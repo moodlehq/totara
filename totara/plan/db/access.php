@@ -91,6 +91,4 @@ $capabilities = array(
 
 );
 
-// add this to make it 1.9 compatible
-$local_plan_capabilities = $capabilities;
 ?>

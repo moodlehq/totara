@@ -601,3 +601,55 @@ $string['competencyframeworkshortname_help'] = '﻿
 # 框架简称
 
 框架简称是对框架全称的快速引用，并且可以用于显示。';
+
+$string['hierarchy:assignselfposition'] = '分配自己的职位';
+$string['hierarchy:assignuserposition'] = '分配用户职位';
+$string['hierarchy:createcompetency'] = '创建一项能力';
+$string['hierarchy:createcompetencycustomfield'] = '创建一个能力自定义字段';
+$string['hierarchy:createcompetencydepth'] = '创建一个能力深度';
+$string['hierarchy:createcompetencyframeworks'] = '创建一个能力框架';
+$string['hierarchy:createcompetencytemplate'] = '创建一个能力模板';
+$string['hierarchy:createcoursecustomfield'] = '创建一个课程自定义字段';
+$string['hierarchy:createorganisation'] = '创建一个组织';
+$string['hierarchy:createorganisationcustomfield'] = '创建一个组织自定义字段';
+$string['hierarchy:createorganisationdepth'] = '创建一个组织深度';
+$string['hierarchy:createorganisationframeworks'] = '创建一个组织框架';
+$string['hierarchy:createposition'] = '创建一个职位';
+$string['hierarchy:createpositioncustomfield'] = '创建一个职位自定义字段';
+$string['hierarchy:createpositiondepth'] = '创建一个职位深度';
+$string['hierarchy:createpositionframeworks'] = '创建一个职位框架';
+$string['hierarchy:deletecompetency'] = '删除一项能力';
+$string['hierarchy:deletecompetencycustomfield'] = '删除一个能力自定义字段';
+$string['hierarchy:deletecompetencydepth'] = '删除一个能力深度';
+$string['hierarchy:deletecompetencyframeworks'] = '删除一个能力框架';
+$string['hierarchy:deletecompetencytemplate'] = '删除一个能力模板';
+$string['hierarchy:deletecoursecustomfield'] = '删除一个课程自定义字段';
+$string['hierarchy:deleteorganisation'] = '删除一个组织';
+$string['hierarchy:deleteorganisationcustomfield'] = '删除一个组织自定义字段';
+$string['hierarchy:deleteorganisationdepth'] = '删除一个组织深度';
+$string['hierarchy:deleteorganisationframeworks'] = '删除一个组织框架';
+$string['hierarchy:deleteposition'] = '删除一个职位';
+$string['hierarchy:deletepositioncustomfield'] = '删除一个职位自定义字段';
+$string['hierarchy:deletepositiondepth'] = '删除一个职位深度';
+$string['hierarchy:deletepositionframeworks'] = '删除一个职位框架';
+$string['hierarchy:editclassifications'] = '编辑课程分类';
+$string['hierarchy:editcourseclassification'] = '编辑一个课程的分类';
+
+$string['hierarchy:searchclassifications'] = '搜索分类';
+$string['hierarchy:updatecompetency'] = '更新一项能力';
+$string['hierarchy:updatecompetencycustomfield'] = '更新一个能力自定义字段';
+$string['hierarchy:updatecompetencydepth'] = '更新一个能力深度';
+$string['hierarchy:updatecompetencyframeworks'] = '更新一个能力框架';
+$string['hierarchy:updatecompetencytemplate'] = '更新一个能力模板';
+$string['hierarchy:updatecoursecustomfield'] = '更新一个课程自定义字段';
+$string['hierarchy:updateorganisation'] = '更新一个组织';
+$string['hierarchy:updateorganisationcustomfield'] = '更新一个组织自定义字段';
+$string['hierarchy:updateorganisationdepth'] = '更新一个组织深度';
+$string['hierarchy:updateorganisationframeworks'] = '更新一个组织框架';
+$string['hierarchy:updateposition'] = '更新一个职位';
+$string['hierarchy:updatepositioncustomfield'] = '更新一个职位自定义字段';
+$string['hierarchy:updatepositiondepth'] = '更新一个职位深度';
+$string['hierarchy:updatepositionframeworks'] = '更新一个职位框架';
+$string['hierarchy:viewcompetency'] = '查看一项能力';
+$string['hierarchy:vieworganisation'] = '查看一个组织';
+$string['hierarchy:viewposition'] = '查看一个职位';

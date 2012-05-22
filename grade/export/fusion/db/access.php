@@ -39,5 +39,3 @@ $capabilities = array(
 
 );
 
-
-$gradeexport_fusion_capabilities = $capabilities;

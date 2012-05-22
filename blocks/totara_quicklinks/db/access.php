@@ -31,7 +31,7 @@
 // For the core capabilities, the variable is $moodle_capabilities.
 
 
-$block_quicklinks_capabilities = array(
+$capabilities = array(
 
     'block/quicklinks:manageownlinks' => array(
         'riskbitmask' => RISK_PERSONAL,
