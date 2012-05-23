@@ -2441,7 +2441,14 @@ function print_course($course, $highlightterms = '') {
 
     echo html_writer::start_tag('div', array('class'=>'coursebox clearfix'));
     echo html_writer::start_tag('div', array('class'=>'info'));
-    echo html_writer::start_tag('h3', array('class'=>'name'));
+
+    echo $OUTPUT->container_start('name');
+
+    if (empty($course->icon)) {
+        $course->icon = 'default';
+    }
+
+    echo $OUTPUT->pix_icon('courseicons/' . $course->icon, '', 'totara_core');
 
     $linkhref = new moodle_url('/course/view.php', array('id'=>$course->id));
 
@@ -2452,7 +2459,8 @@ function print_course($course, $highlightterms = '') {
         $linkparams['class'] = 'dimmed';
     }
     echo html_writer::link($linkhref, $linktext, $linkparams);
-    echo html_writer::end_tag('h3');
+
+    echo $OUTPUT->container_end();
 
     /// first find all roles that are supposed to be displayed
     if (!empty($CFG->coursecontact)) {
@@ -3848,14 +3856,6 @@ function create_course($data, $editoroptions = NULL) {
     events_trigger('course_created', $course);
 
     return $course;
-}
-
-/**
- * TODO SCANMSG
- * method originally defined in same file in totara 1.x
- **/
-function get_category_item_count($categoryids, $countcourses = true) {
-    return array();
 }
 
 /**

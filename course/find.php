@@ -17,7 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Piers Harding <piers@catalyst.net.nz>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -33,12 +35,11 @@ if ($CFG->forcelogin) {
 }
 
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
-
 $strheading = get_string('searchcourses', 'totara_core');
 $shortname = 'findcourses';
 
 if (!$report = reportbuilder_get_embedded_report($shortname)) {
-    print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+    print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
 if ($format != '') {
@@ -56,12 +57,13 @@ $report->include_js();
 $fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report','totara_core').': '.$fullname);
 
-$PAGE->set_title($pagetitle);
-$PAGE->set_button($report->edit_button());
-$PAGE->set_heading('');
 $PAGE->set_url('/course/find.php');
-$PAGE->navbar->add($fullname, new moodle_url("{$CFG->wwwroot}/course/find.php"));
+$PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('admin');
+$PAGE->navbar->add($fullname, new moodle_url("/course/find.php"));
 $PAGE->navbar->add(get_string('search'));
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading($fullname);
 echo $OUTPUT->header();
 
 $countfiltered = $report->get_filtered_count();
@@ -76,22 +78,18 @@ echo $renderer->print_description($report->description, $report->_id);
 $report->display_search();
 
 // print saved search buttons if appropriate
-echo html_writer::start_tag('table', array('align' => 'right', 'border' => '0'));
-echo html_writer::start_tag('tr');
-echo html_writer::tag('td', $renderer->save_button($report->_id));
-echo html_writer::tag('td', $report->view_saved_menu());
-echo html_writer::end_tag('tr');
-echo html_writer::end_tag('table');
-echo html_writer::empty_tag('br');
-echo html_writer::empty_tag('br');
+$table = new html_table();
+$cells = array(new html_table_cell($renderer->save_button($report->_id)), new html_table_cell($report->view_saved_menu()));
+$row = new html_table_row($cells);
+$table->data[] = $row;
+echo html_writer::table($table);
+echo html_writer::empty_tag('br').html_writer::empty_tag('br');
 
 if ($countfiltered > 0) {
-    print $renderer->showhide_button($report->_id, $report->shortname);
+    echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
     // export button
     $renderer->export_select($report->_id);
 }
-
 echo $OUTPUT->footer();
 
-?>

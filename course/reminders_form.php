@@ -24,7 +24,7 @@ class reminder_edit_form extends moodleform {
         $activities = $completion->get_activities();
 
         $choices = array();
-        $choices[0] = get_string('coursecompletion', 'reminders');
+        $choices[0] = get_string('coursecompletion');
         foreach ($activities as $a) {
             $choices[$a->id] = get_string('modulename', $a->modname).' - '.$a->name;
         }
@@ -40,89 +40,90 @@ class reminder_edit_form extends moodleform {
 
 /// form definition
 //--------------------------------------------------------------------------------
-        $mform->addElement('header', 'general', get_string('reminder', 'reminders'));
+        $mform->addElement('header', 'general', get_string('reminder', 'totara_coursecatalog'));
 
-        $mform->addElement('text', 'title', get_string('title', 'reminders'));
+        $mform->addElement('text', 'title', get_string('title', 'totara_coursecatalog'));
         $mform->setType('title', PARAM_TEXT);
-        $mform->setHelpButton('title', array('remindertitle', get_string('title', 'reminders')), true);
-        $mform->addRule('title', get_string('missingtitle', 'reminders'), 'required', null, 'client');
+        $mform->addHelpButton('title', 'title', 'totara_coursecatalog');
 
-        $mform->addElement('select', 'tracking', get_string('completiontotrack', 'reminders'), $choices);
-        $mform->setHelpButton('tracking', array('remindercompltotrack', get_string('completiontotrack', 'reminders')), true);
+        $mform->addRule('title', get_string('missingtitle', 'totara_coursecatalog'), 'required', null, 'client');
+
+        $mform->addElement('select', 'tracking', get_string('completiontotrack', 'totara_coursecatalog'), $choices);
+        $mform->addHelpButton('tracking', 'tracking', 'totara_coursecatalog');
         $mform->addRule('tracking', get_string('missingfullname'), 'required', null, 'client');
         $mform->setType('tracking', PARAM_INT);
 
-        $mform->addElement('select', 'requirement', get_string('requirement', 'reminders'), $rchoices);
-        $mform->setHelpButton('requirement', array('reminderrequirement', get_string('requirement', 'reminders')), true);
+        $mform->addElement('select', 'requirement', get_string('requirement', 'totara_coursecatalog'), $rchoices);
+        $mform->addHelpButton('requirement', 'requirement', 'totara_coursecatalog');
         $mform->addRule('requirement', get_string('required'), 'required', null, 'client');
         $mform->setType('requirement', PARAM_INT);
 
 //--------------------------------------------------------------------------------
-        $mform->addElement('header', 'invitation', get_string('invitation', 'reminders'));
+        $mform->addElement('header', 'invitation', get_string('invitation', 'totara_coursecatalog'));
 
         $options = range(2, 30);
-        array_unshift($options, get_string('nextday', 'reminders'));
-        array_unshift($options, get_string('sameday', 'reminders'));
-        $mform->addElement('select', 'invitationperiod', get_string('period', 'reminders'), $options);
+        array_unshift($options, get_string('nextday', 'totara_coursecatalog'));
+        array_unshift($options, get_string('sameday', 'totara_coursecatalog'));
+        $mform->addElement('select', 'invitationperiod', get_string('period', 'totara_coursecatalog'), $options);
         $mform->setType('invitationperiod', PARAM_INT);
-        $mform->setHelpButton('invitationperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
+        $mform->addHelpButton('invitationperiod', 'invitationperiod', 'totara_coursecatalog');
         $mform->setDefault('invitationperiod', 0);
 
-        $mform->addElement('text', 'invitationsubject', get_string('subject', 'reminders'), 'maxlength="254" size="80"');
-        $mform->setHelpButton('invitationsubject', array('remindersubject', get_string('subject', 'reminders')), true);
-        $mform->setDefault('invitationsubject', get_string('invitationsubjectdefault', 'reminders'));
+        $mform->addElement('text', 'invitationsubject', get_string('subject', 'totara_coursecatalog'), 'maxlength="254" size="80"');
+        $mform->addHelpButton('invitationsubject', 'invitationsubject', 'totara_coursecatalog');
+        $mform->setDefault('invitationsubject', get_string('invitationsubjectdefault', 'totara_coursecatalog'));
         $mform->setType('invitationsubject', PARAM_MULTILANG);
 
-        $mform->addElement('textarea', 'invitationmessage', get_string('message', 'reminders'), 'rows="15" cols="70"');
-        $mform->setHelpButton('invitationmessage', array('remindermessage', get_string('message', 'reminders')), true) ;
-        $mform->setDefault('invitationmessage', get_string('invitationmessagedefault', 'reminders'));
+        $mform->addElement('textarea', 'invitationmessage', get_string('message', 'totara_coursecatalog'), 'rows="15" cols="70"');
+        $mform->addHelpButton('invitationmessage', 'invitationmessage', 'totara_coursecatalog');
+        $mform->setDefault('invitationmessage', get_string('invitationmessagedefault', 'totara_coursecatalog'));
         $mform->setType('invitationmessage', PARAM_MULTILANG);
 
 //--------------------------------------------------------------------------------
-        $mform->addElement('header', 'reminder', get_string('reminder', 'reminders'));
+        $mform->addElement('header', 'reminder', get_string('reminder', 'totara_coursecatalog'));
 
-        $mform->addElement('select', 'reminderperiod', get_string('period', 'reminders'), $options);
+        $mform->addElement('select', 'reminderperiod', get_string('period', 'totara_coursecatalog'), $options);
         $mform->setType('reminderperiod', PARAM_INT);
-        $mform->setHelpButton('reminderperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
+        $mform->addHelpButton('reminderperiod', 'reminderperiod', 'totara_coursecatalog');
         $mform->setDefault('reminderperiod', 1);
 
-        $mform->addElement('text', 'remindersubject', get_string('subject', 'reminders'), 'maxlength="254" size="80"');
-        $mform->setHelpButton('remindersubject', array('remindersubject', get_string('subject', 'reminders')), true);
-        $mform->setDefault('remindersubject', get_string('remindersubjectdefault', 'reminders'));
+        $mform->addElement('text', 'remindersubject', get_string('subject', 'totara_coursecatalog'), 'maxlength="254" size="80"');
+        $mform->addHelpButton('remindersubject', 'remindersubject', 'totara_coursecatalog');
+        $mform->setDefault('remindersubject', get_string('remindersubjectdefault', 'totara_coursecatalog'));
         $mform->setType('remindersubject', PARAM_MULTILANG);
 
-        $mform->addElement('textarea', 'remindermessage', get_string('message', 'reminders'), 'rows="15" cols="70"');
-        $mform->setHelpButton('remindermessage', array('remindermessage', get_string('message', 'reminders')), true) ;
-        $mform->setDefault('remindermessage', get_string('remindermessagedefault', 'reminders'));
+        $mform->addElement('textarea', 'remindermessage', get_string('message', 'totara_coursecatalog'), 'rows="15" cols="70"');
+        $mform->addHelpButton('remindermessage', 'remindermessage', 'totara_coursecatalog');
+        $mform->setDefault('remindermessage', get_string('remindermessagedefault', 'totara_coursecatalog'));
         $mform->setType('remindermessage', PARAM_MULTILANG);
 
 //--------------------------------------------------------------------------------
-        $mform->addElement('header', 'escalation', get_string('escalation', 'reminders'));
+        $mform->addElement('header', 'escalation', get_string('escalation', 'totara_coursecatalog'));
 
-        $mform->addElement('checkbox', 'escalationdontsend', get_string('dontsend', 'reminders'));
+        $mform->addElement('checkbox', 'escalationdontsend', get_string('dontsend', 'totara_coursecatalog'));
         $mform->setType('escalationdontsend', PARAM_INT);
         $mform->setDefault('escalationdontsend', 0);
 
-        $mform->addElement('checkbox', 'escalationskipmanager', get_string('skipmanager', 'reminders'));
+        $mform->addElement('checkbox', 'escalationskipmanager', get_string('skipmanager', 'totara_coursecatalog'));
         $mform->setType('escalationskipmanager', PARAM_INT);
         $mform->setDefault('escalationskipmanager', 0);
         $mform->disabledIf('escalationskipmanager', 'escalationdontsend', 'checked');
 
-        $mform->addElement('select', 'escalationperiod', get_string('period', 'reminders'), $options);
+        $mform->addElement('select', 'escalationperiod', get_string('period', 'totara_coursecatalog'), $options);
         $mform->setType('escalationperiod', PARAM_INT);
-        $mform->setHelpButton('escalationperiod', array('reminderperioduntilreminder', get_string('period', 'reminders')), true);
+        $mform->addHelpButton('escalationperiod', 'reminderperiod', 'totara_coursecatalog');
         $mform->setDefault('escalationperiod', 1);
         $mform->disabledIf('escalationperiod', 'escalationdontsend', 'checked');
 
-        $mform->addElement('text', 'escalationsubject', get_string('subject', 'reminders'), 'maxlength="254" size="80"');
-        $mform->setHelpButton('escalationsubject', array('remindersubject', get_string('subject', 'reminders')), true);
-        $mform->setDefault('escalationsubject', get_string('escalationsubjectdefault', 'reminders'));
+        $mform->addElement('text', 'escalationsubject', get_string('subject', 'totara_coursecatalog'), 'maxlength="254" size="80"');
+        $mform->addHelpButton('escalationsubject', 'invitationsubject', 'totara_coursecatalog');
+        $mform->setDefault('escalationsubject', get_string('escalationsubjectdefault', 'totara_coursecatalog'));
         $mform->setType('escalationsubject', PARAM_MULTILANG);
         $mform->disabledIf('escalationsubject', 'escalationdontsend', 'checked');
 
-        $mform->addElement('textarea', 'escalationmessage', get_string('message', 'reminders'), 'rows="15" cols="70"');
-        $mform->setHelpButton('escalationmessage', array('remindermessage', get_string('message', 'reminders')), true) ;
-        $mform->setDefault('escalationmessage', get_string('escalationmessagedefault', 'reminders'));
+        $mform->addElement('textarea', 'escalationmessage', get_string('message', 'totara_coursecatalog'), 'rows="15" cols="70"');
+        $mform->addHelpButton('escalationmessage', 'remindermessage', 'totara_coursecatalog');
+        $mform->setDefault('escalationmessage', get_string('escalationmessagedefault', 'totara_coursecatalog'));
         $mform->setType('escalationmessage', PARAM_MULTILANG);
         $mform->disabledIf('escalationmessage', 'escalationdontsend', 'checked');
 

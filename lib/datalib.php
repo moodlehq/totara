@@ -551,7 +551,7 @@ function get_courses_wmanagers($categoryid=0, $sort="c.sortorder ASC", $fields=a
         $categoryclause = '';
     }
 
-    $basefields = array('id', 'category', 'sortorder',
+    $basefields = array('id', 'category', 'sortorder', 'icon',
                         'shortname', 'fullname', 'idnumber',
                         'startdate', 'visible',
                         'newsitems', 'groupmode', 'groupmodeforce');
@@ -727,9 +727,10 @@ function get_courses_wmanagers($categoryid=0, $sort="c.sortorder ASC", $fields=a
  * @param int $page The page number to get
  * @param int $recordsperpage The number of records per page
  * @param int $totalcount Passed in by reference.
+ * @param boolean $emptysearchokay Set true if empty $searchterms should return all courses
  * @return object {@link $COURSE} records
  */
-function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount) {
+function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $emptysearchokay=false) {
     global $CFG, $DB;
 
     if ($DB->sql_regex_supported()) {
@@ -784,11 +785,17 @@ function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $record
     }
 
     if (empty($searchcond)) {
-        $totalcount = 0;
-        return array();
-    }
+        if ($emptysearchokay) {
+            $searchcond = '1=1';
+        } else {
+            $totalcount = 0;
+            return array();
+        }
+    } else {
 
-    $searchcond = implode(" AND ", $searchcond);
+        $searchcond = implode(" AND ", $searchcond);
+
+    }
 
     $courses = array();
     $c = 0; // counts how many visible courses we've seen

@@ -5882,9 +5882,9 @@ function admin_externalpage_setup($section, $extrabutton = '', array $extraurlpa
             $caption = get_string('blocksediton');
             $url = new moodle_url($PAGE->url, array('adminedit'=>'1'));
         }
-        $PAGE->set_button($OUTPUT->single_button($url, $caption, 'get'));
+        $extrabutton .= '&nbsp;' . $OUTPUT->single_button($url, $caption, 'get');
     }
-
+    $PAGE->set_button($extrabutton);
     $PAGE->set_title("$SITE->shortname: " . implode(": ", $visiblepathtosection));
     $PAGE->set_heading($SITE->fullname);
 

@@ -26,6 +26,7 @@
 
 require_once("../config.php");
 require_once("lib.php");
+require_once($CFG->dirroot . "/totara/core/totara.php");
 
 $categoryedit = optional_param('categoryedit', -1,PARAM_BOOL);
 $delete   = optional_param('delete',0,PARAM_INT);
@@ -35,7 +36,14 @@ $move     = optional_param('move',0,PARAM_INT);
 $moveto   = optional_param('moveto',-1,PARAM_INT);
 $moveup   = optional_param('moveup',0,PARAM_INT);
 $movedown = optional_param('movedown',0,PARAM_INT);
-
+$viewtype = optional_param('viewtype','',PARAM_TEXT);
+// Set the view type as a session value so that either courses or programs
+// are displayed by default
+if ($viewtype == 'program') {
+    $SESSION->viewtype = 'program';
+} else if ($viewtype == 'course' || empty($SESSION->viewtype)) {
+    $SESSION->viewtype = 'course';
+}
 $site = get_site();
 
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
@@ -114,7 +122,7 @@ if (!$adminediting) {
 }
 /// Everything else is editing on mode.
 require_once($CFG->libdir.'/adminlib.php');
-admin_externalpage_setup('coursemgmt');
+admin_externalpage_setup('managecategories');
 
 /// Delete a category.
 if (!empty($delete) and confirm_sesskey()) {
@@ -177,6 +185,7 @@ if (!$categories = get_categories()) {    /// No category yet!
     $tempcat->context = get_context_instance(CONTEXT_COURSECAT, $tempcat->id);
     mark_context_dirty('/'.SYSCONTEXTID);
     fix_course_sortorder(); // Required to build course_categories.depth and .path.
+    set_config('defaultrequestcategory', $tempcat->id);
 }
 
 /// Move a category to a new parent if required
@@ -239,11 +248,21 @@ if ((!empty($moveup) or !empty($movedown)) and confirm_sesskey()) {
 
 /// Print headings
 echo $OUTPUT->header();
+
+if (has_capability('moodle/category:manage', $systemcontext)) {
+    // Print button for creating new categories
+    $options = array();
+    $options['parent'] = 0;
+    echo $OUTPUT->container($OUTPUT->single_button(new moodle_url('editcategory.php', $options), get_string('addnewcategory'), 'get'), 'buttons');
+}
+print print_totara_search('', true, 'category', 0);
+
 echo $OUTPUT->heading($strcategories);
 
 /// Print out the categories with all the knobs
 $strcategories = get_string('categories');
 $strcourses = get_string('courses');
+$strprograms = get_string('programs', 'totara_coursecatalog');
 $strmovecategoryto = get_string('movecategoryto');
 $stredit = get_string('edit');
 
@@ -256,27 +275,14 @@ make_categories_list($displaylist, $parentlist);
 echo '<table class="generalbox editcourse boxaligncenter"><tr class="header">';
 echo '<th class="header" scope="col">'.$strcategories.'</th>';
 echo '<th class="header" scope="col">'.$strcourses.'</th>';
+echo '<th class="header" scope="col">'.$strprograms.'</th>';
 echo '<th class="header" scope="col">'.$stredit.'</th>';
-echo '<th class="header" scope="col">'.$strmovecategoryto.'</th>';
 echo '</tr>';
 
 print_category_edit(NULL, $displaylist, $parentlist);
 echo '</table>';
 
 echo '<div class="buttons">';
-if (has_capability('moodle/course:create', $systemcontext)) {
-    // print create course link to first category
-    $options = array('category' => $CFG->defaultrequestcategory);
-    $options['returnto'] = 'topcat';
-    echo $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
-}
-
-// Print button for creating new categories
-if (has_capability('moodle/category:manage', $systemcontext)) {
-    $options = array('parent'=>0);
-    echo $OUTPUT->single_button(new moodle_url('editcategory.php', $options), get_string('addnewcategory'), 'get');
-}
-
 print_course_request_buttons($systemcontext);
 echo '</div>';
 
@@ -313,12 +319,18 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
             echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         }
         $linkcss = $category->visible ? '' : ' class="dimmed" ';
-        echo '<a '.$linkcss.' title="'.$str->edit.'" '.
-             ' href="category.php?id='.$category->id.'&amp;categoryedit=on&amp;sesskey='.sesskey().'">'.
-             format_string($category->name, true, array('context' => $category->context)).'</a>';
+        echo format_string($category->name, true, array('context' => $category->context));
         echo '</td>';
 
-        echo '<td class="count">'.$category->coursecount.'</td>';
+        echo '<td class="courses">' .
+                '<a ' . $linkcss . ' href="' . $CFG->wwwroot . '/course/category.php?id=' . $category->id . '&amp;viewtype=course">' .
+                $category->coursecount . '</a></td>';
+        if (!isset($category->programcount)) {
+            $category->programcount = '-';
+        }
+        echo '<td class="programs">' .
+                '<a ' . $linkcss . ' href="' . $CFG->wwwroot . '/course/category.php?id=' . $category->id . '&amp;viewtype=program">' .
+                $category->programcount . '</a></td>';
 
         echo '<td class="icons">';    /// Print little icons
 
@@ -357,22 +369,9 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
         }
         echo '</td>';
 
-        echo '<td align="left">';
-        if (has_capability('moodle/category:manage', $category->context)) {
-            $tempdisplaylist = $displaylist;
-            unset($tempdisplaylist[$category->id]);
-            foreach ($parentslist as $key => $parents) {
-                if (in_array($category->id, $parents)) {
-                    unset($tempdisplaylist[$key]);
-                }
-            }
-            $popupurl = new moodle_url("index.php?move=$category->id&sesskey=".sesskey());
-            $select = new single_select($popupurl, 'moveto', $tempdisplaylist, $category->parent, null, "moveform$category->id");
-            echo $OUTPUT->render($select);
-        }
-        echo '</td>';
         echo '</tr>';
     } else {
+        $category = new stdClass();
         $category->id = '0';
     }
 

@@ -81,19 +81,16 @@ $jsmodule = array(
 $PAGE->requires->js_init_call('M.totara_coursecompetency.init', $args, false, $jsmodule);
 
 $strcompetenciesusedincourse = get_string("competenciesusedincourse", 'totara_hierarchy');
-$navlinks = array();
 
-$navlinks[] = array('name' => $strcompetenciesusedincourse,
-                    'link' => null,
-                    'type' => 'misc');
 $title = $strcompetenciesusedincourse;
 $fullname = $course->fullname;
-
-$navigation = build_navigation($navlinks);
-$PAGE->set_title($title);
+$PAGE->set_course($course);
 $PAGE->set_url(new moodle_url('/course/competency.php', array('id' => $id)));
+$PAGE->navbar->add($strcompetenciesusedincourse);
+$PAGE->set_title($title);
 $PAGE->set_heading($fullname);
-/* SCANMSG: may be additional work required for $navigation variable */
+$PAGE->set_pagelayout('standard');
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading($strcompetenciesusedincourse);
 

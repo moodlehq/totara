@@ -140,6 +140,8 @@ define('CONTEXT_SYSTEM', 10);
 define('CONTEXT_USER', 30);
 /** Course category context level - one instance for each category */
 define('CONTEXT_COURSECAT', 40);
+/** Program context level - one instance for each program */
+define('CONTEXT_PROGRAM', 45);
 /** Course context level - one instances for each course */
 define('CONTEXT_COURSE', 50);
 /** Course module context level - one instance for each course module */

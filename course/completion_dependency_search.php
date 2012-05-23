@@ -13,8 +13,8 @@
 
 require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/local/dialogs/search_form.php');
-require_once($CFG->dirroot . '/local/dialogs/dialog_content_hierarchy.class.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/search_form.php');
+require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_hierarchy.class.php');
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');
@@ -30,9 +30,11 @@ define('HIERARCHY_SEARCH_NUM_PER_PAGE', 50);
 $query = optional_param('query', null, PARAM_TEXT); // search query
 $page = optional_param('page', 0, PARAM_INT); // results page number
 
+require_login();
+$PAGE->set_context(context_system::instance());
+
 $strsearch = get_string('search');
-#$stritemplural = get_string($type . 'plural', $type);
-$strqueryerror = get_string('queryerror', 'hierarchy');
+$strqueryerror = get_string('queryerror', 'totara_hierarchy');
 
 // Trim whitespace off seach query
 $query = urldecode(trim($query));
@@ -52,7 +54,7 @@ $mform->display();
 if (strlen($query)) {
 
     // extract quoted strings from query
-    $keywords = course_search_parse_keywords($query);
+    $keywords = totara_search_parse_keywords($query);
 
     $fields = "
         SELECT
@@ -64,40 +66,44 @@ if (strlen($query)) {
 
     $from = "
         FROM
-            {$CFG->prefix}course c
+            {course} c
     ";
 
     $order = ' ORDER BY c.sortorder ASC';
 
     // Match search terms
-    $where = course_search_get_keyword_where_clause($keywords);
+    $fields = array('c.fullname', 'c.shortname');
+    list($where, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
 
     // Only show courses with completion enabled
     $where .= "
-        AND c.enablecompletion = ".COMPLETION_ENABLED."
+        AND c.enablecompletion = ?
         AND c.visible = 1
     ";
+    $params[]= COMPLETION_ENABLED;
 
-    $total = count_records_sql($count . $from . $where);
+    $total = $DB->count_records_sql($count . $from . $where, $params);
     $start = $page * HIERARCHY_SEARCH_NUM_PER_PAGE;
     if ($total) {
-        if($results = get_records_sql($fields . $from . $where .
-            $order, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
+        if ($results = $DB->get_records_sql($fields . $from . $where . $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
-            $data = array('query' => urlencode(stripslashes($query)));
+            $data = array('query' => urlencode($query));
 
             $url = new moodle_url($CFG->wwwroot . '/course/completion_dependency_search.php', $data);
-            print '<div class="search-paging">';
-            print print_paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url, 'page', false, true, 5);
-            print '</div>';
+            $pagingbar = new paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
+            $pagingbar->pagevar = 'page';
+            $output = $OUTPUT->render($pagingbar);
+            echo html_writer::tag('div',
+                            $output,
+                            array('class' => 'search-paging'));
 
             // Generate some treeview data
             $dialog = new totara_dialog_content();
             $dialog->items = array();
             $dialog->parent_items = array();
 
-            foreach($results as $result) {
-                $item = new object();
+            foreach ($results as $result) {
+                $item = new stdClass();
                 $item->id = $result->id;
                 $item->fullname = $result->fullname;
 
@@ -109,74 +115,14 @@ if (strlen($query)) {
         } else {
             // if count succeeds, query shouldn't fail
             // must be something wrong with query
-            print $strqueryerror;
+            echo $strqueryerror;
         }
     } else {
-        $params = new object();
-        $params->query = stripslashes($query);
+        $params = new stdClass();
+        $params->query = $query;
         $errorstr = 'noresultsfor';
-        print '<p class="message">' . get_string($errorstr, 'hierarchy', $params). '</p>';
+        echo html_writer::tag('p', get_string($errorstr, 'totara_hierarchy', $params), array('class' => 'message'));
     }
 } else {
-    print '<br />';
-}
-
-
-/**
- * Parse a query into individual keywords, treating quoted phrases one item
- *
- * Pairs of matching double or single quotes are treated as a single keyword.
- *
- * @param string $query Text from user search field
- *
- * @return array Array of individual keywords parsed from input string
- */
-function course_search_parse_keywords($query) {
-    // query arrives with quotes escaped, but quotes have special meaning
-    // within a query. Strip out slashes, then re-add any that are left
-    // after parsing done (to protect against SQL injection)
-    $query = stripslashes($query);
-
-    $out = array();
-    // break query down into quoted and unquoted sections
-    $split_quoted = preg_split('/(\'[^\']+\')|("[^"]+")/', $query, 0,
-        PREG_SPLIT_DELIM_CAPTURE);
-    foreach($split_quoted as $item) {
-        // strip quotes from quoted strings but leave spaces
-        if(preg_match('/^(["\'])(.*)\\1$/', trim($item), $matches)) {
-            $out[] = addslashes($matches[2]);
-        } else {
-            // split unquoted text on whitespace
-            $keyword = addslashes_recursive(preg_split('/\s/', $item, 0,
-                PREG_SPLIT_NO_EMPTY));
-            $out = array_merge($out, $keyword);
-        }
-    }
-    return $out;
-}
-
-
-/**
- * Return an SQL WHERE clause to search for the given keywords
- *
- * @param array $keywords Array of strings to search for
- *
- * @return string SQL WHERE clause to match the keywords provided
- */
-function course_search_get_keyword_where_clause($keywords) {
-
-    // fields to search
-    $fields = array('c.fullname', 'c.shortname');
-
-    $queries = array();
-    foreach($keywords as $keyword) {
-        $matches = array();
-        foreach($fields as $field) {
-            $matches[] = $field . ' ' . sql_ilike() . " '%" . $keyword . "%'";
-        }
-        // look for each keyword in any field
-        $queries[] = '(' . implode(' OR ', $matches) . ')';
-    }
-    // all keywords must be found in at least one field
-    return ' WHERE ' . implode(' AND ', $queries);
+    echo html_writer::empty_tag('br');
 }

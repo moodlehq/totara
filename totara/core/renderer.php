@@ -423,7 +423,7 @@ class totara_core_renderer extends plugin_renderer_base {
         $attr = array(
             'type' => 'text',
             'class' => 'search-box',
-            'name' => 'query',
+            'name' => 'search',
             'placeholder' => $placeholder,
             'alt' => $placeholder,
         );

@@ -942,17 +942,17 @@ function print_totara_search($value = '', $return = true, $type = 'all', $catego
         // Get category name
         $categoryname = $DB->get_field('course_categories', 'name', array('id' => $category));
         if ($categoryname) {
-            $strsearch = get_string('searchx', 'moodle', $categoryname);
+            $strsearch = get_string('searchx', 'totara_core', $categoryname);
         } else {
             $strsearch = get_string('search');
         }
     } else {
         if ($type == 'course') {
-            $strsearch = get_string('searchallcourses');
+            $strsearch = get_string('searchallcourses', 'totara_coursecatalog');
         } elseif ($type == 'program') {
-            $strsearch = get_string('searchallprograms');
+            $strsearch = get_string('searchallprograms', 'totara_coursecatalog');
         } elseif ($type == 'category') {
-            $strsearch = get_string('searchallcategories');
+            $strsearch = get_string('searchallcategories', 'totara_coursecatalog');
         } else {
             $strsearch = get_string('search');
             $type = '';

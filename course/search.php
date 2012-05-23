@@ -14,6 +14,7 @@
     $show      = optional_param('show', 0, PARAM_INT);
     $blocklist = optional_param('blocklist', 0, PARAM_INT);
     $modulelist= optional_param('modulelist', '', PARAM_PLUGIN);
+    $category  = optional_param('category', -1, PARAM_INT);
 
     $PAGE->set_url('/course/search.php', compact('search', 'page', 'perpage', 'blocklist', 'modulelist', 'edit'));
     $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
@@ -27,6 +28,9 @@
             }
         }
         $search = trim(implode(" ", $searchterms));
+    } else {
+        $searchterms = array();
+        $search = '';
     }
 
     $site = get_site();
@@ -46,11 +50,16 @@
     if ($CFG->forcelogin) {
         require_login();
     }
+    if (isset($USER->categoryedit) && $USER->categoryedit) {
+        $USER->editing = $USER->categoryedit;
+    }
+    // Save editing state
+    if ($edit !== -1) {
+        $USER->editing = $edit;
+        $USER->categoryedit = $edit;
+    }
 
     if (can_edit_in_category()) {
-        if ($edit !== -1) {
-            $USER->editing = $edit;
-        }
         $adminediting = $PAGE->user_is_editing();
     } else {
         $adminediting = false;
@@ -91,26 +100,6 @@
     $stredit = get_string("edit");
     $strfrontpage = get_string('frontpage', 'admin');
     $strnovalidcourses = get_string('novalidcourses');
-
-    if (empty($search) and empty($blocklist) and empty($modulelist)) {
-        $PAGE->navbar->add($strcourses, new moodle_url('/course/index.php'));
-        $PAGE->navbar->add($strsearch);
-        $PAGE->set_title("$site->fullname : $strsearch");
-        $PAGE->set_heading($site->fullname);
-
-        echo $OUTPUT->header();
-        echo $OUTPUT->box_start();
-        echo "<center>";
-        echo "<br />";
-        print_course_search("", false, "plain");
-        echo "<br /><p>";
-        print_string("searchhelp");
-        echo "</p>";
-        echo "</center>";
-        echo $OUTPUT->box_end();
-        echo $OUTPUT->footer();
-        exit;
-    }
 
     if (!empty($moveto) and $data = data_submitted() and confirm_sesskey()) {   // Some courses are being moved
         if (! $destcategory = $DB->get_record("course_categories", array("id"=>$data->moveto))) {
@@ -168,7 +157,7 @@
     }
     else {
         $courses = get_courses_search($searchterms, "fullname ASC",
-            $page, $perpage, $totalcount);
+            $page, $perpage, $totalcount, true);
     }
 
     $searchform = print_course_search($search, true, "navbar");
@@ -194,6 +183,8 @@
                     'perpage' => $perpage));
             $searchform = $OUTPUT->single_button($aurl, $string, 'get');
         }
+        // should we show the add course button?
+       $searchform .= '&nbsp;' . $OUTPUT->single_button(new moodle_url('/course/edit.php', array('category' => $CFG->defaultrequestcategory)), get_string('addnewcourse'), 'get');
     }
 
     $PAGE->navbar->add($strcourses, new moodle_url('/course/index.php'));
@@ -207,6 +198,15 @@
 
     echo $OUTPUT->header();
 
+    // Generate browse link
+    if ($category == -1) {
+        $browselink = html_writer::link(new moodle_url('/course/categorylist.php', array('viewtype' => 'category')), '&laquo; ' . get_string('browsebycategory', 'totara_coursecatalog'));
+            $browselink .= '<a href="'.$CFG->wwwroot.'/course/categorylist.php?viewtype=category">';
+    } else {
+        $browselink = html_writer::link(new moodle_url('/course/category.php', array('viewtype' => 'category', 'id' => $category)), '&laquo; ' . get_string('backtoallcategory', 'totara_coursecatalog'));
+    }
+
+    echo $browselink;
     $lastcategory = -1;
     if ($courses) {
         echo $OUTPUT->heading("$strsearchresults: $totalcount");

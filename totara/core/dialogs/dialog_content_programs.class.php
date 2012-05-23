@@ -31,6 +31,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 require_once($CFG->dirroot.'/totara/program/lib.php');
+require_once($CFG->dirroot.'/totara/coursecatalog/lib.php');
 require_once($CFG->libdir.'/datalib.php');
 
 /**
@@ -122,7 +123,7 @@ class totara_dialog_content_programs extends totara_dialog_content {
         }
 
         // Get item counts for categories
-        $category_item_counts = (count($category_ids) > 0) ? get_category_item_count($category_ids, false) : array();
+        $category_item_counts = (count($category_ids) > 0) ? totara_get_category_item_count($category_ids, false) : array();
 
         // Fix array to be indexed by prefixed id's (so it doesn't conflict with course id's)
         foreach ($categories as $category) {

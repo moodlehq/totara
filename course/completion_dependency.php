@@ -25,8 +25,7 @@
 
 require_once('../config.php');
 require_once($CFG->dirroot.'/course/lib.php');
-require_once($CFG->dirroot.'/local/dialogs/dialog_content_courses.class.php');
-
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.php');
 
 ///
 /// Setup / loading data
@@ -49,18 +48,14 @@ if ($id) { // editing course
         print_error('cannoteditsiteform');
     }
 
-    if (!$course = get_record('course', 'id', $id)) {
+    if (!$course = $DB->get_record('course', array('id' => $id))) {
         print_error('invalidcourseid');
     }
 
     require_login($course->id);
     require_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id));
 
-} else {
-    require_login();
-    print_error('needcourseid');
 }
-
 
 ///
 /// Load data
@@ -77,27 +72,27 @@ $sql = "
         c.id,
         c.fullname
     FROM
-        {$CFG->prefix}course c
+        {course} c
     LEFT JOIN
-        {$CFG->prefix}course_completion_criteria cc
+        {course_completion_criteria} cc
      ON cc.courseinstance = c.id
-    AND cc.course = {$id}
+    AND cc.course = ?
     LEFT JOIN
-        {$CFG->prefix}course_completion_criteria ccc
+        {course_completion_criteria} ccc
      ON ccc.course = c.id
-    AND cc.courseinstance = {$id}
+    AND cc.courseinstance = ?
     WHERE
-        c.enablecompletion = ".COMPLETION_ENABLED."
-    AND c.id <> {$id}
-    AND c.category = {$categoryid}
+        c.enablecompletion = ?
+    AND c.id <> ?
+    AND c.category = ?
     AND ccc.id IS NULL
     AND cc.id IS NULL
     AND c.visible = 1
     ORDER BY
         c.sortorder ASC
 ";
-
-$courses = get_records_sql($sql);
+$parms = array($id, $id, COMPLETION_ENABLED, $id, $categoryid);
+$courses = $DB->get_records_sql($sql, $parms);
 
 if (!$courses) {
     $courses = array();

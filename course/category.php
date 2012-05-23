@@ -5,6 +5,7 @@
 
     require_once("../config.php");
     require_once("lib.php");
+    require_once($CFG->dirroot.'/totara/coursecatalog/lib.php');
 
     $id = required_param('id', PARAM_INT); // Category id
     $page = optional_param('page', 0, PARAM_INT); // which page to show
@@ -20,7 +21,7 @@
     $site = get_site();
 
     if (empty($id)) {
-        print_error("unknowcategory");
+        redirect($CFG->wwwroot.'/course/categorylist.php');
     }
 
     $PAGE->set_category_by_id($id);
@@ -35,19 +36,21 @@
     navigation_node::override_active_url($PAGE->url);
     $context = $PAGE->context;
     $category = $PAGE->category;
-
+    // save editing state
+    if ($categoryedit !== -1) {
+        $USER->editing = $categoryedit;
+        $USER->categoryedit = $categoryedit;
+    }
     $canedit = can_edit_in_category($category->id);
+    $editingon = !empty($USER->categoryedit);
     if ($canedit) {
-        if ($categoryedit !== -1) {
-            $USER->editing = $categoryedit;
-        }
+        $editbutton = totara_print_edit_button('categoryedit');
         require_login();
-        $editingon = $PAGE->user_is_editing();
     } else {
+        $editbutton = '';
         if ($CFG->forcelogin) {
             require_login();
         }
-        $editingon = false;
     }
 
     if (!$category->visible) {
@@ -156,11 +159,20 @@
     $strcategory = get_string('category');
     $strcourses = get_string('courses');
 
+    $buttons = print_course_search('', true, 'navbar');
     if ($editingon && can_edit_in_category()) {
         // Integrate into the admin tree only if the user can edit categories at the top level,
         // otherwise the admin block does not appear to this user, and you get an error.
         require_once($CFG->libdir . '/adminlib.php');
-        admin_externalpage_setup('coursemgmt', '', $urlparams, $CFG->wwwroot . '/course/category.php');
+        if (has_capability('moodle/course:create', $context)) {
+            /// Print button to create a new course
+            unset($options);
+            $options['category'] = $category->id;
+            $options['returnto'] = 'category';
+            $buttons .= $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
+        }
+        $buttons .= '&nbsp;' . $editbutton;
+        admin_externalpage_setup('managecategories', $buttons, $urlparams, $CFG->wwwroot . '/course/category.php');
         $PAGE->set_context($context);   // Ensure that we are actually showing blocks etc for the cat context
 
         $settingsnode = $PAGE->settingsnav->find_active_node();
@@ -173,22 +185,13 @@
     } else {
         $PAGE->set_title("$site->shortname: $category->name");
         $PAGE->set_heading($site->fullname);
-        $PAGE->set_button(print_course_search('', true, 'navbar'));
+        $buttons .= '&nbsp;' . $editbutton;
+        $PAGE->set_button($buttons);
         $PAGE->set_pagelayout('coursecategory');
         echo $OUTPUT->header();
     }
 
-/// Print the category selector
-    $displaylist = array();
-    $notused = array();
-    make_categories_list($displaylist, $notused);
-
-    echo '<div class="categorypicker">';
-    $select = new single_select(new moodle_url('category.php'), 'id', $displaylist, $category->id, null, 'switchcategory');
-    $select->set_label($strcategories.':');
-    echo $OUTPUT->render($select);
-    echo '</div>';
-
+    echo $OUTPUT->container(html_writer::link(new moodle_url('/course/category.php', array('id' => $category->parent)), get_string('backtoparent','totara_coursecatalog')), 'toplinks');
 /// Print current category description
     if (!$editingon && $category->description) {
         echo $OUTPUT->box_start();
@@ -204,19 +207,7 @@
         echo $OUTPUT->box_end();
     }
 
-    if ($editingon && has_capability('moodle/category:manage', $context)) {
-        echo $OUTPUT->container_start('buttons');
-
-        // Print button to update this category
-        $options = array('id' => $category->id);
-        echo $OUTPUT->single_button(new moodle_url('/course/editcategory.php', $options), get_string('editcategorythis'), 'get');
-
-        // Print button for creating new categories
-        $options = array('parent' => $category->id);
-        echo $OUTPUT->single_button(new moodle_url('/course/editcategory.php', $options), get_string('addsubcategory'), 'get');
-
-        echo $OUTPUT->container_end();
-    }
+    echo $OUTPUT->heading($category->name);
 
 /// Print out all the sub-categories
     if ($subcategories = $DB->get_records('course_categories', array('parent' => $category->id), 'sortorder ASC')) {
@@ -426,20 +417,10 @@
         echo $OUTPUT->single_button(new moodle_url('category.php', $options), get_string('resortcoursesbyname'), 'get');
     }
 
-    if (has_capability('moodle/course:create', $context)) {
-    /// Print button to create a new course
-        unset($options);
-        $options['category'] = $category->id;
-        $options['returnto'] = 'category';
-        echo $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
-    }
-
     if (!empty($CFG->enablecourserequests) && $category->id == $CFG->defaultrequestcategory) {
         print_course_request_buttons(get_context_instance(CONTEXT_SYSTEM));
     }
     echo '</div>';
-
-    print_course_search();
 
     echo $OUTPUT->footer();
 
