@@ -74,8 +74,8 @@ $alreadyselected = array();
 if ($alreadyrelated = comp_relation_get_relations($compid)) {
     list($alreadyrelated_sql, $alreadyrelated_params) = $DB->get_in_or_equal($alreadyrelated);
     $alreadyselected = $DB->get_records_select('comp', 'id ' . $alreadyrelated_sql, $alreadyrelated_params, '', 'id, fullname');
-    $alreadyrelated[$compid] = $compid;
 }
+$alreadyrelated[$compid] = $compid; // competency can't be related to itself
 
 ///
 /// Display page
