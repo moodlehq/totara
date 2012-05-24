@@ -413,4 +413,4 @@ span.dialog-singleselect-deletable {
 .filetree span.folder, .filetree span.file { padding: 1px 0 1px 16px; display: block; }
 .filetree span.folder { background: url([[pix:totara_core|jquery_treeview/folder]]) 0 0 no-repeat; }
 .filetree li.expandable span.folder { background: url([[pix:totara_core|jquery_treeview/folder-closed]]) 0 0 no-repeat; }
-.filetree span.file { background: url([[pix:totara_core|jquery_treeview/file]] 0 0 no-repeat; }
+.filetree span.file { background: url([[pix:totara_core|jquery_treeview/file]]) 0 0 no-repeat; }
