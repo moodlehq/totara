@@ -1,13 +1,12 @@
 <?php
-
-/**
- * Moodle - Modular Object-Oriented Dynamic Learning Environment
- *          http://moodle.org
- * Copyright (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
+/*
+ * This file is part of Totara LMS
  *
- * This program is free software: you can redistribute it and/or modify
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -18,12 +17,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @package    moodle
- * @subpackage totara
- * @author     Simon Coggins <simonc@catalyst.net.nz>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL
- * @copyright  (C) 1999 onwards Martin Dougiamas  http://dougiamas.com
- *
+ * @author Simon Coggins <simon.coggins@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage reportbuilder
+ */
+
+/*
  * Displays current users reports and scheduled reports
  *
  */
@@ -40,30 +40,28 @@ $PAGE->set_title($strheading);
 $PAGE->set_url(new moodle_url('/my/reports.php'));
 $PAGE->navbar->add($strheading);
 
-$output = $PAGE->get_renderer('totara_reportbuilder');
-
-echo $output->header();
+echo $OUTPUT->header();
 
 add_to_log(SITEID, 'my', 'reports', 'reports.php');
 
-echo $output->heading($strheading, 1);
+echo $OUTPUT->heading($strheading, 1);
 
-echo $output->container_start(null, 'myreports_section');
+echo $OUTPUT->container_start(null, 'myreports_section');
 echo totara_print_report_manager();
-echo $output->container_end();
+echo $OUTPUT->container_end();
 
 if (reportbuilder_get_reports()){
-    echo $output->container_start(null, 'scheduledreports_section');
-    echo $output->container_start(null, 'scheduledreports_section_inner');
+    echo $OUTPUT->container_start(null, 'scheduledreports_section');
+    echo $OUTPUT->container_start(null, 'scheduledreports_section_inner');
     echo html_writer::empty_tag('br');
     echo html_writer::tag('a', '', array('name' => 'scheduled'));
-    echo $output->heading(get_string('scheduledreports', 'totara_reportbuilder'), 1);
+    echo $OUTPUT->heading(get_string('scheduledreports', 'totara_reportbuilder'), 1);
 
     totara_print_scheduled_reports();
-    echo $output->container_end();
-    echo $output->container_end();
+    echo $OUTPUT->container_end();
+    echo $OUTPUT->container_end();
 }
 
-echo $output->footer();
+echo $OUTPUT->footer();
 
 ?>

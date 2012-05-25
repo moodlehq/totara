@@ -1,27 +1,54 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package totara
+ * @subpackage my
+ */
 
-require_once('../config.php');
+require_once(dirname(dirname(__FILE__)).'/config.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
-require_once($CFG->dirroot.'/local/reportbuilder/lib.php');
+require_login();
 
 $userid = optional_param('userid', $USER->id, PARAM_INT); // which user to show
 $format = optional_param('format','', PARAM_TEXT); // export format
 
-if (! $user = get_record('user', 'id', $userid)) {
-    error('User not found');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url(new moodle_url('/my/pastbookings.php', array('userid' => $userid, 'format' => $format)));
+$PAGE->set_totara_menu_selected('mybookings');
+
+if (!$user = $DB->get_record('user', array('id' => $userid))) {
+    print_error('error:usernotfound', 'totara_core');
 }
 
 // users can only view their own and their staff's pages
 if ($USER->id != $userid && !totara_is_manager($userid)) {
-    error('You cannot view this page');
+    print_error('error:cannotviewthispage', 'totara_core');
 }
 
 $output = $PAGE->get_renderer('totara_reportbuilder');
 
 if ($USER->id != $userid) {
-    $strheading = get_string('pastbookingsfor','local').fullname($user, true);
+    $strheading = get_string('pastbookingsfor', 'totara_core').fullname($user, true);
 } else {
-    $strheading = get_string('mypastbookings', 'local');
+    $strheading = get_string('mypastbookings', 'totara_core');
 }
 
 $shortname = 'pastbookings';
@@ -30,7 +57,7 @@ $data = array(
 );
 
 if (!$report = reportbuilder_get_embedded_report($shortname, $data)) {
-    print_error('error:couldnotgenerateembeddedreport', 'local_reportbuilder');
+    print_error('error:couldnotgenerateembeddedreport', 'totara_reportbuilder');
 }
 
 $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
@@ -47,13 +74,13 @@ add_to_log(SITEID, 'my', 'past bookings view', $log_url, $report->fullname);
 $report->include_js();
 
 $fullname = $report->fullname;
-$pagetitle = format_string(get_string('report','local').': '.$fullname);
-$navlinks[] = array('name' => get_string('mylearning', 'local'), 'link' => $CFG->wwwroot . '/my/learning.php', 'type' => 'title');
-$navlinks[] = array('name' => $strheading, 'link'=> '', 'type'=>'title');
+$pagetitle = format_string(get_string('report', 'totara_core').': '.$fullname);
 
-$navigation = build_navigation($navlinks);
-
-print_header_simple($pagetitle, '', $navigation, '', null, true, null);
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading('');
+$PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/learning.php'));
+$PAGE->navbar->add($strheading);
+echo $OUTPUT->header();
 
 $currenttab = "pastbookings";
 include('booking_tabs.php');
@@ -64,7 +91,7 @@ $countall = $report->get_full_count();
 // display heading including filtering stats
 $heading = $strheading . ': ' .
     $output->print_result_count_string($countfiltered, $countall);
-print_heading($heading);
+echo $OUTPUT->heading($heading);
 
 print $output->print_description($report->description, $report->_id);
 
@@ -80,6 +107,6 @@ if ($countfiltered > 0) {
     $output->export_select($report->_id);
 }
 
-print_footer();
+echo $OUTPUT->footer();
 
 ?>

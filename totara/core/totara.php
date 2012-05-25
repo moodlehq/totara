@@ -1194,13 +1194,11 @@ function totara_build_menu() {
     }
 
 
-    $sitecontext = context_system::instance();
-    $canviewdashboards  = has_capability('totara/dashboard:view', $sitecontext, $USER->id);
-    // TODO: Uncomment this once plans are ported
+    // SCANMSG TODO: Uncomment this once plans are ported
     //$canviewlearningplans = dp_can_view_users_plans($USER->id);
     $canviewlearningplans = true;
 
-    // TODO: Uncomment this once programs are ported
+    // SCANMSG TODO: Uncomment this once programs are ported
     //$requiredlearninglink = prog_get_tab_link($USER->id);
     $requiredlearninglink = null;
 
@@ -1220,31 +1218,19 @@ function totara_build_menu() {
         'url' => '/user/view.php'
     );
 
-    if ($canviewdashboards) {
-        $mylearning_link = '/my/learning.php';
-    }
-    else if ($canviewlearningplans) {
-        $mylearning_link = '/totara/plan/index.php';
-    }
-    else {
-        $mylearning_link = '/my/bookings.php';
-    }
-
     $tree[] = (object)array(
         'name' => 'mylearning',
         'linktext' => get_string('mylearning', 'totara_core'),
         'parent' => null,
-        'url' => $mylearning_link
+        'url' => '/my/'
     );
 
-    if ($canviewdashboards) {
-        $tree[] = (object)array(
-            'name' => 'learnerdashboard',
-            'linktext' => get_string('dashboard', 'totara_dashboard'),
-            'parent' => 'mylearning',
-            'url' => '/my/learning.php'
-        );
-    }
+    $tree[] = (object)array(
+        'name' => 'learnerdashboard',
+        'linktext' => get_string('dashboard', 'totara_dashboard'),
+        'parent' => 'mylearning',
+        'url' => '/my/'
+    );
 
     if ($canviewlearningplans) {
         $tree[] = (object)array(
@@ -1279,30 +1265,14 @@ function totara_build_menu() {
     }
 
     if ($staff = totara_get_staff()) {
-        $myteam_link = $canviewdashboards ? '/my/team.php' : '/my/teammembers.php';
 
         $tree[] = (object)array(
             'name' => 'myteam',
             'linktext' => get_string('myteam', 'totara_core'),
             'parent' => null,
-            'url' => $myteam_link
-        );
-
-        if ($canviewdashboards) {
-            $tree[] = (object)array(
-                'name' => 'managerdashboard',
-                'linktext' => get_string('dashboard', 'totara_dashboard'),
-                'parent' => 'myteam',
-                'url' => '/my/team.php'
-            );
-        }
-
-        $tree[] = (object)array(
-            'name' => 'teammembers',
-            'linktext' => get_string('teammembers', 'totara_core'),
-            'parent' => 'myteam',
             'url' => '/my/teammembers.php'
         );
+
     }
 
     $tree[] = (object)array(

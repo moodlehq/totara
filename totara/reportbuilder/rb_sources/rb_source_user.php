@@ -225,7 +225,8 @@ class rb_source_user extends rb_base_source {
                                 'userpic_picture' => 'base.picture',
                                 'userpic_firstname' => 'base.firstname',
                                 'userpic_lastname' => 'base.lastname',
-                                'userpic_imagealt' => 'base.imagealt'
+                                'userpic_imagealt' => 'base.imagealt',
+                                'userpic_email' => 'base.email'
                             ),
                         )
         );
@@ -389,7 +390,8 @@ class rb_source_user extends rb_base_source {
         $profile_link = html_writer::link("{$CFG->wwwroot}/user/view.php?id={$userid}", $profilestr);
         $booking_link = html_writer::link("{$CFG->wwwroot}/my/bookings.php?userid={$userid}", $bookingstr);
 
-        $show_plan_link = dp_can_view_users_plans($userid);
+        // SCANMSG: TODO readd once plans merged
+        $show_plan_link = true; //dp_can_view_users_plans($userid);
         $links = $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
         $links .= $profile_link.'&nbsp;|&nbsp;';
         $links .= $booking_link.'&nbsp;|&nbsp;';
