@@ -416,8 +416,9 @@ $sql = "SELECT COUNT(id)
          WHERE currentlogin > ?";
 $activeusers = $DB->count_records_sql($sql, array($oneyearago));
 // Check if any errors in log
-$latesterror = $DB->get_record_sql("SELECT timeoccured FROM {errorlog} ORDER BY id DESC", null, 0, 1);
+$errorrecords = $DB->get_records_sql("SELECT id, timeoccured FROM {errorlog} ORDER BY id DESC", null, 0, 1);
 
+$latesterror = array_shift($errorrecords);
 $output = $PAGE->get_renderer('core', 'admin');
 echo $output->admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
         $cronoverdue, $dbproblems, $maintenancemode, $latesterror, $activeusers, $TOTARA->release);
