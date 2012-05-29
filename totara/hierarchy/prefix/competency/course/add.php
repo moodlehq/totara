@@ -74,7 +74,7 @@ if (empty($CFG->competencyuseresourcelevelevidence)) {
 }
 
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/course/add.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/prefix/competency/course/add.php');
 
 ///
 /// Display page

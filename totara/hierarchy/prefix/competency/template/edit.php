@@ -42,7 +42,7 @@ if (!$id && !$frameworkid) {
 }
 
 // Make this page appear under the manage templates admin item
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/template/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/prefix/competency/template/edit.php');
 
 $context = context_system::instance();
 

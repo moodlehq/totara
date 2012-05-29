@@ -45,7 +45,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $nojsparams = 'nojs='.$nojs.'&amp;returnurl='.urlencode($returnurl).'&amp;s='.$s;
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/item/edit.php');
 
 $sitecontext = context_system::instance();
 require_capability('totara/hierarchy:updatecompetency', $sitecontext);

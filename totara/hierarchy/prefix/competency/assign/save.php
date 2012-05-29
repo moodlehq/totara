@@ -35,7 +35,7 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 $add = required_param('add',PARAM_SEQUENCE);
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/evidence/save.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/prefix/competency/evidence/save.php');
 
 // Check permissions
 $sitecontext = context_system::instance();

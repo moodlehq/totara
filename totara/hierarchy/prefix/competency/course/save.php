@@ -63,7 +63,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/totara/competency/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/totara/hierarchy/item/edit.php');
 
 $sitecontext = context_system::instance();
 require_capability('totara/hierarchy:updatecompetency', $sitecontext);

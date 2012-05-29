@@ -49,7 +49,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $urlparams = array('templateid' => $id, 'nojs' => $nojs, 'returnurl' => urlencode($returnurl), 's' => $s);;
 
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/template/assign_competency.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/prefix/competency/template/assign_competency.php');
 
 // Setup hierarchy object
 $hierarchy = new competency();

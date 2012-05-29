@@ -52,7 +52,7 @@ if (!$currentlyrelated = comp_relation_get_relations($compid)) {
 }
 
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/competency/related/save.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/prefix/competency/related/save.php');
 
 // Check permissions
 $sitecontext = context_system::instance();

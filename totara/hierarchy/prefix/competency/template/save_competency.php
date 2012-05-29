@@ -46,7 +46,7 @@ $returnurl = optional_param('returnurl', '', PARAM_TEXT);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Setup page
-admin_externalpage_setup('competencyframework', '', array(), '', $CFG->wwwroot.'/competency/template/update_assignments.php');
+admin_externalpage_setup('competencyframework', '', array(), '/totara/hierarchy/prefix/competency/template/update_assignments.php');
 
 // Check permissions
 $sitecontext = context_system::instance();

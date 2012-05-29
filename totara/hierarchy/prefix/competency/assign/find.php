@@ -63,7 +63,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $urlparams = array('id' => $id, 'frameworkid' => $frameworkid, 'nojs' => $nojs, 'returnurl' => urlencode($returnurl), 's' => $s);
 
 // Setup page
-admin_externalpage_setup('competencymanage', '', array(), '', $CFG->wwwroot.'/competency/evidence/add.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/prefix/competency/evidence/add.php');
 
 ///
 /// Display page
