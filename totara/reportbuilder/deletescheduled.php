@@ -63,7 +63,7 @@ if (!confirm_sesskey()) {
     print_error('confirmsesskeybad', 'error');
 }
 
-add_to_log(SITEID, 'scheduledreport', 'delete', "totara/reportbuilder/scheduled.php?id=$report->id", "$reportname (ID $report->id)");
+add_to_log(SITEID, 'reportbuilder', 'delete', "scheduled.php?id=$report->id", "$reportname (ID $report->id)");
 
 delete_records('report_builder_schedule', 'id', $report->id);
 

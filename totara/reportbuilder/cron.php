@@ -205,7 +205,7 @@ function process_scheduled_reports(){
                     break;
 
                 default:
-                    add_to_log(SITEID, 'scheduledreport', 'failedcron', null, "Invalid frequency in Cron - $reportname (ID $report->id)");
+                    add_to_log(SITEID, 'reportbuilder', 'failedcron', null, "Invalid frequency in Cron - $reportname (ID $report->id)");
                     break;
             }
 
@@ -216,7 +216,7 @@ function process_scheduled_reports(){
                 mtrace('Failed to send email for report ' . $report->id);
             }
 
-            add_to_log(SITEID, 'scheduledreport', 'dailyreport', null, "$reportname (ID $report->id)");
+            add_to_log(SITEID, 'reportbuilder', 'dailyreport', null, "$reportname (ID $report->id)");
 
             $todb = new object();
             $todb->id = $report->id;

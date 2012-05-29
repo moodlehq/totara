@@ -87,6 +87,24 @@ function make_log_url($module, $url) {
         case 'role':
             $url = '/'.$url;
             break;
+        // Totara specific modules
+        case 'reportbuilder':
+        case 'hierarchy':
+        case 'customfield':
+        case 'program':
+        case 'plan':
+            $url = '/totara/' . $module . '/' . $url;
+            break;
+        case 'position':
+        case 'organisation':
+        case 'competency':
+            $url = '/totara/hierarchy/' . $url;
+            break;
+        case 'priorityscales':
+        case 'objectivescales':
+            $url = '/totara/plan/' . $module . '/' . $url;
+            break;
+        // End Totara specific modules
         default:
             $url = "/mod/$module/$url";
             break;
