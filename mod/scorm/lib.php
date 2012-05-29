@@ -1049,7 +1049,7 @@ function scorm_print_overview($courses, &$htmlarray) {
     // Do scorm::isopen() here without loading the whole thing for speed
     foreach ($scorms as $key => $scorm) {
         $time = time();
-        if ($scorm->timeopen) {
+        if (isset($scorm->timeopen) && $scorm->timeopen) {
             $isopen = ($scorm->timeopen <= $time && $time <= $scorm->timeclose);
         }
         if (empty($scorm->displayattemptstatus) && (empty($isopen) || empty($scorm->timeclose))) {
