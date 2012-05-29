@@ -1172,17 +1172,18 @@ abstract class dp_base_component {
      * @return string html
      */
     protected function display_list_item_comments($item) {
-        global $OUTPUT;
+        global $CFG, $OUTPUT;
+
+        require_once($CFG->dirroot . '/comment/lib.php');
 
         $options = new stdClass;
-        $options->area    = 'plan-'.$this->component.'-item';
+        $options->area    = 'plan_'.$this->component.'_item';
         $options->context = context_system::instance();
         $options->itemid  = $item->id;
         $options->component = 'totara_plan';
 
 
-        // TODO SCANMSG: Readd once Comments is ported
-        /*$comment = new comment($options);
+        $comment = new comment($options);
 
         if ($count = $comment->count()) {
             $latestcomment = $comment->get_latest_comment();
@@ -1194,8 +1195,7 @@ abstract class dp_base_component {
             $commentclass = 'comments-icon-none';
         }
         return $OUTPUT->action_link(new moodle_url("/totara/plan/components/{$this->component}/view.php", array('id' => $this->plan->id, 'itemid' => $item->id.'#comments')),
-            $count, null, array('class' => $commentclass, 'title' => $tooltip));*/
-        return '';
+            $count, null, array('class' => $commentclass, 'title' => $tooltip));
     }
 
 

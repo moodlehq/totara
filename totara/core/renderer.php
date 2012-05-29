@@ -581,4 +581,20 @@ class totara_core_renderer extends plugin_renderer_base {
         return $out;
     }
 
+    /**
+     * Renders a Totara-style HTML comment template to be used by the comments engine
+     *
+     * @return string Totara-style HTML comment template
+     */
+    public function comment_template() {
+        $template = html_writer::tag('div', '___picture___', array('class' => 'comment-userpicture'));
+        $template .= html_writer::start_tag('div', array('class' => 'comment-content'));
+        $template .= html_writer::tag('span', '___name___', array('class' => 'comment-user-name'));
+        $template .= '___content___';
+        $template .= html_writer::tag('div', '___time___', array('class' => 'comment-datetime'));
+        $template .= html_writer::end_tag('div');
+
+        return $template;
+    }
+
 }

@@ -146,11 +146,11 @@ if ($coursesenabled) {
     }
 }
 
-// Comments TODO SCANMSG: fix once comments are ported
-/*require_once($CFG->dirroot.'/totara/comment/lib.php');
+// Comments
+require_once($CFG->dirroot.'/comment/lib.php');
 comment::init();
 $options = new stdClass;
-$options->area    = 'plan-competency-item';
+$options->area    = 'plan_competency_item';
 $options->context = $systemcontext;
 $options->itemid  = $caid;
 $options->showcount = true;
@@ -159,7 +159,7 @@ $options->autostart = true;
 $options->notoggle = true;
 $comment = new comment($options);
 echo $comment->output(true);
- */
+
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->footer();

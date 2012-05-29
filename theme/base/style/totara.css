@@ -421,3 +421,157 @@ span.dialog-singleselect-deletable {
 .filetree span.folder { background: url([[pix:totara_core|jquery_treeview/folder]]) 0 0 no-repeat; }
 .filetree li.expandable span.folder { background: url([[pix:totara_core|jquery_treeview/folder-closed]]) 0 0 no-repeat; }
 .filetree span.file { background: url([[pix:totara_core|jquery_treeview/file]]) 0 0 no-repeat; }
+
+
+/*****************************************************************************
+ * Comments
+ *****************************************************************************/
+
+/* display comment count on top of speech bubble image */
+a.comments-icon-some,
+a.comments-icon-none {
+    display: block;
+    width: 27px;
+    height: 25px;
+    padding: 0px;
+    text-align: center;
+    line-height: 21px;
+}
+
+a.comments-icon-some {
+    background-image: url('pix/t/comments.gif');
+}
+
+a.comments-icon-none {
+    background-image: url('pix/t/comments-none.gif');
+}
+
+.comment-list li {
+    background-color: #FFFFFF;
+    position: relative;
+}
+
+ul.comment-list .comment-list li .comment-content {
+    border: 1px solid #099;
+}
+
+.comments-master-container div.comment-area {
+    margin-left: 27px;
+}
+
+ul.comment-list li.comment-own-post .comment-content {
+    border: medium none;
+    margin: 0 30px 0 29px;
+    border: 1px solid #c2e3eb ;
+    border-radius: 4px 4px 4px 4px;
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.09, #D4EBF1),
+    color-stop(0.93, #EAF5F8)
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        #D4EBF1 9%,
+        #EAF5F8 93%
+    );
+    padding: 5px 8px;
+    max-width: 551px;
+    background-color: #e5f4f7;
+    position: relative;
+
+}
+
+ul.comment-list li.comment-own-post,
+ul.comment-list li.comment-others-post {
+    max-width: 628px;
+    background: none;
+}
+
+ul.comment-list li.comment-others-post .comment-content {
+    border: medium none;
+    position: relative;
+    margin: 0 30px 0 29px;
+    max-width: 551px;
+    position: relative;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px 4px 4px 4px;
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.06, #E2E2E2),
+    color-stop(0.73, #F8F8F8)
+    );
+    background-image: -moz-linear-gradient(
+        center bottom,
+        #E2E2E2 6%,
+        #F8F8F8 73%
+    );
+    padding: 5px 8px;
+    background-color: #f7f7f7;
+
+
+}
+
+ul.comment-list li.comment-others-post .comment-userpicture {
+    background: url([[pix:totara_core|comment-point-grey]]) no-repeat scroll left center transparent;
+    float: right;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 4px;
+    width: 31px;
+    height: 20px;
+    z-index: 99;
+}
+
+ul.comment-list li.comment-own-post .comment-userpicture {
+    background: url([[pix:totara_core|comment-point-blue]]) no-repeat scroll right center transparent;
+    float: left;
+    position: absolute;
+    left: 0;
+    text-align: left;
+    top: 4px;
+    width: 30px;
+    z-index: 99;
+}
+
+ul.comment-list li .comment-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
+
+.comment-ctrl {font-size: 12px;display: none;margin:0;padding:0;}
+.comment-ctrl h5 {margin:0;padding: 5px;}
+.comment-area {max-width: 400px;padding: 5px;margin-left: 27px;}
+.comment-area textarea {width:100%;overflow:auto;}
+.comment-area .fd {text-align:right;}
+.comment-meta span {color:gray;}
+.comment-list {font-size: 11px;overflow:auto;list-style:none;padding:0;margin:0;}
+.comment-list li {margin: 2px;list-style:none;margin-bottom:5px;clear:both;background-color:#F6FAC8;}
+.comment-list li.first {display:none}
+.comment-list .comment-userpicture img {
+    width: 18px;
+    height: 18px;
+}
+.comment-paging{text-align:center;}
+.comment-paging .pageno{padding:2px;}
+.comment-paging .curpage{border:1px solid #CCC;}
+.comment-userpicture {width: 20px;float:left;}
+.comment-content {margin-left: 22px;}
+.comment-content div {margin:0;padding:0;}
+.comment-content p {padding:0;margin:0 20px 0 0; display: inline;}
+.comment-content a {font-weight:bold;}
+.comment-content .comment-datetime {color:gray; padding: 3px 0px;}
+.comment-delete {float:right;text-align:right;}
+.comment-delete-confirm {background: #eee; padding: 1px; width: 12em;text-align:center;}
+.comment-delete-confirm a {padding: 0px 3px;}
+.comment-container {float:left;margin: 4px;}
+.comment-report-selectall{display:none}
+.comment-link {display:none}
+.jsenabled .comment-link {display:block}
+.jsenabled .showcommentsnonjs{display:none}
+.jsenabled .comment-report-selectall{display:inline}

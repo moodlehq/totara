@@ -1044,25 +1044,30 @@ function dp_plan_check_plan_complete($plans) {
 /// Comments callback functions
 ///
 
-function plan_comment_permissions($details) {
+function totara_plan_comment_permissions($details) {
     global $DB;
 
-    $planid = 0;
 
+    $validareas = array('plan_overview', 'plan_course_item', 'plan_competency_item', 'plan_objective_item', 'plan_program_item');
+    if (!in_array($details->commentarea, $validareas)) {
+        throw new comment_exception('invalidcommentarea');
+    }
+
+    $planid = 0;
     switch ($details->commentarea) {
-        case 'plan-overview' :
+        case 'plan_overview' :
             $planid = $details->itemid;
             break;
-        case 'plan-course-item':
+        case 'plan_course_item':
             $planid = $DB->get_field('dp_plan_course_assign', 'planid', array('id' => $details->itemid));
             break;
-        case 'plan-competency-item':
+        case 'plan_competency_item':
             $planid = $DB->get_field('dp_plan_competency_assign', 'planid', array('id' => $details->itemid));
             break;
-        case 'plan-objective-item':
+        case 'plan_objective_item':
             $planid = $DB->get_field('dp_plan_objective', 'planid', array('id' => $details->itemid));
             break;
-        case 'plan-program-item':
+        case 'plan_program_item':
             $planid = $DB->get_field('dp_plan_program_assign', 'planid', array('id' => $details->itemid));
         default:
             break;
@@ -1070,7 +1075,7 @@ function plan_comment_permissions($details) {
     }
 
     if (!$planid) {
-        return array('post' => false, 'view' => false);
+        throw new comment_exception('invalidcommentitemid');
     }
 
     $plan = new development_plan($planid);
@@ -1081,22 +1086,61 @@ function plan_comment_permissions($details) {
     }
 }
 
-function plan_comment_template() {
-    global $OUTPUT;
-    $template = $OUTPUT->container('__picture__', "comment-userpicture");
-    $template .= $OUTPUT->container(html_writer::tag('span', '__name__', array('class' => 'comment-user-name')) . $OUTPUT->container('__time__', 'comment-datetime'), 'comment-content');
-    $template .= $OUTPUT->container(null, 'comment-footer');
+function totara_plan_comment_template() {
+    global $OUTPUT, $PAGE;
 
-    return $template;
+    // Use the totara default comment template
+    $renderer = $PAGE->get_renderer('totara_core');
+
+    return $renderer->comment_template();
 }
 
-function plan_comment_add($comment) {
+/**
+ * Validates the comment parameters
+ *
+ * @param stdClass $comment {
+ *              context  => context the context object
+ *              courseid => int course id
+ *              cm       => stdClass course module object
+ *              commentarea => string comment area
+ *              itemid      => int itemid
+ * }
+ *
+ * @return boolean
+ */
+function totara_plan_comment_validate($comment_param) {
+    global $DB;
+    // comment itemid and comment area already validated as part of permission check (totara_plan_comment_permissions)
+
+    // validation for comment deletion
+    if (!empty($comment_param->commentid)) {
+        if ($record = $DB->get_record('comments', array('id'=>$comment_param->commentid))) {
+            $validareas = array('plan_overview', 'plan_course_item', 'plan_competency_item', 'plan_objective_item',
+                'plan_program_item');
+            if (!in_array($record->commentarea, $validareas)) {
+                throw new comment_exception('invalidcommentarea');
+            }
+            if ($record->contextid != $comment_param->context->id) {
+                throw new comment_exception('invalidcontext');
+            }
+            if ($record->itemid != $comment_param->itemid) {
+                throw new comment_exception('invalidcommentitemid');
+            }
+        } else {
+            throw new comment_exception('invalidcommentid');
+        }
+    }
+    return true;
+}
+
+
+function totara_plan_comment_add($comment) {
     global $CFG, $DB;
 
     /// Get the right message data
     $commentuser = $DB->get_record('user', array('id' => $comment->userid));
     switch ($comment->commentarea) {
-        case 'plan-overview':
+        case 'plan_overview':
             $plan = $DB->get_record('dp_plan', array('id' => $comment->itemid));
 
             $msgobj = new stdClass();
@@ -1109,7 +1153,7 @@ function plan_comment_add($comment) {
             $contexturlname = $plan->name;
             $icon = 'elearning-newcomment';
             break;
-        case 'plan-course-item':
+        case 'plan_course_item':
             $sql = "SELECT ca.id, ca.planid, c.fullname
                 FROM {dp_plan_course_assign} ca
                 INNER JOIN {course} c ON ca.courseid = c.id
@@ -1132,7 +1176,7 @@ function plan_comment_add($comment) {
             $contexturlname = $record->fullname;
             $icon = 'course-newcomment';
             break;
-        case 'plan-competency-item':
+        case 'plan_competency_item':
             $sql = "SELECT ca.id, ca.planid, c.fullname
                 FROM {dp_plan_competency_assign} ca
                 INNER JOIN {comp} c ON ca.competencyid = c.id
@@ -1155,7 +1199,7 @@ function plan_comment_add($comment) {
             $contexturlname = $record->fullname;
             $icon = 'competency-newcomment';
             break;
-        case 'plan-objective-item':
+        case 'plan_objective_item':
             if (!$record = $DB->get_record('dp_plan_objective', array('id' => $comment->itemid))) {
                 print_error('commenterror:itemnotfound', 'totara_plan');
             }
@@ -1173,7 +1217,7 @@ function plan_comment_add($comment) {
             $contexturlname = $record->fullname;
             $icon = 'objective-newcomment';
             break;
-        case 'plan-program-item':
+        case 'plan_program_item':
             $sql = "SELECT pa.id, pa.planid, p.fullname
                 FROM {dp_plan_program_assign} pa
                 INNER JOIN {prog} p ON pa.programid = p.id
@@ -1208,7 +1252,7 @@ function plan_comment_add($comment) {
     $params = array($comment->commentarea, $comment->itemid, $comment->userid);
     $subscribers = $DB->get_records_select('comments', $sql, $params, '', 'DISTINCT userid');
     $subscribers = !empty($subscribers) ? array_keys($subscribers) : array();
-    $subsciberkeys = array();
+    $subscriberkeys = array();
     foreach ($subscribers as $s) {
         $subscriberkeys[$s] = $s;
     }
@@ -1234,9 +1278,8 @@ function plan_comment_add($comment) {
     }
 
     /// Send message
-    //TODO SCANMSG restore requires() when totara_msg done
-    // require_once($CFG->dirroot.'/totara/totara_msg/eventdata.class.php');
-    // require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php');
+    require_once($CFG->dirroot . '/totara/message/eventdata.class.php');
+    require_once($CFG->dirroot . '/totara/message/messagelib.php');
     $result = true;
     $stringmanager = get_string_manager();
     foreach ($subscribers as $sid) {

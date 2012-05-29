@@ -82,11 +82,10 @@ print $component->display_program_detail($progassid);
 
 
 // Comments
-/*TODO SCANMSG re-enable when comments merged
-require_once($CFG->dirroot.'/totara/comment/lib.php');
+require_once($CFG->dirroot.'/comment/lib.php');
 comment::init();
 $options = new stdClass;
-$options->area    = 'plan-program-item';
+$options->area    = 'plan_program_item';
 $options->context = $systemcontext;
 $options->itemid  = $progassid;
 $options->showcount = true;
@@ -95,7 +94,7 @@ $options->autostart = true;
 $options->notoggle = true;
 $comment = new comment($options);
 echo $comment->output(true);
-*/
+
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->footer();

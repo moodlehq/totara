@@ -565,6 +565,7 @@ class comment {
         foreach ($rs as $u) {
             $c = new stdClass();
             $c->id          = $u->cid;
+            $c->userid      = $u->id;
             $c->content     = $u->ccontent;
             $c->format      = $u->cformat;
             $c->timecreated = $u->ctimecreated;
@@ -590,6 +591,29 @@ class comment {
 
         return $comments;
     }
+
+
+    /**
+     * Get the latest comment (used by Totara)
+     *
+     * @return object containing latest comment data OR false
+     */
+    public function get_latest_comment() {
+        global $DB;
+
+        if (empty($this->viewcap)) {
+            return false;
+        }
+        $sql = "SELECT u.*, c.id AS cid, c.content AS ccontent, c.format AS cformat, c.timecreated AS ctimecreated
+            FROM {comments} c
+            JOIN {user} u ON u.id = c.userid
+            WHERE c.contextid =  ? AND c.commentarea = ? AND c.itemid = ?
+            ORDER BY c.timecreated DESC";
+        $params = array($this->contextid, $this->commentarea, $this->itemid);
+
+        return $DB->get_record_sql($sql, $params, IGNORE_MULTIPLE);
+    }
+
 
     /**
      * Returns the number of comments associated with the details of this object
@@ -745,7 +769,7 @@ class comment {
      * @return mixed
      */
     public function print_comments($page = 0, $return = true, $nonjs = true) {
-        global $DB, $CFG, $PAGE;
+        global $DB, $CFG, $PAGE, $USER;
 
         if (!$this->can_view()) {
             return '';
@@ -766,7 +790,9 @@ class comment {
         }
         // Reverse the comments array to display them in the correct direction
         foreach (array_reverse($comments) as $cmt) {
-            $html .= html_writer::tag('li', $this->print_comment($cmt, $nonjs), array('id' => 'comment-'.$cmt->id.'-'.$this->cid));
+            $commentclass = $USER->id == $cmt->userid ? 'comment-own-post' : 'comment-others-post';
+            $html .= html_writer::tag('li', $this->print_comment($cmt, $nonjs), array('id' => 'comment-'.$cmt->id.'-'.$this->cid,
+                'class' => $commentclass));
         }
         if ($nonjs) {
             $html .= html_writer::end_tag('ul');

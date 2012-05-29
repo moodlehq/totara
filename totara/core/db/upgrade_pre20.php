@@ -160,4 +160,24 @@ echo $OUTPUT->heading('Course completion criteria field renamed');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
+// Comments
+// update commentareas of plan comments to comply with PARAM_AREA
+$areas = array('plan-overview' => 'plan_overview',
+    'plan-course-item' => 'plan_course_item',
+    'plan-competency-item' => 'plan_competency_item',
+    'plan-objective-item' => 'plan_objective_item',
+    'plan-program-item' => 'plan_program_item');
+foreach ($areas as $from => $to) {
+    $sql = 'UPDATE {comments}
+        SET commentarea = ?
+        WHERE commentarea = ?';
+    $params = array($to, $from);
+    $DB->execute($sql, $params);
+}
+unset($areas);
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Fixed commentarea identifiers');
+echo $OUTPUT->heading('Comments - Fixed commentarea identifiers');
+echo $OUTPUT->notification($success, 'notifysuccess');
+print_upgrade_separator();
+
 ?>

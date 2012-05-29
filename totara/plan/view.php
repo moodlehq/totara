@@ -152,10 +152,9 @@ $form->display();
 
 if ($action == 'view') {
     // Comments
-    /*TODO SCANMSG : re-enable comments once merged
-    require_once($CFG->dirroot.'/totara/comment/lib.php');
+    require_once($CFG->dirroot.'/comment/lib.php');
     comment::init();
-    $options->area    = 'plan-overview';
+    $options->area    = 'plan_overview';
     $options->context = $context;
     $options->itemid  = $plan->id;
     $options->showcount = true;
@@ -164,7 +163,6 @@ if ($action == 'view') {
     $options->notoggle = true;
     $comment = new comment($options);
     echo $comment->output(true);
-    */
 }
 
 echo $OUTPUT->container_end();
