@@ -75,11 +75,11 @@ function totara_search_get_keyword_where_clause($keywords, $fields, $type=SQL_PA
         $matches = array();
         foreach ($fields as $field) {
             if ($type == SQL_PARAMS_QM) {
-                $matches[] = $DB->sql_like($field, '?');
+                $matches[] = $DB->sql_like($field, '?', false);
                 $params[] = '%' . $DB->sql_like_escape($keyword) . '%';
             } else {
                 $paramname = $prefix . $TOTARA_SEARCH_PARAM_COUNTER;
-                $matches[] = $DB->sql_like($field, ":$paramname");
+                $matches[] = $DB->sql_like($field, ":$paramname", false);
                 $params[$paramname] = '%' . $DB->sql_like_escape($keyword) . '%';
 
                 $TOTARA_SEARCH_PARAM_COUNTER++;
