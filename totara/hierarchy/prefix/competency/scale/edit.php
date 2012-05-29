@@ -46,7 +46,6 @@ if ($id == 0) {
 
   $scale = new stdClass();
   $scale->id = 0;
-  $scale->description = '';
   $scale->sortorder = $DB->get_field('comp_framework', 'MAX(sortorder) + 1', array());
   if (!$scale->sortorder) {
     $scale->sortorder = 1;
@@ -65,6 +64,7 @@ if ($id == 0) {
 ///
 /// Handle form data
 ///
+$scale->description = isset($scale->description) ? $scale->description : '';
 $scale->descriptionformat = FORMAT_HTML;
 $scale = file_prepare_standard_editor($scale, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_hierarchy', 'comp_scale', $scale->id);
@@ -86,6 +86,7 @@ if ($mform->is_cancelled()) {
 
     $scalenew->timemodified = time();
     $scalenew->usermodified = $USER->id;
+    $scalenew->description = '';
     //class to hold totara_set_notification info
     $notification = new stdClass();
 

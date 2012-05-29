@@ -70,6 +70,8 @@ echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
 print_upgrade_separator();
 
 // Changing nullability of char fields
+totara_fix_nullable_charfield('comp_type', 'description', 'shortname', 'medium', null, null, null, XMLDB_TYPE_TEXT);
+totara_fix_nullable_charfield('comp_scale', 'description', 'name', 'medium', null, null, null, XMLDB_TYPE_TEXT);
 totara_fix_nullable_charfield('course_info_field', 'shortname', 'fullname', '100');
 totara_fix_nullable_charfield('course_info_field', 'datatype', 'shortname', '255');
 totara_fix_nullable_charfield('oldpassword', 'hash', 'uid', '100');

@@ -173,13 +173,13 @@ function totara_upgrade_capabilities() {
 * @param string $table the table name
 * @param string $field the field name
 * @param string $previous the field immediately previous to the char field in the table definition
-* @param string $length length of the char field NB: pass as a string, not an int!
+* @param string $length length of the char field NB: pass as a string, not an int! 'small','medium','big' for TEXT fields
 * @param bool or null $notnull null or false if CAN be null, XMLDB_NOTNULL if CANNOT be null
 * * @param string or null $default either remove the default (null) or force a sane non-empty default
 * @param array $indexes array of xmldb_index objects for all indexes on tables that contain the char field
 * @return void
 */
-function totara_fix_nullable_charfield($table, $field, $previous, $length='255', $notnull=null, $default=null, $indexes=array()) {
+function totara_fix_nullable_charfield($table, $field, $previous, $length='255', $notnull=null, $default=null, $indexes=array(), $fieldtype=XMLDB_TYPE_CHAR) {
     global $DB, $CFG;
     $dbman = $DB->get_manager();
 
@@ -195,7 +195,7 @@ function totara_fix_nullable_charfield($table, $field, $previous, $length='255',
     }
 
     $xfield = new xmldb_field($field);
-    $xfield->set_attributes(XMLDB_TYPE_CHAR, $length, null, $notnull, null, $default, $previous);
+    $xfield->set_attributes($fieldtype, $length, null, $notnull, null, $default, $previous);
     $dbman->change_field_notnull($xtable, $xfield);
     $dbman->change_field_default($xtable, $xfield);
 
