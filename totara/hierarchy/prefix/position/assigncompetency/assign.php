@@ -112,7 +112,7 @@ foreach ($add as $addition) {
     $related = $competencies->get_item($addition);
 
     // Add relationship
-    $relationship = new Object();
+    $relationship = new stdClass();
     $relationship->positionid = $position->id;
     $relationship->competencyid = $related->id;
     $relationship->timecreated = $time;

@@ -56,6 +56,9 @@ class organisation extends hierarchy {
             return;
         }
 
+        $id = optional_param('id', 0, PARAM_INT);
+        $frameworkid = optional_param('frameworkid', 0, PARAM_INT);
+
         // Setup custom javascript
         require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
@@ -65,8 +68,15 @@ class organisation extends hierarchy {
             TOTARA_JS_TREEVIEW
         ));
 
-        $PAGE->requires->js('/totara/core/js/organisation.item.js.php?id='.$item->id.'&frameworkid='.$item->frameworkid);
+        $PAGE->requires->string_for_js('assigncompetencies', 'totara_hierarchy');
 
+        $args = array('args'=>'{"id":'.$id.', "frameworkid":'.$frameworkid.'}');
+
+        $jsmodule = array(
+            'name' => 'totara_organisationitem',
+            'fullpath' => '/totara/core/js/organisation.item.js',
+            'requires' => array('json'));
+        $PAGE->requires->js_init_call('M.totara_organisationitem.init', $args, false, $jsmodule);
     }
 
 
@@ -154,7 +164,7 @@ class organisation extends hierarchy {
             $displayclass = false;
         }
         $renderer = $PAGE->get_renderer('totara_hierarchy');
-        echo $renderer->print_hierarchy_items($frameworkid, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
+        echo $renderer->print_hierarchy_items($frameworkid, $this->prefix, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
         echo html_writer::end_tag('div');
     }
 
@@ -289,12 +299,12 @@ class organisation extends hierarchy {
             $fwoptions = count($fwoptions) > 1 ? array(0 => get_string('all')) + $fwoptions : $fwoptions;
             $out .= html_writer::start_tag('div', array('class' => "hierarchyframeworkpicker"));
 
-            $out .= $OUTPUT->single_select(
+            $out .= get_string('filterframework', 'totara_hierarchy') . $OUTPUT->single_select(
                 new moodle_url('/totara/hierarchy/item/view.php', array('id' => $organisationid, 'edit' => $edit, 'prefix' => 'organisation')),
                 'framework',
                 $fwoptions,
                 $currentfw,
-                array('' => get_string('filterframework', 'totara_hierarchy')),
+                null,
                 'switchframework');
 
             $out .= html_writer::end_tag('div');

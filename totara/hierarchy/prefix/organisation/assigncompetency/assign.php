@@ -117,7 +117,7 @@ foreach ($add as $addition) {
     $types = $competencies->get_types();
 
     // Add relationship
-    $relationship = new Object();
+    $relationship = new stdClass();
     $relationship->organisationid = $organisation->id;
     $relationship->competencyid = $related->id;
     $relationship->timecreated = $time;

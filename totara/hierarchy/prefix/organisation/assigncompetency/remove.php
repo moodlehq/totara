@@ -22,7 +22,7 @@
  * @subpackage totara_hierarchy
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
@@ -36,7 +36,7 @@ $sitecontext = context_system::instance();
 // Relationship id
 $id       = required_param('id', PARAM_INT);
 $organisation = required_param('organisation', PARAM_INT);
-$frameworkid = optional_param('framework', PARAM_INT);
+$frameworkid = optional_param('framework', 0, PARAM_INT);
 
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);

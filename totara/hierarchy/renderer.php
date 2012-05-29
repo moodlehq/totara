@@ -100,27 +100,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                     $cells[] = new html_table_cell($eitem->get_activity_type());
                 }
                 if ($can_edit) {
-                    $select = new single_select(
-                        new moodle_url(''), // $url
-                        'linktype', //$name
-                        array( //$options
-                            PLAN_LINKTYPE_MANDATORY => get_string('mandatory','totara_hierarchy'),
-                            PLAN_LINKTYPE_OPTIONAL => get_string('optional','totara_hierarchy'),
-                        ),
-                        (isset($eitem->linktype) ? $eitem->linktype : PLAN_LINKTYPE_OPTIONAL), //$selected,
-                        false //$nothing,
-                    );
-                    // TODO SCANMSG: Rewrite to use a component_action object
-                    $select->add_action = "\$.get(".
-                                          "'{$CFG->wwwroot}/totara/plan/update-linktype.php".
-                                          "?type=course&amp;c={$eitem->id}".
-                                          "&amp;sesskey=".sesskey().
-                                          "&amp;t=' + $(this).val()".
-                                          ");";
-                    $content = $this->output->render($select);
 
-
-                    /*
                     $content = html_writer::select(
                     array( //$options
                     PLAN_LINKTYPE_MANDATORY => get_string('mandatory','totara_hierarchy'),
@@ -129,14 +109,14 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                     'linktype', //$name,
                     (isset($eitem->linktype) ? $eitem->linktype : PLAN_LINKTYPE_OPTIONAL), //$selected,
                     false, //$nothing,
-                            "\$.get(".
+                    array('onchange' => "\$.get(".
                                 "'{$CFG->wwwroot}/totara/plan/update-linktype.php".
-                                "?type=course&amp;c={$eitem->id}".
-                                "&amp;sesskey=".sesskey().
-                                "&amp;t=' + $(this).val()".
-                            ");"
+                                "?type=course&c={$eitem->id}".
+                                "&sesskey=".sesskey().
+                                "&t=' + $(this).val()".
+                            ");")
                     );
-                     */
+
                     $cell = new html_table_cell($content);
                     $cell->attributes['style'] = 'text-align: center;';
                     $cells[] = $cell;
@@ -311,7 +291,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
     * @param boolean $can_edit if the user has edit permissions
     * @return string HTML to output.
     */
-    function print_hierarchy_items($framework, $type, $displaytitle, $addurl, $itemid, $items, $can_edit=false){
+    function print_hierarchy_items($framework, $prefix, $shortprefix, $displaytitle, $addurl, $itemid, $items, $can_edit=false){
         global $CFG;
 
         require_once($CFG->libdir . '/tablelib.php');
@@ -375,12 +355,12 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                     // TODO SCANMSG: Rewrite to use a component_action object
                     array('onChange' => "\$.get(".
                                 "'{$CFG->wwwroot}/totara/plan/update-linktype.php".
-                                "?type={$type}&amp;c={$ritem->aid}".
-                                "&amp;sesskey=".sesskey().
-                                "&amp;t=' + $(this).val()".
+                                "?type={$shortprefix}&c={$ritem->aid}".
+                                "&sesskey=".sesskey().
+                                "&t=' + $(this).val()".
                             ");")
                     );
-                    $content[] = $this->output->action_icon(new moodle_url('assigncompetency/remove.php', array('id' => $ritem->aid, 'position' => $itemid, 'framework' => $framework)),
+                    $content[] = $this->output->action_icon(new moodle_url('/totara/hierarchy/prefix/' . $prefix . '/assigncompetency/remove.php', array('id' => $ritem->aid, $prefix => $itemid, 'framework' => $framework)),
                     new pix_icon('t/delete', $str_remove), null, array('class' => 'iconsmall', 'title' => $str_remove));
                 }
                 $table->add_data($content);

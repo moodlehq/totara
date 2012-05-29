@@ -23,15 +23,14 @@
  * @package totara
  * @subpackage totara_core
  */
-M.totara_positionitem = M.totara_positionitem || {
+M.totara_organisationitem = M.totara_organisationitem || {
 
     Y: null,
     // optional php params and defaults defined here, args passed to init method
     // below will override these values
     config: {
-        id:0,
-        frameworkid:0
-    },
+                id:0
+            },
 
     /**
      * module initialisation method called by php js_init_call()
@@ -40,7 +39,6 @@ M.totara_positionitem = M.totara_positionitem || {
      * @param string    args supplied in JSON format
      */
     init: function(Y, args){
-
         // save a reference to the Y instance (all of its dependencies included)
         this.Y = Y;
 
@@ -56,39 +54,18 @@ M.totara_positionitem = M.totara_positionitem || {
 
         // check jQuery dependency is available
         if (typeof $ === 'undefined') {
-            throw new Error('M.totara_positionitem.init()-> jQuery dependency required for this module to function.');
+            throw new Error('M.totara_competencyitem.init()-> jQuery dependency required for this module to function.');
         }
 
-        ///
-        /// Competency dialog
-        ///
-        (function() {
-            var url = M.cfg.wwwroot+ '/totara/hierarchy/prefix/position/assigncompetency/';
-            var id = M.totara_positionitem.config.id;
-            var fid = M.totara_positionitem.config.frameworkid;
-            totaraMultiSelectDialog(
-                'assignedcompetencies',
-                M.util.get_string('assigncompetencies', 'totara_hierarchy'),
-                url+'find.php?assignto='+id+'&frameworkid='+fid+'&add=',
-                url+'assign.php?assignto='+id+'&frameworkid='+fid+'&deleteexisting=1&add='
-            );
-        })();
 
-        ///
-        /// Template dialog
-        ///
-        // TODO SCANMSG: Stub code for competency templates - not implemented yet
-        (function() {
-            var url = M.cfg.wwwroot+ '/totara/hierarchy/prefix/position/assigncompetencytemplate/';
-            var id = M.totara_positionitem.config.id;
-            var fid = M.totara_positionitem.config.frameworkid;
-            totaraMultiSelectDialog(
-                'assignedcompetencytemplates',
-                M.util.get_string('assigncompetencytemplate', 'totara_hierarchy'),
-                url+'find.php?assignto='+id+'&frameworkid='+fid+'&add=',
-                url+'assign.php?assignto='+id+'&frameworkid='+fid+'&deleteexisting=1&add='
-            );
-        })();
+        var url = M.cfg.wwwroot + '/totara/hierarchy/prefix/organisation/assigncompetency/';
+
+        totaraMultiSelectDialog(
+            'assignedcompetencies',
+            M.util.get_string('assigncompetencies', 'totara_hierarchy'),
+            url+'find.php?assignto='+this.config.id+'&frameworkid='+this.config.frameworkid+'&add=',
+            url+'assign.php?assignto='+this.config.id+'&frameworkid='+this.config.frameworkid+'&deleteexisting=1&add='
+        );
 
         // when the AJAX call to retrieve new HTML for the assigned competency
         // table completes we can set up the component action on the new select
@@ -106,6 +83,5 @@ M.totara_positionitem = M.totara_positionitem || {
                 M.util.init_select_autosubmit(Y, formid, selectid);
             }, '#'+formid, Y);
         });
-
     }
 };

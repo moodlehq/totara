@@ -126,7 +126,7 @@ class position extends hierarchy {
             $displaytitle = 'assignedcompetencytemplates';
         }
         $renderer = $PAGE->get_renderer('totara_hierarchy');
-        echo $renderer->print_hierarchy_items($frameworkid, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
+        echo $renderer->print_hierarchy_items($frameworkid, $this->prefix, $this->shortprefix, $displaytitle, $addurl, $item->id, $items, $can_edit);
         echo html_writer::end_tag('div');
     }
 
@@ -383,11 +383,10 @@ class position extends hierarchy {
             $out .= html_writer::start_tag('div', array('class' => "hierarchyframeworkpicker"));
 
             $url = new moodle_url('/totara/hierarchy/item/view.php', array('id' => $positionid, 'edit' => $edit, 'prefix' => 'position'));
-            $name = get_string('filterframework', 'totara_hierarchy');
             $options = $fwoptions;
             $selected = $currentfw;
             $formid = 'switchframework';
-            $out .= $OUTPUT->single_select($url, 'framework', $options, $selected, array('' => $name), $formid);
+            $out .= get_string('filterframework', 'totara_hierarchy') . $OUTPUT->single_select($url, 'framework', $options, $selected, null, $formid);
 
             $out .= html_writer::end_tag('div');
         } else {

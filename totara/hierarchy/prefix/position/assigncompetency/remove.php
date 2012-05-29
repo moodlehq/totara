@@ -22,7 +22,7 @@
  * @subpackage totara_hierarchy
  */
 
-require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
 
@@ -36,7 +36,7 @@ $sitecontext = context_system::instance();
 // Relationship id
 $id       = required_param('id', PARAM_INT);
 $position = required_param('position', PARAM_INT);
-$frameworkid = optional_param('framework', PARAM_INT);
+$frameworkid = optional_param('framework', 0, PARAM_INT);
 
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
@@ -62,8 +62,8 @@ else {
 }
 
 
-$returnurl = new moodle_url('item/view.php', array('prefix' => 'position', 'id' => $position, 'framework' => $frameworkid));
-$deleteurl = new moodle_url('prefix/position/assigncompetency/remove.php',
+$returnurl = new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => 'position', 'id' => $position, 'framework' => $frameworkid));
+$deleteurl = new moodle_url('/totara/hierarchy/prefix/position/assigncompetency/remove.php',
     array('id' => $id, 'position' => $position, 'framework' => $frameworkid, 'delete' => md5($assignment->timecreated), 'sesskey' => $USER->sesskey));
 
 if ($delete) {
