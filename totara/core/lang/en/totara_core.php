@@ -207,4 +207,8 @@ $string['save'] = 'Save';
 
 $string['pos_description'] = 'Description';
 $string['pos_description_help'] = 'Description of the position';
+
+$string['staffmanager'] = 'Staff Manager';
+$string['sitemanager'] = 'Site Manager';
+
 ?>

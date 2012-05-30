@@ -1810,3 +1810,19 @@ $string['yourself'] = 'yourself';
 $string['yourteacher'] = 'your {$a}';
 $string['yourwordforx'] = 'Your word for \'{$a}\'';
 $string['zippingbackup'] = 'Zipping backup';
+
+// Totara Strings
+$string['staffmanager'] = 'Staff Manager';
+$string['staffmanagerdescription'] = 'User tasked with managing the performance of a learner or team';
+$string['assessor'] = 'Assessor';
+$string['assessordescription'] = 'User tasked with assessing the performance of a learner';
+$string['regionalmanager'] = 'Regional Manager';
+$string['regionalmanagerdescription'] = 'User who is responsible for the performance of a region and has access to regional reports';
+$string['regionaltrainer'] = 'Regional Trainer';
+$string['regionaltrainerdescription'] = 'User who oversees the delivery of training within a region';
+$string['learner'] = 'Learner';
+$string['learnerdescription'] = 'User acquiring knowledge, comprehension, or mastery through learning';
+$string['trainer'] = 'Trainer';
+$string['trainerdescription'] = 'Responsible for delivering training of learners, but may not alter activities.';
+$string['editingtrainer'] = 'Editing Trainer';
+$string['editingtrainerdescription'] = 'Responsible for delivering training of learners, and can alter activities';

@@ -7002,7 +7002,7 @@ FROM
             $data = array();
             $data['plugin'] = 'totara_core';
             $data['name'] = 'version';
-            $data['value'] = $CFG->local_version;
+            $data['value'] = '2012052801';
             $DB->insert_record('config_plugins', $data);
 
             // hierarchy was previously managed via local/ not local plugin

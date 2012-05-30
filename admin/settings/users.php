@@ -40,10 +40,17 @@ if ($hassiteconfig
             $guestroles      = array();
             $userroles       = array();
             $creatornewroles = array();
+            //Totara role groups
+            $learnerroles      = array();
+            $staffmanagerroles = array();
+            $editorroles       = array();
 
             $defaultteacherid = null;
             $defaultuserid    = null;
             $defaultguestid   = null;
+            //Totara id defaults
+            $defaultlearnerid  = null;
+            $defaultmanagerid  = null;
 
             foreach (get_all_roles() as $role) {
                 $rolename = strip_tags(format_string($role->name)) . ' ('. $role->shortname . ')';
@@ -52,15 +59,24 @@ if ($hassiteconfig
                         $creatornewroles[$role->id] = $rolename;
                         break;
                     case 'coursecreator':
+                        $editorroles[$role->id] = $rolename;
                         break;
                     case 'editingteacher':
                         $defaultteacherid = isset($defaultteacherid) ? $defaultteacherid : $role->id;
                         $creatornewroles[$role->id] = $rolename;
+                        $editorroles[$role->id] = $rolename;
                         break;
                     case 'teacher':
                         $creatornewroles[$role->id] = $rolename;
+                        $editorroles[$role->id] = $rolename;
                         break;
                     case 'student':
+                        $defaultlearnerid = isset($defaultlearnerid) ? $defaultlearnerid : $role->id;
+                        $learnerroles[$role->id] = $rolename;
+                        break;
+                    case 'staffmanager':
+                        $defaultmanagerid = isset($defaultmanagerid) ? $defaultmanagerid : $role->id;
+                        $staffmanagerroles[$role->id] = $rolename;
                         break;
                     case 'guest':
                         $defaultguestid = isset($defaultguestid) ? $defaultguestid : $role->id;
@@ -96,6 +112,14 @@ if ($hassiteconfig
                           get_string('confignotloggedinroleid', 'admin'), $defaultguestid, ($guestroles + $otherroles)));
             $temp->add(new admin_setting_configselect('guestroleid', get_string('guestroleid', 'admin'),
                           get_string('guestroleid_help', 'admin'), $defaultguestid, ($guestroles + $otherroles)));
+            // Totara specific options
+            $temp->add(new admin_setting_configselect('learnerroleid', get_string('learnerroleid', 'admin'),
+                          get_string('learnerroleid_help', 'admin'), $defaultlearnerid, ($learnerroles + $otherroles + $userroles)));
+            $temp->add(new admin_setting_configselect('managerroleid', get_string('managerroleid', 'admin'),
+                           get_string('managerroleid_help', 'admin'), $defaultmanagerid, ($editorroles + $staffmanagerroles + $learnerroles + $otherroles)));
+            $temp->add(new admin_setting_configselect('assessorroleid', get_string('assessorroleid', 'admin'),
+                          get_string('assessorroleid_help', 'admin'), $defaultteacherid, ($editorroles + $staffmanagerroles + $learnerroles + $otherroles)));
+            // End Totara options
             $temp->add(new admin_setting_configselect('defaultuserroleid', get_string('defaultuserroleid', 'admin'),
                           get_string('configdefaultuserroleid', 'admin'), $defaultuserid, ($userroles + $otherroles)));
             $temp->add(new admin_setting_configselect('creatornewroleid', get_string('creatornewroleid', 'admin'),
@@ -109,6 +133,10 @@ if ($hassiteconfig
             unset($userroles);
             unset($creatornewroles);
             unset($restorersnewrole);
+            // Totara arrays
+            unset($editorroles);
+            unset($learnerroles);
+            unset($staffmanagerroles);
         }
 
         $temp->add(new admin_setting_configcheckbox('autologinguests', get_string('autologinguests', 'admin'), get_string('configautologinguests', 'admin'), 0));

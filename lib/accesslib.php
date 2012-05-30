@@ -1251,6 +1251,7 @@ function get_role_archetypes() {
         'editingteacher' => 'editingteacher',
         'teacher'        => 'teacher',
         'student'        => 'student',
+        'staffmanager'   => 'staffmanager',
         'guest'          => 'guest',
         'user'           => 'user',
         'frontpage'      => 'frontpage'
@@ -3310,6 +3311,7 @@ function get_default_contextlevels($rolearchetype) {
         'editingteacher' => array(CONTEXT_COURSE, CONTEXT_MODULE),
         'teacher'        => array(CONTEXT_COURSE, CONTEXT_MODULE),
         'student'        => array(CONTEXT_COURSE, CONTEXT_MODULE),
+        'staffmanager'   => array(CONTEXT_SYSTEM, CONTEXT_USER),
         'guest'          => array(),
         'user'           => array(),
         'frontpage'      => array());

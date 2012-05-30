@@ -41,7 +41,7 @@ function xmldb_totara_cohort_install() {
         set_config('totara_cohort_cron', 60);
     }
 
-    /// Define field icon to be added to message_metadata
+    /// Define field cohorttype to be added to cohort
     $table = new xmldb_table('cohort');
     $field = new xmldb_field('cohorttype');
     $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'timemodified');

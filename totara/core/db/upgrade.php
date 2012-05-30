@@ -39,5 +39,22 @@ require_once($CFG->dirroot.'/totara/core/db/utils.php');
 function xmldb_totara_core_upgrade($oldversion) {
     global $CFG, $DB;
 
+    if ($oldversion < 2012052802) {
+        // add the archetype field to the staff manager role
+        $sql = 'UPDATE {role} SET archetype = ? WHERE shortname = ?';
+        $DB->execute($sql, array('staffmanager', 'staffmanager'));
+
+        // rename the moodle 'manager' fullname to "Site Manager" to make it
+        // distinct from the totara "Staff Manager"
+        if ($managerroleid = $DB->get_field('role', 'id', array('shortname' => 'manager', 'name' => get_string('manager', 'role')))) {
+            $todb = new stdClass();
+            $todb->id = $managerroleid;
+            $todb->name = get_string('sitemanager', 'totara_core');
+            $DB->update_record('role', $todb);
+        }
+
+        totara_upgrade_mod_savepoint(true, 2012052802, 'totara_core');
+    }
+
     return true;
 }

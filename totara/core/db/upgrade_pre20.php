@@ -50,6 +50,22 @@ if ($result) {
     throw new upgrade_exception("Totara Set Block Names Failed", '1.1 to 2.2 upgrade');
 }
 
+//rename manager to staff_manager to avoid breaking roles
+$mgrrole = $DB->get_record('role', array('shortname' => 'manager'));
+if ($mgrrole) {
+    $mgrrole->shortname = 'staffmanager';
+    $mgrrole->name = get_string('staffmanager', 'totara_core');
+    $DB->update_record('role', $mgrrole);
+    //remove legacy/manager capability: this is used later during upgrade_core to add archetype='manager',
+    //which in turn then means this role would get lots of module capabilities during the upgrade_non_core module upgrade process
+    $params = array('capability' => 'moodle/legacy:manager', 'roleid' => $mgrrole->id);
+    $DB->delete_records('role_capabilities', $params);
+    upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara Manager Role renamed');
+    echo $OUTPUT->heading('Totara Manager Role renamed');
+    echo $OUTPUT->notification(get_string('success'), 'notifysuccess');
+    print_upgrade_separator();
+}
+
 //remove extensions and spaces from icons in database - 5 possible tables
 $tables = array('course', 'prog', 'pos_type', 'org_type', 'comp_type');
 foreach ($tables as $table) {
