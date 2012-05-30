@@ -63,7 +63,7 @@ $s = optional_param('s', '', PARAM_TEXT);
 $deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 
 // Check perms
-admin_externalpage_setup('competencymanage', '', array(), $CFG->wwwroot.'/totara/hierarchy/item/edit.php');
+admin_externalpage_setup('competencymanage', '', array(), '/totara/hierarchy/item/edit.php');
 
 $sitecontext = context_system::instance();
 require_capability('totara/hierarchy:updatecompetency', $sitecontext);
@@ -91,7 +91,7 @@ foreach ($idlist as $id) {
 
     $data = new stdClass();
     $data->itemtype = $type;
-    $evidence = competency_evidence_type::factory($data);
+    $evidence = competency_evidence_type::factory((array)$data);
     $evidence->iteminstance = $instance;
 
     $newevidenceid = $evidence->add($competency);
@@ -119,7 +119,7 @@ if ($deleteexisting) {
             print_error('updatecompetencyitems', 'totara_hierarchy');
         }
 
-        $item = competency_evidence_type::factory($assignedcomps[$ritem]);
+        $item = competency_evidence_type::factory((array)$assignedcomps[$ritem]);
 
         $item->delete($competency);
     }

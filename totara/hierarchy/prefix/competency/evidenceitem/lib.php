@@ -111,7 +111,7 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ) {
         $available = true;
         echo html_writer::start_tag('div');
         if (array_key_exists("coursecompletion-{$course->id}", $existingevidencelookup)) {
-            echo html_writer::tag('span', get_string('coursecompletion', 'totara_hierarchy') . ' ' . $alreadystr, array('class' => "unclickable"));
+            echo html_writer::tag('span', get_string('coursecompletion', 'totara_core') . ' ' . $alreadystr, array('class' => "unclickable"));
         } else {
             echo html_writer::start_tag('span', array('class' => 'coursecompletion', 'id' => $course->id));
             echo html_writer::link('#', get_string('coursecompletion'));

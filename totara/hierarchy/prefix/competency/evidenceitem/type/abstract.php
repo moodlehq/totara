@@ -81,17 +81,17 @@ abstract class competency_evidence_type extends data_object {
 
         // If supplied an ID, load record
         if (is_numeric($data)) {
-            $data = $DB->get_record('comp_evidence_items', array('id' => $data));
+            $data = (array)$DB->get_record('comp_evidence_items', array('id' => $data));
         }
 
         // Check this competency evidence type is installed
-        if (!isset($data->itemtype) || !isset($COMPETENCY_EVIDENCE_TYPES[$data->itemtype])) {
+        if (!isset($data['itemtype']) || !isset($COMPETENCY_EVIDENCE_TYPES[$data['itemtype']])) {
             print_error('invalidevidencetype', 'totara_hierarchy');
         }
 
         // Load class file
-        require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/'.$data->itemtype.'.php');
-        $class = 'competency_evidence_type_'.$data->itemtype;
+        require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/'.$data['itemtype'].'.php');
+        $class = 'competency_evidence_type_'.$data['itemtype'];
 
         // Create new and return
         return new $class($data, false);
@@ -109,17 +109,23 @@ abstract class competency_evidence_type extends data_object {
         // Don't allow duplicate evidence items
         $params = array(
             'competencyid' => $competency->id,
-            'itemtype'     => ( isset($this->itemtype) ? $this->itemtype : '' ),
-            'itemmodule'   => ( isset($this->itemmodule) ? $this->itemmodule : '' ),
             'iteminstance' => $this->iteminstance
         );
 
         $wherestr = "
             competencyid = :competencyid
-            AND itemtype = :itemtype
-            AND itemmodule = :itemmodule
             AND iteminstance = :iteminstance
         ";
+
+        if (isset($this->itemtype)) {
+            $params['itemtype'] = $this->itemtype;
+            $wherestr .= 'AND itemtype = :itemtype';
+        }
+
+        if (isset($this->itemmodule)) {
+            $params['itemmodule'] = $this->itemmodule;
+            $wherestr .= 'AND itemmodule = :itemmodule';
+        }
 
         if ($DB->count_records_select('comp_evidence_items', $wherestr, $params) ) {
             return false;

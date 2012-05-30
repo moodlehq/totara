@@ -93,7 +93,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
             foreach ($evidence as $eitem) {
                 $cells = array();
                 $oddeven = ++$oddeven % 2;
-                $eitem = competency_evidence_type::factory($eitem);
+                $eitem = competency_evidence_type::factory((array)$eitem);
                 $cells[] = new html_table_cell($eitem->get_name());
                 if (!empty($CFG->competencyuseresourcelevelevidence)) {
                     $cells[] = new html_table_cell($eitem->get_type());
@@ -344,6 +344,18 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                 }
 
                 if ($can_edit) {
+                    // TODO SCANMSG: Rewrite to use a component_action object
+                    // the 't' param may need reworking, since it is applied via
+                    // onChange using the old inline jQuery code below.
+                    /*
+                    $url = new moodle_url('/totara/plan/update-linktype.php', array('type' => $shortprefix, 'c' => $ritem->aid, 'sesskey' => sesskey(), 't' => '$(this).val()'));
+                    $options = array(
+                        PLAN_LINKTYPE_OPTIONAL => get_string('optional', 'totara_hierarchy'),
+                        PLAN_LINKTYPE_MANDATORY => get_string('mandatory', 'totara_hierarchy'),
+                    );
+                    $selected = ($ritem->linktype ? $ritem->linktype : PLAN_LINKTYPE_OPTIONAL);
+                    $content[] = $OUTPUT->single_select($url, 'c', $options, $selected);
+                    */
                     $content[] = html_writer::select(
                     array( //$options
                     PLAN_LINKTYPE_OPTIONAL => get_string('optional', 'totara_hierarchy'),
@@ -352,7 +364,6 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                     'linktype', //$name,
                     ($ritem->linktype ? $ritem->linktype : PLAN_LINKTYPE_OPTIONAL), //$selected,
                     false, //$nothing,
-                    // TODO SCANMSG: Rewrite to use a component_action object
                     array('onChange' => "\$.get(".
                                 "'{$CFG->wwwroot}/totara/plan/update-linktype.php".
                                 "?type={$shortprefix}&c={$ritem->aid}".

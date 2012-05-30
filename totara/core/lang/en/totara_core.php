@@ -211,4 +211,5 @@ $string['pos_description_help'] = 'Description of the position';
 $string['staffmanager'] = 'Staff Manager';
 $string['sitemanager'] = 'Site Manager';
 
+$string['coursecompletion'] = 'Course completion';
 ?>

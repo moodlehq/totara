@@ -416,8 +416,14 @@ class competency extends hierarchy {
         switch ($page) {
             case 'item/view':
 
-                $itemid = !(empty($item->id)) ? array('args'=>'{"id":'.$item->id.'}') : NULL;
-
+                $jargs = '{';
+                if (!empty($item->id)) {
+                    $jargs .= '"id":'.$item->id;
+                }
+                if (!empty($CFG->competencyuseresourcelevelevidence)) {
+                    $jargs .= ', "competencyuseresourcelevelevidence":true';
+                }
+                $jargs .= '}';
                 // Include competency item js module
                 $PAGE->requires->strings_for_js(array('assignrelatedcompetencies',
                         'assignnewevidenceitem','assigncoursecompletions'), 'totara_hierarchy');
@@ -426,7 +432,7 @@ class competency extends hierarchy {
                         'fullpath' => '/totara/core/js/competency.item.js',
                         'requires' => array('json'));
                 $PAGE->requires->js_init_call('M.totara_competencyitem.init',
-                         $itemid, false, $jsmodule);
+                         array('args'=>$jargs), false, $jsmodule);
 
                 break;
             case 'template/view':
@@ -434,6 +440,7 @@ class competency extends hierarchy {
                 $itemid = !(empty($item->id)) ? array('args'=>'{"id":'.$item->id.'}') : NULL;
 
                 // Include competency template js module
+                $PAGE->requires->string_for_js('assignnewcompetency', 'totara_competency');
                 $jsmodule = array(
                         'name' => 'totara_competencytemplate',
                         'fullpath' => '/totara/core/js/competency.template.js',
@@ -705,7 +712,7 @@ class competency extends hierarchy {
                 if (!empty($CFG->competencyuseresourcelevelevidence)) {
                     $cell = new html_table_cell();
 
-                    $evidence = competency_evidence_type::factory($evidence);
+                    $evidence = competency_evidence_type::factory((array)$evidence);
 
                     $cell->text = $evidence->get_type();
                     if ($evidence->itemtype == 'activitycompletion') {
@@ -718,21 +725,31 @@ class competency extends hierarchy {
                 // Options column
                 if ($can_edit) {
                     $cell = new html_table_cell();
-                    $select = $OUTPUT->single_select(
-                        new moodle_url('/totara/plan/update-linktype.php', array('type' => 'course', 'c' => $competency->evidenceid, 'sesskey' => sesskey(), 't' => '$this.val()')),
-                        'c', // ?? name'linktype'
-                        array(
-                            PLAN_LINKTYPE_MANDATORY => get_string('mandatory','totara_hierarchy'),
-                            PLAN_LINKTYPE_OPTIONAL => get_string('optional','totara_hierarchy'),
+
+                    // TODO SCANMSG: Rewrite to use a component_action object
+                    // the 't' param may need reworking, since it is applied via
+                    // onChange using the old inline jQuery code below.
+                    $select = html_writer::select(
+                        $options = array(
+                            PLAN_LINKTYPE_OPTIONAL => get_string('optional', 'totara_hierarchy'),
+                            PLAN_LINKTYPE_MANDATORY => get_string('mandatory', 'totara_hierarchy'),
                         ),
-                        (isset($competency->linktype) ? $competency->linktype : PLAN_LINKTYPE_MANDATORY),
-                        null
+                        'linktype', //$name,
+                        (isset($competency->linktype) ? $competency->linktype : PLAN_LINKTYPE_MANDATORY), //$selected,
+                        false, //$nothing,
+                        array('onChange' => "\$.get(".
+                                    "'{$CFG->wwwroot}/totara/plan/update-linktype.php".
+                                    "?type=course&c={$competency->evidenceid}".
+                                    "&sesskey=".sesskey().
+                                    "&t=' + $(this).val()".
+                            ");")
                     );
+
                     $cell->text = $select;
                     $row->cells[] = $cell;
 
                     $cell = new html_table_cell();
-                    $cell->text = $OUTPUT->action_icon(new moodle_url('prefix/competency/evidenceitem/remove.php', array('id' => $evidence->id, 'course' => $courseid)),
+                    $cell->text = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/competency/evidenceitem/remove.php', array('id' => $evidence->id, 'course' => $courseid)),
                         new pix_icon('t/delete', $str_remove), null, array('class' => 'iconsmall', 'alt' => $str_remove, 'title' => $str_remove));
                     $row->cells[] = $cell;
                 }

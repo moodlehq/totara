@@ -64,7 +64,21 @@ local_js(array(
     TOTARA_JS_TREEVIEW
 ));
 
-$PAGE->requires->js('/totara/core/js/course.competency.js.php?id='.$course->id);
+// Include course competency js module
+$PAGE->requires->string_for_js('cancel', 'moodle');
+$PAGE->requires->string_for_js('save', 'totara_core');
+$PAGE->requires->string_for_js('assigncoursecompletiontocompetencies', 'totara_hierarchy');
+$jargs = '{"id":'.$course->id;
+if (!empty($CFG->competencyuseresourcelevelevidence)) {
+    $jargs .= ', "competencyuseresourcelevelevidence":true';
+}
+$jargs .= '}';
+$args = array('args'=>$jargs);
+$jsmodule = array(
+        'name' => 'totara_coursecompetency',
+        'fullpath' => '/totara/core/js/course.competency.js',
+        'requires' => array('json'));
+$PAGE->requires->js_init_call('M.totara_coursecompetency.init', $args, false, $jsmodule);
 
 $strcompetenciesusedincourse = get_string("competenciesusedincourse", 'totara_hierarchy');
 $navlinks = array();
@@ -102,7 +116,7 @@ if ($can_edit) {
 </script>
 
 <div class="singlebutton centerbutton">
-    <form action="<?php echo $CFG->wwwroot ?>/hierarchy/prefix/competency/course/add.php?id=<?php echo $id ?>" method="get">
+    <form action="<?php echo $CFG->wwwroot ?>/totara/hierarchy/prefix/competency/course/add.php?id=<?php echo $id ?>" method="get">
         <div>
             <?php if (!empty($CFG->competencyuseresourcelevelevidence)) { ?>
                 <input type="submit" id="show-coursecompetency-dialog" value="<?php echo get_string('addcourseevidencetocompetencies', 'totara_hierarchy'); ?>" />
@@ -135,6 +149,6 @@ echo $OUTPUT->single_button(
 
 echo '</div></div>';
 
-$OUTPUT->footer($course);
+echo $OUTPUT->footer($course);
 
 ?>

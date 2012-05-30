@@ -78,7 +78,7 @@ if (!in_array($type, $avail_types)) {
 if (!empty($CFG->competencyuseresourcelevelevidence)) {
     $data = new stdClass();
     $data->itemtype = $type;
-    $evidence = competency_evidence_type::factory($data);
+    $evidence = competency_evidence_type::factory((array)$data);
     $evidence->iteminstance = $instance;
 
     $newevidenceid = $evidence->add($competency);
@@ -107,7 +107,7 @@ if ($nojs) {
                 $data = new stdClass();
                 $data->id = $ritem->id;
                 $data->itemtype = $ritem->itemtype;
-                $evidence = competency_evidence_type::factory($data);
+                $evidence = competency_evidence_type::factory((array)$data);
                 $evidence->iteminstance = $ritem->iteminstance;
                 $evidence->delete($competency);
             }
@@ -119,7 +119,7 @@ if ($nojs) {
         foreach ($idlist as $instance) {
             $data = new stdClass();
             $data->itemtype = $type;
-            $evidence = competency_evidence_type::factory($data);
+            $evidence = competency_evidence_type::factory((array)$data);
             $evidence->iteminstance = $instance;
 
             $newevidenceid = $evidence->add($competency);
