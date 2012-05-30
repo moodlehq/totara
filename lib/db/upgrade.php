@@ -7066,6 +7066,71 @@ FROM
                 }
 
             }
+
+            //manage custom files for custom textareas and filepickers
+            require_once("$CFG->libdir/filelib.php");
+            $fs = get_file_storage();
+            $tables = array('course' => 'course', 'pos_type' => 'position', 'org_type' => 'organisation', 'comp_type' => 'competency');
+            $systemcontext = context_system::instance();
+            $datatypes = array('textarea', 'file');
+            //$file_record values that never change on each iteration
+            $file_record = array();
+            $file_record['contextid'] = $systemcontext->id;
+            $file_record['component'] = 'totara_customfield';
+            foreach ($tables as $table => $itemtype) {
+                $itemproperty = $itemtype . 'id';
+                //handle textareas
+                list($insql, $inparams) = $DB->get_in_or_equal($datatypes);
+                $sql = "SELECT d.*, f.datatype FROM {{$table}_info_data} d INNER JOIN {{$table}_info_field} f ON d.fieldid=f.id WHERE f.datatype $insql";
+                $customdata = $DB->get_recordset_sql($sql, $inparams);
+                foreach ($customdata as $custom) {
+                    //get legacy context
+                    if ($table == 'course') {
+                        $legacycontext = context_course::instance($custom->courseid);
+                    } else {
+                        $legacycontext = context_course::instance(1);
+                    }
+                    //handle filepicker types
+                    if ($custom->datatype == 'file') {
+                        $filename = $custom->data;
+                        $fileid = $DB->get_field('files', 'id', array('contextid' => $legacycontext->id, 'component' => 'course', 'filearea' => 'legacy', 'filename' => $filename));
+                        if ($fileid) {
+                            //change settings and copy file from course/legacy to proper component/filearea
+                            $file_record['filearea'] = $itemtype . '_filemgr';
+                            $file_record['itemid']    = $custom->$itemproperty;
+                            $newfile = $fs->create_file_from_storedfile($file_record, $fileid);
+                            $custom->data = $newfile->get_id();
+                            $DB->update_record("{$table}_info_data", $custom);
+                        }
+                    }
+                    //handle textareas - bit more complex with embedded urls and possible multiple files
+                    if ($custom->datatype == 'textarea') {
+                        $data = $custom->data;
+                        $matches = array();
+                        $pattern = '/\ssrc=\"(.*?)\/file.php\/' . $legacycontext->instanceid .'\/(.*?)\"\s/';
+                        preg_match_all($pattern, $data, $matches);
+                        if (isset($matches[1]) && is_array($matches[1])) {
+                            //may have multiple embedded files in a textarea!
+                            for ($x=0; $x<count($matches[1]); $x++) {
+                                $filename   = $matches[2][$x];
+                                $src_url = $matches[1][$x] . '/file.php/' . $legacycontext->instanceid . '/' . $filename;
+                                $fileid = $DB->get_field('files', 'id', array('contextid' => $legacycontext->id, 'component' => 'course', 'filearea' => 'legacy', 'filename' => $filename));
+                                if ($fileid) {
+                                    //change settings and copy file from course/legacy to proper component/filearea
+                                    $file_record['filearea'] = $itemtype;
+                                    $file_record['itemid']    = $custom->$itemproperty;
+                                    $newfile = $fs->create_file_from_storedfile($file_record, $fileid);
+                                    $data = str_replace($src_url, '@@PLUGINFILE@@/' . $filename, $data);
+                                }
+                            }
+                            $custom->data = $data;
+                            $DB->update_record("{$table}_info_data", $custom);
+                        }
+                    }
+                }
+                $customdata->close();
+            }
+
         }
 
         // Main savepoint reached

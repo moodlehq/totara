@@ -86,23 +86,26 @@ if ($typeid) {
 
 $navlinks = $PAGE->navbar->has_items();
 
-require_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
+// set the capability prefix
+$capability_prefix = ($shortprefix == 'course') ? 'core' : 'hierarchy';
+
+require_capability('totara/'.$capability_prefix.':update'.$prefix.'customfield', $sitecontext);
 admin_externalpage_setup($adminpagename, '', array('prefix' => $prefix));
 
 // check if any actions need to be performed
 switch ($action) {
    case 'movefield':
-        require_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
+        require_capability('totara/'.$capability_prefix.':update'.$prefix.'customfield', $sitecontext);
         $id  = required_param('id', PARAM_INT);
         $dir = required_param('dir', PARAM_ALPHA);
 
         if (confirm_sesskey()) {
-            customfield_move_field($id, $dir, $tableprefix);
+            customfield_move_field($id, $dir, $tableprefix, $prefix);
         }
         redirect($redirect);
         break;
     case 'deletefield':
-        require_capability('totara/hierarchy:delete'.$prefix.'customfield', $sitecontext);
+        require_capability('totara/'.$capability_prefix.':delete'.$prefix.'customfield', $sitecontext);
         $id      = required_param('id', PARAM_INT);
         $confirm = optional_param('confirm', 0, PARAM_BOOL);
 
@@ -133,7 +136,7 @@ switch ($action) {
         die;
         break;
     case 'editfield':
-        require_capability('totara/hierarchy:update'.$prefix.'customfield', $sitecontext);
+        require_capability('totara/'.$capability_prefix.':update'.$prefix.'customfield', $sitecontext);
         $id       = optional_param('id', 0, PARAM_INT);
         $datatype = optional_param('datatype', '', PARAM_ALPHA);
 
@@ -170,21 +173,13 @@ if ($prefix == 'course') {
 }
 $table->data = array();
 
-if ($typeid) {
-    $field = 'typeid';
-    $value = $typeid;
-} else {
-    $field = '';
-    $value = '';
-}
+$select = ($typeid) ? array('typeid' => $typeid) : null;
+$fields = $DB->get_records($tableprefix.'_info_field', $select, 'sortorder ASC');
 
-if ($fields = $DB->get_records($tableprefix.'_info_field', array($field => $value), 'sortorder ASC')) {
+$fieldcount = count($fields);
 
-    $fieldcount = count($fields);
-
-    foreach ($fields as $field) {
-        $table->data[] = array($field->fullname, get_string('customfieldtype'.$field->datatype, 'totara_customfield'), customfield_edit_icons($field, $fieldcount, $typeid, $prefix));
-    }
+foreach ($fields as $field) {
+    $table->data[] = array($field->fullname, get_string('customfieldtype'.$field->datatype, 'totara_customfield'), customfield_edit_icons($field, $fieldcount, $typeid, $prefix));
 }
 if (count($table->data)) {
     echo html_writer::table($table);
@@ -196,11 +191,11 @@ echo html_writer::empty_tag('br');
 $options = customfield_list_datatypes();
 
 if ($prefix == 'course') {
-    $select = new single_select(new moodle_url('index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
+    $select = new single_select(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
     $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
     echo $OUTPUT->render($select);
 } else {
-    $select = new single_select(new moodle_url('index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'typeid' => $typeid, 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
+    $select = new single_select(new moodle_url('/totara/customfield/index.php', array('prefix' => $prefix, 'id' => 0, 'action' => 'editfield', 'typeid' => $typeid, 'datatype' => '')), 'datatype', $options, '', array(''=>'choosedots'), 'newfieldform');
     $select->set_label(get_string('createnewcustomfield', 'totara_customfield'));
     echo $OUTPUT->render($select);
 }

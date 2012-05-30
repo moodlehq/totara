@@ -50,7 +50,7 @@ class customfield_checkbox extends customfield_base {
         $checkbox = &$form->addElement('advcheckbox', $this->inputname, format_string($this->field->fullname));
         if ($this->data == '1') {
             $checkbox->setChecked(true);
-        }        
+        }
         $form->setType($this->inputname, PARAM_BOOL);
         if ($this->is_required()) {
             $form->addRule($this->inputname, get_string('customfieldrequired', 'totara_customfield'), 'nonzero', null, 'client');

@@ -39,14 +39,15 @@ class customfield_file extends customfield_base {
      */
     function edit_save_data($itemnew, $prefix, $tableprefix) {
         global $DB, $FILEPICKER_OPTIONS;
-
-        if (!isset($itemnew->{$this->inputname})) {
+        $formelement = $this->inputname . "_filemanager";
+        if (!isset($itemnew->$formelement)) {
             // field not present in form, probably locked and invisible - skip it
             return;
         }
-        $itemnew->{$this->inputname} = $this->edit_save_data_preprocess($itemnew->{$this->inputname});
+
         $itemnew = file_postupdate_standard_filemanager($itemnew, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
                                                                       'totara_customfield', $this->prefix . '_filemgr', $itemnew->id);
+
         $data = new stdClass();
         $data->{$prefix.'id'} = $itemnew->id;
         $data->fieldid      = $this->field->id;
@@ -54,9 +55,7 @@ class customfield_file extends customfield_base {
 
         if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array($prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
             $data->id = $dataid;
-            if (!$DB->update_record($tableprefix.'_info_data', $data)) {
-                print_error('error:updatecustomfield', 'totara_customfield');
-            }
+            $DB->update_record($tableprefix.'_info_data', $data);
         } else {
             $DB->insert_record($tableprefix.'_info_data', $data);
         }
@@ -67,6 +66,16 @@ class customfield_file extends customfield_base {
         global $FILEPICKER_OPTIONS;
         /// Create the file picker
         $mform->addElement('filemanager', $this->inputname.'_filemanager', format_string($this->field->fullname), null, $FILEPICKER_OPTIONS);
+    }
+
+    /**
+    * Sets the required flag for the field in the form object
+    * @param   object   instance of the moodleform class
+    */
+    function edit_field_set_required(&$mform) {
+        if ($this->is_required()) {
+            $mform->addRule($this->inputname.'_filemanager', get_string('customfieldrequired', 'totara_customfield'), 'required', null, 'client');
+        }
     }
 
     function edit_field_set_locked(&$mform) {
@@ -83,7 +92,7 @@ class customfield_file extends customfield_base {
     /**
      * Display the data for this field
      */
-    static function display_item_data($data, $prefix=null) {
+    static function display_item_data($data, $prefix=null, $itemid) {
         global $OUTPUT;
 
         if (empty($data)) {
@@ -91,7 +100,7 @@ class customfield_file extends customfield_base {
         }
         $context = context_system::instance();
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $data, null, false);
+        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $itemid, null, false);
         if (count($files)!=1) {
             return get_string('filenotfound', 'error');
         } else {

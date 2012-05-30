@@ -52,20 +52,20 @@ function customfield_edit_icons($field, $fieldcount, $typeid=0, $prefix) {
     if ($typeid != null) {
         $params['typeid'] = $typeid;
     }
-    $editstr = $OUTPUT->action_icon(new moodle_url('index.php', $params), new pix_icon('t/edit', $stredit), null, array('title' => $stredit));
+    $editstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/edit', $stredit), null, array('title' => $stredit));
 
     /// Delete
     $params['action'] = 'deletefield';
-    $deletestr = $OUTPUT->action_icon(new moodle_url('index.php', $params), new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete));
+    $deletestr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete));
 
     /// Move up
     if ($field->sortorder > 1) {
         $params['action'] = 'movefield';
         $params['dir'] = 'up';
         $params['sesskey'] = sesskey();
-        $upstr = $OUTPUT->action_icon(new moodle_url('index.php', $params), new pix_icon('t/up', $strmoveup), null, array('title' => $strmoveup));
+        $upstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/up', $strmoveup), null, array('title' => $strmoveup));
     } else {
-        $upstr = $OUTPUT->spacer(array('class' => 'iconsmall'));
+        $upstr = $OUTPUT->spacer(array('height' => 11, 'width' => 11));
     }
 
     /// Move down
@@ -73,9 +73,9 @@ function customfield_edit_icons($field, $fieldcount, $typeid=0, $prefix) {
         $params['action'] = 'movefield';
         $params['dir'] = 'down';
         $params['sesskey'] = sesskey();
-        $downstr = $OUTPUT->action_icon(new moodle_url('index.php', $params), new pix_icon('t/down', $strmovedown), null, array('title' => $strmovedown));
+        $downstr = $OUTPUT->action_icon(new moodle_url('/totara/customfield/index.php', $params), new pix_icon('t/down', $strmovedown), null, array('title' => $strmovedown));
     } else {
-        $downstr = $OUTPUT->spacer(array());
+        $downstr = $OUTPUT->spacer(array('height' => 11, 'width' => 11));
     }
 
     return $editstr . $deletestr . $upstr . $downstr;
@@ -100,10 +100,13 @@ function customfield_delete_field($id, $tableprefix) {
  * @param   string    direction of move
  * @return  boolean   success of operation
  */
-function customfield_move_field($id, $move, $tableprefix) {
+function customfield_move_field($id, $move, $tableprefix, $prefix) {
     global $DB;
+
+    // Get typeid only for hierarchies
+    $subfields = ($prefix == 'course') ? 'id, sortorder' : 'id, typeid, sortorder';
     /// Get the field object
-    $field = $DB->get_record($tableprefix.'_info_field', array('id' => $id), 'id, typeid, sortorder');
+    $field = $DB->get_record($tableprefix.'_info_field', array('id' => $id), $subfields);
 
     /// Count the number of fields
     $fieldcount = $DB->count_records($tableprefix.'_info_field');
@@ -117,8 +120,10 @@ function customfield_move_field($id, $move, $tableprefix) {
         return false;
     }
 
+    // Get typeid only for hierarchies
+    $subfields = ($prefix == 'course') ? array('sortorder' => $neworder) : array('sortorder' => $neworder, 'typeid' => $field->typeid);
     /// Retrieve the field object that is currently residing in the new position
-    $swapfield = $DB->get_record($tableprefix.'_info_field', array('sortorder' => $neworder, 'typeid' => $field->typeid));
+    $swapfield = $DB->get_record($tableprefix.'_info_field', $subfields);
 
     /// Swap the sortorders
     $swapfield->sortorder = $field->sortorder;

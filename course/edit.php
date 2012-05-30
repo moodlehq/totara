@@ -27,6 +27,7 @@ require_once('../config.php');
 require_once('lib.php');
 require_once('edit_form.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot.'/totara/customfield/fieldlib.php');
 
 $usetags = (!empty($CFG->usetags) && get_config('moodlecourse', 'coursetagging') == 1) ? true : false;
 
@@ -44,7 +45,7 @@ $PAGE->set_url('/course/edit.php');
 // basic access control checks
 if ($id) { // editing course
     if ($id == SITEID){
-        // don't allow editing of  'site course' using this from
+        // don't allow editing of  'site course' using this form
         print_error('cannoteditsiteform');
     }
 
@@ -57,6 +58,8 @@ if ($id) { // editing course
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
     require_capability('moodle/course:update', $coursecontext);
     $PAGE->url->param('id',$id);
+
+    customfield_load_data($course, 'course', 'course');
 
 } else if ($categoryid) { // creating new course in this category
     $course = null;
@@ -128,6 +131,10 @@ if ($editform->is_cancelled()) {
         if ($usetags) {
             add_tags_info($course->id);
         }
+
+        $data->id = $course->id;
+        customfield_save_data($data, 'course', 'course');
+
         // Get the context of the newly created course
         $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
 
@@ -154,6 +161,7 @@ if ($editform->is_cancelled()) {
         if ($usetags) {
             add_tags_info($course->id);
         }
+        customfield_save_data($data, 'course', 'course');
     }
 
     switch ($returnto) {

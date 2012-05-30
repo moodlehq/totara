@@ -4345,3 +4345,17 @@ function course_page_type_list($pagetype, $parentcontext, $currentcontext) {
         );
     }
 }
+
+// Totara Functions
+
+function get_course_custom_fields($courseid) {
+    global $DB;
+
+    $sql = "SELECT d.*, f.*
+            FROM {course_info_data} d
+            INNER JOIN {course_info_field} f ON d.fieldid = f.id
+            WHERE d.courseid = ?
+            ORDER BY f.sortorder";
+
+    return $DB->get_records_sql($sql, array($courseid));
+}

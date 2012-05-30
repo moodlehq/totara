@@ -29,8 +29,14 @@ class customfield_textarea extends customfield_base {
         $cols = $this->field->param1;
         $rows = $this->field->param2;
         /// Create the form field
-        $mform->addElement('editor', $this->inputname, format_string($this->field->fullname), array('cols'=>$cols, 'rows'=>$rows), $TEXTAREA_OPTIONS);
-        $mform->setType($this->inputname, PARAM_RAW);
+        if ($this->is_locked()) {
+            $context = context_system::instance();
+            $data = file_rewrite_pluginfile_urls($this->data, 'pluginfile.php', $context->id, 'totara_customfield', $this->prefix, $this->itemid);
+            $mform->addElement('static', 'freezedisplay', format_string($this->field->fullname), format_text($data, FORMAT_MOODLE));
+        } else {
+            $mform->addElement('editor', $this->inputname, format_string($this->field->fullname), array('cols' => $cols, 'rows' => $rows), $TEXTAREA_OPTIONS);
+            $mform->setType($this->inputname, PARAM_RAW);
+        }
     }
 
     /// Overwrite base class method, data in this field type is potentially too large to be
@@ -44,6 +50,7 @@ class customfield_textarea extends customfield_base {
     * object's fieldid and itemid
     */
     function load_data($itemid, $prefix, $tableprefix) {
+        $this->prefix = $prefix;
         parent::load_data($itemid, $prefix, $tableprefix);
         if ($this->inputname != '' && substr($this->inputname, strlen($this->inputname)-6) != '_editor') {
             $this->inputname = $this->inputname . '_editor';
@@ -64,17 +71,14 @@ class customfield_textarea extends customfield_base {
             // field not present in form, probably locked and invisible - skip it
             return;
         }
-        $shortprefix = substr($tableprefix, 0 , strlen($tableprefix)-5);
-        $itemnew = file_postupdate_standard_editor($itemnew, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', $shortprefix, $itemnew->id);
         $data = new stdClass();
         $data->{$prefix.'id'} = $itemnew->id;
         $data->fieldid      = $this->field->id;
+        $itemnew = file_postupdate_standard_editor($itemnew, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', $prefix, $itemnew->id);
         $data->data = $itemnew->{$shortinputname};
         if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array($prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
             $data->id = $dataid;
-            if (!$DB->update_record($tableprefix.'_info_data', $data)) {
-                print_error('error:updatecustomfield', 'totara_customfield');
-            }
+            $DB->update_record($tableprefix.'_info_data', $data);
         } else {
             $data->id = $DB->insert_record($tableprefix.'_info_data', $data);
         }
@@ -130,7 +134,7 @@ class customfield_textarea extends customfield_base {
     function edit_load_item_data(&$item) {
         //get short form by removing trailing '_editor' from $this->inputname;
         $shortinputname = substr($this->inputname, 0, strlen($this->inputname)-7);
-        if ($this->data !== NULL) {
+        if ($this->data !== NULL && !$this->is_locked()) {
             $item->{$shortinputname} = $this->data;
         }
     }
@@ -143,8 +147,7 @@ class customfield_textarea extends customfield_base {
             return $data;
         }
         $context = context_system::instance();
-        $shortprefix = hierarchy::get_short_prefix($prefix);
-        $data = file_rewrite_pluginfile_urls($data, 'pluginfile.php', $context->id, 'totara_customfield', $shortprefix, $itemid);
+        $data = file_rewrite_pluginfile_urls($data, 'pluginfile.php', $context->id, 'totara_customfield', $prefix, $itemid);
         return $data;
     }
 }

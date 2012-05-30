@@ -320,6 +320,13 @@ class course_edit_form extends moodleform {
                 }
             }
         }
+//--------------------------------------------------------------------------------
+        if (empty($course->id)) {
+            $course->id = 0;
+        }
+        customfield_definition($mform, $course, 'course', 0, 'course');
+
+//--------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------
 // Display offical Course Tags
@@ -363,6 +370,11 @@ class course_edit_form extends moodleform {
             $gr_el =& $mform->getElement('defaultgroupingid');
             $gr_el->load($options);
         }
+
+        $courseid = $mform->getElementValue('id') ? $mform->getElementValue('id') : 0;
+        if ($course = $DB->get_record('course', array('id' => $courseid))) {
+            customfield_definition_after_data($mform, $course, 'course', 0, 'course');
+        }
     }
 
 
@@ -382,6 +394,11 @@ class course_edit_form extends moodleform {
                 $foundcoursenamestring = implode(',', $foundcoursenames);
                 $errors['shortname']= get_string('shortnametaken', '', $foundcoursenamestring);
             }
+        }
+
+        if (!empty($data['id'])) {
+            /// Check custom fields
+            $errors += customfield_validation((object)$data, 'course', 'course');
         }
 
         $errors = array_merge($errors, enrol_course_edit_validation($data, $this->context));

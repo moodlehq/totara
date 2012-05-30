@@ -22,19 +22,13 @@
  * @subpackage totara_customfield
  */
 
-$string['category'] = 'Category';
-$string['categorynamemustbeunique'] = 'Category name (must be unique)';
-$string['categorynamenotunique'] = 'This category name is already in use';
-$string['confirmcategorydeletion'] = 'There is/are {$a} field/s in this category which will be moved into the category above (or below if in the top category). <br />Do you still wish to delete this category?';
 $string['commonsettings'] = 'Common settings';
 $string['confirmfielddeletionnodata'] = 'Are you sure you want to delete this field?';
 $string['confirmfielddeletionsingle'] = 'There is 1 record for this field which will be deleted. <br />Do you still wish to delete this field?';
 $string['confirmfielddeletionplural'] = 'There are {$a} records for this field which will be deleted. <br />Do you still wish to delete this field?';
 $string['coursecustomfields'] = 'Course custom fields';
-$string['createcustomfieldcategory'] = 'Create custom field category';
 $string['createnewcustomfield'] = 'Create a new custom field';
 $string['createnewfield'] = 'Create a new &quot;{$a}&quot; custom field';
-$string['createnewcategory'] = 'Creating a new category';
 $string['customfieldtypecheckbox'] = 'Checkbox';
 $string['customfieldtypemenu'] = 'Menu of choices';
 $string['customfieldtypetext'] = 'Text input';
@@ -43,10 +37,8 @@ $string['customfieldtypefile'] = 'File';
 $string['customfield'] = 'Custom field';
 $string['customfields'] = 'Custom fields';
 $string['defaultdata'] = 'Default value';
-$string['deletecategory'] = 'Deleting a category';
 $string['deletefield'] = 'Deleting a field';
 $string['description'] = 'Description of the field';
-$string['editcategory'] = 'Editing custom field category: {$a}';
 $string['editfield'] = 'Editing custom field: {$a}';
 $string['fieldcolumns'] = 'Columns';
 $string['fieldrows'] = 'Rows';
@@ -65,12 +57,8 @@ $string['pluginname'] = 'Customfields';
 $string['shortname'] = 'Short name (must be unique)';
 $string['shortnamenotunique'] = 'This short name is already in use';
 $string['specificsettings'] = 'Specific settings';
-$string['customfieldrequired'] = 'Is this field required?';
+$string['customfieldrequired'] = 'This field is required';
 $string['visible'] = 'Hidden on the settings page?';
-$string['nocustomfieldcategories'] = 'To add custom fields, first create a custom field category';
-$string['nocustomfieldcategoriesdefined'] = 'No custom field categories defined';
-$string['customfieldcategories'] = 'Custom Field Categories';
-$string['returntocategories'] = 'Return to Custom Field Categories';
 $string['customfieldfullname'] = 'Custom Field full name';
 $string['customfieldshortname'] = 'Custom Field short name';
 $string['customfieldlocked'] = 'Custom Field locked';
@@ -97,12 +85,12 @@ $string['customfieldmenuoptions_help'] = 'Enter the menu options that will appea
 Only enter one option per line.';
 $string['customfieldshortname_help'] = 'Custom field short name is the abbreviated name of the custom field and can be used for display purposes.
 
-Custom fields will appear as options on the edit item screen for items at the same depth level as this custom field is assigned.';
+Custom fields will appear as options on the edit item screen for items.';
 $string['customfieldrowstextarea'] = 'Rows (text area)';
 $string['customfieldrowstextarea_help'] = 'Set the height of the text area that will be available (number of lines).';
-$string['customfieldrequired_help'] = 'Is this field required? If set to Yes, it will be a compulsory field when creating new items at this depth level.
+$string['customfieldrequired_help'] = 'If set to Yes, it will be a compulsory field when creating new items
 
-If set to No, it will be an optional field when creating new items at this depth level.';
+If set to No, it will be an optional field when creating new items.';
 $string['customfieldfieldsizetext'] = 'Display size (Text input)';
 $string['customfieldfieldsizetext_help'] = 'Display size sets that number of characters that will be displayed in the text field.';
 $string['customfieldmaxlengthtext'] = 'Maximum length (Text Input)';
@@ -111,22 +99,9 @@ $string['customfielddefaultdatatext'] = 'Default value (Text input)';
 $string['customfielddefaultdatatext_help'] = 'Default value is the text that will appear in the text field by default.
 
 Leave this field blank if no default text is required.';
-$string['customfieldcategory_help'] = 'A **Category** is created to group together additional customised fields on a page, e.g. a on a competency, positions or organisations page.';
-$string['customfieldcategories_help'] = '**Custom field categories** allow you to set up customised categories to hold custom fields under a depth level.
-
-Custom field categories and Custom fields are set up to allow all the relevant information for hierarchy items to be captured and appear on the \'Add/Edit Hierarchy Item\' pages.
-
-Custom field category names must be unique to the depth level. You need to have at least one custom field category set up to be able to set up custom fields.
-
-**Adding a Custom Category: **Click **Create Custom field category** to add a new custom field category.
-
-**Edit/Delete a custom category: **Click **Turn editing on** to edit or delete an existing custom field category.';
 $string['customfielddefaultdatatextarea_help'] = 'Default value is the text that will appear in the text area by default.
 
 Leave this field blank if no default text is required.';
-$string['customfieldcategoryname_help'] = 'The **Custom field category** name helps to group together the types of customised fields you require and must be unique to the depth level you are working in.
-
-Type in the name and click **Save changes**.';
 $string['customfieldcolumnstextarea'] = 'Columns (text area)';
 $string['customfieldcolumnstextarea_help'] = '**Columns** sets the width of text area that will be available.';
 $string['customfielddefaultdatamenu'] = 'Default value (menu of choices)';

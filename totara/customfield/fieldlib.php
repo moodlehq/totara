@@ -118,7 +118,6 @@ class customfield_base {
      */
     function edit_save_data($itemnew, $prefix, $tableprefix) {
         global $DB;
-
         if (!isset($itemnew->{$this->inputname})) {
             // field not present in form, probably locked and invisible - skip it
             return;
@@ -132,9 +131,7 @@ class customfield_base {
 
         if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array($prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
             $data->id = $dataid;
-            if (!$DB->update_record($tableprefix.'_info_data', $data)) {
-                print_error('error:updatecustomfield', 'totara_customfield');
-            }
+            $DB->update_record($tableprefix.'_info_data', $data);
         } else {
             $DB->insert_record($tableprefix.'_info_data', $data);
         }
@@ -150,24 +147,23 @@ class customfield_base {
         $errors = array();
         /// Check for uniqueness of data if required
         if ($this->is_unique()) {
+            $data = $itemnew->{$this->inputname};
+            // check value, not key for menu items
+            if ($this->field->datatype == 'menu') {
+                $data = $this->options[$data];
+            }
+            $select = "fieldid = ? AND " . $DB->sql_compare_text('data') . " = ?";
             if ($prefix == 'course') {
-                // anywhere across the site
-                $data = $itemnew->{$this->inputname};
-                // check value, not key for menu items
-                if ($this->field->datatype == 'menu') {
-                    $data = $this->options[$data];
-                }
                 if ($data != '' && $DB->record_exists_select($tableprefix.'_info_data',
-                    "fieldid = ? AND " .
-                    "data = ? AND " .
-                    "courseid != ?", array($this->field->id, $data, $itemnew->id))) {
-
+                    $select . " AND " . "courseid != ?",
+                    array($this->field->id, $data, $itemnew->id))) {
 
                     $errors["{$this->inputname}"] = get_string('valuealreadyused');
                 }
             } else {
-                // within same depth level
-                if ($itemid = $DB->get_field($tableprefix.'_info_data', $prefix.'id', array('fieldid' => $this->field->id, 'data' => $itemnew->{$this->inputname}))) {
+                // within same type
+                $params = array($this->field->id, $data);
+                if ($itemid = $DB->get_field_select($tableprefix.'_info_data', $prefix.'id', $select, $params)) {
                     if ($itemid != $itemnew->id) {
                         $errors["{$this->inputname}"] = get_string('valuealreadyused');
                     }
@@ -336,31 +332,30 @@ class customfield_base {
 
 function customfield_load_data(&$item, $prefix, $tableprefix) {
     global $CFG, $DB, $TEXTAREA_OPTIONS;
+
     $typestr = '';
     $params = array();
     if (isset($item->typeid)) {
         $typestr = 'typeid = ?';
         $params[] = $item->typeid;
-        $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
-    } else {
-        $fields = array();
     }
 
-    $shortprefix = substr($tableprefix, 0 , strlen($tableprefix)-5);
+    $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
+
     foreach ($fields as $field) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$field->datatype.'/field.class.php');
         $newfield = 'customfield_'.$field->datatype;
         $formfield = new $newfield($field->id, $item, $prefix, $tableprefix);
         //edit_load_item_data adds the field and data to the $item object
         $formfield->edit_load_item_data($item);
-        //if a textfield we also need to prepare the editor fields
-        if ($field->datatype == 'textarea') {
+        //if an unlocked textfield we also need to prepare the editor fields
+        if ($field->datatype == 'textarea' && !$formfield->is_locked()) {
             //get short form by removing trailing '_editor' from $this->inputname;
             $shortinputname = substr($formfield->inputname, 0, strlen($formfield->inputname)-7);
             $formatstr = $shortinputname . 'format';
             $item->$formatstr = FORMAT_HTML;
             $item = file_prepare_standard_editor($item, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                                  'totara_customfield', $shortprefix, $item->id);
+                                                  'totara_customfield', $prefix, $item->id);
         }
     }
 }
@@ -370,18 +365,16 @@ function customfield_load_data(&$item, $prefix, $tableprefix) {
  * @param  object  instance of the moodleform class
  */
 function customfield_definition(&$mform, $item, $prefix, $typeid=0, $tableprefix) {
-    global $CFG, $DB;
+    global $DB, $CFG;
 
     $typestr = '';
     $params = array();
-
-    if ($typeid) {
+    if ($typeid != 0) {
         $typestr = 'typeid = ?';
         $params[] = $typeid;
-        $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params, 'sortorder ASC');
-    } else {
-        $fields = array();
     }
+
+    $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params, 'sortorder ASC');
 
     // check first if *any* fields will be displayed
     $display = false;
@@ -408,14 +401,12 @@ function customfield_definition_after_data(&$mform, $item, $prefix, $typeid=0, $
 
     $typestr = '';
     $params = array();
-
-    if ($typeid) {
+    if ($typeid != 0) {
         $typestr = 'typeid = ?';
         $params[] = $typeid;
-        $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
-    } else {
-        $fields = array();
     }
+
+    $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params, 'sortorder ASC');
 
     foreach ($fields as $field) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$field->datatype.'/field.class.php');
@@ -432,14 +423,12 @@ function customfield_validation($itemnew, $prefix, $tableprefix) {
 
     $typestr = '';
     $params = array();
-
     if (!empty($itemnew->typeid)) {
         $typestr = 'typeid = ?';
         $params[] = $itemnew->typeid;
-        $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
-    } else {
-        $fields = array();
     }
+
+    $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
 
     foreach ($fields as $field) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$field->datatype.'/field.class.php');
@@ -456,14 +445,12 @@ function customfield_save_data($itemnew, $prefix, $tableprefix) {
 
     $typestr = '';
     $params = array();
-
     if (isset($itemnew->typeid)) {
         $typestr = 'typeid = ?';
         $params[] = $itemnew->typeid;
-        $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
-    } else {
-        $fields = array();
     }
+
+    $fields = $DB->get_records_select($tableprefix.'_info_field', $typestr, $params);
 
     foreach ($fields as $field) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$field->datatype.'/field.class.php');
@@ -536,7 +523,7 @@ function customfield_record($id, $tableprefix) {
     global $CFG, $DB;
     $item = new stdClass();
 
-    $fields = $DB->get_records_select($tableprefix.'_info_field', '');
+    $fields = $DB->get_records($tableprefix.'_info_field');
 
     foreach ($fields as $field) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$field->datatype.'/field.class.php');
