@@ -188,7 +188,7 @@ function totara_fix_nullable_charfield($table, $field, $previous, $length='255',
         throw new upgrade_exception("$table $field set as NOT NULL with an empty default value!", '1.1 to 2.2 upgrade');
     }
     $xtable = new xmldb_table($table);
-    if (count($indexes>0)) {
+    if (count($indexes) > 0) {
         foreach ($indexes as $index) {
             $dbman->drop_index($xtable, $index);
         }
