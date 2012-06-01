@@ -99,7 +99,5 @@ function xmldb_totara_core_install() {
 
     rebuild_course_cache($SITE->id);
 
-    // ensure page scrolls right to bottom when debugging on
-    print "<div></div>";
     return true;
 }
