@@ -199,7 +199,7 @@ function totara_fix_nullable_charfield($table, $field, $previous, $length='255',
     $dbman->change_field_notnull($xtable, $xfield);
     $dbman->change_field_default($xtable, $xfield);
 
-    if (count($indexes>0)) {
+    if (count($indexes) > 0) {
         foreach ($indexes as $index) {
             $dbman->add_index($xtable, $index);
         }
