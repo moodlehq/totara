@@ -128,6 +128,7 @@ if ($itemform->is_cancelled()) {
     if ($itemnew->id == 0) {
         // Add New item
         if ($updateditem = $hierarchy->add_hierarchy_item($itemnew, $itemnew->parentid, $itemnew->frameworkid, false)) {
+            $itemnew->id = $updateditem->id;
             add_to_log(SITEID, $prefix, 'added item', "item/view.php?id={$updateditem->id}&amp;prefix={$prefix}", substr(strip_tags($updateditem->fullname), 0, 200) . " (ID {$updateditem->id})");
             $notification->text = 'added';
             $notification->url = "{$CFG->wwwroot}/totara/hierarchy/item/view.php?prefix=$prefix&id={$updateditem->id}";

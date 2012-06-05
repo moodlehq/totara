@@ -50,6 +50,32 @@ require_once $CFG->libdir.'/filelib.php';
 define('EDITOR_UNLIMITED_FILES', -1);
 
 /**
+ * Totara textarea options
+ */
+
+$maxbytes = get_max_upload_file_size();
+$context = context_system::instance();
+global $TEXTAREA_OPTIONS;
+$TEXTAREA_OPTIONS = array(
+        'subdirs' => 0,
+        'maxfiles' => EDITOR_UNLIMITED_FILES,
+        'maxbytes' => $maxbytes,
+        'trusttext' => true,
+        'context' => $context
+);
+
+global $FILEPICKER_OPTIONS;
+$FILEPICKER_OPTIONS = array(
+        'maxbytes' => $maxbytes,
+        'maxfiles' => '1',
+        'subdirs' => 0,
+        'context' => $context
+);
+
+/**
+ * End Totara textarea options
+ */
+/**
  * Callback called when PEAR throws an error
  *
  * @param PEAR_Error $error

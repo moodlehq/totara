@@ -24,24 +24,7 @@
 
 //this file is also included by hierarchy/lib so it seems a good place to put these
 require_once($CFG->libdir . '/formslib.php');
-$maxbytes = get_max_upload_file_size();
-$context = context_system::instance();
-global $TEXTAREA_OPTIONS;
-$TEXTAREA_OPTIONS = array(
-        'subdirs' => 0,
-        'maxfiles' => EDITOR_UNLIMITED_FILES,
-        'maxbytes' => $maxbytes,
-        'trusttext' => true,
-        'context' => $context
-);
 
-global $FILEPICKER_OPTIONS;
-$FILEPICKER_OPTIONS = array(
-        'maxbytes' => $maxbytes,
-        'maxfiles' => '1',
-        'subdirs' => 0,
-        'context' => $context
-);
 /**
  * Base class for the custom fields.
  */
@@ -377,7 +360,7 @@ function customfield_load_data(&$item, $prefix, $tableprefix) {
             $formatstr = $shortinputname . 'format';
             $item->$formatstr = FORMAT_HTML;
             $item = file_prepare_standard_editor($item, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                                  'totara_hierarchy', $shortprefix, $item->id);
+                                                  'totara_customfield', $shortprefix, $item->id);
         }
     }
 }

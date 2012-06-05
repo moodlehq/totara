@@ -29,7 +29,7 @@ class customfield_textarea extends customfield_base {
         $cols = $this->field->param1;
         $rows = $this->field->param2;
         /// Create the form field
-        $mform->addElement('editor', $this->inputname, format_string($this->field->fullname), array('cols'=>$cols, 'rows'=>$rows), $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context']);
+        $mform->addElement('editor', $this->inputname, format_string($this->field->fullname), array('cols'=>$cols, 'rows'=>$rows), $TEXTAREA_OPTIONS);
         $mform->setType($this->inputname, PARAM_RAW);
     }
 
