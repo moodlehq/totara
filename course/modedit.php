@@ -31,6 +31,10 @@ require_once($CFG->libdir.'/completionlib.php');
 require_once($CFG->libdir.'/conditionlib.php');
 require_once($CFG->libdir.'/plagiarismlib.php');
 
+$usetags = (!empty($CFG->usetags));
+if ($usetags) {
+    require_once($CFG->dirroot.'/tag/lib.php');
+}
 $add    = optional_param('add', '', PARAM_ALPHA);     // module name
 $update = optional_param('update', 0, PARAM_INT);
 $return = optional_param('return', 0, PARAM_BOOL);    //return to course/view.php if false or mod/modname/view.php if true
@@ -106,7 +110,10 @@ if (!empty($add)) {
     if (!empty($type)) { //TODO: hopefully will be removed in 2.0
         $data->type = $type;
     }
-
+    if ($usetags) {
+        // adding new module so will have no tags yet
+        $data->otags = array();
+    }
     $sectionname = get_section_name($course, $cw);
     $fullmodulename = get_string('modulename', $module->name);
 
@@ -222,6 +229,11 @@ if (!empty($add)) {
         $pageheading = get_string('updatingain', 'moodle', $heading);
     } else {
         $pageheading = get_string('updatinga', 'moodle', $fullmodulename);
+    }
+
+    if ($usetags) {
+        // Retrieve module's official tags
+        $data->otags = array_keys(tag_get_tags_array($module->name, $cm->instance, 'official'));
     }
 
 } else {
@@ -364,6 +376,9 @@ if ($mform->is_cancelled()) {
             print_error('cannotupdatemod', '', "view.php?id={$course->id}#section-{$cw->section}", $fromform->modulename);
         }
 
+        if ($usetags) {
+            add_tags_info($fromform->modulename, $fromform->instance);
+        }
         // make sure visibility is set correctly (in particular in calendar)
         if (has_capability('moodle/course:activityvisibility', $modcontext)) {
             set_coursemodule_visible($fromform->coursemodule, $fromform->visible);
@@ -492,6 +507,9 @@ if ($mform->is_cancelled()) {
             condition_info::update_cm_from_form((object)array('id'=>$fromform->coursemodule), $fromform, false);
         }
 
+        if ($usetags) {
+            add_tags_info($fromform->modulename, $fromform->instance);
+        }
         // Trigger mod_created event with information about this module.
         $eventdata = new stdClass();
         $eventdata->modulename = $fromform->modulename;
@@ -660,4 +678,16 @@ if ($mform->is_cancelled()) {
     $mform->display();
 
     echo $OUTPUT->footer();
+}
+
+/**
+ * Function to attach tag to a course module
+ */
+function add_tags_info($modulename, $instance) {
+
+    $tags = array();
+    if ($otags = optional_param_array('otags', '', PARAM_INT)) {
+        $tags = tag_get_name($otags);
+    }
+    tag_set($modulename, $instance, $tags);
 }

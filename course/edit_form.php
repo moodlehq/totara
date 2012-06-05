@@ -322,6 +322,21 @@ class course_edit_form extends moodleform {
         }
 
 //--------------------------------------------------------------------------------
+// Display offical Course Tags
+        if (!empty($CFG->usetags) && $DB->count_records('tag', array('tagtype' => 'official')) && (get_config('moodlecourse', 'coursetagging') == 1)) {
+            $mform->addElement('header', 'tagshdr', get_string('tags', 'tag'));
+
+            $namefield = empty($CFG->keeptagnamecase) ? 'name' : 'rawname';
+            $sql = "SELECT id, {$namefield} FROM {tag} WHERE tagtype = ? ORDER by name ASC";
+            $params = array('official');
+            if ($otags = $DB->get_records_sql_menu($sql, $params)) {
+                $otagsselEl =& $mform->addElement('select', 'otags', get_string('otags', 'tag'), $otags, 'size="5"');
+                $otagsselEl->setMultiple(true);
+                $mform->addHelpButton('otags', 'otags', 'tag');
+            }
+        }
+
+//--------------------------------------------------------------------------------
         $this->add_action_buttons();
 //--------------------------------------------------------------------------------
         $mform->addElement('hidden', 'id', null);

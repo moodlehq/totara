@@ -28,6 +28,12 @@ require_once('lib.php');
 require_once('edit_form.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
+$usetags = (!empty($CFG->usetags) && get_config('moodlecourse', 'coursetagging') == 1) ? true : false;
+
+if ($usetags) {
+    require_once($CFG->dirroot.'/tag/lib.php');
+}
+
 $id         = optional_param('id', 0, PARAM_INT);       // course id
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
 $returnto = optional_param('returnto', 0, PARAM_ALPHANUM); // generic navigation return page switch
@@ -43,6 +49,9 @@ if ($id) { // editing course
     }
 
     $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+    if ($usetags) {
+        $course->otags = array_keys(tag_get_tags_array('course', $course->id, 'official'));
+    }
     require_login($course);
     $category = $DB->get_record('course_categories', array('id'=>$course->category), '*', MUST_EXIST);
     $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
@@ -116,7 +125,9 @@ if ($editform->is_cancelled()) {
     if (empty($course->id)) {
         // In creating the course
         $course = create_course($data, $editoroptions);
-
+        if ($usetags) {
+            add_tags_info($course->id);
+        }
         // Get the context of the newly created course
         $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
 
@@ -140,6 +151,9 @@ if ($editform->is_cancelled()) {
     } else {
         // Save any changes to the files used in the editor
         update_course($data, $editoroptions);
+        if ($usetags) {
+            add_tags_info($course->id);
+        }
     }
 
     switch ($returnto) {
@@ -186,3 +200,15 @@ $editform->display();
 
 echo $OUTPUT->footer();
 
+/**
+ * function to attach tags into a course
+ * @param int courseid - id of the course
+ */
+function add_tags_info($courseid) {
+
+    $tags = array();
+    if ($otags = optional_param_array('otags', '', PARAM_INT)) {
+        $tags = tag_get_name($otags);
+    }
+    tag_set('course', $courseid, $tags);
+}

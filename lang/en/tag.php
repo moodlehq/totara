@@ -53,6 +53,7 @@ $string['newname'] = 'New tag name';
 $string['noresultsfor'] = 'No results for "{$a}"';
 $string['officialtag'] = 'Official tag';
 $string['otags'] = 'Official tags';
+$string['otags_help'] = 'Assign Official tags - hold CTRL and click to assign multiple tags';
 $string['othertags'] = 'Other tags (enter tags separated by commas)';
 $string['owner'] = 'Owner';
 $string['ptags'] = 'User defined tags (Comma separated)';

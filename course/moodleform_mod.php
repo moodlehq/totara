@@ -632,6 +632,20 @@ abstract class moodleform_mod extends moodleform {
             $mform->disabledIf('completionexpected', 'completion', 'eq', COMPLETION_TRACKING_NONE);
         }
 
+        if (!empty($CFG->usetags) && $DB->count_records('tag', array('tagtype' => 'official'))) {
+            $mform->addElement('header', 'tagshdr', get_string('tags', 'tag'));
+
+            $namefield = empty($CFG->keeptagnamecase) ? 'name' : 'rawname';
+            $sql = "SELECT id, $namefield FROM {tag} WHERE tagtype = ? ORDER by name ASC";
+            if ($otags = $DB->get_records_sql_menu($sql, array('official'))) {
+                $otagsselEl =& $mform->addElement('select', 'otags', get_string('otags', 'tag'), $otags, 'size="5"');
+                $otagsselEl->setMultiple(true);
+                $otagsselEl->setSelected($this->current->otags);
+                $mform->addHelpButton('otags', 'otags', 'tag');
+            }
+
+        }
+
         $this->standard_hidden_coursemodule_elements();
     }
 
