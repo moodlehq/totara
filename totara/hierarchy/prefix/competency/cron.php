@@ -260,10 +260,10 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
     $item_evidence = array();
 
     while (1) {
+        $record_count = 0;
 
         // Grab records for current user/competency
         foreach ($rs as $record) {
-
             // If we are still grabbing the same users evidence
             $record = (object)$record;
             if ($record->userid === $current_user && $record->competencyid === $current_competency) {
@@ -285,7 +285,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
 
             // Check each of the items
             foreach ($item_evidence as $params) {
-
+                $record_count++;
                 // Get proficiency
                 $proficiency = max($params->itemproficiency, $params->childproficiency);
 
@@ -369,7 +369,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
         }
 
         // If this is the end of the recordset, break the loop
-        if (!$record) {
+        if (!$rs->valid()) {
             $rs->close();
             break;
         }
@@ -383,7 +383,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
 
     // Get total records returned
     if (debugging()) {
-        mtrace($rs->RecordCount().' records returned');
+        mtrace($record_count . ' records returned');
     }
 }
 
