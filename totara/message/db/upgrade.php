@@ -117,6 +117,11 @@ function xmldb_totara_message_upgrade($oldversion) {
             // truncate the old metadata
             $DB->delete_records('message_metadata', null);
 
+            //disable emails during the port
+            $orig_emailstatus = $DB->get_field('message_processors', 'enabled', array('name' => 'email'));
+            if ($orig_emailstatus == 1) {
+                $DB->set_field('message_processors', 'enabled', '0', array('name' => 'email'));
+            }
             // now recreate the messages
             foreach ($msgs as $msg) {
                 /* SCANMSG: need to check other messages for local/ in the contexturl */
@@ -137,7 +142,10 @@ function xmldb_totara_message_upgrade($oldversion) {
                     tm_task_send($msg);
                 }
             }
-
+            //re-enable emails if they were originally turned on
+            if ($orig_emailstatus == 1) {
+                $DB->set_field('message_processors', 'enabled', '1', array('name' => 'email'));
+            }
             echo $OUTPUT->heading('totara/message: Recreated existing alerts and tasks ('.count($msgs).')');
             echo $OUTPUT->notification($success, 'notifysuccess');
             print_upgrade_separator();
