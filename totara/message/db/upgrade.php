@@ -55,6 +55,7 @@ function xmldb_totara_message_upgrade($oldversion) {
                 unset_user_preference($oldsetting, $pref->userid);
             }
         }
+        echo $OUTPUT->notification('Update user notification preferences', 'notifysuccess');
     }
 
     if ($oldversion < 2012012702) {
@@ -73,9 +74,7 @@ function xmldb_totara_message_upgrade($oldversion) {
         if ($dbman->field_exists($table, $field)) {
             $dbman->change_field_notnull($table, $field);
         }
-        echo $OUTPUT->heading('Fix message_metadata role properties');
-        echo $OUTPUT->notification($success, 'notifysuccess');
-        print_upgrade_separator();
+        echo $OUTPUT->notification('Fix message_metadata role properties', 'notifysuccess');
 
         // Recreate messages in new tables
         $table = new xmldb_table('message20');
@@ -146,9 +145,7 @@ function xmldb_totara_message_upgrade($oldversion) {
             if ($orig_emailstatus == 1) {
                 $DB->set_field('message_processors', 'enabled', '1', array('name' => 'email'));
             }
-            echo $OUTPUT->heading('totara/message: Recreated existing alerts and tasks ('.count($msgs).')');
-            echo $OUTPUT->notification($success, 'notifysuccess');
-            print_upgrade_separator();
+            echo $OUTPUT->notification('totara/message: Recreated existing alerts and tasks ('.count($msgs).')', 'notifysuccess');
         }
 
         // drop tables
@@ -159,9 +156,7 @@ function xmldb_totara_message_upgrade($oldversion) {
                 $dbman->drop_table($table);
             }
         }
-        echo $OUTPUT->heading('Dropping obsolete totara_msg tables');
-        echo $OUTPUT->notification($success, 'notifysuccess');
-        print_upgrade_separator();
+        echo $OUTPUT->notification('Dropping obsolete totara_msg tables', 'notifysuccess');
 
         // remove the roleid
         $table = new xmldb_table('message_metadata');
@@ -169,9 +164,7 @@ function xmldb_totara_message_upgrade($oldversion) {
         if ($dbman->field_exists($table, $field)) {
             $dbman->drop_field($table, $field);
         }
-        echo $OUTPUT->heading('Removing message_metadata roleid field');
-        echo $OUTPUT->notification($success, 'notifysuccess');
-        print_upgrade_separator();
+        echo $OUTPUT->notification('Removing message_metadata roleid field', 'notifysuccess');
     }
     return $result;
 }
