@@ -251,10 +251,10 @@ if ($values) {
             if (!$scale_used) {
                 /// prevent deleting default value
                 if ($value->id == $scale->defaultid) {
-                    $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeletecompetencyscalevaluedefault', 'totara_hierarchy'), 'totara_core', array('class' => 'iconsmall'));
+                    $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeletecompetencyscalevaluedefault', 'totara_hierarchy'), 'totara_core', array('class' => 'iconsmall'));
                 // prevent deleting last proficient value
                 } else if ($value->id == $onlyprof) {
-                    $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeletecompetencyscalevalueonlyprof', 'totara_hierarchy'), 'totara_core', array('class' => 'iconsmall'));
+                    $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeletecompetencyscalevalueonlyprof', 'totara_hierarchy'), 'totara_core', array('class' => 'iconsmall'));
                 } else {
                     $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/hierarchy/prefix/competency/scale/deletevalue.php', array('id' => $value->id, 'prefix' => 'competency')),
                             new pix_icon('t/delete', $str_delete), null, array('class' => 'iconsmall', 'title' => $str_delete));
