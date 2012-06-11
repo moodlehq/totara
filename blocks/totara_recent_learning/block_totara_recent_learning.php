@@ -78,7 +78,7 @@ class block_totara_recent_learning extends block_base {
                 $cell2->attributes['class'] = 'status';
                 $table->data[] = new html_table_row(array($cell1, $cell2));
             }
-            $link = html_writer::link(new moodle_url('/totara/plan/record/courses.php', array('userid' => $USER->id)), get_string('allmycourses', 'totara_core'));
+            $this->content->footer = html_writer::link(new moodle_url('/totara/plan/record/courses.php', array('userid' => $USER->id)), get_string('allmycourses', 'totara_core'));
         }
 
         $this->content->text = html_writer::table($table);
