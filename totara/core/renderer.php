@@ -195,26 +195,24 @@ class totara_core_renderer extends plugin_renderer_base {
     * @return html_writer::table
     */
     public function print_my_team_nav($numteammembers) {
-        $table = new html_table();
-        if (!empty($numteammembers) && $numteammembers > 0) {
-            $table = new html_table();
-            $cells = array();
-            $text = get_string('viewmyteam','totara_core');
-            $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/i/teammembers'),
-                        'alt'=> $text));
-            $url = new moodle_url('/my/teammembers.php');
-            $attributes = array('href' => $url);
-            $cellcontent = html_writer::tag('a', $icon, $attributes);
-            $cell = new html_table_cell($cellcontent);
-            $cells[] = $cell;
-            $cellcontent = html_writer::tag('a', $text, $attributes);
-            $cellcontent .= html_writer::empty_tag('br');
-            $cellcontent .= get_string('numberofstaff', 'totara_core', $numteammembers);
-            $cell = new html_table_cell($cellcontent);
-            $cells[] = $cell;
-            $row = new html_table_row($cells);
-            $table->data[] = $row;
+        if (empty($numteammembers) || $numteammembers == 0) {
+            return '';
         }
+        $table = new html_table();
+        $cells = array();
+        $text = get_string('viewmyteam','totara_core');
+        $icon = new pix_icon('/i/teammembers', $text);
+        $url = new moodle_url('/my/teammembers.php');
+        $cellcontent = $this->output->action_icon($url, $icon);
+        $cell = new html_table_cell($cellcontent);
+        $cells[] = $cell;
+        $cellcontent = html_writer::link($url, $text);
+        $cellcontent .= html_writer::empty_tag('br');
+        $cellcontent .= get_string('numberofstaff', 'totara_core', $numteammembers);
+        $cell = new html_table_cell($cellcontent);
+        $cells[] = $cell;
+        $row = new html_table_row($cells);
+        $table->data[] = $row;
         return html_writer::table($table);
     }
 

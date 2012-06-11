@@ -251,13 +251,15 @@ function totara_print_my_team_nav() {
     $managerroleid = $CFG->managerroleid;
 
     // return users with this user as manager
-    $teammembers = count(totara_get_staff());
+    $staff = totara_get_staff();
+    $teammembers = ($staff) ? count($staff) : 0;
+
     //call renderer
     $renderer = $PAGE->get_renderer('totara_core');
     $content = $renderer->print_my_team_nav($teammembers);
     return $content;
-
 }
+
 /**
 * print out the table of visible reports
 */
