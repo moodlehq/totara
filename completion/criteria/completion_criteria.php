@@ -41,12 +41,6 @@ define('COMPLETION_CRITERIA_TYPE_SELF',         1);
 define('COMPLETION_CRITERIA_TYPE_DATE',         2);
 
 /**
- * Unenrol completion criteria type
- * Criteria type constant, primarily for storing criteria type in the database.
- */
-define('COMPLETION_CRITERIA_TYPE_UNENROL',      3);
-
-/**
  * Activity completion criteria type
  * Criteria type constant, primarily for storing criteria type in the database.
  */
@@ -83,7 +77,6 @@ global $COMPLETION_CRITERIA_TYPES;
 $COMPLETION_CRITERIA_TYPES = array(
     COMPLETION_CRITERIA_TYPE_SELF       => 'self',
     COMPLETION_CRITERIA_TYPE_DATE       => 'date',
-    COMPLETION_CRITERIA_TYPE_UNENROL    => 'unenrol',
     COMPLETION_CRITERIA_TYPE_ACTIVITY   => 'activity',
     COMPLETION_CRITERIA_TYPE_DURATION   => 'duration',
     COMPLETION_CRITERIA_TYPE_GRADE      => 'grade',
