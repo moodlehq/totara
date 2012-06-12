@@ -1,0 +1,22 @@
+/** Course **/
+.coursebox {
+    width: inherit;
+}
+
+.path-course-view .current td.side {
+    background: #EBEBEB;
+}
+
+.course_category_tree .category {
+    background-image: none;
+}
+
+.pagelayout-frontpage #region-main .coursebox .info h3.name {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 3px 0 0 20px;
+    background: transparent url([[pix:core|i/course]]) no-repeat left 3px;
+}
+

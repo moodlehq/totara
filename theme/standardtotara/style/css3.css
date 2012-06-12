@@ -1,0 +1,266 @@
+/**
+ * Rounded Corner Syntax Guide
+ *
+ * The following are CSS means for getting rounded corners. Sorry no IE yet, and
+ * please note that each uses a slightly different style of syntax for specific
+ * definition (top, bottom, left, right).
+ *
+ * CSS3 rounded corners
+ *   border-radius
+ *   border-top-left-radius
+ *   border-top-right-radius
+ *   border-bottom-left-radius
+ *   border-bottom-right-radius
+ *
+ * Mozilla rounded corners
+ *   -moz-border-radius
+ *   -moz-border-radius-topleft
+ *   -moz-border-radius-topright
+ *   -moz-border-radius-bottomleft
+ *   -moz-border-radius-bottomright
+ *
+ * Webkit rounded corners
+ *   -webkit-border-radius
+ *   -webkit-border-top-left-radius
+ *   -webkit-border-top-right-radius
+ *   -webkit-border-bottom-left-radius
+ *   -webkit-border-bottom-right-radius
+ */
+
+/**
+ * Buttons and button-like links
+ * see also core.css
+ */
+button,
+input.submit,
+input[type="submit"],
+input[type="button"],
+#id_buttonfield,
+a.link-as-button {
+  -moz-border-radius: 0.4em;
+  -webkit-border-radius: 0.4em;
+  border-radius: 0.4em;
+}
+
+button,
+input.submit,
+input[type="submit"],
+input[type="button"],
+#id_buttonfield,
+a.link-as-button {
+    background: #777777; /* Old browsers */
+    background: -moz-linear-gradient(top, #777777 0%, #565656 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#777777), color-stop(100%,#565656)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #777777 0%,#565656 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #777777 0%,#565656 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #777777 0%,#565656 100%); /* IE10+ */
+    background: linear-gradient(top, #777777 0%,#565656 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777777', endColorstr='#565656',GradientType=0 ); /* IE6-9 */
+}
+
+input.submit:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+#id_buttonfield:hover,
+button:hover,
+a.link-as-button:hover {
+    background: #5e5e5e; /* Old browsers */
+    background: -moz-linear-gradient(top, #5e5e5e 0%, #3d3d3d 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5e5e5e), color-stop(100%,#3d3d3d)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #5e5e5e 0%,#3d3d3d 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #5e5e5e 0%,#3d3d3d 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #5e5e5e 0%,#3d3d3d 100%); /* IE10+ */
+    background: linear-gradient(top, #5e5e5e 0%,#3d3d3d 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5e5e5e', endColorstr='#3d3d3d',GradientType=0 ); /* IE6-9 */
+}
+
+/**
+ * Dock gradient
+ * see also dock.css
+ */
+#dock {
+    background: #f2f2f2; /* Old browsers */
+    background: -moz-linear-gradient(left, #f2f2f2 13%, #e5e5e5 74%, #afafaf 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(13%,#f2f2f2), color-stop(74%,#e5e5e5), color-stop(100%,#afafaf)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, #f2f2f2 13%,#e5e5e5 74%,#afafaf 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #f2f2f2 13%,#e5e5e5 74%,#afafaf 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #f2f2f2 13%,#e5e5e5 74%,#afafaf 100%); /* IE10+ */
+    background: linear-gradient(left, #f2f2f2 13%,#e5e5e5 74%,#afafaf 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#afafaf',GradientType=1 ); /* IE6-9 */
+}
+
+
+fieldset,
+.sitetopiccontent,
+.categorybox,
+.categoryboxcontent,
+.coursebox,
+.notifyproblem,
+.notifysuccess {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+table.minicalendar,
+.block_course_summary,
+.block_course_summary .content {
+  -moz-border-radius: 0px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+}
+
+#page-report-outline-user .section {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+div#main_menu ul li a {
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+div#main_menu ul ul {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  box-shadow: 0 2px 3px 0 #999;
+  -moz-box-shadow: 0 2px 3px 0 #999;
+  -webkit-box-shadow: 0 2px 3px 0 #999;
+}
+
+.block,
+.block.hidden,
+.generalbox,
+.generalboxcontent,
+.informationbox,
+.informationboxcontent {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.block .content {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+}
+.block .header,
+.entryboxheader {
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.generaltabselected,
+.generaltab, .generaltabinactive,
+.glossarycategoryheader,
+.glossaryformatheader {
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.entrybox {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.path-calendar .eventlist .event,
+.glossarypost,
+#page-mod-journal-view .feedbackbox{
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.path-calendar .eventlist .event .side,
+.glossarypost .side,
+#page-mod-journal-view .feedbackbox .side {
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.path-calendar .eventlist .event .description,
+.encyclopedia .entrylowersection,
+#page-mod-journal-view .feedbackbox .entrycontent {
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.path-calendar .maincalendar,
+.path-calendar .sidecalendar,
+.path-calendar td.sidecalendar .block,
+.loginbox,
+.userinfobox,
+.groupinfobox,
+.forumpost,
+.glossarycomment {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.loginbox .content.left,
+#page-user-view .left,
+.forumpost .side,
+.glossarycomment .side {
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.loginbox .content.right,
+.forumpost .content,
+.forumpost .message,
+.forumpost .side,
+.glossarycomment .entry {
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#dock .dockeditem,
+#dock .dockedtitle {
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+

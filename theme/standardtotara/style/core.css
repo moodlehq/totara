@@ -1,0 +1,457 @@
+html {
+    background:#EDEDED;
+}
+body#tinymce {
+    background:#F5F5F5;
+}
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, dl, input, textarea {
+    font-family:Arial, Helvetica, sans-serif;
+    color:#6b6b6b;
+}
+body.lang-vi {
+    font-family:Arial, Verdana, Helvetica, sans-serif;
+}
+/**
+ * Links
+ */
+a {
+    color: #087BB1;
+}
+a:visited {
+    color: #087BB1;
+}
+a:hover {
+    color:#087BB1;
+}
+/**
+ * Headings
+ */
+h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+}
+h1 {
+    font-size:2.1em;
+    letter-spacing:-1px;
+    margin:5px 0 15px;
+}
+h2 {
+    font-size:1.7em;
+    line-height:1em;
+    border:none;
+    padding:0;
+    margin:5px 0 15px;
+    letter-spacing:-1px;
+}
+h3 {
+    font-size:1.4em;
+    padding:0;
+    margin:5px 0 15px;
+}
+h4 {
+    font-size:1.3em;
+    font-weight:normal;
+    letter-spacing:-0.5px;
+    padding:0;
+    margin:5px 0 10px;
+}
+h5 {
+    font-size:1em;
+    margin:5px 0 5px;
+}
+h6 {
+    font-size:1em;
+    margin:5px 0 5px;
+}
+h1.main, h2.main, h3.main, h4.main, h5.main, h6.main {
+    text-align: left;
+}
+th.header, td.header, div.header, .navbar {
+    background:#EEE;
+}
+/**
+ * Tables
+ */
+th, td, .formtable tbody th, .generaltable th.header {
+    text-align: left;
+}
+.generaltable {
+    border:1px solid #DDD;
+    border-collapse: collapse;
+    background-color:#FFF;
+    border-color:#EEEEEE;
+}
+.generaltable.mdl-align {
+    margin:0 auto;
+}
+.generaltable td {
+    border:1px solid #DDD;
+    vertical-align:top;
+}
+.generaltable .cell {
+    background-color:#FFFFFF;
+    border-color:#EEEEEE;
+}
+/**
+ * Boxes
+ */
+.headingblock {
+    border:none;
+    background:transparent;
+}
+h2.headingblock {
+    font-size:2em;
+    font-weight:normal;
+}
+
+/**
+ * Error & Warning Boxes
+ */
+.error {
+    color: #BF2C11;
+}
+.notifysuccess, .notifyproblem, .notifymessage, .loginerrors, .errorbox {
+    width:auto;
+    color: #333333;
+    margin:1em 0;
+    text-align:left !important;
+    border:1px solid #DDDDDD;
+    padding:10px 10px 10px 30px !important;
+    -moz-border-radius:4px 4px 4px 4px;
+    -webkit-border-radius:4px 4px 4px 4px;
+    -o-border-radius:4px 4px 4px 4px;
+    border-radius:4px 4px 4px 4px;
+}
+.notifymessage {
+    background: #E9F3F8 url([[pix:theme|information]]) no-repeat 8px 11px;
+    color: #3876C6;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-color:#BBD7E4;
+}
+.notifysuccess {
+    background: #F6FFC4 url([[pix:theme|tick]]) no-repeat 8px 11px;
+    color: #468847;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background-color: #DFF0D8;
+    border-color: #D6E9C6;
+}
+.errorbox, .loginerrors, .notifyproblem {
+    color: #BF2C11;
+    border-color:#EED3D7;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    background:#F8E9E9 url([[pix:theme|error]]) no-repeat 8px 11px;
+}
+p.errormessage {
+    color:#333333;
+}
+.notifysuccess a, .notifyproblem a, .errorbox a {
+    color:#555555;
+    text-decoration:underline;
+}
+
+/* Profileblock */
+
+.profileblock {
+    float:right;
+    text-align:right;
+    right: 0px;
+}
+
+#profilename {
+    float: right;
+    font-size:100%;
+    font-weight:normal;
+    margin:7px 0 0;
+    background-color: transparent;
+}
+#profileoptions {
+    float: right;
+    text-align:right;
+    margin:5px 5px 0;
+    text-align:right;
+    background-color: transparent;
+}
+#profileoptions ul {
+    margin:0;
+    padding:0;
+}
+#profileoptions li {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: transparent;
+    display: inline;
+    margin-right:0;
+    font-size: 85%;
+    font-weight:normal;
+    text-decoration: none;
+    list-style-type:none;
+}
+
+
+/**
+ * General
+ */
+hr {
+    display: block;
+    color:#DDD;
+    background: #DDD;
+    position: relative;
+    padding: 0;
+    margin: 8px auto;
+    width: 100%;
+    clear: both;
+    border: none;
+    border-top: 1px solid #BFBFBF;
+    border-bottom: 1px solid #FFFFFF;
+    font-size: 1px;
+    line-height: 0;
+    overflow: visible;
+}
+.helplink img {
+    vertical-align: text-top;
+}
+/**
+ * Moodle Forms
+ */
+input, textarea, select {
+    margin: 5px 5px 5px 0;
+}
+
+/**
+ * Buttons and button-like links
+ * see also css3.css
+ */
+button,
+input.submit,
+input[type="submit"],
+input[type="button"],
+#id_buttonfield,
+a.link-as-button {
+    color: #FFF;
+    padding: 0.5em 0.6em; /*4px 5px;*/
+    border: none;
+}
+
+button:hover,
+input.submit:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+#id_buttonfield:hover,
+a.link-as-button:hover {
+    cursor: pointer;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+input[type="reset"] {
+    background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    color: #666666;
+    padding: 4px 5px;
+}
+input[type="reset"]:hover {
+    background: none repeat scroll 0 0 #E2E2E2;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="password"], textarea, select {
+    padding:2px;
+    margin:2px 2px 0;
+    color: #4b4b4b;
+}
+input[disabled="disabled"], select[disabled="disabled"],
+input#id_buttonfield[disabled="disabled"],
+input[disabled="disabled"]:hover,
+input#id_buttonfield[disabled="disabled"]:hover {
+    color: #BBBBBB;
+    background: #F2F2F2;
+    cursor: default;
+    border: none;
+}
+.mform fieldset {
+    padding:10px 0 10px;
+    border:none;
+}
+.mform fieldset legend {
+    width:100%;
+    font-size:1.3em;
+    color:#333333;
+    padding-bottom:3px;
+    border-bottom:1px solid #BFBFBF;
+    margin-left: 0;
+}
+.mform fieldset div {
+    margin:5px 0;
+}
+.mform .required, .mform .fdescription.required {
+    color:#6b6b6b;
+}
+.mform .fitem {
+    padding-bottom:5px;
+    margin-bottom:5px;
+    border:none;
+}
+.mform .fitem .fitemtitle {
+    text-align:left;
+    font-weight:bold;
+    width:22%;
+    margin-top:2px;
+    margin-right:20px;
+}
+.mform .fitem .felement {
+    width: 74%;
+    float: right;
+    margin-left: 0;
+}
+.mform .fitem fieldset {
+    padding: 0 !important;
+}
+.mform .fitem .feditor {
+    clear: none;
+    margin:0;
+    padding:10px 0;
+}
+.mform .fitem .feditor textarea {
+    width:98% !important;
+}
+.mform .fitem .feditor table.mceLayout {
+    width:100% !important;
+}
+/**
+ * Help
+ */
+
+#helppopupbox {
+    background:#F5F5F5;
+}
+#helppopupbox .helpheading {
+    font-size:1.5em;
+    color:#333333;
+}
+/**
+ * Overriding base
+ */
+.pagelayout-frontpage #page-header {
+    margin:0 0;
+    width:100%;
+    border-bottom: 0;
+}
+.navbar {
+    margin:-5px 0 0;
+    padding:2px 0 10px 7px;
+    border:none;
+    background: transparent;
+}
+.navbar .breadcrumb {
+    font-weight: normal;
+    font-size: .9em;
+    margin-top:2px;
+    margin-left: 7px;
+}
+.navbar .breadcrumb ul {
+    color: #666;
+}
+.navbar .navbutton {
+    margin-top:-2px;
+}
+/**
+ * Moodle Tabs
+ */
+.tabtree {
+    margin-bottom: 35px;
+    position: relative;
+}
+
+.tabtree .tabrow0:after {
+    clear: both;
+    content: " ";
+    display: block;}
+.tabtree ul {
+}
+.tabtree li {
+}
+
+.tabtree .tabrow0 li {
+    margin-right: 3px;
+    border-left: 1px solid #DDDDDD;
+    border-top: 1px solid #DDDDDD;
+    border-right: 1px solid #DDDDDD;
+    border-bottom: transparent;
+    border-radius: 3px 3px 0 0;
+    float: left;
+    vertical-align: middle;
+    background: #F9F9F9;
+}
+.tabtree .tabrow0 li a {
+    color: #888;
+    font-weight: bold;
+    background-image:none;
+    margin-bottom:-1px;
+    padding: 5px 10px;
+    display: block;
+}
+.tabtree .tabrow0 li a:hover {
+    background-image:none;
+    text-decoration: none;
+    color: #333333;
+}
+.tabtree .tabrow0 li a span,
+.tabtree .tabrow0 li a span:hover  {
+    background-image:none;
+    background-repeat:no-repeat;
+    padding-right:0;
+    padding-top:0;
+    padding-bottom:0;
+}
+.tabtree .tabrow0 li a:hover span {
+    background-image:none;
+    text-decoration: none;
+}
+.tabtree ul li.here ul,
+.tabtree ul li.here tabrow1 {
+    left: 0;
+    top: 28px;
+    z-index: -1;
+}
+.tabtree .tabrow0 li.here, .tabtree .tabrow0 li.here:hover {
+    background: #FFFFFF;
+    background-image: none;
+    border-left: 1px solid #AAAAAA;
+    border-top: 1px solid #AAAAAA;
+    border-right: 1px solid #AAAAAA;
+    border-bottom: transparent;
+}
+.tabtree .here a.nolink, .tabtree .here ul .here a.nolink, .tabtree .here a.nolink:hover, .tabtree .here ul .here a.nolink:hover {
+    margin-bottom: 2px;
+}
+.tabtree .tabrow0 li.here:after {
+    clear: both;
+}
+.tabtree .tabrow0 ul, .tabtree .tabrow0 div {
+    font-weight: normal;
+    background-image:none;
+    background-position:0% 50%;
+    border-top:1px solid #aaa;
+    padding:0.25em 0px;
+    margin:0px;
+}
+.tabtree .tabrow0 li.here .empty {
+    display:block;
+    overflow:hidden;
+    padding:0px;
+    position:absolute;
+    width:100%;
+    z-index: -1;
+    top: 28px;
+
+}
+.tabtree .tabrow0 .tabrow1 li, .tabtree .tabrow0 .tabrow1 li:hover {
+    background-image:none;
+    background: transparent;
+    border: none;
+}
+tabrow1 {
+    left: 0;
+}
+
+

@@ -165,7 +165,7 @@ $table->data = array(
 );
 echo html_writer::table($table);
 
-echo $OUTPUT->heading('If you need a plain table, build it yourself using html_writer (TODO: add a class that overrides and clears all table styles, or new output renderer for generating a "blank" table?)', 4);
+echo $OUTPUT->heading('If you need a plain table, you can either build it yourself using html_writer:', 4);
 
 echo html_writer::start_tag('table');
 echo html_writer::start_tag('tr');
@@ -181,6 +181,28 @@ echo html_writer::tag('td', 'Bottom Left');
 echo html_writer::tag('td', 'Bottom Right');
 echo html_writer::end_tag('tr');
 echo html_writer::end_tag('table');
+
+echo $OUTPUT->heading('Or use the "invisible" or "invisiblepadded" classes which override all table border styles', 4);
+
+$table = new html_table();
+$table->head = array('Col 1', 'Col 2');
+$table->attributes = array('class' => 'invisible');
+$table->head = array('Name', 'Grade');
+$table->data = array(
+    array('This table', 'Should have'),
+    array('No border styles', 'Or margins or padding'),
+);
+echo html_writer::table($table);
+
+$table = new html_table();
+$table->head = array('Col 1', 'Col 2');
+$table->attributes = array('class' => 'invisible');
+$table->head = array('Name', 'Grade');
+$table->data = array(
+    array('This table', 'Should have'),
+    array('No border styles', 'but a reasonable amount of padding'),
+);
+echo html_writer::table($table);
 
 echo $OUTPUT->heading('A "flexible table" moodle table (class "flexible"). Useful if you want pagination, sorting etc.', 3);
 
@@ -229,6 +251,7 @@ $table->data = array(
     array('Hermione Granger', '100%'),
 );
 echo html_writer::table($table);
+
 
 echo $OUTPUT->container_end();
 

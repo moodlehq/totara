@@ -1,0 +1,48 @@
+/** Calendar **/
+.path-calendar .maincalendar {
+    padding: 5px;
+}
+.path-calendar .maincalendar .eventlist .event .course {
+    font-size: 0.8em;
+}
+.calendartable .today {
+    border: 2px solid #DDDDDD;
+}
+
+.block .minicalendar {
+    font-size: 100%;
+    border: none;
+    margin: 0 0 5px;
+    background: transparent;
+}
+.block .minicalendar th,.block .minicalendar td {
+    font-size: 0.9em;
+    border: none;
+    padding: 2px 0 0;
+}
+.block .minicalendar th abbr {
+    border: none;
+}
+.block .minicalendar td.day {
+    padding: 2px;
+    background: #FFFFFF;
+}
+.block .minicalendar td.today {
+    font-weight: bold;
+    color: #333333;
+    background: #CCCCCC;
+}
+.block .minicalendar td.day.hasevent,.block .minicalendar td.hasevent a {
+    color: #333333;
+}
+.block .minicalendar td.today a {
+    color: #333333;
+}
+.block .minicalendar td.weekend {
+    color: #999999;
+    background: #f5f5f5;
+}
+.block .calendar_filters.filters {
+    background-color: transparent;
+}
+
