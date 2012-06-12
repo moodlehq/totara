@@ -80,6 +80,12 @@ class completion_criteria_course extends completion_criteria {
 
                 $this->courseinstance = $course;
                 $this->id = NULL;
+
+                // Double check this isn't a circular reference
+                if ($this->course == $this->courseinstance) {
+                    continue;
+                }
+
                 $this->insert();
             }
         }
