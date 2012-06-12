@@ -131,6 +131,30 @@ function xmldb_totara_core_install() {
     set_config('frontpageloggedin', '');
     set_config('allowvisiblecoursesinhiddencategories', '1');
 
+
+    // Add RPL column to course_completions table
+    $table = new xmldb_table('course_completions');
+
+    // Define field rpl to be added to course_completions
+    $field = new xmldb_field('rpl', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'reaggregate');
+
+    // Conditionally launch add field rpl
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    // Add RPL column to course_completion_crit_compl table
+    $table = new xmldb_table('course_completion_crit_compl');
+
+    // Define field rpl to be added to course_completion_crit_compl
+    $field = new xmldb_field('rpl', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'unenroled');
+
+    // Conditionally launch add field rpl
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+
     rebuild_course_cache($SITE->id);
 
     return true;

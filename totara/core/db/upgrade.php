@@ -39,6 +39,8 @@ require_once($CFG->dirroot.'/totara/core/db/utils.php');
 function xmldb_totara_core_upgrade($oldversion) {
     global $CFG, $DB;
 
+    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+
     if ($oldversion < 2012052802) {
         // add the archetype field to the staff manager role
         $sql = 'UPDATE {role} SET archetype = ? WHERE shortname = ?';
@@ -54,6 +56,32 @@ function xmldb_totara_core_upgrade($oldversion) {
         }
 
         totara_upgrade_mod_savepoint(true, 2012052802, 'totara_core');
+    }
+
+    if ($oldversion < 2012061200) {
+        // Add RPL column to course_completions table
+        $table = new xmldb_table('course_completions');
+
+        // Define field rpl to be added to course_completions
+        $field = new xmldb_field('rpl', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'reaggregate');
+
+        // Conditionally launch add field rpl
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Add RPL column to course_completion_crit_compl table
+        $table = new xmldb_table('course_completion_crit_compl');
+
+        // Define field rpl to be added to course_completion_crit_compl
+        $field = new xmldb_field('rpl', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'unenroled');
+
+        // Conditionally launch add field rpl
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        totara_upgrade_mod_savepoint(true, 2012061200, 'totara_core');
     }
 
     return true;
