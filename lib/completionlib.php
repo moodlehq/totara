@@ -168,7 +168,7 @@ class completion_info {
      */
     public static function is_enabled_for_site() {
         global $CFG;
-        return !empty($CFG->enablecompletion);
+        return !(!isset($CFG->enablecompletion) || $CFG->enablecompletion == COMPLETION_DISABLED);
     }
 
     /**
@@ -188,7 +188,7 @@ class completion_info {
         global $CFG, $DB;
 
         // First check global completion
-        if (!isset($CFG->enablecompletion) || $CFG->enablecompletion == COMPLETION_DISABLED) {
+        if (!completion_info::is_enabled_for_site()) {
             return COMPLETION_DISABLED;
         }
 
