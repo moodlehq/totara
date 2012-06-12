@@ -186,12 +186,6 @@ class course_completion_form extends moodleform {
         $criteria = new completion_criteria_grade($params);
         $criteria->config_form_display($mform, $course_grade);
 
-        // Completion on unenrolment
-        $mform->addElement('header', 'unenrolment', get_string('unenrolment', 'completion'));
-        $criteria = new completion_criteria_unenrol($params);
-        $criteria->config_form_display($mform);
-
-
 //--------------------------------------------------------------------------------
         $this->add_action_buttons();
 //--------------------------------------------------------------------------------
