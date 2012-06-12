@@ -237,6 +237,10 @@ function completion_cron_completions() {
         mtrace('Aggregating completions');
     }
 
+    // Wait one sec to prevent timestamp overlap with "reaggregate"
+    // being set in completion_cron_criteria()
+    sleep(1);
+
     // Save time started
     $timestarted = time();
 
