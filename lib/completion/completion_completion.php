@@ -51,7 +51,7 @@ class completion_completion extends data_object {
 
     /* @var array $required_fields Array of required table fields, must start with 'id'. */
     public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified',
-        'timeenrolled', 'timestarted', 'timecompleted', 'reaggregate');
+        'timeenrolled', 'timestarted', 'timecompleted', 'reaggregate', 'status');
 
     /* @var int $userid User ID */
     public $userid;
@@ -68,10 +68,7 @@ class completion_completion extends data_object {
     /* @var int Time of course enrolment {@link completion_completion::mark_enrolled()} */
     public $timeenrolled;
 
-    /**
-     * Time the user started their course completion {@link completion_completion::mark_inprogress()}
-     * @var int
-     */
+    /* @var int Time the user started their course completion {@link completion_completion::mark_inprogress()} */
     public $timestarted;
 
     /* @var int Timestamp of course completion {@link completion_completion::mark_complete()} */
@@ -79,6 +76,9 @@ class completion_completion extends data_object {
 
     /* @var int Flag to trigger cron aggregation (timestamp) */
     public $reaggregate;
+
+    /* @var int Completion status constant */
+    public $status;
 
 
     /**
@@ -91,6 +91,58 @@ class completion_completion extends data_object {
         $params['deleted'] = null;
         return self::fetch_helper('course_completions', __CLASS__, $params);
     }
+
+
+    /**
+     * Return user's status
+     *
+     * Uses the following properties to calculate:
+     *  - $timeenrolled
+     *  - $timestarted
+     *  - $timecompleted
+     *  - $rpl
+     *
+     * @static static
+     *
+     * @param   object  $completion  Object with at least the described columns
+     * @return  str     Completion status lang string key
+     */
+    public static function get_status($completion) {
+        // Check if a completion record was supplied
+        if (!is_object($completion)) {
+            throw new coding_exception('Incorrect data supplied to calculate Completion status');
+        }
+
+        // Check we have the required data, if not the user is probably not
+        // participating in the course
+        if (empty($completion->timeenrolled) &&
+            empty($completion->timestarted) &&
+            empty($completion->timecompleted))
+        {
+            return '';
+        }
+
+        // Check if complete
+        if ($completion->timecompleted) {
+            return 'complete';
+        }
+
+        // Check if in progress
+        elseif ($completion->timestarted) {
+            return 'inprogress';
+        }
+
+        // Otherwise not yet started
+        elseif ($completion->timeenrolled) {
+            return 'notyetstarted';
+        }
+
+        // Otherwise they are not participating in this course
+        else {
+            return '';
+        }
+    }
+
 
     /**
      * Return status of this completion
@@ -188,13 +240,23 @@ class completion_completion extends data_object {
             $this->timeenrolled = 0;
         }
 
+        // Update status column
+        $status = completion_completion::get_status($this);
+        if ($status) {
+            $status = constant('COMPLETION_STATUS_'.strtoupper($status));
+        }
+
+        $this->status = $status;
+
         // Save record
         if ($this->id) {
             return $this->update();
         } else {
-            // Make sure reaggregate field is not null
+            // We should always be reaggregating when new course_completions
+            // records are created as they might have already completed some
+            // criteria before enrolling
             if (!$this->reaggregate) {
-                $this->reaggregate = 0;
+                $this->reaggregate = time();
             }
 
             // Make sure timestarted is not null

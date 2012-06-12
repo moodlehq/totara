@@ -218,7 +218,8 @@
         <FIELD NAME="timeenrolled" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timenotified" NEXT="timestarted"/>
         <FIELD NAME="timestarted" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timeenrolled" NEXT="timecompleted"/>
         <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timestarted" NEXT="reaggregate"/>
-        <FIELD NAME="reaggregate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecompleted"/>
+        <FIELD NAME="reaggregate" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecompleted" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="reaggregate"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

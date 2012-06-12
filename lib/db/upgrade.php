@@ -7204,5 +7204,41 @@ FROM
         upgrade_main_savepoint(true, 2011120501.005);
     }
 
+    // Add status column to course_completions table
+    if ($oldversion < 2011120501.006) {
+        require_once("{$CFG->libdir}/completion/completion_completion.php");
+
+        /// Define field status to be added to course_completions
+        $table = new xmldb_table('course_completions');
+        $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0, 'reaggregate');
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Get all records
+        $rs = $DB->get_recordset_sql('SELECT * FROM {course_completions}');
+        foreach ($rs as $record) {
+            // Update status column
+            $status = completion_completion::get_status($record);
+            if ($status) {
+                $status = constant('COMPLETION_STATUS_'.strtoupper($status));
+            }
+
+            $record->status = $status;
+
+            if (!$DB->update_record('course_completions', $record)) {
+                break;
+            }
+        }
+        $rs->close();
+
+        // Run the old completion cron code one more time before moving the code
+        // into enrol_user()
+        completion_mark_users_started();
+
+        // Main savepoint reached
+        upgrade_main_savepoint(true, 2011120501.006);
+    }
+
     return true;
 }
