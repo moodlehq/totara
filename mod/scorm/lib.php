@@ -14,6 +14,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
+/**
+ * Return an array of status options
+ *
+ * Optionally with translated strings
+ *
+ * @access  public
+ * @param   bool    $with_strings   (optional)
+ * @return  array
+ */
+function scorm_status_options($with_strings = false) {
+    // Id's are important as they are bits
+    $options = array(
+        1 => 'failed',
+        2 => 'passed',
+        4 => 'completed'
+    );
+
+    if ($with_strings) {
+        foreach ($options as $key => $value) {
+            $options[$key] = get_string('completionstatus_'.$value, 'scorm');
+        }
+    }
+
+    return $options;
+}
+
+
 /**
  * @package   mod-scorm
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
@@ -656,6 +684,18 @@ function scorm_grade_item_update($scorm, $grades=null) {
         $grades = null;
     }
 
+    // Update activity completion if applicable
+    // Get course info
+    $course = new object();
+    $course->id = $scorm->course;
+
+    $cm = get_coursemodule_from_instance('scorm', $scorm->id, $course->id);
+    // CM will be false if this has been run from scorm_add_instance
+    if ($cm) {
+        $completion = new completion_info($course);
+        $completion->update_state($cm, COMPLETION_COMPLETE);
+    }
+
     return grade_update('mod/scorm', $scorm->course, 'mod', 'scorm', $scorm->id, 0, $grades, $params);
 }
 
@@ -954,9 +994,126 @@ function scorm_supports($feature) {
         case FEATURE_GRADE_OUTCOMES:          return true;
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
+        case FEATURE_COMPLETION_HAS_RULES:    return true;
 
         default: return null;
     }
+}
+
+/**
+ * Obtains the automatic completion state for this scorm based on any conditions
+ * in scorm settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not. (If no conditions, then return
+ *          value depends on comparison type)
+ */
+function scorm_get_completion_state($course, $cm, $userid, $type) {
+    global $CFG, $DB;
+
+    $result = $type;
+
+    // Get scorm
+    if (!$scorm = $DB->get_record('scorm', array('id' => $cm->instance))) {
+        print_error('cannotfindscorm', 'scorm');
+    }
+
+    // Get user's tracks data
+    $tracks = $DB->get_records_sql(
+        "
+        SELECT
+            id,
+            element,
+            value
+        FROM
+            {scorm_scoes_track}
+        WHERE
+            scormid = ?
+        AND userid = ?
+        AND element IN
+        (
+            'cmi.core.lesson_status',
+            'cmi.completion_status',
+            'cmi.core.score.raw',
+            'cmi.score.raw'
+        )
+        ", array($scorm->id, $userid)
+    );
+
+    if (!$tracks) {
+        return completion_info::aggregate_completion_states($type, $result, false);
+    }
+
+    // Check for status
+    if ($scorm->completionstatusrequired !== null) {
+
+        // Get status
+        $statuses = array_flip(scorm_status_options());
+        $nstatus = 0;
+
+        foreach ($tracks as $track) {
+            if (!in_array($track->element, array('cmi.core.lesson_status', 'cmi.completion_status'))) {
+                continue;
+            }
+            if (array_key_exists($track->value, $statuses)) {
+                $nstatus |= $statuses[$track->value];
+            }
+        }
+
+        if ($scorm->completionstatusrequired & $nstatus) {
+            return completion_info::aggregate_completion_states($type, $result, true);
+        }
+        else {
+            return completion_info::aggregate_completion_states($type, $result, false);
+        }
+
+    }
+
+    // Check for score
+    if ($scorm->completionscorerequired !== null) {
+        $maxscore = -1;
+
+        foreach ($tracks as $track) {
+            if (!in_array($track->element, array('cmi.core.score.raw', 'cmi.score.raw'))) {
+                continue;
+            }
+
+            if (strlen($track->value) && floatval($track->value) >= $maxscore) {
+                $maxscore = floatval($track->value);
+            }
+        }
+
+        if ($scorm->completionscorerequired <= $maxscore) {
+            return completion_info::aggregate_completion_states($type, $result, true);
+        }
+        else {
+            return completion_info::aggregate_completion_states($type, $result, false);
+        }
+    }
+    return $result;
+}
+
+/**
+ * This function extends the global navigation for the site.
+ * It is important to note that you should not rely on PAGE objects within this
+ * body of code as there is no guarantee that during an AJAX request they are
+ * available
+ *
+ * @param navigation_node $navigation The scorm node within the global navigation
+ * @param stdClass $course The course object returned from the DB
+ * @param stdClass $module The module object returned from the DB
+ * @param stdClass $cm The course module instance returned from the DB
+ */
+function scorm_extend_navigation($navigation, $course, $module, $cm) {
+    /**
+     * This is currently just a stub so that it can be easily expanded upon.
+     * When expanding just remove this comment and the line below and then add
+     * you content.
+     */
+    $navigation->nodetype = navigation_node::NODETYPE_LEAF;
 }
 
 /**

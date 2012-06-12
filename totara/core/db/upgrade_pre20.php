@@ -138,15 +138,22 @@ echo $OUTPUT->heading('Change nullable database fields');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
+// remove obsolete scorm fields
+$table = new xmldb_table('scorm');
+$field = new xmldb_field('directview');
+if ($dbman->field_exists($table, $field)) {
+    $dbman->drop_field($table, $field);
+}
+$field = new xmldb_field('unpackmethod');
+if ($dbman->field_exists($table, $field)) {
+    $dbman->drop_field($table, $field);
+}
+
 //Remove obsolete report heading table
 $table = new xmldb_table('report_heading_items');
 if ($dbman->table_exists($table)) {
     $dbman->drop_table($table);
 }
-upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete report heading table');
-echo $OUTPUT->heading('Remove obsolete report heading table');
-echo $OUTPUT->notification($success, 'notifysuccess');
-print_upgrade_separator();
 
 //remove obsolete category database tables
 $removetables = array('course', 'comp_type', 'org_type', 'pos_type');
@@ -156,7 +163,7 @@ foreach ($removetables as $prefix) {
         $dbman->drop_table($table);
     }
 }
-upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete info_category tables');
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete database tables and fields');
 echo $OUTPUT->heading('Remove obsolete info_category tables');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();

@@ -1212,7 +1212,7 @@ class completion_info {
             $groupjoin   = "JOIN {groups_members} gm
                               ON gm.userid = u.id";
             $groupselect = " AND gm.groupid = :groupid ";
-            
+
             $return->data['groupid'] = $groupid;
         }
 
@@ -1353,7 +1353,7 @@ class completion_info {
         } else {
             $possibleresult = $this->internal_get_grade_state($item, $grade);
         }
-        
+
         // OK, let's update state based on this
         $this->update_state($cm, $possibleresult, $grade->userid);
     }
@@ -1399,6 +1399,23 @@ class completion_info {
                 // Grade does not exist, so maybe incomplete now
                 return COMPLETION_INCOMPLETE;
             }
+        }
+    }
+
+    /**
+     * Aggregate activity completion state
+     *
+     * @access  public
+     * @param   int     $type   Aggregation type (COMPLETION_* constant)
+     * @param   bool    $old    Old state
+     * @param   bool    $new    New state
+     * @return  bool
+     */
+    public static function aggregate_completion_states($type, $old, $new) {
+        if ($type == COMPLETION_AND) {
+            return $old && $new;
+        } else {
+            return $old || $new;
         }
     }
 
