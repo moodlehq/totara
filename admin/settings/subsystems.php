@@ -36,7 +36,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     // Conditional activities: completion and availability
     $optionalsubsystems->add(new admin_setting_configcheckbox('enablecompletion',
         get_string('enablecompletion','completion'),
-        get_string('configenablecompletion','completion'), 0));
+        get_string('configenablecompletion','completion'), 1));
     $optionalsubsystems->add($checkbox = new admin_setting_configcheckbox('enableavailability',
         get_string('enableavailability','condition'),
         get_string('configenableavailability','condition'), 0));
