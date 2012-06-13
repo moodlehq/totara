@@ -26,6 +26,10 @@ defined('MOODLE_INTERNAL') || die();
 
 global $OUTPUT, $DB;
 
+// switch to new default theme in 2.2
+if (get_config(null, 'theme') == 'totara' || get_config(null, 'theme') == 'totara_install') {
+    set_config('theme', 'standardtotara');
+}
 require_once ("$CFG->dirroot/totara/core/db/utils.php");
 $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 $success = get_string('success');

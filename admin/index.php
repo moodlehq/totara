@@ -350,6 +350,10 @@ if (during_initial_install()) {
         redirect("$CFG->wwwroot/user/editadvanced.php?id=$adminuser->id"); // Edit thyself
 
     } else {
+        if (isset($CFG->totara_release)) {
+            //finished install, set totara theme
+            set_config("theme", 'standardtotara');
+        }
         unset_config('adminsetuppending');
     }
 
