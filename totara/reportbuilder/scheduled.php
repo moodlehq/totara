@@ -34,6 +34,7 @@ require_once($CFG->dirroot . '/totara/reportbuilder/scheduled_forms.php');
 require_login();
 $PAGE->set_context(context_user::instance($USER->id));
 $PAGE->set_url('/totara/reportbuilder/scheduled.php');
+$PAGE->set_totara_menu_selected('myreports');
 
 $reportid = optional_param('reportid', 0, PARAM_INT); //report that a schedule is being added for
 $id = optional_param('id', 0, PARAM_INT); //id if editing schedule

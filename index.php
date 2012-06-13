@@ -88,6 +88,7 @@
     $editing = $PAGE->user_is_editing();
     $PAGE->set_title($SITE->fullname);
     $PAGE->set_heading($SITE->fullname);
+    $PAGE->set_totara_menu_selected('home');
     echo $OUTPUT->header();
 
 /// Print Section or custom info

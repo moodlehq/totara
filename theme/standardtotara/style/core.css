@@ -1,10 +1,22 @@
 html {
-    background:#EDEDED;
+    background:#F5F5F5;
 }
 body#tinymce {
     background:#F5F5F5;
 }
-body, h1, h2, h3, h4, h5, h6, p, ul, ol, dl, input, textarea {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl,
+input,
+textarea {
     font-family:Arial, Helvetica, sans-serif;
     color:#6b6b6b;
 }
@@ -26,52 +38,65 @@ a:hover {
 /**
  * Headings
  */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: #444444;
 }
 h1 {
-    font-size:2.1em;
-    letter-spacing:-1px;
+    font-size:1.9em;
     margin:5px 0 15px;
 }
 h2 {
-    font-size:1.7em;
+    font-size:1.5em;
     line-height:1em;
     border:none;
     padding:0;
     margin:5px 0 15px;
-    letter-spacing:-1px;
 }
 h3 {
-    font-size:1.4em;
+    font-size:1.35em;
     padding:0;
     margin:5px 0 15px;
 }
 h4 {
-    font-size:1.3em;
+    font-size:1.2em;
     font-weight:normal;
-    letter-spacing:-0.5px;
     padding:0;
     margin:5px 0 10px;
 }
 h5 {
-    font-size:1em;
+    font-size:1.1em;
     margin:5px 0 5px;
 }
 h6 {
     font-size:1em;
     margin:5px 0 5px;
 }
-h1.main, h2.main, h3.main, h4.main, h5.main, h6.main {
+h1.main,
+h2.main,
+h3.main,
+h4.main,
+h5.main,
+h6.main {
     text-align: left;
 }
-th.header, td.header, div.header, .navbar {
+th.header,
+td.header,
+div.header,
+.navbar {
     background:#EEE;
 }
 /**
  * Tables
  */
-th, td, .formtable tbody th, .generaltable th.header {
+th,
+td,
+.formtable tbody th,
+.generaltable th.header {
     text-align: left;
 }
 .generaltable {
@@ -91,6 +116,23 @@ th, td, .formtable tbody th, .generaltable th.header {
     background-color:#FFFFFF;
     border-color:#EEEEEE;
 }
+table.invisible th.header {
+    background: none;
+    padding: 0;
+  }
+table.invisible td{
+   padding: 0;
+ }
+table.invisiblepadded th.header {
+    background: none;
+    padding: 5px;
+  }
+
+table.invisiblepadded td{
+   padding: 5px;
+ }
+
+
 /**
  * Boxes
  */
@@ -102,14 +144,19 @@ h2.headingblock {
     font-size:2em;
     font-weight:normal;
 }
-
 /**
  * Error & Warning Boxes
  */
 .error {
     color: #BF2C11;
 }
-.notifysuccess, .notifyproblem, .notifymessage, .loginerrors, .errorbox {
+.notifysuccess,
+.notifyproblem,
+.notifymessage,
+.notifynotice,
+.notice,
+.loginerrors,
+.errorbox {
     width:auto;
     color: #333333;
     margin:1em 0;
@@ -132,9 +179,18 @@ h2.headingblock {
     color: #468847;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     background-color: #DFF0D8;
-    border-color: #D6E9C6;
+    border-color: #C2D6B2;
 }
-.errorbox, .loginerrors, .notifyproblem {
+.notice,
+.notifynotice {
+    background: #FFFBE7 url([[pix:theme|notifynotice]]) no-repeat 8px 11px;
+    color: #BB8931;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-color:#F1E5B1;
+}
+.errorbox,
+.loginerrors,
+.notifyproblem {
     color: #BF2C11;
     border-color:#EED3D7;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -143,11 +199,15 @@ h2.headingblock {
 p.errormessage {
     color:#333333;
 }
-.notifysuccess a, .notifyproblem a, .errorbox a {
+.notifysuccess a,
+.notifyproblem a,
+.notifymessage a,
+.notice a,
+.notifynotice a,
+.errorbox a {
     color:#555555;
     text-decoration:underline;
 }
-
 /* Profileblock */
 
 .profileblock {
@@ -155,7 +215,6 @@ p.errormessage {
     text-align:right;
     right: 0px;
 }
-
 #profilename {
     float: right;
     font-size:100%;
@@ -185,8 +244,6 @@ p.errormessage {
     text-decoration: none;
     list-style-type:none;
 }
-
-
 /**
  * General
  */
@@ -212,10 +269,11 @@ hr {
 /**
  * Moodle Forms
  */
-input, textarea, select {
+input,
+textarea,
+select {
     margin: 5px 5px 5px 0;
 }
-
 /**
  * Buttons and button-like links
  * see also css3.css
@@ -224,17 +282,27 @@ button,
 input.submit,
 input[type="submit"],
 input[type="button"],
+input[type="reset"],
 #id_buttonfield,
 a.link-as-button {
     color: #FFF;
-    padding: 0.5em 0.6em; /*4px 5px;*/
-    border: none;
+    padding: 0.3em 0.6em;
+    border:1px solid #ccc;
 }
-
+body.ie7 button,
+body.ie7 input.submit,
+body.ie7 input[type="submit"],
+body.ie7 input[type="button"],
+body.ie7 input[type="reset"],
+body.ie7 #id_buttonfield,
+body.ie7 a.link-as-button {
+    padding: 0 0.2em;
+}
 button:hover,
 input.submit:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover,
+input[type="reset"]:hover,
 #id_buttonfield:hover,
 a.link-as-button:hover {
     cursor: pointer;
@@ -242,24 +310,16 @@ a.link-as-button:hover {
     text-decoration: none;
 }
 
-input[type="reset"] {
-    background: none repeat scroll 0 0 #EEEEEE;
-    border: 1px solid #CCCCCC;
-    border-radius: 3px 3px 3px 3px;
-    color: #666666;
-    padding: 4px 5px;
-}
-input[type="reset"]:hover {
-    background: none repeat scroll 0 0 #E2E2E2;
-    cursor: pointer;
-}
-
-input[type="text"], input[type="password"], textarea, select {
+input[type="text"],
+input[type="password"],
+textarea,
+select {
     padding:2px;
     margin:2px 2px 0;
     color: #4b4b4b;
 }
-input[disabled="disabled"], select[disabled="disabled"],
+input[disabled="disabled"],
+select[disabled="disabled"],
 input#id_buttonfield[disabled="disabled"],
 input[disabled="disabled"]:hover,
 input#id_buttonfield[disabled="disabled"]:hover {
@@ -267,6 +327,9 @@ input#id_buttonfield[disabled="disabled"]:hover {
     background: #F2F2F2;
     cursor: default;
     border: none;
+}
+input[type="checkbox"] {
+    margin: 0 5px 0 0;
 }
 .mform fieldset {
     padding:10px 0 10px;
@@ -283,7 +346,8 @@ input#id_buttonfield[disabled="disabled"]:hover {
 .mform fieldset div {
     margin:5px 0;
 }
-.mform .required, .mform .fdescription.required {
+.mform .required,
+.mform .fdescription.required {
     color:#6b6b6b;
 }
 .mform .fitem {
@@ -296,7 +360,6 @@ input#id_buttonfield[disabled="disabled"]:hover {
     font-weight:bold;
     width:22%;
     margin-top:2px;
-    margin-right:20px;
 }
 .mform .fitem .felement {
     width: 74%;
@@ -361,42 +424,41 @@ input#id_buttonfield[disabled="disabled"]:hover {
     margin-bottom: 35px;
     position: relative;
 }
-
 .tabtree .tabrow0:after {
     clear: both;
     content: " ";
-    display: block;}
-.tabtree ul {
+    display: block;
 }
-.tabtree li {
+.tabtree ul li.here ul,
+.tabtree ul li.here .tabrow1 {
+    left: 0;
+    top: 28px;
 }
-
-.tabtree .tabrow0 li {
+.tabtree .tabrow0 li a {
     margin-right: 3px;
-    border-left: 1px solid #DDDDDD;
-    border-top: 1px solid #DDDDDD;
-    border-right: 1px solid #DDDDDD;
+    border-left: 1px solid #D0D0D0;
+    border-top: 1px solid #D0D0D0;
+    border-right: 1px solid #D0D0D0;
     border-bottom: transparent;
     border-radius: 3px 3px 0 0;
     float: left;
     vertical-align: middle;
-    background: #F9F9F9;
-}
-.tabtree .tabrow0 li a {
-    color: #888;
+    background: #E8E8E8;
+    color: #666666;
     font-weight: bold;
     background-image:none;
     margin-bottom:-1px;
-    padding: 5px 10px;
+    padding: 5px 10px 4px;
     display: block;
 }
 .tabtree .tabrow0 li a:hover {
     background-image:none;
     text-decoration: none;
     color: #333333;
+    background-color: #EEEEEE;
 }
 .tabtree .tabrow0 li a span,
-.tabtree .tabrow0 li a span:hover  {
+.tabtree .tabrow0 li a span:hover {
     background-image:none;
     background-repeat:no-repeat;
     padding-right:0;
@@ -407,27 +469,50 @@ input#id_buttonfield[disabled="disabled"]:hover {
     background-image:none;
     text-decoration: none;
 }
-.tabtree ul li.here ul,
-.tabtree ul li.here tabrow1 {
-    left: 0;
-    top: 28px;
-    z-index: -1;
+.tabtree .tabrow0 li a.nolink {
+    color: #D8D8D8;
+    background: #F8F8F8;
+    border-left: 1px solid #E8E8E8;
+    border-top: 1px solid #E8E8E8;
+    border-right: 1px solid #E8E8E8;
+    border-bottom: transparent;
 }
-.tabtree .tabrow0 li.here, .tabtree .tabrow0 li.here:hover {
+.tabtree .tabrow0 li a.nolink:hover,
+.tabtree .tabrow0 li.selected .tabrow1 a.nolink,
+.tabtree .tabrow0 li.selected .tabrow1 a.nolink:hover {
+    color: #D8D8D8;
+    text-decoration: none;
+}
+.tabtree .tabrow0 li.selected a,
+.tabtree .tabrow0 li.selected a:hover,
+.tabtree .tabrow0 li.active a,
+.tabtree .tabrow0 li.active a:hover {
+    color: #333333;
     background: #FFFFFF;
     background-image: none;
     border-left: 1px solid #AAAAAA;
     border-top: 1px solid #AAAAAA;
     border-right: 1px solid #AAAAAA;
     border-bottom: transparent;
+    padding-bottom: 5px;
 }
-.tabtree .here a.nolink, .tabtree .here ul .here a.nolink, .tabtree .here a.nolink:hover, .tabtree .here ul .here a.nolink:hover {
-    margin-bottom: 2px;
+
+.tabtree .tabrow0 li.selected .tabrow1 li.active a.nolink,
+.tabtree .tabrow0 li.selected .tabrow1 li.active a.nolink:hover {
+    color: #333333;
+    text-decoration: none;
+}
+.tabtree .here a.nolink,
+.tabtree .here ul .here a.nolink,
+.tabtree .here a.nolink:hover,
+.tabtree .here ul .here a.nolink:hover {
+    margin-bottom: 0px;
 }
 .tabtree .tabrow0 li.here:after {
     clear: both;
 }
-.tabtree .tabrow0 ul, .tabtree .tabrow0 div {
+.tabtree .tabrow0 ul,
+.tabtree .tabrow0 div {
     font-weight: normal;
     background-image:none;
     background-position:0% 50%;
@@ -441,11 +526,10 @@ input#id_buttonfield[disabled="disabled"]:hover {
     padding:0px;
     position:absolute;
     width:100%;
-    z-index: -1;
     top: 28px;
-
 }
-.tabtree .tabrow0 .tabrow1 li, .tabtree .tabrow0 .tabrow1 li:hover {
+.tabtree .tabrow0 .tabrow1 li,
+.tabtree .tabrow0 .tabrow1 li:hover {
     background-image:none;
     background: transparent;
     border: none;
@@ -453,5 +537,42 @@ input#id_buttonfield[disabled="disabled"]:hover {
 tabrow1 {
     left: 0;
 }
-
-
+.tabtree .tabrow0 .tabrow1 li a,
+.tabtree .tabrow0 .tabrow1 li a:hover {
+    border: none;
+}
+.tabtree .tabrow0 li.selected .tabrow1 a {
+    color:#087BB1;
+}
+.tabtree .tabrow0 li.selected .tabrow1 a:hover {
+    text-decoration: underline;
+}
+.ie7 .tabtree .tabrow0 li {
+    margin-left: 0;
+}
+.ie7 .tabtree .tabrow0 li.first {
+    margin-right: -4px;
+}
+.ie7 .tabtree .tabrow0 li.onerow {
+    margin-right: 0;
+}
+.ie7 .tabtree .tabrow0 a {
+    display: inline-block;
+    padding: 3px 10px 5px 10px;
+}
+.ie7 .tabtree .tabrow0 a span {
+    padding: 0;
+}
+.ie7 .tabtree .tabrow0 div {
+    top: 2.6em;
+    padding: 0.2em 0;
+}
+.ie7 .tabtree .tabrow0 div.empty {
+    margin-right: 0;
+}
+.ie7.mod-quiz div.tabtree a span img.iconsmall {
+    margin: 0;
+    vertical-align: baseline;
+    position: relative;
+    top: 2px;
+}

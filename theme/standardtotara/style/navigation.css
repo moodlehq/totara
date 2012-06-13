@@ -32,10 +32,22 @@ div#main_menu ul li a {
     border:1px solid #DDD;
     background:#FFF;
 }
+/* standard hover state for primary nav */
 div#main_menu ul li a:hover {
     color:#333333;
     text-decoration:none;
     background: #F9F9F9;
+}
+/* override hover state when an item is selected (but has no children) */
+div#main_menu ul li.selected a:hover {
+    background: #FFF;
+    cursor: inherit;
+}
+
+/* hover state for secondary nav */
+div#main_menu ul li.selected li a:hover {
+    background: #F9F9F9;
+    cursor: pointer;
 }
 div#main_menu ul ul {
     display:none;
@@ -62,6 +74,7 @@ div#main_menu ul ul li a {
     background:transparent;
     display: block;
 }
+/* secondary nav hover state */
 div#main_menu ul ul li a:hover {
     background: #F9F9F9;
 }
@@ -69,7 +82,11 @@ div#main_menu ul li:hover ul {
     display:block
 }
 
-#page-site-index div#main_menu ul li a.menu-home {
+/*
+ * this causes a tab to sit on top of the normal horizontal line, making
+ * it look like the table is joined to the main page content (e.g. selected)
+ */
+div#main_menu li.selected a {
     color:#333333;
     border-bottom:1px solid #FFF;
     background:#FFF;

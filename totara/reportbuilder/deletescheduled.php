@@ -34,6 +34,7 @@ $confirm = optional_param('confirm', '', PARAM_INT); // Delete confirmation hash
 
 $PAGE->set_context(context_user::instance($USER->id));
 $PAGE->set_url('/totara/reportbuilder/deletescheduled.php', array('id' => $id));
+$PAGE->set_totara_menu_selected('myreports');
 
 if (!$report = $DB->get_record('report_builder_schedule', array('id' => $id))) {
     print_error('error:invalidreportscheduleid', 'totara_reportbuilder');

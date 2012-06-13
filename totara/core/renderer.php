@@ -463,7 +463,9 @@ class totara_core_renderer extends plugin_renderer_base {
                 }
             }
 
-            $selected_items = $relationships[$PAGE->totara_menu_selected];
+            if (array_key_exists($PAGE->totara_menu_selected, $relationships)) {
+                $selected_items = $relationships[$PAGE->totara_menu_selected];
+            }
         }
 
         $currentlevel = array();

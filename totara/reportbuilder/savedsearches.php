@@ -40,6 +40,7 @@ $returnurl = $CFG->wwwroot . '/totara/reportbuilder/savedsearches.php?id=' . $id
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/totara/reportbuilder/savedsearches.php', array('id' => $id, 'sid' => $sid));
+$PAGE->set_totara_menu_selected('myreports');
 
 $output = $PAGE->get_renderer('totara_reportbuilder');
 

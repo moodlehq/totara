@@ -1,7 +1,16 @@
 /** General **/
+
+/* image used to add 1 px line along bottom of header area */
 .block .header {
     border: none;
+    background-image:url([[pix:theme|pixel_grey]]);
+    background-repeat:repeat-x;
+    background-position:center bottom;
     background-color: #F5F5F5;
+}
+/* the line must be removed when the block is minimised */
+.block.hidden .header {
+    background-image: none;
 }
 .block .header h2 {
     margin-top: inherit;

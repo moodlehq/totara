@@ -1212,13 +1212,6 @@ function totara_build_menu() {
     );
 
     $tree[] = (object)array(
-        'name' => 'profile',
-        'linktext' => get_string('profile'),
-        'parent' => 'home',
-        'url' => '/user/view.php'
-    );
-
-    $tree[] = (object)array(
         'name' => 'mylearning',
         'linktext' => get_string('mylearning', 'totara_core'),
         'parent' => null,

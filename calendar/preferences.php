@@ -11,6 +11,7 @@ $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 $PAGE->set_url(new moodle_url('/calendar/preferences.php', array('course' => $courseid)));
 $PAGE->set_pagelayout('standard');
+$PAGE->set_totara_menu_selected('calendar');
 
 require_login($course);
 

@@ -37,6 +37,7 @@ $returnurl = $CFG->wwwroot . '/totara/reportbuilder/report.php?id='.$id;
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url('/totara/reportbuilder/save.php', array('id' => $id));
+$PAGE->set_totara_menu_selected('myreports');
 
 $report = new reportbuilder($id);
 if (!$report->is_capable($id)) {
