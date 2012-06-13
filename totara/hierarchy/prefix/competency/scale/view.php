@@ -191,9 +191,7 @@ if ($values) {
         echo html_writer::empty_tag('br');
     }
     $table = new html_table();
-    $table->class = 'generaltable';
     $table->data = array();
-
     // Headers
     $table->head = array(get_string('name'));
     $table->align = array('left');

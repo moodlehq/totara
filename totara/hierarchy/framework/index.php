@@ -94,7 +94,7 @@ if ($frameworks) {
 
     // Create display table
     $table = new html_table();
-    $table->class = 'generaltable edit'.$prefix;
+    $table->attributes['class'] = 'generaltable fullwidth edit'.$prefix;
 
     // Setup column headers
     $table->head = array(get_string('name', 'totara_hierarchy'), get_string($prefix.'plural', 'totara_hierarchy'));

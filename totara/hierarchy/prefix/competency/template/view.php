@@ -98,11 +98,9 @@ echo html_writer::tag('p', format_text($item->description, FORMAT_HTML));
 echo $OUTPUT->heading(get_string('assignedcompetencies', 'totara_hierarchy'));
 
 if ($competencies) {
-    $table = new stdClass();
+    $table = new html_table();
     $table->id = 'list-assignment';
-    $table->class = 'generaltable';
     $table->data = array();
-
     // Headers
     $table->head = array(get_string('name'));
     $table->align = array('left');
