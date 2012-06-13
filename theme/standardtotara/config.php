@@ -102,6 +102,11 @@ $THEME->layouts = array(
         'regions' => array(),
         'options' => array('langmenu'=>true),
     ),
+    'noblocks' => array(
+        'file' => 'general.php',
+        'regions' => array(),
+        'options' => array('langmenu'=>true),
+    ),
     // Pages that appear in pop-up windows - no navigation, no blocks, no header.
     'popup' => array(
         'file' => 'popup.php',
