@@ -34,27 +34,22 @@ require_once ("$CFG->dirroot/totara/core/db/utils.php");
 $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 $success = get_string('success');
 //fix 1.1-series capabilities
-$result = totara_upgrade_capabilities();
-if ($result) {
-    upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Capabilities upgraded from 1.1');
-    echo $OUTPUT->heading('Capabilities upgraded from 1.1');
-    echo $OUTPUT->notification($success, 'notifysuccess');
-    print_upgrade_separator();
-} else {
-    throw new upgrade_exception("Totara Upgrade Capabilities Failed", '1.1 to 2.2 upgrade');
-}
+totara_upgrade_capabilities();
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Capabilities upgraded from 1.1');
+echo $OUTPUT->heading('Capabilities upgraded from 1.1');
+echo $OUTPUT->notification($success, 'notifysuccess');
+print_upgrade_separator();
+
 //fix blocks where name has changed
 $sql = "UPDATE {block} SET name=? WHERE name=?";
 $params = array('totara_quicklinks', 'quicklinks');
-$result = $result && $DB->execute($sql, $params);
-if ($result) {
-    upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara Blocks renamed');
-    echo $OUTPUT->heading('Totara Blocks renamed');
-    echo $OUTPUT->notification($success, 'notifysuccess');
-    print_upgrade_separator();
-} else {
-    throw new upgrade_exception("Totara Set Block Names Failed", '1.1 to 2.2 upgrade');
-}
+$DB->execute($sql, $params);
+
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara Blocks renamed');
+echo $OUTPUT->heading('Totara Blocks renamed');
+echo $OUTPUT->notification($success, 'notifysuccess');
+print_upgrade_separator();
+
 
 //rename manager to staff_manager to avoid breaking roles
 $mgrrole = $DB->get_record('role', array('shortname' => 'manager'));

@@ -156,17 +156,15 @@ function totara_get_capability_upgrade_map() {
 */
 function totara_upgrade_capabilities() {
     global $DB;
-    $status = true;
     $upgrade_caps = totara_get_capability_upgrade_map();
     foreach ($upgrade_caps as $oldcap => $val) {
         $sql = "UPDATE {capabilities} SET name=?, component=? WHERE name=?";
         $params = array($val['newcap'], $val['component'], $oldcap);
-        $status = $status && $DB->execute($sql, $params);
+        $DB->execute($sql, $params);
         $sql = "UPDATE {role_capabilities} SET capability=? WHERE capability=?";
         $params = array($val['newcap'], $oldcap);
-        $status = $status && $DB->execute($sql, $params);
+        $DB->execute($sql, $params);
     }
-    return $status;
 }
 /**
 * totara_set_charfield_nullable, for fixing 1.9 char fields where old definition was ISNULL=true and DEFAULT=""

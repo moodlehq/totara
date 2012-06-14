@@ -28,7 +28,6 @@ require_once($CFG->dirroot.'/totara/message/messagelib.php');
 class block_totara_tasks extends block_base {
     function init() {
         $this->title = get_string('pluginname', 'block_totara_tasks');
-        $this->version = 2010110101;
     }
 
     // only one instance of this block is required

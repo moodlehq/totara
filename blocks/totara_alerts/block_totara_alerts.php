@@ -27,7 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 class block_totara_alerts extends block_base {
     function init() {
         $this->title = get_string('pluginname', 'block_totara_alerts');
-        $this->version = 2010110101;
     }
 
     // only one instance of this block is required
@@ -55,6 +54,7 @@ class block_totara_alerts extends block_base {
         $this->content = new stdClass;
 
         // initialise jquery requirements
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
         require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
         require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 

@@ -26,6 +26,7 @@
  * Totara message related strings
  */
 $string['pluginname'] = 'Totara Messages';
+$string['message:viewallmessages'] = 'View all messages';
 $string['messages'] = 'Messages';
 $string['accept'] = 'Accept';
 $string['dismiss'] = 'Dismiss';
