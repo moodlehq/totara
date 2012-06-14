@@ -381,7 +381,7 @@ class totara_core_renderer extends plugin_renderer_base {
             $content .= html_writer::end_tag('span');
         }
 
-        $output = html_writer::start_tag('div', array('class' => 'mycourses'));
+        $output = html_writer::start_tag('div', array('class' => 'mycourses block'));
         $output .= html_writer::start_tag('div', array('class' => 'header'));
         $output .= html_writer::start_tag('div', array('class' => 'title'));
         $output .= html_writer::start_tag('h2');
