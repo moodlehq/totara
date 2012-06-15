@@ -473,6 +473,7 @@ abstract class dp_base_component {
      */
     public function display_approval_list($pendingitems) {
         $table = new html_table();
+        $table->attributes['class'] = 'fullwidth generaltable';
         foreach ($pendingitems as $item) {
             $row = array();
             // @todo write abstracted display_item_name() and use here

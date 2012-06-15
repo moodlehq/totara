@@ -225,6 +225,7 @@ $string['assessitem'] = 'Assess item';
 $string['coursenotfound'] = 'Course not found';
 $string['advancedsettingscoursesettings'] = 'Course settings';
 $string['advancedsettingscoursepermissions'] = 'Course permissions';
+$string['includerelatedcourses'] = 'Include linked courses';
 
 //Competency Strings
 $string['competency'] = 'Competency';

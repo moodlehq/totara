@@ -396,7 +396,9 @@ class dp_competency_component extends dp_base_component {
         $evidence = $this->get_course_evidence_items($competencies);
 
         $table = new html_table();
+        $table->attributes['class'] = 'fullwidth generaltable';
         foreach ($pendingitems as $item) {
+            $row = array();
             // @todo write abstracted display_item_name() and use here
             $name = format_string($item->fullname);
 
@@ -414,7 +416,7 @@ class dp_competency_component extends dp_base_component {
                     $name .= html_writer::empty_tag('br');
                     // @todo add code to disable unless
                     // pulldown set to approve
-                    $name .= $OUTPUT->checkbox("linkedcourses[{$item->id}][{$course->courseid}]", "1", true) . $course->fullname . $message;
+                    $name .= html_writer::checkbox("linkedcourses[{$item->id}][{$course->courseid}]", "1", true) . $course->fullname . $message;
                 }
                 $OUTPUT->container($name, "related-courses");
             }
