@@ -289,6 +289,12 @@ a.link-as-button {
     padding: 0.3em 0.6em;
     border:1px solid #ccc;
 }
+.yui-skin-sam .yui-button button,
+.yui-skin-sam .yui-button-hover button,
+.yui-skin-sam .yui-dialog .ft span.default button {
+    color:#6b6b6b;
+}
+
 body.ie7 button,
 body.ie7 input.submit,
 body.ie7 input[type="submit"],
