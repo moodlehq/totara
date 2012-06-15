@@ -33,8 +33,7 @@ require_once($CFG->libdir.'/blocklib.php');
 require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->dirroot.'/tag/lib.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-// SCANMSG: TODO Re-add once plans merged
-//require_once($CFG->dirroot.'/totara/plan/lib.php');
+require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
@@ -66,15 +65,15 @@ $staff_records = $DB->get_field('report_builder', 'id', array('shortname' => 'st
 $staff_f2f = $DB->get_field('report_builder', 'id', array('shortname' => 'staff_facetoface_sessions'));
 
 $PAGE->set_context(context_system::instance());
-$PAGE->set_pagetype('Totara');
+$PAGE->set_pagelayout('noblocks');
 $PAGE->set_url(new moodle_url('/my/teammembers.php'));
+$PAGE->set_totara_menu_selected('myteam');
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
 echo $OUTPUT->header();
 
 // Plan menu
-// SCANMSG: TODO Re-add once plans merged
-//echo dp_display_plans_menu(0,0,'manager', null, null, false);
+echo dp_display_plans_menu(0,0,'manager', null, null, false);
 
 // Plan page content
 echo $OUTPUT->container_start('', 'dp-plan-content');
