@@ -790,6 +790,8 @@ abstract class dp_base_component {
             if ($this->plan->is_active()) {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
+                    // TODO SCANMSG: This causes the subject to have a href tag in it
+                    // Look into using output renderers to display differently
                     $a->user = $this->current_user_link();
                     $event->subject = $stringmanager->get_string('componentupdateshortmanager', 'totara_plan', $a, $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('componentupdatelongmanager', 'totara_plan', $a, $manager->lang);
