@@ -34,6 +34,7 @@
 button,
 input.submit,
 input[type="submit"],
+input[type="reset"],
 input[type="button"],
 #id_buttonfield,
 a.link-as-button {
@@ -44,6 +45,7 @@ a.link-as-button {
 button,
 input.submit,
 input[type="submit"],
+input[type="reset"],
 input[type="button"],
 #id_buttonfield,
 a.link-as-button {
@@ -75,6 +77,7 @@ a.link-as-button {
 body.ie7 button,
 body.ie7 input.submit,
 body.ie7 input[type="submit"],
+body.ie7 input[type="reset"],
 body.ie7 input[type="button"],
 body.ie7 #id_buttonfield,
 body.ie7 a.link-as-button {
@@ -83,6 +86,7 @@ body.ie7 a.link-as-button {
 
 input.submit:hover,
 input[type="submit"]:hover,
+input[type="reset"]:hover,
 input[type="button"]:hover,
 #id_buttonfield:hover,
 button:hover,
@@ -96,6 +100,16 @@ a.link-as-button:hover {
     -ms-transition:background-position .1s linear;
     -o-transition:background-position .1s linear;
     transition:background-position .1s linear;
+}
+input[disabled="disabled"],
+select[disabled="disabled"],
+input#id_buttonfield[disabled="disabled"],
+input[disabled="disabled"]:hover,
+input#id_buttonfield[disabled="disabled"]:hover {
+    color: #BBBBBB;
+    background: #F2F2F2;
+    cursor: default;
+    border: none;
 }
 /**
  * Dock gradient
