@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'theme_standard', language 'en', branch 'MOODLE_20_STABLE'
+ * Strings for component 'theme_standardtotara', language 'en', branch 'MOODLE_20_STABLE'
  *
  * @package   theme_standardtotara
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
@@ -28,4 +28,4 @@ $string['loggedin'] = 'You are logged in as';
 $string['notloggedin'] = 'You are not logged in';
 $string['region-side-post'] = 'Right';
 $string['region-side-pre'] = 'Left';
-$string['choosereadme'] = 'This theme is a very basic totara theme, with a minimum amount of CSS added to the base theme to make it actually usable. When creating new Totara themes, set the parents to "base" and "standardtotara" and most layout issues will be taken care of.';
+$string['choosereadme'] = 'This theme is a simple but clean totara theme, suitable for use as a base when building new themes.';
