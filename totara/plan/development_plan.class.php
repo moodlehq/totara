@@ -413,7 +413,11 @@ class development_plan {
         }
 
         if ($pendingitems) {
-            $content .= html_writer::tag('span', get_string('pendingitemsx', 'totara_plan', (object)array('count' => $pendingitems, 'link' => new moodle_url('approve.php', array('id' => $this->id)))),
+            $a = new stdClass();
+            $a->count = $pendingitems;
+            $link = new moodle_url('approve.php', array('id' => $this->id));
+            $a->link = $link->out();
+            $content .= html_writer::tag('span', get_string('pendingitemsx', 'totara_plan', $a),
                     array('class' => 'dp-summary-widget-pendingitems-text'));
         }
         $out .= $OUTPUT->container($content, 'dp-summary-widget-components');
