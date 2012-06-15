@@ -45,8 +45,10 @@ require_login();
 $systemcontext = context_system::instance();
 $PAGE->set_context($systemcontext);
 $PAGE->set_pagelayout('noblocks');
-$PAGE->set_totara_menu_selected('learningplans');
 $plan = new development_plan($id);
+$ownplan = ($USER->id == $plan->userid);
+$menuitem = ($ownplan) ? 'learningplans' : 'myteam';
+$PAGE->set_totara_menu_selected($menuitem);
 
 if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'totara_plan');

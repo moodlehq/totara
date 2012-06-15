@@ -106,14 +106,16 @@
 
     $PAGE->set_title($strheading);
     $PAGE->set_heading($strheading);
-    echo $OUTPUT->header();
 
     $ownplan = $USER->id == $userid;
 
     $usertype = ($ownplan) ? 'learner' : 'manager';
+    $menuitem = ($ownplan) ? 'recordoflearning' : 'myteam';
+    $PAGE->set_totara_menu_selected($menuitem);
+
+    echo $OUTPUT->header();
 
     echo dp_display_plans_menu($userid, 0, $usertype, 'competencies', $rolstatus);
-
 
     echo $OUTPUT->container_start('', 'dp-plan-content');
 

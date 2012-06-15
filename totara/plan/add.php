@@ -40,7 +40,9 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url('/totara/plan/add.php', array('userid' => $userid));
 $PAGE->set_pagelayout('noblocks');
-$PAGE->set_totara_menu_selected('learningplans');
+$ownplan = ($userid == $USER->id);
+$menuitem = ($ownplan) ? 'learningplans' : 'myteam';
+$PAGE->set_totara_menu_selected($menuitem);
 
 ///
 /// Permission checks

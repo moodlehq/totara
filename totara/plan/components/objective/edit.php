@@ -62,8 +62,12 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_url(new moodle_url('/totara/plan/components/objective/edit.php', array('id' => $planid)));
-$PAGE->set_totara_menu_selected('learningplans');
 $plan = new development_plan($planid);
+
+$ownplan = ($USER->id == $plan->userid);
+$menuitem = ($ownplan) ? 'learningplans' : 'myteam';
+$PAGE->set_totara_menu_selected($menuitem);
+
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);

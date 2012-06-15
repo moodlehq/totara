@@ -54,7 +54,9 @@ $canupdate = $component->can_update_items();
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_url($currenturl);
-$PAGE->set_totara_menu_selected('learningplans');
+$ownplan = ($USER->id == $plan->userid);
+$menuitem = ($ownplan) ? 'learningplans' : 'myteam';
+$PAGE->set_totara_menu_selected($menuitem);
 
 /// Javascript stuff
 // If we are showing dialog

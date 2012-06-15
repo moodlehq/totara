@@ -1185,7 +1185,7 @@ function totara_get_nav_select_classes($navstructure, $primary_selected, $second
  * @return Array of menu item objects
  */
 function totara_build_menu() {
-    global $USER, $SESSION;
+    global $USER, $SESSION, $CFG;
 
     if (isset($SESSION->viewtype) && $SESSION->viewtype == 'course') {
         $findcourse_type = 'courses';
@@ -1193,10 +1193,8 @@ function totara_build_menu() {
         $findcourse_type = 'programs';
     }
 
-
-    // SCANMSG TODO: Uncomment this once plans are ported
-    //$canviewlearningplans = dp_can_view_users_plans($USER->id);
-    $canviewlearningplans = true;
+    require_once($CFG->dirroot . '/totara/plan/lib.php');
+    $canviewlearningplans = dp_can_view_users_plans($USER->id);
 
     // SCANMSG TODO: Uncomment this once programs are ported
     //$requiredlearninglink = prog_get_tab_link($USER->id);
@@ -1215,13 +1213,6 @@ function totara_build_menu() {
         'name' => 'mylearning',
         'linktext' => get_string('mylearning', 'totara_core'),
         'parent' => null,
-        'url' => '/my/'
-    );
-
-    $tree[] = (object)array(
-        'name' => 'learnerdashboard',
-        'linktext' => get_string('dashboard', 'totara_dashboard'),
-        'parent' => 'mylearning',
         'url' => '/my/'
     );
 

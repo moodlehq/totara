@@ -60,7 +60,10 @@ $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/totara/plan/view.php', array('id' => $id)));
 $PAGE->set_pagelayout('noblocks');
-$PAGE->set_totara_menu_selected('learningplans');
+
+$ownplan = $USER->id == $plan->userid;
+$menuitem = ($ownplan) ? 'learningplans' : 'myteam';
+$PAGE->set_totara_menu_selected($menuitem);
 
 if (!has_capability('totara/plan:accessanyplan', $context) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'totara_plan');
