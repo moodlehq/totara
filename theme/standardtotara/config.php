@@ -49,111 +49,46 @@ $THEME->sheets = array(
 );
 
 $THEME->layouts = array(
+    // we want to show blocks on the default layout
     'base' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
         'defaultregion' => 'side-post',
-    ),
-    'standard' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'course' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-        'options' => array('langmenu'=>true),
-    ),
-    'coursecategory' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'incourse' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'frontpage' => array(
-        'file' => 'frontpage.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-        'options' => array('langmenu'=>true),
-    ),
-    'admin' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre'),
-        'defaultregion' => 'side-pre',
-    ),
-    'mydashboard' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-        'options' => array('langmenu'=>true),
-    ),
-    'mypublic' => array(
-        'file' => 'general.php',
-        'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
-    ),
-    'login' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('langmenu'=>true),
+        'options' => array('langmenu' => true),
     ),
     // pages that need the full width of the page - no blocks shown at all
+    // this is only used by totara pages
     'noblocks' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('langmenu'=>true),
+        'options' => array('noblocks'=>true, 'langmenu'=>true),
     ),
-    // Pages that appear in pop-up windows - no navigation, no blocks, no header.
-    'popup' => array(
-        'file' => 'popup.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nocustommenu'=>true, 'noblocks'=>true, 'nonavbar'=>true),
-    ),
-    // No blocks and minimal footer - used for legacy frame layouts only!
-    'frametop' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true),
-    ),
-    // Embeded pages, like iframe embeded in moodleform (chat)
-    'embedded' => array(
-        'file' => 'embedded.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
-    ),
-    // Used during upgrade and install, and for the 'This site is undergoing maintenance' message.
-    // This must not have any blocks, and it is good idea if it does not have links to
-    // other places - for example there should not be a home link in the footer...
-    'maintenance' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true),
-    ),
-    // Should display the content and basic headers only.
-    'print' => array(
-        'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>false, 'noblocks'=>true),
-    ),
-    // The pagelayout used when a redirection is occuring.
-    'redirect' => array(
-        'file' => 'embedded.php',
-        'regions' => array(),
-        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
-    ),
+    // rather than having a separate layout file for the single sidebar report
+    // layout, we re-use general.php and just exclude side-post from the regions list
     'report' => array(
         'file' => 'general.php',
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
     ),
+    // hide the totara nav and login info on the login page as you need to login first
+    'login' => array(
+        'file' => 'general.php',
+        'regions' => array(),
+        'options' => array('langmenu'=>true, 'nologininfo' => true, 'nocustommenu' => true),
+    ),
+    // hide the login info section during maintenance as well
+    'maintenance' => array(
+        'file' => 'general.php',
+        'regions' => array(),
+        'options' => array('noblocks' => true, 'nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true),
+    ),
+    // also exclude login info on print view
+    'print' => array(
+        'file' => 'general.php',
+        'regions' => array(),
+        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true, 'nologininfo' => true),
+    ),
 );
 
 $THEME->enable_dock = true;
-
-$THEME->csspostprocess = 'standardtotara_user_settings';
 

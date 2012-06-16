@@ -33,7 +33,7 @@ echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/mf
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/tabs.php'), 'Moodle tab bar elements'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/images.php'), 'Images'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/notifications.php'), 'Notifications'));
-echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/navigation.php'), 'Navigation elements') . ' TODO');
+echo html_writer::tag('li', html_writer::link(new moodle_url('/theme/elements/pagelayouts.php'), 'Page Layouts'));
 echo html_writer::end_tag('ul');
 echo $OUTPUT->heading('Totara specific elements', 3);
 echo $OUTPUT->container('We should do what we can to upstream these where possible:');

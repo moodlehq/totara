@@ -208,6 +208,12 @@ p.errormessage {
     color:#555555;
     text-decoration:underline;
 }
+/* Langmenu */
+.langmenu {
+    float:right;
+    padding: 6px;
+}
+
 /* Profileblock */
 
 .profileblock {

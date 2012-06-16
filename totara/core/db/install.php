@@ -25,6 +25,9 @@
 function xmldb_totara_core_install() {
     global $CFG, $DB, $SITE;
 
+    // switch to new default theme in totara 2.2
+    set_config('theme', 'standardtotara');
+
     $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
     $systemcontext = context_system::instance();
     // add coursetype and icon fields to course table

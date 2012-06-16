@@ -321,3 +321,14 @@ body.has_dock {
 .ie6.pagelayout-report #report-region-pre, .ie6.pagelayout-report #report-region-pre .block {
     width:100%;
 }
+
+/* Override width in popup windows and when printing to prevent horizontal scrollbars */
+.pagelayout-popup #page-header .page-header-inner,
+.pagelayout-popup #page-content-wrapper,
+.pagelayout-popup #page-footer .footer-content,
+.pagelayout-print #page-header .page-header-inner,
+.pagelayout-print #page-content-wrapper,
+.pagelayout-print #page-footer .footer-content {
+    width:auto;
+    margin: auto 10px;
+}
