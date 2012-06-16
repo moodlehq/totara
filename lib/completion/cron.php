@@ -387,6 +387,7 @@ function completion_cron_completions() {
             reaggregate = 0
         WHERE
             reaggregate < {$timestarted}
+        AND reaggregate > 0
     ";
 
     $DB->execute($sql);
