@@ -179,4 +179,13 @@ echo $OUTPUT->heading('Comments - Fixed commentarea identifiers');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
+// Fix version for feedback module
+// The version was accidentally bumpped to the current date in Totara 1.1
+// We need to put it back so we dont miss any db updates for the module
+$DB->execute('UPDATE {modules} set version = 2008073002 WHERE name = ?', array('feedback'));
+
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Fixed version number for feedback module');
+echo $OUTPUT->heading('Feedback module - Fixed version number for feedback module');
+echo $OUTPUT->notification($success, 'notifysuccess');
+print_upgrade_separator();
 ?>

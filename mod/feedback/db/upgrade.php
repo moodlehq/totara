@@ -259,6 +259,29 @@ function xmldb_feedback_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2008073002, 'feedback');
     }
 
+    if ($oldversion < 2008073003) {
+        $table = new xmldb_table('feedback');
+        $field = new xmldb_field('facetofacecmid');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2008073003, 'feedback');
+    }
+
+    if ($oldversion < 2008073004) {
+        /// Define field grade to be added to feedback (T-9604)
+        $table = new xmldb_table('feedback');
+        $field = new xmldb_field('grade');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'page_after_submit');
+        /// Launch add field2
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        upgrade_mod_savepoint(true, 2008073004, 'feedback');
+    }
+
     if ($oldversion < 2009031301) {
         /// Define field label to be added to feedback_item
         $table = new xmldb_table('feedback_item');
