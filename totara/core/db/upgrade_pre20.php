@@ -188,4 +188,16 @@ upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Fixed version number for feedbac
 echo $OUTPUT->heading('Feedback module - Fixed version number for feedback module');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
+
+//Remove customfield data that is no longer associated with a course
+$customfield_ids = $DB->get_records_sql('SELECT DISTINCT cid.id from {course_info_data} cid LEFT JOIN {course} c ON cid.courseid = c.id WHERE c.id IS NULL');
+if (($num_records = count($customfield_ids)) > 0) {
+    $DB->delete_records_list('course_info_data', 'id', array_keys($customfield_ids));
+
+    upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', "Removed redundant customfield data ({$num_records} records)");
+    echo $OUTPUT->heading("Custom Fields - Cleaning up redundant data ({$num_records} records removed)");
+    echo $OUTPUT->notification($success, 'notifysuccess');
+    print_upgrade_separator();
+}
+
 ?>
