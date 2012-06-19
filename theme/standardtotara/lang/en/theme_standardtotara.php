@@ -24,8 +24,6 @@
  */
 
 $string['pluginname'] = 'Standard Totara';
-$string['loggedin'] = 'You are logged in as';
-$string['notloggedin'] = 'You are not logged in';
 $string['region-side-post'] = 'Right';
 $string['region-side-pre'] = 'Left';
 $string['choosereadme'] = 'This theme is a simple but clean totara theme, suitable for use as a base when building new themes.';

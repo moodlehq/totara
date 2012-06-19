@@ -91,4 +91,4 @@ $THEME->layouts = array(
 );
 
 $THEME->enable_dock = true;
-
+$THEME->rendererfactory = 'theme_overridden_renderer_factory';

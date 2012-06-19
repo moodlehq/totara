@@ -69,7 +69,7 @@ echo $OUTPUT->doctype() ?>
           <?php } ?>
           <div class="headermenu">
             <div class="profileblock">
-              <?php { include('profileblock.php'); } ?>
+              <?php echo $OUTPUT->login_info(); ?>
             </div>
           </div>
         </div>

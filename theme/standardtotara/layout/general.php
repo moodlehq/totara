@@ -82,7 +82,7 @@ echo $OUTPUT->doctype() ?>
             } ?>
             <?php if ($haslogininfo) { ?>
               <div class="profileblock">
-                <?php { include('profileblock.php'); } ?>
+                <?php echo $OUTPUT->login_info(); ?>
               </div>
             <?php } ?>
           </div>
