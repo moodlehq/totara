@@ -7009,7 +7009,7 @@ FROM
             $data = array();
             $data['plugin'] = 'totara_hierarchy';
             $data['name'] = 'version';
-            $data['value'] = $CFG->local_version;
+            $data['value'] = '2012041200';
             $DB->insert_record('config_plugins', $data);
 
             // delete unwanted plugins (remove guides block instances and tables)
