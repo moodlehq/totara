@@ -28,6 +28,8 @@ require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 
+$PAGE->set_context(context_course::instance($COURSE->id));
+
 ///
 /// Setup / loading data
 ///
@@ -72,11 +74,11 @@ if (!$component->can_update_items()) {
 $component->update_assigned_items($full);
 
 if ($fromblock) {
-    require_once($CFG->dirroot . '/blocks/addtoplan/lib.php');
+    require_once($CFG->dirroot . '/blocks/totara_addtoplan/lib.php');
 
     if (count($addlist) == 1) {
         $courseid = $addlist[0];
-        echo get_addtoplan_block_content($courseid, $plan->userid);
+        echo totara_block_addtoplan_get_content($courseid, $plan->userid);
     } else {
         echo 'Block error';
     }

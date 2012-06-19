@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010, 2011 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2011 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,22 +18,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Alastair Munro <alastair.munro@totaralms.com>
+ * @author Eugene Venter <eugene@catalyst.net.nz>
  * @package totara
  * @subpackage plan
  */
-require_once($CFG->dirroot.'/local/plan/lib.php');
+require_once($CFG->dirroot . '/totara/plan/lib.php');
 
-function get_addtoplan_block_content($courseid, $userid) {
-    global $CFG, $USER;
+function totara_block_addtoplan_get_content($courseid, $userid) {
+    global $CFG, $DB, $OUTPUT;
 
     $plans = dp_get_plans($userid, array(DP_PLAN_STATUS_UNAPPROVED, DP_PLAN_STATUS_APPROVED));
-    if (!is_array($plans)) {
-        $plans = array();
-    } else {
-        $plans = array_keys($plans);
-    }
 
-    $course_include = $CFG->dirroot . '/local/plan/components/course/course.class.php';
+    $course_include = $CFG->dirroot . '/totara/plan/components/course/course.class.php';
     if (file_exists($course_include)) {
         require_once($course_include);
     } else {
@@ -45,29 +41,33 @@ function get_addtoplan_block_content($courseid, $userid) {
 
     if ($plans_with_course) {
         if ($exclude_plans = array_values($plans_with_course)) {
-            $plans = (array_diff($plans, $exclude_plans));
+            foreach ($exclude_plans as $eid) {
+                unset($plans[$eid]);
+            }
         }
     }
 
-    $html = '<div id="block_addtoplan_text">';
+    $html = $OUTPUT->container_start(null, 'block_totara_addtoplan_text');
 
     if (!empty($plans)) {
-        $html .= '<p>'.get_string('addtoplanhint', 'block_addtoplan').'</p>';
-        $html .= '<div class="buttons plan-add-item-button-wrapper" id="block_addtoplan_button">';
-        $html .= '<div class="singlebutton dp-plan-assign-button">';
-        $html .= '<div>'."\n";
-        $html .= '<form>';
-        $html .= '<select id="block_addtoplan_selector">';
-        foreach ($plans as $planid) {
-            $plan = new development_plan($planid);
-            $html .= '<option value="' . $plan->id . '">' . $plan->name . '</option>';
+        $html .= html_writer::tag('p', get_string('addtoplanhint', 'block_totara_addtoplan'));
+        $html .= $OUTPUT->container_start('buttons plan-add-item-button-wrapper', 'block_addtoplan_button');
+        $html .= $OUTPUT->container_start('singlebutton dp-plan-assign-button');
+        $html .= $OUTPUT->container_start();
+        $html .= html_writer::start_tag('form');
+        $planoptions = array();
+        foreach ($plans as $plan) {
+            if (empty($plan->name)) {
+                continue;
+            }
+            $planoptions[$plan->id] = $plan->name;
         }
-        $html .= '</select>';
-        $html .= '<input type="submit" class="plan-add-item-button" id="show-course-dialog" value="'.get_string('add', 'block_addtoplan').'" />';
-        $html .= '</form>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
+        $html .= html_writer::select($planoptions, 'block_addtoplan_selector', '', false, array('id' => 'block_addtoplan_selector'));
+        $html .= html_writer::empty_tag('input', array('type' => 'submit', 'class' => 'plan-add-item-button', 'id' => 'show-course-dialog', 'value' => get_string('add', 'block_totara_addtoplan')));
+        $html .= html_writer::end_tag('form');
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_end();
+        $html .= $OUTPUT->container_end();
     }
 
     // Display list of plans
@@ -78,15 +78,15 @@ function get_addtoplan_block_content($courseid, $userid) {
         $planstring .= 'inplan';
         $planstring .= (count($exclude_plans) == 1 ? '' : 's');
 
-        $html .= '<p><strong>'.get_string($planstring, 'block_addtoplan').'</strong></p>';
-        $html .= '<ul>';
+        $html .= html_writer::tag('p', html_writer::tag('strong', get_string($planstring, 'block_totara_addtoplan')));
+        $inplans = array();
         foreach ($exclude_plans as $planid) {
-            $plan = new development_plan($planid);
-            $html .= '<li>' . $plan->name . '</li>';
+            $inplans[$planid] = $DB->get_field('dp_plan', 'name', array('id' => $planid));
         }
-        $html .= '</ul>';
+        $html .= html_writer::alist($inplans, null, 'ul');
     }
-    $html .= '</div>';
+
+    $html .= $OUTPUT->container_end();  // block_totara_addtoplan_text
 
     return $html;
 }
