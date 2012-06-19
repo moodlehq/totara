@@ -104,6 +104,72 @@ define('COMPLETION_AGGREGATION_ANY',        2);
 
 
 /**
+ * Utility function for checking if the logged in user can view
+ * another's completion data for a particular course
+ *
+ * @access  public
+ * @param   int         $userid     Completion data's owner
+ * @param   int         $courseid   Course ID (optional)
+ * @return  boolean
+ */
+function completion_can_view_data($userid, $courseid = null) {
+    global $USER;
+
+    if (!isloggedin()) {
+        return false;
+    }
+
+    // Check if this is the site course
+    if ($courseid == SITEID) {
+        $courseid = null;
+    }
+
+    // Check if completion is enabled
+    if ($courseid) {
+        $course = new object();
+        $course->id = $courseid;
+        $cinfo = new completion_info($course);
+        if (!$cinfo->is_enabled()) {
+            return false;
+        }
+    }
+    else {
+        if (!completion_info::is_enabled_for_site()) {
+            return false;
+        }
+    }
+
+    // Is own user's data?
+    if ($USER->id == $userid) {
+        return true;
+    }
+
+    // Check capabilities
+    $personalcontext = context_user::instance($userid);
+
+    if (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
+        return true;
+    }
+    elseif (has_capability('report/completion:view', $personalcontext)) {
+        return true;
+    }
+
+    if ($courseid) {
+        $coursecontext = context_course::instance($courseid);
+    }
+    else {
+        $coursecontext = context_system::instance();
+    }
+
+    if (has_capability('report/completion:view', $coursecontext)) {
+        return true;
+    }
+
+    return false;
+}
+
+
+/**
  * Class represents completion information for a course.
  *
  * Does not contain any data, so you can safely construct it multiple times
@@ -1008,6 +1074,18 @@ class completion_info {
     function is_tracked_user($userid) {
         global $DB;
 
+        // Check for course_completions records
+        $data = array(
+            'userid'    => $userid,
+            'course'    => $this->course_id
+        );
+
+        $ccompletion = new completion_completion($data);
+        if ($ccompletion->id) {
+            return true;
+        }
+
+        // Otherwise check for role assignments
         $tracked = $this->generate_tracked_user_sql();
 
         $sql  = "SELECT u.id ";
