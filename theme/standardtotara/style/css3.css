@@ -135,7 +135,7 @@ input#id_buttonfield[disabled="disabled"]:hover {
     background: -o-linear-gradient(left, #f2f2f2 13%, #e5e5e5 74%, #afafaf 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(left, #f2f2f2 13%, #e5e5e5 74%, #afafaf 100%); /* IE10+ */
     background: linear-gradient(left, #f2f2f2 13%, #e5e5e5 74%, #afafaf 100%); /* W3C */
- filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#afafaf', GradientType=1 ); /* IE6-9 */
+    background-color: #f2f2f2;
 }
 fieldset,
 .sitetopiccontent,
