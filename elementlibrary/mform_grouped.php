@@ -6,11 +6,11 @@
  *    spacing between stacked groups, eg; 'class="felement fgroup fgroup1"'
  **/
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 require_once($CFG->dirroot.'/lib/formslib.php');
 
 $strheading = 'Element Library: Moodle Forms: Grouped controls';
-$url = new moodle_url('/theme/elements/mform_grouped.php');
+$url = new moodle_url('/elementlibrary/mform_grouped.php');
 
 // Start setting up the page
 $params = array();
@@ -22,7 +22,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/mform.php'), '&laquo; Back to moodle forms');
+echo html_writer::link(new moodle_url('/elementlibrary/mform.php'), '&laquo; Back to moodle forms');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();

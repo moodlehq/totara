@@ -410,7 +410,7 @@ class plugin_manager {
             ),
 
             'message' => array(
-                'email', 'jabber', 'popup'
+                'email', 'jabber', 'popup', 'totara_alert', 'totara_task'
             ),
 
             'mnetservice' => array(
@@ -422,7 +422,7 @@ class plugin_manager {
                 'forum', 'glossary', 'imscp', 'label', 'lesson', 'lti', 'page',
                 'quiz', 'resource', 'scorm', 'survey', 'url', 'wiki', 'workshop'
                 // Totara
-                , 'book', 'certificate', 'hotpot'
+                , 'book', 'certificate', 'hotpot', 'facetoface'
             ),
 
             'plagiarism' => array(
@@ -487,7 +487,7 @@ class plugin_manager {
                 'boxxie', 'brick', 'canvas', 'formal_white', 'formfactor',
                 'fusion', 'leatherbound', 'magazine', 'mymobile', 'nimble',
                 'nonzero', 'overlay', 'serenity', 'sky_high', 'splash',
-                'standard', 'standardold'
+                'standard', 'standardold', 'standardtotara'
             ),
 
             'tool' => array(
@@ -499,8 +499,8 @@ class plugin_manager {
 
             // Totara:
             'totara' => array(
-                'core', 'customfield', 'dashboard', 'hierarchy', 'oauth', 'plan', 'program',
-                'reportbuilder'
+                'cohort', 'core', 'coursecatalog', 'customfield', 'dashboard', 'hierarchy',
+                'message', 'oauth', 'plan', 'program', 'reportbuilder'
             ),
 
             'webservice' => array(

@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 require_once($CFG->libdir . '/totaratablelib.php');
 
 $strheading = 'Element Library: Totara Toolbar';
-$url = new moodle_url('/theme/elements/toolbar.php');
+$url = new moodle_url('/elementlibrary/toolbar.php');
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url($url);
@@ -14,7 +14,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
+echo html_writer::link(new moodle_url('/elementlibrary/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo html_writer::tag('p', 'The Totara Toolbar is currently only available on tables that use flexible_tables(), we need to decide if we should keep that requirement, and update other tables to use flexible_tables, or if we should allow toolbars to be generated independently for use in manually generated tables or those built using the html_table class.');

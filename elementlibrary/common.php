@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 
 
 $strheading = 'Element Library: Common tags';
-$url = new moodle_url('/theme/elements/common.php');
+$url = new moodle_url('/elementlibrary/common.php');
 
 // Start setting up the page
 $params = array();
@@ -16,7 +16,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
+echo html_writer::link(new moodle_url('/elementlibrary/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
@@ -29,7 +29,7 @@ echo html_writer::start_tag('p');
 // http://htmlhelp.com/reference/html40/inline.html
 echo ' Lorum Ipsum ';
 $params = array('t' => time()); // to prevent the link being visited
-echo html_writer::link(new moodle_url('/theme/elements/', $params), 'an unvisited text link');
+echo html_writer::link(new moodle_url('/elementlibrary/', $params), 'an unvisited text link');
 echo ' Lorum Ipsum ';
 echo html_writer::link('', 'a visited text link');
 echo ' Lorum Ipsum ';

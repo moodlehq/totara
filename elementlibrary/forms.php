@@ -1,9 +1,9 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 
 $strheading = 'Element Library: Forms';
-$url = new moodle_url('/theme/elements/forms.php');
+$url = new moodle_url('/elementlibrary/forms.php');
 
 // Start setting up the page
 $params = array();
@@ -15,7 +15,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
+echo html_writer::link(new moodle_url('/elementlibrary/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
@@ -49,7 +49,7 @@ echo html_writer::select_time('years', 'name5', time(), 5, $attr);
 
 echo html_writer::tag('p', 'Generate a hidden input field for every parameter in a moodle_url object (output displayed below instead of rendered):');
 
-$url = new moodle_url('/theme/elements/', array('a' => 1, 'b' => 2, 'exclude' => 'this'));
+$url = new moodle_url('/elementlibrary/', array('a' => 1, 'b' => 2, 'exclude' => 'this'));
 echo html_writer::tag('pre', htmlentities(html_writer::input_hidden_params($url, array('exclude'))));
 
 echo html_writer::tag('p', 'Generate a script tag (output displayed below instead of rendered):');
@@ -63,14 +63,14 @@ echo html_writer::checkbox('name', 'value', false, null, array('id' => 'checkbox
 
 echo html_writer::tag('p', 'A confirm form with continue/cancel options (just providing urls to go to):');
 
-$continueurl = new moodle_url('/theme/elements/');
-$cancelurl = new moodle_url('/theme/elements/');
+$continueurl = new moodle_url('/elementlibrary/');
+$cancelurl = new moodle_url('/elementlibrary/');
 echo $OUTPUT->confirm('This is the message', $continueurl, $cancelurl);
 
 echo html_writer::tag('p', 'A confirm form with continue/cancel options (with custom buttons):');
 
-$continueurl = new moodle_url('/theme/elements/');
-$cancelurl = new moodle_url('/theme/elements/');
+$continueurl = new moodle_url('/elementlibrary/');
+$cancelurl = new moodle_url('/elementlibrary/');
 $continuebutton = new single_button($continueurl, 'Custom Button text', 'post');
 $cancelbutton = new single_button($cancelurl, 'Something else', 'get');
 echo $OUTPUT->confirm('This is another message', $continuebutton, $cancelbutton);
@@ -90,7 +90,7 @@ echo $OUTPUT->render($button);
 
 echo html_writer::tag('p', 'A single select form. Quick way using a function:');
 
-$url = new moodle_url('/theme/elements/', array('urlparams' => 'become', 'hidden' => 'fields'));
+$url = new moodle_url('/elementlibrary/', array('urlparams' => 'become', 'hidden' => 'fields'));
 $options = array(1 => 'one', 2 => 'two', 3 => 'three', 4 => 'four');
 echo $OUTPUT->single_select($url, 'youpicked', $options, '', array('' => 'choose'), 'formid');
 
@@ -107,11 +107,11 @@ echo $OUTPUT->render($select);
 echo html_writer::tag('p', 'A url select form. Typically used for navigation.');
 
 $urls = array(
-    '/theme/elements/' => 'Index',
-    '/theme/elements/common.php' => 'Common elements',
-    '/theme/elements/mform.php' => 'Moodle form elements',
-    '/theme/elements/tables.php' => 'Tables',
-    '/theme/elements/tabs.php' => 'Tabs',
+    '/elementlibrary/' => 'Index',
+    '/elementlibrary/common.php' => 'Common elements',
+    '/elementlibrary/mform.php' => 'Moodle form elements',
+    '/elementlibrary/tables.php' => 'Tables',
+    '/elementlibrary/tabs.php' => 'Tabs',
 );
 
 echo $OUTPUT->url_select($urls, '', array('' => 'choose'), 'formid');
@@ -132,7 +132,7 @@ if ($cmid) {
 }
 
 echo html_writer::tag('p', 'An "editing on/off" button. This automatically sends through the appropriate "edit" param and toggles the text.');
-$url = new moodle_url('/theme/elements/forms.php', array('params' => 'to', 'send' => 'through'));
+$url = new moodle_url('/elementlibrary/forms.php', array('params' => 'to', 'send' => 'through'));
 echo $OUTPUT->edit_button($url);
 
 echo html_writer::tag('p', 'A "close window" button. To be used in a YUI popup dialog, not normally as part of a page. Automatically includes the close_window action:');
@@ -141,7 +141,7 @@ echo $OUTPUT->close_window_button('Close button text');
 
 echo html_writer::tag('p', 'A "continue" button. You can specify the URL to go to when pressed:');
 
-$url = new moodle_url('/theme/elements/');
+$url = new moodle_url('/elementlibrary/');
 echo $OUTPUT->continue_button($url);
 
 echo $OUTPUT->container_start();

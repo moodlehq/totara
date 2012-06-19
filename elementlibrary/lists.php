@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 
 
 $strheading = 'Element Library: Lists';
-$url = new moodle_url('/theme/elements/lists.php');
+$url = new moodle_url('/elementlibrary/lists.php');
 
 // Start setting up the page
 $params = array();
@@ -16,7 +16,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
+echo html_writer::link(new moodle_url('/elementlibrary/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();

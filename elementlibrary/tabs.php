@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 
 
 $strheading = 'Element Library: Tab bars';
-$url = new moodle_url('/theme/elements/tabs.php');
+$url = new moodle_url('/elementlibrary/tabs.php');
 
 // Start setting up the page
 $params = array();
@@ -16,7 +16,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/'), '&laquo; Back to index');
+echo html_writer::link(new moodle_url('/elementlibrary/'), '&laquo; Back to index');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
@@ -30,7 +30,7 @@ $activated = array();
 
 echo $OUTPUT->box('Standard, single row tab bar');
 
-$url = new moodle_url('/theme/elements/index.php');
+$url = new moodle_url('/elementlibrary/index.php');
 $row[] = new tabobject('tab1',
     $url->out(),
     'Selected Tab',
@@ -77,7 +77,7 @@ print_tabs($tabs, $current_tab, $inactive, array('tab4', 'tab5'));
 echo $OUTPUT->box('You can set a flag on the tab object to keep the active tab as a link, though this doesn\'t affect additional selected tabs, just the current tab.');
 
 $row = array();
-$url = new moodle_url('/theme/elements/index.php');
+$url = new moodle_url('/elementlibrary/index.php');
 $row[] = new tabobject('tab1',
     $url->out(),
     'Selected Tab',

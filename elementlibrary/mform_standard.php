@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once(dirname(__FILE__) . '/../config.php');
 require_once($CFG->dirroot.'/lib/formslib.php');
 
 $strheading = 'Element Library: Moodle Forms: Standard elements';
-$url = new moodle_url('/theme/elements/mform_standard.php');
+$url = new moodle_url('/elementlibrary/mform_standard.php');
 
 // Start setting up the page
 $params = array();
@@ -16,7 +16,7 @@ $PAGE->set_heading($strheading);
 require_login();
 echo $OUTPUT->header();
 
-echo html_writer::link(new moodle_url('/theme/elements/mform.php'), '&laquo; Back to moodle forms');
+echo html_writer::link(new moodle_url('/elementlibrary/mform.php'), '&laquo; Back to moodle forms');
 echo $OUTPUT->heading($strheading);
 
 echo $OUTPUT->box_start();
