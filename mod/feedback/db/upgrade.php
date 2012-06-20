@@ -273,7 +273,7 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field grade to be added to feedback (T-9604)
         $table = new xmldb_table('feedback');
         $field = new xmldb_field('grade');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, '0', 'page_after_submit');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, null);
         /// Launch add field2
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
