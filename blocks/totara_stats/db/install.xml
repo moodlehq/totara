@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/totara_stats/db" VERSION="2010111700" COMMENT="XMLDB file for Totara stats block"
+<XMLDB PATH="blocks/totara_stats/db" VERSION="2010112500" COMMENT="XMLDB file for Totara stats block"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
         >
