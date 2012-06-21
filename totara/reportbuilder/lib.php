@@ -493,6 +493,14 @@ class reportbuilder {
             }
         }
 
+        // search for admin/tool/*/rb_sources/ directories
+        foreach (get_list_of_plugins('admin/tool', 'db') as $tool) {
+            $dir = "{$CFG->dirroot}/admin/tool/$tool/rb_sources/";
+            if (file_exists($dir) && is_dir($dir)) {
+                $sourcepaths[] = $dir;
+            }
+        }
+
         // search for totara/*/rb_sources/ directories
         foreach (get_list_of_plugins('totara', 'db') as $totaramod) {
             $dir = "{$CFG->dirroot}/totara/$totaramod/rb_sources/";

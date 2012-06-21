@@ -502,12 +502,14 @@ function cohort_position_updated_handler($position) {
             cri.positionincludechildren = 1
             AND";
     $params[] = $position->id;
-    $path_like_sql = $DB->sql_like("{$position->path}", '?');
+    $path_like_sql = $DB->sql_like('?', '?');
+    $params[] = $position->path;
     $params[] = $DB->sql_concat("pos.path","'%'");
     $sql .= " ($path_like_sql";
 
     if (isset($position->oldpath)) {
-        $old_path_like_sql = $DB->sql_like("{$position->oldpath}", '?');
+        $old_path_like_sql = $DB->sql_like('?', '?');
+        $params[] = $position->oldpath;
         $check_old_path_sql = " OR $old_path_like_sql";
         $params[] = $DB->sql_concat("pos.path","'%'");
     }
@@ -550,11 +552,13 @@ function cohort_organisation_updated_handler($organisation) {
             cri.orgincludechildren = 1
             AND";
     $params[] = $organisation->id;
-    $path_like_sql = $DB->sql_like("{organisation->path}", '?');
+    $path_like_sql = $DB->sql_like('?', '?');
+    $params[] = $organisation->path;
     $params[] = $DB->sql_concat("org.path","'%'");
     $sql .= " ($path_like_sql";
     if (isset($organisation->oldpath)) {
-        $old_path_like_sql = $DB->sql_like("{$organisation->oldpath}", '?');
+        $old_path_like_sql = $DB->sql_like('?', '?');
+        $params[] = $organisation->oldpath;
         $check_old_path_sql = " OR $old_path_like_sql";
         $params[] = $DB->sql_concat("org.path","'%'");
     }

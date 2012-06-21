@@ -7543,9 +7543,9 @@ function get_plugin_types($fullpaths=true) {
                       'qbehaviour'    => 'question/behaviour',
                       'qformat'       => 'question/format',
                       'plagiarism'    => 'plagiarism',
+                      'totara'        => 'totara', // must be before admin tools so totara_sync can add to totara tables
                       'tool'          => $CFG->admin.'/tool',
                       'theme'         => 'theme',  // this is a bit hacky, themes may be in $CFG->themedir too
-                      'totara'        => 'totara',
         );
 
         $mods = get_plugin_list('mod');
