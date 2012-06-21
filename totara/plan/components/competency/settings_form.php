@@ -185,14 +185,10 @@ function dp_competency_component_process_settings_form($fromform, $id) {
     if ($competencysettings = $DB->get_record('dp_competency_settings', array('templateid' => $id))) {
         // update
         $todb->id = $competencysettings->id;
-        if (!$DB->update_record('dp_competency_settings', $todb)) {
-            totara_set_notification(get_string('error:update_competency_settings', 'totara_plan'), $currenturl);
-        }
+        $DB->update_record('dp_competency_settings', $todb);
     } else {
         // insert
-        if (!$DB->insert_record('dp_competency_settings', $todb)) {
-            totara_set_notification(get_string('error:update_competency_settings', 'totara_plan'), $currenturl);
-        }
+        $DB->insert_record('dp_competency_settings', $todb);
     }
     foreach (dp_competency_component::$permissions as $action => $requestable) {
         foreach ($DP_AVAILABLE_ROLES as $role) {

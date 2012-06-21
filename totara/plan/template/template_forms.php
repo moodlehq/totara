@@ -238,7 +238,7 @@ class dp_components_form extends moodleform {
             $table->column_class('options', 'options');
 
             $table->setup();
-            $spacer = $OUTPUT->spacer();
+            $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
             $count = 0;
             $numvalues = count($components);
             foreach ($components as $component) {

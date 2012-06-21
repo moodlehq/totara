@@ -58,7 +58,7 @@ M.totara_plan_component = M.totara_plan_component || {
 
         // Add hooks to learning plan component form elements
         // Update when form elements change
-        $('table.dp-plan-component-items input, table.dp-plan-component-items select').live('change', function() {
+        $(document).on('change', 'table.dp-plan-component-items input, table.dp-plan-component-items select', function() {
             var data = {
                 submitbutton: "1",
                 ajax: "1",

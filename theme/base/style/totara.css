@@ -439,11 +439,11 @@ a.comments-icon-none {
 }
 
 a.comments-icon-some {
-    background-image: url('pix/t/comments.gif');
+    background-image: url([[pix:totara_core|t/comments]]);
 }
 
 a.comments-icon-none {
-    background-image: url('pix/t/comments-none.gif');
+    background-image: url([[pix:totara_core|t/comments-none]]);
 }
 
 .comment-list li {

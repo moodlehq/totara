@@ -757,7 +757,7 @@ class dp_program_component extends dp_base_component {
      *
      * @param int $programid
      * @param int $userid
-     * @return array|false $plans ids of plans with specified program
+     * @return array $plans ids of plans with specified program
      */
     public static function get_plans_containing_item($programid, $userid) {
         global $DB;
@@ -776,8 +776,7 @@ class dp_program_component extends dp_base_component {
                 p.userid = ?";
         $params = array($programid, $userid);
 
-        $plans = $DB->get_fieldset_sql($sql, $params);
-        return $plans;
+        return $DB->get_fieldset_sql($sql, $params);
     }
 
     /**

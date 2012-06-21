@@ -1531,7 +1531,7 @@ class dp_competency_component extends dp_base_component {
      *
      * @param int $competencyid
      * @param int $userid
-     * @return array|false $plans ids of plans with specified competency
+     * @return array $plans ids of plans with specified competency
      */
     public static function get_plans_containing_item($competencyid, $userid) {
         global $DB;
@@ -1549,8 +1549,6 @@ class dp_competency_component extends dp_base_component {
             AND
                 p.userid = ?";
 
-        $plans = $DB->get_fieldset_sql($sql, array($competencyid, $userid));
-
-        return $plans;
+        return $DB->get_fieldset_sql($sql, array($competencyid, $userid));
     }
 }

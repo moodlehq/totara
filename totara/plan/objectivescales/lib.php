@@ -112,7 +112,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
         }
 
         $table->data = array();
-        $spacer = $OUTPUT->spacer();
+        $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
         $count = 0;
         $numvalues = count($objectives);
         foreach ($objectives as $objective) {
@@ -183,23 +183,20 @@ function dp_objective_display_table($objectives, $editingon=0) {
 }
 
 /**
- * Gets the id of the default objective scale (the one with the lowest sortorder)
+ * Gets the default objective scale (the one with the lowest sortorder)
  *
- * @return object the objective
+ * @return object|false the objective if found
  */
 function dp_objective_default_scale() {
     global $DB;
-    if (!$objective = $DB->get_records('dp_objective_scale', null, 'sortorder', '*', '', 1)) {;
-        return false;
-    }
-
+    $objective = $DB->get_records('dp_objective_scale', null, 'sortorder', '*', 0, 1);
     return reset($objective);
 }
 
 /**
  * Gets the id of the default objective scale (the one with the lowest sortorder)
  *
- * @return object the objective
+ * @return integer|false the objective id if found
  */
 function dp_objective_default_scale_id() {
     $objective = dp_objective_default_scale();

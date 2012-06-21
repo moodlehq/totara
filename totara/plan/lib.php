@@ -638,7 +638,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
     if ($plans = dp_get_plans($userid, array(DP_PLAN_STATUS_UNAPPROVED))) {
         if ($role == 'manager') {
             $out .= $OUTPUT->container_start(null, 'dp-plans-menu-section');
-            $out .= html_writer::tag('h4', get_string('unapprovedplans', 'totara_plan'), array('class' => 'dp-plans-menu-sub-header'));
+            $out .= $OUTPUT->heading(get_string('unapprovedplans', 'totara_plan'), 4, 'dp-plans-menu-sub-header');
         }
         else {
             $out .= $OUTPUT->heading(get_string('unapprovedplans', 'totara_plan'), 3, 'main');
@@ -676,12 +676,11 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
 
     // Print Required Learning menu
     if ($showrequired) {
-        /* SCANMSG TODO: re-enable block when program management is merged
         if ($programs = prog_get_required_programs($userid, ' ORDER BY fullname ASC ', '', '', false, true)) {
             if ($role == 'manager') {
                 $extraparams['userid'] = $userid;
                 $out .= $OUTPUT->container_start(null, 'dp-plans-menu-section');
-                $out .= html_writer::tag('h4', get_string('requiredlearning', 'totara_program'), array('class' => 'dp-plans-menu-sub-header'));
+                $out .= $OUTPUT->heading(get_string('requiredlearning', 'totara_program'), 4, 'dp-plans-menu-sub-header');
             }
             else {
                 $extraparams = '';
@@ -709,7 +708,6 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
                 $out .= $OUTPUT->container_end();
             }
         }
-        */
     }
 
     // Print Record of Learning menu
@@ -1352,7 +1350,7 @@ function plan_mark_competency_default($competencyid, $userid, $component) {
 
     $rec = array_pop($records);
     $default = $rec->defaultid;
-//    require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/lib.php'); //SCANMSG TODO fix requirment
+    require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/evidence/lib.php');
 
     $details = new stdClass();
     $details->assessmenttype = get_string('automateddefault', 'totara_plan');

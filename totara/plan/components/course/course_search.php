@@ -86,7 +86,7 @@ if (strlen($query)) {
             {course} c
     ";
 
-    $order = ' ORDER BY c.sortorder ASC';
+    $order = ' ORDER BY c.fullname ASC';
 
     // Match search terms
     list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, array('c.fullname', 'c.shortname'));
@@ -103,9 +103,9 @@ if (strlen($query)) {
         if ($results = $DB->get_records_sql($fields . $from . $where .
             $order, $params, $start, HIERARCHY_SEARCH_NUM_PER_PAGE)) {
 
-            $data = array('query' => urlencode(stripslashes($query)));
+            $data = array('query' => urlencode($query));
 
-            $url = new moodle_url('course_search.php', $data);
+            $url = new moodle_url('/totara/plan/components/course/course_search.php', $data);
 
             $pagingbar = new paging_bar($total, $page, HIERARCHY_SEARCH_NUM_PER_PAGE, $url);
             $pagingbar->pagevar = 'page';
@@ -134,7 +134,7 @@ if (strlen($query)) {
         }
     } else {
         $params = new stdClass();
-        $params->query = stripslashes($query);
+        $params->query = $query;
         $errorstr = 'noresultsfor';
         print html_writer::tag('p', get_string($errorstr, 'totara_core', $params), array('class' => "message"));
     }

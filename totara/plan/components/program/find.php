@@ -28,7 +28,7 @@ require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_programs.class.p
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
-
+$PAGE->set_context(context_system::instance());
 ///
 /// Setup / loading data
 ///

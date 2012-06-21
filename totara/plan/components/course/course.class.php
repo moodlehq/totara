@@ -986,7 +986,7 @@ class dp_course_component extends dp_base_component {
      *
      * @param int $courseid
      * @param int $userid
-     * @return array|false $plans ids of plans with specified course
+     * @return array $plans ids of plans with specified course
      */
     public static function get_plans_containing_item($courseid, $userid) {
         global $DB;
@@ -1004,8 +1004,7 @@ class dp_course_component extends dp_base_component {
             AND
                 p.userid = ?";
 
-        $plans = $DB->get_fieldset_sql($sql, array($courseid, $userid));
-        return $plans;
+        return $DB->get_fieldset_sql($sql, array($courseid, $userid));
     }
 
     /*
@@ -1027,7 +1026,7 @@ class dp_course_component extends dp_base_component {
         $html = $OUTPUT->container_start('buttons');
         $html .= $OUTPUT->container_start('singlebutton dp-plan-assign-button');
         $html .= $OUTPUT->container_start();
-        $html .= html_writer::tag('script', 'var competency_id = ' . $courseid . ';' . 'var plan_id = ' . $this->plan->id, array('type' => 'text/javascript'));
+        $html .= html_writer::script('var competency_id = ' . $courseid . ';' . 'var plan_id = ' . $this->plan->id);
         $html .= $OUTPUT->single_submit($btntext, array('id' => "show-competency-dialog"));
 
         $html .= $OUTPUT->container_end();

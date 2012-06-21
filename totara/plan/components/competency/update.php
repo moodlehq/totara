@@ -64,7 +64,7 @@ if (!$component->can_update_items()) {
     print_error('error:cannotupdateitems', 'totara_plan');
 }
 
-/* SCANMSG re-add when messages in transactions re-enabled MDL-30029
+/* TODO re-add when messages in transactions re-enabled MDL-30029
 $transaction = $DB->start_delegated_transaction();
 */
 $component->update_assigned_items($idlist);
@@ -96,7 +96,7 @@ if (count($linkedcourses) != 0) {
     }
 }
 
-/* SCANMSG re-add when messages in transactions re-enabled MDL-30029
+/* TODO re-add when messages in transactions re-enabled MDL-30029
 $transaction->allow_commit();
 */
 echo $component->display_list();

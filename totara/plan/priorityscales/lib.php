@@ -122,7 +122,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
         }
 
         $table->data = array();
-        $spacer = $OUTPUT->spacer();
+        $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
         $count = 0;
         $numvalues = count($priorities);
         foreach ($priorities as $priority) {

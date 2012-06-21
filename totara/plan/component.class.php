@@ -1025,7 +1025,7 @@ abstract class dp_base_component {
      *
      * @param int $itemid id of item
      * @param int $userid id of user to find plans for
-     * @return array|false $plans an array of plans or false if there are no plans
+     * @return array $plans an array of plans or false if there are no plans
      */
     public static function get_plans_containing_item($itemid, $userid) {
         debugging('The component "' . $this->component . '" has not defined the method "get_plans_containing_item($itemid, $userid)". This should be defined in order for auto completion of plans to work correctly. Any component that doen\'t define this method will assume that all items in that component are complete when auto completion is turned on.', DEBUG_DEVELOPER);

@@ -71,13 +71,7 @@ if ($confirm) {
     }
 
     // Add checking to this method
-     //SCANMSG: transactions may need additional fixing
-        $transaction = $DB->start_delegated_transaction();
-
-        if (!$DB->set_field('dp_template', 'workflow', $workflow, array('id' => $id))) {
-            totara_set_notification(get_string('error:update_workflow_settings', 'totara_plan'), $returnurl);
-        }
-        $transaction->allow_commit();
+    $DB->set_field('dp_template', 'workflow', $workflow, array('id' => $id));
     add_to_log(SITEID, 'plan', 'changed workflow', "template/workflow.php?id={$id}", "Template ID:{$id}");
     totara_set_notification(get_string('update_workflow_settings', 'totara_plan'), $returnurl, array('class' => 'notifysuccess'));
 

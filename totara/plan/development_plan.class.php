@@ -389,7 +389,7 @@ class development_plan {
     function display_summary_widget() {
         global $OUTPUT, $DB;
 
-        $link = html_writer::link(new moodle_url('view.php', array('id' => $this->id)), $this->name);
+        $link = html_writer::link(new moodle_url('/totara/plan/view.php', array('id' => $this->id)), $this->name);
         $out = $OUTPUT->container($link, 'dp-summary-widget-title');
         $components = $DB->get_records_select('dp_component_settings', "templateid = ? AND enabled = 1", array($this->templateid), 'sortorder');
         $total = count($components);
@@ -415,7 +415,7 @@ class development_plan {
         if ($pendingitems) {
             $a = new stdClass();
             $a->count = $pendingitems;
-            $link = new moodle_url('approve.php', array('id' => $this->id));
+            $link = new moodle_url('/totara/plan/approve.php', array('id' => $this->id));
             $a->link = $link->out();
             $content .= html_writer::tag('span', get_string('pendingitemsx', 'totara_plan', $a),
                     array('class' => 'dp-summary-widget-pendingitems-text'));
@@ -436,7 +436,7 @@ class development_plan {
     function display_add_plan_icon() {
         global $OUTPUT;
 
-        return $OUTPUT->action_icon(new moodle_url('edit.php'), $OUTPUT->pix_icon('t/add', get_string('addplan', 'totara_plan')), null, array('title' => get_string('addplan', 'totara_plan')));
+        return $OUTPUT->action_icon(new moodle_url('/totara/plan/edit.php'), new pix_icon('t/add', get_string('addplan', 'totara_plan')), null, array('title' => get_string('addplan', 'totara_plan')));
     }
 
 
@@ -517,7 +517,7 @@ class development_plan {
             // Approval request
             if ($this->get_setting('approve') == DP_PERMISSION_REQUEST) {
                 $out .= html_writer::empty_tag('br');
-                $out .= $OUTPUT->action_link(new moodle_url('action.php', array('id' => $this->id, 'approvalrequest' => 1, 'sesskey' => sesskey())), get_string('requestapproval', 'totara_plan'));
+                $out .= $OUTPUT->action_link(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'approvalrequest' => 1, 'sesskey' => sesskey())), get_string('requestapproval', 'totara_plan'));
             }
 
 
@@ -590,24 +590,24 @@ class development_plan {
 
             // Approve/Decline
             if (in_array($this->get_setting('approve'), array(DP_PERMISSION_ALLOW, DP_PERMISSION_APPROVE))) {
-                echo $OUTPUT->action_icon(new moodle_url('action.php', array('id' => $this->id, 'approve' => 1, 'sesskey' => sesskey())), new pix_icon('/t/go', get_string('approve', 'totara_plan')));
-                echo $OUTPUT->action_icon(new moodle_url('action.php', array('id' => $this->id, 'decline' => 1, 'sesskey' => sesskey())), new pix_icon('/t/stop', get_string('decline', 'totara_plan')));
+                echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'approve' => 1, 'sesskey' => sesskey())), new pix_icon('/t/go', get_string('approve', 'totara_plan')));
+                echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'decline' => 1, 'sesskey' => sesskey())), new pix_icon('/t/stop', get_string('decline', 'totara_plan')));
             }
         }
 
         // Complete
         if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW  && $this->get_setting('manualcomplete')) {
-            echo $OUTPUT->action_icon(new moodle_url('action.php', array('id' => $this->id, 'complete' => 1, 'sesskey' => sesskey())), new pix_icon('/t/favourite_on', get_string('plancomplete', 'totara_plan')));
+            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'complete' => 1, 'sesskey' => sesskey())), new pix_icon('/t/favourite_on', get_string('plancomplete', 'totara_plan')));
         }
 
         // Reactivate
         if ($this->status == DP_PLAN_STATUS_COMPLETE && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
-            echo $OUTPUT->action_icon(new moodle_url('action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey())), new pix_icon('/t/plan_reactivate', get_string('planreactivate', 'totara_plan')));
+            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey())), new pix_icon('/t/plan_reactivate', get_string('planreactivate', 'totara_plan')));
         }
 
         // Delete
         if ($this->get_setting('delete') == DP_PERMISSION_ALLOW) {
-            echo $OUTPUT->action_icon(new moodle_url('action.php', array('id' => $this->id, 'delete' => 1, 'sesskey' => sesskey())), new pix_icon('/t/delete', get_string('delete')));
+            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'delete' => 1, 'sesskey' => sesskey())), new pix_icon('/t/delete', get_string('delete')));
         }
 
         $out = ob_get_contents();
@@ -998,7 +998,7 @@ class development_plan {
 
         $extramessage = '';
         if ($this->get_setting('completereactivate') == DP_PERMISSION_ALLOW) {
-            $url = new moodle_url('action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey()));
+            $url = new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey()));
             $extramessage = html_writer::tag('p', get_string('reactivateplantext', 'totara_plan', $url));
             }
         return html_writer::tag('p',  $message) . $extramessage;
@@ -1482,7 +1482,7 @@ class development_plan {
      */
     function send_approved_alert() {
         global $USER, $CFG, $DB;
-        // require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php'); // SCANMSG: TODO fix messagelib
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
         $userto = $DB->get_record('user', array('id' => $this->userid));
         $userfrom = $DB->get_record('user', array('id' => $USER->id));
@@ -1506,8 +1506,7 @@ class development_plan {
      */
     function send_declined_alert() {
         global $USER, $CFG, $DB;
-
-        // require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php'); // SCANMSG: TODO fix messagelib
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
         $userto = $DB->get_record('user', array('id' => $this->userid));
         $userfrom = $DB->get_record('user', array('id' => $USER->id));
@@ -1531,8 +1530,8 @@ class development_plan {
      */
     function send_completion_alert() {
         global $USER, $CFG, $DB;
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
 
-        // require_once($CFG->dirroot.'/totara/totara_msg/messagelib.php'); // SCANMSG: TODO fix messagelib
         $learner = $DB->get_record('user', array('id' => $this->userid));
 
         // Send alert to manager

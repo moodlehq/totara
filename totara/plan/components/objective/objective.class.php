@@ -254,6 +254,7 @@ class dp_objective_component extends dp_base_component {
 
             $table->add_data($row);
         }
+        $records->close();
 
         // return instead of outputing table contents
         ob_start();
@@ -711,7 +712,7 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = new moodle_url('/totara/plan/components/objective/view.php', array('id' => $this->plan->id, 'itemid' => $objid));
         $event->icon = 'objective-add';
         $a = new stdClass();
-        $a->objective = new action_link($event->contexturl, stripslashes($fullname));
+        $a->objective = new action_link($event->contexturl, $fullname);
         $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
         $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
         $a->userfrom = $this->current_user_link();
@@ -1238,7 +1239,7 @@ class dp_objective_component extends dp_base_component {
      *
      * @param int $objectiveid
      * @param int $userid
-     * @return array|false $plans ids of plans with specified objective
+     * @return array $plans ids of plans with specified objective
      */
     public static function get_plans_containing_item($objectiveid, $userid) {
         global $DB;
@@ -1255,7 +1256,6 @@ class dp_objective_component extends dp_base_component {
                 p.userid = ?";
         $params = array($userid);
 
-        $plans = $DB->get_fieldset_sql($sql, $params);
-        return $plans;
+        return $DB->get_fieldset_sql($sql, $params);
     }
 }

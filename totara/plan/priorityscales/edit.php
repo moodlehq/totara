@@ -108,13 +108,13 @@ if ($mform->is_cancelled()) {
             $prioritynew->proficient = $priorityidlist[0];
             $DB->update_record('dp_priority_scale', $prioritynew);
         }
-        $notification = get_string('priorityscaleadded', 'totara_plan', format_string(stripslashes($prioritynew->name)));
+        $notification = get_string('priorityscaleadded', 'totara_plan', format_string($prioritynew->name));
         $transaction->allow_commit();
     } else {
         // Existing priority
         $DB->update_record('dp_priority_scale', $prioritynew);
         add_to_log(SITEID, 'priorityscales', 'updated', "view.php?id=$prioritynew->id");
-        $notification = get_string('priorityscaleupdated', 'totara_plan', format_string(stripslashes($prioritynew->name)));
+        $notification = get_string('priorityscaleupdated', 'totara_plan', format_string($prioritynew->name));
     }
     $prioritynew = file_postupdate_standard_editor($prioritynew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_plan', 'dp_priority_scale', $prioritynew->id);
     $DB->set_field('dp_priority_scale', 'description', $prioritynew->description, array('id' => $prioritynew->id));

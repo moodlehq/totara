@@ -101,9 +101,7 @@ if ((!empty($moveup) or !empty($movedown))) {
 }
 
 if ($show) {
-    if (!$component = $DB->get_record('dp_component_settings', array('id' => $show))) {
-        totara_set_notification(get_string('error:invalid_component_id', 'totara_plan'), $returnurl);
-    } else {
+    if ($component = $DB->get_record('dp_component_settings', array('id' => $show))) {
         $transaction = $DB->start_delegated_transaction();
         $enabled = 1;
         $DB->set_field('dp_component_settings', 'enabled', $enabled, array('id' => $component->id));
@@ -115,9 +113,7 @@ if ($show) {
 }
 
 if ($hide) {
-    if (!$component = $DB->get_record('dp_component_settings', array('id' => $hide))) {
-        totara_set_notification(get_string('error:invalid_component_id', 'totara_plan'), $returnurl);
-    } else {
+    if ($component = $DB->get_record('dp_component_settings', array('id' => $hide))) {
         $transaction = $DB->start_delegated_transaction();
         $enabled = 0;
         $DB->set_field('dp_component_settings', 'enabled', $enabled, array('id' => $component->id));

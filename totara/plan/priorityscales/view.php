@@ -219,7 +219,7 @@ if ($values) {
     $table->head[] = get_string('edit');
     $table->align[] = 'center';
 
-    $spacer = $OUTPUT->spacer();
+    $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
     $numvalues = count($values);
 
     // Add rows to table

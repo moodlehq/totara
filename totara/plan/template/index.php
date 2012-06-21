@@ -55,18 +55,14 @@ local_js(array(
 $returnurl = new moodle_url('/totara/plan/template/index.php');
 
 if ($show) {
-    if (!$template = $DB->get_record('dp_template', array('id' => $show))) {
-        totara_set_notification(get_string('error:templateid', 'totara_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-    } else {
+    if ($template = $DB->get_record('dp_template', array('id' => $show))) {
         $visible = 1;
         $DB->set_field('dp_template', 'visible', $visible, array('id' => $template->id));
     }
 }
 
 if ($hide) {
-    if (!$template = $DB->get_record('dp_template', array('id' => $hide))) {
-        totara_set_notification(get_string('error:templateid', 'totara_plan'), $CFG->wwwroot.'/totara/plan/template/index.php');
-    } else {
+    if ($template = $DB->get_record('dp_template', array('id' => $hide))) {
         $visible = 0;
         $DB->set_field('dp_template', 'visible', $visible, array('id' => $template->id));
     }
@@ -208,7 +204,7 @@ if ($templates) {
     $table->set_attribute('class', 'generalbox dp-templates');
 
     $table->setup();
-    $spacer = $OUTPUT->spacer();
+    $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
     $count = 0;
     $numvalues = count($templates);
     foreach ($templates as $template) {
@@ -226,7 +222,7 @@ if ($templates) {
 
         $instancecount = $DB->count_records('dp_plan', array('templateid' => $template->id));
         if ($instancecount) {
-            $tablerow[] = html_writer::link(new moodle_url('templateinstances.php', array('id' => $template->id)), $instancecount);
+            $tablerow[] = html_writer::link(new moodle_url('/totara/plan/template/templateinstances.php', array('id' => $template->id)), $instancecount);
         } else {
             $tablerow[] = $instancecount;
         }
