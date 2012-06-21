@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Eugene Venter <eugene@catalyst.net.nz>
- * @author Simon Coggins <simonc@catalyst.net.nz>
+ * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Aaron Barnes <aaronb@catalyst.net.nz>
  * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
