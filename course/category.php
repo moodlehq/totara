@@ -30,8 +30,10 @@
     // are displayed by default
     if ($viewtype == 'program') {
         $SESSION->viewtype = 'program';
+        $PAGE->set_totara_menu_selected('programs');
     } else if ($viewtype == 'course' || empty($SESSION->viewtype)) {
         $SESSION->viewtype = 'course';
+        $PAGE->set_totara_menu_selected('courses');
     }
 
     $PAGE->set_category_by_id($id);

@@ -148,7 +148,7 @@ table.minicalendar,
     -webkit-border-radius: 5px;
     border-radius: 5px;
 }
-div#main_menu ul li a {
+div#totaramenu ul li a {
     -moz-border-radius-topleft: 3px;
     -moz-border-radius-topright: 3px;
     -webkit-border-top-left-radius: 3px;
@@ -156,7 +156,15 @@ div#main_menu ul li a {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
-div#main_menu ul ul {
+div#totaramenu ul ul li a {
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+div#totaramenu ul ul {
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     -moz-border-radius-bottomleft: 3px;

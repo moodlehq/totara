@@ -40,7 +40,11 @@ if (!$viewtype && !empty($SESSION->viewtype)) {
 
     $SESSION->viewtype = $viewtype;
 }
-
+if ($viewtype == 'course') {
+    $PAGE->set_totara_menu_selected('courses');
+} else if ($viewtype == 'program') {
+    $PAGE->set_totara_menu_selected('programs');
+}
 
 /**
  * Clean search terms
