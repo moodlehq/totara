@@ -182,7 +182,6 @@ function totara_reset_frontpage_blocks() {
 
 }
 
-
 /**
  *  Calls module renderer to return markup for displaying a progress bar for a user's course progress
  *
@@ -1295,4 +1294,68 @@ function totara_build_menu() {
     );
 
     return $tree;
+}
+
+/**
+ * Install the Totara MyMoodle blocks
+ *
+ * @return bool
+ */
+function totara_reset_mymoodle_blocks() {
+    global $DB, $SITE;
+
+    // get the id of the default mymoodle page
+    $mypageid = $DB->get_field_sql('SELECT id FROM {my_pages} WHERE userid IS null AND private = 1');
+
+    // build new block array
+    $blocks = array(
+        (object)array(
+            'blockname'=> 'totara_quicklinks',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'my-index',
+            'subpagepattern' => $mypageid,
+            'defaultweight' => 1,
+            'configdata' => '',
+            'default-region' => 'side-post'
+        ),
+        (object)array(
+            'blockname'=> 'totara_tasks',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'my-index',
+            'subpagepattern' => $mypageid,
+            'defaultweight' => 1,
+            'configdata' => '',
+            'default-region' => 'content'
+        ),
+        (object)array(
+            'blockname'=> 'totara_alerts',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'my-index',
+            'subpagepattern' => $mypageid,
+            'defaultweight' => 1,
+            'configdata' => '',
+            'default-region' => 'content',
+        ),
+        (object)array(
+            'blockname'=> 'totara_stats',
+            'parentcontextid' => $SITE->id,
+            'showinsubcontexts' => 0,
+            'pagetypepattern' => 'my-index',
+            'subpagepattern' => $mypageid,
+            'defaultweight' => 1,
+            'configdata' => '',
+            'default-region' => 'side-post',
+        )
+    );
+
+    // insert blocks
+    foreach ($blocks as $b) {
+        $DB->insert_record('block_instances', $b);
+    }
+
+    return 1;
+
 }

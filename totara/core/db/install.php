@@ -128,6 +128,7 @@ function xmldb_totara_core_install() {
 
     // set up blocks
     totara_reset_frontpage_blocks();
+    totara_reset_mymoodle_blocks();
 
     // set up frontpage
     set_config('frontpage', '');
