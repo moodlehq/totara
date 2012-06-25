@@ -148,17 +148,18 @@ class feedback_item_textarea extends feedback_item_base {
     }
 
     public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+        $align = right_to_left() ? 'right' : 'left';
         $values = feedback_get_group_values($item, $groupid, $courseid);
         if ($values) {
-            echo '<tr><th colspan="2" align="left">';
+            echo '<tr><th colspan="2" align="' . $align . '">';
             echo $itemnr.'&nbsp;('.$item->label.') '.$item->name;
             echo '</th></tr>';
             foreach ($values as $value) {
                 echo '<tr>';
-                echo '<td valign="top" align="left">';
+                echo '<td valign="top" align="' . $align . '">';
                 echo '-&nbsp;&nbsp;';
                 echo '</td>';
-                echo '<td align="left" valign="top">';
+                echo '<td align="' . $align . '" valign="top">';
                 echo str_replace("\n", '<br />', $value->value);
                 echo '</td>';
                 echo '</tr>';

@@ -217,6 +217,7 @@ class feedback_item_multichoice extends feedback_item_base {
 
     public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
         global $OUTPUT;
+        $align = right_to_left() ? 'right' : 'left';
         $sep_dec = get_string('separator_decimal', 'feedback');
         if (substr($sep_dec, 0, 2) == '[[') {
             $sep_dec = FEEDBACK_DECIMAL;
@@ -230,7 +231,7 @@ class feedback_item_multichoice extends feedback_item_base {
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
         if ($analysed_item) {
             $itemname = $analysed_item[1];
-            echo '<tr><th colspan="2" align="left">';
+            echo '<tr><th align="' . $align . '" colspan="2">';
             echo $itemnr.'&nbsp;('.$item->label.') '.$itemname;
             echo '</th></tr>';
 
@@ -247,10 +248,10 @@ class feedback_item_multichoice extends feedback_item_base {
                     $str_quotient = '&nbsp;('. $quotient . '&nbsp;%)';
                 }
                 echo '<tr>';
-                echo '<td align="left" valign="top">
+                echo '<td align="' . $align . '" valign="top">
                             -&nbsp;&nbsp;'.trim($val->answertext).':
                       </td>
-                      <td align="left" style="width:'.FEEDBACK_MAX_PIX_LENGTH.';">
+                      <td align="' . $align . '" style="width:'.FEEDBACK_MAX_PIX_LENGTH.';">
                         <img alt="'.$intvalue.'" src="'.$pix.'" height="5" width="'.$pixwidth.'" />
                         &nbsp;'.$val->answercount.$str_quotient.'
                       </td>';

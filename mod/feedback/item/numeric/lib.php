@@ -169,15 +169,16 @@ class feedback_item_numeric extends feedback_item_base {
 
     public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
 
+        $align = right_to_left() ? 'right' : 'left';
         $values = $this->get_analysed($item, $groupid, $courseid);
 
         if (isset($values->data) AND is_array($values->data)) {
-            echo '<tr><th colspan="2" align="left">';
+            echo '<tr><th colspan="2" align="' . $align . '">';
             echo $itemnr.'&nbsp;('.$item->label.') '.$item->name;
             echo '</th></tr>';
 
             foreach ($values->data as $value) {
-                echo '<tr><td colspan="2" valign="top" align="left">';
+                echo '<tr><td colspan="2" valign="top" align="' . $align . '">';
                 echo '-&nbsp;&nbsp;'.number_format($value, 2, $this->sep_dec, $this->sep_thous);
                 echo '</td></tr>';
             }
@@ -187,7 +188,7 @@ class feedback_item_numeric extends feedback_item_base {
             } else {
                 $avg = number_format(0, 2, $this->sep_dec, $this->sep_thous);
             }
-            echo '<tr><td align="left" colspan="2"><b>';
+            echo '<tr><td align="' . $align . '" colspan="2"><b>';
             echo get_string('average', 'feedback').': '.$avg;
             echo '</b></td></tr>';
         }
