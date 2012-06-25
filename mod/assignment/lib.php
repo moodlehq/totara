@@ -130,6 +130,9 @@ class assignment_base {
             print_error('invalidid', 'assignment');
         }
 
+        if (!isset($this->cm->idnumber)) {
+            $this->cm->idnumber = $DB->get_field('course_modules', 'idnumber', array('id' => $cm->id));
+        }
         $this->assignment->cmidnumber = $this->cm->idnumber; // compatibility with modedit assignment obj
         $this->assignment->courseid   = $this->course->id; // compatibility with modedit assignment obj
 
