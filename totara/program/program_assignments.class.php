@@ -484,7 +484,7 @@ abstract class prog_assignment_category {
                                 $delete_user_assign_sql = "DELETE FROM {prog_user_assignment} WHERE assignmentid = ?";
                                 $DB->execute($delete_user_assign_sql, array($object->id));
                                 $delete_completions_sql = "DELETE FROM {prog_completion} WHERE coursesetid = 0 AND userid {$assignment_userid_sql} AND programid = ?";
-                                $DB->execute($delete_completions_sql, array_shift($assignment_userids, array($object->programid)));
+                                $DB->execute($delete_completions_sql, array_merge($assignment_userid_params, array($object->programid)));
                                 $transaction->allow_commit();
                             }
 
