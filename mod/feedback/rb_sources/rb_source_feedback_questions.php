@@ -23,7 +23,7 @@ class rb_source_feedback_questions extends rb_base_source {
         global $CFG;
         $this->groupid = $groupid;
         $this->grouptables = 'report_builder_fbq_' . $groupid . '_';
-        $this->base = $CFG->prefix . $this->grouptables . 'a';
+        $this->base = "{{$this->grouptables}a}";
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();
