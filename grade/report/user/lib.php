@@ -310,6 +310,7 @@ class grade_report_user extends grade_report {
         $hidden = '';
         $excluded = '';
         $class = '';
+        $classfeedback = '';
 
         // If this is a hidden grade category, hide it completely from the user
         if ($type == 'category' && $grade_object->is_hidden() && !$this->canviewhidden && (
@@ -344,6 +345,17 @@ class grade_report_user extends grade_report {
                     ($this->showhiddenitems == GRADE_REPORT_USER_HIDE_UNTIL && !$grade_grade->is_hiddenuntil()))) {
                 // return false;
             } else {
+                // The grade object can be marked visible but still be hidden
+                // if "enablegroupmembersonly" is on and its an activity assigned to a grouping the user is not in
+                if (!empty($grade_object->itemmodule) && !empty($grade_object->iteminstance)) {
+                    $instances = $this->gtree->modinfo->get_instances();
+                    if (!empty($instances[$grade_object->itemmodule][$grade_object->iteminstance])) {
+                        $cm = $instances[$grade_object->itemmodule][$grade_object->iteminstance];
+                        if (!$cm->uservisible) {
+                            return false;
+                        }
+                    }
+                }
                 /// Excluded Item
                 if ($grade_grade->is_excluded()) {
                     $fullname .= ' ['.get_string('excluded', 'grades').']';
@@ -366,6 +378,10 @@ class grade_report_user extends grade_report {
                 /// Actual Grade
                 $gradeval = $grade_grade->finalgrade;
 
+                if ($this->showfeedback) {
+                    // Copy $class before appending itemcenter as feedback should not be centered
+                    $classfeedback = $class;
+                }
                 $class .= " itemcenter ";
                 if ($this->showweight) {
                     $data['weight']['class'] = $class;
@@ -475,13 +491,13 @@ class grade_report_user extends grade_report {
                 // Feedback
                 if ($this->showfeedback) {
                     if ($grade_grade->overridden > 0 AND ($type == 'categoryitem' OR $type == 'courseitem')) {
-                    $data['feedback']['class'] = $class.' feedbacktext';
+                    $data['feedback']['class'] = $classfeedback.' feedbacktext';
                         $data['feedback']['content'] = get_string('overridden', 'grades').': ' . format_text($grade_grade->feedback, $grade_grade->feedbackformat);
                     } else if (empty($grade_grade->feedback) or (!$this->canviewhidden and $grade_grade->is_hidden())) {
-                        $data['feedback']['class'] = $class.' feedbacktext';
+                        $data['feedback']['class'] = $classfeedback.' feedbacktext';
                         $data['feedback']['content'] = '&nbsp;';
                     } else {
-                        $data['feedback']['class'] = $class.' feedbacktext';
+                        $data['feedback']['class'] = $classfeedback.' feedbacktext';
                         $data['feedback']['content'] = format_text($grade_grade->feedback, $grade_grade->feedbackformat);
                     }
                 }

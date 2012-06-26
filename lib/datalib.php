@@ -224,7 +224,7 @@ function get_users($get=true, $search='', $confirmed=false, array $exceptions=nu
     if ($exceptions) {
         list($exceptions, $eparams) = $DB->get_in_or_equal($exceptions, SQL_PARAMS_NAMED, 'ex', false);
         $params = $params + $eparams;
-        $except = " AND id $exceptions";
+        $select .= " AND id $exceptions";
     }
 
     if ($firstinitial) {
@@ -1267,7 +1267,7 @@ function get_my_remotehosts() {
 function make_default_scale() {
     global $DB;
 
-    $defaultscale = NULL;
+    $defaultscale = new stdClass();
     $defaultscale->courseid = 0;
     $defaultscale->userid = 0;
     $defaultscale->name  = get_string('separateandconnected');
@@ -1964,19 +1964,26 @@ function count_login_failures($mode, $username, $lastlogin) {
 /// GENERAL HELPFUL THINGS  ///////////////////////////////////
 
 /**
- * Dump a given object's information in a PRE block.
+ * Dumps a given object's information for debugging purposes
  *
- * Mostly just used for debugging.
+ * When used in a CLI script, the object's information is written to the standard
+ * error output stream. When used in a web script, the object is dumped to a
+ * pre-formatted block with the "notifytiny" CSS class.
  *
  * @param mixed $object The data to be printed
- * @return void OUtput is echo'd
+ * @return void output is echo'd
  */
 function print_object($object) {
-    echo '<pre class="notifytiny">';
+
     // we may need a lot of memory here
     raise_memory_limit(MEMORY_EXTRA);
-    echo s(print_r($object, true));
-    echo '</pre>';
+
+    if (CLI_SCRIPT) {
+        fwrite(STDERR, print_r($object, true));
+        fwrite(STDERR, PHP_EOL);
+    } else {
+        echo html_writer::tag('pre', s(print_r($object, true)), array('class' => 'notifytiny'));
+    }
 }
 
 /**

@@ -185,7 +185,8 @@ function scorm_update_instance($scorm, $mform=null) {
 
     } else if ($scorm->scormtype === SCORM_TYPE_IMSREPOSITORY) {
         $scorm->reference = $scorm->packageurl;
-
+    } else if ($scorm->scormtype === SCORM_TYPE_AICCURL) {
+        $scorm->reference = $scorm->packageurl;
     } else {
         return false;
     }
@@ -501,7 +502,7 @@ function scorm_cron () {
 
         mtrace('Updating scorm packages which require daily update');//We are updating
 
-        $scormsupdate = $DB->get_records('scorm', array('updatefreq'=>UPDATE_EVERYDAY));
+        $scormsupdate = $DB->get_records_select('scorm', 'updatefreq = ? AND scormtype <> ?', array(SCORM_UPDATE_EVERYDAY, SCORM_TYPE_LOCAL));
         foreach ($scormsupdate as $scormupdate) {
             scorm_parse($scormupdate, true);
         }
@@ -920,6 +921,10 @@ function scorm_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
 
     $fs = get_file_storage();
     if (!$file = $fs->get_file_by_hash(sha1($fullpath)) or $file->is_directory()) {
+        if ($filearea === 'content') { //return file not found straight away to improve performance.
+            send_header_404();
+            die;
+        }
         return false;
     }
 
@@ -952,26 +957,6 @@ function scorm_supports($feature) {
 
         default: return null;
     }
-}
-
-/**
- * This function extends the global navigation for the site.
- * It is important to note that you should not rely on PAGE objects within this
- * body of code as there is no guarantee that during an AJAX request they are
- * available
- *
- * @param navigation_node $navigation The scorm node within the global navigation
- * @param stdClass $course The course object returned from the DB
- * @param stdClass $module The module object returned from the DB
- * @param stdClass $cm The course module instance returned from the DB
- */
-function scorm_extend_navigation($navigation, $course, $module, $cm) {
-    /**
-     * This is currently just a stub so that it can be easily expanded upon.
-     * When expanding just remove this comment and the line below and then add
-     * you content.
-     */
-    $navigation->nodetype = navigation_node::NODETYPE_LEAF;
 }
 
 /**

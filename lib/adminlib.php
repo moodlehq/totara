@@ -269,6 +269,10 @@ function uninstall_plugin($type, $name) {
 
     // perform clean-up task common for all the plugin/subplugin types
 
+    //delete the web service functions and pre-built services
+    require_once($CFG->dirroot.'/lib/externallib.php');
+    external_delete_descriptions($component);
+
     // delete calendar events
     $DB->delete_records('event', array('modulename' => $pluginname));
 
@@ -3051,7 +3055,7 @@ class admin_setting_bloglevel extends admin_setting_configselect {
      */
     public function write_setting($data) {
         global $DB, $CFG;
-        if ($data['bloglevel'] == 0) {
+        if ($data == 0) {
             $blogblocks = $DB->get_records_select('block', "name LIKE 'blog_%' AND visible = 1");
             foreach ($blogblocks as $block) {
                 $DB->set_field('block', 'visible', 0, array('id' => $block->id));
@@ -5811,20 +5815,6 @@ function admin_externalpage_setup($section, $extrabutton = '', array $extraurlpa
     $site = get_site();
     require_login();
 
-    $adminroot = admin_get_root(false, false); // settings not required for external pages
-    $extpage = $adminroot->locate($section, true);
-
-    if (empty($extpage) or !($extpage instanceof admin_externalpage)) {
-        print_error('sectionerror', 'admin', "$CFG->wwwroot/$CFG->admin/");
-        die;
-    }
-
-    // this eliminates our need to authenticate on the actual pages
-    if (!$extpage->check_access()) {
-        print_error('accessdenied', 'admin');
-        die;
-    }
-
     if (!empty($options['pagelayout'])) {
         // A specific page layout has been requested.
         $PAGE->set_pagelayout($options['pagelayout']);
@@ -5832,6 +5822,27 @@ function admin_externalpage_setup($section, $extrabutton = '', array $extraurlpa
         $PAGE->set_pagelayout('maintenance');
     } else {
         $PAGE->set_pagelayout('admin');
+    }
+
+    $adminroot = admin_get_root(false, false); // settings not required for external pages
+    $extpage = $adminroot->locate($section, true);
+
+    if (empty($extpage) or !($extpage instanceof admin_externalpage)) {
+        // The requested section isn't in the admin tree
+        // It could be because the user has inadequate capapbilities or because the section doesn't exist
+        if (!has_capability('moodle/site:config', context_system::instance())) {
+            // The requested section could depend on a different capability
+            // but most likely the user has inadequate capabilities
+            print_error('accessdenied', 'admin');
+        } else {
+            print_error('sectionerror', 'admin', "$CFG->wwwroot/$CFG->admin/");
+        }
+    }
+
+    // this eliminates our need to authenticate on the actual pages
+    if (!$extpage->check_access()) {
+        print_error('accessdenied', 'admin');
+        die;
     }
 
     // $PAGE->set_extra_button($extrabutton); TODO
@@ -7575,7 +7586,7 @@ class admin_setting_managewebservicetokens extends admin_setting {
 
                 if (!is_siteadmin($token->userid) and
                         key_exists($token->userid, $usermissingcaps)) {
-                    $missingcapabilities = implode(',',
+                    $missingcapabilities = implode(', ',
                             $usermissingcaps[$token->userid]);
                     if (!empty($missingcapabilities)) {
                         $useratag .= html_writer::tag('div',

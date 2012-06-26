@@ -36,7 +36,7 @@ $confirm = optional_param('confirm', 0, PARAM_BOOL);
 admin_externalpage_setup('externalservicefunctions');
 
 //define nav bar
-$PAGE->set_url('/' . $CFG->admin . '/websevice/service_functions.php', array('id' => $serviceid));
+$PAGE->set_url('/' . $CFG->admin . '/webservice/service_functions.php', array('id' => $serviceid));
 $node = $PAGE->settingsnav->find('externalservices', navigation_node::TYPE_SETTING);
 if ($node) {
     $node->make_active();
@@ -67,7 +67,7 @@ switch ($action) {
             //add the function to the service then redirect to function list page
             if ($data = $mform->get_data()) {
                 ignore_user_abort(true); // no interruption here!
-                foreach ($data->fid as $fid) {
+                foreach ($data->fids as $fid) {
                     $function = $webservicemanager->get_external_function_by_id(
                             $fid, MUST_EXIST);
                     // make sure the function is not there yet

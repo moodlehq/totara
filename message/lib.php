@@ -816,6 +816,12 @@ function message_print_recent_conversations($user=null, $showicontext=false) {
 
     $conversations = message_get_recent_conversations($user);
 
+    // Attach context url information to create the "View this conversation" type links
+    foreach($conversations as $conversation) {
+        $conversation->contexturl = new moodle_url("/message/index.php?user2={$conversation->id}");
+        $conversation->contexturlname = get_string('thisconversation', 'message');
+    }
+
     $showotheruser = true;
     message_print_recent_messages_table($conversations, $user, $showotheruser, $showicontext);
 }
@@ -948,7 +954,7 @@ function message_add_contact($contactid, $blocked=0) {
 
     } else {
     /// new contact record
-        unset($contact);
+        $contact = new stdClass();
         $contact->userid = $USER->id;
         $contact->contactid = $contactid;
         $contact->blocked = $blocked;
@@ -1344,6 +1350,7 @@ function message_contact_link($userid, $linktype='add', $return=false, $script=n
     }
 
     if (empty($str->blockcontact)) {
+       $str = new stdClass();
        $str->blockcontact   =  get_string('blockcontact', 'message');
        $str->unblockcontact =  get_string('unblockcontact', 'message');
        $str->removecontact  =  get_string('removecontact', 'message');
@@ -1503,7 +1510,7 @@ function message_search_users($courseid, $searchtext, $sort='', $exceptions='') 
 
         // everyone who has a role assignment in this course or higher
         $params = array($USER->id, "%$searchtext%");
-        $users = $DB->get_records_sql("SELECT $ufields, mc.id as contactlistid, mc.blocked
+        $users = $DB->get_records_sql("SELECT DISTINCT $ufields, mc.id as contactlistid, mc.blocked
                                          FROM {user} u
                                          JOIN {role_assignments} ra ON ra.userid = u.id
                                          LEFT JOIN {message_contacts} mc
@@ -1533,6 +1540,11 @@ function message_search($searchterms, $fromme=true, $tome=true, $courseid='none'
 /// eg   word  +word -word
 ///
     global $CFG, $USER, $DB;
+
+    // If user is searching all messages check they are allowed to before doing anything else
+    if ($courseid == SITEID && !has_capability('moodle/site:readallmessages', get_context_instance(CONTEXT_SYSTEM))) {
+        print_error('accessdenied','admin');
+    }
 
     /// If no userid sent then assume current user
     if ($userid == 0) $userid = $USER->id;
@@ -1647,7 +1659,7 @@ function message_search($searchterms, $fromme=true, $tome=true, $courseid='none'
 
     /// The keys may be duplicated in $m_read and $m_unread so we can't
     /// do a simple concatenation
-    $message = array();
+    $messages = array();
     foreach ($m_read as $m) {
         $messages[] = $m;
     }
@@ -2346,11 +2358,7 @@ function get_message_processor($type) {
  * @return object $processors object containing information on message processors
  */
 function get_message_output_default_preferences() {
-    $preferences = get_config('message');
-    if (!$preferences) {
-        $preferences = new stdClass();
-    }
-    return $preferences;
+    return get_config('message');
 }
 
 /**
@@ -2382,7 +2390,7 @@ function translate_message_default_setting($plugindefault, $processorname) {
 
     // Validate the value. It should not exceed the maximum size
     if (!is_int($plugindefault) || ($plugindefault > 0x0f)) {
-        $OUTPUT->notification(get_string('errortranslatingdefault', 'message'), 'notifyproblem');
+        debugging(get_string('errortranslatingdefault', 'message'));
         $plugindefault = $default;
     }
     // Use plugin default setting of 'permitted' is 0
@@ -2409,4 +2417,26 @@ function translate_message_default_setting($plugindefault, $processorname) {
  */
 function message_page_type_list($pagetype, $parentcontext, $currentcontext) {
     return array('messages-*'=>get_string('page-message-x', 'message'));
+}
+
+/**
+ * Is $USER one of the supplied users?
+ *
+ * $user2 will be null if viewing a user's recent conversations
+ *
+ * @param stdClass the first user
+ * @param stdClass the second user or null
+ * @return bool True if the current user is one of either $user1 or $user2
+ */
+function message_current_user_is_involved($user1, $user2) {
+    global $USER;
+
+    if (empty($user1->id) || (!empty($user2) && empty($user2->id))) {
+        throw new coding_exception('Invalid user object detected. Missing id.');
+    }
+
+    if ($user1->id != $USER->id && (empty($user2) || $user2->id != $USER->id)) {
+        return false;
+    }
+    return true;
 }

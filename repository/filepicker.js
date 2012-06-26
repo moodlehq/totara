@@ -149,7 +149,11 @@ M.core_filepicker.init = function(Y, options) {
                         // error checking
                         if (data && data.error) {
                             scope.print_msg(data.error, 'error');
-                            scope.list();
+                            if (args.onerror) {
+                                args.onerror(id,data,p);
+                            } else {
+                                Y.one(panel_id).set('innerHTML', '');
+                            }
                             return;
                         } else if (data && data.event) {
                             switch (data.event) {
@@ -311,7 +315,7 @@ M.core_filepicker.init = function(Y, options) {
             if (type=='error') {
                 header = M.str.moodle.error;
             }
-            this.msg_dlg.setHeader(type);
+            this.msg_dlg.setHeader(header);
             this.msg_dlg.show();
         },
         build_tree: function(node, level) {
@@ -653,13 +657,13 @@ M.core_filepicker.init = function(Y, options) {
                     params['author'] = author.get('value');
                 }
 
-                if (this.options.env == 'editor') {
+                if (this.options.externallink && this.options.env == 'editor') {
                     // in editor, images are stored in '/' only
                     params.savepath = '/';
                     // when image or media button is clicked
                     if ( this.options.return_types != 1 ) {
-                        var linkexternal = Y.one('#linkexternal-'+client_id).get('checked');
-                        if (linkexternal) {
+                        var linkexternal = Y.one('#linkexternal-'+client_id);
+                        if (linkexternal && linkexternal.get('checked')) {
                             params['linkexternal'] = 'yes';
                         }
                     } else {
@@ -678,6 +682,9 @@ M.core_filepicker.init = function(Y, options) {
                     client_id: client_id,
                     repository_id: repository_id,
                     'params': params,
+                    onerror: function(id, obj, args) {
+                        scope.view_files();
+                    },
                     callback: function(id, obj, args) {
                         if (scope.options.editor_target && scope.options.env=='editor') {
                             scope.options.editor_target.value=obj.url;
@@ -797,16 +804,22 @@ M.core_filepicker.init = function(Y, options) {
             Y.on('contentready', function(el) {
                 var list = Y.one(el);
                 var count = 0;
+                // Resort the repositories by sortorder
+                var sorted_repositories = new Array();
                 for (var i in r) {
-                    var id = 'repository-'+client_id+'-'+r[i].id;
+                    sorted_repositories[r[i].sortorder - 1] = r[i];
+                }
+                for (var i in sorted_repositories){
+                    repository = sorted_repositories[i];
+                    var id = 'repository-'+client_id+'-'+repository.id;
                     var link_id = id + '-link';
-                    list.append('<li id="'+id+'"><a class="fp-repo-name" id="'+link_id+'" href="###">'+r[i].name+'</a></li>');
-                    Y.one('#'+link_id).prepend('<img src="'+r[i].icon+'" width="16" height="16" />&nbsp;');
+                    list.append('<li id="'+id+'"><a class="fp-repo-name" id="'+link_id+'" href="###">'+repository.name+'</a></li>');
+                    Y.one('#'+link_id).prepend('<img src="'+repository.icon+'" width="16" height="16" />&nbsp;');
                     Y.one('#'+link_id).on('click', function(e, scope, repository_id) {
                         YAHOO.util.Cookie.set('recentrepository', repository_id);
                         scope.repository_id = repository_id;
                         this.list({'repo_id':repository_id});
-                    }, this /*handler running scope*/, this/*second argument*/, r[i].id/*third argument of handler*/);
+                    }, this /*handler running scope*/, this/*second argument*/, repository.id/*third argument of handler*/);
                     count++;
                 }
                 if (count==0) {
@@ -1182,6 +1195,9 @@ M.core_filepicker.init = function(Y, options) {
                         params: {'savepath':scope.options.savepath},
                         repository_id: scope.active_repo.id,
                         form: {id: id, upload:true},
+                        onerror: function(id, o, args) {
+                            scope.create_upload_form(data);
+                        },
                         callback: function(id, o, args) {
                             if (scope.options.editor_target&&scope.options.env=='editor') {
                                 scope.options.editor_target.value=o.url;
@@ -1364,15 +1380,21 @@ M.core_filepicker.init = function(Y, options) {
             var r = this.active_repo;
             var str = '';
             var action = '';
-            if(r.pages > 1) {
+            var lastpage = r.pages;
+            var lastpagetext = r.pages;
+            if (r.pages == -1) {
+                lastpage = r.page + 1;
+                lastpagetext = M.str.moodle.next;
+            }
+            if (lastpage > 1) {
                 str += '<div class="fp-paging" id="paging-'+html_id+'-'+client_id+'">';
                 str += this.get_page_button(1)+'1</a> ';
 
                 var span = 5;
                 var ex = (span-1)/2;
 
-                if (r.page+ex>=r.pages) {
-                    var max = r.pages;
+                if (r.page+ex>=lastpage) {
+                    var max = lastpage;
                 } else {
                     if (r.page<span) {
                         var max = span;
@@ -1399,11 +1421,11 @@ M.core_filepicker.init = function(Y, options) {
                 }
 
                 // won't display upper boundary
-                if (max==r.pages) {
-                    str += this.get_page_button(r.pages)+r.pages+'</a>';
+                if (max==lastpage) {
+                    str += this.get_page_button(lastpage)+lastpagetext+'</a>';
                 } else {
                     str += this.get_page_button(max)+max+'</a>';
-                    str += ' ... '+this.get_page_button(r.pages)+r.pages+'</a>';
+                    str += ' ... '+this.get_page_button(lastpage)+lastpagetext+'</a>';
                 }
                 str += '</div>';
             }

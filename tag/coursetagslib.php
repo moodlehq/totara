@@ -103,7 +103,7 @@ function coursetag_get_all_tags($sort='name', $numtags=0) {
     global $CFG, $DB;
 
     // note that this selects all tags except for courses that are not visible
-    $sql = "SELECT id, name, id, tagtype, rawname, f.timemodified, flag, count
+    $sql = "SELECT id, name, tagtype, rawname, f.timemodified, flag, count
         FROM {tag} t,
         (SELECT tagid, MAX(timemodified) as timemodified, COUNT(id) as count
             FROM {tag_instance} WHERE tagid NOT IN
@@ -395,15 +395,11 @@ function coursetag_get_tagged_courses($tagid) {
     $courses = array();
     if ($crs = $DB->get_records_select('tag_instance', "tagid=:tagid AND itemtype='course'", array('tagid'=>$tagid))) {
         foreach ($crs as $c) {
-            //this capability check was introduced to stop display of courses that a student could not
-            //view, but arguably it is best that when clicking on a tag, the tagged course summary should
-            //be seen and then if the student clicks on that they will be given the opportunity to join
-            //note courses not visible should not have their tagid sent to this function
-            // $context = get_context_instance(CONTEXT_COURSE, $c->itemid);
-            //if (is_enrolled($context) oe is_viewing($context)) {
-                $course = $DB->get_record('course', array('id'=>$c->itemid));
+            $course = $DB->get_record('course', array('id'=>$c->itemid));
+            // check if the course is hidden
+            if ($course->visible == 1 || has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id))) {
                 $courses[$c->itemid] = $course;
-            //}
+            }
         }
     }
     return $courses;

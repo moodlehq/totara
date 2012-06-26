@@ -818,6 +818,9 @@ abstract class repository {
         } else {
             $accepted_types = '*';
         }
+        // Sortorder should be unique, which is not true if we use $record->sortorder
+        // and there are multiple instances of any repository type
+        $sortorder = 1;
         foreach ($records as $record) {
             if (!file_exists($CFG->dirroot . '/repository/'. $record->repositorytype.'/lib.php')) {
                 continue;
@@ -826,6 +829,7 @@ abstract class repository {
             $options['visible'] = $record->visible;
             $options['type']    = $record->repositorytype;
             $options['typeid']  = $record->typeid;
+            $options['sortorder'] = $sortorder++;
             // tell instance what file types will be accepted by file picker
             $classname = 'repository_' . $record->repositorytype;
 
@@ -869,7 +873,11 @@ abstract class repository {
                     }
                     if ($record->repositorytype == 'coursefiles') {
                         // coursefiles plugin needs managefiles permission
-                        $capability = $capability && has_capability('moodle/course:managefiles', $current_context);
+                        if (!empty($current_context)) {
+                            $capability = $capability && has_capability('moodle/course:managefiles', $current_context);
+                        } else {
+                            $capability = $capability && has_capability('moodle/course:managefiles', get_system_context());
+                        }
                     }
                     if ($is_supported && $capability) {
                         $repositories[$repository->id] = $repository;
@@ -1447,6 +1455,7 @@ abstract class repository {
         $meta->icon = $OUTPUT->pix_url('icon', 'repository_'.$meta->type)->out(false);
         $meta->supported_types = $ft->get_extensions($this->supported_filetypes());
         $meta->return_types = $this->supported_returntypes();
+        $meta->sortorder = $this->options['sortorder'];
         return $meta;
     }
 
@@ -2146,6 +2155,8 @@ function initialise_filepicker($args) {
     $return->return_types = $args->return_types;
     foreach ($repositories as $repository) {
         $meta = $repository->get_meta();
+        // Please note that the array keys for repositories are used within
+        // JavaScript a lot, the key NEEDS to be the repository id.
         $return->repositories[$repository->id] = $meta;
     }
     return $return;

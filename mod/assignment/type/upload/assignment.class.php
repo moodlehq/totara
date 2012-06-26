@@ -113,9 +113,6 @@ class assignment_upload extends assignment_base {
             $userid = $submission->userid;
         }
 
-        if (empty($submission->timemarked)) {   /// Nothing to show, so print nothing
-            return;
-        }
         // Check the user can submit
         $canviewfeedback = ($userid == $USER->id && has_capability('mod/assignment:submit', $this->context, $USER->id, false));
         // If not then check if the user still has the view cap and has a previous submission
@@ -396,6 +393,33 @@ class assignment_upload extends assignment_base {
         parent::process_feedback($mform);
     }
 
+    /**
+     * Counts all complete (real) assignment submissions by enrolled students. This overrides assignment_base::count_real_submissions().
+     * This is necessary for advanced file uploads where we need to check that the data2 field is equal to "submitted" to determine
+     * if a submission is complete.
+     *
+     * @param  int $groupid (optional) If nonzero then count is restricted to this group
+     * @return int          The number of submissions
+     */
+    function count_real_submissions($groupid=0) {
+        global $DB;
+
+        // Grab the context assocated with our course module
+        $context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
+
+        // Get ids of users enrolled in the given course.
+        list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:view', $groupid);
+        $params['assignmentid'] = $this->cm->instance;
+
+        // Get ids of users enrolled in the given course.
+        return $DB->count_records_sql("SELECT COUNT('x')
+                                         FROM {assignment_submissions} s
+                                    LEFT JOIN {assignment} a ON a.id = s.assignment
+                                   INNER JOIN ($enroledsql) u ON u.id = s.userid
+                                        WHERE s.assignment = :assignmentid AND
+                                              s.data2 = 'submitted'", $params);
+    }
+
     function print_responsefiles($userid, $return=false) {
         global $CFG, $USER, $OUTPUT, $PAGE;
 
@@ -421,7 +445,6 @@ class assignment_upload extends assignment_base {
         }
         echo $output;
     }
-
 
     /**
      * Upload files
@@ -1151,6 +1174,18 @@ class assignment_upload extends assignment_base {
         if ($zipfile = assignment_pack_files($filesforzipping)) {
             send_temp_file($zipfile, $filename); //send file and delete after sending.
         }
+    }
+
+    /**
+     * Check the given submission is complete. Preliminary rows are often created in the assignment_submissions
+     * table before a submission actually takes place. This function checks to see if the given submission has actually
+     * been submitted.
+     *
+     * @param  stdClass $submission The submission we want to check for completion
+     * @return bool                 Indicates if the submission was found to be complete
+     */
+    public function is_submitted_with_required_data($submission) {
+        return ($submission->timemodified AND $submission->data2);
     }
 }
 

@@ -34,6 +34,13 @@
 
     redirect_if_major_upgrade_required();
 
+    $urlparams = array();
+    if (!empty($CFG->defaulthomepage) && ($CFG->defaulthomepage == HOMEPAGE_MY) && optional_param('redirect', 1, PARAM_BOOL) === 0) {
+        $urlparams['redirect'] = 0;
+    }
+    $PAGE->set_url('/', $urlparams);
+    $PAGE->set_course($SITE);
+
     if ($CFG->forcelogin) {
         require_login();
     } else {
@@ -41,9 +48,6 @@
     }
 
     $hassiteconfig = has_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
-
-    $PAGE->set_url('/');
-    $PAGE->set_course($SITE);
 
 /// If the site is currently under maintenance, then print a message
     if (!empty($CFG->maintenance_enabled) and !$hassiteconfig) {
@@ -58,9 +62,9 @@
         // Redirect logged-in users to My Moodle overview if required
         if (optional_param('setdefaulthome', false, PARAM_BOOL)) {
             set_user_preference('user_home_page_preference', HOMEPAGE_SITE);
-        } else if ($CFG->defaulthomepage == HOMEPAGE_MY && optional_param('redirect', 1, PARAM_BOOL) === 1) {
+        } else if (!empty($CFG->defaulthomepage) && ($CFG->defaulthomepage == HOMEPAGE_MY) && optional_param('redirect', 1, PARAM_BOOL) === 1) {
             redirect($CFG->wwwroot .'/my/');
-        } else if (!empty($CFG->defaulthomepage) && $CFG->defaulthomepage == HOMEPAGE_USER) {
+        } else if (!empty($CFG->defaulthomepage) && ($CFG->defaulthomepage == HOMEPAGE_USER)) {
             $PAGE->settingsnav->get('usercurrentsettings')->add(get_string('makethismyhome'), new moodle_url('/', array('setdefaulthome'=>true)), navigation_node::TYPE_SETTING);
         }
     }

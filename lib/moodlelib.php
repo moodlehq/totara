@@ -1316,7 +1316,7 @@ function get_config($plugin, $name = NULL) {
         if ($localcfg) {
             return (object)$localcfg;
         } else {
-            return null;
+            return new stdClass();
         }
 
     } else {
@@ -1867,6 +1867,7 @@ function make_timestamp($year, $month=1, $day=1, $hour=0, $minute=0, $second=0, 
     $totalsecs = abs($totalsecs);
 
     if (!$str) {  // Create the str structure the slow way
+        $str = new stdClass();
         $str->day   = get_string('day');
         $str->days  = get_string('days');
         $str->hour  = get_string('hour');
@@ -2038,6 +2039,15 @@ function usergetdate($time, $timezone=99) {
         $getdate['seconds']
     ) = explode('_', $datestring);
 
+    // set correct datatype to match with getdate()
+    $getdate['seconds'] = (int)$getdate['seconds'];
+    $getdate['yday'] = (int)$getdate['yday'] - 1; // gettime returns 0 through 365
+    $getdate['year'] = (int)$getdate['year'];
+    $getdate['mon'] = (int)$getdate['mon'];
+    $getdate['wday'] = (int)$getdate['wday'];
+    $getdate['mday'] = (int)$getdate['mday'];
+    $getdate['hours'] = (int)$getdate['hours'];
+    $getdate['minutes']  = (int)$getdate['minutes'];
     return $getdate;
 }
 
@@ -2213,7 +2223,7 @@ function get_timezone_record($timezonename) {
     }
 
     return $cache[$timezonename] = $DB->get_record_sql('SELECT * FROM {timezone}
-                                                        WHERE name = ? ORDER BY year DESC', array($timezonename), true);
+                                                        WHERE name = ? ORDER BY year DESC', array($timezonename), IGNORE_MULTIPLE);
 }
 
 /**
@@ -2609,6 +2619,13 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
         }
     }
 
+    // If this is an AJAX request and $setwantsurltome is true then we need to override it and set it to false.
+    // Otherwise the AJAX request URL will be set to $SESSION->wantsurl and events such as self enrolment in the future
+    // risk leading the user back to the AJAX request URL.
+    if ($setwantsurltome && defined('AJAX_SCRIPT') && AJAX_SCRIPT) {
+        $setwantsurltome = false;
+    }
+
     // If the user is not even logged in yet then make sure they are
     if (!isloggedin()) {
         if ($autologinguest and !empty($CFG->guestloginbutton) and !empty($CFG->autologinguests)) {
@@ -2653,7 +2670,9 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
     if (get_user_preferences('auth_forcepasswordchange') && !session_is_loggedinas()) {
         $userauth = get_auth_plugin($USER->auth);
         if ($userauth->can_change_password() and !$preventredirect) {
-            $SESSION->wantsurl = $FULLME;
+            if ($setwantsurltome) {
+                $SESSION->wantsurl = $FULLME;
+            }
             if ($changeurl = $userauth->change_password_url()) {
                 //use plugin custom url
                 redirect($changeurl);
@@ -2676,7 +2695,9 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
         if ($preventredirect) {
             throw new require_login_exception('User not fully set-up');
         }
-        $SESSION->wantsurl = $FULLME;
+        if ($setwantsurltome) {
+            $SESSION->wantsurl = $FULLME;
+        }
         redirect($CFG->wwwroot .'/user/edit.php?id='. $USER->id .'&amp;course='. SITEID);
     }
 
@@ -2696,13 +2717,17 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
             if ($preventredirect) {
                 throw new require_login_exception('Policy not agreed');
             }
-            $SESSION->wantsurl = $FULLME;
+            if ($setwantsurltome) {
+                $SESSION->wantsurl = $FULLME;
+            }
             redirect($CFG->wwwroot .'/user/policy.php');
         } else if (!empty($CFG->sitepolicyguest) and isguestuser()) {
             if ($preventredirect) {
                 throw new require_login_exception('Policy not agreed');
             }
-            $SESSION->wantsurl = $FULLME;
+            if ($setwantsurltome) {
+                $SESSION->wantsurl = $FULLME;
+            }
             redirect($CFG->wwwroot .'/user/policy.php');
         }
     }
@@ -2739,6 +2764,10 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
                 if ($preventredirect) {
                     throw new require_login_exception('Course is hidden');
                 }
+                // We need to override the navigation URL as the course won't have
+                // been added to the navigation and thus the navigation will mess up
+                // when trying to find it.
+                navigation_node::override_active_url(new moodle_url('/'));
                 notice(get_string('coursehidden'), $CFG->wwwroot .'/');
             }
         }
@@ -2850,7 +2879,9 @@ function require_login($courseorid = NULL, $autologinguest = true, $cm = NULL, $
             if ($preventredirect) {
                 throw new require_login_exception('Not enrolled');
             }
-            $SESSION->wantsurl = $FULLME;
+            if ($setwantsurltome) {
+                $SESSION->wantsurl = $FULLME;
+            }
             redirect($CFG->wwwroot .'/enrol/index.php?id='. $course->id);
         }
     }
@@ -3363,7 +3394,7 @@ function get_extra_user_fields($context, $already = array()) {
     }
 
     // Split showuseridentity on comma
-    if ($CFG->showuseridentity === '') {
+    if (empty($CFG->showuseridentity)) {
         // Explode gives wrong result with empty string
         $extra = array();
     } else {
@@ -3607,7 +3638,8 @@ function create_user_record($username, $password, $auth = 'manual') {
     }
     $newuser->confirmed = 1;
     $newuser->lastip = getremoteaddr();
-    $newuser->timemodified = time();
+    $newuser->timecreated = time();
+    $newuser->timemodified = $newuser->timecreated;
     $newuser->mnethostid = $CFG->mnet_localhost_id;
 
     $newuser->id = $DB->insert_record('user', $newuser);
@@ -3670,6 +3702,7 @@ function update_user_record($username) {
         }
         if ($newuser) {
             $newuser['id'] = $oldinfo->id;
+            $newuser['timemodified'] = time();
             $DB->update_record('user', $newuser);
             // fetch full user record for the event, the complete user data contains too much info
             // and we want to be consistent with other places that trigger this event
@@ -3772,6 +3805,12 @@ function delete_user($user) {
     // last course access not necessary either
     $DB->delete_records('user_lastaccess', array('userid'=>$user->id));
 
+    // remove all user tokens
+    $DB->delete_records('external_tokens', array('userid'=>$user->id));
+
+    // unauthorise the user for all services
+    $DB->delete_records('external_services_users', array('userid'=>$user->id));
+
     // force logout - may fail if file based sessions used, sorry
     session_kill_user($user->id);
 
@@ -3794,6 +3833,13 @@ function delete_user($user) {
     $updateuser->timemodified = time();
 
     $DB->update_record('user', $updateuser);
+    // Add this action to log
+    add_to_log(SITEID, 'user', 'delete', "view.php?id=$user->id", $user->firstname.' '.$user->lastname);
+
+
+    // We will update the user's timemodified, as it will be passed to the user_deleted event, which
+    // should know about this updated property persisted to the user's table.
+    $user->timemodified = $updateuser->timemodified;
 
     // notify auth plugin - do not block the delete even when plugin fails
     $authplugin = get_auth_plugin($user->auth);
@@ -4277,6 +4323,11 @@ function delete_course($courseorid, $showfeedback = true) {
 
     // delete the course and related context instance
     delete_context(CONTEXT_COURSE, $courseid);
+
+    // We will update the course's timemodified, as it will be passed to the course_deleted event,
+    // which should know about this updated property, as this event is meant to pass the full course record
+    $course->timemodified = time();
+
     $DB->delete_records("course", array("id"=>$courseid));
 
     //trigger events
@@ -4985,19 +5036,31 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
     global $CFG, $FULLME;
 
     if (empty($user) || empty($user->email)) {
-        mtrace('Error: lib/moodlelib.php email_to_user(): User is null or has no email');
+        $nulluser = 'User is null or has no email';
+        error_log($nulluser);
+        if (CLI_SCRIPT) {
+            mtrace('Error: lib/moodlelib.php email_to_user(): '.$nulluser);
+        }
         return false;
     }
 
     if (!empty($user->deleted)) {
-        // do not mail delted users
-        mtrace('Error: lib/moodlelib.php email_to_user(): User is deleted');
+        // do not mail deleted users
+        $userdeleted = 'User is deleted';
+        error_log($userdeleted);
+        if (CLI_SCRIPT) {
+            mtrace('Error: lib/moodlelib.php email_to_user(): '.$userdeleted);
+        }
         return false;
     }
 
     if (!empty($CFG->noemailever)) {
         // hidden setting for development sites, set in config.php if needed
-        mtrace('Error: lib/moodlelib.php email_to_user(): Not sending email due to noemailever config setting');
+        $noemail = 'Not sending email due to noemailever config setting';
+        error_log($noemail);
+        if (CLI_SCRIPT) {
+            mtrace('Error: lib/moodlelib.php email_to_user(): '.$noemail);
+        }
         return true;
     }
 
@@ -5012,10 +5075,22 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
         return true;
     }
 
+    if (!validate_email($user->email)) {
+        // we can not send emails to invalid addresses - it might create security issue or confuse the mailer
+        $invalidemail = "User $user->id (".fullname($user).") email ($user->email) is invalid! Not sending.";
+        error_log($invalidemail);
+        if (CLI_SCRIPT) {
+            mtrace('Error: lib/moodlelib.php email_to_user(): '.$invalidemail);
+        }
+        return false;
+    }
+
     if (over_bounce_threshold($user)) {
         $bouncemsg = "User $user->id (".fullname($user).") is over bounce threshold! Not sending.";
         error_log($bouncemsg);
-        mtrace('Error: lib/moodlelib.php email_to_user(): '.$bouncemsg);
+        if (CLI_SCRIPT) {
+            mtrace('Error: lib/moodlelib.php email_to_user(): '.$bouncemsg);
+        }
         return false;
     }
 
@@ -5159,8 +5234,10 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
         }
         return true;
     } else {
-        mtrace('ERROR: '. $mail->ErrorInfo);
         add_to_log(SITEID, 'library', 'mailer', $FULLME, 'ERROR: '. $mail->ErrorInfo);
+        if (CLI_SCRIPT) {
+            mtrace('Error: lib/moodlelib.php email_to_user(): '.$mail->ErrorInfo);
+        }
         if (!empty($mail->SMTPDebug)) {
             echo '</pre>';
         }
@@ -5314,7 +5391,9 @@ function reset_password_and_mail($user) {
 
     $subject = get_string('emailconfirmationsubject', '', format_string($site->fullname));
 
-    $data->link  = $CFG->wwwroot .'/login/confirm.php?data='. $user->secret .'/'. urlencode($user->username);
+    $username = urlencode($user->username);
+    $username = str_replace('.', '%2E', $username); // prevent problems with trailing dots
+    $data->link  = $CFG->wwwroot .'/login/confirm.php?data='. $user->secret .'/'. $username;
     $message     = get_string('emailconfirmation', '', $data);
     $messagehtml = text_to_html(get_string('emailconfirmation', '', $data), false, false, true);
 
@@ -7216,12 +7295,17 @@ class emoticon_manager {
  *
  * @todo Finish documenting this function
  *
- * @param string $data Data to encrypt
- * @return string The now encrypted data
+ * @param string $data        Data to encrypt.
+ * @param bool $usesecurekey  Lets us know if we are using the old or new password.
+ * @return string             The now encrypted data.
  */
-function rc4encrypt($data) {
-    $password = get_site_identifier();
-    return endecrypt($password, $data, '');
+function rc4encrypt($data, $usesecurekey = false) {
+    if (!$usesecurekey) {
+        $passwordkey = 'nfgjeingjk';
+    } else {
+        $passwordkey = get_site_identifier();
+    }
+    return endecrypt($passwordkey, $data, '');
 }
 
 /**
@@ -7229,12 +7313,17 @@ function rc4encrypt($data) {
  *
  * @todo Finish documenting this function
  *
- * @param string $data Data to decrypt
- * @return string The now decrypted data
+ * @param string $data        Data to decrypt.
+ * @param bool $usesecurekey  Lets us know if we are using the old or new password.
+ * @return string             The now decrypted data.
  */
-function rc4decrypt($data) {
-    $password = get_site_identifier();
-    return endecrypt($password, $data, 'de');
+function rc4decrypt($data, $usesecurekey = false) {
+    if (!$usesecurekey) {
+        $passwordkey = 'nfgjeingjk';
+    } else {
+        $passwordkey = get_site_identifier();
+    }
+    return endecrypt($passwordkey, $data, 'de');
 }
 
 /**
@@ -7476,7 +7565,6 @@ function get_core_subsystems() {
             'langconfig'  => NULL,
             'license'     => NULL,
             'mathslib'    => NULL,
-            'message'     => 'message',
             'message'     => 'message',
             'mimetypes'   => NULL,
             'mnet'        => 'mnet',
@@ -7813,7 +7901,7 @@ function plugin_callback($type, $name, $feature, $action, $params = null, $defau
  * @return mixed
  */
 function component_callback($component, $function, array $params = array(), $default = null) {
-    global $CFG; // this is needed for require_once() bellow
+    global $CFG; // this is needed for require_once() below
 
     $cleancomponent = clean_param($component, PARAM_COMPONENT);
     if (empty($cleancomponent)) {
@@ -8181,18 +8269,19 @@ function get_device_type() {
     }
 
     //mobile detection PHP direct copy from open source detectmobilebrowser.com
-    $phonesregex = '/android|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i';
+    $phonesregex = '/android .+ mobile|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i';
     $modelsregex = '/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|e\-|e\/|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(di|rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|xda(\-|2|g)|yas\-|your|zeto|zte\-/i';
     if (preg_match($phonesregex,$useragent) || preg_match($modelsregex,substr($useragent, 0, 4))){
         return 'mobile';
     }
 
-    $tabletregex = '/Tablet browser|iPad|iProd|GT-P1000|GT-I9000|SHW-M180S|SGH-T849|SCH-I800|Build\/ERE27|sholest/i';
+    $tabletregex = '/Tablet browser|android|iPad|iProd|GT-P1000|GT-I9000|SHW-M180S|SGH-T849|SCH-I800|Build\/ERE27|sholest/i';
     if (preg_match($tabletregex, $useragent)) {
          return 'tablet';
     }
 
-    if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false) {
+    // Safe way to check for IE6 and not get false positives for some IE 7/8 users
+    if (substr($_SERVER['HTTP_USER_AGENT'], 0, 34) === 'Mozilla/4.0 (compatible; MSIE 6.0;') {
         return 'legacy';
     }
 
@@ -8497,9 +8586,13 @@ function upgrade_set_timeout($max_execution_time=300) {
     }
 
     if (!$upgraderunning) {
-        // upgrade not running or aborted
-        print_error('upgradetimedout', 'admin', "$CFG->wwwroot/$CFG->admin/");
-        die;
+        if (CLI_SCRIPT) {
+            // never stop CLI upgrades
+            $upgraderunning = 0;
+        } else {
+            // web upgrade not running or aborted
+            print_error('upgradetimedout', 'admin', "$CFG->wwwroot/$CFG->admin/");
+        }
     }
 
     if ($max_execution_time < 60) {
@@ -8514,7 +8607,12 @@ function upgrade_set_timeout($max_execution_time=300) {
         return;
     }
 
-    set_time_limit($max_execution_time);
+    if (CLI_SCRIPT) {
+        // there is no point in timing out of CLI scripts, admins can stop them if necessary
+        set_time_limit(0);
+    } else {
+        set_time_limit($max_execution_time);
+    }
     set_config('upgraderunning', $expected_end); // keep upgrade locked until this time
 }
 
@@ -8691,7 +8789,7 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
     global $CFG;
 
     // if the plain text is shorter than the maximum length, return the whole text
-    if (strlen(preg_replace('/<.*?>/', '', $text)) <= $ideal) {
+    if (textlib::strlen(preg_replace('/<.*?>/', '', $text)) <= $ideal) {
         return $text;
     }
 
@@ -8699,7 +8797,7 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
     // and only tag in its 'line'
     preg_match_all('/(<.+?>)?([^<>]*)/s', $text, $lines, PREG_SET_ORDER);
 
-    $total_length = strlen($ending);
+    $total_length = textlib::strlen($ending);
     $truncate = '';
 
     // This array stores information about open and close tags and their position
@@ -8718,19 +8816,19 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
             } else if (preg_match('/^<\s*\/([^\s]+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
                 // record closing tag
                 $tagdetails[] = (object)array('open'=>false,
-                    'tag'=>strtolower($tag_matchings[1]), 'pos'=>strlen($truncate));
+                    'tag'=>textlib::strtolower($tag_matchings[1]), 'pos'=>textlib::strlen($truncate));
             // if tag is an opening tag (f.e. <b>)
             } else if (preg_match('/^<\s*([^\s>!]+).*?>$/s', $line_matchings[1], $tag_matchings)) {
                 // record opening tag
                 $tagdetails[] = (object)array('open'=>true,
-                    'tag'=>strtolower($tag_matchings[1]), 'pos'=>strlen($truncate));
+                    'tag'=>textlib::strtolower($tag_matchings[1]), 'pos'=>textlib::strlen($truncate));
             }
             // add html-tag to $truncate'd text
             $truncate .= $line_matchings[1];
         }
 
         // calculate the length of the plain text part of the line; handle entities as one character
-        $content_length = strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
+        $content_length = textlib::strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
         if ($total_length+$content_length > $ideal) {
             // the number of characters which are left
             $left = $ideal - $total_length;
@@ -8741,14 +8839,14 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
                 foreach ($entities[0] as $entity) {
                     if ($entity[1]+1-$entities_length <= $left) {
                         $left--;
-                        $entities_length += strlen($entity[0]);
+                        $entities_length += textlib::strlen($entity[0]);
                     } else {
                         // no more characters left
                         break;
                     }
                 }
             }
-            $truncate .= substr($line_matchings[2], 0, $left+$entities_length);
+            $truncate .= textlib::substr($line_matchings[2], 0, $left+$entities_length);
             // maximum length is reached, so get off the loop
             break;
         } else {
@@ -8765,21 +8863,21 @@ function shorten_text($text, $ideal=30, $exact = false, $ending='...') {
     // if the words shouldn't be cut in the middle...
     if (!$exact) {
         // ...search the last occurence of a space...
-        for ($k=strlen($truncate);$k>0;$k--) {
-            if (!empty($truncate[$k]) && ($char = $truncate[$k])) {
-                if ($char == '.' or $char == ' ') {
+        for ($k=textlib::strlen($truncate);$k>0;$k--) {
+            if ($char = textlib::substr($truncate, $k, 1)) {
+                if ($char === '.' or $char === ' ') {
                     $breakpos = $k+1;
                     break;
-                } else if (ord($char) >= 0xE0) {  // Chinese/Japanese/Korean text
-                    $breakpos = $k;               // can be truncated at any UTF-8
-                    break;                        // character boundary.
+                } else if (strlen($char) > 2) {  // Chinese/Japanese/Korean text
+                    $breakpos = $k+1;            // can be truncated at any UTF-8
+                    break;                       // character boundary.
                 }
             }
         }
 
         if (isset($breakpos)) {
             // ...and cut the text in this position
-            $truncate = substr($truncate, 0, $breakpos);
+            $truncate = textlib::substr($truncate, 0, $breakpos);
         }
     }
 
@@ -10021,45 +10119,59 @@ function object_property_exists( $obj, $property ) {
     return array_key_exists( $property, $properties );
 }
 
+/**
+ * Converts an object into an associative array
+ *
+ * This function converts an object into an associative array by iterating
+ * over its public properties. Because this function uses the foreach
+ * construct, Iterators are respected. It works recursively on arrays of objects.
+ * Arrays and simple values are returned as is.
+ *
+ * If class has magic properties, it can implement IteratorAggregate
+ * and return all available properties in getIterator()
+ *
+ * @param mixed $var
+ * @return array
+ */
+function convert_to_array($var) {
+    $result = array();
+    $references = array();
+
+    // loop over elements/properties
+    foreach ($var as $key => $value) {
+        // recursively convert objects
+        if (is_object($value) || is_array($value)) {
+            // but prevent cycles
+            if (!in_array($value, $references)) {
+                $result[$key] = convert_to_array($value);
+                $references[] = $value;
+            }
+        } else {
+            // simple values are untouched
+            $result[$key] = $value;
+        }
+    }
+    return $result;
+}
 
 /**
  * Detect a custom script replacement in the data directory that will
  * replace an existing moodle script
  *
- * @param string $urlpath path to the original script
  * @return string|bool full path name if a custom script exists, false if no custom script exists
  */
-function custom_script_path($urlpath='') {
-    global $CFG;
+function custom_script_path() {
+    global $CFG, $SCRIPT;
 
-    // set default $urlpath, if necessary
-    if (empty($urlpath)) {
-        $urlpath = qualified_me(); // e.g. http://www.this-server.com/moodle/this-script.php
-    }
-
-    // $urlpath is invalid if it is empty or does not start with the Moodle wwwroot
-    if (empty($urlpath) or (strpos($urlpath, $CFG->wwwroot) === false )) {
+    if ($SCRIPT === null) {
+        // Probably some weird external script
         return false;
     }
 
-    // replace wwwroot with the path to the customscripts folder and clean path
-    $scriptpath = $CFG->customscripts . clean_param(substr($urlpath, strlen($CFG->wwwroot)), PARAM_PATH);
-
-    // remove the query string, if any
-    if (($strpos = strpos($scriptpath, '?')) !== false) {
-        $scriptpath = substr($scriptpath, 0, $strpos);
-    }
-
-    // remove trailing slashes, if any
-    $scriptpath = rtrim($scriptpath, '/\\');
-
-    // append index.php, if necessary
-    if (is_dir($scriptpath)) {
-        $scriptpath .= '/index.php';
-    }
+    $scriptpath = $CFG->customscripts . $SCRIPT;
 
     // check the custom script exists
-    if (file_exists($scriptpath)) {
+    if (file_exists($scriptpath) and is_file($scriptpath)) {
         return $scriptpath;
     } else {
         return false;

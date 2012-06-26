@@ -932,7 +932,7 @@ abstract class moodle_database {
 
     /**
      * Execute general sql query. Should be used only when no other method suitable.
-     * Do NOT use this to make changes in db structure, use database_manager::execute_sql() instead!
+     * Do NOT use this to make changes in db structure, use database_manager methods instead!
      * @param string $sql query
      * @param array $params query parameters
      * @return bool true
@@ -1549,9 +1549,6 @@ abstract class moodle_database {
 
     /**
      * Test whether a record exists in a table where all the given conditions met.
-     *
-     * The record to test is specified by giving up to three fields that must
-     * equal the corresponding values.
      *
      * @param string $table The table to check.
      * @param array $conditions optional array $fieldname=>requestedvalue with AND in between

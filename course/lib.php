@@ -49,6 +49,11 @@ define('MOD_CLASS_RESOURCE', 1);
 function make_log_url($module, $url) {
     switch ($module) {
         case 'course':
+            if (strpos($url, 'report/') === 0) {
+                // there is only one report type, course reports are deprecated
+                $url = "/$url";
+                break;
+            }
         case 'file':
         case 'login':
         case 'lib':
@@ -163,6 +168,7 @@ function build_mnet_logs_array($hostid, $course, $user=0, $date=0, $order="l.tim
     $groupid = 0;
 
     $joins = array();
+    $where = '';
 
     $qry = "SELECT l.*, u.firstname, u.lastname, u.picture
               FROM {mnet_log} l
@@ -830,7 +836,7 @@ function print_log_ods($course, $user, $date, $order='l.time DESC', $modname,
 
         $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
 
-        $myxls->write_string($row, 0, format_string($courses[$log->course], true, array('context' => $context)));
+        $myxls->write_string($row, 0, format_string($courses[$log->course], true, array('context' => $coursecontext)));
         $myxls->write_date($row, 1, $log->time);
         $myxls->write_string($row, 2, $log->ip);
         $fullname = fullname($log, has_capability('moodle/site:viewfullnames', $coursecontext));
@@ -1087,6 +1093,7 @@ function get_array_of_activities($courseid) {
                    if (empty($rawmods[$seq])) {
                        continue;
                    }
+                   $mod[$seq] = new stdClass();
                    $mod[$seq]->id               = $rawmods[$seq]->instance;
                    $mod[$seq]->cm               = $rawmods[$seq]->id;
                    $mod[$seq]->mod              = $rawmods[$seq]->modname;
@@ -1350,6 +1357,18 @@ function course_set_display($courseid, $display) {
     $USER->display = array($courseid => $display);
 
     return $display;
+}
+
+/**
+ * Set highlighted section. Only one section can be highlighted at the time.
+ *
+ * @param int $courseid course id
+ * @param int $marker highlight section with this number, 0 means remove higlightin
+ * @return void
+ */
+function course_set_marker($courseid, $marker) {
+    global $DB;
+    $DB->set_field("course", "marker", $marker, array('id' => $courseid));
 }
 
 /**
@@ -1732,9 +1751,9 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                 }
                 if ($completionicon) {
                     $imgsrc = $OUTPUT->pix_url('i/completion-'.$completionicon);
-                    $imgalt = s(get_string('completion-alt-'.$completionicon, 'completion'));
+                    $imgalt = s(get_string('completion-alt-'.$completionicon, 'completion', $mod->name));
                     if ($completion == COMPLETION_TRACKING_MANUAL && !$isediting) {
-                        $imgtitle = s(get_string('completion-title-'.$completionicon, 'completion'));
+                        $imgtitle = s(get_string('completion-title-'.$completionicon, 'completion', $mod->name));
                         $newstate =
                             $completiondata->completionstate==COMPLETION_COMPLETE
                             ? COMPLETION_INCOMPLETE
@@ -1753,6 +1772,7 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                         echo "
 <form class='togglecompletion$extraclass' method='post' action='".$CFG->wwwroot."/course/togglecompletion.php'><div>
 <input type='hidden' name='id' value='{$mod->id}' />
+<input type='hidden' name='modulename' value='".s($mod->name)."' />
 <input type='hidden' name='sesskey' value='".sesskey()."' />
 <input type='hidden' name='completionstate' value='$newstate' />
 <input type='image' src='$imgsrc' alt='$imgalt' title='$imgtitle' />
@@ -2138,6 +2158,7 @@ function print_whole_category_list($category=NULL, $displaylist=NULL, $parentsli
         }
 
     } else {
+        $category = new stdClass();
         $category->id = "0";
     }
 
@@ -2519,7 +2540,7 @@ function print_course($course, $highlightterms = '') {
     echo html_writer::end_tag('div'); // End of info div
 
     echo html_writer::start_tag('div', array('class'=>'summary'));
-    $options = NULL;
+    $options = new stdClass();
     $options->noclean = true;
     $options->para = false;
     $options->overflowdiv = true;
@@ -2666,7 +2687,7 @@ function print_remote_course($course, $width="100%") {
         . format_string($course->cat_name) . ' : '
         . format_string($course->shortname). '</div>';
     echo '</div><div class="summary">';
-    $options = NULL;
+    $options = new stdClass();
     $options->noclean = true;
     $options->para = false;
     $options->overflowdiv = true;
@@ -2861,6 +2882,8 @@ function delete_course_module($id) {
     // very quick on an empty table)
     $DB->delete_records('course_modules_completion', array('coursemoduleid' => $cm->id));
     $DB->delete_records('course_modules_availability', array('coursemoduleid'=> $cm->id));
+    $DB->delete_records('course_completion_criteria', array('moduleinstance' => $cm->id,
+                                                            'criteriatype' => COMPLETION_CRITERIA_TYPE_ACTIVITY));
 
     delete_context(CONTEXT_MODULE, $cm->id);
     return $DB->delete_records('course_modules', array('id'=>$cm->id));
@@ -2888,9 +2911,10 @@ function delete_mod_from_section($mod, $section) {
 /**
  * Moves a section up or down by 1. CANNOT BE USED DIRECTLY BY AJAX!
  *
- * @param object $course
- * @param int $section
+ * @param object $course course object
+ * @param int $section Section number (not id!!!)
  * @param int $move (-1 or 1)
+ * @return boolean true if section moved successfully
  */
 function move_section($course, $section, $move) {
 /// Moves a whole course section up and down within the course
@@ -2916,6 +2940,13 @@ function move_section($course, $section, $move) {
 
     $DB->set_field("course_sections", "section", $sectiondest, array("id"=>$sectionrecord->id));
     $DB->set_field("course_sections", "section", $section, array("id"=>$sectiondestrecord->id));
+
+    // Update highlighting if the move affects highlighted section
+    if ($course->marker == $section) {
+        course_set_marker($course->id, $sectiondest);
+    } elseif ($course->marker == $sectiondest) {
+        course_set_marker($course->id, $section);
+    }
 
     // if the focus is on the section that is being moved, then move the focus along
     if (course_get_display($course->id) == $section) {
@@ -3125,11 +3156,12 @@ function make_editing_buttons(stdClass $mod, $absolute_ignored = true, $movesele
         $str->duplicate      = get_string("duplicate");
         $str->hide           = get_string("hide");
         $str->show           = get_string("show");
-        $str->clicktochange  = get_string("clicktochange");
-        $str->forcedmode     = get_string("forcedmode");
-        $str->groupsnone     = get_string("groupsnone");
-        $str->groupsseparate = get_string("groupsseparate");
-        $str->groupsvisible  = get_string("groupsvisible");
+        $str->groupsnone     = get_string('clicktochangeinbrackets', 'moodle', get_string("groupsnone"));
+        $str->groupsseparate = get_string('clicktochangeinbrackets', 'moodle', get_string("groupsseparate"));
+        $str->groupsvisible  = get_string('clicktochangeinbrackets', 'moodle', get_string("groupsvisible"));
+        $str->forcedgroupsnone     = get_string('forcedmodeinbrackets', 'moodle', get_string("groupsnone"));
+        $str->forcedgroupsseparate = get_string('forcedmodeinbrackets', 'moodle', get_string("groupsseparate"));
+        $str->forcedgroupsvisible  = get_string('forcedmodeinbrackets', 'moodle', get_string("groupsvisible"));
     }
 
     $baseurl = new moodle_url('/course/mod.php', array('sesskey' => sesskey()));
@@ -3246,16 +3278,19 @@ function make_editing_buttons(stdClass $mod, $absolute_ignored = true, $movesele
         if ($mod->groupmode == SEPARATEGROUPS) {
             $groupmode = 0;
             $grouptitle = $str->groupsseparate;
+            $forcedgrouptitle = $str->forcedgroupsseparate;
             $groupclass = 'editing_groupsseparate';
             $groupimage = 't/groups';
         } else if ($mod->groupmode == VISIBLEGROUPS) {
             $groupmode = 1;
             $grouptitle = $str->groupsvisible;
+            $forcedgrouptitle = $str->forcedgroupsvisible;
             $groupclass = 'editing_groupsvisible';
             $groupimage = 't/groupv';
         } else {
             $groupmode = 2;
             $grouptitle = $str->groupsnone;
+            $forcedgrouptitle = $str->forcedgroupsnone;
             $groupclass = 'editing_groupsnone';
             $groupimage = 't/groupn';
         }
@@ -3264,10 +3299,10 @@ function make_editing_buttons(stdClass $mod, $absolute_ignored = true, $movesele
                 new moodle_url($baseurl, array('id' => $mod->id, 'groupmode' => $groupmode)),
                 new pix_icon($groupimage, $grouptitle, 'moodle', array('class' => 'iconsmall')),
                 null,
-                array('class' => $groupclass, 'title' => $grouptitle.' ('.$str->clicktochange.')')
+                array('class' => $groupclass, 'title' => $grouptitle)
             );
         } else {
-            $actions[] = new pix_icon($groupimage, $grouptitle, 'moodle', array('title' => $grouptitle.' ('.$str->forcedmode.')', 'class' => 'iconsmall'));
+            $actions[] = new pix_icon($groupimage, $forcedgrouptitle, 'moodle', array('title' => $forcedgrouptitle, 'class' => 'iconsmall'));
         }
     }
 

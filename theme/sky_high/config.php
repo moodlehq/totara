@@ -52,10 +52,12 @@ $THEME->parents = array(
 
 
 $THEME->sheets = array(
-    'core',
     'pagelayout',
+    'core',
     'menu',
-    'report'
+    'report',
+    'admin',
+    'settings'
 );
 
 ////////////////////////////////////////////////////
@@ -119,7 +121,7 @@ $THEME->layouts = array(
         'defaultregion' => 'side-post',
     ),
     'admin' => array(
-        'file' => 'general.php',
+        'file' => 'report.php',
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
     ),
@@ -160,6 +162,13 @@ $THEME->layouts = array(
         'regions' => array(),
         'options' => array('nofooter'=>true, 'nonavbar'=>true),
     ),
+    // The pagelayout used when a redirection is occuring.
+    'redirect' => array(
+        'theme' => 'canvas',
+        'file' => 'embedded.php',
+        'regions' => array(),
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
+    ),
     // Should display the content and basic headers only.
     'print' => array(
         'file' => 'general.php',
@@ -167,7 +176,6 @@ $THEME->layouts = array(
         'options' => array('nofooter'=>true, 'nonavbar'=>false, 'noblocks'=>true),
     ),
     'report' => array(
-        'theme' => 'base',
         'file' => 'report.php',
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
@@ -218,24 +226,11 @@ $THEME->csspostprocess = 'sky_high_process_css';
 // Overrides the right arrow image used throughout Moodle
 ////////////////////////////////////////////////////
 
-// $THEME->layouts
-
-////////////////////////////////////////////////////
-// An array setting the layouts for the theme
-////////////////////////////////////////////////////
-
 // $THEME->parents_exclude_javascripts
 
 ////////////////////////////////////////////////////
 // An array of JavaScript files NOT to inherit from
 // the themes parents
-////////////////////////////////////////////////////
-
-// $THEME->parents_exclude_sheets
-
-////////////////////////////////////////////////////
-// An array of stylesheets not to inherit from the
-// themes parents
 ////////////////////////////////////////////////////
 
 // $THEME->plugins_exclude_sheets
@@ -251,4 +246,3 @@ $THEME->csspostprocess = 'sky_high_process_css';
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.
 ////////////////////////////////////////////////////
-

@@ -211,7 +211,9 @@ $filldisabled = '';
 if ($quba->get_question_state($slot)->is_finished()) {
     $finishdisabled = ' disabled="disabled"';
     $filldisabled = ' disabled="disabled"';
-} else if (is_null($quba->get_correct_response($slot))) {
+}
+// If question type cannot give us a correct response, disable this button.
+if (is_null($quba->get_correct_response($slot))) {
     $filldisabled = ' disabled="disabled"';
 }
 if (!$previewid) {
@@ -228,8 +230,10 @@ echo $OUTPUT->header();
 // Start the question form.
 echo '<form method="post" action="' . $actionurl .
         '" enctype="multipart/form-data" id="responseform">', "\n";
+echo '<div>';
 echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />', "\n";
 echo '<input type="hidden" name="slots" value="' . $slot . '" />', "\n";
+echo '</div>';
 
 // Output the question.
 echo $quba->render_question($slot, $options, $displaynumber);

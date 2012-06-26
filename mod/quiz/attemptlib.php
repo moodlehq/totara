@@ -90,7 +90,12 @@ class quiz {
         if ($getcontext && !empty($cm->id)) {
             $this->context = get_context_instance(CONTEXT_MODULE, $cm->id);
         }
-        $this->questionids = explode(',', quiz_questions_in_quiz($this->quiz->questions));
+        $questionids = quiz_questions_in_quiz($this->quiz->questions);
+        if ($questionids) {
+            $this->questionids = explode(',', quiz_questions_in_quiz($this->quiz->questions));
+        } else {
+            $this->questionids = array(); // Which idiot made explode(',', '') = array('')?
+        }
     }
 
     /**
@@ -1155,7 +1160,7 @@ class quiz_attempt {
         $DB->update_record('quiz_attempts', $this->attempt);
 
         if (!$this->is_preview()) {
-            quiz_save_best_grade($this->get_quiz());
+            quiz_save_best_grade($this->get_quiz(), $this->attempt->userid);
 
             // Trigger event
             $eventdata = new stdClass();

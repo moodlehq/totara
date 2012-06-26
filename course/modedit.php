@@ -328,6 +328,9 @@ if ($mform->is_cancelled()) {
         $fromform->completiongradeitemnumber = null;
     }
 
+    // the type of event to trigger (mod_created/mod_updated)
+    $eventname = '';
+
     if (!empty($fromform->update)) {
 
         if (!empty($course->groupmodeforce) or !isset($fromform->groupmode)) {
@@ -395,14 +398,7 @@ if ($mform->is_cancelled()) {
             $completion->reset_all_state($cm);
         }
 
-        // Trigger mod_updated event with information about this module.
-        $eventdata = new stdClass();
-        $eventdata->modulename = $fromform->modulename;
-        $eventdata->name       = $fromform->name;
-        $eventdata->cmid       = $fromform->coursemodule;
-        $eventdata->courseid   = $course->id;
-        $eventdata->userid     = $USER->id;
-        events_trigger('mod_updated', $eventdata);
+        $eventname = 'mod_updated';
 
         add_to_log($course->id, "course", "update mod",
                    "../mod/$fromform->modulename/view.php?id=$fromform->coursemodule",
@@ -517,7 +513,7 @@ if ($mform->is_cancelled()) {
         $eventdata->cmid       = $fromform->coursemodule;
         $eventdata->courseid   = $course->id;
         $eventdata->userid     = $USER->id;
-        events_trigger('mod_created', $eventdata);
+        $eventname = 'mod_created';
 
         add_to_log($course->id, "course", "add mod",
                    "../mod/$fromform->modulename/view.php?id=$fromform->coursemodule",
@@ -528,6 +524,15 @@ if ($mform->is_cancelled()) {
     } else {
         print_error('invaliddata');
     }
+
+    // Trigger mod_created/mod_updated event with information about this module.
+    $eventdata = new stdClass();
+    $eventdata->modulename = $fromform->modulename;
+    $eventdata->name       = $fromform->name;
+    $eventdata->cmid       = $fromform->coursemodule;
+    $eventdata->courseid   = $course->id;
+    $eventdata->userid     = $USER->id;
+    events_trigger($eventname, $eventdata);
 
     // sync idnumber with grade_item
     if ($grade_item = grade_item::fetch(array('itemtype'=>'mod', 'itemmodule'=>$fromform->modulename,

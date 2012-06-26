@@ -384,15 +384,15 @@ class qtype_calculated extends question_type {
         }
         return true;
     }
-    public function finished_edit_wizard(&$form) {
+    public function finished_edit_wizard($form) {
         return isset($form->savechanges);
     }
     public function wizardpagesnumber() {
         return 3;
     }
     // This gets called by editquestion.php after the standard question is saved
-    public function print_next_wizard_page(&$question, &$form, $course) {
-        global $CFG, $USER, $SESSION, $COURSE;
+    public function print_next_wizard_page($question, $form, $course) {
+        global $CFG, $SESSION, $COURSE;
 
         // Catch invalid navigation & reloads
         if (empty($question->id) && empty($SESSION->calculated)) {
@@ -456,19 +456,20 @@ class qtype_calculated extends question_type {
      * @param object $question
      * @param string $wizardnow is '' for first page.
      */
-    public function display_question_editing_page(&$mform, $question, $wizardnow) {
+    public function display_question_editing_page($mform, $question, $wizardnow) {
         global $OUTPUT;
         switch ($wizardnow) {
             case '':
-                //on first page default display is fine
+                // On the first page, the default display is fine.
                 parent::display_question_editing_page($mform, $question, $wizardnow);
                 return;
-                break;
+
             case 'datasetdefinitions':
                 echo $OUTPUT->heading_with_help(
                         get_string('choosedatasetproperties', 'qtype_calculated'),
                         'questiondatasets', 'qtype_calculated');
                 break;
+
             case 'datasetitems':
                 echo $OUTPUT->heading_with_help(get_string('editdatasets', 'qtype_calculated'),
                         'questiondatasets', 'qtype_calculated');
@@ -684,6 +685,15 @@ class qtype_calculated extends question_type {
         $DB->delete_records('question_datasets', array('question' => $questionid));
 
         parent::delete_question($questionid, $contextid);
+    }
+
+    public function get_random_guess_score($questiondata) {
+        foreach ($questiondata->options->answers as $aid => $answer) {
+            if ('*' == trim($answer->answer)) {
+                return max($answer->fraction - $questiondata->options->unitpenalty, 0);
+            }
+        }
+        return 0;
     }
 
     public function supports_dataset_item_generation() {
@@ -1200,7 +1210,7 @@ class qtype_calculated extends question_type {
 
     public function substitute_variables($str, $dataset) {
         global $OUTPUT;
-        //  testing for wrong numerical values
+        // testing for wrong numerical values
         // all calculations used this function so testing here should be OK
 
         foreach ($dataset as $name => $value) {
@@ -1220,6 +1230,7 @@ class qtype_calculated extends question_type {
         }
         return $str;
     }
+
     public function evaluate_equations($str, $dataset) {
         $formula = $this->substitute_variables($str, $dataset);
         if ($error = qtype_calculated_find_formula_errors($formula)) {
@@ -1227,7 +1238,6 @@ class qtype_calculated extends question_type {
         }
         return $str;
     }
-
 
     public function substitute_variables_and_eval($str, $dataset) {
         $formula = $this->substitute_variables($str, $dataset);
@@ -1793,21 +1803,32 @@ class qtype_calculated extends question_type {
         $virtualqtype = $this->get_virtual_qtype();
         $unit = $virtualqtype->get_default_numerical_unit($questiondata);
 
+        $tolerancetypes = $this->tolerance_types();
+
+        $starfound = false;
         foreach ($questiondata->options->answers as $aid => $answer) {
             $responseclass = $answer->answer;
 
-            if ($responseclass != '*') {
-                $responseclass = $virtualqtype->add_unit($questiondata, $responseclass, $unit);
+            if ($responseclass === '*') {
+                $starfound = true;
+            } else {
+                $a = new stdClass();
+                $a->answer = $virtualqtype->add_unit($questiondata, $responseclass, $unit);
+                $a->tolerance = $answer->tolerance;
+                $a->tolerancetype = $tolerancetypes[$answer->tolerancetype];
 
-                $ans = new qtype_numerical_answer($answer->id, $answer->answer, $answer->fraction,
-                        $answer->feedback, $answer->feedbackformat, $answer->tolerance);
-                list($min, $max) = $ans->get_tolerance_interval();
-                $responseclass .= " ($min..$max)";
+                $responseclass = get_string('answerwithtolerance', 'qtype_calculated', $a);
             }
 
             $responses[$aid] = new question_possible_response($responseclass,
                     $answer->fraction);
         }
+
+        if (!$starfound) {
+            $responses[0] = new question_possible_response(
+            get_string('didnotmatchanyanswer', 'question'), 0);
+        }
+
         $responses[null] = question_possible_response::no_response();
 
         return array($questiondata->id => $responses);
@@ -1818,6 +1839,7 @@ class qtype_calculated extends question_type {
 
         parent::move_files($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_answers($questionid, $oldcontextid, $newcontextid);
+        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
     }
 
     protected function delete_files($questionid, $contextid) {
@@ -1825,6 +1847,7 @@ class qtype_calculated extends question_type {
 
         parent::delete_files($questionid, $contextid);
         $this->delete_files_in_answers($questionid, $contextid);
+        $this->delete_files_in_hints($questionid, $contextid);
     }
 }
 

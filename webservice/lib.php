@@ -477,9 +477,9 @@ class webservice {
     public function get_user_capabilities($userid) {
         global $DB;
         //retrieve the user capabilities
-        $sql = "SELECT rc.id, rc.capability FROM {role_capabilities} rc, {role_assignments} ra
-            WHERE rc.roleid=ra.roleid AND ra.userid= ?";
-        $dbusercaps = $DB->get_records_sql($sql, array($userid));
+        $sql = "SELECT DISTINCT rc.id, rc.capability FROM {role_capabilities} rc, {role_assignments} ra
+            WHERE rc.roleid=ra.roleid AND ra.userid= ? AND rc.permission = ?";
+        $dbusercaps = $DB->get_records_sql($sql, array($userid, CAP_ALLOW));
         $usercaps = array();
         foreach ($dbusercaps as $usercap) {
             $usercaps[$usercap->capability] = true;
@@ -1209,24 +1209,28 @@ class '.$classname.' {
     }
 
     /**
-     * This method parses the $_REQUEST superglobal and looks for
+     * This method parses the $_POST and $_GET superglobals and looks for
      * the following information:
      *  1/ user authentication - username+password or token (wsusername, wspassword and wstoken parameters)
      *
      * @return void
      */
     protected function parse_request() {
+
+        //Get GET and POST paramters
+        $methodvariables = array_merge($_GET,$_POST);
+
         if ($this->authmethod == WEBSERVICE_AUTHMETHOD_USERNAME) {
             //note: some clients have problems with entity encoding :-(
-            if (isset($_REQUEST['wsusername'])) {
-                $this->username = $_REQUEST['wsusername'];
+            if (isset($methodvariables['wsusername'])) {
+                $this->username = $methodvariables['wsusername'];
             }
-            if (isset($_REQUEST['wspassword'])) {
-                $this->password = $_REQUEST['wspassword'];
+            if (isset($methodvariables['wspassword'])) {
+                $this->password = $methodvariables['wspassword'];
             }
         } else {
-            if (isset($_REQUEST['wstoken'])) {
-                $this->token = $_REQUEST['wstoken'];
+            if (isset($methodvariables['wstoken'])) {
+                $this->token = $methodvariables['wstoken'];
             }
         }
     }

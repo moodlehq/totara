@@ -103,6 +103,7 @@
 
     $strnever = get_string('never');
 
+    $datestring = new stdClass();
     $datestring->year  = get_string('year');
     $datestring->years = get_string('years');
     $datestring->day   = get_string('day');
@@ -478,6 +479,7 @@
     }
 
     if ($roleid > 0) {
+        $a = new stdClass();
         $a->number = $totalcount;
         $a->role = $rolenames[$roleid];
         $heading = format_string(get_string('xuserswiththerole', 'role', $a));
@@ -493,6 +495,7 @@
         }
 
         $heading .= ": $a->number";
+
         if (user_can_assign($context, $roleid)) {
             $heading .= ' <a href="'.$CFG->wwwroot.'/'.$CFG->admin.'/roles/assign.php?roleid='.$roleid.'&amp;contextid='.$context->id.'">';
             $heading .= '<img src="'.$OUTPUT->pix_url('i/edit') . '" class="icon" alt="" /></a>';
@@ -679,8 +682,8 @@
 
                     $row->cells[2]->text .= implode('', $links);
 
-                    if (!empty($messageselect)) {
-                        $row->cells[2]->text .= '<br /><input type="checkbox" name="user'.$user->id.'" /> ';
+                    if ($bulkoperations) {
+                        $row->cells[2]->text .= '<br /><input type="checkbox" class="usercheckbox" name="user'.$user->id.'" /> ';
                     }
                     $table->data = array($row);
                     echo html_writer::table($table);

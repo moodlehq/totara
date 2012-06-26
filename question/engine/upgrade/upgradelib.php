@@ -88,8 +88,9 @@ class question_engine_attempt_upgrader {
         global $CFG, $DB;
 
         // Look to see if the admin has set things up to only upgrade certain attempts.
-        $partialupgradefile = $CFG->dirroot . '/local/qeupgradehelper/partialupgrade.php';
-        $partialupgradefunction = 'local_qeupgradehelper_get_quizzes_to_upgrade';
+        $partialupgradefile = $CFG->dirroot . '/' . $CFG->admin .
+                '/tool/qeupgradehelper/partialupgrade.php';
+        $partialupgradefunction = 'tool_qeupgradehelper_get_quizzes_to_upgrade';
         if (is_readable($partialupgradefile)) {
             include_once($partialupgradefile);
             if (function_exists($partialupgradefunction)) {
@@ -154,19 +155,19 @@ class question_engine_attempt_upgrader {
 
         $quizattemptsrs = $DB->get_recordset_select('quiz_attempts', $where, $params, 'uniqueid');
         $questionsessionsrs = $DB->get_recordset_sql("
-                SELECT *
-                FROM {question_sessions}
-                WHERE attemptid IN (
-                    SELECT uniqueid FROM {quiz_attempts} WHERE $where)
-                ORDER BY attemptid, questionid
+                SELECT s.*
+                  FROM {question_sessions} s
+                  JOIN {quiz_attempts} a ON (attemptid = uniqueid)
+                 WHERE $where
+              ORDER BY attemptid, questionid
         ", $params);
 
         $questionsstatesrs = $DB->get_recordset_sql("
-                SELECT *
-                FROM {question_states}
-                WHERE attempt IN (
-                    SELECT uniqueid FROM {quiz_attempts} WHERE $where)
-                ORDER BY attempt, question, seq_number, id
+                SELECT s.*
+                  FROM {question_states} s
+                  JOIN {quiz_attempts} ON (s.attempt = uniqueid)
+                 WHERE $where
+              ORDER BY s.attempt, question, seq_number, s.id
         ", $params);
 
         $datatodo = $quizattemptsrs && $questionsessionsrs && $questionsstatesrs;
@@ -356,7 +357,8 @@ class question_engine_attempt_upgrader {
                 return 'qbehaviour_manualgraded_converter';
             }
         }
-        if ($question->qtype == 'essay') {
+        $qtype = question_bank::get_qtype($question->qtype, false);
+        if ($qtype->is_manual_graded()) {
             return 'qbehaviour_manualgraded_converter';
         } else if ($question->qtype == 'description') {
             return 'qbehaviour_informationitem_converter';

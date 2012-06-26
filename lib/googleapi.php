@@ -376,8 +376,10 @@ class google_picasa {
     const ALBUM_PHOTO_LIST  = 'https://picasaweb.google.com/data/feed/api/user/default/albumid/';
     const PHOTO_SEARCH_URL  = 'https://picasaweb.google.com/data/feed/api/user/default?kind=photo&q=';
     const LIST_ALBUMS_URL   = 'https://picasaweb.google.com/data/feed/api/user/default';
+    const MANAGE_URL        = 'http://picasaweb.google.com/';
 
     private $google_curl = null;
+    private $lastalbumname = null;
 
     /**
      * Constructor.
@@ -454,6 +456,15 @@ class google_picasa {
     }
 
     /**
+     * Returns the name of the album for which get_photo_details was called last time.
+     *
+     * @return string
+     */
+    public function get_last_album_name() {
+        return $this->lastalbumname;
+    }
+
+    /**
      * Does text search on the users photos and returns
      * matches in format for picasa api
      *
@@ -485,7 +496,7 @@ class google_picasa {
             //hacky...
             $thumbnailinfo = $mediainfo->group->thumbnail[0]->attributes();
 
-            $files[] = array( 'title' => (string) $gphoto->name,
+            $files[] = array( 'title' => (string) $album->title,
                 'date'  => userdate($gphoto->timestamp),
                 'size'  => (int) $gphoto->bytesUsed,
                 'path'  => (string) $gphoto->id,
@@ -510,6 +521,7 @@ class google_picasa {
     public function get_photo_details($rawxml){
 
         $xml = new SimpleXMLElement($rawxml);
+        $this->lastalbumname = (string)$xml->title;
 
         $files = array();
 

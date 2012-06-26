@@ -489,11 +489,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= $this->box_start();
 
         if ($message) {
-            $output .= html_writer('p', $message);
-            $output .= html_writer('p', get_string('windowclosing', 'quiz'));
+            $output .= html_writer::tag('p', $message);
+            $output .= html_writer::tag('p', get_string('windowclosing', 'quiz'));
             $delay = 5;
         } else {
-            $output .= html_writer('p', get_string('pleaseclose', 'quiz'));
+            $output .= html_writer::tag('p', get_string('pleaseclose', 'quiz'));
             $delay = 0;
         }
         $this->page->requires->js_function_call('M.mod_quiz.secure_window.close',
@@ -706,7 +706,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
                     'M.mod_quiz.secure_window.start_attempt_action', array(
                         'url' => $url->out(false),
                         'windowname' => 'quizpopup',
-                        'popupoptions' => $popupaction->get_js_options(),
+                        'options' => $popupaction->get_js_options(),
                         'fullscreen' => true,
                         'startattemptwarning' => $startattemptwarning,
                     )));

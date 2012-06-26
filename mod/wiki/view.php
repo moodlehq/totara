@@ -81,7 +81,7 @@ if ($id) {
 
     // Getting current group id
     $currentgroup = groups_get_activity_group($cm);
-    $currentgroup = !empty($currentgroup) ? $currentgroup : 0;
+
     // Getting current user id
     if ($wiki->wikimode == 'individual') {
         $userid = $USER->id;
@@ -91,7 +91,7 @@ if ($id) {
 
     // Getting subwiki. If it does not exists, redirecting to create page
     if (!$subwiki = wiki_get_subwiki_by_group($wiki->id, $currentgroup, $userid)) {
-        $params = array('wid' => $wiki->id, 'gid' => $currentgroup, 'uid' => $userid, 'title' => $wiki->firstpagetitle);
+        $params = array('wid' => $wiki->id, 'group' => $currentgroup, 'uid' => $userid, 'title' => $wiki->firstpagetitle);
         $url = new moodle_url('/mod/wiki/create.php', $params);
         redirect($url);
     }
@@ -133,6 +133,8 @@ if ($id) {
         print_error('invalidcoursemodule');
     }
 
+    $currentgroup = $subwiki->groupid;
+
     // Checking course instance
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
@@ -169,10 +171,6 @@ if ($id) {
     }
 
     $groupmode = groups_get_activity_groupmode($cm);
-    if (empty($currentgroup)) {
-        $currentgroup = groups_get_activity_group($cm);
-        $currentgroup = !empty($currentgroup) ? $currentgroup : 0;
-    }
 
     if ($wiki->wikimode == 'individual' && ($groupmode == SEPARATEGROUPS || $groupmode == VISIBLEGROUPS)) {
         list($gid, $uid) = explode('-', $groupanduser);
@@ -202,15 +200,20 @@ if ($id) {
             print_error('nocontent','wiki');
         }
 
-        $params = array('wid' => $wiki->id, 'gid' => $gid, 'uid' => $uid, 'title' => $title);
+        $params = array('wid' => $wiki->id, 'group' => $gid, 'uid' => $uid, 'title' => $title);
         $url = new moodle_url('/mod/wiki/create.php', $params);
         redirect($url);
     }
 
     // Checking is there is a page with this title. If it does not exists, redirect to first page
     if (!$page = wiki_get_page_by_title($subwiki->id, $title)) {
-        $params = array('wid' => $wiki->id, 'gid' => $gid, 'uid' => $uid, 'title' => $wiki->firstpagetitle);
-        $url = new moodle_url('/mod/wiki/view.php', $params);
+        $params = array('wid' => $wiki->id, 'group' => $gid, 'uid' => $uid, 'title' => $wiki->firstpagetitle);
+        // Check to see if the first page has been created
+        if (!wiki_get_page_by_title($subwiki->id, $wiki->firstpagetitle)) {
+            $url = new moodle_url('/mod/wiki/create.php', $params);
+        } else {
+            $url = new moodle_url('/mod/wiki/view.php', $params);
+        }
         redirect($url);
     }
 
@@ -269,8 +272,6 @@ require_login($course, true, $cm);
 $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 require_capability('mod/wiki:viewpage', $context);
 
-add_to_log($course->id, 'wiki', 'view', 'view.php?id=' . $cm->id, $wiki->id);
-
 // Update 'viewed' state if required by completion system
 require_once($CFG->libdir . '/completionlib.php');
 $completion = new completion_info($course);
@@ -293,6 +294,14 @@ if ($id) {
 
 $wikipage->set_gid($currentgroup);
 $wikipage->set_page($page);
+
+if($pageid) {
+    add_to_log($course->id, 'wiki', 'view', "view.php?pageid=".$pageid, $pageid, $cm->id);
+} else if($id) {
+    add_to_log($course->id, 'wiki', 'view', "view.php?id=".$id, $id, $cm->id);
+} else if($wid && $title) {
+    add_to_log($course->id, 'wiki', 'view', "view.php?wid=".$wid."&title=".$title, $wid, $cm->id);
+}
 
 $wikipage->print_header();
 $wikipage->print_content();

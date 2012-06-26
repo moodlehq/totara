@@ -137,7 +137,7 @@ h1.headermain {
 }
 
 .course-content .section.main .content {
-    margin: 0 30px 10px 30px;
+    padding: 5px 5px 10px;
     background-color: #FFF;
 }
 
@@ -186,13 +186,13 @@ h1.headermain {
 }
 
 .loginbox .loginform .form-label {
-    width: 39%;
+    width: 44%;
     float: left;
     text-align: right;
 }
 
 .loginbox .loginform .form-input {
-    width: 60%;
+    width: 55%;
     float: right;
     text-align: left;
 }
@@ -243,6 +243,8 @@ h1.headermain {
     margin-bottom: 5px;
     border-top: 1px solid #DDD;
 }
+
+.dir-rtl .loginbox .loginform .form-input {width:50%}
 
 /** Blocks **/
 

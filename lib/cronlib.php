@@ -113,17 +113,18 @@ function cron_run() {
         }
 
 
-        // Delete old backup_controllers and logs
-        if (!empty($CFG->loglifetime)) {  // value in days
-            $loglifetime = $timenow - ($CFG->loglifetime * 3600 * 24);
-            // Delete child records from backup_logs
+        // Delete old backup_controllers and logs.
+        $loglifetime = get_config('backup', 'loglifetime');
+        if (!empty($loglifetime)) {  // Value in days.
+            $loglifetime = $timenow - ($loglifetime * 3600 * 24);
+            // Delete child records from backup_logs.
             $DB->execute("DELETE FROM {backup_logs}
                            WHERE EXISTS (
                                SELECT 'x'
                                  FROM {backup_controllers} bc
                                 WHERE bc.backupid = {backup_logs}.backupid
                                   AND bc.timecreated < ?)", array($loglifetime));
-            // Delete records from backup_controllers
+            // Delete records from backup_controllers.
             $DB->execute("DELETE FROM {backup_controllers}
                           WHERE timecreated < ?", array($loglifetime));
             mtrace(" Deleted old backup records");
@@ -298,35 +299,6 @@ function cron_run() {
         }
     }
     mtrace('Finished blocks');
-
-
-    //TODO: get rid of this bloody hardcoded quiz module stuff, this must be done from quiz_cron()!
-    mtrace("Starting quiz reports");
-    if ($reports = $DB->get_records_select('quiz_reports', "cron > 0 AND ((? - lastcron) > cron)", array($timenow))) {
-        foreach ($reports as $report) {
-            $cronfile = "$CFG->dirroot/mod/quiz/report/$report->name/cron.php";
-            if (file_exists($cronfile)) {
-                include_once($cronfile);
-                $cron_function = 'quiz_report_'.$report->name."_cron";
-                if (function_exists($cron_function)) {
-                    mtrace("Processing quiz report cron function $cron_function ...", '');
-                    $pre_dbqueries = null;
-                    $pre_dbqueries = $DB->perf_get_queries();
-                    $pre_time      = microtime(1);
-                    if ($cron_function()) {
-                        $DB->set_field('quiz_reports', "lastcron", $timenow, array("id"=>$report->id));
-                    }
-                    if (isset($pre_dbqueries)) {
-                        mtrace("... used " . ($DB->perf_get_queries() - $pre_dbqueries) . " dbqueries");
-                        mtrace("... used " . (microtime(1) - $pre_time) . " seconds");
-                    }
-                    @set_time_limit(0);
-                    mtrace("done.");
-                }
-            }
-        }
-    }
-    mtrace("Finished quiz reports");
 
 
     mtrace('Starting admin reports');
@@ -675,7 +647,8 @@ function notify_login_failures() {
 
     // Now, select all the login error logged records belonging to the ips and infos
     // since lastnotifyfailure, that we have stored in the cache_flags table
-    $sql = "SELECT l.*, u.firstname, u.lastname
+    $sql = "SELECT * FROM (
+        SELECT l.*, u.firstname, u.lastname
               FROM {log} l
               JOIN {cache_flags} cf ON l.ip = cf.name
          LEFT JOIN {user} u         ON l.userid = u.id
@@ -689,8 +662,8 @@ function notify_login_failures() {
          LEFT JOIN {user} u         ON l.userid = u.id
              WHERE l.module = 'login' AND l.action = 'error'
                    AND l.time > ?
-                   AND cf.flagtype = 'login_failure_by_info'
-          ORDER BY time DESC";
+                   AND cf.flagtype = 'login_failure_by_info') t
+        ORDER BY t.time DESC";
     $params = array($CFG->lastnotifyfailure, $CFG->lastnotifyfailure);
 
     // Init some variables

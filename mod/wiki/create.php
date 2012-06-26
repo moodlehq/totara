@@ -28,10 +28,10 @@ require_once($CFG->dirroot . '/mod/wiki/pagelib.php');
 // page editing page.
 $action = optional_param('action', 'new', PARAM_TEXT);
 // The title of the new page, can be empty
-$title = optional_param('title', '', PARAM_TEXT);
+$title = optional_param('title', get_string('newpage', 'wiki'), PARAM_TEXT);
 $wid = optional_param('wid', 0, PARAM_INT);
 $swid = optional_param('swid', 0, PARAM_INT);
-$gid = optional_param('gid', 0, PARAM_INT);
+$group = optional_param('group', 0, PARAM_INT);
 $uid = optional_param('uid', 0, PARAM_INT);
 
 // 'create' action must be submitted by moodle form
@@ -50,7 +50,7 @@ if (!empty($swid)) {
     }
 
 } else {
-    $subwiki = wiki_get_subwiki_by_group($wid, $gid, $uid);
+    $subwiki = wiki_get_subwiki_by_group($wid, $group, $uid);
 
     if (!$wiki = wiki_get_wiki($wid)) {
         print_error('invalidwikiid', 'wiki');
@@ -62,11 +62,29 @@ if (!$cm = get_coursemodule_from_instance('wiki', $wiki->id)) {
     print_error('invalidcoursemoduleid', 'wiki');
 }
 
+$groups = new stdClass();
+if (groups_get_activity_groupmode($cm)) {
+    $modulecontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $canaccessgroups = has_capability('moodle/site:accessallgroups', $modulecontext);
+    if ($canaccessgroups) {
+        $groups->availablegroups = groups_get_all_groups($cm->course);
+        $allpart = new stdClass();
+        $allpart->id = '0';
+        $allpart->name = get_string('allparticipants');
+        array_unshift($groups->availablegroups, $allpart);
+    } else {
+        $groups->availablegroups = groups_get_all_groups($cm->course, $USER->id);
+    }
+    if (!empty($group)) {
+        $groups->currentgroup = $group;
+    } else {
+        $groups->currentgroup = groups_get_activity_group($cm);
+    }
+}
+
 $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
 require_login($course->id, true, $cm);
-
-add_to_log($course->id, 'createpage', 'createpage', 'view.php?id=' . $cm->id, $wiki->id);
 
 $wikipage = new page_wiki_create($wiki, $subwiki, $cm);
 
@@ -76,26 +94,27 @@ if (!empty($swid)) {
     $wikipage->set_swid($swid);
 } else {
     $wikipage->set_wid($wid);
-    $wikipage->set_gid($gid);
+    $wikipage->set_gid($group);
     $wikipage->set_uid($uid);
 }
 
-if (!empty($title)) {
-    $wikipage->set_title($title);
-} else {
-    $wikipage->set_title(get_string('newpage', 'wiki'));
-}
+$wikipage->set_availablegroups($groups);
+$wikipage->set_title($title);
 
 // set page action, and initialise moodle form
 $wikipage->set_action($action);
 
 switch ($action) {
 case 'create':
-    $wikipage->create_page($title);
+    $newpageid = $wikipage->create_page($title);
+    add_to_log($course->id, 'wiki', 'add page', "view.php?pageid=".$newpageid, $newpageid, $cm->id);
+    redirect($CFG->wwwroot . '/mod/wiki/edit.php?pageid='.$newpageid);
     break;
 case 'new':
     if ((int)$wiki->forceformat == 1 && !empty($title)) {
-        $wikipage->create_page($title);
+        $newpageid = $wikipage->create_page($title);
+        add_to_log($course->id, 'wiki', 'add page', "view.php?pageid=".$newpageid, $newpageid, $cm->id);
+        redirect($CFG->wwwroot . '/mod/wiki/edit.php?pageid='.$newpageid);
     } else {
         // create link from moodle navigation block without pagetitle
         $wikipage->print_header();

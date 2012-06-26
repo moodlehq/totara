@@ -57,7 +57,7 @@ if (isguestuser($user)) {
 }
 
 if (!empty($CFG->forceloginforprofiles)) {
-    require_login(); // we can not log in to course due to the parent hack bellow
+    require_login(); // we can not log in to course due to the parent hack below
 }
 
 $PAGE->set_context($coursecontext);
@@ -283,7 +283,7 @@ if (!isset($hiddenfields['groups'])) {
 
 // Show other courses they may be in
 if (!isset($hiddenfields['mycourses'])) {
-    if ($mycourses = enrol_get_users_courses($user->id, true, NULL, 'visible DESC,sortorder ASC')) {
+    if ($mycourses = enrol_get_all_users_courses($user->id, true, NULL, 'visible DESC,sortorder ASC')) {
         $shown = 0;
         $courselisting = '';
         foreach ($mycourses as $mycourse) {

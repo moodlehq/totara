@@ -132,7 +132,7 @@ class page_requirements_manager {
             $this->yui3loader->filter = null;
             $this->yui2loader->filter = null;
         }
-        if (!empty($CFG->useexternalyui)) {
+        if (!empty($CFG->useexternalyui) and strpos($CFG->httpswwwroot, 'https:') !== 0) {
             $this->yui3loader->base = 'http://yui.yahooapis.com/' . $CFG->yui3version . '/build/';
             $this->yui2loader->base = 'http://yui.yahooapis.com/' . $CFG->yui2version . '/build/';
             $this->yui3loader->comboBase = 'http://yui.yahooapis.com/combo?';
@@ -408,7 +408,7 @@ class page_requirements_manager {
                                                         array('saving', 'repository'), array('search', 'repository'), array('searching', 'repository'), array('size', 'repository'),
                                                         array('submit', 'repository'), array('sync', 'repository'), array('title', 'repository'), array('upload', 'repository'),
                                                         array('uploading', 'repository'), array('xhtmlerror', 'repository'),
-                                                        array('cancel'), array('chooselicense', 'repository'), array('author', 'repository'),
+                                                        array('cancel'), array('chooselicense', 'repository'), array('author', 'repository'),array('next', 'moodle'),
                                                         array('ok', 'moodle'), array('error', 'moodle'), array('info', 'moodle'), array('norepositoriesavailable', 'repository'), array('norepositoriesexternalavailable', 'repository'),
                                                         array('nofilesattached', 'repository'), array('filepicker', 'repository'),
                                                         array('nofilesavailable', 'repository'), array('overwrite', 'repository'),
@@ -715,7 +715,7 @@ class page_requirements_manager {
             // Set Y's config.gallery to the version
             $jscode = 'Y.config.gallery='.json_encode($galleryversion).';';
         }
-        $jscode .= 'Y.use('.join(',', array_map('json_encode', $modules)).',function() {'.js_writer::function_call($function, $arguments).'});';
+        $jscode .= 'Y.use('.join(',', array_map('json_encode', convert_to_array($modules))).',function() {'.js_writer::function_call($function, $arguments).'});';
         if ($ondomready) {
             $jscode = "Y.on('domready', function() { $jscode });";
         }

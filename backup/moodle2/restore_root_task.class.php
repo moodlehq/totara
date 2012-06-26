@@ -121,19 +121,6 @@ class restore_root_task extends restore_task {
         $this->add_setting($roleassignments);
         $users->add_dependency($roleassignments);
 
-        // Define user_files (dependent of users)
-        $defaultvalue = false;                      // Safer default
-        $changeable = false;
-        if (isset($rootsettings['user_files']) && $rootsettings['user_files']) { // Only enabled when available
-            $defaultvalue = true;
-            $changeable = true;
-        }
-        $userfiles = new restore_user_files_setting('user_files', base_setting::IS_BOOLEAN, $defaultvalue);
-        $userfiles->set_ui(new backup_setting_ui_checkbox($userfiles, get_string('rootsettinguserfiles', 'backup')));
-        $userfiles->get_ui()->set_changeable($changeable);
-        $this->add_setting($userfiles);
-        $users->add_dependency($userfiles);
-
         // Define activitites
         $defaultvalue = false;                      // Safer default
         $changeable = false;
@@ -182,6 +169,19 @@ class restore_root_task extends restore_task {
         $comments->get_ui()->set_changeable($changeable);
         $this->add_setting($comments);
         $users->add_dependency($comments);
+
+        // Define Calendar events (dependent of users)
+        $defaultvalue = false;                      // Safer default
+        $changeable = false;
+        if (isset($rootsettings['calendarevents']) && $rootsettings['calendarevents']) { // Only enabled when available
+            $defaultvalue = true;
+            $changeable = true;
+        }
+        $events = new restore_calendarevents_setting('calendarevents', base_setting::IS_BOOLEAN, $defaultvalue);
+        $events->set_ui(new backup_setting_ui_checkbox($events, get_string('rootsettingcalendarevents', 'backup')));
+        $events->get_ui()->set_changeable($changeable);
+        $this->add_setting($events);
+        $users->add_dependency($events);
 
         // Define completion (dependent of users)
         $defaultvalue = false;                      // Safer default

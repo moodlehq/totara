@@ -1351,7 +1351,7 @@ function calendar_get_default_courses() {
     $courses = array();
     if (!empty($CFG->calendar_adminseesall) && has_capability('moodle/calendar:manageentries', get_context_instance(CONTEXT_SYSTEM))) {
         list ($select, $join) = context_instance_preload_sql('c.id', CONTEXT_COURSE, 'ctx');
-        $sql = "SELECT c.* $select
+        $sql = "SELECT DISTINCT c.* $select
                   FROM {course} c
                   JOIN {event} e ON e.courseid = c.id
                   $join";
@@ -1447,13 +1447,13 @@ function calendar_format_event_time($event, $now, $linkparams = null, $usecommon
             }
         }
     } else {
-        $time = ' ';
+        $time = calendar_time_representation($event->timestart);
 
         // Set printable representation
         if (!$showtime) {
             $day = calendar_day_representation($event->timestart, $now, $usecommonwords);
             $url = calendar_get_link_href(new moodle_url(CALENDAR_URL.'view.php', $linkparams), $startdate['mday'], $startdate['mon'], $startdate['year']);
-            $eventtime = html_writer::link($url, $day).trim($time);
+            $eventtime = html_writer::link($url, $day).', '.trim($time);
         } else {
             $eventtime = $time;
         }
@@ -1540,6 +1540,7 @@ function calendar_set_event_type_display($type, $display = null, $user = null) {
 
 function calendar_get_allowed_types(&$allowed, $course = null) {
     global $USER, $CFG, $DB;
+    $allowed = new stdClass();
     $allowed->user = has_capability('moodle/calendar:manageownentries', get_system_context());
     $allowed->groups = false; // This may change just below
     $allowed->courses = false; // This may change just below
@@ -1551,6 +1552,7 @@ function calendar_get_allowed_types(&$allowed, $course = null) {
         }
         if ($course->id != SITEID) {
             $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+            $allowed->user = has_capability('moodle/calendar:manageownentries', $coursecontext);
 
             if (has_capability('moodle/calendar:manageentries', $coursecontext)) {
                 $allowed->courses = array($course->id => 1);
@@ -1795,7 +1797,7 @@ class calendar_event {
      * @return stdClass
      */
     protected function calculate_context(stdClass $data) {
-        global $USER;
+        global $USER, $DB;
 
         $context = null;
         if (isset($data->courseid) && $data->courseid > 0) {
@@ -2085,6 +2087,20 @@ class calendar_event {
 
         // Delete the event
         $DB->delete_records('event', array('id'=>$this->properties->id));
+
+        // If we are deleting parent of a repeated event series, promote the next event in the series as parent
+        if (($this->properties->id == $this->properties->repeatid) && !$deleterepeated) {
+            $newparent = $DB->get_field_sql("SELECT id from {event} where repeatid = ? order by id ASC", array($this->properties->id), IGNORE_MULTIPLE);
+            if (!empty($newparent)) {
+                $DB->execute("UPDATE {event} SET repeatid = ? WHERE repeatid = ?", array($newparent, $this->properties->id));
+                // Get all records where the repeatid is the same as the event being removed
+                $events = $DB->get_records('event', array('repeatid' => $newparent));
+                // For each of the returned events trigger the event_update hook.
+                foreach ($events as $event) {
+                    self::calendar_event_hook('update_event', array($event, false));
+                }
+            }
+        }
 
         // If the editor context hasn't already been set then set it now
         if ($this->editorcontext === null) {

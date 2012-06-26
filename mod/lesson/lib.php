@@ -171,9 +171,9 @@ function lesson_user_outline($course, $user, $mod, $lesson) {
         //if grade was last modified by the user themselves use date graded. Otherwise use date submitted
         //TODO: move this copied & pasted code somewhere in the grades API. See MDL-26704
         if ($grade->usermodified == $user->id || empty($grade->datesubmitted)) {
-            $result->time = $grade->dategraded;
+            $return->time = $grade->dategraded;
         } else {
-            $result->time = $grade->datesubmitted;
+            $return->time = $grade->datesubmitted;
         }
     }
     return $return;
@@ -659,7 +659,9 @@ function lesson_process_post_save(&$lesson) {
         if ($lesson->available) {
             $event->name = $lesson->name.' ('.get_string('lessonopens', 'lesson').')';
             calendar_event::create(clone($event));
-        } else if ($lesson->deadline) {
+        }
+
+        if ($lesson->deadline) {
             $event->name      = $lesson->name.' ('.get_string('lessoncloses', 'lesson').')';
             $event->timestart = $lesson->deadline;
             $event->eventtype = 'close';
@@ -785,26 +787,6 @@ function lesson_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:          return true;
         default: return null;
     }
-}
-
-/**
- * This function extends the global navigation for the site.
- * It is important to note that you should not rely on PAGE objects within this
- * body of code as there is no guarantee that during an AJAX request they are
- * available
- *
- * @param navigation_node $navigation The lesson node within the global navigation
- * @param stdClass $course The course object returned from the DB
- * @param stdClass $module The module object returned from the DB
- * @param stdClass $cm The course module instance returned from the DB
- */
-function lesson_extend_navigation($navigation, $course, $module, $cm) {
-    /**
-     * This is currently just a stub so  that it can be easily expanded upon.
-     * When expanding just remove this comment and the line below and then add
-     * you content.
-     */
-    $navigation->nodetype = navigation_node::NODETYPE_LEAF;
 }
 
 /**

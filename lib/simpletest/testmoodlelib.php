@@ -296,6 +296,15 @@ class moodlelib_test extends UnitTestCase {
         $this->assertEqual(array('gecko', 'gecko19'), get_browser_version_classes());
     }
 
+    function test_get_device_type() {
+        // IE8 (common pattern ~1.5% of IE7/8 users have embedded IE6 agent))
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; BT Openworld BB; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; Hotbar 10.2.197.0; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET CLR 2.0.50727)';
+        $this->assertEqual('default', get_device_type());
+        // Genuine IE6
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/4.0 (compatible; MSIE 6.0; AOL 9.0; Windows NT 5.1; SV1; FunWebProducts; .NET CLR 1.0.3705; Media Center PC 2.8)';
+        $this->assertEqual('legacy', get_device_type());
+    }
+
     function test_fix_utf8() {
         // make sure valid data including other types is not changed
         $this->assertidentical(null, fix_utf8(null));
@@ -944,6 +953,48 @@ class moodlelib_test extends UnitTestCase {
         $text = "<h1>123456789</h1>";//a string with no convenient breaks
         $this->assertEqual("<h1>12345...</h1>",
             shorten_text($text, 8));
+
+        // ==== this must work with UTF-8 too! ======
+
+        // text without tags
+        $text = "Žluťoučký koníček přeskočil";
+        $this->assertEqual($text, shorten_text($text)); // 30 chars by default
+        $this->assertEqual("Žluťoučký koníče...", shorten_text($text, 19, true));
+        $this->assertEqual("Žluťoučký ...", shorten_text($text, 19, false));
+        // And try it with 2-less (that are, in bytes, the middle of a sequence)
+        $this->assertEqual("Žluťoučký koní...", shorten_text($text, 17, true));
+        $this->assertEqual("Žluťoučký ...", shorten_text($text, 17, false));
+
+        $text = "<p>Žluťoučký koníček <b>přeskočil</b> potůček</p>";
+        $this->assertEqual($text, shorten_text($text, 60));
+        $this->assertEqual("<p>Žluťoučký koníček ...</p>", shorten_text($text, 21));
+        $this->assertEqual("<p>Žluťoučký koníče...</p>", shorten_text($text, 19, true));
+        $this->assertEqual("<p>Žluťoučký ...</p>", shorten_text($text, 19, false));
+        // And try it with 2-less (that are, in bytes, the middle of a sequence)
+        $this->assertEqual("<p>Žluťoučký koní...</p>", shorten_text($text, 17, true));
+        $this->assertEqual("<p>Žluťoučký ...</p>", shorten_text($text, 17, false));
+        // And try over one tag (start/end), it does proper text len
+        $this->assertEqual("<p>Žluťoučký koníček <b>př...</b></p>", shorten_text($text, 23, true));
+        $this->assertEqual("<p>Žluťoučký koníček <b>přeskočil</b> pot...</p>", shorten_text($text, 34, true));
+        // And in the middle of one tag
+        $this->assertEqual("<p>Žluťoučký koníček <b>přeskočil...</b></p>", shorten_text($text, 30, true));
+
+        // Japanese
+        $text = '言語設定言語設定abcdefghijkl';
+        $this->assertEqual($text, shorten_text($text)); // 30 chars by default
+        $this->assertEqual("言語設定言語...", shorten_text($text, 9, true));
+        $this->assertEqual("言語設定言語...", shorten_text($text, 9, false));
+        $this->assertEqual("言語設定言語設定ab...", shorten_text($text, 13, true));
+        $this->assertEqual("言語設定言語設定...", shorten_text($text, 13, false));
+
+        // Chinese
+        $text = '简体中文简体中文abcdefghijkl';
+        $this->assertEqual($text, shorten_text($text)); // 30 chars by default
+        $this->assertEqual("简体中文简体...", shorten_text($text, 9, true));
+        $this->assertEqual("简体中文简体...", shorten_text($text, 9, false));
+        $this->assertEqual("简体中文简体中文ab...", shorten_text($text, 13, true));
+        $this->assertEqual("简体中文简体中文...", shorten_text($text, 13, false));
+
     }
 
     function test_usergetdate() {
@@ -970,31 +1021,31 @@ class moodlelib_test extends UnitTestCase {
         $arr = array_values($arr);
 
         list($seconds,$minutes,$hours,$mday,$wday,$mon,$year,$yday,$weekday,$month) = $arr;
-        $this->assertEqual($seconds,7);
-        $this->assertEqual($minutes,51);
-        $this->assertEqual($hours,4);
-        $this->assertEqual($mday,23);
-        $this->assertEqual($wday,3);
-        $this->assertEqual($mon,12);
-        $this->assertEqual($year,2009);
-        $this->assertEqual($yday,357);
-        $this->assertEqual($weekday, 'Wednesday');
-        $this->assertEqual($month, 'December');
+        $this->assertIdentical($seconds, 7);
+        $this->assertIdentical($minutes, 51);
+        $this->assertIdentical($hours, 4);
+        $this->assertIdentical($mday, 23);
+        $this->assertIdentical($wday, 3);
+        $this->assertIdentical($mon, 12);
+        $this->assertIdentical($year, 2009);
+        $this->assertIdentical($yday, 356);
+        $this->assertIdentical($weekday, 'Wednesday');
+        $this->assertIdentical($month, 'December');
 
         $arr = usergetdate($ts);//gets the timezone from the $USER object
         $arr = array_values($arr);
 
         list($seconds,$minutes,$hours,$mday,$wday,$mon,$year,$yday,$weekday,$month) = $arr;
-        $this->assertEqual($seconds,7);
-        $this->assertEqual($minutes,51);
-        $this->assertEqual($hours,5);
-        $this->assertEqual($mday,23);
-        $this->assertEqual($wday,3);
-        $this->assertEqual($mon,12);
-        $this->assertEqual($year,2009);
-        $this->assertEqual($yday,357);
-        $this->assertEqual($weekday, 'Wednesday');
-        $this->assertEqual($month, 'December');
+        $this->assertIdentical($seconds, 7);
+        $this->assertIdentical($minutes, 51);
+        $this->assertIdentical($hours, 5);
+        $this->assertIdentical($mday, 23);
+        $this->assertIdentical($wday, 3);
+        $this->assertIdentical($mon, 12);
+        $this->assertIdentical($year, 2009);
+        $this->assertIdentical($yday, 356);
+        $this->assertIdentical($weekday, 'Wednesday');
+        $this->assertIdentical($month, 'December');
 
         //set the timezone back to what it was
         $USER->timezone = $userstimezone;

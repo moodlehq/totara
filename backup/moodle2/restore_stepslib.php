@@ -371,40 +371,35 @@ class restore_gradebook_structure_step extends restore_structure_step {
         }
         $rs->close();
 
-        //need to correct the grade category path and parent
+        // Need to correct the grade category path and parent
         $conditions = array(
             'courseid' => $this->get_courseid()
         );
-        $grade_category = new stdclass();
 
         $rs = $DB->get_recordset('grade_categories', $conditions);
-        if (!empty($rs)) {
-            //get all the parents correct first as grade_category::build_path() loads category parents from the DB
-            foreach($rs as $gc) {
-                if (!empty($gc->parent)) {
-                    $grade_category->id = $gc->id;
-                    $grade_category->parent = $this->get_mappingid('grade_category', $gc->parent);
-                    $DB->update_record('grade_categories', $grade_category);
-                }
-            }
-        }
-        if (isset($grade_category->parent)) {
-            unset($grade_category->parent);
-        }
-        $rs->close();
-
-        $rs = $DB->get_recordset('grade_categories', $conditions);
-        if (!empty($rs)) {
-            //now we can rebuild all the paths
-            foreach($rs as $gc) {
+        // Get all the parents correct first as grade_category::build_path() loads category parents from the DB
+        foreach ($rs as $gc) {
+            if (!empty($gc->parent)) {
+                $grade_category = new stdClass();
                 $grade_category->id = $gc->id;
-                $grade_category->path = grade_category::build_path($gc);
+                $grade_category->parent = $this->get_mappingid('grade_category', $gc->parent);
                 $DB->update_record('grade_categories', $grade_category);
             }
         }
         $rs->close();
 
-        //Restore marks items as needing update. Update everything now.
+        // Now we can rebuild all the paths
+        $rs = $DB->get_recordset('grade_categories', $conditions);
+        foreach ($rs as $gc) {
+            $grade_category = new stdClass();
+            $grade_category->id = $gc->id;
+            $grade_category->path = grade_category::build_path($gc);
+            $grade_category->depth = substr_count($grade_category->path, '/') - 1;
+            $DB->update_record('grade_categories', $grade_category);
+        }
+        $rs->close();
+
+        // Restore marks items as needing update. Update everything now.
         grade_regrade_final_grades($this->get_courseid());
     }
 }
@@ -688,7 +683,7 @@ class restore_create_included_users extends restore_execution_step {
 
     protected function define_execution() {
 
-        restore_dbops::create_included_users($this->get_basepath(), $this->get_restoreid(), $this->get_setting_value('user_files'), $this->task->get_userid());
+        restore_dbops::create_included_users($this->get_basepath(), $this->get_restoreid(), $this->task->get_userid());
     }
 }
 
@@ -1129,6 +1124,12 @@ class restore_course_structure_step extends restore_structure_step {
             unset($data->idnumber);
         }
 
+        // Any empty value for course->hiddensections will lead to 0 (default, show collapsed).
+        // It has been reported that some old 1.9 courses may have it null leading to DB error. MDL-31532
+        if (empty($data->hiddensections)) {
+            $data->hiddensections = 0;
+        }
+
         // Only restrict modules if original course was and target site too for new courses
         $data->restrictmodules = $data->restrictmodules && !empty($CFG->restrictmodulesfor) && $CFG->restrictmodulesfor == 'all';
 
@@ -1562,6 +1563,76 @@ class restore_comments_structure_step extends restore_structure_step {
                 }
             }
         }
+    }
+}
+
+/**
+ * This structure steps restores the calendar events
+ */
+class restore_calendarevents_structure_step extends restore_structure_step {
+
+    protected function define_structure() {
+
+        $paths = array();
+
+        $paths[] = new restore_path_element('calendarevents', '/events/event');
+
+        return $paths;
+    }
+
+    public function process_calendarevents($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+        $restorefiles = true; // We'll restore the files
+        // Find the userid and the groupid associated with the event. Return if not found.
+        $data->userid = $this->get_mappingid('user', $data->userid);
+        if ($data->userid === false) {
+            return;
+        }
+        if (!empty($data->groupid)) {
+            $data->groupid = $this->get_mappingid('group', $data->groupid);
+            if ($data->groupid === false) {
+                return;
+            }
+        }
+
+        $params = array(
+                'name'           => $data->name,
+                'description'    => $data->description,
+                'format'         => $data->format,
+                'courseid'       => $this->get_courseid(),
+                'groupid'        => $data->groupid,
+                'userid'         => $data->userid,
+                'repeatid'       => $data->repeatid,
+                'modulename'     => $data->modulename,
+                'eventtype'      => $data->eventtype,
+                'timestart'      => $this->apply_date_offset($data->timestart),
+                'timeduration'   => $data->timeduration,
+                'visible'        => $data->visible,
+                'uuid'           => $data->uuid,
+                'sequence'       => $data->sequence,
+                'timemodified'    => $this->apply_date_offset($data->timemodified));
+        if ($this->name == 'activity_calendar') {
+            $params['instance'] = $this->task->get_activityid();
+        } else {
+            $params['instance'] = 0;
+        }
+        $sql = 'SELECT id FROM {event} WHERE name = ? AND courseid = ? AND
+                repeatid = ? AND modulename = ? AND timestart = ? AND timeduration =?
+                AND ' . $DB->sql_compare_text('description', 255) . ' = ' . $DB->sql_compare_text('?', 255);
+        $arg = array ($params['name'], $params['courseid'], $params['repeatid'], $params['modulename'], $params['timestart'], $params['timeduration'], $params['description']);
+        $result = $DB->record_exists_sql($sql, $arg);
+        if (empty($result)) {
+            $newitemid = $DB->insert_record('event', $params);
+            $this->set_mapping('event_description', $oldid, $newitemid, $restorefiles);
+        }
+
+    }
+    protected function after_execute() {
+        // Add related files
+        $this->add_related_files('calendar', 'event_description', 'event_description');
     }
 }
 

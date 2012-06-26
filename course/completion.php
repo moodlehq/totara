@@ -142,12 +142,12 @@ if ($form->is_cancelled()){
 
     // Update course total passing grade
     if (!empty($data->criteria_grade)) {
-    	if ($grade_item = grade_category::fetch_course_category($course->id)->grade_item) {
-        	$grade_item->gradepass = $data->criteria_grade_value;
-        	if (method_exists($grade_item, 'update')) {
-            	$grade_item->update('course/completion.php');
-        	}
-    	}
+        if ($grade_item = grade_category::fetch_course_category($course->id)->grade_item) {
+            $grade_item->gradepass = $data->criteria_grade_value;
+            if (method_exists($grade_item, 'update')) {
+                $grade_item->update('course/completion.php');
+            }
+        }
     }
 
     add_to_log($course->id, 'course', 'completion updated', 'completion.php?id='.$course->id);

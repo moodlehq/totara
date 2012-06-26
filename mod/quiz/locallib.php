@@ -69,6 +69,12 @@ define('QUIZ_SHOW_TIME_BEFORE_DEADLINE', '3600');
 function quiz_create_attempt($quiz, $attemptnumber, $lastattempt, $timenow, $ispreview = false) {
     global $USER;
 
+    if ($quiz->sumgrades < 0.000005 && $quiz->grade > 0.000005) {
+        throw new moodle_exception('cannotstartgradesmismatch', 'quiz',
+                new moodle_url('/mod/quiz/view.php', array('q' => $quiz->id)),
+                    array('grade' => quiz_format_grade($quiz, $quiz->grade)));
+    }
+
     if ($attemptnumber == 1 || !$quiz->attemptonlast) {
         // We are not building on last attempt so create a new attempt.
         $attempt = new stdClass();
@@ -348,6 +354,10 @@ function quiz_feedback_for_grade($grade, $quiz, $context) {
         return '';
     }
 
+    // With CBM etc, it is possible to get -ve grades, which would then not match
+    // any feedback. Therefore, we replace -ve grades with 0.
+    $grade = max($grade, 0);
+
     $feedback = $DB->get_record_select('quiz_feedback',
             'quizid = ? AND mingrade <= ? AND ? < maxgrade', array($quiz->id, $grade, $grade));
 
@@ -386,10 +396,13 @@ function quiz_has_feedback($quiz) {
  * the grading structure of the quiz is changed. For example if a question is
  * added or removed, or a question weight is changed.
  *
+ * You should call {@link quiz_delete_previews()} before you call this function.
+ *
  * @param object $quiz a quiz.
  */
 function quiz_update_sumgrades($quiz) {
     global $DB;
+
     $sql = 'UPDATE {quiz}
             SET sumgrades = COALESCE((
                 SELECT SUM(grade)
@@ -399,13 +412,20 @@ function quiz_update_sumgrades($quiz) {
             WHERE id = ?';
     $DB->execute($sql, array($quiz->id));
     $quiz->sumgrades = $DB->get_field('quiz', 'sumgrades', array('id' => $quiz->id));
-    if ($quiz->sumgrades < 0.000005 && quiz_clean_layout($quiz->questions, true)) {
-        // If there is at least one question in the quiz, and the sumgrades has been
-        // set to 0, then also set the maximum possible grade to 0.
+
+    if ($quiz->sumgrades < 0.000005 && quiz_has_attempts($quiz->id)) {
+        // If the quiz has been attempted, and the sumgrades has been
+        // set to 0, then we must also set the maximum possible grade to 0, or
+        // we will get a divide by zero error.
         quiz_set_grade(0, $quiz);
     }
 }
 
+/**
+ * Update the sumgrades field of the attempts at a quiz.
+ *
+ * @param object $quiz a quiz.
+ */
 function quiz_update_all_attempt_sumgrades($quiz) {
     global $DB;
     $dm = new question_engine_data_mapper();
@@ -489,8 +509,7 @@ function quiz_set_grade($newgrade, $quiz) {
  * @return bool Indicates success or failure.
  */
 function quiz_save_best_grade($quiz, $userid = null, $attempts = array()) {
-    global $DB;
-    global $USER, $OUTPUT;
+    global $DB, $OUTPUT, $USER;
 
     if (empty($userid)) {
         $userid = $USER->id;
@@ -833,11 +852,13 @@ function quiz_question_edit_button($cmid, $question, $returnurl, $contentafteric
         }
         $questionparams = array('returnurl' => $returnurl, 'cmid' => $cmid, 'id' => $question->id);
         $questionurl = new moodle_url("$CFG->wwwroot/question/question.php", $questionparams);
-        return '<a title="' . $action . '" href="' . $questionurl->out() . '"><img src="' .
+        return '<a title="' . $action . '" href="' . $questionurl->out() . '" class="questioneditbutton"><img src="' .
                 $OUTPUT->pix_url($icon) . '" alt="' . $action . '" />' . $contentaftericon .
                 '</a>';
+    } else if ($contentaftericon) {
+        return '<span class="questioneditbutton">' . $contentaftericon . '</span>';
     } else {
-        return $contentaftericon;
+        return '';
     }
 }
 
@@ -1127,8 +1148,6 @@ function quiz_send_confirmation($recipient, $a) {
  * @return int|false as for {@link message_send()}.
  */
 function quiz_send_notification($recipient, $submitter, $a) {
-
-    global $USER;
 
     // Recipient info for template
     $a->useridnumber = $recipient->idnumber;

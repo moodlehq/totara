@@ -36,6 +36,28 @@ require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 define('NUM_QS_TO_SHOW_IN_RANDOM', 3);
 
 /**
+ * Verify that the question exists, and the user has permission to use it.
+ * Does not return. Throws an exception if the question cannot be used.
+ * @param int $questionid The id of the question.
+ */
+function quiz_require_question_use($questionid) {
+    global $DB;
+    $question = $DB->get_record('question', array('id' => $questionid), '*', MUST_EXIST);
+    question_require_capability_on($question, 'use');
+}
+
+/**
+ * Verify that the question exists, and the user has permission to use it.
+ * @param int $questionid The id of the question.
+ * @return bool whether the user can use this question.
+ */
+function quiz_has_question_use($questionid) {
+    global $DB;
+    $question = $DB->get_record('question', array('id' => $questionid), '*', MUST_EXIST);
+    return question_has_capability_on($question, 'use');
+}
+
+/**
  * Remove a question from a quiz
  * @param object $quiz the quiz object.
  * @param int $questionid The id of the question to be deleted.
@@ -248,8 +270,8 @@ function quiz_add_page_break_after($layout, $questionid) {
 function quiz_save_new_layout($quiz) {
     global $DB;
     $DB->set_field('quiz', 'questions', $quiz->questions, array('id' => $quiz->id));
-    quiz_update_sumgrades($quiz);
     quiz_delete_previews($quiz);
+    quiz_update_sumgrades($quiz);
 }
 
 /**
@@ -333,20 +355,22 @@ function quiz_move_question_down($layout, $questionid) {
  * Prints a list of quiz questions for the edit.php main view for edit
  * ($reordertool = false) and order and paging ($reordertool = true) tabs
  *
- * @return int sum of maximum grades
  * @param object $quiz This is not the standard quiz object used elsewhere but
  *     it contains the quiz layout in $quiz->questions and the grades in
  *     $quiz->grades
- * @param object $pageurl The url of the current page with the parameters required
+ * @param moodle_url $pageurl The url of the current page with the parameters required
  *     for links returning to the current page, as a moodle_url object
  * @param bool $allowdelete Indicates whether the delete icons should be displayed
  * @param bool $reordertool  Indicates whether the reorder tool should be displayed
  * @param bool $quiz_qbanktool  Indicates whether the question bank should be displayed
  * @param bool $hasattempts  Indicates whether the quiz has attempts
+ * @param object $defaultcategoryobj
+ * @param bool $canaddquestion is the user able to add and use questions anywere?
+ * @param bool $canaddrandom is the user able to add random questions anywere?
  */
 function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
-        $quiz_qbanktool, $hasattempts, $defaultcategoryobj) {
-    global $USER, $CFG, $DB, $OUTPUT;
+        $quiz_qbanktool, $hasattempts, $defaultcategoryobj, $canaddquestion, $canaddrandom) {
+    global $CFG, $DB, $OUTPUT;
     $strorder = get_string('order');
     $strquestionname = get_string('questionname', 'quiz');
     $strgrade = get_string('grade');
@@ -462,19 +486,16 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
         $reordercheckboxlabel = '';
         $reordercheckboxlabelclose = '';
 
-        if ($qnum && empty($questions[$qnum])) {
-            continue;
-        }
-
         // If the questiontype is missing change the question type
         if ($qnum && !array_key_exists($qnum, $questions)) {
             $fakequestion = new stdClass();
-            $fakequestion->id = 0;
+            $fakequestion->id = $qnum;
+            $fakequestion->category = 0;
             $fakequestion->qtype = 'missingtype';
-            $fakequestion->name = get_string('deletedquestion', 'qtype_missingtype');
-            $fakequestion->questiontext = '<p>' .
-                    get_string('deletedquestion', 'qtype_missing') . '</p>';
-            $fakequestion->length = 0;
+            $fakequestion->name = get_string('missingquestion', 'quiz');
+            $fakequestion->questiontext = ' ';
+            $fakequestion->questiontextformat = FORMAT_HTML;
+            $fakequestion->length = 1;
             $questions[$qnum] = $fakequestion;
             $quiz->grades[$qnum] = 0;
 
@@ -581,7 +602,7 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
                                 array('title' => $strmovedown));
                     }
                 }
-                if ($allowdelete && (empty($question->id) ||
+                if ($allowdelete && ($question->qtype == 'missingtype' ||
                         question_has_capability_on($question, 'use', $question->category))) {
                     // remove from quiz, not question delete.
                     if (!$hasattempts) {
@@ -595,7 +616,7 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
                 }
                 ?>
             </div><?php
-                if ($question->qtype != 'description' && !$reordertool) {
+                if (!in_array($question->qtype, array('description', 'missingtype')) && !$reordertool) {
                     ?>
 <div class="points">
 <form method="post" action="edit.php" class="quizsavegradesform"><div>
@@ -670,7 +691,7 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
                 if (!$reordertool && !($quiz->shufflequestions &&
                         $count < $questiontotalcount - 1)) {
                     quiz_print_pagecontrols($quiz, $pageurl, $pagecount,
-                            $hasattempts, $defaultcategoryobj);
+                            $hasattempts, $defaultcategoryobj, $canaddquestion, $canaddrandom);
                 } else if ($count < $questiontotalcount - 1) {
                     //do not include the last page break for reordering
                     //to avoid creating a new extra page in the end
@@ -706,12 +727,19 @@ function quiz_print_question_list($quiz, $pageurl, $allowdelete, $reordertool,
  * Print all the controls for adding questions directly into the
  * specific page in the edit tab of edit.php
  *
- * @param unknown_type $quiz
- * @param unknown_type $pageurl
- * @param unknown_type $page
- * @param unknown_type $hasattempts
+ * @param object $quiz This is not the standard quiz object used elsewhere but
+ *     it contains the quiz layout in $quiz->questions and the grades in
+ *     $quiz->grades
+ * @param moodle_url $pageurl The url of the current page with the parameters required
+ *     for links returning to the current page, as a moodle_url object
+ * @param int $page the current page number.
+ * @param bool $hasattempts  Indicates whether the quiz has attempts
+ * @param object $defaultcategoryobj
+ * @param bool $canaddquestion is the user able to add and use questions anywere?
+ * @param bool $canaddrandom is the user able to add random questions anywere?
  */
-function quiz_print_pagecontrols($quiz, $pageurl, $page, $hasattempts, $defaultcategoryobj) {
+function quiz_print_pagecontrols($quiz, $pageurl, $page, $hasattempts,
+        $defaultcategoryobj, $canaddquestion, $canaddrandom) {
     global $CFG, $OUTPUT;
     static $randombuttoncount = 0;
     $randombuttoncount++;
@@ -727,22 +755,25 @@ function quiz_print_pagecontrols($quiz, $pageurl, $page, $hasattempts, $defaultc
         $defaultcategoryid = $defaultcategoryobj->id;
     }
 
-    // Create the url the question page will return to
-    $returnurladdtoquiz = new moodle_url($pageurl, array('addonpage' => $page));
+    if ($canaddquestion) {
+        // Create the url the question page will return to
+        $returnurladdtoquiz = new moodle_url($pageurl, array('addonpage' => $page));
 
-    // Print a button linking to the choose question type page.
-    $returnurladdtoquiz = str_replace($CFG->wwwroot, '', $returnurladdtoquiz->out(false));
-    $newquestionparams = array('returnurl' => $returnurladdtoquiz,
-            'cmid' => $quiz->cmid, 'appendqnumstring' => 'addquestion');
-    create_new_question_button($defaultcategoryid, $newquestionparams,
-            get_string('addaquestion', 'quiz'),
-            get_string('createquestionandadd', 'quiz'), $hasattempts);
+        // Print a button linking to the choose question type page.
+        $returnurladdtoquiz = str_replace($CFG->wwwroot, '', $returnurladdtoquiz->out(false));
+        $newquestionparams = array('returnurl' => $returnurladdtoquiz,
+                'cmid' => $quiz->cmid, 'appendqnumstring' => 'addquestion');
+        create_new_question_button($defaultcategoryid, $newquestionparams,
+                get_string('addaquestion', 'quiz'),
+                get_string('createquestionandadd', 'quiz'), $hasattempts);
+    }
 
     if ($hasattempts) {
         $disabled = 'disabled="disabled"';
     } else {
         $disabled = '';
     }
+    if ($canaddrandom) {
     ?>
     <div class="singlebutton">
         <form class="randomquestionform" action="<?php echo $CFG->wwwroot;
@@ -763,8 +794,8 @@ function quiz_print_pagecontrols($quiz, $pageurl, $page, $hasattempts, $defaultc
             </div>
         </form>
     </div>
-    <?php echo $OUTPUT->help_icon('addarandomquestion', 'quiz'); ?>
-    <?php
+    <?php echo $OUTPUT->help_icon('addarandomquestion', 'quiz');
+    }
     echo "\n</div>";
 }
 
@@ -777,7 +808,7 @@ function quiz_print_pagecontrols($quiz, $pageurl, $page, $hasattempts, $defaultc
  * @param object $quiz The quiz in the context of which the question is being displayed
  */
 function quiz_print_singlequestion($question, $returnurl, $quiz) {
-    echo '<div class="singlequestion">';
+    echo '<div class="singlequestion ' . $question->qtype . '">';
     echo quiz_question_edit_button($quiz->cmid, $question, $returnurl,
             quiz_question_tostring($question) . ' ');
     echo '<span class="questiontype">';
@@ -884,7 +915,7 @@ function quiz_print_randomquestion(&$question, &$pageurl, &$quiz, $quiz_qbanktoo
  * @param object $quiz The quiz in the context of which the question is being displayed
  */
 function quiz_print_singlequestion_reordertool($question, $returnurl, $quiz) {
-    echo '<div class="singlequestion">';
+    echo '<div class="singlequestion ' . $question->qtype . '">';
     echo '<label for="s' . $question->id . '">';
     echo print_question_icon($question);
     echo ' ' . quiz_question_tostring($question);
@@ -1024,6 +1055,9 @@ class question_bank_add_to_quiz_action_column extends question_bank_action_colum
     }
 
     protected function display_content($question, $rowclasses) {
+        if (!question_has_capability_on($question, 'use')) {
+            return;
+        }
         // for RTL languages: switch right and left arrows
         if (right_to_left()) {
             $movearrow = 't/removeright';
@@ -1215,7 +1249,7 @@ class quiz_question_bank_view extends question_bank_view {
  *      the last value used +1.
  */
 function quiz_print_grading_form($quiz, $pageurl, $tabindex) {
-    global $USER, $OUTPUT;
+    global $OUTPUT;
     $strsave = get_string('save', 'quiz');
     echo '<form method="post" action="edit.php" class="quizsavegradesform"><div>';
     echo '<fieldset class="invisiblefieldset" style="display: block;">';

@@ -193,21 +193,19 @@ if (empty($pageid)) {
 
     // if there are any questions have been answered correctly in this attempt
     $corrrectattempts = $lesson->get_attempts($retries, true);
-    if ($corrrectattempts>0) {
-        foreach ($corrrectattempts as $attempt) {
-            $jumpto = $DB->get_field('lesson_answers', 'jumpto', array('id' => $attempt->answerid));
-            // convert the jumpto to a proper page id
-            if ($jumpto == 0) { // unlikely value!
-                $lastpageseen = $attempt->pageid;
-            } elseif ($jumpto == LESSON_NEXTPAGE) {
-                if (!$lastpageseen = $DB->get_field('lesson_pages', 'nextpageid', array('id' => $attempt->pageid))) {
-                    // no nextpage go to end of lesson
-                    $lastpageseen = LESSON_EOL;
-                }
-            } else {
-                $lastpageseen = $jumpto;
+    if (!empty($corrrectattempts)) {
+        $attempt = end($corrrectattempts);
+        $jumpto = $DB->get_field('lesson_answers', 'jumpto', array('id' => $attempt->answerid));
+        // convert the jumpto to a proper page id
+        if ($jumpto == 0) { // unlikely value!
+            $lastpageseen = $attempt->pageid;
+        } elseif ($jumpto == LESSON_NEXTPAGE) {
+            if (!$lastpageseen = $DB->get_field('lesson_pages', 'nextpageid', array('id' => $attempt->pageid))) {
+                // no nextpage go to end of lesson
+                $lastpageseen = LESSON_EOL;
             }
-            break; // only look at the latest correct attempt
+        } else {
+            $lastpageseen = $jumpto;
         }
     }
 
@@ -391,7 +389,8 @@ if ($pageid != LESSON_EOL) {
     lesson_add_fake_blocks($PAGE, $cm, $lesson, $timer);
     echo $lessonoutput->header($lesson, $cm, $currenttab, $extraeditbuttons, $lessonpageid);
     if ($attemptflag) {
-        echo $OUTPUT->heading(get_string('attempt', 'lesson', $retries));
+        // We are using level 3 header because attempt heading is a sub-heading of lesson title (MDL-30911).
+        echo $OUTPUT->heading(get_string('attempt', 'lesson', $retries), 3);
     }
     /// This calculates and prints the ongoing score
     if ($lesson->ongoing && !empty($pageid) && !$reviewmode) {
@@ -415,7 +414,8 @@ if ($pageid != LESSON_EOL) {
     // Update the clock / get time information for this user
     add_to_log($course->id, "lesson", "end", "view.php?id=".$PAGE->cm->id, "$lesson->id", $PAGE->cm->id);
 
-    $lessoncontent .= $OUTPUT->heading(get_string("congratulations", "lesson"));
+    // We are using level 3 header because the page title is a sub-heading of lesson title (MDL-30911).
+    $lessoncontent .= $OUTPUT->heading(get_string("congratulations", "lesson"), 3);
     $lessoncontent .= $OUTPUT->box_start('generalbox boxaligncenter');
     $ntries = $DB->count_records("lesson_grades", array("lessonid"=>$lesson->id, "userid"=>$USER->id));
     if (isset($USER->modattempts[$lesson->id])) {

@@ -123,7 +123,13 @@ class core_enrol_external extends external_api {
                             'name'  => new external_value(PARAM_ALPHANUMEXT, 'option name'),
                             'value' => new external_value(PARAM_RAW, 'option value')
                         )
-                    ), 'method options', VALUE_DEFAULT, array()),
+                    ), 'Option names:
+                            * withcapability (string) return only users with this capability. This option requires \'moodle/role:review\' on the course context.
+                            * groupid (integer) return only users in this group id. This option requires \'moodle/site:accessallgroups\' on the course context.
+                            * onlyactive (integer) return only users with active enrolments and matching time restrictions. This option requires \'moodle/course:enrolreview\' on the course context.
+                            * userfields (\'string, string, ...\') return only the values of these user fields.
+                            * limitfrom (integer) sql limit from.
+                            * limitnumber (integer) maximum number of returned users.', VALUE_DEFAULT, array()),
             )
         );
     }
@@ -152,6 +158,8 @@ class core_enrol_external extends external_api {
         $groupid        = 0;
         $onlyactive     = false;
         $userfields     = array();
+        $limitfrom = 0;
+        $limitnumber = 0;
         foreach ($options as $option) {
             switch ($option['name']) {
             case 'withcapability':
@@ -168,30 +176,17 @@ class core_enrol_external extends external_api {
                 foreach ($thefields as $f) {
                     $userfields[] = clean_param($f, PARAM_ALPHANUMEXT);
                 }
+            case 'limitfrom' :
+                $limitfrom = clean_param($option['value'], PARAM_INT);
+                break;
+            case 'limitnumber' :
+                $limitnumber = clean_param($option['value'], PARAM_INT);
                 break;
             }
         }
 
-        // to overwrite this parameter, you need role:review capability
-        if ($withcapability) {
-            require_capability('moodle/role:review', $coursecontext);
-        }
-        // need accessallgroups capability if you want to overwrite this option
-        if (!empty($groupid) && groups_is_member($groupid)) {
-            require_capability('moodle/site:accessallgroups', $context);
-        }
-        // to overwrite this option, you need course:enrolereview permission
-        if ($onlyactive) {
-            require_capability('moodle/course:enrolreview', $coursecontext);
-        }
-
-        list($coursectxselect, $coursectxjoin) = context_instance_preload_sql('c.id', CONTEXT_COURSE, 'ctx');
-        $coursesql = "SELECT c.* $coursectxselect
-                        FROM {course} c $coursectxjoin
-                       WHERE c.id = $courseid";
-        $course = $DB->get_record_sql($coursesql);
-        context_instance_preload($course);
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $params['courseid']);
+        $course = $DB->get_record('course', array('id'=>$courseid), '*', MUST_EXIST);
+        $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
         if ($courseid == SITEID) {
             $context = get_system_context();
         } else {
@@ -206,20 +201,34 @@ class core_enrol_external extends external_api {
             throw new moodle_exception(get_string('errorcoursecontextnotvalid' , 'webservice', $exceptionparam));
         }
 
+        if ($courseid == SITEID) {
+            require_capability('moodle/site:viewparticipants', $context);
+        } else {
+            require_capability('moodle/course:viewparticipants', $context);
+        }
+        // to overwrite this parameter, you need role:review capability
+        if ($withcapability) {
+            require_capability('moodle/role:review', $coursecontext);
+        }
+        // need accessallgroups capability if you want to overwrite this option
+        if (!empty($groupid) && groups_is_member($groupid)) {
+            require_capability('moodle/site:accessallgroups', $coursecontext);
+        }
+        // to overwrite this option, you need course:enrolereview permission
+        if ($onlyactive) {
+            require_capability('moodle/course:enrolreview', $coursecontext);
+        }
+
         list($enrolledsql, $enrolledparams) = get_enrolled_sql($coursecontext, $withcapability, $groupid, $onlyactive);
         list($ctxselect, $ctxjoin) = context_instance_preload_sql('u.id', CONTEXT_USER, 'ctx');
-        $records = $DB->get_records_sql($enrolledsql, $enrolledparams);
         $sqlparams['courseid'] = $courseid;
         $sql = "SELECT u.* $ctxselect
                   FROM {user} u $ctxjoin
                  WHERE u.id IN ($enrolledsql)
                  ORDER BY u.id ASC";
-        $enrolledusers = $DB->get_recordset_sql($sql, $enrolledparams);
+        $enrolledusers = $DB->get_recordset_sql($sql, $enrolledparams, $limitfrom, $limitnumber);
         $users = array();
         foreach ($enrolledusers as $user) {
-            if (!empty($user->deleted)) {
-                continue;
-            }
             context_instance_preload($user);
             if ($userdetails = user_get_user_details($user, $course, $userfields)) {
                 $users[] = $userdetails;

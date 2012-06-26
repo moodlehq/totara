@@ -49,11 +49,13 @@ class qtype_shortanswer extends question_type {
     public function move_files($questionid, $oldcontextid, $newcontextid) {
         parent::move_files($questionid, $oldcontextid, $newcontextid);
         $this->move_files_in_answers($questionid, $oldcontextid, $newcontextid);
+        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
     }
 
     protected function delete_files($questionid, $contextid) {
         parent::delete_files($questionid, $contextid);
         $this->delete_files_in_answers($questionid, $contextid);
+        $this->delete_files_in_hints($questionid, $contextid);
     }
 
     public function save_question_options($question) {
@@ -139,10 +141,20 @@ class qtype_shortanswer extends question_type {
     public function get_possible_responses($questiondata) {
         $responses = array();
 
+        $starfound = false;
         foreach ($questiondata->options->answers as $aid => $answer) {
             $responses[$aid] = new question_possible_response($answer->answer,
                     $answer->fraction);
+            if ($answer->answer === '*') {
+                $starfound = true;
+            }
         }
+
+        if (!$starfound) {
+            $responses[0] = new question_possible_response(
+                    get_string('didnotmatchanyanswer', 'question'), 0);
+        }
+
         $responses[null] = question_possible_response::no_response();
 
         return array($questiondata->id => $responses);

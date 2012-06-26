@@ -149,10 +149,9 @@ class jsportal {
         $output .= "    main.portal.strings['moveleft']='".addslashes_js(get_string('moveleft'))."';\n";
         $output .= "    main.portal.strings['moveright']='".addslashes_js(get_string('moveright'))."';\n";
         $output .= "    main.portal.strings['update']='".addslashes_js(get_string('update'))."';\n";
-        $output .= "    main.portal.strings['groupsnone']='".addslashes_js(get_string('groupsnone'))."';\n";
-        $output .= "    main.portal.strings['groupsseparate']='".addslashes_js(get_string('groupsseparate'))."';\n";
-        $output .= "    main.portal.strings['groupsvisible']='".addslashes_js(get_string('groupsvisible'))."';\n";
-        $output .= "    main.portal.strings['clicktochange']='".addslashes_js(get_string('clicktochange'))."';\n";
+        $output .= "    main.portal.strings['groupsnone']='".addslashes_js(get_string('clicktochangeinbrackets', 'moodle', get_string('groupsnone')))."';\n";
+        $output .= "    main.portal.strings['groupsseparate']='".addslashes_js(get_string('clicktochangeinbrackets', 'moodle', get_string('groupsseparate')))."';\n";
+        $output .= "    main.portal.strings['groupsvisible']='".addslashes_js(get_string('clicktochangeinbrackets', 'moodle', get_string('groupsvisible')))."';\n";
         $output .= "    main.portal.strings['deletecheck']='".addslashes_js(get_string('deletecheckfull','','_var_'))."';\n";
         $output .= "    main.portal.strings['resource']='".addslashes_js(get_string('resource'))."';\n";
         $output .= "    main.portal.strings['activity']='".addslashes_js(get_string('activity'))."';\n";
@@ -162,6 +161,7 @@ class jsportal {
         }
         $output .= "    main.portal.icons['spacerimg']='".$OUTPUT->pix_url('spacer')."';\n";
         $output .= "    main.portal.icons['marker']='".$OUTPUT->pix_url('i/marker')."';\n";
+        $output .= "    main.portal.icons['marked']='".$OUTPUT->pix_url('i/marked')."';\n";
         $output .= "    main.portal.icons['ihide']='".$OUTPUT->pix_url('i/hide')."';\n";
         $output .= "    main.portal.icons['move_2d']='".$OUTPUT->pix_url('i/move_2d')."';\n";
         $output .= "    main.portal.icons['show']='".$OUTPUT->pix_url('t/show')."';\n";

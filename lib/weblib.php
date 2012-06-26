@@ -474,7 +474,13 @@ class moodle_url {
             $params = $this->params;
         }
         foreach ($params as $key => $val) {
-           $arr[] = rawurlencode($key)."=".rawurlencode($val);
+            if (is_array($val)) {
+                foreach ($val as $index => $value) {
+                    $arr[] = rawurlencode($key.'['.$index.']')."=".rawurlencode($value);
+                }
+            } else {
+                $arr[] = rawurlencode($key)."=".rawurlencode($val);
+            }
         }
         if ($escaped) {
             return implode('&amp;', $arr);
@@ -1179,11 +1185,9 @@ function reset_text_filters_cache() {
  * need filter processing e.g. activity titles, post subjects,
  * glossary concepts.
  *
- * @global object
- * @global object
- * @global object
  * @staticvar bool $strcache
- * @param string $string The string to be filtered.
+ * @param string $string The string to be filtered. Should be plain text, expect
+ * possibly for multilang tags.
  * @param boolean $striplinks To strip any link in the result text.
                               Moodle 1.8 default changed from false to true! MDL-8713
  * @param array $options options array/object or courseid
@@ -1241,7 +1245,7 @@ function format_string($string, $striplinks = true, $options = NULL) {
 
     // If the site requires it, strip ALL tags from this string
     if (!empty($CFG->formatstringstriptags)) {
-        $string = strip_tags($string);
+        $string = str_replace(array('<', '>'), array('&lt;', '&gt;'), strip_tags($string));
 
     } else {
         // Otherwise strip just links if that is required (default)
@@ -1470,6 +1474,7 @@ function purify_html($text, $options = array()) {
         check_dir_exists($cachedir);
 
         require_once $CFG->libdir.'/htmlpurifier/HTMLPurifier.safe-includes.php';
+        require_once $CFG->libdir.'/htmlpurifier/locallib.php';
         $config = HTMLPurifier_Config::createDefault();
 
         $config->set('HTML.DefinitionID', 'moodlehtml');
@@ -2701,7 +2706,7 @@ function debugging($message = '', $level = DEBUG_NORMAL, $backtrace = null) {
     global $CFG, $USER, $UNITTEST;
 
     $forcedebug = false;
-    if (!empty($CFG->debugusers)) {
+    if (!empty($CFG->debugusers) && $USER) {
         $debugusers = explode(',', $CFG->debugusers);
         $forcedebug = in_array($USER->id, $debugusers);
     }
