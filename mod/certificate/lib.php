@@ -992,7 +992,7 @@ function certificate_get_images($type) {
     // If valid path
     if (!empty($path)) {
         $options = array();
-        if ($handle = opendir($path)) {
+        if (is_dir($path) && $handle = opendir($path)) {
             while (false !== ($file = readdir($handle))) {
             if (strpos($file, '.png', 1) || strpos($file, '.jpg', 1) ) {
                     $i = strpos($file, '.');
