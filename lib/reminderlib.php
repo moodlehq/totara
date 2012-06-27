@@ -24,7 +24,7 @@
  * @author    Aaron Barnes <aaronb@catalyst.net.nz>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once($CFG->libdir.'/data_object.php');
+require_once($CFG->libdir.'/completion/data_object.php');
 
 
 /**
@@ -363,7 +363,7 @@ class reminder_message extends data_object {
  * @access  public
  */
 function reminder_cron() {
-    global $CFG;
+    global $DB;
 
     // Get reminders
     $reminders = reminder::fetch_all(
@@ -387,7 +387,7 @@ function reminder_cron() {
             case 'completion':
 
                 // Check completion is still enabled in this course
-                $course = get_record('course', 'id', $reminder->courseid);
+                $course = $DB->get_record('course', array('id' => $reminder->courseid));
                 $completion = new completion_info($course);
 
                 if (!$completion->is_enabled()) {
@@ -401,10 +401,10 @@ function reminder_cron() {
                 $config = unserialize($reminder->config);
 
                 // Get the required feedback's id
-                $requirementid = get_field(
+                $requirementid = $DB->get_field(
                     'course_modules',
                     'instance',
-                    'id', $config['requirement']
+                    array('id' => $config['requirement'])
                 );
 
                 if (empty($requirementid)) {
@@ -415,32 +415,29 @@ function reminder_cron() {
                 // Check if we are tracking the course
                 if ($config['tracking'] == 0) {
                     $tsql = "
-                        INNER JOIN
-                            {$CFG->prefix}course_completions cc
-                         ON cc.course = {$course->id}
-                        AND cc.userid = u.id
-                    ";
-                }
-                // Otherwise get the activity
-                else {
-
+                        INNER JOIN {course_completions} cc
+                                ON cc.course = ?
+                               AND cc.userid = u.id
+                        ";
+                    $params = array($course->id);
+                } else {
+                    // Otherwise get the activity
                     // Load moduleinstance
-                    $cm = get_record('course_modules', 'id', $config['tracking']);
-                    $module = get_field('modules', 'name', 'id', $cm->module);
+                    $cm = $DB->get_record('course_modules', array('id' => $config['tracking']));
+                    $module = $DB->get_field('modules', 'name', array('id' => $cm->module));
 
                     $tsql = "
-                        INNER JOIN
-                            {$CFG->prefix}course_completion_criteria cr
-                         ON cr.course = {$course->id}
-                        AND cr.criteriatype = ".COMPLETION_CRITERIA_TYPE_ACTIVITY."
-                        AND cr.module = '{$module}'
-                        AND cr.moduleinstance = {$config['tracking']}
-                        INNER JOIN
-                            {$CFG->prefix}course_completion_crit_compl cc
-                         ON cc.course = {$course->id}
-                        AND cc.userid = u.id
-                        AND cc.criteriaid = cr.id
-                    ";
+                        INNER JOIN {course_completion}_criteria cr
+                                ON cr.course = ?
+                               AND cr.criteriatype = ?
+                               AND cr.module = ?
+                               AND cr.moduleinstance = ?
+                        INNER JOIN {course_completion_crit_compl} cc
+                                ON cc.course = ?
+                               AND cc.userid = u.id
+                               AND cc.criteriaid = cr.id
+                        ";
+                    $params = array($course->id, COMPLETION_CRITERIA_TYPE_ACTIVITY, $module, $config['tracking'], $course->id);
                 }
 
                 // Process each message
@@ -463,30 +460,25 @@ function reminder_cron() {
                     // Get anyone that needs a reminder sent that hasn't had one already
                     // and has yet to complete the required feedback
                     $sql = "
-                        SELECT
-                            u.*,
-                            cc.timecompleted
-                        FROM
-                            {$CFG->prefix}user u
-                        {$tsql}
-                        LEFT JOIN
-                            {$CFG->prefix}reminder_sent rs
-                         ON rs.userid = u.id
-                        AND rs.reminderid = {$reminder->id}
-                        AND rs.messageid = {$message->id}
-                        LEFT JOIN
-                            {$CFG->prefix}feedback_completed fc
-                         ON fc.feedback = {$requirementid}
-                        AND fc.userid = u.id
-                        WHERE
-                            fc.id IS NULL
-                        AND rs.id IS NULL
-                        AND (cc.timecompleted + {$periodsecs}) >= {$reminder->timecreated}
-                        AND (cc.timecompleted + {$periodsecs}) < {$now}
+                        SELECT u.*, cc.timecompleted
+                          FROM {user} u
+                              {$tsql}
+                     LEFT JOIN {reminder_sent} rs
+                            ON rs.userid = u.id
+                           AND rs.reminderid = ?
+                           AND rs.messageid = ?
+                     LEFT JOIN {feedback_completed} fc
+                            ON fc.feedback = ?
+                           AND fc.userid = u.id
+                         WHERE fc.id IS NULL
+                           AND rs.id IS NULL
+                           AND (cc.timecompleted + ?) >= ?
+                           AND (cc.timecompleted + ?) < ?
                     ";
-
+                    $params = array_merge($params, array($reminder->id, $message->id, $requirementid, $periodsecs, $reminder->timecreated, $periodsecs, $now));
                     // Check if any users found
-                    if (!$rs = get_recordset_sql($sql)) {
+                    $rs = $DB->get_recordset_sql($sql, $params);
+                    if (!$rs->valid()) {
                         mtrace("WARNING: no users to send reminder message to (message id {$message->id})... SKIPPING");
                         continue;
                     }
@@ -494,16 +486,16 @@ function reminder_cron() {
                     // Get manager location
                     static $managerfield;
                     if (!$managerfield) {
-                        $managerfield = get_field('user_info_field', 'id', 'shortname', 'managerid');
+                        $managerfield = $DB->get_field('user_info_field', 'id', array('shortname' => 'managerid'));
                     }
 
                     // Get deadline
-                    $escalationtime = get_field(
+                    $escalationtime = $DB->get_field(
                         'reminder_message',
                         'period',
-                        'reminderid', $reminder->id,
-                        'type', 'escalation',
-                        'deleted', 0
+                        array('reminderid' => $reminder->id,
+                              'type' => 'escalation',
+                              'deleted' => 0)
                     );
 
                     // Calculate days from now
@@ -514,7 +506,7 @@ function reminder_cron() {
                     $mfail = 0;
 
                     // Loop through results and send emails
-                    while ($user = rs_fetch_next_record($rs)) {
+                    foreach ($rs as $user) {
 
                         // Check that even with weekends accounted for, the period
                         // has still passed
@@ -523,7 +515,7 @@ function reminder_cron() {
                         }
 
                         // Load user's manager (or grab from cache)
-                        $managerid = get_field('user_info_data', 'data', 'userid', $user->id, 'fieldid', $managerfield);
+                        $managerid = $DB->get_field('user_info_data', 'data', array('userid' => $user->id, 'fieldid' => $managerfield));
 
                         // If no manager, skip
                         if (!$managerid) {
@@ -532,7 +524,7 @@ function reminder_cron() {
                         else {
                             static $managers;
                             if (!isset($managers[$managerid])) {
-                                $managers[$managerid] = get_record('user', 'idnumber', $managerid);
+                                $managers[$managerid] = $DB->get_record('user', array('idnumber' => $managerid));
                             }
 
                             $manager = $managers[$managerid];
@@ -553,7 +545,7 @@ function reminder_cron() {
                             $sent->timesent = time();
 
                             // Record in database
-                            if (!insert_record('reminder_sent', $sent)) {
+                            if (!$DB->insert_record('reminder_sent', $sent)) {
                                 mtrace('ERROR: Failed to insert reminder_sent record for userid '.$user->id);
                                 ++$mfail;
                             }
@@ -580,7 +572,7 @@ function reminder_cron() {
                             }
                         }
                     }
-
+                    $rs->close();
                     // Show stats for message
                     mtrace($msent.' "'.$message->type.'" type messages sent');
                     if ($mfail) {
@@ -616,25 +608,25 @@ function reminder_email_substitutions($content, $user, $course, $message, $remin
     $subs = array();
 
     // User details
-    $place[] = get_string('placeholder:firstname', 'reminders');
+    $place[] = get_string('placeholder:firstname', 'totara_coursecatalog');
     $subs[] = $user->firstname;
-    $place[] = get_string('placeholder:lastname', 'reminders');
+    $place[] = get_string('placeholder:lastname', 'totara_coursecatalog');
     $subs[] = $user->lastname;
 
     // Course details
-    $place[] = get_string('placeholder:coursepageurl', 'reminders');
+    $place[] = get_string('placeholder:coursepageurl', 'totara_coursecatalog');
     $subs[] = "{$CFG->wwwroot}/course/view.php?id={$course->id}";
-    $place[] = get_string('placeholder:coursename', 'reminders');
+    $place[] = get_string('placeholder:coursename', 'totara_coursecatalog');
     $subs[] = $course->fullname;
 
     // Manager name
-    $place[] = get_string('placeholder:managername', 'reminders');
-    $subs[] = $user->manager ? fullname($user->manager) : get_string('nomanagermessage', 'reminders');
+    $place[] = get_string('placeholder:managername', 'totara_coursecatalog');
+    $subs[] = $user->manager ? fullname($user->manager) : get_string('nomanagermessage', 'totara_coursecatalog');
 
     // Day counts
-    $place[] = get_string('placeholder:dayssincecompletion', 'reminders');
+    $place[] = get_string('placeholder:dayssincecompletion', 'totara_coursecatalog');
     $subs[] = $message->period;
-    $place[] = get_string('placeholder:daysuntildeadline', 'reminders');
+    $place[] = get_string('placeholder:daysuntildeadline', 'totara_coursecatalog');
     $subs[] = $message->deadline;
 
     // Make substitutions

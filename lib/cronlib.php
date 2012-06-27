@@ -323,6 +323,12 @@ function cron_run() {
         mtrace('done');
     }
 
+    // Reminder cron
+    mtrace('Starting the reminder cron...');
+    require_once($CFG->libdir . '/reminderlib.php');
+    reminder_cron();
+    mtrace('done');
+
     // cron for totara modules
     cron_execute_plugin_type('totara', 'totara modules');
 

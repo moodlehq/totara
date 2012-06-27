@@ -60,7 +60,7 @@ if ($delete) {
 
     add_to_log($course->id, 'course', 'reminder deleted', 'reminders.php?courseid='.$course->id, $reminder->title);
 
-    $PAGE->set_title(get_string('editcoursereminder', 'totara_coursecatalog'));
+    $PAGE->set_title(get_string('editcoursereminders', 'totara_coursecatalog'));
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('deletedreminder', 'totara_coursecatalog', format_string($reminder->title)));
@@ -195,13 +195,10 @@ if ($reminder->id > 0) {
         'sesskey'   => sesskey()
     );
 
-    $buttonhtml = print_single_button(
-        new moodle_url('/course/reminders.php'),
-        $options,
+    $buttonhtml = $OUTPUT->single_button(
+        new moodle_url('/course/reminders.php', $options),
         get_string('deletereminder', 'totara_coursecatalog', format_string($reminder->title)),
-        'get',
-        '',
-        true
+        'get'
     );
 }
 

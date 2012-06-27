@@ -6,6 +6,17 @@ $string['backtoallprogram'] = 'Back to all programs';
 $string['backtocategoryx'] = 'Back to {$a}';
 $string['backtocourselisting'] = 'Back to course listing';
 
+//various reminder library strings
+$string['businessdays'] = 'Business days';
+$string['placeholder:coursename'] = '[coursename]';
+$string['placeholder:coursepageurl'] = '[coursepageurl]';
+$string['placeholder:dayssincecompletion'] = '[days counter up]';
+$string['placeholder:daysuntildeadline'] = '[days count down]';
+$string['placeholder:firstname'] = '[firstname]';
+$string['placeholder:lastname'] = '[lastname]';
+$string['placeholder:managername'] = '[managername]';
+$string['remindersmenuitem'] = 'Reminders';
+//main course catalog strings
 $string['backtoparent'] = '&laquo; Back to parent';
 $string['backtoallcategory'] = 'Back to all Categories';
 $string['browsebycategory'] = 'Browse by category';
@@ -54,7 +65,8 @@ $string['period'] = 'Period';
 $string['subject'] = 'Subject';
 $string['sameday'] = 'Same day';
 $string['skipmanager'] = 'Don\'t send to Team Leader / Manager';
-$string['deletereminder'] = 'Delete reminder \"$a\"';
+$string['deletereminder'] = 'Delete reminder "{$a}"';
+$string['deletedreminder'] = 'Successfully deleted reminder "{$a}"';
 $string['error:courseidincorrect'] = 'Course ID was incorrect';
 $string['error:courseidorcategory'] = 'Either course id or category must be specified';
 $string['error:deletereminder'] = 'Could not delete reminder message';
@@ -102,6 +114,7 @@ $string['editcoursereminders'] = 'Edit course reminders';
 $string['new'] = 'Add New';
 $string['noactivitieswithcompletionenabled'] = 'Course reminders are unavailable as no activities in this course have completion enabled';
 $string['nofeedbackactivities'] = 'Course reminders are unavailable as there are no Feedback activities in this course';
+$string['nomanagermessage'] = '(no manager set)';
 
 $string['title_help'] = 'A title that is used to identify the reminder.';
 $string['tracking'] = 'Completion to track';
