@@ -33,12 +33,23 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
 $id = required_param('id', PARAM_INT); // program id
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php');
-
+$systemcontext = context_system::instance();
 $program = new program($id);
+$programcontext = $program->get_context();
+
+// Integrate into the admin tree only if the user can edit program assignments at the top level,
+// otherwise the admin block does not appear to this user, and you get an error.
+if (has_capability('totara/program:configureassignments', $systemcontext)) {
+    admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_assignments.php');
+} else {
+    $PAGE->set_context($programcontext);
+    $PAGE->set_url(new moodle_url('/totara/program/edit_assignments.php', array('id' => $id)));
+    $PAGE->set_title($program->fullname);
+    $PAGE->set_heading($program->fullname);
+}
 
 // Additional permissions check
-if (!has_capability('totara/program:configureassignments', $program->get_context())) {
+if (!has_capability('totara/program:configureassignments', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
 

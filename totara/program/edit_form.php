@@ -211,6 +211,12 @@ class program_edit_form extends moodleform {
             $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('savechanges'), 'class="savechanges-overview program-savechanges"');
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
+        } else {
+            if (isset($programcontext) && has_capability('totara/program:configuredetails', $programcontext)) {
+                $buttonarray = array($mform->createElement('submit', 'edit', get_string('editprogramdetails', 'totara_program')));
+                $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+                $mform->closeHeaderBefore('buttonar');
+            }
         }
 
     }

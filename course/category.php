@@ -703,7 +703,7 @@
                         echo $spacer;
                     }
 
-                    if ($canconfigureprogram) {
+                    if (has_capability('totara/program:deleteprogram', $programcontext)) {
                         echo $OUTPUT->action_icon(new moodle_url('/totara/program/edit.php',
                                 array('id' => $aprogram->id, 'action' => 'delete', 'category' => $id, 'returnto' => 'category')),
                                 new pix_icon('t/delete', $strdelete));

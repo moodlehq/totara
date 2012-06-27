@@ -815,7 +815,7 @@ if ($results['programs']) {
             }
 
             // checks whether user can delete program
-            if ($canconfigureprogram) {
+            if (has_capability('totara/program:deleteprogram', $programcontext)) {
                 echo $OUTPUT->action_icon(new moodle_url('/totara/program/edit.php',
                         array('id' => $program->id, 'action' => 'delete')),
                         new pix_icon('t/delete', get_string("delete")));

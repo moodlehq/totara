@@ -41,7 +41,7 @@ $capabilities = array(
     // View a program
     'totara/program:viewprogram' => array(
         'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
             'user' => CAP_ALLOW,
@@ -51,7 +51,7 @@ $capabilities = array(
     // View hidden programs
     'totara/program:viewhiddenprograms' => array(
         'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'coursecreator' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
@@ -64,7 +64,7 @@ $capabilities = array(
     'totara/program:accessanyprogram' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW
         )
@@ -73,29 +73,56 @@ $capabilities = array(
     // Create new programs
     'totara/program:createprogram' => array(
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
         )
     ),
+
+    // Delete programs
+    'totara/program:deleteprogram' => array(
+        'riskbitmask' => RISK_DATALOSS |
+            RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_PROGRAM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        ),
+        'clonepermissionsfrom' => 'totara/program:createprogram'
+    ),
+    // Ability to edit aspects of a program - specific abilities governed by further capabilities below
+
 
     // Ability to edit and delete programs
     'totara/program:configureprogram' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
         )
     ),
+
+    // Ability to edit the program details tab
+    'totara/program:configuredetails' => array(
+        'riskbitmask' => RISK_DATALOSS |
+            RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_PROGRAM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+        ),
+        'clonepermissionsfrom' => 'totara/program:configureprogram'
+    ),
+
 
     // Ability to add and remove program content and configure the flow of content
     'totara/program:configurecontent' => array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
         )
@@ -106,7 +133,7 @@ $capabilities = array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
         )
@@ -117,7 +144,7 @@ $capabilities = array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
         )
@@ -128,7 +155,7 @@ $capabilities = array(
         'riskbitmask' => RISK_DATALOSS |
             RISK_CONFIG,
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
         )

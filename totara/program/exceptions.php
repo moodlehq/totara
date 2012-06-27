@@ -35,12 +35,15 @@ $id = required_param('id', PARAM_INT); // program id
 $page = optional_param('page', 0, PARAM_INT);
 $searchterm = optional_param('search', '', PARAM_TEXT);
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/exceptions.php');
 
 // Permissions check
-$systemcontext = context_system::instance();
+$program = new program($id);
 
-if (!has_capability('totara/program:handleexceptions', $systemcontext)) {
+$systemcontext = context_system::instance();
+$programcontext = $program->get_context();
+$PAGE->set_context($programcontext);
+$PAGE->set_url('/totara/program/exceptions.php');
+if (!has_capability('totara/program:handleexceptions', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
 
@@ -52,7 +55,6 @@ if (isset($_SESSION['exceptions_resolved']) && $_SESSION['exceptions_resolved']=
     $page = 0;
 }
 
-$program = new program($id);
 
 $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);

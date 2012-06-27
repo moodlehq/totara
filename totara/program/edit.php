@@ -35,7 +35,20 @@ require_once('edit_form.php');
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
 
-admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php');
+$systemcontext = context_system::instance();
+$program = new program($id);
+$programcontext = $program->get_context();
+
+// Integrate into the admin tree only if the user can edit programs at the top level,
+// otherwise the admin block does not appear to this user, and you get an error.
+if (has_capability('totara/program:configureprogram', $systemcontext)) {
+    admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php');
+} else {
+    $PAGE->set_context($programcontext);
+    $PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id)));
+    $PAGE->set_title($program->fullname);
+    $PAGE->set_heading($program->fullname);
+}
 
 if ($action == 'edit') {
     require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
@@ -61,10 +74,6 @@ if ($action == 'edit') {
     );
 
 }
-
-
-$program = new program($id);
-$programcontext = $program->get_context();
 
 if (!has_capability('totara/program:configureprogram', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
@@ -213,9 +222,11 @@ if ($action == 'view') {
     $messagesform->display();
 
     // display the delete button form
-    $deleteform = new program_delete_form($currenturl, array('program'=>$program));
-    $deleteform->set_data($program);
-    $deleteform->display();
+    if (has_capability('totara/program:deleteprogram', $program->get_context())) {
+        $deleteform = new program_delete_form($currenturl, array('program'=>$program));
+        $deleteform->set_data($program);
+        $deleteform->display();
+    }
 
 }
 

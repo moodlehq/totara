@@ -33,7 +33,9 @@ if (!isset($currenttab)) {
     $currenttab = 'details';
 }
 
-if (!isset($context)) {
+if (isset($programcontext)) {
+    $context = $programcontext;
+} else {
     $context = $program->get_context();
 }
 
@@ -49,14 +51,13 @@ if (substr($currenttab, 0, 7) == 'overview'){
 }
 
 // Details Tab
-//disable link if creating a new program to avoid fatal error
-if ($id == 0) {
-    $toprow[] = new tabobject('details', '#', get_string('details', 'totara_program'));
-} else {
-    $toprow[] = new tabobject('details', $CFG->wwwroot.'/totara/program/edit.php?id='.$id.'&amp;action=edit', get_string('details', 'totara_program'));
-}
-if (substr($currenttab, 0, 7) == 'details'){
-    $activated[] = 'details';
+if (has_capability('totara/program:configuredetails', $context)) {
+    //disable details link if creating a new program to avoid fatal error
+    $url = ($id == 0) ? '#' : $CFG->wwwroot.'/totara/program/edit.php?id='.$id.'&amp;action=edit';
+    $toprow[] = new tabobject('details', $url, get_string('details', 'totara_program'));
+    if (substr($currenttab, 0, 7) == 'details'){
+        $activated[] = 'details';
+    }
 }
 
 // Content Tab
@@ -85,7 +86,7 @@ if (has_capability('totara/program:configuremessages', $context)) {
 
 // Exceptions Report Tab
 // Only show if there are exceptions or you are on the exceptions tab already
-if ($exceptions || (substr($currenttab, 0, 10) == 'exceptions')) {
+if (has_capability('totara/program:handleexceptions', $context) && ($exceptions || (substr($currenttab, 0, 10) == 'exceptions'))) {
     $exceptioncount = $exceptions ? $exceptions : '0';
     $toprow[] = new tabobject('exceptions', $CFG->wwwroot.'/totara/program/exceptions.php?id='.$id, get_string('exceptions', 'totara_program', $exceptioncount));
     if (substr($currenttab, 0, 10) == 'exceptions'){

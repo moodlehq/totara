@@ -5956,7 +5956,7 @@ class context_coursecat extends context {
         $params = array();
         $sql = "SELECT *
                   FROM {capabilities}
-                 WHERE contextlevel IN (".CONTEXT_COURSECAT.",".CONTEXT_COURSE.",".CONTEXT_MODULE.",".CONTEXT_BLOCK.")";
+                 WHERE contextlevel IN (".CONTEXT_COURSECAT.",".CONTEXT_COURSE.",".CONTEXT_PROGRAM.",".CONTEXT_MODULE.",".CONTEXT_BLOCK.")";
 
         return $DB->get_records_sql($sql.' '.$sort, $params);
     }

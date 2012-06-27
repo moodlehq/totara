@@ -32,6 +32,10 @@ if (!$program = new program($id)) {
     print_error('error:programid', 'totara_program');
 }
 
+if (!has_capability('totara/program:deleteprogram', $program->get_context())) {
+    print_error('error:nopermissions', 'local_program');
+}
+
 admin_externalpage_setup('manageprograms', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/totara/program/delete.php');
 
 $returnurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$program->id}";

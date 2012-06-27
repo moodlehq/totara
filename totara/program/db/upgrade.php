@@ -71,5 +71,14 @@ function xmldb_totara_program_upgrade($oldversion) {
         $DB->execute($sql);
         totara_upgrade_mod_savepoint(true, 2012072700, 'totara_program');
     }
+
+    if ($oldversion < 2012072701) {
+        // Fix context levels on program capabilities
+        $like_sql = $DB->sql_like('name', '?');
+        $params = array(CONTEXT_PROGRAM, 'totara/program%');
+        $DB->execute("UPDATE {capabilities} SET contextlevel = ? WHERE $like_sql", $params);
+        totara_upgrade_mod_savepoint(true, 2012072701, 'totara_program');
+    }
+
     return true;
 }
