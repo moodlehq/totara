@@ -274,7 +274,7 @@ function xmldb_feedback_upgrade($oldversion) {
         $table = new xmldb_table('feedback');
         $field = new xmldb_field('grade');
         $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, null);
-        /// Launch add field2
+        /// Launch add_field
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }

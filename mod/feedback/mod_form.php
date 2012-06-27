@@ -144,6 +144,10 @@ class mod_feedback_mod_form extends moodleform_mod {
 
         $mform->setType('page_after_submit_editor', PARAM_RAW);
 
+        $mform->addElement('selectyesno', 'grade', get_string('generategrade','feedback'));
+        $mform->setType('grade', PARAM_INT);
+        $mform->addHelpButton('grade', 'generategrade', 'feedback');
+
         $mform->addElement('text',
                            'site_after_submit',
                            get_string('url_for_continue_button', 'feedback'),
@@ -214,6 +218,35 @@ class mod_feedback_mod_form extends moodleform_mod {
         }
 
         return $data;
+    }
+
+    function definition_after_data() {
+        global $DB;
+        parent::definition_after_data();
+        //only add or remove grades to existing feedback items if we are editing an existing feedback
+        if (!empty($this->_instance) && $this->is_submitted() && $this->is_validated()) {
+            if (!$feedbackitem = $DB->get_record('feedback', array('id' => $this->_instance))) {
+                return;
+            }
+            $completeditems = $DB->get_records('feedback_completed', array('feedback' => $feedbackitem->id));
+            if (empty($completeditems)) {
+                return;
+            }
+            $mform = $this->_form;
+            //a selectyesno sends an array, with one item, where the value is 0 (no) or 1 (yes)
+            if (array_pop($mform->getElementValue('grade'))) {
+                // Add 100% grades to all previously completed items
+                foreach ($completeditems as $ci) {
+                    $grade = new stdClass;
+                    $grade->userid = $ci->userid;
+                    $grade->rawgrade = 100;
+                    grade_update('mod/feedback', $feedbackitem->course, 'mod', 'feedback', $feedbackitem->id, 0, $grade);
+                }
+            } else {
+                // Remove grades for all completed items
+                grade_update('mod/feedback', $feedbackitem->course, 'mod', 'feedback', $feedbackitem->id, 0, null, array('deleted'=>1));
+            }
+        }
     }
 
     public function validation($data, $files) {

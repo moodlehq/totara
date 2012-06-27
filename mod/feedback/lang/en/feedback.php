@@ -126,6 +126,11 @@ $string['feedback:viewanalysepage'] = 'View the analysis page after submit';
 $string['feedback:viewreports'] = 'View reports';
 $string['file'] = 'File';
 $string['filter_by_course'] = 'Filter by course';
+$string['generategrade'] = 'Generate Grade';
+$string['generategrade_help'] = 'If you want to use this feedback as a prerequisite for a conditional activity -
+requiring that the feedback must be completed before that conditional activity becomes available -
+then you must set Generate Grade to Yes';
+
 $string['handling_error'] = 'Error occurred in feedback module action handling';
 $string['hide_no_select_option'] = 'Hide the "Not selected" option';
 $string['horizontal'] = 'horizontal';

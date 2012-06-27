@@ -25,6 +25,7 @@
 require_once("../../config.php");
 require_once("lib.php");
 require_once($CFG->libdir . '/completionlib.php');
+require_once($CFG->libdir.'/gradelib.php');
 
 feedback_init_feedback_session();
 
@@ -248,6 +249,15 @@ if ($feedback_can_submit) {
     if ($savevalues AND !$preservevalues) {
         //exists there any pagebreak, so there are values in the feedback_valuetmp
         $userid = $USER->id; //arb
+
+        //add a grade if required
+        if (!empty($feedback->grade)) {
+            // Add feedback grade
+            $grade = new stdClass;
+            $grade->userid = $userid;
+            $grade->rawgrade = 100;
+            grade_update('mod/feedback', $feedback->course, 'mod', 'feedback', $feedback->id, 0, $grade);
+        }
 
         if ($feedback->anonymous == FEEDBACK_ANONYMOUS_NO) {
             $feedbackcompleted = feedback_get_current_completed($feedback->id, false, $courseid);
