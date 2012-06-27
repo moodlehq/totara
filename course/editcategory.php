@@ -136,7 +136,7 @@ try {
     // where the user thinks they are.
     // The big prolem here is that the course management page is a common page
     // for both editing users and common users.
-    $PAGE->settingsnav->get('root')->get('courses')->get('coursemgmt')->make_active();
+    $PAGE->settingsnav->get('root')->get('courses')->get('managecategories')->make_active();
 } catch (Exception $ex) {
     // Failing that we'll override the URL, not as accurate and chances are things
     // won't be 100% correct all the time but should work most times.
