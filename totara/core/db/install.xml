@@ -14,6 +14,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for course_info_data"/>
       </KEYS>
+      <INDEXES>
+          <INDEX NAME="coursei_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="course_info_field" COMMENT="Custom course fields" PREVIOUS="course_info_data" NEXT="oldpassword">
       <FIELDS>

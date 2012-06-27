@@ -237,6 +237,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+          <INDEX NAME="comptyp_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="comp_type_info_field" COMMENT="Stores the custom fields for each competency type" PREVIOUS="comp_type_info_data" NEXT="pos">
       <FIELDS>
@@ -412,6 +415,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+          <INDEX NAME="postype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="pos_type_info_field" COMMENT="Stores the custom fields for each position type" PREVIOUS="pos_type_info_data" NEXT="org">
       <FIELDS>
@@ -535,6 +541,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+      <INDEXES>
+          <INDEX NAME="orgtype_fie_ix" UNIQUE="false" FIELDS="fieldid"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="org_type_info_field" COMMENT="Stores the custom fields for each organisation type" PREVIOUS="org_type_info_data">
       <FIELDS>
