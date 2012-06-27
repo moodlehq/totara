@@ -28,12 +28,22 @@
 //   * partially defaults.php
 
 function xmldb_totara_message_install() {
-    global $CFG;
+    global $DB;
 
-    // hack to get cron working via admin/cron.php
-    // at some point we should create a local_modules table
-    // based on data in version.php
-    set_config('totara_message_cron', 60);
+    $dbman = $DB->get_manager();
+
+    // T-9573 : add indexes to message_working processorid and unreadmessageid fields
+    $table = new xmldb_table('message_working');
+    $index = new xmldb_index('unreadmessageid', XMLDB_INDEX_NOTUNIQUE, array('unreadmessageid'));
+    // Conditionally launch add index unreadmessageid
+    if (!$dbman->index_exists($table, $index)) {
+        $dbman->add_index($table, $index);
+    }
+    $index = new xmldb_index('processorid', XMLDB_INDEX_NOTUNIQUE, array('processorid'));
+    // Conditionally launch add index processorid
+    if (!$dbman->index_exists($table, $index)) {
+        $dbman->add_index($table, $index);
+    }
 
     return true;
 }
