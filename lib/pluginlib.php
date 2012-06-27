@@ -422,7 +422,7 @@ class plugin_manager {
                 'forum', 'glossary', 'imscp', 'label', 'lesson', 'lti', 'page',
                 'quiz', 'resource', 'scorm', 'survey', 'url', 'wiki', 'workshop'
                 // Totara
-                , 'book', 'certificate', 'hotpot', 'facetoface'
+                , 'book', 'certificate', 'facetoface'
             ),
 
             'plagiarism' => array(
