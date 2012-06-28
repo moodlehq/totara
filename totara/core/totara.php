@@ -434,7 +434,7 @@ function totara_print_user_profile_field($userid=null, $fieldshortname=null) {
  * If managerid is not set, uses the current user
 **/
 function totara_is_manager($userid, $managerid=null, $postype=null) {
-    global $CFG, $DB, $USER;
+    global $DB, $USER;
 
     $userid = (int) $userid;
 
@@ -443,9 +443,7 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
         $managerid = $USER->id;
     }
 
-    require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
-
-    $params = array($managerid, $userid);
+    $params = array($userid, $managerid);
     if ($postype) {
         $postypewhere = "AND pa.type = ?";
         $params[] = $postype;
@@ -453,26 +451,15 @@ function totara_is_manager($userid, $managerid=null, $postype=null) {
         $postypewhere = '';
     }
 
-    $sql = "SELECT DISTINCT u.id
-        FROM
-            {pos_assignment} pa
-            INNER JOIN {role_assignments} ra ON pa.reportstoid = ra.id
-            INNER JOIN {user} u ON ra.userid = u.id
-        WHERE
-            ra.userid = ?
-            AND pa.userid = ?
-            AND u.deleted = 0
-            {$postypewhere}";
-
-    return $DB->record_exists_sql($sql, $params);
+    return $DB->record_exists_select('pos_assignment', "userid = ? AND managerid = ?" . $postypewhere, $params);
 }
 
 /**
  * Returns the staff of the specified user
  *
  * @param int $userid ID of a user to get the staff of
- * @param mixed $postype Type of the position to check (POSITION_TYPE_* constant). Defaults to primary position(optional)
- * @return array Array of userids of staff who are managed by user $userid, or false if none (optional)
+ * @param mixed $postype Type of the position to check (POSITION_TYPE_* constant). Defaults to primary position (optional)
+ * @return array Array of userids of staff who are managed by user $userid , or false if none
  *
  * If $userid is not set, returns staff of current user
 **/
@@ -482,28 +469,19 @@ function totara_get_staff($userid=null, $postype=null) {
     $postype = ($postype === null) ? POSITION_TYPE_PRIMARY : (int) $postype;
 
     $userid = !empty($userid) ? (int) $userid : $USER->id;
-    $sql = "SELECT DISTINCT u.id
-        FROM
-            {pos_assignment} pa
-            INNER JOIN {user} u ON pa.userid = u.id
-            INNER JOIN {role_assignments} ra ON pa.reportstoid = ra.id
-        WHERE
-            ra.userid = ?
-            AND u.deleted = 0
-            AND pa.type = ?";
-
-    if (!$res = $DB->get_records_sql($sql, array($userid, $postype))) {
-        // no matches
-        return false;
-    }
-
-    return array_keys($res);
+    // this works because:
+    // - old pos_assignment records are deleted when a user is deleted by {@link delete_user()}
+    //   so no need to check if the record is for a real user
+    // - there is a unique key on (type, userid) on pos_assignment so no need to use
+    //   DISTINCT on the userid
+    $staff = $DB->get_fieldset_select('pos_assignment', 'userid', "type = ? AND managerid = ?", array($postype, $userid));
+    return (empty($staff)) ? false : $staff;
 }
 
 /**
  * Find out a user's manager.
  *
- * @param int $userid Id of users whose manager we want
+ * @param int $userid Id of the user whose manager we want
  * @param int $postype Type of the position we want the manager for (POSITION_TYPE_* constant). Defaults to primary position(optional)
  * @return mixed False if no manager. Manager user object from mdl_user if the user has a manager.
  */
@@ -514,20 +492,12 @@ function totara_get_manager($userid, $postype=null){
 
     $userid = (int) $userid;
     $sql = "
-        SELECT
-            u.*
-        FROM
-            {pos_assignment} pa
-        INNER JOIN
-            {role_assignments} ra
-         ON pa.reportstoid = ra.id
-        INNER JOIN
-            {user} u
-         ON ra.userid = u.id
-        WHERE
-            pa.userid = ?
-            AND pa.type = ?
-            AND u.deleted = 0";
+        SELECT manager.*
+          FROM {pos_assignment} pa
+    INNER JOIN {user} manager
+            ON pa.managerid = manager.id
+         WHERE pa.userid = ?
+           AND pa.type = ?";
 
     //Return a manager if they have one otherwise false
     return $DB->get_record_sql($sql, array($userid, $postype));
