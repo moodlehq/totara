@@ -38,8 +38,10 @@ if ($selected != false) {
     $selected = $DB->get_records_select('user', "id {$selectedsql}", $selectedparams, '', 'id, ' . $DB->sql_fullname() . ' as fullname');
 }
 
-// Get all users that are managers
-$items = $DB->get_records_select('user', 'username <> ? AND deleted = 0', array('guest'), '', 'id, ' . $DB->sql_fullname() . ' as fullname');
+// Get all users
+$guest = guest_user();
+
+$items = $DB->get_records_select('user', 'deleted = 0 AND id != ?', array($guest->id), '', 'id, ' . $DB->sql_fullname('firstname', 'lastname') . ' as fullname');
 
 // Don't let them remove the currently selected ones
 $unremovable = $selected;
@@ -63,8 +65,10 @@ $dialog->unremovable_items = $unremovable;
 
 // Set title
 $dialog->selected_title = 'itemstoadd';
+$dialog->searchtype = 'user';
 
-$dialog->search_code = '/totara/program/assignment/find_individual_search.php';
+// Addition url parameters
+$dialog->urlparams = array('programid' => $programid);
 
 // Display
 echo $dialog->generate_markup();

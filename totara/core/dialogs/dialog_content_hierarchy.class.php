@@ -46,6 +46,13 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
      */
     public $hierarchy;
 
+    /**
+     * Supplied framework id, not necessarily the one used however
+     *
+     * @access  public
+     * @var     object
+     */
+    public $frameworkid;
 
     /**
      * Flag to disable framework picker
@@ -76,12 +83,12 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
 
     /**
-     * Enable search tab content
+     * Type of search to perform (generally relates to dialog type)
      *
      * @access  public
-     * @var     bool
+     * @var     string
      */
-    public $search_code = true;
+    public $searchtype = 'hierarchy';
 
 
     /**
@@ -101,6 +108,14 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
     public $showhidden = false;
 
     /**
+     * Require hierarchy items to have evidence
+     *
+     * @access public
+     * @var    boolean
+     */
+    public $requireevidence = false;
+
+    /**
      * Load hierarchy specific information and make some
      * capability checks (which can be disabled)
      *
@@ -118,6 +133,8 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
             require_login();
             require_capability("totara/hierarchy:view{$prefix}", context_system::instance());
         }
+        // Save supplied frameworkid
+        $this->frameworkid = $frameworkid;
 
         // Load hierarchy instance
         $this->hierarchy = hierarchy::load_hierarchy($prefix);
@@ -200,26 +217,47 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
     }
 
     /**
-     * Generate search interface for hierarchy search
+     * Generate item path for use in search results
+     *
+     * Returns the name of the item, preceeded by all parent nodes that lead to it
      *
      * @access  public
-     * @return  string
+     * @param   integer $id ID of the hierarchy item to generate path for
+     * @return  string  Text string containing ordered path to this item in hierarchy
      */
-    public function generate_search_interface() {
-        global $CFG;
+    public function search_get_item_hover_data($id) {
+        $path = '';
 
-        // Setup variables for the search page
-        $prefix = $this->hierarchy->prefix;
-        $frameworkid = $this->framework->id;
-        $select = !$this->disable_picker; # Only show select if picker isn't disabled
-        $disabledlist = array_flip(array_keys($this->disabled_items)); # Return an array without values
-        $templates = $this->templates_only;
-        $showhidden = $this->showhidden;
+        // this gives all items in path, but not in order
+        $members = $this->hierarchy->get_item_lineage($id);
 
-        // Grab search page markup
-        ob_start();
-        require_once $CFG->dirroot.'/totara/hierarchy/item/search.php';
-        return ob_get_clean();
+        // find order by starting from parent id of 0 (top
+        // of tree) and working down
+
+        // prevent infinite loop in case of bad members list
+        $escape = 0;
+
+        // start at top of tree
+        $parentid = 0;
+        while (count($members) && $escape < 100) {
+            foreach ($members as $key => $member) {
+                if ($member->parentid == $parentid) {
+                    // add to path
+                    if ($parentid) {
+                        // include ' > ' before name except on top element
+                        $path .= ' &gt; ';
+                    }
+                    $path .= $member->fullname;
+                    // now update parent id and
+                    // unset this element
+                    $parentid = $member->id;
+                    unset($members[$key]);
+                }
+            }
+            $escape++;
+        }
+
+        return $path;
     }
 }
 

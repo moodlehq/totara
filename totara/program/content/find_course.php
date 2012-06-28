@@ -57,14 +57,15 @@ $dialog = new totara_dialog_content_courses($categoryid);
 
 $dialog->selected_title = 'currentlyselected';
 
-// Setup search
-$dialog->search_code = '/course/completion_dependency_search.php';
-
 // Add data
+$dialog->requirecompletion = true;
 $dialog->load_courses();
 
 // Set selected items
 $dialog->selected_items = $selected;
+
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
 
 // Display page
 echo $dialog->generate_markup();

@@ -33,6 +33,14 @@ require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_courses.class.ph
 class totara_dialog_linked_courses_content_courses extends totara_dialog_content_courses {
 
     /**
+     * PHP file to use for search tab content
+     *
+     * @access  public
+     * @var     string
+     */
+    public $search_code = '';
+
+    /**
      * Overwrite parent's constructor to avoid categories being loaded
      *
      * @see     totara_dialog_content_courses::__construct()

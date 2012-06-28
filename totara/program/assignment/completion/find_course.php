@@ -50,9 +50,6 @@ $dialog = new totara_dialog_content_courses($categoryid);
 // Set type to multiple
 $dialog->selected_title = 'currentlyselected';
 
-// Setup search
-$dialog->search_code = '/course/completion_dependency_search.php';
-
 // Add data
 $dialog->load_courses();
 

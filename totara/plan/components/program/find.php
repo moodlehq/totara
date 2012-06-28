@@ -91,5 +91,8 @@ $dialog->selected_items = $selected;
 // Set unremovable items
 $dialog->unremovable_items = $unremovable;
 
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
+
 // Display page
 echo $dialog->generate_markup();

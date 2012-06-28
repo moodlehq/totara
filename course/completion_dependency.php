@@ -61,9 +61,7 @@ if ($id) { // editing course
 /// Load data
 ///
 
-// Load courses in category that are:
-// - not hidden
-// - have completin enabled
+// Disabled courses are those that:
 // - are not the current course
 // - are not already a dependency of this course
 // - do not have this course as a dependency
@@ -83,33 +81,31 @@ $sql = "
     AND cc.courseinstance = ?
     WHERE
         c.enablecompletion = ?
-    AND c.id <> ?
-    AND c.category = ?
-    AND ccc.id IS NULL
-    AND cc.id IS NULL
+    AND (
+        c.id = ?
+        OR ccc.id IS NOT NULL
+        OR cc.id IS NOT NULL
+        )
     AND c.visible = 1
     ORDER BY
         c.sortorder ASC
 ";
-$parms = array($id, $id, COMPLETION_ENABLED, $id, $categoryid);
-$courses = $DB->get_records_sql($sql, $parms);
-
-if (!$courses) {
-    $courses = array();
-}
+$parms = array($id, $id, COMPLETION_ENABLED, $id);
+$disabled = $DB->get_records_sql($sql, $parms);
 
 ///
 /// Setup dialog
 ///
-
 // Load dialog content generator
-$dialog = new totara_dialog_content_courses($categoryid);
+$dialog = new totara_dialog_content_courses($categoryid, false);
+$dialog->requirecompletioncriteria = true;
+$dialog->load_data();
 
-// Setup search
-$dialog->search_code = '/course/completion_dependency_search.php';
+// Add disabled data
+$dialog->disabled_items += $disabled;
 
-// Add data
-$dialog->courses = $courses;
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
 
 // Display page
 echo $dialog->generate_markup();

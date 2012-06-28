@@ -30,6 +30,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once("{$CFG->libdir}/formslib.php");
+
+/**
+ * Form definition for dialog search form
+ *
+ * @access  public
+ */
 class dialog_search_form extends moodleform {
 
     // Define the form
@@ -37,6 +44,9 @@ class dialog_search_form extends moodleform {
         global $CFG;
 
         $mform =& $this->_form;
+
+        // Search type
+        $searchtype = $this->_customdata['searchtype'];
 
         // Hack to get around form namespacing
         static $formcounter = 1;
@@ -47,18 +57,19 @@ class dialog_search_form extends moodleform {
         $query = $this->_customdata['query'];
 
         // Check if we are searching a hierarchy
-        $hierarchy = false;
-        if (!empty($this->_customdata['shortprefix'])) {
-            $hierarchy = true;
+        if ($searchtype == 'hierarchy') {
+            // Hierarchy specific code
+            $hierarchy = $this->_customdata['hierarchy'];
             $frameworkid = $this->_customdata['frameworkid'];
-            $shortprefix = $this->_customdata['shortprefix'];
-            $prefix = $this->_customdata['prefix'];
-            $showpicker = $this->_customdata['hidden']['select'];
+            $showpicker = $this->_customdata['showpicker'];
             $showhidden = $this->_customdata['showhidden'];
-        }
 
-        // Pad search string to make it look nicer
-        $strsearch = '    '.get_string('search').'    ';
+            // If framework selector not shown, pass frameworkid as hidden field
+            if (!$showpicker) {
+                $mform->addElement('hidden', 'frameworkid');
+                $mform->setDefault('frameworkid', $frameworkid);
+            }
+        }
 
         // Generic hidden values
         $mform->addElement('hidden', 'dialog_form_target', '#search-tab');
@@ -72,38 +83,23 @@ class dialog_search_form extends moodleform {
             }
         }
 
-        // are we showing items from hidden frameworks?
-        if (!empty($this->_customdata['showhidden'])) {
-            $mform->addElement('hidden', 'showhidden', $showhidden);
-        }
-
-        // If framework selector not shown, pass value as hidden field
-        if ($hierarchy && !$showpicker) {
-            $mform->addElement('hidden', 'frameworkid');
-            $mform->setDefault('frameworkid', $frameworkid);
-        }
-
         // Create actual form elements
         $searcharray = array();
         $searcharray[] =& $mform->createElement('static', 'tablestart', '', '<table id="dialog-search-table"><tbody><tr><td class="querybox">');
 
         // Query box
-        $searcharray[] =& $mform->createElement('text', 'query', '',
-            'maxlength="254"');
+        $query = stripslashes($this->_customdata['query']);
+        $searcharray[] =& $mform->createElement('text', 'query', '', 'maxlength="254"');
         $mform->setType('query', PARAM_TEXT);
         $mform->setDefault('query', $query);
 
         $searcharray[] =& $mform->createElement('static', 'tabledivider1', '', '</td><td>');
 
+        // Hierarchy specific code
         // Show framework selector
-        if ($hierarchy && $showpicker) {
-            $hierarchy_include = $CFG->dirroot.'/totara/hierarchy/prefix/'.$prefix.'/lib.php';
-            if (file_exists($hierarchy_include)) {
-                require_once($CFG->dirroot.'/totara/hierarchy/prefix/competency/lib.php');
-                $hierarchy = new $prefix;
-                $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
-            }
+        if ($searchtype == 'hierarchy' && $showpicker) {
 
+            $frameworks = $hierarchy->get_frameworks(array(), $showhidden);
             $options = array(0 => get_string('allframeworks', 'totara_hierarchy'));
 
             if ($frameworks) {
@@ -124,7 +120,10 @@ class dialog_search_form extends moodleform {
             $searcharray[] =& $mform->createElement('static', 'tabledivider2', '', '</td><td>');
         }
 
-        // Show search button
+
+        // Show search button and close markup
+        // Pad search string to make it look nicer
+        $strsearch = '    '.get_string('search').'    ';
         $searcharray[] =& $mform->createElement('submit', 'dialogsearchsubmitbutton', $strsearch);
         $searcharray[] =& $mform->createElement('static', 'tableend', '', '</td></tr></tbody></table>');
         $mform->addGroup($searcharray, 'searchgroup', '', array(' '), false);

@@ -121,25 +121,23 @@ if ($nojs) {
     $parentid = (int) substr($parentid, 3);
 
     // Load dialog content generator
-    $dialog = new totara_dialog_content_courses($parentid);
+    $dialog = new totara_dialog_content_courses($parentid, false);
 
     // Turn on multi-select
     $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
     $dialog->selected_title = 'itemstoadd';
 
     // Show only courses with completion enabled
-    $where = array("category = ? AND visible = 1 AND enablecompletion = ?", array($parentid, COMPLETION_ENABLED));
-
-    $dialog->load_courses($where);
-
-    // Setup search
-    $dialog->search_code = '/totara/hierarchy/prefix/competency/evidenceitem/search.php';
+    $dialog->requirecompletion = true;
+    $dialog->load_data();
 
     if (empty($CFG->competencyuseresourcelevelevidence)) {
         // Set selected items
         $dialog->selected_items = $selected;
     }
 
+    // Addition url parameters
+    $dialog->urlparams = array('id' => $id);
     // Display page
     echo $dialog->generate_markup();
 }

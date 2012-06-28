@@ -34,6 +34,14 @@ require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content.class.php');
 class totara_dialog_linked_competencies_content_competencies extends totara_dialog_content {
 
     /**
+     * PHP file to use for search tab content
+     *
+     * @access  public
+     * @var     string
+     */
+    public $search_code = '';
+
+    /**
      * Load competencies to display
      *
      * @access  public

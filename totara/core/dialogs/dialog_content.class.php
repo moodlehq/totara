@@ -29,6 +29,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
+ * How many search results to show before paginating
+ *
+ * @var integer
+ */
+define('DIALOG_SEARCH_NUM_PER_PAGE', 50);
+
+/**
  * Class for generating markup
  *
  * @access  public
@@ -70,8 +77,15 @@ class totara_dialog_content {
      * @access  public
      * @var     string
      */
-    public $search_code = '';
+    public $search_code = '/totara/core/dialogs/search.php';
 
+    /**
+     * Type of search to perform (generally relates to dialog type)
+     *
+     * @access  public
+     * @var     string
+     */
+    public $searchtype = '';
 
     /**
      * Lang string to display when no items available
@@ -182,6 +196,10 @@ class totara_dialog_content {
      */
     public $unremovable_items = array();
 
+    /**
+     * Place for storing additional url parameters, for use with the search code
+     */
+    public $urlparams = array();
 
     /**
      * Generate markup from configuration and return
@@ -192,6 +210,10 @@ class totara_dialog_content {
     public function generate_markup() {
         header('Content-Type: text/html; charset=UTF-8');
 
+        // Skip container if only displaying search results
+        if (optional_param('search', false, PARAM_BOOL)) {
+            return $this->generate_search();
+        }
         // Skip container if only displaying treeview
         if ($this->show_treeview_only) {
             return $this->generate_treeview();
@@ -233,7 +255,7 @@ class totara_dialog_content {
         if (!empty($this->search_code)) {
             // Display searchview
             $markup .= '<div id="search-tab" class="dialog-load-within">';
-            $markup .= $this->generate_search_interface();
+            $markup .= $this->generate_search();
             $markup .= '<div id="search-results"></div>';
             $markup .= '</div>';
         }
@@ -357,7 +379,11 @@ class totara_dialog_content {
                         $displayname = '';
                     }
 
-                    $html .= '<a href="#">';
+                    $html .= '<a href="#"';
+                    if (!empty($element->hover)) {
+                        $html .= ' title="'.format_string($element->hover).'"';
+                    }
+                    $html .= '>';
                     $html .= format_string($displayname);
                     $html .= '</a>';
                     $html .= '<span class="deletebutton">delete</span>';
@@ -389,15 +415,15 @@ class totara_dialog_content {
      * @access  public
      * @return  string  Markup
      */
-    public function generate_search_interface() {
-        global $CFG, $PAGE;
+    public function generate_search() {
+        global $CFG;
 
-        if (empty($this->search_code)) {
+        if (empty($this->search_code) || empty($this->searchtype)) {
             return '';
         }
-
+        define('TOTARA_DIALOG_SEARCH', true);
         ob_start();
-        require_once $CFG->dirroot.$this->search_code;
+        require_once("{$CFG->dirroot}{$this->search_code}");
         return ob_get_clean();
     }
 

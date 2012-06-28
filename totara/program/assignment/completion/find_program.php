@@ -49,9 +49,6 @@ $dialog = new totara_dialog_content_programs($categoryid);
 
 $dialog->selected_title = 'currentlyselected';
 
-// Setup search
-$dialog->search_code = '/totara/program/search.php';
-
 // Add data
 $dialog->load_programs();
 

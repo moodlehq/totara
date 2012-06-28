@@ -92,13 +92,14 @@ if (!$nojs) {
     // Load items to display
     $dialog->load_items($parentid);
 
-    // Set disabled/selected items
+    // Set disabled items
     $dialog->disabled_items = $alreadyrelated;
-    $dialog->selected_items = $alreadyselected;
 
     // Set title
     $dialog->selected_title = 'itemstoadd';
-
+    $dialog->selected_items = $alreadyselected;
+    // Addition url parameters
+    $dialog->urlparams = array('id' => $compid);
     // Display
     echo $dialog->generate_markup();
 

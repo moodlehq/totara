@@ -42,6 +42,14 @@ require_once($CFG->libdir.'/datalib.php');
 class totara_dialog_content_programs extends totara_dialog_content {
 
     /**
+     * Type of search to perform (generally relates to dialog type)
+     *
+     * @access  public
+     * @var     string
+     */
+    public $searchtype = 'program';
+
+    /**
      * Current category (e.g., show children of this category)
      *
      * @access  public
@@ -178,5 +186,17 @@ class totara_dialog_content_programs extends totara_dialog_content {
         $this->items = array_merge($this->categories, $this->programs);
 
         return parent::generate_markup();
+    }
+
+    /**
+     * Check if program is accessible before displaying in search results
+     *
+     * @access  public
+     * @param   $programid  integer
+     * @return  boolean
+     */
+    public function search_can_display_result($programid) {
+        $prog = new program($programid);
+        return $prog->is_accessible();
     }
 }

@@ -97,5 +97,8 @@ $dialog->unremovable_items = $unremovable;
 // Set title
 $dialog->selected_title = 'itemstoadd';
 
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
+
 // Display
 echo $dialog->generate_markup();

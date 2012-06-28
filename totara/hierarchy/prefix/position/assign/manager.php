@@ -64,9 +64,10 @@ $managers = $DB->get_records_sql(
 ///
 
 $dialog = new totara_dialog_content();
-$dialog->search_code = '/totara/hierarchy/prefix/position/assign/manager_search.php';
+$dialog->searchtype = 'user';
 $dialog->items = $managers;
 $dialog->lang_file = 'manager';
 $dialog->customdata['current_user'] = $userid;
+$dialog->urlparams['userid'] = $userid;
 
 echo $dialog->generate_markup();

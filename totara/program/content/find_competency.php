@@ -24,7 +24,7 @@
 
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_competency_linkedcourses.class.php');
+require_once($CFG->dirroot.'/totara/core/dialogs/dialog_content_hierarchy.class.php');
 require_once("{$CFG->dirroot}/totara/program/lib.php");
 
 $PAGE->set_context(get_system_context());
@@ -40,15 +40,8 @@ $id = required_param('id', PARAM_INT);
 // Parent id
 $parentid = optional_param('parentid', 0, PARAM_INT);
 
-// Framework id
-$frameworkid = optional_param('frameworkid', 0, PARAM_INT);
-
 // Only return generated tree html
 $treeonly = optional_param('treeonly', false, PARAM_BOOL);
-
-$selected = array();
-
-$unremovable = $selected;
 
 require_capability('totara/program:configurecontent', program_get_context($id));
 
@@ -57,22 +50,35 @@ require_capability('totara/program:configurecontent', program_get_context($id));
 ///
 
 // Load dialog content generator
-$dialog = new totara_dialog_content_competency_linkedcourses($frameworkid);
+$dialog = new totara_dialog_content_hierarchy('competency');
+$dialog->requireevidence = true;
+$dialog->disable_picker = true;
+
 $dialog->lang_file = 'totara_hierarchy';
 // Toggle treeview only display
 $dialog->show_treeview_only = $treeonly;
 
 // Load items to display
-$dialog->load_items($parentid);
+$select = "
+    SELECT
+        c.id as id,
+        c.fullname as fullname
+    FROM
+        {comp} c
+    WHERE
+        c.evidencecount > 0
+    AND c.visible = 1
+    ORDER BY
+        c.fullname
+";
 
-// Set disabled/selected items
-$dialog->selected_items = $selected;
-
-// Set unremovable items
-$dialog->unremovable_items = $unremovable;
+$dialog->items = $DB->get_records_sql($select);
 
 // Set title
 $dialog->selected_title = 'currentlyselected';
+
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
 
 // Display
 echo $dialog->generate_markup();

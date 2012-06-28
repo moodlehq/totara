@@ -87,5 +87,8 @@ $dialog->selected_title = 'itemstoadd';
 
 $dialog->select_title = '';
 
+// Addition url parameters
+$dialog->urlparams = array('programid' => $programid, 'type' => $type, 'table' => $table);
+
 // Display
 echo $dialog->generate_markup();

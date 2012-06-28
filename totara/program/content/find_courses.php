@@ -60,17 +60,15 @@ $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 
 $dialog->selected_title = 'itemstoadd';
 
-// Setup search
-$dialog->search_code = '/course/completion_dependency_search.php';
-
 // Add data
+$dialog->requirecompletion = true;
 $dialog->load_courses();
 
 // Set selected items
 $dialog->selected_items = $selected;
 
-// Set unremovable items
-//$dialog->unremovable_items = $unremovable;
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
 
 // Display page
 echo $dialog->generate_markup();

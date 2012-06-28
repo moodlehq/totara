@@ -41,6 +41,14 @@ require_once($CFG->libdir.'/datalib.php');
 class totara_dialog_content_courses extends totara_dialog_content {
 
     /**
+     * Type of search to perform (generally relates to dialog type)
+     *
+     * @access  public
+     * @var     string
+     */
+    public $searchtype = 'coursecompletion';
+
+    /**
      * Current category (e.g., show children of this category)
      *
      * @access  public
@@ -66,7 +74,22 @@ class totara_dialog_content_courses extends totara_dialog_content {
      */
     public $courses = array();
 
+    /**
+     * Flag to require results to have completion enabled
+     *
+     * @access  public
+     * @var     bool
+     */
+    public $requirecompletion = false;
 
+
+    /**
+     * Flag to require results to have completion criteria enabled
+     *
+     * @access  public
+     * @var     bool
+     */
+    public $requirecompletioncriteria = false;
 
     /**
      * Set current category
@@ -75,8 +98,9 @@ class totara_dialog_content_courses extends totara_dialog_content {
      *
      * @access  public
      * @param   $categoryid     int     Category id
+     * @param   $autoload       bool    Optional (true means run load_data())
      */
-    public function __construct($categoryid) {
+    public function __construct($categoryid, $autoload = true) {
 
         $this->categoryid = $categoryid;
 
@@ -84,7 +108,18 @@ class totara_dialog_content_courses extends totara_dialog_content {
         if ($this->categoryid > 0) {
             $this->show_treeview_only = true;
         }
+        if ($autoload) {
+            $this->load_data();
+        }
+    }
 
+    /**
+     * Load data
+     *
+     * @access  public
+     * @return  void
+     */
+    public function load_data() {
         // Load child categories
         $this->load_categories();
 
@@ -153,14 +188,37 @@ class totara_dialog_content_courses extends totara_dialog_content {
      */
     public function load_courses($where = false) {
         global $DB;
+        $params = array();
         if ($this->categoryid) {
             if ($where === false) {
-                $conditions = "category = ? AND visible = 1";
-                $params = array($this->categoryid);
-            } else {
-                list($conditions, $params) = $where;
+                $where = '';
+
+                if ($this->requirecompletion || $this->requirecompletioncriteria) {
+                    $where = " enablecompletion = ? AND ";
+                    $params[] = COMPLETION_ENABLED;
+                    if ($this->requirecompletioncriteria) {
+                        $where .= "
+                            id IN (
+                                SELECT
+                                    course
+                                FROM
+                                    {course_completion_criteria} ccc
+                                INNER JOIN
+                                    {course} c
+                                 ON c.id = ccc.course
+                                WHERE
+                                    c.category = ?
+                            )
+                            AND
+                        ";
+                        $params[] = $this->categoryid;
+                    }
+                }
+
+                $where .= " category = ? AND visible = 1 ";
+                $params[] = $this->categoryid;
             }
-            $this->courses = $DB->get_records_select('course', $conditions, $params, 'fullname ASC', 'id, fullname, sortorder');
+            $this->courses = $DB->get_records_select('course', $where, $params, 'fullname ASC', 'id, fullname, sortorder');
         }
     }
 

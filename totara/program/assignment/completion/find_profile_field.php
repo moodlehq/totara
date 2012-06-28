@@ -37,7 +37,7 @@ $items = $DB->get_records_select('user_info_field', '', null, '', 'id, name as f
 
 // Load dialog content generator
 $dialog = new totara_dialog_content();
-
+$dialog->search_code = '';
 $dialog->items = $items;
 
 // Set title

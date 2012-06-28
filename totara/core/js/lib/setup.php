@@ -145,17 +145,6 @@ function build_datepicker_js($selector, $dateformat=null) {
     $PAGE->requires->js_init_call('M.totara_core.build_datepicker', $args);
 }
 
-function build_search_interface($prefix, $frameworkid=0, $select=true,
-    $disabledlist=array()) {
-
-    global $CFG;
-
-    include_once($CFG->dirroot .
-        "/hierarchy/item/search.php");
-
-}
-
-
 /**
  * Return markup for a branch of a hierarchy based treeview
  *

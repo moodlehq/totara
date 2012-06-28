@@ -81,9 +81,6 @@ $dialog = new totara_dialog_content_courses($categoryid);
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'itemstoadd';
 
-// Setup search
-$dialog->search_code = '/totara/plan/components/course/course_search.php';
-
 // Add data
 $dialog->load_courses();
 
@@ -92,6 +89,9 @@ $dialog->selected_items = $selected;
 
 // Set unremovable items
 $dialog->unremovable_items = $unremovable;
+
+// Addition url parameters
+$dialog->urlparams = array('id' => $id);
 
 // Display page
 echo $dialog->generate_markup();

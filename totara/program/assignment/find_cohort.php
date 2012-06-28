@@ -52,7 +52,7 @@ $unremovable = $selected;
 
 // Load dialog content generator; skip access, since it's checked above
 $dialog = new totara_dialog_content();
-
+$dialog->search_code = '';
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 
 $dialog->items = $items;
