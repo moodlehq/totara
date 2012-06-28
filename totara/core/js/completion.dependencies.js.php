@@ -79,6 +79,12 @@ totaraDialog_handler_preRequisite.prototype._save = function() {
     var id = $('#treeview_selected_val_coursedependency').val();
     var course = $('#treeview_selected_text_coursedependency').text();
 
+    // Check if something was actually selected
+    if (id == 0) {
+        this._dialog.hide();
+        return;
+    }
+
     // Get button fitem
     var button_fitem = $('#id_add_criteria_course').parent().parent();
 
