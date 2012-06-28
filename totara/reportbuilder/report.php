@@ -71,7 +71,7 @@ $graph = (substr($report->source, 0, strlen('graphical_feedback_questions')) ==
 
 $countfiltered = $report->get_filtered_count();
 // save a query if no filters set
-$countall = ($report->get_sql_filter() == '') ? $countfiltered : $report->get_full_count();
+$countall = (!$report->is_report_filtered()) ? $countfiltered : $report->get_full_count();
 
 $fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report', 'totara_reportbuilder').': '.$fullname);

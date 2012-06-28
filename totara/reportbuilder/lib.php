@@ -3000,6 +3000,25 @@ class reportbuilder {
         $out .= html_writer::table($table);
         return $out;
     }
+
+    /**
+     * Determines if this report currently has any active filters or not
+     *
+     * This is done by fetching the filtering SQL to see if it is set yet
+     *
+     * @return boolean True if one or more filters are currently active
+     */
+    function is_report_filtered() {
+        $filters = $this->get_sql_filter();
+        if (isset($filters[0]['where']) && $filters[0]['where'] != '') {
+            return true;
+        }
+        if (isset($filters[0]['having']) && $filters[0]['having'] != '') {
+            return true;
+        }
+        return false;
+    }
+
 } // End of reportbuilder class
 
 class ReportBuilderException extends Exception { }
