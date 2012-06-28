@@ -54,14 +54,8 @@ class item_bulkadd_form extends moodleform {
             $breadcrumbs = array();
 
             foreach ($items as $parent) {
-
-                // Grab parents and append this title
-                $breadcrumbs = array_slice($breadcrumbs, 0, ($parent->depthlevel - 1));
-                $breadcrumbs[] = $parent->fullname;
-
-                // Make display text
-                $display = implode(' / ', $breadcrumbs);
-                $parents[$parent->id] = $display;
+                //add using same spacing style as the bulkitems->move available & selected multiselects
+                $parents[$parent->id] = str_repeat('&nbsp;', 4 * ($parent->depthlevel - 1)) . format_string($parent->fullname);
             }
         }
 

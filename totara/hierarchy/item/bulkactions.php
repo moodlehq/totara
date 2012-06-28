@@ -80,8 +80,10 @@ $paths = $DB->get_fieldset_select($shortprefix, 'path', $selecteditemssql, $sele
 $where = array();
 $whereparams = array();
 foreach ($paths as $path) {
+    $where[] = 'path = ?';
+    $whereparams[] = $path;
     $where[] = $DB->sql_like('path', '?');
-    $whereparams[] = "$path%";
+    $whereparams[] = "$path/%";
 }
 
 if (count($paths)) {

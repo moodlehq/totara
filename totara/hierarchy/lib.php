@@ -2242,20 +2242,20 @@ class hierarchy {
      * parent
      *
      * @param array $items An array of items, as produced by {@link get_items()}
-     * @param integer|object $item The current item or its ID (optional)
+     * @param integer|array $selected The current item ID, or if in bulk move
+     *                     the current selected items array (optional)
      *                     If provided then the pulldown will exclude items that
      *                     the item can't be moved to (e.g. its own children)
      * @param boolean $inctop If true include the 'top' level (optional - default true)
      * @return array Returns an associative array of item names keyed on ID
      *               or an empty array if no items found
      */
-    public function get_parent_list($items, $item = null, $inctop = true) {
+    public function get_parent_list($items, $selected = array(), $inctop = true) {
 
         $out = array();
-
-        // fetch the record if only an ID is provided
-        if (isset($item) && is_int($item)) {
-            $item = $this->get_item($item);
+        //if an integer has been sent, convert to an array
+        if (!is_array($selected)) {
+            $selected = ($selected) ? array(intval($selected)) : array();
         }
 
         if ($inctop) {
@@ -2264,28 +2264,17 @@ class hierarchy {
         }
 
         if (is_array($items)) {
-            // Cache breadcrumbs
-            $breadcrumbs = array();
-
             foreach ($items as $parent) {
-
-                // An item cannot be its own parent
-                if (isset($item) && $parent->id == $item->id) {
-                    continue;
+                // An item cannot be its own parent and cannot be moved inside itself or one of its own children
+                // what we have in $selected is an array of the ids of the parent nodes of selected branches
+                // so we must exclude these parents and all their children
+                foreach ($selected as $key => $selectedid) {
+                    if (preg_match("@/$selectedid(/|$)@", $parent->path)) {
+                        continue 2;
+                    }
                 }
-
-                // An item cannot be moved inside one of its own children
-                if (isset($item) && isset($item->path) && substr($parent->path, 0, strlen($item->path.'/')) == $item->path.'/') {
-                    continue;
-                }
-
-                // Grab parents and append this title
-                $breadcrumbs = array_slice($breadcrumbs, 0, ($parent->depthlevel - 1));
-                $breadcrumbs[] = $parent->fullname;
-
-                // Make display text
-                $display = implode(' / ', $breadcrumbs);
-                $out[$parent->id] = $display;
+                //add using same spacing style as the bulkitems->move available & selected multiselects
+                $out[$parent->id] = str_repeat('&nbsp;', 4 * ($parent->depthlevel - 1)) . format_string($parent->fullname);
             }
         }
 

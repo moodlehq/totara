@@ -136,6 +136,26 @@ table.invisiblepadded td{
     padding-right: 5px;
     vertical-align: top;
 }
+
+table#hierarchy-bulk-action {
+    border: 0px;
+    margin-top: 5px;
+}
+
+table#hierarchy-bulk-action td.option-column div.fitem div.fitemtitle,
+table#hierarchy-bulk-action td.action-column div.fitem div.fitemtitle {
+    display: none;
+}
+/*IE7 fixes*/
+body.ie7 table#hierarchy-bulk-action td.label-column {
+    word-wrap: normal;
+}
+body.ie7 table#hierarchy-bulk-action td.option-column {
+    width: 220px;
+}
+body.ie7 table#hierarchy-bulk-action td.action-column div.fitem div.felement {
+    margin-left: 0px;
+}
 /**
  * Boxes
  */

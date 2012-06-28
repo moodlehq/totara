@@ -68,7 +68,7 @@ class item_edit_form extends moodleform {
         $mform->addElement('text', 'framework', get_string($prefix.'framework', 'totara_hierarchy'));
         $mform->hardFreeze('framework');
 
-        $parents = $hierarchy->get_parent_list($items, $item);
+        $parents = $hierarchy->get_parent_list($items, $item->id);
         // If we only have one possible parent, it must be the top level, so hide the
         // pulldown
         if (count($parents) <= 1) {

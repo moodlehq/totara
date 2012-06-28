@@ -126,7 +126,7 @@ class item_bulkaction_form extends moodleform {
         $mform->addElement('html', $html);
         // build the select options manually to allow for disabled options
         $select =& $mform->createElement('select', 'available', '', array(),
-            array('multiple' => 'multiple', 'size' => 25, 'class' => 'itemslist', 'width' => 200));
+            array('multiple' => 'multiple', 'size' => 25, 'class' => 'itemslist'));
         if ($displayed_available_items) {
             foreach ($displayed_available_items as $id => $name) {
                 $attr = in_array($id, $all_disabled_item_ids) ?
@@ -155,10 +155,10 @@ class item_bulkaction_form extends moodleform {
         $mform->addElement('html', $html);
 
         $mform->addElement('select', 'selected', '',  $displayed_selected_items,
-            array('multiple' => 'multiple', 'size' => 25, 'class' => 'itemslist', 'width' => 200));
+            array('multiple' => 'multiple', 'size' => 25, 'class' => 'itemslist'));
         $mform->setType('selected', PARAM_INT);
 
-        $html = html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table');
+        $html = html_writer::end_tag('td') . html_writer::end_tag('tr');
         $mform->addElement('html', $html);
 
         switch ($action) {
@@ -168,16 +168,15 @@ class item_bulkaction_form extends moodleform {
                 strtolower(get_string($prefix.'plural', 'totara_hierarchy'))));
             break;
         case 'move':
-            $movearray = array();
-
-            $options = $hierarchy->get_parent_list($items);
-            $movearray[] =& $mform->createElement('select', 'newparent', '',
-                $options, totara_select_width_limiter());
-            $mform->setType('newparent', PARAM_INT);
-            $movearray[] =& $mform->createElement('submit', 'movebutton', get_string('move'));
-            $mform->addGroup($movearray, 'movegroup',
-                get_string('moveselectedxto', 'totara_hierarchy',
-                strtolower(get_string($prefix.'plural', 'totara_hierarchy'))), ' ', false);
+            $mform->addElement('html', html_writer::start_tag('tr'));
+            $title = get_string('moveselectedxto', 'totara_hierarchy', strtolower(get_string($prefix.'plural', 'totara_hierarchy')));
+            $options = $hierarchy->get_parent_list($items, $all_selected_item_ids);
+            $mform->addElement('html', html_writer::tag('td', $title, array('class' => 'available-column')) . html_writer::start_tag('td', array('class' => 'action-column')));
+            $select =& $mform->createElement('select', 'newparent', '', $options, totara_select_width_limiter());
+            $mform->addElement($select);
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td', array('class' => 'selected-column')));
+            $mform->addElement('submit', 'movebutton', get_string('move'));
+            $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table'));
             break;
         default:
             // this shouldn't happen
@@ -186,7 +185,7 @@ class item_bulkaction_form extends moodleform {
 
         // change default render template for bulk action form elements
         $elements = array('available', 'add_items', 'add_all_items', 'remove_items',
-            'remove_all_items', 'selected', 'search', 'submitsearch', 'clearsearch', 'deletebutton');
+            'remove_all_items', 'selected', 'search', 'submitsearch', 'clearsearch', 'deletebutton', 'newparent', 'movebutton');
         $renderer =& $mform->defaultRenderer();
         $elementtemplate = '{element}';
         foreach ($elements as $element) {
