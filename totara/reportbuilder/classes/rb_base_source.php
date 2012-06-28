@@ -464,7 +464,6 @@ abstract class rb_base_source {
         }
 
         $courseid = $row->course_id;
-        $course = format_string($course);
         $attr = (isset($row->course_visible) && $row->course_visible == 0) ? array('class' => 'dimmed') : array();
         $url = new moodle_url('/course/view.php', array('id' => $courseid));
         return html_writer::link($url, $course, $attr);
@@ -482,7 +481,6 @@ abstract class rb_base_source {
         $courseid = $row->course_id;
         $courseicon = !empty($row->course_icon) ? $row->course_icon : 'default';
         $cssclass = (isset($row->course_visible) && $row->course_visible == 0) ? 'dimmed' : '';
-        $course = format_string($course);
         $icon = $OUTPUT->pix_icon('/courseicons/'.$courseicon, $course, 'totara_core', array('class' => 'course_icon'));
         $link = $OUTPUT->action_link(
             new moodle_url('/course/view.php', array('id' => $courseid)),
@@ -564,8 +562,6 @@ abstract class rb_base_source {
         if (strlen($planname) == 0) {
             return '';
         }
-
-        $planname = format_string($planname);
 
         // invalid id - show without a link
         if (empty($row->plan_id)) {

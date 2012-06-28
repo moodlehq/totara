@@ -2066,12 +2066,12 @@ class reportbuilder {
                         if (isset($column->displayfunc)) {
                             $func = 'rb_display_' . $column->displayfunc;
                             if (method_exists($this->src, $func)) {
-                                $tabledata[] = $this->src->$func($record->$field, $record, $isexport);
+                                $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
                             } else {
-                                $tabledata[] = $record->$field;
+                                $tabledata[] =filter_text($record->$field);
                             }
                         } else {
-                            $tabledata[] = $record->$field;
+                            $tabledata[] = filter_text($record->$field);
                         }
                     }
                 }
@@ -2842,12 +2842,12 @@ class reportbuilder {
                 if (isset($primary_field->displayfunc)) {
                     $func = 'rb_display_' . $primary_field->displayfunc;
                     if (method_exists($this->src, $func)) {
-                        $primaryvalue = $this->src->$func($item->$primaryname, $item, false);
+                        $primaryvalue = $this->src->$func(filter_text($item->$primaryname), $item, false);
                     } else {
-                        $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
+                        $primaryvalue = (isset($item->$primaryname)) ? filter_text($item->$primaryname) : get_string('unknown', 'totara_reportbuilder');
                     }
                 } else {
-                    $primaryvalue = (isset($item->$primaryname)) ? $item->$primaryname : 'Unknown';
+                    $primaryvalue = (isset($item->$primaryname)) ? filter_text($item->$primaryname) : get_string('unknown', 'totara_reportbuilder');
                 }
 
                 $out .= $OUTPUT->heading($primaryheading . ': ' . $primaryvalue, 2);
@@ -2858,17 +2858,17 @@ class reportbuilder {
                 foreach ($additional_fields as $additional_field) {
                     $addname = $additional_field->type . '_' . $additional_field->value;
                     $addheading = $additional_field->heading;
-                    $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                    $addvalue = (isset($item->$addname)) ? $item->$addname : get_string('unknown', 'totara_reportbuilder');
                     // treat fields different if display function exists
                     if (isset($additional_field->displayfunc)) {
                         $func = 'rb_display_' . $additional_field->displayfunc;
                         if (method_exists($this->src, $func)) {
-                            $addvalue = $this->src->$func($item->$addname, $item);
+                            $addvalue = $this->src->$func(filter_text($item->$addname), $item);
                         } else {
-                            $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                            $addvalue = (isset($item->$addname)) ? filter_text($item->$addname) : get_string('unknown', 'totara_reportbuilder');
                         }
                     } else {
-                        $addvalue = (isset($item->$addname)) ? $item->$addname : 'Unknown';
+                        $addvalue = (isset($item->$addname)) ? filter_text($item->$addname) : get_string('unknown', 'totara_reportbuilder');
                     }
 
                     $out .= html_writer::tag('strong', $addheading . ': '. $addvalue) . html_writer::empty_tag('br');
