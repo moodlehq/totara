@@ -49,6 +49,7 @@ abstract class rb_base_access {
     abstract function access_restriction($reportid);
     abstract function form_template(&$mform, $reportid);
     abstract function form_process($reportid, $fromform);
+    abstract function get_accessible_reports();
 
 } // end of rb_base_access class
 
@@ -59,6 +60,72 @@ abstract class rb_base_access {
  * Limit access to reports by user role (either in system context or any context)
  */
 class rb_role_access extends rb_base_access {
+
+    /**
+    * Get list of reports this user is allowed to access by this restriction class
+    * @return array of permitted report ids
+    */
+    function get_accessible_reports(){
+        global $DB;
+        // remove the rb_ from class
+        $type = substr(get_class($this), 3);
+        $userid = $this->foruser;
+        $anycontextcheck = false;
+        $allowedreports = array();
+
+        $sql =  "SELECT rbs.reportid, rbs.value AS activeroles, rbs2.value AS context
+                   FROM {report_builder_settings} rbs
+        LEFT OUTER JOIN {report_builder_settings} rbs2
+                     ON (rbs.reportid = rbs2.reportid
+                    AND rbs2.type = ?
+                    AND rbs2.name = ?)
+                  WHERE rbs.type = ?
+                    AND rbs.name = ?";
+        $reports = $DB->get_records_sql($sql, array($type, 'context', $type, 'activeroles'));
+
+        if ($reports) {
+            // site admins no longer have records in role_assignments to check: assume access to everything
+            if (is_siteadmin($userid)) {
+                foreach ($reports as $rpt) {
+                    $allowedreports[] = $rpt->reportid;
+                }
+                return $allowedreports;
+            } else {
+                //not a siteadmin: pass through recordset, to see if we need to get the 'any context' array for any report
+                foreach ($reports as $rpt) {
+                    if (isset($rpt->context) && $rpt->context == 'any') {
+                        $anycontextcheck = true;
+                        break;
+                    }
+                }
+            }
+            //get default site context array
+            $sql = "SELECT DISTINCT ra.roleid
+                      FROM {role_assignments} ra
+                 LEFT JOIN {context} c
+                        ON ra.contextid = c.id
+                     WHERE ra.userid = ?
+                       AND c.contextlevel = ?";
+            $siteuserroles = $DB->get_fieldset_sql($sql, array($userid, CONTEXT_SYSTEM));
+            //only get any context roles if actually needed
+            if ($anycontextcheck) {
+                $sql = "SELECT DISTINCT roleid
+                          FROM {role_assignments}
+                         WHERE userid = ?";
+                $anyuserroles = $DB->get_fieldset_sql($sql, array($userid));
+            }
+            //now loop through our reports again checking role permissions
+            foreach ($reports as $rpt) {
+                $allowed_roles = explode('|', $rpt->activeroles);
+                $roles_to_compare = (isset($rpt->context) && $rpt->context == 'any') ? $anyuserroles : $siteuserroles;
+                $matched_roles = array_intersect($allowed_roles, $roles_to_compare);
+                if (!empty($matched_roles)) {
+                    $allowedreports[] = $rpt->reportid;
+                }
+            }
+        }
+        return $allowedreports;
+    }
 
     /**
      * Check if the user has rights for a particular access restriction

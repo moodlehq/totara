@@ -910,54 +910,176 @@ class reportbuilder {
      * @return boolean True if they have any of the required capabilities
      */
     public static function is_capable($id, $userid=null) {
-        global $USER, $DB;
+        global $USER;
 
-        // if the 'accessmode' flag is set to 0 let anyone view it
-        $accessmode = $DB->get_field('report_builder', 'accessmode', array('id' => $id));
-        if ($accessmode == REPORT_BUILDER_ACCESS_MODE_NONE) {
-            return true;
-        }
-
-        // check access for specified user, or the current user if none set
         $foruser = isset($userid) ? $userid : $USER->id;
+        $allowed = array_keys(reportbuilder::get_permitted_reports($foruser, true));
+        $permitted = in_array($id, $allowed);
+        return $permitted;
+    }
 
-        $any = false;
-        $all = true;
+
+    /**
+    * Returns an array of defined reportbuilder access plugins
+    *
+    * @return array Array of access plugin names
+    */
+    function get_all_access_plugins() {
+        $plugins = array();
         // loop round classes, only considering classes that extend rb_base_access
         foreach (get_declared_classes() as $class) {
             if (is_subclass_of($class, 'rb_base_access')) {
                 // remove rb_ prefix
-                $settingname = substr($class, 3);
-                $obj = new $class($foruser);
-                // is this option enabled?
-                if (reportbuilder::get_setting($id, $settingname, 'enable')) {
-                    // does user have permission for this access option?
-                    $allowed = $obj->access_restriction($id);
-                    $any = $any || $allowed;
-                    $all = $all && $allowed;
+                $plugins[] = substr($class, 3);
+            }
+        }
+        return $plugins;
+    }
+
+    /**
+    * Returns an array of associative arrays keyed by reportid,
+    * each associative array containing ONLY the plugins actually enabled on each report,
+    * with a 0/1 value of whether the report passes each plugin checks for the specified user
+    * For example a return array in the following form
+    *
+    * array[1] = array('role_access' => 1, 'individual_access' => 0)
+    * array[4] = array('role_access' => 0, 'individual_access' => 0, 'hierarchy_access' => 0)
+    *
+    * would mean:
+    * report id 1 has 'role_access' and 'individual_access' plugins enabled,
+    * this user passed role_access checks but failed the individual_access checks;
+    * report id 4 has 'role_access', 'individual_access and 'hierarchy_access' plugins enabled,
+    * and the user failed access checks in all three.
+    *
+    * @param int $userid The user to check which reports they have access to
+    * @param array $plugins array of particular plugins to check
+    * @return array Array of reports, with enabled plugin names and access status
+    */
+    function get_reports_plugins_access($userid, $plugins=NULL) {
+        global $DB;
+        //create return variable
+        $report_plugin_access = array();
+        //if no list of plugins specified, check them all
+        if (empty($plugins)) {
+            $plugins = self::get_all_access_plugins();
+        }
+        //keep track of which plugins are actually active according to report_builder_settings
+        $active_plugins = array();
+        //now get the info for plugins that are actually enabled for any reports
+        list($insql, $params) = $DB->get_in_or_equal($plugins);
+        $sql = "SELECT id,reportid,type
+                  FROM {report_builder_settings}
+                 WHERE type $insql
+                   AND name = ?
+                   AND value = ?";
+        $params[] = 'enable';
+        $params[] = '1';
+        $reportinfo = $DB->get_records_sql($sql, $params);
+
+        foreach ($reportinfo as $id => $plugin) {
+            //foreach scope variables for efficiency
+            $rid = $plugin->reportid;
+            $ptype = '' . $plugin->type;
+            //add to array of plugins that are actually active
+            if (!in_array($ptype, $active_plugins)) {
+                $active_plugins[] = $ptype;
+            }
+            //set up enabled plugin info for this report
+            if (isset($report_plugin_access[$rid])) {
+                $report_plugin_access[$rid][$ptype] = 0;
+            } else {
+                $report_plugin_access[$rid] = array($ptype => 0);
+            }
+        }
+        //now call the plugin class to get the accessible reports for each actually used plugin
+        foreach ($active_plugins as $plugin) {
+            $class = "rb_" . $plugin;
+            $obj = new $class($userid);
+            $accessible = $obj->get_accessible_reports();
+            foreach ($accessible as $key => $rid) {
+                if (isset($report_plugin_access[$rid]) && is_array($report_plugin_access[$rid])) {
+                    //report $rid has passed checks in $plugin
+                    //the plugin should already have an entry with value 0 from above
+                    if (isset($report_plugin_access[$rid][$plugin])) {
+                        $report_plugin_access[$rid][$plugin] = 1;
+                    }
                 }
             }
         }
 
-        if ($accessmode == REPORT_BUILDER_ACCESS_MODE_ANY) {
-            // any enabled options can be true
-            return $any;
-        } else {
-            // all enabled options must be true
-            return $all;
-        }
-
+        return $report_plugin_access;
     }
 
     /**
      * Returns an array of reportbuilder objects that the user can view
      *
+     * @param int $userid The user to check which reports they have access to
      * @param boolean $showhidden If true, reports which are hidden
      *                            will also be included
      * @return array Array of results from the report_builder table
      */
-    public static function get_permitted_reports($showhidden=false) {
+    public static function get_permitted_reports($userid=NULL, $showhidden=false) {
+        global $DB, $USER;
 
+        // check access for specified user, or the current user if none set
+        $foruser = isset($userid) ? $userid : $USER->id;
+        //array to hold the final list
+        $permitted_reports = array();
+        //get array of plugins
+        $all_plugins = self::get_all_access_plugins();
+        //get array of all reports with enabled plugins and whether they passed or failed each enabled plugin
+        $enabled_plugins = self::get_reports_plugins_access($foruser, $all_plugins);
+        //get basic reports list
+        $hidden = (!$showhidden) ? ' WHERE hidden = 0 ' : '';
+        $sql = "SELECT *
+                  FROM {report_builder}
+                 $hidden
+                 ORDER BY fullname ASC";
+        $reports = $DB->get_records_sql($sql);
+        //we now have all the information we need
+        if ($reports) {
+            foreach ($reports as $report) {
+                if ($report->accessmode == REPORT_BUILDER_ACCESS_MODE_NONE) {
+                    $permitted_reports[$report->id] = $report;
+                    continue;
+                }
+                if ($report->accessmode == REPORT_BUILDER_ACCESS_MODE_ANY) {
+                    if (!empty($enabled_plugins) && isset($enabled_plugins[$report->id])) {
+                        foreach ($enabled_plugins[$report->id] as $plugin => $value) {
+                            if ($value == 1) {
+                                //passed in some plugin so allow it
+                                $permitted_reports[$report->id] = $report;
+                                break;
+                            }
+                        }
+                        continue;
+                    } else {
+                        // bad data - set to "any plugin passing", but no plugins actually have settings to check for this report
+                        continue;
+                    }
+                }
+                if ($report->accessmode == REPORT_BUILDER_ACCESS_MODE_ALL) {
+                    if (!empty($enabled_plugins) && isset($enabled_plugins[$report->id])) {
+                        $status=true;
+                        foreach ($enabled_plugins[$report->id] as $plugin => $value) {
+                            if ($value == 0) {
+                                //failed in some expected plugin, reject
+                                $status = false;
+                                break;
+                            }
+                        }
+                        if ($status) {
+                            $permitted_reports[$report->id] = $report;
+                            continue;
+                        }
+                    } else {
+                        // bad data - set to "all plugins passing", but no plugins actually have settings to check for this report
+                        continue;
+                    }
+                }
+            }
+        }
+        return $permitted_reports;
     }
 
 
@@ -3098,24 +3220,12 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
  * @return array Array of report objects
  */
 function reportbuilder_get_reports($showhidden=false) {
-    global $DB;
-    $reports = $DB->get_records('report_builder', null, 'fullname');
-    $context = context_system::instance();
-
-    $return = array();
-    foreach ($reports as $report) {
-        // show reports user has permission to view, that are not hidden
-        if (reportbuilder::is_capable($report->id)) {
-            if ($showhidden || !$report->hidden) {
-                $return[] = $report;
-            }
-        }
+    global $CFG, $reportbuilder_permittedreports;
+    if (!isset($reportbuilder_permittedreports) || !is_array($reportbuilder_permittedreports)) {
+        $reportbuilder_permittedreports = reportbuilder::get_permitted_reports(null,$showhidden);
     }
-
-    return $return;
+    return $reportbuilder_permittedreports;
 }
-
-
 
 /**
  *  Send Scheduled report to a user

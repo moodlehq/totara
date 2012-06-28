@@ -264,27 +264,19 @@ function totara_print_my_team_nav() {
 * print out the table of visible reports
 */
 function totara_print_report_manager() {
-    global $CFG, $USER, $DB, $PAGE;
+    global $CFG, $USER, $PAGE, $reportbuilder_permittedreports;
     require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
-    $reports = $DB->get_records('report_builder', null, 'fullname');
-    if (!is_array($reports)){
-        $reports = array();
+
+    if (!isset($reportbuilder_permittedreports) || !is_array($reportbuilder_permittedreports)) {
+        $reportbuilder_permittedreports = reportbuilder::get_permitted_reports();
     }
+
     $context = context_system::instance();
-    $showsettings = (has_capability('totara/reportbuilder:managereports',$context) && isset($USER->editing) && $USER->editing) ? true : false;
-    //pre-process to avoid any data logic in renderer
-    $viewablereports = array();
+    $canedit = has_capability('totara/reportbuilder:managereports',$context);
 
-    foreach ($reports as $report) {
-        if (reportbuilder::is_capable($report->id) && !$report->hidden) {
-            $report->viewurl = reportbuilder_get_report_url($report);
-            $viewablereports[] = $report;
-        }
-    }
-
-    if (count($viewablereports) > 0) {
+    if (count($reportbuilder_permittedreports) > 0) {
         $renderer = $PAGE->get_renderer('totara_core');
-        $returnstr = $renderer->print_report_manager($viewablereports, $showsettings);
+        $returnstr = $renderer->print_report_manager($reportbuilder_permittedreports, $canedit);
     } else {
         $returnstr = get_string('nouserreports', 'totara_reportbuilder');
     }

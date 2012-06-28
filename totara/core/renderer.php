@@ -222,7 +222,7 @@ class totara_core_renderer extends plugin_renderer_base {
     * @param bool $showsettings if this user is an admin with editing turned on
     * @return html_writer::table
     */
-    public function print_report_manager($reports, $showsettings) {
+    public function print_report_manager($reports, $canedit) {
 
         $counter = 0;
         $table = new html_table();
@@ -235,23 +235,22 @@ class totara_core_renderer extends plugin_renderer_base {
             $text = format_string($report->fullname);
             $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('report_icon', 'totara_reportbuilder'),
                                 'alt'=> $text));
-            $url = new moodle_url('/totara/reportbuilder/report.php?id='.$report->id);
+            $url = new moodle_url('/totara/reportbuilder/report.php', array('id' => $report->id));
             $attributes = array('href' => $url);
             $cellcontent = html_writer::tag('a', $icon, $attributes);
             $cell = new html_table_cell($cellcontent);
             $cell->attributes['class'] = 'icon';
             $cells[] = $cell;
-            $url = new moodle_url($report->viewurl);
             $attributes = array('href' => $url);
             $cellcontent = html_writer::tag('a', $text, $attributes);
             // if admin with edit mode on show settings button too
-            if ($showsettings) {
+            if ($canedit) {
                 $text = get_string('settings','totara_core');
                 $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/t/edit'),
                                                 'alt'=> $text));
                 $url = new moodle_url('/totara/reportbuilder/general.php?id='.$report->id);
                 $attributes = array('href' => $url);
-                $cellcontent .= html_writer::tag('a', $icon, $attributes);
+                $cellcontent .= '&nbsp;' . html_writer::tag('a', $icon, $attributes);
             }
             $cell = new html_table_cell($cellcontent);
             $cell->attributes['class'] = 'text';
