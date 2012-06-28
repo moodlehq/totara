@@ -108,6 +108,25 @@ if (!isset($maturity)) {
     $maturity = MATURITY_STABLE;
 }
 
+// Totara upgrade version checks - only certain upgrade paths are permitted
+// do this early to ensure upgrade hasn't started yet
+//
+// we also need to prevent attempts to downgrade from Moodle release that
+// is later than current totara version (e.g. Moodle 2.3 -> Totara 2.2)
+// This is already handled by the core upgrade code as it would detected a
+// core downgrade and throw and exception
+if (!empty($CFG->local_postinst_hasrun) &&
+    isset($CFG->totara_build) && $CFG->totara_build < 20120627.00) {
+    // if upgrading from totara, require v1.1.17+
+    echo 'You cannot upgrade to Totara 2.x from a Totara 1.1 site prior to release 1.1.17. Please upgrade to 1.1.17 or greater first.';
+    die();
+} else if (empty($CFG->local_postinst_hasrun) &&
+        isset($CFG->version) && $CFG->version < 2010112400) {
+    // if upgrading from moodle, require at least v2.0.0
+    echo 'You cannot upgrade to Totara 2.x from a Moodle version prior to 2.0 Please upgrade to Totara 1.1.17+ or Moodle 2 first.';
+    die();
+}
+
 // Turn off xmlstrictheaders during upgrade.
 $origxmlstrictheaders = !empty($CFG->xmlstrictheaders);
 $CFG->xmlstrictheaders = false;
