@@ -747,9 +747,11 @@ abstract class rb_base_source {
         $out = array();
         $mods = $DB->get_records('modules', array('visible' => 1), 'id', 'id, name');
         foreach ($mods as $mod) {
-            $modname = (get_string_manager()->string_exists('pluginname', $mod->name)) ?
-                get_string('pluginname', $mod->name) : ucfirst($mod->name);
-
+            if (get_string_manager()->string_exists('pluginname', $mod->name)) {
+                $modname = get_string('pluginname', $mod->name);
+            } else {
+                continue;
+            }
             if (file_exists($CFG->dirroot . '/mod/' . $mod->name . '/pix/icon.gif') ||
                 file_exists($CFG->dirroot . '/mod/' . $mod->name . '/pix/icon.png')) {
                 $icon = $OUTPUT->pix_icon('icon', $modname, $mod->name) . '&nbsp;';
