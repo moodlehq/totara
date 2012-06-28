@@ -196,8 +196,6 @@ class rb_source_courses extends rb_base_source {
     //
     //
 
-
-
     function rb_display_modicons($mods, $row) {
         global $OUTPUT, $CFG;
         $modules = explode('|', $mods);
@@ -206,23 +204,27 @@ class rb_source_courses extends rb_base_source {
         // cells all consistent
         sort($modules);
 
-        $out = '';
+        $out = array();
         foreach ($modules as $module) {
             if (empty($module)) {
                 continue;
             }
             $name = (get_string_manager()->string_exists('pluginname', $module)) ?
                 get_string('pluginname', $module) : ucfirst($module);
-
-            if (file_exists($CFG->dirroot . '/mod/' . $module . '/pix/icon.gif') ||
-                file_exists($CFG->dirroot . '/mod/' . $module . '/pix/icon.png')) {
-
-                $out .= $OUTPUT->pix_icon('icon', $name, $module);
+            if ($isexport) {
+                $out[] = $modname;
+                $glue = ', ';
             } else {
-                $out .= $name;
+                $glue = '';
+                if (file_exists($CFG->dirroot . '/mod/' . $module . '/pix/icon.gif') ||
+                    file_exists($CFG->dirroot . '/mod/' . $module . '/pix/icon.png')) {
+                    $out[] = $OUTPUT->pix_icon('icon', $name, $module);
+                } else {
+                    $out[] = $name;
+                }
             }
         }
-        return $out;
+        return implode($glue, $out);
     }
 
     //
