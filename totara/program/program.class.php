@@ -1503,6 +1503,7 @@ class program_utilities {
         $timeallowances[TIME_SELECTOR_DAYS] = get_string('days', 'totara_program');
         $timeallowances[TIME_SELECTOR_WEEKS] = get_string('weeks', 'totara_program');
         $timeallowances[TIME_SELECTOR_MONTHS] = get_string('months', 'totara_program');
+        $timeallowances[TIME_SELECTOR_YEARS] = get_string('years', 'totara_program');
         if ($periodvalue == '') { $periodvalue = '' . TIME_SELECTOR_DAYS; }
         $m_name = $prefix.$periodelementname;
         $m_id = $prefix.$periodelementname;
@@ -1531,6 +1532,7 @@ class program_utilities {
             TIME_SELECTOR_DAYS => get_string('days', 'totara_program'),
             TIME_SELECTOR_WEEKS => get_string('weeks', 'totara_program'),
             TIME_SELECTOR_MONTHS => get_string('months', 'totara_program'),
+            TIME_SELECTOR_YEARS => get_string('years', 'totara_program')
         );
         return $timeallowances;
     }
