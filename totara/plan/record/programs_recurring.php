@@ -110,6 +110,7 @@ $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/
 $PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/programs.php'));
 $PAGE->navbar->add($strsubheading);
 $PAGE->set_title($strheading);
+$PAGE->set_button($report->edit_button());
 $PAGE->set_heading($strheading);
 
 $ownplan = $USER->id == $userid;
@@ -146,7 +147,6 @@ $report->display_search();
 if ($countfiltered > 0) {
     echo $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
-    echo $report->edit_button();
     // export button
     $renderer->export_select($report->_id);
 }

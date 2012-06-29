@@ -46,7 +46,7 @@ $PAGE->set_context($context);
 $PAGE->set_url('/totara/message/alerts.php');
 // users can only view their own and their staff's pages
 // or if they are an admin
-if (($USER->id != $id && !totara_is_manager($id) && !has_capability('totara/message:viewallmessages',$context)) || !confirm_sesskey()) {
+if (($USER->id != $id && !totara_is_manager($id) && !has_capability('totara/message:viewallmessages',$context))) {
     print_error('youcannotview', 'totara_message');
 }
 $strheading = get_string('alerts', 'totara_message');
@@ -91,6 +91,7 @@ if (strstr($referer, 'my/learning.php')) {
 $PAGE->navbar->add($strheading);
 
 $PAGE->set_title($strheading);
+$PAGE->set_button($report->edit_button());
 $PAGE->set_heading($strheading);
 
 $output = $PAGE->get_renderer('totara_reportbuilder');

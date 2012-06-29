@@ -63,6 +63,7 @@ $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add($fullname, new moodle_url("/course/find.php"));
 $PAGE->navbar->add(get_string('search'));
 $PAGE->set_title($pagetitle);
+$PAGE->set_button($report->edit_button());
 $PAGE->set_heading($fullname);
 echo $OUTPUT->header();
 

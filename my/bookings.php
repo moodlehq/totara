@@ -76,6 +76,7 @@ $fullname = $report->fullname;
 $pagetitle = format_string(get_string('report', 'totara_core').': '.$fullname);
 
 $PAGE->set_title($pagetitle);
+$PAGE->set_button($report->edit_button());
 $PAGE->set_heading('');
 $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/learning.php'));
 $PAGE->navbar->add($strheading);
@@ -100,7 +101,6 @@ echo html_writer::empty_tag('br');
 if ($countfiltered > 0) {
     print $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
-    print $report->edit_button();
     // export button
     $renderer->export_select($report->_id);
 }

@@ -68,8 +68,11 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_url(new moodle_url('/my/teammembers.php'));
 $PAGE->set_totara_menu_selected('myteam');
+$PAGE->set_button($report->edit_button());
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
+$PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/'));
+$PAGE->navbar->add($strheading);
 echo $OUTPUT->header();
 
 // Plan menu

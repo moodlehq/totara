@@ -61,6 +61,7 @@ $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add($fullname, new moodle_url('/totara/program/find.php'));
 $PAGE->navbar->add(get_string('search'));
 $PAGE->set_title($pagetitle);
+$PAGE->set_button($report->edit_button());
 $PAGE->set_heading('');
 echo $OUTPUT->header();
 
@@ -87,7 +88,6 @@ echo html_writer::empty_tag('br'). html_writer::empty_tag('br');
 if ($countfiltered>0) {
     print $renderer->showhide_button($report->_id, $report->shortname);
     $report->display_table();
-    print $report->edit_button();
     // export button
     $renderer->export_select($report->_id);
 }
