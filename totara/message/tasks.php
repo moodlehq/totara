@@ -44,6 +44,7 @@ $id = $USER->id;
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url('/totara/message/tasks.php');
+$PAGE->set_pagelayout('noblocks');
 // users can only view their own and their staff's pages
 // or if they are an admin
 if (($USER->id != $id && !totara_is_manager($id) && !has_capability('totara/message:viewallmessages',$context))) {

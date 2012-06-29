@@ -29,6 +29,7 @@ $format = optional_param('format','', PARAM_TEXT); // export format
 
 $PAGE->set_context(context_system::instance());
 $PAGE->set_totara_menu_selected('programs');
+$PAGE->set_pagelayout('noblocks');
 if ($CFG->forcelogin) {
     require_login();
 }

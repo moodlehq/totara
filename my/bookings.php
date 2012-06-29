@@ -33,6 +33,7 @@ $format = optional_param('format','', PARAM_TEXT); // export format
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url(new moodle_url('/my/bookings.php', array('userid' => $userid, 'format' => $format)));
 $PAGE->set_totara_menu_selected('mybookings');
+$PAGE->set_pagelayout('noblocks');
 
 if (!$user = $DB->get_record('user', array('id' => $userid))) {
     print_error('error:usernotfound', 'totara_core');
