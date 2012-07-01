@@ -171,7 +171,9 @@ print_upgrade_separator();
 // rename 'completedate' field to 'timeend' in 'course_completion_criteria'
 $table = new xmldb_table('course_completion_criteria');
 $field = new xmldb_field('completedate', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, null, null, null, 'enrolperiod');
-$dbman->rename_field($table, $field, 'timeend');
+if ($dbman->field_exists($table, $field)) {
+    $dbman->rename_field($table, $field, 'timeend');
+}
 
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Course completion criteria field renamed');
 echo $OUTPUT->heading('Course completion criteria field renamed');
