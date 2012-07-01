@@ -123,8 +123,13 @@ function xmldb_totara_message_upgrade($oldversion) {
             if ($orig_emailstatus == 1) {
                 $DB->set_field('message_processors', 'enabled', '0', array('name' => 'email'));
             }
+
+            $pbar = new progress_bar('migratetotaramessages', 500, true);
+            $count = count($msgs);
+            $i = 0;
             // now recreate the messages
             foreach ($msgs as $msg) {
+                $i++;
                 /* SCANMSG: need to check other messages for local/ in the contexturl */
                 //fix contexturl to change /local/ to /totara/ for totara modules only
                 $msg->contexturl = str_replace('/local/plan','/totara/plan', $msg->contexturl);
@@ -141,7 +146,11 @@ function xmldb_totara_message_upgrade($oldversion) {
                 } else {
                     tm_alert_send($msg);
                 }
+                upgrade_set_timeout(60*5); // set up timeout, may also abort execution
+                $pbar->update($i, $count, "Migrating totara messages - message $i/$count.");
             }
+            $pbar->update($i, $count, "Migrated totara messages - done!");
+
             //re-enable emails if they were originally turned on
             if ($orig_emailstatus == 1) {
                 $DB->set_field('message_processors', 'enabled', '1', array('name' => 'email'));
