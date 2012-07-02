@@ -384,8 +384,8 @@ function totara_print_my_courses() {
     if ($courses) {
         foreach ($courses as $course) {
             $displaycourse = new stdClass();
-            $displaycourse->id = $course->course;
-            $displaycourse->$name = format_string($course->name);
+            $displaycourse->course = $course->course;
+            $displaycourse->name = format_string($course->name);
             $enrolled = $course->timeenrolled;
             $completed = $course->timecompleted;
             $starteddate = '';
@@ -395,7 +395,7 @@ function totara_print_my_courses() {
             $displaycourse->starteddate = $starteddate;
             $displaycourse->enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%d %b %y') : null;
             $displaycourse->completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%d %b %y') : null;
-            $displaycourse->status = array_key_exists($id, $courses) ? $courses[$id]->status : COMPLETION_STATUS_NOTYETSTARTED;
+            $displaycourse->status = $course->status ? $course->status : COMPLETION_STATUS_NOTYETSTARTED;
             $displaycourses[] = $displaycourse;
         }
     }

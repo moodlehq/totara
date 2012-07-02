@@ -107,8 +107,8 @@ function completion_cron_mark_started() {
         WHERE
             c.enablecompletion = 1
         AND crc.timeenrolled IS NULL
-        AND ue.status = 0
-        AND e.status = 0
+        AND ue.status = ?
+        AND e.status = ?
         AND u.deleted = 0
         AND ue.timestart < ?
         AND (ue.timeend > ? OR ue.timeend = 0)
@@ -119,7 +119,13 @@ function completion_cron_mark_started() {
     ";
 
     $now = time();
-    $rs = $DB->get_recordset_sql($sql, array($now, $now, $now, $now));
+    $params = array(
+        ENROL_USER_ACTIVE,
+        ENROL_INSTANCE_ENABLED,
+        $now,
+        $now
+    );
+    $rs = $DB->get_recordset_sql($sql, $params);
 
     // Check if result is empty
     if (!$rs->valid()) {
@@ -152,7 +158,10 @@ function completion_cron_mark_started() {
         else {
             // Not all enrol plugins fill out timestart correctly, so use whichever
             // is non-zero
-            $current->timeenrolled = max($current->timecreated, $current->timeenrolled);
+            $current->timeenrolled = $current->timeenrolled;
+            if (!$current->timeenrolled) {
+                $current->timeenrolled = $current->timecreated;
+            }
         }
 
         // If we are at the last record,

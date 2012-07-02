@@ -135,6 +135,7 @@ $string['err_noroles']='There are no roles with the capability \'moodle/course:m
 $string['err_settingslocked']='One or more students have already completed a criteria so the settings have been locked. Unlocking the completion criteria settings will delete any existing user data and may cause confusion.';
 $string['datepassed']='Date passed';
 $string['daysafterenrolment']='Days after enrolment';
+$string['deletedcourse']='Deleted course';
 $string['durationafterenrolment']='Duration after enrolment';
 $string['durationafterenrolment_help']='When enabled this criteria will be marked as complete when the duration of a user\'s enrolment has reached the specified length.';
 $string['fraction']='Fraction';

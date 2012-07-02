@@ -342,18 +342,18 @@ class totara_core_renderer extends plugin_renderer_base {
             foreach ($displaycourses as $course) {
                 $cells = array();
                 // Display deleted courses as unknown
-                if ($name != '') {
-                    $url = new moodle_url("/course/view.php?id={$course->id}");
+                if ($course->name != '') {
+                    $url = new moodle_url("/course/view.php?id={$course->course}");
                     $attributes = array('href' => $url, 'title' => $course->name);
-                    $cellcontent .= html_writer::tag('a', $course->name, $attributes);
+                    $cellcontent = html_writer::tag('a', $course->name, $attributes);
                 } else {
-                    $cellcontent .= get_string('deletedcourse', 'completion');
+                    $cellcontent = get_string('deletedcourse', 'completion');
                 }
                 $cell = new html_table_cell($cellcontent);
                 $cell->attributes['class'] = 'course';
                 $cells[] = $cell;
 
-                $completion = $this->display_course_progress_icon($userid, $course->id, $course->status);
+                $completion = $this->display_course_progress_icon($userid, $course->course, $course->status);
                 $cell = new html_table_cell($completion);
                 $cell->attributes['class'] = 'status';
                 $cells[] = $cell;

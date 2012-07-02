@@ -1510,9 +1510,52 @@ class completion_info {
     }
 
     /**
-     * Empty stub to be replaced when course completion is updated
+     * Get all completions a user has across the site
+     * @access  public
+     * @param   $userid     int     User id
+     * @param   $limit      int     Limit number of records returned (optional)
+     * @return  array
      */
     function get_all_courses($userid, $limit=0) {
-        return array();
+        global $DB;
+
+        $sql = "
+            SELECT
+                c.id AS course,
+                c.fullname AS name,
+                cc.timeenrolled,
+                cc.timestarted,
+                cc.timecompleted,
+                cc.status,
+                cc.rpl
+            FROM
+                {course_completions} cc
+            LEFT JOIN
+                {course} c
+             ON cc.course = c.id
+            WHERE
+                cc.userid = :userid
+            AND
+            (
+                cc.timeenrolled > 0
+             OR cc.timestarted > 0
+             OR cc.timecompleted > 0
+            )
+            ORDER BY
+                cc.timeenrolled DESC,
+                cc.timestarted DESC,
+                cc.timecompleted DESC
+        ";
+
+        $completions = array();
+
+        if ($ccompletions = $DB->get_records_sql($sql, array('userid' => $userid), 0, $limit)) {
+            foreach ($ccompletions as $course) {
+                // Create completion_completion instance (without reloading from db)
+                $completions[$course->course] = new completion_completion((array) $course, false);
+            }
+        }
+
+        return $completions;
     }
 }
