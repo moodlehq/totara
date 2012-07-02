@@ -195,6 +195,24 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'base.discountcode'
             ),
             new rb_column_option(
+                'session',
+                'normalcost',
+                get_string('normalcost', 'rb_source_facetoface_sessions'),
+                'sessions.normalcost',
+                array(
+                    'joins' => 'sessions',
+                )
+            ),
+            new rb_column_option(
+                'session',
+                'discountcost',
+                get_string('discountcost', 'rb_source_facetoface_sessions'),
+                'sessions.discountcost',
+                array(
+                    'joins' => 'sessions',
+                )
+            ),
+            new rb_column_option(
                 'facetoface',
                 'name',
                 get_string('ftfname', 'rb_source_facetoface_sessions'),
@@ -322,6 +340,18 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'duration',
                 get_string('sessduration', 'rb_source_facetoface_sessions'),
+                'number'
+            ),
+            new rb_filter_option(
+                'session',
+                'normalcost',
+                get_string('normalcost', 'rb_source_facetoface_sessions'),
+                'number'
+            ),
+            new rb_filter_option(
+                'session',
+                'discountcost',
+                get_string('discountcost', 'rb_source_facetoface_sessions'),
                 'number'
             ),
         );
@@ -494,6 +524,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
         if (!isset($allowedroles) || $allowedroles == '') {
             return false;
         }
+        $allowedroles = explode(',', $allowedroles);
 
         list($allowedrolessql, $params) = $DB->get_in_or_equal($allowedroles);
 
@@ -580,6 +611,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
         if (!isset($allowedroles) || $allowedroles == '') {
             return false;
         }
+        $allowedroles = explode(',', $allowedroles);
 
         list($allowedrolessql, $params) = $DB->get_in_or_equal($allowedroles);
 
@@ -630,6 +662,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
         if (!isset($allowedroles) || $allowedroles == '') {
             return false;
         }
+        $allowedroles = explode(',', $allowedroles);
 
         list($allowedrolessql, $params) = $DB->get_in_or_equal($allowedroles);
 

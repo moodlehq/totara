@@ -45,6 +45,7 @@ $string['changemanageremailaddress'] = 'Change manager email address';
 $string['changemanageremailinstruction'] = 'Please enter the email address for your current manager below.';
 $string['cannotsignupsessioninprogress'] = 'You cannot sign up, this session is in progress';
 $string['cannotsignupsessionover'] = 'You cannot sign up, this session is over.';
+$string['cannotapproveatcapacity'] = 'You cannot approve any more attendees as this session is full.';
 $string['clearall'] = 'Clear all';
 $string['closed'] = 'Closed';
 $string['conditions'] = 'Conditions';
@@ -185,6 +186,7 @@ $string['full'] = 'Date is fully occupied';
 $string['goback'] = 'Go back';
 $string['guestsno'] = 'Sorry, guests are not allowed to sign up for sessions.';
 $string['icalendarheading'] = 'iCalendar Attachments';
+$string['icaldescription'] = 'This calendar event is for the {$a->name} face-to-face session you have been booked on to.';
 $string['import'] = 'Import';
 $string['info'] = 'Info';
 $string['late'] = '\{$a} late';
@@ -431,7 +433,7 @@ $string['setting:defaultrequestsubjectdefault'] = 'Course booking request: [face
 $string['setting:defaultvalue'] = 'Default value';
 $string['setting:defaultwaitlistedmessage'] = 'Default wait-listed message sent to users.';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Wait-listed message';
-$string['setting:defaultwaitlistedmessagedefault'] = 'This is to advise that you been added to the waitlist for:
+$string['setting:defaultwaitlistedmessagedefault'] = 'This is to advise that you have been added to the waitlist for:
 
 Course:   [facetofacename]
 Location:  [session:location]
@@ -513,6 +515,7 @@ $string['upcomingsessions'] = 'Upcoming sessions';
 $string['upcomingsessionslist'] = 'List of all upcoming sessions for this Face-to-face activity';
 $string['upgradeprocessinggrades'] = 'Processing Face-to-face grades, this may take a while if there are many sessions...';
 $string['usercancelledon'] = 'User cancelled on {$a}';
+$string['userdeletedcancel'] = 'User has been deleted';
 $string['usernotsignedup'] = 'Status: not signed up';
 $string['usersignedup'] = 'Status: signed up';
 $string['usersignedupon'] = 'User signed up on {$a}';
@@ -676,3 +679,17 @@ $string['venue_help'] = '**Venue** is the building the session will be held in.
 The **Venue** displays on the \'Sign-up\' page, the \'View all sessions\' page and in all email notifications.';
 
 $string['waitlistedmessage_help'] = 'This message is sent out whenever users sign-up for a wait-listed session.';
+
+//Totara Messaging strings
+$string['requestattendsession'] = 'Request to attend session {$a}';
+$string['requestattendsessionsent'] = 'Request to attend session {$a} sent to manager';
+
+$string['bookedforsession'] = 'Booked for session {$a}';
+$string['waitlistedforsession'] = 'Waitlisted for session {$a}';
+$string['cancelledforsession'] = 'Cancelled for session';
+
+$string['requestuserattendsession'] = 'Request for {$a->usermsg} to attend session {$a->url}';
+$string['cancelusersession'] = 'Cancelled for {$a->usermsg} session {$a->url}';
+
+$string['approveinstruction'] = 'To approve session registration, press accept';
+$string['rejectinstruction'] = 'To reject session registration, press reject';

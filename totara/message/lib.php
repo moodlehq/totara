@@ -177,7 +177,7 @@ function totara_message_dismiss_action($id) {
  * @param string $messagetype message type
  */
 function totara_message_alert_popup($id, $extrabuttons=array(), $messagetype) {
-    global $CFG, $FULLME, $PAGE;
+    global $CFG, $FULLME, $PAGE, $DB;
 
     $clean_fullme = clean_param($FULLME, PARAM_LOCALURL);
 
@@ -185,6 +185,20 @@ function totara_message_alert_popup($id, $extrabuttons=array(), $messagetype) {
     $PAGE->requires->string_for_js('cancel', 'moodle');
     $PAGE->requires->string_for_js('dismiss', 'totara_message');
     $PAGE->requires->string_for_js('reviewitems', 'block_totara_alerts');
+
+    $metadata = $DB->get_record('message_metadata', array('messageid' => $id));
+    $eventdata = totara_message_eventdata($id, 'onaccept', $metadata);
+
+    if ($eventdata && $eventdata->action == 'facetoface') {
+        require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+
+        $canbook = facetoface_task_check_capacity($eventdata->data);
+
+        if (!$canbook) {
+            // Remove accept / reject buttons
+            $extrabuttons = array();
+        }
+    }
 
     $extrabuttonjson = '';
     if ($extrabuttons) {

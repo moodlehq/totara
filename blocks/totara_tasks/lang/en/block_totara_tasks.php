@@ -17,3 +17,5 @@ $string['type'] = 'Type';
 $string['viewall'] = 'View all';
 $string['viewallnot'] = 'View all tasks';
 $string['clickformoreinfo'] = 'Click for more information';
+$string['f2fsessionfull'] = 'Session full';
+$string['f2fsessiondeleted'] = 'Session has been deleted';

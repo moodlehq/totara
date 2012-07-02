@@ -32,10 +32,10 @@ class mod_facetoface_mod_form extends moodleform_mod {
 
         $display = array();
         for ($i=0; $i<=18; $i += 2) {
-            $display[] = $i;
+            $display[$i] = $i;
         }
         $mform->addElement('select', 'display', get_string('sessionsoncoursepage', 'facetoface'), $display);
-        $mform->setDefault('display', 3); // 3th element is 6
+        $mform->setDefault('display', 6);
         $mform->addHelpButton('display', 'sessionsoncoursepage', 'facetoface');
 
         $mform->addElement('checkbox', 'approvalreqd', get_string('approvalreqd', 'facetoface'));

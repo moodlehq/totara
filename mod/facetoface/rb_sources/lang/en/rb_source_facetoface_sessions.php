@@ -3,6 +3,8 @@
 $string['sourcetitle'] = 'Face-to-face sessions';
 // columns
 $string['discountcode'] = 'Discount code';
+$string['normalcost'] = 'Normal cost';
+$string['discountcost'] = 'Discount cost';
 $string['sesscapacity'] = 'Session Capacity';
 $string['numattendees'] = 'Number of Attendees';
 $string['sessdetails'] = 'Session Details';

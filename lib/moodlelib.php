@@ -5035,6 +5035,16 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
 
     global $CFG, $FULLME;
 
+    // TODO: use ical library instead
+    if (substr($messagehtml, 0, 5) == 'ical:') {
+        $is_this_an_ical_request = TRUE;
+        $icaltype = substr($messagehtml, 5);
+        $messagehtml = '';
+    } else {
+        $is_this_an_ical_request = FALSE;
+    }
+
+
     if (empty($user) || empty($user->email)) {
         $nulluser = 'User is null or has no email';
         error_log($nulluser);
@@ -5224,6 +5234,14 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml='', $a
     }
     foreach ($tempreplyto as $values) {
         $mail->AddReplyTo($values[0], $values[1]);
+    }
+
+    if ($is_this_an_ical_request) {
+        $mail->ContentType = "text/calendar; name={$icaltype}.ics; method=REQUEST; charset=UTF-8";
+        $mail->Encoding = '8bit';
+        $mail->LE = "\r\n";
+        $mail->AddCustomHeader("Content-class: urn:content-classes:calendarmessage\r\n");
+        $mail->AddCustomHeader("Content-Transfer-Encoding: 8bit\r\n");
     }
 
     if ($mail->Send()) {

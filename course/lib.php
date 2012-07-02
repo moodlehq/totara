@@ -1633,18 +1633,23 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                 }
 
                 if ($url = $mod->get_url()) {
-                    // Display link itself
-                    echo '<a ' . $linkcss . $mod->extra . $onclick .
+                    if ($mod->modname == 'facetoface') {
+                        include_once($CFG->dirroot.'/mod/facetoface/lib.php');
+                        echo facetoface_print_coursemodule_info($mod);
+                    } else {
+                        // Display link itself
+                        echo '<a ' . $linkcss . $mod->extra . $onclick .
                             ' href="' . $url . '"><img src="' . $mod->get_icon_url() .
                             '" class="activityicon" alt="' .
                             $modulename . '" /> ' .
                             $accesstext . '<span class="instancename">' .
                             $instancename . $altname . '</span></a>';
 
-                    // If specified, display extra content after link
-                    if ($content) {
-                        $contentpart = '<div class="' . trim('contentafterlink' . $textclasses) .
+                        // If specified, display extra content after link
+                        if ($content) {
+                            $contentpart = '<div class="' . trim('contentafterlink' . $textclasses) .
                                 '">' . $content . '</div>';
+                        }
                     }
                 } else {
                     // No link, so display only content
@@ -1671,15 +1676,19 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                         ': </span>';
 
                 if ($url = $mod->get_url()) {
-                    // Display greyed-out text of link
-                    echo '<div ' . $textcss . $mod->extra .
+                    if ($mod->modname == 'facetoface') {
+                        include_once($CFG->dirroot.'/mod/facetoface/lib.php');
+                        echo facetoface_print_coursemodule_info($mod);
+                    } else {
+                        // Do not display content after link when it is greyed out like this.
+                        // Display greyed-out text of link
+                        echo '<div ' . $textcss . $mod->extra .
                             ' >' . '<img src="' . $mod->get_icon_url() .
                             '" class="activityicon" alt="' .
                             $modulename .
                             '" /> <span>'. $instancename . $altname .
                             '</span></div>';
-
-                    // Do not display content after link when it is greyed out like this.
+                    }
                 } else {
                     // No link, so display only content (also greyed)
                     $contentpart = '<div ' . $textcss . $mod->extra . '>' .

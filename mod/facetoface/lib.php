@@ -30,6 +30,10 @@ require_once($CFG->libdir.'/gradelib.php');
 require_once($CFG->dirroot.'/grade/lib.php');
 require_once($CFG->dirroot.'/lib/adminlib.php');
 require_once($CFG->dirroot . '/user/selector/lib.php');
+if (file_exists($CFG->libdir.'/completionlib.php')) {
+    require_once($CFG->libdir.'/completionlib.php');
+}
+
 /**
  * Definitions for setting notification types
  */
@@ -51,9 +55,6 @@ define('MDL_F2F_INVITE_ICAL',        5);     // Send just a combined text/ical m
 define('MDL_F2F_CANCEL_BOTH',        11);    // Send a copy of both 8+2+1
 define('MDL_F2F_CANCEL_TEXT',        10);    // Send just a plan email 8+2
 define('MDL_F2F_CANCEL_ICAL',        9);     // Send just a combined text/ical message 8+1
-
-// Name of the custom field where the manager's email address is stored
-define('MDL_MANAGERSEMAIL_FIELD', 'managersemail');
 
 // Custom field related constants
 define('CUSTOMFIELD_DELIMITER', '##SEPARATOR##');
@@ -93,6 +94,49 @@ $MDL_F2F_STATUS = array(
     MDL_F2F_STATUS_PARTIALLY_ATTENDED   => 'partially_attended',
     MDL_F2F_STATUS_FULLY_ATTENDED       => 'fully_attended',
 );
+
+
+/*
+* This function is run when facetoface is first installed
+*
+* Add code here that should be run when the module is first installed
+* @return boolean Success or Failure
+*/
+function facetoface_install() {
+    global $DB;
+
+    $result = true;
+    // Create three new custom fields
+    $newfield1 = new stdClass();
+    $newfield1->name = get_string('location', 'facetoface');
+    $newfield1->shortname = 'location';
+    $newfield1->type = 0; // free text
+    $newfield1->required = 0;
+    if (!$locationfieldid = $DB->insert_record('facetoface_session_field', $newfield1)) {
+        $result = false;
+    }
+
+    $newfield2 = new stdClass();
+    $newfield2->name = get_string('venue', 'facetoface');
+    $newfield2->shortname = 'venue';
+    $newfield2->type = 0; // free text
+    $newfield2->required = 0;
+    if (!$venuefieldid = $DB->insert_record('facetoface_session_field', $newfield2)) {
+        $result = false;
+    }
+
+    $newfield3 = new stdClass();
+    $newfield3->name = get_string('room', 'facetoface');
+    $newfield3->shortname = 'room';
+    $newfield3->type = 0; // free text
+    $newfield3->required = 0;
+    $newfield3->showinsummary = 0;
+    if (!$roomfieldid = $DB->insert_record('facetoface_session_field', $newfield3)) {
+        $result = false;
+    }
+    return $result;
+}
+
 
 /**
  * Returns the human readable code for a face-to-face status
@@ -768,8 +812,7 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
  * Function to be run periodically according to the moodle cron
  * Finds all facetoface notifications that have yet to be mailed out, and mails them.
  */
-function facetoface_cron()
-{
+function facetoface_cron() {
     global $CFG, $USER,$DB;
 
     $signupsdata = facetoface_get_unmailed_reminders();
@@ -805,8 +848,10 @@ function facetoface_cron()
         // Convert the period from business days (no weekends) to calendar days
         for ($reminderday = 0; $reminderday < $reminderperiod + 1; $reminderday++ ) {
             $reminderdaytime = $earlieststarttime - ($reminderday * 24 * 3600);
-            $reminderdaycheck = userdate($reminderdaytime, '%u');
-            if ($reminderdaycheck > 5) {
+            //use %w instead of %u for Windows compatability
+            $reminderdaycheck = userdate($reminderdaytime, '%w');
+            // note w runs from Sun=0 to Sat=6
+            if ($reminderdaycheck == 0 || $reminderdaycheck == 6) {
                 // Saturdays and Sundays are not included in the
                 // reminder period as entered by the user, extend
                 // that period by 1
@@ -1747,9 +1792,11 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         // If approved, then no problem
         if ($current_status == MDL_F2F_STATUS_APPROVED) {
             $new_status = $statuscode;
-        } else {
+        } else if ($session->datetimeknown) {
         // Otherwise, send manager request
             $new_status = MDL_F2F_STATUS_REQUESTED;
+        } else {
+            $new_status = MDL_F2F_STATUS_WAITLISTED;
         }
     }
 
@@ -1763,6 +1810,22 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     // Add to calendar
     if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
         facetoface_add_session_to_user_calendar($session, $facetoface->name, $userid, 'booking');
+    }
+
+    // Course completion
+    if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
+
+        $completion = new completion_info($course);
+        if ($completion->is_enabled()) {
+
+            $ccdetails = array(
+                'course'        => $course->id,
+                'userid'        => $userid,
+            );
+
+            $cc = new completion_completion($ccdetails);
+            $cc->mark_inprogress($timenow);
+        }
     }
 
     // If session has already started, do not send a notification
@@ -1801,6 +1864,13 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     }
 
     //commit_sql();
+
+    // Send notification again - this time using Totara not/rem
+    if ($notifyuser) {
+        // If booked/waitlisted/approval
+        $error = facetoface_send_notrem($facetoface, $session, $userid, $new_status);
+    }
+
     return true;
 }
 
@@ -1992,9 +2062,9 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
     // If we are sending an ical attachment, set file name
     if ($notificationtype & MDL_F2F_ICAL) {
         if ($notificationtype & MDL_F2F_INVITE) {
-            $attachmentfilename = 'invite.ics';
+            $icaltype = 'ical:invite';
         } else if ($notificationtype & MDL_F2F_CANCEL) {
-            $attachmentfilename = 'cancel.ics';
+            $icaltype = 'ical:cancel';
         }
     }
 
@@ -2008,27 +2078,13 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
             foreach ($sessiondates as $sessiondate) {
                 $session->sessiondates = array($sessiondate); // one day at a time
 
-                $filename = facetoface_get_ical_attachment($notificationtype, $facetoface, $session, $user);
-                $subject = facetoface_email_substitutions($postsubject, $facetoface->name, $facetoface->reminderperiod,
-                                                          $user, $session, $session->id);
-                $body = facetoface_email_substitutions($posttext, $facetoface->name, $facetoface->reminderperiod,
-                                                       $user, $session, $session->id);
-                $htmlbody = ''; // TODO
-                $icalattachments[] = array('filename' => $filename, 'subject' => $subject,
-                                           'body' => $body, 'htmlbody' => $htmlbody);
+                $icalattachments[] = facetoface_get_ical_text($notificationtype, $facetoface, $session, $user);
             }
 
             // Restore session dates
             $session->sessiondates = $sessiondates;
         } else {
-            $filename = facetoface_get_ical_attachment($notificationtype, $facetoface, $session, $user);
-            $subject = facetoface_email_substitutions($postsubject, $facetoface->name, $facetoface->reminderperiod,
-                                                      $user, $session, $session->id);
-            $body = facetoface_email_substitutions($posttext, $facetoface->name, $facetoface->reminderperiod,
-                                                   $user, $session, $session->id);
-            $htmlbody = ''; // FIXME
-            $icalattachments[] = array('filename' => $filename, 'subject' => $subject,
-                                       'body' => $body, 'htmlbody' => $htmlbody);
+            $icalattachments[] = facetoface_get_ical_text($notificationtype, $facetoface, $session, $user);
         }
     }
 
@@ -2049,35 +2105,32 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
 
     $usercheck = $DB->get_record('user', array('id' => $userid));
 
-    // Send email with iCal attachment
+    // Send iCal appointment email (ical only - no accompanying additional text)
     if ($notificationtype & MDL_F2F_ICAL) {
-        foreach ($icalattachments as $attachment) {
-            if (!email_to_user($user, $fromaddress, $attachment['subject'], $attachment['body'],
-                    $attachment['htmlbody'], $attachment['filename'], $attachmentfilename)) {
-
-                return 'error:cannotsendconfirmationuser';
+        foreach ($icalattachments as $ical) {
+            if (!email_to_user($user, $fromaddress, $postsubject, $ical, $icaltype)) {
+                return get_string('error:cannotsendconfirmationuser', 'facetoface');
             }
-            unlink($CFG->dataroot . '/' . $attachment['filename']);
         }
     }
 
     // Send plain text email
     if ($notificationtype & MDL_F2F_TEXT) {
         if (!email_to_user($user, $fromaddress, $postsubject, $posttext, $posthtml)) {
-            return 'error:cannotsendconfirmationuser';
+            return get_string('error:cannotsendconfirmationuser', 'facetoface');
         }
     }
 
     // Manager notification
     $manageremail = facetoface_get_manageremail($userid);
     if (!empty($posttextmgrheading) and !empty($manageremail) and $session->datetimeknown) {
-        $managertext = $posttextmgrheading.$posttext;
+        $managertext = $posttextmgrheading . $posttext;
         $manager = $user;
         $manager->email = $manageremail;
 
         // Leave out the ical attachments in the managers notification
         if (!email_to_user($manager, $fromaddress, $postsubject, $managertext, $posthtml)) {
-            return 'error:cannotsendconfirmationmanager';
+            return get_string('error:cannotsendconfirmationmanager', 'facetoface');
         }
     }
 
@@ -2092,11 +2145,10 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
 
             // Leave out the ical attachments in the 3rd parties notification
             if (!email_to_user($thirdparty, $fromaddress, $postsubject, $posttext, $posthtml)) {
-                return 'error:cannotsendconfirmationthirdparty';
+                return get_string('error:cannotsendconfirmationthirdparty', 'facetoface');
             }
         }
     }
-    return '';
 }
 
 /**
@@ -2185,12 +2237,15 @@ function facetoface_check_signup($facetofaceid) {
  */
 function facetoface_get_manageremail($userid) {
     global $DB;
-    $fieldid = $DB->get_field('user_info_field', 'id', array('shortname' => MDL_MANAGERSEMAIL_FIELD));
-    if ($fieldid) {
-        return $DB->get_field('user_info_data', 'data', array('userid' => $userid, 'fieldid' => $fieldid));
-    }
-    else {
-        return ''; // No custom field => no manager's email
+
+    $sql = "SELECT managerid
+        FROM {pos_assignment} pa
+        WHERE pa.userid = ? AND pa.type = 1"; // just use primary position for now
+    $res = $DB->get_record_sql($sql, array($userid));
+    if ($res && isset($res->managerid)) {
+        return $DB->get_field('user', 'email', array('id' => $res->managerid));
+    } else {
+        return ''; // No manager set
     }
 }
 
@@ -2333,7 +2388,7 @@ function facetoface_approve_requests($data) {
 
     // Load course
     if (!$course = $DB->get_record('course', array('id' => $facetoface->course))) {
-        error_log('F2F: Could nto load course');
+        error_log('F2F: Could not load course');
         return false;
     }
 
@@ -2375,8 +2430,14 @@ function facetoface_approve_requests($data) {
                         $USER->id
                 );
 
+                if (!$cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $course->id)) {
+                    print_error('error:incorrectcoursemodule', 'facetoface');
+                }
+
+                $contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
+
                 // Check if there is capacity
-                if (facetoface_session_has_capacity($session)) {
+                if (facetoface_session_has_capacity($session, $contextmodule)) {
                     $status = MDL_F2F_STATUS_BOOKED;
                 } else {
                     if ($session->allowoverbook) {
@@ -2469,7 +2530,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
         return '';
     }
 
-    $htmlactivitynameonly = $OUTPUT->pix_icon('mod/facetoface/icon', $facetoface->name, 'facetoface', array('class' => 'activityicon')) . $facetoface->name;
+    $htmlactivitynameonly = $OUTPUT->pix_icon('icon', $facetoface->name, 'facetoface', array('class' => 'activityicon')) . $facetoface->name;
     $strviewallsessions = get_string('viewallsessions', 'facetoface');
     $sessions_url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetofaceid));
     $htmlviewallsessions = html_writer::link($sessions_url, $strviewallsessions, array('class' => 'f2fsessionlinks f2fviewallsessions', 'title' => $strviewallsessions));
@@ -2524,7 +2585,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
             // don't include the link to view attendees if user is lacking capability
             $attendeeslink = '';
             if ($viewattendees) {
-                $attendees_url = new moodle_url('attendees.php', array('s' => $session->id));
+                $attendees_url = new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id));
                 $attendeeslink = html_writer::tag('tr', html_writer::tag('td', html_writer::link($attendees_url, $strseeattendees, array('class' => 'f2fsessionlinks f2fviewattendees', 'title' => $strseeattendees))));
             }
 
@@ -2543,7 +2604,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 .html_writer::tag('td', $venue)
                 .html_writer::tag('td', $sessiondate)
                 .html_writer::tag('td', $sessiontime)
-                .html_writer::start_tag('td', html_writer::start_tag('table', array('border' => '0')) . html_writer::start_tag('tr') . html_writer::tag('td', html_writer::link($signup_url, $strmoreinfo, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $strmoreinfo))))
+                .html_writer::tag('td', html_writer::start_tag('table', array('border' => '0')) . html_writer::start_tag('tr') . html_writer::tag('td', html_writer::link($signup_url, $strmoreinfo, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $strmoreinfo))))
                 .html_writer::end_tag('tr')
                 .$attendeeslink
                 .$cancellink
@@ -2640,9 +2701,12 @@ function facetoface_print_coursemodule_info($coursemodule) {
  * Returns the ICAL data for a facetoface meeting.
  *
  * @param integer $method The method, @see {{MDL_F2F_INVITE}}
- * @return string Filename of the attachment in the temp directory
+ * @param object $facetoface The mod instance
+ * @param object $session The session within the facetoface instance
+ * @param object $user The user booked onto the session
+ * @return string the ical text properly formatted to open in Outlook
  */
-function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
+function facetoface_get_ical_text($method, $facetoface, $session, $user) {
     global $CFG;
 
     // First, generate all the VEVENT blocks
@@ -2668,7 +2732,7 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
         $SEQUENCE = ($method & MDL_F2F_CANCEL) ? 1 : 0;
 
         $SUMMARY     = facetoface_ical_escape($facetoface->name);
-        $DESCRIPTION = facetoface_ical_escape($session->details, true);
+        $DESCRIPTION = get_string('icaldescription', 'facetoface', $facetoface);
 
         // Get the location data from custom fields if they exist
         $customfielddata = facetoface_get_customfielddata($session->id);
@@ -2715,17 +2779,18 @@ function facetoface_get_ical_attachment($method, $facetoface, $session, $user) {
         // own lines. The very last one is trimmed outside the loop
         $VEVENTS .= <<<EOF
 BEGIN:VEVENT
-UID:{$UID}
-DTSTAMP:{$DTSTAMP}
+ORGANIZER;CN={$ORGANISEREMAIL}:MAILTO:{$ORGANISEREMAIL}
 DTSTART:{$DTSTART}
 DTEND:{$DTEND}
-SEQUENCE:{$SEQUENCE}
-SUMMARY:{$SUMMARY}
 LOCATION:{$LOCATION}
-DESCRIPTION:{$DESCRIPTION}
-CLASS:PRIVATE
 TRANSP:OPAQUE{$CANCELSTATUS}
-ORGANIZER;CN={$ORGANISEREMAIL}:MAILTO:{$ORGANISEREMAIL}
+SEQUENCE:{$SEQUENCE}
+UID:{$UID}
+DTSTAMP:{$DTSTAMP}
+DESCRIPTION:{$DESCRIPTION}
+SUMMARY:{$SUMMARY}
+PRIORITY:5
+CLASS:PRIVATE
 ATTENDEE;CUTYPE=INDIVIDUAL;ROLE={$ROLE};PARTSTAT=NEEDS-ACTION;
  RSVP=FALSE;CN={$USERNAME};LANGUAGE=en:MAILTO:{$MAILTO}
 END:VEVENT
@@ -2738,7 +2803,6 @@ EOF;
     // TODO: remove the hard-coded timezone!
     $template = <<<EOF
 BEGIN:VCALENDAR
-CALSCALE:GREGORIAN
 PRODID:-//Moodle//NONSGML Facetoface//EN
 VERSION:2.0
 METHOD:{$icalmethod}
@@ -2764,14 +2828,18 @@ END:VTIMEZONE
 END:VCALENDAR
 EOF;
 
-    $tempfilename = md5($template);
-    $tempfilepathname = $CFG->dataroot . '/' . $tempfilename;
-    file_put_contents($tempfilepathname, $template);
-    return $tempfilename;
+    return $template;
 }
 
+
+/**
+* Returns a date string properly formatted for an iCal request in Outlook
+*
+* @param integer $timestamp standard Unix timestamp
+* @return string The timestamp as a readable iCal date string
+*/
 function facetoface_ical_generate_timestamp($timestamp) {
-    return gmdate('Ymd', $timestamp) . 'T' . gmdate('His', $timestamp) . 'Z';
+    return gmdate("Ymd\THis\Z", $timestamp);
 }
 
 /**
@@ -2972,7 +3040,22 @@ function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason=''
         return true; // not signed up, nothing to do
     }
 
-    return facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $userid, $cancelreason);
+    $result = facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $userid, $cancelreason);
+
+    if ($result) {
+        // notify cancelled
+        if (!$session = facetoface_get_session($sessionid)) {
+            error_log('F2F: Could not load facetoface session');
+            return false;
+        }
+        if (!$facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface))) {
+            error_log('F2F: Could not load facetoface instance');
+            return false;
+        }
+        $error = facetoface_send_notrem($facetoface, $session, $userid, MDL_F2F_STATUS_USER_CANCELLED);
+    }
+
+    return $result;
 }
 
 /**
@@ -3872,6 +3955,8 @@ function facetoface_get_extra_capabilities() {
 function facetoface_supports($feature) {
     switch($feature) {
         case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_GRADE_HAS_GRADE:         return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
 
         default: return null;
     }
@@ -4045,4 +4130,202 @@ class facetoface_existing_selector extends user_selector_base {
         $options['file'] = 'mod/facetoface/lib.php';
         return $options;
     }
+}
+
+
+/**
+ * Send Totara notification/reminder
+ *
+ * @param   object  $facetoface Facetoface instance
+ * @param   object  $session    Session instance
+ * @param   int     $userid     ID of user requesting booking
+ * @param   int     $nottype    notification type
+ * @return  string  Error string, empty on success
+ */
+function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
+    global $CFG, $USER, $DB;
+
+    require_once($CFG->dirroot.'/totara/message/messagelib.php');
+    $string_manager = get_string_manager();
+    $newevent = new stdClass();
+    $newevent->userfrom         = NULL;
+    $user = $DB->get_record('user', array('id' => $userid));
+    $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$userid;
+    $fromname = fullname($user);
+    $usermsg = html_writer::link($userfrom_link, $fromname, array('title' => $fromname));
+    $newevent->userto           = $user;
+    $newevent->userfrom         = $USER;
+    $url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id));
+    switch ($nottype) {
+        case MDL_F2F_STATUS_BOOKED:
+            $newevent->fullmessage      = facetoface_email_substitutions(
+                                                        $facetoface->confirmationmessage,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id
+                                                );
+            $newevent->subject          = $string_manager->get_string('bookedforsession', 'facetoface', null, $user->lang) . ' ' . html_writer::tag($url, $facetoface->name);
+            $newevent->icon             = 'facetoface-add';
+            $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
+            $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
+            $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            tm_alert_send($newevent);
+            break;
+
+        case MDL_F2F_STATUS_WAITLISTED:
+            $newevent->fullmessage      = facetoface_email_substitutions(
+                                                        $facetoface->waitlistedmessage,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id
+                                                );
+            $newevent->subject          = $string_manager->get_string('waitlistedforsession' ,'facetoface', null, $user->lang) . ' ' . html_writer::link($url, $facetoface->name);
+            $newevent->icon             = 'facetoface-regular';
+            $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
+            $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
+            $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            tm_alert_send($newevent);
+            break;
+
+        case MDL_F2F_STATUS_USER_CANCELLED:
+            $newevent->subject          = $string_manager->get_string('cancelledforsession', 'facetoface', null, $user->lang) . ' ' . html_writer::link($url, $facetoface->name);
+            $newevent->fullmessage      = $newevent->subject;
+            $newevent->icon             = 'facetoface-remove';
+            $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
+            $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
+            $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            tm_alert_send($newevent);
+            $managerid = facetoface_get_manager($userid);
+            if ($managerid !== false) {
+                $userto = $DB->get_record('user', array('id' => $managerid));
+                $newevent->userto           = $userto;
+                $subjectinfo = new stdClass();
+                $subjectinfo->usermsg = $usermsg;
+                $subjectinfo->url = html_writer::link($url, $facetoface->name);
+                $newevent->subject          = $string_manager->get_string('cancelusersession', 'facetoface', $subjectinfo, $userto->lang);
+                $newevent->fullmessage      = $newevent->subject;
+                tm_alert_send($newevent);
+            }
+            break;
+
+        case MDL_F2F_STATUS_REQUESTED:
+            $managerid = facetoface_get_manager($userid);
+            if ($managerid !== false) {
+                $userto = $DB->get_record('user', array('id' => $managerid));
+                $newevent->userto           = $userto;
+                $newevent->fullmessage      = facetoface_email_substitutions(
+                                                        $facetoface->requestinstrmngr,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id
+                                                );
+                $subjectinfo = new stdClass();
+                $subjectinfo->usermsg = $usermsg;
+                $subjectinfo->url = html_writer::link(new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id)), $facetoface->name);
+                $newevent->subject          = $string_manager->get_string('requestuserattendsession', 'facetoface', $subjectinfo, $userto->lang);
+                // do the facetoface workflow event
+                $onaccept = new stdClass();
+                $onaccept->action = 'facetoface';
+                $onaccept->text = $string_manager->get_string('approveinstruction', 'facetoface', null, $userto->lang);
+                $onaccept->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
+                $newevent->onaccept = $onaccept;
+                $onreject = new stdClass();
+                $onreject->action = 'facetoface';
+                $onreject->text = $string_manager->get_string('rejectinstruction', 'facetoface', null, $userto->lang);
+                $onreject->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
+                $newevent->onreject = $onreject;
+                $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
+                tm_task_send($newevent);
+                $newevent = new stdClass();
+                $newevent->userfrom         = NULL;
+                $user = $DB->get_record('user', array('id' => $userid));
+                $newevent->userto           = $user;
+                $newevent->subject          = $string_manager->get_string('requestattendsessionsent', 'facetoface', html_writer::link(new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id)), $facetoface->name), $user->lang);
+                $newevent->fullmessage      = $newevent->subject;
+                $newevent->icon             = 'facetoface-request';
+                $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
+                $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
+                $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+                tm_alert_send($newevent);
+            }
+            break;
+    }
+
+    return true;
+}
+
+
+/**
+ * Return the id of the user's manager if it is
+ * defined. Otherwise return false.
+ *
+ * @param integer $userid User ID of the staff member
+ */
+function facetoface_get_manager($userid) {
+    global $DB;
+
+    $sql = "SELECT managerid
+        FROM {pos_assignment} pa
+        WHERE pa.userid = ? AND pa.type = 1"; // just use primary position for now
+    $res = $DB->get_record_sql($sql, array($userid));
+    if ($res && isset($res->managerid)) {
+        return $res->managerid;
+    } else {
+        return false; // No manager set
+    }
+}
+
+
+/**
+ * Event that is triggered when a user is deleted.
+ *
+ * Cancels a user from any future sessions when they are deleted
+ * this make sure deleted users aren't using space is sessions when
+ * there is limited capacity.
+ *
+ * @param object $user
+ *
+ */
+function facetoface_eventhandler_user_deleted($user) {
+    global $DB;
+
+    if ($signups = $DB->get_records('facetoface_signups', array('userid' => $user->id))) {
+        foreach ($signups as $signup) {
+            $session = facetoface_get_session($signup->sessionid);
+            // using $null, null fails because of passing by reference
+            facetoface_user_cancel($session, $user->id, false, $null, get_string('userdeletedcancel', 'facetoface'));
+        }
+    }
+    return true;
+}
+
+
+/**
+ * Called when displaying facetoface Task to check
+ * capacity of the session.
+ *
+ * @param array Message data for a facetoface task
+ * @return bool True if there is capacity in the session
+ */
+function facetoface_task_check_capacity($data) {
+    $session = $data['session'];
+    // Get session from database in case it has been updated
+    $session = facetoface_get_session($session->id);
+    if (!$session) {
+        return false;
+    }
+    $facetoface = $data['facetoface'];
+
+    if (!$cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $facetoface->course)) {
+        print_error('error:incorrectcoursemodule', 'facetoface');
+    }
+    $contextmodule = context_module::instance($cm->id);
+
+    return (facetoface_session_has_capacity($session, $contextmodule) || $session->allowoverbook);
 }

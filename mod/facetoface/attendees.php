@@ -78,6 +78,7 @@ $cancellations = facetoface_get_cancellations($session->id);
  */
 
 $context = context_course::instance($course->id);
+$contextmodule = context_module::instance($cm->id);
 require_course_login($course);
 
 // Actions the user can perform
@@ -93,6 +94,50 @@ $declines = array();
 // If a user can take attendance, they can approve staff's booking requests
 if ($can_take_attendance) {
     $requests = facetoface_get_requests($session->id);
+    // Check if the user is manager with staff
+} else if ($staff = totara_get_staff()) {
+    // Lets check to see what state their staff are in
+
+    // Check if any staff have requests awaiting approval
+    $get_requests = facetoface_get_requests($session->id);
+    if ($get_requests) {
+        $requests = array_intersect_key($get_requests, array_flip($staff));
+
+        if ($requests) {
+            $can_view_session = true;
+        }
+    }
+
+    // Check if any staff are attending
+    if ($attendees && !$can_view_attendees) {
+        $attendees = array_intersect_key($attendees, array_flip($staff));
+
+        if ($attendees) {
+            $can_view_session = true;
+            $can_view_attendees = true;
+        }
+    }
+
+    // Check if any staff have cancelled
+    if ($cancellations && !$can_view_cancellations) {
+        $cancellations = array_intersect_key($cancellations, array_flip($staff));
+
+        if ($cancellations) {
+            $can_view_session = true;
+            $can_view_cancellations = true;
+        }
+    }
+
+    // Check if any staff have declined
+    $get_declines = facetoface_get_declines($session->id);
+    if ($get_declines) {
+        $declines = array_intersect_key($get_declines, array_flip($staff));
+
+        if ($declines) {
+            $can_view_session = true;
+            $can_approve_requests = true;
+        }
+    }
 }
 
 // If requests found (but not in the middle of taking attendance), show requests table
@@ -310,13 +355,20 @@ if ($can_approve_requests) {
         echo $OUTPUT->notification(get_string('noactionableunapprovedrequests', 'facetoface'));
     }
     else {
+        $can_book_user = (facetoface_session_has_capacity($session, $contextmodule) || $session->allowoverbook);
+
         $OUTPUT->heading(get_string('unapprovedrequests', 'facetoface'));
+
+        if (!$can_book_user) {
+            echo html_writer::tag('p', get_string('cannotapproveatcapacity', 'facetoface'));
+        }
+
 
         $action = new moodle_url('attendees.php', array('s' => $s));
         echo html_writer::start_tag('form', array('action' => $action->out(), 'method' => 'post'));
         echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => $USER->sesskey));
         echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 's', 'value' => $s));
-        echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'backtoallsessions', 'value' => $backtoallsessions)) . '</p>';
+        echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'backtoallsessions', 'value' => $backtoallsessions)) . html_writer::end_tag('p');
 
         $table = new html_table();
         $table->summary = get_string('requeststablesummary', 'facetoface');
@@ -331,7 +383,8 @@ if ($can_approve_requests) {
             $data[] = userdate($attendee->timerequested, get_string('strftimedatetime'));
             $data[] = html_writer::empty_tag('input', array('type' => 'radio', 'name' => 'requests['.$attendee->id.']', 'value' => '0', 'checked' => 'checked'));
             $data[] = html_writer::empty_tag('input', array('type' => 'radio', 'name' => 'requests['.$attendee->id.']', 'value' => '1'));
-            $data[] = html_writer::empty_tag('input', array('type' => 'radio', 'name' => 'requests['.$attendee->id.']', 'value' => '2'));
+            $disabled = ($can_book_user) ? array() : array('disabled' => 'disabled');
+            $data[] = html_writer::empty_tag('input', array_merge(array('type' => 'radio', 'name' => 'requests['.$attendee->id.']', 'value' => '2'), $disabled));
             $table->data[] = $data;
         }
 

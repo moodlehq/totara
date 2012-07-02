@@ -64,6 +64,9 @@ $pagetitle = format_string($facetoface->name);
 
 $f2f_renderer = $PAGE->get_renderer('mod_facetoface');
 
+$completion=new completion_info($course);
+$completion->set_module_viewed($cm);
+
 echo $OUTPUT->header();
 
 if (empty($cm->visible) and !has_capability('mod/facetoface:viewemptyactivities', $context)) {

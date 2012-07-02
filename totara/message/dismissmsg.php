@@ -28,6 +28,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot.'/message/lib.php');
+require_once($CFG->dirroot.'/totara/message/lib.php');
 
 $PAGE->set_context(get_system_context());
 require_login();
@@ -41,18 +42,34 @@ $msg = $DB->get_record('message', array('id' => $id));
 if (!$msg || $msg->useridto != $USER->id || !confirm_sesskey()) {
     print_error('notyours', 'totara_message', $id);
 }
+
+$canbook = false;
+$isfacetoface = false;
 $metadata = $DB->get_record('message_metadata', array('messageid' => $id));
+
+$eventdata = totara_message_eventdata($id, 'onaccept', $metadata);
+if ($eventdata && $eventdata->action == 'facetoface') {
+    require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+    $isfacetoface = true;
+    $canbook = facetoface_task_check_capacity($eventdata->data);
+}
 
 $from = $DB->get_record('user', array('id' => $msg->useridfrom));
 $fromlink = html_writer::link(new moodle_url('/user/view.php', array('id' => $from->id)), fullname($from));
 $subject = format_string($msg->subject);
+
+if ($isfacetoface && !$DB->record_exists('facetoface_sessions', array('id' => $eventdata->data['session']->id))) {
+        $subject .= ' (' . html_writer::tab('b', get_string('f2fsessiondeleted', 'block_totara_tasks')) . ')';
+} else if ($isfacetoface && !$canbook) {
+        $subject .= ' (' . html_writer::tag('b', get_string('f2fsessionfull', 'block_totara_tasks')) . ')';
+}
 $icon = $OUTPUT->pix_icon('i/info', format_string($msg->subject), 'moodle', array('class' => 'msgicon',  'alt' => format_string($msg->subject)));
 $tab = new html_table();
 $tab->attributes = array('class', 'fullwidth');
 $tab->data  = array();
 print html_writer::start_tag('div', array('id' => 'totara-msgs-dismiss'));
 
-if(!empty($msg->subject)) {
+if (!empty($msg->subject)) {
     $cells = array();
     $cell = new html_table_cell(html_writer::tag('label', get_string('subject', 'forum'), array('for' => 'dismiss-type')));
     $cell->attributes['class'] = 'totara-msgs-action-left';
