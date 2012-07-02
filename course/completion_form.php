@@ -61,11 +61,14 @@ class course_completion_form extends moodleform {
 
         // Overall criteria aggregation
         $mform->addElement('header', 'overallcriteria', get_string('overallcriteriaaggregation', 'completion'));
+        $mform->addHelpButton('overallcriteria', 'overallcriteriaaggregation', 'completion');
         $mform->addElement('select', 'overall_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
         $mform->setDefault('overall_aggregation', $completion->get_aggregation_method());
+        $mform->addHelpButton('overall_aggregation', 'aggregationmethod', 'completion');
 
         // Course prerequisite completion criteria
         $mform->addElement('header', 'courseprerequisites', get_string('completiondependencies', 'completion'));
+        $mform->addHelpButton('courseprerequisites', 'completiondependencies', 'completion');
 
         // Get applicable courses
         $courses = $DB->get_records_sql(
@@ -94,6 +97,7 @@ class course_completion_form extends moodleform {
             if (count($courses) > 1) {
                 $mform->addElement('select', 'course_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
                 $mform->setDefault('course_aggregation', $completion->get_aggregation_method(COMPLETION_CRITERIA_TYPE_COURSE));
+                $mform->addHelpButton('course_aggregation', 'courseaggregationmethod', 'completion');
             }
 
             // Get category list
@@ -128,17 +132,20 @@ class course_completion_form extends moodleform {
 
         // Manual self completion
         $mform->addElement('header', 'manualselfcompletion', get_string('manualselfcompletion', 'completion'));
+        $mform->addHelpButton('manualselfcompletion', 'manualselfcompletion', 'completion');
         $criteria = new completion_criteria_self($params);
         $criteria->config_form_display($mform);
 
         // Role completion criteria
         $mform->addElement('header', 'roles', get_string('manualcompletionby', 'completion'));
+        $mform->addHelpButton('roles', 'manualcompletionby', 'completion');
 
         $roles = get_roles_with_capability('moodle/course:markcomplete', CAP_ALLOW, get_context_instance(CONTEXT_COURSE, $course->id));
 
         if (!empty($roles)) {
             $mform->addElement('select', 'role_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
             $mform->setDefault('role_aggregation', $completion->get_aggregation_method(COMPLETION_CRITERIA_TYPE_ROLE));
+            $mform->addHelpButton('role_aggregation', 'roleaggregationmethod', 'completion');
 
             foreach ($roles as $role) {
                 $params_a = array('role' => $role->id);
@@ -151,12 +158,14 @@ class course_completion_form extends moodleform {
 
         // Activity completion criteria
         $mform->addElement('header', 'activitiescompleted', get_string('activitiescompleted', 'completion'));
+        $mform->addHelpButton('activitiescompleted', 'activitiescompleted', 'completion');
 
         $activities = $completion->get_activities();
         if (!empty($activities)) {
             if (count($activities) > 1) {
                 $mform->addElement('select', 'activity_aggregation', get_string('aggregationmethod', 'completion'), $aggregation_methods);
                 $mform->setDefault('activity_aggregation', $completion->get_aggregation_method(COMPLETION_CRITERIA_TYPE_ACTIVITY));
+                $mform->addHelpButton('activity_aggregation', 'activityaggregationmethod', 'completion');
             }
 
             foreach ($activities as $activity) {
@@ -170,16 +179,19 @@ class course_completion_form extends moodleform {
 
         // Completion on date
         $mform->addElement('header', 'date', get_string('date'));
+        $mform->addHelpButton('date', 'date', 'completion');
         $criteria = new completion_criteria_date($params);
         $criteria->config_form_display($mform);
 
         // Completion after enrolment duration
         $mform->addElement('header', 'duration', get_string('durationafterenrolment', 'completion'));
+        $mform->addHelpButton('duration', 'durationafterenrolment', 'completion');
         $criteria = new completion_criteria_duration($params);
         $criteria->config_form_display($mform);
 
         // Completion on course grade
         $mform->addElement('header', 'grade', get_string('coursegrade', 'completion'));
+        $mform->addHelpButton('grade', 'coursegrade', 'completion');
 
         // Grade enable and passing grade
         $course_grade = $DB->get_field('grade_items', 'gradepass', array('courseid' => $course->id, 'itemtype' => 'course'));
