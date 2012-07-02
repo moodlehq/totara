@@ -7060,6 +7060,10 @@ FROM
             $file_record['contextid'] = $systemcontext->id;
             $file_record['component'] = 'totara_customfield';
             foreach ($tables as $table => $itemtype) {
+                $dbtable = new xmldb_table("{$table}_info_data");
+                if (!$dbman->table_exists($dbtable)) {
+                    continue;
+                }
                 $itemproperty = $itemtype . 'id';
                 //handle textareas
                 list($insql, $inparams) = $DB->get_in_or_equal($datatypes);
