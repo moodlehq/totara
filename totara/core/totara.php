@@ -1187,10 +1187,10 @@ function totara_get_nav_select_classes($navstructure, $primary_selected, $second
 function totara_build_menu() {
     global $USER, $SESSION, $CFG;
 
-    if (isset($SESSION->viewtype) && $SESSION->viewtype == 'course') {
-        $findcourse_type = 'course';
-    } else {
+    if (isset($SESSION->viewtype) && $SESSION->viewtype == 'program') {
         $findcourse_type = 'program';
+    } else {
+        $findcourse_type = 'course';
     }
 
     require_once($CFG->dirroot . '/totara/plan/lib.php');
