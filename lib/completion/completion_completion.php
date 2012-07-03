@@ -41,23 +41,38 @@ $COMPLETION_STATUS = array(
     COMPLETION_STATUS_COMPLETE => 'complete',
     COMPLETION_STATUS_COMPLETEVIARPL => 'completeviarpl',
 );
+
+
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/completion/data_object.php');
+require_once("{$CFG->libdir}/completionlib.php");
+require_once("{$CFG->dirroot}/blocks/totara_stats/locallib.php");
+require_once("{$CFG->dirroot}/totara/plan/lib.php");
 
+
+/**
+ * Course completion status for a particular user/course
+ */
 class completion_completion extends data_object {
 
     /* @var string $table Database table name that stores completion information */
     public $table = 'course_completions';
 
     /* @var array $required_fields Array of required table fields, must start with 'id'. */
-    public $required_fields = array('id', 'userid', 'course', 'deleted', 'timenotified',
-        'timeenrolled', 'timestarted', 'timecompleted', 'reaggregate', 'status');
+    public $required_fields = array('id', 'userid', 'course', 'organisationid', 'positionid', 'deleted', 'timenotified',
+        'timeenrolled', 'timestarted', 'timecompleted', 'reaggregate', 'status', 'rpl');
 
     /* @var int $userid User ID */
     public $userid;
 
     /* @var int $course Course ID */
     public $course;
+
+    /* @var int $organisationid Origanisation ID user had when completed */
+    public $organisationid;
+
+    /* @var int $positionid Position ID user had when completed */
+    public $positionid;
 
     /* @var int $deleted set to 1 if this record has been deleted */
     public $deleted;
@@ -79,6 +94,9 @@ class completion_completion extends data_object {
 
     /* @var int Completion status constant */
     public $status;
+
+    /* @var string Record of prior learning, leave blank if none */
+    public $rpl;
 
 
     /**
@@ -124,7 +142,14 @@ class completion_completion extends data_object {
 
         // Check if complete
         if ($completion->timecompleted) {
-            return 'complete';
+
+            // Check for RPL
+            if (isset($completion->rpl) && strlen($completion->rpl)) {
+                return 'completeviarpl';
+            }
+            else {
+                return 'complete';
+            }
         }
 
         // Check if in progress
@@ -161,6 +186,7 @@ class completion_completion extends data_object {
      * @param integer $timeenrolled Time enrolled (optional)
      */
     public function mark_enrolled($timeenrolled = null) {
+        global $DB;
 
         if ($this->timeenrolled === null) {
 
@@ -171,7 +197,17 @@ class completion_completion extends data_object {
             $this->timeenrolled = $timeenrolled;
         }
 
-        return $this->_save();
+        if (!$this->_save()) {
+            return false;
+        }
+
+        $data = array();
+        $data['userid'] = $this->userid;
+        $data['eventtype'] = STATS_EVENT_COURSE_STARTED;
+        $data['data2'] = $this->course;
+        if (!$DB->record_exists('block_totara_stats', $data)) {
+            totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+        }
     }
 
     /**
@@ -182,6 +218,7 @@ class completion_completion extends data_object {
      * @param integer $timestarted Time started (optional)
      */
     public function mark_inprogress($timestarted = null) {
+        global $DB;
 
         $timenow = time();
 
@@ -197,7 +234,21 @@ class completion_completion extends data_object {
             $this->timestarted = $timestarted;
         }
 
-        return $this->_save();
+        $wasenrolled = $this->timeenrolled;
+
+        if (!$this->_save()) {
+            return false;
+        }
+
+        if (!$wasenrolled) {
+            $data = array();
+            $data['userid'] = $this->userid;
+            $data['eventtype'] = STATS_EVENT_COURSE_STARTED;
+            $data['data2'] = $this->course;
+            if (!$DB->record_exists('block_totara_stats', $data)) {
+                totara_stats_add_event($timenow, $this->userid, STATS_EVENT_COURSE_STARTED, '', $this->course);
+            }
+        }
     }
 
     /**
@@ -210,22 +261,44 @@ class completion_completion extends data_object {
      * @return void
      */
     public function mark_complete($timecomplete = null) {
+        global $CFG, $DB;
 
         // Never change a completion time
-        if ($this->timecompleted) {
-            return;
+        if (!$this->timecompleted) {
+
+            // Use current time if nothing supplied
+            if (!$timecomplete) {
+                $timecomplete = time();
+            }
+
+            // Set time complete
+            $this->timecompleted = $timecomplete;
         }
 
-        // Use current time if nothing supplied
-        if (!$timecomplete) {
-            $timecomplete = time();
-        }
+        // Get user's positionid and organisationid if not already set
+        if ($this->positionid === null) {
+            require_once("{$CFG->dirroot}/totara/hierarchy/prefix/position/lib.php");
+            $ids = pos_get_current_position_data($this->userid);
 
-        // Set time complete
-        $this->timecompleted = $timecomplete;
+            $this->positionid = $ids['positionid'];
+            $this->organisationid = $ids['organisationid'];
+        }
 
         // Save record
-        return $this->_save();
+        if (!$this->_save()) {
+            return false;
+        }
+
+        $data = array();
+        $data['userid'] = $this->userid;
+        $data['eventtype'] = STATS_EVENT_COURSE_STARTED;
+        $data['data2'] = $this->course;
+        if (!$DB->record_exists('block_totara_stats', $data)) {
+            totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);
+        }
+
+        //Auto plan completion hook
+        dp_plan_item_updated($this->userid, 'course', $this->course);
     }
 
     /**
