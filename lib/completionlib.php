@@ -60,6 +60,8 @@ define('COMPLETION_COMPLETE', 1);
 define('COMPLETION_COMPLETE_PASS', 2);
 /** The user has completed this activity but their grade is less than the pass mark */
 define('COMPLETION_COMPLETE_FAIL', 3);
+/** A record of prior learning has been added for a user in this activity */
+define('COMPLETION_COMPLETE_RPL', 4);
 
 // Completion effect changes (used only in update_state)
 
@@ -166,6 +168,52 @@ function completion_can_view_data($userid, $courseid = null) {
     }
 
     return false;
+}
+
+
+/**
+ * Check if a module type has RPL enabled for it
+ *
+ * RPLs for modules are enabled/disabled via $CFG->enablemodulerpl, which can
+ * be set on the Site Administration settings page "Grades -> General settings"
+ *
+ * @access  public
+ * @param   mixed   $module     Can either be the (string) name of the module,
+ *                              or the module type id (int).
+ * @return  bool
+ */
+function completion_module_rpl_enabled($module) {
+    global $CFG, $DB;
+
+    // If supplied module id, this is easy
+    if (is_integer($module)) {
+        // Check if RPL is enabled for this module
+        return in_array($module, explode(',', $CFG->enablemodulerpl));
+    }
+
+    // If supplied the module string name
+    if (is_string($module)) {
+
+        // Cache modules list
+        static $modules;
+        if ($modules == null) {
+            $modules = $DB->get_records('modules', array(), '', 'name, id');
+            if (!$modules) {
+                $modules = array();
+            }
+        }
+
+        // Check if module exists in DB
+        if (!array_key_exists($module, $modules)) {
+            return false;
+        }
+
+        // Check if RPL is enabled for this module
+        return in_array($modules[$module]->id, explode(',', $CFG->enablemodulerpl));
+    }
+
+    // Incorrect input
+    throw new coding_exception(get_string('error:incorrectdatatypesupplied', 'completion'));
 }
 
 

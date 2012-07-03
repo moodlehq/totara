@@ -43,11 +43,8 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     $checkbox->set_affects_modinfo(true);
 
     // Course RPL
-    // TODO SCANMSG: Re-add once this feature is integrated
-    //$optionalsubsystems->add(new admin_setting_configcheckbox('enablecourserpl', get_string('enablecourserpl', 'completion'), get_string('configenablecourserpl', 'completion'), 1));
+    $optionalsubsystems->add(new admin_setting_configcheckbox('enablecourserpl', get_string('enablecourserpl', 'completion'), get_string('configenablecourserpl', 'completion'), 1));
 
-    // TODO SCANMSG: Re-add once this feature is integrated
-    /*
     // Module RPLs
     // Get module list
     if ($modules = $DB->get_records("modules")) {
@@ -61,7 +58,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
                 $strmodulename = $module->name;
             }
             $modulebyname[$module->id] = $strmodulename;
-            $defaultmodules[] = $module->id;
+            $defaultmodules[$module->id] = 1;
         }
         asort($modulebyname, SORT_LOCALE_STRING);
 
@@ -73,8 +70,6 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
                         $modulebyname
         ));
     }
-*/
-
 
     $optionalsubsystems->add(new admin_setting_configcheckbox('enableplagiarism', get_string('enableplagiarism','plagiarism'), get_string('configenableplagiarism','plagiarism'), 0));
 }
