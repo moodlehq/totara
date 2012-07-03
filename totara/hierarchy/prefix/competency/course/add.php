@@ -84,6 +84,9 @@ if (!$nojs) {
     // Load dialog content generator
     $dialog = new totara_dialog_content_hierarchy_multi('competency', $frameworkid, $showhidden);
 
+    // Override error message
+    $dialog->string_nothingtodisplay = 'competencyerror:dialognotreeitems';
+
     // Toggle treeview only display
     $dialog->show_treeview_only = $treeonly;
 
