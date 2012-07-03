@@ -67,12 +67,13 @@ $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fulln
 // Check if we are performing an action
 if ($data = data_submitted() && $canupdate) {
     if ($action === 'removelinkedcomps' && !$plan->is_complete()) {
+        $deletions = array();
 
         // Load existing list of linked competencies
         $fullidlist = $component->get_linked_components($caid, 'competency');
 
         // Grab all linked items for deletion
-        $comp_assigns = optional_param('delete_linked_comp_assign', array(), PARAM_BOOL);
+        $comp_assigns = optional_param_array('delete_linked_comp_assign', array(), PARAM_BOOL);
         if ($comp_assigns) {
             foreach ($comp_assigns as $linkedid => $delete) {
                 if (!$delete) {
@@ -125,38 +126,40 @@ if ($canupdate) {
 
 $plan->print_header($componentname, array(), false);
 
-print $component->display_back_to_index_link();
+echo $component->display_back_to_index_link();
 
-print $component->display_course_detail($caid);
+echo $component->display_course_detail($caid);
 
 if ($competenciesenabled) {
-    print html_writer::empty_tag('br');
-    print $OUTPUT->heading(get_string('linkedx', 'totara_plan', $competencyname), 3);
-    print $OUTPUT->container_start(null, "dp-course-competencies-container");
+    echo html_writer::empty_tag('br');
+    echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $competencyname), 3);
+    echo $OUTPUT->container_start(null, "dp-course-competencies-container");
     if ($linkedcomps = $component->get_linked_components($caid, 'competency')) {
-        print $plan->get_component('competency')->display_linked_competencies($linkedcomps);
+        $currenturl->param('action', 'removelinkedcomps');
+        echo html_writer::start_tag('form', array('id' => "dp-component-update",  'action' => $currenturl->out(false), "method" => "POST"));
+        echo $plan->get_component('competency')->display_linked_competencies($linkedcomps);
         if ($canupdate) {
-            $currenturl->params(array('action' => 'removelinkedcomps'));
-            print $OUTPUT->single_button($currenturl, get_string('removeselected', 'totara_plan'), 'post', array('class' => 'plan-remove-selected'));
+            echo $OUTPUT->single_button($currenturl, get_string('removeselected', 'totara_plan'), 'post', array('class' => 'plan-remove-selected'));
         }
+        echo html_writer::end_tag('form');
     } else {
-        print html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($competencyname)), array('class' => 'noitems-assigncompetencies'));
+        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($competencyname)), array('class' => 'noitems-assigncompetencies'));
     }
-    print $OUTPUT->container_end();
+    echo $OUTPUT->container_end();
 
     if (!$plancompleted) {
-        print $component->display_competency_picker($caid);
+        echo $component->display_competency_picker($caid);
     }
 }
 
 if ($objectivesenabled) {
-    print html_writer::empty_tag('br');
-    print $OUTPUT->heading(get_string('linkedx', 'totara_plan', $objectivename), 3);
+    echo html_writer::empty_tag('br');
+    echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $objectivename), 3);
 
     if ($linkedobjectives = $component->get_linked_components( $caid, 'objective')) {
-        print $plan->get_component('objective')->display_linked_objectives($linkedobjectives);
+        echo $plan->get_component('objective')->display_linked_objectives($linkedobjectives);
     } else {
-        print html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($objectivename)));
+        echo html_writer::tag('p', get_string('nolinkedx', 'totara_plan', strtolower($objectivename)));
     }
 }
 

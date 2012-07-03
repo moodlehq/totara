@@ -42,8 +42,9 @@ if ($idlist == null) {
 } else {
     $idlist = explode(',', $idlist);
 }
-
-require_capability('totara/plan:accessplan', context_system::instance());
+$context = context_system::instance();
+$PAGE->set_context($context);
+require_capability('totara/plan:accessplan', $context);
 $plan = new development_plan($planid);
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $component = $plan->get_component('course');

@@ -499,7 +499,7 @@ class dp_competency_component extends dp_base_component {
         }
 
         if (!$this->plan->is_complete() && $this->can_update_items()) {
-            $tableheaders[] = get_string('remove', 'totara_plan');
+            $tableheaders[] = get_string('remove', 'totara_plan', get_string('competencies', 'totara_plan'));
             $tablecolumns[] = 'remove';
         }
 
@@ -533,7 +533,7 @@ class dp_competency_component extends dp_base_component {
                 }
 
                 if (!$this->plan->is_complete() && $this->can_update_items()) {
-                    $row[] = html_writer::checkbox("delete_linked_comp_assign['.$ca->id.']", '1');
+                    $row[] = html_writer::checkbox('delete_linked_comp_assign['.$ca->id.']', '1', false);
                 }
 
                 $table->add_data($row);
