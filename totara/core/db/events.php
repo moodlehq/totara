@@ -32,9 +32,4 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 $handlers = array (
-    'role_assigned' => array(
-        'handlerfile'       => '/lib/completion/completion_completion.php',
-        'handlerfunction'   => 'completion_eventhandler_role_assigned',
-        'schedule'          => 'instant'
-    )
 );
