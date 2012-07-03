@@ -817,10 +817,23 @@ class completion_info {
      * @return  void
      */
     public function delete_course_completion_data() {
-        global $DB;
+        global $DB, $CFG;
+
+        require_once("{$CFG->dirroot}/blocks/totara_stats/locallib.php");
 
         $DB->delete_records('course_completions', array('course' => $this->course_id));
         $DB->delete_records('course_completion_crit_compl', array('course' => $this->course_id));
+
+        // Remove stats data
+        $DB->delete_records(
+            'block_totara_stats',
+            array('eventtype' => STATS_EVENT_COURSE_STARTED, 'data2' => $this->course_id)
+        );
+
+        $DB->delete_records(
+            'block_totara_stats',
+            array('eventtype' => STATS_EVENT_COURSE_COMPLETE, 'data2' => $this->course_id)
+        );
     }
 
     /**
