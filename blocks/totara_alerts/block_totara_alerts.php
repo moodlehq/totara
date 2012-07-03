@@ -93,7 +93,7 @@ class block_totara_alerts extends block_base {
                 //build the array of 3 table cell objects
                 $cells = array();
 
-                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'totara_core', array('class' => 'msgicon',  'alt'=>format_string($msg->subject)));
+                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'totara_core', array('class' => "msgicon {$cssclass}",  'alt'=>format_string($msg->subject)));
                 if (!empty($msglink)) {
                     $url = new moodle_url($msglink);
                     $attributes = array('href' => $url);

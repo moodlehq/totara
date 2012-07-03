@@ -94,11 +94,12 @@ class block_totara_tasks extends block_base {
 
                 // statement - multipart: user + statment + object
                 $rowbkgd = ($cnt % 2) ? 'shade' : 'noshade';
+                $cssclass = totara_message_cssclass($msg->msgtype);
                 $msglink = !empty($msg->contexturl) ? $msg->contexturl : '';
 
                 // Status icon
                 $cells = array();
-                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'totara_core', array('class'=>'msgicon', 'title' => format_string($msg->subject)));
+                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'totara_core', array('class'=>"msgicon {$cssclass}", 'title' => format_string($msg->subject)));
                 if (!empty($msglink)) {
                     $url = new moodle_url($msglink);
                     $attributes = array('href' => $url);

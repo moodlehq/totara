@@ -80,6 +80,7 @@ $TOTARA_MESSAGE_TYPES = array(
     TOTARA_MSG_TYPE_FACE2FACE => 'face2face',
     TOTARA_MSG_TYPE_SURVEY => 'survey',
     TOTARA_MSG_TYPE_SCORM => 'scorm',
+    TOTARA_MSG_TYPE_LINK => 'link',
 );
 
 // message urgency constants
