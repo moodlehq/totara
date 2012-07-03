@@ -115,7 +115,7 @@ class completion_criteria_date extends completion_criteria {
      * @return  string
      */
     public function get_title_detailed() {
-        return userdate($this->timeend, '%d-%h-%y');
+        return userdate($this->timeend, get_string('strfdateshortmonth', 'langconfig'));
     }
 
     /**
@@ -135,7 +135,7 @@ class completion_criteria_date extends completion_criteria {
      * @return  string
      */
     public function get_status($completion) {
-        return $completion->is_complete() ? get_string('yes') : userdate($this->timeend, '%d-%h-%y');
+        return $completion->is_complete() ? get_string('yes') : userdate($this->timeend, get_string('strfdateshortmonth', 'langconfig'));
     }
 
     /**
