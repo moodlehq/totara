@@ -72,7 +72,7 @@ abstract class totara_sync_element {
         $sfiles = preg_grep($pattern, scandir($sdir));
         $sources = array();
         foreach ($sfiles as $f) {
-            require_once($f);
+            require_once($sdir.$f);
 
             $basename = basename($f, '.php');
             $sname = str_replace("source_{$elname}_", '', $basename);
