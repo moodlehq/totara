@@ -324,7 +324,7 @@ class rb_source_totaramessages extends rb_base_source {
     function rb_display_urgency_link($comp, $row) {
         global $OUTPUT;
         $display = totara_message_urgency_text($row->message_values_urgency);
-        return $OUTPUT->pix_icon($display['icon'], $display['text'], 'theme', array('title' => $display['text'], 'class' => 'iconsmall'));
+        return $OUTPUT->pix_icon($display['icon'], $display['text'], 'moodle', array('title' => $display['text'], 'class' => 'iconsmall'));
     }
 
     // generate urgency text

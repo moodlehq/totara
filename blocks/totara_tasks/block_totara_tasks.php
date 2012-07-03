@@ -98,7 +98,7 @@ class block_totara_tasks extends block_base {
 
                 // Status icon
                 $cells = array();
-                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'theme', array('class'=>'msgicon', 'title' => format_string($msg->subject)));
+                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'totara_core', array('class'=>'msgicon', 'title' => format_string($msg->subject)));
                 if (!empty($msglink)) {
                     $url = new moodle_url($msglink);
                     $attributes = array('href' => $url);
@@ -155,7 +155,7 @@ class block_totara_tasks extends block_base {
                     $detailbuttons[] = $btn;
                 }
                 $moreinfotext = get_string('clickformoreinfo', 'block_totara_tasks');
-                $icon = $OUTPUT->pix_icon('i/info', $moreinfotext, 'theme', array('class'=>'msgicon', 'title' => $moreinfotext, 'alt' => $moreinfotext));
+                $icon = $OUTPUT->pix_icon('i/info', $moreinfotext, 'moodle', array('class'=>'msgicon', 'title' => $moreinfotext, 'alt' => $moreinfotext));
                 $detailjs = totara_message_alert_popup($msg->id, $detailbuttons, 'detailtask');
                 $url = new moodle_url($msglink);
                 $attributes = array('href' => $url, 'id' => 'detailtask'.$msg->id.'-dialog');

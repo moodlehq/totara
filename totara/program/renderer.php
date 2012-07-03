@@ -530,7 +530,7 @@ class totara_program_renderer extends plugin_renderer_base {
                         $action = new popup_action('click', $url, $strsummary);
                         $icon = $this->output->action_link($url, $image, $action, array('height' => 400, 'width' => 500, 'title' => $strsummary));
                     } else {
-                        $icon = $this->output->pix_icon('/spacer','','theme', array('width' => '18px', 'height' => '16px'));
+                        $icon = $this->output->spacer(array('width' => '18px', 'height' => '16px'));
                     }
                     $cell = new html_table_cell($icon);
                     $cell->attributes['valign'] = 'top';

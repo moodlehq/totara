@@ -93,7 +93,7 @@ class block_totara_alerts extends block_base {
                 //build the array of 3 table cell objects
                 $cells = array();
 
-                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'theme', array('class' => 'msgicon',  'alt'=>format_string($msg->subject)));
+                $icon = $OUTPUT->pix_icon('msgicons/' . $msg->icon, format_string($msg->subject), 'totara_core', array('class' => 'msgicon',  'alt'=>format_string($msg->subject)));
                 if (!empty($msglink)) {
                     $url = new moodle_url($msglink);
                     $attributes = array('href' => $url);
@@ -118,7 +118,7 @@ class block_totara_alerts extends block_base {
                 $cells[] = $cell;
 
                 $moreinfotext = get_string('clickformoreinfo', 'block_totara_alerts');
-                $icon = $OUTPUT->pix_icon('i/info', $moreinfotext, 'theme', array('class'=>'msgicon', 'title' => $moreinfotext, 'alt' => $moreinfotext));
+                $icon = $OUTPUT->pix_icon('i/info', $moreinfotext, 'moodle', array('class'=>'msgicon', 'title' => $moreinfotext, 'alt' => $moreinfotext));
                 $detailjs = totara_message_alert_popup($msg->id, null, 'detailalert');
                 $url = new moodle_url($msglink);
                 $attributes = array('href' => $url, 'id' => "detailalert{$msg->id}-dialog");

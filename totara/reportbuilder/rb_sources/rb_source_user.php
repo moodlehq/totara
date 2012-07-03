@@ -329,14 +329,14 @@ class rb_source_user extends rb_base_source {
         // Learning Records icon
         $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/totara/plan/record/courses.php?userid='.$itemid));
         $disp .= html_writer::empty_tag('img',
-            array('src' => $OUTPUT->pix_url('/i/record', 'theme'), 'title' => get_string('learningrecords', 'totara_core')));
+            array('src' => $OUTPUT->pix_url('record', 'totara_core'), 'title' => get_string('learningrecords', 'totara_core')));
         $disp .= html_writer::end_tag('a');
 
         // Face To Face Bookings icon
         if ($this->staff_f2f) {
             $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/my/bookings.php?userid='.$itemid));
             $disp .= html_writer::empty_tag('img',
-                array('src=' => $OUTPUT->pix_url('i/bookings', 'theme'), 'title' => get_string('f2fbookings', 'totara_core')));
+                array('src' => $OUTPUT->pix_url('bookings', 'totara_core'), 'title' => get_string('f2fbookings', 'totara_core')));
             $disp .= html_writer::end_tag('a');
         }
 
@@ -344,7 +344,7 @@ class rb_source_user extends rb_base_source {
         if (has_capability('totara/plan:accessplan', $systemcontext)) {
             $disp .= html_writer::start_tag('a', array('href' => $CFG->wwwroot . '/totara/plan/index.php?userid='.$itemid));
             $disp .= html_writer::empty_tag('img',
-                array('src' => $OUTPUT->pix_url('i/plan', 'theme'), 'title' => get_string('learningplans', 'totara_plan')));
+                array('src' => $OUTPUT->pix_url('plan', 'totara_core'), 'title' => get_string('learningplans', 'totara_plan')));
             $disp .= html_writer::end_tag('a');
         }
 

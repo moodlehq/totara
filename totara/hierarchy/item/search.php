@@ -155,7 +155,7 @@ if (strlen($query)) {
             echo $OUTPUT->render($pagingbar);
             print html_writer::end_tag('div');
 
-            $addbutton_html = new pix_icon('add', get_string('add'), 'theme', array('class' => 'addbutton'));
+            $addbutton_html = new pix_icon('add', get_string('add'), 'moodle', array('class' => 'addbutton'));
 
             // Generate some treeview data
             $dialog = new totara_dialog_content_hierarchy($prefix, $frameworkid);

@@ -129,7 +129,7 @@ YAHOO.util.Event.onDOMReady(function () {
             var inputvalue = input.val();
             if (inputvalue) {
                 // Change icon
-                $('a.rpledit img', cell).attr('src', '<?php echo $OUTPUT->pix_url('i/completion-rpl-y', 'theme'); ?>');
+                $('a.rpledit img', cell).attr('src', '<?php echo $OUTPUT->pix_url('i/completion-rpl-y', 'moodle'); ?>');
 
                 // Save value
                 value.text(inputvalue);
@@ -162,7 +162,7 @@ YAHOO.util.Event.onDOMReady(function () {
                 dots.remove();
 
                 // Change icon
-                $('a.rpledit img', cell).attr('src', '<?php echo $OUTPUT->pix_url('i/completion-rpl-n', 'theme'); ?>');
+                $('a.rpledit img', cell).attr('src', '<?php echo $OUTPUT->pix_url('i/completion-rpl-n', 'moodle'); ?>');
             }
 
             // Toggle expander
@@ -201,7 +201,7 @@ YAHOO.util.Event.onDOMReady(function () {
             });
 
             // Create delete button
-            var cancel = $('<a href="#" class="icon rpldelete" title="Delete this RPL"><img src="<?php echo $OUTPUT->pix_url('i/cross_red_big', 'theme'); ?>')" alt="Delete" /></a>');
+            var cancel = $('<a href="#" class="icon rpldelete" title="Delete this RPL"><img src="<?php echo $OUTPUT->pix_url('i/cross_red_big', 'moodle'); ?>')" alt="Delete" /></a>');
             cancel.click(function(event) {
 
                 event.preventDefault();
@@ -249,7 +249,7 @@ YAHOO.util.Event.onDOMReady(function () {
         var type = fnc_rpltype(cell).substr(4);
 
         // Show loading icon
-        cell.append($('<img class="rplloading" src="<?php echo $OUTPUT->pix_url('i/loading_small', 'theme'); ?>" />'));
+        cell.append($('<img class="rplloading" src="<?php echo $OUTPUT->pix_url('i/loading_small', 'moodle'); ?>" />'));
 
         // Save callback
         var fnc_savecallback = function(response) {
