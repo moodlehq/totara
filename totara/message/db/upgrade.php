@@ -109,8 +109,10 @@ function xmldb_totara_message_upgrade($oldversion) {
                                     d.onreject,
                                     d.oninfo,
                                     m.contexturl,
-                                    m.contexturlname
-                                    FROM {message20} m LEFT JOIN {message_metadata} d ON (d.messageid = m.id)
+                                    m.contexturlname,
+                                    p.name as processor
+                                    FROM {message20} m LEFT JOIN {message_metadata} d ON d.messageid = m.id
+                                    LEFT JOIN {message_processors20} p on d.processorid = p.id
                                     ', array());
 
             // truncate the old metadata
@@ -134,11 +136,10 @@ function xmldb_totara_message_upgrade($oldversion) {
                 !empty($msg->onaccept) && $msg->onaccept = unserialize($msg->onaccept);
                 !empty($msg->onreject) && $msg->onreject = unserialize($msg->onreject);
                 !empty($msg->oninfo) && $msg->oninfo = unserialize($msg->oninfo);
-                if ($msg->alert == 1) {
-                    tm_alert_send($msg);
-                }
-                else {
+                if ($msg->processor == 'totara_task') {
                     tm_task_send($msg);
+                } else {
+                    tm_alert_send($msg);
                 }
             }
             //re-enable emails if they were originally turned on
