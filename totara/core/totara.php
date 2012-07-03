@@ -1273,14 +1273,14 @@ function totara_build_menu() {
     );
 
     $tree[] = (object)array(
-        'name' => 'courses',
+        'name' => 'course',
         'linktext' => get_string('courses'),
         'parent' => 'findcourses',
         'url' => '/course/categorylist.php?viewtype=course'
     );
 
     $tree[] = (object)array(
-        'name' => 'programs',
+        'name' => 'program',
         'linktext' => get_string('programs', 'totara_program'),
         'parent' => 'findcourses',
         'url' => '/course/categorylist.php?viewtype=program'
