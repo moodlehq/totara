@@ -1189,9 +1189,9 @@ function totara_build_menu() {
     global $USER, $SESSION, $CFG;
 
     if (isset($SESSION->viewtype) && $SESSION->viewtype == 'course') {
-        $findcourse_type = 'courses';
+        $findcourse_type = 'course';
     } else {
-        $findcourse_type = 'programs';
+        $findcourse_type = 'program';
     }
 
     require_once($CFG->dirroot . '/totara/plan/lib.php');
