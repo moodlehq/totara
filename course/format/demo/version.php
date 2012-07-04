@@ -22,13 +22,8 @@
  * @subpackage totara_course_format
  */
 
-//
-// Optional course format configuration file
-//
-// This file contains any specific configuration settings for the format
-//
-// The default blocks layout for this course format:
-$format['defaultblocks'] = 'participants,activity_modules,search_forums,'.
-'course_list:news_items,calendar_upcoming,'.
-'recent_activity';
-//
+defined('MOODLE_INTERNAL') || die();
+
+$plugin->version   = 2012071900;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2011120100;        // Requires this Moodle version
+$plugin->component = 'format_demo';    // Full name of the plugin (used for diagnostics)

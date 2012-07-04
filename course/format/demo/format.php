@@ -1,221 +1,239 @@
-<?php // $Id$
-      // Display the whole course as "topics" made of of modules
-      // In fact, this is very similar to the "weeks" format, in that
-      // each "topic" is actually a week.  The main difference is that
-      // the dates aren't printed - it's just an aesthetic thing for
-      // courses that aren't so rigidly defined by time.
-      // Included from "view.php"
-      
+<?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Chris Wharton <chrisw@catalyst.net.nz>
+ * @package totara
+ * @subpackage totara_course_format
+ */
 
-    require_once($CFG->libdir.'/ajax/ajaxlib.php');
-  
-    $topic = optional_param('topic', -1, PARAM_INT);
+defined('MOODLE_INTERNAL') || die();
 
-    // Bounds for block widths
-    // more flexible for theme designers taken from theme config.php
-    $lmin = (empty($THEME->block_l_min_width)) ? 100 : $THEME->block_l_min_width;
-    $lmax = (empty($THEME->block_l_max_width)) ? 210 : $THEME->block_l_max_width;
-    $rmin = (empty($THEME->block_r_min_width)) ? 100 : $THEME->block_r_min_width;
-    $rmax = (empty($THEME->block_r_max_width)) ? 210 : $THEME->block_r_max_width;
+require_once($CFG->libdir.'/filelib.php');
+require_once($CFG->libdir.'/completionlib.php');
 
-    define('BLOCK_L_MIN_WIDTH', $lmin);
-    define('BLOCK_L_MAX_WIDTH', $lmax);
-    define('BLOCK_R_MIN_WIDTH', $rmin);
-    define('BLOCK_R_MAX_WIDTH', $rmax);
+$topic = optional_param('topic', -1, PARAM_INT);
 
-    $preferred_width_left  = bounded_number(BLOCK_L_MIN_WIDTH, blocks_preferred_width($pageblocks[BLOCK_POS_LEFT]),  
-                                            BLOCK_L_MAX_WIDTH);
-    $preferred_width_right = bounded_number(BLOCK_R_MIN_WIDTH, blocks_preferred_width($pageblocks[BLOCK_POS_RIGHT]), 
-                                            BLOCK_R_MAX_WIDTH);
+if ($topic != -1) {
+    $displaysection = course_set_display($course->id, $topic);
+} else {
+    $displaysection = course_get_display($course->id);
+}
 
-    if ($topic != -1) {
-        $displaysection = course_set_display($course->id, $topic);
-    } else {
-        if (isset($USER->display[$course->id])) {       // for admins, mostly
-            $displaysection = $USER->display[$course->id];
-        } else {
-            $displaysection = course_set_display($course->id, 0);
-        }
-    }
+$streditsummary  = get_string('editsummary');
+$stradd          = get_string('add');
+$stractivities   = get_string('activities');
+$strshowalltopics= get_string('showalltopics');
+$strtopic        = get_string('topic');
+$strgroups       = get_string('groups');
+$strgroupmy      = get_string('groupmy');
+$editing         = $PAGE->user_is_editing();
 
-    $context = get_context_instance(CONTEXT_COURSE, $course->id);
+if ($editing) {
+    $textlib = textlib_get_instance();
+    $strstudents = $textlib->strtolower(get_string('students', 'moodle'), 'UTF-8');
+    $strtopichide = get_string('topichide', '', $strstudents);
+    $strtopicshow = get_string('topicshow', '', $strstudents);
+    $strmarkthistopic = get_string('markthistopic');
+    $strmarkedthistopic = get_string('markedthistopic');
+    $strmoveup = get_string('moveup');
+    $strmovedown = get_string('movedown');
+}
 
-    if (($marker >=0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
-        $course->marker = $marker;
-        if (! set_field("course", "marker", $marker, "id", $course->id)) {
-            error("Could not mark that topic for this course");
-        }
-    }
+$context = context_course::instance($course->id);
 
-    $streditsummary   = get_string('editsummary');
-    $stradd           = get_string('add');
-    $stractivities    = get_string('activities');
-    $strshowalltopics = get_string('showalltopics');
-    $strtopic         = get_string('topic');
-    $strgroups        = get_string('groups');
-    $strgroupmy       = get_string('groupmy');
-    $editing          = $PAGE->user_is_editing();
+if (($marker >=0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
+    $course->marker = $marker;
+    $DB->set_field("course", "marker", $marker, "id", $course->id);
+}
 
-    if ($editing) {
-        $strstudents = moodle_strtolower($course->students);
-        $strtopichide = get_string('topichide', '', $strstudents);
-        $strtopicshow = get_string('topicshow', '', $strstudents);
-        $strmarkthistopic = get_string('markthistopic');
-        $strmarkedthistopic = get_string('markedthistopic');
-        $strmoveup = get_string('moveup');
-        $strmovedown = get_string('movedown');
-    }
+//Print the Your progress icon if the track completion is enabled
+$completioninfo = new completion_info($course);
+echo $completioninfo->display_help_icon();
 
+echo $OUTPUT->heading(get_string('topicoutline'), 2, 'headingblock header outline');
 
-/// Layout the whole page as three big columns.
-    echo '<table id="layout-table" class="format-demo" cellspacing="0" summary="'.get_string('layouttable').'"><tr>';
-
-/// The left column ...
-    $lt = (empty($THEME->layouttable)) ? array('left', 'middle', 'right') : $THEME->layouttable;
-    foreach ($lt as $column) {
-        switch ($column) {
-            case 'left':
-
-    if (blocks_have_content($pageblocks, BLOCK_POS_LEFT) || $editing) {
-        echo '<td style="width:'.$preferred_width_left.'px" id="left-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_LEFT);
-        print_container_end();
-        echo '</td>';
-    }
-
-            break;
-            case 'middle':
-/// Start main column
-    echo '<td id="middle-column">';
-    print_container_start();
-    echo skip_main_destination();
-
-    echo '<table class="topics" width="100%" summary="'.get_string('layouttable').'">';
-
+$OUTPUT->container_start();
+$OUTPUT->skip_link_target();
+echo html_writer::start_tag('table', array('class' => "topics", 'width' => "100%", 'summary' => get_string('layouttable')));
+echo html_writer::start_tag('ul', array('class' => 'demo'));
 /// If currently moving a file then show the current clipboard
-    if (ismoving($course->id)) {
-        $stractivityclipboard = strip_tags(get_string('activityclipboard', '', addslashes($USER->activitycopyname)));
-        $strcancel= get_string('cancel');
-        echo '<tr class="clipboard">';
-        echo '<td colspan="3">';
-        echo $stractivityclipboard.'&nbsp;&nbsp;(<a href="mod.php?cancelcopy=true&amp;sesskey='.$USER->sesskey.'">'.$strcancel.'</a>)';
-        echo '</td>';
-        echo '</tr>';
-    }
+if (ismoving($course->id)) {
+    $stractivityclipboard = strip_tags(get_string('activityclipboard', '', $USER->activitycopyname));
+    $strcancel = get_string('cancel') . ')';
+    $link = $stractivityclipboard.'&nbsp;&nbsp;(' . $OUTPUT->action_link(new moodle_url('mod.php', array('cancelcopy' => 'true', 'sesskey' => sesskey())), $strcancel);
+    echo html_writer::tag("li", $link, array('class' => 'clipboard'));
+}
 
-/// Print Section 0
+    /// Print Section 0 with general activities
 
     $section = 0;
     $thissection = $sections[$section];
+    unset($sections[0]);
+
+    if ($thissection->summary or $thissection->sequence or $PAGE->user_is_editing()) {
+
+        // Note, 'right side' is BEFORE content.
+        echo html_writer::start_tag('li', array ('id' => "section-0", 'class' => "section main clearfix"));
+        echo $OUTPUT->container('&nbsp;', 'left side');
+        echo $OUTPUT->container('&nbsp;', 'right side');
+        echo $OUTPUT->container_start('content');
+
+        if (!empty($thissection->name)) {
+            echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 3, 'sectionname');
+        }
+
+        echo $OUTPUT->container_start('summary');
+
+        $coursecontext = context_course::instance($course->id);
+        $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
+        $summaryformatoptions = new stdClass();
+        $summaryformatoptions->noclean = true;
+        $summaryformatoptions->overflowdiv = true;
+        echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
+
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
+            echo html_writer::tag('p', $OUTPUT->action_icon(new moodle_url('editsection.php', array('id' => $thissection->id)), new pix_icon('t/edit', $streditsummary)));
+        }
+        echo $OUTPUT->container_end();
+
+        print_section($course, $thissection, $mods, $modnamesused);
+
+        if ($PAGE->user_is_editing()) {
+            print_section_add_menus($course, $section, $modnames);
+        }
+
+        echo $OUTPUT->container_end();
+        echo html_writer::end_tag("li");
+    }
+
 
 /// Now all the normal modules by topic
 /// Everything below uses "section" terminology - each "section" is a topic.
 
-    $timenow = time();
-    $section = 1;
-    $sectionmenu = array();
+$section = 1;
+$sectionmenu = array();
 
-    while ($section <= $course->numsections) {
+while ($section <= $course->numsections) {
 
-        if (!empty($sections[$section])) {
-            $thissection = $sections[$section];
+    if (!empty($sections[$section])) {
+        $thissection = $sections[$section];
 
+    } else {
+        unset($thissection);
+        $thissection->course = $course->id;   // Create a new section structure
+        $thissection->section = $section;
+        $thissection->summary = '';
+        $thissection->visible = 1;
+        if (!$thissection->id = $DB->insert_record('course_sections', $thissection)) {
+            totara_set_notification('Error inserting new topic!');
+        }
+    }
+
+    $showsection = (has_capability('moodle/course:viewhiddensections', $context) or $thissection->visible or !$course->hiddensections);
+
+    if (!empty($displaysection) and $displaysection != $section) {
+        if ($showsection) {
+            $strsummary = strip_tags(format_string($thissection->summary,true));
+            if (strlen($strsummary) < 57) {
+                $strsummary = ' - '.$strsummary;
+            } else {
+                $strsummary = ' - '.substr($strsummary, 0, 60).'...';
+            }
+            $sectionmenu['topic='.$section] = s($section.$strsummary);
+        }
+        $section++;
+        continue;
+    }
+
+    if ($showsection) {
+
+        $currenttopic = ($course->marker == $section);
+
+        $currenttext = '';
+        if (!$thissection->visible) {
+            $sectionstyle = ' hidden';
+        } else if ($currenttopic) {
+            $sectionstyle = ' current';
+            $currenttext = get_accesshide(get_string('currenttopic','access'));
         } else {
-            unset($thissection);
-            $thissection->course = $course->id;   // Create a new section structure
-            $thissection->section = $section;
-            $thissection->summary = '';
-            $thissection->visible = 1;
-            if (!$thissection->id = insert_record('course_sections', $thissection)) {
-                notify('Error inserting new topic!');
+            $sectionstyle = '';
+        }
+
+        echo html_writer::start_tag('tr', array('id' => "section-{$section}", 'class' => "section main {$sectionstyle}"));
+        echo html_writer::start_tag('td', array('class' => "content format-demo-content"));
+        if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible) {   // Hidden for students
+            echo get_string('notavailable');
+        } else {
+            echo $OUTPUT->container_start('summary');
+            $summaryformatoptions = new stdClass();
+            $summaryformatoptions->noclean = true;
+            echo format_text($thissection->summary, FORMAT_HTML, $summaryformatoptions);
+
+            if ($PAGE->user_is_editing($course->id) && has_capability('moodle/course:update', context_course::instance($course->id))) {
+                echo $OUTPUT->action_icon(new moodle_url('editsection.php', array('id' => $thissection->id)), new pix_icon('t/edit', $streditsummary));
+                echo html_writer::empty_tag('br') . html_writer::empty_tag('br');
+            }
+            $OUTPUT->container_end();
+
+            print_section($course, $thissection, $mods, $modnamesused);
+
+            if ($PAGE->user_is_editing($course->id)) {
+                print_section_add_menus($course, $section, $modnames);
             }
         }
 
-        $showsection = (has_capability('moodle/course:viewhiddensections', $context) or $thissection->visible or !$course->hiddensections);
+        echo html_writer::end_tag('td') . html_writer::end_tag('tr');
+        echo html_writer::tag('tr', html_writer::tag('td', '', array('class' => 'spacer'), array('class' => "section separator")));
+    }
+    unset($sections[$section]);
+    $section++;
+}
 
-        if (!empty($displaysection) and $displaysection != $section) {
-            if ($showsection) {
-                $strsummary = strip_tags(format_string($thissection->summary,true));
-                if (strlen($strsummary) < 57) {
-                    $strsummary = ' - '.$strsummary;
-                } else {
-                    $strsummary = ' - '.substr($strsummary, 0, 60).'...';
-                }
-                $sectionmenu['topic='.$section] = s($section.$strsummary);
-            }
-            $section++;
+if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', context_course::instance($course->id))) {
+    // print stealth sections if present
+    $modinfo = get_fast_modinfo($course);
+    foreach ($sections as $section=>$thissection) {
+        if (empty($modinfo->sections[$section])) {
             continue;
         }
 
-        if ($showsection) {
-
-            $currenttopic = ($course->marker == $section);
-
-            $currenttext = '';
-            if (!$thissection->visible) {
-                $sectionstyle = ' hidden';
-            } else if ($currenttopic) {
-                $sectionstyle = ' current';
-                $currenttext = get_accesshide(get_string('currenttopic','access'));
-            } else {
-                $sectionstyle = '';
-            }
-
-            echo '<tr id="section-'.$section.'" class="section main'.$sectionstyle.'">';
-            echo '<td class="content format-demo-content">';
-            if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible) {   // Hidden for students
-                echo get_string('notavailable');
-            } else {
-                echo '<div class="summary">';
-                $summaryformatoptions->noclean = true;
-                echo format_text($thissection->summary, FORMAT_HTML, $summaryformatoptions);
-
-                if (isediting($course->id) && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
-                    echo ' <a title="'.$streditsummary.'" href="editsection.php?id='.$thissection->id.'">'.
-                         '<img src="'.$CFG->pixpath.'/t/edit.gif" alt="'.$streditsummary.'" /></a><br /><br />';
-                }
-                echo '</div>';
-
-                print_section($course, $thissection, $mods, $modnamesused);
-
-                if (isediting($course->id)) {
-                    print_section_add_menus($course, $section, $modnames);
-                }
-            }
-
-            echo '</td></tr>';
-            echo '<tr class="section separator"><td class="spacer"></td></tr>';
-        }
-
-        $section++;
+        $content = $OUTPUT->container('', 'left side');
+        // Note, 'right side' is BEFORE content.
+        $content .=  $OUTPUT->container('', 'right side');
+        $content .= $OUTPUT->container(
+                $OUTPUT->heading(get_string('orphanedactivities'), 3, 'sectionname') .
+                print_section($course, $thissection, $mods, $modnamesused),
+                'content'
+                );
+        echo html_writer::tag("li", $content, array('id' => "section-{$section}", 'class' => 'section main clearfix stealth hidden'));
     }
-    echo '</table>';
+}
+echo html_writer::end_tag('ul');
+echo html_writer::end_tag('table');
 
-    if (!empty($sectionmenu)) {
-        echo '<div class="jumpmenu">';
-        echo popup_form($CFG->wwwroot.'/course/view.php?id='.$course->id.'&amp;', $sectionmenu,
-                   'sectionmenu', '', get_string('jumpto'), '', '', true);
-        echo '</div>';
-    }
+if (!empty($sectionmenu)) {
+    $select = new single_select(new moodle_url('/course/view.php', array('id'=>$course->id)), 'topic', $sectionmenu);
+    $select->label = get_string('jumpto');
+    $select->class = 'jumpmenu';
+    $select->formid = 'sectionmenu';
+    echo $OUTPUT->render($select);
+}
 
-    print_container_end();
-    echo '</td>';
-
-            break;
-            case 'right':
-    // The right column
-    if (blocks_have_content($pageblocks, BLOCK_POS_RIGHT) || $editing) {
-        echo '<td style="width:'.$preferred_width_right.'px" id="right-column">';
-        print_container_start();
-        blocks_print_group($PAGE, $pageblocks, BLOCK_POS_RIGHT);
-        print_container_end();
-        echo '</td>';
-    }
-
-            break;
-        }
-    }
-    echo '</tr></table>';
-    
-?>
+$OUTPUT->container_end();
+echo html_writer::end_tag('td');

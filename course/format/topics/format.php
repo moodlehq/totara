@@ -38,7 +38,7 @@ if ($topic != -1) {
     $displaysection = course_get_display($course->id);
 }
 
-$context = get_context_instance(CONTEXT_COURSE, $course->id);
+$context = context_course::instance($course->id);
 
 if (($marker >=0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
     $course->marker = $marker;
@@ -100,7 +100,7 @@ if ($thissection->summary or $thissection->sequence or $PAGE->user_is_editing())
     }
     echo '<div class="summary">';
 
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+    $coursecontext = context_course::instance($course->id);
     $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
     $summaryformatoptions = new stdClass();
     $summaryformatoptions->noclean = true;
@@ -186,7 +186,7 @@ while ($section <= $course->numsections) {
                  '<img src="'.$OUTPUT->pix_url('i/one') . '" class="icon" alt="'.$strshowonlytopic.'" /></a><br />';
         }
 
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
 
             if ($course->marker == $section) {  // Show the "light globe" on/off
                 echo '<a href="view.php?id='.$course->id.'&amp;marker=0&amp;sesskey='.sesskey().'#section-'.$section.'" title="'.$strmarkedthistopic.'">'.'<img src="'.$OUTPUT->pix_url('i/marked') . '" alt="'.$strmarkedthistopic.'" class="icon"/></a><br />';
@@ -222,7 +222,7 @@ while ($section <= $course->numsections) {
             }
             echo '<div class="summary">';
             if ($thissection->summary) {
-                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                $coursecontext = context_course::instance($course->id);
                 $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
                 $summaryformatoptions = new stdClass();
                 $summaryformatoptions->noclean = true;
@@ -232,7 +232,7 @@ while ($section <= $course->numsections) {
                echo '&nbsp;';
             }
 
-            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
                 echo ' <a title="'.$streditsummary.'" href="editsection.php?id='.$thissection->id.'">'.
                      '<img src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall edit" alt="'.$streditsummary.'" /></a><br /><br />';
             }
@@ -253,7 +253,7 @@ while ($section <= $course->numsections) {
     $section++;
 }
 
-if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', context_course::instance($course->id))) {
     // print stealth sections if present
     $modinfo = get_fast_modinfo($course);
     foreach ($sections as $section=>$thissection) {

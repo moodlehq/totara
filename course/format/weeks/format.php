@@ -53,7 +53,7 @@ defined('MOODLE_INTERNAL') || die();
         $strmovedown = get_string('movedown');
     }
 
-    $context = get_context_instance(CONTEXT_COURSE, $course->id);
+    $context = context_course::instance($course->id);
 
     //Print the Your progress icon if the track completion is enabled
     $completioninfo = new completion_info($course);
@@ -93,14 +93,14 @@ defined('MOODLE_INTERNAL') || die();
 
         echo '<div class="summary">';
 
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+        $coursecontext = context_course::instance($course->id);
         $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
         $summaryformatoptions = new stdClass;
         $summaryformatoptions->noclean = true;
         $summaryformatoptions->overflowdiv = true;
         echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
 
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
             echo '<p><a title="'.$streditsummary.'" '.
                  ' href="editsection.php?id='.$thissection->id.'"><img src="'.$OUTPUT->pix_url('t/edit') . '" '.
                  ' class="iconsmall edit" alt="'.$streditsummary.'" /></a></p>';
@@ -192,7 +192,7 @@ defined('MOODLE_INTERNAL') || die();
                      '<img src="'.$OUTPUT->pix_url('i/one') . '" class="icon wkone" alt="'.$strshowonlyweek.'" /></a><br />';
             }
 
-            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+            if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
                 if ($thissection->visible) {        // Show the hide/show eye
                     echo '<a href="view.php?id='.$course->id.'&amp;hide='.$section.'&amp;sesskey='.sesskey().'#section-'.$section.'" title="'.$strweekhide.'">'.
                          '<img src="'.$OUTPUT->pix_url('i/hide') . '" class="icon hide" alt="'.$strweekhide.'" /></a><br />';
@@ -225,14 +225,14 @@ defined('MOODLE_INTERNAL') || die();
                     echo $OUTPUT->heading($currenttext.$weekperiod, 3, 'weekdates');
                 }
                 echo '<div class="summary">';
-                $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                $coursecontext = context_course::instance($course->id);
                 $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
                 $summaryformatoptions = new stdClass;
                 $summaryformatoptions->noclean = true;
                 $summaryformatoptions->overflowdiv = true;
                 echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
 
-                if ($PAGE->user_is_editing() && has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+                if ($PAGE->user_is_editing() && has_capability('moodle/course:update', context_course::instance($course->id))) {
                     echo ' <a title="'.$streditsummary.'" href="editsection.php?id='.$thissection->id.'">'.
                          '<img src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall edit" alt="'.$streditsummary.'" /></a><br /><br />';
                 }
@@ -254,7 +254,7 @@ defined('MOODLE_INTERNAL') || die();
         $weekdate = $nextweekdate;
     }
 
-    if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', get_context_instance(CONTEXT_COURSE, $course->id))) {
+    if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', context_course::instance($course->id))) {
         // print stealth sections if present
         $modinfo = get_fast_modinfo($course);
         foreach ($sections as $section=>$thissection) {

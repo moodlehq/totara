@@ -1,0 +1,7 @@
+.course-content ul.demo {margin:0;}
+.course-content ul.demo li.section {list-style: none;margin:5px 0 0 0;padding:0;}
+.course-content ul.demo li.section .content {margin:0 40px;}
+.course-content ul.demo li.section .left {width:40px;float:left;text-align:center;}
+.course-content ul.demo li.section .right {width:40px;float:right;text-align:center;}
+.course-content ul.section li.activity span.autocompletion {right: 0;}
+.jumpmenu {text-align:center;}
