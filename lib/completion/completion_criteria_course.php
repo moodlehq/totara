@@ -225,7 +225,7 @@ class completion_criteria_course extends completion_criteria {
         $details['type'] = $this->get_title();
         $details['criteria'] = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->courseinstance.'">'.s($fullname).'</a>';
         $details['requirement'] = get_string('coursecompleted', 'completion');
-        $details['status'] = '<a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$this->courseinstance.'">'.get_string('seedetails', 'completion').'</a>';
+        $details['status'] = '<a href="'.$CFG->wwwroot.'/blocks/completionstatus/details.php?course='.$this->courseinstance.'&amp;user='.$completion->userid.'">'.get_string('seedetails', 'completion').'</a>';
 
         return $details;
     }
