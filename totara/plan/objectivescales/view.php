@@ -259,12 +259,12 @@ if ($values) {
 
         if (!$scale_used) {
             if ($value->id == $objective->defaultid) {
-                $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeleteobjectivescalevaluedefault', 'totara_plan'), 'totara_core');
+                $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeleteobjectivescalevaluedefault', 'totara_plan'), 'totara_core');
             } else {
                 $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/objectivescales/view.php', array('id' => $objective->id, 'delete' => $value->id)), new pix_icon('t/delete', $str_delete));
             }
         } else {
-            $buttons[] = $OUTPUT->pix_icon('nodelete', get_string('error:nodeleteobjectivescalevalueinuse', 'totara_plan'), 'totara_core');
+            $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeleteobjectivescalevalueinuse', 'totara_plan'), 'totara_core');
         }
 
         // If value can be moved up

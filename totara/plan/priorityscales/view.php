@@ -244,7 +244,7 @@ if ($values) {
 
         if (!$scale_used) {
             if ($value->id == $priority->defaultid) {
-                $buttons[] = $OUTPUT->action_icon('', new pix_icon('nodelete', get_string('error:nodeletepriorityscalevaluedefault', 'totara_plan'), 'totara_core'));
+                $buttons[] = $OUTPUT->pix_icon('t/delete_grey', get_string('error:nodeletepriorityscalevaluedefault', 'totara_plan'), 'totara_core');
             } else {
                 $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/priorityscales/view.php', array('id' => $priority->id, 'delete' => $value->id)), new pix_icon('t/delete', $str_delete));
             }
