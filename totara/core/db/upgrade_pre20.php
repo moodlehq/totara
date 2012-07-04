@@ -134,9 +134,6 @@ totara_fix_nullable_charfield('prog_exception_data', 'dataname', 'exceptionid', 
 totara_fix_nullable_charfield('prog_message', 'messagesubject', 'locked', '255');
 
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Change nullable character fields');
-echo $OUTPUT->heading('Change nullable database fields');
-echo $OUTPUT->notification($success, 'notifysuccess');
-print_upgrade_separator();
 
 // remove obsolete scorm fields
 $table = new xmldb_table('scorm');
@@ -163,10 +160,9 @@ foreach ($removetables as $prefix) {
         $dbman->drop_table($table);
     }
 }
-upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Remove obsolete database tables and fields');
-echo $OUTPUT->heading('Remove obsolete info_category tables');
-echo $OUTPUT->notification($success, 'notifysuccess');
-print_upgrade_separator();
+
+//ensure course and course category paths are correct before upgrade
+fix_course_sortorder();
 
 // rename 'completedate' field to 'timeend' in 'course_completion_criteria'
 $table = new xmldb_table('course_completion_criteria');
@@ -175,8 +171,8 @@ if ($dbman->field_exists($table, $field)) {
     $dbman->rename_field($table, $field, 'timeend');
 }
 
-upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Course completion criteria field renamed');
-echo $OUTPUT->heading('Course completion criteria field renamed');
+upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara database schema updates');
+echo $OUTPUT->heading('Totara database schema updates');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
