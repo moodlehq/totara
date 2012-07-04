@@ -101,12 +101,16 @@ function xmldb_totara_core_upgrade($oldversion) {
         ");
 
         // get unique default quicklinks
-        list($insql, $inparams) = $DB->get_in_or_equal($quicklinks_defaultinstances);
-        $sql = "SELECT DISTINCT(url),id,title,displaypos
-            FROM {block_quicklinks}
-            WHERE block_instance_id $insql
-            ORDER BY displaypos ASC";
-        $links = $DB->get_records_sql($sql, $inparams);
+        if (!empty($quicklinks_defaultinstances)) {
+            list($insql, $inparams) = $DB->get_in_or_equal($quicklinks_defaultinstances);
+            $sql = "SELECT DISTINCT(url),id,title,displaypos
+                FROM {block_quicklinks}
+                WHERE block_instance_id $insql
+                ORDER BY displaypos ASC";
+            $links = $DB->get_records_sql($sql, $inparams);
+        } else {
+            $links = array();
+        }
 
         // Change default my_pages for My Moodle
         if ($mypageid = $DB->get_field_sql('SELECT id FROM {my_pages} WHERE userid IS null AND private = 1')) {
