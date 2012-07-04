@@ -508,6 +508,7 @@ if (!$csv) {
                 $crs = $DB->get_record('course', array('id' => $criterion->courseinstance));
 
                 // Display icon
+                $icon = $OUTPUT->pix_url('i/course');
                 $iconlink = $CFG->wwwroot.'/course/view.php?id='.$criterion->courseinstance;
                 $icontitle = format_string($crs->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $crs->id, MUST_EXIST)));
                 $iconalt = format_string($crs->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $crs->id)));
@@ -519,20 +520,39 @@ if (!$csv) {
 
                 // Display icon
                 $iconalt = $role->name;
+                $icon = $OUTPUT->pix_url('i/roles');
+                break;
+
+            case COMPLETION_CRITERIA_TYPE_SELF:
+                // Display icon
+                $icon = $OUTPUT->pix_url('i/user');
+                break;
+
+            case COMPLETION_CRITERIA_TYPE_GRADE:
+                // Display icon
+                $icon = $OUTPUT->pix_url('i/grades');
+                break;
+
+            case COMPLETION_CRITERIA_TYPE_DURATION:
+                // Display icon
+                $icon = $OUTPUT->pix_url('i/calendar');
+                break;
+
+            case COMPLETION_CRITERIA_TYPE_DATE:
+                // Display icon
+                $icon = $OUTPUT->pix_url('i/calendar');
                 break;
         }
 
         // Print icon and cell
         print '<th class="criteriaicon">';
-
-        // Create icon if not supplied
-        if (!$icon) {
-            $icon = $OUTPUT->pix_url('i/'.$COMPLETION_CRITERIA_TYPES[$criterion->criteriatype]);
+        if ($icon) {
+            print ($iconlink ? '<a href="'.$iconlink.'" title="'.$icontitle.'">' : '');
+            print '<img src="'.$icon.'" class="icon" alt="'.$iconalt.'" '.(!$iconlink ? 'title="'.$iconalt.'"' : '').' />';
+            print ($iconlink ? '</a>' : '');
+        } else {
+            print '&nbsp;';
         }
-
-        print ($iconlink ? '<a href="'.$iconlink.'" title="'.$icontitle.'">' : '');
-        print '<img src="'.$icon.'" class="icon" alt="'.$iconalt.'" '.(!$iconlink ? 'title="'.$iconalt.'"' : '').' />';
-        print ($iconlink ? '</a>' : '');
 
         print '</th>';
     }

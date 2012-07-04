@@ -54,54 +54,10 @@ function report_completion_extend_navigation_course($navigation, $course, $conte
  * @param stdClass $course The course to object for the report
  */
 function report_completion_extend_navigation_user($navigation, $user, $course) {
-
-    return; //TODO: this plugin was not linked from navigation in 2.0, let's keep it that way for now --skodak
-
-    if (report_completion_can_access_user_report($user, $course)) {
+    if (completion_can_view_data($user->id, $course->id)) {
         $url = new moodle_url('/report/completion/user.php', array('id'=>$user->id, 'course'=>$course->id));
         $navigation->add(get_string('coursecompletion'), $url);
     }
-}
-
-/**
- * Is current user allowed to access this report
- *
- * @private defined in lib.php for performance reasons
- *
- * @param stdClass $user
- * @param stdClass $course
- * @return bool
- */
-function report_completion_can_access_user_report($user, $course) {
-    global $USER, $CFG;
-
-    if (empty($CFG->enablecompletion)) {
-        return false;
-    }
-
-    if ($course->id != SITEID and !$course->enablecompletion) {
-        return;
-    }
-
-    $coursecontext = context_course::instance($course->id);
-    $personalcontext = context_user::instance($user->id);
-
-    if (has_capability('report/completion:view', $coursecontext)) {
-        return true;
-    }
-
-    if (has_capability('moodle/user:viewuseractivitiesreport', $personalcontext)) {
-        if ($course->showreports and (is_viewing($coursecontext, $user) or is_enrolled($coursecontext, $user))) {
-            return true;
-        }
-
-    } else if ($user->id == $USER->id) {
-        if ($course->showreports and (is_viewing($coursecontext, $USER) or is_enrolled($coursecontext, $USER))) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 /**

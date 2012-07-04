@@ -24,8 +24,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['activitiescomplete'] = 'Activities complete';
+$string['complete'] = 'Courses completed';
 $string['completion:view'] = 'View course completion report';
 $string['completiondate'] = 'Completion date';
+$string['completions'] = 'Course completions';
+$string['detailedview'] = 'Detail view';
+$string['incomplete'] = 'Incomplete';
+$string['inprogress'] = 'Courses in progress';
+$string['nocompletioncoursesenroled'] = 'User not enrolled or started in any courses with completion enabled';
+$string['nocompletions'] = 'User has enrolled in this course, but has not yet started';
+$string['notyetstarted'] = 'Courses not yet started';
 $string['page-report-completion-x'] = 'Any completion report';
 $string['page-report-completion-index'] = 'Course completion report';
 $string['page-report-completion-user'] = 'User course completion report';
