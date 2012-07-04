@@ -37,6 +37,30 @@ require_once($CFG->dirroot.'/totara/core/db/utils.php');
  */
 function xmldb_totara_program_upgrade($oldversion) {
     global $CFG, $DB;
+    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+
+    if ($oldversion < 2012070600) {
+        //doublecheck organisationid and positionid tables exist in prog_completion tables (T-9752)
+        $table = new xmldb_table('prog_completion');
+        $field = new xmldb_field('organisationid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'timecompleted');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('positionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'organisationid');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $table = new xmldb_table('prog_completion_history');
+        $field = new xmldb_field('organisationid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'recurringcourseid');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        $field = new xmldb_field('positionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'organisationid');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        totara_upgrade_mod_savepoint(true, 2012070600, 'totara_program');
+    }
 
     return true;
 }
