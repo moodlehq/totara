@@ -121,7 +121,7 @@ if (!empty($CFG->local_postinst_hasrun) &&
     echo 'You cannot upgrade to Totara 2.x from a Totara 1.1 site prior to release 1.1.17. Please upgrade to 1.1.17 or greater first.';
     die();
 } else if (empty($CFG->local_postinst_hasrun) &&
-        isset($CFG->version) && $CFG->version < 2010112400) {
+        !empty($CFG->version) && $CFG->version < 2010112400) {
     // if upgrading from moodle, require at least v2.0.0
     echo 'You cannot upgrade to Totara 2.x from a Moodle version prior to 2.0 Please upgrade to Totara 1.1.17+ or Moodle 2 first.';
     die();
