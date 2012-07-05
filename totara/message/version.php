@@ -25,3 +25,4 @@
 $plugin->version  = 2012012702;   // The (date) version of this module
 $plugin->requires = 2011120501;  // Requires this Moodle version
 $plugin->cron     = 1;
+$plugin->component = 'totara_message';   // To check on upgrade, that module sits in correct place
