@@ -221,4 +221,29 @@ if (($num_records = count($customfield_ids)) > 0) {
     print_upgrade_separator();
 }
 
+// migrate devplan plugin version and other references to new location "totara_learningplan"
+// must be done before moodle 2 migrates enrollment data
+$DB->execute('UPDATE {config_plugins} SET plugin = ? WHERE plugin = ?',
+    array('enrol_totara_learningplan', 'enrol_totara_devplan'));
+$DB->execute('UPDATE {course} SET enrol = ? WHERE enrol = ?',
+    array('totara_learningplan', 'devplan'));
+
+// enable totara_learningplan if devplan was enabled before
+$enabledplugins = $CFG->enrol_plugins_enabled;
+$enabledplugins = explode(',', $enabledplugins);
+$newenabled = array();
+foreach ($enabledplugins as $plugin) {
+    if ($plugin == 'devplan') {
+        $newenabled[] = 'totara_learningplan';
+    } else {
+        $newenabled[] = $plugin;
+    }
+}
+set_config('enrol_plugins_enabled', implode(',', $newenabled));
+
+upgrade_log(UPGRADE_LOG_NORMAL, 'enrol/totara_learningplan', 'Migrated devplan enrolment plugin to totara_learningplan');
+echo $OUTPUT->heading('Rename old devplan enrolment plugin to "Learning Plan"');
+echo $OUTPUT->notification($success, 'notifysuccess');
+print_upgrade_separator();
+
 ?>

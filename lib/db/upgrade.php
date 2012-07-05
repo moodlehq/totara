@@ -7385,5 +7385,33 @@ FROM
         upgrade_main_savepoint(true, 2011120503.09);
     }
 
+    if ($oldversion < 2011120504.001) {
+        // migrate devplan plugin version to new location "totara_learningplan"
+        // must be done before enrolment plugins are upgraded
+        // this is a copy of part of what is done in totara/core/db/upgrade_pre20.php for
+        // beta users who may have already upgraded a site
+        $DB->execute('UPDATE {config_plugins} SET plugin = ? WHERE plugin = ?',
+            array('enrol_totara_learningplan', 'enrol_totara_devplan'));
+
+        // enable totara_learningplan if devplan was enabled before
+        $enabledplugins = $CFG->enrol_plugins_enabled;
+        $enabledplugins = explode(',', $enabledplugins);
+        $newenabled = array();
+        foreach ($enabledplugins as $plugin) {
+            if ($plugin == 'devplan') {
+                $newenabled[] = 'totara_learningplan';
+            } else {
+                $newenabled[] = $plugin;
+            }
+        }
+        set_config('enrol_plugins_enabled', implode(',', $newenabled));
+
+        // also uninstall the old plugin now
+        uninstall_plugin('enrol', 'devplan');
+
+        // Main savepoint reached
+        upgrade_main_savepoint(true, 2011120504.001);
+    }
+
     return true;
 }

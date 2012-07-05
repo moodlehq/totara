@@ -17,15 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Peter Bulmer <peter.bulmer@catalyst.net.nz>
- * @author Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author Chris Wharton <chrisw@catalyst.net.nz>
  * @package totara
- * @subpackage enrol_devplan
+ * @subpackage enrol_totara_learningplan
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2010120800;       // The current module version (Date: YYYYMMDDXX)
-$plugin->requires = 2011120501;       // Requires this Moodle version
-$plugin->cron = 0;                    // Period for cron to check this module (secs)
-$plugin->component = 'enrol_totara_devplan'; // To check on upgrade, that module sits in correct place
+$capabilities = array(
+
+    'enrol/totara_learningplan:unenrol' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        )
+    ),
+
+);
