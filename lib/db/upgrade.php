@@ -7222,6 +7222,31 @@ FROM
         upgrade_main_savepoint(true, 2011120501.006);
     }
 
+    if ($oldversion < 2011120501.007) {
+        // delete hotpot if not used and not installed - no longer part of totara - now in contrib (do not use adminlib uninstall functions, they may change)
+        if (!file_exists("$CFG->dirroot/mod/hotpot/version.php")) {
+            if ($module = $DB->get_record('modules', array('name'=>'hotpot'))) {
+                if (!$DB->record_exists('course_modules', array('module'=>$module->id))) {
+                    //purge capabilities
+                    $DB->delete_records_select('capabilities', "name LIKE ?", array('mod/hotpot:%'));
+                    $DB->delete_records_select('role_capabilities', "capability LIKE ?", array('mod/hotpot:%'));
+                    $tables = array('hotpot', 'hotpot_attempts', 'hotpot_details', 'hotpot_questions', 'hotpot_responses', 'hotpot_strings');
+                    foreach ($tables as $tname) {
+                        $table = new xmldb_table($tname);
+                        if ($dbman->table_exists($table)) {
+                            $dbman->drop_table($table);
+                        }
+                    }
+                    $DB->delete_records('event', array('modulename' => 'hotpot'));
+                    $DB->delete_records('log', array('module' => 'hotpot'));
+                    $DB->delete_records('modules', array('name'=>'hotpot'));
+                }
+            }
+        }
+        // Main savepoint reached
+        upgrade_main_savepoint(true, 2011120501.007);
+    }
+
     if ($oldversion < 2011120501.08) {
         // Check if we need to fix post.uniquehash
         $columns = $DB->get_columns('post');
