@@ -271,10 +271,10 @@ class rb_source_dp_program extends rb_base_source {
     function rb_display_link_program_icon($programname, $row) {
         global $OUTPUT;
         $programid = $row->program_id;
-        $programicon = $row->program_icon;
+        $programicon = !empty($row->program_icon) ? $row->program_icon : 'default';
 
         $program = new program($programid);
-        $icon = $OUTPUT->pix_icon('/programicons/' . $programicon, $programname, 'totara_core',array('class' => 'course_icon'));
+        $icon = $OUTPUT->pix_icon('programicons/' . $programicon, $programname, 'totara_core', array('class' => 'course_icon'));
 
         if ($program->is_accessible()) {
             $html = $OUTPUT->action_link(
