@@ -62,7 +62,7 @@ $mform = new item_bulkadd_form(null, compact('prefix', 'frameworkid', 'page'));
 // cancelled
 if ($mform->is_cancelled()) {
 
-    redirect("{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$item->frameworkid}&amp;page={$page}");
+    redirect("{$CFG->wwwroot}/totara/hierarchy/index.php?prefix=$prefix&amp;frameworkid={$frameworkid}&amp;page={$page}");
 
 // Update data
 } else if ($formdata = $mform->get_data()) {
