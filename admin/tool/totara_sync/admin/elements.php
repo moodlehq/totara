@@ -86,10 +86,10 @@ foreach ($elements as $ename => $eobj) {
 
     // Visible/hidden
     if ($eobj->is_enabled()) {
-        $row[] = $OUTPUT->action_icon(new moodle_url('/admin/tool/totara_sync/elements.php', array('disable' => $ename, 'sesskey' => $USER->sesskey)),
+        $row[] = $OUTPUT->action_icon(new moodle_url('/admin/tool/totara_sync/admin/elements.php', array('disable' => $ename, 'sesskey' => $USER->sesskey)),
                             new pix_icon('i/hide', $strdisable), null, array('title' => $strdisable));
     } else {
-        $row[] = $OUTPUT->action_icon(new moodle_url('/admin/tool/totara_sync/elements.php', array('enable' => $ename, 'sesskey' => $USER->sesskey)),
+        $row[] = $OUTPUT->action_icon(new moodle_url('/admin/tool/totara_sync/admin/elements.php', array('enable' => $ename, 'sesskey' => $USER->sesskey)),
                             new pix_icon('i/show', $strenable), null, array('title' => $strenable));
     }
     $row[] = $eobj->is_enabled() ? html_writer::link(new moodle_url('/admin/tool/totara_sync/admin/elementsettings.php', array('element' => $ename)), $strsettings) : '';
