@@ -96,48 +96,6 @@ $MDL_F2F_STATUS = array(
 );
 
 
-/*
-* This function is run when facetoface is first installed
-*
-* Add code here that should be run when the module is first installed
-* @return boolean Success or Failure
-*/
-function facetoface_install() {
-    global $DB;
-
-    $result = true;
-    // Create three new custom fields
-    $newfield1 = new stdClass();
-    $newfield1->name = get_string('location', 'facetoface');
-    $newfield1->shortname = 'location';
-    $newfield1->type = 0; // free text
-    $newfield1->required = 0;
-    if (!$locationfieldid = $DB->insert_record('facetoface_session_field', $newfield1)) {
-        $result = false;
-    }
-
-    $newfield2 = new stdClass();
-    $newfield2->name = get_string('venue', 'facetoface');
-    $newfield2->shortname = 'venue';
-    $newfield2->type = 0; // free text
-    $newfield2->required = 0;
-    if (!$venuefieldid = $DB->insert_record('facetoface_session_field', $newfield2)) {
-        $result = false;
-    }
-
-    $newfield3 = new stdClass();
-    $newfield3->name = get_string('room', 'facetoface');
-    $newfield3->shortname = 'room';
-    $newfield3->type = 0; // free text
-    $newfield3->required = 0;
-    $newfield3->showinsummary = 0;
-    if (!$roomfieldid = $DB->insert_record('facetoface_session_field', $newfield3)) {
-        $result = false;
-    }
-    return $result;
-}
-
-
 /**
  * Returns the human readable code for a face-to-face status
  *
