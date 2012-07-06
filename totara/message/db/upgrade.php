@@ -149,7 +149,7 @@ function xmldb_totara_message_upgrade($oldversion) {
                 upgrade_set_timeout(60*5); // set up timeout, may also abort execution
                 $pbar->update($i, $count, "Migrating totara messages - message $i/$count.");
             }
-            $pbar->update($i, $count, "Migrated totara messages - done!");
+            $pbar->update($count, $count, "Migrated totara messages - done!");
 
             //re-enable emails if they were originally turned on
             if ($orig_emailstatus == 1) {
