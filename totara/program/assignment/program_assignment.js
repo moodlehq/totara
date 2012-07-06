@@ -216,7 +216,7 @@ M.totara_programassignment = M.totara_programassignment || {
 
                 var completionevent = $('#eventtype option:selected', self.handler._container).val();
                 var completioninstance = $('#instance', self.handler._container).val();
-                var unitformat = /^\d{1,3}$/
+                var unitformat = /^\d{1,3}$/;
                 if (unitformat.test(timeunit) === false) {
                     alert(M.util.get_string('pleaseentervalidunit', 'totara_program'));
                 } else if (completioninstance == '' && completionevent != module.config.COMPLETION_EVENT_FIRST_LOGIN) {
