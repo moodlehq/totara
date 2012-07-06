@@ -84,6 +84,14 @@ h5.main,
 h6.main {
     text-align: left;
 }
+h1.centered,
+h2.centered,
+h3.centered,
+h4.centered,
+h5.centered,
+h6.centered {
+    text-align: center;
+}
 th.header,
 td.header,
 div.header,
