@@ -615,7 +615,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
 
         list($allowedrolessql, $params) = $DB->get_in_or_equal($allowedroles);
 
-        $sessionroles = get_records_sql("SELECT id,name,shortname
+        $sessionroles = $DB->get_records_sql("SELECT id,name,shortname
             FROM {role}
             WHERE id {$allowedrolessql}", $params);
         if (!$sessionroles) {
@@ -631,7 +631,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'role',
                 $field . '_name',
                 'Session '.$name . ' Name',
-                sql_fullname($userkey.'.firstname', $userkey.'.lastname'),
+                $DB->sql_fullname($userkey.'.firstname', $userkey.'.lastname'),
                 array(
                     'joins' => $userkey,
                     'grouping' => 'comma_list_unique',
