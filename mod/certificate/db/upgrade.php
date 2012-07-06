@@ -406,10 +406,10 @@ function xmldb_certificate_upgrade($oldversion=0) {
         // The poor certificate_issues table is going to have a lot of
         // duplicates, we don't need that now, just keep the latest one
         $sql = "DELETE
-                FROM {certificate_issues}
-                WHERE id NOT IN (SELECT * FROM (SELECT MAX(id)
-                                 FROM {certificate_issues}
-                                 GROUP BY certificateid, userid) as t)";
+                  FROM {certificate_issues}
+                 WHERE id NOT IN (SELECT MAX(id)
+                                    FROM {certificate_issues}
+                                GROUP BY certificateid, userid)";
         $DB->execute($sql);
 
         // Going to be editing this table

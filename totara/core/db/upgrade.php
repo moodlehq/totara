@@ -99,17 +99,18 @@ function xmldb_totara_core_upgrade($oldversion) {
                 AND d.shortname IN ('mylearning', 'myteam')
                 AND bi.blockname = 'totara_quicklinks'
         ");
-
-        // get unique default quicklinks
+        // first get all default quicklinks
         if (!empty($quicklinks_defaultinstances)) {
             list($insql, $inparams) = $DB->get_in_or_equal($quicklinks_defaultinstances);
-            $sql = "SELECT DISTINCT(url),id,title,displaypos
-                FROM {block_quicklinks}
-                WHERE block_instance_id $insql
-                ORDER BY displaypos ASC";
-            $links = $DB->get_records_sql($sql, $inparams);
+            $alllinks = $DB->get_records_select('block_quicklinks', "block_instance_id $insql", $inparams, 'displaypos ASC');
         } else {
-            $links = array();
+            $alllinks = array();
+        }
+        // now loop through and remove duplicates with same url and title
+        $links = array();
+        foreach ($alllinks as $l) {
+            $key = $l->url . '-' . $l->title;
+            $links[$key] = $l;
         }
 
         // Change default my_pages for My Moodle
