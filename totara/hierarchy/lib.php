@@ -95,6 +95,54 @@ function totara_hierarchy_cron() {
 }
 
 /**
+ * Execute the SQL to create a default competency scale
+ *
+ * @returns true
+ */
+function totara_hierarchy_install_default_comp_scale() {
+    global $USER, $DB;
+    $now = time();
+
+    $todb = new stdClass;
+    $todb->name = get_string('competencyscale', 'totara_hierarchy');
+    $todb->description = '';
+    $todb->usermodified = $USER->id;
+    $todb->timemodified = $now;
+    $scaleid = $DB->insert_record('comp_scale', $todb);
+
+    $comp_scale_vals = array(
+        array('name'=>get_string('competent', 'totara_hierarchy'), 'scaleid' => $scaleid, 'sortorder' => 1, 'usermodified' => $USER->id, 'timemodified' => $now),
+        array('name'=>get_string('competentwithsupervision', 'totara_hierarchy'), 'scaleid' => $scaleid, 'sortorder' => 2, 'usermodified' => $USER->id, 'timemodified' => $now),
+        array('name'=>get_string('notcompetent', 'totara_hierarchy'), 'scaleid' => $scaleid, 'sortorder' => 3, 'usermodified' => $USER->id, 'timemodified' => $now)
+        );
+
+    $count = 0;
+    foreach ($comp_scale_vals as $svrow) {
+        $count++;
+        $todb = new stdClass;
+        foreach ($svrow as $key => $val) {
+            // Insert default competency scale values, if non-existent
+            $todb->$key = $val;
+        }
+        $svid = $DB->insert_record('comp_scale_values', $todb);
+        if ($count == 1) {
+            $proficient = $svid;
+        }
+    }
+
+    $todb = new stdClass;
+    $todb->id = $scaleid;
+    $todb->proficient = $proficient;
+    $todb->defaultid = $svid;
+
+    $DB->update_record('comp_scale', $todb);
+
+    unset($comp_scale_vals, $scaleid, $svid, $todb, $proficient);
+
+    return true;
+}
+
+/**
  * An abstract object that holds methods and attributes common to all hierarchy objects.
  * @abstract
  */

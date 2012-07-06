@@ -23,5 +23,7 @@ function xmldb_totara_hierarchy_install() {
         $dbman->add_field($table, $field);
     }
 
+    totara_hierarchy_install_default_comp_scale();
+
     return true;
 }
