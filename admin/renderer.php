@@ -47,8 +47,8 @@ class core_admin_renderer extends plugin_renderer_base {
         $continue = new single_button(new moodle_url('/admin/index.php', array('lang'=>$CFG->lang, 'agreelicense'=>1)), get_string('continue'), 'get');
 
         $output .= $this->header();
-        $output .= $this->heading('<a href="http://moodle.org">Moodle</a> - Modular Object-Oriented Dynamic Learning Environment');
-        $output .= $this->heading(get_string('copyrightnotice'));
+        $output .= $this->heading('<a href="http://www.totaralms.com/">Totara</a> - Totara Learning Management System', 2, 'centered');
+        $output .= $this->heading(get_string('copyrightnotice'), 2, 'centered');
         $output .= $this->box($copyrightnotice, 'copyrightnotice');
         $output .= html_writer::empty_tag('br');
         $output .= $this->confirm(get_string('doyouagree'), $continue, "http://docs.moodle.org/dev/License");

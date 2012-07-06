@@ -725,7 +725,8 @@ $string['general'] = 'General';
 $string['geolocation'] = 'latitude - longitude';
 $string['gettheselogs'] = 'Get these logs';
 $string['go'] = 'Go';
-$string['gpl'] = 'Copyright (C) 1999 onwards  Martin Dougiamas  (http://moodle.com)
+$string['gpl'] = 'Copyright (C) 2010-2012 Totara Learning Solutions Ltd (http://www.totaralms.com/)
+Copyright (C) 1999 onwards  Martin Dougiamas  (http://moodle.com)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -739,7 +740,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the Moodle License information page for full details:
 http://docs.moodle.org/dev/License';
 $string['gpllicense'] = 'GPL license';
-$string['gpl3'] = 'Copyright (C) 1999 onwards Martin Dougiamas (http://moodle.com)
+$string['gpl3'] = 'Copyright (C) 2010-2012 Totara Learning Solutions Ltd (http://www.totaralms.com/)
+Copyright (C) 1999 onwards Martin Dougiamas (http://moodle.com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
