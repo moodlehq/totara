@@ -1287,7 +1287,7 @@ function totara_reset_mymoodle_blocks() {
             'subpagepattern' => $mypageid,
             'defaultweight' => 1,
             'configdata' => '',
-            'default-region' => 'side-post'
+            'defaultregion' => 'side-post'
         ),
         (object)array(
             'blockname'=> 'totara_tasks',
@@ -1297,7 +1297,7 @@ function totara_reset_mymoodle_blocks() {
             'subpagepattern' => $mypageid,
             'defaultweight' => 1,
             'configdata' => '',
-            'default-region' => 'content'
+            'defaultregion' => 'content'
         ),
         (object)array(
             'blockname'=> 'totara_alerts',
@@ -1307,7 +1307,7 @@ function totara_reset_mymoodle_blocks() {
             'subpagepattern' => $mypageid,
             'defaultweight' => 1,
             'configdata' => '',
-            'default-region' => 'content',
+            'defaultregion' => 'content',
         ),
         (object)array(
             'blockname'=> 'totara_stats',
@@ -1317,7 +1317,7 @@ function totara_reset_mymoodle_blocks() {
             'subpagepattern' => $mypageid,
             'defaultweight' => 1,
             'configdata' => '',
-            'default-region' => 'side-post',
+            'defaultregion' => 'side-post',
         )
     );
 
