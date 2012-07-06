@@ -220,6 +220,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
 
 
     function define_requiredcolumns() {
+        global $DB;
         $requiredcolumns = array(
             new rb_column(
                 'responses',
@@ -230,7 +231,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
             ),
         );
         // only create fields if being called on a group
-        if($this->groupid !== null) {
+        if ($this->groupid !== null) {
             $questions = $DB->get_records($this->grouptables . 'q', null, 'sortorder');
 
             foreach ($questions as $question) {
