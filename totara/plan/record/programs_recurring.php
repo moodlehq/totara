@@ -34,7 +34,7 @@ global $SESSION,$USER;
 $programid  = optional_param('programid', 0, PARAM_INT);                       // which program to show
 $userid     = optional_param('userid', null, PARAM_INT);                  // which user to show
 $format = optional_param('format','', PARAM_TEXT); // export format
-
+$rolstatus = optional_param('status', 'all', PARAM_ALPHANUM);
 // instantiate the program instance
 if ($programid) {
     try {
