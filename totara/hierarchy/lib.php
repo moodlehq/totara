@@ -2555,4 +2555,50 @@ class hierarchy {
         return $start . totara_increment_vancode($last, $inc);
     }
 
+
+    /**
+     * Method for correcting invalid sortthreads, within a framework
+     * or across the whole hierarchy
+     *
+     * @param integer $frameworkid Optional frameworkid to specify a single
+     * framework to be updated. If not given all frameworks will be updated
+     *
+     * @return true if the operation succeeded
+     * @throws exception if a problem is encountered
+     */
+    public function fix_sortthreads($frameworkid = null) {
+        global $DB;
+
+        $transaction = $DB->start_delegated_transaction();
+
+        $params = array();
+        if ($frameworkid) {
+            $select = 'frameworkid = ?';
+            $params[] = $frameworkid;
+            $updatewhere = ' WHERE frameworkid = ?';
+        } else {
+            $select = '';
+            $updatewhere = '';
+        }
+
+        // loop through all records, sorted by framework, then depthlevel, then sortthread (in order to
+        // retain as much of the current arbitrary sortorder as possible)
+        $rs = $DB->get_recordset_select($this->shortprefix, $select, $params, 'frameworkid, depthlevel, sortthread');
+
+        // try to clear all existing sortthreads
+        $sql = "UPDATE {{$this->shortprefix}} SET sortthread = null $updatewhere";
+        $DB->execute($sql, $params);
+
+        foreach ($rs as $datarow) {
+            $todb = new object();
+            $todb->id = $datarow->id;
+            $todb->sortthread = $this->get_next_child_sortthread($datarow->parentid, $datarow->frameworkid);
+            $DB->update_record($this->shortprefix, $todb);
+        }
+        $rs->close();
+
+        $transaction->allow_commit();
+        return true;
+    }
+
 }
