@@ -47,6 +47,11 @@ class rb_source_cohort extends rb_base_source {
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('cohort', 'totara_cohort');
 
+        //Adding custom fields
+        $this->add_custom_user_fields($this->joinlist,
+                                      $this->columnoptions,
+                                      $this->filteroptions);
+
         parent::__construct();
     }
 
@@ -76,7 +81,6 @@ class rb_source_cohort extends rb_base_source {
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'members', 'userid');
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'members', 'userid');
         $this->add_position_tables_to_joinlist($joinlist, 'members', 'userid');
 
         return $joinlist;
@@ -99,7 +103,6 @@ class rb_source_cohort extends rb_base_source {
         );
 
         $this->add_user_fields_to_columns($columnoptions);
-        $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
 
         return $columnoptions;
@@ -114,7 +117,6 @@ class rb_source_cohort extends rb_base_source {
         $filteroptions = array();
 
         $this->add_user_fields_to_filters($filteroptions);
-        $this->add_user_custom_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

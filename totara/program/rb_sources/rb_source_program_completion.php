@@ -45,6 +45,12 @@ class rb_source_program_completion extends rb_base_source {
         $this->sourcetitle = get_string('program_completion','rb_source_program_completion');
         // only consider whole programs - not courseset completion
         $this->sourcewhere = 'base.coursesetid = 0';
+
+        //Adding custom fields
+        $this->add_custom_user_fields($this->joinlist,
+                                      $this->columnoptions,
+                                      $this->filteroptions);
+
         parent::__construct();
     }
 
@@ -75,7 +81,6 @@ class rb_source_program_completion extends rb_base_source {
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
@@ -177,7 +182,6 @@ class rb_source_program_completion extends rb_base_source {
 
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
-        $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'program');
@@ -268,7 +272,6 @@ class rb_source_program_completion extends rb_base_source {
         );
 
         $this->add_user_fields_to_filters($filteroptions);
-        $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions, 'prog', 'category');
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);

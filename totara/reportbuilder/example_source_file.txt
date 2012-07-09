@@ -43,10 +43,6 @@ class rb_source_[source_name] extends rb_base_source {
         */
         );
 
-        // optionally include some standard joins
-        // see functions in classes/rb_base_source.php for some options
-        //$this->add_user_custom_fields_to_joinlist($joinlist);
-
         return $joinlist;
     }
 
@@ -75,7 +71,6 @@ class rb_source_[source_name] extends rb_base_source {
 
         // optionally include some standard columns
         //$this->add_user_fields_to_columns($columnoptions);
-        //$this->add_user_custom_fields_to_columns($columnoptions);
         //$this->add_position_info_to_columns($columnoptions);
 
         return $columnoptions;
@@ -100,7 +95,6 @@ class rb_source_[source_name] extends rb_base_source {
 
         // optionally include some standard filters
         //$this->add_user_fields_to_filters($filteroptions);
-        //$this->add_user_custom_fields_to_filters($filteroptions);
         //$this->add_position_fields_to_filters($filteroptions);
 
         return $filteroptions;

@@ -30,6 +30,9 @@ class rb_source_feedback_summary extends rb_base_source {
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_feedback_summary');
 
         //Adding custom fields
+        $this->add_custom_user_fields($this->joinlist,
+                                      $this->columnoptions,
+                                      $this->filteroptions);
         $this->add_custom_position_fields($this->joinlist,
                                           $this->columnoptions,
                                           $this->filteroptions);
@@ -51,7 +54,7 @@ class rb_source_feedback_summary extends rb_base_source {
 
         // get the trainer role's id (or set a dummy value)
         $trainerroleid = $DB->get_field('role', 'id', array('shortname' => 'trainer'));
-        if(!$trainerroleid) {
+        if (!$trainerroleid) {
             $trainerroleid = 0;
         }
 
@@ -132,7 +135,6 @@ class rb_source_feedback_summary extends rb_base_source {
 
         // include some standard joins
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_course_table_to_joinlist($joinlist, 'feedback', 'course');
         // requires the course join
         $this->add_course_category_table_to_joinlist($joinlist,
@@ -208,7 +210,6 @@ class rb_source_feedback_summary extends rb_base_source {
         );
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
-        $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_course_fields_to_columns($columnoptions);
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
@@ -263,7 +264,6 @@ class rb_source_feedback_summary extends rb_base_source {
 
         // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
-        $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_course_fields_to_filters($filteroptions);
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);

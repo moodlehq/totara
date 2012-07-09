@@ -42,6 +42,9 @@ class rb_source_competency_evidence extends rb_base_source {
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_competency_evidence');
 
         //Adding custom fields
+        $this->add_custom_user_fields($this->joinlist,
+                                      $this->columnoptions,
+                                      $this->filteroptions);
         $this->add_custom_position_fields($this->joinlist,
                                           $this->columnoptions,
                                           $this->filteroptions);
@@ -102,7 +105,6 @@ class rb_source_competency_evidence extends rb_base_source {
 
         // include some standard joins
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_position_tables_to_joinlist($joinlist, 'base', 'userid');
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
@@ -259,7 +261,6 @@ class rb_source_competency_evidence extends rb_base_source {
 
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
-        $this->add_user_custom_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
 
@@ -375,7 +376,6 @@ class rb_source_competency_evidence extends rb_base_source {
         );
         // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
-        $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
 

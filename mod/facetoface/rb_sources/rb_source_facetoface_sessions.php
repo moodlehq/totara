@@ -43,18 +43,18 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_facetoface_sessions');
 
         //Adding custom fields
-        /*$this->add_custom_user_fields($this->joinlist,
+        $this->add_custom_user_fields($this->joinlist,
                                       $this->columnoptions,
-                                      $this->filteroptions);*/
+                                      $this->filteroptions);
         $this->add_custom_position_fields($this->joinlist,
                                           $this->columnoptions,
                                           $this->filteroptions);
         $this->add_custom_organisation_fields($this->joinlist,
                                               $this->columnoptions,
                                               $this->filteroptions);
-        /*$this->add_custom_course_fields($this->joinlist,
+        $this->add_custom_course_fields($this->joinlist,
                                         $this->columnoptions,
-                                        $this->filteroptions);*/
+                                        $this->filteroptions);
 
         parent::__construct();
     }
@@ -430,10 +430,6 @@ class rb_source_facetoface_sessions extends rb_base_source {
             array(
                 'type' => 'course',
                 'value' => 'courselink',
-            ),
-            array(
-                'type' => 'session',
-                'value' => 'location',
             ),
             array(
                 'type' => 'date',

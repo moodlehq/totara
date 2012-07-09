@@ -22,6 +22,8 @@
  * @subpackage reportbuilder
  */
 
+require_once($CFG->dirroot . '/user/profile/lib.php');
+
 /**
  * Abstract base class to be extended to create report builder sources
  */
@@ -1165,100 +1167,6 @@ abstract class rb_base_source {
 
 
     /**
-     * Adds any user profile fields to the $joinlist array
-     *
-     * @param array &$joinlist Array of current join options
-     *                         Passed by reference and updated if
-     *                         any user custom fields exist
-     * @param string $join Name of join containing user id to join on
-     * @param string $joinfield Name of user id field to join on
-     * @return boolean True if user custom fields exist
-     */
-    protected function add_user_custom_fields_to_joinlist(&$joinlist,
-        $join, $joinfield) {
-        global $DB;
-
-        // add all user custom fields to join list
-        $custom_fields = $DB->get_records('user_info_field');
-        if (!empty($custom_fields)) {
-            foreach ($custom_fields as $custom_field) {
-                $id = $custom_field->id;
-                $key = "user_$id";
-                $joinlist[] = new rb_join(
-                    $key,
-                    'LEFT',
-                    '{user_info_data}',
-                    "$key.userid = $join.$joinfield AND $key.fieldid = $id",
-                    REPORT_BUILDER_RELATION_ONE_TO_ONE,
-                    $join
-                );
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Adds any user profile fields to the $columnoptions array
-     *
-     * @param array &$columnoptions Array of current column options
-     *                              Passed by reference and updated if
-     *                              any user custom fields exist
-     * @return boolean True if user custom fields exist
-     */
-    protected function add_user_custom_fields_to_columns(&$columnoptions) {
-        global $DB;
-
-        // auto-generate columns for each user custom field
-        $custom_fields = $DB->get_records('user_info_field');
-        if (!empty($custom_fields)) {
-            foreach ($custom_fields as $custom_field) {
-                $name = $custom_field->name;
-                $key = "user_$custom_field->id";
-                $columnoptions[] = new rb_column_option(
-                    'user_profile',
-                    $key,
-                    $name,
-                    "$key.data",
-                    array('joins' => $key)
-                );
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Adds any user profile fields to the $filteroptions array as text filters
-     *
-     * @param array &$filteroptions Array of current filter options
-     *                              Passed by reference and updated if
-     *                              any user custom fields exist
-     * @return boolean True if user custom fields exist
-     */
-    protected function add_user_custom_fields_to_filters(&$filteroptions) {
-        global $DB;
-
-        $custom_fields = $DB->get_records('user_info_field', null, '', 'id, shortname, name');
-        if (!empty($custom_fields)) {
-            foreach ($custom_fields as $custom_field) {
-                $name = $custom_field->name;
-                $key = "user_$custom_field->id";
-                $filteroptions[] = new rb_filter_option(
-                    'user_profile',
-                    $key,
-                    $name,
-                    'text'
-                );
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Adds the course table to the $joinlist array
      *
      * @param array &$joinlist Array of current join options
@@ -1629,101 +1537,6 @@ abstract class rb_base_source {
         return true;
     }
 
-    /**
-     * Adds any course custom fields to the $joinlist array
-     *
-     * @param array &$joinlist Array of current join options
-     *                         Passed by reference and updated if
-     *                         any course custom fields exist
-     * @param string $join Name of join containing course id to join on
-     * @param string $joinfield Name of course id field to join on
-     * @return boolean True if course custom fields exist
-     */
-    protected function add_course_custom_fields_to_joinlist(&$joinlist,
-        $join, $joinfield) {
-        global $DB;
-
-        // add all course custom fields to join list
-        $custom_fields = $DB->get_records('course_info_field');
-        if (!empty($custom_fields)) {
-            foreach ($custom_fields as $custom_field) {
-                $id = $custom_field->id;
-                $key = "course_$custom_field->id";
-                $joinlist[] = new rb_join(
-                    $key,
-                    'LEFT',
-                    '{course_info_data}',
-                    "$key.courseid = $join.$joinfield AND $key.fieldid = $id",
-                    REPORT_BUILDER_RELATION_ONE_TO_ONE,
-                    $join
-                );
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Adds any course custom fields to the $columnoptions array
-     *
-     * @param array &$columnoptions Array of current column options
-     *                              Passed by reference and updated if
-     *                              any course custom fields exist
-     * @return boolean True if course custom fields exist
-     */
-    protected function add_course_custom_fields_to_columns(&$columnoptions) {
-        global $DB;
-
-        // auto-generate columns for each course custom field
-        $custom_fields = $DB->get_records('course_info_field');
-        if (!empty($custom_fields)) {
-            foreach ($custom_fields as $custom_field) {
-                $name = $custom_field->fullname;
-                $key = "course_$custom_field->id";
-                $columnoptions[] = new rb_column_option(
-                    'course_custom_fields',
-                    $key,
-                    $name,
-                    "$key.data",
-                    array('joins' => $key)
-                );
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Adds any course custom fields to the $filteroptions array as text filters
-     *
-     * @param array &$filteroptions Array of current filter options
-     *                              Passed by reference and updated if
-     *                              any course custom fields exist
-     * @return boolean True if course custom fields exist
-     */
-    protected function add_course_custom_fields_to_filters(&$filteroptions) {
-        global $DB;
-
-        $custom_fields = $DB->get_records('course_info_field', null, '', 'id, shortname, fullname');
-        if (!empty($custom_fields)) {
-            foreach ($custom_fields as $custom_field) {
-                $name = $custom_field->fullname;
-                $key = "course_$custom_field->id";
-                $filteroptions[] = new rb_filter_option(
-                    'course_custom_fields',
-                    $key,
-                    $name,
-                    'text'
-                );
-            }
-            return true;
-        }
-        return false;
-    }
-
-
 
     /**
      * Adds the course_category table to the $joinlist array
@@ -2081,7 +1894,7 @@ abstract class rb_base_source {
     }
 
     /**
-     * Generic function for adding custom hierarchy fields to the reports
+     * Generic function for adding custom fields to the reports
      * Intentionally optimized into one function to reduce number of db queries
      *
      * @param string $cf_prefix - prefix for custom field table e.g. everything before '_info_field' or '_info_data'
@@ -2103,6 +1916,11 @@ abstract class rb_base_source {
                 break;
             }
         }
+
+        if ($join == 'base') {
+            $seek = 'base';
+        }
+
         if (!$seek) {
             throw new ReportBuilderException("Missing dependency table in joinlist: {$join}!");
         }
@@ -2112,7 +1930,12 @@ abstract class rb_base_source {
         $datatable = $cf_prefix.'_info_data';
 
         // check if there are any visible custom fields of this type
-        $items = $DB->get_recordset($fieldtable, array('hidden' => '0'));
+        if ($cf_prefix == 'user') {
+            $items = $DB->get_recordset($fieldtable, array('visible' => PROFILE_VISIBLE_ALL));
+        } else {
+            $items = $DB->get_recordset($fieldtable, array('hidden' => '0'));
+        }
+
         if (empty($items)) {
             $items->close();
             return false;
@@ -2123,22 +1946,36 @@ abstract class rb_base_source {
             $id   = $record->id;
             $joinname = "{$cf_prefix}_{$id}";
             $value = "custom_field_{$id}";
-            $name = $record->fullname;
+            $name = isset($record->fullname) ? $record->fullname : $record->name;
             $column_options = array('joins' => $joinname);
             $datatype = 'text';
             $filter_options = array();
 
-            if ($record->datatype == 'menu') {
-                $datatype = 'simpleselect';
-                $filter_options['selectchoices'] = $this->list_to_array($record->param1, "\n");
-                $filter_options['selectoptions'] = array('datatype' => 'text');
-            }
+            $columnsql = "{$joinname}.data";
 
-            if ($record->datatype == 'checkbox') {
+            switch ($record->datatype) {
+            case 'menu':
+                $datatype = 'simpleselect';
+                $filter_options['selectchoices'] = $this->list_to_array($record->param1,"\n");
+                $filter_options['selectoptions'] = array('datatype' => 'text');
+                break;
+
+            case 'checkbox':
                 $datatype = 'simpleselect';
                 $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
                 $filter_options['selectoptions'] = array('datatype' => 'text');
-                $column_options['displayfunc'  ] = 'yes_no';
+                $column_options['displayfunc'] = 'yes_no';
+                break;
+
+            case 'datetime':
+                $datatype = 'date';
+                $columnsql = $DB->sql_cast_char2int($columnsql);
+                if ($record->param3) {
+                    $column_options['displayfunc'] = 'nice_datetime';
+                } else {
+                    $column_options['displayfunc'] = 'nice_date';
+                }
+                break;
             }
 
             $joinlist[] = new rb_join($joinname,
@@ -2151,7 +1988,7 @@ abstract class rb_base_source {
             $columnoptions[] = new rb_column_option($cf_prefix,
                                                      $value,
                                                      $name,
-                                                     "{$joinname}.data",
+                                                     $columnsql,
                                                      $column_options
                                                      );
             $filteroptions[] = new rb_filter_option( $cf_prefix,
@@ -2170,8 +2007,47 @@ abstract class rb_base_source {
     }
 
     /**
+     * Adds user custom fields to the report
      *
-     * Add's custom organisation fields to the report
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @param string $basetable
+     * @return boolean
+     */
+    protected function add_custom_user_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions, $basetable = 'auser') {
+        return $this->add_custom_fields_for('user',
+                                            $basetable,
+                                            'userid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+    }
+
+
+    /**
+     * Adds course custom fields to the report
+     *
+     * @param array $joinlist
+     * @param array $columnoptions
+     * @param array $filteroptions
+     * @param string $basetable
+     * @return boolean
+     */
+    protected function add_custom_course_fields(array &$joinlist, array &$columnoptions,
+        array &$filteroptions, $basetable = 'course') {
+        return $this->add_custom_fields_for('course',
+                                            $basetable,
+                                            'courseid',
+                                            $joinlist,
+                                            $columnoptions,
+                                            $filteroptions);
+    }
+
+
+    /**
+     * Adds custom organisation fields to the report
      *
      * @param array $joinlist
      * @param array $columnoptions
@@ -2188,9 +2064,9 @@ abstract class rb_base_source {
                                             $filteroptions);
     }
 
+
     /**
-     *
-     * Add's custom position fields to the report
+     * Adds custom position fields to the report
      *
      * @param array $joinlist
      * @param array $columnoptions
@@ -2208,9 +2084,9 @@ abstract class rb_base_source {
 
     }
 
+
     /**
-     *
-     * Add's custom competency fields to the report
+     * Adds custom competency fields to the report
      *
      * @param array $joinlist
      * @param array $columnoptions

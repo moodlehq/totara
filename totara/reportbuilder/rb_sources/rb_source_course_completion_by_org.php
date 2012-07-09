@@ -43,12 +43,18 @@ class rb_source_course_completion_by_org extends rb_base_source {
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_course_completion_by_org');
 
         //Adding custom fields
+        $this->add_custom_user_fields($this->joinlist,
+                                      $this->columnoptions,
+                                      $this->filteroptions);
         $this->add_custom_position_fields($this->joinlist,
                                           $this->columnoptions,
                                           $this->filteroptions);
         $this->add_custom_organisation_fields($this->joinlist,
                                               $this->columnoptions,
                                               $this->filteroptions);
+        $this->add_custom_course_fields($this->joinlist,
+                                        $this->columnoptions,
+                                        $this->filteroptions);
 
         parent::__construct();
     }
@@ -60,6 +66,10 @@ class rb_source_course_completion_by_org extends rb_base_source {
     //
 
     function define_joinlist() {
+        global $CFG;
+
+        // to get access to constants
+        require_once($CFG->libdir . '/completion/completion_criteria.php');
 
         // joinlist for this source
         $joinlist = array(
@@ -100,7 +110,6 @@ class rb_source_course_completion_by_org extends rb_base_source {
 
         // include some standard joins
         $this->add_user_table_to_joinlist($joinlist, 'base', 'userid');
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'userid');
         $this->add_course_table_to_joinlist($joinlist, 'base', 'course');
         // requires the course join
         $this->add_course_category_table_to_joinlist($joinlist,
@@ -118,7 +127,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
         global $DB;
 
         $columnoptions = array(
-            // none-aggregated columns
+            // non-aggregated columns
             new rb_column_option(
                 'course_completion',
                 'organisationid',

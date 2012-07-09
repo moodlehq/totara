@@ -41,6 +41,13 @@ class rb_source_courses extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_courses');
+
+        //Adding custom fields
+        $this->add_custom_course_fields($this->joinlist,
+                                        $this->columnoptions,
+                                        $this->filteroptions,
+                                        'base');
+
         parent::__construct();
     }
 
@@ -65,7 +72,6 @@ class rb_source_courses extends rb_base_source {
         );
 
         // include some standard joins
-        $this->add_course_custom_fields_to_joinlist($joinlist, 'base', 'id');
         $this->add_course_category_table_to_joinlist($joinlist,
             'base', 'category');
         $this->add_course_tags_tables_to_joinlist($joinlist, 'base', 'id');
@@ -86,7 +92,6 @@ class rb_source_courses extends rb_base_source {
 
         // include some standard columns
         $this->add_course_fields_to_columns($columnoptions, 'base');
-        $this->add_course_custom_fields_to_columns($columnoptions, 'base', 'id');
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'base');
         $this->add_course_tag_fields_to_columns($columnoptions);
 
@@ -108,7 +113,6 @@ class rb_source_courses extends rb_base_source {
 
         // include some standard filters
         $this->add_course_fields_to_filters($filteroptions, 'base', 'id');
-        $this->add_course_custom_fields_to_filters($filteroptions, 'base', 'id');
         $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');
         $this->add_course_tag_fields_to_filters($filteroptions);
 
@@ -205,6 +209,7 @@ class rb_source_courses extends rb_base_source {
         sort($modules);
 
         $out = array();
+        $glue = '';
         foreach ($modules as $module) {
             if (empty($module)) {
                 continue;

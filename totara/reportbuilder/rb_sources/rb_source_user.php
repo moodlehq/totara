@@ -56,6 +56,10 @@ class rb_source_user extends rb_base_source {
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_user');
 
         //Adding custom fields
+        $this->add_custom_user_fields($this->joinlist,
+                                        $this->columnoptions,
+                                        $this->filteroptions,
+                                        'base');
         $this->add_custom_position_fields($this->joinlist,
                                           $this->columnoptions,
                                           $this->filteroptions);
@@ -122,7 +126,6 @@ class rb_source_user extends rb_base_source {
             )
         );
 
-        $this->add_user_custom_fields_to_joinlist($joinlist, 'base', 'id');
         $this->add_position_tables_to_joinlist($joinlist, 'base', 'id');
         $this->add_manager_tables_to_joinlist($joinlist, 'position_assignment', 'reportstoid');
 
@@ -242,9 +245,6 @@ class rb_source_user extends rb_base_source {
                         )
         );
 
-
-        $this->add_user_custom_fields_to_columns($columnoptions);
-
         return $columnoptions;
     }
 
@@ -256,7 +256,6 @@ class rb_source_user extends rb_base_source {
         $filteroptions = array();
 
         $this->add_user_fields_to_filters($filteroptions);
-        $this->add_user_custom_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
 

@@ -71,7 +71,7 @@ class rb_plan_programs_recurring_embedded extends rb_base_embedded {
 
         $context = context_system::instance();
         if (!has_capability('totara/program:viewhiddenprograms', $context)) {
-            // don't show hidden programs to none-admins
+            // don't show hidden programs to non-admins
             $this->embeddedparams['visible'] = 1;
         }
 
