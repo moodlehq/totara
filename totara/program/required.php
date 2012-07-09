@@ -52,7 +52,7 @@ if ($userid != $USER->id) {
 
 if ($programid) {
     $program = new program($programid);
-    if (!$program->is_required_learning()) {
+    if (!$program->is_required_learning($userid)) {
         print_error('error:notrequiredlearning', 'totara_program');
     }
 

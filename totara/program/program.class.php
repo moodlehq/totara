@@ -885,7 +885,7 @@ class program {
             }
             $user->fullname = fullname($user);
             $user->wwwroot = $CFG->wwwroot;
-            $out .= html_writer::start_tag('p', get_string('viewingxusersprogram', 'totara_program', $user));
+            $out .= html_writer::tag('p', get_string('viewingxusersprogram', 'totara_program', $user));
         }
 
         $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);

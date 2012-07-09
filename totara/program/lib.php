@@ -237,7 +237,7 @@ function prog_add_base_navlinks() {
  * @return boolean True if it is the user's own required learning
  */
 function prog_add_required_learning_base_navlinks($userid) {
-    global $USER, $PAGE;
+    global $USER, $PAGE, $DB;
 
     // the user is viewing their own learning
     if ($userid == $USER->id) {
