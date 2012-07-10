@@ -77,6 +77,7 @@ class customfield_base {
 /***** The following methods may be overwritten by child classes *****/
 
     static function display_item_data($data, $prefix=null) {
+        $options = new stdClass();
         $options->para = false;
         return format_text($data, FORMAT_MOODLE, $options);
     }

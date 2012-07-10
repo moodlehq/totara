@@ -152,6 +152,7 @@ $headerdata = array();
 
 $row = new stdClass();
 $row->type = 'name';
+$row->value = new stdClass();
 $row->value->fullname = get_string('name');
 $headerdata[] = $row;
 
@@ -160,6 +161,7 @@ if ($extrafields = $hierarchy->get_extrafields()) {
         $row = new stdClass();
         $row->type = 'extrafield';
         $row->extrafield = $extrafield;
+        $row->value = new stdClass();
         $row->value->fullname = get_string($prefix . $extrafield, 'totara_hierarchy');
         $headerdata[] = $row;
     }
@@ -167,6 +169,7 @@ if ($extrafields = $hierarchy->get_extrafields()) {
 
 $row = new stdClass();
 $row->type = 'actions';
+$row->value = new stdClass();
 $row->value->fullname = get_string('actions');
 $headerdata[] = $row;
 

@@ -61,6 +61,7 @@ class customfield_checkbox extends customfield_base {
      * Display the data for this field
      */
     static function display_item_data($data, $prefix=null) {
+        $options = new stdClass();
         $options->para = false;
         if (intval($data) === 1) {
             return get_string('yes');
