@@ -98,6 +98,7 @@ EOD;
         global $CFG, $OUTPUT;
         $ret = array();
         $curl = new curl;
+        $curl->setopt(array('CURLOPT_FOLLOWLOCATION' => true, 'CURLOPT_MAXREDIRS' => 3));
         $msg = $curl->head($this->file_url);
         $info = $curl->get_info();
         if ($info['http_code'] != 200) {
@@ -149,6 +150,15 @@ EOD;
         } else {
             return $matches[1];
         }
+    }
+
+    /**
+     * file types supported by url downloader plugin
+     *
+     * @return array
+     */
+    public function supported_filetypes() {
+        return array('web_image');
     }
 
     public function supported_returntypes() {

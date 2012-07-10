@@ -70,7 +70,8 @@ YUI.add('moodle-filter_glossary-autolinker', function(Y) {
                     this.overlay.hide(); //hide progress indicator
 
                     for (key in data.entries) {
-                        new M.core.alert({title:data.entries[key].concept, message:data.entries[key].definition, lightbox:false});
+                        definition = data.entries[key].definition + data.entries[key].attachments
+                        new M.core.alert({title:data.entries[key].concept, message:definition, lightbox:false});
                     }
 
                     return true;
@@ -131,4 +132,4 @@ YUI.add('moodle-filter_glossary-autolinker', function(Y) {
         return new AUTOLINKER(config);
     }
 
-}, '@VERSION@', {requires:['base','node','event-delegate','overlay','moodle-enrol-notification']});
+}, '@VERSION@', {requires:['base','node','io-base','json-parse','event-delegate','overlay','moodle-enrol-notification']});

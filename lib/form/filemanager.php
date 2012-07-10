@@ -124,7 +124,7 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
         $subdirs     = $this->_options['subdirs'];
         $maxbytes    = $this->_options['maxbytes'];
         $draftitemid = $this->getValue();
-        $accepted_types = $this->_options['accepted_types'];
+        $accepted_types = (array) $this->_options['accepted_types'];
 
         if (empty($draftitemid)) {
             // no existing area info provided - let's use fresh new draft area
@@ -273,7 +273,8 @@ function form_filemanager_render($options) {
         $extra = '';
     }
 
-    $maxsize = get_string('maxfilesize', 'moodle', display_size(get_max_upload_file_size($CFG->maxbytes, $course_maxbytes, $options->maxbytes)));
+    $options->maxbytes = get_max_upload_file_size($CFG->maxbytes, $course_maxbytes, $options->maxbytes);
+    $maxsize = get_string('maxfilesize', 'moodle', display_size($options->maxbytes));
     $loading = get_string('loading', 'repository');
     $html .= <<<FMHTML
 <div class="filemanager-loading mdl-align" id='filemanager-loading-{$client_id}'>

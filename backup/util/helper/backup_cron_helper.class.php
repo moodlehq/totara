@@ -315,6 +315,7 @@ abstract class backup_cron_automated_helper {
      */
     public static function launch_automated_backup($course, $starttime, $userid) {
 
+        $outcome = true;
         $config = get_config('backup');
         $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, $userid);
 
@@ -347,15 +348,15 @@ abstract class backup_cron_automated_helper {
 
             $bc->set_status(backup::STATUS_AWAITING);
 
-            $outcome = $bc->execute_plan();
+            $bc->execute_plan();
             $results = $bc->get_results();
-            $file = $results['backup_destination'];
+            $file = $results['backup_destination']; // may be empty if file already moved to target location
             $dir = $config->backup_auto_destination;
             $storage = (int)$config->backup_auto_storage;
             if (!file_exists($dir) || !is_dir($dir) || !is_writable($dir)) {
                 $dir = null;
             }
-            if (!empty($dir) && $storage !== 0) {
+            if ($file && !empty($dir) && $storage !== 0) {
                 $filename = backup_plan_dbops::get_default_backup_filename($format, $type, $course->id, $users, $anonymised, !$config->backup_shortname);
                 $outcome = $file->copy_content_to($dir.'/'.$filename);
                 if ($outcome && $storage === 1) {
@@ -363,16 +364,17 @@ abstract class backup_cron_automated_helper {
                 }
             }
 
-            $outcome = true;
-        } catch (backup_exception $e) {
-            $bc->log('backup_auto_failed_on_course', backup::LOG_WARNING, $course->shortname);
+        } catch (moodle_exception $e) {
+            $bc->log('backup_auto_failed_on_course', backup::LOG_ERROR, $course->shortname); // Log error header.
+            $bc->log('Exception: ' . $e->errorcode, backup::LOG_ERROR, $e->a, 1); // Log original exception problem.
+            $bc->log('Debug: ' . $e->debuginfo, backup::LOG_DEBUG, null, 1); // Log original debug information.
             $outcome = false;
         }
 
         $bc->destroy();
         unset($bc);
 
-        return true;
+        return $outcome;
     }
 
     /**
@@ -458,6 +460,11 @@ abstract class backup_cron_automated_helper {
         $keep =     (int)$config->backup_auto_keep;
         $storage =  $config->backup_auto_storage;
         $dir =      $config->backup_auto_destination;
+
+        if ($keep == 0) {
+            // means keep all backup files
+            return true;
+        }
 
         $backupword = str_replace(' ', '_', moodle_strtolower(get_string('backupfilename')));
         $backupword = trim(clean_filename($backupword), '_');

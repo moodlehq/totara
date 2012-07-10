@@ -353,11 +353,12 @@ function user_get_user_details($user, $course = null, array $userfields = array(
         }
     }
 
-    if (in_array('email', $userfields) && ($currentuser
+    if (in_array('email', $userfields) && ($isadmin // The admin is allowed the users email
+      or $currentuser // Of course the current user is as well
       or $canviewuseremail  // this is a capability in course context, it will be false in usercontext
       or $user->maildisplay == 1
       or ($user->maildisplay == 2 and enrol_sharing_course($user, $USER)))) {
-        $userdetails['email'] = $user->email;;
+        $userdetails['email'] = $user->email;
     }
 
     if (in_array('interests', $userfields) && !empty($CFG->usetags)) {

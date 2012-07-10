@@ -49,9 +49,17 @@ require_once("{$CFG->libdir}/completionlib.php");
 require_once("{$CFG->dirroot}/blocks/totara_stats/locallib.php");
 require_once("{$CFG->dirroot}/totara/plan/lib.php");
 
+defined('MOODLE_INTERNAL') || die();
+require_once($CFG->libdir.'/completion/data_object.php');
 
 /**
  * Course completion status for a particular user/course
+ *
+ * @package core_completion
+ * @category completion
+ * @copyright 2009 Catalyst IT Ltd
+ * @author Aaron Barnes <aaronb@catalyst.net.nz>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class completion_completion extends data_object {
 
@@ -65,6 +73,7 @@ class completion_completion extends data_object {
     /* @var array $optional_fields Array of optional table fields */
     public $optional_fields = array('name' => '');
 
+
     /* @var int $userid User ID */
     public $userid;
 
@@ -76,6 +85,7 @@ class completion_completion extends data_object {
 
     /* @var int $positionid Position ID user had when completed */
     public $positionid;
+
 
     /* @var int $deleted set to 1 if this record has been deleted */
     public $deleted;

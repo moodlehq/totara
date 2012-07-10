@@ -31,8 +31,8 @@ class user_filesedit_form extends moodleform {
     function definition() {
         $mform = $this->_form;
 
-        $data    = $this->_customdata['data'];
-        $options = $this->_customdata['options'];
+        $data           = $this->_customdata['data'];
+        $options        = $this->_customdata['options'];
 
         $mform->addElement('filemanager', 'files_filemanager', get_string('files'), null, $options);
         $mform->addElement('hidden', 'returnurl', $data->returnurl);

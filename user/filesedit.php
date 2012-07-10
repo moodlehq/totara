@@ -35,11 +35,7 @@ if (isguestuser()) {
 $returnurl = optional_param('returnurl', '', PARAM_URL);
 
 if (empty($returnurl)) {
-    if (!empty($_SERVER["HTTP_REFERER"])) {
-        $returnurl = $_SERVER["HTTP_REFERER"];
-    } else {
-        $returnurl = new moodle_url('/user/files.php');
-    }
+    $returnurl = new moodle_url('/user/filesedit.php');
 }
 
 $context = get_context_instance(CONTEXT_USER, $USER->id);
@@ -48,7 +44,7 @@ require_capability('moodle/user:manageownfiles', $context);
 $title = get_string('myfiles');
 $struser = get_string('user');
 
-$PAGE->set_url('/user/files.php');
+$PAGE->set_url('/user/filesedit.php');
 $PAGE->set_context($context);
 $PAGE->set_title($title);
 $PAGE->set_heading($title);

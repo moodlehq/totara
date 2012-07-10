@@ -191,6 +191,7 @@ class course_completion_form extends moodleform {
 
         // Completion on course grade
         $mform->addElement('header', 'grade', get_string('coursegrade', 'completion'));
+
         $mform->addHelpButton('grade', 'coursegrade', 'completion');
 
         // Grade enable and passing grade
