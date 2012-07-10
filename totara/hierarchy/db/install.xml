@@ -431,7 +431,7 @@
         <FIELD NAME="locked" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
         <FIELD NAME="required" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
         <FIELD NAME="forceunique" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
-        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
+        <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
         <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
         <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
         <FIELD NAME="param3" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param2" NEXT="param4"/>

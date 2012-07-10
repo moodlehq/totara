@@ -38,6 +38,15 @@ require_once($CFG->dirroot.'/totara/core/db/utils.php');
  */
 function xmldb_totara_hierarchy_upgrade($oldversion) {
     global $CFG, $DB;
+    $dbman = $DB->get_manager();
 
+    if ($oldversion < 2012071000) {
+        $table = new xmldb_table('pos_type_info_field');
+        $field = new xmldb_field('defaultdata', XMLDB_TYPE_TEXT, 'big', null, null, null, null, 'forceunique');
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->change_field_notnull($table, $field);
+        }
+        totara_upgrade_mod_savepoint(true, 2012071000, 'totara_hierarchy');
+    }
     return true;
 }
