@@ -122,7 +122,7 @@ if ($fromform = $mform->get_data()) {
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
-dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+dp_get_plan_base_navlinks($plan->userid);
 $PAGE->navbar->add($fullname, $plan->get_display_url());
 $PAGE->navbar->add(get_string($component->component, 'totara_plan'));
 

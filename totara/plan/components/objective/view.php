@@ -129,7 +129,7 @@ $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fulln
 $PAGE->set_title($pagetitle);
 $PAGE->set_heading($pagetitle);
 
-dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+dp_get_plan_base_navlinks($plan->userid);
 
 $PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $id)));
 $PAGE->navbar->add(get_string($component->component, 'totara_plan'), $component->get_url());

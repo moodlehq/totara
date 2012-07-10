@@ -137,7 +137,7 @@ $hierarchy->hierarchy_page_setup('item/add');
 $fullname = get_string('addcompetencyevidence', 'totara_hierarchy');
 $pagetitle = format_string($fullname);
 
-dp_get_plan_base_navlinks($PAGE->navbar, $plan->userid);
+dp_get_plan_base_navlinks($plan->userid);
 $PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $plan->id)));
 
 $PAGE->set_title($pagetitle);

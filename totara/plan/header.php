@@ -50,7 +50,7 @@ else {
 $fullname = $this->name;
 $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
 
-dp_get_plan_base_navlinks($PAGE->navbar, $this->userid);
+dp_get_plan_base_navlinks($this->userid);
 
 //Javascript include
 local_js(array(

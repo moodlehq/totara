@@ -863,12 +863,11 @@ function dp_record_status_menu($pagename, $status, $userid=null) {
  * Exact links added depends on if the plan belongs to the current
  * user or not.
  *
- * @param ojbect &$navbar The navbar object to update (passed by reference)
  * @param integer $userid ID of the plan's owner
  *
  * @return boolean True if it is the user's own plan
  */
-function dp_get_plan_base_navlinks(&$navbar, $userid) {
+function dp_get_plan_base_navlinks($userid) {
     global $USER, $PAGE, $DB;
     // the user is viewing their own plan
     if ($userid == $USER->id) {

@@ -144,7 +144,7 @@ if ($data = $form->get_data()) {
 ///
 $heading = get_string('createnewlearningplan', 'totara_plan');
 $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$heading);
-dp_get_plan_base_navlinks($PAGE->navbar, $userid);
+dp_get_plan_base_navlinks($userid);
 $PAGE->navbar->add($heading);
 
 //Javascript include
