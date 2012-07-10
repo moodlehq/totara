@@ -88,7 +88,7 @@ class dialog_search_form extends moodleform {
         $searcharray[] =& $mform->createElement('static', 'tablestart', '', '<table id="dialog-search-table"><tbody><tr><td class="querybox">');
 
         // Query box
-        $query = stripslashes($this->_customdata['query']);
+        $query = $this->_customdata['query'];
         $searcharray[] =& $mform->createElement('text', 'query', '', 'maxlength="254"');
         $mform->setType('query', PARAM_TEXT);
         $mform->setDefault('query', $query);

@@ -354,7 +354,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                         PLAN_LINKTYPE_MANDATORY => get_string('mandatory', 'totara_hierarchy'),
                     );
                     $selected = ($ritem->linktype ? $ritem->linktype : PLAN_LINKTYPE_OPTIONAL);
-                    $content[] = $OUTPUT->single_select($url, 'c', $options, $selected);
+                    $content[] = $this->output->single_select($url, 'c', $options, $selected);
                     */
                     $content[] = html_writer::select(
                     array( //$options

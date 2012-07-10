@@ -144,7 +144,7 @@ if ($valueform->is_cancelled()) {
     //fix the description field and redirect
     $valuenew = file_postupdate_standard_editor($valuenew, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_hierarchy', 'comp_scale_values', $valuenew->id);
     $DB->set_field('comp_scale_values', 'description', $valuenew->description, array('id' => $valuenew->id));
-    totara_set_notification(get_string($notification->text, 'totara_hierarchy', format_string(stripslashes($valuenew->name))),
+    totara_set_notification(get_string($notification->text, 'totara_hierarchy', format_string($valuenew->name)),
                         $notification->url, $notification->params);
 }
 

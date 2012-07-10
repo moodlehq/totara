@@ -89,7 +89,7 @@ class item_bulkaction_form extends moodleform {
 
         $mform->addElement('text', 'search', '',
             array('placeholder' => get_string('searchavailable', 'totara_hierarchy')));
-        $mform->setDefault('search', stripslashes($searchterm));
+        $mform->setDefault('search', $searchterm);
         $mform->setType('search', PARAM_TEXT);
         $mform->addElement('submit', 'submitsearch', get_string('search'));
         if (strlen(trim($searchterm)) != 0) {
