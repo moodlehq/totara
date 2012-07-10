@@ -201,7 +201,7 @@ class totara_core_renderer extends plugin_renderer_base {
         $table = new html_table();
         $cells = array();
         $text = get_string('viewmyteam','totara_core');
-        $icon = new pix_icon('/i/teammembers', $text);
+        $icon = new pix_icon('teammembers', $text, 'totara_core');
         $url = new moodle_url('/my/teammembers.php');
         $cellcontent = $this->output->action_icon($url, $icon);
         $cell = new html_table_cell($cellcontent);
@@ -233,7 +233,7 @@ class totara_core_renderer extends plugin_renderer_base {
             $counter++;
             $cells = array();
             $text = format_string($report->fullname);
-            $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/i/reports'),
+            $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('report_icon', 'totara_reportbuilder'),
                                 'alt'=> $text));
             $url = new moodle_url('/totara/reportbuilder/report.php?id='.$report->id);
             $attributes = array('href' => $url);
