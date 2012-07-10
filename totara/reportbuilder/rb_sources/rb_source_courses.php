@@ -196,7 +196,7 @@ class rb_source_courses extends rb_base_source {
     //
     //
 
-    function rb_display_modicons($mods, $row) {
+    function rb_display_modicons($mods, $row, $isexport = false) {
         global $OUTPUT, $CFG;
         $modules = explode('|', $mods);
 
