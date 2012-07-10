@@ -309,8 +309,8 @@ class position extends hierarchy {
         list($items_sql, $items_params) = $DB->get_in_or_equal($items);
 
         // nullify all references to these positions in comp_evidence table
-        $sql = 'UPDATE ' . $CFG->prefix . hierarchy::get_short_prefix('competency') .
-            "_evidence
+        $sql = 'UPDATE {' . hierarchy::get_short_prefix('competency') .
+            "_evidence}
             SET positionid = NULL
             WHERE positionid {$items_sql}";
         if (!$DB->execute($sql, $items_params)) {
