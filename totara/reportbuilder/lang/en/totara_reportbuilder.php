@@ -476,7 +476,7 @@ $string['reportbuilderfilters_help'] = '
 
 Filters can be added, sorted and removed.
 
-**Adding filters:** To add a new filter to the report choose the required filter from the \'Add another filter...\' dropdown menu and click **Save changes**. When **Advanced** is checked the filter will not appear in the \'Search by\' box by default, they use can click **Show advanced** to see these filters.
+**Adding filters:** To add a new filter to the report choose the required filter from the \'Add another filter...\' dropdown menu and click **Save changes**. When **Advanced** is checked the filter will not appear in the \'Search by\' box by default, you can click **Show advanced** when viewing a report to see these filters.
 
 **Moving filters:** The filters will appear in the \'Search by\' box in the order they are listed. Use the up and down arrows to change the order.
 
