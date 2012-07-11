@@ -80,6 +80,59 @@ $strdelete = get_string('delete');
 $straction = get_string('action');
 $strfulllistofcourses = get_string('fulllistofcourses');
 
+/// Delete a category.
+if (!empty($delete) and confirm_sesskey()) {
+
+    if (!$deletecat = $DB->get_record('course_categories', array('id'=>$delete))) {
+        print_error('invalidcategoryid');
+    }
+    $context = context_coursecat::instance($delete);
+    require_capability('moodle/category:manage', $context);
+    require_capability('moodle/category:manage', get_category_or_system_context($deletecat->parent));
+
+    $heading = get_string('deletecategory', 'moodle', format_string($deletecat->name, true, array('context' => $context)));
+    require_once('delete_category_form.php');
+    $mform = new delete_category_form(null, $deletecat);
+    $mform->set_data(array('delete'=>$delete));
+
+    if ($mform->is_cancelled()) {
+
+        redirect(new moodle_url('course/index.php'));
+
+    } else if (!$data= $mform->get_data()) {
+        require_once($CFG->libdir . '/questionlib.php');
+        echo $OUTPUT->header();
+        echo $OUTPUT->heading($heading);
+        $mform->display();
+        echo $OUTPUT->footer();
+        exit();
+    }
+
+    echo $OUTPUT->header();
+    echo $OUTPUT->heading($heading);
+
+    if ($data->fulldelete) {
+        $deletedcourses = category_delete_full($deletecat, true);
+
+        foreach($deletedcourses as $course) {
+            echo $OUTPUT->notification(get_string('coursedeleted', '', $course->shortname), 'notifysuccess');
+        }
+        echo $OUTPUT->notification(get_string('coursecategorydeleted', '', format_string($deletecat->name, true, array('context' => $context))), 'notifysuccess');
+
+    } else {
+        category_delete_move($deletecat, $data->newparent, true);
+    }
+
+    // If we deleted $CFG->defaultrequestcategory, make it point somewhere else.
+    if ($delete == $CFG->defaultrequestcategory) {
+        set_config('defaultrequestcategory', $DB->get_field('course_categories', 'MIN(id)', array('parent' => 0)));
+    }
+
+    echo $OUTPUT->continue_button(new moodle_url('/course/index.php', array('categoryedit' => $categoryedit)));
+
+    echo $OUTPUT->footer();
+    die;
+}
 
 $buttoncontainer = null;
 if (has_capability('moodle/course:create', $systemcontext)) {
@@ -129,57 +182,7 @@ if (!$adminediting) {
 require_once($CFG->libdir.'/adminlib.php');
 admin_externalpage_setup('managecategories', $editbutton);
 
-/// Delete a category.
-if (!empty($delete) and confirm_sesskey()) {
-    if (!$deletecat = $DB->get_record('course_categories', array('id'=>$delete))) {
-        print_error('invalidcategoryid');
-    }
-    $context = get_context_instance(CONTEXT_COURSECAT, $delete);
-    require_capability('moodle/category:manage', $context);
-    require_capability('moodle/category:manage', get_category_or_system_context($deletecat->parent));
 
-    $heading = get_string('deletecategory', 'moodle', format_string($deletecat->name, true, array('context' => $context)));
-    require_once('delete_category_form.php');
-    $mform = new delete_category_form(null, $deletecat);
-    $mform->set_data(array('delete'=>$delete));
-
-    if ($mform->is_cancelled()) {
-        redirect('index.php');
-
-    } else if (!$data= $mform->get_data()) {
-        require_once($CFG->libdir . '/questionlib.php');
-        echo $OUTPUT->header();
-        echo $OUTPUT->heading($heading);
-        $mform->display();
-        echo $OUTPUT->footer();
-        exit();
-    }
-
-    echo $OUTPUT->header();
-    echo $OUTPUT->heading($heading);
-
-    if ($data->fulldelete) {
-        $deletedcourses = category_delete_full($deletecat, true);
-
-        foreach($deletedcourses as $course) {
-            echo $OUTPUT->notification(get_string('coursedeleted', '', $course->shortname), 'notifysuccess');
-        }
-        echo $OUTPUT->notification(get_string('coursecategorydeleted', '', format_string($deletecat->name, true, array('context' => $context))), 'notifysuccess');
-
-    } else {
-        category_delete_move($deletecat, $data->newparent, true);
-    }
-
-    // If we deleted $CFG->defaultrequestcategory, make it point somewhere else.
-    if ($delete == $CFG->defaultrequestcategory) {
-        set_config('defaultrequestcategory', $DB->get_field('course_categories', 'MIN(id)', array('parent'=>0)));
-    }
-
-    echo $OUTPUT->continue_button('index.php');
-
-    echo $OUTPUT->footer();
-    die;
-}
 
 /// Create a default category if necessary
 if (!$categories = get_categories()) {    /// No category yet!
