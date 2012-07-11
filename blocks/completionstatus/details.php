@@ -117,11 +117,11 @@ $params = array(
 $ccompletion = new completion_completion($params);
 
 if ($coursecomplete) {
-    echo get_string('complete');
-
     // Check for RPL
     if (strlen($ccompletion->rpl)) {
-        echo ' '.get_string('viarpl', 'completion');
+        echo get_string('completeviarpl', 'completion');
+    } else {
+        echo get_string('complete');
     }
 
 } else if (!$criteriacomplete && !$ccompletion->timestarted) {

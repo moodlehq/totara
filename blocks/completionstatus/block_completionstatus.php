@@ -205,6 +205,12 @@ class block_completionstatus extends block_base {
         }
 
         $this->content->text .= '</td></tr>';
+
+        // If RPL
+        if (isset($ccompletion) && strlen($ccompletion->rpl)) {
+            $this->content->text .= '<tr><td colspan="2"><b>'.get_string('courserpl', 'completion').':</b> '.format_string($ccompletion->rpl).'</td></tr>';
+        }
+
         $this->content->text .= '<tr><td colspan="2">';
 
         // Get overall aggregation method
