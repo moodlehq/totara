@@ -27,7 +27,8 @@ M.totara_programview = M.totara_programview || {
     // optional php params and defaults defined here, args passed to init method
     // below will override these values
     config: {
-        userid:''
+        userid:'',
+        user_fullname:''
     },
 
     totaraDialog_extension: null,
@@ -141,7 +142,7 @@ M.totara_programview = M.totara_programview || {
             'unused', // buttonid unused
             {
                 buttons: buttonsObj,
-                title: '<h2>'+M.util.get_string('extensionrequest', 'totara_program')+'</h2>'
+                title: '<h2>'+M.util.get_string('extensionrequest', 'totara_program', module.config.user_fullname)+'</h2>'
             },
             this.url,
             handler

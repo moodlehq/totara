@@ -75,12 +75,10 @@ $string['extensiondenied'] = 'Extension denied';
 $string['extensiondeniedmessage'] = 'Your request for an extension has been refused.';
 $string['extensiongranted'] = 'Extension granted';
 $string['extensiongrantedmessage'] = 'You have been granted an extension until {$a}.';
-$string['extensionrequest'] = 'Extension request';
 $string['extensionrequestfailed'] = 'The extension request failed. Please try again.';
 $string['extensionrequestfailed:nomanager'] = 'Extension request was not sent. Manager could not be found';
 $string['extensionrequestmessage'] = '<p>A user has requested an extension for program <em>{$a->programfullname}</em>. The details of the request are:</p><ul><li>Date: {$a->extensiondatestr}</li><li>Reason: {$a->extensionreason}</li></ul>';
 $string['extensionrequestnotsent'] = 'The extension request could NOT be sent. Please try again.';
-$string['extensionrequestsent'] = 'Extension request sent successfully';
 $string['fullname'] = 'Full name';
 $string['holdposof'] = 'Hold position of \'{$a}\'';
 $string['icon'] = 'Icon';
@@ -530,6 +528,15 @@ $string['error:failedsendextensiongrantalert'] = 'Error, failed to alert user of
 $string['error:failedsendextensiondenyalert'] = 'Error, failed to alert user of denied extension';
 $string['error:failedupdateextension'] = 'Error, failed to update program with new due date';
 $string['error:noprogramcompletionfound'] = 'No program completion record was found';
+$string['extensionrequest'] = 'Request for program extension by {$a}';
+$string['extensionrequestsent'] = 'Request for program extension sent to manager';
+$string['extensioninfo_button'] = 'Extension details';
+$string['extensioninfo_text'] = 'Extension request details';
+$string['extensionacceptbutton'] = 'Grant Extension';
+$string['extensionaccepttext'] = 'Extension Granted';
+$string['extensionrejectbutton'] = 'Deny Extension';
+$string['extensionrejecttext'] = 'Extension Denied';
+
 
 //help strings from M2 Code Converter Language Merge
 $string['programidnumber_help'] = 'The ID number of a program is only used when matching this course against external systems - it is never displayed within Moodle. If you have an official code name for this program then use it here ... otherwise you can leave it blank.';

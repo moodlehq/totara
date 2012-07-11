@@ -1241,6 +1241,124 @@ function prog_assignments_firstlogin($user) {
     return $status;
 }
 
+
+/**
+ * Processes extension request to grant or deny them given
+ * an array of exceptions and the action to take
+ *
+ * @param array $extensions list of extension ids and actions in the form array(id => action)
+ * @return array Contains count of extensions processed and number of failures
+ */
+function prog_process_extensions($extensions) {
+    global $CFG, $DB;
+
+    if (!empty($extensions)) {
+        $update_fail_count = 0;
+        $update_extension_count = 0;
+
+        foreach ($extensions as $id => $action) {
+            if ($action == 0) {
+                continue;
+            }
+
+            $update_extension_count++;
+
+            if (!$extension = $DB->get_record('prog_extension', array('id' => $id))) {
+                print_error('error:couldnotloadextension', 'totara_program');
+            }
+
+            if (!totara_is_manager($extension->userid)) {
+                print_error('error:notusersmanager', 'totara_program');
+            }
+
+            if ($action == PROG_EXTENSION_DENY) {
+
+                $userto = $DB->get_record('user', array('id' => $extension->userid));
+                $userfrom = totara_get_manager($extension->userid);
+
+                $messagedata = new stdClass();
+                $messagedata->userto           = $userto;
+                $messagedata->userfrom         = $userfrom;
+                $messagedata->subject          = get_string('extensiondenied', 'totara_program');;
+                $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
+                $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
+                $messagedata->fullmessage      = get_string('extensiondeniedmessage', 'totara_program');
+
+                $eventdata = new stdClass();
+                $eventdata->message = $messagedata;
+
+                if ($result = tm_alert_send($messagedata)) {
+
+                    $extension_todb = new stdClass();
+                    $extension_todb->id = $extension->id;
+                    $extension_todb->status = PROG_EXTENSION_DENY;
+
+                    if (!$DB->update_record('prog_extension', $extension_todb)) {
+                        $update_fail_count++;
+                    }
+                } else {
+                    error(get_string('error:failedsendextensiondenyalert' ,'totara_program'));
+                }
+            } elseif ($action == PROG_EXTENSION_GRANT) {
+                // Load the program for this extension
+                $extension_program = new program($extension->programid);
+
+                if ($prog_completion = $DB->get_record('prog_completion', array('programid' => $extension_program->id, 'userid' => $extension->userid, 'coursesetid' => 0))) {
+                    $duedate = empty($prog_completion->timedue) ? 0 : $prog_completion->timedue;
+
+                    if ($extension->extensiondate < $duedate) {
+                        $update_fail_count++;
+                        continue;
+                    }
+                }
+
+                $now = time();
+                if ($extension->extensiondate < $now) {
+                    $update_fail_count++;
+                    continue;
+                }
+
+                // Try to update due date for program using extension date
+                if (!$extension_program->set_timedue($extension->userid, $extension->extensiondate)) {
+                    $update_fail_count++;
+                    continue;
+                } else {
+                    $userto = $DB->get_record('user', array('id' => $extension->userid));
+                    if (!$userto) {
+                        print_error('error:failedtofinduser', 'totara_program', $extension->userid);
+                    }
+
+                    $userfrom = totara_get_manager($extension->userid);
+
+                    $messagedata = new stdClass();
+                    $messagedata->userto           = $userto;
+                    $messagedata->userfrom         = $userfrom;
+                    $messagedata->subject          = get_string('extensiongranted', 'totara_program');
+                    $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
+                    $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
+                    $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'totara_program', userdate($extension->extensiondate, get_string('strftimedate', 'langconfig'), $CFG->timezone));
+
+                    if ($result = tm_alert_send($messagedata)) {
+
+                        $extension_todb = new stdClass();
+                        $extension_todb->id = $extension->id;
+                        $extension_todb->status = PROG_EXTENSION_GRANT;
+
+                        if (!$DB->update_record('prog_extension', $extension_todb)) {
+                            $update_fail_count++;
+                        }
+                    } else {
+                        print_error('error:failedsendextensiongrantalert','totara_program');
+                    }
+                 }
+            }
+        }
+        return array('total' => $update_extension_count, 'failcount' => $update_fail_count, 'updatefailcount' => $update_fail_count);
+    }
+    return array();
+}
+
+
 /**
  * Run the program cron
  */

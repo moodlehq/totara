@@ -103,13 +103,27 @@ $extension->status = 0;
 
 if ($extensionid = $DB->insert_record('prog_extension', $extension)) {
 
-    $extension_message = new prog_extension_request_message($program->id, $extension->userid);
-    $managermessagedata = $extension_message->get_manager_message_data();
-    $managermessagedata->subject = get_string('extensionrequest', 'totara_program');
-    $managermessagedata->fullmessage = get_string('extensionrequestmessage', 'totara_program', (object)$extensiondata);
+    $data = array();
+    $data['extensionid'] = $extensionid;
+
 
     // Get user to send message to
     $user = $DB->get_record('user', array('id' => $userid));
+    $userfullname = fullname($user);
+
+    $extension_message = new prog_extension_request_message($program->id, $extension->userid, null, null, $data);
+    $managermessagedata = $extension_message->get_manager_message_data();
+    $managermessagedata->subject = get_string('extensionrequest', 'totara_program', $userfullname);
+    $managermessagedata->fullmessage = get_string('extensionrequestmessage', 'totara_program', (object)$extensiondata);
+
+    $managermessagedata->infobutton = get_string('extensioninfo_button', 'totara_program');
+    $managermessagedata->infotext = get_string('extensioninfo_text', 'totara_program');
+
+    $managermessagedata->acceptbutton = get_string('extensionacceptbutton', 'totara_program');
+    $managermessagedata->accepttext = get_string('extensionaccepttext', 'totara_program');
+
+    $managermessagedata->rejectbutton = get_string('extensionrejectbutton', 'totara_program');
+    $managermessagedata->rejecttext = get_string('extensionrejecttext', 'totara_program');
 
     if ($extension_message->send_message($manager, $user)) {
         // Calcuate the new time and print pending extension text

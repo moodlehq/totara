@@ -56,7 +56,7 @@ if ($programid = $DB->get_field('dp_plan_program_assign', 'programid', array('id
     $PAGE->requires->strings_for_js(array('pleaseentervaliddate', 'pleaseentervalidreason', 'extensionrequest', 'cancel', 'ok'), 'totara_program');
     $notify_html = trim($OUTPUT->notification(get_string("extensionrequestsent", "totara_program"), "notifysuccess"));
     $notify_html_fail = trim($OUTPUT->notification(get_string("extensionrequestnotsent", "totara_program"), null));
-    $args = array('args'=>'{"id":'.$programid.', "userid":'.$USER->id.', "notify_html_fail":"'.$notify_html_fail.'", "notify_html":"'.$notify_html.'"}');
+    $args = array('args'=>'{"id":'.$programid.', "userid":'.$USER->id.', "user_fullname":'.json_encode(fullname($USER)).', "notify_html_fail":"'.$notify_html_fail.'", "notify_html":"'.$notify_html.'"}');
     $jsmodule = array(
                  'name' => 'totara_programview',
                  'fullpath' => '/totara/program/view/program_view.js',

@@ -1012,7 +1012,7 @@ class prog_learner_followup_message extends prog_eventbased_message {
  */
 class prog_extension_request_message extends prog_noneventbased_message {
 
-    public function __construct($programid, $userid, $messageob=null, $uniqueid=null) {
+    public function __construct($programid, $userid, $messageob=null, $uniqueid=null, $data) {
         global $CFG;
 
         parent::__construct($programid, $messageob, $uniqueid);
@@ -1022,6 +1022,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:extensionrequestmessage', 'totara_program');
         $this->userid = $userid;
+        $this->extensiondata = $data;
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
@@ -1041,12 +1042,40 @@ class prog_extension_request_message extends prog_noneventbased_message {
             return false;
         }
 
-        // send the message to the learner
+        // send the message to the Manager
         $this->managermessagedata->userto = $recipient;
         $this->managermessagedata->userfrom = $sender;
         $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
         $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
-        $result = tm_alert_send($this->managermessagedata);
+
+        if (!empty($this->managermessagedata->acceptbutton)) {
+            $onaccept = new stdClass();
+            $onaccept->action = 'prog_extension';
+            $onaccept->text = $this->managermessagedata->accepttext;
+            $onaccept->data = array('userid' => $this->userid, 'extensionid' => $this->extensiondata['extensionid']);
+            $onaccept->acceptbutton = $this->managermessagedata->acceptbutton;
+            $this->managermessagedata->onaccept = $onaccept;
+        }
+        if (!empty($this->managermessagedata->rejectbutton)) {
+            $onreject = new stdClass();
+            $onreject->action = 'prog_extension';
+            $onreject->text = $this->managermessagedata->rejecttext;
+            $onreject->data = array('userid' => $this->userid, 'extensionid' => $this->extensiondata['extensionid']);
+            $onreject->rejectbutton = $this->managermessagedata->rejectbutton;
+            $this->managermessagedata->onreject = $onreject;
+        }
+
+        if (!empty($this->managermessagedata->infobutton)) {
+            $oninfo = new stdClass();
+            $oninfo->action = 'prog_extension';
+            $oninfo->text = $this->managermessagedata->infotext;
+            $oninfo->data = array('userid' => $this->userid);
+            $oninfo->data['redirect'] = $this->managermessagedata->contexturl;
+            $oninfo->infobutton = $this->managermessagedata->infobutton;
+            $this->managermessagedata->oninfo = $oninfo;
+        }
+
+        $result = tm_task_send($this->managermessagedata);
 
         return $result;
     }

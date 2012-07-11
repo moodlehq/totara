@@ -52,7 +52,7 @@ $PAGE->requires->strings_for_js(array('pleaseentervaliddate', 'pleaseentervalidr
 $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
 $notify_html = trim($OUTPUT->notification(get_string("extensionrequestsent", "totara_program"), "notifysuccess"));
 $notify_html_fail = trim($OUTPUT->notification(get_string("extensionrequestnotsent", "totara_program"), null));
-$args = array('args'=>'{"id":'.$program->id.', "userid":'.$USER->id.', "notify_html_fail":'.json_encode($notify_html_fail).', "notify_html":'.json_encode($notify_html).'}');
+$args = array('args'=>'{"id":'.$program->id.', "userid":'.$USER->id.', "user_fullname":'.json_encode(fullname($USER)).', "notify_html_fail":'.json_encode($notify_html_fail).', "notify_html":'.json_encode($notify_html).'}');
 $jsmodule = array(
      'name' => 'totara_programview',
      'fullpath' => '/totara/program/view/program_view.js',
