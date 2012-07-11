@@ -48,5 +48,23 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         }
         totara_upgrade_mod_savepoint(true, 2012071000, 'totara_hierarchy');
     }
+
+    //Update to set default proficient value in competency scale
+    if ($oldversion < 2012071200) {
+        $scaleid = $DB->get_field('comp_scale', 'id', array('name' => get_string('competencyscale', 'totara_hierarchy')));
+        if (!$DB->record_exists('comp_scale_values', array('scaleid' => $scaleid, 'proficient' => 1))) {
+            $scalevalueid = $DB->get_field_sql("
+                    SELECT id
+                    FROM {comp_scale_values}
+                    WHERE scaleid = ?
+                    ORDER BY sortorder ASC", array($scaleid), IGNORE_MULTIPLE);
+            $todb = new stdClass();
+            $todb->id = $scalevalueid;
+            $todb->proficient = 1;
+            $DB->update_record('comp_scale_values', $todb);
+        }
+        totara_upgrade_mod_savepoint(true, 2012071200, 'totara_hierarchy');
+    }
+
     return true;
 }
