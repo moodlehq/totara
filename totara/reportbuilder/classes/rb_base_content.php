@@ -81,48 +81,38 @@ class rb_current_pos_content extends rb_base_content {
         $settings = reportbuilder::get_all_settings($reportid, $type);
         $userid = $this->reportfor;
 
-        // get the user's positionid (for primary position)
-        $posid = $DB->get_field('pos_assignment', 'positionid', array('userid' => $userid, 'type' => 1));
-        // no results if they don't have one
-        if (empty($posid)) {
+        // get the user's primary position path
+        $positionpath = $DB->get_field_sql(
+            "SELECT p.path FROM {pos_assignment} pa
+                JOIN {pos} p ON pa.positionid = p.id
+                WHERE pa.userid = ? AND pa.type = ?",
+            array($userid, POSITION_TYPE_PRIMARY));
+
+        // we need the user to have a valid position path
+        if (!$positionpath) {
             // using 1=0 instead of FALSE for MSSQL support
             return array('1=0', array());
         }
 
         if ($settings['recursive']) {
-            // get list of positions to find users for
-            $hierarchy = new position();
-            $children = $hierarchy->get_item_descendants($posid);
-            $plist = array();
-            foreach ($children as $child) {
-                // exclude the user's position (descendants only)
-                if ($settings['recursive'] == 2 && $child->id == $posid) {
-                    continue;
-                }
-                $plist[] = $child->id;
+            // match all positions below the user's one
+            $paramname = rb_unique_param('cpr');
+            $sql = $DB->sql_like($field, ":$paramname");
+            $params = array($paramname => $DB->sql_like_escape($positionpath) . '/%');
+            if ($settings['recursive'] == 1) {
+                // also include the current position
+                $paramname2 = rb_unique_param('cpr');
+                $sql .= " OR $field = :{$paramname2}";
+                $params[$paramname2] = $positionpath;
             }
         } else {
-            $plist = array($posid);
+            // the user's position only
+            $paramname = rb_unique_param('cpr');
+            $sql = "{$field} = :{$paramname}";
+            $params = array($paramname => $positionpath);
         }
 
-        // no positions found
-        if (count($plist) == 0) {
-            // using 1=0 instead of FALSE for MSSQL support
-            return array('1=0', array());
-        }
-
-        // return users who are in a position in that list
-        list($isql, $iparams) = $DB->get_in_or_equal($plist);
-        $users = $DB->get_records_select('pos_assignment',
-            "positionid {$isql}", $iparams, '', 'DISTINCT userid');
-
-        $ulist = array();
-        foreach ($users as $user) {
-            $ulist[] = $user->userid;
-        }
-
-        list($isql, $iparams) = $DB->get_in_or_equal($ulist, SQL_PARAMS_NAMED, rb_unique_param('cpr').'_');
-        return array("{$field} {$isql}", $iparams);
+        return array("({$sql})", $params);
     }
 
     /**
@@ -248,54 +238,45 @@ class rb_current_org_content extends rb_base_content {
         global $CFG, $DB;
 
         require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
-        require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
         $userid = $this->reportfor;
 
-        // get the user's organisationid (for primary position)
-        $orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $userid, 'type' => 1));
-        // no results if they don't have one
-        if (empty($orgid)) {
+        // get the user's primary organisation path
+        $orgpath = $DB->get_field_sql(
+            "SELECT o.path FROM {pos_assignment} pa
+                JOIN {org} o ON pa.organisationid = o.id
+                WHERE pa.userid = ? AND pa.type = ?",
+            array($userid, POSITION_TYPE_PRIMARY));
+
+        // we need the user to have a valid organisation path
+        if (!$orgpath) {
             // using 1=0 instead of FALSE for MSSQL support
             return array('1=0', array());
         }
 
         if ($settings['recursive']) {
-            // get list of organisations to find users for
-            $hierarchy = new organisation();
-            $children = $hierarchy->get_item_descendants($orgid);
-            $olist = array();
-            foreach ($children as $child) {
-                // exclude the user's organisation (descendants only)
-                if ($settings['recursive'] == 2 && $child->id == $orgid) {
-                    continue;
-                }
-                $olist[] = $child->id;
+            // match all organisations below the user's one
+            $paramname = rb_unique_param('cor');
+            $sql = $DB->sql_like($field, ":$paramname");
+            $params = array($paramname => $DB->sql_like_escape($orgpath) . '/%');
+            if ($settings['recursive'] == 1) {
+                // also include the current organisation
+                $paramname2 = rb_unique_param('cor');
+                $sql .= " OR $field = :{$paramname2}";
+                $params[$paramname2] = $orgpath;
             }
         } else {
-            $olist = array($orgid);
+            // the user's organisation only
+            $paramname = rb_unique_param('cor');
+            $sql = "{$field} = :{$paramname}";
+            $params = array($paramname => $orgpath);
         }
 
-        // no orgs found
-        if (count($olist) == 0) {
-            // using 1=0 instead of FALSE for MSSQL support
-            return array('1=0', array());
-        }
-
-        // return users who are in an organisation in that list
-        list($isql, $iparams) = $DB->get_in_or_equal($olist);
-        $users = $DB->get_records_select('pos_assignment',
-            "organisationid {$isql}", $iparams, '', 'DISTINCT userid');
-        $ulist = array();
-        foreach ($users as $user) {
-            $ulist[] = $user->userid;
-        }
-
-        list($isql, $iparams) = $DB->get_in_or_equal($ulist, SQL_PARAMS_NAMED, rb_unique_param('cor').'_');
-        return array("{$field} {$isql}", $iparams);
+        return array("({$sql})", $params);
     }
 
     /**
@@ -419,44 +400,46 @@ class rb_completed_org_content extends rb_base_content {
     function sql_restriction($field, $reportid) {
         global $CFG, $DB;
         require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
-        require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
+        require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
         $settings = reportbuilder::get_all_settings($reportid, $type);
 
         $userid = $this->reportfor;
-        // get the user's organisationid (for primary position)
-        $orgid = $DB->get_field('pos_assignment', 'organisationid', array('userid' => $userid, 'type' => 1));
-        // no results if they don't have one
-        if (empty($orgid)) {
+
+        // get the user's primary organisation path
+        $orgpath = $DB->get_field_sql(
+            "SELECT o.path FROM {pos_assignment} pa
+                JOIN {org} o ON pa.organisationid = o.id
+                WHERE pa.userid = ? AND pa.type = ?",
+            array($userid, POSITION_TYPE_PRIMARY));
+
+        // we need the user to have a valid organisation path
+        if (!$orgpath) {
             // using 1=0 instead of FALSE for MSSQL support
             return array('1=0', array());
         }
-        $uniqueparam = rb_unique_param('ccor');
+
         if ($settings['recursive']) {
-            // get list of organisations to match against
-            $hierarchy = new organisation();
-            $children = $hierarchy->get_item_descendants($orgid);
-            $olist = array();
-            foreach ($children as $child) {
-                // exclude the user's organisation (decendants only)
-                if ($settings['recursive'] == 2 && $child->id == $orgid) {
-                    continue;
-                }
-                $olist[] = $child->id;
+            // match all organisations below the user's one
+            $paramname = rb_unique_param('ccor');
+            $sql = $DB->sql_like($field, ":$paramname");
+            $params = array($paramname => $DB->sql_like_escape($orgpath) . '/%');
+            if ($settings['recursive'] == 1) {
+                // also include the current organisation
+                $paramname2 = rb_unique_param('ccor');
+                $sql .= " OR $field = :{$paramname2}";
+                $params[$paramname2] = $orgpath;
             }
-            // no organisations found
-            if (count($olist) == 0) {
-                // using 1=0 instead of FALSE for MSSQL support
-                return array('1=0', array());
-            }
-            list($isql, $iparams) = $DB->get_in_or_equal($olist, SQL_PARAMS_NAMED, $uniqueparam.'_');
-            return array("{$field} {$isql}", $iparams);
         } else {
-            // just the users organisation
-            return array("{$field} = :{$uniqueparam}", array($uniqueparam => $orgid));
+            // the user's organisation only
+            $paramname = rb_unique_param('ccor');
+            $sql = "{$field} = :{$paramname}";
+            $params = array($paramname => $orgpath);
         }
+
+        return array("({$sql})", $params);
     }
 
     /**

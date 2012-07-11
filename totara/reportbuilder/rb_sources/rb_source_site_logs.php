@@ -181,14 +181,14 @@ class rb_source_site_logs extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 get_string('currentorg', 'rb_source_site_logs'),  // title
-                'base.userid',                      // field
-                null                                // joins
+                'organisation.path',                // field
+                'organisation'                      // joins
             ),
             new rb_content_option(
                 'current_pos',                      // class name
                 get_string('currentpos', 'rb_source_site_logs'),      // title
-                'base.userid',                      // field
-                null                                // joins
+                'position.path',                    // field
+                'position'                          // joins
             ),
             new rb_content_option(
                 'user',

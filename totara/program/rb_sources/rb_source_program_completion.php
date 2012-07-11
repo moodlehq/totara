@@ -285,17 +285,20 @@ class rb_source_program_completion extends rb_base_source {
             new rb_content_option(
                 'current_org',
                 get_string('currentorg', 'rb_source_course_completion'),
-                'base.userid'
+                'organisation.path',
+                'organisation'
             ),
             new rb_content_option(
                 'current_pos',
                 get_string('currentpos', 'rb_source_course_completion'),
-                'base.userid'
+                'position.path',
+                'position'
             ),
             new rb_content_option(
                 'completed_org',
                 get_string('orgwhencompleted', 'rb_source_program_completion'),
-                'base.organisationid'
+                'completion_organisation.path',
+                'completion_organisation'
             ),
             new rb_content_option(
                 'user',

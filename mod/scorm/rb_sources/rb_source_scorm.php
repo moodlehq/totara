@@ -293,8 +293,8 @@ class rb_source_scorm extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 get_string('currentorg', 'rb_source_scorm'),  // title
-                'base.userid',                      // field
-                null                                // joins
+                'organisation.path',                // field
+                'organisation'                      // joins
             ),
             new rb_content_option(
                 'user',

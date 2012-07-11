@@ -382,19 +382,20 @@ class rb_source_course_completion extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 get_string('currentorg', 'rb_source_course_completion'),  // title
-                'base.userid',                      // field
-                null                                // joins
+                'organisation.path',                // field
+                'organisation'                      // joins
             ),
             new rb_content_option(
                 'current_pos',                      // class name
                 get_string('currentpos', 'rb_source_course_completion'),      // title
-                'base.userid',                      // field
-                null                                // joins
+                'position.path',                    // field
+                'position'                          // joins
             ),
             new rb_content_option(
                 'completed_org',
                 get_string('orgwhencompleted', 'rb_source_course_completion'),
-                'base.organisationid'
+                'completion_organisation.path',
+                'completion_organisation'
             ),
             new rb_content_option(
                 'user',

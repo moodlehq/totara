@@ -387,19 +387,20 @@ class rb_source_competency_evidence extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 get_string('currentorg', 'rb_source_competency_evidence'),  // title
-                'base.userid',                      // field
-                null                                // joins
+                'organisation.path',                // field
+                'organisation'                      // joins
             ),
             new rb_content_option(
                 'current_pos',                      // class name
                 get_string('currentpos', 'rb_source_competency_evidence'),      // title
-                'base.userid',                      // field
-                null                                // joins
+                'position.path',                    // field
+                'position'                          // joins
             ),
             new rb_content_option(
                 'completed_org',
                 get_string('completedorg', 'rb_source_competency_evidence'),
-                'base.organisationid'
+                'completion_organisation.path',
+                'completion_organisation'
             ),
             new rb_content_option(
                 'user',

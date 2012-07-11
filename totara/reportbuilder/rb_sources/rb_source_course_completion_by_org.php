@@ -334,13 +334,14 @@ class rb_source_course_completion_by_org extends rb_base_source {
             new rb_content_option(
                 'current_org',                      // class name
                 get_string('currentorg', 'rb_source_course_completion_by_org'),  // title
-                'base.userid',                      // field
-                null                                // joins
+                'organisation.path',                // field
+                'organisation'                      // joins
             ),
             new rb_content_option(
                 'completed_org',
                 get_string('orgwhencompleted', 'rb_source_course_completion_by_org'),
-                'base.organisationid'
+                'completion_organisation.path',
+                'completion_organisation'
             ),
             new rb_content_option(
                 'user',

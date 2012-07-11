@@ -1145,10 +1145,10 @@ class reportbuilder {
             return array("( 1=1 )", array());
         } else if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_ALL) {
             // require all to match
-            $op = ' AND ';
+            $op = "\n    AND ";
         } else {
             // require any to match
-            $op = ' OR ';
+            $op = "\n    OR ";
         }
 
         $reportid = $this->_id;
@@ -1953,7 +1953,7 @@ class reportbuilder {
             $whereclauses[] = $this->src->sourcewhere;
         }
 
-        $where = (count($whereclauses) > 0) ? "WHERE " . implode(' AND ', $whereclauses) . "\n" : '';
+        $where = (count($whereclauses) > 0) ? "WHERE " . implode("\n    AND ", $whereclauses) . "\n" : '';
 
         $groupby = '';
         if ($this->grouped) {
