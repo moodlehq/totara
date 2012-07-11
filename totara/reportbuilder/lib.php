@@ -2011,7 +2011,7 @@ class reportbuilder {
         foreach ($columns as $column) {
             // check that column should be included
             if ($column->display_column(true)) {
-                $headings[] = strip_tags($column->heading);
+                $headings[] = $column;
             }
         }
         switch($format) {
@@ -2354,8 +2354,8 @@ class reportbuilder {
             $row++;
         }
 
-        foreach ($fields as $fieldname) {
-            $worksheet[0]->write($row, $col, $fieldname);
+        foreach ($fields as $field) {
+            $worksheet[0]->write($row, $col, strip_tags($field->heading));
             $col++;
         }
         $row++;
@@ -2424,6 +2424,10 @@ class reportbuilder {
         $worksheet[0] =& $workbook->add_worksheet('');
         $row = 0;
         $col = 0;
+        $dateformat =& $workbook->add_format();
+        $dateformat->set_num_format('dd mmm yyyy');
+        $datetimeformat =& $workbook->add_format();
+        $datetimeformat->set_num_format('dd mmm yyyy h:mm');
 
         if (is_array($restrictions) && count($restrictions) > 0) {
             $worksheet[0]->write($row, 0, get_string('reportcontents', 'totara_reportbuilder'));
@@ -2435,8 +2439,8 @@ class reportbuilder {
             $row++;
         }
 
-        foreach ($fields as $fieldname) {
-            $worksheet[0]->write($row, $col, $fieldname);
+        foreach ($fields as $field) {
+            $worksheet[0]->write($row, $col, strip_tags($field->heading));
             $col++;
         }
         $row++;
@@ -2451,9 +2455,27 @@ class reportbuilder {
             $filerow = 0;
             if ($data) {
                 foreach ($data as $datarow) {
-                    for($col=0; $col<$numfields; $col++) {
-                        if (isset($data[$filerow][$col])) {
-                            $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
+                    for ($col=0; $col<$numfields; $col++) {
+                        if (isset($data[$filerow][$col]) && !empty($data[$filerow][$col])) {
+                            if ($fields[$col]->displayfunc == 'nice_date') {
+                                $system_timezone = date_default_timezone_get();
+                                date_default_timezone_set('UTC');
+                                $unix_ts = strtotime($data[$filerow][$col]);
+                                date_default_timezone_set($system_timezone);
+                                $worksheet[0]->write_date($row, $col, $unix_ts, $dateformat);
+                            } else if ($fields[$col]->displayfunc == 'nice_datetime') {
+                                $system_timezone = date_default_timezone_get();
+                                date_default_timezone_set('UTC');
+                                //change the incoming data slightly so that strtotime can understand it
+                                $datetime = str_replace(" at", "", $data[$filerow][$col]) . ":00";
+                                $unix_ts = strtotime($datetime);
+                                date_default_timezone_set($system_timezone);
+                                if ($unix_ts != 0) {
+                                    $worksheet[0]->write_date($row, $col, $unix_ts, $datetimeformat);
+                                }
+                            } else {
+                                $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
+                            }
                         }
                     }
                     $row++;
@@ -2491,8 +2513,8 @@ class reportbuilder {
         $delimiter = get_string('listsep', 'langconfig');
         $encdelim  = '&#' . ord($delimiter) . ';';
         $row = array();
-        foreach ($fields as $fieldname) {
-            $row[] = str_replace($delimiter, $encdelim, $fieldname);
+        foreach ($fields as $field) {
+            $row[] = str_replace($delimiter, $encdelim, strip_tags($field->heading));
         }
 
         $csv .= implode($delimiter, $row) . "\n";
@@ -3356,7 +3378,7 @@ function create_attachment($reportid, $format, $userid, $sid=null) {
     foreach ($columns as $column) {
         // check that column should be included
         if ($column->display_column(true)) {
-            $headings[] = strip_tags($column->heading);
+            $headings[] = $column;
         }
     }
     $tempfilename = md5(time());
