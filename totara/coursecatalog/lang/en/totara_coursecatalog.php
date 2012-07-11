@@ -119,7 +119,7 @@ $string['nomanagermessage'] = '(no manager set)';
 $string['title_help'] = 'A title that is used to identify the reminder.';
 $string['tracking'] = 'Completion to track';
 $string['tracking_help'] = 'The Completion to track, this can be any activity with or course with completion enabled.';
-$string['requirement_help'] = 'The Requirement that any feedback activity that needs to be completed.
+$string['requirement_help'] = 'The Required feedback activity that needs to be completed.
 ';
 $string['invitationperiod'] = 'Period';
 $string['invitationperiod_help'] = 'The period before the reminder is sent in days.
