@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require('../../config.php');
+require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->libdir.'/completionlib.php');
 
 /**
@@ -32,6 +32,7 @@ require_once($CFG->libdir.'/completionlib.php');
  */
 define('COMPLETION_REPORT_PAGE',        25);
 define('COMPLETION_REPORT_COL_TITLES',  true);
+$criteria_with_rpl = array();
 
 /*
  * Setup page, check permissions
@@ -76,6 +77,37 @@ function csv_quote($value) {
 }
 
 
+///
+/// Display RPL stuff
+///
+function show_rpl($type, $user, $rpl, $describe, $fulldescribe) {
+    global $OUTPUT, $edituser, $course, $sort, $start;
+
+    // If editing a user
+    if ($edituser == $user->id) {
+        // Show edit form
+        print '<form action="save_rpl.php?type='.$type.'&course='.$course->id.'&sort='.$sort.'&start='.$start.'&redirect=1" method="post">';
+        print '<input type="hidden" name="user" value="'.$user->id.'" />';
+        print '<input type="text" name="rpl" value="'.format_string($rpl).'" maxlength="255" />';
+        print '<input type="submit" name="saverpl" value="'.get_string('save', 'completion').'" /></form> ';
+        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'">'.get_string('cancel').'</a>';
+    } else {
+        // Show RPL status icon
+        $rplicon = strlen($rpl) ? 'completion-rpl-y' : 'completion-rpl-n';
+        print '<a href="index.php?course='.$course->id.'&sort='.$sort.'&start='.$start.'&edituser='.$user->id.'#user-'.$user->id.'" class="rpledit"><img src="'.$OUTPUT->pix_url('i/'.$rplicon, 'totara_core').
+            '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" /></a>';
+
+        // Show status text
+        if (strlen($rpl)) {
+            print '<a href="#" class="rplshow" title="'.get_string('showrpl', 'completion').'">...</a>';
+        }
+
+        // Rrpl value
+        print '<span class="rplvalue">'.format_string($rpl).'</span>';
+    }
+}
+
+
 // Check permissions
 require_login($course);
 
@@ -110,6 +142,9 @@ foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_COURSE) as $criterio
 
 foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_ACTIVITY) as $criterion) {
     $criteria[] = $criterion;
+    if ($criterion->module && completion_module_rpl_enabled($criterion->module)) {
+        $criteria_with_rpl[] = $criterion->id;
+    }
 }
 
 foreach ($completion->get_criteria() as $criterion) {
@@ -182,6 +217,25 @@ if ($csv) {
     );
 
     $PAGE->requires->js('/report/completion/textrotate.js');
+    $PAGE->requires->js('/totara/core/js/lib/jquery-1.7.2.min.js');
+
+    $args = array(
+        'args' => json_encode(array(
+            'course'      => $course->id,
+            'pix_rply'    => $OUTPUT->pix_url('i/completion-rpl-y', 'totara_core')->out(),
+            'pix_rpln'    => $OUTPUT->pix_url('i/completion-rpl-n', 'totara_core')->out(),
+            'pix_cross'   => $OUTPUT->pix_url('i/cross_red_big')->out(),
+            'pix_loading' => $OUTPUT->pix_url('loading_small', 'totara_core')->out(),
+        ))
+    );
+
+    $jsmodule = array(
+        'name'      => 'totara_completionrpl',
+        'fullpath'  => '/report/completion/rpl.js',
+        'required'  => array('json'));
+
+    $PAGE->requires->js_init_call('M.totara_completionrpl.init',
+             $args, false, $jsmodule);
 
     // Handle groups (if enabled)
     groups_print_course_menu($course, $CFG->wwwroot.'/report/completion/?course='.$course->id);
@@ -406,7 +460,7 @@ if (!$csv) {
                 // Try load a aggregation method
                 $method = $completion->get_aggregation_method($current_group->criteriatype);
 
-                $method = $method == 1 ? get_string('all') : get_string('any');
+                $method = $method == 1 ? get_string('aggregateall', 'completion') : get_string('aggregateany', 'completion');
 
             } else {
                 $method = '-';
@@ -428,7 +482,16 @@ if (!$csv) {
     // Get course aggregation
     $method = $completion->get_aggregation_method();
 
-    print $method == 1 ? get_string('all') : get_string('any');
+    // Print
+    if ($CFG->enablecourserpl) {
+        if ($method == 1) {
+            print get_string('courserplorallcriteriagroups', 'completion');
+        } else {
+            print get_string('courserploranycriteriagroup', 'completion');
+        }
+    } else {
+        print $method == 1 ? get_string('aggregateall', 'completion') : get_string('aggregateany', 'completion');
+    }
     print '</th>';
 
     print '</tr>';
@@ -446,6 +509,11 @@ if (!$csv) {
             $details = $criterion->get_title_detailed();
             print '<th scope="col" class="colheader criterianame">';
             print '<span class="completion-criterianame">'.$details.'</span>';
+
+            if (in_array($criterion->id, $criteria_with_rpl)) {
+                print '<span class="completion-rplheader completion-criterianame">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
+            }
+
             print '</th>';
         }
 
@@ -453,6 +521,9 @@ if (!$csv) {
         print '<th scope="col" class="colheader criterianame">';
 
         print '<span class="completion-criterianame">'.get_string('coursecomplete', 'completion').'</span>';
+        if ($CFG->enablecourserpl) {
+            print '<span class="completion-rplheader completion-criterianame">'.get_string('recognitionofpriorlearning', 'completion').'</span>';
+        }
 
         print '</th></tr>';
     }
@@ -546,6 +617,7 @@ if (!$csv) {
 
         // Print icon and cell
         print '<th class="criteriaicon">';
+
         if ($icon) {
             print ($iconlink ? '<a href="'.$iconlink.'" title="'.$icontitle.'">' : '');
             print '<img src="'.$icon.'" class="icon" alt="'.$iconalt.'" '.(!$iconlink ? 'title="'.$iconalt.'"' : '').' />';
@@ -554,12 +626,23 @@ if (!$csv) {
             print '&nbsp;';
         }
 
+        if (in_array($criterion->id, $criteria_with_rpl)) {
+            print '<img src="'.$OUTPUT->pix_url('i/course').'" class="icon" alt="'.get_string('rpl', 'completion').'" title="'.get_string('activityrpl', 'completion').'" />';
+            print '<a href="#" class="rplexpand rpl-'.$criterion->id.'" title="'.get_string('showrpls', 'completion').'"><img src="'.$OUTPUT->pix_url('i/one').'" class="icon" alt="+"/></a>';
+        }
+
         print '</th>';
     }
 
     // Overall course completion status
     print '<th class="criteriaicon">';
     print '<img src="'.$OUTPUT->pix_url('i/course').'" class="icon" alt="'.get_string('course').'" title="'.get_string('coursecomplete', 'completion').'" />';
+
+    if ($CFG->enablecourserpl) {
+        print '<img src="'.$OUTPUT->pix_url('i/course').'" class="icon" alt="'.get_string('rpl', 'completion').'" title="'.get_string('courserpl', 'completion').'" />';
+        print '<a href="#" class="rplexpand rpl-course" title="'.get_string('showrpls', 'completion').'"><img src="'.$OUTPUT->pix_url('i/one').'" class="icon" alt="+"/></a>';
+    }
+
     print '</th>';
 
     print '</tr>';
@@ -635,10 +718,15 @@ foreach ($progress as $user) {
             if ($csv) {
                 print $sep.csv_quote($describe).$sep.csv_quote($date);
             } else {
-                print '<td class="completion-progresscell">';
+                print '<td class="completion-progresscell rpl-'.$criterion->id.'">';
 
                 print '<img src="'.$OUTPUT->pix_url('i/'.$completionicon).
                       '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" />';
+
+                // Decide if we need to display an RPL
+                if (in_array($criterion->id, $criteria_with_rpl)) {
+                    show_rpl($criterion->id, $user, $criteria_completion->rpl, $describe, $fulldescribe);
+                }
 
                 print '</td>';
             }
@@ -705,11 +793,15 @@ foreach ($progress as $user) {
         print $sep.csv_quote($describe);
     } else {
 
-        print '<td class="completion-progresscell">';
+        print '<td class="completion-progresscell rpl-course">';
 
         // Display course completion status icon
         print '<img src="'.$OUTPUT->pix_url('i/completion-auto-'.$completiontype).
                '" alt="'.$describe.'" class="icon" title="'.$fulldescribe.'" />';
+
+        if ($CFG->enablecourserpl) {
+            show_rpl('course', $user, $ccompletion->rpl, $describe, $fulldescribe);
+        }
 
         print '</td>';
     }
