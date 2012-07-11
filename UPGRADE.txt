@@ -33,4 +33,6 @@ For more information see http://docs.moodle.org/en/Upgrading
 
 10. Disable server maintenance mode.
 
-11. Congratulations, your site is now running upgraded.
+11. Congratulations, your site is now running upgraded. Read CHANGELOG.txt for details
+    on what is new
+
