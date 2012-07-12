@@ -475,7 +475,7 @@ function program_cron_completions() {
                         'status'        => STATUS_PROGRAM_COMPLETE,
                         'timecompleted' => time()
                         );
-                    return $program->update_program_complete($user->id, $completionsettings);
+                    $program->update_program_complete($user->id, $completionsettings);
                 }
             }
         }
