@@ -312,15 +312,15 @@ class user_position_assignment_form extends moodleform {
         $timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat','totara_core'),$timevalidtostr);
 
         // Enforce valid dates
-        if ( false === $timevalidfrom && $timevalidfromstr !== get_string('datepickerdisplayformat','totara_core') && $timevalidfromstr !== '' ){
+        if (false === $timevalidfrom && $timevalidfromstr !== get_string('datepickerdisplayformat','totara_core') && $timevalidfromstr !== '') {
             $result['timevalidfrom'] = get_string('error:dateformat','totara_hierarchy', get_string('datepickerplaceholder', 'totara_core'));
         }
-        if ( false === $timevalidto && $timevalidtostr !== get_string('datepickerdisplayformat','totara_core') && $timevalidtostr !== '' ){
+        if (false === $timevalidto && $timevalidtostr !== get_string('datepickerdisplayformat','totara_core') && $timevalidtostr !== '') {
             $result['timevalidto'] = get_string('error:dateformat','totara_hierarchy', get_string('datepickerplaceholder', 'totara_core'));
         }
 
         // Enforce start date before finish date
-        if ( $timevalidfrom > $timevalidto && $timevalidfrom !== false && $timevalidto !== false ){
+        if ($timevalidfrom > $timevalidto && $timevalidfrom !== false && $timevalidto !== false && $timevalidtostr !== '') {
             $errstr = get_string('error:startafterfinish','totara_hierarchy');
             $result['timevalidfrom_group'] = $errstr;
             $result['timevalidto_group'] = $errstr;
