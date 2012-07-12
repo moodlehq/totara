@@ -1,7 +1,7 @@
 <?php
 // lang strings for report builder 'user' source
 $string['sourcetitle'] = 'User';
-$string['userspicture'] = 'User\'s picture';
+$string['userspicture'] = 'User\'s Picture';
 $string['lastlogin'] = 'Last Login';
 $string['mylearningicons'] = 'User\'s My Learning Icons';
 $string['name'] = 'Name';
