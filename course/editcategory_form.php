@@ -32,7 +32,12 @@ class editcategory_form extends moodleform {
             $strsubmit = get_string('createcategory');
         }
 
-        $mform->addElement('select', 'parent', get_string('parentcategory'), $options);
+        $attributes = array();
+        $attributes['class'] = 'totara-limited-width';
+        $attributes['onchange'] = 'if (document.all) { this.className=\'totara-limited-width\';}';
+        $attributes['onmousedown'] = 'if (document.all) this.className=\'totara-expanded-width\';';
+        $attributes['onblur'] = 'if (document.all) this.className=\'totara-limited-width\';';
+        $mform->addElement('select', 'parent', get_string('parentcategory'), $options, $attributes);
         $mform->addElement('text', 'name', get_string('categoryname'), array('size'=>'30'));
         $mform->addRule('name', get_string('required'), 'required', null);
         $mform->addElement('text', 'idnumber', get_string('idnumbercoursecategory'),'maxlength="100"  size="10"');

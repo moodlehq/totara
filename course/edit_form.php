@@ -42,14 +42,18 @@ class course_edit_form extends moodleform {
         $mform->addElement('hidden', 'returnto', null);
         $mform->setType('returnto', PARAM_ALPHANUM);
         $mform->setConstant('returnto', $returnto);
-
+        $attributes = array();
+        $attributes['class'] = 'totara-limited-width';
+        $attributes['onchange'] = 'if (document.all) { this.className=\'totara-limited-width\';}';
+        $attributes['onmousedown'] = 'if (document.all) this.className=\'totara-expanded-width\';';
+        $attributes['onblur'] = 'if (document.all) this.className=\'totara-limited-width\';';
         // verify permissions to change course category or keep current
         if (empty($course->id)) {
             if (has_capability('moodle/course:create', $categorycontext)) {
                 $displaylist = array();
                 $parentlist = array();
-                make_categories_list($displaylist, $parentlist, 'moodle/course:create');
-                $mform->addElement('select', 'category', get_string('category'), $displaylist);
+               make_categories_list($displaylist, $parentlist, 'moodle/course:create');
+                $mform->addElement('select', 'category', get_string('category'), $displaylist, $attributes);
                 $mform->addHelpButton('category', 'category');
                 $mform->setDefault('category', $category->id);
             } else {
@@ -66,7 +70,7 @@ class course_edit_form extends moodleform {
                     //always keep current
                     $displaylist[$course->category] = format_string($DB->get_field('course_categories', 'name', array('id'=>$course->category)));
                 }
-                $mform->addElement('select', 'category', get_string('category'), $displaylist);
+                $mform->addElement('select', 'category', get_string('category'), $displaylist, $attributes);
                 $mform->addHelpButton('category', 'category');
             } else {
                 //keep current
