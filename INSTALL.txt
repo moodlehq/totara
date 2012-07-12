@@ -18,4 +18,10 @@ Before installing Totara you should have a server with:
 5. Using your web browser, visit your domain and step through the installation process.
 6. Set up a cron task to call the file admin/cron.php every fifteen minutes.
 7. Set up a cron task to call the file admin/cron_watcher.php every five minutes.
-
+8. Setting PHP variables
+   There are some PHP configuration variables that may need to be customised, depending on your needs. The variables that are commonly changed
+   include "memory_limit", "upload_max_filesize" and "post_max_size".
+   memory_limit - This will need to be increased for restoring large course backups or unzipping large files within Totara
+   upload_max_filesize - This setting in conjuction with "post_max_size" will determine how high you can set the max upload size within Totara.
+   These settings are all located in php.ini. See http://php.net/manual/en/ini.core.php for more information (note that you will need to restart your
+   webserver for these settings to take effect).
