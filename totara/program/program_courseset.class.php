@@ -1029,7 +1029,7 @@ class multi_course_set extends course_set {
             $template_values['%'.$prefix.'label%'] = array('name' => $prefix.'label', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'label'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1050,7 +1050,7 @@ class multi_course_set extends course_set {
             $template_values['%'.$prefix.'completiontype%'] = array('name' => $prefix.'completiontype', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('completiontype', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:learnermustcomplete', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'completiontype'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1072,7 +1072,7 @@ class multi_course_set extends course_set {
             $template_values['%'.$prefix.'timeallowedperiod%'] = array('name'=>$prefix.'timeallowedperiod', 'value'=>null);
         }
         $helpbutton = $OUTPUT->help_icon('timeallowance', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:timeallowance', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1625,7 +1625,7 @@ class competency_course_set extends course_set {
             $template_values['%'.$prefix.'label%'] = array('name' => $prefix.'label', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'label'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1635,7 +1635,7 @@ class competency_course_set extends course_set {
 
         if ($this->competencyid > 0) {
             if ($competency = $DB->get_record('comp', array('id' => $this->competencyid))) {
-                $templatehtml .= html_writer::start_tag('div');
+                $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
                 $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
                 $templatehtml .= html_writer::tag('label', get_string('label:competencyname', 'totara_program'));
                 $templatehtml .= html_writer::end_tag('div');
@@ -1659,7 +1659,7 @@ class competency_course_set extends course_set {
             $template_values['%'.$prefix.'timeallowedperiod%'] = array('name' => $prefix.'timeallowedperiod', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('timeallowance', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:timeallowance', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2044,7 +2044,7 @@ class recurring_course_set extends course_set {
         $templatehtml .= (!isset($this->course->enrolenddate)) ? html_writer::tag('div', get_string('error:courses_endenroldate', 'totara_program'), array('class' => 'recurringnotice')) : '';
 
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:setname', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'label'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2055,7 +2055,7 @@ class recurring_course_set extends course_set {
         // Display the course name
         if (is_object($this->course)) {
             if (isset($this->course->fullname)) {
-                $templatehtml .= html_writer::start_tag('div');
+                $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
                 $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
                 $templatehtml .= html_writer::tag('label', get_string('coursename', 'totara_program'));
                 $templatehtml .= html_writer::end_tag('div');
@@ -2078,7 +2078,7 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'timeallowedperiod%'] = array('name' => $prefix.'timeallowedperiod', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('timeallowance', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:timeallowance', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2101,7 +2101,7 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'recurrencetimeperiod%'] = array('name' => $prefix.'recurrencetimeperiod', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('recurrence', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:recurrence', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'recurrencetimenum'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2124,7 +2124,7 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'recurcreatetimeperiod%'] = array('name' => $prefix.'recurcreatetimeperiod', 'value' => null);
         }
         $helpbutton = $OUTPUT->help_icon('coursecreation', 'totara_program');
-        $templatehtml .= html_writer::start_tag('div');
+        $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:recurcreation', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'recurcreatetimenum'));
         $templatehtml .= html_writer::end_tag('div');
