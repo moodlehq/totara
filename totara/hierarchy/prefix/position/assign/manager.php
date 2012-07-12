@@ -55,8 +55,10 @@ $managers = $DB->get_records_sql(
         ORDER BY
             u.firstname,
             u.lastname
-    "
-, array($guest->id, $userid));
+    ",
+    array($guest->id, $userid), 0, 101);
+// Limit results to 101, which forces the use of search instead of browse in the dialog
+// as it is over the limit of 100 records
 
 
 ///
@@ -66,7 +68,6 @@ $managers = $DB->get_records_sql(
 $dialog = new totara_dialog_content();
 $dialog->searchtype = 'user';
 $dialog->items = $managers;
-$dialog->lang_file = 'manager';
 $dialog->customdata['current_user'] = $userid;
 $dialog->urlparams['userid'] = $userid;
 
