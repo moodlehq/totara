@@ -38,7 +38,7 @@ class editcategory_form extends moodleform {
         $mform->addElement('text', 'idnumber', get_string('idnumbercoursecategory'),'maxlength="100"  size="10"');
         $mform->addHelpButton('idnumber', 'idnumbercoursecategory');
         $mform->addElement('editor', 'description_editor', get_string('description'), null, $editoroptions);
-        $mform->setType('description_editor', PARAM_RAW);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
         if (!empty($CFG->allowcategorythemes)) {
             $themes = array(''=>get_string('forceno'));
             $allthemes = get_list_of_themes();
