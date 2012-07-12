@@ -140,7 +140,7 @@ if ($formdata = $mform->get_data()) {
     echo '<table>';
     echo '<tr>';
     foreach ($header as $h) {
-        $h = clean_param($h, PARAM_RAW);
+        $h = clean_param($h, PARAM_TEXT);
         echo '<th>'.$h.'</th>';
     }
     echo '</tr>';
@@ -148,6 +148,7 @@ if ($formdata = $mform->get_data()) {
         $lines = explode($csv_delimiter, fgets($fp, GRADE_CSV_LINE_LENGTH));
         echo '<tr>';
         foreach ($lines as $line) {
+            $line = clean_param($line, PARAM_TEXT);
             echo '<td>'.$line.'</td>';
         }
         $numlines ++;
