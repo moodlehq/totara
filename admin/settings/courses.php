@@ -15,7 +15,7 @@ if ($hassiteconfig
             array('moodle/category:manage', 'moodle/course:create')));
 
     $ADMIN->add('courses', new admin_externalpage('managecategories', get_string('managecategories'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
-            array('moodle/category:manage', 'local/program:createprogram')));
+            array('moodle/category:manage', 'totara/program:createprogram')));
 
     $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'totara_customfield'), $CFG->wwwroot . '/totara/customfield/index.php?prefix=course',
             array('totara/core:createcoursecustomfield', 'totara/core:updatecoursecustomfield', 'totara/core:deletecoursecustomfield')));
