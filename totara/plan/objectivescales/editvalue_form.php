@@ -55,11 +55,12 @@ class dp_objective_scale_value_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string('objectivescalevalueidnumber', 'totara_plan'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('idnumber', 'objectivescalevalueidnumber', 'totara_plan', '', true);
-        $mform->setType('idnumber', PARAM_RAW);
+        $mform->setType('idnumber', PARAM_TEXT);
 
         $mform->addElement('text', 'numericscore', get_string('objectivescalevaluenumeric', 'totara_plan'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('numericscore', 'objectivescalevaluenumeric', 'totara_plan', '', true);
-        $mform->setType('numericscore', PARAM_RAW);
+        $mform->setType('numericscore', PARAM_NUMBER);
+        $mform->addRule('numericscore', null, 'numeric', null, 'client');
 
         $note = (dp_objective_scale_is_used($scaleid)) ? html_writer::tag('span', get_string('achievedvaluefrozen', 'totara_plan'), array('class' => "notifyproblem")) : '';
         $mform->addElement('advcheckbox', 'achieved', get_string('achieved', 'totara_plan'), $note);
@@ -69,29 +70,8 @@ class dp_objective_scale_value_edit_form extends moodleform {
         }
 
         $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
-        $mform->setType('description_editor', PARAM_RAW);
+        $mform->setType('description_editor', PARAM_CLEAN);
 
         $this->add_action_buttons();
-    }
-
-    function validation($valuenew) {
-
-        $err = array();
-        $valuenew = (object)$valuenew;
-
-        // Check the numericscore field was either empty or a number
-        if (strlen($valuenew->numericscore)) {
-            // Is a number
-            if (is_numeric($valuenew->numericscore)) {
-                $valuenew->numericscore = (float)$valuenew->numericscore;
-            } else {
-                $err['numericscore'] = get_string('invalidnumeric', 'totara_plan');
-                return $err;
-            }
-        } else {
-            $valuenew->numericscore = null;
-        }
-
-        return true;
     }
 }

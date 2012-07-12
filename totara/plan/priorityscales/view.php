@@ -228,7 +228,7 @@ if ($values) {
         $count++;
         $row = array();
         $buttons = array();
-        $row[] = $value->name;
+        $row[] = format_string($value->name);
 
 
         // Is this the default value?
