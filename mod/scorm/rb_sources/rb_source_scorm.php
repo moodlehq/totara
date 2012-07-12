@@ -304,7 +304,7 @@ class rb_source_scorm extends rb_base_source {
             new rb_content_option(
                 'date',
                 get_string('thedate', 'rb_source_scorm'),
-                $DB->sql_cast_char2int('sco_starttime.value'),
+                $DB->sql_cast_char2int('sco_starttime.value', true),
                 'sco_starttime'
             ),
         );

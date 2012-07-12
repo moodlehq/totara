@@ -1289,10 +1289,10 @@ abstract class rb_base_source {
             'name_and_summary',
             get_string('coursenameandsummary', 'totara_reportbuilder'),
             // case used to merge even if one value is null
-            "CASE WHEN $join.fullname IS NULL THEN $join.summary
+            "CASE WHEN $join.fullname IS NULL THEN " . $DB->sql_compare_text("$join.summary") . "
                 WHEN $join.summary IS NULL THEN $join.fullname
                 ELSE " . $DB->sql_concat("$join.fullname", "'" . html_writer::empty_tag('br') . "'",
-                    "$join.summary") . ' END',
+                    $DB->sql_compare_text("$join.summary")) . ' END',
             array(
                 'joins' => $join,
             )
@@ -1455,7 +1455,7 @@ abstract class rb_base_source {
             'prog',
             'availablefrom',
             get_string('availablefrom', 'totara_program'),
-            $DB->sql_compare_text("$join.availablefrom"),
+            "$join.availablefrom",
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date'
@@ -1465,7 +1465,7 @@ abstract class rb_base_source {
             'prog',
             'availableuntil',
             get_string('availableuntil', 'totara_program'),
-            $DB->sql_compare_text("$join.availableuntil"),
+            "$join.availableuntil",
             array(
                 'joins' => $join,
                 'displayfunc' => 'nice_date'
@@ -1969,7 +1969,7 @@ abstract class rb_base_source {
 
             case 'datetime':
                 $datatype = 'date';
-                $columnsql = $DB->sql_cast_char2int($columnsql);
+                $columnsql = $DB->sql_cast_char2int($columnsql, true);
                 if ($record->param3) {
                     $column_options['displayfunc'] = 'nice_datetime';
                 } else {
