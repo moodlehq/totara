@@ -134,6 +134,7 @@ $string['error:invalideventtype'] = 'Invalid event type: ';
 $string['error:invalidreportid'] = 'Invalid report ID';
 $string['error:invalidreportscheduleid'] = 'Invalid scheduled report ID';
 $string['error:invaliduserid'] = 'Invalid user ID';
+$string['error:missingdependencytable'] = 'In report source {$a->source}, missing dependency table in joinlist: {$a->join}!';
 $string['error:mustselectsource'] = 'You must pick a source for the report';
 $string['error:nocolumns'] = 'No columns found. Ask your developer to add column options to the \'{$a}\' source.';
 $string['error:nocolumnsdefined'] = 'No columns have been defined for this report. Ask you site administrator to add some columns.';

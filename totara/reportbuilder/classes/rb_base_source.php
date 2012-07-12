@@ -1922,7 +1922,10 @@ abstract class rb_base_source {
         }
 
         if (!$seek) {
-            throw new ReportBuilderException("Missing dependency table in joinlist: {$join}!");
+            $a = new stdClass();
+            $a->join = $join;
+            $a->source = get_class($this);
+            throw new ReportBuilderException(get_string('error:missingdependencytable', 'totara_reportbuilder', $a));
         }
 
         // build the table names for this sort of custom field data
