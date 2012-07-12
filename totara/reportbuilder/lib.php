@@ -19,6 +19,7 @@
  *
  * @author Simon Coggins <simon.coggins@totaralms.com>
  * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -1830,6 +1831,40 @@ class reportbuilder {
 
 
     /**
+     * Returns the ORDER BY SQL snippet for the current report
+     *
+     * @param object $table Flexible table object to use to find the sort parameters (optional)
+     *                      If not provided a new object will be created based on the report's
+     *                      shortname
+     *
+     * @return string SQL string to order the report to be appended to the main query
+     */
+    public function get_report_sort($table = null) {
+        global $SESSION;
+
+        // check the sort session var doesn't contain old columns that no
+        // longer exist
+        $this->check_sort_keys();
+
+        // unless the table object is provided we need to call get_sql_sort() statically
+        // and pass in the report's unique id (shortname)
+        if (!isset($table)) {
+            $shortname = $this->shortname;
+            $sort = trim(flexible_table::get_sort_for_table($shortname));
+        } else {
+            $sort = trim($table->get_sql_sort());
+        }
+
+        // always include the base id as a last resort to ensure order is
+        // predetermined for pagination
+        $baseid = $this->grouped ? 'min(base.id)' : 'base.id';
+        $order = ($sort != '') ? " ORDER BY $sort, $baseid" : " ORDER BY $baseid";
+
+        return $order;
+    }
+
+
+    /**
      * This function builds the main SQL query used to get the data for the page
      *
      * @param boolean $countonly If true returns SQL to count results, otherwise the
@@ -1995,13 +2030,10 @@ class reportbuilder {
      */
     function export_data($format) {
         $columns = $this->columns;
-        $shortname = $this->shortname;
         $this->get_filtering();
         $count = $this->get_filtered_count();
         list($sql, $params) = $this->build_query(false, true);
-
-        $sort = flexible_table::get_sort_for_table($shortname);
-        $order = ($sort != '') ? " ORDER BY $sort" : '';
+        $order = $this->get_report_sort();
 
         // array of filters that have been applied
         // for including in report where possible
@@ -2022,7 +2054,7 @@ class reportbuilder {
             case 'csv':
                 $this->download_csv($headings, $sql . $order, $params, $count);
             case 'fusion':
-                $this->download_fusion($headings, $sql . $order, $params, $count, $restrictions);
+                $this->download_fusion();
         }
         die;
     }
@@ -2033,7 +2065,8 @@ class reportbuilder {
      * @return No return value but prints the current data table
      */
     function display_table() {
-        global $SESSION;
+        global $SESSION, $DB;
+
         define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
         define('SHOW_ALL_PAGE_SIZE', 9999);
         $spage     = optional_param('spage', 0, PARAM_INT);                    // which page to show
@@ -2104,20 +2137,13 @@ class reportbuilder {
         $table->initialbars(true);
         $table->pagesize($perpage, $countfiltered);
 
-        // check the sort session var doesn't contain old columns that no
-        // longer exist
-        $this->check_sort_keys();
         // get the ORDER BY SQL fragment from table
-        $sort = $table->get_sql_sort();
-        if ($sort != '') {
-            $order = " ORDER BY $sort";
-        } else {
-           $order = '';
-        }
-        if ($data = $this->fetch_data($sql . $order, $params, $table->get_page_start(), $table->get_page_size())) {
-            // add data to flexible table
-            foreach ($data as $row) {
-                $table->add_data($row);
+        $order = $this->get_report_sort($table);
+
+        if ($records = $DB->get_recordset_sql($sql.$order, $params, $table->get_page_start(), $table->get_page_size())) {
+            foreach ($records as $record) {
+                $record_data = $this->process_data_row($record);
+                $table->add_data($record_data);
             }
         } else if ($data === false) {
             print_error('error:problemobtainingreportdata', 'totara_reportbuilder');
@@ -2185,59 +2211,44 @@ class reportbuilder {
 
 
     /**
-     * Given an SQL query and some addition parameters, returns a 2d array of the data
-     * obtained by running the query. If display functions exist for any columns the
-     * data is passed to the display function and the result included instead.
+     * Given a record, returns an array of data for the record. If display
+     * functions exist for any columns the data is passed to the display
+     * function and the result included instead.
      *
-     * @param string $sql The SQL query, excluding offset/limit
-     * @param array $params The SQL query params
-     * @param integer $start The first row to extract
-     * @param integer $size The total number of rows to extract
+     * @param array $record A record returnd by a recordset
      * @param boolean $striptags If true, returns the data with any html tags removed
      * @param boolean $isexport If true, data is being exported
      * @return array Outer array are table rows, inner array are columns
      *               False is returned if the SQL query failed entirely
      */
-    function fetch_data($sql, $params, $start=null, $size=null, $striptags=false, $isexport=false) {
-        global $DB;
+    function process_data_row($record, $striptags=false, $isexport=false) {
         $columns = $this->columns;
         $columnoptions = $this->columnoptions;
 
-        $records = $DB->get_recordset_sql($sql, $params, $start, $size);
-        $ret = array();
-        if ($records) {
-            foreach ($records as $record) {
-                $tabledata = array();
-                foreach ($columns as $column) {
-                    // check column should be shown
-                    if ($column->display_column($isexport)) {
-                        $type = $column->type;
-                        $value = $column->value;
-                        $field = "{$type}_{$value}";
-                        // treat fields different if display function exists
-                        if (isset($column->displayfunc)) {
-                            $func = 'rb_display_' . $column->displayfunc;
-                            if (method_exists($this->src, $func)) {
-                                $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
-                            } else {
-                                $tabledata[] =filter_text($record->$field);
-                            }
-                        } else {
-                            $tabledata[] = filter_text($record->$field);
-                        }
+        $tabledata = array();
+        foreach ($columns as $column) {
+            // check column should be shown
+            if ($column->display_column($isexport)) {
+                $type = $column->type;
+                $value = $column->value;
+                $field = "{$type}_{$value}";
+                // treat fields different if display function exists
+                if (isset($column->displayfunc)) {
+                    $func = 'rb_display_'.$column->displayfunc;
+                    if (method_exists($this->src, $func)) {
+                        $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
+                    } else {
+                        $tabledata[] = filter_text($record->$field);
                     }
+                } else {
+                    $tabledata[] = filter_text($record->$field);
                 }
-                $ret[] = $tabledata;
             }
-            $records->close();
-        } else {
-            // this indicates a failed query, not just 0 results
-            return false;
         }
         if ($striptags === true) {
-            return $this->strip_tags_r($ret);
+            return $this->strip_tags_r($tabledata);
         } else {
-            return $ret;
+            return $tabledata;
         }
     }
 
@@ -2317,11 +2328,11 @@ class reportbuilder {
      * @return Returns the ODS file
      */
     function download_ods($fields, $query, $params, $count, $restrictions=array(), $file=null) {
-        global $CFG;
+        global $CFG, $DB;
+
         require_once("$CFG->libdir/odslib.class.php");
         $shortname = $this->shortname;
         $filename = clean_filename($shortname . '_report.ods');
-        $blocksize = 1000;
 
         if (!$file) {
             header("Content-Type: application/download\n");
@@ -2362,23 +2373,22 @@ class reportbuilder {
 
         $numfields = count($fields);
 
-        //break the data into blocks as single array gets too big
-        for($k = 0; $k <= floor($count/$blocksize); $k++) {
-            $start = $k * $blocksize;
-            $data = $this->fetch_data($query, $params, $start, $blocksize, true, true);
+        //use recordset so we can manage very large datasets
+        if ($records = $DB->get_recordset_sql($query, $params)) {
+            foreach ($records as $record) {
+                $record_data = $this->process_data_row($record, true, true);
 
-            $filerow = 0;
-            if ($data) {
-                foreach ($data as $datarow) {
-                    for($col=0; $col<$numfields;$col++) {
-                        if (isset($data[$filerow][$col])) {
-                            $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
-                        }
+                for($col=0; $col<$numfields; $col++) {
+                    if (isset($record_data[$col])) {
+                        $worksheet[0]->write($row, $col, html_entity_decode($record_data[$col], ENT_COMPAT, 'UTF-8'));
                     }
-                    $filerow++;
-                    $row++;
                 }
+                $row++;
             }
+            $records->close();
+        } else {
+            // this indicates a failed query, not just 0 results
+            return false;
         }
 
         $workbook->close();
@@ -2397,13 +2407,12 @@ class reportbuilder {
      * @return Returns the Excel file
      */
     function download_xls($fields, $query, $params, $count, $restrictions=array(), $file=null) {
-        global $CFG;
+        global $CFG, $DB;
 
         require_once("$CFG->libdir/excellib.class.php");
 
         $shortname = $this->shortname;
         $filename = clean_filename($shortname . '_report.xls');
-        $blocksize = 1000;
 
         if (!$file) {
             header("Content-Type: application/download\n");
@@ -2447,41 +2456,40 @@ class reportbuilder {
 
         $numfields = count($fields);
 
-        // break the data into blocks as single array gets too big
-        for($k = 0; $k <= floor($count/$blocksize); $k++) {
-            $start = $k * $blocksize;
-            $data = $this->fetch_data($query, $params, $start, $blocksize, true, true);
+        // user recordset so we can handle large datasets
+        if ($records = $DB->get_recordset_sql($query, $params)) {
+            foreach ($records as $record) {
+                $record_data = $this->process_data_row($record, true, true);
 
-            $filerow = 0;
-            if ($data) {
-                foreach ($data as $datarow) {
-                    for ($col=0; $col<$numfields; $col++) {
-                        if (isset($data[$filerow][$col]) && !empty($data[$filerow][$col])) {
-                            if ($fields[$col]->displayfunc == 'nice_date') {
-                                $system_timezone = date_default_timezone_get();
-                                date_default_timezone_set('UTC');
-                                $unix_ts = strtotime($data[$filerow][$col]);
-                                date_default_timezone_set($system_timezone);
-                                $worksheet[0]->write_date($row, $col, $unix_ts, $dateformat);
-                            } else if ($fields[$col]->displayfunc == 'nice_datetime') {
-                                $system_timezone = date_default_timezone_get();
-                                date_default_timezone_set('UTC');
-                                //change the incoming data slightly so that strtotime can understand it
-                                $datetime = str_replace(" at", "", $data[$filerow][$col]) . ":00";
-                                $unix_ts = strtotime($datetime);
-                                date_default_timezone_set($system_timezone);
-                                if ($unix_ts != 0) {
-                                    $worksheet[0]->write_date($row, $col, $unix_ts, $datetimeformat);
-                                }
-                            } else {
-                                $worksheet[0]->write($row, $col, html_entity_decode($data[$filerow][$col], ENT_COMPAT, 'UTF-8'));
+                for ($col=0; $col<$numfields; $col++) {
+                    if (isset($record_data[$col]) && !empty($record_data[$col])) {
+                        if ($fields[$col]->displayfunc == 'nice_date') {
+                            $system_timezone = date_default_timezone_get();
+                            date_default_timezone_set('UTC');
+                            $unix_ts = strtotime($record_data[$col]);
+                            date_default_timezone_set($system_timezone);
+                            $worksheet[0]->write_date($row, $col, $unix_ts, $dateformat);
+                        } else if ($fields[$col]->displayfunc == 'nice_datetime') {
+                            $system_timezone = date_default_timezone_get();
+                            date_default_timezone_set('UTC');
+                            //change the incoming data slightly so that strtotime can understand it
+                            $datetime = str_replace(" at", "", $record_data[$col]) . ":00";
+                            $unix_ts = strtotime($datetime);
+                            date_default_timezone_set($system_timezone);
+                            if ($unix_ts != 0) {
+                                $worksheet[0]->write_date($row, $col, $unix_ts, $datetimeformat);
                             }
+                        } else {
+                            $worksheet[0]->write($row, $col, html_entity_decode($record_data[$col], ENT_COMPAT, 'UTF-8'));
                         }
                     }
-                    $row++;
-                    $filerow++;
                 }
+                $row++;
             }
+            $records->close();
+        } else {
+            // this indicates a failed query, not just 0 results
+            return false;
         }
 
         $workbook->close();
@@ -2498,9 +2506,10 @@ class reportbuilder {
      * @return Returns the CSV file
      */
     function download_csv($fields, $query, $params, $count, $file=null) {
+        global $DB;
+
         $shortname = $this->shortname;
         $filename = clean_filename($shortname . '_report.csv');
-        $blocksize = 1000;
         $csv = '';
         if (!$file) {
             header("Content-Type: application/download\n");
@@ -2520,25 +2529,24 @@ class reportbuilder {
         $csv .= implode($delimiter, $row) . "\n";
 
         $numfields = count($fields);
-        // break the data into blocks as single array gets too big
-        for($k = 0; $k <= floor($count/$blocksize); $k++) {
-            $start = $k * $blocksize;
-            $data = $this->fetch_data($query, $params, $start, $blocksize, true, true);
-            $i = 0;
-            if ($data) {
-                foreach ($data AS $row) {
-                    $row = array();
-                    for($j=0; $j<$numfields; $j++) {
-                        if (isset($data[$i][$j])) {
-                            $row[] = html_entity_decode(str_replace($delimiter, $encdelim, $data[$i][$j]), ENT_COMPAT, 'UTF-8');
-                        } else {
-                            $row[] = '';
-                        }
+
+        if ($records = $DB->get_recordset_sql($query, $params)) {
+            foreach ($records as $record) {
+                $record_data = $this->process_data_row($record, true, true);
+                $row = array();
+                for ($j=0; $j<$numfields; $j++) {
+                    if (isset($record_data[$j])) {
+                        $row[] = html_entity_decode(str_replace($delimiter, $encdelim, $record_data[$j]), ENT_COMPAT, 'UTF-8');
+                    } else {
+                        $row[] = '';
                     }
-                    $csv .= implode($delimiter, $row) . "\n";
-                    $i++;
                 }
+                $csv .= implode($delimiter, $row)."\n";
             }
+            $records->close();
+        } else {
+            // this indicates a failed query, not just 0 results
+            return false;
         }
 
         if ($file) {
@@ -2559,7 +2567,7 @@ class reportbuilder {
      *                            about the content of the report
      * @return Returns never
      */
-    function download_fusion($fields, $query, $params, $count, $restriction) {
+    function download_fusion() {
         $jump = new moodle_url('/totara/reportbuilder/fusionexporter.php', array('id' => $this->_id, 'sid' => $this->_sid));
         redirect($jump->out());
         die;
@@ -2968,6 +2976,8 @@ class reportbuilder {
         // get data
         list($sql, $params) = $this->build_query(false, true);
 
+        $baseid = $this->grouped ? 'min(base.id)' : 'base.id';
+
         // use default sort data if set
         if (isset($this->defaultsortcolumn)) {
             if (isset($this->defaultsortorder) &&
@@ -2985,12 +2995,12 @@ class reportbuilder {
                 }
             }
             if ($set) {
-                $sort = " ORDER BY {$this->defaultsortcolumn} {$order}";
+                $sort = " ORDER BY {$this->defaultsortcolumn} {$order}, {$baseid}";
             } else {
-                $sort = '';
+                $sort = " ORDER BY {$baseid}";
             }
         } else {
-            $sort = '';
+            $sort = " ORDER BY {$baseid}";
         }
         $data = $DB->get_records_sql($sql . $sort, $params, $spage * $perpage, $perpage);
         $first = true;

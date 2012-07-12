@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Piers Harding <piers@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage reportbuilder
  */
@@ -35,12 +36,9 @@ $sid        = optional_param('sid', NULL, PARAM_INT); // report search id
 if ($id != null) {
     // look for existing report by id
     $report = $DB->get_record('report_builder', array('id' => $id));
-} else if ($shortname != null) {
-    // look for existing report by shortname
-    $report = $DB->get_record('report_builder', array('shortname' => $shortname));
 } else {
-    // either id or shortname is required
-    print_error('noshortnameorid', 'totara_reportbuilder');
+    // id is required
+    print_error('invalidreportid', 'local_reportbuilder');
 }
 $rep =  new reportbuilder($id, null, false, $sid) ;
 
@@ -75,13 +73,11 @@ $columns = $rep->columns;
 $shortname = $rep->shortname;
 $count = $rep->get_filtered_count();
 list($query, $params) = $rep->build_query(false, true);
-
-$sort = flexible_table::get_sort_for_table($shortname);
+$query .= flexible_table::get_sort_for_table($shortname);
 
 // array of filters that have been applied
 // for including in report where possible
 $restrictions = $rep->get_restriction_descriptions();
-$query .= ($sort != '') ? " ORDER BY $sort" : '';
 
 $fields = array();
 foreach ($columns as $column) {
@@ -121,31 +117,26 @@ $tables = $oauth->show_tables();
 @set_time_limit(0);
 
 // process the output
-$blocksize = 500;
 $numfields = count($fields);
 // break the data into blocks as single array gets too big
 global $data_len;
-for($k = 0; $k <= floor($count/$blocksize); $k++) {
-    $start = $k * $blocksize;
-    $data = $rep->fetch_data($query, $params, $start, $blocksize, true, true);
-    $i = 0;
+
+if ($records = $DB->get_recordset_sql($query, $params)) {
     $rows = array();
-    if ($data) {
-        foreach ($data AS $row) {
-            $row = array();
-            for($j = 0; $j < $numfields; $j++) {
-                if (isset($data[$i][$j])) {
-                    $row[] = htmlspecialchars_decode($data[$i][$j]);
-                } else {
-                    $row[] = '';
-                }
+    foreach ($records as $record) {
+        $record_data = $rep->process_data_row($record, true, true);
+        $row = array();
+        for($j=0; $j<$numfields; $j++) {
+            if (isset($record_data[$j])) {
+                $row[] = htmlspecialchars_decode($record_data[$j]);
+            } else {
+                $row[] = '';
             }
-            $rows[]= $row;
-            $i++;
         }
+        $rows[]= $row;
     }
     $result = $oauth->insert_rows($tablename, $rows);
-
+    $records->close();
 }
 
 // all done - go and have a look at the table
