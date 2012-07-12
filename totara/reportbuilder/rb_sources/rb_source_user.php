@@ -296,13 +296,26 @@ class rb_source_user extends rb_base_source {
      * @return array
      */
     protected function define_contentoptions() {
-        $contentoptions = array();
-
         // Include the rb_user_content content options for this report
-        $contentoptions[] = new rb_content_option(
-            'user',
-            get_string('users', 'rb_source_user'),
-            'base.id');
+        $contentoptions = array(
+            new rb_content_option(
+                'user',
+                get_string('user', 'rb_source_user'),
+                'base.id'
+            ),
+            new rb_content_option(
+                'current_org',
+                get_string('currentorg', 'rb_source_course_completion'),
+                'organisation.path',
+                'organisation'
+            ),
+            new rb_content_option(
+                'current_pos',
+                get_string('currentpos', 'rb_source_course_completion'),
+                'position.path',
+                'position'
+            ),
+        );
         return $contentoptions;
     }
 
@@ -353,7 +366,7 @@ class rb_source_user extends rb_base_source {
 
 
     function rb_display_extension_link($extensioncount, $row, $isexport) {
-
+        global $CFG;
         if (empty($extensioncount)) {
             return '0';
         }
