@@ -510,6 +510,14 @@ class reportbuilder {
             }
         }
 
+        // search for local/*/rb_sources/ directories for local customisations
+        foreach (get_list_of_plugins('local', 'db') as $localmod) {
+            $dir = "{$CFG->dirroot}/local/$localmod/rb_sources/";
+            if (file_exists($dir) && is_dir($dir)) {
+                $sourcepaths[] = $dir;
+            }
+        }
+
         return $sourcepaths;
     }
 
