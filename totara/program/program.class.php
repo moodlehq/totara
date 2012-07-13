@@ -874,7 +874,7 @@ class program {
 
         if (!$this->is_accessible()) {
             // Return if program is not accessible
-            return html_writer::start_tag('p', get_string('programnotcurrentlyavailable', 'totara_program'));
+            return html_writer::tag('p', get_string('programnotcurrentlyavailable', 'totara_program'));
         }
 
         $viewinganothersprogram = false;
