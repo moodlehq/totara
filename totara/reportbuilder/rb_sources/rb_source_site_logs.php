@@ -62,7 +62,7 @@ class rb_source_site_logs extends rb_base_source {
     //
     //
 
-    function define_joinlist() {
+    protected function define_joinlist() {
 
         $joinlist = array(
             // no none standard joins
@@ -82,7 +82,7 @@ class rb_source_site_logs extends rb_base_source {
         return $joinlist;
     }
 
-    function define_columnoptions() {
+    protected function define_columnoptions() {
         global $DB;
 
         $columnoptions = array(
@@ -154,7 +154,7 @@ class rb_source_site_logs extends rb_base_source {
         return $columnoptions;
     }
 
-    function define_filteroptions() {
+    protected function define_filteroptions() {
         $filteroptions = array(
             new rb_filter_option(
                 'log',     // type
@@ -176,7 +176,7 @@ class rb_source_site_logs extends rb_base_source {
         return $filteroptions;
     }
 
-    function define_contentoptions() {
+    protected function define_contentoptions() {
         $contentoptions = array(
             new rb_content_option(
                 'current_org',                      // class name
@@ -204,7 +204,7 @@ class rb_source_site_logs extends rb_base_source {
         return $contentoptions;
     }
 
-    function define_paramoptions() {
+    protected function define_paramoptions() {
         $paramoptions = array(
             new rb_param_option(
                 'userid',       // parameter name
@@ -220,7 +220,7 @@ class rb_source_site_logs extends rb_base_source {
         return $paramoptions;
     }
 
-    function define_defaultcolumns() {
+    protected function define_defaultcolumns() {
         $defaultcolumns = array(
             array(
                 'type' => 'log',
@@ -259,7 +259,7 @@ class rb_source_site_logs extends rb_base_source {
         return $defaultcolumns;
     }
 
-    function define_defaultfilters() {
+    protected function define_defaultfilters() {
         $defaultfilters = array(
             array(
                 'type' => 'user',
@@ -296,7 +296,7 @@ class rb_source_site_logs extends rb_base_source {
     }
 
 
-    function define_requiredcolumns() {
+    protected function define_requiredcolumns() {
         $requiredcolumns = array(
             /*
             // array of rb_column objects, e.g:

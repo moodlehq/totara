@@ -95,7 +95,7 @@ class rb_source_dp_competency extends rb_base_source {
      * @global object $CFG
      * @return array
      */
-    private function define_joinlist() {
+    protected function define_joinlist() {
         global $CFG;
 
         $joinlist = array();
@@ -220,7 +220,7 @@ from
      *
      * @return array
      */
-    private function define_columnoptions() {
+    protected function define_columnoptions() {
         $columnoptions = array();
 
         $columnoptions[] = new rb_column_option(
@@ -473,7 +473,7 @@ from
      * Creates the array of rb_filter_option objects required for $this->filteroptions
      * @return array
      */
-    private function define_filteroptions() {
+    protected function define_filteroptions() {
         $filteroptions = array();
 
         $filteroptions[] = new rb_filter_option(
@@ -523,7 +523,7 @@ from
      * Creates the array of rb_content_option object required for $this->contentoptions
      * @return array
      */
-    private function define_contentoptions() {
+    protected function define_contentoptions() {
         $contentoptions = array();
 
         // Include the rb_user_content content options for this report
@@ -531,7 +531,7 @@ from
         return $contentoptions;
     }
 
-    private function define_paramoptions() {
+    protected function define_paramoptions() {
         global $CFG;
         require_once($CFG->dirroot.'/totara/plan/lib.php');
         $paramoptions = array();

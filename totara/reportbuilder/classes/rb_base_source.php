@@ -2346,8 +2346,60 @@ abstract class rb_base_source {
         return true;
     }
 
+    /**
+     * @return array
+     */
+    protected function define_joinlist() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_columnoptions() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_filteroptions() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_defaultcolumns() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_defaultfilters() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_contentoptions() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_paramoptions() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
+    protected function define_requiredcolumns() {
+        return array();
+    }
 
 } // end of rb_base_source class
-
-
-

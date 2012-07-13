@@ -67,7 +67,7 @@ class rb_source_cohort extends rb_base_source {
      * @global object $CFG
      * @return array
      */
-    private function define_joinlist() {
+    protected function define_joinlist() {
         global $CFG;
 
         $joinlist = array(
@@ -92,7 +92,7 @@ class rb_source_cohort extends rb_base_source {
      *
      * @return array
      */
-    private function define_columnoptions() {
+    protected function define_columnoptions() {
         $columnoptions = array();
 
         $columnoptions[] = new rb_column_option(
@@ -112,7 +112,7 @@ class rb_source_cohort extends rb_base_source {
      * Creates the array of rb_filter_option objects required for $this->filteroptions
      * @return array
      */
-    private function define_filteroptions() {
+    protected function define_filteroptions() {
         // No filter options!
         $filteroptions = array();
 
@@ -122,7 +122,7 @@ class rb_source_cohort extends rb_base_source {
     }
 
 
-    function define_defaultcolumns() {
+    protected function define_defaultcolumns() {
         $defaultcolumns = array(
                             array(
                                 'type' => 'cohort',
@@ -136,7 +136,7 @@ class rb_source_cohort extends rb_base_source {
         return $defaultcolumns;
     }
 
-    function define_defaultfilters() {
+    protected function define_defaultfilters() {
         $defaultfilters = array(
                             array(
                                     'type' => 'user',
@@ -151,13 +151,13 @@ class rb_source_cohort extends rb_base_source {
      * Creates the array of rb_content_option object required for $this->contentoptions
      * @return array
      */
-    private function define_contentoptions() {
+    protected function define_contentoptions() {
         $contentoptions = array();
 
         return $contentoptions;
     }
 
-    private function define_paramoptions() {
+    protected function define_paramoptions() {
         $paramoptions = array(
                             new rb_param_option(
                                 'cohortid',        // parameter name

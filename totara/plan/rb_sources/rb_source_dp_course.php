@@ -95,7 +95,7 @@ class rb_source_dp_course extends rb_base_source {
      * @global object $CFG
      * @return array
      */
-    private function define_joinlist() {
+    protected function define_joinlist() {
         global $CFG;
         $joinlist = array();
 
@@ -200,7 +200,7 @@ from
      *
      * @return array
      */
-    private function define_columnoptions() {
+    protected function define_columnoptions() {
         $columnoptions = array();
 
         $this->add_course_fields_to_columns($columnoptions);
@@ -409,7 +409,7 @@ from
      * Creates the array of rb_filter_option objects required for $this->filteroptions
      * @return array
      */
-    private function define_filteroptions() {
+    protected function define_filteroptions() {
         $filteroptions = array();
 
         $filteroptions[] = new rb_filter_option(
@@ -469,7 +469,7 @@ from
      * Creates the array of rb_content_option object required for $this->contentoptions
      * @return array
      */
-    private function define_contentoptions() {
+    protected function define_contentoptions() {
         $contentoptions = array();
 
         // Include the rb_user_content content options for this report
@@ -477,7 +477,7 @@ from
         return $contentoptions;
     }
 
-    private function define_paramoptions() {
+    protected function define_paramoptions() {
 
         $paramoptions = array();
         $paramoptions[] = new rb_param_option(

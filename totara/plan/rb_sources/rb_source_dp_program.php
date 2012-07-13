@@ -56,7 +56,7 @@ class rb_source_dp_program extends rb_base_source {
     //
     //
 
-    function define_joinlist() {
+    protected function define_joinlist() {
 
         $joinlist = array(
             new rb_join(
@@ -98,7 +98,7 @@ class rb_source_dp_program extends rb_base_source {
         return $joinlist;
     }
 
-    function define_columnoptions() {
+    protected function define_columnoptions() {
         $columnoptions = array();
 
         $columnoptions[] = new rb_column_option(
@@ -288,7 +288,7 @@ class rb_source_dp_program extends rb_base_source {
         return $html;
     }
 
-    function define_filteroptions() {
+    protected function define_filteroptions() {
         $filteroptions = array(
         new rb_filter_option(
         'program',
@@ -303,12 +303,12 @@ class rb_source_dp_program extends rb_base_source {
         return $filteroptions;
     }
 
-    function define_contentoptions() {
+    protected function define_contentoptions() {
         $contentoptions = array();
         return $contentoptions;
     }
 
-    function define_paramoptions() {
+    protected function define_paramoptions() {
         $paramoptions = array(
             new rb_param_option(
                 'programid',
@@ -338,7 +338,7 @@ class rb_source_dp_program extends rb_base_source {
         return $paramoptions;
     }
 
-    function define_defaultcolumns() {
+    protected function define_defaultcolumns() {
         $defaultcolumns = array(
             array(
                 'type' => 'program',
@@ -352,7 +352,7 @@ class rb_source_dp_program extends rb_base_source {
         return $defaultcolumns;
     }
 
-    function define_defaultfilters() {
+    protected function define_defaultfilters() {
         $defaultfilters = array(
             array(
                 'type' => 'program',
@@ -368,7 +368,7 @@ class rb_source_dp_program extends rb_base_source {
         return $defaultfilters;
     }
 
-    function define_requiredcolumns() {
+    protected function define_requiredcolumns() {
         $requiredcolumns = array();
         return $requiredcolumns;
     }
