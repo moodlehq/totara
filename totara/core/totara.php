@@ -1023,13 +1023,11 @@ function sql_cast2float($fieldname) {
 
     switch ($DB->get_dbfamily()) {
         case 'mysql':
-            $sql = ' CAST(' . $fieldname . ' AS DECIMAL) ';
+            $sql = ' CAST(' . $fieldname . ' AS DECIMAL(20,2)) ';
             break;
         case 'mssql':
         case 'postgres':
             $sql = ' CAST(' . $fieldname . ' AS FLOAT) ';
-            break;
-            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
             break;
         case 'oracle':
             $sql = ' TO_BINARY_FLOAT(' . $fieldname . ') ';
