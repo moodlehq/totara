@@ -382,11 +382,11 @@ function totara_print_my_courses() {
             $completed = $course->timecompleted;
             $starteddate = '';
             if ($course->timestarted != 0) {
-                $starteddate = userdate($course->timestarted, '%d %b %y');
+                $starteddate = userdate($course->timestarted, get_string('strfdateshortmonth', 'langconfig'));
             }
             $displaycourse->starteddate = $starteddate;
-            $displaycourse->enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, '%d %b %y') : null;
-            $displaycourse->completeddate = isset($completed) && $completed != 0 ? userdate($completed, '%d %b %y') : null;
+            $displaycourse->enroldate = isset($enrolled) && $enrolled != 0 ? userdate($enrolled, get_string('strfdateshortmonth', 'langconfig')) : null;
+            $displaycourse->completeddate = isset($completed) && $completed != 0 ? userdate($completed, get_string('strfdateshortmonth', 'langconfig')) : null;
             $displaycourse->status = $course->status ? $course->status : COMPLETION_STATUS_NOTYETSTARTED;
             $displaycourses[] = $displaycourse;
         }

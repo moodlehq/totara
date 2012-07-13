@@ -93,7 +93,7 @@ function competency_template_display_table($templates, $frameworkid) {
 
             $row[] = $OUTPUT->action_link(new moodle_url('prefix/competency/template/view.php', array('id' => $template->id)), $template->fullname, null, array('class' => $cssclass));
             $row[] = $OUTPUT->action_link(new moodle_url('prefix/competency/template/view.php', array('id' => $template->id)), $template->competencycount, null, array('class' => $cssclass));
-            $row[] = userdate($template->timecreated, '%A, %e %B %Y');
+            $row[] = userdate($template->timecreated, get_string('strftimedaydate', 'langconfig'));
 
             // Add edit link
             $buttons = array();

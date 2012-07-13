@@ -687,6 +687,8 @@ function reminder_check_businessdays($timestamp, $period, $check = null) {
  * @return boolean
  */
 function reminder_is_businessday($timestamp){
-    // Converts the timestamp to the day of the week with 1 = Monday, 7 = Sunday
-    return (userdate($timestamp, '%u') <= 5);
+    // Converts the timestamp to the day of the week running from 0 = Sunday to 6 = Saturday
+    //use %w instead of %u for Windows compatability
+    $day = userdate($timestamp, '%w');
+    return ($day != 0 && $day != 6);
 }

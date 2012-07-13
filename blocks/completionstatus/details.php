@@ -248,7 +248,7 @@ if (empty($completions)) {
         // Completion data
         echo '<td class="cell c5">';
         if ($row['timecompleted']) {
-            echo userdate($row['timecompleted'], '%e %B %G');
+            echo userdate($row['timecompleted'], get_string('strftimedate', 'langconfig'));
         } else {
             echo '-';
         }

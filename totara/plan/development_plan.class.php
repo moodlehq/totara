@@ -469,7 +469,7 @@ class development_plan {
     function display_enddate_as_text($enddate) {
         global $CFG;
         if (isset($enddate)) {
-            return userdate($enddate, get_string('strftimedateshortmonth', 'totara_core'), $CFG->timezone, false);
+            return userdate($enddate, get_string('strftimedateshortmonth', 'langconfig'), $CFG->timezone, false);
         } else {
             return '';
         }

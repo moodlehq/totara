@@ -888,7 +888,7 @@ class dp_competency_component extends dp_base_component {
                     if (!empty($record->duedate) && $oldrecords[$itemid]->duedate != $record->duedate) {
                         $updates .= $compprinted ? '' : $compheader;
                         $compprinted = true;
-                        $dateformat = get_string('strftimedateshortmonth', 'totara_core');
+                        $dateformat = get_string('strftimedateshortmonth', 'langconfig');
                         $updates .= get_string('duedate', 'totara_plan').' - '.
                             get_string('changedfromxtoy', 'totara_plan', (object)array('before' => empty($oldrecords[$itemid]->duedate) ? '' :
                                     userdate($oldrecords[$itemid]->duedate, $dateformat, $CFG->timezone, false),

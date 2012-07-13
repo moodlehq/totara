@@ -128,7 +128,7 @@ if ($submitted && confirm_sesskey()) {
                     $messagedata->subject          = get_string('extensiongranted', 'totara_program');
                     $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
                     $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
-                    $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'totara_program', userdate($extension->extensiondate, '%d/%m/%Y', $CFG->timezone));
+                    $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'totara_program', userdate($extension->extensiondate, get_string('strfdateshortmonth', 'langconfig'), $CFG->timezone));
 
                     if ($result = tm_alert_send($messagedata)) {
 
