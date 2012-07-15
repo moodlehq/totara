@@ -50,7 +50,7 @@ $data = array(
     'searchtype'    => $searchtype,
     'page'          => $page
 );
-$thisurl = new moodle_url(null, array_merge($data, $this->urlparams));
+$thisurl = new moodle_url(strip_querystring(qualified_me()), array_merge($data, $this->urlparams));
 
 // Extra form data
 $formdata = array(
