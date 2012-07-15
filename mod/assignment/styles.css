@@ -33,7 +33,8 @@
 #page-mod-assignment-view #dates .c0 {text-align:right;font-weight:bold;}
 
 #page-mod-assignment-submissions .mform.optionspref .fitem .fitemtitle {width:50%;}
-#page-mod-assignment-submissions .mform.optionspref .fitem .felement {width: 30%; margin-left: 51%;}
+#page-mod-assignment-submissions .mform.optionspref .fitem .felement {width: 40%; margin-left: 31%;}
+.ie#page-mod-assignment-submissions .mform.optionspref .fitem .felement {width: 30%; margin-left: 51%;}
 
 #page-mod-assignment-submissions .optionspref {width: 50%;}
 #page-mod-assignment-submissions .fastgbutton {text-align: center;}
