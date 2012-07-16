@@ -539,9 +539,9 @@ class rb_source_course_completion extends rb_base_source {
 
     function rb_display_completion_status($status, $row, $isexport) {
         if ($status == 0) {
-            return get_string('completion-alt-auto-n', 'completion');
+            return get_string('completion-n', 'completion');
         } else if ($status == 1) {
-            return get_string('completion-alt-auto-y', 'completion');
+            return get_string('completion-y', 'completion');
         } else {
             return '';
         }
