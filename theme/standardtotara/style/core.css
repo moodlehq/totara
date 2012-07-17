@@ -303,6 +303,25 @@ hr {
 .helplink img {
     vertical-align: text-top;
 }
+
+/**
+ * Fieldset class with borders shown by default
+ */
+fieldset.surround,
+.mform fieldset.surround {
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border: 1px solid #000000;
+    padding: 5px;
+}
+fieldset.surround legend,
+.mform fieldset.surround legend {
+    font-weight:bold;
+    font-size:16px;
+    padding: 0px 5px;
+}
+
 /**
  * Moodle Forms
  */

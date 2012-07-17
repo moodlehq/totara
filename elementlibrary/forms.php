@@ -152,6 +152,22 @@ echo html_writer::tag('small', html_writer::tag('small', '<a href="#" class="lin
 echo html_writer::tag('big', html_writer::tag('big', '&nbsp; <a href="#" class="link-as-button">Large link</a>'));
 echo $OUTPUT->container_end();
 
+echo html_writer::tag('p', '');
+
+echo $OUTPUT->container_start();
+echo html_writer::tag('p', 'By default we remove the full border from the fieldset element and show the legend as a title like this:');
+echo html_writer::start_tag('fieldset');
+echo html_writer::tag('legend', 'Legend');
+echo html_writer::tag('div', 'This is a standard fieldset');
+echo html_writer::end_tag('fieldset');
+
+echo html_writer::tag('p', 'If you want an enclosed fieldset (with borders on all sides) use the class "surround" on the fieldset element like this:');
+echo html_writer::start_tag('fieldset', array('class' => 'surround'));
+echo html_writer::tag('legend', 'Legend');
+echo html_writer::tag('div', 'This is a fieldset with the "surround" class applied');
+echo html_writer::end_tag('fieldset');
+echo $OUTPUT->container_end();
+
 echo $OUTPUT->container_end();
 echo $OUTPUT->box_end();
 echo $OUTPUT->footer();
