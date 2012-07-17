@@ -2689,8 +2689,8 @@ function facetoface_get_ical_text($method, $facetoface, $session, $user) {
         // sesion are changed. This is not ideal!
         $SEQUENCE = ($method & MDL_F2F_CANCEL) ? 1 : 0;
 
-        $SUMMARY     = facetoface_ical_escape($facetoface->name);
-        $DESCRIPTION = get_string('icaldescription', 'facetoface', $facetoface);
+        $SUMMARY     = str_replace("\\n", "\\n ", facetoface_ical_escape($facetoface->name, true));
+        $DESCRIPTION = facetoface_ical_escape(get_string('icaldescription', 'facetoface', $facetoface), true);
 
         // Get the location data from custom fields if they exist
         $customfielddata = facetoface_get_customfielddata($session->id);
@@ -2814,16 +2814,14 @@ function facetoface_ical_escape($text, $converthtml=false) {
         $text = html_to_text($text);
     }
 
-    $text = str_replace(
-        array('\\',   "\n", ';',  ','),
-        array('\\\\', '\n', '\;', '\,'),
-        $text
-    );
-
+    $text = str_replace('"', '\"', $text);
+    $text = str_replace("\\", "\\\\", $text);
+    $text = str_replace(",", "\,", $text);
+    $text = str_replace(";", "\;", $text);
+    $text = str_replace("\n", "\\n", $text);
     // Text should be wordwrapped at 75 octets, and there should be one
     // whitespace after the newline that does the wrapping
-    $text = wordwrap($text, 75, "\n ", true);
-
+    $text = implode("\n ",str_split($text, 50));
     return $text;
 }
 
