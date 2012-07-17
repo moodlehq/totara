@@ -879,6 +879,8 @@ class program {
             return html_writer::tag('p', get_string('programnotcurrentlyavailable', 'totara_program'));
         }
 
+        $message = '';
+
         $viewinganothersprogram = false;
         if ($userid && $userid != $USER->id) {
             $viewinganothersprogram = true;
@@ -887,12 +889,38 @@ class program {
             }
             $user->fullname = fullname($user);
             $user->wwwroot = $CFG->wwwroot;
-            $out .= html_writer::tag('p', get_string('viewingxusersprogram', 'totara_program', $user));
+            $message .= html_writer::tag('p', get_string('viewingxusersprogram', 'totara_program', $user));
+        }
+
+
+        $userassigned = $this->user_is_assigned($userid);
+
+        // display the reason why this user has been assigned to the program (if it is mandatory for the user)
+        if ($userassigned) {
+            $user_assignments = $DB->get_records_select('prog_user_assignment', "programid = ? AND userid = ?", array($this->id, $userid));
+            if (count($user_assignments) > 0) {
+                if ($viewinganothersprogram) {
+                    $message .= html_writer::tag('p', get_string('assignmentcriteriamanager', 'totara_program'));
+                } else {
+                    $message .= html_writer::tag('p', get_string('assignmentcriterialearner', 'totara_program'));
+                }
+                $message .= html_writer::start_tag('ul');
+                foreach ($user_assignments as $user_assignment) {
+                    if ($assignment = $DB->get_record('prog_assignment', array('id' => $user_assignment->assignmentid))) {
+                        $user_assignment_ob = prog_user_assignment::factory($assignment->assignmenttype, $user_assignment->id);
+                        $message .= $user_assignment_ob->display_criteria();
+                    }
+                }
+                $message .= html_writer::end_tag('ul');
+            }
+        }
+
+        // show message box if there are any messages
+        if (!empty($message)) {
+                $out .= html_writer::tag('div', $message, array('class' => 'notifymessage'));
         }
 
         $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
-
-        $userassigned = $this->user_is_assigned($userid);
 
         // display the start date, due date and progress bar
         if ($userassigned) {
@@ -900,36 +928,14 @@ class program {
                 $startdatestr = $this->display_date_as_text($prog_completion->timestarted);
                 $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'totara_program') : $this->display_date_as_text($prog_completion->timedue);
                 $out .= html_writer::start_tag('div', array('class' => 'programprogress'));
-                $out .= html_writer::tag('div', get_string('startdate', 'totara_program') . ': ' . $startdatestr, array('class' => 'startdate'));
-                $out .= html_writer::tag('div', get_string('duedate', 'totara_program').': ' . $duedatestr, array('class' => 'duedate'));
-                $out .= html_writer::tag('div', get_string('progress', 'totara_program') . ': ' . $this->display_progress($userid), array('class' => 'startdate'));
+                $out .= html_writer::tag('div', get_string('startdate', 'totara_program') . ': ' . $startdatestr, array('class' => 'item'));
+                $out .= html_writer::tag('div', get_string('duedate', 'totara_program').': ' . $duedatestr, array('class' => 'item'));
+                $out .= html_writer::tag('div', get_string('progress', 'totara_program') . ': ' . $this->display_progress($userid), array('class' => 'item'));
                 $out .= html_writer::end_tag('div');
             }
         }
 
         $out .= html_writer::tag('div', $this->summary, array('class' => 'summary'));
-
-        // display the reason why this user has been assigned to the program (if it is mandatory for the user)
-        if ($userassigned) {
-            $user_assignments = $DB->get_records_select('prog_user_assignment', "programid = ? AND userid = ?", array($this->id, $userid));
-            if (count($user_assignments) > 0) {
-                $out .= html_writer::start_tag('div', array('class' => 'assignments'));
-                if ($viewinganothersprogram) {
-                    $out .= html_writer::tag('p', get_string('assignmentcriteriamanager', 'totara_program'));
-                } else {
-                    $out .= html_writer::tag('p', get_string('assignmentcriterialearner', 'totara_program'));
-                }
-                $out .= html_writer::start_tag('ul');
-                foreach ($user_assignments as $user_assignment) {
-                    if ($assignment = $DB->get_record('prog_assignment', array('id' => $user_assignment->assignmentid))) {
-                        $user_assignment_ob = prog_user_assignment::factory($assignment->assignmenttype, $user_assignment->id);
-                        $out .= $user_assignment_ob->display_criteria();
-                    }
-                }
-                $out .= html_writer::end_tag('ul');
-                $out .= html_writer::end_tag('div');
-            }
-        }
 
         $courseset_groups = $this->content->get_courseset_groups();
 
