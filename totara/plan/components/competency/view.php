@@ -40,7 +40,6 @@ if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_
         print_error('error:nopermissions', 'totara_plan');
 }
 
-// TODO SCANMSG: Check context is correct
 $PAGE->set_context($systemcontext);
 $PAGE->set_url('/totara/plan/components/competency/view.php', array('id' => $id, 'itemid' => $caid));
 $PAGE->set_pagelayout('noblocks');

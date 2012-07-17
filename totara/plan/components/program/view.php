@@ -41,6 +41,11 @@ if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_
         print_error('error:nopermissions', 'totara_plan');
 }
 
+$PAGE->set_context($systemcontext);
+$PAGE->set_url('/totara/plan/components/program/view.php', array('id' => $id, 'itemid' => $progassid));
+$PAGE->set_pagelayout('noblocks');
+$PAGE->set_totara_menu_selected('learningplans');
+
 //Javascript include
 local_js(array(
     TOTARA_JS_DIALOG,
@@ -63,18 +68,17 @@ if ($programid = $DB->get_field('dp_plan_program_assign', 'programid', array('id
 $componentname = 'program';
 $component = $plan->get_component($componentname);
 
-$currenturl = new moodle_url('/totara/plan/components/program/view.php', array('id' => $id, 'itemid' => $caid));
+$currenturl = new moodle_url('/totara/plan/components/program/view.php', array('id' => $id, 'itemid' => $progassid));
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
 
 dp_get_plan_base_navlinks($plan->userid);
-$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $planid)));
+$PAGE->navbar->add($fullname, new moodle_url('/totara/plan/view.php', array('id' => $plan->id)));
 $PAGE->navbar->add(get_string('viewitem', 'totara_plan'));
 
 
-$plan->print_heading($componentname);
-echo $OUTPUT->header();
+$plan->print_header($componentname);
 
 print $component->display_back_to_index_link();
 
