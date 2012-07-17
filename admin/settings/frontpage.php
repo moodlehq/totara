@@ -56,8 +56,7 @@ if (!during_initial_install()) { //do not use during installation
         $options = array(0=>get_string('none')); // roles to choose from
         $defaultfrontpageroleid = 0;
         foreach (get_all_roles() as $role) {
-            if (empty($role->archetype) or $role->archetype === 'guest' or $role->archetype === 'frontpage' or $role->archetype === 'student'
-                or (isset($CFG->defaultfrontpageroleid) && $role->id = $CFG->defaultfrontpageroleid)) {
+            if (empty($role->archetype) or $role->archetype === 'guest' or $role->archetype === 'frontpage' or $role->archetype === 'student') {
                 $options[$role->id] = strip_tags(format_string($role->name)) . ' ('. $role->shortname . ')';
                 if ($role->archetype === 'frontpage') {
                     $defaultfrontpageroleid = $role->id;
