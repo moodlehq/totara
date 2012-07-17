@@ -79,9 +79,6 @@ $dialog = new totara_dialog_content_programs($categoryid);
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 $dialog->selected_title = 'itemstoadd';
 
-// Setup search
-$dialog->search_code = '/totara/program/search.php';
-
 // Add data
 $dialog->load_programs();
 
