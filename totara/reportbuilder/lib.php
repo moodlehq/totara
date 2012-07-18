@@ -193,10 +193,6 @@ class reportbuilder {
         }
         $this->_params = $this->get_current_params();
 
-        if ($sid) {
-            $this->restore_saved_search();
-        }
-
         // determine who is viewing or receiving the report
         // used for access and content restriction checks
         if (isset($reportfor)) {
@@ -205,6 +201,9 @@ class reportbuilder {
             $this->reportfor = $USER->id;
         }
 
+        if ($sid) {
+            $this->restore_saved_search();
+        }
     }
 
 
@@ -612,7 +611,8 @@ class reportbuilder {
         $this->get_filtering(true);
         $filtername = 'filtering_' . $this->shortname;
         if ($saved = $DB->get_record('report_builder_saved', array('id' => $this->_sid))) {
-            if ($saved->ispublic != 0 || $saved->userid == $USER->id) {
+
+            if ($saved->ispublic != 0 || $saved->userid == $this->reportfor) {
                 $SESSION->$filtername = unserialize($saved->search);
             } else {
                 if (defined('FULLME') and FULLME === 'cron') {
