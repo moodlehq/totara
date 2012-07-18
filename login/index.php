@@ -175,6 +175,12 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
     /// Let's get them all set up.
         add_to_log(SITEID, 'user', 'login', "view.php?id=$USER->id&course=".SITEID,
                    $user->id, 0, $user->id);
+
+        // if multiple logins not permitted, clear out any existing sessions for this user
+        if (!empty($CFG->preventmultiplelogins)) {
+            session_kill_user($user->id);
+        }
+
         complete_user_login($user);
 
         // sets the username cookie
