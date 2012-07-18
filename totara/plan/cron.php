@@ -45,16 +45,16 @@ function plan_cron() {
     // Get plans that need completing
     $sql = "
         SELECT
-            plan.id as planid
+            lp.id as planid
         FROM
-            {dp_plan} plan
+            {dp_plan} lp
         JOIN
             {dp_plan_settings} ps
-         ON plan.templateid = ps.templateid
+         ON lp.templateid = ps.templateid
         WHERE
             ps.autobyplandate = 1
-        AND plan.enddate <= ?
-        AND plan.status = ?
+        AND lp.enddate <= ?
+        AND lp.status = ?
     ";
     $params = array($time, $approved);
 
