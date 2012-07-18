@@ -288,13 +288,13 @@ class rb_source_course_completion extends rb_base_source {
             ),
             new rb_filter_option(
                 'course_completion',
-                'completeddate',
+                'starteddate',
                 get_string('datestarted', 'rb_source_course_completion'),
                 'date'
             ),
             new rb_filter_option(
                 'course_completion',
-                'completeddate',
+                'enrolleddate',
                 get_string('dateenrolled', 'rb_source_course_completion'),
                 'date'
             ),
