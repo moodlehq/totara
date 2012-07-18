@@ -137,15 +137,13 @@ class totara_core_renderer extends plugin_renderer_base {
         if (has_capability('totara/plan:accessplan', $usercontext)) {
             $cells = array();
             $text = get_string('developmentplan', 'totara_core');
-            $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/i/idp'),
-            'alt'=> $text));
+            $icon = new pix_icon('plan', $text, 'totara_core');
             $url = new moodle_url('/totara/plan/index.php');
-            $attributes = array('href' => $url);
-            $cellcontent = html_writer::tag('a', $icon, $attributes);
+            $cellcontent = $this->output->action_icon($url, $icon);
             $cell = new html_table_cell($cellcontent);
             $cells[] = $cell;
-            //second cell is another link to same location so we can reuse $text and $attributes
-            $cellcontent = html_writer::tag('a', $text, $attributes);
+            //second cell is another link to same location so we can reuse $text
+            $cellcontent = html_writer::link($url, $text);
             $cell = new html_table_cell($cellcontent);
             $cells[] = $cell;
             $row = new html_table_row($cells);
@@ -154,39 +152,33 @@ class totara_core_renderer extends plugin_renderer_base {
 
         $cells = array();
         $text = get_string('bookings', 'totara_core');
-        $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/i/bookings'),
-                'alt'=> $text));
-        $url = new moodle_url('/blocks/facetoface/mysignups.php');
-        $attributes = array('href' => $url);
-        $cellcontent = html_writer::tag('a', $icon, $attributes);
-        $cell = new html_table_cell($cellcontent);
-        $cells[] = $cell;
-        //second cell is another link to different location
+        $icon = new pix_icon('bookings', $text, 'totara_core');
         $url = new moodle_url('/my/bookings.php?userid=' . $USER->id);
         $attributes = array('href' => $url);
-        $cellcontent = html_writer::tag('a', $text, $attributes);
+        $cellcontent = $this->output->action_icon($url, $icon);
+        $cell = new html_table_cell($cellcontent);
+        $cells[] = $cell;
+        //second cell is another link to same location so we can reuse $text
+        $cellcontent = html_writer::link($url, $text);
         $cell = new html_table_cell($cellcontent);
         $cells[] = $cell;
         $row = new html_table_row($cells);
         $table->data[] = $row;
 
-        if (get_config(NULL, 'idp_showlearnrec') == 2) {
-            $cells = array();
-            $text = get_string('recordoflearning', 'totara_core');
-            $icon = html_writer::empty_tag('img', array('src' => $this->output->pix_url('/i/rol'),
-                    'alt'=> $text));
-            $url = new moodle_url('/totara/plan/record/courses.php?userid='.$USER->id);
-            $attributes = array('href' => $url);
-            $cellcontent = html_writer::tag('a', $icon, $attributes);
-            $cell = new html_table_cell($cellcontent);
-            $cells[] = $cell;
-            //second cell is another link to same location so we can reuse $text and $attributes
-            $cellcontent = html_writer::tag('a', $text, $attributes);
-            $cell = new html_table_cell($cellcontent);
-            $cells[] = $cell;
-            $row = new html_table_row($cells);
-            $table->data[] = $row;
-        }
+        $cells = array();
+        $text = get_string('recordoflearning', 'totara_core');
+        $icon = new pix_icon('record', $text, 'totara_core');
+        $url = new moodle_url('/totara/plan/record/courses.php?userid='.$USER->id);
+        $cellcontent = $this->output->action_icon($url, $icon);
+        $cell = new html_table_cell($cellcontent);
+        $cells[] = $cell;
+        //second cell is another link to same location so we can reuse $text
+        $cellcontent = html_writer::link($url, $text);
+        $cell = new html_table_cell($cellcontent);
+        $cells[] = $cell;
+        $row = new html_table_row($cells);
+        $table->data[] = $row;
+
         return html_writer::table($table);
     }
 
