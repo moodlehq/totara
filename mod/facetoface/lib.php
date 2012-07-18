@@ -4181,6 +4181,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
+                $newevent->contexturl = $CFG->wwwroot . '/mod/facetoface/attendees.php?s=' . $session->id . '#unapproved';
                 $subjectinfo = new stdClass();
                 $subjectinfo->usermsg = $usermsg;
                 $subjectinfo->url = html_writer::link(new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id)), $facetoface->name);
