@@ -423,10 +423,10 @@ function program_cron_completions() {
         $courseset_groups = $program_content->get_courseset_groups();
 
         if (!empty($program_users)) {
-            foreach ($program_users as $user) {
+            foreach ($program_users as $userid) {
 
                 // first check if the program is already marked as complete for this user and do nothing if it is
-                if ($program->is_program_complete($user->id)) {
+                if ($program->is_program_complete($userid)) {
                     continue;
                 }
 
@@ -442,14 +442,14 @@ function program_cron_completions() {
                     foreach ($courseset_group as $courseset) {
 
                         // first check if the course set is already marked as complete
-                        if ($courseset->is_courseset_complete($user->id)) {
+                        if ($courseset->is_courseset_complete($userid)) {
                             $courseset_group_completed = true;
                             $previous_courseset_group_completed = true;
                             break;
                         }
 
                         // otherwise carry out a check to see if the course set should be marked as complete and mark it as complete if so
-                        if ($courseset->check_courseset_complete($user->id)) {
+                        if ($courseset->check_courseset_complete($userid)) {
                             $courseset_group_completed = true;
                             $previous_courseset_group_completed = true;
                             break;
@@ -462,7 +462,7 @@ function program_cron_completions() {
                         // time allowance so that course set due reminders will be triggered
                         // at the appropriate time
                         if ($previous_courseset_group_completed) {
-                            $program_content->set_courseset_group_timedue($courseset_group, $user->id);
+                            $program_content->set_courseset_group_timedue($courseset_group, $userid);
                             $previous_courseset_group_completed = false;
                         }
                         break;
@@ -475,7 +475,7 @@ function program_cron_completions() {
                         'status'        => STATUS_PROGRAM_COMPLETE,
                         'timecompleted' => time()
                         );
-                    $program->update_program_complete($user->id, $completionsettings);
+                    $program->update_program_complete($userid, $completionsettings);
                 }
             }
         }

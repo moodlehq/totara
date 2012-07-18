@@ -751,29 +751,30 @@ class program {
     }
 
     /**
-     * Returns an array containing all the users who are currently registered
+     * Returns an array containing all the userids who are currently registered
      * on the program. Optionally, will only return a subset of users with a
      * specific completion status
      *
      * @param int $status
-     * @return array
+     * @return array of userids for users in the program
      */
     public function get_program_learners($status=false) {
         global $DB;
 
-        // Query to retrive any users who are registered on the program
-        $sql = "SELECT DISTINCT(pc.userid) AS id, pc.*, u.*
-                FROM {user} AS u
-                JOIN {prog_completion} AS pc ON u.id = pc.userid
-                WHERE pc.programid = ?
-                AND pc.coursesetid = 0";
-        $params = array($this->id);
         if ($status) {
-            $sql .= " AND pc.status = ?";
-            $params[] = $status;
+            $statussql = 'AND status = ?';
+            $statusparams = array($status);
+        } else {
+            $statussql = '';
+            $statusparams = array();
         }
 
-        return $DB->get_records_sql($sql, $params);
+        // Query to retrive any users who are registered on the program
+        $sql = "SELECT id FROM {user} WHERE id IN
+            (SELECT DISTINCT userid FROM {prog_completion} WHERE programid = ? {$statussql})";
+        $params = array_merge(array($this->id), $statusparams);
+
+        return $DB->get_fieldset_sql($sql, $params);
     }
 
     /**
