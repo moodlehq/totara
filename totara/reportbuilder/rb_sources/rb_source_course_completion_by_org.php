@@ -151,7 +151,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
             // aggregated columns
             new rb_column_option(
                 'user',
-                'fullname',
+                'allparticipants',
                 get_string('participants', 'rb_source_course_completion_by_org'),
                 $DB->sql_fullname('auser.firstname', 'auser.lastname'),
                 array(
@@ -240,6 +240,14 @@ class rb_source_course_completion_by_org extends rb_base_source {
             ),
         );
 
+        // include some standard columns
+        $this->add_user_fields_to_columns($columnoptions);
+        $this->add_course_fields_to_columns($columnoptions);
+        $this->add_course_category_fields_to_columns($columnoptions);
+        $this->add_position_fields_to_columns($columnoptions);
+        $this->add_manager_fields_to_columns($columnoptions);
+        $this->add_course_tag_fields_to_columns($columnoptions);
+
         return $columnoptions;
     }
 
@@ -304,11 +312,19 @@ class rb_source_course_completion_by_org extends rb_base_source {
             ),
             new rb_filter_option(
                 'user',
-                'fullname',
+                'allparticipants',
                 get_string('participants', 'rb_source_course_completion_by_org'),
                 'text'
             ),
         );
+
+        // include some standard filters
+        $this->add_user_fields_to_filters($filteroptions);
+        $this->add_course_fields_to_filters($filteroptions);
+        $this->add_course_category_fields_to_filters($filteroptions);
+        $this->add_position_fields_to_filters($filteroptions);
+        $this->add_manager_fields_to_filters($filteroptions);
+        $this->add_course_tag_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

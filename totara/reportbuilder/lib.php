@@ -3749,6 +3749,54 @@ function rb_unique_param($name) {
 }
 
 /**
+ * Helper function for renaming the data in the columns/filters table
+ *
+ * Useful when a field is renamed and the report data needs to be updated
+ *
+ * @param string $table Table to update, either 'filters' or 'columns'
+ * @param string $source Name of the source or '*' to update all sources
+ * @param string $oldtype The type of the item to change
+ * @param string $oldvalue The value of the item to change
+ * @param string $newtype The new type of the item
+ * @param string $newvalue The new value of the item
+ *
+ * @return boolean Result from the update query or true if no data to update
+ */
+function reportbuilder_rename_data($table, $source, $oldtype, $oldvalue, $newtype, $newvalue) {
+    global $DB;
+
+    if ($source == '*') {
+        $sourcesql = '';
+        $params = array();
+    } else {
+        $sourcesql = ' AND rb.source = :source';
+        $params = array('source' => $source);
+    }
+
+    $sql = "SELECT rbt.id FROM {report_builder_{$table}} rbt
+        JOIN {report_builder} rb
+        ON rbt.reportid = rb.id
+        WHERE rbt.type = :oldtype AND rbt.value = :oldvalue
+        $sourcesql";
+    $params['oldtype'] = $oldtype;
+    $params['oldvalue'] = $oldvalue;
+
+    $items = $DB->get_fieldset_sql($sql, $params);
+
+    if (!empty($items)) {
+        list($insql, $params) = $DB->get_in_or_equal($items, SQL_PARAMS_NAMED);
+        $sql = "UPDATE {report_builder_{$table}}
+            SET type = :newtype, value = :newvalue
+            WHERE id $insql";
+        $params['newtype'] = $newtype;
+        $params['newvalue'] = $newvalue;
+        $DB->execute($sql, $params);
+    }
+    return true;
+}
+
+
+/**
 * Serves reportbuilder file type files. Required for M2 File API
 *
 * @param object $course

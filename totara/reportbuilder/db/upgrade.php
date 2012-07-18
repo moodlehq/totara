@@ -57,5 +57,13 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012071300, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2012071900) {
+        require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+        // rename the aggregated user columns/filters to avoid clashing with standard user fields
+        reportbuilder_rename_data('columns', 'course_completion_by_org', 'user', 'fullname', 'user', 'allparticipants');
+        reportbuilder_rename_data('filters', 'course_completion_by_org', 'user', 'fullname', 'user', 'allparticipants');
+        totara_upgrade_mod_savepoint(true, 2012071900, 'totara_reportbuilder');
+    }
+
     return true;
 }
