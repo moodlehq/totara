@@ -107,10 +107,6 @@ $PAGE->navbar->add(get_string('myreports', 'totara_reportbuilder'), new moodle_u
 $PAGE->navbar->add(get_string($pagename, 'totara_reportbuilder'));
 echo $output->header();
 
-echo $output->container_start('reportbuilder-navlinks');
-echo $output->view_all_reports_link();
-echo $output->container_end();
-
 echo $output->heading(get_string($pagename, 'totara_reportbuilder'));
 
 $mform->display();
