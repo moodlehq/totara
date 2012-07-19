@@ -124,32 +124,34 @@ function xmldb_totara_message_upgrade($oldversion) {
                 $DB->set_field('message_processors', 'enabled', '0', array('name' => 'email'));
             }
 
-            $pbar = new progress_bar('migratetotaramessages', 500, true);
             $count = count($msgs);
-            $i = 0;
-            // now recreate the messages
-            foreach ($msgs as $msg) {
-                $i++;
-                /* SCANMSG: need to check other messages for local/ in the contexturl */
-                //fix contexturl to change /local/ to /totara/ for totara modules only
-                $msg->contexturl = str_replace('/local/plan','/totara/plan', $msg->contexturl);
-                $msg->contexturl = str_replace('/local/program','/totara/program', $msg->contexturl);
-                $msg->userto = $DB->get_record('user', array('id' => $msg->useridto), '*', MUST_EXIST);
-                $msg->userfrom = $DB->get_record('user', array('id' => $msg->useridfrom), '*', MUST_EXIST);
-                //1.1 bug, many messages are set as format_plain when they should be format_html
-                $msg->fullmessageformat = FORMAT_HTML;
-                !empty($msg->onaccept) && $msg->onaccept = unserialize($msg->onaccept);
-                !empty($msg->onreject) && $msg->onreject = unserialize($msg->onreject);
-                !empty($msg->oninfo) && $msg->oninfo = unserialize($msg->oninfo);
-                if ($msg->processor == 'totara_task') {
-                    tm_task_send($msg);
-                } else {
-                    tm_alert_send($msg);
+            if ($count > 0) {
+                $pbar = new progress_bar('migratetotaramessages', 500, true);
+                $i = 0;
+                // now recreate the messages
+                foreach ($msgs as $msg) {
+                    $i++;
+                    /* SCANMSG: need to check other messages for local/ in the contexturl */
+                    //fix contexturl to change /local/ to /totara/ for totara modules only
+                    $msg->contexturl = str_replace('/local/plan','/totara/plan', $msg->contexturl);
+                    $msg->contexturl = str_replace('/local/program','/totara/program', $msg->contexturl);
+                    $msg->userto = $DB->get_record('user', array('id' => $msg->useridto), '*', MUST_EXIST);
+                    $msg->userfrom = $DB->get_record('user', array('id' => $msg->useridfrom), '*', MUST_EXIST);
+                    //1.1 bug, many messages are set as format_plain when they should be format_html
+                    $msg->fullmessageformat = FORMAT_HTML;
+                    !empty($msg->onaccept) && $msg->onaccept = unserialize($msg->onaccept);
+                    !empty($msg->onreject) && $msg->onreject = unserialize($msg->onreject);
+                    !empty($msg->oninfo) && $msg->oninfo = unserialize($msg->oninfo);
+                    if ($msg->processor == 'totara_task') {
+                        tm_task_send($msg);
+                    } else {
+                        tm_alert_send($msg);
+                    }
+                    upgrade_set_timeout(60*5); // set up timeout, may also abort execution
+                    $pbar->update($i, $count, "Migrating totara messages - message $i/$count.");
                 }
-                upgrade_set_timeout(60*5); // set up timeout, may also abort execution
-                $pbar->update($i, $count, "Migrating totara messages - message $i/$count.");
+                $pbar->update($count, $count, "Migrated totara messages - done!");
             }
-            $pbar->update($count, $count, "Migrated totara messages - done!");
 
             //re-enable emails if they were originally turned on
             if ($orig_emailstatus == 1) {
