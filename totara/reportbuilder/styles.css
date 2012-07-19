@@ -6,7 +6,3 @@ div.multicheck-items fieldset.felement span {
     width: 30%;
 }
 
-/* Override the normal margin on the form elements on the report column/filter pages
- * so they fit nicely in the html table */
-div.reportbuilderform .fitem .felement {margin-left: 0px;}
-

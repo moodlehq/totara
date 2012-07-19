@@ -283,8 +283,8 @@ class report_builder_edit_filters_form extends moodleform {
 
         // remove the labels from the form elements
         $renderer =& $mform->defaultRenderer();
-        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fselectgroups'), 'fitem');
-        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fcheckbox'), 'fitem');
+        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fselectgroups'), 'fitem');
+        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fcheckbox'), 'fitem');
         $renderer->setElementTemplate($select_elementtemplate, 'newfilter');
         $renderer->setElementTemplate($check_elementtemplate, 'newadvanced');
         foreach ($filters as $index => $unused) {
@@ -500,9 +500,9 @@ class report_builder_edit_columns_form extends moodleform {
 
         // remove the labels from the form elements
         $renderer =& $mform->defaultRenderer();
-        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fselectgroups'), 'fitem');
-        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement fcheckbox'), 'fitem');
-        $text_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'felement ftext'), 'fitem');
+        $select_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fselectgroups'), 'fitem');
+        $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fcheckbox'), 'fitem');
+        $text_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'ftext'), 'fitem');
         $renderer->setElementTemplate($select_elementtemplate, 'newcolumns');
         $renderer->setElementTemplate($check_elementtemplate, 'newcustomheading');
         $renderer->setElementTemplate($text_elementtemplate, 'newheading');
