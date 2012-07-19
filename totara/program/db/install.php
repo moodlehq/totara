@@ -61,19 +61,17 @@ function prog_setup_initial_plan_settings() {
     $templates = $DB->get_records('dp_template', null, 'id', 'id');
 
     // Create program settings for existing templates so they don't break
-    // but disable programs by default in existing templates
-
     foreach ($templates as $t) {
         $transaction = $DB->start_delegated_transaction();
         if ($settings = $DB->get_record('dp_component_settings', array('templateid' => $t->id, 'component' => 'program'))) {
-            $settings->enabled=0;
+            $settings->enabled = 1;
             $settings->sortorder = 1 + $DB->count_records('dp_component_settings', array('templateid' => $t->id));
             $DB->update_record('dp_component_settings', $settings);
         } else {
             $settings = new stdClass();
-            $settings->templateid=$t->id;
-            $settings->component='program';
-            $settings->enabled=0;
+            $settings->templateid = $t->id;
+            $settings->component = 'program';
+            $settings->enabled = 1;
             $settings->sortorder = 1 + $DB->count_records('dp_component_settings', array('templateid' => $t->id));
             $DB->insert_record('dp_component_settings', $settings);
         }
