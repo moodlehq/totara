@@ -348,7 +348,12 @@ class plugin_manager {
                 , 'totara_addtoplan', 'totara_alerts',
                 'totara_my_learning_nav', 'totara_my_team_nav', 'totara_quicklinks',
                 'totara_recent_learning', 'totara_report_manager', 'totara_stats',
-                'totara_tasks'
+                'totara_tasks', 'facetoface'
+            ),
+
+            // Totara (as book module is standard)
+            'booktool' => array(
+                'exportimscp', 'importhtml', 'print'
             ),
 
             'coursereport' => array(
@@ -373,7 +378,7 @@ class plugin_manager {
                 'guest', 'imsenterprise', 'ldap', 'manual', 'meta', 'mnet',
                 'paypal', 'self'
                 // Totara
-                , 'totara_devplan'
+                , 'totara_learningplan'
             ),
 
             'filter' => array(
@@ -496,6 +501,8 @@ class plugin_manager {
                 'health', 'innodb', 'langimport', 'multilangupgrade', 'profiling',
                 'qeupgradehelper', 'replace', 'spamcleaner', 'timezoneimport', 'unittest',
                 'uploaduser', 'unsuproles', 'xmldb'
+                // Totara:
+                , 'totara_sync'
             ),
 
             // Totara:
