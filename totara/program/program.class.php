@@ -771,7 +771,8 @@ class program {
 
         // Query to retrive any users who are registered on the program
         $sql = "SELECT id FROM {user} WHERE id IN
-            (SELECT DISTINCT userid FROM {prog_completion} WHERE programid = ? {$statussql})";
+            (SELECT DISTINCT userid FROM {prog_completion}
+            WHERE coursesetid = 0 AND programid = ? {$statussql})";
         $params = array_merge(array($this->id), $statusparams);
 
         return $DB->get_fieldset_sql($sql, $params);
