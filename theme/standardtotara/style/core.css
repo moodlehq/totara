@@ -380,16 +380,6 @@ select {
     margin:2px 2px 0;
     color: #4b4b4b;
 }
-input[disabled="disabled"],
-select[disabled="disabled"],
-input#id_buttonfield[disabled="disabled"],
-input[disabled="disabled"]:hover,
-input#id_buttonfield[disabled="disabled"]:hover {
-    color: #BBBBBB;
-    background: #F2F2F2;
-    cursor: default;
-    border: none;
-}
 input[type="checkbox"] {
     margin: 0 5px 0 0;
 }
@@ -638,3 +628,72 @@ tabrow1 {
     position: relative;
     top: 2px;
 }
+
+
+/**
+ * Totara Dialog boxes
+ *
+ * These changes override the default dialog styles from jquery in
+ * theme/base/styles/totara_dialog_*.css
+ */
+
+/* Dialog heading */
+.totara-dialog .ui-dialog-titlebar h2 {
+    margin-bottom: 5px;
+}
+.ui-dialog .dialog-content .header {
+    background: none;
+}
+
+/* Dialog tabs (e.g. Browse, Search) */
+#dialog-tabs ul {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+#dialog-tabs ul li.ui-state-default {
+    background: #F5F5F5;
+    border-color: #CCCCCC;
+}
+#dialog-tabs ul li.ui-state-default a {
+    color: #888;
+}
+#dialog-tabs ul li.ui-state-default a:hover {
+    color: #333333;
+    background: #EEEEEE;
+}
+#dialog-tabs ul li.ui-tabs-selected {
+ background: #FFFFFF;
+ }
+#dialog-tabs ul li.ui-tabs-selected a {
+    color: #333333;
+}
+#dialog-tabs ul li.ui-tabs-selected a:hover {
+    color: #333333;
+    background: #FFFFFF;
+}
+
+/* selected items in multi-select dialogs (improve spacing) */
+.ui-dialog .dialog-content td.selected span.clickable {
+    margin: 0;
+    padding: 3px 0;
+}
+.ui-dialog .dialog-content td.selected span.clickable a:hover {
+    color: inherit;
+    cursor: default;
+}
+
+/* dialog search form (improve spacing) */
+div.totara-dialog td.select #search-tab,
+div.totara-dialog td.select #browse-tab {
+    padding: 0;
+}
+#dialog-search-table {
+    margin-bottom: 0;
+}
+#dialog-search-table td {
+    padding: 0 5px 0 0;
+    margin-bottom: 0px;
+}
+

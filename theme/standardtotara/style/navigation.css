@@ -81,6 +81,12 @@ div#totaramenu ul li.selected a:hover {
 div#totaramenu ul li ul {
     border-top: 1px solid #DDD;
 }
+/* fix for IE < 9 */
+.ie6 div#totaramenu ul li ul,
+.ie7 div#totaramenu ul li ul,
+.ie8 div#totaramenu ul li ul {
+    border: 1px solid #DDDDDD;
+}
 
 /* secondary nav - not selected child of unselected parent */
 div#totaramenu ul li li a {

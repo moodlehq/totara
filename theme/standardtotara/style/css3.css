@@ -84,6 +84,7 @@ body.ie7 a.link-as-button {
     zoom:1;
 }
 
+/* hover state for buttons */
 input.submit:hover,
 input[type="submit"]:hover,
 input[type="reset"]:hover,
@@ -91,7 +92,7 @@ input[type="button"]:hover,
 #id_buttonfield:hover,
 button:hover,
 a.link-as-button:hover {
-    color:#333;
+    color: #000000;
     text-decoration:none;
     background-color:#e6e6e6;
     background-position:0 -15px;
@@ -101,15 +102,26 @@ a.link-as-button:hover {
     -o-transition:background-position .1s linear;
     transition:background-position .1s linear;
 }
+
+/* override to remove hover state for disabled buttons */
 input[disabled="disabled"],
 select[disabled="disabled"],
 input#id_buttonfield[disabled="disabled"],
 input[disabled="disabled"]:hover,
 input#id_buttonfield[disabled="disabled"]:hover {
-    color: #BBBBBB;
-    background: #F2F2F2;
-    cursor: default;
-    border: none;
+    color: #999999;
+    cursor: not-allowed;
+    background-color: transparent;
+    background-position: 0;
+    background-image: -webkit-linear-gradient(top, #FFFFFF, #E6E6E6);
+    background-image: -o-linear-gradient(top, #FFFFFF, #E6E6E6);
+    background-image: -moz-linear-gradient(top, #FFFFFF, #E6E6E6);
+    background-image: linear-gradient(top, #FFFFFF, #E6E6E6);
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
 }
 /**
  * Dock gradient
@@ -308,4 +320,15 @@ select.totara-limited-width {
 select.totara-expanded-width {
     width: auto;
     position: absolute;
+}
+/* Totara dialog boxes */
+.totara-dialog .ui-dialog-titlebar {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+#dialog-tabs ul li.ui-state-default {
+    -moz-border-radius: 3px 3px 0px 0px;
+    -webkit-border-radius: 3px 3px 0px 0px;
+    border-radius: 3px 3px 0px 0px;
 }
