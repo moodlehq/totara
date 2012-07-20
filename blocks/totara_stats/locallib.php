@@ -128,13 +128,14 @@ function totara_stats_manager_stats($user, $config=null) {
         AND userid IN (SELECT DISTINCT userid FROM {pos_assignment} where managerid = :userid) ";
     $params = array('from' => $from, 'to' => $to, 'userid' => $user->id);
 
-    $statssql = array();
+    $statssql = array_fill(1, 5, new stdClass());
     if (empty($config) || !empty($config->statlearnerhours)) {
         $statssql[1]->sql = "SELECT count(DISTINCT userid) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_TIME_SPENT.$commonsql.
                             " GROUP BY userid HAVING sum(data2) > ".$numhours*60*60;
         $statssql[1]->sqlparams = $params;
         $statssql[1]->string = 'statlearnerhours';
+        $statssql[1]->stringparam = new stdClass();
         $statssql[1]->stringparam->hours = $numhours; //extra params used by this particular query - could be configurable in future?
     }
     if (empty($config) || !empty($config->statcoursesstarted)) {
