@@ -56,7 +56,7 @@ function program_cron() {
 function program_hourly_cron() {
 
     $timenow  = time();
-    $hourlycron = 60 * 60; // one hour
+    $hourlycron = 0;//60 * 60; // one hour
     $lasthourlycron = get_config(null, 'totara_program_lasthourlycron');
 
     if ($lasthourlycron && ($timenow - $lasthourlycron <= $hourlycron)) {
@@ -81,7 +81,7 @@ function program_hourly_cron() {
  */
 function program_daily_cron() {
     $timenow  = time();
-    $dailycron = 60 * 60 * 24; // one day
+    $dailycron = 0;//60 * 60 * 24; // one day
     $lastdailycron = get_config(null, 'totara_program_lastdailycron');
 
     if ($lastdailycron && ($timenow - $lastdailycron <= $dailycron)) {

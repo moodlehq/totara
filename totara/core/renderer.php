@@ -115,13 +115,11 @@ class totara_core_renderer extends plugin_renderer_base {
         $content .= html_writer::end_tag('span');
         $content .= html_writer::end_tag('span');
         // Check if user has permissions to see details
-        /*TODO SCANMSG: re-enable when course completion merged
         if (completion_can_view_data($userid, $courseid)) {
             $url = new moodle_url("/blocks/completionstatus/details.php?course={$courseid}&user={$userid}");
             $attributes = array('href' => $url);
             $content = html_writer::tag('a', $content, $attributes);
         }
-        */
         return $content;
     }
 
@@ -596,14 +594,14 @@ class totara_core_renderer extends plugin_renderer_base {
         // Add more sizes if as neccessary :)!
         switch ($size) {
         case 'large' :
-            $bar_background = 'progressbar_back-large';
+            $bar_foreground = 'progressbar-large';
             $pixelvalue = ($percent / 100) * 121;
             $pixeloffset = round($pixelvalue - 120);
             $class = 'totara_progress_bar_large';
             break;
         case 'medium' :
         default :
-            $bar_background = 'progressbar_back-medium';
+            $bar_foreground = 'progressbar-medium';
             $pixelvalue = ($percent / 100) * 61;
             $pixeloffset = round($pixelvalue - 60);
             $class = 'totara_progress_bar_medium';
@@ -614,15 +612,9 @@ class totara_core_renderer extends plugin_renderer_base {
             $tooltip = get_string('xpercent', 'totara_core', $percent);
         }
 
-        if (right_to_left()) {
-            // Negate offset and add 1 to
-            // fix display in RTL
-            $pixeloffset  = -$pixeloffset + 1;
-        }
-
         $out = '';
 
-        $out .= $this->pix_icon($bar_background, $tooltip, 'totara_core', array('title' => $tooltip, 'style' => "background-position: ' . $pixeloffset . 'px 0pt;", 'class' => $class));
+        $out .= $this->pix_icon($bar_foreground, $tooltip, 'totara_core', array('title' => $tooltip, 'style' => 'background-position: ' . $pixeloffset . 'px 0px;', 'class' => $class));
         if ($showlabel) {
             $out .= ' ' . get_string('xpercentcomplete', 'totara_core', $percent) . html_writer::empty_tag('br');
         }
