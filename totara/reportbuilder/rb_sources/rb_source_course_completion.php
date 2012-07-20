@@ -556,8 +556,8 @@ class rb_source_course_completion extends rb_base_source {
     function rb_filter_completion_status_list() {
         // TODO obtain this scale from single source - db?
         $proficiencyselect = array();
-        $proficiencyselect[0] = get_string('completion-alt-auto-n', 'completion');
-        $proficiencyselect[1] = get_string('completion-alt-auto-y', 'completion');
+        $proficiencyselect[0] = get_string('completion-n', 'completion');
+        $proficiencyselect[1] = get_string('completion-y', 'completion');
 
         return $proficiencyselect;
     }
