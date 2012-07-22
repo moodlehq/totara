@@ -92,6 +92,9 @@ if (!$nojs) {
     // Load items to display
     $dialog->load_items($parentid);
 
+    // Make a note of the current item (competency) id
+    $dialog->customdata['current_item_id'] = $compid;
+
     // Set disabled items
     $dialog->disabled_items = $alreadyrelated;
 
