@@ -1088,7 +1088,7 @@ class development_plan {
                 // determine plurality
                 $langkey = $name . ($a->number > 1 ? 'plural' : '');
                 $a->name = (get_string($langkey, 'totara_plan') ? get_string($langkey, 'totara_plan') : $name);
-                $a->link = $component->get_url();
+                $a->link = $component->get_url()->out();
                 $list[] = get_string('xitemspending', 'totara_plan', $a);
             }
             $approval = $approval || $canapprove;
@@ -1128,7 +1128,7 @@ class development_plan {
             $comp = $this->get_component($component);
 
             $a = new stdClass();
-            $a->uri = $comp->get_url();
+            $a->uri = $comp->get_url()->out();
             $a->number = count($items);
             $totalitems += $a->number;
             $a->name = $component;

@@ -50,6 +50,7 @@ require_login();
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_url(qualified_me());
+$PAGE->set_pagelayout('noblocks');
 $plan = new development_plan($id);
 $componentname = 'competency';
 $component = $plan->get_component($componentname);

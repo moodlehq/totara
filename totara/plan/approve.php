@@ -42,6 +42,7 @@ $submitted = optional_param('submitbutton', null, PARAM_TEXT); // form submitted
 $currenturl = qualified_me();
 $PAGE->set_context(context_system::instance());
 $PAGE->set_url($currenturl);
+$PAGE->set_pagelayout('noblocks');
 $planurl = "{$CFG->wwwroot}/totara/plan/view.php?id={$id}";
 $plan = new development_plan($id);
 

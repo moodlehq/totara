@@ -157,6 +157,7 @@ if ($action == 'view') {
     // Comments
     require_once($CFG->dirroot.'/comment/lib.php');
     comment::init();
+    $options = new stdClass();
     $options->area    = 'plan_overview';
     $options->context = $context;
     $options->itemid  = $plan->id;
