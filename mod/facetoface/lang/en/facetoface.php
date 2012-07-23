@@ -686,7 +686,7 @@ $string['requestattendsessionsent'] = 'Request to attend session {$a} sent to ma
 
 $string['bookedforsession'] = 'Booked for session {$a}';
 $string['waitlistedforsession'] = 'Waitlisted for session {$a}';
-$string['cancelledforsession'] = 'Cancelled for session';
+$string['cancelledforsession'] = 'Cancelled for session {$a}';
 
 $string['requestuserattendsession'] = 'Request for {$a->usermsg} to attend session {$a->url}';
 $string['cancelusersession'] = 'Cancelled for {$a->usermsg} session {$a->url}';

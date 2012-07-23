@@ -4122,11 +4122,12 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-            $newevent->subject          = $string_manager->get_string('bookedforsession', 'facetoface', null, $user->lang) . ' ' . html_writer::tag($url, $facetoface->name);
+            $newevent->subject          = $string_manager->get_string('bookedforsession', 'facetoface', $facetoface->name, $user->lang);
             $newevent->icon             = 'facetoface-add';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
             $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            $newevent->contexturl       = $url;
             tm_alert_send($newevent);
             break;
 
@@ -4139,16 +4140,17 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                                                         $session,
                                                         $session->id
                                                 );
-            $newevent->subject          = $string_manager->get_string('waitlistedforsession' ,'facetoface', null, $user->lang) . ' ' . html_writer::link($url, $facetoface->name);
+            $newevent->subject          = $string_manager->get_string('waitlistedforsession' ,'facetoface', $facetoface->name, $user->lang);
             $newevent->icon             = 'facetoface-regular';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
             $newevent->msgtype          = TOTARA_MSG_TYPE_FACE2FACE;
             $newevent->urgency          = TOTARA_MSG_URGENCY_NORMAL;
+            $newevent->contexturl       = $url;
             tm_alert_send($newevent);
             break;
 
         case MDL_F2F_STATUS_USER_CANCELLED:
-            $newevent->subject          = $string_manager->get_string('cancelledforsession', 'facetoface', null, $user->lang) . ' ' . html_writer::link($url, $facetoface->name);
+            $newevent->subject          = $string_manager->get_string('cancelledforsession', 'facetoface', $facetoface->name, $user->lang);
             $newevent->fullmessage      = $newevent->subject;
             $newevent->icon             = 'facetoface-remove';
             $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
@@ -4163,6 +4165,7 @@ function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
                 $subjectinfo->usermsg = $usermsg;
                 $subjectinfo->url = html_writer::link($url, $facetoface->name);
                 $newevent->subject          = $string_manager->get_string('cancelusersession', 'facetoface', $subjectinfo, $userto->lang);
+                $newevent->contexturl       = $url;
                 $newevent->fullmessage      = $newevent->subject;
                 tm_alert_send($newevent);
             }
