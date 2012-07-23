@@ -17,9 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Chris Wharton <chrisw@catalyst.net.nz>
- * @package totara
- * @subpackage enrol_totara_learningplan
+ * @author Ciaran Irvine <ciaran.irvine@totaralms.com>
+ * @package enrol
+ * @subpackage totara_program
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -27,15 +27,20 @@ defined('MOODLE_INTERNAL') || die();
 if ($ADMIN->fulltree) {
 
     //--- general settings -----------------------------------------------------------------------------------
-    $settings->add(new admin_setting_heading('enrol_totara_learningplan_settings', '', get_string('pluginname_desc', 'enrol_totara_learningplan')));
+    $settings->add(new admin_setting_heading('enrol_totara_program_settings', '', get_string('pluginname_desc', 'enrol_totara_program')));
 
 
+    $settings->add(new admin_setting_configcheckbox('enrol_totara_program/defaultenrol',
+            get_string('defaultenrol', 'enrol'), get_string('defaultenrol_desc', 'enrol'), 1));
     //--- enrol instance defaults ----------------------------------------------------------------------------
     if (!during_initial_install()) {
         $options = get_default_enrol_roles(context_system::instance());
         $student = get_archetype_roles('student');
         $student = reset($student);
-        $settings->add(new admin_setting_configselect('enrol_totara_learningplan/roleid',
+        $settings->add(new admin_setting_configselect('enrol_totara_program/roleid',
             get_string('defaultrole', 'role'), '', $student->id, $options));
     }
+
+    $settings->add(new admin_setting_configtext('enrol_totara_program/enrolperiod',
+            get_string('enrolperiod', 'enrol_totara_program'), get_string('enrolperiod_desc', 'enrol_totara_program'), 0, PARAM_INT));
 }

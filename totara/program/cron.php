@@ -121,6 +121,9 @@ function program_daily_cron() {
     // Sends any messages that are due to be sent
     program_cron_send_messages();
 
+    //tidy up enrolment plugins on courses
+    program_cron_clean_enrolment_plugins();
+
     return true;
 }
 
@@ -152,6 +155,47 @@ function program_cron_send_messages() {
 
     // Send alerts if any programs have outstanding exceptions
     program_cron_exceptions_raised($programs);
+}
+
+/**
+ * Checks if the enrolment plugin is enabled in any courses which are part of programs and ensures
+ * the plugin is enabled (when required) ore removed (if no longer required)
+ *
+ * @global object $DB
+ */
+function program_cron_clean_enrolment_plugins() {
+    global $DB;
+
+    //get program enrolment plugin
+    $program_plugin = enrol_get_plugin('totara_program');
+
+    //fix courses that are in a courseset but do not have the enrolment plugin
+    $program_courses = prog_get_courses_associated_with_programs();
+    foreach ($program_courses as $course) {
+        $program_plugin->add_instance($course);
+    }
+
+    // now the other way round: get courses with the plugin that are NOT in coursesets -
+    //need to check if they are linked to a program via a competency
+    $params = array('totara_program');
+    if (count($program_courses) > 0) {
+        list($notinsql, $notinparams) = $DB->get_in_or_equal(array_keys($program_courses), SQL_PARAMS_QM, 'param', false);
+        $courseidclause = " AND courseid $notinsql";
+        $params = array_merge($params, $notinparams);
+    } else {
+        $courseidclause = '';
+    }
+    $sql = "SELECT DISTINCT courseid
+                FROM {enrol}
+                WHERE enrol = ?
+                $courseidclause";
+    $unused_program_courses = $DB->get_recordset_sql($sql, $params);
+    foreach ($unused_program_courses as $course) {
+        $instance = $program_plugin->get_instance_for_course($course->courseid);
+        if ($instance) {
+            $program_plugin->delete_instance($instance);
+        }
+    }
 }
 
 /**

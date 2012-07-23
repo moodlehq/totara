@@ -17,14 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Ben Lobo <ben.lobo@kineo.com>
- * @package totara
- * @subpackage program
+ * @author Ciaran Irvine <ciaran.irvine@totaralms.com>
+ * @package enrol
+ * @subpackage totara_program
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2012080300;       // The current module version (Date: YYYYMMDDXX)
+$plugin->version  = 2012071300;       // The current module version (Date: YYYYMMDDXX)
 $plugin->requires = 2011120501;       // Requires this Moodle version
 $plugin->cron = 0;                    // Period for cron to check this module (secs)
-$plugin->component = 'totara_program'; // To check on upgrade, that module sits in correct place
+$plugin->component = 'enrol_totara_program'; // To check on upgrade, that module sits in correct place

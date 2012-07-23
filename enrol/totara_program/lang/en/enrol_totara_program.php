@@ -17,18 +17,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Peter Bulmer <peter.bulmer@catalyst.net.nz>
- * @author Aaron Barnes <aaron.barnes@totaralms.com>
- * @package totara
- * @subpackage enrol_totara_learningplan
+ * @author Ciaran Irvine <ciaran.irvine@totaralms.com>
+ * @package enrol
+ * @subpackage totara_program
  */
 
-$string['pluginname_desc'] = 'The Learning Plan enrolment module restricts interactive enrolment in courses.  Where a course uses the Learning Plan enrolment plugin to manage interactive enrolments, only users who have the course listed as an approved component as part of an approved learning plan are permitted to self-enrol.';
+$string['pluginname_desc'] = 'The Program enrolment plugin is used to provide access to courses that form part of a program. Courses added to programs will have this plugin enabled automatically, and users will automatically get enrolled into the appropriate courses via this plugin.';
 $string['guestnoenrol'] = 'You are unable to enrol in this course. You need to be a real (not guest) user to be allowed to enrol in this course.Click \'logout\' to stop being a guest, and log in using individual username and password, then try enroling again.';
 $string['guestaccess'] = 'Without enrolment, guests are allowed <a href="{$a}">limited access to view the course</a>.<br />';
-$string['nowenrolled'] = 'You have been enrolled in course {$a} .';
+$string['enrolperiod'] = 'Enrolment duration';
+$string['enrolperiod_desc'] = 'Default length of time that the enrolment is valid (in seconds). If set to zero, the enrolment duration will be unlimited by default.';
+$string['enrolperiod_help'] = 'Length of time that the enrolment is valid, starting with the moment the user enrols themselves. If disabled, the enrolment duration will be unlimited.';
+$string['nowenrolled'] = 'You have been enrolled in course {$a->course} via required learning program {$a->program}.';
 $string['redirectedsoon'] = 'You are about to be redirected.';
-$string['notpermitted'] = 'You are not currently permitted to enrol in this course.<br />To enrol you must have this course listed and fully approved in your ';
-$string['learningplan'] = 'Learning Plan';
-$string['pluginname'] = 'Learning Plan';
-$string['totara_learningplan:unenrol'] = 'Unenrol users from course';
+$string['program'] = 'Program';
+$string['pluginname'] = 'Program';
+$string['totara_program:unenrol'] = 'Unenrol users from course';

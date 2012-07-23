@@ -59,8 +59,7 @@ class enrol_totara_learningplan_plugin extends enrol_plugin {
     }
 
     /**
-     * Creates course enrol form, checks if form submitted
-     * and enrols user if necessary.
+     * Enrols user onto a course in an approved plan.
      *
      * @param stdClass $instance
      * @return string html text, usually a form in a text box

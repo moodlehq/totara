@@ -569,16 +569,35 @@ class multi_course_set extends course_set {
             return false;
         }
 
-        // first delete any courses from the database that have been marked for deletion
+        // first get program enrolment plugin class
+        $program_plugin = enrol_get_plugin('totara_program');
+        // then delete any courses from the database that have been marked for deletion
         foreach ($this->courses_deleted_ids as $courseid) {
             if ($courseset_course = $DB->get_record('prog_courseset_course', array('coursesetid' => $this->id, 'courseid' => $courseid))) {
                 $DB->delete_records('prog_courseset_course', array('coursesetid' => $this->id, 'courseid' => $courseid));
             }
         }
 
+        //if the course no longer exists in any programs, remove the program enrolment plugin
+        $courses_still_associated = prog_get_courses_associated_with_programs($this->courses_deleted_ids);
+        $courses_to_remove_plugin_from = array_diff($this->courses_deleted_ids, array_keys($courses_still_associated));
+        foreach ($courses_to_remove_plugin_from as $courseid) {
+            $instance = $program_plugin->get_instance_for_course($courseid);
+            if ($instance) {
+                $program_plugin->delete_instance($instance);
+            }
+        }
+
+
         // then add any new courses
         foreach ($this->courses as $course) {
             if (!$ob = $DB->get_record('prog_courseset_course', array('coursesetid' => $this->id, 'courseid' => $course->id))) {
+                //check if program enrolment plugin is already enabled on this course
+                $instance = $program_plugin->get_instance_for_course($course->id);
+                if (!$instance) {
+                    //add it
+                    $program_plugin->add_instance($course);
+                }
                 $ob = new stdClass();
                 $ob->coursesetid = $this->id;
                 $ob->courseid = $course->id;
@@ -1258,6 +1277,21 @@ class competency_course_set extends course_set {
 
     }
 
+    public function save_set() {
+
+        $courses = $this->get_competency_courses();
+        $program_plugin = enrol_get_plugin('totara_program');
+        foreach ($courses as $course) {
+            //check if program enrolment plugin is already enabled on this course
+            $instance = $program_plugin->get_instance_for_course($course->id);
+            if (!$instance) {
+                //add it
+                $program_plugin->add_instance($course);
+            }
+        }
+        return parent::save_set();
+    }
+
     public function init_form_data($formnameprefix, $formdata) {
         parent::init_form_data($formnameprefix, $formdata);
 
@@ -1845,7 +1879,11 @@ class recurring_course_set extends course_set {
             $ob->courseid = $this->course->id;
             return $DB->insert_record('prog_courseset_course', $ob);
         }
-
+        $program_plugin = enrol_get_plugin('totara_program');
+        $instance = $program_plugin->get_instance_for_course($this->course->id);
+        if (!$instance) {
+            $program_plugin->add_instance($course->courseid);
+        }
         return true;
     }
 

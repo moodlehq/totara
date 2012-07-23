@@ -794,54 +794,86 @@ function prog_print_viewtype_selector($pagetype, $viewtype, $options=null) {
  * @global object $CFG
  * @param object $user
  * @param object $course
- * @return void
+ * @return object $result containing properties:
+ *         'enroled' (boolean: whether user is enroled on the course)
+ *         'notify' (boolean: whether a new enrolment has been made so notify user)
+ *         'program' (string: name of program they have obtained access through)
  */
 function prog_can_enter_course($user, $course) {
     global $DB;
 
-    if (!$courserole = get_default_course_role($course)) {
-        return;
-    }
+    $result = new stdClass();
+    $result->enroled = false;
+    $result->notify = false;
+    $result->program = null;
 
-    // check if the user has already been assigned the student role in this course
-    if (user_has_role_assignment($user->id, $courserole->id, $course->context->id)) {
-        return;
+    $studentrole = get_archetype_roles('student');
+    if (empty($studentrole)) {
+        return $result;
     }
+    $studentrole = reset($studentrole);
 
-    // Get programs that this user is assigned to, either via learning plans or required learning
+    // Get programs containing this course that this user is assigned to, either via learning plans or required learning
     $get_programs = "
         SELECT p.id
           FROM {prog} p
          WHERE p.id IN
              (
-                SELECT pc.programid
+                SELECT DISTINCT pc.programid
                   FROM {dp_plan_program_assign} pc
             INNER JOIN {dp_plan} pln ON pln.id = pc.planid
+             LEFT JOIN {prog_courseset} pcs ON pc.programid = pcs.programid
+             LEFT JOIN {prog_courseset_course} pcsc ON pcs.id = pcsc.coursesetid AND pcsc.courseid = ?
                  WHERE pc.approved >= ?
                    AND pln.userid = ?
                    AND pln.status = ?
              )
             OR p.id IN
              (
-                SELECT pua.programid
+                SELECT DISTINCT pua.programid
                   FROM {prog_user_assignment} pua
              LEFT JOIN {prog_completion} pc
                     ON pua.programid = pc.programid AND pua.userid = pc.userid
+             LEFT JOIN {prog_courseset} pcs ON pua.programid = pcs.programid
+             LEFT JOIN {prog_courseset_course} pcsc ON pcs.id = pcsc.coursesetid AND pcsc.courseid = ?
                  WHERE pua.userid = ?
                    AND pc.coursesetid = ?
                    AND pc.status <> ?
              )
     ";
-    $params = array(DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $user->id, 0, STATUS_PROGRAM_COMPLETE);
+    $params = array($course->id, DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $course->id, $user->id, 0, STATUS_PROGRAM_COMPLETE);
     $program_records = $DB->get_records_sql($get_programs, $params);
 
-    foreach ($program_records as $program_record) {
-        $program = new program($program_record->id);
-        if ($program->is_accessible() && $program->can_enter_course($user->id, $course->id)) {
-            enrol_into_course($course, $user, 'manual');
-            return;
+    if (!empty($program_records)) {
+        //get program enrolment plugin class
+        $program_plugin = enrol_get_plugin('totara_program');
+        foreach ($program_records as $program_record) {
+            $program = new program($program_record->id);
+            if ($program->is_accessible() && $program->can_enter_course($user->id, $course->id)) {
+                //check if program enrolment plugin is enabled on this course
+                //should be added when coursesets are created but just in case we'll double-check
+                $instance = $program_plugin->get_instance_for_course($course->id);
+                if (!$instance) {
+                    //add it
+                    $instanceid = $program_plugin->add_instance($course);
+                    $instance = $DB->get_record('enrol', array('id' => $instanceid));
+                }
+                //check if user is already enroled under the program plugin
+                if (!$ue = $DB->get_record('user_enrolments', array('enrolid' => $instance->id, 'userid' => $user->id))) {
+                    //enrol them
+                    $program_plugin->enrol_user($instance, $user->id, $studentrole->id);
+                    $result->enroled = true;
+                    $result->notify = true;
+                    $result->program = $program->fullname;
+                } else {
+                    //already enroled
+                    $result->enroled = true;
+                }
+                return $result;
+            }
         }
     }
+    return $result;
 }
 
 
@@ -1363,4 +1395,51 @@ function totara_program_cron() {
     global $CFG;
     require_once($CFG->dirroot . '/totara/program/cron.php');
     program_cron();
+}
+
+/**
+ * Returns an array of course objects for all the courses which
+ * are part of any program.
+ *
+ * If an array of courseids are provided, the query is restricted
+ * to only check for those courses
+ *
+ * @param array $courses Array of courseids to check for (optional) Defaults to all courses
+ * @return array Array of course objects
+ */
+function prog_get_courses_associated_with_programs($courses = null) {
+    global $DB;
+
+    $limitcourses = (isset($courses) && is_array($courses) && count($courses) > 0);
+
+    // restrict by list of courses provided
+    if ($limitcourses) {
+        list($insql, $inparams) = $DB->get_in_or_equal($courses);
+        $insql = " AND c.id $insql";
+    } else {
+        $insql = '';
+        $inparams = array();
+    }
+    // get courses mentioned in the courseset_course tab, and also any courses
+    // linked to competencies used in any courseset
+    // always exclude the site course and optionally restrict to a selected list of courses
+    $sql = "SELECT c.* FROM {prog_courseset_course} pcc
+            INNER JOIN {course} c ON c.id = pcc.courseid
+            WHERE c.id <> ? $insql
+        UNION ALL
+            SELECT c.* FROM {course} c
+            JOIN {comp_evidence_items} cei ON c.id = cei.iteminstance
+            AND cei.itemtype = ?
+            WHERE cei.competencyid IN
+                (SELECT DISTINCT competencyid FROM {prog_courseset} WHERE competencyid <> 0)
+            AND c.id <> ? $insql";
+
+    // build up the params array
+    $params = array(SITEID);
+    $params = array_merge($params, $inparams);
+    $params[] = 'coursecompletion';
+    $params[] = SITEID;
+    $params = array_merge($params, $inparams);
+
+    return $DB->get_records_sql($sql, $params);
 }

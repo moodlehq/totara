@@ -80,5 +80,18 @@ function xmldb_totara_program_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012072701, 'totara_program');
     }
 
+    if ($oldversion < 2012080300) {
+        //get program enrolment plugin
+        $program_plugin = enrol_get_plugin('totara_program');
+
+        // add enrollment plugin to all courses associated with programs
+        $program_courses = prog_get_courses_associated_with_programs();
+        foreach ($program_courses as $course) {
+            //add plugin
+            $program_plugin->add_instance($course);
+        }
+        totara_upgrade_mod_savepoint(true, 2012080300, 'totara_program');
+    }
+
     return true;
 }

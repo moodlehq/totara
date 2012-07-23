@@ -17,14 +17,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @author Ben Lobo <ben.lobo@kineo.com>
- * @package totara
- * @subpackage program
+ * @author Ciaran Irvine <ciaran.irvine@totaralms.com>
+ * @package enrol
+ * @subpackage totara_program
  */
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Add new instance of enrol_totara_program to course
+ *
+ */
 
-$plugin->version  = 2012080300;       // The current module version (Date: YYYYMMDDXX)
-$plugin->requires = 2011120501;       // Requires this Moodle version
-$plugin->cron = 0;                    // Period for cron to check this module (secs)
-$plugin->component = 'totara_program'; // To check on upgrade, that module sits in correct place
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+
+$id = required_param('id', PARAM_INT); // course id
+
+$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
+$context = context_course::instance($course->id);
+
+require_login($course);
+require_capability('moodle/course:enrolconfig', $context);
+require_sesskey();
+
+$enrol = enrol_get_plugin('totara_program');
+
+if ($enrol->get_newinstance_link($course->id)) {
+    $enrol->add_instance($course);
+}
+
+redirect(new moodle_url('/enrol/instances.php', array('id' => $course->id)));

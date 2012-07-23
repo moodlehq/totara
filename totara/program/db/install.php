@@ -43,6 +43,12 @@ function xmldb_totara_program_install() {
         set_config('totara_program_cron', 60);
     }
 
+    //enable program enrolment plugin
+    $enabledplugins = explode(',', $CFG->enrol_plugins_enabled);
+    $enabledplugins[] = 'totara_program';
+    $enabledplugins = array_unique($enabledplugins);
+    set_config('enrol_plugins_enabled', implode(',', $enabledplugins));
+
     prog_setup_initial_plan_settings();
 }
 

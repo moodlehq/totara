@@ -283,14 +283,26 @@ class prog_content {
     public function save_content() {
         global $DB;
         $this->fix_set_sortorder($this->coursesets);
-
+        $program_plugin = enrol_get_plugin('totara_program');
         // first delete any course sets from the database that have been marked for deletion
         foreach ($this->coursesets_deleted_ids as $coursesetid) {
             if ($courseset = $DB->get_record('prog_courseset', array('id' => $coursesetid))) {
 
-                // delete and courses linked to the course set
+                // delete any courses linked to the course set
+                // first get the list of courses to check later
+                $courses = $DB->get_fieldset_select('prog_courseset_course', 'courseid', 'coursesetid = ?', array($coursesetid));
+                //now delete the courseset
                 if (!$DB->delete_records('prog_courseset_course', array('coursesetid' => $coursesetid))) {
                     return false;
+                }
+                //now check if any of those courses still exist in any other program and remove the enrolment plugin if required
+                $courses_still_associated = prog_get_courses_associated_with_programs($courses);
+                $courses_to_remove_plugin_from = array_diff($courses, array_keys($courses_still_associated));
+                foreach ($courses_to_remove_plugin_from as $courseid) {
+                    $instance = $program_plugin->get_instance_for_course($courseid);
+                    if ($instance) {
+                        $program_plugin->delete_instance($instance);
+                    }
                 }
 
                 // delete the course set
