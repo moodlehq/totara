@@ -27,6 +27,9 @@ require_once($CFG->dirroot.'/blocks/totara_stats/locallib.php');
 /**
  * Determine whether the current logged-in user is able to rate a competency proficiency for the given competency
  *
+ * If a null competencyid is given, just does basic permission checks to ensure they
+ * can modify evidence in this plan. Without checking individual competencies.
+ *
  * @access  public
  * @param   object      $plan       Development plan object
  * @param   object      $component  Full plan component class instance
@@ -50,6 +53,11 @@ function hierarchy_can_add_competency_evidence($plan, $component, $userid, $comp
     // Validate whether the plan belongs to the specified user
     if (!$plan->userid == $userid) {
         return array('error:usernotfound','totara_plan');
+    }
+
+    //no competency specified, they generally have permission so that's okay
+    if (is_null($competencyid)) {
+        return true;
     }
 
     // Validate whether this competency is even in the plan

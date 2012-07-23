@@ -214,7 +214,7 @@ class dp_competency_component extends dp_base_component {
     public function setup_picker() {
         global $PAGE;
         // If we are showing dialog
-        if ($this->can_update_items()) {
+        if ($this->can_update_items() || hierarchy_can_add_competency_evidence($this->plan, $this, $this->plan->viewas, null)) {
             // Setup lightbox
             local_js(array(
                 TOTARA_JS_DIALOG,

@@ -184,7 +184,7 @@ M.totara_plan_competency_find = M.totara_plan_competency_find || {
                 buttons: {},
                 title: '<h2>' + M.util.get_string('addcompetencys', 'totara_plan') + '</h2>'
             },
-            url+'find.php?id='+plan_id,
+            url+'find.php?id='+this.config.plan_id,
             handler
         );
     }
