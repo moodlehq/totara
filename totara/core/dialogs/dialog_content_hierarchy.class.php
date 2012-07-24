@@ -144,6 +144,8 @@ class totara_dialog_content_hierarchy extends totara_dialog_content {
 
         // Set lang file
         $this->lang_file = 'totara_hierarchy';
+        $this->string_nothingtodisplay = "{$prefix}error:dialognotreeitems";
+
         // Load framework
         $this->set_framework($frameworkid);
 
