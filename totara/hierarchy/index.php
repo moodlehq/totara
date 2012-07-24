@@ -66,11 +66,13 @@ if (!$framework) {
     exit();
 }
 
+// Check if custom types exist
+$types = $hierarchy->get_types();
 // Cache user capabilities
 $can_add_item    = has_capability('totara/hierarchy:create'.$prefix, $sitecontext);
 $can_edit_item   = has_capability('totara/hierarchy:update'.$prefix, $sitecontext);
 $can_delete_item = has_capability('totara/hierarchy:delete'.$prefix, $sitecontext);
-$can_manage_type = has_capability('totara/hierarchy:update'.$prefix.'type', $sitecontext);
+$can_manage_type = (count($types) > 0) && has_capability('totara/hierarchy:update'.$prefix.'type', $sitecontext);
 
 // process actions
 if ($can_edit_item) {

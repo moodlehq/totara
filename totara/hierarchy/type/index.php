@@ -152,9 +152,8 @@ if ($types) {
     echo html_writer::tag("p", get_string($prefix.'notypes', 'totara_hierarchy'));
 }
 
-// only show bulk re-classify form if there is at least one type with items
-// (otherwise there's nothing to re-classify)
-$showbulkform = (count($options) > 0);
+// only show bulk re-classify form if there is at least one type
+$showbulkform = (count($types) > 0);
 
 // add an option to change all unclassified items to a new type (if there are any)
 if ($unclassified) {
@@ -163,6 +162,7 @@ if ($unclassified) {
 
 if ($showbulkform) {
     echo html_writer::empty_tag('br');
+    echo html_writer::tag('a', '', array('name' => 'bulkreclassify'));
     echo $OUTPUT->heading(get_string('bulktypechanges', 'totara_hierarchy'), 1);
 
     echo $OUTPUT->container(get_string('bulktypechangesdesc', 'totara_hierarchy'));
