@@ -6345,7 +6345,7 @@ class context_program extends context {
      * @static
      * @return string the human readable context level name.
      */
-    protected static function get_level_name() {
+    public static function get_level_name() {
         return get_string('program', 'totara_program');
     }
 
