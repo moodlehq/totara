@@ -38,7 +38,7 @@ class framework_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string($prefix.'frameworkidnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('idnumber', $prefix.'frameworkidnumber', 'totara_hierarchy');
-        $mform->setType('idnumber', PARAM_INT);
+        $mform->setType('idnumber', PARAM_TEXT);
 
         $mform->addElement('editor', 'description_editor', get_string($prefix.'frameworkdescription', 'totara_hierarchy'), null, $TEXTAREA_OPTIONS);
         $mform->addHelpButton('description_editor', $prefix.'frameworkdescription', 'totara_hierarchy');

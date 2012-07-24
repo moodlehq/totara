@@ -91,7 +91,7 @@ class item_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string($prefix.'idnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('idnumber', $prefix.'idnumber', 'totara_hierarchy');
-        $mform->setType('idnumber', PARAM_INT);
+        $mform->setType('idnumber', PARAM_TEXT);
 
         // If we are in a dialog, hide the htmleditor. It messes with the jquery code
         if (!$dialog) {

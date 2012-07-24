@@ -56,7 +56,7 @@ class competencyscalevalue_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string('competencyscalevalueidnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('idnumber', 'competencyscalevalueidnumber', 'totara_hierarchy');
-        $mform->setType('idnumber', PARAM_INT);
+        $mform->setType('idnumber', PARAM_TEXT);
 
         $mform->addElement('text', 'numericscore', get_string('competencyscalevaluenumericalvalue', 'totara_hierarchy'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('numericscore', 'competencyscalevaluenumericalvalue', 'totara_hierarchy');

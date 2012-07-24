@@ -71,7 +71,7 @@ class framework_edit_form extends moodleform {
 
         $mform->addElement('text', 'idnumber', get_string('competencyframeworkidnumber', 'totara_hierarchy'), 'maxlength="100"  size="10"');
         $mform->addHelpButton('idnumber', 'competencyframeworkidnumber', 'totara_hierarchy');
-        $mform->setType('idnumber', PARAM_INT);
+        $mform->setType('idnumber', PARAM_TEXT);
 
         $mform->addElement('editor', 'description_editor', get_string('competencyframeworkdescription', 'totara_hierarchy'), null, $TEXTAREA_OPTIONS);
         $mform->addHelpButton('description_editor', 'competencyframeworkdescription', 'totara_hierarchy');
