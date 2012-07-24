@@ -67,8 +67,9 @@ echo $OUTPUT->box($controller->get_intro_text());
 
 echo '<form action="' . $baseurl . '" method="post">';
 echo '<input type="hidden" name="sesskey" value="' . sesskey() . '" />';
+echo '<div class="no-overflow">';
 echo html_writer::table($table);
-echo '<div class="buttons"><input type="submit" name="submit" value="'.get_string('savechanges').'"/>';
+echo '</div><div class="buttons"><input type="submit" name="submit" value="'.get_string('savechanges').'"/>';
 echo '</div></form>';
 
 echo $OUTPUT->footer();
