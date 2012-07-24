@@ -305,14 +305,23 @@
         $buttoncontainer .= $OUTPUT->container_end();
         // Integrate into the admin tree only if the user can edit categories at the top level,
         // otherwise the admin block does not appear to this user, and you get an error.
-        require_once($CFG->libdir . '/adminlib.php');
-        admin_externalpage_setup('managecategories', $editbutton, $urlparams, $CFG->wwwroot . '/course/category.php');
-        $PAGE->set_context($context);   // Ensure that we are actually showing blocks etc for the cat context
-        $settingsnode = $PAGE->settingsnav->find_active_node();
-        if ($settingsnode) {
-            $settingsnode->make_inactive();
-            $settingsnode->force_open();
-            $PAGE->navbar->add($settingsnode->text, $settingsnode->action);
+        if (has_capability('moodle/category:manage', $context)) {
+            require_once($CFG->libdir . '/adminlib.php');
+            admin_externalpage_setup('managecategories', $editbutton, $urlparams, $CFG->wwwroot . '/course/category.php');
+            $PAGE->set_context($context);   // Ensure that we are actually showing blocks etc for the cat context
+            $settingsnode = $PAGE->settingsnav->find_active_node();
+            if ($settingsnode) {
+                $settingsnode->make_inactive();
+                $settingsnode->force_open();
+                $PAGE->navbar->add($settingsnode->text, $settingsnode->action);
+            }
+        } else {
+            //cannot manage categories but may have course or program create/update capabilities
+            $PAGE->set_title("$site->shortname: $category->name");
+            $PAGE->set_heading($site->fullname);
+            $PAGE->set_context($context);
+            $PAGE->set_button($editbutton);
+            $PAGE->set_pagelayout('coursecategory');
         }
         echo $OUTPUT->header();
     } else {

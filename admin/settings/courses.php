@@ -6,16 +6,20 @@ if ($hassiteconfig
  or has_capability('moodle/backup:backupcourse', $systemcontext)
  or has_capability('moodle/category:manage', $systemcontext)
  or has_capability('moodle/course:create', $systemcontext)
- or has_capability('moodle/site:approvecourse', $systemcontext)) { // speedup for non-admins, add all caps used on this page
+ or has_capability('moodle/site:approvecourse', $systemcontext)
+ or has_capability('moodle/course:update', $systemcontext)
+ or has_capability('totara/program:configureprogram', $systemcontext)
+ or has_capability('totara/program:createprogram', $systemcontext)
+) { // speedup for non-admins, add all caps used on this page
 
     $ADMIN->add('courses', new admin_externalpage('managecourses', get_string('managecourses', 'admin'), $CFG->wwwroot . '/course/categorylist.php?viewtype=course&amp;categoryedit=on',
-            array('moodle/category:manage', 'moodle/course:create')));
+            array('moodle/course:create', 'moodle/course:update')));
 
     $ADMIN->add('courses', new admin_externalpage('manageprograms', get_string('manageprograms', 'admin'), $CFG->wwwroot . '/course/categorylist.php?viewtype=program&amp;categoryedit=on',
-            array('moodle/category:manage', 'moodle/course:create')));
+            array('totara/program:createprogram', 'totara/program:configureprogram')));
 
     $ADMIN->add('courses', new admin_externalpage('managecategories', get_string('managecategories'), $CFG->wwwroot . '/course/index.php?categoryedit=on',
-            array('moodle/category:manage', 'totara/program:createprogram')));
+            array('moodle/category:manage')));
 
     $ADMIN->add('courses', new admin_externalpage('coursecustomfields', get_string('customfields', 'totara_customfield'), $CFG->wwwroot . '/totara/customfield/index.php?prefix=course',
             array('totara/core:createcoursecustomfield', 'totara/core:updatecoursecustomfield', 'totara/core:deletecoursecustomfield')));
