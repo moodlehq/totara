@@ -742,7 +742,7 @@ class multi_course_set extends course_set {
                 // Need to figure out how to di $course->enrollable in 2.x as as all this type of functionality
                 // has been moved into individual enrollment plugins
                 if (($userid && $accessible) || ($accessible) || (is_enrolled($coursecontext, $userid)) || is_siteadmin($USER->id)) {
-                    $coursedetails .= html_writer::link('/course/view.php?id='.$course->id, $course->fullname);
+                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname);
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
                     $coursedetails .= $course->fullname;
@@ -1415,7 +1415,7 @@ class competency_course_set extends course_set {
 
                 $cells = array();
                 $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
-                $coursedetails .= $accessible ? html_writer::link('/course/view.php?id='.$course->id, $course->fullname) : $course->fullname;
+                $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname) : $course->fullname;
                 $cells[] = new html_table_cell($coursedetails);
                 if ($accessible) {
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
