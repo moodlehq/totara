@@ -689,7 +689,7 @@ class competency extends hierarchy {
             $data = array();
             foreach ($competencies as $competency) {
                 $framework_text = ($can_manage_fw) ?
-                     $OUTPUT->action_link(new moodle_url('index.php', array('prefix' => 'competency', 'frameworkid' => $competency->fid)), format_string($competency->framework))
+                     $OUTPUT->action_link(new moodle_url('/totara/hierarchy/index.php', array('prefix' => 'competency', 'frameworkid' => $competency->fid)), format_string($competency->framework))
                      : format_string($competency->framework);
 
                 // define a data row
@@ -699,7 +699,7 @@ class competency extends hierarchy {
                 $cell = new html_table_cell($framework_text);
                 $row->cells[] = $cell;
 
-                $cell = new html_table_cell($OUTPUT->action_link(new moodle_url('item/view.php', array('prefix' => 'competency', 'id' => $competency->id)), format_string($competency->fullname)));
+                $cell = new html_table_cell($OUTPUT->action_link(new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => 'competency', 'id' => $competency->id)), format_string($competency->fullname)));
                 $row->cells[] = $cell;
 
                 // Create evidence object
