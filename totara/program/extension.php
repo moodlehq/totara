@@ -33,6 +33,8 @@ $extensionrequest = optional_param('extrequest', false, PARAM_BOOL);
 $extensiondate = optional_param('extdate', '', PARAM_TEXT);
 $extensionreason = optional_param('extreason', '', PARAM_TEXT);
 
+$PAGE->set_context(context_program::instance($programid));
+
 if ($USER->id != $userid) {
     @header('HTTP/1.0 404 Not Found');
     echo get_string('error:cannotrequestextnotuser', 'totara_program');
