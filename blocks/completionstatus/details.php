@@ -143,7 +143,7 @@ $completions = $info->get_completions($user->id);
 // Check if this course has any criteria
 if (empty($completions)) {
     echo '<tr><td colspan="2"><br />';
-    echo print_box(get_string('err_nocriteria', 'completion'), 'noticebox');
+    echo $OUTPUT->box(get_string('err_nocriteria', 'completion'), 'noticebox');
     echo '</td></tr></tbody></table>';
 } else {
     echo '<tr><td colspan="2"><b>'.get_string('required').':</b> ';
