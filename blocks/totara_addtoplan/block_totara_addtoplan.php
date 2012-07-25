@@ -87,5 +87,11 @@ class block_totara_addtoplan extends block_base {
         return $this->content;
     }
 
+    public function applicable_formats() {
+        return array(
+            'site' => false,
+            'course-view' => true);
+    }
+
 }
 ?>
