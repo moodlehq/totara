@@ -597,6 +597,8 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
  */
 function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage='courses', $rolstatus='none', $showrol=true, $selectedprogid=0, $showrequired=true) {
     global $OUTPUT, $DB;
+    $list = array();
+    $attr = array();
 
     $out = $OUTPUT->container_start(null, 'dp-plans-menu');
 
