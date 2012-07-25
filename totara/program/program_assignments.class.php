@@ -771,7 +771,7 @@ class organisations_category extends prog_assignment_category {
         if ($item = $DB->get_record_sql($sql, array($assignment->id))) {
             return $this->get_affected_users($item);
         } else {
-            return false;
+            return array();
         }
 
     }
@@ -914,7 +914,7 @@ class positions_category extends prog_assignment_category {
         if ($item = $DB->get_record_sql($sql, array($assignment->id))) {
             return $this->get_affected_users($item);
         } else {
-            return false;
+            return array();
         }
 
     }
@@ -1151,7 +1151,7 @@ class managers_category extends prog_assignment_category {
         if ($item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $assignment->id))) {
             return $this->get_affected_users($item);
         } else {
-            return false;
+            return array();
         }
 
     }
@@ -1404,7 +1404,8 @@ class prog_assigment_completion_program_completion extends prog_assignment_compl
     private function load_data() {
         global $DB;
         $this->names = $DB->get_records_select('prog', '', null, '', 'id, fullname');
-        $this->timestamps = $DB->get_records_select('prog_completion', '', null, '', $DB->sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
+        //prog_completion records where coursesetid = 0 are the master record for the program as a whole
+        $this->timestamps = $DB->get_records_select('prog_completion', 'coursesetid = 0', null, '', $DB->sql_concat('userid',"'-'",'programid') . ' as hash, timecompleted');
     }
     public function get_item_name($instanceid) {
         // lazy load data when required
