@@ -999,8 +999,8 @@ class development_plan {
         $extramessage = '';
         if ($this->get_setting('completereactivate') == DP_PERMISSION_ALLOW) {
             $url = new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey()));
-            $extramessage = html_writer::tag('p', get_string('reactivateplantext', 'totara_plan', $url));
-            }
+            $extramessage = html_writer::tag('p', get_string('reactivateplantext', 'totara_plan', $url->out()));
+        }
         return html_writer::tag('p',  $message) . $extramessage;
     }
 

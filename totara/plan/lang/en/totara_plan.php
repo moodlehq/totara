@@ -600,7 +600,7 @@ $string['plannotapproved'] = 'This plan has not yet been approved';
 $string['awaitingapproval'] = 'Awaiting approval';
 $string['youareviewingxsplan'] = '<strong>You are viewing <a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> plan.</strong>';
 $string['youareviewingxsplans'] = '<strong>You are viewing <a href="{$a->site}/user/view.php?id={$a->userid}">{$a->name}\'s</a> plans.</strong>';
-$string['reactivateplantext'] = 'If you want to make changes or continue using this plan is must be reactivated.<br /><a href="{$a}">Reactivate</a> this plan.';
+$string['reactivateplantext'] = 'If you want to make changes or continue using this plan, it must first be reactivated.<br /><a href="{$a}">Reactivate</a> this plan.';
 $string['notcompleted'] = 'Not completed';
 $string['coursescomplete'] = 'Courses complete';
 $string['inprogress'] = 'In progress';
