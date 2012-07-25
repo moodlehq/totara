@@ -388,7 +388,7 @@ if ($isadminediting) {
             $adminpage = 'managecourses';
     }
 
-    admin_externalpage_setup($adminpage, $editbutton, array(), "{$CFG->wwwroot}/course/category.php");
+    admin_externalpage_setup($adminpage, $editbutton, array(), new moodle_url('/course/search.php'));
 }
 
 
