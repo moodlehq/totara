@@ -121,7 +121,7 @@ class rb_source_totaramessages extends rb_base_source {
             new rb_column_option(
                 'message_values',
                 'urgency',
-                get_string('msgurgency', 'rb_source_totaramessages'),
+                get_string('msgurgencyicon', 'rb_source_totaramessages'),
                 'base.urgency',
                 array('displayfunc' => 'urgency_link')
                 ),
@@ -131,6 +131,13 @@ class rb_source_totaramessages extends rb_base_source {
                 get_string('msgurgency', 'rb_source_totaramessages'),
                 'base.urgency',
                 array('displayfunc' => 'urgency_text')
+                ),
+            new rb_column_option(
+                'message_values',
+                'status_text',
+                get_string('msgstatus', 'rb_source_totaramessages'),
+                'base.msgstatus',
+                array('displayfunc' => 'msgstatus_text')
                 ),
             new rb_column_option(
                 'message_values',
@@ -228,7 +235,7 @@ class rb_source_totaramessages extends rb_base_source {
             new rb_filter_option(
                 'message_values',
                 'urgency',
-                'Message Urgency',
+                get_string('msgurgency', 'rb_source_totaramessages'),
                 'select',
                 array(
                     'selectfunc' => 'message_urgency_list',
@@ -314,7 +321,7 @@ class rb_source_totaramessages extends rb_base_source {
 
     // generate status text
     function rb_display_msgstatus_text($comp, $row) {
-        $display = totara_message_msgstatus_text($row->message_values_msgstatus);
+        $display = totara_message_msgstatus_text($row->message_values_status_text);
         return $display['text'];
     }
 
@@ -332,7 +339,7 @@ class rb_source_totaramessages extends rb_base_source {
 
     // generate urgency text
     function rb_display_urgency_text($comp, $row) {
-        $display = totara_message_urgency_text($row->message_values_urgency);
+        $display = totara_message_urgency_text($row->message_values_urgency_text);
         return $display['text'];
     }
 
@@ -400,6 +407,8 @@ class rb_source_totaramessages extends rb_base_source {
     //
 
     function rb_filter_message_status_list() {
+        global $CFG;
+        require_once($CFG->dirroot . '/totara/message/messagelib.php');
         $statusselect = array();
         $statusselect[TOTARA_MSG_STATUS_OK] = get_string('statusok', 'totara_message');
         $statusselect[TOTARA_MSG_STATUS_NOTOK] = get_string('statusnotok', 'totara_message');
@@ -408,6 +417,8 @@ class rb_source_totaramessages extends rb_base_source {
     }
 
     function rb_filter_message_urgency_list() {
+        global $CFG;
+        require_once($CFG->dirroot . '/totara/message/messagelib.php');
         $urgencyselect = array();
         $urgencyselect[TOTARA_MSG_URGENCY_NORMAL] = get_string('urgencynormal', 'totara_message');
         $urgencyselect[TOTARA_MSG_URGENCY_URGENT] = get_string('urgencyurgent', 'totara_message');
@@ -417,8 +428,8 @@ class rb_source_totaramessages extends rb_base_source {
     function rb_filter_message_type_list() {
         global $OUTPUT;
         $out = array();
-        foreach (array('blended', 'competency', 'course', 'elearning',
-            'evidence', 'facetoface', 'learningplan', 'objective', 'resource')
+        foreach (array('competency', 'course', 'evidence',
+                'facetoface', 'learningplan', 'objective', 'resource', 'program')
             as $type) {
 
             $typename = get_string($type, 'totara_message');

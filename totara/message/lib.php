@@ -68,7 +68,7 @@ function totara_message_urgency_text($urgency) {
         $text = get_string('urgent', 'block_totara_alerts');
     }
     else {
-        $level = 'grey_undecided';
+        $level = 'go';
         $text = get_string('normal', 'block_totara_alerts');
     }
     return array('text' => $text, 'icon' => 't/'.$level);

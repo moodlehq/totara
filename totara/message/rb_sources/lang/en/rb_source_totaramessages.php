@@ -8,6 +8,7 @@ $string['msgid'] = 'Message ID';
 $string['msgstatus'] = 'Message status';
 $string['msgtype'] = 'Message type';
 $string['msgurgency'] = 'Message urgency';
+$string['msgurgencyicon'] = 'Message urgency (icon)';
 $string['name'] = 'Name';
 $string['sent'] = 'Sent';
 $string['select'] = 'Select';

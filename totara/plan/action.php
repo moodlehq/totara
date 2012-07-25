@@ -207,11 +207,11 @@ if (!empty($delete)) {
                 // don't bother unless the plan was active
                 if ($is_active) {
                     // User was deleting their own plan, notify their manager
-                    $plan->send_alert(false,'learningplan-remove.png','plan-remove-manager-short','plan-remove-manager-long');
+                    $plan->send_alert(false,'learningplan-remove','plan-remove-manager-short','plan-remove-manager-long');
                 }
             } else {
                 // Someone else was deleting the learner's plan, notify the learner
-                $plan->send_alert(true,'learningplan-remove.png','plan-remove-learner-short','plan-remove-learner-long');
+                $plan->send_alert(true,'learningplan-remove','plan-remove-learner-short','plan-remove-learner-long');
             }
             add_to_log(SITEID, 'plan', 'deleted', "index.php?userid={$plan->userid}", "{$plan->name} (ID:{$plan->id})");
             totara_set_notification(get_string('plandeletesuccess', 'totara_plan', $plan->name), $referer, array('class' => 'notifysuccess'));

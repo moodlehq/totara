@@ -1147,7 +1147,7 @@ function totara_plan_comment_add($comment) {
             $msgobj->commentdate = userdate($comment->timecreated);
             $contexturl = new moodle_url('/totara/plan/view.php', array('id' => $plan->id.'#comments'));
             $contexturlname = $plan->name;
-            $icon = 'elearning-newcomment';
+            $icon = 'learningplan-newcomment';
             break;
         case 'plan_course_item':
             $sql = "SELECT ca.id, ca.planid, c.fullname
@@ -1287,7 +1287,7 @@ function totara_plan_comment_add($comment) {
         $event->contexturlname = $contexturlname;
         $event->icon = $icon;
 
-        if ($comment->commentarea == 'plan-overview') {
+        if ($comment->commentarea == 'plan_overview') {
             $subject = $stringmanager->get_string('commentmsg:planoverview', 'totara_plan', $msgobj, $userto->lang);
             $fullmsg = $stringmanager->get_string('commentmsg:planoverviewdetail', 'totara_plan', $msgobj, $userto->lang);
         } else {

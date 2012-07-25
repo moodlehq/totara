@@ -62,6 +62,7 @@ define('TOTARA_MSG_TYPE_FACE2FACE', 7);
 define('TOTARA_MSG_TYPE_SURVEY', 8);
 define('TOTARA_MSG_TYPE_SCORM', 9);
 define('TOTARA_MSG_TYPE_LINK', 10);
+define('TOTARA_MSG_TYPE_PROGRAM', 11);
 
 // message email constants
 define('TOTARA_MSG_EMAIL_YES', 0);
@@ -72,6 +73,7 @@ global $TOTARA_MESSAGE_TYPES;
 $TOTARA_MESSAGE_TYPES = array(
     TOTARA_MSG_TYPE_UNKNOWN => 'unknown',
     TOTARA_MSG_TYPE_COURSE => 'course',
+    TOTARA_MSG_TYPE_PROGRAM => 'program',
     TOTARA_MSG_TYPE_FORUM => 'forum',
     TOTARA_MSG_TYPE_GRADING => 'grading',
     TOTARA_MSG_TYPE_CHAT => 'chat',
