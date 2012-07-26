@@ -1385,7 +1385,7 @@ class competency_course_set extends course_set {
 
         $out = '';
         $out .= html_writer::start_tag('fieldset');
-        $out .= html_writer::tag('legend') . $this->label . html_writer::end_tag('legend');
+        $out .= html_writer::tag('legend', $this->label);
 
         switch ($this->completiontype) {
             case COMPLETIONTYPE_ALL:
