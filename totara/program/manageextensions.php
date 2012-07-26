@@ -24,6 +24,7 @@
 
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 
 require_login();
 
@@ -37,8 +38,11 @@ if ((!empty($userid) && !totara_is_manager($userid, $USER->id)) && !is_siteadmin
 define('PROG_EXTENSION_GRANT', 1);
 define('PROG_EXTENSION_DENY', 2);
 
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url(new moodle_url("/totara/program/manageextensions.php", array('userid' => $userid)));
+
 if ($submitted && confirm_sesskey()) {
-    $extensions = optional_param('extension', array(), PARAM_INT);
+    $extensions = optional_param_array('extension', array(), PARAM_INT);
 
     if (!empty($extensions)) {
         $update_fail_count = 0;
@@ -184,7 +188,7 @@ if (!empty($userid)) {
 
     $staff_ids = $userid;
 } elseif ($staff_members = totara_get_staff()) {
-    $staff_ids = implode(',', $staff_members);
+    $staff_ids = $staff_members;
 }
 
 if (!empty($staff_ids)) {
@@ -213,13 +217,16 @@ if (!empty($staff_ids)) {
         $table = new flexible_table('Extensions');
         $table->define_columns($columns);
         $table->define_headers($headers);
-
+        $table->define_baseurl(new moodle_url("/totara/program/manageextensions.php"));
         $table->setup();
 
         $options = array(
             PROG_EXTENSION_GRANT => get_string('grant', 'totara_program'),
             PROG_EXTENSION_DENY => get_string('deny', 'totara_program'),
         );
+
+        $currenturl = qualified_me();
+        echo html_writer::start_tag('form', array('id'=>'program-extension-update', 'action'=>$currenturl, 'method'=>'POST'));
 
         foreach ($extensions as $extension) {
             $tablerow = array();
@@ -242,7 +249,6 @@ if (!empty($staff_ids)) {
             $attributes = array();
             $attributes['disabled'] = false;
             $attributes['tabindex'] = 0;
-            $attributes['multiple'] = false;
             $attributes['class'] = 'approval';
             $attributes['id'] = null;
 
@@ -252,13 +258,10 @@ if (!empty($staff_ids)) {
             $table->add_data($tablerow);
         }
 
-        $currenturl = qualified_me();
-
         if (!empty($userid)) {
             echo html_writer::tag('p', get_string('viewinguserextrequests', 'totara_program', $user_fullname));
         }
 
-        echo html_writer::start_tag('form', array('id'=>'program-extension-update', 'action'=>$currenturl, 'method'=>'POST'));
         echo html_writer::empty_tag('input', array('type'=>'hidden', 'id' => 'sesskey', 'name'=>'sesskey', 'value'=>sesskey()));
         $table->finish_html();
         echo html_writer::empty_tag('br');
@@ -266,12 +269,12 @@ if (!empty($staff_ids)) {
         html_writer::end_tag('form');
 
     } elseif (!empty($userid)) {
-        echo html_writer::start_tag('p', get_string('nouserextensions', 'totara_program', $user_fullname));
+        echo html_writer::tag('p', get_string('nouserextensions', 'totara_program', $user_fullname));
     } else {
-        echo html_writer::start_tag('p', get_string('noextensions', 'totara_program'));
+        echo html_writer::tag('p', get_string('noextensions', 'totara_program'));
     }
 } else {
-    echo html_writer::start_tag('p', get_string('notmanager', 'totara_program'));
+    echo html_writer::tag('p', get_string('notmanager', 'totara_program'));
 }
 
 echo $OUTPUT->footer();
