@@ -323,10 +323,10 @@ $string['contentupdatednotsaved'] = 'Program content updated (not yet saved)';
 // Program messages
 $string['areyousuredeletemessage'] = 'Are you sure you want to delete this message?';
 $string['confirmmessagechanges'] = 'Confirm message changes';
-$string['defaultenrolmentmessage_subject'] = 'You have been enrolled on program %%programfullname%%';
-$string['defaultenrolmentmessage_message'] = 'You are now enrolled on program %%programfullname%%.';
-$string['defaultexceptionreportmessage_subject'] = 'Exceptions require attention in program %%programfullname%%';
-$string['defaultexceptionreportmessage_message'] = 'There are exceptions in program %%programfullname%% which need to be resolved.';
+$string['defaultenrolmentmessage_subject'] = 'You have been enrolled on program %programfullname%';
+$string['defaultenrolmentmessage_message'] = 'You are now enrolled on program %programfullname%.';
+$string['defaultexceptionreportmessage_subject'] = 'Exceptions require attention in program %programfullname%';
+$string['defaultexceptionreportmessage_message'] = 'There are exceptions in program %programfullname% which need to be resolved.';
 $string['editmessages'] = 'Edit messages';
 $string['programdue'] = 'Program due';
 $string['programmessagessavedsuccessfully'] = 'Program messages saved successfully';
