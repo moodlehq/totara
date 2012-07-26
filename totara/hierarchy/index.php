@@ -46,10 +46,10 @@ $show        = optional_param('show', 0, PARAM_INT);
 $setdisplay  = optional_param('setdisplay', -1, PARAM_INT);
 $moveup      = optional_param('moveup', 0, PARAM_INT);
 $movedown    = optional_param('movedown', 0, PARAM_INT);
-$query       = optional_param('query', '', PARAM_TEXT);
+$search      = optional_param('search', '', PARAM_TEXT);
 $format      = optional_param('format', '', PARAM_TEXT);
 
-$searchactive = (strlen(trim($query)) > 0);
+$searchactive = (strlen(trim($search)) > 0);
 // hide move arrows when a search active because the hierarchy
 // is no longer properly represented
 $can_move_item = (!$searchactive);
@@ -133,7 +133,7 @@ $matchcount = $DB->count_records_sql($count.$from.$where, $params);
 // include search terms if any set
 if ($searchactive) {
     // extract quoted strings from query
-    $keywords = totara_search_parse_keywords($query);
+    $keywords = totara_search_parse_keywords($search);
     // match search terms against the following fields
     $dbfields = array('fullname', 'shortname', 'description', 'idnumber');
     if (is_array($custom_fields)) {
@@ -185,7 +185,11 @@ foreach ($headerdata as $key => $head) {
 $table->define_headers($headers);
 $table->define_columns($columns);
 
-$table->define_baseurl(new moodle_url('index.php', array('prefix' => $prefix, 'frameworkid' => $frameworkid)));
+$urlparams = array('prefix' => $prefix, 'frameworkid' => $frameworkid);
+if ($searchactive) {
+    $urlparams['search'] = $search;
+}
+$table->define_baseurl(new moodle_url('index.php', $urlparams));
 $table->set_attribute('class', 'hierarchy-index fullwidth');
 $table->setup();
 $table->pagesize($perpage, $filteredcount);
@@ -208,9 +212,9 @@ echo html_writer::tag('div', '', array('class' => 'clearfix'));
 
 $table->add_toolbar_content($hierarchy->display_action_buttons($can_add_item, $page), 'right');
 $table->add_toolbar_content($hierarchy->display_bulk_actions_picker($can_add_item, $can_edit_item, $can_delete_item, $can_manage_type, $page), 'left' , 'top', 1);
-$table->add_toolbar_content($hierarchy->display_showhide_detail_button($displaymode, $query, $page), 'right', 'top', 1);
+$table->add_toolbar_content($hierarchy->display_showhide_detail_button($displaymode, $search, $page), 'right', 'top', 1);
 $placeholder = get_string('search') . ' ' . format_string($framework->fullname);
-$table->add_toolbar_content($hierarchy->display_search_box($query, $placeholder), 'left');
+$table->add_toolbar_content($hierarchy->display_search_box($search, $placeholder), 'left');
 
 $table->add_toolbar_pagination('right', 'top', 1);
 $table->add_toolbar_pagination('left', 'bottom');
@@ -223,12 +227,12 @@ if ($searchactive) {
         $a = new stdClass();
         $a->filteredcount = $filteredcount;
         $a->allcount = $matchcount;
-        $a->query = $query;
+        $a->query = $search;
         echo html_writer::start_tag('p');
         echo html_writer::tag('strong', get_string('showingxofyforsearchz', 'totara_hierarchy', $a));
     } else {
         echo html_writer::start_tag('p');
-        echo html_writer::tag('strong', get_string('noresultsforsearchx', 'totara_hierarchy', $query));
+        echo html_writer::tag('strong', get_string('noresultsforsearchx', 'totara_hierarchy', $search));
     }
     echo $OUTPUT->action_link(new moodle_url('index.php', array('prefix' => $prefix, 'frameworkid' => $frameworkid)), get_string('clearsearch', 'totara_hierarchy'));
     echo html_writer::end_tag('p');
@@ -243,7 +247,7 @@ if ($matchcount > 0) {
             $params[] = 'page='.$page;
         }
         if ($searchactive) {
-            $params[] = 'query='.urlencode($query);
+            $params[] = 'query='.urlencode($search);
         }
         $extraparams = (count($params)) ? implode($params, '&amp;') : '';
 
