@@ -2300,7 +2300,11 @@ class reportbuilder {
                 if (isset($column->displayfunc)) {
                     $func = 'rb_display_'.$column->displayfunc;
                     if (method_exists($this->src, $func)) {
-                        $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
+                        if ($column->displayfunc == 'customfield_textarea' || $column->displayfunc == 'customfield_file') {
+                            $tabledata[] = $this->src->$func($value, $record->$field, $record, $isexport);
+                        } else {
+                            $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
+                        }
                     } else {
                         $tabledata[] = filter_text($record->$field);
                     }

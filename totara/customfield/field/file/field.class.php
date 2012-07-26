@@ -94,7 +94,7 @@ class customfield_file extends customfield_base {
     /**
      * Display the data for this field
      */
-    static function display_item_data($data, $prefix=null, $itemid) {
+    static function display_item_data($data, $prefix=null, $itemid, $isexport = false) {
         global $OUTPUT;
 
         if (empty($data)) {
@@ -110,10 +110,14 @@ class customfield_file extends customfield_base {
             $file = array_shift($files);
             $strfile = get_string('file');
             $filename = $file->get_filename();
-            $icon = mimeinfo("icon", $filename);
-            $pic = $OUTPUT->pix_icon("f/{$icon}", $strfile);
-            $url = new moodle_url("/pluginfile.php/{$file->get_contextid()}/{$file->get_component()}/{$file->get_filearea()}" . $file->get_filepath() . $file->get_itemid().'/'.$filename);
-            return $OUTPUT->action_link($url, $pic . $filename, null, array('class' => "icon"));
+            if ($isexport) {
+                return $filename;
+            } else {
+                $icon = mimeinfo("icon", $filename);
+                $pic = $OUTPUT->pix_icon("f/{$icon}", $strfile);
+                $url = new moodle_url("/pluginfile.php/{$file->get_contextid()}/{$file->get_component()}/{$file->get_filearea()}" . $file->get_filepath() . $file->get_itemid().'/'.$filename);
+                return $OUTPUT->action_link($url, $pic . $filename, null, array('class' => "icon"));
+            }
         }
 
     }

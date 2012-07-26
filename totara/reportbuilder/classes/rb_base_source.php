@@ -338,6 +338,74 @@ abstract class rb_base_source {
         return html_writer::link($url, $user);
     }
 
+    /**
+     * Properly format user customfield textarea data for display
+     *
+     * @param integer $data contents of field from database
+     * @param object $row Object containing all other fields for this row
+     * @param boolean $isexport
+     * @return string Textarea contents with images etc processed properly
+     */
+    function rb_display_userfield_textarea($data, $row, $isexport = false) {
+        global $CFG;
+        if (empty($data)) {
+            return '';
+        }
+
+        if ($isexport) {
+            $displaytext = format_text($data, FORMAT_MOODLE);
+        } else {
+            $displaytext = format_text($data, FORMAT_HTML);
+        }
+
+        return $displaytext;
+    }
+
+    /**
+     * Properly format totara customfield textarea data for display
+     *
+     * @param integer $data contents of field from database
+     * @param object $row Object containing all other fields for this row
+     * @param boolean $isexport
+     * @return string Textarea contents with images etc processed properly
+     */
+    function rb_display_customfield_textarea($field, $data, $row, $isexport = false) {
+        global $CFG;
+        if (empty($data)) {
+            return '';
+        }
+
+        if ($isexport) {
+            $displaytext = format_text($data, FORMAT_MOODLE);
+        } else {
+            $prefix = "{$field}_prefix";
+            $itemidfield = $field . '_itemid';
+            require_once($CFG->dirroot.'/totara/customfield/field/textarea/field.class.php');
+            $displaytext = call_user_func(array('customfield_textarea', 'display_item_data'), $data, $row->$prefix, $row->$itemidfield);
+        }
+
+        return $displaytext;
+    }
+
+    /**
+     * Properly format totara customfield file data for display
+     *
+     * @param integer $data contents of field from database
+     * @param object $row Object containing all other fields for this row
+     * @param boolean $isexport
+     * @return string Filename action link or just the name if $isexport
+     */
+    function rb_display_customfield_file($field, $data, $row, $isexport = false) {
+        global $CFG;
+        if (empty($data)) {
+            return '';
+        }
+        $prefix = "{$field}_prefix";
+        require_once($CFG->dirroot.'/totara/customfield/field/file/field.class.php');
+        $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $row->$prefix, $data, $isexport);
+
+        return $displaytext;
+    }
 
     function rb_display_link_user_icon($user, $row, $isexport = false) {
         global $OUTPUT;
@@ -1883,6 +1951,21 @@ abstract class rb_base_source {
         $fieldtable = $cf_prefix.'_info_field';
         $datatable = $cf_prefix.'_info_data';
 
+        //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
+        switch ($cf_prefix) {
+            case 'org_type':
+                $prefix = 'organisation';
+                break;
+            case 'pos_type':
+                $prefix = 'position';
+                break;
+            case 'comp_type':
+                $prefix = 'competency';
+                break;
+            default:
+                $prefix = $cf_prefix;
+                break;
+        }
         // check if there are any visible custom fields of this type
         if ($cf_prefix == 'user') {
             $items = $DB->get_recordset($fieldtable, array('visible' => PROFILE_VISIBLE_ALL));
@@ -1908,33 +1991,50 @@ abstract class rb_base_source {
             $columnsql = "{$joinname}.data";
 
             switch ($record->datatype) {
-            case 'textarea':
-                $filtertype = 'textarea';
-                break;
+                case 'file':
+                    $column_options['displayfunc'] = 'customfield_file';
+                    $column_options['extrafields'] = array(
+                            "custom_field_{$id}_itemid" => "{$joinname}.id",
+                            "custom_field_{$id}_prefix" => "'{$prefix}'"
+                    );
+                    break;
 
-            case 'menu':
-                $filtertype = 'select';
-                $filter_options['selectchoices'] = $this->list_to_array($record->param1,"\n");
-                $filter_options['simplemode'] = true;
-                break;
+                case 'textarea':
+                    $filtertype = 'textarea';
+                    if ($cf_prefix == 'user') {
+                        $column_options['displayfunc'] = 'userfield_textarea';
+                    } else {
+                        $column_options['displayfunc'] = 'customfield_textarea';
+                    }
+                    $column_options['extrafields'] = array(
+                            "custom_field_{$id}_itemid" => "{$joinname}.id",
+                            "custom_field_{$id}_prefix" => "'{$prefix}'"
+                    );
+                    break;
 
-            case 'checkbox':
-                $filtertype = 'select';
-                $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
-                $filter_options['simplemode'] = true;
-                $column_options['displayfunc'] = 'yes_no';
-                break;
+                case 'menu':
+                    $filtertype = 'select';
+                    $filter_options['selectchoices'] = $this->list_to_array($record->param1,"\n");
+                    $filter_options['simplemode'] = true;
+                    break;
 
-            case 'datetime':
-                $filtertype = 'date';
-                $columnsql = $DB->sql_cast_char2int($columnsql, true);
-                if ($record->param3) {
-                    $column_options['displayfunc'] = 'nice_datetime';
-                    $filter_options['includetime'] = true;
-                } else {
-                    $column_options['displayfunc'] = 'nice_date';
-                }
-                break;
+                case 'checkbox':
+                    $filtertype = 'select';
+                    $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
+                    $filter_options['simplemode'] = true;
+                    $column_options['displayfunc'] = 'yes_no';
+                    break;
+
+                case 'datetime':
+                    $filtertype = 'date';
+                    $columnsql = $DB->sql_cast_char2int($columnsql, true);
+                    if ($record->param3) {
+                        $column_options['displayfunc'] = 'nice_datetime';
+                        $filter_options['includetime'] = true;
+                    } else {
+                        $column_options['displayfunc'] = 'nice_date';
+                    }
+                    break;
             }
 
             $joinlist[] = new rb_join($joinname,
@@ -1950,12 +2050,19 @@ abstract class rb_base_source {
                                                      $columnsql,
                                                      $column_options
                                                      );
-            $filteroptions[] = new rb_filter_option( $cf_prefix,
-                                                     $value,
-                                                     $name,
-                                                     $filtertype,
-                                                     $filter_options
-                                                     );
+
+            if ($record->datatype == 'file') {
+                //no filter options for files yet
+                continue;
+            } else {
+                $filteroptions[] = new rb_filter_option( $cf_prefix,
+                                                         $value,
+                                                         $name,
+                                                         $filtertype,
+                                                         $filter_options
+                                                         );
+            }
+
 
         }
 
