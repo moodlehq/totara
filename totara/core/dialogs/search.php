@@ -141,7 +141,7 @@ switch ($searchtype) {
         list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
 
         $search_info->id = 'i.id';
-        $search_info->fullname = 'CASE WHEN i.idnumber IS NULL OR i.idnumber = \'\' THEN i.fullname ELSE '. $DB->sql_concat('i.fullname', "' ('", 'i.idnumber', "')'").' END';
+        $search_info->fullname = 'CASE WHEN (i.idnumber IS NULL OR i.idnumber = \'\' OR i.idnumber = \'0\') THEN i.fullname ELSE '. $DB->sql_concat('i.fullname', "' ('", 'i.idnumber', "')'").' END';
 
         $search_info->sql = "
             FROM
