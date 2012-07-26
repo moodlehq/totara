@@ -74,7 +74,7 @@ $THEME->layouts = array(
     'login' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('langmenu'=>true, 'nologininfo' => true, 'nocustommenu' => true),
+        'options' => array('langmenu'=>true, 'nologininfo' => true, 'nocustommenu' => true, 'nonavbar' => true),
     ),
     // hide the login info section during maintenance as well
     'maintenance' => array(

@@ -38,6 +38,7 @@ $PAGE->https_required();
 $PAGE->set_url('/login/forgot_password.php');
 $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 $PAGE->set_context($systemcontext);
+$PAGE->set_pagelayout('login');
 
 // setup text strings
 $strforgotten = get_string('passwordforgotten');

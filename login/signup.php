@@ -42,6 +42,7 @@ $PAGE->https_required();
 
 $PAGE->set_url('/login/signup.php');
 $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_pagelayout('login');
 
 $mform_signup = new login_signup_form(null, null, 'post', '', array('autocomplete'=>'on'));
 
