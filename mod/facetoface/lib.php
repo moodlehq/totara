@@ -3614,7 +3614,7 @@ function facetoface_get_trainer_roles() {
 
     // Parse roles
     $cleanroles = clean_param($CFG->facetoface_session_roles, PARAM_SEQUENCE);
-    list($rolesql, $param) = $DB->get_in_or_equal($cleanroles);
+    list($rolesql, $params) = $DB->get_in_or_equal($cleanroles);
 
     // Load role names
     $rolenames = $DB->get_records_sql("
