@@ -173,6 +173,7 @@ if (ajaxenabled()) { // TODO: move this to JS init!
     $onchange = '';
 }
 
+echo '<div class="userselector">';
 echo '<select name="groups[]" multiple="multiple" id="groups" size="15" class="select" onchange="'.$onchange.'"'."\n";
 echo ' onclick="window.status=this.selectedIndex==-1 ? \'\' : this.options[this.selectedIndex].title;" onmouseout="window.status=\'\';">'."\n";
 
@@ -201,6 +202,7 @@ if ($groups) {
 }
 
 echo '</select>'."\n";
+echo '</div>';
 echo '<p><input type="submit" name="act_updatemembers" id="updatemembers" value="'
         . get_string('showmembersforgroup', 'group') . '" /></p>'."\n";
 echo '<p><input type="submit" '. $showeditgroupsettingsform_disabled . ' name="act_showgroupsettingsform" id="showeditgroupsettingsform" value="'
@@ -224,6 +226,7 @@ echo '<p><label for="members"><span id="memberslabel">'.
     get_string('membersofselectedgroup', 'group').
     ' </span><span id="thegroup">'.$selectedname.'</span></label></p>'."\n";
 //NOTE: the SELECT was, multiple="multiple" name="user[]" - not used and breaks onclick.
+echo '<div class="userselector">';
 echo '<select name="user" id="members" size="15" class="select"'."\n";
 echo ' onclick="window.status=this.options[this.selectedIndex].title;" onmouseout="window.status=\'\';">'."\n";
 
@@ -249,6 +252,7 @@ if (!$atleastonemember) {
 }
 
 echo '</select>'."\n";
+echo '</div>';
 
 echo '<p><input type="submit" ' . $showaddmembersform_disabled . ' name="act_showaddmembersform" '
         . 'id="showaddmembersform" value="' . get_string('adduserstogroup', 'group'). '" /></p>'."\n";

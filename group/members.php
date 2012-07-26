@@ -21,7 +21,7 @@ $group = $DB->get_record('groups', array('id'=>$groupid), '*', MUST_EXIST);
 $course = $DB->get_record('course', array('id'=>$group->courseid), '*', MUST_EXIST);
 
 $PAGE->set_url('/group/members.php', array('group'=>$groupid));
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('report');
 
 require_login($course);
 $context = get_context_instance(CONTEXT_COURSE, $course->id);
@@ -83,25 +83,26 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('adduserstogroup', 'group').": $groupname", 3);
 
 /// Print group info -  TODO: remove tables for layout here
-$groupinfotable = new html_table();
-$groupinfotable->attributes['class'] = 'groupinfobox';
-$picturecell = new html_table_cell();
-$picturecell->attributes['class'] = 'left side picture';
-$picturecell->text = print_group_picture($group, $course->id, true, true, false);
+if ($group->description) {
+    $groupinfotable = new html_table();
+    $groupinfotable->attributes['class'] = 'groupinfobox';
+    $picturecell = new html_table_cell();
+    $picturecell->attributes['class'] = 'left side picture';
+    $picturecell->text = print_group_picture($group, $course->id, true, true, false);
 
-$contentcell = new html_table_cell();
-$contentcell->attributes['class'] = 'content';
+    $contentcell = new html_table_cell();
+    $contentcell->attributes['class'] = 'content';
 
-$group->description = file_rewrite_pluginfile_urls($group->description, 'pluginfile.php', $context->id, 'group', 'description', $group->id);
-if (!isset($group->descriptionformat)) {
-    $group->descriptionformat = FORMAT_MOODLE;
+    $group->description = file_rewrite_pluginfile_urls($group->description, 'pluginfile.php', $context->id, 'group', 'description', $group->id);
+    if (!isset($group->descriptionformat)) {
+        $group->descriptionformat = FORMAT_MOODLE;
+    }
+    $options = new stdClass;
+    $options->overflowdiv = true;
+    $contentcell->text = format_text($group->description, $group->descriptionformat, $options);
+    $groupinfotable->data[] = new html_table_row(array($picturecell, $contentcell));
+    echo html_writer::table($groupinfotable);
 }
-$options = new stdClass;
-$options->overflowdiv = true;
-$contentcell->text = format_text($group->description, $group->descriptionformat, $options);
-$groupinfotable->data[] = new html_table_row(array($picturecell, $contentcell));
-echo html_writer::table($groupinfotable);
-
 /// Print the editing form
 ?>
 
@@ -130,9 +131,11 @@ echo html_writer::table($groupinfotable);
           </p>
           <?php $potentialmembersselector->display(); ?>
       </td>
-      <td>
-        <p><?php echo($strusergroupmembership) ?></p>
-        <div id="group-usersummary"></div>
+    </tr>
+    <tr>
+      <td colspan="3">
+          <p><?php echo($strusergroupmembership) ?></p>
+          <div id="group-usersummary"></div>
       </td>
     </tr>
     <tr><td colspan="3" id='backcell'>
