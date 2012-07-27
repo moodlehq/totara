@@ -133,7 +133,7 @@ $strparticipants = get_string('participants');
 /// Print header
 $PAGE->set_title($strgroups);
 $PAGE->set_heading($course->fullname);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('report');
 echo $OUTPUT->header();
 
 // Add tabs
@@ -164,7 +164,7 @@ echo '<table cellpadding="6" class="generaltable generalbox groupmanagementtable
 echo '<tr>'."\n";
 
 
-echo "<td>\n";
+echo "<td id='existingcell'>\n";
 echo '<p><label for="groups"><span id="groupslabel">'.get_string('groups').':</span><span id="thegrouping">&nbsp;</span></label></p>'."\n";
 
 if (ajaxenabled()) { // TODO: move this to JS init!
@@ -173,8 +173,8 @@ if (ajaxenabled()) { // TODO: move this to JS init!
     $onchange = '';
 }
 
-echo '<div class="userselector">';
-echo '<select name="groups[]" multiple="multiple" id="groups" size="15" class="select" onchange="'.$onchange.'"'."\n";
+echo '<div class="userselector" id="addselect_wrapper">';
+echo '<select name="groups[]" multiple="multiple" id="groups" size="15" onchange="'.$onchange.'"'."\n";
 echo ' onclick="window.status=this.selectedIndex==-1 ? \'\' : this.options[this.selectedIndex].title;" onmouseout="window.status=\'\';">'."\n";
 
 $groups = groups_get_all_groups($courseid);
@@ -220,14 +220,14 @@ echo '<p><input type="submit" name="act_showimportgroups" id="showimportgroups" 
         . get_string('importgroups', 'core_group') . '" /></p>'."\n";
 
 echo '</td>'."\n";
-echo '<td>'."\n";
+echo '<td id="existingcell">'."\n";
 
 echo '<p><label for="members"><span id="memberslabel">'.
     get_string('membersofselectedgroup', 'group').
     ' </span><span id="thegroup">'.$selectedname.'</span></label></p>'."\n";
 //NOTE: the SELECT was, multiple="multiple" name="user[]" - not used and breaks onclick.
-echo '<div class="userselector">';
-echo '<select name="user" id="members" size="15" class="select"'."\n";
+echo '<div class="userselector" id="addselect_wrapper">';
+echo '<select name="user" id="members" size="15"'."\n";
 echo ' onclick="window.status=this.options[this.selectedIndex].title;" onmouseout="window.status=\'\';">'."\n";
 
 $member_names = array();

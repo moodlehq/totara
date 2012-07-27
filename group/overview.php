@@ -106,7 +106,7 @@ $PAGE->navbar->add(get_string('overview', 'group'));
 /// Print header
 $PAGE->set_title($strgroups);
 $PAGE->set_heading($course->fullname);
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('report');
 echo $OUTPUT->header();
 
 // Add tabs
@@ -186,10 +186,12 @@ foreach ($members as $gpgid=>$groupdata) {
     } else {
         echo $OUTPUT->heading(format_string($groupings[$gpgid]->name), 3);
         $description = file_rewrite_pluginfile_urls($groupings[$gpgid]->description, 'pluginfile.php', $context->id, 'grouping', 'description', $gpgid);
-        $options = new stdClass;
-        $options->noclean = true;
-        $options->overflowdiv = true;
-        echo $OUTPUT->box(format_text($description, $groupings[$gpgid]->descriptionformat, $options), 'generalbox boxwidthnarrow boxaligncenter');
+        if ($description) {
+            $options = new stdClass;
+            $options->noclean = true;
+            $options->overflowdiv = true;
+            echo $OUTPUT->box(format_text($description, $groupings[$gpgid]->descriptionformat, $options), 'generalbox boxwidthnarrow boxaligncenter');
+        }
     }
     echo html_writer::table($table);
     $printed = true;
