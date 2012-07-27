@@ -35,8 +35,12 @@ if (!isset($currenttab)) {
 
 if (isset($programcontext)) {
     $context = $programcontext;
-} else {
+} else if (isset($program)) {
     $context = $program->get_context();
+} else if (isset($systemcontext)) {
+    $context = $systemcontext;
+} else {
+    $context = context_system::instance();
 }
 
 $toprow = array();

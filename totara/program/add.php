@@ -33,10 +33,20 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 require_once('edit_form.php');
 
 
-admin_externalpage_setup('manageprograms');
-
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
 
+$systemcontext = context_system::instance();
+
+// Integrate into the admin tree only if the user can create programs at the top level,
+// otherwise the admin block does not appear to this user, and you get an error.
+if (has_capability('totara/program:createprogram', $systemcontext)) {
+    admin_externalpage_setup('manageprograms');
+} else {
+    $PAGE->set_context($systemcontext);
+    $PAGE->set_url(new moodle_url('/totara/program/add.php', array('category' => $categoryid)));
+    $PAGE->set_title(get_string('createnewprogram', 'totara_program'));
+    $PAGE->set_heading(get_string('createnewprogram', 'totara_program'));
+}
 //Javascript include
 local_js(array(
     TOTARA_JS_DATEPICKER,
