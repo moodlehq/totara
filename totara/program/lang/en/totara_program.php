@@ -258,6 +258,7 @@ $string['label:sendnoticetomanager'] = 'Send notice to manager';
 $string['label:setname'] = 'Set name';
 $string['label:subject'] = 'Subject';
 $string['label:timeallowance'] = 'Time allowance';
+$string['label:minimumtimerequired'] = 'Minimum time required';
 $string['label:trigger'] = 'Trigger';
 
 // Page links
@@ -380,6 +381,7 @@ $string['successfullyresolvedexceptions'] = 'Successfully resolved exceptions';
 $string['thiswillaffect'] = 'This will affect {$a} learners';
 $string['thisactioncannotbeundone'] = 'This action cannot be undone';
 $string['timeallowance'] = 'Time allowance';
+$string['minimumtimerequired'] = 'Minimum time required';
 $string['unknownexception'] = 'Unknown exception';
 $string['unresolvedexceptions'] = '{$a} unresolved issue(s)';
 $string['showingresults'] = 'Showing results {$a->from} - {$a->to} of {$a->total}';
@@ -573,7 +575,17 @@ $string['variablesubstitution_help'] = 'In program messages, certain variables c
 $string['totalassignments_help'] = 'The total number of assignments that is displayed in the program assignments page and the overview page represents the total number of learners in all the assigned categories and not the number of learners currently assigned to the program.
 
 If a learner belongs to an organisation that is assigned to the program and also holds a position that is assigned to the program then the learner will be counted in each category (but will only be assigned to the program once).';
-$string['timeallowance_help'] = 'Sets the amount of time allowed to complete the courses within the set. This is a general indication of elapsed time to complete the set, not the actual time it takes to complete a course. The actual time to complete the course can be set at the course level.';
+$string['minimumtimerequired_help'] = 'This value indicates a minimum amount of time that a user might realistically be able to complete the course set. It is used to determine if the completion period set on the "assignments" tab is realistic for a particular group of users. If the assignment is not realistic, a "time allowance" exception will be generated and the user will not be assigned to the program until the exception has been resolved.
+
+For example, consider a program consisting of a single course set with a minimum time required of 10 days. If a user was assigned with completion criteria that required them to complete it in less than 10 days, then it would raise an exception report for that user.
+
+When using completion criteria relative to a user, it is possible for some users to generate exceptions but not others - for example when using the "days since first login" criteria, each user would have their own deadline that may or may not be realistic.
+
+When multiple course sets exist in a program the overall minimum time required for the program is calculated based on the worst-case scenario taking into account the course set logic. For example if a program consists of:
+
+Course set1 [10 days] THEN Course set2 [5 days] OR Course set3 [7 days]
+
+then the overall time allowance would be 17 days.';
 $string['programavailability_help'] = 'This option allows you to "hide" your program completely.
 
 It will not appear on any program listings, except to administrators.

@@ -1071,10 +1071,10 @@ class multi_course_set extends course_set {
             $template_values['%'.$prefix.'timeallowednum%'] = array('name'=>$prefix.'timeallowednum', 'value'=>null);
             $template_values['%'.$prefix.'timeallowedperiod%'] = array('name'=>$prefix.'timeallowedperiod', 'value'=>null);
         }
-        $helpbutton = $OUTPUT->help_icon('timeallowance', 'totara_program');
+        $helpbutton = $OUTPUT->help_icon('minimumtimerequired', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:timeallowance', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
+        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%'.$prefix.'timeallowednum% %'.$prefix.'timeallowedperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -1434,7 +1434,7 @@ class competency_course_set extends course_set {
             }
             $out .= html_writer::table($table);
         } else {
-            $out .= html_writer::start_tag('p', get_string('nocourses', 'totara_program'));
+            $out .= html_writer::tag('p', get_string('nocourses', 'totara_program'));
         }
 
         $out .= html_writer::end_tag('fieldset');
@@ -1658,10 +1658,10 @@ class competency_course_set extends course_set {
             $template_values['%'.$prefix.'timeallowednum%'] = array('name' => $prefix.'timeallowednum', 'value' => null);
             $template_values['%'.$prefix.'timeallowedperiod%'] = array('name' => $prefix.'timeallowedperiod', 'value' => null);
         }
-        $helpbutton = $OUTPUT->help_icon('timeallowance', 'totara_program');
+        $helpbutton = $OUTPUT->help_icon('minimumtimerequired', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:timeallowance', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
+        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%' . $prefix . 'timeallowednum% %' . $prefix . 'timeallowedperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
@@ -2077,10 +2077,10 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'timeallowednum%'] = array('name' => $prefix.'timeallowednum', 'value' => null);
             $template_values['%'.$prefix.'timeallowedperiod%'] = array('name' => $prefix.'timeallowedperiod', 'value' => null);
         }
-        $helpbutton = $OUTPUT->help_icon('timeallowance', 'totara_program');
+        $helpbutton = $OUTPUT->help_icon('minimumtimerequired', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
-        $templatehtml .= html_writer::tag('label', get_string('label:timeallowance', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
+        $templatehtml .= html_writer::tag('label', get_string('label:minimumtimerequired', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'timeallowance'));
         $templatehtml .= html_writer::end_tag('div');
         $templatehtml .= html_writer::tag('div', '%' . $prefix . 'timeallowednum% %' . $prefix . 'timeallowedperiod%', array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
