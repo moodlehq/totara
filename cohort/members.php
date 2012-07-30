@@ -28,31 +28,37 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
-$id = optional_param('id', null, PARAM_INT);
+$id     = required_param('id', PARAM_INT);
+$format = optional_param('format','',PARAM_TEXT); //export format
+$debug  = optional_param('debug', false, PARAM_BOOL);
 
 admin_externalpage_setup('cohorts');
 
 $context = context_system::instance();
-require_capability('moodle/cohort:manage', $context);
+require_capability('moodle/cohort:view', $context);
 
-if (isset($id)) {
-    $cohort = $DB->get_record('cohort',array('id' => $id));
-    if (!$cohort) {
-        print_error('error:doesnotexist', 'cohort');
-    }
-}
+$cohort = $DB->get_record('cohort',array('id' => $id), '*', MUST_EXIST);
+
 $report = reportbuilder_get_embedded_report('cohort_members', array('cohortid' => $id));
-$strheading = get_string('editcohort', 'totara_cohort');
-
+if ($format != '') {
+    $report->export_data($format);
+    die;
+}
+$strheading = get_string('viewmembers', 'totara_cohort');
+totara_cohort_navlinks($cohort->id, $cohort->name, $strheading);
 echo $OUTPUT->header();
-
+if ($debug) {
+    $report->debug($debug);
+}
 if (isset($id)) {
     echo $OUTPUT->heading(format_string($cohort->name));
-    $currenttab = 'viewmembers';
-    require_once('tabs.php');
+    echo cohort_print_tabs('viewmembers', $cohort->id, $cohort->cohorttype, $cohort);
 }
 
 $report->display_search();
 
 $report->display_table();
+$output = $PAGE->get_renderer('totara_reportbuilder');
+$output->export_select($report->_id);
+
 echo $OUTPUT->footer();

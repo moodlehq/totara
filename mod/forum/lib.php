@@ -6006,6 +6006,15 @@ function forum_user_enrolled($cp) {
     }
 }
 
+function forum_user_enrolled_bulk($ue) {
+    foreach ($ue->userids as $uid) {
+        $cp = new stdClass;
+        $cp->userid = $uid->userid;
+        $cp->courseid = $ue->courseid;
+        forum_user_enrolled($cp);
+    }
+}
+
 /**
  * This function gets run whenever user is unenrolled from course
  *
@@ -6024,6 +6033,26 @@ function forum_user_unenrolled($cp) {
         $DB->delete_records_select('forum_subscriptions', "userid = :userid AND forum $forumselect", $params);
         $DB->delete_records_select('forum_track_prefs',   "userid = :userid AND forumid $forumselect", $params);
         $DB->delete_records_select('forum_read',          "userid = :userid AND forumid $forumselect", $params);
+    }
+}
+
+/**
+ * This function gets run whenever users are unenrolled from a course in a bulk way
+ *
+ * @param stdClass $cp
+ * @return void
+ */
+function forum_user_unenrolled_bulk($cp) {
+    global $DB;
+
+    $courseid = $cp->courseid;
+    $enrol = $cp->enrol;
+    $lastenrol = $cp->lastenrol;
+    foreach ($cp->ue as $ue) {
+        $ue->courseid = $courseid;
+        $ue->enrol = $enrol;
+        $ue->lastenrol = $lastenrol;
+        forum_user_unenrolled($ue);
     }
 }
 

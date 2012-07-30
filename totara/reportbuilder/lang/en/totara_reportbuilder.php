@@ -36,6 +36,7 @@ $string['activitygroups'] = 'Activity groups';
 $string['activitygroupnotfound'] = 'The activity group could not be found';
 $string['addanothercolumn'] = 'Add another column...';
 $string['addanotherfilter'] = 'Add another filter...';
+$string['addcohorts'] = 'Add audiences';
 $string['addedscheduledreport'] = 'Added new scheduled report';
 $string['addscheduledreport'] = 'Add scheduled report';
 $string['advanced'] = 'Advanced?';
@@ -85,7 +86,7 @@ $string['context'] = 'Context';
 $string['couldnotsortjoinlist'] = 'Could not sort join list. Source either contains circular dependencies or references a non-existent join';
 $string['course_completion'] = 'Course Completion';
 $string['coursenotset'] = 'Course Not Set';
-$string['coursetagenable'] = 'Show records by course tag';
+$string['tagenable'] = 'Show records by tag';
 $string['createasavedsearch'] = 'Create a saved search';
 $string['createreport'] = 'Create report';
 $string['csvformat'] = 'text format';
@@ -156,7 +157,7 @@ $string['error:columnoptiontypexandvalueynotfoundinz'] = 'Column option with typ
 $string['error:filteroptiontypexandvalueynotfoundinz'] = 'Filter option with type "{$a->type}" and value "{$a->value}" not found in source "{$a->source}"';
 $string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Joins for filter with type "{$a->type}" and value "{$a->value}" not found in source "{$a->source}"';
 $string['error:invalidsavedsearchid'] = 'Invalid saved search ID';
-$string['excludecoursetags'] = 'Exclude records tagged with';
+$string['excludetags'] = 'Exclude records tagged with';
 $string['export'] = 'Export';
 $string['exportcsv'] = 'Export in text format';
 $string['exportfusion'] = 'Export to Google Fusion';
@@ -192,7 +193,7 @@ $string['help:searchdesc'] = 'The choices below determine which options appear i
 $string['hidden'] = 'Hide in My Reports';
 $string['includechildorgs'] = 'Include records from child organisations';
 $string['includechildpos'] = 'Include records from child positions';
-$string['includecoursetags'] = 'Include records tagged with';
+$string['includetags'] = 'Include records tagged with';
 $string['includeemptydates'] = 'Include record if date is missing';
 $string['includerecordsfrom'] = 'Include records from';
 $string['includetrainerrecords'] = 'Include records from particular trainers';
@@ -340,7 +341,7 @@ $string['shortnametaken'] = 'That shortname is already in use';
 $string['show'] = 'Show';
 $string['showbasedonx'] = 'Show records based on {$a}';
 $string['showbycompletedorg'] = 'Show by completed organisation';
-$string['showbycoursetag'] = 'Show by course tag';
+$string['showbytag'] = 'Show by tag';
 $string['showbycurrentorg'] = 'Show by current organisation';
 $string['showbycurrentpos'] = 'Show by current position';
 $string['showbydate'] = 'Show by date';
@@ -358,6 +359,7 @@ $string['showrecordsbeloworgonly'] = 'Just staff below the user\'s organisation'
 $string['sorting'] = 'Sorting';
 $string['source'] = 'Source';
 $string['systemcontext'] = 'Users must have role in the system context';
+$string['tags'] = 'Tags';
 $string['thefuture'] = 'The future';
 $string['thepast'] = 'The past';
 $string['trainerownrecords'] = 'Show records where the user is the trainer';
@@ -446,7 +448,7 @@ $string['usersmanageridnumber'] = 'User\'s Manager ID Number';
 $string['managername'] = 'Manager\'s Name';
 
 // add course tag fields
-$string['coursetagids'] = 'Course Tag IDs';
+$string['tagids'] = 'Tag IDs';
 $string['taggedx'] = 'Tagged \'{$a}\'';
 
 // course type icon
@@ -456,6 +458,7 @@ $string['coursetypeicon'] = 'Type';
 // you can override these in individual source lang files if you want
 $string['type_user'] = 'User';
 $string['type_user_profile'] = 'User Profile';
+$string['type_cohort'] = 'Audience';
 $string['type_course'] = 'Course';
 $string['type_course_custom_fields'] = 'Course Custom Fields';
 $string['type_course_category'] = 'Category';
@@ -649,16 +652,23 @@ When **Include records from child positions** is set to:
 
 *   **Yes** the user viewing the report can view records related to their positions and any child positions related to their positions
 *   **No** the user viewing the report can only view records related to their position.';
-$string['reportbuildercoursetag'] = 'Report Builder: Show by course tag';
-$string['reportbuildercoursetag_help'] = '
-This criteria is enabled by selecting the \'Show records by course tag\' checkbox. If selected, the report will show results based on whether the record belongs to a course that is tagged with particular tags.
+$string['reportbuildertag'] = 'Report Builder: Show by tag';
+$string['reportbuildertag_help'] = '
+This criteria is enabled by selecting the \'Show records by tag\' checkbox. If selected, the report will show results based on whether the record belongs to an item that is tagged with particular tags.
 
-If any tags in the \'Include records tagged with\' section are selected, only records belonging to a course tagged with all the selected tags will be shown. Records belonging to courses with no tags will **not** be shown.
+If any tags in the \'Include records tagged with\' section are selected, only records belonging to an item tagged with all the selected tags will be shown. Records belonging to items with no tags will **not** be shown.
 
-If any tags in the \'Exclude records tagged with\' section are selected, records belonging to a coures tagged with the selected tags will **not** be shown. All records belonging to courses without any tags will be shown.
+If any tags in the \'Exclude records tagged with\' section are selected, records belonging to a coures tagged with the selected tags will **not** be shown. All records belonging to items without any tags will be shown.
 
 It is possible to include and exclude tags at the same time, but a single tag cannot be both included and excluded.';
 $string['reportbuilderfinancialyear'] = 'Report Financial Year Settings';
 $string['reportbuilderfinancialyear_help'] = '**Financial year** is used in the reports content controls.
 
 This setting allows to set the start date of the financial year.';
+// add audience fields
+$string['usercohortids'] = 'User audience IDs';
+$string['enrolledcoursecohortids'] = 'Enrolled course audience IDs';
+$string['enrolledprogramcohortids'] = 'Enrolled program audience IDs';
+$string['userincohort'] = 'User is a member of audience';
+$string['courseenrolledincohort'] = 'Course is enrolled in by audience';
+$string['programenrolledincohort'] = 'Program is enrolled in by audience';

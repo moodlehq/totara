@@ -215,5 +215,50 @@ M.totara_reportbuilder_filterdialogs = M.totara_reportbuilder_filterdialogs || {
             })();
 
         });
-    }
+
+        ///
+        /// Cohorts
+        ///
+
+        // activate the 'delete' option next to any selected items in filters
+        $(document).on('click', '.multiselect-selected-item a', function(event) {
+            event.preventDefault();
+
+            var container = $(this).parents('div.multiselect-selected-item');
+            var filtername = container.data('filtername');
+            var id = container.data('id');
+            var hiddenfield = $('input[name='+filtername+']');
+
+            // take this element's ID out of the hidden form field
+            var ids = hiddenfield.val();
+            var id_array = ids.split(',');
+            var new_id_array = $.grep(id_array, function(n, i) { return n != id });
+            var new_ids = new_id_array.join(',');
+            hiddenfield.val(new_ids);
+
+            // remove this element from the DOM
+            container.remove();
+
+        });
+
+        // loop through every 'add cohort' link binding to a dialog
+        $('div.rb-cohort-add-link a').each(function(i, el) {
+            var id = $(this).attr('id');
+            // remove 'show-' and '-dialog' from ID
+            id = id.substr(5, id.length - 12);
+
+            (function() {
+                var url = M.cfg.wwwroot + '/totara/reportbuilder/ajax/';
+
+                totaraMultiSelectDialogRbFilter(
+                    id,
+                    M.util.get_string('choosecohorts', 'totara_cohort'),
+                    url + 'find_cohort.php',
+                    url + 'save_cohort.php?filtername='+id+'&ids='
+                );
+            })();
+
+        });
+
+    }  // init_filter_dialogs
 }

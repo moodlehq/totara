@@ -136,11 +136,14 @@ class rb_source_facetoface_sessions extends rb_base_source {
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
             'position_assignment', 'reportstoid');
-        $this->add_course_tags_tables_to_joinlist($joinlist, 'facetoface', 'course');
+        $this->add_tag_tables_to_joinlist('course', $joinlist, 'facetoface', 'course');
 
         $this->add_facetoface_session_custom_fields_to_joinlist($joinlist);
         // add joins for session custom fields and session roles
         $this->add_facetoface_session_roles_to_joinlist($joinlist);
+
+        $this->add_cohort_user_tables_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_cohort_course_tables_to_joinlist($joinlist, 'facetoface', 'course');
 
         return $joinlist;
     }
@@ -286,10 +289,13 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
-        $this->add_course_tag_fields_to_columns($columnoptions);
+        $this->add_tag_fields_to_columns('course', $columnoptions);
 
         $this->add_facetoface_session_custom_fields_to_columns($columnoptions);
         $this->add_facetoface_session_roles_to_columns($columnoptions);
+
+        $this->add_cohort_user_fields_to_columns($columnoptions);
+        $this->add_cohort_course_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -362,12 +368,15 @@ class rb_source_facetoface_sessions extends rb_base_source {
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
-        $this->add_course_tag_fields_to_filters($filteroptions);
+        $this->add_tag_fields_to_filters('course', $filteroptions);
 
         // add session custom fields to filters
         $this->add_facetoface_session_custom_fields_to_filters($filteroptions);
         // add session role fields to filters
         $this->add_facetoface_session_role_fields_to_filters($filteroptions);
+
+        $this->add_cohort_user_fields_to_filters($filteroptions);
+        $this->add_cohort_course_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

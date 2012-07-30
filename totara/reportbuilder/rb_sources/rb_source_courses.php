@@ -74,7 +74,8 @@ class rb_source_courses extends rb_base_source {
         // include some standard joins
         $this->add_course_category_table_to_joinlist($joinlist,
             'base', 'category');
-        $this->add_course_tags_tables_to_joinlist($joinlist, 'base', 'id');
+        $this->add_tag_tables_to_joinlist('course', $joinlist, 'base', 'id');
+        $this->add_cohort_course_tables_to_joinlist($joinlist, 'base', 'id');
 
         return $joinlist;
     }
@@ -93,7 +94,8 @@ class rb_source_courses extends rb_base_source {
         // include some standard columns
         $this->add_course_fields_to_columns($columnoptions, 'base');
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'base');
-        $this->add_course_tag_fields_to_columns($columnoptions);
+        $this->add_tag_fields_to_columns('course', $columnoptions);
+        $this->add_cohort_course_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -114,7 +116,8 @@ class rb_source_courses extends rb_base_source {
         // include some standard filters
         $this->add_course_fields_to_filters($filteroptions, 'base', 'id');
         $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');
-        $this->add_course_tag_fields_to_filters($filteroptions);
+        $this->add_tag_fields_to_filters('course', $filteroptions);
+        $this->add_cohort_course_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

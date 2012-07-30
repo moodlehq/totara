@@ -26,6 +26,6 @@
 
 $string['ajaxmore'] = 'More...';
 $string['cohortsearch'] = 'Search';
-$string['cohort:config'] = 'Configure cohort instances';
-$string['pluginname'] = 'Cohort sync';
-$string['pluginname_desc'] = 'Cohort enrolment plugin synchronises cohort members with course participants.';
+$string['cohort:config'] = 'Configure audience instances';
+$string['pluginname'] = 'Audience sync';
+$string['pluginname_desc'] = 'Audience enrolment plugin synchronises audience members with course participants.';

@@ -1655,6 +1655,99 @@ function role_assign($roleid, $userid, $contextid, $component = '', $itemid = 0,
 }
 
 /**
+ * This function makes bulk role-assignments (a role for users in a particular context)
+ *
+ * @param int $roleid the role of the id
+ * @param array $userids containing objects with userids
+ * @param int|context $contextid id of the context
+ * @param string $component example 'enrol_ldap', defaults to '' which means manual assignment,
+ * @param int $itemid id of enrolment/auth plugin
+ * @param string $timemodified defaults to current time
+ * @return int new/existing id of the assignment
+ */
+function role_assign_bulk($roleid, $userids, $contextid, $component = '', $itemid = 0, $timemodified = '') {
+    global $USER, $DB;
+
+    // now validate all parameters
+    if (empty($roleid)) {
+        throw new coding_exception('Invalid call to role_bulk_assign(), roleid can not be empty');
+    }
+
+    if (empty($userids)) {
+        throw new coding_exception('Invalid call to role_bulk_assign(), userids can not be empty');
+    }
+
+    if ($itemid) {
+        if (strpos($component, '_') === false) {
+            throw new coding_exception('Invalid call to role_bulk_assign(), component must start with plugin type such as"enrol_" when itemid specified', 'component:'.$component);
+        }
+    } else {
+        $itemid = 0;
+        if ($component !== '' and strpos($component, '_') === false) {
+            throw new coding_exception('Invalid call to role_bulk_assign(), invalid component string', 'component:'.$component);
+        }
+    }
+
+    if ($contextid instanceof context) {
+        $context = $contextid;
+    } else {
+        $context = context::instance_by_id($contextid, MUST_EXIST);
+    }
+
+    if (!$timemodified) {
+        $timemodified = time();
+    }
+
+    // TODO: Revisit this sql_empty() use once Oracle bindings are improved. MDL-29765
+    $component = ($component === '') ? $DB->sql_empty() : $component;
+
+    // remove duplicates
+    list($sqlin, $sqlinparams) = $DB->get_in_or_equal(array_map(function($item) { return $item->userid; },
+        $userids));
+    $sql = "SELECT u.id AS userid
+        FROM {user} u
+        LEFT JOIN {role_assignments} ra ON u.id = ra.userid
+            AND ra.roleid = ? AND ra.contextid = ? AND ra.component = ? AND ra.itemid = ?
+        WHERE u.id {$sqlin}
+        AND ra.userid IS NULL";
+    $userids = $DB->get_records_sql($sql, array_merge(array($roleid, $contextid, $component, $itemid), $sqlinparams));
+
+    $roleassignments = array();
+    foreach ($userids as $u) {
+        $raobj = new stdClass;
+        $raobj->userid = $u->userid;
+        $raobj->roleid = $roleid;
+        $raobj->contextid = $contextid;
+        $raobj->component = $component;
+        $raobj->itemid = $itemid;
+        $raobj->timemodified = $timemodified;
+        $raobj->modifierid = empty($USER->id) ? 0 : $USER->id;
+
+        $roleassignments[] = $raobj;
+    }
+
+    $DB->insert_records_via_batch('role_assignments', $roleassignments);
+    unset($roleassignments);
+
+    // mark context as dirty - again expensive, but needed
+    $context->mark_dirty();
+
+    reload_all_capabilities();
+
+    $ra = new stdClass;
+    $ra->userids = $userids;
+    $ra->roleid = $roleid;
+    $ra->contextid = $contextid;
+    $ra->component = $component;
+    $ra->itemid = $itemid;
+    $ra->timemodified = $timemodified;
+    events_trigger('role_assigned_bulk', $ra);
+
+    return true;
+}
+
+
+/**
  * Removes one role assignment
  *
  * @param int $roleid
@@ -1776,6 +1869,117 @@ function role_unassign_all(array $params, $subcontexts = false, $includemanual =
         role_unassign_all($params, $subcontexts, false);
     }
 }
+
+/**
+ * Bulk removes multiple role assignments, parameters may contain:
+ *   'roleid', 'userids', 'contextid'(required), 'component', 'enrolid'.
+ *
+ * @param array $params role assignment parameters
+ * @param bool $subcontexts unassign in subcontexts too
+ * @param bool $includemanual include manual role assignments too
+ * @return void
+ */
+function role_unassign_all_bulk(array $params, $subcontexts = false, $includemanual = false) {
+    global $USER, $CFG, $DB;
+
+    if (!$params) {
+        throw new coding_exception('Missing parameters in role_unsassign_all_bulk() call');
+    }
+
+    $allowed = array('roleid', 'userids', 'contextid', 'component', 'itemid');
+    foreach ($params as $key => $value) {
+        if (!in_array($key, $allowed)) {
+            throw new coding_exception('Unknown role_unsassign_all_bulk() parameter key', 'key:'.$key);
+        }
+    }
+
+    if (isset($params['component']) && $params['component'] !== '' && strpos($params['component'], '_') === false) {
+        throw new coding_exception('Invalid component paramter in role_unsassign_all_bulk() call', 'component:'.$params['component']);
+    }
+
+    if ($includemanual) {
+        if (!isset($params['component']) || $params['component'] === '') {
+            throw new coding_exception('include manual parameter requires component parameter in role_unsassign_all_bulk() call');
+        }
+    }
+
+    if (empty($params['contextid'])) {
+        throw new coding_exception('contextid parameter required in role_unsassign_all_bulk() call');
+    }
+
+    // TODO: Revisit this sql_empty() use once Oracle bindings are improved. MDL-29765
+    if (isset($params['component'])) {
+        $params['component'] = ($params['component'] === '') ? $DB->sql_empty() : $params['component'];
+    }
+
+    /// construct query
+    $sql = "SELECT *
+        FROM {role_assignments} WHERE ";
+    $wheresql = '';
+    $sqlinparams = array();
+    if (!empty($params['userids'])) {
+        list($sqlin, $sqlinparams) = $DB->get_in_or_equal($params['userids'], SQL_PARAMS_NAMED);
+        $wheresql .= "userid {$sqlin} AND ";
+        unset($params['userids']);
+    }
+    $wheresql .= implode(' AND ', array_map(function ($iname) { return "{$iname} = :{$iname}"; }, array_keys($params)));
+    $params = array_merge($sqlinparams, $params);
+
+    /// process context
+    $ras = $DB->get_records_sql($sql . $wheresql, $params);
+    if (!empty($ras)) {
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal(array_keys($ras));
+        $DB->delete_records_select('role_assignments', "id {$sqlin}", $sqlparams);
+        if ($context = context::instance_by_id($params['contextid'], IGNORE_MISSING)) {
+            // this is a bit expensive but necessary
+            $context->mark_dirty();
+        }
+        events_trigger('role_unassigned_bulk', $ras);
+        unset($ras);
+    }
+
+    /// process subcontexts
+    if ($subcontexts && $context = context::instance_by_id($params['contextid'], IGNORE_MISSING)) {
+        if ($params['contextid'] instanceof context) {
+            $context = $params['contextid'];
+        } else {
+            $context = context::instance_by_id($params['contextid'], IGNORE_MISSING);
+        }
+
+        if ($context) {
+            $contexts = $context->get_child_contexts();
+            $sparams = $params;
+            foreach ($contexts as $context) {
+                $sparams['contextid'] = $context->id;
+                $ras = $DB->get_records_sql($sql . $wheresql, $sparams);
+                if (!empty($ras)) {
+                    list($sqlin, $sqlparams) = $DB->get_in_or_equal(array_keys($ras));
+                    $DB->delete_records_select('role_assignments', "id {$sqlin}", $sqlparams);
+                    // this is a bit expensive but necessary
+                    $context->mark_dirty();
+                    events_trigger('role_unassigned_bulk', $ras);
+                }
+            }
+            unset($sparams);
+        }
+    }
+
+    /// do this once more for all manual role assignments
+    if ($includemanual) {
+        $params['userids'] = array_values($sqlinparams);
+        $params['component'] = '';  // manual
+        foreach ($sqlinparams as $i => $p) {
+            // unset userid prepared param trash
+            unset($params[$i]);
+        }
+        role_unassign_all_bulk($params, $subcontexts, false);
+    }
+
+    /// do full reload of capabilities for current user.
+    reload_all_capabilities();
+}
+
+
 
 /**
  * Determines if a user is currently logged in

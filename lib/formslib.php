@@ -153,7 +153,7 @@ abstract class moodleform {
      *
      * @var MoodleQuickForm MoodleQuickForm
      */
-    protected $_form;
+    public $_form; //TOTARA: changed to public var to allow dialogs to use mforms easily.
     /**
      * globals workaround
      *

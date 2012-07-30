@@ -921,7 +921,7 @@ class rb_date_content extends rb_base_content {
  *
  * Pass in a column that contains a pipe '|' separated list of official tag ids
  */
-class rb_course_tag_content extends rb_base_content {
+class rb_tag_content extends rb_base_content {
     /**
      * Generate the SQL to apply this content restriction
      *
@@ -1108,14 +1108,14 @@ class rb_course_tag_content extends rb_base_content {
         $activeexcludes = explode('|',
             reportbuilder::get_setting($reportid, $type, 'excluded'));
 
-        $mform->addElement('header', 'course_tag_header',
-            get_string('showbycoursetag', 'totara_reportbuilder'));
-        $mform->addHelpButton('course_tag_header', 'reportbuildercoursetag', 'totara_reportbuilder');
+        $mform->addElement('header', 'tag_header',
+            get_string('showbytag', 'totara_reportbuilder'));
+        $mform->addHelpButton('tag_header', 'reportbuildertag', 'totara_reportbuilder');
 
-        $mform->addElement('checkbox', 'course_tag_enable', '',
-            get_string('coursetagenable', 'totara_reportbuilder'));
-        $mform->setDefault('course_tag_enable', $enable);
-        $mform->disabledIf('course_tag_enable', 'contentenabled', 'eq', 0);
+        $mform->addElement('checkbox', 'tag_enable', '',
+            get_string('tagenable', 'totara_reportbuilder'));
+        $mform->setDefault('tag_enable', $enable);
+        $mform->disabledIf('tag_enable', 'contentenabled', 'eq', 0);
 
         $mform->addElement('html', html_writer::empty_tag('br'));
 
@@ -1125,23 +1125,23 @@ class rb_course_tag_content extends rb_base_content {
         if (!empty($tags)) {
             $opts = array(1 => get_string('anyofthefollowing', 'totara_reportbuilder'),
                           0 => get_string('allofthefollowing', 'totara_reportbuilder'));
-            $mform->addElement('select', 'course_tag_include_logic', get_string('includecoursetags', 'totara_reportbuilder'), $opts);
-            $mform->setDefault('course_tag_include_logic', $include_logic);
-            $mform->disabledIf('course_tag_enable', 'contentenabled', 'eq', 0);
+            $mform->addElement('select', 'tag_include_logic', get_string('includetags', 'totara_reportbuilder'), $opts);
+            $mform->setDefault('tag_include_logic', $include_logic);
+            $mform->disabledIf('tag_enable', 'contentenabled', 'eq', 0);
             foreach ($tags as $tag) {
                 $checkgroup[] =& $mform->createElement('checkbox',
-                    'course_tag_include_option_' . $tag->id, '', $tag->name, 1);
-                $mform->disabledIf('course_tag_include_option_' . $tag->id,
-                    'course_tag_exclude_option_' . $tag->id, 'checked');
+                    'tag_include_option_' . $tag->id, '', $tag->name, 1);
+                $mform->disabledIf('tag_include_option_' . $tag->id,
+                    'tag_exclude_option_' . $tag->id, 'checked');
                 if (in_array($tag->id, $activeincludes)) {
-                    $mform->setDefault('course_tag_include_option_' . $tag->id, 1);
+                    $mform->setDefault('tag_include_option_' . $tag->id, 1);
                 }
             }
         }
-        $mform->addGroup($checkgroup, 'course_tag_include_group',
+        $mform->addGroup($checkgroup, 'tag_include_group',
             '', html_writer::empty_tag('br'), false);
-        $mform->disabledIf('course_tag_include_group', 'contentenabled', 'eq', 0);
-        $mform->disabledIf('course_tag_include_group', 'course_tag_enable',
+        $mform->disabledIf('tag_include_group', 'contentenabled', 'eq', 0);
+        $mform->disabledIf('tag_include_group', 'tag_enable',
             'notchecked');
 
         $mform->addElement('html', str_repeat(html_writer::empty_tag('br'), 2));
@@ -1151,23 +1151,23 @@ class rb_course_tag_content extends rb_base_content {
         if ($tags) {
             $opts = array(1 => get_string('anyofthefollowing', 'totara_reportbuilder'),
                           0 => get_string('allofthefollowing', 'totara_reportbuilder'));
-            $mform->addElement('select', 'course_tag_exclude_logic', get_string('excludecoursetags', 'totara_reportbuilder'), $opts);
-            $mform->setDefault('course_tag_exclude_logic', $exclude_logic);
-            $mform->disabledIf('course_tag_enable', 'contentenabled', 'eq', 0);
+            $mform->addElement('select', 'tag_exclude_logic', get_string('excludetags', 'totara_reportbuilder'), $opts);
+            $mform->setDefault('tag_exclude_logic', $exclude_logic);
+            $mform->disabledIf('tag_enable', 'contentenabled', 'eq', 0);
             foreach ($tags as $tag) {
                 $checkgroup[] =& $mform->createElement('checkbox',
-                    'course_tag_exclude_option_' . $tag->id, '', $tag->name, 1);
-                $mform->disabledIf('course_tag_exclude_option_' . $tag->id,
-                    'course_tag_include_option_' . $tag->id, 'checked');
+                    'tag_exclude_option_' . $tag->id, '', $tag->name, 1);
+                $mform->disabledIf('tag_exclude_option_' . $tag->id,
+                    'tag_include_option_' . $tag->id, 'checked');
                 if (in_array($tag->id, $activeexcludes)) {
-                    $mform->setDefault('course_tag_exclude_option_' . $tag->id, 1);
+                    $mform->setDefault('tag_exclude_option_' . $tag->id, 1);
                 }
             }
         }
-        $mform->addGroup($checkgroup, 'course_tag_exclude_group',
+        $mform->addGroup($checkgroup, 'tag_exclude_group',
             '', html_writer::empty_tag('br'), false);
-        $mform->disabledIf('course_tag_exclude_group', 'contentenabled', 'eq', 0);
-        $mform->disabledIf('course_tag_exclude_group', 'course_tag_enable',
+        $mform->disabledIf('tag_exclude_group', 'contentenabled', 'eq', 0);
+        $mform->disabledIf('tag_exclude_group', 'tag_enable',
             'notchecked');
 
     }
@@ -1189,20 +1189,20 @@ class rb_course_tag_content extends rb_base_content {
         $type = substr(get_class($this), 3);
 
         // enable checkbox option
-        $enable = (isset($fromform->course_tag_enable) &&
-            $fromform->course_tag_enable) ? 1 : 0;
+        $enable = (isset($fromform->tag_enable) &&
+            $fromform->tag_enable) ? 1 : 0;
         $status = $status && reportbuilder::update_setting($reportid, $type,
             'enable', $enable);
 
         // include with any or all
-        $includelogic = (isset($fromform->course_tag_include_logic) &&
-            $fromform->course_tag_include_logic) ? 1 : 0;
+        $includelogic = (isset($fromform->tag_include_logic) &&
+            $fromform->tag_include_logic) ? 1 : 0;
         $status = $status && reportbuilder::update_setting($reportid, $type,
             'include_logic', $includelogic);
 
         // exclude with any or all
-        $excludelogic = (isset($fromform->course_tag_exclude_logic) &&
-            $fromform->course_tag_exclude_logic) ? 1 : 0;
+        $excludelogic = (isset($fromform->tag_exclude_logic) &&
+            $fromform->tag_exclude_logic) ? 1 : 0;
         $status = $status && reportbuilder::update_setting($reportid, $type,
             'exclude_logic', $excludelogic);
 
@@ -1212,8 +1212,8 @@ class rb_course_tag_content extends rb_base_content {
             $activeincludes = array();
             $activeexcludes = array();
             foreach ($tags as $tag) {
-                $includename = 'course_tag_include_option_' . $tag->id;
-                $excludename = 'course_tag_exclude_option_' . $tag->id;
+                $includename = 'tag_include_option_' . $tag->id;
+                $excludename = 'tag_exclude_option_' . $tag->id;
 
                 // included tags
                 if (isset($fromform->$includename)) {

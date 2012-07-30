@@ -21,9 +21,13 @@
  * @package totara
  * @subpackage reportbuilder
  */
-
+if (!defined('MOODLE_INTERNAL')) {
+    die('Direct access to this script is forbidden.'); // It must be included from a Moodle page
+}
+global $CFG;
+require_once($CFG->dirroot.'/cohort/lib.php');
 /**
- * A report builder source for the "user" table.
+ * A report builder source for the "cohorts" table.
  */
 class rb_source_cohort extends rb_base_source {
 
@@ -72,16 +76,17 @@ class rb_source_cohort extends rb_base_source {
 
         $joinlist = array(
                         new rb_join(
-                            'members', // table alias?
-                            'LEFT', // type of join
+                            'members', // Table alias?
+                            'LEFT', // Type of join.
                             '{cohort_members}',
-                            'base.id = members.cohortid', //how it is joined
+                            'base.id = members.cohortid', // How it is joined.
                             REPORT_BUILDER_RELATION_ONE_TO_MANY
                         ),
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'members', 'userid');
         $this->add_position_tables_to_joinlist($joinlist, 'members', 'userid');
+        $this->add_tag_tables_to_joinlist('cohort', $joinlist, 'base', 'id');
 
         return $joinlist;
     }
@@ -96,14 +101,93 @@ class rb_source_cohort extends rb_base_source {
         $columnoptions = array();
 
         $columnoptions[] = new rb_column_option(
-                                'cohort',   // which table? Type
-                                'name', // alias for the field
-                                get_string('name', 'totara_cohort'), // name for the column
-                                'base.name' // table alias and field name
+                                'cohort',  // Which table? Type.
+                                'name', // Alias for the field.
+                                get_string('name', 'totara_cohort'), // Name for the column.
+                                'base.name' // Table alias and field name.
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'namelink',
+            get_string('namelink', 'totara_cohort'),
+            'base.name',
+            array(
+                'displayfunc' => 'cohort_name_link',
+                'extrafields' => array(
+                    'cohort_id' => 'base.id'
+                )
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'idnumber',
+            get_string('idnumber', 'totara_cohort'),
+            'base.idnumber'
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'type',
+            get_string('type', 'totara_cohort'),
+            'base.cohorttype',
+            array(
+                'displayfunc' => 'cohort_type'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'numofmembers',
+            get_string('numofmembers', 'totara_cohort'),
+            'members.id',
+            array(
+                'grouping' => 'count',
+                'joins' => array('members')
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'actions',
+            get_string('actions', 'totara_cohort'),
+            'base.id',
+            array(
+                'displayfunc' => 'cohort_actions',
+                'nosort' => true
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'startdate',
+            get_string('startdate', 'totara_cohort'),
+            'base.startdate',
+            array(
+                'displayfunc' => 'nice_date'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'enddate',
+            get_string('enddate', 'totara_cohort'),
+            'base.enddate',
+            array(
+                'displayfunc' => 'nice_date'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'status',
+            get_string('status', 'totara_cohort'),
+            'base.id',
+            array(
+                'displayfunc' => 'cohort_status',
+                'extrafields' => array(
+                    'startdate'=>'base.startdate',
+                    'enddate'=>'base.enddate'
+                )
+            )
         );
 
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
+        $this->add_tag_fields_to_columns('cohort', $columnoptions);
 
         return $columnoptions;
     }
@@ -115,8 +199,32 @@ class rb_source_cohort extends rb_base_source {
     protected function define_filteroptions() {
         // No filter options!
         $filteroptions = array();
-
+        $filteroptions[] = new rb_filter_option(
+            'cohort',
+            'name',
+            get_string('name', 'totara_cohort'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'cohort',
+            'idnumber',
+            get_string('idnumber', 'totara_cohort'),
+            'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'cohort',
+            'type',
+            get_string('type', 'totara_cohort'),
+            'simpleselect',
+            array(
+                'selectchoices' => array(
+                    cohort::TYPE_DYNAMIC => get_string('dynamic', 'totara_cohort'),
+                    cohort::TYPE_STATIC  => get_string('set', 'totara_cohort'),
+                )
+            )
+        );
         $this->add_user_fields_to_filters($filteroptions);
+        $this->add_tag_fields_to_filters('cohort', $filteroptions);
 
         return $filteroptions;
     }
@@ -160,12 +268,85 @@ class rb_source_cohort extends rb_base_source {
     protected function define_paramoptions() {
         $paramoptions = array(
                             new rb_param_option(
-                                'cohortid',        // parameter name
-                                'base.id'  // field
+                                'cohortid', // Parameter name.
+                                'base.id'  // Field.
                         ),
         );
         return $paramoptions;
     }
+    /**
+     * RB helper function to show the name of the cohort with a link to the cohort's details page
+     * @param int $cohortid
+     * @param object $row
+     */
+    public function rb_display_cohort_name_link($cohortname, $row ) {
+        return html_writer::link(new moodle_url('/cohort/view.php', array('id' => $row->cohort_id)), format_string($cohortname));
+    }
+
+    /**
+     * RB helper function to show whether a cohort is dynamic or static
+     * @param int $cohorttype
+     * @param object $row
+     */
+    public function rb_display_cohort_type($cohorttype, $row) {
+        global $CFG;
+        require_once($CFG->dirroot.'/cohort/lib.php');
+
+        switch( $cohorttype ) {
+            case cohort::TYPE_DYNAMIC:
+                $ret = get_string('dynamic', 'totara_cohort');
+                break;
+            case cohort::TYPE_STATIC:
+                $ret = get_string('set', 'totara_cohort');
+                break;
+            default:
+                $ret = get_string('typeunknown', 'totara_cohort', $cohorttype);
+        }
+        return $ret;
+    }
+
+    /**
+     * RB helper function to show the "action" links for a cohort -- edit/clone/delete
+     * @param int $cohortid
+     * @param object $row
+     * @return string|string
+     */
+    public function rb_display_cohort_actions( $cohortid, $row ) {
+        global $OUTPUT;
+
+        static $canedit = null;
+        if ($canedit === null) {
+            $canedit = has_capability('moodle/cohort:manage', context_system::instance());
+        }
+
+        if ($canedit) {
+            $editurl = new moodle_url('/cohort/edit.php', array('id' => $cohortid));
+            $str = html_writer::link($editurl, $OUTPUT->pix_icon('t/edit', get_string('edit')));
+            $cloneurl = new moodle_url('/cohort/view.php', array('id' => $cohortid, 'clone' => 1, 'cancelurl' => qualified_me()));
+            $str .= html_writer::link($cloneurl, $OUTPUT->pix_icon('t/copy', get_string('copy', 'totara_cohort')));
+            $delurl = new moodle_url('/cohort/view.php', array('id'=>$cohortid, 'delete' => 1, 'cancelurl' => qualified_me()));
+            $str .= html_writer::link($delurl, $OUTPUT->pix_icon('t/delete', get_string('delete')));
+            return $str;
+        }
+        return '';
+    }
+
+    public function rb_display_cohort_status($cohortid, $row) {
+        $now = time();
+        if (totara_cohort_is_active($row, $now)) {
+            return get_string('cohortdateactive', 'totara_cohort');
+        }
+
+        if ($row->startdate && $row->startdate > $now) {
+            return get_string('cohortdatenotyetstarted', 'totara_cohort');
+        }
+
+        if ($row->enddate && $row->enddate < $now) {
+            return get_string('cohortdatealreadyended', 'totara_cohort');
+        }
+
+        return '';
+    }
 }
 
-// end of rb_source_user class
+// End of rb_source_user class

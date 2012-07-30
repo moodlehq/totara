@@ -185,9 +185,11 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
     /**
      * Load an external page in the dialog
      * @param   string      Url of page
+     * @param   string      Type of request ('GET', 'POST') (optional, GET is default)
+     * @param   string      GET or POST query string style data, also accepts an object (optional)
      * @return  void
      */
-    this.load = function(url) {
+    this.load = function(url, type, query_data) {
         // Add loading animation
         this.dialog.html('');
         this.showLoading();
@@ -196,7 +198,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         this.url = url;
 
         // Load page
-        this._request(this.url);
+        this._request(this.url, {}, type, query_data);
     }
 
 
@@ -284,7 +286,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
                 var target = $(this).parents('.dialog-load-within').slice(0,1);
                 if(target.length != 0) {
                     dialog.showLoading();
-                    dialog._request(url, null, null, null, target);
+                    dialog._request(url, {outputelement: target});
                 } else {
                     // otherwise, load in the whole dialog
                     dialog.load(url);
@@ -311,23 +313,23 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         $('form', this.dialog).each(function() {
 
             $(this).bind('submit', function(e) {
-                var action = $(this).attr('action');
-                var sep = (action.indexOf('?') == -1 ) ? '?' : '&';
-                var url = action + sep + $(this).serialize();
+                var url = $(this).attr('action');
+                var method = $(this).attr('method');
+                var data = $(this).serialize();
 
                 // if the form is inside an element with the
-                // 'dialog-load-within' class set, load the results in
-                // that element instead of reloading the whole dialog
+                // 'dialog-load-within' class set, load the results in(improved version)
+
                 //
                 // if there is more than one parent with the class set,
                 // loads in the most specific one
-                var target = $(this).parents('.dialog-load-within').slice(0,1);
-                if(target.length != 0) {
+                var target = $(this).parents('.dialog-load-within').slice(0, 1);
+                if (target.length != 0) {
                     dialog.showLoading();
-                    dialog._request(url, null, null, null, target);
+                    dialog._request(url, {outputelement: target}, method, data);
                 } else {
                     // if no target set, reload whole dialog
-                    dialog.load(url);
+                    dialog.load(url, method, data);
                 }
 
                 // Stop any default event occuring
@@ -374,38 +376,57 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
 
     /**
-     * Make an HTTP request
+     * Make an HTTP request (improved version)
      *
-     * Optionally pass an object and method name to be called on success.
-     * This method is passed the HTML response, and optionally the data variable.
+     * The success parameter is an optional object containing:
+     *  .object:
+     *  .method:
+     *    Object variable and method name to be called on success
+     *    This method is passed the HTML response, and optionally the data variable.
+     *
+     *  .data:
+     *    data to be passed to success method (optional)
+     *
+     *  .outputelement:
+     *    element in which request output should be outputted (optional)
      *
      * If no object/method name are passed, or they return 'true' - the dialog.render
-     * method is called on success also.
+     * method is called on success.
      *
-     * @param string    request url
-     * @param object    Object to call on success (optional)
-     * @param string    Object's method name to call on success (optional)
-     * @param mixed     extra data to send to success method (optional)
-     * @param object outputelement (optional) element in which request output should be generated
+     * @param   string      Request url
+     * @param   object      What to do on success (optional)
+     * @param   string      Type of request ('GET', 'POST') (optional, GET is default)
+     * @param   string      GET or POST query string style data, also accepts an object (optional)
      */
-    this._request = function(url, s_object, s_method, data, outputelement) {
+    this._request = function(url, success, type, query_data) {
         var dialog = this;
+
+        if (type == undefined) {
+            type = 'GET';
+        }
 
         $.ajax({
             url: url,
-            type: 'GET',
+            type: type,
+            data: query_data,
+
             success: function(o) {
 
                 var result = true;
 
                 // Check the result of onsuccess
                 // If false, do not run the render method
-                if (s_object != undefined) {
-                    result = s_object[s_method](o, data);
+                if (success != undefined && success.object != undefined) {
+                    result = success.object[success.method](o, success.data);
                 }
 
                 if (result) {
-                    dialog.render(o, outputelement);
+                    if (success != undefined && success.outputelement != undefined) {
+                        dialog.render(o, success.outputelement);
+                    } else {
+                        dialog.render(o);
+                    }
+
                 }
             },
             error: function(o) {
@@ -425,7 +446,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
 function totaraDialog_handler() {
 
-    // Reference to the yuiDialog object
+    // Reference to the totaraDialog object
     var _dialog;
 
     // Dialog title/name
@@ -554,7 +575,7 @@ totaraDialog_handler.prototype._save = function(url) {
     url = url + selected_str;
 
     // Send to server
-    this._dialog._request(url, this, '_update');
+    this._dialog._request(url, {object: this, method: '_update'});
 }
 
 /**
@@ -602,7 +623,7 @@ totaraDialog_handler.prototype._set_framework = function() {
     }
 
     this._dialog.showLoading();  // Show loading icon and then perform request
-    this._dialog._request(url, undefined, undefined, undefined, $('#browse-tab .treeview-wrapper', this._container));
+    this._dialog._request(url, {outputelement: $('#browse-tab .treeview-wrapper', this._container)});
 }
 
 
@@ -750,7 +771,7 @@ totaraDialog_handler_treeview.prototype._make_hierarchy = function(parent_elemen
         var id = par.attr('id').substr(10);
 
         var url = handler._dialog.url+'&parentid='+id;
-        handler._dialog._request(url, handler, '_update_hierarchy', id);
+        handler._dialog._request(url, {object: handler, method: '_update_hierarchy', data: id});
 
         return false;
     });
@@ -1403,6 +1424,77 @@ totaraDialog_handler_skeletalTreeview.prototype._make_selectable = function(elem
     }
 
 }
+
+/*****************************************************************************/
+/** totaraDialog_handler_form **/
+
+totaraDialog_handler_form = function() {};
+totaraDialog_handler_form.prototype = new totaraDialog_handler();
+
+
+/**
+ * Add custom submit handler to forms in dialog
+ */
+totaraDialog_handler_form.prototype.every_load = function() {
+    var handler = this;
+
+    var forms = $('form', this._container);
+    forms.unbind('submit');
+
+    forms.bind('submit', function(e) {
+        e.preventDefault();
+
+        handler._dialog.showLoading();
+
+        var url = $(this).attr('action');
+        var method = $(this).attr('method');
+        var data = $(this).serialize();
+
+        handler._dialog._request(
+            url,
+            {
+                object:     handler,
+                method:     '_updatePage' // Update page and close dialog on success
+            },
+            method,
+            data
+        );
+    });
+};
+
+
+/**
+ * Submit first form in dialog
+ */
+totaraDialog_handler_form.prototype.submit = function() {
+    var form = $('form', this._container).first();
+    form.submit();
+};
+
+
+/**
+ * Update page with forms results
+ *
+ * @param   string  HTML response
+ * @return  void
+ */
+totaraDialog_handler_form.prototype._updatePage = function(response) {
+
+    // Get all root elements in response
+    var els = $(response);
+
+    // Replace any items on the main page with their content (if IDs match)
+    els.each(function() {
+        var id = $(this).attr('id');
+
+        if (id) {
+            $('body #'+id).replaceWith($(this));
+        }
+    });
+
+    // Close dialog
+    this._dialog.hide();
+};
 
 /*****************************************************************************/
 /** Factory methods **/

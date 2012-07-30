@@ -1,26 +1,88 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cohort/db" VERSION="20110620" COMMENT="XMLDB file for Moodle local/cohort"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
->
-  <TABLES>
-    <TABLE NAME="cohort_criteria" COMMENT="Criteria for the dynamic cohorts">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="cohortid"/>
-        <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="profilefield"/>
-        <FIELD NAME="profilefield" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="cohortid" NEXT="profilefieldvalues"/>
-        <FIELD NAME="profilefieldvalues" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="profilefield" NEXT="positionid"/>
-        <FIELD NAME="positionid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="profilefieldvalues" NEXT="positionincludechildren"/>
-        <FIELD NAME="positionincludechildren" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="organisationid"/>
-        <FIELD NAME="organisationid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="positionincludechildren" NEXT="orgincludechildren"/>
-        <FIELD NAME="orgincludechildren" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="organisationid"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="cohortid" UNIQUE="true" FIELDS="cohortid"/>
-      </INDEXES>
-    </TABLE>
-  </TABLES>
+<XMLDB PATH="totara/cohort/db" VERSION="2012080202" COMMENT="XMLDB file for totara/cohort"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+        >
+    <TABLES>
+        <TABLE NAME="cohort_rule_collections" COMMENT="Collections of rulesets &amp; rules for a dynamic cohort" NEXT="cohort_rulesets">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="cohortid"/>
+                <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="rulesetoperator"/>
+                <FIELD NAME="rulesetoperator" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="cohortid" NEXT="status"/>
+                <FIELD NAME="status" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="rulesetoperator" NEXT="timecreated"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="status" NEXT="timemodified"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+                <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="cohort_rulesets" COMMENT="Rulesets for dynamic cohorts" PREVIOUS="cohort_rule_collections" NEXT="cohort_rules">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="rulecollectionid"/>
+                <FIELD NAME="rulecollectionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="rulecollectionid" NEXT="operator"/>
+                <FIELD NAME="operator" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="name" NEXT="sortorder"/>
+                <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="operator" NEXT="timecreated"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="timemodified"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+                <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="cohort_rules" COMMENT="Rules within a ruleset" PREVIOUS="cohort_rulesets" NEXT="cohort_rule_params">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="rulesetid"/>
+                <FIELD NAME="rulesetid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="ruletype"/>
+                <FIELD NAME="ruletype" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="rulesetid" NEXT="name"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="ruletype" NEXT="sortorder"/>
+                <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="name" NEXT="timecreated"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="timemodified"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+                <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="rulesetid"/>
+                <KEY NAME="rulesetid" TYPE="foreign" FIELDS="rulesetid" REFTABLE="ruleset" REFFIELDS="id" PREVIOUS="primary"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="cohort_rule_params" COMMENT="The parameters of rules in cohort_rules" PREVIOUS="cohort_rules" NEXT="cohort_msg_queue">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="ruleid"/>
+                <FIELD NAME="ruleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="ruleid" NEXT="value"/>
+                <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="timecreated"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="value" NEXT="timemodified"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+                <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="ruleid" UNIQUE="false" FIELDS="ruleid"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="cohort_msg_queue" COMMENT="A table to store cohort member join/delete notifications, to be sent at the next cron run." PREVIOUS="cohort_rule_params">
+          <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="cohortid"/>
+            <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+            <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="cohortid" NEXT="action"/>
+            <FIELD NAME="action" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="userid" NEXT="processed"/>
+            <FIELD NAME="processed" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="action" NEXT="timecreated"/>
+            <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="processed" NEXT="timemodified"/>
+            <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+            <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timemodified"/>
+          </FIELDS>
+          <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+          </KEYS>
+          <INDEXES>
+            <INDEX NAME="cohortidaction" UNIQUE="false" FIELDS="cohortid, action"/>
+          </INDEXES>
+        </TABLE>
+    </TABLES>
 </XMLDB>

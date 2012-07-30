@@ -387,16 +387,18 @@ abstract class prog_assignment_category {
      * Gets the affected users for the given item record
      *
      * @param object $item An object containing data about the assignment
+     * @param int $userid (optional) Only look at this user
      */
-    abstract function get_affected_users($item);
+    abstract function get_affected_users($item, $userid=0);
 
     /**
      * Retrives an array of all the users affected by an assignment based on the
      * assignment record
      *
      * @param object $assignment The db record from 'prog_assignment' for this assignment
+     * @param int $userid (optional) only look at this user
      */
-    abstract function get_affected_users_by_assignment($assignment);
+    abstract function get_affected_users_by_assignment($assignment, $userid=0);
 
     /**
      * Updates the assignments by looking at the post data
@@ -502,6 +504,7 @@ abstract class prog_assignment_category {
                     // Create new assignment
                     $insertssql[] = "(?, ?, ?, ?, ?, ?, ?)";
                     $insertsparams[] = array($object->programid, $object->assignmenttype, $object->assignmenttypeid, $object->includechildren, $object->completiontime, $object->completionevent, $object->completioninstance);
+                    $this->_add_assignment_hook($object);
                 }
             }
 
@@ -538,6 +541,22 @@ abstract class prog_assignment_category {
 
     }
 
+ /**
+  * Called when an assignment of this category is going to be added
+  * @param $object
+  */
+    protected function _add_assignment_hook($object) {
+        return true;
+    }
+
+/**
+  * called when an assignment of this list is going to be deleted
+  * @param $object
+  */
+    protected function _delete_assignment_hook($object) {
+        return true;
+    }
+
     /**
      * Gets the include children part from the post data
      * @param <type> $data
@@ -549,7 +568,7 @@ abstract class prog_assignment_category {
         global $CFG;
         $completion_string = get_string('setcompletion', 'totara_program');
 
-        if (!isset($item->completiontime)) {
+        if (empty($item->completiontime)) {
             $item->completiontime = '';
         }
 
@@ -711,7 +730,7 @@ class organisations_category extends prog_assignment_category {
      * @return int
      */
     function user_affected_count($item) {
-        return $this->get_affected_users($item, true);
+        return $this->get_affected_users($item, $userid=0, true);
     }
 
     /**
@@ -723,7 +742,7 @@ class organisations_category extends prog_assignment_category {
      * @param boolean $count If true return the record count instead of the records
      * @return integer|array Record count or array of records
      */
-    function get_affected_users($item, $count=false) {
+    function get_affected_users($item, $userid=0, $count=false) {
         global $DB;
 
         $params = array();
@@ -735,6 +754,9 @@ class organisations_category extends prog_assignment_category {
             //replace the existing $params
             list($usql, $params) = $DB->get_in_or_equal($children);
             $where = "pa.organisationid {$usql}";
+        }
+        if ($userid) {
+            $where .= " AND u.id=$userid";
         }
 
         $select = $count ? 'COUNT(u.id)' : 'u.id';
@@ -752,7 +774,7 @@ class organisations_category extends prog_assignment_category {
         }
     }
 
-    function get_affected_users_by_assignment($assignment) {
+    function get_affected_users_by_assignment($assignment, $userid = 0) {
         global $DB;
 
         // Query to retrieves the data required to determine the number of users
@@ -769,7 +791,7 @@ class organisations_category extends prog_assignment_category {
                 WHERE prog_assignment.id = ?";
 
         if ($item = $DB->get_record_sql($sql, array($assignment->id))) {
-            return $this->get_affected_users($item);
+            return $this->get_affected_users($item, $userid);
         } else {
             return array();
         }
@@ -853,7 +875,7 @@ class positions_category extends prog_assignment_category {
      * @return int
      */
     function user_affected_count($item) {
-        return $this->get_affected_users($item, true);
+        return $this->get_affected_users($item, 0, true);
     }
 
     /**
@@ -865,7 +887,7 @@ class positions_category extends prog_assignment_category {
      * @param boolean $count If true return the record count instead of the records
      * @return integer|array Record count or array of records
      */
-    function get_affected_users($item, $count=false) {
+    function get_affected_users($item, $userid = 0, $count=false) {
         global $DB;
 
         $where = "pa.positionid = ?";
@@ -887,6 +909,10 @@ class positions_category extends prog_assignment_category {
                 AND pa.type = ?
                 AND u.deleted = 0";
         $params[] = POSITION_TYPE_PRIMARY;
+        if ($userid) {
+            $sql .= " AND u.id = ?";
+            $params[] = $userid;
+        }
         if ($count) {
             return $DB->count_records_sql($sql, $params);
         }
@@ -895,7 +921,7 @@ class positions_category extends prog_assignment_category {
         }
     }
 
-    function get_affected_users_by_assignment($assignment) {
+    function get_affected_users_by_assignment($assignment, $userid = 0) {
         global $DB;
 
         // Query to retrieves the data required to determine the number of users
@@ -912,7 +938,7 @@ class positions_category extends prog_assignment_category {
                 WHERE prog_assignment.id = ?";
 
         if ($item = $DB->get_record_sql($sql, array($assignment->id))) {
-            return $this->get_affected_users($item);
+            return $this->get_affected_users($item, $userid);
         } else {
             return array();
         }
@@ -996,10 +1022,10 @@ class cohorts_category extends prog_assignment_category {
     }
 
     function user_affected_count($item) {
-        return $this->get_affected_users($item, true);
+        return $this->get_affected_users($item, 0, true);
     }
 
-    function get_affected_users($item, $count=false) {
+    function get_affected_users($item, $userid = 0, $count = false) {
         global $DB;
         $select = $count ? 'COUNT(u.id)' : 'u.id';
         $sql = "SELECT $select
@@ -1008,6 +1034,10 @@ class cohorts_category extends prog_assignment_category {
                  WHERE cm.cohortid = ?
                    AND u.deleted = 0";
         $params = array($item->id);
+        if ($userid) {
+            $sql .= " AND u.id = ?";
+            $params[] = $userid;
+        }
         if ($count) {
             return $DB->count_records_sql($sql, $params);
         }
@@ -1016,10 +1046,10 @@ class cohorts_category extends prog_assignment_category {
         }
     }
 
-    function get_affected_users_by_assignment($assignment) {
+    function get_affected_users_by_assignment($assignment, $userid = 0) {
         $item = new stdClass();
         $item->id = $assignment->assignmenttypeid;
-        return $this->get_affected_users($item);
+        return $this->get_affected_users($item, $userid);
     }
 
     /**
@@ -1033,6 +1063,13 @@ class cohorts_category extends prog_assignment_category {
         $title = get_string('addcohortstoprogram', 'totara_program');
         $url = 'find_cohort.php?programid='.$programid;
         return "M.totara_programassignment.add_category({$this->id}, 'cohorts', '{$url}', '{$title}');";
+    }
+    protected function _add_assignment_hook($object) {
+        return true;
+    }
+
+    protected function _delete_assignment_hook($object) {
+        return true;
     }
 }
 
@@ -1104,10 +1141,10 @@ class managers_category extends prog_assignment_category {
     }
 
     function user_affected_count($item) {
-        return $this->get_affected_users($item, true);
+        return $this->get_affected_users($item, 0, true);
     }
 
-    function get_affected_users($item, $count=false) {
+    function get_affected_users($item, $userid = 0, $count=false) {
         global $DB;
         $primarytype = POSITION_TYPE_PRIMARY;
 
@@ -1124,9 +1161,13 @@ class managers_category extends prog_assignment_category {
         $select = $count ? 'COUNT(pa.userid) AS id' : 'pa.userid AS id';
 
         $sql = "SELECT $select
-                  FROM {pos_assignment} pa
-            INNER JOIN {user} u ON (pa.userid = u.id AND u.deleted = 0)
-                 WHERE {$where}";
+                FROM {pos_assignment} pa
+                INNER JOIN {user} u ON (pa.userid = u.id AND u.deleted = 0)
+                WHERE {$where}";
+        if ($userid) {
+            $sql .= " AND u.id = ?";
+            $params[] = $userid;
+        }
 
         if ($count) {
             return $DB->count_records_sql($sql, $params);
@@ -1135,8 +1176,9 @@ class managers_category extends prog_assignment_category {
         }
     }
 
-    function get_affected_users_by_assignment($assignment) {
+    function get_affected_users_by_assignment($assignment, $userid = 0) {
         global $DB;
+        $primarytype = POSITION_TYPE_PRIMARY;
 
         // Query to retrieves the data required to determine the number of users
         //affected by an assignment
@@ -1149,7 +1191,7 @@ class managers_category extends prog_assignment_category {
                  WHERE prog_assignment.id = ?";
 
         if ($item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $assignment->id))) {
-            return $this->get_affected_users($item);
+            return $this->get_affected_users($item, $userid);
         } else {
             return array();
         }
@@ -1224,13 +1266,13 @@ class individuals_category extends prog_assignment_category {
         return 1;
     }
 
-    function get_affected_users($item) {
+    function get_affected_users($item, $userid = 0) {
         $user = (object)array('id'=>$item->assignmenttypeid);
         return array($user);
     }
 
-    function get_affected_users_by_assignment($assignment) {
-        return $this->get_affected_users($assignment);
+    function get_affected_users_by_assignment($assignment, $userid = 0) {
+        return $this->get_affected_users($assignment, $userid);
     }
 
     function get_includechildren($data, $object) {
@@ -1307,23 +1349,11 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
     public function get_completion_string() {
         return 'first login';
     }
-    private function load_data() {
-        global $DB;
-        $this->timestamps = $DB->get_records_select('user','', null, '','id, firstaccess, lastaccess');
-    }
     public function get_timestamp($userid,$instanceid) {
-        // lazy load data when required
-        if (!isset($this->timestamps)) {
-            $this->load_data();
-        }
-        if (!isset($this->timestamps[$userid])) {
-            return false;
-        }
+        global $DB;
+        $rec = $DB->get_record('user', array('id' => $userid),'id, firstaccess, lastaccess');
+        $firstaccess = empty($rec->firstaccess) ? $rec->lastaccess : $rec->firstaccess;
 
-        $firstaccess = $this->timestamps[$userid]->firstaccess;
-        if (empty($firstaccess)) {
-            $firstaccess = $this->timestamps[$userid]->lastaccess;
-        }
         return $firstaccess;
     }
 }

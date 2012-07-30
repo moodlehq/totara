@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * it may fail sometimes, so we always do a full sync in cron too.
  */
 class enrol_category_handler {
-    public function role_assigned($ra) {
+    public static function role_assigned($ra) {
         global $DB;
 
         if (!enrol_is_enabled('category')) {
@@ -84,7 +84,27 @@ class enrol_category_handler {
         return true;
     }
 
-    public function role_unassigned($ra) {
+    public static function role_assigned_bulk($ra) {
+        global $DB;
+
+        $transaction = $DB->start_delegated_transaction();
+
+        foreach ($ra->userids as $uid) {
+            $ass = new stdClass;
+            $ass->userid = $uid->userid;
+            $ass->roleid = $ra->roleid;
+            $ass->contextid = $ra->contextid;
+            $ass->timemodified = $ra->timemodified;
+
+            self::role_assigned($ass);
+        }
+
+        $transaction->allow_commit();
+
+        return true;
+    }
+
+    public static function role_unassigned($ra) {
         global $DB;
 
         if (!enrol_is_enabled('category')) {
@@ -133,6 +153,15 @@ class enrol_category_handler {
             }
         }
         $rs->close();
+
+        return true;
+    }
+
+    public static function role_unassigned_bulk($ras) {
+        // TODO this can be optimised
+        foreach ($ras as $ra) {
+            self::role_unassigned($ra);
+        }
 
         return true;
     }

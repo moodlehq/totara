@@ -114,7 +114,7 @@ class enrol_cohort_plugin extends enrol_plugin {
         }
 
         require_once("$CFG->dirroot/enrol/cohort/locallib.php");
-        enrol_cohort_sync();
+        enrol_cohort_sync(null, true);
     }
 
     /**

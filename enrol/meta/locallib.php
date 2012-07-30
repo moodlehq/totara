@@ -258,6 +258,18 @@ class enrol_meta_handler {
         return true;
     }
 
+    public static function role_assigned_bulk($ra) {
+        foreach ($ra->userids as $uid) {
+            $a = new stdClass;
+            $a->userid = $uid->userid;
+            $a->roleid = $ra->roleid;
+            $a->contextid = $ra->contextid;
+            $a->component = $ra->component;
+
+            self::role_assigned($a);
+        }
+    }
+
     /**
      * Triggered via role unassigned event.
      * @static
@@ -289,6 +301,20 @@ class enrol_meta_handler {
     }
 
     /**
+     * Triggered via role unassigned bulk event.
+     * @static
+     * @param stdClass $ras
+     * @return bool success
+     */
+    public static function role_unassigned_bulk($ras) {
+        foreach ($ras as $ra) {
+            self::role_unassigned($ra);
+        }
+
+        return true;
+    }
+
+    /**
      * Triggered via user enrolled event.
      * @static
      * @param stdClass $ue
@@ -311,6 +337,24 @@ class enrol_meta_handler {
     }
 
     /**
+     * Triggered via bulk user enrolled event.
+     * @static
+     * @param stdClass $ue
+     * @return bool success
+     */
+    public static function user_enrolled_bulk($ue) {
+        foreach ($ue->userids as $uid) {
+            $e = new stdClass;
+            $e->name = $ue->enrol;
+            $e->courseid = $ue->courseid;
+            $e->userid = $uid->userid;
+            self::user_enrolled($e);
+        }
+
+        return true;
+    }
+
+    /**
      * Triggered via user unenrolled event.
      * @static
      * @param stdClass $ue
@@ -326,6 +370,26 @@ class enrol_meta_handler {
         }
 
         self::sync_course_instances($ue->courseid, $ue->userid);
+
+        return true;
+    }
+
+    /**
+     * Triggered via bulk user unenrolled event.
+     * @static
+     * @param stdClass $ue
+     * @return bool success
+     */
+    public static function user_unenrolled_bulk($ue) {
+
+        $courseid = $ue->courseid;
+        $enrol = $ue->enrol;
+        foreach ($ue->ue as $e) {
+            $e->courseid = $courseid;
+            $e->enrol = $enrol;
+
+            self::user_unenrolled($e);
+        }
 
         return true;
     }

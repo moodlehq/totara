@@ -118,7 +118,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
             'position_assignment', 'reportstoid');
-        $this->add_course_tags_tables_to_joinlist($joinlist, 'base', 'course');
+        $this->add_tag_tables_to_joinlist('course', $joinlist, 'base', 'course');
 
         return $joinlist;
     }
@@ -246,7 +246,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
-        $this->add_course_tag_fields_to_columns($columnoptions);
+        $this->add_tag_fields_to_columns('course', $columnoptions);
 
         return $columnoptions;
     }
@@ -324,7 +324,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
-        $this->add_course_tag_fields_to_filters($filteroptions);
+        $this->add_tag_fields_to_filters('course', $filteroptions);
 
         return $filteroptions;
     }

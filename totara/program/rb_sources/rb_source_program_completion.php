@@ -87,6 +87,8 @@ class rb_source_program_completion extends rb_base_source {
             'position_assignment', 'reportstoid');
         $this->add_program_table_to_joinlist($joinlist, 'base', 'programid');
         $this->add_course_category_table_to_joinlist($joinlist, 'program', 'category');
+        $this->add_cohort_user_tables_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_cohort_program_tables_to_joinlist($joinlist, 'base', 'programid');
 
         return $joinlist;
     }
@@ -143,7 +145,7 @@ class rb_source_program_completion extends rb_base_source {
             'organisationpath',
             get_string('completionorgpath', 'rb_source_program_completion'),
             'completion_organisation.path',
-            array('joins' => 'completion_organisation')
+            array('joins' => 'completion_organisation', 'selectable' => false)
         );
         $columnoptions[] =new rb_column_option(
             'progcompletion',
@@ -170,7 +172,7 @@ class rb_source_program_completion extends rb_base_source {
             'positionpath',
             get_string('completionpospath', 'rb_source_program_completion'),
             'completion_position.path',
-            array('joins' => 'completion_position')
+            array('joins' => 'completion_position', 'selectable' => false)
         );
         $columnoptions[] =new rb_column_option(
             'progcompletion',
@@ -186,6 +188,8 @@ class rb_source_program_completion extends rb_base_source {
         $this->add_manager_fields_to_columns($columnoptions);
         $this->add_course_category_fields_to_columns($columnoptions, 'course_category', 'program');
         $this->add_program_fields_to_columns($columnoptions);
+        $this->add_cohort_user_fields_to_columns($columnoptions);
+        $this->add_cohort_program_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -276,6 +280,8 @@ class rb_source_program_completion extends rb_base_source {
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
         $this->add_program_fields_to_filters($filteroptions);
+        $this->add_cohort_user_fields_to_filters($filteroptions);
+        $this->add_cohort_program_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

@@ -396,6 +396,48 @@ function groups_delete_group_members($courseid, $userid=0, $showfeedback=false) 
 }
 
 /**
+ * Bulk remove all users (or one user) from all groups in a course
+ * @param int $courseid
+ * @param array $userids or 0 for all
+ * @param bool $showfeedback
+ * @return bool success
+ */
+function groups_delete_group_members_bulk($courseid, $userids, $showfeedback=false) {
+    global $DB, $OUTPUT;
+
+    if (is_bool($userids)) {
+        debugging('Incorrect userids function parameter');
+        return false;
+    }
+
+    $params = array();
+
+    if (!empty($userids)) {
+        list($sqlin, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        $usersql = "AND userid {$sqlin}";
+    } else {
+        $usersql = "";
+    }
+
+    $params['courseid'] = $courseid;
+
+    $groupssql = "SELECT id FROM {groups} g WHERE g.courseid = :courseid";
+    $DB->delete_records_select('groups_members', "groupid IN ($groupssql) $usersql", $params);
+
+    //trigger groups events
+    $eventdata = new stdClass();
+    $eventdata->courseid = $courseid;
+    $eventdata->userids  = $userids;
+    events_trigger('groups_members_removed_bulk', $eventdata);
+
+    if ($showfeedback) {
+        echo $OUTPUT->notification(get_string('deleted').' - '.get_string('groupmembers', 'group'), 'notifysuccess');
+    }
+
+    return true;
+}
+
+/**
  * Remove all groups from all groupings in course
  * @param int $courseid
  * @param bool $showfeedback

@@ -415,7 +415,7 @@ class totara_program_renderer extends plugin_renderer_base {
     public function display_set_completion() {
         $out = '';
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-fixed-date'));
-        $out .= html_writer::start_tag('label', array('for' => 'exception_search')) . get_string('completeby', 'totara_program') . html_writer::end_tag('label');
+        $out .= html_writer::start_tag('label', array('for' => 'completiontime')) . get_string('completeby', 'totara_program') . html_writer::end_tag('label');
         $out .= html_writer::empty_tag('input', array('class' => 'completiontime', 'type' => 'text', 'name' => "completiontime", 'placeholder' => get_string('datepickerplaceholder', 'totara_core')));
         $out .= html_writer::start_tag('button', array('class' => 'fixeddate')) . get_string('setfixedcompletiondate', 'totara_program') . html_writer::end_tag('button');
         $out .= html_writer::end_tag('div');

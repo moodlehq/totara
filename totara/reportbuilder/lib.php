@@ -240,14 +240,15 @@ class reportbuilder {
 
         // include JS for dialogs if required for filters
         foreach ($this->filters as $filter) {
-            if (in_array($filter->filtertype, array('org', 'comp', 'pos', 'orgmulti', 'compmulti', 'posmulti'))) {
+            if (in_array($filter->filtertype, array('org', 'comp', 'pos', 'orgmulti', 'compmulti', 'posmulti', 'cohort'))) {
                 $jsdetails = new stdClass();
                 $jsdetails->initcall = 'M.totara_reportbuilder_filterdialogs.init';
                 $jsdetails->jsmodule = array('name' => 'totara_reportbuilder_filterdialogs',
                     'fullpath' => '/totara/reportbuilder/filter_dialogs.js');
                 $jsdetails->strings = array(
                     'totara_hierarchy' => array('chooseposition', 'selected', 'chooseorganisation', 'currentlyselected', 'selectcompetency'),
-                    'totara_reportbuilder' => array('chooseorgplural', 'chooseposplural', 'choosecompplural')
+                    'totara_reportbuilder' => array('chooseorgplural', 'chooseposplural', 'choosecompplural'),
+                    'totara_cohort' => array('choosecohorts')
                 );
 
                 // add currently selected as args
@@ -3523,7 +3524,7 @@ function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
  *                          e.g. X from rb_X_embedded.php
  * @param array $data Associative array of data needed by source (optional)
  *
- * @return object Embedded report
+ * @return reportbuilder Embedded report
  */
 function reportbuilder_get_embedded_report($embedname, $data=array()) {
     if ($embed = reportbuilder_get_embedded_report_object($embedname, $data)) {

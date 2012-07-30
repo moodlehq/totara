@@ -35,9 +35,23 @@ $handlers = array (
         'internal'         => 1,
     ),
 
+    'role_assigned_bulk' => array (
+        'handlerfile'      => '/enrol/meta/locallib.php',
+        'handlerfunction'  => array('enrol_meta_handler', 'role_assigned_bulk'),
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
     'role_unassigned' => array (
         'handlerfile'      => '/enrol/meta/locallib.php',
         'handlerfunction'  => array('enrol_meta_handler', 'role_unassigned'),
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
+    'role_unassigned_bulk' => array (
+        'handlerfile'      => '/enrol/meta/locallib.php',
+        'handlerfunction'  => array('enrol_meta_handler', 'role_unassigned_bulk'),
         'schedule'         => 'instant',
         'internal'         => 1,
     ),
@@ -49,6 +63,13 @@ $handlers = array (
         'internal'         => 1,
     ),
 
+    'user_enrolled_bulk' => array (
+        'handlerfile'      => '/enrol/meta/locallib.php',
+        'handlerfunction'  => array('enrol_meta_handler', 'user_enrolled_bulk'),
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
     'user_unenrolled' => array (
         'handlerfile'      => '/enrol/meta/locallib.php',
         'handlerfunction'  => array('enrol_meta_handler', 'user_unenrolled'),
@@ -56,9 +77,23 @@ $handlers = array (
         'internal'         => 1,
     ),
 
+    'user_unenrolled_bulk' => array (
+        'handlerfile'      => '/enrol/meta/locallib.php',
+        'handlerfunction'  => array('enrol_meta_handler', 'user_unenrolled_bulk'),
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
     'user_enrol_modified' => array (
         'handlerfile'      => '/enrol/meta/locallib.php',
         'handlerfunction'  => array('enrol_meta_handler', 'user_enrol_modified'),
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
+    'user_enrol_modified_bulk' => array (
+        'handlerfile'      => '/enrol/meta/locallib.php',
+        'handlerfunction'  => array('enrol_meta_handler', 'user_enrol_modified_bulk'),
         'schedule'         => 'instant',
         'internal'         => 1,
     ),

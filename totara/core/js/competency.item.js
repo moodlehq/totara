@@ -106,7 +106,7 @@
                 // Indicate loading...
                 this._dialog.showLoading();
 
-                this._dialog._request(url, this, '_display_evidence');
+                this._dialog._request(url, {object: this, method: '_display_evidence'});
             }
 
             /**
@@ -127,7 +127,7 @@
                     var type = $(this).parent().attr('type');
                     var instance = $(this).parent().attr('id');
                     var url = handler.baseurl+'add.php?competency='+M.totara_competencyitem.config.id+'&type='+type+'&instance='+instance;
-                    handler._dialog._request(url, handler, '_update');
+                    handler._dialog._request(url, {object: handler, method: '_update'});
                 });
 
             }

@@ -78,8 +78,7 @@ M.totara_competencyadd = M.totara_competencyadd || {
                 // submit form
                 handler._dialog._request(
                     M.cfg.wwwroot+'/totara/hierarchy/item/add.php?'+formdata.serialize(),
-                    handler,
-                    'submission'
+                    {object: handler, method: 'submission'}
                 );
 
                 return false;

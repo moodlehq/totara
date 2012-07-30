@@ -252,6 +252,25 @@ switch ($searchtype) {
         $search_info->params = $params;
         break;
 
+    /**
+     * Cohort search
+     */
+    case 'cohort':
+        // Generate search SQL
+        $keywords = totara_search_parse_keywords($query);
+        $fields = array('idnumber', 'name');
+        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+
+        $search_info->fullname = 'name';
+        $search_info->sql = "
+            FROM
+                {cohort}
+            WHERE
+                {$searchsql}
+        ";
+        $search_info->order = " ORDER BY name ASC";
+        $search_info->params = $params;
+        break;
 
     default:
         print_error('invalidsearchtable', 'totara_core');

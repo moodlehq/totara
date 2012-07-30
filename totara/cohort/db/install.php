@@ -30,25 +30,84 @@
 function xmldb_totara_cohort_install() {
     global $CFG, $DB;
 
+    require_once($CFG->dirroot . '/totara/cohort/lib.php');
+
     $dbman = $DB->get_manager();
 
     $result = true;
 
-    // hack to get cron working via admin/cron.php
-    // at some point we should create a local_modules table
-    // based on data in version.php
-    if (!isset($CFG->totara_cohort_cron)) {
-        set_config('totara_cohort_cron', 60);
-    }
-
-    /// Define field cohorttype to be added to cohort
+    // Define fields to be added to cohort
     $table = new xmldb_table('cohort');
+
     $field = new xmldb_field('cohorttype');
     $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'timemodified');
-
-    /// Launch add field cohorttype
     if (!$dbman->field_exists($table, $field)) {
-        $result = $result && $dbman->add_field($table, $field);
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('modifierid');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'cohorttype');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('visibility');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'modifierid');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('alertmembers');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'visibility');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('startdate');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'alertmembers');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('enddate');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'startdate');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('active');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'enddate');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('calculationstatus');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '1', 'active');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('activecollectionid');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'calculationstatus');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    $field = new xmldb_field('draftcollectionid');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'activecollectionid');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+    }
+
+    if (!isset($CFG->cohort_lastautoidnumber)) {
+        set_config('cohort_lastautoidnumber', 0);
+    }
+    if (!isset($CFG->cohort_autoidformat)) {
+        set_config('cohort_autoidformat', 'AUD%04d');
+    }
+    // Add cohort alert global config
+    if (get_config('cohort', 'alertoptions') === false) {
+        set_config('alertoptions', implode(',', array_keys($COHORT_ALERT)), 'cohort');
     }
 
     return $result;

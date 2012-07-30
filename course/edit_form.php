@@ -4,6 +4,7 @@ defined('MOODLE_INTERNAL') || die;
 
 require_once($CFG->libdir.'/formslib.php');
 require_once($CFG->libdir.'/completionlib.php');
+require_once($CFG->dirroot.'/totara/cohort/lib.php');
 
 class course_edit_form extends moodleform {
     protected $course;
@@ -196,10 +197,25 @@ class course_edit_form extends moodleform {
         $course->icon = isset($course->icon) ? $course->icon : 'default';
         totara_add_icon_picker($mform, $action, 'course', $course->icon);
         // END Course Icons
-//--------------------------------------------------------------------------------
+
         enrol_course_edit_form($mform, $course, $context);
 
-//--------------------------------------------------------------------------------
+        $mform->addElement('header','enrolledcohortshdr', get_string('enrolledcohorts', 'totara_cohort'));
+
+        if (empty($course->id)) {
+            $cohorts = '';
+        } else {
+            $cohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id');
+            $cohorts = !empty($cohorts) ? implode(',', array_keys($cohorts)) : '';
+        }
+
+        $mform->addElement('hidden', 'cohortsenrolled', $cohorts);
+        $cohortsclass = new totara_cohort_course_cohorts(COHORT_ASSN_VALUE_ENROLLED);
+        $cohortsclass->build_table(!empty($course->id) ? $course->id : 0);
+        $mform->addElement('html', $cohortsclass->display(true));
+
+        $mform->addElement('button', 'cohortsaddenrolled', get_string('cohortsaddenrolled', 'totara_cohort'));
+
         $mform->addElement('header','', get_string('groups', 'group'));
 
         $choices = array();

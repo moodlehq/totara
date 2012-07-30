@@ -190,6 +190,7 @@ from
 
         $this->add_course_table_to_joinlist($joinlist, 'base', 'courseid');
         $this->add_user_table_to_joinlist($joinlist, 'base','userid');
+        $this->add_cohort_course_tables_to_joinlist($joinlist, 'base', 'courseid');
 
         return $joinlist;
     }
@@ -402,6 +403,8 @@ from
                 )
             );
 
+        $this->add_cohort_course_fields_to_columns($columnoptions);
+
         return $columnoptions;
     }
 
@@ -461,6 +464,8 @@ from
                 'Required Grade',
                 'number'
         );
+
+        $this->add_cohort_course_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

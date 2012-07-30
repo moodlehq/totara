@@ -130,7 +130,11 @@ table.invisible th.header {
   }
 table.invisible td{
    padding: 0;
- }
+}
+table.invisible {
+    padding: 0;
+    margin: 0;
+}
 table.invisiblepadded th.header {
     background: none;
     padding: 5px;

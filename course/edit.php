@@ -34,6 +34,9 @@ $usetags = (!empty($CFG->usetags) && get_config('moodlecourse', 'coursetagging')
 if ($usetags) {
     require_once($CFG->dirroot.'/tag/lib.php');
 }
+require_once($CFG->dirroot.'/cohort/lib.php');
+require_once($CFG->dirroot.'/totara/cohort/lib.php');
+require_once($CFG->dirroot.'/totara/program/lib.php');
 
 $id         = optional_param('id', 0, PARAM_INT);       // course id
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
@@ -75,7 +78,30 @@ if ($id) { // editing course
     print_error('needcoursecategroyid');
 }
 
-local_js(array(TOTARA_JS_ICON_PREVIEW));
+// Set up JS
+local_js(array(
+        TOTARA_JS_ICON_PREVIEW,
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_TREEVIEW
+        ));
+if (empty($course->id)) {
+    $enrolledselected = '';
+} else {
+    $enrolledselected = totara_cohort_get_course_cohorts($course->id, null, 'c.id');
+    $enrolledselected = !empty($enrolledselected) ? implode(',', array_keys($enrolledselected)) : '';
+}
+
+// Course cohorts
+$PAGE->requires->strings_for_js(array('coursecohortsenrolled'), 'totara_cohort');
+$jsmodule = array(
+        'name' => 'totara_cohortdialog',
+        'fullpath' => '/totara/cohort/dialog/coursecohort.js',
+        'requires' => array('json'));
+$args = array('args'=>'{"enrolledselected":"' . $enrolledselected . '",'.
+        '"COHORT_ASSN_VALUE_ENROLLED":' . COHORT_ASSN_VALUE_ENROLLED . '}');
+$PAGE->requires->js_init_call('M.totara_coursecohort.init', $args, false, $jsmodule);
+
+unset($enrolledselected);
 
 // Prepare course and the editor
 $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
@@ -124,7 +150,7 @@ if ($editform->is_cancelled()) {
 
 } else if ($data = $editform->get_data()) {
     // process data if submitted
-
+    $url = '';
     if (empty($course->id)) {
         // In creating the course
         $course = create_course($data, $editoroptions);
@@ -150,7 +176,7 @@ if ($editform->is_cancelled()) {
                 if ($plugin = enrol_get_plugin($instance->enrol)) {
                     if ($plugin->get_manual_enrol_link($instance)) {
                         // we know that the ajax enrol UI will have an option to enrol
-                        redirect(new moodle_url('/enrol/users.php', array('id'=>$course->id)));
+                        $url = new moodle_url('/enrol/users.php', array('id'=>$course->id));
                     }
                 }
             }
@@ -164,7 +190,30 @@ if ($editform->is_cancelled()) {
         customfield_save_data($data, 'course', 'course');
     }
 
-    switch ($returnto) {
+    ///
+    /// Update course cohorts
+    ///
+
+    // Enrolled cohorts
+    $currentcohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id, e.id AS associd');
+    $currentcohorts = !empty($currentcohorts) ? $currentcohorts : array();
+    $newcohorts = !empty($data->cohortsenrolled) ? explode(',', $data->cohortsenrolled) : array();
+
+    if ($todelete = array_diff(array_keys($currentcohorts), $newcohorts)) {
+        // Delete removed cohorts
+        foreach ($todelete as $cohortid) {
+            totara_cohort_delete_association($cohortid, $currentcohorts[$cohortid]->associd, COHORT_ASSN_ITEMTYPE_COURSE);
+        }
+    }
+
+    if ($newcohorts = array_diff($newcohorts, array_keys($currentcohorts))) {
+        // Add new cohort associations
+        foreach ($newcohorts as $cohortid) {
+            totara_cohort_add_association($cohortid, $course->id, COHORT_ASSN_ITEMTYPE_COURSE);
+        }
+    }
+
+    switch ($returnto && empty($url)) {
         case 'category':
         case 'topcat': //redirecting to where the new course was created by default.
             $url = new moodle_url($CFG->wwwroot.'/course/category.php', array('id'=>$categoryid));

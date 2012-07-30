@@ -32,9 +32,23 @@ $handlers = array (
         'internal'         => 1,
     ),
 
+    'user_enrolled_bulk' => array (
+        'handlerfile'      => '/mod/forum/lib.php',
+        'handlerfunction'  => 'forum_user_enrolled_bulk',
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
     'user_unenrolled' => array (
         'handlerfile'      => '/mod/forum/lib.php',
         'handlerfunction'  => 'forum_user_unenrolled',
+        'schedule'         => 'instant',
+        'internal'         => 1,
+    ),
+
+    'user_unenrolled_bulk' => array (
+        'handlerfile'      => '/mod/forum/lib.php',
+        'handlerfunction'  => 'forum_user_unenrolled_bulk',
         'schedule'         => 'instant',
         'internal'         => 1,
     ),

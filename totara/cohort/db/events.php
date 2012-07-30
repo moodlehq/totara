@@ -19,7 +19,7 @@
  *
  * @author Jake Salmon <jake.salmon@kineo.com>
  * @package totara
- * @subpackage local
+ * @subpackage cohort
  */
 
 /**
@@ -28,7 +28,7 @@
  */
 
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.'); //  It must be included from a Moodle page
 }
 
 $handlers = array (
@@ -60,5 +60,3 @@ $handlers = array (
          'schedule'         => 'instant'
      ),
 );
-
-?>

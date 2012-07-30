@@ -135,7 +135,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
             'position_assignment', 'reportstoid');
-        $this->add_course_tags_tables_to_joinlist($joinlist, 'feedback', 'course');
+        $this->add_tag_tables_to_joinlist('course', $joinlist, 'feedback', 'course');
 
         return $joinlist;
     }
@@ -214,7 +214,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
-        $this->add_course_tag_fields_to_columns($columnoptions);
+        $this->add_tag_fields_to_columns('course', $columnoptions);
 
         return $columnoptions;
     }
@@ -440,7 +440,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
-        $this->add_course_tag_fields_to_filters($filteroptions);
+        $this->add_tag_fields_to_filters('course', $filteroptions);
 
         return $filteroptions;
     }
@@ -466,7 +466,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'organisation'
             ),
             new rb_content_option(
-                'course_tag',
+                'tag',
                 get_string('course', 'rb_source_graphical_feedback_questions'),
                 'tagids.idlist',
                 'tagids'
@@ -532,7 +532,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
         foreach ($tags as $tag) {
             $defaultfilters[] = array(
                 'type' => 'tags',
-                'value' => 'course_tag_' . $tag->id,
+                'value' => 'tag_' . $tag->id,
                 'advanced' => 1,
             );
         }

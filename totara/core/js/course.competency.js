@@ -80,7 +80,7 @@ M.totara_coursecompetency = M.totara_coursecompetency || {
                 // Indicate loading...
                 this._dialog.showLoading();
 
-                this._dialog._request(url, this, 'display_evidence');
+                this._dialog._request(url, {object: this, method: 'display_evidence'});
             };
 
             totaraDialog_handler_assignCourseEvidence.prototype.display_evidence = function(response) {
@@ -99,7 +99,7 @@ M.totara_coursecompetency = M.totara_coursecompetency || {
                     var type = $(this).parent().attr('type');
                     var instance = $(this).parent().attr('id');
                     var url = handler.baseurl+'save.php?competency='+competency_id+'&course='+module.config.id+'&type='+type+'&instance='+instance;
-                    handler._dialog._request(url, handler, '_update');
+                    handler._dialog._request(url, {object: handler, method: '_update'});
                 });
 
                 return false;

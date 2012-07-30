@@ -31,13 +31,13 @@ class rb_cohort_members_embedded extends rb_base_embedded {
     public function __construct($data) {
     $cohortid = array_key_exists('cohortid', $data) ? $data['cohortid'] : null;
         $this->url = '/cohort/members.php';
-        $this->source = 'cohort';
+        $this->source = 'cohort_members';
         $this->shortname = 'cohort_members';
         $this->fullname = get_string('cohortmembers', 'totara_cohort');
         $this->columns = array(
             array(
                 'type' => 'user',
-                'value' => 'fullname',
+                'value' => 'namelink',
                 'heading' => get_string('name')
             ),
         array(

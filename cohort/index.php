@@ -27,10 +27,13 @@
 require('../config.php');
 require($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $contextid = optional_param('contextid', 0, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
 $searchquery  = optional_param('search', '', PARAM_RAW);
+$format = optional_param('format', '', PARAM_TEXT); //export format
+$debug = optional_param('debug', false, PARAM_BOOL); //report debug
 
 require_login();
 
@@ -66,75 +69,25 @@ if ($category) {
 } else {
     admin_externalpage_setup('cohorts', '', null, '', array('pagelayout'=>'report'));
 }
-
+$report = reportbuilder_get_embedded_report('cohort_admin');
+if(!empty($format)) {
+    $report->export_data($format);
+    die;
+}
 echo $OUTPUT->header();
+if($debug) {
+    $report->debug($debug);
+}
 
 echo $OUTPUT->heading(get_string('cohortsin', 'cohort', print_context_name($context)));
 
-// add search form
-$search  = html_writer::start_tag('form', array('id'=>'searchcohortquery', 'method'=>'get'));
-$search .= html_writer::start_tag('div');
-$search .= html_writer::label(get_string('searchcohort', 'cohort').':', 'cohort_search_q');
-$search .= html_writer::empty_tag('input', array('id'=>'cohort_search_q', 'type'=>'text', 'name'=>'search', 'value'=>$searchquery));
-$search .= html_writer::empty_tag('input', array('type'=>'submit', 'value'=>get_string('search', 'cohort')));
-$search .= html_writer::end_tag('div');
-$search .= html_writer::end_tag('form');
-echo $search;
+$report->display_search();
 
-$cohorts = cohort_get_cohorts(false, $page, 25, $searchquery);
 
-// output pagination bar
-$params = array('page' => $page);
-if ($contextid) {
-    $params['contextid'] = $contextid;
-}
-if ($search) {
-    $params['search'] = $searchquery;
-}
-$baseurl = new moodle_url('/cohort/index.php', $params);
-echo $OUTPUT->paging_bar($cohorts['totalcohorts'], $page, 25, $baseurl);
+$report->display_table();
 
-$data = array();
-foreach($cohorts['cohorts'] as $cohort) {
-    $type = ($cohort->cohorttype == cohort::TYPE_DYNAMIC) ? 'dynamic' : 'set';
-    $line = array();
-    $line[] = format_string($cohort->name);
-    $line[] = s($cohort->idnumber); // plain text
-    $line[] = format_text($cohort->description, $cohort->descriptionformat);
-
-    $line[] = $DB->count_records('cohort_members', array('cohortid'=>$cohort->id));
-    $line[] = get_string($type, 'totara_cohort');
-    if (empty($cohort->component)) {
-        $line[] = get_string('nocomponent', 'cohort');
-    } else {
-        $line[] = get_string('pluginname', $cohort->component);
-    }
-
-    $buttons = array();
-    if (empty($cohort->component)) {
-        if ($manager) {
-            $buttons[] = html_writer::link(new moodle_url('/cohort/edit.php', array('id'=>$cohort->id, 'delete'=>1)), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/delete'), 'alt'=>get_string('delete'), 'class'=>'iconsmall')));
-            $buttons[] =  html_writer::link(new moodle_url('/cohort/edit.php', array('id'=>$cohort->id)), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/edit'), 'alt'=>get_string('edit'), 'class'=>'iconsmall')));
-        }
-
-        if ($type == 'set' && ($manager or $canassign)) {
-            $buttons[] = html_writer::link(new moodle_url('/cohort/assign.php', array('id'=>$cohort->id)), html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('i/users'), 'alt'=>get_string('assign', 'core_cohort'), 'class'=>'iconsmall')));
-        }
-    }
-    $line[] = implode(' ', $buttons);
-
-    $data[] = $line;
-}
-$table = new html_table();
-$table->head  = array(get_string('name', 'cohort'), get_string('idnumber', 'cohort'), get_string('description', 'cohort'),
-                      get_string('memberscount', 'cohort'), get_string('type', 'totara_cohort'), get_string('component', 'cohort'), get_string('edit'));
-$table->size  = array('20%', '10%', '25%', '10%', '10%', '10%', '15%');
-$table->align = array('left', 'left', 'left', 'left','left', 'center', 'center');
-$table->width = '80%';
-$table->data  = $data;
-echo html_writer::table($table);
-echo $OUTPUT->paging_bar($cohorts['totalcohorts'], $page, 25, $baseurl);
-
+$output = $PAGE->get_renderer('totara_reportbuilder');
+$output->export_select($report->_id);
 if ($manager) {
     echo $OUTPUT->single_button(new moodle_url('/cohort/edit.php', array('contextid'=>$context->id)), get_string('add'));
 }

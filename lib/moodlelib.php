@@ -4523,7 +4523,7 @@ function remove_course_contents($courseid, $showfeedback = true, array $options 
     }
 
     // Cleanup the rest of plugins
-    $cleanuplugintypes = array('report', 'coursereport', 'format');
+    $cleanuplugintypes = array('report', 'coursereport', 'format', 'totara');
     foreach ($cleanuplugintypes as $type) {
         $plugins = get_plugin_list_with_function($type, 'delete_course', 'lib.php');
         foreach ($plugins as $plugin=>$pluginfunction) {
@@ -10624,4 +10624,22 @@ function get_home_page() {
         }
     }
     return HOMEPAGE_SITE;
+}
+
+/**
+ * Given a function name or array syntax (same as first arg of call_user_func)
+ * returns true if the function or method exists
+ *
+ * @param callback $function Function name or array defining the method
+ * @return boolean true if function or method exists
+ */
+function function_or_method_exists($function) {
+    // see if it's a function
+    if (is_string($function) && function_exists($function)) {
+        return true;
+    }
+    if (is_array($function) && method_exists($function[0], $function[1])) {
+        return true;
+    }
+    return false;
 }

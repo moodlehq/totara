@@ -101,7 +101,7 @@ M.totara_plan_competency_find = M.totara_plan_competency_find || {
             url = url + selected_str;
 
             // Load url in dialog
-            this._dialog._request(url, this, '_continueRender');
+            this._dialog._request(url, {object: this, method: '_continueRender'});
         }
 
 
@@ -122,7 +122,7 @@ M.totara_plan_competency_find = M.totara_plan_competency_find || {
                 var url = this.continueskipurl + response.substr(10);
 
                 // Send to server
-                this._dialog._request(url, this, '_update');
+                this._dialog._request(url, {object: this, method: '_update'});
 
                 // Do not render
                 return false;
@@ -152,7 +152,7 @@ M.totara_plan_competency_find = M.totara_plan_competency_find || {
             url = url + data_str;
 
             // Send to server
-            this._dialog._request(url, this, '_update');
+            this._dialog._request(url, {object: this, method: '_update'});
         }
 
         var url = M.cfg.wwwroot + '/totara/plan/components/competency/';

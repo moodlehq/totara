@@ -33,6 +33,7 @@ require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy_multi.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/filters/multicheck.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/filters/filter_forms.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/filters/cohort.php');
 
 /**
  * Filtering wrapper class.
@@ -139,6 +140,7 @@ class filtering {
             case 'number':
             case 'date':
             case 'datetime':
+            case 'cohort':
                 return new $filtername($filter, $sessionname);
             case 'org':
             case 'comp':

@@ -73,8 +73,10 @@ course_content_removed - object course table record + context property
 course_deleted - object course table record + context property
 
 user_enrolled - object record from user_enrolments table + courseid,enrol
+user_enrolled_bulk - object record from user_enrolments table + courseid,enrol
 user_enrol_modified - object record from user_enrolments table + courseid,enrol
 user_unenrolled - object record from user_enrolments table + courseid,enrol,lastenrol
+user_unenrolled_bulk - object record from user_enrolments table + courseid,enrol,lastenrol
 
 ==== cohort related events ===
 
@@ -100,6 +102,7 @@ groups_grouping_updated - object groups_grouping table record
 groups_grouping_deleted - object groups_grouping table record
 
 groups_members_removed          - object courseid+userid - removed all users (or one user) from all groups in course
+groups_members_removed_bulk     - role_assign objects courseid+userid - removed all users (or one user) from all groups in course
 groups_groupings_groups_removed - int course id - removed all groups from all groupings in course
 groups_groups_deleted           - int course id - deleted all course groups
 groups_groupings_deleted        - int course id - deleted all course groupings
@@ -107,7 +110,9 @@ groups_groupings_deleted        - int course id - deleted all course groupings
 ==== role related events ====
 
 role_assigned         - object role_assignments table record
+role_assigned_bulk    - object role_assignments table record
 role_unassigned       - object role_assignments table record
+role_unassigned_bulk  - object role_assignments table record
 
 ==== activity module events ====
 

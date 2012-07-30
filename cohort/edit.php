@@ -29,6 +29,12 @@ require('../config.php');
 require($CFG->dirroot.'/course/lib.php');
 require($CFG->dirroot.'/cohort/lib.php');
 require($CFG->dirroot.'/cohort/edit_form.php');
+require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+
+$usetags = (!empty($CFG->usetags));
+if ($usetags) {
+    require_once($CFG->dirroot.'/tag/lib.php');
+}
 
 $id        = optional_param('id', 0, PARAM_INT);
 $contextid = optional_param('contextid', 0, PARAM_INT);
@@ -40,6 +46,9 @@ require_login();
 $category = null;
 if ($id) {
     $cohort = $DB->get_record('cohort', array('id'=>$id), '*', MUST_EXIST);
+    if ($usetags) {
+        $cohort->otags = array_keys(tag_get_tags_array('cohort', $cohort->id, 'official'));
+    }
     $context = get_context_instance_by_id($cohort->contextid, MUST_EXIST);
 } else {
     $context = get_context_instance_by_id($contextid, MUST_EXIST);
@@ -117,8 +126,22 @@ if ($editform->is_cancelled()) {
 
 } else if ($data = $editform->get_data()) {
 
+    // Fix dates
+    if (isset($data->startdate) && $data->startdate) {
+        $data->startdate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->startdate);
+    }
+
+    if (isset($data->enddate) && $data->enddate) {
+        $data->enddate = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->enddate);
+    }
+
+
     if ($data->id) {
         cohort_update_cohort($data);
+        if ($usetags) {
+            add_tags_info($cohort->id);
+        }
+        add_to_log(SITEID, 'cohort', 'edit', '/cohort/view.php?id='.$cohort->id, $data->idnumber);
         //update textarea
         $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $context, 'cohort', 'cohort', $data->id);
         $DB->set_field('cohort', 'description', $data->description, array('id' => $data->id));
@@ -127,13 +150,17 @@ if ($editform->is_cancelled()) {
         totara_set_notification(get_string('successfullyupdated','totara_cohort'), $url, array('class' => 'notifysuccess'));
     } else {
         $cohortid = cohort_add_cohort($data);
+        if ($usetags) {
+            add_tags_info($cohortid);
+        }
+        add_to_log(SITEID, 'cohort', 'create', '/cohort/view.php?id='.$cohortid, $data->idnumber);
         //update textarea
         $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $context, 'cohort', 'cohort', $cohortid);
         $DB->set_field('cohort', 'description', $data->description, array('id' => $cohortid));
         if ($data->cohorttype == cohort::TYPE_STATIC) {
             $url = new moodle_url('/cohort/assign.php', array('id' => $cohortid));
         } else {
-            $url = new moodle_url('/cohort/editcriteria.php', array('id' => $cohortid));
+            $url = new moodle_url('/totara/cohort/rules.php', array('id' => $cohortid));
         }
         redirect($url);
     }
@@ -144,11 +171,32 @@ if ($editform->is_cancelled()) {
 echo $OUTPUT->header();
 if ($cohort->id != false) {
     echo $OUTPUT->heading($strheading);
-    $currenttab = 'edit';
-    require_once('tabs.php');
+    echo cohort_print_tabs('edit', $cohort->id, $cohort->cohorttype, $cohort);
 }
 else {
     echo $OUTPUT->heading($strheading);
 }
 echo $editform->display();
+
+//Javascript include
+local_js(array(
+    TOTARA_JS_DATEPICKER
+));
+
+// Set up js calendars
+build_datepicker_js('#id_startdate, #id_enddate');
+
 echo $OUTPUT->footer();
+
+/**
+ * function to attach tags into a cohort
+ * @param int cohortid - id of the course
+ */
+function add_tags_info($cohortid) {
+
+    $tags = array();
+    if ($otags = optional_param_array('otags', '', PARAM_INT)) {
+        $tags = tag_get_name($otags);
+    }
+    tag_set('cohort', $cohortid, $tags);
+}

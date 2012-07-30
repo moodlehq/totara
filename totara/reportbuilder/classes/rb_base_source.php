@@ -766,6 +766,12 @@ abstract class rb_base_source {
         return $out;
     }
 
+    function rb_filter_tags_list($contentmode, $contentoptions, $reportid) {
+        global $DB, $OUTPUT, $CFG;
+
+        return $DB->get_records_menu('tag', array('tagtype' => 'official'), 'name', 'id, name');
+    }
+
     function rb_filter_organisations_list($contentmode, $contentoptions, $reportid) {
         global $CFG, $USER, $DB;
 
@@ -2224,18 +2230,18 @@ abstract class rb_base_source {
 
 
     /**
-     * Adds the tags tables to the $joinlist array
+     * Adds the tag tables to the $joinlist array
      *
+     * @param string $type tag itemtype
      * @param array &$joinlist Array of current join options
      *                         Passed by reference and updated to
      *                         include new table joins
      * @param string $join Name of the join that provides the
-     *                     'course' table
+     *                     $type table
      * @param string $field Name of course id field to join on
      * @return boolean True
      */
-    protected function add_course_tags_tables_to_joinlist(&$joinlist,
-        $join, $field) {
+    protected function add_tag_tables_to_joinlist($type, &$joinlist, $join, $field) {
 
         global $DB;
 
@@ -2243,15 +2249,32 @@ abstract class rb_base_source {
             'tagids',
             'LEFT',
             // subquery as table name
-            "(SELECT crs.id AS cid, " .
+            "(SELECT til.id AS tilid, " .
                 sql_group_concat(sql_cast2char('t.id'), '|') .
-                " AS idlist FROM {course} crs
+                " AS idlist FROM {{$type}} til
                 LEFT JOIN {tag_instance} ti
-                    ON crs.id = ti.itemid AND ti.itemtype = 'course'
+                    ON til.id = ti.itemid AND ti.itemtype = '{$type}'
                 LEFT JOIN {tag} t
                     ON ti.tagid = t.id AND t.tagtype = 'official'
-                GROUP BY crs.id)",
-            "tagids.cid = $join.$field",
+                GROUP BY til.id)",
+            "tagids.tilid = {$join}.{$field}",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
+        $joinlist[] = new rb_join(
+            'tagnames',
+            'LEFT',
+            // subquery as table name
+            "(SELECT tnl.id AS tnlid, " .
+                sql_group_concat(sql_cast2char('t.name'), ', ') .
+                " AS namelist FROM {{$type}} tnl
+                LEFT JOIN {tag_instance} ti
+                    ON tnl.id = ti.itemid AND ti.itemtype = '{$type}'
+                LEFT JOIN {tag} t
+                    ON ti.tagid = t.id AND t.tagtype = 'official'
+                GROUP BY tnl.id)",
+            "tagnames.tnlid = {$join}.{$field}",
             REPORT_BUILDER_RELATION_ONE_TO_ONE,
             $join
         );
@@ -2260,13 +2283,13 @@ abstract class rb_base_source {
         $tags = $DB->get_records('tag', array('tagtype' => 'official'));
         foreach ($tags as $tag) {
             $tagid = $tag->id;
-            $name = "course_tag_$tagid";
+            $name = "{$type}_tag_$tagid";
             $joinlist[] = new rb_join(
                 $name,
                 'LEFT',
                 '{tag_instance}',
                 "($name.itemid = $join.$field AND $name.tagid = $tagid " .
-                    "AND $name.itemtype = 'course')",
+                    "AND $name.itemtype = '{$type}')",
                 REPORT_BUILDER_RELATION_ONE_TO_ONE,
                 $join
             );
@@ -2275,27 +2298,35 @@ abstract class rb_base_source {
         return true;
     }
 
+
     /**
-     * Adds some common course tag info to the $columnoptions array
+     * Adds some common tag info to the $columnoptions array
      *
+     * @param string $type tag itemtype
      * @param array &$columnoptions Array of current column options
      *                              Passed by reference and updated by
      *                              this method
-     * @param string $manager Name of the join that provides the
-     *                          'tagids' table.
+     * @param string $tagids name of the join that provides the 'tagids' table.
+     * @param string $tagnames name of the join that provides the 'tagnames' table.
      *
      * @return True
      */
-    protected function add_course_tag_fields_to_columns(&$columnoptions,
-        $tagids='tagids') {
+    protected function add_tag_fields_to_columns($type, &$columnoptions, $tagids='tagids', $tagnames='tagnames') {
         global $DB;
 
         $columnoptions[] = new rb_column_option(
-            'course',
+            'tags',
             'tagids',
-            get_string('coursetagids', 'totara_reportbuilder'),
+            get_string('tagids', 'totara_reportbuilder'),
             "$tagids.idlist",
             array('joins' => $tagids, 'selectable' => false)
+        );
+        $columnoptions[] = new rb_column_option(
+            'tags',
+            'tagnames',
+            get_string('tags', 'totara_reportbuilder'),
+            "$tagnames.namelist",
+            array('joins' => $tagnames)
         );
 
         // create a on/off field for every official tag
@@ -2303,7 +2334,7 @@ abstract class rb_base_source {
         foreach ($tags as $tag) {
             $tagid = $tag->id;
             $name = $tag->name;
-            $join = "course_tag_$tagid";
+            $join = "{$type}_tag_$tagid";
             $columnoptions[] = new rb_column_option(
                 'tags',
                 $join,
@@ -2320,22 +2351,23 @@ abstract class rb_base_source {
 
 
     /**
-     * Adds some common course tag filters to the $filteroptions array
+     * Adds some common tag filters to the $filteroptions array
      *
-     * @param array &$columnoptions Array of current filter options
+     * @param string $type tag itemtype
+     * @param array &$filteroptions Array of current filter options
      *                              Passed by reference and updated by
      *                              this method
      * @return True
      */
-    protected function add_course_tag_fields_to_filters(&$filteroptions) {
+    protected function add_tag_fields_to_filters($type, &$filteroptions) {
         global $DB;
 
-        // create a filter for every official tag
+        // create a yes/no filter for every official tag
         $tags = $DB->get_records('tag', array('tagtype' => 'official'));
         foreach ($tags as $tag) {
             $tagid = $tag->id;
             $name = $tag->name;
-            $join = "course_tag_{$tagid}";
+            $join = "{$type}_tag_{$tagid}";
             $filteroptions[] = new rb_filter_option(
                 'tags',
                 $join,
@@ -2346,14 +2378,254 @@ abstract class rb_base_source {
                 )
             );
         }
+
+        // create a tag list selection filter
+        $filteroptions[] = new rb_filter_option(
+            'tags',         // type
+            'tagids',           // value
+            get_string('tags', 'totara_reportbuilder'), // label
+            'multicheck',     // filtertype
+            array(            // options
+                'selectfunc' => 'tags_list',
+            )
+        );
+
+
+        return true;
+    }
+
+
+    /**
+     * Adds the cohort user tables to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'user' table
+     * @param string $field Name of user id field to join on
+     * @return boolean True
+     */
+    protected function add_cohort_user_tables_to_joinlist(&$joinlist,
+                                                          $join, $field) {
+
+        $joinlist[] = new rb_join(
+            'cohortuser',
+            'LEFT',
+            // subquery as table name
+            "(SELECT cm.userid AS userid, " .
+                sql_group_concat(sql_cast2char('cm.cohortid'),'|', true) .
+                " AS idlist FROM {cohort_members} cm
+                GROUP BY cm.userid)",
+            "cohortuser.userid = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
         return true;
     }
 
     /**
-     * @return array
+     * Adds the cohort course tables to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     'course' table
+     * @param string $field Name of course id field to join on
+     * @return boolean True
      */
-    protected function define_joinlist() {
-        return array();
+    protected function add_cohort_course_tables_to_joinlist(&$joinlist,
+                                                            $join, $field) {
+
+        global $CFG;
+        require_once($CFG->dirroot . '/cohort/lib.php');
+
+        $joinlist[] = new rb_join(
+            'cohortenrolledcourse',
+            'LEFT',
+            // subquery as table name
+            "(SELECT courseid AS course, " .
+                sql_group_concat(sql_cast2char('customint1'), '|', true) .
+                " AS idlist FROM {enrol} e
+                WHERE e.enrol = 'cohort'
+                GROUP BY courseid)",
+            "cohortenrolledcourse.course = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
+        return true;
+    }
+
+
+    /**
+     * Adds the cohort program tables to the $joinlist array
+     *
+     * @param array &$joinlist Array of current join options
+     *                         Passed by reference and updated to
+     *                         include new table joins
+     * @param string $join Name of the join that provides the
+     *                     table containing the program id
+     * @param string $field Name of program id field to join on
+     * @return boolean True
+     */
+    protected function add_cohort_program_tables_to_joinlist(&$joinlist,
+                                                             $join, $field) {
+
+        global $CFG;
+        require_once($CFG->dirroot . '/cohort/lib.php');
+
+        $joinlist[] = new rb_join(
+            'cohortenrolledprogram',
+            'LEFT',
+            // subquery as table name
+            "(SELECT programid AS program, " .
+                sql_group_concat(sql_cast2char('assignmenttypeid'), '|', true) .
+                " AS idlist FROM {prog_assignment} pa
+                WHERE assignmenttype = " . ASSIGNTYPE_COHORT . "
+                GROUP BY programid)",
+            "cohortenrolledprogram.program = $join.$field",
+            REPORT_BUILDER_RELATION_ONE_TO_ONE,
+            $join
+        );
+
+        return true;
+    }
+
+
+    /**
+     * Adds some common cohort user info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $cohortids Name of the join that provides the
+     *                          'cohortuser' table.
+     *
+     * @return True
+     */
+    protected function add_cohort_user_fields_to_columns(&$columnoptions,
+                                                         $cohortids='cohortuser') {
+
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'usercohortids',
+            get_string('usercohortids', 'totara_reportbuilder'),
+            "$cohortids.idlist",
+            array('joins' => $cohortids, 'selectable' => false)
+        );
+
+        return true;
+    }
+
+
+    /**
+     * Adds some common cohort course info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $cohortenrolledids Name of the join that provides the
+     *                          'cohortenrolledcourse' table.
+     *
+     * @return True
+     */
+    protected function add_cohort_course_fields_to_columns(&$columnoptions, $cohortenrolledids='cohortenrolledcourse') {
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'enrolledcoursecohortids',
+            get_string('enrolledcoursecohortids', 'totara_reportbuilder'),
+            "$cohortenrolledids.idlist",
+            array('joins' => $cohortenrolledids, 'selectable' => false)
+        );
+
+        return true;
+    }
+
+
+    /**
+     * Adds some common cohort program info to the $columnoptions array
+     *
+     * @param array &$columnoptions Array of current column options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @param string $cohortenrolledids Name of the join that provides the
+     *                          'cohortenrolledprogram' table.
+     *
+     * @return True
+     */
+    protected function add_cohort_program_fields_to_columns(&$columnoptions, $cohortenrolledids='cohortenrolledprogram') {
+        $columnoptions[] = new rb_column_option(
+            'cohort',
+            'enrolledprogramcohortids',
+            get_string('enrolledprogramcohortids', 'totara_reportbuilder'),
+            "$cohortenrolledids.idlist",
+            array('joins' => $cohortenrolledids, 'selectable' => false)
+        );
+
+        return true;
+    }
+
+    /**
+     * Adds some common user cohort filters to the $filteroptions array
+     *
+     * @param array &$columnoptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_cohort_user_fields_to_filters(&$filteroptions) {
+
+        $filteroptions[] = new rb_filter_option(
+            'cohort',
+            'usercohortids',
+            get_string('userincohort', 'totara_reportbuilder'),
+            'cohort'
+        );
+        return true;
+    }
+
+    /**
+     * Adds some common course cohort filters to the $filteroptions array
+     *
+     * @param array &$columnoptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_cohort_course_fields_to_filters(&$filteroptions) {
+
+        $filteroptions[] = new rb_filter_option(
+            'cohort',
+            'enrolledcoursecohortids',
+            get_string('courseenrolledincohort', 'totara_reportbuilder'),
+            'cohort'
+        );
+
+        return true;
+    }
+
+
+    /**
+     * Adds some common program cohort filters to the $filteroptions array
+     *
+     * @param array &$columnoptions Array of current filter options
+     *                              Passed by reference and updated by
+     *                              this method
+     * @return True
+     */
+    protected function add_cohort_program_fields_to_filters(&$filteroptions) {
+
+        $filteroptions[] = new rb_filter_option(
+            'cohort',
+            'enrolledprogramcohortids',
+            get_string('programenrolledincohort', 'totara_reportbuilder'),
+            'cohort'
+        );
+
+        return true;
     }
 
     /**

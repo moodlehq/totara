@@ -26,6 +26,7 @@ if ($hassiteconfig
     $ADMIN->add('accounts', new admin_externalpage('addnewuser', get_string('addnewuser'), "$securewwwroot/user/editadvanced.php?id=-1", 'moodle/user:create'));
     $ADMIN->add('accounts', new admin_externalpage('profilefields', get_string('profilefields','admin'), "$CFG->wwwroot/user/profile/index.php", 'moodle/site:config'));
     $ADMIN->add('accounts', new admin_externalpage('cohorts', get_string('cohorts', 'cohort'), $CFG->wwwroot . '/cohort/index.php', array('moodle/cohort:manage', 'moodle/cohort:view')));
+    $ADMIN->add('accounts', new admin_externalpage('cohortglobalsettings', get_string('cohortglobalsettings', 'totara_cohort'), $CFG->wwwroot . '/totara/cohort/globalsettings.php', array('moodle/cohort:manage', 'moodle/cohort:view')));
 
 
     // stuff under the "roles" subcategory

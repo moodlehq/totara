@@ -95,7 +95,9 @@ class rb_source_scorm extends rb_base_source {
         // requires the position_assignment join
         $this->add_manager_tables_to_joinlist($joinlist,
             'position_assignment', 'reportstoid');
-        $this->add_course_tags_tables_to_joinlist($joinlist, 'scorm', 'course');
+        $this->add_tag_tables_to_joinlist('course', $joinlist, 'scorm', 'course');
+        $this->add_cohort_user_tables_to_joinlist($joinlist, 'base', 'userid');
+        $this->add_cohort_course_tables_to_joinlist($joinlist, 'scorm', 'course');
 
         return $joinlist;
     }
@@ -200,7 +202,9 @@ class rb_source_scorm extends rb_base_source {
         $this->add_course_category_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
         $this->add_manager_fields_to_columns($columnoptions);
-        $this->add_course_tag_fields_to_columns($columnoptions);
+        $this->add_tag_fields_to_columns('course', $columnoptions);
+        $this->add_cohort_user_fields_to_columns($columnoptions);
+        $this->add_cohort_course_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -281,7 +285,9 @@ class rb_source_scorm extends rb_base_source {
         $this->add_course_category_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
         $this->add_manager_fields_to_filters($filteroptions);
-        $this->add_course_tag_fields_to_filters($filteroptions);
+        $this->add_tag_fields_to_filters('course', $filteroptions);
+        $this->add_cohort_user_fields_to_filters($filteroptions);
+        $this->add_cohort_course_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }

@@ -66,7 +66,7 @@ $PAGE->set_heading($COURSE->fullname);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('assignto', 'cohort', format_string($cohort->name)));
-
+echo cohort_print_tabs('editmembers', $cohort->id, $cohort->cohorttype, $cohort);
 echo $OUTPUT->notification(get_string('removeuserwarning', 'core_cohort'));
 
 // Get the user_selector we will need.
@@ -79,12 +79,16 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoassign = $potentialuserselector->get_selected_users();
     if (!empty($userstoassign)) {
 
+        $newids = array();
         foreach ($userstoassign as $adduser) {
             // no duplicates please
             if (!$DB->record_exists('cohort_members', array('cohortid'=>$cohort->id, 'userid'=>$adduser->id))) {
                 cohort_add_member($cohort->id, $adduser->id);
+                add_to_log(SITEID, 'cohort', 'add member', 'cohort/members.php?id='.$cohort->id, "userid={$adduser->id}");
+                $newids[] = $adduser->id;
             }
         }
+        totara_cohort_notify_add_users($cohort->id, $newids);
 
         $potentialuserselector->invalidate_selected_users();
         $existinguserselector->invalidate_selected_users();
@@ -95,9 +99,14 @@ if (optional_param('add', false, PARAM_BOOL) && confirm_sesskey()) {
 if (optional_param('remove', false, PARAM_BOOL) && confirm_sesskey()) {
     $userstoremove = $existinguserselector->get_selected_users();
     if (!empty($userstoremove)) {
+        $delids = array();
         foreach ($userstoremove as $removeuser) {
             cohort_remove_member($cohort->id, $removeuser->id);
+            add_to_log(SITEID, 'cohort', 'remove member', 'cohort/members.php?id='.$cohort->id, "userid={$removeuser->id}");
+            $delids[] = $removeuser->id;
         }
+        totara_cohort_notify_del_users($cohort->id, $delids);
+
         $potentialuserselector->invalidate_selected_users();
         $existinguserselector->invalidate_selected_users();
     }

@@ -91,6 +91,7 @@ class rb_source_totaramessages extends rb_base_source {
         // include some standard joins
         $this->add_user_table_to_joinlist($joinlist, 'msg', 'useridfrom');
         $this->add_position_tables_to_joinlist($joinlist, 'msg', 'useridfrom');
+        $this->add_cohort_user_tables_to_joinlist($joinlist, 'msg', 'useridfrom');
 
         return $joinlist;
     }
@@ -204,6 +205,7 @@ class rb_source_totaramessages extends rb_base_source {
         // include some standard columns
         $this->add_user_fields_to_columns($columnoptions);
         $this->add_position_fields_to_columns($columnoptions);
+        $this->add_cohort_user_fields_to_columns($columnoptions);
 
         return $columnoptions;
     }
@@ -246,6 +248,7 @@ class rb_source_totaramessages extends rb_base_source {
         // include some standard filters
         $this->add_user_fields_to_filters($filteroptions);
         $this->add_position_fields_to_filters($filteroptions);
+        $this->add_cohort_user_fields_to_filters($filteroptions);
 
         return $filteroptions;
     }
