@@ -2632,8 +2632,12 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 $locationstring = $customfielddata['location']->data . ', ';
             }
 
-            $signup_url = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
-            $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+            if ($coursemodule->uservisible) {
+                $signup_url = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
+                $table .= html_writer::tag('td', html_writer::link($signup_url, $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+            } else {
+                $table .= html_writer::tag('td', html_writer::tag('span', $locationstring . $sessiondate . html_writer::empty_tag('br') . $sessiontime . $multiday, array('class' => 'f2fsessiontime')));
+            }
         }
         if ($i++ % 2 == 0) {
             $table .= html_writer::tag('td', "&nbsp;");
@@ -2641,7 +2645,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
 
         $table .= html_writer::end_tag('tr')
             .html_writer::start_tag('tr')
-            .html_writer::tag('td', $htmlviewallsessions, array('colspan' => '2'))
+            .html_writer::tag('td', $coursemodule->uservisible ? $htmlviewallsessions : $strviewallsessions, array('colspan' => '2'))
             .html_writer::end_tag('tr')
             .html_writer::end_tag('table');
     }

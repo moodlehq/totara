@@ -49,7 +49,7 @@ if (!empty($download)) {
     exit();
 }
 
-require_course_login($course);
+require_course_login($course, true, $cm);
 require_capability('mod/facetoface:view', $context);
 
 add_to_log($course->id, 'facetoface', 'view', "view.php?id=$cm->id", $facetoface->id, $cm->id);

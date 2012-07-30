@@ -1634,7 +1634,9 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                 if ($url = $mod->get_url()) {
                     if ($mod->modname == 'facetoface') {
                         include_once($CFG->dirroot.'/mod/facetoface/lib.php');
+                        echo '<div ' . $textcss . '>';
                         echo facetoface_print_coursemodule_info($mod);
+                        echo '</div>';
                     } else {
                         // Display link itself
                         echo '<a ' . $linkcss . $mod->extra . $onclick .
@@ -1677,7 +1679,9 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                 if ($url = $mod->get_url()) {
                     if ($mod->modname == 'facetoface') {
                         include_once($CFG->dirroot.'/mod/facetoface/lib.php');
+                        echo '<div ' . $textcss . '>';
                         echo facetoface_print_coursemodule_info($mod);
+                        echo '</div>';
                     } else {
                         // Do not display content after link when it is greyed out like this.
                         // Display greyed-out text of link
