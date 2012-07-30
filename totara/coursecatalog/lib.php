@@ -14,7 +14,7 @@
  *   path to find courses within a category
  *
  * - To avoid having to check capabilities for every item it only
- *   checks hidden courses, and only if user doesn't have doanything
+ *   checks hidden courses, and only if user isn't a siteadmin
  *
  * @param integer|array $categoryids ID or IDs of the category/categories to fetch
  * @param boolean $countcourses If true count number of courses, otherwise count programs

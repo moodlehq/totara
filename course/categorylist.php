@@ -138,7 +138,7 @@
     if ($topcats) {
         $viscats = array();
         foreach ($topcats as $topcat) {
-            if ($topcat->visible || $doanything || has_capability('moodle/category:viewhiddencategories', $context)) {
+            if ($topcat->visible || has_capability('moodle/category:viewhiddencategories', $context)) {
                 $viscats[] = $topcat;
             }
         }
