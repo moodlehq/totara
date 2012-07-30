@@ -136,12 +136,11 @@ class report_builder_global_settings_form extends moodleform {
         $financialyear = get_config('reportbuilder', 'financialyear');
 
         $group = array();
-        $oauthenabled = get_config('local_oauth', 'oauthenabled');
         $sitecontext = context_system::instance();
-        $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
         foreach ($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // specific checks for fusion tables export
-            if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
+            // disabled for now, awaiting new repository/gdrive integration
+            if ($option == 'fusion') {
                 continue;
             }
 

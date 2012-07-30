@@ -126,6 +126,7 @@ $string['error:failedtoremovetempfile'] = 'Failed to remove temporary report exp
 $string['error:filter_not_deleted'] = 'There was a problem deleting that filter';
 $string['error:filter_not_moved'] = 'There was a problem moving that filter';
 $string['error:filters_not_updated'] = 'There was a problem updating the filters';
+$string['error:fusion_oauthnotsupported'] = 'Fusion export via OAuth is not currently supported.';
 $string['error:grouphasreports'] = 'You cannot delete a group that is being used by reports.';
 $string['error:groupnotcreated'] = 'Group could not be created';
 $string['error:groupnotcreatedinitfail'] = 'Group could not be created - failed to initialize tables!';

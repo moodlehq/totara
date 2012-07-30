@@ -331,12 +331,11 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
         $exportoptions = get_config('reportbuilder', 'exportoptions');
 
         $out = html_writer::start_tag('table') . html_writer::start_tag('tr');
-        $oauthenabled = get_config('totara_oauth', 'oauthenabled');
         $sitecontext = context_system::instance();
-        $oauthcap = has_capability('totara/oauth:negotiate', $sitecontext);
         foreach ($REPORT_BUILDER_EXPORT_OPTIONS as $option => $code) {
             // specific checks for fusion tables export
-            if ($option == 'fusion' && (!$oauthenabled || !$oauthcap)) {
+            // disabled for now, awaiting new repository/gdrive integration
+            if ($option == 'fusion') {
                 continue;
             }
             $exporturl = new moodle_url(qualified_me(),

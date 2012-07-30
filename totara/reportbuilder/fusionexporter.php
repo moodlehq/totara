@@ -25,7 +25,6 @@
 global $DB;
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once($CFG->dirroot . '/totara/oauth/fusionlib.php');
 require_once('lib.php');
 
 require_login();
@@ -45,6 +44,9 @@ $rep =  new reportbuilder($id, null, false, $sid) ;
 if (!$rep->is_capable($id)) {
     print_error('nopermission', 'totara_reportbuilder');
 }
+
+// temporarily disable awaiting repository/gdrive integration
+print_error('error:fusion_oauthnotsupported', 'totara_reportbuilder');
 
 // check OAuth
 $oauth = new local_oauth_fusion();

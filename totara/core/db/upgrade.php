@@ -294,5 +294,13 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_readd_course_completion_changes();
         totara_upgrade_mod_savepoint(true, 2012080100, 'totara_core');
     }
+
+    if ($oldversion < 2012080101) {
+        // remove OAuth plugin
+        // Google fusion export will use repository/gdrive integration instead
+        uninstall_plugin('totara', 'oauth');
+        totara_upgrade_mod_savepoint(true, 2012080101, 'totara_core');
+    }
+
     return true;
 }
