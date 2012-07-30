@@ -71,8 +71,6 @@ $report->include_js();
  * End of defining the report
  */
 
-// SCANMSG TODO implement setup of dashlet blocks
-
 // see which reports exist in db and add columns for them to table
 // these reports should have the "userid" url parameter enabled to allow
 // viewing of individual reports
