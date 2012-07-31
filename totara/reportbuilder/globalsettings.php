@@ -80,6 +80,11 @@ function update_global_settings($fromform) {
         }
     }
     set_config('exportoptions', $exportoptions, 'reportbuilder');
+
+    $financialyear = 'financialyear';
+    $newconfig = $fromform->$financialyear;
+    set_config('financialyear', date("dm", mktime(0, 0, 0, $newconfig["F"], $newconfig["d"], 0)), 'reportbuilder');
+
     return true;
 }
 ?>

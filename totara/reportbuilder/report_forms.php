@@ -133,6 +133,7 @@ class report_builder_global_settings_form extends moodleform {
         $mform->addElement('header', 'settings', get_string('globalsettings', 'totara_reportbuilder'));
 
         $exportoptions = get_config('reportbuilder', 'exportoptions');
+        $financialyear = get_config('reportbuilder', 'financialyear');
 
         $group = array();
         $oauthenabled = get_config('local_oauth', 'oauthenabled');
@@ -157,6 +158,16 @@ class report_builder_global_settings_form extends moodleform {
         }
         $mform->addGroup($group, 'exportoptions', get_string('exportoptions', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
         $mform->addHelpButton('exportoptions', 'reportbuilderexportoptions', 'totara_reportbuilder');
+
+        // Settings for financial year
+        $group = $mform->createElement('date', 'financialyear', get_string('financialyear', 'totara_reportbuilder'), array('format' => 'dF'));
+
+        $day = substr($financialyear, 0, 2);
+        $month = substr($financialyear, 2, 2);
+        $mform->setDefault('financialyear', date('dF', mktime(0, 0, 0, $month, $day, 0)));
+
+        $mform->addGroup(array($group), 'finyeargroup', get_string('financialyear', 'totara_reportbuilder'), html_writer::empty_tag('br'), false);
+        $mform->addHelpButton('finyeargroup', 'reportbuilderfinancialyear', 'totara_reportbuilder');
 
         $this->add_action_buttons();
     }

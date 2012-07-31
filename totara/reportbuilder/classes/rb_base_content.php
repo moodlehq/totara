@@ -720,6 +720,9 @@ class rb_date_content extends rb_base_content {
     function sql_restriction($field, $reportid) {
         global $DB;
         $now = time();
+        $financialyear = get_config('reportbuilder', 'financialyear');
+        $month = substr($financialyear, 2, 2);
+        $day = substr($financialyear, 0, 2);
 
         // remove rb_ from start of classname
         $type = substr(get_class($this), 3);
@@ -747,12 +750,12 @@ class rb_date_content extends rb_base_content {
             $required_year = date('Y', $now);
             $year_before = $required_year - 1;
             $year_after = $required_year + 1;
-            if (date('z', $now) >= 181) { // date is on or after 1st July
-                $start = mktime(0, 0, 0, 7, 1, $required_year);
-                $end = mktime(0, 0, 0, 7, 1, $year_after);
+            if (date('z', $now) >= date('z', mktime(0, 0, 0, $month, $day, $required_year))) {
+                $start = mktime(0, 0, 0, $month, $day, $required_year);
+                $end = mktime(0, 0, 0, $month, $day, $year_after);
             } else {
-                $start = mktime(0, 0, 0, 7, 1, $year_before);
-                $end = mktime(0, 0, 0, 7, 1, $required_year);
+                $start = mktime(0, 0, 0, $month, $day, $year_before);
+                $end = mktime(0, 0, 0, $month, $day, $required_year);
             }
             $sql = "( ({$field} >= {$start} AND {$field} <
                 {$end}) {$includenulls})";
@@ -761,12 +764,12 @@ class rb_date_content extends rb_base_content {
             $required_year = date('Y', $now) - 1;
             $year_before = $required_year - 1;
             $year_after = $required_year + 1;
-            if (date('z', $now) >= 181) { // date is on or after 1st July
-                $start = mktime(0, 0, 0, 7, 1, $required_year);
-                $end = mktime(0, 0, 0, 7, 1, $year_after);
+            if (date('z', $now) >= date('z', mktime(0, 0, 0, $month, $day, $required_year))) {
+                $start = mktime(0, 0, 0, $month, $day, $required_year);
+                $end = mktime(0, 0, 0, $month, $day, $year_after);
             } else {
-                $start = mktime(0, 0, 0, 7, 1, $year_before);
-                $end = mktime(0, 0, 0, 7, 1, $required_year);
+                $start = mktime(0, 0, 0, $month, $day, $year_before);
+                $end = mktime(0, 0, 0, $month, $day, $required_year);
             }
             $sql = "( ({$field} >= {$start} AND {$field} <
                 {$end}) {$includenulls})";

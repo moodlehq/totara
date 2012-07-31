@@ -171,6 +171,7 @@ $string['filter_moved'] = 'Filter moved';
 $string['filternameformatincorrect'] = 'get_filter_joins(): filter name format incorrect. Query snippets may have included a dash character.';
 $string['filters'] = 'Filters';
 $string['filters_updated'] = 'Filters updated';
+$string['financialyear'] = 'Financial year start';
 $string['format'] = 'Format';
 $string['globalsettings'] = 'Global settings';
 $string['globalsettingsupdated'] = 'Global settings updated';
@@ -656,4 +657,7 @@ If any tags in the \'Include records tagged with\' section are selected, only re
 If any tags in the \'Exclude records tagged with\' section are selected, records belonging to a coures tagged with the selected tags will **not** be shown. All records belonging to courses without any tags will be shown.
 
 It is possible to include and exclude tags at the same time, but a single tag cannot be both included and excluded.';
+$string['reportbuilderfinancialyear'] = 'Report Financial Year Settings';
+$string['reportbuilderfinancialyear_help'] = '**Financial year** is used in the reports content controls.
 
+This setting allows to set the start date of the financial year.';

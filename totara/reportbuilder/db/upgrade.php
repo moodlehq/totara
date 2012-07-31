@@ -65,5 +65,12 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012071900, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2012073100) {
+        // set global setting for financial year
+        // default: July, 1
+        set_config('financialyear', '0107', 'reportbuilder');
+        totara_upgrade_mod_savepoint(true, 2012073100, 'totara_reportbuilder');
+    }
+
     return true;
 }

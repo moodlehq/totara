@@ -43,6 +43,10 @@ function xmldb_totara_reportbuilder_install() {
     // formats except fusion tables (excel, csv and ods)
     set_config('exportoptions', 7, 'reportbuilder');
 
+    // set global setting for financial year
+    // default: July, 1
+    set_config('financialyear', '0107', 'reportbuilder');
+
     // create stored procedure for aggregating text by concatenation
     // mysql supports by default. The code below adds postgres support
     // see sql_group_concat() function for usage
