@@ -296,10 +296,9 @@ function prog_get_programs($categoryid="all", $sort="p.sortorder ASC", $fields="
 
     // loop through them
     foreach ($programs as $program) {
-        context_helper::preload_from_record($program);
         if (isset($program->visible) && $program->visible <= 0) {
             // for hidden programs, require visibility check
-            if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
+            if (has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
                 $visibleprograms[] = $program;
             }
         } else {
@@ -353,10 +352,9 @@ function prog_get_programs_page($categoryid="all", $sort="sortorder ASC",
 
     // iteration will have to be done inside loop to keep track of the limitfrom and limitnum
     foreach ($rs as $program) {
-        context_helper::preload_from_record($program);
         if ($program->visible <= 0) {
             // for hidden programs, require visibility check
-            if (has_capability('totara/program:viewhiddenprograms', $program->context)) {
+            if (has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
                 $totalcount++;
                 if ($totalcount > $limitfrom && (!$limitnum or count($visibleprograms) < $limitnum)) {
                     $visibleprograms [] = $program;
@@ -458,7 +456,7 @@ function prog_print_programs($category) {
                 continue;
             }
             if ($program->visible == 1
-                || has_capability('totara/program:viewhiddenprograms', $program->context)) {
+                || has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
                 prog_print_program($program);
             }
         }
@@ -957,7 +955,6 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
     $rs = $DB->get_recordset_sql($sql, $params);
 
     foreach ($rs as $program) {
-        context_helper::preload_from_record($program);
         if (!is_siteadmin($USER->id)) {
             // Check if this program is not available, if it's not then deny access
             if ($program->available == 0) {
@@ -981,7 +978,7 @@ function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $
             }
         }
 
-        if ($program->visible || has_capability('totara/program:viewhiddenprograms', $program->context)) {
+        if ($program->visible || has_capability('totara/program:viewhiddenprograms', program_get_context($program->id))) {
             // Don't exit this loop till the end
             // we need to count all the visible courses
             // to update $totalcount

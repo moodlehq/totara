@@ -1224,17 +1224,18 @@ class program {
      * @return boolean
      */
     public function is_viewable($user = null) {
-        if ($this->visibile) {
+        global $USER;
+
+        if ($this->visible) {
             return true;
         }
 
         if ($user == null) {
-            global $USER;
             $user = $USER;
         }
 
         // If this user is able to view hidden programs then let it be visible
-        if (has_capability('totara/program:viewhiddenprograms', context_system::instance(), $user->id)) {
+        if (has_capability('totara/program:viewhiddenprograms', program_get_context($this->id), $user->id)) {
             return true;
         }
 
