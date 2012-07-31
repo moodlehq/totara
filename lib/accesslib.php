@@ -6459,6 +6459,14 @@ class context_program extends context {
      */
     protected static function create_level_instances() {
         global $DB;
+        $dbman = $DB->get_manager();
+
+        // check the program table exists in case this is during an upgrade
+        // to totara and the table hasn't yet been created
+        $table = new xmldb_table('prog');
+        if (!$dbman->table_exists($table)) {
+            return;
+        }
 
         $sql = "INSERT INTO {context} (contextlevel, instanceid)
                 SELECT ".CONTEXT_PROGRAM.", p.id
@@ -6476,6 +6484,17 @@ class context_program extends context {
      * @return string cleanup SQL
      */
     protected static function get_cleanup_sql() {
+        global $DB;
+        $dbman = $DB->get_manager();
+
+        // check the program table exists in case this is during an upgrade
+        // to totara and the table hasn't yet been created
+        $table = new xmldb_table('prog');
+        if (!$dbman->table_exists($table)) {
+            return 'SELECT c.*
+                    FROM {context} c
+                   WHERE 1=2';
+        }
         $sql = "
                   SELECT c.*
                     FROM {context} c
