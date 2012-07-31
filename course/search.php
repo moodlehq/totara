@@ -265,30 +265,32 @@ if (in_array($viewtype, array('course', 'all'))) {
 
     // get list of courses containing blocks if required
     if (!empty($blocklist) and confirm_sesskey()) {
-        $blockid = $blocklist;
-        if (!$blocks = $DB->get_records('block_instance', array('blockid' => $blockid))) {
-            print_error('couldntreaddataforblockid', 'totara_core', $blockid);
-        }
+        $blockname = $DB->get_field('block', 'name', array('id' => $blocklist));
 
-        // run through blocks and get (unique) courses
-        foreach ($blocks as $block) {
-            $courseid = $block->pageid;
-            // MDL-11167, blocks can be placed on mymoodle, or the blogs page
-            // and it should not show up on course search page
-            if ($courseid==0 || $block->pagetype != 'course-view') {
-                continue;
+        $courseids = array();
+        $courseids = $DB->get_records_sql("
+                SELECT id FROM {course} WHERE id IN (
+                    SELECT DISTINCT ctx.instanceid
+                    FROM {context} ctx
+                    JOIN {block_instances} bi ON bi.parentcontextid = ctx.id
+                    WHERE ctx.contextlevel = " . CONTEXT_COURSE . " AND bi.blockname = ?)",
+                array($blockname));
+
+        if (!empty($courseids)) {
+            $firstcourse = $page * $perpage;
+            $lastcourse = $page * $perpage + $perpage - 1;
+            $i = 0;
+            foreach ($courseids as $courseid) {
+                if ($i >= $firstcourse && $i <= $lastcourse) {
+                    $results['courses'][$courseid->id] = $DB->get_record('course', array('id' => $courseid->id));
+                }
+                $i++;
             }
-            if (!$course = $DB->get_record('course', array('id' => $courseid))) {
-                print_error('couldntreaddataforcourseid', 'totara_core', $courseid);
-            }
-            $results['courses'][$courseid] = $course;
+            $totalcount['courses'] += count($courseids);
         }
-        $totalcount['courses'] += count($results['courses']);
     }
     // get list of courses containing modules if required
     elseif (!empty($modulelist) and confirm_sesskey()) {
-        $modulename = $modulelist;
-
         $sql =  "SELECT DISTINCT c.id FROM {".$modulelist."} module, {course} c"
             ." WHERE module.course=c.id";
 
