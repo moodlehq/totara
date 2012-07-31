@@ -80,13 +80,17 @@ if ($blockaction == 'delete' && confirm_sesskey()) {
 
 if ($blockaction == 'add' && confirm_sesskey()) {
     // Save the block link
-    $link = new stdClass;
-    $link->userid = $USER->id;
-    $link->block_instance_id = $blockinstanceid;
-    $link->title = empty($linktitle) ? $linkurl : $linktitle;
-    $link->url = $linkurl;
-    $link->displaypos = $DB->count_records('block_quicklinks', array('block_instance_id' => $blockinstanceid)) > 0 ? $DB->get_field('block_quicklinks', 'MAX(displaypos)+1', array('block_instance_id' => $blockinstanceid)) : 0;
-    $DB->insert_record('block_quicklinks', $link);
+    if (empty($linkurl)) {
+        print_error('error:linkurlrequired', 'block_totara_quicklinks', $baseurl);
+    } else {
+        $link = new stdClass;
+        $link->userid = $USER->id;
+        $link->block_instance_id = $blockinstanceid;
+        $link->title = empty($linktitle) ? $linkurl : $linktitle;
+        $link->url = $linkurl;
+        $link->displaypos = $DB->count_records('block_quicklinks', array('block_instance_id' => $blockinstanceid)) > 0 ? $DB->get_field('block_quicklinks', 'MAX(displaypos)+1', array('block_instance_id' => $blockinstanceid)) : 0;
+        $DB->insert_record('block_quicklinks', $link);
+    }
 }
 
 if ($blockaction == 'moveup' && confirm_sesskey()) {

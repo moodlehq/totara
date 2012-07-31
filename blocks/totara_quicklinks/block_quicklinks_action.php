@@ -36,7 +36,7 @@ if (!$referer = get_referer(false)) {
 }
 
 if (!confirm_sesskey() || isguestuser()) {
-    print_error('accessdenied', 'block_quicklinks', $referer);
+    print_error('accessdenied', 'block_totara_quicklinks', $referer);
 }
 
 $id = required_param('id', PARAM_ALPHANUM);
@@ -44,7 +44,7 @@ $blockinstanceid = required_param('blockinstance', PARAM_INT);
 $action = required_param('blockaction', PARAM_ALPHANUM);
 
 if (!$blockinstance = $DB->get_record('block_instance', array('id' => $blockinstanceid))) {
-    print_error('accessdenied', 'block_quicklinks');
+    print_error('accessdenied', 'block_totara_quicklinks');
 }
 
 $blockcontext = context_block::instance($blockinstanceid);
@@ -54,7 +54,7 @@ require_capability('block/totara_quicklinks:manageownlinks', $blockcontext);
 switch ($action) {
     case 'deletelink' :
         if (!$DB->delete_records('block_quicklinks', array('id' => $id))) {
-            print_error('error:deletequicklink', 'block_quicklinks');
+            print_error('error:deletequicklink', 'block_totara_quicklinks');
         }
         $sqlparams = array($blockinstanceid);
         $links = $DB->get_records_select('block_quicklinks', "block_instance_id=?", $sqlparams, 'displaypos');

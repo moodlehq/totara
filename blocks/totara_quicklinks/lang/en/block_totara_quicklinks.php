@@ -14,6 +14,7 @@ $string['leaveblanktohide'] = 'Leave blank to hide';
 $string['links'] = 'Links';
 $string['accessdenied'] = 'Access denied';
 $string['error:deletequicklink'] = 'Error deleting quicklink';
+$string['error:linkurlrequired'] = 'Link URL is missing';
 $string['error:usernotfound'] = 'User not found';
 //Strings for default links
 $string['home'] = 'Home';

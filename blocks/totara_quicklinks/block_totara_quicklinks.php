@@ -97,10 +97,6 @@ class block_totara_quicklinks extends block_base {
         return true;
     }
 
-    function has_config() {
-        return true;
-    }
-
     function instance_create() {
         global $CFG, $USER, $DB;
 
