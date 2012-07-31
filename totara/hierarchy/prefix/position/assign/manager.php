@@ -56,10 +56,9 @@ $managers = $DB->get_records_sql(
             u.firstname,
             u.lastname
     ",
-    array($guest->id, $userid), 0, 101);
-// Limit results to 101, which forces the use of search instead of browse in the dialog
-// as it is over the limit of 100 records
-
+    array($guest->id, $userid), 0, TOTARA_DIALOG_MAXITEMS + 1);
+// Limit results to 1 more than the maximum number that might be displayed
+// there is no point returning any more as we will never show them
 
 ///
 /// Display page

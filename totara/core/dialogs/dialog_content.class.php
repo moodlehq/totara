@@ -36,6 +36,12 @@ defined('MOODLE_INTERNAL') || die();
 define('DIALOG_SEARCH_NUM_PER_PAGE', 50);
 
 /**
+ * Maximum number of items to show at any one level of a dialog
+ * before displaying the "use search instead" message
+ */
+define('TOTARA_DIALOG_MAXITEMS', 1000);
+
+/**
  * Class for generating markup
  *
  * @access  public
@@ -311,7 +317,7 @@ class totara_dialog_content {
 
         // Maximum number of items to load (at any one level)
         // before giving up and suggesting search instead
-        $maxitems = 100;
+        $maxitems = TOTARA_DIALOG_MAXITEMS;
 
         $html = '';
 

@@ -160,7 +160,7 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
     global $CFG, $OUTPUT;
     // maximum number of items to load (at any one level)
     // before giving up and suggesting search instead.
-    $maxitems = 100;
+    $maxitems = TOTARA_DIALOG_MAXITEMS;
 
     $html = '';
 
@@ -171,7 +171,10 @@ function build_treeview($elements, $error_string, $hierarchy = null, $disabledli
 
         if(count($elements) > $maxitems) {
             $html .= '<li class="last"><span class="empty dialog-nobind">';
-            $html .= 'There are more than ' . $maxitems . ' items at this level. Try <a href="#search-tab" onclick="$(\'#tabs\').tabs(\'select\', 1);return false;">searching</a> instead.';
+            $html .= get_string('error:morethanxitemsatthislevel', 'totara_core', $maxitems);
+            $html .= ' <a href="#search-tab" onclick="$(\'#tabs\').tabs(\'select\', 1);return false;">';
+            $html .= get_string('trysearchinginstead', 'totara_core');
+            $html .= '</a>';
             $html .= '</span></li>'.PHP_EOL;
             return $html;
         }
