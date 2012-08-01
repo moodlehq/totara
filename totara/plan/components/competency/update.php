@@ -35,15 +35,31 @@ $PAGE->set_context($context);
 
 // Plan id
 $id = required_param('id', PARAM_INT);
-$linkedcourses = optional_param_array('linkedcourses', array(), PARAM_SEQUENCE);
-$mandatorycourses = optional_param_array('mandatory', array(), PARAM_SEQUENCE);
 
-//magic to get around the clean_param call in optional_param_array: we are not allowed to pass nested arrays in M2.2
-foreach ($linkedcourses as $key => $sequence) {
-    $linkedcourses[$key] = explode(',', $sequence);
+//get the delimited lists of competency ids and course ids in the form $compid_$courseid
+$linkedcoursedata = optional_param_array('linkedcourses', array(), PARAM_TEXT);
+$mandatorycoursedata = optional_param('mandatory', '', PARAM_TEXT);
+
+$linkedcourses = array();
+$mandatorycourses = array();
+
+//organise the mandatorycourse data
+$data = explode(',', $mandatorycoursedata);
+foreach ($data as $compitem) {
+    list($compid, $courseid) = explode ('_', $compitem);
+    if (!isset($mandatorycourses[$compid])) {
+        $mandatorycourses[$compid] = array();
+    }
+    $mandatorycourses[$compid][] = $courseid;
 }
-foreach ($mandatorycourses as $key => $sequence) {
-    $mandatorycourses[$key] = explode(',', $sequence);
+
+//organise the linkedcourse data
+foreach ($linkedcoursedata as $compitem) {
+    list($compid, $courseid) = explode ('_', $compitem);
+    if (!isset($linkedcourses[$compid])) {
+        $linkedcourses[$compid] = array();
+    }
+    $linkedcourses[$compid][] = $courseid;
 }
 
 // Updated course lists

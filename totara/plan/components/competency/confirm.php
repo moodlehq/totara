@@ -84,29 +84,25 @@ $form .= html_writer::tag('p', get_string('confirmlinkedcoursesdesc', 'totara_pl
 $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id));
 $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'update', 'value' => implode(',', $idlist)));
 
+$comp_mandatory=array();
 foreach ($evidence as $compid => $linkedcourses) {
     $form .= get_string('competency', 'totara_hierarchy') . ' '. format_string($compnames[$compid]) . ':' . html_writer::empty_tag('br');
-    $comp_linked = array();
-    $comp_mandatory=array();
+
     foreach ($linkedcourses as $linkedcourse) {
         $message = '';
         if ($plan->get_component('course')->is_item_assigned($linkedcourse->courseid)) {
             $message = ' ('.get_string('alreadyassignedtoplan', 'totara_plan').')';
         }
-
         if ($linkedcourse->linktype == PLAN_LINKTYPE_MANDATORY) {
             $form .= html_writer::checkbox(null, '1', true, '', array('disabled' => "disabled"));
-            $comp_linked[] = $linkedcourse->courseid;
-            $comp_mandatory[] = $linkedcourse->courseid;
+            $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'linkedcourses[]', 'value' => "{$compid}_{$linkedcourse->courseid}"));
+            $comp_mandatory[] = "{$compid}_{$linkedcourse->courseid}";
             $form .= format_string($linkedcourse->fullname) . $message .html_writer::empty_tag('br');
         } else {
-            $comp_linked[] = $linkedcourse->courseid;
-            $form .= html_writer::checkbox("linkedcourses[{$compid}]", $linkedcourse->courseid, true);
+            $form .= html_writer::checkbox("linkedcourses[]", "{$compid}_{$linkedcourse->courseid}", true);
             $form .= format_string($linkedcourse->fullname) . $message . html_writer::empty_tag('br');
         }
-        $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "linkedcourses[{$compid}]", 'value' => implode(',', $comp_linked)));
-        $form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "mandatory[{$compid}]", 'value' => implode(',', $comp_mandatory)));
     }
-
 }
+$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "mandatory", 'value' => implode(',', $comp_mandatory)));
 print html_writer::tag('form', $form);
