@@ -122,13 +122,13 @@ class totara_competency_evidence_form extends moodleform {
         if ($editing) {
             $mform->addElement('hidden', 'competencyid', $ce->competencyid);
             $mform->setType('competencyid', PARAM_INT);
-            $mform->addElement('static', 'compname', get_string('competency','competency'), html_writer::tag('span', format_string($competency_title), array('id' => "competencytitle1")));
+            $mform->addElement('static', 'compname', get_string('competency', 'totara_hierarchy'), html_writer::tag('span', format_string($competency_title), array('id' => "competencytitle1")));
             $mform->addHelpButton('compname', 'competencyevidencecompetency', 'totara_hierarchy');
         } else {
             if ($nojs) {
-                $mform->addElement('static','assigncompetency',get_string('assigncompetency','competency'), $OUTPUT->container(format_string($competency_title).
+                $mform->addElement('static','assigncompetency',get_string('assigncompetency', 'totara_hierarchy'), $OUTPUT->container(format_string($competency_title).
                     new action_link(new moodle_url('/totara/hierarchy/prefix/competency/assign/find.php',
-                    array('nojs' => '1', 's' => sesskey(), 'returnurl' => $newreturn, 'userid' => $userid)), get_string('assigncompetency','competency')), null, "competencytitle"));
+                    array('nojs' => '1', 's' => sesskey(), 'returnurl' => $newreturn, 'userid' => $userid)), get_string('assigncompetency', 'totara_hierarchy')), null, "competencytitle"));
                 $mform->addElement('hidden', 'competencyid');
                 $mform->setType('competencyid', PARAM_INT);
                 $mform->setDefault('competencyid', $competencyid);

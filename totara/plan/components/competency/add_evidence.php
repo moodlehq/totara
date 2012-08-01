@@ -48,6 +48,7 @@ $nojs = optional_param('nojs', 0, PARAM_INT);
 
 require_login();
 $PAGE->set_context(context_system::instance());
+$PAGE->set_pagelayout('noblocks');
 $PAGE->set_url(qualified_me());
 $plan = new development_plan($id);
 $componentname = 'competency';
