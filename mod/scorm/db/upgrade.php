@@ -622,6 +622,41 @@ function xmldb_scorm_upgrade($oldversion) {
     // Moodle v2.2.0 release upgrade line
     // Put any upgrade step following this
 
+    if ($oldversion < 2011112902) {
+        require_once($CFG->dirroot . '/lib/completionlib.php');
+        // a bug in scorm activity completion means that there may be users who have
+        // met the criteria but are not marked as complete. This upgrade finds any
+        // incomplete scorm activities and reruns the activity completion check to
+        // fix the records
+
+        // get activity completion details for all incomplete scorm activities
+        $sql = "SELECT cmc.id, cmc.userid, cmc.coursemoduleid, cm.course as courseid
+            FROM {course_modules_completion} cmc
+            JOIN {course_modules} cm ON cmc.coursemoduleid = cm.id
+            WHERE cmc.completionstate = ?
+            AND cm.module = (SELECT id FROM {modules} WHERE name = ?)";
+        $incomplete_scorm_records = $DB->get_recordset_sql($sql, array(COMPLETION_INCOMPLETE, 'scorm'));
+        $cms = array();
+        $courses = array();
+        foreach ($incomplete_scorm_records as $incomplete_scorm) {
+            $cmid = $incomplete_scorm->coursemoduleid;
+            $courseid = $incomplete_scorm->courseid;
+            // cache course module records for speed
+            if (!array_key_exists($cmid, $cms)) {
+                $cms[$cmid] = $DB->get_record('course_modules', array('id' => $cmid));
+            }
+            // cache course records for speed
+            if (!array_key_exists($courseid, $courses)) {
+                $courses[$courseid] = $DB->get_record('course', array('id' => $courseid));
+            }
+
+            // recheck the completion record for each user
+            $completion = new completion_info($courses[$courseid]);
+            $completion->update_state($cms[$cmid], COMPLETION_UNKNOWN, $incomplete_scorm->userid);
+        }
+        $incomplete_scorm_records->close();
+
+    }
     return true;
 }
 
