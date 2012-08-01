@@ -157,8 +157,12 @@ function xmldb_totara_core_install() {
         $dbman->add_field($table, $field);
     }
 
-
     rebuild_course_cache($SITE->id);
+
+    // readd totara specific course completion changes for anyone
+    // upgrading from moodle 2.2.2+
+    require_once($CFG->dirroot . '/totara/core/db/utils.php');
+    totara_readd_course_completion_changes();
 
     return true;
 }

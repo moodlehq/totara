@@ -287,5 +287,12 @@ function xmldb_totara_core_upgrade($oldversion) {
 
         totara_upgrade_mod_savepoint(true, 2012062900, 'totara_core');
     }
+
+    if ($oldversion < 2012080100) {
+        // readd totara specific course completion changes for anyone
+        // who has already upgraded from moodle 2.2.2+
+        totara_readd_course_completion_changes();
+        totara_upgrade_mod_savepoint(true, 2012080100, 'totara_core');
+    }
     return true;
 }

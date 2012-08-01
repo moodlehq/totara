@@ -275,3 +275,93 @@ function totara_data_object_duplicate_fix($tablename, $where_sql) {
 
     return true;
 }
+
+/**
+ * Re-add changes to course completion for Totara
+ *
+ * Although these exist in lib/db/upgrade.php, anyone upgrading from Moodle 2.2.2 or above
+ * would already have a higher version number so we need to apply them again:
+ *
+ * 1. when totara first is installed (to fix for anyone upgrading from 2.2.2+)
+ * 2. in a totara core upgrade (to fix for anyone who has already upgraded from 2.2.2+)
+ *
+ * These changes will only be applied if they haven't been run previously so it's okay
+ * to call this function multiple times
+ */
+function totara_readd_course_completion_changes() {
+    global $CFG, $DB;
+    $dbman = $DB->get_manager();
+
+    // Define index useridcourse (unique) to be added to course_completions
+    $table = new xmldb_table('course_completions');
+    $index = new xmldb_index('useridcourse', XMLDB_INDEX_UNIQUE, array('userid', 'course'));
+
+    // Conditionally launch add index useridcourse
+    if (!$dbman->index_exists($table, $index)) {
+        // Clean up all instances of duplicate records
+        // Add indexes to prevent new duplicates
+        upgrade_course_completion_remove_duplicates(
+            'course_completions',
+            array('userid', 'course'),
+            array('timecompleted', 'timestarted', 'timeenrolled')
+        );
+
+        $dbman->add_index($table, $index);
+    }
+
+    // Define index useridcoursecriteraid (unique) to be added to course_completion_crit_compl
+    $table = new xmldb_table('course_completion_crit_compl');
+    $index = new xmldb_index('useridcoursecriteraid', XMLDB_INDEX_UNIQUE, array('userid', 'course', 'criteriaid'));
+
+    // Conditionally launch add index useridcoursecriteraid
+    if (!$dbman->index_exists($table, $index)) {
+        upgrade_course_completion_remove_duplicates(
+            'course_completion_crit_compl',
+            array('userid', 'course', 'criteriaid'),
+            array('timecompleted')
+        );
+
+        $dbman->add_index($table, $index);
+    }
+
+    // Define index coursecriteratype (unique) to be added to course_completion_aggr_methd
+    $table = new xmldb_table('course_completion_aggr_methd');
+    $index = new xmldb_index('coursecriteriatype', XMLDB_INDEX_UNIQUE, array('course', 'criteriatype'));
+
+    // Conditionally launch add index coursecriteratype
+    if (!$dbman->index_exists($table, $index)) {
+        upgrade_course_completion_remove_duplicates(
+            'course_completion_aggr_methd',
+            array('course', 'criteriatype')
+        );
+
+        $dbman->add_index($table, $index);
+    }
+
+    require_once("{$CFG->libdir}/completion/completion_completion.php");
+
+    /// Define field status to be added to course_completions
+    $table = new xmldb_table('course_completions');
+    $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0, 'reaggregate');
+    if (!$dbman->field_exists($table, $field)) {
+        $dbman->add_field($table, $field);
+
+        // Get all records
+        $rs = $DB->get_recordset_sql('SELECT * FROM {course_completions}');
+        foreach ($rs as $record) {
+            // Update status column
+            $status = completion_completion::get_status($record);
+            if ($status) {
+                $status = constant('COMPLETION_STATUS_'.strtoupper($status));
+            }
+
+            $record->status = $status;
+
+            if (!$DB->update_record('course_completions', $record)) {
+                break;
+            }
+        }
+        $rs->close();
+    }
+
+}
