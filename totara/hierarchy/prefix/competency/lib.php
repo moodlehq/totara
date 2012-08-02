@@ -237,7 +237,7 @@ class competency extends hierarchy {
             // finally, set the count to zero for any of the templates that no longer
             // have any assignments
             if (count($empty_templates) > 0) {
-                list($in_sql, $in_params) = $DB->get_in_or_equal($emptytemplates);
+                list($in_sql, $in_params) = $DB->get_in_or_equal($empty_templates);
                 $sql = "UPDATE {{$this->shortprefix}_template}
                     SET competencycount = 0
                     WHERE id {$in_sql}";

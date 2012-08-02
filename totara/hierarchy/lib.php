@@ -347,7 +347,7 @@ class hierarchy {
         global $DB;
         if (empty($this->frameworkid) || $all) {
             // all root level items across frameworks
-            return $DB->get_records_select($this->shortprefix, "parentid = ? AND visible = ?", array(0, 1), 'frameworkid, sorthread, fullname');
+            return $DB->get_records_select($this->shortprefix, "parentid = ? AND visible = ?", array(0, 1), 'frameworkid, sortthread, fullname');
         } else {
             // root level items for current framework only
             $fwid = $this->frameworkid;
@@ -1588,7 +1588,7 @@ class hierarchy {
         } else {
             $newparent = $DB->get_record($this->shortprefix, array('id' => $newparentid));
 
-            if ($this->is_child_of($newparent, $item->id)) {
+            if ($this->is_child_of($newparent, $item->id) || empty($newparent)) {
                 // you can't move an item into its own child
                 return false;
             }

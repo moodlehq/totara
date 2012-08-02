@@ -1,4 +1,7 @@
 <?php
+//required for unit tests
+$string['sortthreadview'] = 'Sort Thread';
+
 $string['availablex'] = 'Available {$a}';
 $string['selectedx'] = 'Selected {$a}';
 $string['bulkaddfailed'] = 'There was a problem adding those items to the hierarchy';

@@ -30,15 +30,12 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->dirroot . '/totara/core/totara.php');
 
 //Need constants for one of the tests...
-require_once($CFG->dirroot.'/totara/hierarchy/prefix/position/lib.php');
-require_once($CFG->dirroot. '/admin/tool/unittest/simpletestlib.php');
+require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
+require_once($CFG->dirroot . '/admin/tool/unittest/simpletestlib.php');
 
 class totaralib_session_test extends UnitTestCase {
 
-    var $queue_key_data = array(
-                                "key0",
-                                "key1",
-                              );
+    var $queue_key_data = array("key0", "key1");
 
     var $queue_data = array(
                            "key0" => "data0",
@@ -124,7 +121,7 @@ class totaralib_session_test extends UnitTestCase {
 
 }
 
-/*class totaralib_db_test extends prefix_changing_test_case {
+class totaralib_db_test extends UnitTestCaseUsingDatabase {
 
     var $userid = 1;
     var $managerid = 2;
@@ -132,52 +129,62 @@ class totaralib_session_test extends UnitTestCase {
 
     //Left out columns not needed for this test (and kept a few for code readability)
     var $user_table_data = array(
-                                    array('id','username','firstname','lastname','deleted'),
-                                    array(1,'user1','user','one',0),
-                                    array(2,'manager1','manager','one',0),
+                                    array('id', 'username', 'firstname', 'lastname', 'deleted'),
+                                    array(1, 'user1', 'user', 'one', 0),
+                                    array(2, 'manager1', 'manager', 'one', 0),
                                 );
 
     //Left out columns not needed for this test
     var $role_assignments_table_data = array(
-                                                array('id','roleid','contextid','userid'),
-                                                array(1,1,1,2),
+                                                array('id', 'roleid', 'contextid', 'userid'),
+                                                array(1, 1, 1, 2),
                                             );
 
     //Left out columns not needed for this test
     var $role_table_data = array(
-                                    array('id','name','shortname','description'),
-                                    array(1,'Manager','manager','Manager Role'),
+                                    array('id', 'name', 'shortname', 'description'),
+                                    array(1, 'Manager', 'manager', 'Manager Role'),
                                 );
 
     //Left out columns not needed for this test
     var $context_table_data = array(
-                                        array('id','contextlevel','instanceid'),
+                                        array('id', 'contextlevel', 'instanceid'),
                                         array('1', CONTEXT_USER, 1),
                                    );
 
     //Left out columns not needed for this test
     var $pos_assignment_table_data = array(
-                                                array('id','userid','reportstoid','type'),
-                                                array(1,1,1,POSITION_TYPE_PRIMARY),
-                                          );
+                                                array('id', 'fullname', 'userid', 'managerid', 'reportstoid', 'type', 'timecreated', 'timemodified', 'usermodified'),
+                                                array(1, 'pos_fullname', 1, 2, 1, POSITION_TYPE_PRIMARY, '0', '0', '1'),
+                                            );
+
+    function load_test_table($table, $location, $data){
+        $this->create_test_table($table, $location);
+        $this->load_test_data($table, $data[0], array_slice($data, 1));
+    }
 
     function setUp() {
         global $db, $CFG;
         parent::setUp();
-        load_test_table('{context}', $this->context_table_data, $db);
-        load_test_table('{role}', $this->role_table_data, $db);
-        load_test_table('{role_assignments}', $this->role_assignments_table_data, $db);
-        load_test_table('{user}', $this->user_table_data, $db);
-        load_test_table('{pos_assignment}', $this->pos_assignment_table_data, $db);
+        $this->load_test_table('context', 'lib', $this->context_table_data);
+        $this->load_test_table('user', 'lib', $this->user_table_data);
+        $this->load_test_table('role', 'lib', $this->role_table_data);
+        $this->load_test_table('role_assignments', 'lib', $this->role_assignments_table_data);
+        $this->load_test_table('pos_assignment', 'totara/hierarchy', $this->pos_assignment_table_data);
+
+        $this->switch_to_test_db();
     }
 
     function tearDown() {
         global $db, $CFG;
-        remove_test_table('{context}',$db);
-        remove_test_table('{role}',$db);
-        remove_test_table('{role_assignments}',$db);
-        remove_test_table('{user}',$db);
-        remove_test_table('{pos_assignment}',$db);
+        $this->drop_test_table('context');
+        $this->drop_test_table('role');
+        $this->drop_test_table('role_assignments');
+        $this->drop_test_table('user');
+        $this->drop_test_table('pos_assignment');
+
+        $this->revert_to_real_db();
+
         parent::tearDown();
     }
 
@@ -204,5 +211,5 @@ class totaralib_session_test extends UnitTestCase {
         //Expect false when the 'managerid' being inspected has no staff
         $this->assertFalse(totara_get_staff($this->userid));
     }
-}*/
+}
 ?>
