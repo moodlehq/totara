@@ -57,7 +57,13 @@ $canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role
 $PAGE->set_url('/totara/plan/index.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('noblocks');
-$PAGE->set_totara_menu_selected('learningplans');
+
+if ($role == 'manager') {
+    $PAGE->set_totara_menu_selected('myteam');
+} else {
+    $PAGE->set_totara_menu_selected('learningplans');
+}
+
 $heading = get_string('learningplans', 'totara_plan');
 $pagetitle = get_string('learningplans', 'totara_plan');
 

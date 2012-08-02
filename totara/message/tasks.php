@@ -80,15 +80,6 @@ $PAGE->requires->js_init_call('M.totara_message.init');
 ///
 /// Display the page
 ///
-$referer = get_referer();
-if (strstr($referer, 'my/team.php')) {
-    $backlink = "{$CFG->wwwroot}/my/team.php";
-    $PAGE->navbar->add(get_string('myteam', 'totara_core').' '.get_string('dashboard', 'totara_dashboard'), new moodle_url('/my/team.php'));
-}
-if (strstr($referer, 'my/learning.php')) {
-    $backlink = "{$CFG->wwwroot}/my/learning.php";
-    $PAGE->navbar->add(get_string('mylearning', 'totara_core').' '.get_string('dashboard', 'totara_dashboard'), new moodle_url('/my/learning.php'));
-}
 $PAGE->navbar->add($strheading);
 $PAGE->set_title($strheading);
 $PAGE->set_button($report->edit_button());
@@ -98,10 +89,7 @@ $output = $PAGE->get_renderer('totara_reportbuilder');
 
 echo $output->header();
 echo $output->heading($strheading, 1);
-if (!empty($backlink)) {
-    new moodle_url($backlink, array('gi' => $guideinstance->giid));
-    echo html_writer::tag('p', html_writer::link($backlink, "<< ".get_string('backtodashboard', 'totara_dashboard')));
-}
+echo html_writer::tag('p', html_writer::link("{$CFG->wwwroot}/my/", "<< " . get_string('mylearning', 'totara_core')));
 
 // display table here
 $fullname = $report->fullname;

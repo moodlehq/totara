@@ -99,7 +99,7 @@
     ///
     /// Display the page
     ///
-    $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/learning.php'));
+    $PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/'));
     $PAGE->navbar->add($strheading, new moodle_url('/totara/plan/record/programs.php'));
     $PAGE->navbar->add($strsubheading);
 
