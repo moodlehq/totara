@@ -332,7 +332,7 @@
         echo $OUTPUT->header();
     }
 
-    echo $OUTPUT->container(html_writer::link(new moodle_url('/course/category.php', array('id' => $category->parent)), get_string('backtoparent','totara_coursecatalog')), 'toplinks');
+    echo $OUTPUT->container(html_writer::link(new moodle_url('/course/category.php', array('id' => $category->parent, 'viewtype' => $SESSION->viewtype)), get_string('backtoparent','totara_coursecatalog')), 'toplinks');
     /// Print current category description
     if (!$editingon && $category->description) {
         echo $OUTPUT->box_start();
@@ -366,7 +366,7 @@
         $subcats = $DB->get_fieldset_select('course_categories', 'id', 'parent = ?', array($category->id));
         $item_counts = totara_get_category_item_count($subcats, ($SESSION->viewtype != 'program'));
         $table = new flexible_table('sub_categories');
-        $table->define_baseurl(new moodle_url('/course/category.php', array('id' => $id)));
+        $table->define_baseurl(new moodle_url('/course/category.php', array('id' => $id, 'viewtype' => $SESSION->viewtype)));
         $table->define_columns(array('col1', 'col2', 'col3'));
         $table->define_headers(array('', '', ''));
         $table->set_attribute('class', 'nostripes boxaligncenter fullwidth');

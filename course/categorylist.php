@@ -187,7 +187,7 @@
                 $url = new moodle_url('/course/category.php', array('id' => $topcat->id, 'viewtype' => $viewtype));
                 $text = format_string($topcat->name).' ('.$item_count.')';
                 $tablerow[] = $OUTPUT->heading(html_writer::link($url, $text, array('class' => $catlinkcss)), 3) .
-                        totara_print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting);
+                        totara_print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting, $SESSION->viewtype);
             }
             // output the last row
             if (count($tablerow) > 0) {

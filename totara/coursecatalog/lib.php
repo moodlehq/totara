@@ -128,7 +128,7 @@ function totara_get_category_item_count($categoryids, $countcourses = true) {
 
 }
 
-function totara_print_main_subcategories($parentid, $secondarycats, $secondary_item_counts, $editingon, $numbertoshow = 3) {
+function totara_print_main_subcategories($parentid, $secondarycats, $secondary_item_counts, $editingon, $viewtype = 'course', $numbertoshow = 3) {
     //If there are no secondary items return
     if ($secondary_item_counts <= 0) {
         return '';
@@ -173,7 +173,7 @@ function totara_print_main_subcategories($parentid, $secondarycats, $secondary_i
 
         if ($numdisplayed < $numbertoshow) {
             $out .= html_writer::tag('li', html_writer::link(new moodle_url('/course/category.php',
-                            array('id' => $subcat->id)), format_string($subcat->name).' ('.$subcat->itemcount.')', array('class' => $cssclass)));
+                            array('id' => $subcat->id, 'viewtype' => $viewtype)), format_string($subcat->name).' ('.$subcat->itemcount.')', array('class' => $cssclass)));
             $numdisplayed++;
         } else {
             $showmorelink = true;
