@@ -218,7 +218,7 @@ class rb_source_dp_program extends rb_base_source {
 
         $completionstatus = $row->completionstatus;
 
-        if ($time == 0) {
+        if ($time == 0 || $time == COMPLETION_TIME_NOT_SET) {
             return get_string('noduedate', 'totara_plan');;
         }
 

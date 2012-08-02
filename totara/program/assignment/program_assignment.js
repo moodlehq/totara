@@ -146,9 +146,11 @@ M.totara_programassignment = M.totara_programassignment || {
             var completiontime = this._dialog.item.get_completion_time();
             var completionevent = this._dialog.item.get_completion_event();
             var completioninstance = this._dialog.item.get_completion_instance();
-            // TODO SCANMSG: check dataype usage of 'COMPLETION_EVENT_NONE' and similar args stored in config
+            // TODO SCANMSG: check datatype usage of 'COMPLETION_EVENT_NONE' and similar args stored in config
             if (completionevent == module.config.COMPLETION_EVENT_NONE) {
-                $('.completiontime', this._container).val(completiontime);
+                if (completiontime != module.config.COMPLETION_TIME_NOT_SET) {
+                    $('.completiontime', this._container).val(completiontime);
+                }
             }
             else {
                 var parts = completiontime.split(" ");
@@ -411,11 +413,6 @@ M.totara_programassignment = M.totara_programassignment || {
         if (dialog.savechanges === true) {
             window.onbeforeunload = null;
             return true;
-        }
-
-        if (!program_assignment.all_items_have_completion_times()) {
-            alert(M.util.get_string('pleasesetcompletiontimes', 'totara_program'));
-            return false;
         }
 
         // Load a html template in, and switch
@@ -801,8 +798,20 @@ function item(category, element, isexistingitem) {
             if (data == 'error') {
                 // Put back to the original
                 self.completionlink.html(original);
-            }
-            else {
+            } else {
+                var deletecompletiondatelink = self.completionlink.parent().find('.deletecompletiondatelink');
+                if (data == M.util.get_string('setcompletion', 'totara_program')) {
+                    //remove deletedate link if it exists
+                    if (deletecompletiondatelink.length > 0) {
+                        deletecompletiondatelink.remove();
+                    }
+                } else {
+                    //add deletedate link if it does not exist
+                    if (deletecompletiondatelink.length == 0) {
+                        var newlink = $('<a href="#" class="deletecompletiondatelink"><img class="smallicon" src="'+M.util.image_url('t/delete', 'moodle')+'" alt="'+M.util.get_string('removecompletiondate', 'totara_program')+'" title="'+M.util.get_string('removecompletiondate', 'totara_program')+'" /></a>');
+                        self.completionlink.parent().append(newlink);
+                    }
+                }
                 self.completionlink.html(data);
                 self.completiontime.val(completiontime);
                 self.completionevent.val(completionevent);
@@ -868,18 +877,24 @@ function item(category, element, isexistingitem) {
     };
 
     // Add handler to remove this element
-    $('.deletelink', this.element).click(function(event) {
-    event.preventDefault();
+    this.element.on('click', '.deletelink', function(event){
+        event.preventDefault();
         self.category.remove_item(self);
     });
 
-    // Add handler to select completion dates etc
-    $('.completionlink', this.element).click(function(event) {
+    // Add handler to remove completion dates
+    this.element.on('click', '.deletecompletiondatelink', function(event){
+        event.preventDefault();
+        self.update_completiontime('', 0, 0);
+    });
+
+
+    // Add handler to add completion dates
+    this.element.on('click', '.completionlink', function(event){
         event.preventDefault();
         totaraDialogs['completion'].item = self;
         totaraDialogs['completion'].default_url = self.category.url + 'set_completion.php';
         totaraDialogs['completion'].open();
-
     });
 
     // Add handler for the include children being toggled

@@ -85,7 +85,7 @@ $PAGE->requires->js_init_call('M.totara_cohortlearning.init', $args, false, $jsm
 // Include cohort programcompletion js module
 $PAGE->requires->strings_for_js(array('datepickerdisplayformat', 'datepickerplaceholder', 'datepickerregexjs'), 'totara_core');
 $PAGE->requires->strings_for_js(array('completioncriteria', 'pleaseentervaliddate',
-    'pleaseentervalidunit', 'pleasepickaninstance', 'chooseitem'), 'totara_program');
+    'pleaseentervalidunit', 'pleasepickaninstance', 'chooseitem', 'removecompletiondate'), 'totara_program');
 $selected_program = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'program-completion-event-dialog'));
 $jsmodule = array(
         'name' => 'totara_cohortprogramcompletion',
@@ -94,6 +94,7 @@ $jsmodule = array(
 $args = array('args'=>'{"cohortid":'.$cohort->id.','.
         '"selected_program":'.$selected_program.','.
         '"COMPLETION_EVENT_NONE":'.COMPLETION_EVENT_NONE.','.
+        '"COMPLETION_TIME_NOT_SET":'.COMPLETION_TIME_NOT_SET.','.
         '"COMPLETION_EVENT_FIRST_LOGIN":'.COMPLETION_EVENT_FIRST_LOGIN.'}');
 $PAGE->requires->js_init_call('M.totara_cohortprogramcompletion.init', $args, false, $jsmodule);
 

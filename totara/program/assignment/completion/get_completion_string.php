@@ -29,10 +29,13 @@ $completiontime = required_param('completiontime', PARAM_TEXT);
 $completionevent = required_param('completionevent', PARAM_INT);
 $completioninstance = required_param('completioninstance', PARAM_INT);
 
-$string = prog_assignment_category::build_completion_string($completiontime, $completionevent, $completioninstance);
-if (trim($string) == '') {
-    echo 'error';
-}
-else {
-    echo $string;
+if ($completiontime == '' && $completionevent == 0 && $completioninstance == 0) {
+    echo get_string('setcompletion', 'totara_program');
+} else {
+    $string = prog_assignment_category::build_completion_string($completiontime, $completionevent, $completioninstance);
+    if (trim($string) == '') {
+        echo 'error';
+    } else {
+        echo $string;
+    }
 }

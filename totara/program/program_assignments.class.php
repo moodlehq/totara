@@ -44,12 +44,14 @@ $ASSIGNMENT_CATEGORY_CLASSNAMES = array(
     ASSIGNTYPE_INDIVIDUAL   => 'individuals_category'
 );
 
-define('COMPLETION_EVENT_NONE',0);
-define('COMPLETION_EVENT_FIRST_LOGIN',1);
-define('COMPLETION_EVENT_POSITION_START_DATE',2);
-define('COMPLETION_EVENT_PROGRAM_COMPLETION',3);
-define('COMPLETION_EVENT_COURSE_COMPLETION',4);
-define('COMPLETION_EVENT_PROFILE_FIELD_DATE',5);
+define('COMPLETION_TIME_NOT_SET', -1);
+define('COMPLETION_TIME_UNKNOWN', 0);
+define('COMPLETION_EVENT_NONE', 0);
+define('COMPLETION_EVENT_FIRST_LOGIN', 1);
+define('COMPLETION_EVENT_POSITION_START_DATE', 2);
+define('COMPLETION_EVENT_PROGRAM_COMPLETION', 3);
+define('COMPLETION_EVENT_COURSE_COMPLETION', 4);
+define('COMPLETION_EVENT_PROFILE_FIELD_DATE', 5);
 
 global $COMPLETION_EVENTS_CLASSNAMES;
 
@@ -441,11 +443,6 @@ abstract class prog_assignment_category {
                 // Get the completion time
                 $object->completiontime = $data->completiontime[$this->id][$itemid];
 
-                if (empty($object->completiontime)) {
-                    // No completion time set.. :/ Skip for now
-                    continue;
-                }
-
                 $object->completionevent = $data->completionevent[$this->id][$itemid];
 
                 $object->completioninstance = $data->completioninstance[$this->id][$itemid];
@@ -453,10 +450,13 @@ abstract class prog_assignment_category {
                     $object->completioninstance = 0;
                 }
 
-                if ($object->completionevent == COMPLETION_EVENT_NONE) {
-                    $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$object->completiontime);
-                }
-                else {
+                if (empty($object->completiontime)) {
+                    $object->completiontime = COMPLETION_TIME_NOT_SET;
+                } elseif ($object->completionevent == COMPLETION_EVENT_NONE) {
+                    if ($object->completiontime != COMPLETION_TIME_NOT_SET) {
+                        $object->completiontime = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $object->completiontime);
+                    }
+                } else {
                     $parts = explode(' ',$object->completiontime);
                     if (!isset($parts[0]) || !isset($parts[1])) {
                         continue;
@@ -565,9 +565,10 @@ abstract class prog_assignment_category {
     abstract function get_includechildren($data, $object);
 
     function get_completion($item) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $completion_string = get_string('setcompletion', 'totara_program');
 
+        $show_deletecompletionlink = false;
         if (empty($item->completiontime)) {
             $item->completiontime = '';
         }
@@ -583,20 +584,26 @@ abstract class prog_assignment_category {
         if ($item->completiontime != '') {
             if ($item->completionevent == COMPLETION_EVENT_NONE) {
                 // Completiontime must be a timestamp
-
-                // Print a date
-                $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) );
-                $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
+                if ($item->completiontime != COMPLETION_TIME_NOT_SET) {
+                    // Print a date
+                    $item->completiontime = trim( userdate($item->completiontime, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) );
+                    $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
+                    $show_deletecompletionlink = true;
+                }
             } else {
                 $parts = program_utilities::duration_explode($item->completiontime);
                 $item->completiontime = $parts->num . ' ' . $parts->period;
                 $completion_string = self::build_completion_string($item->completiontime, $item->completionevent, $item->completioninstance);
+                $show_deletecompletionlink = true;
             }
         }
         $html = html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completiontime['.$this->id.']['.$item->id.']', 'value' => $item->completiontime));
         $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completionevent['.$this->id.']['.$item->id.']', 'value' => $item->completionevent));
         $html .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'completioninstance['.$this->id.']['.$item->id.']', 'value' => $item->completioninstance));
         $html .= html_writer::link('#', $completion_string, array('class' => 'completionlink'));
+        if ($show_deletecompletionlink) {
+            $html .= $OUTPUT->action_icon('#', new pix_icon('t/delete', get_string('removecompletiondate', 'totara_program')), null, array('class' => 'deletecompletiondatelink'));
+        }
         return $html;
     }
 

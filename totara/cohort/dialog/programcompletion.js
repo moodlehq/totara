@@ -121,14 +121,14 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
                 });
             }
 
-            $('.fixeddate', this.handler._container).live('click', function() {
+            this.handler._container.on('click', '.fixeddate', function() {
                 var completiontime = $('.completiontime', thisdialog.handler._container).val();
                 var completionevent = M.totara_cohortprogramcompletion.config.COMPLETION_EVENT_NONE;
                 var completioninstance = 0;
 
                 var dateformat = new RegExp(M.util.get_string('datepickerregexjs', 'totara_core'));
                 if (dateformat.test(completiontime) == false) {
-                    alert(M.util.get_string('pleaseentervaliddate', 'totara_program'));
+                    alert(M.util.get_string('pleaseentervaliddate', 'totara_program', M.util.get_string('datepickerplaceholder', 'totara_core')));
                 }
                 else {
                     thisdialog.update_completiontime(completiontime, completionevent, completioninstance);
@@ -136,7 +136,7 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
                 }
             });
 
-            $('.relativeeventtime', this.handler._container).live('click', function() {
+            this.handler._container.on('click', '.relativeeventtime', function() {
 
                 var timeunit = $('#timeamount', thisdialog.handler._container).val();
                 var timeperiod = $('#timeperiod option:selected', thisdialog.handler._container).val();
@@ -181,7 +181,9 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
             var completioninstance = this._dialog.completioninstance.val();
 
             if (completionevent == M.totara_cohortprogramcompletion.config.COMPLETION_EVENT_NONE) {
-                $('.completiontime').val(completiontime);
+                if (completiontime != M.totara_cohortprogramcompletion.config.COMPLETION_TIME_NOT_SET) {
+                    $('.completiontime').val(completiontime);
+                }
             } else {
                 var parts = completiontime.split(" ");
                 $('#timeamount').val(parts[0]);
@@ -239,7 +241,7 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
 
         /// init the completion dialogs
         totaraDialogs['completion'] = new totaraDialog_completion();
-        $('.completionlink').live('click', function(event){
+        $(document).on('click', '.completionlink', function(event){
             event.preventDefault();
             var td = $(this).parent('td');
 
@@ -251,12 +253,26 @@ M.totara_cohortprogramcompletion = M.totara_cohortprogramcompletion || {
             dialog.completiontime = $('input[name^="completiontime"]', td);
             dialog.completionevent = $('input[name^="completionevent"]', td);
             dialog.completioninstance = $('input[name^="completioninstance"]', td);
-            dialog.completionlink = $(this);
+            dialog.completionlink = td;
 
             dialog.default_url = M.cfg.wwwroot + '/totara/program/assignment/set_completion.php';
             totaraDialogs['completion'].open();
         });
+        // Add handler to remove completion dates
+        $(document).on('click', '.deletecompletiondatelink', function(event) {
+            event.preventDefault();
+            var dialog = totaraDialogs['completion'];
 
+            var td = $(this).parent('td');
+            dialog.programid = $('input[name^="programid"]', td).val();
+            dialog.cohortid = M.totara_cohortprogramcompletion.config.cohortid;
+            dialog.completiontime = $('input[name^="completiontime"]', td);
+            dialog.completionevent = $('input[name^="completionevent"]', td);
+            dialog.completioninstance = $('input[name^="completioninstance"]', td);
+            dialog.completionlink = td;
+
+            dialog.update_completiontime('', 0, 0);
+        });
         totaraDialogs['completionevent'] = new totaraDialog_completion_event();
 
     }  // init

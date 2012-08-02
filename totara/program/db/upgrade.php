@@ -109,5 +109,22 @@ function xmldb_totara_program_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012080301, 'totara_program');
     }
 
+    if ($oldversion < 2012081500) {
+        // update completion fields to support signed values
+        // as no completion date set uses -1
+        $table = new xmldb_table('prog_assignment');
+        $field = new xmldb_field('completiontime', XMLDB_TYPE_INTEGER, 10, false, XMLDB_NOTNULL, null, '0', 'includechildren');
+        $dbman->change_field_unsigned($table, $field);
+
+        $table = new xmldb_table('prog_completion');
+        $field = new xmldb_field('timedue', XMLDB_TYPE_INTEGER, 10, false, XMLDB_NOTNULL, null, '0', 'timestarted');
+        $dbman->change_field_unsigned($table, $field);
+
+        $table = new xmldb_table('prog_completion_history');
+        $field = new xmldb_field('timedue', XMLDB_TYPE_INTEGER, 10, false, XMLDB_NOTNULL, null, '0', 'timestarted');
+        $dbman->change_field_unsigned($table, $field);
+
+        totara_upgrade_mod_savepoint(true, 2012081500, 'totara_program');
+    }
     return true;
 }

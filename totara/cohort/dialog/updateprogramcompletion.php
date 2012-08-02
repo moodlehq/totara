@@ -29,6 +29,7 @@ require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/config.php');
 require_once($CFG->dirroot.'/totara/program/lib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 
+$PAGE->set_context(context_system::instance());
 require_login();
 require_capability('moodle/cohort:manage', context_system::instance());
 

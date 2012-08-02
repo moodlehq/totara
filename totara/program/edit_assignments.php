@@ -31,6 +31,8 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once('lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
+require_login();
+
 $id = required_param('id', PARAM_INT); // program id
 
 require_login();
@@ -64,7 +66,7 @@ TOTARA_JS_PLACEHOLDER
 ));
 
 // Get item pickers
-$PAGE->requires->strings_for_js(array('youhaveunsavedchanges','pleasesetcompletiontimes',
+$PAGE->requires->strings_for_js(array('setcompletion', 'removecompletiondate', 'youhaveunsavedchanges',
                 'cancel','ok','completioncriteria','pleaseentervaliddate',
                 'pleaseentervalidunit','pleasepickaninstance','editassignments',
                 'saveallchanges','confirmassignmentchanges','chooseitem'), 'totara_program');
@@ -74,6 +76,7 @@ $display_selected = json_encode(dialog_display_currently_selected(get_string('se
 $args = array('args' => '{"id":"'.$program->id.'",'.
                          '"confirmation_template":'.prog_assignments::get_confirmation_template().','.
                          '"COMPLETION_EVENT_NONE":"'.COMPLETION_EVENT_NONE.'",'.
+                         '"COMPLETION_TIME_NOT_SET":"'.COMPLETION_TIME_NOT_SET.'",'.
                          '"COMPLETION_EVENT_FIRST_LOGIN":"'.COMPLETION_EVENT_FIRST_LOGIN.'",'.
                          '"display_selected_completion_event":'.$display_selected.'}');
 $jsmodule = array(

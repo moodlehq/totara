@@ -290,7 +290,7 @@ class program {
                         $current_assignment = new user_assignment($user->id, $user_assign_data->assignmentid, $this->id);
 
                         if (!in_array($user_assign_data->exceptionstatus, array(PROGRAM_EXCEPTION_RAISED, PROGRAM_EXCEPTION_DISMISSED, PROGRAM_EXCEPTION_RESOLVED)) &&
-                            $timedue != $current_assignment->completion->timedue) {
+                            (isset($current_assignment->completion) && $timedue != $current_assignment->completion->timedue)) {
                             // there is no exception, and the timedue has changed
 
                             if ($assign->completionevent == COMPLETION_EVENT_FIRST_LOGIN && $timedue === false) {
@@ -350,7 +350,7 @@ class program {
         }
 
         // Users can have multiple assignments to a program
-        // We need this to clean up unnessessary redundant assignments caused
+        // We need this to clean up unnecessary redundant assignments caused
         // when removing an assignment type
         if (count($active_assignments) > 0) {
             list($usql, $params) = $DB->get_in_or_equal($active_assignments, SQL_PARAMS_QM, '', false);
@@ -590,8 +590,12 @@ class program {
     public function make_timedue($userid, $assignment_record) {
 
         if ($assignment_record->completionevent == COMPLETION_EVENT_NONE) {
-            // Fixed time
-            return $assignment_record->completiontime;
+            // Fixed time or Not Set?
+            if ($assignment_record->completiontime == COMPLETION_TIME_UNKNOWN) {
+                return COMPLETION_TIME_NOT_SET;
+            } else {
+                return $assignment_record->completiontime;
+            }
         }
 
         // Else it's a relative event, need to do a lookup
@@ -924,6 +928,7 @@ class program {
 
         // display the reason why this user has been assigned to the program (if it is mandatory for the user)
         if ($userassigned) {
+            $prog_completion = $DB->get_record('prog_completion', array('programid' => $this->id, 'userid' => $userid, 'coursesetid' => 0));
             $user_assignments = $DB->get_records_select('prog_user_assignment', "programid = ? AND userid = ?", array($this->id, $userid));
             if (count($user_assignments) > 0) {
                 if ($viewinganothersprogram) {
@@ -947,13 +952,16 @@ class program {
                 $out .= html_writer::tag('div', $message, array('class' => 'notifymessage'));
         }
 
-        $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
+        //only show time allowance and extension text if a completion time has been set
+        if ($prog_completion->timedue != COMPLETION_TIME_NOT_SET) {
+            $out .= $this->get_time_allowance_and_extension_text($userid, $viewinganothersprogram);
+        }
 
         // display the start date, due date and progress bar
         if ($userassigned) {
-            if ($prog_completion = $DB->get_record('prog_completion', array('programid' => $this->id, 'userid' => $userid, 'coursesetid' => 0))) {
+            if ($prog_completion) {
                 $startdatestr = $this->display_date_as_text($prog_completion->timestarted);
-                $duedatestr = empty($prog_completion->timedue) ? get_string('duedatenotset', 'totara_program') : $this->display_date_as_text($prog_completion->timedue);
+                $duedatestr = (empty($prog_completion->timedue) || $prog_completion->timedue == COMPLETION_TIME_NOT_SET) ? get_string('duedatenotset', 'totara_program') : $this->display_date_as_text($prog_completion->timedue);
                 $out .= html_writer::start_tag('div', array('class' => 'programprogress'));
                 $out .= html_writer::tag('div', get_string('startdate', 'totara_program') . ': ' . $startdatestr, array('class' => 'item'));
                 $out .= html_writer::tag('div', get_string('duedate', 'totara_program').': ' . $duedatestr, array('class' => 'item'));
@@ -1109,6 +1117,9 @@ class program {
     function display_duedate($duedate) {
         $out = '';
 
+        if ($duedate == COMPLETION_TIME_NOT_SET) {
+            return get_string('noduedate', 'totara_program');
+        }
         $out .= $this->display_date_as_text($duedate);
 
         // highlight dates that are overdue or due soon
@@ -1320,12 +1331,14 @@ class program {
         // Changes are being made so old exceptions are no longer
         // relevant
         prog_exceptions_manager::delete_exceptions_by_assignment($assignment->id, $userid);
-
+        if ($timedue == COMPLETION_TIME_NOT_SET) {
+            return false;
+        }
         $now = time();
         $total_time_allowed = $this->content->get_total_time_allowance();
         $time_until_duedate = $timedue - $now;
 
-        if (!$timedue) {
+        if ($timedue == COMPLETION_TIME_UNKNOWN) {
             $this->exceptionsmanager->raise_exception(EXCEPTIONTYPE_COMPLETION_TIME_UNKNOWN, $userid, $assignment->id, $now);
             return true;
         } else if ($time_until_duedate < $total_time_allowed) {
