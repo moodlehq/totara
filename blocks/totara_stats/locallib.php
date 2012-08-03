@@ -128,8 +128,9 @@ function totara_stats_manager_stats($user, $config=null) {
         AND userid IN (SELECT DISTINCT userid FROM {pos_assignment} where managerid = :userid) ";
     $params = array('from' => $from, 'to' => $to, 'userid' => $user->id);
 
-    $statssql = array_fill(1, 5, new stdClass());
+    $statssql = array();
     if (empty($config) || !empty($config->statlearnerhours)) {
+        $statssql[1] = new stdClass();
         $statssql[1]->sql = "SELECT count(DISTINCT userid) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_TIME_SPENT.$commonsql.
                             " GROUP BY userid HAVING sum(data2) > ".$numhours*60*60;
@@ -139,24 +140,28 @@ function totara_stats_manager_stats($user, $config=null) {
         $statssql[1]->stringparam->hours = $numhours; //extra params used by this particular query - could be configurable in future?
     }
     if (empty($config) || !empty($config->statcoursesstarted)) {
+        $statssql[2] = new stdClass();
         $statssql[2]->sql = "SELECT count(*) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_COURSE_STARTED.$commonsql;
         $statssql[2]->sqlparams = $params;
         $statssql[2]->string = 'statcoursesstarted';
     }
     if (empty($config) || !empty($config->statcoursescompleted)) {
+        $statssql[3] = new stdClass();
         $statssql[3]->sql = "SELECT count(*) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_COURSE_COMPLETE.$commonsql;
         $statssql[3]->sqlparams = $params;
         $statssql[3]->string = 'statcoursescompleted';
     }
     if (empty($config) || !empty($config->statcompachieved)) {
+        $statssql[4] = new stdClass();
         $statssql[4]->sql = "SELECT count(*) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_COMP_ACHIEVED.$commonsql;
         $statssql[4]->sqlparams = $params;
         $statssql[4]->string = 'statcompachieved';
     }
     if (empty($config) || !empty($config->statobjachieved)) {
+        $statssql[5] = new stdClass();
         $statssql[5]->sql = "SELECT count(*) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_OBJ_ACHIEVED.$commonsql;
         $statssql[5]->sqlparams = $params;
