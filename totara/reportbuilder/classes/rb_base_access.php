@@ -66,7 +66,8 @@ class rb_role_access extends rb_base_access {
     * @return array of permitted report ids
     */
     function get_accessible_reports(){
-        global $DB;
+        global $DB, $CFG;
+
         // remove the rb_ from class
         $type = substr(get_class($this), 3);
         $userid = $this->foruser;
@@ -107,6 +108,12 @@ class rb_role_access extends rb_base_access {
                      WHERE ra.userid = ?
                        AND c.contextlevel = ?";
             $siteuserroles = $DB->get_fieldset_sql($sql, array($userid, CONTEXT_SYSTEM));
+
+            // Add defaultuserrole if necessary
+            if (!in_array((int)$CFG->defaultuserroleid, $siteuserroles)) {
+                $siteuserroles[] = $CFG->defaultuserroleid;
+            }
+
             //only get any context roles if actually needed
             if ($anycontextcheck) {
                 $sql = "SELECT DISTINCT roleid
