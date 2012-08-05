@@ -1426,7 +1426,7 @@ function prog_get_courses_associated_with_programs($courses = null) {
     $sql = "SELECT c.* FROM {prog_courseset_course} pcc
             INNER JOIN {course} c ON c.id = pcc.courseid
             WHERE c.id <> ? $insql
-        UNION ALL
+        UNION
             SELECT c.* FROM {course} c
             JOIN {comp_evidence_items} cei ON c.id = cei.iteminstance
             AND cei.itemtype = ?
