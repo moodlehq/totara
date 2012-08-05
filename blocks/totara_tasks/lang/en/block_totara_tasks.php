@@ -1,5 +1,5 @@
 <?php
-$string['pluginname'] = 'Totara Tasks';
+$string['pluginname'] = 'Tasks';
 $string['dismiss'] = 'Dismiss message';
 $string['from'] = 'From';
 $string['tasks'] = 'Tasks';

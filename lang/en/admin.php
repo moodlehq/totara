@@ -1086,7 +1086,7 @@ $string['cron_status_info'] = 'Cron Execution Status';
 $string['cron_watcher_info_help'] = '# Cron Watcher
 
 Cron Watcher is a script located in
-<pre>&lt;TOTARA&gt;/admin/cron_watcher.php</pre> To activate it you need to add it to the list of cron jobs on Linux or create a new scheduled task on Windows.
+<pre>&lt;SITEURL&gt;/admin/cron_watcher.php</pre> To activate it you need to add it to the list of cron jobs on Linux or create a new scheduled task on Windows.
 
 We recommend you set the script to run every 5 minutes.
 

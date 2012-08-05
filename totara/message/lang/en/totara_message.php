@@ -48,8 +48,8 @@ $string['cannotsavemessage'] = 'Cannot save message';
 $string['alertfooter2'] = 'To change your preferences for receiving these emails, go to your <a href="{$a}">My Profile Settings -> Messaging</a>.';
 $string['error:redirecttoexternal'] = 'Error: trying to redirect to external domain';
 $string['emailnotifications'] = 'Email notifications';
-$string['messageprovider:alert'] = 'Totara Alert Notifications';
-$string['messageprovider:task'] = 'Totara Task Notifications';
+$string['messageprovider:alert'] = 'Alert Notifications';
+$string['messageprovider:task'] = 'Task Notifications';
 
 // message types
 $string['blended'] = 'Blended';

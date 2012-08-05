@@ -1,6 +1,6 @@
 <?php
 $string['managelinks'] = 'Manage links';
-$string['pluginname'] = 'Totara Quick Links';
+$string['pluginname'] = 'Quick Links';
 $string['totara_quicklinks:manageownlinks'] = 'Manage own links';
 $string['title'] = 'Quick Links';
 $string['maintitle'] = 'Main title';

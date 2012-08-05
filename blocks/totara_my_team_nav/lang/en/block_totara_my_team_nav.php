@@ -1,5 +1,5 @@
 <?php
 
 $string['pluginname'] = 'My Team';
-$string['title'] = 'Totara My Team Nav';
+$string['title'] = 'My Team';
 $string['displaytitle'] = 'My Team';
