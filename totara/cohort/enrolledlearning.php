@@ -35,9 +35,18 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 $context = context_system::instance();
 require_capability('moodle/cohort:manage', $context);
 
-$id = required_param('id', PARAM_INT);
+$id = optional_param('id', false, PARAM_INT);
 
 admin_externalpage_setup('cohorts');
+require_capability('moodle/cohort:view', $context);
+
+if (!$id) {
+    echo $OUTPUT->header();
+    $url = new moodle_url('/cohort/index.php');
+    echo $OUTPUT->container(get_string('cohortenrolledlearningselect', 'totara_cohort', $url->out()));
+    echo $OUTPUT->footer();
+    exit;
+}
 
 $cohort = $DB->get_record('cohort', array('id' => $id), '*', MUST_EXIST);
 

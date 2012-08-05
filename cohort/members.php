@@ -28,7 +28,7 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
-$id     = required_param('id', PARAM_INT);
+$id     = optional_param('id', false, PARAM_INT);
 $format = optional_param('format','',PARAM_TEXT); //export format
 $debug  = optional_param('debug', false, PARAM_BOOL);
 
@@ -36,6 +36,14 @@ admin_externalpage_setup('cohorts');
 
 $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);
+
+if (!$id) {
+    echo $OUTPUT->header();
+    $url = new moodle_url('/cohort/index.php');
+    echo $OUTPUT->container(get_string('cohortmembersselect', 'totara_cohort', $url->out()));
+    echo $OUTPUT->footer();
+    exit;
+}
 
 $cohort = $DB->get_record('cohort',array('id' => $id), '*', MUST_EXIST);
 

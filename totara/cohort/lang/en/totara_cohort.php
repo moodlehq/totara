@@ -95,6 +95,8 @@ $string['cohort:manage'] = 'Manage audiences';
 $string['cohort:managerules'] = 'Manage dynamic audience rules';
 $string['cohort:view'] = 'Use audiences and view members';
 $string['cohortadminreportname'] = 'Audience Admin Screen';
+$string['cohortmembersselect'] = 'To view audience members, first <a href="{$a}">select an audience</a> then click the "View Members" tab.';
+$string['cohortenrolledlearningselect'] = 'To view enrolled learning, first <a href="{$a}">select an audience</a> then click the "Enrolled Learning" tab.';
 $string['cohortdateactive'] = 'Active';
 $string['cohortdatealreadyended'] = 'Already ended';
 $string['cohortdatenotyetstarted'] = 'Not yet started';
