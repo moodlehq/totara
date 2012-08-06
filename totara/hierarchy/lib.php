@@ -820,6 +820,7 @@ class hierarchy {
         $swap = NULL;
         $sortoffset = $this->get_framework_sortorder_offset();
         $move = $DB->get_record("{$this->shortprefix}_framework", array('id' => $id));
+
         if ($up) {
             $swap = $DB->get_record_sql(
                     "SELECT *
@@ -835,8 +836,10 @@ class hierarchy {
                     ORDER BY sortorder ASC", array($move->sortorder), IGNORE_MULTIPLE
                     );
         }
-        $transaction = $DB->start_delegated_transaction();
+
         if ($move && $swap) {
+            $transaction = $DB->start_delegated_transaction();
+
             $DB->set_field($this->shortprefix.'_framework', 'sortorder', $sortoffset, array('id' => $swap->id));
             $DB->set_field($this->shortprefix.'_framework', 'sortorder', $swap->sortorder, array('id' => $move->id));
             $DB->set_field($this->shortprefix.'_framework', 'sortorder', $move->sortorder, array('id' => $swap->id));

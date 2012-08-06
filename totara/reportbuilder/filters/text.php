@@ -152,6 +152,7 @@ class rb_filter_text extends rb_filter_type {
      * @return string active filter label
      */
     function get_label($data) {
+
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();

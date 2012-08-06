@@ -31,7 +31,7 @@ class rb_source_totara_sync_log extends rb_base_source {
 
     function __construct() {
         global $CFG;
-        $this->base = $CFG->prefix . 'totara_sync_log';
+        $this->base = '{totara_sync_log}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();

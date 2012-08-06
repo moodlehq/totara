@@ -1370,10 +1370,13 @@ class dp_competency_component extends dp_base_component {
      * @param $item (must contain "approved" field)
      */
     public function can_update_competency_evidence($item) {
-        // Get permissions
-        $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
-        $approved = $this->is_item_approved($item->approved);
-        return $cansetproficiency && $approved;
+        if (!empty($item->approved)) {
+            // Get permissions
+            $cansetproficiency = !$this->plan->is_complete() && $this->get_setting('setproficiency') >= DP_PERMISSION_ALLOW;
+            $approved = $this->is_item_approved($item->approved);
+            return $cansetproficiency && $approved;
+        }
+        return false;
     }
 
 

@@ -276,6 +276,7 @@ $string['exceptions'] = 'Exception Report ({$a})';
 
 // Program content
 $string['unknowncompletiontype'] = 'Unrecognised completion type for course set {$a}';
+$string['contenttypenotfound'] = 'Content type not found';
 $string['addcompetency'] = 'Add competency';
 $string['addcourse'] = 'Add course';
 $string['addcourses'] = 'Add courses';

@@ -320,31 +320,31 @@ class rb_source_totaramessages extends rb_base_source {
     //
 
     // generate status text
-    function rb_display_msgstatus_text($comp, $row) {
-        $display = totara_message_msgstatus_text($row->message_values_status_text);
+    function rb_display_msgstatus_text($msgstatus, $row) {
+        $display = totara_message_msgstatus_text($msgstatus);
         return $display['text'];
     }
 
     // generate statement url
-    function rb_display_msgtype_statementurl($comp, $row) {
-        return html_writer::link($row->msgurl, $comp);
+    function rb_display_msgtype_statementurl($message, $row) {
+        return html_writer::link($row->msgurl, $message);
     }
 
     // generate urgency icon link
-    function rb_display_urgency_link($comp, $row) {
+    function rb_display_urgency_link($urgency, $row) {
         global $OUTPUT;
-        $display = totara_message_urgency_text($row->message_values_urgency);
+        $display = totara_message_urgency_text($urgency);
         return $OUTPUT->pix_icon($display['icon'], $display['text'], 'moodle', array('title' => $display['text'], 'class' => 'iconsmall'));
     }
 
     // generate urgency text
-    function rb_display_urgency_text($comp, $row) {
-        $display = totara_message_urgency_text($row->message_values_urgency_text);
+    function rb_display_urgency_text($urgency, $row) {
+        $display = totara_message_urgency_text($urgency);
         return $display['text'];
     }
 
     // generate type icon link
-    function rb_display_msgtype_link($comp, $row) {
+    function rb_display_msgtype_link($msgtype, $row) {
         global $OUTPUT;
         $subject = format_string($row->msgsubject);
         $icon = !empty($row->msgicon) ? format_string($row->msgicon) : 'default';
@@ -352,8 +352,8 @@ class rb_source_totaramessages extends rb_base_source {
     }
 
     // generate status type text
-    function rb_display_msgtype_text($comp, $row) {
-        $display = totara_message_msgtype_text($row->message_values_msgtype);
+    function rb_display_msgtype_text($msgtype, $row) {
+        $display = totara_message_msgtype_text($msgtype);
         return $display['text'];
     }
 

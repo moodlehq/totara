@@ -147,7 +147,7 @@ class rb_source_cohort_associations extends rb_base_source {
             'cohort',
             'name',
             get_string('name', 'totara_cohort'),
-            'cohort.cohortname',
+            'cohort.name',
             array('joins' => 'cohort')
         );
         $columnoptions[] = new rb_column_option(
