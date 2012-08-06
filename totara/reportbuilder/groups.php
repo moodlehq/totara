@@ -122,7 +122,7 @@
         $likeparam = '%' . $DB->sql_like_escape('_grp_').'%';
 
         $sql = "
-            SELECT reports.groupid, g.*, assign.numitems, reports.numreports,
+            SELECT g.id, g.*, assign.numitems, reports.numreports,
             f.name AS feedbackname, f.id AS feedbackid,
             c.fullname AS coursename, c.id AS courseid,
             cm.id AS cmid, tag.name as tagname
@@ -148,7 +148,7 @@
                 FROM {report_builder}
                 WHERE $likesql
                 GROUP BY groupid
-            ) reports ON " . $DB->sql_cast_char2int('reports.groupid') . " = g.id";
+            ) reports ON " . $DB->sql_cast_char2int('reports.groupid') . " = g.id ORDER BY g.name";
         $params = array($feedbackmoduleid, 'official', 'tag', $likeparam);
         $groups = $DB->get_records_sql($sql, $params);
     } else {
