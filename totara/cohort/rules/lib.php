@@ -287,8 +287,8 @@ function cohort_rules_delete_collection($collectionid, $usetrans=true) {
     }
 
     // Delete rule params
-    $sql = "DELETE FROM {cohort_rule_params} crp
-         WHERE crp.ruleid IN (
+    $sql = "DELETE FROM {cohort_rule_params}
+         WHERE ruleid IN (
             SELECT cr.id FROM {cohort_rules} cr
             WHERE cr.rulesetid IN (
                 SELECT crs.id FROM {cohort_rulesets} crs
@@ -298,8 +298,8 @@ function cohort_rules_delete_collection($collectionid, $usetrans=true) {
     $DB->execute($sql, array($collectionid));
 
     // Delete rules
-    $sql = "DELETE FROM {cohort_rules} cr
-        WHERE cr.rulesetid IN(
+    $sql = "DELETE FROM {cohort_rules}
+        WHERE rulesetid IN(
             SELECT crs.id FROM {cohort_rulesets} crs
             WHERE crs.rulecollectionid = ?
         )";
