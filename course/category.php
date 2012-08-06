@@ -361,43 +361,52 @@
     $renderer = $PAGE->get_renderer('totara_core');
     $renderer->print_toolbars('top', 2, $toolbar['top']);
     echo '</table>';
+
     // Print out all the sub-categories
     if ($subcategories = $DB->get_records('course_categories', array('parent' => $category->id), 'sortorder ASC')) {
         $subcats = $DB->get_fieldset_select('course_categories', 'id', 'parent = ?', array($category->id));
         $item_counts = totara_get_category_item_count($subcats, ($SESSION->viewtype != 'program'));
-        $table = new flexible_table('sub_categories');
-        $table->define_baseurl(new moodle_url('/course/category.php', array('id' => $id, 'viewtype' => $SESSION->viewtype)));
-        $table->define_columns(array('col1', 'col2', 'col3'));
-        $table->define_headers(array('', '', ''));
-        $table->set_attribute('class', 'nostripes boxaligncenter fullwidth');
-        $table->column_style_all('width', '33%');
-        $table->setup();
-        $tablerow = array();
+        $table = new html_table();
+        $table->attributes = array('class' => "fullwidth invisiblepadded");
+        $tablerow = new html_table_row();
+        $tablerow->cells = array();
         foreach ($subcategories as $subcategory) {
             if ($subcategory->visible || has_capability('moodle/category:viewhiddencategories', $context)) {
-                if (count($tablerow) == 3) {
-                    $table->add_data($tablerow);
-                    $tablerow = array();
-                }
+
                 $catlinkcss = $subcategory->visible ? '' : 'class="dimmed" ';
                 $item_count = array_key_exists($subcategory->id, $item_counts) ? $item_counts[$subcategory->id] : 0;
                 // don't show empty sub-categories unless viewing as admin
                 if (!$isediting && $item_count == 0) {
                     continue;
                 }
-                $tablerow[] = '<a '.$catlinkcss.' href="category.php?viewtype='.$viewtype.'&id='.$subcategory->id.'">'.
+                $cell = new html_table_cell();
+                $cell->style = 'width: 33%;';
+                $cell->text = '<a '.$catlinkcss.' href="category.php?viewtype='.$viewtype.'&id='.$subcategory->id.'">'.
                 format_string($subcategory->name, true, array('context' => context_coursecat::instance($subcategory->id))).' ('.$item_count.')</a>';
+
+                if (count($tablerow->cells) < 3) {
+                    // add another cell to this row
+                    $tablerow->cells[] = $cell;
+                } else {
+                    // otherwise push the data and start a new row
+                    $table->data[] = $tablerow;
+                    $tablerow = new html_table_row();
+                    $tablerow->cells = array($cell);
+                }
             }
         }
-        // add the last row
-        if (count($tablerow) > 0) {
-            $table->add_data($tablerow);
+        // push the last row
+        if (count($tablerow->cells) > 0) {
+            $table->data[] = $tablerow;
         }
-        // only show sub-categories section if there are some
-        if (!empty($table->data)) {
-            $OUTPUT->heading(get_string('subcategories'), '', 3);
-            $table->finish_html();
+
+        // only display table if there is data in it
+        if (count($table->data) > 0) {
+            // display table
+            echo $OUTPUT->heading(get_string('subcategories', 'moodle'), 3);
+            echo html_writer::table($table);
         }
+
     }
 
     // Need to have these before heading so it displays correctly
