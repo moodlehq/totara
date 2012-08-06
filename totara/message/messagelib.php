@@ -352,10 +352,6 @@ function tm_task_send($eventdata) {
         $eventdata->fullmessagehtml .= html_writer::empty_tag('br').html_writer::empty_tag('br').get_string('viewdetailshere', 'totara_message', $eventdata->contexturl);
     }
 
-    // Add footer to email
-    $eventdata->fullmessagehtml .= html_writer::empty_tag('br').html_writer::empty_tag('br').get_string('alertfooter2', 'totara_message', $CFG->wwwroot."/message/edit.php?id=".$eventdata->userto->id."&course=1");
-    $eventdata->fullmessage .= "\n".get_string('alertfooter2', 'totara_message', $CFG->wwwroot."/message/edit.php?id=".$eventdata->userto->id."&course=1");
-
     $result = tm_message_send($eventdata);
 
     return $result;
@@ -459,10 +455,6 @@ function tm_workflow_send($eventdata) {
     if ($eventdata->contexturl) {
         $eventdata->fullmessagehtml .= html_writer::empty_tag('br').html_writer::empty_tag('br').get_string('viewdetailshere', 'totara_message', $eventdata->contexturl);
     }
-
-    // Add footer to email
-    $eventdata->fullmessagehtml .= html_writer::empty_tag('br').html_writer::empty_tag('br').get_string('alertfooter2', 'totara_message', $CFG->wwwroot."/message/edit.php?id=".$eventdata->userto->id."&course=1");
-    $eventdata->fullmessage .= "\n".get_string('alertfooter2', 'totara_message', $CFG->wwwroot."/message/edit.php?id=".$eventdata->userto->id."&course=1");
 
     $result = tm_message_send($eventdata);
 
