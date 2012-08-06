@@ -89,7 +89,7 @@ $tab->head  = array(get_string('type', 'block_totara_alerts'),
                      get_string('from', 'block_totara_alerts'),
                      get_string('statement', 'block_totara_alerts'));
 
-$tab->attributes['class'] = 'fullwidth';
+$tab->attributes['class'] = 'fullwidth invisiblepadded';
 $tab->data  = array();
 foreach ($ids as $msgid => $msg) {
     $metadata = $DB->get_record('message_metadata', array('messageid' => $msgid));

@@ -63,18 +63,21 @@ if ($isfacetoface && !$DB->record_exists('facetoface_sessions', array('id' => $e
 } else if ($isfacetoface && !$canbook) {
         $subject .= ' (' . html_writer::tag('b', get_string('f2fsessionfull', 'block_totara_tasks')) . ')';
 }
-$icon = $OUTPUT->pix_icon('i/info', format_string($msg->subject), 'moodle', array('class' => 'msgicon',  'alt' => format_string($msg->subject)));
+global $TOTARA_MESSAGE_TYPES;
+$msgtype = get_string($TOTARA_MESSAGE_TYPES[$metadata->msgtype], 'totara_message');
+$icon = $OUTPUT->pix_icon('msgicons/' . $metadata->icon, format_string($msgtype), 'totara_core', array('class' => 'msgicon',  'alt' => format_string($msgtype)));
+
 $tab = new html_table();
-$tab->attributes = array('class', 'fullwidth');
+$tab->attributes['class'] = 'fullwidth invisiblepadded';
 $tab->data  = array();
 print html_writer::start_tag('div', array('id' => 'totara-msgs-dismiss'));
 
 if (!empty($msg->subject)) {
     $cells = array();
-    $cell = new html_table_cell(html_writer::tag('label', get_string('subject', 'forum'), array('for' => 'dismiss-type')));
+    $cell = new html_table_cell(html_writer::tag('label', get_string('subject', 'forum'), array('for' => 'dismiss-subject')));
     $cell->attributes['class'] = 'totara-msgs-action-left';
     $cells []= $cell;
-    $cell = new html_table_cell(html_writer::tag('div', $subject, array('id' => 'dismiss-type')));
+    $cell = new html_table_cell(html_writer::tag('div', $subject, array('id' => 'dismiss-subject')));
     $cell->attributes['class'] = 'totara-msgs-action-right';
     $cells []= $cell;
     $tab->data[] = new html_table_row($cells);

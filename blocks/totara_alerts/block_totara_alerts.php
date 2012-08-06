@@ -74,6 +74,7 @@ class block_totara_alerts extends block_base {
 
         // now build the table of results
         $table = new html_table();
+        $table->attributes['class'] = 'fullwidth invisiblepadded';
         if (!empty($this->msgs)) {
             $cnt = 0;
             foreach ($this->msgs as $msg) {

@@ -61,7 +61,7 @@ $type_alt = $display['text'];
 $from = $DB->get_record('user', array('id' => $msg->useridfrom));
 $fromname = fullname($from);
 $tab = new html_table();
-$tab->set_attribute('class', 'fullwidth');
+$tab->attributes['class'] = 'fullwidth invisiblepadded';
 $tab->data  = array();
 print html_writer::start_tag('div', array('id' => 'totara-msgs-action'));
 $cell = new html_table_cell($msgtext);
