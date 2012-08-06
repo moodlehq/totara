@@ -71,7 +71,7 @@ class cohort_rule_sqlhandler_reportsto extends cohort_rule_sqlhandler {
                 ."where pa.userid=u.id "
                 ."and pa.type=" . POSITION_TYPE_PRIMARY . ' ';
         if ($this->isdirectreport) {
-            list($sqlin, $params) = $DB->get_in_or_equal($this->managerid, SQL_PARAMS_NAMED, 'rt'.$this->ruleid);
+            list($sqlin, $params) = $DB->get_in_or_equal($this->managerid, SQL_PARAMS_NAMED, 'rt' . $this->ruleid);
             $sqlhandler->sql .= 'and pa.managerid '.$sqlin;
         } else {
             $sqlhandler->sql .= "and (";

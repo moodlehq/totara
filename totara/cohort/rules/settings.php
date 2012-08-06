@@ -27,13 +27,14 @@
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
-require_once($CFG->dirroot.'/totara/cohort/rules/ui.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandler.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/inlist.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/date.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/completion.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/manager.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/option.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/ui.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandler.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/inlist.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/date.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/completion.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/manager.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/cohortmember.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/option.php');
 
 /**
  * Get the list of defined cohort rules
@@ -487,6 +488,14 @@ function cohort_rules_list(){
                 get_string('ruledesc-learning-programcompletionduration', 'totara_cohort')
             ),
             new cohort_rule_sqlhandler_completion_duration_program()
+        );
+
+        // Cohort member
+        $rules[] = new cohort_rule_option(
+            'cohort',
+            'cohortmember',
+            new cohort_rule_ui_cohortmember(),
+            new cohort_rule_sqlhandler_cohortmember()
         );
 
         // System access! (though I think maybe this is better group under "user"?

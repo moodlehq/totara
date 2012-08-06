@@ -261,14 +261,26 @@ switch ($searchtype) {
         $fields = array('idnumber', 'name');
         list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
 
-        $search_info->fullname = 'name';
+        $search_info->fullname = "(
+            CASE WHEN {cohort}.idnumber IS NULL
+                OR {cohort}.idnumber = ''
+                OR {cohort}.idnumber = '0'
+            THEN
+                {cohort}.name
+            ELSE " .
+                $DB->sql_concat("{cohort}.name", "' ('", "{cohort}.idnumber", "')'") .
+            "END)";
         $search_info->sql = "
             FROM
                 {cohort}
             WHERE
                 {$searchsql}
         ";
-        $search_info->order = " ORDER BY name ASC";
+        if (!empty($this->customdata['current_cohort_id'])) {
+            $search_info->sql .= ' AND {cohort}.id != ? ';
+            $params[] = $this->customdata['current_cohort_id'];
+        }
+        $search_info->order = ' ORDER BY name ASC';
         $search_info->params = $params;
         break;
 

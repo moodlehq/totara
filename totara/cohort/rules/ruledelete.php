@@ -43,7 +43,7 @@ $sql = "SELECT crc.*
     WHERE crs.id = ?";
 $colldetails = $DB->get_record_sql($sql, array($rule->rulesetid));
 
-$success = $DB->delete_records('cohort_rules', array('id' => $ruleid)) && $DB->delete_records('cohort_rule_params', array('ruleid' =>$ruleid));
+$success = $DB->delete_records('cohort_rules', array('id' => $ruleid)) && $DB->delete_records('cohort_rule_params', array('ruleid' => $ruleid));
 
 add_to_log(SITEID, 'cohort', 'delete rule', 'totara/cohort/rules.php?id='.$colldetails->cohortid, "ruleid={$ruleid}&rulesetid={$rule->rulesetid}&ruletype={$rule->ruletype}&rulename={$rule->name}");
 

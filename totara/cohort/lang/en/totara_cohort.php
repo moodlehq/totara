@@ -209,6 +209,8 @@ $string['idnumber'] = 'ID';
 $string['includechildren'] = 'Include children';
 $string['includechildrenyes'] = 'Include children';
 $string['includechildrenno'] = 'Don\'t include children';
+$string['incohort'] = 'In audience(s)';
+$string['notincohort'] = 'Not in audience(s)';
 $string['isequalto'] = ' is equal to ';
 $string['isnotequalto'] = ' is not equal to ';
 $string['learningitemcourses'] = 'Courses';
@@ -364,6 +366,9 @@ $string['youhaveremoved'] = 'You have removed {$a->itemname} from this program<b
 <br />
 This change will be applied once the \''.$string['saveallchanges'].'\' button is clicked on the main Program assignments screen';
 
+$string['rulegroup-cohort'] = 'Audience';
+$string['rulename-cohort-cohortmember'] = 'Audience member';
+
 $string['rulegroup-user'] = 'User profile';
 $string['rulename-user-idnumber'] = 'ID number';
 $string['ruledesc-user-idnumber'] = 'user\'s ID number';
@@ -432,3 +437,5 @@ $string['addprograms'] = 'Add programs';
 $string['deletelearningconfirm'] = 'Are you sure you want to delete this learning item?';
 $string['savinglearning'] = 'Saving learning...';
 $string['na'] = 'n/a';
+$string['useriscohortmember'] = 'User is a member of any of these audiences:';
+$string['userisnotcohortmember'] = 'User is NOT a member of any of these audiences:';

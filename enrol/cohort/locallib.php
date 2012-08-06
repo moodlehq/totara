@@ -133,7 +133,7 @@ function enrol_cohort_sync($courseid = NULL, $mtrace=false) {
         try {
             $timenow = time();
             if ($mtrace) {
-                mtrace(date("H:i:s",$timenow)."updating {$cohort->idnumber} members...");
+                mtrace(date("H:i:s",$timenow)." updating {$cohort->idnumber} members...");
             }
             $result = totara_cohort_update_dynamic_cohort_members($cohort->id);
             if (is_array($result) && array_key_exists('add', $result) && array_key_exists('del', $result)) {

@@ -12,7 +12,7 @@ require_capability('moodle/cohort:view', $context);
 
 $PAGE->set_context($context);
 
-$items = $DB->get_records('cohort', array(), 'name');
+$items = $DB->get_records('cohort', null, 'name');
 
 ///
 /// Setup dialog

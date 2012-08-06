@@ -1865,7 +1865,6 @@ class totara_dialog_content_manager_cohortreportsto extends totara_dialog_conten
     * @return  $html
     */
     public function populate_selected_items_pane($elements) {
-
         $operatormenu = array();
         $operatormenu[0] = get_string('reportsto', 'totara_cohort');
         $operatormenu[1] = get_string('reportsdirectlyto', 'totara_cohort');
@@ -1913,6 +1912,7 @@ class cohort_rule_ui_reportsto extends cohort_rule_ui {
             $alreadyselected = $DB->get_records_sql($sql, array($ruleinstanceid));
         }
         $dialog->selected_items = $alreadyselected;
+        $dialog->isdirectreport = isset($this->isdirectreport) ? $this->isdirectreport : '';
 
         $dialog->urlparams = $hidden;
 
@@ -1973,6 +1973,165 @@ class cohort_rule_ui_reportsto extends cohort_rule_ui {
 
         $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
         $ret .= implode($paramseparator, $userlist);
+
+        return $ret;
+    }
+}
+
+
+require_once($CFG->dirroot . '/totara/core/dialogs/dialog_content_manager.class.php');
+class totara_dialog_content_manager_cohortmember extends totara_dialog_content_manager {
+    /**
+    * Returns markup to be used in the selected pane of a multi-select dialog
+    *
+    * @param   $elements    array elements to be created in the pane
+    * @return  $html
+    */
+    public function populate_selected_items_pane($elements) {
+
+        $operatormenu = array();
+        $operatormenu[1] = get_string('incohort', 'totara_cohort');
+        $operatormenu[0] = get_string('notincohort', 'totara_cohort');
+        $selected = isset($this->incohort) ? $this->incohort : '';
+        $html = html_writer::select($operatormenu, 'incohort', $selected, array(),
+            array('id' => 'id_incohort', 'class' => 'cohorttreeviewsubmitfield'));
+        return $html . parent::populate_selected_items_pane($elements);
+    }
+}
+
+class cohort_rule_ui_cohortmember extends cohort_rule_ui {
+    public $handlertype = 'treeview';
+    public $params = array(
+        'cohortids' => 1,
+        'incohort' => 0
+    );
+
+    public function printDialogContent($hidden=array(), $ruleinstanceid=false) {
+        global $CFG, $DB;
+
+        $type = !empty($hidden['type']) ? $hidden['type'] : '';
+        $id = !empty($hidden['id']) ? $hidden['id'] : 0;
+        $rule = !empty($hidden['rule']) ? $hidden['rule'] : '';
+        // Get sql to exclude current cohort
+        switch ($type) {
+            case 'rule':
+                $sql = "SELECT DISTINCT crc.cohortid
+                    FROM {cohort_rules} cr
+                    INNER JOIN {cohort_rulesets} crs ON crs.id = cr.rulesetid
+                    INNER JOIN {cohort_rule_collections} crc ON crc.id = crs.rulecollectionid
+                    WHERE cr.id = ? ";
+                $currentcohortid = $DB->get_field_sql($sql, array($id), IGNORE_MULTIPLE);
+                break;
+            case 'ruleset':
+                $sql = "SELECT DISTINCT crc.cohortid
+                    FROM {cohort_rulesets} crs
+                    INNER JOIN {cohort_rule_collections} crc ON crc.id = crs.rulecollectionid
+                    WHERE crs.id = ? ";
+                $currentcohortid = $DB->get_field_sql($sql, array($id), IGNORE_MULTIPLE);
+                break;
+            case 'cohort':
+                $currentcohortid = $id;
+                break;
+            default:
+                $currentcohortid =  0;
+                break;
+        }
+
+        // Get cohorts
+        $sql = "SELECT c.id,
+                CASE WHEN c.idnumber IS NULL OR c.idnumber = '' OR c.idnumber = '0'
+                    THEN c.name
+                    ELSE " . $DB->sql_concat("c.name", "' ('", "c.idnumber", "')'") .
+                "END AS fullname
+            FROM {cohort} c";
+        if (!empty($currentcohortid)) {
+            $sql .= ' WHERE c.id != ? ';
+        }
+        $sql .= ' ORDER BY c.name, c.idnumber';
+        $items = $DB->get_records_sql($sql, array($currentcohortid));
+
+        // Set up dialog
+        $dialog = new totara_dialog_content_manager_cohortmember();
+        $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
+        $dialog->items = $items;
+        $dialog->selected_title = 'itemstoadd';
+        $dialog->searchtype = 'cohort';
+        $dialog->urlparams = array('id' => $id, 'type' => $type, 'rule' => $rule);
+        if (!empty($currentcohortid)) {
+            $dialog->disabled_items = array($currentcohortid);
+            $dialog->customdata['current_cohort_id'] = $currentcohortid;
+        }
+
+        // Set selected items
+        if ($ruleinstanceid) {
+            $sql = "SELECT c.id,
+                CASE WHEN c.idnumber IS NULL OR c.idnumber = '' OR c.idnumber = '0'
+                    THEN c.name
+                    ELSE " . $DB->sql_concat("c.name", "' ('", "c.idnumber", "')'") .
+                "END AS fullname
+                FROM {cohort} c
+                INNER JOIN {cohort_rule_params} crp
+                    ON c.id = " . $DB->sql_cast_char2int('crp.value') . "
+                WHERE crp.ruleid = ? AND crp.name = 'cohortids'
+                ORDER BY c.name, c.idnumber
+                ";
+            $alreadyselected = $DB->get_records_sql($sql, array($ruleinstanceid));
+        } else {
+            $alreadyselected = array();
+        }
+        $dialog->selected_items = $alreadyselected;
+        $dialog->unremovable_items = $alreadyselected;
+        $dialog->incohort = isset($this->incohort) ? $this->incohort : '';
+
+        // Display
+        $markup = $dialog->generate_markup();
+        echo $markup;
+    }
+
+    public function handleDialogUpdate($sqlhandler) {
+        $cohortids = required_param('selected', PARAM_SEQUENCE);
+        $cohortids = explode(',', $cohortids);
+        $this->cohortids = $sqlhandler->cohortids = $cohortids;
+
+        $incohort = required_param('incohort', PARAM_BOOL);
+        $this->incohort = $sqlhandler->incohort = $incohort;
+
+        $sqlhandler->write();
+    }
+
+    public function getRuleDescription($ruleid, $static=true) {
+        global $DB;
+
+        if ($this->incohort) {
+            $ret = get_string('useriscohortmember', 'totara_cohort');
+        } else {
+            $ret = get_string('userisnotcohortmember', 'totara_cohort');
+        }
+
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->cohortids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT c.id,
+                CASE WHEN c.idnumber IS NULL OR c.idnumber = '' OR c.idnumber = '0'
+                    THEN c.name
+                    ELSE " . $DB->sql_concat("c.name", "' ('", "c.idnumber", "')'") .
+                "END AS fullname, crp.id AS paramid
+            FROM {cohort} c
+            INNER JOIN {cohort_rule_params} crp ON c.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE c.id {$sqlin}
+            AND crp.name = 'cohortids' AND crp.ruleid = ?
+            ORDER BY c.name, c.idnumber";
+        $cohortlist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($cohortlist as $i => $c) {
+            $value = '"' . $c->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($c->paramid);
+            }
+            $cohortlist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $cohortlist);
 
         return $ret;
     }

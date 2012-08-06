@@ -462,9 +462,17 @@ function totara_cohort_get_dynamic_cohort_whereclause($cohortid) {
  * @param int $delaymessages (optional) If true, queue the messages for the cron. If false, send them now. Defaults to false.
  * @return mixed Change in number of members, or false for failure
  */
-function totara_cohort_update_dynamic_cohort_members($cohortid, $userid=0, $delaymessages=false) {
+function totara_cohort_update_dynamic_cohort_members($cohortid, $userid=0, $delaymessages=false, $updatenested=true) {
     global $CFG, $DB;
     require_once($CFG->dirroot . '/totara/cohort/rules/lib.php');
+
+    /// update necessary nested cohorts first (if any)
+    if ($updatenested) {
+        $nestedcohorts = totara_cohort_get_nested_dynamic_cohorts($cohortid);
+        foreach ($nestedcohorts as $ncohortid) {
+            totara_cohort_update_dynamic_cohort_members($ncohortid, $userid, $delaymessages, false);
+        }
+    }
 
     $beforecount = $DB->count_records('cohort_members', array('cohortid' => $cohortid));
 
@@ -591,6 +599,58 @@ function totara_cohort_update_dynamic_cohort_members($cohortid, $userid=0, $dela
     }
 
     return array('add' => $numadd, 'del' => $numdel);
+}
+
+/**
+ * Get all nested cohorts for the specified parent cohort
+ *
+ * @param int $cohortid the parent cohortid
+ * @param array $current the current list of found nested cohortids (used by recursion)
+ */
+function totara_cohort_get_nested_dynamic_cohorts($cohortid, $current=array()) {
+    global $DB;
+
+    if (empty($current)) {
+        $current = array($cohortid);
+        $mastercohortid = $cohortid;
+    }
+
+    list($notinsql, $sqlparams) = $DB->get_in_or_equal($current, SQL_PARAMS_QM, 'param', false);
+    array_unshift($sqlparams, $cohortid);
+
+    $sql = "SELECT DISTINCT c.id
+        FROM {cohort} c
+        INNER JOIN {cohort_rule_params} crp ON c.id = " . $DB->sql_cast_char2int('crp.value') . "
+            AND crp.name = 'cohortids'
+        INNER JOIN {cohort_rules} cr ON crp.ruleid = cr.id
+            AND cr.ruletype = 'cohort' AND cr.name = 'cohortmember'
+        INNER JOIN {cohort_rulesets} crs ON cr.rulesetid = crs.id
+        INNER JOIN {cohort_rule_collections} crc ON crs.rulecollectionid = crc.id
+            AND crc.status = " . COHORT_COL_STATUS_ACTIVE . "
+        WHERE crc.cohortid = ?
+        AND c.id {$notinsql}
+        AND c.cohorttype = " . cohort::TYPE_DYNAMIC;
+    $cohorts = $DB->get_records_sql($sql, $sqlparams);
+    $cohorts = array_keys($cohorts);
+
+    $current = array_unique(array_merge($current, $cohorts));
+
+    foreach ($cohorts as $ncohortid) {
+        $current = array_merge($current, totara_cohort_get_nested_dynamic_cohorts($ncohortid, $current));
+    }
+    $current = array_unique($current);
+
+    if (!empty($mastercohortid)) {
+        // unset the top level cohortid
+        foreach ($current as $i => $v) {
+            if ($v == $mastercohortid) {
+                unset($current[$i]);
+                break;
+            }
+        }
+    }
+
+    return $current;
 }
 
 
