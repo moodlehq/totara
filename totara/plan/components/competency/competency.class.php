@@ -93,7 +93,6 @@ class dp_competency_component extends dp_base_component {
      */
     public function get_assigned_items($approved = null, $orderby='', $limitfrom='', $limitnum='') {
         global $DB;
-        //TODO SCANMSG: check this works now it's using prepared statements
 
         // Generate where clause
         $where = "c.visible = 1 AND a.planid = :planid";

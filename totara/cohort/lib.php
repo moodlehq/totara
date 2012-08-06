@@ -57,7 +57,7 @@ $COHORT_ASSN_ITEMTYPES = array(
     COHORT_ASSN_ITEMTYPE_PROGRAM => 'program'
 );
 
-// SCANMSG TODO kill this at some point as we don't have visible anymore
+// this will be extended when we add visible learning and/or other tabs
 define ('COHORT_ASSN_VALUE_ENROLLED', 30);
 global $COHORT_ASSN_VALUES;
 $COHORT_ASSN_VALUES = array(

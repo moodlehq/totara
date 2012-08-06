@@ -41,7 +41,6 @@ class totara_plan_renderer extends plugin_renderer_base {
     public function totara_print_approval_form($requested_items, $require_approval) {
         $output = '';
 
-        // TODO SCANMSG: make sure this form submits correctly still
         $form_attributes = array('id' => 'dp-component-update', 'action' => qualified_me(), 'method' => 'POST');
         $output .= html_writer::start_tag('form', $form_attributes);
 

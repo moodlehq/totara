@@ -733,8 +733,7 @@ function assign_user_position($assignment, $unittest=false) {
         }
         // Store the date of this assignment
         require_once($CFG->dirroot.'/totara/program/lib.php');
-        //TODO SCANMSG: Uncomment once programs is merged
-        //prog_store_position_assignment($assignment);
+        prog_store_position_assignment($assignment);
         // Save assignment
         $assignment->save($managerchanged);
         $transaction->allow_commit();

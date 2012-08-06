@@ -890,7 +890,7 @@ function prog_can_enter_course($user, $course) {
  * @param array $whereparams Parameters needed for $whereclause
  * @return object {@link $COURSE} records
  */
-// TODO SCANMSG: Fix this function to work in Moodle 2 way
+// TODO: Fix this function to work in Moodle 2 way
 // See lib/datalib.php -> get_courses_search for example
 function prog_get_programs_search($searchterms, $sort='fullname ASC', $page=0, $recordsperpage=50, &$totalcount, $whereclause, $whereparams) {
     global $DB, $USER;

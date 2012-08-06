@@ -275,10 +275,6 @@ if ($matchcount > 0) {
             ++$num_on_page;
         }
 
-        if ($filteredcount > 0) {
-            //TODO SCANMSG: Implement function in 2.2 and then uncomment
-            //$table->hide_empty_cols();
-        }
     }
 }
 $table->finish_html();

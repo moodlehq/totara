@@ -37,7 +37,6 @@ $action = optional_param('action', 'view', PARAM_TEXT);
 $plan = new development_plan($id);
 $systemcontext = context_system::instance();
 
-// TODO SCANMSG check this is correct context
 $PAGE->set_context($systemcontext);
 $PAGE->set_url('/totara/plan/components/course/view.php', array('id' => $id, 'itemid' => $caid));
 $PAGE->set_pagelayout('noblocks');

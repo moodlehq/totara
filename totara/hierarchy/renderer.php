@@ -344,18 +344,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                 }
 
                 if ($can_edit) {
-                    // TODO SCANMSG: Rewrite to use a component_action object
-                    // the 't' param may need reworking, since it is applied via
-                    // onChange using the old inline jQuery code below.
-                    /*
-                    $url = new moodle_url('/totara/plan/update-linktype.php', array('type' => $shortprefix, 'c' => $ritem->aid, 'sesskey' => sesskey(), 't' => '$(this).val()'));
-                    $options = array(
-                        PLAN_LINKTYPE_OPTIONAL => get_string('optional', 'totara_hierarchy'),
-                        PLAN_LINKTYPE_MANDATORY => get_string('mandatory', 'totara_hierarchy'),
-                    );
-                    $selected = ($ritem->linktype ? $ritem->linktype : PLAN_LINKTYPE_OPTIONAL);
-                    $content[] = $this->output->single_select($url, 'c', $options, $selected);
-                    */
+                    // TODO: Rewrite to use a component_action object
                     $content[] = html_writer::select(
                     array( //$options
                     PLAN_LINKTYPE_OPTIONAL => get_string('optional', 'totara_hierarchy'),

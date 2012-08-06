@@ -77,7 +77,7 @@ M.totara_positionitem = M.totara_positionitem || {
         ///
         /// Template dialog
         ///
-        // TODO SCANMSG: Stub code for competency templates - not implemented yet
+        // Stub code for competency templates - not implemented yet
         (function() {
             var url = M.cfg.wwwroot+ '/totara/hierarchy/prefix/position/assigncompetencytemplate/';
             var id = M.totara_positionitem.config.id;

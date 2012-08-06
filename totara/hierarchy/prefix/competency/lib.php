@@ -726,7 +726,7 @@ class competency extends hierarchy {
                 if ($can_edit) {
                     $cell = new html_table_cell();
 
-                    // TODO SCANMSG: Rewrite to use a component_action object
+                    // TODO: Rewrite to use a component_action object
                     // the 't' param may need reworking, since it is applied via
                     // onChange using the old inline jQuery code below.
                     $select = html_writer::select(

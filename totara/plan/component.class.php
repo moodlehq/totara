@@ -359,11 +359,6 @@ abstract class dp_base_component {
             $table->add_data($row);
         }
 
-        // Hide empty columns TODO SCANMSG Readd once functionality is readded
-        /*if (!empty($headers->hide_if_empty)) {
-            $table->hide_empty_cols($headers->hide_if_empty);
-        }*/
-
         $table->finish_html();
         $out = ob_get_contents();
         ob_end_clean();
@@ -1267,7 +1262,6 @@ abstract class dp_base_component {
         // Check for allow/approve permissions
         $canupdate = ($permission >= DP_PERMISSION_ALLOW ? 'true' : 'false');
 
-        // TODO SCANMSG sesskey no longer included as a hidden input - does this still function correctly?
         $add_button_text = get_string('add'.$this->component.'s', 'totara_plan');
         $html = html_writer::start_tag('div', array('class' => 'buttons plan-add-item-button-wrapper'));
         $html .= html_writer::start_tag('div', array('class' => 'singlebutton dp-plan-assign-button'));

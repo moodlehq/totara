@@ -571,8 +571,6 @@ function dp_display_plans($userid, $statuses=array(DP_PLAN_STATUSAPPROVED), $col
         }
     }
     unset($plans);
-    //TODO SCANMSG re-enable when we figure out what to do about the new flexible_table
-    //$table->hide_empty_cols();
 
     $table->finish_html();
     $out = ob_get_contents();

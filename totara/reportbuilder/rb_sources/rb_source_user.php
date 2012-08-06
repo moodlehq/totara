@@ -406,8 +406,8 @@ class rb_source_user extends rb_base_source {
         $profile_link = html_writer::link("{$CFG->wwwroot}/user/view.php?id={$userid}", $profilestr);
         $booking_link = html_writer::link("{$CFG->wwwroot}/my/bookings.php?userid={$userid}", $bookingstr);
 
-        // SCANMSG: TODO readd once plans merged
-        $show_plan_link = true; //dp_can_view_users_plans($userid);
+        require_once($CFG->dirroot . '/totara/plan/lib.php');
+        $show_plan_link = dp_can_view_users_plans($userid);
         $links = $show_plan_link ? ($plan_link.'&nbsp;|&nbsp;') : '';
         $links .= $profile_link.'&nbsp;|&nbsp;';
         $links .= $booking_link.'&nbsp;|&nbsp;';
