@@ -597,13 +597,13 @@ function totara_cohort_update_dynamic_cohort_members($cohortid, $userid=0, $dela
 function totara_cohort_send_queued_notifications(){
     global $CFG, $DB;
 
-    $sql = "SELECT " . $DB->sql_concat('cohort.id', "'-'", 'cmq.action') . " AS id, cmq.cohortid, cmq.action, cohort.idnumber
-    FROM {cohort_msg_queue} cmq
-    INNER JOIN {cohort} cohort
-       ON cohort.id = cmq.cohortid
-       WHERE cmq.processed=0
-    GROUP BY cmq.cohortid, cmq.action, cohort.idnumber
-    ORDER BY cohort.idnumber, cmq.action";
+    $sql = "SELECT " . $DB->sql_concat('cmq.cohortid', "'-'", 'cmq.action') . " AS id, cmq.cohortid, cmq.action, cohort.idnumber
+              FROM {cohort_msg_queue} cmq
+        INNER JOIN {cohort} cohort
+                ON cohort.id = cmq.cohortid
+             WHERE cmq.processed = 0
+          GROUP BY cmq.cohortid, cmq.action, cohort.idnumber
+          ORDER BY cohort.idnumber, cmq.action";
 
     $batchlist = $DB->get_records_sql($sql);
     if (empty($batchlist)) {
@@ -617,12 +617,18 @@ function totara_cohort_send_queued_notifications(){
         // First flag the notices we're going to send, so that subsequent cron runs won't accidentally double-send them
         // if this takes a long time.
         $processtime = time();
-        $sql = 'UPDATE {cohort_msg_queue} SET processed=? WHERE cohortid=? AND action=? and processed=0';
+        $sql = 'UPDATE {cohort_msg_queue} SET processed = ? WHERE cohortid = ? AND action = ? and processed = 0';
         $sqlparams = array($processtime, $batch->cohortid, $batch->action);
         $DB->execute($sql, $sqlparams);
 
-        $msglist = $DB->get_records_select('cohort_msg_queue', 'cohortid=? and action=? and processed=?',
-            array($batch->cohortid, $batch->action, $processtime), 'timecreated, id', 'DISTINCT userid');
+        $sql = "SELECT userid
+                  FROM {cohort_msg_queue}
+                 WHERE cohortid = ?
+                   AND action = ?
+                   AND processed = ?
+              GROUP BY userid";
+        $msglist = $DB->get_records_sql($sql, array($batch->cohortid, $batch->action, $processtime));
+
         if (empty($msglist)) {
             continue;
         }
