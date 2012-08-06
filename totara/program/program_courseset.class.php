@@ -1870,21 +1870,46 @@ class recurring_course_set extends course_set {
         }
 
         if ($ob = $DB->get_record('prog_courseset_course', array('coursesetid' => $this->id))) {
-            if ($this->course->id != $ob->courseid) {
+            if ($this->course->id == $ob->courseid) {
+                // nothing to do
+                return true;
+            } else {
+                $removed_id = $ob->courseid;
+                $added_id = $this->course->id;
                 $ob->courseid = $this->course->id;
-                return $DB->update_record('prog_courseset_course', $ob);
+                $DB->update_record('prog_courseset_course', $ob);
             }
         } else {
+            $removed_id = false;
+            $added_id = $this->course->id;
             $ob = new stdClass();
             $ob->coursesetid = $this->id;
             $ob->courseid = $this->course->id;
-            return $DB->insert_record('prog_courseset_course', $ob);
+            $DB->insert_record('prog_courseset_course', $ob);
         }
+
         $program_plugin = enrol_get_plugin('totara_program');
-        $instance = $program_plugin->get_instance_for_course($this->course->id);
-        if (!$instance) {
-            $program_plugin->add_instance($course->courseid);
+
+        // if the course no longer exists in any programs, remove the program enrolment plugin
+        if ($removed_id) {
+            $courses_still_associated = prog_get_courses_associated_with_programs(array($removed_id));
+            // don't consider the one we've just added
+            unset($courses_still_associated[$added_id]);
+            if (empty($courses_still_associated)) {
+                $instance = $program_plugin->get_instance_for_course($removed_id);
+                if ($instance) {
+                    $program_plugin->delete_instance($instance);
+                }
+            }
         }
+
+        // if the new course doesn't yet have the enrollment plugin, add it
+        $instance = $program_plugin->get_instance_for_course($added_id);
+        if (!$instance) {
+            $course = $DB->get_record('course', array('id' => $added_id));
+            $program_plugin->add_instance($course);
+        }
+
         return true;
     }
 
@@ -2080,8 +2105,6 @@ class recurring_course_set extends course_set {
             $template_values['%'.$prefix.'label%'] = array('name' => $prefix.'label', 'value' => null);
         }
 
-        $templatehtml .= (!isset($this->course->enrolenddate)) ? html_writer::tag('div', get_string('error:courses_endenroldate', 'totara_program'), array('class' => 'recurringnotice')) : '';
-
         $helpbutton = $OUTPUT->help_icon('setlabel', 'totara_program');
         $templatehtml .= html_writer::start_tag('div', array('class' => 'fline'));
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
@@ -2153,7 +2176,7 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'recurcreatetimenum', $this->recurcreatetimenum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'recurcreatetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurcreatetimenum', get_string('error:coursecreation_nonzero', 'totara_program'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'recurcreatetimenum', get_string('error:coursecreationrepeat_nonzero', 'totara_program'), 'nonzero', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurcreatetimeperiod', '', $timeallowanceoptions);
@@ -2167,7 +2190,7 @@ class recurring_course_set extends course_set {
         $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
         $templatehtml .= html_writer::tag('label', get_string('label:recurcreation', 'totara_program') . ' ' . $helpbutton, array('for' => $prefix.'recurcreatetimenum'));
         $templatehtml .= html_writer::end_tag('div');
-        $templatehtml .= html_writer::tag('div', get_string('createcourse', 'totara_program') . ' %' . $prefix . 'recurcreatetimenum% %' . $prefix . 'recurcreatetimeperiod% '. get_string('beforecourseends', 'totara_program'), array('class' => 'fitem'));
+        $templatehtml .= html_writer::tag('div', get_string('createcourse', 'totara_program') . ' %' . $prefix . 'recurcreatetimenum% %' . $prefix . 'recurcreatetimeperiod% '. get_string('beforecourserepeats', 'totara_program'), array('class' => 'fitem'));
         $templatehtml .= html_writer::end_tag('div');
         $formdataobject->{$prefix.'recurcreatetimenum'} = $this->recurcreatetimenum;
         $formdataobject->{$prefix.'recurcreatetimeperiod'} = $this->recurcreatetimeperiod;

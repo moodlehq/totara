@@ -30,6 +30,8 @@ require_once $CFG->dirroot.'/backup/lib.php';
 require_once $CFG->dirroot.'/backup/backuplib.php';
 require_once $CFG->dirroot.'/backup/restorelib.php';
 require_once $CFG->dirroot.'/totara/program/lib.php';
+require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
+require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
 
 /**
  * Update programs
@@ -228,16 +230,9 @@ function program_cron_switch_recurring_courses() {
         // retrieve the recurring course
         $course = $courseset->course;
 
-        // if the recurring course has no enrolment end date set we can't check
-        // when the course is supposed to be changed over (as this is what the
-        // change over date is based on for want of a better option)
-        if (!isset($course->enrolenddate) || $course->enrolenddate==0) {
-            continue;
-        }
-
-        // if the enrolment date of the recurring course is in the future then
+        // if the start date of the recurring course is in the future then
         // we don't need to switch over yet
-        if ($course->enrolenddate > $now) {
+        if ($course->startdate > $now) {
             continue;
         }
 
@@ -250,7 +245,7 @@ function program_cron_switch_recurring_courses() {
                 // Before we set the new course in the program, we have to first save the history
                 // record of any users who have not completed the current course and notify
                 // those users that the course has been changed so that they can complete
-                // the course independently. The can view the record of their complete/incomplete
+                // the course independently. They can view the record of their complete/incomplete
                 // recurring program history via a link in their record of learning.
 
                 // Query to retrieve all the users who have not completed the program
@@ -278,24 +273,24 @@ function program_cron_switch_recurring_courses() {
                         // it was added to the history table so that we can report on the course history later if necessary
                         $completion_record->recurringcourseid = $course->id;
                         $backup_success = $DB->insert_record('prog_completion_history', $completion_record);
-
-                        // send a message to the user to let them know that the course
-                        // has changed and that they haven't completed it
-                        $messagedata = new stdClass();
-                        $messagedata->userto = $user;
-                        $messagedata->userfrom = get_admin();
-                        $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
-                        $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
-                        $messagedata->contexturl = $CFG->wwwroot.'/course/view.php?id='.$course->id;
-                        $messagedata->contexturlname = get_string('launchcourse', 'totara_program');;
-                        $result = tm_alert_send($messagedata);
                     }
                     $transaction->allow_commit();
 
+                    // send a message to the user to let them know that the course
+                    // has changed and that they haven't completed it
+                    $messagedata = new stdClass();
+                    $messagedata->userto = $user;
+                    $messagedata->userfrom = get_admin();
+                    $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
+                    $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
+                    $messagedata->contexturl = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
+                    $messagedata->contexturlname = get_string('launchcourse', 'totara_program');;
+                    $result = tm_alert_send($messagedata);
                 }
 
-                // Now we can set the next course as the current course in the program
+                // Now we can make the next course visible and set it as the current course in the program
                 $courseset->course = $newcourse;
+                $DB->update_record('course', (object)array('id' => $newcourse->id, 'visible' => true));
                 $courseset->save_set();
             }
 
@@ -318,7 +313,7 @@ function program_cron_switch_recurring_courses() {
  * @global object $DB
  */
 function program_cron_copy_recurring_courses() {
-    global $DB;
+    global $DB, $USER, $CFG;
 
     $debugging = debugging();
     $now = time();
@@ -340,19 +335,12 @@ function program_cron_copy_recurring_courses() {
         // retrieve the recurring course
         $course = $courseset->course;
 
-        // if the recurring course has no enrolment end date set we can't check
-        // when the course is supposed to be changed over (as this is what the
-        // change over date is based on for want of a better option)
-        if (!isset($course->enrolenddate) || $course->enrolenddate == 0) {
-            continue;
-        }
-
-        // if the enrolment date of the recurring course is too far in the
+        // if the start date of the recurring course is too far in the
         // future (based on the recurcreatetime value set by the program creator)
         // we don't need to create the new course yet
-        if (($course->enrolenddate - $now) > $courseset->recurcreatetime) {
-            continue;
-        }
+         if (($course->startdate + $courseset->recurrencetime - $now) > $courseset->recurcreatetime) {
+             continue;
+         }
 
         // check if a course has already been created for this program. If so,
         // and the course actually exists, we don't need to do anything
@@ -368,23 +356,20 @@ function program_cron_copy_recurring_courses() {
         // So if processing has reached this far it means the existing course
         // needs to be backed up and restored to a new course
 
-        $prefs = array();
-        $errorstr = null;
+        //Backup course
+        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc->execute_plan();
 
-        // backup the course
-        if ($backupfile = backup_course_silently($course->id, $prefs, $errorstr)) {
-
+        if ($backupfile = $bc->get_results()) {
             if ($debugging) {
-                mtrace("Course '{$course->shortname}' with id {$course->id} successfully backed up to: $backupfile");
+                mtrace("Course '{$course->fullname}' with id {$course->id} successfully backed up");
             }
 
-            $datestr = userdate($course->enrolenddate, '%d/%m/%Y'); // use the enrolment end date of the current course to distinguish the next course
-            $newcourseob = clone $course;
-            unset($newcourseob->id);
-            unset($newcourseob->modinfo);
+            $backupfile = $backupfile['backup_destination'];
+            $bc->destroy();
 
-            // we need to check both fullname and shortname to see if they have a date appended to them already
-            // if there is a date, it needs to be stripped out, including the space or hyphen
+            $datestr = userdate($course->startdate, '%d/%m/%Y');
             $fullname = $course->fullname;
             if (preg_match('/ ([0-9]{2}\/[0-9]{2}\/[0-9]{4})$/', $fullname)) {
                 $fullname = substr($fullname, 0, -11);
@@ -394,36 +379,66 @@ function program_cron_copy_recurring_courses() {
                 $shortname = substr($shortname, 0, -12);
             }
 
-            // then the new date can be appended if needed
-            $newcourseob->fullname = $fullname.' '.trim($datestr);
-            $newcourseob->shortname = $shortname.'-'.trim($datestr);
-            $newcourseob->enrollable = false;
-            $newcourseob->enrolenddate = $now + $courseset->recurcreatetime + $courseset->recurrencetime; // this should prevent the system from trying to create another new course the next time the cron is run
-            $newcourseob->visible = false;
+            $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
-            if ($newcourse = create_course($newcourseob)) {
-                if ($restoresuccess = import_backup_file_silently($backupfile, $newcourse->id, true, false, array())) {
-                    if ($debugging) {
-                        mtrace("Backup file $backupfile was successfully restored into course with id {$newcourse->id}");
-                    }
+            // Unzip backup to a temporary folder
+            $tempfolder = time() . $USER->id;
+            check_dir_exists($CFG->dataroot . '/temp/backup');
+            $backupfile->extract_to_pathname(get_file_packer(), $CFG->dataroot . '/temp/backup/' . $tempfolder);
 
-                    // create a new record to enable the system to find the new course
-                    // when it is time to switch the old course for the new course
-                    // in the recurring program
-                    $new_recurrence_rec = new stdClass();
-                    $new_recurrence_rec->programid = $program->id;
-                    $new_recurrence_rec->currentcourseid = $course->id;
-                    $new_recurrence_rec->nextcourseid = $newcourse->id;
-                    $DB->insert_record('prog_recurrence', $new_recurrence_rec);
+            //Execute in transaction to prevent course creation if restore fails
+            $transaction = $DB->start_delegated_transaction();
 
-                } else {
-                    if ($debugging) {
-                        mtrace("Backup file $backupfile was NOT successfully restored into course with id {$newcourse->id}");
-                    }
+            if ($newcourseid = restore_dbops::create_new_course($fullname, $shortname, $course->category)) {
+                $rc = new restore_controller($tempfolder, $newcourseid, backup::INTERACTIVE_NO, backup::MODE_SAMESITE,
+                    $USER->id, backup::TARGET_NEW_COURSE);
+                $rc->execute_precheck();
+                $rc->execute_plan();
+
+                $newstartdate = $now + $courseset->recurcreatetime + $courseset->recurrencetime;
+                // Update properties of a new course
+                $DB->update_record('course', (object)array(
+                    'id' => $newcourseid,
+                    'shortname' => $shortname . '-' . trim($datestr),
+                    'fullname' => $fullname . ' ' . trim($datestr),
+                    'icon' => $course->icon,
+                    'startdate' => $newstartdate,
+                    'visible' => false
+                ));
+
+                //Update enrolment dates for each user
+                $enrolments = $DB->get_records_sql("
+                        SELECT uenr.id
+                        FROM
+                            {user_enrolments} AS uenr
+                        INNER JOIN {enrol} enr
+                            ON uenr.enrolid = enr.id
+                        WHERE enr.courseid = ?", array($newcourseid));
+
+                foreach ($enrolments as $enrolment) {
+                    $DB->update_record('user_enrolments', (object)array(
+                        'id' => $enrolment->id,
+                        'timestart' => $newstartdate
+                    ));
                 }
+
+                if ($debugging) {
+                    mtrace("Course '{$fullname}' with id {$newcourseid} was successfully restored");
+                }
+
+                $transaction->allow_commit();
+
+                // create a new record to enable the system to find the new course
+                // when it is time to switch the old course for the new course
+                // in the recurring program
+                $new_recurrence_rec = new stdClass();
+                $new_recurrence_rec->programid = $program->id;
+                $new_recurrence_rec->currentcourseid = $course->id;
+                $new_recurrence_rec->nextcourseid = $newcourseid;
+                $DB->insert_record('prog_recurrence', $new_recurrence_rec);
             } else {
                 if ($debugging) {
-                    mtrace("Backup file $backupfile was NOT successfully restored because a new course could not be created to complete the restore");
+                    mtrace("Backup file was NOT successfully restored because a new course could not be created to complete the restore");
                 }
             }
         } else {
