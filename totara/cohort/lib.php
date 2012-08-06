@@ -856,6 +856,7 @@ function totara_cohort_notify_users($cohortid, $userids, $action, $delaymessages
         email_to_user($touser, $CFG->orgname, $emailsubject, $emailbody);
 
         $eventdata->userto = $touser;
+        $eventdata->userfrom = $touser;
         tm_alert_send($eventdata);
     }
 

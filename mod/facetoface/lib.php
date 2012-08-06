@@ -4108,7 +4108,6 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
     require_once($CFG->dirroot.'/totara/message/messagelib.php');
     $string_manager = get_string_manager();
     $newevent = new stdClass();
-    $newevent->userfrom         = NULL;
     $user = $DB->get_record('user', array('id' => $userid));
     $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$userid;
     $fromname = fullname($user);
@@ -4177,9 +4176,11 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
 
         case MDL_F2F_STATUS_REQUESTED:
             $managerid = facetoface_get_manager($userid);
+            $user = $DB->get_record('user', array('id' => $userid));
             if ($managerid !== false) {
-                $userto = $DB->get_record('user', array('id' => $managerid));
-                $newevent->userto           = $userto;
+                $manager = $DB->get_record('user', array('id' => $managerid));
+                $newevent->userto           = $manager;
+                $newevent->userfrom         = $user;
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
                                                         $facetoface->name,
@@ -4192,24 +4193,23 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
                 $subjectinfo = new stdClass();
                 $subjectinfo->usermsg = $usermsg;
                 $subjectinfo->url = html_writer::link(new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id)), $facetoface->name);
-                $newevent->subject          = $string_manager->get_string('requestuserattendsession', 'facetoface', $subjectinfo, $userto->lang);
+                $newevent->subject          = $string_manager->get_string('requestuserattendsession', 'facetoface', $subjectinfo, $manager->lang);
                 // do the facetoface workflow event
                 $onaccept = new stdClass();
                 $onaccept->action = 'facetoface';
-                $onaccept->text = $string_manager->get_string('approveinstruction', 'facetoface', null, $userto->lang);
+                $onaccept->text = $string_manager->get_string('approveinstruction', 'facetoface', null, $manager->lang);
                 $onaccept->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onaccept = $onaccept;
                 $onreject = new stdClass();
                 $onreject->action = 'facetoface';
-                $onreject->text = $string_manager->get_string('rejectinstruction', 'facetoface', null, $userto->lang);
+                $onreject->text = $string_manager->get_string('rejectinstruction', 'facetoface', null, $manager->lang);
                 $onreject->data = array('userid' => $userid, 'session' => $session, 'facetoface' => $facetoface);
                 $newevent->onreject = $onreject;
                 $newevent->sendemail        = TOTARA_MSG_EMAIL_NO;
                 tm_task_send($newevent);
                 $newevent = new stdClass();
-                $newevent->userfrom         = NULL;
-                $user = $DB->get_record('user', array('id' => $userid));
                 $newevent->userto           = $user;
+                $newevent->userfrom         = $user;
                 $newevent->subject          = $string_manager->get_string('requestattendsessionsent', 'facetoface', html_writer::link(new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id)), $facetoface->name), $user->lang);
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->icon             = 'facetoface-request';
