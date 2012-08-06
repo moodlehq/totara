@@ -581,7 +581,7 @@ if ($results['courses']) {
     print_navigation_bar($totalcount['courses'], $page, $perpage, $encodedsearch, $modulelink);
 
     if (!$isediting) {
-    /// Show browse view.
+        // Show browse view.
         echo $OUTPUT->spacer(array('height' => 5, 'width' => 5));
         foreach ($results['courses'] as $course) {
             $course->summary .= "<br /><p class=\"category\">";
@@ -591,7 +591,7 @@ if ($results['courses']) {
             print_course($course, $search);
         }
     } else {
-    /// Show editing UI.
+        // Show editing UI.
         echo "<form id=\"movecourses\" action=\"search.php\" method=\"post\">\n";
         echo "<div><input type=\"hidden\" name=\"sesskey\" value=\"$USER->sesskey\" />\n";
         echo "<input type=\"hidden\" name=\"search\" value=\"".s($search, true)."\" />\n";
@@ -645,9 +645,9 @@ if ($results['courses']) {
             // this is ok since this will get inherited from course category context
             // if it is set
             if (has_capability('moodle/category:manage', $coursecontext)) {
-                echo "<input type=\"checkbox\" name=\"c$course->id\" />\n";
+                echo "<input type=\"checkbox\" name=\"c{$course->id}\" />\n";
             } else {
-                echo "<input type=\"checkbox\" name=\"c$course->id\" disabled=\"disabled\" />\n";
+                echo "<input type=\"checkbox\" name=\"c{$course->id}\" disabled=\"disabled\" />\n";
             }
 
             echo "</td>\n";
@@ -749,7 +749,7 @@ if ($results['programs']) {
     print_navigation_bar($totalcount['programs'], $page, $perpage, $encodedsearch, '');
 
     if (!$isediting) {
-    /// Show browse view.
+        // Show browse view.
         echo $OUTPUT->spacer(array('height' => 5, 'width' => 5));
         foreach ($results['programs'] as $program) {
             $program->summary .= "<br /><p class=\"category\">";
@@ -759,7 +759,7 @@ if ($results['programs']) {
             prog_print_program($program, $search);
         }
     } else {
-    /// Show editing UI.
+        // Show editing UI.
         echo "<form id=\"movecourses\" action=\"search.php\" method=\"post\">\n";
         echo "<div><input type=\"hidden\" name=\"sesskey\" value=\"$USER->sesskey\" />\n";
         echo "<input type=\"hidden\" name=\"search\" value=\"".s($search, true)."\" />\n";
@@ -884,7 +884,7 @@ if ($results['categories']) {
     print_navigation_bar($totalcount['categories'], $page, $perpage, $encodedsearch, '');
 
     if (!$isediting) {
-    /// Show browse view.
+        // Show browse view.
         echo $OUTPUT->spacer(array('height' => 5, 'width' => 5));
         foreach ($results['categories'] as $cat) {
             if (isset($category->parent) && $category->parent) {
@@ -896,7 +896,7 @@ if ($results['categories']) {
             print_category($cat, $search);
         }
     } else {
-    /// Show editing UI.
+        // Show editing UI.
         echo "<form id=\"movecategories\" action=\"search.php\" method=\"post\">\n";
         echo "<div><input type=\"hidden\" name=\"sesskey\" value=\"$USER->sesskey\" />\n";
         echo "<input type=\"hidden\" name=\"search\" value=\"".s($search, true)."\" />\n";

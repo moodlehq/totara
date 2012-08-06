@@ -37,11 +37,7 @@ class program_edit_form extends moodleform {
         $action = $this->_customdata['action'];
         $category = $this->_customdata['category'];
         $editoroptions = $this->_customdata['editoroptions'];
-        if (isset($this->_customdata['program'])) {
-            $program = $this->_customdata['program'];
-        } else {
-            $program = false;
-        }
+        $program = (isset($this->_customdata['program'])) ? $this->_customdata['program'] : false;
 
         $systemcontext = context_system::instance();
         $categorycontext = context_coursecat::instance($category->id);
@@ -67,7 +63,6 @@ class program_edit_form extends moodleform {
             $buttonarray[] = $mform->createElement('submit', 'deleteno', get_string('no'));
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
-
             return;
         }
 
@@ -197,8 +192,8 @@ class program_edit_form extends moodleform {
 
 
         //replacement for old totara/core/icon classes
-        $program->icon = (!empty($program->icon)) ? $program->icon : 'default';
-        totara_add_icon_picker($mform, $action, 'program', $program->icon);
+        $programicon = ($program && !empty($program->icon)) ? $program->icon : 'default';
+        totara_add_icon_picker($mform, $action, 'program', $programicon);
 
         if ($action == 'add') {
             $buttonarray = array();
@@ -211,12 +206,6 @@ class program_edit_form extends moodleform {
             $buttonarray[] = $mform->createElement('submit', 'savechanges', get_string('savechanges'), 'class="savechanges-overview program-savechanges"');
             $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
-        } else {
-            if (isset($programcontext) && has_capability('totara/program:configuredetails', $programcontext)) {
-                $buttonarray = array($mform->createElement('submit', 'edit', get_string('editprogramdetails', 'totara_program')));
-                $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
-                $mform->closeHeaderBefore('buttonar');
-            }
         }
 
     }
@@ -249,6 +238,26 @@ class program_edit_form extends moodleform {
         return $errors;
     }
 
+    /**
+     * Display static form and edit button
+     *
+     * @access  public
+     * @return  void
+     */
+    public function display() {
+        global $OUTPUT;
+
+        parent::display();
+
+        $program = (isset($this->_customdata['program'])) ? $this->_customdata['program'] : false;
+        $action = $this->_customdata['action'];
+
+        // if $action is 'view' and $program is not false then we are viewing an existing program
+        // Check user has capability to edit program
+        if ($action == 'view' && $program && has_capability('totara/program:configuredetails', $program->get_context())) {
+            echo $OUTPUT->single_button(new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'edit')), get_string('editprogramdetails', 'totara_program'), 'get');
+        }
+    }
 }
 
 // Define a form class to display the program content in a non-editable form
@@ -296,7 +305,6 @@ class program_content_nonedit_form extends moodleform {
             $mform->addElement('static', 'timeallowance', '', $timeallowedstr);
         }
     }
-
 
     /**
      * Display static form and edit button

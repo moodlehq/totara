@@ -35,6 +35,8 @@ require_once('edit_messages_form.php');
 
 $id = required_param('id', PARAM_INT); // program id
 
+require_login();
+
 $systemcontext = context_system::instance();
 $program = new program($id);
 $programcontext = $program->get_context();
@@ -42,7 +44,7 @@ $programcontext = $program->get_context();
 // Integrate into the admin tree only if the user can edit program messages at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configuremessages', $systemcontext)) {
-    admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php');
+    admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_messages.php', array('context' => $programcontext));
 } else {
     $PAGE->set_context($programcontext);
     $PAGE->set_url(new moodle_url('/totara/program/edit_messages.php', array('id' => $id)));
@@ -56,7 +58,8 @@ local_js(array(
 ));
 
 // Additional permissions check
-if (!has_capability('totara/program:configuremessages', $program->get_context())) {
+
+if (!has_capability('totara/program:configuremessages', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
 

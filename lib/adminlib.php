@@ -5806,11 +5806,16 @@ class admin_page_managefilters extends admin_externalpage {
  *      page (e.g. admin/roles/allow.php, instead of admin/roles/manage.php, you can pass the alternate URL here.
  * @param array $options Additional options that can be specified for page setup.
  *      pagelayout - This option can be used to set a specific pagelyaout, admin is default.
+ *      context - if we want the page to have a particular context
  */
 function admin_externalpage_setup($section, $extrabutton = '', array $extraurlparams = null, $actualurl = '', array $options = array()) {
     global $CFG, $PAGE, $USER, $SITE, $OUTPUT;
 
-    $PAGE->set_context(null); // hack - set context to something, by default to system context
+    if (!empty($options['context'])) {
+        $PAGE->set_context($options['context']);
+    } else {
+        $PAGE->set_context(null); // hack - set context to something, by default to system context
+    }
 
     $site = get_site();
     require_login();

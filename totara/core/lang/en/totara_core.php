@@ -83,6 +83,7 @@ $string['error:morethanxitemsatthislevel'] = 'There are more than {$a} items at 
 $string['invalidsearchtable'] = 'Invalid search table';
 $string['itemstoadd'] = 'Items to add';
 $string['noresultsfor'] = 'No results found for "{$a->query}".';
+$string['xresultsfory'] = '<b>{$a->count}</b> results found for "{$a->query}"';
 $string['queryerror'] = 'Query error. No results found.';
 $string['search'] = 'Search';
 $string['trysearchinginstead'] = 'Try searching instead.';

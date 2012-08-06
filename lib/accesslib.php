@@ -6564,19 +6564,16 @@ class context_program extends context {
         global $DB;
 
         $name = '';
-        if ($this->_instanceid == SITEID) {
-            $name = get_string('frontpage', 'admin');
-        } else {
-            if ($program = $DB->get_record('prog', array('id' => $this->_instanceid))) {
-                if ($withprefix){
-                    $name = get_string('program', 'totara_program').': ';
-                }
-                if ($short){
-                    $name .= format_string($program->shortname, true, array('context' => $this));
-                } else {
-                    $name .= format_string($program->fullname);
-               }
+
+        if ($program = $DB->get_record('prog', array('id' => $this->_instanceid))) {
+            if ($withprefix){
+                $name = get_string('program', 'totara_program').': ';
             }
+            if ($short){
+                $name .= format_string($program->shortname, true, array('context' => $this));
+            } else {
+                $name .= format_string($program->fullname);
+           }
         }
         return $name;
     }
@@ -6587,11 +6584,7 @@ class context_program extends context {
      * @return moodle_url
      */
     public function get_url() {
-        if ($this->_instanceid != SITEID) {
-            return new moodle_url('/totara/program/view.php', array('id'=>$this->_instanceid));
-        }
-
-        return new moodle_url('/');
+        return new moodle_url('/totara/program/view.php', array('id'=>$this->_instanceid));
     }
 
     /**

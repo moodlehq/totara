@@ -28,9 +28,11 @@
         redirect(new moodle_url('/admin/index.php'));
     }
 
+    $systemcontext = context_system::instance();
+    $category = isset($CFG->defaultrequestcategory) ? $CFG->defaultrequestcategory : SITEID;
+    $catcontext = context_coursecat::instance($category);
     $PAGE->set_url(new moodle_url('/course/categorylist.php'));
-    $context = context_system::instance();
-    $PAGE->set_context($context);
+    $PAGE->set_context($systemcontext);
     $PAGE->set_pagelayout('admin');
 
     // save editing state
@@ -40,15 +42,22 @@
     $editingon = !empty($USER->categoryedit);
 
     // determine how to display this page
-    $canmanagecourses = has_any_capability(array('moodle/course:create', 'moodle/course:update'), $context);
-    $canmanageprograms = has_any_capability(array('totara/program:createprogram', 'totara/program:configureprogram'), $context);
-    $isadmin = (($SESSION->viewtype == 'course' && $canmanagecourses) ||
-         ($SESSION->viewtype == 'program' && $canmanageprograms));
+    $canmanagesitecourses = has_any_capability(array('moodle/course:create', 'moodle/course:update'), $systemcontext);
+    $canmanagesiteprograms = has_any_capability(array('totara/program:createprogram', 'totara/program:configureprogram'), $systemcontext);
 
-    $adminediting = ($editingon && $isadmin);
+    $canmanagethesecourses = has_any_capability(array('moodle/course:create', 'moodle/course:update'), $catcontext);
+    $canmanagetheseprograms = has_any_capability(array('totara/program:createprogram', 'totara/program:configureprogram'), $catcontext);
+
+    $canedit = (($SESSION->viewtype == 'course' && $canmanagethesecourses) ||
+                ($SESSION->viewtype == 'program' && $canmanagetheseprograms));
+    $isediting = ($editingon && $canedit);
+
+    $isadmin = (($SESSION->viewtype == 'course' && $canmanagesitecourses) ||
+                 ($SESSION->viewtype == 'program' && $canmanagesiteprograms));
+    $isadminediting = ($editingon && $isadmin);
 
     // should we show the editing on/off button?
-    $editbutton = $isadmin ? totara_print_edit_button('categoryedit') : '';
+    $editbutton = $canedit ? totara_print_edit_button('categoryedit') : '';
 
 /// Print headings
     $numcategories = $DB->count_records('course_categories');
@@ -58,7 +67,7 @@
     $strcategory = get_string('category');
     $strcourses = get_string('courses');
 
-    if ($adminediting) {
+    if ($isadminediting) {
         if ($SESSION->viewtype == 'course') {
             $PAGE->navbar->add(get_string('managecourses'));
         }
@@ -75,7 +84,7 @@
 
     }
 
-    if ($adminediting) {
+    if ($isadminediting) {
         // Integrate into the admin tree only if the user can edit categories at the top level,
         // otherwise the admin block does not appear to this user, and you get an error.
         require_once($CFG->libdir.'/adminlib.php');
@@ -105,16 +114,16 @@
     echo $OUTPUT->heading($strheading, 1);
 
     $buttoncontainer = null;
-    if ($adminediting) {
+    if ($isediting) {
         $buttoncontainer = $OUTPUT->container_start();
         if ($SESSION->viewtype == 'course' &&
-            has_capability('moodle/course:create', $context)) {
-        /// Print button to create a new course (no specific category)
+            has_capability('moodle/course:create', $catcontext)) {
+            // Print button to create a new course (no specific category)
             $buttoncontainer .= $OUTPUT->single_button(new moodle_url('/course/edit.php', array('category' => $CFG->defaultrequestcategory)), get_string('addnewcourse'), 'get');
         }
         if ($SESSION->viewtype == 'program' &&
-            has_capability('totara/program:createprogram', $context)) {
-        /// Print button to create a new program
+            has_capability('totara/program:createprogram', $catcontext)) {
+            // Print button to create a new program
             $buttoncontainer .= $OUTPUT->single_button(new moodle_url('/totara/program/add.php', array('category' => $CFG->defaultrequestcategory)), get_string('addnewprogram', 'totara_program'), 'get');
         }
         $buttoncontainer .= $OUTPUT->container_end();
@@ -138,10 +147,11 @@
     if ($topcats) {
         $viscats = array();
         foreach ($topcats as $topcat) {
-            if ($topcat->visible || has_capability('moodle/category:viewhiddencategories', $context)) {
+            if ($topcat->visible || has_capability('moodle/category:viewhiddencategories', $systemcontext)) {
                 $viscats[] = $topcat;
             }
         }
+
         if (count($viscats) == 0) {
             echo html_writer::tag('p', $strnoitems);
         } else {
@@ -149,7 +159,7 @@
 
             require_once($CFG->dirroot.'/lib/tablelib.php');
             // use 3 columns if there's space, 2 on admin pages
-            $numcols = $adminediting ? 2 : 3;
+            $numcols = $isadminediting ? 2 : 3;
             $table = new totara_table('toplevel_categories');
             $columns = array();
             $headers = array();
@@ -179,15 +189,20 @@
                 $catlinkcss = $topcat->visible ? '' : 'dimmed';
                 $item_count = array_key_exists($topcat->id, $top_item_counts) ? $top_item_counts[$topcat->id] : 0;
 
-                // don't show empty sub-categories unless viewing as admin
-                if (!$adminediting && $item_count == 0) {
-                    continue;
+                // don't show empty sub-categories unless viewing as admin or user has capabilities at the level of the empty category
+                if (!$isediting && $item_count == 0) {
+                    $emptycatcontext = context_coursecat::instance($topcat->id);
+                    $hasemptycat_coursecap = has_any_capability(array('moodle/course:create', 'moodle/course:update'), $emptycatcontext);
+                    $hasemptycat_progcap = has_any_capability(array('totara/program:createprogram', 'totara/program:configureprogram'), $emptycatcontext);
+                    if (!$hasemptycat_coursecap && !$hasemptycat_progcap) {
+                        continue;
+                    }
                 }
 
                 $url = new moodle_url('/course/category.php', array('id' => $topcat->id, 'viewtype' => $viewtype));
                 $text = format_string($topcat->name).' ('.$item_count.')';
                 $tablerow[] = $OUTPUT->heading(html_writer::link($url, $text, array('class' => $catlinkcss)), 3) .
-                        totara_print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $adminediting, $SESSION->viewtype);
+                        totara_print_main_subcategories($topcat->id, $secondarycats, $secondary_item_counts, $isadminediting, $SESSION->viewtype);
             }
             // output the last row
             if (count($tablerow) > 0) {
@@ -200,8 +215,8 @@
     echo $OUTPUT->container_start("buttons");
     // @todo decide what to do with this button
 
-    if (!empty($CFG->enablecourserequests) && $category->id == $CFG->enablecourserequests) {
-        print_course_request_buttons(context_system::instance());
+    if (!empty($CFG->enablecourserequests)) {
+        print_course_request_buttons($systemcontext);
     }
     echo $OUTPUT->container_end();
 

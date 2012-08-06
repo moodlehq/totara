@@ -2385,7 +2385,9 @@ function print_course_request_buttons($systemcontext) {
  */
 function can_edit_in_category($categoryid = 0) {
     $context = get_category_or_system_context($categoryid);
-    return has_any_capability(array('moodle/category:manage', 'moodle/course:create'), $context);
+    return has_any_capability(array('moodle/category:manage', 'moodle/course:create',
+                                    'moodle/course:update', 'totara/program:createprogram','totara/program:configureprogram'),
+                              $context);
 }
 
 /**

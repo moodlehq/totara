@@ -45,6 +45,8 @@ if ($course) {
         $user = $DB->get_record('user', array('id'=>$context->instanceid), '*', MUST_EXIST);
         $url->param('courseid', $course->id);
         $url->param('userid', $user->id);
+    } else if ($context->contextlevel == CONTEXT_PROGRAM) {
+        $course = $DB->get_record('prog', array('id' => $context->instanceid), '*', MUST_EXIST);
     } else {
         $course = $SITE;
     }
@@ -154,6 +156,9 @@ switch ($context->contextlevel) {
         break;
     case CONTEXT_COURSECAT:
         $PAGE->set_heading("$SITE->fullname: ".get_string("categories"));
+        break;
+    case CONTEXT_PROGRAM:
+        $PAGE->set_heading($course->fullname);
         break;
     case CONTEXT_COURSE:
         if ($isfrontpage) {

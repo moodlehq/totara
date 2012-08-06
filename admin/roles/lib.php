@@ -559,6 +559,7 @@ class define_role_table_advanced extends capability_table_with_risks {
             CONTEXT_SYSTEM => get_string('coresystem'),
             CONTEXT_USER => get_string('user'),
             CONTEXT_COURSECAT => get_string('category'),
+            CONTEXT_PROGRAM => get_string('program', 'totara_program'),
             CONTEXT_COURSE => get_string('course'),
             CONTEXT_MODULE => get_string('activitymodule'),
             CONTEXT_BLOCK => get_string('block')

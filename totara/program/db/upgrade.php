@@ -93,5 +93,21 @@ function xmldb_totara_program_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012080300, 'totara_program');
     }
 
+    if ($oldversion < 2012080301) {
+        //set up role assignment levels
+        //allow all roles except guest, frontpage and authenticateduser to be assigned at Program level
+        $roles = $DB->get_records('role', array(), '', 'id, archetype');
+        $rcl = new stdClass();
+        foreach ($roles as $role) {
+            if (isset($role->archetype) && ($role->archetype != 'guest' && $role->archetype != 'user' && $role->archetype != 'frontpage')) {
+                $rolecontextlevels[$role->id] = CONTEXT_PROGRAM;
+                $rcl->roleid = $role->id;
+                $rcl->contextlevel = CONTEXT_PROGRAM;
+                $DB->insert_record('role_context_levels', $rcl, false);
+            }
+        }
+        totara_upgrade_mod_savepoint(true, 2012080301, 'totara_program');
+    }
+
     return true;
 }

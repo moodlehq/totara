@@ -16,6 +16,8 @@ $string['program:configuremessages'] = 'Configure program messages';
 $string['program:handleexceptions'] = 'Handle program exceptions';
 $string['program:manageextensions'] = 'Manage extensions';
 
+//Admin/Settings
+$string['programadministration'] = 'Program Administration';
 // General program
 $string['added'] = 'Added';
 $string['addnewprogram'] = 'Add a new program';

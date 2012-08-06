@@ -35,6 +35,8 @@ require_once('edit_content_form.php');
 
 $id = required_param('id', PARAM_INT); // program id
 
+require_login();
+
 $systemcontext = context_system::instance();
 $program = new program($id);
 $programcontext = $program->get_context();
@@ -42,7 +44,7 @@ $programcontext = $program->get_context();
 // Integrate into the admin tree only if the user can edit program content at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configurecontent', $systemcontext)) {
-    admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_content.php');
+    admin_externalpage_setup('manageprograms', '', array('id' => $id), $CFG->wwwroot.'/totara/program/edit_content.php', array('context' => $programcontext));
 } else {
     $PAGE->set_context($programcontext);
     $PAGE->set_url(new moodle_url('/totara/program/edit_content.php', array('id' => $id)));
@@ -56,7 +58,8 @@ local_js(array(
     TOTARA_JS_TREEVIEW
 ));
 
-// Additional permissions check
+// Permissions checks
+
 if (!has_capability('totara/program:configurecontent', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }

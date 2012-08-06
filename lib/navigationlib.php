@@ -2935,6 +2935,9 @@ class settings_navigation extends navigation_node {
             case CONTEXT_COURSECAT:
                 $this->load_category_settings();
                 break;
+            case CONTEXT_PROGRAM:
+                $this->load_program_settings(true);
+                break;
             case CONTEXT_COURSE:
                 if ($this->page->course->id != SITEID) {
                     $this->load_course_settings(($context->id == $this->context->id));
@@ -3189,6 +3192,68 @@ class settings_navigation extends navigation_node {
         return array($resources, $activities);
     }
 
+    /**
+     * This function loads the program settings that are available for the user
+     *
+     * @param bool $forceopen If set to true the course node will be forced open
+     * @return navigation_node|false
+     */
+    protected function load_program_settings($forceopen = false) {
+        $context = $this->page->context;
+        $program = new program($context->instanceid);
+        $exceptions = $program->get_exception_count();
+        $exceptioncount = $exceptions ? $exceptions : 0;
+
+        $adminnode = $this->add(get_string('programadministration', 'totara_program'), null, self::TYPE_COURSE, null, 'progadmin');
+        if ($forceopen) {
+            $adminnode->force_open();
+        }
+        //standard tabs
+        if (has_capability('totara/program:configuredetails', $context)) {
+            $url = new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'edit'));
+            $adminnode->add(get_string('details', 'totara_program'), $url, self::TYPE_SETTING, null, 'progdetails', new pix_icon('i/settings', ''));
+        }
+        if (has_capability('totara/program:configurecontent', $context)) {
+            $url = new moodle_url('/totara/program/edit_content.php', array('id' => $program->id));
+            $adminnode->add(get_string('content', 'totara_program'), $url, self::TYPE_SETTING, null, 'progcontent', new pix_icon('i/settings', ''));
+        }
+        if (has_capability('totara/program:configureassignments', $context)) {
+            $url = new moodle_url('/totara/program/edit_assignments.php', array('id' => $program->id));
+            $adminnode->add(get_string('assignments', 'totara_program'), $url, self::TYPE_SETTING, null, 'progassignments', new pix_icon('i/settings', ''));
+        }
+        if (has_capability('totara/program:configuremessages', $context)) {
+            $url = new moodle_url('/totara/program/edit_messages.php', array('id' => $program->id));
+            $adminnode->add(get_string('messages', 'totara_program'), $url, self::TYPE_SETTING, null, 'progmessages', new pix_icon('i/settings', ''));
+        }
+        if (($exceptioncount > 0) && has_capability('totara/program:handleexceptions', $context)) {
+            $url = new moodle_url('/totara/program/exceptions.php', array('id' => $program->id, 'page' => 0));
+            $adminnode->add(get_string('exceptions', 'totara_program', $exceptioncount), $url, self::TYPE_SETTING, null, 'progexceptions', new pix_icon('i/settings', ''));
+        }
+        //roles and permissions
+        $usersnode = $adminnode->add(get_string('users'), null, navigation_node::TYPE_CONTAINER, null, 'users');
+        // Override roles
+        if (has_capability('moodle/role:review', $context)) {
+            $url = new moodle_url('/admin/roles/permissions.php', array('contextid' => $context->id));
+        } else {
+            $url = NULL;
+        }
+        $permissionsnode = $usersnode->add(get_string('permissions', 'role'), $url, navigation_node::TYPE_SETTING, null, 'override');
+        // Add assign or override roles if allowed
+        if (is_siteadmin()) {
+            if (has_capability('moodle/role:assign', $context)) {
+                $url = new moodle_url('/admin/roles/assign.php', array('contextid' => $context->id));
+                $permissionsnode->add(get_string('assignedroles', 'role'), $url, navigation_node::TYPE_SETTING, null, 'roles', new pix_icon('i/roles', ''));
+            }
+        }
+        // Check role permissions
+        if (has_any_capability(array('moodle/role:assign', 'moodle/role:safeoverride','moodle/role:override', 'moodle/role:assign'), $context)) {
+            $url = new moodle_url('/admin/roles/check.php', array('contextid' => $context->id));
+            $permissionsnode->add(get_string('checkpermissions', 'role'), $url, navigation_node::TYPE_SETTING, null, 'permissions', new pix_icon('i/checkpermissions', ''));
+        }
+        // just in case nothing was actually added
+        $usersnode->trim_if_empty();
+        $adminnode->trim_if_empty();
+    }
     /**
      * This function loads the course settings that are available for the user
      *

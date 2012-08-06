@@ -298,14 +298,20 @@ class totara_program_renderer extends plugin_renderer_base {
     * @param string $previoussearch
     * @return string HTML Fragment
     */
-    public function print_search($programid, $previoussearch='') {
-        $url = '/totara/program/exceptions.php?id='. $programid;
-        $out = html_writer::start_tag('form', array('action' => $url, 'method' => 'get'));
+    public function print_search($programid, $previoussearch='', $resultcount = 0) {
+        $url = new moodle_url('/totara/program/exceptions.php', array('id' => $programid));
+        $out = html_writer::start_tag('form', array('action' => $url->out(), 'method' => 'get'));
         $out .= html_writer::tag('label', get_string('searchforindividual', 'totara_program'), array('for' => 'exception_search'));
         $out .= html_writer::empty_tag('input', array('type' => 'text', 'id' => "exception_search", 'name' => 'search', 'value' => $previoussearch));
         $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => "id", 'value' => $programid));
         $out .= html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('search')));
         $out .= html_writer::end_tag('form');
+        if ($previoussearch != '' && $resultcount > 0) {
+            $a = new stdClass();
+            $a->count = $resultcount;
+            $a->query = $previoussearch;
+            $out .= html_writer::tag('p', get_string('xresultsfory', 'totara_core', $a));
+        }
         return $out;
     }
 

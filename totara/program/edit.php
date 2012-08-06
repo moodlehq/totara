@@ -35,6 +35,8 @@ require_once('edit_form.php');
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
 
+require_login();
+
 $systemcontext = context_system::instance();
 $program = new program($id);
 $programcontext = $program->get_context();
@@ -42,10 +44,10 @@ $programcontext = $program->get_context();
 // Integrate into the admin tree only if the user can edit programs at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configureprogram', $systemcontext)) {
-    admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php');
+    admin_externalpage_setup('manageprograms', '', array('id' => $id, 'action' => $action), $CFG->wwwroot.'/totara/program/edit.php', array('context' => $programcontext));
 } else {
-    $PAGE->set_context($programcontext);
     $PAGE->set_url(new moodle_url('/totara/program/edit.php', array('id' => $id)));
+    $PAGE->set_context($programcontext);
     $PAGE->set_title($program->fullname);
     $PAGE->set_heading($program->fullname);
 }
@@ -73,10 +75,6 @@ if ($action == 'edit') {
         'input[name="availablefromselector"], input[name="availableuntilselector"]'
     );
 
-}
-
-if (!has_capability('totara/program:configureprogram', $programcontext)) {
-    print_error('error:nopermissions', 'totara_program');
 }
 
 if (!$category = $DB->get_record('course_categories', array('id' => $program->category))) {
@@ -166,14 +164,12 @@ $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 if ($action == 'edit') {
-    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
     foreach ($category_breadcrumbs as $node) {
         $PAGE->add($node);
     }
     $PAGE->navbar->add($program->shortname, $viewurl);
     $PAGE->navbar->add(ucwords($action));
 } else {
-    $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
     foreach ($category_breadcrumbs as $node) {
         $PAGE->add($node);
     }
@@ -192,7 +188,6 @@ echo $program->display_current_status();
 $exceptions = $program->get_exception_count();
 require('tabs.php');
 
-
 // Program details
 $program->availablefromselector = $program->availablefrom > 0 ? userdate($program->availablefrom, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
 $program->availableuntilselector = $program->availableuntil > 0 ? userdate($program->availableuntil, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false) : '';
@@ -200,30 +195,27 @@ $program->availableuntilselector = $program->availableuntil > 0 ? userdate($prog
 $detailsform->set_data($program);
 $detailsform->display();
 
-if ($action == 'view') {
-    echo $OUTPUT->single_button(new moodle_url('/totara/program/edit.php', array('id' => $program->id, 'action' => 'edit')), get_string('editprogramdetails', 'totara_program'), 'get');
-}
 // display content, assignments and messages if in view mode
 if ($action == 'view') {
 
     // display the content form
-    $contentform = new program_content_nonedit_form($editcontenturl, array('program'=>$program), 'get');
+    $contentform = new program_content_nonedit_form($editcontenturl, array('program' => $program), 'get');
     $contentform->set_data($program);
     $contentform->display();
 
     // display the assignments form
-    $assignmentform = new program_assignments_nonedit_form($editassignmentsurl, array('program'=>$program), 'get');
+    $assignmentform = new program_assignments_nonedit_form($editassignmentsurl, array('program' => $program), 'get');
     $assignmentform->set_data($program);
     $assignmentform->display();
 
     // display the messages form
-    $messagesform = new program_messages_nonedit_form($editmessagesurl, array('program'=>$program), 'get');
+    $messagesform = new program_messages_nonedit_form($editmessagesurl, array('program' => $program), 'get');
     $messagesform->set_data($program);
     $messagesform->display();
 
     // display the delete button form
     if (has_capability('totara/program:deleteprogram', $program->get_context())) {
-        $deleteform = new program_delete_form($currenturl, array('program'=>$program));
+        $deleteform = new program_delete_form($currenturl, array('program' => $program));
         $deleteform->set_data($program);
         $deleteform->display();
     }

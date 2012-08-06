@@ -81,7 +81,7 @@ $item = file_prepare_standard_editor($item, 'summary', $TEXTAREA_OPTIONS, $TEXTA
 
 $item = file_prepare_standard_editor($item, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'progendnote', 0);
-$form = new program_edit_form($currenturl, array('action'=>'add', 'category'=>$category, 'editoroptions' => $TEXTAREA_OPTIONS));
+$form = new program_edit_form($currenturl, array('action' => 'add', 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS));
 
 if ($form->is_cancelled()) {
     redirect($progindexurl);
@@ -129,7 +129,14 @@ if ($data = $form->get_data()) {
 
         add_to_log(SITEID, 'program', 'created', "edit.php?id={$newid}", $program->fullname);
 
-        $viewurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$newid}&amp;action=edit";
+        // take them straight to edit page if they have permissions,
+        // otherwise view the program
+        $programcontext = context_program::instance($newid);
+        if (has_capability('totara/program:configuredetails', $programcontext)) {
+            $viewurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$newid}&amp;action=edit";
+        } else {
+            $viewurl = "{$CFG->wwwroot}/totara/program/view.php?id={$newid}";
+        }
 
         totara_set_notification(get_string('programcreatesuccess', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
     }

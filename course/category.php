@@ -46,7 +46,7 @@
     }
     $PAGE->set_url(new moodle_url('/course/category.php', array('id' => $id)));
     navigation_node::override_active_url($PAGE->url);
-    $context = $PAGE->context;
+    $context = context_coursecat::instance($id);
     $category = $PAGE->category;
 
     // save editing state
@@ -71,9 +71,8 @@
 
     $isadmin = (($SESSION->viewtype == 'course' && $canmanagesitecourses) ||
          ($SESSION->viewtype == 'program' && $canmanagesiteprograms));
-    $isadminediting = ($editingon && $isadmin);
 
-    // show we show the editing on/off button?
+    // should we show the editing on/off button?
     $editbutton = $canedit ? totara_print_edit_button('categoryedit', array('id' => $category->id, 'viewtype' => $SESSION->viewtype)) : '';
 
     // Process any category actions.
@@ -284,7 +283,8 @@
     $strcourses = get_string('courses');
 
     $buttoncontainer = null;
-    if ($editingon && can_edit_in_category()) {
+
+    if ($editingon && can_edit_in_category($id)) {
         $buttoncontainer = $OUTPUT->container_start();
         if ($SESSION->viewtype == 'course' && has_capability('moodle/course:create', $context)) {
             /// Print button to create a new course
@@ -334,7 +334,7 @@
 
     echo $OUTPUT->container(html_writer::link(new moodle_url('/course/category.php', array('id' => $category->parent, 'viewtype' => $SESSION->viewtype)), get_string('backtoparent','totara_coursecatalog')), 'toplinks');
     /// Print current category description
-    if (!$editingon && $category->description) {
+    if (!$isediting && $category->description) {
         echo $OUTPUT->box_start();
         $options = new stdClass;
         $options->noclean = true;
@@ -442,7 +442,7 @@
             if (empty($subcategorieswereshown)) {
                 echo $OUTPUT->heading(get_string("nocoursesyet"));
             }
-        } else if ($numcourses <= COURSE_MAX_SUMMARIES_PER_PAGE and !$page and !$editingon) {
+        } else if ($numcourses <= COURSE_MAX_SUMMARIES_PER_PAGE and !$page and !$isediting) {
             echo $OUTPUT->box_start('courseboxes');
             print_courses($category);
             echo $OUTPUT->box_end();
@@ -468,7 +468,7 @@
             echo '<table border="0" cellspacing="2" cellpadding="4" class="generalbox boxaligncenter"><tr>';
 
             echo '<th class="header" scope="col">'.$strcourses.'</th>';
-            if ($editingon) {
+            if ($isediting) {
                 echo '<th class="header" scope="col">'.$stredit.'</th>';
                 echo '<th class="header" scope="col">'.$strselect.'</th>';
             } else {
@@ -507,7 +507,7 @@
                 $iconname = strtr($courseicon, $replace);
                 $iconname = ucwords($iconname);
                 echo '<td>'. $OUTPUT->pix_icon('courseicons/' . $courseicon, $iconname, 'totara_core', array('class' => 'course_icon')) . '<a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($coursename) .'</a></td>';
-                if ($editingon) {
+                if ($isediting) {
                     echo '<td>';
                     if (has_capability('moodle/course:update', $coursecontext)) {
                         echo $OUTPUT->action_icon(new moodle_url('/course/edit.php',
@@ -800,20 +800,22 @@
     } // End of print list of programs
 
 
-    echo '<div class="buttons">';
-    if (has_capability('moodle/category:manage', $context) and $numcourses > 1) {
-    /// Print button to re-sort courses by name
-        unset($options);
-        $options['id'] = $category->id;
-        $options['resort'] = 'name';
-        $options['sesskey'] = sesskey();
-        echo $OUTPUT->single_button(new moodle_url('category.php', $options), get_string('resortcoursesbyname'), 'get');
-    }
+    if ($isediting) {
+        echo '<div class="buttons">';
+        if ($SESSION->viewtype=='course' && $canmanagecategories && $numcourses > 1) {
+            // Print button to re-sort courses by name
+            unset($options);
+            $options['id'] = $category->id;
+            $options['resort'] = 'name';
+            $options['sesskey'] = sesskey();
+            echo $OUTPUT->single_button(new moodle_url('category.php', $options), get_string('resortcoursesbyname'), 'get');
+        }
 
-    if (!empty($CFG->enablecourserequests) && $category->id == $CFG->defaultrequestcategory) {
-        print_course_request_buttons(context_system::instance());
+        if (!empty($CFG->enablecourserequests) && $category->id == $CFG->defaultrequestcategory) {
+            print_course_request_buttons(context_system::instance());
+        }
+        echo '</div>';
     }
-    echo '</div>';
 
     echo $OUTPUT->footer();
 

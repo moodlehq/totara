@@ -35,14 +35,20 @@ $id = required_param('id', PARAM_INT); // program id
 $page = optional_param('page', 0, PARAM_INT);
 $searchterm = optional_param('search', '', PARAM_TEXT);
 
-
-// Permissions check
+require_login();
 $program = new program($id);
 
 $systemcontext = context_system::instance();
 $programcontext = $program->get_context();
 $PAGE->set_context($programcontext);
-$PAGE->set_url('/totara/program/exceptions.php');
+
+$page_params = array('id' => $program->id, 'page' => $page);
+if (!empty($searchterm)) {
+    $page_params['search'] = $searchterm;
+}
+$base_url = new moodle_url('/totara/program/exceptions.php', $page_params);
+$PAGE->set_url($base_url);
+// Permissions check
 if (!has_capability('totara/program:handleexceptions', $programcontext)) {
     print_error('error:nopermissions', 'totara_program');
 }
@@ -117,18 +123,11 @@ echo html_writer::start_tag('legend', array('class' => 'ftoggler')) . get_string
 echo html_writer::start_tag('p') . get_string('instructions:programexceptions', 'totara_program') . html_writer::end_tag('p');
 
 $renderer = $PAGE->get_renderer('totara_program');
-echo $renderer->print_search($id, $searchterm);
+echo $renderer->print_search($id, $searchterm, $foundexceptionscount);
 
 $programexceptionsmanager->print_exceptions_form($id, $programexceptions, $selected_exceptions, $selectiontype);
 
-$params = array('id' => $program->id);
-if (!empty($searchterm)) {
-    $params['search'] = $searchterm;
-}
-
-$base_url = new moodle_url('/totara/program/exceptions.php', $params);
 $pagingbar = new paging_bar($foundexceptionscount, $page, RESULTS_PER_PAGE, $base_url);
-$pagingbar->pagevar = $page;
 echo $OUTPUT->render($pagingbar);
 
 echo html_writer::end_tag('fieldset');
