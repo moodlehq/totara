@@ -67,7 +67,7 @@ function xmldb_totara_program_upgrade($oldversion) {
         // a bug in the lang strings would have resulted in too many % symbols being stored in
         // the program messages - update any incorrect messages
         $sql = "UPDATE {prog_message} SET messagesubject = REPLACE(messagesubject, '%%programfullname%%', '%programfullname%'),
-                mainmessage = REPLACE(mainmessage, '%%programfullname%%', '%programfullname%')";
+                mainmessage = REPLACE(" . $DB->sql_compare_text('mainmessage', 1024) . ", '%%programfullname%%', '%programfullname%')";
         $DB->execute($sql);
         totara_upgrade_mod_savepoint(true, 2012072700, 'totara_program');
     }
