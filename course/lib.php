@@ -46,6 +46,18 @@ define('FIRSTUSEDEXCELROW', 3);
 define('MOD_CLASS_ACTIVITY', 0);
 define('MOD_CLASS_RESOURCE', 1);
 
+//Course types
+define('TOTARA_COURSE_TYPE_ELEARNING', 0);
+define('TOTARA_COURSE_TYPE_BLENDED', 1);
+define('TOTARA_COURSE_TYPE_FACETOFACE', 2);
+
+global $TOTARA_COURSE_TYPES;
+$TOTARA_COURSE_TYPES = array(
+    'elearning' => TOTARA_COURSE_TYPE_ELEARNING,
+    'blended' => TOTARA_COURSE_TYPE_BLENDED,
+    'facetoface' => TOTARA_COURSE_TYPE_FACETOFACE,
+);
+
 function make_log_url($module, $url) {
     switch ($module) {
         case 'course':

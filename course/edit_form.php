@@ -11,7 +11,7 @@ class course_edit_form extends moodleform {
     protected $context;
 
     function definition() {
-        global $USER, $CFG, $DB;
+        global $USER, $CFG, $DB, $TOTARA_COURSE_TYPES;
 
         $mform    = $this->_form;
 
@@ -187,6 +187,13 @@ class course_edit_form extends moodleform {
             }
             $mform->addElement('select', 'theme', get_string('forcetheme'), $themes);
         }
+
+        //Course type
+        $coursetypeoptions = array();
+        foreach($TOTARA_COURSE_TYPES as $k => $v) {
+            $coursetypeoptions[$v] = get_string($k, 'totara_core');
+        }
+        $mform->addElement('select', 'coursetype', get_string('coursetype', 'totara_core'), $coursetypeoptions);
 
         // Course Icons
         if (empty($course->id)) {
