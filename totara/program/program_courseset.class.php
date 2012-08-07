@@ -741,7 +741,7 @@ class multi_course_set extends course_set {
 
         if (count($this->courses) > 0) {
             $table = new html_table();
-            $table->head = array(get_string('coursename', 'totara_program'));
+            $table->head = array(get_string('coursename', 'totara_program'), '');
             $table->attributes['class'] = 'fullwidth generaltable';
             if ($userid) {
                 $table->head[] = get_string('status', 'totara_program');
@@ -767,8 +767,8 @@ class multi_course_set extends course_set {
                     $coursedetails .= $course->fullname;
                     $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
                 }
-
-                $cells[] = new html_table_cell($launch . $coursedetails);
+                $cells[] = new html_table_cell($coursedetails);
+                $cells[] = new html_table_cell($launch);
 
                 if ($userid) {
                     if (!$status = $DB->get_field('course_completions', 'status', array('userid' => $userid, 'course' => $course->id))) {
@@ -1439,6 +1439,7 @@ class competency_course_set extends course_set {
         if ($courses && count($courses) > 0) {
             $table = new html_table();
             $table->head = array(get_string('coursename', 'totara_program'), '');
+            $table->attributes['class'] = 'fullwidth generaltable';
             if ($userid) {
                 $table->head[] = get_string('status', 'totara_program');
             }

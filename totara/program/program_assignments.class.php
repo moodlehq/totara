@@ -624,6 +624,7 @@ abstract class prog_assignment_category {
                 return '';
             }
 
+            $a = new stdClass();
             $a->num = $parts[0];
             if (isset($TIMEALLOWANCESTRINGS[$parts[1]])) {
                 $a->period = get_string($TIMEALLOWANCESTRINGS[$parts[1]], 'totara_program');
