@@ -96,9 +96,7 @@ if (!empty($delete) and confirm_sesskey()) {
     $mform->set_data(array('delete'=>$delete));
 
     if ($mform->is_cancelled()) {
-
-        redirect(new moodle_url('course/index.php'));
-
+        redirect(new moodle_url('index.php', array('categoryedit' => 'on')));
     } else if (!$data= $mform->get_data()) {
         require_once($CFG->libdir . '/questionlib.php');
         echo $OUTPUT->header();
@@ -114,7 +112,7 @@ if (!empty($delete) and confirm_sesskey()) {
     if ($data->fulldelete) {
         $deletedcourses = category_delete_full($deletecat, true);
 
-        foreach($deletedcourses as $course) {
+        foreach ($deletedcourses as $course) {
             echo $OUTPUT->notification(get_string('coursedeleted', '', $course->shortname), 'notifysuccess');
         }
         echo $OUTPUT->notification(get_string('coursecategorydeleted', '', format_string($deletecat->name, true, array('context' => $context))), 'notifysuccess');
@@ -360,17 +358,17 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
         echo '<td class="icons">';    /// Print little icons
 
         if (has_capability('moodle/category:manage', $category->context)) {
-            echo '<a title="'.$str->edit.'" href="editcategory.php?id='.$category->id.'"><img'.
+            echo '<a title="'.$str->edit.'" href="editcategory.php?id='.$category->id.'&amp;categoryedit=on"><img'.
                  ' src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall" alt="'.$str->edit.'" /></a> ';
 
-            echo '<a title="'.$str->delete.'" href="index.php?delete='.$category->id.'&amp;sesskey='.sesskey().'"><img'.
+            echo '<a title="'.$str->delete.'" href="index.php?delete='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                  ' src="'.$OUTPUT->pix_url('t/delete') . '" class="iconsmall" alt="'.$str->delete.'" /></a> ';
 
             if (!empty($category->visible)) {
-                echo '<a title="'.$str->hide.'" href="index.php?hide='.$category->id.'&amp;sesskey='.sesskey().'"><img'.
+                echo '<a title="'.$str->hide.'" href="index.php?hide='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                      ' src="'.$OUTPUT->pix_url('t/hide') . '" class="iconsmall" alt="'.$str->hide.'" /></a> ';
             } else {
-                echo '<a title="'.$str->show.'" href="index.php?show='.$category->id.'&amp;sesskey='.sesskey().'"><img'.
+                echo '<a title="'.$str->show.'" href="index.php?show='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                      ' src="'.$OUTPUT->pix_url('t/show') . '" class="iconsmall" alt="'.$str->show.'" /></a> ';
             }
 
@@ -380,13 +378,13 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
             }
 
             if ($up) {
-                echo '<a title="'.$str->moveup.'" href="index.php?moveup='.$category->id.'&amp;sesskey='.sesskey().'"><img'.
+                echo '<a title="'.$str->moveup.'" href="index.php?moveup='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                      ' src="'.$OUTPUT->pix_url('t/up') . '" class="iconsmall" alt="'.$str->moveup.'" /></a> ';
             } else {
                 echo $str->spacer;
             }
             if ($down) {
-                echo '<a title="'.$str->movedown.'" href="index.php?movedown='.$category->id.'&amp;sesskey='.sesskey().'"><img'.
+                echo '<a title="'.$str->movedown.'" href="index.php?movedown='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                      ' src="'.$OUTPUT->pix_url('t/down') . '" class="iconsmall" alt="'.$str->movedown.'" /></a> ';
             } else {
                 echo $str->spacer;
