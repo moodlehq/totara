@@ -1826,7 +1826,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     // Send notification again - this time using Totara not/rem
     if ($notifyuser) {
         // If booked/waitlisted/approval
-        $error = facetoface_send_notrem($facetoface, $session, $userid, $new_status);
+        $error = facetoface_send_totaramessage($facetoface, $session, $userid, $new_status);
     }
 
     return true;
@@ -3012,7 +3012,7 @@ function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason=''
             error_log('F2F: Could not load facetoface instance');
             return false;
         }
-        $error = facetoface_send_notrem($facetoface, $session, $userid, MDL_F2F_STATUS_USER_CANCELLED);
+        $error = facetoface_send_totaramessage($facetoface, $session, $userid, MDL_F2F_STATUS_USER_CANCELLED);
     }
 
     return $result;
@@ -4094,7 +4094,7 @@ class facetoface_existing_selector extends user_selector_base {
 
 
 /**
- * Send Totara notification/reminder
+ * Send Totara task or alert
  *
  * @param   object  $facetoface Facetoface instance
  * @param   object  $session    Session instance
@@ -4102,7 +4102,7 @@ class facetoface_existing_selector extends user_selector_base {
  * @param   int     $nottype    notification type
  * @return  string  Error string, empty on success
  */
-function facetoface_send_notrem($facetoface, $session, $userid, $nottype) {
+function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype) {
     global $CFG, $USER, $DB;
 
     require_once($CFG->dirroot.'/totara/message/messagelib.php');

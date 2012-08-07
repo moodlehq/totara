@@ -51,6 +51,13 @@ class message_output_email extends message_output {
             return true;
         }
 
+        // totara specific extension to allow system to send alert/task but prevent email
+        // even when users have it enabled
+        require_once($CFG->dirroot.'/totara/message/messagelib.php');
+        if (isset($eventdata->sendemail) && $eventdata->sendemail == TOTARA_MSG_EMAIL_NO) {
+            return true;
+        }
+
         //the user the email is going to
         $recipient = null;
 
