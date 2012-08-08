@@ -747,9 +747,9 @@ function dp_display_user_message_box($planuser) {
     ));
 
     $t = new html_table();
-    $t->attributes['border'] = 0;
+    $t->attributes['class'] = 'invisiblepadded';
     $t->data[] = $r;
-    return html_writer::tag('div', html_writer::table($t), array('class' => "plan_box plan_box_plain"));
+    return html_writer::tag('div', html_writer::table($t), array('class' => "plan_box notifymessage"));
 }
 
 /*

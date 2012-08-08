@@ -927,16 +927,17 @@ class development_plan {
 
         if ($completed) {
             $message .= $this->display_completed_plan_message();
-            $style = 'plan_box_completed';
+            $style = 'notifyinfo';
         } else {
-            if ($canapprovepending || $canapproveplan) {
-                $style = 'plan_box_action';
+            if (($haspendingitems && $canapprovepending) || ($unapproved && $canapproveplan)) {
+                $style = 'notifynotice';
             } else {
-                $style = 'plan_box_plain';
+                $style = 'notifymessage';
             }
 
             if (!$viewingasmanager && $hasunapproveditems) {
                 $message .= $this->display_unapproved_items($unapproveditems);
+                $style = 'notifynotice';
             }
 
             if ($unapproved) {
@@ -1021,6 +1022,7 @@ class development_plan {
         $out .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
 
         $table = new html_table();
+        $table->attributes['class'] = 'invisiblepadded';
         $row = new html_table_row();
         $cell = new html_table_cell(get_string('plannotapproved', 'totara_plan'));
         $cell->attributes['class'] = 'c0';
@@ -1099,11 +1101,20 @@ class development_plan {
         // only print if there are pending items
         $out = '';
         if (count($list)) {
+            $table = new html_table();
+            $table->attributes['class'] = 'invisiblepadded';
+            $row = new html_table_row();
             $descriptor .= ($itemscount > 1 ? '_p' : '_s');
-            $out .= $OUTPUT->container_start('plan_box_wrap');
-            $out .= html_writer::tag('p', get_string($descriptor, 'totara_plan'));
-            $out .= html_writer::alist($list);
-            $out .= $OUTPUT->container_end();
+            $description = $OUTPUT->container_start('plan_box_wrap');
+            $description .= html_writer::tag('p', get_string($descriptor, 'totara_plan'));
+            $description .= html_writer::alist($list);
+            $description .= $OUTPUT->container_end();
+
+            $url = new moodle_url('/totara/plan/approve.php', array('id' => $this->id));
+            $actionbutton = $approval ? $OUTPUT->single_button($url, get_string('review', 'totara_plan'), 'get') : '';
+
+            $table->data[] = new html_table_row(array($description, $actionbutton));
+            $out = html_writer::table($table);
         }
 
         return $out;
@@ -1172,8 +1183,8 @@ class development_plan {
         $a->userid = $userid;
         $a->site = $CFG->wwwroot;
 
-        // TODO table move styling to CSS
         $table = new html_table();
+        $table->attributes['class'] = 'invisiblepadded';
         $cells = array($OUTPUT->user_picture($user), get_string('youareviewingxsplan', 'totara_plan', $a));
         $table->data[] = new html_table_row($cells);
         return html_writer::table($table);
