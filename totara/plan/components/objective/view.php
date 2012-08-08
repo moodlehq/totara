@@ -51,7 +51,7 @@ $coursename = get_string('courseplural', 'totara_plan');
 $currenturl = new moodle_url('/totara/plan/components/objective/view.php', array('id' => $id, 'itemid' => $caid));
 $canupdate = $component->can_update_items();
 
-$PAGE->set_context($context);
+$PAGE->set_context($systemcontext);
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_url($currenturl);
 $ownplan = ($USER->id == $plan->userid);

@@ -312,31 +312,41 @@ $string['advancedsettingsobjectivepermissions'] = 'Objective permissions';
 // new objective
 $string['objectivenewshortlearner'] = 'New objective "{$a}" assigned';
 $string['objectivenewlonglearner'] = '{$a->userfrom} has assigned new objective "{$a->objective}" to learning plan "{$a->plan}"';
+$string['objectivenewlonglearnerhtml'] = '{$a->userfromhtml} has assigned new objective "{$a->objectivehtml}" to learning plan "{$a->planhtml}"';
 $string['objectivenewshortmanager'] = '{$a} created new objective';
 $string['objectivenewlongmanager'] = '{$a->userfrom} has created new objective "{$a->objective}" in learning plan "{$a->plan}"';
+$string['objectivenewlongmanagerhtml'] = '{$a->userfromhtml} has created new objective "{$a->objectivehtml}" in learning plan "{$a->planhtml}"';
 
 // delete objective
 $string['objectivedeleteshortlearner'] = 'Objective "{$a}" has been deleted';
 $string['objectivedeletelonglearner'] = '{$a->userfrom} has deleted objective "{$a->objective}" in learning plan "{$a->plan}"';
+$string['objectivedeletelonglearnerhtml'] = '{$a->userfromhtml} has deleted objective "{$a->objective}" in learning plan "{$a->planhtml}"';
 $string['objectivedeleteshortmanager'] = '{$a} has deleted an objective';
 $string['objectivedeletelongmanager'] = '{$a->userfrom} has deleted the objective "{$a->objective}" in learning plan "{$a->plan}"';
+$string['objectivedeletelongmanagerhtml'] = '{$a->userfromhtml} has deleted the objective "{$a->objective}" in learning plan "{$a->planhtml}"';
 
 // change an objective
 $string['objectiveeditshortlearner'] = 'Objective "{$a}" has been edited';
-$string['objectiveeditlonglearner'] = '{$a->userfrom} has edited {$a->field} for objective "{$a->objective}"';
+$string['objectiveeditlonglearner'] = '{$a->userfrom} has edited {$a->field} for objective "{$a->objective}" in learning plan "{$a->plan}"';
+$string['objectiveeditlonglearnerhtml'] = '{$a->userfromhtml} has edited {$a->field} for objective "{$a->objectivehtml}" in learning plan "{$a->planhtml}"';
 $string['objectiveeditshortmanager'] = '{$a} has edited their objectives';
 $string['objectiveeditlongmanager'] = '{$a->userfrom} has edited {$a->field} for objective "{$a->objective}" in learning plan "{$a->plan}"';
+$string['objectiveeditlongmanagerhtml'] = '{$a->userfromhtml} has edited {$a->field} for objective "{$a->objectivehtml}" in learning plan "{$a->planhtml}"';
 
 // objective complete/incomplete
 $string['objectivecompleteshortlearner'] = 'Completed objective "{$a}"';
-$string['objectivecompletelonglearner'] = '{$a->userfrom} has changed objective "{$a->objective}" to completed';
+$string['objectivecompletelonglearner'] = '{$a->userfrom} has changed objective "{$a->objective}" to completed in learning plan "{$a->plan}"';
+$string['objectivecompletelonglearnerhtml'] = '{$a->userfromhtml} has changed objective "{$a->objectivehtml}" to completed in learning plan "{$a->planhtml}"';
 $string['objectivecompleteshortmanager'] = '{$a} has completed an objective';
 $string['objectivecompletelongmanager'] = '{$a->userfrom} has changed objective "{$a->objective}" to completed in learning plan "{$a->plan}"';
+$string['objectivecompletelongmanagerhtml'] = '{$a->userfromhtml} has changed objective "{$a->objectivehtml}" to completed in learning plan "{$a->planhtml}"';
 
 $string['objectiveincompleteshortlearner'] = 'Objective "{$a}" incomplete';
-$string['objectiveincompletelonglearner'] = '{$a->userfrom} has changed objective "{$a->objective}" to incomplete';
+$string['objectiveincompletelonglearner'] = '{$a->userfrom} has changed objective "{$a->objective}" to incomplete in learning plan "{$a->plan}"';
+$string['objectiveincompletelonglearnerhtml'] = '{$a->userfromhtml} has changed objective "{$a->objectivehtml}" to incomplete in learning plan "{$a->planhtml}"';
 $string['objectiveincompleteshortmanager'] = '{$a} has an incomplete objective';
 $string['objectiveincompletelongmanager'] = '{$a->userfrom} has changed objective "{$a->objective}" to incomplete in learning plan "{$a->plan}"';
+$string['objectiveincompletelongmanagerhtml'] = '{$a->userfromhtml} has changed objective "{$a->objectivehtml}" to incomplete in learning plan "{$a->planhtml}"';
 
 
 //Plan Settings strings
@@ -713,24 +723,40 @@ $string['addedx'] = 'Added "{$a}"';
 $string['removedx'] = 'Removed "{$a}"';
 $string['changedfromxtoy'] = 'Changed from "{$a->before}" to "{$a->after}"';
 $string['componentupdateshortlearner'] = '{$a} updated';
-$string['componentupdatelonglearner'] = '{$a->component} in learning plan "{$a->plan}" updated:<br /> {$a->updates}';
+$string['componentupdatelonglearner'] = '{$a->component} in learning plan "{$a->plan}" updated:
+{$a->updates}';
+$string['componentupdatelonglearnerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" updated:<br /> {$a->updateshtml}';
 $string['componentupdateshortmanager'] = '{$a->user} updated {$a->component}';
-$string['componentupdatelongmanager'] = '{$a->component} in learning plan "{$a->plan}" updated:<br /> {$a->updates}';
+$string['componentupdatelongmanager'] = '{$a->component} in learning plan "{$a->plan}" updated:
+{$a->updates}';
+$string['componentupdatelongmanagerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" updated:<br /> {$a->updateshtml}';
 
 $string['componentapproveshortlearner'] = '{$a->name} approved';
-$string['componentapprovelonglearner'] = '{$a->component} in learning plan "{$a->plan}" approved:<br /> {$a->updates}';
+$string['componentapprovelonglearner'] = '{$a->component} in learning plan "{$a->plan}" approved:
+{$a->updates}';
+$string['componentapprovelonglearnerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" approved:<br /> {$a->updateshtml}';
 $string['componentapproveshortmanager'] = '{$a->user} approved {$a->component} {$a->name}';
-$string['componentapprovelongmanager'] = '{$a->component} in learning plan "{$a->plan}" approved:<br /> {$a->updates}';
+$string['componentapprovelongmanager'] = '{$a->component} in learning plan "{$a->plan}" approved:
+{$a->updates}';
+$string['componentapprovelongmanagerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" approved:<br /> {$a->updateshtml}';
 
 $string['componentdeclineshortlearner'] = '{$a->name} declined';
-$string['componentdeclinelonglearner'] = '{$a->component} in learning plan "{$a->plan}" declined:<br /> {$a->updates}';
+$string['componentdeclinelonglearner'] = '{$a->component} in learning plan "{$a->plan}" declined:
+{$a->updates}';
+$string['componentdeclinelonglearnerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" declined:<br /> {$a->updateshtml}';
 $string['componentdeclineshortmanager'] = '{$a->user} declined {$a->component} {$a->name}';
-$string['componentdeclinelongmanager'] = '{$a->component} in learning plan "{$a->plan}" declined:<br /> {$a->updates}';
+$string['componentdeclinelongmanager'] = '{$a->component} in learning plan "{$a->plan}" declined:
+{$a->updates}';
+$string['componentdeclinelongmanagerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" declined:<br /> {$a->updateshtml}';
 
 $string['componentcompleteshortlearner'] = '{$a->name} completed';
-$string['componentcompletelonglearner'] = '{$a->component} in learning plan "{$a->plan}" completed:<br /> {$a->updates}';
+$string['componentcompletelonglearner'] = '{$a->component} in learning plan "{$a->plan}" completed:
+{$a->updates}';
+$string['componentcompletelonglearnerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" completed:<br /> {$a->updateshtml}';
 $string['componentcompleteshortmanager'] = '{$a->user} completed {$a->component} {$a->name}';
-$string['componentcompletelongmanager'] = '{$a->component} in learning plan "{$a->plan}" completed:<br /> {$a->updates}';
+$string['componentcompletelongmanager'] = '{$a->component} in learning plan "{$a->plan}" completed:
+{$a->updates}';
+$string['componentcompletelongmanagerhtml'] = '{$a->component} in learning plan "{$a->planhtml}" completed:<br /> {$a->updateshtml}';
 
 
 $string['completedviarpl'] = 'Completed via RPL: {$a}';

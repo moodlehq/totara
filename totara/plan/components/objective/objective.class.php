@@ -668,8 +668,10 @@ class dp_objective_component extends dp_base_component {
         $event->icon = 'objective-remove';
         $a = new stdClass();
         $a->objective = $objective->fullname;
-        $a->userfrom = $this->current_user_link();
-        $a->plan = $OUTPUT->action_link($event->contexturl, $this->plan->name, null, array('title' => $this->plan->name));
+        $a->userfrom = fullname($USER);
+        $a->userfromhtml = $this->current_user_link();
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link($event->contexturl, $this->plan->name, null, array('title' => $this->plan->name));
         $stringmanager = get_string_manager();
         // did they delete it themselves?
         if ($USER->id == $this->plan->userid) {
@@ -678,8 +680,9 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = $stringmanager->get_string('objectivedeleteshortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->subject = $stringmanager->get_string('objectivedeleteshortmanager', 'totara_plan', fullname($USER), $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('objectivedeletelongmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('objectivedeletelongmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -690,6 +693,7 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('objectivedeleteshortlearner', 'totara_plan', $a->objective, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('objectivedeletelonglearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('objectivedeletelonglearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -711,10 +715,13 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = new moodle_url('/totara/plan/components/objective/view.php', array('id' => $this->plan->id, 'itemid' => $objid));
         $event->icon = 'objective-add';
         $a = new stdClass();
-        $a->objective = new action_link($event->contexturl, $fullname);
+        $a->objective = $fullname;
+        $a->objectivehtml = $OUTPUT->action_link($event->contexturl, $fullname);
         $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
-        $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
-        $a->userfrom = $this->current_user_link();
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
+        $a->userfrom = fullname($USER);
+        $a->userfromhtml = $this->current_user_link();
 
         $stringmanager = get_string_manager();
         // did they create it themselves?
@@ -724,8 +731,9 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = $stringmanager->get_string('objectivenewshortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->subject = $stringmanager->get_string('objectivenewshortmanager', 'totara_plan', fullname($USER), $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('objectivenewlongmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('objectivenewlongmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -736,6 +744,7 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('objectivenewshortlearner', 'totara_plan', $fullname, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('objectivenewlonglearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('objectivenewlonglearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -758,10 +767,13 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = new moodle_url("/totara/plan/components/objective/view.php", array('id' => $this->plan->id, 'itemid' => $objective->id));
         $event->icon = 'objective-update';
         $a = new stdClass();
-        $a->objective = new action_link($event->contexturl, $objective->fullname);
+        $a->objective = format_string($objective->fullname);
+        $a->objectivehtml = $OUTPUT->action_link($event->contexturl, format_string($objective->fullname));
         $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
-        $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
-        $a->userfrom = $this->current_user_link();
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
+        $a->userfrom = fullname($USER);
+        $a->userfromhtml = $this->current_user_link();
 
         $stringmanager = get_string_manager();
         // did they edit it themselves?
@@ -772,8 +784,9 @@ class dp_objective_component extends dp_base_component {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $a->field = $stringmanager->get_string('objective'.$field, 'totara_plan', $manager->lang);
                     $event->userto = $manager;
-                    $event->subject = $stringmanager->get_string('objectiveeditshortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->subject = $stringmanager->get_string('objectiveeditshortmanager', 'totara_plan', fullname($USER), $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('objectiveeditlongmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('objectiveeditlongmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -784,6 +797,7 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('objectiveeditshortlearner', 'totara_plan', $a->objective, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('objectiveeditlonglearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('objectiveeditlonglearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -812,10 +826,13 @@ class dp_objective_component extends dp_base_component {
         $event->contexturl = new moodle_url("/totara/plan/components/objective/view.php", array('id' => $this->plan->id, 'itemid' => $objective->id));
         $event->icon = 'objective-'.($status == 'complete' ? 'complete' : 'fail');
         $a = new stdClass;
-        $a->objective = new action_link($event->contexturl, $objective->fullname);
+        $a->objective = format_string($objective->fullname);
+        $a->objectivehtml = $OUTPUT->action_link($event->contexturl, format_string($objective->fullname));
         $url = new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id));
-        $a->plan = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
-        $a->userfrom = $this->current_user_link();
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link($url, $this->plan->name, null, array('title' => $this->plan->name));
+        $a->userfrom = fullname($USER);
+        $a->userfromhtml = $this->current_user_link();
 
         $stringmanager = get_string_manager();
         // did they complete it themselves?
@@ -825,8 +842,9 @@ class dp_objective_component extends dp_base_component {
                 // notify their manager
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $event->subject = $stringmanager->get_string('objective'.$status.'shortmanager', 'totara_plan', $this->current_user_link(), $manager->lang);
+                    $event->subject = $stringmanager->get_string('objective'.$status.'shortmanager', 'totara_plan', fullname($USER), $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('objective'.$status.'longmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('objective'.$status.'longmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -836,6 +854,7 @@ class dp_objective_component extends dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('objective'.$status.'shortlearner', 'totara_plan', $a->objective, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('objective'.$status.'longlearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('objective'.$status.'longlearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }

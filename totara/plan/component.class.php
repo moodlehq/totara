@@ -773,10 +773,12 @@ abstract class dp_base_component {
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-update';
         $a = new stdClass;
-        $a->plan = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
             $this->plan->name, null, array('title' => $this->plan->name));
         $a->component = get_string($this->component.'plural', 'totara_plan');
-        $a->updates = $update_info;
+        $a->updates = text_to_html($update_info, 75, false);
+        $a->updateshtml = $update_info;
 
         $stringmanager = get_string_manager();
         // did they edit it themselves?
@@ -785,11 +787,10 @@ abstract class dp_base_component {
             if ($this->plan->is_active()) {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    // TODO SCANMSG: This causes the subject to have a href tag in it
-                    // Look into using output renderers to display differently
-                    $a->user = $this->current_user_link();
+                    $a->user = fullname($USER);
                     $event->subject = $stringmanager->get_string('componentupdateshortmanager', 'totara_plan', $a, $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('componentupdatelongmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('componentupdatelongmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -799,6 +800,7 @@ abstract class dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('componentupdateshortlearner', 'totara_plan', $a->component, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('componentupdatelonglearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('componentupdatelonglearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -825,11 +827,13 @@ abstract class dp_base_component {
         $event->icon = $this->component.'-'.$type;
         $a = new stdClass;
 
-        $a->plan = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
             $this->plan->name, null, array('title' => $this->plan->name));
         $a->component = get_string($this->component.'plural', 'totara_plan');
 
-        $a->updates = $approval->text;
+        $a->updates = text_to_html($approval->text, 75, false);
+        $a->updateshtml = $approval->text;
         $a->name = $approval->itemname;
 
         // did they edit it themselves?
@@ -839,9 +843,10 @@ abstract class dp_base_component {
             if ($this->plan->is_active()) {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $a->user = $this->current_user_link();
+                    $a->user = fullname($USER);
                     $event->subject = $stringmanager->get_string('component'.$type.'shortmanager', 'totara_plan', $a, $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('component'.$type.'longmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('component'.$type.'longmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -851,6 +856,7 @@ abstract class dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('component'.$type.'shortlearner', 'totara_plan', $a, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('component'.$type.'longlearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('component'.$type.'longlearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }
@@ -872,11 +878,13 @@ abstract class dp_base_component {
         $event->icon = $this->component.'-complete';
         $a = new stdClass;
 
-        $a->plan = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
+        $a->plan = $this->plan->name;
+        $a->planhtml = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
             $this->plan->name, null, array('title' => $this->plan->name));
         $a->component = get_string($this->component.'plural', 'totara_plan');
 
-        $a->updates = $completion->text;
+        $a->updates = text_to_html($completion->text, 75, false);
+        $a->updateshtml = $completion->text;
         $a->name = $completion->itemname;
 
         // did they edit it themselves?
@@ -886,9 +894,10 @@ abstract class dp_base_component {
             if ($this->plan->is_active()) {
                 if ($manager = totara_get_manager($this->plan->userid)) {
                     $event->userto = $manager;
-                    $a->user = $this->current_user_link();
+                    $a->user = fullname($USER);
                     $event->subject = $stringmanager->get_string('componentcompleteshortmanager', 'totara_plan', $a, $manager->lang);
                     $event->fullmessage = $stringmanager->get_string('componentcompletelongmanager', 'totara_plan', $a, $manager->lang);
+                    $event->fullmessagehtml = $stringmanager->get_string('componentcompletelongmanagerhtml', 'totara_plan', $a, $manager->lang);
                     tm_alert_send($event);
                 }
             }
@@ -898,6 +907,7 @@ abstract class dp_base_component {
             $event->userto = $userto;
             $event->subject = $stringmanager->get_string('componentcompleteshortlearner', 'totara_plan', $a, $userto->lang);
             $event->fullmessage = $stringmanager->get_string('componentcompletelonglearner', 'totara_plan', $a, $userto->lang);
+            $event->fullmessagehtml = $stringmanager->get_string('componentcompletelonglearnerhtml', 'totara_plan', $a, $userto->lang);
             tm_alert_send($event);
         }
     }

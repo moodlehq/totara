@@ -1503,6 +1503,7 @@ class development_plan {
         $event->userto = $userto;
         $event->icon = 'learningplan-approve';
         $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
+        $event->subject = $stringmanager->get_string('planapproved', 'totara_plan', $this->name, $userto->lang);
         $event->fullmessage = $stringmanager->get_string('planapproved', 'totara_plan', $this->name, $userto->lang);
         tm_alert_send($event);
     }
@@ -1527,6 +1528,7 @@ class development_plan {
         $event->userto = $userto;
         $event->icon = 'learningplan-decline';
         $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
+        $event->subject = format_string($stringmanager->get_string('plandeclined', 'totara_plan', $this->name, $userto->lang));
         $event->fullmessage = format_string($stringmanager->get_string('plandeclined', 'totara_plan', $this->name, $userto->lang));
         tm_alert_send($event);
     }
@@ -1569,7 +1571,9 @@ class development_plan {
         $event->userto = $learner;
         $event->icon = 'learningplan-complete';
         $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
-        $event->fullmessage = format_text($stringmanager->get_string('plancompletesuccess', 'totara_plan', $this->name, $learner->lang));
+        $msg = $stringmanager->get_string('plancompletesuccess', 'totara_plan', $this->name, $learner->lang);
+        $event->subject = $msg;
+        $event->fullmessage = format_text($msg);
         tm_alert_send($event);
     }
 

@@ -60,9 +60,17 @@ $string['course'] = 'Course';
 $string['program'] = 'Program';
 $string['evidence'] = 'Evidence';
 $string['facetoface'] = 'Face-to-face';
+$string['face2face'] = 'Face to face';
 $string['learningplan'] = 'Learning plan';
 $string['objective'] = 'Objective';
 $string['resource'] = 'Resource';
+$string['forum'] = 'Forum';
+$string['grading'] = 'Grading';
+$string['chat'] = 'Chat';
+$string['lesson'] = 'Lesson';
+$string['survey'] = 'Survey';
+$string['scorm'] = 'Scorm';
+$string['link'] = 'Link';
 
 //status & urgency
 $string['statusok'] = 'Status OK';
