@@ -131,7 +131,9 @@ if ($fromform = $mform->get_data()) { // Form submitted
     $todb->details = trim($fromform->details['text']);
 
     $sessionid = null;
-    $transaction = $DB->start_delegated_transaction();
+
+    //We cannot use transactions here because of the current issue in messagelib.php
+    //$transaction = $DB->start_delegated_transaction();
 
     $update = false;
     if (!$c and $session != null) {
@@ -140,20 +142,20 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
         $todb->id = $session->id;
         if (!facetoface_update_session($todb, $sessiondates)) {
-            $transaction->force_transaction_rollback();
+            //$transaction->force_transaction_rollback();
             add_to_log($course->id, 'facetoface', 'update session (FAILED)', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
             print_error('error:couldnotupdatesession', 'facetoface', $returnurl);
         }
 
         // Remove old site-wide calendar entry
         if (!facetoface_remove_session_from_site_calendar($session)) {
-            $transaction->force_transaction_rollback();
+            //$transaction->force_transaction_rollback();
             print_error('error:couldnotupdatecalendar', 'facetoface', $returnurl);
         }
     }
     else {
         if (!$sessionid = facetoface_add_session($todb, $sessiondates)) {
-            $transaction->force_transaction_rollback();
+            //$transaction->force_transaction_rollback();
             add_to_log($course->id, 'facetoface', 'add session (FAILED)', 'sessions.php?f='.$facetoface->id, $facetoface->id, $cm->id);
             print_error('error:couldnotaddsession', 'facetoface', $returnurl);
         }
@@ -166,7 +168,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         }
 
         if (!facetoface_save_customfield_value($field->id, $fromform->$fieldname, $sessionid, 'session')) {
-            $transaction->force_transaction_rollback();
+            //$transaction->force_transaction_rollback();
             print_error('error:couldnotsavecustomfield', 'facetoface', $returnurl);
         }
     }
@@ -178,13 +180,13 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     // Retrieve record that was just inserted/updated
     if (!$session = facetoface_get_session($sessionid)) {
-        $transaction->force_transaction_rollback();
+        //$transaction->force_transaction_rollback();
         print_error('error:couldnotfindsession', 'facetoface', $returnurl);
     }
 
     // Put the session in the site-wide calendar (needs customfields to be up to date)
     if (!facetoface_add_session_to_site_calendar($session, $facetoface)) {
-        $transaction->force_transaction_rollback();
+        //$transaction->force_transaction_rollback();
         print_error('error:couldnotupdatecalendar', 'facetoface', $returnurl);
     }
 
@@ -195,7 +197,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         add_to_log($course->id, 'facetoface', 'added session', 'facetoface', 'sessions.php?f='.$facetoface->id, $facetoface->id, $cm->id);
     }
 
-    $transaction->allow_commit();
+    //$transaction->allow_commit();
     redirect($returnurl);
 }
 elseif ($session != null) { // Edit mode
