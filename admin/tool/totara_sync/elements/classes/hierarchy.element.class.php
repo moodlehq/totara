@@ -145,7 +145,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             $sql = "SELECT *
                       FROM {{$synctable}}
                      WHERE idnumber = ? ";
-            if (!$newparent = $DB->get_record_sql($sql, array($newitem->parentidnumber))) {
+            if (!$newparent = $DB->get_record_sql($sql, array($newitem->parentidnumber), IGNORE_MULTIPLE)) {
                 $this->addlog(get_string('parentxnotfound', 'tool_totara_sync', $newitem->parentidnumber), 'error', 'syncitem');
                 return false;
             }
