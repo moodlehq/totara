@@ -223,8 +223,8 @@ abstract class cohort_rule_sqlhandler {
                     foreach ($toinsert as $val) {
                         $todb = new stdClass();
                         $todb->ruleid = $ruleinstanceid;
-                        $todb->name = addslashes($name);
-                        $todb->value = addslashes($val);
+                        $todb->name = $name;
+                        $todb->value = $val;
                         $todb->timecreated = $todb->timemodified = time();
                         $todb->modifierid = $USER->id;
                         $DB->insert_record('cohort_rule_params', $todb);
@@ -239,8 +239,8 @@ abstract class cohort_rule_sqlhandler {
                     foreach ($this->{$name} as $val) {
                         $todb = new stdClass();
                         $todb->ruleid = $ruleinstanceid;
-                        $todb->name = addslashes($name);
-                        $todb->value = addslashes($val);
+                        $todb->name = $name;
+                        $todb->value = $val;
                         $todb->timecreated = $todb->timemodified = time();
                         $todb->modifierid = $USER->id;
                         $DB->insert_record('cohort_rule_params', $todb);
@@ -255,7 +255,7 @@ abstract class cohort_rule_sqlhandler {
                     if ($rec->value != $this->{$name}) {
                         $todb = new stdClass();
                         $todb->id = $rec->id;
-                        $todb->value = addslashes($this->{$name});
+                        $todb->value = $this->{$name};
                         $todb->timemodified = time();
                         $todb->modifierid = $USER->id;
                         $DB->update_record('cohort_rule_params', $todb);
@@ -266,7 +266,7 @@ abstract class cohort_rule_sqlhandler {
                     $todb = new stdClass();
                     $todb->ruleid = $ruleinstanceid;
                     $todb->name = $name;
-                    $todb->value = addslashes($this->{$name});
+                    $todb->value = $this->{$name};
                     $todb->timecreated = $todb->timemodified = time();
                     $todb->modifierid = $USER->id;
                     $DB->insert_record('cohort_rule_params', $todb);

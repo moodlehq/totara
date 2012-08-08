@@ -696,14 +696,14 @@ function totara_cohort_clone_cohort($oldcohortid) {
 
     // Create the base cohort record
     $newcohort->contextid =         $oldcohort->contextid;
-    $newcohort->name =              addslashes(get_string('clonename', 'totara_cohort', $oldcohort->name));
+    $newcohort->name =              get_string('clonename', 'totara_cohort', $oldcohort->name);
     $newcohort->idnumber =          totara_cohort_next_automatic_id();
     if (!$newcohort->idnumber) {
-        $newcohort->idnumber = addslashes($oldcohort->idnumber . '.1');
+        $newcohort->idnumber = $oldcohort->idnumber . '.1';
     }
-    $newcohort->description =       addslashes($oldcohort->description);
+    $newcohort->description =       $oldcohort->description;
     $newcohort->descriptionformat = $oldcohort->descriptionformat;
-    $newcohort->component =         addslashes($oldcohort->component);
+    $newcohort->component =         $oldcohort->component;
     $newcohort->cohorttype =        $oldcohort->cohorttype;
     $newcohort->visibility =        $oldcohort->visibility;
     $newcohort->alertmembers =      $oldcohort->alertmembers;
