@@ -147,41 +147,63 @@ function cohort_rules_list(){
         );
         // User custom fields
         $usercustomfields = $DB->get_records_sql(
-            "select usinfi.id, usinfi.name, usinfi.datatype, usinfi.param1
-            from {user_info_field} usinfi
-            inner join {user_info_category} usinca
-            on usinfi.categoryid=usinca.id
-            order by usinca.sortorder, usinfi.sortorder"
+            "SELECT usinfi.id, usinfi.name, usinfi.datatype, usinfi.param1
+               FROM {user_info_field} usinfi
+         INNER JOIN {user_info_category} usinca
+                 ON usinfi.categoryid = usinca.id
+              WHERE usinfi.datatype != ?
+           ORDER BY usinca.sortorder, usinfi.sortorder",
+            array('textarea')
         );
         if (!$usercustomfields) {
             $usercustomfields = array();
         }
-        foreach ($usercustomfields as $id=>$field){
-            switch( $field->datatype ){
+        foreach ($usercustomfields as $id => $field) {
+            $dialogs = array();
+            switch($field->datatype) {
                 case 'menu':
                     $options = explode("\n", $field->param1);
-                    $dialog = new cohort_rule_ui_menu(
+                    $dialogs[] = new cohort_rule_ui_menu(
                         get_string('usersx', 'totara_cohort', $field->name),
                         array_combine($options, $options)
                     );
                     $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
                     break;
                 case 'text':
-                case 'textarea':
-                    $dialog = new cohort_rule_ui_text(
+                    // text input
+                    $dialogui = new cohort_rule_ui_text(
                         get_string('usersx', 'totara_cohort', $field->name),
                         get_string('separatemultiplebycommas', 'totara_cohort')
                     );
+                    $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('text', 'totara_cohort') . ')';
+                    $dialogs[] = $dialogui;
+
+                    // choose from distinct customfield values
+                    $sql = "SELECT DISTINCT data
+                              FROM {user_info_data}
+                             WHERE fieldid = ?
+                          ORDER BY data";
+                    $options = $DB->get_records_sql($sql, array($id));
+                    if (!empty($options)) {
+                        $dialogui = new cohort_rule_ui_menu(
+                            get_string('usersx', 'totara_cohort', $field->name),
+                            array_combine(array_keys($options), array_keys($options))
+                        );
+                        $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('choose', 'totara_cohort') . ')';
+                        $dialogs[] = $dialogui;
+                    }
+
                     $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
+                    unset($dialogui);
                     break;
                 case 'datetime':
-                    $dialog = new cohort_rule_ui_date(
+                    $dialogs[] = new cohort_rule_ui_date(
                         get_string('usersx', 'totara_cohort', $field->name)
                     );
                     $sqlhandler = new cohort_rule_sqlhandler_date_usercustomfield($id);
                     break;
                 case 'checkbox':
-                    $dialog = new cohort_rule_ui_checkbox(
+                    $dialogs[] = new cohort_rule_ui_checkbox(
                         get_string('usersx', 'totara_cohort', $field->name),
                         array(
                             1 => get_string('checkboxyes','totara_cohort'),
@@ -192,17 +214,19 @@ function cohort_rules_list(){
                     break;
                 default:
                     // Skip fields that we haven't defined a rule type for
-                    unset($dialog);
+                    unset($dialogs);
                     unset($sqlhandler);
                     continue 2;
             }
-            $rules[] = new cohort_rule_option(
-                'user',
-                "customfield{$id}",
-                $dialog,
-                $sqlhandler,
-                s($field->name)
-            );
+            foreach ($dialogs as $i => $dialog) {
+                $rules[] = new cohort_rule_option(
+                    'usercustomfields',
+                    "customfield{$id}_{$i}",
+                    $dialog,
+                    $sqlhandler,
+                    !empty($dialog->selectoptionstr) ? $dialog->selectoptionstr : s($field->name)
+                );
+            }
         }
 
         // Positions!
@@ -267,11 +291,12 @@ function cohort_rules_list(){
         );
         // Custom fields for user's primary position
         $poscustomfields = $DB->get_records_sql(
-            "select potyinfi.id, potyinfi.fullname as name, potyinfi.datatype, potyinfi.param1
-            from {pos_type_info_field} potyinfi
-            inner join {pos_type} poty
-            on potyinfi.typeid=poty.id
-            order by poty.fullname, potyinfi.sortorder"
+            "SELECT potyinfi.id, potyinfi.fullname as name, potyinfi.datatype, potyinfi.param1
+               FROM {pos_type_info_field} potyinfi
+         INNER JOIN {pos_type} poty
+                 ON potyinfi.typeid = poty.id
+              WHERE potyinfi.datatype != ?
+           ORDER BY poty.fullname, potyinfi.sortorder", array('textarea')
         );
         if (!$poscustomfields) {
             $poscustomfields = array();
@@ -287,7 +312,6 @@ function cohort_rules_list(){
                     $sqlhandler = new cohort_rule_sqlhandler_in_poscustomfield($id);
                     break;
                 case 'text':
-                case 'textarea':
                     $dialog = new cohort_rule_ui_text(
                         get_string('usersposx', 'totara_cohort', $field->name),
                         get_string('separatemultiplebycommas', 'totara_cohort')
@@ -350,11 +374,12 @@ function cohort_rules_list(){
         );
         // Custom fields for user's primary position's organization
         $orgcustomfields = $DB->get_records_sql(
-            "select ortyinfi.id, ortyinfi.fullname as name, ortyinfi.datatype, ortyinfi.param1
-            from {org_type_info_field} ortyinfi
-            inner join {org_type} orty
-            on ortyinfi.typeid=orty.id
-            order by orty.fullname, ortyinfi.sortorder"
+            "SELECT ortyinfi.id, ortyinfi.fullname as name, ortyinfi.datatype, ortyinfi.param1
+               FROM {org_type_info_field} ortyinfi
+         INNER JOIN {org_type} orty
+                 ON ortyinfi.typeid = orty.id
+              WHERE ortyinfi.datatype != ?
+           ORDER BY orty.fullname, ortyinfi.sortorder", array('textarea')
         );
         if (!$orgcustomfields) {
             $orgcustomfields = array();
@@ -370,7 +395,6 @@ function cohort_rules_list(){
                     $sqlhandler = new cohort_rule_sqlhandler_in_posorgcustomfield($id);
                     break;
                 case 'text':
-                case 'textarea':
                     $dialog = new cohort_rule_ui_text(
                         get_string('usersorgx', 'totara_cohort', $field->name),
                         get_string('separatemultiplebycommas', 'totara_cohort')

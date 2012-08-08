@@ -43,7 +43,7 @@ if ($type == 'rule') {
     $rulegroupname = required_param('rule',PARAM_RAW);
 }
 
-if (!preg_match('/^([a-z]+)-([a-z0-9]+)$/', $rulegroupname, $matches)) {
+if (!preg_match('/^([a-z]+)-([a-z0-9_]+)$/', $rulegroupname, $matches)) {
     error(get_string('error:rulemissing', 'totara_cohort'));
 } else {
     $rulegroup = $matches[1];

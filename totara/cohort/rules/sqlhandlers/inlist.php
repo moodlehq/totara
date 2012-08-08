@@ -124,13 +124,14 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
     protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
         $sqlhandler = new stdClass();
-        list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'icu'.$this->ruleid, ($not != 'not'));
-        $sqlhandler->sql = "exists("
-                ."select 1 from {user_info_data} usinda "
-                ."where usinda.userid=u.id "
-                ."and usinda.fieldid={$field} "
-                ."and usinda.data {$sqlin}"
-            .")";
+        list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'icu' . $this->ruleid, ($not != 'not'));
+        $sqlhandler->sql = "EXISTS (
+                                   SELECT 1
+                                     FROM {user_info_data} usinda
+                                    WHERE usinda.userid = u.id
+                                      AND usinda.fieldid = {$field}
+                                      AND usinda.data {$sqlin}
+                                   )";
         $sqlhandler->params = $params;
         return $sqlhandler;
     }
@@ -145,15 +146,15 @@ class cohort_rule_sqlhandler_in_posfield extends cohort_rule_sqlhandler_in {
         global $DB;
         $sqlhandler = new stdClass();
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'ipf'.$this->ruleid, ($not != 'not'));
-        $sqlhandler->sql = "exists("
-                ."select 1 "
-                ."from {pos_assignment} pa "
-                ."inner join {pos} p "
-                ."on pa.positionid=p.id "
-                ."where pa.userid=u.id "
-                ."and pa.type=".POSITION_TYPE_PRIMARY." "
-                ."and p.{$field} {$sqlin}"
-            .")";
+        $sqlhandler->sql = "EXISTS (
+                                   SELECT 1
+                                     FROM {pos_assignment} pa
+                               INNER JOIN {pos} p
+                                       ON pa.positionid = p.id
+                                    WHERE pa.userid = u.id
+                                      AND pa.type = ".POSITION_TYPE_PRIMARY . "
+                                      AND p.{$field} {$sqlin}
+                                   )";
         $sqlhandler->params = $params;
         return $sqlhandler;
     }
