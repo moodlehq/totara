@@ -1705,35 +1705,20 @@ class cohort_rule_ui_reportsto extends cohort_rule_ui {
         $dialog->load_items($parentid);
 
         // Set selected items
+        $alreadyselected = array();
         if ($ruleinstanceid) {
-            $sql = "SELECT u.id, u.firstname, u.lastname
+            $sql = "SELECT u.id, " . $DB->sql_fullname('u.firstname', 'u.lastname') . " AS fullname
                 FROM {user} u
                 INNER JOIN {cohort_rule_params} crp
                     ON u.id = " . $DB->sql_cast_char2int('crp.value') . "
                 WHERE crp.ruleid = ? AND crp.name='managerid'
+                ORDER BY u.firstname, u.lastname
                 ";
             $alreadyselected = $DB->get_records_sql($sql, array($ruleinstanceid));
-            if ($alreadyselected) {
-                // Calculate the fullname for each user
-                array_walk($alreadyselected, function(&$value, $key){
-                    $value->fullname = fullname($value);
-                });
-                // sort them by their PHP-calculated fullname
-                usort($alreadyselected, function($obja, $objb){
-                    $a = $obja->fullname;
-                    $b = $objb->fullname;
-                    if ($a == $b){
-                        return 0;
-                    }
-                    return ($a < $b) ? -1 : 1;
-                });
-            } else {
-                $alreadyselected = array();
-            }
-        } else {
-            $alreadyselected = array();
         }
         $dialog->selected_items = $alreadyselected;
+
+        $dialog->urlparams = $hidden;
 
         // Display page
         // Display
