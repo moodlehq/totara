@@ -1420,19 +1420,24 @@ function prog_get_courses_associated_with_programs($courses = null) {
         $insql = '';
         $inparams = array();
     }
+
     // get courses mentioned in the courseset_course tab, and also any courses
     // linked to competencies used in any courseset
     // always exclude the site course and optionally restrict to a selected list of courses
-    $sql = "SELECT c.* FROM {prog_courseset_course} pcc
-            INNER JOIN {course} c ON c.id = pcc.courseid
-            WHERE c.id <> ? $insql
-        UNION
-            SELECT c.* FROM {course} c
-            JOIN {comp_evidence_items} cei ON c.id = cei.iteminstance
-            AND cei.itemtype = ?
-            WHERE cei.competencyid IN
-                (SELECT DISTINCT competencyid FROM {prog_courseset} WHERE competencyid <> 0)
-            AND c.id <> ? $insql";
+
+    //mssql fails because of the 'ntext not comparable' issue
+    //so we have to use a subquery to perform union
+    $subquery = "SELECT c.id FROM {prog_courseset_course} pcc
+                INNER JOIN {course} c ON c.id = pcc.courseid
+                WHERE c.id <> ? $insql
+            UNION
+                SELECT c.id FROM {course} c
+                JOIN {comp_evidence_items} cei ON c.id = cei.iteminstance
+                AND cei.itemtype = ?
+                WHERE cei.competencyid IN
+                    (SELECT DISTINCT competencyid FROM {prog_courseset} WHERE competencyid <> 0)
+                AND c.id <> ? $insql";
+    $sql = "SELECT * FROM {course} WHERE id IN ($subquery)";
 
     // build up the params array
     $params = array(SITEID);
