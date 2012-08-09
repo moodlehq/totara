@@ -40,12 +40,12 @@ class totara_dialog_content_manager extends totara_dialog_content {
 
 
     /**
-     * Enable search tab content
+     * Type of search to perform (generally relates to dialog type)
      *
      * @access  public
-     * @var     bool
+     * @var     string
      */
-    public $search_code = false;
+    public $searchtype = 'manager';
 
 
     /**
@@ -91,18 +91,6 @@ class totara_dialog_content_manager extends totara_dialog_content {
         return !$this->show_treeview_only;
     }
 
-    /**
-     * Generate search interface for hierarchy search
-     *
-     * @access  public
-     * @return  string
-     */
-    public function generate_search_interface() {
-        global $CFG;
-
-        return 'Search not implemented';
-    }
-
 
     /**
      * Return all possible managers
@@ -114,7 +102,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
         return $DB->get_records_sql("
             SELECT DISTINCT pa.managerid AS sortorder, pa.managerid AS id, u.lastname
             FROM {pos_assignment} pa
-            LEFT JOIN {user} u
+            INNER JOIN {user} u
             ON pa.managerid = u.id
             WHERE pa.type = ?
             ORDER BY u.lastname", array(POSITION_TYPE_PRIMARY)
@@ -132,7 +120,7 @@ class totara_dialog_content_manager extends totara_dialog_content {
         if ($parentid) {
             // returns users who *are* managers, who's manager is user $parentid
             return $DB->get_records_sql("
-                SELECT u.id, " . $DB->sql_fullname() . " as fullname
+                SELECT u.id, " . $DB->sql_fullname() . " AS fullname
                 FROM (
                     SELECT DISTINCT managerid AS id
                     FROM {pos_assignment}
