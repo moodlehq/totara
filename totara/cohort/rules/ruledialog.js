@@ -227,7 +227,7 @@ totaraDialog_handler_cohortruleform.prototype.every_load = function() {
     // Get the original onsubmit (most likely from mforms)
     var orighandler = forms.get(0).onsubmit;
 
-    forms.get(0).onsubmit = undefined;
+    forms.get(0).onsubmit = null;
     forms.unbind('submit');
 
     forms.bind('submit', function(e) {

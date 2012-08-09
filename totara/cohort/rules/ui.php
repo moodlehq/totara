@@ -1102,7 +1102,7 @@ class cohort_rule_ui_picker_course_duration extends cohort_rule_ui_picker_course
 $(function() {
     var valfunc = function(element){
         element = $(element);
-        parent = element.parent();
+        var parent = element.parent();
         if (!element.val().match(/[1-9]+[0-9]*/)){
             parent.addClass('error');
             if ( $('#id_error_completionduration').length == 0 ) {
@@ -1219,7 +1219,7 @@ JS;
 $(function() {
     var valfunc = function(element){
         element = $(element);
-        parent = element.parent();
+        var parent = element.parent();
         if (!element.val().match(/^[0-9]{1,2}[\/\-][0-9]{1,2}[\/\-](19|20)?[0-9]{2}$/)){
             parent.addClass('error');
             if ($('#id_error_completiondate').length == 0) {
@@ -1474,7 +1474,7 @@ class cohort_rule_ui_picker_program_duration extends cohort_rule_ui_picker_progr
 $(function() {
     var valfunc = function(element){
         element = $(element);
-        parent = element.parent();
+        var parent = element.parent();
         if (!element.val().match(/[1-9]+[0-9]*/)){
             parent.addClass('error');
             if ( $('#id_error_completionduration').length == 0 ) {
@@ -1591,7 +1591,7 @@ JS;
 $(function() {
     var valfunc = function(element){
         element = $(element);
-        parent = element.parent();
+        var parent = element.parent();
         if (!element.val().match(/^[0-9]{1,2}[\/\-][0-9]{1,2}[\/\-](19|20)?[0-9]{2}$/)){
             parent.addClass('error');
             if ($('#id_error_completiondate').length == 0) {
