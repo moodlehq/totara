@@ -155,7 +155,7 @@
             $headers = array();
             for ($i = 1; $i <= $numcols; $i++) {
                 $columns[] = 'column'.$i;
-                $headers[] = '';
+                $headers[] = null;
             }
             $colwidth = floor(100 / $numcols) . '%';
             $table->define_columns($columns);

@@ -1061,6 +1061,18 @@ class flexible_table {
     function print_headers() {
         global $CFG, $OUTPUT;
 
+        // added in totara: don't print a header row unless at least one heading is defined
+        $headerset = false;
+        foreach ($this->headers as $header) {
+            if ($header !== NULL) {
+                $headerset = true;
+            }
+        }
+        if (!$headerset) {
+            return;
+        }
+        // end added in totara
+
         echo html_writer::start_tag('tr');
         foreach ($this->columns as $column => $index) {
 
