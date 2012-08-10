@@ -785,7 +785,7 @@ function totara_get_nav_select_classes($navstructure, $primary_selected, $second
  * @return Array of menu item objects
  */
 function totara_build_menu() {
-    global $USER, $SESSION, $CFG;
+    global $USER, $SESSION, $CFG, $reportbuilder_permittedreports;
 
     if (isset($SESSION->viewtype) && $SESSION->viewtype == 'program') {
         $findcourse_type = 'program';
@@ -796,6 +796,12 @@ function totara_build_menu() {
     require_once($CFG->dirroot . '/totara/plan/lib.php');
     $canviewlearningplans = dp_can_view_users_plans($USER->id);
     $requiredlearninglink = prog_get_tab_link($USER->id);
+
+    require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+    if (!isset($reportbuilder_permittedreports) || !is_array($reportbuilder_permittedreports)) {
+        $reportbuilder_permittedreports = reportbuilder::get_permitted_reports();
+    }
+    $hasreports = (is_array($reportbuilder_permittedreports) && (count($reportbuilder_permittedreports) > 0));
 
     $tree = array();
 
@@ -856,12 +862,14 @@ function totara_build_menu() {
 
     }
 
-    $tree[] = (object)array(
-        'name' => 'myreports',
-        'linktext' => get_string('myreports', 'totara_core'),
-        'parent' => null,
-        'url' => '/my/reports.php'
-    );
+    if ($hasreports) {
+        $tree[] = (object)array(
+            'name' => 'myreports',
+            'linktext' => get_string('myreports', 'totara_core'),
+            'parent' => null,
+            'url' => '/my/reports.php'
+        );
+    }
 
     $tree[] = (object)array(
         'name' => 'findcourses',
