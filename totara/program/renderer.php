@@ -514,7 +514,7 @@ class totara_program_renderer extends plugin_renderer_base {
                     $cell->attributes['valign'] = 'top';
                     $cells[] = $cell;
 
-                    $icon = $this->output->pix_icon('/programicons/' . $program->icon, '', 'totara_core', array('class' => 'smallicon'));
+                    $icon = $this->output->pix_icon('/programicons/' . $program->icon, '', 'totara_core', array('class' => 'iconsmall'));
                     $url = new moodle_url('/totara/program/view.php', array('id' => $program->id));
                     $attributes = array('class' => $linkcss);
                     $linktext = format_string($program->fullname);

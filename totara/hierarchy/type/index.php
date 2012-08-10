@@ -109,7 +109,7 @@ if ($types) {
                 new pix_icon('t/delete', $str_delete), null, array('title' => $str_delete, 'class' => 'iconsmall'));
         }
         if ($buttons) {
-            $row[] = implode($buttons, ' ');
+            $row[] = implode($buttons, '');
         }
 
         $table->data[] = $row;

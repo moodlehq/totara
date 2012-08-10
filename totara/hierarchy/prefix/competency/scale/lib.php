@@ -208,7 +208,7 @@ function competency_scale_display_table($scales, $editingon=0) {
                             new pix_icon('t/delete', $strdelete), null, array('title' => $strdelete));
                     }
                 }
-                $line[] = implode($buttons, ' ');
+                $line[] = implode($buttons, '');
             }
 
             $table->data[] = $line;

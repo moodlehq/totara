@@ -173,7 +173,7 @@ function dp_priority_display_table($priorities, $editingon=0) {
                 } else {
                     $buttons[] = $spacer;
                 }
-                $line[] = implode($buttons, ' ');
+                $line[] = implode($buttons, '');
             }
 
             $table->data[] = $line;

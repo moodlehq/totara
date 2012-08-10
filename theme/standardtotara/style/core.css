@@ -144,6 +144,8 @@ table.invisiblepadded td{
    padding: 5px;
  }
 
+img.iconsmall {padding: 2px;}
+
 .course_icon, .program_icon{
     padding-right: 5px;
     vertical-align: top;

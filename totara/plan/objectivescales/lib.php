@@ -164,7 +164,7 @@ function dp_objective_display_table($objectives, $editingon=0) {
                 } else {
                     $buttons[] = $spacer;
                 }
-                $line[] = implode($buttons, ' ');
+                $line[] = implode($buttons, '');
             }
 
             $table->data[] = $line;

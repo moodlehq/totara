@@ -466,7 +466,7 @@ class pix_icon implements renderable {
 
         $this->attributes['alt'] = $alt;
         if (empty($this->attributes['class'])) {
-            $this->attributes['class'] = 'smallicon';
+            $this->attributes['class'] = 'iconsmall';
         }
         if (!isset($this->attributes['title'])) {
             $this->attributes['title'] = $this->attributes['alt'];

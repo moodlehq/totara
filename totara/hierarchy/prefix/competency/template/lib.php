@@ -107,7 +107,7 @@ function competency_template_display_table($templates, $frameworkid) {
             }
 
             if ($buttons) {
-                $row[] = implode($buttons, ' ');
+                $row[] = implode($buttons, '');
             }
 
             $table->data[] = $row;

@@ -277,7 +277,7 @@ if ($values) {
         }
 
         if ($can_edit) {
-            $row[] = implode($buttons, ' ');
+            $row[] = implode($buttons, '');
         }
 
         $table->data[] = $row;
