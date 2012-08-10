@@ -68,7 +68,7 @@ abstract class totara_sync_element {
 
         // Get all available sync element files
         $sdir = $CFG->dirroot.'/admin/tool/totara_sync/sources/';
-        $pattern = '/source_' . $elname . '_(.*?)\.php/';
+        $pattern = '/^source_' . $elname . '_(.*?)\.php$/';
         $sfiles = preg_grep($pattern, scandir($sdir));
         $sources = array();
         foreach ($sfiles as $f) {
