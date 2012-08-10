@@ -57,7 +57,7 @@ function totara_sync_get_element_files() {
 
     // Get all available sync element files
     $edir = $CFG->dirroot.'/admin/tool/totara_sync/elements/';
-    $pattern = '/(.*?)\.php/';
+    $pattern = '/(.*?)\.php$/';
     $files = preg_grep($pattern, scandir($edir));
     $filepaths = array();
     foreach ($files as $key => $val) {
