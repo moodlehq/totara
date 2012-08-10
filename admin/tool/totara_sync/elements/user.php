@@ -392,7 +392,10 @@ class totara_sync_element_user extends totara_sync_element {
         $elname = $this->get_name();
 
         // Get a row from the sync table, so we can check field existence
-        $syncfields = $DB->get_records_sql("SELECT * FROM {{$synctable}}");
+        if (!$syncfields = $DB->get_record_sql("SELECT * FROM {{$synctable}}", null, IGNORE_MULTIPLE)) {
+            // nothing to check
+            return true;
+        }
 
         /// Check for duplicate idnumbers
         if (isset($syncfields->idnumber)) {
