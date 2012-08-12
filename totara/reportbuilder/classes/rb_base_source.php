@@ -213,73 +213,6 @@ abstract class rb_base_source {
     }
 
 
-    /**
-     * Returns a new rb_filter object based on a filter option from this source
-     *
-     * If $advanced is given use it for the advanced property, otherwise use
-     * the default advanced property from the filter option
-     *
-     * @param string $type The type of the filter option to use
-     * @param string $value The value of the filter option to use
-     * @param string $advanced If the filter should be an advanced option
-     * @return object A new rb_filter object with details copied from this
-     *                rb_filter_option
-     */
-    function new_filter_from_option($type, $value, $advanced=null) {
-        $filteroptions = $this->filteroptions;
-        $columnoptions = $this->columnoptions;
-        $joinlist = $this->joinlist;
-
-        if (!$filteroption =
-            reportbuilder::get_single_item($filteroptions, $type, $value)) {
-
-            $a = new stdClass();
-            $a->type = $type;
-            $a->value = $value;
-            $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:filteroptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
-        }
-        if (!$columnoption =
-            reportbuilder::get_single_item($columnoptions, $type, $value)) {
-
-            $a = new stdClass();
-            $a->type = $type;
-            $a->value = $value;
-            $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:columnoptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
-        }
-
-        // make sure joins are defined before adding column
-        if (!reportbuilder::check_joins($joinlist, $columnoption->joins)) {
-            $a = new stdClass();
-            $a->type = $columnoption->type;
-            $a->value = $columnoption->value;
-            $a->source = get_class($this);
-            throw new ReportBuilderException(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
-
-        }
-
-        if ($advanced === null) {
-            $advanced = $filteroption->defaultadvanced;
-        }
-        return new rb_filter(
-            $type,
-            $value,
-            $advanced,
-            $filteroption->label,
-            $filteroption->filtertype,
-            $columnoption->field,
-            array(
-                'selectfunc' => $filteroption->selectfunc,
-                'selectchoices' => $filteroption->selectchoices,
-                'selectoptions' => $filteroption->selectoptions,
-                'grouping' => $columnoption->grouping,
-                'src' => $this,
-            )
-        );
-
-    }
-
     //
     //
     // Generic column display methods
@@ -766,17 +699,21 @@ abstract class rb_base_source {
         return $out;
     }
 
-    function rb_filter_tags_list($contentmode, $contentoptions, $reportid) {
+    function rb_filter_tags_list() {
         global $DB, $OUTPUT, $CFG;
 
         return $DB->get_records_menu('tag', array('tagtype' => 'official'), 'name', 'id, name');
     }
 
-    function rb_filter_organisations_list($contentmode, $contentoptions, $reportid) {
+    function rb_filter_organisations_list($report) {
         global $CFG, $USER, $DB;
 
         require_once($CFG->dirroot . '/totara/hierarchy/lib.php');
         require_once($CFG->dirroot . '/totara/hierarchy/prefix/organisation/lib.php');
+
+        $contentmode = $report->contentmode;
+        $contentoptions = $report->contentoptions;
+        $reportid = $report->_id;
 
         // show all options if no content restrictions set
         if ($contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
@@ -794,14 +731,15 @@ abstract class rb_base_source {
             foreach ($contentoptions as $option) {
                 $name = $option->classname;
                 $classname = 'rb_' . $name . '_content';
+                $settingname = $name . '_content';
                 if (class_exists($classname)) {
                     if ($name == 'completed_org' || $name == 'current_org') {
-                        if (reportbuilder::get_setting($reportid, $classname,
+                        if (reportbuilder::get_setting($reportid, $settingname,
                             'enable')) {
                             $localset = true;
                         }
                     } else {
-                        if (reportbuilder::get_setting($reportid, $classname,
+                        if (reportbuilder::get_setting($reportid, $settingname,
                             'enable')) {
                         $nonlocal = true;
                         }
@@ -1161,10 +1099,11 @@ abstract class rb_base_source {
             'user',
             'country',
             get_string('usercountry', 'totara_reportbuilder'),
-            'simpleselect',
+            'select',
             array(
                 'selectchoices' => get_string_manager()->get_list_of_countries(),
-                'selectoptions' => array_merge($select_width_options, array('datatype' => 'text')),
+                'attributes' => $select_width_options,
+                'simplemode' => true,
             )
         );
 
@@ -1377,7 +1316,7 @@ abstract class rb_base_source {
             'select',
             array(
                 'selectfunc' => 'course_languages',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'attributes' => rb_filter_option::select_width_limiter(),
             )
         );
         return true;
@@ -1630,7 +1569,7 @@ abstract class rb_base_source {
             'select',
             array(
                 'selectfunc' => 'course_categories_list',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'attributes' => rb_filter_option::select_width_limiter(),
             )
         );
         return true;
@@ -1829,14 +1768,17 @@ abstract class rb_base_source {
             'select',
             array(
                 'selectfunc' => 'organisations_list',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'attributes' => rb_filter_option::select_width_limiter(),
             )
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'organisationpath',
             get_string('participantscurrentorg', 'totara_reportbuilder'),
-            'org'
+            'hierarchy',
+            array(
+                'hierarchytype' => 'org',
+            )
         );
         $filteroptions[] = new rb_filter_option(
             'user',
@@ -1845,14 +1787,17 @@ abstract class rb_base_source {
             'select',
             array(
                 'selectfunc' => 'positions_list',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'attributes' => rb_filter_option::select_width_limiter(),
             )
         );
         $filteroptions[] = new rb_filter_option(
             'user',
             'positionpath',
             get_string('participantscurrentpos', 'totara_reportbuilder'),
-            'pos'
+            'hierarchy',
+            array(
+                'hierarchytype' => 'pos',
+            )
         );
         $filteroptions[] = new rb_filter_option(
                 'user',
@@ -1861,7 +1806,7 @@ abstract class rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'position_type_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
         );
         $filteroptions[] = new rb_filter_option(
@@ -1871,7 +1816,7 @@ abstract class rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'organisation_type_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
         );
 
@@ -1957,30 +1902,35 @@ abstract class rb_base_source {
             $value = "custom_field_{$id}";
             $name = isset($record->fullname) ? $record->fullname : $record->name;
             $column_options = array('joins' => $joinname);
-            $datatype = 'text';
+            $filtertype = 'text'; // default filter type
             $filter_options = array();
 
             $columnsql = "{$joinname}.data";
 
             switch ($record->datatype) {
+            case 'textarea':
+                $filtertype = 'textarea';
+                break;
+
             case 'menu':
-                $datatype = 'simpleselect';
+                $filtertype = 'select';
                 $filter_options['selectchoices'] = $this->list_to_array($record->param1,"\n");
-                $filter_options['selectoptions'] = array('datatype' => 'text');
+                $filter_options['simplemode'] = true;
                 break;
 
             case 'checkbox':
-                $datatype = 'simpleselect';
+                $filtertype = 'select';
                 $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
-                $filter_options['selectoptions'] = array('datatype' => 'text');
+                $filter_options['simplemode'] = true;
                 $column_options['displayfunc'] = 'yes_no';
                 break;
 
             case 'datetime':
-                $datatype = 'date';
+                $filtertype = 'date';
                 $columnsql = $DB->sql_cast_char2int($columnsql, true);
                 if ($record->param3) {
                     $column_options['displayfunc'] = 'nice_datetime';
+                    $filter_options['includetime'] = true;
                 } else {
                     $column_options['displayfunc'] = 'nice_date';
                 }
@@ -2003,7 +1953,7 @@ abstract class rb_base_source {
             $filteroptions[] = new rb_filter_option( $cf_prefix,
                                                      $value,
                                                      $name,
-                                                     $datatype,
+                                                     $filtertype,
                                                      $filter_options
                                                      );
 
@@ -2372,9 +2322,10 @@ abstract class rb_base_source {
                 'tags',
                 $join,
                 get_string('taggedx', 'totara_reportbuilder', $name),
-                'simpleselect',
-                array('selectchoices' => array(
-                    1 => get_string('yes'), 0 => get_string('no'))
+                'select',
+                array(
+                    'selectchoices' => array(1 => get_string('yes'), 0 => get_string('no')),
+                    'simplemode' => true,
                 )
             );
         }
@@ -2386,10 +2337,9 @@ abstract class rb_base_source {
             get_string('tags', 'totara_reportbuilder'), // label
             'multicheck',     // filtertype
             array(            // options
-                'selectfunc' => 'tags_list',
+                'checkoptions' => $this->rb_filter_tags_list(),
             )
         );
-
 
         return true;
     }

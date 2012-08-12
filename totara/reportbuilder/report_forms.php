@@ -760,8 +760,8 @@ class report_builder_save_form extends moodleform {
         $filterparams = $report->get_restriction_descriptions('filter');
         $shortname = $report->shortname;
         $filtername = 'filtering_'.$shortname;
-        $searchsettings = serialize($SESSION->$filtername);
-        $params = implode('<br />', $filterparams);
+        $searchsettings = serialize($SESSION->reportbuilder[$id]);
+        $params = implode(html_writer::empty_tag('br'), $filterparams);
 
         $mform->addElement('header', 'savesearch', get_string('createasavedsearch', 'totara_reportbuilder'));
         $mform->addElement('static', 'description', '', get_string('savedsearchdesc', 'totara_reportbuilder'));
@@ -780,4 +780,44 @@ class report_builder_save_form extends moodleform {
     }
 }
 
+class report_builder_search_form extends moodleform {
+    function definition() {
+        global $SESSION;
+        $mform       =& $this->_form;
+        $fields      = $this->_customdata['fields'];
+
+        if ($fields && is_array($fields) && count($fields) > 0) {
+            $mform->addElement('header', 'newfilter', get_string('searchby', 'totara_reportbuilder'));
+
+            foreach ($fields as $ft) {
+                $ft->setupForm($mform);
+            }
+
+            $submitgroup = array();
+            // Add button
+            $submitgroup[] =& $mform->createElement('html', '&nbsp;', html_writer::empty_tag('br'));
+            $submitgroup[] =& $mform->createElement('submit', 'addfilter', get_string('search', 'totara_reportbuilder'));
+            // clear form button
+            $submitgroup[] =& $mform->createElement('submit', 'clearfilter', get_string('clearform', 'totara_reportbuilder'));
+            $mform->addGroup($submitgroup, 'submitgroup', '&nbsp;', ' &nbsp; ');
+
+            // Don't use last advanced state
+            $mform->setShowAdvanced(false);
+        }
+    }
+
+    function definition_after_data() {
+        $mform       =& $this->_form;
+        $fields      = $this->_customdata['fields'];
+
+        if ($fields && is_array($fields) && count($fields) > 0) {
+
+            foreach ($fields as $ft) {
+                if (method_exists($ft, 'definition_after_data')) {
+                    $ft->definition_after_data($mform);
+                }
+            }
+        }
+    }
+}
 

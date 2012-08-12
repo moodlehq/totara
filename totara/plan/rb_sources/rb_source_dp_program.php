@@ -292,12 +292,12 @@ class rb_source_dp_program extends rb_base_source {
 
     protected function define_filteroptions() {
         $filteroptions = array(
-        new rb_filter_option(
-        'program',
-        'fullname',
-        get_string('programname', 'totara_program'),
-        'text'
-        )
+            new rb_filter_option(
+                'program',
+                'fullname',
+                get_string('programname', 'totara_program'),
+                'text'
+            )
         );
 
         $this->add_course_category_fields_to_filters($filteroptions, 'base', 'category');

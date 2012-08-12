@@ -285,7 +285,7 @@ class rb_source_competency_evidence extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'proficiency_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
@@ -295,20 +295,26 @@ class rb_source_competency_evidence extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'organisationid2',
                 get_string('multiorg', 'rb_source_competency_evidence'),
-                'orgmulti'
+                'hierarchy_multi',
+                array(
+                    'hierarchytype' => 'org',
+                )
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'organisationpath',
                 get_string('organisationwhencompleted', 'rb_source_competency_evidence'),
-                'org'
+                'hierarchy',
+                array(
+                    'hierarchytype' => 'org',
+                )
             ),
             new rb_filter_option(
                 'competency_evidence',
@@ -317,20 +323,26 @@ class rb_source_competency_evidence extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'positions_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'positionid2',
                 get_string('multipos', 'rb_source_competency_evidence'),
-                'posmulti'
+                'hierarchy_multi',
+                array(
+                    'hierarchytype' => 'pos',
+                )
             ),
             new rb_filter_option(
                 'competency_evidence',
                 'positionpath',
                 get_string('positionwhencompleted', 'rb_source_competency_evidence'),
-                'pos'
+                'hierarchy',
+                array(
+                    'hierarchytype' => 'pos',
+                )
             ),
             new rb_filter_option(
                 'competency_evidence',
@@ -348,7 +360,10 @@ class rb_source_competency_evidence extends rb_base_source {
                 'competency',
                 'path',
                 get_string('competency', 'rb_source_competency_evidence'),
-                'comp'
+                'hierarchy',
+                array(
+                    'hierarchytype' => 'comp',
+                )
             ),
             new rb_filter_option(
                 'competency',
@@ -372,7 +387,10 @@ class rb_source_competency_evidence extends rb_base_source {
                 'competency',
                 'id2',
                 get_string('multicomp', 'rb_source_competency_evidence'),
-                'compmulti'
+                'hierarchy_multi',
+                array(
+                    'hierarchytype' => 'comp',
+                )
             ),
 
         );

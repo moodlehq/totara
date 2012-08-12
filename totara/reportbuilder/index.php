@@ -152,15 +152,11 @@ if ($fromform = $mform->get_data()) {
             $defaultfilters = $src->defaultfilters;
             $so = 1;
             foreach ($defaultfilters as $option) {
-                $advanced = isset($option['advanced']) ? $option['advanced'] :
-                    null;
-                $filter = $src->new_filter_from_option($option['type'],
-                    $option['value'], $advanced);
                 $todb = new stdClass();
                 $todb->reportid = $newid;
-                $todb->type = $filter->type;
-                $todb->value = $filter->value;
-                $todb->advanced = $filter->advanced;
+                $todb->type = $option['type'];
+                $todb->value = $option['value'];
+                $todb->advanced = isset($option['advanced']) ? $option['advanced'] : 0;
                 $todb->sortorder = $so;
                 $DB->insert_record('report_builder_filters', $todb);
                 $so++;

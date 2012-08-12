@@ -106,7 +106,10 @@ class rb_source_totara_sync_log extends rb_base_source {
                 'totara_sync_log',         // type
                 'time',           // value
                 get_string('datetime', 'tool_totara_sync'), // label
-                'datetime'     // filtertype
+                'date',     // filtertype
+                array(
+                    'includetime' => true,
+                )
             ),
             new rb_filter_option(
                 'totara_sync_log',         // type
@@ -121,7 +124,7 @@ class rb_source_totara_sync_log extends rb_base_source {
                 'select',     // filtertype
                 array(
                     'selectfunc' => 'logtypes',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(

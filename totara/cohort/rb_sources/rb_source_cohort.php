@@ -215,12 +215,13 @@ class rb_source_cohort extends rb_base_source {
             'cohort',
             'type',
             get_string('type', 'totara_cohort'),
-            'simpleselect',
+            'select',
             array(
                 'selectchoices' => array(
                     cohort::TYPE_DYNAMIC => get_string('dynamic', 'totara_cohort'),
                     cohort::TYPE_STATIC  => get_string('set', 'totara_cohort'),
-                )
+                ),
+                'simplemode' => true,
             )
         );
         $this->add_user_fields_to_filters($filteroptions);

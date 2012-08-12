@@ -23,20 +23,24 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
-
 /**
  * Generic filter for text fields.
  */
-class filter_text extends filter_type {
+class rb_filter_text extends rb_filter_type {
 
     /**
      * Constructor
-     * @param object $filter rb_filter object for this filter
-     * @param string $sessionname Unique name for the report for storing sessions
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return rb_filter_text object
      */
-    function filter_text($filter, $sessionname) {
-        parent::filter_type($filter, $sessionname);
+    function __construct($type, $value, $advanced, $report) {
+        parent::__construct($type, $value, $advanced, $report);
     }
 
     /**
@@ -58,31 +62,29 @@ class filter_text extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $sessionname=$this->_sessionname;
-        $label = $this->_filter->label;
-        $advanced = $this->_filter->advanced;
+        $label = $this->label;
+        $advanced = $this->advanced;
 
         $objs = array();
-        $objs[] =& $mform->createElement('select', $this->_name . '_op', null, $this->getOperators());
-        $objs[] =& $mform->createElement('text', $this->_name, null);
-        $mform->setType($this->_name, PARAM_TEXT);
-        $grp =& $mform->addElement('group', $this->_name . '_grp', $label, $objs, '', false);
+        $objs[] =& $mform->createElement('select', $this->name . '_op', null, $this->getOperators());
+        $objs[] =& $mform->createElement('text', $this->name, null);
+        $mform->setType($this->name, PARAM_TEXT);
+        $grp =& $mform->addElement('group', $this->name . '_grp', $label, $objs, '', false);
         $mform->addHelpButton($grp->_name, 'filtertext', 'filters');
-        $mform->disabledIf($this->_name, $this->_name . '_op', 'eq', 5);
+        $mform->disabledIf($this->name, $this->name . '_op', 'eq', 5);
         if ($advanced) {
-            $mform->setAdvanced($this->_name . '_grp');
+            $mform->setAdvanced($this->name . '_grp');
         }
 
         // set default values
-        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
-            $defaults = $SESSION->{$sessionname}[$this->_name];
+        if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {
+            $defaults = $SESSION->reportbuilder[$this->report->_id][$this->name];
         }
-        // TODO get rid of need for [0]
-        if (isset($defaults[0]['operator'])) {
-            $mform->setDefault($this->_name . '_op', $defaults[0]['operator']);
+        if (isset($defaults['operator'])) {
+            $mform->setDefault($this->name . '_op', $defaults['operator']);
         }
-        if (isset($defaults[0]['value'])) {
-            $mform->setDefault($this->_name, $defaults[0]['value']);
+        if (isset($defaults['value'])) {
+            $mform->setDefault($this->name, $defaults['value']);
         }
     }
 
@@ -92,7 +94,7 @@ class filter_text extends filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field    = $this->_name;
+        $field    = $this->name;
         $operator = $field . '_op';
         $value = (isset($formdata->$field)) ? $formdata->$field : '';
         if (array_key_exists($operator, $formdata)) {
@@ -117,10 +119,10 @@ class filter_text extends filter_type {
 
         $operator = $data['operator'];
         $value    = $data['value'];
-        $query    = $this->_filter->get_field();
+        $query    = $this->field;
 
         if ($operator != 5 and $value === '') {
-            return '';
+            return array('', array());
         }
 
         switch($operator) {
@@ -129,7 +131,8 @@ class filter_text extends filter_type {
                 return search_get_keyword_where_clause($query, $keywords);
             case 1: // does not contain
                 $keywords = totara_search_parse_keywords($value);
-                return search_get_keyword_where_clause($query, $keywords, true);
+                list($sql, $params) = search_get_keyword_where_clause($query, $keywords, true);
+                return array("($query IS NULL OR $sql)", $params);
             case 2: // equal to
                 return search_get_keyword_where_clause($query, array($value), false, 'equal');
             case 3: // starts with
@@ -152,7 +155,7 @@ class filter_text extends filter_type {
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();
-        $label     = $this->_filter->label;
+        $label     = $this->label;
 
         $a = new stdClass();
         $a->label    = $label;

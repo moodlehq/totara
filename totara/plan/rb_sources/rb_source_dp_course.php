@@ -419,10 +419,7 @@ from
                 'user',
                 'id',
                 get_string('userid', 'rb_source_dp_course'),
-                'number',
-                array(
-                    'defaultadvanced' => true
-                )
+                'number'
         );
         $filteroptions[] = new rb_filter_option(
                 'course',
@@ -437,7 +434,7 @@ from
                 'select',
                 array(
                     'selectfunc' => 'coursecompletion_status',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
         );
         $filteroptions[] = new rb_filter_option(

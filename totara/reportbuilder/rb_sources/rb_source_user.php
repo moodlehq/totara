@@ -23,6 +23,8 @@
  * @subpackage reportbuilder
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * A report builder source for the "user" table.
  */

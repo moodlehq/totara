@@ -23,36 +23,44 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
-
 /**
  * Generic filter based on a list of values.
  */
-class filter_select extends filter_type {
-    /**
-     * options for the list values
-     */
-    var $_options;
-    var $_default;
+class rb_filter_select extends rb_filter_type {
 
     /**
      * Constructor
-     * @param string $name the name of the filter instance
-     * @param string $label the label of the filter instance
-     * @param boolean $advanced advanced form element flag
-     * @param string $field user table filed name
-     * @param array $options select options
-     * @param mixed $default option
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return rb_filter_select object
      */
-    function filter_select($filter, $sessionname, $selectoptions, $default=null, $attributes=null) {
-        parent::filter_type($filter, $sessionname);
-        $this->_options = $selectoptions;
-        $this->_default = $default;
-        $this->_attributes = $attributes;
+    function __construct($type, $value, $advanced, $report) {
+        parent::__construct($type, $value, $advanced, $report);
+
+        // set defaults for optional rb_filter_select options
+        if (!isset($this->options['simplemode'])) {
+            $this->options['simplemode'] = false;
+        }
+        if (!isset($this->options['selectfunc'])) {
+            if (!isset($this->options['selectchoices'])) {
+                debugging("No selectchoices provided for filter '{$this->name}' in source '" . get_class($report->src) . "'");
+                $this->options['selectchoices'] = array();
+            }
+        }
+        if (!isset($this->options['attributes'])) {
+            $this->options['attributes'] = array();
+        }
     }
 
     /**
      * Returns an array of comparison operators
+     *
+     * Only used by full select (not by simple select)
      * @return array of comparison operators
      */
     function get_operators() {
@@ -67,35 +75,44 @@ class filter_select extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $sessionname = $this->_sessionname;
-        $label = $this->_filter->label;
-        $advanced = $this->_filter->advanced;
+        $label = $this->label;
+        $advanced = $this->advanced;
+        $options = $this->options['selectchoices'];
+        $simplemode = $this->options['simplemode'];
+        $attr = $this->options['attributes'];
 
-        $objs = array();
-        $objs[] =& $mform->createElement('select', $this->_name . '_op', null, $this->get_operators());
-        $objs[] =& $mform->createElement('select', $this->_name, null, $this->_options, $this->_attributes);
-        $grp =& $mform->addElement('group', $this->_name . '_grp', $label, $objs, '', false);
-        $mform->addHelpButton($grp->_name, 'filterselect', 'filters');
-        $mform->disabledIf($this->_name, $this->_name . '_op', 'eq', 0);
-        if (!is_null($this->_default)) {
-            $mform->setDefault($this->_name, $this->_default);
+        if ($simplemode) {
+            // simple select mode
+            $choices = array('' => get_string('anyvalue', 'filters')) + $options;
+            $mform->addElement('select', $this->name, $label, $choices, $attr);
+            $mform->addHelpButton($this->name, 'filterselect', 'filters');
+            if ($advanced) {
+                $mform->setAdvanced($this->name);
+            }
+        } else {
+            // full select mode
+            $objs = array();
+            $objs[] =& $mform->createElement('select', $this->name . '_op', null, $this->get_operators());
+            $objs[] =& $mform->createElement('select', $this->name, null, $options, $attr);
+            $grp =& $mform->addElement('group', $this->name . '_grp', $label, $objs, '', false);
+            $mform->addHelpButton($grp->_name, 'filterselect', 'filters');
+            $mform->disabledIf($this->name, $this->name . '_op', 'eq', 0);
+            if ($advanced) {
+                $mform->setAdvanced($this->name . '_grp');
+            }
         }
-        if ($advanced) {
-            $mform->setAdvanced($this->_name . '_grp');
-        }
+
 
         // set default values
-        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
-            $defaults = $SESSION->{$sessionname}[$this->_name];
+        if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {
+            $defaults = $SESSION->reportbuilder[$this->report->_id][$this->name];
         }
-        //TODO get rid of need for [0]
-        if (isset($defaults[0]['operator'])) {
-            $mform->setDefault($this->_name . '_op', $defaults[0]['operator']);
+        if (!$simplemode && isset($defaults['operator'])) {
+            $mform->setDefault($this->name . '_op', $defaults['operator']);
         }
-        if (isset($defaults[0]['value'])) {
-            $mform->setDefault($this->_name, $defaults[0]['value']);
+        if (isset($defaults['value'])) {
+            $mform->setDefault($this->name, $defaults['value']);
         }
-                // check for null case if
 
     }
 
@@ -105,12 +122,19 @@ class filter_select extends filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field    = $this->_name;
-        $operator = $field . '_op';
+        $field    = $this->name;
+        $simplemode = $this->options['simplemode'];
 
-        if (array_key_exists($field, $formdata) ) {
-            return array('operator' => (int)$formdata->$operator,
-                         'value'    => (string)$formdata->$field);
+        if ($simplemode) {
+            if (isset($formdata->$field) && $formdata->$field !== '') {
+                return array('value'    => (string)$formdata->$field);
+            }
+        } else {
+            $operator = $field . '_op';
+            if (isset($formdata->$operator) && $formdata->$operator != 0) {
+                return array('operator' => (int)$formdata->$operator,
+                    'value'    => (string)$formdata->$field);
+            }
         }
 
         return false;
@@ -122,45 +146,39 @@ class filter_select extends filter_type {
      * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
-        $operator = $data['operator'];
         $value    = $data['value'];
-        $query    = $this->_filter->get_field();
+        $query    = $this->field;
+        $simplemode = $this->options['simplemode'];
 
-        switch($operator) {
-            case 1:
-                $token = ' = ';
-                $glue = ' OR ';
-                break;
-            case 2:
-                $token = ' <> ';
-                $glue = ' AND ';
-                break;
-            default:
+        if ($simplemode) {
+            if ($value == '') {
                 // return 1=1 instead of TRUE for MSSQL support
                 return array(' 1=1 ', array());
+            } else {
+                // use "equal to" operator for simple select
+                $operator = 1;
+            }
+        } else {
+            $operator = $data['operator'];
         }
 
-        // split by comma and look for any items
-        // within list
-        $items = explode(',', $value);
-        $res = array();
-        $params = array();
-        $count = 1;
-        foreach ($items as $item) {
-            if ($operator == 2) {
-                $uniqueparam = rb_unique_param("fsnotequal_{$count}_");
-                // check for null case for is not operator
-                $res[] = '(' . $query . $token . ":{$uniqueparam} OR " . $query . ' IS NULL)';
-            } else {
-                // equal
-                $uniqueparam = rb_unique_param("fsequal_{$count}_");
-                $res[] = $query . $token . ":{$uniqueparam}";
-            }
-            $params[$uniqueparam] = $item;
-            $count++;
+        if ($operator == 0) {
+            // return 1=1 instead of TRUE for MSSQL support
+            return array(' 1=1 ', array());
+        } else if ($operator == 1) {
+            // equal
+            $uniqueparam = rb_unique_param("fsequal_");
+            $sql = "{$query} = :{$uniqueparam}";
+        } else {
+            // not equal
+            $uniqueparam = rb_unique_param("fsnotequal_");
+            // check for null case for is not operator
+            $sql = "({$query} <> :{$uniqueparam} OR {$query} IS NULL)";
         }
-        return array('(' . implode($glue, $res) . ')', $params);
+        $params = array($uniqueparam => $value);
+        return array($sql, $params);
     }
+
 
     /**
      * Returns a human friendly description of the filter used as label.
@@ -168,19 +186,33 @@ class filter_select extends filter_type {
      * @return string active filter label
      */
     function get_label($data) {
-        $operators = $this->get_operators();
-        $operator  = $data['operator'];
         $value     = $data['value'];
-        $label = $this->_filter->label;
+        $label = $this->label;
+        $options = $this->options['selectchoices'][$value];
+        $simplemode = $this->options['simplemode'];
 
-        if (empty($operator)) {
-            return '';
+        if ($simplemode) {
+            if ($value == '') {
+                return '';
+            }
+
+            $a = new stdClass();
+            $a->label    = $label;
+            $a->value    = '"' . s($options) . '"';
+            $a->operator = get_string('isequalto', 'filters');
+
+        } else {
+            $operators = $this->get_operators();
+            $operator  = $data['operator'];
+            if (empty($operator)) {
+                return '';
+            }
+
+            $a = new stdClass();
+            $a->label    = $label;
+            $a->value    = '"' . s($options) . '"';
+            $a->operator = $operators[$operator];
         }
-
-        $a = new stdClass();
-        $a->label    = $label;
-        $a->value    = '"' . s($this->_options[$value]) . '"';
-        $a->operator = $operators[$operator];
 
         return get_string('selectlabel', 'filters', $a);
     }

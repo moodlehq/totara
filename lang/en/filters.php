@@ -129,6 +129,7 @@ $string['profilelabelnovalue'] = '{$a->label}: {$a->profile} {$a->operator}';
 $string['removeall'] = 'Remove all filters';
 $string['removeselected'] = 'Remove selected';
 $string['selectlabel'] = '{$a->label} {$a->operator} {$a->value}';
+$string['selectlabelnoop'] = '{$a->label} {$a->value}';
 $string['startswith'] = 'starts with';
 $string['tablenosave'] = 'Changes in table above are saved automatically.';
 $string['textlabel'] = '{$a->label} {$a->operator} {$a->value}';

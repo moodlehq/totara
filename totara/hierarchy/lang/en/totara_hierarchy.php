@@ -2,6 +2,7 @@
 //required for unit tests
 $string['sortthreadview'] = 'Sort Thread';
 
+$string['andchildren'] = ' (and children)';
 $string['availablex'] = 'Available {$a}';
 $string['selectedx'] = 'Selected {$a}';
 $string['bulkaddfailed'] = 'There was a problem adding those items to the hierarchy';

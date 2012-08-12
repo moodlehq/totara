@@ -1,5 +1,7 @@
 <?php
 
+defined('MOODLE_INTERNAL') || die();
+
 class rb_source_assignmentsummary extends rb_base_source {
 
     const LANG = 'rb_source_assignmentsummary';
@@ -251,12 +253,9 @@ class rb_source_assignmentsummary extends rb_base_source {
 
     /**
      * filter assignment types
-     * @param integer $contentmode
-     * @param array $contentoptions
-     * @param integer $id
      * @return array
      */
-    public function rb_filter_assignmenttype($contentmode, $contentoptions, $id) {
+    public function rb_filter_assignmenttype() {
         global $CFG;
         require_once("{$CFG->dirroot}/mod/assignment/lib.php");
         return assignment_types();

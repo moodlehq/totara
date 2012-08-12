@@ -39,7 +39,6 @@ require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_base_embedded.php
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_join.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_column.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_column_option.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_filter.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_filter_option.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_param.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/classes/rb_param_option.php');
@@ -183,6 +182,7 @@ class reportbuilder {
             $this->requiredcolumns = $this->src->requiredcolumns;
             $this->columns = $this->get_columns();
             $this->filters = $this->get_filters();
+            $this->process_filters();
 
         } else {
             print_error('reportwithidnotfound', 'totara_reportbuilder', '', $id);
@@ -214,8 +214,6 @@ class reportbuilder {
         global $CFG, $PAGE, $SESSION;
         require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 
-        $this->get_filtering();
-
         $dialog = false;
         $treeview = false;
 
@@ -240,7 +238,7 @@ class reportbuilder {
 
         // include JS for dialogs if required for filters
         foreach ($this->filters as $filter) {
-            if (in_array($filter->filtertype, array('org', 'comp', 'pos', 'orgmulti', 'compmulti', 'posmulti', 'cohort'))) {
+            if (in_array($filter->filtertype, array('hierarchy', 'hierarchy_multi', 'cohort'))) {
                 $jsdetails = new stdClass();
                 $jsdetails->initcall = 'M.totara_reportbuilder_filterdialogs.init';
                 $jsdetails->jsmodule = array('name' => 'totara_reportbuilder_filterdialogs',
@@ -254,7 +252,7 @@ class reportbuilder {
                 // add currently selected as args
                 $cargs = array();
                 foreach ($this->filters as $f) {
-                    if (!in_array($f->filtertype, array('org', 'comp', 'pos'))) {
+                    if ($f->filtertype != 'hierarchy') {
                         continue;
                     }
                     $title = $f->type . '-' . $f->value;
@@ -297,22 +295,6 @@ class reportbuilder {
                 false, $jsdetails->jsmodule);
         }
 
-    }
-
-    /**
-     * Generate a filtering object for this report
-     *
-     * This does quite a few small SQL queries so load it lazily only when required.
-     *
-     * @param boolean $ignorecache If set to true, reload the filtering even if already saved
-     * @return boolean True if set, false if has been set previously
-     */
-    function get_filtering($ignorecache = false) {
-        if (!$ignorecache && $this->_filtering === null) {
-            $this->_filtering = new filtering($this, $this->get_current_url());
-            return true;
-        }
-        return false;
     }
 
 
@@ -614,15 +596,11 @@ class reportbuilder {
      * @return Boolean True if user can view, error otherwise
      */
     function restore_saved_search() {
-        global $SESSION, $USER, $DB;
-        // reload ignoring the cache to ensure we've got an up to date
-        // version
-        $this->get_filtering(true);
-        $filtername = 'filtering_' . $this->shortname;
+        global $SESSION, $DB;
         if ($saved = $DB->get_record('report_builder_saved', array('id' => $this->_sid))) {
 
             if ($saved->ispublic != 0 || $saved->userid == $this->reportfor) {
-                $SESSION->$filtername = unserialize($saved->search);
+                $SESSION->reportbuilder[$this->_id] = unserialize($saved->search);
             } else {
                 if (defined('FULLME') and FULLME === 'cron') {
                     mtrace('Saved search not found or search is not public');
@@ -642,6 +620,8 @@ class reportbuilder {
         return true;
     }
 
+
+
     /**
      * Gets any filters set for the current report from the database
      *
@@ -651,28 +631,119 @@ class reportbuilder {
         global $DB;
 
         $out = array();
-        $id = isset($this->_id) ? $this->_id : null;
-        if (empty($id)) {
-            return $out;
-        }
-        $filters = $DB->get_records('report_builder_filters', array('reportid' => $id), 'sortorder');
+        $filters = $DB->get_records('report_builder_filters', array('reportid' => $this->_id), 'sortorder');
         foreach ($filters as $filter) {
-            try {
-                $out[$filter->id] = $this->src->new_filter_from_option(
-                    $filter->type,
-                    $filter->value,
-                    $filter->advanced
-                );
+            $type = $filter->type;
+            $value = $filter->value;
+            $advanced = $filter->advanced;
+            $name = "{$filter->type}-{$filter->value}";
+
+            // only include filter if a valid object is returned
+            if ($filterobj = rb_filter_type::get_filter($type, $value, $advanced, $this)) {
+                $out[$name] = $filterobj;
+
                 // enabled report grouping if any filters are grouped
-                if ($out[$filter->id]->grouping != 'none') {
+                if (isset($filterobj->grouping) && $filterobj->grouping != 'none') {
                     $this->grouped = true;
                 }
-            } catch (ReportBuilderException $e) {
-                trigger_error($e->getMessage(), E_USER_WARNING);
             }
         }
         return $out;
     }
+
+    /**
+     * Returns sql where statement based on active filters
+     * @param string $extrasql
+     * @param array $extraparams for the extra sql clause (named params)
+     * @return array containing one array of SQL clauses and one array of params
+     */
+    function fetch_sql_filters($extrasql='', $extraparams=array()) {
+        global $SESSION;
+
+        $where_sqls = array();
+        $having_sqls = array();
+        $filterparams = array();
+
+        if ($extrasql != '') {
+            if (strpos($extrasql, '?')) {
+                print_error('extrasqlshouldusenamedparams', 'totara_reportbuilder');
+            }
+            $where_sqls[] = $extra;
+        }
+
+        if (!empty($SESSION->reportbuilder[$this->_id])) {
+            foreach ($SESSION->reportbuilder[$this->_id] as $fname => $data) {
+                if (!array_key_exists($fname, $this->filters)) {
+                    continue; // filter not used in this report
+                }
+                $field = $this->filters[$fname];
+                if ($field->grouping != 'none') {
+                    list($having_sqls[], $params) = $field->get_sql_filter($data);
+                } else {
+                    list($where_sqls[], $params) = $field->get_sql_filter($data);
+                }
+                $filterparams = array_merge($filterparams, $params);
+            }
+        }
+
+        $out = array();
+        if (!empty($having_sqls)) {
+            $out['having'] = implode(' AND ', $having_sqls);
+        }
+        if (!empty($where_sqls)) {
+            $out['where'] = implode(' AND ', $where_sqls);
+        }
+
+        return array($out, array_merge($filterparams, $extraparams));
+    }
+
+    /**
+     * Same as fetch_sql_filters() but returns array of strings
+     * describing active filters instead of SQL
+     */
+    function fetch_text_filters() {
+        global $SESSION;
+        $out = array();
+        if (!empty($SESSION->reportbuilder[$this->_id])) {
+            foreach ($SESSION->reportbuilder[$this->_id] as $fname => $data) {
+                if (!array_key_exists($fname, $this->filters)) {
+                    continue; // filter not used in this report
+                }
+                $field = $this->filters[$fname];
+                $out[] = $field->get_label($data);
+            }
+        }
+        return $out;
+    }
+
+    function process_filters() {
+        global $CFG, $SESSION;
+        require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
+        $mform = new report_builder_search_form($this->get_current_url(), array('fields' => $this->filters));
+
+        if ($adddata = $mform->get_data(false)) {
+            if (isset($adddata->submitgroup['clearfilter'])) {
+                // clear out any existing data
+                $SESSION->reportbuilder[$this->_id] = array();
+                $_POST = array();
+            } else {
+                foreach ($this->filters as $field) {
+                    $fieldname = $field->name;
+                    $data = $field->check_data($adddata);
+                    if ($data === false) {
+                        // unset existing result if field has been set back to "not set" position
+                        if (isset($SESSION->reportbuilder) &&
+                            array_key_exists($field->name, $SESSION->reportbuilder[$this->_id])) {
+                            unset($SESSION->reportbuilder[$this->_id][$fieldname]);
+                        }
+                        continue;
+                    }
+                    $SESSION->reportbuilder[$this->_id][$fieldname] = $data;
+                }
+            }
+        }
+    }
+
 
     /**
      * Gets any columns set for the current report from the database
@@ -895,21 +966,10 @@ class reportbuilder {
      * @return Nothing returned but prints the search box
      */
     function display_search() {
-        echo isset($this->_body_javascript) ? $this->_body_javascript : '';
-        $this->get_filtering();
-        $this->_filtering->display_add();
-    }
-
-    /**
-     * Wrapper for displaying active filter from filtering class
-     * No longer used as filtering behaviour modified to be
-     * more like a search
-     *
-     * @return Nothing returned but prints active filters
-     */
-    function get_sql_filter() {
-        $this->get_filtering();
-        return $this->_filtering->get_sql_filter();
+        global $CFG;
+        require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
+        $mform = new report_builder_search_form($this->get_current_url(), array('fields' => $this->filters));
+        $mform->display();
     }
 
 
@@ -1237,8 +1297,7 @@ class reportbuilder {
             }
         }
 
-        $this->get_filtering();
-        $filter_restrictions = $this->_filtering->return_active();
+        $filter_restrictions = $this->fetch_text_filters();
 
         switch($which) {
         case 'content':
@@ -1511,13 +1570,12 @@ class reportbuilder {
         $shortname = $this->shortname;
         $columnoptions = $this->columnoptions;
         global $SESSION;
-        $this->get_filtering();
         $filterjoins = array();
         // check session variable for any active filters
         // if they exist we need to make sure we have included joins for them too
-        $filtername = 'filtering_' . $shortname;
-        if (isset($SESSION->$filtername)) {
-            foreach ($SESSION->$filtername as $filter => $unused) {
+        if (isset($SESSION->reportbuilder[$this->_id]) &&
+            is_array($SESSION->reportbuilder[$this->_id])) {
+            foreach ($SESSION->reportbuilder[$this->_id] as $filter => $unused) {
                 // parse the filtername for type and value
                 $parts = explode('-', $filter);
                 if (count($parts) != 2) {
@@ -1889,7 +1947,6 @@ class reportbuilder {
         $base = $this->_base;
         $sqlparams = array();
 
-        $this->get_filtering();
         // get the fields needed to display requested columns
         $fields = $this->get_column_fields();
 
@@ -1939,7 +1996,7 @@ class reportbuilder {
         unset($contentparams);
 
         if ($filtered === true) {
-            list($sqls, $filterparams) = $this->get_sql_filter();
+            list($sqls, $filterparams) = $this->fetch_sql_filters();
             if (isset($sqls['where']) && $sqls['where'] != '') {
                 $whereclauses[] = $sqls['where'];
             }
@@ -2021,7 +2078,6 @@ class reportbuilder {
     function get_filtered_count() {
         global $DB;
 
-        $this->get_filtering();
         // use cached value if present
         if (empty($this->_filteredcount)) {
             list($sql, $params) = $this->build_query(true, true);
@@ -2039,7 +2095,6 @@ class reportbuilder {
      */
     function export_data($format) {
         $columns = $this->columns;
-        $this->get_filtering();
         $count = $this->get_filtered_count();
         list($sql, $params) = $this->build_query(false, true);
         $order = $this->get_report_sort();
@@ -2284,7 +2339,7 @@ class reportbuilder {
         $id = $this->_id;
         $sid = $this->_sid;
         $savedoptions = array();
-        $common = new moodle_url('/totara/reportbuilder/report.php', array('id' => $id, 'sid' => ''));
+        $common = new moodle_url('/totara/reportbuilder/report.php', array('id' => $id));
         // are there saved searches for this report and user?
         $saved = $DB->get_records('report_builder_saved', array('reportid' => $id, 'userid' => $USER->id));
         foreach ($saved as $item) {
@@ -3202,7 +3257,7 @@ class reportbuilder {
      * @return boolean True if one or more filters are currently active
      */
     function is_report_filtered() {
-        $filters = $this->get_sql_filter();
+        $filters = $this->fetch_sql_filters();
         if (isset($filters[0]['where']) && $filters[0]['where'] != '') {
             return true;
         }

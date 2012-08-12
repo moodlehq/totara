@@ -183,6 +183,7 @@ $string['groupconfirmdelete'] = 'Are you sure you want to delete this group?';
 $string['groupcontents'] = 'This group currently contains {$a->count} feedback activities tagged with the <strong>\'{$a->tag}\'</strong> official tag:';
 $string['groupdeleted'] = 'Group deleted.';
 $string['groupingfuncnotinfieldoftypeandvalue'] = 'Grouping function \'{$a->groupfunc}\' doesn\'t exist in field of type \'{$a->type}\' and value \'{$a->$value}\'';
+$string['hierarchyfiltermusthavetype'] = 'Hierarchy filter of type "{$a->type}" and value "{$a->value}" must have "hierarchytype" set in source "{$a->source}"';
 $string['groupname'] = 'Group name';
 $string['grouptag'] = 'Group tag';
 $string['heading'] = 'Heading';

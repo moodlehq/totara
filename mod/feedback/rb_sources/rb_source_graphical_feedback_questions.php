@@ -13,6 +13,8 @@
  * @package totara
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 class rb_source_graphical_feedback_questions extends rb_base_source {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
@@ -419,7 +421,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
@@ -429,7 +431,7 @@ class rb_source_graphical_feedback_questions extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'positions_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
         );

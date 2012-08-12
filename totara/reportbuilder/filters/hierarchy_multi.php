@@ -22,28 +22,32 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
-
 /**
  * Generic filter based on selecting multiple items from a hierarchy.
  */
-class filter_hierarchy_multi extends filter_type {
-
-    /**
-     * Hierarchy type
-     * Refers to the name of the main table e.g. 'pos', 'org' or 'comp'
-     */
-    var $_type;
+class rb_filter_hierarchy_multi extends rb_filter_type {
 
     /**
      * Constructor
-     * @param object $filter rb_filter object for this filter
-     * @param string $sessionname Unique name for the report for storing sessions
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return rb_filter_hierarchy_multi object
      */
-    function __construct($filter, $sessionname, $type) {
-        // hierarchy type
-        $this->_type = substr($type, 0, -5); // strip off 'multi'
-        parent::filter_type($filter, $sessionname);
+    function __construct($type, $value, $advanced, $report) {
+        parent::__construct($type, $value, $advanced, $report);
+
+        // Refers to the name of the main table e.g. 'pos', 'org' or 'comp'
+        if (!isset($this->options['hierarchytype'])) {
+            // hierarchy type required for this filter
+            throw new ReportBuilderException(get_string('hierarchyfiltermusthavetype',
+                'totara_reportbuilder',
+                (object)array('type' => $type, 'value' => $value, 'source' => get_class($report->src))));
+        }
     }
 
     /**
@@ -62,49 +66,49 @@ class filter_hierarchy_multi extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $sessionname = $this->_sessionname;
-        $label = $this->_filter->label;
-        $advanced = $this->_filter->advanced;
-        $type = $this->_type;
+        $label = $this->label;
+        $advanced = $this->advanced;
+        $type = $this->options['hierarchytype'];
 
         // container for currently selected items
-        $content = html_writer::empty_tag('div', array('class' => 'list-' . $this->_name )) . display_choose_hierarchy_items_link($this->_name, $type);
-        $mform->addElement('static', $this->_name.'_list', $label, $content);
+        $content = html_writer::empty_tag('div', array('class' => 'list-' . $this->name )) . display_choose_hierarchy_items_link($this->name, $type);
+        $mform->addElement('static', $this->name.'_list', $label, $content);
 
         if ($advanced) {
-            $mform->setAdvanced($this->_name.'_grp');
+            $mform->setAdvanced($this->name.'_grp');
         }
 
-        $mform->addElement('hidden', $this->_name);
-        $mform->setType($this->_name, PARAM_SEQUENCE);
+        $mform->addElement('hidden', $this->name);
+        $mform->setType($this->name, PARAM_SEQUENCE);
 
-        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
-            $defaults = $SESSION->{$sessionname}[$this->_name];
+        // set default values
+        if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {
+            $defaults = $SESSION->reportbuilder[$this->report->_id][$this->name];
         }
-
-        if (isset($defaults[0]['value'])) {
-            $mform->setDefault($this->_name, $defaults[0]['value']);
+        if (isset($defaults['value'])) {
+            $mform->setDefault($this->name, $defaults['value']);
         }
 
     }
 
     function definition_after_data(&$mform) {
         global $DB;
+        $type = $this->options['hierarchytype'];
 
-        if ($ids = $mform->getElementValue($this->_name)) {
+        if ($ids = $mform->getElementValue($this->name)) {
             list($isql, $iparams) = $DB->get_in_or_equal(explode(',', $ids));
-            $items = $DB->get_records_select($this->_type, "id {$isql}", $iparams);
+            $items = $DB->get_records_select($type, "id {$isql}", $iparams);
             if (!empty($items)) {
-                $out = html_writer::start_tag('div', array('class' => 'list-' . $this->_name ));
+                $out = html_writer::start_tag('div', array('class' => 'list-' . $this->name ));
                 foreach ($items as $item) {
-                    $out .= display_selected_hierarchy_item($item, $this->_name);
+                    $out .= display_selected_hierarchy_item($item, $this->name);
                 }
                 $out .= html_writer::end_tag('div');
 
                 // link to add items
-                $out .= display_choose_hierarchy_items_link($this->_name, $this->_type);
+                $out .= display_choose_hierarchy_items_link($this->name, $type);
 
-                $mform->setDefault($this->_name.'_list', $out);
+                $mform->setDefault($this->name.'_list', $out);
             }
         }
 
@@ -117,9 +121,9 @@ class filter_hierarchy_multi extends filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field    = $this->_name;
+        $field    = $this->name;
 
-        if (array_key_exists($field, $formdata) && !empty($formdata->$field) ) {
+        if (isset($formdata->$field) && !empty($formdata->$field) ) {
             return array('value'    => $formdata->$field);
         }
 
@@ -136,7 +140,7 @@ class filter_hierarchy_multi extends filter_type {
         global $DB;
 
         $items    = explode(',', $data['value']);
-        $query    = $this->_filter->get_field();
+        $query    = $this->field;
 
         // don't filter if none selected
         if (empty($items)) {
@@ -158,7 +162,8 @@ class filter_hierarchy_multi extends filter_type {
         global $DB;
 
         $value     = explode(',', $data['value']);
-        $label = $this->_filter->label;
+        $label = $this->label;
+        $type = $this->options['hierarchytype'];
 
         if (empty($value)) {
             return '';
@@ -169,7 +174,7 @@ class filter_hierarchy_multi extends filter_type {
 
         $selected = array();
         list($isql, $iparams) = $DB->get_in_or_equal($value);
-        $items = $DB->get_records_select($this->_type, "id {$isql}", $params);
+        $items = $DB->get_records_select($type, "id {$isql}", $params);
         foreach ($items as $item) {
             $selected[] = '"' . format_string($item->fullname) . '"';
         }
@@ -183,7 +188,7 @@ class filter_hierarchy_multi extends filter_type {
 
 
 /**
- * Given a hiearchy item object returns the HTML to display it as a filter selection
+ * Given a hierarchy item object returns the HTML to display it as a filter selection
  *
  * @param object $item A hierarchy object containing id and name properties
  * @param string $filtername The identifying name of the current filter

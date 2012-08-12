@@ -220,13 +220,14 @@ class rb_source_program_completion extends rb_base_source {
             'progcompletion',
             'status',
             get_string('programcompletionstatus', 'rb_source_program_completion'),
-            'simpleselect',
+            'select',
             array (
                 'selectchoices' => array(
                     0 => get_string('incomplete', 'totara_program'),
                     1 => get_string('complete', 'totara_program'),
                 ),
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'attributes' => rb_filter_option::select_width_limiter(),
+                'simplemode' => true,
             )
         );
 
@@ -237,20 +238,26 @@ class rb_source_program_completion extends rb_base_source {
             'select',
             array(
                 'selectfunc' => 'organisations_list',
-                'selectoptions' => rb_filter_option::select_width_limiter(),
+                'attributes' => rb_filter_option::select_width_limiter(),
             )
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',
             'organisationid2',
             get_string('multiorgwhencompleted', 'rb_source_program_completion'),
-            'orgmulti'
+            'hierarchy_multi',
+            array(
+                'hierarchytype' => 'org',
+            )
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',
             'organisationpath',
             get_string('orgwhencompleted', 'rb_source_program_completion'),
-            'org'
+            'hierarchy',
+            array(
+                'hierarchytype' => 'org',
+            )
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',
@@ -259,20 +266,26 @@ class rb_source_program_completion extends rb_base_source {
             'select',
             array(
                 'selectfunc' => 'positions_list',
-                'selectoptions' => rb_filter_option::select_width_limiter()
+                'attributes' => rb_filter_option::select_width_limiter()
             )
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',
             'positionid2',
             get_string('multiposwhencompleted', 'rb_source_program_completion'),
-            'posmulti'
+            'hierarchy_multi',
+            array(
+                'hierarchytype' => 'pos',
+            )
         );
         $filteroptions[] = new rb_filter_option(
             'progcompletion',
             'positionpath',
             get_string('poswhencompleted', 'rb_source_program_completion'),
-            'pos'
+            'hierarchy',
+            array(
+                'hierarchytype' => 'pos',
+            )
         );
 
         $this->add_user_fields_to_filters($filteroptions);

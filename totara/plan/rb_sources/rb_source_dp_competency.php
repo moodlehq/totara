@@ -511,7 +511,7 @@ from
                 'select',
                 array(
                     'selectfunc' => 'competency_type_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
         );
 

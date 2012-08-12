@@ -232,7 +232,7 @@ class rb_source_totaramessages extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'message_urgency_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(

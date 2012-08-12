@@ -206,12 +206,13 @@ class rb_source_cohort_members extends rb_base_source {
             'cohort',
             'type',
             get_string('type', 'totara_cohort'),
-            'simpleselect',
+            'select',
             array(
                 'selectchoices' => array(
                     cohort::TYPE_DYNAMIC => get_string('dynamic', 'totara_cohort'),
                     cohort::TYPE_STATIC  => get_string('set', 'totara_cohort'),
-                )
+                ),
+                'simplemode' => true,
             )
         );
 

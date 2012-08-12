@@ -5,15 +5,21 @@ require_once($CFG->dirroot.'/totara/reportbuilder/filters/lib.php');
 /**
  * Filter based on selecting multiple cohorts via a dialog
  */
-class filter_cohort extends filter_type {
+class rb_filter_cohort extends rb_filter_type {
 
     /**
      * Constructor
-     * @param object $filter rb_filter object for this filter
-     * @param string $sessionname Unique name for the report for storing sessions
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return rb_filter_cohort object
      */
-    function filter_cohort($filter, $sessionname) {
-        parent::filter_type($filter, $sessionname);
+    function __construct($type, $value, $advanced, $report) {
+        parent::__construct($type, $value, $advanced, $report);
     }
 
     /**
@@ -32,47 +38,46 @@ class filter_cohort extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $sessionname = $this->_sessionname;
-        $label = $this->_filter->label;
-        $advanced = $this->_filter->advanced;
+        $label = $this->label;
+        $advanced = $this->advanced;
 
-        $mform->addElement('static', $this->_name.'_list', $label,
+        $mform->addElement('static', $this->name.'_list', $label,
             // container for currently selected cohorts
-            '<div class="list-' . $this->_name . '">' .
-            '</div>' . display_add_cohort_link($this->_name));
+            '<div class="list-' . $this->name . '">' .
+            '</div>' . display_add_cohort_link($this->name));
 
         if ($advanced) {
-            $mform->setAdvanced($this->_name.'_list');
+            $mform->setAdvanced($this->name.'_list');
         }
 
-        $mform->addElement('hidden', $this->_name, '');
-        $mform->setType($this->_name, PARAM_SEQUENCE);
+        $mform->addElement('hidden', $this->name, '');
+        $mform->setType($this->name, PARAM_SEQUENCE);
 
-        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
-            $defaults = $SESSION->{$sessionname}[$this->_name];
+        // set default values
+        if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {
+            $defaults = $SESSION->reportbuilder[$this->report->_id][$this->name];
         }
-
-        if (isset($defaults[0]['value'])) {
-            $mform->setDefault($this->_name, $defaults[0]['value']);
+        if (isset($defaults['value'])) {
+            $mform->setDefault($this->name, $defaults['value']);
         }
 
     }
 
     function definition_after_data(&$mform) {
         global $DB;
-        if ($ids = $mform->getElementValue($this->_name)) {
+        if ($ids = $mform->getElementValue($this->name)) {
 
             if ($cohorts = $DB->get_records_select('cohort', "id IN ($ids)")) {
-                $out = html_writer::start_tag('div', array('class' => "list-".$this->_name));
+                $out = html_writer::start_tag('div', array('class' => "list-".$this->name));
                 foreach ($cohorts as $cohort) {
-                    $out .= display_selected_cohort_item($cohort, $this->_name);
+                    $out .= display_selected_cohort_item($cohort, $this->name);
                 }
                 $out .= html_writer::end_tag('div');
 
                 // link to add cohorts
-                $out .= display_add_cohort_link($this->_name);
+                $out .= display_add_cohort_link($this->name);
 
-                $mform->setDefault($this->_name.'_list', $out);
+                $mform->setDefault($this->name.'_list', $out);
             }
         }
     }
@@ -83,9 +88,9 @@ class filter_cohort extends filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field    = $this->_name;
+        $field    = $this->name;
 
-        if (array_key_exists($field, $formdata) && !empty($formdata->$field) ) {
+        if (isset($formdata->$field) && !empty($formdata->$field) ) {
             return array('value'    => $formdata->$field);
         }
 
@@ -98,9 +103,10 @@ class filter_cohort extends filter_type {
      * @return string the filtering condition or null if the filter is disabled
      */
     function get_sql_filter($data) {
+        global $DB;
         $items    = $data['value'];
         $items    = explode(',', $items);
-        $query    = $this->_filter->get_field();
+        $query    = $this->field;
 
         // don't filter if none selected
         if (empty($items)) {
@@ -111,12 +117,34 @@ class filter_cohort extends filter_type {
         // split by comma and look for any items
         // within list
         $res = array();
+        $params = array();
         if (is_array($items)) {
+            $count = 1;
             foreach ($items as $id) {
-                $res[] = "( $query = '$id' OR " .
-                    "$query LIKE '%|$id' OR " .
-                    "$query LIKE '$id|%' OR " .
-                    "$query LIKE '%|$id|%' )\n";
+
+                $uniqueparam = rb_unique_param("fcohequal_{$count}_");
+                $equals = "{$query} = :{$uniqueparam}";
+                $params[$uniqueparam] = $id;
+
+                $uniqueparam = rb_unique_param("fcohendswith_{$count}_");
+                $endswithlike = $DB->sql_like($query, ":{$uniqueparam}");
+                $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id);
+
+                $uniqueparam = rb_unique_param("fcohstartswith_{$count}_");
+                $startswithlike = $DB->sql_like($query, ":{$uniqueparam}");
+                $params[$uniqueparam] = $DB->sql_like_escape($id) . '|%';
+
+                $uniqueparam = rb_unique_param("fcohcontains{$count}_");
+                $containslike = $DB->sql_like($query, ":{$uniqueparam}");
+                $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id) . '|%';
+
+                $res[] = "( {$equals} OR \n" .
+                    "    {$endswithlike} OR \n" .
+                    "    {$startswithlike} OR \n" .
+                    "    {$containslike} )\n";
+
+                $count++;
+
             }
         }
 
@@ -127,7 +155,7 @@ class filter_cohort extends filter_type {
         }
 
         // combine with OR logic (match any cohort)
-        return array('(' . implode(' OR ', $res) . ')', array());
+        return array('(' . implode(' OR ', $res) . ')', $params);
     }
 
     /**
@@ -138,9 +166,10 @@ class filter_cohort extends filter_type {
     function get_label($data) {
         global $DB;
         $value     = $data['value'];
-        $label = $this->_filter->label;
+        $values = explode(',', $value);
+        $label = $this->label;
 
-        if (empty($value)) {
+        if (empty($values)) {
             return '';
         }
 
@@ -148,7 +177,8 @@ class filter_cohort extends filter_type {
         $a->label    = $label;
 
         $selected = array();
-        if ($cohorts = $DB->get_records_select('cohort', "id IN ($value)")) {
+        list($insql, $inparams) = $DB->get_in_or_equal($values);
+        if ($cohorts = $DB->get_records_select('cohort', "id {$insql}", $inparams)) {
             foreach ($cohorts as $cohort) {
                 $selected[] = '"' . format_string($cohort->name) . '"';
             }

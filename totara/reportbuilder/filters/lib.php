@@ -22,278 +22,213 @@
  * @package totara
  * @subpackage reportbuilder
  */
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/text.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/textarea.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/number.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/simpleselect.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/select.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/date.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/datetime.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/hierarchy_multi.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/multicheck.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/filters/filter_forms.php');
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/cohort.php');
-
-/**
- * Filtering wrapper class.
- */
-class filtering {
-    var $_fields;
-    var $_addform;
-    var $_activeform;
-    var $_filter;
-    var $_shortname;
-    var $_sessionname;
-
-    /**
-     * Contructor
-     * @param array array of visible fields
-     * @param string base url used for submission/return, null if the same of current page
-     * @param array extra page parameters
-     */
-    function filtering($report=null, $baseurl=null, $extraparams=null) {
-        global $SESSION;
-
-        if ($report == null) {
-            print_error('reportmustbedefined', 'totara_reportbuilder');
-        }
-
-        $this->_report = $report;
-
-        $shortname = $report->shortname;
-
-        if ($shortname == null) {
-            print_error('reportshortnamemustbedefined', 'totara_reportbuilder');
-        }
-
-        // initialise session var based on unique shortname
-        $filtername = "filtering_$shortname";
-        $this->_sessionname = $filtername;
-        if (!isset($SESSION->{$filtername})) {
-            $SESSION->{$filtername} = array();
-        }
-
-        // generate arrays of field names and queries based on input array
-        $this->_fields  = array();
-        if ($report->filters) {
-            foreach ($report->filters as $filter) {
-                $type = $filter->type;
-                $value = $filter->value;
-                $fieldname = "{$type}-{$value}";
-                if ($field = $this->get_field($filter)) {
-                    $this->_fields[$fieldname] = $field;
-                }
-            }
-        }
-
-        // the new filter form
-        $this->_addform = new add_filter_form($baseurl, array('fields' => $this->_fields, 'extraparams' => $extraparams, 'shortname' => $shortname));
-
-        if ($adddata = $this->_addform->get_data(false)) {
-
-            if (isset($adddata->submitgroup['clearfilter'])) {
-                    $SESSION->{$filtername} = array();
-                    $_POST = array();
-                    $this->_addform = new add_filter_form($baseurl, array('fields' => $this->_fields, 'extraparams' => $extraparams, 'shortname' => $shortname));
-
-            } else {
-
-                foreach ($this->_fields as $fname => $field) {
-                    $data = $field->check_data($adddata);
-                    if ($data === false) {
-                        // unset existing result if field has been set back to "not set" position
-                        if (array_key_exists($fname, $SESSION->{$filtername})) {
-                            unset($SESSION->{$filtername}[$fname]);
-                        }
-                        continue;
-                    }
-                    if (!array_key_exists($fname, $SESSION->{$filtername})) {
-                        $SESSION->{$filtername}[$fname] = array();
-                    }
-                    // TODO stop using array index 0 (no longer needed as only one filter per field)
-                    $SESSION->{$filtername}[$fname][0] = $data;
-                }
-            }
-        }
-    }
-
-    /**
-     * Creates known filter if present
-     * @param object $filter rb_filter object from report builder
-     * @return object filter
-     */
-    function get_field($filter) {
-        global $USER, $CFG, $SITE;
-
-        $type = $filter->type;
-        $value = $filter->value;
-        $sessionname = $this->_sessionname;
-
-        if (isset($filter->filtertype)) {
-            $filtertype = $filter->filtertype;
-            $filtername = "filter_{$filtertype}";
-
-            switch($filtertype) {
-            case 'text':
-            case 'textarea':
-            case 'number':
-            case 'date':
-            case 'datetime':
-            case 'cohort':
-                return new $filtername($filter, $sessionname);
-            case 'org':
-            case 'comp':
-            case 'pos':
-                return new filter_hierarchy($filter, $sessionname, $filtertype);
-            case 'orgmulti':
-            case 'compmulti':
-            case 'posmulti':
-                return new filter_hierarchy_multi($filter, $sessionname, $filtertype);
-            case 'simpleselect':
-                $choices = $filter->selectchoices;
-                $options = isset($filter->selectoptions) ?
-                    $filter->selectoptions : null;
-                return new $filtername($filter, $sessionname, $choices, $options);
-            case 'select':
-            case 'multicheck':
-                $selectfunc = 'rb_filter_'.$filter->selectfunc;
-                $options = $filter->selectoptions;
-                if (method_exists($this->_report->src, $selectfunc)) {
-                    $selectfield = $this->_report->src->$selectfunc(
-                        $this->_report->contentmode,
-                        $this->_report->contentoptions,
-                        $this->_report->_id
-                    );
-                } else {
-                    trigger_error("Filter function '{$selectfunc}' not found", E_USER_WARNING);
-                    $selectfield = array();
-                }
-                return new $filtername($filter, $sessionname, $selectfield, null, $options);
-            default:
-                trigger_error("No filter found for filter type '$filtertype'.", E_USER_WARNING);
-                return null;
-            }
-
-        } else {
-            print_error('nofiltersetfortypewithvalue', 'totara_reportbuilder', '', (object)array('type' => $type, 'value' => $value));
-        }
-    }
-
-    /**
-     * Returns sql where statement based on active filters
-     * @param string $extrasql
-     * @param array $extraparams for the extra sql clause (named params)
-     * @return array containing one array of SQL clauses and one array of params
-     */
-    function get_sql_filter($extrasql='', $extraparams=array()) {
-        global $SESSION;
-
-        $shortname = $this->_report->shortname;
-        $filtername = 'filtering_'.$shortname;
-
-        $where_sqls = array();
-        $having_sqls = array();
-        $filterparams = array();
-
-        if ($extrasql != '') {
-            if (strpos($extrasql, '?')) {
-                print_error('extrasqlshouldusenamedparams', 'totara_reportbuilder');
-            }
-            $where_sqls[] = $extra;
-        }
-
-
-        if (!empty($SESSION->{$filtername})) {
-            foreach ($SESSION->{$filtername} as $fname => $datas) {
-                if (!array_key_exists($fname, $this->_fields)) {
-                    continue; // filter not used
-                }
-                $field = $this->_fields[$fname];
-                foreach ($datas as $i => $data) {
-                    if ($field->_filter->is_grouped()) {
-                        list($having_sqls[], $params) = $field->get_sql_filter($data);
-                    } else {
-                        list($where_sqls[], $params) = $field->get_sql_filter($data);
-                    }
-                    $filterparams = array_merge($filterparams, $params);
-                }
-            }
-        }
-
-        $out = array();
-        if (!empty($having_sqls)) {
-            $out['having'] = implode(' AND ', $having_sqls);
-        }
-        if (!empty($where_sqls)) {
-            $out['where'] = implode(' AND ', $where_sqls);
-        }
-
-        return array($out, array_merge($filterparams, $extraparams));
-    }
-
-    /**
-     * Print the add filter form.
-     */
-    function display_add() {
-        $this->_addform->display();
-    }
-
-    /**
-     * Print the active filter form.
-     */
-    function display_active() {
-        $this->_activeform->display();
-    }
-
-    /**
-     * Same as display_active() but returns array of strings describing active
-     * filters instead of form
-     */
-    function return_active() {
-        global $SESSION;
-        $shortname = $this->_report->shortname;
-        $filtername = 'filtering_'.$shortname;
-        $fields = $this->_fields;
-        $out = array();
-        if (!empty($SESSION->{$filtername})) {
-            foreach ($SESSION->{$filtername} as $fname => $datas) {
-                if (!array_key_exists($fname, $fields)) {
-                    continue; // filter not used
-                }
-                $field = $fields[$fname];
-                foreach ($datas as $i => $data) {
-                    $out[] = $field->get_label($data);
-                }
-            }
-        }
-        return $out;
-    }
-
-}
 
 /**
  * The base filter class. All abstract classes must be implemented.
  */
-class filter_type {
-    var $_name;
-    var $_sessionname;
-    var $_filter;
+class rb_filter_type {
+    public $type;
+    public $value;
+    public $advanced;
+    public $filtertype;
+    protected $label;
+    protected $field;
+    protected $joins;
+    protected $options;
+    protected $report;
+    public $grouping;
+    public $name;
+
     /**
      * Constructor
-     * @param object $filter rb_filter object for this filter
-     * @param string $sessionname Unique name for the report for storing sessions
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return filter_* object
      */
-    function filter_type($filter, $sessionname) {
-        $this->_filter = $filter;
-        $this->_name     = $filter->type . '-' . $filter->value;
-        $this->_sessionname = $sessionname;
+    function __construct($type, $value, $advanced, $report) {
+        $this->type = $type;
+        $this->value = $value;
+        $this->advanced = $advanced;
+        $this->report = $report;
+        $this->name = "{$type}-{$value}";
+
+        // get this filter's settings based on the option from the report's source
+        $filteroption = reportbuilder::get_single_item($report->src->filteroptions, $type, $value);
+        $columnoption = reportbuilder::get_single_item($report->src->columnoptions, $type, $value);
+
+        $this->label = $filteroption->label;
+        $this->filtertype = $filteroption->filtertype;
+        $this->grouping = isset($columnoption->grouping) ? $columnoption->grouping : 'none';
+        $this->field = $this->get_field($columnoption->field);
+        $this->joins = isset($columnoption->joins) ? $columnoption->joins : array();
+        $this->options = isset($filteroption->filteroptions) ? $filteroption->filteroptions : array();
+
+        // if the filter defines a selectfunc option, call the function
+        // and save the return value to selectchoices
+        if (isset($this->options['selectfunc'])) {
+            $this->options['selectchoices'] = $this->get_select_choices($this->options['selectfunc']);
+        }
+
+    }
+
+    /**
+     * Call the named function from the report source and return the choices returned
+     *
+     * @param string $selectfunc Name of the function to call
+     * @return array Array representing a set of choices for the filter
+     */
+    private function get_select_choices($selectfunc) {
+            $selectfunc = 'rb_filter_' . $selectfunc;
+            if (method_exists($this->report->src, $selectfunc)) {
+                $selectchoices = $this->report->src->$selectfunc($this->report);
+            } else {
+                debugging("Filter function '{$selectfunc}' not found for filter '{$name}}' in source '" . get_class($report->src) . "'");
+                $selectchoices = array();
+            }
+            return $selectchoices;
+    }
+
+    /**
+     * Return an SQL snippet describing field information for this filter
+     *
+     * Includes any aggregation/grouping function that the filter is using
+     *
+     * @return string SQL snippet to use in WHERE or HAVING clause
+     */
+    private function get_field($field) {
+        $grouping = $this->grouping;
+        $src = $this->report->src;
+        $type = $this->type;
+        $value = $this->value;
+        if ($grouping == 'none') {
+            return $field;
+        } else {
+            $groupfunc = "rb_group_{$grouping}";
+            if (!method_exists($src, $groupfunc)) {
+                throw new ReportBuilderException(get_string('groupingfuncnotinfieldoftypeandvalue',
+                    'totara_reportbuilder',
+                    (object)array('groupfunc' => $groupfunc, 'type' => $type, 'value' => $value)));
+            }
+            return $src->$groupfunc($field);
+        }
+    }
+
+    /**
+     * Factory method for creating a filter object
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return @object A filter_[type] object or false
+     */
+    static function get_filter($type, $value, $advanced, $report) {
+        global $CFG;
+
+        // do some basic checks to ensure its a valid filter
+        if (!self::validate_filter($type, $value, $report)) {
+            return false;
+        }
+
+        // figure out what sort of filter it is
+        if (!$filtertype = self::get_filter_type($type, $value, $report)) {
+            return false;
+        }
+
+        $filename = "{$CFG->dirroot}/totara/reportbuilder/filters/{$filtertype}.php";
+        if (!is_readable($filename)) {
+            return false;
+        }
+        require_once($filename);
+        $classname = "rb_filter_{$filtertype}";
+        if (!class_exists($classname)) {
+            return false;
+        }
+
+        return new $classname($type, $value, $advanced, $report);
+    }
+
+    /**
+     * Check a filter to ensure it is supported by this report's source
+     *
+     * @param string $type The type of filter
+     * @param string $value The filter value
+     * @return bool True if the filter is supported, false (and prints debugging messages) otherwise
+     */
+    static function validate_filter($type, $value, $report) {
+        $filteroptions = $report->src->filteroptions;
+        $columnoptions = $report->src->columnoptions;
+        $joinlist = $report->src->joinlist;
+        $sourcename = get_class($report->src);
+
+        if (!reportbuilder::get_single_item($filteroptions, $type, $value)) {
+
+            $a = new stdClass();
+            $a->type = $type;
+            $a->value = $value;
+            $a->source = $sourcename;
+            debugging(get_string('error:filteroptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
+            return false;
+        }
+        if (!$columnoption = reportbuilder::get_single_item($columnoptions, $type, $value)) {
+
+            $a = new stdClass();
+            $a->type = $type;
+            $a->value = $value;
+            $a->source = $sourcename;
+            debugging(get_string('error:columnoptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
+            return false;
+        }
+
+        // make sure joins are defined before adding column
+        if (!reportbuilder::check_joins($joinlist, $columnoption->joins)) {
+            $a = new stdClass();
+            $a->type = $columnoption->type;
+            $a->value = $columnoption->value;
+            $a->source = $sourcename;
+            debugging(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
+            return false;
+
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Get a filter's filtertype by looking up from the filteroption in the report's source
+     *
+     * @param string $type The type of filter
+     * @param string $value The filter value
+     * @param object $report The report object
+     *
+     * @return string|false The filtertype of the filter from this report's source, if found
+     */
+    static function get_filter_type($type, $value, $report) {
+        $filteroptions = $report->src->filteroptions;
+        if (!$filteroption = reportbuilder::get_single_item($filteroptions, $type, $value)) {
+            return false;
+        }
+
+        if (!isset($filteroption->filtertype)) {
+            return false;
+        }
+
+        return $filteroption->filtertype;
     }
 
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array containing the filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
         print_error('abstractmethodcalled', 'totara_reportbuilder', '', 'get_sql_filter()');

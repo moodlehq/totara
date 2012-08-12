@@ -57,10 +57,10 @@ class rb_filter_option {
     public $label;
 
     /**
-     * Name of the kind of {@link filter_type} to display
+     * Name of the kind of {@link rb_filter_type} to display
      *
      * Options include 'text', 'date', 'select', 'number', 'textarea', 'simpleselect'.
-     * See {@link filter_type} child classes for a full list of options
+     * See {@link rb_filter_type} child classes for a full list of options
      *
      * Each type of filter appears differently, and offers different search options.
      * Some filter types (like select) require additional parameters
@@ -71,73 +71,16 @@ class rb_filter_option {
     public $filtertype;
 
     /**
-     * Name of a function that will provide the options for a select pulldown
+     * Array containing a set of options to be passed directly to the filter
      *
-     * Given a $selectfunc of 'name', a method of the source called rb_filter_name()
-     * will be called and the return value used to populate the options list. It will
-     * be passed three arguments: 1) The report's contentmode. 2) The report's
-     * list of contentoptions. 3) The report's id.
-     *
-     * Some common filter functions are provided by {@link rb_base_source}, and more
-     * can be created by the source that needs them.
-     *
-     * Filters with type 'simpleselect' use {@link rb_filter::$selectchoices} instead.
-     *
-     * @access public
-     * @var string
-     */
-    public $selectfunc;
-
-    /**
-     * Array of options used by simpleselect filters to populate the filter options
-     *
-     * Typical format would be:
-     *
-     * <code>
-     * array(
-     *     1 => get_string('yes'),
-     *     0 => get_string('no'),
-     * )
-     * </code>
-     *
-     * Filters with type 'select' use {@link rb_filter::$selectfunc} instead.
-     * @access public
-     * @var array
-     */
-    public $selectchoices;
-
-    /**
-     * Options to pass to 'select' and 'simpleselect' type filters. Used in the
-     * select formslib element to modify the appearance of the select menu. The
-     * format is:
-     *
-     * <code>array('attribute' => 'value')</code>
-     *
-     * where attribute is an HTML attribute to add to the select tag and value
-     * is the value to give it.
-     *
-     * One common value for $selectoptions is:
-     *
-     * <code>'selectoptions' => rb_filter_option::select_width_limiter(), </code>
-     *
-     * Which uses the {@link rb_filter_option::select_width_limiter()} method
-     * to restrict the size of the pulldown without cutting it off in Internet
-     * Explorer.
+     * The filters vary depending on the filtertype, see each filter class for available
+     * options. One or more of these options may be required by the particular filter
+     * type.
      *
      * @access public;
      * @var array
      */
-    public $selectoptions;
-
-
-    /**
-     * When default filters are included, this parameter determines if they
-     * start with their advanced status set to basic (0) or advanced (1)
-     *
-     * @access public
-     * @var integer
-     */
-    public $defaultadvanced;
+    public $filteroptions;
 
 
     /**
@@ -153,30 +96,16 @@ class rb_filter_option {
      * @param string $value Value of the column to base the filter on
      * @param string $label Text label to appear next to the filter
      * @param string $filtertype Kind of filter this is (text, select, date, etc)
-     * @param array $options Associative array of optional settings for the filter
+     * @param array $filteroptions Associative array of options to be passed to the filter
      */
     function __construct($type, $value, $label, $filtertype,
-        $options=array()) {
-
-        // use defaults if options not set
-        $defaults = array(
-            'selectfunc' => null,
-            'selectchoices' => array(),
-            'selectoptions' => null,
-            'defaultadvanced' => 0,
-        );
-        $options = array_merge($defaults, $options);
+        $filteroptions=array()) {
 
         $this->type = $type;
         $this->value = $value;
         $this->label = $label;
         $this->filtertype = $filtertype;
-
-        // assign optional properties
-        foreach ($defaults as $property => $unused) {
-            $this->$property = $options[$property];
-        }
-
+        $this->filteroptions = $filteroptions;
     }
 
     /**
@@ -197,5 +126,5 @@ class rb_filter_option {
         );
     }
 
-} // end of rb_filter class
+} // end of rb_filter_option class
 

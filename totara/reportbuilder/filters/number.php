@@ -23,20 +23,24 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
-
 /**
  * Generic filter for numbers.
  */
-class filter_number extends filter_type {
+class rb_filter_number extends rb_filter_type {
 
     /**
      * Constructor
-     * @param object $filter rb_filter object for this filter
-     * @param string $sessionname Unique name for the report for storing sessions
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return rb_filter_number object
      */
-    function filter_number($filter, $sessionname) {
-        parent::filter_type($filter, $sessionname);
+    function __construct($type, $value, $advanced, $report) {
+        parent::__construct($type, $value, $advanced, $report);
     }
 
     /**
@@ -58,29 +62,27 @@ class filter_number extends filter_type {
      */
     function setupForm(&$mform) {
         global $SESSION;
-        $sessionname=$this->_sessionname;
-        $label = $this->_filter->label;
-        $advanced = $this->_filter->advanced;
+        $label = $this->label;
+        $advanced = $this->advanced;
 
         $objs = array();
-        $objs[] =& $mform->createElement('select', $this->_name . '_op', null, $this->getOperators());
-        $objs[] =& $mform->createElement('text', $this->_name, null);
-        $grp =& $mform->addElement('group', $this->_name . '_grp', $label, $objs, '', false);
+        $objs[] =& $mform->createElement('select', $this->name . '_op', null, $this->getOperators());
+        $objs[] =& $mform->createElement('text', $this->name, null);
+        $grp =& $mform->addElement('group', $this->name . '_grp', $label, $objs, '', false);
         $mform->addHelpButton($grp->_name, 'filternumber', 'filters');
         if ($advanced) {
-            $mform->setAdvanced($this->_name . '_grp');
+            $mform->setAdvanced($this->name . '_grp');
         }
 
         // set default values
-        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
-            $defaults = $SESSION->{$sessionname}[$this->_name];
+        if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {
+            $defaults = $SESSION->reportbuilder[$this->report->_id][$this->name];
         }
-        // TODO get rid of need for [0]
-        if (isset($defaults[0]['operator'])) {
-            $mform->setDefault($this->_name . '_op', $defaults[0]['operator']);
+        if (isset($defaults['operator'])) {
+            $mform->setDefault($this->name . '_op', $defaults['operator']);
         }
-        if (isset($defaults[0]['value'])) {
-            $mform->setDefault($this->_name, $defaults[0]['value']);
+        if (isset($defaults['value'])) {
+            $mform->setDefault($this->name, $defaults['value']);
         }
     }
 
@@ -90,12 +92,12 @@ class filter_number extends filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field    = $this->_name;
+        $field    = $this->name;
         $operator = $field . '_op';
         $value = (isset($formdata->$field)) ? $formdata->$field : '';
-        if (array_key_exists($operator, $formdata)) {
+        if (isset($formdata->$operator)) {
             if ($value == '') {
-                // no data - no change except for empty filter
+                // no data
                 return false;
             }
             return array('operator' => (int)$formdata->$operator, 'value' => $value);
@@ -112,7 +114,7 @@ class filter_number extends filter_type {
     function get_sql_filter($data) {
         $operator = $data['operator'];
         $value    = (float) $data['value'];
-        $query    = $this->_filter->get_field();
+        $query    = $this->field;
 
         if ($value === '') {
             return array('', array());
@@ -153,13 +155,12 @@ class filter_number extends filter_type {
         $operator  = $data['operator'];
         $value     = $data['value'];
         $operators = $this->getOperators();
-        $label     = $this->_filter->label;
+        $label     = $this->label;
 
         $a = new stdClass();
         $a->label    = $label;
         $a->value    = '"' . s($value) . '"';
         $a->operator = $operators[$operator];
-
 
         switch ($operator) {
             case 0: // contains

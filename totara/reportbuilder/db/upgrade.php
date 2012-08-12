@@ -72,5 +72,26 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012073100, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2012081000) {
+        // need to migrate saved search data from the database
+        // to remove extraneous array that is no longer used
+        $searches = $DB->get_recordset('report_builder_saved', null, '', 'id, search');
+        foreach ($searches as $search) {
+            $todb = new stdClass();
+            $todb->id = $search->id;
+            $currentfilters = unserialize($search->search);
+            $newfilters = array();
+            foreach ($currentfilters as $key => $filter) {
+                // if the filter contains an array with only the [0] key set
+                // assume it is no longer needed and remove it
+                $newfilters[$key] = (isset($filter[0]) && count($filter) == 1) ? $filter[0] : $filter;
+            }
+            $todb->search = serialize($newfilters);
+            $DB->update_record('report_builder_saved', $todb);
+        }
+        $searches->close();
+        totara_upgrade_mod_savepoint(true, 2012081000, 'totara_reportbuilder');
+    }
+
     return true;
 }

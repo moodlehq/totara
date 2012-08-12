@@ -127,6 +127,5 @@ if ($countfiltered > 0) {
     print get_string('noresultsfound', 'totara_reportbuilder');
     echo $output->box_end();
 }
-
 echo $output->footer();
 

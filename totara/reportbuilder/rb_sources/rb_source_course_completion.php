@@ -309,7 +309,7 @@ class rb_source_course_completion extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'completion_status_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
@@ -319,20 +319,26 @@ class rb_source_course_completion extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
                 'course_completion',
                 'organisationpath',
                 get_string('orgwhencompleted', 'rb_source_course_completion'),
-                'org'
+                'hierarchy',
+                array(
+                    'hierarchytype' => 'org',
+                )
             ),
             new rb_filter_option(
                 'course_completion',
                 'organisationid2',
                 get_string('multiorgwhencompleted', 'rb_source_course_completion'),
-                'orgmulti'
+                'hierarchy_multi',
+                array(
+                    'hierarchytype' => 'org',
+                )
             ),
             new rb_filter_option(
                 'course_completion',
@@ -341,20 +347,26 @@ class rb_source_course_completion extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'positions_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter()
+                    'attributes' => rb_filter_option::select_width_limiter()
                 )
             ),
             new rb_filter_option(
                 'course_completion',
                 'positionid2',
                 get_string('multiposwhencompleted', 'rb_source_course_completion'),
-                'posmulti'
+                'hierarchy_multi',
+                array(
+                    'hierarchytype' => 'pos',
+                )
             ),
             new rb_filter_option(
                 'course_completion',
                 'positionpath',
                 get_string('poswhencompleted', 'rb_source_course_completion'),
-                'pos'
+                'hierarchy',
+                array(
+                    'hierarchytype' => 'pos',
+                )
             ),
             new rb_filter_option(
                 'course_completion',

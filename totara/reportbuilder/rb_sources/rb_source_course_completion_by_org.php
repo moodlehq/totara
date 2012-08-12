@@ -270,14 +270,17 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 'select',
                 array(
                     'selectfunc' => 'organisations_list',
-                    'selectoptions' => rb_filter_option::select_width_limiter(),
+                    'attributes' => rb_filter_option::select_width_limiter(),
                 )
             ),
             new rb_filter_option(
                 'course_completion',
                 'organisationpath',
                 get_string('officewhencompleted', 'rb_source_course_completion_by_org'),
-                'org'
+                'hierarchy',
+                array(
+                    'hierarchytype' => 'org',
+                )
             ),
             // aggregated filters
             new rb_filter_option(

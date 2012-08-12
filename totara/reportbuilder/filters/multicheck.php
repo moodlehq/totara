@@ -23,32 +23,34 @@
  * @subpackage reportbuilder
  */
 
-require_once($CFG->dirroot . '/totara/reportbuilder/filters/lib.php');
-
 /**
  * Generic filter based on a multiple checkboxes
  */
-class filter_multicheck extends filter_type {
-    /**
-     * options for the list values
-     */
-    var $_options;
-    var $_default;
+class rb_filter_multicheck extends rb_filter_type {
 
     /**
      * Constructor
-     * @param string $name the name of the filter instance
-     * @param string $label the label of the filter instance
-     * @param boolean $advanced advanced form element flag
-     * @param string $field user table filed name
-     * @param array $options select options
-     * @param mixed $default option
+     *
+     * @param string $type The filter type (from the db or embedded source)
+     * @param string $value The filter value (from the db or embedded source)
+     * @param integer $advanced If the filter should be shown by default (0) or only
+     *                          when advanced options are shown (1)
+     * @param reportbuilder object $report The report this filter is for
+     *
+     * @return rb_filter_multicheck object
      */
-    function filter_multicheck($filter, $sessionname, $checkoptions, $default=null, $attributes=null) {
-        parent::filter_type($filter, $sessionname);
-        $this->_options = $checkoptions;
-        $this->_default = $default;
-        $this->_attributes = $attributes;
+    function __construct($type, $value, $advanced, $report) {
+        parent::__construct($type, $value, $advanced, $report);
+
+        if (!isset($this->options['selectfunc'])) {
+            if (!isset($this->options['selectchoices'])) {
+                debugging("No selectchoices provided for filter '{$this->name}' in source '" . get_class($report->src) . "'");
+                $this->options['selectchoices'] = array();
+            }
+        }
+        if (!isset($this->options['attributes'])) {
+            $this->options['attributes'] = array();
+        }
     }
 
     /**
@@ -66,43 +68,41 @@ class filter_multicheck extends filter_type {
      * @param object $mform a MoodleForm object to setup
      */
     function setupForm(&$mform) {
-        global $SESSION, $OUTPUT;
-        $sessionname = $this->_sessionname;
-        $label = $this->_filter->label;
-        $advanced = $this->_filter->advanced;
+        global $OUTPUT, $SESSION;
+        $label = $this->label;
+        $advanced = $this->advanced;
+        $options = $this->options['selectchoices'];
+        $attr = $this->options['attributes'];
 
-        $mform->addElement('select', $this->_name . '_op', $label, $this->get_operators());
-        $mform->addHelpButton($this->_name . '_op', 'filtercheckbox', 'filters');
+        $mform->addElement('select', $this->name . '_op', $label, $this->get_operators());
+        $mform->addHelpButton($this->name . '_op', 'filtercheckbox', 'filters');
 
         // this class is used by the CSS to arrange the checkboxes nicely
         $mform->addElement('html', $OUTPUT->container_start('multicheck-items'));
         $objs = array();
-        foreach ($this->_options as $id => $name) {
-            $objs[] =& $mform->createElement('advcheckbox', $this->_name . '[' . $id . ']', null, $name, array('group' => 1));
-            $mform->disabledIf($this->_name . '[' . $id . ']', $this->_name . '_op', 'eq', 0);
+        foreach ($options as $id => $name) {
+            $objs[] =& $mform->createElement('advcheckbox', $this->name . '[' . $id . ']', null, $name, array_merge(array('group' => 1), $attr));
+            $mform->disabledIf($this->name . '[' . $id . ']', $this->name . '_op', 'eq', 0);
         }
-        $mform->addGroup($objs, $this->_name . '_grp', '&nbsp;', '', false);
+        $mform->addGroup($objs, $this->name . '_grp', '&nbsp;', '', false);
         $mform->addElement('html', $OUTPUT->container_end());
-        if (!is_null($this->_default)) {
-            $mform->setDefault($this->_name, $this->_default);
-        }
+
         if ($advanced) {
-            $mform->setAdvanced($this->_name . '_op');
-            $mform->setAdvanced($this->_name . '_grp');
+            $mform->setAdvanced($this->name . '_op');
+            $mform->setAdvanced($this->name . '_grp');
         }
 
         // set default values
-        if (array_key_exists($this->_name, $SESSION->{$sessionname})) {
-            $defaults = $SESSION->{$sessionname}[$this->_name];
+        if (isset($SESSION->reportbuilder[$this->report->_id][$this->name])) {
+            $defaults = $SESSION->reportbuilder[$this->report->_id][$this->name];
         }
-        //TODO get rid of need for [0]
-        if (isset($defaults[0]['operator'])) {
-            $mform->setDefault($this->_name . '_op', $defaults[0]['operator']);
+        if (isset($defaults['operator'])) {
+            $mform->setDefault($this->name . '_op', $defaults['operator']);
         }
-        if (isset($defaults[0]['value'])) {
-            $mform->setDefault($this->_name, $defaults[0]['value']);
+        // contains an array which will set multiple checkboxes
+        if (isset($defaults['value'])) {
+            $mform->setDefault($this->name, $defaults['value']);
         }
-                // check for null case if
 
     }
 
@@ -112,10 +112,10 @@ class filter_multicheck extends filter_type {
      * @return mixed array filter data or false when filter not set
      */
     function check_data($formdata) {
-        $field    = $this->_name;
+        $field    = $this->name;
         $operator = $field . '_op';
 
-        if (array_key_exists($field, $formdata) ) {
+        if (isset($formdata->$operator) && $formdata->$operator != 0) {
             return array('operator' => (int)$formdata->$operator,
                          'value'    => (array)$formdata->$field);
         }
@@ -125,6 +125,7 @@ class filter_multicheck extends filter_type {
 
     /**
      * Returns the condition to be used with SQL where
+     *
      * @param array $data filter settings
      * @return array containing filtering condition SQL clause and params
      */
@@ -133,7 +134,7 @@ class filter_multicheck extends filter_type {
 
         $operator = $data['operator'];
         $items    = $data['value'];
-        $query    = $this->_filter->get_field();
+        $query    = $this->field;
 
         switch($operator) {
             case 1:
@@ -156,29 +157,27 @@ class filter_multicheck extends filter_type {
             foreach ($items as $id => $selected) {
                 if ($selected) {
                     $uniqueparam = rb_unique_param("fmcequal_{$count}_");
-                    $equalslike = $DB->sql_like($query, ":{$uniqueparam}");
-                    $params[$uniqueparam] = $DB->sql_like_escape($id);
-                    $count++;
+                    $equals = "{$query} = :{$uniqueparam}";
+                    $params[$uniqueparam] = $id;
 
                     $uniqueparam = rb_unique_param("fmcendswith_{$count}_");
                     $endswithlike = $DB->sql_like($query, ":{$uniqueparam}");
                     $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id);
-                    $count++;
 
                     $uniqueparam = rb_unique_param("fmcstartswith_{$count}_");
                     $startswithlike = $DB->sql_like($query, ":{$uniqueparam}");
                     $params[$uniqueparam] = $DB->sql_like_escape($id) . '|%';
-                    $count++;
 
                     $uniqueparam = rb_unique_param("fmccontains{$count}_");
                     $containslike = $DB->sql_like($query, ":{$uniqueparam}");
                     $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id) . '|%';
-                    $count++;
 
-                    $res[] = "( {$equalslike} OR " .
-                        "{$endswithlike} OR " .
-                        "{$startswithlike} OR " .
-                        "{$containslike} )\n";
+                    $res[] = "( {$equals} OR \n" .
+                        "    {$endswithlike} OR \n" .
+                        "    {$startswithlike} OR \n" .
+                        "    {$containslike} )\n";
+
+                    $count++;
                 }
             }
         }
@@ -200,7 +199,8 @@ class filter_multicheck extends filter_type {
         $operators = $this->get_operators();
         $operator  = $data['operator'];
         $value     = $data['value'];
-        $label = $this->_filter->label;
+        $label = $this->label;
+        $selectchoices = $this->options['selectchoices'];
 
         if (empty($operator)) {
             return '';
@@ -209,13 +209,14 @@ class filter_multicheck extends filter_type {
         $a = new stdClass();
         $a->label    = $label;
         $checked = array();
-        foreach ($value as $name => $selected) {
+        foreach ($value as $key => $selected) {
             if ($selected) {
+                $name = array_key_exists($key, $selectchoices) ?
+                    $selectchoices[$key] : $key;
                 $checked[] = '"' . s($name) . '"';
             }
         }
         $a->value    = implode(', ', $checked);
-            //'"' . s($this->_options[$value]) . '"';
         $a->operator = $operators[$operator];
 
         return get_string('selectlabel', 'filters', $a);

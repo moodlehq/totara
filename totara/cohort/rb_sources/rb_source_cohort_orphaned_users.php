@@ -36,12 +36,6 @@ class rb_source_cohort_orphaned_users extends rb_source_user {
     public $base, $joinlist, $columnoptions, $filteroptions;
     public $contentoptions, $paramoptions, $defaultcolumns;
     public $defaultfilters, $requiredcolumns, $sourcetitle;
-    /**
-     * Whether the "staff_facetoface_sessions" report exists or not (used to determine
-     * whether or not to display icons that link to it)
-     * @var boolean
-     */
-    private $staff_f2f;
 
     /**
      * Constructor
