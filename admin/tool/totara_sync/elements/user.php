@@ -87,7 +87,7 @@ class totara_sync_element_user extends totara_sync_element {
             }
 
             if ($rs = $DB->get_recordset_sql($sql)) {
-                foreach ($rs as $suser) {
+                foreach ($rs as $user) {
                     // remove user
                     if (!delete_user($DB->get_record('user', array('id' => $user->id)))) {
                         $this->addlog(get_string('cannotdeleteuserx', 'tool_totara_sync', $user->idnumber), 'error', 'deleteuser');

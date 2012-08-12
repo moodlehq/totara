@@ -253,12 +253,11 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
        LEFT OUTER JOIN {{$elname}} i
                     ON s.parentidnumber = i.idnumber
                  WHERE s.parentidnumber IS NOT NULL AND s.parentidnumber != ''
-                   AND s.parentidnumber NOT IN (SELECT idnumber FROM {{$synctable}})
-                   AND i.idnumber IS NULL";
+                   AND s.parentidnumber NOT IN (SELECT idnumber FROM {{$synctable}})";
         $rs = $DB->get_recordset_sql($sql);
         if ($rs->valid()) {
             foreach ($rs as $r) {
-                $this->addlog(get_string('parentxnotexist', 'tool_totara_sync', $r->parentidnumber), 'error', 'checksanity');
+                $this->addlog(get_string('parentxnotexistinfile', 'tool_totara_sync', $r->parentidnumber), 'error', 'checksanity');
             }
             $rs->close();
             return false;
