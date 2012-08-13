@@ -3277,7 +3277,6 @@ function reportbuilder_get_reports($showhidden=false) {
  */
 function send_scheduled_report($sched) {
     global $CFG, $DB, $REPORT_BUILDER_EXPORT_OPTIONS;
-    $CALENDARDAYS = calendar_get_days();
     $export_codes = array_flip($REPORT_BUILDER_EXPORT_OPTIONS);
 
     if (!$user = $DB->get_record('user', array('id' => $sched->userid))) {
@@ -3326,23 +3325,7 @@ function send_scheduled_report($sched) {
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
-    $dateformat = ($user->lang == 'en_utf8') ? 'jS' : 'j';
-    $schedule = '';
-    switch($sched->frequency) {
-        case REPORT_BUILDER_SCHEDULE_DAILY:
-            $schedule .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder');
-            $schedule .= strftime('%l:%M%P' , mktime($sched->schedule, 0, 0));
-            break;
-        case REPORT_BUILDER_SCHEDULE_WEEKLY:
-            $schedule .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder');
-            $schedule .= get_string($CALENDARDAYS[$sched->schedule], 'calendar');
-            break;
-        case REPORT_BUILDER_SCHEDULE_MONTHLY:
-            $schedule .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder');
-            $schedule .= date($dateformat , mktime(0, 0, 0, 0, $sched->schedule));
-            break;
-    }
-    $messagedetails->schedule = $schedule;
+    $messagedetails->schedule = reportbuilder_get_formatted_schedule($sched->frequency, $sched->schedule, $user);
 
     $subject = $report->fullname . ' ' . get_string('report', 'totara_reportbuilder');
 
@@ -3368,6 +3351,43 @@ function send_scheduled_report($sched) {
 
     return $emailed;
 }
+
+
+/**
+ * Given scheduled report frequency and schedule data, output a human readable string.
+ *
+ * @param integer Code representing the frequency of reports (one of REPORT_BUILDER_SCHEDULE_OPTIONS)
+ * @param integer The scheduled date/time (either hour of day, day or week or day of month)
+ * @param object User object belonging to the recipient (optional). Defaults to current user
+ * @return string Human readable string describing the schedule
+ */
+function reportbuilder_get_formatted_schedule($frequency, $schedule, $user = null) {
+    // use current user if not set
+    if ($user === null) {
+        global $USER;
+        $user = $USER;
+    }
+    $CALENDARDAYS = calendar_get_days();
+    $dateformat = ($user->lang == 'en') ? 'jS' : 'j';
+    $out = '';
+    switch($frequency) {
+        case REPORT_BUILDER_SCHEDULE_DAILY:
+            $out .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder') . ' ';
+            $out .= strftime('%I:%M%p' , mktime($schedule, 0, 0));
+            break;
+        case REPORT_BUILDER_SCHEDULE_WEEKLY:
+            $out .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder') . ' ';
+            $out .= get_string($CALENDARDAYS[$schedule], 'calendar');
+            break;
+        case REPORT_BUILDER_SCHEDULE_MONTHLY:
+            $out .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder') . ' ';
+            $out .= date($dateformat , mktime(0, 0, 0, 0, $schedule));
+            break;
+    }
+
+    return $out;
+}
+
 
 /**
  *  Creates an export of a report in specified format (xls, csv or ods)

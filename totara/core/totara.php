@@ -241,7 +241,6 @@ function totara_print_report_manager() {
 */
 function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause=array()) {
     global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
-    $CALENDARDAYS = calendar_get_days();
     $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
 
     require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
@@ -264,7 +263,6 @@ function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $s
     }
     //note from M2.0 these functions return an empty array, not false
     $scheduledreports = $DB->get_records_sql($sql, $parameters);
-    $dateformat = ($USER->lang == 'en') ? 'jS' : 'j';
     //pre-process before sending to renderer
     foreach ($scheduledreports as $sched) {
         //data column
@@ -279,21 +277,7 @@ function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $s
         $sched->format = get_string($key . 'format','totara_reportbuilder');
         //schedule column
         if (isset($sched->frequency) && isset($sched->schedule)){
-            $schedule = '';
-            switch($REPORT_BUILDER_SCHEDULE_CODES[$sched->frequency]){
-                case 'daily':
-                    $schedule .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder') . ' ';
-                    $schedule .= strftime('%l:%M%P' ,mktime($sched->schedule,0,0));
-                    break;
-                case 'weekly':
-                    $schedule .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder') . ' ';
-                    $schedule .= get_string($CALENDARDAYS[$sched->schedule], 'calendar');
-                    break;
-                case 'monthly':
-                    $schedule .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder') . ' ';
-                    $schedule .= date($dateformat ,mktime(0,0,0,0,$sched->schedule));
-                    break;
-            }
+            $schedule = reportbuilder_get_formatted_schedule($sched->frequency, $sched->schedule);
         } else {
             $schedule = get_string('schedulenotset', 'totara_reportbuilder');
         }
