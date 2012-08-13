@@ -103,3 +103,78 @@ class HTMLPurifier_URIScheme_teamspeak extends HTMLPurifier_URIScheme {
     }
 
 }
+
+/**
+ *  Additional protocol validation classes added by Totara
+ */
+class HTMLPurifier_URIScheme_skype extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_ymsgr extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_meet extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_sip extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_xmpp extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_aim extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_myim extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
+
+class HTMLPurifier_URIScheme_msnim extends HTMLPurifier_URIScheme {
+    public $browsable = true;
+    public $hierarchical = true;
+    public function doValidate(&$uri, $config, $context) {
+        $uri->userinfo = null;
+        return true;
+    }
+}
