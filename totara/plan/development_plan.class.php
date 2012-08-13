@@ -597,17 +597,17 @@ class development_plan {
 
         // Complete
         if ($this->status == DP_PLAN_STATUS_APPROVED && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW  && $this->get_setting('manualcomplete')) {
-            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'complete' => 1, 'sesskey' => sesskey())), new pix_icon('/t/favourite_on', get_string('plancomplete', 'totara_plan')));
+            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'complete' => 1, 'sesskey' => sesskey())), new pix_icon('/i/star', get_string('plancomplete', 'totara_plan'), 'totara_plan'));
         }
 
         // Reactivate
         if ($this->status == DP_PLAN_STATUS_COMPLETE && $this->get_setting('completereactivate') >= DP_PERMISSION_ALLOW) {
-            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey())), new pix_icon('/t/plan_reactivate', get_string('planreactivate', 'totara_plan')));
+            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'reactivate' => 1, 'sesskey' => sesskey())), new pix_icon('/i/star_grey', get_string('planreactivate', 'totara_plan'), 'totara_plan'));
         }
 
         // Delete
         if ($this->get_setting('delete') == DP_PERMISSION_ALLOW) {
-            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'delete' => 1, 'sesskey' => sesskey())), new pix_icon('/t/delete', get_string('delete')));
+            echo $OUTPUT->action_icon(new moodle_url('/totara/plan/action.php', array('id' => $this->id, 'delete' => 1, 'sesskey' => sesskey())), new pix_icon('/i/cross_red_big', get_string('delete')));
         }
 
         $out = ob_get_contents();
