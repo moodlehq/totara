@@ -58,7 +58,7 @@ $jsmodule = array(
         'requires' => array('json'));
 $PAGE->requires->js_init_call('M.totara_cohortrules.init', null, false, $jsmodule);
 // Include rule delete js handlers
-$PAGE->requires->strings_for_js(array('deleteruleconfirm', 'savingrule', 'error:noresponsefromajax',
+$PAGE->requires->strings_for_js(array('deleteruleconfirm', 'deleteruleparamconfirm', 'savingrule', 'error:noresponsefromajax',
     'error:badresponsefromajax'), 'totara_cohort');
 $jsmodule = array(
         'name' => 'totara_cohortruledelete',

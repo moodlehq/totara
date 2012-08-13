@@ -171,7 +171,7 @@ if ($update) {
                 $mform->addGroup($radiogroup, $radioname, get_string('rulesetoperatorlabel', 'totara_cohort'), '<br />', false);
 
                 $mform->addElement('html', '<div class="rulelist fitem"><table class="rule_table">');
-                $mform->addElement('html', cohort_rule_form_html($ruleinstanceid, $ui->getRuleDescription(), $rule->group, $rule->name, true));
+                $mform->addElement('html', cohort_rule_form_html($ruleinstanceid, $ui->getRuleDescription($ruleinstanceid, false), $rule->group, $rule->name, true));
                 $mform->addElement('html', '</table></div>');
 
                 $mform->addElement(
@@ -199,7 +199,7 @@ if ($update) {
             case 'rule':
 
                 $isfirst = $DB->count_records_select('cohort_rules', "id=? and sortorder=(select min(sortorder) from {cohort_rules} where rulesetid = ?)", array($ruleinstanceid, $rulesetid));
-                echo cohort_rule_form_html($ruleinstanceid, $ui->getRuleDescription(), $rule->group, $rule->name, $isfirst, $ruleset->operator);
+                echo cohort_rule_form_html($ruleinstanceid, $ui->getRuleDescription($ruleinstanceid, false), $rule->group, $rule->name, $isfirst, $ruleset->operator);
                 break;
         }
         exit();

@@ -64,7 +64,7 @@ M.totara_cohortruledelete = M.totara_cohortruledelete || {
 
     init_deletelisteners: function() {
         $('a.ruledef-delete').unbind('click');
-        $('a.ruledef-delete').live('click', function(e, postdeletecallback) {
+        $('#cohort-rules').on('click', 'a.ruledef-delete', function(e, postdeletecallback) {
             e.preventDefault();
             var link = $(this);
             var ruleid = link.attr('data-ruleid');
@@ -90,28 +90,9 @@ M.totara_cohortruledelete = M.totara_cohortruledelete || {
                     if (o.length > 0) {
                         o = JSON.parse(o);
                         if (o.action == 'delrule'){
-                            var rulerow = $('div#ruledef'+o.ruleid).parent().parent();
-
-                            // If this row is the first one in the table, then blank out the "operator" in the next row
-                            if (!rulerow.prev('tr').length) {
-                                rulerow.next('tr').children('.operator').html('&nbsp;');
-                            }
-                            rulerow.remove();
-                        }
-                        if (o.action == 'delruleset'){
-                            var ruleset = $('fieldset#cohort-ruleset-header'+o.rulesetid);
-
-                            // Delete the operator immediately prior to this ruleset (if any)
-                            ruleset.prev('fieldset').has('.cohort-oplabel').remove();
-
-                            // If this is the first ruleset on the page, also delete the operator
-                            // immediately after it (if any)
-                            if (!ruleset.prevAll('fieldset [id^="cohort-ruleset-header"]').length) {
-                                ruleset.next('fieldset').has('.cohort-oplabel').remove();
-                            }
-
-                            // If there are no rulesets before this one, then delete the operator immediately after it
-                            ruleset.remove();
+                            remove_rule(o.ruleid);
+                        } else if (o.action == 'delruleset'){
+                            remove_ruleset(o.rulesetid);
                         }
 
                         $('#cohort_rules_action_box').show();
@@ -132,5 +113,95 @@ M.totara_cohortruledelete = M.totara_cohortruledelete || {
                 postdeletecallback.object[postdeletecallback.method]();
             }
         });
+
+        $('a img.ruleparam-delete').unbind('click');
+        $('#cohort-rules').on('click', 'a img.ruleparam-delete', function(e, postdeletecallback) {
+            e.preventDefault();
+            var link = $(this);
+            var ruleparamid = link.attr('ruleparam-id');
+            var ruleparamcontainer = (link).closest('span.ruleparamcontainer');
+
+            confirmed = confirm(M.util.get_string('deleteruleparamconfirm', 'totara_cohort'));
+
+            if (!confirmed) {
+                return;
+            }
+
+            $.ajax({
+                url: M.cfg.wwwroot + '/totara/cohort/rules/ruleparamdelete.php',
+                type: "GET",
+                data: ({
+                    sesskey: M.cfg.sesskey,
+                    ruleparamid: ruleparamid
+                }),
+                beforeSend: function() {
+                    var loadingimg = '<img src="' + M.util.image_url('i/ajaxloader', 'moodle') + '" alt="' + M.util.get_string('savingrule', 'totara_cohort') + '" class="iconsmall" />';
+                    link.replaceWith(loadingimg);
+                },
+                success: function(o) {
+                    if (o.length > 0) {
+                        o = JSON.parse(o);
+                        if (o.action == 'delruleparam') {
+                            var separator = ruleparamcontainer.next('.ruleparamseparator');
+                            if (separator.length) {
+                                separator.remove();
+                            } else {
+                                separator = ruleparamcontainer.prev('.ruleparamseparator');
+                                if (separator.length) {
+                                    separator.remove();
+                                }
+                            }
+                            ruleparamcontainer.remove();
+                        } else if (o.action == 'delrule') {
+                            remove_rule(o.ruleid);
+                        } else if (o.action == 'delruleset') {
+                            remove_ruleset(o.rulesetid);
+                        }
+
+                        $('#cohort_rules_action_box').show();
+                    } else {
+                        alert(M.util.get_string('error:noresponsefromajax', 'totara_cohort'));
+                        location.reload();
+                    }
+                }, // success
+                error: function(h, t, e) {
+                    alert(M.util.get_string('error:badresponsefromajax', 'totara_cohort'));
+                    // Reload the broken page
+                    location.reload();
+                } // error
+            }); // ajax
+
+            // Call the postdeletecallback method, if provided
+            if (postdeletecallback != undefined && postdeletecallback.object != undefined) {
+                postdeletecallback.object[postdeletecallback.method]();
+            }
+        });
+
+        function remove_rule(ruleid) {
+            var rulerow = $('div#ruledef' + ruleid).closest('tr');
+
+            // If this row is the first one in the table, then blank out the "operator" in the next row
+            if (!rulerow.prev('tr').length) {
+                rulerow.next('tr').children('.operator').html('&nbsp;');
+            }
+            rulerow.remove();
+
+        }
+
+        function remove_ruleset(rulesetid) {
+            var ruleset = $('fieldset#cohort-ruleset-header' + rulesetid);
+
+            // Delete the operator immediately prior to this ruleset (if any)
+            ruleset.prev('fieldset').has('.cohort-oplabel').remove();
+
+            // If this is the first ruleset on the page, also delete the operator
+            // immediately after it (if any)
+            if (!ruleset.prevAll('fieldset [id^="cohort-ruleset-header"]').length) {
+                ruleset.next('fieldset').has('.cohort-oplabel').remove();
+            }
+
+            // If there are no rulesets before this one, then delete the operator immediately after it
+            ruleset.remove();
+        }
     }  // init_deletelisteners
 }

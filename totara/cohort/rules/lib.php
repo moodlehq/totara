@@ -164,8 +164,8 @@ function cohort_rule_create_rule($rulesetid, $type, $name) {
 function cohort_rule_form_html($ruleid, $description, $rulegroup='', $rulename='', $first=false, $operator='') {
     global $CFG, $OUTPUT;
 
-    $strdelete = get_string('delete');
-    $stredit = get_string('edit');
+    $strdelete = get_string('deleterule', 'totara_cohort');
+    $stredit = get_string('editrule', 'totara_cohort');
 
     if ($first) {
         $opstr = '&nbsp;';
@@ -186,13 +186,13 @@ function cohort_rule_form_html($ruleid, $description, $rulegroup='', $rulename='
     $return .= html_writer::start_tag('td', array('class' => 'rule'));
     $return .= html_writer::start_tag('div', array('id' => 'ruledef'.$ruleid, 'class' => 'fitem ruledef'));
     $return .= $description;
-    $image = html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/edit'), 'alt'=>$stredit, 'class'=>'iconsmall'));
-    $url = new moodle_url($CFG->wwwroot.'/totara/cohort/rules/ruledetail.php', array('type'=>'rule', 'id'=>$ruleid));
-    $return .= html_writer::link($url, $image, array('title'=>$stredit, 'class'=>'ruledef-edit',
-                                                                           'data-ruletype'=> $rulegroup.'-'.$rulename,
-                                                                           'data-ruleid'=> $ruleid));
-    $image = html_writer::empty_tag('img', array('src'=>$OUTPUT->pix_url('t/delete'), 'alt'=>$strdelete, 'class'=>'iconsmall'));
-    $return .= html_writer::link('#', $image, array('title'=>$strdelete, 'class'=>'ruledef-delete','data-ruleid'=> $ruleid));
+    $image = html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/edit'), 'alt' => $stredit, 'class'=>'iconsmall'));
+    $url = new moodle_url($CFG->wwwroot . '/totara/cohort/rules/ruledetail.php', array('type' => 'rule', 'id' => $ruleid));
+    $return .= html_writer::link($url, $image, array('title' => $stredit, 'class' => 'ruledef-edit',
+                                                                           'data-ruletype' => $rulegroup . '-' . $rulename,
+                                                                           'data-ruleid' => $ruleid));
+    $image = html_writer::empty_tag('img', array('src' => $OUTPUT->pix_url('t/delete'), 'alt' => $strdelete, 'class'=>'iconsmall'));
+    $return .= html_writer::link('#', $image, array('title' => $strdelete, 'class' => 'ruledef-delete','data-ruleid'=> $ruleid));
 
     $return .= html_writer::end_tag('div');
     $return .= html_writer::end_tag('td');

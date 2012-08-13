@@ -187,7 +187,7 @@ if ($cohort->cohorttype == cohort::TYPE_DYNAMIC) {
                     if ($j) {
                         $item .= $rulesetoperator . ' ';
                     }
-                    $item .= $rule->ui->getRuleDescription();
+                    $item .= $rule->ui->getRuleDescription($rulerec->id);
                     $item .= html_writer::end_tag('li');
 
                     $j++;

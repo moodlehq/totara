@@ -105,14 +105,16 @@ abstract class cohort_rule_ui {
 
     /**
      * Get the description of the rule, to be printed on the cohort's rules list page
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
      * @return string
      */
-    abstract public function getRuleDescription();
+    abstract public function getRuleDescription($ruleid, $static=true);
 
     /**
      * Print the user params (used in logging)
      */
-    public function printParams(){
+    public function printParams() {
         $ret = '';
         foreach ($this->params as $k=>$v) {
             $ret .= $k.':'.print_r($this->{$k}, true)."\n";
@@ -123,8 +125,14 @@ abstract class cohort_rule_ui {
     /**
      * Validate the response
      */
-    public function validateResponse(){
+    public function validateResponse() {
         return true;
+    }
+
+    public function param_delete_action_icon($paramid) {
+        global $OUTPUT;
+
+        return $OUTPUT->action_icon('#', new pix_icon('i/bullet_delete', get_string('deleteruleparam', 'totara_cohort'), 'totara_core', array('class' => 'ruleparam-delete', 'ruleparam-id' => $paramid)));
     }
 }
 
@@ -275,8 +283,11 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $COHORT_RULES_OP_IN;
         if (!isset($this->equal) || !isset($this->listofvalues)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -412,8 +423,11 @@ JS;
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $COHORT_RULES_OP_IN;
         if (!isset($this->equal) || !isset($this->listofvalues)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -671,8 +685,11 @@ JS;
 
     /**
      * Print a description of the rule in text, for the rules list page
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription(){
+    public function getRuleDescription($ruleid, $static=true) {
         global $CFG, $COHORT_RULE_DATE_OP;
 
         if (!isset($this->operator) || !isset($this->date)) {
@@ -875,7 +892,13 @@ class cohort_rule_ui_picker_hierarchy extends cohort_rule_ui {
         $sqlhandler->write();
     }
 
-    public function getRuleDescription(){
+    /**
+     * Get the description of the rule, to be printed on the cohort's rules list page
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
+     */
+    public function getRuleDescription($ruleid, $static=true) {
         global $CFG, $COHORT_RULES_OP_IN, $DB;
 
         if (
@@ -887,30 +910,37 @@ class cohort_rule_ui_picker_hierarchy extends cohort_rule_ui {
             return get_string('error:rulemissingparams', 'totara_cohort');
         }
 
-        list($in_sql, $in_params) = $DB->get_in_or_equal($this->listofvalues);
-        $hierarchy = $this->shortprefix;
-        $sql = "SELECT h.id, h.fullname, h.sortthread, hfw.sortorder
-                  FROM {{$hierarchy}} h
-            INNER JOIN {{$hierarchy}_framework} hfw
-                    ON h.frameworkid = hfw.id
-                 WHERE h.id $in_sql
-              ORDER BY hfw.sortorder, h.sortthread";
-        $items = $DB->get_records_sql($sql, $in_params);
-        if (!$items) {
-            return get_string('error:rulemissingparams', 'totara_cohort');
-        }
-
-        $namelist = array();
-        foreach ($items as $item) {
-            $namelist[] = $item->fullname;
-        }
-
         $ret = ucfirst($this->description);
         $ret .= get_string("is{$COHORT_RULES_OP_IN[$this->equal]}to", 'totara_cohort');
         if ($this->includechildren) {
             $ret .= get_string('orachildof', 'totara_cohort');
         }
-        $ret .= '"' . htmlspecialchars(implode('", "', $namelist)) .'"';
+
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofvalues);
+        $sqlparams[] = $ruleid;
+        $hierarchy = $this->shortprefix;
+        $sql = "SELECT h.id, h.fullname, h.sortthread, hfw.sortorder, crp.id AS paramid
+            FROM {{$hierarchy}} h
+            INNER JOIN {{$hierarchy}_framework} hfw ON h.frameworkid = hfw.id
+            INNER JOIN {cohort_rule_params} crp ON h.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE h.id {$sqlin}
+            AND crp.name = 'listofvalues' AND crp.ruleid = ?
+            ORDER BY hfw.sortorder, h.sortthread";
+        $items = $DB->get_records_sql($sql, $sqlparams);
+        if (!$items) {
+            return get_string('error:rulemissingparams', 'totara_cohort');
+        }
+
+        foreach ($items as $i => $h) {
+            $value = '"' . $h->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($h->paramid);
+            }
+            $items[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $items);
 
         return $ret;
     }
@@ -1000,8 +1030,6 @@ abstract class cohort_rule_ui_picker_course extends cohort_rule_ui {
 
         // Display
         $markup = $dialog->generate_markup();
-        // Hack to get around the hack that prevents deleting items via dialogs
-        $markup = str_replace('<td class="selected" ', '<td class="selected selected-shown" ', $markup);
         echo $markup;
     }
 
@@ -1040,8 +1068,11 @@ class cohort_rule_ui_picker_course_allanynotallnone extends cohort_rule_ui_picke
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB;
         if (!isset($this->operator) || !isset($this->listofids)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -1060,13 +1091,27 @@ class cohort_rule_ui_picker_course_allanynotallnone extends cohort_rule_ui_picke
             default:
                 $ret .= get_string('ccdescnotany', 'totara_cohort');
         }
-        $idlist = implode(',', $this->listofids);
-        $coursereclist = $DB->get_records_select('course','id in ('.$idlist.')', array(), 'sortorder, fullname', 'id, fullname');
-        $courselist = array();
-        foreach( $coursereclist as $rec ){
-            $courselist[] = $rec->fullname;
-        }
-        $ret .= '"' . implode('", "', $courselist) . '"';
+
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT c.id, c.fullname, crp.id AS paramid
+            FROM {course} c
+            INNER JOIN {cohort_rule_params} crp ON c.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE c.id {$sqlin}
+            AND crp.name = 'listofids' AND crp.ruleid = ?
+            ORDER BY sortorder, fullname";
+        $courselist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($courselist as $i => $c) {
+            $value = '"' . $c->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($c->paramid);
+            }
+            $courselist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $courselist);
         return $ret;
     }
 }
@@ -1141,8 +1186,11 @@ JS;
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB;
         if (!isset($this->operator) || !isset($this->listofids)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -1157,13 +1205,27 @@ JS;
         }
         $ret = get_string($descstr, 'totara_cohort', $this->date);
 
-        $idlist = implode(',', $this->listofids);
-        $coursereclist = $DB->get_records_select('course','id in ('.$idlist.')', array(), 'sortorder, fullname', 'id, fullname');
-        $courselist = array();
-        foreach( $coursereclist as $rec ){
-            $courselist[] = $rec->fullname;
-        }
-        $ret .= '"' . implode('", "', $courselist) . '"';
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT c.id, c.fullname, crp.id AS paramid
+            FROM {course} c
+            INNER JOIN {cohort_rule_params} crp ON c.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE c.id {$sqlin}
+            AND crp.name = 'listofids' AND crp.ruleid = ?
+            ORDER BY sortorder, fullname";
+        $courselist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($courselist as $i => $c) {
+            $value = '"' . $c->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($c->paramid);
+            }
+            $courselist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $courselist);
+
         return $ret;
     }
 }
@@ -1257,8 +1319,11 @@ JS;
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB, $CFG;
         if (!isset($this->operator) || !isset($this->listofids)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -1277,13 +1342,27 @@ JS;
             userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false)
         );
 
-        $idlist = implode(',', $this->listofids);
-        $coursereclist = $DB->get_records_select('course','id in ('.$idlist.')', array(), 'sortorder, fullname', 'id, fullname');
-        $courselist = array();
-        foreach( $coursereclist as $rec ){
-            $courselist[] = $rec->fullname;
-        }
-        $ret .= '"' . implode('", "', $courselist) . '"';
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT c.id, c.fullname, crp.id AS paramid
+            FROM {course} c
+            INNER JOIN {cohort_rule_params} crp ON c.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE c.id {$sqlin}
+            AND crp.name = 'listofids' AND crp.ruleid = ?
+            ORDER BY sortorder, fullname";
+        $courselist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($courselist as $i => $c) {
+            $value = '"' . $c->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($c->paramid);
+            }
+            $courselist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $courselist);
+
         return $ret;
     }
 }
@@ -1413,8 +1492,11 @@ class cohort_rule_ui_picker_program_allanynotallnone extends cohort_rule_ui_pick
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB;
         if (!isset($this->operator) || !isset($this->listofids)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -1433,13 +1515,28 @@ class cohort_rule_ui_picker_program_allanynotallnone extends cohort_rule_ui_pick
                 $getstr = 'pcdescnotany';
         }
         $ret = get_string($getstr, 'totara_cohort');
-        $idlist = implode(',', $this->listofids);
-        $programreclist = $DB->get_records_select('prog','id in ('.$idlist.')', array(), 'sortorder, fullname', 'id, fullname');
-        $programlist = array();
-        foreach( $programreclist as $rec ){
-            $programlist[] = $rec->fullname;
-        }
-        $ret .= '"' . implode('", "', $programlist) . '"';
+
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT p.id, p.fullname, crp.id AS paramid
+            FROM {prog} p
+            INNER JOIN {cohort_rule_params} crp ON p.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE p.id {$sqlin}
+            AND crp.name = 'listofids' AND crp.ruleid = ?
+            ORDER BY sortorder, fullname";
+        $proglist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($proglist as $i => $p) {
+            $value = '"' . $p->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($p->paramid);
+            }
+            $proglist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $proglist);
+
         return $ret;
     }
 }
@@ -1513,8 +1610,11 @@ JS;
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB;
         if (!isset($this->operator) || !isset($this->listofids)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -1529,13 +1629,27 @@ JS;
         }
         $ret = get_string($getstr, 'totara_cohort', $this->date);
 
-        $idlist = implode(',', $this->listofids);
-        $programreclist = $DB->get_records_select('prog','id in ('.$idlist.')', array(), 'sortorder, fullname', 'id, fullname');
-        $programlist = array();
-        foreach( $programreclist as $rec ){
-            $programlist[] = $rec->fullname;
-        }
-        $ret .= '"' . implode('", "', $programlist) . '"';
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT p.id, p.fullname, crp.id AS paramid
+            FROM {prog} p
+            INNER JOIN {cohort_rule_params} crp ON p.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE p.id {$sqlin}
+            AND crp.name = 'listofids' AND crp.ruleid = ?
+            ORDER BY sortorder, fullname";
+        $proglist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($proglist as $i => $p) {
+            $value = '"' . $p->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($p->paramid);
+            }
+            $proglist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $proglist);
+
         return $ret;
     }
 }
@@ -1629,8 +1743,11 @@ JS;
 
     /**
      * Get the description of this rule for the list of rules
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
      */
-    public function getRuleDescription() {
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB, $CFG;
         if (!isset($this->operator) || !isset($this->listofids)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
@@ -1649,13 +1766,27 @@ JS;
             userdate($this->date, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false)
         );
 
-        $idlist = implode(',', $this->listofids);
-        $programreclist = $DB->get_records_select('prog','id in ('.$idlist.')', array(), 'sortorder, fullname', 'id, fullname');
-        $programlist = array();
-        foreach( $programreclist as $rec ){
-            $programlist[] = $rec->fullname;
-        }
-        $ret .= '"' . implode('", "', $programlist) . '"';
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->listofids);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT p.id, p.fullname, crp.id AS paramid
+            FROM {prog} p
+            INNER JOIN {cohort_rule_params} crp ON p.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE p.id {$sqlin}
+            AND crp.name = 'listofids' AND crp.ruleid = ?
+            ORDER BY sortorder, fullname";
+        $proglist = $DB->get_records_sql($sql, $sqlparams);
+
+        foreach ($proglist as $i => $p) {
+            $value = '"' . $p->fullname . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($p->paramid);
+            }
+            $proglist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
+
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $proglist);
+
         return $ret;
     }
 }
@@ -1737,8 +1868,15 @@ class cohort_rule_ui_reportsto extends cohort_rule_ui {
         $sqlhandler->write();
     }
 
-    public function getRuleDescription() {
+    /**
+     * Get the description of the rule, to be printed on the cohort's rules list page
+     * @param int $ruleid
+     * @param boolean $static only display static description, without action controls
+     * @return string
+     */
+    public function getRuleDescription($ruleid, $static=true) {
         global $DB;
+
         if (!isset($this->isdirectreport) || !isset($this->managerid)) {
             return get_string('error:rulemissingparams', 'totara_cohort');
         }
@@ -1749,17 +1887,28 @@ class cohort_rule_ui_reportsto extends cohort_rule_ui {
             $ret = get_string('userreportsto', 'totara_cohort');
         }
 
-        $idlist = implode(',', $this->managerid);
-        $userlist = $DB->get_records_select('user','id in ('.$idlist.')', array(), '', 'id, firstname, lastname');
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($this->managerid);
+        $sqlparams[] = $ruleid;
+        $sql = "SELECT u.id, u.firstname, u.lastname, crp.id AS paramid
+            FROM {user} u
+            INNER JOIN {cohort_rule_params} crp ON u.id = " . $DB->sql_cast_char2int('crp.value') . "
+            WHERE u.id {$sqlin}
+            AND crp.name = 'managerid' AND crp.ruleid = ?";
+        $userlist = $DB->get_records_sql($sql, $sqlparams);
 
-        // Calculate the fullname for each user
-        array_walk($userlist, function(&$value, $key){
-            $value = fullname($value);
-        });
+        foreach ($userlist as $i => $u) {
+            $value = '"' . fullname($u) . '"';
+            if (!$static) {
+                $value .= $this->param_delete_action_icon($u->paramid);
+            }
+            $userlist[$i] = html_writer::tag('span', $value, array('class' => 'ruleparamcontainer'));
+        };
         // Sort by fullname
         sort($userlist);
 
-        $ret .= '"' . implode('", "', $userlist) . '"';
+        $paramseparator = html_writer::tag('span', ', ', array('class' => 'ruleparamseparator'));
+        $ret .= implode($paramseparator, $userlist);
+
         return $ret;
     }
 }

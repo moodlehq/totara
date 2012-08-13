@@ -90,7 +90,7 @@ class cohort_rules_form extends moodleform {
                 $rule = cohort_rules_get_rule_definition($rulerec->ruletype, $rulerec->name);
                 $rule->sqlhandler->fetch($rulerec->id);
                 $rule->ui->setParamValues($rule->sqlhandler->paramvalues);
-                $mform->addElement('html', cohort_rule_form_html($rulerec->id, $rule->ui->getRuleDescription(), $rulerec->ruletype, $rulerec->name, $firstrule, $ruleset->operator));
+                $mform->addElement('html', cohort_rule_form_html($rulerec->id, $rule->ui->getRuleDescription($rulerec->id, false), $rulerec->ruletype, $rulerec->name, $firstrule, $ruleset->operator));
                 $firstrule = false;
             }
             $mform->addElement('html', '</table></div>');
