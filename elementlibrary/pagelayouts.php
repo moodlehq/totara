@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . '/../config.php');
+require_once($CFG->libdir . '/adminlib.php');
 
 $layout = optional_param('layout', null, PARAM_ALPHANUM);
 
@@ -99,7 +100,8 @@ if ($layout) {
     $PAGE->set_pagelayout($layout);
 }
 
-require_login();
+admin_externalpage_setup('elementlibrary');
+
 echo $OUTPUT->header();
 
 if ($layout) {

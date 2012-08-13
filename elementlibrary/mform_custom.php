@@ -10,9 +10,8 @@
  **/
 
 require_once(dirname(__FILE__) . '/../config.php');
-
+require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot.'/lib/formslib.php');
-
 
 $strheading = 'Element Library: Moodle Forms: Custom Forms';
 $url = new moodle_url('/elementlibrary/mform_custom.php');
@@ -24,7 +23,8 @@ $PAGE->set_url($url);
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
 
-require_login();
+admin_externalpage_setup('elementlibrary');
+
 echo $OUTPUT->header();
 
 echo html_writer::link(new moodle_url('/elementlibrary/mform.php'), '&laquo; Back to moodle forms');

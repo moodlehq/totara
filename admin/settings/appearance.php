@@ -22,6 +22,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     $temp->add(new admin_setting_devicedetectregex('devicedetectregex', get_string('devicedetectregex', 'admin'), get_string('devicedetectregex_desc', 'admin'), ''));
     $ADMIN->add('themes', $temp);
     $ADMIN->add('themes', new admin_externalpage('themeselector', get_string('themeselector','admin'), $CFG->wwwroot . '/theme/index.php'));
+    $ADMIN->add('themes', new admin_externalpage('elementlibrary', get_string('elementlibrary','totara_core'), $CFG->wwwroot . '/elementlibrary/index.php'));
 
     // settings for each theme
     foreach (get_plugin_list('theme') as $theme => $themedir) {

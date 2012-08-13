@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . '/../config.php');
+require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
 
 $strheading = 'Element Library: Dialogs';
@@ -35,7 +36,7 @@ $args = array('args'=>'{"userid":0,'.
 
 $PAGE->requires->js_init_call('M.totara_positionuser.init', $args, false, $jsmodule);
 
-require_login();
+admin_externalpage_setup('elementlibrary');
 echo $OUTPUT->header();
 
 echo html_writer::link(new moodle_url('/elementlibrary/'), '&laquo; Back to index');

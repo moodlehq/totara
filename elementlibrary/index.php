@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . '/../config.php');
-
+require_once($CFG->libdir . '/adminlib.php');
 
 $strheading = 'Element Library';
 $url = new moodle_url('/elementlibrary/index.php');
@@ -13,7 +13,8 @@ $PAGE->set_url($url);
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
 
-require_login();
+admin_externalpage_setup('elementlibrary');
+
 echo $OUTPUT->header();
 
 echo $OUTPUT->heading($strheading);

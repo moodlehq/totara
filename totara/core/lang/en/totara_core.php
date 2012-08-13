@@ -56,6 +56,7 @@ $string['browsecategories'] = 'Browse Categories';
 $string['couldntreaddataforblockid'] = 'Could not read data for blockid={$a}';
 $string['couldntreaddataforcourseid'] = 'Could not ready data for courseid={$a}';
 $string['developmentplan'] = 'Development Planner';
+$string['elementlibrary'] = 'Element Library';
 $string['errorfindingcategory'] = 'Error finding the category';
 $string['errorfindingprogram'] = 'Error finding the program';
 $string['findcourses'] = 'Find Courses';
