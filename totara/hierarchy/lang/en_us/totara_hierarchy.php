@@ -1,5 +1,8 @@
 <?php
+$string['addorganisation'] = 'Add Organization';
+$string['organisationtypedescription'] = 'Organization Type Description';
 $string['organisationaddedframework'] = 'The organization framework "{$a}" has been added';
+$string['competencyevidenceorganisation'] = 'Evidence Organization';
 $string['addedorganisation'] = 'The organization "{$a}" has been added';
 $string['addmultipleneworganisation'] = 'Add multiple organizations';
 $string['organisationaddnewframework'] = 'Add new organization framework';
