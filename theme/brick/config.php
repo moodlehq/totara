@@ -58,6 +58,8 @@ $THEME->sheets = array(
     'core',
     'colors',
     'css3',
+    'menu',
+    'rtl',
 );
 
 ////////////////////////////////////////////////////
@@ -241,7 +243,9 @@ $THEME->layouts = array(
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

@@ -58,6 +58,8 @@ $THEME->sheets = array(
     'pagelayout',
     'colors',
     'menu',
+    'menu_dropdown',
+    'menu_rtl',
 );
 
 ////////////////////////////////////////////////////
@@ -246,7 +248,9 @@ $THEME->rarrow    = '&rang;';
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

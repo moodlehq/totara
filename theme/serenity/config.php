@@ -21,7 +21,7 @@ $THEME->parents = array('canvas','base');
 ////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('core');
+$THEME->sheets = array('core','menu','menu_rtl');
 
 ////////////////////////////////////////////////////
 // Name of the stylesheet(s) you've including in
@@ -106,7 +106,9 @@ $THEME->editor_sheets = array('editor');
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

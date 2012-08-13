@@ -14,6 +14,7 @@ html a:hover,body a:hover, ul.dropdown li.hover, ul.dropdown li:hover, ul.dropdo
 	background: [[setting:maincolor]] url([[pix:theme|header]]) repeat-x;
 	border-bottom: 1px solid [[setting:maincolor]];
 }
+.dir-rtl #page-header {height: 100px;}
 
 #nologo a,#nologo, #loggedinas, .block .header h2, .yui3-menu-content li a, #navigation li a {
 	color: [[setting:maincolorlink]] !important;

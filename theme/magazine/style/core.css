@@ -65,6 +65,9 @@ div#headerinner {
     margin: 0px 0px 0px 5px !important;
     font-size: 9px;
 }
+.dir-rtl #headright {float: left;}
+.dir-rtl #headright div.langmenu {float: left !important;}
+.dir-rtl .logininfo {float:left;}
 
 #headleft {
     float: left;
@@ -124,11 +127,22 @@ div.thetitle {
 #nologo a:hover {
     text-decoration: none;
 }
+
+.dir-rtl #nologo {
+float: right;
+width:auto;
+padding-right: 7px;
+}
+
 div.rightinfo {
     float: right;
     min-width: 470px;
     height: 130px;
     overflow: hidden;
+}
+
+.dir-rtl div.rightinfo {
+float: left;
 }
 
 #menucontainer {
@@ -192,6 +206,10 @@ div.jcontrolsleft {
     min-width: 100px;
 }
 
+.dir-rtl div.jcontrolsleft {
+  float:right;
+}
+
 div.jcontrolsright {
     float: right;
     min-width: 100px;
@@ -199,6 +217,9 @@ div.jcontrolsright {
     margin-right: 15px;
 }
 
+.dir-rtl div.jcontrolsright {
+  float: left;
+}
 div.jcontrolsright div.singlebutton, div.jcontrolsright div.forumsearch {
     margin: 5px 0px 0px;
 }
@@ -211,6 +232,7 @@ div.jcontrolsright div.singlebutton, div.jcontrolsright div.forumsearch {
     position: relative;
     margin: 0 auto;
 }
+.dir-rtl #footer {width: 22%;}
 
 #page-footer {
     position: relative;
@@ -229,6 +251,7 @@ div.jcontrolsright div.singlebutton, div.jcontrolsright div.forumsearch {
     margin: 10px 3px 0px 0px;
     color: #333333;
 }
+.dir-rtl .johndocs {float: none;}
 
 .johndocs a, div.johndocsleft a {
     font-weight: 200;
@@ -243,7 +266,7 @@ div.johndocsleft {
     color: #333333;
     font-size: 11px;
 }
-
+.dir-rtl div.johndocsleft {float:none;}
 /** Some breadcrumb style **/
 
 .breadcrumb ul {
@@ -277,6 +300,11 @@ div#jcontrols_button span.arrow.sep {
     width: 16px;
 }
 
+.dir-rtl div#jcontrols_button span.arrow.sep {
+      background: url([[pix:theme|breadcrumb_separator_arrow_2_dots_rtl]]) no-repeat;
+	  background-position: center;
+	  height:25px;
+}
 /** Block styles **/
 
 .block {
@@ -467,6 +495,7 @@ div.yui3-widget-bd h1.helpheading {
     border-right: 1px solid #cccccc;
     float: right;
 }
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu .yui3-menu-content li a {text-align:right;}
 
 #custommenu .yui3-menu-content {
     border-width: 0;
@@ -775,7 +804,7 @@ div.notifysuccess {
     color: #008500;
     border: 3px solid #dadada;
     text-align: center;
-    background: #fff url([[pix:theme|check]]) no-repeat 2% 50%;
+    background: lightGoldenrodYellow url([[pix:theme|check]]) no-repeat 2% 50%;
     padding: 5px;
 }
 

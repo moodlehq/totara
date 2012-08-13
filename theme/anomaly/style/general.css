@@ -838,3 +838,13 @@ h1.headermain {
 /* Add Block
 -------------------------*/
 .block .content .singleselect form#add_block .select.menubui_addblock { width: 160px;}
+
+/* Header's custom menu, in RTL mode */
+.dir-rtl #custommenu ul.dropdown {float:right;}
+.dir-rtl #custommenu ul.dropdown ul{right: 0;left: auto;}
+.dir-rtl #custommenu ul.dropdown ul ul {right: 203px;left: auto;}
+
+/* UI fixes in forum's post list, when in RTL mode */
+.dir-rtl .forumpost .row .left {clear: right;}
+.dir-rtl .forumpost .row .options {background-color: white;}
+.dir-rtl .forumpost .row {width: 95%;}

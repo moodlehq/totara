@@ -9,8 +9,8 @@
 
 div.block {
 	-moz-border-radius: 2px;
-	-webkit-border-radius: 3px;
-	border-radius: 2px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .block div.content {

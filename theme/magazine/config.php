@@ -21,7 +21,7 @@ $THEME->parents = array('canvas','base');
 // changes you want to your theme.
 ////////////////////////////////////////////////////
 
-$THEME->sheets = array('layout','core','colors','css3');
+$THEME->sheets = array('layout','core','colors','css3','menu','menu_rtl');
 
 ////////////////////////////////////////////////////
 // Name of the stylesheet(s) you've including in
@@ -193,7 +193,9 @@ $THEME->csspostprocess = 'magazine_process_css';
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

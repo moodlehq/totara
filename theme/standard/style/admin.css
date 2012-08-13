@@ -152,3 +152,4 @@ table.flexible .r1 {background-color: #FAFAFA;}
 #page-admin-modules.dir-rtl .generaltable td.c0,
 #page-admin-auth.dir-rtl .generaltable th.c0,
 #page-admin-auth.dir-rtl .generaltable td.c0 {text-align: right;}
+#page-admin-index.dir-rtl.pagelayout-maintenance {text-align: center;} /* center text when running plugin install page */

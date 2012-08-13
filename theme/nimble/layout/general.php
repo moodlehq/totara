@@ -17,7 +17,7 @@ $bodyclasses = array();
     $bodyclasses[] = 'content-only';
 }
 if ($hascustommenu) {
-    $bodyclasses[] = 'has_custom_menu';
+    $bodyclasses[] = 'has-custom-menu';
 }
 
 if (!empty($PAGE->theme->settings->footertext)) {

@@ -1,0 +1,109 @@
+/**moodle dropdown css for yui menu **/
+
+.dir-rtl #custommenu {
+    width: 100%;
+    float: left;
+    background-color: #EEE;
+}
+.dir-rtl #custommenu .yui3-menu-label-active,
+.dir-rtl #custommenu .yui3-menu-label-menuvisible,
+.dir-rtl #custommenu .yui3-menu .yui3-menu .yui3-menu-label-active,
+.dir-rtl #custommenu .yui3-menu .yui3-menu .yui3-menu-label-menuvisible,
+.dir-rtl #custommenu .yui3-menuitem-active .yui3-menuitem-content,
+.dir-rtl #custommenu .yui3-menu .yui3-menu .yui3-menuitem-active .yui3-menuitem-content,
+.dir-rtl #custommenu .yui3-menu-horizontal.javascript-disabled li a:hover {
+    background-color:#DDD;
+    background-image: none;
+    color: #333;
+}
+.dir-rtl #custommenu .yui3-menu-content,
+.dir-rtl #custommenu .yui3-menu .yui3-menu .yui3-menu .yui3-menu-content {
+    background-image:none;
+    background-color:#EEE;
+    padding:0;
+    margin: 0;
+}
+
+.dir-rtl #custommenu .yui3-menu-label,
+.dir-rtl #custommenu .yui3-menu .yui3-menu .yui3-menu-label {
+    background-image:url([[pix:theme|rtl-vertical-menu-submenu-indicator]]);
+    background-position:5px center;
+    background-repeat:no-repeat;
+    color: #333;
+}
+.dir-rtl #custommenu .yui3-menu-label.yui3-menu-label-menuvisible,
+.dir-rtl #custommenu .yui3-menu .yui3-menu .yui3-menu-label.yui3-menu-label-menuvisible {
+    background-image:url([[pix:theme|horizontal-menu-submenu-indicator]]);
+    background-position: 5px center;
+    color: #333;
+}
+.dir-rtl #custommenu .yui3-menu-horizontal .yui3-menu-label,
+.dir-rtl #custommenu .yui3-menu-horizontal .yui3-menuitem-content {
+    border-width:0;
+    text-transform: uppercase;
+    text-decoration:none;
+    font-size:1em;
+    font-weight: 200;
+    line-height:30px;
+    cursor: pointer;
+    color: #333;
+}
+.dir-rtl #custommenu .yui3-menu-horizontal .yui3-menu-label {
+    padding: 0 30px;
+}
+.dir-rtl #custommenu .yui3-menu-horizontal .yui3-menuitem-content {
+    padding: 0 20px;
+}
+.dir-rtl #custommenu .yui3-menu-horizontal.javascript-disabled .yui3-menu-content,
+.dir-rtl #custommenu .yui3-menu-horizontal.javascript-disabled .yui3-menu-content .ul {
+    border-width:0;
+}
+.dir-rtl #custommenu .yui3-menu-horizontal.javascript-disabled li a {
+    padding: 0 20px;
+    display: block;
+    float: right;
+}
+.dir-rtl #custommenu .yui3-menu.yui3-menu-horizontal {
+    float: right;
+}
+
+.dir-rtl #custommenu .yui3-menu-content li a {
+    cursor: pointer;
+    text-align: right;
+}
+
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu {
+    border: none;
+    min-width: 100px;
+    z-index: 99998;
+}
+
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu .yui3-menu.custom_menu_submenu {
+    background-color: transparent;
+    min-width: 100px;
+}
+
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu .yui3-menu-content {
+    background-color: #EEE;
+    z-index: 99999;
+    min-width: 200px;
+    margin: 0 0 0 -20px;
+    padding: 0;
+}
+
+/** below style to move sub subs to the left to keep from going off the page **/
+
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu .yui3-menu-content .yui3-menu.custom_menu_submenu .yui3-menu-content {
+    margin: 0;
+    position: absolute;
+    right: 300px;
+}
+
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu .yui3-menu-content .yui3-menuitm .yui-meuitem-content {
+    padding: 0;
+}
+
+/* make menu visible hack */
+.dir-rtl #custommenu .yui3-menu-hidden { left:200px !important; right: auto; top:0!important;}
+.dir-rtl .yui3-menuitem-content {float:right;}
+.dir-rtl #custommenu .yui3-menu.custom_menu_submenu .yui3-menu.custom_menu_submenu {left:100px !important;top:-30px!important;position: relative;}

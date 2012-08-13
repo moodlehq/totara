@@ -46,6 +46,9 @@ $THEME->sheets = array(
     'blue',
     'orange',
     'ie',
+    'settings',
+    'menu_dropdown',
+    'menu_rtl'
 );
 
 ////////////////////////////////////////////////////
@@ -168,3 +171,6 @@ $THEME->csspostprocess = 'splash_process_css';
 ///////////////////////////////////////////////////////////////
 
 $THEME->editor_sheets = array('editor');
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}

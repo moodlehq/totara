@@ -50,7 +50,7 @@ $THEME->parents = array('canvas','base');
 ////////////////////////////////////////////////////
 
 
-$THEME->sheets = array('selected', 'core', 'course', 'mods', 'blocks');
+$THEME->sheets = array('selected', 'core', 'course', 'mods', 'blocks','menu','menu_rtl');
 
 ////////////////////////////////////////////////////
 // Name of the stylesheet(s) you've including in
@@ -225,7 +225,9 @@ $THEME->layouts = array(
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

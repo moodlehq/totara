@@ -13,7 +13,7 @@ if (!$showsidepre) {
     $bodyclasses[] = 'content-only';
 }
 if ($hascustommenu) {
-    $bodyclasses[] = 'has_custom_menu';
+    $bodyclasses[] = 'has-custom-menu';
 }
 if ($hasnavbar) {
     $bodyclasses[] = 'hasnavbar';

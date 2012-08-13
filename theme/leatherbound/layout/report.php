@@ -17,7 +17,7 @@ if ($hassidepre && !$hassidepost) {
     $bodyclasses[] = 'content-only';
 }
 if ($hascustommenu) {
-    $bodyclasses[] = 'has_custom_menu';
+    $bodyclasses[] = 'has-custom-menu';
 }
 
 echo $OUTPUT->doctype() ?>

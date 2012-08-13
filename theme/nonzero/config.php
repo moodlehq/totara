@@ -56,6 +56,8 @@ $THEME->parents = array(
 $THEME->sheets = array(
     'core',
     'pagelayout',
+    'menu',
+    'menu_rtl',
 );
 
 ////////////////////////////////////////////////////
@@ -245,7 +247,9 @@ $THEME->csspostprocess = 'nonzero_process_css';
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

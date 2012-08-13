@@ -141,9 +141,15 @@ h6{
 #page-site-index #region-header {
     margin-bottom: 65px;
 }
+#page-site-index.dir-rtl #region-header {
+    margin-bottom: 90px;
+}
 
 #region-header {
     margin-bottom: 40px;
+}
+.dir-rtl #region-header {
+    margin-top: 15px;
 }
 
 .headermain {

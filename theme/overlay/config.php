@@ -57,6 +57,8 @@ $THEME->sheets = array(
     'core',
     'settings',
     'pagelayout',
+    'menu',
+    'menu_rtl',
 );
 
 ////////////////////////////////////////////////////
@@ -240,6 +242,9 @@ $THEME->csspostprocess = 'overlay_process_css';
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the

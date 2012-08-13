@@ -57,7 +57,9 @@ $THEME->sheets = array(
     'menu',
     'report',
     'admin',
-    'settings'
+    'settings',
+    'menu_dropdown',
+    'menu_rtl',
 );
 
 ////////////////////////////////////////////////////
@@ -121,9 +123,9 @@ $THEME->layouts = array(
         'defaultregion' => 'side-post',
     ),
     'admin' => array(
-        'file' => 'report.php',
-        'regions' => array('side-pre'),
-        'defaultregion' => 'side-pre',
+        'file' => 'general.php',
+        'regions' => array('side-pre', 'side-post'),
+        'defaultregion' => 'side-post',
     ),
     'mydashboard' => array(
         'file' => 'general.php',
@@ -241,7 +243,9 @@ $THEME->csspostprocess = 'sky_high_process_css';
 ////////////////////////////////////////////////////
 
 // $THEME->rendererfactory
-
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.

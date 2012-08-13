@@ -68,7 +68,8 @@ $THEME->parents_exclude_sheets = array(
 $THEME->sheets = array('frame'     ,'menu', 'course',
                        'pagelayout','core', 'calendar',
                        'tabs'      ,'quiz', 'forum',
-                       'formal_white');
+                       'formal_white','menu_dropdown','menu_rtl');
+
 ////////////////////////////////////////////////////
 // Name of the stylesheet(s) you've including in
 // this theme's /styles/ directory.
@@ -253,6 +254,9 @@ $THEME->csspostprocess = 'formal_white_user_settings';
 
 
 // $THEME->rendererfactory
+if (right_to_left()) {
+    $THEME->rendererfactory = 'theme_overridden_renderer_factory';
+}
 ////////////////////////////////////////////////////
 // Sets a custom render factory to use with the
 // theme, used when working with custom renderers.
