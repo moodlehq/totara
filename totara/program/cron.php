@@ -472,7 +472,7 @@ function program_cron_completions() {
         $program_users = $program->get_program_learners();
 
         if (count($program_users) == 0) {
-            return;
+            continue;
         }
 
         // get the program content
