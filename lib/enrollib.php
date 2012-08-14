@@ -1796,11 +1796,25 @@ abstract class enrol_plugin {
             throw new coding_exception('invalid enrol instance!');
         }
 
-        //first unenrol all users
+        //unenrol all users in batches of BATCH_INSERT_MAX_ROW_COUNT
         $participants = $DB->get_recordset('user_enrolments', array('enrolid'=>$instance->id));
+        $pcount = 0;
+        $puids = array();
         foreach ($participants as $participant) {
-            $this->unenrol_user($instance, $participant->userid);
+            $puids[] = $participant->userid;
+            $pcount++;
+            if ($pcount == BATCH_INSERT_MAX_ROW_COUNT) {
+                $this->unenrol_user_bulk($instance, $puids);
+                // reset
+                $pcount = 0;
+                $puids = array();
+            }
         }
+        //handle any remainder
+        if (!empty($puids)) {
+            $this->unenrol_user_bulk($instance, $puids);
+        }
+        unset($pcount, $puids);
         $participants->close();
 
         // now clean up all remainders that were not removed correctly
