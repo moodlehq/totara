@@ -75,7 +75,7 @@ abstract class totara_sync_source_pos extends totara_sync_source {
 
         foreach ($this->fields as $f) {
             $mform->addElement('text', "fieldmapping_{$f}", $f);
-            $mform->setType("fieldmapping_{$f}", PARAM_ALPHANUM);
+            $mform->setType("fieldmapping_{$f}", PARAM_ALPHANUMEXT);
         }
     }
 
