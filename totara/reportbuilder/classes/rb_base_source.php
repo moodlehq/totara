@@ -1969,7 +1969,9 @@ abstract class rb_base_source {
         }
         // check if there are any visible custom fields of this type
         if ($cf_prefix == 'user') {
-            $items = $DB->get_recordset($fieldtable, array('visible' => PROFILE_VISIBLE_ALL));
+            // for user fields include them all - below we require
+            // moodle/user:update to actually display the column
+            $items = $DB->get_recordset($fieldtable);
         } else {
             $items = $DB->get_recordset($fieldtable, array('hidden' => '0'));
         }
@@ -1986,6 +1988,11 @@ abstract class rb_base_source {
             $value = "custom_field_{$id}";
             $name = isset($record->fullname) ? $record->fullname : $record->name;
             $column_options = array('joins' => $joinname);
+            // if profile field isn't available to everyone require
+            // a capability to display the column
+            if ($record->visible != PROFILE_VISIBLE_ALL) {
+                $column_options['capability'] = 'moodle/user:update';
+            }
             $filtertype = 'text'; // default filter type
             $filter_options = array();
 
