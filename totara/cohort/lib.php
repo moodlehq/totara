@@ -220,7 +220,7 @@ function totara_cohort_get_associations($cohortid, $instancetype=null) {
             break;
         default:
             // return all associations. prefix ids to ensure uniqueness
-            $sql = "SELECT " .$DB->sql_concat("'c'", 'c.id') . " AS instanceid, c.fullname AS fullname, 'course' AS type
+            $sql = "SELECT " .$DB->sql_concat("'c'", 'c.id') . " AS instanceid, c.id, c.fullname AS fullname, 'course' AS type
                 FROM {enrol} e
                 JOIN {course} c ON e.courseid = c.id
                 WHERE enrol = 'cohort'
@@ -228,7 +228,7 @@ function totara_cohort_get_associations($cohortid, $instancetype=null) {
 
                 UNION
 
-                SELECT " . $DB->sql_concat("'p'", 'p.id') . " AS instanceid, p.fullname, 'program' AS type
+                SELECT " . $DB->sql_concat("'p'", 'p.id') . " AS instanceid, p.id, p.fullname, 'program' AS type
                 FROM {prog_assignment} pa
                 JOIN {prog} p ON pa.programid = p.id
                 WHERE pa.assignmenttype = ?
