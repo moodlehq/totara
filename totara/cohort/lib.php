@@ -414,10 +414,13 @@ function totara_cohort_get_dynamic_cohort_whereclause($cohortid) {
     $cohort = $DB->get_record('cohort', array('id'=>$cohortid));
     $rulesetoperator = $DB->get_field('cohort_rule_collections', 'rulesetoperator', array('id' => $cohort->activecollectionid));
     $rulesets = $DB->get_records('cohort_rulesets', array('rulecollectionid' => $cohort->activecollectionid), 'sortorder');
-    if (!$rulesets) {
-        $rulesets = array();
-    }
     $whereclause = new stdClass();
+    if (empty($rulesets)) {
+        // no rules, so no members!
+        $whereclause->sql = '1 = 0';
+        $whereclause->params = array();
+        return $whereclause;
+    }
     $whereclause->sql = (($rulesetoperator == COHORT_RULES_OP_AND) ? '1=1 ' : '1=0 ') . " \n";
     $whereclause->params = array();
     foreach ($rulesets as $ruleset) {
