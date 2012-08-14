@@ -55,7 +55,9 @@ body.has_dock {
     background-color:#f5f5f5;
 }
 #page-header .page-header-inner {
-    width:960px;
+    min-width:960px;
+    max-width:1440px;
+    padding: 0 20px;
     margin:0 auto;
     position:relative;
     z-index:1;
@@ -81,6 +83,9 @@ body.has_dock {
     float:left;
     background:transparent;
 }
+.dir-rtl #page-header #logo.custom {
+    float: right;
+}
 #page-header #logo.custom a {
     width:auto;
     height:auto;
@@ -89,7 +94,9 @@ body.has_dock {
     margin:10px 0;
 }
 #page-content-wrapper {
-    width:960px;
+    min-width:960px;
+    max-width:1440px;
+    padding: 0 20px;
     margin:0 auto;
 }
 #page-content {
@@ -144,6 +151,7 @@ body.has_dock {
     overflow:hidden;
     padding:0;
 }
+
 /* the anchored 1px background image provides the border between the main content and the footer */
 #page-footer {
     clear:both;
@@ -155,7 +163,8 @@ body.has_dock {
     background-color:#f5f5f5;
 }
 #page-footer .footer-content {
-    width:960px;
+    min-width:960px;
+    max-width:1440px;
     margin:0 auto;
     padding:15px 0
 }

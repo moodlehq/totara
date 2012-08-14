@@ -412,13 +412,15 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
         $html = html_writer::script($js);
 
         // hide if javascript disabled
+        $html .= html_writer::start_tag('div', array('class' => 'rb-showhide boxalignright'));
         $html .= html_writer::start_tag('form');
         $html .= html_writer::empty_tag('input', array('type' => 'button',
             'name' => 'rb_showhide_columns',
             'id' => 'show-showhide-dialog',
             'value' => get_string('showhidecolumns', 'totara_reportbuilder'),
-            'style' => 'display:none; float: right;'));
+            'style' => 'display:none;'));
         $html .= html_writer::end_tag('form');
+        $html .= html_writer::end_tag('div');
 
         return $html;
     }

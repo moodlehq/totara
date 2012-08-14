@@ -162,7 +162,7 @@ function totara_message_dismiss_action($id) {
         html_writer::tag('form',
             html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id)) .
             html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'returnto', 'value' => $clean_fullme)) .
-            html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall', 'src' => $OUTPUT->pix_url('t/delete', 'delete_grey'), 'title' => $str, 'alt' => $str)),
+            html_writer::empty_tag('input', array('type' => 'image', 'class' => 'iconsmall', 'src' => $OUTPUT->pix_url('t/delete_grey', 'totara_core'), 'title' => $str, 'alt' => $str)),
         array('action' => $CFG->wwwroot . '/totara/message/dismiss.php?id=' . $id, 'method' => 'post'))
     );
     return $out;

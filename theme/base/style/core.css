@@ -904,6 +904,7 @@ sup {vertical-align: super;}
 #page-admin-setting-enrolsettingsflatfile.dir-rtl .informationbox {direction: ltr;text-align: left;}
 
 #page-admin-grade-edit-scale-edit.dir-rtl .error input#id_name {margin-right: 170px;}
+
 .initialbar a {padding-right: 2px;}
 
 /* Invert alignment of all hard coded table cell internal alignment, when in RTL mode */
@@ -1019,3 +1020,11 @@ sup {vertical-align: super;}
     background-color: #ddd;
 }
 
+/* fixes for rtl and IE7 from http://tracker.moodle.org/browse/MDL-26400 */
+.ie7.dir-rtl div#page-content #region-pre { margin-left:0px; left:-35%;}
+.ie7.dir-rtl div#page-content #region-post { left: 200px; float: none;}
+.ie7.dir-rtl div#page-content #region-main-box { width:100%; }
+.ie7.dir-rtl div#page-content #region-main-wrap { right:50%; }
+.ie7.dir-rtl div#page-content #region-main { margin-left:-200px; }
+.ie7.dir-rtl div#page-content .region-content { padding-left:2px; }
+.ie7.dir-rtl .block .header { text-align:right; }

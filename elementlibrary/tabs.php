@@ -102,14 +102,14 @@ $row[] = new tabobject('tab3',
 
 $row[] = new tabobject('tab4',
     $url->out(),
-    'More tabs',
+    'Activated tab',
     'This is the hover text for tab4',
     true
 );
 
 $row[] = new tabobject('tab5',
     $url->out(),
-    'Even more tabs',
+    'Another activated tab',
     'This is the hover text for tab5',
     true
 );
@@ -120,47 +120,47 @@ print_tabs($tabs2, $current_tab, $inactive, array('tab4', 'tab5'));
 echo $OUTPUT->box('Extra rows can be used to hold further subcategories.');
 
 $row1 = array(
-    new tabobject('row1a', $url->out(), 'Row 1 Tab A'),
+    new tabobject('row1a', $url->out(), 'Activated Row 1 Tab A'),
     new tabobject('row1b', $url->out(), 'Row 1 Tab B'),
-    new tabobject('row1c', $url->out(), 'Row 1 Tab C'),
+    new tabobject('row1c', $url->out(), 'Disabled Row 1 Tab C'),
 );
 $row2 = array(
     new tabobject('row2a', $url->out(), 'Row 2 Tab A'),
-    new tabobject('row2b', $url->out(), 'Row 2 Tab B'),
+    new tabobject('row2b', $url->out(), 'Selected Row 2 Tab B'),
     new tabobject('row2c', $url->out(), 'Row 2 Tab C'),
 );
 $tabs = array();
 $tabs[] = $row1;
 $tabs[] = $row2;
-$current_tab = 'row1a';
+$current_tab = 'row2b';
 $inactive = array('row1c');
-$activated = array('row2b');
+$activated = array('row1a');
 print_tabs($tabs, $current_tab, $inactive, $activated);
 
 
 echo $OUTPUT->box('Extra rows can be used to hold further subcategories. You can nest as many levels of tabs as you like but for Totara please stick to a maximum of two levels, any more will be confusing anyway. Note that while each row is specified independently in the code, the HTML that is rendered nests the list items hierarchically, so the activated tabs on each row contains the list items for the level below.');
 
 $row1 = array(
-    new tabobject('row1a', $url->out(), 'Row 1 Tab A'),
+    new tabobject('row1a', $url->out(), 'Activated Row 1 Tab A'),
     new tabobject('row1b', $url->out(), 'Row 1 Tab B'),
-    new tabobject('row1c', $url->out(), 'Row 1 Tab C'),
+    new tabobject('row1c', $url->out(), 'Disabled Row 1 Tab C'),
 );
 $row2 = array(
     new tabobject('row2a', $url->out(), 'Row 2 Tab A'),
-    new tabobject('row2b', $url->out(), 'Row 2 Tab B'),
+    new tabobject('row2b', $url->out(), 'Selected Row 2 Tab B'),
     new tabobject('row2c', $url->out(), 'Row 2 Tab C'),
 );
 $tabs = array();
 $tabs[] = $row1;
 $tabs[] = $row2;
-$current_tab = 'row1a';
+$current_tab = 'row2b';
 $inactive = array('row1c');
-$activated = array('row2b');
+$activated = array('row1a');
 print_tabs($tabs, $current_tab, $inactive, $activated);
 echo html_writer::tag('div', 'This is a div tag directly under a two row tab bar. Make sure the padding is correct. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu accumsan nulla. Cras elementum tincidunt dictum. Phasellus varius, est non ornare mattis, leo velit congue libero, vitae suscipit ipsum urna sed orci. Pellentesque venenatis pulvinar lobortis. Vestibulum iaculis commodo eros quis volutpat. Morbi vitae dapibus ante. Nullam convallis interdum ipsum, venenatis consequat eros faucibus sed. Pellentesque non tellus vel eros ullamcorper sollicitudin ut in lectus. Sed aliquet gravida porta.');
 
 
-echo $OUTPUT->box('Sometimes the tab bars can get very full, especially when translated into other languages. We need to ensure they look reasonable when the tabs are two wide for the page.');
+echo $OUTPUT->box('Sometimes the tab bars can get very full, especially when translated into other languages. We need to ensure they are at least readable when the tabs are too wide for the page.');
 
 $row1 = array(
     new tabobject('row1a', $url->out(), 'Row 1 Tab A. This is a really long title. This is a really long title. This is a really long title.'),
@@ -175,9 +175,9 @@ $row2 = array(
 $tabs = array();
 $tabs[] = $row1;
 $tabs[] = $row2;
-$current_tab = 'row1a';
+$current_tab = 'row2b';
 $inactive = array('row1c');
-$activated = array('row2b');
+$activated = array('row1a');
 print_tabs($tabs, $current_tab, $inactive, $activated);
 echo html_writer::tag('div', 'This is a div tag directly under an overflowing two row tab bar. Make sure the padding is correct. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu accumsan nulla. Cras elementum tincidunt dictum. Phasellus varius, est non ornare mattis, leo velit congue libero, vitae suscipit ipsum urna sed orci. Pellentesque venenatis pulvinar lobortis. Vestibulum iaculis commodo eros quis volutpat. Morbi vitae dapibus ante. Nullam convallis interdum ipsum, venenatis consequat eros faucibus sed. Pellentesque non tellus vel eros ullamcorper sollicitudin ut in lectus. Sed aliquet gravida porta.');
 

@@ -104,13 +104,7 @@ echo $output->print_description($report->description, $report->_id);
 $report->display_search();
 
 // print saved search buttons if appropriate
-echo html_writer::start_tag('table', array('align' => 'right', 'border' => '0'));
-echo html_writer::start_tag('tr') . html_writer::start_tag('td');
-echo $output->save_button($report->_id);
-echo html_writer::end_tag('td') . html_writer::start_tag('td');
-echo $report->view_saved_menu();
-echo html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table');
-echo str_repeat(html_writer::empty_tag('br'), 2);
+echo $report->display_saved_search_options();
 
 // show results
 if ($countfiltered > 0) {

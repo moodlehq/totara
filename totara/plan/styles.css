@@ -44,6 +44,10 @@ table.dp-plan-component-items td a {
     float:left;
     width:28%;
 }
+.dir-rtl #recordoflearning-menu,
+.dir-rtl #dp-plans-menu {
+    float:right;
+}
 
 #recordoflearning-menu h3,
 #dp-plans-menu h3,
@@ -71,10 +75,6 @@ div.plan_box {
     padding: 10px;
 }
 
-#dp-plan-content h2.main {
-    text-align: left;
-}
-
 #dp-plan-content #dp-plans-description .instructional_text {
     float: left;
     width: 73%;
@@ -100,6 +100,10 @@ table.dp-templates {
 
 table.dp-templates td.c0 {
     width:70%;
+}
+
+table.planpermissions select {
+    width: 100px
 }
 
 #recordoflearning-menu .dp-menu-selected,

@@ -269,6 +269,7 @@ function dp_get_alert_receivers($contextuser, $type) {
  * @param   boolean $requestable
  */
 function dp_add_permissions_select(&$form, $name, $requestable) {
+    global $OUTPUT;
     $select_options = array();
 
     $select_options[DP_PERMISSION_ALLOW] = get_string('allow', 'totara_plan');
@@ -280,6 +281,11 @@ function dp_add_permissions_select(&$form, $name, $requestable) {
     }
 
     $form->addElement('select', $name, null, $select_options);
+    // modify the renderer to remove unnecessary label divs
+    $renderer =& $form->defaultRenderer();
+    $select_elementtemplate = $OUTPUT->container('{element}', 'fitem');
+    $renderer->setElementTemplate($select_elementtemplate, $name);
+
 }
 
 /**

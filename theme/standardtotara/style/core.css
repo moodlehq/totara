@@ -84,6 +84,14 @@ h5.main,
 h6.main {
     text-align: left;
 }
+.dir-rtl h1.main,
+.dir-rtl h2.main,
+.dir-rtl h3.main,
+.dir-rtl h4.main,
+.dir-rtl h5.main,
+.dir-rtl h6.main {
+    text-align: right;
+}
 h1.centered,
 h2.centered,
 h3.centered,
@@ -107,6 +115,12 @@ td,
 .generaltable th.header {
     text-align: left;
 }
+.dir-rtl th,
+.dir-rtl td,
+.dir-rtl .formtable tbody th,
+.dir-rtl .generaltable th.header {
+    text-align: right;
+}
 .generaltable {
     border:1px solid #DDD;
     border-collapse: collapse;
@@ -127,9 +141,9 @@ td,
 table.invisible th.header {
     background: none;
     padding: 0;
-  }
-table.invisible td{
-   padding: 0;
+}
+table.invisible td {
+    padding: 0;
 }
 table.invisible {
     padding: 0;
@@ -138,24 +152,22 @@ table.invisible {
 table.invisiblepadded th.header {
     background: none;
     padding: 5px;
-  }
-
-table.invisiblepadded td{
+}
+table.invisiblepadded td {
    padding: 5px;
- }
-
-img.iconsmall {padding: 2px;}
-
-.course_icon, .program_icon{
+}
+img.iconsmall {
+    padding: 2px;
+}
+.course_icon,
+.program_icon {
     padding-right: 5px;
     vertical-align: top;
 }
-
 table#hierarchy-bulk-action {
     border: 0px;
     margin-top: 5px;
 }
-
 table#hierarchy-bulk-action td.option-column div.fitem div.fitemtitle,
 table#hierarchy-bulk-action td.action-column div.fitem div.fitemtitle {
     display: none;
@@ -205,6 +217,18 @@ h2.headingblock {
     -o-border-radius:4px 4px 4px 4px;
     border-radius:4px 4px 4px 4px;
 }
+.dir-rtl .notifysuccess,
+.dir-rtl .notifyproblem,
+.dir-rtl .notifymessage,
+.dir-rtl .notifynotice,
+.dir-rtl .notice,
+.dir-rtl .loginerrors,
+.dir-rtl .errorbox {
+    text-align: right !important;
+    padding:10px 35px 10px !important;
+    background-position: right 11px;
+}
+
 .notifymessage {
     background: #E9F3F8 url([[pix:theme|information]]) no-repeat 8px 11px;
     color: #3876C6;
@@ -225,6 +249,7 @@ h2.headingblock {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     border-color:#F1E5B1;
 }
+
 .errorbox,
 .loginerrors,
 .notifyproblem {
@@ -249,6 +274,9 @@ p.errormessage {
 .langmenu {
     float:right;
     padding: 6px;
+}
+.dir-rtl .langmenu {
+    float: left;
 }
 
 /* Profileblock */
@@ -309,7 +337,9 @@ hr {
 .helplink img {
     vertical-align: text-top;
 }
-
+.arrow {
+    font-size: 0.85em;
+}
 /**
  * Fieldset class with borders shown by default
  */
@@ -327,7 +357,6 @@ fieldset.surround legend,
     font-size:16px;
     padding: 0px 5px;
 }
-
 /**
  * Moodle Forms
  */
@@ -336,6 +365,11 @@ textarea,
 select {
     margin: 5px 5px 5px 0;
 }
+.ie7 input[type="radio"] {
+    margin: 0;
+}
+
+
 /**
  * Buttons and button-like links
  * see also css3.css
@@ -356,7 +390,6 @@ a.link-as-button {
 .yui-skin-sam .yui-dialog .ft span.default button {
     color:#6b6b6b;
 }
-
 body.ie7 button,
 body.ie7 input.submit,
 body.ie7 input[type="submit"],
@@ -377,7 +410,6 @@ a.link-as-button:hover {
     color: #FFFFFF;
     text-decoration: none;
 }
-
 input[type="text"],
 input[type="password"],
 textarea,
@@ -388,6 +420,10 @@ select {
 }
 input[type="checkbox"] {
     margin: 0 5px 0 0;
+}
+.dir-rtl input[type="checkbox"],
+.dir-rtl input[type="radio "] {
+    margin: 0 0 0 5px;
 }
 .mform fieldset {
     padding:10px 0 10px;
@@ -419,10 +455,16 @@ input[type="checkbox"] {
     width:22%;
     margin-top:2px;
 }
+.dir-rtl .mform .fitem .fitemtitle {
+    text-align: right;
+}
 .mform .fitem .felement {
     width: 74%;
     float: right;
     margin-left: 0;
+}
+.dir-rtl .mform .fitem .felement {
+    margin-right: 0;
 }
 .mform .fitem fieldset {
     padding: 0 !important;
@@ -478,56 +520,74 @@ input[type="checkbox"] {
 /**
  * Moodle Tabs
  */
-.tabtree {
-    margin-bottom: 35px;
-    position: relative;
-}
+
 .tabtree .tabrow0:after {
     clear: both;
     content: " ";
     display: block;
 }
-.tabtree ul li.here ul,
-.tabtree ul li.here .tabrow1 {
-    left: 0;
-    top: 28px;
+/* Removes core tab backgrounds */
+.tabtree .tabrow0 ul,
+.tabtree .tabrow0 li a,
+.tabtree .tabrow0 li a:hover,
+.tabtree .tabrow0 li a:hover span,
+.tabtree .tabrow0 li a span,
+.tabtree .tabrow0 li a span:hover {
+    background-image: none;
+}
+.tabtree .tabrow0 li a span {
+    padding: 0;
+}
+.tabtree .tabrow0 li:after {
+    clear: both;
 }
 .tabtree .tabrow0 li a {
-    margin-right: 3px;
+    color: #666666;
+    font-weight: bold;
+    margin-bottom: -1px;
+    padding: 5px 10px 4px;
+    display: block;
+    background-image: none;
     border-left: 1px solid #D0D0D0;
     border-top: 1px solid #D0D0D0;
     border-right: 1px solid #D0D0D0;
     border-bottom: transparent;
     border-radius: 3px 3px 0 0;
     float: left;
-    vertical-align: middle;
     background: #E8E8E8;
-    color: #666666;
-    font-weight: bold;
-    background-image:none;
-    margin-bottom:-1px;
-    padding: 5px 10px 4px;
-    display: block;
+    margin-right: 3px;
+}
+.dir-rtl .tabtree .tabrow0 li a {
+    margin-left: 3px;
 }
 .tabtree .tabrow0 li a:hover {
-    background-image:none;
     text-decoration: none;
     color: #333333;
     background-color: #EEEEEE;
 }
-.tabtree .tabrow0 li a span,
-.tabtree .tabrow0 li a span:hover {
-    background-image:none;
-    background-repeat:no-repeat;
-    padding-right:0;
-    padding-top:0;
-    padding-bottom:0;
+.dir-rtl .tabtree li {
+    float: right;
 }
-.tabtree .tabrow0 li a:hover span {
-    background-image:none;
-    text-decoration: none;
+.tabtree li.active a,
+.tabtree li.active .nolink,
+.tabtree li.active .nolink:hover,
+.tabtree li.selected a,
+.tabtree li.selected a.nolink,
+.tabtree li.selected a.nolink:hover,
+.tabtree li.here a,
+.tabtree li.here.selected a,
+.tabtree li.here.selected a:hover,
+.tabtree li.here a.nolink,
+.tabtree li.here a.nolink:hover {
+    border-left: 1px solid #AAAAAA;
+    border-top: 1px solid #AAAAAA;
+    border-right: 1px solid #AAAAAA;
+    border-bottom: transparent;
+    background: #FFFFFF;
+    color: #333333;
 }
-.tabtree .tabrow0 li a.nolink {
+.tabtree li a.nolink,
+.tabtree li a.nolink:hover {
     color: #D8D8D8;
     background: #F8F8F8;
     border-left: 1px solid #E8E8E8;
@@ -535,48 +595,16 @@ input[type="checkbox"] {
     border-right: 1px solid #E8E8E8;
     border-bottom: transparent;
 }
-.tabtree .tabrow0 li a.nolink:hover,
-.tabtree .tabrow0 li.selected .tabrow1 a.nolink,
-.tabtree .tabrow0 li.selected .tabrow1 a.nolink:hover {
-    color: #D8D8D8;
-    text-decoration: none;
+.tabtree .tabrow0 li.active ul li > a {
+    border: none;
+    background: transparent;
+    color: #087BB1;
 }
-.tabtree .tabrow0 li.selected a,
-.tabtree .tabrow0 li.selected a:hover,
-.tabtree .tabrow0 li.active a,
-.tabtree .tabrow0 li.active a:hover {
-    color: #333333;
-    background: #FFFFFF;
-    background-image: none;
-    border-left: 1px solid #AAAAAA;
-    border-top: 1px solid #AAAAAA;
-    border-right: 1px solid #AAAAAA;
-    border-bottom: transparent;
-    padding-bottom: 5px;
+.tabtree .tabrow0 li.active ul li > a:hover {
+    text-decoration: underline;
 }
-
-.tabtree .tabrow0 li.selected .tabrow1 li.active a.nolink,
-.tabtree .tabrow0 li.selected .tabrow1 li.active a.nolink:hover {
-    color: #333333;
-    text-decoration: none;
-}
-.tabtree .here a.nolink,
-.tabtree .here ul .here a.nolink,
-.tabtree .here a.nolink:hover,
-.tabtree .here ul .here a.nolink:hover {
-    margin-bottom: 0px;
-}
-.tabtree .tabrow0 li.here:after {
-    clear: both;
-}
-.tabtree .tabrow0 ul,
-.tabtree .tabrow0 div {
-    font-weight: normal;
-    background-image:none;
-    background-position:0% 50%;
-    border-top:1px solid #aaa;
-    padding:0.25em 0px;
-    margin:0px;
+.tabtree .tabrow0 li.active ul li.selected > a {
+    border: none;
 }
 .tabtree .tabrow0 li.here .empty {
     display:block;
@@ -584,58 +612,20 @@ input[type="checkbox"] {
     padding:0px;
     position:absolute;
     width:100%;
-    top: 28px;
-}
-.tabtree .tabrow0 .tabrow1 li,
-.tabtree .tabrow0 .tabrow1 li:hover {
-    background-image:none;
+    top: 27px;
     background: transparent;
+}
+.dir-rtl .tabtree .tabrow0 li.here .empty {
+    right: 0;
+}
+.tabtree .tabrow0 li ul li .empty {
     border: none;
 }
-tabrow1 {
+.ie7 .tabtree .tabrow0 li.here .empty,
+.ie7 .tabtree .tabrow1 {
+    top: 33px;
     left: 0;
 }
-.tabtree .tabrow0 .tabrow1 li a,
-.tabtree .tabrow0 .tabrow1 li a:hover {
-    border: none;
-}
-.tabtree .tabrow0 li.selected .tabrow1 a {
-    color:#087BB1;
-}
-.tabtree .tabrow0 li.selected .tabrow1 a:hover {
-    text-decoration: underline;
-}
-.ie7 .tabtree .tabrow0 li {
-    margin-left: 0;
-}
-.ie7 .tabtree .tabrow0 li.first {
-    margin-right: -4px;
-}
-.ie7 .tabtree .tabrow0 li.onerow {
-    margin-right: 0;
-}
-.ie7 .tabtree .tabrow0 a {
-    display: inline-block;
-    padding: 3px 10px 5px 10px;
-}
-.ie7 .tabtree .tabrow0 a span {
-    padding: 0;
-}
-.ie7 .tabtree .tabrow0 div {
-    top: 2.6em;
-    padding: 0.2em 0;
-}
-.ie7 .tabtree .tabrow0 div.empty {
-    margin-right: 0;
-}
-.ie7.mod-quiz div.tabtree a span img.iconsmall {
-    margin: 0;
-    vertical-align: baseline;
-    position: relative;
-    top: 2px;
-}
-
-
 /**
  * Totara Dialog boxes
  *
@@ -644,11 +634,74 @@ tabrow1 {
  */
 
 /* Dialog heading */
+
 .totara-dialog .ui-dialog-titlebar h2 {
     margin-bottom: 5px;
 }
 .ui-dialog .dialog-content .header {
     background: none;
+}
+/* Dialog RTL */
+.dir-rtl .ui-dialog .ui-dialog-title {
+    float: right;
+}
+.dir-rtl .ui-dialog .ui-dialog-titlebar-close {
+    left: 5px;
+    right: inherit;
+}
+.dir-rtl #dialog-tabs ul li.ui-state-default {
+    float: right;
+}
+.dir-rtl div.ui-dialog .ui-dialog-buttonpane button {
+    float: left;
+}
+.dir-rtl div.totara-dialog .selected span a {
+    float: right;
+}
+.dir-rtl div.totara-dialog table.dialog-content td.selected {
+    border-right: 1px solid #CCC;
+    border-left: none;
+}
+.dir-rtl .treeview .hitarea {
+    float: right;
+    background: url([[pix:totara_core|jquery_treeview/treeview-default-rtl]]);
+}
+.dir-rtl .treeview li {
+    background: url([[pix:totara_core|jquery_treeview/treeview-default-line-rtl]]) right 0  no-repeat;
+}
+.dir-rtl .filetree li {
+    padding: 0 16px 0 0;
+}
+.dir-rtl .treeview li.lastCollapsable {}
+.dir-rtl .treeview li.lastExpandable {
+    background: url([[pix:totara_core|jquery_treeview/treeview-default-rtl]]) no-repeat 8px 11px;
+}
+.dir-rtl .treeview li.collapsable,
+.dir-rtl .treeview li.expandable {
+    padding-right: 0px;
+    background-position: right -176px
+}
+.dir-rtl .treeview li.last {
+    background-position: right -1766px;
+}
+.dir-rtl .treeview li.collapsable .hitarea {
+    background-position: -16px -24px;
+}
+.dir-rtl .treeview li.expandable .hitarea {
+    background-position: 0 -2px;
+}
+.dir-rtl .filetree li.expandable span.folder {
+    background-position: right 0;
+    margin-right: 15px;
+}
+.dir-rtl .filetree span.folder,
+.dir-rtl .filetree span.file {
+    padding: 1px 16px 1px 0px;
+    background-position: right 0;
+    margin-right: 15px;
+}
+.dir-rtl .filetree li ul {
+    margin-right: 16px;
 }
 
 /* Dialog tabs (e.g. Browse, Search) */
@@ -657,7 +710,6 @@ tabrow1 {
     border-right: none;
     border-top: none;
 }
-
 #dialog-tabs ul li.ui-state-default {
     background: #F5F5F5;
     border-color: #CCCCCC;
@@ -670,8 +722,8 @@ tabrow1 {
     background: #EEEEEE;
 }
 #dialog-tabs ul li.ui-tabs-selected {
- background: #FFFFFF;
- }
+    background: #FFFFFF;
+}
 #dialog-tabs ul li.ui-tabs-selected a {
     color: #333333;
 }
@@ -679,7 +731,6 @@ tabrow1 {
     color: #333333;
     background: #FFFFFF;
 }
-
 /* selected items in multi-select dialogs (improve spacing) */
 .ui-dialog .dialog-content td.selected span.clickable {
     margin: 0;
@@ -689,7 +740,6 @@ tabrow1 {
     color: inherit;
     cursor: default;
 }
-
 /* dialog search form (improve spacing) */
 div.totara-dialog td.select #search-tab,
 div.totara-dialog td.select #browse-tab {

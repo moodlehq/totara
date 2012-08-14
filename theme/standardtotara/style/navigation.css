@@ -23,6 +23,10 @@ div#totaramenu ul li  {
     list-style-type:none;
     border:none;
 }
+.dir-rtl div#totaramenu ul li {
+    float: right;
+    margin: 0 0 0 1px;
+}
 div#totaramenu ul li a {
     display:block;
     padding:8px 35px 7px;
@@ -39,7 +43,7 @@ div#totaramenu ul ul {
 
 div#totaramenu ul ul li {
     font-size:0.8em;
-    float:none;
+    float:none !important;
     margin:0;
 }
 

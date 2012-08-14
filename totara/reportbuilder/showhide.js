@@ -62,7 +62,7 @@ M.totara_reportbuilder_showhide = M.totara_reportbuilder_showhide || {
         // http://verens.com/2005/07/25/isset-for-javascript/#comment-332
         if (window.id === undefined) {return;}
 
-        $('#show-showhide-dialog').css('display','block');
+        $('#show-showhide-dialog').css('display','inline');
         var url = M.cfg.wwwroot + '/totara/reportbuilder/';
 
         var handler = new totaraDialog_handler();

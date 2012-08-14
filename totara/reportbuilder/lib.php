@@ -2369,6 +2369,41 @@ class reportbuilder {
 
 
     /**
+     * Diplays a table containing the save search button and pulldown
+     * of existing saved searches (if any)
+     *
+     * @return string HTML to display the table
+     */
+    public function display_saved_search_options() {
+        global $PAGE;
+        $output = $PAGE->get_renderer('totara_reportbuilder');
+
+        $savedbutton = $output->save_button($this->_id);
+        $savedmenu = $this->view_saved_menu();
+
+        // no need to print anything
+        if (strlen($savedmenu) == 0 && strlen($savedbutton) == 0) {
+            return '';
+        }
+
+        $table = new html_table();
+        $row = new html_table_row();
+        $table->attributes['class'] = 'invisiblepadded boxalignright';
+
+        if (strlen($savedbutton) != 0) {
+            $row->cells[] = new html_table_cell($savedbutton);
+        }
+        if (strlen($savedmenu) != 0) {
+            $row->cells[] = new html_table_cell($savedmenu);
+        }
+
+        $table->data = array($row);
+        return html_writer::table($table);
+
+    }
+
+
+    /**
      * Returns HTML for a button that when clicked, takes the user to a page which
      * allows them to edit this report
      *

@@ -6,3 +6,11 @@ div.multicheck-items fieldset.felement span {
     width: 30%;
 }
 
+/* show/hide button alignment */
+.rb-showhide.boxalignright {
+    text-align: right;
+}
+
+.dir-rtl .rb-showhide.boxalignright {
+    text-align: left;
+}

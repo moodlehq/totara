@@ -519,7 +519,7 @@ class core_calendar_renderer extends plugin_renderer_base {
             }
 
             // Special visual fx for today
-            if($display->thismonth && $calendar->day == $calendar->day) {
+            if($display->thismonth && $calendar->day == $date['mday']) {
                 $cellclasses[] = 'today';
             } else {
                 $cellclasses[] = 'nottoday';

@@ -2,6 +2,9 @@
 .coursebox {
     width: inherit;
 }
+.coursebox .name img.smallicon {
+    vertical-align: middle;
+}
 
 .path-course-view .current td.side {
     background: #EBEBEB;
