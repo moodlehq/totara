@@ -53,10 +53,16 @@ chmod 777 .
 
 echo "Initialize installation"
 
-# Handle old postgres syntax
+# Convert to type required by moodle cli install
 if [ $2 = 'postgres7' ]
 then
     DBTYPE='pgsql'
+elif [$2 = 'mysql' ]
+then
+    DBTYPE='mysqli'
+elif [$2 = 'mssql_n' ]
+then
+    DBTYPE='mssql'
 else
     DBTYPE="$2"
 fi
