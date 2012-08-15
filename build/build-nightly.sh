@@ -48,5 +48,6 @@ then
     cd -
 fi
 
-echo "STEP 6: Run link checker script as a learner";
-sudo -u www-data php build/link_checker.php $1 learner 'passworD1!'
+# TODO reenable once link_checker ported to work with 2.2
+#echo "STEP 6: Run link checker script as a learner";
+#sudo -u www-data php build/link_checker.php $1 learner 'passworD1!'
