@@ -164,5 +164,10 @@ function xmldb_totara_core_install() {
     require_once($CFG->dirroot . '/totara/core/db/utils.php');
     totara_readd_course_completion_changes();
 
+    // remove any references to "complete on unenrolment" critiera type
+    // these could exist in an upgrade from moodle 2.2 but the criteria
+    // was never implemented and is no longer in totara
+    $DB->delete_records('course_completion_criteria', array('criteriatype' => 3));
+
     return true;
 }
