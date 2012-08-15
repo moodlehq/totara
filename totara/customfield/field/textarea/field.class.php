@@ -74,14 +74,16 @@ class customfield_textarea extends customfield_base {
         $data = new stdClass();
         $data->{$prefix.'id'} = $itemnew->id;
         $data->fieldid      = $this->field->id;
-        $itemnew = file_postupdate_standard_editor($itemnew, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', $prefix, $itemnew->id);
-        $data->data = $itemnew->{$shortinputname};
+        $data->data = '';
         if ($dataid = $DB->get_field($tableprefix.'_info_data', 'id', array($prefix.'id' => $itemnew->id, 'fieldid' => $data->fieldid))) {
             $data->id = $dataid;
             $DB->update_record($tableprefix.'_info_data', $data);
         } else {
             $data->id = $DB->insert_record($tableprefix.'_info_data', $data);
         }
+        $itemnew = file_postupdate_standard_editor($itemnew, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', $prefix, $data->id);
+        $data->data = $data->id;
+        $DB->update_record($tableprefix.'_info_data', $data);
     }
 
     /**
