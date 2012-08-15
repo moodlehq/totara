@@ -1,3 +1,7 @@
 Totara LMS Changelog
 
-This will be updated when the Totara 2.2 final is released.
+Release 2.2.0 (15 August 2012):
+==================================================
+
+Initial release of Totara 2.2
+
