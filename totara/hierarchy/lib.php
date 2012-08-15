@@ -1287,7 +1287,7 @@ class hierarchy {
             // only show if there's data
             if ($record->$property) {
                 $safetext = format_text($record->$property, FORMAT_HTML);
-                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $record->id), array('class' => 'customfield ' . $cssclass));
+                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $cf->id), array('class' => 'customfield ' . $cssclass));
             }
         }
 

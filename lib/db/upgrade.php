@@ -7065,7 +7065,6 @@ FROM
                 if (!$dbman->table_exists($dbtable)) {
                     continue;
                 }
-                $itemproperty = $itemtype . 'id';
                 //handle textareas
                 list($insql, $inparams) = $DB->get_in_or_equal($datatypes);
                 $sql = "SELECT d.*, f.datatype FROM {{$table}_info_data} d INNER JOIN {{$table}_info_field} f ON d.fieldid=f.id WHERE f.datatype $insql";
@@ -7084,7 +7083,7 @@ FROM
                         if ($fileid) {
                             //change settings and copy file from course/legacy to proper component/filearea
                             $file_record['filearea'] = $itemtype . '_filemgr';
-                            $file_record['itemid']    = $custom->$itemproperty;
+                            $file_record['itemid']    = $custom->id;
                             $newfile = $fs->create_file_from_storedfile($file_record, $fileid);
                             $custom->data = $newfile->get_id();
                             $DB->update_record("{$table}_info_data", $custom);
@@ -7105,7 +7104,7 @@ FROM
                                 if ($fileid) {
                                     //change settings and copy file from course/legacy to proper component/filearea
                                     $file_record['filearea'] = $itemtype;
-                                    $file_record['itemid']    = $custom->$itemproperty;
+                                    $file_record['itemid']    = $custom->id;
                                     $newfile = $fs->create_file_from_storedfile($file_record, $fileid);
                                     $data = str_replace($src_url, '@@PLUGINFILE@@/' . $filename, $data);
                                 }

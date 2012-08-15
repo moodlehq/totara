@@ -28,7 +28,7 @@ class customfield_file extends customfield_base {
     function edit_load_item_data(&$item) {
         global $FILEPICKER_OPTIONS;
         $this->data = file_prepare_standard_filemanager($item, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
-                                                           'totara_customfield', $this->prefix . '_filemgr', $this->dataid);
+                                                           'totara_customfield', $this->prefix . '_filemgr', $this->itemid);
     }
 
     /**
@@ -102,7 +102,7 @@ class customfield_file extends customfield_base {
         }
         $context = context_system::instance();
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $data, null, false);
+        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $itemid, null, false);
         if (count($files)!=1) {
             return get_string('filenotfound', 'error');
         } else {

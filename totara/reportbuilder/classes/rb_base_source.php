@@ -401,8 +401,9 @@ abstract class rb_base_source {
             return '';
         }
         $prefix = "{$field}_prefix";
+        $itemidfield = $field . '_itemid';
         require_once($CFG->dirroot.'/totara/customfield/field/file/field.class.php');
-        $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $row->$prefix, $data, $isexport);
+        $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $row->$prefix, $row->$itemidfield, $isexport);
 
         return $displaytext;
     }
