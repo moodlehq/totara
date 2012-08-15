@@ -408,8 +408,8 @@ function xmldb_certificate_upgrade($oldversion=0) {
         $sql = "DELETE
                   FROM {certificate_issues}
                  WHERE id NOT IN (SELECT MAX(id)
-                                    FROM (SELECT id FROM {certificate_issues}) as ci2
-                                GROUP BY certificateid, userid)";
+                                    FROM (SELECT id, certificateid, userid FROM {certificate_issues}) as ci2
+                                GROUP BY ci2.certificateid, ci2.userid)";
         $DB->execute($sql);
 
         // Going to be editing this table
