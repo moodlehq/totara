@@ -837,10 +837,11 @@ function prog_can_enter_course($user, $course) {
              LEFT JOIN {prog_courseset_course} pcsc ON pcs.id = pcsc.coursesetid AND pcsc.courseid = ?
                  WHERE pua.userid = ?
                    AND pc.coursesetid = ?
-                   AND pc.status <> ?
+                   AND (pc.timedue = ?
+                        OR pc.status <> ? )
              )
     ";
-    $params = array($course->id, DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $course->id, $user->id, 0, STATUS_PROGRAM_COMPLETE);
+    $params = array($course->id, DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $course->id, $user->id, 0, COMPLETION_TIME_NOT_SET, STATUS_PROGRAM_COMPLETE);
     $program_records = $DB->get_records_sql($get_programs, $params);
 
     if (!empty($program_records)) {

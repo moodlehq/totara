@@ -61,7 +61,7 @@ class enrol_totara_program_plugin extends enrol_plugin {
      * Add new instance of enrol_totara_program plugin.
      * @param object $course
      * @param array instance fields
-     * @return int id of new instance, null if can not be created
+     * @return int id of new instance, or id of existing instance
      */
     public function add_instance($course, array $fields = NULL) {
 
@@ -69,7 +69,7 @@ class enrol_totara_program_plugin extends enrol_plugin {
         if (!$instance) {
             return parent::add_instance($course);
         } else {
-            return null;
+            return $instance->id;
         }
     }
 
@@ -151,5 +151,21 @@ class enrol_totara_program_plugin extends enrol_plugin {
             $actions[] = new user_enrolment_action(new pix_icon('t/delete', ''), get_string('unenrol', 'enrol'), $url, array('class'=>'unenrollink', 'rel'=>$ue->id));
         }
         return $actions;
+    }
+}
+
+/**
+ * Indicates API features that the enrol plugin supports.
+ *
+ * @param string $feature
+ * @return mixed True if yes (some features may use other values)
+ */
+function enrol_totara_program_supports($feature) {
+    switch($feature) {
+        case ENROL_RESTORE_TYPE:
+            return ENROL_RESTORE_EXACT;
+
+        default:
+            return null;
     }
 }

@@ -502,7 +502,7 @@ $string['therearenoprogramstodisplay'] = 'There are no programs to display.';
 
 // Alert messages
 $string['z:incompleterecurringprogramsubject'] = 'Incomplete recurring course';
-$string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached it\'s end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';
+$string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached its end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';
 
 
 // Extensions
