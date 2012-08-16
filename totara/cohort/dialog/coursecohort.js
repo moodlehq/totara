@@ -180,7 +180,7 @@ totaraDialog_handler_coursecohorts.prototype.add_cohort_delete_event_handlers = 
 
     // Add fresh event handlers
     var self = this;
-    $('.coursecohortdeletelink', this.cohort_table).live('click', function(event) {
+    this.cohort_table.on('click', '.coursecohortdeletelink', function(event) {
         event.preventDefault();
         self.remove_cohort_item(this);
     });

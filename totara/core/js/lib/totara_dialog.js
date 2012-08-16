@@ -138,7 +138,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         var obj = this;
 
         // Bind open event to button
-        $('#'+this.buttonid).live('click',function(event) {
+        $(document).on('click', '#'+this.buttonid, function(event) {
 
             // Stop any default event occuring
             event.preventDefault();
@@ -1644,7 +1644,7 @@ totaraMultiSelectDialogRbFilter = function(name, title, find_url, save_url) {
 
     // activate the 'delete' option next to any selected items in filters
     // (for this dialog only)
-    $('.multiselect-selected-item[data-filtername='+name+'] a').live('click', function(event) {
+    $(document).on('click', '.multiselect-selected-item[data-filtername='+name+'] a', function(event) {
         event.preventDefault();
 
         var container = $(this).parents('div.multiselect-selected-item');

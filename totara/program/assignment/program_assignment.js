@@ -195,7 +195,7 @@ M.totara_programassignment = M.totara_programassignment || {
                 this.dialog.height(150);
             };
 
-            $('.fixeddate', this.handler._container).live('click', function() {
+            $(document).on('click', '.fixeddate', function(event) {
                 var completiontime = $('.completiontime', self.handler._container).val();
                 var completionevent = module.config.COMPLETION_EVENT_NONE;
                 var completioninstance = 0;
@@ -210,7 +210,7 @@ M.totara_programassignment = M.totara_programassignment || {
                 }
             });
 
-            $('.relativeeventtime').live('click', function() {
+            $(document).on('click', '.relativeeventtime', function(event) {
 
                 var timeunit = $('#timeamount', self.handler._container).val();
                 var timeperiod = $('#timeperiod option:selected', self.handler._container).val();

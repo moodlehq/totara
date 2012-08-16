@@ -107,7 +107,7 @@ M.totara_cohortrules = M.totara_cohortrules || {
 
         // Bind open event to rule_selector menu(s)
         // Also set their default value
-        $('select.rule_selector').val('').live('change',function(event) {
+        $(document).on('change', 'select.rule_selector', function(event) {
 
             // Stop any default event occuring
             event.preventDefault();
@@ -141,7 +141,7 @@ M.totara_cohortrules = M.totara_cohortrules || {
         });
 
         // Also bind open event to rule edit links
-        $('a.ruledef-edit').live('click', function(event) {
+        $(document).on('click', 'a.ruledef-edit', function(event) {
 
             // Stop any default event occurring
             event.preventDefault();
