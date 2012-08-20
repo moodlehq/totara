@@ -452,6 +452,17 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2012080202, 'totara', 'cohort');
     }
 
+    if ($oldversion < 2012082100) {
+        // Migrate all old user custom field rules
+        $sql = "UPDATE {cohort_rules}
+            SET name = " . $DB->sql_concat('name', "'_0'") . ", ruletype = 'usercustomfields'
+            WHERE ruletype = 'user'
+            AND " . $DB->sql_like('name', '?');
+        $DB->execute($sql, array('customfield%'));
+
+        upgrade_plugin_savepoint(true, 2012082100, 'totara', 'cohort');
+    }
+
     return true;
 
 }
