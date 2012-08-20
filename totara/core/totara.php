@@ -947,5 +947,212 @@ function totara_reset_mymoodle_blocks() {
     }
 
     return 1;
+}
 
+
+/**
+ * Color functions used by totara themes for auto-generating colors
+ */
+
+/**
+ * Given a hex color code lighten or darken the color by the specified
+ * percentage and return the hex code of the new color
+ *
+ * @param string $color Hex color code in format '#abc' or '#aabbcc'
+ * @param integer $percent Number between -100 and 100, negative to darken
+ * @return string 6 digit hex color code for resulting color
+ */
+function totara_brightness($color, $percent) {
+    // convert 3 digit color codes into 6 digit form
+    $pattern = '/^#([[:xdigit:]])([[:xdigit:]])([[:xdigit:]])$/';
+    $color = preg_replace($pattern, '#$1$1$2$2$3$3', $color );
+
+    // don't change if color format not recognised
+    $pattern = '/^#([[:xdigit:]]{2})([[:xdigit:]]{2})([[:xdigit:]]{2})$/';
+    if (!preg_match($pattern, $color, $matches)) {
+        debugging("Bad hex color '{$color}' passed to totara_brightness().");
+        return $color;
+    }
+    $red = hexdec($matches[1]);
+    $green = hexdec($matches[2]);
+    $blue = hexdec($matches[3]);
+
+    if ($percent >= 0) {
+        $red = floor($red + (255 - $red) * $percent / 100);
+        $green = floor($green + (255 - $green) * $percent / 100);
+        $blue = floor($blue + (255 - $blue) * $percent / 100);
+    } else {
+        // remember $percent is negative
+        $red = floor($red + $red * $percent / 100);
+        $green = floor($green + $green * $percent / 100);
+        $blue = floor($blue + $blue * $percent / 100);
+    }
+
+    return '#' .
+        str_pad(dechex($red), 2, '0', STR_PAD_LEFT) .
+        str_pad(dechex($green), 2, '0', STR_PAD_LEFT) .
+        str_pad(dechex($blue), 2, '0', STR_PAD_LEFT);
+}
+
+
+/**
+ * Given a hex color code lighten or darken the color by the specified
+ * number of hex points and return the hex code of the new color
+ *
+ * This differs from {@link totara_brightness} in that the scaling is
+ * linear (until pure white or black is reached). *
+ *
+ * @param string $color Hex color code in format '#abc' or '#aabbcc'
+ * @param integer $amount Number between -255 and 255, negative to darken
+ * @return string 6 digit hex color code for resulting color
+ */
+function totara_brightness_linear($color, $amount) {
+    // convert 3 digit color codes into 6 digit form
+    $pattern = '/^#([[:xdigit:]])([[:xdigit:]])([[:xdigit:]])$/';
+    $color = preg_replace($pattern, '#$1$1$2$2$3$3', $color );
+
+    // don't change if color format not recognised
+    $pattern = '/^#([[:xdigit:]]{2})([[:xdigit:]]{2})([[:xdigit:]]{2})$/';
+    if (!preg_match($pattern, $color, $matches)) {
+        debugging("Bad hex color '{$color}' passed to totara_brightness_linear().");
+        return $color;
+    }
+    $red = hexdec($matches[1]);
+    $green = hexdec($matches[2]);
+    $blue = hexdec($matches[3]);
+
+    // max and min ensure colour remains within range
+    $red = max(min($red + $amount, 255), 0);
+    $green = max(min($green + $amount, 255), 0);
+    $blue = max(min($blue + $amount, 255), 0);
+
+    return '#' .
+        str_pad(dechex($red), 2, '0', STR_PAD_LEFT) .
+        str_pad(dechex($green), 2, '0', STR_PAD_LEFT) .
+        str_pad(dechex($blue), 2, '0', STR_PAD_LEFT);
+}
+
+/**
+ * Given a hex color code return the hex code for either white or black,
+ * depending on which color will have the most contrast compared to $color
+ *
+ * @param string $color Hex color code in format '#abc' or '#aabbcc'
+ * @return string 6 digit hex color code for resulting color
+ */
+function totara_readable_text($color) {
+    // convert 3 digit color codes into 6 digit form
+    $pattern = '/^#([[:xdigit:]])([[:xdigit:]])([[:xdigit:]])$/';
+    $color = preg_replace($pattern, '#$1$1$2$2$3$3', $color );
+
+    // don't change if color format not recognised
+    $pattern = '/^#([[:xdigit:]]{2})([[:xdigit:]]{2})([[:xdigit:]]{2})$/';
+    if (!preg_match($pattern, $color, $matches)) {
+        debugging("Bad hex color '{$color}' passed to totara_readable_text().");
+        return $color;
+    }
+    $red = hexdec($matches[1]);
+    $green = hexdec($matches[2]);
+    $blue = hexdec($matches[3]);
+
+    // get average intensity
+    $avg = array_sum(array($red, $green, $blue)) / 3;
+    return ($avg >= 153) ? '#000000' : '#FFFFFF';
+}
+
+/**
+ * Given a hex color code return the rgba shadow that will work best on text
+ * that is the readable-text color
+ *
+ * This is useful for adding shadows to text that uses the readable-text color.
+ *
+ * @param string $color Hex color code in format '#abc' or '#aabbcc'
+ * @return string rgba() colour to provide an appropriate shadow for readable-text
+ */
+function totara_readable_text_shadow($color) {
+    if (totara_readable_text($color) == '#FFFFFF') {
+        return 'rgba(0, 0, 0, 0.75)';
+    } else {
+        return 'rgba(255, 255, 255, 0.75)';
+    }
+}
+/**
+ * Given a hex color code return the hex code for a desaturated version of
+ * $color, which has the same brightness but is greyscale
+ *
+ * @param string $color Hex color code in format '#abc' or '#aabbcc'
+ * @return string 6 digit hex color code for resulting greyscale color
+ */
+function totara_desaturate($color) {
+    // convert 3 digit color codes into 6 digit form
+    $pattern = '/^#([[:xdigit:]])([[:xdigit:]])([[:xdigit:]])$/';
+    $color = preg_replace($pattern, '#$1$1$2$2$3$3', $color );
+
+    // don't change if color format not recognised
+    $pattern = '/^#([[:xdigit:]]{2})([[:xdigit:]]{2})([[:xdigit:]]{2})$/';
+    if (!preg_match($pattern, $color, $matches)) {
+        debugging("Bad hex color '{$color}' passed to desaturate().");
+        return $color;
+    }
+    $red = hexdec($matches[1]);
+    $green = hexdec($matches[2]);
+    $blue = hexdec($matches[3]);
+
+    // get average intensity
+    $avg = array_sum(array($red, $green, $blue)) / 3;
+
+    return '#' . str_repeat(str_pad(dechex($avg), 2, '0', STR_PAD_LEFT), 3);
+}
+
+/**
+ * Given an array of the form:
+ * array(
+ *   // setting name => default value
+ *   'linkcolor' => '#dddddd',
+ * );
+ * perform substitutions on the css provided
+ *
+ * @param string $css CSS to substitute settings variables
+ * @param object $theme Theme object
+ * @param array $substitutions Array of settingname/defaultcolor pairs
+ * @return string CSS with replacements
+ */
+function totara_theme_generate_autocolors($css, $theme, $substitutions) {
+
+    // each element added here will generate a new color
+    // with the key appended to the existing setting name
+    // and with the color passed through the function with the arguments
+    // supplied via an array:
+    $autosettings = array(
+        'lighter' => array('brightness_linear', 15),
+        'darker' => array('brightness_linear', -15),
+        'light' => array('brightness_linear', 25),
+        'dark' => array('brightness_linear', -25),
+        'lighter-perc' => array('brightness', 15),
+        'darker-perc' => array('brightness', -15),
+        'light-perc' => array('brightness', 25),
+        'dark-perc' => array('brightness', -25),
+        'readable-text' => array('readable_text'),
+        'readable-text-shadow' => array('readable_text_shadow'),
+    );
+
+    $find = array();
+    $replace = array();
+    foreach ($substitutions as $setting => $defaultcolor) {
+        $value = isset($theme->settings->$setting) ? $theme->settings->$setting : $defaultcolor;
+        $find[] = "[[setting:{$setting}]]";
+        $replace[] = $value;
+
+        foreach ($autosettings as $suffix => $modification) {
+            if (!is_array($modification) || count($modification) < 1) {
+                continue;
+            }
+            $function_name = 'totara_' . array_shift($modification);
+            $function_args = $modification;
+            array_unshift($function_args, $value);
+
+            $find[] = "[[setting:{$setting}-$suffix]]";
+            $replace[] = call_user_func_array($function_name, $function_args);
+        }
+    }
+    return str_replace($find, $replace, $css);
 }
