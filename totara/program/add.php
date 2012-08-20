@@ -137,7 +137,8 @@ if ($data = $form->get_data()) {
         } else {
             $viewurl = "{$CFG->wwwroot}/totara/program/view.php?id={$newid}";
         }
-
+        //call prog_fix_program_sortorder to ensure new program is displayed properly and category->programcount is updated
+        prog_fix_program_sortorder($data->category);
         totara_set_notification(get_string('programcreatesuccess', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
     }
 }
