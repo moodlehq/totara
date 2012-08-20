@@ -378,7 +378,7 @@ class plugin_manager {
                 'guest', 'imsenterprise', 'ldap', 'manual', 'meta', 'mnet',
                 'paypal', 'self'
                 // Totara
-                , 'totara_learningplan'
+                , 'totara_learningplan', 'totara_program'
             ),
 
             'filter' => array(
