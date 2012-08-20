@@ -3451,6 +3451,8 @@ function category_delete_full($category, $showfeedback=true) {
     }
 
     $deletedcourses = array();
+    $deletedprograms = array();
+
     if ($courses = $DB->get_records('course', array('category'=>$category->id), 'sortorder ASC')) {
         foreach ($courses as $course) {
             if (!delete_course($course, false)) {
@@ -3460,6 +3462,16 @@ function category_delete_full($category, $showfeedback=true) {
         }
     }
 
+    if ($programs = $DB->get_records('prog', array('category'=>$category->id), 'sortorder ASC', 'id, shortname')) {
+        require_once($CFG->dirroot.'/totara/program/lib.php');
+        foreach ($programs as $program) {
+            $prog = new program($program->id);
+            if (!$prog->delete()) {
+                throw new moodle_exception('programdeletefail','totara_program','',$program->shortname);
+            }
+            $deletedprograms[] = $program;
+        }
+    }
     // move or delete cohorts in this context
     cohort_delete_category($category);
 
@@ -3475,7 +3487,7 @@ function category_delete_full($category, $showfeedback=true) {
 
     events_trigger('course_category_deleted', $category);
 
-    return $deletedcourses;
+    return array($deletedcourses, $deletedprograms);
 }
 
 /**
@@ -3506,6 +3518,14 @@ function category_delete_move($category, $newparentid, $showfeedback=true) {
             return false;
         }
         echo $OUTPUT->notification(get_string('coursesmovedout', '', format_string($category->name)), 'notifysuccess');
+    }
+
+    if ($programs = $DB->get_records('prog', array('category' => $category->id), 'sortorder ASC', 'id')) {
+        if (!prog_move_programs(array_keys($programs), $newparentid)) {
+            echo $OUTPUT->notification(get_string('error:progsnotmoved', 'totara_program', format_string($category->name)));
+            return false;
+        }
+        echo $OUTPUT->notification(get_string('programsmovedout', 'totara_program', format_string($category->name)), 'notifysuccess');
     }
 
     // move or delete cohorts in this context

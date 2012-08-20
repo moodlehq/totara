@@ -220,6 +220,7 @@ $string['error:unableaddmessagetypeunrecog'] = 'Unable to add new message. Messa
 $string['error:unabledeletemessagenotfound'] = 'Unable to delete message. Message not found';
 $string['error:findingprogram'] = 'Error finding program {$a}';
 $string['error:prognotmoved'] = 'Error, program not moved!';
+$string['error:progsnotmoved'] = 'Error, programs not moved from {$a}!';
 $string['error:assignmentnotfound'] = 'Assignment record not found';
 $string['error:userassignmenttypenotfound'] = 'User assignment type not found';
 $string['error:userassignmentclassnotfound'] = 'User assignment class not found';

@@ -110,10 +110,13 @@ if (!empty($delete) and confirm_sesskey()) {
     echo $OUTPUT->heading($heading);
 
     if ($data->fulldelete) {
-        $deletedcourses = category_delete_full($deletecat, true);
+        list($deletedcourses, $deletedprograms) = category_delete_full($deletecat, true);
 
         foreach ($deletedcourses as $course) {
             echo $OUTPUT->notification(get_string('coursedeleted', '', $course->shortname), 'notifysuccess');
+        }
+        foreach ($deletedprograms as $program) {
+            echo $OUTPUT->notification(get_string('programdeletesuccess', 'totara_program', $program->shortname), 'notifysuccess');
         }
         echo $OUTPUT->notification(get_string('coursecategorydeleted', '', format_string($deletecat->name, true, array('context' => $context))), 'notifysuccess');
 
