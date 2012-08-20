@@ -38,8 +38,6 @@ echo $OUTPUT->container_start();
 echo html_writer::alist(array(
     html_writer::link(new moodle_url('/elementlibrary/mform_standard.php'), 'Standard form elements'),
     html_writer::link(new moodle_url('/elementlibrary/mform_grouped.php'), 'Grouped form elements'),
-    html_writer::link(new moodle_url('/elementlibrary/mform_other.php'), 'Other form controls (e.g. advanced elements, required fields, etc) TODO'),
-    html_writer::link(new moodle_url('/elementlibrary/mform_custom.php'), 'Custom forms created by changing the default renderer TODO'),
 ));
 
 echo $OUTPUT->container_end();
