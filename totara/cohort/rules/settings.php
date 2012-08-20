@@ -179,19 +179,19 @@ function cohort_rules_list(){
                     $dialogs[] = $dialogui;
 
                     // choose from distinct customfield values
-                    $sql = "SELECT DISTINCT data
-                              FROM {user_info_data}
-                             WHERE fieldid = ?
-                          ORDER BY data";
-                    $options = $DB->get_records_sql($sql, array($id));
-                    if (!empty($options)) {
-                        $dialogui = new cohort_rule_ui_menu(
-                            get_string('usersx', 'totara_cohort', $field->name),
-                            array_combine(array_keys($options), array_keys($options))
-                        );
-                        $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('choose', 'totara_cohort') . ')';
-                        $dialogs[] = $dialogui;
-                    }
+                    $sql = new stdClass;
+                    $sql->select = "DISTINCT data AS mkey, data AS mval";
+                    $sql->from = "{user_info_data}";
+                    $sql->where = "fieldid = ?";
+                    $sql->orderby = 'data';
+                    $sql->valuefield = 'data';
+                    $sql->sqlparams = array($id);
+                    $dialogui = new cohort_rule_ui_menu(
+                        get_string('usersx', 'totara_cohort', $field->name),
+                        $sql
+                    );
+                    $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('choose', 'totara_cohort') . ')';
+                    $dialogs[] = $dialogui;
 
                     $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
                     unset($dialogui);

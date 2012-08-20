@@ -48,6 +48,8 @@ $COHORT_RULES_OP_IN = array(
     COHORT_RULES_OP_IN_EQUAL => 'equal',
 );
 
+define('COHORT_RULES_UI_MENU_LIMIT', 2500);
+
 /**
  * Get the definition of a specific rule
  * @param string $rulegroup

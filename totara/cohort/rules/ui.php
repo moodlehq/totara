@@ -365,11 +365,16 @@ class cohort_rule_ui_menu extends cohort_rule_ui_form {
                 COHORT_RULES_OP_IN_NOTEQUAL=>get_string('notequalto', 'totara_cohort')
             )
         );
+        if (is_object($this->options)) {
+            $options = $this->options_from_sqlobj($this->options);
+        } else {
+            $options = $this->options;
+        }
         $row[1] =& $mform->createElement(
             'select',
             'listofvalues',
             '',
-            $this->options
+            $options
         );
         // todo: The UI mockup shows a fancy ajax thing to add/remove selected items.
         // For now, using a humble multi-select
@@ -435,11 +440,71 @@ JS;
         $ret = ucfirst($this->description);
         $ret .= get_string("is{$COHORT_RULES_OP_IN[$this->equal]}to", 'totara_cohort');
 
+        if (is_object($this->options)) {
+            $selected = $this->options_from_sqlobj($this->options, $this->listofvalues);
+        } else {
+            $selected = array_intersect_key($this->options, array_flip($this->listofvalues));
+        }
         // append the list of selected items
-        $selected = array_intersect_key($this->options, array_flip($this->listofvalues));
         $ret .= '"' . htmlspecialchars(implode('", "', $selected)) .'"';
 
         return $ret;
+    }
+
+    /**
+     * Retrieve menu options by constructing sql string from an sql object
+     * and then querying the database
+     *
+     * @param object $sqlobj the sql object instance to construct the query from
+     *                      e.g stdClass Object
+                                (
+                                    [select] => DISTINCT data AS mkey, data AS mval
+                                    [from] => {user_info_data}
+                                    [where] => fieldid = ?
+                                    [orderby] => data
+                                    [valuefield] => data
+                                    [sqlparams] => Array
+                                        (
+                                            [0] => 1
+                                        )
+
+                                )
+     * @param array $selectedvals selected values (optional)
+     * @return array of menu options
+     */
+    protected function options_from_sqlobj($sqlobj, $selectedvals=null) {
+        global $DB;
+
+        $sql = "SELECT {$sqlobj->select} FROM {$sqlobj->from} ";
+
+        $sqlparams = array();
+        if ($selectedvals !== null) {
+            if (!empty($selectedvals)) {
+                list($sqlin, $sqlparams) = $DB->get_in_or_equal($selectedvals);
+            } else {
+                // dummiez to ensure nothing gets returned :D
+                $sqlin = ' IN (?) ';
+                $sqlparams = array(0);
+            }
+        }
+        if (empty($sqlobj->where)) {
+            $sql .= ' WHERE ';
+        } else {
+            $sql .= " WHERE {$sqlobj->where} ";
+        }
+        if (!empty($sqlin)) {
+            $sql .= " AND {$sqlobj->valuefield} {$sqlin} ";
+        }
+
+        if (!empty($sqlobj->orderby)) {
+            $sql .= " ORDER BY {$sqlobj->orderby}";
+        }
+
+        if (!empty($sqlobj->sqlparams)) {
+            $sqlparams = array_merge($sqlobj->sqlparams, $sqlparams);
+        }
+
+        return $DB->get_records_sql_menu($sql, $sqlparams, 0, COHORT_RULES_UI_MENU_LIMIT);
     }
 }
 
