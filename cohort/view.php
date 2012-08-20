@@ -207,18 +207,6 @@ if ($cohort->cohorttype == cohort::TYPE_DYNAMIC) {
 
 } //end if cohort type is dynamic
 
-$out .= html_writer::start_tag('div', array('class' => 'mform'));
-$out .= html_writer::start_tag('fieldset');
-$item = html_writer::tag('div', '&nbsp;', array('class' => 'fitemtitle'));
-$form = html_writer::start_tag('form');
-$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'delete', 'value' => '1'));
-$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $cohort->id));
-$form .= html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('deletethiscohort', 'totara_cohort')));
-$form .= html_writer::end_tag('form');
-$item .= html_writer::tag('div', $membercount, array('class' => 'felement ftext'));
-$out .= $OUTPUT->container($item, 'fitem required');
-$out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
-
 echo $out;
 $cloneurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id,'clone'=>1));
 $delurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id,'delete'=>1));
