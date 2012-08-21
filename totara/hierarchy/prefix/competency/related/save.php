@@ -123,7 +123,7 @@ foreach ($relidlist as $relid) {
     $types = $hierarchy->get_types();
 
     // Add relationship
-    $relationship = new Object();
+    $relationship = new stdClass();
     $relationship->id1 = $competency->id;
     $relationship->id2 = $related->id;
 

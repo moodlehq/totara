@@ -2578,7 +2578,7 @@ class hierarchy {
         $DB->execute($sql, $params);
 
         foreach ($rs as $datarow) {
-            $todb = new object();
+            $todb = new stdClass();
             $todb->id = $datarow->id;
             $todb->sortthread = $this->get_next_child_sortthread($datarow->parentid, $datarow->frameworkid);
             $DB->update_record($this->shortprefix, $todb);

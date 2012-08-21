@@ -353,7 +353,7 @@ if (strlen($query)) {
             $dialog->disabled_items = $this->disabled_items;
 
             foreach ($results as $result) {
-                $item = new object();
+                $item = new stdClass();
 
                 if (method_exists($this, 'search_can_display_result') && !$this->search_can_display_result($result->id)) {
                    continue;

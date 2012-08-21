@@ -32,7 +32,7 @@ define('NO_OUTPUT_BUFFERING', true);
 
 require_once(dirname(dirname(__FILE__)).'/config.php');
 
-$todb = new object();
+$todb = new stdClass();
 $todb->auth = 'manual';
 $todb->confirmed = 1;
 $todb->policyagreed = 1;

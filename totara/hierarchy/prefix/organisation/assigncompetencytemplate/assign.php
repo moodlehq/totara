@@ -112,7 +112,7 @@ foreach ($add as $addition) {
     $framework = $competencies->get_framework($related->frameworkid);
 
     // Add relationship
-    $relationship = new Object();
+    $relationship = new stdClass();
     $relationship->organisationid = $organisation->id;
     $relationship->templateid = $related->id;
     $relationship->timecreated = $time;
