@@ -79,11 +79,9 @@ class block_totara_quicklinks extends block_base {
         foreach ($links as $l) {
             $rowclass = ($counter % 2) ? 'noshade' : 'shade';
             $counter++;
-            $cell1 = new html_table_cell($OUTPUT->pix_icon('link', '', 'block_totara_quicklinks'));
-            $cell1->attributes['class'] = 'linkicon';
-            $cell2 = new html_table_cell(html_writer::tag('div', html_writer::link(format_string($l->url), format_string($l->title)), array('class' => 'quicklink-title')));
-            $cell2->attributes['class'] = 'linkname';
-            $row = new html_table_row(array($cell1,$cell2));
+            $cell = new html_table_cell(html_writer::tag('div', html_writer::link(format_string($l->url), format_string($l->title)), array('class' => 'quicklink-title')));
+            $cell->attributes['class'] = 'linkname';
+            $row = new html_table_row(array($cell));
             $row->attributes['class'] = $rowclass;
             $table->data[] = $row;
         }
