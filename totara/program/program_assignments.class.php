@@ -1105,7 +1105,7 @@ class managers_category extends prog_assignment_category {
                 prog_assignment.completionevent, prog_assignment.completioninstance
               FROM {prog_assignment} prog_assignment
         INNER JOIN {user} u ON u.id = prog_assignment.assignmenttypeid
-        INNER JOIN {pos_assignment} pa ON pa.userid = u.id AND pa.type = ?
+         LEFT JOIN {pos_assignment} pa ON pa.userid = u.id AND pa.type = ?
              WHERE prog_assignment.programid = ?
                AND prog_assignment.assignmenttype = ?
         ", array(POSITION_TYPE_PRIMARY, $programid, $this->id));
@@ -1113,6 +1113,11 @@ class managers_category extends prog_assignment_category {
         // Convert these into html
         if (!empty($items)) {
             foreach ($items as $item) {
+                //sometimes a manager may not have a pos_assignment record e.g. top manager in the tree
+                //so we need to set a default path
+                if (empty($item->path)) {
+                    $item->path = '/' . $item->id;
+                }
                 $this->data[] = $this->build_row($item);
             }
         }
@@ -1122,9 +1127,15 @@ class managers_category extends prog_assignment_category {
         global $DB;
         $sql = "SELECT u.id, " . $DB->sql_fullname('u.firstname', 'u.lastname') . " AS fullname, pa.managerpath AS path
                   FROM {user} AS u
-            INNER JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
+             LEFT JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
                  WHERE u.id = ?";
-        return $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $itemid));
+        //sometimes a manager may not have a pos_assignment record e.g. top manager in the tree
+        //so we need to set a default path
+        $item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $itemid));
+        if (empty($item->path)) {
+            $item->path = "/{$itemid}";
+        }
+        return $item;
     }
 
     function build_row($item) {
@@ -1195,10 +1206,15 @@ class managers_category extends prog_assignment_category {
                         prog_assignment.includechildren
                   FROM {prog_assignment} prog_assignment
             INNER JOIN {user} u ON u.id = prog_assignment.assignmenttypeid
-            INNER JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
+             LEFT JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
                  WHERE prog_assignment.id = ?";
 
         if ($item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $assignment->id))) {
+            //sometimes a manager may not have a pos_assignment record e.g. top manager in the tree
+            //so we need to set a default path
+            if (empty($item->path)) {
+                $item->path = "/{$item->id}";
+            }
             return $this->get_affected_users($item, $userid);
         } else {
             return array();
