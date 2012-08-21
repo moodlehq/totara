@@ -390,7 +390,7 @@ function program_cron_copy_recurring_courses() {
                 $shortname = substr($shortname, 0, -12);
             }
 
-            $context = get_context_instance(CONTEXT_COURSE, $course->id);
+            $context = context_course::instance($course->id);
 
             // Unzip backup to a temporary folder
             $tempfolder = time() . $USER->id;

@@ -62,7 +62,7 @@ class dp_priority_scale_value_edit_form extends moodleform {
         $mform->addRule('numericscore', null, 'numeric', null, 'client');
 
         $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
-        $mform->setType('description_editor', PARAM_CLEAN);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $this->add_action_buttons();
     }

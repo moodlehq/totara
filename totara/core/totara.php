@@ -696,7 +696,7 @@ function assign_user_position($assignment, $unittest=false) {
         // skip this bit during testing as we don't have all the required tables for role assignments
         if (!$unittest) {
             // Get context
-            $context = get_context_instance(CONTEXT_USER, $assignment->userid);
+            $context = context_user::instance($assignment->userid);
             // Get manager role id
             $roleid = $CFG->managerroleid;
             // Delete role assignment if there was a manager but it changed

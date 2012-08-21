@@ -40,7 +40,7 @@ if (isguestuser()) {
 }
 
 if (!in_array($event, array('onaccept', 'onreject'))) {
-    error('Invalid event type: '.$event);
+    print_error('error:invalideventtype', 'totara_message', '', $event);
 }
 
 $metadata = $DB->get_record('message_metadata', array('messageid' => $id));

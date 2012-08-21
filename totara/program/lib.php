@@ -1325,7 +1325,7 @@ function prog_process_extensions($extensions) {
                         $update_fail_count++;
                     }
                 } else {
-                    error(get_string('error:failedsendextensiondenyalert' ,'totara_program'));
+                    print_error('error:failedsendextensiondenyalert', 'totara_program');
                 }
             } elseif ($action == PROG_EXTENSION_GRANT) {
                 // Load the program for this extension

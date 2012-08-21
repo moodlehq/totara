@@ -76,7 +76,7 @@ $sql = "SELECT c.*, crc.rulesetoperator, crc.status
 $cohort = $DB->get_record_sql($sql, array($id), '*', MUST_EXIST);
 
 if (!$cohort->cohorttype == cohort::TYPE_DYNAMIC) {
-    error(get_string('error:notdynamiccohort', 'totara_cohort'));
+    print_error('error:notdynamiccohort', 'totara_cohort');
 }
 
 $rulesets = $DB->get_records('cohort_rulesets', array('rulecollectionid' => $cohort->draftcollectionid), 'sortorder');

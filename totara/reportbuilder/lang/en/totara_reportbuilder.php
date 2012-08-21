@@ -132,7 +132,6 @@ $string['error:groupnotcreated'] = 'Group could not be created';
 $string['error:groupnotcreatedinitfail'] = 'Group could not be created - failed to initialize tables!';
 $string['error:groupnotcreatedpreproc'] = 'Group could not be created - preprocessor not found!';
 $string['error:groupnotdeleted'] = 'Group could not be deleted';
-$string['error:invalideventtype'] = 'Invalid event type: ';
 $string['error:invalidreportid'] = 'Invalid report ID';
 $string['error:invalidreportscheduleid'] = 'Invalid scheduled report ID';
 $string['error:invaliduserid'] = 'Invalid user ID';

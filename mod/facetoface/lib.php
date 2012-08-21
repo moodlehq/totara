@@ -2392,7 +2392,7 @@ function facetoface_approve_requests($data) {
                     print_error('error:incorrectcoursemodule', 'facetoface');
                 }
 
-                $contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
+                $contextmodule = context_module::instance($cm->id);
 
                 // Check if there is capacity
                 if (facetoface_session_has_capacity($session, $contextmodule)) {
