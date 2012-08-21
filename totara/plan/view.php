@@ -141,6 +141,8 @@ if ($data = $form->get_data()) {
 /**
  * Display header
  */
+dp_get_plan_base_navlinks($plan->userid);
+$PAGE->navbar->add($plan->name);
 $plan->print_header('plan');
 add_to_log(SITEID, 'plan', 'view', "view.php?id={$plan->id}", $plan->name);
 
