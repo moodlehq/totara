@@ -225,7 +225,9 @@ switch ($searchtype) {
                 ";
             }
         }
-
+        //always exclude site course
+        $search_info->sql .= " AND c.id <> ?";
+        $params[] = SITEID;
         $search_info->order = " ORDER BY c.sortorder ASC";
         $search_info->params = $params;
         break;

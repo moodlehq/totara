@@ -67,9 +67,11 @@ switch ($type) {
 $dialog->type = totara_dialog_content::TYPE_CHOICE_MULTI;
 
 $dialog->selected_title = 'itemstoadd';
+//show all courses
+$dialog->requirecompletioncriteria = false;
+$dialog->requirecompletion = false;
 
 // Add data
-$dialog->requirecompletion = true;
 switch ($type) {
     case COHORT_ASSN_ITEMTYPE_COURSE:
         $dialog->load_courses();
