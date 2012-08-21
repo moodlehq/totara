@@ -732,8 +732,7 @@ class reportbuilder {
                     $data = $field->check_data($adddata);
                     if ($data === false) {
                         // unset existing result if field has been set back to "not set" position
-                        if (isset($SESSION->reportbuilder) &&
-                            array_key_exists($field->name, $SESSION->reportbuilder[$this->_id])) {
+                        if (isset($SESSION->reportbuilder[$this->_id][$fieldname])) {
                             unset($SESSION->reportbuilder[$this->_id][$fieldname]);
                         }
                         continue;
