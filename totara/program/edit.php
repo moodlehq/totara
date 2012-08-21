@@ -34,6 +34,7 @@ require_once('edit_form.php');
 
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
+$category = optional_param('category', '', PARAM_INT);
 
 require_login();
 
@@ -77,7 +78,7 @@ if ($action == 'edit') {
 
 }
 
-if (!$category = $DB->get_record('course_categories', array('id' => $program->category))) {
+if (!$progcategory = $DB->get_record('course_categories', array('id' => $program->category))) {
     print_error('error:determineprogcat', 'totara_program');
 }
 
@@ -85,7 +86,7 @@ $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
 $viewurl = $currenturl_noquerystring."?id={$id}&action=view";
 $editurl = $currenturl_noquerystring."?id={$id}&action=edit";
-$categoryindexurl = "{$CFG->wwwroot}/course/category.php?id={$category->id}&amp;viewtype=program";
+
 $editcontenturl = "{$CFG->wwwroot}/totara/program/edit_content.php?id={$program->id}";
 $editassignmentsurl = "{$CFG->wwwroot}/totara/program/edit_assignments.php?id={$program->id}";
 $editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$program->id}";
@@ -97,7 +98,7 @@ $program = file_prepare_standard_editor($program, 'summary', $TEXTAREA_OPTIONS, 
 
 $program = file_prepare_standard_editor($program, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'progendnote', $id);
-$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS), 'post', '', array('name'=>'form_prog_details'));
+$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
     totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
@@ -105,7 +106,7 @@ if ($detailsform->is_cancelled()) {
 
 // Redirect to delete page if deleting
 if ($action == 'delete') {
-    redirect("{$CFG->wwwroot}/totara/program/delete.php?id={$id}");
+    redirect("{$CFG->wwwroot}/totara/program/delete.php?id={$id}&amp;category={$category}");
 }
 
 // Handle form submits
