@@ -4432,9 +4432,31 @@ function get_course_custom_fields($courseid) {
 }
 
 /**
- * TODO SCANMSG
- * Stub to stop errors during porting
+ * Gets the path of breadcrumbs for a category path matching $categoryid
+ *
+ * @param integer $categoryid The id of the current category
+ * @return array Multidimensional array containing name, link, and type of breadcrumbs
+ *
  */
-function get_category_breadcrumbs($category) {
-    return array();
+function get_category_breadcrumbs($categoryid) {
+    global $CFG, $DB;
+
+    $category = $DB->get_record('course_categories', array('id' => $categoryid));
+
+    if (strpos($category->path, '/') === false) {
+        return array();
+    }
+
+    $bread = explode('/', substr($category->path, 1));
+    list($breadinsql, $params) = $DB->get_in_or_equal($bread);
+    $sql = "SELECT id, name FROM {course_categories} WHERE id {$breadinsql} ORDER BY depth";
+    $cat_bread = array();
+
+    if ($bread_info = $DB->get_records_sql($sql, $params)) {
+        foreach ($bread_info as $crumb) {
+            $cat_bread[] = array('name' => format_string($crumb->name), 'link' => new moodle_url('/course/category.php', array('id' => $crumb->id, 'viewtype' => 'program')), 'type' => 'misc');
+
+        }
+    }
+    return $cat_bread;
 }

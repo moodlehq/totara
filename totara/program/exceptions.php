@@ -101,12 +101,14 @@ $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = $program->fullname;
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-$navlinks = array();
+$PAGE->navbar->add(get_string('programadministration', 'totara_program'));
+$PAGE->navbar->add(get_string('exceptions', 'admin'), new moodle_url('/totara/program/exceptions.php', array('id' => $id)));
 
-foreach ($category_breadcrumbs as $node) {
-    $PAGE->navbar->add_node($node);
+foreach ($category_breadcrumbs as $crumb) {
+    $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }
-$PAGE->navbar->add($program->shortname, $viewurl);
+
+$PAGE->navbar->add($program->shortname, new moodle_url('/totara/program/view.php', array('id' => $id)));
 $PAGE->navbar->add(get_string('exceptionsreport', 'totara_program'));
 
 echo $OUTPUT->header();

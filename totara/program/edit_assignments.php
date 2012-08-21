@@ -132,16 +132,16 @@ add_to_log(SITEID, 'program', 'view assignments', "edit_assignments.php?id={$pro
 /// Display
 ///
 
-//$category_breadcrumbs = get_category_breadcrumbs($program->category);
+$category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = format_string($program->fullname);
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-//$navlinks = array();
-$PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
 
-//$navlinks = array_merge($navlinks, $category_breadcrumbs);
+foreach ($category_breadcrumbs as $crumb) {
+    $PAGE->navbar->add($crumb['name'], $crumb['link']);
+}
 
-$PAGE->navbar->add(format_string($program->shortname), $viewurl);
+$PAGE->navbar->add($program->shortname, new moodle_url('/totara/program/view.php', array('id' => $id)));
 $PAGE->navbar->add(get_string('editprogramassignments', 'totara_program'));
 
 echo $OUTPUT->header();
