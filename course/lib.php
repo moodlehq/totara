@@ -2599,7 +2599,7 @@ function print_my_moodle() {
     global $USER, $CFG, $DB, $OUTPUT;
 
     if (!isloggedin() or isguestuser()) {
-        print_error('nopermissions', '', '', 'See My Moodle');
+        print_error('nopermissions', '', '', 'See My Home');
     }
 
     $courses  = enrol_get_my_courses('summary', 'visible DESC,sortorder ASC');
