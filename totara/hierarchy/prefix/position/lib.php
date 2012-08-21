@@ -32,14 +32,11 @@ require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
 require_once("{$CFG->dirroot}/totara/core/utils.php");
 require_once("{$CFG->dirroot}/completion/data_object.php");
 
-
-// DO NOT COMMENT OUT IF UNUSED
 define('POSITION_TYPE_PRIMARY',         1);
 define('POSITION_TYPE_SECONDARY',       2);
 define('POSITION_TYPE_ASPIRATIONAL',    3);
 
 // List available position types
-// (Commented out unused types here)
 global $POSITION_TYPES;
 $POSITION_TYPES = array(
     POSITION_TYPE_PRIMARY       => 'primary',

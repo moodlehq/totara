@@ -116,5 +116,14 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012092600, 'totara_hierarchy');
     }
 
+    if ($oldversion < 2012110500) {
+        // set positionsenabled default config
+        if (get_config('totara_hierarchy', 'positionsenabled') === false) {
+            set_config('positionsenabled', '1,2,3', 'totara_hierarchy');
+        }
+
+        totara_upgrade_mod_savepoint(true, 2012110500, 'totara_hierarchy');
+    }
+
     return true;
 }

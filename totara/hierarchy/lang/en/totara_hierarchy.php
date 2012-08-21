@@ -35,6 +35,7 @@ $string['positiondescription'] = 'Description';
 $string['organisationdescription'] = 'Description';
 $string['competencydescription'] = 'Description';
 $string['error:unknownaction'] = 'Unknown action';
+$string['error:unknownbuttonclicked'] = 'Unknown button clicked';
 $string['error:nonedeleted'] = 'None of the selected {$a} could be deleted';
 $string['error:somedeleted'] = 'Only {$a->actually_deleted} of a possible {$a->marked_for_deletion} {$a->items} could be deleted';
 $string['error:failedbulkmove'] = 'There was a problem moving those items';
@@ -88,6 +89,7 @@ $string['restoreusers'] = '{$a} Users found to restore.';
 $string['restorenousers'] = 'No Users found to restore.';
 $string['restoreusersanddata'] = 'Restore users and user data';
 $string['selectframeworks'] = 'Select which frameworks to restore';
+$string['settingsupdated'] = 'Settings updated';
 $string['top'] = 'Top';
 $string['pickaframework'] = 'Pick a framework';
 $string['parentchildselectedwarningdelete'] = 'Note: you have selected an item and also selected one of that item\'s children. Deleting an item will automatically delete all of its children. If you want to keep an item\'s children, move them before deleting the item.';
@@ -570,6 +572,8 @@ $string['error:addposition'] = 'There was a problem adding the position "{$a}"';
 $string['deletedposition'] = 'The position {$a} and it\'s children have been completely deleted';
 $string['updatedposition'] = 'The position "{$a}" has been updated';
 $string['error:updateposition'] = 'There was a problem updating the position "{$a}"';
+$string['error:noposenabled'] = 'No position types enabled';
+$string['error:postypenotenabled'] = 'Position type not enabled';
 $string['positiondeletedassignedcompetency'] = 'Competency unassigned successfully from this position';
 $string['positionerror:deleteassignedcompetency'] = 'Error unassigning competency from this position';
 $string['deletedposition'] = 'The position {$a} and its children have been completely deleted';
@@ -577,6 +581,12 @@ $string['positionaddedframework'] = 'The position framework "{$a}" has been adde
 $string['positiondeletedframework'] = 'The position framework "{$a}" and its data have been completely deleted';
 $string['positionupdatedframework'] = 'The position framework "{$a}" has been updated';
 $string['positionerror:deletedframework'] = 'Error deleting position framework "{$a}" and its data.';
+$string['positionsenabled'] = 'Positions enabled';
+$string['positionsenabled_help'] = $string['reportbuilderexportoptions_help'] = '
+**Positions enabled settings** allows a user with the appropriate permissions to specify the positions that are available in the system.
+
+When no options are selected, the position functionality will be disabled completely.';
+$string['positionsettings'] = 'Position settings';
 $string['deleteposition'] = 'Delete position';
 $string['editposition'] = 'Edit position';
 $string['positioneditframework'] = 'Edit position framework';

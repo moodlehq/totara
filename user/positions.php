@@ -14,6 +14,28 @@ $courseid   = optional_param('course', SITEID, PARAM_INT);   // course id
 
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
+// Position types check
+if (!$positionsenabled = get_config('totara_hierarchy', 'positionsenabled')) {
+    print_error('error:noposenabled', 'totara_hierarchy');
+}
+
+// Create array of enabled positions
+$enabled_positions = explode(',', $positionsenabled);
+
+if (empty($POSITION_CODES[$type])) {
+    // Set default enabled position type
+    foreach ($POSITION_CODES as $ptype => $poscode) {
+        if (in_array($poscode, $enabled_positions)) {
+            $type = $ptype;
+            break;
+        }
+    }
+}
+$poscode = $POSITION_CODES[$type];
+if (!in_array($poscode, $enabled_positions)) {
+    print_error('error:postypenotenabled', 'totara_hierarchy');
+}
+
 if (empty($courseid)) {
     $courseid = SITEID;
 }

@@ -24,6 +24,9 @@ function xmldb_totara_hierarchy_install() {
     }
 
     totara_hierarchy_install_default_comp_scale();
-
+    // set positionsenabled default config
+    if (get_config('totara_hierarchy', 'positionsenabled') === false) {
+        set_config('positionsenabled', '1,2,3', 'totara_hierarchy');
+    }
     return true;
 }

@@ -3997,16 +3997,32 @@ class settings_navigation extends navigation_node {
             $canview = true;
         }
 
-        if ($canview) {
+        $positionsenabled = get_config('totara_hierarchy', 'positionsenabled');
+        if ($canview && $positionsenabled) {
             $posbaseargs['user'] = $user->id;
+
+            $enabled_positions = explode(',', $positionsenabled);
+            // Get default enabled position type
+            global $POSITION_CODES;
+            foreach ($POSITION_CODES as $ptype => $poscode) {
+                if (in_array($poscode, $enabled_positions)) {
+                    $dtype = $ptype;
+                    break;
+                }
+            }
+            $url = new moodle_url('/user/positions.php', array_merge($posbaseargs, array('type' => $dtype)));
+
+            // Link to users Positions page
             $positions = $usersetting->add(get_string('positions', 'totara_hierarchy'), null, self::TYPE_CONTAINER);
 
             require_once($CFG->dirroot . '/totara/hierarchy/prefix/position/lib.php');
             global $POSITION_TYPES;
 
-            foreach ($POSITION_TYPES as $ptype) {
-                $url = new moodle_url('/user/positions.php', array_merge($posbaseargs, array('type' => $ptype)));
-                $positions->add(get_string('type' . $ptype, 'totara_hierarchy'), $url, self::TYPE_USER);
+            foreach ($POSITION_TYPES as $pcode => $ptype) {
+                if (in_array($pcode, $enabled_positions)) {
+                    $url = new moodle_url('/user/positions.php', array_merge($posbaseargs, array('type' => $ptype)));
+                    $positions->add(get_string('type' . $ptype, 'totara_hierarchy'), $url, self::TYPE_USER);
+                }
             }
         }
 
