@@ -1,5 +1,33 @@
 Totara LMS Changelog
 
+Release 2.2.1 (21 August 2012):
+==================================================
+
+Database Upgrades:
+    T-9712      Migrate old cohort user custom field rules to Audiences
+
+Improvements:
+    T-9712      Improve scalability of bulk user unenrol
+    T-9836      Add customisable totara theme to distribution                      This provides a way to customise the theme via the interface
+    T-9712      Add nested cohorts functionality to Audiences                      This makes it possible to create rules that include or exclude other audiences
+    T-9712      Improve scalability of Rules UI in Audiences
+    T-9712      Allow hidden custom fields to be added to reports
+
+Bug fixes:
+    T-8343      Add extra allowed link protocols in textareas
+    T-9824      Fix PHP Notice on saving an aspirational position
+    T-9712      Fix grade percentage language string in reports
+    T-9829      Remove all remaining dashlet_roles.txt files
+    T-9828      Fix duplicate display of cohort member numbers
+    T-9843      Remove debugging message in mod/book
+    T-9827      Improve notification when deleting a saved report (reportbuilder)
+    T-9712      Fix PHP Notice when deleting an Audience with enrolled learning
+    T-9712      Fix duplicate parents error in totara_sync
+    T-9712      Add totara_program enrol plugin to list of standard plugins
+    T-9852      Remove moodle themes from Totara distribution
+    T-9834      Fix breadcrumbs for learning plans
+
+
 Release 2.2.0 (15 August 2012):
 ==================================================
 
