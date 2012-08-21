@@ -86,11 +86,16 @@ $PAGE->set_url('/totara/hierarchy/item/view.php', array('prefix' => $prefix, 'id
 $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix)));
 
-if ($can_manage_fw) {
-    $PAGE->navbar->add(get_string('manage'.$prefix, 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix, 'frameworkid' => $framework->id)));
-} else {
-    $PAGE->navbar->add(get_string('manage'.$prefix, 'totara_hierarchy'));
+if (!$framework = $DB->get_record($shortprefix.'_framework', array('id' => $item->frameworkid))) {
+    print_error('invalidframeworkid', 'totara_hierarchy', $prefix);
 }
+
+if ($can_manage_fw) {
+    $PAGE->navbar->add(format_string($framework->fullname), new moodle_url("../index.php", array('prefix' => $prefix, 'frameworkid' => $framework->id)));
+} else {
+    $PAGE->navbar->add(format_string($framework->fullname));
+}
+
 $PAGE->navbar->add(format_string($item->fullname));
 echo $OUTPUT->header();
 
