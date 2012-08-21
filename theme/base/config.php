@@ -68,6 +68,13 @@ $THEME->layouts = array(
         'regions' => array('side-pre', 'side-post'),
         'defaultregion' => 'side-post',
     ),
+    // pages that need the full width of the page - no blocks shown at all
+    // this is only used by totara pages
+    'noblocks' => array(
+        'file' => 'general.php',
+        'regions' => array(),
+        'options' => array('noblocks'=>true, 'langmenu'=>true),
+    ),
     // Main course page
     'course' => array(
         'file' => 'general.php',
