@@ -543,6 +543,20 @@ $string['error:updatingpriorityscale'] = 'An error occured while updating priori
 $string['error:createpriorityvalue'] = 'Error creating priority scale value record';
 $string['nopriorityscales'] = 'To use priorities setup a priority scale';
 
+//Default Priority Scale
+$string['defaultpriorityscalename'] = 'High, Medium, Low';
+$string['defaultpriorityscaledescription'] = 'High priority, medium priority, or low priority.';
+$string['defaultscalevaluehigh'] = 'High';
+$string['defaultscalevaluemedium'] = 'Medium';
+$string['defaultscalevaluelow'] = 'Low';
+
+//Default Objective Scale
+$string['defaultobjectivescalename'] = 'Completed, In Progress, Not Started';
+$string['defaultobjectivescaledescription'] = 'Completed objective, objective in progress, or not started objective.';
+$string['defaultscalevaluecompleted'] = 'Completed';
+$string['defaultscalevalueinprogress'] = 'In Progress';
+$string['defaultscalevaluenotstarted'] = 'Not Started';
+
 // Objective Scales
 $string['objectivescales'] = 'Objective scales';
 $string['objectivescale'] = 'Objective scale';

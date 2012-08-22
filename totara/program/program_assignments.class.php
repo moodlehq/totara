@@ -1371,7 +1371,7 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
         return '';
     }
     public function get_completion_string() {
-        return 'first login';
+        return get_string('firstlogin', 'totara_program');
     }
     public function get_timestamp($userid,$instanceid) {
         global $DB;

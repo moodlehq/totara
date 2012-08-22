@@ -29,8 +29,8 @@ function xmldb_totara_plan_install() {
     //create default priority & objective scales and default template
     /*default priority scale*/
     $ps = new stdClass();
-    $ps->name = 'High, Medium, Low';
-    $ps->description = 'High priority, medium priority, or low priority.';
+    $ps->name = get_string('defaultpriorityscalename', 'totara_plan');
+    $ps->description = get_string('defaultpriorityscaledescription', 'totara_plan');
     $ps->sortorder = 1;
     $ps->timemodified = time();
     $ps->usermodified = 0;
@@ -38,7 +38,7 @@ function xmldb_totara_plan_install() {
 
     // Add values to that default priority scale
     $psv = new stdClass();
-    $psv->name = 'High';
+    $psv->name = get_string('defaultscalevaluehigh', 'totara_plan');
     $psv->priorityscaleid = $psid;
     $psv->sortorder = 1;
     $psv->timemodified = time();
@@ -46,7 +46,7 @@ function xmldb_totara_plan_install() {
     $DB->insert_record('dp_priority_scale_value', $psv);
 
     $psv = new stdClass();
-    $psv->name = 'Medium';
+    $psv->name = get_string('defaultscalevaluemedium', 'totara_plan');
     $psv->priorityscaleid = $psid;
     $psv->sortorder = 2;
     $psv->timemodified = time();
@@ -54,7 +54,7 @@ function xmldb_totara_plan_install() {
     $DB->insert_record('dp_priority_scale_value', $psv);
 
     $psv = new stdClass();
-    $psv->name = 'Low';
+    $psv->name = get_string('defaultscalevaluelow', 'totara_plan');
     $psv->priorityscaleid = $psid;
     $psv->sortorder = 3;
     $psv->timemodified = time();
@@ -68,7 +68,8 @@ function xmldb_totara_plan_install() {
 
     /*default objective scale*/
     $os = new stdClass();
-    $os->name = 'Completed, In Progress, Not Started';
+    $os->name = get_string('defaultobjectivescalename', 'totara_plan');
+    $os->description = get_string('defaultobjectivescaledescription', 'totara_plan');
     $os->timemodified = time();
     $os->usermodified = 0;
     $os->sortorder = 1;
@@ -76,7 +77,7 @@ function xmldb_totara_plan_install() {
 
     // Add scale values
     $osv = new stdClass();
-    $osv->name = 'Completed';
+    $osv->name = get_string('defaultscalevaluecompleted', 'totara_plan');
     $osv->objscaleid = $osid;
     $osv->achieved = 1;
     $osv->sortorder = 1;
@@ -85,7 +86,7 @@ function xmldb_totara_plan_install() {
     $DB->insert_record('dp_objective_scale_value', $osv);
 
     $osv = new stdClass();
-    $osv->name = 'In Progress';
+    $osv->name = get_string('defaultscalevalueinprogress', 'totara_plan');
     $osv->objscaleid = $osid;
     $osv->achieved = 0;
     $osv->sortorder = 2;
@@ -94,7 +95,7 @@ function xmldb_totara_plan_install() {
     $DB->insert_record('dp_objective_scale_value', $osv);
 
     $osv = new stdClass();
-    $osv->name = 'Not Started';
+    $osv->name = get_string('defaultscalevaluenotstarted', 'totara_plan');
     $osv->achieved = 0;
     $osv->objscaleid = $osid;
     $osv->sortorder = 3;
