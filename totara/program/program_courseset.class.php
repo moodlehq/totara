@@ -1081,7 +1081,7 @@ class multi_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'timeallowednum', $this->timeallowednum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
-            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
@@ -2130,7 +2130,7 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'timeallowednum', $this->timeallowednum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
-            $mform->addRule($prefix.'timeallowednum', get_string('error:timeallowednum_nonzero', 'totara_program'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
@@ -2153,7 +2153,7 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'recurrencetimenum', $this->recurrencetimenum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'recurrencetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurrencetimenum', get_string('error:recurrence_nonzero', 'totara_program'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'recurrencetimenum', get_string('required'), 'required', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurrencetimeperiod', '', $timeallowanceoptions);
@@ -2176,11 +2176,11 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'recurcreatetimenum', $this->recurcreatetimenum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'recurcreatetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurcreatetimenum', get_string('error:coursecreationrepeat_nonzero', 'totara_program'), 'nonzero', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurcreatetimeperiod', '', $timeallowanceoptions);
             $mform->setType($prefix.'recurcreatetimeperiod', PARAM_INT);
+            $mform->addRule($prefix.'recurcreatetimeperiod', get_string('required'), 'required', null, 'server');
 
             $template_values['%'.$prefix.'recurcreatetimenum%'] = array('name' => $prefix.'recurcreatetimenum', 'value' => null);
             $template_values['%'.$prefix.'recurcreatetimeperiod%'] = array('name' => $prefix.'recurcreatetimeperiod', 'value' => null);

@@ -146,7 +146,7 @@ class program_content_edit_form extends moodleform {
 
         foreach ($data as $elementname=>$elementvalue) {
 
-            // check for time allowance issues
+            // check for negative integer issues
             if (preg_match('/[0-9]timeallowednum/', $elementname)) {
                 $timeallowednum = $elementvalue;
                 if ($timeallowednum <= 0) {
@@ -154,6 +154,19 @@ class program_content_edit_form extends moodleform {
                 }
             }
 
+            if (preg_match('/[0-9]recurrencetimenum/', $elementname)) {
+                $timeallowednum = $elementvalue;
+                if ($timeallowednum <= 0) {
+                    $errors[$elementname] = get_string('error:recurrence_nonzero', 'totara_program');
+                }
+            }
+
+            if (preg_match('/[0-9]recurcreatetimenum/', $elementname)) {
+                $timeallowednum = $elementvalue;
+                if ($timeallowednum <= 0) {
+                    $errors[$elementname] = get_string('error:coursecreationrepeat_nonzero', 'totara_program');
+                }
+            }
             // check for course sets with no courses
             if (preg_match('/[0-9]courses/', $elementname)) {
                 $courses = $elementvalue;
@@ -164,4 +177,5 @@ class program_content_edit_form extends moodleform {
         }
         return $errors;
     }
+
 }
