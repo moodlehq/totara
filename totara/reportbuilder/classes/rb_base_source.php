@@ -1990,7 +1990,7 @@ abstract class rb_base_source {
             $column_options = array('joins' => $joinname);
             // if profile field isn't available to everyone require
             // a capability to display the column
-            if ($record->visible != PROFILE_VISIBLE_ALL) {
+            if ($cf_prefix == 'user' && $record->visible != PROFILE_VISIBLE_ALL) {
                 $column_options['capability'] = 'moodle/user:update';
             }
             $filtertype = 'text'; // default filter type
