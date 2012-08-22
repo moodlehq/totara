@@ -196,7 +196,7 @@ echo html_writer::tag('p', format_text($objective->description, FORMAT_HTML));
 
 // Display warning if scale is in use
 if ($scale_used) {
-    echo $OUTPUT->container(get_string('objectivescaleinuse', 'totara_plan'), 'notifysuccess');
+    echo $OUTPUT->container(get_string('objectivescaleinuse', 'totara_plan'), 'notifymessage');
 }
 
 // Display warning if proficient values don't make sense

@@ -62,7 +62,7 @@ class dp_objective_scale_value_edit_form extends moodleform {
         $mform->setType('numericscore', PARAM_NUMBER);
         $mform->addRule('numericscore', null, 'numeric', null, 'client');
 
-        $note = (dp_objective_scale_is_used($scaleid)) ? html_writer::tag('span', get_string('achievedvaluefrozen', 'totara_plan'), array('class' => "notifyproblem")) : '';
+        $note = (dp_objective_scale_is_used($scaleid)) ? html_writer::tag('div', get_string('achievedvaluefrozen', 'totara_plan'), array('class' => 'notifymessage')) : '';
         $mform->addElement('advcheckbox', 'achieved', get_string('achieved', 'totara_plan'), $note);
         $mform->addHelpButton('achieved', 'objectivescalevalueachieved', 'totara_plan', '', true);
         if (dp_objective_scale_is_used($scaleid)) {

@@ -133,7 +133,7 @@ if ($id == 0) { // Add
     $heading = get_string('priorityscalecreate', 'totara_plan');
 } else {    //Edit
     $PAGE->navbar->add(get_string('editpriority', 'totara_plan', format_string($priority->name)));
-    $heading = get_string('editpriority', 'totara_plan');
+    $heading = get_string('editpriority', 'totara_plan', format_string($priority->name));
 }
 
 echo $OUTPUT->header();

@@ -197,7 +197,7 @@ echo html_writer::tag('p', format_text($priority->description, FORMAT_HTML));
 
 // Display warning if scale is in use
 if ($scale_used) {
-    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifysuccess');
+    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifymessage');
 }
 
 // Display priority scale values

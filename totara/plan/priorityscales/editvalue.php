@@ -136,7 +136,7 @@ if ($id == 0) {
 
 // Display warning if scale is in use
 if ($scale_used) {
-    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifysuccess');
+    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifymessage');
 }
 
 $valueform->display();
