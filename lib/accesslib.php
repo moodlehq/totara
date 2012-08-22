@@ -1658,7 +1658,7 @@ function role_assign($roleid, $userid, $contextid, $component = '', $itemid = 0,
  * This function makes bulk role-assignments (a role for users in a particular context)
  *
  * @param int $roleid the role of the id
- * @param array $userids containing objects with userids
+ * @param array $userids containing objects with userids OR just array of userids
  * @param int|context $contextid id of the context
  * @param string $component example 'enrol_ldap', defaults to '' which means manual assignment,
  * @param int $itemid id of enrolment/auth plugin
@@ -1676,6 +1676,15 @@ function role_assign_bulk($roleid, $userids, $contextid, $component = '', $itemi
     if (empty($userids)) {
         throw new coding_exception('Invalid call to role_bulk_assign(), userids can not be empty');
     }
+    $userids = array_map(function($item) {
+        if (is_object($item)) {
+            return $item->userid;
+        } elseif (is_int($item)) {
+            return $item;
+        } else {
+            return 0;
+        }
+    }, $userids);
 
     if ($itemid) {
         if (strpos($component, '_') === false) {
@@ -1702,8 +1711,7 @@ function role_assign_bulk($roleid, $userids, $contextid, $component = '', $itemi
     $component = ($component === '') ? $DB->sql_empty() : $component;
 
     // remove duplicates
-    list($sqlin, $sqlinparams) = $DB->get_in_or_equal(array_map(function($item) { return $item->userid; },
-        $userids));
+    list($sqlin, $sqlinparams) = $DB->get_in_or_equal($userids);
     $sql = "SELECT u.id AS userid
         FROM {user} u
         LEFT JOIN {role_assignments} ra ON u.id = ra.userid

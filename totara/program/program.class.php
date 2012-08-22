@@ -260,6 +260,10 @@ class program {
         if ($prog_assignments) {
             foreach ($prog_assignments as $assign) {
                 $active_assignments[] = $assign->id;
+                $newassignusers = array();
+                $newassigncount = 0;
+                $fassignusers = array();
+                $fassigncount = 0;
 
                 // Create instance of assignment type so we can call functions on it
                 $assignment_class = new $ASSIGNMENT_CATEGORY_CLASSNAMES[$assign->assignmenttype]();
@@ -314,15 +318,37 @@ class program {
                         if ($assign->completionevent == COMPLETION_EVENT_FIRST_LOGIN && $timedue === false) {
                             // this means that the user hasn't logged in yet
                             // create a future assignment so we can assign them when they do login
-                            $this->create_future_assignment($this->id, $user->id, $assign->id);
+                            $fassigncount++;
+                            $fassignusers[$user->id] = $user->id;
+                            if ($fassigncount == BATCH_INSERT_MAX_ROW_COUNT) {
+                                $this->create_future_assignments_bulk($this->id, $fassignusers, $assign->id);
+                                $fassigncount = 0;
+                                $fassignusers = array();
+                            }
                             continue;
                         }
 
                         $exceptions = $this->update_exceptions($user->id, $assign, $timedue);
 
                         // No record in user_assignment we need to make one
-                        $this->assign_learner($user->id, $timedue, $assign, $exceptions);
+                        $newassigncount++;
+                        $newassignusers[$user->id] = array('timedue' => $timedue, 'exceptions' => $exceptions);
+                        if ($newassigncount == BATCH_INSERT_MAX_ROW_COUNT) {
+                            $this->assign_learners_bulk($newassignusers, $assign);
+                            $newassigncount = 0;
+                            $newassignusers = array();
+                        }
                     }
+                }
+                if (!empty($fassignusers)) {
+                    // bulk assign remaining future users
+                    $this->create_future_assignments_bulk($this->id, $fassignusers, $assign->id);
+                    unset($fassigncount, $fassignusers);
+                }
+                if (!empty($newassignusers)) {
+                    // bulk assign remaining users
+                    $this->assign_learners_bulk($newassignusers, $assign);
+                    unset($newassignusers, $newassigncount);
                 }
             }
         }
@@ -355,65 +381,61 @@ class program {
         if (count($active_assignments) > 0) {
             list($usql, $params) = $DB->get_in_or_equal($active_assignments, SQL_PARAMS_QM, '', false);
             $params[] = $this->id;
-            $redundant_user_assignments = $DB->get_records_sql("
-                SELECT * FROM {prog_user_assignment}
-                WHERE
-                    assignmentid $usql
-                    AND programid = ?", $params
-            );
 
-            if ($redundant_user_assignments) {
-                $redundant_ids = array_keys($redundant_user_assignments);
-                list($usql, $params) = $DB->get_in_or_equal($redundant_ids);
-                $DB->delete_records_select('prog_user_assignment', "id $usql", $params);
-            }
+            $DB->delete_records_select('prog_user_assignment', "assignmentid {$usql} AND programid = ?", $params);
 
             // delete any future_user_assignment records too that are related to
             // assignment types that have been deleted too
-            list($usql, $params) = $DB->get_in_or_equal($active_assignments, SQL_PARAMS_QM, '', false);
-            $params[] = $this->id;
-            $redundant_future_user_assignments = $DB->get_records_sql("
-                SELECT * FROM {prog_future_user_assignment}
-                WHERE
-                    assignmentid {$usql}
-                    AND programid = ?", $params
-            );
-            if ($redundant_future_user_assignments) {
-                $redundant_future_ids = array_keys($redundant_future_user_assignments);
-                list($usql, $params) = $DB->get_in_or_equal($redundant_future_ids);
-                $DB->delete_records_select('prog_future_user_assignment', "id $usql", $params);
-            }
+            $DB->delete_records_select('prog_future_user_assignment', "assignmentid {$usql} AND programid = ?", $params);
         }
 
         return true;
     }
 
     /**
-     * Create a record in the future assignment table
+     * Bulk create records in the future assignment table
      *
      * Used to track an assignment that cannot be made yet, but will be added
      * at some later time (e.g. first login assignments which will be applied the
      * first time the user logs in).
      *
      * @param integer $programid ID of the program
-     * @param integer $userid ID of the user being assigned
+     * @param integer $userids IDs of the user being assigned
      * @param integer $assignment ID of the assignment (record in prog_assignment table)
      *
      * @return boolean True if the future assignment is saved successfully or already exists
      */
-    function create_future_assignment($programid, $userid, $assignmentid) {
+    function create_future_assignments_bulk($programid, $userids, $assignmentid) {
         global $DB;
-        if ($DB->record_exists('prog_future_user_assignment', array('programid' => $programid, 'userid' => $userid, 'assignmentid' => $assignmentid))) {
-            // future assignment already exists
+
+        list($sqlin, $sqlparams) = $DB->get_in_or_equal($userids);
+        $sqlparams[] = $programid;
+        $sqlparams[] = $assignmentid;
+        $sql = "SELECT u.id
+            FROM {user} u
+            WHERE u.id {$sqlin}
+            AND u.id NOT IN (
+                SELECT userid
+                FROM {prog_future_user_assignment}
+                WHERE programid = ?
+                AND assignmentid = ?
+            )";
+        $users = $DB->get_records_sql($sql, $sqlparams);
+        if (empty($users)) {
             return true;
         }
 
-        $assignment = new stdClass();
-        $assignment->programid = $programid;
-        $assignment->userid = $userid;
-        $assignment->assignmentid = $assignmentid;
+        $fassignments = array();
+        foreach ($users as $user) {
+            $assignment = new stdClass();
+            $assignment->programid = $programid;
+            $assignment->userid = $user->id;
+            $assignment->assignmentid = $assignmentid;
 
-        return $DB->insert_record('prog_future_user_assignment', $assignment);
+            $fassignments[] = $assignment;
+        }
+
+        return $DB->insert_records_via_batch('prog_future_user_assignment', $fassignments);
     }
 
     /**
@@ -433,61 +455,71 @@ class program {
      * @param bool $exceptions True if there are exceptions for this learner
      * @return bool
      */
-    public function assign_learner($userid, $timedue, $assignment_record, $exceptions=false) {
+    public function assign_learners_bulk($users, $assignment_record) {
         global $DB;
+
+        if (empty($users)) {
+            return true;
+        }
 
         $now = time();
 
-        // insert or update a completion record to store the status of the user's progress on the program
-        // create record if none exists
-        if ($completion = $DB->get_record('prog_completion', array('programid' => $this->id, 'userid' => $userid, 'coursesetid' => 0))) {
-            if ($exceptions == false) {
-                // This assignment didn't generate exceptions
-                // update completion date with new one
-                $pc = new stdClass();
-                $pc->id = $completion->id;
-                $pc->timedue = $timedue;
-                $DB->update_record('prog_completion', $pc);
-            }
-        } else {
+        // insert a completion record to store the status of the user's progress on the program
+        // TO DO: eventually we need to have multiple completion records, linked to the assignment that made them
+
+        // remove any existing records first - the latest assignment completion date should trump previous ones
+        list($insql, $params) = $DB->get_in_or_equal(array_keys($users));
+        $DB->delete_records_select('prog_completion', "userid $insql AND programid = ? AND coursesetid = ?", array_merge($params, array($this->id, 0)));
+
+        $prog_completions = array();
+        foreach ($users as $userid => $assigndata) {
             $pc = new stdClass();
             $pc->programid = $this->id;
             $pc->userid = $userid;
             $pc->coursesetid = 0;
             $pc->status = STATUS_PROGRAM_INCOMPLETE;
             $pc->timestarted = $now;
-            $pc->timedue = $timedue;
-            $DB->insert_record('prog_completion', $pc);
+            $pc->timedue = $assigndata['timedue'];
+            $prog_completions[] = $pc;
         }
+        $DB->insert_records_via_batch('prog_completion', $prog_completions);
+        unset($prog_completions);
 
         // insert a completion record to store the time due for the
         // shortest course set in the first group of course sets in the program
         $courseset_groups = $this->content->get_courseset_groups();
-        if (count($courseset_groups)>0) {
-            $this->content->set_courseset_group_timedue($courseset_groups[0], $userid);
+        if (count($courseset_groups) > 0) {
+            $this->content->set_courseset_group_timedue_bulk($courseset_groups[0], array_keys($users));
         }
 
         // insert or update a user assignment record to store the details of how this user was assigned to the program
-        if (!$DB->get_record('prog_user_assignment', array('programid' => $this->id, 'userid' => $userid, 'assignmentid' => $assignment_record->id))) {
+        $user_assignments = array();
+        foreach ($users as $userid => $assigndata) {
             $ua = new stdClass();
             $ua->programid = $this->id;
             $ua->userid = $userid;
             $ua->assignmentid = $assignment_record->id;
             $ua->timeassigned = $now;
-            $ua->exceptionstatus = $exceptions ? PROGRAM_EXCEPTION_RAISED : PROGRAM_EXCEPTION_NONE;
-            $DB->insert_record('prog_user_assignment', $ua);
+            $ua->exceptionstatus = $assigndata['exceptions'] ? PROGRAM_EXCEPTION_RAISED : PROGRAM_EXCEPTION_NONE;
+
+            $user_assignments[] = $ua;
         }
+        $DB->insert_records_via_batch('prog_user_assignment', $user_assignments);
+        unset($user_assignments);
 
         // Assign the student role to the user in the program context
         // This is what identifies the program as required learning.
-        role_assign($this->studentroleid, $userid, $this->context->id);
+        role_assign_bulk($this->studentroleid, array_keys($users), $this->context->id);
 
-        if (!$exceptions) {
-            // trigger this event for any listening handlers to catch
-            $eventdata = new stdClass();
-            $eventdata->programid = $this->id;
-            $eventdata->userid = $userid;
-            events_trigger('program_assigned', $eventdata);
+        foreach ($users as $userid => $assigndata) {
+            // TODO: implement a bulk message queue for program_assigned_bulk?
+            if (!$assigndata['exceptions']) {
+                // trigger this event for any listening handlers to catch
+                $eventdata = new stdClass();
+                $eventdata->programid = $this->id;
+                $eventdata->userid = $userid;
+                events_trigger('program_assigned', $eventdata);
+            }
         }
 
         return true;

@@ -394,7 +394,7 @@ abstract class prog_assignment_category {
     abstract function get_affected_users($item, $userid=0);
 
     /**
-     * Retrives an array of all the users affected by an assignment based on the
+     * Retrieves an array of all the users affected by an assignment based on the
      * assignment record
      *
      * @param object $assignment The db record from 'prog_assignment' for this assignment

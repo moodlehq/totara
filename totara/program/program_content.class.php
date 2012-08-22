@@ -636,7 +636,7 @@ class prog_content {
      */
     public function set_courseset_group_timedue($courseset_group, $userid) {
         global $DB;
-        if (count($courseset_group)<1) {
+        if (count($courseset_group) < 1) {
             return;
         }
 
@@ -666,6 +666,63 @@ class prog_content {
 
         return;
 
+    }
+
+    /**
+     * Receives an array containing the course sets in a course group and determines
+     * the time allowance for the group based on the shortest time allowance of
+     * all the course sets. Records are then added to the prog_completion table
+     * setting the timedue property as the current time + time allowance.
+     *
+     * This date will be used to determine when to issue course set due reminders.
+     *
+     * @param array $courseset_group
+     * @param array $userids
+     * @return void
+     */
+    public function set_courseset_group_timedue_bulk($courseset_group, $userids) {
+        global $DB;
+
+        if (count($courseset_group) < 1) {
+            return;
+        }
+
+        $now = time();
+        $courseset_selected = $courseset_group[0];
+
+        // select the course set with the shortest time allowance
+        foreach ($courseset_group as $courseset) {
+            $courseset_selected = ($courseset->timeallowed < $courseset_selected->timeallowed) ? $courseset : $courseset_selected;
+        }
+
+        $timeallowance = $courseset_selected->timeallowed;
+
+        // insert a record to set the time that this course set will be due
+        if ($timeallowance > 0) {
+            // first get a list of users who already have a record
+            $existing_records = $DB->get_fieldset_select('prog_completion', 'userid',
+                "programid = ? AND coursesetid = ?", array($this->programid, $courseset_selected->id));
+
+            $prog_completions = array();
+            foreach ($userids as $userid) {
+                // don't add if they already have a record
+                if (in_array($userid, $existing_records)) {
+                    continue;
+                }
+                $cc = new stdClass();
+                $cc->programid = $this->programid;
+                $cc->userid = $userid;
+                $cc->coursesetid = $courseset_selected->id;
+                $cc->status = STATUS_COURSESET_INCOMPLETE;
+                $cc->timestarted = $now;
+                $cc->timedue = $now + $timeallowance;
+
+                $prog_completions[] = $cc;
+            }
+            $DB->insert_records_via_batch('prog_completion', $prog_completions);
+        }
+
+        return;
     }
 
     public function get_content_form_template(&$mform, &$template_values, $coursesets=null, $updateform=true) {
