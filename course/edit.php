@@ -59,7 +59,7 @@ if ($id) { // editing course
     }
     require_login($course);
     $category = $DB->get_record('course_categories', array('id'=>$course->category), '*', MUST_EXIST);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+    $coursecontext = context_course::instance($course->id);
     require_capability('moodle/course:update', $coursecontext);
     $PAGE->url->param('id',$id);
 

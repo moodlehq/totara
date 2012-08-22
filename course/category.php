@@ -437,6 +437,7 @@
                 'c.id,c.sortorder,c.shortname,c.fullname,c.summary,c.visible, c.icon',
                 $totalcount, $page*$perpage, $perpage);
         $numcourses = count($courses);
+        $abletomovecourses = has_capability('moodle/category:manage', $context);
 
         if (!$courses) {
             if (empty($subcategorieswereshown)) {
@@ -470,14 +471,15 @@
             echo '<th class="header" scope="col">'.$strcourses.'</th>';
             if ($isediting) {
                 echo '<th class="header" scope="col">'.$stredit.'</th>';
-                echo '<th class="header" scope="col">'.$strselect.'</th>';
+                if ($abletomovecourses) {
+                    echo '<th class="header" scope="col">'.$strselect.'</th>';
+                }
             } else {
                 echo '<th class="header" scope="col">&nbsp;</th>';
             }
             echo '</tr>';
 
             $count = 0;
-            $abletomovecourses = false;  // for now
 
             // Checking if we are at the first or at the last page, to allow courses to
             // be moved up and down beyond the paging border
@@ -551,7 +553,7 @@
                                 new pix_icon('t/restore', $strrestore));
                     }
 
-                    if (has_capability('moodle/category:manage', $context)) {
+                    if ($canmanagesitecourses || $abletomovecourses) {
                         if ($up) {
                             echo $OUTPUT->action_icon(new moodle_url('/course/category.php',
                                     array('id' => $category->id, 'page' => $page, 'perpage' => $perpage,
@@ -565,13 +567,16 @@
                                             'movedown' => $acourse->id, 'sesskey' => sesskey())),
                                     new pix_icon('t/down', $strmovedown));
                         }
-                        $abletomovecourses = true;
                     }
 
                     echo '</td>';
-                    echo '<td align="center">';
-                    echo '<input type="checkbox" name="c'.$acourse->id.'" />';
-                    echo '</td>';
+
+                    if ($abletomovecourses) {
+                        echo '<td align="center">';
+                        echo '<input type="checkbox" name="c'.$acourse->id.'" />';
+                        echo '</td>';
+                    }
+
                 } else {
                     echo '<td align="right">';
                     // print enrol info
