@@ -169,6 +169,7 @@ $string['managerxnotexist'] = 'manager {$a} does not exist';
 $string['nosourceforelement'] = 'no source set for element';
 $string['nosourceconfigured'] = 'No source configured';
 $string['duplicateuserswithidnumberx'] = 'Duplicate users with idnumber {$a->idnumber}';
+$string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
 
 
 ///
@@ -179,6 +180,7 @@ $string['datetime'] = 'Date/Time';
 $string['logtype'] = 'Log type';
 $string['error'] = 'Error';
 $string['info'] = 'Info';
+$string['warn'] = 'Warning';
 $string['action'] = 'Action';
 $string['info'] = 'Info';
 ?>

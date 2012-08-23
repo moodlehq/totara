@@ -247,6 +247,19 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             return false;
         }
 
+        /// Check duplicate idnumbers and warn
+        $sql = "SELECT idnumber
+            FROM {{$synctable}}
+            GROUP BY idnumber
+                HAVING COUNT(*) > 1";
+        $rs = $DB->get_recordset_sql($sql);
+        if ($rs->valid()) {
+            foreach ($rs as $r) {
+                $this->addlog(get_string('duplicateidnumberx', 'tool_totara_sync', $r->idnumber), 'warn', 'checksanity');
+            }
+            $rs->close();
+        }
+
         /// Check parents
         $sql = "SELECT DISTINCT s.parentidnumber
                   FROM {{$synctable}} s
