@@ -912,16 +912,6 @@ function totara_reset_mymoodle_blocks() {
     // build new block array
     $blocks = array(
         (object)array(
-            'blockname'=> 'totara_quicklinks',
-            'parentcontextid' => $SITE->id,
-            'showinsubcontexts' => 0,
-            'pagetypepattern' => 'my-index',
-            'subpagepattern' => $mypageid,
-            'defaultweight' => 1,
-            'configdata' => '',
-            'defaultregion' => 'side-post'
-        ),
-        (object)array(
             'blockname'=> 'totara_tasks',
             'parentcontextid' => $SITE->id,
             'showinsubcontexts' => 0,
@@ -956,6 +946,26 @@ function totara_reset_mymoodle_blocks() {
     // insert blocks
     foreach ($blocks as $b) {
         $DB->insert_record('block_instances', $b);
+    }
+
+    //A separate set up for a quicklinks block as it needs additional data to be added on install
+    $blockinstance = new stdClass();
+    $blockinstance->blockname = 'totara_quicklinks';
+    $blockinstance->parentcontextid = SITEID;
+    $blockinstance->showinsubcontexts = 0;
+    $blockinstance->pagetypepattern = 'my-index';
+    $blockinstance->subpagepattern = $mypageid;
+    $blockinstance->defaultregion = 'side-post';
+    $blockinstance->defaultweight = 1;
+    $blockinstance->configdata = '';
+    $blockinstance->id = $DB->insert_record('block_instances', $blockinstance);
+
+    // Ensure the block context is created.
+    context_block::instance($blockinstance->id);
+
+    // If the new instance was created, allow it to do additional setup
+    if ($block = block_instance('totara_quicklinks', $blockinstance)) {
+        $block->instance_create();
     }
 
     return 1;
