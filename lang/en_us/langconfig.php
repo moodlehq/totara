@@ -1,10 +1,11 @@
 <?php
 // langconfig.php - created with Totara langimport script version 1.1
 
+$string['decsep'] = '.';
 $string['firstdayofweek'] = '0';
 $string['iso6391'] = 'en';
 $string['iso6392'] = 'eng';
-$string['labelsep'] = ': ';
+$string['labelsep'] = ':';
 $string['listsep'] = ',';
 $string['locale'] = 'en_US.UTF-8';
 $string['oldcharset'] = 'ISO-8859-1';
@@ -29,7 +30,7 @@ $string['strftimerecentfull'] = '%a, %b %d, %Y, %I:%M %p';
 $string['strftimetime'] = '%I:%M %p';
 $string['thisdirection'] = 'ltr';
 $string['thisdirectionvertical'] = 'btt';
-$string['thislanguage'] = 'English';
-$string['thislanguageint'] = 'English (US)';
-
+$string['thislanguage'] = 'English - United States';
+$string['thislanguageint'] = 'English - United States';
+$string['thousandssep'] = ',';
 ?>

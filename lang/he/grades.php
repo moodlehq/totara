@@ -1,0 +1,658 @@
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Strings for component 'grades', language 'he', branch 'MOODLE_22_STABLE'
+ *
+ * @package   grades
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['activities'] = 'פעילויות';
+$string['addcategory'] = 'הוספת קטגוריה';
+$string['addcategoryerror'] = 'לא היה ניתן להוסיף קטגוריה.';
+$string['addexceptionerror'] = 'חלה שגיאה במהלך הוספת יוצא מן הכלל ל-userid:gradeitem';
+$string['addfeedback'] = 'הוספת משוב';
+$string['addgradeletter'] = 'הוספת אות לציון';
+$string['addidnumbers'] = 'הוספת מספרי זיהוי (ID)';
+$string['additem'] = 'הוספת פריט ציון';
+$string['addoutcome'] = 'הוספת מדד־הערכה';
+$string['addoutcomeitem'] = 'הוספת פריט מדדי־הערכה';
+$string['addscale'] = 'הוספת מדרגת הערכה';
+$string['aggregateextracreditmean'] = 'ממוצע ציונים (עם נקודות זכות נוספות)';
+$string['aggregatemax'] = 'הציון הגבוה ביותר';
+$string['aggregatemean'] = 'ממוצע הציונים';
+$string['aggregatemedian'] = 'חציון הציונים';
+$string['aggregatemin'] = 'הציון הנמוך ביותר';
+$string['aggregatemode'] = 'הציון השכיח';
+$string['aggregateonlygraded'] = 'צבירת ציונים שאינם חסרים (בלבד)';
+$string['aggregateonlygraded_help'] = '<p>ציונים שאינם קיימים מיוחסים כמיזעריים או כאינם נחשבים בצבירה.</p>';
+$string['aggregateoutcomes'] = 'כלול מדדי־הערכה שבצבירה';
+$string['aggregateoutcomes_help'] = '<p>הכלל תוצאות בצבירה עלולה שלא להוביל לציון המקיף שביקשת, לכן ישנה האפשרות להכליל זאת או לא להכליל. </p>';
+$string['aggregatesonly'] = 'רק צבירות';
+$string['aggregatesubcats'] = 'צבירה הכוללת תתי-קטגוריות';
+$string['aggregatesubcats_help'] = '<p>הצבירה בד"כ נעשת עם הילדים הראשוניים, ניתן גם לצבור ציונים בכל תתי הקטגוריות למעט ציונים נצברים אחרים.</p>';
+$string['aggregatesum'] = 'סכום הציונים';
+$string['aggregateweightedmean'] = 'ממוצע ציונים משוקלל';
+$string['aggregateweightedmean2'] = 'ממוצע ציונים משוקלל פשוט';
+$string['aggregation'] = 'צבירה';
+$string['aggregationcoef'] = 'מקדם הצבירה';
+$string['aggregationcoefextra'] = 'נקודת זכות נוספת';
+$string['aggregationcoefextra_help'] = '<h2>עבור סכום צבירת הציונים</h2>
+<p>כאשר צבירת "סיכום הציונים" בשימוש, פריט ציון יכול להתנהג כ"קרדיט נוסף"  עבור הקטגוריה. כלומר, הציון המירבי של פריט הציון לא התווסף לסה"כ הציון המירבי של הקטגוריה, אך ציון הפריט כן התווסף.. דוגמא לכך:</p>
+
+<ul>
+    <li>פריט 1 בטווח ציונים 0-100</li>
+    <li>פריט 2 בטווח ציונים 0-75</li>
+    <li>פריט 1 משתמש ב-"קרדיט נוסף" ופריט 2 לא משתמש בו.</li>
+    <li>שני הפריטים שייכים לקטגוריה 1 , אשר מוגדרת באסטרטגית הצבירה כ"סכום ציונים".</li>
+    <li>טווח הציונים של קטגוריה  יהיה 0-751</li>
+    <li>סטודנט מקבל ציון 20 בפריט 1 ו-70 בפריט 2.</li>
+    <li>סה"כ ציון הסטודנט לקטגוריה 1 יהיה 75/75 (20+70) = 90 אך פריט 1 מתנהד כ "קרדיט נוסף" לכן הדבר מקנה לו את המקסימום לסה"כ.</li>
+</ul>
+<h2>עבור ממוצע ציונים משוקלל (קרדיט נוסף)</h2>
+<p>ערך הגדול מ-0 מתייחס לציונים בפריט ציון זה כ"קרדיט נוסף"במהלך השקלול (צבירה). המספר הוא מקדם אשר באמצעותו הציון יוכפל לפני שהוא התווסף לסכום כל הציונים, אך הפריט עצמו לא  יספר בחילוק, לדוגמא:</p>
+
+<ul>
+    <li>פריט 1 בטווח ציונים 0-100 וה"קרדיט הנוסף " שלו הוא הערך 2.</li>
+    <li>פריט 2 בטווח ציונים 0-100 וה"קרדיט הנוסף " שלו הוא הערך 0.0000</li>
+    <li>פריט 3 בטווח ציונים 0-100 וה"קרדיט הנוסף " שלו הוא הערך 0.0000</li>
+    <li>כל שלוש הפריטים שייכים לקטגוריה 1 אשר אסטרטריית הצבירה שלה מוגדרת כ"ממוצע הציונים (עם קרדיט נוסף)". </li>
+    <li>סטודנט מקבל ציון 20 בפריט 1 , 40 בפריט 2 ו-70 בפריט 3</li>
+    <li>סה"כ ציון הסטודנט עבור קטגוריה 1 יהיה: 95/100 מפני ש 20*2 + (40 + 70)/2 = 95</li>
+</ul>';
+$string['aggregationcoefextrasum'] = 'סכום קרדיט נוסף';
+$string['aggregationcoefextrasum_help'] = '<p>כאשר אסטרטגיית צבירת "סכום הציונים" מתבצעת, פריט ציון יכול לשמש כקרדיט נוסף עבור הקטגוריה. כך שהציון הגדול בפריט לא התווסף לסה"כ הציון המירבי בקטגוריה, אך ציון הפריט כן יתווסף. דוגמא:</p>
+
+<ul>
+    <li>פריט 1 בטווח הציונים 0-100</li>
+    <li>פריט 2 בטווח הציונים 0-75</li>
+    <li>לפריט 1 סומן ואופשר "חוק הקרדיט הנוסף", פריט 2 לא סומן (לא אופשר)</li>
+    <li>שני הפריטים שייכים לקטגוריה  1, אשר משויכת ל"סכום הציונים" כמו אסטרטגיית הצבירה שלה.</li>
+    <li>סה"כ  הציון של קטגוריה 1 יהיה בין 0-75</li>
+    <li>סטודנט קיבל ציון 20 בפריט 1 ו70 בפריט 2</li>
+    <li>סה"כ ציון לסטודנט זה בקטגוריה 1 יהיה:  75/75 (20+70=90 אך פריט 1 מתנהג כמו "קרדיט נוסף" לכן הציון הסופי סה"כ יגיע למקסימום שלו)</li>
+</ul>';
+$string['aggregationcoefextraweight'] = 'משקל קרדיט נוסף';
+$string['aggregationcoefextraweight_help'] = '<p>ערך גדול מ-0 מתייחס לציון כקרדיט נוסף בזמן הצבירה. המספר הוא מקדם אשר באמצעותו ערך הציון יוכפל לפני שהוא מתווסף לסכום כל הציונים, אך הפריט עצמו לא יספר בחילוק. לדוגמא:</p>
+
+<ul>
+    <li>פריט 1 בטווח הציונים 0-100 וה"קרדיט הנוסף" הוא 2</li>
+    <li>פריט 2 בטווח הציונים 0-100 וה"קרדיט הנוסף" הוא 0.0000</li>
+    <li>פריט 3 בטווח הציונים 0-100 וה"קרדיט הנוסף" הוא 0.0000</li>
+    <li>fk שלוש הפריטים שייכים לקטגוריה 1 , אשר משתייכת לממוצע הציונים (עם קרדיטים נוספים) כמו אסטרטגיית הצבירה שלה </li>
+    <li>סטודנט מקבל ציון 20 בפריט 1, 40 בפריט 2 ו70 בפריט 3</li>
+    <li>סה"כ ציון הסטודנט עבור קטגוריה 1 יהיה 95/100 מפני ש 20*2 +(40+70)/2 = 95</li>
+</ul>';
+$string['aggregationcoefweight'] = 'משקל פריט';
+$string['aggregationcoefweight_help'] = '<p>משקל מתייחס לכל הציונים בפריט ציון זה במהלך צבירה עם פרטי ציון אחרים.</p>';
+$string['aggregationposition'] = 'מיקום הצבירה';
+$string['aggregationposition_help'] = '<p>מגדיר את מיקום סה"כ עמודת הצבירה בדוח הקשור לציונים אשר בצבירה.</p>';
+$string['aggregationsvisible'] = 'זמינות סוגי צבירה';
+$string['aggregationsvisiblehelp'] = 'בחר את כל סוגיה הצבירה אשר זמינים. החזק את מקש ה CTRL בכדי לבחור מספר פריטים.';
+$string['allgrades'] = 'כל הציונים לפי קטגוריה';
+$string['allstudents'] = 'כל הסטודנטים';
+$string['allusers'] = 'כל המשתמשים';
+$string['autosort'] = 'מיין אוטומטית';
+$string['availableidnumbers'] = 'זמינות מספרי זיהוי';
+$string['average'] = 'ממוצע';
+$string['averagesdecimalpoints'] = 'ספרות אחרי הנקודה בעמודות הממוצעים';
+$string['averagesdecimalpoints_help'] = '<p>מספר הספרות אחרי הנקודה להצגה עבור כל ממוצע (לקבוצה או לכול), למטה בעמודת הציונים. אפשר לשנות זאת לכל פריט מתן ציון (דירוג).</p>';
+$string['averagesdisplaytype'] = 'סוג ההצגה של ממוצעי העמודות';
+$string['averagesdisplaytype_help'] = '<p>מציין איך להציג את הממוצע עבור כל עמודה בדוח הציונים. ערך ברירת המחדל המומלץ מורש, אשר יבדוק את סוג ההצגה של כל עמודה, ואם כזה איננו מוגדר במפורש, יחזור לברירת המחדל הכללית יותר של סוג הצגת הציון. אם סוגי הצגה אחרים נבחרו, הם יתעלמו מההגדרות האינדיבידואליות עבור כל עמודה, וישתמשו בצורה בלעדית בסוג הנבחר.</p>';
+$string['backupwithoutgradebook'] = 'הגיבוי איננו מכיל את תצורת ספר הציונים';
+$string['badgrade'] = 'הציון שנמסר איננו נאות';
+$string['badlyformattedscale'] = 'אנא הקש רשימת ערכים מופרדת בפסיק (נדרשים לפחות שני פריטים לבחירה)';
+$string['baduser'] = 'המשתמש שצוין איננו נאות';
+$string['bonuspoints'] = 'נקודות בונוס';
+$string['bulkcheckboxes'] = 'תיבות סימון גדולות';
+$string['calculatedgrade'] = 'ציון שחושב';
+$string['calculation'] = 'חישוב';
+$string['calculationadd'] = 'הוספת חישוב';
+$string['calculationedit'] = 'ערוך חישוב';
+$string['calculationsaved'] = 'שמור חישוב';
+$string['calculationview'] = 'צפה בחישוב';
+$string['cannotaccessgroup'] = 'לא ניתן לגשת לציונים מהקבוצה הנבחרת, מצטערים.';
+$string['categories'] = 'קטגוריות חישוב ציונים';
+$string['categoriesanditems'] = 'קטגוריות ופריטים';
+$string['categoriesedit'] = 'עריכת קטגוריות ופריטים';
+$string['category'] = 'קטגוריה';
+$string['categoryedit'] = 'עריכת קטגוריה';
+$string['categoryname'] = 'שם קטגוריה';
+$string['categorytotal'] = 'סך הכל של הקטגוריה';
+$string['categorytotalfull'] = '{$a->category} סך-הכל';
+$string['categorytotalname'] = 'השם הכולל של הקטגוריה';
+$string['changedefaults'] = 'שנה ברירות מחדל';
+$string['changereportdefaults'] = 'שנה את ברירות המחדל של דוח.';
+$string['chooseaction'] = 'בחר פעולה...';
+$string['choosecategory'] = 'בחר בקטגוריה';
+$string['combo'] = 'לשוניות ותפריטים נפתחים';
+$string['compact'] = 'כווץ';
+$string['contract'] = 'כווץ קטגוריה';
+$string['controls'] = 'עדכון מאפייני ציון';
+$string['courseavg'] = 'ממוצע הקורס';
+$string['coursegradecategory'] = 'קטגוריית ציון הקורס';
+$string['coursegradedisplaytype'] = 'סוג הצגת ציון הקורס';
+$string['coursegradedisplayupdated'] = 'סוג הצגת ציון הקורס עודכן';
+$string['coursegradesettings'] = 'הגדרות ציון הקורס';
+$string['coursename'] = 'שם הקורס';
+$string['coursescales'] = 'ניהול מדרגות הערכה';
+$string['coursesettings'] = 'הגדרות ציונים בקורס';
+$string['coursesettingsexplanation'] = 'הגדרות ציונים בקורס קובעות איך גליון הציונים מופיע לכל המשתתפים בקורס';
+$string['coursetotal'] = 'סך הכל של הקורס';
+$string['createcategory'] = 'צור קטגוריה';
+$string['createcategoryerror'] = 'לא ניתן ליצור קטגוריה';
+$string['creatinggradebooksettings'] = 'יוצר הגדרות גיליון ציונים';
+$string['csv'] = 'CSV';
+$string['currentparentaggregation'] = 'צבירת הורה (אב) נוכחית';
+$string['curveto'] = 'נרמל ל-';
+$string['decimalpoints'] = 'מספר ספרות השבר־העשרוני';
+$string['decimalpoints_help'] = '<p>מספר הספרות אחרי הנקודה להצגה עבור כל ממוצע, להגדרה זו אין כל השפעה על חישובי הציון, אשר מתבצעים עם דיוק של 5 ספרות אחרי הנקודה.</p>';
+$string['default'] = 'בררת מחדל';
+$string['defaultprev'] = 'ברירת מחדל ({$a})';
+$string['deletecategory'] = 'מחק קטגוריה';
+$string['disablegradehistory'] = 'היסטוריית ציון מנוטרלת';
+$string['disablegradehistory_help'] = 'מנע את היסטורית מעקב אחר שינויים בציונים אשר מיוחסים לטבלאות. הדבר עשוי להאיץ את פעילות השרת  במעט ולשמר מקום במסד הנתונים.';
+$string['displaylettergrade'] = 'הצג ציוני אותיות';
+$string['displaypercent'] = 'הצג אחוזים';
+$string['displaypoints'] = 'הצג נקודות';
+$string['displayweighted'] = 'הצג ציונים משוקללים';
+$string['dropdown'] = 'תפריט נפתח';
+$string['droplow'] = 'הסרת X הציונים הנמוכים ביותר';
+$string['droplow_help'] = '<p>אם מופעלת, אפשרות זאת תוותר על X הציונים הנמוכים ביותר, כאשר X הוא הערך שנבחר בעבור אפשרות שאת.</p>';
+$string['dropped'] = 'הורדה';
+$string['dropxlowest'] = 'הורד את X הנמוכים ביותר';
+$string['dropxlowestwarning'] = 'שים לב: אם אתה משתמש ב\'הורד את X הנמוכים ביותר\' תהליך הבדיקה ומתן הציון מניח שלכל הפריטים בקטגוריה יש את אותו הערך בנקודות. אם הערכים בנקודות הם שונים, התוצאות יהיו בלתי צפויות.';
+$string['duplicatescale'] = 'הכפל את הסולם';
+$string['edit'] = 'עריכה';
+$string['editcalculation'] = 'ערוך חישוב';
+$string['editcalculationverbose'] = 'ערוך חישובים עבור
+{$a->category}$a->itemmodule {$a->itemname}';
+$string['editfeedback'] = 'ערוך משוב';
+$string['editgrade'] = 'ערוך ציון';
+$string['editgradeletters'] = 'ערוך את אותיות הציון';
+$string['editoutcome'] = 'ערוך מדד־הערכה';
+$string['editoutcomes'] = 'ערוך מדדי־הערכה';
+$string['editscale'] = 'ערוך סולם';
+$string['edittree'] = 'קטגוריות ופריטים';
+$string['editverbose'] = 'ערוך {$a->category}$a->itemmodule {$a->itemname}';
+$string['enableajax'] = 'אפשר AJAX';
+$string['enableajax_help'] = 'מוסיף שכבת פונקצית AJAX עבור דוח הציונים. מפשט את הצורך בהגברת המהירות על פעולות שכיחות. תלוי זמינות ה-JavaScript המוחלף ברמת דפדפן המשתמש.';
+$string['enableoutcomes'] = 'אפשר מדדי־הערכה';
+$string['enableoutcomes_help'] = 'תמיכה בתוצאות (ידוע גם כיכולות, מטרות, סטנדרטים או קריטריונים) כך שנוכל לתת ציון לדברים ע"י שימוש סולם דירוג אחד או יותר אשר קשור למשפטי(הצהרות) התוצאה. איפשור התוצאות מקנה את מתן ציון מיוחד זה באתר כולו.';
+$string['encoding'] = 'קידוד';
+$string['errorcalculationnoequal'] = 'הנוסחה חייבת להתחיל עם סימן השיוויון (=1+2)';
+$string['errorcalculationunknown'] = 'נוסחה לא תקפה';
+$string['errorgradevaluenonnumeric'] = 'התקבל ערך לא-מספרי כציון נמוך או גבוה עבור';
+$string['errornocalculationallowed'] = 'חישובים לא מאופשרים עבור פריט זה';
+$string['errornocategorisedid'] = 'לא ניתן לקבל זיהוי שלא שייך לקטגוריה';
+$string['errornocourse'] = 'לה היה ניתן לקבל את המידע אודות הקורס';
+$string['errorreprintheadersnonnumeric'] = 'התקבל ערך לא-מספרי עבור \'הדפס מחדש כותרות\'.';
+$string['errorsavegrade'] = 'לא ניתן היה לשמור את הציון, מצטערים.';
+$string['excluded'] = 'הוצא מן הכלל';
+$string['excluded_help'] = '<p>אם - הוצא מן מקבלת הציון - מופעל, ציון זה לא יכלל בכל צבירה המבוצעת על ידי פריט ציון של ה"אב" או קטגורית "אב".</p>';
+$string['expand'] = 'הרחב קטגוריות';
+$string['export'] = 'יצוא';
+$string['exportalloutcomes'] = 'ייצא את כל מדדי־הערכה';
+$string['exportfeedback'] = 'להכליל משוב ביצוא';
+$string['exportplugins'] = 'יצוא תוספים';
+$string['exportsettings'] = 'הגדרות יצוא';
+$string['exportto'] = 'יצוא ל';
+$string['extracreditwarning'] = 'שים לב: אם תקבע את כל הפריטים בקטגוריה כמעניקים נקודות בונוס, הלכה למעשה אתה תוציא את כל הפריטים הללו מחישוב הציון. זאת מכיוון שלא יהיה סכום נקודות שירכיב את השלם.';
+$string['feedback'] = 'משוב';
+$string['feedbackadd'] = 'הוספת משוב';
+$string['feedbackedit'] = 'ערוך משוב';
+$string['feedback_help'] = '<p>הודעות משוב נוספו לציון ע"י המורה. הן יכולות להיות הודעות נרחבות, הודעות אישיות או קוד פשוט אשר מתייחס למערכת פנימית של משוב.</p>';
+$string['feedbacksaved'] = 'שמור משוב';
+$string['feedbackview'] = 'צפה במשוב';
+$string['finalgrade'] = 'ציון סופי';
+$string['finalgrade_help'] = '<p>הציון הסופי (שנשמר) לאחר שבוצעו כל החישובים.</p>';
+$string['fixedstudents'] = 'עמודת סטודנטים סטטית';
+$string['fixedstudents_help'] = 'מאפשר לגלול בצורה אופקית ציונים ללא איבוד תחום ראית עמודת הסטודנטים, ע"י הפיכה למצב סטאטי.';
+$string['forceoff'] = 'אלץ:כבוי';
+$string['forceon'] = 'אלץ: פעיל';
+$string['forelementtypes'] = 'בעבור {$a} הנבחרים';
+$string['forstudents'] = 'לסטודנטים';
+$string['full'] = 'מלא';
+$string['fullmode'] = 'תצוגה מורחבת';
+$string['fullview'] = 'תצוגה מורחבת';
+$string['generalsettings'] = 'הגדרות כלליות';
+$string['grade'] = 'ציון';
+$string['gradeadministration'] = 'ניהול ציון';
+$string['gradeanalysis'] = 'ניתוח ציון';
+$string['gradebook'] = 'גיליון ציונים';
+$string['gradebookhiddenerror'] = 'כרגע גיליון הציונים מוגדר להחביא את כל תכולתו מהסטודנטים.';
+$string['gradebookhistories'] = 'היסטורית הציונים';
+$string['gradeboundary'] = 'גבול האותיות בציון';
+$string['gradeboundary_help'] = '<p>מעל גבול אחוז זה הציונים יוקצו לאותיות ציון (אם סוג הצגת הציון כאות בשימוש)</p>';
+$string['gradecategories'] = 'קטגוריות ציון';
+$string['gradecategory'] = 'שיוך פעילות זו לקטגוריית ציון';
+$string['gradecategoryonmodform'] = 'שיוך פעילות זו לקטגוריית ציון';
+$string['gradecategoryonmodform_help'] = 'הגדרה זו שולטת על הקטגוריה שבה ציוני פעילות זו ימוקמו בגליון הציונים.';
+$string['gradecategorysettings'] = 'הגדרות קטגוריית ציון';
+$string['gradedisplay'] = 'הצגת ציון';
+$string['gradedisplaytype'] = 'סוג תצוגת הציון';
+$string['gradedisplaytype_help'] = '<p>מציין כיצד להציג ציונים במתן הציונים ובדוח המשתמש. ציונים יכולים להיות מוצגים כציונים אמיתיים, אחוזים (ביחס לציונים מיזעריים ומירביים) או כאותיות.</p>';
+$string['gradedon'] = 'מדורג: &a';
+$string['gradeexport'] = 'יצוא ציון';
+$string['gradeexportdecimalpoints'] = 'הצגת ציון בנקודות עשרוניות';
+$string['gradeexportdecimalpoints_desc'] = 'מספר נקודות העשרוניות להצגה עבור היצוא. ניתן לעקוף זאת במהלך הייצוא.';
+$string['gradeexportdisplaytype'] = 'סוג הצגת יצוא הציון';
+$string['gradeexportdisplaytype_desc'] = 'ציונים עשויים להיות מוצגים כציונים אמיתיים, אחוזים (בהתייחס לציונים מינימליים ומקסימליים) או כאותיות (A,B,C וכו\') במהלך היצוא. ניתן לעקוף הגדרות אלו במהלך הייצוא.';
+$string['gradeforstudent'] = '{$a->student}<br />{$a->item}$a->feedback';
+$string['gradehelp'] = 'עזרה - ציון';
+$string['gradehistorylifetime'] = 'משך זמן היסטוריית הציון';
+$string['gradehistorylifetime_help'] = 'הדבר מציין את אורך הזמן שתרצה לשמור את היסטוריית שינויי ציון המיוחסים לטבלאות. מומלץ לשמור זאת בזמן ארוך ככל שניתן. אם  תחוש בבעיות בביצועים או בעיות במקום במסד הנתונים, הגדר ערך קטן יותר.';
+$string['gradeimport'] = 'יבוא ציון';
+$string['gradeitem'] = 'פריט ציון';
+$string['gradeitemaddusers'] = 'הוצא ממתן הציון';
+$string['gradeitemadvanced'] = 'אפשרויות פריט ציון נרחבות';
+$string['gradeitemadvanced_help'] = 'בחר בכל המרכיבים אשר תרצה להציגם כהרחבה כאשר עורכים פריטי ציון';
+$string['gradeitemislocked'] = 'פעילות זו חסומה בגליון הציונים. שינויים שנעשים לציונים בפעילות זו לא יועתקו לגליון הציונים עד אשר היא לא תיהיה נעולה.';
+$string['gradeitemlocked'] = 'נעילה הציונים';
+$string['gradeitemmembersselected'] = 'הוצא מקבלת הציון';
+$string['gradeitemnonmembers'] = 'נכלל בקבלת הציון';
+$string['gradeitemremovemembers'] = 'כלול במתן הציון';
+$string['gradeitems'] = 'פריטי הציון';
+$string['gradeitemsettings'] = 'הגדרות פריט ציון';
+$string['gradeitemsinc'] = 'יש לכלול את פרטי הציון';
+$string['gradeletter'] = 'אות ציון';
+$string['gradeletter_help'] = '<p>אות או סמל אחר אשר נשתמש בכדי לייצג טווחי ציונים.</p>';
+$string['gradeletternote'] = 'כדי למחוק אות שמשמשת כציון, פשוט רוקן כל אחד<br /> משלושת שדות הטקסט שמיועדים לאות זו ולחץ על \'השלם\'.';
+$string['gradeletters'] = 'אותיות ציון';
+$string['gradelocked'] = 'ציון נעול';
+$string['gradelong'] = '{$a->grade} / {$a->max}';
+$string['grademax'] = 'הניקוד המשוקלל';
+$string['grademax_help'] = '<p>הציון המירבי המותר לפריט ציון זה. ניתן להגדיר זאת בעמוד עדכון הפעילות.</p>';
+$string['grademin'] = 'הציון המיזערי';
+$string['grademin_help'] = '<p>הציון המיזערי המותר לפריט ציון זה.</p>';
+$string['gradeoutcomeitem'] = 'פריט תוצאת הציון';
+$string['gradeoutcomes'] = 'מדדי־הערכה';
+$string['gradeoutcomescourses'] = 'מדדי־הערכה בקורס';
+$string['gradepass'] = 'ציון המעבר';
+$string['gradepass_help'] = '<p>אם לפריט קיים ציון אשר משתמשים חייבים להשתוות אליו או לעלות מעליו בכדי לעבור את פריט זה, תוכל להגדיר זאת כאן.</p>';
+$string['gradepreferences'] = 'העדפות הציונים';
+$string['gradepreferenceshelp'] = 'עזרה - העדפות הציון';
+$string['gradepublishing'] = 'אפשר פרסום';
+$string['gradepublishing_help'] = 'איפשור פרסום ליצוא ויבוא: ניתן לגשת לציונים שעברו ייצוא ע"י גישה ל URL , ללא צורך להתחבר לאתר. ציונים יכולים להיות מיובאים ע"י גישה ל-URL כזה (משמע כי אתר Moodle יכול לייבא ציונים אשר פורסמו מאתר אחר). ברירת המחדל מקנה רק למנהלי האתר להשתמש בתכונה זו, אנא עדכן את המשתמשים לפני מתן יכולות אלו למשתמשים בתפקידים השונים באתר (זהירות מסמניות משותפות ומאיצי הורדות, הגבלות IP ועוד...).';
+$string['gradereport'] = 'דוח ציון';
+$string['graderreport'] = 'דוח הציונים';
+$string['grades'] = 'ציונים';
+$string['gradesforuser'] = 'ציונים עבור {$a->user}';
+$string['gradesonly'] = 'רק ציונים';
+$string['gradessettings'] = 'הגדרות ציון';
+$string['gradetype'] = 'סוג הציון';
+$string['gradetype_help'] = '<p>מציין את סוג הציון בשימוש: ריק ( לא ניתן לתת ציון), ערך (מאפשר ציון מירבי ומיזערי), סולם (מאפשר את הגדרת הסולם) או טקסט (משוב בלבד). ערך וסוגי ציון סולם בלבד יכולים להיות ניתנים לצבירה. סוג הציון עבור פעילות מבוססת פריט ציון מוגדר בעמוד הפעילות המעודכן</p>';
+$string['gradeview'] = 'צפה בציון';
+$string['gradeweighthelp'] = 'עזרה- משקל הציון';
+$string['groupavg'] = 'ממוצע הקבוצה';
+$string['hidden'] = 'מוסתר';
+$string['hiddenasdate'] = 'הראה תאריך הגשה עבור ציונים מוסתרים';
+$string['hiddenasdate_help'] = 'אם המשתמש לא יכול לראות ציונים מוסתרים, הראה את תאריך ההגשה במקום \'-\'.';
+$string['hidden_help'] = 'אם מסומן, הציונים יוסתרו בפני התלמידים. הסתרה עד לתאריך שיכול להיות מוגדר אם רוצים, בכדי לשחרר את הציונים לאחר שמתן הציונים מסתיים.';
+$string['hiddenuntil'] = 'מוסתרים עד';
+$string['hiddenuntildate'] = 'מוסתר עד: {$a}';
+$string['hideadvanced'] = 'הסתר תכונות מתקדמות';
+$string['hideaverages'] = 'הסתר ממוצעים';
+$string['hidecalculations'] = 'הסתר חישובים';
+$string['hidecategory'] = 'מוסתר';
+$string['hideeyecons'] = 'הסתר צלמיות הראה/הסתר';
+$string['hidefeedback'] = 'הסתר משוב';
+$string['hideforcedsettings'] = 'הסתר הגדרות מאולצות';
+$string['hideforcedsettings_help'] = 'לא להציג הגדרות מאולצות ב-UI של מתן הציונים';
+$string['hidegroups'] = 'הסתר קבוצות';
+$string['hidelocks'] = 'הסתר נעליות';
+$string['hidenooutcomes'] = 'הצגת מדדי־הערכה';
+$string['hidequickfeedback'] = 'הסתר משובים מהירים';
+$string['hideranges'] = 'הסתר טווחים';
+$string['hidetotalifhiddenitems'] = 'הסתר את הסיכומים אם הם מכילים פריטים מוסתרים';
+$string['hidetotalshowexhiddenitems'] = 'הצג סיכומים אשר לא כוללים פרטי ציון מוסתרים';
+$string['hidetotalshowinchiddenitems'] = 'הצג סיכומים אשר כוללים פרטי ציון מוסתרים';
+$string['hideverbose'] = 'הסתר {$a->category}$a->itemmodule {$a->itemname}';
+$string['highgradeascending'] = 'מיין לפי ציונים גבוהים בסדר עולה';
+$string['highgradedescending'] = 'מיין לפי ציונים גבוהים בסדר יורד';
+$string['highgradeletter'] = 'גבוה';
+$string['identifier'] = 'זהה את השמשתמש על ידי';
+$string['idnumbers'] = 'מספרי זיהוי (ID)';
+$string['import'] = 'יבוא';
+$string['importcsv'] = 'יבוא CSV';
+$string['importcustom'] = 'ייבוא כתוצאות מותאמות אישית (רק לקורס זה)';
+$string['importerror'] = 'שגיאה התרחשה, קטע הקוד לא נקרא עם הפרמטרים הנכונים.';
+$string['importfailed'] = 'היבוא נכשל';
+$string['importfeedback'] = 'יבא משוב';
+$string['importfile'] = 'יבא קובץ';
+$string['importfilemissing'] = 'לא התקבל אף קובץ, חזור לטופס וודא כי הינך מעלה קובץ תקין.';
+$string['importfrom'] = 'יבא מ';
+$string['importoutcomenofile'] = 'הקובץ המועלה ריק או פגום. אנא בדוק אם הקובץ תקין. הבעיה אותרה בשורת קוד מספר {$a}.
+לשורות הקוד חסרות מספר עמודות  כמו לשורה הראשונה (שורת ה- header) או אם חסרות לקובץ המיובא Header (כותרות) צפויות. הסתכל בקובץ המיוצא כדוגמא לקובץ עם כותרת  (header) תקינה.';
+$string['importoutcomes'] = 'יבא מדדי־הערכה';
+$string['importoutcomes_help'] = 'מדדי-הערכה יכולים להיות מיובאים דרך קובץ
+CSV עם תבנית עבור קובץ יצוא מדדי הערכה CSV של מ';
+$string['importoutcomesuccess'] = 'תוצאה מיובאת "{$a->name}" עם זיהוי #{$a->id}';
+$string['importplugins'] = 'יבא תוספים';
+$string['importpreview'] = 'יבא צפיה מוקדמת';
+$string['importsettings'] = 'יבא הגדרות';
+$string['importskippednomanagescale'] = 'אין לך הרשאות להוסיף סולם חדש, התוצאה "{$a}" דולגה כשהיא דרשה ליצור סולם חדש.';
+$string['importskippedoutcome'] = 'מדד־הערכה עם השם המקוצר "{$a}" כבר קיים בהקשר הזה, מדד־הערכה בקובץ המיובא דולג.';
+$string['importstandard'] = 'יבא כמדדי־הערכה מערכתיים';
+$string['importsuccess'] = 'יבוא הציון הצליח';
+$string['importxml'] = 'יבא XML';
+$string['includescalesinaggregation'] = 'כלול סולמות בצבירה';
+$string['includescalesinaggregation_help'] = 'תוכל לשנות, האם סולמות כלולות כמספרים בכל הציונים אשר נכללו בצבירה בכל גליונות הציונים ובכל הקורסים. הזהרה: שינוי הגדרה זו יאלץ את כל ציוני הצבירה לערוך חישוב מחדש.';
+$string['incorrectcourseid'] = 'מספר זיהוי הקורס היה שגוי';
+$string['incorrectcustomscale'] = 'הסולם המוגדר אישית איננו נכון, אנא תקן.';
+$string['incorrectminmax'] = 'המינימום חייב להיות קטן מהמקסימום';
+$string['inherit'] = 'ירושה';
+$string['intersectioninfo'] = 'מידע על סטודנט או ציון';
+$string['item'] = 'פריט';
+$string['iteminfo'] = 'מידע אודות פריט';
+$string['iteminfo_help'] = '<p>מקום עבור הכנסת מידע אודות הפריט. הטקסט המוכנס לא יופיע במקום אחר.</p>';
+$string['itemname'] = 'שם הפריט';
+$string['itemnamehelp'] = 'שם הפריט שהוצב על יד הרכיב';
+$string['items'] = 'פריטים';
+$string['itemsedit'] = 'ערוך פריט ציון';
+$string['keephigh'] = 'שמור את הגבוה ביותר';
+$string['keephigh_help'] = 'אם תופעל, אפשרות שאת תשמושר רק את X הערכים הגבוהים ביותר, מקום ש-X הןא הערך שנבחר בעבור אפשרות זאת.';
+$string['keymanager'] = 'מנהל מפתח';
+$string['lessthanmin'] = 'הציון שהוכנס מ- {$a->itemname} עבור {$a->username} הוא פחות מהמינימום המותר';
+$string['letter'] = 'אות';
+$string['lettergrade'] = 'ציון אות';
+$string['lettergradenonnumber'] = 'הציון הנמוך ו,או הגבוה התקבלו כערכים לא-מספריים עבור';
+$string['letterpercentage'] = 'אות (אחוזים)';
+$string['letterreal'] = 'אות (ממשי)';
+$string['letters'] = 'אותיות';
+$string['linkedactivity'] = 'פעילות מקושרת';
+$string['linkedactivity_help'] = '<p>מציין פעילות אופציונלית אשר פריט תוצאה זה יקושר. הדבר ישמש למדוד את ביצועי הסטודנט בקריטריון אשר לא מוערך עדיין ע"י ציון הפעילות. </p>';
+$string['linktoactivity'] = 'הסתכל בפעילות {$a->name}';
+$string['lock'] = 'נעל';
+$string['locked'] = 'נעול';
+$string['locked_help'] = 'אם תסמן, ציונים לא יתעדכנו בצורה אוטומטית ע"י הפעילות הקשורה.';
+$string['locktime'] = 'נעל עד';
+$string['locktimedate'] = 'ננעל לאחר: {$a}';
+$string['lockverbose'] = 'נעל {$a->category}$a->itemmodule {$a->itemname}';
+$string['lowest'] = 'הנמוך ביותר';
+$string['lowgradeletter'] = 'נמוך';
+$string['manualitem'] = 'פריט ידני';
+$string['mapfrom'] = 'מיפוי מ-';
+$string['mappings'] = 'מיפוי פריטי ציון';
+$string['mapto'] = 'מפה ל-';
+$string['max'] = 'הגבוה ביותר';
+$string['maxgrade'] = 'ציון מירבי';
+$string['meanall'] = 'כל הציונים';
+$string['meangraded'] = 'ציונים שאינם חסרים';
+$string['meanselection'] = 'ציונים שנבחרו לממוצעים';
+$string['meanselection_help'] = 'בחר אלו סוגי ציונים יכללו בעמודת הממוצעים. תאים שאין בהם ציון יתקלו בהתעלמות, או יספרו כ-0 (הגדרת ברירת מחדל).';
+$string['median'] = 'חציון';
+$string['min'] = 'נמוך ביותר';
+$string['missingscale'] = 'סולם חייב להיבחר';
+$string['mode'] = 'מצב';
+$string['morethanmax'] = 'הציון מוכנס עבור {$a->itemname} עבור {$a->username} יותר מהמירבי המותר';
+$string['moveselectedto'] = 'הסט את הרכיבים שנבחרו ל';
+$string['movingelement'] = 'הסט {$a}';
+$string['multfactor'] = 'מקדם';
+$string['multfactor_help'] = '<p>מקדם אשר באמצעותו כל הציונים לפריט ציון זה יוכפלו עם הערך המירבי של הציון הכי גבוה.</p>';
+$string['mypreferences'] = 'המאפיינים שלי';
+$string['myreportpreferences'] = 'מאפייני הדוח שלי';
+$string['navmethod'] = 'שיטת ניווט';
+$string['neverdeletehistory'] = 'לעולם אל תמחק היסטוריה';
+$string['newcategory'] = 'קטגוריה חדשה';
+$string['newitem'] = 'רכיב ציון חדש';
+$string['newoutcomeitem'] = 'רכיב תוצאה חדש';
+$string['no'] = 'לא';
+$string['nocategories'] = 'לא היה ניתן למצוא או להוסיף קטגוריות ציון לקורס זה.';
+$string['nocategoryname'] = 'לא נמסר שם הקטגוריה';
+$string['nocategoryview'] = 'אין קטגוריה לראות על ידי';
+$string['nocourses'] = 'לא קיימים עדיין קורסים';
+$string['noforce'] = 'אל תכריח';
+$string['nogradeletters'] = 'לא נקבעו אותיות ציון';
+$string['nogradesreturned'] = 'לא הוחזרו ציונים';
+$string['noidnumber'] = 'לא קיים מספר זיהוי';
+$string['nolettergrade'] = 'אין ציון אות עבור';
+$string['nomode'] = 'NA';
+$string['nonnumericweight'] = 'התקבל ערך לא-מספרי עבור';
+$string['nonunlockableverbose'] = 'ציון זה איננו יכול להינעל עד אשר {$a->itemname}  נעול.';
+$string['nonweightedpct'] = '% לא משוקלל';
+$string['nooutcome'] = 'לא קיים מדד־הערכה';
+$string['nooutcomes'] = 'רכיבי מדד־הערכה חייבים להיות מקושרים למדד־הערכת הקורס, אך אין מדדי־הערכה לקורס זה. האם תרצה להוסיף מדד־הערכה ?חדש';
+$string['nopublish'] = 'אל תפרסם';
+$string['norolesdefined'] = 'לא הוגדרו תפקידים תחת ניהול->ציונים->הגדרות כלליות->תפקידי מתן ציון';
+$string['noscales'] = 'תוצאות חייבות להיות מקושרות לסולם קורס או לסולם גלובלי, אך אין תוצאות. האם תרצה להוסיף?';
+$string['noselectedcategories'] = 'לא נבחרו קטגוריות כלשהן';
+$string['noselecteditems'] = 'לא נבחרו פריטים כלשהם.';
+$string['notteachererror'] = 'עליך להיות מורה כדי שתוכל להשתמש בתכונה זו.';
+$string['nousersloaded'] = 'לא נטענו משתמשים';
+$string['numberofgrades'] = 'מספר הציונים';
+$string['onascaleof'] = 'בסולם של {$a->grademin} ל- {$a->grademax}';
+$string['operations'] = 'פעולות';
+$string['options'] = 'אפשרויות';
+$string['outcome'] = 'תוצאה';
+$string['outcomeassigntocourse'] = 'הקצה מדד־הערכה נוסף לקורס זה';
+$string['outcomecategory'] = 'צור מדדי־הערכה בקטגוריה';
+$string['outcomecategorynew'] = 'קטגוריה חדשה';
+$string['outcomeconfirmdelete'] = 'האם אתה בטוח כי ברצונך למחוק את התוצאה "{$a}"?';
+$string['outcomecreate'] = 'הוספת מדד־הערכה חדש';
+$string['outcomedelete'] = 'מחק מדד־הערכה';
+$string['outcomefullname'] = 'שם מלא';
+$string['outcome_help'] = 'התוצאה שפריט הציון מייצג';
+$string['outcomeitem'] = 'פריט מדד־הערכה';
+$string['outcomeitemsedit'] = 'ערוך פריט מדד־הערכה';
+$string['outcomereport'] = 'דוח מדדי־הערכה';
+$string['outcomes'] = 'מדדי־הערכה';
+$string['outcomescourse'] = 'מדדי-הערכה פעילים בקורס';
+$string['outcomescoursecustom'] = 'ההתאמה שבשימוש (לא להסיר)';
+$string['outcomescoursenotused'] = ' מדרגת-ההערכה  בשימוש';
+$string['outcomescourseused'] = ' מדרגת-ההערכה  לא בשימוש (לא להסרה)';
+$string['outcomescustom'] = 'התאם את מדדי־הערכה';
+$string['outcomeshortname'] = 'שם מקוצר';
+$string['outcomesstandard'] = 'מדדי־הערכה מערכתיים';
+$string['outcomesstandardavailable'] = 'מדדי־הערכה מערכתיים זמינים';
+$string['outcomestandard'] = 'מדד־הערכה מערכתי';
+$string['outcomestandard_help'] = 'מדד־הערכה מערכתי זמינה בכל האתר ולכל הקורסים';
+$string['overallaverage'] = 'ממוצע כללי';
+$string['overridden'] = 'עקיפה';
+$string['overridden_help'] = '<p>כאשר מופעל, דגל העקיפה, מונע כל נסיון עתידי להתאים את ערך הציון באופן אוטומטי. דגל זה בד"כ מוגדר תוך הגדרות גליון הציונים, אך ניתן להדליקו או לכבותו באופן ידני כאשד נשתמש ברכיב טופס זה.</p>';
+$string['overriddennotice'] = 'הציון הסופי שלך מפעילות זו הותאם ידנית.';
+$string['overridesitedefaultgradedisplaytype'] = 'עקיפת ברירות המחדל של האתר';
+$string['overridesitedefaultgradedisplaytype_help'] = '<p>אפשר הגדרה זו לדרוס את ברירת המחדל של האתר עבור הצגת ציונים בגליון הציונים. הדבר מפעיל טופס רכיבים המאפשרים להגדיר את אותיות הציון וגבולות הבחירה שלך.</p>';
+$string['parentcategory'] = 'קטגורית אב';
+$string['pctoftotalgrade'] = '% מהציון הכולל';
+$string['percent'] = 'אחוז';
+$string['percentage'] = 'אחוז';
+$string['percentageletter'] = 'אחוז (אות)';
+$string['percentagereal'] = 'אחוז (אמיתי)';
+$string['percentascending'] = 'מיין לפי אחוזים בסדר עולה';
+$string['percentdescending'] = 'מיין לפי אחוזים בסדר יורד';
+$string['percentshort'] = '%';
+$string['plusfactor'] = 'הסט';
+$string['plusfactor_help'] = '<p>מספר אשר התווסף לכל ציון עבור פריט ציון זה, לאחר שההסט נקבע.</p>';
+$string['points'] = 'נקודות';
+$string['pointsascending'] = 'מיין לפי נקודות בסדר עולה';
+$string['pointsdescending'] = 'מיין לפי נקודות בסדר יורד';
+$string['positionfirst'] = 'ראשון';
+$string['positionlast'] = 'אחרון';
+$string['preferences'] = 'העדפות';
+$string['prefgeneral'] = 'כללי';
+$string['prefletters'] = 'אותיות ציון וגבולות';
+$string['prefrows'] = 'שורות מיוחדות';
+$string['prefshow'] = 'הראה/הסתר';
+$string['previewrows'] = 'תצוגה מקדימה של שורות';
+$string['profilereport'] = 'דוח פרופיל משתמש';
+$string['profilereport_help'] = 'דוח ציון אשר ניתן לשימוש בדף הפרופיל של המשתמש';
+$string['publishing'] = 'פרסום';
+$string['quickfeedback'] = 'משוב מהיר';
+$string['quickgrading'] = 'מתן ציון מהיר';
+$string['quickgrading_help'] = '<p>מתן ציון מהיר מוסיף מרכיב קלט טקסט בכל תא של ציון בדוח הציונים, מאפשר לך לערוך איזו כמות ציונים שתרצה במקביל. לאחר מכן תוכל ללחוץ על כפתור העדכון לביצוע השינויים במכה אחת במקום אחד אחרי השני.</p>';
+$string['range'] = 'טווח';
+$string['rangedecimals'] = 'טווח הנקודה העשרונית';
+$string['rangedecimals_help'] = 'מספר הנקודות העשרוניות שיופיעו לטווח זה';
+$string['rangesdecimalpoints'] = 'מספר הספרות אחרי הנקודה בטווחים';
+$string['rangesdecimalpoints_help'] = '<p>מציין את המספר הנקודות הדצימלי להצגה עבור כל טווח. ניתן לדרוס הגדרה זו בכל מתן פריט ציון.</p>';
+$string['rangesdisplaytype'] = 'סוג תצוגת הטווח';
+$string['rangesdisplaytype_help'] = '<p>מציין כיצד להציג טווחים. אם היורש נבחר, נשתמש בסוג התצוגה לכל עמודה.</p>';
+$string['rank'] = 'דרגה';
+$string['rawpct'] = '% גולמי';
+$string['real'] = 'אמיתי';
+$string['realletter'] = 'אמיתי (אות)';
+$string['realpercentage'] = 'אמיתי (אחוז)';
+$string['regradeanyway'] = 'מתן ציון מחדש בכל מקרה';
+$string['removeallcoursegrades'] = 'מחק את כל הציונים';
+$string['removeallcourseitems'] = 'מחק את כל הפריטים והקטגוריות';
+$string['report'] = 'דוח';
+$string['reportdefault'] = 'דוח ברירת מחדל ({$a})';
+$string['reportplugins'] = 'תוספי דוחות';
+$string['reportsettings'] = 'הגדרות הדוח';
+$string['reprintheaders'] = 'הדפס מחדש את הכותרות';
+$string['respectingcurrentdata'] = 'השאר את התצורה הנוכחית ללא שינוי';
+$string['rowpreviewnum'] = 'תצוגה מקדימה של שורות';
+$string['savechanges'] = 'שמירת שינויים';
+$string['savepreferences'] = 'שמור העדפות';
+$string['scaleconfirmdelete'] = 'האם אתה מאשר מחיקת סולם
+"{$a}"?';
+$string['scaledpct'] = '% שונה גודל';
+$string['seeallcoursegrades'] = 'הצגת כל ציוני הקורס';
+$string['selectalloroneuser'] = 'בחר את כל המשתמשים או אחד';
+$string['selectauser'] = 'בחר משתמש';
+$string['selectdestination'] = 'בחר את המטרה של {$a}';
+$string['separator'] = 'מפריד שדות';
+$string['sepcomma'] = 'סימן פסיק';
+$string['septab'] = 'סימן "tab"';
+$string['setcategories'] = 'הגדר קטגוריות';
+$string['setcategorieserror'] = 'תחילה עליך להגדיר קטגוריות לקורס שלך לפני שתוכל לתת להם משקלים.';
+$string['setgradeletters'] = 'הגדר אותיות ציון';
+$string['setpreferences'] = 'קבע העדפות';
+$string['setting'] = 'הגדרה';
+$string['settings'] = 'הגדרות';
+$string['setweights'] = 'קבע משקלים';
+$string['showactivityicons'] = 'הצג צלמיות הפעילות';
+$string['showactivityicons_help'] = '<p>האם להציג צלמיות פעילות לצד שמות פעילות.</p>';
+$string['showallhidden'] = 'מוסתרים';
+$string['showallstudents'] = 'הצג את כל הסטודנטים';
+$string['showanalysisicon'] = 'הצג את צלמית ניתוח הציון';
+$string['showanalysisicon_help'] = 'אם רכיב הפעילות תומך בזה, צלמית ניתוח הציון   יקושר לעמוד עם הסברים מפורטים נוספים של הציון וכיצד הוא התקבל.';
+$string['showaverage'] = 'הצג ממוצע';
+$string['showaverage_help'] = 'הצג את עמודות הממוצע?
+סטודנטים יוכלו להעריך את ציוני חבריהם אם הממוצע מחושב ממספר קטן של ציונים.
+מסיבות ביצועי מערכת הממוצע מקורס אם הוא תלוי בפריטים נסתרים..';
+$string['showaverages'] = 'הצג ממוצע העמודות';
+$string['showaverages_help'] = 'הראה את עמודת הממוצעים בדוח הציונים.';
+$string['showcalculations'] = 'הצג חישובים';
+$string['showcalculations_help'] = 'האם להראות צלמיות מחשבון ליד כל פריט ציון וקטגוריה, חלון קופץ במעבר על פריטים מחושבים ומצביע חזותי כאשר עמודה מחושבת.';
+$string['showeyecons'] = 'הצג צלמיות הראה/הסתר';
+$string['showeyecons_help'] = 'האם להראות את צלמית הראה/הסתר ליד כל ציון (ע"י שליטת הראות למשתמש).';
+$string['showfeedback'] = 'הצג משוב';
+$string['showfeedback_help'] = 'האם להציג את עמודת המשוב?';
+$string['showgrade'] = 'הצג ציונים';
+$string['showgrade_help'] = 'האם להציג את עמודת הציון';
+$string['showgroups'] = 'הצג קבוצות';
+$string['showhiddenitems'] = 'הצג פריטים מוסתרים';
+$string['showhiddenitems_help'] = 'מציין כיצד פרטי ציון מוסתרים יוצגו. אם "מוסתרים" נבחר, הם יהיו מוסתרים לגמרי. אם "מוצגים" נבחר, שורת פריט הציון תוצג באפור יחד עם הסתרת הציון לחלוטין. אם "מוסתרים עד" נבחר, פרטי ציונים עם התאריך של הגדרת "מוסתרים עד" יוצגו באפור יחד עם הציונים המוסתרים עד לתאריך המוגדר, לאחר שפריט הציון יוצג.';
+$string['showhiddenuntilonly'] = 'הסתר עד מועד';
+$string['showlettergrade'] = 'הצג את ציוני האות';
+$string['showlettergrade_help'] = 'האם להציג את עמודת ציוני האות';
+$string['showlocks'] = 'הצג נעילות';
+$string['showlocks_help'] = 'האם להראות צלמית נעילה/פתיחה ליד כל ציון.';
+$string['shownohidden'] = 'מוצג תמיד';
+$string['shownooutcomes'] = 'הסתר מדדי־הערכה';
+$string['shownumberofgrades'] = 'הצג מספר הציונים בממוצעים';
+$string['shownumberofgrades_help'] = 'האם להראות את מספר הציונים כאשר מחשבים את הממוצע בסוגריים לאחר כל ממוצע, למשל 45 (34).';
+$string['showpercentage'] = 'הצג שיעור אחוזים';
+$string['showpercentage_help'] = 'האם להראות את ערך האחוז של כל פריט ציון?';
+$string['showquickfeedback'] = 'הצג משוב מהיר';
+$string['showquickfeedback_help'] = 'משוב מהיר מוסיף מרכיב קלט טקסט בכל תא ציון בדוח הציון, מאפשר לך לערוך את המשוב עבור מספר ציונים בו זמנית. לאחר מכן תוכל ללחוץ על לחצן העדכון לביצוע כל שינויים אלו בו זמנית, במקום אחד אחרי השני.';
+$string['showrange'] = 'הצג טווחים';
+$string['showrange_help'] = 'האם להציג את עמודת הטווח?';
+$string['showranges'] = 'הצג טווחים';
+$string['showranges_help'] = 'הצג שורה המראה את טווח האפשרות עבור כל פריט מתן ציון (דרוג) בדוח הציונים.';
+$string['showrank'] = 'הצג דירוג';
+$string['showrank_help'] = 'האם להראות את מיקום המשתמש ביחס לשאר הכיתה, עבור כל פריט ציון?';
+$string['showuserimage'] = 'הצג את צלמיות המשתמש שבפרופיל';
+$string['showuserimage_help'] = 'באם להציג את תמונת המשתמש מהפרופיל ליד השם בדוח הציונים.';
+$string['showverbose'] = 'הצג {$a->category}$a->itemmodule {$a->itemname}';
+$string['showweight'] = 'הצג משקלים';
+$string['showweight_help'] = 'האם להציג את עמודת המשקל?';
+$string['simpleview'] = 'תצוגה מצומצמת';
+$string['sitewide'] = 'קיים בכל האתר';
+$string['sort'] = 'מיין';
+$string['sortasc'] = 'מיין בסדר עולה';
+$string['sortbyfirstname'] = 'מיין לפי שם פרטי';
+$string['sortbylastname'] = 'מיין לפי שם משפחה';
+$string['sortdesc'] = 'מיין בסדר יורד';
+$string['standarddeviation'] = 'סטיית תקן';
+$string['stats'] = 'סטטיסטיקה';
+$string['statslink'] = 'סטטיסטיקה';
+$string['student'] = 'סטודנט';
+$string['studentsperpage'] = 'סטודנטים לדף';
+$string['studentsperpage_help'] = 'מספר הסטודנטים שיוצגו בדף בדוח הציונים.';
+$string['subcategory'] = 'קטגוריה רגילה';
+$string['submissions'] = 'הגשות';
+$string['submittedon'] = 'הוגשו: {$a}';
+$string['switchtofullview'] = 'החלף לתצוגה מורחבת';
+$string['switchtosimpleview'] = 'החלף לניהול תצוגה מצומצמת';
+$string['tabs'] = 'לשוניות';
+$string['topcategory'] = 'קטגורית על';
+$string['total'] = 'כולל';
+$string['totalweight100'] = 'הציון הכולל שווה ל-100';
+$string['totalweightnot100'] = 'הציון הכולל לא שווה ל-100';
+$string['turnfeedbackoff'] = 'בגור משוב';
+$string['turnfeedbackon'] = 'הפעל משוב';
+$string['typenone'] = 'לא כלום';
+$string['typescale'] = 'סולם';
+$string['typescale_help'] = '<p>כאשר משתמשים בסוג ציון סולם, ניתן לבחור סולם. הסולם עבור פריט הציון המבוסס על פעילות נבחר בעמוד הפעילות המעודכן.</p>';
+$string['typetext'] = 'טקסט';
+$string['typevalue'] = 'ערך';
+$string['uncategorised'] = 'ללא קטגוריה';
+$string['unchangedgrade'] = 'ציון ללא שינוי';
+$string['unenrolledusersinimport'] = 'יבוא זה מכליל את הציונים הבאים עבור משתמשים אשר אינם רשומים לקורס כעת: {$a}';
+$string['unlimitedgrades'] = 'ציונים בלתי מוגבלים';
+$string['unlimitedgrades_help'] = 'כברירת המחדל הציונים מוגבלים ע"י ערכי מקסימום ומינימום של פרטי הציון. איפשרו הגדרה זו תוריד את הגבלה זו, ותאפשר להוסיף ציונים מעל 100% בגליון הציונים. מומלץ לאפשר הגדרה זו בזמן שיא "מת" כך שכל הציונים יחושבו מחדש, הדבר יוצר עומס עיבוד גבוה בשרת.';
+$string['unlock'] = 'הסר נעילה';
+$string['unlockverbose'] = 'נעילת {$a->category}$a->itemmodule {$a->itemname}';
+$string['unused'] = 'לא בשימוש';
+$string['updatedgradesonly'] = 'ייצא ציונים מעודכנים או חדשים';
+$string['uploadgrades'] = 'טען ציונים';
+$string['useadvanced'] = 'השתמש בתכונות מתקדמות';
+$string['usedcourses'] = 'קורסים בשימוש';
+$string['usedgradeitem'] = 'פריט ציון בשימוש';
+$string['usenooutcome'] = 'אל תשתמש במדד־הערכה';
+$string['usenoscale'] = 'אל תשתמש בסולם';
+$string['usepercent'] = 'השתמש באחוז';
+$string['user'] = 'משתמש';
+$string['userenrolmentsuspended'] = 'הרשמת משתמש מושהת';
+$string['usergrade'] = 'משתמש {$a->fullname} ({$a->useridnumber}) בפריט  {$a->gradeidnumber}';
+$string['userpreferences'] = 'העדפות המשתמש';
+$string['useweighted'] = 'השתמש במשוקלל';
+$string['verbosescales'] = 'סולמות מילוליים';
+$string['viewbygroup'] = 'קבוצה';
+$string['viewgrades'] = 'ראה ציונים';
+$string['warningexcludedsum'] = 'הזהרה: הוצאת הציונים  אינה תואמת עם סיכום צבירה.';
+$string['weight'] = 'משקל';
+$string['weightcourse'] = 'השתמש בציונים משוקללים עבור הקורס';
+$string['weightedascending'] = 'מיין לפי אחוז משוקלל בסדר עולה';
+$string['weighteddescending'] = 'מיין לפי אחוז משוקלל בסדר יורד';
+$string['weightedpct'] = '% משוקלל';
+$string['weightedpctcontribution'] = '% תרומה משוקללת';
+$string['weightorextracredit'] = 'משקל או קרדיט נוסף';
+$string['weights'] = 'משקלים';
+$string['weightsedit'] = 'ערוך משקלים ונקודות זכותים נוספים';
+$string['weightuc'] = 'משקל';
+$string['writinggradebookinfo'] = 'הגדרות כתיבת גיליון הציונים';
+$string['xml'] = 'XML';
+$string['yes'] = 'כן';
+$string['yourgrade'] = 'הציון שלך';

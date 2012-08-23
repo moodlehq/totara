@@ -1,0 +1,294 @@
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Strings for component 'hotpot', language 'fi', branch 'MOODLE_22_STABLE'
+ *
+ * @package   hotpot
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['abandoned'] = 'jätetty kesken';
+$string['activitygrade'] = 'Aktiviteetin arvosana';
+$string['added'] = 'Lisätty';
+$string['addquizchain'] = 'Lisää kysymysketju';
+$string['allowreview'] = 'Salli uudelleenkatselu';
+$string['allowreview_help'] = 'Jos sallittu, opiskelijat voivat katsella tenttiyrityksiään uudelleen tentin sulkeuduttua.';
+$string['analysisreport'] = 'Kohdeanalyysi';
+$string['attemptlimit'] = 'Yrityksen raja';
+$string['attemptlimit_help'] = 'Tämän HotPot-aktiviteetin yritysten maksimimäärä opiskelijoille';
+$string['attemptnumber'] = 'Yrityksen numero';
+$string['attempts'] = 'Yritykset';
+$string['attemptscore'] = 'Yrityksen pisteet';
+$string['attemptsunlimited'] = 'Rajoittamaton määrä yrityksiä';
+$string['average'] = 'Keskiarvo';
+$string['averagescore'] = 'Keskiarvopisteet';
+$string['cacherecords'] = 'HotPot:in välimuistimerkinnät';
+$string['canrestartquiz'] = 'Tähänastiset tuloksesi tallennetaan ja voit tehdä tehtävän "{$a}" myöhemmin';
+$string['canrestartunit'] = 'Tähänastiset tuloksesi tallennetaan, mutta jos haluat tehdä tämän aktiviteetin uudelleen, joudut aloittamaan alusta.';
+$string['canresumequiz'] = 'Tähänastiset tuloksesi tallennetaan ja voit jatkaa tehtävää "{$a}" myöhemmin.';
+$string['checks'] = 'Tarkistuksia';
+$string['checksomeboxes'] = 'Ole hyvä ja valitse joitakin kohteita';
+$string['clearcache'] = 'Tyhjennä HotPot-välimuisti';
+$string['cleardetails'] = 'Tyhjennä HotPot:in yksityiskohdat';
+$string['clearedcache'] = 'HotPot:in välimuisti on tyhjennetty';
+$string['cleareddetails'] = 'HotPot-aktiviteetin yksityiskohdat on tyhjennetty';
+$string['clickreporting'] = 'Ota käyttöön näpäytysten seuranta';
+$string['clickreporting_help'] = 'Jos käytössä, säilytetään merkinnät joka kerrasta kun "vihje", "johtolanka" tai "tarkista" -painiketta on painettu. Tämä antaa opettajan nähdä hyvin yksityiskohtaisen raportin kyselyn tilasta jokaisella klikkauksella. Muussa tapauksessa säilytetään kyselyssä vain yksi merkintä per yritys.';
+$string['clicktrailreport'] = 'Klikkaa polkuja';
+$string['closed'] = 'Tämä aktiviteetti on sulkeutunut';
+$string['clues'] = 'Vihjeitä';
+$string['completed'] = 'Suoritettu';
+$string['configenablecache'] = 'HotPot -kyselyiden välimuistissa pitäminen voi dramaattisesti nopeuttaa kyselyiden toimittamista opiskelijoille.';
+$string['configenablecron'] = 'Määritä aikavyöhykkeesi kellonajat, jolloin HotPot cron skripti voidaan ajaa';
+$string['configenablemymoodle'] = 'Tämä asetus määrittelee näytetäänkö HotPot -kyselyt OmaMoodle -sivulla vai ei.';
+$string['configenableobfuscate'] = 'Javascriptin estäminen lisäämästä mediasoittimia, tekee median tiedostonimen sekä tiedoston sisällön päättelystä vaikeampaa.';
+$string['configenableswf'] = 'Salli SWF-tiedostojen upottaminen HotPot -aktiviteetteihin. Jos sallittu, tämä asetus ohittaa asetuksen filter_mediaplugin_enable_swf.';
+$string['configfile'] = 'Konfiguraatiotiedosto';
+$string['configframeheight'] = 'Kun kysely näytetään kehyksessä, tämä arvo on kehyksen yläosan korkeus (pikseleinä), joka sisältää Moodlen navigointipalkin.';
+$string['configlocation'] = 'Konfiguraatiotiedoston sijainti';
+$string['configlockframe'] = 'Jos tämä asetus on sallittu, navigointikehys (jos käytössä) on lukittu niin, ettei sitä voi vierittää, sen kokoa ei voi muuttaa eikä sillä ole rajaa.';
+$string['configstoredetails'] = 'Jos tämä asetus on käytössä, raa\'at XML-tiedot HotPot-kyselyiden yrityksistä säilytetään hotpot_details -taulussa. Tämä mahdollistaa yritysten uudelleenarvioinnin tulevaisuudessa jos HotPot:in pisteytystä on muutettu. Kuitenkin, tämän asetuksen käyttäminen vilkkaalla sivustolla aiheuttaa hotpot_details -taulun todella nopean kasvamisen.';
+$string['confirmdeleteattempts'] = 'Haluatko poistaa nämä yritykset?';
+$string['confirmstop'] = 'Oletko varma että haluat poistua sivulta?';
+$string['correct'] = 'Oikein';
+$string['couldnotinsertsubmissionform'] = 'Ei voitu syöttää lähetyslomaketta';
+$string['delay1'] = 'Aikaviive 1';
+$string['delay1_help'] = 'Minimiaika ensimmäisen ja toisen yrityksen välillä.';
+$string['delay1summary'] = 'Aikaviive ensimmäisen ja toisen yrityksen välillä';
+$string['delay2'] = 'Aikaviive 2';
+$string['delay2_help'] = 'Minimiaika toisen yrityksen jälkeisten yritysten välillä.';
+$string['delay2summary'] = 'Aikaviive myöhempien yritysten välillä';
+$string['delay3'] = 'Aikaviive 3';
+$string['delay3afterok'] = 'Odota kunnes opiskelija napsauttaa OK';
+$string['delay3disable'] = 'Älä jatka automaattisesti';
+$string['delay3specific'] = 'Käytä tiettyä aikaa (sekunteina)';
+$string['delay3summary'] = 'Aikaviive tehtävän lopussa';
+$string['delay3template'] = 'Käytä asetuksia lähde-/mallitiedostossa';
+$string['deleteattempts'] = 'Poista yritykset';
+$string['detailsrecords'] = 'HotPot-yksityiskohtien merkinnät';
+$string['d_index'] = 'Diskriminointi-indeksi';
+$string['duration'] = 'Kesto';
+$string['enablecache'] = 'Salli HotPot-välimuisti';
+$string['enablecron'] = 'Salli HotPot-cron';
+$string['enablemymoodle'] = 'Näytä HotPot-aktiviteetit Omassa Moodlessa';
+$string['enableobfuscate'] = 'Salli mediasoittimen koodin tarkoituksenmukainen monimutkaistaminen';
+$string['enableswf'] = 'Salli SWF-tiedostojen upottaminen HotPot-aktiviteeteissa';
+$string['entry_attempts'] = 'Yritykset';
+$string['entrycm'] = 'Aiemmat toimet';
+$string['entrycmcourse'] = 'Aiemmat toimet tällä kurssilla';
+$string['entrycmsection'] = 'Aiemmat toimet tässä kurssin osassa';
+$string['entrycompletionwarning'] = 'Ennen kuin aloitat aktiviteetin, sinun täytyy katsoa {$a}.';
+$string['entry_dates'] = 'Päivämäärät';
+$string['entrygrade'] = 'Aiempien toimien arvosana';
+$string['entrygradewarning'] = 'Et voi aloittaa tätä aktiviteettia ennen kuin olet saanut {$a->entrygrade}% pistettä {$a->entryactivity} aktiviteetissa. Tällä hetkellä pisteesi kyseisessä aktiviteetissa on {$a->usergrade}%';
+$string['entry_grading'] = 'Arvostelu';
+$string['entryhotpotcourse'] = 'Edellinen HotPot tällä kurssilla';
+$string['entryhotpotsection'] = 'Edellinen HotPot tässä kurssin osassa';
+$string['entryoptions'] = 'Aloitussivun asetukset';
+$string['entrypage'] = 'Näytä aloitussivu';
+$string['entrypagehdr'] = 'Aloitussivu';
+$string['entrytext'] = 'Aloitussivun teksti';
+$string['entry_title'] = 'Yksikön nimi otsikkona';
+$string['exit_areyouok'] = 'Haloo, oletko vielä siellä?';
+$string['exit_attemptscore'] = 'Pisteesi kyseisestä yrityksestä oli {$a}';
+$string['exitcm'] = 'Seuraava aktiviteetti';
+$string['exitcmcourse'] = 'Seuraava aktiviteetti tällä kurssilla';
+$string['exitcmsection'] = 'Seuraava aktiviteetti tässä kurssiosassa';
+$string['exit_course'] = 'Kurssi';
+$string['exit_course_text'] = 'Palaa kurssin etusivulle';
+$string['exit_encouragement'] = 'Rohkaisu';
+$string['exit_excellent'] = 'Erinomaista!';
+$string['exit_feedback'] = 'Poistu sivun palautteesta';
+$string['exit_goodtry'] = 'Hyvä yritys!';
+$string['exit_grades'] = 'Arvioinnit';
+$string['exit_grades_text'] = 'Katsele tämänhetkisiä arvosanojasi tällä kurssilla';
+$string['exithotpotcourse'] = 'Seuraava HotPot tällä kurssilla';
+$string['exit_hotpotgrade'] = 'Arvosanasi tässä aktiviteetissa on {$a}';
+$string['exit_hotpotgrade_average'] = 'Tämänhetkinen arvosanakeskiarvosi tässä aktiviteetissa on {$a}';
+$string['exit_hotpotgrade_highest'] = 'Tämänhetkinen ylin arvosanasi tässä aktiviteetissa on {$a}';
+$string['exit_hotpotgrade_highest_equal'] = 'Yhtä paljon pisteitä kuin edellinen paras tuloksesi!';
+$string['exit_hotpotgrade_highest_previous'] = 'Edellinen ylin pistemääräsi tässä aktiviteetissa oli {$a}';
+$string['exit_hotpotgrade_highest_zero'] = 'Et ole vielä ylittänyt pistemäärää {$a} tässä aktiviteetissa';
+$string['exithotpotsection'] = 'Seuraava HotPot tässä kurssiosassa';
+$string['exit_index'] = 'Luettelo';
+$string['exit_index_text'] = 'Mene aktiviteettiluetteloon';
+$string['exit_links'] = 'Poistumissivun linkit';
+$string['exit_next'] = 'Seuraava';
+$string['exit_next_text'] = 'Yritä seuraavaa aktiviteettia';
+$string['exit_noscore'] = 'Olet suorittanut tämän aktiviteetin!';
+$string['exitoptions'] = 'Poistumissivun asetukset';
+$string['exitpage'] = 'Näytä poistumissivu';
+$string['exitpagehdr'] = 'Poistumissivu';
+$string['exit_retry'] = 'Yritä uudelleen';
+$string['exit_retry_text'] = 'Yritä tätä aktiviteettia uudelleen';
+$string['exittext'] = 'Poistumissivun teksti';
+$string['exit_welldone'] = 'Hyvin tehty!';
+$string['exit_whatnext_0'] = 'Mitä haluaisit tehdä seuraavaksi?';
+$string['exit_whatnext_1'] = 'Valitse kohteesi...';
+$string['exit_whatnext_default'] = 'Ole hyvä ja valitse yksi seuraavista:';
+$string['feedbackdiscuss'] = 'Keskustele tästä tehtävästä keskustelualueella';
+$string['feedbackformmail'] = 'Palautelomake';
+$string['feedbackmoodleforum'] = 'Moodle-keskustelu';
+$string['feedbackmoodlemessaging'] = 'Moodle-viestit';
+$string['feedbacknone'] = 'Ei mitään';
+$string['feedbacksendmessage'] = 'Lähetä viesti ohjaajallesi';
+$string['feedbackwebpage'] = 'Web-sivu';
+$string['firstattempt'] = 'Ensimmäinen yritys';
+$string['forceplugins'] = 'Käytä medialaajennuksia';
+$string['forceplugins_help'] = 'Jos sallittu, Moodlen kanssa yhteensopiva mediasoitin toistaa tiedostoja kuten avi, mpeg, mpg, mp3, mov and wmv. Muussa tapauksessa Moodle ei muuta minkään mediasoittimen asetuksia kyselyssä.';
+$string['frameheight'] = 'Kehyksen korkeus';
+$string['giveup'] = 'Luovuta';
+$string['grademethod'] = 'Arvostelumetodi';
+$string['gradeweighting'] = 'Arvosanan painotus';
+$string['gradeweighting_help'] = 'Tämän HotPot-aktiviteetin arvosanat skaalataan tähän lukuun Moodlen Arvosanoissa.';
+$string['highestscore'] = 'Ylin pistemäärä';
+$string['hints'] = 'Vihjeet';
+$string['hotpot:attempt'] = 'Yritä HotPot-aktiviteettia ja lähetä tulokset';
+$string['hotpot:deleteallattempts'] = 'Poista käyttäjien yrityksiä HotPot-aktiviteetista';
+$string['hotpot:deletemyattempts'] = 'Poista omat yrityksesi HotPot-aktiviteetista';
+$string['hotpot:ignoretimelimits'] = 'Jättää aikarajat huomiotta HotPot-aktiviteetissa';
+$string['hotpot:manage'] = 'Muuta asetuksia HotPot-aktiviteetissa';
+$string['hotpotname'] = 'HotPot-aktiviteetin nimi';
+$string['hotpot:preview'] = 'Esikatsele HotPot-aktiviteettia';
+$string['hotpot:reviewallattempts'] = 'Näytä käyttäjien yritykset HotPot-aktiviteetissa';
+$string['hotpot:reviewmyattempts'] = 'Näytä omat yrityksesi HotPot-aktiviteetissa';
+$string['hotpot:view'] = 'Näytä HotPot-aktiviteetin aloitussivu';
+$string['ignored'] = 'Jätä huomiotta';
+$string['inprogress'] = 'kesken';
+$string['isgreaterthan'] = 'on suurempi kuin';
+$string['islessthan'] = 'on pienempi kuin';
+$string['lastaccess'] = 'Viimeinen käynti';
+$string['lastattempt'] = 'Viimeinen yritys';
+$string['lockframe'] = 'Lukitse kehys';
+$string['maxeventlength'] = 'Yksittäisen kalenterimerkinnän päivien maksimimäärä';
+$string['mediafilter_hotpot'] = 'HotPot mediasuodin';
+$string['mediafilter_moodle'] = 'Moodlen standardit mediasuotimet';
+$string['migratingfiles'] = 'Hot Potatoes -kyselyn tiedostojen siirtäminen';
+$string['missingsourcetype'] = 'HotPot -merkinnästä puuttuu lähdetyyppi';
+$string['modulename'] = 'Hot Potatoes -kysely';
+$string['modulenameplural'] = 'Hot Potatoes -kyselyt';
+$string['nameadd'] = 'Nimi';
+$string['nameedit'] = 'Nimi';
+$string['nameedit_help'] = 'Teksti joka näytetään opiskelijoille';
+$string['navigation'] = 'Navigointi';
+$string['navigation_embed'] = 'Upotettu verkkosivu';
+$string['navigation_frame'] = 'Moodlen navigointikehys';
+$string['navigation_give_up'] = 'Yksittäinen "Luovuta"-nappula';
+$string['navigation_moodle'] = 'Standardit Moodlen navigointipalkit (ylä ja sivu)';
+$string['navigation_none'] = 'Ei mitään';
+$string['navigation_original'] = 'Alkuperäinen navigointi';
+$string['navigation_topbar'] = 'Vain Moodlen ylänavigointipalkki (ei sivupalkkeja)';
+$string['noactivity'] = 'Ei toimintoja';
+$string['nohotpots'] = 'Ei löydetty HotPot:teja';
+$string['nomoreattempts'] = 'Valitettavasti sinulla ei ole enää jäljellä yrityksiä tässä aktiviteetissa';
+$string['noresponses'] = 'Ei löydetty tietoa yksittäisistä kysymyksistä ja vastauksista.';
+$string['noreview'] = 'Valitettavasti et voi katsella tämän yrityksen tietoja.';
+$string['noreviewafterclose'] = 'Valitettavasti tämä kysely on mennyt kiinni. Et voi enää katsella tämän yrityksen tietoja.';
+$string['noreviewbeforeclose'] = 'Valitettavasti et voi katsella tämän yrityksen tietoja ennen {$a}';
+$string['nosourcefilesettings'] = 'HotPot-merkinnästä puuttuu lähdetiedoston tiedot';
+$string['notavailable'] = 'Valitettavasti tämä aktiviteetti ei ole tällä hetkellä saatavillasi.';
+$string['outputformat'] = 'Näyttömuoto';
+$string['outputformat_best'] = 'Paras';
+$string['outputformat_hp_6_jcloze_html'] = 'JCloze HP6 html: Standard';
+$string['outputformat_hp_6_jcloze_xml_anctscan'] = 'JCloze from HP6 xml: ANCT-Scan';
+$string['outputformat_hp_6_jcloze_xml_dropdown'] = 'JCloze from HP6 xml: Rottmeier DropDown';
+$string['outputformat_hp_6_jcloze_xml_findit_a'] = 'JCloze from HP6 xml: Rottmeier FindIt (a)';
+$string['outputformat_hp_6_jcloze_xml_findit_b'] = 'JCloze from HP6 xml: Rottmeier FindIt (b)';
+$string['outputformat_hp_6_jcloze_xml_jgloss'] = 'JCloze from HP6 xml: Rottmeier JGloss';
+$string['outputformat_hp_6_jcloze_xml_v6'] = 'JCloze from HP6 xml: Standard';
+$string['outputformat_hp_6_jcross_html'] = 'JCross HP6 html';
+$string['outputformat_hp_6_jcross_xml_v6'] = 'JCross from HP6 xml';
+$string['outputformat_hp_6_jmatch_html'] = 'JMatch from html';
+$string['outputformat_hp_6_jmatch_xml_flashcard'] = 'JMatch from HP6 xml: Flashcard';
+$string['outputformat_hp_6_jmatch_xml_jmemori'] = 'JMatch from HP6 xml: Rottmeier JMemori';
+$string['outputformat_hp_6_jmatch_xml_v6'] = 'JMatch from HP6 xml: Standard';
+$string['outputformat_hp_6_jmatch_xml_v6_plus'] = 'JMatch from HP6 xml: Drag and Drop';
+$string['outputformat_hp_6_jmix_html'] = 'JMix from HP6 html';
+$string['outputformat_hp_6_jmix_xml_v6'] = 'JMix from HP6 xml: Standard';
+$string['outputformat_hp_6_jmix_xml_v6_plus'] = 'JMix from HP6 xml: Drag and Drop';
+$string['outputformat_hp_6_jmix_xml_v6_plus_keypress'] = 'JMix from HP6 xml: Drag and Drop with key press';
+$string['outputformat_hp_6_jquiz_html'] = 'JQuiz HP6 html';
+$string['outputformat_hp_6_jquiz_xml_v6'] = 'JQuiz from HP6 xml: Standard';
+$string['outputformat_hp_6_jquiz_xml_v6_autoadvance'] = 'JQuiz from HP6 xml: Auto-advance';
+$string['outputformat_hp_6_jquiz_xml_v6_exam'] = 'JQuiz from HP6 xml: Exam';
+$string['outputformat_hp_6_rhubarb_html'] = 'WebRhubarb (v6) from html';
+$string['outputformat_hp_6_rhubarb_xml'] = 'WebRhubarb (v6) from xml';
+$string['outputformat_hp_6_sequitur_html'] = 'WebSequitur (v6) from html';
+$string['outputformat_hp_6_sequitur_html_incremental'] = 'WebSequitur (v6) from html, incremental scoring';
+$string['outputformat_hp_6_sequitur_xml'] = 'WebSequitur (v6) from xml';
+$string['outputformat_hp_6_sequitur_xml_incremental'] = 'WebSequitur (v6) from xml, incremental scoring';
+$string['overviewreport'] = 'Yleiskatsaus';
+$string['penalties'] = 'Pistevähennykset';
+$string['percent'] = 'Prosenttia';
+$string['pluginadministration'] = 'HotPot -ylläpito';
+$string['pluginname'] = 'Hot Potatoes -kysely';
+$string['pressoktocontinue'] = 'Paina OK jatkaaksesi tai Peruuta pysyäksesi nykyisellä sivulla.';
+$string['questionshort'] = 'Q-{$a}';
+$string['quizname_help'] = 'Kyselyn nimen ohjeteksti';
+$string['quizzes'] = 'Kyselyt';
+$string['removegradeitem'] = 'Poista arvosanakohde';
+$string['responsesreport'] = 'Vastaukset';
+$string['score'] = 'Pisteet';
+$string['scoresreport'] = 'Pisteet';
+$string['selectattempts'] = 'Valitse yritykset';
+$string['showerrormessage'] = 'HotPot virhe: {$a}';
+$string['sourcefile'] = 'Lädetiedoston nimi';
+$string['sourcefilenotfound'] = 'Lähdetiedostoa ei löytynyt (tai se on tyhjä): {$a}';
+$string['status'] = 'Tila';
+$string['stopbutton'] = 'Näytä lopetuspainike';
+$string['stopbutton_langpack'] = 'Kielipaketista';
+$string['stopbutton_specific'] = 'Käytä erityistä tekstiä';
+$string['stoptext'] = 'Lopetuspainikkeen teksti';
+$string['storedetails'] = 'Säilytä raa\'at XML-tiedot HotPot-kyselyiden yrityksistä';
+$string['studentfeedback'] = 'Opiskelijan palaute';
+$string['submits'] = 'Palautukset';
+$string['textsourcefile'] = 'Hanki lähdetiedostosta';
+$string['textsourcefilename'] = 'Käytä alkuperäistä tiedostonimeä';
+$string['textsourcefilepath'] = 'Käytä alkuperäistä tiedostopolkua';
+$string['textsourcequiz'] = 'Hae kysymyksestä';
+$string['textsourcespecific'] = 'Erityisteksti';
+$string['timeclose'] = 'Saatavilla asti';
+$string['timedout'] = 'Aika loppui';
+$string['timelimit'] = 'Aikaraja';
+$string['timelimitexpired'] = 'Aikaraja tälle yritykselle on umpeutunut';
+$string['timelimitspecific'] = 'Käytä tiettyä aikaa';
+$string['timelimitsummary'] = 'Aikaraja yhdelle yritykselle';
+$string['timelimittemplate'] = 'Käytä asetuksia lähde/malli -tiedostossa';
+$string['timeopen'] = 'Saatavilla alkaen';
+$string['timeopenclose'] = 'Avautumis- ja sulkeutumisajat';
+$string['timeopenclose_help'] = 'Voit määrittää ajat, koska kyselyyn on mahdollista vastata. Ennen avautumisaikaa, ja lsulkeutumisajan jälkeen, kysely ei ole saatavilla.';
+$string['title'] = 'Otsikko';
+$string['unitname_help'] = 'yksikkönimen ohjeteksti';
+$string['updated'] = 'Päivitetty';
+$string['usefilters'] = 'Käytä suodattimia';
+$string['usefilters_help'] = 'Jos tämä asetus on käytössä, sisältö ajetaan Moodlen suotimien läpi ennen sen lähettämistä selaimelle.';
+$string['useglossary'] = 'Käytä sanastoa';
+$string['useglossary_help'] = 'Jos tämä asetus on käytössä, sisältö ajetaan Moodlen Sanaston Automattilinkityssuotimen läpi ennen sen lähettämistä selaimelle.
+
+Huomaa että tämä asetus ohittaa sivuston ylläpitoasetuksen Sanaston Automattilinkityssuotimen sallimisesta / estämisestä.';
+$string['usemediafilter'] = 'Käytä mediasuodinta';
+$string['utilitiesindex'] = 'HotPot-apuvälineiden luettelo';
+$string['viewreports'] = 'Näytä raportit {$a}:lle käyttäjälle';
+$string['views'] = 'Katselut';
+$string['weighting'] = 'Painotus';
+$string['wrong'] = 'Väärin';
+$string['zeroduration'] = 'Ei kestoa';
+$string['zeroscore'] = 'Nolla pistettä';
