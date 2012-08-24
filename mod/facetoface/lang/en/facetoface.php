@@ -693,3 +693,5 @@ $string['cancelusersession'] = 'Cancelled for {$a->usermsg} session {$a->url}';
 
 $string['approveinstruction'] = 'To approve session registration, press accept';
 $string['rejectinstruction'] = 'To reject session registration, press reject';
+$string['sessiondate_help'] = 'Session date is the date on which the session occurs.';
+

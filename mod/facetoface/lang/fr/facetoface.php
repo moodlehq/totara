@@ -224,7 +224,7 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '***Information***
 
 L\'inscription de [firstname] [lastname] a été annulée pour la formation suivante et vous êtes désigné comme son responsable.
 
-*** L\'annulation de l\'inscription de [firstname] [lastname]est en copie ci-dessous ****';
+*** L\'annulation de l\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultcancellationmessage'] = 'Message d\'annulation par défaut envoyés aux utilisateurs.';
 $string['setting:defaultcancellationmessage_caption'] = 'Message d\'annulation';
 $string['setting:defaultcancellationmessagedefault'] = 'Ce message vous confirme que votre inscription à la session suivante a été annulée:
@@ -251,7 +251,7 @@ $string['setting:defaultconfirmationinstrmngrdefault'] = '***Information***
 
 Si vous n\'êtes pas son responsable et avez reçu ce message par erreur,merci de le signaler en y répondant.
 
-*** L\'inscription de [firstname] [lastname]est en copie ci-dessous ****';
+*** L\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultconfirmationmessage'] = 'Messages de confirmation par défaut envoyés aux utilisateurs.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Message de confirmation';
 $string['setting:defaultconfirmationmessagedefault'] = 'Ce message vous confirme que vous êtes inscrit(e) à la formation suivante:
@@ -288,7 +288,7 @@ $string['setting:defaultreminderinstrmngrdefault'] = '***Rappel***
 
 Si vous n\'êtes pas le responsable de cette personne et pensez avoir reçu ce message par erreur, merci d\'y répondre pour le signaler.
 
-*** Le courriel de rappel à [firstname] [lastname]est en copie ci-dessous ****';
+*** Le courriel de rappel à [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultremindermessage'] = 'Messages de rappel par défaut envoyés aux utilisateurs.';
 $string['setting:defaultremindermessage_caption'] = 'Message de rappel';
 $string['setting:defaultremindermessagedefault'] = 'Ce message vous rappelle que vous êtes inscrit(e) à la session suivante:
@@ -476,13 +476,63 @@ $string['location_help'] = 'Lieu indique le lieu de la session (ville, départem
 Le lieu est affiché sur la page de cours avec les dates et heures de début et de fin de session. Il est aussi indiqué sur la page d\'inscription, la page "Afficher toutes les sessions" et tous les courriels envoyés.
 
 Sur la page "Afficher toutes les sessions", la liste des sessions peut aussi être filtrée par lieu.';
-$string['duration_help'] = 'La durée est la durée totale de la formation en heures.
+$string['duration_help'] = 'La durée est la durée totale de la formation en heures.';
+$string['requestmessage_help'] = '# Messages de requête
 
-Par exemple:
-*   *"2 heures"* se tape: **2**
-*   *"1 heure et demi"* se tape: **1.5**
-*   *"45 minutes"* se tape: **0.75**
+Quand **approbation requise** est activé, la section **Message de requête** est disponible.
 
-Si la formation se passe sur deux périodes ou plus la durée est le total des durées de ces périodes.
+La section **Message de requête** affiche les notifications envoyées à l\'apprenti et son gestionnaire à propos du processus d\'approbation pour la participation de l\'apprenti aux sessions face-to-face.
 
-Ce champ est optionnel.';
+**Sujet :** est la ligne de sujet qui apparaît dans les e-mails de demande d\'approbation envoyées au gestionnaire et à l\'apprenti.
+
+**Message :** est le texte de l\'e-mail envoyé à l\'apprenti et leur signifiant que leur requête pour assister à la session face-to-face a été envoyée à leur gestionnaire pour approbation.
+
+**Notification pour gestionnaires :** est le texte de l\'e-mail envoyé au gestionnaire de l\'apprenti demandant à assister à une session face-to-face.';
+$string['notificationtype_help'] = '# Type de notification
+
+Le type de notification permet à l\'apprenti de choisir la manière dont ils souhaitent être informés de leur réservation.
+
+*   Rendez-vous iCalendar seulement</i> 
+    *   E-mail de notification seulement</i> 
+        *   E-mail de notification et rendez-vous iCalendar</i> </ul>';
+$string['reminderinstrmngr_help'] = '# Notification pour gestionnaire
+
+Quand **Envoyer notification au gestionnaire** est cochée, le texte du champ **Notice pour gestionnaire** est envoyé au gestionnaire de l\'apprenti lui signifiant que l\'apprenti s\'est inscrit à une session face-to-face.';
+$string['shortname_help'] = '# Nom abrégé
+
+Le **nom abrégé** est la description de la session apparaissant sur le calendrier d\'apprentissage quand **Afficher sur le calendrier** est activé.';
+$string['showoncalendar_help'] = '# Afficher sur le calendrier
+
+Quand **Afficher sur le calendrier** est coché les sessions d\'activité face-to-face s\'affichent sur le calendrier d\'apprentissage.';
+$string['waitlistedmessage_help'] = '# Message de liste d\'attente
+
+Ce message est envoyé chaque fois qu\'un utilisateur s\'inscrit en liste d\'attente.';
+$string['confirmationinstrmngr_help'] = '# Notification au gestionnaire
+
+Quand "Envoyer notification au gestionnaire" est coché, le texte du champ "Notification au gestionnaire" est envoyé au gestionnaire l\'avertissant qu\'un membre d\'équipe s\'est inscrit à une session face-to-face.';
+$string['description_help'] = '# Description
+
+La **description** est la description de cours affichée quand un apprenti s\'engage dans une session face-to-face. 
+
+La **description** s\'affiche également dans le calendrier d\'apprentissage.';
+$string['allowoverbook_help'] = '# Autoriser le surbooking
+
+Quand "autoriser le surbooking" est coché, les apprentis pour s\'enregistrer pour une session face-to-face même si elle est déjà pleine.
+
+Quand un apprenti s\'inscrit à une session déjà pleine, il recevra un e-mail l\'avertissant qu\'il est sur liste d\'attente pour la session et sera notifié si une réservation devient disponible.';
+$string['approvalreqd_help'] = '# Approbation requise
+
+Quand "approbation requise" est coché, l\'apprenti devra recevoir l\'approbation de son gestionnaire pour être autorisé à participer à la session face-to-face.';
+$string['cancellationinstrmngr_help'] = '# Notication au gestionnaire
+
+Quand **Envoyer une notification au gestionnaire** est coché, le texte du champ **Notication au gestionnaire** est envoyé au gestionnaire de l\'apprenti pour l\'informer de l\'annulation d\'une session face-to-face.';
+$string['emailmanagerreminder_help'] = '# Envoyer notification au gestionnaire
+
+Quand "envoyer une notification au gestionnaire" est coché, un message de rappel sera envoyé au gestionnaire de l\'apprenti quelques jours avant la date de début de la session face-to-face.';
+$string['emailmanagercancellation_help'] = '# Envoyer notification au gestionnaire
+
+Quand "Envoyer notification au gestionnaire" est coché, un e-mail sera envoyé au gestionnaire de l\'apprenti pour l\'avertir quand une réservation face-to-face est annulée.';
+$string['emailmanagerconfirmation_help'] = '# Envoyer notification au gestionnaire
+
+Quand "Envoyer notification au gestionnaire" est coché, un e-mail de confirmation sera envoyé au gestionnaire de l\'apprenti quand celui-ci s\'inscrit à une session face-to-face.';
+
