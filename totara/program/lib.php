@@ -1047,11 +1047,11 @@ function prog_eventhandler_program_assigned($eventdata) {
 
     $messagesmanager = $program->get_messagesmanager();
     $messages = $messagesmanager->get_messages();
-
+    $completed = $program->is_program_complete($userid);
     // send notifications to user and (optionally) the user's manager
     foreach ($messages as $message) {
         if ($message->messagetype == MESSAGETYPE_ENROLMENT) {
-            if ($user = $DB->get_record('user', array('id' => $userid))) {
+            if ($user = $DB->get_record('user', array('id' => $userid)) && !$completed) {
                 $message->send_message($user);
             }
         }
