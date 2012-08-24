@@ -20,3 +20,5 @@ $string['usercount'] = 'User count';
 
 // types
 $string['type_base'] = 'Assignment';
+$string['assignmentdescription'] = 'Assignment description';
+
