@@ -321,6 +321,11 @@ class rb_source_user extends rb_base_source {
                 'position.path',
                 'position'
             ),
+            new rb_content_option(
+                'date',
+                get_string('timecreated', 'rb_source_user'),
+                'base.timecreated'
+            ),
         );
         return $contentoptions;
     }
