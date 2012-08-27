@@ -25,8 +25,6 @@
  * Replaces lang/[lang]/local.php from 1.1 series
  */
 
-$string['pluginname'] = 'Totara core';
-
 $string['addanothercolumn'] = '添加另一列...';
 $string['allf2fbookings'] = '所有面授登记';
 $string['alllearningrecords'] = '所有学习记录';
@@ -45,9 +43,13 @@ $string['browsecategories'] = '浏览类别';
 $string['calendar'] = '日历';
 $string['column'] = '列';
 $string['completed'] = '已完成';
+$string['coursecompletion'] = '课程完成';
 $string['coursecompletionsfor'] = '课程完成情况 ';
 $string['courseicon'] = '课程图标';
+$string['courseprogress'] = '课程进度';
+$string['courseprogresshelp'] = '这指定课程进度版块是否会显示在首页上';
 $string['currenticon'] = '当前图标';
+$string['currentlyselected'] = '当前选定项';
 $string['delete'] = '删除';
 $string['developmentplan'] = '开发计划器';
 $string['editheading'] = '编辑报表标题版块';
@@ -56,6 +58,9 @@ $string['enrolled'] = '选修';
 $string['error:columntypenotfound'] = '列类型 \'{$a}\'已定义，但并非有效选项。如果您删除了一个自定义字段或层级深度级别，则可能会发生这种情况。最佳做法是按下右侧的红叉，删除此列。';
 $string['error:couldnotcreatedefaultfields'] = '无法创建默认字段';
 $string['error:couldnotupdatereport'] = '无法更新报表';
+$string['error:courseidincorrect'] = '课程 ID 不正确';
+$string['error:dashboardnotfound'] = '错误：未找到仪表板';
+$string['error:dialognotreeitems'] = '无项目可用';
 $string['error:norolesfound'] = '未找到角色';
 $string['error:notificationsparamtypewrong'] = '向 Totara 通知发送了不正确的参数类型';
 $string['error:unknownbuttonclicked'] = '点击了未知按钮';
@@ -102,6 +107,7 @@ $string['organisationsarrow'] = '组织 > ';
 $string['participant'] = '参与者';
 $string['pastbookingsfor'] = '过去的登记 ';
 $string['performinglocalpostinst'] = '本地安装后设置';
+$string['pluginname'] = 'Totara core';
 $string['positionatcompletion'] = '完成时的职位';
 $string['positionsarrow'] = '职位 > ';
 $string['proficiency'] = '熟练程度';
@@ -112,6 +118,7 @@ $string['recordoflearningfor'] = '学习记录 ';
 $string['report'] = '报表';
 $string['reportedat'] = '报告位置';
 $string['returntocourse'] = '返回到课程';
+$string['search'] = '搜索';
 $string['searchcourses'] = '搜索课程';
 $string['selectanassessor'] = '选择一名评价者...';
 $string['selectaproficiency'] = '选择熟练程度...';
@@ -126,5 +133,3 @@ $string['template'] = '模板';
 $string['timecompleted'] = '完成时间';
 $string['type'] = '类型';
 $string['viewmyteam'] = '查看我的团队';
-
-?>

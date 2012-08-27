@@ -1,5 +1,29 @@
 <?php
-// customfields.php - created with Totara langimport script version 1.1
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage totara_core
+ *
+ * totara_core specific language strings.
+ * these should be called like get_string('key', 'totara_core');
+ * Replaces lang/[lang]/local.php from 1.1 series
+ */
 
 $string['category'] = 'קטיגוריה';
 $string['categorynamemustbeunique'] = 'שם קטיגוריה (חייב להיות ייחודי)';
@@ -14,6 +38,7 @@ $string['createnewcustomfield'] = 'צור שדה מותאם אישית חדש';
 $string['createnewfield'] = 'צור שדה מותאם אישית &quot;{$a}&quot; חדש';
 $string['customfield'] = 'שדה מותאם אישית';
 $string['customfieldcategories'] = 'קטיגוריית שדות מותאמים אישית';
+$string['customfieldrequired'] = 'האם זה שדה נדרש?';
 $string['customfields'] = 'שדות מותאמים אישית';
 $string['customfieldtypecheckbox'] = 'תיבת סימון';
 $string['customfieldtypedatetime'] = 'תאריך/שעה';
@@ -43,14 +68,13 @@ $string['menutoofewoptions'] = 'עליך לספק לפחות 2 אפשרויות'
 $string['nocustomfieldcategories'] = 'להוספת שדה מותאם אישית, ראשית צור קטיגוריית שדות מותאמים אישית';
 $string['nocustomfieldcategoriesdefined'] = 'לא הוגדרו קטיגוריות שדות מותאמים אישית';
 $string['nocustomfieldsdefined'] = 'לא הוגדרו שדות';
-$string['customfieldrequired'] = 'האם זה שדה נדרש?';
+$string['notset'] = 'לא מוגדר';
 $string['returntocategories'] = 'חזור לקטיגוריות שדות מותאמים אישית';
 $string['returntoframework'] = 'חזור למסגרת';
 $string['shortname'] = 'שם קצר (חייב להיות ייחודי)';
 $string['shortnamenotunique'] = 'שם קצר זה כבר נמצא בשימוש';
 $string['specificsettings'] = 'הגדרות ספציפיות';
 $string['startyear'] = 'שנת התחלה';
+$string['startyearafterend'] = 'שנת ההתחלה לא כולה להיות אחרי שנת הסיום';
 $string['visible'] = 'מוסתר בעמוד ההגדרות?';
 $string['wanttime'] = 'לכלול שעה?';
-
-?>

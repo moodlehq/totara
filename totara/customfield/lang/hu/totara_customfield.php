@@ -1,5 +1,29 @@
 <?php
-// customfields.php - created with Totara langimport script version 1.1
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage totara_core
+ *
+ * totara_core specific language strings.
+ * these should be called like get_string('key', 'totara_core');
+ * Replaces lang/[lang]/local.php from 1.1 series
+ */
 
 $string['category'] = 'Kategória';
 $string['categorynamemustbeunique'] = 'Kategória név (egyedinek kell lennie)';
@@ -16,6 +40,7 @@ $string['createnewcustomfield'] = 'Új egyéni mező létrehozása';
 $string['createnewfield'] = 'Új &quot;{$a}&quot; egyéni mező létrehozása';
 $string['customfield'] = 'Egyéni mező';
 $string['customfieldcategories'] = 'Egyéni mező kategóriák';
+$string['customfieldrequired'] = 'Ez a mező kötelező?';
 $string['customfields'] = 'Egyéni mezők';
 $string['customfieldtypecheckbox'] = 'Jelölőnégyzet';
 $string['customfieldtypedatetime'] = 'Dátum/időpont';
@@ -45,14 +70,13 @@ $string['menutoofewoptions'] = 'Kötelező megadni legalább két listaelemet.';
 $string['nocustomfieldcategories'] = 'Az egyéni mező létrehozásához létre kell hozni egy egyéni mező kategóriát.';
 $string['nocustomfieldcategoriesdefined'] = 'Nincs egyéni mező kategória megadva.';
 $string['nocustomfieldsdefined'] = 'Nincs mező megadva.';
-$string['customfieldrequired'] = 'Ez a mező kötelező?';
+$string['notset'] = 'Nem beállított';
 $string['returntocategories'] = 'Visszatérés az egyéni mező kategóriákhoz';
 $string['returntoframework'] = 'Visszatérés a struktúrához';
 $string['shortname'] = 'Rövid név (egyedinek kell lennie)';
 $string['shortnamenotunique'] = 'Ez a rövid név már használatban van.';
 $string['specificsettings'] = 'Speciális beállítások';
 $string['startyear'] = 'Kezdési év';
+$string['startyearafterend'] = 'A kezdő év nem következhet a befejező év után';
 $string['visible'] = 'Legyen rejtett a beállítási oldalon?';
 $string['wanttime'] = 'Legyen az időpont hozzáfűzve?';
-
-?>

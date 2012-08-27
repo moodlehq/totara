@@ -25,14 +25,12 @@
  * Replaces lang/[lang]/local.php from 1.1 series
  */
 
-$string['pluginname'] = 'Totara core';
-
+$string['datepickerdisplayformat'] = 'mm/dd/y';
+$string['datepickerparseformat'] = 'm/d/y';
+$string['datepickerplaceholder'] = 'mm/dd/yy';
+$string['datepickerregexjs'] = '(0|1)[0-9]/[0-3][0-9]/[0-9]{2}';
+$string['datepickerregexphp'] = '/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/(\d{2})$/';
 $string['organisation_typeicon'] = 'Organization type icon';
 $string['organisationatcompletion'] = 'Organization at completion';
 $string['organisationsarrow'] = 'Organizations >';
-$string['datepickerdisplayformat'] = 'mm/dd/y';
-$string['datepickerplaceholder'] = 'mm/dd/yy'; //how the datepicker placeholder hint displays the default
-$string['datepickerparseformat'] = 'm/d/y'; //how php parses the datepicker dates to a timestamp (in totara_date_parse_from_format)
-$string['datepickerregexjs'] = '(0|1)[0-9]/[0-3][0-9]/[0-9]{2}';
-$string['datepickerregexphp'] = '/^(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/(\d{2})$/';
-?>
+$string['pluginname'] = 'Totara core';

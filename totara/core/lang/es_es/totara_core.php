@@ -25,12 +25,19 @@
  * Replaces lang/[lang]/local.php from 1.1 series
  */
 
-$string['pluginname'] = 'Totara core';
-
 $string['allf2fbookings'] = 'Todas las inscripciones presenciales';
 $string['alllearningrecords'] = 'Todos los registros de formación';
 $string['competency_typeicon'] = 'Icono tipo de competencia';
 $string['coursecategoryicon'] = 'Icono de categoría';
+$string['coursecompletion'] = 'Curso finalizado';
+$string['courseprogress'] = 'Progreso del curso';
+$string['courseprogresshelp'] = 'Esto especifica si el bloque de progreso curso aparece en la página de inicio';
+$string['currentlyselected'] = 'Selección actual';
+$string['datepickerplaceholder'] = 'dd/mm/aa';
+$string['error:courseidincorrect'] = 'El ID del curso era incorrecto';
+$string['error:dashboardnotfound'] = 'Error: No se encontró panel de control';
+$string['error:dialognotreeitems'] = 'No hay ítems disponibles';
+$string['error:morethanxitemsatthislevel'] = 'Hay más de \${a} ítems en este nivel.';
 $string['f2fbookings'] = 'Inscripciones presenciales';
 $string['facetoface'] = 'Presenciales';
 $string['framework'] = 'Estructura';
@@ -72,10 +79,12 @@ $string['organisationsarrow'] = 'Organizaciones >';
 $string['participant'] = 'Participante';
 $string['pastbookingsfor'] = 'Antiguas reservas';
 $string['performinglocalpostinst'] = 'Icono tipo de puesto de trabajo';
+$string['pluginname'] = 'Totara core';
 $string['position_typeicon'] = 'Icono tipo de puesto de trabajo';
 $string['positionatcompletion'] = 'Puesto de trabajo al Completar';
 $string['positionsarrow'] = 'Puestos de trabajo >';
 $string['proficiency'] = 'Capacidad';
+$string['programicon'] = 'Icono del programa';
 $string['recordnotcreated'] = 'No se pudo crear el registro';
 $string['recordnotupdated'] = 'No se pudo actualizar el registro';
 $string['recordoflearning'] = 'Registro de formación';
@@ -83,7 +92,10 @@ $string['recordoflearningfor'] = 'Registro de formación para';
 $string['report'] = 'Informe';
 $string['reportedat'] = 'Informó a';
 $string['returntocourse'] = 'Volver al curso';
+$string['save'] = 'Guardar';
+$string['search'] = 'Buscar';
 $string['searchcourses'] = 'Buscar cursos';
+$string['searchx'] = 'Search {$a}';
 $string['selectanassessor'] = 'Seleccione un asesor';
 $string['selectaproficiency'] = 'Seleccione una capacidad';
 $string['settings'] = 'Configuración';
@@ -95,8 +107,7 @@ $string['teammembers'] = 'Miembros del equipo';
 $string['teammembers_text'] = 'A continuación se muestran todos los miembros de su equipo';
 $string['template'] = 'Plantilla';
 $string['timecompleted'] = 'Tiempo completado';
+$string['trysearchinginstead'] = 'Intente buscar en su lugar';
 $string['type'] = 'Tipo';
 $string['typeicon'] = 'Icono tipo';
 $string['viewmyteam'] = 'Ver mi equipo';
-
-?>
