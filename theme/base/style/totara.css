@@ -133,6 +133,7 @@ div.totara-dialog {
     }
     div.totara-dialog div.ui-dialog-content table.dialog-content {
         height: 100%;
+        margin-bottom: 0; /* avoids scrollbars due to default margin applied to tables */
         width: 100%;
     }
         /* Treeview and Select table cell */
