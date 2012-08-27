@@ -49,10 +49,23 @@ if (has_capability('totara/program:createprogram', $systemcontext)) {
 }
 //Javascript include
 local_js(array(
+    TOTARA_JS_DIALOG,
+    TOTARA_JS_UI,
     TOTARA_JS_DATEPICKER,
     TOTARA_JS_PLACEHOLDER,
     TOTARA_JS_ICON_PREVIEW
 ));
+
+$PAGE->requires->string_for_js('chooseicon', 'totara_program');
+$iconjsmodule = array(
+        'name' => 'totara_iconpicker',
+        'fullpath' => '/totara/core/js/icon.picker.js',
+        'requires' => array('json'));
+
+$iconargs = array('args' => '{"selected_icon":"default",
+                              "type":"program"}');
+
+$PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
 
 if ($categoryid) { // creating new program in this category
     if (!$category = $DB->get_record('course_categories', array('id' => $categoryid))) {

@@ -752,4 +752,24 @@ div.totara-dialog td.select #browse-tab {
     padding: 0 5px 0 0;
     margin-bottom: 0px;
 }
-
+/*Icon picker for programs and courses*/
+#icon-selectable {
+    list-style-type: none;
+}
+#icon-selectable .ui-selected,
+#icon-selectable .ui-selecting {
+    background: #FFFFFF;
+    border: 2px solid #087BB1;
+    margin: 2px;
+}
+#icon-selectable li {
+    border: 1px solid #DDDDDD;
+    background: #FFFFFF;
+    margin: 3px;
+    padding: 1px;
+    float: left;
+    width: 40px;
+    height: 35px;
+    text-align: center;
+    cursor: pointer;
+}

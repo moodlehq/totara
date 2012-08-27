@@ -35,6 +35,7 @@ require_once('edit_form.php');
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
 $category = optional_param('category', '', PARAM_INT);
+$nojs = optional_param('nojs', 0, PARAM_INT);
 
 require_login();
 
@@ -58,6 +59,8 @@ if ($action == 'edit') {
 
     //Javascript include
     local_js(array(
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_UI,
         TOTARA_JS_DATEPICKER,
         TOTARA_JS_ICON_PREVIEW,
         TOTARA_JS_PLACEHOLDER
@@ -76,6 +79,16 @@ if ($action == 'edit') {
         'input[name="availablefromselector"], input[name="availableuntilselector"]'
     );
 
+    $PAGE->requires->string_for_js('chooseicon', 'totara_program');
+    $iconjsmodule = array(
+            'name' => 'totara_iconpicker',
+            'fullpath' => '/totara/core/js/icon.picker.js',
+            'requires' => array('json'));
+
+    $iconargs = array('args' => '{"selected_icon":"' . $program->icon . '",
+                            "type":"program"}');
+
+    $PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
 }
 
 if (!$progcategory = $DB->get_record('course_categories', array('id' => $program->category))) {
@@ -98,7 +111,7 @@ $program = file_prepare_standard_editor($program, 'summary', $TEXTAREA_OPTIONS, 
 
 $program = file_prepare_standard_editor($program, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'progendnote', $id);
-$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS), 'post', '', array('name'=>'form_prog_details'));
+$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS, 'nojs' => $nojs), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
     totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));

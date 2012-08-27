@@ -19,6 +19,7 @@ class course_edit_form extends moodleform {
         $category      = $this->_customdata['category'];
         $editoroptions = $this->_customdata['editoroptions'];
         $returnto = $this->_customdata['returnto'];
+        $nojs = (isset($this->_customdata['nojs'])) ? $this->_customdata['nojs'] : 0 ;
 
         $systemcontext   = get_context_instance(CONTEXT_SYSTEM);
         $categorycontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
@@ -202,7 +203,7 @@ class course_edit_form extends moodleform {
             $action = 'edit';
         }
         $course->icon = isset($course->icon) ? $course->icon : 'default';
-        totara_add_icon_picker($mform, $action, 'course', $course->icon);
+        totara_add_icon_picker($mform, $action, 'course', $course->icon, $nojs);
         // END Course Icons
 
         enrol_course_edit_form($mform, $course, $context);

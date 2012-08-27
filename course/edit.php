@@ -41,6 +41,7 @@ require_once($CFG->dirroot.'/totara/program/lib.php');
 $id         = optional_param('id', 0, PARAM_INT);       // course id
 $categoryid = optional_param('category', 0, PARAM_INT); // course category - can be changed in edit form
 $returnto = optional_param('returnto', 0, PARAM_ALPHANUM); // generic navigation return page switch
+$nojs = optional_param('nojs', 0, PARAM_INT);
 
 $PAGE->set_pagelayout('admin');
 $PAGE->set_url('/course/edit.php');
@@ -80,6 +81,7 @@ if ($id) { // editing course
 
 // Set up JS
 local_js(array(
+        TOTARA_JS_UI,
         TOTARA_JS_ICON_PREVIEW,
         TOTARA_JS_DIALOG,
         TOTARA_JS_TREEVIEW
@@ -100,6 +102,18 @@ $jsmodule = array(
 $args = array('args'=>'{"enrolledselected":"' . $enrolledselected . '",'.
         '"COHORT_ASSN_VALUE_ENROLLED":' . COHORT_ASSN_VALUE_ENROLLED . '}');
 $PAGE->requires->js_init_call('M.totara_coursecohort.init', $args, false, $jsmodule);
+
+$PAGE->requires->string_for_js('chooseicon', 'totara_program');
+$iconjsmodule = array(
+        'name' => 'totara_iconpicker',
+        'fullpath' => '/totara/core/js/icon.picker.js',
+        'requires' => array('json'));
+
+$currenticon = isset($course->icon) ? $course->icon : 'default';
+$iconargs = array('args' => '{"selected_icon":"' . $currenticon . '",
+                            "type":"course"}');
+
+$PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
 
 unset($enrolledselected);
 

@@ -54,6 +54,7 @@ function local_js($options = array()) {
     if (in_array(TOTARA_JS_UI, $options)) {
 
         $PAGE->requires->js('/totara/core/js/lib/jquery-ui-1.8.20.custom.min.js');
+        $PAGE->requires->js('/totara/core/js/lib/jquery.ui.selectable.min.js');
 
     }
 

@@ -140,6 +140,11 @@ M.totara_programedit = M.totara_programedit || {
             }
         });
 
+        // Check if check boxes have changed
+        if (($('input[name=icon]').attr('initialvalue') != undefined) && ($('input[name=icon]').attr('initialvalue') != $('input[name=icon]').val())) {
+            isModified = true;
+        }
+
         // Check if textareas have been changed
         $('textarea', form).each(function() {
             // See if there's a tiny MCE instance for this text area

@@ -1497,6 +1497,47 @@ totaraDialog_handler_form.prototype._updatePage = function(response) {
 };
 
 /*****************************************************************************/
+/** totaraDialog_handler_selectable **/
+
+totaraDialog_handler_selectable = function(selected) { this.selected = selected; };
+totaraDialog_handler_selectable.prototype = new totaraDialog_handler();
+
+totaraDialog_handler_selectable.prototype.first_load = function() {
+    // Setup selectable
+    $("#icon-selectable").selectable({
+        filter: "li",
+        multiple: false,
+    });
+
+    //Set selection
+    this._set_selected();
+};
+
+totaraDialog_handler_selectable.prototype.every_load = function() {
+    totaraDialog_handler_selectable.prototype.first_load.call(this);
+};
+
+totaraDialog_handler_selectable.prototype._updatePage = function(response) {
+    // Replace any items on the main page with their content (if IDs match)
+    var src = $('#icon_preview').attr('src');
+    src = src.replace(/image=(.*?)icons%2F(.*?)&/, 'image=$1'+'icons%2F'+response+'&');
+    $('#icon_preview').attr('src', src);
+    $('#icon_preview').attr('title', response.replace(/-|_/g, " ").toTitleCase());
+    $("input[name=icon]").val(response);
+
+    this._dialog.hide();
+};
+
+totaraDialog_handler_selectable.prototype._set_selected = function() {
+    $('#' + this.selected).addClass("ui-selected");
+    $("input[name=icon]").attr('initialvalue', this.selected);
+};
+
+String.prototype.toTitleCase = function() {
+    return this.replace(/\w\S*/g, function(text) { return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase(); });
+};
+
+/*****************************************************************************/
 /** Factory methods **/
 
 /**

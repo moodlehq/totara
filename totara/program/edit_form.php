@@ -38,6 +38,7 @@ class program_edit_form extends moodleform {
         $category = $this->_customdata['category'];
         $editoroptions = $this->_customdata['editoroptions'];
         $program = (isset($this->_customdata['program'])) ? $this->_customdata['program'] : false;
+        $nojs = (isset($this->_customdata['nojs'])) ? $this->_customdata['nojs'] : 0 ;
 
         $systemcontext = context_system::instance();
         $categorycontext = context_coursecat::instance($category->id);
@@ -193,7 +194,7 @@ class program_edit_form extends moodleform {
 
         //replacement for old totara/core/icon classes
         $programicon = ($program && !empty($program->icon)) ? $program->icon : 'default';
-        totara_add_icon_picker($mform, $action, 'program', $programicon);
+        totara_add_icon_picker($mform, $action, 'program', $programicon, $nojs);
 
         if ($action == 'add') {
             $buttonarray = array();

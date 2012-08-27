@@ -157,23 +157,35 @@ function totara_display_course_progress_icon($userid, $courseid, $status) {
 * @param   string $currenticon value currently stored in db
 * @return  void
 */
-function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default') {
+function totara_add_icon_picker(&$mform, $action, $type, $currenticon='default', $nojs=0) {
     global $CFG, $OUTPUT;
     //get all icons of this type from core
-    $iconhtml = $OUTPUT->pix_icon('/' . $type . 'icons/' . $currenticon, '', 'totara_core', array('class' => "course_icon", 'id' => "icon_preview"));
+    $replace = array('.png' => '', '_' => ' ', '-' => ' ');
+    $iconhtml = $OUTPUT->pix_icon('/' . $type . 'icons/' . $currenticon,
+                            ucwords(strtr($currenticon, $replace)),
+                            'totara_core',
+                            array('class' => "course_icon", 'id' => "icon_preview"));
     $mform->addElement('header', 'iconheader', get_string($type.'icon', 'totara_core'));
-    $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml);
-    if ($action=='add' || $action=='edit') {
-        $path = $CFG->dirroot . '/totara/core/pix/' . $type . 'icons';
-        foreach (scandir($path) as $icon) {
-            if ($icon == '.' || $icon == '..') { continue;}
-            $iconfile = str_replace('.png', '', $icon);
-            $replace = array('.png' => '', '_' => ' ', '-' => ' ');
-            $iconname = strtr($icon, $replace);
-            $icons[$iconfile] = ucwords($iconname);
+    if ($nojs == 1) {
+        $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml);
+        if ($action=='add' || $action=='edit') {
+            $path = $CFG->dirroot . '/totara/core/pix/' . $type . 'icons';
+            foreach (scandir($path) as $icon) {
+                if ($icon == '.' || $icon == '..') { continue;}
+                $iconfile = str_replace('.png', '', $icon);
+                $iconname = strtr($icon, $replace);
+                $icons[$iconfile] = ucwords($iconname);
+            }
+            $mform->addElement('select', 'icon', get_string('icon', 'totara_core'), $icons);
+            $mform->setDefault('icon', $currenticon);
         }
-        $mform->addElement('select', 'icon', get_string('icon', 'totara_core'), $icons);
-        $mform->setDefault('icon', $currenticon);
+    } else {
+        $buttonhtml = '';
+        if ($action=='add' || $action=='edit') {
+            $buttonhtml = html_writer::empty_tag('input', array('type' => 'button', 'value' => get_string('chooseicon', 'totara_program'), 'id' => 'show-icon-dialog'));
+            $mform->addElement('hidden', 'icon');
+        }
+        $mform->addElement('static', 'currenticon', get_string('currenticon', 'totara_core'), $iconhtml . $buttonhtml);
     }
 }
 /**

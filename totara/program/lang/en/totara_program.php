@@ -58,6 +58,7 @@ $string['createcourse'] = 'Create course';
 $string['createprogram'] = 'Create program';
 $string['createnewprogram'] = 'Create new program';
 $string['currenticon'] = 'Current icon';
+$string['chooseicon'] = 'Choose icon';
 $string['defaultprogramfullname'] = 'Program fullname 101';
 $string['defaultprogramshortname'] = 'P101';
 $string['deleteprogram'] = 'Delete program "{$a}"';
