@@ -674,5 +674,16 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2011120703, 'facetoface');
     }
 
+    if ($oldversion < 2012140602) {
+        //Remove additional html anchor reference from existing manager approval request message formats
+        $rs = $DB->get_recordset('facetoface');
+        foreach ($rs as $facetoface) {
+            $facetoface->requestinstrmngr = str_replace('[attendeeslink]#unapproved', '[attendeeslink]', $facetoface->requestinstrmngr);
+            $DB->update_record('facetoface', $facetoface);
+        }
+        // facetoface savepoint reached
+        $rs->close();
+        upgrade_mod_savepoint(true, 2012140602, 'facetoface');
+    }
     return $result;
 }

@@ -410,7 +410,7 @@ Venue:   [session:venue]
 Room:   [session:room]
 
 Please follow the link below to approve the request:
-[attendeeslink]#unapproved
+[attendeeslink]
 
 
 *** [firstname] [lastname]\'s booking request is copied below ****

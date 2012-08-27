@@ -693,9 +693,10 @@ function facetoface_delete_session($session) {
  * @param   obj     $user           The subject of the message
  * @param   obj     $data           Session data
  * @param   int     $sessionid      Session ID
+ * @param   bool    $plaintext      Whether the message should contain markup or not
  * @return  string
  */
-function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $data, $sessionid) {
+function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $data, $sessionid, $plaintext=true) {
     global $CFG, $DB;
 
     if (empty($msg)) {
@@ -744,8 +745,12 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
     $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod, $msg);
 
     // Replace more meta data
-    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id, $msg);
-
+    if ($plaintext) {
+        $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id.'#unapproved', $msg);
+    } else {
+        $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), '<a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id.'#unapproved">'.
+            $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id.'#unapproved</a>', $msg);
+    }
     // Custom session fields (they look like "session:shortname" in the templates)
     $customfields = facetoface_get_session_customfields();
     $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $data->id), '', 'fieldid, data');
@@ -4189,6 +4194,15 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
                                                         $session,
                                                         $session->id
                                                 );
+                $newevent->fullmessagehtml  = nl2br(facetoface_email_substitutions(
+                                                        $facetoface->requestinstrmngr,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id,
+                                                        false
+                                                ));
                 $newevent->contexturl = $CFG->wwwroot . '/mod/facetoface/attendees.php?s=' . $session->id . '#unapproved';
                 $subjectinfo = new stdClass();
                 $subjectinfo->usermsg = $usermsg;
