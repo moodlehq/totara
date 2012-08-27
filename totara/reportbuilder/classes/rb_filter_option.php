@@ -82,6 +82,33 @@ class rb_filter_option {
      */
     public $filteroptions;
 
+    /**
+     * Optional sql snippet representing the field to filter against
+     * (instead of using field from a matching column option).
+     * If provided the joins and grouping options will also be used
+     *
+     * @access public;
+     * @var string
+     */
+    public $field;
+
+    /**
+     * Optional string or array of join names to be included when
+     * filtering using this type
+     *
+     * @access public;
+     * @var string|array
+     */
+    public $joins;
+
+    /**
+     * Optional string representing how the field should be grouped
+     * when filtering
+     *
+     * @access public;
+     * @var string
+     */
+    public $grouping;
 
     /**
      * Generate a new filter option instance
@@ -96,16 +123,23 @@ class rb_filter_option {
      * @param string $value Value of the column to base the filter on
      * @param string $label Text label to appear next to the filter
      * @param string $filtertype Kind of filter this is (text, select, date, etc)
-     * @param array $filteroptions Associative array of options to be passed to the filter
+     * @param array $filteroptions Associative array of options to be passed to the filter (optional)
+     * @param string $field Optional sql snippet representing the field to filter against (instead of using field from a matching column option). If provided the joins and grouping options will also be used
+     * @param string|array $joins Optional string or array of join names to be included when filtering using this type
+     * @param string $grouping Optional string representing how the field should be grouped when filtering
      */
     function __construct($type, $value, $label, $filtertype,
-        $filteroptions=array()) {
+        $filteroptions=array(), $field = null, $joins = null,
+        $grouping = null) {
 
         $this->type = $type;
         $this->value = $value;
         $this->label = $label;
         $this->filtertype = $filtertype;
         $this->filteroptions = $filteroptions;
+        $this->field = isset($field) ? $field : '';
+        $this->joins = isset($joins) ? $joins : array();
+        $this->grouping = isset($grouping) ? $grouping : 'none';
     }
 
     /**

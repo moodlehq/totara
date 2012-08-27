@@ -33,8 +33,8 @@ class rb_filter_type {
     public $advanced;
     public $filtertype;
     protected $label;
-    protected $field;
-    protected $joins;
+    public $field;
+    public $joins;
     protected $options;
     protected $report;
     public $grouping;
@@ -59,22 +59,163 @@ class rb_filter_type {
         $this->name = "{$type}-{$value}";
 
         // get this filter's settings based on the option from the report's source
-        $filteroption = reportbuilder::get_single_item($report->src->filteroptions, $type, $value);
-        $columnoption = reportbuilder::get_single_item($report->src->columnoptions, $type, $value);
+        if (!$filteroption = $this->get_filteroption($type, $value)) {
+            return false;
+        }
 
         $this->label = $filteroption->label;
         $this->filtertype = $filteroption->filtertype;
-        $this->grouping = isset($columnoption->grouping) ? $columnoption->grouping : 'none';
-        $this->field = $this->get_field($columnoption->field);
-        $this->joins = isset($columnoption->joins) ? $columnoption->joins : array();
-        $this->options = isset($filteroption->filteroptions) ? $filteroption->filteroptions : array();
 
+        // there must be a columnoption, unless the filter is providing the field
+        // data directly
+        if (empty($filteroption->field)) {
+            if (!$columnoption = $this->get_columnoption($type, $value)) {
+                return false;
+            }
+        } else {
+            $columnoption = null;
+        }
+
+        $this->field = $this->get_field($filteroption, $columnoption);
+        $this->joins = $this->get_joins($filteroption, $columnoption);
+        if ($this->joins === false) {
+            return false;
+        }
+        $this->grouping = $this->get_grouping($filteroption, $columnoption);
+
+        $this->options = isset($filteroption->filteroptions) ? $filteroption->filteroptions : array();
         // if the filter defines a selectfunc option, call the function
         // and save the return value to selectchoices
         if (isset($this->options['selectfunc'])) {
             $this->options['selectchoices'] = $this->get_select_choices($this->options['selectfunc']);
         }
 
+    }
+
+    /**
+     * Given a type and value, return the matching filteroption from the report source
+     *
+     * @param string $type The filter type
+     * @param string $value The filter value
+     *
+     * @return object|false A filteroption, or false if not found
+     */
+    private function get_filteroption($type, $value) {
+        $sourcename = get_class($this->report->src);
+        $filteroption = reportbuilder::get_single_item($this->report->src->filteroptions, $type, $value);
+
+        if (!$filteroption) {
+            $a = new stdClass();
+            $a->type = $type;
+            $a->value = $value;
+            $a->source = $sourcename;
+            debugging(get_string('error:filteroptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
+            return false;
+        }
+
+        return $filteroption;
+    }
+
+    /**
+     * Given a type and value, return the matching columnoption from the report source
+     *
+     * @param string $type The filter type
+     * @param string $value The filter value
+     *
+     * @return object|false A columnoption, or false if not found
+     */
+    private function get_columnoption($type, $value) {
+
+        $sourcename = get_class($this->report->src);
+        $columnoption = reportbuilder::get_single_item($this->report->src->columnoptions, $type, $value);
+
+        if (!$columnoption) {
+            $a = new stdClass();
+            $a->type = $type;
+            $a->value = $value;
+            $a->source = $sourcename;
+            debugging(get_string('error:columnoptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
+            return false;
+        }
+
+        return $columnoption;
+    }
+
+    /**
+     * Return an SQL snippet describing field information for this filter
+     *
+     * Includes any aggregation/grouping function that the filter is using
+     *
+     * @param object $filteroption The filteroption to get a field from
+     * @param object $columnoption The columnoption associated with this filter, or
+     *                             null if not required
+     * @return string The SQL snippet to use in WHERE or HAVING clause
+     */
+    private function get_field($filteroption, $columnoption) {
+        // determine whether to get field data from a column or the filter itself
+        $option = empty($filteroption->field) ? $columnoption : $filteroption;
+
+        $field = $option->field;
+        $grouping = !empty($option->grouping) ? $option->grouping: 'none';
+
+        // now apply grouping to field
+        $src = $this->report->src;
+        if ($grouping == 'none') {
+            return $field;
+        } else {
+            $groupfunc = "rb_group_{$grouping}";
+            if (!method_exists($src, $groupfunc)) {
+                throw new ReportBuilderException(get_string('groupingfuncnotinfieldoftypeandvalue',
+                    'totara_reportbuilder',
+                    (object)array('groupfunc' => $groupfunc, 'type' => $type, 'value' => $value)));
+            }
+            return $src->$groupfunc($field);
+        }
+    }
+
+    /**
+     * Return one or more rb_join names indicating joins required by this filter
+     *
+     * These are obtained either from the columnoption this filter is based on or provided
+     * by the filteroption explicitly
+     *
+     * @param object $filteroption The filteroption to get a field from
+     * @param object $columnoption The columnoption associated with this filter, or
+     *                             null if not required
+     * @return string|array Joins to include in the query when this filter is active
+     */
+    private function get_joins($filteroption, $columnoption) {
+        // determine whether to get joins from a column or the filter itself
+        $option = empty($filteroption->field) ? $columnoption : $filteroption;
+
+        $joins = isset($option->joins) ? $option->joins : array();
+
+        // validate joins against the report's source
+        if (!reportbuilder::check_joins($this->report->src->joinlist, $joins)) {
+            $a = new stdClass();
+            $a->type = $option->type;
+            $a->value = $option->value;
+            $a->source = get_class($this->report->src);
+            debugging(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
+            return false;
+        }
+
+        return $joins;
+    }
+
+    /**
+     * Get the grouping of the filteroption provided
+     *
+     * @param object $filteroption The filteroption to get a field from
+     * @param object $columnoption The columnoption associated with this filter, or
+     *                             null if not required
+     * @return string the grouping of this filter
+     */
+    private function get_grouping($filteroption, $columnoption) {
+        // determine whether to get joins from a column or the filter itself
+        $option = empty($filteroption->field) ? $columnoption : $filteroption;
+
+        return isset($option->grouping) ? $option->grouping : array();
     }
 
     /**
@@ -95,31 +236,6 @@ class rb_filter_type {
     }
 
     /**
-     * Return an SQL snippet describing field information for this filter
-     *
-     * Includes any aggregation/grouping function that the filter is using
-     *
-     * @return string SQL snippet to use in WHERE or HAVING clause
-     */
-    private function get_field($field) {
-        $grouping = $this->grouping;
-        $src = $this->report->src;
-        $type = $this->type;
-        $value = $this->value;
-        if ($grouping == 'none') {
-            return $field;
-        } else {
-            $groupfunc = "rb_group_{$grouping}";
-            if (!method_exists($src, $groupfunc)) {
-                throw new ReportBuilderException(get_string('groupingfuncnotinfieldoftypeandvalue',
-                    'totara_reportbuilder',
-                    (object)array('groupfunc' => $groupfunc, 'type' => $type, 'value' => $value)));
-            }
-            return $src->$groupfunc($field);
-        }
-    }
-
-    /**
      * Factory method for creating a filter object
      *
      * @param string $type The filter type (from the db or embedded source)
@@ -132,11 +248,6 @@ class rb_filter_type {
      */
     static function get_filter($type, $value, $advanced, $report) {
         global $CFG;
-
-        // do some basic checks to ensure its a valid filter
-        if (!self::validate_filter($type, $value, $report)) {
-            return false;
-        }
 
         // figure out what sort of filter it is
         if (!$filtertype = self::get_filter_type($type, $value, $report)) {
@@ -154,52 +265,6 @@ class rb_filter_type {
         }
 
         return new $classname($type, $value, $advanced, $report);
-    }
-
-    /**
-     * Check a filter to ensure it is supported by this report's source
-     *
-     * @param string $type The type of filter
-     * @param string $value The filter value
-     * @return bool True if the filter is supported, false (and prints debugging messages) otherwise
-     */
-    static function validate_filter($type, $value, $report) {
-        $filteroptions = $report->src->filteroptions;
-        $columnoptions = $report->src->columnoptions;
-        $joinlist = $report->src->joinlist;
-        $sourcename = get_class($report->src);
-
-        if (!reportbuilder::get_single_item($filteroptions, $type, $value)) {
-
-            $a = new stdClass();
-            $a->type = $type;
-            $a->value = $value;
-            $a->source = $sourcename;
-            debugging(get_string('error:filteroptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
-            return false;
-        }
-        if (!$columnoption = reportbuilder::get_single_item($columnoptions, $type, $value)) {
-
-            $a = new stdClass();
-            $a->type = $type;
-            $a->value = $value;
-            $a->source = $sourcename;
-            debugging(get_string('error:columnoptiontypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
-            return false;
-        }
-
-        // make sure joins are defined before adding column
-        if (!reportbuilder::check_joins($joinlist, $columnoption->joins)) {
-            $a = new stdClass();
-            $a->type = $columnoption->type;
-            $a->value = $columnoption->value;
-            $a->source = $sourcename;
-            debugging(get_string('error:joinsforfiltertypexandvalueynotfoundinz', 'totara_reportbuilder', $a));
-            return false;
-
-        }
-
-        return true;
     }
 
 

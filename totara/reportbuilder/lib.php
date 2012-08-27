@@ -677,11 +677,11 @@ class reportbuilder {
                 if (!array_key_exists($fname, $this->filters)) {
                     continue; // filter not used in this report
                 }
-                $field = $this->filters[$fname];
-                if ($field->grouping != 'none') {
-                    list($having_sqls[], $params) = $field->get_sql_filter($data);
+                $filter = $this->filters[$fname];
+                if ($filter->grouping != 'none') {
+                    list($having_sqls[], $params) = $filter->get_sql_filter($data);
                 } else {
-                    list($where_sqls[], $params) = $field->get_sql_filter($data);
+                    list($where_sqls[], $params) = $filter->get_sql_filter($data);
                 }
                 $filterparams = array_merge($filterparams, $params);
             }
@@ -1575,18 +1575,14 @@ class reportbuilder {
         // if they exist we need to make sure we have included joins for them too
         if (isset($SESSION->reportbuilder[$this->_id]) &&
             is_array($SESSION->reportbuilder[$this->_id])) {
-            foreach ($SESSION->reportbuilder[$this->_id] as $filter => $unused) {
-                // parse the filtername for type and value
-                $parts = explode('-', $filter);
-                if (count($parts) != 2) {
-                    print_error('filternameformatincorrect', 'totara_reportbuilder');
-                    continue;
+            foreach ($SESSION->reportbuilder[$this->_id] as $fname => $unused) {
+                if (!array_key_exists($fname, $this->filters)) {
+                    continue; // filter not used in this report
                 }
-                $type = $parts[0];
-                $value = $parts[1];
-                $item = $this->get_single_item($columnoptions, $type, $value);
+                $filter = $this->filters[$fname];
+
                 $filterjoins = array_merge($filterjoins,
-                    $this->get_joins($item, 'filter'));
+                    $this->get_joins($filter, 'filter'));
             }
         }
         return $filterjoins;
