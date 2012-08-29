@@ -27,6 +27,33 @@ defined('MOODLE_INTERNAL') || die;
 define('TOTARA_SYNC_DBROWS', 10000);
 
 /**
+* Run the cron for syncing Totara elements with external sources
+*
+* This can be run separately from the main cron via run_cron.php
+*
+* @access public
+* @return void
+*/
+function tool_totara_sync_cron() {
+    global $CFG;
+
+    // Get enabled sync element objects
+    $elements = totara_sync_get_elements($onlyenabled=true);
+
+    foreach ($elements as $element) {
+        if (!method_exists($element, 'sync')) {
+            // Skip if no sync() method exists
+            continue;
+        }
+
+        // Finally, start element syncing
+        $element->sync();
+    }
+
+    return true;
+}
+
+/**
  * Method for adding sync log messages
  *
  * @param string $element element name
