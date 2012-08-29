@@ -1,5 +1,46 @@
 Totara LMS Changelog
 
+Release 2.2.2 (29 August 2012):
+==================================================
+
+Database upgrades:
+    T-9891      Fix error preventing upgrades from 1.1 to 2.2.1 when dynamic cohorts
+                have rules based on user customfield textareas
+    T-9674      Fixed html link in Face To Face "request approval" alerts for managers
+
+New features:
+    T-9804      Initial install of Arabic, Chinese, Dutch, English (US), Finnish,
+                French, German, Hebrew, Hungarian, Italian, Japanese, Polish,
+                Portuguese (Brazilian), Spanish (Castilian), Spanish (International),
+                Swedish and Thai language packs
+
+Improvements:
+    T-9804      Additions to standard English language pack
+    T-9876      Update GPL license to v3+
+    T-9872      Convert program/course icon pulldown into dialog-based icon picker
+
+Bug fixes:
+    T-9830      Prevent delete of Miscellaneous (or last remaining) Course Category
+    T-9865      Fix courses without course completion not showing in
+                Audiences "Enrolled Learning" tab dialog
+    T-9870      Fix PHP warnings in reports containing non-user profile custom fields
+    T-9864      Fix PHP notice when adding filters to User report
+    T-9863      Fix PHP warnings when using noblocks layout with customtotara theme
+    T-9883      Remove unnecessary scrollbar in dialogs
+    T-9882      Add horizontal scrollbar to very wide reports
+    T-6080      Fixes to element library links
+    T-9712      Add custom totaratheme to standard list of plugins
+    T-9866      Remove icons from Quicklinks block
+    T-9849      Fix incorrect number of programs displayed in a category
+    T-9805      Fix redirect to Course Catalog program view after deleting a program
+    T-9846      Fix handling of Programs when deleting a Course Category
+    T-9826      Fix dialog in Program Management when resolving exceptions
+    T-9763      Fix Program access for users assigned via management hierarchies
+    T-9712      Remove all remaining deprecated Moodle and jQuery function calls in Totara code
+    T-9792      Add additional info to INSTALL.txt about PHP configuration variables
+    T-6072      Clarify upgrade procedure in UPGRADE.txt
+
+
 Release 2.2.1 (21 August 2012):
 ==================================================
 
