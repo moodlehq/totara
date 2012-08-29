@@ -1099,11 +1099,10 @@ totaraDialog_handler_treeview_singleselect.prototype.setup_delete = function() {
         handler.setup_delete();
     });
 
-    if (!textel.text().length) {
-        deletebutton.hide();
+    if (textel.text().length) {
+        textel.append(deletebutton);
     }
 
-    textel.append(deletebutton);
 }
 
 
@@ -1181,9 +1180,9 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
 
     // Update text element
     if (this.text_element_id) {
-        $('#'+this.text_element_id).text(selected_text);
 
         if (selected_text) {
+            $('#'+this.text_element_id).text(selected_text);
             $('#'+this.text_element_id).addClass('nonempty');
         } else {
             $('#'+this.text_element_id).removeClass('nonempty');
