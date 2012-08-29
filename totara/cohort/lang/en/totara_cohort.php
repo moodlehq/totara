@@ -182,6 +182,7 @@ $string['enrolledcohorts'] = 'Enrolled audiences';
 $string['enrolledlearning'] = 'Enrolled learning';
 $string['entervaliddate'] = 'Enter a valid date';
 $string['equalto'] = 'Equal to';
+$string['error:badruleonupgrade'] = 'Dynamic Cohort "{$a}" contains criteria based on a user profile customfield of type textarea. This type of criteria is no longer supported in Totara 2.2 Audiences. You should check the rules for the "{$a}" Audience after the upgrade and make any necessary changes.';
 $string['error:badcohortid'] = 'Audience with this id does not exist';
 $string['error:baddate'] = 'Please specify a valid date';
 $string['error:baddateoption'] = 'You must select an option';
