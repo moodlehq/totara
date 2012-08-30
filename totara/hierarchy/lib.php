@@ -2431,20 +2431,19 @@ class hierarchy {
     protected function move_sortthread($oldsortthread, $newsortthread, $frameworkid) {
         global $DB;
 
-        $length_sql = $DB->sql_length(":oldsortthread");
+        $length_sql = $DB->sql_length("'$oldsortthread'");
         $substr_sql = $DB->sql_substr('sortthread', "$length_sql + 1");
         $sortthread = $DB->sql_concat(":newsortthread", $substr_sql);
         $params = array(
-        'frameworkid' => $frameworkid,
-        'oldsortthread' => $oldsortthread,
-        'oldsortthread2' => $oldsortthread,
-        'oldsortthreadmatch' => "{$oldsortthread}%",
-        'newsortthread' => $newsortthread
+            'newsortthread' => $newsortthread,
+            'frameworkid' => $frameworkid,
+            'oldsortthread' => $oldsortthread,
+            'oldsortthreadmatch' => "{$oldsortthread}%"
         );
         $sql = "UPDATE {{$this->shortprefix}}
             SET sortthread = $sortthread
             WHERE frameworkid = :frameworkid
-            AND (sortthread = :oldsortthread2 OR
+            AND (sortthread = :oldsortthread OR
             " . $DB->sql_like('sortthread', ':oldsortthreadmatch') . ')';
 
         return $DB->execute($sql, $params);
