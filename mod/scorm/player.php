@@ -186,8 +186,14 @@ if (empty($scorm->popup) || $displaymode=='popup') {
 }
 
 $PAGE->requires->yui2_lib('connection');
-$PAGE->requires->data_for_js('scormplayerdata', Array('cwidth'=>$scorm->width,
-                                                      'cheight'=>$scorm->height,
+
+$PAGE->requires->data_for_js('scormplayerdata', Array('launch' => 0,
+                                                      'currentorg' => '',
+                                                      'sco' => 0,
+                                                      'scorm' => 0,
+                                                      'courseid' => $scorm->course,
+                                                      'cwidth' => $scorm->width,
+                                                      'cheight' => $scorm->height,
                                                       'popupoptions' => $scorm->options), true);
 $PAGE->requires->js('/mod/scorm/request.js', true);
 $PAGE->requires->js('/lib/cookies.js', true);
