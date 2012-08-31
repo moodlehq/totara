@@ -147,7 +147,7 @@
                 count(id) as numreports
                 FROM {report_builder}
                 WHERE $likesql
-                GROUP BY groupid
+                GROUP BY $substr_sql
             ) reports ON " . $DB->sql_cast_char2int('reports.groupid') . " = g.id ORDER BY g.name";
         $params = array($feedbackmoduleid, 'official', 'tag', $likeparam);
         $groups = $DB->get_records_sql($sql, $params);
