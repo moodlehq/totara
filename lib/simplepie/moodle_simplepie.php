@@ -54,7 +54,7 @@ class moodle_simplepie extends SimplePie
      *
      * @param string $feedurl optional URL of the feed
      */
-    function __construct($feedurl = null) {
+    function __construct($feedurl = null, $timeout=2) {
 
         // Use the Moodle class for http requests
         $this->file_class = 'moodle_simplepie_file';
@@ -67,7 +67,7 @@ class moodle_simplepie extends SimplePie
         $this->set_output_encoding('UTF-8');
 
         // default to a short timeout as most operations will be interactive
-        $this->set_timeout(2);
+        $this->set_timeout($timeout);
 
         // 1 hour default cache
         $this->set_cache_location($cachedir);
