@@ -173,7 +173,7 @@ class hierarchylib_test extends advanced_testcase {
         $this->comp4->timemodified = 1265963591;
         $this->comp4->usermodified = 2;
         $this->comp4->depthlevel = 2;
-        $this->comp4->typeid = 2;
+        $this->comp4->typeid = 0;
         $this->comp_data[] = $this->comp4;
 
         $this->comp5 = new stdClass();
@@ -194,7 +194,7 @@ class hierarchylib_test extends advanced_testcase {
         $this->comp5->timemodified = 1265963591;
         $this->comp5->usermodified = 2;
         $this->comp5->depthlevel = 1;
-        $this->comp5->typeid = 1;
+        $this->comp5->typeid = 0;
         $this->comp_data[] = $this->comp5;
 
 
@@ -402,26 +402,12 @@ class hierarchylib_test extends advanced_testcase {
         //Expected custom field return data for get_custom_fields
         $this->cf1 = new stdClass();
         $this->cf1->id = 1;
-        $this->cf1->fullname = 'Custom Field 1';
-        $this->cf1->shortname = 'CF1';
-        $this->cf1->typeid = 2;
-        $this->cf1->datatype = 'checkbox';
-        $this->cf1->description = 'Custom Field Description 1';
-        $this->cf1->sortorder = 1;
-        $this->cf1->hidden = 0;
-        $this->cf1->locked = 0;
-        $this->cf1->required = 0;
-        $this->cf1->forceunique = 0;
-        $this->cf1->defaultdata = 0;
-        $this->cf1->param1 = null;
-        $this->cf1->param2 = null;
-        $this->cf1->param3 = null;
-        $this->cf1->param4 = null;
-        $this->cf1->param5 = null;
         $this->cf1->data = 1;
         $this->cf1->fieldid = 1;
         $this->cf1->competencyid = 2;
-        $this->cf1->categoryid = null;
+        $this->cf1->datatype = 'checkbox';
+        $this->cf1->hidden = 0;
+        $this->cf1->fullname = 'Custom Field 1';
     }
 
     function test_hierarchy_get_framework() {
@@ -856,5 +842,156 @@ class hierarchylib_test extends advanced_testcase {
         $this->resetAfterTest(true);
     }
 
+    function test_reorder_hierarchy_item() {
+        global $DB;
+        $competency = $this->competency;
+
+        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 2)), '01.01');
+        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 4)), '01.02');
+        $this->assertTrue((bool)$competency->reorder_hierarchy_item(2, 4));
+        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 2)), '01.02');
+        $this->assertEquals($DB->get_field('comp', 'sortthread', array('id' => 4)), '01.01');
+        $this->resetAfterTest(true);
+    }
+
+    function test_get_extra_fields() {
+        $competency = new competency();
+        $position = new position();
+        $organisation = new organisation();
+
+        $this->assertEquals($competency->get_extrafields(), array('evidencecount'));
+        $this->assertEquals($position->get_extrafields(), null);
+        $this->assertEquals($organisation->get_extrafields(), null);
+
+        $this->resetAfterTest(true);
+    }
+
+
+    function test_update_hierarchy_item() {
+        global $DB;
+        $competency = $DB->get_record('comp', array('id' => 2));
+        $competency->fullname = 'UPDATED2';
+
+        $this->assertEquals($this->competency->update_hierarchy_item(2, $competency), $competency);
+
+        $afterupdate = $DB->get_records('comp', array('id' => 2));
+        $this->assertEquals($afterupdate[2]->fullname, 'UPDATED2');
+
+        $this->resetAfterTest(true);
+    }
+
+    function test_move_hierarchy_item() {
+        global $DB;
+        $competency = $DB->get_record('comp', array('id' => 4));
+
+        $this->assertEquals($competency->parentid, 1);
+        $this->assertTrue((bool)$this->competency->move_hierarchy_item($competency, $competency->frameworkid, 5));
+
+        $competency = $DB->get_record('comp', array('id' => 4));
+        $this->assertEquals($competency->parentid, 5);
+
+        $this->resetAfterTest(true);
+    }
+
+    function test_get_unclassified_items() {
+        global $DB;
+        $competency = $this->competency;
+        $unclassified = $competency->get_unclassified_items();
+
+        $this->assertEquals(sizeOf($unclassified), 2);
+        $this->assertEquals($unclassified[4], $DB->get_record('comp', array('id' => 4)));
+        $this->assertEquals($unclassified[5], $DB->get_record('comp', array('id' => 5)));
+
+        $this->resetAfterTest(true);
+    }
+
+    function test_get_item_stats() {
+        $info = $this->competency->get_item_stats(1);
+        $this->assertEquals($info['itemname'], 'Competency 1');
+        $this->assertEquals($info['children'], 2);
+
+        $info = $this->competency->get_item_stats(3);
+        $this->assertEquals($info['itemname'], 'F2 Competency 1');
+        $this->assertEquals($info['children'], 0);
+
+        $this->resetAfterTest(true);
+    }
+
+    function test_get_items_excluding_children() {
+        $excluded = $this->competency->get_items_excluding_children(array(1, 2, 3, 4, 5));
+        $this->assertEquals($excluded, array(1, 3, 5));
+
+        $this->resetAfterTest(true);
+    }
+
+    function test_is_child_of() {
+        global $DB;
+        $competency1 = $DB->get_record('comp', array('id' => 1));
+        $competency2 = $DB->get_record('comp', array('id' => 2));
+        $competency4 = $DB->get_record('comp', array('id' => 4));
+
+        $this->assertTrue((bool)$this->competency->is_child_of($competency2, 1));
+        $this->assertTrue((bool)$this->competency->is_child_of($competency4, array(1, 3, 5)));
+        $this->assertFalse((bool)$this->competency->is_child_of($competency2, array(3, 2, 4, 5, 6)));
+        $this->assertFalse((bool)$this->competency->is_child_of($competency4, 2));
+        $this->assertFalse((bool)$this->competency->is_child_of($competency1, array(0,1,2,3,4,5)));
+
+        $this->resetAfterTest(true);
+    }
+
+    function test_get_parent_list() {
+        $competency = $this->competency;
+
+        $inctop = $competency->get_parent_list($competency->get_items(), array(), true);
+        $noinctop = $competency->get_parent_list($competency->get_items(), array(), false);
+        $this->assertEquals($inctop, array('0'=>'Top', '1'=>'Competency 1', '2'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 2', '4'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 3', '5'=>'Competency 4'));
+        $this->assertEquals($noinctop, array('1'=>'Competency 1', '2'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 2', '4'=>'&nbsp;&nbsp;&nbsp;&nbsp;Competency 3', '5'=>'Competency 4'));
+
+        $inctop = $competency->get_parent_list($competency->get_items(), 1, true);
+        $noinctop = $competency->get_parent_list($competency->get_items(), 1, false);
+        $this->assertEquals($inctop, array('0'=>'Top', '5'=>'Competency 4'));
+        $this->assertEquals($noinctop, array('5'=>'Competency 4'));
+
+        $this->resetAfterTest(true);
+    }
+
+    /* TODO
+    function test_get_next_child_sortthread() {
+
+    }
+
+    function test_get_types_list() {
+
+    }
+
+    function test_move_sortthread() {
+
+    }
+
+    function test_swap_item_sortthreads(){
+
+    }
+
+    function test_increment_sortthread() {
+
+    }
+
+    function test_fix_sortthreads() {
+
+    }
+
+    function test_support_old_url_syntax() {
+
+    }
+
+    function test_add_hierarchy_item() {
+
+    }
+
+    function test_add_multiple_hierarchy_items() {
+
+    }
+
+     */
 
 }
