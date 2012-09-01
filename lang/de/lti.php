@@ -111,7 +111,7 @@ Drei Icons erscheinen in der Liste
 * **Bearbeiten** - Typ aus Dropdownmneu auswählen und die Details konfigurieren.
 * **Löschen** - Ausgewählten Typ im Kurs löschen.';
 $string['external_tool_types'] = 'Typen des externen Tools';
-$string['failedtoconnect'] = 'Moodle konnte nicht mit dem System  \'$a\' kommunizieren';
+$string['failedtoconnect'] = 'Moodle konnte nicht mit dem System  \'{$a}\' kommunizieren';
 $string['filter_basiclti_configlink'] = 'Konfigurieren Sie die bevorzugte Seiten und deren Kennworte';
 $string['filter_basiclti_password'] = 'Passwort ist erforderlich';
 $string['filterconfig'] = 'LTI Administration';
@@ -150,7 +150,7 @@ Falls ein spezieller Tool-Typ gewählt wurde, kann u.U. auf die Start URL verzic
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'LTI Aktivitäten bewerten';
 $string['lti_administration'] = 'LTI Administration';
-$string['lti_errormsg'] = 'Das Tool gab folgende Fehlermeldung zurück: \'$a\'';
+$string['lti_errormsg'] = 'Das Tool gab folgende Fehlermeldung zurück: \'{$a}\'';
 $string['lti:grade'] = 'LTI Aktivitäten bewerten';
 $string['lti_launch_error'] = 'Beim Start des externen Tools trat ein Fehler auf:';
 $string['lti_launch_error_tool_request'] = '<p>Zum Versand einer Anfrage an den Administrator zur Vervollständigung der Tool-Konfiguration klicken Sie <a href="{$a->admin_request_url}" target="_top">hier</a>. </p>';
@@ -170,7 +170,7 @@ Die Tools sind in drei unterschiedliche Typen klassifiziert:
 * **Gesperrt** - Diese Tool sind vom Administrator nicht zur systemweiten Nutzung freigegeben worden. Trainer können die Tools dennoch nutzen wenn sie über einen Anwenderschlüssel und ein Kennwort für dieses Tool verfügen oder dies nicht erforderlich ist.';
 $string['miscellaneous'] = 'Verschiedenes';
 $string['misconfiguredtools'] = 'Fehlerhaft konfigurierte Instanzen entdeckt';
-$string['missingparameterserror'] = 'Diese Seite ist falsch konfiguriert: \'$a\'';
+$string['missingparameterserror'] = 'Diese Seite ist falsch konfiguriert: \'{$a}\'';
 $string['module_class_type'] = 'Moodle Modultyp';
 $string['modulename'] = 'Externes Tool';
 $string['modulename_help'] = 'Externe Tools ermöglichen es Nutzern mit Lerngeboten von anderen Anbietern zu kommunizieren und diese in Moodle-Kursen zu nutzen. damit dies möglch wird, muss das externe Tool den LTI-Standard (Learning Tools Interoperability) unterstützen.

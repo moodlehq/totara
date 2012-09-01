@@ -209,16 +209,16 @@ $string['cancel'] = 'Annulla';
 $string['cancelled'] = 'Annullato';
 $string['categories'] = 'Categorie di corso';
 $string['category'] = 'Categoria';
-$string['categoryadded'] = 'La categoria \'{$a}\' è stata aggiunta';
-$string['categorycontents'] = 'Sotto categorie e corsi';
-$string['categorycurrentcontents'] = 'Contenuto di {$a}';
-$string['categorydeleted'] = 'La categoria \'{$a}\' è stata eliminata';
-$string['categoryduplicate'] = 'Esiste già una categoria di nome \'{$a}\'!';
 $string['category_help'] = '<p>L\'amministratore di questo sito Moodle dovrebbe aver predisposto diverse categorie di corsi</p>
 
 <p>Ad esempio "Scienze", "Lettere", "Medicina", eccetera.</p>
 
 <p>Scegliete la categoria che ritenete più adatta per il vostro corso: poiché il titolo del corso comparirà all\'interno della categoria, una scelta appropriata faciliterà gli studenti nel reperire il vostro corso.</p>';
+$string['categoryadded'] = 'La categoria \'{$a}\' è stata aggiunta';
+$string['categorycontents'] = 'Sotto categorie e corsi';
+$string['categorycurrentcontents'] = 'Contenuto di {$a}';
+$string['categorydeleted'] = 'La categoria \'{$a}\' è stata eliminata';
+$string['categoryduplicate'] = 'Esiste già una categoria di nome \'{$a}\'!';
 $string['categorymodifiedcancel'] = 'La categoria è stata modificata! Annulla e riprova.';
 $string['categoryname'] = 'Nome categoria';
 $string['categoryupdated'] = 'La categoria \'{$a}\' è stata aggiornata';
@@ -646,12 +646,12 @@ Questi altri saranno disiscritti da questo corso in meno di {$a->threshold} gior
 È possibile andare alla pagina seguente per estendere la durata della loro iscrizione:
 {$a->extendurl}';
 $string['expirynotifystudents'] = 'Avverti gli studenti';
+$string['expirynotifystudents_help'] = 'Se è stata specificata una durata per l\'iscrizione al corso, questa impostazione consente di avvertire gli studenti via email quando la loro iscrizione sta per scadere.';
 $string['expirynotifystudentsemail'] = 'Caro {$a->studentstr}:
 
 Ti informiamo che la tua l\'iscrizione al corso {$a->course} scadrà tra {$a->threshold} giorni.
 
 Per ulteriori informazioni puoi contattare {$a->teacherstr}';
-$string['expirynotifystudents_help'] = 'Se è stata specificata una durata per l\'iscrizione al corso, questa impostazione consente di avvertire gli studenti via email quando la loro iscrizione sta per scadere.';
 $string['expirythreshold'] = 'Soglia';
 $string['expirythreshold_help'] = 'Imposta quanti giorni prima della scadenza dell\'iscrizione sarà inviata la notifica agli studenti.';
 $string['explanation'] = 'Spiegazione';
@@ -681,8 +681,8 @@ $string['forcedmodeinbrackets'] = '{$a} (modalità forzata)';
 $string['forcelanguage'] = 'Forza lingua';
 $string['forceno'] = 'Non forzare';
 $string['forcepasswordchange'] = 'Forza il cambiamento della password';
-$string['forcepasswordchangecheckfull'] = 'Sei sicuro di voler obbligare {$a} a cambiare la password ?';
 $string['forcepasswordchange_help'] = '<p>Richiede che l\'utente cambi la propria password al suo primo login.</p>';
+$string['forcepasswordchangecheckfull'] = 'Sei sicuro di voler obbligare {$a} a cambiare la password ?';
 $string['forcepasswordchangenot'] = 'Non è stato possibile obbligare il cambio di password per {$a}';
 $string['forcepasswordchangenotice'] = 'È necessario cambiare la password per proseguire.';
 $string['forcetheme'] = 'Tema obbligato';
@@ -809,8 +809,8 @@ $string['helpwiththis'] = 'Aiuto per questo';
 $string['hiddenassign'] = 'Attribuzione nascosta';
 $string['hiddenfromstudents'] = 'Nascosta agli studenti';
 $string['hiddensections'] = 'Sezioni nascoste';
-$string['hiddensectionscollapsed'] = 'Le sezioni nascoste mostrano solo l\'intestazione';
 $string['hiddensections_help'] = 'L\'impostazione determina come visualizzare le sezioni nascoste agli studenti. La sezione può essere visualizzata in formato compatto (ad esempio una settimana di vacanze quando il formato del corso è settimanale) oppure può essere nascosta del tutto.';
+$string['hiddensectionscollapsed'] = 'Le sezioni nascoste mostrano solo l\'intestazione';
 $string['hiddensectionsinvisible'] = 'Le sezioni nascoste non sono visibili';
 $string['hide'] = 'Nascondi';
 $string['hideadvancedsettings'] = 'Nascondi le impostazioni avanzate';
@@ -838,9 +838,9 @@ $string['icon'] = 'Icona';
 $string['icqnumber'] = 'Numero ICQ';
 $string['idnumber'] = 'Numero ID';
 $string['idnumbercourse'] = 'Numero ID del corso';
+$string['idnumbercourse_help'] = '<p>Il Numero ID del corso viene utilizzato quando si interfaccia Moodle a sistemi esterni e non è mai visualizzato all\'interno di Moodle. Se conoscete il Numero ID del corso, potete inserirlo in questo campo, altrimenti potete lasciarlo vuoto.</p>';
 $string['idnumbercoursecategory'] = 'Numero ID categoria';
 $string['idnumbercoursecategory_help'] = 'Il numero ID di una categoria di corsi viene utilizzata solo se occorre far corrispondere la categoria in un sistema esterno e non viene mai visualizzato nel sito. Se la categoria possiede una codifica ufficiale, puoi usarlo come numero ID, oppure puoi lasciare il campo vuoto.';
-$string['idnumbercourse_help'] = '<p>Il Numero ID del corso viene utilizzato quando si interfaccia Moodle a sistemi esterni e non è mai visualizzato all\'interno di Moodle. Se conoscete il Numero ID del corso, potete inserirlo in questo campo, altrimenti potete lasciarlo vuoto.</p>';
 $string['idnumbermod'] = 'Numero ID';
 $string['idnumbermod_help'] = 'L\'impostazione del numero ID permette di identificare l\'attività ai fini del calcolo della valutazione. Se l\'attività non è inclusa in nessun calcolo, il campo può essere lasciato vuoto.
 
@@ -912,10 +912,10 @@ $string['loggedinas'] = 'Sei collegato come {$a}.';
 $string['loggedinasguest'] = 'Stai utilizzando un accesso da ospite';
 $string['loggedinnot'] = 'Non sei collegato.';
 $string['login'] = 'Login';
+$string['login_failure_logs'] = 'Log accessi falliti';
 $string['loginalready'] = 'Sei già collegato';
 $string['loginas'] = 'Login come';
 $string['loginaspasswordexplain'] = '<p>È necessario impostare la speciale "password login come" per utilizzare questa caratteristica.<br />Se non la conoscete, chiedete all\'amministratore del server.</p>';
-$string['login_failure_logs'] = 'Log accessi falliti';
 $string['loginguest'] = 'Login come ospite';
 $string['loginsite'] = 'Login al sito';
 $string['loginsteps'] = 'Per accedere al sito, puoi creare facilmente il tuo account in pochi minuti.
@@ -948,6 +948,7 @@ $string['makeafolder'] = 'Crea una cartella';
 $string['makeeditable'] = 'Se si rende \'{$a}\' modificabile dal processo del server web (es. apache) si potrà modificare questo file direttamente da questa pagina.';
 $string['makethismyhome'] = 'Rendi questa pagina la mia home page di default';
 $string['manageblocks'] = 'Blocchi';
+$string['managecategories'] = 'Gestisci categorie';
 $string['managecourses'] = 'Gestisci i corsi';
 $string['managedatabase'] = 'Gestione database';
 $string['manageeditorfiles'] = 'Gestione file usati dall\'editor';
@@ -1066,8 +1067,8 @@ $string['new'] = 'Nuovo';
 $string['newaccount'] = 'Nuovo account';
 $string['newcourse'] = 'Nuovo corso';
 $string['newpassword'] = 'Nuova password';
-$string['newpasswordfromlost'] = '<strong>NOTA:</strong> La tua  <strong>Password </strong> ti verrà spedita nella <strong>seconda</strong> delle due mail spedite dalla procedura di recupero password. Accertati di aver ricevuto la nuova passowrd prima di proseguire.';
 $string['newpassword_help'] = '<p>Lasciare vuoto per mantenere la password attuale.</p>';
+$string['newpasswordfromlost'] = '<strong>NOTA:</strong> La tua  <strong>Password </strong> ti verrà spedita nella <strong>seconda</strong> delle due mail spedite dalla procedura di recupero password. Accertati di aver ricevuto la nuova passowrd prima di proseguire.';
 $string['newpasswordtext'] = 'Gentile {$a->firstname},
 
 la password del tuo account su \'{$a->sitename}\' è stata reimpostata.
@@ -1441,14 +1442,14 @@ $string['screenreaderuse_help'] = 'Permette di avere una interfaccia maggiorment
 $string['screenreaderyes'] = 'Si';
 $string['screenshot'] = 'Screenshot';
 $string['search'] = 'Cerca';
+$string['search_help'] = 'Per ricerche semplici, inserisci una o più parole separate da uno spazio. Saranno utilizzate tutte le parole più lunghe di due caratteri.
+
+Per ricerche complesse, puoi accedere al form di ricerca avanzata facendo click sul pulsante cerca avendo cura di non aver inserito parole.';
 $string['searchagain'] = 'Cerca ancora';
 $string['searchbyemail'] = 'Cerca indirizzo email';
 $string['searchbyusername'] = 'Cerca username';
 $string['searchcourses'] = 'Cerca corsi';
 $string['searchhelp'] = 'Puoi ricercare con più chiavi.<br />chiave : trova ogni corrispondenza di questa chiave nel testo.</br>+chiave : solo le esatte corrispondenze della chiave verranno trovate.</br>-chiave : non include i risultati che contengono questa chiave.';
-$string['search_help'] = 'Per ricerche semplici, inserisci una o più parole separate da uno spazio. Saranno utilizzate tutte le parole più lunghe di due caratteri.
-
-Per ricerche complesse, puoi accedere al form di ricerca avanzata facendo click sul pulsante cerca avendo cura di non aver inserito parole.';
 $string['searchoptions'] = 'Opzioni di ricerca';
 $string['searchresults'] = 'Risultati della ricerca';
 $string['sec'] = 'secondo';

@@ -210,12 +210,12 @@ $string['cancel'] = 'Cancelar';
 $string['cancelled'] = 'Cancelado';
 $string['categories'] = 'Categorías';
 $string['category'] = 'Categoría';
+$string['category_help'] = 'Este ajuste determina la categoría en la que aparecerá el curso en la lista de cursos.';
 $string['categoryadded'] = 'Se instaló la categoría \'{$a}\'';
 $string['categorycontents'] = 'Subcategorías y cursos';
 $string['categorycurrentcontents'] = 'Contenido de {$a}';
 $string['categorydeleted'] = 'Se ha borrado la categoría \'{$a}\'';
 $string['categoryduplicate'] = 'Ya existe una categoría llamada \'{$a}\'.';
-$string['category_help'] = 'Este ajuste determina la categoría en la que aparecerá el curso en la lista de cursos.';
 $string['categorymodifiedcancel'] = 'La categoría se ha modificado. Por favor, cancele y pruebe de nuevo.';
 $string['categoryname'] = 'Nombre de la categoría';
 $string['categoryupdated'] = 'La categoría \'{$a}\' ha sido actualizada';
@@ -656,12 +656,12 @@ La matrícula en este curso de los siguientes estudiantes expira en menos de {$a
 Para ampliar el período de matrícula, puede ir a esta página:
 {$a->extendurl}';
 $string['expirynotifystudents'] = 'Notificar a los estudiantes';
+$string['expirynotifystudents_help'] = 'Si se ha especificado el periodo de tiempo durante el que está activa la matrícula, esta opción determina si los estudiantes recibirán notificación por correo electrónico cuando están a punto de ser dados de baja del curso.';
 $string['expirynotifystudentsemail'] = 'Estimado {$a->studentstr}
 
 Le informo de que su matrícula en el curso {$a->course} expira en {$a->threshold} días.
 
 Por favor, contacte con {$a->teacherstr} para más información.';
-$string['expirynotifystudents_help'] = 'Si se ha especificado el periodo de tiempo durante el que está activa la matrícula, esta opción determina si los estudiantes recibirán notificación por correo electrónico cuando están a punto de ser dados de baja del curso.';
 $string['expirythreshold'] = 'Umbral';
 $string['expirythreshold_help'] = 'Si se ha especificado el periodo de tiempo durante el que está activa la matrícula, esta opción determina el número de días de preaviso antes de que los estudiantes sean dados de baja del curso';
 $string['explanation'] = 'Explicación';
@@ -690,8 +690,8 @@ $string['forcedmode'] = 'Modo forzado';
 $string['forcelanguage'] = 'Forzar idioma';
 $string['forceno'] = 'No forzar';
 $string['forcepasswordchange'] = 'Forzar cambio de contraseña';
-$string['forcepasswordchangecheckfull'] = '¿Está totalmente seguro que quiere forzar un cambio de contraseña a {$a} ?';
 $string['forcepasswordchange_help'] = 'Avisar al usuario de que lo cambie en su próximo acceso.';
+$string['forcepasswordchangecheckfull'] = '¿Está totalmente seguro que quiere forzar un cambio de contraseña a {$a} ?';
 $string['forcepasswordchangenot'] = 'No se pudo forzar el cambio de contraseña a {$a}';
 $string['forcepasswordchangenotice'] = 'Para continuar, deberá cambiar su contraseña.';
 $string['forcetheme'] = 'Forzar tema';
@@ -817,7 +817,6 @@ $string['helpwiththis'] = 'Ayuda';
 $string['hiddenassign'] = 'Tarea oculta';
 $string['hiddenfromstudents'] = 'Oculto de estudiantes';
 $string['hiddensections'] = 'Temas ocultos';
-$string['hiddensectionscollapsed'] = 'Las secciones ocultas se muestran en forma colapsada';
 $string['hiddensections_help'] = '<P>Esta opción le permite decidir cómo se mostrarán a los estudiantes las
    secciones ocultas del curso.</p>
 
@@ -829,6 +828,7 @@ $string['hiddensections_help'] = '<P>Esta opción le permite decidir cómo se mo
 
 <p>Si usted lo elige, pueden estar completamente ocultas, de forma que los
    estudiantes ni siquiera saben qué secciones del curso están ocultas.</p>';
+$string['hiddensectionscollapsed'] = 'Las secciones ocultas se muestran en forma colapsada';
 $string['hiddensectionsinvisible'] = 'Las secciones ocultas son totalmente invisibles';
 $string['hide'] = 'Ocultar';
 $string['hideadvancedsettings'] = 'Ocultar ajustes avanzados';
@@ -856,9 +856,9 @@ $string['icon'] = 'Icono';
 $string['icqnumber'] = 'Número de ICQ';
 $string['idnumber'] = 'Número de ID';
 $string['idnumbercourse'] = 'Número ID del curso';
+$string['idnumbercourse_help'] = '<P>El número ID de un curso únicamente se usa cuando se compara este curso contra un sistema externo - lo cual nunca es mostrado dentro de Moodle. Si tiene un código oficial para este curso úselo aquí ... de otra forma lo puede dejar en blanco.</p>';
 $string['idnumbercoursecategory'] = 'Número ID de la catagoría';
 $string['idnumbercoursecategory_help'] = 'El número de identificación ID de una categoría de cursos sólo se usa cuando se compara la categoría contra un sistema externo y no se muestra en ningún lugar del sitio. Si la categoría tiene un código oficial, este puede ser introducido, de lo contrario, el campo puede dejarse en blanco.';
-$string['idnumbercourse_help'] = '<P>El número ID de un curso únicamente se usa cuando se compara este curso contra un sistema externo - lo cual nunca es mostrado dentro de Moodle. Si tiene un código oficial para este curso úselo aquí ... de otra forma lo puede dejar en blanco.</p>';
 $string['idnumbermod'] = 'Número ID';
 $string['idnumbermod_help'] = 'El número ID proporciona una forma de identificar la actividad a fin de poder calcular la calificación. Si la actividad no está incluida en ningún cálculo de calificación, el campo Número ID puede dejarse en blanco. El Número ID puede asimismo ajustarse en la página de edición del cálculo de calificaciones, si bien únicamente
 puede editarse en la página de actualización de la actividad.';
@@ -928,10 +928,10 @@ $string['loggedinas'] = 'Usted se ha identificado como {$a}';
 $string['loggedinasguest'] = 'En este momento está usando el acceso para invitados';
 $string['loggedinnot'] = 'Usted no se ha identificado.';
 $string['login'] = 'Entrar';
+$string['login_failure_logs'] = 'Registro de fallos de acceso';
 $string['loginalready'] = 'Usted ya ha accedido al sistema';
 $string['loginas'] = 'Entrar como';
 $string['loginaspasswordexplain'] = '<p>Debe introducir la "loginas password" especial para usar esta característica.<br />Si no la sabe, pregunte al administrador de su servidor.</p>';
-$string['login_failure_logs'] = 'Registro de fallos de acceso';
 $string['loginguest'] = 'Entrar como invitado';
 $string['loginsite'] = 'Entrar al sitio';
 $string['loginsteps'] = 'Hola. Para acceder al sistema tómese un minuto para
@@ -971,6 +971,7 @@ $string['makeafolder'] = 'Crear un directorio';
 $string['makeeditable'] = 'Si \'{$a}\' tiene CHMOD 777, usted puede editar el idioma desde aquí.';
 $string['makethismyhome'] = 'Hacer ésta mi página de inicio por defecto';
 $string['manageblocks'] = 'Bloques';
+$string['managecategories'] = 'Ajustar categorías';
 $string['managecourses'] = 'Gestionar cursos';
 $string['managedatabase'] = 'Administrar la base de datos';
 $string['manageeditorfiles'] = 'Gestionar archivos usados por el editor';
@@ -1087,8 +1088,8 @@ $string['new'] = 'Nuevo';
 $string['newaccount'] = 'Nueva cuenta';
 $string['newcourse'] = 'Nuevo curso';
 $string['newpassword'] = 'Nueva contraseña';
-$string['newpasswordfromlost'] = '<strong>AVISO:</strong> Su<strong>Contraseña actual</strong> ha sido enviada en el <strong>segundo</strong> de los dos correos electrónicos enviados como parte del proceso de recuperación de la contraseña perdida. Asegúrese de que ha recibido la nueva contraseña antes de continuar con esta pantalla.';
 $string['newpassword_help'] = 'Escriba una nueva contraseña o déjelo en blanco para mantener la contraseña actual.';
+$string['newpasswordfromlost'] = '<strong>AVISO:</strong> Su<strong>Contraseña actual</strong> ha sido enviada en el <strong>segundo</strong> de los dos correos electrónicos enviados como parte del proceso de recuperación de la contraseña perdida. Asegúrese de que ha recibido la nueva contraseña antes de continuar con esta pantalla.';
 $string['newpasswordtext'] = 'Hola, {$a->firstname}.
 
 La contraseña de su cuenta en \'{$a->sitename}\' se ha
@@ -1492,14 +1493,14 @@ $string['screenreaderuse_help'] = 'Si se ajusta a SÍ, se proporcionará una int
 $string['screenreaderyes'] = 'Sí';
 $string['screenshot'] = 'Pantallazo';
 $string['search'] = 'Buscar';
+$string['search_help'] = 'Para realizar una búsqueda básica de una o más palabras en cualquier lugar del texto, simplemente escríbalas separadas por espacios. Se usarán todas las palabras de más de dos caracteres.
+
+Para realizar una búsqueda avanzada, pulse el botón de búsqueda sin teclear nada en la caja de texto.';
 $string['searchagain'] = 'Volver a buscar';
 $string['searchbyemail'] = 'Buscar por dirección email';
 $string['searchbyusername'] = 'Buscar por nombre de usuario';
 $string['searchcourses'] = 'Buscar cursos';
 $string['searchhelp'] = 'Puede buscar muchas palabras al mismo tiempo.<p>Si escribe una o más palabras, el buscador encuentra todos los mensajes que contengan esa o esas palabras en cualquier lugar.<br />Si escribe varias palabras separadas por el signo de adición (+) aparecerán los resultados que contengan todas esas palabras en el orden exacto en el que fueron escritas.<br />Si escribe un signo de sustracción (-) antes de una palabra se mostrarán todos los mensajes que contengan la o las otras plabras pero que no contengan la palabra antecedida por este signo.';
-$string['search_help'] = 'Para realizar una búsqueda básica de una o más palabras en cualquier lugar del texto, simplemente escríbalas separadas por espacios. Se usarán todas las palabras de más de dos caracteres.
-
-Para realizar una búsqueda avanzada, pulse el botón de búsqueda sin teclear nada en la caja de texto.';
 $string['searchoptions'] = 'Opciones de búsqueda';
 $string['searchresults'] = 'Resultados de la búsqueda';
 $string['sec'] = 'segundos';

@@ -53,14 +53,6 @@ $string['aggregatesum'] = 'Summan av alla betyg';
 $string['aggregateweightedmean'] = 'Viktat medelbetyg';
 $string['aggregateweightedmean2'] = 'Enkelt vägt medelbetyg';
 $string['aggregation'] = 'Aggregering';
-$string['aggregationcoef'] = 'Koefficient för aggregering';
-$string['aggregationcoefextra'] = 'Extra tillägg';
-$string['aggregationcoefextrasum'] = 'Extra tillägg';
-$string['aggregationcoefextrasum_help'] = '<p>Extra tillgodoräknande för den här betygskomponenten under aggregation.</p>';
-$string['aggregationcoefextraweight'] = 'Vikt på extra tillägg';
-$string['aggregationcoefextraweight_help'] = '<p>Extra tillgodoräknande för den här betygskomponenten under aggregation.</p>';
-$string['aggregationcoefweight'] = 'Vikt för komponent';
-$string['aggregationcoefweight_help'] = '<p>Den viktning som tillämpas på alla betyg i den här betygskomponenten under aggregation med andra betygskomponenter.</p>';
 $string['aggregation_help'] = '<p>Den här menyn gör det möjligt för dig att välja vilken strategi för aggregering som ska användas för att beräkna varje deltagares övergripande betyg för den här kategorin.
 De olika alternativen förklarar vi här nedan:</p>
 
@@ -73,47 +65,47 @@ De olika alternativen förklarar vi här nedan:</p>
     <dd>Summan av alla betyg dividerat med det totala antalet betyg.</dd>
     <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
                      <code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
-                     
     <dt>Viktat medel</dt>
         <dd>Varje betygskomponent kan tilldelas en viktning som sedan används för den aritmetiska medelvärdes-aggregering som syftar till att påverka den betydelse som varje komponent ska ha i det övergripande medelvärdet. </dd>
         <dd class="example">A1 70/100 weight 10, A2 20/80 weight 5, A3
                          10/10 weight 3, kategori max 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
-    
     <dt>Enkelt viktat medelvärde</dt>
         <dd>Skillnaden i förhållande till <em>Viktat medelvärde</em> är den att viktningen beräknas som <em>maxbetyg</em> - <em>minimibetyg</em>
                          för varje komponent. En uppgift på 100 poäng har en viktning på 100 , en uppgift på 10 poäng har en viktning på 10.</dd>
         <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
                          <code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
-    
     <dt>Medelvärde för betyg (med extra tillgodoräknanden)</dt>
         <dd>Aritmetiskt medelvärde med ett tillägg. Detta är en gammal typ av aggregation som inte längre stödjs. Den finns med här endast p.g.a. behovet av bakåtkompatibilitet.</dd>
-    
     <dt>Medianvärde för betyg</dt>
         <dd>Det mittersta betyget (eller medelvärdet av de två mittersta betygen) när betygen har arrangerats efter storlek. Fördelen med detta i förhållande till medelvärdet är att det inte påverkas av undantagsvärden (betyg som ligger extremt långt från medelvärdet).</dd>
         <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
                          <code>0.7 + 0.25 + 1.0 --> 0.25 --> 25/100</code></dd>
-    
     <dt>Minsta betyget</dt>
         <dd>Resultatet är det minsta betyget efter normalisation. Det används vanligen i kombination med <em>Aggregera bara icke-tomma betyg</em>.</dd>
         <dd class="example">A1 70/100, A2 20/80, A3 10/10, kategori max 100:<br />
                          <code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
-                         
     <dt>Högsta betyget</dt>
         <dd>Resultatet är det högsta betyget efter normalisation.</dd>
         <dd class="example">A1 70/100, A2 20/80, A3 10/10, category max 100:<br />
                          <code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
-    
     <dt>"Mode" för betyg</dt>
         <dd>"Mode" är det betyg som är det vanligaste. Det används mer ofta för icke-numeriska betyg. Fördelen jämfört med medelvärdet är att det inte påverkas av undantagsvärden.                         (betyg som ligger extremt långt från medelvärdet). 
                         Detta förlorar dock sin mening så fort det finns mer än ett betyg som är det vanligaste (det är bara ett som används), eller när alla betyg skiljer sig från varandra.</dd>
         <dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 kategori max 100:<br />
                          <code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
-    
     <dt>Summan av betygen</dt>
         <dd>Summan av alla betygsvärden. Ingen hänsyn tas till betyg i skalor. Detta är den enda  typen som inte omvandlar betygen till procentvärden internt (normalisation). <em>Maxbetyget</em> på en associerad komponent i en kategori beräknas automatiskt som en summa av max från alla aggregerade komponenter.</dd>
         <dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
                          <code>70 + 20 + 10 = 100/190</code></dd>
 </dl>';
+$string['aggregationcoef'] = 'Koefficient för aggregering';
+$string['aggregationcoefextra'] = 'Extra tillägg';
+$string['aggregationcoefextrasum'] = 'Extra tillägg';
+$string['aggregationcoefextrasum_help'] = '<p>Extra tillgodoräknande för den här betygskomponenten under aggregation.</p>';
+$string['aggregationcoefextraweight'] = 'Vikt på extra tillägg';
+$string['aggregationcoefextraweight_help'] = '<p>Extra tillgodoräknande för den här betygskomponenten under aggregation.</p>';
+$string['aggregationcoefweight'] = 'Vikt för komponent';
+$string['aggregationcoefweight_help'] = '<p>Den viktning som tillämpas på alla betyg i den här betygskomponenten under aggregation med andra betygskomponenter.</p>';
 $string['aggregationposition'] = 'Position för aggregering';
 $string['aggregationposition_help'] = '<p>Detta definierar vilken position aggregationens kolumn för totalsumman ska ha i rapporten i förhållande till de betyg som aggregeras.</p>';
 $string['aggregationsvisible'] = 'Tillgängliga typer av aggregation';
@@ -130,6 +122,7 @@ $string['averagesdisplaytype'] = 'Visningstyp för medelvärde i kolumner';
 $string['averagesdisplaytype_help'] = '<p>Detta specificerar hur medelvärdet för varje kolumn ska visas. Om du väljer Ärv så kommer visningstypen för varje kolumn att användas.</p>';
 $string['backupwithoutgradebook'] = 'Säkerhetskopieringen innehåller inte konfigurering av Betygskatalogen.';
 $string['badgrade'] = 'Det betyg som har avgivits är ogiltigt';
+$string['badlyformattedscale'] = 'Mata in en kommasepararerad lista med värden(minst två värden krävs).';
 $string['baduser'] = 'Den användare som har lagts till är ogiltig';
 $string['bonuspoints'] = 'Bonuspoäng';
 $string['bulkcheckboxes'] = 'Kryssrutor för bulk';
@@ -165,6 +158,7 @@ $string['coursegradesettings'] = 'Inställningar för kursbetyg/omdömen';
 $string['coursename'] = 'Namn på kurs';
 $string['coursescales'] = 'Skalor för kurs';
 $string['coursesettings'] = 'Inställningar för kurs';
+$string['coursesettingsexplanation'] = 'Kursinställningar avgör hur betygsbok visas för alla deltagare i kursen.';
 $string['coursetotal'] = 'Samlat resultat på kurs';
 $string['createcategory'] = 'Skapa kategori';
 $string['createcategoryerror'] = 'Det gick inte att skapa någon ny kategori';
@@ -225,9 +219,9 @@ $string['exportsettings'] = 'Exportera inställningar';
 $string['exportto'] = 'Exportera till';
 $string['extracreditwarning'] = 'OBS! Om Du ställer in alla enheter i en kategori till \'Extra tillgodoräknande\' så kommer det att effektivt ta bort dem från beräkningen av betyg/omdömen. Detta eftersom det inte kommer att bli någon totalsumma för poäng.';
 $string['feedback'] = 'Återkoppling';
+$string['feedback_help'] = '<p>Detta är anteckningar som (distans)läraren lägger till betyget. Det kan vara omfattande, individualiserad återkoppling eller en enkel kod som hänvisar till ett internt system för återkoppling.</p>';
 $string['feedbackadd'] = 'Lägg till återkoppling';
 $string['feedbackedit'] = 'Redigera återkoppling';
-$string['feedback_help'] = '<p>Detta är anteckningar som (distans)läraren lägger till betyget. Det kan vara omfattande, individualiserad återkoppling eller en enkel kod som hänvisar till ett internt system för återkoppling.</p>';
 $string['feedbacksaved'] = 'Återkoppling sparad';
 $string['feedbackview'] = 'Visa återkoppling';
 $string['finalgrade'] = 'Slutbetyg';
@@ -262,6 +256,7 @@ $string['gradeexportdecimalpoints'] = 'Decimaler för exporterade betyg';
 $string['gradeexportdecimalpoints_desc'] = 'Antalet decimaler att visa i samband med export. Detta kan överskridas under export.';
 $string['gradeexportdisplaytype'] = 'Visningstyp för exporterade betyg';
 $string['gradeexportdisplaytype_desc'] = 'Betyg kan visas som heltal, som procenttal (i förhållande till minimi- och maxbetyg) eller som bokstäver  (A, B, C etc..) under export. Detta kan överskridas under export.';
+$string['gradeforstudent'] = '{$a->student}<br />{$a->item}{$a->feedback}';
 $string['gradehelp'] = 'Hjälp angående betyg/omdömen';
 $string['gradehistorylifetime'] = 'Livscykel för betygshistorik';
 $string['gradehistorylifetime_help'] = 'Detta anger hur länge du vill att ändringshistoriken ska finnas kvar när det gäller betygsrelaterade tabeller. Det bästa är att behålla detta så länge det går. Om du';
@@ -325,6 +320,9 @@ $string['hidelocks'] = 'Dölj låsningar';
 $string['hidenooutcomes'] = 'Visa resultat';
 $string['hidequickfeedback'] = 'Dölj Snabb återkoppling';
 $string['hideranges'] = 'Visa omfång';
+$string['hidetotalifhiddenitems'] = 'Göm totaler om de innehåller dolda poster';
+$string['hidetotalshowexhiddenitems'] = 'Visa totaler utan dolda poster';
+$string['hidetotalshowinchiddenitems'] = 'Visa totaler med dolda poster';
 $string['hideverbose'] = ' {Dölj {$a->category} {$a->itemmodule} {$a->itemname}';
 $string['highgradeascending'] = 'Sortera enligt stigande skala för höga betyg/omdömen';
 $string['highgradedescending'] = 'Sortera enligt fallande skala för höga betyg/omdömen';
@@ -354,8 +352,10 @@ $string['importxml'] = 'Importera XML';
 $string['includescalesinaggregation'] = 'Ta med skalor i aggregering';
 $string['includescalesinaggregation_help'] = 'Du kan ändra ditt val huruvida skalor ska tas med som tal i alla aggregerade betyg i alla betygskataloger i alla kurser. VARNING:om du ändrar den här inställningen så kommer alla aggregerade betyg att beräknas om.';
 $string['incorrectcourseid'] = 'ID för kurs var felaktigt';
+$string['incorrectcustomscale'] = '(Felaktig anpassad skala, vg. ändra)';
 $string['incorrectminmax'] = 'Minimum måste vara lägre än maximum';
 $string['inherit'] = 'Ärv';
+$string['intersectioninfo'] = 'Student/Betyginfo';
 $string['item'] = 'Komponent';
 $string['iteminfo'] = 'Info om komponent';
 $string['iteminfo_help'] = '<p>Det här är ett utrymme där du kan mata in information om komponenten. Den text som matas in visas inte någon annanstans.</p>';
@@ -424,7 +424,9 @@ $string['nonnumericweight'] = 'Mottaget icke-numeriskt värde för';
 $string['nonunlockableverbose'] = 'Det här betyget går inte att låsa upp förrän {$a->itemname} har låsts upp';
 $string['nonweightedpct'] = 'icke-viktat %';
 $string['nooutcome'] = 'Inget resultat';
+$string['nooutcomes'] = 'Resultatobjekt måste kopplas till ett kursresultat, men det finns inga resultat för denna kurs. Vill du lägga till ett?';
 $string['nopublish'] = 'Publicera inte';
+$string['noscales'] = 'Resultat måste kopplas till en kursskala eller global skala men det finns inga. Vill du lägga till ett?';
 $string['noselectedcategories'] = 'inga kategorier valdes';
 $string['noselecteditems'] = 'inga komponenter valdes';
 $string['notteachererror'] = 'Du måste vara lärare för att få använda det här';
@@ -433,6 +435,7 @@ $string['onascaleof'] = 'på en skala av  {$a->grademin} till {$a->grademax}';
 $string['operations'] = 'Operationer';
 $string['options'] = 'Alternativ';
 $string['outcome'] = 'Resultat';
+$string['outcome_help'] = 'Det resultat som den här betygskomponenten representerar';
 $string['outcomeassigntocourse'] = 'Tilldela ett annat resultat till den här kursen';
 $string['outcomecategory'] = 'Skapa resultat i kategori';
 $string['outcomecategorynew'] = 'Ny kategori';
@@ -440,7 +443,6 @@ $string['outcomeconfirmdelete'] = 'Är du säker på att du vill ta bort resulta
 $string['outcomecreate'] = 'Lägg till ett nytt resultat';
 $string['outcomedelete'] = 'Ta bort Resultat';
 $string['outcomefullname'] = 'Hela namnet';
-$string['outcome_help'] = 'Det resultat som den här betygskomponenten representerar';
 $string['outcomeitem'] = 'Komponent för resultat';
 $string['outcomeitemsedit'] = 'Redigera komponent för resultat';
 $string['outcomereport'] = 'Rapport angående resultat';
@@ -556,7 +558,8 @@ $string['showrank'] = 'Visa rangordning';
 $string['showrank_help'] = 'Detta avgör huruvida du vill visa användarens ställning i förhållande till resten av klassen, detta för varje betygskomponent.';
 $string['showuserimage'] = 'Visa bilderna från användarnas profiler';
 $string['showuserimage_help'] = 'Detta avgör huruvida användarnas bilder ska visas bredvid namnet i betygsrapporten.';
-$string['showverbose'] = 'Visa {$a->category}$a->itemmodule {$a->itemname}';
+$string['showverbose'] = 'Visa {$a->category}{$a->itemmodule} {$a->itemname}';
+$string['simpleview'] = 'Enkel vy';
 $string['sitewide'] = 'Över hela webbplatsen';
 $string['sort'] = 'Sortera';
 $string['sortasc'] = 'Sortera i stigande ordning';
@@ -572,6 +575,9 @@ $string['studentsperpage_help'] = 'Antalet studenter/elever/deltagare/lärande  
 $string['subcategory'] = 'Normal kategori';
 $string['submissions'] = 'Inskickningar';
 $string['submittedon'] = 'Inskickad: {$a}';
+$string['switchtofullview'] = 'Byt till full vy';
+$string['switchtosimpleview'] = 'Växla till enkel vy';
+$string['tabs'] = 'Flikar';
 $string['topcategory'] = 'Superkategori';
 $string['total'] = 'Summa';
 $string['totalweight100'] = 'Den sammanlagda viktningen är lika med 100';
@@ -586,8 +592,9 @@ $string['typevalue'] = 'Värde';
 $string['uncategorised'] = 'Inte kategoriserad';
 $string['unchangedgrade'] = 'Betyget har inte ändrats';
 $string['unenrolledusersinimport'] = 'Den här importen tar med de följande betygen för användare som f.n. inte är registrerade på den här kursen: {$a}';
+$string['unlimitedgrades'] = 'Obegränsade betyg';
 $string['unlock'] = 'lås upp';
-$string['unlockverbose'] = 'Lås upp {$a->category}$a->itemmodule {$a->itemname}';
+$string['unlockverbose'] = 'Lås upp {$a->category}{$a->itemmodule} {$a->itemname}';
 $string['unused'] = 'ej använd';
 $string['updatedgradesonly'] = 'Exportera bara nya eller uppdaterade betyg';
 $string['uploadgrades'] = 'ladda upp betyg';
@@ -601,14 +608,20 @@ $string['user'] = 'Användare';
 $string['usergrade'] = 'Användare {$a->fullname} ({$a->useridnumber}) på komponent {$a->gradeidnumber}';
 $string['userpreferences'] = 'Användarens föredragna värden';
 $string['useweighted'] = 'Använd viktat';
+$string['verbosescales'] = 'Mångordiga skalor';
 $string['viewbygroup'] = 'Grupp';
 $string['viewgrades'] = 'Visa betyg/omdömen';
+$string['warningexcludedsum'] = 'Varning: undantag av betyg är inte kompatibelt med summaaggregering.';
 $string['weight'] = 'vikt';
 $string['weightcourse'] = 'Använd viktade betyg för kurs';
 $string['weightedascending'] = 'Sortera efter stigande viktad procent';
 $string['weighteddescending'] = 'Sortera efter fallande viktad procent';
 $string['weightedpct'] = 'viktad %';
 $string['weightedpctcontribution'] = 'viktat  %  bidrag';
+$string['weightorextracredit'] = 'Vikt eller extra kredit';
+$string['weights'] = 'Vikter';
+$string['weightsedit'] = 'Redigera vikter och extra krediter';
+$string['weightuc'] = 'Vikt';
 $string['writinggradebookinfo'] = 'Skriver inställningar för betygskatalogen';
 $string['xml'] = 'XML';
 $string['yes'] = 'Ja';

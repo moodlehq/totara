@@ -210,11 +210,6 @@ $string['cancel'] = 'ביטול';
 $string['cancelled'] = 'בוטל';
 $string['categories'] = 'קטגוריות קורסים';
 $string['category'] = 'קטגוריה';
-$string['categoryadded'] = 'הקטגוריה \'{$a}\' התווספה';
-$string['categorycontents'] = 'תתי-קטגוריות וקורסים';
-$string['categorycurrentcontents'] = 'תכני ה{$a}';
-$string['categorydeleted'] = 'הקטגוריה \'{$a}\' נמחקה';
-$string['categoryduplicate'] = 'קטגוריה בשם \'{$a}\' כבר קיימת!';
 $string['category_help'] = '<p align="center"><b>קטגוריות קורסים</b></p>
 
 <p>יכול להיות שמנהל המוודל שלכם יצטרך להקים מספר קטגוריות של קורסים.
@@ -225,6 +220,11 @@ $string['category_help'] = '<p align="center"><b>קטגוריות קורסים</
 
 <p>ביחרו בקטגוריה שהכי מתאימה לקורס שלכם. הבחירה הזו תשפיע על המקום שבו הקורס שלכם יופיע ברשימות הקורסים, דבר שיקל על הסטודנטים למצוא אותו.
 </p>';
+$string['categoryadded'] = 'הקטגוריה \'{$a}\' התווספה';
+$string['categorycontents'] = 'תתי-קטגוריות וקורסים';
+$string['categorycurrentcontents'] = 'תכני ה{$a}';
+$string['categorydeleted'] = 'הקטגוריה \'{$a}\' נמחקה';
+$string['categoryduplicate'] = 'קטגוריה בשם \'{$a}\' כבר קיימת!';
 $string['categorymodifiedcancel'] = 'הקטגוריה עודכנה! אנא בטל ונסה שנית';
 $string['categoryname'] = 'שם הקטגוריה';
 $string['categoryupdated'] = 'קטגוריית {$a} עודכנה';
@@ -616,10 +616,10 @@ $string['expandall'] = 'הרחב הכל';
 $string['expirynotify'] = 'הודעת רישום אשר תוקפה פג';
 $string['expirynotifyemail'] = 'הסטודנטים הבאים בקורס זה מסיימים את רישומם לקורס לאחר {$a->threshold} יום בדיוק: {$a->current} הסטודנטים הבאים בקורס זה מסיימים את רישומם לקורס פחות מ{$a->threshold} יום: {$a->past} תוכל להגיע לעמוד הבא בכדי להאריך להם את תקופת הרישום: {$a->extendurl}';
 $string['expirynotifystudents'] = 'הודיע לסטודנטים';
-$string['expirynotifystudentsemail'] = '{$a->studentstr} יקר: זוהי הודעה כי הרישום שלך בקורס {$a->course} יסתיים תוך {$a->threshold} יום אנא צור קשר עם המורה שלך {$a->teacherstr} לחקירה נוספת';
 $string['expirynotifystudents_help'] = '<p>הודעת רישום אשר תוקפה תם - עבור הסטודנטים</p>
 
 <p>אם משך זמן הרישום צויין, הגדרה זו תקבע האם סטודנטים יקבלו הודעת דוא"ל כאשר הם על סף סיום רישום לקורס.</p>';
+$string['expirynotifystudentsemail'] = '{$a->studentstr} יקר: זוהי הודעה כי הרישום שלך בקורס {$a->course} יסתיים תוך {$a->threshold} יום אנא צור קשר עם המורה שלך {$a->teacherstr} לחקירה נוספת';
 $string['expirythreshold'] = 'סף';
 $string['expirythreshold_help'] = 'אם צוין מועד ההרשמה אזי הגדרה זאת קובעת את מספר הימים המופיע בהודעה שלאחריהם הסטודנטים מוסרים מהקורס.';
 $string['explanation'] = 'הסבר';
@@ -649,8 +649,8 @@ $string['forcedmodeinbrackets'] = '{$a} (מצב מוכרח)';
 $string['forcelanguage'] = 'אלץ שפה';
 $string['forceno'] = 'אל תכריח';
 $string['forcepasswordchange'] = 'אלץ שינוי סיסמה';
-$string['forcepasswordchangecheckfull'] = 'האם אתה בטוח כי ברצונך לכפות שינוי סיסמה ל- {$a} ?';
 $string['forcepasswordchange_help'] = 'הנע משתמש עבור שינוי בהתחברות הבאה.';
+$string['forcepasswordchangecheckfull'] = 'האם אתה בטוח כי ברצונך לכפות שינוי סיסמה ל- {$a} ?';
 $string['forcepasswordchangenot'] = 'לא היה ניתן לכפות שינוי סיסמה ל- {$a}';
 $string['forcepasswordchangenotice'] = 'הינך חייב לשנות את סיסמתך בכדי להמשיך';
 $string['forcetheme'] = 'בחר ערכת נושא';
@@ -767,7 +767,6 @@ $string['helpwiththis'] = 'עזור עם זה';
 $string['hiddenassign'] = 'תפקיד מוסתר';
 $string['hiddenfromstudents'] = 'מוסתר בפני סטודנטים';
 $string['hiddensections'] = 'יחידות הוראה נסתרות';
-$string['hiddensectionscollapsed'] = 'יחידות הוראה נסתרות: מוצגות בצורה לא זמינה';
 $string['hiddensections_help'] = '<p align="center"><b>חלקי קורס נסתרים</b></p>
 
 <p>האפשרות הזו מאפשרת לכם להחליט כיצד יוצגו החלקים הנסתרים בקורס שלכם בפני הסטודנטים.
@@ -778,6 +777,7 @@ $string['hiddensections_help'] = '<p align="center"><b>חלקי קורס נסת�
 
 <p>אם תרצו, אתם יכולים לבחור שהחלקים הנסתרים של הקורס יהיו מוסתרים לחלוטין מעיני הסטודנטים, כך שהם אפילו לא יהיו מודעים לכך שבקורס יש חלקים נסתרים.
 </p>';
+$string['hiddensectionscollapsed'] = 'יחידות הוראה נסתרות: מוצגות בצורה לא זמינה';
 $string['hiddensectionsinvisible'] = 'יחידות הוראה נסתרות: לא מוצגות';
 $string['hide'] = 'הסתר';
 $string['hideadvancedsettings'] = 'הסתר הגדרות מתקדמות';
@@ -805,11 +805,11 @@ $string['icon'] = 'צלמית';
 $string['icqnumber'] = 'מספר ICQ';
 $string['idnumber'] = 'מספר זיהוי';
 $string['idnumbercourse'] = 'מספר זיהוי הקורס';
-$string['idnumbercoursecategory'] = 'מספר זיהוי של קטגוריה';
 $string['idnumbercourse_help'] = '<p align="center"><b>מספר הזיהוי של הקורס</b></p>
 
 <p> במספר הזיהוי של הקורס משתמשים רק כאשר בודקים זהות בין פריטי נתונים של הקורס ובין מערכות חיצוניות - לעולם הוא לא מוצג בתוך Moodle. אם יש לכם שם קוד רשמי בשביל הקורס, אז השתמשו בו כאן.... אחרת, אתם יכולים להשאיר את השדה ריק.
 </p>';
+$string['idnumbercoursecategory'] = 'מספר זיהוי של קטגוריה';
 $string['idnumbermod'] = 'מספר זיהוי (לצורך חישוב ציון)';
 $string['idnumbermod_help'] = '<p>הגדרת מספר זיהוי מקנה דרך לזיהוי הפעילות לתהליך חישוב הציון. אם הפעילות לא כלולה איזשהו חישוב ציון, שדה מספר הזיהוי יכול להישאר ריק. </p>
 <p>מספר הזיהוי יכול להיות מוגדר גם בעמוד העריכה של חישוב הציון, ניתן לערוך אותו רק בעמוד עדכון הפעילות.</p>';
@@ -880,10 +880,10 @@ $string['loggedinas'] = 'אתה מחובר כ{$a}';
 $string['loggedinasguest'] = 'אתם משתמשים כרגע בגישת אורחים';
 $string['loggedinnot'] = 'אתה לא מחובר.';
 $string['login'] = 'התחבר';
+$string['login_failure_logs'] = 'רישום נסיונות התחברות כושלים';
 $string['loginalready'] = 'אתה כבר מחובר למערכת';
 $string['loginas'] = 'התחבר כמשתמש זה';
 $string['loginaspasswordexplain'] = '<p> אתה חייב להכניס "loginas password" מיוחד בכדי להשתמש במאפיין זה.<br/> אם אינך יודע זאת, שאל את מנהל הרשת.';
-$string['login_failure_logs'] = 'רישום נסיונות התחברות כושלים';
 $string['loginguest'] = 'התחבר כאורח';
 $string['loginsite'] = 'התחבר לאתר';
 $string['loginsteps'] = 'שלום לך! לקבלת גישה מלאה לקורסים עליך להקדיש דקה לפתיחת חשבון חדש באתר זה.
@@ -913,6 +913,7 @@ $string['makeafolder'] = 'צור תיקייה';
 $string['makeeditable'] = 'אם תהפוך את \'{$a}\' לקובץ שניתן לערוך אותו על ידי תוכנת שרת הרשת (לדוגמא Apache), אז תוכל לערוך קובץ זה ישירות מדף זה';
 $string['makethismyhome'] = 'הפוך עמוד זה לעמוד הבית כברירת מחדל';
 $string['manageblocks'] = 'משבצות (בלוקים)';
+$string['managecategories'] = 'נהל קטגוריות';
 $string['managecourses'] = 'נהל קורסים';
 $string['managedatabase'] = 'בסיס נתונים';
 $string['manageeditorfiles'] = 'נהל קבצים אשר בשימוש העורך';
@@ -1033,8 +1034,8 @@ $string['new'] = 'חדש';
 $string['newaccount'] = 'חשבון חדש';
 $string['newcourse'] = 'קורס חדש';
 $string['newpassword'] = 'סיסמה חדשה';
-$string['newpasswordfromlost'] = '<strong> הודעה: הסיסמה הנוחכית </strong> שלך תשלח לך בדוא"ל <strong> השני</strong> מתוך השנים שישלחו לך כחלק מתהליך השבת הסיסמה האבודה שלך. וודא כי קיבלת את הסיסמה החלופה לפני שתמשיך עם עמוד זה.';
 $string['newpassword_help'] = 'השאר ריק כדי לשמור את סיסמתך הנוכחית';
+$string['newpasswordfromlost'] = '<strong> הודעה: הסיסמה הנוחכית </strong> שלך תשלח לך בדוא"ל <strong> השני</strong> מתוך השנים שישלחו לך כחלק מתהליך השבת הסיסמה האבודה שלך. וודא כי קיבלת את הסיסמה החלופה לפני שתמשיך עם עמוד זה.';
 $string['newpasswordtext'] = 'שלום לך {$a->firstname}, סיסמת חשבונך באתר \'{$a->sitename}\' אופסה, והונפקה לך סיסמה זמנית חדשה. פרטי ההתחברות החדשים שלך הינם: שם משתמש: {$a->username} סיסמה: {$a->newpassword} אנא גש לעמוד זה כדי לשנות את סיסמתך: {$a->link} ברוב תוכנות הדואר, כתובת האינטרנט אמורה להופיע כקישור כחול אשר אתה יכול פשוט ללחוץ עליו. אם זה לא עובד, גזור את הכתובת והדבק אותה בתוך פס הכתובות של דפדפן האינטרנט שלך. איחולי הצלחה מהמנהל של \'{$a->sitename}\'. {$a->signoff}';
 $string['newpicture'] = 'תמונה חדשה';
 $string['newpicture_help'] = '<p align="center"><b>העלאת תמונה</b></p>
@@ -1214,7 +1215,7 @@ $string['pleasesearchmore'] = 'אנא חפש עוד קצת';
 $string['pleaseusesearch'] = 'אנא השתמש בחיפוש';
 $string['plugin'] = 'תוסף';
 $string['plugincheck'] = 'בדיקת תוספים';
-$string['plugindeletefiles'] = 'כל המידע אשר משוייך לתוסף {\'$a->name\'} נמחק ממסד הנתונים. בכדי למנוע מהתוסף להתקין עצמו מחדש, תצטרך למחוק את הסיפרייה הזו ישירות מהשרת: {$a->directory}';
+$string['plugindeletefiles'] = 'כל המידע אשר משוייך לתוסף {\'{$a->name}\'} נמחק ממסד הנתונים. בכדי למנוע מהתוסף להתקין עצמו מחדש, תצטרך למחוק את הסיפרייה הזו ישירות מהשרת: {$a->directory}';
 $string['pluginsetup'] = 'הגדר התקני טבלאות';
 $string['policyaccept'] = 'אני מבין ומסכים';
 $string['policyagree'] = 'הינך חייב לאשר את מדיניות זו על מנת להמשיך להשתמש באתר זה. האם אתה מסכים?';
@@ -1237,7 +1238,7 @@ $string['preview'] = 'תצוגה מקדימה';
 $string['previewhtml'] = 'תצוגת מקדימה של תסדיר דף מעוצב (html)';
 $string['previeworchoose'] = 'הצג או בחר ערכת נושא';
 $string['previous'] = 'קודם';
-$string['previouslyselectedusers'] = 'המשתמשים שנבחרו קודם לכן אינם מתאימים {\'$a\'}';
+$string['previouslyselectedusers'] = 'המשתמשים שנבחרו קודם לכן אינם מתאימים {\'{$a}\'}';
 $string['previoussection'] = 'קטע קודם';
 $string['primaryadminsetup'] = 'הגדרות תצורת חשבון מנהל המערכת';
 $string['profile'] = 'פרופיל';
@@ -1399,14 +1400,14 @@ $string['screenreaderuse_help'] = 'אם מוגדר כ"כן" , יסופק ממש�
 $string['screenreaderyes'] = 'כן';
 $string['screenshot'] = 'תמונת מסך';
 $string['search'] = 'חיפוש';
+$string['search_help'] = 'כדי לערוך חיפוש בסיסי של מילה או יותר באיזור טקסט זה, יש להקליד מופרדים עם פסיק. הדבר פעיל עבור מילים הארוכות מ2 תווים .
+
+למצב גישה בטופס החיפוש מתקדם, לחץ על כפתור ה"חיפוש"  עם השארת תיבת החיפוש ריקה.';
 $string['searchagain'] = 'חיפוש נוסף';
 $string['searchbyemail'] = 'חפש לפי כתובת דוא"ל';
 $string['searchbyusername'] = 'חיפוש לפי שם משתמש';
 $string['searchcourses'] = 'חיפוש קורסים';
 $string['searchhelp'] = 'אתה יכול לחפש מספר מילים בבת אחת.<br />word : תמצא כל התאמה למילה זו בתוך הטקסט.<br />+word : רק התאמות מדוייקות יימצאו.<br />-word : אל תכלול תוצאות הכוללות מילה זו.';
-$string['search_help'] = 'כדי לערוך חיפוש בסיסי של מילה או יותר באיזור טקסט זה, יש להקליד מופרדים עם פסיק. הדבר פעיל עבור מילים הארוכות מ2 תווים .
-
-למצב גישה בטופס החיפוש מתקדם, לחץ על כפתור ה"חיפוש"  עם השארת תיבת החיפוש ריקה.';
 $string['searchoptions'] = 'אפשרויות חיפוש';
 $string['searchresults'] = 'תוצאות חיפוש';
 $string['sec'] = 'שניה';

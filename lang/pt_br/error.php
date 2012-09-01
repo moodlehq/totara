@@ -33,7 +33,7 @@ $string['blockcannotconfig'] = 'Este bloco não permite configuração global';
 $string['blockcannotinistantiate'] = 'Problema para instanciar objeto de bloco';
 $string['blockcannotread'] = 'Não foi possível ler dados de blockid={$a}';
 $string['blockdoesnotexist'] = 'Este  bloco não existe';
-$string['blockdoesnotexistonpage'] = 'Este bloco (id={$a->instanced}) não existe nesta página ($a->url).';
+$string['blockdoesnotexistonpage'] = 'Este bloco (id={$a->instanceid}) não existe nesta página ({$a->url}).';
 $string['blocknameconflict'] = 'Conflito de nomes: o bloco {$a->name} tem o mesmo título que um bloco existente: {$a->conflict}!';
 $string['callbackrejectcomment'] = 'O módulo rejeita acrescentar este comentário';
 $string['cannotaddcoursemodule'] = 'Não foi adicionado um novo módulo de curso';

@@ -231,8 +231,8 @@ $string['legacy:editingteacher'] = 'ÄRVD ROLL: (redigerande) distanslärare';
 $string['legacy:guest'] = 'ÄRVD ROLL: Gäst';
 $string['legacy:student'] = 'ÄRVD ROLL: Student/elev/deltagare/lärande';
 $string['legacy:teacher'] = 'ÄRVD ROLL: (icke-redigerande) distanslärare';
-$string['legacytype'] = 'Typ av ärvd roll';
 $string['legacy:user'] = 'ÄRVD ROLL: autenticerad användare';
+$string['legacytype'] = 'Typ av ärvd roll';
 $string['listallroles'] = 'Lista alla roller';
 $string['localroles'] = 'Lokalt tilldelade roller';
 $string['manageadmins'] = 'Administrera administratörer på webbplatsnivå';
@@ -254,7 +254,6 @@ $string['notset'] = 'Inte inställd';
 $string['overrideanotherrole'] = 'Överskrid en annan roll';
 $string['overridecontext'] = 'Överskrid sammanhanget';
 $string['overridepermissions'] = 'Överskrid tillstånd';
-$string['overridepermissionsforrole'] = 'Överskrid tillstånden för rollen {$a->role}\' i {$a->context}';
 $string['overridepermissions_help'] = '<p>
 Överskridanden är de specifika tillstånd som är utformade 
 för att överskrida en roll i ett specifikt sammanhang;
@@ -290,6 +289,7 @@ See also
 <a href="help.php?file=assignroles.html">Tilldela roller</a> and
 <a href="help.php?file=permissions.html">Tillstånd</a>.
 </p>';
+$string['overridepermissionsforrole'] = 'Överskrid tillstånden för rollen {$a->role}\' i {$a->context}';
 $string['overridepermissionsin'] = 'Överskrid tillstånd i {$a}';
 $string['overrideroles'] = 'Överskrida roller';
 $string['overriderolesin'] = 'Överskrid roller i {$a}';
@@ -350,7 +350,6 @@ Se även
 <a href="help.php?file=overrides.html">Överskridanden</a>.
 </p>';
 $string['permissions'] = 'Tillstånd';
-$string['permissionsforuser'] = 'Tillstånd för användaren {$a}';
 $string['permissions_help'] = '<p>
 Tillstånd är de inställningar som Du medger för vissa specifika kapaciteter. 
 </p>
@@ -405,6 +404,7 @@ Se även
 <a href="help.php?file=assignroles.html">Tilldela roller</a> and
 <a href="help.php?file=overrides.html">Överskridanden</a>.
 </p>';
+$string['permissionsforuser'] = 'Tillstånd för användaren {$a}';
 $string['permissionsincontext'] = 'Tillstånd i {$a}';
 $string['portfolio:export'] = 'Exportera till portfolios';
 $string['potentialusers'] = '{$a} potentiella användare';
@@ -440,14 +440,17 @@ $string['restore:restorecourse'] = 'Återställ kurser';
 $string['restore:restoresection'] = 'Återställ sektioner';
 $string['restore:restoretargethub'] = 'Återställ från filer som är markerade för hubb';
 $string['restore:restoretargetimport'] = 'Återställ från filer som är markerade som import';
+$string['restore:rolldates'] = 'Tillåtet att ändra aktivitetskonfigurationsdatum vid återställing';
 $string['restore:uploadfile'] = 'Ladda upp filer till områden för säkerhetskopiering';
 $string['restore:userinfo'] = 'Återställ användardata';
 $string['risks'] = 'Risker';
 $string['role:assign'] = 'Tilldela användare roller';
-$string['roleassignments'] = 'Tilldelning av roller';
-$string['rolefullname'] = 'Namn';
 $string['role:manage'] = 'Skapa och administrera roller';
 $string['role:override'] = 'Översskrid tillstånd för andra';
+$string['role:safeoverride'] = 'Översskrid säkra tillstånd för andra';
+$string['role:switchroles'] = 'Skifta till andra roller';
+$string['roleassignments'] = 'Tilldelning av roller';
+$string['rolefullname'] = 'Namn';
 $string['roles'] = 'Roller';
 $string['roles_help'] = '<p> 
 En roll är en samling tillstånd som har definierats för hela systemet.
@@ -483,9 +486,9 @@ Se även
 <a href="help.php?file=overrides.html">Överskridanden</a>.
 </p>';
 $string['roleshortname'] = 'Kortnamn';
-$string['role:switchroles'] = 'Skifta till andra roller';
 $string['roletoassign'] = 'Roll att tilldela';
 $string['roletooverride'] = 'Roll att överskrida';
+$string['safeoverridenotice'] = 'Notera: Funktioner med högre risk är låsta eftersom du är endast tillåten att ändra säkra funktioner.';
 $string['selectrole'] = 'Välj en roll';
 $string['showallroles'] = 'Visa alla roller';
 $string['site:accessallgroups'] = 'Tillträde till alla grupper';
@@ -523,5 +526,6 @@ $string['user:viewdetails'] = 'Visa användarprofiler';
 $string['user:viewhiddendetails'] = 'Visa dolda detaljer angående användare';
 $string['user:viewuseractivitiesreport'] = 'Se rapporter över användarnas aktivitet';
 $string['user:viewusergrades'] = 'Visa betyg/omdömen för användare';
+$string['userswithrole'] = 'Alla användare med en roll';
 $string['viewrole'] = 'Visa detaljer angående roll';
 $string['xuserswiththerole'] = 'Användare med rollen "{$a->role}"';

@@ -209,11 +209,6 @@ $string['cancel'] = 'Annuler';
 $string['cancelled'] = 'Annulé';
 $string['categories'] = 'Catégories de cours';
 $string['category'] = 'Catégorie';
-$string['categoryadded'] = 'La catégorie « {$a} » a été ajoutée';
-$string['categorycontents'] = 'Sous-catégories et cours';
-$string['categorycurrentcontents'] = 'Contenu de {$a}';
-$string['categorydeleted'] = 'La catégorie « {$a} » a été supprimée';
-$string['categoryduplicate'] = 'Une catégorie de ce nom (« {$a} ») existe déjà';
 $string['category_help'] = '<!-- $Id$ -->
 
 
@@ -222,6 +217,11 @@ $string['category_help'] = '<!-- $Id$ -->
 <p>Par exemple, « Mathématiques », « Langues anciennes », « Deuxième année », « Sciences naturelles », « Ateliers », etc.</p>
 
 <p>Choisissez la catégorie qui convient le mieux à votre cours. Ce choix permettra de classer votre cours dans la liste des cours et permettra aux étudiants de le trouver plus facilement.</p>';
+$string['categoryadded'] = 'La catégorie « {$a} » a été ajoutée';
+$string['categorycontents'] = 'Sous-catégories et cours';
+$string['categorycurrentcontents'] = 'Contenu de {$a}';
+$string['categorydeleted'] = 'La catégorie « {$a} » a été supprimée';
+$string['categoryduplicate'] = 'Une catégorie de ce nom (« {$a} ») existe déjà';
 $string['categorymodifiedcancel'] = 'La catégorie a été modifiée ! Veuillez annuler et essayer encore.';
 $string['categoryname'] = 'Nom de catégorie';
 $string['categoryupdated'] = 'La catégorie « {$a} » a été modifiée';
@@ -636,12 +636,12 @@ Celle des étudiants suivants arrive à échéance dans moins de {$a->threshold}
 La page suivante vous permet d\'étendre leur période d\'inscription :
 {$a->extendurl}';
 $string['expirynotifystudents'] = 'Rappel aux étudiants';
+$string['expirynotifystudents_help'] = 'Si une durée d\'inscription a été indiquée, ce réglage détermine si les étudiants recevront un courriel lorsqu\'ils seront sur le point d\'être désinscrits du cours.';
 $string['expirynotifystudentsemail'] = 'Cher {$a->studentstr},
 
 Ce message est un rappel concernant votre inscription au cours {$a->course}. Votre inscription arrivera à échéance dans {$a->threshold} jours.
 
 Pour plus d\'informations, veuillez contacter {$a->teacherstr}.';
-$string['expirynotifystudents_help'] = 'Si une durée d\'inscription a été indiquée, ce réglage détermine si les étudiants recevront un courriel lorsqu\'ils seront sur le point d\'être désinscrits du cours.';
 $string['expirythreshold'] = 'Délai';
 $string['expirythreshold_help'] = 'Si une durée d\'inscription a été indiquée, ce réglage détermine combien de jours avant leur désinscription effective les étudiants recevront un courriel lorsqu\'ils seront sur le point d\'être désinscrits du cours.';
 $string['explanation'] = 'Explication';
@@ -671,10 +671,10 @@ $string['forcedmodeinbrackets'] = '{$a} (mode imposé)';
 $string['forcelanguage'] = 'Imposer la langue';
 $string['forceno'] = 'Ne pas imposer';
 $string['forcepasswordchange'] = 'Imposer le changement du mot de passe';
-$string['forcepasswordchangecheckfull'] = 'Voulez-vous vraiment imposer un changement de mot de passe à {$a} ?';
 $string['forcepasswordchange_help'] = '<!-- $Id$ -->
 
 Demande à l\'utilisateur de changer son mot de passe lors de la connexion suivante.';
+$string['forcepasswordchangecheckfull'] = 'Voulez-vous vraiment imposer un changement de mot de passe à {$a} ?';
 $string['forcepasswordchangenot'] = 'Impossible d\'imposer un changement de mot de passe à {$a}';
 $string['forcepasswordchangenotice'] = 'Vous devez changer votre mot de passe pour continuer.';
 $string['forcetheme'] = 'Imposer le thème';
@@ -824,7 +824,6 @@ $string['helpwiththis'] = 'Aide sur ceci';
 $string['hiddenassign'] = 'Attribution cachée';
 $string['hiddenfromstudents'] = 'Caché pour les participants';
 $string['hiddensections'] = 'Sections cachées';
-$string['hiddensectionscollapsed'] = 'Sections cachées affichées sous forme condensée';
 $string['hiddensections_help'] = '<!-- $Id$ -->
 
 
@@ -833,6 +832,7 @@ $string['hiddensections_help'] = '<!-- $Id$ -->
 <p>Par défaut, une petite surface est affichée (sous forme condensée, en général en gris) pour indiquer où se trouve la section cachée, même si les étudiants ne peuvent la voir. Cela est surtout utile dans le format hebdomadaire, pour indiquer clairement les semaines où le cours n\'a pas lieu.</p>
 
 <p>Si vous le spécifiez, les sections cachées seront totalement invisibles, de sorte que les étudiants ne sauront même pas que des sections du cours sont cachées.</p>';
+$string['hiddensectionscollapsed'] = 'Sections cachées affichées sous forme condensée';
 $string['hiddensectionsinvisible'] = 'Sections cachées invisibles';
 $string['hide'] = 'Cacher';
 $string['hideadvancedsettings'] = 'Cacher les réglages avancés';
@@ -860,12 +860,12 @@ $string['icon'] = 'Icône';
 $string['icqnumber'] = 'Identifiant ICQ';
 $string['idnumber'] = 'Numéro d\'identification';
 $string['idnumbercourse'] = 'No d\'identification du cours';
-$string['idnumbercoursecategory'] = 'Numéro d\'identifiant de catégorie';
-$string['idnumbercoursecategory_help'] = 'L\'identifiant de catégorie de cours n\'est utilisé que lors de la vérification de correspondance avec des systèmes externes et n\'est affiché nulle part sur le site. Si la catégorie est codée de manière officielle, celui-ce devrait être renseigné ici. Sinon, le champ peut être laissé vide.';
 $string['idnumbercourse_help'] = '<!-- Version: $Id$ -->
 
 
 <p>Le numéro d\'identification (ID) du cours n\'est utilisé que lorsque le cours est mis en relation avec des systèmes externes. Il n\'est jamais affiché dans Moodle. Si vous avez un numéro de code officiel pour ce cours, utilisez-le. Sinon, vous pouvez laisser ce champ vide.</p>';
+$string['idnumbercoursecategory'] = 'Numéro d\'identifiant de catégorie';
+$string['idnumbercoursecategory_help'] = 'L\'identifiant de catégorie de cours n\'est utilisé que lors de la vérification de correspondance avec des systèmes externes et n\'est affiché nulle part sur le site. Si la catégorie est codée de manière officielle, celui-ce devrait être renseigné ici. Sinon, le champ peut être laissé vide.';
 $string['idnumbermod'] = 'Numéro d\'identification';
 $string['idnumbermod_help'] = 'En définissant un numéro d\'identification (ID number), vous fournissez un moyen d\'identifier une activité, si vous voulez effectuer des calculs avec les notes. Si l\'activité n\'est utilisée dans aucun calcul de note, le numéro d\'identification peut être laissé vide.
 
@@ -939,10 +939,10 @@ $string['loggedinas'] = 'Connecté sous le nom « {$a} »';
 $string['loggedinasguest'] = 'Vous êtes connecté anonymement';
 $string['loggedinnot'] = 'Non connecté.';
 $string['login'] = 'Connexion';
+$string['login_failure_logs'] = 'Historique des tentatives de connexion';
 $string['loginalready'] = 'Vous êtes déjà connecté';
 $string['loginas'] = 'Se connecter sous ce nom';
 $string['loginaspasswordexplain'] = '<p>Pour utiliser cette fonction, vous devez saisir un mot de passe spécial « connecté en tant que ».<br />Si vous ne connaissez pas ce mot de passe, prenez contact avec l\'administrateur de ce moodle.</p>';
-$string['login_failure_logs'] = 'Historique des tentatives de connexion';
 $string['loginguest'] = 'Connexion anonyme';
 $string['loginsite'] = 'Se connecter sur le site';
 $string['loginsteps'] = '<p>Bonjour. Pour un accès complet aux cours, prenez une minute pour vous créer un compte personnel sur ce site.<br />
@@ -973,6 +973,7 @@ $string['makeafolder'] = 'Créer un dossier';
 $string['makeeditable'] = 'Si le serveur Web (par exemple Apache) possède un accès en écriture au fichier « {$a} », alors il sera possible de modifier ce fichier directement depuis cette page';
 $string['makethismyhome'] = 'Faire de cette page ma page d\'accueil par défaut';
 $string['manageblocks'] = 'Blocs';
+$string['managecategories'] = 'Gérer les catégories';
 $string['managecourses'] = 'Gestion des cours';
 $string['managedatabase'] = 'Base de données';
 $string['manageeditorfiles'] = 'Gérer les fichiers utilisés par l\'éditeur';
@@ -1094,10 +1095,10 @@ $string['new'] = 'Nouveau';
 $string['newaccount'] = 'Nouveau compte';
 $string['newcourse'] = 'Nouveau cours';
 $string['newpassword'] = 'Nouveau mot de passe';
-$string['newpasswordfromlost'] = '<strong>Attention !</strong> Votre <strong>Mot de passe actuel</strong> vous a été envoyé dans le <strong>deuxième</strong> des deux courriels envoyés durant le processus de récupération de mot de passe. Veuillez vous assurer que vous avez bien reçu votre mot de passe de remplacement avant de continuer sur cette page.';
 $string['newpassword_help'] = '<!-- $Id$ -->
 
 Laissez vide pour conserver le mot de passe actuel.';
+$string['newpasswordfromlost'] = '<strong>Attention !</strong> Votre <strong>Mot de passe actuel</strong> vous a été envoyé dans le <strong>deuxième</strong> des deux courriels envoyés durant le processus de récupération de mot de passe. Veuillez vous assurer que vous avez bien reçu votre mot de passe de remplacement avant de continuer sur cette page.';
 $string['newpasswordtext'] = 'Bonjour {$a->firstname},
 
 Le mot de passe de votre compte sur « {$a->sitename} » a été remplacé par un nouveau mot de passe temporaire.
@@ -1455,14 +1456,14 @@ $string['screenreaderuse_help'] = 'Si activé, une interface plus accessible ser
 $string['screenreaderyes'] = 'Oui';
 $string['screenshot'] = 'Copie d\'écran';
 $string['search'] = 'Rechercher';
+$string['search_help'] = 'Pour une recherche simple d\'un ou de plusieurs mots n\'importe où dans le texte, il suffit de les taper, en les séparant par des espaces. Les mots de moins de 3 caractères sont ignorés.
+
+Pour des critères de recherche plus pointus, cliquez sur le bouton sans taper quoi que ce soit dans les différents champs. Un formulaire complet s\'affichera, vous permettant de spécifier plus précisément votre recherche.';
 $string['searchagain'] = 'Rechercher de nouveau';
 $string['searchbyemail'] = 'Récupération par adresse de courriel';
 $string['searchbyusername'] = 'Récupération par nom d\'utilisateur';
 $string['searchcourses'] = 'Rechercher des cours';
 $string['searchhelp'] = 'Vous pouvez introduire plusieurs termes comme critères de recherche.<br /><br />terme : rechercher toutes les occurrences du terme dans le texte.<br />+terme : seules les correspondances exactes du terme (mot entier) seront trouvées.<br />-terme : ne pas inclure les résultats contenant ce terme.';
-$string['search_help'] = 'Pour une recherche simple d\'un ou de plusieurs mots n\'importe où dans le texte, il suffit de les taper, en les séparant par des espaces. Les mots de moins de 3 caractères sont ignorés.
-
-Pour des critères de recherche plus pointus, cliquez sur le bouton sans taper quoi que ce soit dans les différents champs. Un formulaire complet s\'affichera, vous permettant de spécifier plus précisément votre recherche.';
 $string['searchoptions'] = 'Options de recherche';
 $string['searchresults'] = 'Résultats de la recherche';
 $string['sec'] = 's';

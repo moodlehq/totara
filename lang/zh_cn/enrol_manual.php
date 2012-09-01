@@ -55,6 +55,6 @@ $string['unenrolselectedusers'] = '撤销选定用户的选课';
 $string['unenrolselfconfirm'] = '您确定要撤销您自己对“{$a}”课程的选课吗？';
 $string['unenroluser'] = '您确定要撤销用户“{$a->user}”对“{$a->course}”课程的选课吗？';
 $string['unenrolusers'] = '撤销用户选课';
-$string['wscannotenrol'] = '插件实例不能手动把一个用户加入id = {$a->courseid}}的课程';
+$string['wscannotenrol'] = '插件实例不能手动把一个用户加入id = {$a->courseid}的课程';
 $string['wsnoinstance'] = '对于课程（id = {$a->courseid}），手动选课插件实例不存在或者被禁用';
 $string['wsusercannotassign'] = '您在课程({$a->courseid})中没有权限为用户({$a->userid})指定这一角色({$a->roleid})。';

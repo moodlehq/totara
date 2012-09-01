@@ -55,7 +55,7 @@ $string['deletedhosts'] = 'מאחרים מחוקים: {$a}';
 $string['deletehost'] = 'הסר מארח';
 $string['deletekeycheck'] = 'האם אתה בטוח כי הינך רוצה למחוק מפתח זה?';
 $string['deleteoutoftime'] = 'חלון ה-60 שניות עבור מחיקת מפתח זה פג. אנא התחל שוב.';
-$string['deleteuserrecord'] = 'SSO ACL: מחק רשומה למשתמש \'{$a}[0]\' מ-{$a}[1].';
+$string['deleteuserrecord'] = 'SSO ACL: מחק רשומה למשתמש \'{$a->user}\' מ-{$a->host}.';
 $string['deletewrongkeyvalue'] = 'שגיאה התרחשה. אם לא ניסית למחוק את מפתח שרת ה-SSL שלך, יתכן שהותקפת ע"י גורם עויין חיצוני. שום פעולה לא התרחשה.';
 $string['deny'] = 'מנע';
 $string['description'] = 'תיאור';
@@ -160,7 +160,7 @@ $string['noaddressforhost'] = 'מצטערים, אך לא ניתן לפתור א�
 $string['nocurl'] = 'ספריית Curl של PHP לא מותקנת';
 $string['nolocaluser'] = 'לא קיימת רשומה מקומית עבור משתמש מרוחק.';
 $string['nomodifyacl'] = 'אינך רשאי לשנות את רשימת בקרת הגישה ל-MNET.';
-$string['nonmatchingcert'] = 'נושא תעודת-הזיהוי : <br/><em>{$a}[0]</em><br /> לא מתאים למחשב המארח ממנו הגיע: <br /><em>{$a}[1]</em>.';
+$string['nonmatchingcert'] = 'נושא תעודת-הזיהוי : <br/><em>{$a->subject}</em><br /> לא מתאים למחשב המארח ממנו הגיע: <br /><em>{$a->host}</em>.';
 $string['nopubkey'] = 'התרחשה בעיה בעת קבלת המפתח הציבורי <br /> כנראה שמחשב המארח אינו מרשה את  תקשורת Moodle או שהמפתח אינו תקין.';
 $string['nosite'] = 'לא נמצא קורס ברמת האתר.';
 $string['nosuchfile'] = 'פונקצית/קובץ {$a} לא קיימת';
@@ -230,8 +230,8 @@ $string['serviceswesubscribeto'] = 'שרותים ב-{$a} אשר נרשמנו ל�
 $string['settings'] = 'הגדרות';
 $string['showlocal'] = 'הצג משתמשים מקומיים';
 $string['showremote'] = 'הצג משתמשים מרוחקים';
-$string['ssl_acl_allow'] = 'SSO ACL: אפשר משתמש {$a}[0] from {$a}[1]';
-$string['ssl_acl_deny'] = 'SSO ACL: מנע משתמש {$a}[0] from {$a}[1]';
+$string['ssl_acl_allow'] = 'SSO ACL: אפשר משתמש {$a->user} from {$a->host}';
+$string['ssl_acl_deny'] = 'SSO ACL: מנע משתמש {$a->user} from {$a->host}';
 $string['ssoaccesscontrol'] = 'בקרת גישת SSO';
 $string['ssoacldescr'] = 'השתמש בעמוד זה להעניק/למנוע גישה למשתמשים מסויימים ממחשבים מארחים מרוחקים של Moodle Network. הדבר פונקציונלי כאשר מציעים לך שרותי SSO למשתמשים מרוחקים. בכדי לשלוט על היכולת של המשתמשים המקומיים שלך לשוטט למחשבים מארחים של Moodle Network אחרים, השתמש במערכת התפקידים להעניק להם את יכולת ה-<em>mnetcanroam</em>';
 $string['ssoaclneeds'] = 'בכדי שתכונה זו תעבוד, אתה חייב להדליק את Moodle Networking On, ובנוסף לאפשר את התקן אימות תקשורת Moodle יחד עם הוספה אוטומטית של משתמשים.';
@@ -257,7 +257,7 @@ $string['type'] = 'סוג';
 $string['unknown'] = 'לא ידוע';
 $string['unknownerror'] = 'שגיאה בלתי ידועה התרחשה במהלך ההתקשרות.';
 $string['usercannotchangepassword'] = 'אינך יכול לשנות את סיסמתך כאן בגלל היותך משתמש מרוחק.';
-$string['userchangepasswordlink'] = '<br/> תוכל לשנות את סיסמתך אצל<a href="$a-<wwwroot/login/change_password.php">$a-<description</a>הספק שלך';
+$string['userchangepasswordlink'] = '<br/> תוכל לשנות את סיסמתך אצל<a href="{$a->wwwroot}/login/change_password.php">{$a->description}</a>הספק שלך';
 $string['usernotfullysetup'] = 'חשבון המשתמש שלך לא הושלם. אתה צריך לגשת <a href="{$a}"> אחורה לספק שלך</a>  ולוודא כי הפרופיל שלך הושלם שם. יתכן ותצטרך להתנתק ולהתחבר מהאתר עבור תקיפות פעולה זו.';
 $string['usersareonline'] = 'אזהרה: {$a} משתמשים משרת זה מחוברים כרגע לאתר שלך.';
 $string['validated_by'] = 'מאושר ע"י הרשת

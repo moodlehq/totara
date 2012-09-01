@@ -87,6 +87,13 @@ $string['databasesettingssub'] = '<b>Typ:</b>  mysql or postgres7<br/>
 <b>Użytkownik:</b> Użytkownik Twojej bazy danych<br />
 <b>Hasło:</b> Hasło dostępu do bazy danych<br />
 <b>Prefiksy tabel:</b> opcjonalny prefiks używany przed wszystkimi nazwami tabeli';
+$string['databasesettingssub_mssql'] = '<b>Typ:</b> SQL*Server (nie UTF-8) <b><strong class="errormsg">Eksperymentalne! (nie do stosowania w produkcji)</strong></b><br />\n<b>Host:</b> np. localhost lub db.isp.com<br />\n<b>Nazwa:</b> nazwa bazy danych, np. moodle<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (obowiązkowy)';
+$string['databasesettingssub_mssql_n'] = '<b>Typ:</b> SQL*Server (włączone UTF-8) <br />\n<b>Host:</b> np. localhost lub db.isp.com<br />\n<b>Nazwa:</b> nazwa bazy danych, np. moodle<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (obowiązkowy)';
+$string['databasesettingssub_mysql'] = '<b>Typ:</b> MySQL<br />\n<b>Host:</b> np. localhost lub db.isp.com<br />\n<b>Nazwa:</b> nazwa bazy danych, np. moodle<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (opcjonalny)';
+$string['databasesettingssub_mysqli'] = '<b>Typ:</b> Ulepszony MySQL<br />\n<b>Host:</b> np. localhost lub db.isp.com<br />\n<b>Nazwa:</b> nazwa bazy danych, np. moodle<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (opcjonalny)';
+$string['databasesettingssub_oci8po'] = '<b>Typ:</b> Oracle<br />\n<b>Host:</b> nieużywany, musi pozostać pusty<br />\n<b>Nazwa:</b> nadana nazwa połączenia tnsnames.ora<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (obowiązkowy, maksymalnie 2 znaki)';
+$string['databasesettingssub_odbc_mssql'] = '<b>Typ:</b> SQL*Server (przez ODBC)<b><strong class="errormsg">Eksperymentalne! (nie do stosowania w produkcji)</strong></b><br />\n<b>Host:</b> nazwa DSN nadana w panelu sterowania ODBC<br />\n<b>Nazwa:</b> nazwa bazy danych, np. moodle<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (obowiązkowy)';
+$string['databasesettingssub_postgres7'] = '<b>Typ:</b> PostgreSQL<br />\n<b>Host:</b> np. localhost lub db.isp.com<br />\n<b>Nazwa:</b> nazwa bazy danych, np. moodle<br />\n<b>Użytkownik:</b> nazwa użytkownika bazy danych<br />\n<b>Hasło:</b> hasło użytkownika bazy danych<br />\n<b>Prefiks tabel:</b> prefiks używany dla wszystkich nazw tabel (obowiązkowy)';
 $string['databasesettingswillbecreated'] = '<b>Uwaga:</b> Instalator będzie próbował automatycznie utworzyć bazę danych jeśli jej nie będzie.';
 $string['databaseuser'] = 'Użytkownik bazy danych';
 $string['dataroot'] = 'Katalog z danymi';
@@ -99,6 +106,9 @@ $string['dbpass'] = 'Hasło';
 $string['dbprefix'] = 'Prefiks tabel';
 $string['dbtype'] = 'Typ';
 $string['dbwrongencoding'] = 'Wybrana baza danych pracuje w niezalecanym kodowaniu({$a}). Lepiej używać bazy danych kodowanej jednym z Unicodów (UTF-8). Ale można to obejść wybierając "opuść test kodowania DB", ale w przyszłości mogą wystąpić podobne problemy.';
+$string['dbwronghostserver'] = 'Należy przestrzegać reguł hosta zgodnie z powyższym opisem.';
+$string['dbwrongnlslang'] = 'Zmienna środowiskowa NLS_LANG serwera internetowego musi używać zestawu znaków AL32UTF8. Sprawdź w dokumentacji PHP, jak poprawnie skonfigurować OCI8.';
+$string['dbwrongprefix'] = 'Należy przestrzegać reguł prefiksu tabel zgodnie z powyższym opisem.';
 $string['directorysettings'] = '<p> Potwierdź lokalizację dla tej instalacji Moodle.</p>
 
 <p><b>Adres w sieci:</b>
@@ -159,6 +169,9 @@ $string['globalsquoteshelp'] = '<p> Nie jest zalecane ustawienie równocześnie 
 	<blockquote>php_value magic_quotes_gpc On</blockquote>
    	<blockquote>php_value register_globals Off</blockquote>
 </p>';
+$string['inputdatadirectory'] = 'Katalog danych:';
+$string['inputwebadress'] = 'Adres internetowy:';
+$string['inputwebdirectory'] = 'Katalog Moodle:';
 $string['installation'] = 'Instalacja';
 $string['langdownloaderror'] = 'Niestety język "{$a}" nie może zostać pobrany. Proces instalacji będzie kontynuowany w języku angielskim.';
 $string['langdownloadok'] = 'Język został "{$a}" zainstalowany pomyślnie. Instalacja będzie w nim kontynuowana w tym języku.';
@@ -187,10 +200,12 @@ Pozwoli to Moodle ustawić samoczynnie limit pamięci.</li>
 <p>Jednakże na niektórych serwerach będzie uniemożliwiało to poprawne działanie <b>wszystkich</b> stron PHP (ujrzysz błędy na wyświetlanych stronach), wtedy będziesz musiał usunąć plik .htaccess.</p></li>
 </ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP nie został prawidłowo skonfigurowany z serwerem SQL, aby mógł komunikować się z MSSQL. Sprawdź proszę swój plik php.ini lub przekompiluj PHP.';
 $string['mssql_n'] = 'SQL*Server z UTF-8 support (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP nie został prawidłowo skonfigurowany z serwerem SQL, aby mógł komunikować się z MSSQL. Sprawdź proszę swój plik php.ini lub przekompiluj PHP.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP nie został prawidłowo skonfigurowany z rozszerzeniem MySQL, co może zostać zakomunikowane przez MySQL. Sprawdź proszę swój plik php.ini lub przekompiluj PHP';
+$string['mysqli'] = 'Ulepszony MySQL (mysqli)';
+$string['mysqliextensionisnotpresentinphp'] = 'PHP nie zostało poprawnie skonfigurowane z rozszerzeniem MySQL do komunikacji z bazą MySQL. Sprawdź plik php.ini lub ponownie skompiluj PHP. Rozszerzenie MySQLi jest niedostępne dla PHP 4.';
 $string['nativemssqlhelp'] = 'Teraz należy skonfigurować bazę danych, gdzie Moodle przechowuje większość informacji.
 Baza danych musi być utworzona wcześniej, oraz użytkownik wraz z hasłem musi posiadać odpowiednie uprawnienia. Prefiks tabeli nie jest obowiązkowy.';
 $string['nativemysqlihelp'] = 'Teraz należy skonfigurować bazę danych, gdzie Moodle przechowuje większość informacji.
@@ -203,6 +218,9 @@ Baza danych musi być utworzona wcześniej, oraz użytkownik wraz z hasłem musi
 $string['nativesqlsrvhelp'] = 'Teraz należy skonfigurować bazę danych, gdzie Moodle przechowuje większość informacji.
 Baza danych musi być utworzona wcześniej, oraz użytkownik wraz z hasłem musi posiadać odpowiednie uprawnienia. Prefiks tabeli nie jest obowiązkowy.';
 $string['oci8po'] = 'Oracle (oci8po)';
+$string['ociextensionisnotpresentinphp'] = 'PHP nie zostało poprawnie skonfigurowane z rozszerzeniem OCI8 do komunikacji z bazą Oracle. Sprawdź plik php.ini lub ponownie skompiluj PHP.';
+$string['odbc_mssql'] = 'SQL*Server przez ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP nie zostało poprawnie skonfigurowane z rozszerzeniem ODBC do komunikacji z serwerem SQL*server. Sprawdź plik php.ini lub ponownie skompiluj PHP.';
 $string['pass'] = 'Udane';
 $string['paths'] = 'Ścieżki';
 $string['pathserrcreatedataroot'] = 'Katalog danych ({$a->dataroot}) nie może zostać utworzony przez instalator.';
@@ -212,12 +230,14 @@ $string['pathsroparentdataroot'] = 'Nadrzędny katalog ({$a->parent}) jest tylko
 $string['pathssubdirroot'] = 'Pełna ścieżka do katalogu z instalacją Moodle.';
 $string['pathsunsecuredataroot'] = 'Lokalizacja głównego katalogu danych nie jest bezpieczna';
 $string['pathswrongadmindir'] = 'Katalog admin nie istnieje';
+$string['pgsqlextensionisnotpresentinphp'] = 'PHP nie zostało poprawnie skonfigurowane z rozszerzeniem PGSQL do komunikacji z bazą PostgreSQL. Sprawdź plik php.ini lub ponownie skompiluj PHP.';
 $string['phpextension'] = '{$a} rozszerzenie PHP';
 $string['phpversion'] = 'Wersja PHP';
 $string['phpversionhelp'] = '<p>Moodle wymaga wersji PHP co najmniej 4.3.0 lub 5.1.0 (5.0.x posiada kilka znanych problemów).</p>
 <p>Obecnie jest uruchomiona wersja {$a}</p>
 <p>Musisz uaktualnić wersję PHP lub przenieść na host z nowszą wersją PHP!<br />(W przypadku wersji 5.0.x możesz dokonać downgrade do wersji 4.4.x)</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
+$string['releasenoteslink'] = 'Informacje o tej wersji produktu Moodle można znaleźć w Uwagach do wydania pod adresem {$a}';
 $string['safemode'] = 'Bezpieczny tryb';
 $string['safemodeerror'] = 'Moodle ma trudności z włączeniem bezpiecznego trybu';
 $string['safemodehelp'] = '“<p> Moodle może mieć wiele zróżnicowanych problemów z trybem bezpiecznym z czego nie najmniejszym jest brak możliwości tworzenia nowych plików.
@@ -229,7 +249,9 @@ $string['sessionautostart'] = 'Automatyczny start sesji';
 $string['sessionautostarterror'] = 'To powinno być wyłączone';
 $string['sessionautostarthelp'] = '<p>Moodle wymaga obsługi sesjii nie będzie bez niego funkcjonować.</p>
 <p>Sesja może być zainicjowana w pliku php.ini  poszukaj parametrów session.auto_start sesji </p>';
+$string['skipdbencodingtest'] = 'Pomiń test kodowania bazy danych';
 $string['sqliteextensionisnotpresentinphp'] = 'PHP nie został prawidłowo skonfigurowany z rozszerzeniem SQLite. Sprawdź plik php.ini lub przekompiluj PHP.';
+$string['upgradingqtypeplugin'] = 'Aktualizacja wtyczki pytania/typu';
 $string['welcomep10'] = '{$a->installername} ({$a->installerversion})';
 $string['welcomep20'] = 'Widzisz tę stronę, ponieważ z powodzeniem zainstalowałeś i uruchomiłeś <strong>{$a->packname} {$a->packversion}</strong> na swoim komputerze.';
 $string['welcomep30'] = 'Ten instalator <strong>{$a->installername}</strong> zawiera aplikacje, by stworzyć środowisko, w którym będzie działać <strong>Moodle</strong>, czyli';

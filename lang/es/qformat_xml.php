@@ -26,5 +26,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname_help'] = 'Es un formato específico de Moodle para importar y exportar preguntas utilizadas en las actividades de tipo cuestionario.';
-$string['truefalseimporterror'] = '<b> ¡Atención! </ b>: La pregunta de tipo verdadero/falso \'{$ a-> questionText}\' no pudo ser importada correctamente. No estaba claro si la respuesta correcta era Verdadero o Falso. La pregunta se ha importado suponiendo de que la respuesta es \'{$a->answer}\'. Si esto no es correcto, tendrá que editar la pregunta.';
+$string['truefalseimporterror'] = '<b> ¡Atención! </ b>: La pregunta de tipo verdadero/falso \'{$a->questiontext}\' no pudo ser importada correctamente. No estaba claro si la respuesta correcta era Verdadero o Falso. La pregunta se ha importado suponiendo de que la respuesta es \'{$a->answer}\'. Si esto no es correcto, tendrá que editar la pregunta.';
 $string['xmlimportnoquestion'] = 'No se encuentra el texto de la pregunta en el fichero XML';

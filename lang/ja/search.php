@@ -78,4 +78,5 @@ $string['totalsize'] = '合計サイズ';
 $string['type'] = 'タイプ';
 $string['uncompleteindexingerror'] = 'インデックス処理が完全に終了していません。リスタートしてください。';
 $string['versiontoolow'] = '申し訳ございません、グローバルサーチにはPHP 5.0.0またはそれ以降のバージョンが必要です。';
+$string['whichmodulestosearch?'] = 'どのモジュールを検索しますか?';
 $string['wordsintitle'] = '次の文字をタイトルに含む';

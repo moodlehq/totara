@@ -210,17 +210,17 @@ $string['cancel'] = 'Mégse';
 $string['cancelled'] = 'Törölve';
 $string['categories'] = 'Kurzuskategóriák';
 $string['category'] = 'Kategória';
-$string['categoryadded'] = 'A(z) \'{$a}\' kategória hozzáadva';
-$string['categorycontents'] = 'Alkategóriák és kurzusok';
-$string['categorycurrentcontents'] = 'A(z) {$a} tartalma';
-$string['categorydeleted'] = 'A(z) \'{$a}\' kategória törlése megtörtént';
-$string['categoryduplicate'] = '\'{$a}\' nevű kategória már létezik!';
 $string['category_help'] = '<p>A Moodle-rendszergazda néhány kurzuskategóriát előre elkészíthet.</p>
 
 <p>Például létrehozhat "Természettudományok", "Bölcsészettudományok", "Egészségügy" stb. elnevezésű kategóriákat.</p>
 
 <p>Válassza ki a kurzusának leginkább megfelelőt. Ez a választás határozza majd meg, hogy a
 kurzuslistán hol jelenik meg a kurzus. Emellett megkönnyítheti a tanulók számára a kurzus megtalálását. </p>';
+$string['categoryadded'] = 'A(z) \'{$a}\' kategória hozzáadva';
+$string['categorycontents'] = 'Alkategóriák és kurzusok';
+$string['categorycurrentcontents'] = 'A(z) {$a} tartalma';
+$string['categorydeleted'] = 'A(z) \'{$a}\' kategória törlése megtörtént';
+$string['categoryduplicate'] = '\'{$a}\' nevű kategória már létezik!';
 $string['categorymodifiedcancel'] = 'A kategória módosult! Törölje és próbálja meg újra.';
 $string['categoryname'] = 'Kategória neve';
 $string['categoryupdated'] = 'A(z) \'{$a}\' kategória frissítése megtörtént';
@@ -592,8 +592,8 @@ $string['expandall'] = 'Az összes kibontása';
 $string['expirynotify'] = 'Beiratkozás lejártáról szóló értesítés';
 $string['expirynotifyemail'] = 'Az alábbi tanulók kurzusban való szereplése pontosan {$a->threshold} nap múlva lejár: {$a->current}. Az alábbi tanulók kurzusban való szereplése {$a->threshold} napnál rövidebb ideig érvényes: {$a->past}. A beiratkozási időszakuk meghosszabbításához áttérhet a következő oldalra: {$a->extendurl}';
 $string['expirynotifystudents'] = 'Tanulók értesítése';
-$string['expirynotifystudentsemail'] = 'Kedves Tanuló! Értesítjük, hogy a(z) {$a->course} kurzusra vonatkozó beiratkozása {$a->threshold} napon belül lejár. Ha további kérdése van, vegye fel a kapcsolatot {$a->teacherstr} tanárával.';
 $string['expirynotifystudents_help'] = 'Ha beiratkozási időszak van megadva, ez a beállítás szabja meg, kapjanak-e a tanulók e-mailben értesítést, ha kiiratkozásuk időpontja közeleg.';
+$string['expirynotifystudentsemail'] = 'Kedves Tanuló! Értesítjük, hogy a(z) {$a->course} kurzusra vonatkozó beiratkozása {$a->threshold} napon belül lejár. Ha további kérdése van, vegye fel a kapcsolatot {$a->teacherstr} tanárával.';
 $string['expirythreshold'] = 'Lejárat';
 $string['expirythreshold_help'] = 'Ha beiratkozási időszak van megadva, ez a beállítás szabja meg, hány nappal előre kapjanak a tanulók értesítést kiiratkozásukról.';
 $string['explanation'] = 'Magyarázat';
@@ -623,8 +623,8 @@ $string['forcedmodeinbrackets'] = '{$a} (előírt mód)';
 $string['forcelanguage'] = 'Nyelv előírása';
 $string['forceno'] = 'Ne írja elő';
 $string['forcepasswordchange'] = 'Jelszómódosítás előírása';
-$string['forcepasswordchangecheckfull'] = 'Biztosan jelszómódosítást kíván előírni {$a} esetén?';
 $string['forcepasswordchange_help'] = 'Felszólítja a felhasználót, hogy következő belépésekor változtassa meg.';
+$string['forcepasswordchangecheckfull'] = 'Biztosan jelszómódosítást kíván előírni {$a} esetén?';
 $string['forcepasswordchangenot'] = '{$a} esetén nem lehetett jelszómódosítást előírni';
 $string['forcepasswordchangenotice'] = 'Továbblépéshez módosítsa jelszavát.';
 $string['forcetheme'] = 'Stílus előírása';
@@ -723,10 +723,10 @@ $string['helpwiththis'] = 'Súgó ehhez';
 $string['hiddenassign'] = 'Rejtett feladat';
 $string['hiddenfromstudents'] = 'Tanulók elől rejtve';
 $string['hiddensections'] = 'Rejtett részek';
-$string['hiddensectionscollapsed'] = 'A rejtett részek összecsukott formában jelennek meg';
 $string['hiddensections_help'] = 'Ezzel az opcióval azt határozhatja meg, hogy a kurzusban lévő rejtett részek összecsukott formában jelenjenek-e meg a tanulók számár (pl. heti forma esetén hasznos,
 mert így az ünnepnapok elkülönülnek).
 Ha kívánja, teljesen el is rejtheti őket.';
+$string['hiddensectionscollapsed'] = 'A rejtett részek összecsukott formában jelennek meg';
 $string['hiddensectionsinvisible'] = 'A rejtett részek teljesen láthatatlanok';
 $string['hide'] = 'Elrejtés';
 $string['hideadvancedsettings'] = 'Részletes beállítások elrejtése';
@@ -754,11 +754,11 @@ $string['icon'] = 'Ikon';
 $string['icqnumber'] = 'ICQ-szám';
 $string['idnumber'] = 'Azonosítószám';
 $string['idnumbercourse'] = 'A kurzus azonosítószáma';
-$string['idnumbercoursecategory'] = 'Kategória azonosítószáma';
-$string['idnumbercoursecategory_help'] = 'Egy kurzuskategória azonosítószáma csak a kategória külső rendszerekhez való illesztésére használatos, és a portálon sehol nem látható. Ha a kategória hivatalos kódnévvel rendelkezik, azt itt m,egadhatja, ellenkező esetben a mezőt üresen hagyhatja.';
 $string['idnumbercourse_help'] = '<p>Egy kurzus azonosítószáma csak akkor használatos, amikor az adott kurzust külső
 rendszerekkel hozza kapcsolatba - a Moodle ezt sohasem jeleníti meg. Ha a kurzus hivatalos kódnévvel
 rendelkezik, azt használja itt, egyébként hagyja üresen.</p>';
+$string['idnumbercoursecategory'] = 'Kategória azonosítószáma';
+$string['idnumbercoursecategory_help'] = 'Egy kurzuskategória azonosítószáma csak a kategória külső rendszerekhez való illesztésére használatos, és a portálon sehol nem látható. Ha a kategória hivatalos kódnévvel rendelkezik, azt itt m,egadhatja, ellenkező esetben a mezőt üresen hagyhatja.';
 $string['idnumbermod'] = 'Azonosítószám';
 $string['idnumbermod_help'] = 'Azonosítószám beállításával pontszámításhoz azonosíthat egy tevékenységet. Ha a tevékenység egyik pontszámításban sem szerepel, akkor az Azonosítószám mező üresen maradhat.
 Az azonosítószámot beállíthatja az osztályozónaplóban is, bár ott csak a tevékenység beállítási oldalán szerkeszthet.';
@@ -828,10 +828,10 @@ $string['loggedinas'] = '{$a} néven lépett be';
 $string['loggedinasguest'] = 'Jelenleg vendégként van bejelentkezve';
 $string['loggedinnot'] = 'Nincs bejelentkezve.';
 $string['login'] = 'Belépés';
+$string['login_failure_logs'] = 'Sikertelen belépések naplói';
 $string['loginalready'] = 'Már belépett';
 $string['loginas'] = 'Belépés mint';
 $string['loginaspasswordexplain'] = 'Ennek használatához a speciális "belépés mint" jelszót kell megadnia. Ha nem ismeri, forduljon a rendszergazdához.';
-$string['login_failure_logs'] = 'Sikertelen belépések naplói';
 $string['loginguest'] = 'Belépés vendégként';
 $string['loginsite'] = 'Belépés a portálra';
 $string['loginsteps'] = 'Üdvözöljük! Ahhoz, hogy teljesen hozzáférjen a kurzusokhoz, új fiókot kell létrehoznia ezen a weboldalon. Minden kurzushoz hozzátartozhat egy egyszeri beiratkozási kulcs, amelyre egyelőre nincs szüksége. A végrehajtandó lépések: <ol> <li>Töltse ki az <a href="{$a}">Új felhasználó</a> űrlap adatait. </li> <li>Egy e-mailt kap a saját címére közvetlenül a kitöltés után.</li> <li> Olvassa el az e-mailt és kattintson a benne talált ugrópontra.</li> <li> Azonosítóját ekkor a rendszer visszaigazolja, Ön pedig ezzel sikeresen be is lépett.</li> <li>Most válassza ki azt a kurzust, amelynek résztvevője kíván lenni.</li> <li> Ha egy beiratkozási kulcsot kér a rendszer, írja be azt, amelyet a tanár adott Önnek. Ezzel be is iratkozott a kurzusra.</li> <li>Ezután szabadon beléphet a kurzusba. A továbbiakban a belépéshez csak a felhasználónevét és a jelszavát kell beírnia (az ezen az oldalon lévő űrlapba). Ezután minden kurzushoz hozzáfér, amelyre beiratkozott. </li> </ol>';
@@ -854,6 +854,7 @@ $string['makeafolder'] = 'Mappa létrehozása';
 $string['makeeditable'] = 'Ha a webszerver (pl. apache) eljárása írhatóvá teszi \'{$a}\'-t , akkor ezt az állományt közvetlenül szerkesztheti erről az oldalról';
 $string['makethismyhome'] = 'Ez legyen az alapbeállítás szerinti honlapom';
 $string['manageblocks'] = 'Blokkok';
+$string['managecategories'] = 'Kategóriák kezelése';
 $string['managecourses'] = 'Kurzusok kezelése';
 $string['managedatabase'] = 'Adatbázis';
 $string['manageeditorfiles'] = 'A szerkesztő által használt állományok kezelése';
@@ -970,8 +971,8 @@ $string['new'] = 'Új';
 $string['newaccount'] = 'Új fiók';
 $string['newcourse'] = 'Új kurzus';
 $string['newpassword'] = 'Új jelszó';
-$string['newpasswordfromlost'] = '<strong>FIGYELEM:</strong> A <strong>jelenlegi jelszavát</strong> a jelszóvisszanyerés során az elküldendő két e-mail közül a <strong>másodikban<strong/> küldjük el Önnek. A képernyőn való továbblépés előtt ellenőrizze, megkapta-e cserejelszavát.';
 $string['newpassword_help'] = 'A jelenlegi jelszó megtartásához hagyja üresen.';
+$string['newpasswordfromlost'] = '<strong>FIGYELEM:</strong> A <strong>jelenlegi jelszavát</strong> a jelszóvisszanyerés során az elküldendő két e-mail közül a <strong>másodikban<strong/> küldjük el Önnek. A képernyőn való továbblépés előtt ellenőrizze, megkapta-e cserejelszavát.';
 $string['newpasswordtext'] = 'Üdvözöljük, {$a->firstname}! Az Ön jelszava a(z) \'{$a->sitename}\' portálon megváltozott és egy új, ideiglenes jelszót kapott. A jelenlegi belépési információi: felhasználónév: {$a->username}, jelszó: {$a->newpassword}. Kérjük, a jelszó megváltoztatásához térjen át erre az oldalra: {$a->link}. Általában a levelező programokban ez kék ugrópontként jelenik meg, amelyre csak kattintania kell. Ha ez nem működik, másolja ki a címet a böngészőablak tetején lévő címsorba. Üdvözlettel: \'{$a->sitename}\' rendszergazda, {$a->signoff}';
 $string['newpicture'] = 'Új kép';
 $string['newpicture_help'] = 'Egy képet feltöltéséhez válasszon egy JPG vagy PNG formátumban lévő képet, majd kattintson a "Profil frissítése" gombra. A kép négyzet alakú és 100x100 képernyőpont méretű lesz.';
@@ -1298,14 +1299,14 @@ $string['screenreaderuse_help'] = 'Igenre állítva különféle helyeken, péld
 $string['screenreaderyes'] = 'Van';
 $string['screenshot'] = 'Képernyőkép';
 $string['search'] = 'Keresés';
+$string['search_help'] = 'A szövegben való kereséshez írja be a szavakat szóközökkel elválasztva. Minden két karakternél hosszabb szót felhasznál a rendszer.
+
+Részletes kereséshez a részletes keresés űrlapjára áttérhet, ha megnyomja a Keresés gombot, de a keresőnégyzetet üresen hagyja';
 $string['searchagain'] = 'Keresés ismétlése';
 $string['searchbyemail'] = 'Keresés e-mail cím alapján';
 $string['searchbyusername'] = 'Keresés felhasználónév alapján';
 $string['searchcourses'] = 'Kurzusok keresése';
 $string['searchhelp'] = 'Egyszerre több szóra is rákereshet.<br /><br />szó : a szó bármely előfordulása a szövegben.<br />+szó : csak a pontos egyezést keresi ki.<br />-szó : az adott szót tartalmazó eredményeket kihagyja.';
-$string['search_help'] = 'A szövegben való kereséshez írja be a szavakat szóközökkel elválasztva. Minden két karakternél hosszabb szót felhasznál a rendszer.
-
-Részletes kereséshez a részletes keresés űrlapjára áttérhet, ha megnyomja a Keresés gombot, de a keresőnégyzetet üresen hagyja';
 $string['searchoptions'] = 'Keresés beállításai';
 $string['searchresults'] = 'Keresési eredmények';
 $string['sec'] = 'mp';

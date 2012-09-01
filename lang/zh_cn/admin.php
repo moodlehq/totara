@@ -93,7 +93,7 @@ $string['cachetype'] = '缓存类型';
 $string['calendarexportsalt'] = '日历导出盐';
 $string['calendarsettings'] = '日历';
 $string['calendar_weekend'] = '周末';
-$string['cannotdeletemodfilter'] = '您不能卸载“{$a->filter}”，因为它是“$a->module}”模块的一部分。';
+$string['cannotdeletemodfilter'] = '您不能卸载“{$a->filter}”，因为它是"{$a->module}"模块的一部分。';
 $string['cfgwwwrootslashwarning'] = 'config.php文件中定义的$CFG->wwwroot不正确。可能是因为在结尾处包含了"/"字符，请将其删除或者像调试bug一样<a href=\'http://tracker.moodle.org/browse/MDL-11061\'>MDL-11061</a>.';
 $string['cfgwwwrootwarning'] = 'config.php文件中定义的$CFG->wwwroot不正确。可能是因为因为URL地址和使用访问站点的地址不匹配，请将其纠正或者像调试bug一样<a href=\'http://tracker.moodle.org/browse/MDL-11061\'>MDL-11061</a>.';
 $string['change'] = '修改';

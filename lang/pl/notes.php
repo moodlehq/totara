@@ -40,6 +40,7 @@ $string['editnote'] = 'Edytuj notatkę';
 $string['enablenotes'] = 'Włącz notatki';
 $string['groupaddnewnote'] = 'dodaj nową notatkę dla wszystkich';
 $string['invalidcourseid'] = 'Nieprawidłowy identyfikator kursu: {$a}';
+$string['invalidid'] = 'Podano niepoprawny ID notatki';
 $string['invaliduserid'] = 'Niepoprawny identyfikator użytkownika: {$a}';
 $string['nocontent'] = 'Notatka nie może być pusta';
 $string['nonotes'] = 'Nie ma jeszcze notatek tego typu';

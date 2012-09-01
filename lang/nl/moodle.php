@@ -210,12 +210,12 @@ $string['cancel'] = 'Annuleer';
 $string['cancelled'] = 'Geannuleerd';
 $string['categories'] = 'Cursuscategorieën';
 $string['category'] = 'Categorie';
+$string['category_help'] = 'Deze instelling bepaalt de categorie waarin je cursus verschijnt in de cursussenlijst.';
 $string['categoryadded'] = 'De categorie \'{$a}\'  werd toegevoegd';
 $string['categorycontents'] = 'Subcategorieën en cursussen';
 $string['categorycurrentcontents'] = 'Inhoud van {$a}';
 $string['categorydeleted'] = 'De categorie \'{$a}\'  werd verwijderd';
 $string['categoryduplicate'] = 'Er bestaat al een categorie met de naam \'{$a}\'!';
-$string['category_help'] = 'Deze instelling bepaalt de categorie waarin je cursus verschijnt in de cursussenlijst.';
 $string['categorymodifiedcancel'] = 'Categorie gewijzigd! Annuleer en probeer opnieuw.';
 $string['categoryname'] = 'Categorienaam';
 $string['categoryupdated'] = 'De categorie \'{$a}\' is aangepast';
@@ -644,12 +644,12 @@ De aanmelding van volgende leerlingen zal beëindigen binnen minder dan {$a->thr
 Op volgende pagina kun je hun aanmeldingsperiode verlengen:
 {$a->extendurl}';
 $string['expirynotifystudents'] = 'Verwittig leerlingen';
+$string['expirynotifystudents_help'] = 'Als een aanmeldingsduur is opgegeven, dan zal deze instelling bepalen of leerlingen een melding via e-mail zullen krijgen als ze van de cursus gaan afgemeld worden.';
 $string['expirynotifystudentsemail'] = 'Beste,
 
 Dit is een automatische verwittiging dat je aanmelding voor het vak {$a->course} zal verlopen binnen {$a->threshold} dagen.
 
 Wanneer je hierbij vragen hebt, neem dan contact op met je leraar.';
-$string['expirynotifystudents_help'] = 'Als een aanmeldingsduur is opgegeven, dan zal deze instelling bepalen of leerlingen een melding via e-mail zullen krijgen als ze van de cursus gaan afgemeld worden.';
 $string['expirythreshold'] = 'Drempelwaarde';
 $string['expirythreshold_help'] = 'Als een aanmeldingsperiode is opgegeven, dan zal deze instelling bepalen hoeveel dagen op voorhand leerlingen en leraren een melding krijgen dat de cursus voor die leerling bijna verlopen is.';
 $string['explanation'] = 'Verklaring';
@@ -679,8 +679,8 @@ $string['forcedmodeinbrackets'] = '{$a} (verplichte modus)';
 $string['forcelanguage'] = 'Verplicht taal';
 $string['forceno'] = 'Verplicht niet';
 $string['forcepasswordchange'] = 'Verplicht het wijzigen van het wachtwoord';
-$string['forcepasswordchangecheckfull'] = 'Ben je zeker dat je de wachtwoordswijziging wil afdwingen voor {$a} ?';
 $string['forcepasswordchange_help'] = 'Vraag de gebruiker het wachtwoord te wijzigen bij de volgend login.';
+$string['forcepasswordchangecheckfull'] = 'Ben je zeker dat je de wachtwoordswijziging wil afdwingen voor {$a} ?';
 $string['forcepasswordchangenot'] = 'Kon geen wachtwoordswijziging afdwingen voor {$a}';
 $string['forcepasswordchangenotice'] = 'Je moet je wachtwoord wijzigen om verder te kunnen gaan';
 $string['forcetheme'] = 'Leg dit thema op';
@@ -806,12 +806,12 @@ $string['helpwiththis'] = 'Hulp hierbij';
 $string['hiddenassign'] = 'Verborgen rol';
 $string['hiddenfromstudents'] = 'Verborgen voor leerlingen';
 $string['hiddensections'] = 'Verborgen onderwerpen';
-$string['hiddensectionscollapsed'] = 'Verborgen secties worden samengeklapt getoond';
 $string['hiddensections_help'] = '<p>Met deze optie kun je kiezen hoe je de verborgen secties in je cursus toont aan je leerlingen.</p>
 
 <p>Standaard wordt er een kleine zone getoond (in samengeklapte vorm, meestal grijs) om aan te geven waar de verborgen sectie zich bevindt, hoewel de verborgen activiteiten en teksten zelf niet zichtbaar zijn. Dit is vooral nuttig in cursussen met weken, zodat het duidelijk is welke weken er geen les is.</p>
 
 <p>Als je ervoor kiest kun je die secties helemaal verbergen, zodat de leerlingen zelfs niet weten dat er delen van de cursus verborgen zijn.</p>';
+$string['hiddensectionscollapsed'] = 'Verborgen secties worden samengeklapt getoond';
 $string['hiddensectionsinvisible'] = 'Verborgen secties worden helemaal niet getoond';
 $string['hide'] = 'Verberg';
 $string['hideadvancedsettings'] = 'Verberg geavanceerde instellingen';
@@ -839,9 +839,9 @@ $string['icon'] = 'Icoon';
 $string['icqnumber'] = 'ICQ-nummer';
 $string['idnumber'] = 'Nummer (ID)';
 $string['idnumbercourse'] = 'Nummer (ID) van de cursus';
+$string['idnumbercourse_help'] = '<p>Het ID-nummer van een cursus wordt alleen gebruikt wanneer deze cursus moet gekoppeld worden aan externe systemen - het wordt nooit getoond binnen Moodle. Als je een officiële codenaam hebt voor deze cursus, gebruik die dan hier ... anders kun je dit veld gewoon leeg laten.</p>';
 $string['idnumbercoursecategory'] = 'Categorie ID nummer';
 $string['idnumbercoursecategory_help'] = 'Het ID-nummer van een cursuscategorie wordt alleen gebruikt als de categorie moet gekoppeld worden met externe systemen en wordt nergens anders op de site getoond. Als de categorie een officiële code heeft, kan die hier ingegeven worden, anders mag je dit veld leeglaten.';
-$string['idnumbercourse_help'] = '<p>Het ID-nummer van een cursus wordt alleen gebruikt wanneer deze cursus moet gekoppeld worden aan externe systemen - het wordt nooit getoond binnen Moodle. Als je een officiële codenaam hebt voor deze cursus, gebruik die dan hier ... anders kun je dit veld gewoon leeg laten.</p>';
 $string['idnumbermod'] = 'ID-nummer';
 $string['idnumbermod_help'] = 'Een ID-nummer instellen geeft een manier om de activiteit te identificeren voor de berekening van cijfers. Als de activiteit niet in een cijferberekening opgenomen wordt, dan mag dit veld leeg gelaten worden.
 
@@ -913,10 +913,10 @@ $string['loggedinas'] = 'Je bent ingelogd als {$a}';
 $string['loggedinasguest'] = 'Je gebruikt nu de gast-account';
 $string['loggedinnot'] = 'Je bent niet ingelogd';
 $string['login'] = 'Log in';
+$string['login_failure_logs'] = 'Logs mislukte aanmelding';
 $string['loginalready'] = 'Je bent al aangemeld';
 $string['loginas'] = 'Log in als';
 $string['loginaspasswordexplain'] = '<p>Je moet het speciale "loginas" wachtwoord ingeven om deze functie te kunnen gebruiken.<br />Als je dit niet kent, vraag het dan aan je serverbeheerder.</p>';
-$string['login_failure_logs'] = 'Logs mislukte aanmelding';
 $string['loginguest'] = 'Inloggen als gast';
 $string['loginsite'] = 'Op de site inloggen';
 $string['loginsteps'] = 'Hallo! Om volledige toegang tot de cursussen te krijgen moet je even de tijd nemen om een nieuwe account voor jezelf aan te maken op deze website.
@@ -949,6 +949,7 @@ $string['makeafolder'] = 'Maak een map';
 $string['makeeditable'] = 'Als je \'{$a}\' bewerkbaar maakt door het proces op de webserver (bijv. Apache), dan kun je dit bestand rechtstreeks vanuit deze pagina bewerken';
 $string['makethismyhome'] = 'Maak deze pagina als mijn standaard startpagina';
 $string['manageblocks'] = 'Blokken';
+$string['managecategories'] = 'Categorieën';
 $string['managecourses'] = 'Beheer cursussen';
 $string['managedatabase'] = 'Beheer de database';
 $string['manageeditorfiles'] = 'Beheer bestanden gebruikt door de editor';
@@ -1069,8 +1070,8 @@ $string['new'] = 'Nieuw';
 $string['newaccount'] = 'Nieuwe account';
 $string['newcourse'] = 'Nieuwe cursus';
 $string['newpassword'] = 'Nieuw wachtwoord';
-$string['newpasswordfromlost'] = '<strong>OPMERKING:</strong> Je <strong>huidige wachtwoord</strong> zal je toegestuurd worden in de <strong>tweede</strong> van de twee e-mails die je toegestuurd worden voor het terugkrijgen van je wachtwoord. Zorg er voor dat je je nieuwe wachtwoord gekregen hebt voor je verder gaat met dit scherm.';
 $string['newpassword_help'] = 'Laat dit veld leeg om het huidige wachtwoord te behouden.';
+$string['newpasswordfromlost'] = '<strong>OPMERKING:</strong> Je <strong>huidige wachtwoord</strong> zal je toegestuurd worden in de <strong>tweede</strong> van de twee e-mails die je toegestuurd worden voor het terugkrijgen van je wachtwoord. Zorg er voor dat je je nieuwe wachtwoord gekregen hebt voor je verder gaat met dit scherm.';
 $string['newpasswordtext'] = 'Beste {$a->firstname},
 
 Het wachtwoord voor je account op \'{$a->sitename}\' is gereset en je hebt een nieuw tijdelijk wachtwoord gekregen.
@@ -1449,14 +1450,14 @@ $string['screenreaderuse_help'] = 'Indien je hier ja kiest, zal op verschillende
 $string['screenreaderyes'] = 'Ja';
 $string['screenshot'] = 'Schermafdruk';
 $string['search'] = 'Zoek';
+$string['search_help'] = 'Voor het standaard zoeken met één of meer worden in de tekst, geef je je zoektermen in gescheiden door spaties. Alle woorden, langer dan twee tekens worden gebruikt.
+
+Voor geavanceerd zoeken, klik je op op de zoekknop zonder iets in het zoekvenster te typen om zo in het formulier voor geavanceerd zoeken terecht te komen.';
 $string['searchagain'] = 'Zoek nog een keer';
 $string['searchbyemail'] = 'Zoek op e-mailadres';
 $string['searchbyusername'] = 'Zoek op gebruikersnaam';
 $string['searchcourses'] = 'Zoek cursussen';
 $string['searchhelp'] = 'Je kunt naar meer woorden tegelijkertijd zoeken.<p>woord : zoek naar elke instantie van dit woord in de tekst.<br />+word : alleen precies passende woorden worden gevonden.<br />-word : de resultaten waar dit woord in voorkomt worden niet getoond.';
-$string['search_help'] = 'Voor het standaard zoeken met één of meer worden in de tekst, geef je je zoektermen in gescheiden door spaties. Alle woorden, langer dan twee tekens worden gebruikt.
-
-Voor geavanceerd zoeken, klik je op op de zoekknop zonder iets in het zoekvenster te typen om zo in het formulier voor geavanceerd zoeken terecht te komen.';
 $string['searchoptions'] = 'Zoekopties';
 $string['searchresults'] = 'Zoekresultaten';
 $string['sec'] = 'seconde';

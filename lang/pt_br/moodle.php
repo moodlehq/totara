@@ -209,11 +209,6 @@ $string['cancel'] = 'Cancelar';
 $string['cancelled'] = 'Cancelado';
 $string['categories'] = 'Categorias de Cursos';
 $string['category'] = 'Categoria';
-$string['categoryadded'] = 'A categoria \'{$a}\' foi adicionada';
-$string['categorycontents'] = 'Subcategorias e cursos';
-$string['categorycurrentcontents'] = 'Conteúdos de {$a}';
-$string['categorydeleted'] = 'A categoria \'{$a}\' foi removida';
-$string['categoryduplicate'] = 'A categoria \'{$a}\' já existe!';
 $string['category_help'] = '<p>Algumas categorias de curso devem ter sido definidas previamente pelo administrador do sistema.</p>
 
 <p>Por exemplo: "Ciências", "Economia", "Saúde Pública", etc.</p>
@@ -222,6 +217,11 @@ $string['category_help'] = '<p>Algumas categorias de curso devem ter sido defini
    A categoria escolhida determina a posição do seu curso
    na lista de cursos para que os alunos o encontrem
    com facilidade.</p>';
+$string['categoryadded'] = 'A categoria \'{$a}\' foi adicionada';
+$string['categorycontents'] = 'Subcategorias e cursos';
+$string['categorycurrentcontents'] = 'Conteúdos de {$a}';
+$string['categorydeleted'] = 'A categoria \'{$a}\' foi removida';
+$string['categoryduplicate'] = 'A categoria \'{$a}\' já existe!';
 $string['categorymodifiedcancel'] = 'Categoria modificada! Por favor, cancele e tente novamente.';
 $string['categoryname'] = 'Nome da categoria';
 $string['categoryupdated'] = 'Categoria {$a} atualizada';
@@ -655,12 +655,12 @@ Você pode estender o período de participação destes alunos na seguinte pági
 
 {$a->extendurl}';
 $string['expirynotifystudents'] = 'Notificar alunos';
+$string['expirynotifystudents_help'] = 'Se a duração de inscrição for especificada, essa configuração determina se os estudantes recebem a notificação via email quando estiverem prestes a serem excluídos do curso.';
 $string['expirynotifystudentsemail'] = 'Prezado {$a->studentstr}:
 
 Este é um aviso que indica a proximidade da data de expiração da sua inscrição no curso {$a->course} . Faltam ainda {$a->threshold} dias.
 
 Por favor, contate {$a->teacherstr} para eventuais esclarecimentos.';
-$string['expirynotifystudents_help'] = 'Se a duração de inscrição for especificada, essa configuração determina se os estudantes recebem a notificação via email quando estiverem prestes a serem excluídos do curso.';
 $string['expirythreshold'] = 'Limite';
 $string['expirythreshold_help'] = 'Se a duração de inscrição tenha sido especificada, então esta configuração determina o número de dias de aviso prévio dado antes que os estudantes sejam excluidos do curso.';
 $string['explanation'] = 'Explicação';
@@ -690,8 +690,8 @@ $string['forcedmodeinbrackets'] = '{$a} (modo forçado)';
 $string['forcelanguage'] = 'Forçar língua';
 $string['forceno'] = 'Não forçar';
 $string['forcepasswordchange'] = 'Forçar mudança de senha';
-$string['forcepasswordchangecheckfull'] = 'Você tem absoluta certeza que você quer forçar uma troca de senha para {$a} ?';
 $string['forcepasswordchange_help'] = 'Avisa o usuário que deve modificar a password no próximo acesso ao site.';
+$string['forcepasswordchangecheckfull'] = 'Você tem absoluta certeza que você quer forçar uma troca de senha para {$a} ?';
 $string['forcepasswordchangenot'] = 'Não foi possível forçar a mudança de senha para {$a}';
 $string['forcepasswordchangenotice'] = 'Você tem que mudar a senha antes de continuar';
 $string['forcetheme'] = 'Forçar tema';
@@ -819,7 +819,6 @@ $string['helpwiththis'] = 'Ajudar';
 $string['hiddenassign'] = 'Atribuição oculta';
 $string['hiddenfromstudents'] = 'Esconder dos estudantes';
 $string['hiddensections'] = 'Seções escondidas';
-$string['hiddensectionscollapsed'] = 'Seções escondidas são mostratas contraídas';
 $string['hiddensections_help'] = '<P>Estas opções permitem que você decida como seções ocultas no seu curso serão exibidas para os estudantes.</p>
 
 <p>A opção padrão define que as seções aparecerão aos estudantes com a área das atividades contraída e com a cor da seção alterada. A seção é visualizada mas os conteúdos da seção ficam ocultos. Isto pode ser útil em cursos com o formato semanal, para indicar semanas de férias, por exemplo.
@@ -827,6 +826,7 @@ $string['hiddensections_help'] = '<P>Estas opções permitem que você decida co
 
 <p>Se você escolher a outra opção, "seções ocultas são completamente invisíveis", as seções não serão visualizadas enquanto forem marcadas como ocultas.
 </p>';
+$string['hiddensectionscollapsed'] = 'Seções escondidas são mostratas contraídas';
 $string['hiddensectionsinvisible'] = 'Seções escondidas são completamente invisíveis';
 $string['hide'] = 'Ocultar';
 $string['hideadvancedsettings'] = 'Ocultar configurações avançadas';
@@ -854,10 +854,10 @@ $string['icon'] = 'Ícone';
 $string['icqnumber'] = 'Número de ICQ';
 $string['idnumber'] = 'Número de identificação';
 $string['idnumbercourse'] = 'Número de identificação do curso';
-$string['idnumbercoursecategory'] = 'Número ID da categoria';
-$string['idnumbercoursecategory_help'] = 'O número ID de uma categoria de curso é utilizado apenas quando comparando a categoria com sistemas externos e não é exibido em nenhum local no site. Caso a categoria possua um código oficial isto pode ser inserido, caso contrário o campo pode ser deixado em branco.';
 $string['idnumbercourse_help'] = '<P>O ID de um curso é usado apenas nos processos de comunicação com sistemas externos - não é visualizado na interface do curso.  Se você tem um código oficial de identificação do curso, utilize-o para preencher este campo. Em caso contrário, deixe o campo vazio.
 </p>';
+$string['idnumbercoursecategory'] = 'Número ID da categoria';
+$string['idnumbercoursecategory_help'] = 'O número ID de uma categoria de curso é utilizado apenas quando comparando a categoria com sistemas externos e não é exibido em nenhum local no site. Caso a categoria possua um código oficial isto pode ser inserido, caso contrário o campo pode ser deixado em branco.';
 $string['idnumbermod'] = 'Número de identificação do módulo';
 $string['idnumbermod_help'] = 'O Número ID identifica a atividade para fins de cálculo de avaliação.
 Se a atividade não estiver inclusa em nenhum cálculo de avaliação então o campo do Número ID pode ser deixado em branco.
@@ -931,10 +931,10 @@ $string['loggedinas'] = 'Você acessou como {$a}';
 $string['loggedinasguest'] = 'Você acessou como visitante';
 $string['loggedinnot'] = 'Você ainda não se identificou';
 $string['login'] = 'Acesso';
+$string['login_failure_logs'] = 'Relatório dos erros de identificação (login)';
 $string['loginalready'] = 'Você já se identificou';
 $string['loginas'] = 'Acesso como';
 $string['loginaspasswordexplain'] = '<p>Você tem que usar uma senha especial dada pelo administrador para "acessar como" antes de fazer isto.</p>';
-$string['login_failure_logs'] = 'Relatório dos erros de identificação (login)';
 $string['loginguest'] = 'Acessar como visitante';
 $string['loginsite'] = 'Acesso ao site';
 $string['loginsteps'] = 'Olá! Para o acesso completo aos cursos, você precisará criar uma nova conta neste web site.
@@ -964,6 +964,7 @@ $string['makeafolder'] = 'Criar diretório';
 $string['makeeditable'] = 'Se for permitido que \'{$a}\' seja editado pelo processo de servidor de rede (es. apache), será possível editar este arquivo usando esta página.';
 $string['makethismyhome'] = 'Tornar esta minha página inicial padrão';
 $string['manageblocks'] = 'Blocos';
+$string['managecategories'] = 'Gerenciar categorias';
 $string['managecourses'] = 'Administrar cursos';
 $string['managedatabase'] = 'Base de Dados';
 $string['manageeditorfiles'] = 'Gerenciar arquivos usados pelo editor';
@@ -1084,8 +1085,8 @@ $string['new'] = 'Novo';
 $string['newaccount'] = 'Cadastramento de novo usuário';
 $string['newcourse'] = 'Novo curso';
 $string['newpassword'] = 'Nova senha';
-$string['newpasswordfromlost'] = '<strong>AVISO:</strong> A sua <strong>senha atual</strong> será enviada no <strong>segundo</strong> dos dois emails emitidos neste processo de recuperação de senha. Certifique-se que você recebeu a senha substituta antes de continuar.';
 $string['newpassword_help'] = 'Deixar em branco para manter a senha atual';
+$string['newpasswordfromlost'] = '<strong>AVISO:</strong> A sua <strong>senha atual</strong> será enviada no <strong>segundo</strong> dos dois emails emitidos neste processo de recuperação de senha. Certifique-se que você recebeu a senha substituta antes de continuar.';
 $string['newpasswordtext'] = 'Olá {$a->firstname},
 
 A senha de sua conta em \'{$a->sitename}\' foi redefinida e você recebeu uma senha provisória:
@@ -1458,14 +1459,14 @@ $string['screenreaderuse_help'] = 'Se definido como sim, uma interface mais aces
 $string['screenreaderyes'] = 'Sim';
 $string['screenshot'] = 'Captura de tela';
 $string['search'] = 'Buscar';
+$string['search_help'] = 'Para a busca básica por uma ou mais palavras em qualquer parte do texto, simplesmente digite-as separadas por espaços. Todas as palavras com mais de dois caracteres serão usadas.
+
+Para busca avançada, pressione o botão de busca sem digitar nada na caixa de busca para acessar o formulário de busca avançada.';
 $string['searchagain'] = 'Buscar novamente';
 $string['searchbyemail'] = 'Buscar pelo endereço de email';
 $string['searchbyusername'] = 'Buscar por usuário';
 $string['searchcourses'] = 'Buscar cursos';
 $string['searchhelp'] = 'Você pode utilizar mais de uma palavra em cada busca.<br />termo: busca todas as palavras nos textos que contém este termo<br />+termo: busca apenas as palavras que correspondem exatamente ao termo<br />-termo: exclui dos resultados da busca os textos que contém este termo.';
-$string['search_help'] = 'Para a busca básica por uma ou mais palavras em qualquer parte do texto, simplesmente digite-as separadas por espaços. Todas as palavras com mais de dois caracteres serão usadas.
-
-Para busca avançada, pressione o botão de busca sem digitar nada na caixa de busca para acessar o formulário de busca avançada.';
 $string['searchoptions'] = 'Opções de busca';
 $string['searchresults'] = 'Resultados da busca';
 $string['sec'] = 'segundo';

@@ -25,25 +25,31 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['addcompletions'] = 'Dodaj {no} warunki czynności do formularza';
 $string['addgrades'] = 'Dodaj {no} warunek(ki) ocen do formularza';
 $string['availabilityconditions'] = 'Ogranicz dostęp';
 $string['availablefrom'] = 'Zezwól na dostęp z';
 $string['availableuntil'] = 'Zezwalaj na dostęp do';
+$string['badavailabledates'] = 'Niepoprawne daty. W przypadku ustawienia obu dat data "dostępny od" powinna być wcześniejsza niż data "do".';
 $string['completion_complete'] = 'musi być oznaczone jako ukończone';
 $string['completion_fail'] = 'musi być zakończone z oceną negatywną';
 $string['completion_incomplete'] = 'nie może być oznaczone jako ukończone';
 $string['completion_pass'] = 'musi być zakończone z oceną pozytywną';
+$string['completioncondition'] = 'Warunek ukończenia czynności';
 $string['configenableavailability'] = 'Gdy opcja jest włączona, umożliwia na ustawienie warunków (w oparciu o datę, ocenę lub ukończenie) dostępu do aktywności.';
 $string['enableavailability'] = 'Włącz dostęp warunkowy';
 $string['grade_atleast'] = 'mysi być co najmniej';
+$string['grade_upto'] = 'i mniej niż';
 $string['gradecondition'] = 'Warunki ocen';
 $string['gradecondition_help'] = 'To ustawienie określa dowolne warunki dla ocen, które muszą być spełnione w celu uzyskania dostępu do tej aktywności.
 
 W razie potrzeby mogą być ustawione wielokrotne warunki. W takim przypadku aktywność będzie dostępna tylko po spełnieniu WSZYSTKICH warunków. ';
-$string['grade_upto'] = 'i mniej niż';
 $string['none'] = '(żaden)';
 $string['notavailableyet'] = 'Jeszcze nie dostepny';
+$string['requires_completion_0'] = 'Niedostępne o ile czynność <strong>{$a}</strong> jest nieukończona.';
 $string['requires_completion_1'] = 'Niedostępne dopóki aktywność <strong>{$a}</strong> nie zostanie oznaczona jako zakończona.';
+$string['requires_completion_2'] = 'Niedostępne dopóki czynność <strong>{$a}</strong> jest ukończona i zaliczona.';
+$string['requires_completion_3'] = 'Niedostępne dopóki czynność <strong>{$a}</strong> jest ukończona i niezaliczona.';
 $string['requires_date'] = 'Dostępny od {$a}.';
 $string['requires_date_before'] = 'Dostępny do {$a}.';
 $string['requires_date_both'] = 'Dostępny od {$a->from} do {$a->until}.';

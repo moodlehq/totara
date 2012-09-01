@@ -281,7 +281,7 @@ $string['rating:viewany'] = '查看每个人收到的总评分';
 $string['resetrole'] = '重置';
 $string['resetrolenolegacy'] = '清除权限';
 $string['resetrolesure'] = '确定重“{$a->name} ({$a->shortname})”回缺省状态吗？<p></p>缺省值将从原型({$a->legacytype})获得。';
-$string['resetrolesurenolegacy'] = '确定想清除所有在角色"{$a->name ({$a->shortname}})"
+$string['resetrolesurenolegacy'] = '确定想清除所有在角色"{$a->name} ({$a->shortname})"
 中定义的权限吗？';
 $string['restore:configure'] = '配置恢复选项';
 $string['restore:createuser'] = '恢复时创建用户';

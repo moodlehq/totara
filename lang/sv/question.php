@@ -39,7 +39,7 @@ $string['cannotdeleteqtypeneeded'] = 'Du kan inte ta bort frågetypen \'{$a}\'. 
 $string['cannotenable'] = ' Det går inte att skapa frågetypen {$a} direkt.';
 $string['cannotfindcate'] = 'Det gick inte att hitta posten för kategori';
 $string['cannotfindquestionfile'] = 'Det gick inte att hitta datafilen för frågor i zip-filen';
-$string['cannotgetdsfordependent'] = 'Det gick inte att hitta det angivna datasetet för en fråga som är beroende av dataset! (question: {$a[0]}, datasetitem: {a[1]})';
+$string['cannotgetdsfordependent'] = 'Det gick inte att hitta det angivna datasetet för en fråga som är beroende av dataset! (question: {$a->id}, datasetitem: {$a->item})';
 $string['cannotgetdsforquestion'] = 'Det gick inte att hitta det angivna datasetet för en kalkylerad fråga! (question: {$a})';
 $string['cannotimportformat'] = 'Import av det här formatet är tyvärr ännu inte implementerat!';
 $string['cannotinsertquestioncatecontext'] = 'Det gick inte att foga in den nya kategorin {$a->cat} för frågor p g a ett ogiltigt \'contextid\' {$a->ctx}';
@@ -71,6 +71,7 @@ $string['cwrqpfsinfo'] = '<p>I samband med uppgraderingen till Moodle 1.9 kommer
 $string['cwrqpfsnoprob'] = 'Inga frågekategorier på Din webbplats påverkas av funktionen \'Slumpmässiga frågor som väljer frågor ur underkategorier\'.';
 $string['defaultfor'] = 'Förinställt standardvärde för {$a}';
 $string['defaultinfofor'] = 'Det förinställda standardvärdet för frågor som är gemensamma i sammanhanget \'{$a}\'.';
+$string['deletecoursecategorywithquestions'] = 'Det finns frågor i frågebanken associerad med denna kurs kategori. Om du fortsätter kommer de att raderas. Du kanske vill flytta dem först, med hjälp av gränssnittet för frågebanken.';
 $string['deleteqtypeareyousure'] = 'Är Du säker på att Du vill ta bort frågetypen \'{$a}\' ';
 $string['deleteqtypeareyousuremessage'] = 'Du håller på att ta bort frågetypen \'{$a}\' helt och hållet. Är Du säker på att Du vill avinstallera den?';
 $string['deletingqtype'] = 'Tar bort frågetypen\'{$a}\'';
@@ -90,6 +91,10 @@ $string['errorfilecannotbecopied'] = 'Fel: Det går inte att kopiera filen {$a}.
 $string['errorfilecannotbemoved'] = 'Fel: Det går inte att flytta filen {$a}.';
 $string['errorfileschanged'] = 'De fel-filer som har länkats till från frågor har ändrats sedan formuläret visades.';
 $string['errormanualgradeoutofrange'] = 'Betyget/omdömet {$a->grade} ligger inte mellan 0 och {$a->maxgrade} för fråga {$a->name}. Resultatet och kommentaren har inte sparats.';
+$string['errormovingquestions'] = 'Fel vid flyttning av frågor med id {$a}.';
+$string['errorprocessingresponses'] = 'Ett fel uppstod vid behandling av dina svar.';
+$string['errorsavingcomment'] = 'Fel vid sparande av kommentar för fråga {$a->name} i databasen.';
+$string['errorupdatingattempt'] = 'Fel vid uppdatering av försök {$a->id} i databasen.';
 $string['exportcategory'] = 'Kategori för export';
 $string['exportcategory_help'] = '<p align="center"><b>Exportera kategori</b></p>
 
@@ -156,6 +161,8 @@ N&auml;r f&ouml;ddes Ulysses S. Grant?{#1822}
 <p>Import och export format är pluggbara resurser. Det kan finnas andra alternativa format i databasen för moduler och plugin-program.</p>
 
 <p>Fler format kommer att tillkomma, vad helst annat som Moodle-anv&auml;ndare kan komma att bidra med! </p>';
+$string['filecantmovefrom'] = 'Frågefilerna kan inte flyttas eftersom du inte har rättigheter att flytta filer från platsen du försöker att flytta från.';
+$string['filecantmoveto'] = 'Frågefilerna kan inte flyttas eller kopieras eftersom du inte har rättigheter att lägga till filer till platsen du försöker att flytta till.';
 $string['filesareacourse'] = 'arkiv för kursfiler';
 $string['filesareasite'] = 'arkiv för filer på webbplatsnivå';
 $string['filestomove'] = 'Flytta/kopiera filer till {$a}?';
@@ -163,6 +170,7 @@ $string['fractionsnomax'] = 'Ett av svaren bör ha ett resultat på 100% så att
 $string['getcategoryfromfile'] = 'Hämta kategori från fil';
 $string['getcontextfromfile'] = 'Hämta sammanhang från fil';
 $string['ignorebroken'] = 'Ta inte hänsyn till brutna länkar';
+$string['invalidcontextinhasanyquestions'] = 'Felaktig kontext skickad till question_context_has_any_questions.';
 $string['linkedfiledoesntexist'] = 'Den länkade filen {$a} finns inte.';
 $string['makechildof'] = 'Gör om \'{$a}\'  till ett barn';
 $string['maketoplevelitem'] = 'Flytta till översta positionen';
@@ -170,6 +178,7 @@ $string['missingimportantcode'] = 'Den här frågan saknar viktig kod: {$a}';
 $string['modified'] = 'Senast sparad';
 $string['move'] = 'Flytta från {$a} och byt länkar';
 $string['movecategory'] = 'Flytta kategori';
+$string['movedquestionsandcategories'] = 'Flyttade frågor och frågekategorier från {$a->oldplace} till {$a->newplace}.';
 $string['movelinksonly'] = 'Ändra bara länkadresserna, flytta inte och kopiera inte filerna.';
 $string['moveq'] = 'Flytta fråga/or';
 $string['moveqtoanothercontext'] = 'Flytta fråga till ett annat sammanhang';
@@ -181,6 +190,7 @@ $string['movingquestionsandfiles'] = 'Är Du säker på att Du vill flytta fråg
 $string['movingquestionsnofiles'] = 'Är Du säker på att Du vill flytta frågorna  {$a->questions}till sammanhanget <strong>"{$a->tocontext}"</strong>?<br /> Det finns  <strong>inga filer</strong> som är länkade från dessa frågor i {$a->fromareaname}.';
 $string['needtochoosecat'] = 'Du måste välja en kategori för att flytta den här frågan eller klicka på \'Avbryt\'.';
 $string['nopermissionadd'] = 'Du har inte tillstånd att lägga till frågor här.';
+$string['nopermissionmove'] = 'Du har inte rättigheter att flytta frågor härifrån. Du måste spara frågan i denna kategori eller spara den som en ny fråga.';
 $string['noprobs'] = 'Det fanns inga problem i Din databas för frågor.';
 $string['noquestionsinfile'] = 'Det finns inga frågor i den importerade filen';
 $string['notenoughdatatoeditaquestion'] = 'Varken ett fråge-id, en kategori-id eller frågetyp har angivits.';
@@ -196,8 +206,12 @@ $string['permissionto'] = 'Du har tillstånd att:';
 $string['published'] = 'gemensam';
 $string['questionaffected'] = '<a href="{$a->qurl}">Frågan "{$a->name}" ({$a->qtype})</a> finns i den här frågekategorin men den används även i <a href="{$a->qurl}">test "{$a->quizname}"</a> i en annan kurs "{$a->coursename}".';
 $string['questionbank'] = 'Frågebank';
+$string['questioncategory'] = 'Frågekategori';
 $string['questioncatsfor'] = 'Frågekategorier för \'{$a}\'';
 $string['questiondoesnotexist'] = 'Den här frågan finns inte.';
+$string['questionsmovedto'] = 'Fråga som används flyttad till "{$a}" i överliggande kurskategori.';
+$string['questionsrescuedfrom'] = 'Frågor sparade från kontext {$a}.';
+$string['questionsrescuedfrominfo'] = 'Dessa frågor (av vilka några kan vara dolda) sparades när kontext {$a} raderades eftersom de fortfarande används av någon quiz eller aktivitet.';
 $string['questionuse'] = 'Använd frågan i den här aktiviteten';
 $string['selectcategoryabove'] = 'Välj en kategori ovan';
 $string['shareincontext'] = 'Dela i sammanhanget för {$a}';
@@ -207,3 +221,7 @@ $string['uninstallqtype'] = 'Avinstallera den här frågetypen';
 $string['unknown'] = 'Okänd';
 $string['unknownquestiontype'] = 'Okänd frågetyp: {$a}';
 $string['unpublished'] = 'Inte gemensam';
+$string['upgradeproblemcategoryloop'] = 'Problem upptäckt vid uppgradering av frågekategorier. Det finns en loop i kategoriträdet. De påverkade kategoriid är {$a}.';
+$string['upgradeproblemcouldnotupdatecategory'] = 'Kunde inte uppdatera frågekategori {$a->name} ({$a->id}).';
+$string['upgradeproblemunknowncategory'] = 'Probelm hittat vid uppgradeing av frågekategorier. Kategori {$a->id} refererar till en övre {$a->parent}, som inte finns. Övre kategori ändrad för att lösa problemet.';
+$string['yourfileshoulddownload'] = 'Din exportfil borde starta nedladdning strax. Om inte  <a href="{$a}">klicka här</a>. Övre ändrad för att lösa problemet.';

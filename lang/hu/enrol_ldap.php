@@ -62,9 +62,9 @@ $string['enroluser'] = '\'{$a->user_username}\' felhasználó beíratása a(z) \
 $string['enroluserenable'] = '\'{$a->user_username}\' felhasználó \'{$a->course_shortname}\' kurzusfelvétele (id {$a->course_id}) érvényesítve';
 $string['explodegroupusertypenotsupported'] = 'Az ldap_explode_group() nem támogatja a kiválasztott {$a} felhasználótípust';
 $string['extcourseidinvalid'] = 'A kurzus külső azonosítója érvénytelen! ';
-$string['extremovedsuspend'] = '\'{$a-&gt;user_username}\' felhasználó esetén \'{$a-&gt;course_shortname}\' kurzusban (id {$a-&gt;course_id}) beiratkozás kikapcsolva';
-$string['extremovedsuspendnoroles'] = '\'{$a-&gt;user_username}\' felhasználó esetén \'{$a-&gt;course_shortname}\' kurzusban (id {$a-&gt;course_id}) beiratkozás kikapcsolva és szerepek eltávolítva';
-$string['extremovedunenrol'] = '\'{$a-&gt;user_username}\' felhasználó törlése a(z) \'{$a-&gt;course_shortname}\' kurzusból (id {$a-&gt;course_id})';
+$string['extremovedsuspend'] = '\'{$a->user_username}\' felhasználó esetén \'{$a->course_shortname}\' kurzusban (id {$a->course_id}) beiratkozás kikapcsolva';
+$string['extremovedsuspendnoroles'] = '\'{$a->user_username}\' felhasználó esetén \'{$a->course_shortname}\' kurzusban (id {$a->course_id}) beiratkozás kikapcsolva és szerepek eltávolítva';
+$string['extremovedunenrol'] = '\'{$a->user_username}\' felhasználó törlése a(z) \'{$a->course_shortname}\' kurzusból (id {$a->course_id})';
 $string['failed'] = 'Nem sikerült!';
 $string['general_options'] = 'Általános lehetőségek';
 $string['group_memberofattribute'] = 'Azon paraméter neve, amely megadja, melyik csoportokhoz tartozik a felhasználó vagy a csoport (pl. memberOf, groupMembership stb.)';
@@ -99,13 +99,13 @@ $string['role_mapping'] = '<p>Az LDAP-ból hozzárendelendő összes szerephez m
 $string['role_mapping_key'] = 'LDAP-szerepek megfeleltetése ';
 $string['roles'] = 'Szerepek megfeleltetése';
 $string['server_settings'] = 'Az LDAP-szerver beállításai';
-$string['synccourserole'] = '== \'{$a-&gt;idnumber}\' kurzus szinkronizálása \'{$a-&gt;role_shortname}\' szerephez';
+$string['synccourserole'] = '== \'{$a->idnumber}\' kurzus szinkronizálása \'{$a->role_shortname}\' szerephez';
 $string['template'] = 'Opcionális: az automatikusan létrehozott kurzusok a sablonkurzusból átmásolhatják beállításaikat.';
 $string['template_key'] = 'Sablon';
-$string['unassignrole'] = '\'{$a-&gt;role_shortname}\' szerep \'{$a-&gt;user_username}\' felhasználóhoz rendelésének törlése a(z) \'{$a-&gt;course_shortname}\' kurzus esetén (id {$a-&gt;course_id})';
-$string['unassignrolefailed'] = 'A(z) \'{$a-&gt;role_shortname}\' szerep \'{$a-&gt;user_username}\' felhasználóhoz rendelése \'{$a-&gt;course_shortname}\' kurzus (id
-{$a-&gt;course_id}) esetén nem sikerült.';
-$string['unassignroleid'] = '\'{$a-&gt;role_id}\' szerepazonosító \'{$a-&gt;user_id}\' felhasználói azonosítóhoz rendelésének megszüntetése';
+$string['unassignrole'] = '\'{$a->role_shortname}\' szerep \'{$a->user_username}\' felhasználóhoz rendelésének törlése a(z) \'{$a->course_shortname}\' kurzus esetén (id {$a->course_id})';
+$string['unassignrolefailed'] = 'A(z) \'{$a->role_shortname}\' szerep \'{$a->user_username}\' felhasználóhoz rendelése \'{$a->course_shortname}\' kurzus (id
+{$a->course_id}) esetén nem sikerült.';
+$string['unassignroleid'] = '\'{$a->role_id}\' szerepazonosító \'{$a->user_id}\' felhasználói azonosítóhoz rendelésének megszüntetése';
 $string['updatelocal'] = 'Helyi adatok frissítése';
 $string['user_attribute'] = 'Ha a csoporttagság egyedi neveket tartalmaz, adja meg a felhasználók elnevezésére/keresésére használt paramétert. Ha LDAP-hitelesítést alkalmaz, ennek az értéknek egyeznie kell az LDAP hitelesítési segédprogramban megadott \'Azonosítószám\' hozzárendelésével.';
 $string['user_attribute_key'] = 'Azonosítószám-paraméter';

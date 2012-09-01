@@ -78,4 +78,5 @@ $string['totalsize'] = 'Koko yhteensä';
 $string['type'] = 'Tyyppi';
 $string['uncompleteindexingerror'] = 'Indeksointia ei saatu loppuun, ole hyvä ja aloita uudestaan.';
 $string['versiontoolow'] = 'Globaali haku vaatii PHP version 5.0.0 tai uudemman';
+$string['whichmodulestosearch?'] = 'Mistä aktiviteeteistä haetaan?';
 $string['wordsintitle'] = 'Sanoja otsikossa';

@@ -78,4 +78,5 @@ $string['totalsize'] = 'Tamanho Total';
 $string['type'] = 'Tipo';
 $string['uncompleteindexingerror'] = 'A indexação não foi completada com sucesso, por favor tente outra vez.';
 $string['versiontoolow'] = 'Sinto muito, a pesquisa global requer PHP 5.0.0 ou mais recente';
+$string['whichmodulestosearch?'] = 'Quais módulos pesquisar?';
 $string['wordsintitle'] = 'Palavras no título';

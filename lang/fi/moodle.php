@@ -212,14 +212,14 @@ $string['cancel'] = 'Peruuta';
 $string['cancelled'] = 'Peruutettu';
 $string['categories'] = 'Kurssikategoriat';
 $string['category'] = 'Kategoria';
+$string['category_help'] = 'Moodleen on valmiiksi luotu kurssikategorioita, kuten tiedekuntakohtainen tai muu oppiaineperustainen jako. Kurssisi on sijoitettu kategoriaan, johon olet sen pyytänyt, tai esimerkiksi Harjoituskursseihin. Jos sinulla ei ole itselläsi oikeuksia vaihtaa kurssialueesi kategoriaa, voit tarvittaessa pyytää vaihtoa Moodle-ylläpidosta.
+
+Valitse kategoria, johon kurssisi sopii parhaiten. Tämä valinta vaikuttaa siihen, missä kohdassa kurssisi näkyy kurssiluettelossa ja helpottaa opiskelijota kurssisi löytymisessä.';
 $string['categoryadded'] = 'Kategoria \'{$a}\' lisätty';
 $string['categorycontents'] = 'Alakategoriat ja kurssit';
 $string['categorycurrentcontents'] = 'Kategorian {$a} sisältö';
 $string['categorydeleted'] = 'Kategoria \'{$a}\' poistettu';
 $string['categoryduplicate'] = 'Kategoria \'{$a}\' on jo olemassa';
-$string['category_help'] = 'Moodleen on valmiiksi luotu kurssikategorioita, kuten tiedekuntakohtainen tai muu oppiaineperustainen jako. Kurssisi on sijoitettu kategoriaan, johon olet sen pyytänyt, tai esimerkiksi Harjoituskursseihin. Jos sinulla ei ole itselläsi oikeuksia vaihtaa kurssialueesi kategoriaa, voit tarvittaessa pyytää vaihtoa Moodle-ylläpidosta.
-
-Valitse kategoria, johon kurssisi sopii parhaiten. Tämä valinta vaikuttaa siihen, missä kohdassa kurssisi näkyy kurssiluettelossa ja helpottaa opiskelijota kurssisi löytymisessä.';
 $string['categorymodifiedcancel'] = 'Kategoriaa muutettiin! Peruuta ja kokeile uudestaan.';
 $string['categoryname'] = 'Kategorian nimi';
 $string['categoryupdated'] = 'Kategoria \'{$a}\' päivitetty';
@@ -658,12 +658,12 @@ Seuraavien kurssin opiskelijoiden osallistuminen vanhenee vähemmässä kuin {$a
 
 Voit pidentää rekisteröitymisjaksoa seuraavalla sivulla: {$a->extendurl}';
 $string['expirynotifystudents'] = 'Ilmoitus opiskelijoille';
+$string['expirynotifystudents_help'] = 'Jos olet määritellyt kurssillesi kurssillaoloajan, tällä asetuksella tilaat opiskelijalle automaatti-ilmoituksen kurssillaolon päättymisestä hieman nnen kuin hänet poistetaan automaattisesti kurssialueelta.';
 $string['expirynotifystudentsemail'] = 'Hyvä opiskelija.
 
 Rekisteröitymisesi kurssille {$a->course} vanhenee {$a->threshold} päivässä.
 
 Kysy kurssin ohjaajilta lisätietoja.';
-$string['expirynotifystudents_help'] = 'Jos olet määritellyt kurssillesi kurssillaoloajan, tällä asetuksella tilaat opiskelijalle automaatti-ilmoituksen kurssillaolon päättymisestä hieman nnen kuin hänet poistetaan automaattisesti kurssialueelta.';
 $string['expirythreshold'] = 'Raja-arvo';
 $string['expirythreshold_help'] = 'Jos olet määritellyt kurssillesi kurssillaoloajan, tällä asetuksella määrittelet, kuinka monta päivää etukäteen opettajat ja/tai opiskelijat saavat ilmoituksen automaattisesta kurssialueelta poistamisesta.';
 $string['explanation'] = 'Selitys';
@@ -693,8 +693,8 @@ $string['forcedmodeinbrackets'] = '{$a} (pakotettu tila)';
 $string['forcelanguage'] = 'Pakota kielivalinta';
 $string['forceno'] = 'Älä pakota';
 $string['forcepasswordchange'] = 'Pakota salasanan vaihto';
-$string['forcepasswordchangecheckfull'] = 'Oletko varma, että haluat ottaa käyttöön salasanan pakotetun vaihtamisen: {$a}?';
 $string['forcepasswordchange_help'] = 'Jos valintalaatikko on valittuna, käyttäjä pakotetaan vaihtamaan salasanansa seuraavan sisäänkirjautumisen yhteydessä.';
+$string['forcepasswordchangecheckfull'] = 'Oletko varma, että haluat ottaa käyttöön salasanan pakotetun vaihtamisen: {$a}?';
 $string['forcepasswordchangenot'] = 'Salasanan pakotettua vaihtamista ei voida ottaa käyttöön: {$a}';
 $string['forcepasswordchangenotice'] = 'Sinun pitää vaihtaa salasanasi ennen kuin voit jatkaa.';
 $string['forcetheme'] = 'Pakota teema';
@@ -844,11 +844,11 @@ $string['helpwiththis'] = 'Avusta tässä';
 $string['hiddenassign'] = 'Piilotettu tehtävä';
 $string['hiddenfromstudents'] = 'Piilotettu opiskelijoilta';
 $string['hiddensections'] = 'Piilotetut osiot';
-$string['hiddensectionscollapsed'] = 'Piilotetut osiot näytetään tiivistetyssä muodossa';
 $string['hiddensections_help'] = '<p>T&auml;m&auml; vaihtoehto sallii sinun p&auml;&auml;tt&auml;&auml; miten piilotetut osiot kurssillasi n&auml;kyv&auml;t opiskelijoille. </p>
 
 <p>Oletuksena n&auml;ytett&auml;&auml;n pieni alue (supistetussa muodossa, yleens&auml; harmaana) viittauksena siit&auml; miss&auml; piilotettu osio on. Vaikka he eiv&auml;t silti n&auml;e piilotettuja toimintoja ja tekstej&auml;. T&auml;m&auml; on erityisen k&auml;yt&auml;nn&ouml;llist&auml; viikoittaisessa muodossa, jolloin viikot joilla ei ole luentoja, ovat tyhji&auml;.</p>
 <p>Jos haluat, n&auml;m&auml; voivat olla my&ouml;s kokonaan piilotettuja, jolloin opiskelijat eiv&auml;t edes tied&auml;, ett&auml; osioita kurssista on piilotettuina.</p>';
+$string['hiddensectionscollapsed'] = 'Piilotetut osiot näytetään tiivistetyssä muodossa';
 $string['hiddensectionsinvisible'] = 'Piilotetut osiot ovat kokonaan näkymättömissä';
 $string['hide'] = 'Piilota';
 $string['hideadvancedsettings'] = 'Piilota lisäasetukset';
@@ -876,9 +876,9 @@ $string['icon'] = 'Ikoni';
 $string['icqnumber'] = 'ICQ-numero';
 $string['idnumber'] = 'Tunnistenumero';
 $string['idnumbercourse'] = 'Kurssin tunnistenumero';
+$string['idnumbercourse_help'] = 'Kurssin tunnistenumeroa käytetään vain, kun kurssia verrataan ulkoisiin järjestelmiiin. Sitä ei koskaan näytetä Moodlen sisällä. Jos sinulla on virallinen koodinimi kurssille, käytä sitä tässä. Muuten voit jättää kohdan tyhjäksi.';
 $string['idnumbercoursecategory'] = 'Kategorian tunnistenumero';
 $string['idnumbercoursecategory_help'] = 'Kurssikategorian ID-numeroa käytetään vain kun kategoriaa verrataan ulkoisiin järjestelmiin, eikä sitä näytetä missään sivustolla. Jos kategorialla on virallinen koodinimi se voidaan syöttää, muuten kenttä voidaan jättää tyhjäksi.';
-$string['idnumbercourse_help'] = 'Kurssin tunnistenumeroa käytetään vain, kun kurssia verrataan ulkoisiin järjestelmiiin. Sitä ei koskaan näytetä Moodlen sisällä. Jos sinulla on virallinen koodinimi kurssille, käytä sitä tässä. Muuten voit jättää kohdan tyhjäksi.';
 $string['idnumbermod'] = 'Tunnistenumero';
 $string['idnumbermod_help'] = 'ID-numeron asetus antaa mahdollisuuden tunnistaa aktiviteetti arvosanan laskennassa. Jos tietty aktiviteetti ei sisälly mihinkään arvosanaan voidaan ID-numeron kenttä jättää tyhjäksi.
 
@@ -950,10 +950,10 @@ $string['loggedinas'] = 'Olet kirjautunut nimellä  {$a}.';
 $string['loggedinasguest'] = 'Käytät vierailijatunnusta';
 $string['loggedinnot'] = 'Et ole kirjautunut.';
 $string['login'] = 'Kirjaudu';
+$string['login_failure_logs'] = 'Kirjautumisvirhelokit';
 $string['loginalready'] = 'Olet jo kirjautunut';
 $string['loginas'] = 'Kirjaudu käyttäjänä';
 $string['loginaspasswordexplain'] = '<p>Sinun pitää antaa erityinen "Kirjaudu toisena" -salasana.<br />Ellet tiedä sitä, kysy ohjeita järjestelmän ylläpitäjältä.</p>';
-$string['login_failure_logs'] = 'Kirjautumisvirhelokit';
 $string['loginguest'] = 'Kirjaudu vierailijana';
 $string['loginsite'] = 'Kirjaudu sivustoon';
 $string['loginsteps'] = 'Hei! Käytä hetki aikaa luodaksesi itsellesi käyttäjätunnus ja salasana sivustoon. Tämä mahdollistaa sivuston vapaan käytön.
@@ -985,6 +985,7 @@ $string['makeafolder'] = 'Luo kansio';
 $string['makeeditable'] = 'Jos annat WWW-palvelimelle kirjoitusoikeudet kansioon \'{$a}\', voit muokata tätä tiedostoa suoraan tältä sivulta.';
 $string['makethismyhome'] = 'Tee tästä oletuskotisivuni';
 $string['manageblocks'] = 'Lohkot';
+$string['managecategories'] = 'Hallinnoi kategorioita';
 $string['managecourses'] = 'Kurssien hallinta';
 $string['managedatabase'] = 'Tietokanta';
 $string['manageeditorfiles'] = 'Hallitse editorin käyttämiä tiedostoja';
@@ -1099,8 +1100,8 @@ $string['new'] = 'Uusi';
 $string['newaccount'] = 'Uusi tunnus';
 $string['newcourse'] = 'Uusi kurssi';
 $string['newpassword'] = 'Uusi salasana';
-$string['newpasswordfromlost'] = '<strong>HUOMAA:</strong> Sinun <strong>Nykyinen salasanasi</strong> on lähetetty <strong>toisena</strong> kahdesta viestistä. Tarkista että olet saanut uuden salasanasi ennen kuin jatkat tästä näytöstä eteenpäin.';
 $string['newpassword_help'] = 'Sytä uusi salasana tai jätä tyhjäksi pitääksesi nykyisen salasanasi';
+$string['newpasswordfromlost'] = '<strong>HUOMAA:</strong> Sinun <strong>Nykyinen salasanasi</strong> on lähetetty <strong>toisena</strong> kahdesta viestistä. Tarkista että olet saanut uuden salasanasi ennen kuin jatkat tästä näytöstä eteenpäin.';
 $string['newpasswordtext'] = 'Hei {$a->firstname},
 
 Salasanasi sivustolla \'{$a->sitename}\' on vaihdettu ja sinulle on annettu uusi tilapäinen salasana.
@@ -1458,14 +1459,14 @@ $string['screenreaderuse_help'] = 'Ruudunlukija on näkövammaisten käyttäjien
 $string['screenreaderyes'] = 'Kyllä';
 $string['screenshot'] = 'Ruudunkaappaus';
 $string['search'] = 'Hae';
+$string['search_help'] = 'Tekstin perushaussa (yksi tai useampi sana) kirjoita sanoja erottamalla ne välilyönnillä. Kaikki kahta merkkiä pidemmät sanat ovat haun kohteena.
+
+Halutessasi päästä edistyneeseen hakuun paina haku-painiketta kirjoittamatta hakuikkunaan mitään niin lomake hakuun aukeaa.';
 $string['searchagain'] = 'Hae uudelleen';
 $string['searchbyemail'] = 'Etsi sähköpostin perusteella';
 $string['searchbyusername'] = 'Etsi käyttäjänimen perusteella';
 $string['searchcourses'] = 'Etsi kursseja';
 $string['searchhelp'] = 'Voit hakea useampaa sanaa kerrallaan. <br  /><br />sana : etsi mikä tahansa täsmäävä sana.<br />+sana : kaikkien sanojen tulee löytyä.<br />-sana : jätä pois kyseisen sanan sisältävät.';
-$string['search_help'] = 'Tekstin perushaussa (yksi tai useampi sana) kirjoita sanoja erottamalla ne välilyönnillä. Kaikki kahta merkkiä pidemmät sanat ovat haun kohteena.
-
-Halutessasi päästä edistyneeseen hakuun paina haku-painiketta kirjoittamatta hakuikkunaan mitään niin lomake hakuun aukeaa.';
 $string['searchoptions'] = 'Hakuasetukset';
 $string['searchresults'] = 'Hakutulokset';
 $string['sec'] = 'sekunti';

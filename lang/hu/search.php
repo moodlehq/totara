@@ -78,4 +78,5 @@ $string['totalsize'] = 'Méret összesen';
 $string['type'] = 'Típus';
 $string['uncompleteindexingerror'] = 'Az indexálást nem sikerült végrehajtani, indítsa el újra.';
 $string['versiontoolow'] = 'A globális kereséshez PHP 5.0.0 vagy későbbi verzióra van szükség';
+$string['whichmodulestosearch?'] = 'Keresendő modulok?';
 $string['wordsintitle'] = 'Címbeli szavak';

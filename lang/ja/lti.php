@@ -141,7 +141,7 @@ $string['external_tool_type_help'] = 'ツール設定の主目的は、Moodleお
 
 * **削除** - 選択したコースレベルのツールタイプを削除します。';
 $string['external_tool_types'] = '外部ツールタイプ';
-$string['failedtoconnect'] = 'Moodleが「 $a 」システムと通信できませんでした。';
+$string['failedtoconnect'] = 'Moodleが「 {$a} 」システムと通信できませんでした。';
 $string['filter_basiclti_configlink'] = 'あなたの推奨サイトおよびパスワードを設定します。';
 $string['filter_basiclti_password'] = 'パスワードは必須です。';
 $string['filterconfig'] = 'LTI管理';
@@ -186,7 +186,7 @@ $string['launch_url_help'] = '起動URIでは外部ツールのウェブアド�
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'LTI活動を評定する';
 $string['lti_administration'] = 'LTI管理';
-$string['lti_errormsg'] = 'ツールにより次のエラーメッセージが返されました: 「 $a 」';
+$string['lti_errormsg'] = 'ツールにより次のエラーメッセージが返されました: 「 {$a} 」';
 $string['lti:grade'] = 'LTI活動を評定する';
 $string['lti_launch_error'] = '外部ツールの起動中にエラーが発生しました:';
 $string['lti_launch_error_tool_request'] = '<p>管理者にツール設定の完了をリクエストするには、<a href="{$a->admin_request_url}" target="_top">ここをクリック</a>してください。 </p>';
@@ -210,7 +210,7 @@ $string['main_admin_help'] = '外部ツールでは、遠隔に設置された�
 * **拒否** - これらのツールは、管理者がMoodleインスタンス全体において、利用できるようにする意図がない旨、フラグを立てられた状態です。コンシューマーキーおよび共通秘密鍵がある場合、またはそれらを必要としない場合、教師はこれらのプロバイダのツールを利用することができます。';
 $string['miscellaneous'] = 'その他';
 $string['misconfiguredtools'] = '設定の正しくないツールインスタンスが検出されました。';
-$string['missingparameterserror'] = 'ページの設定が正しくありません: 「 $a 」';
+$string['missingparameterserror'] = 'ページの設定が正しくありません: 「 {$a} 」';
 $string['module_class_type'] = 'Moodleモジュールタイプ';
 $string['modulename'] = '外部ツール';
 $string['modulename_help'] = '外部ツールでは、Moodleユーザが他のウェブサイト上の学習リソースおよび活動と相互連携することができます。例えば、外部ツールは新しい活動タイプまたは出版社の学習教材へのアクセスを提供することができます。

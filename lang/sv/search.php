@@ -77,4 +77,5 @@ $string['totalsize'] = 'Samlad storlek';
 $string['type'] = 'Typ';
 $string['uncompleteindexingerror'] = 'Indexeringen avslutades inte fullständigt, var snäll och starta om den.';
 $string['versiontoolow'] = 'Global sökning kräver tyvärr PHP 5.0.0+ (använder f.n. version)';
+$string['whichmodulestosearch?'] = 'Vilka moduler ska genomsökas?';
 $string['wordsintitle'] = 'Ord i titel';

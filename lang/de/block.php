@@ -51,6 +51,7 @@ $string['showoncontextonly'] = 'Nur auf \'{$a}\' anzeigen';
 $string['showonentiresite'] = 'Überall auf der Website anzeigen';
 $string['showonfrontpageandsubs'] = 'Auf der Startseite und allen Unterseiten anzeigen';
 $string['showonfrontpageonly'] = 'Nur auf der Startseite anzeigen';
+$string['site-*'] = 'Jede top-level Website';
 $string['subpages'] = 'Seiten auswählen';
 $string['thisspecificpage'] = 'Spezielle Seite';
 $string['undockall'] = 'Alles abdocken';

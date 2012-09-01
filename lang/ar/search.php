@@ -77,4 +77,5 @@ $string['totalsize'] = 'الحجم الكلي';
 $string['type'] = 'النوع';
 $string['uncompleteindexingerror'] = 'لم يتم إجراء الفهرسة بنجاح، الرجاء إعادتها من جديد.';
 $string['versiontoolow'] = 'عذراً، البحث الشامل يحتاج إلى النسخة 5.0.0 من PHP أو أحدث';
+$string['whichmodulestosearch?'] = 'في أي الوحدات';
 $string['wordsintitle'] = 'الكلمات في العنوان';

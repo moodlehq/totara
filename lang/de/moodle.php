@@ -209,12 +209,12 @@ $string['cancel'] = 'Abbrechen';
 $string['cancelled'] = 'Abgebrochen';
 $string['categories'] = 'Kursbereiche';
 $string['category'] = 'Kursbereich';
+$string['category_help'] = 'Diese Option legt fest, in welchem Kursbereich der Kurs abgelegt wird.';
 $string['categoryadded'] = 'Der Kursbereich \'{$a}\' wurde angelegt';
 $string['categorycontents'] = 'Kursunterbereiche und Kurse';
 $string['categorycurrentcontents'] = 'Inhalt von {$a}';
 $string['categorydeleted'] = 'Der Kursbereich \'{$a}\' wurde gelöscht';
 $string['categoryduplicate'] = 'Der Kursbereich \'{$a}\' existiert bereits!';
-$string['category_help'] = 'Diese Option legt fest, in welchem Kursbereich der Kurs abgelegt wird.';
 $string['categorymodifiedcancel'] = 'Der Kursbereich wurde verändert! Bitte brechen Sie ab und versuchen Sie es noch einmal.';
 $string['categoryname'] = 'Name des Kursbereichs';
 $string['categoryupdated'] = 'Der Kursbereich \'{$a}\' wurde aktualisiert';
@@ -661,12 +661,12 @@ Die folgenden Teilnehmer/innen werden in weniger als {$a->threshold} Tagen aus d
 Sie können auf der folgenden Seite ihren Teilnahmezeitraum verlängern:
 {$a->extendurl}';
 $string['expirynotifystudents'] = 'Nachricht an Teilnehmer/innen';
+$string['expirynotifystudents_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, gibt diese Einstellung an, ob die Teilnehmer/innen per E-Mail über das Einschreibungsende für diesen Kurs informiert werden.';
 $string['expirynotifystudentsemail'] = 'Liebe/r {$a->studentstr},
 
 wir erinnern Sie daran, dass Ihre Teilnahmedauer für den Kurs {$a->course} in {$a->threshold} Tagen endet.
 
 Nehmen Sie bitte mit Ihren Trainer/innen Kontakt auf, falls Sie weiterhin im Kurs eingeschrieben bleiben wollen.';
-$string['expirynotifystudents_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, gibt diese Einstellung an, ob die Teilnehmer/innen per E-Mail über das Einschreibungsende für diesen Kurs informiert werden.';
 $string['expirythreshold'] = 'Wie lange vorher';
 $string['expirythreshold_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, dann gibt diese Einstellung an, wie viele Tage vorher die Teilnehmer/innen über das Einschreibungsende informiert werden.
 ';
@@ -698,8 +698,8 @@ $string['forcedmodeinbrackets'] = '{$a} (nicht änderbar)';
 $string['forcelanguage'] = 'Festgelegte Sprache';
 $string['forceno'] = 'Nicht festgelegt';
 $string['forcepasswordchange'] = 'Kennwortänderung';
-$string['forcepasswordchangecheckfull'] = 'Sind Sie absolut sicher, dass Sie {$a} zur Kennwortänderung auffordern möchten?';
 $string['forcepasswordchange_help'] = 'Wenn diese Option aktiviert ist, muss das Kennwort beim nächsten Login geändert werden';
+$string['forcepasswordchangecheckfull'] = 'Sind Sie absolut sicher, dass Sie {$a} zur Kennwortänderung auffordern möchten?';
 $string['forcepasswordchangenot'] = 'Die Kennwortänderung für {$a} konnte nicht angefordert werden';
 $string['forcepasswordchangenotice'] = 'Bitte ändern Sie Ihr Kennwort, bevor Sie weiterarbeiten';
 $string['forcetheme'] = 'Festgelegtes Design';
@@ -807,7 +807,6 @@ $string['helpwiththis'] = 'Hilfe für dies';
 $string['hiddenassign'] = 'Verborgene Zuweisung';
 $string['hiddenfromstudents'] = 'Für Teilnehmer/innen verborgen';
 $string['hiddensections'] = 'Verborgene Abschnitte';
-$string['hiddensectionscollapsed'] = 'Mit Hinweis "Nicht verfügbar" anzeigen';
 $string['hiddensections_help'] = '<h2>Verborgene Abschnitte</h2>
 
 <p>Diese Einstellung legt fest, ob und wie verborgene Abschnitte für die Teilnehmer/innen angezeigt werden.</p>
@@ -815,6 +814,7 @@ $string['hiddensections_help'] = '<h2>Verborgene Abschnitte</h2>
 <p>In der Standardeinstellung werden sie mit dem Hinweis: "Nicht verfügbar" angezeigt, um den verborgenen Abschnitt zu kennzeichnen. Die Texte und Aktivitäten des verborgenen Abschnitts werden nicht angezeigt. Diese Einstellung ist sinnvoll, um z.B. im Wochen-Format Wochen zu kennzeichnen, in denen kein Unterricht stattfindet.</p>
 
 <p>Sie können Abschnitte auch vollständig verbergen, d.h. die Teilnehmer/innen können dann nicht sehen, dass diese Abschnitte überhaupt existieren. Im Themen-Format kann dies aber zu einer Irritation der Teilnehmer/innen führen, da verborgene Abschnitte in der Zählung der Abschnitte berücksichtigt werden und somit als fehlend interpretiert werden.</p>';
+$string['hiddensectionscollapsed'] = 'Mit Hinweis "Nicht verfügbar" anzeigen';
 $string['hiddensectionsinvisible'] = 'Vollständig unsichtbar';
 $string['hide'] = 'Verbergen';
 $string['hideadvancedsettings'] = 'Optionale Felder verbergen';
@@ -843,11 +843,11 @@ $string['icon'] = 'Icon
 $string['icqnumber'] = 'ICQ';
 $string['idnumber'] = 'ID-Nummer';
 $string['idnumbercourse'] = 'Kurs-ID';
-$string['idnumbercoursecategory'] = 'Kursbereichs-ID';
-$string['idnumbercoursecategory_help'] = 'Die ID des Kursbereichs wird nur verwendet, wenn der Kursbereich mit externen Systemen verbunden ist und nicht auf der Webseite gezeigt wird. Falls der Kursbereich eine offizielle Namenscodierung hat, kann diese hier eingetragen werden, andernfalls kann das Feld leer bleiben.';
 $string['idnumbercourse_help'] = '<h2>Kurs-ID-Nummer</h2>
 
 <p>Die Kurs-ID-Nummer wird lediglich zum Abgleich von Kursdaten durch externe Datenbanken benötigt. In Moodle selbst wird die Nummer nicht weiter benötigt bzw. angezeigt. Wenn Sie eine offizielle Kursnummer haben, können Sie diese hier eintragen, andernfalls lassen Sie das Feld leer.</p>';
+$string['idnumbercoursecategory'] = 'Kursbereichs-ID';
+$string['idnumbercoursecategory_help'] = 'Die ID des Kursbereichs wird nur verwendet, wenn der Kursbereich mit externen Systemen verbunden ist und nicht auf der Webseite gezeigt wird. Falls der Kursbereich eine offizielle Namenscodierung hat, kann diese hier eingetragen werden, andernfalls kann das Feld leer bleiben.';
 $string['idnumbermod'] = 'ID-Nummer';
 $string['idnumbermod_help'] = 'Wenn eine ID-Nummer vergeben wird, kann die Aktivität in Bewertungsberechnungen identifiziert werden. Falls die Aktivität in keine Berechnung einbezogen wird, kann das Feld für die ID-Nummer leer bleiben.
 
@@ -919,10 +919,10 @@ $string['loggedinas'] = 'Sie sind angemeldet als {$a}';
 $string['loggedinasguest'] = 'Sie sind zur Zeit als Gast angemeldet';
 $string['loggedinnot'] = 'Sie sind nicht angemeldet';
 $string['login'] = 'Login';
+$string['login_failure_logs'] = 'Login-Fehlerdaten';
 $string['loginalready'] = 'Sie sind bereits angemeldet.';
 $string['loginas'] = 'Login als';
 $string['loginaspasswordexplain'] = '<p>Sie müssen das spezielle \'Login als\'-Passwort für diese Funktion verwenden. <br />Falls Ihnen dieses Passwort nicht bekannt ist, wenden Sie sich an die Administrator/innen Ihrer Website.</p>';
-$string['login_failure_logs'] = 'Login-Fehlerdaten';
 $string['loginguest'] = 'Als Gast anmelden';
 $string['loginsite'] = 'Login';
 $string['loginsteps'] = 'Guten Tag!
@@ -960,6 +960,7 @@ $string['makeafolder'] = 'Verzeichnis erstellen';
 $string['makeeditable'] = 'Wenn der Webserver (z.B. Apache) Schreibrechte für \'{$a}\' hat, können Sie die Datei direkt über diese Seite bearbeiten.';
 $string['makethismyhome'] = 'Diese Seite zu meiner Startseite machen';
 $string['manageblocks'] = 'Blöcke';
+$string['managecategories'] = 'Kategorien verwalten';
 $string['managecourses'] = 'Kurse verwalten';
 $string['managedatabase'] = 'Datenbank';
 $string['manageeditorfiles'] = 'Dateien verwalten, die vom Autor genutzt werden';
@@ -1080,9 +1081,9 @@ $string['new'] = 'Neu';
 $string['newaccount'] = 'Neuer Zugang';
 $string['newcourse'] = 'Neuer Kurs';
 $string['newpassword'] = 'Neues Kennwort';
+$string['newpassword_help'] = 'Lassen Sie dieses Feld leer, um das bisherige Passwort zu behalten.';
 $string['newpasswordfromlost'] = '<strong>Hinweis:</strong> Ihr <strong> Ersatzkennwort </strong> wurde Ihnen mit einer
 <strong> zweiten E-Mail</strong> zugeschickt. Sie können sich jetzt nur noch mit dem Ersatzkennwort aus der E-Mail einloggen..';
-$string['newpassword_help'] = 'Lassen Sie dieses Feld leer, um das bisherige Passwort zu behalten.';
 $string['newpasswordtext'] = 'Guten Tag {$a->firstname},
 
 Ihr Kennwort auf \'{$a->sitename}\' wurde zurückgesetzt. Ihnen ist ein neues, temporäres Kennwort zugewiesen worden.
@@ -1449,6 +1450,7 @@ $string['screenreaderuse_help'] = 'Mit der Einstellung \'Ja\' wird ein barrieref
 $string['screenreaderyes'] = 'Ja';
 $string['screenshot'] = 'Bildschirmfoto';
 $string['search'] = 'Suchen';
+$string['search_help'] = 'Einfache Suche von einem oder mehreren Wörtern, die im Text vorkommen. Zwischen den Suchwörtern bitte Leerzeichen eingeben. Gesuchte Begriffe müssen mindestens drei Zeichen lang sein. ';
 $string['searchagain'] = 'Erneut suchen';
 $string['searchbyemail'] = 'Über die E-Mail-Adresse suchen';
 $string['searchbyusername'] = 'Über den Anmeldenamen suchen';
@@ -1460,7 +1462,6 @@ Begriff: findet jeden Treffer des Begriffs im gesamten Text
 +Begriff: nur exakte Treffer werden gefunden
 
 -Begriff: schließt Ergebnisse, die diesen Begriff enthalten, aus den Treffern aus';
-$string['search_help'] = 'Einfache Suche von einem oder mehreren Wörtern, die im Text vorkommen. Zwischen den Suchwörtern bitte Leerzeichen eingeben. Gesuchte Begriffe müssen mindestens drei Zeichen lang sein. ';
 $string['searchoptions'] = 'Suchoptionen';
 $string['searchresults'] = 'Suchergebnisse';
 $string['sec'] = 'Sekunde';

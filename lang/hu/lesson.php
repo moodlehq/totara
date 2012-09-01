@@ -362,7 +362,7 @@ $string['ongoing_help'] = '<p>Bekapcsolása esetén az egyes oldalakon megjeleni
  megszerezhető pontból ez idáig megszerzett pontok száma.
  Példa: egy tanuló négy 5 pontos kérdésre válaszolt és egyre hibás választ adott.
  Ekkor a pillanatnyi pont 15/20 pont lesz.</p>';
-$string['ongoingnormal'] = '{$a-&gt;correct} kérdést válaszolt meg helyesen az eddigi {$a-&gt;viewed} próbálkozásból';
+$string['ongoingnormal'] = '{$a->correct} kérdést válaszolt meg helyesen az eddigi {$a->viewed} próbálkozásból';
 $string['onpostperpage'] = 'Pontonként csak egy hozzászólás';
 $string['options'] = 'Lehetőségek';
 $string['or'] = 'VAGY';

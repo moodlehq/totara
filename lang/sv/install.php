@@ -134,6 +134,7 @@ $string['databasetypesub'] = 'Moodle stödjer ett flertal typer av databasservra
 $string['databaseuser'] = 'Databasanvändare';
 $string['dataroot'] = 'katalog för data';
 $string['datarooterror'] = 'Den "katalog för data" som Du har angivit gick inte att hitta eller skapa. Du får antingen korrigera sökvägen eller skapa katalogen manuellt.';
+$string['datarootpublicerror'] = '\'Databilblioteket\' du valde har åtkomst direkt via webben. Du måste välja ett annat bilbliotek.';
 $string['dbconnectionerror'] = 'Det gick inte att ansluta till den databas som Du har angivit. Var snäll och kontrollera inställningarna till Din databas.';
 $string['dbcreationerror'] = 'Fel (error) när databasen skulle skapas. Det gick tyvärr inte att skapa det namn (och med de inställningar) på databasen som Du har angivit';
 $string['dbhost'] = 'Värdserver';
@@ -198,6 +199,9 @@ $string['globalsquoteshelp'] = '<p>Kombinationen av avaktiverade Magic Quotes GP
 <p>Om Du inte har tillgång till Din php.ini, så kanske Du kan placera följande rad i en fil som kallas .htaccess inne i Din Moodle-katalog:
 <blockquote>php_value magic_quotes_gpc On</blockquote>
 <blockquote>php_value register_globals Off</blockquote>';
+$string['inputdatadirectory'] = 'Data directory:';
+$string['inputwebadress'] = 'Webadress:';
+$string['inputwebdirectory'] = 'Moodle directory:';
 $string['installation'] = 'Installation';
 $string['langdownloaderror'] = 'Språket "{$a}" gick tyvärr inte att ladda ner. Installationen kommer att fullföljas på engelska.';
 $string['langdownloadok'] = 'Språket "{$a}" installerades framgångsrikt. Installationen kommer att fullföljas på detta språk.';
@@ -217,8 +221,8 @@ $string['memorylimithelp'] = '<p>Den aktuella minnesbegränsningen för PHP på 
 <li>På en del PHP-servrar kan Du skapa en .htaccess-fil i Moodle-katalogen som innehåller den här raden: <blockquote>php_value memory_limit 16M</blockquote>.<br />Detta kan dock på en del servrar leda till att <b>inga</b> PHP-sidor fungerar. (Du får Error-sidor istället för de riktiga) så då får Du ta bort .htaccess-filen.</li>
 </ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP har inte konfigurerats på rätt sätt med tillägget MSSQL. Därför kan det inte kommunicera med SQL*Server. Var snäll och kontrollera Din php.ini-fil eller kompilera om PHP.';
 $string['mssql_n'] = 'SQL*Server med UTF-8 support (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP har inte konfigurerats på rätt sätt med tillägget MSSQL. Därför kan det inte kommunicera med SQL*Server. Var snäll och kontrollera Din php.ini-fil eller kompilera om PHP.';
 $string['mysql'] = 'MySQL';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP har inte konfigurerats på det sätt som måste i förhållande till MySQL-extensionen för att kunna kommunicera med MySQL. Var snäll och kontrollera Din php.ini-fil eller kompilera om PHP.';
 $string['mysqli'] = 'Förbättrad MySQL (mysqli)';
@@ -235,8 +239,8 @@ $string['nativesqlsrv'] = 'SQL*Server Microsoft (native/sqlsrv)';
 $string['nativesqlsrvhelp'] = 'Nu måste Du konfigurera databasen där större delen av Moodles data kommer att lagras. Du måste först skapa databasen liksom ett användarnamn och ett lösenord för att få tillgång till den. Ett prefix för tabeller är obligatoriskt. ';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP har inte konfigurerats på rätt sätt med tillägget OCI8. Därför kan det inte kommunicera med Oracle. Var snäll och kontrollera Din php.ini-fil eller kompilera om PHP.';
-$string['odbcextensionisnotpresentinphp'] = 'PHP har inte konfigurerats på rätt sätt med tillägget ODBC. Därför kan det inte kommunicera med SQL*Server. Var snäll och kontrollera Din php.ini-fil eller kompilera om PHP.';
 $string['odbc_mssql'] = 'SQL*Server över ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP har inte konfigurerats på rätt sätt med tillägget ODBC. Därför kan det inte kommunicera med SQL*Server. Var snäll och kontrollera Din php.ini-fil eller kompilera om PHP.';
 $string['pass'] = 'Pass';
 $string['paths'] = 'Vägar';
 $string['pathserrcreatedataroot'] = 'Datakatalogen ({$a->dataroot}) går inte att skapa med hjälp av installeraren.';
@@ -266,6 +270,7 @@ $string['sessionautostarthelp'] = '<p>Moodle kräver stöd för sessioner och ko
 <p>Sessioner kan vara aktiverade i php.ini-filen... kontrollera parametern för session.auto_start. </p>';
 $string['skipdbencodingtest'] = 'Hoppa över Test av DB Encoding';
 $string['sqliteextensionisnotpresentinphp'] = 'PHP har inte konfigurerats korrekt med tillägget för SQLite. Var snäll och kontrollera Din php.ini-fil för att kompilera om PHP.';
+$string['upgradingqtypeplugin'] = 'Uppgraderar Question/type Plugin';
 $string['welcomep10'] = '{$a->installername} ({$a->installerversion})';
 $string['welcomep20'] = 'Du ser detta eftersom Du framgångsrikt har installerat och börjat använda språkpaketet <strong>{$a->packname} {$a->packversion}</strong> på Din dator. Gratulerar!';
 $string['welcomep30'] = 'I den här versionen av <strong>{$a->installername}</strong> ingår de applikationer som kan skapa en miljö som <strong>Moodle</strong> kan fungera i, nämligen:';

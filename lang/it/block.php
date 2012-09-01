@@ -51,6 +51,7 @@ $string['showoncontextonly'] = 'Visualizza solo in \'{$a}\'';
 $string['showonentiresite'] = 'Visualizza in tutto il sito';
 $string['showonfrontpageandsubs'] = 'Visualizza nella pagina home e nelle pagine figlie della pagina home';
 $string['showonfrontpageonly'] = 'Visualizza solo nella pagina home';
+$string['site-*'] = 'Tutte le pagine a livello di sito';
 $string['subpages'] = 'Seleziona pagine';
 $string['thisspecificpage'] = 'Questa pagina specifica';
 $string['undockall'] = 'Rimuovi tutto dal dock';

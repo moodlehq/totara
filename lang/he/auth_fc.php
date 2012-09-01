@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_fcchangepasswordurl'] = 'כתובת URL המשמשת לשינוי סיסמה';
-$string['auth_fcconnfail'] = 'החיבור עם Errno נכשל: {$a}[0] ומחרוזת שגיאה: {$a}[1]';
+$string['auth_fcconnfail'] = 'החיבור עם Errno נכשל: {$a->no} ומחרוזת שגיאה: {$a->str}';
 $string['auth_fccreators'] = 'רשימת קבוצות שחבריהם רשאים ליצור קורסים חדשים. אנא הפרד קבוצות מרובות בעזרת \';\'. יש להגדיר את השמות באופן זהה לאופן שבו הם מוגדרים על שרת FirsClass. המערכת רגישה לאותיות רישיות.';
 $string['auth_fccreators_key'] = 'יוצרים';
 $string['auth_fcdescription'] = 'שיטה זו משתמשת בשרת FirstClass לבדיקה האם שם משתמש וסיסמה תקפים.';

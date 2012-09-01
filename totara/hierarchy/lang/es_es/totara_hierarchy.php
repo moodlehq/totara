@@ -206,7 +206,7 @@ $string['deletedtype'] = 'El tipo "{$a}" ha sido eliminado';
 $string['deleteframework'] = 'Eliminar {$a}';
 $string['deleteincludexcustomfields'] = '- {$a} registro/s de campo personalizado';
 $string['deleteincludexevidence'] = '- {$a} item/s de prueba';
-$string['deleteincludexrelatedcompetencies'] = '- \$ A enlace/s a las competencias relacionadas con';
+$string['deleteincludexrelatedcompetencies'] = '- {$a} enlace/s a las competencias relacionadas con';
 $string['deleteincludexuserstatusrecords'] = '- {$a} estado de registro/s del usuario';
 $string['deleteorganisation'] = 'Eliminar organización';
 $string['deleteposition'] = 'Eliminar puesto de trabajo';
@@ -238,7 +238,7 @@ $string['error:cannotconvertfieldfromxtoy'] = '"{$a->from}" no se pueden convert
 $string['error:cannotmoveparentintochild'] = 'No puede mover "{$a->item}" a su propia subcategoría "{$a->newparent}"';
 $string['error:checkvariable'] = 'La variable de control no era correcta - vuelva a intentarlo';
 $string['error:compevidencealreadyexists'] = 'Este usuario ya dispone de pruebas de competencia para la competencia elegida. Puede <a href=\'edit.php?id={$a}\'> editar  la competencia existente </ a>, o añadir una diferente.';
-$string['error:couldnotdeletescale'] = 'Hubo un problema al eliminar el nivel  de competencias "{\$ a}"';
+$string['error:couldnotdeletescale'] = 'Hubo un problema al eliminar el nivel  de competencias "{$a}"';
 $string['error:couldnotmoveitem'] = 'No se puede mover {$a}. Hay un error en la actualización de la base de datos.';
 $string['error:couldnotmoveitemnopeer'] = 'No se puede mover {$a}, no hay ningún elemento adyacente a este mismo nivel para intercambiar.';
 $string['error:couldnotreclassifybulk'] = 'Hay un problema en la reclasificación de los ítems para "{$a->from}" de "{$a->to}"';
@@ -417,25 +417,25 @@ $string['numericalvalue'] = 'Valor numérico';
 $string['optional'] = 'Opcional';
 $string['options'] = 'Opciones';
 $string['organisation'] = 'Organización';
-$string['organisationaddedframework'] = 'La estructura de organización "{\$ a}" ha sido añadido';
+$string['organisationaddedframework'] = 'La estructura de organización "{$a}" ha sido añadido';
 $string['organisationaddnew'] = 'Añadir una nueva organización';
 $string['organisationaddnewframework'] = 'Crear una nueva estructura de organización';
 $string['organisationbacktoallframeworks'] = 'Volver a todas las estructuras de organización';
 $string['organisationbulkaction'] = 'Acciones de bloque';
 $string['organisationcreatetype'] = 'La organización tipo "{$a}" ha sido creada';
 $string['organisationcustomfields'] = 'Campos personalizados';
-$string['organisationdeletecheck'] = '¿Está seguro que desea eliminar de la organización "\$ a"?
+$string['organisationdeletecheck'] = '¿Está seguro que desea eliminar de la organización "{$a}"?
 <br /> <br />
 Esto eliminará los siguientes datos: <br />
-- El "\$ a" la organización';
+- El "{$a}" la organización';
 $string['organisationdeletecheckwithchildren'] = '¿Está seguro que desea eliminar la organización "{$a->itemname}" y {$a->children_string}?
 <br /><br />
 Esto eliminará los datos: <br />
 - The "{$a->itemname}" de la organización y
 {$a->childcount} {$a->children_string}';
 $string['organisationdeletedassignedcompetency'] = 'Competencia con éxito sin asignar a esta organización';
-$string['organisationdeletedframework'] = 'La estructura de la organización "{\$ a}" y sus datos han sido completamente eliminados';
-$string['organisationdeletedtype'] = 'El tipo de organización "{\$ a}" ha sido completamente eliminado';
+$string['organisationdeletedframework'] = 'La estructura de la organización "{$a}" y sus datos han sido completamente eliminados';
+$string['organisationdeletedtype'] = 'El tipo de organización "{$a}" ha sido completamente eliminado';
 $string['organisationdeleteincludexlinkedcompetencies'] = '- {$a} enlace (s) a las competencias';
 $string['organisationdeleteincludexposassignments'] = '- {$a} asignación (s) a esta organización (usuarios asignados a esta organización serán desasignados)';
 $string['organisationdeletemulticheckwithchildren'] = '¿Está seguro que desea eliminar la/s organización/es  {$a->num} y {$a->childcount} {$a->children_string}?
@@ -447,7 +447,7 @@ $string['organisationdescription'] = 'Descripción';
 $string['organisationeditframework'] = 'Editar estructura de la organización';
 $string['organisationerror:createtype'] = 'Error al crear la organización tipo "{$a}"';
 $string['organisationerror:deleteassignedcompetency'] = 'Error al desasignar la competencia de esta organización';
-$string['organisationerror:deletedframework'] = 'Error en la eliminación de la estructura de la organización "{\$ a}" y sus datos.';
+$string['organisationerror:deletedframework'] = 'Error en la eliminación de la estructura de la organización "{$a}" y sus datos.';
 $string['organisationerror:deletedtype'] = 'Error al eliminar el tipo de organización "{$a}".';
 $string['organisationerror:dialognotreeitems'] = 'Ninguna organización en esta estructura';
 $string['organisationerror:updatetype'] = 'Error al actualizar el tipo de organización "{$a}"';
@@ -488,16 +488,16 @@ $string['positionbacktoallframeworks'] = 'Volver a todas las estructuras de pues
 $string['positionbulkaction'] = 'Acciones de bloque';
 $string['positioncreatetype'] = 'El puesto de trabajo tipo "{$a}" ha sido creado';
 $string['positioncustomfields'] = 'Campos personalizados';
-$string['positiondeletecheck'] = '¿Está seguro que desea eliminar puesto de trabajo "\$ a"?
+$string['positiondeletecheck'] = '¿Está seguro que desea eliminar puesto de trabajo "{$a}"?
 <br /> <br />
 Esto eliminará los siguientes datos: <br />
-- El "\$ a" puesto de trabajo';
-$string['positiondeletecheckwithchildren'] = '¿Está seguro que desea eliminar el puesto de trabajo "\$ a-> nombre de objeto" y sus \$ a-> children_string?
+- El "{$a}" puesto de trabajo';
+$string['positiondeletecheckwithchildren'] = '¿Está seguro que desea eliminar el puesto de trabajo "{$a->itemname}" y sus {$a->children_string}?
 <br /> <br />
 Esto eliminará los siguientes datos: <br />
-- El "\$ a-> nombre de objeto" y su puesto de trabajo de \$ a-> childCount \$ a-> children_string';
+- El "{$a->itemname}" y su puesto de trabajo de {$a->childcount} {$a->children_string}';
 $string['positiondeletedassignedcompetency'] = 'Competencia asignada con éxito en este puesto de trabajo';
-$string['positiondeletedframework'] = 'La estructura del puesto de trabajo "{\$ a}" y sus datos han sido completamente eliminados';
+$string['positiondeletedframework'] = 'La estructura del puesto de trabajo "{$a}" y sus datos han sido completamente eliminados';
 $string['positiondeletedtype'] = 'El tipo puesto de trabajo {$a} ha sido completamente eliminado';
 $string['positiondeleteincludexlinkedcompetencies'] = '- {$a} enlaces de competencias';
 $string['positiondeleteincludexposassignments'] = '- {$a} asignación a este puesto de trabajo (el usuario asignado a este puesto será asignado)';

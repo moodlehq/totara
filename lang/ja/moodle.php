@@ -209,12 +209,12 @@ $string['cancel'] = 'キャンセル';
 $string['cancelled'] = 'キャンセルされました。';
 $string['categories'] = 'コースカテゴリ';
 $string['category'] = 'カテゴリ';
+$string['category_help'] = 'この設定ではコース一覧内のコースが表示されるカテゴリを決定します。';
 $string['categoryadded'] = '「 {$a} 」 が追加されました。';
 $string['categorycontents'] = 'サブカテゴリおよびコース';
 $string['categorycurrentcontents'] = '{$a} のコンテンツ';
 $string['categorydeleted'] = '「 {$a} 」 が削除されました。';
 $string['categoryduplicate'] = '「{$a}」はすでに登録されています!';
-$string['category_help'] = 'この設定ではコース一覧内のコースが表示されるカテゴリを決定します。';
 $string['categorymodifiedcancel'] = 'カテゴリが変更されました! キャンセルの後、もう一度お試しください。';
 $string['categoryname'] = 'カテゴリ名';
 $string['categoryupdated'] = 'カテゴリ「 {$a} 」が更新されました。';
@@ -640,12 +640,12 @@ $string['expirynotifyemail'] = 'このコースに関する次の学生の登録
 学生の登録期間を延長するには、次のページにアクセスしてください:
 {$a->extendurl}';
 $string['expirynotifystudents'] = '学生に通知';
+$string['expirynotifystudents_help'] = '<p>利用有効期間が設定された場合、この設定では学生がコースから受講登録解除される前にメール通知を受信するかどうか設定します。</p>';
 $string['expirynotifystudentsemail'] = 'こんにちは、{$a->studentstr} さん
 
 このメールは、あなたのコース「 {$a->course} 」に対する登録期間が、あと {$a->threshold} 日で終了するお知らせのため送信されました。
 
 詳細な情報は、{$a->teacherstr} にお聞きください。';
-$string['expirynotifystudents_help'] = '<p>利用有効期間が設定された場合、この設定では学生がコースから受講登録解除される前にメール通知を受信するかどうか設定します。</p>';
 $string['expirythreshold'] = '閾値';
 $string['expirythreshold_help'] = '利用有効期間が設定された場合、この設定では学生がコースから受講登録解除される前に何日でメール通知が送信されるか設定します。';
 $string['explanation'] = '説明';
@@ -675,8 +675,8 @@ $string['forcedmodeinbrackets'] = '{$a} (強制モード)';
 $string['forcelanguage'] = '言語の強制';
 $string['forceno'] = '強制しない';
 $string['forcepasswordchange'] = 'パスワード変更を強制する';
-$string['forcepasswordchangecheckfull'] = '本当に {$a} のパスワード変更を強制してもよろしいですか?';
 $string['forcepasswordchange_help'] = '次回ログイン時、ユーザに対してパスワードの変更を促します。';
+$string['forcepasswordchangecheckfull'] = '本当に {$a} のパスワード変更を強制してもよろしいですか?';
 $string['forcepasswordchangenot'] = '{$a} のパスワード変更を強制できませんでした。';
 $string['forcepasswordchangenotice'] = '続けるにはパスワードを変更してください。';
 $string['forcetheme'] = 'テーマの強制';
@@ -781,8 +781,8 @@ $string['helpwiththis'] = 'この内容に関するヘルプ';
 $string['hiddenassign'] = '割り当て非表示';
 $string['hiddenfromstudents'] = '学生から非表示';
 $string['hiddensections'] = 'コースセクションの非表示';
-$string['hiddensectionscollapsed'] = '非表示コースセクションを折りたたんで表示する';
 $string['hiddensections_help'] = 'ここでは学生に非表示セクションを折りたたんだ形で (おそらくウィークリーフォーマットで休日を示すため)　表示するか、完全に隠すか指定します。';
+$string['hiddensectionscollapsed'] = '非表示コースセクションを折りたたんで表示する';
 $string['hiddensectionsinvisible'] = '非表示のコースセクションを完全に見えなくする';
 $string['hide'] = '非表示';
 $string['hideadvancedsettings'] = '高度な設定を隠す';
@@ -810,9 +810,9 @@ $string['icon'] = 'アイコン';
 $string['icqnumber'] = 'ICQナンバー';
 $string['idnumber'] = 'IDナンバー';
 $string['idnumbercourse'] = 'コースIDナンバー';
+$string['idnumbercourse_help'] = 'コースのIDナンバーは外部のシステムとマッチングを行う時のみ使用され、Moodle内に表示されることはありません。このコースに関わる公式のコードがある場合はここに設定してください。それ以外は空白のままにしてください。';
 $string['idnumbercoursecategory'] = 'カテゴリIDナンバー';
 $string['idnumbercoursecategory_help'] = 'コースカテゴリのIDナンバーは外部のシステムとマッチングする場合のみ使用され、サイト内のどこにも表示されることはありません。このカテゴリに関わる公式のコードがある場合はここに設定してください。それ以外は空白のままにしてください。';
-$string['idnumbercourse_help'] = 'コースのIDナンバーは外部のシステムとマッチングを行う時のみ使用され、Moodle内に表示されることはありません。このコースに関わる公式のコードがある場合はここに設定してください。それ以外は空白のままにしてください。';
 $string['idnumbermod'] = 'IDナンバー';
 $string['idnumbermod_help'] = 'IDナンバーを設定することで、評定計算の目的で活動を識別する手段を提供します。評定計算に活動が含まれていない場合、IDナンバーフィールドは空白のままにすることができます。
 
@@ -884,10 +884,10 @@ $string['loggedinas'] = 'あなたは {$a} としてログインしています'
 $string['loggedinasguest'] = 'あなたは現在ゲストアクセスを利用しています';
 $string['loggedinnot'] = 'あなたはログインしていません。';
 $string['login'] = 'ログイン';
+$string['login_failure_logs'] = 'ログイン失敗ログ';
 $string['loginalready'] = 'あなたはすでにログインしています';
 $string['loginas'] = 'このユーザとしてログインする';
 $string['loginaspasswordexplain'] = '<p>この機能を使用するには、特別な「ログインパスワード」を入力する必要があります。<br />パスワードが分からない場合は、サーバ管理者にお聞きください。</p>';
-$string['login_failure_logs'] = 'ログイン失敗ログ';
 $string['loginguest'] = 'ゲストとしてログインする';
 $string['loginsite'] = 'ログイン画面';
 $string['loginsteps'] = 'こんにちは! コースにアクセスするために新しいアカウントを作成してください。アカウント作成方法は下記のとおりです。
@@ -930,6 +930,7 @@ $string['makeafolder'] = 'フォルダを作成する';
 $string['makeeditable'] = '「 {$a} 」をサーバ上 (例 apache) で編集可能にした場合、あなたはこのページで直接編集することができます。';
 $string['makethismyhome'] = 'このページをマイデフォルトホームページにする';
 $string['manageblocks'] = 'ブロック';
+$string['managecategories'] = 'カテゴリの管理';
 $string['managecourses'] = 'コースを管理する';
 $string['managedatabase'] = 'データベース';
 $string['manageeditorfiles'] = 'エディタで使用されるファイルを管理する';
@@ -1046,8 +1047,8 @@ $string['new'] = '新規';
 $string['newaccount'] = '新しいアカウント';
 $string['newcourse'] = '新しいコース';
 $string['newpassword'] = '新しいパスワード';
-$string['newpasswordfromlost'] = '<strong>注意:</strong> 喪失パスワードリカバリ処理の一環として送信される2通のメールの<strong>2番目</strong>に、あなたの<strong>現在のパスワード</strong>が送信されます。この画面を続ける前に、あなたの新しいパスワードが記載されたメールを受信したことをよく確かめてください。';
 $string['newpassword_help'] = '新しいパスワードを入力、または現在のパスワードを使用する場合は空白にしてください。';
+$string['newpasswordfromlost'] = '<strong>注意:</strong> 喪失パスワードリカバリ処理の一環として送信される2通のメールの<strong>2番目</strong>に、あなたの<strong>現在のパスワード</strong>が送信されます。この画面を続ける前に、あなたの新しいパスワードが記載されたメールを受信したことをよく確かめてください。';
 $string['newpasswordtext'] = 'こんにちは {$a->firstname} さん
 
 「 {$a->sitename} 」のパスワードリセットおよび仮パスワードの作成が完了しました。
@@ -1382,14 +1383,14 @@ $string['screenreaderuse_help'] = '有効にした場合、チャット等の様
 $string['screenreaderyes'] = 'Yes';
 $string['screenshot'] = 'スクリーンショット';
 $string['search'] = '検索';
+$string['search_help'] = 'テキスト中に存在する1つまたはそれ以上の言葉を検索する基本的な検索では、空白で区切られた言葉を入力してください。半角2文字より大きな言葉が検索に使用されます。
+
+高度な検索では検索ボックス内に文字を入力せずに検索ボタンをクリックしてください。高度な検索フォームが表示されます。';
 $string['searchagain'] = '再検索';
 $string['searchbyemail'] = 'メールアドレスで探す';
 $string['searchbyusername'] = 'ユーザ名で探す';
 $string['searchcourses'] = 'コースの検索';
 $string['searchhelp'] = 'あなたは同時に複数の言葉で探すことができます。<p>単語 : テキストの中に含まれる単語を探します。<br />+単語 : 合致する単語を検索します。<br />-単語 : この単語を含まない検索をします。';
-$string['search_help'] = 'テキスト中に存在する1つまたはそれ以上の言葉を検索する基本的な検索では、空白で区切られた言葉を入力してください。半角2文字より大きな言葉が検索に使用されます。
-
-高度な検索では検索ボックス内に文字を入力せずに検索ボタンをクリックしてください。高度な検索フォームが表示されます。';
 $string['searchoptions'] = '検索オプション';
 $string['searchresults'] = '検索結果';
 $string['sec'] = '秒';

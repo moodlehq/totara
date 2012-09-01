@@ -81,4 +81,4 @@ $string['resettingquizattemptsprogress'] = 'Poging {$a->done} / {$a->outof} aan 
 $string['upgradedsitedetected'] = 'Dit blijkt een site te zijn die geüpgraded is om de nieuwe vraagmotor te gebruiken.';
 $string['upgradedsiterequired'] = 'Dit script werkt alleen als de site geüpgraded is.';
 $string['upgradingquizattempts'] = 'Testpogingen upgraden voor test  \'{$a->name}\' in cursus {$a->shortname}';
-$string['veryoldattemtps'] = 'Je site heeft $a testpogingen dat nooit volledig zijn geüpgraded tijdens de upgrade van 1.4 naar Moodle 1.5. Deze pogingen zullen eerst omgezet worden voor de eigenlijke upgrade. Reken wat extra tijd hiervoor.';
+$string['veryoldattemtps'] = 'Je site heeft {$a} testpogingen dat nooit volledig zijn geüpgraded tijdens de upgrade van 1.4 naar Moodle 1.5. Deze pogingen zullen eerst omgezet worden voor de eigenlijke upgrade. Reken wat extra tijd hiervoor.';

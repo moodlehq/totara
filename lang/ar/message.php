@@ -75,6 +75,7 @@ $string['mostrecent'] = 'الرسائل الحديثة';
 $string['mycontacts'] = 'عناوين الاتصال الخاصة بي';
 $string['newonlymsg'] = 'عرض الجديد فقط';
 $string['newsearch'] = 'بحث جديد';
+$string['noframesjs'] = 'إصدار بدون إطارات وجافا سكريبت';
 $string['nomessages'] = 'لا يوجد رساله/رسائل جديدة';
 $string['nomessagesfound'] = 'لم يتم العثور على إي رسالة';
 $string['noreply'] = 'لا ترد على هذه الرسالة';

@@ -131,7 +131,7 @@ A Külső eszköztípus lenyíló lista után három ikon érhető el:
 * **Szerkesztés** - A lenyíló listáról válasszon ki egy kurzusszintű eszköztípust, majd kattintson az ikonra. Az eszközbeállítás részleteit szerkesztheti.
 * **Törlés** - Törli a kiválasztott kurzusszintű eszköztípust.';
 $string['external_tool_types'] = 'Külső eszköz típusai';
-$string['failedtoconnect'] = 'A Moodle nem tudott kapcsolatot teremteni a(z) "$a" rendszerrel.';
+$string['failedtoconnect'] = 'A Moodle nem tudott kapcsolatot teremteni a(z) "{$a}" rendszerrel.';
 $string['filter_basiclti_configlink'] = 'Állítsa be kedvenc portáljait és azok jelszavait.';
 $string['filter_basiclti_password'] = 'Jelszó megadása kötelező';
 $string['filterconfig'] = 'LTI-adminisztráció';
@@ -174,7 +174,7 @@ Ha kiválasztott egy konkrét eszközfajtát, előfordulhat, hogy nem kell megad
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'LTI-tevékenységek pontozása';
 $string['lti_administration'] = 'LTI-adminisztráció';
-$string['lti_errormsg'] = 'Az eszköztől a következő hibaüzenet érkezett: "$a"';
+$string['lti_errormsg'] = 'Az eszköztől a következő hibaüzenet érkezett: "{$a}"';
 $string['lti:grade'] = 'LTI-tevékenységek pontozása';
 $string['lti_launch_error'] = 'Hiba a külső eszköz indítása közben';
 $string['lti_launch_error_tool_request'] = 'Ha egy rendszergazdától szeretné kérni az eszköz beállítását, kattintson a(z) <a href="{$a->admin_request_url}" target="_top">here</a>.pontra.';

@@ -78,4 +78,5 @@ $string['totalsize'] = '总大小';
 $string['type'] = '类型';
 $string['uncompleteindexingerror'] = '索引不成功！请重新启动';
 $string['versiontoolow'] = '对不起！全局检索需要PHP5.0.0或者更高版本支持';
+$string['whichmodulestosearch?'] = '在哪个模块中检索？';
 $string['wordsintitle'] = '标题字数';

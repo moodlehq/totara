@@ -78,4 +78,5 @@ $string['totalsize'] = 'Totale grootte';
 $string['type'] = 'Type';
 $string['uncompleteindexingerror'] = 'Indexering was niet volledig voltooid. Herstart de indexering.';
 $string['versiontoolow'] = 'Sorry, globaal zoeken vereist PHP 5.0.0 of later';
+$string['whichmodulestosearch?'] = 'Welke modules doorzoeken?';
 $string['wordsintitle'] = 'Woorden in titel';
