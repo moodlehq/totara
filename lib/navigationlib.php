@@ -1689,11 +1689,14 @@ class global_navigation extends navigation_node {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot.'/course/lib.php');
 
+        if ($courseformat == 'unknown' && isset($course->format)) {
+            $courseformat = $course->format;
+        }
+
         list($sections, $activities) = $this->generate_sections_and_activities($course);
 
         $namingfunction = 'callback_'.$courseformat.'_get_section_name';
         $namingfunctionexists = (function_exists($namingfunction));
-
         $viewhiddensections = has_capability('moodle/course:viewhiddensections', $this->page->context);
 
         $urlfunction = 'callback_'.$courseformat.'_get_section_url';

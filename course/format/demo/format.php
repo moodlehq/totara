@@ -66,8 +66,6 @@ if (($marker >=0) && has_capability('moodle/course:setcurrentsection', $context)
 $completioninfo = new completion_info($course);
 echo $completioninfo->display_help_icon();
 
-echo $OUTPUT->heading(get_string('topicoutline'), 2, 'headingblock header outline');
-
 $OUTPUT->container_start();
 $OUTPUT->skip_link_target();
 echo html_writer::start_tag('table', array('class' => "topics", 'width' => "100%", 'summary' => get_string('layouttable')));
@@ -95,7 +93,9 @@ if (ismoving($course->id)) {
         echo $OUTPUT->container_start('content');
 
         if (!empty($thissection->name)) {
-            echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 3, 'sectionname');
+            echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 1, 'sectionname');
+        } else {
+            echo $OUTPUT->heading(format_string(get_string('topicoutline'), true, array('context' => $context)), 1, 'sectionname');
         }
 
         echo $OUTPUT->container_start('summary');
