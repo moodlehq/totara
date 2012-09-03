@@ -62,6 +62,8 @@ if (!empty($PAGE->theme->settings->favicon)) {
     $faviconurl = $OUTPUT->pix_url('favicon', 'theme');
 }
 
+$sitesummary = isset($SITE->summary) ? $SITE->summary : '';
+
 $hasframe = !isset($PAGE->theme->settings->noframe) || !$PAGE->theme->settings->noframe;
 
 // ensure X-UA-Compatible is before favicon meta tag to ensure compatibility mode is disabled
@@ -71,7 +73,7 @@ echo $OUTPUT->doctype() ?>
 <title><?php echo $PAGE->title ?></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="generator" content="<?php echo get_string('poweredby', 'totara_core'); ?>" />
-<meta name="description" content="<?php p(strip_tags(format_text($SITE->summary, FORMAT_HTML))) ?>" />
+<meta name="description" content="<?php p(strip_tags(format_text($sitesummary, FORMAT_HTML))) ?>" />
 <link rel="shortcut icon" href="<?php echo $faviconurl; ?>" />
 <?php echo $OUTPUT->standard_head_html() ?>
 </head>
