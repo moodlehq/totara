@@ -484,14 +484,14 @@ class hierarchy {
                 // but without the db calls
                 $descendants = array();
                 foreach ($records as $key => $record) {
-                    if (substr($record->path,0,strlen($item->path)) == $item->path) {
-                    //print "{$record->path} child of {$item->path}<br>";
+                    if (substr($record->path, 0, strlen($item->path . '/')) == $item->path . '/') {
                         $descendants[$key] = $record;
                     }
                 }
                 if (count($descendants)>1) {
                     // add comma separated list of all children too
                     $idstr = implode(',',array_keys($descendants));
+                    $idstr = $item->id.','.$idstr;
                     $list[$idstr] = $path." (and all children)";
                 }
             }

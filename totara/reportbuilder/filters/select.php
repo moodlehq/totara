@@ -146,12 +146,14 @@ class rb_filter_select extends rb_filter_type {
      * @return array containing filtering condition SQL clause and params
      */
     function get_sql_filter($data) {
-        $value    = $data['value'];
+        global $DB;
+
+        $value = explode(',', $data['value']);
         $query    = $this->field;
         $simplemode = $this->options['simplemode'];
 
         if ($simplemode) {
-            if ($value == '') {
+            if (count($value) == 1 && current($value) == '') {
                 // return 1=1 instead of TRUE for MSSQL support
                 return array(' 1=1 ', array());
             } else {
@@ -167,16 +169,16 @@ class rb_filter_select extends rb_filter_type {
             return array(' 1=1 ', array());
         } else if ($operator == 1) {
             // equal
-            $uniqueparam = rb_unique_param("fsequal_");
-            $sql = "{$query} = :{$uniqueparam}";
+            list($insql, $inparams) = $DB->get_in_or_equal($value, SQL_PARAMS_NAMED,
+                rb_unique_param('fsequal_'));
+            return array("{$query} {$insql}", $inparams);
         } else {
             // not equal
-            $uniqueparam = rb_unique_param("fsnotequal_");
+            list($insql, $inparams) = $DB->get_in_or_equal($value, SQL_PARAMS_NAMED,
+                rb_unique_param('fsequal_'), false);
             // check for null case for is not operator
-            $sql = "({$query} <> :{$uniqueparam} OR {$query} IS NULL)";
+            return array("({$query} {$insql} OR {$query} IS NULL)", $inparams);
         }
-        $params = array($uniqueparam => $value);
-        return array($sql, $params);
     }
 
 
