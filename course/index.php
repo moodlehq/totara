@@ -89,11 +89,11 @@ if (!empty($delete) and confirm_sesskey()) {
     }
 
     if ($delete == 1) {
-        print_error('deletebasecategory');
+        print_error('deletecategoryerrormisc', 'moodle', '/course/index.php', format_string($deletecat->name));
     }
 
     if ($totalcats <= 1) {
-        print_error('deletelastcategory');
+        print_error('deletecategoryerrorfinal', 'moodle', '/course/index.php');
     }
 
     $context = context_coursecat::instance($delete);
@@ -376,7 +376,8 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
                 echo '<a title="'.$str->delete.'" href="index.php?delete='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                     ' src="'.$OUTPUT->pix_url('t/delete') . '" class="iconsmall" alt="'.$str->delete.'" /></a> ';
             } else {
-                echo $str->spacer;
+                echo '<img title="' . get_string('deletecategoryunavail', 'moodle') . '"' .
+                    ' src="' . $OUTPUT->pix_url('t/dismiss') . '" class="iconsmall" alt="' . $str->delete . '" />';
             }
             if (!empty($category->visible)) {
                 echo '<a title="'.$str->hide.'" href="index.php?hide='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
@@ -424,6 +425,7 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
             }
             $up = $first ? false : true;
             $down = $last ? false : true;
+            //checks for single root category or Misc category, and removes their delete button
             $del = (($category->id == 0 && $countcats == 1) || $cat->id == 1) ? false : true;
             $first = false;
 
