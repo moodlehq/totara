@@ -1,5 +1,33 @@
 Totara LMS Changelog
 
+Release 2.2.3 (5 September 2012):
+==================================================
+
+Database upgrades:
+    T-9888      Backport SCORM directview patch MDL-33755 from 2.3
+
+API Changes
+    T-9875      Program Management performance improvements to update_learner_assignments()            A number of program management functions have changed names as well as some arguments:
+                                                                                                       create_future_assignment() => create_future_assignments_bulk(),
+                                                                                                       assign_learner() => assign_learners_bulk(),
+                                                                                                       new function courseset_group_timedue_bulk().
+
+Improvements:
+    T-9856      Add script to allow completion cron to run as separate crontab job
+    T-9879      Add time created content restriction to user source
+
+Bug fixes:
+    T-9909      Fixes for the basic hierarchy filters in Report Builder
+    T-9902      Fixes for the dialog hierarchy filters in Report Builder
+    T-9901      Fixes for course Demo format navigation & title
+    T-9830      Prevent delete of Miscellaneous (or last remaining) Course Category
+    T-9869      Fixes for RTL support in help popups
+    T-9887      Fix for Site Summary PHP Notice during install
+    T-9893      Fix MSSQL errors when moving hierarchy items
+    T-9809      Fix recurring course repeat values in Program Management accepting negative integers
+    T-9817      Totara sync now accepts underscores in mapped columns
+
+
 Release 2.2.2 (29 August 2012):
 ==================================================
 
