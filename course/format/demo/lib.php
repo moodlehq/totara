@@ -69,6 +69,8 @@ function callback_demo_get_section_name($course, $section) {
     // We can't add a node without any text
     if ((string)$section->name !== '') {
         return format_string($section->name, true, array('context' => context_course::instance($course->id)));
+    } else if ($section->section == 0) {
+        return get_string('topicoutline');
     } else {
         return get_string('section').' '.$section->section;
     }
