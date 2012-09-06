@@ -1258,7 +1258,7 @@ function prog_assignments_firstlogin($user) {
                 }
                 if (!empty($future_assignments_to_delete)) {
                     list($deleteids_sql, $deleteids_params) = $DB->get_in_or_equal($future_assignments_to_delete);
-                    $DB->delete_records_select('prog_future_user_assignment', "id {$deleteids_sql}", array($deleteids_params));
+                    $DB->delete_records_select('prog_future_user_assignment', "id {$deleteids_sql}", $deleteids_params);
                 }
             } else {
                 $status = false;
