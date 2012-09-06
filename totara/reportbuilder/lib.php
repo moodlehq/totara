@@ -640,6 +640,7 @@ class reportbuilder {
 
             // only include filter if a valid object is returned
             if ($filterobj = rb_filter_type::get_filter($type, $value, $advanced, $this)) {
+                $filterobj->filterid = $filter->id;
                 $out[$name] = $filterobj;
 
                 // enabled report grouping if any filters are grouped

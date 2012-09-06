@@ -210,28 +210,28 @@ class report_builder_edit_filters_form extends moodleform {
                 $i = 1;
                 foreach ($filters as $index => $filter) {
                     $row = array();
+                    $filterid = $filter->filterid;
                     $type = $filter->type;
                     $value = $filter->value;
                     $field = "{$type}-{$value}";
                     $advanced = $filter->advanced;
-                    $fid = $index;
 
-                    $mform->addElement('html', html_writer::start_tag('tr', array('fid' => $fid)) .
+                    $mform->addElement('html', html_writer::start_tag('tr', array('fid' => $filterid)) .
                         html_writer::start_tag('td'));
-                    $mform->addElement('selectgroups', "filter{$fid}", '', $filtersselect, array('class' => 'filter_selector'));
-                    $mform->setDefault("filter{$fid}", $field);
+                    $mform->addElement('selectgroups', "filter{$filterid}", '', $filtersselect, array('class' => 'filter_selector'));
+                    $mform->setDefault("filter{$filterid}", $field);
                     $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
-                    $mform->addElement('checkbox', "advanced{$fid}", '');
-                    $mform->setDefault("advanced{$fid}", $advanced);
+                    $mform->addElement('checkbox', "advanced{$filterid}", '');
+                    $mform->setDefault("advanced{$filterid}", $advanced);
 
                     $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td'));
                     $deleteurl = new moodle_url('/totara/reportbuilder/filters.php',
-                        array('d' => '1', 'id' => $id, 'fid' => $fid));
+                        array('d' => '1', 'id' => $id, 'fid' => $filterid));
                     $mform->addElement('html', html_writer::link($deleteurl, $OUTPUT->pix_icon('/t/delete', $strdelete),
                         array('title' => $strdelete, 'class' => 'deletefilterbtn')));
                     if ($i != 1) {
                         $moveupurl = new moodle_url('/totara/reportbuilder/filters.php',
-                            array('m' => 'up', 'id' => $id, 'fid' => $fid));
+                            array('m' => 'up', 'id' => $id, 'fid' => $filterid));
                         $mform->addElement('html', html_writer::link($moveupurl, $OUTPUT->pix_icon('/t/up', $strmoveup),
                             array('title' => $strmoveup, 'class' => 'movefilterupbtn')));
                     } else {
@@ -239,7 +239,7 @@ class report_builder_edit_filters_form extends moodleform {
                     }
                     if ($i != $filtercount) {
                         $movedownurl = new moodle_url('/totara/reportbuilder/filters.php',
-                            array('m' => 'down', 'id' => $id, 'fid' => $fid));
+                            array('m' => 'down', 'id' => $id, 'fid' => $filterid));
                         $mform->addElement('html', html_writer::link($movedownurl, $OUTPUT->pix_icon('/t/down', $strmovedown),
                             array('title' => $strmovedown, 'class' => 'movefilterdownbtn')));
                     } else {
@@ -297,9 +297,10 @@ class report_builder_edit_filters_form extends moodleform {
         $check_elementtemplate = $OUTPUT->container($OUTPUT->container('{element}', 'fcheckbox'), 'fitem');
         $renderer->setElementTemplate($select_elementtemplate, 'newfilter');
         $renderer->setElementTemplate($check_elementtemplate, 'newadvanced');
-        foreach ($filters as $index => $unused) {
-            $renderer->setElementTemplate($select_elementtemplate, 'filter' . $index);
-            $renderer->setElementTemplate($check_elementtemplate, 'advanced' . $index);
+        foreach ($filters as $index => $filter) {
+            $filterid = $filter->filterid;
+            $renderer->setElementTemplate($select_elementtemplate, 'filter' . $filterid);
+            $renderer->setElementTemplate($check_elementtemplate, 'advanced' . $filterid);
         }
     }
 

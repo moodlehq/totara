@@ -39,7 +39,7 @@ class rb_filter_type {
     protected $report;
     public $grouping;
     public $name;
-
+    public $filterid;
     /**
      * Constructor
      *
