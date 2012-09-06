@@ -159,6 +159,9 @@ table.invisiblepadded td {
 img.iconsmall {
     padding: 2px;
 }
+img.smallicon {
+    padding: 2px;
+}
 .course_icon,
 .program_icon {
     padding-right: 5px;
