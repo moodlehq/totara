@@ -22,6 +22,8 @@
  * @subpackage message
  */
 
+require_once($CFG->dirroot.'/totara/core/db/utils.php');
+
 /**
  * Upgrade code for the oauth plugin
  */
@@ -189,6 +191,48 @@ function xmldb_totara_message_upgrade($oldversion) {
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
+    }
+
+    if ($oldversion < 2012120400) {
+        // add field to track metadata for read messages
+        $table = new xmldb_table('message_metadata');
+        $field = new xmldb_field('messagereadid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'onreject');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        // add an index to the new field
+        $table = new xmldb_table('message_metadata');
+        $index = new xmldb_index('messageread');
+        $index->setUnique(false);
+        $index->setFields(array('messagereadid'));
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // allow messageid to be null
+
+        // need to drop the index first
+        $table = new xmldb_table('message_metadata');
+        $index = new xmldb_index('message');
+        $index->setUnique(true);
+        $index->setFields(array('messageid'));
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
+        // now allow null messageid
+        $table = new xmldb_table('message_metadata');
+        $field = new xmldb_field('messageid', XMLDB_TYPE_INTEGER, 10, null, null, null, null);
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->change_field_notnull($table, $field);
+        }
+        // readd a non-unique index
+        $table = new xmldb_table('message_metadata');
+        $index = new xmldb_index('message', XMLDB_INDEX_NOTUNIQUE, array('messageid'));
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        totara_upgrade_mod_savepoint(true, 2012120400, 'totara_message');
     }
     return $result;
 }

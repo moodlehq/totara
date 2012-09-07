@@ -814,10 +814,17 @@ function tm_message_mark_message_read($message, $timeread, $messageworkingempty=
 
     $message->timeread = $timeread;
     $messageid = $message->id;
-    message_mark_message_read($message, $timeread, $messageworkingempty);
+    $messagereadid = message_mark_message_read($message, $timeread, $messageworkingempty);
 
-    // delete the metadata record belonging to the message id
-    $DB->delete_records('message_metadata', array('messageid' => $messageid));
+    // modify the metadata record to point to the read message instead
+    $metadataid = $DB->get_field('message_metadata', 'id', array('messageid' => $messageid));
+    if ($metadataid) {
+        $todb = new stdClass();
+        $todb->id = $metadataid;
+        $todb->messageid = null; // remove message id
+        $todb->messagereadid = $messagereadid; // add the read id
+        $DB->update_record('message_metadata', $todb);
+    }
 }
 
 /**

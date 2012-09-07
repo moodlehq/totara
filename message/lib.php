@@ -339,6 +339,7 @@ function message_get_contacts($user1=null, $user2=null) {
                      JOIN {user} u ON u.id = mc.contactid
                      LEFT OUTER JOIN {message} m ON m.useridfrom = mc.contactid AND m.useridto = ?
                     WHERE mc.userid = ? AND mc.blocked = 0
+                      AND (m.id IS NULL OR NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id))
                  GROUP BY $userfields
                  ORDER BY u.firstname ASC";
 
@@ -363,8 +364,9 @@ function message_get_contacts($user1=null, $user2=null) {
     $strangersql = "SELECT $userfields, count(m.id) as messagecount
                       FROM {message} m
                       JOIN {user} u  ON u.id = m.useridfrom
-                      LEFT OUTER JOIN {message_contacts} mc ON mc.contactid = m.useridfrom AND mc.userid = m.useridto
+           LEFT OUTER JOIN {message_contacts} mc ON mc.contactid = m.useridfrom AND mc.userid = m.useridto
                      WHERE mc.id IS NULL AND m.useridto = ?
+                       AND (m.id IS NULL OR NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id))
                   GROUP BY $userfields
                   ORDER BY u.firstname ASC";
 
@@ -583,11 +585,14 @@ function message_count_unread_messages($user1=null, $user2=null) {
     }
 
     if (!empty($user2)) {
-        return $DB->count_records_select('message', "useridto = ? AND useridfrom = ?",
-            array($user1->id, $user2->id), "COUNT('id')");
+        return $DB->count_records_sql('SELECT COUNT(m.id) FROM {message} m
+                                        WHERE NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id)
+                                          AND m.useridto = ?
+                                          AND m.useridfrom = ?', array($user1->id, $user2->id));
     } else {
-        return $DB->count_records_select('message', "useridto = ?",
-            array($user1->id), "COUNT('id')");
+        return $DB->count_records_sql('SELECT COUNT(m.id) FROM {message} m
+                                        WHERE NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id)
+                                          AND m.useridto = ?', array($user1->id));
     }
 }
 
@@ -713,6 +718,7 @@ function message_get_recent_conversations($user, $limitfrom=0, $limitto=100) {
               JOIN {user} u ON u.id = messages2.userid
          LEFT JOIN {message_contacts} mc ON mc.userid = :userid3 AND mc.contactid = u.id
              WHERE u.deleted = '0'
+              AND (mr.id IS NULL OR NOT EXISTS (SELECT md.messagereadid FROM {message_metadata} md WHERE md.messagereadid = mr.id))
           ORDER BY mr.id DESC";
     $params = array('userid1' => $user->id, 'userid2' => $user->id, 'userid3' => $user->id);
     $read =  $DB->get_records_sql($sql, $params, $limitfrom, $limitto);
@@ -739,6 +745,7 @@ function message_get_recent_conversations($user, $limitfrom=0, $limitto=100) {
               JOIN {user} u ON u.id = messages2.userid
          LEFT JOIN {message_contacts} mc ON mc.userid = :userid3 AND mc.contactid = u.id
              WHERE u.deleted = '0'
+             AND (m.id IS NULL OR NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id))
              ORDER BY m.id DESC";
     $unread =  $DB->get_records_sql($sql, $params, $limitfrom, $limitto);
 
@@ -1594,13 +1601,18 @@ function message_search($searchterms, $fromme=true, $tome=true, $courseid='none'
     ///    b.  Messages to user
     ///    c.  Messages to and from user
 
+    // exclude all totara messages
+    $totaramessagewhere = " AND (m.id IS NULL OR NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id))";
+    $totaramessagereadwhere = " AND (m.id IS NULL OR NOT EXISTS (SELECT messagereadid FROM {message_metadata} md WHERE md.messagereadid = m.id))";
+
     if ($courseid == SITEID) { /// admin is searching all messages
+
         $m_read   = $DB->get_records_sql("SELECT m.id, m.useridto, m.useridfrom, m.smallmessage, m.fullmessage, m.timecreated
                                             FROM {message_read} m
-                                           WHERE $searchcond", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
+                                           WHERE $searchcond $totaramessagereadwhere", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
         $m_unread = $DB->get_records_sql("SELECT m.id, m.useridto, m.useridfrom, m.smallmessage, m.fullmessage, m.timecreated
                                             FROM {message} m
-                                           WHERE $searchcond", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
+                                           WHERE $searchcond $totaramessagewhere", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
 
     } else if ($courseid !== 'none') {
         /// This has not been implemented due to security concerns
@@ -1628,7 +1640,7 @@ function message_search($searchterms, $fromme=true, $tome=true, $courseid='none'
                                            WHERE $searchcond", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
         $m_unread = $DB->get_records_sql("SELECT m.id, m.useridto, m.useridfrom, m.smallmessage, m.fullmessage, m.timecreated
                                             FROM {message} m
-                                           WHERE $searchcond", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
+                                           WHERE $searchcond $totaramessagewhere", $params, 0, MESSAGE_SEARCH_MAX_RESULTS);
 
     }
 
@@ -1774,24 +1786,33 @@ function message_get_history($user1, $user2, $limitnum=0, $viewingnewmessages=fa
     $notificationswhere = null;
     //we have just moved new messages to read. If theyre here to see new messages dont hide notifications
     if (!$viewingnewmessages && $CFG->messaginghidereadnotifications) {
-        $notificationswhere = 'AND notification=0';
+        $notificationswhere = 'AND m.notification=0';
     }
 
     //prevent notifications of your own actions appearing in your own message history
-    $ownnotificationwhere = ' AND NOT (useridfrom=? AND notification=1)';
+    $ownnotificationwhere = ' AND NOT (m.useridfrom=? AND m.notification=1)';
 
-    if ($messages_read = $DB->get_records_select('message_read', "((useridto = ? AND useridfrom = ?) OR
-                                                    (useridto = ? AND useridfrom = ?)) $notificationswhere $ownnotificationwhere",
-                                                    array($user1->id, $user2->id, $user2->id, $user1->id, $user1->id),
-                                                    "timecreated $sort", '*', 0, $limitnum)) {
+    // never show totara tasks or alerts
+    $totaramessagewhere = " AND (m.id IS NULL OR NOT EXISTS (SELECT md.messageid FROM {message_metadata} md WHERE md.messageid = m.id))";
+    $totaramessagereadwhere = " AND (m.id IS NULL OR NOT EXISTS (SELECT messagereadid FROM {message_metadata} md WHERE md.messagereadid = m.id))";
+    if ($messages_read = $DB->get_records_sql("SELECT * FROM {message_read} m
+                                                WHERE ((m.useridto = ? AND m.useridfrom = ?)
+                                                   OR (m.useridto = ? AND m.useridfrom = ?))
+                                               $notificationswhere $ownnotificationwhere $totaramessagereadwhere
+                                              ORDER BY m.timecreated $sort",
+                                               array($user1->id, $user2->id, $user2->id, $user1->id, $user1->id),
+                                               0, $limitnum)) {
         foreach ($messages_read as $message) {
             $messages[] = $message;
         }
     }
-    if ($messages_new =  $DB->get_records_select('message', "((useridto = ? AND useridfrom = ?) OR
-                                                    (useridto = ? AND useridfrom = ?)) $ownnotificationwhere",
-                                                    array($user1->id, $user2->id, $user2->id, $user1->id, $user1->id),
-                                                    "timecreated $sort", '*', 0, $limitnum)) {
+    if ($messages_new =  $DB->get_records_sql("SELECT * FROM {message} m
+                                                WHERE((useridto = ? AND useridfrom = ?)
+                                                   OR (useridto = ? AND useridfrom = ?))
+                                               $ownnotificationwhere $totaramessagewhere
+                                              ORDER BY m.timecreated $sort",
+                                               array($user1->id, $user2->id, $user2->id, $user1->id, $user1->id),
+                                               0, $limitnum)) {
         foreach ($messages_new as $message) {
             $messages[] = $message;
         }

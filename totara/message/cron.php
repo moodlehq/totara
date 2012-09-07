@@ -50,8 +50,13 @@ function message_cron() {
     // dismiss old alerts
     $time = time() - (TOTARA_MSG_CRON_DISMISS_ALERTS * (24 * 60 * 60));
     $msgs = tm_messages_get_by_time('totara_alert', $time);
+    $deleted = array();
     foreach ($msgs as $msg) {
         tm_message_dismiss($msg->id);
+        //store message ids for bulk delete
+        if (!in_array($msg->id, $deleted)) {
+            $deleted[] = $msg->id;
+        }
     }
 
     // dismiss old taskes
@@ -59,10 +64,16 @@ function message_cron() {
     $msgs = tm_messages_get_by_time('totara_task', $time);
     foreach ($msgs as $msg) {
         tm_message_dismiss($msg->id);
+        //store message ids for bulk delete
+        if (!in_array($msg->id, $deleted)) {
+            $deleted[] = $msg->id;
+        }
     }
 
-    // tidy up orphaned metadata records - shouldn't be any  - but odd things could happen with core messages cron
-    $DB->delete_records_select('message_metadata', 'messageid NOT IN (SELECT id FROM {message})', array());
+    //delete the message records
+    $DB->delete_records_list('message', 'id', $deleted);
+    // tidy up orphaned metadata records - shouldn't be any - but odd things could happen with core messages cron
+    $DB->delete_records_select('message_metadata', 'messageid NOT IN (SELECT id FROM {message}) AND messagereadid NOT IN (SELECT id FROM {message_read})');
 
     return true;
 }
