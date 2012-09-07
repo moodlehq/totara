@@ -25,6 +25,8 @@ $string['pluginname'] = 'Totara sync';
 
 $string['sync'] = 'Sync';
 $string['totarasync'] = 'Totara sync';
+$string['totarasync_help'] = 'Enabling Totara syncing will cause the element to be updated/deleted (synced) from an external source (if configured).
+See the Sync settings in the Administration menu.';
 $string['totara_sync:manage'] = 'Manage Totara sync process';
 $string['settingssaved'] = 'Settings saved';
 $string['elementenabled'] = 'Element enabled';

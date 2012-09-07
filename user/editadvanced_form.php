@@ -50,6 +50,11 @@ class user_editadvanced_form extends moodleform {
         $mform->addElement('select', 'auth', get_string('chooseauthmethod','auth'), $auth_options);
         $mform->addHelpButton('auth', 'chooseauthmethod', 'auth');
 
+        if (get_config('totara_sync', 'element_user_enabled')) {
+            $mform->addElement('advcheckbox', 'totarasync', get_string('totarasync', 'tool_totara_sync').'?');
+            $mform->addHelpButton('totarasync', 'totarasync', 'tool_totara_sync');
+        }
+
         $mform->addElement('advcheckbox', 'suspended', get_string('suspended','auth'));
         $mform->addHelpButton('suspended', 'suspended', 'auth');
 
