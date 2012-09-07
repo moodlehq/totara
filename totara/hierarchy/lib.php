@@ -276,6 +276,19 @@ class hierarchy {
     }
 
     /**
+     * Remove all custom field data for the specified hierarchy item
+     *
+     * @param int $itemid the hierarchy item id
+     * @return boolean true if removal successful
+     */
+    function delete_custom_field_data($itemid) {
+        global $DB;
+
+        return $DB->delete_records($this->shortprefix . '_type_info_data',
+            array($this->prefix . 'id' => $itemid));
+    }
+
+    /**
      * Get custom fields for an item
      * @param int $itemid id of the item
      * @return array
