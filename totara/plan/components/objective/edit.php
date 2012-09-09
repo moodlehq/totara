@@ -144,7 +144,7 @@ if ($deleteyes) {
                 $data->fullname,
                 isset($data->description) ? $data->description : null,
                 isset($data->priority) ? $data->priority : null,
-                isset($data->duedate) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate) : null,
+                !empty($data->duedate) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate) : null,
                 isset($data->scalevalueid) ? $data->scalevalueid : null
         );
         if (!$result) {
