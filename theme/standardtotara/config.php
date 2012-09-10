@@ -63,7 +63,7 @@ $THEME->layouts = array(
     // rather than having a separate layout file for the single sidebar report
     // layout, we re-use general.php and just exclude side-post from the regions list
     'report' => array(
-        'file' => 'general.php',
+        'file' => 'report.php',
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
     ),

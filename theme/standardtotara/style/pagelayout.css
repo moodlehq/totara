@@ -283,6 +283,7 @@ body.has_dock {
     width:100%;
 }
 .pagelayout-report #report-main-content .region-content {
+    padding:14px;
     margin-left:200px;
 }
 .pagelayout-report #report-main-content .region-content table {
