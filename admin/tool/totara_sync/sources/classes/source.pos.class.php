@@ -138,7 +138,7 @@ abstract class totara_sync_source_pos extends totara_sync_source {
 
         /// Create and truncate the table
         $dbman->create_temp_table($table, false, false);
-        $DB->execute("TRUNCATE {{$this->temptable}}");
+        $DB->execute("TRUNCATE TABLE {{$this->temptable}}");
 
         return $this->temptable;
     }
