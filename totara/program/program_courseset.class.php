@@ -2201,12 +2201,9 @@ class recurring_course_set extends course_set {
         if (count($courseoptions) > 0) {
             if ($updateform) {
                 $mform->addElement('select',  $prefix.'courseid', '', $courseoptions);
-                $mform->addElement('submit', $prefix.'changecourse', get_string('changecourse', 'totara_program'), array('onclick' => "return selectRecurringCourse('$prefix')"));
                 $template_values['%'.$prefix.'courseid%'] = array('name' => $prefix.'courseid', 'value' => null);
-                $template_values['%'.$prefix.'changecourse%'] = array('name' => $prefix.'changecourse', 'value' => null);
             }
             $templatehtml .= '%'.$prefix.'courseid%'."\n";
-            $templatehtml .= '%'.$prefix.'changecourse%'."\n";
             $templatehtml .= $OUTPUT->help_icon('recurringcourse', 'totara_program');
             $formdataobject->{$prefix.'courseid'} = $this->course->id;
         } else {

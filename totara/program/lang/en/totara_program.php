@@ -565,7 +565,7 @@ $string['programduemessage'] = 'Program due message';
 $string['programduemessage_help'] = 'This message will be sent at the specified time before a program is due.';
 $string['recurringcourse_help'] = 'Displays the selected recurring course.
 
-Only one course can be chosen for recurrence. To change the course, select a new course from the drop down menu and click "Change Course" to save the change.';
+Only one course can be chosen for recurrence. To change the course, select a new course from the drop down menu and click "Save Changes" to save the change.';
 $string['trigger'] = 'Trigger';
 $string['trigger_help'] = 'The trigger time determines when the message will be sent in relation to the event described (e.g. 4 weeks after the program is completed).';
 $string['unenrolmentmessage'] = 'Un-enrolment message';
