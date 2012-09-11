@@ -63,7 +63,7 @@ class question_usage_by_activity {
      */
     protected $preferredbehaviour = null;
 
-    /** @var object the context this usage belongs to. */
+    /** @var context the context this usage belongs to. */
     protected $context;
 
     /** @var string plugin name of the plugin this usage belongs to. */
@@ -104,7 +104,7 @@ class question_usage_by_activity {
         return $this->preferredbehaviour;
     }
 
-    /** @return object the context this usage belongs to. */
+    /** @return context the context this usage belongs to. */
     public function get_owning_context() {
         return $this->context;
     }
@@ -705,6 +705,14 @@ class question_usage_by_activity {
         $quba->set_preferred_behaviour($record->preferredbehaviour);
 
         $quba->observer = new question_engine_unit_of_work($quba);
+
+        // If slot is null then the current pointer in $records will not be
+        // advanced in the while loop below, and we get stuck in an infinite loop,
+        // since this method is supposed to always consume at least one record.
+        // Therefore, in this case, advance the record here.
+        if (is_null($record->slot)) {
+            $records->next();
+        }
 
         while ($record && $record->qubaid == $qubaid && !is_null($record->slot)) {
             $quba->questionattempts[$record->slot] =

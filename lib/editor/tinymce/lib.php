@@ -147,7 +147,7 @@ class tinymce_texteditor extends texteditor {
                     'theme_advanced_resizing_min_height' => 30,
                     'theme_advanced_toolbar_location' => "top",
                     'theme_advanced_statusbar_location' => "bottom",
-                    'spellchecker_rpc_url' => $CFG->wwwroot."/lib/editor/tinymce/tiny_mce/$this->version/plugins/spellchecker/rpc.php",
+                    'spellchecker_rpc_url' => $CFG->httpswwwroot."/lib/editor/tinymce/tiny_mce/$this->version/plugins/spellchecker/rpc.php",
                     'spellchecker_languages' => get_config('editor_tinymce', 'spelllanguagelist')
                   );
 
@@ -170,6 +170,9 @@ class tinymce_texteditor extends texteditor {
             $params['valid_elements'] = 'script[src|type],*[*]'; // for some reason the *[*] does not inlcude javascript src attribute MDL-25836
             $params['invalid_elements'] = '';
         }
+        // Add unique moodle elements - unfortunately we have to decide if these are SPANs or DIVs.
+        $params['extended_valid_elements'] = 'nolink,tex,algebra,lang[lang]';
+        $params['custom_elements'] = 'nolink,~tex,~algebra,lang';
 
         if (empty($options['legacy'])) {
             if (isset($options['maxfiles']) and $options['maxfiles'] != 0) {

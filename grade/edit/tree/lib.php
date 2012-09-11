@@ -382,7 +382,7 @@ class grade_edit_tree {
     //Grader report has its own decimal place settings so they are handled elsewhere
     function format_number($number) {
         $formatted = rtrim(format_float($number, 4),'0');
-        if (substr($formatted, -1)=='.') { //if last char is the decimal point
+        if (substr($formatted, -1)==get_string('decsep', 'langconfig')) { //if last char is the decimal point
             $formatted .= '0';
         }
         return $formatted;
@@ -666,7 +666,8 @@ class grade_edit_tree_column_aggregation extends grade_edit_tree_column_category
         } else {
             $attributes = array();
             $attributes['id'] = 'aggregation_'.$category->id;
-            $aggregation = html_writer::select($options, 'aggregation_'.$category->id, $category->aggregation, null, $attributes);
+            $aggregation = html_writer::label(get_string('aggregation', 'grades'), 'aggregation_'.$category->id, false, array('class' => 'accesshide'));
+            $aggregation .= html_writer::select($options, 'aggregation_'.$category->id, $category->aggregation, null, $attributes);
             $action = new component_action('change', 'update_category_aggregation', array('courseid' => $params['id'], 'category' => $category->id, 'sesskey' => sesskey()));
             $OUTPUT->add_action_handler($action, 'aggregation_'.$category->id);
         }

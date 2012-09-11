@@ -19,24 +19,23 @@
  *
  * @package    block
  * @subpackage completion
- * @copyright  2009 Catalyst IT Ltd
+ * @copyright  2009-2012 Catalyst IT Ltd
  * @author     Aaron Barnes <aaronb@catalyst.net.nz>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
-require_once($CFG->libdir.'/completionlib.php');
+require_once(dirname(__FILE__).'/../../config.php');
+require_once("{$CFG->libdir}/completionlib.php");
 
 
 ///
 /// Load data
 ///
 $id = required_param('course', PARAM_INT);
-// User id
 $userid = optional_param('user', 0, PARAM_INT);
 
 // Load course
-$course = $DB->get_record('course', array('id' => $id));
+$course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
 // Load user
 if ($userid) {
@@ -55,7 +54,7 @@ if (!completion_can_view_data($user->id, $course->id)) {
 // Load completion data
 $info = new completion_info($course);
 
-$returnurl = "{$CFG->wwwroot}/course/view.php?id={$id}";
+$returnurl = new moodle_url('/course/view.php', array('id' => $id));
 
 // Don't display if completion isn't enabled!
 if (!$info->is_enabled()) {
@@ -156,7 +155,6 @@ if (empty($completions)) {
     } else {
         echo get_string('criteriarequiredany', 'completion');
     }
-
     echo '</td></tr></tbody></table>';
 
     // Generate markup for criteria statuses
@@ -172,8 +170,6 @@ if (empty($completions)) {
 
     // Save row data
     $rows = array();
-
-    global $COMPLETION_CRITERIA_TYPES;
 
     // Loop through course criteria
     foreach ($completions as $completion) {
@@ -261,8 +257,9 @@ if (empty($completions)) {
     echo '</tbody></table>';
 }
 
-echo '<div class="buttons center-buttons">';
-echo $OUTPUT->single_button(new moodle_url("/course/view.php", array('id' => $course->id)), get_string('returntocourse', 'completion'), 'get');
+echo '<div class="buttons">';
+$courseurl = new moodle_url("/course/view.php", array('id' => $course->id));
+echo $OUTPUT->single_button($courseurl, get_string('returntocourse', 'block_completionstatus'), 'get');
 echo '</div>';
 
 echo $OUTPUT->footer();
