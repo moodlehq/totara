@@ -397,6 +397,7 @@ $string['courseicon'] = 'Course Icon';
 $string['courseshortname'] = 'Course Shortname';
 $string['courseidnumber'] = 'Course ID Number';
 $string['courseid'] = 'Course ID';
+$string['coursevisible'] = 'Course Visible';
 $string['courselanguage'] = 'Course language';
 $string['coursestartdate'] = 'Course Start Date';
 $string['coursenameandsummary'] = 'Course Name and Summary';

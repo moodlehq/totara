@@ -1254,6 +1254,16 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'course',
+            'visible',
+            get_string('coursevisible', 'totara_reportbuilder'),
+            "$join.visible",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'yes_no'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
             'icon',
             get_string('courseicon', 'totara_reportbuilder'),
             "$join.icon",
@@ -1365,6 +1375,16 @@ abstract class rb_base_source {
             'idnumber',
             get_string('courseidnumber', 'totara_reportbuilder'),
             'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'course',
+            'visible',
+            get_string('coursevisible', 'totara_reportbuilder'),
+            'select',
+            array(
+                'selectchoices' => array(0 => get_string('no'), 1 => get_string('yes')),
+                'simplemode' => true
+            )
         );
         $filteroptions[] = new rb_filter_option(
             'course',
