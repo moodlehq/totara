@@ -143,7 +143,11 @@ class repository_webdav extends repository {
             }else{
                 // a file
                 $path = rtrim($path,'/');
-                $title = urldecode(substr($v['href'], strpos($v['href'], $path)+strlen($path)));
+                if (empty($path)) {
+                    $title = urldecode($v['href']);
+                } else {
+                    $title = urldecode(substr($v['href'], strpos($v['href'], $path)+strlen($path)));
+                }
                 $title = basename($title);
                 $size = !empty($v['getcontentlength'])? $v['getcontentlength']:'';
                 $ret['list'][] = array(
