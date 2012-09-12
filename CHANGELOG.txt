@@ -1,5 +1,28 @@
 Totara LMS Changelog
 
+Release 2.2.4 (12 September 2012):
+==================================================
+
+Security fixes:
+                Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.2.5_release_notes
+
+Improvements:
+    T-9804      Improvements to Arabic, Chinese, Dutch, Finnish, French, German, Hebrew, Hungarian, Italian, Japanese,
+                Polish, Portuguese (Brazilian), Spanish (Castilian), Spanish (International), Swedish and Thai language packs
+    T-9931      Add "course visibility" column and filter to Report Builder
+
+Bug fixes:
+    T-9924      Fix bug when optional Learning Plan objective due date is not set
+    T-9822      Fix empty Quicklinks after fresh install
+    T-9712      Fix notification types and language string in Plan objective/priority scales
+    T-9739      Remove the change course button from recurring courses in Programs
+    T-9842      Fix problem with icons being miniaturised
+    T-9916      Fix Filters Tab form actions (delete, advanced etc) in Report Builder
+    T-9936      Fix file handling bug in webdav repository
+    T-9912      Fix MSSQL truncating table error in totara sync
+    T-9890      Fix event triggers for Program user assignments when completion based on time from first login
+
+
 Release 2.2.3 (5 September 2012):
 ==================================================
 
