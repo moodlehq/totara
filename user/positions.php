@@ -84,10 +84,12 @@ $fullname           = fullname($user, true);
 
 if ($course->id != SITEID && has_capability('moodle/course:viewparticipants', $coursecontext)) {
     $PAGE->navbar->add($strparticipants, "{$CFG->wwwroot}/user/index.php?id={$course->id}");
+    $PAGE->navbar->add($fullname, "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}");
+    $PAGE->navbar->add($positiontype, null);
+} else {
+    $PAGE->navigation->extend_for_user($user);
 }
 
-$PAGE->navbar->add($fullname, "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}");
-$PAGE->navbar->add($positiontype, null);
 
 // Setup custom javascript
 local_js(array(
