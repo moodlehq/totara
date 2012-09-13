@@ -36,22 +36,25 @@ $url = $CFG->wwwroot.'/admin/tool/totara_sync/admin/elements.php';
 $elements = totara_sync_get_elements();
 
 /// Process actions
+$systemcontext = context_system::instance();
 if ($enable = optional_param('enable', null, PARAM_TEXT)) {
-    if (!empty($elements[$enable])) {
+    if (has_capability("tool/totara_sync:manage{$enable}", $systemcontext) && !empty($elements[$enable])) {
         $elements[$enable]->enable();
         totara_set_notification(get_string('elementenabled', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
     }
 } elseif ($disable = optional_param('disable', null, PARAM_TEXT)) {
-    if (!empty($elements[$disable])) {
+    if (has_capability("tool/totara_sync:manage{$disable}", $systemcontext) && !empty($elements[$disable])) {
         $elements[$disable]->disable();
         totara_set_notification(get_string('elementdisabled', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
     }
 }
 
 $form = new totara_sync_config_form();
-if ($fdata = $form->get_data()) {
-    set_config('filesdir', $fdata->filesdir, 'totara_sync');
-    totara_set_notification(get_string('settingssaved', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
+if (has_capability('tool/totara_sync:setfilesdirectory', $systemcontext)) {
+    if ($fdata = $form->get_data()) {
+        set_config('filesdir', $fdata->filesdir, 'totara_sync');
+        totara_set_notification(get_string('settingssaved', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
+    }
 }
 
 
@@ -77,6 +80,10 @@ $table->set_attribute('class', 'generaltable generalbox boxaligncenter boxwidthw
 $table->setup();
 
 foreach ($elements as $ename => $eobj) {
+    if (!has_capability('tool/totara_sync:manage' . $ename, $systemcontext)) {
+        continue;
+    }
+
     $row = array();
 
     $class = $eobj->is_enabled() ? '' : 'dimmed_text';
@@ -102,6 +109,8 @@ $table->finish_html();
 $form->set_data((object) array(
     'filesdir' => get_config('totara_sync', 'filesdir')));
 
-$form->display();
+if (has_capability('tool/totara_sync:setfilesdirectory', $systemcontext)) {
+    $form->display();
+}
 
 echo $OUTPUT->footer();

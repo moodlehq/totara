@@ -27,7 +27,14 @@ $string['sync'] = 'Sync';
 $string['totarasync'] = 'Totara sync';
 $string['totarasync_help'] = 'Enabling Totara syncing will cause the element to be updated/deleted (synced) from an external source (if configured).
 See the Sync settings in the Administration menu.';
-$string['totara_sync:manage'] = 'Manage Totara sync process';
+$string['totara_sync:manage'] = 'Manage Totara sync';
+$string['totara_sync:setfilesdirectory'] = 'Set Totara sync files directory';
+$string['totara_sync:manageuser'] = 'Manage Totara sync users';
+$string['totara_sync:manageorg'] = 'Manage Totara sync organisations';
+$string['totara_sync:managepos'] = 'Manage Totara sync positions';
+$string['totara_sync:uploaduser'] = 'Upload Totara sync users';
+$string['totara_sync:uploadorg'] = 'Upload Totara sync organisations';
+$string['totara_sync:uploadpos'] = 'Upload Totara sync positions';
 $string['settingssaved'] = 'Settings saved';
 $string['elementenabled'] = 'Element enabled';
 $string['elementdisabled'] = 'Element disabled';

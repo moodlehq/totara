@@ -30,30 +30,47 @@ if (has_capability('tool/totara_sync:manage', $systemcontext)) {
     $ADMIN->add('root', new admin_category('tool_totara_sync', get_string('pluginname', 'tool_totara_sync')));
     $ADMIN->add('tool_totara_sync', new admin_category('syncelements', get_string('elements', 'tool_totara_sync')));
     $ADMIN->add('tool_totara_sync', new admin_category('syncsources', get_string('sources', 'tool_totara_sync')));
-    $ADMIN->add('syncelements', new admin_externalpage('managesyncelements', get_string('manageelements', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/elements.php", 'tool/totara_sync:manage'));
 
-    if ($elements = totara_sync_get_elements($onlyenabled=true)) {
+    $can_manage_any = false;
+    $can_upload_any = false;
+    if ($elements = totara_sync_get_elements()) {
         foreach ($elements as $e) {
-            /// Elements
             $elname = $e->get_name();
-            $ADMIN->add('syncelements', new admin_externalpage('syncelement'.$elname,
-                            get_string('displayname:'.$elname, 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/elementsettings.php?element={$elname}", 'tool/totara_sync:manage'));
+            if (!$can_manage_any) {
+                if (has_capability('tool/totara_sync:manage' . $elname, $systemcontext) || has_capability('tool/totara_sync:setfilesdirectory', $systemcontext)) {
+                    $can_manage_any = true;
+                    $ADMIN->add('syncelements', new admin_externalpage('managesyncelements', get_string('manageelements', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/elements.php", 'tool/totara_sync:manage'));
+                }
+            }
 
-            /// Sources
-            if ($sources = $e->get_sources()) {
+            if ($e->is_enabled()) {
+                if (has_capability('tool/totara_sync:upload' . $elname, $systemcontext)) {
+                    $can_upload_any = true;
+                }
 
-                $ADMIN->add('syncsources', new admin_category($elname.'sources', get_string('displayname:'.$elname, 'tool_totara_sync')));
-                foreach ($sources as $s) {
-                    if (!$s->has_config()) {
-                        continue;
+                /// Elements
+                $ADMIN->add('syncelements', new admin_externalpage('syncelement'.$elname,
+                    get_string('displayname:'.$elname, 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/elementsettings.php?element={$elname}", 'tool/totara_sync:manage' . $elname));
+
+                /// Sources
+                if ($sources = $e->get_sources()) {
+
+                    $ADMIN->add('syncsources', new admin_category($elname.'sources', get_string('displayname:'.$elname, 'tool_totara_sync')));
+                    foreach ($sources as $s) {
+                        if (!$s->has_config()) {
+                            continue;
+                        }
+                        $sname = $s->get_name();
+                        $ADMIN->add($elname.'sources', new admin_externalpage($sname,
+                            get_string('displayname:'.$sname, 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/sourcesettings.php?element={$elname}&source={$sname}", 'tool/totara_sync:manage' . $elname));
                     }
-                    $sname = $s->get_name();
-                    $ADMIN->add($elname.'sources', new admin_externalpage($sname,
-                                    get_string('displayname:'.$sname, 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/sourcesettings.php?element={$elname}&source={$sname}", 'tool/totara_sync:manage'));
                 }
             }
         }
-        $ADMIN->add('syncsources', new admin_externalpage('uploadsyncfiles', get_string('uploadsyncfiles', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/uploadsourcefiles.php", 'tool/totara_sync:manage'));
+
+        if ($can_upload_any) {
+            $ADMIN->add('syncsources', new admin_externalpage('uploadsyncfiles', get_string('uploadsyncfiles', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/uploadsourcefiles.php", 'tool/totara_sync:manage'));
+        }
         unset($elname);
     }
 

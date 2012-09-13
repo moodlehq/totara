@@ -32,9 +32,18 @@ admin_externalpage_setup('uploadsyncfiles');
 $form = new totara_sync_source_files_form();
 
 /// Process actions
-if ($data = $form->get_data()) {
+$elements = totara_sync_get_elements($onlyenabled=true);
+$systemcontext = context_system::instance();
+$can_upload_any = false;
+foreach ($elements as $e) {
+    $elementname = $e->get_name();
+    if (has_capability('tool/totara_sync:upload' . $elementname, $systemcontext)) {
+        $can_upload_any = true;
+        break;
+    }
+}
 
-    $elements = totara_sync_get_elements($onlyenabled=true);
+if ($data = $form->get_data()) {
 
     // Save files to temporary location
     $tempdir = $CFG->tempdir.'/totarasync';
@@ -43,6 +52,9 @@ if ($data = $form->get_data()) {
 
     foreach ($elements as $e) {
         $elementname = $e->get_name();
+        if (!has_capability('tool/totara_sync:upload' . $elementname, $systemcontext)) {
+            continue;
+        }
         if (!$form->hasFile($elementname)) {
             continue;
         }
@@ -56,6 +68,10 @@ if ($data = $form->get_data()) {
     // Move files to source's 'ready' folders
     $readyfiles = array();
     foreach ($elements as $e) {
+        $elementname = $e->get_name();
+        if (!has_capability('tool/totara_sync:upload' . $elementname, $systemcontext)) {
+            continue;
+        }
         $source = $e->get_source();
         if ($source) {
             $sfilepath = $source->get_filepath();
@@ -89,8 +105,10 @@ echo $OUTPUT->heading(get_string('uploadsyncfiles', 'tool_totara_sync'));
 
 if (!get_config('totara_sync', 'filesdir')) {
     print_string('nofilesdir', 'tool_totara_sync');
-} else {
+} else if ($can_upload_any) {
     $form->display();
+} else {
+    // @todo error message
 }
 
 echo $OUTPUT->footer();

@@ -66,6 +66,68 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
+    'tool/totara_sync:setfilesdirectory' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
+    'tool/totara_sync:manageuser' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
+    'tool/totara_sync:manageorg' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
+    'tool/totara_sync:managepos' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
+    'tool/totara_sync:uploaduser' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
+    'tool/totara_sync:uploadorg' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
+    'tool/totara_sync:uploadpos' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'tool/totara_sync:manage'
+    ),
 );
 
-?>

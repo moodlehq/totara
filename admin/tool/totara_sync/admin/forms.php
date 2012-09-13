@@ -122,8 +122,12 @@ class totara_sync_source_files_form extends moodleform {
         }
 
         foreach ($elements as $e) {
-            $mform->addElement('header', 'header_'.$e->get_name(),
-                get_string('displayname:'.$e->get_name(), 'tool_totara_sync'));
+            $name = $e->get_name();
+            if (!has_capability("tool/totara_sync:upload{$name}", context_system::instance())) {
+                continue;
+            }
+            $mform->addElement('header', "header_{$name}",
+                get_string("displayname:{$name}", 'tool_totara_sync'));
 
             try {
                 $source = $e->get_source();
@@ -138,8 +142,7 @@ class totara_sync_source_files_form extends moodleform {
                     get_string('sourcedoesnotusefiles', 'tool_totara_sync')));
                 continue;
             }
-
-            $mform->addElement('filepicker', $e->get_name(),
+            $mform->addElement('filepicker', $name,
                 get_string('displayname:'.$source->get_name(), 'tool_totara_sync'), 'size="40"');
             if (file_exists($source->get_filepath())) {
                 $mform->addElement('static', '', '',
