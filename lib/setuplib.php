@@ -123,6 +123,10 @@ class moodle_exception extends Exception {
             $message = $module . '/' . $errorcode;
         }
 
+        if (defined('PHPUNIT_TEST') and PHPUNIT_TEST and $debuginfo) {
+            $message = "$message ($debuginfo)";
+        }
+
         parent::__construct($message, 0);
     }
 }

@@ -312,9 +312,12 @@ abstract class moodle_database {
             // the diagnostic info should be printed in footer instead
             $lowesttransaction = end($this->transactions);
             $backtrace = $lowesttransaction->get_backtrace();
-
-            error_log('Potential coding error - active database transaction detected when disposing database:'."\n".format_backtrace($backtrace, true));
-            $this->force_transaction_rollback();
+            if (defined('PHPUNIT_TEST')) {
+                //no need to log sudden exits in our PHPUnit test cases.
+            } else {
+                error_log('Potential coding error - active database transaction detected when disposing database:'."\n".format_backtrace($backtrace, true));
+            }
+                $this->force_transaction_rollback();
         }
         if ($this->used_for_db_sessions) {
             // this is needed because we need to save session to db before closing it

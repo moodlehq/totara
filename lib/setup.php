@@ -125,6 +125,11 @@ if (!defined('NO_DEBUG_DISPLAY')) {
     define('NO_DEBUG_DISPLAY', false);
 }
 
+//phpunit tests need custom init
+if (!defined('PHPUNIT_TEST')) {
+    define('PHPUNIT_TEST', false);
+}
+
 // Some scripts such as upgrade may want to prevent output buffering
 if (!defined('NO_OUTPUT_BUFFERING')) {
     define('NO_OUTPUT_BUFFERING', false);
@@ -141,12 +146,12 @@ if (function_exists('date_default_timezone_set') and function_exists('date_defau
 
 // PHPUnit scripts are a special case, for now we treat them as normal CLI scripts,
 // please note you must install PHPUnit library separately via PEAR
-if (!defined('PHPUNIT_SCRIPT')) {
-    define('PHPUNIT_SCRIPT', false);
-}
-if (PHPUNIT_SCRIPT) {
-    define('CLI_SCRIPT', true);
-}
+//if (!defined('PHPUNIT_SCRIPT')) {
+//    define('PHPUNIT_SCRIPT', false);
+//}
+//if (PHPUNIT_SCRIPT) {
+//    define('CLI_SCRIPT', true);
+//}
 
 // Detect CLI scripts - CLI scripts are executed from command line, do not have session and we do not want HTML in output
 // In your new CLI scripts just add "define('CLI_SCRIPT', true);" before requiring config.php.
@@ -399,8 +404,10 @@ init_performance_info();
 $OUTPUT = new bootstrap_renderer();
 
 // set handler for uncaught exceptions - equivalent to print_error() call
-set_exception_handler('default_exception_handler');
-set_error_handler('default_error_handler', E_ALL | E_STRICT);
+if (!PHPUNIT_TEST or PHPUNIT_UTIL) {
+    set_exception_handler('default_exception_handler');
+    set_error_handler('default_error_handler', E_ALL | E_STRICT);
+}
 
 // If there are any errors in the standard libraries we want to know!
 error_reporting(E_ALL);
@@ -465,6 +472,24 @@ setup_validate_php_configuration();
 // Connect to the database
 setup_DB();
 
+if (PHPUNIT_TEST and !PHPUNIT_UTIL) {
+    // make sure tests do not run in parallel
+    phpunit_util::acquire_test_lock();
+    $dbhash = null;
+    try {
+        if ($dbhash = $DB->get_field('config', 'value', array('name'=>'phpunittest'))) {
+            // reset DB tables
+            phpunit_util::reset_database();
+        }
+    } catch (Exception $e) {
+        if ($dbhash) {
+            // we ned to reinit if reset fails
+            $DB->set_field('config', 'value', 'na', array('name'=>'phpunittest'));
+        }
+    }
+    unset($dbhash);
+}
+
 // Disable errors for now - needed for installation when debug enabled in config.php
 if (isset($CFG->debug)) {
     $originalconfigdebug = $CFG->debug;
@@ -474,7 +499,11 @@ if (isset($CFG->debug)) {
 }
 
 // Load up any configuration from the config table
-initialise_cfg();
+if (PHPUNIT_TEST) {
+    PHPUNIT_UTIL::initialise_cfg();
+} else {
+    initialise_cfg();
+}
 
 // Verify upgrade is not running unless we are in a script that needs to execute in any case
 if (!defined('NO_UPGRADE_CHECK') and isset($CFG->upgraderunning)) {
@@ -823,7 +852,9 @@ if (!empty($CFG->customscripts)) {
     }
 }
 
-if (CLI_SCRIPT and !defined('WEB_CRON_EMULATED_CLI') and !PHPUNIT_SCRIPT) {
+if (PHPUNIT_TEST) {
+    //no ip blocking
+} else if (CLI_SCRIPT and !defined('WEB_CRON_EMULATED_CLI')) {
     // no ip blocking
 } else if (!empty($CFG->allowbeforeblock)) { // allowed list processed before blocked list?
     // in this case, ip in allowed list will be performed first
