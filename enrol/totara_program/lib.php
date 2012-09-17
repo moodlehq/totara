@@ -48,6 +48,16 @@ class enrol_totara_program_plugin extends enrol_plugin {
     }
 
     /**
+     * Add new instance of enrol plugin with default settings.
+     * @param object $course
+     * @return int id of new instance, null if can not be created
+     */
+    public function add_default_instance($course) {
+        $fields = array('enrolperiod' => $this->get_config('enrolperiod', 0), 'roleid' => $this->get_config('roleid', 0));
+        return $this->add_instance($course, $fields);
+    }
+
+    /**
      * Add new instance of enrol_totara_program plugin.
      * @param object $course
      * @param array instance fields

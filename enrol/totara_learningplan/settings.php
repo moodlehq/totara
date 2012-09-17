@@ -29,6 +29,8 @@ if ($ADMIN->fulltree) {
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_totara_learningplan_settings', '', get_string('pluginname_desc', 'enrol_totara_learningplan')));
 
+    $settings->add(new admin_setting_configcheckbox('enrol_totara_learningplan/defaultenrol',
+            get_string('defaultenrol', 'enrol'), get_string('defaultenrol_desc', 'enrol'), 1));
 
     //--- enrol instance defaults ----------------------------------------------------------------------------
     if (!during_initial_install()) {
