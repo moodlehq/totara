@@ -339,6 +339,14 @@ function facetoface_update_instance($facetoface) {
     facetoface_fix_settings($facetoface);
     if ($return = $DB->update_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
+
+        //update any entries the facetoface has in the site calendar
+        $sessions = facetoface_get_sessions($facetoface->id);
+        foreach ($sessions as $session) {
+            if (facetoface_remove_session_from_site_calendar($session)) {
+                facetoface_add_session_to_site_calendar($session, $facetoface);
+            }
+        }
     }
     return $return;
 }
