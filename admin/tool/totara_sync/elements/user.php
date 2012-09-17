@@ -153,9 +153,14 @@ class totara_sync_element_user extends totara_sync_element {
                     if (undelete_user($user)) {
                         $user->deleted = 0;
 
-                        // tag the revived user for new password generation
-                        set_user_preference('auth_forcepasswordchange', 1, $user->id);
-                        set_user_preference('create_password',          1, $user->id);
+                        // tag the revived user for new password generation (if applicable)
+                        $userauth = get_auth_plugin($user->auth);
+                        if ($userauth->can_change_password()) {
+                            set_user_preference('auth_forcepasswordchange', 1, $user->id);
+                            set_user_preference('create_password',          1, $user->id);
+                        }
+                        unset($userauth);
+
                         $this->addlog(get_string('reviveduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
                     } else {
                         $this->addlog(get_string('cannotreviveuserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
@@ -176,10 +181,15 @@ class totara_sync_element_user extends totara_sync_element {
 
                 // update user password
                 if (isset($suser->password)) {
-                    $auth = get_auth_plugin($user->auth);
-                    if (!$auth->user_update_password($user, $suser->password)) {
-                        $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'error', 'updateusers');
+                    $userauth = get_auth_plugin($user->auth);
+                    if ($userauth->can_change_password()) {
+                        if (!$userauth->user_update_password($user, $suser->password)) {
+                            $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'warn', 'updateusers');
+                        }
+                    } else {
+                        $this->addlog(get_string('cannotsetuserpasswordnoauthsupport', 'tool_totara_sync', $user->idnumber), 'warn', 'updateusers');
                     }
+                    unset($userauth);
                 }
 
                 // update user assignment data
@@ -233,17 +243,20 @@ class totara_sync_element_user extends totara_sync_element {
         $this->set_sync_user_fields($user, $suser);
 
         if ($user->id = $DB->insert_record('user', $user)) { // insert user
-            if (!isset($suser->password)) {
-                // tag for password generation
-                set_user_preference('auth_forcepasswordchange', 1, $user->id);
-                set_user_preference('create_password',          1, $user->id);
-            } else {
-                // set user password
-                $auth = get_auth_plugin($user->auth);
-                if (!$auth->user_update_password($user, $suser->password)) {
-                    $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'error', 'createusers');
+            $userauth = get_auth_plugin($user->auth);
+            if ($userauth->can_change_password()) {
+                if (!isset($suser->password)) {
+                    // tag for password generation
+                    set_user_preference('auth_forcepasswordchange', 1, $user->id);
+                    set_user_preference('create_password',          1, $user->id);
+                } else {
+                    // set user password
+                    if (!$userauth->user_update_password($user, $suser->password)) {
+                        $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'error', 'createusers');
+                    }
                 }
             }
+            unset($userauth);
 
             // ensure user's manager exists
             if (!empty($suser->manageridnumber) && !$DB->record_exists('user', array('idnumber' => $suser->manageridnumber))) {

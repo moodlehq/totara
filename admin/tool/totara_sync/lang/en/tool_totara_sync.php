@@ -158,6 +158,7 @@ $string['deleteduserx'] = 'deleted user {$a}';
 $string['syncaborted'] = 'sync aborted';
 $string['cannotupdateuserx'] = 'cannot update user {$a}';
 $string['cannotsetuserpassword'] = 'cannot set user password (user:{$a})';
+$string['cannotsetuserpasswordnoauthsupport'] = 'cannot set user password (user:{$a}), auth plugin does not support password changes';
 $string['updateduserx'] = 'updated user {$a}';
 $string['reviveduserx'] = 'revived user {$a}';
 $string['cannotreviveuserx'] = 'cannot revive user {$a}';
