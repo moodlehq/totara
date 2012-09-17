@@ -428,7 +428,8 @@ function totara_get_manager($userid, $postype=null){
 function totara_date_parse_from_format ($format, $date) {
 
     global $CFG;
-    $timezone = get_user_timezone_offset($CFG->timezone);
+    $tz = isset($CFG->timezone) ? $CFG->timezone : 99;
+    $timezone = get_user_timezone_offset($tz);
     $dateArray = array();
     $dateArray = date_parse_from_format($format, $date);
     if (is_array($dateArray)) {
