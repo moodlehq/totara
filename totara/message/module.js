@@ -274,7 +274,7 @@ totaraDialog_handler_confirm.prototype._confirm = function(url, returnto) {
     url = url+'&msgids='+msgids.join(',');
 
     // Send to server
-    this._dialog._request(url, this, '_redirect');
+    this._dialog._request(url, {object: this, method: '_redirect'});
 };
 
 /**
