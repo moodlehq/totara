@@ -2125,7 +2125,7 @@ class reportbuilder {
      * @return No return value but prints the current data table
      */
     function display_table() {
-        global $SESSION, $DB;
+        global $SESSION, $DB, $OUTPUT;
 
         define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
         define('SHOW_ALL_PAGE_SIZE', 9999);
@@ -2154,6 +2154,9 @@ class reportbuilder {
                 $tableheaders[] = format_string($column->heading);
             }
         }
+
+        // prevent notifications boxes inside the table
+        echo $OUTPUT->container_start('nobox');
 
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
@@ -2211,6 +2214,9 @@ class reportbuilder {
 
         // display the table
         $table->print_html();
+
+        // end of .nobox div
+        echo $OUTPUT->container_end();
     }
 
 

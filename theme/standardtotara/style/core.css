@@ -220,6 +220,7 @@ h2.headingblock {
     -o-border-radius:4px 4px 4px 4px;
     border-radius:4px 4px 4px 4px;
 }
+
 .dir-rtl .notifysuccess,
 .dir-rtl .notifyproblem,
 .dir-rtl .notifymessage,
@@ -273,6 +274,37 @@ p.errormessage {
     color:#555555;
     text-decoration:underline;
 }
+
+/* Don't include the box border/background inside this class
+ * Useful for showing warnings inside table cells, etc where
+ * there isn't enough room for a full boxed notification
+ * */
+.nobox .notifysuccess,
+.nobox .notifyproblem,
+.nobox .notifymessage,
+.nobox .notifynotice,
+.nobox .notice,
+.nobox .loginerrors,
+.nobox .errorbox {
+    margin:1em 0;
+    border: 0;
+    background-color: transparent;
+    text-shadow: none;
+    padding-left: 30px !important;
+}
+/* and RTL support */
+.dir-rtl .nobox .notifysuccess,
+.dir-rtl .nobox .notifyproblem,
+.dir-rtl .nobox .notifymessage,
+.dir-rtl .nobox .notifynotice,
+.dir-rtl .nobox .notice,
+.dir-rtl .nobox .loginerrors,
+.dir-rtl .nobox .errorbox {
+    padding-left: 0px !important;
+    padding-right: 30px !important;
+}
+
+
 /* Langmenu */
 .langmenu {
     float:right;
