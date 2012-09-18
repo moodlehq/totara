@@ -1588,7 +1588,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         }
 
         // Check if the profile field contains a date in UNIX timestamp form..
-        $timestamppattern = '/^[1-9]+$/';
+        $timestamppattern = '/^[0-9]+$/';
         if (preg_match($timestamppattern, $date, $matches) > 0) {
             return $date;
         }
