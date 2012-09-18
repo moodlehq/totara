@@ -178,6 +178,10 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $rowcount = 0;
 
         while ($csvrow = fgetcsv($file)) {
+            // skip empty rows
+            if (is_array($csvrow) && current($csvrow) === null) {
+                continue;
+            }
             $csvrow = array_combine($fields, $csvrow);  // nice associative array ;)
 
             // clean the data a bit

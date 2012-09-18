@@ -146,6 +146,10 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
         $rowcount = 0;
 
         while ($row = fgetcsv($file)) {
+            // skip empty rows
+            if (is_array($row) && current($row) === null) {
+                continue;
+            }
             $row = array_combine($fields, $row);  // nice associative array ;)
 
             // clean the data a bit
