@@ -86,7 +86,9 @@ if ($download == "ods") {
     require_once("$CFG->libdir/odslib.class.php");
 
     // Calculate file name
-    $filename = clean_filename("$course->shortname ".strip_tags(format_string($certificate->name,true))).'.ods';
+    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
+    $filename = clean_filename(strip_tags(format_string($filename, true))).'.ods';
     // Creating a workbook
     $workbook = new MoodleODSWorkbook("-");
     // Send HTTP headers
@@ -135,7 +137,9 @@ if ($download == "xls") {
     require_once("$CFG->libdir/excellib.class.php");
 
     // Calculate file name
-    $filename = clean_filename("$course->shortname " . strip_tags(format_string($certificate->name, true))) . '.xls';
+    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
+    $filename = clean_filename(strip_tags(format_string($filename, true))).'.xls';
     // Creating a workbook
     $workbook = new MoodleExcelWorkbook("-");
     // Send HTTP headers
@@ -181,7 +185,9 @@ if ($download == "xls") {
 }
 
 if ($download == "txt") {
-    $filename = clean_filename("$course->shortname " . strip_tags(format_string($certificate->name, true))) . '.txt';
+    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
+    $filename = clean_filename(strip_tags(format_string($filename, true))).'.txt';
 
     header("Content-Type: application/download\n");
     header("Content-Disposition: attachment; filename=\"$filename\"");
