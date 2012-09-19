@@ -173,8 +173,9 @@ $string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
 
 
 ///
-/// Totara sync log report
+/// Totara sync log reports
 ///
+$string['synclog'] = 'Sync log';
 $string['sourcetitle'] = 'Totara Sync Log';
 $string['datetime'] = 'Date/Time';
 $string['logtype'] = 'Log type';
@@ -183,4 +184,11 @@ $string['info'] = 'Info';
 $string['warn'] = 'Warning';
 $string['action'] = 'Action';
 $string['info'] = 'Info';
+$string['id'] = 'ID';
+$string['datetime'] = 'Date/Time';
+$string['element'] = 'Element';
+$string['logtype'] = 'Logtype';
+$string['action'] = 'Action';
+$string['info'] = 'Info';
+
 ?>
