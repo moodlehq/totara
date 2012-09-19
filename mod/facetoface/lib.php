@@ -2682,7 +2682,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
  * @return string the ical text properly formatted to open in Outlook
  */
 function facetoface_get_ical_text($method, $facetoface, $session, $user) {
-    global $CFG;
+    global $CFG, $DB;
 
     // First, generate all the VEVENT blocks
     $VEVENTS = '';
@@ -2694,9 +2694,18 @@ function facetoface_get_ical_text($method, $facetoface, $session, $user) {
 
         // UIDs should be globally unique
         $urlbits = parse_url($CFG->wwwroot);
+        $sql = "SELECT COUNT(*)
+            FROM {facetoface_signups} su
+            INNER JOIN {facetoface_signups_status} sus ON su.id = sus.signupid
+            WHERE su.userid = ?
+                AND su.sessionid = ?
+                AND sus.superceded = 1
+                AND sus.statuscode = ? ";
+        $params = array($user->id, $session->id, MDL_F2F_STATUS_USER_CANCELLED);
         $UID =
             $DTSTAMP .
             '-' . substr(md5($CFG->siteidentifier . $session->id . $date->id), -8) .   // Unique identifier, salted with site identifier
+            '-' . $DB->count_records_sql($sql, $params) .                              // New UID if this is a re-signup ;)
             '@' . $urlbits['host'];                                                    // Hostname for this moodle installation
 
         $DTSTART = facetoface_ical_generate_timestamp($date->timestart);
