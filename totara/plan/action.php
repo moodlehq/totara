@@ -128,15 +128,29 @@ if (!empty($decline)) {
 /// Approval request
 ///
 if (!empty($approvalrequest)) {
+    global $DB;
+    $manager = $plan->get_manager();
 
     // If plan is a draft, must be asking for plan approval
     if ($plan->status == DP_PLAN_STATUS_UNAPPROVED) {
         if ($plan->get_setting('approve') == DP_PERMISSION_REQUEST) {
             // If a learner is updating their plan and now needs approval, notify manager
             if ($USER->id == $plan->userid) {
-                if ($plan->get_manager()) {
-                    $plan->send_manager_plan_approval_request();
-                    add_to_log(SITEID, 'plan', 'requested approval', "view.php?id={$plan->id}", $plan->name);
+                if ($manager) {
+                    //check for existing approval requests for that plan
+                    $sql = 'SELECT id
+                            FROM {message}
+                            WHERE useridfrom = ?
+                            AND useridto = ?
+                            AND contexturlname = ?
+                            AND ' . $DB->sql_like('contexturl', '?');
+
+                    $duplicates = $DB->get_records_sql($sql, array($plan->userid, $manager->id, $plan->name, "%view.php?id={$plan->id}"));
+                    if (empty($duplicates)) {
+                        //only send email/task if there is not already one for that learning plan
+                        $plan->send_manager_plan_approval_request();
+                        add_to_log(SITEID, 'plan', 'requested approval', "view.php?id={$plan->id}", $plan->name);
+                    }
                 }
                 else {
                     totara_set_notification(get_string('nomanager', 'totara_plan'), $referer);
@@ -163,7 +177,7 @@ if (!empty($approvalrequest)) {
         // Get unapproved items
         $unapproved = $plan->get_unapproved_items();
         if ($unapproved) {
-            if ($plan->get_manager()) {
+            if ($manager) {
                 $plan->send_manager_item_approval_request($unapproved);
             }
             else {
