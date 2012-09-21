@@ -162,11 +162,11 @@ if (!core_tables_exist()) {
 
         $PAGE->navbar->add($strcurrentrelease);
         $PAGE->set_title($strinstallation);
-        $PAGE->set_heading($strinstallation . ' - Totara ' . $CFG->target_release);
+        $PAGE->set_heading($strinstallation . ' - Totara ' . $TOTARA->release);
         $PAGE->set_cacheable(false);
 
         $output = $PAGE->get_renderer('core', 'admin');
-        echo $output->install_environment_page($maturity, $envstatus, $environment_results, $release);
+        echo $output->install_environment_page($maturity, $envstatus, $environment_results, $TOTARA->release);
         die();
     }
 
@@ -264,7 +264,7 @@ if ($version > $CFG->version
         $PAGE->set_cacheable(false);
 
         $output = $PAGE->get_renderer('core', 'admin');
-        echo $output->upgrade_environment_page($release, $envstatus, $environment_results);
+        echo $output->upgrade_environment_page($TOTARA->release, $envstatus, $environment_results);
         die();
 
     } else if (empty($confirmplugins)) {

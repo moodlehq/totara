@@ -128,7 +128,7 @@ $string['configallowobjectembed'] = 'As a default security measure, normal users
 $string['configallowoverride'] = 'You can allow people with the roles on the left side to override some of the column roles';
 $string['configallowoverride2'] = 'Select which role(s) can be overridden by each role in the left column.<br />Note that these settings only apply to users who have either the capability moodle/role:override or the capability moodle/role:safeoverride allowed.';
 $string['configallowswitch'] = 'Select which roles a user may switch to, based on which roles they already have. In addition to an entry in this table, a user must also have the moodle/role:switchroles capability to be able to switch.<br />Note that it is only possible to switch to roles that have the moodle/course:view capability, and that do not have the moodle/site:doanything capability, so some columns in this table are disabled.';
-$string['configallowthemechangeonurl'] = 'If enabled, the theme can be changed by adding either:<br />?theme=themename to any Moodle URL (eg: mymoodlesite.com/?theme=afterburner ) or <br />&theme=themename to any internal Moodle URL (eg: mymoodlesite.com/course/view.php?id=2&theme=afterburner ).';
+$string['configallowthemechangeonurl'] = 'If enabled, the theme can be changed by adding either:<br />?theme=themename to any Totara URL (eg: mytotarasite.com/?theme=afterburner ) or <br />&theme=themename to any internal Totara URL (eg: mytotarasite.com/course/view.php?id=2&theme=afterburner ).';
 $string['configallowuserblockhiding'] = 'Do you want to allow users to hide/show side blocks throughout this site?  This feature uses Javascript and cookies to remember the state of each collapsible block, and only affects the user\'s own view.';
 $string['configallowuserswitchrolestheycantassign'] = 'By default, moodle/role:assign is required for users to switch roles. Enabling this setting removes this requirement, and results in the roles available in the "Switch role to" dropdown menu being determined by settings in the "Allow role assignments" table only.
 It is recommended that the settings in the "Allow role assignments" table do not allow users to switch to a role with more capabilities than their existing role.';
@@ -139,7 +139,7 @@ $string['configautolang'] = 'Detect default language from browser setting, if di
 $string['configautologinguests'] = 'Should visitors be logged in as guests automatically when entering courses with guest access?';
 $string['configbloglevel'] = 'This setting allows you to restrict the level to which user blogs can be viewed on this site.  Note that they specify the maximum context of the VIEWER not the poster or the types of blog posts.  Blogs can also be disabled completely if you don\'t want them at all.';
 $string['configcachetext'] = 'For larger sites or sites that use text filters, this setting can really speed things up.  Copies of texts will be retained in their processed form for the time specified here.  Setting this too small may actually slow things down slightly,  but setting it too large may mean texts take too long to refresh (with new links, for example).';
-$string['configcachetype'] = 'Select a type of cache for Moodle to use. This will only configure the cache, remember to enable rcache so that the cache is used for something. Use <strong>only</strong> if you need to reduce the load on the database system -- otherwise Moodle will actually run slower. Medium-traffic sites may see benefits using \'internal\'. A single webserver with eAccelerator or Turckmmcache installed <em>with the shared memory options enabled</em> should try \'eaccelerator\'. If you have a multiple-server setup, and you have one or more memcached daemons running and the PHP-memcached extension, select \'memcached\' and configure the memached options below. <br /><strong>Note:</strong> make sure you test performance under load and tune accordingly -- the caches can make your site slower. In high-traffic situations, eAccelerator and memcached can yield the most benefits, but have the higher costs in CPU usage on the webserver.';
+$string['configcachetype'] = 'Select a type of cache for Totara to use. This will only configure the cache, remember to enable rcache so that the cache is used for something. Use <strong>only</strong> if you need to reduce the load on the database system -- otherwise Totara will actually run slower. Medium-traffic sites may see benefits using \'internal\'. A single webserver with eAccelerator or Turckmmcache installed <em>with the shared memory options enabled</em> should try \'eaccelerator\'. If you have a multiple-server setup, and you have one or more memcached daemons running and the PHP-memcached extension, select \'memcached\' and configure the memached options below. <br /><strong>Note:</strong> make sure you test performance under load and tune accordingly -- the caches can make your site slower. In high-traffic situations, eAccelerator and memcached can yield the most benefits, but have the higher costs in CPU usage on the webserver.';
 $string['configcalendarexportsalt'] = 'This random text is used for improving of security of authentication tokens used for exporting of calendars. Please note that all current tokens are invalidated if you change this hash salt.';
 $string['configclamactlikevirus'] = 'Treat files like viruses';
 $string['configclamdonothing'] = 'Treat files as OK';
@@ -158,15 +158,13 @@ $string['configcronremotepassword'] = 'This means that the cron.php script canno
 $string['configcurlcache'] = 'Time-to-live for cURL cache, in seconds.';
 $string['configcustommenuitems'] = 'You can configure a custom menu here to be shown by themes. Each line consists of some menu text, a link URL (optional) and a tooltip title (optional), separated by pipe characters. You can specify a structure using hyphens. For example:
 <pre>
-Moodle community|http://moodle.org
--Moodle free support|http://moodle.org/support
--Moodle development|http://moodle.org/development
---Moodle Tracker|http://tracker.moodle.org
---Moodle Docs|http://docs.moodle.org
--Moodle News|http://moodle.org/news
-Moodle company
--Moodle commercial hosting|http://moodle.com/hosting
--Moodle commercial support|http://moodle.com/support
+Totara community|http://www.community.totaralms.com
+-Totara support|http://www.support.totaralms.com
+-Totara development|http://www.dev.totaralms.com
+--Totara help|http://www.help.totaralms.com
+-Totara News|http://www.totaralms.com/about-totara/news
+Totara Company
+-Totara Partners|http://www.totaralms.com/partners
 </pre>';
 $string['configdbsessions'] = 'If enabled, this setting will use the database to store information about current sessions.  This is especially useful for large/busy sites or sites built on cluster of servers.  For most sites this should probably be left disabled so that the server disk is used instead.  Note that changing this setting now will log out all current users (including you). If you are using MySQL please make sure that \'max_allowed_packet\' in my.cnf (or my.ini) is at least 4M.';
 $string['configdebug'] = 'If you turn this on, then PHP\'s error_reporting will be increased so that more warnings are printed.  This is only useful for developers.';
@@ -185,8 +183,8 @@ $string['configdenyemailaddresses'] = 'To deny email addresses from particular d
 $string['configenabledevicedetection'] = 'Enables detection of mobiles, smartphones, tablets or default devices (desktop PCs, laptops, etc) for the application of themes and other features.';
 $string['configdisableuserimages'] = 'Disable the ability for users to change user profile images.';
 $string['configdisplayloginfailures'] = 'This will display information to selected users about previous failed logins.';
-$string['configdocroot'] = 'Defines the path to the Moodle Docs. You can change this if you wish to have your own custom online documentation. However, if you do that make sure that the paths in your documentation follow the same format as http://docs.moodle.org.';
-$string['configdoctonewwindow'] = 'If you enable this, then links to Moodle Docs will be shown in a new window.';
+$string['configdocroot'] = 'Defines the path to the Totara Docs. You can change this if you wish to have your own custom online documentation. However, if you do that make sure that the paths in your documentation follow the same format as http://docs.moodle.org.';
+$string['configdoctonewwindow'] = 'If you enable this, then links to Totara Docs will be shown in a new window.';
 $string['configeditordictionary'] = 'This value will be used if aspell doesn\'t have dictionary for users own language.';
 $string['configeditorfontlist'] = 'Select the fonts that should appear in the editor\'s drop-down list.';
 $string['configemailchangeconfirmation'] = 'Require an email confirmation step when users change their email address in their profile.';
@@ -195,14 +193,14 @@ $string['configenablecalendarexport'] = 'Enable exporting or subscribing to cale
 $string['configenablecomments'] = 'Enable comments';
 $string['configenablecourserequests'] = 'This will allow any user to request a course be created.';
 $string['configenablegroupmembersonly'] = 'If enabled, access to activities can be restricted to group members only. This may result in an increased server load. In addition, gradebook categories must be set up in a certain way to ensure that activities are hidden from non-group members.';
-$string['configenablemobilewebservice'] = 'Enable mobile service for the official Moodle app or other app requesting it. For more information, read the {$a}';
+$string['configenablemobilewebservice'] = 'Enable mobile service for the official Totara app or other app requesting it. For more information, read the {$a}';
 $string['configenablerssfeeds'] = 'This switch will enable RSS feeds from across the site.  To actually see any change you will need to enable RSS feeds in the individual modules too - go to the Modules settings under Admin Configuration.';
 $string['configenablerssfeedsdisabled'] = 'It is not available because RSS feeds are disabled in all the Site. To enable them, go to the Variables settings under Admin Configuration.';
 $string['configenablerssfeedsdisabled2'] = 'RSS feeds are disabled at the server level. You need to enable them first in Server/RSS.';
 $string['configenablesafebrowserintegration'] = 'This adds the choice \'Require Safe Exam Browser\' to the \'Browser security\' field on the quiz settings form. See http://www.safeexambrowser.org/ for more information.';
-$string['configenablestats'] = 'If you choose \'yes\' here, Moodle\'s cronjob will process the logs and gather some statistics.  Depending on the amount of traffic on your site, this can take awhile. If you enable this, you will be able to see some interesting graphs and statistics about each of your courses, or on a sitewide basis.';
-$string['configenabletrusttext'] = 'By default Moodle will always thoroughly clean text that comes from users to remove any possible bad scripts, media etc that could be a security risk.  The Trusted Content system is a way of giving particular users that you trust the ability to include these advanced features in their content without interference.  To enable this system, you need to first enable this setting, and then grant the Trusted Content permission to a specific Moodle role.  Texts created or uploaded by such users will be marked as trusted and will not be cleaned before display.';
-$string['configenablewebservices'] = 'Web services enable other systems to log in to this Moodle and perform operations.  For extra security this feature should be disabled unless you are really using it.';
+$string['configenablestats'] = 'If you choose \'yes\' here, Totara\'s cronjob will process the logs and gather some statistics.  Depending on the amount of traffic on your site, this can take awhile. If you enable this, you will be able to see some interesting graphs and statistics about each of your courses, or on a sitewide basis.';
+$string['configenabletrusttext'] = 'By default Totara will always thoroughly clean text that comes from users to remove any possible bad scripts, media etc that could be a security risk.  The Trusted Content system is a way of giving particular users that you trust the ability to include these advanced features in their content without interference.  To enable this system, you need to first enable this setting, and then grant the Trusted Content permission to a specific Totara role.  Texts created or uploaded by such users will be marked as trusted and will not be cleaned before display.';
+$string['configenablewebservices'] = 'Web services enable other systems to log in to this Totara and perform operations.  For extra security this feature should be disabled unless you are really using it.';
 $string['configenablewsdocumentation'] = 'Enable auto-generation of web services documentation. A user can access to his own documentation on his security keys page {$a}. It displays the documentation for the enabled protocols only.';
 $string['configerrorlevel'] = 'Choose the amount of PHP warnings that you want to be displayed.  Normal is usually the best choice.';
 $string['configextendedusernamechars'] = 'Enable this setting to allow students to use any characters in their usernames (note this does not affect their actual names).  The default is "false" which restricts usernames to be alphanumeric lowercase characters, underscore (_), hyphen (-), period (.) or at symbol (@).';
@@ -218,7 +216,7 @@ $string['configfrontpage'] = 'The items selected above will be displayed on the 
 $string['configfrontpageloggedin'] = 'The items selected above will be displayed on the site\'s front page when a user is logged in.';
 $string['configfullnamedisplay'] = 'This defines how names are shown when they are displayed in full. For most mono-lingual sites the most efficient setting is "First name + Surname", but you may choose to hide surnames altogether, or to leave it up to the current language pack to decide (some languages have different conventions).';
 $string['configgdversion'] = 'Indicate the version of GD that is installed.  The version shown by default is the one that has been auto-detected.  Don\'t change this unless you really know what you\'re doing.';
-$string['configgeoipfile'] = 'Location of GeoIP City binary data file. This file is not part of Moodle distribution and must be obtained separately from <a href="http://www.maxmind.com/">MaxMind</a>. You can either buy a commercial version or use the free version.<br />Simply download <a href="http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" >http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz</a> and extract it into "{$a}" directory on your server.';
+$string['configgeoipfile'] = 'Location of GeoIP City binary data file. This file is not part of Totara distribution and must be obtained separately from <a href="http://www.maxmind.com/">MaxMind</a>. You can either buy a commercial version or use the free version.<br />Simply download <a href="http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" >http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz</a> and extract it into "{$a}" directory on your server.';
 $string['configgetremoteaddrconf'] = 'If your server is behind a reverse proxy, you can use this setting to specify which HTTP headers can be trusted to contain the remote IP address. The headers are read in order, using the first one that is available.';
 $string['configgooglemapkey'] = 'You need to enter a special key to use Google Maps for IP address lookup visualization. You can obtain the key free of charge at <a href="https://developers.google.com/maps/documentation/javascript/v2/introduction#Obtaining_Key">https://developers.google.com/maps/documentation/javascript/v2/introduction#Obtaining_Key</a>.<br />Your web site URL is: {$a}';
 $string['configgradebookroles'] = 'This setting allows you to control who appears on the gradebook.  Users need to have at least one of these roles in a course to be shown in the gradebook for that course.';
@@ -226,18 +224,18 @@ $string['configgradeexport'] = 'Choose which gradebook export formats are your p
 $string['confighiddenuserfields'] = 'Select which user information fields you wish to hide from other users other than course teachers/admins. This will increase student privacy. Hold CTRL key to select multiple fields.';
 $string['configidnumber'] = 'This option specifies whether (a) Users are not be asked for an ID number at all, (b) Users are asked for an ID number but can leave it blank or (c) Users are asked for an ID Number and cannot leave it blank. If given the User\'s ID number is displayed in their Profile.';
 $string['configintcachemax'] = 'For internal cache only. Maximum number of records to keep in the cache. Recommended value: 50. Use lower values to reduce memory usage.';
-$string['configintro'] = 'On this page you can specify a number of configuration variables that help make Moodle work properly on your server.  Don\'t worry too much about it - the defaults will usually work fine and you can always come back to this page later and change these settings.';
+$string['configintro'] = 'On this page you can specify a number of configuration variables that help make Totara work properly on your server.  Don\'t worry too much about it - the defaults will usually work fine and you can always come back to this page later and change these settings.';
 $string['configintroadmin'] = 'On this page you should configure your main administrator account which will have complete control over the site. Make sure you give it a secure username and password as well as a valid email address.  You can create more admin accounts later on.';
 $string['configintrosite'] = 'This page allows you to configure the front page and name of this new site.  You can come back here later to change these settings any time using the Administration menus.';
 $string['configiplookup'] = 'When you click on an IP address (such as 34.12.222.93), such as in the logs, you are shown a map with a best guess of where that IP is located.  There are different plugins for this that you can choose from, each has benefits and disadvantages.';
 $string['configkeeptagnamecase'] = 'Check this if you want tag names to keep the original casing as entered by users who created them';
 $string['configlang'] = 'Choose a default language for the whole site. Users can override this setting using the language menu or the setting in their personal profile.';
-$string['configlangstringcache'] = 'Caches all the language strings into compiled files in the data directory.  If you are translating Moodle or changing strings in the Moodle source code then you may want to switch this off.  Otherwise leave it on to see performance benefits.';
-$string['configlanglist'] = 'Leave this blank to allow users to choose from any language you have in this installation of Moodle.  However, you can shorten the language menu by entering a comma-separated list of language codes that you want.  For example:  en,es_es,fr,it';
+$string['configlangstringcache'] = 'Caches all the language strings into compiled files in the data directory.  If you are translating Totara or changing strings in the Totara source code then you may want to switch this off.  Otherwise leave it on to see performance benefits.';
+$string['configlanglist'] = 'Leave this blank to allow users to choose from any language you have in this installation of Totara.  However, you can shorten the language menu by entering a comma-separated list of language codes that you want.  For example:  en,es_es,fr,it';
 $string['configlangmenu'] = 'Choose whether or not you want to display the general-purpose language menu on the home page, login page etc.  This does not affect the user\'s ability to set the preferred language in their own profile.';
 $string['configlatinexcelexport'] = 'Choose the encoding for Excel exports.';
 $string['configlocale'] = 'Choose a sitewide locale - this will override the format and language of dates for all language packs (though names of days in calendar are not affected). You need to have this locale data installed on your operating system (eg for linux en_US.UTF-8 or es_ES.UTF-8). In most cases this field should be left blank.';
-$string['configloginhttps'] = 'Turning this on will make Moodle use a secure https connection just for the login page (providing a secure login), and then afterwards revert back to the normal http URL for general speed.  CAUTION: this setting REQUIRES https to be specifically enabled on the web server - if it is not then YOU COULD LOCK YOURSELF OUT OF YOUR SITE.';
+$string['configloginhttps'] = 'Turning this on will make Totara use a secure https connection just for the login page (providing a secure login), and then afterwards revert back to the normal http URL for general speed.  CAUTION: this setting REQUIRES https to be specifically enabled on the web server - if it is not then YOU COULD LOCK YOURSELF OUT OF YOUR SITE.';
 $string['configloglifetime'] = 'This specifies the length of time you want to keep logs about user activity.  Logs that are older than this age are automatically deleted.  It is best to keep logs as long as possible, in case you need them, but if you have a very busy server and are experiencing performance problems, then you may want to lower the log lifetime. Values lower than 30 are not recommended because statistics may not work properly.';
 $string['configlookahead'] = 'Days to look ahead';
 $string['configmaxbytes'] = 'This specifies a maximum size that uploaded files can be throughout the whole site. This setting is limited by the PHP settings post_max_size and upload_max_filesize, as well as the Apache setting LimitRequestBody. In turn, maxbytes limits the range of sizes that can be chosen at course level or module level. If \'Server Limit\' is chosen, the server maximum allowed by the server will be used.';
@@ -265,7 +263,7 @@ $string['confignotifyloginthreshold'] = 'If notifications about failed logins ar
 $string['confignotloggedinroleid'] = 'Users who are not logged in to the site will be treated as if they have this role granted to them at the site context.  Guest is almost always what you want here, but you might want to create roles that are less or more restrictive.  Things like creating posts still require the user to log in properly.';
 $string['configopentogoogle'] = 'If you enable this setting, then Google will be allowed to enter your site as a Guest.  In addition, people coming in to your site via a Google search will automatically be logged in as a Guest.  Note that this only provides transparent access to courses that already allow guest access.';
 $string['configoverride'] = 'Defined in config.php';
-$string['configpasswordpolicy'] = 'Turning this on will make Moodle check user passwords against a valid password policy. Use the settings below to specify your policy (they will be ignored if you set this to \'No\').';
+$string['configpasswordpolicy'] = 'Turning this on will make Totara check user passwords against a valid password policy. Use the settings below to specify your policy (they will be ignored if you set this to \'No\').';
 $string['configpathtoclam'] = 'Path to clam AV.  Probably something like /usr/bin/clamscan or /usr/bin/clamdscan. You need this in order for clam AV to run.';
 $string['configpathtodu'] = 'Path to du. Probably something like /usr/bin/du. If you enter this, pages that display directory contents will run much faster for directories with a lot of files.';
 $string['configperfdebug'] = 'If you turn this on, performance info will be printed in the footer of the standard theme';
@@ -281,7 +279,7 @@ $string['configproxyuser'] = 'Username needed to access internet through proxy i
 $string['configquarantinedir'] = 'If you want clam AV to move infected files to a quarantine directory, enter it here. It must be writable by the webserver.  If you leave this blank, or if you enter a directory that doesn\'t exist or isn\'t writable, infected files will be deleted.  Do not include a trailing slash.';
 $string['configrcache'] = 'Use the cache to store database records. Remember to set \'cachetype\' as well!';
 $string['configrcachettl'] = 'Time-to-live for cached records, in seconds. Use a short (&lt;15) value here.';
-$string['configrecaptchaprivatekey'] = 'String of characters used to communicate between your Moodle server and the recaptcha server. Obtain one for this site by visiting http://www.google.com/recaptcha';
+$string['configrecaptchaprivatekey'] = 'String of characters used to communicate between your Totara server and the recaptcha server. Obtain one for this site by visiting http://www.google.com/recaptcha';
 $string['configrecaptchapublickey'] = 'String of characters used to display the reCAPTCHA element in the signup form. Generated by http://www.google.com/recaptcha';
 $string['configrequestedstudentname'] = 'Word for student used in requested courses';
 $string['configrequestedstudentsname'] = 'Word for students used in requested courses';
@@ -303,10 +301,10 @@ $string['configsectionrequestedcourse'] = 'Course requests';
 $string['configsectionsecurity'] = 'Security';
 $string['configsectionstats'] = 'Statistics';
 $string['configsectionuser'] = 'User';
-$string['configsecureforms'] = 'Moodle can use an additional level of security when accepting data from web forms. If this is enabled, then the browser\'s HTTP_REFERER variable is checked against the current form address.  In a very few cases this can cause problems if the user is using a firewall (eg Zonealarm) configured to strip HTTP_REFERER from their web traffic.  Symptoms are getting \'stuck\' on a form. If your users are having problems with the login page (for example) you might want to disable this setting, although it might leave your site more open to brute-force password attacks.  If in doubt, leave this set to \'Yes\'.';
-$string['configsessioncookie'] = 'This setting customises the name of the cookie used for Moodle sessions.  This is optional, and only useful to avoid cookies being confused when there is more than one copy of Moodle running within the same web site.';
-$string['configsessioncookiedomain'] = 'This allows you to change the domain that the Moodle cookies are available from. This is useful for Moodle customisations (e.g. authentication or enrolment plugins) that need to share Moodle session information with a web application on another subdomain. <strong>WARNING: it is strongly recommended to leave this setting at the default (empty) - an incorrect value will prevent all logins to the site.</strong>';
-$string['configsessioncookiepath'] = 'If you need to change where browsers send the Moodle cookies, you can change this setting to specify a subdirectory of your web site.  Otherwise the default \'/\' should be fine.';
+$string['configsecureforms'] = 'Totara can use an additional level of security when accepting data from web forms. If this is enabled, then the browser\'s HTTP_REFERER variable is checked against the current form address.  In a very few cases this can cause problems if the user is using a firewall (eg Zonealarm) configured to strip HTTP_REFERER from their web traffic.  Symptoms are getting \'stuck\' on a form. If your users are having problems with the login page (for example) you might want to disable this setting, although it might leave your site more open to brute-force password attacks.  If in doubt, leave this set to \'Yes\'.';
+$string['configsessioncookie'] = 'This setting customises the name of the cookie used for Totara sessions.  This is optional, and only useful to avoid cookies being confused when there is more than one copy of Totara running within the same web site.';
+$string['configsessioncookiedomain'] = 'This allows you to change the domain that the Totara cookies are available from. This is useful for Totara customisations (e.g. authentication or enrolment plugins) that need to share Totara session information with a web application on another subdomain. <strong>WARNING: it is strongly recommended to leave this setting at the default (empty) - an incorrect value will prevent all logins to the site.</strong>';
+$string['configsessioncookiepath'] = 'If you need to change where browsers send the Totara cookies, you can change this setting to specify a subdirectory of your web site.  Otherwise the default \'/\' should be fine.';
 $string['configsessiontimeout'] = 'If people logged in to this site are idle for a long time (without loading pages) then they are automatically logged out (their session is ended).  This variable specifies how long this time should be.';
 $string['configshowcommentscount'] = 'Show comments count, it will cost one more query when display comments link';
 $string['configshowsiteparticipantslist'] = 'All of these site students and site teachers will be listed on the site participants list. Who shall be allowed to see this site participants list?';
@@ -315,14 +313,14 @@ $string['configsitedefaultlicensehelp'] = 'The default licence for publishing co
 $string['configsitemaxcategorydepth'] = 'Maximum category depth';
 $string['configsitemaxcategorydepthhelp'] = 'This specifies the maximum depth of child categories shown';
 $string['configslasharguments'] = 'Files (images, uploads etc) are provided via a script using \'slash arguments\'. This method allows files to be more easily cached in web browsers, proxy servers etc.  Unfortunately, some PHP servers don\'t allow this method, so if you have trouble viewing uploaded files or images (eg user pictures), disable this setting.';
-$string['configsmartpix'] = 'With this on, icons are served through a PHP script that searches the current theme, then all parent themes, then the Moodle /pix folder. This reduces the need to duplicate image files within themes, but has a slight performance cost.';
+$string['configsmartpix'] = 'With this on, icons are served through a PHP script that searches the current theme, then all parent themes, then the Totara /pix folder. This reduces the need to duplicate image files within themes, but has a slight performance cost.';
 $string['configstartwday'] = 'Start of week';
 $string['configstatsfirstrun'] = 'This specifies how far back the logs should be processed <b>the first time</b> the cronjob wants to process statistics. If you have a lot of traffic and are on shared hosting, it\'s probably not a good idea to go too far back, as it could take a long time to run and be quite resource intensive. (Note that for this setting, 1 month = 28 days. In the graphs and reports generated, 1 month = 1 calendar month.)';
 $string['configstatsmaxruntime'] = 'Stats processing can be quite intensive, so use a combination of this field and the next one to specify when it will run and how long for.';
 $string['configstatsmaxruntime2'] = 'Stats processing can be quite intensive, specify maximum time allowed for gathering of one day of statistics. Maximum number of days processed in one cron execution is 31.';
 $string['configstatsmaxruntime3'] = 'Specify the maximum time allowed to calculate the statistics for one day, bearing in mind that stats processing can put a big load on the server. The maximum number of days processed in one cron can be specified below.';
 $string['configstatsruntimedays'] = 'Specify the maximum number of days processed in each stats execution. When stats are up-to-date, only one day will be processed, so adjust this value depending of your server load, reducing it if shorter cron executions are needed.';
-$string['configstatsruntimestart'] = 'What time should the cronjob that does the stats processing <b>start</b>? Please specify different times if there are multiple Moodles on one physical server.';
+$string['configstatsruntimestart'] = 'What time should the cronjob that does the stats processing <b>start</b>? Please specify different times if there are multiple Totaras on one physical server.';
 $string['configstatsuserthreshold'] = 'This setting specifies the minimum number of enrolled users for a course to be included in statistics calculations.';
 $string['configstrictformsrequired'] = 'If enabled, users are prevented from entering a space or line break only in required fields in forms.';
 $string['configstripalltitletags'] = 'Uncheck this setting to allow HTML tags in activity and resource names.';
@@ -332,8 +330,8 @@ $string['configsupportpage'] = 'This web address will be published to users of t
 $string['configthemedesignermode'] = 'Normally all theme images and style sheets are cached in browsers and on the server for a very long time, for performance. If you are designing themes or developing code then you probably want to turn this mode on so that you are not served cached versions.  Warning: this will make your site slower for all users!  Alternatively, you can also reset the theme caches manually from the Theme selection page.';
 $string['configthemelist'] = 'Leave this blank to allow any valid theme to be used.  If you want to shorten the theme menu, you can specify a comma-separated list of names here (Don\'t use spaces!).
 For example:  standard,orangewhite.';
-$string['configtimezone'] = 'You can set the default timezone here.  This is the only the DEFAULT timezone for displaying dates - each user can override this by setting their own in their profile. "Server time" here will make Moodle default to the server\'s operating system setting, but "Server time" in the user profile will make the user default to this timezone setting.  Cronjobs that depend on a time of day to run will use this timezone.';
-$string['configunzip'] = 'Indicate the location of your unzip program (Unix only, optional).  If specified, this will be used to unpack zip archives on the server.  If you leave this blank, then Moodle will use internal routines.';
+$string['configtimezone'] = 'You can set the default timezone here.  This is the only the DEFAULT timezone for displaying dates - each user can override this by setting their own in their profile. "Server time" here will make Totara default to the server\'s operating system setting, but "Server time" in the user profile will make the user default to this timezone setting.  Cronjobs that depend on a time of day to run will use this timezone.';
+$string['configunzip'] = 'Indicate the location of your unzip program (Unix only, optional).  If specified, this will be used to unpack zip archives on the server.  If you leave this blank, then Totara will use internal routines.';
 $string['configuseblogassociations'] = 'Should users be able to organize their blog by associating entries with courses and course modules?';
 $string['configuseexternalyui'] = 'Instead of using local files, use online files available on Yahoo&#145;s servers. WARNING: This requires an internet connection, or no AJAX will work on your site. This setting is not compatible with sites using https.';
 $string['configusesitenameforsitepages'] = 'If enabled the site\'s shortname will be used for the site pages node in the navigation rather than the string \'Site pages\'';
@@ -344,7 +342,7 @@ $string['configvisiblecourses'] = 'Display courses in hidden categories normally
 $string['configwarning'] = 'Be careful modifying these settings - strange values could cause problems.';
 $string['configxmlstrictheaders'] = 'Set to on, each page will be generated using XML http headers and prolog, so browsers will show XHTML errors inline. This is only useful for developers.';
 $string['configyuicomboloading'] = 'This options enables combined file loading optimisation for YUI libraries. This setting should be enabled on production sites for performance reasons.';
-$string['configzip'] = 'Indicate the location of your zip program (Unix only, optional).  If specified, this will be used to create zip archives on the server.  If you leave this blank, then Moodle will use internal routines.';
+$string['configzip'] = 'Indicate the location of your zip program (Unix only, optional).  If specified, this will be used to create zip archives on the server.  If you leave this blank, then Totara will use internal routines.';
 $string['confirmation'] = 'Confirmation';
 $string['confirmdeletecomments'] = 'You are about to delete comments, are you sure?';
 $string['confirmed'] = 'Confirmed';
@@ -367,7 +365,7 @@ $string['coursesperpage'] = 'Courses per page';
 $string['creatornewroleid'] = 'Creators\' role in new courses';
 $string['creatornewroleid_help'] = 'If the user does not already have the permission to manage the new course, the user is automatically enrolled using this role.';
 $string['cron'] = 'Cron';
-$string['cron_help'] = 'The cron.php maintenance script assists some of Moodle\'s modules to perform tasks on a scheduled basis, such as mailing out copies of new forum posts. A mechanism is required to run the script regularly e.g. every 5 minutes.';
+$string['cron_help'] = 'The cron.php maintenance script assists some of Totara\'s modules to perform tasks on a scheduled basis, such as mailing out copies of new forum posts. A mechanism is required to run the script regularly e.g. every 5 minutes.';
 $string['cron_link'] = 'admin/cron';
 $string['cronclionly'] = 'Cron execution via command line only';
 $string['cronerrorclionly'] = 'Sorry, internet access to this page has been disabled by the administrator.';
@@ -375,10 +373,10 @@ $string['cronerrorpassword'] = 'Sorry, you have not provided a valid password to
 $string['cronremotepassword'] = 'Cron password for remote access';
 $string['cronwarning'] = 'The <a href="cron.php">cron.php maintenance script</a> has not been run for at least 24 hours.';
 $string['ctyperecommended'] = 'Installing the optional ctype PHP extension is highly recommended in order to improve site performance, particularly if your site is supporting non-latin languages.';
-$string['ctyperequired'] = 'The ctype PHP extension is now required by Moodle, in order to improve site performance and to offer multilingual compatibility.';
+$string['ctyperequired'] = 'The ctype PHP extension is now required by Totara, in order to improve site performance and to offer multilingual compatibility.';
 $string['curlcache'] = 'cURL cache TTL';
-$string['curlrecommended'] = 'Installing the optional cURL library is highly recommended in order to enable Moodle Networking functionality.';
-$string['curlrequired'] = 'The cURL PHP extension is now required by Moodle, in order to communicate with Moodle repositories.';
+$string['curlrecommended'] = 'Installing the optional cURL library is highly recommended in order to enable Totara Networking functionality.';
+$string['curlrequired'] = 'The cURL PHP extension is now required by Totara, in order to communicate with Totara repositories.';
 $string['curltimeoutkbitrate'] = 'Bitrate to use when calculating cURL timeouts (Kbps)';
 $string['curltimeoutkbitrate_help'] = 'This setting is used to calculate an appropriate timeout during large cURL requests. As part of this calculation an HTTP HEAD request is made to determine the size of the content. Setting this to 0 disables this request from being made.';
 $string['currenttheme'] = 'Current theme';
@@ -388,18 +386,18 @@ $string['custommenuitems'] = 'Custom menu items';
 $string['datarootsecurityerror'] = '<p><strong>SECURITY WARNING!</strong></p><p>Your dataroot directory is in the wrong location and is exposed to the web. This means that all your private files are available to anyone in the world, and some of them could be used by a cracker to obtain unauthorised administrative access to your site!</p>
 <p>You <em>must</em> move dataroot directory ({$a}) to a new location that is not within your public web directory, and update the <code>$CFG->dataroot</code> setting in your config.php accordingly.</p>';
 $string['datarootsecuritywarning'] = 'Your site configuration might not be secure. Please make sure that your dataroot directory ({$a}) is not directly accessible via web.';
-$string['dbmigrate'] = 'Moodle database migration';
+$string['dbmigrate'] = 'Totara database migration';
 $string['dbmigrateconnecerror'] = 'Could not connect to the database specified.';
 $string['dbmigrateencodingerror'] = 'The database specified has encoding {$a} rather than required UNICODE/UTF8.<br />Please specify another.';
 $string['dbmigratepostgres'] = 'It seems that you are using PostgreSQL as the database server. To continue the migration process you need to manually create a new database with encoding "UNICODE"(PostgreSQL 7) or "UTF8" (PostgreSQL 8) to store the migrated data. Please enter your new database connection settings below to continue:';
-$string['dbmigratewarning'] = 'Please make sure that you have backed up your Moodle database before commencing this procedure. If you are unsure of how to do that, please contact your system admin. Your Moodle site will be put under maintenance mode after you start the migration process';
-$string['dbmigratewarning2'] = '<b>Warning: You are about to start the database migration process. Please be very sure that your entire Moodle database is backed up.</b>';
-$string['dbmigrationdeprecateddb'] = '<font color="#ff0000">This database is migrated to a new UTF8 database and deprecated. Please edit your config.php and use the new database for this moodle.</font>';
+$string['dbmigratewarning'] = 'Please make sure that you have backed up your Totara database before commencing this procedure. If you are unsure of how to do that, please contact your system admin. Your Totara site will be put under maintenance mode after you start the migration process';
+$string['dbmigratewarning2'] = '<b>Warning: You are about to start the database migration process. Please be very sure that your entire Totara database is backed up.</b>';
+$string['dbmigrationdeprecateddb'] = '<font color="#ff0000">This database is migrated to a new UTF8 database and deprecated. Please edit your config.php and use the new database for this Totara.</font>';
 $string['dbmigrationdupfailed'] = 'Database duplication failed with possible error:<font color="#ff0000"><pre>{$a}</pre></font>';
 $string['dbsessions'] = 'Use database for session information';
 $string['debug'] = 'Debug messages';
 $string['debugall'] = 'ALL: Show all reasonable PHP debug messages';
-$string['debugdeveloper'] = 'DEVELOPER: extra Moodle debug messages for developers';
+$string['debugdeveloper'] = 'DEVELOPER: extra debug messages for developers';
 $string['debugdisplay'] = 'Display debug messages';
 $string['debugging'] = 'Debugging';
 $string['debugminimal'] = 'MINIMAL: Show only fatal errors';
@@ -428,7 +426,7 @@ $string['density'] = 'Density';
 $string['denyemailaddresses'] = 'Denied email domains';
 $string['development'] = 'Development';
 $string['devicedetectregex'] = 'Device detection regular expressions';
-$string['devicedetectregex_desc'] = '<p>By default, Moodle can detect devices of the type default (desktop PCs, laptops, etc), mobile (phones and small hand held devices), tablet (iPads, Android tablets) and legacy (Internet Explorer 6 users).  The theme selector can be used to apply separate themes to all of these.  This setting allows regular expressions that allow the detection of extra device types (these take precedence over the default types).</p>
+$string['devicedetectregex_desc'] = '<p>By default, Totara can detect devices of the type default (desktop PCs, laptops, etc), mobile (phones and small hand held devices), tablet (iPads, Android tablets) and legacy (Internet Explorer 6 users).  The theme selector can be used to apply separate themes to all of these.  This setting allows regular expressions that allow the detection of extra device types (these take precedence over the default types).</p>
 <p>For example, you could enter the regular expression \'/(MIDP-1.0|Maemo|Windows CE)/\' to detect some commonly used feature phones add the return value \'featurephone\'.  This adds \'featurephone\' on the theme selector that would allow you to add a theme that would be used on these devices.  Other phones would still use the theme selected for the mobile device type.</p>';
 $string['devicedetectregexexpression'] = 'Regular expression';
 $string['devicedetectregexvalue'] = 'Return value';
@@ -436,7 +434,7 @@ $string['devicetype'] = 'Device type';
 $string['disableuserimages'] = 'Disable user profile images';
 $string['displayerrorswarning'] = 'Enabling the PHP setting <em>display_errors</em> is not recommended on production sites because some error messages may reveal sensitive information about your server.';
 $string['displayloginfailures'] = 'Display login failures to';
-$string['docroot'] = 'Moodle Docs document root';
+$string['docroot'] = 'Totara Docs document root';
 $string['doctonewwindow'] = 'Open in new window';
 $string['download'] = 'Download';
 $string['edithelpdocs'] = 'Edit help documents';
@@ -474,7 +472,7 @@ $string['enablecourseajax_desc'] = 'Allow AJAX when editing main course pages. N
 $string['enablecourserequests'] = 'Enable course requests';
 $string['enabledevicedetection'] = 'Enable device detection';
 $string['enablegravatar'] = 'Enable Gravatar';
-$string['enablegravatar_help'] = 'When enabled Moodle will attempt to fetch a user profile picture from Gravatar if the user has not uploaded an image.';
+$string['enablegravatar_help'] = 'When enabled Totara will attempt to fetch a user profile picture from Gravatar if the user has not uploaded an image.';
 $string['enablegroupmembersonly'] = 'Enable group members only';
 $string['enablemobilewebservice'] = 'Enable web services for mobile devices';
 $string['enablerecordcache'] = 'Enable record cache';
@@ -488,8 +486,8 @@ $string['enrolinstancedefaults'] = 'Enrolment instance defaults';
 $string['enrolinstancedefaults_desc'] = 'Default enrolment settings in new courses.';
 $string['enrolmultipleusers'] = 'Enrol the users';
 $string['environment'] = 'Environment';
-$string['environmenterrortodo'] = 'You must solve all the environmental problems (errors) found above before proceeding to install this Moodle version!';
-$string['environmenterrorupgrade'] = 'Warning: you should solve all the environmental problems (errors) found above before proceeding to upgrade this Moodle version!  Upgrading without fixing these requirements could cause problems such as data loss.  Are you sure you want to continue with the upgrade?';
+$string['environmenterrortodo'] = 'You must solve all the environmental problems (errors) found above before proceeding to install this Totara version!';
+$string['environmenterrorupgrade'] = 'Warning: you should solve all the environmental problems (errors) found above before proceeding to upgrade this Totara version!  Upgrading without fixing these requirements could cause problems such as data loss.  Are you sure you want to continue with the upgrade?';
 $string['environmentmustfixsetting'] = 'PHP setting must be changed.';
 $string['environmentok'] = 'Your server environment meets all minimum requirements.';
 $string['environmentrecommendcustomcheck'] = 'if this test fails, it indicates a potential problem';
@@ -510,8 +508,8 @@ $string['experimental'] = 'Experimental';
 $string['experimentalsettings'] = 'Experimental settings';
 $string['extendedusernamechars'] = 'Allow extended characters in usernames';
 $string['extramemorylimit'] = 'Extra PHP memory limit';
-$string['fatalmagicquotesruntime'] = '<p>Serious configuration error detected, please notify server administrator.</p><p> To operate properly, Moodle requires that administrator changes PHP settings.</p><p><code>magic_quotes_runtime</code> must be set to <code>off</code>.</p><p>This setting is controlled by editing <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file on the server.</p>';
-$string['fatalsessionautostart'] = '<p>Serious configuration error detected, please notify server administrator.</p><p> To operate properly, Moodle requires that administrator changes PHP settings.</p><p><code>session.auto_start</code> must be set to <code>off</code>.</p><p>This setting is controlled by editing <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file on the server.</p>';
+$string['fatalmagicquotesruntime'] = '<p>Serious configuration error detected, please notify server administrator.</p><p> To operate properly, Totara requires that administrator changes PHP settings.</p><p><code>magic_quotes_runtime</code> must be set to <code>off</code>.</p><p>This setting is controlled by editing <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file on the server.</p>';
+$string['fatalsessionautostart'] = '<p>Serious configuration error detected, please notify server administrator.</p><p> To operate properly, Totara requires that administrator changes PHP settings.</p><p><code>session.auto_start</code> must be set to <code>off</code>.</p><p>This setting is controlled by editing <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file on the server.</p>';
 $string['filecreated'] = 'New file created';
 $string['filestoredin'] = 'Save file into folder :';
 $string['filestoredinhelp'] = 'Where the file will be stored';
@@ -547,10 +545,10 @@ $string['gdversion'] = 'GD version';
 $string['generalsettings'] = 'General settings';
 $string['geoipfile'] = 'GeoIP city data file';
 $string['getremoteaddrconf'] = 'Logged IP address source';
-$string['globalsquoteswarning'] = '<p><strong>Security Warning</strong>: to operate properly, Moodle requires <br />that you make certain changes to your current PHP settings.<p/><p>You <em>must</em> set <code>register_globals=off</code> and/or <code>magic_quotes_gpc=on</code>. <br />If possible, you should set <code>register_globals=off</code> to improve general <br /> server security, setting <code>magic_quotes_gpc=on</code> is also recommended.<p/><p>These settings are controlled by editing your <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file.</p>';
-$string['globalswarning'] = '<p><strong>SECURITY WARNING!</strong></p><p> To operate properly, Moodle requires <br />that you make certain changes to your current PHP settings.</p><p>You <em>must</em> set <code>register_globals=off</code>.</p><p>This setting is controlled by editing your <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file.</p>';
+$string['globalsquoteswarning'] = '<p><strong>Security Warning</strong>: to operate properly, Totara requires <br />that you make certain changes to your current PHP settings.<p/><p>You <em>must</em> set <code>register_globals=off</code> and/or <code>magic_quotes_gpc=on</code>. <br />If possible, you should set <code>register_globals=off</code> to improve general <br /> server security, setting <code>magic_quotes_gpc=on</code> is also recommended.<p/><p>These settings are controlled by editing your <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file.</p>';
+$string['globalswarning'] = '<p><strong>SECURITY WARNING!</strong></p><p> To operate properly, Totara requires <br />that you make certain changes to your current PHP settings.</p><p>You <em>must</em> set <code>register_globals=off</code>.</p><p>This setting is controlled by editing your <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file.</p>';
 $string['groupenrolmentkeypolicy'] = 'Group enrolment key policy';
-$string['groupenrolmentkeypolicy_desc'] = 'Turning this on will make Moodle check group enrolment keys against a valid password policy.';
+$string['groupenrolmentkeypolicy_desc'] = 'Turning this on will make Totara check group enrolment keys against a valid password policy.';
 $string['googlemapkey'] = 'Google Maps API V2 key';
 $string['gotofirst'] = 'Go to first missing string';
 $string['gradebook'] = 'Gradebook';
@@ -559,7 +557,7 @@ $string['gradeexport'] = 'Primary grade export methods';
 $string['guestroleid'] = 'Role for guest';
 $string['guestroleid_help'] = 'This role is automatically assigned to the guest user. It is also temporarily assigned to not enrolled users that enter the course via guest enrolment plugin.';
 $string['helpadminseesall'] = 'Do admins see all calendar events or just those that apply to themselves?';
-$string['helpcalendarsettings'] = 'Configure various calendar and date/time-related aspects of Moodle';
+$string['helpcalendarsettings'] = 'Configure various calendar and date/time-related aspects of Totara';
 $string['helpforcetimezone'] = 'You can allow users to individually select their timezone, or force a timezone for everyone.';
 $string['helpsitemaintenance'] = 'For upgrades and other work';
 $string['helpstartofweek'] = 'Which day starts the week in the calendar?';
@@ -594,7 +592,7 @@ $string['ipblocked'] = 'This site is not available currently.';
 $string['ipblocker'] = 'IP blocker';
 $string['ipblockersyntax'] = 'Put every entry on one line. Valid entries are either full IP address (such as <b>192.168.10.1</b>) which matches a single host; or partial address (such as <b>192.168.</b>) which matches any address starting with those numbers; or CIDR notation (such as <b>231.54.211.0/20</b>); or a range of IP addresses (such as <b>231.3.56.10-20</b>) where the range applies to the last part of the address. Text domain names (like \'example.com\') are not supported. Blank lines are ignored.';
 $string['iplookup'] = 'IP address lookup';
-$string['iplookupinfo'] = 'By default Moodle uses the free online NetGeo (The Internet Geographic Database) server to lookup location of IP addresses, unfortunately this database is not maintained anymore and may return <em>wildly incorrect</em> data.
+$string['iplookupinfo'] = 'By default Totara uses the free online NetGeo (The Internet Geographic Database) server to lookup location of IP addresses, unfortunately this database is not maintained anymore and may return <em>wildly incorrect</em> data.
 It is recommended to install local copy of free GeoLite City database from MaxMind.<br />
 IP address location is displayed on simple map or using Google Maps. Please note that you need to have a Google account and apply for free Google Maps API key to enable interactive maps.';
 $string['iplookupmaxmindnote'] = 'This product includes GeoLite data created by MaxMind, available from <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.';
@@ -605,7 +603,7 @@ $string['langcache'] = 'Cache language menu';
 $string['langcache_desc'] = 'Cache the language menu. If enabled, the list of available translations is cached. The cache is automatically refreshed when you install or delete a language pack via the in-built language packs management tool. If you install a new language pack manually, you have to use Purge all caches feature to refresh the cached list.';
 $string['langlist'] = 'Languages on language menu';
 $string['langmenu'] = 'Display language menu';
-$string['langpackwillbeupdated'] = 'NOTE: Moodle will try to download updates for your language packs during the upgrade.';
+$string['langpackwillbeupdated'] = 'NOTE: Totara will try to download updates for your language packs during the upgrade.';
 $string['langstringcache'] = 'Cache all language strings';
 $string['languagesettings'] = 'Language settings';
 $string['latexpreamble'] = 'LaTeX preamble';
@@ -648,10 +646,10 @@ $string['maturity100'] = 'Beta';
 $string['maturity150'] = 'Release candidate';
 $string['maturity200'] = 'Stable version';
 $string['maturitycoreinfo'] = 'Your site is currently running unstable "{$a}" development code.';
-$string['maturitycorewarning'] = 'The version of Moodle that you are about to install or upgrade to contains
+$string['maturitycorewarning'] = 'The version of Totara that you are about to install or upgrade to contains
 unstable "{$a}" development code that is not suitable for use on most production
 sites. If this is not what you wanted then you should make sure you are updating
-from a STABLE branch of the Moodle code. See Moodle Docs for more details.';
+from a STABLE branch of the Totara code. See Totara Docs for more details.';
 $string['maxbytes'] = 'Maximum uploaded file size';
 $string['maxconsecutiveidentchars'] = 'Consecutive identical characters';
 $string['maxeditingtime'] = 'Maximum time to edit posts';
@@ -682,11 +680,11 @@ $string['minpasswordlower'] = 'Lowercase letters';
 $string['minpasswordnonalphanum'] = 'Non-alphanumeric characters';
 $string['minpasswordupper'] = 'Uppercase letters';
 $string['misc'] = 'Miscellaneous';
-$string['mnetrestore_extusers'] = '<strong>Note:</strong> This backup file contains remote Moodle Network user accounts which will be restored as part of the process.';
-$string['mnetrestore_extusers_admin'] = '<strong>Note:</strong> This backup file seems to come from a different Moodle installation and contains remote Moodle Network user accounts. The restore process will try to match the Moodle Network hosts for all created users. Those not matching will be automatically switched to internal authentication (instead of mnet one). The restore log will inform you about that.';
-$string['mnetrestore_extusers_mismatch'] = '<strong>Note:</strong> This backup file apparently originates from a different Moodle installation and contains remote Moodle Network user accounts that may fail to restore. This operation is unsupported. If you are certain that it was created on this Moodle installation, or you can ensure that all the needed Moodle Network Hosts are configured, you may want to still try the restore.';
-$string['mnetrestore_extusers_noadmin'] = '<strong>Note:</strong> This backup file seems to come from a different Moodle installation and contains remote Moodle Network user accounts. You are not allowed to execute this type of restore. Contact the administrator of the site or, alternatively, restore this course without any user information (modules, files...)';
-$string['mnetrestore_extusers_switchuserauth'] = 'Remote Moodle Network user {$a->username} (coming from {$a->mnethosturl}) switched to local {$a->auth} authenticated user.';
+$string['mnetrestore_extusers'] = '<strong>Note:</strong> This backup file contains remote Totara Network user accounts which will be restored as part of the process.';
+$string['mnetrestore_extusers_admin'] = '<strong>Note:</strong> This backup file seems to come from a different Totara installation and contains remote Totara Network user accounts. The restore process will try to match the Totara Network hosts for all created users. Those not matching will be automatically switched to internal authentication (instead of mnet one). The restore log will inform you about that.';
+$string['mnetrestore_extusers_mismatch'] = '<strong>Note:</strong> This backup file apparently originates from a different Totara installation and contains remote Totara Network user accounts that may fail to restore. This operation is unsupported. If you are certain that it was created on this Totara installation, or you can ensure that all the needed Totara Network Hosts are configured, you may want to still try the restore.';
+$string['mnetrestore_extusers_noadmin'] = '<strong>Note:</strong> This backup file seems to come from a different Totara installation and contains remote Totara Network user accounts. You are not allowed to execute this type of restore. Contact the administrator of the site or, alternatively, restore this course without any user information (modules, files...)';
+$string['mnetrestore_extusers_switchuserauth'] = 'Remote Totara Network user {$a->username} (coming from {$a->mnethosturl}) switched to local {$a->auth} authenticated user.';
 $string['modeditdefaults'] = 'Default values for activity settings';
 $string['modsettings'] = 'Manage activities';
 $string['modulesecurity'] = 'Module security';
@@ -712,7 +710,7 @@ $string['navshowcategories'] = 'Show course categories';
 $string['neverdeleteruns'] = 'Never delete runs';
 $string['nobookmarksforuser'] = 'You do not have any bookmarks.';
 $string['nodatabase'] = 'No database';
-$string['nohttpsformobilewarning'] = 'It is recommended to enable HTTPS with a valid certificate. The Moodle app will always try to use a secured connection first.';
+$string['nohttpsformobilewarning'] = 'It is recommended to enable HTTPS with a valid certificate. The Totara app will always try to use a secured connection first.';
 $string['nomissingstrings'] = 'No missing strings';
 $string['nonewsettings'] = 'No new settings were added during this upgrade.';
 $string['nonexistentbookmark'] = 'The bookmark you requested does not exist.';
@@ -726,7 +724,7 @@ $string['numberofmissingstrings'] = 'Number of missing strings: {$a}';
 $string['numberofstrings'] = 'Total number of strings: {$a->strings}<br />Missing: {$a->missing} ({$a->missingpercent}&nbsp;%)';
 $string['numcoursesincombo'] = 'Maximum number of courses in combo list';
 $string['numcoursesincombo_help'] = 'The combo list doesn\'t work well with large numbers of courses. When the total number of courses in the site is higher than this setting then a link to the dedicated course listing will be shown instead of trying to display all the courses on the front page.';
-$string['opensslrecommended'] = 'Installing the optional OpenSSL library is highly recommended -- it enables Moodle Networking functionality.';
+$string['opensslrecommended'] = 'Installing the optional OpenSSL library is highly recommended -- it enables Totara Networking functionality.';
 $string['opentogoogle'] = 'Open to Google';
 $string['optionalmaintenancemessage'] = 'Optional maintenance message';
 $string['order1'] = 'First';
@@ -739,7 +737,7 @@ $string['pathdvips'] = 'Path of <i>dvips</i> binary';
 $string['pathlatex'] = 'Path of <i>latex</i> binary';
 $string['pathtoclam'] = 'clam AV path';
 $string['pathtodot'] = 'Path to dot';
-$string['pathtodot_help'] = 'Path to dot. Probably something like /usr/bin/dot. To be able to generate graphics from DOT files, you must have installed the dot executable and point to it here. Note that, for now, this only used by the profiling features (Development->Profiling) built into Moodle.';
+$string['pathtodot_help'] = 'Path to dot. Probably something like /usr/bin/dot. To be able to generate graphics from DOT files, you must have installed the dot executable and point to it here. Note that, for now, this only used by the profiling features (Development->Profiling) built into Totara.';
 $string['pathtodu'] = 'Path to du';
 $string['pathtopgdump'] = 'Path to pg_dump';
 $string['pathtopgdumpdesc'] = 'This is only necessary to enter if you have more than one pg_dump on your system (for example if you have more than one version of postgresql installed)';
@@ -756,11 +754,11 @@ $string['pgclusterdescription'] = 'PostgreSQL version/cluster parameter for comm
 $string['php533warning'] = 'PHP 5.3.3 and upwards is recommended';
 $string['phpfloatproblem'] = 'Detected unexpected problem in handling of PHP float numbers - {$a}';
 $string['php50restricted'] = 'PHP 5.0.x has a number of known problems, please upgrade to 5.1.x or downgrade to 4.3.x or 4.4.x';
-$string['pleaserefreshregistration'] = 'Your site has been registered with moodle.org, please consider updating the registration if significant changes happened since your last update, on {$a}';
+$string['pleaserefreshregistration'] = 'Your site has been registered with Totaralms.com, please consider updating the registration if significant changes happened since your last update, on {$a}';
 $string['pleaseregister'] = 'Please register your site to remove this button';
 $string['plugin'] = 'Plugin';
 $string['plugins'] = 'Plugins';
-$string['pluginschecktodo'] = 'You must solve all the plugin requirements before proceeding to install this Moodle version!';
+$string['pluginschecktodo'] = 'You must solve all the plugin requirements before proceeding to install this Totara version!';
 $string['pluginsoverview'] = 'Plugins overview';
 $string['profilecategory'] = 'Category';
 $string['profilecategoryname'] = 'Category name (must be unique)';
@@ -817,7 +815,7 @@ $string['profilevisiblenone'] = 'Not visible';
 $string['profilevisibleprivate'] = 'Visible to user';
 $string['profiling'] = 'Profiling';
 $string['profilingallowall'] = 'Continuous profiling';
-$string['profilingallowall_help'] = 'If you enable this setting, then, at any moment, you can use the PROFILEALL parameter anywhere (PGC) to enable profiling for all the executed scripts along the Moodle session life. Analogously, you can use the PROFILEALLSTOP parameter to stop it.';
+$string['profilingallowall_help'] = 'If you enable this setting, then, at any moment, you can use the PROFILEALL parameter anywhere (PGC) to enable profiling for all the executed scripts along the Totara session life. Analogously, you can use the PROFILEALLSTOP parameter to stop it.';
 $string['profilingallowme'] = 'Selective profiling';
 $string['profilingallowme_help'] = 'If you enable this setting, then, selectively, you can use the PROFILEME parameter anywhere (PGC) and profiling for that script will happen. Analogously, you can use the DONTPROFILEME parameter to prevent profiling to happen';
 $string['profilingautofrec'] = 'Automatic profiling';
@@ -851,7 +849,7 @@ $string['rcachettl'] = 'Record cache TTL';
 $string['recaptchaprivatekey'] = 'ReCAPTCHA private key';
 $string['recaptchapublickey'] = 'ReCAPTCHA public key';
 $string['registration'] = 'Registration';
-$string['releasenoteslink'] = 'For information about this version of Moodle, please see the online <a target="_blank" href="{$a}">Release Notes</a>';
+$string['releasenoteslink'] = 'For information about this version of Totara, please see the <a target="_blank" href="{$a}">Change Logs</a>';
 $string['rememberusername'] = 'Remember username';
 $string['rememberusername_desc'] = 'Enable if you want to store permanent cookies with usernames during user login. Permanent cookies may be considered a privacy issue if used without consent.';
 $string['reportsmanage'] = 'Manage reports';
@@ -861,7 +859,7 @@ $string['requiredentrieschanged'] = '<strong>IMPORTANT - PLEASE READ<br/>(This w
 $string['requiremodintro'] = 'Require activity description';
 $string['requires'] = 'Requires';
 $string['purgecaches']= 'Purge all caches';
-$string['purgecachesconfirm']= 'Moodle can cache themes, javascript, language strings, filtered text, rss feeds and many other pieces of calculated data.  Purging these caches will delete that data from the server and force browsers to refetch data, so that you can be sure you are seeing the most up-to-date values produced by the current code.  There is no danger in purging caches, but your site may appear slower for a while until the server and clients calculate new information and cache it.';
+$string['purgecachesconfirm']= 'Totara can cache themes, javascript, language strings, filtered text, rss feeds and many other pieces of calculated data.  Purging these caches will delete that data from the server and force browsers to refetch data, so that you can be sure you are seeing the most up-to-date values produced by the current code.  There is no danger in purging caches, but your site may appear slower for a while until the server and clients calculate new information and cache it.';
 $string['purgecachesfinished']= 'All caches were purged.';
 $string['restorernewroleid'] = 'Restorers\' role in courses';
 $string['restorernewroleid_help'] = 'If the user does not already have the permission to manage the newly restored course, the user is automatically assigned this role and enrolled if necessary. Select "None" if you do not want restorers to be able to manage every restored course.';
@@ -896,7 +894,7 @@ $string['selecttheme'] = 'Select theme for {$a} device';
 $string['server'] = 'Server';
 $string['serverchecks'] = 'Server checks';
 $string['serverlimit'] = 'Server limit';
-$string['sessionautostartwarning'] = '<p>Serious configuration error detected, please notify server administrator.</p><p> To operate properly, Moodle requires that administrator changes PHP settings.</p><p><code>session.auto_start</code> must be set to <code>off</code>.</p><p>This setting is controlled by editing <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file on the server.</p>';
+$string['sessionautostartwarning'] = '<p>Serious configuration error detected, please notify server administrator.</p><p> To operate properly, Totara requires that administrator changes PHP settings.</p><p><code>session.auto_start</code> must be set to <code>off</code>.</p><p>This setting is controlled by editing <code>php.ini</code>, Apache/IIS <br />configuration or <code>.htaccess</code> file on the server.</p>';
 $string['sessioncookie'] = 'Cookie prefix';
 $string['sessioncookiedomain'] = 'Cookie domain';
 $string['sessioncookiepath'] = 'Cookie path';
@@ -904,12 +902,12 @@ $string['sessionhandling'] = 'Session handling';
 $string['sessiontimeout'] = 'Timeout';
 $string['settingfileuploads'] = 'File uploading is required for normal operation, please enable it in PHP configuration.';
 $string['settingmemorylimit'] = 'Insufficient memory detected, please set higher memory limit in PHP settings.';
-$string['settingsafemode'] = 'Moodle is not fully compatible with safe mode, please ask server administrator to turn it off. Running Moodle under safe mode is not supported, please expect various problems if you do so.';
+$string['settingsafemode'] = 'Totara is not fully compatible with safe mode, please ask server administrator to turn it off. Running Totara under safe mode is not supported, please expect various problems if you do so.';
 $string['showcommentscount'] = 'Show comments count';
 $string['showdetails'] = 'Show details';
 $string['showuseridentity'] = 'Show user identity';
 $string['showuseridentity_desc'] = 'When selecting or searching for users, and when displaying lists of users, these fields may be shown in addition to their full name. The fields are only shown to users who have the moodle/site:viewuseridentity capability; by default, teachers and managers. (This option makes most sense if you choose one or two fields that are mandatory at your institution.)';$string['simpletest'] = 'Unit tests';
-$string['simplexmlrequired'] = 'The SimpleXML PHP extension is now required by Moodle.';
+$string['simplexmlrequired'] = 'The SimpleXML PHP extension is now required by Totara.';
 $string['sitemaintenance'] = 'The site is undergoing maintenance and is currently not available';
 $string['sitemaintenancemode'] = 'Maintenance mode';
 $string['sitemaintenanceoff'] = 'Maintenance mode has been disabled and the site is running normally again';
@@ -927,7 +925,7 @@ $string['smartpix'] = 'Smart pix search';
 $string['soaprecommended'] = 'Installing the optional soap extension is useful for web services and some contrib modules.';
 $string['spellengine'] = 'Spell engine';
 $string['spelllanguagelist'] = 'Spell language list';
-$string['splrequired'] = 'The SPL PHP extension is now required by Moodle.';
+$string['splrequired'] = 'The SPL PHP extension is now required by Totara.';
 $string['stats'] = 'Statistics';
 $string['statsfirstrun'] = 'Maximum processing interval';
 $string['statsmaxruntime'] = 'Maximum runtime';
@@ -964,7 +962,7 @@ $string['timezone'] = 'Default timezone';
 $string['timezoneforced'] = 'This is forced by the site administrator';
 $string['timezoneisforcedto'] = 'Force all users to use';
 $string['timezonenotforced'] = 'Users can choose their own timezone';
-$string['tokenizerrecommended'] = 'Installing the optional PHP Tokenizer extension is recommended -- it improves Moodle Networking functionality.';
+$string['tokenizerrecommended'] = 'Installing the optional PHP Tokenizer extension is recommended -- it improves Totara Networking functionality.';
 $string['tools'] = 'Admin tools';
 $string['toolsdeleteconfirm'] = 'You are about to completely delete the admin tool \'{$a}\'. This will completely delete everything in the database associated with this plugin. Are you SURE you want to continue?';
 $string['toolsmanage'] = 'Manage admin tools';
@@ -985,8 +983,8 @@ $string['upgradeforumreadinfo'] = 'A new feature has been added in Moodle 1.5 to
 $string['upgradelogs'] = 'For full functionality, your old logs need to be upgraded.  <a href="{$a}">More information</a>';
 $string['upgradelogsinfo'] = 'Some changes have recently been made in the way logs are stored.  To be able to view all of your old logs on a per-activity basis, your old logs need to be upgraded.  Depending on your site this can take a long time (eg several hours) and can be quite taxing on the database for large sites.  Once you start this process you should let it finish (by keeping the browser window open).  Don\'t worry - your site will work fine for other people while the logs are being upgraded.<br /><br />Do you want to upgrade your logs now?';
 $string['upgradesettings'] = 'New settings';
-$string['upgradesettingsintro'] = 'The settings shown below were added during your last Moodle upgrade. Make any changes necessary to the defaults and then click the &quot;Save changes&quot; button at the bottom of this page.';
-$string['upgradesure'] = 'Your Moodle files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
+$string['upgradesettingsintro'] = 'The settings shown below were added during your last Totara upgrade. Make any changes necessary to the defaults and then click the &quot;Save changes&quot; button at the bottom of this page.';
+$string['upgradesure'] = 'Your Totara files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
 <strong>{$a}</strong> <br /><br />
 Once you do this you can not go back again. <br /><br />
 Please note that this process can take a long time. <br /><br />
@@ -1016,17 +1014,17 @@ $string['validateerror'] = 'This value was not valid:';
 $string['verifychangedemail'] = 'Restrict domains when changing email';
 $string['warningcurrentsetting'] = 'Invalid current value: {$a}';
 $string['webproxy'] = 'Web proxy';
-$string['webproxyinfo'] = 'Fill in following options if your Moodle server can not access internet directly. Internet access is required for download of environment data, language packs, RSS feeds, timezones, etc.<br /><em>PHP cURL extension is highly recommended.</em>';
-$string['xmlrpcrecommended'] = 'The xmlrpc extension is needed for hub communication, and useful for web services and Moodle networking';
+$string['webproxyinfo'] = 'Fill in following options if your Totara server can not access internet directly. Internet access is required for download of environment data, language packs, RSS feeds, timezones, etc.<br /><em>PHP cURL extension is highly recommended.</em>';
+$string['xmlrpcrecommended'] = 'The xmlrpc extension is needed for hub communication, and useful for web services and Totara networking';
 $string['xmlstrictheaders'] = 'XML strict headers';
 $string['yuicomboloading'] = 'YUI combo loading';
-$string['ziprequired'] = 'The Zip PHP extension is now required by Moodle, info-ZIP binaries or PclZip library are not used anymore.';
+$string['ziprequired'] = 'The Zip PHP extension is now required by Totara, info-ZIP binaries or PclZip library are not used anymore.';
 
 // Totara-specific strings
 $string['coursecount'] = 'Number of site courses';
 $string['displayerrorsset'] = 'This site is configured to display errors occurrences. <br />This setting is not recommended on production sites. <br />Uncheck <em>Display debug messages</em> in the <a href="{$a->link}">Server/Debugging</a> section of the site admin settings block.';
 $string['displayerrorswarning'] = 'Enabling the PHP setting <em>display_errors</em> is not recommended on production sites. <br />This setting can be changed in your php settings.';
-$string['moodlerelease'] = 'Moodle release identifier';
+$string['moodlerelease'] = 'Totara release identifier';
 $string['orgname'] = 'Organisation name';
 $string['orgnamehelp'] = 'The name of your organisation.';
 $string['passwordreuselimit'] = 'Password rotation limit';
@@ -1040,7 +1038,7 @@ $string['registrationisenabled'] = 'Registration is enabled.';
 $string['registrationoutofdate'] = 'Registration information has not been updated for an extended period of time. Registration information should be kept up-to-date to assist possible future troubleshooting. Ensure that your webserver has unrestricted access to make https requests to register.totaralms.com';
 $string['save'] = 'Save';
 $string['sitefullname'] = 'Site Fullname';
-$string['sitehasntregistered'] = 'This site has not yet successfully registered with Totara. Registering basic information with Totara is recommended to assist in troubleshooting any future issues you may have.  Ensure your webserver is able to make https requests to register.totaralms.com and that the Moodle cron is enabled. You can run the cron manually by <a href="{$a}">clicking here</a>';
+$string['sitehasntregistered'] = 'This site has not yet successfully registered with Totara. Registering basic information with Totara is recommended to assist in troubleshooting any future issues you may have.  Ensure your webserver is able to make https requests to register.totaralms.com and that the Totara cron is enabled. You can run the cron manually by <a href="{$a}">clicking here</a>';
 $string['siteidentifier'] = 'Site Identifier';
 $string['siteshortname'] = 'Site Shortname';
 $string['techsupportemail'] = 'Tech support email';
