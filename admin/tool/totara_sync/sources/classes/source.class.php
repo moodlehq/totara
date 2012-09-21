@@ -27,7 +27,11 @@ require_once($CFG->dirroot.'/admin/tool/totara_sync/lib.php');
 abstract class totara_sync_source {
     protected $config;
 
-    public $temptable;
+    /**
+     * The temp table name to be used for holding data from external source
+     * Set this in the child class constructor
+     */
+    public $temptablename;
 
     abstract function has_config();
 
@@ -44,7 +48,8 @@ abstract class totara_sync_source {
     /**
      * Implementation of data import to the sync table
      *
-     * @return sync table name, e.g mdl_totara_sync_org
+     * @return sync table name (without prefix), e.g totara_sync_org
+     * @throws totara_sync_exception if error
      */
     abstract function get_sync_table();
 
@@ -79,6 +84,13 @@ abstract class totara_sync_source {
     function __construct() {
         $this->config = get_config($this->get_name());
         $this->filesdir = rtrim(get_config('totara_sync', 'filesdir'), '/');
+
+        // Ensure child class specified temptablename
+        if (!isset($this->temptablename)) {
+            throw totara_sync_exception($this->get_element_name, 'setup', 'error',
+                'Programming error - source class for ' . $this->get_name() .
+                ' needs to specify temptablename in constructor');
+        }
     }
 
     /**
@@ -105,20 +117,34 @@ abstract class totara_sync_source {
     }
 
     /**
-     * drop the tempoary table
+     * drop the temporary source table (if applicable)
      *
-     * @param string $tablename
      * @return boolean
      */
-    public static function drop_temp_table($tablename) {
+    function drop_temp_table() {
         global $DB;
+
+        if (empty($this->temptablename)) {
+            // no temptable
+            return true;
+        }
+
         $dbman = $DB->get_manager(); // We are going to use database_manager services
 
-        $table = new xmldb_table($tablename);
+        $return = true;
+
+        $table = new xmldb_table($this->temptablename);
         if ($dbman->table_exists($table)) {
-            return $dbman->drop_temp_table($table); // And drop it
+            $return = $return && $dbman->drop_temp_table($table); // And drop it
         }
-        return false;
+
+        // drop any clones
+        $table = new xmldb_table($this->temptablename . '_clone');
+        if ($dbman->table_exists($table)) {
+            $return = $return && $dbman->drop_temp_table($table); // And drop it
+        }
+
+        return $return;
     }
 
     /**
@@ -127,12 +153,14 @@ abstract class totara_sync_source {
      *
      * @return mixed Returns false if failed or the name of temporary table if successful
      */
-    function get_sync_table_clone($temptable) {
+    function get_sync_table_clone() {
         global $DB;
 
-        if (!$temptable_clone = $this->prepare_temp_table(true)) {
-            $this->addlog(get_string('temptableprepfail', 'tool_totara_sync'), 'error', 'importdata');
-            return false;
+        try {
+            $temptable_clone = $this->prepare_temp_table(true);
+        } catch (dml_exception $e) {
+            throw new totara_sync_exception($this->get_element_name(), 'importdata',
+                'temptableprepfail', $e->getMessage());
         }
 
         // Can't reuse $this->import_data($temptable) because the CSV file gets renamed,
@@ -146,7 +174,7 @@ abstract class totara_sync_source {
             }
         }
         $fieldlist = implode(",", $fieldnames);
-        $sql = "INSERT INTO {{$temptable_clone->name}} ($fieldlist) SELECT $fieldlist FROM {{$temptable}}";
+        $sql = "INSERT INTO {{$temptable_clone->name}} ($fieldlist) SELECT $fieldlist FROM {{$this->temptablename}}";
         $DB->execute($sql);
 
         return $temptable_clone->name;

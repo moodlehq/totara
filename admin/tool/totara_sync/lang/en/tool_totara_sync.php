@@ -122,16 +122,15 @@ $string['csvimportfilestructinfo'] = 'The current config requires a CSV file wit
 /// Log messages
 ///
 $string['temptableprepfail'] = 'temp table preparation failed';
-$string['dataimportaborted'] = 'data import aborted';
 $string['temptablecreatefail'] = 'error creating temp table';
 $string['nocsvfilepath'] = 'no CSV filepath specified';
 $string['nofilesdir'] = 'No sync files directory configured';
-$string['xnotfound'] = '{$a} not found';
+$string['nofiletosync'] = 'No file to sync (file path: {$a})';
 $string['nochangesskippingsync'] = 'no changes, skipping sync';
 $string['cannotopenx'] = 'cannot open {$a}';
 $string['cannotreadx'] = 'cannot read {$a}';
 $string['csvnotvalidmissingfieldx'] = 'CSV file not valid, missing field "{$a}"';
-$string['mappingforx'] = 'mapping for "{$a}"';
+$string['csvnotvalidmissingfieldxmappingx'] = 'CSV file not valid, missing field "{$a->field}" (mapping for "{$a->mapping}")';
 $string['couldnotimportallrecords'] = 'could not import all records';
 $string['syncstarted'] = 'sync started';
 $string['syncfinished'] = 'sync finished';
@@ -172,11 +171,14 @@ $string['cannotcreateuserx'] = 'cannot create user {$a}';
 $string['orgxnotexist'] = 'org {$a} does not exist';
 $string['posxnotexist'] = 'pos {$a} does not exist';
 $string['managerxnotexist'] = 'manager {$a} does not exist';
-$string['nosourceforelement'] = 'no source set for element';
 $string['nosourceconfigured'] = 'No source configured';
 $string['duplicateuserswithidnumberx'] = 'Duplicate users with idnumber {$a->idnumber}';
 $string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
 $string['fieldcountmismatch'] = 'Skipping row {$a->rownum} in CSV file - {$a->fieldcount} fields found but {$a->headercount} fields expected';
+$string['nosynctablemethodforsourcex'] = 'Source {$a} has no get_sync_table method. This needs to be fixed by a programmer.';
+$string['sourcefilexnotfound'] = 'Source file {$a} not found.';
+$string['sourceclassxnotfound'] = 'Source class {$a} not found. This must be fixed by a programmer.';
+$string['nosourceenabled'] = 'No source enabled for this element.';
 
 
 ///

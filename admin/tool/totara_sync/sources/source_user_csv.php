@@ -85,13 +85,11 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
     function import_data($temptable) {
 
         if (!$this->filesdir) {
-            $this->addlog(get_string('nofilesdir', 'tool_totara_sync'), 'error', 'populatesynctablecsv');
-            return false;
+            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofilesdir');
         }
         $filepath = $this->get_filepath();
         if (!file_exists($filepath)) {
-            $this->addlog(get_string('xnotfound', 'tool_totara_sync', $filepath), 'error', 'populatesynctablecsv');
-            return false;
+            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofiletosync', $filepath, null, 'warn');
         }
         $filemd5 = md5_file($filepath);
         while (true) {
@@ -107,28 +105,21 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
         // See if file is readable
         if (!$file = is_readable($filepath)) {
-            $this->addlog(get_string('cannotreadx', 'tool_totara_sync', $filepath),
-                'error', 'populatesynctablecsv');
-            return false;
+            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotreadx', $filepath);
         }
 
         /// Move file to store folder
         $storedir = $this->filesdir.'/csv/store';
         if (!totara_sync_make_dirs($storedir)) {
-            $this->addlog(get_string('cannotcreatedirx', 'tool_totara_sync',
-                $currdir), 'error', 'populatesynctablecsv');
-            return false;
+            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotcreatedirx', $storedir);
         }
 
-        $now = time();
-        $storefilepath = $storedir.'/'.$now.'.'.basename($filepath);
+        $storefilepath = $storedir . '/' . time() . '.' . basename($filepath);
 
         rename($filepath, $storefilepath);
 
         if (!$file = fopen($storefilepath, 'r')) {
-            $this->addlog(get_string('cannotopenx', 'tool_totara_sync', $filepath),
-                'error', 'populatesynctablecsv');
-            return false;
+            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotopenx', $storefilepath);
         }
 
         /// Map CSV fields
@@ -145,10 +136,14 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         // Ensure necessary mapped fields are present in the CSV
         foreach ($fieldmappings as $m => $f) {
             if (!in_array($m, $fields)) {
-                $errorstr = get_string('csvnotvalidmissingfieldx', 'tool_totara_sync', $m);
-                $errorstr .= ($m != $f) ? ' ('.get_string('mappingforx', 'tool_totara_sync', $f).')' : '';
-                $this->addlog($errorstr, 'error', 'mapfieldscheck');
-                return false;
+                if ($f == $m) {
+                    throw new totara_sync_exception($this->get_element_name(), 'mapfields',
+                        'csvnotvalidmissingfieldx', $f);
+                } else {
+                    throw new totara_sync_exception($this->get_element_name(), 'mapfields',
+                        'csvnotvalidmissingfieldxmappingx',
+                        (object)array('field' => $f, 'mapping' => $m));
+                }
             }
         }
         // Finally, perform CSV to db field mapping
@@ -165,8 +160,8 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 continue;
             }
             if (!in_array($f, $fields)) {
-                $this->addlog(get_string('csvnotvalidmissingfieldx', 'tool_totara_sync', $f), 'error', 'importdata');
-                return false;
+                throw new totara_sync_exception($this->get_element_name(), 'importdata',
+                    'csvnotvalidmissingfieldx', $f);
             }
         }
         foreach (array_keys($this->customfields) as $f) {
@@ -175,8 +170,8 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 continue;
             }
             if (!in_array($f, $fields)) {
-                $this->addlog(get_string('csvnotvalidmissingfieldx', 'tool_totara_sync', $f), 'error', 'importdata');
-                return false;
+                throw new totara_sync_exception($this->get_element_name(), 'importdata',
+                    'csvnotvalidmissingfieldx', $f);
             }
         }
         unset($fieldmappings);
@@ -245,9 +240,10 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
             if ($rowcount >= $dbpersist) {
                 // bulk insert
-                if (!totara_sync_bulk_insert($temptable, $datarows)) {
-                    $this->addlog(get_string('couldnotimportallrecords', 'tool_totara_sync'), 'error', 'populatesynctablecsv');
-                    return false;
+                try {
+                    totara_sync_bulk_insert($temptable, $datarows);
+                } catch (dml_exception $e) {
+                    throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'couldnotimportallrecords', $e->getMessage());
                 }
 
                 $rowcount = 0;
@@ -260,9 +256,10 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
 
         // Insert remaining rows
-        if (!totara_sync_bulk_insert($temptable, $datarows)) {
-            $this->addlog(get_string('couldnotimportallrecords', 'tool_totara_sync'), 'error', 'populatesynctablecsv');
-            return false;
+        try {
+            totara_sync_bulk_insert($temptable, $datarows);
+        } catch (dml_exception $e) {
+            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'couldnotimportallrecords', $e->getMessage());
         }
 
         fclose($file);

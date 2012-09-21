@@ -36,10 +36,18 @@ abstract class totara_sync_source_pos extends totara_sync_source {
         'timemodified'
     );
 
+    function __construct() {
+        $this->temptablename = 'totara_sync_pos';
+        parent::__construct();
+    }
+
     /**
      * Implement in child classes
      *
      * Populate the temp table to be used by the sync element
+     *
+     * @return boolean true on success
+     * @throws totara_sync_exception if error
      */
     abstract function import_data($temptable);
 
@@ -89,18 +97,15 @@ abstract class totara_sync_source_pos extends totara_sync_source {
     }
 
     function get_sync_table() {
-        global $CFG;
 
-        if (!$temptable = $this->prepare_temp_table()) {
-            $this->addlog(get_string('temptableprepfail', 'tool_totara_sync'), 'error', 'importdata');
-            return false;
+        try {
+            $temptable = $this->prepare_temp_table();
+        } catch (dml_exception $e) {
+            throw new totara_sync_exception($this->get_element_name(), 'importdata',
+                'temptableprepfail', $e->getMessage());
         }
 
-        // Import the data
-        if (!$this->import_data($temptable->name)) {
-            $this->addlog(get_string('dataimportaborted', 'tool_totara_sync'), 'error', 'importdata');
-            return false;
-        }
+        $this->import_data($temptable->name);
 
         return $temptable->name;
     }
@@ -111,12 +116,12 @@ abstract class totara_sync_source_pos extends totara_sync_source {
         require_once($CFG->dirroot . '/lib/ddllib.php');
 
         /// Instantiate table
-        $this->temptable = 'totara_sync_pos';
+        $tablename = $this->temptablename;
         if ($clone) {
-            $this->temptable .= '_clone';
+            $tablename .= '_clone';
         }
         $dbman = $DB->get_manager();
-        $table = new xmldb_table($this->temptable);
+        $table = new xmldb_table($tablename);
 
         /// Add fields
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE);
@@ -141,7 +146,7 @@ abstract class totara_sync_source_pos extends totara_sync_source {
 
         /// Create and truncate the table
         $dbman->create_temp_table($table, false, false);
-        $DB->execute("TRUNCATE TABLE {{$this->temptable}}");
+        $DB->execute("TRUNCATE TABLE {{$tablename}}");
 
         return $table;
     }

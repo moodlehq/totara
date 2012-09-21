@@ -53,10 +53,13 @@ class totara_sync_element_settings_form extends moodleform {
                 return;
             }
         }
-        if ($source = $element->get_source()) {
+        try {
+            $source = $element->get_source();
             if ($source->has_config()) {
                 $mform->addElement('static', 'configuresource', '', html_writer::link(new moodle_url('/admin/tool/totara_sync/admin/sourcesettings.php', array('element' => $element->get_name(), 'source' => $source->get_name())), get_string('configuresource', 'tool_totara_sync')));
             }
+        } catch (totara_sync_exception $e) {
+            // do nothing, as no source is present :D
         }
 
         // Element configuration
@@ -113,7 +116,8 @@ class totara_sync_source_files_form extends moodleform {
 
         $elements = totara_sync_get_elements($onlyenabled=true);
         if (!count($elements)) {
-            $mform->addElement('html', html_writer::tag('p', get_string('noenabledelements', 'tool_totara_sync')));
+            $mform->addElement('html', html_writer::tag('p',
+                get_string('noenabledelements', 'tool_totara_sync')));
             return;
         }
 
@@ -121,18 +125,25 @@ class totara_sync_source_files_form extends moodleform {
             $mform->addElement('header', 'header_'.$e->get_name(),
                 get_string('displayname:'.$e->get_name(), 'tool_totara_sync'));
 
-            if (!$source = $e->get_source()) {
-                $mform->addElement('html', html_writer::tag('p', get_string('nosourceconfigured', 'tool_totara_sync')));
+            try {
+                $source = $e->get_source();
+            } catch (totara_sync_exception $e) {
+                $mform->addElement('html', html_writer::tag('p',
+                    get_string('nosourceconfigured', 'tool_totara_sync')));
                 continue;
             }
+
             if (!$source->uses_files()) {
-                $mform->addElement('html', html_writer::tag('p', get_string('sourcedoesnotusefiles', 'tool_totara_sync')));
+                $mform->addElement('html', html_writer::tag('p',
+                    get_string('sourcedoesnotusefiles', 'tool_totara_sync')));
                 continue;
             }
+
             $mform->addElement('filepicker', $e->get_name(),
                 get_string('displayname:'.$source->get_name(), 'tool_totara_sync'), 'size="40"');
             if (file_exists($source->get_filepath())) {
-                $mform->addElement('static', '', '', get_string('note:syncfilepending', 'tool_totara_sync'));
+                $mform->addElement('static', '', '',
+                    get_string('note:syncfilepending', 'tool_totara_sync'));
             }
         }
 
@@ -149,14 +160,18 @@ class totara_sync_source_files_form extends moodleform {
         global $USER;
 
         $elements = totara_sync_get_elements($onlyenabled=true);
-        // must exist
+        // element must exist
         if (!in_array($elname, array_keys($elements))) {
             return false;
         }
-        // must be configured
-        if (!$source = $elements[$elname]->get_source()) {
+
+        // source must be configured
+        try {
+            $source = $elements[$elname]->get_source();
+        } catch (totara_sync_exception $e) {
             return false;
         }
+
         $values = $this->_form->exportValues($elname);
         if (empty($values[$elname])) {
             return false;
