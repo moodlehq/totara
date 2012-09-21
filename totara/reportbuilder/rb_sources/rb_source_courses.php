@@ -220,7 +220,7 @@ class rb_source_courses extends rb_base_source {
             $name = (get_string_manager()->string_exists('pluginname', $module)) ?
                 get_string('pluginname', $module) : ucfirst($module);
             if ($isexport) {
-                $out[] = $modname;
+                $out[] = $name;
                 $glue = ', ';
             } else {
                 $glue = '';

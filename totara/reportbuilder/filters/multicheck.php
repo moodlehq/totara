@@ -213,7 +213,8 @@ class rb_filter_multicheck extends rb_filter_type {
             if ($selected) {
                 $name = array_key_exists($key, $selectchoices) ?
                     $selectchoices[$key] : $key;
-                $checked[] = '"' . s($name) . '"';
+                $formatname = explode("&nbsp;", $name);
+                $checked[] = '"' . $formatname[1] . '"';
             }
         }
         $a->value    = implode(', ', $checked);
