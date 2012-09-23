@@ -138,7 +138,7 @@ if ($delete && $confirm) {
     $deleteurl = new moodle_url('/totara/plan/template/index.php', array('delete' => $delete, 'confirm' => 'true', 'sesskey' => sesskey()));
     $returnurl = new moodle_url('/totara/plan/template/index.php');
     $strdelete = get_string('deletecheckdptemplate', 'totara_plan');
-    $strbreak = $OUTPUT->line_break(2);
+    $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
 
     echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($template->fullname), $deleteurl, $returnurl);
 
