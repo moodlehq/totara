@@ -717,7 +717,7 @@ kunnen dienen als aankondigingenbord voor een departement.
 $string['formathtml'] = 'HTML-opmaak';
 $string['formatmarkdown'] = 'Markdown-opmaak';
 $string['formatplain'] = 'Plattetekstopmaak';
-$string['formattext'] = 'Moodle auto-opmaak';
+$string['formattext'] = 'Totara auto-opmaak';
 $string['formattexttype'] = 'Opmaken';
 $string['framesetinfo'] = 'Dit frameset document bevat:';
 $string['from'] = 'Van';

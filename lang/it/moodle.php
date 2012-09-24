@@ -718,7 +718,7 @@ Ha le stesse caratteristiche dl formato settimanale ma non fa uso di tabelle per
 $string['formathtml'] = 'Formato HTML';
 $string['formatmarkdown'] = 'Formato Markdown';
 $string['formatplain'] = 'Formato testo';
-$string['formattext'] = 'Formattazione automatica Moodle';
+$string['formattext'] = 'Formattazione automatica Totara';
 $string['formattexttype'] = 'Formattazione';
 $string['framesetinfo'] = 'Questo frame contiene:';
 $string['from'] = 'Da';

@@ -771,7 +771,7 @@ en anslagstavla f&ouml;r en avdelning.</li>
 $string['formathtml'] = 'HTML-format';
 $string['formatmarkdown'] = 'Markdown format';
 $string['formatplain'] = 'Ren text';
-$string['formattext'] = 'Autoformat för Moodle';
+$string['formattext'] = 'Autoformat för Totara';
 $string['formattexttype'] = 'Formatering';
 $string['framesetinfo'] = 'Det här dokumentet i ramverksformat innehåller:';
 $string['from'] = 'Från';

@@ -688,7 +688,7 @@ Jest to format zorientowany na jedno główne forum - Forum towarzyskie - które
 $string['formathtml'] = 'Format HTML';
 $string['formatmarkdown'] = 'Format Markdown';
 $string['formatplain'] = 'Format tekstu zwykłego';
-$string['formattext'] = 'Automatyczny format Moodle';
+$string['formattext'] = 'Automatyczny format Totara';
 $string['formattexttype'] = 'Formatowanie';
 $string['framesetinfo'] = 'Ramka dokumentu zawiera:';
 $string['from'] = 'Od';

@@ -678,7 +678,7 @@ $string['format_help'] = '<p align="center"><b>תצורת התצוגה של קו
 $string['formathtml'] = 'מעוצב (HTML)';
 $string['formatmarkdown'] = 'Markdown';
 $string['formatplain'] = 'טקסט פשוט (CSV)';
-$string['formattext'] = 'תסדיר Moodle';
+$string['formattext'] = 'תסדיר Totara';
 $string['formattexttype'] = 'עיצוב';
 $string['framesetinfo'] = 'מסמך frameset זה מכיל:';
 $string['from'] = 'מתאריך';
