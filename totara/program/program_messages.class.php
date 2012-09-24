@@ -595,12 +595,6 @@ class prog_messages_manager {
                     MESSAGETYPE_COURSESET_COMPLETED => get_string('coursesetcompleted', 'totara_program'),
                     MESSAGETYPE_LEARNER_FOLLOWUP => get_string('learnerfollowup', 'totara_program')
                 );
-                //remove message types already added
-                foreach ($messages as $message) {
-                    if (isset($messageoptions[$message->messagetype])) {
-                        unset($messageoptions[$message->messagetype]);
-                    }
-                }
                 $mform->addElement('select', 'messagetype', get_string('addnew', 'totara_program'), $messageoptions, array('id'=>'messagetype'));
                 $mform->setType('messagetype', PARAM_INT);
                 $template_values['%messagetype%'] = array('name'=>'messagetype', 'value'=>null);

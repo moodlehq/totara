@@ -902,7 +902,6 @@ class prog_courseset_due_message extends prog_eventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'totara_program');
         $this->triggereventstr = get_string('beforesetisdue', 'totara_program');
-        $this->managermessagedata->subject = get_string('coursesetdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
@@ -928,7 +927,6 @@ class prog_program_overdue_message extends prog_eventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programoverduemessage', 'totara_program');
         $this->triggereventstr = get_string('afterprogramisdue', 'totara_program');
-        $this->managermessagedata->subject = get_string('programoverdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
