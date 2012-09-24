@@ -178,5 +178,14 @@ function xmldb_totara_message_upgrade($oldversion) {
         }
         echo $OUTPUT->notification('Removing message_metadata roleid field', 'notifysuccess');
     }
+
+    if ($oldversion < 2012092500) {
+        //ensure oninfo field exists T-9963
+        $table = new xmldb_table('message_metadata');
+        $field = new xmldb_field('oninfo', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'onreject');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+    }
     return $result;
 }

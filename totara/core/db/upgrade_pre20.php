@@ -171,6 +171,13 @@ if ($dbman->field_exists($table, $field)) {
     $dbman->rename_field($table, $field, 'timeend');
 }
 
+//ensure oninfo field exists T-9963
+$table = new xmldb_table('message_metadata');
+$field = new xmldb_field('oninfo', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'onreject');
+if (!$dbman->field_exists($table, $field)) {
+    $dbman->add_field($table, $field);
+}
+
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara database schema updates');
 echo $OUTPUT->heading('Totara database schema updates');
 echo $OUTPUT->notification($success, 'notifysuccess');
