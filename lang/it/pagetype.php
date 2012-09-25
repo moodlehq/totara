@@ -32,6 +32,7 @@ $string['page-course-view-x'] = 'Qualsiasi tipo di pagina principale dei corsi';
 $string['page-course-x'] = 'Qualsiasi pagina dei corsi';
 $string['page-mod-x'] = 'Qualsiasi pagina di moduli di attività';
 $string['page-mod-x-view'] = 'Qualsiasi pagina principale di moduli di attiivtà';
+$string['page-my-index'] = 'My home page';
 $string['page-report-x'] = 'Qualsiasi pagina report';
 $string['page-site-index'] = 'Solo la pagina home';
 $string['page-site-x'] = 'Qualsiasi pagina a livello di sito';

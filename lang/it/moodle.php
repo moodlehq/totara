@@ -1055,6 +1055,7 @@ $string['mustconfirm'] = 'È necessario confermare il tuo accesso';
 $string['mycourses'] = 'I miei corsi';
 $string['myfiles'] = 'File personali';
 $string['myfilesmanage'] = 'Gestisci file personali';
+$string['myhome'] = 'My home';
 $string['mymoodledashboard'] = 'Dashboard My Moodle';
 $string['myprofile'] = 'Il mio profilo';
 $string['name'] = 'Nome';
