@@ -29,7 +29,7 @@ class rb_totarasynclog_embedded extends rb_base_embedded {
     public $hidden, $accessmode, $accesssettings, $shortname;
 
     public function __construct($data) {
-        $this->url = '/admin/tool/totara_sync/synclog.php';
+        $this->url = '/admin/tool/totara_sync/admin/synclog.php';
         $this->source = 'totara_sync_log';
         $this->shortname = 'totarasynclog';
         $this->fullname = get_string('synclog', 'tool_totara_sync');
