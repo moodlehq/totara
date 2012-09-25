@@ -47,7 +47,7 @@ class rb_source_dp_objective extends rb_base_source {
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
         $this->paramoptions = $this->define_paramoptions();
-        $this->defaultcolumns = array();
+        $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_objective');
@@ -397,6 +397,40 @@ class rb_source_dp_objective extends rb_base_source {
                 'string'
         );
         return $paramoptions;
+    }
+
+    protected function define_defaultcolumns() {
+        $defaultcolumns = array(
+            array(
+                'type' => 'plan',
+                'value' => 'planlink',
+            ),
+            array(
+                'type' => 'plan',
+                'value' => 'status',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'fullnamelink',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'description',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'priority',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'duedate',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'proficiencyandapproval',
+            ),
+        );
+        return $defaultcolumns;
     }
 
     /**

@@ -76,7 +76,7 @@ class rb_source_dp_course extends rb_base_source {
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
         $this->paramoptions = $this->define_paramoptions();
-        $this->defaultcolumns = array();
+        $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_course');
@@ -513,6 +513,31 @@ from
         return $paramoptions;
     }
 
+    protected function define_defaultcolumns() {
+        $defaultcolumns = array(
+            array(
+                'type' => 'course',
+                'value' => 'coursetypeicon',
+            ),
+            array(
+                'type' => 'course',
+                'value' => 'courselink',
+            ),
+            array(
+                'type' => 'plan',
+                'value' => 'planlink',
+            ),
+            array(
+                'type' => 'plan',
+                'value' => 'courseduedate',
+            ),
+            array(
+                'type' => 'course_completion',
+                'value' => 'statusandapproval',
+            ),
+        );
+        return $defaultcolumns;
+    }
 
     function rb_display_course_completion_progress($status, $row) {
         return totara_display_course_progress_icon($row->userid, $row->courseid, $status);
