@@ -37,7 +37,7 @@ require_once($CFG->dirroot.'/totara/core/db/utils.php');
  * @return  boolean $result
  */
 function xmldb_totara_hierarchy_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $CFG, $DB, $OUTPUT;
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2012071000) {
@@ -64,6 +64,56 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
             $DB->update_record('comp_scale_values', $todb);
         }
         totara_upgrade_mod_savepoint(true, 2012071200, 'totara_hierarchy');
+    }
+
+    //Update to make position assignments table schema more robust
+    if ($oldversion < 2012092600) {
+        //Remove potential duplicates
+        upgrade_course_completion_remove_duplicates(
+            'pos_assignment',
+            array('userid', 'type')
+        );
+
+        //Cleaning table 'pos_assignment': remove records where userid is NULL or type is NULL
+        $nullrecords = $DB->count_records_select('pos_assignment', 'userid IS NULL OR type IS NULL');
+        if ($nullrecords > 0) {
+            $DB->delete_records_select('pos_assignment', 'userid IS NULL OR type IS NULL');
+            echo $OUTPUT->heading("Cleaning up data in 'pos_assignment' table ({$nullrecords} records with NULL values found and removed)");
+        }
+
+        $table = new xmldb_table('pos_assignment');
+        $field1 = new xmldb_field('userid', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, null, 'organisationid');
+        $field2 = new xmldb_field('type', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '1', 'reportstoid');
+        $index1 = new xmldb_index('usetyp', XMLDB_INDEX_UNIQUE, array('userid', 'type'));
+        $index2 = new xmldb_index('use', XMLDB_INDEX_NOTUNIQUE, array('userid'));
+        if ($dbman->field_exists($table, $field1) && $dbman->field_exists($table, $field2)) {
+            //Dropping indexes to update fields
+            $dbman->drop_index($table, $index1);
+            $dbman->drop_index($table, $index2);
+            $dbman->change_field_notnull($table, $field1);
+            $dbman->change_field_notnull($table, $field2);
+            $dbman->change_field_default($table, $field2);
+            //Recreating dropped indexes
+            $dbman->add_index($table, $index1);
+            $dbman->add_index($table, $index2);
+        }
+
+        //Cleaning table 'pos_assignment_history': remove records where userid is NULL or type is NULL
+        $nullrecords = $DB->count_records_select('pos_assignment_history', 'userid IS NULL OR type IS NULL');
+        if ($nullrecords > 0) {
+            $DB->delete_records_select('pos_assignment_history', 'userid IS NULL OR type IS NULL');
+            echo $OUTPUT->heading("Cleaning up data in 'pos_assignment_history' table ({$nullrecords} records with NULL values found and removed)");
+        }
+
+        $table = new xmldb_table('pos_assignment_history');
+        $field1 = new xmldb_field('userid', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, null, 'organisationid');
+        $field2 = new xmldb_field('type', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, '1', 'reportstoid');
+        if ($dbman->field_exists($table, $field1) && $dbman->field_exists($table, $field2)) {
+            $dbman->change_field_notnull($table, $field1);
+            $dbman->change_field_notnull($table, $field2);
+            $dbman->change_field_default($table, $field2);
+        }
+        totara_upgrade_mod_savepoint(true, 2012092600, 'totara_hierarchy');
     }
 
     return true;
