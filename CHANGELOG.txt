@@ -1,5 +1,12 @@
 Totara LMS Changelog
 
+Release 2.2.5.1 (27 September 2012):
+==================================================
+
+Bug fixes:
+    T-9981      Fix fatal error in Programs when assigning individual users with fixed completion date
+
+
 Release 2.2.5 (26 September 2012):
 ==================================================
 
