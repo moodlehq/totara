@@ -1,5 +1,58 @@
 Totara LMS Changelog
 
+Release 2.2.5 (26 September 2012):
+==================================================
+
+Database upgrades:
+    T-9963      Fix potential missing oninfo field in Messages which can cause failure on upgrade from 1.1
+
+Improvements:
+    T-9956      Add totara_sync log report to embedded reports
+    T-9877      Added hierarchies duplicate idnumber warning to totara_sync
+    T-9974      Add position start/end dates to report builder
+
+Bug fixes:
+    T-9925      Fix navbar when admin viewing other users permissions
+    T-5734      Fix warning relating to use of timezone CFG variable
+    T-9819      Fix task/alert pop-up dialog action buttons
+    T-9901      Fix new Course Demo Format when creating a new course
+    T-9814      Fix course enrolment & editing options for users with moodle/course:update capability
+    T-9942      Fix HTML tags appearing in page titles
+    T-9871      Fix for various missing language strings
+    T-9885      Fix various displayed references to Moodle
+    T-9859      Fix layout issue on some report pages
+    T-9539      Remove unnecessary background image files from Certificates
+    T-9943      Fix for &amp in Certificate file names
+    T-9938      Prevent upgrade from Totara 1.0 to 2.2                                                    You must upgrade to 1.1.17+ first
+    T-9834      Fix Hierarchy breadcrumbs
+    T-9921      Fix missing delete_custom_field_data() function in Hierarchy Custom Fields
+    T-9807      Fix validation when using user Position select dialogs
+    T-9940      Fix SQL error in totara_recent_learning block when user has multiple roles
+    T-9946      Fix "Add Default Instance" issues with totara enrolment plugins
+    T-9962      Fix error when deleting a Learning Plan template
+    T-9959      Fix sending of multiple messages to manager as user is editing a Learning Plan
+    T-9895      Fix MSSQL error when trying to view Reportbuilder Activity Groups
+    T-9954      Fix display of notifications within a Reportbuilder report
+    T-9825      Fix multipicker HTML display in description of Find Courses embedded report
+    T-9556      Add default headings to Reportbuilder report sources
+    T-9802      Add support for Reportbuilder filters that aren't based on a columnoption
+    T-9937      Show report description on My Team members page
+    T-9834      Fix Program breadcrumbs
+    T-9922      Allow creation of multiple Program messages of same type
+    T-9847      Fix sending of course enrolment emails to users who have already completed a Program
+    T-9926      Fix regex for user profile dates when assigning users to Programs
+    T-9812      Fix Program recurring courseset backup, restore, enrolment and messaging issues
+    T-9892      Fix running of totara_sync cron
+    T-9952      Fix totara_sync failing when CSV contains empty rows
+    T-9712      Fix totara_sync validation checks for the User source
+    T-9712      Fix totara_sync element and source file detection
+    T-9712      Fix totara_sync validation of parent element when specified in CSV file
+    T-9951      Fix for totara_sync csv file structure example
+    T-9941      Fix for Facetoface calendar notifications
+    T-9958      Fix iCal UIDs when user has multiple Facetoface session signups & cancellations
+    T-9948      Fix update of sitewide calendar Facetoface events
+
+
 Release 2.2.4 (12 September 2012):
 ==================================================
 
