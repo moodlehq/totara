@@ -35,6 +35,7 @@ body {
 }
 body.has_dock {
     padding: 0;
+    margin-left: 30px; /* T-9900 */
 }
 #page {
     width:100%;
