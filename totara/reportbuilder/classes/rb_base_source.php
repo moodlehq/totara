@@ -1831,6 +1831,20 @@ abstract class rb_base_source {
             "$posassign.fullname",
             array('joins' => $posassign)
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'posstartdate',
+            get_string('posstartdate', 'totara_reportbuilder'),
+            "$posassign.timevalidfrom",
+            array('joins' => $posassign, 'displayfunc' => 'nice_date')
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'posenddate',
+            get_string('posenddate', 'totara_reportbuilder'),
+            "$posassign.timevalidto",
+            array('joins' => $posassign, 'displayfunc' => 'nice_date')
+        );
         return true;
     }
 
@@ -1897,6 +1911,18 @@ abstract class rb_base_source {
                     'selectfunc' => 'position_type_list',
                     'attributes' => rb_filter_option::select_width_limiter(),
                 )
+        );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'posstartdate',
+                get_string('posstartdate', 'totara_reportbuilder'),
+                'date'
+        );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'posenddate',
+                get_string('posenddate', 'totara_reportbuilder'),
+                'date'
         );
         $filteroptions[] = new rb_filter_option(
                 'user',
