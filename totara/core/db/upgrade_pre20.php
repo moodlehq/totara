@@ -32,6 +32,13 @@ set_config('theme', 'standardtotara');
 
 $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 $success = get_string('success');
+
+if ($DB->record_exists('role', array('shortname' => 'staffmanager'))) {
+    echo $OUTPUT->notification(get_string('error:staffmanagerroleexists', 'totara_core'));
+    upgrade_log(UPGRADE_LOG_ERROR, 'totara/core', get_string('error:staffmanagerroleexists', 'totara_core'));
+    die();
+}
+
 //fix 1.1-series capabilities
 totara_upgrade_capabilities();
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Capabilities upgraded from 1.1');
