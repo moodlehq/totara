@@ -4472,12 +4472,12 @@ WHERE gradeitemid IS NOT NULL AND grademax IS NOT NULL");
         upgrade_main_savepoint(true, 2010061900.31);
     }
 
-    if ($oldversion < 2010061900.32) {
+    /*if ($oldversion < 2010061900.32) { //This upgrade cause issues when upgrading from Totara 1.1 to Totara 2.2
         // MDL-22797 course completion has to be updated to use new enrol framework, it will not be enabled in final 2.0
         set_config('enableavailability', 0);
         set_config('enablecompletion', 0);
         upgrade_main_savepoint(true, 2010061900.32);
-    }
+    }*/
 
     if ($oldversion < 2010062101) {
 
