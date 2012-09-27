@@ -311,6 +311,9 @@ if ($user->msn && !isset($hiddenfields['msnid'])) {
     print_row(get_string('msnid').':', s($user->msn));
 }
 
+///Display hierarchy information
+profile_display_hierarchy_fields($user->id);
+
 /// Print the Custom User Fields
 profile_display_fields($user->id);
 
