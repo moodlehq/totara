@@ -192,7 +192,7 @@ class rb_filter_hierarchy extends rb_filter_type {
         $uniqueparam2 = rb_unique_param("fh{$operator}2_");
         if ($operator == 2) {
             // check for null case for is not operator
-            $sql = '(((' . $DB->sql_like($query, ":{$uniqueparam}", true, true, $not) . ") AND ( {$query} <> :{$uniqueparam2} )) OR {$query} IS NULL)";
+            $sql = '(((' . $DB->sql_like($query, ":{$uniqueparam}", true, true, $not) . ") AND ( {$query} <> :{$uniqueparam2} )) OR ({$query}) IS NULL)";
             $params[$uniqueparam] = $DB->sql_like_escape($path) . $recursive;
             $params[$uniqueparam2] = $path;
         } else {

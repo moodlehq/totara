@@ -141,7 +141,7 @@ class rb_filter_number extends rb_filter_type {
 
         // this will cope with empty values but not anything that can't be cast to a float
         // make sure the source column only contains numbers!
-        $sql = 'CASE WHEN ' . $query . ' IS NULL THEN 0 ELSE ' . sql_cast2float($query) . ' END ' . $res;
+        $sql = 'CASE WHEN (' . $query . ') IS NULL THEN 0 ELSE ' . sql_cast2float($query) . ' END ' . $res;
 
         return array($sql, $params);
     }

@@ -132,7 +132,7 @@ class rb_filter_text extends rb_filter_type {
             case 1: // does not contain
                 $keywords = totara_search_parse_keywords($value);
                 list($sql, $params) = search_get_keyword_where_clause($query, $keywords, true);
-                return array("($query IS NULL OR $sql)", $params);
+                return array("(({$query}) IS NULL OR {$sql})", $params);
             case 2: // equal to
                 return search_get_keyword_where_clause($query, array($value), false, 'equal');
             case 3: // starts with

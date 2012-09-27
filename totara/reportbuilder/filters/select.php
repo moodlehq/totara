@@ -177,7 +177,7 @@ class rb_filter_select extends rb_filter_type {
             list($insql, $inparams) = $DB->get_in_or_equal($value, SQL_PARAMS_NAMED,
                 rb_unique_param('fsequal_'), false);
             // check for null case for is not operator
-            return array("({$query} {$insql} OR {$query} IS NULL)", $inparams);
+            return array("({$query} {$insql} OR ({$query}) IS NULL)", $inparams);
         }
     }
 
