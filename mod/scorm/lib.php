@@ -595,17 +595,20 @@ function scorm_get_user_grades($scorm, $userid=0) {
  * @param bool $nullifnone
  */
 function scorm_update_grades($scorm, $userid=0, $nullifnone=true) {
-    global $CFG, $DB;
+    global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->libdir.'/completionlib.php');
 
     if ($grades = scorm_get_user_grades($scorm, $userid)) {
         scorm_grade_item_update($scorm, $grades);
+        scorm_set_completion($scorm, $userid, COMPLETION_COMPLETE, $grades);
 
     } else if ($userid and $nullifnone) {
         $grade = new stdClass();
         $grade->userid   = $userid;
         $grade->rawgrade = null;
         scorm_grade_item_update($scorm, $grade);
+        scorm_set_completion($scorm, $userid, COMPLETION_INCOMPLETE);
 
     } else {
         scorm_grade_item_update($scorm);
@@ -684,20 +687,39 @@ function scorm_grade_item_update($scorm, $grades=null) {
         $grades = null;
     }
 
-    // Update activity completion if applicable
-    // Get course info
-    $course = new object();
-    $course->id = $scorm->course;
-
-    $cm = get_coursemodule_from_instance('scorm', $scorm->id, $course->id);
-    // CM will be false if this has been run from scorm_add_instance
-    if ($cm) {
-        $completion = new completion_info($course);
-        $completion->update_state($cm, COMPLETION_COMPLETE);
-    }
-
     return grade_update('mod/scorm', $scorm->course, 'mod', 'scorm', $scorm->id, 0, $grades, $params);
 }
+
+/**
+ * Sets the completion state for the activity
+ *
+ * @param object $scorm - The scorm object
+ * @param int $userid - The User ID
+ * @param int $completionstate - The completion state
+ * @param array $grades - grades array of users with grades, used when userid = 0
+ */
+function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COMPLETE, $grades = array()) {
+    if (!completion_info::is_enabled()) {
+        return;
+    }
+
+    $course = new stdClass();
+    $course->id = $scorm->course;
+
+    $cm = get_coursemodule_from_instance('scorm', $scorm->id, $scorm->course);
+    if (!empty($cm)) {
+        $completion = new completion_info($course);
+        if (empty($userid)) { //use all the relevant users in the grades array
+            foreach ($grades as $grade) {
+                $completion->update_state($cm, $completionstate, $grade->userid);
+            }
+        } else {
+            $completion->update_state($cm, $completionstate, $userid);
+        }
+    }
+}
+
+
 
 /**
  * Delete grade item for given scorm
