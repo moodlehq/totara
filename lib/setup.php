@@ -112,7 +112,9 @@ if (!isset($CFG->cachedir)) {
 // directory of the script when run from the command line. The require_once()
 // would fail, so we'll have to chdir()
 if (!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['argv'][0])) {
-    chdir(dirname($_SERVER['argv'][0]));
+    if (!defined('ABORT_AFTER_CONFIG') and !defined('ABORT_AFTER_CONFIG_CANCEL')) {
+        chdir(dirname($_SERVER['argv'][0]));
+    }
 }
 
 // sometimes default PHP settings are borked on shared hosting servers, I wonder why they have to do that??
