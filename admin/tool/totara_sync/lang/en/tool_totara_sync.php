@@ -191,4 +191,9 @@ $string['logtype'] = 'Logtype';
 $string['action'] = 'Action';
 $string['info'] = 'Info';
 
+///
+/// Totara sync help strings
+///
+$string['country_help'] = "This should be formatted within the CSV as the 2 character code of the country.
+    For example 'New Zealand' should be 'NZ'";
 ?>

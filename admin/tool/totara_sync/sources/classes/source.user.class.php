@@ -106,6 +106,9 @@ abstract class totara_sync_source_user extends totara_sync_source {
                 $mform->addElement('hidden', 'import_'.$f, empty($this->element->config->sourceallrecords));
             } else {
                 $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
+                if (in_array($f, array('country'))) {
+                     $mform->addHelpButton('import_'.$f, $f, 'tool_totara_sync');
+                }
             }
         }
         foreach ($this->customfields as $field => $name) {
