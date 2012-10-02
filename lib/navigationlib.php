@@ -2374,7 +2374,7 @@ class global_navigation extends navigation_node {
 
         if (isloggedin()) {
             // Calendar
-            $calendarurl = new moodle_url('/calendar/view.php', array('view' => 'month'));
+            $calendarurl = new moodle_url('/calendar/view.php', array());
             $coursenode->add(get_string('calendar', 'calendar'), $calendarurl, self::TYPE_CUSTOM, null, 'calendar');
         }
 
