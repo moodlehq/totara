@@ -576,3 +576,42 @@ ul.comment-list li .comment-delete {
 .jsenabled .comment-link {display:block}
 .jsenabled .showcommentsnonjs{display:none}
 .jsenabled .comment-report-selectall{display:inline}
+
+/* Fix for T-9945
+ * https://bugs.totaralms.com/show_bug.cgi?id=9945
+ * Removed default padding of .5em
+ * from /lib/yui/3.4.1/build/cssbase/cssbase.css
+ * and /lib/yui/3.4.1/build/cssbase/cssbase-min.css
+ * and added padding to the classes below
+ */
+ /* Standard table classes from the element library */
+.generaltable td,
+.generaltable th,
+.flexible td,
+.flexible th,
+.boxaligncenter td,
+.boxaligncenter th,
+.fullwidth td,
+.fullwidth th,
+.cell td,
+.cell th,
+/* Other table/cell classes found in the base styles with no padding */
+.ratingtable td,
+.ratingtable th,
+.notifytiny td,
+.category_subcategories td,
+.category_subcategories th,
+.formtable td,
+.formtable th,
+.logtable td,
+.logtable th,
+.gradetreebox td,
+.gradetreebox th,
+.incompatibleblockstable td,
+.incompatibleblockstable th,
+.groupmanagementtable td,
+.groupmanagementtable th
+{
+    padding:.5em;
+}
+/* End of fix for T-9945 */
