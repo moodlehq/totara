@@ -699,16 +699,15 @@ function scorm_grade_item_update($scorm, $grades=null) {
  * @param array $grades - grades array of users with grades, used when userid = 0
  */
 function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COMPLETE, $grades = array()) {
-    if (!completion_info::is_enabled()) {
-        return;
-    }
 
     $course = new stdClass();
     $course->id = $scorm->course;
-
+    $completion = new completion_info($course);
     $cm = get_coursemodule_from_instance('scorm', $scorm->id, $scorm->course);
+    if (!$completion->is_enabled($cm)) {
+        return;
+    }
     if (!empty($cm)) {
-        $completion = new completion_info($course);
         if (empty($userid)) { //use all the relevant users in the grades array
             foreach ($grades as $grade) {
                 $completion->update_state($cm, $completionstate, $grade->userid);
