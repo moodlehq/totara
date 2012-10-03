@@ -63,7 +63,7 @@ M.totara_iconpicker = M.totara_iconpicker || {
                 'show-icon-dialog',
                 {
                     buttons: buttonsObj,
-                    title: '<h2>'+M.util.get_string('chooseicon', 'totara_program')+'</h2>',
+                    title: '<h2>'+M.util.get_string('chooseicon', 'totara_program')+'</h2>'
                 },
                 M.cfg.wwwroot + '/totara/core/icons.php?type=' + M.totara_iconpicker.config.type,
                 handler

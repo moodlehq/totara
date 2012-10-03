@@ -1505,7 +1505,7 @@ totaraDialog_handler_selectable.prototype.first_load = function() {
     // Setup selectable
     $("#icon-selectable").selectable({
         filter: "li",
-        multiple: false,
+        multiple: false
     });
 
     //Set selection
