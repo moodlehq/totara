@@ -1,5 +1,31 @@
 Totara LMS Changelog
 
+Release 2.2.6 (4 October 2012):
+==================================================
+
+Database upgrades:
+    T-9977      Improve robustness of position_assignments table
+
+Improvements:
+    T-9976      Ensure dates displayed in users local time format
+    T-9984      Added a help button and help text to the 'country' element in Totara Sync
+
+Bug fixes:
+    T-9982      Fix dialog and datepicker Javascript errors in IE7
+    T-9987      Fix duplicated footer in program messages
+    T-9823      Fix incorrect help text in help popups in plan templates and competency framework
+    T-9957      Fix report builder "Not in" filter issue when comparing composite fields
+    T-9910      Fix bug on upgrade from Totara 1.1 that turns off site-wide completion
+    T-9900      Fix theme error where screen text is overwritten when the side navigation bars are docked
+    T-9972      Move user positions link from Navigation to User profile settings
+    T-9913      Fix bug on upgrade from Totara 1.1 if there is a role "staffmanager"
+    T-9868      Fix the display order of message types
+    T-9985      Backport of MDL-35227 to resolve SCORM grade and completion bug
+    T-9997      Fix fatal MSSQL error when opening a SCORM activity
+    T-9996      Fix PHP warnings in user profile
+    T-9945      Fix cell padding in HTML Block tables
+
+
 Release 2.2.5.1 (27 September 2012):
 ==================================================
 
