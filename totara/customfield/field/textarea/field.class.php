@@ -82,7 +82,7 @@ class customfield_textarea extends customfield_base {
             $data->id = $DB->insert_record($tableprefix.'_info_data', $data);
         }
         $itemnew = file_postupdate_standard_editor($itemnew, $shortinputname, $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_customfield', $prefix, $data->id);
-        $data->data = $data->id;
+        $data->data = $itemnew->{$shortinputname};
         $DB->update_record($tableprefix.'_info_data', $data);
     }
 
@@ -94,8 +94,10 @@ class customfield_textarea extends customfield_base {
     function edit_load_item_data(&$item) {
         //get short form by removing trailing '_editor' from $this->inputname;
         $shortinputname = substr($this->inputname, 0, strlen($this->inputname)-7);
+        $context = context_system::instance();
         if ($this->data !== NULL && !$this->is_locked()) {
-            $item->{$shortinputname} = $this->data;
+            $data = file_rewrite_pluginfile_urls($this->data, 'pluginfile.php', $context->id, 'totara_customfield', $this->prefix, $this->dataid);
+            $item->{$shortinputname} = $data;
         }
     }
     /**

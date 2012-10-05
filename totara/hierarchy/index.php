@@ -122,7 +122,7 @@ if ($searchactive || !$displaymode) {
     foreach ($custom_fields as $custom_field) {
         // add one join per custom field
         $fieldid = $custom_field->id;
-        $select .= ", cf_{$fieldid}.data AS cf_{$fieldid}";
+        $select .= ", cf_{$fieldid}.id AS cf_{$fieldid}_itemid, cf_{$fieldid}.data AS cf_{$fieldid}";
         $from .= " LEFT JOIN {{$shortprefix}_type_info_data} cf_{$fieldid}
             ON hierarchy.id = cf_{$fieldid}.{$prefix}id AND cf_{$fieldid}.fieldid = {$fieldid}";
     }

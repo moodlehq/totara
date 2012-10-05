@@ -297,7 +297,7 @@ class hierarchy {
         global $DB;
         $prefix = $this->prefix;
 
-        $sql = "SELECT c.*, f.*
+        $sql = "SELECT c.*, f.datatype, f.hidden, f.fullname
                 FROM {{$this->shortprefix}_type_info_data} c
                 INNER JOIN {{$this->shortprefix}_type_info_field} f ON c.fieldid = f.id
                 WHERE c.{$prefix}id = ?
@@ -1296,11 +1296,12 @@ class hierarchy {
             if ($cf->hidden) {
                 continue;
             }
-            $property = "cf_{$cf->id}";
+            $data = "cf_{$cf->id}";
+            $itemid = "cf_{$cf->id}_itemid";
             // only show if there's data
-            if ($record->$property) {
-                $safetext = format_text($record->$property, FORMAT_HTML);
-                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $cf->id), array('class' => 'customfield ' . $cssclass));
+            if ($record->$data) {
+                $safetext = format_text($record->$data, FORMAT_HTML);
+                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $record->$itemid), array('class' => 'customfield ' . $cssclass));
             }
         }
 
