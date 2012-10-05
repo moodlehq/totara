@@ -181,7 +181,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             $newitem->visible = 1;
             $newitem->usermodified = get_admin()->id;
 
-            if (!$hitem = $this->hierarchy->add_hierarchy_item($newitem, $newitem->parentid, $newitem->frameworkid)) {
+            if (!$hitem = $this->hierarchy->add_hierarchy_item($newitem, $newitem->parentid, $newitem->frameworkid, true, true, false)) {
                 $this->addlog(get_string('cannotcreatex', 'tool_totara_sync', "{$elname} {$newitem->idnumber}"), 'error', 'syncitem');
                 return false;
             }
@@ -211,7 +211,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         /// Update the item
         ///
         $newitem->usermodified = get_admin()->id;
-        if (!$this->hierarchy->update_hierarchy_item($dbitem->id, $newitem, false)) {
+        if (!$this->hierarchy->update_hierarchy_item($dbitem->id, $newitem, false, true, false)) {
             $this->addlog(get_string('cannotupdatex', 'tool_totara_sync', "{$elname} {$newitem->idnumber}"), 'error', 'syncitem');
             return false;
         }

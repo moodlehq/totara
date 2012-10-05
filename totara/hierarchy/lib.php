@@ -1412,7 +1412,7 @@ class hierarchy {
      *
      * @return object|false A copy of the new item, or false if it could not be added
      */
-    function add_hierarchy_item($item, $parentid, $frameworkid = null, $usetransaction = true, $triggerevent = true) {
+    function add_hierarchy_item($item, $parentid, $frameworkid = null, $usetransaction = true, $triggerevent = true, $removedesc = true) {
         global $DB;
         // figure out the framework if not provided
         if (!isset($frameworkid)) {
@@ -1455,7 +1455,9 @@ class hierarchy {
         $item->timecreated = time();
         $item->sortthread = $sortthread;
         //set description to NULL, will be fixed in the post-insert html editor operations
-        $item->description = NULL;
+        if ($removedesc) {
+            $item->description = NULL;
+        }
         if ($usetransaction) {
             $transaction = $DB->start_delegated_transaction();
         }
@@ -1500,7 +1502,7 @@ class hierarchy {
      *
      * @return object|false The updated item, or false if it could not be updated
      */
-    function update_hierarchy_item($itemid, $newitem, $usetransaction = true, $triggerevent = true) {
+    function update_hierarchy_item($itemid, $newitem, $usetransaction = true, $triggerevent = true, $removedesc = true) {
         global $USER, $DB;
 
         // the itemid must be a valid item
@@ -1520,7 +1522,9 @@ class hierarchy {
         }
 
         //set description to NULL, will be fixed in the post-update html editor operations
-        $newitem->description = NULL;
+        if ($removedesc) {
+            $newitem->description = NULL;
+        }
 
         $newitem->id = $itemid;
         $newitem->timemodified = empty($newitem->timemodified) ? time() : $newitem->timemodified;
