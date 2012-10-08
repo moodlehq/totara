@@ -312,6 +312,7 @@ if ( (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release)
     // Also set Totara release (human readable version)
     set_config("totara_release", $TOTARA->release);
     set_config("totara_build", $TOTARA->build);
+    set_config("totara_version", $TOTARA->version);
 }
 
 if (moodle_needs_upgrading()) {

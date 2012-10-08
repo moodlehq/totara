@@ -450,7 +450,15 @@ function install_cli_database(array $options, $interactive) {
     // install core
     install_core($version, true);
     set_config('release', $release);
-
+    //set up totara config variables
+    if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
+        || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
+        || !isset($CFG->totara_version) || $CFG->totara_version <> $TOTARA->version) {
+        // Also set Totara release (human readable version)
+        set_config("totara_release", $TOTARA->release);
+        set_config("totara_build", $TOTARA->build);
+        set_config("totara_version", $TOTARA->version);
+    }
     // install all plugins types, local, etc.
     upgrade_noncore(true);
 

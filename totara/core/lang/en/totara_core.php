@@ -144,6 +144,11 @@ $string['performinglocalpostinst'] = 'Local Post-installation setup';
 $string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation.';
 $string['totara11requiredupgradeversion'] = 'Totara 1.1.13';
 $string['poweredby'] = 'Powered by TotaraLMS';
+$string['cliupgradesure'] = 'Your Totara files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
+<strong>{$a}</strong> <br /><br />
+Once you do this you can not go back again. <br /><br />
+Please note that this process can take a long time. <br /><br />
+Are you sure you want to upgrade this server to this version?';
 
 $string['myreports'] = 'My Reports';
 $string['addanothercolumn'] = 'Add another column...';
