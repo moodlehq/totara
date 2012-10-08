@@ -40,7 +40,7 @@ $instance = required_param('instance', PARAM_INT);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
-$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Indicates whether current related items, not in $relidlist, should be deleted

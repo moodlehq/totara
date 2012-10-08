@@ -39,11 +39,10 @@ if (isguestuser()) {
 $PAGE->set_context(context_system::instance());
 
 /// Script parameters
-$returnto = optional_param('returnto', $CFG->wwwroot, PARAM_RAW);
 $dismiss = optional_param('dismiss', NULL, PARAM_RAW);
 $accept = optional_param('accept', NULL, PARAM_RAW);
 $reject = optional_param('reject', NULL, PARAM_RAW);
-$msgids = explode(',', optional_param('msgids', array(), PARAM_RAW));
+$msgids = explode(',', optional_param('msgids', '', PARAM_SEQUENCE));
 
 // hunt for Message Ids in the POST parameters
 foreach ($_POST as $parm => $value) {

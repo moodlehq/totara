@@ -30,7 +30,7 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 
 // competency id
 $id = required_param('id', PARAM_INT);
-$returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_TEXT);
+$returnurl = optional_param('returnurl', $CFG->wwwroot, PARAM_LOCALURL);
 $confirm = optional_param('confirm', 0, PARAM_INT);
 $s = optional_param('s', null, PARAM_TEXT);
 

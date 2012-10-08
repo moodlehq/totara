@@ -41,7 +41,7 @@ $category = optional_param('category', 0, PARAM_INT);
 
 // No javascript parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
-$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Check perms
