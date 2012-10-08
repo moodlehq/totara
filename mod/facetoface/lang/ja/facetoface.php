@@ -297,7 +297,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '*** これはご連絡
 
 [firstname] [lastname]は以下のコースへのサインアップをキャンセルし、あなたをチームリーダー／マネージャーとして挙げたことをお知らせします。
 
-*** [firstname] [lastname]の予約のキャンセルが以下にコピーされています ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [firstname] [lastname]の予約のキャンセルが以下にコピーされています ****';
 $string['setting:defaultcancellationmessage'] = 'デフォルトのキャンセルメッセージがユーザに送信されました。';
 $string['setting:defaultcancellationmessage_caption'] = 'キャンセルメッセージ';
 $string['setting:defaultcancellationmessagedefault'] = '以下のコースへの予約がキャンセルされたことをお知らせします：
@@ -325,7 +326,8 @@ $string['setting:defaultconfirmationinstrmngrdefault'] = '*** これはご連絡
 
 あなたがチームリーダー／マネージャーではなく、このEメールを間違って受信したと確信できる場合は、このEメールに返信してください。また、このコースをとっているスタッフメンバーについて懸案事項がある場合は、スタッフメンバーと直接話し合ってください。
 
-*** [firstname] [lastname]の予約の確認が以下にコピーされています ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [firstname] [lastname]の予約の確認が以下にコピーされています ****';
 $string['setting:defaultconfirmationmessage'] = 'デフォルトの確認メッセージがユーザに送信されました。';
 $string['setting:defaultconfirmationmessage_caption'] = '確認メッセージ';
 $string['setting:defaultconfirmationmessagedefault'] = '以下のコースに予約したことを確認するお知らせです：
@@ -361,7 +363,8 @@ $string['setting:defaultreminderinstrmngrdefault'] = '*** これはリマイン�
 
 あなたがチームリーダー／マネージャーではなく、このEメールを間違って受信したと確信できる場合は、このEメールに返信してください。
 
-*** [firstname] [lastname]のリマインダメールが以下にコピーされています ****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [firstname] [lastname]のリマインダメールが以下にコピーされています ****';
 $string['setting:defaultremindermessage'] = 'デフォルトのリマインダメッセージがユーザに送信されました。';
 $string['setting:defaultremindermessage_caption'] = 'リマインダメッセージ';
 $string['setting:defaultremindermessagedefault'] = '以下のコースに予約したことのリマインダをお送りします：
@@ -403,7 +406,8 @@ $string['setting:defaultrequestinstrmngrdefault'] = '[firstname] [lastname]が�
 リクエストを承認するには下記のリンクに従ってください：
 [attendeeslink]
 
-*** [firstname] [lastname]の予約リクエストが以下にコピーされています ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [firstname] [lastname]の予約リクエストが以下にコピーされています ****';
 $string['setting:defaultrequestmessagedefault'] = '以下のコースについてのあなたの予約リクエストがマネージャーに送信されました：
 
 参加者：[firstname] [lastname]

@@ -297,7 +297,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '*** Información ****
 
 Esto es para informarle que [nombre] [apellido] ya no se encuentra inscrito en el curso siguiente y usted figura como su Jefe de Equipo / Supervisor.
 
-*** La cancelación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** La cancelación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
 $string['setting:defaultcancellationmessage'] = 'Mensaje por defecto de cancelación enviado al usuario.';
 $string['setting:defaultcancellationmessage_caption'] = 'Mensaje de cancelación';
 $string['setting:defaultcancellationmessagedefault'] = 'Esto es para informarle que su inscripción en el siguiente curso ha sido cancelada:
@@ -325,7 +326,8 @@ Esto es para informarle que [nombre] [apellido], ha sido inscrito en el curso si
 
 Si usted no es su Jefe de Equipo / Supervisor y cree que ha recibido este mensaje por error, por favor, responda a este correo electrónico. Si tiene dudas acerca de sus miembros del staff tomamndo este curso por favor, hable con ellos directamente.
 
-*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
 $string['setting:defaultconfirmationmessage'] = 'Mensaje de confirmación enviado a los usuarios por defecto.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Mensaje de confirmación';
 $string['setting:defaultconfirmationmessagedefault'] = 'Esto es para confirmar que usted esta ahora inscrito para el siguiente curso:
@@ -361,7 +363,8 @@ Su miembro [nombre] [apellido] está inscrito para asistir y también ha recibid
 
 Si usted no es su Jefe de Equipo / Supervisor y cree que ha recibido este mensaje por error, por favor, responda a este correo electrónico.
 
-*** El correo electrónico recordatorio de [nombre] [apellido] se escribe a continuación ****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** El correo electrónico recordatorio de [nombre] [apellido] se escribe a continuación ****';
 $string['setting:defaultremindermessage'] = 'Mensaje recordatorio por defecto enviado a los usuarios.';
 $string['setting:defaultremindermessage_caption'] = 'Mensaje recordatorio';
 $string['setting:defaultremindermessagedefault'] = 'Este es un recordatorio de que usted está inscrito en el siguiente curso:
@@ -401,9 +404,10 @@ Lugar: [session:venue]
 Sala: [session:room]
 
 Por favor siga el enlace a continuación para aprobar la solicitud:
-[enlaceasistentes] # no aprobados
+[enlaceasistentes]
 
-*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
 $string['setting:defaultrequestmessagedefault'] = 'Su solicitud para la inscripción del siguiente curso ha sido enviada a su supervisor:
 
 Participante: [nombre] [apellido]

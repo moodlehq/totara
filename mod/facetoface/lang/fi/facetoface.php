@@ -299,7 +299,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '***Ilmoitus***
 
 Tämä on ilmoitus siitä, että [firstname] [lastname] ei ole enää ilmoittautuneena seuraavalle kurssille. Käyttäjä nimesi sinut tiiminvetäjäkseen/esimiehekseen.
 
-***Kopio käyttäjän [firstname] [lastname] ilmoittautumisen peruutusviestistä***';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '***Kopio käyttäjän [firstname] [lastname] ilmoittautumisen peruutusviestistä***';
 $string['setting:defaultcancellationmessage'] = 'Oletusperuutusviesti lähetetty käyttäjälle';
 $string['setting:defaultcancellationmessage_caption'] = 'Peruutusviesti';
 $string['setting:defaultcancellationmessagedefault'] = 'Tämä on ilmoitus siitä, että ilmoittautumisesi seuraavalle kurssille on peruttu:
@@ -327,7 +328,8 @@ Tämä on ilmoitus siitä, että [firstname] [lastname] on ilmoittautunut seuraa
 
 Jos et ole tämän henkilön tiiminvetäjä/esimies ja olet saanut tmänä viestin vahingossa, vastaa tähän viestiin. Mikäli on epäselvyyttä siitä, onko kyseinen kurssi tarpeellinen tälle käyttäjälle, keskustele asiasta hänen kanssaan asiasta.
 
-*** Kopio käyttäjän [firstname] [lastname] vahvistusviestistä alla****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** Kopio käyttäjän [firstname] [lastname] vahvistusviestistä alla****';
 $string['setting:defaultconfirmationmessage'] = 'Oletusvahvistusviesti, joka lähetetään käyttäjille.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Vahvistusviesti';
 $string['setting:defaultconfirmationmessagedefault'] = 'Tämä on vahvistusviesti siitä, että olet ilmoittatunut seuraavalle kurssille:
@@ -364,7 +366,8 @@ Henkilökuntasi jäsen [firstname] [lastname] on ilmoittautuneena yllämainitull
 
 Jos et ole tämän henkilön tiiminvetäjä/esimies ja olet saanut tmänä viestin vahingossa, vastaa tähän viestiin.
 
-*** Kopio käyttäjän [firstname] [lastname] muistutusviestistä alla****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Kopio käyttäjän [firstname] [lastname] muistutusviestistä alla****';
 $string['setting:defaultremindermessage'] = 'Oletusmuistutusviesti, joka lähetetään käyttäjille';
 $string['setting:defaultremindermessage_caption'] = 'Muistutusviesti';
 $string['setting:defaultremindermessagedefault'] = 'Tämä on muistutus siitä, että olet ilmoittautuneena seuraavalle kurssille:
@@ -407,7 +410,8 @@ Huone: [session:room]
 Voit hyväksyä pyynnön allaolevasta linkistä:
 [attendeeslink]
 
-*** Kopio käyttäjän [firstname] [lastname] anomuksesta alla****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** Kopio käyttäjän [firstname] [lastname] anomuksesta alla****';
 $string['setting:defaultrequestmessagedefault'] = 'Anomuksesi osallistua seuraavalle kurssille on lähetetty esimiehellesi:
 
 Osallistuja: [firstname] [lastname]

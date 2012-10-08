@@ -297,7 +297,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '*** Advice only ****
 
 This is to advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.
 
-*** [firstname] [lastname]\'s booking cancellation is copied below ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking cancellation is copied below ****';
 $string['setting:defaultcancellationmessage'] = 'Mensagem de cancelamento padrão enviada ao usuário.';
 $string['setting:defaultcancellationmessage_caption'] = 'Mensagem de cancelamento';
 $string['setting:defaultcancellationmessagedefault'] = 'Mensagem para avisar que sua reserva no seguinte curso foi cancelada: ***RESERVA CANCELADA*** Participante: [firstname] [lastname] Curso: [facetofacename] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room]';
@@ -312,7 +313,8 @@ This is to advise that [firstname] [lastname] has been booked for the following 
 
 If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.
 
-*** [firstname] [lastname]\'s booking confirmation is copied below ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking confirmation is copied below ****';
 $string['setting:defaultconfirmationmessage'] = 'Mensagem de confirmação padrão enviada aos usuários.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Mensagem de confirmação';
 $string['setting:defaultconfirmationmessagedefault'] = 'Mensagem para confirmar que você está reservado no seguinte curso: Participante: [firstname] [lastname] Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] ***Chegue 10 minutos antes do início do curso*** Para reagendar ou cancelar sua reserva, você precisar cancelar esta reserva e reservar uma nova sessão. Para cancelar sua reserva, retorne ao site e na página deste curso selecione \'cancelar\' na tela de informações da reserva. [details] Você receberá um lembrete [reminderperiod] dias úteis antes do curso.';
@@ -327,14 +329,18 @@ Your staff member [firstname] [lastname] is booked to attend and above course an
 
 If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.
 
-*** [firstname] [lastname]\'s reminder email is copied below ****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s reminder email is copied below ****';
 $string['setting:defaultremindermessage'] = 'Mensagem de lembrete padrão enviada aos usuários.';
 $string['setting:defaultremindermessage_caption'] = 'Mensagem de lembrete';
 $string['setting:defaultremindermessagedefault'] = 'Este é um lembrete de que você está reservado no seguinte curso: Participante: [firstname] [lastname] Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] ***Chegue 10 minutos antes do início do curso*** Para reagendar ou cancelar sua reserva, você precisar cancelar esta reserva e reservar uma nova sessão. Para cancelar sua reserva, retorne ao site e na página deste curso selecione \'cancelar\' na tela de informações da reserva. [details]';
 $string['setting:defaultremindersubject'] = 'Linha de assunto padrão para emails de lembrete.';
 $string['setting:defaultremindersubject_caption'] = 'Assunto do lembrete';
 $string['setting:defaultremindersubjectdefault'] = 'Lembrete da reserva no curso: [facetofacename], [starttime]-[finishtime], [sessiondate]';
-$string['setting:defaultrequestinstrmngrdefault'] = 'Mensagem para avisar que [firstname] [lastname] solicitou uma reserva no seguinte curso e você está listado como seu líder de equipe/gerente. Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] Siga o link abaixo para aprovar a solicitação: [attendeeslink] *** A solicitação de reserva de [firstname] [lastname] foi copiada abaixo ****';
+$string['setting:defaultrequestinstrmngrdefault'] = 'Mensagem para avisar que [firstname] [lastname] solicitou uma reserva no seguinte curso e você está listado como seu líder de equipe/gerente. Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] Siga o link abaixo para aprovar a solicitação: [attendeeslink]
+
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** A solicitação de reserva de [firstname] [lastname] foi copiada abaixo ****';
 $string['setting:defaultrequestmessagedefault'] = 'Sua solicitação de reserva no seguinte curso foi enviada ao seu gerente: Participante: [firstname] [lastname] Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room]';
 $string['setting:defaultrequestsubjectdefault'] = 'Solicitação de reserva no curso: [facetofacename], [starttime]-[finishtime]';
 $string['setting:defaultvalue'] = 'Valor padrão';

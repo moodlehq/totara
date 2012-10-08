@@ -218,7 +218,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '***Ter kennisname***
 
 Dit is een bevestiging dat [firstname] [lastname] de volgende cursus heeft afgemeld en u heeft opgegeven als hun teamleider.
 
-***[firstname] [lastname]\'s opzegging is hieronder weergegeven ***';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '***[firstname] [lastname]\'s opzegging is hieronder weergegeven ***';
 $string['setting:defaultcancellationmessage'] = 'Standaard kennisgeving van afzegging naar de deelnemer gestuurd.';
 $string['setting:defaultcancellationmessage_caption'] = 'Bericht van verwijderen boeking';
 $string['setting:defaultcancellationmessagedefault'] = 'Dit is een kennisgeving van het opzeggen van de boeking voor de volgende afspraak:
@@ -245,7 +246,8 @@ Dit is een kennisgeving dat [firstname] [lastname] zich heeft ingeschreven voor 
 
 Als u dit bericht ten onrechte ontvangt, stuur dit bericht dan terug.
 
-*** [fistname] [lastname]\'s inschrijving wordt hieronder weergegeven ***';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [fistname] [lastname]\'s inschrijving wordt hieronder weergegeven ***';
 $string['setting:defaultconfirmationmessage'] = 'Standaard bevestigingsbericht gestuurd naar deelnemers.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Bevestigingsmelding';
 $string['setting:defaultconfirmationmessagedefault'] = 'Dit is een kennisgeving van het bevestigen van de boeking voor de volgende afspraak:
@@ -277,7 +279,8 @@ Uw collega [firstname] [lastname] is bij de volgende afspraak geplaatst en heeft
 
 Als u dit bericht ten onrechte heeft ontvangen, stuur deze mail dan terug.
 
-***[firstname] [lastname]\'s herinnering is hieronder weergegeven***';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '***[firstname] [lastname]\'s herinnering is hieronder weergegeven***';
 $string['setting:defaultremindermessage'] = 'Standaard herinneringsboodschap gestuurd naar deelnemers.';
 $string['setting:defaultremindermessage_caption'] = 'Herinneringsboodschap';
 $string['setting:defaultremindermessagedefault'] = 'Dit is een herinnering dat u geboekt bent voor de volgende afspraak:
@@ -467,7 +470,8 @@ Ruimte: [session:room]
 Klik op de link om deze aanmelding goed te keuren:
 [attendeeslink]
 
-*** [firstname] [lastname]\'s aanmelding ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s aanmelding ****';
 $string['setting:defaultrequestmessagedefault'] = 'Je manager is verzocht om je aanmelding voor onderstaande bijeenkomst goed te keuren:
 
 Gebruiker: [firstname] [lastname]

@@ -283,9 +283,10 @@ $string['setting:defaultcancellationinstrmngr'] = '发送给管理者的默认�
 $string['setting:defaultcancellationinstrmngr_caption'] = '取消消息（管理者）';
 $string['setting:defaultcancellationinstrmngrdefault'] = '*** 仅用于通知 ****
 
-本邮件是为了通知将您列为团队主管/管理者的 [名] [姓] 不再注册以下课程。
+本邮件是为了通知将您列为团队主管/管理者的 [名] [姓] 不再注册以下课程
 
-*** [名] [姓] 的预约取消信息复制如下 ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [名] [姓] 的预约取消信息复制如下 ****';
 $string['setting:defaultcancellationmessage'] = '发送给用户的默认取消消息。';
 $string['setting:defaultcancellationmessage_caption'] = '取消消息';
 $string['setting:defaultcancellationmessagedefault'] = '本邮件是为了通知您已取消以下课程的预约：
@@ -313,7 +314,8 @@ $string['setting:defaultconfirmationinstrmngrdefault'] = '*** 仅用于通知 **
 
 如果您不是其团队主管/管理者，并且确信您错误地收到了这封电子邮件，请回复本电子邮件。如果您有任何与参与本课程的员工相关的问题，请直接与这些员工沟通。
 
-*** [名] [姓] 的预约确认信息复制如下 ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [名] [姓] 的预约确认信息复制如下 ****';
 $string['setting:defaultconfirmationmessage'] = '发送给用户的默认确认消息。';
 $string['setting:defaultconfirmationmessage_caption'] = '确认消息';
 $string['setting:defaultconfirmationmessagedefault'] = '本邮件是为了确认您已预约以下课程：
@@ -349,7 +351,8 @@ $string['setting:defaultreminderinstrmngrdefault'] = '*** 仅用于提醒 ****
 
 如果您不是其团队主管/管理者，并且确信您错误地收到了这封电子邮件，请回复本电子邮件。
 
-*** [名] [姓] 的提醒电子邮件复制如下 ****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [名] [姓] 的提醒电子邮件复制如下 ****';
 $string['setting:defaultremindermessage'] = '发送给用户的默认提醒消息。';
 $string['setting:defaultremindermessage_caption'] = '提醒消息';
 $string['setting:defaultremindermessagedefault'] = '本邮件是为了提醒您已预约以下课程：
@@ -391,7 +394,8 @@ $string['setting:defaultrequestinstrmngrdefault'] = '本邮件是为了通知将
 请访问以下链接来批准申请：
 [参与者链接]
 
-*** [名] [姓] 的预约申请信息复制如下 ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [名] [姓] 的预约申请信息复制如下 ****';
 $string['setting:defaultrequestmessagedefault'] = '您对以下课程的预约申请已发送给您的管理者：
 
 参与者：   [名] [姓]

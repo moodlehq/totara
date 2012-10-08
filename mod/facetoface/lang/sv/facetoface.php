@@ -285,7 +285,8 @@ $string['setting:defaultcancellationinstrmngr'] = 'Standardmeddelande vid instä
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Meddelande vid inställt (chefer)';
 $string['setting:defaultcancellationinstrmngrdefault'] = 'Detta är ett meddelande om att [förnamn][efternamn] inte längre är bokad på följande kur och har listat dig som sin chef.
 
-***[förnamn][efternamn]\'s avbokning är kopierad nedan***';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s avbokning är kopierad nedan***';
 $string['setting:defaultcancellationmessage'] = 'Standardmeddelande vid inställt som skickas till användaren.';
 $string['setting:defaultcancellationmessage_caption'] = 'Meddelande vid inställt';
 $string['setting:defaultcancellationmessagedefault'] = 'Detta är ett meddelande om att din bokning på följande kurs har avbokats: 
@@ -312,7 +313,8 @@ Detta är ett meddelande om att [förnamn][efternamn] har bokats på följade ku
 
 Om du inte är chef och tror att du har fått denna e-post av misstag var vänlig att svara på denna e-post. Om du har funderingar över att din medarbetare tar denna kurs var vänligt att diskuter direkt med personen.
 
-***[förnamn][efternamn]\'s bokningsbekräftelse är kopierad nedan****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s bokningsbekräftelse är kopierad nedan****';
 $string['setting:defaultconfirmationmessage'] = 'Standard bekräftelsemeddelande skickat till användare.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Bekräftelse';
 $string['setting:defaultconfirmationmessagedefault'] = 'Härmed bekräftas att du är bokad på följande kurs:
@@ -346,7 +348,8 @@ $string['setting:defaultreminderinstrmngrdefault'] = 'Din medarbetare [förnamn]
 
 Om du inte är chef och tror att du har fått denna e-post av misstag var vänlig att svara på denna e-post.
 
-***[förnamn][efternamn]\'s e-postpåminnelse är kopierad nedan****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s e-postpåminnelse är kopierad nedan****';
 $string['setting:defaultremindermessage'] = 'Standarpåminnelse som skickas till användarna';
 $string['setting:defaultremindermessage_caption'] = 'Påminnelsemeddelande';
 $string['setting:defaultremindermessagedefault'] = 'Detta är en påminnelse att du är bokad på följande kurs:
@@ -387,7 +390,8 @@ Rum: [session:rum]
 Var vänlig följ nedanstående länk för att godkänna förfrågan:
 [deltagarlänk]
 
-***[förnamn][efternamn]\'s bokningsförfrågan är kopierad nedan****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s bokningsförfrågan är kopierad nedan****';
 $string['setting:defaultrequestmessagedefault'] = 'Din förfrågan att delta i följande kurs har skickats till din chef:
 
 Deltagare: [förnamn][efternamn]

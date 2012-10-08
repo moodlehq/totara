@@ -293,7 +293,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '--- Tájékoztatásul 
 
 Ez egy tájékoztató levél arról, hogy [vezetéknév] [keresztnév] visszavonta a jelentkezését a következő oktatótermi képzésről, és erről Önt mint a munkaköri vezetőjét tájékoztatjuk.
 
---- [vezetéknév] [keresztnév] feliratkozásának visszavonása ide másolva ---';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '--- [vezetéknév] [keresztnév] feliratkozásának visszavonása ide másolva ---';
 $string['setting:defaultcancellationmessage'] = 'Alapértelmezett feliratkozás visszavonási e-mail elküldése a felhasználónak.';
 $string['setting:defaultcancellationmessage_caption'] = 'Feliratkozás visszavonási e-mail';
 $string['setting:defaultcancellationmessagedefault'] = 'Ez egy tájékoztató levél arról, hogy visszavonta a jelentkezését a következő oktatótermi képzésről:
@@ -321,7 +322,8 @@ Ez egy tájékoztató levél arról, hogy [vezetéknév] [keresztnév] feliratko
 
 Ha Ön nem munkaköri vezető, és azt gondolja, hogy ez a levél egy hiba folytán került Önhöz, akkor kérem küldje vissza ezt a levelet. Ha aggályai vannak afelől, hogy a beosztottjai miként végzik el a képzést, akkor kérem beszélje meg velük közvetlenül.
 
---- [vezetéknév] [keresztnév] feliratkozásának megerősítése ide másolva ---';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '--- [vezetéknév] [keresztnév] feliratkozásának megerősítése ide másolva ---';
 $string['setting:defaultconfirmationmessage'] = 'Alapértelmezett megerősítései e-mail elküldése a felhasználónak.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Megerősítési e-mail';
 $string['setting:defaultconfirmationmessagedefault'] = 'Ez egy tájékoztató levél arról, hogy feliratkozott a következő oktatótermi képzésre:
@@ -357,7 +359,8 @@ $string['setting:defaultreminderinstrmngrdefault'] = '--- Emlékeztető ---
 
 Ha Ön nem munkaköri vezető, és azt gondolja, hogy ez a levél egy hiba folytán került Önhöz, akkor kérem küldje vissza ezt a levelet.
 
---- [vezetéknév] [keresztnév] emlékeztető email bemásolva ide ---';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '--- [vezetéknév] [keresztnév] emlékeztető email bemásolva ide ---';
 $string['setting:defaultremindermessage'] = 'Alapértelmezett emlékeztető e-mail elküldése a tanulónak.';
 $string['setting:defaultremindermessage_caption'] = 'Emlékeztető e-mail';
 $string['setting:defaultremindermessagedefault'] = 'Ez az e-mail emlékezteti arra, hogy feliratkozott a következő oktatótermi képzésre:
@@ -399,7 +402,8 @@ Terem: [session:room]
 Kérem hívja meg ezt a linket a kérelem elbírálásához:
 [résztvevők]
 
---- [vezetéknév] [keresztnév] feliratkozási kérelme bemásolva ide ---';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '--- [vezetéknév] [keresztnév] feliratkozási kérelme bemásolva ide ---';
 $string['setting:defaultrequestmessagedefault'] = 'A feliratkozási kérelmét elküldtük a munkaköri vezetője email címére:
 
 Résztvevő: [vezetéknév] [keresztnév]

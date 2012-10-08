@@ -224,7 +224,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '***Information***
 
 L\'inscription de [firstname] [lastname] a été annulée pour la formation suivante et vous êtes désigné comme son responsable.
 
-*** L\'annulation de l\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** L\'annulation de l\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultcancellationmessage'] = 'Message d\'annulation par défaut envoyés aux utilisateurs.';
 $string['setting:defaultcancellationmessage_caption'] = 'Message d\'annulation';
 $string['setting:defaultcancellationmessagedefault'] = 'Ce message vous confirme que votre inscription à la session suivante a été annulée:
@@ -251,7 +252,8 @@ $string['setting:defaultconfirmationinstrmngrdefault'] = '***Information***
 
 Si vous n\'êtes pas son responsable et avez reçu ce message par erreur,merci de le signaler en y répondant.
 
-*** L\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** L\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultconfirmationmessage'] = 'Messages de confirmation par défaut envoyés aux utilisateurs.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Message de confirmation';
 $string['setting:defaultconfirmationmessagedefault'] = 'Ce message vous confirme que vous êtes inscrit(e) à la formation suivante:
@@ -288,7 +290,8 @@ $string['setting:defaultreminderinstrmngrdefault'] = '***Rappel***
 
 Si vous n\'êtes pas le responsable de cette personne et pensez avoir reçu ce message par erreur, merci d\'y répondre pour le signaler.
 
-*** Le courriel de rappel à [firstname] [lastname] est en copie ci-dessous ****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Le courriel de rappel à [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultremindermessage'] = 'Messages de rappel par défaut envoyés aux utilisateurs.';
 $string['setting:defaultremindermessage_caption'] = 'Message de rappel';
 $string['setting:defaultremindermessagedefault'] = 'Ce message vous rappelle que vous êtes inscrit(e) à la session suivante:
@@ -315,6 +318,25 @@ Pour annuler votre inscription, retournez sur le site, ensuite à la page de cet
 $string['setting:defaultremindersubject'] = 'Sujet par défaut des messages de rappel.';
 $string['setting:defaultremindersubject_caption'] = 'Sujet de rappel';
 $string['setting:defaultremindersubjectdefault'] = 'Rappel d\'inscription:[facetofacename], [starttime]-[finishtime], [sessiondate]';
+$string['setting:defaultrequestinstrmngrdefault'] = 'Ce message vous informe que votre coéquipier [firstname] [lastname] a demandé une réservation au cours affiché ci-dessous.
+
+Cours: [facetofacename]
+Coût: [cost]
+
+Durée: [duration]
+Date(s):
+[alldates]
+
+Situation: [session:location]
+Lieu: [session:venue]
+Salle: [session:room]
+
+Veuillez suivre le lien suivant afin d\'approuver la demande:
+[attendeeslink]
+
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La demande de réservation de l\'utilisateur [firstname] [lastname] se trouve en copie ci-dessous ****';
+
 $string['setting:defaultwaitlistedmessage'] = 'Messages de liste d\'attente par défaut envoyés aux utilisateurs.';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Message de liste d\'attente';
 $string['setting:defaultwaitlistedmessagedefault'] = 'Ce message vous informe que vous avez été ajouté(e) à la liste d\'attente pour:

@@ -302,7 +302,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '*** Solo avviso ****
 
 Questo messaggio è per avvisare che [firstname] [lastname] non è più registrato al seguente corso e ti ha elencato come Team Leader / Manager.
 
-*** l\'annullamento della prenotazione di [firstname] [lastname] è copiata di seguito ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** l\'annullamento della prenotazione di [firstname] [lastname] è copiata di seguito ****';
 $string['setting:defaultcancellationmessage'] = 'Messaggio di annullamento predefinito inviato all\'utente';
 $string['setting:defaultcancellationmessage_caption'] = 'Messaggio di annullamento';
 $string['setting:defaultcancellationmessagedefault'] = 'Questo messaggio è per informare che la prenotazione al seguente corso è stata annullata:
@@ -330,7 +331,8 @@ Questo messaggio è per informare che [firstname] [lastname] è stato prenotato 
 
 Se non sei il Team Leader / Manager e pensi di aver ricevuto questa e-mail per sbaglio, rispondi a questa e-mail. Se temi che il membro di staff segua il corso, parlane direttamente.
 
-*** La conferma di prenotazione [firstname] [lastname] è copiata di seguito ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** La conferma di prenotazione [firstname] [lastname] è copiata di seguito ****';
 $string['setting:defaultconfirmationmessage'] = 'Messaggio di conferma predefinito inviato agli utenti';
 $string['setting:defaultconfirmationmessage_caption'] = 'Messaggio di conferma';
 $string['setting:defaultconfirmationmessagedefault'] = 'Questo messaggio è per confermare che sei iscritto al seguente corso:
@@ -367,7 +369,8 @@ Il tuo membro di staff [firstname] [lastname] è prenotato per frequentare il co
 
 Se non sei il loro Team Leader / Manager e pensi di aver ricevuto questa e-mail per errore, rispondere a questa e-mail.
 
-*** [firstname] [lastname]\'s reminder email is copied below ****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s reminder email is copied below ****';
 $string['setting:defaultremindermessage'] = 'Messaggio di promemoria predefinito inviato agli utenti';
 $string['setting:defaultremindermessage_caption'] = 'Messaggio di promemoria';
 $string['setting:defaultremindermessagedefault'] = 'Questo è un promemoria per cui sei iscritto al seguente corso:
@@ -407,7 +410,8 @@ Sala: [session:room]
 Andare al link di seguito per approvare la richiesta:
 [attendeeslink]
 
-*** La richiesta di [firstname] [lastname] è approvata di seguito ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La richiesta di [firstname] [lastname] è approvata di seguito ****';
 $string['setting:defaultrequestmessagedefault'] = 'La richiesta di prenotazione al seguente corso è stata inviata al tuo manager:
 
 Partecipante: [firstname] [lastname]

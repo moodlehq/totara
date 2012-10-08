@@ -297,7 +297,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '*** Tylko informacja *
 
 Informujemy, że [firstname] [lastname] nie ma już rejestracji na następujący kurs i otrzymaliśmy informację, że jesteś liderem zespołu/kierownikiem, pod którego podlega.
 
-*** Kopia anulowania rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** Kopia anulowania rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
 $string['setting:defaultcancellationmessage'] = 'Domyślna wiadomość o anulowaniu została wysłana do użytkownika.';
 $string['setting:defaultcancellationmessage_caption'] = 'Wiadomość o anulowaniu';
 $string['setting:defaultcancellationmessagedefault'] = 'Informujemy, że Twoja rezerwacja na następujący kurs została anulowana:
@@ -325,7 +326,8 @@ Informujemy, że [firstname] [lastname] ma rejestrację na następujący kurs i 
 
 Jeśli tak nie jest i uważasz, że ta wiadomość została przysłana przez pomyłkę, odpowiedz na nią. Jeśli masz wątpliwości dotyczące uczestnictwa podwładnego w tym kursie, przedyskutuj to z nim bezpośrednio.
 
-*** Kopia potwierdzenia rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** Kopia potwierdzenia rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
 $string['setting:defaultconfirmationmessage'] = 'Domyślna wiadomość potwierdzająca została wysłana do użytkowników.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Wiadomość potwierdzająca';
 $string['setting:defaultconfirmationmessagedefault'] = 'Potwierdzamy, że masz rezerwację na następujący kurs:
@@ -361,7 +363,8 @@ Twój pracownik [firstname] [lastname] ma rezerwację uczestnictwa w powyższym 
 
 Jeśli nie jesteś liderem zespołu/kierownikiem i uważasz, że ta wiadomość została przysłana przez pomyłkę, odpowiedz na nią.
 
-*** Poniżej znajduje się kopia wiadomości e-mail o przypomnieniu dla [firstname] [lastname]****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Poniżej znajduje się kopia wiadomości e-mail o przypomnieniu dla [firstname] [lastname]****';
 $string['setting:defaultremindermessage'] = 'Domyślna wiadomość przypominająca została wysłana do użytkowników.';
 $string['setting:defaultremindermessage_caption'] = 'Wiadomość przypominająca';
 $string['setting:defaultremindermessagedefault'] = 'Jest to przypomnienie, że masz rezerwację na następujący kurs:
@@ -403,7 +406,8 @@ Pomieszczenie: [session:room]
 Użyj poniższego łącza, aby zatwierdzić żądanie:
 [attendeeslink]
 
-*** Poniżej znajduje się kopia żądania rezerwacji [firstname] [lastname] ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** Poniżej znajduje się kopia żądania rezerwacji [firstname] [lastname] ****';
 $string['setting:defaultrequestmessagedefault'] = 'Twoje żądanie rezerwacji na następujący kurs zostało wysłane do Twojego kierownika:
 
 Uczestnik: [firstname] [lastname]

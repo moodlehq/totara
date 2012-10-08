@@ -297,7 +297,8 @@ $string['setting:defaultcancellationinstrmngrdefault'] = '*** Nur Mitteilung ***
 
 Hiermit wird Ihnen mitgeteilt, dass [Vorname] [Nachname] nicht mehr für den folgenden Kurs angemeldet ist und Sie als Teamleiter/Manager aufgeführt hat.
 
-*** Die Buchungsstornierung von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
+';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** Die Buchungsstornierung von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
 $string['setting:defaultcancellationmessage'] = 'Standardmäßige, an Nutzer gesendete Stornierungsmitteilung.';
 $string['setting:defaultcancellationmessage_caption'] = 'Stornierungsmitteilung';
 $string['setting:defaultcancellationmessagedefault'] = 'Hiermit teilen wir Ihnen mit, dass Ihre Buchung für den folgenden Kurs storniert wurde:
@@ -325,7 +326,8 @@ Hiermit wird Ihnen mitgeteilt, dass [Vorname] [Nachname] den folgenden Kurs gebu
 
 Wenn Sie nicht der Teamleiter/Manager sind und glauben, diese E-Mail fälschlicherweise erhalten zu haben, dann antworten Sie bitte auf diese E-Mail. Wenn Sie Zweifel bei Ihrer Belegschaft in Hinblick auf die Teilnahme an diesem Kurs haben, besprechen Sie dies bitte direkt mit Ihrer Belegschaft.
 
-*** Die Buchungsbestätigung von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
+';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] ='*** Die Buchungsbestätigung von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
 $string['setting:defaultconfirmationmessage'] = 'Standardmäßige, an Nutzer gesendete Bestätigungsmitteilung.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Bestätigungsmitteilung';
 $string['setting:defaultconfirmationmessagedefault'] = 'Hiermit bestätigen wir, dass Sie den folgenden Kurs gebucht haben:
@@ -361,7 +363,8 @@ Ihr Mitarbeiter [Vorname] [Nachname] hat den vorstehenden Kurs gebucht und ebenf
 
 Wenn Sie nicht der Teamleiter/Manager sind und glauben, diese E-Mail fälschlicherweise erhalten zu haben, dann antworten Sie bitte auf diese E-Mail.
 
-*** Die Erinnerungs-E-Mail von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
+';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Die Erinnerungs-E-Mail von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt****';
 $string['setting:defaultremindermessage'] = 'Standardmäßige, an Nutzer gesendete Erinnerungsmitteilung.';
 $string['setting:defaultremindermessage_caption'] = 'Erinnerungsmitteilung';
 $string['setting:defaultremindermessagedefault'] = 'Dies ist eine Erinnerung, dass Sie den folgenden Kurs gebucht haben:
@@ -401,9 +404,10 @@ Veranstaltungsort: [Sitzung:Veranstaltungsort]
 Raum: [Sitzung:Raum]
 
 Bitte folgen Sie dem nachfolgenden Link, um die Anfrage zu bestätigen:
-[Teilnehmerlink]#unbestätigt
+[Teilnehmerlink]
 
-*** Die Buchungsanfrage von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt ****';
+';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** Die Buchungsanfrage von [Vorname] [Nachname] ist nachfolgend als Kopie beigefügt ****';
 $string['setting:defaultrequestmessagedefault'] = 'Ihre Anfrage für die Buchung des folgenden Kurses wurde an Ihren Manager übermittelt:
 
 Teilnehmer: [Voname] [Nachname]
