@@ -1094,15 +1094,17 @@ function certificate_get_date($certificate, $certrecord, $course, $userid = null
     }
     if ($certificate->printdate > 0) {
         if ($certificate->datefmt == 1) {
-            $certificatedate = str_replace(' 0', ' ', strftime('%B %d, %Y', $date));
-        } else if ($certificate->datefmt == 2) {
-            $certificatedate = date('F jS, Y', $date);
-        } else if ($certificate->datefmt == 3) {
-            $certificatedate = str_replace(' 0', '', strftime('%d %B %Y', $date));
-        } else if ($certificate->datefmt == 4) {
-            $certificatedate = strftime('%B %Y', $date);
-        } else if ($certificate->datefmt == 5) {
-            $certificatedate = userdate($date, get_string('strftimedate', 'langconfig'));
+            $certificatedate = userdate($date, get_string('dateformat1', 'certificate'), null, true);
+        }
+        if ($certificate->datefmt == 2) {
+            //NB - day ordinal suffixes work in English ONLY
+            $certificatedate = date(get_string('dateformat2', 'certificate'), $date);
+        }
+        if ($certificate->datefmt == 3) {
+            $certificatedate = userdate($date, get_string('strftimedate', 'langconfig'), null, true);
+        }
+        if ($certificate->datefmt == 4) {
+            $certificatedate = userdate($date, get_string('strftimemonthyear', 'langconfig'), null, true);
         }
 
         return $certificatedate;

@@ -56,6 +56,9 @@ the role of teacher, do not select Print Teacher or any signature image except f
 $string['date'] = 'On';
 $string['datefmt'] = 'Date Format';
 $string['datefmt_help'] = 'Choose a date format to print the date on the certificate. Or, choose the last option to have the date printed in the format of the user\'s chosen language.';
+//date format strings - note format 2 is date() format, the others are srtftime() format
+$string['dateformat1'] = '%B %d, %Y';
+$string['dateformat2'] = 'F jS, Y';
 $string['datehelp'] = 'Date';
 $string['deletissuedcertificates'] = 'Delete issued certificates';
 $string['delivery'] = 'Delivery';

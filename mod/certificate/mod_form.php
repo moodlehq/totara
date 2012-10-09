@@ -9,7 +9,7 @@ require_once($CFG->dirroot.'/mod/certificate/lib.php');
 class mod_certificate_mod_form extends moodleform_mod {
 
     function definition() {
-        global $CFG;
+        global $CFG, $USER;
 
         $mform =& $this->_form;
 
@@ -61,8 +61,11 @@ class mod_certificate_mod_form extends moodleform_mod {
         $mform->setDefault('printdate', 'N');
         $mform->addHelpButton('printdate', 'printdate', 'certificate');
 
-        $dateformatoptions = array( 1 => 'January 1, 2000', 2 => 'January 1st, 2000', 3 => '1 January 2000',
-            4 => 'January 2000', 5 => get_string('userdateformat', 'certificate'));
+        $curtime = time();
+        $dateformatoptions = array( 1 => strftime(get_string('dateformat1', 'certificate'), $curtime),
+                                    2 => date(get_string('dateformat2', 'certificate'), $curtime) . ' (English only)',
+                                    3 => strftime(get_string('strftimedate', 'langconfig'), $curtime),
+                                    4 => strftime(get_string('strftimemonthyear', 'langconfig'), $curtime));
         $mform->addElement('select', 'datefmt', get_string('datefmt', 'certificate'), $dateformatoptions);
         $mform->setDefault('datefmt', 0);
         $mform->addHelpButton('datefmt', 'datefmt', 'certificate');
