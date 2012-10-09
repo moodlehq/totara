@@ -132,6 +132,7 @@ $string['couldnotimportallrecords'] = 'could not import all records';
 $string['syncstarted'] = 'sync started';
 $string['syncfinished'] = 'sync finished';
 $string['couldnotgetsourcetable'] = 'could not get source table, aborting...';
+$string['couldnotcreateclonetable'] = 'could not create clone table, aborting...';
 $string['sanitycheckfailed'] = 'sanity check failed, aborting...';
 $string['cannotdeletex'] = 'cannot delete {$a} (might already be deleted)';
 $string['deletedx'] = 'deleted {$a}';
