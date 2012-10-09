@@ -427,16 +427,18 @@ class totara_program_renderer extends plugin_renderer_base {
         $out .= html_writer::end_tag('div');
 
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-or-string'));
-        $out .= get_string('or', 'totara_program') . html_writer::end_tag('div');
+        $out .= get_string('or', 'totara_program');
+        $out .= html_writer::end_tag('div');
 
         $out .= html_writer::start_tag('div', array('id' => 'prog-completion-relative-date'));
         $out .= get_string('completewithin', 'totara_program');
         $out .= program_utilities::print_duration_selector($prefix = '', $periodelementname = 'timeperiod', $periodvalue = '', $numberelementname = 'timeamount', $numbervalue = '1', $includehours = false);
+        $out .= html_writer::empty_tag('br');
         $out .= get_string('of', 'totara_program');
         $out .= $this->completion_events_dropdown();
-
         $out .= html_writer::empty_tag('input', array('id' => 'instance', 'type' => 'hidden', 'name' => "instance", 'value' => ''));
-        html_writer::link('#', '', array('id' => 'instancetitle'));
+        $out .= html_writer::link('#', '', array('id' => 'instancetitle'));
+        $out .= html_writer::empty_tag('br');
         $out .= html_writer::start_tag('button', array('class' => 'relativeeventtime')) . get_string('settimerelativetoevent', 'totara_program') . html_writer::end_tag('button');
         $out .= html_writer::end_tag('div');
 
