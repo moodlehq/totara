@@ -595,6 +595,8 @@ ul.comment-list li .comment-delete {
 .fullwidth th,
 .cell td,
 .cell th,
+.centerblock td,
+.centerblock th,
 /* Other table/cell classes found in the base styles with no padding */
 .ratingtable td,
 .ratingtable th,
