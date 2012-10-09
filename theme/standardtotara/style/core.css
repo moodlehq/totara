@@ -808,3 +808,12 @@ div.totara-dialog td.select #browse-tab {
     text-align: center;
     cursor: pointer;
 }
+
+table.namewithlinks-layout td.user-links a {
+    font-size: 1.4em;
+}
+
+table.namewithlinks-layout td.user-name {
+    font-size: 1.3em;
+}
+

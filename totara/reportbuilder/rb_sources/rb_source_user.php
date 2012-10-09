@@ -432,7 +432,7 @@ class rb_source_user extends rb_base_source {
         $table->data[] = new html_table_row($cells);
         $cell = new html_table_cell($links);
         $cell->attributes['class'] = 'user-links';
-        $cell->attributes['colspan'] = '2';
+        $cell->colspan = 2;
         $table->data[] = new html_table_row(array($cell));
         $return = html_writer::table($table);
 
