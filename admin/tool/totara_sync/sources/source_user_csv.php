@@ -36,7 +36,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $this->config->import_idnumber = "1";
         $this->config->import_username = "1";
         $this->config->import_timemodified = "1";
-        $this->config->import_delete = (isset($this->element->config->sourceallrecords) && $this->element->config->sourceallrecords == 0) ? "1" : '0';
+        $this->config->import_deleted = (isset($this->element->config->sourceallrecords) && $this->element->config->sourceallrecords == 0) ? "1" : '0';
 
         if (empty($filepath)) {
             $mform->addElement('html', html_writer::tag('p', get_string('nofilesdir', 'tool_totara_sync')));

@@ -61,6 +61,7 @@ $string['removeusers'] = 'Remove users';
 $string['removeusersdesc'] = 'Specify what to do with internal user accounts during sync when user was removed from source. Users are automatically revived if they reappear in source.';
 $string['keep'] = 'Keep';
 $string['delete'] = 'Delete';
+$string['deleted'] = 'Deleted';
 $string['sourceallrecords'] = 'Source contains all records';
 $string['sourceallrecordsdesc'] = 'Does the source provide all sync records, everytime <strong>OR</strong> are only records that need to be updated/deleted provided? If "No" (only records to be updated/deleted), then the source must use the <strong>"delete" flag</strong>.';
 
