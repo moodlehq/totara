@@ -1,5 +1,29 @@
 Totara LMS Changelog
 
+Release 2.2.7 (11 October 2012):
+==================================================
+
+Security fixes:
+    T-9998      Fix open redirect security issues
+    T-9998      Enforce file size and quota limits in user private files
+
+Improvements:
+    T-9927      Improve layout of program assignment time allowance dialog
+
+Bug fixes:
+    T-10011     Fix hardcoded, English-only date formats in certificates
+    T-10010     Rename column 'delete' to 'deleted' in totara_sync
+    T-9999      Fixed the syncing of hierarchy descriptions in totara_sync
+    T-10008     Fix mySQL duplicate temporary table problem in totara_sync
+    T-9992      Fix completion duplicate records issue by applying MDL-32107
+    T-9945      Fix cell padding styles in html tables
+    T-10013     Fix layout and fonts of 'My Team' and related embedded reports
+    T-10001     Fix CLI (command line) upgrades
+    T-9978      Fix storage and display of Hierarchy textarea & file custom fields
+    T-9674      Fix link in Facetoface manager request task
+    T-10000     Fix MSSQL error when submitting Learning Plan for approval
+
+
 Release 2.2.6 (4 October 2012):
 ==================================================
 
