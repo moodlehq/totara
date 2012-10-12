@@ -95,41 +95,10 @@ abstract class totara_sync_source_org extends totara_sync_source {
     }
 
     /**
-     * Creates a clone of the temporary sync table
-     *
-     * Fix for T-10008 - MySql bug, can't use temporary table twice
-     * http://dev.mysql.com/doc/refman/5.0/en/temporary-table-problems.html
-     * The workaround is as follows
-     * Clone the table (structure & indices but no data)
-     * CREATE TEMPORARY TABLE test2 LIKE test;
-     * Then add the data
-     * INSERT INTO test2 SELECT * FROM test;
-     *
-     * But... there might be a database somewhere that doesn't like the LIKE
-     * So creating a clone using the original prepare_temp_table() and then an INSERT
-     *
-     * @return mixed Returns false if failed or the name of temporary table if successful
-     */
-    function get_sync_table_clone($temptable) {
-        global $DB;
-
-        if (!$temptable_clone = $this->prepare_temp_table(true)) {
-            $this->addlog(get_string('temptableprepfail', 'tool_totara_sync'), 'error', 'importdata');
-            return false;
-        }
-
-        // Can't reuse $this->import_data($temptable) because the CSV file gets renamed, so it fails when calling again
-        $sql = "INSERT INTO {{$temptable_clone}} SELECT * FROM {{$temptable}}";
-        $DB->execute($sql);
-
-        return $temptable_clone;
-    }
-
-    /**
      * Define and create the temporary table necessary for element syncing
      * @param boolean $clone add _clone to the table name?
      */
-    function prepare_temp_table($clone=false) {
+    function prepare_temp_table($clone = false) {
         global $CFG, $DB;
 
         require_once($CFG->dirroot . '/lib/ddllib.php');

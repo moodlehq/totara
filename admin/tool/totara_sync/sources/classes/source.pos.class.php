@@ -105,13 +105,16 @@ abstract class totara_sync_source_pos extends totara_sync_source {
         return $temptable;
     }
 
-    function prepare_temp_table() {
+    function prepare_temp_table($clone = false) {
         global $CFG, $DB;
 
         require_once($CFG->dirroot . '/lib/ddllib.php');
 
         /// Instantiate table
         $this->temptable = 'totara_sync_pos';
+        if ($clone) {
+            $this->temptable .= '_clone';
+        }
         $dbman = $DB->get_manager();
         $table = new xmldb_table($this->temptable);
 

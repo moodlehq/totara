@@ -72,7 +72,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         }
 
         // Create a clone of the temporary table
-        if (!$synctable_clone = $this->get_source()->get_sync_table_clone($synctable)) {
+        if (!$synctable_clone = $this->get_source_sync_table_clone($synctable)) {
             $this->addlog(get_string('couldnotcreateclonetable', 'tool_totara_sync'), 'error', $elname.'sync');
             return false;
         }
@@ -244,7 +244,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
      * @param string $synctable_clone name of the clone table
      * @return boolean
      */
-    function check_sanity($synctable,$synctable_clone) {
+    function check_sanity($synctable, $synctable_clone) {
         global $DB;
 
         $elname = $this->get_name();

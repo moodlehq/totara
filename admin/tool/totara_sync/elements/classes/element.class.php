@@ -142,6 +142,27 @@ abstract class totara_sync_element {
         return $result;
     }
 
+    /**
+     * Gets the element's source's sync table clone
+     *
+     * @return string name of sync table clone, e.g mdl_totara_sync_org
+     */
+    function get_source_sync_table_clone($temptable) {
+        if (!$source = $this->get_source()) {
+            $this->addlog(get_string('nosourceforelement', 'tool_totara_sync'), 'error', 'getsource');
+            return false;
+        }
+        if (!method_exists($source, 'get_sync_table_clone')) {
+            // Don't continue if no recordset can be retrieved
+            return false;
+        }
+
+        $result = $source->get_sync_table_clone($temptable);
+        if (!$result) {
+            $source->drop_temp_table($source->temptable . 'clone');
+        }
+        return $result;
+    }
 
     /**
      * Is element syncing enabled?

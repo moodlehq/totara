@@ -49,6 +49,11 @@ abstract class totara_sync_source {
     abstract function get_sync_table();
 
     /**
+     * Define and create temp table necessary for element syncing
+     */
+    abstract function prepare_temp_table($clone = false);
+
+    /**
      * Returns the name of the element this source applies to
      */
     abstract function get_element_name();
@@ -114,6 +119,28 @@ abstract class totara_sync_source {
             return $dbman->drop_temp_table($table); // And drop it
         }
         return false;
+    }
+
+    /**
+     * Create clone of temp table because MySQL cannot reference temp
+     * table twice in a query
+     *
+     * @return mixed Returns false if failed or the name of temporary table if successful
+     */
+    function get_sync_table_clone($temptable) {
+        global $DB;
+
+        if (!$temptable_clone = $this->prepare_temp_table(true)) {
+            $this->addlog(get_string('temptableprepfail', 'tool_totara_sync'), 'error', 'importdata');
+            return false;
+        }
+
+        // Can't reuse $this->import_data($temptable) because the CSV file gets renamed,
+        // so it fails when calling again
+        $sql = "INSERT INTO {{$temptable_clone}} SELECT * FROM {{$temptable}}";
+        $DB->execute($sql);
+
+        return $temptable_clone;
     }
 }
 
