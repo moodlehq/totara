@@ -353,9 +353,74 @@ abstract class dp_base_component {
         $sort = $table->get_sql_sort();
         $items = $this->get_assigned_items($restrict, $sort, $page_start, $page_size);
 
-        // Loop through items
+        // Collect the rows/columns to display
+        $rows = array();
         foreach ($items as $item) {
             $row = $this->display_list_row($headers->columns, $item);
+            $rows[] = $row;
+        }
+
+        if (!empty($headers->hide_if_empty)) {
+            // Check for empty columns
+
+            // Set up columns to show
+            $showcolumn = array();
+            foreach ($headers->columns as $index => $column) {
+                if (in_array($column, $headers->hide_if_empty)) {
+                    // Don't show unless there is a value
+                    $showcolumn[$index] = false;
+                } else {
+                    // Always show
+                    $showcolumn[$index] = true;
+                }
+            }
+
+            // Check each column for a value
+            foreach ($rows as $row) {
+                foreach ($headers->columns as $index => $column) {
+                    if (!$showcolumn[$index]) {
+                        // Check if this column has a value
+                        // Note that this doesn't check if its just html, this should be up to the display_list_item_$col method
+                        $value = (string)$row[$index];
+                        if (strlen(trim($value)) > 0) {
+                            // There is a value, so display it
+                            $showcolumn[$index] = true;
+                        }
+                    }
+                }
+            }
+
+            // Reset columns and headers
+            $newcolumns = array();
+            $newheaders = array();
+            foreach ($headers->columns as $index => $column) {
+                if ($showcolumn[$index]) {
+                    // There is a value
+                    $newcolumns[] = $column;
+                    $newheaders[] = $headers->headers[$index];
+                }
+            }
+            // Redefine columns
+            $table->define_columns($newcolumns);
+            $table->define_headers($newheaders);
+
+            // Reset the data
+            $newrows = array();
+            foreach($rows as $row) {
+                $newrow = array();
+                foreach ($headers->columns as $index => $column) {
+                    if ($showcolumn[$index]) {
+                        // There is a value, so include this column
+                        $newrow[] = $row[$index];
+                    }
+                }
+                $newrows[] = $newrow;
+            }
+            $rows = $newrows;
+        }
+
+        // Send them off to the table for display
+        foreach ($rows as $row) {
             $table->add_data($row);
         }
 
