@@ -98,7 +98,7 @@ class grade_outcome_test extends grade_test {
     function sub_test_grade_outcome_fetch() {
         $grade_outcome = new grade_outcome();
         $this->assertTrue(method_exists($grade_outcome, 'fetch'));
-        
+
         $grade_outcome = grade_outcome::fetch(array('id'=>$this->grade_outcomes[0]->id));
         $grade_outcome->load_scale();
         $this->assertEqual($this->grade_outcomes[0]->id, $grade_outcome->id);
