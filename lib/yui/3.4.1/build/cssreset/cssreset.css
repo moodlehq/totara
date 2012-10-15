@@ -41,9 +41,7 @@ legend,
 input,
 textarea,
 p,
-blockquote,
-th,
-td {
+blockquote {
 	margin:0;
 	padding:0;
 }
