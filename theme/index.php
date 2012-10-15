@@ -170,6 +170,11 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
         if ($themename == 'standard') {
             continue;
         }
+        //Hide the standard mymobile theme from users, they should be using mymobiletotara.
+        //Do Not! remove the code though, the totara themes require it.
+        if ($themename == 'mymobile') {
+            continue;
+        }
         if (empty($CFG->themedesignermode) && $theme->hidefromselector) {
             // The theme doesn't want to be shown in the theme selector and as theme
             // designer mode is switched off we will respect that decision.
