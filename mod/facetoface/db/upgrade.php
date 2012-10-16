@@ -674,7 +674,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2011120703, 'facetoface');
     }
 
-    if ($oldversion < 2012140604) {
+    if ($oldversion < 2012140605) {
         //Remove additional html anchor reference from existing manager approval request message formats
         $links = array(
             '[Teilnehmerlink]#unbestätigt' => '[Teilnehmerlink]',
@@ -682,9 +682,14 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             '[enlaceasistentes] # no aprobados' => '[enlaceasistentes]',
             '[เชื่อมโยงผู้เข้าร่วมประชุม] อนุมัติ #' => '[เชื่อมโยงผู้เข้าร่วมประชุม]',
         );
-
+        //mssql has a problem with ntext columns being used in REPLACE function calls
+        $dbfamily = $DB->get_dbfamily();
         foreach ($links as $key => $replacement) {
-            $sql = "UPDATE {facetoface} SET requestinstrmngr = REPLACE(requestinstrmngr, ?, ?)";
+            if ($dbfamily == 'mssql') {
+                $sql = "UPDATE {facetoface} SET requestinstrmngr = CAST(REPLACE(CAST(requestinstrmngr as nvarchar(max)), ?, ?) as ntext)";
+            } else {
+                $sql = "UPDATE {facetoface} SET requestinstrmngr = REPLACE(requestinstrmngr, ?, ?)";
+            }
             $result = $result && $DB->execute($sql, array($key, $replacement));
         }
         $stringmanager = get_string_manager();
@@ -697,8 +702,12 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             $params = array();
 
             foreach ($strings as $str) {
-            $remove = $stringmanager->get_string('setting:default' . $str . 'copybelow', 'facetoface', null, $lang);
-                $sql .= "{$str} = REPLACE({$str}, ?, '')";
+                $remove = $stringmanager->get_string('setting:default' . $str . 'copybelow', 'facetoface', null, $lang);
+                if ($dbfamily == 'mssql') {
+                    $sql .= "{$str} = CAST(REPLACE(CAST({$str} as nvarchar(max)), ?, '') as ntext)";
+                } else {
+                    $sql .= "{$str} = REPLACE({$str}, ?, '')";
+                }
                 $params[] = $remove;
 
                 if ($str != "reminderinstrmngr") {
@@ -710,7 +719,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         }
         // facetoface savepoint reached
 
-        upgrade_mod_savepoint(true, 2012140604, 'facetoface');
+        upgrade_mod_savepoint(true, 2012140605, 'facetoface');
     }
 
     return $result;
