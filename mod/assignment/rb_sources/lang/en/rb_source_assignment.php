@@ -25,3 +25,5 @@ $string['type_comment'] = 'Assignment';
 $string['type_base'] = 'Grade';
 $string['type_grade_grades'] = 'Grade';
 $string['type_scale'] = 'Grade';
+$string['assignmentdescription'] = 'Assignment description';
+

@@ -10,7 +10,7 @@
 //                                                                       //
 // This program is free software; you can redistribute it and/or modify  //
 // it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
+// the Free Software Foundation; either version 3 of the License, or     //
 // (at your option) any later version.                                   //
 //                                                                       //
 // This program is distributed in the hope that it will be useful,       //
@@ -78,7 +78,9 @@ class data_field_radiobutton extends data_field_base {
                 $options[$rec->content] = $rec->content;  //Build following indicies from the sql.
             }
         }
-        return html_writer::select($options, 'f_'.$this->field->id, $value);
+        $return = html_writer::label(get_string('nameradiobutton', 'data'), 'menuf_'. $this->field->id, false, array('class' => 'accesshide'));
+        $return .= html_writer::select($options, 'f_'.$this->field->id, $value);
+        return $return;
     }
 
     function parse_search_field() {

@@ -17,6 +17,36 @@ $string['helpweekenddays'] = 'Which days of the week are treated as "weekend" an
 $string['nonmetacoursesyncroleids'] = 'Roles that are not synchronized to metacourses';
 $string['orgname'] = 'Organization name';
 $string['orgnamehelp'] = 'The name of your organization.';
+
+$string['availablelicenses'] = 'Available licenses';
+$string['confignavcourselimit'] = 'Limits the number of courses shown to the user when they are either not logged in or are not enrolled in any courses.
+';
+$string['confignavshowcategories'] = 'Show course categories in the navigation bar and navigation blocks. This does not occur with courses the user is currently enrolled in, they will still be listed under mycourses without categories.
+';
+$string['configprofilesforenrolledusersonly'] = 'To prevent misuse by spammers, profile descriptions of users who are not yet enrolled in any course are hidden. New users must enroll in at least one course before they can add a profile description.';
+$string['configsessioncookie'] = 'This setting customizes the name of the cookie used for Moodle sessions. This is optional, and only useful to avoid cookies being confused when there is more than one copy of Moodle running within the same web site.';
+$string['configsessioncookiedomain'] = 'This allows you to change the domain that the Moodle cookies are available from. This is useful for Moodle customization (e.g. authentication or enrollment plugins) that need to share Moodle session information with a web application on another subdomain. <strong>WARNING: it is strongly recommended to leave this setting at the default (empty) - an incorrect value will prevent all logins to the site.</strong>';
+$string['configsitedefaultlicense'] = 'Default site license';
+$string['configsitedefaultlicensehelp'] = 'The default license for publishing content on this site';
+$string['configstatsuserthreshold'] = 'Show course categories in the navigation bar and navigation blocks. This does not occur with courses the user is currently enrolled in, they will still be listed under mycourses without categories.
+';
+$string['creatornewroleid_help'] = 'Show course categories in the navigation bar and navigation blocks. This does not occur with courses the user is currently enrolled in, they will still be listed under mycourses without categories.
+';
+$string['enrolinstancedefaults'] = 'Enrollment instance defaults';
+$string['enrolinstancedefaults_desc'] = 'Default enrollment settings in new courses.';
+$string['enrolmultipleusers'] = 'Enroll the users';
+$string['groupenrolmentkeypolicy'] = 'Group enrollment key policy';
+$string['groupenrolmentkeypolicy_desc'] = 'Turning this on will make Moodle check group enrollment keys against a valid password policy.';
+$string['guestroleid_help'] = 'This role is automatically assigned to the guest user. It is also temporarily assigned to not enrolled users that enter the course via guest enrollment plugin.';
+$string['licensesettings'] = 'License settings';
+$string['managelicenses'] = 'Manage licenses';
+$string['manageqbehaviours'] = 'Manage question behaviors';
+$string['profilesforenrolledusersonly'] = 'Profiles for enrolled users only
+';
+$string['questionbehaviours'] = 'Question behaviors';
+$string['requiredentrieschanged'] = '<strong>IMPORTANT - PLEASE READ<br/>(This warning message will only be displayed during this upgrade)</strong><br/>Due to a bug fix, the behavior of database activities using the \'Required entries\' and \'Required entries before viewing settings\' settings will change. A more detailed explanation of the changes can be read on <a href="http://moodle.org/mod/forum/discuss.php?d=110928" target="_blank">the database module forum</a>. The expected behavior of these settings can also be read on <a href="http://docs.moodle.org/en/Adding/editing_a_database#Required_entries" target="_blank">Moodle Docs</a>.';
+$string['riskconfig'] = 'Users could change site configuration and behavior';
+
 $string['guestaccess_help'] = '# Guest Access
 
 You have the choice of allowing "guests" into your course.

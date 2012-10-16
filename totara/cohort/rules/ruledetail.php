@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -44,7 +44,7 @@ if ($type == 'rule') {
 }
 
 if (!preg_match('/^([a-z]+)-([a-z0-9_]+)$/', $rulegroupname, $matches)) {
-    error(get_string('error:rulemissing', 'totara_cohort'));
+    print_error('error:rulemissing', 'totara_cohort');
 } else {
     $rulegroup = $matches[1];
     $rulename = $matches[2];
@@ -53,7 +53,7 @@ if (!preg_match('/^([a-z]+)-([a-z0-9_]+)$/', $rulegroupname, $matches)) {
 
 $rule = cohort_rules_get_rule_definition($rulegroup, $rulename);
 if (!$rule) {
-    error(get_string('error:badrule', 'totara_cohort', "{$rulegroup}-{$rulename}"));
+    print_error('error:badrule', 'totara_cohort', '', "{$rulegroup}-{$rulename}");
 }
 
 /* @var $ui cohort_rule_ui_form */

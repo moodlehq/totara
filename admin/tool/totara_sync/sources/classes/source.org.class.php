@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -95,15 +95,50 @@ abstract class totara_sync_source_org extends totara_sync_source {
     }
 
     /**
-     * Define and create the temporary table necessary for element syncing
+     * Creates a clone of the temporary sync table
+     *
+     * Fix for T-10008 - MySql bug, can't use temporary table twice
+     * http://dev.mysql.com/doc/refman/5.0/en/temporary-table-problems.html
+     * The workaround is as follows
+     * Clone the table (structure & indices but no data)
+     * CREATE TEMPORARY TABLE test2 LIKE test;
+     * Then add the data
+     * INSERT INTO test2 SELECT * FROM test;
+     *
+     * But... there might be a database somewhere that doesn't like the LIKE
+     * So creating a clone using the original prepare_temp_table() and then an INSERT
+     *
+     * @return mixed Returns false if failed or the name of temporary table if successful
      */
-    function prepare_temp_table() {
+    function get_sync_table_clone($temptable) {
+        global $DB;
+
+        if (!$temptable_clone = $this->prepare_temp_table(true)) {
+            $this->addlog(get_string('temptableprepfail', 'tool_totara_sync'), 'error', 'importdata');
+            return false;
+        }
+
+        // Can't reuse $this->import_data($temptable) because the CSV file gets renamed, so it fails when calling again
+        $sql = "INSERT INTO {{$temptable_clone}} SELECT * FROM {{$temptable}}";
+        $DB->execute($sql);
+
+        return $temptable_clone;
+    }
+
+    /**
+     * Define and create the temporary table necessary for element syncing
+     * @param boolean $clone add _clone to the table name?
+     */
+    function prepare_temp_table($clone=false) {
         global $CFG, $DB;
 
         require_once($CFG->dirroot . '/lib/ddllib.php');
 
         /// Instantiate table
         $this->temptable = 'totara_sync_org';
+        if ($clone) {
+            $this->temptable .= '_clone';
+        }
         $dbman = $DB->get_manager();
         $table = new xmldb_table($this->temptable);
 
@@ -130,7 +165,7 @@ abstract class totara_sync_source_org extends totara_sync_source {
 
         /// Create and truncate the table
         $dbman->create_temp_table($table, false, false);
-        $DB->execute("TRUNCATE {{$this->temptable}}");
+        $DB->execute("TRUNCATE TABLE {{$this->temptable}}");
 
         return $this->temptable;
     }

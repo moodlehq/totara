@@ -7,7 +7,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -595,12 +595,6 @@ class prog_messages_manager {
                     MESSAGETYPE_COURSESET_COMPLETED => get_string('coursesetcompleted', 'totara_program'),
                     MESSAGETYPE_LEARNER_FOLLOWUP => get_string('learnerfollowup', 'totara_program')
                 );
-                //remove message types already added
-                foreach ($messages as $message) {
-                    if (isset($messageoptions[$message->messagetype])) {
-                        unset($messageoptions[$message->messagetype]);
-                    }
-                }
                 $mform->addElement('select', 'messagetype', get_string('addnew', 'totara_program'), $messageoptions, array('id'=>'messagetype'));
                 $mform->setType('messagetype', PARAM_INT);
                 $template_values['%messagetype%'] = array('name'=>'messagetype', 'value'=>null);

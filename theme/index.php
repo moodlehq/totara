@@ -165,6 +165,11 @@ if (!empty($CFG->enabledevicedetection) && empty($device)) {
             //obsoleted or broken theme, just skip for now
             continue;
         }
+        //Hide the standard moodle theme from users, they should be using standardTotara.
+        //Do Not! remove the code though, the totara themes require it.
+        if ($themename == 'standard') {
+            continue;
+        }
         if (empty($CFG->themedesignermode) && $theme->hidefromselector) {
             // The theme doesn't want to be shown in the theme selector and as theme
             // designer mode is switched off we will respect that decision.

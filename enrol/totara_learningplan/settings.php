@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -29,6 +29,8 @@ if ($ADMIN->fulltree) {
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_heading('enrol_totara_learningplan_settings', '', get_string('pluginname_desc', 'enrol_totara_learningplan')));
 
+    $settings->add(new admin_setting_configcheckbox('enrol_totara_learningplan/defaultenrol',
+            get_string('defaultenrol', 'enrol'), get_string('defaultenrol_desc', 'enrol'), 1));
 
     //--- enrol instance defaults ----------------------------------------------------------------------------
     if (!during_initial_install()) {

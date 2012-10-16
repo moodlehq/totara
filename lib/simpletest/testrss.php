@@ -118,9 +118,11 @@ EOD;
     function test_redirect() {
         global $CFG;
 
-        $feed = new moodle_simplepie(moodlesimplepie_test::REDIRECTURL);
-
-        $this->assertFalse($feed->error());
+        $feed = new moodle_simplepie(moodlesimplepie_test::REDIRECTURL, 4);
+        //only fail if not a timeout error
+        if ($feed->error() && (strpos($feed->error(), 'Operation timed out') === false)) {
+            $this->assertFalse($feed->error());
+        }
         $this->assertEqual($feed->get_title(), 'Moodle News');
         $this->assertEqual($feed->get_link(), 'http://moodle.org/mod/forum/view.php?f=1');
     }

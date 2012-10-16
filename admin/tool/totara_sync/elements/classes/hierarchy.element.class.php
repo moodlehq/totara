@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -71,9 +71,16 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             return false;
         }
 
-        if (!$this->check_sanity($synctable)) {
+        // Create a clone of the temporary table
+        if (!$synctable_clone = $this->get_source()->get_sync_table_clone($synctable)) {
+            $this->addlog(get_string('couldnotcreateclonetable', 'tool_totara_sync'), 'error', $elname.'sync');
+            return false;
+        }
+
+        if (!$this->check_sanity($synctable, $synctable_clone)) {
             $this->addlog(get_string('sanitycheckfailed', 'tool_totara_sync'), 'error', $elname.'sync');
             $this->get_source()->drop_temp_table($synctable);
+            $this->get_source()->drop_temp_table($synctable_clone);
             return false;
         }
 
@@ -83,12 +90,15 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
                  WHERE s.idnumber NOT IN
                         (SELECT ii.idnumber
                            FROM {{$elname}} ii
-                LEFT OUTER JOIN {{$synctable}} ss ON (ii.idnumber = ss.idnumber)
+                LEFT OUTER JOIN {{$synctable_clone}} ss ON (ii.idnumber = ss.idnumber)
                           WHERE (ii.totarasync=1 AND ss.idnumber IS NULL)
                              OR ss.timemodified = ii.timemodified
                         )";
 
         $rs = $DB->get_recordset_sql($sql);
+
+        // Don't need the clone anymore so drop it
+        $this->get_source()->drop_temp_table($synctable_clone);
 
         foreach ($rs as $item) {
             if (!$this->sync_item($item, $synctable)) {
@@ -171,7 +181,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             $newitem->visible = 1;
             $newitem->usermodified = get_admin()->id;
 
-            if (!$hitem = $this->hierarchy->add_hierarchy_item($newitem, $newitem->parentid, $newitem->frameworkid)) {
+            if (!$hitem = $this->hierarchy->add_hierarchy_item($newitem, $newitem->parentid, $newitem->frameworkid, true, true, false)) {
                 $this->addlog(get_string('cannotcreatex', 'tool_totara_sync', "{$elname} {$newitem->idnumber}"), 'error', 'syncitem');
                 return false;
             }
@@ -201,7 +211,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         /// Update the item
         ///
         $newitem->usermodified = get_admin()->id;
-        if (!$this->hierarchy->update_hierarchy_item($dbitem->id, $newitem, false)) {
+        if (!$this->hierarchy->update_hierarchy_item($dbitem->id, $newitem, false, true, false)) {
             $this->addlog(get_string('cannotupdatex', 'tool_totara_sync', "{$elname} {$newitem->idnumber}"), 'error', 'syncitem');
             return false;
         }
@@ -226,7 +236,15 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         return true;
     }
 
-    function check_sanity($synctable) {
+    /**
+     * Checks the temporary table for data integrity
+     *
+     * @global object $DB
+     * @param string $synctable
+     * @param string $synctable_clone name of the clone table
+     * @return boolean
+     */
+    function check_sanity($synctable,$synctable_clone) {
         global $DB;
 
         $elname = $this->get_name();
@@ -247,13 +265,26 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             return false;
         }
 
+        /// Check duplicate idnumbers and warn
+        $sql = "SELECT idnumber
+            FROM {{$synctable}}
+            GROUP BY idnumber
+                HAVING COUNT(*) > 1";
+        $rs = $DB->get_recordset_sql($sql);
+        if ($rs->valid()) {
+            foreach ($rs as $r) {
+                $this->addlog(get_string('duplicateidnumberx', 'tool_totara_sync', $r->idnumber), 'warn', 'checksanity');
+            }
+            $rs->close();
+        }
+
         /// Check parents
         $sql = "SELECT DISTINCT s.parentidnumber
                   FROM {{$synctable}} s
        LEFT OUTER JOIN {{$elname}} i
                     ON s.parentidnumber = i.idnumber
                  WHERE s.parentidnumber IS NOT NULL AND s.parentidnumber != ''
-                   AND s.parentidnumber NOT IN (SELECT idnumber FROM {{$synctable}})";
+                   AND s.parentidnumber NOT IN (SELECT idnumber FROM {{$synctable_clone}})";
         $rs = $DB->get_recordset_sql($sql);
         if ($rs->valid()) {
             foreach ($rs as $r) {
@@ -315,7 +346,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
                  WHERE s.idnumber NOT IN
                     (SELECT ii.idnumber
                        FROM {{$elname}} ii
-            LEFT OUTER JOIN {{$synctable}} ss
+            LEFT OUTER JOIN {{$synctable_clone}} ss
                          ON (ii.idnumber = ss.idnumber)
                       WHERE ss.idnumber IS NULL
                          OR ss.timemodified = ii.timemodified

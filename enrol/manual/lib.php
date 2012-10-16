@@ -215,6 +215,7 @@ class enrol_manual_plugin extends enrol_plugin {
         $today = time();
         $today = make_timestamp(date('Y', $today), date('m', $today), date('d', $today), 0, 0, 0);
         $startdateoptions[3] = get_string('today') . ' (' . userdate($today, $timeformat) . ')' ;
+        $defaultduration = $instance->enrolperiod > 0 ? $instance->enrolperiod / 86400 : '';
 
         $modules = array('moodle-enrol_manual-quickenrolment', 'moodle-enrol_manual-quickenrolment-skin');
         $arguments = array(
@@ -224,6 +225,7 @@ class enrol_manual_plugin extends enrol_plugin {
             'url'                 => $manager->get_moodlepage()->url->out(false),
             'optionsStartDate'    => $startdateoptions,
             'defaultRole'         => $instance->roleid,
+            'defaultDuration'     => $defaultduration,
             'disableGradeHistory' => $CFG->disablegradehistory
         );
         $function = 'M.enrol_manual.quickenrolment.init';
@@ -288,6 +290,21 @@ class enrol_manual_plugin extends enrol_plugin {
             'deleteselectedusers' => new enrol_manual_deleteselectedusers_operation($manager, $this)
         );
         return $bulkoperations;
+    }
+
+    /**
+     * Attempt to automatically enrol current user in course without any interaction,
+     * calling code has to make sure the plugin and instance are active.
+     *
+     * This should return either a timestamp in the future or false.
+     *
+     * @param stdClass $instance course enrol instance
+     * @return bool|int false means not enrolled, integer means timeend
+     */
+    public function try_autoenrol($instance) {
+        //if not already enroled, users with the moodle/course:update capability in this context should be allowed in
+        $coursecontext = context_course::instance($instance->courseid);
+        return (has_capability('moodle/course:update', $coursecontext)) ? 0 : false;
     }
 }
 

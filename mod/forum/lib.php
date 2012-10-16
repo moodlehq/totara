@@ -925,7 +925,8 @@ function forum_cron() {
 
                 $attachment = $attachname='';
                 $usetrueaddress = true;
-                //directly email forum digests rather than sending them via messaging
+                // Directly email forum digests rather than sending them via messaging, use the
+                // site shortname as 'from name', the noreply address will be used by email_to_user.
                 $mailresult = email_to_user($userto, $site->shortname, $postsubject, $posttext, $posthtml, $attachment, $attachname, $usetrueaddress, $CFG->forum_replytouser);
 
                 if (!$mailresult) {
@@ -1221,23 +1222,33 @@ function forum_print_overview($courses,&$htmlarray) {
         return;
     }
 
-
-    // get all forum logs in ONE query (much better!)
+    // Courses to search for new posts
+    $coursessqls = array();
     $params = array();
-    $sql = "SELECT instance,cmid,l.course,COUNT(l.id) as count FROM {log} l "
-        ." JOIN {course_modules} cm ON cm.id = cmid "
-        ." WHERE (";
     foreach ($courses as $course) {
-        $sql .= '(l.course = ? AND l.time > ?) OR ';
-        $params[] = $course->id;
-        $params[] = $course->lastaccess;
+
+        // If the user has never entered into the course all posts are pending
+        if ($course->lastaccess == 0) {
+            $coursessqls[] = '(f.course = ?)';
+            $params[] = $course->id;
+
+        // Only posts created after the course last access
+        } else {
+            $coursessqls[] = '(f.course = ? AND p.created > ?)';
+            $params[] = $course->id;
+            $params[] = $course->lastaccess;
+        }
     }
-    $sql = substr($sql,0,-3); // take off the last OR
-
-    $sql .= ") AND l.module = 'forum' AND action = 'add post' "
-        ." AND userid != ? GROUP BY cmid,l.course,instance";
-
     $params[] = $USER->id;
+    $coursessql = implode(' OR ', $coursessqls);
+
+    $sql = "SELECT f.id, COUNT(*) as count "
+                .'FROM {forum} f '
+                .'JOIN {forum_discussions} d ON d.forum  = f.id '
+                .'JOIN {forum_posts} p ON p.discussion = d.id '
+                ."WHERE ($coursessql) "
+                .'AND p.userid != ? '
+                .'GROUP BY f.id';
 
     if (!$new = $DB->get_records_sql($sql, $params)) {
         $new = array(); // avoid warnings
@@ -2048,8 +2059,7 @@ function forum_search_posts($searchterms, $courseid=0, $limitfrom=0, $limitnum=5
                          u.lastname,
                          u.email,
                          u.picture,
-                         u.imagealt,
-                         u.email
+                         u.imagealt
                     FROM $fromsql
                    WHERE $selectsql
                 ORDER BY p.modified DESC";
@@ -3792,9 +3802,11 @@ function forum_print_mode_form($id, $mode, $forumtype='') {
     global $OUTPUT;
     if ($forumtype == 'single') {
         $select = new single_select(new moodle_url("/mod/forum/view.php", array('f'=>$id)), 'mode', forum_get_layout_modes(), $mode, null, "mode");
+        $select->set_label(get_string('displaymode', 'forum'), array('class' => 'accesshide'));
         $select->class = "forummode";
     } else {
         $select = new single_select(new moodle_url("/mod/forum/discuss.php", array('d'=>$id)), 'mode', forum_get_layout_modes(), $mode, null, "mode");
+        $select->set_label(get_string('displaymode', 'forum'), array('class' => 'accesshide'));
     }
     echo $OUTPUT->render($select);
 }

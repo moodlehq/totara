@@ -10,7 +10,7 @@
 //                                                                       //
 // This program is free software; you can redistribute it and/or modify  //
 // it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
+// the Free Software Foundation; either version 3 of the License, or     //
 // (at your option) any later version.                                   //
 //                                                                       //
 // This program is distributed in the hope that it will be useful,       //
@@ -38,6 +38,7 @@ class data_field_multimenu extends data_field_base {
 
         $str = '<div title="'.s($this->field->description).'">';
         $str .= '<input name="field_' . $this->field->id . '[xxx]" type="hidden" value="xxx"/>'; // hidden field - needed for empty selection
+        $str .= '<label class="accesshide" for="field_' . $this->field->id . '">' . $this->field->name. '</label>';
         $str .= '<select name="field_' . $this->field->id . '[]" id="field_' . $this->field->id . '" multiple="multiple">';
 
         foreach (explode("\n",$this->field->param1) as $option) {
@@ -71,7 +72,8 @@ class data_field_multimenu extends data_field_base {
 
         static $c = 0;
 
-        $str = '<select name="f_'.$this->field->id.'[]" multiple="multiple">';
+        $str = '<label class="accesshide" for="f_' . $this->field->id . '">' . $this->field->name . '</label>';
+        $str .= '<select id="f_'.$this->field->id.'" name="f_'.$this->field->id.'[]" multiple="multiple">';
 
         // display only used options
         $varcharcontent =  $DB->sql_compare_text('content', 255);

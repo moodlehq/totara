@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -213,7 +213,8 @@ class rb_filter_multicheck extends rb_filter_type {
             if ($selected) {
                 $name = array_key_exists($key, $selectchoices) ?
                     $selectchoices[$key] : $key;
-                $checked[] = '"' . s($name) . '"';
+                $formatname = explode("&nbsp;", $name);
+                $checked[] = '"' . $formatname[1] . '"';
             }
         }
         $a->value    = implode(', ', $checked);

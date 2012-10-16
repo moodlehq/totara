@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -85,9 +85,13 @@ $component->process_action_hook();
 // Display header
 //
 $component->setup_picker();
+
+dp_get_plan_base_navlinks($USER->id);
+$PAGE->navbar->add($plan->name, new moodle_url('/totara/plan/view.php', array('id' => $plan->id)));
+$PAGE->navbar->add(get_string($component->component.'plural', 'totara_plan'));
 $PAGE->set_context($systemcontext);
 $PAGE->set_url(new moodle_url('/totara/plan/component.php', array('id' => $id, 'c' => $componentname)));
-$PAGE->navbar->add(get_string($component->component.'plural', 'totara_plan'));
+
 $plan->print_header($componentname);
 
 echo $component->display_picker();

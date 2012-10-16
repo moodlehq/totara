@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -106,6 +106,7 @@ $frameworkid = $framework->id;
 
 // Setup page and check permissions
 admin_externalpage_setup($prefix.'manage', null, array('prefix' => $prefix, 'frameworkid' => $frameworkid));
+$PAGE->navbar->add(format_string($framework->fullname));
 echo $OUTPUT->header();
 // build query now as we need the count for flexible tables
 $select = "SELECT hierarchy.*";
@@ -121,7 +122,7 @@ if ($searchactive || !$displaymode) {
     foreach ($custom_fields as $custom_field) {
         // add one join per custom field
         $fieldid = $custom_field->id;
-        $select .= ", cf_{$fieldid}.data AS cf_{$fieldid}";
+        $select .= ", cf_{$fieldid}.id AS cf_{$fieldid}_itemid, cf_{$fieldid}.data AS cf_{$fieldid}";
         $from .= " LEFT JOIN {{$shortprefix}_type_info_data} cf_{$fieldid}
             ON hierarchy.id = cf_{$fieldid}.{$prefix}id AND cf_{$fieldid}.fieldid = {$fieldid}";
     }
@@ -195,8 +196,6 @@ $table->pagesize($perpage, $filteredcount);
 
 $records = $DB->get_recordset_sql($select.$from.$where.$order, $params, $table->get_page_start(), $table->get_page_size());
 
-$PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url('index.php', array('prefix' => $prefix)));
-$PAGE->navbar->add(format_string($framework->fullname));
 
 echo $OUTPUT->container($OUTPUT->action_link(
     new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => $prefix)), '&laquo; ' . get_string($prefix.'backtoallframeworks', 'totara_hierarchy')), 'back-link'

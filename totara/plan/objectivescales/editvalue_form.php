@@ -7,7 +7,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -62,7 +62,7 @@ class dp_objective_scale_value_edit_form extends moodleform {
         $mform->setType('numericscore', PARAM_NUMBER);
         $mform->addRule('numericscore', null, 'numeric', null, 'client');
 
-        $note = (dp_objective_scale_is_used($scaleid)) ? html_writer::tag('span', get_string('achievedvaluefrozen', 'totara_plan'), array('class' => "notifyproblem")) : '';
+        $note = (dp_objective_scale_is_used($scaleid)) ? html_writer::tag('div', get_string('achievedvaluefrozen', 'totara_plan'), array('class' => 'notifymessage')) : '';
         $mform->addElement('advcheckbox', 'achieved', get_string('achieved', 'totara_plan'), $note);
         $mform->addHelpButton('achieved', 'objectivescalevalueachieved', 'totara_plan', '', true);
         if (dp_objective_scale_is_used($scaleid)) {
@@ -70,7 +70,7 @@ class dp_objective_scale_value_edit_form extends moodleform {
         }
 
         $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
-        $mform->setType('description_editor', PARAM_CLEAN);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $this->add_action_buttons();
     }

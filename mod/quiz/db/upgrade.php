@@ -1196,6 +1196,36 @@ function xmldb_quiz_upgrade($oldversion) {
     // Moodle v2.2.0 release upgrade line
     // Put any upgrade step following this
 
+    if ($oldversion < 2011112903) {
+
+        // MDL-32791 somebody reported having nonsense rows in their
+        // quiz_question_instances which caused various problems. These rows
+        // are meaningless, hence this upgrade step to clean them up.
+        $DB->delete_records('quiz_question_instances', array('question' => 0));
+
+        // Quiz savepoint reached.
+        upgrade_mod_savepoint(true, 2011112903, 'quiz');
+    }
+
+    if ($oldversion < 2011112904) {
+
+        // MDL-34702 the questiondecimalpoints column was created with default -2
+        // when it should have been -1, and no-one has noticed in the last 2+ years!
+
+        // Changing the default of field questiondecimalpoints on table quiz to -1.
+        $table = new xmldb_table('quiz');
+        $field = new xmldb_field('questiondecimalpoints', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '-1', 'decimalpoints');
+
+        // Launch change of default for field questiondecimalpoints.
+        $dbman->change_field_default($table, $field);
+
+        // Correct any wrong values.
+        $DB->set_field('quiz', 'questiondecimalpoints', -1, array('questiondecimalpoints' => -2));
+
+        // Quiz savepoint reached.
+        upgrade_mod_savepoint(true, 2011112904, 'quiz');
+    }
+
     return true;
 }
 

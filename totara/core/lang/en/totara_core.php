@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -144,6 +144,11 @@ $string['performinglocalpostinst'] = 'Local Post-installation setup';
 $string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation.';
 $string['totara11requiredupgradeversion'] = 'Totara 1.1.13';
 $string['poweredby'] = 'Powered by TotaraLMS';
+$string['cliupgradesure'] = 'Your Totara files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
+<strong>{$a}</strong> <br /><br />
+Once you do this you can not go back again. <br /><br />
+Please note that this process can take a long time. <br /><br />
+Are you sure you want to upgrade this server to this version?';
 
 $string['myreports'] = 'My Reports';
 $string['addanothercolumn'] = 'Add another column...';
@@ -152,6 +157,7 @@ $string['myteam'] = 'My Team';
 $string['teammembers'] = 'Team Members';
 $string['calendar'] = 'Calendar';
 $string['myteaminstructionaltext'] = 'Choose a team member from the table on the right.';
+$string['error:staffmanagerroleexists'] = 'A role "staffmanager" already exists. This role must be renamed before the upgrade can proceed.';
 
 // Course competencies
 $string['returntocourse'] = 'Return to the course';

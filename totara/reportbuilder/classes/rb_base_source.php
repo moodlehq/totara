@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -1254,6 +1254,16 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'course',
+            'visible',
+            get_string('coursevisible', 'totara_reportbuilder'),
+            "$join.visible",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'yes_no'
+            )
+        );
+        $columnoptions[] = new rb_column_option(
+            'course',
             'icon',
             get_string('courseicon', 'totara_reportbuilder'),
             "$join.icon",
@@ -1365,6 +1375,16 @@ abstract class rb_base_source {
             'idnumber',
             get_string('courseidnumber', 'totara_reportbuilder'),
             'text'
+        );
+        $filteroptions[] = new rb_filter_option(
+            'course',
+            'visible',
+            get_string('coursevisible', 'totara_reportbuilder'),
+            'select',
+            array(
+                'selectchoices' => array(0 => get_string('no'), 1 => get_string('yes')),
+                'simplemode' => true
+            )
         );
         $filteroptions[] = new rb_filter_option(
             'course',
@@ -1811,6 +1831,20 @@ abstract class rb_base_source {
             "$posassign.fullname",
             array('joins' => $posassign)
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'posstartdate',
+            get_string('posstartdate', 'totara_reportbuilder'),
+            "$posassign.timevalidfrom",
+            array('joins' => $posassign, 'displayfunc' => 'nice_date')
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'posenddate',
+            get_string('posenddate', 'totara_reportbuilder'),
+            "$posassign.timevalidto",
+            array('joins' => $posassign, 'displayfunc' => 'nice_date')
+        );
         return true;
     }
 
@@ -1877,6 +1911,18 @@ abstract class rb_base_source {
                     'selectfunc' => 'position_type_list',
                     'attributes' => rb_filter_option::select_width_limiter(),
                 )
+        );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'posstartdate',
+                get_string('posstartdate', 'totara_reportbuilder'),
+                'date'
+        );
+        $filteroptions[] = new rb_filter_option(
+                'user',
+                'posenddate',
+                get_string('posenddate', 'totara_reportbuilder'),
+                'date'
         );
         $filteroptions[] = new rb_filter_option(
                 'user',
@@ -1990,7 +2036,7 @@ abstract class rb_base_source {
             $column_options = array('joins' => $joinname);
             // if profile field isn't available to everyone require
             // a capability to display the column
-            if ($record->visible != PROFILE_VISIBLE_ALL) {
+            if ($cf_prefix == 'user' && $record->visible != PROFILE_VISIBLE_ALL) {
                 $column_options['capability'] = 'moodle/user:update';
             }
             $filtertype = 'text'; // default filter type

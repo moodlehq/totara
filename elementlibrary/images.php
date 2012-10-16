@@ -60,7 +60,7 @@ echo $OUTPUT->render($icon);
 echo html_writer::tag('p', 'Or you can call the helper method to just render the pix_icon directly');
 echo $OUTPUT->pix_icon('t/edit', 'Edit', 'moodle', $attr);
 
-echo html_writer::tag('p', 'This will set the title to be the same as the alt text, and by default assign the "iconsmall" class unless you set any other class via the attributes. Note that currently in moodle it sets "smallicon" instead of iconsmall - we swapped it in lib/outputcomponents.php because there are no styles set on "smallicon" (but iconsmall is set to 11x11px). <strong>Moodle bug?</strong>');
+echo html_writer::tag('p', 'This will set the title to be the same as the alt text, and by default assign the "smallicon" class unless you set any other class via the attributes.');
 
 echo html_writer::tag('p', 'If you want to create a linked icon use $OUTPUT->action_icon(). Note that action_icon requires a pix_icon object, not the rendered string so make sure the second argument is "new pix_icon()" not $OUTPUT->pix_icon().');
 

@@ -82,6 +82,7 @@ class mod_scorm_mod_form extends moodleform_mod {
         $maxbytes = get_max_upload_file_size($CFG->maxbytes, $COURSE->maxbytes);
         $mform->setMaxFileSize($maxbytes);
         $mform->addElement('filepicker', 'packagefile', get_string('package', 'scorm'));
+        $mform->addRule('packagefile', null, 'required', null, 'client');
         $mform->addHelpButton('packagefile', 'package', 'scorm');
         $mform->disabledIf('packagefile', 'scormtype', 'noteq', SCORM_TYPE_LOCAL);
 
@@ -124,7 +125,14 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->setAdvanced('winoptgrp', $cfg_scorm->winoptgrp_adv);
 
         // Skip view page
-        $mform->addElement('select', 'skipview', get_string('skipview', 'scorm'), scorm_get_skip_view_array());
+        $skipviewoptions = scorm_get_skip_view_array();
+        if ($COURSE->format == 'scorm') { // Remove option that would cause a constant redirect.
+            unset($skipviewoptions[SCORM_SKIPVIEW_ALWAYS]);
+            if ($cfg_scorm->skipview == SCORM_SKIPVIEW_ALWAYS) {
+                $cfg_scorm->skipview = SCORM_SKIPVIEW_FIRST;
+            }
+        }
+        $mform->addElement('select', 'skipview', get_string('skipview', 'scorm'), $skipviewoptions);
         $mform->addHelpButton('skipview', 'skipview', 'scorm');
         $mform->setDefault('skipview', $cfg_scorm->skipview);
         $mform->setAdvanced('skipview', $cfg_scorm->skipview_adv);

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -48,10 +48,20 @@ class enrol_totara_program_plugin extends enrol_plugin {
     }
 
     /**
+     * Add new instance of enrol plugin with default settings.
+     * @param object $course
+     * @return int id of new instance, null if can not be created
+     */
+    public function add_default_instance($course) {
+        $fields = array('enrolperiod' => $this->get_config('enrolperiod', 0), 'roleid' => $this->get_config('roleid', 0));
+        return $this->add_instance($course, $fields);
+    }
+
+    /**
      * Add new instance of enrol_totara_program plugin.
      * @param object $course
      * @param array instance fields
-     * @return int id of new instance, null if can not be created
+     * @return int id of new instance, or id of existing instance
      */
     public function add_instance($course, array $fields = NULL) {
 
@@ -59,7 +69,7 @@ class enrol_totara_program_plugin extends enrol_plugin {
         if (!$instance) {
             return parent::add_instance($course);
         } else {
-            return null;
+            return $instance->id;
         }
     }
 
@@ -141,5 +151,21 @@ class enrol_totara_program_plugin extends enrol_plugin {
             $actions[] = new user_enrolment_action(new pix_icon('t/delete', ''), get_string('unenrol', 'enrol'), $url, array('class'=>'unenrollink', 'rel'=>$ue->id));
         }
         return $actions;
+    }
+}
+
+/**
+ * Indicates API features that the enrol plugin supports.
+ *
+ * @param string $feature
+ * @return mixed True if yes (some features may use other values)
+ */
+function enrol_totara_program_supports($feature) {
+    switch($feature) {
+        case ENROL_RESTORE_TYPE:
+            return ENROL_RESTORE_EXACT;
+
+        default:
+            return null;
     }
 }

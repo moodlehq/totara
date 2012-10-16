@@ -7,7 +7,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -206,18 +206,6 @@ if ($cohort->cohorttype == cohort::TYPE_DYNAMIC) {
     $out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
 
 } //end if cohort type is dynamic
-
-$out .= html_writer::start_tag('div', array('class' => 'mform'));
-$out .= html_writer::start_tag('fieldset');
-$item = html_writer::tag('div', '&nbsp;', array('class' => 'fitemtitle'));
-$form = html_writer::start_tag('form');
-$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'delete', 'value' => '1'));
-$form .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $cohort->id));
-$form .= html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('deletethiscohort', 'totara_cohort')));
-$form .= html_writer::end_tag('form');
-$item .= html_writer::tag('div', $membercount, array('class' => 'felement ftext'));
-$out .= $OUTPUT->container($item, 'fitem required');
-$out .= html_writer::end_tag('fieldset') . html_writer::end_tag('div');
 
 echo $out;
 $cloneurl = new moodle_url("/cohort/view.php", array('id'=>$cohort->id,'clone'=>1));

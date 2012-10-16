@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -1081,7 +1081,7 @@ class multi_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'timeallowednum', $this->timeallowednum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
-            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
@@ -2130,7 +2130,7 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'timeallowednum', $this->timeallowednum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
-            $mform->addRule($prefix.'timeallowednum', get_string('error:timeallowednum_nonzero', 'totara_program'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
@@ -2153,7 +2153,7 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'recurrencetimenum', $this->recurrencetimenum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'recurrencetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurrencetimenum', get_string('error:recurrence_nonzero', 'totara_program'), 'nonzero', null, 'server');
+            $mform->addRule($prefix.'recurrencetimenum', get_string('required'), 'required', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurrencetimeperiod', '', $timeallowanceoptions);
@@ -2176,11 +2176,11 @@ class recurring_course_set extends course_set {
         if ($updateform) {
             $mform->addElement('text', $prefix.'recurcreatetimenum', $this->recurcreatetimenum, array('size' => 4, 'maxlength' => 3));
             $mform->setType($prefix.'recurcreatetimenum', PARAM_INT);
-            $mform->addRule($prefix.'recurcreatetimenum', get_string('error:coursecreationrepeat_nonzero', 'totara_program'), 'nonzero', null, 'server');
 
             $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
             $mform->addElement('select', $prefix.'recurcreatetimeperiod', '', $timeallowanceoptions);
             $mform->setType($prefix.'recurcreatetimeperiod', PARAM_INT);
+            $mform->addRule($prefix.'recurcreatetimeperiod', get_string('required'), 'required', null, 'server');
 
             $template_values['%'.$prefix.'recurcreatetimenum%'] = array('name' => $prefix.'recurcreatetimenum', 'value' => null);
             $template_values['%'.$prefix.'recurcreatetimeperiod%'] = array('name' => $prefix.'recurcreatetimeperiod', 'value' => null);
@@ -2201,12 +2201,9 @@ class recurring_course_set extends course_set {
         if (count($courseoptions) > 0) {
             if ($updateform) {
                 $mform->addElement('select',  $prefix.'courseid', '', $courseoptions);
-                $mform->addElement('submit', $prefix.'changecourse', get_string('changecourse', 'totara_program'), array('onclick' => "return selectRecurringCourse('$prefix')"));
                 $template_values['%'.$prefix.'courseid%'] = array('name' => $prefix.'courseid', 'value' => null);
-                $template_values['%'.$prefix.'changecourse%'] = array('name' => $prefix.'changecourse', 'value' => null);
             }
             $templatehtml .= '%'.$prefix.'courseid%'."\n";
-            $templatehtml .= '%'.$prefix.'changecourse%'."\n";
             $templatehtml .= $OUTPUT->help_icon('recurringcourse', 'totara_program');
             $formdataobject->{$prefix.'courseid'} = $this->course->id;
         } else {

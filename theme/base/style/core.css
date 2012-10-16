@@ -121,7 +121,6 @@ form.popupform div {display: inline;}
 
 /** The 1-pixel padding is there to avoid phantom scroll bars on OS X (FF, Safari and Chrome)**/
 .no-overflow {overflow:auto;padding-bottom:1px;}
-.pagelayout-report .no-overflow {overflow:visible;}
 .no-overflow > .generaltable {margin-bottom:0;}
 .ie6 .no-overflow {width:100%;}
 
@@ -582,6 +581,7 @@ body.tag .managelink {padding: 5px;}
 #helppopupbox .yui3-widget-bd {margin:0 1em 1em 1em;border-top:1px solid #eee;}
 #helppopupbox .helpheading {font-size: 1em;}
 #helppopupbox .spinner {margin:1em;}
+.dir-rtl #helppopupbox .yui3-widget-hd {float:left;margin:3px 0 0 3px;}
 
 /**
  * Custom menu
@@ -613,7 +613,7 @@ body.tag .managelink {padding: 5px;}
 #custommenu .yui3-menu-horizontal .yui3-menu-label,
 #custommenu .yui3-menu-horizontal .yui3-menu-content {background-image:none;background-position:right center;background-repeat:no-repeat;}
 #custommenu .yui3-menu-label,
-#custommenu .yui3-menu .yui3-menu .yui3-menu-label {background-image:url([[pix:theme|vertical-menu-submenu-indicator]]);}
+#custommenu .yui3-menu .yui3-menu .yui3-menu-label {background-image:url([[pix:theme|vertical-menu-submenu-indicator]]); padding-right: 20px;}
 #custommenu .yui3-menu .yui3-menu .yui3-menu-label-menuvisible {background-image:url([[pix:theme|horizontal-menu-submenu-indicator]]);}
 
 /**

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -147,7 +147,7 @@
                 count(id) as numreports
                 FROM {report_builder}
                 WHERE $likesql
-                GROUP BY groupid
+                GROUP BY $substr_sql
             ) reports ON " . $DB->sql_cast_char2int('reports.groupid') . " = g.id ORDER BY g.name";
         $params = array($feedbackmoduleid, 'official', 'tag', $likeparam);
         $groups = $DB->get_records_sql($sql, $params);

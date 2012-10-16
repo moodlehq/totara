@@ -378,7 +378,7 @@ class plugin_manager {
                 'guest', 'imsenterprise', 'ldap', 'manual', 'meta', 'mnet',
                 'paypal', 'self'
                 // Totara
-                , 'totara_learningplan'
+                , 'totara_learningplan', 'totara_program'
             ),
 
             'filter' => array(
@@ -493,12 +493,14 @@ class plugin_manager {
                 'boxxie', 'brick', 'canvas', 'formal_white', 'formfactor',
                 'fusion', 'leatherbound', 'magazine', 'mymobile', 'nimble',
                 'nonzero', 'overlay', 'serenity', 'sky_high', 'splash',
-                'standard', 'standardold', 'standardtotara'
+                'standard', 'standardold'
+                // Totara:
+                , 'standardtotara', 'customtotara'
             ),
 
             'tool' => array(
                 'bloglevelupgrade', 'capability', 'customlang', 'dbtransfer', 'generator',
-                'health', 'innodb', 'langimport', 'multilangupgrade', 'profiling',
+                'health', 'innodb', 'langimport', 'multilangupgrade', 'phpunit', 'profiling',
                 'qeupgradehelper', 'replace', 'spamcleaner', 'timezoneimport', 'unittest',
                 'uploaduser', 'unsuproles', 'xmldb'
                 // Totara:

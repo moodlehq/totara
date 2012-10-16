@@ -1471,7 +1471,8 @@ class assignment_base {
                                 } else if ($quickgrade) {
                                     $attributes = array();
                                     $attributes['tabindex'] = $tabindex++;
-                                    $menu = html_writer::select(make_grades_menu($this->assignment->grade), 'menu['.$auser->id.']', $auser->grade, array(-1=>get_string('nograde')), $attributes);
+                                    $menu = html_writer::label(get_string('assignment:grade', 'assignment'), 'menumenu'. $auser->id, false, array('class' => 'accesshide'));
+                                    $menu .= html_writer::select(make_grades_menu($this->assignment->grade), 'menu['.$auser->id.']', $auser->grade, array(-1=>get_string('nograde')), $attributes);
                                     $grade = '<div id="g'.$auser->id.'">'. $menu .'</div>';
                                 } else {
                                     $grade = '<div id="g'.$auser->id.'">'.$this->display_grade($auser->grade).'</div>';
@@ -1484,7 +1485,8 @@ class assignment_base {
                                 } else if ($quickgrade) {
                                     $attributes = array();
                                     $attributes['tabindex'] = $tabindex++;
-                                    $menu = html_writer::select(make_grades_menu($this->assignment->grade), 'menu['.$auser->id.']', $auser->grade, array(-1=>get_string('nograde')), $attributes);
+                                    $menu = html_writer::label(get_string('assignment:grade', 'assignment'), 'menumenu'. $auser->id, false, array('class' => 'accesshide'));
+                                    $menu .= html_writer::select(make_grades_menu($this->assignment->grade), 'menu['.$auser->id.']', $auser->grade, array(-1=>get_string('nograde')), $attributes);
                                     $grade = '<div id="g'.$auser->id.'">'.$menu.'</div>';
                                 } else {
                                     $grade = '<div id="g'.$auser->id.'">'.$this->display_grade($auser->grade).'</div>';
@@ -1512,7 +1514,8 @@ class assignment_base {
                             } else if ($quickgrade) {   // allow editing
                                 $attributes = array();
                                 $attributes['tabindex'] = $tabindex++;
-                                $menu = html_writer::select(make_grades_menu($this->assignment->grade), 'menu['.$auser->id.']', $auser->grade, array(-1=>get_string('nograde')), $attributes);
+                                $menu = html_writer::label(get_string('assignment:grade', 'assignment'), 'menumenu'. $auser->id, false, array('class' => 'accesshide'));
+                                $menu .= html_writer::select(make_grades_menu($this->assignment->grade), 'menu['.$auser->id.']', $auser->grade, array(-1=>get_string('nograde')), $attributes);
                                 $grade = '<div id="g'.$auser->id.'">'.$menu.'</div>';
                                 $hassubmission = true;
                             } else {
@@ -1556,7 +1559,7 @@ class assignment_base {
                         if ($uses_outcomes) {
 
                             foreach($grading_info->outcomes as $n=>$outcome) {
-                                $outcomes .= '<div class="outcome"><label>'.$outcome->name.'</label>';
+                                $outcomes .= '<div class="outcome"><label for="'. 'outcome_'.$n.'_'.$auser->id .'">'.$outcome->name.'</label>';
                                 $options = make_grades_menu(-$outcome->scaleid);
 
                                 if ($outcome->grades[$auser->id]->locked or !$quickgrade) {
@@ -1587,7 +1590,7 @@ class assignment_base {
                     }
                     $currentposition++;
                 }
-                if ($hassubmission && ($this->assignment->assignmenttype=='upload' || $this->assignment->assignmenttype=='online' || $this->assignment->assignmenttype=='uploadsingle')) { //TODO: this is an ugly hack, where is the plugin spirit? (skodak)
+                if ($hassubmission && method_exists($this, 'download_submissions')) {
                     echo html_writer::start_tag('div', array('class' => 'mod-assignment-download-link'));
                     echo html_writer::link(new moodle_url('/mod/assignment/submissions.php', array('id' => $this->cm->id, 'download' => 'zip')), get_string('downloadall', 'assignment'));
                     echo html_writer::end_tag('div');
@@ -1816,10 +1819,10 @@ class assignment_base {
      *
      * @global object
      * @global object
-     * @param $userid int The id of the user whose submission we want or 0 in which case USER->id is used
-     * @param $createnew boolean optional Defaults to false. If set to true a new submission object will be created in the database
+     * @param int $userid int The id of the user whose submission we want or 0 in which case USER->id is used
+     * @param bool $createnew boolean optional Defaults to false. If set to true a new submission object will be created in the database
      * @param bool $teachermodified student submission set if false
-     * @return object The submission
+     * @return object|bool The submission or false (if $createnew is false and there is no existing submission).
      */
     function get_submission($userid=0, $createnew=false, $teachermodified=false) {
         global $USER, $DB;
@@ -1830,8 +1833,10 @@ class assignment_base {
 
         $submission = $DB->get_record('assignment_submissions', array('assignment'=>$this->assignment->id, 'userid'=>$userid));
 
-        if ($submission || !$createnew) {
+        if ($submission) {
             return $submission;
+        } else if (!$createnew) {
+            return false;
         }
         $newsubmission = $this->prepare_new_submission($userid, $teachermodified);
         $DB->insert_record("assignment_submissions", $newsubmission);

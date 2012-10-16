@@ -2229,22 +2229,6 @@ function make_categories_options() {
 }
 
 /**
- * Gets the name of a course to be displayed when showing a list of courses.
- * By default this is just $course->fullname but user can configure it. The
- * result of this function should be passed through print_string.
- * @param object $course Moodle course object
- * @return string Display name of course (either fullname or short + fullname)
- */
-function get_course_display_name_for_list($course) {
-    global $CFG;
-    if (!empty($CFG->courselistshortnames)) {
-        return $course->shortname . ' ' .$course->fullname;
-    } else {
-        return $course->fullname;
-    }
-}
-
-/**
  * Prints the category info in indented fashion
  * This function is only used by print_whole_category_list() above
  */
@@ -2599,7 +2583,7 @@ function print_my_moodle() {
     global $USER, $CFG, $DB, $OUTPUT;
 
     if (!isloggedin() or isguestuser()) {
-        print_error('nopermissions', '', '', 'See My Moodle');
+        print_error('nopermissions', '', '', 'See My Home');
     }
 
     $courses  = enrol_get_my_courses('summary', 'visible DESC,sortorder ASC');
@@ -3266,8 +3250,8 @@ function make_editing_buttons(stdClass $mod, $absolute_ignored = true, $movesele
         );
     }
 
-    // Duplicate (require both target import caps to be able to duplicate, see modduplicate.php)
-    if (has_all_capabilities($dupecaps, $coursecontext)) {
+    // Duplicate (require both target import caps to be able to duplicate and backup2 support, see modduplicate.php)
+    if (has_all_capabilities($dupecaps, $coursecontext) && plugin_supports('mod', $mod->modname, FEATURE_BACKUP_MOODLE2)) {
         $actions[] = new action_link(
             new moodle_url($baseurl, array('duplicate' => $mod->id)),
             new pix_icon('t/copy', $str->duplicate, 'moodle', array('class' => 'iconsmall')),
@@ -3451,6 +3435,8 @@ function category_delete_full($category, $showfeedback=true) {
     }
 
     $deletedcourses = array();
+    $deletedprograms = array();
+
     if ($courses = $DB->get_records('course', array('category'=>$category->id), 'sortorder ASC')) {
         foreach ($courses as $course) {
             if (!delete_course($course, false)) {
@@ -3460,6 +3446,16 @@ function category_delete_full($category, $showfeedback=true) {
         }
     }
 
+    if ($programs = $DB->get_records('prog', array('category'=>$category->id), 'sortorder ASC', 'id, shortname')) {
+        require_once($CFG->dirroot.'/totara/program/lib.php');
+        foreach ($programs as $program) {
+            $prog = new program($program->id);
+            if (!$prog->delete()) {
+                throw new moodle_exception('programdeletefail','totara_program','',$program->shortname);
+            }
+            $deletedprograms[] = $program;
+        }
+    }
     // move or delete cohorts in this context
     cohort_delete_category($category);
 
@@ -3475,7 +3471,7 @@ function category_delete_full($category, $showfeedback=true) {
 
     events_trigger('course_category_deleted', $category);
 
-    return $deletedcourses;
+    return array($deletedcourses, $deletedprograms);
 }
 
 /**
@@ -3506,6 +3502,14 @@ function category_delete_move($category, $newparentid, $showfeedback=true) {
             return false;
         }
         echo $OUTPUT->notification(get_string('coursesmovedout', '', format_string($category->name)), 'notifysuccess');
+    }
+
+    if ($programs = $DB->get_records('prog', array('category' => $category->id), 'sortorder ASC', 'id')) {
+        if (!prog_move_programs(array_keys($programs), $newparentid)) {
+            echo $OUTPUT->notification(get_string('error:progsnotmoved', 'totara_program', format_string($category->name)));
+            return false;
+        }
+        echo $OUTPUT->notification(get_string('programsmovedout', 'totara_program', format_string($category->name)), 'notifysuccess');
     }
 
     // move or delete cohorts in this context
@@ -3898,7 +3902,7 @@ function create_course($data, $editoroptions = NULL) {
     fix_course_sortorder();
 
     // update module restrictions
-    if ($course->restrictmodules) {
+    if ($course->restrictmodules || $CFG->restrictbydefault ) {
         if (isset($data->allowedmods)) {
             update_restricted_mods($course, $data->allowedmods);
         } else {
@@ -4428,9 +4432,31 @@ function get_course_custom_fields($courseid) {
 }
 
 /**
- * TODO SCANMSG
- * Stub to stop errors during porting
+ * Gets the path of breadcrumbs for a category path matching $categoryid
+ *
+ * @param integer $categoryid The id of the current category
+ * @return array Multidimensional array containing name, link, and type of breadcrumbs
+ *
  */
-function get_category_breadcrumbs($category) {
-    return array();
+function get_category_breadcrumbs($categoryid) {
+    global $CFG, $DB;
+
+    $category = $DB->get_record('course_categories', array('id' => $categoryid));
+
+    if (strpos($category->path, '/') === false) {
+        return array();
+    }
+
+    $bread = explode('/', substr($category->path, 1));
+    list($breadinsql, $params) = $DB->get_in_or_equal($bread);
+    $sql = "SELECT id, name FROM {course_categories} WHERE id {$breadinsql} ORDER BY depth";
+    $cat_bread = array();
+
+    if ($bread_info = $DB->get_records_sql($sql, $params)) {
+        foreach ($bread_info as $crumb) {
+            $cat_bread[] = array('name' => format_string($crumb->name), 'link' => new moodle_url('/course/category.php', array('id' => $crumb->id, 'viewtype' => 'program')), 'type' => 'misc');
+
+        }
+    }
+    return $cat_bread;
 }

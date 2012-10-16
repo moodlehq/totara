@@ -51,6 +51,15 @@ class delete_category_form extends moodleform {
             }
         }
 
+    // Are there any programs in here, can they be deleted?
+        list($insql, $inparams) = $DB->get_in_or_equal($categoryids);
+        $containedprograms = $DB->get_records_sql(
+                "SELECT id,1 FROM {prog} p WHERE p.category $insql", $inparams);
+        $containsprograms = false;
+        if ($containedprograms) {
+            $containsprograms = true;
+        }
+
     /// Are there any questions in the question bank here?
         $containsquestions = question_context_has_any_questions($categorycontext);
 
@@ -58,6 +67,9 @@ class delete_category_form extends moodleform {
         $testcaps = array();
         if ($containscourses) {
             $testcaps[] = 'moodle/course:create';
+        }
+        if ($containsprograms) {
+            $testcaps[] = 'totara/program:createprogram';
         }
         if ($containscategories || $containsquestions) {
             $testcaps[] = 'moodle/category:manage';
@@ -80,7 +92,7 @@ class delete_category_form extends moodleform {
     /// Now build the form.
         $mform->addElement('header','general', get_string('categorycurrentcontents', '', format_string($category->name, true, array('context' => $categorycontext))));
 
-        if ($containscourses || $containscategories || $containsquestions) {
+        if ($containscourses || $containscategories || $containsquestions || $containsprograms) {
             if (empty($options)) {
                 print_error('youcannotdeletecategory', 'error', 'index.php', format_string($category->name, true, array('context' => $categorycontext)));
             }
@@ -92,6 +104,9 @@ class delete_category_form extends moodleform {
             }
             if ($containscourses) {
                 $contents .= '<li>' . get_string('courses') . '</li>';
+            }
+            if ($containsprograms) {
+                $contents .= '<li>' . get_string('programs', 'totara_coursecatalog') . '</li>';
             }
             if ($containsquestions) {
                 $contents .= '<li>' . get_string('questionsinthequestionbank') . '</li>';

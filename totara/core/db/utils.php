@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -342,7 +342,7 @@ function totara_readd_course_completion_changes() {
 
     /// Define field status to be added to course_completions
     $table = new xmldb_table('course_completions');
-    $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, 0, 'reaggregate');
+    $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, 'reaggregate');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
 

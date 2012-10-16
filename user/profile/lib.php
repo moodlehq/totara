@@ -431,6 +431,37 @@ function profile_save_data($usernew) {
     }
 }
 
+/**
+ * Display current primary hierarchy information for the given user
+ * @param  integer  userid
+ * @return  void
+ */
+function profile_display_hierarchy_fields($userid) {
+    global $OUTPUT, $DB;
+    $sql = "SELECT p.fullname as pos, o.fullname as org, u.id as manid,
+                " . $DB->sql_fullname('u.firstname', 'u.lastname') . " AS fullname
+                FROM {pos_assignment} pa
+                    LEFT JOIN {pos} p ON pa.positionid = p.id
+                    LEFT JOIN {org} o ON pa.organisationid = o.id
+                    LEFT JOIN {user} u ON u.id = pa.managerid
+                WHERE pa.userid = ? AND pa.type = 1 ";
+
+    $record = $DB->get_record_sql($sql, array($userid), IGNORE_MULTIPLE);
+
+    if (isset($record->pos)) {
+        print_row(get_string('position', 'totara_hierarchy') . " :", $record->pos);
+    }
+
+    if (isset($record->org)) {
+        print_row(get_string('organisation', 'totara_hierarchy') . " :", $record->org);
+    }
+
+    if (isset($record->manid)) {
+        $manurl = html_writer::link(new moodle_url('/user/profile.php', array("id" => $record->manid)), $record->fullname);
+        print_row(get_string('manager', 'totara_hierarchy') . " :", $manurl);
+    }
+}
+
 function profile_display_fields($userid) {
     global $CFG, $USER, $DB;
 

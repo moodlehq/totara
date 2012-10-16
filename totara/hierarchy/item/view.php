@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -86,11 +86,16 @@ $PAGE->set_url('/totara/hierarchy/item/view.php', array('prefix' => $prefix, 'id
 $PAGE->set_pagelayout('admin');
 $PAGE->navbar->add(get_string("{$prefix}frameworks", 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix)));
 
-if ($can_manage_fw) {
-    $PAGE->navbar->add(get_string('manage'.$prefix, 'totara_hierarchy'), new moodle_url("../index.php", array('prefix' => $prefix, 'frameworkid' => $framework->id)));
-} else {
-    $PAGE->navbar->add(get_string('manage'.$prefix, 'totara_hierarchy'));
+if (!$framework = $DB->get_record($shortprefix.'_framework', array('id' => $item->frameworkid))) {
+    print_error('invalidframeworkid', 'totara_hierarchy', $prefix);
 }
+
+if ($can_manage_fw) {
+    $PAGE->navbar->add(format_string($framework->fullname), new moodle_url("../index.php", array('prefix' => $prefix, 'frameworkid' => $framework->id)));
+} else {
+    $PAGE->navbar->add(format_string($framework->fullname));
+}
+
 $PAGE->navbar->add(format_string($item->fullname));
 echo $OUTPUT->header();
 
@@ -115,7 +120,7 @@ if ($cfdata) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$cf->datatype.'/field.class.php');
         $data[] = array(
             'title' => $cf->fullname,
-            'value' => call_user_func(array($cf_class, 'display_item_data'), $cf->data, $prefix, $item->id)
+            'value' => call_user_func(array($cf_class, 'display_item_data'), $cf->data, $prefix, $cf->id)
         );
     }
 }

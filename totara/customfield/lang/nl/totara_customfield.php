@@ -1,5 +1,29 @@
 <?php
-// customfields.php - created with Totara langimport script version 1.1
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage totara_core
+ *
+ * totara_core specific language strings.
+ * these should be called like get_string('key', 'totara_core');
+ * Replaces lang/[lang]/local.php from 1.1 series
+ */
 
 $string['category'] = 'Categorie';
 $string['categorynamemustbeunique'] = 'Naam categorie (moet uniek zijn)';
@@ -14,6 +38,7 @@ $string['createnewcustomfield'] = 'Extra veld toevoegen';
 $string['createnewfield'] = 'Extra veld &quot;{$a}&quot; toevoegen';
 $string['customfield'] = 'Extra veld';
 $string['customfieldcategories'] = 'Categorieën extra veld';
+$string['customfieldrequired'] = 'Is invullen verplicht?';
 $string['customfields'] = 'Extra velden';
 $string['customfieldtypecheckbox'] = 'Selectiehokje';
 $string['customfieldtypedatetime'] = 'Datum/tijd';
@@ -43,14 +68,13 @@ $string['menutoofewoptions'] = 'Vul minimaal twee opties in';
 $string['nocustomfieldcategories'] = 'Om extra velden toe te kunnen voegen moet eerst een categorie worden toegevoegd';
 $string['nocustomfieldcategoriesdefined'] = 'Geen categorieën voor extra velden ingesteld';
 $string['nocustomfieldsdefined'] = 'Geen velden ingesteld';
-$string['customfieldrequired'] = 'Is invullen verplicht?';
+$string['notset'] = 'Niet geselecteerd';
 $string['returntocategories'] = 'Terug naar Categorieën extra veld';
 $string['returntoframework'] = 'Terug naar Raamwerk';
 $string['shortname'] = 'Korte naam (moet uniek zijn)';
 $string['shortnamenotunique'] = 'Deze korte naam is reeds in gebruik';
 $string['specificsettings'] = 'Speciale instellingen';
 $string['startyear'] = 'Start jaar';
+$string['startyearafterend'] = 'Kies een startjaar vóór het eindjaar';
 $string['visible'] = 'Verborgen op de pagina Instellingen?';
 $string['wanttime'] = 'Tijdstip opnemen?';
-
-?>

@@ -674,5 +674,44 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2011120703, 'facetoface');
     }
 
+    if ($oldversion < 2012140604) {
+        //Remove additional html anchor reference from existing manager approval request message formats
+        $links = array(
+            '[Teilnehmerlink]#unbestätigt' => '[Teilnehmerlink]',
+            '[attendeeslink]#unapproved' => '[attendeeslink]',
+            '[enlaceasistentes] # no aprobados' => '[enlaceasistentes]',
+            '[เชื่อมโยงผู้เข้าร่วมประชุม] อนุมัติ #' => '[เชื่อมโยงผู้เข้าร่วมประชุม]',
+        );
+
+        foreach ($links as $key => $replacement) {
+            $sql = "UPDATE {facetoface} SET requestinstrmngr = REPLACE(requestinstrmngr, ?, ?)";
+            $result = $result && $DB->execute($sql, array($key, $replacement));
+        }
+        $stringmanager = get_string_manager();
+        $langs = array("de", "en", "es", "fi", "fr", "he", "hu", "it", "ja", "nl", "pl", "pt_br",
+            "sv", "th", "zh_cn");
+        $strings = array("cancellationinstrmngr", "confirmationinstrmngr", "requestinstrmngr", "reminderinstrmngr");
+
+        foreach ($langs as $lang) {
+            $sql = "UPDATE {facetoface} SET ";
+            $params = array();
+
+            foreach ($strings as $str) {
+            $remove = $stringmanager->get_string('setting:default' . $str . 'copybelow', 'facetoface', null, $lang);
+                $sql .= "{$str} = REPLACE({$str}, ?, '')";
+                $params[] = $remove;
+
+                if ($str != "reminderinstrmngr") {
+                    $sql .= ", ";
+                }
+            }
+
+            $result = $result && $DB->execute($sql, $params);
+        }
+        // facetoface savepoint reached
+
+        upgrade_mod_savepoint(true, 2012140604, 'facetoface');
+    }
+
     return $result;
 }

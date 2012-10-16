@@ -89,11 +89,34 @@ if ($version < $CFG->version) {
     cli_error(get_string('downgradedcore', 'error'));
 }
 
-$oldversion = "$CFG->release ($CFG->version)";
-$newversion = "$release ($version)";
+//determine proper upgrade message
+$a = new stdClass();
+$a->newversion = 'Totara ' . $TOTARA->release;
+// If a Moodle core upgrade:
+if ($version > $CFG->version) {
+    $prefix = get_string('moodlecore', 'totara_core').':';
+    $a->oldversion .= "{$prefix} {$CFG->release} ({$CFG->version}) ";
+    $a->newversion .= "{$prefix} {$release} ({$version}) ";
+}
 
-if (!moodle_needs_upgrading()) {
-    cli_error(get_string('cliupgradenoneed', 'core_admin', $newversion), 0);
+// If a Totara core upgrade
+if (!isset($CFG->totara_build) || $TOTARA->build > $CFG->totara_build) {
+    $prefix = get_string('totaracore','totara_core').':';
+
+    if (!isset($CFG->totara_build)) {
+        $a->oldversion .= $prefix.' '.get_string('totarapre11', 'totara_core');
+        $a->newversion .= "{$prefix} {$TOTARA->release}";
+    } else {
+        $a->oldversion .= "{$prefix} {$CFG->totara_release}";
+        $a->newversion .= "{$prefix} {$TOTARA->release}";
+    }
+}
+
+//check that neither moodle nor totara need upgrading
+//cli installs and upgrades prior to T-10001 bugfix will not have the totara CFG values set - run the upgrade anyway to get those variables in
+$totara_needs_upgrade = (!isset($CFG->totara_build) || (isset($CFG->totara_build) && $TOTARA->build > $CFG->totara_build));
+if (!moodle_needs_upgrading() && !($version > $CFG->version) && !$totara_needs_upgrade) {
+    cli_error(get_string('cliupgradenoneed', 'core_admin', $a->newversion), 0);
 }
 
 // Test environment first.
@@ -114,9 +137,6 @@ if (!plugin_manager::instance()->all_plugins_ok($version)) {
 }
 
 if ($interactive) {
-    $a = new stdClass();
-    $a->oldversion = $oldversion;
-    $a->newversion = $newversion;
     echo cli_heading(get_string('databasechecking', '', $a)) . PHP_EOL;
 }
 
@@ -138,7 +158,7 @@ if (isset($maturity)) {
 }
 
 if ($interactive) {
-    echo html_to_text(get_string('upgradesure', 'admin', $newversion))."\n";
+    echo html_to_text(get_string('cliupgradesure', 'totara_core', $a->newversion))."\n";
     $prompt = get_string('cliyesnoprompt', 'admin');
     $input = cli_input($prompt, '', array(get_string('clianswerno', 'admin'), get_string('cliansweryes', 'admin')));
     if ($input == get_string('clianswerno', 'admin')) {
@@ -151,6 +171,14 @@ if ($version > $CFG->version) {
 }
 set_config('release', $release);
 
+if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
+    || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
+    || !isset($CFG->totara_version) || $CFG->totara_version <> $TOTARA->version) {
+    // Also set Totara release (human readable version)
+    set_config("totara_release", $TOTARA->release);
+    set_config("totara_build", $TOTARA->build);
+    set_config("totara_version", $TOTARA->version);
+}
 // unconditionally upgrade
 upgrade_noncore(true);
 

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -222,7 +222,7 @@ class rb_source_dp_program extends rb_base_source {
             return get_string('noduedate', 'totara_plan');;
         }
 
-        $out = userdate($time, '%d/%m/%Y');
+        $out = userdate($time, get_string('strftimedatefullshort', 'langconfig'));
 
         $days = '';
         if ($completionstatus != STATUS_PROGRAM_COMPLETE) {

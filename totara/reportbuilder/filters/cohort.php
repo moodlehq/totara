@@ -173,7 +173,7 @@ class rb_filter_cohort extends rb_filter_type {
             return '';
         }
 
-        $a = new object();
+        $a = new stdClass();
         $a->label    = $label;
 
         $selected = array();

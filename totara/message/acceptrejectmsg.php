@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -40,7 +40,7 @@ if (isguestuser()) {
 }
 
 if (!in_array($event, array('onaccept', 'onreject'))) {
-    error('Invalid event type: '.$event);
+    print_error('error:invalideventtype', 'totara_message', '', $event);
 }
 
 $metadata = $DB->get_record('message_metadata', array('messageid' => $id));

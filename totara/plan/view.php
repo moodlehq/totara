@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -141,6 +141,8 @@ if ($data = $form->get_data()) {
 /**
  * Display header
  */
+dp_get_plan_base_navlinks($plan->userid);
+$PAGE->navbar->add($plan->name);
 $plan->print_header('plan');
 add_to_log(SITEID, 'plan', 'view', "view.php?id={$plan->id}", $plan->name);
 

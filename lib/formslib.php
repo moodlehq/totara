@@ -101,7 +101,28 @@ function form_init_date_js() {
     if (!$done) {
         $module   = 'moodle-form-dateselector';
         $function = 'M.form.dateselector.init_date_selectors';
-        $config = array(array('firstdayofweek'=>get_string('firstdayofweek', 'langconfig')));
+        $config = array(array(
+            'firstdayofweek'    =>  get_string('firstdayofweek', 'langconfig'),
+            'mon'               => strftime('%a', strtotime("Monday")),      // 5th Jan 1970 at 12pm
+            'tue'               => strftime('%a', strtotime("Tuesday")),
+            'wed'               => strftime('%a', strtotime("Wednesday")),
+            'thu'               => strftime('%a', strtotime("Thursday")),
+            'fri'               => strftime('%a', strtotime("Friday")),
+            'sat'               => strftime('%a', strtotime("Saturday")),
+            'sun'               => strftime('%a', strtotime("Sunday")),
+            'january'           => strftime('%B', strtotime("January")),       // 1st Jan 1970 at 12pm
+            'february'          => strftime('%B', strtotime("February")),
+            'march'             => strftime('%B', strtotime("March")),
+            'april'             => strftime('%B', strtotime("April")),
+            'may'               => strftime('%B', strtotime("May")),
+            'june'              => strftime('%B', strtotime("June")),
+            'july'              => strftime('%B', strtotime("July")),
+            'august'            => strftime('%B', strtotime("August")),
+            'september'         => strftime('%B', strtotime("September")),
+            'october'           => strftime('%B', strtotime("October")),
+            'november'          => strftime('%B', strtotime("November")),
+            'december'          => strftime('%B', strtotime("December"))
+        ));
         $PAGE->requires->yui_module($module, $function, $config);
         $done = true;
     }

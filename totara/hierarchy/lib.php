@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -276,6 +276,19 @@ class hierarchy {
     }
 
     /**
+     * Remove all custom field data for the specified hierarchy item
+     *
+     * @param int $itemid the hierarchy item id
+     * @return boolean true if removal successful
+     */
+    function delete_custom_field_data($itemid) {
+        global $DB;
+
+        return $DB->delete_records($this->shortprefix . '_type_info_data',
+            array($this->prefix . 'id' => $itemid));
+    }
+
+    /**
      * Get custom fields for an item
      * @param int $itemid id of the item
      * @return array
@@ -284,7 +297,7 @@ class hierarchy {
         global $DB;
         $prefix = $this->prefix;
 
-        $sql = "SELECT c.*, f.*
+        $sql = "SELECT c.*, f.datatype, f.hidden, f.fullname
                 FROM {{$this->shortprefix}_type_info_data} c
                 INNER JOIN {{$this->shortprefix}_type_info_field} f ON c.fieldid = f.id
                 WHERE c.{$prefix}id = ?
@@ -484,14 +497,14 @@ class hierarchy {
                 // but without the db calls
                 $descendants = array();
                 foreach ($records as $key => $record) {
-                    if (substr($record->path,0,strlen($item->path)) == $item->path) {
-                    //print "{$record->path} child of {$item->path}<br>";
+                    if (substr($record->path, 0, strlen($item->path . '/')) == $item->path . '/') {
                         $descendants[$key] = $record;
                     }
                 }
                 if (count($descendants)>1) {
                     // add comma separated list of all children too
                     $idstr = implode(',',array_keys($descendants));
+                    $idstr = $item->id.','.$idstr;
                     $list[$idstr] = $path." (and all children)";
                 }
             }
@@ -1283,11 +1296,12 @@ class hierarchy {
             if ($cf->hidden) {
                 continue;
             }
-            $property = "cf_{$cf->id}";
+            $data = "cf_{$cf->id}";
+            $itemid = "cf_{$cf->id}_itemid";
             // only show if there's data
-            if ($record->$property) {
-                $safetext = format_text($record->$property, FORMAT_HTML);
-                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $cf->id), array('class' => 'customfield ' . $cssclass));
+            if ($record->$data) {
+                $safetext = format_text($record->$data, FORMAT_HTML);
+                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $record->$itemid), array('class' => 'customfield ' . $cssclass));
             }
         }
 
@@ -1398,7 +1412,7 @@ class hierarchy {
      *
      * @return object|false A copy of the new item, or false if it could not be added
      */
-    function add_hierarchy_item($item, $parentid, $frameworkid = null, $usetransaction = true, $triggerevent = true) {
+    function add_hierarchy_item($item, $parentid, $frameworkid = null, $usetransaction = true, $triggerevent = true, $removedesc = true) {
         global $DB;
         // figure out the framework if not provided
         if (!isset($frameworkid)) {
@@ -1441,7 +1455,9 @@ class hierarchy {
         $item->timecreated = time();
         $item->sortthread = $sortthread;
         //set description to NULL, will be fixed in the post-insert html editor operations
-        $item->description = NULL;
+        if ($removedesc) {
+            $item->description = NULL;
+        }
         if ($usetransaction) {
             $transaction = $DB->start_delegated_transaction();
         }
@@ -1486,7 +1502,7 @@ class hierarchy {
      *
      * @return object|false The updated item, or false if it could not be updated
      */
-    function update_hierarchy_item($itemid, $newitem, $usetransaction = true, $triggerevent = true) {
+    function update_hierarchy_item($itemid, $newitem, $usetransaction = true, $triggerevent = true, $removedesc = true) {
         global $USER, $DB;
 
         // the itemid must be a valid item
@@ -1506,7 +1522,9 @@ class hierarchy {
         }
 
         //set description to NULL, will be fixed in the post-update html editor operations
-        $newitem->description = NULL;
+        if ($removedesc) {
+            $newitem->description = NULL;
+        }
 
         $newitem->id = $itemid;
         $newitem->timemodified = empty($newitem->timemodified) ? time() : $newitem->timemodified;
@@ -2431,20 +2449,19 @@ class hierarchy {
     protected function move_sortthread($oldsortthread, $newsortthread, $frameworkid) {
         global $DB;
 
-        $length_sql = $DB->sql_length(":oldsortthread");
+        $length_sql = $DB->sql_length("'$oldsortthread'");
         $substr_sql = $DB->sql_substr('sortthread', "$length_sql + 1");
         $sortthread = $DB->sql_concat(":newsortthread", $substr_sql);
         $params = array(
-        'frameworkid' => $frameworkid,
-        'oldsortthread' => $oldsortthread,
-        'oldsortthread2' => $oldsortthread,
-        'oldsortthreadmatch' => "{$oldsortthread}%",
-        'newsortthread' => $newsortthread
+            'newsortthread' => $newsortthread,
+            'frameworkid' => $frameworkid,
+            'oldsortthread' => $oldsortthread,
+            'oldsortthreadmatch' => "{$oldsortthread}%"
         );
         $sql = "UPDATE {{$this->shortprefix}}
             SET sortthread = $sortthread
             WHERE frameworkid = :frameworkid
-            AND (sortthread = :oldsortthread2 OR
+            AND (sortthread = :oldsortthread OR
             " . $DB->sql_like('sortthread', ':oldsortthreadmatch') . ')';
 
         return $DB->execute($sql, $params);
@@ -2578,7 +2595,7 @@ class hierarchy {
         $DB->execute($sql, $params);
 
         foreach ($rs as $datarow) {
-            $todb = new object();
+            $todb = new stdClass();
             $todb->id = $datarow->id;
             $todb->sortthread = $this->get_next_child_sortthread($datarow->parentid, $datarow->frameworkid);
             $DB->update_record($this->shortprefix, $todb);

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -33,6 +33,11 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
     function config_form(&$mform) {
         $filepath = $this->get_filepath();
+        $this->config->import_idnumber = "1";
+        $this->config->import_username = "1";
+        $this->config->import_timemodified = "1";
+        $this->config->import_deleted = (isset($this->element->config->sourceallrecords) && $this->element->config->sourceallrecords == 0) ? "1" : '0';
+
         if (empty($filepath)) {
             $mform->addElement('html', html_writer::tag('p', get_string('nofilesdir', 'tool_totara_sync')));
             return false;
@@ -173,6 +178,10 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $rowcount = 0;
 
         while ($csvrow = fgetcsv($file)) {
+            // skip empty rows
+            if (is_array($csvrow) && current($csvrow) === null) {
+                continue;
+            }
             $csvrow = array_combine($fields, $csvrow);  // nice associative array ;)
 
             // clean the data a bit

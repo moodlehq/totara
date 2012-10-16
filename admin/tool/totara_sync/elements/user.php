@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -73,11 +73,11 @@ class totara_sync_element_user extends totara_sync_element {
         ///
         if (!empty($this->config->removeuser) && $this->config->removeuser == 'delete') {
             if (empty($this->config->sourceallrecords)) {
-                // Get records with "delete" flag set
+                // Get records with "deleted" flag set
                 $sql = "SELECT u.id, u.idnumber, u.auth
                          FROM {{$synctable}} s
                    INNER JOIN {user} u ON (s.idnumber = u.idnumber)
-                        WHERE u.totarasync=1 AND u.deleted = 0 AND s.delete = 1";
+                        WHERE u.totarasync=1 AND u.deleted = 0 AND s.deleted = 1";
             } else {
                 // All records provided by source - get missing user records
                 $sql = "SELECT u.id, u.idnumber, u.auth
@@ -103,7 +103,7 @@ class totara_sync_element_user extends totara_sync_element {
         if (empty($this->config->sourceallrecords)) {
             // Remove the deleted records from the sync table
             // This ensures that our create/update queries runs smoothly
-            $DB->execute("DELETE FROM {{$synctable}} WHERE delete = 1");
+            $DB->execute("DELETE FROM {{$synctable}} WHERE deleted = 1");
         }
 
 
@@ -423,7 +423,7 @@ class totara_sync_element_user extends totara_sync_element {
                        AND o.idnumber IS NULL";
             if (empty($this->config->sourceallrecords)) {
                 // Avoid users that will be deleted
-                $sql .= ' AND s.delete = 0';
+                $sql .= ' AND s.deleted = 0';
             }
             $rs = $DB->get_recordset_sql($sql);
             if ($rs->valid()) {
@@ -446,7 +446,7 @@ class totara_sync_element_user extends totara_sync_element {
                        AND p.idnumber IS NULL";
             if (empty($this->config->sourceallrecords)) {
                 // Avoid users that will be deleted
-                $sql .= ' AND s.delete = 0';
+                $sql .= ' AND s.deleted = 0';
             }
 
             $rs = $DB->get_recordset_sql($sql);

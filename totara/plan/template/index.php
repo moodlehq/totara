@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -138,7 +138,7 @@ if ($delete && $confirm) {
     $deleteurl = new moodle_url('/totara/plan/template/index.php', array('delete' => $delete, 'confirm' => 'true', 'sesskey' => sesskey()));
     $returnurl = new moodle_url('/totara/plan/template/index.php');
     $strdelete = get_string('deletecheckdptemplate', 'totara_plan');
-    $strbreak = $OUTPUT->line_break(2);
+    $strbreak = html_writer::empty_tag('br') . html_writer::empty_tag('br');
 
     echo $OUTPUT->confirm("{$strdelete}{$strbreak}".format_string($template->fullname), $deleteurl, $returnurl);
 

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -146,7 +146,7 @@ class program_content_edit_form extends moodleform {
 
         foreach ($data as $elementname=>$elementvalue) {
 
-            // check for time allowance issues
+            // check for negative integer issues
             if (preg_match('/[0-9]timeallowednum/', $elementname)) {
                 $timeallowednum = $elementvalue;
                 if ($timeallowednum <= 0) {
@@ -154,6 +154,19 @@ class program_content_edit_form extends moodleform {
                 }
             }
 
+            if (preg_match('/[0-9]recurrencetimenum/', $elementname)) {
+                $timeallowednum = $elementvalue;
+                if ($timeallowednum <= 0) {
+                    $errors[$elementname] = get_string('error:recurrence_nonzero', 'totara_program');
+                }
+            }
+
+            if (preg_match('/[0-9]recurcreatetimenum/', $elementname)) {
+                $timeallowednum = $elementvalue;
+                if ($timeallowednum <= 0) {
+                    $errors[$elementname] = get_string('error:coursecreationrepeat_nonzero', 'totara_program');
+                }
+            }
             // check for course sets with no courses
             if (preg_match('/[0-9]courses/', $elementname)) {
                 $courses = $elementvalue;
@@ -164,4 +177,5 @@ class program_content_edit_form extends moodleform {
         }
         return $errors;
     }
+
 }

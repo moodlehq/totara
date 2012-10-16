@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -46,7 +46,7 @@ $deleteexisting = optional_param('deleteexisting', 0, PARAM_BOOL);
 
 // Non JS parameters
 $nojs = optional_param('nojs', false, PARAM_BOOL);
-$returnurl = optional_param('returnurl', '', PARAM_TEXT);
+$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 $s = optional_param('s', '', PARAM_TEXT);
 
 // Setup page
@@ -112,7 +112,7 @@ foreach ($add as $addition) {
     $framework = $competencies->get_framework($related->frameworkid);
 
     // Add relationship
-    $relationship = new Object();
+    $relationship = new stdClass();
     $relationship->organisationid = $organisation->id;
     $relationship->templateid = $related->id;
     $relationship->timecreated = $time;

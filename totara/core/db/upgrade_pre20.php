@@ -6,7 +6,7 @@
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
+* the Free Software Foundation; either version 3 of the License, or
 * (at your option) any later version.
 *
 * This program is distributed in the hope that it will be useful,
@@ -32,6 +32,13 @@ set_config('theme', 'standardtotara');
 
 $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 $success = get_string('success');
+
+if ($DB->record_exists('role', array('shortname' => 'staffmanager'))) {
+    echo $OUTPUT->notification(get_string('error:staffmanagerroleexists', 'totara_core'));
+    upgrade_log(UPGRADE_LOG_ERROR, 'totara/core', get_string('error:staffmanagerroleexists', 'totara_core'));
+    die();
+}
+
 //fix 1.1-series capabilities
 totara_upgrade_capabilities();
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Capabilities upgraded from 1.1');
@@ -169,6 +176,13 @@ $table = new xmldb_table('course_completion_criteria');
 $field = new xmldb_field('completedate', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, null, null, null, 'enrolperiod');
 if ($dbman->field_exists($table, $field)) {
     $dbman->rename_field($table, $field, 'timeend');
+}
+
+//ensure oninfo field exists T-9963
+$table = new xmldb_table('message_metadata');
+$field = new xmldb_field('oninfo', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'onreject');
+if (!$dbman->field_exists($table, $field)) {
+    $dbman->add_field($table, $field);
 }
 
 upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Totara database schema updates');

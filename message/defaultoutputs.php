@@ -34,7 +34,7 @@ require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
 // Fetch processors
 $processors = get_message_processors(true);
 // Fetch message providers
-$providers = $DB->get_records('message_providers', null, 'name');
+$providers = $DB->get_records('message_providers', null, 'component desc, name asc');
 
 if (($form = data_submitted()) && confirm_sesskey()) {
     $preferences = array();

@@ -1,0 +1,456 @@
+<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Strings for component 'lesson', language 'fi', branch 'MOODLE_22_STABLE'
+ *
+ * @package   lesson
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['accesscontrol'] = 'Pääsyrajoitteet';
+$string['actionaftercorrectanswer'] = 'Toiminto oikean vastauksen jälkeen';
+$string['actionaftercorrectanswer_help'] = 'Vastattaessa kysymykseen oikein, annetaan kolme etenemisvaihtoehtoa:
+
+* Tavallinen – Seuraa oppitunnin polkua
+* Näytä sivu jota ei ole tarkasteltu – Sivut näytetään satunnaisessa järjestyksessä, samaa sivua ei näytetä kahdesti
+* Näytä vastaamaton sivu – Sivut näytetään satunnaisessa järjestyksessä, sivut joilla on vastaamattomia kysymyksiä näytetään uudelleen';
+$string['actions'] = 'Toiminnot';
+$string['activitylink'] = 'Linkitä aktiviteettiin';
+$string['activitylink_help'] = 'Antaaksesi oppitunnin lopussa linkin johonkin kurssin toiseen aktiviteettiin, valitse aktiviteetti alasvetovalikosta.';
+$string['activitylinkname'] = 'Mene kohtaan: {$a}';
+$string['addabranchtable'] = 'Lisää sisältösivu';
+$string['addanendofbranch'] = 'Päätä haara';
+$string['addanewpage'] = 'Lisää uusi sivu';
+$string['addaquestionpage'] = 'Lisää kysymyssivu';
+$string['addaquestionpagehere'] = 'Lisää kysymyssivu tähän';
+$string['addbranchtable'] = 'Lisää sisältösivu';
+$string['addcluster'] = 'Lisää ryhmä';
+$string['addedabranchtable'] = 'Lisätty sisältösivu';
+$string['addedanendofbranch'] = 'Haara päätetty';
+$string['addedaquestionpage'] = 'Kysymyssivu lisätty';
+$string['addedcluster'] = 'Ryhmä lisätty';
+$string['addedendofcluster'] = 'Ryhmä päätetty';
+$string['addendofcluster'] = 'Päätä ryhmä';
+$string['addpage'] = 'Lisää sivu';
+$string['anchortitle'] = 'Pääsisällön alku';
+$string['and'] = 'JA';
+$string['answer'] = 'Vastaus';
+$string['answeredcorrectly'] = 'vastasi oikein.';
+$string['answersfornumerical'] = 'Numeeristen kysymysten vastauksia tulee verrata minimi- ja maksimiarvoihin. Tälle välille osuva arvo katsotaan oikeaksi vastaukseksi.';
+$string['arrangebuttonshorizontally'] = 'Järjestä sisältöpainikkeet vaakasuuntaisesti?';
+$string['attempt'] = 'Suorituskerta: {$a}';
+$string['attempts'] = 'Suorituskerrat';
+$string['attemptsdeleted'] = 'Poistetut suorituskerrat';
+$string['attemptsremaining'] = 'Sinulla on {$a} suorituskerta(a) jäljellä.';
+$string['available'] = 'Oppitunti aukeaa';
+$string['averagescore'] = 'Pisteiden keskiarvo';
+$string['averagetime'] = 'Ajan keskiarvo';
+$string['branch'] = 'Sisältö';
+$string['branchtable'] = 'Sisältö';
+$string['cancel'] = 'Peruuta';
+$string['cannotfindanswer'] = 'Virhe: ei löydetty vastausta';
+$string['cannotfindattempt'] = 'Virhe: suorituskertaa ei löydetty';
+$string['cannotfindessay'] = 'Virhe: ei löydetty esseetä';
+$string['cannotfindfirstgrade'] = 'Virhe: ei löydetty arvosanoja';
+$string['cannotfindfirstpage'] = 'Ei löydetty aloitussivua';
+$string['cannotfindgrade'] = 'Virhe: ei löydetty arvosanoja';
+$string['cannotfindnewestgrade'] = 'Virhe: ei löydetty uusinta arvosanaa';
+$string['cannotfindnextpage'] = 'Oppitunnin varmuuskopiointi: Ei löydetty seuraavaa sivua!';
+$string['cannotfindpagerecord'] = 'Päätä haara: sivun tietoa ei löytynyt';
+$string['cannotfindpages'] = 'Ei löydetty oppituntisivuja';
+$string['cannotfindpagetitle'] = 'Varmista poisto: sivun otsikkoa ei löytynyt';
+$string['cannotfindpreattempt'] = 'Edellisestä suorituskerrasta ei löytynyt tietoa!';
+$string['cannotfindrecords'] = 'Virhe: ei löydetty tietoja oppitunnista';
+$string['cannotfindtimer'] = 'Virhe: ei löydetty oppitunti_ajastimen tietoja';
+$string['cannotfinduser'] = 'Virhe: ei löydetty käyttäjiä';
+$string['canretake'] = '{$a} voi aloittaa uudelleen';
+$string['casesensitive'] = 'Käytä säännöllisiä lausekkeita';
+$string['casesensitive_help'] = '<p align="center"><strong>Kysymysten asetukset </strong></p>
+
+<p>Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
+  <ol>
+
+<li><p> </p>
+  <p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
+  <p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
+
+</li>';
+$string['checkbranchtable'] = 'Tarkista sisältösivu';
+$string['checkedthisone'] = 'valitsi tämän.';
+$string['checknavigation'] = 'Tarkista navigointi';
+$string['checkquestion'] = 'Tarkista kysymys';
+$string['classstats'] = 'Luokan tiedot';
+$string['clicktodownload'] = 'Klikkaa seuraavaa linkkiä ladataksesi tiedoston.';
+$string['clicktopost'] = 'Klikkaa tästä lähettääksesi arvosanasi parhaiden tulosten listalle.';
+$string['cluster'] = 'Klusteri';
+$string['clusterjump'] = 'Katsomaton kysymys ryhmässä';
+$string['clustertitle'] = 'Ryhmä';
+$string['collapsed'] = 'Tiivistetty näkymä';
+$string['comments'] = 'Kommenttisi';
+$string['completed'] = 'Suoritettu';
+$string['completederror'] = 'Suorita oppitunti';
+$string['completethefollowingconditions'] = 'Sinun pitää suorittaa seuraavat asiat <b>{$a}</b>  oppitunnilla, ennen kuin se on hyväksytty.';
+$string['conditionsfordependency'] = 'Ehdot suoritukselle';
+$string['configactionaftercorrectanswer'] = 'Oletustoiminto oikean vastauksen jälkeen';
+$string['configmaxanswers'] = 'Oletus vastausten enimmäismäärälle sivulla';
+$string['configmaxhighscores'] = 'Näytettävien parhaiden pisteiden määrä';
+$string['configmediaclose'] = 'Näytä sulje-painike osana linkitetyn mediatiedoston ponnahdusikkunaa.';
+$string['configmediaheight'] = 'Asettaa linkitetyn mediatiedoston ponnahdusikkunan korkeuden';
+$string['configmediawidth'] = 'Asettaa linkitetyn mediatiedoston ponnahdusikkunan leveyden';
+$string['configslideshowbgcolor'] = 'Diaesityksen taustaväri, jos diaesitys on käytössä';
+$string['configslideshowheight'] = 'Asettaa diaesityksen korkeuden, jos diaesitys on käytössä';
+$string['configslideshowwidth'] = 'Asettaa diaesityksen leveyden, jos diaesitys on käytössä';
+$string['confirmdelete'] = 'Poista sivu';
+$string['confirmdeletionofthispage'] = 'Vahvista tämän sivun poistaminen';
+$string['congratulations'] = 'Onnittelut - olet päässyt oppitunnin loppuun.';
+$string['continue'] = 'Jatka';
+$string['continuetoanswer'] = 'Jatka vastausten muokkaamista.';
+$string['continuetonextpage'] = 'Jatka seuraavalle sivulle.';
+$string['correctanswerjump'] = 'Oikea vastaus -hyppy';
+$string['correctanswerscore'] = 'Oikea vastaus -tulos';
+$string['correctresponse'] = 'Oikea vaste';
+$string['credit'] = 'Pisteet';
+$string['customscoring'] = 'Muokattu pisteytys';
+$string['customscoring_help'] = 'Jos käytössä, jokaiselle vastaukselle voidaan antaa numeerinen pistearvo (positiivinen tai negatiivinen).';
+$string['deadline'] = 'Oppitunti sulkeutuu';
+$string['defaultessayresponse'] = 'Kurssin opettaja arvioi esseesi.';
+$string['deleteallattempts'] = 'Poista kaikki oppitunnin suorituskerrat';
+$string['deletedefaults'] = 'Poistettu {$a} x oppitunnin oletus';
+$string['deletedpage'] = 'Poistettu sivu';
+$string['deleting'] = 'Poistetaan';
+$string['deletingpage'] = 'Poistetaan sivu {$a}';
+$string['dependencyon'] = 'Riippuvuudet';
+$string['dependencyon_help'] = 'Tämä asetus sallii opiskelijan pääsyn tähän oppituntiin olevan riippuvainen opiskelijan suorituksesta toisella saman kurssin oppitunnilla. Mitä tahansa yhdistelmää pääsyvaatimuksista: käytetty aika, suoritettu tai "arvosana parempi kuin" voidaan käyttää.';
+$string['description'] = 'Kuvaus';
+$string['detailedstats'] = 'Tarkemmat tiedot';
+$string['didnotanswerquestion'] = 'Ei vastannut tähän kysymykseen.';
+$string['didnotreceivecredit'] = 'Ei hyväksytty';
+$string['displaydefaultfeedback'] = 'Näytä oletuspalaute';
+$string['displaydefaultfeedback_help'] = 'Jos käytössä, kun tiettyyn kysymykseen ei löydy palautetta, näytetään oletuspalaute "Oikea vastaus" tai "Väärä vastaus".';
+$string['displayhighscores'] = 'Näytä parhaat tulokset';
+$string['displayinleftmenu'] = 'Näytä vasemmassa valikossa?';
+$string['displayleftif'] = 'Näytä vasen valikko vain jos arvosana on suurempi kuin';
+$string['displayleftif_help'] = 'Tämä asetus määrittelee, täytyykö opiskelijan saada tietty arvosana ennen kuin hän näkee vasemman reunan valikon. Tämä pakottaa opiskelijan käymään oppitunnin läpi ensimmäisellä suorituskerralla, ja vaaditun arvosanan saamisen jälkeen he voivat käyttää vasemmanpuoleista valikkoa katsoakseen oppituntia uudelleen.';
+$string['displayleftmenu'] = 'Näytä vasen valikko';
+$string['displayleftmenu_help'] = 'Jos käytössä, näytetään lista sivuista.';
+$string['displayofgrade'] = 'Arvosanan näyttäminen (vain opiskelijoille)';
+$string['displayreview'] = 'Tarjoa mahdollisuus yrittää kysymystä uudelleen';
+$string['displayreview_help'] = 'Jos käytössä, opiskelija voi väärän vastauksen jälkeen yrittää kysymystä uudelleen, saamatta siitä pisteitä, tai jatkaa eteenpäin oppitunnilla.';
+$string['displayscorewithessays'] = 'Olet ansainnut {$a->score} {$a->tempmaxgrade} :sta automaattisesti arvioiduista kysymyksistä.<br /> Esseekysymyksesi {$a->essayquestions} arvioidaan ja lisätään<br />lopulliseen tulokseesi myöhemmin.<br /><br />Tämänhetkinen tuloksesi ilman esseekysymyksiä on {$a->score} {$a->grade} :stä.';
+$string['displayscorewithoutessays'] = 'Tuloksesi on {$a->score} ({$a->grade}:sta).';
+$string['edit'] = 'Muokkaa';
+$string['editingquestionpage'] = 'Muokataan {$a} kysymyssivua';
+$string['editlessonsettings'] = 'Muokkaa tämän oppitunnin asetuksia';
+$string['editpage'] = 'Muokkaa sivun sisältöä';
+$string['editpagecontent'] = 'Muokkaa tämän sivun osia';
+$string['email'] = 'Sähköposti';
+$string['emailallgradedessays'] = 'Lähetä KAIKKI<br />arvioidut esseet sähköpostiin';
+$string['emailgradedessays'] = 'Lähetä arvioidut esseet';
+$string['emailsuccess'] = 'Sähköpostiin lähettäminen onnistui';
+$string['emptypassword'] = 'Salasana ei voi olla tyhjä';
+$string['endofbranch'] = 'Haaran pääte';
+$string['endofcluster'] = 'Ryhmän pääte';
+$string['endofclustertitle'] = 'Ryhmän pääte';
+$string['endoflesson'] = 'Oppitunnin loppu';
+$string['enteredthis'] = 'kirjoitti tämän';
+$string['entername'] = 'Syötä nimimerkki parhaiden tulosten listalle';
+$string['enterpassword'] = 'Syötä salasana:';
+$string['eolstudentoutoftime'] = 'Huomio: Aika loppui tämän oppitunnin osalta. Viimeistä vastaustasi ei ehkä huomioitu, jos se annettiin ajan päättymisen jälkeen.';
+$string['eolstudentoutoftimenoanswers'] = 'Et vastannut yhteenkään kysymykseen. Et saanut pisteitä tästä oppitunnista.';
+$string['essay'] = 'Essee';
+$string['essayemailmessage'] = '<p>Tehtävänanto:<blockquote>{$a->question}</blockquote></p><p>Vastuksesi:<blockquote><em>{$a->response}</em></blockquote></p><p>Tarkastajan kommentit:<blockquote><em>{$a->comment}</em></blockquote></p><p>Sait {$a->earned}/{$a->outof} tästä esseetehtävästä.</p><p>Oppituntisi pisteet on {$a->newgrade}&#37;.</p>';
+$string['essayemailmessage2'] = '<p>Essee kysymys:<blockquote>{$a->question}</blockquote></p><p>Vastauksesi:<blockquote><em>{$a->response}</em></blockquote></p><p>Arvioijan kommentit:<blockquote><em>{$a->comment}</em></blockquote></p><p>Olet saanut {$a->earned} pistettä {$a->outof}:stä tässä esseekysymyksessä.</p><p>Uusi oppitunnin arvosanasi on {$a->newgrade}%.</p>';
+$string['essayemailsubject'] = 'Arvosanasi tehtävästä: {$a}';
+$string['essays'] = 'Esseet';
+$string['essayscore'] = 'Esseen tulos';
+$string['fileformat'] = 'Tiedoston tyyppi';
+$string['finish'] = 'Valmis';
+$string['firstanswershould'] = 'Ensimmäinen vastaus hyppää "oikealle" sivulle.';
+$string['firstwrong'] = 'Antamastasi vastauksesta ei tule pisteitä, koska vastaus ei ollut oikein. Haluatko vastata uudestaan, vain oppimisen ilosta ja ilman pistekertymää?';
+$string['flowcontrol'] = 'Kulunvalvonta';
+$string['full'] = 'Laajennettu näkymä';
+$string['general'] = 'Yleistä';
+$string['gotoendoflesson'] = 'Mene oppitunnin loppuun';
+$string['grade'] = 'Arvosana';
+$string['gradebetterthan'] = 'Riippuvuuden arvosana vähintään (%)';
+$string['gradebetterthanerror'] = 'Sinun on saatava arvosanaksi vähintään {$a} prosenttia oikein';
+$string['gradeessay'] = 'Arvioi esseekysymykset';
+$string['gradeis'] = 'Arvosana on {$a}';
+$string['gradeoptions'] = 'Arviointi';
+$string['handlingofretakes'] = 'Uusintojen käsittelytapa';
+$string['handlingofretakes_help'] = 'Jos uusintasuoritukset sallitaan, tämä asetus määrittelee, onko tämän oppitunnin arvosana kaikkien suorituskertojen keskiarvo vai ylin arvosana.';
+$string['havenotgradedyet'] = 'Ei ole vielä arvioinut.';
+$string['here'] = 'tänne';
+$string['highscore'] = 'Paras tulos';
+$string['highscores'] = 'Parhaat tulokset';
+$string['hightime'] = 'Parhaat ajat';
+$string['importcount'] = 'Tuodaan {$a} kysymystä';
+$string['importppt'] = 'Tuo HTML-muotoon muunnettu PowerPoint-esitys';
+$string['importppt_help'] = 'Tämä ominaisuus mahdollistaa web-sivuina tallennettujen PowerPoint 2003 -diojen tuonnin oppitunnille.';
+$string['importquestions'] = 'Tuo kysymykset';
+$string['importquestions_help'] = 'Tämä ominaisuus mahdollistaa monissa eri formaateissa olevien kysymysten tuonnin tekstitiedostosta.';
+$string['insertedpage'] = 'Lisätty sivu';
+$string['invalidfile'] = 'Epäkelpo tiedosto';
+$string['invalidid'] = 'Ei saatu kurssimoduulin ID:tä tai oppintunnin ID:tä';
+$string['invalidlessonid'] = 'oppitunnin ID oli väärä';
+$string['invalidpageid'] = 'Epäkelpo sivun ID';
+$string['jump'] = 'Siirry';
+$string['jumps'] = 'Siirtyy';
+$string['jumps_help'] = 'Jokaisella vastauksella (kysymyksiin) tai kuvauksella (sisältösivuille) on niitä vastaava siirtymä. Siirtymä voi olla suhteellinen, kuten tämä sivu tai seuraava sivu, tai absoluuttinen, ohjaten mille tahansa oppitunnin sivulle.';
+$string['jumpsto'] = 'Siirtyy <em>{$a}</em>';
+$string['leftduringtimed'] = 'Olet lähtenyt ajastetun oppitunnin aikana.<br>Ole hyvä ja napsauta "jatka" aloittaaksesi oppitunnin uudelleen.';
+$string['leftduringtimednoretake'] = 'Olet lähtenyt ajastetun oppitunnin aikana, etkä<br> saa aloittaa uudelleen tai jatkaa oppituntia.';
+$string['lessonattempted'] = 'Oppitunti suoritettu';
+$string['lessonclosed'] = 'Tämä oppitunti on suljettu {$a}:ssa';
+$string['lessoncloses'] = 'Oppitunti sulkeutuu';
+$string['lessoncloseson'] = 'Oppitunti sulkeutuu';
+$string['lesson:edit'] = 'Muokkaa oppituntia';
+$string['lessonformating'] = 'Oppitunnin muotoilu';
+$string['lesson:manage'] = 'Hallinnoi oppituntia';
+$string['lessonmenu'] = 'Oppitunnin valikko';
+$string['lessonnotready'] = 'Tämä oppitunti ei valmis suoritettavaksi. Ota yhteyttä {$a}.';
+$string['lessonnotready2'] = 'Tämä oppitunti ei valmis suoritettavaksi.';
+$string['lessonopen'] = 'Tämä oppitunti on auki {$a}:ssa';
+$string['lessonopens'] = 'Oppitunti avautuu';
+$string['lessonpagelinkingbroken'] = 'Aloitussivua ei löydy. Ilmeisesti linkitys sivuun ei ole toiminnassa. Ole hyvä ja ota yhteyttä pääkäyttäjään.';
+$string['lessonstats'] = 'Tunnin tiedot';
+$string['linkedmedia'] = 'Linkitetty media';
+$string['loginfail'] = 'Sisäänkirjautuminen epäonnistui, yritä uudelleen...';
+$string['lowscore'] = 'Matalat pisteet';
+$string['lowtime'] = 'Huono aika';
+$string['manualgrading'] = 'Arvioi essee-tehtävät';
+$string['matchesanswer'] = 'Sopii yhteen vastausten kanssa';
+$string['matching'] = 'Vastaavat';
+$string['matchingpair'] = 'Vastaavat parit {$a}';
+$string['maxgrade'] = 'Ylin arvosana';
+$string['maxgrade_help'] = 'Tämä asetus määrittää oppitunnin ylimmän arvosanan. Jos 0, oppitunti ei näy arvioinnit-sivuilla.';
+$string['maxhighscores'] = 'Parhaiden tulosten määrä';
+$string['maximumnumberofanswersbranches'] = 'Vastaustenmaksimimäärä';
+$string['maximumnumberofanswersbranches_help'] = 'Tämä asetus määrittää oppitunnilla käytettävien vastausten maksimimäärän. Jos käytetään vain tosi/epätosi-kysymyksiä, se voidaan asettaa 2:teen. Asetusta voidaan muutta milloin tahansa koska se vaikuttaa vain opettajan näkymään, ei dataan.';
+$string['maximumnumberofattempts'] = 'Vastauskertojen maksimimäärä';
+$string['maximumnumberofattempts_help'] = 'Tämä asetus määrittää kunkin kysymyksen suorituskertojen maksimimäärän. Jos opiskelija vastaa väärin maksimimäärän kertoja, oppitunti siirtyy seuraavalle sivulle.';
+$string['maximumnumberofattemptsreached'] = 'Maksimimäärä suorituskertoja - siirrytään seuraavalle sivulle';
+$string['maxtime'] = 'Aikaraja (minuuteissa)';
+$string['maxtimewarning'] = 'Sinulla on {$a} minuutti(a) aikaa viimeistellä oppitunti.';
+$string['mediaclose'] = 'Näytä Sulje-painike';
+$string['mediafile'] = 'Avaa tiedosto tai web-sivu ponnahdusikkunaan';
+$string['mediafile_help'] = 'Jos haluat näyttää ponnahdusikkunan oppitunnin alussa, valitse näytettävä tiedosto. Tarvittaessa jokaisella oppitunnin sivulla näytetään linkki ponnahdusikkunan uudelleen avaamiseen.';
+$string['mediafilepopup'] = 'Klikkaa tästä nähdäksesi oppitunnin mediatiedostot';
+$string['mediaheight'] = 'Ponnahdusikkunan korkeus:';
+$string['mediawidth'] = 'Ponnahdusikkunan leveys:';
+$string['messageprovider:graded_essay'] = 'Ilmoitus esseen arvioinnista';
+$string['minimumnumberofquestions'] = 'Kysymysten minimimäärä';
+$string['minimumnumberofquestions_help'] = 'Tämä asetus määrittää aktiviteetin arvosanan laskemiseen käytettävien kysymysten minimimäärän. Jos oppitunnilla on yksi tai useampi sisältösivu, arvoksi pitäisi antaa nolla.
+
+Jos arvoksi annetaan esim. 20, olisi hyvä lisätä seuraava teksti oppitunnin aloitussivulle: "Tällä oppitunnilla sinun oletetaan yrittävän ainakin 20:tä kysymystä. Voit yrittää useampaakin. Kuitenkin, jos vastaat alle 20:een kysymykseen, arvosanasi lasketaan kuin olisit yrittänyt 20:tä."';
+$string['missingname'] = 'Annan lempinimi';
+$string['modattempts'] = 'Salli opiskelijoiden esikatselu';
+$string['modattempts_help'] = 'Jos käytössä, opiskelijat voivat selata oppitunnin uudelleen alusta alkaen.';
+$string['modattemptsnoteacher'] = 'Vain opiskelijat voivat esikatsella';
+$string['modulename'] = 'Oppitunti';
+$string['modulename_help'] = '<img valign="middle" src="<?php echo $CFG->wwwroot?>/mod/lesson/icon.gif"> <strong>Oppitunti</strong>
+
+<blockquote>
+Oppitunti välittää sisällön kiinnostavalla ja joustavalla tavalla. Oppitunti koostuu joukosta sivuja. Jokainen sivu loppuu tyypillisesti kysymykseen ja mahdollisiin vastausvaihtoehtoihin. Opiskelijan vastauksesta riippuen hän joko jatkaa seuraavalle sivulle tai joutuu takaisin edelliselle sivulle. Oppitunnin läpi liikkuminen voi olla suoraviivaista tai monimutkaista, riippuen paljolti esitetyn materiaalin rakenteesta.
+</blockquote>
+';
+$string['modulenameplural'] = 'Oppitunnit';
+$string['move'] = 'Siirrä sivu';
+$string['movedpage'] = 'Siirretty sivu';
+$string['movepagehere'] = 'Siirrä sivu tähän';
+$string['moving'] = 'Siirretään sivu {$a}';
+$string['multianswer'] = 'Monivastaus';
+$string['multianswer_help'] = '<p align="center"><strong>Kysymysten asetukset </strong></p>
+
+<p>Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
+  <ol>
+
+<li><p> </p>
+  <p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
+  <p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
+
+</li>';
+$string['multichoice'] = 'Monivalinta';
+$string['multipleanswer'] = 'Useita vastauksia';
+$string['nameapproved'] = 'Nimi hyväksytty';
+$string['namereject'] = 'Valitettavasti suodatin hylkäsi nimesi.<br>Yritä toista nimeä.';
+$string['new'] = 'uusi';
+$string['nextpage'] = 'Seuraava sivu';
+$string['noanswer'] = 'Ei vastausta';
+$string['noattemptrecordsfound'] = 'Ei yrityksiä: ei arvosanaa';
+$string['nobranchtablefound'] = 'Sisältösivua ei löytynyt';
+$string['nocommentyet'] = 'ei vielä kommentteja';
+$string['nocoursemods'] = 'Ei aktiviteettejä';
+$string['nocredit'] = 'Ei pisteitä';
+$string['nodeadline'] = 'Ei aikarajaa';
+$string['noessayquestionsfound'] = 'Oppitunnille ei ole palautettu yhtään essee-tehtävää';
+$string['nohighscores'] = 'Ei parhaita tuloksia';
+$string['nolessonattempts'] = 'Tässä oppitunnissa ei ole vielä suorituksia';
+$string['nooneansweredcorrectly'] = 'Kukaan ei vastannut oikein';
+$string['nooneansweredthisquestion'] = 'Kukaan ei vastannut tähän kysymykseen';
+$string['noonecheckedthis'] = 'Kukaan ei valinnut tätä';
+$string['nooneenteredthis'] = 'Kukaan ei kirjoittanut tätä';
+$string['noonehasanswered'] = 'Kukaan ei ole vielä vastannut essee-tehtävään.';
+$string['noretake'] = 'Sinulla ei ole lupaa uusia tätä oppituntia.';
+$string['normal'] = 'Normaali - seuraa oppitunnin polkua';
+$string['notcompleted'] = 'Ei valmis';
+$string['notdefined'] = 'Ei määritelty';
+$string['nothighscore'] = 'Et päässyt  {$a} :n parhaan joukkoon.';
+$string['notitle'] = 'Otsikko puuttuu';
+$string['numberofcorrectanswers'] = 'Oikeiden vastausten lukumäärä: {$a}';
+$string['numberofcorrectmatches'] = 'Oikeiden parikysymysten määrä: {$a}';
+$string['numberofpagestoshow'] = 'Näytettävien sivujen  määrä';
+$string['numberofpagestoshow_help'] = 'Tämä asetus määrittää oppitunnilla näytettävien sivujen määrän. Tämä soveltuu vain oppitunteihin, joissa sivut näytetään satunnaisessa järjestyksessä (kun "Toiminto oikean vastauksen jälkeen" on asetettu vaihtoehtoon "Näytä katselematon sivu" tai "Näytä vastaamaton sivu"). Jos asetettu nollaksi, kaikki sivut näytetään.';
+$string['numberofpagesviewed'] = 'Vastattujen kysymysten määrä: {$a}';
+$string['numberofpagesviewednotice'] = 'Vastattujen kysymysten lukumäärä: {$a->nquestions} (sinun pitää vastat vähintään {$a->minquestions} kysymykseen)';
+$string['numerical'] = 'Numeerinen';
+$string['ongoing'] = 'Näytä tähän mennessä kertyneet pisteet';
+$string['ongoingcustom'] = 'Tämä on {$a->score} pisteen oppitunti. Olet ansainnut {$a->score} pistettä {$a->currenthigh} pisteestä tähän mennessä.';
+$string['ongoing_help'] = 'Jos käytössä, jokainen sivu näyttää opiskelijan sen hetkisen pistemäärän sekä sen hetkisen mahdollisen maksimipistemäärän.';
+$string['ongoingnormal'] = 'Olet vastannut oikein {$a->correct} kysymykseen {$a->viewed} kysymyksestä.';
+$string['onpostperpage'] = 'Vain yksi viesti luokkaa kohden';
+$string['options'] = 'Asetukset';
+$string['or'] = 'TAI';
+$string['ordered'] = 'Järjestetty';
+$string['other'] = 'Muu';
+$string['outof'] = 'maksimipisteet {$a}';
+$string['overview'] = 'Yleistä';
+$string['overview_help'] = 'Oppitunti sisältää tietyn määrän sivuja ja vaihtoehtoisia sisältösivuja. Sivulla on jonkin verran sisältöä ja se normaalisti loppuu kysymykseen. Jokaiseen kysymyksen vastaukseen on liitetty "hyppy". Hyppy voi olla suhteellinen, kuten siirtyminen seuraavalle sivulle, tai absoluuttinen, joka on määritelty tietylle oppitunnin sivulle. Sisältösivu on sivu jossa on linkkejä muille oppitunnin sivuille, esimerkiksi Sisällysluettelo.';
+$string['page'] = 'Sivu {$a}';
+$string['pagecontents'] = 'Sivun sisältö';
+$string['page-mod-lesson-edit'] = 'Muokkaa oppituntisivua';
+$string['page-mod-lesson-view'] = 'Näytä tai esikatsele oppituntisivua';
+$string['page-mod-lesson-x'] = 'Kaikki oppituntisivut';
+$string['pages'] = 'Sivuja';
+$string['pagetitle'] = 'Sivun otsikko';
+$string['password'] = 'Salasana';
+$string['passwordprotectedlesson'] = '{$a} on salasanasuojattu oppitunti.';
+$string['pleasecheckoneanswer'] = 'Valitse yksi vastausvaihtoehto';
+$string['pleasecheckoneormoreanswers'] = 'Valitse yksi tai useampia vastausvaihtoehdoista';
+$string['pleaseenteryouranswerinthebox'] = 'Kirjoita vastauksesi tekstikenttään';
+$string['pleasematchtheabovepairs'] = 'Yhdistä yllä olevien listojen kohdat pareiksi';
+$string['pluginadministration'] = 'Oppitunnin asetukset';
+$string['pluginname'] = 'Oppitunti';
+$string['pointsearned'] = 'Pisteitä ansaittu';
+$string['postprocesserror'] = 'Tapahtui virhe lähetyksen käsittelyssä!';
+$string['postsuccess'] = 'Lähetys onnistui';
+$string['pptsuccessfullimport'] = 'Vietiin onnistuneesti ladatun PowerPoint-esityksen sivut';
+$string['practice'] = 'Harjoitusoppitunti';
+$string['practice_help'] = 'Harjoitusoppitunti ei näy arvioinneissa.';
+$string['preprocesserror'] = 'Esikäsittelyssä tapahtui virhe!';
+$string['preview'] = 'Esikatsele';
+$string['previewlesson'] = 'Esikatselu {$a}';
+$string['previouspage'] = 'Edellinen sivu';
+$string['processerror'] = 'Käsittelyssä tapahtui virhe!';
+$string['progressbar'] = 'Etenemispalkki';
+$string['progressbar_help'] = 'Jos käytössä, oppitunnin sivujen alareunassa näytetään edistymistä seuraava prosenttipalkki.';
+$string['progressbarteacherwarning'] = 'Etenemispalkki ei näy {$a}:lle';
+$string['progressbarteacherwarning2'] = 'Et näe edistymispalkkia koska voit muokata tätä oppituntia';
+$string['progresscompleted'] = 'Olet suorittanut {$a} % oppitunnista';
+$string['qtype'] = 'Sivun tyyppi';
+$string['question'] = 'Kysymys';
+$string['questionoption'] = 'Kysymyksen vaihtoehtoinen toiminta';
+$string['questiontype'] = 'Kysymyksen tyyppi';
+$string['randombranch'] = 'Satunnainen sisältösivu';
+$string['randompageinbranch'] = 'Satunnainen kysymys sisältösivulla';
+$string['rank'] = 'Luokitus';
+$string['rawgrade'] = 'Pisteet';
+$string['receivedcredit'] = 'Hyväksytty';
+$string['redisplaypage'] = 'Näytä sivu uudelleen';
+$string['report'] = 'Raportti';
+$string['reports'] = 'Raportit';
+$string['response'] = 'Palaute';
+$string['retakesallowed'] = 'Uusinnat sallittu';
+$string['retakesallowed_help'] = '<p>Tämä asetus määrittää, voivatko opiskelijat tehdä tehtävän useammin kuin kerran vai eivät. Opettaja voi päättää, että tehtävä sisältää materiaalia, joka opiskelijan tulisi tuntea läpikotaisin. Silloin kannattaa sallia useita suorituskertoa. Jos materiaalia käytetään tentin tyylisesti, silloin opiskelijoiden ei kannata antaa uusia tehtävää. </p>
+<p>Kun opiskelijat savat uusia tehtäviä, arvosanasivulla näytettävät <strong>arvosanat</strong> ovat joko <strong>keskiarvo</strong> uusinnoista tai niiden<strong> paras</strong> tulos. Seuraava parametri määrittelee, mikä näistä arvosanavaihtoehdoista on käytössä. </p>
+<p>Huomaa, että <strong>Kysymys Analyysi</strong>  käyttää aina vastauksia tehtävän ensimmäisestä suorituskerrasta,  uusinnat tämän jälkeen jätetään huomiotta. </p>
+
+<p>Oletuksena tämä valinta on<strong> Kyllä</strong>, tarkoittaen, että opiskelijat voivat uusia tehtävän, sillä oletettavasti harvemmin tämä valinta olisi <strong>Ei</strong>.</p>';
+$string['returnto'] = 'Palaa {$a}';
+$string['returntocourse'] = 'Palaa kurssiin';
+$string['review'] = 'Tarkastele';
+$string['reviewlesson'] = 'Tarkastele oppituntia';
+$string['reviewquestionback'] = 'Kyllä, haluan vastata uudestaan';
+$string['reviewquestioncontinue'] = 'Ei, haluan siirtyä seuraavaan kysymykseen';
+$string['sanitycheckfailed'] = 'Tarkistus epäonnistui: tämä yritys on poistettu';
+$string['savechanges'] = 'Tallenna muutokset';
+$string['savechangesandeol'] = 'Tallenna muutokset ja mene tunnin loppuun';
+$string['savepage'] = 'Tallenna sivu';
+$string['score'] = 'Tulos';
+$string['scores'] = 'Tulokset';
+$string['secondpluswrong'] = 'Ei aivan. Haluaisitko yrittää uudelleen?';
+$string['selectaqtype'] = 'Valitse kysymystyyppi';
+$string['shortanswer'] = 'Lyhytvastaus';
+$string['showanunansweredpage'] = 'Näytä vastaamaton sivu';
+$string['showanunseenpage'] = 'Näytä vielä katsomaton sivu';
+$string['singleanswer'] = 'Yksi vastaus';
+$string['skip'] = 'Ohita navigaatio';
+$string['slideshow'] = 'Diaesitys';
+$string['slideshowbgcolor'] = 'Diaesityksen taustaväri';
+$string['slideshowheight'] = 'Diaesityksen korkeus';
+$string['slideshow_help'] = 'Jos käytössä, oppitunti näytetään diaesityksenä, jolla on määrätty leveys ja korkeus.';
+$string['slideshowwidth'] = 'Diaesityksen leveys';
+$string['startlesson'] = 'Aloita oppitunti';
+$string['studentattemptlesson'] = 'Opiskelijan {$a->lastname}, {$a->firstname} suorituskerta numero {$a->attempt}';
+$string['studentname'] = '{$a} Nimi';
+$string['studentoneminwarning'] = 'Varoitus: Sinulla on korkeintaan 1 minuutti aikaa oppitunnin viimeistelyyn.';
+$string['studentresponse'] = '{$a}\'n vastaus';
+$string['submit'] = 'Lähetä';
+$string['submitname'] = 'Lähetä nimi';
+$string['teacherjumpwarning'] = 'Tässä oppitunnissa käytetään {$a->cluster} -hyppyä tai {$a->unseen} -hyppyä. Esikatselussa käytetään tilalla Seuraava sivu -hyppyä. Kirjaudu sisään opiskelijana testataksesi em. hyppyjä.';
+$string['teacherongoingwarning'] = 'Menossa oleva tulos on näytetty ainoastaan opiskelijalle. Kirjaudu sisään opiskelijana testataksesi menossa olevaa tulosta.';
+$string['teachertimerwarning'] = 'Ajastin toimii vain opiskelijalle. Kirjaudu sisään opiskelijana testataksesi ajastinta.';
+$string['thatsthecorrectanswer'] = 'Vastaus on oikein';
+$string['thatsthewronganswer'] = 'Vastaus on väärin';
+$string['thefollowingpagesjumptothispage'] = 'Seuraavat sivut hyppäävät tälle sivulle';
+$string['thispage'] = 'Tämä sivu';
+$string['timeremaining'] = 'Aikaa jäljellä';
+$string['timespenterror'] = 'Käytä vähintään {$a} minuuttia tällä oppitunnilla';
+$string['timespentminutes'] = 'Riippuvuuteen käytetty aikaa (minuutteina)';
+$string['timetaken'] = 'Aikaa kulunut';
+$string['topscorestitle'] = '{$a} parasta tulosta';
+$string['truefalse'] = 'Oikein/väärin';
+$string['unabledtosavefile'] = 'Lataamaasi tiedostoa ei voitu tallentaa';
+$string['unknownqtypesnotimported'] = '{$a} kysymystä, jotka ovat tukematonta kysymystyyppiä, ei tuotu';
+$string['unseenpageinbranch'] = 'Katsomaton kysymys haarassa';
+$string['unsupportedqtype'] = 'Kysymystyyppi {$a} ei ole tuettu!';
+$string['updatedpage'] = 'Sivu päivitetty';
+$string['updatefailed'] = 'Päivitys epäonnistui';
+$string['usemaximum'] = 'Valitse korkein';
+$string['usemean'] = 'Käytä keskiarvoa';
+$string['usepassword'] = 'Salasanasuojattu oppitunti';
+$string['usepassword_help'] = 'Jos käytössä, oppitunnille pääsyyn vaaditaan salasana.';
+$string['viewgrades'] = 'Katsele arvosanoja';
+$string['viewhighscores'] = 'Näytä parhaat tulokset.';
+$string['viewreports'] = 'Näytä {$a->attempts} suorittamat {$a->student} suorituskerrat';
+$string['viewreports2'] = 'Näytä {$a} valmista suorituskertaa';
+$string['welldone'] = 'Hyvin tehty!';
+$string['whatdofirst'] = 'Mistä haluat aloittaa?';
+$string['wronganswerjump'] = 'Väärä vastaus -hyppy';
+$string['wronganswerscore'] = 'Väärä vastaus -tulos';
+$string['wrongresponse'] = 'Väärä vaste';
+$string['xattempts'] = '{$a} suorituskertaa';
+$string['youhaveseen'] = 'Olet aikaisemmin aloittanut tämän oppitunnin.<br />Haluatko jatkaa sivulta, jolle viimeksi jäit?';
+$string['youmadehighscore'] = 'Pääsit parhaiden {$a} :n joukkoon tuloslistalla.';
+$string['youranswer'] = 'Vastauksesi';
+$string['yourcurrentgradeis'] = 'Nykyinen arvosanasi on {$a}';
+$string['yourcurrentgradeisoutof'] = 'Nykyinen arvosanasi on {$a->grade} maksimista {$a->total}';
+$string['youshouldview'] = 'Sinun tulee katsoa vähintään {$a} sivua';

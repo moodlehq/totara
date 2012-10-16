@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -61,6 +61,7 @@ $string['removeusers'] = 'Remove users';
 $string['removeusersdesc'] = 'Specify what to do with internal user accounts during sync when user was removed from source. Users are automatically revived if they reappear in source.';
 $string['keep'] = 'Keep';
 $string['delete'] = 'Delete';
+$string['deleted'] = 'Deleted';
 $string['sourceallrecords'] = 'Source contains all records';
 $string['sourceallrecordsdesc'] = 'Does the source provide all sync records, everytime <strong>OR</strong> are only records that need to be updated/deleted provided? If "No" (only records to be updated/deleted), then the source must use the <strong>"delete" flag</strong>.';
 
@@ -132,6 +133,7 @@ $string['couldnotimportallrecords'] = 'could not import all records';
 $string['syncstarted'] = 'sync started';
 $string['syncfinished'] = 'sync finished';
 $string['couldnotgetsourcetable'] = 'could not get source table, aborting...';
+$string['couldnotcreateclonetable'] = 'could not create clone table, aborting...';
 $string['sanitycheckfailed'] = 'sanity check failed, aborting...';
 $string['cannotdeletex'] = 'cannot delete {$a} (might already be deleted)';
 $string['deletedx'] = 'deleted {$a}';
@@ -169,16 +171,31 @@ $string['managerxnotexist'] = 'manager {$a} does not exist';
 $string['nosourceforelement'] = 'no source set for element';
 $string['nosourceconfigured'] = 'No source configured';
 $string['duplicateuserswithidnumberx'] = 'Duplicate users with idnumber {$a->idnumber}';
+$string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
 
 
 ///
-/// Totara sync log report
+/// Totara sync log reports
 ///
+$string['synclog'] = 'Sync log';
 $string['sourcetitle'] = 'Totara Sync Log';
 $string['datetime'] = 'Date/Time';
 $string['logtype'] = 'Log type';
 $string['error'] = 'Error';
 $string['info'] = 'Info';
+$string['warn'] = 'Warning';
 $string['action'] = 'Action';
 $string['info'] = 'Info';
+$string['id'] = 'ID';
+$string['datetime'] = 'Date/Time';
+$string['element'] = 'Element';
+$string['logtype'] = 'Logtype';
+$string['action'] = 'Action';
+$string['info'] = 'Info';
+
+///
+/// Totara sync help strings
+///
+$string['country_help'] = "This should be formatted within the CSV as the 2 character code of the country.
+    For example 'New Zealand' should be 'NZ'";
 ?>

@@ -7,7 +7,7 @@
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -48,6 +48,9 @@ then
     cd -
 fi
 
-# TODO reenable once link_checker ported to work with 2.2
-#echo "STEP 6: Run link checker script as a learner";
-#sudo -u www-data php build/link_checker.php $1 learner 'passworD1!'
+echo "STEP 6: Run link checker script as a learner";
+sudo -u www-data php build/link_checker.php $1 learner 'passworD1!'
+
+echo "STEP 7: Run link checker script as an admin";
+sudo -u www-data php build/link_checker.php $1 admin 'passworD1!'
+

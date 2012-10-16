@@ -58,6 +58,7 @@ $string['createcourse'] = 'Create course';
 $string['createprogram'] = 'Create program';
 $string['createnewprogram'] = 'Create new program';
 $string['currenticon'] = 'Current icon';
+$string['chooseicon'] = 'Choose icon';
 $string['defaultprogramfullname'] = 'Program fullname 101';
 $string['defaultprogramshortname'] = 'P101';
 $string['deleteprogram'] = 'Delete program "{$a}"';
@@ -220,6 +221,7 @@ $string['error:unableaddmessagetypeunrecog'] = 'Unable to add new message. Messa
 $string['error:unabledeletemessagenotfound'] = 'Unable to delete message. Message not found';
 $string['error:findingprogram'] = 'Error finding program {$a}';
 $string['error:prognotmoved'] = 'Error, program not moved!';
+$string['error:progsnotmoved'] = 'Error, programs not moved from {$a}!';
 $string['error:assignmentnotfound'] = 'Assignment record not found';
 $string['error:userassignmenttypenotfound'] = 'User assignment type not found';
 $string['error:userassignmentclassnotfound'] = 'User assignment class not found';
@@ -273,7 +275,7 @@ $string['messages'] = 'Messages';
 $string['exceptions'] = 'Exception Report ({$a})';
 
 // Program content
-$string['unknowncompletiontype'] = 'Unrecognised completion type for course set $a';
+$string['unknowncompletiontype'] = 'Unrecognised completion type for course set {$a}';
 $string['addcompetency'] = 'Add competency';
 $string['addcourse'] = 'Add course';
 $string['addcourses'] = 'Add courses';
@@ -500,7 +502,7 @@ $string['therearenoprogramstodisplay'] = 'There are no programs to display.';
 
 // Alert messages
 $string['z:incompleterecurringprogramsubject'] = 'Incomplete recurring course';
-$string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached it\'s end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';
+$string['z:incompleterecurringprogrammessage'] = 'A course in a recurring program that you are enrolled on has reached its end date but you have not completed the course. This course must be completed in order to meet the requirements of the program.';
 
 
 // Extensions
@@ -563,7 +565,7 @@ $string['programduemessage'] = 'Program due message';
 $string['programduemessage_help'] = 'This message will be sent at the specified time before a program is due.';
 $string['recurringcourse_help'] = 'Displays the selected recurring course.
 
-Only one course can be chosen for recurrence. To change the course, select a new course from the drop down menu and click "Change Course" to save the change.';
+Only one course can be chosen for recurrence. To change the course, select a new course from the drop down menu and click "Save Changes" to save the change.';
 $string['trigger'] = 'Trigger';
 $string['trigger_help'] = 'The trigger time determines when the message will be sent in relation to the event described (e.g. 4 weeks after the program is completed).';
 $string['unenrolmentmessage'] = 'Un-enrolment message';

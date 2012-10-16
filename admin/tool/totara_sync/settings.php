@@ -1,25 +1,25 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
-/**
- * Link to CSV course upload
+/*
+ * This file is part of Totara LMS
  *
- * @package    tool
+ * Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @package tool
  * @subpackage totara_sync
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
@@ -56,4 +56,7 @@ if (has_capability('tool/totara_sync:manage', $systemcontext)) {
         $ADMIN->add('syncsources', new admin_externalpage('uploadsyncfiles', get_string('uploadsyncfiles', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/uploadsourcefiles.php", 'tool/totara_sync:manage'));
         unset($elname);
     }
+
+
+    $ADMIN->add('tool_totara_sync', new admin_externalpage('totarasynclog', get_string('synclog', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/synclog.php", 'tool/totara_sync:manage'));
 }

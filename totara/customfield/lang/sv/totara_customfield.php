@@ -1,5 +1,29 @@
 <?php
-// customfields.php - created with Totara langimport script version 1.1
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package totara
+ * @subpackage totara_core
+ *
+ * totara_core specific language strings.
+ * these should be called like get_string('key', 'totara_core');
+ * Replaces lang/[lang]/local.php from 1.1 series
+ */
 
 $string['category'] = 'Kategori';
 $string['categorynamemustbeunique'] = 'Kategorinamn (Måste vara unikt)';
@@ -14,6 +38,7 @@ $string['createnewcustomfield'] = 'Skapa nytt anpassat fält';
 $string['createnewfield'] = 'Skapa ett nytt &quot;{$a}&quot; anpassat fält';
 $string['customfield'] = 'Anpassat fält';
 $string['customfieldcategories'] = 'Anpassade fält kategorier';
+$string['customfieldrequired'] = 'Är detta fält obligatoriskt?';
 $string['customfields'] = 'Anpassade fält';
 $string['customfieldtypecheckbox'] = 'Kryssruta';
 $string['customfieldtypefile'] = 'Fil';
@@ -41,12 +66,9 @@ $string['menutoofewoptions'] = 'Du måste ha minst 2 val';
 $string['nocustomfieldcategories'] = 'För att lägga till anpassade fält skapa först en anpassad fältkategori';
 $string['nocustomfieldcategoriesdefined'] = 'Inga anpassade fält kategorier definierade';
 $string['nocustomfieldsdefined'] = 'Inga fält är definierade';
-$string['customfieldrequired'] = 'Är detta fält obligatoriskt?';
 $string['returntocategories'] = 'Återgå till anpassade fält kategorier';
 $string['returntoframework'] = 'Återgå till ramverk';
 $string['shortname'] = 'Kortnamn(måste vara unikt)';
 $string['shortnamenotunique'] = 'Detta kortnamn används redan';
 $string['specificsettings'] = 'Specifika inställningar';
 $string['visible'] = 'Gömda på inställningssida?';
-
-?>

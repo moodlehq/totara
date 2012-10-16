@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -76,7 +76,7 @@ $sql = "SELECT c.*, crc.rulesetoperator, crc.status
 $cohort = $DB->get_record_sql($sql, array($id), '*', MUST_EXIST);
 
 if (!$cohort->cohorttype == cohort::TYPE_DYNAMIC) {
-    error(get_string('error:notdynamiccohort', 'totara_cohort'));
+    print_error('error:notdynamiccohort', 'totara_cohort');
 }
 
 $rulesets = $DB->get_records('cohort_rulesets', array('rulecollectionid' => $cohort->draftcollectionid), 'sortorder');

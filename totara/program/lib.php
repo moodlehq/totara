@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -837,10 +837,11 @@ function prog_can_enter_course($user, $course) {
              LEFT JOIN {prog_courseset_course} pcsc ON pcs.id = pcsc.coursesetid AND pcsc.courseid = ?
                  WHERE pua.userid = ?
                    AND pc.coursesetid = ?
-                   AND pc.status <> ?
+                   AND (pc.timedue = ?
+                        OR pc.status <> ? )
              )
     ";
-    $params = array($course->id, DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $course->id, $user->id, 0, STATUS_PROGRAM_COMPLETE);
+    $params = array($course->id, DP_APPROVAL_APPROVED, $user->id, DP_PLAN_STATUS_APPROVED, $course->id, $user->id, 0, COMPLETION_TIME_NOT_SET, STATUS_PROGRAM_COMPLETE);
     $program_records = $DB->get_records_sql($get_programs, $params);
 
     if (!empty($program_records)) {
@@ -1047,11 +1048,11 @@ function prog_eventhandler_program_assigned($eventdata) {
 
     $messagesmanager = $program->get_messagesmanager();
     $messages = $messagesmanager->get_messages();
-
+    $completed = $program->is_program_complete($userid);
     // send notifications to user and (optionally) the user's manager
     foreach ($messages as $message) {
         if ($message->messagetype == MESSAGETYPE_ENROLMENT) {
-            if ($user = $DB->get_record('user', array('id' => $userid))) {
+            if (($user = $DB->get_record('user', array('id' => $userid))) && !$completed) {
                 $message->send_message($user);
             }
         }
@@ -1258,7 +1259,7 @@ function prog_assignments_firstlogin($user) {
                 }
                 if (!empty($future_assignments_to_delete)) {
                     list($deleteids_sql, $deleteids_params) = $DB->get_in_or_equal($future_assignments_to_delete);
-                    $DB->delete_records_select('prog_future_user_assignment', "id {$deleteids_sql}", array($deleteids_params));
+                    $DB->delete_records_select('prog_future_user_assignment', "id {$deleteids_sql}", $deleteids_params);
                 }
             } else {
                 $status = false;
@@ -1325,7 +1326,7 @@ function prog_process_extensions($extensions) {
                         $update_fail_count++;
                     }
                 } else {
-                    error(get_string('error:failedsendextensiondenyalert' ,'totara_program'));
+                    print_error('error:failedsendextensiondenyalert', 'totara_program');
                 }
             } elseif ($action == PROG_EXTENSION_GRANT) {
                 // Load the program for this extension

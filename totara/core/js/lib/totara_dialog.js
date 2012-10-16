@@ -5,7 +5,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -138,7 +138,7 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         var obj = this;
 
         // Bind open event to button
-        $('#'+this.buttonid).live('click',function(event) {
+        $(document).on('click', '#'+this.buttonid, function(event) {
 
             // Stop any default event occuring
             event.preventDefault();
@@ -1099,11 +1099,10 @@ totaraDialog_handler_treeview_singleselect.prototype.setup_delete = function() {
         handler.setup_delete();
     });
 
-    if (!textel.text().length) {
-        deletebutton.hide();
+    if (textel.text().length) {
+        textel.append(deletebutton);
     }
 
-    textel.append(deletebutton);
 }
 
 
@@ -1181,9 +1180,9 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
 
     // Update text element
     if (this.text_element_id) {
-        $('#'+this.text_element_id).text(selected_text);
 
         if (selected_text) {
+            $('#'+this.text_element_id).text(selected_text);
             $('#'+this.text_element_id).addClass('nonempty');
         } else {
             $('#'+this.text_element_id).removeClass('nonempty');
@@ -1497,6 +1496,47 @@ totaraDialog_handler_form.prototype._updatePage = function(response) {
 };
 
 /*****************************************************************************/
+/** totaraDialog_handler_selectable **/
+
+totaraDialog_handler_selectable = function(selected) { this.selected = selected; };
+totaraDialog_handler_selectable.prototype = new totaraDialog_handler();
+
+totaraDialog_handler_selectable.prototype.first_load = function() {
+    // Setup selectable
+    $("#icon-selectable").selectable({
+        filter: "li",
+        multiple: false
+    });
+
+    //Set selection
+    this._set_selected();
+};
+
+totaraDialog_handler_selectable.prototype.every_load = function() {
+    totaraDialog_handler_selectable.prototype.first_load.call(this);
+};
+
+totaraDialog_handler_selectable.prototype._updatePage = function(response) {
+    // Replace any items on the main page with their content (if IDs match)
+    var src = $('#icon_preview').attr('src');
+    src = src.replace(/image=(.*?)icons%2F(.*?)&/, 'image=$1'+'icons%2F'+response+'&');
+    $('#icon_preview').attr('src', src);
+    $('#icon_preview').attr('title', response.replace(/-|_/g, " ").toTitleCase());
+    $("input[name=icon]").val(response);
+
+    this._dialog.hide();
+};
+
+totaraDialog_handler_selectable.prototype._set_selected = function() {
+    $('#' + this.selected).addClass("ui-selected");
+    $("input[name=icon]").attr('initialvalue', this.selected);
+};
+
+String.prototype.toTitleCase = function() {
+    return this.replace(/\w\S*/g, function(text) { return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase(); });
+};
+
+/*****************************************************************************/
 /** Factory methods **/
 
 /**
@@ -1603,7 +1643,7 @@ totaraMultiSelectDialogRbFilter = function(name, title, find_url, save_url) {
 
     // activate the 'delete' option next to any selected items in filters
     // (for this dialog only)
-    $('.multiselect-selected-item[data-filtername='+name+'] a').live('click', function(event) {
+    $(document).on('click', '.multiselect-selected-item[data-filtername='+name+'] a', function(event) {
         event.preventDefault();
 
         var container = $(this).parents('div.multiselect-selected-item');

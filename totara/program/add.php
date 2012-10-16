@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -49,10 +49,23 @@ if (has_capability('totara/program:createprogram', $systemcontext)) {
 }
 //Javascript include
 local_js(array(
+    TOTARA_JS_DIALOG,
+    TOTARA_JS_UI,
     TOTARA_JS_DATEPICKER,
     TOTARA_JS_PLACEHOLDER,
     TOTARA_JS_ICON_PREVIEW
 ));
+
+$PAGE->requires->string_for_js('chooseicon', 'totara_program');
+$iconjsmodule = array(
+        'name' => 'totara_iconpicker',
+        'fullpath' => '/totara/core/js/icon.picker.js',
+        'requires' => array('json'));
+
+$iconargs = array('args' => '{"selected_icon":"default",
+                              "type":"program"}');
+
+$PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
 
 if ($categoryid) { // creating new program in this category
     if (!$category = $DB->get_record('course_categories', array('id' => $categoryid))) {
@@ -137,7 +150,8 @@ if ($data = $form->get_data()) {
         } else {
             $viewurl = "{$CFG->wwwroot}/totara/program/view.php?id={$newid}";
         }
-
+        //call prog_fix_program_sortorder to ensure new program is displayed properly and category->programcount is updated
+        prog_fix_program_sortorder($data->category);
         totara_set_notification(get_string('programcreatesuccess', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
     }
 }

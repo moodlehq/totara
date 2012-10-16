@@ -728,16 +728,20 @@ class completion_info {
             debugging('set_module_viewed must be called before header is printed',
                     DEBUG_DEVELOPER);
         }
+
         // Don't do anything if view condition is not turned on
         if ($cm->completionview == COMPLETION_VIEW_NOT_REQUIRED || !$this->is_enabled($cm)) {
             return;
         }
+
         // Get current completion state
-        $data = $this->get_data($cm, $userid);
+        $data = $this->get_data($cm, false, $userid);
+
         // If we already viewed it, don't do anything
         if ($data->viewed == COMPLETION_VIEWED) {
             return;
         }
+
         // OK, change state, save it, and update completion
         $data->viewed = COMPLETION_VIEWED;
         $this->internal_set_data($cm, $data);
@@ -834,6 +838,31 @@ class completion_info {
             'block_totara_stats',
             array('eventtype' => STATS_EVENT_COURSE_COMPLETE, 'data2' => $this->course_id)
         );
+    }
+
+    /**
+     * Deletes all activity and course completion data for an entire course
+     * (the below delete_all_state function does this for a single activity).
+     *
+     * Used by course reset page.
+     */
+    public function delete_all_completion_data() {
+        global $DB, $SESSION;
+
+        // Delete from database.
+        $DB->delete_records_select('course_modules_completion',
+                'coursemoduleid IN (SELECT id FROM {course_modules} WHERE course=?)',
+                array($this->course_id));
+
+        // Reset cache for current user.
+        if (isset($SESSION->completioncache) &&
+            array_key_exists($this->course_id, $SESSION->completioncache)) {
+
+            unset($SESSION->completioncache[$this->course_id]);
+        }
+
+        // Wipe course completion data too.
+        $this->delete_course_completion_data();
     }
 
     /**
@@ -1135,188 +1164,75 @@ class completion_info {
      * @param   $userid     User id
      * @return  bool
      */
-    function is_tracked_user($userid) {
-        global $DB;
-
-        // Check for course_completions records
-        $data = array(
-            'userid'    => $userid,
-            'course'    => $this->course_id
-        );
-
-        $ccompletion = new completion_completion($data);
-        if ($ccompletion->id) {
-            return true;
-        }
-
-        // Otherwise check for role assignments
-        $tracked = $this->generate_tracked_user_sql();
-
-        $sql  = "SELECT u.id ";
-        $sql .= $tracked->sql;
-        $sql .= ' AND u.id = :userid';
-
-        $params = $tracked->data;
-        $params['userid'] = (int)$userid;
-        return $DB->record_exists_sql($sql, $params);
+    public function is_tracked_user($userid) {
+        return is_enrolled(context_course::instance($this->course->id), $userid, '', true);
     }
 
 
     /**
-     * Return number of users whose progress is tracked in this course
+     * Returns the number of users whose progress is tracked in this course.
      *
-     * Optionally supply a search's where clause, or a group id
+     * Optionally supply a search's where clause, or a group id.
      *
-     * @param   string  $where          Where clause sql
-     * @param   array   $where_params   Where clause params
-     * @param   int     $groupid    Group id
-     * @return  int
+     * @param string $where Where clause sql (use 'u.whatever' for user table fields)
+     * @param array $whereparams Where clause params
+     * @param int $groupid Group id
+     * @return int Number of tracked users
      */
-    function get_num_tracked_users($where = '', $where_params = array(), $groupid = 0) {
+    public function get_num_tracked_users($where = '', $whereparams = array(), $groupid = 0) {
         global $DB;
 
-        $tracked = $this->generate_tracked_user_sql($groupid);
-
-        $sql  = "SELECT COUNT(u.id) ";
-        $sql .= $tracked->sql;
-
+        list($enrolledsql, $enrolledparams) = get_enrolled_sql(
+                context_course::instance($this->course->id), '', $groupid, true);
+        $sql  = 'SELECT COUNT(eu.id) FROM (' . $enrolledsql . ') eu JOIN {user} u ON u.id = eu.id';
         if ($where) {
-            $sql .= " AND $where";
+            $sql .= " WHERE $where";
         }
 
-        $params = array_merge($tracked->data, $where_params);
+        $params = array_merge($enrolledparams, $whereparams);
         return $DB->count_records_sql($sql, $params);
     }
 
 
     /**
-     * Return array of users whose progress is tracked in this course
+     * Return array of users whose progress is tracked in this course.
      *
-     * Optionally supply a search's where caluse, group id, sorting, paging
+     * Optionally supply a search's where clause, group id, sorting, paging.
      *
-     * @param   string      $where          Where clause sql (optional)
-     * @param   array       $where_params   Where clause params (optional)
-     * @param   integer     $groupid    Group ID to restrict to (optional)
-     * @param   string      $sort       Order by clause (optional)
-     * @param   integer     $limitfrom  Result start (optional)
-     * @param   integer     $limitnum   Result max size (optional)
+     * @param string $where Where clause sql, referring to 'u.' fields (optional)
+     * @param array $whereparams Where clause params (optional)
+     * @param int $groupid Group ID to restrict to (optional)
+     * @param string $sort Order by clause (optional)
+     * @param int $limitfrom Result start (optional)
+     * @param int $limitnum Result max size (optional)
      * @param context $extracontext If set, includes extra user information fields
      *   as appropriate to display for current user in this context
-     * @return  array
+     * @return array Array of user objects with standard user fields
      */
-    function get_tracked_users($where = '', $where_params = array(), $groupid = 0,
+    public function get_tracked_users($where = '', $whereparams = array(), $groupid = 0,
              $sort = '', $limitfrom = '', $limitnum = '', context $extracontext = null) {
 
         global $DB;
 
-        $tracked = $this->generate_tracked_user_sql($groupid);
-        $params = $tracked->data;
+        list($enrolledsql, $params) = get_enrolled_sql(
+                context_course::instance($this->course->id), '', $groupid, true);
 
-        $sql = "
-            SELECT
-                u.id,
-                u.firstname,
-                u.lastname,
-                u.idnumber
-        ";
+        $sql = 'SELECT u.id, u.firstname, u.lastname, u.idnumber';
         if ($extracontext) {
             $sql .= get_extra_user_fields_sql($extracontext, 'u', '', array('idnumber'));
         }
-
-        $sql .= $tracked->sql;
+        $sql .= ' FROM (' . $enrolledsql . ') eu JOIN {user} u ON u.id = eu.id';
 
         if ($where) {
             $sql .= " AND $where";
-            $params = array_merge($params, $where_params);
+            $params = array_merge($params, $whereparams);
         }
 
         if ($sort) {
             $sql .= " ORDER BY $sort";
         }
 
-        $users = $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
-        return $users ? $users : array(); // In case it returns false
-    }
-
-
-    /**
-     * Generate the SQL for finding tracked users in this course
-     *
-     * Returns an object containing the sql fragment and an array of
-     * bound data params.
-     *
-     * @param   integer $groupid
-     * @return  object
-     */
-    function generate_tracked_user_sql($groupid = 0) {
-        global $CFG;
-
-        $return = new stdClass();
-        $return->sql = '';
-        $return->data = array();
-
-        if (!empty($CFG->gradebookroles)) {
-            $roles = ' AND ra.roleid IN ('.$CFG->gradebookroles.')';
-        } else {
-            // This causes it to default to everyone (if there is no student role)
-            $roles = '';
-        }
-
-        // Build context sql
-        $context = get_context_instance(CONTEXT_COURSE, $this->course->id);
-        $parentcontexts = substr($context->path, 1); // kill leading slash
-        $parentcontexts = str_replace('/', ',', $parentcontexts);
-        if ($parentcontexts !== '') {
-            $parentcontexts = ' OR ra.contextid IN ('.$parentcontexts.' )';
-        }
-
-        $groupjoin   = '';
-        $groupselect = '';
-        if ($groupid) {
-            $groupjoin   = "JOIN {groups_members} gm
-                              ON gm.userid = u.id";
-            $groupselect = " AND gm.groupid = :groupid ";
-
-            $return->data['groupid'] = $groupid;
-        }
-
-        $return->sql = "
-            FROM
-                {user} u
-            INNER JOIN
-                {role_assignments} ra
-             ON ra.userid = u.id
-            INNER JOIN
-                {role} r
-             ON r.id = ra.roleid
-            INNER JOIN
-                {user_enrolments} ue
-             ON ue.userid = u.id
-            INNER JOIN
-                {enrol} e
-             ON e.id = ue.enrolid
-            INNER JOIN
-                {course} c
-             ON c.id = e.courseid
-            $groupjoin
-            WHERE
-                (ra.contextid = :contextid $parentcontexts)
-            AND c.id = :courseid
-            AND ue.status = 0
-            AND e.status = 0
-            AND ue.timestart < :now1
-            AND (ue.timeend > :now2 OR ue.timeend = 0)
-                $groupselect
-                $roles
-        ";
-
-        $now = time();
-        $return->data['now1'] = $now;
-        $return->data['now2'] = $now;
-        $return->data['contextid'] = $context->id;
-        $return->data['courseid'] = $this->course->id;
-
-        return $return;
+        return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
     }
 
     /**

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -25,6 +25,33 @@
 defined('MOODLE_INTERNAL') || die;
 
 define('TOTARA_SYNC_DBROWS', 10000);
+
+/**
+* Run the cron for syncing Totara elements with external sources
+*
+* This can be run separately from the main cron via run_cron.php
+*
+* @access public
+* @return void
+*/
+function tool_totara_sync_cron() {
+    global $CFG;
+
+    // Get enabled sync element objects
+    $elements = totara_sync_get_elements($onlyenabled=true);
+
+    foreach ($elements as $element) {
+        if (!method_exists($element, 'sync')) {
+            // Skip if no sync() method exists
+            continue;
+        }
+
+        // Finally, start element syncing
+        $element->sync();
+    }
+
+    return true;
+}
 
 /**
  * Method for adding sync log messages

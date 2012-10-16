@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -302,6 +302,7 @@ function xmldb_totara_core_upgrade($oldversion) {
         uninstall_plugin('totara', 'oauth');
         totara_upgrade_mod_savepoint(true, 2012080101, 'totara_core');
     }
+
     if ($oldversion < 2012081300) {
         //turn off forceunique for any filepicker totara customfields
         $tables = array('course', 'pos_type', 'org_type', 'comp_type');
@@ -311,5 +312,11 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012081300, 'totara_core');
     }
 
+    if ($oldversion < 2012090500) {
+        // backport of SCORM directview patch MDL-33755 from 2.3
+        // we removed the directview column in upgrade_pre20 but we may have orphaned data that needs fixed
+        $DB->execute("UPDATE {scorm} SET popup = ?, skipview = ? WHERE popup = ?", array(1, 2, 2));
+        totara_upgrade_mod_savepoint(true, 2012090500, 'totara_core');
+    }
     return true;
 }

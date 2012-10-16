@@ -10,7 +10,7 @@
 //                                                                       //
 // This program is free software; you can redistribute it and/or modify  //
 // it under the terms of the GNU General Public License as published by  //
-// the Free Software Foundation; either version 2 of the License, or     //
+// the Free Software Foundation; either version 3 of the License, or     //
 // (at your option) any later version.                                   //
 //                                                                       //
 // This program is distributed in the hope that it will be useful,       //
@@ -46,7 +46,7 @@ class data_field_menu extends data_field_base {
             }
         }
 
-
+        $str .= html_writer::label(get_string('menuchoose', 'data'), 'field_'.$this->field->id, false, array('class' => 'accesshide'));
         $str .= html_writer::select($options, 'field_'.$this->field->id, $content, array(''=>get_string('menuchoose', 'data')), array('id'=>'field_'.$this->field->id));
 
         $str .= '</div>';
@@ -86,7 +86,9 @@ class data_field_menu extends data_field_base {
             return '';
         }
 
-        return html_writer::select($options, 'f_'.$this->field->id, $content);
+        $return = html_writer::label(get_string('namemenu', 'data'), 'menuf_'. $this->field->id, false, array('class' => 'accesshide'));
+        $return .= html_writer::select($options, 'f_'.$this->field->id, $content);
+        return $return;
     }
 
      function parse_search_field() {

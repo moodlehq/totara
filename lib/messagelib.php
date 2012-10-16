@@ -58,7 +58,7 @@ function message_send($eventdata) {
     //TODO: we need to solve problems with database transactions here somehow, for now we just prevent transactions - sorry
     $DB->transactions_forbidden();
 
-    if (is_int($eventdata->userto)) {
+    if (is_number($eventdata->userto)) {
         $eventdata->userto = $DB->get_record('user', array('id' => $eventdata->userto));
     }
     if (is_int($eventdata->userfrom)) {
@@ -392,7 +392,7 @@ function message_get_providers_for_user($userid) {
 
     $systemcontext = get_context_instance(CONTEXT_SYSTEM);
 
-    $providers = $DB->get_records('message_providers', null, 'name');
+    $providers = $DB->get_records('message_providers', null, 'component desc, name asc');
 
     // Remove all the providers we aren't allowed to see now
     foreach ($providers as $providerid => $provider) {

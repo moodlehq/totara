@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -640,6 +640,7 @@ class reportbuilder {
 
             // only include filter if a valid object is returned
             if ($filterobj = rb_filter_type::get_filter($type, $value, $advanced, $this)) {
+                $filterobj->filterid = $filter->id;
                 $out[$name] = $filterobj;
 
                 // enabled report grouping if any filters are grouped
@@ -676,11 +677,11 @@ class reportbuilder {
                 if (!array_key_exists($fname, $this->filters)) {
                     continue; // filter not used in this report
                 }
-                $field = $this->filters[$fname];
-                if ($field->grouping != 'none') {
-                    list($having_sqls[], $params) = $field->get_sql_filter($data);
+                $filter = $this->filters[$fname];
+                if ($filter->grouping != 'none') {
+                    list($having_sqls[], $params) = $filter->get_sql_filter($data);
                 } else {
-                    list($where_sqls[], $params) = $field->get_sql_filter($data);
+                    list($where_sqls[], $params) = $filter->get_sql_filter($data);
                 }
                 $filterparams = array_merge($filterparams, $params);
             }
@@ -732,8 +733,7 @@ class reportbuilder {
                     $data = $field->check_data($adddata);
                     if ($data === false) {
                         // unset existing result if field has been set back to "not set" position
-                        if (isset($SESSION->reportbuilder) &&
-                            array_key_exists($field->name, $SESSION->reportbuilder[$this->_id])) {
+                        if (isset($SESSION->reportbuilder[$this->_id][$fieldname])) {
                             unset($SESSION->reportbuilder[$this->_id][$fieldname]);
                         }
                         continue;
@@ -1575,18 +1575,14 @@ class reportbuilder {
         // if they exist we need to make sure we have included joins for them too
         if (isset($SESSION->reportbuilder[$this->_id]) &&
             is_array($SESSION->reportbuilder[$this->_id])) {
-            foreach ($SESSION->reportbuilder[$this->_id] as $filter => $unused) {
-                // parse the filtername for type and value
-                $parts = explode('-', $filter);
-                if (count($parts) != 2) {
-                    print_error('filternameformatincorrect', 'totara_reportbuilder');
-                    continue;
+            foreach ($SESSION->reportbuilder[$this->_id] as $fname => $unused) {
+                if (!array_key_exists($fname, $this->filters)) {
+                    continue; // filter not used in this report
                 }
-                $type = $parts[0];
-                $value = $parts[1];
-                $item = $this->get_single_item($columnoptions, $type, $value);
+                $filter = $this->filters[$fname];
+
                 $filterjoins = array_merge($filterjoins,
-                    $this->get_joins($item, 'filter'));
+                    $this->get_joins($filter, 'filter'));
             }
         }
         return $filterjoins;
@@ -2129,7 +2125,7 @@ class reportbuilder {
      * @return No return value but prints the current data table
      */
     function display_table() {
-        global $SESSION, $DB;
+        global $SESSION, $DB, $OUTPUT;
 
         define('DEFAULT_PAGE_SIZE', $this->recordsperpage);
         define('SHOW_ALL_PAGE_SIZE', 9999);
@@ -2158,6 +2154,9 @@ class reportbuilder {
                 $tableheaders[] = format_string($column->heading);
             }
         }
+
+        // prevent notifications boxes inside the table
+        echo $OUTPUT->container_start('nobox');
 
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
@@ -2215,6 +2214,9 @@ class reportbuilder {
 
         // display the table
         $table->print_html();
+
+        // end of .nobox div
+        echo $OUTPUT->container_end();
     }
 
 

@@ -35,8 +35,12 @@ Before installing Totara you should have a server with:
    php /path/to/site/admin/cron_watcher.php > /path/to/logs/watcher.log 2>&1
 8. Setting PHP variables
    There are some PHP configuration variables that may need to be customised, depending on your needs. The variables that are commonly changed
-   include "memory_limit", "upload_max_filesize" and "post_max_size".
+   include "memory_limit", "upload_max_filesize", "post_max_size", "max_input_vars" and "upload_tmp_dir".
+
    memory_limit - This will need to be increased for restoring large course backups or unzipping large files within Totara
-   upload_max_filesize - This setting in conjuction with "post_max_size" will determine how high you can set the max upload size within Totara.
+   upload_max_filesize - This setting in conjuction with "post_max_size" will determine how high you can set the max upload size within Totara
+   max_input_vars - This setting will need to be increased to a minimum of 2000 if you would like to customise any of the Totara language packs.
+   upload_tmp_dir - Some customers may wish to enable this setting and specifically set a directory where files are temporarily stored during the upload process. Note the web server user must have permissions to write files in this directory, or all file uploads will fail.
+
    These settings are all located in php.ini. See http://php.net/manual/en/ini.core.php for more information (note that you will need to restart your
    webserver for these settings to take effect).

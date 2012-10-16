@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -339,6 +339,14 @@ function facetoface_update_instance($facetoface) {
     facetoface_fix_settings($facetoface);
     if ($return = $DB->update_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
+
+        //update any entries the facetoface has in the site calendar
+        $sessions = facetoface_get_sessions($facetoface->id);
+        foreach ($sessions as $session) {
+            if (facetoface_remove_session_from_site_calendar($session)) {
+                facetoface_add_session_to_site_calendar($session, $facetoface);
+            }
+        }
     }
     return $return;
 }
@@ -693,9 +701,10 @@ function facetoface_delete_session($session) {
  * @param   obj     $user           The subject of the message
  * @param   obj     $data           Session data
  * @param   int     $sessionid      Session ID
+ * @param   bool    $plaintext      Whether the message should contain markup or not
  * @return  string
  */
-function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $data, $sessionid) {
+function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, $user, $data, $sessionid, $plaintext=true) {
     global $CFG, $DB;
 
     if (empty($msg)) {
@@ -744,8 +753,12 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
     $msg = str_replace(get_string('placeholder:reminderperiod', 'facetoface'), $reminderperiod, $msg);
 
     // Replace more meta data
-    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id, $msg);
-
+    if ($plaintext) {
+        $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id.'#unapproved', $msg);
+    } else {
+        $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), '<a href="'.$CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id.'#unapproved">'.
+            $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$data->id.'#unapproved</a>', $msg);
+    }
     // Custom session fields (they look like "session:shortname" in the templates)
     $customfields = facetoface_get_session_customfields();
     $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $data->id), '', 'fieldid, data');
@@ -881,13 +894,16 @@ function facetoface_cron() {
                 continue; // no manager message set
             }
 
-            $managertext = $posttextmgrheading.$posttext;
             $manager = $user;
             $manager->email = facetoface_get_manageremail($user->id);
 
             if (empty($manager->email)) {
                 continue; // don't know who the manager is
             }
+
+            $copybelow = facetoface_email_substitutions(get_string('setting:defaultreminderinstrmngrcopybelow', 'facetoface'),
+                $signupdata->facetofacename, $signupdata->reminderperiod, $user, $signupdata, $signupdata->sessionid) . "\n";
+            $managertext  = $posttextmgrheading . $posttext . $copybelow;
 
             // Send email to mamager
             if (email_to_user($manager, $fromaddress, $postsubject, $managertext, $posthtml)) {
@@ -1865,6 +1881,15 @@ function facetoface_send_request_notice($facetoface, $session, $userid) {
             $session->id
     );
 
+    $copybelow = facetoface_email_substitutions(
+            get_string('setting:defaultrequestinstrmngrcopybelow', 'facetoface'),
+            $facetoface->name,
+            $facetoface->reminderperiod,
+            $user,
+            $session,
+            $session->id
+    );
+
     $posttext = facetoface_email_substitutions(
             $facetoface->requestmessage,
             $facetoface->name,
@@ -1891,7 +1916,7 @@ function facetoface_send_request_notice($facetoface, $session, $userid) {
     // Send to manager
     $user->email = $manageremail;
 
-    if (!email_to_user($user, $fromaddress, $postsubject, $posttextmgrheading.$posttext)) {
+    if (!email_to_user($user, $fromaddress, $postsubject, $posttextmgrheading . $copybelow . $posttext)) {
         return 'error:cannotsendrequestmanager';
     }
 
@@ -2051,7 +2076,6 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
                                                   $user, $session, $session->id);
     $posttext = facetoface_email_substitutions($posttext, $facetoface->name, $facetoface->reminderperiod,
                                                $user, $session, $session->id);
-
     $posttextmgrheading = facetoface_email_substitutions($posttextmgrheading, $facetoface->name, $facetoface->reminderperiod,
                                                          $user, $session, $session->id);
 
@@ -2082,7 +2106,16 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
     // Manager notification
     $manageremail = facetoface_get_manageremail($userid);
     if (!empty($posttextmgrheading) and !empty($manageremail) and $session->datetimeknown) {
-        $managertext = $posttextmgrheading . $posttext;
+        if ($notificationtype & MDL_F2F_CANCEL) {
+            $copybelowstr = 'setting:defaultcancellationinstrmngrcopybelow';
+        }
+       if ($notificationtype & MDL_F2F_INVITE) {
+            $copybelowstring = 'setting:defaultconfirmationinstrmngrcopybelow';
+        }
+        $copybelow = facetoface_email_substitutions(get_string($copybelowstring, 'facetoface'), $facetoface->name,
+            $facetoface->reminderperiod, $user, $session, $session->id) . "\n";
+
+        $managertext = $posttextmgrheadingi . $copybelow . $posttext;
         $manager = $user;
         $manager->email = $manageremail;
 
@@ -2392,7 +2425,7 @@ function facetoface_approve_requests($data) {
                     print_error('error:incorrectcoursemodule', 'facetoface');
                 }
 
-                $contextmodule = get_context_instance(CONTEXT_MODULE, $cm->id);
+                $contextmodule = context_module::instance($cm->id);
 
                 // Check if there is capacity
                 if (facetoface_session_has_capacity($session, $contextmodule)) {
@@ -2669,7 +2702,7 @@ function facetoface_print_coursemodule_info($coursemodule) {
  * @return string the ical text properly formatted to open in Outlook
  */
 function facetoface_get_ical_text($method, $facetoface, $session, $user) {
-    global $CFG;
+    global $CFG, $DB;
 
     // First, generate all the VEVENT blocks
     $VEVENTS = '';
@@ -2681,9 +2714,18 @@ function facetoface_get_ical_text($method, $facetoface, $session, $user) {
 
         // UIDs should be globally unique
         $urlbits = parse_url($CFG->wwwroot);
+        $sql = "SELECT COUNT(*)
+            FROM {facetoface_signups} su
+            INNER JOIN {facetoface_signups_status} sus ON su.id = sus.signupid
+            WHERE su.userid = ?
+                AND su.sessionid = ?
+                AND sus.superceded = 1
+                AND sus.statuscode = ? ";
+        $params = array($user->id, $session->id, MDL_F2F_STATUS_USER_CANCELLED);
         $UID =
             $DTSTAMP .
             '-' . substr(md5($CFG->siteidentifier . $session->id . $date->id), -8) .   // Unique identifier, salted with site identifier
+            '-' . $DB->count_records_sql($sql, $params) .                              // New UID if this is a re-signup ;)
             '@' . $urlbits['host'];                                                    // Hostname for this moodle installation
 
         $DTSTART = facetoface_ical_generate_timestamp($date->timestart);
@@ -3130,6 +3172,12 @@ function facetoface_add_session_to_user_calendar($session, $eventname, $userid, 
         $newevent->timeduration = $date->timefinish - $date->timestart;
         $newevent->visible = 1;
         $newevent->timemodified = time();
+
+        if ($eventtype == 'booking') {
+            //Check for and Delete the 'created' calendar event to reduce multiple entries for the same event
+            $DB->delete_records('event', array('name' => $eventname, 'userid' => $userid,
+                'instance' => $session->facetoface, 'eventtype' => 'facetofacesession'));
+        }
 
         $DB->insert_record('event', $newevent);
     }
@@ -4189,6 +4237,15 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
                                                         $session,
                                                         $session->id
                                                 );
+                $newevent->fullmessagehtml  = nl2br(facetoface_email_substitutions(
+                                                        $facetoface->requestinstrmngr,
+                                                        $facetoface->name,
+                                                        $facetoface->reminderperiod,
+                                                        $user,
+                                                        $session,
+                                                        $session->id,
+                                                        false
+                                                ));
                 $newevent->contexturl = $CFG->wwwroot . '/mod/facetoface/attendees.php?s=' . $session->id . '#unapproved';
                 $subjectinfo = new stdClass();
                 $subjectinfo->usermsg = $usermsg;

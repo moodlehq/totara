@@ -5,7 +5,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -195,7 +195,7 @@ M.totara_programassignment = M.totara_programassignment || {
                 this.dialog.height(150);
             };
 
-            $('.fixeddate', this.handler._container).live('click', function() {
+            $(document).on('click', '.fixeddate', function(event) {
                 var completiontime = $('.completiontime', self.handler._container).val();
                 var completionevent = module.config.COMPLETION_EVENT_NONE;
                 var completioninstance = 0;
@@ -210,7 +210,7 @@ M.totara_programassignment = M.totara_programassignment || {
                 }
             });
 
-            $('.relativeeventtime').live('click', function() {
+            $(document).on('click', '.relativeeventtime', function(event) {
 
                 var timeunit = $('#timeamount', self.handler._container).val();
                 var timeperiod = $('#timeperiod option:selected', self.handler._container).val();

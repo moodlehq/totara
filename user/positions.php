@@ -84,10 +84,12 @@ $fullname           = fullname($user, true);
 
 if ($course->id != SITEID && has_capability('moodle/course:viewparticipants', $coursecontext)) {
     $PAGE->navbar->add($strparticipants, "{$CFG->wwwroot}/user/index.php?id={$course->id}");
+    $PAGE->navbar->add($fullname, "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}");
+    $PAGE->navbar->add($positiontype, null);
+} else {
+    $PAGE->navigation->extend_for_user($user);
 }
 
-$PAGE->navbar->add($fullname, "{$CFG->wwwroot}/user/view.php?id={$user->id}&amp;course={$course->id}");
-$PAGE->navbar->add($positiontype, null);
 
 // Setup custom javascript
 local_js(array(
@@ -181,8 +183,10 @@ else {
         assign_user_position($position_assignment);
 
         // Description editor post-update
-        $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $editoroptions['context'], 'totara_core', 'pos_assignment', $data->id);
-        $DB->set_field('pos_assignment', 'description', $data->description, array('id' => $data->id));
+        if ($data->type != POSITION_TYPE_ASPIRATIONAL) {
+            $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $editoroptions['context'], 'totara_core', 'pos_assignment', $data->id);
+            $DB->set_field('pos_assignment', 'description', $data->description, array('id' => $data->id));
+        }
 
         // Log
         add_to_log($course->id, "user", "position updated", "positions.php?user=$user->id&amp;courseid=$course->id&amp;type=$type", fullname($user)." (ID: {$user->id})");

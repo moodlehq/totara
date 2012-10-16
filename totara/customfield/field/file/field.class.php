@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,7 +28,7 @@ class customfield_file extends customfield_base {
     function edit_load_item_data(&$item) {
         global $FILEPICKER_OPTIONS;
         $this->data = file_prepare_standard_filemanager($item, $this->inputname, $FILEPICKER_OPTIONS, $FILEPICKER_OPTIONS['context'],
-                                                           'totara_customfield', $this->prefix . '_filemgr', $this->itemid);
+                                                           'totara_customfield', $this->prefix . '_filemgr', $this->dataid);
     }
 
     /**
@@ -100,9 +100,10 @@ class customfield_file extends customfield_base {
         if (empty($data)) {
             return $data;
         }
+
         $context = context_system::instance();
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $itemid, null, false);
+        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $data, null, false);
         if (count($files)!=1) {
             return get_string('filenotfound', 'error');
         } else {

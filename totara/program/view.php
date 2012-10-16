@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -70,13 +70,14 @@ $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 $heading = $program->fullname;
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-$navlinks = array();
 if ($adminediting) {
     $PAGE->navbar->add(get_string('manageprograms', 'admin'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
-    //$navlinks = array_merge($navlinks, $category_breadcrumbs);
 } else {
     $PAGE->navbar->add(get_string('findprograms', 'totara_program'), new moodle_url('/course/categorylist.php', array('viewtype' => 'program')));
-    //$navlinks = array_merge($navlinks, $category_breadcrumbs);
+}
+
+foreach ($category_breadcrumbs as $crumb) {
+    $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }
 
 $PAGE->navbar->add($heading);

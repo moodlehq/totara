@@ -7,7 +7,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -241,7 +241,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
 
         try {
             // Locate the dynamic cohorts
-            $cohorts = $DB->get_records('cohort', array('cohorttype' => cohort::TYPE_DYNAMIC), 'id', 'id, rulesetoperator');
+            $cohorts = $DB->get_records('cohort', array('cohorttype' => cohort::TYPE_DYNAMIC), 'id', 'id, name, rulesetoperator');
 
             foreach ($cohorts as $cohort) {
 
@@ -289,43 +289,48 @@ function xmldb_totara_cohort_upgrade($oldversion) {
                     // Create a user field rule
                     if (!empty($criterion->profilefield) && !empty($criterion->profilefieldvalues)) {
                         if (substr($criterion->profilefield, 0, 11) == 'customfield') {
-                            // Create a custom field rule
-                            $ruledef = cohort_rules_get_rule_definition('user', $criterion->profilefield);
-                            $rulesql = $ruledef->sqlhandler;
-
                             // Find out what type of field this is
                             $fieldid = (int)substr($criterion->profilefield, 11);
                             $fieldtype = $DB->get_field('user_info_field', 'datatype', array('id' => $fieldid));
-                            switch ($fieldtype) {
-                                case 'datetime':
-                                    $dates = explode(',', $criterion->profilefieldvalues);
-                                    // Create 'between' dates by adding 2 rules: before and after
-                                    foreach ($dates as $d) {
-                                        // before
-                                        $rulesql->date = $d;
-                                        $rulesql->operator = COHORT_RULE_DATE_OP_BEFORE_FIXED_DATE;
+                            //textarea criteria types no longer supported in 2.2, warn the admin
+                            if ($fieldtype == 'textarea') {
+                                $warning = get_string('error:badruleonupgrade', 'totara_cohort', $cohort->name);
+                                echo $OUTPUT->container($warning, 'notifynotice');
+                                //continue on to next rule
+                                continue;
+                            }
+                            // Create a custom field rule if a 2.2-style rule definition exists
+                            if ($ruledef = cohort_rules_get_rule_definition('usercustomfields', $criterion->profilefield . '_0')) {
+                                $rulesql = $ruledef->sqlhandler;
+
+                                switch ($fieldtype) {
+                                    case 'datetime':
+                                        $dates = explode(',', $criterion->profilefieldvalues);
+                                        // Create 'between' dates by adding 2 rules: before and after
+                                        foreach ($dates as $d) {
+                                            // before
+                                            $rulesql->date = $d;
+                                            $rulesql->operator = COHORT_RULE_DATE_OP_BEFORE_FIXED_DATE;
+                                            $ruleid = cohort_rule_create_rule($rulesetid, 'user', $criterion->profilefield);
+                                            $rulesql->write($ruleid);
+                                            // after
+                                            $rulesql->date = $d;
+                                            $rulesql->operator = COHORT_RULE_DATE_OP_AFTER_FIXED_DATE;
+                                            $ruleid = cohort_rule_create_rule($rulesetid, 'user', $criterion->profilefield);
+                                            $rulesql->write($ruleid);
+                                        }
+                                        break;
+                                    case 'checkbox':
+                                    case 'menu':
+                                    case 'text':
+                                        $rulesql->equal = 1;
+                                        $rulesql->listofvalues = explode(',', $criterion->profilefieldvalues);
                                         $ruleid = cohort_rule_create_rule($rulesetid, 'user', $criterion->profilefield);
                                         $rulesql->write($ruleid);
-                                        // after
-                                        $rulesql->date = $d;
-                                        $rulesql->operator = COHORT_RULE_DATE_OP_AFTER_FIXED_DATE;
-                                        $ruleid = cohort_rule_create_rule($rulesetid, 'user', $criterion->profilefield);
-                                        $rulesql->write($ruleid);
-                                    }
-                                    break;
-                                case 'checkbox':
-                                case 'menu':
-                                case 'text':
-                                case 'textarea':
-                                    $rulesql->equal = 1;
-                                    $rulesql->listofvalues = explode(',', $criterion->profilefieldvalues);
-
-                                    $ruleid = cohort_rule_create_rule($rulesetid, 'user', $criterion->profilefield);
-                                    $rulesql->write($ruleid);
-                                    break;
-
-                                default:
-                                    mtrace('ERROR: Could not convert old dynamic cohort criterion on unknown custom field type "'.$fieldtype.'".');
+                                        break;
+                                    default:
+                                        mtrace('ERROR: Could not convert old dynamic cohort criterion on unknown custom field type "'.$fieldtype.'".');
+                                }
                             }
                         } else {
                             // Create a non-custom field rule
@@ -450,6 +455,17 @@ function xmldb_totara_cohort_upgrade($oldversion) {
             set_config('alertoptions', implode(',', array_keys($COHORT_ALERT)), 'cohort');
         }
         upgrade_plugin_savepoint(true, 2012080202, 'totara', 'cohort');
+    }
+
+    if ($oldversion < 2012082100) {
+        // Migrate all old user custom field rules
+        $sql = "UPDATE {cohort_rules}
+            SET name = " . $DB->sql_concat('name', "'_0'") . ", ruletype = 'usercustomfields'
+            WHERE ruletype = 'user'
+            AND " . $DB->sql_like('name', '?');
+        $DB->execute($sql, array('customfield%'));
+
+        upgrade_plugin_savepoint(true, 2012082100, 'totara', 'cohort');
     }
 
     return true;

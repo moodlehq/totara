@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -71,12 +71,6 @@ $report->include_js();
  * End of defining the report
  */
 
-// see which reports exist in db and add columns for them to table
-// these reports should have the "userid" url parameter enabled to allow
-// viewing of individual reports
-$staff_records = $DB->get_field('report_builder', 'id', array('shortname' => 'staff_learning_records'));
-$staff_f2f = $DB->get_field('report_builder', 'id', array('shortname' => 'staff_facetoface_sessions'));
-
 $PAGE->set_totara_menu_selected('myteam');
 $PAGE->set_button($report->edit_button());
 $PAGE->set_title($strheading);
@@ -97,6 +91,8 @@ $countall = $report->get_full_count();
 
 $heading = $strheading . ': ' . $renderer->print_result_count_string($countfiltered, $countall);
 echo $OUTPUT->heading($heading);
+
+echo $renderer->print_description($report->description, $report->_id);
 
 echo html_writer::tag('p', get_string('teammembers_text', 'totara_core'));
 $report->display_search();

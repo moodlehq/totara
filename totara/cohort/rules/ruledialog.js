@@ -5,7 +5,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -107,7 +107,7 @@ M.totara_cohortrules = M.totara_cohortrules || {
 
         // Bind open event to rule_selector menu(s)
         // Also set their default value
-        $('select.rule_selector').val('').live('change',function(event) {
+        $(document).on('change', 'select.rule_selector', function(event) {
 
             // Stop any default event occuring
             event.preventDefault();
@@ -141,7 +141,7 @@ M.totara_cohortrules = M.totara_cohortrules || {
         });
 
         // Also bind open event to rule edit links
-        $('a.ruledef-edit').live('click', function(event) {
+        $(document).on('click', 'a.ruledef-edit', function(event) {
 
             // Stop any default event occurring
             event.preventDefault();

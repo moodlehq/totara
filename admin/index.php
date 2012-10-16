@@ -115,11 +115,22 @@ if (!isset($maturity)) {
 // is later than current totara version (e.g. Moodle 2.3 -> Totara 2.2)
 // This is already handled by the core upgrade code as it would detected a
 // core downgrade and throw and exception
-if (!empty($CFG->local_postinst_hasrun) &&
-    isset($CFG->totara_build) && $CFG->totara_build < 20120627.00) {
-    // if upgrading from totara, require v1.1.17+
-    echo 'You cannot upgrade to Totara 2.x from a Totara 1.1 site prior to release 1.1.17. Please upgrade to 1.1.17 or greater first.';
-    die();
+if (!empty($CFG->local_postinst_hasrun)) {
+    $canupgrade = true;
+    if (isset($CFG->totara_release)) {
+        //Totara 1.1.0 or greater
+        $parts = explode(" ", $CFG->totara_release);
+        $canupgrade = version_compare(trim($parts[0]), '1.1.17', '>=');
+    } else {
+        //Totara 1.0 does not set any Totara release info, however if local_postinst_hasrun is true then this is Totara
+        //cannot upgrade from any 1.0
+        $canupgrade = false;
+    }
+    // if upgrading from totara, require v1.1.17 or greater
+    if (!$canupgrade) {
+         echo 'You cannot upgrade to Totara 2.x from this version of Totara. Please upgrade to Totara 1.1.17 or greater first.';
+         die();
+    }
 } else if (empty($CFG->local_postinst_hasrun) &&
         !empty($CFG->version) && $CFG->version < 2010112400) {
     // if upgrading from moodle, require at least v2.0.0
@@ -162,11 +173,11 @@ if (!core_tables_exist()) {
 
         $PAGE->navbar->add($strcurrentrelease);
         $PAGE->set_title($strinstallation);
-        $PAGE->set_heading($strinstallation . ' - Totara ' . $CFG->target_release);
+        $PAGE->set_heading($strinstallation . ' - Totara ' . $TOTARA->release);
         $PAGE->set_cacheable(false);
 
         $output = $PAGE->get_renderer('core', 'admin');
-        echo $output->install_environment_page($maturity, $envstatus, $environment_results, $release);
+        echo $output->install_environment_page($maturity, $envstatus, $environment_results, $TOTARA->release);
         die();
     }
 
@@ -264,7 +275,7 @@ if ($version > $CFG->version
         $PAGE->set_cacheable(false);
 
         $output = $PAGE->get_renderer('core', 'admin');
-        echo $output->upgrade_environment_page($release, $envstatus, $environment_results);
+        echo $output->upgrade_environment_page($TOTARA->release, $envstatus, $environment_results);
         die();
 
     } else if (empty($confirmplugins)) {
@@ -295,12 +306,13 @@ if ($release <> $CFG->release) {  // Update the release version
     set_config('release', $release);
 }
 
-if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
-    || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
-    || !isset($CFG->totara_version) || $CFG->totara_version <> $TOTARA->version) {
+if ( (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release)
+    || (!isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build)
+    || (!isset($CFG->totara_version) || $CFG->totara_version <> $TOTARA->version)) {
     // Also set Totara release (human readable version)
     set_config("totara_release", $TOTARA->release);
     set_config("totara_build", $TOTARA->build);
+    set_config("totara_version", $TOTARA->version);
 }
 
 if (moodle_needs_upgrading()) {

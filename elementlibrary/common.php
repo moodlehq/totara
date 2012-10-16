@@ -31,7 +31,7 @@ echo ' Lorum Ipsum ';
 $params = array('t' => time()); // to prevent the link being visited
 echo html_writer::link(new moodle_url('/elementlibrary/', $params), 'an unvisited text link');
 echo ' Lorum Ipsum ';
-echo html_writer::link('', 'a visited text link');
+echo html_writer::link(new moodle_url(qualified_me()), 'a visited text link');
 echo ' Lorum Ipsum ';
 echo html_writer::tag('strong', 'some strong text');
 echo ' Lorum Ipsum ';

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -177,6 +177,15 @@ function xmldb_totara_message_upgrade($oldversion) {
             $dbman->drop_field($table, $field);
         }
         echo $OUTPUT->notification('Removing message_metadata roleid field', 'notifysuccess');
+    }
+
+    if ($oldversion < 2012092500) {
+        //ensure oninfo field exists T-9963
+        $table = new xmldb_table('message_metadata');
+        $field = new xmldb_field('oninfo', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'onreject');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
     }
     return $result;
 }

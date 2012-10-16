@@ -303,10 +303,10 @@
         <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="organisationid"/>
         <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="usermodified" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
         <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="reportstoid"/>
         <FIELD NAME="reportstoid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="type"/>
-        <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="reportstoid" NEXT="managerid"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="1" UNSIGNED="false" SEQUENCE="false" PREVIOUS="reportstoid" NEXT="managerid"/>
         <FIELD NAME="managerid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="type" NEXT="managerpath"/>
         <FIELD NAME="managerpath" TYPE="char" LENGTH="1024" NOTNULL="false" SEQUENCE="false" PREVIOUS="managerid"/>
       </FIELDS>
@@ -331,10 +331,10 @@
         <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timevalidto" NEXT="timefinished"/>
         <FIELD NAME="timefinished" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timecreated" NEXT="organisationid"/>
         <FIELD NAME="organisationid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="timefinished" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="organisationid" NEXT="positionid"/>
         <FIELD NAME="positionid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="userid" NEXT="reportstoid"/>
         <FIELD NAME="reportstoid" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="positionid" NEXT="type"/>
-        <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="reportstoid"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="1" UNSIGNED="false" SEQUENCE="false" PREVIOUS="reportstoid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

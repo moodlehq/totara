@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -27,13 +27,14 @@
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
-require_once($CFG->dirroot.'/totara/cohort/rules/ui.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandler.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/inlist.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/date.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/completion.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/sqlhandlers/manager.php');
-require_once($CFG->dirroot.'/totara/cohort/rules/option.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/ui.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandler.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/inlist.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/date.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/completion.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/manager.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/sqlhandlers/cohortmember.php');
+require_once($CFG->dirroot . '/totara/cohort/rules/option.php');
 
 /**
  * Get the list of defined cohort rules
@@ -179,19 +180,19 @@ function cohort_rules_list(){
                     $dialogs[] = $dialogui;
 
                     // choose from distinct customfield values
-                    $sql = "SELECT DISTINCT data
-                              FROM {user_info_data}
-                             WHERE fieldid = ?
-                          ORDER BY data";
-                    $options = $DB->get_records_sql($sql, array($id));
-                    if (!empty($options)) {
-                        $dialogui = new cohort_rule_ui_menu(
-                            get_string('usersx', 'totara_cohort', $field->name),
-                            array_combine(array_keys($options), array_keys($options))
-                        );
-                        $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('choose', 'totara_cohort') . ')';
-                        $dialogs[] = $dialogui;
-                    }
+                    $sql = new stdClass;
+                    $sql->select = "DISTINCT data AS mkey, data AS mval";
+                    $sql->from = "{user_info_data}";
+                    $sql->where = "fieldid = ?";
+                    $sql->orderby = 'data';
+                    $sql->valuefield = 'data';
+                    $sql->sqlparams = array($id);
+                    $dialogui = new cohort_rule_ui_menu(
+                        get_string('usersx', 'totara_cohort', $field->name),
+                        $sql
+                    );
+                    $dialogui->selectoptionstr = s($field->name) . ' (' . get_string('choose', 'totara_cohort') . ')';
+                    $dialogs[] = $dialogui;
 
                     $sqlhandler = new cohort_rule_sqlhandler_in_usercustomfield($id);
                     unset($dialogui);
@@ -487,6 +488,14 @@ function cohort_rules_list(){
                 get_string('ruledesc-learning-programcompletionduration', 'totara_cohort')
             ),
             new cohort_rule_sqlhandler_completion_duration_program()
+        );
+
+        // Cohort member
+        $rules[] = new cohort_rule_option(
+            'cohort',
+            'cohortmember',
+            new cohort_rule_ui_cohortmember(),
+            new cohort_rule_sqlhandler_cohortmember()
         );
 
         // System access! (though I think maybe this is better group under "user"?

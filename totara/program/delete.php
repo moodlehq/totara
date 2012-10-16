@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -27,6 +27,7 @@ require_once('lib.php');
 $id = required_param('id', PARAM_INT);
 // Delete confirmation hash
 $delete = optional_param('delete', '', PARAM_ALPHANUM);
+$category = optional_param('category', '', PARAM_INT);
 
 if (!$program = new program($id)) {
     print_error('error:programid', 'totara_program');
@@ -39,7 +40,7 @@ if (!has_capability('totara/program:deleteprogram', $program->get_context())) {
 admin_externalpage_setup('manageprograms', '', array('id' => $id, 'delete' => $delete), $CFG->wwwroot.'/totara/program/delete.php');
 
 $returnurl = "{$CFG->wwwroot}/totara/program/edit.php?id={$program->id}";
-$deleteurl = "{$CFG->wwwroot}/totara/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;delete=".md5($program->timemodified);
+$deleteurl = "{$CFG->wwwroot}/totara/program/delete.php?id={$program->id}&amp;sesskey={$USER->sesskey}&amp;category={$category}&amp;delete=".md5($program->timemodified);
 
 if (!$delete) {
     echo $OUTPUT->header();
@@ -80,7 +81,7 @@ if ($program->delete()) {
     } else {
         throw new Exception(get_string('error:failfixprogsortorder', 'totara_program'));
     }
-    $notification_url = "{$CFG->wwwroot}/course/category.php?id={$program->category}";
+    $notification_url = "{$CFG->wwwroot}/course/category.php?id={$category}&amp;viewtype=program&amp;categoryedit=on";
     totara_set_notification(get_string('programdeletesuccess', 'totara_program', $program->fullname), $notification_url, array('class' => 'notifysuccess'));
 }
 ?>

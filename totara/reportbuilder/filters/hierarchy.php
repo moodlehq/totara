@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -169,7 +169,7 @@ class rb_filter_hierarchy extends rb_filter_type {
 
         $operator = $data['operator'];
         $recursive = (isset($data['recursive'])
-            && $data['recursive']) ? '%' : '';
+            && $data['recursive']) ? '/%' : '';
         $value    = $data['value'];
         $query    = $this->field;
         $type = $this->options['hierarchytype'];
@@ -189,13 +189,16 @@ class rb_filter_hierarchy extends rb_filter_type {
         $path = $DB->get_field($type, 'path', array('id' => $value));
         $params = array();
         $uniqueparam = rb_unique_param("fh{$operator}_");
+        $uniqueparam2 = rb_unique_param("fh{$operator}2_");
         if ($operator == 2) {
             // check for null case for is not operator
-            $sql = '(' . $DB->sql_like($query, ":{$uniqueparam}", true, true, $not) . " OR {$query} IS NULL)";
+            $sql = '(((' . $DB->sql_like($query, ":{$uniqueparam}", true, true, $not) . ") AND ( {$query} <> :{$uniqueparam2} )) OR ({$query}) IS NULL)";
             $params[$uniqueparam] = $DB->sql_like_escape($path) . $recursive;
+            $params[$uniqueparam2] = $path;
         } else {
-            $sql = $DB->sql_like($query, ":{$uniqueparam}", true, true, $not);
+            $sql = '((' . $DB->sql_like($query, ":{$uniqueparam}", true, true, $not) . ") OR ( {$query} = :{$uniqueparam2} ))";
             $params[$uniqueparam] = $DB->sql_like_escape($path) . $recursive;
+            $params[$uniqueparam2] = $path;
         }
 
         return array($sql, $params);

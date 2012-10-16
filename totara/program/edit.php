@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -34,6 +34,8 @@ require_once('edit_form.php');
 
 $id = required_param('id', PARAM_INT); // program id
 $action = optional_param('action', 'view', PARAM_TEXT);
+$category = optional_param('category', '', PARAM_INT);
+$nojs = optional_param('nojs', 0, PARAM_INT);
 
 require_login();
 
@@ -57,6 +59,8 @@ if ($action == 'edit') {
 
     //Javascript include
     local_js(array(
+        TOTARA_JS_DIALOG,
+        TOTARA_JS_UI,
         TOTARA_JS_DATEPICKER,
         TOTARA_JS_ICON_PREVIEW,
         TOTARA_JS_PLACEHOLDER
@@ -75,9 +79,19 @@ if ($action == 'edit') {
         'input[name="availablefromselector"], input[name="availableuntilselector"]'
     );
 
+    $PAGE->requires->string_for_js('chooseicon', 'totara_program');
+    $iconjsmodule = array(
+            'name' => 'totara_iconpicker',
+            'fullpath' => '/totara/core/js/icon.picker.js',
+            'requires' => array('json'));
+
+    $iconargs = array('args' => '{"selected_icon":"' . $program->icon . '",
+                            "type":"program"}');
+
+    $PAGE->requires->js_init_call('M.totara_iconpicker.init', $iconargs, false, $iconjsmodule);
 }
 
-if (!$category = $DB->get_record('course_categories', array('id' => $program->category))) {
+if (!$progcategory = $DB->get_record('course_categories', array('id' => $program->category))) {
     print_error('error:determineprogcat', 'totara_program');
 }
 
@@ -85,7 +99,7 @@ $currenturl = qualified_me();
 $currenturl_noquerystring = strip_querystring($currenturl);
 $viewurl = $currenturl_noquerystring."?id={$id}&action=view";
 $editurl = $currenturl_noquerystring."?id={$id}&action=edit";
-$categoryindexurl = "{$CFG->wwwroot}/course/category.php?id={$category->id}&amp;viewtype=program";
+
 $editcontenturl = "{$CFG->wwwroot}/totara/program/edit_content.php?id={$program->id}";
 $editassignmentsurl = "{$CFG->wwwroot}/totara/program/edit_assignments.php?id={$program->id}";
 $editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$program->id}";
@@ -97,7 +111,7 @@ $program = file_prepare_standard_editor($program, 'summary', $TEXTAREA_OPTIONS, 
 
 $program = file_prepare_standard_editor($program, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
                                           'totara_program', 'progendnote', $id);
-$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS), 'post', '', array('name'=>'form_prog_details'));
+$detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS, 'nojs' => $nojs), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
     totara_set_notification(get_string('programupdatecancelled', 'totara_program'), $viewurl, array('class' => 'notifysuccess'));
@@ -105,7 +119,7 @@ if ($detailsform->is_cancelled()) {
 
 // Redirect to delete page if deleting
 if ($action == 'delete') {
-    redirect("{$CFG->wwwroot}/totara/program/delete.php?id={$id}");
+    redirect("{$CFG->wwwroot}/totara/program/delete.php?id={$id}&amp;category={$category}");
 }
 
 // Handle form submits
@@ -158,22 +172,17 @@ if ($action == 'edit') {
     $heading = $program->fullname;
 }
 
-
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
+foreach ($category_breadcrumbs as $crumb) {
+        $PAGE->navbar->add($crumb['name'], $crumb['link']);
+}
+
+$PAGE->navbar->add($program->shortname, new moodle_url('/totara/program/view.php', array('id' => $id)));
+
 if ($action == 'edit') {
-    foreach ($category_breadcrumbs as $node) {
-        $PAGE->add($node);
-    }
-    $PAGE->navbar->add($program->shortname, $viewurl);
     $PAGE->navbar->add(ucwords($action));
-} else {
-    foreach ($category_breadcrumbs as $node) {
-        $PAGE->add($node);
-    }
-    $PAGE->navbar->add($program->shortname);
 }
 
 echo $OUTPUT->header();

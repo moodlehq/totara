@@ -7,7 +7,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version
  *
  * This program is distributed in the hope that it will be useful,
@@ -136,7 +136,7 @@ if ($id == 0) {
 
 // Display warning if scale is in use
 if ($scale_used) {
-    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifysuccess');
+    echo $OUTPUT->container(get_string('priorityscaleinuse', 'totara_plan'), 'notifymessage');
 }
 
 $valueform->display();

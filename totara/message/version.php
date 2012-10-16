@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -22,7 +22,7 @@
  * @subpackage message
  */
 
-$plugin->version  = 2012012702;   // The (date) version of this module
+$plugin->version  = 2012092500;   // The (date) version of this module
 $plugin->requires = 2011120501;  // Requires this Moodle version
 $plugin->cron     = 1;
 $plugin->component = 'totara_message';   // To check on upgrade, that module sits in correct place

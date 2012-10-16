@@ -182,6 +182,7 @@ $string['enrolledcohorts'] = 'Enrolled audiences';
 $string['enrolledlearning'] = 'Enrolled learning';
 $string['entervaliddate'] = 'Enter a valid date';
 $string['equalto'] = 'Equal to';
+$string['error:badruleonupgrade'] = 'Dynamic Cohort "{$a}" contains criteria based on a user profile customfield of type textarea. This type of criteria is no longer supported in Totara 2.2 Audiences. You should check the rules for the "{$a}" Audience after the upgrade and make any necessary changes.';
 $string['error:badcohortid'] = 'Audience with this id does not exist';
 $string['error:baddate'] = 'Please specify a valid date';
 $string['error:baddateoption'] = 'You must select an option';
@@ -209,6 +210,8 @@ $string['idnumber'] = 'ID';
 $string['includechildren'] = 'Include children';
 $string['includechildrenyes'] = 'Include children';
 $string['includechildrenno'] = 'Don\'t include children';
+$string['incohort'] = 'In audience(s)';
+$string['notincohort'] = 'Not in audience(s)';
 $string['isequalto'] = ' is equal to ';
 $string['isnotequalto'] = ' is not equal to ';
 $string['learningitemcourses'] = 'Courses';
@@ -315,7 +318,7 @@ $string['rulescancelsuccess'] = 'Rule changes cancelled';
 $string['rulesupdatesuccess'] = 'Rules updated';
 $string['rulecheckboxdialogdesc'] = 'Add a rule based on whether {$a} is checked or not.';
 $string['ruledialogdesc'] = 'Add a rule based on {$a}';
-$string['rulelistdateformat'] = '%%d %%b, %%Y';
+$string['rulelistdateformat'] = '%d %b, %Y';
 $string['ruleneedsnoconfiguration'] = 'This rule needs no configuration.';
 $string['rulesetname'] = 'Ruleset #{$a}';
 $string['rulesetoperatorlabel'] = 'Membership setting between each rule in this rule set';
@@ -363,6 +366,9 @@ $string['youhaveremoved'] = 'You have removed {$a->itemname} from this program<b
 <strong>This will unasign {$a->affectedusers} users from the program</strong><br />
 <br />
 This change will be applied once the \''.$string['saveallchanges'].'\' button is clicked on the main Program assignments screen';
+
+$string['rulegroup-cohort'] = 'Audience';
+$string['rulename-cohort-cohortmember'] = 'Audience member';
 
 $string['rulegroup-user'] = 'User profile';
 $string['rulename-user-idnumber'] = 'ID number';
@@ -432,3 +438,5 @@ $string['addprograms'] = 'Add programs';
 $string['deletelearningconfirm'] = 'Are you sure you want to delete this learning item?';
 $string['savinglearning'] = 'Saving learning...';
 $string['na'] = 'n/a';
+$string['useriscohortmember'] = 'User is a member of any of these audiences:';
+$string['userisnotcohortmember'] = 'User is NOT a member of any of these audiences:';

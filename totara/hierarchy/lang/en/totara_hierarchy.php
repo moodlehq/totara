@@ -760,7 +760,7 @@ Select the **Parent competency** from the dropdown menu. Select **Top** if you w
 If you change the parent competency of an item it will move to sit below its new parent, and all of its children will move with it.
 
 **Note:** to set up parent/child relationships you need to have at least one other item in the framework. Otherwise the option will not appear.';
-$string['competencyframeworks_help'] = 'Competency Frameworks **are set up to hold the skills, knowledge and behavioural competencies you expect staff to achieve.
+$string['competencyframeworks_help'] = '**Competency Frameworks** are set up to hold the skills, knowledge and behavioural competencies you expect staff to achieve.
 
 Competencies may be grouped under different kinds of framework. For example, one framework could hold all industry national competency standards (taken from an industry body), while another framework could hold specific competencies set up in-house.
 

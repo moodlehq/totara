@@ -159,6 +159,9 @@ table.invisiblepadded td {
 img.iconsmall {
     padding: 2px;
 }
+img.smallicon {
+    padding: 2px;
+}
 .course_icon,
 .program_icon {
     padding-right: 5px;
@@ -217,6 +220,7 @@ h2.headingblock {
     -o-border-radius:4px 4px 4px 4px;
     border-radius:4px 4px 4px 4px;
 }
+
 .dir-rtl .notifysuccess,
 .dir-rtl .notifyproblem,
 .dir-rtl .notifymessage,
@@ -270,6 +274,37 @@ p.errormessage {
     color:#555555;
     text-decoration:underline;
 }
+
+/* Don't include the box border/background inside this class
+ * Useful for showing warnings inside table cells, etc where
+ * there isn't enough room for a full boxed notification
+ * */
+.nobox .notifysuccess,
+.nobox .notifyproblem,
+.nobox .notifymessage,
+.nobox .notifynotice,
+.nobox .notice,
+.nobox .loginerrors,
+.nobox .errorbox {
+    margin:1em 0;
+    border: 0;
+    background-color: transparent;
+    text-shadow: none;
+    padding-left: 30px !important;
+}
+/* and RTL support */
+.dir-rtl .nobox .notifysuccess,
+.dir-rtl .nobox .notifyproblem,
+.dir-rtl .nobox .notifymessage,
+.dir-rtl .nobox .notifynotice,
+.dir-rtl .nobox .notice,
+.dir-rtl .nobox .loginerrors,
+.dir-rtl .nobox .errorbox {
+    padding-left: 0px !important;
+    padding-right: 30px !important;
+}
+
+
 /* Langmenu */
 .langmenu {
     float:right;
@@ -751,5 +786,34 @@ div.totara-dialog td.select #browse-tab {
 #dialog-search-table td {
     padding: 0 5px 0 0;
     margin-bottom: 0px;
+}
+/*Icon picker for programs and courses*/
+#icon-selectable {
+    list-style-type: none;
+}
+#icon-selectable .ui-selected,
+#icon-selectable .ui-selecting {
+    background: #FFFFFF;
+    border: 2px solid #087BB1;
+    margin: 2px;
+}
+#icon-selectable li {
+    border: 1px solid #DDDDDD;
+    background: #FFFFFF;
+    margin: 3px;
+    padding: 1px;
+    float: left;
+    width: 40px;
+    height: 35px;
+    text-align: center;
+    cursor: pointer;
+}
+
+table.namewithlinks-layout td.user-links a {
+    font-size: 1.4em;
+}
+
+table.namewithlinks-layout td.user-name {
+    font-size: 1.3em;
 }
 

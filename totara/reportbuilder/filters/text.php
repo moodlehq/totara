@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -132,7 +132,7 @@ class rb_filter_text extends rb_filter_type {
             case 1: // does not contain
                 $keywords = totara_search_parse_keywords($value);
                 list($sql, $params) = search_get_keyword_where_clause($query, $keywords, true);
-                return array("($query IS NULL OR $sql)", $params);
+                return array("(({$query}) IS NULL OR {$sql})", $params);
             case 2: // equal to
                 return search_get_keyword_where_clause($query, array($value), false, 'equal');
             case 3: // starts with

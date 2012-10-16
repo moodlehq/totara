@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -146,6 +146,10 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
         $rowcount = 0;
 
         while ($row = fgetcsv($file)) {
+            // skip empty rows
+            if (is_array($row) && current($row) === null) {
+                continue;
+            }
             $row = array_combine($fields, $row);  // nice associative array ;)
 
             // clean the data a bit

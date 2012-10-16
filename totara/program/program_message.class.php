@@ -7,7 +7,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -876,7 +876,6 @@ class prog_program_due_message extends prog_eventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programduemessage', 'totara_program');
         $this->triggereventstr = get_string('beforeprogramisdue', 'totara_program');
-        $this->managermessagedata->subject = get_string('programdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
@@ -902,7 +901,6 @@ class prog_courseset_due_message extends prog_eventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetduemessage', 'totara_program');
         $this->triggereventstr = get_string('beforesetisdue', 'totara_program');
-        $this->managermessagedata->subject = get_string('coursesetdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
@@ -928,7 +926,6 @@ class prog_program_overdue_message extends prog_eventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:programoverduemessage', 'totara_program');
         $this->triggereventstr = get_string('afterprogramisdue', 'totara_program');
-        $this->managermessagedata->subject = get_string('programoverdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,
@@ -954,7 +951,6 @@ class prog_courseset_overdue_message extends prog_eventbased_message {
         $this->locked = false;
         $this->fieldsetlegend = get_string('legend:coursesetoverduemessage', 'totara_program');
         $this->triggereventstr = get_string('aftersetisdue', 'totara_program');
-        $this->managermessagedata->subject = get_string('coursesetoverdue', 'totara_program');
 
         $managermessagedata = array(
             'roleid'            => $this->managerrole,

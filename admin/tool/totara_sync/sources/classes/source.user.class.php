@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -42,7 +42,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
             'idnumber',
             'timemodified',
             'username',
-            'delete',
+            'deleted',
             'firstname',
             'lastname',
             'email',
@@ -102,10 +102,13 @@ abstract class totara_sync_source_user extends totara_sync_source {
         foreach ($this->fields as $f) {
             if (in_array($f, array('idnumber', 'username', 'timemodified'))) {
                 $mform->addElement('hidden', 'import_'.$f, '1');
-            } elseif ($f == 'delete') {
+            } elseif ($f == 'deleted') {
                 $mform->addElement('hidden', 'import_'.$f, empty($this->element->config->sourceallrecords));
             } else {
                 $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
+                if (in_array($f, array('country'))) {
+                     $mform->addHelpButton('import_'.$f, $f, 'tool_totara_sync');
+                }
             }
         }
         foreach ($this->customfields as $field => $name) {
@@ -162,8 +165,8 @@ abstract class totara_sync_source_user extends totara_sync_source {
         $table->add_field('idnumber', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
         $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null, null);
         $table->add_field('username', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null, null, null);
-        if (!empty($this->config->import_delete)) {
-            $table->add_field('delete', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '0');
+        if (!empty($this->config->import_deleted)) {
+            $table->add_field('deleted', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '0');
         }
         if (!empty($this->config->import_firstname)) {
             $table->add_field('firstname', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
@@ -233,8 +236,8 @@ abstract class totara_sync_source_user extends totara_sync_source {
         /// Add indexes
         $table->add_index('username', XMLDB_INDEX_NOTUNIQUE, array('username'));
         $table->add_index('idnumber', XMLDB_INDEX_NOTUNIQUE, array('idnumber'));
-        if (!empty($this->config->import_delete)) {
-            $table->add_index('delete', XMLDB_INDEX_NOTUNIQUE, array('delete'));
+        if (!empty($this->config->import_deleted)) {
+            $table->add_index('deleted', XMLDB_INDEX_NOTUNIQUE, array('deleted'));
         }
         if (!empty($this->config->import_email)) {
             $table->add_index('email', XMLDB_INDEX_NOTUNIQUE, array('email'));
@@ -252,7 +255,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
 
         /// Create and truncate the table
         $dbman->create_temp_table($table, false, false);
-        $DB->execute("TRUNCATE {{$this->temptable}}");
+        $DB->execute("TRUNCATE TABLE {{$this->temptable}}");
 
         return $this->temptable;
     }

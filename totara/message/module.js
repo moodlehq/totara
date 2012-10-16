@@ -5,7 +5,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -274,7 +274,7 @@ totaraDialog_handler_confirm.prototype._confirm = function(url, returnto) {
     url = url+'&msgids='+msgids.join(',');
 
     // Send to server
-    this._dialog._request(url, this, '_redirect');
+    this._dialog._request(url, {object: this, method: '_redirect'});
 };
 
 /**

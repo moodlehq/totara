@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -394,7 +394,7 @@ abstract class prog_assignment_category {
     abstract function get_affected_users($item, $userid=0);
 
     /**
-     * Retrives an array of all the users affected by an assignment based on the
+     * Retrieves an array of all the users affected by an assignment based on the
      * assignment record
      *
      * @param object $assignment The db record from 'prog_assignment' for this assignment
@@ -1105,7 +1105,7 @@ class managers_category extends prog_assignment_category {
                 prog_assignment.completionevent, prog_assignment.completioninstance
               FROM {prog_assignment} prog_assignment
         INNER JOIN {user} u ON u.id = prog_assignment.assignmenttypeid
-        INNER JOIN {pos_assignment} pa ON pa.userid = u.id AND pa.type = ?
+         LEFT JOIN {pos_assignment} pa ON pa.userid = u.id AND pa.type = ?
              WHERE prog_assignment.programid = ?
                AND prog_assignment.assignmenttype = ?
         ", array(POSITION_TYPE_PRIMARY, $programid, $this->id));
@@ -1113,6 +1113,11 @@ class managers_category extends prog_assignment_category {
         // Convert these into html
         if (!empty($items)) {
             foreach ($items as $item) {
+                //sometimes a manager may not have a pos_assignment record e.g. top manager in the tree
+                //so we need to set a default path
+                if (empty($item->path)) {
+                    $item->path = '/' . $item->id;
+                }
                 $this->data[] = $this->build_row($item);
             }
         }
@@ -1122,9 +1127,15 @@ class managers_category extends prog_assignment_category {
         global $DB;
         $sql = "SELECT u.id, " . $DB->sql_fullname('u.firstname', 'u.lastname') . " AS fullname, pa.managerpath AS path
                   FROM {user} AS u
-            INNER JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
+             LEFT JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
                  WHERE u.id = ?";
-        return $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $itemid));
+        //sometimes a manager may not have a pos_assignment record e.g. top manager in the tree
+        //so we need to set a default path
+        $item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $itemid));
+        if (empty($item->path)) {
+            $item->path = "/{$itemid}";
+        }
+        return $item;
     }
 
     function build_row($item) {
@@ -1195,10 +1206,15 @@ class managers_category extends prog_assignment_category {
                         prog_assignment.includechildren
                   FROM {prog_assignment} prog_assignment
             INNER JOIN {user} u ON u.id = prog_assignment.assignmenttypeid
-            INNER JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
+             LEFT JOIN {pos_assignment} pa ON u.id = pa.userid AND pa.type = ?
                  WHERE prog_assignment.id = ?";
 
         if ($item = $DB->get_record_sql($sql, array(POSITION_TYPE_PRIMARY, $assignment->id))) {
+            //sometimes a manager may not have a pos_assignment record e.g. top manager in the tree
+            //so we need to set a default path
+            if (empty($item->path)) {
+                $item->path = "/{$item->id}";
+            }
             return $this->get_affected_users($item, $userid);
         } else {
             return array();
@@ -1355,7 +1371,7 @@ class prog_assigment_completion_first_login extends prog_assignment_completion_t
         return '';
     }
     public function get_completion_string() {
-        return 'first login';
+        return get_string('firstlogin', 'totara_program');
     }
     public function get_timestamp($userid,$instanceid) {
         global $DB;
@@ -1572,7 +1588,7 @@ class prog_assigment_completion_profile_field_date extends prog_assignment_compl
         }
 
         // Check if the profile field contains a date in UNIX timestamp form..
-        $timestamppattern = '/^[1-9]+$/';
+        $timestamppattern = '/^[0-9]+$/';
         if (preg_match($timestamppattern, $date, $matches) > 0) {
             return $date;
         }

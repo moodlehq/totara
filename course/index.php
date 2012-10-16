@@ -79,6 +79,7 @@ $stredit = get_string('edit');
 $strdelete = get_string('delete');
 $straction = get_string('action');
 $strfulllistofcourses = get_string('fulllistofcourses');
+$totalcats = $DB->count_records('course_categories');
 
 /// Delete a category.
 if (!empty($delete) and confirm_sesskey()) {
@@ -86,6 +87,15 @@ if (!empty($delete) and confirm_sesskey()) {
     if (!$deletecat = $DB->get_record('course_categories', array('id'=>$delete))) {
         print_error('invalidcategoryid');
     }
+
+    if ($delete == 1) {
+        print_error('deletecategoryerrormisc', 'moodle', '/course/index.php', format_string($deletecat->name));
+    }
+
+    if ($totalcats <= 1) {
+        print_error('deletecategoryerrorfinal', 'moodle', '/course/index.php');
+    }
+
     $context = context_coursecat::instance($delete);
     require_capability('moodle/category:manage', $context);
     require_capability('moodle/category:manage', get_category_or_system_context($deletecat->parent));
@@ -110,10 +120,13 @@ if (!empty($delete) and confirm_sesskey()) {
     echo $OUTPUT->heading($heading);
 
     if ($data->fulldelete) {
-        $deletedcourses = category_delete_full($deletecat, true);
+        list($deletedcourses, $deletedprograms) = category_delete_full($deletecat, true);
 
         foreach ($deletedcourses as $course) {
             echo $OUTPUT->notification(get_string('coursedeleted', '', $course->shortname), 'notifysuccess');
+        }
+        foreach ($deletedprograms as $program) {
+            echo $OUTPUT->notification(get_string('programdeletesuccess', 'totara_program', $program->shortname), 'notifysuccess');
         }
         echo $OUTPUT->notification(get_string('coursecategorydeleted', '', format_string($deletecat->name, true, array('context' => $context))), 'notifysuccess');
 
@@ -143,9 +156,8 @@ if (has_capability('moodle/course:create', $systemcontext)) {
 if (!$adminediting) {
 
 /// Print form for creating new categories
-    $countcategories = $DB->count_records('course_categories');
 
-    if ($countcategories > 1 || ($countcategories == 1 && $DB->count_records('course') > 200)) {
+    if ($totalcats > 1 || ($totalcats == 1 && $DB->count_records('course') > 200)) {
         $strcourses = get_string('courses');
         $strcategories = get_string('categories');
 
@@ -311,10 +323,10 @@ echo '</div>';
 
 echo $OUTPUT->footer();
 
-function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $up=false, $down=false) {
+function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $up=false, $down=false, $delete=true) {
 /// Recursive function to print all the categories ready for editing
 
-    global $CFG, $USER, $OUTPUT;
+    global $CFG, $USER, $OUTPUT, $DB;
 
     static $str = NULL;
 
@@ -360,10 +372,13 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
         if (has_capability('moodle/category:manage', $category->context)) {
             echo '<a title="'.$str->edit.'" href="editcategory.php?id='.$category->id.'&amp;categoryedit=on"><img'.
                  ' src="'.$OUTPUT->pix_url('t/edit') . '" class="iconsmall" alt="'.$str->edit.'" /></a> ';
-
-            echo '<a title="'.$str->delete.'" href="index.php?delete='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
-                 ' src="'.$OUTPUT->pix_url('t/delete') . '" class="iconsmall" alt="'.$str->delete.'" /></a> ';
-
+            if ($delete) {
+                echo '<a title="'.$str->delete.'" href="index.php?delete='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
+                    ' src="'.$OUTPUT->pix_url('t/delete') . '" class="iconsmall" alt="'.$str->delete.'" /></a> ';
+            } else {
+                echo '<img title="' . get_string('deletecategoryunavail', 'moodle') . '"' .
+                    ' src="' . $OUTPUT->pix_url('t/dismiss') . '" class="iconsmall" alt="' . $str->delete . '" />';
+            }
             if (!empty($category->visible)) {
                 echo '<a title="'.$str->hide.'" href="index.php?hide='.$category->id.'&amp;sesskey='.sesskey().'&amp;categoryedit=on"><img'.
                      ' src="'.$OUTPUT->pix_url('t/hide') . '" class="iconsmall" alt="'.$str->hide.'" /></a> ';
@@ -391,7 +406,6 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
             }
         }
         echo '</td>';
-
         echo '</tr>';
     } else {
         $category = new stdClass();
@@ -410,9 +424,11 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
             }
             $up = $first ? false : true;
             $down = $last ? false : true;
+            //checks for single root category or Misc category, and removes their delete button
+            $del = (($category->id == 0 && $countcats == 1) || $cat->id == 1) ? false : true;
             $first = false;
 
-            print_category_edit($cat, $displaylist, $parentslist, $depth+1, $up, $down);
+            print_category_edit($cat, $displaylist, $parentslist, $depth+1, $up, $down, $del);
         }
     }
 }

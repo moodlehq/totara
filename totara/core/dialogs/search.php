@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -225,7 +225,9 @@ switch ($searchtype) {
                 ";
             }
         }
-
+        //always exclude site course
+        $search_info->sql .= " AND c.id <> ?";
+        $params[] = SITEID;
         $search_info->order = " ORDER BY c.sortorder ASC";
         $search_info->params = $params;
         break;
@@ -261,14 +263,26 @@ switch ($searchtype) {
         $fields = array('idnumber', 'name');
         list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
 
-        $search_info->fullname = 'name';
+        $search_info->fullname = "(
+            CASE WHEN {cohort}.idnumber IS NULL
+                OR {cohort}.idnumber = ''
+                OR {cohort}.idnumber = '0'
+            THEN
+                {cohort}.name
+            ELSE " .
+                $DB->sql_concat("{cohort}.name", "' ('", "{cohort}.idnumber", "')'") .
+            "END)";
         $search_info->sql = "
             FROM
                 {cohort}
             WHERE
                 {$searchsql}
         ";
-        $search_info->order = " ORDER BY name ASC";
+        if (!empty($this->customdata['current_cohort_id'])) {
+            $search_info->sql .= ' AND {cohort}.id != ? ';
+            $params[] = $this->customdata['current_cohort_id'];
+        }
+        $search_info->order = ' ORDER BY name ASC';
         $search_info->params = $params;
         break;
 
@@ -341,7 +355,7 @@ if (strlen($query)) {
             $dialog->disabled_items = $this->disabled_items;
 
             foreach ($results as $result) {
-                $item = new object();
+                $item = new stdClass();
 
                 if (method_exists($this, 'search_can_display_result') && !$this->search_can_display_result($result->id)) {
                    continue;

@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -41,6 +41,7 @@ $systemcontext = context_system::instance();
 $program = new program($id);
 $programcontext = $program->get_context();
 
+
 // Integrate into the admin tree only if the user can edit program messages at the top level,
 // otherwise the admin block does not appear to this user, and you get an error.
 if (has_capability('totara/program:configuremessages', $systemcontext)) {
@@ -51,6 +52,14 @@ if (has_capability('totara/program:configuremessages', $systemcontext)) {
     $PAGE->set_title($program->fullname);
     $PAGE->set_heading($program->fullname);
 }
+
+$category_breadcrumbs = get_category_breadcrumbs($program->category);
+foreach ($category_breadcrumbs as $crumb) {
+    $PAGE->navbar->add($crumb['name'], $crumb['link']);
+}
+
+$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
+$PAGE->navbar->add(get_string('editprogrammessages', 'totara_program'));
 
 //Javascript include
 local_js(array(
@@ -154,16 +163,8 @@ add_to_log(SITEID, 'program', 'view messages', "edit_messages.php?id={$program->
 /// Display
 ///
 
-$category_breadcrumbs = get_category_breadcrumbs($program->category);
-
 $heading = format_string($program->fullname);
 $pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
-$navlinks = array();
-$navlinks[] = array('name' => get_string('manageprograms', 'admin'), 'link'=> $CFG->wwwroot . '/course/categorylist.php?viewtype=program', 'type'=>'title');
-$navlinks = array_merge($navlinks, $category_breadcrumbs);
-$navlinks[] = array('name' => format_string($program->shortname), 'link'=> $viewurl, 'type'=>'title');
-$navlinks[] = array('name' => get_string('editprogrammessages', 'totara_program'), 'link'=> '', 'type'=>'title');
-
 //Javascript includes
 $PAGE->requires->strings_for_js(array('editmessages','saveallchanges',
          'confirmmessagechanges','youhaveunsavedchanges','youhaveunsavedchanges',

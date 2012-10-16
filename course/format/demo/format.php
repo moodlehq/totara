@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -66,11 +66,8 @@ if (($marker >=0) && has_capability('moodle/course:setcurrentsection', $context)
 $completioninfo = new completion_info($course);
 echo $completioninfo->display_help_icon();
 
-echo $OUTPUT->heading(get_string('topicoutline'), 2, 'headingblock header outline');
-
 $OUTPUT->container_start();
 $OUTPUT->skip_link_target();
-echo html_writer::start_tag('table', array('class' => "topics", 'width' => "100%", 'summary' => get_string('layouttable')));
 echo html_writer::start_tag('ul', array('class' => 'demo'));
 /// If currently moving a file then show the current clipboard
 if (ismoving($course->id)) {
@@ -86,8 +83,7 @@ if (ismoving($course->id)) {
     $thissection = $sections[$section];
     unset($sections[0]);
 
-    if ($thissection->summary or $thissection->sequence or $PAGE->user_is_editing()) {
-
+    if ($thissection->visible or $PAGE->user_is_editing()) {
         // Note, 'right side' is BEFORE content.
         echo html_writer::start_tag('li', array ('id' => "section-0", 'class' => "section main clearfix"));
         echo $OUTPUT->container('&nbsp;', 'left side');
@@ -95,7 +91,9 @@ if (ismoving($course->id)) {
         echo $OUTPUT->container_start('content');
 
         if (!empty($thissection->name)) {
-            echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 3, 'sectionname');
+            echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 1, 'sectionname');
+        } else {
+            echo $OUTPUT->heading(format_string(get_string('topicoutline'), true, array('context' => $context)), 1, 'sectionname');
         }
 
         echo $OUTPUT->container_start('summary');
@@ -138,7 +136,9 @@ while ($section <= $course->numsections) {
         unset($thissection);
         $thissection->course = $course->id;   // Create a new section structure
         $thissection->section = $section;
+        $thissection->name = null;
         $thissection->summary = '';
+        $thissection->summaryformat = FORMAT_HTML;
         $thissection->visible = 1;
         if (!$thissection->id = $DB->insert_record('course_sections', $thissection)) {
             totara_set_notification('Error inserting new topic!');
@@ -172,11 +172,14 @@ while ($section <= $course->numsections) {
             $sectionstyle = ' current';
             $currenttext = get_accesshide(get_string('currenttopic','access'));
         } else {
-            $sectionstyle = '';
+            $sectionstyle = 'format-demo-content';
         }
 
-        echo html_writer::start_tag('tr', array('id' => "section-{$section}", 'class' => "section main {$sectionstyle}"));
-        echo html_writer::start_tag('td', array('class' => "content format-demo-content"));
+        echo html_writer::start_tag('li', array ('id' => "section-{$section}", 'class' => "section main {$sectionstyle}"));
+        echo $OUTPUT->container('&nbsp;', 'left side');
+        echo $OUTPUT->container('&nbsp;', 'right side');
+        echo $OUTPUT->container_start('content');
+
         if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible) {   // Hidden for students
             echo get_string('notavailable');
         } else {
@@ -198,8 +201,8 @@ while ($section <= $course->numsections) {
             }
         }
 
-        echo html_writer::end_tag('td') . html_writer::end_tag('tr');
-        echo html_writer::tag('tr', html_writer::tag('td', '', array('class' => 'spacer'), array('class' => "section separator")));
+        echo $OUTPUT->container_end();
+        echo html_writer::end_tag("li");
     }
     unset($sections[$section]);
     $section++;
@@ -225,7 +228,6 @@ if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/cou
     }
 }
 echo html_writer::end_tag('ul');
-echo html_writer::end_tag('table');
 
 if (!empty($sectionmenu)) {
     $select = new single_select(new moodle_url('/course/view.php', array('id'=>$course->id)), 'topic', $sectionmenu);

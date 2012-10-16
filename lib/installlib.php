@@ -206,7 +206,7 @@ function install_db_validate($database, $dbhost, $dbuser, $dbpass, $dbname, $pre
  * @return string
  */
 function install_generate_configphp($database, $cfg) {
-    $configphp = '<?php  // Moodle configuration file' . PHP_EOL . PHP_EOL;
+    $configphp = '<?php  // Totara configuration file' . PHP_EOL . PHP_EOL;
 
     $configphp .= 'unset($CFG);' . PHP_EOL;
     $configphp .= 'global $CFG;' . PHP_EOL;
@@ -308,10 +308,10 @@ function install_print_header($config, $stagename, $heading, $stagetext) {
     echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
     echo '<html dir="'.(right_to_left() ? 'rtl' : 'ltr').'">
           <head>
-          <link rel="shortcut icon" href="theme/standard/pix/favicon.ico" />';
+          <link rel="shortcut icon" href="theme/standardtotara/pix/favicon.ico" />';
 
     echo '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/install/css.php" />
-          <title>'.get_string('installation','install').' - Moodle '.$CFG->target_release.'</title>
+          <title>'.get_string('installation','install').' - Totara '.$CFG->target_release.'</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           <meta http-equiv="pragma" content="no-cache" />
           <meta http-equiv="expires" content="0" />';
@@ -380,8 +380,8 @@ function install_print_footer($config, $reload=false) {
     echo '</fieldset><fieldset id="nav_buttons">'.$first.$next.'</fieldset>';
 
     $homelink  = '<div class="sitelink">'.
-       '<a title="Moodle '. $CFG->target_release .'" href="http://docs.moodle.org/en/Administrator_documentation" onclick="this.target=\'_blank\'">'.
-       '<img style="width:100px;height:30px" src="pix/moodlelogo.gif" alt="moodlelogo" /></a></div>';
+       '<a title="Totara '. $CFG->target_release .'" href="http://help.totaralms.com/Getting_Started_for_Administrators.htm" onclick="this.target=\'_blank\'">'.
+       '<img src="theme/standardtotara/pix/logo.png" alt="totaralogo" /></a></div>';
 
     echo '</form></div>';
     echo '<div id="footer"><hr />'.$homelink.'</div>';
@@ -450,7 +450,15 @@ function install_cli_database(array $options, $interactive) {
     // install core
     install_core($version, true);
     set_config('release', $release);
-
+    //set up totara config variables
+    if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
+        || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
+        || !isset($CFG->totara_version) || $CFG->totara_version <> $TOTARA->version) {
+        // Also set Totara release (human readable version)
+        set_config("totara_release", $TOTARA->release);
+        set_config("totara_build", $TOTARA->build);
+        set_config("totara_version", $TOTARA->version);
+    }
     // install all plugins types, local, etc.
     upgrade_noncore(true);
 

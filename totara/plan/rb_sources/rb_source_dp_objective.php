@@ -7,7 +7,7 @@
  * 
  * This program is free software; you can redistribute it and/or modify  
  * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 2 of the License, or     
+ * the Free Software Foundation; either version 3 of the License, or     
  * (at your option) any later version.                                   
  *                                                                       
  * This program is distributed in the hope that it will be useful,
@@ -47,7 +47,7 @@ class rb_source_dp_objective extends rb_base_source {
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
         $this->paramoptions = $this->define_paramoptions();
-        $this->defaultcolumns = array();
+        $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_objective');
@@ -397,6 +397,40 @@ class rb_source_dp_objective extends rb_base_source {
                 'string'
         );
         return $paramoptions;
+    }
+
+    protected function define_defaultcolumns() {
+        $defaultcolumns = array(
+            array(
+                'type' => 'plan',
+                'value' => 'planlink',
+            ),
+            array(
+                'type' => 'plan',
+                'value' => 'status',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'fullnamelink',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'description',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'priority',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'duedate',
+            ),
+            array(
+                'type' => 'objective',
+                'value' => 'proficiencyandapproval',
+            ),
+        );
+        return $defaultcolumns;
     }
 
     /**

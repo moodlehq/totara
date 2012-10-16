@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -42,13 +42,24 @@ if (!$report = $DB->get_record('report_builder_schedule', array('id' => $id))) {
 
 $reportname = $DB->get_field('report_builder', 'fullname', array('id' => $report->reportid));
 
+$returnurl = new moodle_url('/my/reports.php');
+$deleteurl = new moodle_url('/totara/reportbuilder/deletescheduled.php', array('id' => $report->id, 'confirm' => '1', 'sesskey' => $USER->sesskey));
+
+if ($confirm == 1) {
+    if (!confirm_sesskey()) {
+        print_error('confirmsesskeybad', 'error');
+    } else {
+        $DB->delete_records('report_builder_schedule', array('id' => $report->id));
+        add_to_log(SITEID, 'reportbuilder', 'delete', "scheduled.php?id=$report->id", "$reportname (ID $report->id)");
+
+        totara_set_notification(get_string('deletedscheduledreport', 'totara_reportbuilder', format_string($reportname)),
+                                $returnurl, array('class' => 'notifysuccess'));
+    }
+}
 /// Display page
 $PAGE->set_title(' ');
 $PAGE->set_heading(' ');
 echo $OUTPUT->header();
-
-$returnurl = new moodle_url('/my/reports.php');
-$deleteurl = new moodle_url('/totara/reportbuilder/deletescheduled.php', array('id' => $report->id, 'confirm' => '1', 'sesskey' => $USER->sesskey));
 
 if (!$confirm) {
     $strdelete = get_string('deletecheckschedulereport', 'totara_reportbuilder');
@@ -58,14 +69,4 @@ if (!$confirm) {
     exit;
 }
 
-// Delete report builder schedule
-if (!confirm_sesskey()) {
-    print_error('confirmsesskeybad', 'error');
-}
-
-$DB->delete_records('report_builder_schedule', array('id' => $report->id));
-add_to_log(SITEID, 'reportbuilder', 'delete', "scheduled.php?id=$report->id", "$reportname (ID $report->id)");
-
-echo html_writer::tag('p', get_string('deletedscheduledreport', 'totara_reportbuilder', format_string($reportname)));
-echo $OUTPUT->continue_button($returnurl);
 echo $OUTPUT->footer();

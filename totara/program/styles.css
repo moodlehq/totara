@@ -39,3 +39,10 @@ p.course-prog-alt-view {
     background: none repeat scroll 0 0 #F0F0F0;
 }
 
+#prog-completion-relative-date .relativeeventtime {
+    margin-top: 5px;
+}
+
+#prog-completion-or-string {
+    margin: 5px;
+}

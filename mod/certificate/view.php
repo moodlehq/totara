@@ -102,7 +102,9 @@ if (empty($action)) { // Not displaying PDF
     exit;
 } else { // Output to pdf
     // The PDF filename
-    $filename = clean_filename($certificate->name.'.pdf');
+    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
+    $filename = clean_filename(strip_tags(format_string($filename, true))).'.pdf';
     if ($certificate->savecert == 1) {
         // PDF contents are now in $file_contents as a string
        $file_contents = $pdf->Output('', 'S');

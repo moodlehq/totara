@@ -75,6 +75,7 @@ $string['configenablecourserpl']='When enabled, a course can be marked as comple
 $string['configenablemodulerpl']='When enabled for a module, any Course Completion criteria for that module type can be marked as completed by assigning the user a Record of Prior Learning.';
 $string['csvdownload'] = 'Download in spreadsheet format (UTF-8 .csv)';
 $string['deletecoursecompletiondata'] = 'Delete course completion data';
+$string['deletecompletiondata'] = 'Delete completion data';
 $string['enablecompletion'] = 'Enable completion tracking';
 $string['enablecourserpl']='Enable RPL for courses';
 $string['enablemodulerpl']='Enable RPL for modules';

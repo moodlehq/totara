@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -35,7 +35,7 @@ class block_totara_recent_learning extends block_base {
     }
 
     public function get_content() {
-        global $USER, $DB;
+        global $USER, $DB, $CFG;
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -48,16 +48,19 @@ class block_totara_recent_learning extends block_base {
 
         $completions = completion_info::get_all_courses($USER->id);
 
-        $sql = "SELECT c.id,c.fullname FROM
-            {role_assignments} ra
+        $sql = "SELECT c.id,c.fullname, MAX(ra.timemodified)
+            FROM {role_assignments} ra
             INNER JOIN {context} cx
-                ON ra.contextid = cx.id AND cx.contextlevel = " . CONTEXT_COURSE . "
+                ON ra.contextid = cx.id
+                AND cx.contextlevel = " . CONTEXT_COURSE . "
             LEFT JOIN {course} c
                 ON cx.instanceid = c.id
             WHERE ra.userid = ?
-            ORDER BY ra.timemodified DESC";
+            AND ra.roleid = ?
+            GROUP BY c.id, c.fullname
+            ORDER BY MAX(ra.timemodified) DESC";
 
-        $courses = $DB->get_records_sql($sql, array($USER->id));
+        $courses = $DB->get_records_sql($sql, array($USER->id, $CFG->learnerroleid));
         if (!$courses) {
             $this->content->text = get_string('norecentlearning', 'block_totara_recent_learning');
             return $this->content;

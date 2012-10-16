@@ -1135,8 +1135,14 @@ function quiz_update_events($quiz, $override = null) {
         $addopen  = empty($current->id) || !empty($current->timeopen);
         $addclose = empty($current->id) || !empty($current->timeclose);
 
+        if (!empty($quiz->coursemodule)) {
+            $cmid = $quiz->coursemodule;
+        } else {
+            $cmid = get_coursemodule_from_instance('quiz', $quiz->id, $quiz->course)->id;
+        }
+
         $event = new stdClass();
-        $event->description = format_module_intro('quiz', $quiz, $quiz->coursemodule);
+        $event->description = format_module_intro('quiz', $quiz, $cmid);
         // Events module won't show user events when the courseid is nonzero.
         $event->courseid    = ($userid) ? 0 : $quiz->course;
         $event->groupid     = $groupid;
@@ -1328,8 +1334,18 @@ function quiz_reset_userdata($data) {
 
     // Updating dates - shift may be negative too
     if ($data->timeshift) {
+        $DB->execute("UPDATE {quiz_overrides}
+                         SET timeopen = timeopen + ?
+                       WHERE quiz IN (SELECT id FROM {quiz} WHERE course = ?)
+                         AND timeopen <> 0", array($data->timeshift, $data->courseid));
+        $DB->execute("UPDATE {quiz_overrides}
+                         SET timeclose = timeclose + ?
+                       WHERE quiz IN (SELECT id FROM {quiz} WHERE course = ?)
+                         AND timeclose <> 0", array($data->timeshift, $data->courseid));
+
         shift_course_mod_dates('quiz', array('timeopen', 'timeclose'),
                 $data->timeshift, $data->courseid);
+
         $status[] = array(
             'component' => $componentstr,
             'item' => get_string('openclosedatesupdated', 'quiz'),
@@ -1535,15 +1551,16 @@ function quiz_attempt_summary_link_to_reports($quiz, $cm, $context, $returnzero 
  */
 function quiz_supports($feature) {
     switch($feature) {
-        case FEATURE_GROUPS:                  return true;
-        case FEATURE_GROUPINGS:               return true;
-        case FEATURE_GROUPMEMBERSONLY:        return true;
-        case FEATURE_MOD_INTRO:               return true;
-        case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
-        case FEATURE_GRADE_HAS_GRADE:         return true;
-        case FEATURE_GRADE_OUTCOMES:          return false;
-        case FEATURE_BACKUP_MOODLE2:          return true;
-        case FEATURE_SHOW_DESCRIPTION:        return true;
+        case FEATURE_GROUPS:                    return true;
+        case FEATURE_GROUPINGS:                 return true;
+        case FEATURE_GROUPMEMBERSONLY:          return true;
+        case FEATURE_MOD_INTRO:                 return true;
+        case FEATURE_COMPLETION_TRACKS_VIEWS:   return true;
+        case FEATURE_GRADE_HAS_GRADE:           return true;
+        case FEATURE_GRADE_OUTCOMES:            return true;
+        case FEATURE_BACKUP_MOODLE2:            return true;
+        case FEATURE_SHOW_DESCRIPTION:          return true;
+        case FEATURE_CONTROLS_GRADE_VISIBILITY: return true;
 
         default: return null;
     }

@@ -32,7 +32,7 @@ if (isguestuser()) {
     die();
 }
 
-$returnurl = optional_param('returnurl', '', PARAM_URL);
+$returnurl = optional_param('returnurl', '', PARAM_LOCALURL);
 
 if (empty($returnurl)) {
     $returnurl = new moodle_url('/user/filesedit.php');
@@ -53,7 +53,8 @@ $PAGE->set_pagetype('user-files');
 
 $data = new stdClass();
 $data->returnurl = $returnurl;
-$options = array('subdirs'=>1, 'maxbytes'=>$CFG->userquota, 'maxfiles'=>-1, 'accepted_types'=>'*', 'return_types'=>FILE_INTERNAL);
+$maxbytes = get_max_upload_file_size($CFG->maxbytes);
+$options = array('subdirs' => 1, 'maxbytes' => $maxbytes, 'maxfiles' => -1, 'accepted_types' => '*', 'return_types' => FILE_INTERNAL);
 file_prepare_standard_filemanager($data, 'files', $options, $context, 'user', 'private', 0);
 
 $mform = new user_filesedit_form(null, array('data'=>$data, 'options'=>$options));

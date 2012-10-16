@@ -9,10 +9,10 @@ if (!empty($_SERVER['GATEWAY_INTERFACE'])){
 define('CLI_SCRIPT', 1);
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
-require_once($CFG->dirroot . '/admin/tool/totara_sync/cron.php');
+require_once($CFG->dirroot . '/admin/tool/totara_sync/lib.php');
 
 echo 'Running totara_sync cron...';
 
-totara_sync_cron();
+tool_totara_sync_cron();
 
 echo 'Done!'.PHP_EOL;

@@ -206,13 +206,17 @@ class hierarchylib_test extends UnitTestCaseUsingDatabase {
         //Expected custom field return data for get_custom_fields
         $this->cf1 = new stdClass();
         $this->cf1->id = 1;
+        $this->cf1->data = 1;
+        $this->cf1->fieldid = 1;
+        $this->cf1->competencyid = 2;
+        $this->cf1->hidden = 0;
+        $this->cf1->datatype = 'checkbox';
         $this->cf1->fullname = 'Custom Field 1';
+        /*
         $this->cf1->shortname = 'CF1';
         $this->cf1->typeid = 2;
-        $this->cf1->datatype = 'checkbox';
         $this->cf1->description = 'Custom Field Description 1';
         $this->cf1->sortorder = 1;
-        $this->cf1->hidden = 0;
         $this->cf1->locked = 0;
         $this->cf1->required = 0;
         $this->cf1->forceunique = 0;
@@ -222,10 +226,8 @@ class hierarchylib_test extends UnitTestCaseUsingDatabase {
         $this->cf1->param3 = null;
         $this->cf1->param4 = null;
         $this->cf1->param5 = null;
-        $this->cf1->data = 1;
-        $this->cf1->fieldid = 1;
-        $this->cf1->competencyid = 2;
         $this->cf1->categoryid = null;
+        */
     }
 
     function tearDown() {

@@ -5,7 +5,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -148,11 +148,11 @@ M.totara_programexceptions = M.totara_programexceptions || {
             var searchterm = module.config.search_term;
             url += '&action=' + $('#selectionaction option:selected').val();
             url += '&search=' + searchterm;
-            this._request(url, dialog, '_update', searchterm);
+            this._request(url, {object: dialog, method: '_update'});
         };
-        dialog._update = function(response, searchterm) {
+        dialog._update = function(response) {
             this.hide();
-            window.location.href = M.cfg.wwwroot+'/totara/program/exceptions.php?id='+module.config.id+'&search='+searchterm;
+            window.location.href = M.cfg.wwwroot+'/totara/program/exceptions.php?id='+module.config.id+'&search='+module.config.search_term;
         };
 
         totaraDialogs['applyaction'] = dialog;

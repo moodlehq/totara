@@ -132,7 +132,13 @@ class auth_plugin_email extends auth_plugin_base {
 
             } else if ($user->secret == $confirmsecret) {   // They have provided the secret key to get in
                 $DB->set_field("user", "confirmed", 1, array("id"=>$user->id));
-                $DB->set_field("user", "firstaccess", time(), array("id"=>$user->id));
+                if ($user->firstaccess == 0) {
+                    $now = time();
+                    $DB->set_field("user", "firstaccess", $now, array("id"=>$user->id));
+
+                    $user->firstaccess = $now;
+                    events_trigger('user_firstaccess', $user);
+                }
                 return AUTH_CONFIRM_OK;
             }
         } else {

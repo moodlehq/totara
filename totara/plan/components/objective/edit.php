@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -144,7 +144,7 @@ if ($deleteyes) {
                 $data->fullname,
                 isset($data->description) ? $data->description : null,
                 isset($data->priority) ? $data->priority : null,
-                isset($data->duedate) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate) : null,
+                !empty($data->duedate) ? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate) : null,
                 isset($data->scalevalueid) ? $data->scalevalueid : null
         );
         if (!$result) {
@@ -161,7 +161,7 @@ if ($deleteyes) {
         $record->fullname = $data->fullname;
         $record->description = ''; //handled later
         $record->priority = isset($data->priority)?$data->priority:null;
-        $record->duedate = isset($data->duedate)? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate):null;
+        $record->duedate = !empty($data->duedate)? totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'), $data->duedate):null;
         $record->scalevalueid = $data->scalevalueid;
         $record->approved = $component->approval_status_after_update();
 

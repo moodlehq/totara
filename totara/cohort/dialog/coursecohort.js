@@ -5,7 +5,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -180,7 +180,7 @@ totaraDialog_handler_coursecohorts.prototype.add_cohort_delete_event_handlers = 
 
     // Add fresh event handlers
     var self = this;
-    $('.coursecohortdeletelink', this.cohort_table).live('click', function(event) {
+    this.cohort_table.on('click', '.coursecohortdeletelink', function(event) {
         event.preventDefault();
         self.remove_cohort_item(this);
     });

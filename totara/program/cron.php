@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -218,6 +218,9 @@ function program_cron_switch_recurring_courses() {
     }
 
     $recurring_programs = prog_get_recurring_programs();
+    $program_plugin = enrol_get_plugin('totara_program');
+    //get_archetype_roles returns an array, get the first element of it
+    $studentrole = array_shift(get_archetype_roles('student'));
 
     foreach ($recurring_programs as $program) {
 
@@ -241,6 +244,9 @@ function program_cron_switch_recurring_courses() {
 
             // check that the next course actually exists
             if ($newcourse = $DB->get_record('course', array('id' => $recurrence_rec->nextcourseid))) {
+                //add the program enrolment plugin to this course
+                $instanceid = $program_plugin->add_instance($newcourse);
+                $instance = $DB->get_record('enrol', array('id' => $instanceid));
 
                 // Before we set the new course in the program, we have to first save the history
                 // record of any users who have not completed the current course and notify
@@ -248,31 +254,35 @@ function program_cron_switch_recurring_courses() {
                 // the course independently. They can view the record of their complete/incomplete
                 // recurring program history via a link in their record of learning.
 
-                // Query to retrieve all the users who have not completed the program
-                $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, u.*
+                // Query to retrieve all the users and their completion status
+                $sql = "SELECT DISTINCT(pc.userid) AS id, pc.id AS completionid, pc.status as completionstatus, u.*
                         FROM {prog_completion} AS pc
                         LEFT JOIN {user} AS u ON pc.userid = u.id
                         WHERE pc.programid = ?
-                        AND pc.status = ?
                         AND pc.coursesetid = ?";
 
                 // get all the users matching the query
-                $users = $DB->get_records_sql($sql, array($program->id, STATUS_PROGRAM_INCOMPLETE, 0));
+                $users = $DB->get_records_sql($sql, array($program->id, 0));
                 foreach ($users as $user) {
-                    $transaction = $DB->start_delegated_transaction();
-
-                    // copy the existing completion records for the user in to the
-                    // history table so that we have a record to show that the
-                    // course has not been completed
-                    $select = "programid = ? AND userid = ? AND coursesetid = 0";
-                    $params = array($program->id, $user->id);
-                    $completion_records_history = $DB->get_records_select('prog_completion', $select, $params);
-                    $backup_success = true;
-                    foreach ($completion_records_history as $completion_record) {
-                        // we need to store the id of the course that belonged to this recurring program at the time
-                        // it was added to the history table so that we can report on the course history later if necessary
-                        $completion_record->recurringcourseid = $course->id;
-                        $backup_success = $DB->insert_record('prog_completion_history', $completion_record);
+                    //enrol all users assigned to the program in the new course
+                    $program_plugin->enrol_user($instance, $user->id, $studentrole->id);
+                    //handle history and messaging for users who did not complete
+                    if ($user->completionstatus == STATUS_PROGRAM_INCOMPLETE) {
+                        $transaction = $DB->start_delegated_transaction();
+                        // copy the existing completion records for the user in to the
+                        // history table so that we have a record to show that the
+                        // course has not been completed
+                        $select = "programid = ? AND userid = ? AND coursesetid = 0";
+                        $params = array($program->id, $user->id);
+                        $completion_records_history = $DB->get_records_select('prog_completion', $select, $params);
+                        $backup_success = true;
+                        foreach ($completion_records_history as $completion_record) {
+                            // we need to store the id of the course that belonged to this recurring program at the time
+                            // it was added to the history table so that we can report on the course history later if necessary
+                            $completion_record->recurringcourseid = $course->id;
+                            $backup_success = $DB->insert_record('prog_completion_history', $completion_record);
+                        }
+                        $transaction->allow_commit();
 
                         // send a message to the user to let them know that the course
                         // has changed and that they haven't completed it
@@ -281,22 +291,10 @@ function program_cron_switch_recurring_courses() {
                         $messagedata->userfrom = $user;
                         $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
                         $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
-                        $messagedata->contexturl = $CFG->wwwroot.'/course/view.php?id='.$course->id;
+                        $messagedata->contexturl = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
                         $messagedata->contexturlname = get_string('launchcourse', 'totara_program');;
                         $result = tm_alert_send($messagedata);
                     }
-                    $transaction->allow_commit();
-
-                    // send a message to the user to let them know that the course
-                    // has changed and that they haven't completed it
-                    $messagedata = new stdClass();
-                    $messagedata->userto = $user;
-                    $messagedata->userfrom = get_admin();
-                    $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
-                    $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
-                    $messagedata->contexturl = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
-                    $messagedata->contexturlname = get_string('launchcourse', 'totara_program');;
-                    $result = tm_alert_send($messagedata);
                 }
 
                 // Now we can make the next course visible and set it as the current course in the program
@@ -380,7 +378,7 @@ function program_cron_copy_recurring_courses() {
             $backupfile = $backupfile['backup_destination'];
             $bc->destroy();
 
-            $datestr = userdate($course->startdate, '%d/%m/%Y');
+            $datestr = userdate($course->startdate, '%d/%m/%Y', null, false);
             $fullname = $course->fullname;
             if (preg_match('/ ([0-9]{2}\/[0-9]{2}\/[0-9]{4})$/', $fullname)) {
                 $fullname = substr($fullname, 0, -11);
@@ -390,7 +388,7 @@ function program_cron_copy_recurring_courses() {
                 $shortname = substr($shortname, 0, -12);
             }
 
-            $context = get_context_instance(CONTEXT_COURSE, $course->id);
+            $context = context_course::instance($course->id);
 
             // Unzip backup to a temporary folder
             $tempfolder = time() . $USER->id;

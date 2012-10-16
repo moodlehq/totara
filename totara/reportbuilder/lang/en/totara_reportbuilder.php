@@ -6,7 +6,7 @@
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -132,7 +132,6 @@ $string['error:groupnotcreated'] = 'Group could not be created';
 $string['error:groupnotcreatedinitfail'] = 'Group could not be created - failed to initialize tables!';
 $string['error:groupnotcreatedpreproc'] = 'Group could not be created - preprocessor not found!';
 $string['error:groupnotdeleted'] = 'Group could not be deleted';
-$string['error:invalideventtype'] = 'Invalid event type: ';
 $string['error:invalidreportid'] = 'Invalid report ID';
 $string['error:invalidreportscheduleid'] = 'Invalid scheduled report ID';
 $string['error:invaliduserid'] = 'Invalid user ID';
@@ -398,6 +397,7 @@ $string['courseicon'] = 'Course Icon';
 $string['courseshortname'] = 'Course Shortname';
 $string['courseidnumber'] = 'Course ID Number';
 $string['courseid'] = 'Course ID';
+$string['coursevisible'] = 'Course Visible';
 $string['courselanguage'] = 'Course language';
 $string['coursestartdate'] = 'Course Start Date';
 $string['coursenameandsummary'] = 'Course Name and Summary';
@@ -437,6 +437,8 @@ $string['userspospathids'] = 'User\'s Position Path IDs';
 $string['userspos'] = 'User\'s Position';
 $string['positiontype'] = 'User\'s Position Type';
 $string['positiontypeid'] = 'User\'s Position Type ID';
+$string['posstartdate'] = 'User\'s Position Start Date';
+$string['posenddate'] = 'User\'s Position End Date';
 $string['usersjobtitle'] = 'User\'s Job Title';
 $string['participantscurrentorgbasic'] = 'Participant\'s Current Organisation (basic)';
 $string['participantscurrentorg'] = 'Participant\'s Current Organisation';
