@@ -56,7 +56,7 @@ function xmldb_tool_totara_sync_upgrade($oldversion) {
             SET value = 'delete'
             WHERE plugin = 'totara_sync_source_user_csv'
             AND name = 'fieldmapping_deleted'
-            AND value = ''";
+            AND " . $DB->sql_compare_text('value') . " = ''";
         $DB->execute($sql);
 
         upgrade_plugin_savepoint(true, 2012101100, 'tool', 'totara_sync');
