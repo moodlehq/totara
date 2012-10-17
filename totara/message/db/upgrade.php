@@ -147,6 +147,9 @@ function xmldb_totara_message_upgrade($oldversion) {
                     } else {
                         tm_alert_send($msg);
                     }
+                    // Unset the user records to save memory, we don't need them
+                    unset($msg->userto);
+                    unset($msg->userfrom);
                     upgrade_set_timeout(60*5); // set up timeout, may also abort execution
                     $pbar->update($i, $count, "Migrating totara messages - message $i/$count.");
                 }
