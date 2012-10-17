@@ -34,6 +34,7 @@ class rb_plan_programs_embedded extends rb_base_embedded {
 
         $userid = array_key_exists('userid', $data) ? $data['userid'] : null;
         $rolstatus = array_key_exists('rolstatus', $data) ? $data['rolstatus'] : null;
+        $exceptionstatus = array_key_exists('exceptionstatus', $data) ? $data['exceptionstatus'] : null;
 
         $this->url = '/totara/plan/record/programs.php';
         $this->source = 'dp_program';
@@ -103,6 +104,10 @@ class rb_plan_programs_embedded extends rb_base_embedded {
                 break;
             }
             $this->embeddedparams['rolstatus'] = $rolstatus;
+        }
+
+        if (isset($exceptionstatus)) {
+            $this->embeddedparams['exceptionstatus'] = $exceptionstatus;
         }
 
         $context = context_system::instance();
