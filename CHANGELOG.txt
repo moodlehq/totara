@@ -1,5 +1,24 @@
 Totara LMS Changelog
 
+Release 2.2.8 (18 October 2012):
+==================================================
+
+Database upgrades:
+    T-10028     Fix totara_sync MSSQL error on upgrade from 2.2.6
+    T-10026     Fix Facetoface MSSQL error on upgrade from 2.2.6
+    T-10002     Fix Site Policy URLs on upgrade from 1.1
+    T-9886      Fix memory leak on upgrade from 1.1 where there are large numbers of messages
+
+Bug fixes:
+    T-10008     Fix issues with MySQL temptable in totara_sync
+    T-10023     Fix HTML table padding
+    T-9855      Fix dynamic ruleset required field message in Audiences
+    T-9834      Fix for calendar breadcrumbs
+    T-9674      Fix for Facetoface manager approval message strings
+    T-10022     Fix Javascript error on Programs Assignments tab
+    T-9885      Fix references to moodle in language packs
+
+
 Release 2.2.7 (11 October 2012):
 ==================================================
 
@@ -36,7 +55,6 @@ Improvements:
 
 Bug fixes:
     T-9982      Fix dialog and datepicker Javascript errors in IE7
-    T-9987      Fix duplicated footer in program messages
     T-9823      Fix incorrect help text in help popups in plan templates and competency framework
     T-9957      Fix report builder "Not in" filter issue when comparing composite fields
     T-9910      Fix bug on upgrade from Totara 1.1 that turns off site-wide completion
