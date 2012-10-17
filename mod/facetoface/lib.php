@@ -2107,7 +2107,7 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
     $manageremail = facetoface_get_manageremail($userid);
     if (!empty($posttextmgrheading) and !empty($manageremail) and $session->datetimeknown) {
         if ($notificationtype & MDL_F2F_CANCEL) {
-            $copybelowstr = 'setting:defaultcancellationinstrmngrcopybelow';
+            $copybelowstring = 'setting:defaultcancellationinstrmngrcopybelow';
         }
        if ($notificationtype & MDL_F2F_INVITE) {
             $copybelowstring = 'setting:defaultconfirmationinstrmngrcopybelow';
@@ -2115,7 +2115,7 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
         $copybelow = facetoface_email_substitutions(get_string($copybelowstring, 'facetoface'), $facetoface->name,
             $facetoface->reminderperiod, $user, $session, $session->id) . "\n";
 
-        $managertext = $posttextmgrheadingi . $copybelow . $posttext;
+        $managertext = $posttextmgrheading . $copybelow . $posttext;
         $manager = $user;
         $manager->email = $manageremail;
 
