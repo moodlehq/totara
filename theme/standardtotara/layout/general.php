@@ -6,6 +6,7 @@ $hasheading = $PAGE->heading;
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
 $haslogininfo = (empty($PAGE->layout_options['nologininfo']));
+$haslangmenu = (!isset($PAGE->layout_options['langmenu']) || $PAGE->layout_options['langmenu'] );
 
 $hassidepre = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-pre', $OUTPUT));
 $hassidepost = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-post', $OUTPUT));
@@ -93,13 +94,16 @@ echo $OUTPUT->doctype() ?>
           <div id="logo" class="custom"><a href="<?php echo $CFG->wwwroot; ?>"><img class="logo" src="<?php echo $logourl;?>" alt="Logo" /></a></div>
           <?php } ?>
           <div class="headermenu">
-            <?php
-            if (!empty($PAGE->layout_options['langmenu'])) {
-                echo $OUTPUT->lang_menu();
-            } ?>
-            <?php if ($haslogininfo) { ?>
+            <?php if ($haslogininfo || $haslangmenu) { ?>
               <div class="profileblock">
-                <?php echo $OUTPUT->login_info(); ?>
+                <?php
+                if ($haslogininfo) {
+                    echo $OUTPUT->login_info();
+                }
+                if ($haslangmenu) {
+                    echo $OUTPUT->lang_menu();
+                }
+                ?>
               </div>
             <?php } ?>
           </div>

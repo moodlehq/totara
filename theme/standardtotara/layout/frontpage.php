@@ -87,7 +87,10 @@ echo $OUTPUT->doctype() ?>
           <?php } ?>
           <div class="headermenu">
             <div class="profileblock">
-              <?php echo $OUTPUT->login_info(); ?>
+              <?php
+              echo $OUTPUT->login_info();
+              echo $OUTPUT->lang_menu();
+              ?>
             </div>
           </div>
         </div>
