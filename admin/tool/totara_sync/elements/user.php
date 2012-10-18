@@ -378,8 +378,11 @@ class totara_sync_element_user extends totara_sync_element {
         if (isset($suser->country)) {
             $user->country = $suser->country;
         }
-        if (isset($suser->language)) {
-            $user->language = $suser->language;
+        if (isset($suser->timezone)) {
+            $user->timezone = $suser->timezone;
+        }
+        if (isset($suser->lang)) {
+            $user->lang = $suser->lang;
         }
         if (isset($suser->description)) {
             $user->description = $suser->description;
