@@ -213,6 +213,11 @@ function tm_message_send($eventdata) {
 function tm_insert_metadata($eventdata, $processorid) {
     global $DB;
 
+    // check if metadata record already exists (from other message provider alert/task)
+    if ($DB->record_exists('message_metadata', array('messageid' => $eventdata->savedmessageid))) {
+      return $eventdata->savedmessageid;
+    }
+
     // add the metadata record
     $eventdata->onaccept = isset($eventdata->onaccept) ? serialize($eventdata->onaccept) : null;
     $eventdata->onreject = isset($eventdata->onreject) ? serialize($eventdata->onreject) : null;
