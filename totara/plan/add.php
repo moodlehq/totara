@@ -55,7 +55,7 @@ if (!dp_can_view_users_plans($userid)) {
 // START PERMISSION HACK
 if ($userid != $USER->id) {
     // Make sure user is manager
-    if (totara_is_manager($userid) || isadmin()) {
+    if (totara_is_manager($userid) || is_siteadmin()) {
         $role = 'manager';
     } else {
         print_error('error:nopermissions', 'totara_plan');
