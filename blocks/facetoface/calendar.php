@@ -781,7 +781,7 @@ function get_matching_waitlisted_sessions($activefilters) {
             $whereparams = array('%' . $fieldvalue . '%');
         }
         $filterwhere .= " AND d{$filternb}.fieldid = ? AND $whereclause ";
-        $filterparams = array_merge($filterparams, array($fieldid), $whereparams);
+        $filterparams = array_merge($filterparams, array(F2F_CAL_NONE, $fieldid), $whereparams);
         $filternb++;
     }
 
@@ -790,7 +790,7 @@ function get_matching_waitlisted_sessions($activefilters) {
                                    FROM {facetoface} f
                                    JOIN {facetoface_sessions} s ON f.id = s.facetoface
                                    $filterjoins
-                                  WHERE f.showoncalendar = 1 AND s.datetimeknown = 0
+                                  WHERE f.showoncalendar > ? AND s.datetimeknown = 0
                                   $filterwhere", $filterparams);
 
     return $sessions;

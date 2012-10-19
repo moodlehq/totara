@@ -64,6 +64,9 @@ define('CUSTOMFIELD_TYPE_MULTISELECT', 2);
 
 // Calendar-related constants
 define('CALENDAR_MAX_NAME_LENGTH', 15);
+define('F2F_CAL_NONE',      0);
+define('F2F_CAL_COURSE',    1);
+define('F2F_CAL_SITE',      2);
 
 // Signup status codes (remember to update $MDL_F2F_STATUS)
 define('MDL_F2F_STATUS_USER_CANCELLED',     10);
@@ -285,11 +288,11 @@ function facetoface_fix_settings($facetoface) {
     if (empty($facetoface->emailmanagercancellation)) {
         $facetoface->cancellationinstrmngr = null;
     }
+    if (empty($facetoface->usercalentry)) {
+        $facetoface->usercalentry = 0;
+    }
     if (empty($facetoface->thirdpartywaitlist)) {
         $facetoface->thirdpartywaitlist = 0;
-    }
-    if (empty($facetoface->showoncalendar)) {
-        $facetoface->showoncalendar = 0;
     }
     if (empty($facetoface->approvalreqd)) {
         $facetoface->approvalreqd = 0;
@@ -310,17 +313,10 @@ function facetoface_add_instance($facetoface) {
         facetoface_grade_item_update($facetoface);
     }
 
-    //Update events when we update instance
+    //update any calendar entries
     if ($sessions = facetoface_get_sessions($facetoface->id)) {
         foreach ($sessions as $session) {
-            // Update bookings
-            $return = $return && facetoface_update_calendar_events($session, 'booking');
-            // Update sessions
-            $return = $return && facetoface_update_calendar_events($session, 'session');
-
-            // Update the session on the site calendar
-            $return = $return && facetoface_remove_session_from_site_calendar($session);
-            $return = $return && facetoface_add_session_to_site_calendar($session, $facetoface);
+            facetoface_update_calendar_entries($session, $facetoface);
         }
     }
 
@@ -332,19 +328,21 @@ function facetoface_add_instance($facetoface) {
  * form in mod.html) this function will update an existing instance
  * with new data.
  */
-function facetoface_update_instance($facetoface) {
-   global $DB;
-    $facetoface->id = $facetoface->instance;
+function facetoface_update_instance($facetoface, $instanceflag = true) {
+    global $DB;
 
-    facetoface_fix_settings($facetoface);
-    if ($return = $DB->update_record('facetoface', $facetoface)) {
+    if ($instanceflag) {
+        $facetoface->id = $facetoface->instance;
+    }
+
+   facetoface_fix_settings($facetoface);
+   if ($return = $DB->update_record('facetoface', $facetoface)) {
         facetoface_grade_item_update($facetoface);
 
-        //update any entries the facetoface has in the site calendar
-        $sessions = facetoface_get_sessions($facetoface->id);
-        foreach ($sessions as $session) {
-            if (facetoface_remove_session_from_site_calendar($session)) {
-                facetoface_add_session_to_site_calendar($session, $facetoface);
+        //update any calendar entries
+        if ($sessions = facetoface_get_sessions($facetoface->id)) {
+            foreach ($sessions as $session) {
+                facetoface_update_calendar_entries($session, $facetoface);
             }
         }
     }
@@ -466,10 +464,9 @@ function facetoface_add_session($session, $sessiondates) {
         }
     }
 
-    // Put the sessions in this user's calendar
-    // (i.e. we're assuming it's the teacher)
+    //create any calendar entries
     $session->sessiondates = $sessiondates;
-    facetoface_add_session_to_user_calendar($session, $eventname, $USER->id, 'session');
+    facetoface_update_calendar_entries($session);
 
     return $session->id;
 }
@@ -482,11 +479,9 @@ function facetoface_update_session($session, $sessiondates) {
 
     $session->timemodified = time();
     $session = cleanup_session_data($session);
-
     $transaction = $DB->start_delegated_transaction();
 
     $DB->update_record('facetoface_sessions', $session);
-
     $DB->delete_records('facetoface_sessions_dates', array('sessionid' => $session->id));
 
     if (empty($sessiondates)) {
@@ -504,15 +499,54 @@ function facetoface_update_session($session, $sessiondates) {
         }
     }
 
-    // Update Calendar entries for students and teachers
+    //update any calendar entries
     $session->sessiondates = $sessiondates;
-    facetoface_update_calendar_events($session, 'booking');
 
-    facetoface_update_calendar_events($session, 'session');
+    facetoface_update_calendar_entries($session);
 
     $transaction->allow_commit();
 
     return facetoface_update_attendees($session);
+}
+
+function facetoface_update_calendar_entries($session, $facetoface = null){
+    global $USER, $DB;
+
+    if (empty($facetoface)) {
+        $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
+    }
+
+    //remove from all calendars
+    facetoface_delete_user_calendar_events($session, 'booking');
+    facetoface_delete_user_calendar_events($session, 'session');
+    facetoface_remove_session_from_calendar($session, $facetoface->course);
+    facetoface_remove_session_from_calendar($session, SITEID);
+
+    if (empty($facetoface->showoncalendar) && empty($facetoface->usercalentry)) {
+        return true;
+    }
+
+    //add to NEW calendartype
+    if ($facetoface->usercalentry) {
+    //get ALL enrolled/booked users
+        $users  = facetoface_get_attendees($session->id);
+        if (!in_array($USER->id, $users)) {
+            facetoface_add_session_to_calendar($session, $facetoface, 'user', $USER->id, 'session');
+        }
+
+        foreach ($users as $user) {
+            $eventtype = $user->statuscode == MDL_F2F_STATUS_BOOKED ? 'booking' : 'session';
+            facetoface_add_session_to_calendar($session, $facetoface, 'user', $user->id, $eventtype);
+        }
+    }
+
+    if ($facetoface->showoncalendar == F2F_CAL_COURSE) {
+        facetoface_add_session_to_calendar($session, $facetoface, 'course');
+    } else if ($facetoface->showoncalendar == F2F_CAL_SITE) {
+        facetoface_add_session_to_calendar($session, $facetoface, 'site');
+    }
+
+    return true;
 }
 
 /**
@@ -652,11 +686,13 @@ function facetoface_delete_session($session) {
                                          instance = ? AND description LIKE ?",
                                          array($facetoface->id, "%attendees.php?s={$session->id}%"));
 
-    // Remove entry from site-wide calendar
-    facetoface_remove_session_from_site_calendar($session);
-
-    // Remove entry from site-wide calendar
-    facetoface_remove_session_from_site_calendar($session);
+    if ($facetoface->showoncalendar == F2F_CAL_COURSE) {
+        // Remove entry from course calendar
+        facetoface_remove_session_from_calendar($session, $facetoface->course);
+    } else if ($facetoface->showoncalendar == F2F_CAL_SITE) {
+        // Remove entry from site-wide calendar
+        facetoface_remove_session_from_calendar($session, SITEID);
+    }
 
     // Delete session details
     $DB->delete_records('facetoface_sessions', array('id' => $session->id));
@@ -1781,9 +1817,11 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
         return false;
     }
 
-    // Add to calendar
-    if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
-        facetoface_add_session_to_user_calendar($session, $facetoface->name, $userid, 'booking');
+    // Add to user calendar -- if facetoface usercalentry is set to true
+    if ($facetoface->usercalentry) {
+        if (in_array($new_status, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED))) {
+            facetoface_add_session_to_calendar($session, $facetoface, 'user', $userid, 'booking');
+        }
     }
 
     // Course completion
@@ -1992,7 +2030,7 @@ function facetoface_user_cancel($session, $userid=false, $forcecancel=false, &$e
     }
 
     if (facetoface_user_cancel_submission($session->id, $userid, $cancelreason)) {
-        facetoface_remove_bookings_from_user_calendar($session, $userid);
+        facetoface_remove_session_from_calendar($session, 0, $userid);
 
         facetoface_update_attendees($session);
 
@@ -3119,69 +3157,23 @@ function facetoface_user_complete($course, $user, $mod, $facetoface) {
 }
 
 /**
- * Add a link to the session to this user's Moodle calendar.
+ * Add a link to the session to the courses calendar.
  *
- * @param class   $session     Record from the facetoface_sessions table
- * @param class   $eventname   Name to display for this event
- * @param integer $userid      ID of the user
- * @param string  $eventtype   Type of the event (booking or session)
+ * @param class   $session          Record from the facetoface_sessions table
+ * @param class   $eventname        Name to display for this event
+ * @param string  $calendartype     Which calendar to add the event to (user, course, site)
+ * @param int     $userid           Optional param for user calendars
+ * @param string  $eventtype        Optional param for user calendar (booking/session)
  */
-function facetoface_add_session_to_user_calendar($session, $eventname, $userid, $eventtype) {
+function facetoface_add_session_to_calendar($session, $facetoface, $calendartype = 'none', $userid = 0, $eventtype = 'session') {
     global $CFG, $DB;
 
-    if (!$session->datetimeknown) {
-        // There is no date associated with this session, nothing needs to be done
-        return true;
+    if (empty($session->datetimeknown)) {
+        return true; //date unkown, can't add to calendar
     }
 
-    $detailsurl = $CFG->wwwroot . '/mod/facetoface/';
-    $detailsurl .= ('session' == $eventtype) ? 'attendees' : 'signup';
-    $detailsurl .= ".php?s=$session->id";
-
-    foreach ($session->sessiondates as $date) {
-        $newevent = new stdClass();
-        $newevent->name = $eventname;
-        $newevent->description = get_string("calendareventdescription$eventtype", 'facetoface', $detailsurl);
-        $newevent->format = FORMAT_HTML;
-        $newevent->courseid = 0; // Not a course event
-        $newevent->groupid = 0;
-        $newevent->userid = $userid;
-        $newevent->instance = $session->facetoface;
-        $newevent->modulename = 'facetoface';
-        $newevent->eventtype = "facetoface$eventtype";
-        $newevent->timestart = $date->timestart;
-        $newevent->timeduration = $date->timefinish - $date->timestart;
-        $newevent->visible = 1;
-        $newevent->timemodified = time();
-
-        if ($eventtype == 'booking') {
-            //Check for and Delete the 'created' calendar event to reduce multiple entries for the same event
-            $DB->delete_records('event', array('name' => $eventname, 'userid' => $userid,
-                'instance' => $session->facetoface, 'eventtype' => 'facetofacesession'));
-        }
-
-        $DB->insert_record('event', $newevent);
-    }
-
-    return true;
-}
-
-/**
- * Add a link to the session to the site Calendar
- *
- * @param class   $session     Record from the facetoface_sessions table
- * @param class   $facetoface  Record from the facetoface table
- */
-function facetoface_add_session_to_site_calendar($session, $facetoface) {
-    global $CFG, $DB;
-
-    if (empty($facetoface->showoncalendar) or empty($session->datetimeknown)) {
-        return true; // not meant for the calendar
-    }
-
-    $shortname = $facetoface->shortname;
-    if (empty($shortname)) {
-        $shortname = substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
+    if (empty($facetoface->showoncalendar) && empty($facetoface->usercalentry)) {
+        return true; //facetoface calendar settings prevent calendar
     }
 
     $description = '';
@@ -3189,8 +3181,28 @@ function facetoface_add_session_to_site_calendar($session, $facetoface) {
         $description .= html_writer::tag('p', clean_param($facetoface->description, PARAM_CLEANHTML));
     }
     $description .= facetoface_print_session($session, false, true, true);
-    $signupurl = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
-    $description .= html_writer::link($signupurl, get_string('signupforthissession', 'facetoface'));
+    $linkurl = new moodle_url('/mod/facetoface/signup.php', array('s' => $session->id));
+    $linktext = get_string('signupforthissession', 'facetoface');
+
+    if ($calendartype == 'site' && $facetoface->showoncalendar == F2F_CAL_SITE) {
+        $courseid = SITEID;
+        $description .= html_writer::link($linkurl, $linktext);
+    } else if ($calendartype == 'course' && $facetoface->showoncalendar == F2F_CAL_COURSE) {
+        $courseid = $facetoface->course;
+        $description .= html_writer::link($linkurl, $linktext);
+    } else if ($calendartype == 'user' && $facetoface->usercalentry) {
+        $courseid = 0;
+        $urlvar = ($eventtype == 'session') ? 'attendees' : 'signup';
+        $linkurl = $CFG->wwwroot . "/mod/facetoface/" . $urlvar . ".php?s=$session->id";
+        $description .= get_string("calendareventdescription{$eventtype}", 'facetoface', $linkurl);
+    } else {
+        return true;
+    }
+
+    $shortname = $facetoface->shortname;
+    if (empty($shortname)) {
+        $shortname = substr($facetoface->name, 0, CALENDAR_MAX_NAME_LENGTH);
+    }
 
     $result = true;
     foreach ($session->sessiondates as $date) {
@@ -3198,17 +3210,23 @@ function facetoface_add_session_to_site_calendar($session, $facetoface) {
         $newevent->name = $shortname;
         $newevent->description = $description;
         $newevent->format = FORMAT_HTML;
-        $newevent->courseid = SITEID; // site-wide event
+        $newevent->courseid = $courseid;
         $newevent->groupid = 0;
-        $newevent->userid = 0; // not a user event
-        $newevent->uuid = "$session->id";
+        $newevent->userid = $userid;
+        $newevent->uuid = "{$session->id}";
         $newevent->instance = $session->facetoface;
         $newevent->modulename = 'facetoface';
-        $newevent->eventtype = "facetofacesession";
+        $newevent->eventtype = "facetoface{$eventtype}";
         $newevent->timestart = $date->timestart;
         $newevent->timeduration = $date->timefinish - $date->timestart;
         $newevent->visible = 1;
         $newevent->timemodified = time();
+
+        if ($calendartype == 'user' && $eventtype == 'booking') {
+            //Check for and Delete the 'created' calendar event to reduce multiple entries for the same event
+            $DB->delete_records('event', array('name' => $shortname, 'userid' => $userid,
+                'instance' => $session->facetoface, 'eventtype' => 'facetofacesession'));
+        }
 
         $result = $result && $DB->insert_record('event', $newevent);
     }
@@ -3217,39 +3235,21 @@ function facetoface_add_session_to_site_calendar($session, $facetoface) {
 }
 
 /**
- * Remove all entries in the student's calendar which relate to this session.
+ * Remove all entries in the course calendar which relate to this session.
  *
  * @param class $session    Record from the facetoface_sessions table
  * @param integer $userid   ID of the user
  */
-function facetoface_remove_bookings_from_user_calendar($session, $userid) {
+function facetoface_remove_session_from_calendar($session, $courseid = 0, $userid = 0) {
     global $DB;
 
-    $params = array($session->facetoface, $userid);
+    $params = array($session->facetoface, $userid, $courseid, $session->id);
 
     return $DB->delete_records_select('event', "modulename = 'facetoface' AND
-                                           eventtype = 'facetofacebooking' AND
-                                           instance = ? AND
-                                           userid = ? AND
-                                           courseid = 0", $params);
-}
-
-/**
- * Remove all entries in the site calendar which relate to this session.
- *
- * @param class $session       Record from the facetoface_sessions table
- */
-function facetoface_remove_session_from_site_calendar($session) {
-    global $CFG, $DB;
-
-    $params = array($session->facetoface, SITEID, $session->id);
-
-    return $DB->delete_records_select('event', "modulename = 'facetoface' AND
-                                           eventtype = 'facetofacesession' AND
-                                           instance = ? AND
-                                           courseid = ? AND
-                                           uuid = ? AND
-                                           userid = 0", $params);
+                                                instance = ? AND
+                                                userid = ? AND
+                                                courseid = ? AND
+                                                uuid = ?", $params);
 }
 
 /**
@@ -3259,7 +3259,31 @@ function facetoface_remove_session_from_site_calendar($session) {
  * @param class  $session    Record from the facetoface_sessions table
  * @param string $eventtype  Type of the event (booking or session)
  */
-function facetoface_update_calendar_events($session, $eventtype) {
+function facetoface_update_user_calendar_events($session, $eventtype) {
+    global $DB;
+
+    $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
+
+    if (empty($facetoface->usercalentry) || $facetoface->usercalentry == 0) {
+        return true;
+    }
+
+    $users = facetoface_delete_user_calendar_events($session, $eventtype);
+
+    // Add this session to these users' calendar
+    foreach ($users as $user) {
+        facetoface_add_session_to_calendar($session, $facetoface, 'user', $user->userid, $eventtype);
+    }
+    return true;
+}
+
+/**
+ *Delete all user level calendar events for a face to face session
+ *
+ * @param class     $session    Record from the facetoface_sessions table
+ * @param string    $eventtype  Type of the event (booking or session)
+ */
+function facetoface_delete_user_calendar_events($session, $eventtype) {
     global $CFG, $DB;
 
     $whereclause = "modulename = 'facetoface' AND
@@ -3276,24 +3300,17 @@ function facetoface_update_calendar_events($session, $eventtype) {
         $whereparams[] = $likestr;
     }
 
-    // Find all users with this session in their calendar
+    //users calendar
     $users = $DB->get_records_sql("SELECT DISTINCT userid
         FROM {event}
         WHERE $whereclause", $whereparams);
 
-    $result = true;
     if ($users && count($users) > 0) {
         // Delete the existing events
         $DB->delete_records_select('event', $whereclause, $whereparams);
-
-        // Add this session to these users' calendar
-        $eventname = $DB->get_field('facetoface', 'name', array('id' => $session->facetoface));
-        foreach ($users as $user) {
-            facetoface_add_session_to_user_calendar($session, $eventname, $user->userid, $eventtype);
-        }
     }
 
-    return true;
+    return $users;
 }
 
 /**

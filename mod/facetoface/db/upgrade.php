@@ -293,7 +293,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             if ($records = $DB->get_records('facetoface_sessions', '', '', '', 'id, facetoface')) {
                 // Remove all exising site-wide events (there shouldn't be any)
                 foreach ($records as $record) {
-                    if (!facetoface_remove_session_from_site_calendar($record)) {
+                    if (!facetoface_remove_session_from_calendar($record, SITEID)) {
                         $result = false;
                         throw new Exception('Could not remove session from site calendar');
                         break;
@@ -305,7 +305,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                     $session = facetoface_get_session($record->id);
                     $facetoface = $DB->get_record('facetoface', 'id', $record->facetoface);
 
-                    if (!facetoface_add_session_to_site_calendar($session, $facetoface)) {
+                    if (!facetoface_add_session_to_calendar($session, $facetoface, 'site')) {
                         $result = false;
                         throw new Exception('Could not add session to site calendar');
                         break;
@@ -478,7 +478,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         if ($records = $DB->get_records('facetoface_sessions', '', '', '', 'id, facetoface')) {
             // Remove all exising site-wide events (there shouldn't be any)
             foreach ($records as $record) {
-                facetoface_remove_session_from_site_calendar($record);
+                facetoface_remove_session_from_calendar($record, SITEID);
             }
 
             // Add new site-wide events
@@ -486,7 +486,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                 $session = facetoface_get_session($record->id);
                 $facetoface = $DB->get_record('facetoface', 'id', $record->facetoface);
 
-                facetoface_add_session_to_site_calendar($session, $facetoface);
+                facetoface_add_session_to_calendar($session, $facetoface, 'site');
             }
         }
 
@@ -722,5 +722,26 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2012140605, 'facetoface');
     }
 
-    return $result;
+    if ($oldversion < 2012140609) {
+        //add a field for the user calendar entry checkbox
+        $table = new xmldb_table('facetoface');
+        $field = new xmldb_field('usercalentry');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, 1, XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 1);
+        $result = $result && $dbman->add_field($table, $field);
+
+        //update the existing showoncalendar field, change true to F2F_CAL_SITE
+        $sql = 'UPDATE {facetoface}
+                SET showoncalendar = ?
+                WHERE showoncalendar = ?';
+        $DB->execute($sql, array(F2F_CAL_SITE, F2F_CAL_COURSE));
+
+        $f2f = $DB->get_records('facetoface');
+        foreach ($f2f as $facetoface) {
+            facetoface_update_instance($facetoface, false);
+        }
+
+        upgrade_mod_savepoint(true, 2012140609, 'facetoface');
+    }
+
+        return $result;
 }

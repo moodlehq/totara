@@ -1,6 +1,7 @@
 <?php
 
 require_once "$CFG->dirroot/course/moodleform_mod.php";
+require_once "$CFG->dirroot/mod/facetoface/lib.php";
 
 class mod_facetoface_mod_form extends moodleform_mod {
 
@@ -43,14 +44,22 @@ class mod_facetoface_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'calendaroptions', get_string('calendaroptions', 'facetoface'));
 
-        $mform->addElement('checkbox', 'showoncalendar', get_string('showoncalendar', 'facetoface'));
-        $mform->setDefault('showoncalendar', true);
+        $calendarOptions = array(
+            F2F_CAL_NONE    =>  get_string('none'),
+            F2F_CAL_COURSE  =>  get_string('course'),
+            F2F_CAL_SITE    =>  get_string('site')
+        );
+        $mform->addElement('select', 'showoncalendar', get_string('showoncalendar', 'facetoface'), $calendarOptions);
+        $mform->setDefault('showoncalendar', F2F_CAL_COURSE);
         $mform->addHelpButton('showoncalendar', 'showoncalendar', 'facetoface');
+
+        $mform->addElement('advcheckbox', 'usercalentry', get_string('usercalentry', 'facetoface'));
+        $mform->setDefault('usercalentry', true);
+        $mform->addHelpButton('usercalentry', 'usercalentry', 'facetoface');
 
         $mform->addElement('text', 'shortname', get_string('shortname'), array('size' => 32, 'maxlength' => 32));
         $mform->setType('shortname', PARAM_TEXT);
         $mform->addHelpButton('shortname', 'shortname', 'facetoface');
-        $mform->disabledIf('shortname', 'showoncalendar');
         $mform->addRule('shortname', null, 'maxlength', 32);
 
         // REQUEST MESSAGE

@@ -471,7 +471,7 @@ $string['setting:sessionroles'] = 'Users assigned to the selected roles in a cou
 $string['setting:sessionroles_caption'] = 'Session roles:';
 $string['setting:type'] = 'Field type';
 $string['showbylocation'] = 'Show by location';
-$string['showoncalendar'] = 'Show on the calendar';
+$string['showoncalendar'] = 'Calendar display settings';
 $string['signup'] = 'Sign-up';
 $string['signups'] = 'Sign-ups';
 $string['signupfor'] = 'Sign-up for {$a}';
@@ -515,6 +515,7 @@ $string['upcomingsessionslist'] = 'List of all upcoming sessions for this Face-t
 $string['updaterequests'] = 'Update requests';
 $string['upgradeprocessinggrades'] = 'Processing Face-to-face grades, this may take a while if there are many sessions...';
 $string['usercancelledon'] = 'User cancelled on {$a}';
+$string['usercalentry'] = 'Show entry on user\'s calendar';
 $string['userdeletedcancel'] = 'User has been deleted';
 $string['usernotsignedup'] = 'Status: not signed up';
 $string['usersignedup'] = 'Status: signed up';
@@ -658,7 +659,11 @@ $string['sessionsoncoursepage_help'] = 'This is the number of sessions for each 
 $string['shortname'] = '# Short Name';
 $string['shortname_help'] = '**Short name** is the description of the session that appears on the training calendar when **Show on the calendar** is enabled.';
 
-$string['showoncalendar_help'] = 'When **Show on the Calendar** is enabled the face-to-face activity sessions display on the training calendar.';
+$string['showoncalendar_help'] = 'When **Site** is selected the face-to-face activity sessions will be displayed on the site calendar as a Global Event.  All site users will be able to view these sessions.
+
+When **Course** is selected all of the face-to-face activity sessions will be displayed on the course calendar and as Course Event on the site level calendar and visible to all users enrolled in the course.
+
+When **None** is selected, face-to-face activity sessions will only be displayed as User Events on a confirmed attendee\'s calendar, provided the **Show on user\'s calendar** option has been selected.';
 
 $string['suppressemail_help'] = 'Use this option if you want to silently add/remove users from a Face-to-face session. When this option is toggled, the usual email
   confirmation is not sent to the selected users.';
@@ -673,6 +678,8 @@ $string['thirdpartywaitlist_help'] = 'When **Notify third-party about wait-liste
 $string['timefinish_help'] = 'Finish time is the time when the session ends.';
 
 $string['timestart_help'] = 'Start time is the time when the session begins.';
+
+$string['usercalentry_help'] = 'When active this setting adds a User Event entry to the calendar of an attendee of a face-to-face session. When turned off this prevents a duplicate event appearing in a session attendee\'s calendar, where you have calendar display settings set to Course or Site.';
 
 $string['venue_help'] = '**Venue** is the building the session will be held in.
 
