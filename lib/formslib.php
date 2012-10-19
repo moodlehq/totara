@@ -2467,7 +2467,7 @@ class MoodleQuickForm_Renderer extends HTML_QuickForm_Renderer_Tableless{
             } else {
                 $buttonlabel = get_string('hideadvanced', 'form');
             }
-            $button = '<input name="'.$elementName.'" class="showadvancedbtn" value="'.$buttonlabel.'" type="submit" />';
+            $button = '<input name="'.$elementName.'" class="showadvancedbtn" value="'.$buttonlabel.'" type="button" />';
             $PAGE->requires->js_init_call('M.form.initShowAdvanced', array(), false, moodleform::get_js_module());
             $header_html = str_replace('{button}', $button, $header_html);
         } else {
