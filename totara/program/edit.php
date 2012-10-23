@@ -146,6 +146,13 @@ if ($data = $detailsform->get_data()) {
         if (isset($data->savechanges)) {
             $nexturl = $viewurl;
         }
+
+        file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'program', 'prog', $data->id);
+        $DB->set_field('prog', 'summary', $data->summary, array('id' => $data->id));
+
+        file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'program', 'prog', $data->id);
+        $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $data->id));
+
         totara_set_notification(get_string('programdetailssaved', 'totara_program'), $nexturl, array('class' => 'notifysuccess'));
     }
 
