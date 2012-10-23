@@ -537,7 +537,7 @@ function scorm_get_user_data($userid) {
 
 function scorm_grade_user_attempt($scorm, $userid, $attempt=1) {
     global $DB;
-    $attemptscore = null;
+    $attemptscore = new stdClass();
     $attemptscore->scoes = 0;
     $attemptscore->values = 0;
     $attemptscore->max = 0;
