@@ -318,5 +318,22 @@ function xmldb_totara_core_upgrade($oldversion) {
         $DB->execute("UPDATE {scorm} SET popup = ?, skipview = ? WHERE popup = ?", array(1, 2, 2));
         totara_upgrade_mod_savepoint(true, 2012090500, 'totara_core');
     }
+
+    if ($oldversion < 2012102400) {
+        //fix broken stats for course completions
+        require_once($CFG->dirroot.'/lib/completion/completion_completion.php');
+        $completions = $DB->get_recordset('course_completions', array('status' => COMPLETION_STATUS_COMPLETE));
+        foreach ($completions as $completion) {
+            $data = array();
+            $data['userid'] = $completion->userid;
+            $data['eventtype'] = STATS_EVENT_COURSE_COMPLETE;
+            $data['data2'] = $completion->course;
+            if (!$DB->record_exists('block_totara_stats', $data)) {
+                totara_stats_add_event($completion->timecompleted, $data['userid'], STATS_EVENT_COURSE_COMPLETE, '', $data['data2']);
+            }
+        }
+        $completions->close();
+        totara_upgrade_mod_savepoint(true, 2012102400, 'totara_core');
+    }
     return true;
 }
