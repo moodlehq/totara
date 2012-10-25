@@ -3487,7 +3487,7 @@ function facetoface_save_customfield_value($fieldid, $data, $otherid, $table) {
     if ($record = $DB->get_record("facetoface_{$table}_data", array('fieldid' => $fieldid, $fieldname => $otherid))) {
         if (empty($dbdata)) {
             // Clear out the existing value
-            return $DB->delete_records("facetoface_{$table}_data", 'id', $record->id);
+            return $DB->delete_records("facetoface_{$table}_data", array('id' => $record->id));
         }
 
         $newrecord->id = $record->id;
