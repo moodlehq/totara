@@ -512,6 +512,7 @@ $string['unknowndate'] = '(unknown date)';
 $string['unknowntime'] = '(unknown time)';
 $string['upcomingsessions'] = 'Upcoming sessions';
 $string['upcomingsessionslist'] = 'List of all upcoming sessions for this Face-to-face activity';
+$string['updaterequests'] = 'Update requests';
 $string['upgradeprocessinggrades'] = 'Processing Face-to-face grades, this may take a while if there are many sessions...';
 $string['usercancelledon'] = 'User cancelled on {$a}';
 $string['userdeletedcancel'] = 'User has been deleted';
