@@ -229,7 +229,7 @@ abstract class rb_base_source {
      * @return string Date in a nice format
      */
     function rb_display_nice_date($date, $row) {
-        if ($date) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strfdateshortmonth', 'langconfig'));
         } else {
             return '';
@@ -245,7 +245,7 @@ abstract class rb_base_source {
      * @return string Time in a nice format
      */
     function rb_display_nice_time($date, $row) {
-        if ($date) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strftimeshort', 'langconfig'));
         } else {
             return '';
@@ -262,7 +262,7 @@ abstract class rb_base_source {
      * @return string Date and time in a nice format
      */
     function rb_display_nice_datetime($date, $row) {
-        if ($date) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strfdateattime', 'langconfig'));
         } else {
             return '';
@@ -278,7 +278,7 @@ abstract class rb_base_source {
      * @return string Date and time (including seconds) in a nice format
      */
     function rb_display_nice_datetime_seconds($date, $row) {
-        if ($date) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strftimedateseconds', 'langconfig'));
         } else {
             return '';
