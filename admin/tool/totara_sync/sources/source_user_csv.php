@@ -104,8 +104,10 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 break;
             }
         }
-        if (!$file = fopen($filepath, 'r')) {
-            $this->addlog(get_string('cannotopenx', 'tool_totara_sync', $filepath),
+
+        // See if file is readable
+        if (!$file = is_readable($filepath)) {
+            $this->addlog(get_string('cannotreadx', 'tool_totara_sync', $filepath),
                 'error', 'populatesynctablecsv');
             return false;
         }
@@ -117,7 +119,17 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 $currdir), 'error', 'populatesynctablecsv');
             return false;
         }
-        rename($filepath, $storedir.'/'.time().'.'.basename($filepath));
+
+        $now = time();
+        $storefilepath = $storedir.'/'.$now.'.'.basename($filepath);
+
+        rename($filepath, $storefilepath);
+
+        if (!$file = fopen($storefilepath, 'r')) {
+            $this->addlog(get_string('cannotopenx', 'tool_totara_sync', $filepath),
+                'error', 'populatesynctablecsv');
+            return false;
+        }
 
         /// Map CSV fields
         $fields = fgetcsv($file);

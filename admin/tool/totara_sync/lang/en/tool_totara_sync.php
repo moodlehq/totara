@@ -127,6 +127,7 @@ $string['nofilesdir'] = 'No sync files directory configured';
 $string['xnotfound'] = '{$a} not found';
 $string['nochangesskippingsync'] = 'no changes, skipping sync';
 $string['cannotopenx'] = 'cannot open {$a}';
+$string['cannotreadx'] = 'cannot read {$a}';
 $string['csvnotvalidmissingfieldx'] = 'CSV file not valid, missing field "{$a}"';
 $string['mappingforx'] = 'mapping for "{$a}"';
 $string['couldnotimportallrecords'] = 'could not import all records';
