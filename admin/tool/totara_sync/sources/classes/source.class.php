@@ -137,10 +137,19 @@ abstract class totara_sync_source {
 
         // Can't reuse $this->import_data($temptable) because the CSV file gets renamed,
         // so it fails when calling again
-        $sql = "INSERT INTO {{$temptable_clone}} SELECT * FROM {{$temptable}}";
+        //to be cross-database compliant especially for MSSQL we need to use the $temptable column names
+        $fields = $temptable_clone->getFields();
+        $fieldnames = array();
+        foreach ($fields as $field) {
+            if ($field->name != 'id') {
+                $fieldnames[] = $field->name;
+            }
+        }
+        $fieldlist = implode(",", $fieldnames);
+        $sql = "INSERT INTO {{$temptable_clone->name}} ($fieldlist) SELECT $fieldlist FROM {{$temptable}}";
         $DB->execute($sql);
 
-        return $temptable_clone;
+        return $temptable_clone->name;
     }
 }
 

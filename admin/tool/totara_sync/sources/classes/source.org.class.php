@@ -86,12 +86,12 @@ abstract class totara_sync_source_org extends totara_sync_source {
             return false;
         }
 
-        if (!$this->import_data($temptable)) {
+        if (!$this->import_data($temptable->name)) {
             $this->addlog(get_string('dataimportaborted', 'tool_totara_sync'), 'error', 'importdata');
             return false;
         }
 
-        return $temptable;
+        return $temptable->name;
     }
 
     /**
@@ -136,6 +136,6 @@ abstract class totara_sync_source_org extends totara_sync_source {
         $dbman->create_temp_table($table, false, false);
         $DB->execute("TRUNCATE TABLE {{$this->temptable}}");
 
-        return $this->temptable;
+        return $table;
     }
 }

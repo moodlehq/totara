@@ -98,6 +98,7 @@ class totara_sync_element_user extends totara_sync_element {
                     if (!delete_user($DB->get_record('user', array('id' => $user->id)))) {
                         $this->addlog(get_string('cannotdeleteuserx', 'tool_totara_sync', $user->idnumber), 'error', 'deleteuser');
                         $this->get_source()->drop_temp_table($synctable);
+                        $this->get_source()->drop_temp_table($synctable_clone);
                         return false;
                     } else {
                         $this->addlog(get_string('deleteduserx', 'tool_totara_sync', $user->idnumber), 'info', 'deleteuser');
@@ -127,6 +128,7 @@ class totara_sync_element_user extends totara_sync_element {
                 if (!$this->create_user($suser, $synctable, $intrans=true)) {
                     $this->addlog(get_string('syncaborted', 'tool_totara_sync'), 'error', 'createusers');
                     $this->get_source()->drop_temp_table($synctable);
+                    $this->get_source()->drop_temp_table($synctable_clone);
                     return false;
                 }
 
@@ -176,6 +178,7 @@ class totara_sync_element_user extends totara_sync_element {
                     $DB->force_transaction_rollback();
                     $this->addlog(get_string('cannotupdateuserx', 'tool_totara_sync', $user->idnumber), 'error', 'updateusers');
                     $this->get_source()->drop_temp_table($synctable);
+                    $this->get_source()->drop_temp_table($synctable_clone);
                     return false;
                 }
 
@@ -213,7 +216,7 @@ class totara_sync_element_user extends totara_sync_element {
         }
 
         $this->get_source()->drop_temp_table($synctable);
-
+        $this->get_source()->drop_temp_table($synctable_clone);
         $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', $elname.'sync');
     }
 
