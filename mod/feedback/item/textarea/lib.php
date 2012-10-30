@@ -154,15 +154,25 @@ class feedback_item_textarea extends feedback_item_base {
             echo '<tr><th colspan="2" align="' . $align . '">';
             echo $itemnr.'&nbsp;('.$item->label.') '.$item->name;
             echo '</th></tr>';
+            $blank  = 0;
             foreach ($values as $value) {
-                echo '<tr>';
-                echo '<td valign="top" align="' . $align . '">';
-                echo '-&nbsp;&nbsp;';
-                echo '</td>';
-                echo '<td align="' . $align . '" valign="top">';
-                echo str_replace("\n", '<br />', $value->value);
-                echo '</td>';
-                echo '</tr>';
+                if (empty($value->value)) {
+                    $blank++;
+                } else {
+                    echo '<tr>';
+                    echo '<td valign="top" align="' . $align . '">';
+                    echo '-&nbsp;&nbsp;';
+                    echo '</td>';
+                    echo '<td align="' . $align . '" valign="top">';
+                    echo str_replace("\n", '<br />', $value->value);
+                    echo '</td>';
+                    echo '</tr>';
+                }
+            }
+            if ($blank>0) {
+                    echo '<tr><td colspan="2" valign="top" align="' . $align . '">';
+                    echo '-&nbsp;&nbsp;'.get_string('blank_responses', 'feedback', (string)$blank);
+                    echo '</td></tr>';
             }
         }
     }
