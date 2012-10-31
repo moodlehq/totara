@@ -107,7 +107,8 @@ class totara_sync_element_user extends totara_sync_element {
                 $rs->close();
             }
         }
-        if (empty($this->config->sourceallrecords)) {
+
+        if (isset($this->config->sourceallrecords) && $this->config->sourceallrecords == 0) {
             // Remove the deleted records from the sync table
             // This ensures that our create/update queries runs smoothly
             $DB->execute("DELETE FROM {{$synctable}} WHERE deleted = 1");
