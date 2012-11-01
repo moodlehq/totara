@@ -174,6 +174,7 @@ $string['nosourceforelement'] = 'no source set for element';
 $string['nosourceconfigured'] = 'No source configured';
 $string['duplicateuserswithidnumberx'] = 'Duplicate users with idnumber {$a->idnumber}';
 $string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
+$string['fieldcountmismatch'] = 'Skipping row {$a->rownum} in CSV file - {$a->fieldcount} fields found but {$a->headercount} fields expected';
 
 
 ///

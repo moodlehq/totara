@@ -188,12 +188,24 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $datarows = array();    // holds csv row data
         $dbpersist = TOTARA_SYNC_DBROWS;  // # of rows to insert into db at a time
         $rowcount = 0;
+        $fieldcount = new object();
+        $fieldcount->headercount = count($fields);
+        $fieldcount->rownum = 0;
 
         while ($csvrow = fgetcsv($file)) {
+            $fieldcount->rownum++;
             // skip empty rows
             if (is_array($csvrow) && current($csvrow) === null) {
+                $fieldcount->fieldcount = 0;
+                $this->addlog(get_string('fieldcountmismatch', 'tool_totara_sync', $fieldcount), 'error', 'populatesynctablecsv');
                 continue;
             }
+            $fieldcount->fieldcount = count($csvrow);
+            if ($fieldcount->fieldcount !== $fieldcount->headercount) {
+                $this->addlog(get_string('fieldcountmismatch', 'tool_totara_sync', $fieldcount), 'error', 'populatesynctablecsv');
+                continue;
+            }
+
             $csvrow = array_combine($fields, $csvrow);  // nice associative array ;)
 
             // clean the data a bit
