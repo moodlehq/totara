@@ -147,7 +147,7 @@ class rb_source_course_completion extends rb_base_source {
                 'course_completion',
                 'status',
                 get_string('completionstatus', 'rb_source_course_completion'),
-                "CASE WHEN base.timecompleted IS NOT NULL THEN 1 ELSE 0 END",
+                'base.status',
                 array('displayfunc' => 'completion_status')
             ),
             new rb_column_option(
@@ -306,7 +306,7 @@ class rb_source_course_completion extends rb_base_source {
                 'course_completion',
                 'status',
                 get_string('completionstatus', 'rb_source_course_completion'),
-                'select',
+                'multicheck',
                 array(
                     'selectfunc' => 'completion_status_list',
                     'attributes' => rb_filter_option::select_width_limiter(),
@@ -557,12 +557,18 @@ class rb_source_course_completion extends rb_base_source {
     //
 
     function rb_display_completion_status($status, $row, $isexport) {
-        if ($status == 0) {
-            return get_string('completion-n', 'completion');
-        } else if ($status == 1) {
-            return get_string('completion-y', 'completion');
-        } else {
+        global $CFG;
+        require_once($CFG->libdir.'/completion/completion_completion.php');
+        global $COMPLETION_STATUS;
+
+        if (!array_key_exists((int)$status, $COMPLETION_STATUS)) {
             return '';
+        }
+        $string = $COMPLETION_STATUS[(int)$status];
+        if (empty($string)) {
+            return '';
+        } else {
+            return get_string($string, 'completion');
         }
     }
 
@@ -573,13 +579,15 @@ class rb_source_course_completion extends rb_base_source {
     //
 
     function rb_filter_completion_status_list() {
-        // TODO obtain this scale from single source - db?
-        $proficiencyselect = array();
-        $proficiencyselect[0] = get_string('completion-n', 'completion');
-        $proficiencyselect[1] = get_string('completion-y', 'completion');
+        global $CFG;
+        require_once($CFG->libdir.'/completion/completion_completion.php');
+        global $COMPLETION_STATUS;
 
-        return $proficiencyselect;
+        $statuslist = array();
+        foreach ($COMPLETION_STATUS as $key => $value) {
+            $statuslist[(string)$key] = get_string($value, 'completion');
+        }
+        return $statuslist;
     }
-
 } // end of rb_source_course_completion class
 

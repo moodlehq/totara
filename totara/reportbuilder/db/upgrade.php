@@ -93,5 +93,64 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012081000, 'totara_reportbuilder');
     }
 
+    if ($oldversion < 2012112300) {
+        // Convert saved searches with status to the new status field
+        $filter = 'course_completion-status';
+
+        $like_sql = $DB->sql_like('rs.search', '?');
+
+        $sql = "SELECT rs.id, rs.search
+                FROM {report_builder_saved} AS rs
+                JOIN {report_builder} AS rb ON rb.id = rs.reportid
+                WHERE rb.source = ?
+                AND {$like_sql}";
+
+        $params = array('course_completion', '%' . $DB->sql_like_escape($filter) . '%');
+
+        $searches = $DB->get_records_sql($sql, $params);
+
+        require_once($CFG->libdir.'/completion/completion_completion.php');
+
+        foreach ($searches as $search) {
+            $todb = new stdClass();
+            $todb->id = $search->id;
+            $data = unserialize($search->search);
+
+            if (isset($data[$filter])) {
+                $options = $data[$filter];
+                if (isset($options['operator']) && isset($options['value']) && is_int($options['operator']) && is_string($options['value'])) {
+                    $operator = $options['operator'];
+                    $value = $options['value'];
+                    if (($operator == 1 && $value == '0') || ($operator == 2 && $value == '1')) {
+                        // Completion Status is equal to "Not completed" or
+                        // Completion Status isn't equal to "Completed"
+                        $options['value'] = array(
+                            COMPLETION_STATUS_NOTYETSTARTED => "1",
+                            COMPLETION_STATUS_INPROGRESS => "1",
+                            COMPLETION_STATUS_COMPLETE => "0",
+                            COMPLETION_STATUS_COMPLETEVIARPL => "0" );
+                    } else if (($operator == 1 && $value == '1') || ($operator == 2 && $value == '0')) {
+                        // Completion Status is equal to "Completed" or
+                        // Completion Status isn't equal to "Not completed"
+                        $options['value'] = array(
+                            COMPLETION_STATUS_NOTYETSTARTED => "0",
+                            COMPLETION_STATUS_INPROGRESS => "0",
+                            COMPLETION_STATUS_COMPLETE => "1",
+                            COMPLETION_STATUS_COMPLETEVIARPL => "1" );
+                    } else {
+                        // not the expected data so leave the data alone
+                        continue;
+                    }
+                    // Set the operator to any of the following
+                    $options['operator'] = 1;
+                    $data[$filter] = $options;
+                    $todb->search = serialize($data);
+                    $DB->update_record('report_builder_saved', $todb);
+                }
+            }
+        }
+        totara_upgrade_mod_savepoint(true, 2012112300, 'totara_reportbuilder');
+    }
+
     return true;
 }

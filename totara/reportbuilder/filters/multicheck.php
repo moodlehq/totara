@@ -157,25 +157,26 @@ class rb_filter_multicheck extends rb_filter_type {
             foreach ($items as $id => $selected) {
                 if ($selected) {
                     $uniqueparam = rb_unique_param("fmcequal_{$count}_");
-                    $equals = "{$query} = :{$uniqueparam}";
+                    $filter = "( {$query} = :{$uniqueparam}";
                     $params[$uniqueparam] = $id;
 
-                    $uniqueparam = rb_unique_param("fmcendswith_{$count}_");
-                    $endswithlike = $DB->sql_like($query, ":{$uniqueparam}");
-                    $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id);
+                    if (is_string($id)) {
+                        $uniqueparam = rb_unique_param("fmcendswith_{$count}_");
+                        $filter .=  " OR \n " . $DB->sql_like($query, ":{$uniqueparam}");
+                        $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id);
 
-                    $uniqueparam = rb_unique_param("fmcstartswith_{$count}_");
-                    $startswithlike = $DB->sql_like($query, ":{$uniqueparam}");
-                    $params[$uniqueparam] = $DB->sql_like_escape($id) . '|%';
+                        $uniqueparam = rb_unique_param("fmcstartswith_{$count}_");
+                        $filter .= " OR \n " . $DB->sql_like($query, ":{$uniqueparam}");
+                        $params[$uniqueparam] = $DB->sql_like_escape($id) . '|%';
 
-                    $uniqueparam = rb_unique_param("fmccontains{$count}_");
-                    $containslike = $DB->sql_like($query, ":{$uniqueparam}");
-                    $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id) . '|%';
+                        $uniqueparam = rb_unique_param("fmccontains{$count}_");
+                        $filter .= " OR \n " . $DB->sql_like($query, ":{$uniqueparam}");
+                        $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id) . '|%';
+                    }
 
-                    $res[] = "( {$equals} OR \n" .
-                        "    {$endswithlike} OR \n" .
-                        "    {$startswithlike} OR \n" .
-                        "    {$containslike} )\n";
+                    $filter .= " )\n";
+
+                    $res[] = $filter;
 
                     $count++;
                 }
@@ -212,9 +213,9 @@ class rb_filter_multicheck extends rb_filter_type {
         foreach ($value as $key => $selected) {
             if ($selected) {
                 $name = array_key_exists($key, $selectchoices) ?
-                    $selectchoices[$key] : $key;
-                $formatname = explode("&nbsp;", $name);
-                $checked[] = '"' . $formatname[1] . '"';
+                $selectchoices[$key] : $key;
+                $formatname = trim(html_entity_decode(strip_tags($name)), chr(0xC2).chr(0xA0)); // chr(0xC2).chr(0xA0) = &nbsp;
+                $checked[] = '"' . $formatname . '"';
             }
         }
         $a->value    = implode(', ', $checked);
