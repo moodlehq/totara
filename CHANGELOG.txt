@@ -1,5 +1,34 @@
 Totara LMS Changelog
 
+Release 2.2.9 (1 November 2012):
+==================================================
+
+Database upgrades:
+   T-10051      Fix course completion totals on the managers My Team report
+
+Improvements:
+    T-10063     Add missing elearning messaging icons
+    T-10031     Fix display of the language menu in the standardtotara theme
+    T-9851      Add Totara menu to "my mobile" theme
+    T-10014     Re-implement hiding of empty columns for flexible_table component
+
+Bug fixes:
+    T-10034     Fix message creation error when message metadata already exists
+    T-10045     Fix saving of Program summary and endnote fields
+    T-9804      Fix to Spanish Castilian language pack to aid AMOS translation work
+    T-5734      Fix PHP5.4 empty object warning in SCORM package
+    T-10029     Hide empty feedback submissions and display count of blank entries in Feedback
+    T-10027     Fix duplicate user ids and "nothing to do" message in course participation report
+    T-10061     Fix display of dates prior to 1970 in Reportbuilder
+    T-10044     Fix missing column headings in Facetoface block
+    T-6710      Fix hardcoded language string in Facetoface
+    T-10053     Fix fatal error when removing Facetoface session custom fields
+    T-10036     Fix Browse Users form behaviour in IE7/8 when pressing Enter
+    T-10067     Fix display when viewing learning plans in IE7
+    T-9947      Use authentication plugin when processing password changes in totara_sync
+    T-10065     Fix MSSQL and temptable errors in totara_sync
+    T-10062     Fix file rename issue when running totara_sync on Windows/IIS
+
 Release 2.2.8 (18 October 2012):
 ==================================================
 
