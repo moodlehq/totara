@@ -246,7 +246,7 @@ table#categoryquestions {width: 100%;overflow: hidden;table-layout: fixed;}
 #page-mod-quiz-edit div.question div.content div.points{top:0.5em;border-left:0.4em solid #FFF;width:8.5em;padding:0.2em;line-height:1em;max-width:30%;position:absolute;right:50px;-webkit-border-radius:0.2em;-webkit-border-radius-bottomleft:0;-webkit-border-radius-topleft:0;border-radius:0.2em;border-radius-bottomleft:0;border-radius-topleft:0;z-index:900;display:block;margin:0;background-color:#ddf;}
 #page-mod-quiz-edit div.question div.content div.points input{width:2em;padding:0;}
 #page-mod-quiz-edit div.question div.content div.points input.pointssubmitbutton{width:auto;}
-#page-mod-quiz-edit div.question div.content div.qorder {line-height:1em;max-width:30%;position:absolute;right:50px;-webkit-border-radius:0.2em;-webkit-border-radius-bottomleft:0;-webkit-border-radius-topleft:0;border-radius:0.2em;border-radius-bottomleft:0;border-radius-topleft:0;z-index:900;display:block;margin:0;background-color:#ddf;}
+#page-mod-quiz-edit div.question div.content div.qorder {line-height:1em;float:right;-webkit-border-radius:0.2em;-webkit-border-radius-bottomleft:0;-webkit-border-radius-topleft:0;border-radius:0.2em;border-radius-bottomleft:0;border-radius-topleft:0;z-index:900;display:block;margin:0;background-color:#ddf;margin-right:55px;}
 #page-mod-quiz-edit div.question div.content .editicon {width:15px;}
 #page-mod-quiz-edit div.question div.content .singlequestion .questionname,
 #page-mod-quiz-edit div.question div.content .singlequestion .questiontext{display:inline-block;}
@@ -418,3 +418,4 @@ bank window's title is prominent enough*/
 .path-question.dir-rtl input[name="maxmark"],
 .path-question-type.dir-rtl input[name="defaultmark"],
 #page-mod-quiz-edit.dir-rtl div.points input {direction: ltr;text-align: left;}
+#page-mod-quiz-edit.dir-rtl div.question div.content div.qorder {float:left;margin-left:55px;}
