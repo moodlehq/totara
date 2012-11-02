@@ -109,6 +109,29 @@ if ($user !== false or $frm !== false or $errormsg !== '') {
     $frm = data_submitted();
 }
 
+if ($frm && !empty($CFG->recaptchapublickey) && !empty($CFG->recaptchaprivatekey) && !empty($CFG->recaptchaloginform)) {
+    if (!empty($frm->recaptcha_response_field)) {
+        require_once($CFG->libdir . '/recaptchalib.php');
+        $captcha = recaptcha_check_answer($CFG->recaptchaprivatekey,
+                                           getremoteaddr(),
+                                           $frm->recaptcha_challenge_field,
+                                           $frm->recaptcha_response_field);
+        if (!$captcha->is_valid) {
+            if ($captcha->error == 'incorrect-captcha-sol') {
+                $errormsg = get_string('incorrectpleasetryagain', 'auth');
+            } else {
+                $errormsg = $captcha->error;
+            }
+            $errorcode = 5;
+            $user = null;
+        }
+    } else {
+        $errormsg = get_string("missingrecaptchachallengefield");
+        $errorcode = 5;
+        $user = null;
+    }
+}
+
 /// Check if the user has actually submitted login data to us
 
 if ($frm and isset($frm->username)) {                             // Login WITH cookies

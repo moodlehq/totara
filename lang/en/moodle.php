@@ -1442,6 +1442,7 @@ For advanced searching, press the search button without typing anything in the s
 $string['searchagain'] = 'Search again';
 $string['searchbyemail'] = 'Search by email address';
 $string['searchbyusername'] = 'Search by username';
+$string['searchbyusernameoremail'] = 'Search by username or email address';
 $string['searchcourses'] = 'Search courses';
 $string['searchhelp'] = 'You can search for multiple words at once.<br /><br />word : find any match of this word within the text.<br />+word : only exact matching words will be found.<br />-word : don\'t include results containing this word.';
 $string['searchoptions'] = 'Search options';
