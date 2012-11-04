@@ -222,6 +222,11 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 }
             }
             $dbrow['timemodified'] = empty($dbrow['timemodified']) ? $now : $dbrow['timemodified'];
+            if (isset($dbrow['deleted'])) {
+                // ensure int value, as this can come empty from source
+                $dbrow['deleted'] = empty($dbrow['deleted']) ? 0 : 1;
+            }
+
 
             // Custom fields are special - needs to be json-encoded
             if (!empty($this->customfields)) {
