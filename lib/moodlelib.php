@@ -5406,6 +5406,7 @@ function generate_email_supportuser() {
     }
 
     $supportuser = new stdClass();
+    $supportuser->id = 0;
     $supportuser->email = $CFG->supportemail ? $CFG->supportemail : $CFG->noreplyaddress;
     $supportuser->firstname = $CFG->supportname ? $CFG->supportname : get_string('noreplyname');
     $supportuser->lastname = '';

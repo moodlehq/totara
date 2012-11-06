@@ -507,7 +507,7 @@ abstract class prog_noneventbased_message extends prog_message {
      * @return bool Success
      */
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $result = true;
 
@@ -520,12 +520,15 @@ abstract class prog_noneventbased_message extends prog_message {
 
         $manager = totara_get_manager($recipient->id);
 
-        if ($sender == null) {
-            if (!$manager) {
-                $sender = $recipient;
-            } else {
-                $sender = $manager;
-            }
+        //verify the $sender of the email
+        if ($sender == null) { //null check on $sender, default to manager or no-reply accordingly
+            $sender = ($manager->id == $USER->id) ? $manager : generate_email_supportuser();
+        } else if ($sender->id == $USER->id) { //make sure $sender is currently logged in
+            $sender = $USER;
+        } else if ($USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
+            $sender = $manager;
+        } else { //last option, the no-reply address
+            $sender = generate_email_supportuser();
         }
 
         // send the message to the learner
@@ -540,7 +543,8 @@ abstract class prog_noneventbased_message extends prog_message {
         if ($result && $this->notifymanager && $manager) {
             $managerdata = new stdClass();
             $managerdata->userto = $manager;
-            $managerdata->userfrom = $recipient;
+            //ensure the message is actually coming from $user, default to support
+            $managerdata->userfrom = ($USER->id == $recipient->id) ? $recipient : generate_email_supportuser();
             $managerdata->subject = $this->replacevars($this->managermessagedata->subject);
             $managerdata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
             $managerdata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
@@ -619,7 +623,7 @@ abstract class prog_eventbased_message extends prog_message {
      * @return bool Success
      */
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $coursesetid = isset($options['coursesetid']) ? $options['coursesetid'] : 0;
 
@@ -638,12 +642,15 @@ abstract class prog_eventbased_message extends prog_message {
 
         $manager = totara_get_manager($recipient->id);
 
-        if ($sender == null) {
-            if (!$manager) {
-                $sender = $recipient;
-            } else {
-                $sender = $manager;
-            }
+        //verify the $sender of the email
+        if ($sender == null) { //null check on $sender, default to manager or no-reply accordingly
+            $sender = ($manager->id == $USER->id) ? $manager : generate_email_supportuser();
+        } else if ($sender->id == $USER->id) { //make sure $sender is currently logged in
+            $sender = $USER;
+        } else if ($USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
+            $sender = $manager;
+        } else { //last option, the no-reply address
+            $sender = generate_email_supportuser();
         }
 
         // send the message to the learner
@@ -669,7 +676,8 @@ abstract class prog_eventbased_message extends prog_message {
         if ($result && $this->notifymanager && $manager) {
             $managerdata = new stdClass();
             $managerdata->userto = $manager;
-            $managerdata->userfrom = $recipient;
+            //ensure the message is actually coming from $user, default to support
+            $managerdata->userfrom = ($USER->id == $recipient->id) ? $recipient : generate_email_supportuser();
             $managerdata->subject = $this->replacevars($this->managermessagedata->subject);
             $managerdata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
             $managerdata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
@@ -1036,10 +1044,11 @@ class prog_extension_request_message extends prog_noneventbased_message {
     }
 
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG;
+        global $CFG, $USER;
 
-        if ($sender == null) {
-            return false;
+        //ensure that $sender is defined and logged in, default to support
+        if ($sender == null || ($USER->id != $sender->id)) {
+           $sender == generate_email_supportuser();
         }
 
         // send the message to the Manager

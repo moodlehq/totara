@@ -288,7 +288,8 @@ function program_cron_switch_recurring_courses() {
                         // has changed and that they haven't completed it
                         $messagedata = new stdClass();
                         $messagedata->userto = $user;
-                        $messagedata->userfrom = $user;
+                        //stop user from emailing themselves, use support instead
+                        $messagedata->userfrom = generate_email_supportuser();
                         $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
                         $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
                         $messagedata->contexturl = $CFG->wwwroot . '/course/view.php?id=' . $course->id;

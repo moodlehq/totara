@@ -4142,7 +4142,8 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
     $fromname = fullname($user);
     $usermsg = html_writer::link($userfrom_link, $fromname, array('title' => $fromname));
     $newevent->userto           = $user;
-    $newevent->userfrom         = $USER;
+    //stop user from emailing themselves, use support instead
+    $newevent->userfrom         = ($USER->id == $user->id) ? generate_email_supportuser() : $USER;
     $url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id));
     switch ($nottype) {
         case MDL_F2F_STATUS_BOOKED:
@@ -4209,7 +4210,8 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
             if ($managerid !== false) {
                 $manager = $DB->get_record('user', array('id' => $managerid));
                 $newevent->userto           = $manager;
-                $newevent->userfrom         = $user;
+                //ensure the message is actually coming from $user, default to support
+                $newevent->userfrom         = ($USER->id == $user->id) ? $user : generate_email_supportuser();
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
                                                         $facetoface->name,
@@ -4247,7 +4249,8 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
                 tm_task_send($newevent);
                 $newevent = new stdClass();
                 $newevent->userto           = $user;
-                $newevent->userfrom         = $user;
+                //stop user from emailing themselves, use support instead
+                $newevent->userfrom         = generate_email_supportuser();
                 $newevent->subject          = $string_manager->get_string('requestattendsessionsent', 'facetoface', html_writer::link(new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id)), $facetoface->name), $user->lang);
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->icon             = 'facetoface-request';

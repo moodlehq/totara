@@ -1279,7 +1279,7 @@ function prog_assignments_firstlogin($user) {
  * @return array Contains count of extensions processed and number of failures
  */
 function prog_process_extensions($extensions) {
-    global $CFG, $DB;
+    global $CFG, $DB, $USER;
 
     if (!empty($extensions)) {
         $update_fail_count = 0;
@@ -1303,7 +1303,8 @@ function prog_process_extensions($extensions) {
             if ($action == PROG_EXTENSION_DENY) {
 
                 $userto = $DB->get_record('user', array('id' => $extension->userid));
-                $userfrom = totara_get_manager($extension->userid);
+                //ensure the message is actually coming from $user's manager, default to support
+                $userfrom = totara_is_manager($extension->userid, $USER->id) ? $USER : generate_email_supportuser();
 
                 $messagedata = new stdClass();
                 $messagedata->userto           = $userto;
@@ -1357,7 +1358,8 @@ function prog_process_extensions($extensions) {
                         print_error('error:failedtofinduser', 'totara_program', $extension->userid);
                     }
 
-                    $userfrom = totara_get_manager($extension->userid);
+                    //ensure the message is actually coming from $user's manager, default to support
+                    $userfrom = totara_is_manager($extension->userid, $USER->id) ? $USER : generate_email_supportuser();
 
                     $messagedata = new stdClass();
                     $messagedata->userto           = $userto;

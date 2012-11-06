@@ -1137,7 +1137,7 @@ function totara_plan_comment_validate($comment_param) {
 
 
 function totara_plan_comment_add($comment) {
-    global $CFG, $DB;
+    global $CFG, $DB, $USER;
 
     /// Get the right message data
     $commentuser = $DB->get_record('user', array('id' => $comment->userid));
@@ -1287,7 +1287,8 @@ function totara_plan_comment_add($comment) {
     foreach ($subscribers as $sid) {
         $userto = $DB->get_record('user', array('id' => $sid));
         $event = new stdClass();
-        $event->userfrom = $commentuser;
+        //ensure the message is actually coming from $commentuser, default to support
+        $event->userfrom = ($USER->id == $commentuser->id) ? $commentuser : generate_email_supportuser();
         $event->userto = $userto;
         $event->contexturl = $contexturl;
         $event->contexturlname = $contexturlname;
