@@ -2781,7 +2781,7 @@ function facetoface_get_ical_text($method, $facetoface, $session, $user) {
 
         // The extra newline at the bottom is so multiple events start on their
         // own lines. The very last one is trimmed outside the loop
-        $VEVENTS .= <<<EOF
+        $VEVENTS .= "
 BEGIN:VEVENT
 ORGANIZER;CN={$ORGANISEREMAIL}:MAILTO:{$ORGANISEREMAIL}
 DTSTART:{$DTSTART}
@@ -2799,38 +2799,19 @@ ATTENDEE;CUTYPE=INDIVIDUAL;ROLE={$ROLE};PARTSTAT=NEEDS-ACTION;
  RSVP=FALSE;CN={$USERNAME};LANGUAGE=en:MAILTO:{$MAILTO}
 END:VEVENT
 
-EOF;
+";
     }
 
     $VEVENTS = trim($VEVENTS);
 
-    // TODO: remove the hard-coded timezone!
-    $template = <<<EOF
+    $template = "
 BEGIN:VCALENDAR
 PRODID:-//Moodle//NONSGML Facetoface//EN
 VERSION:2.0
 METHOD:{$icalmethod}
-BEGIN:VTIMEZONE
-TZID:/softwarestudio.org/Tzfile/Pacific/Auckland
-X-LIC-LOCATION:Pacific/Auckland
-BEGIN:STANDARD
-TZNAME:NZST
-DTSTART:19700405T020000
-RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=4
-TZOFFSETFROM:+1300
-TZOFFSETTO:+1200
-END:STANDARD
-BEGIN:DAYLIGHT
-TZNAME:NZDT
-DTSTART:19700928T030000
-RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=9
-TZOFFSETFROM:+1200
-TZOFFSETTO:+1300
-END:DAYLIGHT
-END:VTIMEZONE
 {$VEVENTS}
 END:VCALENDAR
-EOF;
+";
 
     return $template;
 }
