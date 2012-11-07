@@ -86,6 +86,13 @@ $THEME->layouts = array(
         'regions' => array(),
         'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true, 'nologininfo' => true, 'langmenu' => false),
     ),
+    // simplify the layout of popups, removing superfluous divs and padding,
+    // to make popups work much better with tablets and other devices with limited screen size.
+    'popup' => array(
+        'file' => 'popup.php',
+        'regions' => array(),
+        'options' => array('nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true),
+    ),
 );
 
 $THEME->enable_dock = true;

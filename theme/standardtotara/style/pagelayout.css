@@ -343,3 +343,6 @@ body.has_dock {
     width:auto;
     margin: auto 10px;
 }
+
+#popup-page {padding: 15px;}
+body.popup {background: white;}
