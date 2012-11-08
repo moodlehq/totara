@@ -37,7 +37,6 @@ echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/no
 echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/pagelayouts.php'), 'Page Layouts'));
 echo html_writer::end_tag('ul');
 echo $OUTPUT->heading('Totara specific elements', 3);
-echo $OUTPUT->container('We should do what we can to upstream these where possible:');
 echo html_writer::start_tag('ul');
 echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/toolbar.php'), 'Toolbar'));
 echo html_writer::tag('li', html_writer::link(new moodle_url('/elementlibrary/dialogs.php'), 'Dialogs'));
