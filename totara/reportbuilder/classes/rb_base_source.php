@@ -705,7 +705,7 @@ abstract class rb_base_source {
     function rb_display_link_program_icon($program, $row) {
         global $OUTPUT;
         $programid = $row->program_id;
-        $programicon = $row->program_icon;
+        $programicon = !empty($row->program_icon) ? $row->program_icon : 'default';
         $icon = $OUTPUT->pix_icon('/programicons/' . $programicon, $program, 'totara_core', array('class' => 'course_icon'));
         $link = $OUTPUT->action_link(
             new moodle_url('/totara/program/view.php', array('id' => $programid)),
