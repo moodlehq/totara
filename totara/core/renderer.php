@@ -309,7 +309,7 @@ class totara_core_renderer extends plugin_renderer_base {
 
         if (count($displaycourses) > 0) {
             $table = new html_table();
-            $table->attributes['class'] = 'centerblock';
+            $table->attributes['class'] = 'centerblock fullwidth';
             //set up table headers
             $headers = array();
             $cell = new html_table_cell(get_string('course'));

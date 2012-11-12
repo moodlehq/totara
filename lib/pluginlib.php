@@ -577,6 +577,7 @@ class plugin_manager {
                 'standard', 'standardold'
                 // Totara:
                 , 'standardtotara', 'customtotara', 'mymobiletotara'
+                , 'kiwifruit'
             ),
 
             'tool' => array(
