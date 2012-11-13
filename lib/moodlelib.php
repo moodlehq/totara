@@ -6401,6 +6401,10 @@ class core_string_manager implements string_manager {
                 if (file_exists("$location/lang/$dep/$file.php")) {
                     include("$location/lang/$dep/$file.php");
                 }
+                // the root lang folder
+                if (file_exists("{$CFG->dirroot}/lang/$dep/$file.php")) {
+                    include("{$CFG->dirroot}/lang/$dep/$file.php");
+                }
                 // the main lang string location
                 if (file_exists("$this->otherroot/$dep/$file.php")) {
                     include("$this->otherroot/$dep/$file.php");
