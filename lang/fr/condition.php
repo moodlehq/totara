@@ -36,16 +36,17 @@ $string['availableuntil'] = 'Disponible jusqu\'au';
 $string['badavailabledates'] = 'Dates non valables. Si vous définissez les deux dates, assurez-vous que la date de début de disponibilité soit antérieure à celle de fin.';
 $string['badgradelimits'] = 'Si vous définissez une limite supérieure et une limite inférieure, la limite supérieure doit être plus grande que la limite inférieure.';
 $string['completion_complete'] = 'doit être marqué comme terminé';
+$string['completion_fail'] = 'doit être terminé avec une note d\'échec';
+$string['completion_incomplete'] = 'ne doit pas être marqué comme terminé';
+$string['completion_pass'] = 'doit être terminé avec une note de réussite';
 $string['completioncondition'] = 'Condition de fin d\'activité';
 $string['completioncondition_help'] = 'Ce réglage détermine les conditions sur l\'achèvement d\'autres activités pour que l\'activité soit rendue disponible. Le suivi d\'achèvement des activités doit bien entendu être activé avant qu\'une telle condition puisse être fixée.
 
 Plusieurs conditions d\'achèvement peuvent être spécifiées. Dans ce cas, l\'activité sera rendue disponible lorsque toutes les conditions d\'achèvement d\'activité seront remplies.';
-$string['completion_fail'] = 'doit être terminé avec une note d\'échec';
-$string['completion_incomplete'] = 'ne doit pas être marqué comme terminé';
-$string['completion_pass'] = 'doit être terminé avec une note de réussite';
 $string['configenableavailability'] = 'Permet de définir des conditions (basées sur la date, une note ou la fin d\'une activité) qui déterminent si une activité ou une ressource est disponible.';
 $string['enableavailability'] = 'Activer la disponibilité conditionnelle';
 $string['grade_atleast'] = 'doit être supérieur à';
+$string['grade_upto'] = 'et inférieur à';
 $string['gradecondition'] = 'Condition de note';
 $string['gradecondition_help'] = 'Ce réglage détermine les conditions sur les notes pour que l\'activité soit rendue disponible.
 
@@ -53,7 +54,6 @@ Plusieurs conditions sur les notes peuvent être spécifiées. Dans ce cas, l\'a
 $string['gradeitembutnolimits'] = 'Veuillez saisir une limite supérieure ou une limite inférieure, ou les deux.';
 $string['gradelimitsbutnoitem'] = 'Vous devez sélectionner un élément d\'évaluation.';
 $string['gradesmustbenumeric'] = 'Les notes maximales et minimales doivent être des nombres (ou vides).';
-$string['grade_upto'] = 'et inférieur à';
 $string['none'] = '(aucune)';
 $string['notavailableyet'] = 'Pas encore disponible';
 $string['requires_completion_0'] = 'Non disponible tant que l\'activité <strong>{$a}</strong> n\'est pas terminée.';

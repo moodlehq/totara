@@ -53,13 +53,13 @@ $string['attempts'] = 'tentatives';
 $string['attemptsx'] = '{$a} tentatives';
 $string['attr_error'] = 'Valeur incorrecte de l\'attribut ({$a->attr}) dans la balise {$a->tag}.';
 $string['autocontinue'] = 'Continuer automatiquement';
-$string['autocontinuedesc'] = 'Ce réglage détermine si par défaut l\'activité continue automatiquement ou non';
 $string['autocontinue_help'] = '<!-- $Id$ -->
 
 
 <p>Si l\'option « Continuer automatiquement » est activée, l\'objet d\'apprentissage suivant est automatiquement lancé lorsque le précédent objet d\'apprentissage appelle la méthode standard « close communication.»</p>
 
 <p>Si elle n\'est pas activée, l\'apprenant doit cliquer explicitement le bouton « Continuer » pour obtenir l\'exercice ou l\'étape suivante.</p>';
+$string['autocontinuedesc'] = 'Ce réglage détermine si par défaut l\'activité continue automatiquement ou non';
 $string['averageattempt'] = 'Moyenne des tentatives';
 $string['badmanifest'] = 'Erreurs dans le fichier « manifest » : veuillez consulter l\'historique des erreurs';
 $string['badpackage'] = 'Le paquetage/manifeste indiqué n\'est pas valide. Veuillez le vérifier et essayer à nouveau.';
@@ -70,6 +70,14 @@ $string['browserepository'] = 'Consulter le dépôt';
 $string['cannotfindsco'] = 'Objet d\'apprentissage introuvable';
 $string['chooseapacket'] = 'Sélectionner ou mettre à jour un paquetage';
 $string['completed'] = 'Terminé';
+$string['completionscorerequired'] = 'Requiert score minimum';
+$string['completionstatus_completed'] = 'Passé';
+$string['completionstatus_failed'] = 'Echoué';
+$string['completionstatus_help'] = '# Achèvement d\'activité : Exiger le statut
+
+Vérifier un ou plusieurs statut exigera d\'un utilisateur l\'achèvement d\'au moins un des status sélectionnés pour que l\'activité SCORM soit considérée achevée, en plus des autres critères d\'achèvement de l\'activité.';
+$string['completionstatus_passed'] = 'Réussi';
+$string['completionstatusrequired'] = 'Requiert statut';
 $string['confirmloosetracks'] = 'Attention ! Le paquetage semble avoir été modifié. Si sa structure a été modifiée, les historiques de certains utilisateurs (tracking) seront perdus lors du processus de mise à jour.';
 $string['contents'] = 'Contenus';
 $string['coursepacket'] = 'Paquetage du cours';
@@ -87,11 +95,11 @@ $string['directories'] = 'Afficher les liens de dossier';
 $string['disabled'] = 'Désactivé';
 $string['display'] = 'Afficher le paquetage';
 $string['displayattemptstatus'] = 'Afficher l\'état de la tentative';
-$string['displayattemptstatusdesc'] = 'Ce réglage détermine si par défaut l\'état de la tentative doit être affiché ou non';
 $string['displayattemptstatus_help'] = 'Si ce réglage est activé, les scores et notes des tentatives seront affichés dans le résumé du SCORM.';
+$string['displayattemptstatusdesc'] = 'Ce réglage détermine si par défaut l\'état de la tentative doit être affiché ou non';
 $string['displaycoursestructure'] = 'Afficher la structure du cours sur la page d\'entrée';
-$string['displaycoursestructuredesc'] = 'Ce réglage détermine si par défaut la structure du cours doit être affichée ou non sur la page d\'entrée';
 $string['displaycoursestructure_help'] = 'Si ce réglage est activé, la table des matières sera affichée dans le résumé du SCORM.';
+$string['displaycoursestructuredesc'] = 'Ce réglage détermine si par défaut la structure du cours doit être affichée ou non sur la page d\'entrée';
 $string['displaydesc'] = 'Ce réglage détermine si par défaut le paquetage de l\'activité doit être affiché ou non';
 $string['displaysettings'] = 'Réglages de l\'affichage';
 $string['domxml'] = 'Bibliothèque externe DOMXML';
@@ -114,14 +122,14 @@ $string['finishscormlinkname'] = 'cliquez ici pour revenir à la page de cours';
 $string['firstaccess'] = 'Premier accès';
 $string['firstattempt'] = 'Première tentative';
 $string['forcecompleted'] = 'Imposer de terminer';
-$string['forcecompleteddesc'] = 'Ce réglage détermine si par défaut il est imposé de terminer l\'activité ou non';
 $string['forcecompleted_help'] = 'Si ce réglage est activé, l\'état de la tentative actuelle est forcé sur « Terminé ». Ce réglage n\'est valable que pour les paquetages SCORM 1.2. Il est utile si le paquetage ne traite pas correctement les consultations ultérieures d\'une tentative dans le mode relecture ou consultation, ou lors d\'autres problèmes avec l\'état d\'achèvement.';
+$string['forcecompleteddesc'] = 'Ce réglage détermine si par défaut il est imposé de terminer l\'activité ou non';
 $string['forcejavascript'] = 'Forcer les utilisateurs à activer JavaScript';
 $string['forcejavascript_desc'] = 'Si ce réglage est activé (recommandé), il empêche l\'accès aux objets SCORM lorsque JavaScript est désactivé ou n\'est pas supporté dans le navigateur de l\'utilisateur. Si le réglage est désactivé, l\'utilisateur pourra voir le SCORM, mais les communications entre le serveur et le navigateur ne fonctionneront pas et aucune information d\'évaluation ne sera enregistrée.';
 $string['forcejavascriptmessage'] = 'JavaScript est requis pour voir cet élément. Veuillez activer JavaScript dans votre navigateur et essayer à nouveau.';
 $string['forcenewattempt'] = 'Imposer une nouvelle tentative';
-$string['forcenewattemptdesc'] = 'Ce réglage détermine si par défaut une nouvelle tentative sera imposée ou non';
 $string['forcenewattempt_help'] = 'Si ce réglage est activé, une nouvelle tentative est comptée chaque fois que le paquetage SCORM est consulté.';
+$string['forcenewattemptdesc'] = 'Ce réglage détermine si par défaut une nouvelle tentative sera imposée ou non';
 $string['found'] = 'Fichier « manifest » trouvé';
 $string['frameheight'] = 'Ce réglage détermine la hauteur par défaut du cadre ou de la fenêtre';
 $string['framewidth'] = 'Ce réglage détermine la largeur par défaut du cadre ou de la fenêtre';
@@ -131,7 +139,6 @@ $string['gradeaverage'] = 'Note moyenne';
 $string['gradeforattempt'] = 'Note de la tentative';
 $string['gradehighest'] = 'Note la plus haute';
 $string['grademethod'] = 'Méthode d\'évaluation';
-$string['grademethoddesc'] = 'Ce réglage détermine la méthode d\'évaluation par défaut de l\'activité';
 $string['grademethod_help'] = 'La méthode de notation définit comment la note d\'une tentative est calculée.
 
 Il y a 4 méthodes possibles pour cela :
@@ -140,6 +147,7 @@ Il y a 4 méthodes possibles pour cela :
 * Note la plus haute : le plus haut score AICC obtenu dans les objets d\'apprentissage achevés
 * Note moyenne : la moyenne des scores AICC obtenus
 * Somme : la somme des scores AICC obtenus';
+$string['grademethoddesc'] = 'Ce réglage détermine la méthode d\'évaluation par défaut de l\'activité';
 $string['gradereported'] = 'Note envoyée';
 $string['gradescoes'] = 'Objets d\'apprentissage';
 $string['gradesettings'] = 'Réglages des notes';
@@ -147,7 +155,6 @@ $string['gradesum'] = 'Note totale';
 $string['height'] = 'Hauteur';
 $string['hidden'] = 'Invisible';
 $string['hidebrowse'] = 'Désactiver le mode prévisualisation';
-$string['hidebrowsedesc'] = 'Ce réglage détermine si par défaut le mode prévisualisation doit être activé ou non';
 $string['hidebrowse_help'] = '<!-- $Id$ -->
 
 
@@ -156,13 +163,14 @@ $string['hidebrowse_help'] = '<!-- $Id$ -->
 <p>L\'étudiant peut choisir de prévisualiser (parcourir) l\'activité ou de réaliser une tentative en mode normal.</p>
 
 <p>Lorsqu\'un objet d\'apprentissage est achevé en mode prévisualisation, il est signalé par l\'icône <img src="<?php echo $CFG->wwwroot.\'/mod/scorm/pix/browsed.gif\' ?>" alt="<?php print_string(\'browsed\',\'scorm\') ?>" title="<?php print_string(\'browsed\',\'scorm\') ?>" />.</p>';
+$string['hidebrowsedesc'] = 'Ce réglage détermine si par défaut le mode prévisualisation doit être activé ou non';
 $string['hideexit'] = 'Masquer le bouton de sortie';
 $string['hidenav'] = 'Masquer les boutons de navigation';
 $string['hidenavdesc'] = 'Ce réglage détermine si par défaut les boutons de navigation doivent être affichés ou non';
 $string['hidereview'] = 'Masquer le bouton de relecture';
 $string['hidetoc'] = 'Affichage de la structure du cours dans le lecteur';
-$string['hidetocdesc'] = 'Ce réglage détermine comment doit être affichée par défaut la structure du cours (table des matières) dans le lecteur SCORM';
 $string['hidetoc_help'] = 'Ce réglage détermine comment est affichée la table des matières dans le lecteur SCORM';
+$string['hidetocdesc'] = 'Ce réglage détermine comment doit être affichée par défaut la structure du cours (table des matières) dans le lecteur SCORM';
 $string['highestattempt'] = 'Meilleure tentative';
 $string['identifier'] = 'Identifiant de question';
 $string['incomplete'] = 'Incomplet';
@@ -190,22 +198,22 @@ $string['last'] = 'Dernier accès le';
 $string['lastaccess'] = 'Dernier accès';
 $string['lastattempt'] = 'Dernière tentative terminée';
 $string['lastattemptlock'] = 'Verrouiller après la tentative finale';
-$string['lastattemptlockdesc'] = 'Ce réglage détermine si par défaut l\'activité doit être verrouillée après la tentative finale';
 $string['lastattemptlock_help'] = 'Si ce réglage est activé, les étudiants ne peuvent plus lancer le lecteur SCORM une fois qu\'ils ont épuisé le nombre de tentatives qui leur sont allouées.';
+$string['lastattemptlockdesc'] = 'Ce réglage détermine si par défaut l\'activité doit être verrouillée après la tentative finale';
 $string['location'] = 'Afficher la barre d\'URL';
 $string['max'] = 'Score max';
 $string['maximumattempts'] = 'Nombre de tentatives';
-$string['maximumattemptsdesc'] = 'Ce réglage détermine la valeur par défaut du nombre maximal de tentatives de l\'activité';
 $string['maximumattempts_help'] = '<!-- $Id$ -->
 
 
 <p>Ceci indique le nombre de tentatives que l\'utilisateur peut réaliser.<br />Utilisable uniquement avec les paquetages SCORM1.2 ou AICC. SCORM2004 comporte ses propres paramètres pour le nombre de tentatives.</p>';
+$string['maximumattemptsdesc'] = 'Ce réglage détermine la valeur par défaut du nombre maximal de tentatives de l\'activité';
 $string['maximumgradedesc'] = 'Ce réglage détermine la note maximale par défaut de l\'activité';
 $string['menubar'] = 'Afficher la barre des menus';
 $string['min'] = 'Score min';
 $string['missing_attribute'] = 'Attribut {$a->attr} manquant dans la balise {$a->tag}';
-$string['missingparam'] = 'Un paramètre requis est manquant ou incorrect';
 $string['missing_tag'] = 'Balise {$a->tag} manquante';
+$string['missingparam'] = 'Un paramètre requis est manquant ou incorrect';
 $string['mode'] = 'Mode';
 $string['modulename'] = 'Paquetage SCORM';
 $string['modulename_help'] = 'SCORM et AICC sont des spécifications permettant l\'interopérabilité, l\'accessibilité et la réutilisation de contenus d\'apprentissage web. Le module SCORM/AICC permet d\'inclure des paquetages SCORM/AICC dans les cours.';
@@ -213,22 +221,21 @@ $string['modulenameplural'] = 'Paquetages SCORM';
 $string['navigation'] = 'Navigation';
 $string['newattempt'] = 'Commencer une nouvelle tentative';
 $string['next'] = 'Continuer';
+$string['no_attributes'] = 'La balise {$a->tag} doit avoir des attributs';
+$string['no_children'] = 'La balise {$a->tag} doit avoir des descendants';
 $string['noactivity'] = 'Aucune activité';
 $string['noattemptsallowed'] = 'Nombre de tentatives permises';
 $string['noattemptsmade'] = 'Nombre de tentatives effectuées';
-$string['no_attributes'] = 'La balise {$a->tag} doit avoir des attributs';
-$string['no_children'] = 'La balise {$a->tag} doit avoir des descendants';
 $string['nolimit'] = 'Tentatives illimitées';
 $string['nomanifest'] = 'Aucun descriptif trouvé';
 $string['noprerequisites'] = 'Désolé ! Vous n\'avez pas obtenu les prérequis suffisants pour accéder à cet objet';
 $string['noreports'] = 'Pas de rapport à afficher';
 $string['normal'] = 'Normal';
 $string['noscriptnoscorm'] = 'Votre navigateur ne supporte pas JavaScript ou celui-ci est désactivé. Ce paquetage SCORM ne fonctionnera pas correctement et le suivi des participants ne sera pas enregistré.';
-$string['notattempted'] = 'Aucune tentative';
 $string['not_corr_type'] = 'Erreur de type pour la balise {$a->tag}';
+$string['notattempted'] = 'Aucune tentative';
 $string['notopenyet'] = 'Désolé, cette activité n\'est pas disponible avant le {$a}';
 $string['objectives'] = 'Objectifs';
-$string['onchanges'] = 'À chaque modification';
 $string['optallstudents'] = 'Tous les utilisateurs';
 $string['optattemptsonly'] = 'Seulement les utilisateurs avec tentatives';
 $string['options'] = 'Options (bloqué par certains navigateurs)';
@@ -240,8 +247,6 @@ $string['organizations'] = 'Organisations';
 $string['othersettings'] = 'Réglages additionels';
 $string['othertracks'] = 'Autres pistes';
 $string['package'] = 'Fichier paquetage';
-$string['packagedir'] = 'Erreur du système de fichier : impossible de créer le dossier du paquetage';
-$string['packagefile'] = 'Pas de paquetage spécifié';
 $string['package_help'] = '<!-- $Id$ -->
 
 
@@ -268,6 +273,8 @@ $string['package_help'] = '<!-- $Id$ -->
 <li>CMP - Fichier des conditions de validation (Completion Requirements file - optionnel)</li>
 
 </ul>';
+$string['packagedir'] = 'Erreur du système de fichier : impossible de créer le dossier du paquetage';
+$string['packagefile'] = 'Pas de paquetage spécifié';
 $string['packageurl'] = 'URL';
 $string['packageurl_help'] = 'Ce réglage permet de spécifier une URL pour le paquetage SCORM, au lieu de choisir un paquetage dans le sélecteur de fichiers.';
 $string['page-mod-scorm-x'] = 'Toute page du module SCORM';
@@ -297,16 +304,18 @@ $string['review'] = 'Relecture';
 $string['reviewmode'] = 'Mode relecture';
 $string['scoes'] = 'Objets d\'apprentissage';
 $string['score'] = 'Résultat';
-$string['scormclose'] = 'Jusqu\'au';
-$string['scormcourse'] = 'Cours d\'apprentissage';
 $string['scorm:deleteownresponses'] = 'Supprimer ses propres tentatives';
 $string['scorm:deleteresponses'] = 'Supprimer les tentatives SCORM';
+$string['scorm:savetrack'] = 'Enregistrer les traces';
+$string['scorm:skipview'] = 'Sauter la vue d\'ensemble';
+$string['scorm:viewreport'] = 'Voir les rapports';
+$string['scorm:viewscores'] = 'Voir les scores';
+$string['scormclose'] = 'Jusqu\'au';
+$string['scormcourse'] = 'Cours d\'apprentissage';
 $string['scormloggingoff'] = 'L\'historique API est désactivée';
 $string['scormloggingon'] = 'L\'historique API est activée';
 $string['scormopen'] = 'Ouvert';
 $string['scormresponsedeleted'] = 'Tentative supprimées de l\'utilisateur';
-$string['scorm:savetrack'] = 'Enregistrer les traces';
-$string['scorm:skipview'] = 'Sauter la vue d\'ensemble';
 $string['scormtype'] = 'Type';
 $string['scormtype_help'] = 'Ce réglage détermine comment le paquetage est inclus dans le cours. Il y a au maximum 5 options.
 
@@ -315,15 +324,12 @@ $string['scormtype_help'] = 'Ce réglage détermine comment le paquetage est inc
 * Paquetage téléchargé : permet d\'indiquer l\'URL d\'un paquetage SCORM externe. Le paquetage sera décompressé et enregistré localement, et mis à jour si le paquetage externe est modifié.
 * Dépôt local IMS content : permet de choisir un paquetage depuis un dépôt IMS.
 * External AICC URL : cette URL est l\'URL permettant de lancer une activité AICC. Un pseudo paquetage sera construit autour de cette activité.';
-$string['scorm:viewreport'] = 'Voir les rapports';
-$string['scorm:viewscores'] = 'Voir les scores';
 $string['scrollbars'] = 'Permettre le défilement de la fenêtre';
 $string['selectall'] = 'Tout sélectionner';
 $string['selectnone'] = 'Tout désélectionner';
 $string['show'] = 'Afficher';
 $string['sided'] = 'Sur le côté';
 $string['skipview'] = 'Ne pas afficher la structure du contenu des pages';
-$string['skipviewdesc'] = 'Ce réglage détermine quand par défaut ne pas afficher pour les participants la structure du contenu d\'une page';
 $string['skipview_help'] = '<!-- $Id$ -->
 
 
@@ -340,6 +346,7 @@ $string['skipview_help'] = '<!-- $Id$ -->
 <li><strong>Toujours</strong> n\'affiche pas la liste des contenus</li>
 
 </ul>';
+$string['skipviewdesc'] = 'Ce réglage détermine quand par défaut ne pas afficher pour les participants la structure du contenu d\'une page';
 $string['slashargs'] = 'ATTENTION ! Le réglage <i>slasharguments</i> est désactivé. Les objets SCORM ne fonctionneront pas correctement !';
 $string['stagesize'] = 'Taille cadre/fenêtre';
 $string['stagesize_help'] = '<!-- $Id$ -->
@@ -359,9 +366,9 @@ $string['time'] = 'Durée';
 $string['timerestrict'] = 'Restreindre les réponses à cette période';
 $string['title'] = 'Titre';
 $string['toc'] = 'TOC';
-$string['toolbar'] = 'Afficher la barre d\'outils';
 $string['too_many_attributes'] = 'La balise {$a->tag} a trop d\'attributs';
 $string['too_many_children'] = 'La balise {$a->tag} a trop de descendants';
+$string['toolbar'] = 'Afficher la barre d\'outils';
 $string['totaltime'] = 'Durée';
 $string['trackingloose'] = 'Attention ! Les données du suivi de ce paquetage seront perdues !';
 $string['type'] = 'Type';
@@ -372,8 +379,8 @@ $string['typelocal'] = 'Paquetage déposé';
 $string['typelocalsync'] = 'Paquetage téléchargé';
 $string['unziperror'] = 'Une erreur est survenue lors du décompactage du paquetage';
 $string['updatefreq'] = 'Fréquence de mise à jour';
-$string['updatefreqdesc'] = 'Ce réglage détermine la valeur par défaut de la fréquence de la mise à jour automatique de l\'activité';
 $string['updatefreq_help'] = 'Ceci permet de télécharger et de mettre à jour automatiquement le paquetage externe';
+$string['updatefreqdesc'] = 'Ce réglage détermine la valeur par défaut de la fréquence de la mise à jour automatique de l\'activité';
 $string['validateascorm'] = 'Valider un paquetage';
 $string['validation'] = 'Résultat de la validation';
 $string['validationtype'] = 'Ce réglage détermine la bibliothèque DOMXML utilisée pour la validation du fichier « manifest » des SCORM. Si vous ne savez pas de quoi il s\'agit, ne modifiez pas la valeur.';
@@ -382,7 +389,6 @@ $string['versionwarning'] = 'La version du fichier « manifest » est antérie
 $string['viewallreports'] = 'Afficher les rapports des {$a} tentatives';
 $string['viewalluserreports'] = 'Afficher les rapports des {$a} utilisateurs';
 $string['whatgrade'] = 'Évaluation des tentatives';
-$string['whatgradedesc'] = 'Ce réglage détermine le mode d\'évaluation par défaut des tentatives';
 $string['whatgrade_help'] = 'Si plusieurs tentatives sont autorisées, ce réglage détermine le résultat à intégrer au carnet de notes, entre la tentative la plus élevée, la moyenne, la première ou la dernière.
 
 Traitement des tentatives multiples
@@ -390,5 +396,6 @@ Traitement des tentatives multiples
 * L\'option de commencer une nouvelle tentative est fournie par une cas à chaque au-dessus du bouton Entrée sur la page de la structure du contenu. Veuillez vous assurer l\'accès à cette page si vous voulez autoriser les tentatives multiples.
 * Si certains paquetages SCORM peuvent traiter les nouvelles tentatives, la plupart d\'entre eux n\'en sont pas capables. Cela signifie que si un participant commence une nouvelle tentative et que le paquetage SCORM n\'est pas capable d\'éviter que les tentatives précédentes ne soient écrasées, celles-ci pourraient être écrasées même si la tentative est marquée comme terminée ou réussie.
 * Les réglages « Imposer de terminer », « Imposer une nouvelle tentative » et « Verrouiller après la tentative finale » permettent en outre de mieux gérer les tentatives multiples.';
+$string['whatgradedesc'] = 'Ce réglage détermine le mode d\'évaluation par défaut des tentatives';
 $string['width'] = 'Largeur';
 $string['window'] = 'Fenêtre';

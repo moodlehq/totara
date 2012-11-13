@@ -34,7 +34,6 @@ $string['configsecretphrase'] = 'Ce texte secret est utilisé pour générer une
 $string['contentheader'] = 'Contenu';
 $string['displayoptions'] = 'Options d\'affichage disponibles';
 $string['displayselect'] = 'Affichage';
-$string['displayselectexplain'] = 'Choisir le type d\'affichage. Tous les types ne sont pas adéquats pour toutes les URLs.';
 $string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier de l\'URL et la capacité du navigateur à intégrer des objets (<i>embedding</i>), détermine la façon dont le l\'URL est affichée. Les options sont :
 
 * Automatique : la meilleure option d\'affichage pour l\'URL concernée est automatiquement sélectionnée
@@ -44,6 +43,7 @@ $string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier de l\
 * Fenêtre surgissante : l\'URL est affichée dans une nouvelle fenêtre de navigateur sans menus ni barre d\'adresse
 * Dans un cadre : l\'URL est affichée dans un cadre en dessous de la barre de navigation et de la description de l\'URL
 * Nouvelle fenêtre : l\'URL est affichée dans une nouvelle fenêtre du navigateur, avec menus et barre d\'adresse';
+$string['displayselectexplain'] = 'Choisir le type d\'affichage. Tous les types ne sont pas adéquats pour toutes les URLs.';
 $string['externalurl'] = 'URL externe';
 $string['framesize'] = 'Hauteur du cadre';
 $string['invalidstoredurl'] = 'Impossible d\'afficher cette ressource : l\'URL n\'est pas valide.';

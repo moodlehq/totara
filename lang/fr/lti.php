@@ -49,14 +49,14 @@ $string['always'] = 'Toujours';
 $string['automatic'] = 'Automatique, basé sur l\'URL de lancement';
 $string['baseurl'] = 'URL de base';
 $string['basiclti'] = 'LTI';
-$string['basicltiactivities'] = 'Activités LTI';
 $string['basiclti_base_string'] = 'Chaîne de base OAuth LTI';
 $string['basiclti_endpoint'] = 'Point de terminaison LTI';
-$string['basicltifieldset'] = 'Jeu de champs personnalisés';
 $string['basiclti_in_new_window'] = 'Votre activité est ouverte dans une nouvelle fenêtre';
+$string['basiclti_parameters'] = 'Paramètres de lancement LTI';
+$string['basicltiactivities'] = 'Activités LTI';
+$string['basicltifieldset'] = 'Jeu de champs personnalisés';
 $string['basicltiintro'] = 'Description de l\'activité';
 $string['basicltiname'] = 'Nom de l\'activité';
-$string['basiclti_parameters'] = 'Paramètres de lancement LTI';
 $string['basicltisettings'] = 'Réglages d\'interopérabilité Basic Learning Tool';
 $string['cannot_delete'] = 'Vous ne pouvez pas supprimer la configuration de cet outil.';
 $string['cannot_edit'] = 'Vous ne pouvez pas modifier la configuration de cet outil.';
@@ -68,9 +68,9 @@ $string['configpreferwidth'] = 'Largeur favorite par défaut';
 $string['configresourceurl'] = 'URL de la ressource par défaut';
 $string['configtoolurl'] = 'URL de l\'outil distant par défaut';
 $string['configtypes'] = 'Autoriser les applications LTI';
+$string['course_tool_types'] = 'Types d\'outil du cours';
 $string['courseid'] = 'Identifiant du cours';
 $string['coursemisconf'] = 'Le cours n\'est pas configuré correctement';
-$string['course_tool_types'] = 'Types d\'outil du cours';
 $string['createdon'] = 'Créé le';
 $string['curllibrarymissing'] = 'La bibliothèque PHP cURL doit être installée pour utiliser LTI';
 $string['custom'] = 'Paramètres personnalisés';
@@ -141,13 +141,13 @@ $string['fixexistingconf'] = 'Utiliser une configuration existante pour l\'insta
 $string['fixnew'] = 'Nouvelle configuration';
 $string['fixnewconf'] = 'Définir une nouvelle configuration pour l\'instance configurée incorrectement';
 $string['fixold'] = 'Utiliser l\'existant';
-$string['forced_help'] = 'Ce réglage a été imposé au niveau de la configuration du cours ou du site. Vous ne pouvez pas le modifier depuis cette interface.';
 $string['force_ssl'] = 'Forcer SSL';
 $string['force_ssl_help'] = 'La sélection de cette option impose l\'utilisation de SSL lors de l\'appel de ce fournisseur d\'outil.
 
 De plus, toutes les requêtes de services web de ce fournisseur d\'outil utiliseront SSL.
 
 Avant d’activer cette option, assurez-vous que ce site Moodle et que le fournisseur de l\'outil supportent le protocole SSL.';
+$string['forced_help'] = 'Ce réglage a été imposé au niveau de la configuration du cours ou du site. Vous ne pouvez pas le modifier depuis cette interface.';
 $string['global_tool_types'] = 'Types d\'outils globaux';
 $string['grading'] = 'Évaluation';
 $string['icon_url'] = 'URL de l\'icône';
@@ -158,8 +158,12 @@ $string['imsroleinstructor'] = 'Instructeur';
 $string['imsrolelearner'] = 'Participant';
 $string['invalidid'] = 'L\'identifiant LTI est incorrect';
 $string['launch_in_moodle'] = 'Lancer l\'outil dans Moodle';
-$string['launchinpopup'] = 'Conteneur de lancement';
 $string['launch_in_popup'] = 'Lancer l\'outil dans une fenêtre surgissante';
+$string['launch_url'] = 'URL de lancement';
+$string['launch_url_help'] = 'L\'URL de lancement indique l\'adresse web de l\'outil externe et peut contenir d\'autres informations, comme la ressource à afficher. Si vous ne savez pas qu\'indiquer comme URL de lancement, veuillez vous renseigner auprès du fournisseur de l\'outil.
+
+Si vous avez choisi un type d\'outil spécifique, il ne sera peut-être pas nécessaire de saisir une URL. Si le lien n\'est utilisé que pour lancer l\'outil dans le système du fournisseur et n\'envoie pas vers une ressource spécifique, ce sera vraisemblablement le cas.';
+$string['launchinpopup'] = 'Conteneur de lancement';
 $string['launchinpopup_help'] = 'Le conteneur de lancement détermine l\'affichage de l\'outil quand il est lancé depuis le cours. Certains conteneurs fournissent plus d\'espace à l\'écran, d\'autres proposent une meilleure intégration avec l\'environnement de Moodle.
 
 * **Défaut** : utilise le conteneur spécifié dans la configuration de l\'outil.
@@ -167,24 +171,20 @@ $string['launchinpopup_help'] = 'Le conteneur de lancement détermine l\'afficha
 * **Intégré, sans les blocs** : l\'outil est affiché dans la fenêtre Moodle existante, uniquement avec la navigation en haut de la page.
 * **Nouvelle fenêtre** : l\'outil s\'ouvre dans une nouvelle fenêtre, occupant la totalité de l\'espace disponible. Suivant la configuration du navigateur, il peut s\'ouvrir dans un nouvel onglet. Certains navigateurs empêcheront l\'ouverture d\'une nouvelle fenêtre.';
 $string['launchoptions'] = 'Options de lancement';
-$string['launch_url'] = 'URL de lancement';
-$string['launch_url_help'] = 'L\'URL de lancement indique l\'adresse web de l\'outil externe et peut contenir d\'autres informations, comme la ressource à afficher. Si vous ne savez pas qu\'indiquer comme URL de lancement, veuillez vous renseigner auprès du fournisseur de l\'outil.
-
-Si vous avez choisi un type d\'outil spécifique, il ne sera peut-être pas nécessaire de saisir une URL. Si le lien n\'est utilisé que pour lancer l\'outil dans le système du fournisseur et n\'envoie pas vers une ressource spécifique, ce sera vraisemblablement le cas.';
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'Évaluer les activités LTI';
+$string['lti:grade'] = 'Évaluer des activités LTI';
+$string['lti:manage'] = 'Modifier des activités LTI';
+$string['lti:requesttooladd'] = 'Envoyer une demande de configuration d\'outil aux administrateurs';
+$string['lti:view'] = 'Afficher les activités LTI';
 $string['lti_administration'] = 'Administration LTI';
 $string['lti_errormsg'] = 'L\'outil a retourné le message d\'erreur suivant : « {$a} »';
-$string['lti:grade'] = 'Évaluer des activités LTI';
 $string['lti_launch_error'] = 'Une erreur est survenue lors du lancement de l\'outil externe :';
 $string['lti_launch_error_tool_request'] = '<p>Pour demander à un administrateur de terminer la configuration de cet outil, cliquez <a href="{$a->admin_request_url}" target="_top">ici</a>.</p>';
 $string['lti_launch_error_unsigned_help'] = '<p>Cette erreur est vraisemblablement le résultat du manque de la clef client et du secret partagé pour ce fournisseur d\'outil.</p>
 <p>Si vous êtes en possession de la clef utilisateur et du secret partagé, veuillez les saisir lors de la mise en place de l\'instance de l\'outil externe (assurez-vous que les réglages avancés sont affichés).<br />AutreSinonment, vous pouvez <a href="{$a->course_tool_editor}">créer une configuration</a> du fournisseur d\'outil au niveau du cours.</p>';
-$string['lti:manage'] = 'Modifier des activités LTI';
-$string['lti:requesttooladd'] = 'Envoyer une demande de configuration d\'outil aux administrateurs';
 $string['lti_tool_request_added'] = 'La demande de configuration a été envoyée correctement. Vous pouvez contacter un administrateur pour terminer la configuration de l\'outil.';
 $string['lti_tool_request_existing'] = 'Une demande de configuration a déjà été envoyée pour cet outil.';
-$string['lti:view'] = 'Afficher les activités LTI';
 $string['main_admin'] = 'Aide générale';
 $string['main_admin_help'] = 'Les outils externes permettent aux utilisateurs de Moodle d\'interagir de manière transparente avec des ressources d\'apprentissage distantes. Au moyen d\'un protocole de lancement spécial, l\'outil externe aura accès à des informations sur l\'utilisateur qui lance l\'outil, par exemple le nom de l\'institution, l\'identifiant du cours, l\'identifiant de l\'utilisateur et d\'autres informations comme le nom d\'utilisateur ou son adresse de courriel.
 
@@ -210,10 +210,10 @@ $string['modulenameplural'] = 'basicltis';
 $string['modulenamepluralformatted'] = 'Instances LTI';
 $string['never'] = 'Jamais';
 $string['new_window'] = 'Nouvelle fenêtre';
-$string['noattempts'] = 'Aucune tentative n\'a été effectuée sur cet instance de l\'outil';
 $string['no_lti_configured'] = 'Il n\'y a pas d\'outil externe actif configuré.';
 $string['no_lti_pending'] = 'Il n\'y a pas d\'outil externe en attente.';
 $string['no_lti_rejected'] = 'Il n\'y a pas d\'outil externe rejeté.';
+$string['noattempts'] = 'Aucune tentative n\'a été effectuée sur cet instance de l\'outil';
 $string['noltis'] = 'Il n\'y a pas d\'instance LTI';
 $string['noservers'] = 'Aucun serveur trouvé';
 $string['notypes'] = 'Il n\'y a actuellement dans Moodle aucune configuration d\'outil LTI. Cliquer le lien d\'installation ci-dessus pour en ajouter.';
@@ -325,26 +325,26 @@ $string['toolurl_help'] = 'L\'URL de base de l\'outil est utilisée pour apparie
 De plus, l\'URL de base est utilisée comme URL de lancement si cette dernière n\'est pas spécifiée dans l\'instance de l\'outil externe.
 
 <table>
-	<thead>
-		<tr>
-			<td> <b>URL de base</b> </td>
-			<td> <b>Correspond à</b> </td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td> outil.fr </td>
-			<td> outil.fr, outil.fr/quiz, outil.fr/quiz/quiz.php?id=10, www.outil.fr/quiz </td>
-		</tr>
-		<tr>
-			<td> www.outil.fr/quiz </td>
-			<td> outil.fr/quiz, outil.fr/quiz/take.php?id=10, www.outil.fr/quiz </td>
-		</tr>
-		<tr>
-			<td> quiz.outil.fr </td>
-			<td> quiz.outil.fr, quiz.outil.fr/take.php?id=10 </td>
-		</tr>
-	</tbody>
+<thead>
+<tr>
+<td> <b>URL de base</b> </td>
+<td> <b>Correspond à</b> </td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> outil.fr </td>
+<td> outil.fr, outil.fr/quiz, outil.fr/quiz/quiz.php?id=10, www.outil.fr/quiz </td>
+</tr>
+<tr>
+<td> www.outil.fr/quiz </td>
+<td> outil.fr/quiz, outil.fr/quiz/take.php?id=10, www.outil.fr/quiz </td>
+</tr>
+<tr>
+<td> quiz.outil.fr </td>
+<td> quiz.outil.fr, quiz.outil.fr/take.php?id=10 </td>
+</tr>
+</tbody>
 </table>
 
 S\'il y a deux configurations d\'outils différents pour le même domaine, la correspondance la plus spécifique est utilisée.';

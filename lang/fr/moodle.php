@@ -538,7 +538,7 @@ $string['emailconfirmation'] = 'Bonjour,
 
 La création d\'un compte pour {$a->sitename} a été demandée en utilisant votre adresse de courriel. Pour confirmer votre enregistrement, veuillez visiter la page web suivante :
 
-    {$a->link}
+{$a->link}
 
 Dans la plupart des logiciels de courriel, cette adresse est un lien actif qu\'il vous suffit de cliquer. Si cela ne fonctionne pas, copiez ce lien (qui peut être coupé sur deux lignes) et collez-le dans la barre d\'adresse de votre navigateur web.
 
@@ -948,15 +948,15 @@ $string['loginsite'] = 'Se connecter sur le site';
 $string['loginsteps'] = '<p>Bonjour. Pour un accès complet aux cours, prenez une minute pour vous créer un compte personnel sur ce site.<br />
 Chaque cours peut également nécessiter une clef d\'inscription à usage unique dont vous n\'avez pas besoin pour l\'instant.</p>
 <p>Voici les étapes à suivre :</p>
-   <ol>
-   <li>Remplir le formulaire <a href="{$a}">nouveau compte</a>.</li>
-   <li>Un message vous sera immédiatement adressé par courriel.</li>
-   <li>Récupérer ce message et cliquer sur le lien Web qu\'il contient.</li>
-   <li>Votre inscription sera alors confirmée et vous serez connecté.</li>
-   <li>Vous pourrez ensuite choisir le cours auquel vous souhaitez vous inscrire.</li>
-   <li>Si une clef d\'inscription vous est demandée, utilisez celle que votre enseignant vous aura communiquée.</li>
-   <li>Vous aurez alors un accès au cours complet. À votre prochaine visite il vous suffira d\'entrer votre nom d\'utilisateur et mot de passe (dans le formulaire ci-contre) afin de vous connecter et d\'accéder à tous les cours auxquels vous serez inscrit.</li>
-   </ol>';
+<ol>
+<li>Remplir le formulaire <a href="{$a}">nouveau compte</a>.</li>
+<li>Un message vous sera immédiatement adressé par courriel.</li>
+<li>Récupérer ce message et cliquer sur le lien Web qu\'il contient.</li>
+<li>Votre inscription sera alors confirmée et vous serez connecté.</li>
+<li>Vous pourrez ensuite choisir le cours auquel vous souhaitez vous inscrire.</li>
+<li>Si une clef d\'inscription vous est demandée, utilisez celle que votre enseignant vous aura communiquée.</li>
+<li>Vous aurez alors un accès au cours complet. À votre prochaine visite il vous suffira d\'entrer votre nom d\'utilisateur et mot de passe (dans le formulaire ci-contre) afin de vous connecter et d\'accéder à tous les cours auxquels vous serez inscrit.</li>
+</ol>';
 $string['loginstepsnone'] = '<p>Bonjour !</p><p>Pour un accès complet aux cours vous devez vous créer un compte.</p><p>Pour cela, vous avez seulement besoin de choisir un nom d\'utilisateur et un mot de passe à entrer dans le formulaire de cette page.</p><p>Si ce nom d\'utilisateur est déjà utilisé, il vous sera demandé d\'en choisir un autre.</p>';
 $string['loginto'] = 'S\'inscrire à {$a}';
 $string['loginusing'] = 'Connectez-vous ici en utilisant votre nom d\'utilisateur et mot de passe';
@@ -1105,11 +1105,11 @@ Le mot de passe de votre compte sur « {$a->sitename} » a été remplacé par u
 
 Les informations pour vous connecter sont désormais :
 
-    nom d\'utilisateur : {$a->username}
-    mot de passe : {$a->newpassword}
+nom d\'utilisateur : {$a->username}
+mot de passe : {$a->newpassword}
 
 Merci de visiter cette page afin de changer de mot de passe :
-    {$a->link}
+{$a->link}
 
 Dans la plupart des logiciels de messagerie, cette adresse devrait apparaître comme un lien de couleur bleue qu\'il vous suffit de cliquer. Si cela ne fonctionne pas, copiez ce lien et collez-le dans la barre d\'adresse de votre navigateur web.
 
@@ -1135,13 +1135,13 @@ $string['newusernewpasswordtext'] = 'Bonjour,
 Un nouveau compte a été créé pour vous sur le site « {$a->sitename} » et un mot de passe temporaire vous a été délivré.
 
 Les informations nécessaires à votre connexion sont maintenant :
-   nom d\'utilisateur : {$a->username}
-   mot de passe       : {$a->newpassword}
+nom d\'utilisateur : {$a->username}
+mot de passe       : {$a->newpassword}
 
 Vous devrez changer votre mot de passe lors de votre première connexion.
 
 Pour commencer à travailler sur « {$a->sitename} », veuillez vous connecter en cliquant sur le lien ci-dessous.
-   {$a->link}
+{$a->link}
 
 Dans la plupart des logiciels de messagerie, cette adresse devrait apparaître comme un lien de couleur bleue qu\'il vous suffit de cliquer. Si cela ne fonctionne pas, copiez ce lien et collez-le dans la barre d\'adresse de votre navigateur web.
 

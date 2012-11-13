@@ -55,7 +55,6 @@ Seuls les enseignants peuvent créer et modifier des livres. Nous ne prévoyons 
 *Mon titre n\'entre pas sur une seule ligne.*
 
 Modifiez votre titre ou demandez à votre administrateur de site de modifier la largeur de la table des matières. Il s\'agit d\'une valeur par défaut pour tous les livres dans la page de configuration des modules d\'activité.';
-$string['missingfilemanagement'] = 'Chers utilisateurs du module Livre, je suppose que vous aviez déjà remarqué qu\'il n\'est pas possible de supprimer ou gérer les fichiers utilisés dans les chapitres de livre. Merci de voter pour {$a} pour que ceci soit corrigé. Merci. Petr Škoda';
 $string['modulename'] = 'Livre';
 $string['modulename_help'] = 'Le livre est un court document contenant quelques pages.';
 $string['modulenameplural'] = 'Livres';

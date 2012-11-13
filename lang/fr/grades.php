@@ -43,128 +43,16 @@ $string['aggregatemedian'] = 'Médiane des notes';
 $string['aggregatemin'] = 'Note la plus basse';
 $string['aggregatemode'] = 'Mode des notes';
 $string['aggregateonlygraded'] = 'Calcul des tendances centrales seulement pour notes non vides';
-$string['aggregateonlygraded_help'] = '<!-- $Id$ -->
-
-
-<p>Les notes non existantes sont soit traitées comme notes minimales, soit pas incluses dans le calcul des tendances centrales.</p>';
+$string['aggregateonlygraded_help'] = 'Les notes non existantes sont soit traitées comme notes minimales, soit pas incluses dans le calcul des tendances centrales.';
 $string['aggregateoutcomes'] = 'Inclure les objectifs dans les tendances centrales';
-$string['aggregateoutcomes_help'] = '<!-- $Id$ -->
-
-
-<p>De l\'inclusion des objectifs dans le calcul des tendances centrales peut découler une note globale non désirée. Vous avez la possibilité de les inclure ou non dans le calcul des notes.</p>';
+$string['aggregateoutcomes_help'] = 'De l\'inclusion des objectifs dans le calcul des tendances centrales peut découler une note globale non désirée. Vous avez la possibilité de les inclure ou non dans le calcul des notes.';
 $string['aggregatesonly'] = 'Seulement tendances centrales';
 $string['aggregatesubcats'] = 'Inclure les sous-catégories dans les tendances centrales';
-$string['aggregatesubcats_help'] = '<!-- $Id$ -->
-
-
-<p>Le calcul des tendances centrales est habituellement effectué sur les notes de la catégorie. Il est aussi possible de calculer les tendances centrales en incluant les notes individuelles de toutes les sous-catégories, tout en excluant les autres tendances centrales calculées.</p>';
+$string['aggregatesubcats_help'] = 'Le calcul des tendances centrales est habituellement effectué sur les notes de la catégorie. Il est aussi possible de calculer les tendances centrales en incluant les notes individuelles de toutes les sous-catégories, tout en excluant les autres tendances centrales calculées.';
 $string['aggregatesum'] = 'Sommes des notes';
 $string['aggregateweightedmean'] = 'Moyenne pondérée des notes';
 $string['aggregateweightedmean2'] = 'Simple moyenne pondérée des notes';
 $string['aggregation'] = 'Tendance centrale';
-$string['aggregationcoef'] = 'Coefficient';
-$string['aggregationcoefextra'] = 'Points supplémentaires';
-$string['aggregationcoefextra_help'] = '<!-- $Id$ -->
-
-
-<h2>Lorsque la tendance centrale choisie est la « Somme des notes »</h2>
-
-<p>Lorsque la tendance centrale choisie est la « Somme des notes », un élément d\'évaluation peut compter pour des points supplémentaires dans une catégorie. Cela signifie que la note maximale de l\'élément d\'évaluation ne sera pas compté dans le maximum du total des notes, mais que les points obtenus par chaque participant pour cet élément seront ajoutés à leur total.</p>
-
-<p>Voici un exemple :</p>
-
-<ul>
-
-    <li>l\'élément 1 est noté de 0 à 100 ;</li>
-
-    <li>l\'élément 2 est noté de 0 à 75 ;</li>
-
-    <li>l\'élément 1 a l\'option « Compte comme points supplémentaires » cochée, l\'élément 2 ne l\'a pas ;</li>
-
-    <li>les deux éléments font partie de la catégorie 1, dont la tendance centrale choisie est « Somme des notes » ;</li>
-
-    <li>Le total de la catégorie 1 sera noté de 0 à 75 ;</li>
-
-    <li>un participant a obtenu 20 pour l\'élément 1 et 70 pour l\'élément 2 ;</li>
-
-    <li>la note du participant pour la catégorie 1 sera de 75 sur 75 (20 + 70 = 90, mais l\'élément 1 compte comme points supplémentaires, et pousse donc la note à son maximum de 75, et non de 175).</li>
-
-</ul>
-
-<h2>Lorsque la tendance centrale choisie est la « Moyenne des notes (points supplémentaires) »</h2>
-
-<p>Une valeur plus grande que 0 a pour effet le traitement de la note de cet élément d\'évaluation comme points supplémentaires lors du calcul de la tendance centrale. Le nombre est un facteur par lequel la valeur de la note sera multipliée avant d\'être ajoutée à la somme de toutes les notes, mais l\'élément lui-même ne sera pas compté dans la division.</p>
-
-<p>Voici un exemple :</p>
-
-<ul>
-
-    <li>l\'élément 1 est noté de 0 à 100 et sa valeur « Points supplémentaires » est de 2 ;</li>
-
-    <li>l\'élément 2 est noté de 0 à 100 et sa valeur « Points supplémentaires » est laissée à 0.0000 ;</li>
-
-    <li>l\'élément 3 est noté de 0 à 100 et sa valeur « Points supplémentaires » est laissée à 0.0000 ;</li>
-
-    <li>Les trois éléments 3 font partie de la catégorie 1, dont la tendance centrale choisie est « Moyenne des notes (points supplémentaires) » ;</li>
-
-    <li>un participant a obtenu 20 pour l\'élément 1, 40 pour l\'élément 2 et 70 pour l\'élément 3 ;</li>
-
-    <li>la note du participant pour la catégorie 1 sera de 95 sur 100 puisque 20*2 + (40 + 70)/2 = 95.</li>
-
-</ul>';
-$string['aggregationcoefextrasum'] = 'Points supplémentaires';
-$string['aggregationcoefextrasum_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsque la tendance centrale choisie est la « Somme des notes », un élément d\'évaluation peut compter pour des points supplémentaires dans une catégorie. Cela signifie que la note maximale de l\'élément d\'évaluation ne sera pas compté dans le maximum du total des notes, mais que les points obtenus par chaque participant pour cet élément seront ajoutés à leur total.</p>
-
-<p>Voici un exemple :</p>
-
-<ul>
-
-    <li>l\'élément 1 est noté de 0 à 100 ;</li>
-
-    <li>l\'élément 2 est noté de 0 à 75 ;</li>
-
-    <li>l\'élément 1 a l\'option « Compte comme points supplémentaires » cochée, l\'élément 2 ne l\'a pas ;</li>
-
-    <li>les deux éléments font partie de la catégorie 1, dont la tendance centrale choisie est « Somme des notes » ;</li>
-
-    <li>Le total de la catégorie 1 sera noté de 0 à 75 ;</li>
-
-    <li>un participant a obtenu 20 pour l\'élément 1 et 70 pour l\'élément 2 ;</li>
-
-    <li>le total du participant pour la catégorie 1 sera de 75 sur 75 (20 + 70 = 90, mais puisque l\'élément 1 compte comme points supplémentaires, et pousse donc la note à son maximum de 75, et non de 175).</li>
-
-</ul>';
-$string['aggregationcoefextraweight'] = 'Coefficient de points supplémentaires';
-$string['aggregationcoefextraweight_help'] = '<!-- $Id$ -->
-
-
-<p>Une valeur supérieure à 0 dans ce champ aura pour effet que la note obtenue pour cet élément d\'évaluation sera traitée comme des points supplémentaires lors du calcul de la tendance centrale. Cette valeur est un facteur par lequel la valeur de la note sera multipliée avant d\'être ajoutée à la somme de toutes les notes. L\'élément lui-même ne sera pas utilisé dans la division.</p>
-
-<p>Voici un exemple :</p>
-
-<ul>
-
-    <li>l\'élément 1 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est 2 ;</li>
-
-    <li>l\'élément 2 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est laissée à 0 ;</li>
-
-    <li>l\'élément 3 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est laissée à 0 ;</li>
-
-    <li>Tous les 3 éléments font partie de la catégorie 1, dont la tendance centrale choisie est la « Moyenne des notes (avec points supplémentaires) » ;</li>
-
-    <li>Un participant obtient la note 20 pour l\'élément 1, 40  pour l\'élément 2 et 70 pour l\'élément 3 ;</li>
-
-    <li>La note du participant pour la catégorie 1 sera de 95/100 puisque 95 = 20*2 + (40 + 70)/2.</li>
-
-</ul>';
-$string['aggregationcoefweight'] = 'Coefficient de l\'élément';
-$string['aggregationcoefweight_help'] = '<!-- $Id$ -->
-
-
-<p>Pondération appliquée à toutes les notes de cet élément d\'évaluation lors du calcul de la tendance centrale.</p>';
 $string['aggregation_help'] = 'La tendance centrale détermine comment les notes d\'une catégorie sont combinées.
 
 * Moyenne des notes : la somme de toutes les notes divisée par le nombre total de notes.
@@ -176,11 +64,82 @@ $string['aggregation_help'] = 'La tendance centrale détermine comment les notes
 * Note la plus haute.
 * Mode des notes : le mode est la note qui revient le plus souvent dans le groupe. En général, il s\'applique à des notes non numériques. Son avantage par rapport à la moyenne des notes est qu\'il n\'est pas influencé par les valeurs extrêmes (notes anormalement éloignées de la moyenne). Toutefois, ce calcul perd son sens lorsque plus d\'une note revient fréquemment (dans ce cas, une seule note est conservée), ou lorsque toutes les notes sont différentes les unes des autres.
 * Somme des notes : la somme de toutes les notes est calculée et les éléments évalués selon un barème sont ignorés.';
+$string['aggregationcoef'] = 'Coefficient';
+$string['aggregationcoefextra'] = 'Points supplémentaires';
+$string['aggregationcoefextra_help'] = 'Lorsque la tendance centrale choisie est la « Somme des notes », un élément d\'évaluation peut compter pour des points supplémentaires dans une catégorie. Cela signifie que la note maximale de l\'élément d\'évaluation ne sera pas compté dans le maximum du total des notes, mais que les points obtenus par chaque participant pour cet élément seront ajoutés à leur total.
+
+Voici un exemple :
+
+* l\'élément 1 est noté de 0 à 100 ;
+
+* l\'élément 2 est noté de 0 à 75 ;
+
+* l\'élément 1 a l\'option « Compte comme points supplémentaires » cochée, l\'élément 2 ne l\'a pas ;
+
+* les deux éléments font partie de la catégorie 1, dont la tendance centrale choisie est « Somme des notes » ;
+
+* Le total de la catégorie 1 sera noté de 0 à 75 ;
+
+* un participant a obtenu 20 pour l\'élément 1 et 70 pour l\'élément 2 ;
+
+* la note du participant pour la catégorie 1 sera de 75 sur 75 (20 + 70 = 90, mais l\'élément 1 compte comme points supplémentaires, et pousse donc la note à son maximum de 75, et non de 175).
+
+
+## Lorsque la tendance centrale choisie est la « Moyenne des notes (points supplémentaires) »
+
+Une valeur plus grande que 0 a pour effet le traitement de la note de cet élément d\'évaluation comme points supplémentaires lors du calcul de la tendance centrale. Le nombre est un facteur par lequel la valeur de la note sera multipliée avant d\'être ajoutée à la somme de toutes les notes, mais l\'élément lui-même ne sera pas compté dans la division.
+
+Voici un exemple :
+
+* l\'élément 1 est noté de 0 à 100 et sa valeur « Points supplémentaires » est de 2 ;
+
+* l\'élément 2 est noté de 0 à 100 et sa valeur « Points supplémentaires » est laissée à 0.0000 ;
+
+* l\'élément 3 est noté de 0 à 100 et sa valeur « Points supplémentaires » est laissée à 0.0000 ;
+
+* Les trois éléments 3 font partie de la catégorie 1, dont la tendance centrale choisie est « Moyenne des notes (points supplémentaires) » ;
+
+* un participant a obtenu 20 pour l\'élément 1, 40 pour l\'élément 2 et 70 pour l\'élément 3 ;
+
+* la note du participant pour la catégorie 1 sera de 95 sur 100 puisque 20*2 + (40 + 70)/2 = 95.';
+$string['aggregationcoefextrasum'] = 'Points supplémentaires';
+$string['aggregationcoefextrasum_help'] = 'Lorsque la tendance centrale choisie est la « Somme des notes », un élément d\'évaluation peut compter pour des points supplémentaires dans une catégorie. Cela signifie que la note maximale de l\'élément d\'évaluation ne sera pas compté dans le maximum du total des notes, mais que les points obtenus par chaque participant pour cet élément seront ajoutés à leur total.
+
+Voici un exemple :
+
+* l\'élément 1 est noté de 0 à 100 ;
+
+* l\'élément 2 est noté de 0 à 75 ;
+
+* l\'élément 1 a l\'option « Compte comme points supplémentaires » cochée, l\'élément 2 ne l\'a pas ;
+
+* les deux éléments font partie de la catégorie 1, dont la tendance centrale choisie est « Somme des notes » ;
+
+* Le total de la catégorie 1 sera noté de 0 à 75 ;
+
+* un participant a obtenu 20 pour l\'élément 1 et 70 pour l\'élément 2 ;
+
+* le total du participant pour la catégorie 1 sera de 75 sur 75 (20 + 70 = 90, mais puisque l\'élément 1 compte comme points supplémentaires, et pousse donc la note à son maximum de 75, et non de 175).';
+$string['aggregationcoefextraweight'] = 'Coefficient de points supplémentaires';
+$string['aggregationcoefextraweight_help'] = 'Une valeur supérieure à 0 dans ce champ aura pour effet que la note obtenue pour cet élément d\'évaluation sera traitée comme des points supplémentaires lors du calcul de la tendance centrale. Cette valeur est un facteur par lequel la valeur de la note sera multipliée avant d\'être ajoutée à la somme de toutes les notes. L\'élément lui-même ne sera pas utilisé dans la division.
+
+Voici un exemple :
+
+* l\'élément 1 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est 2 ;
+
+* l\'élément 2 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est laissée à 0 ;
+
+* l\'élément 3 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est laissée à 0 ;
+
+* Tous les 3 éléments font partie de la catégorie 1, dont la tendance centrale choisie est la « Moyenne des notes (avec points supplémentaires) » ;
+
+* Un participant obtient la note 20 pour l\'élément 1, 40  pour l\'élément 2 et 70 pour l\'élément 3 ;
+
+* La note du participant pour la catégorie 1 sera de 95/100 puisque 95 = 20*2 + (40 + 70)/2.';
+$string['aggregationcoefweight'] = 'Coefficient de l\'élément';
+$string['aggregationcoefweight_help'] = 'Pondération appliquée à toutes les notes de cet élément d\'évaluation lors du calcul de la tendance centrale.';
 $string['aggregationposition'] = 'Position de la tendance centrale';
-$string['aggregationposition_help'] = '<!-- $Id$ -->
-
-
-<p>La position de la colonne <i>Tendance centrale</i> dans le rapport, relativement aux notes dont on calcule la tendance centrale.</p>';
+$string['aggregationposition_help'] = 'La position de la colonne *Tendance centrale* dans le rapport, relativement aux notes dont on calcule la tendance centrale.';
 $string['aggregationsvisible'] = 'Types de tendances centrales disponibles';
 $string['aggregationsvisiblehelp'] = 'Sélectionnez tous les types de tendances centrales que vous voulez autoriser.';
 $string['allgrades'] = 'Toutes les notes par catégorie';
@@ -190,15 +149,9 @@ $string['autosort'] = 'Tri automatique';
 $string['availableidnumbers'] = 'Identifiants disponibles';
 $string['average'] = 'Moyenne';
 $string['averagesdecimalpoints'] = 'Décimales des moyennes de colonnes';
-$string['averagesdecimalpoints_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie le nombre de décimales à afficher pour chaque moyenne de colonne. Si Hériter est sélectionné, le type d\'affichage de chaque colonne est utilisé.</p>';
+$string['averagesdecimalpoints_help'] = 'Spécifie le nombre de décimales à afficher pour chaque moyenne de colonne. Si Hériter est sélectionné, le type d\'affichage de chaque colonne est utilisé.';
 $string['averagesdisplaytype'] = 'Type d\'affichage des moyennes de colonnes';
-$string['averagesdisplaytype_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie comment afficher des moyennes de chaque colonne. Si « Hériter » est sélectionné, le type d\'affichage de chaque colonne est utilisé.</p>';
+$string['averagesdisplaytype_help'] = 'Spécifie comment afficher des moyennes de chaque colonne. Si « Hériter » est sélectionné, le type d\'affichage de chaque colonne est utilisé.';
 $string['backupwithoutgradebook'] = 'La sauvegarde ne contient pas la configuration du carnet de notes';
 $string['badgrade'] = 'La note fournie n\'est pas valide';
 $string['badlyformattedscale'] = 'Veuillez spécifier une liste de valeurs séparées par des virgules (au moins deux valeurs requises).';
@@ -207,9 +160,9 @@ $string['bonuspoints'] = 'Bonus';
 $string['bulkcheckboxes'] = 'Cases à cocher en vrac';
 $string['calculatedgrade'] = 'Note calculée';
 $string['calculation'] = 'Calcul';
+$string['calculation_help'] = 'Les calculs de notes utilisent une syntaxe similaire à celle des fonctions de tableurs. Une formule commence par un signe d\'égalité (=) et emploie des opérateurs et fonctions mathématiques usuels, comme min, max ou sum. On peut au besoin inclure dans les formules les valeurs d\'autres éléments d\'évaluations en indiquant leur identifiant entouré de deux paires de crochets [[...]].';
 $string['calculationadd'] = 'Ajouter calcul';
 $string['calculationedit'] = 'Modifier calcul';
-$string['calculation_help'] = 'Les calculs de notes utilisent une syntaxe similaire à celle des fonctions de tableurs. Une formule commence par un signe d\'égalité (=) et emploie des opérateurs et fonctions mathématiques usuels, comme min, max ou sum. On peut au besoin inclure dans les formules les valeurs d\'autres éléments d\'évaluations en indiquant leur identifiant entouré de deux paires de crochets [[...]].';
 $string['calculationsaved'] = 'Calcul enregistré';
 $string['calculationview'] = 'Afficher calcul';
 $string['cannotaccessgroup'] = 'Impossible d\'accéder aux notes du groupe sélectionné.';
@@ -248,10 +201,7 @@ $string['csv'] = 'CSV';
 $string['currentparentaggregation'] = 'Tendance centrale parente actuelle';
 $string['curveto'] = 'Normaliser à';
 $string['decimalpoints'] = 'Décimales';
-$string['decimalpoints_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie le nombre de décimales à afficher pour chaque note. Ce réglage n\'a pas d\'effet sur le résultat des calculs, qui sont effectués dans tous les cas avec une précision de 5 décimales.</p>';
+$string['decimalpoints_help'] = 'Spécifie le nombre de décimales à afficher pour chaque note. Ce réglage n\'a pas d\'effet sur le résultat des calculs, qui sont effectués dans tous les cas avec une précision de 5 décimales.';
 $string['default'] = 'Défaut';
 $string['defaultprev'] = 'Défaut ({$a})';
 $string['deletecategory'] = 'Supprimer une catégorie';
@@ -263,10 +213,7 @@ $string['displaypoints'] = 'Afficher les points';
 $string['displayweighted'] = 'Afficher les notes pondérées';
 $string['dropdown'] = 'Menu déroulant';
 $string['droplow'] = 'Ignorer les plus basses';
-$string['droplow_help'] = '<!-- $Id$ -->
-
-
-<p>Cette option permet d\'ignorer les <i>n</i> notes les plus basses, le nombre <i>n</i> étant sélectionné dans le menu déroulant.</p>';
+$string['droplow_help'] = 'Cette option permet d\'ignorer les *n* notes les plus basses, le nombre *n* étant sélectionné dans le menu déroulant.';
 $string['dropped'] = 'Ignoré';
 $string['dropxlowest'] = 'Ignorer les <i>n</i> notes les plus basses';
 $string['dropxlowestwarning'] = 'Remarque : si vous utilisez l\'option « ignorer les n notes les plus basses »,<br />tous les éléments de la catégorie seront considérés comme valant<br />le même nombre de points. Si ces valeurs varient, les résultats seront imprévisibles !';
@@ -301,10 +248,7 @@ $string['errorupdatinggradecategoryaggregatesubcats'] = 'Erreur lors de la modif
 $string['errorupdatinggradecategoryaggregation'] = 'Erreur lors de la modification du type de tendance centrale de la catégorie de note d\'identifiant {$a->id}';
 $string['errorupdatinggradeitemaggregationcoef'] = 'Erreur lors de la modification du  coefficient de l\'élément d\'évaluation d\'identifiant {$a->id}';
 $string['excluded'] = 'Exclue';
-$string['excluded_help'] = '<!-- $Id$ -->
-
-
-<p>Si cette option est activée, la note ne sera prise en compte dans aucun calcul de tendance centrale effectuée dans les éléments d\'évaluation ou les catégories auxquels appartiennent la note.</p>';
+$string['excluded_help'] = 'Si cette option est activée, la note ne sera prise en compte dans aucun calcul de tendance centrale effectuée dans les éléments d\'évaluation ou les catégories auxquels appartiennent la note.';
 $string['expand'] = 'Développer la catégorie';
 $string['export'] = 'Exporter';
 $string['exportalloutcomes'] = 'Exporter tous les objectifs';
@@ -314,19 +258,13 @@ $string['exportsettings'] = 'Réglages d\'exportation';
 $string['exportto'] = 'Exporter vers';
 $string['extracreditwarning'] = 'Remarque : si tous les éléments d\'une catégorie sont cochés comme bonus, cela aura pour effet de les retirer complètement du calcul des notes, puisqu\'il n\'y aura pas de point au total.';
 $string['feedback'] = 'Feedback';
+$string['feedback_help'] = 'Les remarques ajoutées à la note par l\'enseignant. Ces remarques peuvent être détaillées ou au contraire un simple code faisant référence à votre système de feedback personnel.';
 $string['feedbackadd'] = 'Ajouter feedback';
 $string['feedbackedit'] = 'Modifier feedback';
-$string['feedback_help'] = '<!-- $Id$ -->
-
-
-<p>Les remarques ajoutées à la note par l\'enseignant. Ces remarques peuvent être détaillées ou au contraire un simple code faisant référence à votre système de feedback personnel.</p>';
 $string['feedbacksaved'] = 'Feedback enregistré';
 $string['feedbackview'] = 'Afficher feedback';
 $string['finalgrade'] = 'Note finale';
-$string['finalgrade_help'] = '<!-- $Id -->
-
-
-<p>La note finale (mise en cache), une fois tous les calculs effectués.</p>';
+$string['finalgrade_help'] = 'La note finale (mise en cache), une fois tous les calculs effectués.';
 $string['fixedstudents'] = 'Colonne étudiants statique';
 $string['fixedstudents_help'] = 'Permet aux notes de défiler horizontalement sans perdre de vue la colonne des étudiants, en rendant statique cette dernière.';
 $string['forceoff'] = 'Imposer : non';
@@ -344,10 +282,7 @@ $string['gradebook'] = 'Carnet de notes';
 $string['gradebookhiddenerror'] = 'Le carnet de notes est configuré de façon à cacher toutes ses données aux étudiants.';
 $string['gradebookhistories'] = 'Historiques d\'évaluation';
 $string['gradeboundary'] = 'Limite pour note lettre';
-$string['gradeboundary_help'] = '<!-- $Id$ -->
-
-
-<p>Une limite en pourcent au-dessus de laquelle les notes seront converties en une lettre (si l\'affichage des notes lettres est choisi).</p>';
+$string['gradeboundary_help'] = 'Une limite en pourcent au-dessus de laquelle les notes seront converties en une lettre (si l\'affichage des notes lettres est choisi).';
 $string['gradecategories'] = 'Catégories de note';
 $string['gradecategory'] = 'Catégorie de note';
 $string['gradecategoryonmodform'] = 'Catégorie de note';
@@ -355,10 +290,7 @@ $string['gradecategoryonmodform_help'] = 'Ce réglage définit la catégorie du 
 $string['gradecategorysettings'] = 'Réglages des catégories';
 $string['gradedisplay'] = 'Affichage des notes';
 $string['gradedisplaytype'] = 'Type d\'affichage des notes';
-$string['gradedisplaytype_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie comment afficher les notes dans les rapports de l\'évaluateur et du participant. Les notes peuvent être affichées comme notes réelles, comme pourcentages (relativement aux notes maximale et minimale) ou comme lettres.</p>';
+$string['gradedisplaytype_help'] = 'Spécifie comment afficher les notes dans les rapports de l\'évaluateur et du participant. Les notes peuvent être affichées comme notes réelles, comme pourcentages (relativement aux notes maximale et minimale) ou comme lettres.';
 $string['gradedon'] = 'Évalué le {$a}';
 $string['gradeexport'] = 'Exportation de notes';
 $string['gradeexportdecimalpoints'] = 'Nombre de décimales des notes exportées';
@@ -383,32 +315,20 @@ $string['gradeitems'] = 'Éléments d\'évaluation';
 $string['gradeitemsettings'] = 'Réglages des éléments';
 $string['gradeitemsinc'] = 'Éléments d\'évaluation à inclure';
 $string['gradeletter'] = 'Note lettre';
-$string['gradeletter_help'] = '<!-- $Id$ -->
-
-
-<p>Une lettre ou autre symbole utilisé pour représenter un intervalle de notes.</p>';
+$string['gradeletter_help'] = 'Une lettre ou autre symbole utilisé pour représenter un intervalle de notes.';
 $string['gradeletternote'] = 'Pour supprimer une note lettre, effacer simplement le contenu des trois<br />zones lui correspondant et cliquer sur « Enregistrer les changements ».';
 $string['gradeletters'] = 'Notes lettres';
 $string['gradelocked'] = 'La note est verrouillée';
 $string['gradelong'] = '{$a->grade} / {$a->max}';
 $string['grademax'] = 'Note maximale';
-$string['grademax_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsque le type de note est valeur, une note maximale peut être fixée. La note maximale pour un élément d\'évaluation basé sur une activité est géré sur la page de modification de l\'activité.</p>';
+$string['grademax_help'] = 'Lorsque le type de note est valeur, une note maximale peut être fixée. La note maximale pour un élément d\'évaluation basé sur une activité est géré sur la page de modification de l\'activité.';
 $string['grademin'] = 'Note minimale';
-$string['grademin_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsque le type de note est valeur, une note minimale peut être fixée.</p>';
+$string['grademin_help'] = 'Lorsque le type de note est valeur, une note minimale peut être fixée.';
 $string['gradeoutcomeitem'] = 'Évaluer élément d\'objectif';
 $string['gradeoutcomes'] = 'Objectifs';
 $string['gradeoutcomescourses'] = 'Objectifs du cours';
 $string['gradepass'] = 'Note pour passer';
-$string['gradepass_help'] = '<!-- $Id$ -->
-
-
-<p>Si pour un élément d\'évaluation doit être définie une note que les participants doivent égaler ou dépasser pour réussir l\'élément, vous pouvez la saisir ici.</p>';
+$string['gradepass_help'] = 'Si pour un élément d\'évaluation doit être définie une note que les participants doivent égaler ou dépasser pour réussir l\'élément, vous pouvez la saisir ici.';
 $string['gradepreferences'] = 'Préférences des notes';
 $string['gradepreferenceshelp'] = 'Aide sur les préférences des notes';
 $string['gradepublishing'] = 'Activer la publication';
@@ -420,17 +340,14 @@ $string['gradesforuser'] = 'Notes de {$a->user}';
 $string['gradesonly'] = 'Seulement les notes';
 $string['gradessettings'] = 'Réglages des notes';
 $string['gradetype'] = 'Type de note';
-$string['gradetype_help'] = '<!-- $Id$ -->
-
-
-<p>Indique le type de note utilisé : aucune (pas de note possible), valeur (activation des notes maximale et minimale), barème (activation du réglage du barème) ou texte (feedback uniquement). Seuls les types valeur et barème permettent le calcul d\'une tendance centrale. Le type de note pour un élément d\'évaluation basé sur une activité est géré sur la page de modification de l\'activité.</p>';
+$string['gradetype_help'] = 'Indique le type de note utilisé : aucune (pas de note possible), valeur (activation des notes maximale et minimale), barème (activation du réglage du barème) ou texte (feedback uniquement). Seuls les types valeur et barème permettent le calcul d\'une tendance centrale. Le type de note pour un élément d\'évaluation basé sur une activité est géré sur la page de modification de l\'activité.';
 $string['gradeview'] = 'Afficher la note';
 $string['gradeweighthelp'] = 'Aide sur les coefficients des notes';
 $string['groupavg'] = 'Moyenne du groupe';
 $string['hidden'] = 'Caché';
+$string['hidden_help'] = 'Si cette case est cochée, les notes sont cachées aux étudiants. Un délai peut être fixé au besoin, afin d\'afficher les notes après que l\'évaluation soit terminée.';
 $string['hiddenasdate'] = 'Afficher la date de remise pour les notes cachées';
 $string['hiddenasdate_help'] = 'Si le participant n\'a pas le droit de voir les notes cachées, afficher la date de remise au lieu d\'un tiret.';
-$string['hidden_help'] = 'Si cette case est cochée, les notes sont cachées aux étudiants. Un délai peut être fixé au besoin, afin d\'afficher les notes après que l\'évaluation soit terminée.';
 $string['hiddenuntil'] = 'Caché jusqu\'au';
 $string['hiddenuntildate'] = 'Caché jusqu\'au {$a}';
 $string['hideadvanced'] = 'Cacher les fonctions avancées';
@@ -447,14 +364,11 @@ $string['hidenooutcomes'] = 'Afficher les objectifs';
 $string['hidequickfeedback'] = 'Cacher le feedback rapide';
 $string['hideranges'] = 'Cacher les valeurs possibles';
 $string['hidetotalifhiddenitems'] = 'Cacher les totaux contenant des éléments cachés';
-$string['hidetotalifhiddenitems_help'] = '<!-- $Id$ -->
+$string['hidetotalifhiddenitems_help'] = 'Ce réglage détermine si les totaux contenant un ou plusieurs éléments d\'évaluation cachés seront affichés pour les participants ou remplacés par un tiret (-). S\'ils sont affichés, les totaux seront calculés soit en incluant, soit en excluant les éléments d\'évaluation cachés.
 
+Si les éléments cachés sont exclus, le total vu par les participants sera différent de celui vu dans le rapport d\'évaluation par l\'enseignant, puisque celui-ci voit toujours les totaux calculés à partir de tous les éléments, qu\'ils soient cachés ou non.
 
-<p>Ce réglage détermine si les totaux contenant un ou plusieurs éléments d\'évaluation cachés seront affichés pour les participants ou remplacés par un tiret (-). S\'ils sont affichés, les totaux seront calculés soit en incluant, soit en excluant les éléments d\'évaluation cachés.</p>
-
-<p>Si les éléments cachés sont exclus, le total vu par les participants sera différent de celui vu dans le rapport d\'évaluation par l\'enseignant, puisque celui-ci voit toujours les totaux calculés à partir de tous les éléments, qu\'ils soient cachés ou non.</p>
-
-<p>Si les éléments cachés sont inclus, les participants seront potentiellement en mesure de déduire par le calcul la valeur des éléments cachés.</p>';
+Si les éléments cachés sont inclus, les participants seront potentiellement en mesure de déduire par le calcul la valeur des éléments cachés.';
 $string['hidetotalshowexhiddenitems'] = 'Afficher les totaux en excluant les éléments cachés';
 $string['hidetotalshowinchiddenitems'] = 'Afficher les totaux en incluant les éléments cachés';
 $string['hideverbose'] = 'Cacher {$a->category} {$a->itemmodule} {$a->itemname}';
@@ -493,10 +407,7 @@ $string['inherit'] = 'Hériter';
 $string['intersectioninfo'] = 'Infos participant/note';
 $string['item'] = 'Élément';
 $string['iteminfo'] = 'Info élément';
-$string['iteminfo_help'] = '<!-- $Id$ -->
-
-
-<p>Un endroit où indiquer des informations concernant l\'élément d\'évaluation. Le texte saisi n\'apparaît nulle part ailleurs.</p>';
+$string['iteminfo_help'] = 'Un endroit où indiquer des informations concernant l\'élément d\'évaluation. Le texte saisi n\'apparaît nulle part ailleurs.';
 $string['itemname'] = 'Nom élément';
 $string['itemnamehelp'] = 'Le nom de cet élément, fourni par le module.';
 $string['items'] = 'Éléments';
@@ -512,10 +423,7 @@ $string['letterpercentage'] = 'Lettre (pourcentage)';
 $string['letterreal'] = 'Lettre (brute)';
 $string['letters'] = 'Lettres';
 $string['linkedactivity'] = 'Activité liée';
-$string['linkedactivity_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie une activité optionnelle à laquelle cet élément d\'objectif est lié. On utilise ceci pour mesurer la performance d\'un participant par rapport à un critère non évalué par la note de l\'activité.</p>';
+$string['linkedactivity_help'] = 'Spécifie une activité optionnelle à laquelle cet élément d\'objectif est lié. On utilise ceci pour mesurer la performance d\'un participant par rapport à un critère non évalué par la note de l\'activité.';
 $string['linktoactivity'] = 'Lien vers l\'activité {$a->name}';
 $string['lock'] = 'Verrouiller';
 $string['locked'] = 'Verrouillé';
@@ -543,10 +451,7 @@ $string['morethanmax'] = 'La note saisie dans {$a->itemname} pour {$a->username}
 $string['moveselectedto'] = 'Déplacer les éléments sélectionnés vers';
 $string['movingelement'] = 'Déplacement de {$a}';
 $string['multfactor'] = 'Multiplicateur';
-$string['multfactor_help'] = '<!-- $Id$ -->
-
-
-<p>Nombre par lequel toutes les notes de cet élément d\'évaluation seront multipliées.</p>';
+$string['multfactor_help'] = 'Nombre par lequel toutes les notes de cet élément d\'évaluation seront multipliées.';
 $string['mypreferences'] = 'Mes préférences';
 $string['myreportpreferences'] = 'Mes préférences de rapport';
 $string['navmethod'] = 'Méthode de navigation';
@@ -582,6 +487,7 @@ $string['onascaleof'] = 'sur un barème de {$a->grademin} à {$a->grademax}';
 $string['operations'] = 'Opérations';
 $string['options'] = 'Options';
 $string['outcome'] = 'Objectif';
+$string['outcome_help'] = 'Spécifie l\'objectif représenté par cet élément d\'évaluation dans le carnet de notes. Seuls les objectifs associés à ce cours et les objectifs globaux du site sont disponibles';
 $string['outcomeassigntocourse'] = 'Attribuer un autre objectif à ce cours';
 $string['outcomecategory'] = 'Créer des objectifs dans la catégorie';
 $string['outcomecategorynew'] = 'Nouvelle catégorie';
@@ -589,7 +495,6 @@ $string['outcomeconfirmdelete'] = 'Voulez-vous vraiment supprimer l\'objectif «
 $string['outcomecreate'] = 'Ajouter un objectif';
 $string['outcomedelete'] = 'Supprimer objectif';
 $string['outcomefullname'] = 'Nom complet';
-$string['outcome_help'] = 'Spécifie l\'objectif représenté par cet élément d\'évaluation dans le carnet de notes. Seuls les objectifs associés à ce cours et les objectifs globaux du site sont disponibles';
 $string['outcomeitem'] = 'Élément d\'objectif';
 $string['outcomeitemsedit'] = 'Modifier élément d\'objectif';
 $string['outcomereport'] = 'Rapport des objectifs';
@@ -603,22 +508,13 @@ $string['outcomeshortname'] = 'Nom abrégé';
 $string['outcomesstandard'] = 'Objectifs standards';
 $string['outcomesstandardavailable'] = 'Objectifs standards disponibles';
 $string['outcomestandard'] = 'Objectif standard';
-$string['outcomestandard_help'] = '<!-- $Id$ -->
-
-
-<p>Un objectif standard est disponible dans tout le site, pour tous les cours.</p>';
+$string['outcomestandard_help'] = 'Un objectif standard est disponible dans tout le site, pour tous les cours.';
 $string['overallaverage'] = 'Moyenne globale';
 $string['overridden'] = 'Court-circuité';
-$string['overridden_help'] = '<!-- $Id -->
-
-
-<p>Ce réglage permet d\'éviter toute tentative future d\'ajustement automatique de la valeur de la note. Ce réglage est souvent fixé de façon interne par le carnet de notes, mais peut être modifié manuellement ici.</p>';
+$string['overridden_help'] = 'Ce réglage permet d\'éviter toute tentative future d\'ajustement automatique de la valeur de la note. Ce réglage est souvent fixé de façon interne par le carnet de notes, mais peut être modifié manuellement ici.';
 $string['overriddennotice'] = 'Votre note finale pour cette activité a été ajustée manuellement.';
 $string['overridesitedefaultgradedisplaytype'] = 'Court-circuiter les réglages du site';
-$string['overridesitedefaultgradedisplaytype_help'] = '<!-- $Id$ -->
-
-
-<p>En activant ce réglage, vous permettrez de passer outre les réglages du site pour l\'affichage des notes du carnet de notes. Cela activera les éléments permettant de définir les notes lettres et les valeurs limites au choix des enseignants.</p>';
+$string['overridesitedefaultgradedisplaytype_help'] = 'En activant ce réglage, vous permettrez de passer outre les réglages du site pour l\'affichage des notes du carnet de notes. Cela activera les éléments permettant de définir les notes lettres et les valeurs limites au choix des enseignants.';
 $string['parentcategory'] = 'Catégorie mère';
 $string['pctoftotalgrade'] = '% de la note maximale';
 $string['percent'] = 'Pourcent';
@@ -629,10 +525,7 @@ $string['percentascending'] = 'Tri croissant par pourcent';
 $string['percentdescending'] = 'Tri décroissant par pourcent';
 $string['percentshort'] = '%';
 $string['plusfactor'] = 'Décalage';
-$string['plusfactor_help'] = '<!-- $Id$ -->
-
-
-<p>Nombre qui sera ajouté à toutes les notes de cet élément d\'évaluation, après l\'application du multiplicateur.</p>';
+$string['plusfactor_help'] = 'Nombre qui sera ajouté à toutes les notes de cet élément d\'évaluation, après l\'application du multiplicateur.';
 $string['points'] = 'points';
 $string['pointsascending'] = 'Tri croissant par points';
 $string['pointsdescending'] = 'Tri décroissant par points';
@@ -649,23 +542,14 @@ $string['profilereport_help'] = 'Rapport d\'évaluation présenté dans les prof
 $string['publishing'] = 'Publication en cours';
 $string['quickfeedback'] = 'Feedback rapide';
 $string['quickgrading'] = 'Évaluation rapide';
-$string['quickgrading_help'] = '<!-- $Id$ -->
-
-
-<p>L\'évaluation rapide ajoute un champ de texte à chaque cellule de note du rapport de l\'évaluateur, vous permettant de modifier de nombreuses notes à la fois. Vous pouvez alors cliquer sur le bouton Modifier pour effectuer d\'un coup toutes les modifications, au lieu de les faire une à la fois.</p>';
+$string['quickgrading_help'] = 'L\'évaluation rapide ajoute un champ de texte à chaque cellule de note du rapport de l\'évaluateur, vous permettant de modifier de nombreuses notes à la fois. Vous pouvez alors cliquer sur le bouton Modifier pour effectuer d\'un coup toutes les modifications, au lieu de les faire une à la fois.';
 $string['range'] = 'Valeurs possibles';
 $string['rangedecimals'] = 'Décimales de l\'intervalle';
 $string['rangedecimals_help'] = 'Nombre de décimales à afficher pour l\'intervalle';
 $string['rangesdecimalpoints'] = 'Décimales des valeurs possibles';
-$string['rangesdecimalpoints_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie le nombre de décimales à afficher pour les valeurs possibles, au-dessus des colonnes de notes. Ce réglage peut être modifié pour chaque élément d\'évaluation.</p>';
+$string['rangesdecimalpoints_help'] = 'Spécifie le nombre de décimales à afficher pour les valeurs possibles, au-dessus des colonnes de notes. Ce réglage peut être modifié pour chaque élément d\'évaluation.';
 $string['rangesdisplaytype'] = 'Type d\'affichage des valeurs possibles';
-$string['rangesdisplaytype_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie comment afficher les valeurs possibles. Si Hériter est sélectionné, le type d\'affichage de chaque colonne est utilisé.</p>';
+$string['rangesdisplaytype_help'] = 'Spécifie comment afficher les valeurs possibles. Si Hériter est sélectionné, le type d\'affichage de chaque colonne est utilisé.';
 $string['rank'] = 'Rang';
 $string['rawpct'] = '% brut';
 $string['real'] = 'Brut';
@@ -700,10 +584,7 @@ $string['setting'] = 'Réglage';
 $string['settings'] = 'Réglages';
 $string['setweights'] = 'Coefficients';
 $string['showactivityicons'] = 'Afficher icônes d\'activité';
-$string['showactivityicons_help'] = '<!-- $Id$ -->
-
-
-<p>Spécifie si une icône d\'activité doit être affichée en regard de chaque activité.</p>';
+$string['showactivityicons_help'] = 'Spécifie si une icône d\'activité doit être affichée en regard de chaque activité.';
 $string['showallhidden'] = 'Afficher les éléments cachés';
 $string['showallstudents'] = 'Afficher tous les étudiants';
 $string['showanalysisicon'] = 'Afficher l\'icône d\'analyse de l\'évaluation';
@@ -779,10 +660,7 @@ $string['turnfeedbackoff'] = 'Désactiver le feedback';
 $string['turnfeedbackon'] = 'Activer le feedback';
 $string['typenone'] = 'Aucun';
 $string['typescale'] = 'Barème';
-$string['typescale_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsque le type de note utilisé est barème, un barème peut être choisi. Le barème d\'un élément d\'évaluation basé sur une activité est géré sur la page de modification de l\'activité.</p>';
+$string['typescale_help'] = 'Lorsque le type de note utilisé est barème, un barème peut être choisi. Le barème d\'un élément d\'évaluation basé sur une activité est géré sur la page de modification de l\'activité.';
 $string['typetext'] = 'Texte';
 $string['typevalue'] = 'Valeur';
 $string['uncategorised'] = 'Sans catégorie';

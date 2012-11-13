@@ -76,8 +76,8 @@ $string['groupinfo'] = 'Information sur le groupe sélectionné';
 $string['groupinfomembers'] = 'Information sur les membres sélectionnés';
 $string['groupinfopeople'] = 'Information sur les personnes sélectionnées';
 $string['grouping'] = 'Groupement';
-$string['groupingdescription'] = 'Description du groupement';
 $string['grouping_help'] = 'Un groupement est un ensemble de groupes dans un cours. Si un groupement est sélectionné, les utilisateurs dans les groupes du groupement pourront travailler ensemble.';
+$string['groupingdescription'] = 'Description du groupement';
 $string['groupingname'] = 'Nom du groupement';
 $string['groupingnameexists'] = 'Le nom de groupement « {$a} » existe déjà dans ce cours. Veuillez en choisir un autre.';
 $string['groupings'] = 'Groupements';
@@ -86,13 +86,11 @@ $string['groupmember'] = 'Membre du groupe';
 $string['groupmemberdesc'] = 'Rôle par défaut pour un membre d\'un groupe.';
 $string['groupmembers'] = 'Membres du groupe';
 $string['groupmembersonly'] = 'Disponible uniquement pour les membres du groupe';
-$string['groupmembersonlyerror'] = 'Désolé, vous devez être membre d\'au moins un groupe utilisé dans cette activité.';
 $string['groupmembersonly_help'] = 'Si cette case est cochée, l\'activité (ou la ressource) ne sera disponible que pour les participants membres de groupes faisant partie du groupement sélectionné.';
+$string['groupmembersonlyerror'] = 'Désolé, vous devez être membre d\'au moins un groupe utilisé dans cette activité.';
 $string['groupmemberssee'] = 'Voir les membres du groupe';
 $string['groupmembersselected'] = 'Membres du groupe sélectionné';
 $string['groupmode'] = 'Mode de groupe';
-$string['groupmodeforce'] = 'Imposer le mode de groupe';
-$string['groupmodeforce_help'] = 'Lorsque le type des groupes est imposé, le type des groupes défini dans le cours est appliqué à chaque activité du cours. Le type des groupes défini dans les activités est ignoré.';
 $string['groupmode_help'] = 'Ce réglage a trois options :
 
 * Pas de groupe - il n\'y a pas de groupes, tout le monde fait partie d\'une seule communauté ;
@@ -100,6 +98,8 @@ $string['groupmode_help'] = 'Ce réglage a trois options :
 * Groupes visibles - chaque groupe travaille uniquement dans son propre groupe, mais les autres groupes sont visibles.
 
 Le type de groupe défini au niveau du cours est le type par défaut pour toutes les activités du cours. Chaque activité qui supporte les groupes peut définir son propre type de groupe. Toutefois, si dans le cours le paramètre « Imposer le type des groupes » a été choisi, le type des groupes défini dans les activités sera ignoré.';
+$string['groupmodeforce'] = 'Imposer le mode de groupe';
+$string['groupmodeforce_help'] = 'Lorsque le type des groupes est imposé, le type des groupes défini dans le cours est appliqué à chaque activité du cours. Le type des groupes défini dans les activités est ignoré.';
 $string['groupmy'] = 'Mon groupe';
 $string['groupname'] = 'Nom du groupe';
 $string['groupnameexists'] = 'Le nom de groupe « {$a} » existe déjà dans ce cours. Veuillez en choisir un autre.';

@@ -149,13 +149,6 @@ $string['destination_help'] = '<!-- Version: $Id$ -->
 
 </ul>';
 $string['displayformat'] = 'Format d\'affichage';
-$string['displayformatcontinuous'] = 'Continu sans auteur';
-$string['displayformatdictionary'] = 'Simple, style dictionnaire';
-$string['displayformatencyclopedia'] = 'Encyclopédie';
-$string['displayformatentrylist'] = 'Liste d\'articles';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Complet avec auteur';
-$string['displayformatfullwithoutauthor'] = 'Complet sans auteur';
 $string['displayformat_help'] = 'Il existe 7 formats d\'affichages :
 
 * Simple, style dictionnaire : ressemble à un dictionnaire avec des articles séparés. Les auteurs ne sont pas affichés. Les annexes sont proposées sous forme de liens.
@@ -165,6 +158,13 @@ $string['displayformat_help'] = 'Il existe 7 formats d\'affichages :
 * Encyclopédie : identique au format « Complet avec auteur », mais les images en annexe sont affichées en ligne.
 * Liste d\'articles : une liste des concepts, sous forme de liens.
 * FAQ : utile pour l\'affichage de Foires Aux Questions. Les mots « Question » et « Réponse » sont affichés automatiquement en regard du concept, respectivement de la définition.';
+$string['displayformatcontinuous'] = 'Continu sans auteur';
+$string['displayformatdictionary'] = 'Simple, style dictionnaire';
+$string['displayformatencyclopedia'] = 'Encyclopédie';
+$string['displayformatentrylist'] = 'Liste d\'articles';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Complet avec auteur';
+$string['displayformatfullwithoutauthor'] = 'Complet sans auteur';
 $string['displayformats'] = 'Formats d\'affichage';
 $string['displayformatssetup'] = 'Réglages des formats d\'affichage';
 $string['duplicatecategory'] = 'Doublon de catégorie';
@@ -245,11 +245,16 @@ $string['glossary:export'] = 'Exporter des articles';
 $string['glossary:exportentry'] = 'Exporter un unique article';
 $string['glossary:exportownentry'] = 'Exporter un de ses propres articles';
 $string['glossary:import'] = 'Importer des articles';
-$string['glossaryleveldefaultsettings'] = 'Réglages par défaut des glossaires';
 $string['glossary:managecategories'] = 'Gérer les catégories';
 $string['glossary:managecomments'] = 'Gérer les commentaires';
 $string['glossary:manageentries'] = 'Gérer les articles';
 $string['glossary:rate'] = 'Évaluer les articles';
+$string['glossary:view'] = 'Voir les glossaires';
+$string['glossary:viewallratings'] = 'Afficher toutes les évaluations brutes';
+$string['glossary:viewanyrating'] = 'Afficher les évaluations totales reçues';
+$string['glossary:viewrating'] = 'Voir les évaluations que vous avez reçues';
+$string['glossary:write'] = 'Créer des articles';
+$string['glossaryleveldefaultsettings'] = 'Réglages par défaut des glossaires';
 $string['glossarytype'] = 'Type de glossaire';
 $string['glossarytype_help'] = '<!-- Version: $Id$ -->
 
@@ -259,11 +264,6 @@ $string['glossarytype_help'] = '<!-- Version: $Id$ -->
 <p>Attention ! Il ne peut y avoir qu\'un seul glossaire principal par cours.</p>
 
 <p>Avant Moodle 1.7, seuls les enseignants peuvaient modifier un glossaire principal. À partir de la version 1.7 de Moodle, si vous voulez contrôler qui a le droit de modifier un glossaire (y compris le glossaire principal), vous devez utiliser le mécanisme de dérogation aux rôles.</p>';
-$string['glossary:view'] = 'Voir les glossaires';
-$string['glossary:viewallratings'] = 'Afficher toutes les évaluations brutes';
-$string['glossary:viewanyrating'] = 'Afficher les évaluations totales reçues';
-$string['glossary:viewrating'] = 'Voir les évaluations que vous avez reçues';
-$string['glossary:write'] = 'Créer des articles';
 $string['guestnoedit'] = 'Les visiteurs anonymes ne sont pas autorisés à modifier les glossaires';
 $string['importcategories'] = 'Importer les catégories';
 $string['importedcategories'] = 'Catégories importées';

@@ -190,7 +190,7 @@ $string['hintn'] = 'Indice {no}';
 $string['hinttext'] = 'Texte de l\'indice';
 $string['howquestionsbehave'] = 'Comment se comportent les questions';
 $string['howquestionsbehave_help'] = 'Les participants peuvent agir avec les questions du test de différentes façons. Par exemple, vous pourriez souhaiter que les participants répondent à chaque question et envoient ensuite la totalité du test, avant que quoique ce soit ne soit noté ou qu\'un feedback ne leur soit donné. Ce sera le mode « Feedback a posteriori ».
-Vous pourriez aussi souhaiter que les étudiants envoient chaque question au fur et à mesure du test et reçoivent immédiatement le feedback correspondant, qu\'il puissent tenter de répondre à nouveau s\'ils ont échoué, mais avec une note moindre. Ce sera le mode « Interactif avec tentatives multiples ». ';
+Vous pourriez aussi souhaiter que les étudiants envoient chaque question au fur et à mesure du test et reçoivent immédiatement le feedback correspondant, qu\'il puissent tenter de répondre à nouveau s\'ils ont échoué, mais avec une note moindre. Ce sera le mode « Interactif avec tentatives multiples ».';
 $string['ignorebroken'] = 'Ignorer les liens cassés';
 $string['importcategory'] = 'Catégorie d\'importation';
 $string['importcategory_help'] = 'Ce réglage détermine la catégorie dans laquelle les questions importées seront placées.
@@ -232,11 +232,11 @@ $string['markoutofmax'] = 'Note de {$a->mark} sur {$a->max}';
 $string['marks'] = 'Notes';
 $string['matcherror'] = 'Les notes ne correspondent pas aux options de notation - question ignorée';
 $string['matchgrades'] = 'Faire correspondre les notes';
-$string['matchgradeserror'] = 'Erreur si la note n\'est pas listée';
 $string['matchgrades_help'] = 'Les notes importées doivent correspondre à la liste des notes acceptables : 100, 90, 80, 75, 70, 66.666, 60, 50, 40, 33.333, 30, 25, 20, 16.666, 14.2857, 12.5, 11.111, 10, 5, 0. Des valeurs négatives sont également permises. Dans le cas contraire, il y a deux options :
 
 * erreur si la note n\'est pas répertoriée : si une question prévoit une note qui n\'est pas répertoriée dans la liste, une erreur est affichée et la question n\'est pas importée ;
 * note la plus proche si elle n\'est pas répertoriée : si une note ne correspond à celles prévues dans la liste, elle est adaptée à la valeur la plus proche de la liste.';
+$string['matchgradeserror'] = 'Erreur si la note n\'est pas listée';
 $string['matchgradesnearest'] = 'Note la plus proche si elle n\'est pas listée';
 $string['missingcourseorcmid'] = 'Vous devez fournir l\'identifiant de cours ou le numéro de cours pour imprimer la question.';
 $string['missingcourseorcmidtolink'] = 'Vous devez fournir l\'identifiant de cours ou le numéro de cours à get_question_edit_link.';

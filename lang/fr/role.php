@@ -39,11 +39,11 @@ $string['allowroletoswitch'] = 'Autoriser les utilisateurs ayant le rôle {$a->f
 $string['allowswitch'] = 'Autoriser le changement de rôle';
 $string['allsiteusers'] = 'Tous les utilisateurs du site';
 $string['archetype'] = 'Modèle de rôle';
+$string['archetype_help'] = 'Le rôle modèle détermine les permissions affectées à un rôle lors de sa réinitialisation. Il détermine également les nouvelles permissions lors d\'une mise à jour du site.';
 $string['archetypecoursecreator'] = 'MODÈLE : Créateur de cours';
 $string['archetypeeditingteacher'] = 'MODÈLE : Enseignant';
 $string['archetypefrontpage'] = 'MODÈLE : Utilisateur authentifié sur la page d\'accueil';
 $string['archetypeguest'] = 'MODÈLE : Visiteur anonyme';
-$string['archetype_help'] = 'Le rôle modèle détermine les permissions affectées à un rôle lors de sa réinitialisation. Il détermine également les nouvelles permissions lors d\'une mise à jour du site.';
 $string['archetypemanager'] = 'MODÈLE : Gestionnaire';
 $string['archetypestudent'] = 'MODÈLE : Étudiant';
 $string['archetypeteacher'] = 'MODÈLE : Enseignant non éditeur';
@@ -209,8 +209,8 @@ $string['legacy:editingteacher'] = 'RÔLE HISTORIQUE : Enseignant (éditeur)';
 $string['legacy:guest'] = 'RÔLE HISTORIQUE :  Visiteur anonyme';
 $string['legacy:student'] = 'RÔLE HISTORIQUE : Étudiant';
 $string['legacy:teacher'] = 'RÔLE HISTORIQUE : Enseignant (non éditeur)';
-$string['legacytype'] = 'Type de rôle historique';
 $string['legacy:user'] = 'RÔLE HISTORIQUE : Utilisateur authentifié';
+$string['legacytype'] = 'Type de rôle historique';
 $string['listallroles'] = 'Liste de tous les rôles';
 $string['localroles'] = 'Rôles attribués localement';
 $string['mainadmin'] = 'Administrateur principal';
@@ -238,7 +238,6 @@ $string['notset'] = 'Non défini';
 $string['overrideanotherrole'] = 'Définir une dérogation pour un autre rôle';
 $string['overridecontext'] = 'Contexte de dérogation';
 $string['overridepermissions'] = 'Définir des dérogations aux permissions';
-$string['overridepermissionsforrole'] = 'Définir des dérogations pour le rôle {$a->role} dans {$a->context}';
 $string['overridepermissions_help'] = '<!-- $Id$ -->
 
 
@@ -251,6 +250,7 @@ $string['overridepermissions_help'] = '<!-- $Id$ -->
 <p>L\'interface est similaire à celle destinée à définir les rôles, à part que seules les capacités pertinentes sont affichées, et que vous y verrez certaines capacités mises en évidence pour vous montrer quelle permission aurait ce rôle sans dérogation active (c\'est-à-dire lorsque la dérogation est réglée sur HÉRITER).</p>
 
 <p>Voir aussi <a href="help.php?file=roles.html">Rôles</a>, <a href="help.php?file=contexts.html">Contextes</a>, <a href="help.php?file=assignroles.html">Attribuer des rôles</a> et <a href="help.php?file=permissions.html">Permissions</a>.</p>';
+$string['overridepermissionsforrole'] = 'Définir des dérogations pour le rôle {$a->role} dans {$a->context}';
 $string['overridepermissionsin'] = 'Définir des dérogations aux permissions dans {$a}';
 $string['overrideroles'] = 'Définir des dérogations aux rôles';
 $string['overriderolesin'] = 'Définir des dérogations aux rôles dans {$a}';
@@ -305,22 +305,21 @@ $string['restore:uploadfile'] = 'Déposer des fichiers dans les zones de sauvega
 $string['restore:userinfo'] = 'Restaurer les données des utilisateurs';
 $string['restore:viewautomatedfilearea'] = 'Restaurer les cours à partir des backups automatiques';
 $string['risks'] = 'Risques';
+$string['role:assign'] = 'Attribuer des rôles aux utilisateurs';
+$string['role:manage'] = 'Créer et gérer les rôles';
+$string['role:override'] = 'Définir des dérogations pour d\'autres utilisateurs';
+$string['role:review'] = 'Vérifier les permissions pour autres';
+$string['role:safeoverride'] = 'Définir des dérogations aux capacités sûres pour d\'autres utilisateurs';
+$string['role:switchroles'] = 'Prendre d\'autres rôles';
 $string['roleallowheader'] = 'Permettre le rôle';
 $string['roleallowinfo'] = 'Sélectionner un rôle à ajouter à la liste des rôles avec permission pour la capacité {$a->cap} dans le contexte {$a->context} :';
-$string['role:assign'] = 'Attribuer des rôles aux utilisateurs';
 $string['roleassignments'] = 'Attributions de rôle';
 $string['roledefinitions'] = 'Définitions des rôles';
 $string['rolefullname'] = 'Nom';
 $string['roleincontext'] = '{$a->role} dans {$a->context}';
-$string['role:manage'] = 'Créer et gérer les rôles';
-$string['role:override'] = 'Définir des dérogations pour d\'autres utilisateurs';
 $string['roleprohibitheader'] = 'Interdire le rôle';
 $string['roleprohibitinfo'] = 'Sélectionner un rôle à ajouter à la liste des rôles avec interdiction pour la capacité {$a->cap} dans le contexte {$a->context} :';
-$string['role:review'] = 'Vérifier les permissions pour autres';
 $string['roles'] = 'Rôles';
-$string['role:safeoverride'] = 'Définir des dérogations aux capacités sûres pour d\'autres utilisateurs';
-$string['roleselect'] = 'Sélectionner rôle';
-$string['rolesforuser'] = 'Rôles de l\'utilisateur {$a}';
 $string['roles_help'] = '<!-- $Id$ -->
 
 
@@ -331,11 +330,11 @@ $string['roles_help'] = '<!-- $Id$ -->
 <p>Un rôle doit avoir un <strong>nom</strong>. Si vous devez dénommer un rôle dans diverses langues, vous pouvez utiliser la syntaxe du filtre multilingue, par exemple</p>
 
 <pre>
-  &lt;span lang="fr" class="multilang"&gt;Enseignant&lt;/span&gt;
-  &lt;span lang="de" class="multilang"&gt;Dozent&lt;/span&gt;
-  &lt;span lang="en" class="multilang"&gt;Teacher&lt;/span&gt;
-  &lt;span lang="es_es" class="multilang"&gt;Profesor&lt;/span&gt;
-  </pre>
+&lt;span lang="fr" class="multilang"&gt;Enseignant&lt;/span&gt;
+&lt;span lang="de" class="multilang"&gt;Dozent&lt;/span&gt;
+&lt;span lang="en" class="multilang"&gt;Teacher&lt;/span&gt;
+&lt;span lang="es_es" class="multilang"&gt;Profesor&lt;/span&gt;
+</pre>
 
 <p>Si vous le faites, assurez-vous que le réglage « Filtrer toutes les chaînes de caractères » soit activé sur votre Moodle.</p>
 
@@ -344,8 +343,9 @@ $string['roles_help'] = '<!-- $Id$ -->
 <p>La <strong>description</strong> sert simplement à décrire le rôle dans vos propres mots, afin que l\'on puisse comprendre facilement à quoi correspond ce rôle.</p>
 
 <p>Voir aussi <a href="help.php?file=contexts.html">Contextes</a>, <a href="help.php?file=permissions.html">Permissions</a>, <a href="help.php?file=assignroles.html">Attribuer des rôles</a> et <a href="help.php?file=overrides.html">Dérogations</a>.</p>';
+$string['roleselect'] = 'Sélectionner rôle';
+$string['rolesforuser'] = 'Rôles de l\'utilisateur {$a}';
 $string['roleshortname'] = 'Nom abrégé';
-$string['role:switchroles'] = 'Prendre d\'autres rôles';
 $string['roletoassign'] = 'Rôle à attribuer';
 $string['roletooverride'] = 'Rôle pour lequel définir des dérogations';
 $string['safeoverridenotice'] = 'Remarque : les capacités comportant des risques élevés sont verrouillées, car vous n\'êtes autorisé à définir des dérogations que pour des capacités sûres.';
@@ -355,7 +355,6 @@ $string['selectrole'] = 'Sélectionner un rôle';
 $string['showallroles'] = 'Afficher tous les rôles';
 $string['showthisuserspermissions'] = 'Afficher les permissions de cet utilisateur';
 $string['site:accessallgroups'] = 'Accéder à tous les groupes';
-$string['siteadministrators'] = 'Administrateurs du site';
 $string['site:approvecourse'] = 'Approuver la création de cours';
 $string['site:backup'] = 'Sauvegarder les cours';
 $string['site:config'] = 'Modifier la configuration du site';
@@ -374,6 +373,7 @@ $string['site:viewfullnames'] = 'Toujours voir les noms complets des utilisateur
 $string['site:viewparticipants'] = 'Voir les participants';
 $string['site:viewreports'] = 'Afficher les rapports';
 $string['site:viewuseridentity'] = 'Voir l\'identité complète des utilisateurs dans les listes';
+$string['siteadministrators'] = 'Administrateurs du site';
 $string['tag:create'] = 'Créer de nouveaux tags';
 $string['tag:edit'] = 'Modifier les tags existants';
 $string['tag:editblocks'] = 'Modifier les blocs sur les pages de tags';
@@ -396,18 +396,18 @@ $string['user:manageownfiles'] = 'Gérer ses propres fichiers personnels';
 $string['user:managesyspages'] = 'Configurer la disposition par défaut de la page des profils publics';
 $string['user:readuserblogs'] = 'Voir les blogs de tous les utilisateurs';
 $string['user:readuserposts'] = 'Voir les messages de tous les utilisateurs';
-$string['usersfrom'] = 'Utilisateurs de {$a}';
-$string['usersfrommatching'] = 'Utilisateurs de {$a->contextname} correspondant à « {$a->search} »';
-$string['usersinthisx'] = 'Utilisateurs dans ce {$a}';
-$string['usersinthisxmatching'] = 'Utilisateurs dans ce {$a->contexttype} correspondant à « {$a->search} »';
-$string['userswithrole'] = 'Tous les utilisateurs avec un rôle';
-$string['userswiththisrole'] = 'Utilisateurs avec ce rôle';
 $string['user:update'] = 'Mettre à jour les profils des utilisateurs';
 $string['user:viewalldetails'] = 'Afficher toutes les infos utilisateur';
 $string['user:viewdetails'] = 'Voir les profils des utilisateurs';
 $string['user:viewhiddendetails'] = 'Voir les informations cachées des utilisateurs';
 $string['user:viewuseractivitiesreport'] = 'Voir les rapports d\'activités des utilisateurs';
 $string['user:viewusergrades'] = 'Voir les notes des utilisateurs';
+$string['usersfrom'] = 'Utilisateurs de {$a}';
+$string['usersfrommatching'] = 'Utilisateurs de {$a->contextname} correspondant à « {$a->search} »';
+$string['usersinthisx'] = 'Utilisateurs dans ce {$a}';
+$string['usersinthisxmatching'] = 'Utilisateurs dans ce {$a->contexttype} correspondant à « {$a->search} »';
+$string['userswithrole'] = 'Tous les utilisateurs avec un rôle';
+$string['userswiththisrole'] = 'Utilisateurs avec ce rôle';
 $string['useshowadvancedtochange'] = 'Utiliser « Afficher éléments supplémentaires » pour effectuer des modifications';
 $string['viewingdefinitionofrolex'] = 'Affichage de la définition du rôle « {$a} »';
 $string['viewrole'] = 'Afficher les détails du rôle';

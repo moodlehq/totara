@@ -43,7 +43,6 @@ $string['configpopupwidth'] = 'Largeur par défaut des fenêtres pop-up';
 $string['contentheader'] = 'Contenu';
 $string['displayoptions'] = 'Options d\'affichage disponibles';
 $string['displayselect'] = 'Affichage';
-$string['displayselectexplain'] = 'Choisir le type d\'affichage. Tous les types ne sont pas adéquats pour tous les fichiers.';
 $string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier et la capacité du navigateur à intégrer des objets (<i>embedding</i>), détermine la façon dont le fichier est affiché. Les options sont :
 
 * Automatique : la meilleure option d\'affichage pour le type de fichier concerné est automatiquement sélectionnée
@@ -53,6 +52,7 @@ $string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier et la
 * Fenêtre surgissante : le fichier est affiché dans une nouvelle fenêtre de navigateur sans menus ni barre d\'adresse
 * Dans un cadre : le fichier est affiché dans un cadre en dessous de la barre de navigation et de la description du fichier
 * Nouvelle fenêtre : le fichier est affiché dans une nouvelle fenêtre du navigateur, avec menus et barre d\'adresse';
+$string['displayselectexplain'] = 'Choisir le type d\'affichage. Tous les types ne sont pas adéquats pour tous les fichiers.';
 $string['encryptedcode'] = 'Code chiffré';
 $string['filenotfound'] = 'Fichier introuvable.';
 $string['filterfiles'] = 'Types de fichiers à filtrer';
@@ -81,7 +81,7 @@ $string['printheading'] = 'Afficher le nom de la ressource';
 $string['printheadingexplain'] = 'Indique s\'il faut afficher le nom de la ressource au-dessus du contenu. Certains types d\'affichage n\'afficheront toutefois pas ce nom, même lorsque l\'option est activée.';
 $string['printintro'] = 'Afficher la description de la ressource';
 $string['printintroexplain'] = 'Indique s\'il faut afficher la description de la ressource au-dessus du contenu. Certains types d\'affichage n\'afficheront toutefois pas cette description, même lorsque l\'option est activée.';
-$string['resourcecontent'] = 'Fichiers et sous-dossiers';
 $string['resource:exportresource'] = 'Exporter des ressources';
 $string['resource:view'] = 'Voir les ressources';
+$string['resourcecontent'] = 'Fichiers et sous-dossiers';
 $string['selectmainfile'] = 'Veuillez choisir le fichier principal en cliquant sur son icône.';

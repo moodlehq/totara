@@ -112,7 +112,7 @@ $string['clistatusenabled'] = 'Statut : activé';
 $string['clitypevalue'] = 'type valeur';
 $string['clitypevaluedefault'] = 'type valeur, tapez Entrée pour utiliser la valeur par défaut ({$a})';
 $string['cliunknowoption'] = 'Options non reconnues :
- {$a}.
+{$a}.
 Utilisez l\'option --help.';
 $string['cliupgradefinished'] = 'Mise à jour terminée avec succès.';
 $string['cliupgradenoneed'] = 'Aucune mise à jour nécessaire pour la version installée {$a}. C\'était quand même sympa de venir !';

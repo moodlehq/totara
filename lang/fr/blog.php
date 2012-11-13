@@ -127,17 +127,17 @@ $string['permalink'] = 'Permalien';
 $string['personalblogs'] = 'Les utilisateurs ne peuvent voir que les articles de leur propre blog';
 $string['preferences'] = 'Préférences';
 $string['publishto'] = 'Publier pour';
+$string['publishto_help'] = 'Il y a trois options :
+
+* Vous-même (brouillon) : seul vous et les administrateurs pourront voir cet article
+* Tout le monde sur le site : tous les utilisateurs enregistrés sur ce site pourront voir cet article
+* Tout le monde : n\'importe qui pourra voir cet article, y compris des visiteurs anonymes';
 $string['publishtocourse'] = 'Les participants à un de vos cours';
 $string['publishtocourseassoc'] = 'Les participants au cours associé';
 $string['publishtocourseassocparam'] = 'Participants à {$a}';
 $string['publishtogroup'] = 'Les utilisateurs appartenant à un même groupe que vous';
 $string['publishtogroupassoc'] = 'Les membres de votre groupe dans le cours associé';
 $string['publishtogroupassocparam'] = 'Les membres de votre groupe dans {$a}';
-$string['publishto_help'] = 'Il y a trois options :
-
-* Vous-même (brouillon) : seul vous et les administrateurs pourront voir cet article
-* Tout le monde sur le site : tous les utilisateurs enregistrés sur ce site pourront voir cet article
-* Tout le monde : n\'importe qui pourra voir cet article, y compris des visiteurs anonymes';
 $string['publishtonoone'] = 'Vous-même (brouillon)';
 $string['publishtosite'] = 'Tout le monde sur ce site';
 $string['publishtoworld'] = 'Tout le monde (grand public)';

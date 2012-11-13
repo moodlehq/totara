@@ -398,13 +398,13 @@ $string['jumps_help'] = 'Chaque réponse (pour les questions) ou description (po
 $string['jumpsto'] = 'Saute vers <em>{$a}</em>';
 $string['leftduringtimed'] = 'Vous avez quitté une leçon à durée limitée.<br />Veuillez cliquer sur Continuer pour recommencer cette leçon.';
 $string['leftduringtimednoretake'] = 'Vous avez quitté une leçon à durée limitée et vous n\'êtes<br />pas autorisé à la recommencer ou la continuer.';
+$string['lesson:edit'] = 'Modifier les activités leçon';
+$string['lesson:manage'] = 'Gérer les activités leçon';
 $string['lessonattempted'] = 'Leçon effectuée';
 $string['lessonclosed'] = 'Cette leçon n\'est plus disponible depuis {$a}.';
 $string['lessoncloses'] = 'La leçon se termine';
 $string['lessoncloseson'] = 'La leçon se termine le {$a}';
-$string['lesson:edit'] = 'Modifier les activités leçon';
 $string['lessonformating'] = 'Format de la leçon';
-$string['lesson:manage'] = 'Gérer les activités leçon';
 $string['lessonmenu'] = 'Menu leçon';
 $string['lessonnotready'] = 'Cette leçon n\'est encore prête. Veuillez contacter votre {$a}.';
 $string['lessonnotready2'] = 'Cette leçon n\'est encore prête.';
@@ -427,8 +427,7 @@ $string['maxgrade_help'] = '<!-- $Id$ -->
 <p>Cette valeur détermine la note maximale pouvant être accordée dans cette leçon. Elle doit se situer entre 0 et 100%. Cette valeur peut être modifiée en tout temps durant la leçon. Tout changement aura un effet immédiat dans la page des notes, ainsi que dans les différentes listes affichées pour les étudiants. Si l\'ont met 0 pour cette valeur, la leçon n\'apparaîtra dans aucune des pages de notes.</p>';
 $string['maxhighscores'] = 'Nombre de meilleurs résultats affichés';
 $string['maximumnumberofanswersbranches'] = 'Nombre maximal de réponses';
-$string['maximumnumberofanswersbranches_help'] = 'Cette valeur détermine le nombre maximal de réponses utilisables dans la leçon. Si une leçon n\'utilise que des questions vrai/faux, elle peut être fixée à 2. Ce paramètre peut être modifié à tout moment, car il n\'a d\'effet que sur ce que voit l\'enseignant, pas sur les données.
-';
+$string['maximumnumberofanswersbranches_help'] = 'Cette valeur détermine le nombre maximal de réponses utilisables dans la leçon. Si une leçon n\'utilise que des questions vrai/faux, elle peut être fixée à 2. Ce paramètre peut être modifié à tout moment, car il n\'a d\'effet que sur ce que voit l\'enseignant, pas sur les données.';
 $string['maximumnumberofattempts'] = 'Nombre maximal de tentatives';
 $string['maximumnumberofattempts_help'] = 'Ce réglage fixe le nombre maximal de tentatives à disposition des étudiants pour répondre à chaque question. Si une réponse incorrecte est répétée, lorsque cette valeur est atteinte, la page suivante de la leçon est affichée.';
 $string['maximumnumberofattemptsreached'] = 'Le nombre maximal de tentatives a été atteint - On passe à la page suivante';
@@ -551,11 +550,11 @@ $string['numberofpagesviewed'] = 'Nombre de questions répondues : {$a}';
 $string['numberofpagesviewednotice'] = 'Nombre de questions répondues : {$a->nquestions} ; (vous devez répondre au moins à {$a->minquestions})';
 $string['numerical'] = 'Numérique';
 $string['ongoing'] = 'Afficher le score actuel';
-$string['ongoingcustom'] = 'Vous avez jusqu\'ici reçu {$a->score} sur un maximum de {$a->currenthigh} point(s).';
 $string['ongoing_help'] = '<!-- $Id$ -->
 
 
 <p>Grâce à cette option, l\'étudiant pourra voir, sur chaque page, son nombre de points par rapport au maximum possible. Par exemple : sur quatre questions à 5 points, l\'étudiant s\'est trompé à une. Il sera affiché qu\'il a a obtenu 15 points sur 20.</p>';
+$string['ongoingcustom'] = 'Vous avez jusqu\'ici reçu {$a->score} sur un maximum de {$a->currenthigh} point(s).';
 $string['ongoingnormal'] = 'Vous avez répondu correctement à {$a->correct} tentatives sur {$a->viewed}.';
 $string['onpostperpage'] = 'Seulement un message par note';
 $string['options'] = 'Options';
@@ -567,10 +566,10 @@ $string['overview'] = 'Vue d\'ensemble';
 $string['overview_help'] = 'Une leçon est constituée de plusieurs pages et éventuellement de pages de contenu.
 Une page contient des données et se termine souvent par une question. Un lien est associé à chaque réponse. Ce lien peut être relatif, comme cette page ou page suivante, ou absolue, en spécifiant une des pages de la leçon. Une page de contenu est une page qui contient des liens vers d\'autres pages de la leçon, comme une table des matières.';
 $string['page'] = 'Page : {$a}';
-$string['pagecontents'] = 'Contenu de la page';
 $string['page-mod-lesson-edit'] = 'Modifier page de leçon';
 $string['page-mod-lesson-view'] = 'Afficher ou prévisualiser une page leçon';
 $string['page-mod-lesson-x'] = 'Toute page de leçon';
+$string['pagecontents'] = 'Contenu de la page';
 $string['pages'] = 'Pages';
 $string['pagetitle'] = 'Titre de la page';
 $string['password'] = 'Mot de passe';
@@ -644,12 +643,12 @@ $string['showanunseenpage'] = 'Afficher une page non vue';
 $string['singleanswer'] = 'Réponse simple';
 $string['skip'] = 'Sauter la navigation';
 $string['slideshow'] = 'Diaporama';
-$string['slideshowbgcolor'] = 'Couleur de fond du diaporama';
-$string['slideshowheight'] = 'Hauteur du diaporama';
 $string['slideshow_help'] = '<!-- $Id$ -->
 
 
 <p>Ce réglage permet d\'afficher la leçon à la manière d\'une présentation, avec une largeur et une hauteur déterminées, et une couleur de fond personnalisée. Le cas échéant, une barre de défilement s\'affichera. Les pages de questions échapperont à ce mode, seules les pages de tables de branchements s\'afficheront par défaut comme une présentation. Des boutons avec l\'inscription (dans la langue par défaut) « Précédent » et « Suivant » apparaîtront dans le coin inférieur droit de la présentation si la page a prévu cette option. Les autres boutons seront centrés en bas de la présentation.</p>';
+$string['slideshowbgcolor'] = 'Couleur de fond du diaporama';
+$string['slideshowheight'] = 'Hauteur du diaporama';
 $string['slideshowwidth'] = 'Largeur du diaporama';
 $string['startlesson'] = 'Commencer la leçon';
 $string['studentattemptlesson'] = 'Tentative numéro {$a->attempt} de {$a->firstname} {$a->lastname}';

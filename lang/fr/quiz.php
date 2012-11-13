@@ -367,16 +367,14 @@ $string['history'] = 'Historique des réponses :';
 $string['howquestionsbehave_desc'] = 'Réglage par défaut pour le comportement des questions dans un test.';
 $string['imagedisplay'] = 'Image à afficher';
 $string['import'] = 'Importer';
+$string['import_help'] = 'Cette fonction vous permet d\'importer des questions à partir de fichiers texte externes.
+
+Si votre fichier comprend des caractères étendus, il doit être encodé en UTF-8. Soyez particulièrement prudent avec les fichiers générés par les applications Microsoft Office, qui utilisent habituellement des encodages exotiques qui ne seront pas traités correctement.';
 $string['importcategory'] = 'Importer une catégorie';
 $string['importerror'] = 'Une erreur est survenue lors de l\'importation';
 $string['importfilearea'] = 'Importer à partir d\'un fichier du cours...';
 $string['importfileupload'] = 'Importer à partir d\'un fichier à déposer...';
 $string['importfromthisfile'] = 'Importer à partir de ce fichier';
-$string['import_help'] = 'Cette fonction vous permet d\'importer des questions à partir de fichiers texte externes.
-
-Si votre fichier comprend des caractères étendus, il doit être encodé en UTF-8. Soyez particulièrement prudent avec les fichiers générés par les applications Microsoft Office, qui utilisent habituellement des encodages exotiques qui ne seront pas traités correctement.
-
-';
 $string['importingquestions'] = 'Importation de {$a} questions à partir du fichier';
 $string['importmax10error'] = 'Cette question comporte une erreur. Il est impossible d\'avoir plus de 10 réponses';
 $string['importmaxerror'] = 'Cette question comporte une erreur. Elle propose trop de réponses.';
@@ -437,11 +435,11 @@ $string['navnojswarning'] = 'Attention ! Ces liens n\'enregistrent pas vos rép
 $string['neverallononepage'] = 'Jamais, toutes les questions sur une page';
 $string['newattemptfail'] = 'Erreur ! Impossible de commencer une tentative de ce test';
 $string['newpage'] = 'Nouvelle page';
-$string['newpageevery'] = 'Commencer automatiquement une nouvelle page';
 $string['newpage_help'] = '<!-- $Id$ -->
 
 
 <p>Pour les tests longs, il peut être utile de répartir le test au travers de plusieurs pages, en définissant un nombre de questions par page. Lorsque vous ajouterez des questions au test, les boutons de changement de page seront automatiquement introduits, selon le paramètre indiqué ici. Par ailleurs, vous pourrez également déplacer manuellement ce changement de page, en éditant la page.</p>';
+$string['newpageevery'] = 'Commencer automatiquement une nouvelle page';
 $string['noanswers'] = 'Aucune réponse n\'a été sélectionnée !';
 $string['noattempts'] = 'Aucune tentative n\'a été réalisée sur ce test';
 $string['noattemptsfound'] = 'Aucune tentative trouvée.';
@@ -586,22 +584,27 @@ $string['questiontextisempty'] = '[Texte de question vide]';
 $string['questiontype'] = 'Question de type {$a}';
 $string['questiontypesetupoptions'] = 'Options pour les types de questions :';
 $string['quiz:attempt'] = 'Effectuer des tests';
-$string['quizavailable'] = 'Le test est disponible jusqu\'au {$a}';
-$string['quizclose'] = 'Fermer le test';
-$string['quizclosed'] = 'Ce test a été fermé le {$a}';
-$string['quizcloses'] = 'Test est fermé';
-$string['quizcloseson'] = 'Ce test sera fermé le {$a}';
 $string['quiz:deleteattempts'] = 'Supprimer les tentatives de tests';
 $string['quiz:emailconfirmsubmission'] = 'Recevoir un courriel de confirmation lors de l\'envoi d\'un test';
 $string['quiz:emailnotifysubmission'] = 'Recevoir par courriel notification des tentatives envoyées par les participants';
 $string['quiz:grade'] = 'Évaluer manuellement les tests';
 $string['quiz:ignoretimelimits'] = 'Ignorer les limites de temps des tests';
+$string['quiz:manage'] = 'Gérer les tests';
+$string['quiz:manageoverrides'] = 'Gérer les modifications de test';
+$string['quiz:preview'] = 'Prévisualiser les tests';
+$string['quiz:regrade'] = 'Renoter les tentatives des tests';
+$string['quiz:reviewmyattempts'] = 'Relire ses propres tentatives';
+$string['quiz:view'] = 'Voir les informations des tests';
+$string['quiz:viewreports'] = 'Voir les rapports des tests';
+$string['quizavailable'] = 'Le test est disponible jusqu\'au {$a}';
+$string['quizclose'] = 'Fermer le test';
+$string['quizclosed'] = 'Ce test a été fermé le {$a}';
+$string['quizcloses'] = 'Test est fermé';
+$string['quizcloseson'] = 'Ce test sera fermé le {$a}';
 $string['quizisclosed'] = 'Ce test est fermé';
 $string['quizisclosedwillopen'] = 'Test fermé (ouverture {$a})';
 $string['quizisopen'] = 'Ce test est ouvert';
 $string['quizisopenwillclose'] = 'Test ouvert (fermera le {$a})';
-$string['quiz:manage'] = 'Gérer les tests';
-$string['quiz:manageoverrides'] = 'Gérer les modifications de test';
 $string['quiznavigation'] = 'Navigation du test';
 $string['quizopen'] = 'Ouvrir ce test';
 $string['quizopenclose'] = 'Dates d\'ouverture et de fermeture';
@@ -612,13 +615,8 @@ $string['quizopens'] = 'Le test est disponible';
 $string['quizopenwillclose'] = 'Ce test est ouvert et sera fermée le {$a} à';
 $string['quizordernotrandom'] = 'L\'ordre du test n\'est pas mélangé';
 $string['quizorderrandom'] = '* L\'ordre du test est mélangé';
-$string['quiz:preview'] = 'Prévisualiser les tests';
-$string['quiz:regrade'] = 'Renoter les tentatives des tests';
-$string['quiz:reviewmyattempts'] = 'Relire ses propres tentatives';
 $string['quizsettings'] = 'Réglages du test';
 $string['quiztimer'] = 'Minuterie';
-$string['quiz:view'] = 'Voir les informations des tests';
-$string['quiz:viewreports'] = 'Voir les rapports des tests';
 $string['quizwillopen'] = 'Ce test sera ouvert le {$a}';
 $string['random'] = 'Question aléatoire';
 $string['randomcreate'] = 'Créer des questions aléatoires';
@@ -803,9 +801,9 @@ $string['submitallandfinish'] = 'Tout envoyer et terminer';
 $string['subneterror'] = 'Désolé, ce test a été configuré de façon à ne pouvoir être effectué que depuis certains ordinateurs. Votre ordinateur n\'est actuellement pas autorisé.';
 $string['subnetnotice'] = 'Ce test a été configuré de façon à ne pouvoir être effectué que depuis certains ordinateurs. Votre ordinateur n\'est pas situé dans une sous-réseau autorisé. En tant qu\'enseignant, vous pouvez toutefois le prévisualiser.';
 $string['subplugintype_quiz'] = 'Rapport';
+$string['subplugintype_quiz_plural'] = 'Rapports';
 $string['subplugintype_quizaccess'] = 'Règle d\'accès';
 $string['subplugintype_quizaccess_plural'] = 'Règles d\'accès';
-$string['subplugintype_quiz_plural'] = 'Rapports';
 $string['substitutedby'] = 'sera remplacé par';
 $string['summaryofattempt'] = 'Résumé de la tentative';
 $string['summaryofattempts'] = 'Résumé de vos tentatives précédentes';
@@ -816,7 +814,6 @@ $string['timecompleted'] = 'Terminé';
 $string['timedelay'] = 'Vous ne pouvez effectuer le test maintenant, car le délai entre deux tentatives n\'est pas encore échu';
 $string['timeleft'] = 'Temps restant';
 $string['timelimit'] = 'Temps disponible';
-$string['timelimitexeeded'] = 'Désolé ! La limite de temps est échue !';
 $string['timelimit_help'] = '<!-- $Id$ -->
 
 
@@ -835,6 +832,7 @@ $string['timelimit_help'] = '<!-- $Id$ -->
 <li>Si un étudiant tente de tricher et prend plus que 60 secondes de plus que la durée allouée, une note de 0 lui est automatiquement attribué</li>
 
 </ul>';
+$string['timelimitexeeded'] = 'Désolé ! La limite de temps est échue !';
 $string['timelimitmin'] = 'Temps disponible (minutes)';
 $string['timelimitsec'] = 'Temps disponible (secondes)';
 $string['timestr'] = '%H:%M:%S, le %d.%m.%y';
