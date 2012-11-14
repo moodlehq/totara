@@ -117,17 +117,17 @@ $string['permalink'] = 'Link bezpośredni';
 $string['personalblogs'] = 'Użytkownicy mogą wyświetlać tylko własny blog';
 $string['preferences'] = 'Ustawienia';
 $string['publishto'] = 'Opublikuj do';
+$string['publishto_help'] = 'Dostępne są 3 opcje:
+
+* Wpis prywatny (szkic) - tylko ty i administrator może zobaczyć wpis
+* Wpis widoczny dla wszystkich - każdy kto jest zarejestrowany w tym serwisie może przeczytać wpis
+* Wpis widoczny dla wszystkich na świecie - każdy, włączając gości, może zobaczyć ten wpis';
 $string['publishtocourse'] = 'Użytkownicy współdzielący kurs z tobą';
 $string['publishtocourseassoc'] = 'Członkowie skojarzonego kursu';
 $string['publishtocourseassocparam'] = 'Członkowie {$a}';
 $string['publishtogroup'] = 'Użytkownicy współdzielący z Tobą grupę';
 $string['publishtogroupassoc'] = 'Członkowie Twojej grupy w skojarzonym kursie';
 $string['publishtogroupassocparam'] = 'Członkowie Twojej grupy w {$a}';
-$string['publishto_help'] = 'Dostępne są 3 opcje:
-
-* Wpis prywatny (szkic) - tylko ty i administrator może zobaczyć wpis
-* Wpis widoczny dla wszystkich - każdy kto jest zarejestrowany w tym serwisie może przeczytać wpis
-* Wpis widoczny dla wszystkich na świecie - każdy, włączając gości, może zobaczyć ten wpis';
 $string['publishtonoone'] = 'Wpis prywatny (szkic)';
 $string['publishtosite'] = 'Wpis widoczny dla wszystkich';
 $string['publishtoworld'] = 'Wpis widoczny dla wszystkich na świecie';

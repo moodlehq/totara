@@ -31,9 +31,10 @@ $string['answered'] = 'Udzielone odpowiedzi';
 $string['atleastoneoption'] = 'Należy podać co najmniej jedną z możliwych odpowiedzi.';
 $string['choice'] = 'Opcje';
 $string['choice:choose'] = 'Zapisz wybór';
-$string['choiceclose'] = 'Do';
 $string['choice:deleteresponses'] = 'Usuń odpowiedzi';
 $string['choice:downloadresponses'] = 'Ściągnij odpowiedzi';
+$string['choice:readresponses'] = 'Czytaj odpowiedzi';
+$string['choiceclose'] = 'Do';
 $string['choicefull'] = 'To głosowanie jest pełne i nie ma więcej wolnych miejsc.';
 $string['choicename'] = 'Nazwa głosowania';
 $string['choiceopen'] = 'Otwórz';
@@ -43,7 +44,6 @@ $string['choiceoptions_help'] = '<P ALIGN=CENTER><B>Wybór odpowiedzi</B></P>
 <P>W tym miejscu określasz odpowiedzi, z których uczestnicy mają dokonać wyboru.</P>
 
 <P>Możesz wypełnić dowolną ich liczbę i pozostawić niektóre puste, jeżeli nie potrzebujesz wszystkich sześciu.</P>';
-$string['choice:readresponses'] = 'Czytaj odpowiedzi';
 $string['choicesaved'] = 'Twój wybór został zapisany';
 $string['choicetext'] = 'Treść pytania';
 $string['chooseaction'] = 'Wybierz akcję ...';

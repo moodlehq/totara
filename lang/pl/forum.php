@@ -69,8 +69,13 @@ $string['cannotviewpostyet'] = 'Nie możesz czytać pytań innych studentów w t
 $string['cleanreadtime'] = 'Zaznacz stare posty jako przeczytane w tej godzinie';
 $string['completiondiscussions'] = 'Student musi utworzyć dyskusję:';
 $string['completiondiscussionsgroup'] = 'Wymagaj dyskusji';
+$string['completiondiscussionshelp'] = 'wymaganie dyskusji do ukończenia';
+$string['completionposts'] = 'Użytkownik musi publikować dyskusje lub odpowiedzi:';
 $string['completionpostsgroup'] = 'Wymagaj postów';
+$string['completionpostshelp'] = 'wymaganie dyskusji lub odpowiedzi do ukończenia';
+$string['completionreplies'] = 'Użytkownik musi publikować odpowiedzi:';
 $string['completionrepliesgroup'] = 'Wymagaj odpowiedzi';
+$string['completionreplieshelp'] = 'wymaganie odpowiedzi do ukończenia';
 $string['configcleanreadtime'] = 'Godzina i dzień oczyszczania starych postów w tablicy przeczytanych';
 $string['configdigestmailtime'] = 'Dla tych którzy wybrali wysyłanie streszczenia codziennie mailem. Można ustawić o której godzinnie codziennie streszczenie będzie wysyłane.';
 $string['configdisplaymode'] = 'Domyślny tryb wyświetlania dyskusji, jeśli nie wybrano innego.';
@@ -137,9 +142,6 @@ $string['forcessubscribe'] = 'To forum wymusza subskrypcję u wszystkich.';
 $string['forum'] = 'Forum';
 $string['forum:addnews'] = 'Dodaj wiadomość';
 $string['forum:addquestion'] = 'Dodaj pytanie';
-$string['forumauthorhidden'] = 'Autor (ukryty)';
-$string['forumblockingalmosttoomanyposts'] = 'Zbliżasz się do progu liczby postów. Napisałeś {$a->numposts}  postów w czasie {$a->blockperiod}  a limit to {$a->blockafter}  postów.';
-$string['forumbodyhidden'] = 'Nie możesz oglądać tej dyskusji, prawdopodobnie dlatego, że jeszcze w niej nic nie napisałeś';
 $string['forum:createattachment'] = 'Utworzyć załączniki';
 $string['forum:deleteanypost'] = 'Usunąć każdą wiadomość (kiedykolwiek)';
 $string['forum:deleteownpost'] = 'Usunąć własne wiadomości';
@@ -147,17 +149,27 @@ $string['forum:editanypost'] = 'Modyfikować każdą wiadomość';
 $string['forum:exportdiscussion'] = 'Eksportuj całą dyskusję';
 $string['forum:exportownpost'] = 'Eksportuj własne posty';
 $string['forum:exportpost'] = 'Eksport postów';
-$string['forumintro'] = 'Wstęp';
 $string['forum:managesubscriptions'] = 'Zarządzać subskrypcjami';
 $string['forum:movediscussions'] = 'Przesunąć dyskusje';
-$string['forumname'] = 'Nazwa Forum';
-$string['forumposts'] = 'Posty forum';
 $string['forum:rate'] = 'Ocenić wiadomości';
 $string['forum:replynews'] = 'Odpowiedzieć na aktualności';
 $string['forum:replypost'] = 'Odpowiedzieć na wiadomość';
-$string['forums'] = 'Fora dyskusyjne';
 $string['forum:splitdiscussions'] = 'Podzielić dyskusje';
 $string['forum:startdiscussion'] = 'Rozpocząć nową dyskusję';
+$string['forum:throttlingapplies'] = 'Zastosuj ograniczenie przepustowości';
+$string['forum:viewanyrating'] = 'przeglądać dowolne oceny';
+$string['forum:viewdiscussion'] = 'Przeglądać dyskusje';
+$string['forum:viewhiddentimedposts'] = 'Zobacz ukryte posty z ustawionym czasem wysłania';
+$string['forum:viewqandawithoutposting'] = 'Pokazuj pytania i odpowiedzi również osobom które nie odpowiedziały';
+$string['forum:viewrating'] = 'Przeglądać oceny';
+$string['forum:viewsubscribers'] = 'Przeglądać subskrybentów';
+$string['forumauthorhidden'] = 'Autor (ukryty)';
+$string['forumblockingalmosttoomanyposts'] = 'Zbliżasz się do progu liczby postów. Napisałeś {$a->numposts}  postów w czasie {$a->blockperiod}  a limit to {$a->blockafter}  postów.';
+$string['forumbodyhidden'] = 'Nie możesz oglądać tej dyskusji, prawdopodobnie dlatego, że jeszcze w niej nic nie napisałeś';
+$string['forumintro'] = 'Wstęp';
+$string['forumname'] = 'Nazwa Forum';
+$string['forumposts'] = 'Posty forum';
+$string['forums'] = 'Fora dyskusyjne';
 $string['forumsubjecthidden'] = 'Tytuł (ukryty)';
 $string['forumtracked'] = 'Nieprzeczytane wiadomości są śledzone';
 $string['forumtrackednot'] = 'Nieprzeczytane wiadomości są śledzone';
@@ -173,12 +185,6 @@ $string['forumtype_help'] = '<P ALIGN=CENTER><B>Rodzaje forów</B></P>
 <P><B>Każda osoba przesyła jeden temat dyskusji</B> - każda osoba może przesłać tylko jeden nowy temat dyskusji (ale wszyscy mogą odpowiadać). Jest to opcja przydatna w przypadku gdy chcesz aby każdy ze studentów rozpoczął dyskusję na temat np. ich refleksji dotyczących tematu tygodnia, a wszyscy inni użytkownicy mają się wypowiedzieć.</P>
 
 <P>(Więcej możliwości pojawi się w przyszłych wersjach Moodle)</P>';
-$string['forum:viewanyrating'] = 'przeglądać dowolne oceny';
-$string['forum:viewdiscussion'] = 'Przeglądać dyskusje';
-$string['forum:viewhiddentimedposts'] = 'Zobacz ukryte posty z ustawionym czasem wysłania';
-$string['forum:viewqandawithoutposting'] = 'Pokazuj pytania i odpowiedzi również osobom które nie odpowiedziały';
-$string['forum:viewrating'] = 'Przeglądać oceny';
-$string['forum:viewsubscribers'] = 'Przeglądać subskrybentów';
 $string['generalforum'] = 'Forum standardowe do użytku ogólnego';
 $string['generalforums'] = 'Fora ogólne';
 $string['inforum'] = 'w {$a}';
@@ -220,9 +226,9 @@ $string['modulename'] = 'Forum';
 $string['modulename_help'] = '<P><IMG VALIGN=absmiddle SRC="<?php echo $CFG->wwwroot?>/mod/forum/icon.gif">&nbsp;<B>Fora</B></P>
 <UL>
 <P>Ten moduł może być najważniejszy - właśnie w nim odbywa się większość dyskusji.
-   Fora mogą posiadać różną strukturę i mogą umożliwiać ocenę każdego postu przez współuczestników.
-   Posty mogą być przeglądane w różnych formatach i mogą zawierać załączniki.
-   Uczestnicy, którzy są subskrybentami forum otrzymają pocztą elektroniczną kopie każdego nowego postu. Prowadzący może narzucić subskrypcję wszystkim uczestnikom.
+Fora mogą posiadać różną strukturę i mogą umożliwiać ocenę każdego postu przez współuczestników.
+Posty mogą być przeglądane w różnych formatach i mogą zawierać załączniki.
+Uczestnicy, którzy są subskrybentami forum otrzymają pocztą elektroniczną kopie każdego nowego postu. Prowadzący może narzucić subskrypcję wszystkim uczestnikom.
 
 </UL>';
 $string['modulenameplural'] = 'Fora dyskusyjne';
@@ -311,7 +317,7 @@ $string['resetforums'] = 'Usuń wszystkie posty z forów tego typu';
 $string['resetforumsall'] = 'Usuń wszystkie posty';
 $string['resetsubscriptions'] = 'Usuń wszystkie subskrypcje forum';
 $string['resettrackprefs'] = 'Usuń wszystkie preferencje śledzenia forum';
-$string['rssarticles'] = 'Liczba ostatnich artykułów RSS ';
+$string['rssarticles'] = 'Liczba ostatnich artykułów RSS';
 $string['rssarticles_help'] = '<P ALIGN=CENTER><B>Liczba artykułów w RSS</B></P>
 
 <P>Ta opcja pozawala ustalić liczbę artykułów w RSS Feed.
@@ -362,9 +368,6 @@ $string['subscribersto'] = 'Zapisani na \'{$a}\'';
 $string['subscribestart'] = 'Przesyłaj mi kopie postów z tego forum pocztą elektroniczną';
 $string['subscribestop'] = 'Nie chcę otrzymywać kopii postów z tego forum';
 $string['subscription'] = 'Zapisanie się na forum';
-$string['subscriptionauto'] = 'Automatyczna subskrypcja';
-$string['subscriptiondisabled'] = 'Subskrypcja wyłączona';
-$string['subscriptionforced'] = 'Wymuś subskrypcję';
 $string['subscription_help'] = '<P ALIGN=CENTER><B>Subskrypcja (zapis na) forum</B></P>
 
 <P>Każda osoba, która zapisze się na dane forum otrzyma pocztą elektroniczną kopie wszystkich postów do tego forum (posty wysyłane są po upływie około <?PHP echo $CFG->maxeditingtime/60 ?> minut po ich napisaniu). </P>
@@ -374,6 +377,9 @@ $string['subscription_help'] = '<P ALIGN=CENTER><B>Subskrypcja (zapis na) forum<
 <P>W przypadku jednak gdy prowadzący wymusi subskrypcję danego forum, wybór nie jest możliwy i wszystkie osoby w grupie będą otrzymywać kopie postów.</P>
 
 <P>Jest to szczególnie przydatne w przypadku forum Aktualności oraz na początku kursu zanim wszyscy uczestnicy zorientują się, że mogą samodzielnie zapisać się na fora.</P>';
+$string['subscriptionauto'] = 'Automatyczna subskrypcja';
+$string['subscriptiondisabled'] = 'Subskrypcja wyłączona';
+$string['subscriptionforced'] = 'Wymuś subskrypcję';
 $string['subscriptionmode'] = 'Tryb subskrypcji';
 $string['subscriptionmode_help'] = '<P ALIGN=CENTER><B>Subskrypcja forum</B></P>
 
@@ -413,7 +419,7 @@ $string['trackingtype'] = 'Przeczytać obserwacje dla tego forum?';
 $string['trackingtype_help'] = '<p>Jeżeli opcja obserwowania jest włączona, użytkownicy może obserwować przeczytane i nieprzeczytane wiadomości w forach i dyskusjach. Prowadzący może wymusić obserwowanie forum używający tego ustawienia. </p>
 
 <p>Tam są trzy możliwe opcje do ustawienia:
- <ul>
+<ul>
 <li> Nieobowiązujący [domyślny ]: studenci mogą włączać i wyłączać obserwowanie forum. <li>Włączony: Obserwowanie forum jest zawsze włączone.
 <li>Wyłączone: Obserwowanie forum jest zawsze wyłączone.';
 $string['unread'] = 'Nieprzeczytane';

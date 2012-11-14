@@ -43,7 +43,7 @@ $string['grade_upto'] = 'i mniej niż';
 $string['gradecondition'] = 'Warunki ocen';
 $string['gradecondition_help'] = 'To ustawienie określa dowolne warunki dla ocen, które muszą być spełnione w celu uzyskania dostępu do tej aktywności.
 
-W razie potrzeby mogą być ustawione wielokrotne warunki. W takim przypadku aktywność będzie dostępna tylko po spełnieniu WSZYSTKICH warunków. ';
+W razie potrzeby mogą być ustawione wielokrotne warunki. W takim przypadku aktywność będzie dostępna tylko po spełnieniu WSZYSTKICH warunków.';
 $string['none'] = '(żaden)';
 $string['notavailableyet'] = 'Jeszcze nie dostepny';
 $string['requires_completion_0'] = 'Niedostępne o ile czynność <strong>{$a}</strong> jest nieukończona.';

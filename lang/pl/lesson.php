@@ -33,20 +33,23 @@ $string['actionaftercorrectanswer_help'] = '<p align="center"><b>Reakcja na popr
 do Następnej Strony lekcji.</p>
 
 <p>Jednakże lekcja może być także zorganizowana jako lekcja typu <i>Flash Card</i>.
-    W tym wariancie student po przedstawieniu mu pewnych informacji (co jest fakultatywne)
-    będzie mógł odpowiedzieć na losowe pytanie. Nie ma w tym wariancie ustalonego początku ani końca.
-    W tym typie lekcji jest tylko zestaw <i>Kart</i> wyświetlanych losowo jedna po drugiej. </p>
+W tym wariancie student po przedstawieniu mu pewnych informacji (co jest fakultatywne)
+będzie mógł odpowiedzieć na losowe pytanie. Nie ma w tym wariancie ustalonego początku ani końca.
+W tym typie lekcji jest tylko zestaw <i>Kart</i> wyświetlanych losowo jedna po drugiej. </p>
 
 <p>Ta opcja oferuje dwa dalsze podobne warianty zachowania się systemu. Opcja "Nigdy nie pokazuj tej
 samej strony dwuktronie"
- nigdy nie pokaże tej samej strony dwa razy (nawet jeśli student <b>nie</b> odpowiedział na pytanie poprawnie).
- Druga opcja "Umożliw wielokrotne przeglądanie stron z błędną odpowiedzią" pozwala na przeglądanie już wyświetlonych stron tylko
- gdy student błędnie odpowiedział na pytanie na danej stronie.</p>
+nigdy nie pokaże tej samej strony dwa razy (nawet jeśli student <b>nie</b> odpowiedział na pytanie poprawnie).
+Druga opcja "Umożliw wielokrotne przeglądanie stron z błędną odpowiedzią" pozwala na przeglądanie już wyświetlonych stron tylko
+gdy student błędnie odpowiedział na pytanie na danej stronie.</p>
 
 <p>W każdym z powyższych wariantów lekcji typu Flash Card nauczyciel może użyć albo wszystkich stron (kart) albo losowo
 dobranego podzbioru zagadnień poprzez odpowiednie użycie paramateru &quot;Ilość stron (kart) do wyświetlenia&quot;</p>';
 $string['actions'] = 'Akcje';
 $string['activitylink'] = 'Link do składowej';
+$string['activitylink_help'] = '# Łącze czynności
+
+Menu rozwijane zawiera wszystkie czynności danego kursu. Jeśli któraś zostanie wybrana, łącze do tej czynności zostanie wyświetlone na końcu lekcji.';
 $string['activitylinkname'] = 'Idź do:{$a}';
 $string['addabranchtable'] = 'Wstaw tabelę rozgałęzień';
 $string['addanendofbranch'] = 'Wstaw Koniec Tabeli Wątków';
@@ -93,12 +96,12 @@ Uwagi poniższe odnoszą się do następujących typów pytań:
 
 <ol>
 <li><p><b>Wielokrotny wybór</b> To wariant pytań wielokrotnego wyboru zwany
-    <b>&quot;Wiele dobrych odpowiedzi&quot;</b>. Jeśli opcja ta zostanie wybrana
-    wówczas student musi wskazać wszystki poprawne odpowiedzi w ramach zestawu odpowiedzi.
-    Pytanie może podpowiedzieć studentowi ile odpowiedzi jest poprawnych n.p. Wskaż dwóch prezedyentów
-    USA z poniższej listy. Liczba właściwych odpowiedzi może być minimalnie 1 i maksymalnie tyle
-    ile jest odpowiedzi do zakreślenia. W klasycznym pytaniu wielokrotnego wyboru student wybiera tylko
-    jedną dobrą odpowiedĽ i tym różni się od tego typu pytań ten wariant.</p></li>
+<b>&quot;Wiele dobrych odpowiedzi&quot;</b>. Jeśli opcja ta zostanie wybrana
+wówczas student musi wskazać wszystki poprawne odpowiedzi w ramach zestawu odpowiedzi.
+Pytanie może podpowiedzieć studentowi ile odpowiedzi jest poprawnych n.p. Wskaż dwóch prezedyentów
+USA z poniższej listy. Liczba właściwych odpowiedzi może być minimalnie 1 i maksymalnie tyle
+ile jest odpowiedzi do zakreślenia. W klasycznym pytaniu wielokrotnego wyboru student wybiera tylko
+jedną dobrą odpowiedĽ i tym różni się od tego typu pytań ten wariant.</p></li>
 
 <li><p><b>Krótka odpowiedĽ</b> Domyślnie system ignoruje wielkość liter w odpowiedziach. Jeśli Opcja pytania
 zostania wybrana, wówczas system będzie sprawdzał użycie liter.</p></li>
@@ -174,6 +177,7 @@ $string['enterpassword'] = 'Wprowadź hasło:';
 $string['eolstudentoutoftime'] = 'Uwaga: Czas lekcji minął. Twoja ostatnia odpowiedź nie będzie się liczyła jeżeli została wysłana po czasie';
 $string['eolstudentoutoftimenoanswers'] = 'Nie odpowiedziałeś na żadne pytanie. Otrzymujesz 0 z tej lekcji.';
 $string['essay'] = 'Essej';
+$string['essayemailmessage'] = '<p>Monit próby:<blockquote>{$a->question}</blockquote></p><p>Twoja odpowiedź:<blockquote><em>{$a->response}</em></blockquote></p><p>Komentarze {$a->teacher}:<blockquote><em>{$a->comment}</em></blockquote></p><p>Masz {$a->earned} z {$a->outof} za to pytanie próby.</p><p>Twoja ocena za lekcję została zmieniona na {$a->newgrade}&#37;.</p>';
 $string['essayemailsubject'] = 'Twoja ocena za {$a} pytanie';
 $string['essays'] = 'Eseje';
 $string['essayscore'] = 'Punkty za esej';
@@ -286,7 +290,7 @@ pytań, wszystkie pytania typu krótkie odpowiedzi są konwertowane po 4 na raz 
 </p>
 <p>W przypadku Linuxa musisz włączyć maszynę windows w tej samej sieci z zainstalowaną bazą CTM oraz programeme ODBC Socket Server, który prześle dane w formacie XML do Moodle.</p>
 
-  <p>Przeczytaj plik pomocy zanim zaczniesz importować w tym formacie.</p>
+<p>Przeczytaj plik pomocy zanim zaczniesz importować w tym formacie.</p>
 
 
 <p align=right><a href="help.php?file=formatctm.html&module=quiz">Więcej o formacie "CTM"</a></p>
@@ -317,16 +321,17 @@ prowadzi do następnej strony w logicznym układzie stron. Link absolutny z drug
 zawsze tytuł strony.</p>
 <p>Zauważ, że relatywny link <b>Następna strona</b> może wskazać różne strony jeśli zmieniany był
 porządek stron. Z drugiej strony linki opierające sie na <b>tytule</b>
- zawsze odwołują się do określonej strony.</p>';
+zawsze odwołują się do określonej strony.</p>';
 $string['jumpsto'] = 'Przejścia do <em>{$a}</em>';
 $string['leftduringtimed'] = 'Czas lekcji minął.<br/> Kliknij \'Kontynuuj\', żeby zacząć lekcję od nowa.';
 $string['leftduringtimednoretake'] = 'Czas lekcji minął <br/> nie możesz powtórzyć lekcji.';
+$string['lesson:edit'] = 'Edytuj lekcję';
+$string['lesson:manage'] = 'Zarządzaj lekcją';
+$string['lessonattempted'] = 'Próby lekcji';
 $string['lessonclosed'] = 'Ta lekcja zakończyła się {$a}';
 $string['lessoncloses'] = 'Lekcja zakończona';
 $string['lessoncloseson'] = 'Ta lekcja zakończy się {$a}';
-$string['lesson:edit'] = 'Edytuj lekcję';
 $string['lessonformating'] = 'Formatuj lekcje';
-$string['lesson:manage'] = 'Zarządzaj lekcją';
 $string['lessonmenu'] = 'Menu lekcji';
 $string['lessonnotready'] = 'Ta lekcja nie jest gotowa do rozwiązania. Prosze skontaktować się ze swoim {$a}.';
 $string['lessonnotready2'] = 'Ta lekcja nie jest gotowa do nauki.';
@@ -371,6 +376,25 @@ $string['maxtime'] = 'Limit czasu (minuty)';
 $string['maxtimewarning'] = 'Zostało {$a} minut do końca lekcji';
 $string['mediaclose'] = 'Pokaż przycisk zamknij:';
 $string['mediafile'] = 'Wstaw wyskakujące okienko z plikiem lub stroną WWW';
+$string['mediafile_help'] = '# Podręczny plik lub strona internetowa
+
+Spowoduje to utworzenie na początku lekcji okna podręcznego z plikiem (na przykład: plikiem mp3) lub stroną internetową. Ponadto na każdej stronie lekcji zostanie wyświetlone łącze, które ponownie otworzy okno podręczne w razie potrzeby.
+
+Opcjonalnie u dołu okna podręcznego zostanie wyświetlony przycisk "Zamknij okno", a ponadto można będzie ustawić wysokość i szerokość okna.
+
+Obsługiwane zagnieżdżone typy plików:
+
+*   MP3
+*   Media Player
+*   Quicktime
+*   Realmedia
+*   HTML
+*   Zwykły tekst
+*   GIF
+*   JPEG
+*   PNG
+
+Wszystkie pozostałe typy plików będą domyślnie powiązane z łączem do pobrania.';
 $string['mediafilepopup'] = 'Kliknij tutaj w celu zobaczenia pliku medialnego tej lekcji';
 $string['mediaheight'] = 'Wysokość okna:';
 $string['mediawidth'] = 'Szerokość:';
@@ -414,12 +438,12 @@ Uwagi poniższe odnoszą się do następujących typów pytań:
 
 <ol>
 <li><p><b>Wielokrotny wybór</b> To wariant pytań wielokrotnego wyboru zwany
-    <b>&quot;Wiele dobrych odpowiedzi&quot;</b>. Jeśli opcja ta zostanie wybrana
-    wówczas student musi wskazać wszystki poprawne odpowiedzi w ramach zestawu odpowiedzi.
-    Pytanie może podpowiedzieć studentowi ile odpowiedzi jest poprawnych n.p. Wskaż dwóch prezedyentów
-    USA z poniższej listy. Liczba właściwych odpowiedzi może być minimalnie 1 i maksymalnie tyle
-    ile jest odpowiedzi do zakreślenia. W klasycznym pytaniu wielokrotnego wyboru student wybiera tylko
-    jedną dobrą odpowiedĽ i tym różni się od tego typu pytań ten wariant.</p></li>
+<b>&quot;Wiele dobrych odpowiedzi&quot;</b>. Jeśli opcja ta zostanie wybrana
+wówczas student musi wskazać wszystki poprawne odpowiedzi w ramach zestawu odpowiedzi.
+Pytanie może podpowiedzieć studentowi ile odpowiedzi jest poprawnych n.p. Wskaż dwóch prezedyentów
+USA z poniższej listy. Liczba właściwych odpowiedzi może być minimalnie 1 i maksymalnie tyle
+ile jest odpowiedzi do zakreślenia. W klasycznym pytaniu wielokrotnego wyboru student wybiera tylko
+jedną dobrą odpowiedĽ i tym różni się od tego typu pytań ten wariant.</p></li>
 
 <li><p><b>Krótka odpowiedĽ</b> Domyślnie system ignoruje wielkość liter w odpowiedziach. Jeśli Opcja pytania
 zostania wybrana, wówczas system będzie sprawdzał użycie liter.</p></li>
@@ -437,7 +461,7 @@ $string['nobranchtablefound'] = 'Nie znaleziono tabeli rozgałęzień';
 $string['nocommentyet'] = 'Brak komentarzy';
 $string['nocoursemods'] = 'Nie znaleziono aktywności';
 $string['nocredit'] = 'Bez oceny';
-$string['nodeadline'] = 'Brak ostatecznego terminu ';
+$string['nodeadline'] = 'Brak ostatecznego terminu';
 $string['noessayquestionsfound'] = 'W tej lekcji nie odnaleziono pytań typu \'esej\'';
 $string['nohighscores'] = 'Brak punktów';
 $string['nolessonattempts'] = 'Nikt jeszcze nie rozwiązał lekcji';
@@ -465,6 +489,9 @@ $string['numberofpagesviewed'] = 'Ilość obejrzanych strony: {$a}';
 $string['numberofpagesviewednotice'] = 'Liczba pytań odpowiedzianych: {$a->nquestions}; (powinieneś odpowiedzieć na przynajmniej {$a->minquestions})';
 $string['numerical'] = 'Numeryczne';
 $string['ongoing'] = 'Wyświetlaj bieżący wynik w trakcie rozwiązywania lekcji';
+$string['ongoing_help'] = '# Bieżący wynik
+
+Po włączeniu tej opcji na każdej stronie będzie wyświetlana bieżąca punktacja uczestnika uzyskana w porównaniu z ogólną liczbą punktów, które można było zdobyć. Przykład: uczestnik odpowiedział na czetry pytania za 5 punktów, z czego jedna odpowiedź była niepoprawna. Bieżący wynik będzie pokazywał, że uczestnik uzyskał 15/20 punktów.';
 $string['ongoingcustom'] = 'Otrzymałeś dotąd {$a->score} punktów z {$a->currenthigh}';
 $string['ongoingnormal'] = 'Odpowiedziałeś poprawnie na {$a->correct} z {$a->viewed} pytań';
 $string['options'] = 'Opcje';
@@ -483,14 +510,14 @@ Ten tekst nazywany jest <b>informacją zwrotną</b>.
 <li>Z każdą odpowiedzią związany jest <b>link</b>. Link może przenieść studenta do określonego fragmentu danej strony,
 następnej strony lub każdej innej strony czy na koniec lekcji.
 <li>Domyślnie pierwsza strona przeniesie studenta do <b>następnej strony</b>.
-    Kolejne odpowiedzi również przeniosą studenta do tej strony.
+Kolejne odpowiedzi również przeniosą studenta do tej strony.
 <li><b>Logiczny porządek</b> determinuje układ lekcji. Odnosi się to do porządku stron z
 perspektywy nauczyciela. Porządek ten może być w każdej chwili zmieniony.
 <li>Lekcja ma także <b>porządek nawigacji</b>. Ten termin odnosi się do układu stron
 widzianego oczami studenta. Porządek ten determinowany jest przez przejścia do innych stron
 zdefiniowane w odpowiedziach i może znacznie odbiegać od logicznego porządku.
-    (Jednakże gdy przejścia <i>nie</i> zostaną zmienione oba porządki pozostaną do siebie podobne.
-    Nauczyciel ma możliwość sprawdzenia porządku nawigacji.
+(Jednakże gdy przejścia <i>nie</i> zostaną zmienione oba porządki pozostaną do siebie podobne.
+Nauczyciel ma możliwość sprawdzenia porządku nawigacji.
 <li>Odpowiedzi wyświetlane studentom są zawsze pomieszane. Tak więc pierwsza odpowiedĽ na ekranie
 nauczyciela nie oznacza, że będzie to pierwsza odpowiedĽ na ekranie studenta. Tak więc przy wyświetlaniu
 tego samego zestawu odpowiedzi, najprawdopodobniej pojawią się one w innym porządku.
@@ -499,9 +526,9 @@ typu PRAWDA/FAŁSZ a kolejne mogą zawierać po 4 odpowiedzi.
 <li>Można zawrzeć stronę bez odpowiedzi. Studenci wówczas zobaczą link "Kontynuuj".
 <li>Jeśli chodzi o ocenianie lekcji, odpowiedzi <b>poprawne</b> będą prowadziły do strony, która
 będzie zawierać dalsze informacje.
-    <b>Złe</b> odpowiedzi będą prowadzić do tej samej strony lub do innej strony w logicznym układzie stron.
-    Tak więc jeśli linki do innych stron <i>nie</i> są zmienione, wówczas pierwsza odpowiedĽ
-    jest poprawną odpowiedzią.
+<b>Złe</b> odpowiedzi będą prowadzić do tej samej strony lub do innej strony w logicznym układzie stron.
+Tak więc jeśli linki do innych stron <i>nie</i> są zmienione, wówczas pierwsza odpowiedĽ
+jest poprawną odpowiedzią.
 <li>Pytania mogą mieć więcej niż jedną dobrą odpowiedĽ. Przykładowo, jeśli dwie odpowiedzi przeniosą studenta
 do następnej strony, to oznacza, że obydwie odpowiedzi były poprawnymi odpowiedziami. W takim przypadku, można
 też wyświetlić różne informacje zwrotne tym studentom.
@@ -515,8 +542,8 @@ ostatnio skończył bądĽ też może rozpocząć naukę od początku.
 najlepszej oceny.
 </ol>';
 $string['page'] = 'Strona: {$a}';
-$string['pagecontents'] = 'Opis';
 $string['page-mod-lesson-x'] = 'Na każdej stronie lekcji';
+$string['pagecontents'] = 'Opis';
 $string['pages'] = 'Strony';
 $string['pagetitle'] = 'Tytuł strony';
 $string['password'] = 'Hasło';
@@ -536,6 +563,13 @@ $string['preview'] = 'Podgląd';
 $string['previewlesson'] = 'Podgląd {$a}';
 $string['previouspage'] = 'Poprzednia strona';
 $string['progressbar'] = 'Wskaźnik postępu';
+$string['progressbar_help'] = '# Pasek postępu
+
+Wyświetla postęp u dołu lekcji. Obecnie pasek postępu jest najdokładniejszy dla lekcji liniowej.
+
+Podczas obliczania wartości procentowej ukończenia do postępu lekcji są zaliczane tabele gałęzi i strony pytań, na które udzielono poprawnych odpowiedzi. Podczas obliczania łącznej liczby stron w lekcji klastry i strony w klastrach liczą się jako jedna strona, a strony Koniec klastra i Koniec tabeli gałęzi są pomijane. Wszystkie inne strony są wliczane do łącznej liczby stron w lekcji.
+
+Uwaga: domyślne style paska postępu nie są powalające ;). Wszystkie style (np.: kolory, obrazy tła itd.) paska postępu można zmodyfikować w pliku mod/lesson/styles.php.';
 $string['progressbarteacherwarning'] = 'Pasek postępu nie jest wyświetlany dla  {$a}';
 $string['progressbarteacherwarning2'] = 'Nie zobaczysz wskaźnika postępu, ponieważ możesz edytować tą lekcję.';
 $string['qtype'] = 'Typ strony';
@@ -545,6 +579,7 @@ $string['questiontype'] = 'Typ pytania';
 $string['randombranch'] = 'losuj wątki';
 $string['randompageinbranch'] = 'losuj pytania w obrębie wątku';
 $string['rank'] = 'Pozycja';
+$string['rawgrade'] = 'Nieprzetworzona ocena';
 $string['receivedcredit'] = 'Otrzymany kredyt';
 $string['redisplaypage'] = 'Ponownie wyświetl stronę';
 $string['report'] = 'Raport';
@@ -578,10 +613,10 @@ $string['showanunseenpage'] = 'Nigdy nie pokazuj tej samej strony dwukrotnie';
 $string['singleanswer'] = 'Pojedyncza odpowiedź';
 $string['skip'] = 'Pomiń nawigację';
 $string['slideshow'] = 'Pokaz slajdów';
-$string['slideshowbgcolor'] = 'Tło slajdów';
-$string['slideshowheight'] = 'Wysokość slajdów';
 $string['slideshow_help'] = '<p> Można wyświetlić lekcję jako pokaz slajdów, z ustaloną wysokością, szerokościa i kolorem tła. Bazując na CSS pasek przewijania będzie wyświetlany wtedy gdy szerokość lub wysokość okna jest przewyższana przez zawartość strony.
 Przyciski "Następny" i "Poprzedni" będą dostępne po lewej stronie wtedy gdy wybrana będzie opcja lewe menu. Inaczej będą umieszczone poniżej slajdu</p>';
+$string['slideshowbgcolor'] = 'Tło slajdów';
+$string['slideshowheight'] = 'Wysokość slajdów';
 $string['slideshowwidth'] = 'Szerokość slajdów';
 $string['startlesson'] = 'Zacznij lekcję';
 $string['studentattemptlesson'] = '{$a->lastname}, {$a->firstname} liczba prób {$a->attempt}';

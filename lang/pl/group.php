@@ -88,27 +88,27 @@ $string['groupmembersonlyerror'] = 'Niestety, musisz być członkiem przynajmnie
 $string['groupmemberssee'] = 'Zobacz członków grupy';
 $string['groupmembersselected'] = 'Członkowie wybranych grup';
 $string['groupmode'] = 'Tryb grup';
-$string['groupmodeforce'] = 'Wymuś istnienie grup';
 $string['groupmode_help'] = '<p>Są trzy ustawienia dla grup:
-   <ul>
-      <li>brak grup</li>
-      <li>osobne grupy - każda grupa widzi tylko siebie, reszta jest niewidzialna</li>
-      <li>widoczne grupy - każda grupa pracuje w swoich ramach, ale widzi także inne grupy</li>
-   </ul>
+<ul>
+<li>brak grup</li>
+<li>osobne grupy - każda grupa widzi tylko siebie, reszta jest niewidzialna</li>
+<li>widoczne grupy - każda grupa pracuje w swoich ramach, ale widzi także inne grupy</li>
+</ul>
 </p>
 
 <P>Grupy można stworzyć na dwóch poziomach:</p>
 
 <dl>
-   <dt><b>1. Poziom kursu</b></dt>
-   <dd>Jest to domyślne ustawienie dla wszystkich aktywności w ramach danego kursu<br /><br /></dd>
-   <dt><b>2. Poziom aktywności</b></dt>
-   <dd>Każda aktywność, która umożliwia grupową pracę pozwala określić tryb pracy w grupach.
-   Jeśli kurs wymusza pracę w grupach <a href="help.php?module=moodle&file=groupmodeforce.html">
-   wówczas ten parametr nie jest brany pod uwagę.</dd>
+<dt><b>1. Poziom kursu</b></dt>
+<dd>Jest to domyślne ustawienie dla wszystkich aktywności w ramach danego kursu<br /><br /></dd>
+<dt><b>2. Poziom aktywności</b></dt>
+<dd>Każda aktywność, która umożliwia grupową pracę pozwala określić tryb pracy w grupach.
+Jeśli kurs wymusza pracę w grupach <a href="help.php?module=moodle&file=groupmodeforce.html">
+wówczas ten parametr nie jest brany pod uwagę.</dd>
 </dl>
 
 <P>';
+$string['groupmodeforce'] = 'Wymuś istnienie grup';
 $string['groupmy'] = 'Moja grupa';
 $string['groupname'] = 'Nazwa grupy';
 $string['groupnameexists'] = 'Nazwa grupy \'{$a}\' już istnieje w tym kursie, proszę wybrać inną.';

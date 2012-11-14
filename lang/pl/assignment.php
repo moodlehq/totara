@@ -41,10 +41,12 @@ $string['allowresubmit_help'] = '<P ALIGN=CENTER><B>Powtórne przesyłanie rozwi
 
 <P>Opcja ta oczywiście nie dotyczy zadań wykonywanych w trybie off-line.</P>';
 $string['alreadygraded'] = 'Twoje zadanie zostało już ocenione więc ponowne przesłanie go nie jest możliwe.';
-$string['assignmentdetails'] = 'Szczegóły zadania';
 $string['assignment:exportownsubmission'] = 'Eksportuj własne zadania';
 $string['assignment:exportsubmission'] = 'Eksportuj zadania';
 $string['assignment:grade'] = 'Oceń zadanie';
+$string['assignment:submit'] = 'Zgłoś zadanie';
+$string['assignment:view'] = 'Zobacz zadanie';
+$string['assignmentdetails'] = 'Szczegóły zadania';
 $string['assignmentmail'] = '{$a->teacher} przesłał informację zwrotną do Twojego zadania \'{$a->assignment}\'
 
 Informację zwrotną znajdziesz jako załącznik do zadania:
@@ -55,14 +57,15 @@ Znajdziesz ją jako załącznik do <a href="{$a->url}">oddanego zadania</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} zamieścił informację zwrotną do oddanego zadania \'<i>{$a->assignment}</i>\'<br /><br />
 Znajdziesz ją jako załącznik do <a href="{$a->url}">oddanego zadania</a>.';
 $string['assignmentname'] = 'Nazwa zadania';
-$string['assignment:submit'] = 'Zgłoś zadanie';
 $string['assignmenttype'] = 'Typ zadania';
-$string['assignment:view'] = 'Zobacz zadanie';
 $string['availabledate'] = 'Dostępne od';
 $string['cannotdeletefiles'] = 'Wystąpił błąd. Pliki nie mogą zostać usunięte.';
 $string['cannotviewassignment'] = 'Nie możesz zobaczyć tego zadania';
 $string['comment'] = 'Komentarz';
 $string['commentinline'] = 'Komentarz wewnątrzliniowy';
+$string['commentinline_help'] = '# Wbudowany komentarz
+
+W przypadku wybrania tej opcji oryginalne przesłanie zostanie skopiowane do pola komentarza opinii podczas oceny, co ułatwi wprowadzanie komentarzy wbudowanych (być może za pomocą innego koloru) lub edycję oryginalnego tekstu.';
 $string['configitemstocount'] = 'Co ma być traktowane jako oddane zadanie w zadaniu online.';
 $string['configmaxbytes'] = 'Standardowy dopuszczalny rozmiar zadania dla wszystkich zadań (zależy od limitów w kursach i innych lokalnych ustawień)';
 $string['configshowrecentsubmissions'] = 'Każdy może zobaczyć powiadomienia o przesłanych zadaniach w ostatnich raportach aktywności.';
@@ -93,7 +96,7 @@ $string['emailteachers'] = 'Wyślij powiadomienie do nauczycieli';
 $string['emailteachers_help'] = '<p> Jeżeli włączony, wtedy nauczyciele są alarmowani krótkim mailem kiedykolwiek studenci dodadzą lub uaktualnią zadanie.</p>
 <p> Tylko nauczyciele którzy mają możliwość oceniania poszczególnych argumentacji są powiadamiani.
 
-   Więc dla przykładu, jeżeli na kursie jest kilka oddzielnych grup, wtedy nauczyciele wymagają od poszczególnych grup aby nie otrzymywać żadnych powiadomień o studentach z innych grup.</p>
+Więc dla przykładu, jeżeli na kursie jest kilka oddzielnych grup, wtedy nauczyciele wymagają od poszczególnych grup aby nie otrzymywać żadnych powiadomień o studentach z innych grup.</p>
 <p>Dla ćwiczeń nie w sieci, oczywiście, email nie jest wysyłany i studenci nie potwierdzają niczego. </p>';
 $string['emptysubmission'] = 'Jeszcze nie oddałeś zadania';
 $string['enablenotification'] = 'Przesłać e-maile z powiadomieniami';
@@ -184,6 +187,9 @@ $string['submittedfiles'] = 'Przesłane pliki';
 $string['subplugintype_assignment'] = 'Typ zadania';
 $string['subplugintype_assignment_plural'] = 'Typy zadań';
 $string['trackdrafts'] = 'Włącz funkcję \'Wyślij do oceny\'';
+$string['trackdrafts_help'] = '# Wyślij do oceny
+
+Przycisk Wyślij do oceny umożliwia użytkownikom poinformowanie oceniających o tym, że ukończyli oni pracę nad przypisanym zadaniem. Oceniający mogą przywrócić przypisane zadanie do stanu wersji roboczej (na przykład, jeśli wymaga ono dalszej pracy).';
 $string['typeoffline'] = 'Zadanie offline';
 $string['typeonline'] = 'Tekst online';
 $string['typeupload'] = 'Zaawansowane ładowanie plików';

@@ -113,12 +113,14 @@ $string['defaultapproval_help'] = '<P ALIGN=CENTER><B>Domyślna aprobata wpisów
 
 <p>Możesz wybrać czy wpisy dokonane przez studentów będą automatycznie publikowane w sieci Web
 czy też będą musiały być najpierw zatwierdzone przez nauczyciela.</p>';
+$string['defaulthook'] = 'Domyślny punkt zaczepienia';
 $string['defaultmode'] = 'Domyślny tryb';
 $string['defaultsortkey'] = 'Domyślne sortowanie';
 $string['defaultsortorder'] = 'Domyślny porządek sortowania';
 $string['definition'] = 'Definicja';
 $string['definitions'] = 'Definicje';
 $string['deleteentry'] = 'Usuń wpis';
+$string['deletenotenrolled'] = 'Usuń wpisy według niezapisanych użytkowników';
 $string['deletingcomment'] = 'Usuwanie komentarza';
 $string['deletingnoneemptycategory'] = 'Usunięcie tej kategorii nie usunie pojęć należących do tej kategorii. Zostaną one oznaczone jako \'nieskategoryzowane\'.';
 $string['descending'] = '(malejące)';
@@ -131,13 +133,6 @@ $string['destination_help'] = '<P ALIGN=CENTER><B>Do którego słownika importuj
 <li><strong>Nowy słownik:</strong> Nowy słownik zostanie utworzony w oparciu o plik XML i importowane pojęcia.</li>
 </ul>';
 $string['displayformat'] = 'Format słownika';
-$string['displayformatcontinuous'] = 'Ciągły bez autora';
-$string['displayformatdictionary'] = 'Prosty styl słownika';
-$string['displayformatencyclopedia'] = 'Encyklopedia';
-$string['displayformatentrylist'] = 'Lista wpisów';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Pełny z autorami';
-$string['displayformatfullwithoutauthor'] = 'Pełny bez autorów';
 $string['displayformat_help'] = '<P ALIGN=CENTER><B>Wygląd słownika</B></P>
 
 <P>Ten parametr określa sposób w jaki definicje zostaną zaprezentowane w słowniku. Możliwe są następujące sposoby prezentacji:</p>
@@ -166,6 +161,13 @@ $string['displayformat_help'] = '<P ALIGN=CENTER><B>Wygląd słownika</B></P>
 <li> Dokonaj edycji tego pliku w/g własnego uznania (musisz jednak trochę znać PHP).
 <li> Następnie, dopisz w każdym pakiecie językowym jakiego używasz <b>displayformatN</b>, i nadaj mu krótką ale logiczną nazwę.
 </ol>';
+$string['displayformatcontinuous'] = 'Ciągły bez autora';
+$string['displayformatdictionary'] = 'Prosty styl słownika';
+$string['displayformatencyclopedia'] = 'Encyklopedia';
+$string['displayformatentrylist'] = 'Lista wpisów';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Pełny z autorami';
+$string['displayformatfullwithoutauthor'] = 'Pełny bez autorów';
 $string['displayformats'] = 'Dostępne formaty wyglądu';
 $string['displayformatssetup'] = 'Wyświetl ustawienia formatów';
 $string['duplicatecategory'] = 'Duplikuj kategorie';
@@ -211,6 +213,7 @@ $string['errcannoteditothers'] = 'Nie możesz edytować pojęć innych użytkown
 $string['errconceptalreadyexists'] = 'Definicja tego pojęcia już istnieje. Ten słownik nie zezwala na duplikowanie pojęć.';
 $string['errdeltimeexpired'] = 'Nie możesz tego usunąć. Czas minął!';
 $string['erredittimeexpired'] = 'Czas edycji tego pojęcia upłynął.';
+$string['errorparsingxml'] = 'Wystąpiły błędy podczas analizy pliku. Upewnij się, że ma on poprawną składnię XML.';
 $string['explainaddentry'] = 'Dodaj nowe pojęcie do tego słownika pojęć.<br />Pola: Termin i Definicja muszą zostać wypełnione.';
 $string['explainall'] = 'Wyświetl wszystkie pojęcia na jednej stronie';
 $string['explainalphabet'] = 'Wyszukaj pojęcia używając tego indeksu';
@@ -242,11 +245,14 @@ $string['glossary:export'] = 'Eksportuj pojęcia';
 $string['glossary:exportentry'] = 'Eksport pojedynczego wpisu';
 $string['glossary:exportownentry'] = 'Eksport własnego pojedynczego wpisu';
 $string['glossary:import'] = 'Importuj pojęcia';
-$string['glossaryleveldefaultsettings'] = 'Domyślne ustawienia słownika';
 $string['glossary:managecategories'] = 'Zarządzaj kategoriami';
 $string['glossary:managecomments'] = 'Zarządzaj komentarzami';
 $string['glossary:manageentries'] = 'Zarządzaj wpisami';
 $string['glossary:rate'] = 'Oceń wpisy';
+$string['glossary:view'] = 'Oglądaj słownik';
+$string['glossary:viewrating'] = 'Oglądaj oceny';
+$string['glossary:write'] = 'Twórz nowe pojęcia';
+$string['glossaryleveldefaultsettings'] = 'Domyślne ustawienia słownika';
 $string['glossarytype'] = 'Typ słownika pojęć';
 $string['glossarytype_help'] = '<P ALIGN=CENTER><B>Definiowanie głównego słownika pojęć kursu</B></P>
 
@@ -255,15 +261,13 @@ $string['glossarytype_help'] = '<P ALIGN=CENTER><B>Definiowanie głównego słow
 <p>Aby móc to zrobić musisz najpierw określić, który słownik jest słownikiem głównym.</p>
 
 <p>Uwaga: W ramach jednego kursu można zbudować tylko jeden słownik główny. Tylko nauczyciele mogą aktualizować ten słownik.</p>';
-$string['glossary:view'] = 'Oglądaj słownik';
-$string['glossary:viewrating'] = 'Oglądaj oceny';
-$string['glossary:write'] = 'Twórz nowe pojęcia';
 $string['guestnoedit'] = 'Goście nie mogą edytować słowników';
 $string['importcategories'] = 'Importuj kategorie';
 $string['importedcategories'] = 'Zaimportowano kategorie';
 $string['importedentries'] = 'Zaimportowano wpisy';
 $string['importentries'] = 'Importuj pojęcia';
 $string['importentriesfromxml'] = 'Importuj pojęcia z pliku XML';
+$string['includegroupbreaks'] = 'Uwzględnij przerwy grup';
 $string['isglobal'] = 'Czy to jest globalny słownik pojęć?';
 $string['isglobal_help'] = '<P ALIGN=CENTER><B>Globalny słownik pojęć</B></P>
 
@@ -301,6 +305,7 @@ $string['numberofentries'] = 'Ilość pojęć';
 $string['onebyline'] = '(jedno na linię)';
 $string['pluginadministration'] = 'Administracja słownikiem';
 $string['pluginname'] = 'Słownik pojęć';
+$string['popupformat'] = 'Format okna podręcznego';
 $string['printerfriendly'] = 'Wersja do wydruku';
 $string['printviewnotallowed'] = 'Nie pozwalaj na drukowanie słownika';
 $string['question'] = 'Pytanie';

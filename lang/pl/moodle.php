@@ -1349,7 +1349,7 @@ $string['scale_help'] = '<p>Prowadzący mogą tworzyć nowe, niestandardowe skal
 <p>Sama skala jest określana za pomocą uporządkowanej liście wartości. Zacząć należy od najbardziej negatywnej, a skończyć na najbardziej pozytywnej wartości. Kolejne pozycje powinny być określane przecinkami. Przykładowo : </p>
 
 <blockquote><i>
-   Niedostateczny, Dopuszczający, Dostateczny, Dobry, Bardzo Dobry, Celujący
+Niedostateczny, Dopuszczający, Dostateczny, Dobry, Bardzo Dobry, Celujący
 </i></blockquote>
 
 <p>Skala powinna zawierać również dokładny opis znaczenia poszczególnych ocen, a także sposobu jej użycia. Opis ten będzie dostępny na stronach pomocy zarówno dla prowadzących jak i studentów.</p>
@@ -1453,16 +1453,16 @@ $string['showperpage'] = 'Pokaż {$a} na stronę';
 $string['showrecent'] = 'Pokaż ostatnie wydarzenia';
 $string['showreports'] = 'Pokaż raporty aktywności';
 $string['showreports_help'] = '<P>Raporty aktywności są dostępne dla każdego z partycypujących w kursie.
- Raporty te zawierają dzienniki dostępu użytkownika a także informacje dotyczace aktywności użytkownika.</p>
+Raporty te zawierają dzienniki dostępu użytkownika a także informacje dotyczace aktywności użytkownika.</p>
 
 <p>Nauczyciele zawsze mają dostęp do tych raportów, używąc przycisku znajdującego się na stronie na której
 znajduje się profil danego studenta.<p>
 
 <p>Z kolei dostęp studentów do tych raportów kontrolowany jest przez nauczycieli. W przypadku niektórych kursów
- umożliwienie takiego dostępu może okazać się bardzo pomocne, ponieważ pokaże to  studentowi jego wysiłek i wkład w pracę online.
+umożliwienie takiego dostępu może okazać się bardzo pomocne, ponieważ pokaże to  studentowi jego wysiłek i wkład w pracę online.
 Jednakże w przypadku niektórych kursów studenci mogą mieć ten dostęp ograniczony.
- Ponadto, udostępnienie tych raportów studentom spowoduje dodatkowe obciążenie serwera co w przypadku licznych klas czy dłuższych
- kursów może skłonić administratora do wyłączenia tej opcji.</p>';
+Ponadto, udostępnienie tych raportów studentom spowoduje dodatkowe obciążenie serwera co w przypadku licznych klas czy dłuższych
+kursów może skłonić administratora do wyłączenia tej opcji.</p>';
 $string['showsettings'] = 'Pokaż ustawienia';
 $string['showtheselogs'] = 'Pokaż te logi';
 $string['showthishelpinlanguage'] = 'Pokaż tą pomoc w języku: {$a}';

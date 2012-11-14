@@ -16,25 +16,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'block_tag_flickr', language 'pl', branch 'MOODLE_22_STABLE'
+ * Strings for component 'block_selfcompletion', language 'pl', branch 'MOODLE_22_STABLE'
  *
- * @package   block_tag_flickr
+ * @package   block_selfcompletion
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['configtitle'] = 'Tytuł';
-$string['date-posted-asc'] = 'Data przesłania - rosnąco';
-$string['date-posted-desc'] = 'Data przesłania - malejąco';
-$string['date-taken-asc'] = 'Data wykonania - rosnąco';
-$string['date-taken-desc'] = 'Data wykonania - malejąco';
-$string['defaulttile'] = 'Flickr';
-$string['getfromphotoset'] = 'Pobierz zdjęcia z zestawu zdjęć o identyfikatorze';
-$string['includerelatedtags'] = 'Uwzględnij powiązane znaczniki w zapytaniu';
-$string['interestingness-asc'] = 'Zainteresowanie ASC';
-$string['interestingness-desc'] = 'Zainteresowanie DESC';
-$string['numberofphotos'] = 'Liczba zdjęć';
-$string['relevance'] = 'Istotność';
-$string['sortby'] = 'Sortuj według';
+$string['alreadyselfcompleted'] = 'Użytkownik sam zaznaczył ukończenie tego kursu.';
+$string['completecourse'] = 'Ukończ kurs';
+$string['selfcompletion'] = 'Samodzielne ukończenie';
+$string['selfcompletionnotenabled'] = 'Dla tego kursu nie zostały włączone kryteria samodzielnego ukończenia.';
