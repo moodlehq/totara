@@ -270,7 +270,6 @@ $string['markoutofmax'] = '{$a->mark} / {$a->max}';
 $string['marks'] = '評点';
 $string['matcherror'] = '評点が評定オプションと合致しません - 問題をスキップしました。';
 $string['matchgrades'] = '評点の合致';
-$string['matchgradeserror'] = '評点が一覧にない場合、エラーにする';
 $string['matchgrades_help'] = '<p>インポートされた評点は下記の有効な評点一覧に合致する<b>必要があります</b>。</p>
 
 <ul>
@@ -308,6 +307,7 @@ $string['matchgrades_help'] = '<p>インポートされた評点は下記の有�
 </ul>
 
 <p><i>注意: いくつかのカスタムインポートフォーマットではデータベースにデータを直接書き込み、このチェックをバイパスします。</i></p>';
+$string['matchgradeserror'] = '評点が一覧にない場合、エラーにする';
 $string['matchgradesnearest'] = '評点が一覧にない場合、最も近い評点を使用する';
 $string['missingcourseorcmid'] = 'print_questionに対して、コースIDまたはコースモジュールIDを提供する必要があります。';
 $string['missingcourseorcmidtolink'] = 'get_question_edit_linkに対して、コースIDまたはコースモジュールIDを提供する必要があります。';
@@ -368,9 +368,9 @@ $string['parentcategory_help'] = '<h2>親</h2>
 
 <p>関連情報 :</p>
 <ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">問題カテゴリ</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">カテゴリコンテクスト</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">問題パーミッション</a></li>
+<li><a href="help.php?module=question&amp;file=categories.html">問題カテゴリ</a></li>
+<li><a href="help.php?module=question&amp;file=categorycontexts.html">カテゴリコンテクスト</a></li>
+<li><a href="help.php?module=question&amp;file=permissions.html">問題パーミッション</a></li>
 </ul>';
 $string['parenthesisinproperclose'] = '{$a}** 内の ** の前で丸括弧が適切に閉じていません。';
 $string['parenthesisinproperstart'] = '{$a}** 内の ** の前で丸括弧が適切に始まっていません。';

@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'TODO';
 $string['alreadyloggedin'] = 'あなたはすでに {$a} としてログインしています。異なるユーザとしてログインする前にログアウトする必要があります。';
 $string['authnotexisting'] = '認証プラグインがありません。';
 $string['backupcontainexternal'] = 'このバックアップファイルには、ローカルに設定されていない外部Moodleネットワークホストが含まれています。';
@@ -202,7 +203,7 @@ $string['detectedbrokenplugin'] = '申し訳ございません、プラグイン
 $string['dmlreadexception'] = 'データベースからの読み込み中にエラーが発生しました。';
 $string['dmltransactionexception'] = 'データベーストランザクションエラー';
 $string['dmlwriteexception'] = 'データベースへの書き込み中にエラーが発生しました。';
-$string['downgradedcore'] = 'エラー!!! あなたが使用しているコードはこれらのデータベースが作成されたものより古いコードです! ';
+$string['downgradedcore'] = 'エラー!!! あなたが使用しているコードはこれらのデータベースが作成されたものより古いコードです!';
 $string['downloadedfilecheckfailed'] = 'ダウンロードファイルのチェックに失敗しました。';
 $string['duplicatefieldname'] = '重複フィールド名「 {$a} 」が見つかりました。';
 $string['duplicateparaminsql'] = 'エラー: クエリのパラメータ名が重複しています。';
@@ -344,9 +345,9 @@ $string['maxbytes'] = 'このファイルは最大サイズを超えています
 $string['messagingdisable'] = 'このサイトではメッセージングが無効にされています。';
 $string['mimetexisnotexist'] = 'あなたのシステムはmimeTeXを実行できるよう設定されていません。あなたのPHPおよびOSプラットフォームに適した実行ファイルを<a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>からダウンロードするか、C言語のソースを<a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>からダウンロードしてください。ダウンロードしたファイルをコンパイルした後、 あなたの「moodle/filter/tex/」ディレクトリに入れてください。';
 $string['mimetexnotexecutable'] = 'カスタムmimetexを実行できません!';
+$string['missing_moodle_backup_xml_file'] = 'バックアップにXMLファイルがありません: {$a}';
 $string['missingfield'] = 'フィールド「 {$a} 」 に入力してください。';
 $string['missingkeyinsql'] = 'エラー: クエリにパラメータ「 {$a} 」がありません。';
-$string['missing_moodle_backup_xml_file'] = 'バックアップにXMLファイルがありません: {$a}';
 $string['missingparam'] = '必須パラメータ ({$a}) がありません。';
 $string['missingparameter'] = 'パラメータがありません。';
 $string['missingrequiredfield'] = 'いくつかの必須入力フィールドが入力されていません。';
@@ -429,9 +430,9 @@ $string['remotedownloaderror'] = 'あなたのサーバへのコンポーネン�
 $string['remotedownloadnotallowed'] = 'あなたのサーバにコンポーネントをダウンロードすることができません (allow_url_fopen が無効)。<br /><br /><a href="{$a->url}">{$a->url}</a> ファイルを手動でダウンロードして、サーバの「 {$a->dest} 」にコピーした後、解凍してください。';
 $string['reportnotavailable'] = 'このタイプのレポートはサイトコースのみで利用できます。';
 $string['requireloginerror'] = 'コースまたは活動にアクセスできません。';
-$string['restorechecksumfailed'] = 'あなたのセッションに保存されているリストア情報に問題が生じました。あなたのPHPメモリ/DBパッケージサイズ制限を確認してください。リストアを停止しました。';
 $string['restore_path_element_missingmethod'] = 'リストアメソッド {$a} がありません。開発者により定義される必要があります。';
 $string['restore_path_element_noobject'] = 'リストアオブジェクト {$a} はオブジェクトではありません。';
+$string['restorechecksumfailed'] = 'あなたのセッションに保存されているリストア情報に問題が生じました。あなたのPHPメモリ/DBパッケージサイズ制限を確認してください。リストアを停止しました。';
 $string['restrictedcontextexception'] = '申し訳ございません、外部関数の実行により、コンテクストの制限に違反します。';
 $string['restricteduser'] = '申し訳ございません、あなたのアカウント「 {$a} 」では、この処理を実行できません。';
 $string['reverseproxyabused'] = '申し訳ございません、リバースプロクシが有効にされているため、サーバに直接アクセスできません。<br />サーバ管理者にご連絡ください。';
@@ -464,7 +465,6 @@ $string['tagnotfound'] = '指定されたタグは、データベースで見つ
 $string['targetdatabasenotempty'] = 'ターゲットデータベースが空ではありません。安全上の理由から、転送は中止されました。';
 $string['textconditionsnotallowed'] = 'テキストカラムコンディションの比較は許可されていません。あなたのクエリには sql_compare_text() を使用してください。';
 $string['themenotinstall'] = 'このテーマはインストールされていません。';
-$string['TODO'] = 'TODO';
 $string['tokengenerationfailed'] = '新しいトークンを生成できません。';
 $string['transactionvoid'] = 'すでに取り消されているため、トランザクションを取り消すことはできません。';
 $string['unenrolerror'] = 'ユーザの登録抹消中にエラーが発生しました。';

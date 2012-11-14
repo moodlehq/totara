@@ -31,18 +31,17 @@ $string['answered'] = '投票済み';
 $string['atleastoneoption'] = 'あなたは少なくとも1つの考えられる答えを提供する必要があります。';
 $string['choice'] = '選択肢';
 $string['choice:choose'] = '投票を記録する';
-$string['choiceclose'] = '終了日時';
 $string['choice:deleteresponses'] = '投票結果を削除する';
 $string['choice:downloadresponses'] = '投票結果をダウンロードする';
+$string['choice:readresponses'] = '投票結果を表示する';
+$string['choiceclose'] = '終了日時';
 $string['choicefull'] = 'この投票は投票可能数の上限に達しているため、投票できません。';
 $string['choicename'] = '投票名';
 $string['choiceopen'] = '開始日時';
 $string['choiceoptions'] = '投票オプション';
 $string['choiceoptions_help'] = 'ここであなたは、参加者が選択しなければならないオプションを指定します。
 
-あなたはどのような数でも入力することができます。オプションを空白にした場合、そのオプションは表示されません。あなたが8個以上のオプションを追加したい場合、「フィールド 3 個をフォームに追加する」ボタンをクリックしてください。
-';
-$string['choice:readresponses'] = '投票結果を表示する';
+あなたはどのような数でも入力することができます。オプションを空白にした場合、そのオプションは表示されません。あなたが8個以上のオプションを追加したい場合、「フィールド 3 個をフォームに追加する」ボタンをクリックしてください。';
 $string['choicesaved'] = 'あなたの投票が保存されました。';
 $string['choicetext'] = '説明文';
 $string['chooseaction'] = '操作を選択する ...';

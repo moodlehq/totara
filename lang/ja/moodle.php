@@ -1733,7 +1733,7 @@ $string['welcometocoursetext'] = '{$a->coursename} へようこそ!
 
 まだプロファイルの編集が終わっていない場合は、私たちが受講している皆さんのことを知ることができるよう、あなたのプロファイルページを編集してください:
 
- {$a->profileurl}';
+{$a->profileurl}';
 $string['whattocallzip'] = 'Zipファイルの名称は?';
 $string['whattodo'] = '処理';
 $string['windowclosing'] = 'このウィンドウは自動的に閉じます。自動的に閉じられない場合、ウィンドウを閉じてください。';

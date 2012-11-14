@@ -314,13 +314,13 @@ $string['jumps_help'] = 'それぞれの (問題の) 答えまたは (コンテ�
 $string['jumpsto'] = '<em>{$a}</em> にジャンプする';
 $string['leftduringtimed'] = 'あなたは制限時間のあるレッスンを途中で終了しました。<br />レッスンを再スタートするには、「続ける」をクリックしてください。';
 $string['leftduringtimednoretake'] = 'あなたは制限時間のあるレッスンを途中で終了しました。<br />レッスンを再受験または継続できません。';
+$string['lesson:edit'] = 'レッスン活動を編集する';
+$string['lesson:manage'] = 'レッスン活動を管理する';
 $string['lessonattempted'] = 'レッスン受験済み';
 $string['lessonclosed'] = 'このレッスンは {$a} に終了します。';
 $string['lessoncloses'] = 'レッスン終了';
 $string['lessoncloseson'] = 'レッスン終了: {$a}';
-$string['lesson:edit'] = 'レッスン活動を編集する';
 $string['lessonformating'] = 'レッスンフォーマット';
-$string['lesson:manage'] = 'レッスン活動を管理する';
 $string['lessonmenu'] = 'レッスンメニュー';
 $string['lessonnotready'] = 'このレッスンは、まだ受験することができません。あなたの {$a} に連絡してください。';
 $string['lessonnotready2'] = 'このレッスンは、まだ受験することができません';
@@ -353,17 +353,17 @@ $string['mediafile_help'] = '<p>ここでは、レッスンの最初に表示さ
 <p>任意で「ウィンドウを閉じる」ボタンをポップアップの下部に表示することができます。同様に、ウィンドウの高さおよび幅を設定することができます。</p>
 
 <p>サポートされた埋め込みファイルタイプ:</p>
-    <ul>
-        <li>MP3</li>
-        <li>Media Player</li>
-        <li>Quicktime</li>
-        <li>Realmedia</li>
-        <li>HTML</li>
-        <li>Plain Text</li>
-        <li>GIF</li>
-        <li>JPEG</li>
-        <li>PNG</li>
-    </ul>
+<ul>
+<li>MP3</li>
+<li>Media Player</li>
+<li>Quicktime</li>
+<li>Realmedia</li>
+<li>HTML</li>
+<li>Plain Text</li>
+<li>GIF</li>
+<li>JPEG</li>
+<li>PNG</li>
+</ul>
 <p>    他のすべてのタイプのファイルには、デフォルトでダウンロード用のリンクが設定されます。</p>';
 $string['mediafilepopup'] = '閲覧するにはここをクリックしてください。';
 $string['mediaheight'] = 'ポップアップウィンドウ高:';
@@ -434,8 +434,8 @@ $string['numberofpagesviewed'] = '解答済み問題数: {$a}';
 $string['numberofpagesviewednotice'] = '解答済み問題数: {$a->nquestions}; (あなたは少なくとも {$a->minquestions} 問の問題に解答する必要があります)';
 $string['numerical'] = '数値問題';
 $string['ongoing'] = '進行中の評点を表示する';
-$string['ongoingcustom'] = '現在、あなたの評点は {$a->currenthigh} 点中 {$a->score} 点です。';
 $string['ongoing_help'] = '<p>この設定を「Yes」にすると、現時点で考えられる学生の合計評点が各ページに表示されます。例:  学生が評点5点の問題4問に答えて、1問が間違っている場合、表示される進行中の評点は、15/20点になります。</p>';
+$string['ongoingcustom'] = '現在、あなたの評点は {$a->currenthigh} 点中 {$a->score} 点です。';
 $string['ongoingnormal'] = 'あなたは {$a->viewed} 問中 {$a->correct} 問を正しく答えました。';
 $string['onpostperpage'] = '1評点あたり1回のみ登録してください。';
 $string['options'] = 'オプション';
@@ -446,10 +446,10 @@ $string['outof'] = '{$a} 中';
 $string['overview'] = '概要';
 $string['overview_help'] = 'レッスンは多くのページおよび任意のコンテンツページにより構成されます。ページはいくつかのコンテンツを含み、通常、問題で終了します。ジャンプには「このページ」または「次のページ」のような相対ジャンプ、またはレッスン内の1ページを指定する絶対ジャンプがあります。ページコンテンツには例えば目次のように、レッスン内の他のページへの一連のリンクを含みます。';
 $string['page'] = 'ページ: {$a}';
-$string['pagecontents'] = 'ページコンテンツ';
 $string['page-mod-lesson-edit'] = 'レッスンページを編集する';
 $string['page-mod-lesson-view'] = 'レッスンページを表示またはプレビューする';
 $string['page-mod-lesson-x'] = 'すべてのレッスンページ';
+$string['pagecontents'] = 'ページコンテンツ';
 $string['pages'] = 'ページ';
 $string['pagetitle'] = 'ページタイトル';
 $string['password'] = 'パスワード';
@@ -519,9 +519,9 @@ $string['showanunseenpage'] = '未閲覧のページを表示する';
 $string['singleanswer'] = '単一解答';
 $string['skip'] = 'ナビゲーションをスキップする';
 $string['slideshow'] = 'スライドショー';
+$string['slideshow_help'] = '<p>この設定を「Yes」にすると、固定した幅、高さ、独自の背景色のスライドショーとして、レッスンを表示することができます。コンテンツページの幅または高さが指定した範囲を超えた場合、CSSベースのスクロールバーが表示されます。問題は、スライドショーモードでは「除外」され、デフォルトでページ (ブランチテーブル) のみスライド表示されます。オプションが選択された場合、デフォルト言語のラベル付きボタン「次へ」および「戻る」ボタンが、ページの右端および左端に表示されます。他のボタンは、スライドショー下部中央に配置されます。</p>';
 $string['slideshowbgcolor'] = 'スライドショーの背景色';
 $string['slideshowheight'] = 'スライドショーの高さ';
-$string['slideshow_help'] = '<p>この設定を「Yes」にすると、固定した幅、高さ、独自の背景色のスライドショーとして、レッスンを表示することができます。コンテンツページの幅または高さが指定した範囲を超えた場合、CSSベースのスクロールバーが表示されます。問題は、スライドショーモードでは「除外」され、デフォルトでページ (ブランチテーブル) のみスライド表示されます。オプションが選択された場合、デフォルト言語のラベル付きボタン「次へ」および「戻る」ボタンが、ページの右端および左端に表示されます。他のボタンは、スライドショー下部中央に配置されます。</p>';
 $string['slideshowwidth'] = 'スライドショーの幅';
 $string['startlesson'] = 'レッスンの開始';
 $string['studentattemptlesson'] = '{$a->lastname}, {$a->firstname} さんの受験回数:  {$a->attempt}';

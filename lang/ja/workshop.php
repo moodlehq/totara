@@ -53,7 +53,7 @@ $string['assessmentend'] = '評価終了日時';
 $string['assessmentenddatetime'] = '評価期限: {$a->daydatetime} ({$a->distanceday})';
 $string['assessmentendevent'] = '{$a} (評価期限)';
 $string['assessmentform'] = '評価フォーム';
-$string['assessmentofsubmission'] = '<a href="{$a->submissionurl}">{$a->submissiontitle}</a>　の <a href="{$a->assessmenturl}">評価</a> ';
+$string['assessmentofsubmission'] = '<a href="{$a->submissionurl}">{$a->submissiontitle}</a>　の <a href="{$a->assessmenturl}">評価</a>';
 $string['assessmentreference'] = '参考評価';
 $string['assessmentreferenceconflict'] = 'あなたが参考評価のために提出した提出例を評価することはできません。';
 $string['assessmentreferenceneeded'] = '参考評価を提供するため、あなたはこの提出例を評価する必要があります。提出を評価するには「続ける」ボタンをクリックしてください。';
@@ -72,11 +72,11 @@ $string['calculatesubmissiongrades'] = '提出に対する評点を計算する'
 $string['calculatesubmissiongradesdetails'] = '期待数: {$a->expected}<br />計算数: {$a->calculated}';
 $string['chooseuser'] = 'ユーザを選択する ...';
 $string['clearaggregatedgrades'] = 'すべての評点総計をクリアする';
-$string['clearaggregatedgradesconfirm'] = '本当に計算済みの提出に対する評点および評価に対する評点をクリアしてもよろしいですか?';
 $string['clearaggregatedgrades_help'] = '提出に対する評点および評価に対する評点の総計がリセットされます。あなたは成績評価フェースにて、これらの評点をゼロから再計算することができます。';
+$string['clearaggregatedgradesconfirm'] = '本当に計算済みの提出に対する評点および評価に対する評点をクリアしてもよろしいですか?';
 $string['clearassessments'] = '評価をクリアする';
-$string['clearassessmentsconfirm'] = '本当にすべての評価に対する評点をクリアしてもよろしいですか? あなたは自力で情報を元に戻すことができなくなります。また、評価者は割り当てられた提出を再度評価することになります。';
 $string['clearassessments_help'] = '提出に対する計算済み評点および評価に対する計算済み評点がリセットされます。評価フォームに入力された内容は保持されますが、評点を再計算するため、評価者は評価フォームを再度開いて保存する必要があります。';
+$string['clearassessmentsconfirm'] = '本当にすべての評価に対する評点をクリアしてもよろしいですか? あなたは自力で情報を元に戻すことができなくなります。また、評価者は割り当てられた提出を再度評価することになります。';
 $string['configexamplesmode'] = 'ワークショップ評価例のデフォルトモード';
 $string['configgrade'] = 'ワークショップ提出のデフォルト最大評点';
 $string['configgradedecimals'] = '評点を表示する場合、小数点以降に表示するデフォルトの桁数です。';
@@ -127,22 +127,20 @@ $string['formataggregatedgradeover'] = '<del>{$a->grade}</del><br /><ins>{$a->ov
 $string['formatpeergrade'] = '<span class="grade">{$a->grade}</span> <span class="gradinggrade">({$a->gradinggrade})</span>';
 $string['formatpeergradeover'] = '<span class="grade">{$a->grade}</span> <span class="gradinggrade">(<del>{$a->gradinggrade}</del> / <ins>{$a->gradinggradeover}</ins>)</span>';
 $string['formatpeergradeoverweighted'] = '<span class="grade">{$a->grade}</span> <span class="gradinggrade">(<del>{$a->gradinggrade}</del> / <ins>{$a->gradinggradeover}</ins>)</span> @ <span class="weight">{$a->weight}</span>';
-$string['formatpeergradeweighted'] = '	
-<span class="grade">{$a->grade}</span> <span class="gradinggrade">({$a->gradinggrade})</span> @ <span class="weight">{$a->weight}</span>';
+$string['formatpeergradeweighted'] = '<span class="grade">{$a->grade}</span> <span class="gradinggrade">({$a->gradinggrade})</span> @ <span class="weight">{$a->weight}</span>';
 $string['givengrades'] = '与えた評点';
 $string['gradecalculated'] = '提出に対する計算済み評点';
 $string['gradedecimals'] = '評点の小数位';
 $string['gradegivento'] = '&gt;';
 $string['gradeinfo'] = '評点: {$a->received} / {$a->max}';
 $string['gradeitemassessment'] = '{$a->workshopname} (評定)';
-$string['gradeitemsubmission'] = '	
-{$a->workshopname} (提出)';
+$string['gradeitemsubmission'] = '{$a->workshopname} (提出)';
 $string['gradeover'] = '提出に対する評点をオーバーライドする';
 $string['gradereceivedfrom'] = '&lt;';
 $string['gradesreport'] = 'ワークショップ評定レポート';
 $string['gradinggrade'] = '評定点';
-$string['gradinggradecalculated'] = '評価に対する計算済み評点';
 $string['gradinggrade_help'] = 'この設定では提出の評価に関して取得する最大評点を指定します。';
+$string['gradinggradecalculated'] = '評価に対する計算済み評点';
 $string['gradinggradeof'] = '評価に対する評点 (最大 {$a})';
 $string['gradinggradeover'] = '評価に対する評点をオーバーライドする';
 $string['gradingsettings'] = '評定設定';
@@ -152,9 +150,9 @@ $string['instructauthors'] = '提出のインストラクション';
 $string['instructreviewers'] = '評価のインストラクション';
 $string['introduction'] = 'イントロダクション';
 $string['latesubmissions'] = '提出期限後の提出';
-$string['latesubmissionsallowed'] = '提出期限後の提出は許可されています。';
 $string['latesubmissions_desc'] = '提出期限後の提出を許可します。';
 $string['latesubmissions_help'] = '有効にした場合、作成者は提出期限後または評価フェーズ時にワークを提出することができます。提出期限後の提出は編集することができません。';
+$string['latesubmissionsallowed'] = '提出期限後の提出は許可されています。';
 $string['maxbytes'] = '最大ファイルサイズ';
 $string['modulename'] = 'ワークショップ';
 $string['modulenameplural'] = 'ワークショップ';
@@ -199,13 +197,13 @@ $string['someuserswosubmission'] = 'ワークを提出していない作者が�
 $string['sortasc'] = '昇順ソート';
 $string['sortdesc'] = '降順ソート';
 $string['strategy'] = '評定方法';
-$string['strategyhaschanged'] = '編集のためにフォームが開かれて以降、ワークショップ評定方法が変更されました。';
 $string['strategy_help'] = '評定方法では使用される評価フォームおよび提出の評定方法を決定します。下記4つのオプションがあります:
 
 * 累積評価 - 指定されたアスペクトに関して、コメントおよび評点が与えられます。
 * コメント - 指定されたアスペクトにコメントが与えられますが、評点は与えられません。
 * エラー数 - 指定された条件に関して、コメントおよびyes/no評価が与えられます。
 * ルーブリック - 指定されたクライテリアに関して、レベル評価が与えられます。';
+$string['strategyhaschanged'] = '編集のためにフォームが開かれて以降、ワークショップ評定方法が変更されました。';
 $string['submission'] = '提出';
 $string['submissionattachment'] = '添付';
 $string['submissionby'] = '提出 by {$a}';
@@ -260,10 +258,8 @@ $string['weightinfo'] = '加重: {$a}';
 $string['withoutsubmission'] = '自分では提出していない評価者';
 $string['workshop:allocate'] = '提出をレビューのために割り当てる';
 $string['workshop:editdimensions'] = '評価フォームを編集する';
-$string['workshopfeatures'] = 'ワークショップ機能';
 $string['workshop:ignoredeadlines'] = '時間制限を無視する';
 $string['workshop:manageexamples'] = '提出例を管理する';
-$string['workshopname'] = 'ワークショップ名';
 $string['workshop:overridegrades'] = '計算済み評定をオーバーライドする';
 $string['workshop:peerassess'] = '相互評価';
 $string['workshop:publishsubmissions'] = '提出を公開する';
@@ -276,5 +272,7 @@ $string['workshop:viewauthornames'] = '作成者名を表示する';
 $string['workshop:viewauthorpublished'] = '公開された提出の作成者を表示する';
 $string['workshop:viewpublishedsubmissions'] = '公開済み提出を表示する';
 $string['workshop:viewreviewernames'] = '評価者名を表示する';
+$string['workshopfeatures'] = 'ワークショップ機能';
+$string['workshopname'] = 'ワークショップ名';
 $string['yourassessment'] = 'あなたの評価';
 $string['yoursubmission'] = 'あなたの提出課題';

@@ -49,14 +49,14 @@ $string['always'] = '常に';
 $string['automatic'] = '自動、起動URIをベースにする';
 $string['baseurl'] = 'ベースURI';
 $string['basiclti'] = 'LTI';
-$string['basicltiactivities'] = 'LTI活動';
 $string['basiclti_base_string'] = 'LTI OAuth基本ストリング';
 $string['basiclti_endpoint'] = 'LTI起動エンドポイント';
-$string['basicltifieldset'] = 'カスタムテンプレートフィールド';
 $string['basiclti_in_new_window'] = 'あなたの活動は新しいウィンドウに表示されます。';
+$string['basiclti_parameters'] = 'LTI起動パラメータ';
+$string['basicltiactivities'] = 'LTI活動';
+$string['basicltifieldset'] = 'カスタムテンプレートフィールド';
 $string['basicltiintro'] = '活動説明';
 $string['basicltiname'] = '活動名';
-$string['basiclti_parameters'] = 'LTI起動パラメータ';
 $string['basicltisettings'] = '基本学習ツール相互運用 (Learning Tool Interoperability) 設定';
 $string['cannot_delete'] = 'あなたはこのツール設定を削除できません。';
 $string['cannot_edit'] = 'あなたはこのツール設定を編集できません。';
@@ -68,9 +68,9 @@ $string['configpreferwidth'] = 'デフォルト推奨幅';
 $string['configresourceurl'] = 'デフォルトリソースURI';
 $string['configtoolurl'] = 'デフォルトリモートツールURI';
 $string['configtypes'] = 'LTIアプリケーションを有効にする';
+$string['course_tool_types'] = 'コースツールタイプ';
 $string['courseid'] = 'コースIDナンバー';
 $string['coursemisconf'] = 'コースが正しく設定されていません。';
-$string['course_tool_types'] = 'コースツールタイプ';
 $string['createdon'] = '作成日';
 $string['curllibrarymissing'] = 'LTIを使用するには、PHP Curlライブラリをインストールする必要があります。';
 $string['custom'] = 'カスタムパラメータ';
@@ -150,13 +150,13 @@ $string['fixexistingconf'] = '設定の正しくないインスタンスに対�
 $string['fixnew'] = '新しい設定';
 $string['fixnewconf'] = '設定の正しくないインスタンスに対して、新しい設定を定義する';
 $string['fixold'] = '既存の設定を使用する';
-$string['forced_help'] = 'この設定はコースまたはサイトレベルのツール設定で強制されています。あなたはこのインターフェースで設定内容を変更することはできません。';
 $string['force_ssl'] = 'SSLを強制する';
 $string['force_ssl_help'] = 'このオプションを有効にすることで、このツールプロバイダのツール起動すべてにSSLが使用されます。
 
 加えて、ツールプロバイダからのウェブサービスリクエストすべてにSSLが使用されます。
 
 このオプションを使用する場合、MoodleサイトおよびツールプロバイダがSSLをサポートしていることを確認してください。';
+$string['forced_help'] = 'この設定はコースまたはサイトレベルのツール設定で強制されています。あなたはこのインターフェースで設定内容を変更することはできません。';
 $string['global_tool_types'] = 'グローバルタイプ';
 $string['grading'] = '評定ルーティング';
 $string['icon_url'] = 'アイコンURI';
@@ -167,8 +167,12 @@ $string['imsroleinstructor'] = 'インストラクタ';
 $string['imsrolelearner'] = '学習者';
 $string['invalidid'] = 'LTI IDが正しくありません。';
 $string['launch_in_moodle'] = 'Moodle内でツールを起動する';
-$string['launchinpopup'] = '起動コンテナ';
 $string['launch_in_popup'] = 'ツールをポップアップに起動する';
+$string['launch_url'] = '起動URI';
+$string['launch_url_help'] = '起動URIでは外部ツールのウェブアドレスを指定します。また、表示するリソース等、追加的な情報を含むことができます。起動URIに何を入力するのか分からない場合、ツールプロバイダを確認してください。
+
+特定のツールタイプを選択した場合、あなたは起動URIを入力する必要はありません。ツールリンクがツールプロバイダのシステムを起動するのみ、または特定のリソースに移動しない場合がこのケースにあたります。';
+$string['launchinpopup'] = '起動コンテナ';
 $string['launchinpopup_help'] = '起動コンテナは、コースからツールが起動される場合の表示に影響します。いくつかの起動コンテナではツールに場所を提供して、他の起動コンテナではMoodle環境との統合を実現します。
 
 * **デフォルト** - ツール設定で指定された起動コンテナを使用します。
@@ -179,25 +183,21 @@ $string['launchinpopup_help'] = '起動コンテナは、コースからツー�
 
 * **新しいウィンドウ** - ツールは利用可能なスペースすべてを占有して、新しいウィンドウに表示されます。ブラウザにより、新しいタブまたはポップアップウィンドウが使用されます。ブラウザでは、新しいウィンドウのオープンを抑制することができます。';
 $string['launchoptions'] = '起動オプション';
-$string['launch_url'] = '起動URI';
-$string['launch_url_help'] = '起動URIでは外部ツールのウェブアドレスを指定します。また、表示するリソース等、追加的な情報を含むことができます。起動URIに何を入力するのか分からない場合、ツールプロバイダを確認してください。
-
-特定のツールタイプを選択した場合、あなたは起動URIを入力する必要はありません。ツールリンクがツールプロバイダのシステムを起動するのみ、または特定のリソースに移動しない場合がこのケースにあたります。';
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'LTI活動を評定する';
+$string['lti:grade'] = 'LTI活動を評定する';
+$string['lti:manage'] = 'LTI活動を編集する';
+$string['lti:requesttooladd'] = '設定のため、管理者にツールを送信する';
+$string['lti:view'] = 'ＬＴＩ活動を表示する';
 $string['lti_administration'] = 'LTI管理';
 $string['lti_errormsg'] = 'ツールにより次のエラーメッセージが返されました: 「 {$a} 」';
-$string['lti:grade'] = 'LTI活動を評定する';
 $string['lti_launch_error'] = '外部ツールの起動中にエラーが発生しました:';
 $string['lti_launch_error_tool_request'] = '<p>管理者にツール設定の完了をリクエストするには、<a href="{$a->admin_request_url}" target="_top">ここをクリック</a>してください。 </p>';
 $string['lti_launch_error_unsigned_help'] = '<p>ツールプロバイダのコンシューマーキーおよび共通秘密鍵が不足しているため、このエラーが発生したと考えられます。</p>
 
 <p> コンシューマーキーおよび共通秘密鍵がある場合、あなたは外部ツールインスタンスの設定時に入力することができます (拡張要素が表示されていることを確認してください)。<br /> 代わりに、あなたは<a href="{$a->course_tool_editor}">ここで</a>コースレベルのツールプロバイダ設定を作成することができます。</p>';
-$string['lti:manage'] = 'LTI活動を編集する';
-$string['lti:requesttooladd'] = '設定のため、管理者にツールを送信する';
 $string['lti_tool_request_added'] = 'ツール設定のリクエストが正常に送信されました。ツール設定を完了するため、あなたは管理者に連絡する必要があります。';
 $string['lti_tool_request_existing'] = 'ツールドメインに関するツール設定は、すでに送信されています。';
-$string['lti:view'] = 'ＬＴＩ活動を表示する';
 $string['main_admin'] = '概要ヘルプ';
 $string['main_admin_help'] = '外部ツールでは、遠隔に設置されたリソースをMoodleユーザがシームレスに利用できること実現します。特別な起動プロトコルを通して、リモートツールは起動ユーザの一般的な情報にアクセスすることができます。例えば、インスティテューション名、コースID、ユーザIDおよびユーザ名またはメールアドレス等の情報です。
 
@@ -228,10 +228,10 @@ $string['modulenameplural'] = 'basiclti';
 $string['modulenamepluralformatted'] = 'LTIインスタンス';
 $string['never'] = 'なし';
 $string['new_window'] = '新しいウィンドウ';
-$string['noattempts'] = 'このツールインスタンスでは、受験されたものはありません。';
 $string['no_lti_configured'] = 'アクティブな外部ツール設定はありません。';
 $string['no_lti_pending'] = '保留された外部ツール設定はありません。';
 $string['no_lti_rejected'] = '拒否された外部ツール設定はありません。';
+$string['noattempts'] = 'このツールインスタンスでは、受験されたものはありません。';
 $string['noltis'] = 'LTIインスタンスはありません。';
 $string['noservers'] = 'サーバが見つかりませんでした。';
 $string['notypes'] = '現在、Moodle内で設定されているLTIツールはありません。追加するには、上記のインストールリンクをクリックしてください。';

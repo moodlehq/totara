@@ -109,8 +109,7 @@ $string['browsersecurity_help'] = 'Javaスクリプトセキュリティ対策�
 
 * 学生がJavaスクリプトの利用を有効にしているブラウザのみ、小テスト受験を開始することができます。
 * 小テストはフルスクリーンのポップアップウィンドウ上に表示され、ナビゲーションコントロールはありません。
-* 可能な範囲でコピー&ペーストのような機能を学生が使用できないようにします。
-';
+* 可能な範囲でコピー&ペーストのような機能を学生が使用できないようにします。';
 $string['calculated'] = '計算問題';
 $string['calculatedquestion'] = '{$a} 行の計算された問題はサポートされていません。問題は無視されました。';
 $string['cannotcreatepath'] = 'パス ({$a}) が作成できません。';
@@ -362,16 +361,16 @@ $string['history'] = '解答履歴:';
 $string['howquestionsbehave_desc'] = '小テストにおける問題動作のデフォルト設定です。';
 $string['imagedisplay'] = '表示イメージ';
 $string['import'] = 'インポート';
-$string['importcategory'] = 'ファイルからカテゴリをインポートする';
-$string['importerror'] = 'インポート処理中にエラーが発生しました。';
-$string['importfilearea'] = 'すでにコース内にあるファイルからインポートする ...';
-$string['importfileupload'] = 'アップロードしたファイルからインポートする ...';
-$string['importfromthisfile'] = 'このファイルからインポートする';
 $string['import_help'] = 'この機能では外部テキストファイルから問題をインポートすることができます。
 
 あなたのファイルが非ASCII文字コードを含んでいる場合、 UTF-8エンコードを使用する必要があります。正常に処理できない特別エンコーディングを使用する場合がありますので、Microsoft Officeアプリケーションで作成されたファイルには特に注意してください。
 
 インポートおよびエクスポートフォーマットは着脱可能なリソースです。他の任意のフォーマットはModules and Pluginsより入手することができます。';
+$string['importcategory'] = 'ファイルからカテゴリをインポートする';
+$string['importerror'] = 'インポート処理中にエラーが発生しました。';
+$string['importfilearea'] = 'すでにコース内にあるファイルからインポートする ...';
+$string['importfileupload'] = 'アップロードしたファイルからインポートする ...';
+$string['importfromthisfile'] = 'このファイルからインポートする';
 $string['importingquestions'] = '{$a} 問の問題をファイルからインポートする';
 $string['importmax10error'] = '問題にエラーがあります。10以上の答えを設定することはできません。';
 $string['importmaxerror'] = '問題にエラーがあります。答えが多すぎます。';
@@ -432,8 +431,8 @@ $string['navnojswarning'] = 'これらのリンクでは、あなたの解答を
 $string['neverallononepage'] = 'なし、すべての問題を1ページに表示する';
 $string['newattemptfail'] = 'エラー: 小テストの新しい受験を開始できませんでした。';
 $string['newpage'] = '新しいページ';
-$string['newpageevery'] = '新しいページを自動的に開始する';
 $string['newpage_help'] = '<p>問題数の多い小テストの場合、1ページあたりの問題数を制限して、小テストを複数のページに分けることは理にかなっています。小テストのページに問題を追加する場合、この設定にしたがって改ページ (Page break) が自動的に挿入されます。後で小テストの編集ページにて、手動で改ページ (Page break) の位置を変えることもできます。 </p>';
+$string['newpageevery'] = '新しいページを自動的に開始する';
 $string['noanswers'] = '答えが選択されていません!';
 $string['noattempts'] = 'この小テストは受験されていません。';
 $string['noattemptsfound'] = '受験は見つかりませんでした。';
@@ -572,22 +571,27 @@ $string['questiontextisempty'] = '[空の問題テキスト]';
 $string['questiontype'] = '問題タイプ {$a}';
 $string['questiontypesetupoptions'] = '問題タイプのオプション設定';
 $string['quiz:attempt'] = '小テストを受験する';
-$string['quizavailable'] = '小テストは {$a} まで利用できます。';
-$string['quizclose'] = '小テスト終了日時';
-$string['quizclosed'] = 'この小テストは {$a} に終了しました。';
-$string['quizcloses'] = '終了日時';
-$string['quizcloseson'] = 'この小テストは {$a} に終了します。';
 $string['quiz:deleteattempts'] = '小テストの受験結果を削除する';
 $string['quiz:emailconfirmsubmission'] = '解答を送信した旨の確認メールを受信する';
 $string['quiz:emailnotifysubmission'] = '解答が送信された旨の通知メールを受信する';
 $string['quiz:grade'] = '小テストを手動で評定する';
 $string['quiz:ignoretimelimits'] = '小テストの制限時間を無視する';
+$string['quiz:manage'] = '小テストを管理する';
+$string['quiz:manageoverrides'] = '小テストのオーバーライドを管理する';
+$string['quiz:preview'] = '小テストをプレビューする';
+$string['quiz:regrade'] = '小テストの受験を再評定する';
+$string['quiz:reviewmyattempts'] = 'あなたの受験をレビューする';
+$string['quiz:view'] = '小テスト情報を表示する';
+$string['quiz:viewreports'] = '小テストレポートを表示する';
+$string['quizavailable'] = '小テストは {$a} まで利用できます。';
+$string['quizclose'] = '小テスト終了日時';
+$string['quizclosed'] = 'この小テストは {$a} に終了しました。';
+$string['quizcloses'] = '終了日時';
+$string['quizcloseson'] = 'この小テストは {$a} に終了します。';
 $string['quizisclosed'] = 'この小テストは終了しています。';
 $string['quizisclosedwillopen'] = '小テスト終了 (公開 {$a})';
 $string['quizisopen'] = 'この小テストは公開されています。';
 $string['quizisopenwillclose'] = '小テスト公開中 (終了 {$a})';
-$string['quiz:manage'] = '小テストを管理する';
-$string['quiz:manageoverrides'] = '小テストのオーバーライドを管理する';
 $string['quiznavigation'] = '小テストナビゲーション';
 $string['quizopen'] = '小テスト公開日時';
 $string['quizopenclose'] = '公開および終了日時';
@@ -598,13 +602,8 @@ $string['quizopens'] = '公開日時';
 $string['quizopenwillclose'] = 'この小テストは公開中です。{$a} に終了します。';
 $string['quizordernotrandom'] = '小テスト順 はシャッフルされません。';
 $string['quizorderrandom'] = '*小テスト順 はシャッフルされます。';
-$string['quiz:preview'] = '小テストをプレビューする';
-$string['quiz:regrade'] = '小テストの受験を再評定する';
-$string['quiz:reviewmyattempts'] = 'あなたの受験をレビューする';
 $string['quizsettings'] = '小テスト設定';
 $string['quiztimer'] = '小テストタイマー';
-$string['quiz:view'] = '小テスト情報を表示する';
-$string['quiz:viewreports'] = '小テストレポートを表示する';
 $string['quizwillopen'] = 'この小テストは {$a} に公開されます。';
 $string['random'] = 'ランダム問題';
 $string['randomcreate'] = 'ランダム問題の作成';
@@ -781,9 +780,9 @@ $string['submitallandfinish'] = 'すべてを送信して終了する';
 $string['subneterror'] = '申し訳ございません、この小テストは特定の場所からのみアクセスすることができます。あなたのコンピュータは、この小テストを利用できるコンピュータではありません。';
 $string['subnetnotice'] = '特定の場所からのみアクセスできるように、この小テストはロックされています。現在、あなたのコンピュータは、この小テストの使用を許可されていません。教師として、プレビューすることは許可されています。';
 $string['subplugintype_quiz'] = 'レポート';
+$string['subplugintype_quiz_plural'] = 'レポート';
 $string['subplugintype_quizaccess'] = 'アクセスルール';
 $string['subplugintype_quizaccess_plural'] = 'アクセスルール';
-$string['subplugintype_quiz_plural'] = 'レポート';
 $string['substitutedby'] = 'が次の値と置換されます:';
 $string['summaryofattempt'] = '受験の要約';
 $string['summaryofattempts'] = 'あなたの前回受験の要約';
@@ -794,10 +793,10 @@ $string['timecompleted'] = '受験完了';
 $string['timedelay'] = '次の小テストを受験するまでの待ち時間を経過していないため、あなたは小テストを受験することができません。';
 $string['timeleft'] = '残り時間';
 $string['timelimit'] = '制限時間';
-$string['timelimitexeeded'] = '申し訳ございません! 小テストの制限時間を経過しました!';
 $string['timelimit_help'] = '<p>デフォルトでは小テストに制限時間はなく、学生は小テストを終えるまで好きなだけ時間を使うことができます。また、学生は終了日以前に小テストを終了することもできます。</p>
 
 <p>あなたが時間制限を設定した場合、画面上にカウントダウンクロックが表示されます。また、時間切れになった場合、小テストは自動的に送信されます。時間制限が設定された場合、学生は制限時間前に受験を送信する必要があります。制限時間を超えて送信した場合、学生は評点を得ることができません。</p>';
+$string['timelimitexeeded'] = '申し訳ございません! 小テストの制限時間を経過しました!';
 $string['timelimitmin'] = '制限時間 (分)';
 $string['timelimitsec'] = '制限時間 (秒)';
 $string['timestr'] = '%y/%m/%d  %H:%M:%S';

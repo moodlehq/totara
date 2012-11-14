@@ -132,13 +132,6 @@ $string['destination_help'] = '<p>エントリをどこにインポートした�
 <li><strong>新しい用語集:</strong> 選択されたインポートファイルの情報を元に、新しい用語集が作成され、新しいエントリが追加されます。</li>
 </ul>';
 $string['displayformat'] = '表示フォーマット';
-$string['displayformatcontinuous'] = '連続、著者なし';
-$string['displayformatdictionary'] = 'シンプル、辞書スタイル';
-$string['displayformatencyclopedia'] = '百科事典';
-$string['displayformatentrylist'] = 'エントリリスト';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'フル、著者有り';
-$string['displayformatfullwithoutauthor'] = 'フル、著者なし';
 $string['displayformat_help'] = '用語集には以下7つの表示フォーマットがあります:
 
 *シンプル、辞書スタイル - 著者は表示されず、添付ファイルはリンクとして表示されます。
@@ -148,6 +141,13 @@ $string['displayformat_help'] = '用語集には以下7つの表示フォーマ�
 *百科辞書 - 「フル、著者有り」のように表示されます。イメージは用語集の内部に表示されます。
 *エントリリスト - 用語をリンクとして一覧表示します。
 *FAQ - それぞれの「用語」および「定義」に対して、自動的に「質問」および「答え」の文字が追加されます。';
+$string['displayformatcontinuous'] = '連続、著者なし';
+$string['displayformatdictionary'] = 'シンプル、辞書スタイル';
+$string['displayformatencyclopedia'] = '百科事典';
+$string['displayformatentrylist'] = 'エントリリスト';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'フル、著者有り';
+$string['displayformatfullwithoutauthor'] = 'フル、著者なし';
 $string['displayformats'] = '表示フォーマット';
 $string['displayformatssetup'] = '表示フォーマット設定';
 $string['duplicatecategory'] = 'カテゴリを複製する';
@@ -213,22 +213,22 @@ $string['glossary:export'] = 'エントリをエクスポートする';
 $string['glossary:exportentry'] = '単一エントリをエクスポートする';
 $string['glossary:exportownentry'] = 'あなたの単一エントリをエクスポートする';
 $string['glossary:import'] = 'エントリをインポートする';
-$string['glossaryleveldefaultsettings'] = '用語集レベルのデフォルト設定';
 $string['glossary:managecategories'] = 'カテゴリを管理する';
 $string['glossary:managecomments'] = 'コメントを管理する';
 $string['glossary:manageentries'] = 'エントリを管理する';
 $string['glossary:rate'] = 'エントリを評価する';
+$string['glossary:view'] = '用語集を表示する';
+$string['glossary:viewallratings'] = '個々のユーザから与えられた実評価すべてを表示する';
+$string['glossary:viewanyrating'] = 'すべてのユーザが受けた評価合計を表示する';
+$string['glossary:viewrating'] = 'あなたが受けた評価合計を表示する';
+$string['glossary:write'] = '新しいエントリを作成する';
+$string['glossaryleveldefaultsettings'] = '用語集レベルのデフォルト設定';
 $string['glossarytype'] = '用語集タイプ';
 $string['glossarytype_help'] = '<p>用語集システムでは、コースのメイン用語集に補助的な (サブ) 用語集からエントリをエクスポートすることができます。エントリをエクスポートするためには、どの用語集がメイン用語集であるか指定してください。</p>
 
 <p>注意: 1コースあたり1つのメイン用語集を設定することができます。</p>
 
 <p>Moodle 1.7以前では、教師のみメイン用語集を更新することができます。Moodle 1.7以降では、誰が (メイン用語集を含む) 用語集を編集できるかコントロールしたい場合、ロールのオーバーライドインターフェースを使用してください。</p>';
-$string['glossary:view'] = '用語集を表示する';
-$string['glossary:viewallratings'] = '個々のユーザから与えられた実評価すべてを表示する';
-$string['glossary:viewanyrating'] = 'すべてのユーザが受けた評価合計を表示する';
-$string['glossary:viewrating'] = 'あなたが受けた評価合計を表示する';
-$string['glossary:write'] = '新しいエントリを作成する';
 $string['guestnoedit'] = 'ゲストは、用語集を編集できません。';
 $string['importcategories'] = 'カテゴリをインポートする';
 $string['importedcategories'] = 'インポートされたカテゴリ';
@@ -251,8 +251,7 @@ $string['linking'] = 'オートリンク';
 $string['mainglossary'] = 'メイン用語集';
 $string['maxtimehaspassed'] = '申し訳ございません、このコメントの最大編集回数 ({$a}) を超えました!';
 $string['modulename'] = '用語集';
-$string['modulename_help'] = '用語集では参加者が辞書のような定義リストを作成および管理することができます。コースを通して表示される用語および定義に用語集エントリを自動リンクすることができます。
-';
+$string['modulename_help'] = '用語集では参加者が辞書のような定義リストを作成および管理することができます。コースを通して表示される用語および定義に用語集エントリを自動リンクすることができます。';
 $string['modulenameplural'] = '用語集';
 $string['newentries'] = '新しい用語集エントリ';
 $string['newglossary'] = '新しい用語集';

@@ -76,8 +76,8 @@ $string['groupinfo'] = '選択したグループの情報';
 $string['groupinfomembers'] = '選択したメンバーの情報';
 $string['groupinfopeople'] = '選択した人の情報';
 $string['grouping'] = 'グルーピング';
-$string['groupingdescription'] = 'グルーピング説明';
 $string['grouping_help'] = 'グルーピングはコース内のグループ群です。グルーピングが選択された場合、グルーピング内のグループに割り当てられた学生は共同で作業することができます。';
+$string['groupingdescription'] = 'グルーピング説明';
 $string['groupingname'] = 'グルーピング名';
 $string['groupingnameexists'] = 'グルーピング名「 {$a} 」はすでにこのコースで使用されています。他のグルーピング名を使用してください。';
 $string['groupings'] = 'グルーピング';
@@ -86,13 +86,11 @@ $string['groupmember'] = 'グループメンバー';
 $string['groupmemberdesc'] = 'グループメンバーの標準ロール';
 $string['groupmembers'] = 'グループメンバー';
 $string['groupmembersonly'] = 'グループメンバーのみ利用可';
-$string['groupmembersonlyerror'] = '申し訳ございません、あなたがこの活動を使用するには、少なくとも1つのグループメンバーである必要があります。';
 $string['groupmembersonly_help'] = 'このチェックボックスがチェックされた場合、活動 (またはリソース)  は、選択されたグルーピング内のグループに属するユーザのみ利用できます。';
+$string['groupmembersonlyerror'] = '申し訳ございません、あなたがこの活動を使用するには、少なくとも1つのグループメンバーである必要があります。';
 $string['groupmemberssee'] = 'グループメンバーを表示する';
 $string['groupmembersselected'] = '選択されたグループのメンバー';
 $string['groupmode'] = 'グループモード';
-$string['groupmodeforce'] = 'グループモードを強制する';
-$string['groupmodeforce_help'] = 'グループモードが強制された場合、コース内のすべての活動にコースグループモードが適用されます。そのため、それぞれの活動のグループモード設定は無視されます。';
 $string['groupmode_help'] = 'この設定には下記3つのオプションがあります:
 
 * グループなし - サブグループはありません。全員が1つの大きなコミュニティの一員です。
@@ -100,6 +98,8 @@ $string['groupmode_help'] = 'この設定には下記3つのオプションが�
 * 可視グループ - それぞれのグループメンバーはそのグループ内で作業しますが、他のグループを閲覧することもできます。
 
 コースレベルで設定されたグループモードはコース内活動すべてのデフォルトモードとなります。グループに対応している活動では、それぞれ独自のグループモードを設定することもできます。しかし、コースレベルで強制グループモードが設定された場合、活動ごとに設定したグループモードは無視されます。';
+$string['groupmodeforce'] = 'グループモードを強制する';
+$string['groupmodeforce_help'] = 'グループモードが強制された場合、コース内のすべての活動にコースグループモードが適用されます。そのため、それぞれの活動のグループモード設定は無視されます。';
 $string['groupmy'] = 'マイグループ';
 $string['groupname'] = 'グループ名';
 $string['groupnameexists'] = 'グループ名「 {$a} 」はすでにこのコースで使用されています。他のグループ名を使用してください。';

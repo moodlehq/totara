@@ -48,8 +48,8 @@ $string['attachments'] = '添付ファイル';
 $string['blockafter'] = 'ブロッキングまでの投稿閾値';
 $string['blockafter_help'] = 'この設定では指定された時間内にユーザが投稿できる記事数を指定します。ケイパビリティ「mod/forum:postwithoutthrottling」が割り当てられたユーザは投稿制限から除外されます。';
 $string['blockperiod'] = 'ブロッキング期間';
-$string['blockperioddisabled'] = 'ブロックしない';
 $string['blockperiod_help'] = '指定された時間内に指定された記事数以上を投稿した場合、学生の投稿を拒否することができます。ケイパビリティ「mod/forum:postwithoutthrottling」が割り当てられたユーザは投稿制限から除外されます。';
+$string['blockperioddisabled'] = 'ブロックしない';
 $string['blogforum'] = 'ブログフォーマットで表示される標準フォーラム';
 $string['bynameondate'] = '{$a->date} - {$a->name} の投稿';
 $string['cannotadd'] = 'このフォーラムにディスカッションを追加できませんでした。';
@@ -165,9 +165,6 @@ $string['forcessubscribe'] = 'このフォーラムはメール購読が強制�
 $string['forum'] = 'フォーラム';
 $string['forum:addnews'] = 'ニュースを追加する';
 $string['forum:addquestion'] = '質問を追加する';
-$string['forumauthorhidden'] = '投稿者 (非表示)';
-$string['forumblockingalmosttoomanyposts'] = 'あなたは投稿数の限度に近づきつつあります。あなたは直近の {$a->blockperiod} に {$a->numposts} 回投稿しています。投稿数の限度は {$a->blockafter} 回です。';
-$string['forumbodyhidden'] = 'あなたはこの記事を閲覧できません。おそらく、あなたはまだディスカッションを投稿していません、または最大編集時間を経過していません。';
 $string['forum:createattachment'] = '添付ファイルを作成する';
 $string['forum:deleteanypost'] = 'どの投稿でも削除する (いつでも)';
 $string['forum:deleteownpost'] = '自分の投稿を削除する (期限内)';
@@ -175,20 +172,30 @@ $string['forum:editanypost'] = 'どの投稿でも編集する';
 $string['forum:exportdiscussion'] = 'すべてのディスカッションをエクスポートする';
 $string['forum:exportownpost'] = '自分の投稿をエクスポートする';
 $string['forum:exportpost'] = '投稿をエクスポートする';
-$string['forumintro'] = 'フォーラムイントロダクション';
 $string['forum:managesubscriptions'] = 'メール購読を管理する';
 $string['forum:movediscussions'] = 'ディスカッションを移動する';
-$string['forumname'] = 'フォーラム名';
-$string['forumposts'] = 'フォーラム投稿';
 $string['forum:postwithoutthrottling'] = '投稿閾値を適用しない';
 $string['forum:rate'] = '投稿を評価する';
 $string['forum:replynews'] = 'ニュースに返信する';
 $string['forum:replypost'] = '投稿に返信する';
-$string['forums'] = 'フォーラム';
 $string['forum:splitdiscussions'] = 'ディスカッションを分割する';
 $string['forum:startdiscussion'] = '新しいディスカッションを開始する';
-$string['forumsubjecthidden'] = '題名 (非表示)';
 $string['forum:throttlingapplies'] = '投稿制限を適用する';
+$string['forum:viewallratings'] = '個々のユーザから与えられた実評価すべてを表示する';
+$string['forum:viewanyrating'] = 'すべてのユーザが受けた評価合計を表示する';
+$string['forum:viewdiscussion'] = 'ディスカッションを表示する';
+$string['forum:viewhiddentimedposts'] = '非表示の時間制限投稿を表示する';
+$string['forum:viewqandawithoutposting'] = 'Q and A投稿を常に表示する';
+$string['forum:viewrating'] = 'あなたが受けた評価合計を表示する';
+$string['forum:viewsubscribers'] = 'メール購読ユーザを表示する';
+$string['forumauthorhidden'] = '投稿者 (非表示)';
+$string['forumblockingalmosttoomanyposts'] = 'あなたは投稿数の限度に近づきつつあります。あなたは直近の {$a->blockperiod} に {$a->numposts} 回投稿しています。投稿数の限度は {$a->blockafter} 回です。';
+$string['forumbodyhidden'] = 'あなたはこの記事を閲覧できません。おそらく、あなたはまだディスカッションを投稿していません、または最大編集時間を経過していません。';
+$string['forumintro'] = 'フォーラムイントロダクション';
+$string['forumname'] = 'フォーラム名';
+$string['forumposts'] = 'フォーラム投稿';
+$string['forums'] = 'フォーラム';
+$string['forumsubjecthidden'] = '題名 (非表示)';
 $string['forumtracked'] = '現在、投稿を未読管理しています。';
 $string['forumtrackednot'] = '現在、投稿を未読管理していません。';
 $string['forumtype'] = 'フォーラムタイプ';
@@ -199,13 +206,6 @@ $string['forumtype_help'] = 'フォーラムには5つのタイプあります:
 * Q&A フォーラム - 学生は他の学生の投稿を読む前に自分の考え方を投稿する必要があります。
 * ブログフォーマットで表示される標準フォーラム - 誰でも常に新しいトピックを開始できる開かれたフォーラムです。また、ディスカッショントピックは1つのページに「このトピックを読む」リンクとして表示されます。
 * 一般的利用のための標準フォーラム - 誰でも常に新しいトピックを開始できる開かれたフォーラムです。';
-$string['forum:viewallratings'] = '個々のユーザから与えられた実評価すべてを表示する';
-$string['forum:viewanyrating'] = 'すべてのユーザが受けた評価合計を表示する';
-$string['forum:viewdiscussion'] = 'ディスカッションを表示する';
-$string['forum:viewhiddentimedposts'] = '非表示の時間制限投稿を表示する';
-$string['forum:viewqandawithoutposting'] = 'Q and A投稿を常に表示する';
-$string['forum:viewrating'] = 'あなたが受けた評価合計を表示する';
-$string['forum:viewsubscribers'] = 'メール購読ユーザを表示する';
 $string['generalforum'] = '一般利用のための標準フォーラム';
 $string['generalforums'] = '総合フォーラム';
 $string['inforum'] = '{$a}';
@@ -394,13 +394,6 @@ $string['subscription'] = 'メール購読';
 $string['subscriptionauto'] = '自動購読';
 $string['subscriptiondisabled'] = '購読停止';
 $string['subscriptionforced'] = '強制購読';
-$string['subscription_help'] = '<p>メール購読を行うことにより、登録者にはすべての投稿内容がメール配信されます。(メールは記事の投稿 <?php echo $CFG->maxeditingtime/60 ?> 分後に配信されます。)</p>
-
-<p>通常、それぞれがフォーラムでメール購読するかどうか選択することができます。</p>
-
-<p>教師が特定のフォーラムへ強制的に全員を登録したときは、クラスの全員に投稿内容がメール配信されます。</p>
-
-<p>この機能は、ニュースフォーラムや新たにコースを開講するときに特に便利です。(事前にメールアドレスを学生自身で登録する必要があります。)</p>';
 $string['subscriptionmode'] = '購読モード';
 $string['subscriptionmode_help'] = '参加者がフォーラムを購読する場合、フォーラム投稿内容のコピーをメール受信することを意味します。
 
@@ -425,7 +418,7 @@ $string['trackingtype_help'] = '有効にした場合、参加者はフォーラ
 
 設定には以下3つのオプションがあります:
 
- 任意: 参加者は未読管理をOnまたはOffにすることができます。
+任意: 参加者は未読管理をOnまたはOffにすることができます。
 On: 常に未読管理します。
 Off: 常に未読管理しません。';
 $string['unread'] = '未読';
