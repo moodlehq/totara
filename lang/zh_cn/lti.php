@@ -32,9 +32,9 @@ $string['basicltiname'] = '活动名称';
 $string['cannot_delete'] = '您不能删除这个工具的配置。';
 $string['cannot_edit'] = '您不能编辑这个工具的配置。';
 $string['comment'] = '评论';
+$string['course_tool_types'] = '课程工具的类型';
 $string['courseid'] = '课程编号';
 $string['coursemisconf'] = '课程配置错误';
-$string['course_tool_types'] = '课程工具的类型';
 $string['curllibrarymissing'] = '要使用 LTI 必须安装 PHP Curl 库';
 $string['custom'] = '定制参数';
 $string['custom_config'] = '使用定制的工具配置。';
@@ -81,42 +81,42 @@ $string['toolurl_help'] = '工具基地址用来和启动 URL 匹配，以确定
 此外，如果外部工具实例中未指定启动 URL，会使用此基地址。
 
 <table>
-    <thead>
-        <tr>
-            <td>
-                <b>基地址</b>
-            </td>
-            <td>
-                <b>匹配</b>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                tool.com
-            </td>
-            <td>
-                tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes
-            </td>
-        </tr>
-        <tr>
-            <td>
-                www.tool.com/quizzes
-            </td>
-            <td>
-                tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes
-            </td>
-        </tr>
-        <tr>
-            <td>
-                quiz.tool.com
-            </td>
-            <td>
-                quiz.tool.com, quiz.tool.com/take.php?id=10
-            </td>
-        </tr>
-    </tbody>
+<thead>
+<tr>
+<td>
+<b>基地址</b>
+</td>
+<td>
+<b>匹配</b>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tool.com
+</td>
+<td>
+tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes
+</td>
+</tr>
+<tr>
+<td>
+www.tool.com/quizzes
+</td>
+<td>
+tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes
+</td>
+</tr>
+<tr>
+<td>
+quiz.tool.com
+</td>
+<td>
+quiz.tool.com, quiz.tool.com/take.php?id=10
+</td>
+</tr>
+</tbody>
 </table>
 
 如果同一个域名有两条不同的工具配置，那么会使用匹配度最高的。';

@@ -210,11 +210,6 @@ $string['cancel'] = '取消';
 $string['cancelled'] = '取消';
 $string['categories'] = '课程分类';
 $string['category'] = '课程分类';
-$string['categoryadded'] = '已经添加类别‘{$a}’';
-$string['categorycontents'] = '课程子目录和课程';
-$string['categorycurrentcontents'] = '{$a}的内容';
-$string['categorydeleted'] = '已经删除类别‘{$a}’';
-$string['categoryduplicate'] = '“{$a}”类别已经存在!';
 $string['category_help'] = '<p align="center"><b>课程类别</b></p>
 
 <p>您的 Moodle 管理员可能已经设立了几个课程分类。</p>
@@ -222,6 +217,11 @@ $string['category_help'] = '<p align="center"><b>课程类别</b></p>
 <p>例如，“自然科学”，“人文科学”，“公共卫生”等。</p>
 
 <p>选择一个最适合用于您的课程的。这个选择将影响到您的课程在课程列表上的显示，也会更容易的让学生们找到您的课程。</p>';
+$string['categoryadded'] = '已经添加类别‘{$a}’';
+$string['categorycontents'] = '课程子目录和课程';
+$string['categorycurrentcontents'] = '{$a}的内容';
+$string['categorydeleted'] = '已经删除类别‘{$a}’';
+$string['categoryduplicate'] = '“{$a}”类别已经存在!';
 $string['categorymodifiedcancel'] = '课程目录被编辑，请取消后重试。';
 $string['categoryname'] = '类别名称';
 $string['categoryupdated'] = '‘{$a}’已经更新';
@@ -643,12 +643,12 @@ $string['expirynotifyemail'] = '{$a->threshold}天之后，本课程里下列学
 您可以到下述页面延长他们的选课时间：
 {$a->extendurl}';
 $string['expirynotifystudents'] = '是否提醒学生';
+$string['expirynotifystudents_help'] = '如果指定了选课周期，那么这项设置会决定学生在即将被课程注销时是否会收到email通知。';
 $string['expirynotifystudentsemail'] = '亲爱的{$a->studentstr}：
 
 本信提醒您在课程“{$a->course}”的选课将在{$a->threshold}天之后到期。
 
 如有疑问，请联系{$a->teacherstr}。';
-$string['expirynotifystudents_help'] = '如果指定了选课周期，那么这项设置会决定学生在即将被课程注销时是否会收到email通知。';
 $string['expirythreshold'] = '课程到期后期限';
 $string['expirythreshold_help'] = '如果指定了选课周期，那么这项设置会决定在学生被课程注销之前多少天发出通知。';
 $string['explanation'] = '解释';
@@ -678,8 +678,8 @@ $string['forcedmodeinbrackets'] = '{$a}(强制模式)';
 $string['forcelanguage'] = '指定课程语言类型';
 $string['forceno'] = '不强制';
 $string['forcepasswordchange'] = '强制修改密码';
-$string['forcepasswordchangecheckfull'] = '您十分确定要将密码强行改为 {$a} 吗？';
 $string['forcepasswordchange_help'] = '如果此复选框被勾选，那么用户在下次登录时会被要求修改密码';
+$string['forcepasswordchangecheckfull'] = '您十分确定要将密码强行改为 {$a} 吗？';
 $string['forcepasswordchangenot'] = '不能强制将密码改为 {$a}';
 $string['forcepasswordchangenotice'] = '继续下去之前，您必须修改您的密码。';
 $string['forcetheme'] = '强制使用主题';
@@ -786,8 +786,8 @@ $string['helpwiththis'] = '帮助';
 $string['hiddenassign'] = '隐藏分配';
 $string['hiddenfromstudents'] = '对学生隐藏';
 $string['hiddensections'] = '隐藏小节';
-$string['hiddensectionscollapsed'] = '以折叠方式显示隐藏的小节';
 $string['hiddensections_help'] = '此设置决定隐藏的小节是向学生折叠显示（比如在星期格式的课程中表示假期）还是完全隐藏。';
+$string['hiddensectionscollapsed'] = '以折叠方式显示隐藏的小节';
 $string['hiddensectionsinvisible'] = '完全不显示隐藏的小节';
 $string['hide'] = '隐藏';
 $string['hideadvancedsettings'] = '隐藏高级设置';
@@ -815,9 +815,9 @@ $string['icon'] = '图标';
 $string['icqnumber'] = 'ICQ号码';
 $string['idnumber'] = '学号';
 $string['idnumbercourse'] = '课程编号';
+$string['idnumbercourse_help'] = '课程的编号用于和外部系统匹配——它从不显示于Moodle的内部。如果您的课程有一个正式的编号，可以在这里使用它，否则您可以空着它。';
 $string['idnumbercoursecategory'] = '分类ID';
 $string['idnumbercoursecategory_help'] = '课程分类的ID号只用来和外部系统匹配，不会在网站的任何地方显示。如果此分类有官方编号，可以在此输入，否则可以留空。';
-$string['idnumbercourse_help'] = '课程的编号用于和外部系统匹配——它从不显示于Moodle的内部。如果您的课程有一个正式的编号，可以在这里使用它，否则您可以空着它。';
 $string['idnumbermod'] = 'ID号';
 $string['idnumbermod_help'] = 'ID号可以在成绩计算公式中唯一标识一个活动。
 如果这个活动与任何成绩计算公式无关，那么它的ID号可以为空。
@@ -889,22 +889,22 @@ $string['loggedinas'] = '您以{$a}登录';
 $string['loggedinasguest'] = '您正在用访客帐号访问';
 $string['loggedinnot'] = '您尚未登录。';
 $string['login'] = '登录';
+$string['login_failure_logs'] = '登录失败日志';
 $string['loginalready'] = '您已经登录';
 $string['loginas'] = '登录为';
 $string['loginaspasswordexplain'] = '<p>要使用此功能，您需要特别的“登录为密码”。<br />如果您没有，请和服务器管理员联系。</p>';
-$string['login_failure_logs'] = '登录失败日志';
 $string['loginguest'] = '以访客身份浏览';
 $string['loginsite'] = '登录本网站';
 $string['loginsteps'] = '嗨！为了能完全访问本站，您需要花费一分钟在本站建立一个新帐号。某些课程可能还设有只需输入一次的“选课密钥”，但目前还不需要。下面是步骤：
-   <ol>
-   <li>将您个人的详细信息填入<a href="{$a}">注册表单</a>中。</li>
-   <li>一封Email将被立刻发往您的Email地址。</li>
-   <li>阅读您收到的Email，点击信中包含的网络链接。</li>
-   <li>您的帐号会得到确认，并且可以登录了。</li>
-   <li>现在，选择您想要参与的课程。</li>
-   <li>如果您被提示要求输入“选课密码”，请输入教师给您的密码。这样，您就选课成功了。</li>
-   <li>您现在可以完全访问此课程了。从现在开始，您只需要输入用户名和密码（在本页的表单中），就可以登录并访问任何您已经加入的课程。</li>
-   </ol>';
+<ol>
+<li>将您个人的详细信息填入<a href="{$a}">注册表单</a>中。</li>
+<li>一封Email将被立刻发往您的Email地址。</li>
+<li>阅读您收到的Email，点击信中包含的网络链接。</li>
+<li>您的帐号会得到确认，并且可以登录了。</li>
+<li>现在，选择您想要参与的课程。</li>
+<li>如果您被提示要求输入“选课密码”，请输入教师给您的密码。这样，您就选课成功了。</li>
+<li>您现在可以完全访问此课程了。从现在开始，您只需要输入用户名和密码（在本页的表单中），就可以登录并访问任何您已经加入的课程。</li>
+</ol>';
 $string['loginstepsnone'] = '<p>嗨! </p>
 <p>为了完全访问课程您必须申请一个新帐号。</p>
 <p>您所需要做的是创建一个用户名和密码，并在本页面中使用。</p>
@@ -1042,18 +1042,18 @@ $string['new'] = '新';
 $string['newaccount'] = '新帐号';
 $string['newcourse'] = '新课程';
 $string['newpassword'] = '新密码';
-$string['newpasswordfromlost'] = '<strong>注意：</strong>您的<strong>当前密码</strong> 将在两封email的<strong>第二</strong>封里发送给您。这是恢复丢失密码流程的一部分。在从此屏幕继续之前，请确认您收到了新的密码。';
 $string['newpassword_help'] = '输入一个新密码或留空以保留当前密码。';
+$string['newpasswordfromlost'] = '<strong>注意：</strong>您的<strong>当前密码</strong> 将在两封email的<strong>第二</strong>封里发送给您。这是恢复丢失密码流程的一部分。在从此屏幕继续之前，请确认您收到了新的密码。';
 $string['newpasswordtext'] = '{$a->firstname}，您好：
 
 您在“{$a->sitename}”上的帐号密码已被重设为一个新生成的临时密码。
 
 现在您的登录信息是：
- 用户名：{$a->username}
- 密码：{$a->newpassword}
+用户名：{$a->username}
+密码：{$a->newpassword}
 
 请到这里更改您的密码：
- {$a->link}
+{$a->link}
 
 在多数的邮件程序中，这个地址应该显示为蓝色的链接，可以直接点击。如果不是这样，请将以上地址复制粘贴到网页浏览器窗口上部的地址栏中，打开这个网页。
 
@@ -1213,8 +1213,7 @@ $string['pleasesearchmore'] = '请多搜一些关键词';
 $string['pleaseusesearch'] = '请使用搜索功能';
 $string['plugin'] = '插件';
 $string['plugincheck'] = '检查插件';
-$string['plugindeletefiles'] = '与插件“{$a->name}”相关的所有数据都已经从数据库删除。为了阻止插件被重新安装，您现在就应该从服务器删除此目录：{$a->directory}
-';
+$string['plugindeletefiles'] = '与插件“{$a->name}”相关的所有数据都已经从数据库删除。为了阻止插件被重新安装，您现在就应该从服务器删除此目录：{$a->directory}';
 $string['pluginsetup'] = '创建插件表格';
 $string['policyaccept'] = '我了解和同意了';
 $string['policyagree'] = '如要继续使用此站，您必须同意此协议。您同意么?';
@@ -1363,7 +1362,7 @@ $string['scale_help'] = '<p align="center"><b>等级</b></p>
 <p>等级由一列按由负到正的次序排好的值定义，用逗号分隔。例如：</p>
 
 <blockquote><i>
-   令人失望,不够好,平均水平,好,很好,优秀！
+令人失望,不够好,平均水平,好,很好,优秀！
 </i></blockquote>
 
 <p>等级应该也包含一个良好的描述来说明它是什么和应该如何被使用。此描述会出现在教师与学生的帮助页内。</p>
@@ -1385,14 +1384,14 @@ $string['screenreaderuse_help'] = '如果设为是，很多地方（比如聊天
 $string['screenreaderyes'] = '是';
 $string['screenshot'] = '抓屏';
 $string['search'] = '搜索';
+$string['search_help'] = '基本搜索可以在文本中查找一个或多个词。词之间用空格分隔。只有一个字母的单词会被忽略。
+
+如要进行高级搜索，直接点击搜索按钮，搜索框中什么都不要输入，便可访问高级搜索表单。';
 $string['searchagain'] = '再次搜索';
 $string['searchbyemail'] = '用email地址搜索';
 $string['searchbyusername'] = '用用户名搜索';
 $string['searchcourses'] = '搜索课程';
 $string['searchhelp'] = '您可以使用多关键字搜索。<br />word: 搜索任何包含该关键字的内容。<br />+word: 严格匹配。<br />-word: 结果中不含该关键词。';
-$string['search_help'] = '基本搜索可以在文本中查找一个或多个词。词之间用空格分隔。只有一个字母的单词会被忽略。
-
-如要进行高级搜索，直接点击搜索按钮，搜索框中什么都不要输入，便可访问高级搜索表单。';
 $string['searchoptions'] = '搜索选项';
 $string['searchresults'] = '搜索结果';
 $string['sec'] = '秒';
@@ -1635,8 +1634,7 @@ $string['update'] = '更改';
 $string['updated'] = '已更改的{$a}';
 $string['updatemymoodleoff'] = '停止自定义此页';
 $string['updatemymoodleon'] = '自定义此页';
-$string['updatemyprofile'] = '更新个人资料
-';
+$string['updatemyprofile'] = '更新个人资料';
 $string['updatesevery'] = '每隔{$a}秒刷新一次';
 $string['updatethis'] = '更改这个{$a}';
 $string['updatethiscourse'] = '更改该课程';

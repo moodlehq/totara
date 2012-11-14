@@ -43,11 +43,12 @@ $string['borderstyle'] = '边界图像';
 $string['borderstyle_help'] = '边界图像选项允许您从 certificate/pix/borders 文件夹选择一个边界图像。选择证书边缘您想要的图像或选择没有边框。';
 $string['certificate'] = '证书编码验证：';
 $string['certificate:manage'] = '管理证书';
-$string['certificatename'] = '证书名称';
 $string['certificate:printteacher'] = '打印教师';
+$string['certificate:student'] = '获得证书';
+$string['certificate:view'] = '查看证书';
+$string['certificatename'] = '证书名称';
 $string['certificatereport'] = '证书报告';
 $string['certificatesfor'] = '证书';
-$string['certificate:student'] = '获得证书';
 $string['certificatetype'] = '证书类型';
 $string['certificatetype_help'] = '这是您确定证书布局的地方。证书类型文件夹包含了四种默认证书：
 A4 嵌入式打印在 A4 大小的纸上，使用嵌入字体。
@@ -58,7 +59,6 @@ A4 非嵌入式打印在 A4 大小的纸上，不使用嵌入字体。
 非嵌入类型使用 Helvetica 和 Times 字体。如果您担心您的用户的电脑上没有这种字体，或者您的语言使用的字符或符号无法接受Helvetica 和 Times 字体，那么选择一种嵌入类型。嵌入类型使用 Dejavusans 和 Dejavuserif 字体。这会使得 PDF 文件变得相当大；因此不建议使用嵌入类型，除非您必须使用。
 
 新类型文件夹可以添加到 certificate/type 文件夹里。文件夹的名字和新类型使用的任何语言字符串必须添加到证书的语言文件里。';
-$string['certificate:view'] = '查看证书';
 $string['certify'] = '这是为了验证';
 $string['code'] = '编码';
 $string['completiondate'] = '课程结业';
@@ -89,12 +89,12 @@ $string['emailteachermail'] = '{$a->student}已经获得证书：{$a->course}课
 
 您可以在这里查看：
 
-     {$a->url}';
+{$a->url}';
 $string['emailteachermailhtml'] = '{$a->student}已经获得证书：{$a->course}课程的“<i>{$a->certificate}</i>”。
 
 您可以在这里查看：
 
-    <a href="{$a->url}">证书报告</a>。';
+<a href="{$a->url}">证书报告</a>。';
 $string['emailteachers'] = '向教师发电子邮件';
 $string['emailteachers_help'] = '如果启用，那么当学生获得证书时，老师会收到一封电子邮件提醒。';
 $string['entercode'] = '输入证书号码来验证：';

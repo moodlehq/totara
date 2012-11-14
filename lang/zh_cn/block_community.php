@@ -31,7 +31,7 @@ $string['addcommunitycourse'] = '添加社区课程';
 $string['addcourse'] = '搜索';
 $string['addedtoblock'] = '到此课程的链接已经加到您的社区查找版块';
 $string['additionalcoursedesc'] = '{$a->lang} 创建人：{$a->creatorname} - 发布人：{$a->publishername} - 主题：{$a->subject}
-    - 受众：{$a->audience} - 学历：{$a->educationallevel} - 许可证：{$a->license}';
+- 受众：{$a->audience} - 学历：{$a->educationallevel} - 许可证：{$a->license}';
 $string['addtocommunityblock'] = '保存这门课程的链接';
 $string['audience'] = '专为';
 $string['audience_help'] = '你在寻找什么样的课程？除了专门为学生开设的传统课程外，你也许在寻找为教育工作着或Moodle管理者建设的社区';
@@ -85,8 +85,8 @@ $string['nocourse'] = '没有找到课程';
 $string['noratings'] = '没有评分';
 $string['operation'] = '操作';
 $string['orderby'] = '排序';
-$string['orderbyeldest'] = '最早的';
 $string['orderby_help'] = '搜索结果显示的顺序';
+$string['orderbyeldest'] = '最早的';
 $string['orderbyname'] = '名称';
 $string['orderbynewest'] = '最新的';
 $string['orderbypublisher'] = '发布人';

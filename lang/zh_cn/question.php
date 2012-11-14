@@ -231,11 +231,11 @@ $string['markoutofmax'] = '获得{$a->max}分中的{$a->mark}分';
 $string['marks'] = '得分';
 $string['matcherror'] = '成绩与成绩选项不匹配——此题跳过';
 $string['matchgrades'] = '匹配成绩';
-$string['matchgradeserror'] = '如果不在列表中，出错';
 $string['matchgrades_help'] = '导入的成绩必须是此列表的成绩之一才有效——100、90、80、75、70、66.666、60、50、40、33.333、30、25、20、16.666、14.2857、12.5、11.111、10、5、0（也包括负值）。如果不是，那么有两个选择：
 
 * 显示错误 - 如果一个题目使用了列表中没有的分数，那么将显示错误信息，并且该题目不会被导入
 * 使用最接近的成绩 - 如果某个分数不在列表中，那么这个分数就会被改成列表中最接近的值。';
+$string['matchgradeserror'] = '如果不在列表中，出错';
 $string['matchgradesnearest'] = '如果不在列表中，使用最接近的成绩';
 $string['missingcourseorcmid'] = 'print_question 需要 courseid 或 cmid';
 $string['missingcourseorcmidtolink'] = 'get_question_edit_link 需要 courseid 或 cmid';

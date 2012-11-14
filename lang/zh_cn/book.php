@@ -57,7 +57,6 @@ $string['faq_help'] = '*为什么仅有两级？*
 *我的标题一行容纳不下。*
 
 修改标题或者让网站管理员修改目录的宽度。它是一个影响所有图书的全局配置，在模块配置页面修改。';
-$string['missingfilemanagement'] = '尊敬的图书模块用户，您大概已经注意到，图书章节中的文件是不能删除或管理的。请到{$a}投票来解决这一问题，谢谢。Petr Škoda';
 $string['modulename'] = '图书';
 $string['modulename_help'] = '图书是一种简单的多页学习资料。';
 $string['modulenameplural'] = '图书';

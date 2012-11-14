@@ -31,9 +31,10 @@ $string['answered'] = '已答';
 $string['atleastoneoption'] = '您至少要提供一个可能的答案';
 $string['choice'] = '投票项 {$a}';
 $string['choice:choose'] = '记录投票';
-$string['choiceclose'] = '结束时间';
 $string['choice:deleteresponses'] = '删除回复';
 $string['choice:downloadresponses'] = '下载回复';
+$string['choice:readresponses'] = '阅读回复';
+$string['choiceclose'] = '结束时间';
 $string['choicefull'] = '该选项已满，不能再选择。';
 $string['choicename'] = '投票名称';
 $string['choiceopen'] = '开始时间';
@@ -41,7 +42,6 @@ $string['choiceoptions'] = '投票选项';
 $string['choiceoptions_help'] = '在这里您可以指定参与者应当选择的选项。
 
 您可以输入任意数目的选项。空选项会被忽略。如果您需要超过8个选项，请点击“增加3个选项”按钮。';
-$string['choice:readresponses'] = '阅读回复';
 $string['choicesaved'] = '已经保存了您的选择';
 $string['choicetext'] = '投票描述';
 $string['chooseaction'] = '选择一个动作...';

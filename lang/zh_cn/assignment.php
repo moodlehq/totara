@@ -35,23 +35,23 @@ $string['allownotes_help'] = '如果启用，学生可以在一个文本框里�
 $string['allowresubmit'] = '是否允许重交';
 $string['allowresubmit_help'] = '如果启用，学生在评分后仍可以重新提交作业(给教师重新评分)。';
 $string['alreadygraded'] = '您的作业已经评分，不允许重新提交';
-$string['assignmentdetails'] = '布置作业细节';
 $string['assignment:exportownsubmission'] = '导出自己的作业';
 $string['assignment:exportsubmission'] = '导出作业';
 $string['assignment:grade'] = '作业评分';
+$string['assignment:submit'] = '提交作业';
+$string['assignment:view'] = '查看作业';
+$string['assignmentdetails'] = '布置作业细节';
 $string['assignmentmail'] = '{$a->teacher}已经在“{$a->assignment}”中为您提交的作业写了反馈意见。
 
 您可以在您交的作业后面看到反馈意见：
 
-    {$a->url}';
+{$a->url}';
 $string['assignmentmailhtml'] = '{$a->teacher}已经在<i>“{$a->assignment}”</i>中为您提交的作业写了反馈意见。<br /><br />
 您可以在<a href="{$a->url}">您交的作业</a>后面看到反馈意见。';
 $string['assignmentmailsmall'] = '{$a->teacher}对您在\'{$a->assignment}\'提交的作业写了一些反馈，可以在您的作业的后面看到';
 $string['assignmentname'] = '作业名称';
 $string['assignmentsubmission'] = '提交的作业';
-$string['assignment:submit'] = '提交作业';
 $string['assignmenttype'] = '作业类型';
-$string['assignment:view'] = '查看作业';
 $string['availabledate'] = '开放时间';
 $string['cannotdeletefiles'] = '发生错误，不能删除文件！';
 $string['cannotviewassignment'] = '您不能查看此作业';
@@ -81,7 +81,7 @@ $string['emailteachermail'] = '{$a->username}在{$a->timeupdated}更新了作业
 
 可以在这里查看：
 
-    {$a->url}';
+{$a->url}';
 $string['emailteachermailhtml'] = '{$a->username}在<i>{$a->timeupdated}</i>更新了作业<i>“{$a->assignment}”</i><br /><br />可以在<a href="{$a->url}">网站上查看</a>。';
 $string['emailteachers'] = '用Email提醒教师';
 $string['emailteachers_help'] = '如果启用，当学生上传或更新作业时教师都会收到一封提醒邮件。
@@ -157,8 +157,7 @@ $string['pluginname'] = '作业';
 $string['popupinnewwindow'] = '在弹出窗口中打开';
 $string['preventlate'] = '是否禁止迟交';
 $string['quickgrade'] = '允许快速评分';
-$string['quickgrade_help'] = '如果启用，您可以在一个页面内给多份作业评分。只需设定分数和评论，然后点击“保存所有反馈”按钮，就可以保存该页所有的变更。
-';
+$string['quickgrade_help'] = '如果启用，您可以在一个页面内给多份作业评分。只需设定分数和评论，然后点击“保存所有反馈”按钮，就可以保存该页所有的变更。';
 $string['requiregrading'] = '请求评分';
 $string['responsefiles'] = '反馈文件';
 $string['reviewed'] = '复习';
@@ -187,8 +186,8 @@ $string['typeonline'] = '在线文本';
 $string['typeupload'] = '高级文件上传';
 $string['typeuploadsingle'] = '上传单个文件';
 $string['unfinalize'] = '还原成草稿';
-$string['unfinalizeerror'] = '发生错误！提交的作业不能转化为草稿';
 $string['unfinalize_help'] = '恢复到草稿状态使学生可以对作业做进一步更新';
+$string['unfinalizeerror'] = '发生错误！提交的作业不能转化为草稿';
 $string['uploadafile'] = '上传一个文件';
 $string['uploadbadname'] = '该文件名含有怪异字符，无法上传';
 $string['uploadedfiles'] = '已上传的文件';

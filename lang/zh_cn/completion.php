@@ -61,8 +61,7 @@ $string['completion-y'] = '已完成';
 $string['completion_automatic'] = '当条件都满足时，将活动标为完成';
 $string['completion_help'] = '如果启用，将基于给定的条件，人工或自动跟踪活动的完成状态。如需要，可以设置多个条件，那么只有所有条件都满足时活动才被看作已完成。
 
-在课程页面，当活动已完成时，活动名后面会有一个标记。
-';
+在课程页面，当活动已完成时，活动名后面会有一个标记。';
 $string['completion_manual'] = '学生可以手工标记此活动为完成';
 $string['completion_none'] = '不标示活动完成状态';
 $string['completiondisabled'] = '禁用，不在活动设置页面显示';

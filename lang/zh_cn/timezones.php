@@ -35,8 +35,7 @@ $string['africa/bangui'] = '非洲/班吉';
 $string['africa/banjul'] = '非洲/班珠尔';
 $string['africa/bissau'] = '非洲/比绍';
 $string['africa/blantyre'] = '非洲/布兰太尔';
-$string['africa/brazzaville'] = '非洲/布拉柴维尔
-';
+$string['africa/brazzaville'] = '非洲/布拉柴维尔';
 $string['africa/bujumbura'] = '非洲/布琼布拉';
 $string['africa/cairo'] = '非洲/开罗';
 $string['africa/casablanca'] = '非洲/卡萨布兰卡';
@@ -64,8 +63,7 @@ $string['africa/lusaka'] = '非洲/卢萨卡';
 $string['africa/malabo'] = '非洲/马拉博';
 $string['africa/maputo'] = '非洲/马普托';
 $string['africa/maseru'] = '非洲/马塞卢';
-$string['africa/mbabane'] = '非洲/姆巴巴内
-';
+$string['africa/mbabane'] = '非洲/姆巴巴内';
 $string['africa/mogadishu'] = '非洲/摩加迪沙';
 $string['africa/monrovia'] = '非洲/蒙罗维亚';
 $string['africa/nairobi'] = '非洲/内罗毕';
@@ -84,15 +82,12 @@ $string['america/anchorage'] = '美洲/安克雷奇';
 $string['america/anguilla'] = '美洲/安圭拉';
 $string['america/antigua'] = '美洲/安提瓜';
 $string['america/araguaina'] = '美洲/阿拉瓜伊纳';
-$string['america/argentina/buenos_aires'] = '美洲/阿根廷/布宜诺斯艾利斯
-';
+$string['america/argentina/buenos_aires'] = '美洲/阿根廷/布宜诺斯艾利斯';
 $string['america/argentina/catamarca'] = '美洲/阿根廷/卡塔马卡';
-$string['america/argentina/comodrivadavia'] = '美洲/阿根廷/里瓦达维亚
-';
+$string['america/argentina/comodrivadavia'] = '美洲/阿根廷/里瓦达维亚';
 $string['america/argentina/cordoba'] = '美洲/阿根廷/科尔多瓦';
 $string['america/argentina/jujuy'] = '美洲/阿根廷/胡胡伊';
-$string['america/argentina/la_rioja'] = '美洲/阿根廷/拉里奥哈
-';
+$string['america/argentina/la_rioja'] = '美洲/阿根廷/拉里奥哈';
 $string['america/argentina/mendoza'] = '美洲/阿根廷/门多萨';
 $string['america/argentina/rio_gallegos'] = '美洲/阿根廷/里奥加耶戈斯';
 $string['america/argentina/san_juan'] = '美洲/阿根廷/圣胡安';
@@ -102,11 +97,9 @@ $string['america/aruba'] = '美洲/阿鲁巴';
 $string['america/asuncion'] = '美洲/亚松森';
 $string['america/bahia'] = '美洲/巴伊亚';
 $string['america/barbados'] = '美洲/巴巴多斯';
-$string['america/belem'] = '美洲/贝伦
-';
+$string['america/belem'] = '美洲/贝伦';
 $string['america/belize'] = '美洲/伯利兹';
-$string['america/boa_vista'] = '美洲/博阿维斯塔
-';
+$string['america/boa_vista'] = '美洲/博阿维斯塔';
 $string['america/bogota'] = '美洲/波哥大';
 $string['america/boise'] = '美洲/博伊西';
 $string['america/cambridge_bay'] = '美洲/剑桥湾';
@@ -118,24 +111,18 @@ $string['america/cayman'] = '美洲/开曼';
 $string['america/chicago'] = '美国/芝加哥';
 $string['america/chihuahua'] = '美洲/奇瓦瓦';
 $string['america/costa_rica'] = '美洲/哥斯达黎加';
-$string['america/cuiaba'] = '美洲/库亚巴
-';
-$string['america/curacao'] = '美洲/库拉索
-';
-$string['america/danmarkshavn'] = '美洲/丹马沙
-';
-$string['america/dawson'] = '美洲/道森
-';
-$string['america/dawson_creek'] = '美洲/道森河
-';
+$string['america/cuiaba'] = '美洲/库亚巴';
+$string['america/curacao'] = '美洲/库拉索';
+$string['america/danmarkshavn'] = '美洲/丹马沙';
+$string['america/dawson'] = '美洲/道森';
+$string['america/dawson_creek'] = '美洲/道森河';
 $string['america/denver'] = '美洲/丹佛';
 $string['america/detroit'] = '美洲/底特律';
 $string['america/dominica'] = '美洲/多米尼加';
 $string['america/edmonton'] = '美洲/埃德蒙顿';
 $string['america/eirunepe'] = '美洲/埃鲁内佩';
 $string['america/el_salvador'] = '美洲/萨尔瓦多';
-$string['america/fortaleza'] = '美洲/福塔雷萨
-';
+$string['america/fortaleza'] = '美洲/福塔雷萨';
 $string['america/glace_bay'] = '美洲/格莱斯贝';
 $string['america/godthab'] = '美洲/戈特霍布';
 $string['america/goose_bay'] = '美洲/戈泽贝伊';
@@ -150,13 +137,9 @@ $string['america/havana'] = '美洲/哈瓦那';
 $string['america/hermosillo'] = '美洲/埃莫西约';
 $string['america/indiana/knox'] = '美国/印第安纳/诺克斯';
 $string['america/indiana/marengo'] = '美国/印第安纳/马伦哥';
-$string['america/indianapolis'] = '美国/印第安纳波利斯
-';
-$string['america/indiana/vevay'] = '美国/印第安纳/韦韦
-
-';
-$string['america/inuvik'] = '美洲/伊努维克
-';
+$string['america/indiana/vevay'] = '美国/印第安纳/韦韦';
+$string['america/indianapolis'] = '美国/印第安纳波利斯';
+$string['america/inuvik'] = '美洲/伊努维克';
 $string['america/iqaluit'] = '美洲/伊魁特';
 $string['america/jamaica'] = '美洲/牙买加';
 $string['america/juneau'] = '美洲/朱诺';
@@ -192,8 +175,7 @@ $string['america/port-au-prince'] = '美洲/太子港';
 $string['america/port_of_spain'] = '美洲/西班牙港';
 $string['america/porto_velho'] = '美洲/波多韦柳';
 $string['america/puerto_rico'] = '美洲/波多黎各';
-$string['america/rainy_river'] = '美洲/雷尼河
-';
+$string['america/rainy_river'] = '美洲/雷尼河';
 $string['america/rankin_inlet'] = '美洲/兰进';
 $string['america/recife'] = '美洲/累西腓';
 $string['america/regina'] = '美洲/里贾纳';
@@ -310,8 +292,8 @@ $string['atlantic/faeroe'] = '大西洋/法罗';
 $string['atlantic/madeira'] = '大西洋/马德拉';
 $string['atlantic/reykjavik'] = '大西洋/雷克雅未克';
 $string['atlantic/south_georgia'] = '大西洋/南乔治亚';
-$string['atlantic/stanley'] = '大西洋/斯坦利';
 $string['atlantic/st_helena'] = '大西洋/圣赫勒拿';
+$string['atlantic/stanley'] = '大西洋/斯坦利';
 $string['australia/adelaide'] = '澳大利亚/阿德莱德';
 $string['australia/brisbane'] = '澳大利亚/布里斯班';
 $string['australia/broken_hill'] = '澳大利亚/布罗肯希尔';

@@ -34,7 +34,6 @@ $string['configsecretphrase'] = '此秘密短语被用来生成加密的代码�
 $string['contentheader'] = '内容';
 $string['displayoptions'] = '可用的显示选项';
 $string['displayselect'] = '显示';
-$string['displayselectexplain'] = '选择显示类型，但并不是所有类型都适合所有URL。';
 $string['displayselect_help'] = '此设置，URL文件的类型，及浏览器是否允许嵌入，一起决定如何显示文件。选项可能包括：
 
 * 自动 - 对类型可以自动选择的文件，这是最好的选项
@@ -43,8 +42,8 @@ $string['displayselect_help'] = '此设置，URL文件的类型，及浏览器�
 * 打开 - 只在浏览器窗口中显示此文件
 * 在弹出窗口中 - 在一个无菜单和地址栏的新窗口中显示文件
 * 在框架中 - 在导航栏和文件描述下方的框架里显示文件
-* 新窗口 - 在有菜单和地址栏的新窗口中显示文件
-';
+* 新窗口 - 在有菜单和地址栏的新窗口中显示文件';
+$string['displayselectexplain'] = '选择显示类型，但并不是所有类型都适合所有URL。';
 $string['externalurl'] = '外部URL';
 $string['framesize'] = '框架高度';
 $string['invalidstoredurl'] = '不能显示此资源，URL 无效。';
