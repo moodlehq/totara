@@ -101,8 +101,6 @@ $string['monththis'] = 'Questo mese';
 $string['newevent'] = 'Nuovo evento';
 $string['noupcomingevents'] = 'Non ci sono eventi prossimi';
 $string['oneevent'] = '1 evento';
-$string['preferences'] = 'Preferenze';
-$string['preferences_available'] = 'Le tue preferenze';
 $string['pref_lookahead'] = 'Cerca prossimi eventi';
 $string['pref_lookahead_help'] = 'Imposta il numero massimo di giorni futuri entro i quali cercare eventi. Eventi che iniziano successivamente non saranno visualizzati. Da notare che <strong>non ci sono garanzie</strong> che gli eventi compresi nell\'intervallo di giorni specificato vengano effettivamente visualizzati: se ci sono più eventi di quanti impostati in
 "Max. prossimi eventi" gli interventi che superano questo valore non saranno visualizzati.';
@@ -114,6 +112,8 @@ $string['pref_startwday'] = 'Primo giorno della settimana';
 $string['pref_startwday_help'] = 'Nel calendario le settimane cominceranno nel giorno impostato.';
 $string['pref_timeformat'] = 'Formato ora';
 $string['pref_timeformat_help'] = 'E\' possibile visualizzare l\'orario nel formato a 12 o 24 ore. Scegliendo "default" il formato sarà scelto automaticamente dalle impostazioni della lingua usata nel sito.';
+$string['preferences'] = 'Preferenze';
+$string['preferences_available'] = 'Le tue preferenze';
 $string['quickdownloadcalendar'] = 'Download / iscrizione veloce al calendario';
 $string['recentupcoming'] = 'Recenti e dei prossimi 60 giorni';
 $string['repeatedevents'] = 'Evento ripetuto';

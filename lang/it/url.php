@@ -34,7 +34,6 @@ $string['configsecretphrase'] = 'La chiave viene utilizzata per generare il codi
 $string['contentheader'] = 'Contenuto';
 $string['displayoptions'] = 'Modalità di visualizzazione disponibili';
 $string['displayselect'] = 'Visualizzazione';
-$string['displayselectexplain'] = 'Imposta il tipo di visualizzazione di default. Tenere presente che i vari tipi di URL potrebbero permettere solo alcuni tipi di visualizzazione.';
 $string['displayselect_help'] = 'L\'impostazione, assieme al tipo di URL e ciò che supporta il browser, determina la visualizzazione dell\'URL. Opzioni disponibili:
 
 * Automatica - La visualizzazione migliore sarà scelta automaticamente
@@ -44,6 +43,7 @@ $string['displayselect_help'] = 'L\'impostazione, assieme al tipo di URL e ciò 
 * Popup - L\'URL sarà visualizzata in una nova finestra priva di barre dei menu e di navigazione.
 * Frame - L\'URL sarà visualizzato utilizzando un frame. Nel frame superiore saranno disponibili la navigazione e la descrizione.
 * Nuova finestra - L\'URL sarà visualizzata in una nuova finestra completa di barre dei menu e di navigazione.';
+$string['displayselectexplain'] = 'Imposta il tipo di visualizzazione di default. Tenere presente che i vari tipi di URL potrebbero permettere solo alcuni tipi di visualizzazione.';
 $string['externalurl'] = 'URL';
 $string['framesize'] = 'Altezza frame';
 $string['invalidstoredurl'] = 'Non è possibile visualizzare la risorsa, l\'URL non è valida';

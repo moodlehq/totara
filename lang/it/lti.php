@@ -49,14 +49,14 @@ $string['always'] = 'Sempre';
 $string['automatic'] = 'Automatico, in funzione dell\'URL di lancio';
 $string['baseurl'] = 'URL base';
 $string['basiclti'] = 'LTI';
-$string['basicltiactivities'] = 'Attività LTI';
 $string['basiclti_base_string'] = 'Stringa base LTI OAuth';
 $string['basiclti_endpoint'] = 'Endpoint di lancio LTI';
-$string['basicltifieldset'] = 'Esempio personalizzato di campi';
 $string['basiclti_in_new_window'] = 'L\'attività è stata aperta in una nuova finestra';
+$string['basiclti_parameters'] = 'Parametri di lancio LTI';
+$string['basicltiactivities'] = 'Attività LTI';
+$string['basicltifieldset'] = 'Esempio personalizzato di campi';
 $string['basicltiintro'] = 'Introduzione all\'attività';
 $string['basicltiname'] = 'Nome attività';
-$string['basiclti_parameters'] = 'Parametri di lancio LTI';
 $string['basicltisettings'] = 'Impostazioni basiche Learning Tool Interoperability';
 $string['cannot_delete'] = 'Non dovresti eliminare la configurazione di questo tool.';
 $string['cannot_edit'] = 'Non dovresti modificare la configurazione di questo tool.';
@@ -68,9 +68,9 @@ $string['configpreferwidth'] = 'Larghezza preferita di default';
 $string['configresourceurl'] = 'Resource URL di default';
 $string['configtoolurl'] = 'URL del tool remoto di default';
 $string['configtypes'] = 'Abilita applicazioni LTI';
+$string['course_tool_types'] = 'Tipi di tool corso';
 $string['courseid'] = 'Numero id del corso';
 $string['coursemisconf'] = 'Il corso è mal configurato';
-$string['course_tool_types'] = 'Tipi di tool corso';
 $string['createdon'] = 'Creato il';
 $string['curllibrarymissing'] = 'Per usare LTI deve essere installata la libreria PHP Curl';
 $string['custom'] = 'Parametri personalizzati';
@@ -143,13 +143,13 @@ $string['fixexistingconf'] = 'Utilizza una configurazione esistente per l\'istan
 $string['fixnew'] = 'Nuova configurazione';
 $string['fixnewconf'] = 'Crea una nuova configurazione per l\'istanza mal configurata';
 $string['fixold'] = 'Usa esitente';
-$string['forced_help'] = 'L\'impostazione è stata forzato in un corso o in una configurazione a livello di siti. Non puoi modificarla da questa interfaccia.';
 $string['force_ssl'] = 'SSL obbligatorio';
 $string['force_ssl_help'] = 'I lanci di questo tool provider saranno obbligati ad usare SSL.
 
 Inoltre, SSL sarà utilizzato anche per richieste web service provenienti dal tool provider.
 
 Per usare questa opzione, accertatevi che sia Moodle sia il tool provider supportino SSL.';
+$string['forced_help'] = 'L\'impostazione è stata forzato in un corso o in una configurazione a livello di siti. Non puoi modificarla da questa interfaccia.';
 $string['global_tool_types'] = 'Tipi di tool globali';
 $string['grading'] = 'Instradamento valutazioni';
 $string['icon_url'] = 'URL dell\'icona';
@@ -160,8 +160,13 @@ $string['imsroleinstructor'] = 'Docente';
 $string['imsrolelearner'] = 'Studente';
 $string['invalidid'] = 'L\'ID LTI non era corretta';
 $string['launch_in_moodle'] = 'Lancia il tool in Moodle';
-$string['launchinpopup'] = 'Contenitore di lancio';
 $string['launch_in_popup'] = 'Lancia il tool in una finestra pop-up';
+$string['launch_url'] = 'URL di lancio';
+$string['launch_url_help'] = 'L\'URL di lancio specifica l\'indirizzo web del tool esterno e può contenere informazioni aggiuntive come la risorsa da visualizzare.
+Se non sei certo su cosa inserire per l\'URL di lancio, verifica le informazioni con il tool provider.
+
+Se hai selezionato un tipo di tool specifico, potrebbe non essere necessario inserire l\'URL di lancio, ad esempio quando l\'URl di lancio è utilizzata per accedere al sistema del tool provider invece che ad una specifica risorsa.';
+$string['launchinpopup'] = 'Contenitore di lancio';
 $string['launchinpopup_help'] = 'Il contenitore di lancio influenza la visualizzazione del tool quando lo si lancia dal corso. Alcuni contenitori di lancio lasciano più libero il tool mentre altri forniscono una esperienza dell\'utente più integrata con Moodle
 
 * ** Default** - Usa il contenitore di lancio impostato nella configurazione del tool.
@@ -169,16 +174,14 @@ $string['launchinpopup_help'] = 'Il contenitore di lancio influenza la visualizz
 * **Embed, senza blocchi** - Il tool viene visualizzato all\'interno della finestra di Moodle già esistente, ma con i soli controlli di navigazione sulla parte superiore della pagina.
 * **Nuova finestra** - Il tool viene aperto in una nuova finestra che occuperà tutto lo spazio disponibile. In funzione del tipo di browser, la nuova finestra può essere una nuova finestra browser oppure un tab di una finestra già esistente. E\' possibile che il browser impedisca l\'apertura di nuove finestre.';
 $string['launchoptions'] = 'Opzioni di lancio';
-$string['launch_url'] = 'URL di lancio';
-$string['launch_url_help'] = 'L\'URL di lancio specifica l\'indirizzo web del tool esterno e può contenere informazioni aggiuntive come la risorsa da visualizzare.
-Se non sei certo su cosa inserire per l\'URL di lancio, verifica le informazioni con il tool provider.
-
-Se hai selezionato un tipo di tool specifico, potrebbe non essere necessario inserire l\'URL di lancio, ad esempio quando l\'URl di lancio è utilizzata per accedere al sistema del tool provider invece che ad una specifica risorsa.';
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'Valutare attività LTI';
+$string['lti:grade'] = 'Valutare attività LTI';
+$string['lti:manage'] = 'Modificare attività LTI';
+$string['lti:requesttooladd'] = 'Invia un tool all\'amministratore per la configurazione';
+$string['lti:view'] = 'Visualizzare attività LTI';
 $string['lti_administration'] = 'Gestione LTI';
 $string['lti_errormsg'] = 'Il tool ha restituito il messaggio di errore seguente: "{$a}"';
-$string['lti:grade'] = 'Valutare attività LTI';
 $string['lti_launch_error'] = 'Si è verificato un errore durante il lancio del tool esterno.';
 $string['lti_launch_error_tool_request'] = '<p>
 Per inviare all\'amministratore una richiesta di completamento di una configurazione di un tool, fai click su  <a href="{$a->admin_request_url}" target="_top">here</a>. </p>
@@ -188,11 +191,8 @@ L\'errore può essere causato dalla mancanza di consumer key e/o shared secret p
 </p> <p>
 Se disponi di consumer key e shared secret, puoi inserirli nella configurazione del tool esterno (accertati che le opzioni avanzate siano visibili)<br />
 In alternativa, puoi creare una configurazione di  tool provider a livello di corso <a href="{$a->course_tool_editor}">here</a>. </p>';
-$string['lti:manage'] = 'Modificare attività LTI';
-$string['lti:requesttooladd'] = 'Invia un tool all\'amministratore per la configurazione';
 $string['lti_tool_request_added'] = 'La richiesta di configurare il tool è stata inviata correttamente. Contatta l\'amministratore per completare la configurazione.';
 $string['lti_tool_request_existing'] = 'E\' già stata inviata una configurazione per il dominio del tool.';
-$string['lti:view'] = 'Visualizzare attività LTI';
 $string['main_admin'] = 'Help generale';
 $string['main_admin_help'] = 'I tool esterni consentono a Moodle di interagire con risorse formative ospitate in altri siti. Tramite uno speciale protocollo di lancio, il tool remoto può accedere ad alcune informazioni relative all\'utente, come ad esempio il nome dell\'istituzione, l\'id del corso, l\'id dell\'utente, il nome dell\'utente e l\'email.
 
@@ -219,10 +219,10 @@ $string['modulenameplural'] = 'basicltis';
 $string['modulenamepluralformatted'] = 'Istanze LTI';
 $string['never'] = 'Mai';
 $string['new_window'] = 'Nuova finestra';
-$string['noattempts'] = 'Non ci sono tentativi effettuati in questa istanza di tool';
 $string['no_lti_configured'] = 'Non ci sono  tool esterni configurati.';
 $string['no_lti_pending'] = 'Non ci sono  tool esterni in attesa.';
 $string['no_lti_rejected'] = 'Non ci sono  tool esterni rifiutati.';
+$string['noattempts'] = 'Non ci sono tentativi effettuati in questa istanza di tool';
 $string['noltis'] = 'Non ci sono istanze lti';
 $string['noservers'] = 'Non sono stati trovati server';
 $string['notypes'] = 'Non ci sono tool LTI configurati in Moodle. Fai click su installa per aggiungerli.';
@@ -336,20 +336,20 @@ $string['toolurl_help'] = 'L\'URL base del tool viene utilizzata per far corrisp
 Inoltre, l\'URL base viene utilizzata come URL di lancio se non è stata definita una URL di lancio.
 
 <table>
- <thead>
-   <tr>
-     <td>
-       <b>URL Base</b>
-    </td>
-    <td>
-      <b>corrisponde a</b>
-     </td>
-   </tr>
- </thead>
- <tbody>
-  <tr>
-   <td>tool.com </td>
-   <td> tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes </td> </tr>
+<thead>
+<tr>
+<td>
+<b>URL Base</b>
+</td>
+<td>
+<b>corrisponde a</b>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tool.com </td>
+<td> tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes </td> </tr>
 <tr>
 <td> www.tool.com/quizzes </td><td> tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes </td> </tr> <tr> <td> quiz.tool.com </td> <td> quiz.tool.com, quiz.tool.com/take.php?id=10 </td> </tr> </tbody></table>
 

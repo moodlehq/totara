@@ -132,8 +132,7 @@ $string['leap2a_filecontent'] = 'Si è tentato di impostare il contenuto di un e
 $string['leap2a_invalidentryfield'] = 'Hai tentato di impostare un entry field che non esiste ({$a}) o che non puoi impostare direttamente';
 $string['leap2a_invalidentryid'] = 'Hai tentato di accedere un entry con un id che non esiste ({$a})';
 $string['leap2a_missingfield'] = 'Manca un entry field Leap2A {$a}';
-$string['leap2a_nonexistantlink'] = '	
-Un entry Leap2A ({$a->from}) ha cercato di collegarsi ad un entry inesistente ({$a->to}) con rel {$a->rel}';
+$string['leap2a_nonexistantlink'] = 'Un entry Leap2A ({$a->from}) ha cercato di collegarsi ad un entry inesistente ({$a->to}) con rel {$a->rel}';
 $string['leap2a_overwritingselection'] = 'Sovrascrittura del tipo di entry originale ({$a}) con la selezione presente in make_selection';
 $string['leap2a_selflink'] = 'Un entry Leap2A ({$a->id}) ha cercato di collegarsi a se stesso con rel {$a->rel}';
 $string['logs'] = 'Log dei trasferimenti';

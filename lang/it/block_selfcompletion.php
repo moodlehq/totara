@@ -29,4 +29,4 @@ $string['alreadyselfcompleted'] = 'Hai già confermato di aver completato questo
 $string['completecourse'] = 'Segnala il completamento del corso';
 $string['pluginname'] = 'Auto completamento';
 $string['selfcompletion'] = 'Auto completamento';
-$string['selfcompletionnotenabled'] = 'In questo corso non sono stati abilitati criteri di auto completamento. ';
+$string['selfcompletionnotenabled'] = 'In questo corso non sono stati abilitati criteri di auto completamento.';

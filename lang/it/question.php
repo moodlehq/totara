@@ -233,30 +233,29 @@ $string['markoutofmax'] = 'Punteggio ottenuto {$a->mark} su {$a->max}';
 $string['marks'] = 'Punteggio';
 $string['matcherror'] = 'Le valutazioni non corrispondono alle opzioni di valutazione - la domanda è stata saltata.';
 $string['matchgrades'] = 'Allinea voti';
-$string['matchgradeserror'] = 'Errore se la valutazione non è presente nell\'elenco';
 $string['matchgrades_help'] = '<p>Le valutazioni importate <b>devono</b> corrispondere a uno dei valori della lista fissata, come segue...</p>
 
 <ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
+<li>100%</li>
+<li>90%</li>
+<li>80%</li>
+<li>75%</li>
+<li>70%</li>
+<li>66.666%</li>
+<li>60%</li>
+<li>50%</li>
+<li>40%</li>
+<li>33.333</li>
+<li>30%</li>
+<li>25%</li>
+<li>20%</li>
+<li>16.666%</li>
+<li>14.2857</li>
+<li>12.5%</li>
+<li>11.111%</li>
+<li>10%</li>
+<li>5%</li>
+<li>0%</li>
 </ul>
 
 <p>sono anche permessi valori negativi della lista precedente.</p>
@@ -264,13 +263,14 @@ $string['matchgrades_help'] = '<p>Le valutazioni importate <b>devono</b> corrisp
 <p>Ci sono due possibilità per questa impostazione. Esse definiscono come il modulo di importazione tratta i valori che non corrispondono <b>esattamente</b> a uno dei valori della lista</p>
 
 <ul>
-  <li><b>Errore se valutazione non in elenco</b><br />
+<li><b>Errore se valutazione non in elenco</b><br />
 Se una domanda contiene valutazioni non elencate nella lista, è mostrato un errore e la domanda non sarà importata.</li>
-  <li><b>Valutazione più vicina se non in elenco</b><br />
+<li><b>Valutazione più vicina se non in elenco</b><br />
 Se si trova una valutazione che non corrisponde ad alcun valore della lista, la stessa è sostituita dal valore più vicino trovato nella lista</li>
 </ul>
 
 <p><i>Nota: alcuni formati di importazione scrivono direttamente nel database e possono bypassare questo controllo</i></p>';
+$string['matchgradeserror'] = 'Errore se la valutazione non è presente nell\'elenco';
 $string['matchgradesnearest'] = 'Voto più vicino se non presente nell\'elenco';
 $string['missingcourseorcmid'] = 'Bisogna fornire courseid o cmid a print_questione.';
 $string['missingcourseorcmidtolink'] = 'Bisogna fornire courseid o cmid a get_question_edit_link.';
@@ -322,7 +322,7 @@ $string['page-question-x'] = 'Qualisiasi pagina con domande';
 $string['parent'] = 'Genitore';
 $string['parentcategory'] = 'Categoria genitore';
 $string['parentcategory_help'] = 'La nuova categoria sarà inserita all\'interno della categoria genitore. "Top" significa che la nuova categoria non sarà inserita in nessun\'altra categoria.
-I contesti delle categoria sono visualizzati in grassetto. Per ogni contesto dovrebbe essere presente almeno una categoria. ';
+I contesti delle categoria sono visualizzati in grassetto. Per ogni contesto dovrebbe essere presente almeno una categoria.';
 $string['parenthesisinproperclose'] = 'La parentesi prima di ** non è chiusa correttamente in {$a}**';
 $string['parenthesisinproperstart'] = 'La parentesi prima di ** non è aperta correttamente in {$a}**';
 $string['parsingquestions'] = 'Analisi domande presenti nel file di importazione.';

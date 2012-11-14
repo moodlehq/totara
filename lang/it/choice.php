@@ -31,9 +31,10 @@ $string['answered'] = 'Risposta';
 $string['atleastoneoption'] = 'Devi fornire almeno una possibile risposta.';
 $string['choice'] = 'Scelta {$a}';
 $string['choice:choose'] = 'Salvare una scelta';
-$string['choiceclose'] = 'Chiusura';
 $string['choice:deleteresponses'] = 'Rimuovere le scelte';
 $string['choice:downloadresponses'] = 'Scaricare le scelte';
+$string['choice:readresponses'] = 'Visualizzare le scelte';
+$string['choiceclose'] = 'Chiusura';
 $string['choicefull'] = 'Questa opzione è completa.';
 $string['choicename'] = 'Titolo della scelta';
 $string['choiceopen'] = 'Apertura';
@@ -41,7 +42,6 @@ $string['choiceoptions'] = 'Opzioni scelta';
 $string['choiceoptions_help'] = 'Le opzioni sono le proposte tra cui gli studenti potranno fare la loro scelta.
 
 Puoi aggiungere un qualsiasi numero di scelte. Per non visualizzare una proposta è sufficiente lasciarla vuota. Se hai bisogno di più di 8 proposte, fai click sul pulsante "Aggiungi 3 campi al form".';
-$string['choice:readresponses'] = 'Visualizzare le scelte';
 $string['choicesaved'] = 'la tua scelta è stata salvata';
 $string['choicetext'] = 'Testo della domanda';
 $string['chooseaction'] = 'Scegli un\'azione...';

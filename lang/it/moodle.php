@@ -1411,21 +1411,21 @@ $string['savepreferences'] = 'Salva impostazioni';
 $string['saveto'] = 'Salva in';
 $string['scale'] = 'Scala';
 $string['scale_help'] = '<p>I docenti possono creare scale di valutazione personalizzate utilizzabili
-  in qualsiasi attività valutabile.</p>
+in qualsiasi attività valutabile.</p>
 <p>E\' preferibile assegnare alle scale di valutazione dei nomi che le identifichino
-  in modo chiaro: il nome infatti apparirà nella lista drop-down delle scale
-  di valutazione disponibili e negli help sensibili al contesto.</p>
+in modo chiaro: il nome infatti apparirà nella lista drop-down delle scale
+di valutazione disponibili e negli help sensibili al contesto.</p>
 <p>Le scale di valutazione sono definite tramite una lista di parole
-  separate da virgole che spaziano da una valutazione minima a una massima. Di
-  seguito è riportato un esempio di scala di valutazione:</p>
+separate da virgole che spaziano da una valutazione minima a una massima. Di
+seguito è riportato un esempio di scala di valutazione:</p>
 <blockquote><i>
-   Gravemente insufficiente, Insufficiente, Sufficiente, Buono, Molto buono,
-       Ottimo</i></blockquote>
+Gravemente insufficiente, Insufficiente, Sufficiente, Buono, Molto buono,
+Ottimo</i></blockquote>
 <p>Le scale di valutazione personalizzate possono includere una descrizione
-  del loro significato e suggerimenti su come potrebbero essere impiegate.
-  Questa descrizione apparirà nelle pagine di help dei docenti e degli studenti.</p>
+del loro significato e suggerimenti su come potrebbero essere impiegate.
+Questa descrizione apparirà nelle pagine di help dei docenti e degli studenti.</p>
 <p>E\' anche possibile definire una o più scale di valutazione "standard"
-  a livello di sito da parte dell\'amministratore del sistema e queste saranno disponibili in tutti i corsi.</p>';
+a livello di sito da parte dell\'amministratore del sistema e queste saranno disponibili in tutti i corsi.</p>';
 $string['scales'] = 'Scale';
 $string['scalescustom'] = 'Scale personalizzate';
 $string['scalescustomcreate'] = 'Aggiungi una scala';
@@ -1543,7 +1543,7 @@ $string['siteerrors'] = 'Errori sito';
 $string['sitefiles'] = 'File del sito';
 $string['sitefilesused'] = 'File del sito usati in questo corso';
 $string['sitehome'] = 'Home del sito';
-$string['sitelegacyfiles'] = 'File legacy del sito ';
+$string['sitelegacyfiles'] = 'File legacy del sito';
 $string['sitelogs'] = 'Log del sito';
 $string['sitenews'] = 'News del sito';
 $string['sitepages'] = 'Pagine del sito';

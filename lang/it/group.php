@@ -76,8 +76,8 @@ $string['groupinfo'] = 'Informazioni su gruppo selezionato';
 $string['groupinfomembers'] = 'Informazioni sui membri selezionati';
 $string['groupinfopeople'] = 'Informazioni sulle persone selezionate';
 $string['grouping'] = 'Raggruppamento';
-$string['groupingdescription'] = 'Descrizione raggruppamento';
 $string['grouping_help'] = 'Un raggruppamento è un insieme di gruppi di un corso. Utilizzando i raggruppamenti, gli appartenenti a gruppi facenti parte dello stesso raggruppamento potranno condividere attività.';
+$string['groupingdescription'] = 'Descrizione raggruppamento';
 $string['groupingname'] = 'Nome raggruppamento';
 $string['groupingnameexists'] = 'Il raggruppamento di nome \'{$a}\' già esiste in questo corso, scegli un nome diverso.';
 $string['groupings'] = 'Raggruppamenti';
@@ -86,13 +86,11 @@ $string['groupmember'] = 'Membro del gruppo';
 $string['groupmemberdesc'] = 'Ruolo standard per un membro di un gruppo';
 $string['groupmembers'] = 'Membri del gruppo';
 $string['groupmembersonly'] = 'Disponibile solo per gli appartenenti al raggruppamento';
-$string['groupmembersonlyerror'] = 'Spiacente, devi essere membro di almeno un gruppo coinvolto in questa attività.';
 $string['groupmembersonly_help'] = 'Selezionando questa opzione, l\'attività (o la risorsa) saraà disponibile solo per gli studenti dei gruppi facenti parte del raggruppamento indicato.';
+$string['groupmembersonlyerror'] = 'Spiacente, devi essere membro di almeno un gruppo coinvolto in questa attività.';
 $string['groupmemberssee'] = 'Visualizza membri del gruppo';
 $string['groupmembersselected'] = 'Membri del gruppo selezionato';
 $string['groupmode'] = 'Modalità gruppo';
-$string['groupmodeforce'] = 'Forza modalità gruppo';
-$string['groupmodeforce_help'] = 'Forzando la modalità gruppo, tale modalità sarà applicata a tutte le attività del corso. Eventuali modalità gruppo diverse non saranno prese in considerazione.';
 $string['groupmode_help'] = 'L\'impostazione ha 3 opzioni:
 
 * Senza gruppi- la modalità gruppi non è attiva, ogni partecipante fa parte della stessa comunità
@@ -102,6 +100,8 @@ $string['groupmode_help'] = 'L\'impostazione ha 3 opzioni:
 * Gruppi visibili - ciascun partecipante è membro del gruppo al quale è stato assegnato ma può vedere il lavoro svolto dagli altri gruppi.
 
 La modalità gruppo definita nell impostazioni del corso è la modalità di deafult per le attività del corso. La modalità gruppo può essere gestita per ciascuna attività del corso purché l\'attività supporti i gruppi e la modalità gruppo non sia stata forzata a livello di corso.';
+$string['groupmodeforce'] = 'Forza modalità gruppo';
+$string['groupmodeforce_help'] = 'Forzando la modalità gruppo, tale modalità sarà applicata a tutte le attività del corso. Eventuali modalità gruppo diverse non saranno prese in considerazione.';
 $string['groupmy'] = 'Il mio gruppo';
 $string['groupname'] = 'Nome gruppo';
 $string['groupnameexists'] = 'Il nome del gruppo \'{$a}\' è già esistente in questo corso, per favore cambialo.';
@@ -136,7 +136,7 @@ $string['newgrouping'] = 'Nuovo raggrupamento';
 $string['newpicture'] = 'Nuova immagine';
 $string['newpicture_help'] = 'Seleziona una immagine in fromato JPG o PNG. L\'immagine sarà ritagliata in forma quadrata e poi ridimensionata a 100x100 pixel.';
 $string['noallocation'] = 'Nessuna assegnazione';
-$string['nogroups'] = 'In questo corso non sono ancora stati creati gruppi ';
+$string['nogroups'] = 'In questo corso non sono ancora stati creati gruppi';
 $string['nogroupsassigned'] = 'Nessun gruppo assegnato';
 $string['nopermissionforcreation'] = 'Non puoi creare il gruppo "{$a}" in quanto non hai i privilegi necessari';
 $string['nosmallgroups'] = 'Evita gruppi piccoli';

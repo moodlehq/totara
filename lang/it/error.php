@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'TODO';
 $string['alreadyloggedin'] = 'Sei già collegato come {$a}, per collegarti come un utente diverso devi prima effettuare il logout.';
 $string['authnotexisting'] = 'Il plugin di autenticazione non esiste';
 $string['backupcontainexternal'] = 'Questo file di backup contiene host Moodle Network che non sono definiti in questo sito';
@@ -204,7 +205,7 @@ $string['dmltransactionexception'] = 'Si è verificato un errore nella transazio
 $string['dmlwriteexception'] = 'Si è verificato un errore durante la scrittura nel database';
 $string['downgradedcore'] = 'ERRORE! La versione del codice che stai usando è più vecchia della versione usata per creare il database!';
 $string['downloadedfilecheckfailed'] = 'Il controllo del file scaricato non è andato a buon fine.';
-$string['duplicatefieldname'] = 'E\' stato individuato un nome di campo duplicato: "{$a}" ';
+$string['duplicatefieldname'] = 'E\' stato individuato un nome di campo duplicato: "{$a}"';
 $string['duplicateparaminsql'] = 'Errore: query con nome duplicato del parametro';
 $string['duplicaterolename'] = 'Esiste giù un ruolo con questo nome!';
 $string['duplicateroleshortname'] = 'Esiste giù un ruolo con questo nome abbreviato!';
@@ -344,9 +345,9 @@ $string['maxbytes'] = 'Il file è più grande della dimensione massima consentit
 $string['messagingdisable'] = 'In questo sito il messaging è disabilitato';
 $string['mimetexisnotexist'] = 'Il tuo sistema non è configurato per eseguire mimeTEX. Devi scaricare l\'eseguibile adatto al tuo sistema operativo e versione PHP da <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, oppure ottenere il codice sorgente C da <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>, compilarlo e caricare l\'eseguibile risultante nella cartella moodle/filter/tex/.';
 $string['mimetexnotexecutable'] = 'Il mimetex personalizzato non è eseguibile!';
+$string['missing_moodle_backup_xml_file'] = 'Al backup manca il file XML: {$a}';
 $string['missingfield'] = 'Manca il campo "{$a}"';
 $string['missingkeyinsql'] = 'ERROR: nella query manca il parametro "{$a}"';
-$string['missing_moodle_backup_xml_file'] = 'Al backup manca il file XML: {$a}';
 $string['missingparam'] = 'Un parametro obbligatorio ({$a}) è mancante';
 $string['missingparameter'] = 'Parametro mancante';
 $string['missingrequiredfield'] = 'Mancano alcuni campi richiesti';
@@ -429,9 +430,9 @@ $string['remotedownloaderror'] = 'Lo scaricamento delle componenti non è andato
 $string['remotedownloadnotallowed'] = 'Non è permesso scaricare i componenti su vostro server (allow_url_fopen è disabilitato). <br /><br /> È necessario scaricare manualmente il file <a href="{$a->url}">{$a->url}</a>, copiarlo in "{$a->dest}" sul vostro server e scompattarlo la.';
 $string['reportnotavailable'] = 'Questo tipo di report è disponibile solamente nel corso della pagina home';
 $string['requireloginerror'] = 'L\'accesso al corso o attività non è consentito.';
-$string['restorechecksumfailed'] = 'Si sono verificati alcuni problemi con le informazioni di ripristino presenti nella tua sessione. Per favore controllare i limiti della memoria PHP e della dimensione del pacchetto. Il ripristino è stato interrotto.';
 $string['restore_path_element_missingmethod'] = 'Il metodo di ripristino {$a} non è presente. Deve essere definito da uno sviluppatore.';
 $string['restore_path_element_noobject'] = 'L\'oggetto del ripristino {$a} non è un oggetto.';
+$string['restorechecksumfailed'] = 'Si sono verificati alcuni problemi con le informazioni di ripristino presenti nella tua sessione. Per favore controllare i limiti della memoria PHP e della dimensione del pacchetto. Il ripristino è stato interrotto.';
 $string['restrictedcontextexception'] = 'Spiacente, l\'esecuzione di funzioni esterne viola le restrizioni del contesto.';
 $string['restricteduser'] = 'Spiacente, ma il tuoi account  "{$a}" non è autorizzato a fare questo';
 $string['reverseproxyabused'] = 'Spiacente ma il server non può essere raggiunto direttamente, è stato abilitato un reverse proxy.<br />Per favore contattate l\'amministratore del server.';
@@ -464,7 +465,6 @@ $string['tagnotfound'] = 'Il tag specificato non è stato trovato nel database';
 $string['targetdatabasenotempty'] = 'Il database destinazione non è vuoto. Per sicurezza il trasferimento è stato interrotto.';
 $string['textconditionsnotallowed'] = 'Il confronto di condizioni sulle colonne di testo non è consentito. Per favore utilizza sql_compare_text() nella query.';
 $string['themenotinstall'] = 'Questo tema non è installato!';
-$string['TODO'] = 'TODO';
 $string['tokengenerationfailed'] = 'Non è possibile generare un nuovo token.';
 $string['transactionvoid'] = 'La transazione non può essere annullata in quanto è già stata annullata';
 $string['unenrolerror'] = 'Si è verificato un errore durante la disiscrizione dei quella persona';

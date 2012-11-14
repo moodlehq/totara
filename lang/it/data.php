@@ -127,7 +127,7 @@ $string['errormustbeteacher'] = 'Devi avere il ruolo di docente per utilizzare q
 $string['errorpresetexists'] = 'Una preimpostazione con il nome scelto esiste già';
 $string['example'] = 'Esempio di modulo Database';
 $string['excel'] = 'Excel';
-$string['expired'] = 'Spiacente, l\'attività non è più disponibile poiché è stata chiusa il {$a} ';
+$string['expired'] = 'Spiacente, l\'attività non è più disponibile poiché è stata chiusa il {$a}';
 $string['export'] = 'Esporta';
 $string['exportaszip'] = 'Esporta come .zip';
 $string['exportaszip_help'] = 'L\'esportazione come .zip consente di scaricare le preimpostazioni. Le preimpostazioni possono essere caricate ed utilizzate in altri corsi.';
@@ -327,7 +327,7 @@ $string['uploadrecords_help'] = 'E\' possibile importare record attraverso un fi
 Il delimitatore di campo è un carattere che racchiude i campi del record. Spesso non è presente e si può evitare di impostarlo.';
 $string['url'] = 'URL';
 $string['usestandard'] = 'Utilizza preimpostazione';
-$string['usestandard_help'] = 'Permette di scegliere un Modello di visualizzazione preimpostato tra quelli disponibili nel sito. (Se è stato già salvato un Modello di visualizzazione, è possibile anche eliminarlo.) ';
+$string['usestandard_help'] = 'Permette di scegliere un Modello di visualizzazione preimpostato tra quelli disponibili nel sito. (Se è stato già salvato un Modello di visualizzazione, è possibile anche eliminarlo.)';
 $string['viewfromdate'] = 'Solo visualizzazione dal';
 $string['viewtodate'] = 'fino al';
 $string['wrongdataid'] = 'E\' stato fornito un id errato';

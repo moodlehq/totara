@@ -35,7 +35,7 @@ $string['association'] = 'Associazione';
 $string['associations'] = 'Associazioni';
 $string['associationunviewable'] = 'Questo intervento non può essere visualizzato da altri utenti finché non sarà associato un corso oppure non sarà cambiato il campo \'Pubblica in\'';
 $string['autotags'] = 'Aggiungi questi tag';
-$string['autotags_help'] = 'Inserisci uno più tag locali (separati da virgole) da aggiungere automaticamente agli interventi copiati dal blog esterno al blog locale. ';
+$string['autotags_help'] = 'Inserisci uno più tag locali (separati da virgole) da aggiungere automaticamente agli interventi copiati dal blog esterno al blog locale.';
 $string['backupblogshelp'] = 'Se abilitato, i blog verranno inclusi nei backup automatici di SITO';
 $string['blockexternalstitle'] = 'Blog esterni';
 $string['blocktitle'] = 'Titolo blocco tag dei blog';
@@ -127,17 +127,17 @@ $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'Gli utenti possono vedere solo i propri blog';
 $string['preferences'] = 'Preferenze';
 $string['publishto'] = 'Pubblicazione';
+$string['publishto_help'] = 'Sono disponibili 3 opzioni:
+
+* Te stesso (draft) - L\'intervento è visualizzabile solo da te e dagli amministratori
+* Utenti autenticati - L\'intervento è visualizzabile da qualsiasi utente che abbia un account su questo sito
+* Chiunque - L\'intervento è visualizzabile da chiunque, inclusi gli ospiti';
 $string['publishtocourse'] = 'Utenti iscritti ai tuoi stessi corsi';
 $string['publishtocourseassoc'] = 'Membri del corso associato';
 $string['publishtocourseassocparam'] = 'Membri di {$a}';
 $string['publishtogroup'] = 'Utenti membri dei tuoi stessi gruppi';
 $string['publishtogroupassoc'] = 'I membri del tuo gruppo nel corso associato';
 $string['publishtogroupassocparam'] = 'I membri del tuo gruppo in {$a}';
-$string['publishto_help'] = 'Sono disponibili 3 opzioni:
-
-* Te stesso (draft) - L\'intervento è visualizzabile solo da te e dagli amministratori
-* Utenti autenticati - L\'intervento è visualizzabile da qualsiasi utente che abbia un account su questo sito
-* Chiunque - L\'intervento è visualizzabile da chiunque, inclusi gli ospiti';
 $string['publishtonoone'] = 'Personale (Bozza)';
 $string['publishtosite'] = 'Su questo sito';
 $string['publishtoworld'] = 'Su tutto il web';

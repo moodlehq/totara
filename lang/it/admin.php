@@ -248,7 +248,7 @@ $string['configlanglist'] = 'Lascia vuoto se vuoi consentire agli utenti di sceg
 Per esempio: en, es_es, it, fr';
 $string['configlangmenu'] = 'Scegliete se pubblicare o meno il menu delle lingue generico sulla Home Page, nella pagina di Login, ecc.
 Questa scelta non influisce sulla possibilità  da parte dell\'utente di scegliere una lingua preferita all\'interno del suo profilo personale.';
-$string['configlangstringcache'] = 'Esegue il caching delle stringhe delle lingue in file compilati nella cartella dati, migliorando le prestazioni. Se stai traducendo Moodle o modificando stringhe nel codice sorgente, è preferibile disabilitare il caching. ';
+$string['configlangstringcache'] = 'Esegue il caching delle stringhe delle lingue in file compilati nella cartella dati, migliorando le prestazioni. Se stai traducendo Moodle o modificando stringhe nel codice sorgente, è preferibile disabilitare il caching.';
 $string['configlatinexcelexport'] = 'Scegli la codifica per le esportazioni Excel.';
 $string['configlocale'] = 'Scegli la localizzazione del sito - L\'impostazione avrà  effetto sulla visualizzazione delle date. È necessario avere la stessa localizzazione del server installata sul sistema operativo del proprio computer. (Per esempio: it_IT).
 Se non sai come impostare, lascia il campo vuoto.';
@@ -860,7 +860,7 @@ $string['profilingallowall_help'] = 'L\'impostazione permette di usare ovunque (
 $string['profilingallowme'] = 'Profilazione selettiva';
 $string['profilingallowme_help'] = 'L\'impostazione permette di usare selettivamente (PGC) il parametro PROFILEME per profilare specifici script. Per fermare la profilazione è possibile usare il parametro DONTPROFILEME.';
 $string['profilingautofrec'] = 'Profilazione automatica';
-$string['profilingautofrec_help'] = 'L\'impostazione attiverà la profilazione automatica e casuale di richieste (basata sulla frequenza impostata, 1 su XXX). I risultati saranno memorizzati per successive analisi. Da notare che questo tipo di profilazione tiene conto delle impostazioni di include/exclude. Il valore 0 disabilita la profilazione automatica ';
+$string['profilingautofrec_help'] = 'L\'impostazione attiverà la profilazione automatica e casuale di richieste (basata sulla frequenza impostata, 1 su XXX). I risultati saranno memorizzati per successive analisi. Da notare che questo tipo di profilazione tiene conto delle impostazioni di include/exclude. Il valore 0 disabilita la profilazione automatica';
 $string['profilingenabled'] = 'Abilita profilazione';
 $string['profilingenabled_help'] = 'L\'imposatzione abilita le funzioni di profilazione, il cui comportamento può essere regolato con le impostazioni che segiuono';
 $string['profilingexcluded'] = 'Escludi profilazione';
@@ -877,7 +877,7 @@ $string['proxyport'] = 'Porta proxy';
 $string['proxytype'] = 'Tipo proxy';
 $string['proxyuser'] = 'Proxy username';
 $string['purgecaches'] = 'Svuota le cache';
-$string['purgecachesconfirm'] = 'Moodle può tenere in cache temi, javascript, stringhe di lingua, testo filtrato, feed rss ed altri tipi di dati. Svuotando le cache i dati saranno eliminati dal server e il browser verrà costretto a ricaricarli, in questo modo potrai essere certo di visualizzare i dati più aggiornati. Svuotare le cache non presenta rischi, tuttavia il sito potrebbe subire un rallentamento fino a quando le cache non saranno ripristinate. ';
+$string['purgecachesconfirm'] = 'Moodle può tenere in cache temi, javascript, stringhe di lingua, testo filtrato, feed rss ed altri tipi di dati. Svuotando le cache i dati saranno eliminati dal server e il browser verrà costretto a ricaricarli, in questo modo potrai essere certo di visualizzare i dati più aggiornati. Svuotare le cache non presenta rischi, tuttavia il sito potrebbe subire un rallentamento fino a quando le cache non saranno ripristinate.';
 $string['purgecachesfinished'] = 'Tutte le cache sono state svuotate';
 $string['qtyperqpwillberemoved'] = 'Durante l\'aggiornamento, il tipo di domanda RQP sarà rimosso. Il sito non ha utilizzato tale tipo di domanda, per cui non si dovrebbe manifestare alcun problema.';
 $string['qtyperqpwillberemovedanyway'] = 'Durante l\'aggiornamento, il tipo di domanda RQP sarà rimosso. Il sito ha alcune domande RPQ nel database e queste non funzioneranno più a meno di reinstallare il codice da http://moodle.org/mod/data/view.php?d=13&amp;rid=797 prima di continuare con l\'aggiornamento.';

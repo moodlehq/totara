@@ -55,7 +55,6 @@ Al momento è possibile effettuare ricerche utilizzando la funzione di ricerca d
 "Alcuni titoli non entrano in una sola linea"
 
 In questo caso è possibile abbreviare il titolo oppure chiedere all\'amministratore del sito di allargare il TOC, impostabile nella configurazione globale del modulo.';
-$string['missingfilemanagement'] = 'Cari utenti del moduli Libro, suppongo che abbiate già notato che non è possibile eliminare o gestire i file utilizzati nei capitoli del modulo. Puoi votare su {$a} se desideri che questa cosa venga risolta, grazie.Petr Škoda';
 $string['modulename'] = 'Libro';
 $string['modulename_help'] = 'Il libro è un oggetto multipagina per materiale di studio';
 $string['modulenameplural'] = 'Libri';

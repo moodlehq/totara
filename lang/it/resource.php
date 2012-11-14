@@ -43,7 +43,6 @@ $string['configpopupwidth'] = 'Larghezza di default (in pixel) delle finestre po
 $string['contentheader'] = 'Contenuto';
 $string['displayoptions'] = 'Modalità di visualizzazione disponibili';
 $string['displayselect'] = 'Visualizzazione';
-$string['displayselectexplain'] = 'Imposta il tipo di visualizzazione di default. Tenere presente che i vari tipi di file potrebbero permettere solo alcuni tipi di visualizzazione.';
 $string['displayselect_help'] = 'L\'impostazione, assieme al tipo di file e  alla possibilità di effettuare un embed nel browser, determina come sarà visualizzato il file. Le modalità di visualizzazione possono essere:
 
 * Automatica - La modalità di visualizzazione migliore viene scelta automaticamente
@@ -53,6 +52,7 @@ $string['displayselect_help'] = 'L\'impostazione, assieme al tipo di file e  all
 * Popup - Il file viene visualizzato in un nuova finestra browser priva di menu e barra dell\'indirizzo
 * Frame - Il file viene visualizzato all\'interno di un frame sotto la barra di navigazione
 * Nuova finestra - Il file viene visualizzato in una nuova finestra browser completa di menu e barra dell\'indirizzo.';
+$string['displayselectexplain'] = 'Imposta il tipo di visualizzazione di default. Tenere presente che i vari tipi di file potrebbero permettere solo alcuni tipi di visualizzazione.';
 $string['encryptedcode'] = 'Codice criptato';
 $string['filenotfound'] = 'Spiacente, il file non è stato trovato';
 $string['filterfiles'] = 'Applica filtri sul contenuto del file';
@@ -81,7 +81,7 @@ $string['printheading'] = 'Visualizza il nome della risorsa';
 $string['printheadingexplain'] = 'Consente di visualizzare il nome della risorsa prima del contenuto. Tenere presente che alcuni tipi di visualizzazione potrebbero non rispettare questa impostazione.';
 $string['printintro'] = 'Visualizza la descrizione della risorsa';
 $string['printintroexplain'] = 'Consente di visualizzare la descrizione della risorsa sotto al contenuto. Tenere presente che alcuni tipi di visualizzazione potrebbero non rispettare questa impostazione.';
-$string['resourcecontent'] = 'File e sotto cartelle';
 $string['resource:exportresource'] = 'Esporta risorsa';
 $string['resource:view'] = 'Visualizza la risorsa';
+$string['resourcecontent'] = 'File e sotto cartelle';
 $string['selectmainfile'] = 'Per favore scegli il file primario facendo click sull\'icona accanto al nome del file';

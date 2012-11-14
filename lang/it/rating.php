@@ -56,10 +56,4 @@ $string['ratinginvalid'] = 'Il punteggio non è valido';
 $string['ratings'] = 'Valutazioni';
 $string['ratingtime'] = 'Limita valutazioni agli elementi con la data in questo intervallo:';
 $string['rolewarning'] = 'Ruoli con il privilegio di valutare';
-$string['rolewarning_help'] = 'Per valutare, gli utenti necessitano del privilegio moodle/rating:rate. Gli utenti che hanno uno dei ruoli elencati hanno questo privilegio. L\'elenco dei ruoli può essere modificato tramite il link Autorizzazioni nel blocco Impostazioni. 
-
-
-
-
-
-';
+$string['rolewarning_help'] = 'Per valutare, gli utenti necessitano del privilegio moodle/rating:rate. Gli utenti che hanno uno dei ruoli elencati hanno questo privilegio. L\'elenco dei ruoli può essere modificato tramite il link Autorizzazioni nel blocco Impostazioni.';

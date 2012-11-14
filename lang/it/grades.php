@@ -53,54 +53,6 @@ $string['aggregatesum'] = 'Somma dei voti';
 $string['aggregateweightedmean'] = 'Media ponderale dei voti';
 $string['aggregateweightedmean2'] = 'Media ponderale semplice dei voti';
 $string['aggregation'] = 'Aggregazione dei voti';
-$string['aggregationcoef'] = 'Coefficiente di aggregazione';
-$string['aggregationcoefextra'] = 'Credito extra';
-$string['aggregationcoefextra_help'] = '<h2>Per il tipo di aggregazione Somma dei voti</h2>
-<p>Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
-<ul>
-    <li>Intervallo di voti per l\'Elemento 1: 0-100</li>
-    <li>Intervallo di voti per l\'Elemento 2: 0-75</li>
-    <li>Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.</li>
-    <li>Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.</li>
-    <li>L\'intervallo dei voti della Categoria 1 è 0-75</li>
-    <li>Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2</li>
-    <li>Il totale ottenuto dallo studente nella Categoria 1 sarà  75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)</li>
-</ul>
-<h2>Per il tipo di aggregazione Voto medio (con crediti extra)</h2>
-<p>Con questo tipo di aggregazione impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:</p>
-
-<ul>
-    <li>Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2</li>
-    <li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-    <li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-    <li>I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"</li>
-    <li>Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3</li>
-    <li>Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
-$string['aggregationcoefextrasum'] = 'Credito extra';
-$string['aggregationcoefextrasum_help'] = '<p>Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
-<ul>
-    <li>Intervallo di voti per l\'Elemento 1: 0-100</li>
-    <li>Intervallo di voti per l\'Elemento 2: 0-75</li>
-    <li>Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.</li>
-    <li>Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.</li>
-    <li>L\'intervallo dei voti della Categoria 1 è 0-75</li>
-    <li>Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2</li>
-    <li>Il totale ottenuto dallo studente nella Categoria 1 sarà  75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)</li>
-</ul>';
-$string['aggregationcoefextraweight'] = 'Peso credito extra';
-$string['aggregationcoefextraweight_help'] = '<p>Impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:</p>
-
-<ul>
-    <li>Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2</li>
-    <li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-    <li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-    <li>I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"</li>
-    <li>Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3</li>
-    <li>Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
-$string['aggregationcoefweight'] = 'Peso dell\'elemento';
-$string['aggregationcoefweight_help'] = '<p>Peso applicato ai voti durante l\'aggregazione.</p>';
 $string['aggregation_help'] = '<p>Il menù a discesa permette di scegliere la strategia di aggregazione da utilizzare per calcolare la valutazione complessiva per una data categoria. Questo help spiega il calcolo e le diverse strategie di aggregazione disponibili.</p>
 
 <p>I voti sono dapprima convertiti in valori percentuali (intervallo da 0 a 1, fase di normalizzazione), successivamente aggregati usando la strategia di prescelta. Il totale ottenuto viene quindi convertito in accordo all\'intervallo di voti impostato per la categoria stessa
@@ -109,49 +61,97 @@ $string['aggregation_help'] = '<p>Il menù a discesa permette di scegliere la st
 <p><strong>Importante</strong>: Una voto non presente è di fatto un elemento mancante nel registro delle valutazioni ma può significare cose differenti. Per esempio potrebbe significare che un partecipante non ha ancora consegnato un compito, oppure il compito è stato consegnato ma non ancora valutato dal docente, oppure una valutazione che è stata eliminata manualmente dall\'amministratore del registro. Bisogna quindi porre molta attenzione nell\'interpretare i "Voti non ricevuti".</p>
 
 <dl id="grade-aggregation-help">
-    <dt>Media dei voti</dt>
-    <dd>La somma di tutti i voti diviso per il numero totale di voti.</dd>
-    <dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-                     <code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
+<dt>Media dei voti</dt>
+<dd>La somma di tutti i voti diviso per il numero totale di voti.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
+<code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
 
-    <dt>Media ponderale dei voti</dt>
-        <dd>Ad ogni voto può essere dato un peso che sarà utilizzato nel calcolo della media aritmetica, stabilendo l\'importanza di ogni elemento nella media generale.</dd>
-        <dd class="example">A1 70/100 peso 10, A2 20/80 peso 5, A3
-                         10/10 peso 3, massimo categoria 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
+<dt>Media ponderale dei voti</dt>
+<dd>Ad ogni voto può essere dato un peso che sarà utilizzato nel calcolo della media aritmetica, stabilendo l\'importanza di ogni elemento nella media generale.</dd>
+<dd class="example">A1 70/100 peso 10, A2 20/80 peso 5, A3
+10/10 peso 3, massimo categoria 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
 
-    <dt>Media ponderale semplice dei voti</dt>
-        <dd>La differenza rispetto alla <em>Media ponderale dei voti</em> è che il peso per ogni elemento viene calcolato come <em>Voto massimo</em> - <em>Voto minimo</em>. Un compito da 100 punti ha peso 100, un compito da 10 punti ha peso 10.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-                         <code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
+<dt>Media ponderale semplice dei voti</dt>
+<dd>La differenza rispetto alla <em>Media ponderale dei voti</em> è che il peso per ogni elemento viene calcolato come <em>Voto massimo</em> - <em>Voto minimo</em>. Un compito da 100 punti ha peso 100, un compito da 10 punti ha peso 10.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
+<code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
 
-    <dt>Voto medio (con credito extra)</dt>
-        <dd>Media aritmetica con una variante: è una strategia di aggregazione obsoleta e non più supportata ed è presente solo per compatibilità con versioni precedenti di moduli di attività.</dd>
+<dt>Voto medio (con credito extra)</dt>
+<dd>Media aritmetica con una variante: è una strategia di aggregazione obsoleta e non più supportata ed è presente solo per compatibilità con versioni precedenti di moduli di attività.</dd>
 
-    <dt>Mediana dei voti</dt>
-        <dd>La mediana è calcolata mettendo in ordine tutti i voti e selezionando quello che si trova a metà (o la media tra le due valutazioni di mezzo se queste sono in numero pari). Il vantaggio rispetto alla media è che la Mediana dei voti  risente meno di deviazioni eccessive (ossia valutazioni troppo lontane dalla media).</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-                         <code>1.0 + 0.7 + 0.25 --> 0.7 --> 70/100</code></dd>
+<dt>Mediana dei voti</dt>
+<dd>La mediana è calcolata mettendo in ordine tutti i voti e selezionando quello che si trova a metà (o la media tra le due valutazioni di mezzo se queste sono in numero pari). Il vantaggio rispetto alla media è che la Mediana dei voti  risente meno di deviazioni eccessive (ossia valutazioni troppo lontane dalla media).</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
+<code>1.0 + 0.7 + 0.25 --> 0.7 --> 70/100</code></dd>
 
-    <dt>Voto più basso</dt>
-        <dd>Il risultato è la il voto più basso dopo la normalizzazione. E\' di solito utilizzato in combinazione con l\'impostazione <em>Aggrega solo i voti ricevuti</em>.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-                         <code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
+<dt>Voto più basso</dt>
+<dd>Il risultato è la il voto più basso dopo la normalizzazione. E\' di solito utilizzato in combinazione con l\'impostazione <em>Aggrega solo i voti ricevuti</em>.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
+<code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
 
-    <dt>Voto più alto</dt>
-        <dd>Il risultato è lil voto più alto dopo la normalizzazione.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-                         <code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
+<dt>Voto più alto</dt>
+<dd>Il risultato è lil voto più alto dopo la normalizzazione.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
+<code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
 
-    <dt>Moda dei voti</dt>
-        <dd>La moda è una strategia di aggregazione molto frequente, in particolare per valutazioni non numeriche. Il vantaggio rispetto alla media è che la moda non è condizionata da deviazioni eccessive (ossia valutazioni troppo lontane dalla media). Tuttavia la moda perde di efficacia quando sono presenti più una valutazione ottenuta più frequentemente (ne viene mantenuta solo una) oppure quando tutte le valutazioni sono diverse fra loro.</dd>
-        <dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 massimo categoria 100:<br />
-                         <code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
+<dt>Moda dei voti</dt>
+<dd>La moda è una strategia di aggregazione molto frequente, in particolare per valutazioni non numeriche. Il vantaggio rispetto alla media è che la moda non è condizionata da deviazioni eccessive (ossia valutazioni troppo lontane dalla media). Tuttavia la moda perde di efficacia quando sono presenti più una valutazione ottenuta più frequentemente (ne viene mantenuta solo una) oppure quando tutte le valutazioni sono diverse fra loro.</dd>
+<dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 massimo categoria 100:<br />
+<code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
 
-    <dt>Somma dei voti</dt>
-        <dd>La somma di tutti i voti. Le scale di valutazione non vengono considerate. E\' il solo tipo di aggregazione che non converte le valutazioni in percentuali (normalizzazione). Il <em>Voto massimo</em> della categoria viene calcolato automaticamente come somma dei massimi fra tutti gli elementi aggregati.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
-                         <code>70 + 20 + 10 = 100/190</code></dd>
+<dt>Somma dei voti</dt>
+<dd>La somma di tutti i voti. Le scale di valutazione non vengono considerate. E\' il solo tipo di aggregazione che non converte le valutazioni in percentuali (normalizzazione). Il <em>Voto massimo</em> della categoria viene calcolato automaticamente come somma dei massimi fra tutti gli elementi aggregati.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
+<code>70 + 20 + 10 = 100/190</code></dd>
 </dl>';
+$string['aggregationcoef'] = 'Coefficiente di aggregazione';
+$string['aggregationcoefextra'] = 'Credito extra';
+$string['aggregationcoefextra_help'] = '<h2>Per il tipo di aggregazione Somma dei voti</h2>
+<p>Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
+<ul>
+<li>Intervallo di voti per l\'Elemento 1: 0-100</li>
+<li>Intervallo di voti per l\'Elemento 2: 0-75</li>
+<li>Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.</li>
+<li>Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.</li>
+<li>L\'intervallo dei voti della Categoria 1 è 0-75</li>
+<li>Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2</li>
+<li>Il totale ottenuto dallo studente nella Categoria 1 sarà  75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)</li>
+</ul>
+<h2>Per il tipo di aggregazione Voto medio (con crediti extra)</h2>
+<p>Con questo tipo di aggregazione impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:</p>
+
+<ul>
+<li>Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2</li>
+<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
+<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
+<li>I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"</li>
+<li>Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3</li>
+<li>Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95</li>
+</ul>';
+$string['aggregationcoefextrasum'] = 'Credito extra';
+$string['aggregationcoefextrasum_help'] = '<p>Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
+<ul>
+<li>Intervallo di voti per l\'Elemento 1: 0-100</li>
+<li>Intervallo di voti per l\'Elemento 2: 0-75</li>
+<li>Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.</li>
+<li>Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.</li>
+<li>L\'intervallo dei voti della Categoria 1 è 0-75</li>
+<li>Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2</li>
+<li>Il totale ottenuto dallo studente nella Categoria 1 sarà  75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)</li>
+</ul>';
+$string['aggregationcoefextraweight'] = 'Peso credito extra';
+$string['aggregationcoefextraweight_help'] = '<p>Impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:</p>
+
+<ul>
+<li>Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2</li>
+<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
+<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
+<li>I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"</li>
+<li>Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3</li>
+<li>Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95</li>
+</ul>';
+$string['aggregationcoefweight'] = 'Peso dell\'elemento';
+$string['aggregationcoefweight_help'] = '<p>Peso applicato ai voti durante l\'aggregazione.</p>';
 $string['aggregationposition'] = 'Posizione colonna aggregazione dei voti';
 $string['aggregationposition_help'] = '<p>Permette di impostare la posizione della colonna contenente l\'aggregazione dei voti. La posizione è relativa rispetto alle colonne dei voti da aggregare.</p>';
 $string['aggregationsvisible'] = 'Tipi di aggregazione disponibili';
@@ -174,9 +174,9 @@ $string['bonuspoints'] = 'Punti bonus';
 $string['bulkcheckboxes'] = 'Selezioni in blocco';
 $string['calculatedgrade'] = 'Voto calcolato';
 $string['calculation'] = 'Calcolo';
+$string['calculation_help'] = 'I calcolo dei voti permette di aggregare i voti in base ad una formula. La formula deve iniziare con un segno uguale (=) e può usare i normali operatori matematici com max, min e sum. E\' anche possibile usare elementi di valutazione diversi referenziandoli nella formula all\'interno di doppie parentesi quadre tramite il loro numero ID.';
 $string['calculationadd'] = 'Aggiungi calcolo';
 $string['calculationedit'] = 'Modifica calcolo';
-$string['calculation_help'] = 'I calcolo dei voti permette di aggregare i voti in base ad una formula. La formula deve iniziare con un segno uguale (=) e può usare i normali operatori matematici com max, min e sum. E\' anche possibile usare elementi di valutazione diversi referenziandoli nella formula all\'interno di doppie parentesi quadre tramite il loro numero ID.';
 $string['calculationsaved'] = 'Calcolo salvato';
 $string['calculationview'] = 'Visualizza calcolo';
 $string['cannotaccessgroup'] = 'Spiacente, non è possibile accedere ai voti del gruppo selezionato.';
@@ -272,9 +272,9 @@ $string['exportsettings'] = 'Impostazioni esportazione';
 $string['exportto'] = 'Esporta in';
 $string['extracreditwarning'] = 'Nota: L\'impostazione Credito Extra per tutte gli elementi di una categoria di fatto rimuove gli stessi dal calcolo della valutazione, per cui non ci sarà  il punteggio totale.';
 $string['feedback'] = 'Feedback';
+$string['feedback_help'] = 'Permette di aggiungere commenti al voto.';
 $string['feedbackadd'] = 'Aggiungi feedback';
 $string['feedbackedit'] = 'Modifica feedback';
-$string['feedback_help'] = 'Permette di aggiungere commenti al voto.';
 $string['feedbacksaved'] = 'Feedback salvato';
 $string['feedbackview'] = 'Vedi feedback';
 $string['finalgrade'] = 'Valutazione finale';
@@ -359,9 +359,9 @@ $string['gradeview'] = 'Vedi valutazione';
 $string['gradeweighthelp'] = 'Help peso valutazioni';
 $string['groupavg'] = 'Media di gruppo';
 $string['hidden'] = 'Nascosto';
+$string['hidden_help'] = 'Permette di nascondere i voti agli studenti. E\' anche possibile specificare una data dopo la quale i voti saranno visibili agli studenti.';
 $string['hiddenasdate'] = 'Visualizza la data dei voti nascosti';
 $string['hiddenasdate_help'] = 'Se l\'utente non è autorizzato a vedere i voti nascosti, tramite questa impostazione potrà comunque vedere la data in cui ha ricevuto il voto.';
-$string['hidden_help'] = 'Permette di nascondere i voti agli studenti. E\' anche possibile specificare una data dopo la quale i voti saranno visibili agli studenti.';
 $string['hiddenuntil'] = 'Nascosto fino al';
 $string['hiddenuntildate'] = 'Nascosto fino al: {$a}';
 $string['hideadvanced'] = 'Nascondi opzioni avanzate';
@@ -499,6 +499,7 @@ $string['onascaleof'] = 'su una scala da {$a->grademin} a {$a->grademax}';
 $string['operations'] = 'Operazioni';
 $string['options'] = 'Opzioni';
 $string['outcome'] = 'Obiettivo';
+$string['outcome_help'] = 'L\'obiettivo che questo elemento di valutazione rappresenta.';
 $string['outcomeassigntocourse'] = 'Assegna un altro obiettivo a questo corso';
 $string['outcomecategory'] = 'Crea obiettivi nella categoria';
 $string['outcomecategorynew'] = 'Nuova categoria';
@@ -506,7 +507,6 @@ $string['outcomeconfirmdelete'] = 'Sei sicuro di eliminare l\'obiettivo "{$a}"?'
 $string['outcomecreate'] = 'Aggiungi un obiettivo';
 $string['outcomedelete'] = 'Elimina obiettivo';
 $string['outcomefullname'] = 'Nome';
-$string['outcome_help'] = 'L\'obiettivo che questo elemento di valutazione rappresenta.';
 $string['outcomeitem'] = 'Elemento obiettivo';
 $string['outcomeitemsedit'] = 'Modifica elemento obiettivo';
 $string['outcomereport'] = 'Scheda obiettivi';
