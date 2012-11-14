@@ -67,29 +67,29 @@ $string['errorupdatingattempt'] = 'ข้อผิดพลาดพยายา
 $string['exportcategory'] = 'หมวดหมู่การส่งออก';
 $string['exportfilename'] = 'แบบทดสอบ';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
-$string['exportquestions_help'] = '<p>This function allows you to export a complete category of questions to 
-   a text file.  
+$string['exportquestions_help'] = '<p>This function allows you to export a complete category of questions to
+a text file.
 
 <p>Please note that in many file formats some information is lost
-   when the questions are exported. This is because many formats do
-   not possess all the features that exist in Moodle questions. You should 
-   not expect to export and import questions and for them to be
-   identical. Also some question types may not export at all.
-   You are advised to check exported data before using
-   it in a production environment.</p>
+when the questions are exported. This is because many formats do
+not possess all the features that exist in Moodle questions. You should
+not expect to export and import questions and for them to be
+identical. Also some question types may not export at all.
+You are advised to check exported data before using
+it in a production environment.</p>
 
 <p>The format(s) currently supported are:</p>
 
 <p><b>GIFT format</b></p>
 <ul>
-<p>GIFT is the most comprehensive import/export format available for exporting 
-   Moodle quiz questions to a text file.  It was designed to be an easy 
-   method for teachers writing questions as a text file. It supports Multiple-Choice, 
-   True-False, Short Answer, Matching and Numerical questions, as well as insertion 
-   of a _____ for the "missing word" format.  Note that Cloze questions are not
-   currently supported. Various question-types can be 
-   mixed in a single text file, and the format also supports line comments, question names, 
-   feedback and percentage-weight grades.  Below are some examples:</p>
+<p>GIFT is the most comprehensive import/export format available for exporting
+Moodle quiz questions to a text file.  It was designed to be an easy
+method for teachers writing questions as a text file. It supports Multiple-Choice,
+True-False, Short Answer, Matching and Numerical questions, as well as insertion
+of a _____ for the "missing word" format.  Note that Cloze questions are not
+currently supported. Various question-types can be
+mixed in a single text file, and the format also supports line comments, question names,
+feedback and percentage-weight grades.  Below are some examples:</p>
 <pre>
 Who\'s buried in Grant\'s tomb?{~Grant ~Jefferson =no one}
 
@@ -106,7 +106,7 @@ When was Ulysses S. Grant born?{#1822}
 </ul>
 
 <p>More formats are yet to come, including WebCT, IMS QTI and whatever else
-   Moodle users can contribute! </p>';
+Moodle users can contribute! </p>';
 $string['filecantmovefrom'] = 'ไฟล์คำถามที่ไม่สามารถย้ายเพราะคุณไม่ได้รับสิทธิ์ในการลบไฟล์จากสถานที่ที่คุณกำลังพยายามที่จะย้ายคำถามจาก';
 $string['filecantmoveto'] = 'ไฟล์คำถามที่ไม่สามารถย้ายหรือคัดลอก becuase คุณไม่ได้รับอนุญาตให้เพิ่มไฟล์ไปยังสถานที่ที่คุณกำลังพยายามที่จะย้ายคำถามไปที่';
 $string['filesareacourse'] = 'แน่นอนพื้นที่ไฟล์';
