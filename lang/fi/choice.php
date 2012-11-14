@@ -31,9 +31,10 @@ $string['answered'] = 'Vastattu';
 $string['atleastoneoption'] = 'Valitse ainakin yksi vaihtoehto.';
 $string['choice'] = 'Vaihtoehto {$a}';
 $string['choice:choose'] = 'Vaihtoehdon valitseminen';
-$string['choiceclose'] = 'Saakka';
 $string['choice:deleteresponses'] = 'Vastausten poisto';
 $string['choice:downloadresponses'] = 'Vastausten lataus';
+$string['choice:readresponses'] = 'Vastusten tarkastelu';
+$string['choiceclose'] = 'Saakka';
 $string['choicefull'] = 'Tämä valinta on jo täynnä.';
 $string['choicename'] = 'Valinnan nimi';
 $string['choiceopen'] = 'Avoinna';
@@ -42,7 +43,6 @@ $string['choiceoptions_help'] = '<P ALIGN=CENTER><B>Valinnan vaihtoehdot</B></P>
 <p>Täällä määrittelet vaihtoehdot, joista kurssilaiset voivat valita vastauksensa.</p>
 
 <p>Voit täyttää näistä niin monta kuin haluat: voit myös jättää joitain kohtia tyhjäksi, jos et tarvitse kaikkia kuutta vaihtoehtoa.</p>';
-$string['choice:readresponses'] = 'Vastusten tarkastelu';
 $string['choicesaved'] = 'Valintasi on tallennettu';
 $string['choicetext'] = 'Valinnan teksti';
 $string['chooseaction'] = 'Valitse toiminto';

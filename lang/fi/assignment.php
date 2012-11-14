@@ -47,13 +47,14 @@ $string['allowresubmit_help'] = '<h2>Palautus arvioinnin jälkeen</h2>
 
 <P>Jos sallit palautuksen myös arvioinnin jälkeen, opiskelijat voivat palauttaa tehtäviään arvioitavaksi uudestaan, esimerkiksi jos alkuperäinen työ on hylätty, tai jos halutaan työstää tekstiä prosessikirjoituksen avulla. Tästä valinnasta on siis hyötyä, kun halutaan ohjata opiskelijoita tekemään parempaa työtä tekstin iteroinnin avulla.</P>
 
-<P>Tätä valintaa ei tietenkään voi käyttää Tehtävänanto-tyyppisessä tehtävässä, jossa opiskelija ei palauta mitään.</P>
-';
+<P>Tätä valintaa ei tietenkään voi käyttää Tehtävänanto-tyyppisessä tehtävässä, jossa opiskelija ei palauta mitään.</P>';
 $string['alreadygraded'] = 'Vastauksesi on jo arvioitu. Et voi palauttaa tehtävää uudestaan.';
-$string['assignmentdetails'] = 'Tehtävän tiedot';
 $string['assignment:exportownsubmission'] = 'Vie oma palautus';
 $string['assignment:exportsubmission'] = 'Vie palautus';
 $string['assignment:grade'] = 'Tehtävän arviointi';
+$string['assignment:submit'] = 'Tehtävän palautus';
+$string['assignment:view'] = 'Tehtävän tarkastelu';
+$string['assignmentdetails'] = 'Tehtävän tiedot';
 $string['assignmentmail'] = '{$a->teacher} on antanut sinulle palautetta tehtävästä \'{$a->assignment}\'
 
 Voit nähdä sen osoitteessa:
@@ -67,9 +68,7 @@ Voit nähdä sen osoitteessa:
 $string['assignmentmailsmall'] = 'Opettajan {$a->teacher} antama palaute on lisätty tehtävän palautukseesi \'{$a->assignment}\'';
 $string['assignmentname'] = 'Tehtävän nimi';
 $string['assignmentsubmission'] = 'Tehtävän palautukset';
-$string['assignment:submit'] = 'Tehtävän palautus';
 $string['assignmenttype'] = 'Tehtävän tyyppi';
-$string['assignment:view'] = 'Tehtävän tarkastelu';
 $string['availabledate'] = 'Palautettavissa alkaen';
 $string['cannotdeletefiles'] = 'Tapahtuneen virheen takia tiedostoja ei voitu poistaa';
 $string['cannotviewassignment'] = 'Et voi katsella tätä tehtävää';
@@ -113,8 +112,7 @@ $string['emailteachers_help'] = '<h2>Ilmoita palautuksesta opettajille</h2>
 
 <p>Vain opettajat, jotka voivat arvioida ko. tehtävän, saavat nämä ilmoitukset. Esimerkiksi, jos kurssialueella käytetään erillisiä ryhmiä, osaan ryhmistä rajoitetut opettajat eivät saa toisiin ryhmiin palautettuja töitä.</p>
 
-<p>Tehtävänannoissa (offline-tehtävä) sähköpostia ei tietenkään lähetetä, sillä opiskelijat eivät palauta mitään.</p>
-';
+<p>Tehtävänannoissa (offline-tehtävä) sähköpostia ei tietenkään lähetetä, sillä opiskelijat eivät palauta mitään.</p>';
 $string['emptysubmission'] = 'Et ole palauttanut vielä mitään.';
 $string['enablenotification'] = 'Lähetä ilmoitukset sähköpostitse';
 $string['enablenotification_help'] = '<h3>Annetusta arvioinnista viesti opiskelijoille</h3>
@@ -230,8 +228,8 @@ $string['typeonline'] = 'Verkkoteksti';
 $string['typeupload'] = 'Tiedostojen palautus';
 $string['typeuploadsingle'] = 'Yhden tiedoston palautus';
 $string['unfinalize'] = 'Palauta muokattavaksi';
-$string['unfinalizeerror'] = 'Tapahtuneen virheen takia tätä palautusta ei voitu palauttaa muokattavaksi.';
 $string['unfinalize_help'] = 'Kun palautat tehtävän muokattavaksi, opiskelija voi korjata palautustaan esim. palautteesi perusteella ja palauttaa sen uudestaan.';
+$string['unfinalizeerror'] = 'Tapahtuneen virheen takia tätä palautusta ei voitu palauttaa muokattavaksi.';
 $string['uploadafile'] = 'Lähetä tiedosto';
 $string['uploadbadname'] = 'Tiedostonimessä on tuntemattomia merkkejä. Tiedostoa ei voida tallentaa.';
 $string['uploadedfiles'] = 'lähetetyt tiedostot';

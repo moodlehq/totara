@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Kirjaudu chat-huoneeseen';
 $string['chat:deletelog'] = 'Chatin lokien poisto';
 $string['chat:exportparticipatedsession'] = 'Vie chat-keskustelut, joihin osallistuit';
 $string['chat:exportsession'] = 'Vie kaikki chat-keskustelut';
+$string['chat:readlog'] = 'Chatin lokien lukeminen';
+$string['chat:talk'] = 'Keskustele chatissa';
 $string['chatintro'] = 'Johdanto';
 $string['chatname'] = 'Chat-huoneen nimi';
-$string['chat:readlog'] = 'Chatin lokien lukeminen';
 $string['chatreport'] = 'Chat-keskustelut';
-$string['chat:talk'] = 'Keskustele chatissa';
 $string['chattime'] = 'Seuraavan chatin aika';
 $string['configmethod'] = 'Ajax chat-metodi tarjoaa ajax-pohjaisen käyttöliittymän, joka ottaa säännöllisesti yhteyttä palvelimelle päivittääkseen chatin. Normaalisti chatin toiminta vaatii selaimen ottavan yhteyttä säännöllisesti palvelimeen. Tämä toimii kaikkialla eikä vaadi asetuksia, mutta saattaa samalla aiheuttaa kuormitusta palvelimelle. Chat-palvelu vaatii unix-komentorivin käyttömahdollisuuden, mutta skaalautuu paremmin laajempaan käyttöön.';
 $string['confignormalupdatemode'] = 'Chatin päivitys hoidetaan yleensä HTTP 1.1:n <em>Keep-Alive</em>-ominaisuudella, mutta se on aika raskas palvelimelle. Tehokkaampi tapa on käyttää <em>Stream</em>-menetelmää chatin päivityksessä. <em>Stream</em> skaalautuu paremmin (kuten chatd), mutta palvelimesi ei välttämättä tue sitä.';
@@ -80,8 +80,8 @@ $string['modulename_help'] = 'Chatissa osallistujat keskustelevat samanaikaisest
 $string['modulenameplural'] = 'Chatit';
 $string['neverdeletemessages'] = 'Älä koskaan poista keskusteluja';
 $string['nextsession'] = 'Seuraava sovittu keskusteluaika';
-$string['nochat'] = 'Chatteja ei löytynyt.';
 $string['no_complete_sessions_found'] = 'Ajastetusti päättyneitä keskusteluja ei ole.';
+$string['nochat'] = 'Chatteja ei löytynyt.';
 $string['noguests'] = 'Tämä chat ei ole avoinna vierailijoille';
 $string['nomessages'] = 'Ei viestejä';
 $string['nopermissiontoseethechatlog'] = 'Sinulla ei ole oikeuksia nähdä keskustelujen lokeja.';
@@ -131,15 +131,15 @@ $string['usingchat_help'] = '<p align="center"><strong>Chatin käyttäminen </st
 
 <p>Internetosoiteet muunnetaan linkeiksi automaattisesti </p>
 <dl>
-  <dt><strong>Tunteilu</strong></dt>
+<dt><strong>Tunteilu</strong></dt>
 </dl>
 <p>Voit aloittaa rivin "/me" tai ":" tunteillaksesi. Tällä voit kuvaila tekemisisäsi ja tunnetilojasi siten että se erottuu muun tekstin joukosta. Jos nimesi on Pekka ja kirjoitat "/me nauraa!" Tulee chattiin rivi "Pekka nauraa!" </p>
 <dl>
-  <dt><strong>Kutsut</strong></dt>
+<dt><strong>Kutsut</strong></dt>
 </dl>
 <p>Voit lähettää muille kutsumisäänen painamalla "kutsu" linkkiä heidän nimensä vieressä. Voit kutsua kaikkia helposti kirjoittamalla: "beeb all".</p>
 <dl>
-  <dt><b>HTML</b></dt>
-  <dd>Jos osaat HTML-koodausta voit värittää tekstejäsi, lisätä kuvia yms...</dd>
+<dt><b>HTML</b></dt>
+<dd>Jos osaat HTML-koodausta voit värittää tekstejäsi, lisätä kuvia yms...</dd>
 </dl>';
 $string['viewreport'] = 'Näytä menneet keskustelut';

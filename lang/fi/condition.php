@@ -36,16 +36,17 @@ $string['availableuntil'] = 'Salli pääsy saakka';
 $string['badavailabledates'] = 'Virheelliset päivämäärät. Jos asetat molemmat päivämäärät, \'avoinna alkaen\' -päivämäärän täytyy olla ennen \'avoinna saakka\' -päivämäärää.';
 $string['badgradelimits'] = 'Jos asetat arvosanalle sekä ylä- että alarajan, täytyy ylärajan olla korkeampi kuin alarajan.';
 $string['completion_complete'] = 'merkittävä suoritetuksi';
+$string['completion_fail'] = 'suoritettava hylätyllä arvosanalla';
+$string['completion_incomplete'] = 'ei saa olla merkitty suoritetuksi';
+$string['completion_pass'] = 'suoritettava hyväksytyllä arvosanalla';
 $string['completioncondition'] = 'Aktiviteetin suoritusehdot';
 $string['completioncondition_help'] = 'Tämä asetus määrittelee aktiviteettien suoritus -ehdot, joiden täytyy täyttyä ennen tähän aktiviteettiin pääsyä. Huomaa että kurssisuoritusten seurannan täytyy olla asetettu ennen kuin aktiviteetin suoritus -ehtoa voidaan asettaa.
 
 Haluttaessa voidaan asettaa useita aktiviteetin suoritus -ehtoja. Tässä tapauksessa KAIKKIEN ehtojen pitää täyttyä ennen kuin aktiviteettin pääsee.';
-$string['completion_fail'] = 'suoritettava hylätyllä arvosanalla';
-$string['completion_incomplete'] = 'ei saa olla merkitty suoritetuksi';
-$string['completion_pass'] = 'suoritettava hyväksytyllä arvosanalla';
 $string['configenableavailability'] = 'Jos sallittu, voit määritellä julkaisuehdot (perustuen päivämäärään, arvosanaan tai suoritukseen) jotka määrittelevät onko aktiviteetti saatavilla.';
 $string['enableavailability'] = 'Salli ehdollinen julkaisu';
 $string['grade_atleast'] = 'oltava vähintään';
+$string['grade_upto'] = 'ja vähemmän kuin';
 $string['gradecondition'] = 'Arvosanan ehto';
 $string['gradecondition_help'] = 'Tämä asetus määrittelee arvosanaehdot, joiden pitää täyttyä ennen aktiviteettiin pääsyä.
 
@@ -53,7 +54,6 @@ Haluttaessa voidaan asettaa useita arvosanaehtoja. Tässä tapauksessa KAIKKIEN 
 $string['gradeitembutnolimits'] = 'Sinun täytyy antaa ylä- tai alaraja, tai molemmat.';
 $string['gradelimitsbutnoitem'] = 'Sinun täytyy valita arvosanakohde.';
 $string['gradesmustbenumeric'] = 'Minimi ja maksimi arvosanojen täytyy olla numeerisia (tai tyhjiä).';
-$string['grade_upto'] = 'ja vähemmän kuin';
 $string['none'] = '(ei mitään)';
 $string['notavailableyet'] = 'Ei vielä saatavilla';
 $string['requires_completion_0'] = 'Ei saatavilla ellei aktiviteetti <strong>{$a}</strong> ole keskeneräinen.';

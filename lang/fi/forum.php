@@ -48,7 +48,6 @@ $string['attachments'] = 'Liitteet';
 $string['blockafter'] = 'Postituksen raja';
 $string['blockafter_help'] = 'Tällä asetuksella määrittelet yhden osallistujan kirjoittamien viestien enimmäismäärän seuraavaksi määrittelemäsi ajanjakson aikana.';
 $string['blockperiod'] = 'Ajanjakso';
-$string['blockperioddisabled'] = 'Rajoitus ei käytössä';
 $string['blockperiod_help'] = '<h2>Postituksen rajoittaminen</h2>
 
 <p>Postituksen rajoittamisen idea on yksinkertainen: käyttäjältä estetään viestien lähettäminen keskustelualueelle valitun viestimäärän jälkeen, valitulla ajanjaksolla, ja tätä rajaa lähestyessään käyttäjä saa varoitusviestin aiheesta.</p>
@@ -56,6 +55,7 @@ $string['blockperiod_help'] = '<h2>Postituksen rajoittaminen</h2>
 <p>Asettamalla varoituksen rajan 0:ksi kytkeytyy varoitusviesti pois käytöstä, ja asettamalla postitusrajan 0:ksi kytkeytyy viestien rajoitus pois käytöstä. Jos viestien rajoitus on pois käytöstä, varoituskin automaattisesti on.</p>
 
 <p>Mikään näistä asetuksista ei rajoita opettajien viestien lähettämistä.</p>';
+$string['blockperioddisabled'] = 'Rajoitus ei käytössä';
 $string['blogforum'] = 'Normaali keskustelualue näytetään blogimaisessa muodossa';
 $string['bynameondate'] = '{$a->name} - {$a->date}';
 $string['cannotadd'] = 'Viestiä ei voitu lisätä tähän keskusteluun';
@@ -163,9 +163,6 @@ $string['forcessubscribe'] = 'Kaikki tilaavat tämän keskustelualueen';
 $string['forum'] = 'Keskustelualue';
 $string['forum:addnews'] = 'Lisää uutinen';
 $string['forum:addquestion'] = 'Lisää kysymys';
-$string['forumauthorhidden'] = 'Kirjoittaja (piilotettu)';
-$string['forumblockingalmosttoomanyposts'] = 'Lähestyt viestin lähetyksen rajaa. Olet lähettänyt {$a->numposts} viestiä {$a->blockperiod} aikana ja rajana on {$a->blockafter} viestiä.';
-$string['forumbodyhidden'] = 'Et voi lukea tätä viestiä, koska et ole vielä osallistunut keskusteluun tai viestin editointiaika ei ole kulunut loppuun.';
 $string['forum:createattachment'] = 'Liitetiedoston luonti';
 $string['forum:deleteanypost'] = 'Viestin poisto';
 $string['forum:deleteownpost'] = 'Oman viestin poisto';
@@ -173,20 +170,30 @@ $string['forum:editanypost'] = 'Viestien muokkaus';
 $string['forum:exportdiscussion'] = 'Vie koko keskustelu';
 $string['forum:exportownpost'] = 'Vie oma viesti';
 $string['forum:exportpost'] = 'Vie viesti';
-$string['forumintro'] = 'Keskustelualueen johdanto';
 $string['forum:managesubscriptions'] = 'Tilausten hallinta';
 $string['forum:movediscussions'] = 'Keskusteluiden siirto';
-$string['forumname'] = 'Keskustelualueen nimi';
-$string['forumposts'] = 'Keskustelualueen viestit';
 $string['forum:postwithoutthrottling'] = 'Vapauta viestien kynnyksestä';
 $string['forum:rate'] = 'Viestien arviointi';
 $string['forum:replynews'] = 'Uutisiin vastaaminen';
 $string['forum:replypost'] = 'Viestiin vastaaminen';
-$string['forums'] = 'Keskustelualueet';
 $string['forum:splitdiscussions'] = 'Keskustelujen jakaminen';
 $string['forum:startdiscussion'] = 'Uuden keskustelun luominen';
-$string['forumsubjecthidden'] = 'Otsikko (piilotettu)';
 $string['forum:throttlingapplies'] = 'Kavennus pätee';
+$string['forum:viewallratings'] = 'Näytä kaikki eri käyttäjien antamat arvioinnit';
+$string['forum:viewanyrating'] = 'Kaikkien arviointien katselu';
+$string['forum:viewdiscussion'] = 'Keskustelujen katselu';
+$string['forum:viewhiddentimedposts'] = 'Katsele piilo ajastettuja viestejä';
+$string['forum:viewqandawithoutposting'] = 'Näytä aina kysymys ja vastausalueen viestit.';
+$string['forum:viewrating'] = 'Näytä saamasi kokonaisarviointi';
+$string['forum:viewsubscribers'] = 'Tilaajien tarkastelu';
+$string['forumauthorhidden'] = 'Kirjoittaja (piilotettu)';
+$string['forumblockingalmosttoomanyposts'] = 'Lähestyt viestin lähetyksen rajaa. Olet lähettänyt {$a->numposts} viestiä {$a->blockperiod} aikana ja rajana on {$a->blockafter} viestiä.';
+$string['forumbodyhidden'] = 'Et voi lukea tätä viestiä, koska et ole vielä osallistunut keskusteluun tai viestin editointiaika ei ole kulunut loppuun.';
+$string['forumintro'] = 'Keskustelualueen johdanto';
+$string['forumname'] = 'Keskustelualueen nimi';
+$string['forumposts'] = 'Keskustelualueen viestit';
+$string['forums'] = 'Keskustelualueet';
+$string['forumsubjecthidden'] = 'Otsikko (piilotettu)';
 $string['forumtracked'] = 'Uusia viestejä seurataan';
 $string['forumtrackednot'] = 'Uusia viestejä ei seurata';
 $string['forumtype'] = 'Keskustelualueen tyyppi';
@@ -205,13 +212,6 @@ $string['forumtype_help'] = '<h2>Keskustelualueet</h2>
 <p>Blogi-tyyppinen keskustelu - avoin keskustelualue, jonka keskusteluaiheet listataan yhdellä sivulla ja kussakin on linkki "keskustele tästä aiheesta".</p>
 
 <p>Lisäksi kullakin kurssialueella on keskustelualue <b>Uutiset</b>, jolle vain opettajat voivat kirjoittaa ja viestit pakotetaan kaikkien osallistujien sähköpostiin.</p>';
-$string['forum:viewallratings'] = 'Näytä kaikki eri käyttäjien antamat arvioinnit';
-$string['forum:viewanyrating'] = 'Kaikkien arviointien katselu';
-$string['forum:viewdiscussion'] = 'Keskustelujen katselu';
-$string['forum:viewhiddentimedposts'] = 'Katsele piilo ajastettuja viestejä';
-$string['forum:viewqandawithoutposting'] = 'Näytä aina kysymys ja vastausalueen viestit.';
-$string['forum:viewrating'] = 'Näytä saamasi kokonaisarviointi';
-$string['forum:viewsubscribers'] = 'Tilaajien tarkastelu';
 $string['generalforum'] = 'Keskustelualue yleiseen käyttöön';
 $string['generalforums'] = 'Yleiset keskustelualueet';
 $string['inforum'] = '{$a} :ssa';
@@ -396,14 +396,14 @@ $string['subscribersto'] = 'Tilaa \'{$a}\'';
 $string['subscribestart'] = 'Lähetä sähköpostiini kopiot viesteistä tälle keskustelualueelle';
 $string['subscribestop'] = 'En halua kopioita tälle keskustelualueelle lähetetyistä viesteistä';
 $string['subscription'] = 'Tilaus';
-$string['subscriptionauto'] = 'Automaattitilaus';
-$string['subscriptiondisabled'] = 'Tilaus pois päältä';
-$string['subscriptionforced'] = 'Pakotettu tilaus';
 $string['subscription_help'] = '<h2>Keskustelualueen tilaaminen</h2>
 
 <p>Keskustelualueen tilaaminen merkitsee sitä, että tilaajalle lähetetään sähköpostilla kopio jokaisesta kyseiseen foorumiin lähetettävästä viestistä. Viestit lähetetään <?PHP echo $CFG->maxeditingtime/60 ?> minuuttia sen jälkeen kuin kirjoittaja on ne laatinut. Tuon ajan sisään kirjoittajalla on myös mahdollista muokata viestiään siten, että muokkaus ehtii lähteviin sähköposteihin.</p>
 
 <p>Tavallisesti osallistuja voi valita, tilaako hän keskustelualueen vai ei. Jos opettaja kuitenkin edellyttää tietyn keskustelualueen tilaamisen, tämä valintamahdollisuus ei päde, vaan jokainen kurssilainen saa sähköpostikopiot. Pakotettu tilaus sopii erityisen hyvin Uutisiin, ja muillekin keskustelualueille kurssin alussa, ennen kuin kaikille on selvää, että he voivat tilata näitä sähköposteja itse.</p>';
+$string['subscriptionauto'] = 'Automaattitilaus';
+$string['subscriptiondisabled'] = 'Tilaus pois päältä';
+$string['subscriptionforced'] = 'Pakotettu tilaus';
 $string['subscriptionmode'] = 'Tilauksen tila';
 $string['subscriptionmode_help'] = '<h2>Keskustelualueen tilaaminen</h2>
 

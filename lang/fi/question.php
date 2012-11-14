@@ -179,7 +179,7 @@ $string['exportquestions_help'] = '<P>Tällä toiminnolla voi siirtää Moodlest
 <P><B>GIFT tiedostotyyppi</B></P>
 <ul>
 <p>GIFT on kattavin tiedoston vienti- tai tuontimuoto, jolla voi siirtää Moodle tenttikysymyksiä tekstitiedostoon. GIFT on alunperin suunniteltu helpoksi työkaluksi, jolla opettaja voi kirjoittaa kysymyksiä tekstitiedostoon. GIFT tukee monivalintaa, oikein/väärin -kysymyksiä, lyhytvastauksia, yhdistelyä ja numeerisia kysymyksiä, sekä "puuttuva sana" -aukkotehtäviä. Huomaa, että Cloze-aukkotehtäviä ei tällä hetkellä tueta. Erilaisia kysymystyyppejä voi tallentaa samaan tiedostoon ja tietostotyyppi tukee myös rivien kommentointia, kysymysten nimiä, palautetta ja prosentuaalisesti painotettua arvostelua. Esimerkiksi:
- </p>
+</p>
 <pre>
 Kuka oli Sepeteuksen poikien isä? {=Sepeteus ~Virtanen ~ei kukaan}
 
@@ -258,11 +258,11 @@ $string['markoutofmax'] = 'Pisteet {$a->mark} kokonaispisteistä {$a->max}';
 $string['marks'] = 'Pisteet';
 $string['matcherror'] = 'Arvosanat eivät täsmää arviointiasetuksiin - kysymys ohitettu';
 $string['matchgrades'] = 'Yhdistä arvosanat';
-$string['matchgradeserror'] = 'Virhe jos arvosanaa ei ole listattu';
 $string['matchgrades_help'] = 'Tuotujen arvosanojen täytyy täsmätä yhden validin arvosanalistan kanssa - 100, 90, 80, 75, 70, 66.666, 60, 50, 40, 33.333, 30, 25, 20, 16.666, 14.2857, 12.5, 11.111, 10, 5, 0 (myös negatiiviset arvot). Jos ei, on kaksi vaihtoehtoa:
 
 * Virhe jos arvosanaa ei ole listalla - Jos kysymys sisältää arvosanoja, joita ei löydy listalta, näytetään virhe, eikä kysymystä tuoda
 * Lähin arvosana jos ei listalla - Jos löydetään arvosana, joka ei täsmää listalla olevien arvojen kanssa, arvosana muutetaan lähinnä sitä olevaan listan arvoon';
+$string['matchgradeserror'] = 'Virhe jos arvosanaa ei ole listattu';
 $string['matchgradesnearest'] = 'Lähin arvosana jos ei listalla';
 $string['missingcourseorcmid'] = 'Täytyy antaa kurssi-id tai cm-id kohteelle print_question';
 $string['missingcourseorcmidtolink'] = 'Täytyy antaa kurssi-id tai cm-id kohteelle get_question_edit_link.';

@@ -127,17 +127,17 @@ $string['permalink'] = 'Pysyväislinkki';
 $string['personalblogs'] = 'Käyttäjät voivat nähdä vain oman bloginsa';
 $string['preferences'] = 'Asetukset';
 $string['publishto'] = 'Julkaise';
+$string['publishto_help'] = 'Sinulla on kolme vaihtoehtoa:
+
+* Sinä (luonnostila) - Vain sinä ja ylläpitäjät näkevät merkinnän
+* Kirjautuneet käyttäjät - Kaikki Moodleen kirjautuneet voivat lukea merkinnän
+* Koko maailma - Kaikki, mukaanlukien vierailijat, voivat lukea tämän merkinnän';
 $string['publishtocourse'] = 'Yhteisten kurssien käyttäjät';
 $string['publishtocourseassoc'] = 'Yhdistetyn kurssin jäsenet';
 $string['publishtocourseassocparam'] = 'Kurssin {$a} jäsenet';
 $string['publishtogroup'] = 'Yhteisen ryhmän käyttäjät';
 $string['publishtogroupassoc'] = 'Ryhmäsi jäsenet yhdistetyllä kurssilla';
 $string['publishtogroupassocparam'] = 'Ryhmäsi jäsenet kurssilla {$a}';
-$string['publishto_help'] = 'Sinulla on kolme vaihtoehtoa:
-
-* Sinä (luonnostila) - Vain sinä ja ylläpitäjät näkevät merkinnän
-* Kirjautuneet käyttäjät - Kaikki Moodleen kirjautuneet voivat lukea merkinnän
-* Koko maailma - Kaikki, mukaanlukien vierailijat, voivat lukea tämän merkinnän';
 $string['publishtonoone'] = 'Itsellesi (keskeneräinen)';
 $string['publishtosite'] = 'Kaikille tällä sivustolla';
 $string['publishtoworld'] = 'Kaikille Internetin käyttäjille';

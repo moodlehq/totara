@@ -86,11 +86,11 @@ $string['casesensitive'] = 'Käytä säännöllisiä lausekkeita';
 $string['casesensitive_help'] = '<p align="center"><strong>Kysymysten asetukset </strong></p>
 
 <p>Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
-  <ol>
+<ol>
 
 <li><p> </p>
-  <p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
-  <p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
+<p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
+<p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
 
 </li>';
 $string['checkbranchtable'] = 'Tarkista sisältösivu';
@@ -218,13 +218,13 @@ $string['jumps_help'] = 'Jokaisella vastauksella (kysymyksiin) tai kuvauksella (
 $string['jumpsto'] = 'Siirtyy <em>{$a}</em>';
 $string['leftduringtimed'] = 'Olet lähtenyt ajastetun oppitunnin aikana.<br>Ole hyvä ja napsauta "jatka" aloittaaksesi oppitunnin uudelleen.';
 $string['leftduringtimednoretake'] = 'Olet lähtenyt ajastetun oppitunnin aikana, etkä<br> saa aloittaa uudelleen tai jatkaa oppituntia.';
+$string['lesson:edit'] = 'Muokkaa oppituntia';
+$string['lesson:manage'] = 'Hallinnoi oppituntia';
 $string['lessonattempted'] = 'Oppitunti suoritettu';
 $string['lessonclosed'] = 'Tämä oppitunti on suljettu {$a}:ssa';
 $string['lessoncloses'] = 'Oppitunti sulkeutuu';
 $string['lessoncloseson'] = 'Oppitunti sulkeutuu';
-$string['lesson:edit'] = 'Muokkaa oppituntia';
 $string['lessonformating'] = 'Oppitunnin muotoilu';
-$string['lesson:manage'] = 'Hallinnoi oppituntia';
 $string['lessonmenu'] = 'Oppitunnin valikko';
 $string['lessonnotready'] = 'Tämä oppitunti ei valmis suoritettavaksi. Ota yhteyttä {$a}.';
 $string['lessonnotready2'] = 'Tämä oppitunti ei valmis suoritettavaksi.';
@@ -270,8 +270,7 @@ $string['modulename_help'] = '<img valign="middle" src="<?php echo $CFG->wwwroot
 
 <blockquote>
 Oppitunti välittää sisällön kiinnostavalla ja joustavalla tavalla. Oppitunti koostuu joukosta sivuja. Jokainen sivu loppuu tyypillisesti kysymykseen ja mahdollisiin vastausvaihtoehtoihin. Opiskelijan vastauksesta riippuen hän joko jatkaa seuraavalle sivulle tai joutuu takaisin edelliselle sivulle. Oppitunnin läpi liikkuminen voi olla suoraviivaista tai monimutkaista, riippuen paljolti esitetyn materiaalin rakenteesta.
-</blockquote>
-';
+</blockquote>';
 $string['modulenameplural'] = 'Oppitunnit';
 $string['move'] = 'Siirrä sivu';
 $string['movedpage'] = 'Siirretty sivu';
@@ -281,11 +280,11 @@ $string['multianswer'] = 'Monivastaus';
 $string['multianswer_help'] = '<p align="center"><strong>Kysymysten asetukset </strong></p>
 
 <p>Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
-  <ol>
+<ol>
 
 <li><p> </p>
-  <p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
-  <p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
+<p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
+<p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
 
 </li>';
 $string['multichoice'] = 'Monivalinta';
@@ -323,8 +322,8 @@ $string['numberofpagesviewed'] = 'Vastattujen kysymysten määrä: {$a}';
 $string['numberofpagesviewednotice'] = 'Vastattujen kysymysten lukumäärä: {$a->nquestions} (sinun pitää vastat vähintään {$a->minquestions} kysymykseen)';
 $string['numerical'] = 'Numeerinen';
 $string['ongoing'] = 'Näytä tähän mennessä kertyneet pisteet';
-$string['ongoingcustom'] = 'Tämä on {$a->score} pisteen oppitunti. Olet ansainnut {$a->score} pistettä {$a->currenthigh} pisteestä tähän mennessä.';
 $string['ongoing_help'] = 'Jos käytössä, jokainen sivu näyttää opiskelijan sen hetkisen pistemäärän sekä sen hetkisen mahdollisen maksimipistemäärän.';
+$string['ongoingcustom'] = 'Tämä on {$a->score} pisteen oppitunti. Olet ansainnut {$a->score} pistettä {$a->currenthigh} pisteestä tähän mennessä.';
 $string['ongoingnormal'] = 'Olet vastannut oikein {$a->correct} kysymykseen {$a->viewed} kysymyksestä.';
 $string['onpostperpage'] = 'Vain yksi viesti luokkaa kohden';
 $string['options'] = 'Asetukset';
@@ -335,10 +334,10 @@ $string['outof'] = 'maksimipisteet {$a}';
 $string['overview'] = 'Yleistä';
 $string['overview_help'] = 'Oppitunti sisältää tietyn määrän sivuja ja vaihtoehtoisia sisältösivuja. Sivulla on jonkin verran sisältöä ja se normaalisti loppuu kysymykseen. Jokaiseen kysymyksen vastaukseen on liitetty "hyppy". Hyppy voi olla suhteellinen, kuten siirtyminen seuraavalle sivulle, tai absoluuttinen, joka on määritelty tietylle oppitunnin sivulle. Sisältösivu on sivu jossa on linkkejä muille oppitunnin sivuille, esimerkiksi Sisällysluettelo.';
 $string['page'] = 'Sivu {$a}';
-$string['pagecontents'] = 'Sivun sisältö';
 $string['page-mod-lesson-edit'] = 'Muokkaa oppituntisivua';
 $string['page-mod-lesson-view'] = 'Näytä tai esikatsele oppituntisivua';
 $string['page-mod-lesson-x'] = 'Kaikki oppituntisivut';
+$string['pagecontents'] = 'Sivun sisältö';
 $string['pages'] = 'Sivuja';
 $string['pagetitle'] = 'Sivun otsikko';
 $string['password'] = 'Salasana';
@@ -404,9 +403,9 @@ $string['showanunseenpage'] = 'Näytä vielä katsomaton sivu';
 $string['singleanswer'] = 'Yksi vastaus';
 $string['skip'] = 'Ohita navigaatio';
 $string['slideshow'] = 'Diaesitys';
+$string['slideshow_help'] = 'Jos käytössä, oppitunti näytetään diaesityksenä, jolla on määrätty leveys ja korkeus.';
 $string['slideshowbgcolor'] = 'Diaesityksen taustaväri';
 $string['slideshowheight'] = 'Diaesityksen korkeus';
-$string['slideshow_help'] = 'Jos käytössä, oppitunti näytetään diaesityksenä, jolla on määrätty leveys ja korkeus.';
 $string['slideshowwidth'] = 'Diaesityksen leveys';
 $string['startlesson'] = 'Aloita oppitunti';
 $string['studentattemptlesson'] = 'Opiskelijan {$a->lastname}, {$a->firstname} suorituskerta numero {$a->attempt}';

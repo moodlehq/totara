@@ -934,7 +934,7 @@ $string['upgradesettings'] = 'Uudet asetukset';
 $string['upgradesettingsintro'] = 'Alla olevat asetukset lisättiin Moodlen päivityksen aikana. Tee haluamasi muutokset oletusarvoihin ja napsauta &quot;Tallenna&quot; sivun alareunasta ottaaksesi käyttöön tekemäsi muutokset.';
 $string['upgradestart'] = 'Päivitys';
 $string['upgradesure'] = 'Moodlen asennustiedostot ovat muuttuneet, järjestelmä tullaan päivittämään uuteen versioon automaattisesti. Uusi versio on:
- <p><b>{$a}</b></p>
+<p><b>{$a}</b></p>
 <p>Kun aloitat päivittämisen, et voi enää palata takaisin aiempaan versioon.</p>
 <p>Oletko varma, että haluat päivittää palvelimen?</p>';
 $string['upgradetimedout'] = 'Päivitys aikakatkaistiin, aloita päivitys uudelleen.';

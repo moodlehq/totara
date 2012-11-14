@@ -81,8 +81,7 @@ $string['casesensitive_help'] = '<h2>Kirjasinkoon vaikutus</h2>
 
 <p>Tämä asetus määrittää, onko isojen ja pienten kirjainten käytöllä merkitystä linkitettäessä sanoja automaattisesti ko. hakusanaan.</p>
 
-<p>Esimerkiksi, jos kirjasinkoolla <em>on</em> merkitystä, tekstissä käytetty sana "html" <em>ei</em> linkity hakusanaan "HTML". </p>
-';
+<p>Esimerkiksi, jos kirjasinkoolla <em>on</em> merkitystä, tekstissä käytetty sana "html" <em>ei</em> linkity hakusanaan "HTML". </p>';
 $string['cat'] = 'kategoria';
 $string['categories'] = 'Kategoriat';
 $string['category'] = 'Kategoria';
@@ -120,8 +119,7 @@ $string['dateview'] = 'Selaa päiväysten mukaan';
 $string['defaultapproval'] = 'Hakusanat julkaistaan heti';
 $string['defaultapproval_help'] = '<h2>Hakusanat julkaistaan heti</h2>
 
-<p>Tämä asetus määrittelee, mitä tapahtuu opiskelijoiden lisäämille hakusanoille. Ne voidaan automaattisesti julkaista eli laittaa näkyville kaikille. Muuten opettajan täytyy hyväksyä jokainen opiskelijan lisäämä hakusana erikseen.</p>
-';
+<p>Tämä asetus määrittelee, mitä tapahtuu opiskelijoiden lisäämille hakusanoille. Ne voidaan automaattisesti julkaista eli laittaa näkyville kaikille. Muuten opettajan täytyy hyväksyä jokainen opiskelijan lisäämä hakusana erikseen.</p>';
 $string['defaulthook'] = 'Oletuskoukku';
 $string['defaultmode'] = 'Oletustila';
 $string['defaultsortkey'] = 'Järjestämisen oletusperuste';
@@ -140,13 +138,6 @@ $string['destination_help'] = '<p>Voit määritellä mihin haluat tuoda hakusana
 <li><strong>Uusi sanasto:</strong> Luo uuden sanaston, joka perustuu tietoon valituissa tuoduissa tiedostoissa, ja syöttää uudet hakusanat siihen.</li>
 </ul>';
 $string['displayformat'] = 'Sanaston selaustapa';
-$string['displayformatcontinuous'] = 'Jatkuva';
-$string['displayformatdictionary'] = 'Yksinkertainen sanakirja';
-$string['displayformatencyclopedia'] = 'Tietosanakirja';
-$string['displayformatentrylist'] = 'Hakusanalista';
-$string['displayformatfaq'] = 'Usein kysytyt kysymykset (FAQ)';
-$string['displayformatfullwithauthor'] = 'Kaikki tiedot';
-$string['displayformatfullwithoutauthor'] = 'Kaikki tiedot paitsi tekijä';
 $string['displayformat_help'] = '<h2>Sanaston hakusanojen selaustapa</h2>
 
 <p>Tämä asetus määrittelee hakusanojen selaustavan sanastossa. Oletusmuodot ovat:</p>
@@ -180,6 +171,13 @@ $string['displayformat_help'] = '<h2>Sanaston hakusanojen selaustapa</h2>
 
 <hr />
 <p>Moodlen ylläpitäjät voivat luoda uusia esitysmuotoja seuraamalla ohjeita <b>mod/glossary/formats/README.txt</b>.</p>';
+$string['displayformatcontinuous'] = 'Jatkuva';
+$string['displayformatdictionary'] = 'Yksinkertainen sanakirja';
+$string['displayformatencyclopedia'] = 'Tietosanakirja';
+$string['displayformatentrylist'] = 'Hakusanalista';
+$string['displayformatfaq'] = 'Usein kysytyt kysymykset (FAQ)';
+$string['displayformatfullwithauthor'] = 'Kaikki tiedot';
+$string['displayformatfullwithoutauthor'] = 'Kaikki tiedot paitsi tekijä';
 $string['displayformats'] = 'Sanaston hakusanojen selaustavat';
 $string['displayformatssetup'] = 'Esitysmuodon valinta';
 $string['duplicatecategory'] = 'Kopioi kategoria';
@@ -249,22 +247,22 @@ $string['glossary:export'] = 'Hakusanojen vienti';
 $string['glossary:exportentry'] = 'Vie yksittäinen merkintä';
 $string['glossary:exportownentry'] = 'Vie yksittäinen oma merkintä';
 $string['glossary:import'] = 'Hakusanojen tuonti';
-$string['glossaryleveldefaultsettings'] = 'Sanastojen oletusasetukset';
 $string['glossary:managecategories'] = 'Kategorioiden hallinta';
 $string['glossary:managecomments'] = 'Kommenttien hallinta';
 $string['glossary:manageentries'] = 'Hakusanojen hallinta';
 $string['glossary:rate'] = 'Hakusanojen arviointi';
+$string['glossary:view'] = 'Sanaston katselu';
+$string['glossary:viewallratings'] = 'Näytä kaikki arviot';
+$string['glossary:viewanyrating'] = 'Näytä saatujen arvioiden yhteismäärä';
+$string['glossary:viewrating'] = 'Tarkastele saamiasi arviointeja';
+$string['glossary:write'] = 'Luo uusia hakusanoja';
+$string['glossaryleveldefaultsettings'] = 'Sanastojen oletusasetukset';
 $string['glossarytype'] = 'Sanaston tyyppi';
 $string['glossarytype_help'] = '<h2>Kurssin pääsanaston määrittäminen</h2>
 
 <p>Sanastojärjestelmä mahdollistaa hakusanojen viennin kurssialueen mistä tahansa toissijaisesta sanastosta kurssialueen pääsanastoon. Tehdäksesi tämän sinun pitää määritellä, mikä sanasto on tämä pääsanasto. Kurssialueella voi olla vain yksi pääsanasto.</p>
 
 <p>Oletusarvoisesti vain opettajat saavat päivittää pääsanastoa.</p>';
-$string['glossary:view'] = 'Sanaston katselu';
-$string['glossary:viewallratings'] = 'Näytä kaikki arviot';
-$string['glossary:viewanyrating'] = 'Näytä saatujen arvioiden yhteismäärä';
-$string['glossary:viewrating'] = 'Tarkastele saamiasi arviointeja';
-$string['glossary:write'] = 'Luo uusia hakusanoja';
 $string['guestnoedit'] = 'Vierailijat eivät voi muokata sanastoja';
 $string['importcategories'] = 'Tuo kategorioita';
 $string['importedcategories'] = 'Tuodut kategoriat';
@@ -345,8 +343,7 @@ $string['showall_help'] = '<h2>Selailu aakkostetussa näkymässä</h2>
 
 <p><strong>Näytä aakkosittain</strong> mahdollistaa tai estää selaamisen aakkosjärjestyksessä.</p>
 
-<p><strong>Näytä kaikki</strong> mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.</p>
-';
+<p><strong>Näytä kaikki</strong> mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.</p>';
 $string['showalphabet'] = 'Näytä aakkosittain';
 $string['showalphabet_help'] = '<p>Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa: </p>
 

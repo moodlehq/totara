@@ -55,6 +55,14 @@ $string['aggregatesum'] = 'Arvosanojen summa';
 $string['aggregateweightedmean'] = 'Arvosanojen painotettu keskiarvo';
 $string['aggregateweightedmean2'] = 'Arvosanojen yksinkertainen painotettu keskiarvo';
 $string['aggregation'] = 'Yhteenveto';
+$string['aggregation_help'] = 'Koostaminen määrittää kuinka kategorian arvosanat on yhdistetty
+
+* Arvosanojen keskiarvo - Kaikkien arvosanojen summa jaettuna niiden määrällä
+* Arvosanojen mediaani - Keskimmäinen arvo kun arvosanat ovat kokojärjestyksessä
+* Alin arvosana
+* Ylin arvosana
+* Arvosanojen moodi - Arvosana joka esiintyy useiten
+* Arvosanojen summa - Kaikkien arvosanojen summa, jossa arvosana-asteikot jätetään pois';
 $string['aggregationcoef'] = 'Kokonaispistemäärän kerroin';
 $string['aggregationcoefextra'] = 'Lisäpisteet';
 $string['aggregationcoefextra_help'] = 'Jos arvosanakooste on Arvosanojen summa tai Yksinkertainen painotettu keskiarvo ja lisäpisteet -valintalaatikko on valittuna, arvosanakohteiden ylintä arvosanaa ei lisätä kategorian ylimpään arvosanaan, jolloin on mahdollista saavuttaa ylin arvosana (tai arvosanat yli maksimin, jos sallittu ylläpitäjän toimesta) kategoriassa ilman että kaikissa arvosanakohteissa olisi ylintä arvosanaa.
@@ -66,14 +74,6 @@ $string['aggregationcoefextraweight'] = 'Lisäpisteiden paino';
 $string['aggregationcoefextraweight_help'] = 'Jos lisäpisteiden painotus on asetettu suuremmaksi kuin nolla, arvosana toimii lisäpisteenä yhteisarvosanaa koostettaessa. Numero on kerroin, jolla arvosana kerrotaan ennen sen lisäämistä kokonaismäärään keskiarvon laskemiseksi.';
 $string['aggregationcoefweight'] = 'Kohteen painotus';
 $string['aggregationcoefweight_help'] = 'Kohteen painoa käytetään kategoriakoosteessa ilmaisemaan kohteen tärkeyttä verrattaen muihin arvosanakohteisiin samassa kategoriassa.';
-$string['aggregation_help'] = 'Koostaminen määrittää kuinka kategorian arvosanat on yhdistetty
-
-* Arvosanojen keskiarvo - Kaikkien arvosanojen summa jaettuna niiden määrällä
-* Arvosanojen mediaani - Keskimmäinen arvo kun arvosanat ovat kokojärjestyksessä
-* Alin arvosana
-* Ylin arvosana
-* Arvosanojen moodi - Arvosana joka esiintyy useiten
-* Arvosanojen summa - Kaikkien arvosanojen summa, jossa arvosana-asteikot jätetään pois';
 $string['aggregationposition'] = 'Yhteenvedon paikka';
 $string['aggregationposition_help'] = 'Tämä asetus määrittelee näytetäänkö kategorian ja kurssin yhteispistesarakkeet ensimmäisenä vai viimeisenä arvioinnit-raporteissa.';
 $string['aggregationsvisible'] = 'Käytettävissä olevat koostetyypit';
@@ -96,9 +96,9 @@ $string['bonuspoints'] = 'Lisäpisteet';
 $string['bulkcheckboxes'] = 'Täydennä asetusnapit';
 $string['calculatedgrade'] = 'Laskettu arvosana';
 $string['calculation'] = 'Laskentatapa';
+$string['calculation_help'] = 'Arvosanan laskenta on kaava, jota käytetään arvosanojen määrittämiseen. Kaavan tulisi alkaa yhtäsuuri kuin (=) -merkillä ja se voi käyttää yleisiä matemaattisia toimintoja kuten max, min, ja summa. Haluttaessa voidaan muita arvosanakohteita sisällyttää laskentaan kirjoittamalla ID-numerot kaksiin hakasulkeisiin.';
 $string['calculationadd'] = 'Lisää laskentatapa';
 $string['calculationedit'] = 'Muokkaa laskentatapaa';
-$string['calculation_help'] = 'Arvosanan laskenta on kaava, jota käytetään arvosanojen määrittämiseen. Kaavan tulisi alkaa yhtäsuuri kuin (=) -merkillä ja se voi käyttää yleisiä matemaattisia toimintoja kuten max, min, ja summa. Haluttaessa voidaan muita arvosanakohteita sisällyttää laskentaan kirjoittamalla ID-numerot kaksiin hakasulkeisiin.';
 $string['calculationsaved'] = 'Laskentatapa tallennettiin';
 $string['calculationview'] = 'Näytä laskentatapa';
 $string['cannotaccessgroup'] = 'Valitun ryhmän arvosanoja ei voi näyttää.';
@@ -193,9 +193,9 @@ $string['exportsettings'] = 'Vie asetukset';
 $string['exportto'] = 'Vie muotoon';
 $string['extracreditwarning'] = 'Huomioi: Kaikkien kohteitten muuttaminen ylimääräisiksi suorituksiksi jossain kategoriassa käytännössä poistaa ne arvosanan laskennasta, koska kategorian kokonaispistemääräksi tulee nolla.';
 $string['feedback'] = 'Palaute';
+$string['feedback_help'] = 'Tämä kenttä mahdollistaa kommentit arvosanasta.';
 $string['feedbackadd'] = 'Anna palautetta';
 $string['feedbackedit'] = 'Muokkaa palautetta';
-$string['feedback_help'] = 'Tämä kenttä mahdollistaa kommentit arvosanasta.';
 $string['feedbacksaved'] = 'Palaute tallennettu';
 $string['feedbackview'] = 'Näytä palaute';
 $string['finalgrade'] = 'Lopullinen arviointi';
@@ -291,9 +291,9 @@ $string['gradeview'] = 'Näytä arvosana';
 $string['gradeweighthelp'] = 'Ohje arvosanan painotukseen';
 $string['groupavg'] = 'Ryhmän keskiarvo';
 $string['hidden'] = 'Piilotettu';
+$string['hidden_help'] = 'Jos valittu, arvosanat piilotetaan opiskelijoilta. Haluttaessa voidaan asettaa päivämäärä, jonka jälkeen arvosanat näytetään.';
 $string['hiddenasdate'] = 'Näytä piilotettujen arvosanojen päivämäärä';
 $string['hiddenasdate_help'] = 'Jos käyttäjä ei pysty näkemään piiloitettuja arvosanoja, näytä alistamisen päivämäärä, kuin "-".';
-$string['hidden_help'] = 'Jos valittu, arvosanat piilotetaan opiskelijoilta. Haluttaessa voidaan asettaa päivämäärä, jonka jälkeen arvosanat näytetään.';
 $string['hiddenuntil'] = 'Piilossa kunnes';
 $string['hiddenuntildate'] = 'Piilossa kunnes: {$a}';
 $string['hideadvanced'] = 'Piilota lisäominaisuudet';
@@ -431,6 +431,7 @@ $string['onascaleof'] = 'asteikolla {$a->grademin} - {$a->grademax}';
 $string['operations'] = 'Operaatiot';
 $string['options'] = 'Optiot';
 $string['outcome'] = 'Tavoite';
+$string['outcome_help'] = 'Määrittelee tavoitteen, jota tämä arvosana vastaa arviointikirjassa.';
 $string['outcomeassigntocourse'] = 'Lisää kurssille uusi tavoite';
 $string['outcomecategory'] = 'Luo tavoitteet kategoriaan';
 $string['outcomecategorynew'] = 'Uusi kategoria';
@@ -438,7 +439,6 @@ $string['outcomeconfirmdelete'] = 'Haluatko varmasti poistaa tavoitteen "{$a}"?'
 $string['outcomecreate'] = 'Lisää uusi tavoite';
 $string['outcomedelete'] = 'Poista tavoite';
 $string['outcomefullname'] = 'Koko nimi';
-$string['outcome_help'] = 'Määrittelee tavoitteen, jota tämä arvosana vastaa arviointikirjassa.';
 $string['outcomeitem'] = 'Tavoitesarake';
 $string['outcomeitemsedit'] = 'Muokkaa tavoitesaraketta';
 $string['outcomereport'] = 'Tavoitteiden raportti';

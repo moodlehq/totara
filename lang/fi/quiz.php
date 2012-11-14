@@ -123,11 +123,11 @@ $string['browsersecurity_help'] = '<h2>Näytä "suojatussa" ikkunassa</h2>
 <p>"Suojatulla" ikkunalla rajoitetaan hieman opiskelijan selaimen käyttöä siten, että tentissä huijaaminen ja tekstin suora kopiointi hankaloituu. Javascriptin on oltava päällä selaimessa.</p>
 
 <p>Suojauksella:</p>
- <ul>
-     <li>Tentti näytetään omassa, koko ruudun selainikkunassaan.</li>
-     <li>Osa hiiren toiminnoista on estetty.</li>
-     <li>Osa näppäimistökomennoista on estetty.</li>
- </ul>
+<ul>
+<li>Tentti näytetään omassa, koko ruudun selainikkunassaan.</li>
+<li>Osa hiiren toiminnoista on estetty.</li>
+<li>Osa näppäimistökomennoista on estetty.</li>
+</ul>
 
 <p>HUOM: <b>Tämä suojaus ei ole vedenpitävä</b>. Älä luota tähän suojaukseen ainoana suojauskeinona, jos epäilet opiskelijoidesi huijaavan. Verkkoympäristössä on mahdotonta tehdä aukotonta suojausta. Lisävarmistuksena voit esimerkiksi luoda kysymyksistä ison tietokannan, josta arvotaan satunnaisia kysymyksiä. Tai mieti arviointikriteereitäsi uudestaan siten, että opiskelijoiden konstruktiivisella toiminnalla, kuten keskusteluaktiivisuudella, sanastotyöskentelyllä, wiki-aktiivisuudella, tuntiaktiivisuudella tai tehtävillä on merkitystä arvioinnissa.</p>';
 $string['calculated'] = 'Lasku';
@@ -392,16 +392,16 @@ $string['history'] = 'Vastaushistoria:';
 $string['howquestionsbehave_desc'] = 'Oletusasetus tentin kysymysten toimintatavalle.';
 $string['imagedisplay'] = 'Näytettävä kuva';
 $string['import'] = 'Tuo';
-$string['importcategory'] = 'tuonti kategoria';
-$string['importerror'] = 'Virhe tuonnissa';
-$string['importfilearea'] = 'Tuo kurssilla olevasta tiedostosta';
-$string['importfileupload'] = 'Tuo palvelimelle ladattavasta tiedostosta...';
-$string['importfromthisfile'] = 'Tuo tästä tiedostosta';
 $string['import_help'] = 'Tämä toiminnon avulla voit tuoda kysymyksiä ulkoisista tekstitiedostoista.
 
 Jos tiedostosi sisältää muita kuin ascii merkkejä, täytyy tiedoston olla UTF-8 muodossa. Ole erityisen varovainen Microsoft Office ohjelmilla luotujen tiedostojen kanssa, koska nämä käyttävät yleisesti erityistä koodausta, jota ei käsitellä oikein.
 
 Tuonti- ja vientiformaatit ovat plugineilla toteutettavia resursseja. Muita vaihtoehtoisia formaatteja saattaa olla saatavissa Moduulit ja Pluginit -tietokannassa.';
+$string['importcategory'] = 'tuonti kategoria';
+$string['importerror'] = 'Virhe tuonnissa';
+$string['importfilearea'] = 'Tuo kurssilla olevasta tiedostosta';
+$string['importfileupload'] = 'Tuo palvelimelle ladattavasta tiedostosta...';
+$string['importfromthisfile'] = 'Tuo tästä tiedostosta';
 $string['importingquestions'] = 'Tuodaan {$a} kysymystä tiedostosta';
 $string['importmax10error'] = 'Kysymyksessä on virhe. Ei voi olla yli kymmentä vastausta';
 $string['importmaxerror'] = 'Tässä kysymyksessä on virhe: liian monta vastausta.';
@@ -462,8 +462,8 @@ $string['navnojswarning'] = 'Varoitus: nämä linkit eivät tallenna vastauksias
 $string['neverallononepage'] = 'Ei koskaan, kaikki kysymykset yhdellä sivulla';
 $string['newattemptfail'] = 'Virhe: Tentin uutta suorituskertaa ei voitu aloittaa';
 $string['newpage'] = 'Uusi sivu';
-$string['newpageevery'] = 'Aloita uusi sivu automaattisesti';
 $string['newpage_help'] = 'Pitkissä tenteissä kysymykset kannattaa jakaa usealle sivulle rajoittamalla sivukohtaista kysymysmäärää. Kysymyksiä lisättäessä sivunvaihdot lisätään automaattisesti tällä asetuksella määrittelemäsi sivujaon mukaan. Myöhemmin tenttiä muokatessasi sivunvaihtojen paikkoja on toki mahdollista vielä siirtää.';
+$string['newpageevery'] = 'Aloita uusi sivu automaattisesti';
 $string['noanswers'] = 'Vastausta ei ole valittu!';
 $string['noattempts'] = 'Kukaan ei ole yrittänyt tätä tenttiä.';
 $string['noattemptsfound'] = 'Suorituskertoja ei löytynyt';
@@ -587,22 +587,27 @@ $string['questiontextisempty'] = '[Tyhjä kysymysteksti]';
 $string['questiontype'] = 'Kysymystyyppi {$a}';
 $string['questiontypesetupoptions'] = 'Asetukset kysymystyypeille:';
 $string['quiz:attempt'] = 'Yritä tenttejä';
-$string['quizavailable'] = 'Tentti on vastattavissa {$a} saakka.';
-$string['quizclose'] = 'Tenttiaika päättyy';
-$string['quizclosed'] = 'Tentti on suljettu {$a}';
-$string['quizcloses'] = 'Tentti sulkeutuu';
-$string['quizcloseson'] = 'Tentti sulkeutuu {$a}';
 $string['quiz:deleteattempts'] = 'Poista tentin suoritukset';
 $string['quiz:emailconfirmsubmission'] = 'Sähköpostivarmistus kun tenttivastaukset palautetaan';
 $string['quiz:emailnotifysubmission'] = 'Tilaa sähköpostihuomautus kun tenttivastaukset palautetaan';
 $string['quiz:grade'] = 'Arvioi tentit itse';
 $string['quiz:ignoretimelimits'] = 'Jätä aikarajat huomioimatta';
+$string['quiz:manage'] = 'Tenttien asetukset';
+$string['quiz:manageoverrides'] = 'Hallinnoi poikkeuspääsyjä tenttiin';
+$string['quiz:preview'] = 'Tenttien esikatselu';
+$string['quiz:regrade'] = 'Uudelleenarvioi suoritukset';
+$string['quiz:reviewmyattempts'] = 'Tarkastele omia tenttisuorituksiasi';
+$string['quiz:view'] = 'Katso tentin tietoja';
+$string['quiz:viewreports'] = 'Katso tentin raportteja';
+$string['quizavailable'] = 'Tentti on vastattavissa {$a} saakka.';
+$string['quizclose'] = 'Tenttiaika päättyy';
+$string['quizclosed'] = 'Tentti on suljettu {$a}';
+$string['quizcloses'] = 'Tentti sulkeutuu';
+$string['quizcloseson'] = 'Tentti sulkeutuu {$a}';
 $string['quizisclosed'] = 'Tämä tentti on suljettu';
 $string['quizisclosedwillopen'] = 'Tentti suljettu (avautuu {$a})';
 $string['quizisopen'] = 'Tämä tentti on auki';
 $string['quizisopenwillclose'] = 'Tentti auki (sulkeutuu {$a})';
-$string['quiz:manage'] = 'Tenttien asetukset';
-$string['quiz:manageoverrides'] = 'Hallinnoi poikkeuspääsyjä tenttiin';
 $string['quiznavigation'] = 'Tentin navigaatio';
 $string['quizopen'] = 'Tenttiaika alkaa';
 $string['quizopenclose'] = 'Avautumis- ja sulkeutumispäivämäärät';
@@ -615,13 +620,8 @@ $string['quizopens'] = 'Tentti aukeaa';
 $string['quizopenwillclose'] = 'Tämä tentti on auki, sulkeutuu {$a} kello';
 $string['quizordernotrandom'] = 'Tentin kysymyksiä ei ole sekoitettu';
 $string['quizorderrandom'] = '* Tentin kysymykset on sekoitettu';
-$string['quiz:preview'] = 'Tenttien esikatselu';
-$string['quiz:regrade'] = 'Uudelleenarvioi suoritukset';
-$string['quiz:reviewmyattempts'] = 'Tarkastele omia tenttisuorituksiasi';
 $string['quizsettings'] = 'Tentin asetukset';
 $string['quiztimer'] = 'Tentin Aika';
-$string['quiz:view'] = 'Katso tentin tietoja';
-$string['quiz:viewreports'] = 'Katso tentin raportteja';
 $string['quizwillopen'] = 'Tämä tentti avautuu {$a}';
 $string['random'] = 'Satunnaistetut kysymykset';
 $string['randomcreate'] = 'Luo satunnaistetut kysymykset';
@@ -671,8 +671,7 @@ $string['requirepassword_help'] = '<h2>Suojaa salasanalla</h2>
 
 <p>Tämä kenttä on vapaaehtoinen.</p>
 
-<p>Jos määrittelet salasanan tähän kenttään, tenttiin osallistujien on annettava sama salasana ennen kuin he voivat vastata tenttiin.</p>
-';
+<p>Jos määrittelet salasanan tähän kenttään, tenttiin osallistujien on annettava sama salasana ennen kuin he voivat vastata tenttiin.</p>';
 $string['requiresubnet'] = 'Rajaa pääsy verkko-osoitteisiin';
 $string['requiresubnet_help'] = '<h2>Rajaa pääsy verkko-osoitteisiin</h2>
 
@@ -689,8 +688,8 @@ $string['requiresubnet_help'] = '<h2>Rajaa pääsy verkko-osoitteisiin</h2>
 <li>Osittainen IP-osoite, kuten <b>192.168</b>, joka vastaa kaikkia annetuilla numeroilla alkavia osoitteita.</li>
 <li>CIDR (Classless Inter-Domain Routing), kuten <b>231.54.211.0/20</b>, joka sallii vieläkin tarkemman aliverkon määrittelyn.</li>
 <li>A range of IP addresses <b>231.3.56.10-20</b> The range applies to the last
-    part of the address, so this means all the IP addresses from 231.3.56.10
-    to 231.3.56.20.</li>
+part of the address, so this means all the IP addresses from 231.3.56.10
+to 231.3.56.20.</li>
 </ol>
 <p></p>
 
@@ -804,9 +803,9 @@ $string['submitallandfinish'] = 'Palauta kaikki ja lopeta';
 $string['subneterror'] = 'Tämä tentti on saatavilla vain tietyistä osoitteista. Tietokoneesi osoite ei ole sallittujen osoitteiden joukossa.';
 $string['subnetnotice'] = 'Tentti on lukittu, niin että se on saatavilla vain tietyiltä verkkoalueilta. Tietokoneesi ei ole osa hyväksyttyä aliverkkoa. Opettajana voit kuitenkin silti katsella tenttiä.';
 $string['subplugintype_quiz'] = 'Raportti';
+$string['subplugintype_quiz_plural'] = 'Raportit';
 $string['subplugintype_quizaccess'] = 'Saatavuussääntö';
 $string['subplugintype_quizaccess_plural'] = 'Saatavuussäännöt';
-$string['subplugintype_quiz_plural'] = 'Raportit';
 $string['substitutedby'] = 'korvataan';
 $string['summaryofattempt'] = 'Tenttisuorituksen yhteenveto';
 $string['summaryofattempts'] = 'Yhteenveto aiemmista suorituksistasi';
@@ -817,17 +816,17 @@ $string['timecompleted'] = 'Suoritettu';
 $string['timedelay'] = 'Et voi vastata tenttiin, koska edellisestä suorituskerrasta ei ole kulunut tarpeeksi kauan aikaa';
 $string['timeleft'] = 'Aikaa jäljellä';
 $string['timelimit'] = 'Suoritusaika';
-$string['timelimitexeeded'] = 'Tenttiaika päättyi!';
 $string['timelimit_help'] = '<p>Yleensä tentin suoritusaikaa ei ole rajoitettu, eli tentin tekijä voi käyttää tentin tekemiseen niin paljon aikaa kuin haluaa.</p>
 
 <p>Jos määrittelet tentille suoritusajan eli maksimikeston minuutteina, huomioithan seuraavaa:</p>
 
 <ul>
-  <li>Käytetyn selaimen on tuettava Javascriptiä - sen ansiosta ajastin toimii tarkoitetulla tavalla.</li>
-  <li>Tentin aikana näytetään ajastin ponnahdusikkunassa.</li>
-  <li>Suoritusajan täytyttyä tentti palautuu automaattisesti ja siihen mennessä vastatut kysymykset tallentuvat.</li>
-  <li>Jos vastaaja onnistuu huijaamaan ja ylittää suoritusajan 60 sekunnilla, tentti arvioidaan automaattisesti nollan pisteen arvoiseksi.</li>
+<li>Käytetyn selaimen on tuettava Javascriptiä - sen ansiosta ajastin toimii tarkoitetulla tavalla.</li>
+<li>Tentin aikana näytetään ajastin ponnahdusikkunassa.</li>
+<li>Suoritusajan täytyttyä tentti palautuu automaattisesti ja siihen mennessä vastatut kysymykset tallentuvat.</li>
+<li>Jos vastaaja onnistuu huijaamaan ja ylittää suoritusajan 60 sekunnilla, tentti arvioidaan automaattisesti nollan pisteen arvoiseksi.</li>
 </ul>';
+$string['timelimitexeeded'] = 'Tenttiaika päättyi!';
 $string['timelimitmin'] = 'Suoritusaika (minuuttia)';
 $string['timelimitsec'] = 'Suoritusaika (sekuntia)';
 $string['timestr'] = '%d.%m.%y kello %H:%M:%S';

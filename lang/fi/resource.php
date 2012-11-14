@@ -43,7 +43,6 @@ $string['configpopupwidth'] = 'Ponnahdusikkunoiden leveys?';
 $string['contentheader'] = 'Sisältö';
 $string['displayoptions'] = 'Saatavilla olevat näyttöasetukset';
 $string['displayselect'] = 'Näyttö';
-$string['displayselectexplain'] = 'Valitse näyttötyyppi, valitettavasti kaikki tyypit eivät sovi kaikille tiedostoille.';
 $string['displayselect_help'] = 'Tämä asetus, tiedoston tyyppi sekä salliiko selain upotusta, määrittävät kuinka tiedosto näytetään. Vaihtoehdot saattavat sisältää:
 
 * Automaattinen - Paras tiedoston näyttötapa valitaan automaattisesti
@@ -53,6 +52,7 @@ $string['displayselect_help'] = 'Tämä asetus, tiedoston tyyppi sekä salliiko 
 * ponnahdusikkunassa - Tiedosto näytetään uudessa selaimen ikkunassa ilman valikoita tai osoiteriviä
 * Kehyksessä - Tiedosto näytetään kehyksessä navigointipalkin ja tiedostonkuvauksen alla.
 * Uudessa ikkunassa - Tiedosto näytetään uudessa selainikkunassa valikkojen sekä osoiterivin kanssa';
+$string['displayselectexplain'] = 'Valitse näyttötyyppi, valitettavasti kaikki tyypit eivät sovi kaikille tiedostoille.';
 $string['encryptedcode'] = 'Suojaa koodi';
 $string['filenotfound'] = 'Valitettavasti tiedostoa ei löydy';
 $string['filterfiles'] = 'Käytä suotimia tiedoston sisällössä';
@@ -81,7 +81,7 @@ $string['printheading'] = 'Näytä resurssin nimi';
 $string['printheadingexplain'] = 'Näytetäänkö resurssin nimi sisällön yläpuolella? Joillakin näyttötyypeillä ei ehkä silti voida näyttää resurssin nimeä.';
 $string['printintro'] = 'Näytä resurssin kuvaus';
 $string['printintroexplain'] = 'Näytetäänkö resurssin kuvaus sisällön alla? Joillakin näyttötyypeillä ei ehkä silti voida näyttää resurssin kuvausta.';
-$string['resourcecontent'] = 'Tiedostot ja alikansiot';
 $string['resource:exportresource'] = 'Vie resurssi';
 $string['resource:view'] = 'Katso aineistoa';
+$string['resourcecontent'] = 'Tiedostot ja alikansiot';
 $string['selectmainfile'] = 'Valitse päätiedosto klikkaamalla kuvaketta tiedoston nimen vieressä.';

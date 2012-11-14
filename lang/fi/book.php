@@ -59,7 +59,6 @@ Toistaiseksi ainoa tapa on käyttää selaimen hakutoimintoa kirjan tulostussivu
 *Otsikkoni eivät mahdu yhdelle riville.*
 
 Muokkaa otsikoitasi tai pyydä sivuston ylläpitäjää muuttamaan sisällysluettelon leveyttä. Leveys määritellään yleisesti kaikille kirjoille moduulin asetussivulla.';
-$string['missingfilemanagement'] = 'Hyvät kirjamoduulin käyttäjät, olette varmaan jo huomanneet, että Kirjan kappaleissa käytettyjä tiedostoja ei voi poistaa tai hallita. Ole hyvä ja äänestä {$a} että tämä saataisiin korjattua. Petr Škoda';
 $string['modulename'] = 'Kirja';
 $string['modulename_help'] = 'Kirja on yksinkertainen monisivuinen oppimateriaali.';
 $string['modulenameplural'] = 'Kirjat';

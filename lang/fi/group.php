@@ -76,15 +76,14 @@ $string['groupinfo'] = 'Tietoa valitusta ryhmästä';
 $string['groupinfomembers'] = 'Tietoa valituista jäsenistä';
 $string['groupinfopeople'] = 'Tietoa valituista käyttäjistä';
 $string['grouping'] = 'Ryhmittely';
-$string['groupingdescription'] = 'Ryhmittelyn kuvaus';
 $string['grouping_help'] = '<h2>Ryhmittelyt</h2>
 
 <p>Ryhmittely on "ryhmien ryhmä", eli voit muodostaa yksittäisistä ryhmistä erilaisia kokonaisuuksia ryhmittelyjä käyttämällä. Ryhmittelemällä kurssin osallistujia erilaisiin kokonaisuuksiin voit tarjota heille monipuolisemmat työskentelymahdollisuudet eri ihmisten kanssa.</p>
 
 <p>Esimerkki:</p>
 <ul>
- <li>Ryhmittely 1: Lähiryhmät. Tämän ryhmittelyn alle tulevat ryhmät Tampere, Helsinki, joihin lisäät osallistujia heidän osallistumispaikkansa mukaan.</li>
- <li>Ryhmittely 2: Vertaisryhmät. Tämän ryhmittelyn alle tulevat ryhmät Luonnontieteet, Kielet, Reaaliaineet, joihin lisäät osallistujia heidän pääaineensa mukaan osallistumispaikkakunnasta riippumatta. </li>
+<li>Ryhmittely 1: Lähiryhmät. Tämän ryhmittelyn alle tulevat ryhmät Tampere, Helsinki, joihin lisäät osallistujia heidän osallistumispaikkansa mukaan.</li>
+<li>Ryhmittely 2: Vertaisryhmät. Tämän ryhmittelyn alle tulevat ryhmät Luonnontieteet, Kielet, Reaaliaineet, joihin lisäät osallistujia heidän pääaineensa mukaan osallistumispaikkakunnasta riippumatta. </li>
 <li>Käytät ryhmittelyä Lähiryhmät keskustelualueella ja wikissä, joissa työstetään kurssin paikkakuntakohtaisten lähitapaamisten sisältöjä.</li>
 <li>Käytät ryhmittelyä Vertaisryhmät keskustelualueella ja wikissä, joilla osallistujat työstävät ainekohtaisia projektejaan.</li>
 </ul>
@@ -92,6 +91,7 @@ $string['grouping_help'] = '<h2>Ryhmittelyt</h2>
 <p>Verrattuna siihen, ettet käyttäisi ryhmittelyjä, mutta hyödyntäisit ryhmäkohtaisia työskentelyalueita, kaikkien ryhmien (jotka olet muodostanut esim. em. esimerkin lähi- ja vertaisryhmistä) näkyvät osallistujille jokaisen ryhmäkohtaisen aktiviteetin ryhmälistassa (pudotusvalikossa). On siis osallistujien kannalta selkeämpää käyttää ryhmittelyjä, jolloin he tietävät, kenen kanssa pitikään tehdä mitäkin.</p>
 
 <p><em>Jotta ryhmittely toimii, Ryhmien näkyvyys -asetukseen on valittava joko Erilliset tai Näkyvät ryhmät.</em></p>';
+$string['groupingdescription'] = 'Ryhmittelyn kuvaus';
 $string['groupingname'] = 'Ryhmittelyn nimi';
 $string['groupingnameexists'] = 'Ryhmittely \'{$a}\' on jo olemassa tällä kurssilla, käytä jotain toista nimeä.';
 $string['groupings'] = 'Ryhmittelyt';
@@ -100,36 +100,36 @@ $string['groupmember'] = 'Ryhmän jäsen';
 $string['groupmemberdesc'] = 'Vakiorooli ryhmän jäsenelle';
 $string['groupmembers'] = 'Ryhmän jäsenet';
 $string['groupmembersonly'] = 'Näkyy vain ryhmien jäsenille';
-$string['groupmembersonlyerror'] = 'Sinun pitää olla vähintään yhden ryhmän jäsen voidaksesi käyttää tätä aktiviteettia.';
 $string['groupmembersonly_help'] = '<h2>Näkyvyys vain ryhmien jäsenille</h2>
 
 <p>Jos rastit ruudun Näkyy vain ryhmien jäsenille, lisäämääsi aktiviteettiin tai resurssiin pääsevät vain ne opiskelijat, jotka kuuluvat valitsemasi ryhmittelyn sisältämiin ryhmiin, tai, jos et ole valinnut ryhmittelyä, vähintään yhteen mutta mihin tahansa ryhmään.</p>';
+$string['groupmembersonlyerror'] = 'Sinun pitää olla vähintään yhden ryhmän jäsen voidaksesi käyttää tätä aktiviteettia.';
 $string['groupmemberssee'] = 'Näytä ryhmän jäsenet';
 $string['groupmembersselected'] = 'Valitun ryhmän jäsenet';
 $string['groupmode'] = 'Ryhmämoodi';
+$string['groupmode_help'] = '<h2>Osallistujien ryhmittely</h2>
+
+<p>Ryhmätoiminnossa on kolme vaihtoehtoa: </p>
+
+<ul>
+<li><strong>Ei ryhmiä</strong> - kaikki kurssialueen osallistujat ovat yhtä samaa yhteisöä.</li>
+<li><strong>Erilliset ryhmät</strong> - jokainen ryhmä voi nähdä ainoastaan oman ryhmänsä tuottamat sisällöt, muiden ryhmien työt ja osallistujat ovat näkymättömiä </li>
+<li><strong>Näkyvät ryhmät</strong> - jokainen osallistuja työskentelee omassa ryhmässään, mutta voi nähdä myös muut ryhmät </li>
+</ul>
+
+<p>Ryhmät voidaan määritellä kahdella tasolla:</p>
+
+<ul>
+<li><strong>Kurssitaso</strong>: ryhmäytys, joka on määritelty kurssitasolla, ryhmäyttää oletusarvoisesti kaikki toiminnot kurssialueella. </li>
+
+<li><strong>Aktiviteettitaso</strong>: jokaiselle aktiviteetille, joka tukee ryhmiä, on mahdollista määritellä oma ryhmäytyminen. </li>
+</ul>';
 $string['groupmodeforce'] = 'Pakota ryhmämoodi';
 $string['groupmodeforce_help'] = '<h2>Pakotetut ryhmät</h2>
 
 <p>Jos ryhmäytyminen on kurssitasolla lukittu, samaa ryhmittelyä (ei ryhmiä / näkyvät ryhmät / erilliset ryhmät) sovelletaan kaikissa sen kurssin toiminnoissa ja aktiviteettikohtaiset ryhmäyttämiset jätetään huomiotta.</p>
 
 <p>Ryhmien pakottaminen on hyödyllistä lähinnä silloin, kun haluaa perustaa kurssin muutamille täysin erillisille joukoille. </p>';
-$string['groupmode_help'] = '<h2>Osallistujien ryhmittely</h2>
-
-<p>Ryhmätoiminnossa on kolme vaihtoehtoa: </p>
-
-<ul>
-      <li><strong>Ei ryhmiä</strong> - kaikki kurssialueen osallistujat ovat yhtä samaa yhteisöä.</li>
-      <li><strong>Erilliset ryhmät</strong> - jokainen ryhmä voi nähdä ainoastaan oman ryhmänsä tuottamat sisällöt, muiden ryhmien työt ja osallistujat ovat näkymättömiä </li>
-      <li><strong>Näkyvät ryhmät</strong> - jokainen osallistuja työskentelee omassa ryhmässään, mutta voi nähdä myös muut ryhmät </li>
-</ul>
-
-<p>Ryhmät voidaan määritellä kahdella tasolla:</p>
-
-<ul>
-  <li><strong>Kurssitaso</strong>: ryhmäytys, joka on määritelty kurssitasolla, ryhmäyttää oletusarvoisesti kaikki toiminnot kurssialueella. </li>
-
-  <li><strong>Aktiviteettitaso</strong>: jokaiselle aktiviteetille, joka tukee ryhmiä, on mahdollista määritellä oma ryhmäytyminen. </li>
-</ul>';
 $string['groupmy'] = 'Oma ryhmäni';
 $string['groupname'] = 'Ryhmän nimi';
 $string['groupnameexists'] = 'Ryhmä nimeltään \'{$a}\' on jo olemassa tällä kurssilla, valitse toinen nimi.';

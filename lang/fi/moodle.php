@@ -504,7 +504,7 @@ $string['edhelpenablespelling'] = 'Oikoluvun käyttö editorissa. Jos asetus on 
 $string['edhelpfontfamily'] = 'Kirjasinperhelista valittavissa olevista kirjasinperheistä ja yleisistä kirjasinnimistä. Nimet erotellaan toisistaan pilkuilla.';
 $string['edhelpfontlist'] = 'Määrittele valikossa käytettävät kirjasimet.';
 $string['edhelpfontsize'] = 'Määritä kirjasimen oletuskoko.<br /> Sallittuja arvoja ovat esim.: medium, large, smaller, larger, 10pt, 11px.';
-$string['edit'] = 'Muokkaa ';
+$string['edit'] = 'Muokkaa';
 $string['edita'] = 'Muokkaa {$a}';
 $string['editcategorysettings'] = 'Muokkaa kategorian asetuksia';
 $string['editcategorythis'] = 'Muokkaa tätä kategoriaa';
@@ -542,7 +542,7 @@ käyttäen sinun osoitettasi.
 
 Vahvistaaksesi käyttäjätunnuksen itsellesi mene selaimellasi osoitteeseen
 
-  {$a->link}
+{$a->link}
 
 Useimmissa postiohjelmissa sinun tarvitsee vain napsauttaa ylläolevaa linkkiä.
 Jos tämä ei toimi, kopioi ja liitä osoite selaimen osoitekenttään.
@@ -551,8 +551,8 @@ Terveisin \'{$a->sitename}\' pääkäyttäjä,
 {$a->admin}';
 $string['emailconfirmationsubject'] = '{$a}: tunnuksen vahvistaminen';
 $string['emailconfirmsent'] = '<p>Vahvistusviesti on lähetetty osoitteeseesi <b>{$a}</b></p>
-   <p>Se sisältää ohjeet, kuinka voit vahvistaa käyttäjätunnuksesi.</p>
-   <p>Jos vahvistuksessa on ongelmia, ota yhteyttä ylläpitäjään.</p>';
+<p>Se sisältää ohjeet, kuinka voit vahvistaa käyttäjätunnuksesi.</p>
+<p>Jos vahvistuksessa on ongelmia, ota yhteyttä ylläpitäjään.</p>';
 $string['emaildigest'] = 'Postin keräilytapa';
 $string['emaildigestcomplete'] = 'Täysi (Posti päivässä , täydet viestit)';
 $string['emaildigestoff'] = 'Ei keräilyä (Posti per viesti)';
@@ -785,8 +785,7 @@ This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details:
-http://www.gnu.org/copyleft/gpl.html
-';
+http://www.gnu.org/copyleft/gpl.html';
 $string['gpl3'] = 'Copyright (C) 1999  Martin Dougiamas  (http://Moodle.com)
 
 (Epävirallisen suomenkielisen käännöksen lisenssistä löydät  osoitteesta: http://www.turre.com/licenses/gpl_fi.php)
@@ -957,16 +956,16 @@ $string['loginaspasswordexplain'] = '<p>Sinun pitää antaa erityinen "Kirjaudu 
 $string['loginguest'] = 'Kirjaudu vierailijana';
 $string['loginsite'] = 'Kirjaudu sivustoon';
 $string['loginsteps'] = 'Hei! Käytä hetki aikaa luodaksesi itsellesi käyttäjätunnus ja salasana sivustoon. Tämä mahdollistaa sivuston vapaan käytön.
-   Jotkut kurssit saattavat myös vaatia kertakäyttöisen "avaimen", jonka saat myöhemmin. Luodaksesi tunnuksen itsellesi sinun pitää:
-   <ol>
-   <li>Täyttää  <a href="{$a}">uusi tunnus</a> lomake henkilötiedoillasi.</li>
-   <li>Sähköposti lähetetään antamaasi osoitteeseen.</li>
-   <li>Lue postisi ja napsauta linkkiä viestissä</li>
-   <li>Tunnuksesi vahvistetaan ja sinut kirjataan sisään.</li>
-   <li>Valitse kurssit, mihin haluat.</li>
-   <li>Jos kurssi vaatii  "avaimen", käytä sitä, jonka sait opettajaltasi.</li>
-   <li>Nyt voit käyttää järjestelmää vapaasti. Vastaisuudessa kirjaudut antamalla käyttäjätunnuksen ja salasanan vieressä oleviin kenttiin.</li>
-   </ol>';
+Jotkut kurssit saattavat myös vaatia kertakäyttöisen "avaimen", jonka saat myöhemmin. Luodaksesi tunnuksen itsellesi sinun pitää:
+<ol>
+<li>Täyttää  <a href="{$a}">uusi tunnus</a> lomake henkilötiedoillasi.</li>
+<li>Sähköposti lähetetään antamaasi osoitteeseen.</li>
+<li>Lue postisi ja napsauta linkkiä viestissä</li>
+<li>Tunnuksesi vahvistetaan ja sinut kirjataan sisään.</li>
+<li>Valitse kurssit, mihin haluat.</li>
+<li>Jos kurssi vaatii  "avaimen", käytä sitä, jonka sait opettajaltasi.</li>
+<li>Nyt voit käyttää järjestelmää vapaasti. Vastaisuudessa kirjaudut antamalla käyttäjätunnuksen ja salasanan vieressä oleviin kenttiin.</li>
+</ol>';
 $string['loginstepsnone'] = '<p>Hei!</p>
 <p>Jotta voisit käyttää kursseja, sinun pitää luoda itsellesi
 käyttäjätunnus. Luot vain itsellesi käyttäjätunnuksen ja salasanan, sitten käytät niitä tällä sivulla. Jos käyttäjätunnus on jo varattu, sinun pitää valita toinen käyttäjätunnus.</p>';
@@ -1107,11 +1106,11 @@ $string['newpasswordtext'] = 'Hei {$a->firstname},
 Salasanasi sivustolla \'{$a->sitename}\' on vaihdettu ja sinulle on annettu uusi tilapäinen salasana.
 
 Uusi tunnuksesi ja salasanasi ovat seuraavat:
-   tunnus: {$a->username}
-   salasana: {$a->newpassword}
+tunnus: {$a->username}
+salasana: {$a->newpassword}
 
 Käytä alla olevaa linkkiä vaihtaaksesi salasanasi:
-   {$a->link}
+{$a->link}
 
 Useimmissa postiohjelmissa sinun tarvitsee vain napsauttaa ylläolevaa linkkiä.
 Jos tämä ei toimi, kopioi ja liitä osoite selaimen osoitekenttään.
@@ -1183,7 +1182,7 @@ $string['nopotentialteachers'] = 'Ei mahdollisia opettajia';
 $string['norecentactivity'] = 'Ei tapahtumia';
 $string['noreplybouncemessage'] = 'Olet yrittänyt vastata sähköpostiosoitteeseen, joka ei ota viestejä vastaan. Jos yritit vastata viestiin keskustelualueella, käytä vastauksesi lähettämiseen {$a} keskustelualueita.
 
-Sähköpostisi sisältö: ';
+Sähköpostisi sisältö:';
 $string['noreplybouncesubject'] = '{$a} - sähköposti ei päässyt perille';
 $string['noreplyname'] = 'Älä vastaa tähän sähköpostiin';
 $string['noresults'] = 'Ei tuloksia';
@@ -1263,9 +1262,9 @@ $string['passwordrecovery'] = 'Kyllä, auta minua kirjautumisessa';
 $string['passwordsdiffer'] = 'Salasanat eivät täsmää';
 $string['passwordsent'] = 'Salasana on lähetetty';
 $string['passwordsenttext'] = '<p>Viesti on lähetetty osoitteeseen: {$a->email}.</p>
-   <p><b>Tarkista viestistä uusi salasanasi.</b></p>
-   <p>Uusi salasana on automaattisesti generoitu, joten haluat luultavasti
-   <a href="{$a->link}">vaihtaa sen joksikin helpommin muistettavaksi</a>.</p>';
+<p><b>Tarkista viestistä uusi salasanasi.</b></p>
+<p>Uusi salasana on automaattisesti generoitu, joten haluat luultavasti
+<a href="{$a->link}">vaihtaa sen joksikin helpommin muistettavaksi</a>.</p>';
 $string['path'] = 'Polku';
 $string['pathnotexists'] = 'Polkua ei löydy palvelimelta';
 $string['pathslasherror'] = 'Polku ei voi päättyä kauttaviivaan "/"!';
@@ -1805,7 +1804,7 @@ $string['welcometocoursetext'] = 'Tervetuloa kurssille {$a->coursename}!
 
 Ensimmäiseksi sinun kannattaa muokata käyttäjätietojasi, jotta muut voivat tutustua sinuun:
 
-  {$a->profileurl}';
+{$a->profileurl}';
 $string['whattocallzip'] = 'Miksi haluat kutsuttavan zip-tiedostoa?';
 $string['whattodo'] = 'Mitä tehdä';
 $string['windowclosing'] = 'Tämän ikkunan pitäisi sulkeutua automaattisesti. Jos ei, niin sulje se nyt.';
