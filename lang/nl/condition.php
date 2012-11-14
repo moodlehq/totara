@@ -36,16 +36,17 @@ $string['availableuntil'] = 'Toegankelijk tot';
 $string['badavailabledates'] = 'Ongeldige data. Als je beide data instelt, dan moet de \'Toegankelijk vanaf\'-datum voor de \'Toegankelijk tot\'-datum zijn.';
 $string['badgradelimits'] = 'Als je zowel een boven als een onderlimiet instelt, dan moet de bovenlimiet groter zijn dan de onderlimiet.';
 $string['completion_complete'] = 'moet als voltooid gemarkeerd worden';
+$string['completion_fail'] = 'moet voltooid zijn en een onvoldoende behaald';
+$string['completion_incomplete'] = 'moet niet als voltooid gemarkeerd worden';
+$string['completion_pass'] = 'moet voltooid zijn en een voldoende behaald';
 $string['completioncondition'] = 'Voorwaarde voltooide activiteit';
 $string['completioncondition_help'] = 'Deze instelling bepaalt of er bepaalde delen van de cursus voltooid moeten zijn voor toegang tot deze activiteit mogelijk wordt. Merk op dat het opvolgen van voltooien eerst moet ingeschakeld zijn.
 
 Meerdere voorwaarden voor voltooide activiteiten kunnen ingesteld worden indien gewenst. In dat geval zal de toegang tot de activiteit slecht mogelijk worden als aan alle voorwaarden voldaan is.';
-$string['completion_fail'] = 'moet voltooid zijn en een onvoldoende behaald';
-$string['completion_incomplete'] = 'moet niet als voltooid gemarkeerd worden';
-$string['completion_pass'] = 'moet voltooid zijn en een voldoende behaald';
 $string['configenableavailability'] = 'Wanneer dit ingeschakeld is, dan kun je voorwaarden instellen (gebaseerd op datum, cijfer of voltooid) die controleren wanneer toegang tot een activiteit of bron mogelijk is.';
 $string['enableavailability'] = 'Voorwaardelijke toegang inschakelen';
 $string['grade_atleast'] = 'minstens';
+$string['grade_upto'] = 'en minder dan';
 $string['gradecondition'] = 'Cijfervoorwaarde';
 $string['gradecondition_help'] = 'Deze instelling bepaalt of er aan bepaalde cijfervoorwaarden moet voldaan worden voor toegang tot deze activiteit mogelijk wordt.
 
@@ -53,7 +54,6 @@ Meerdere cijfervoorwaarden kunnen ingesteld worden indien gewenst. In dat geval 
 $string['gradeitembutnolimits'] = 'Je moet een bovenlimiet, een onderlimiet of beide ingeven.';
 $string['gradelimitsbutnoitem'] = 'Je moet een beoordelingsitem ingeven.';
 $string['gradesmustbenumeric'] = 'De minimum en maximumcijfers moeten numeriek zijn (of leeg)';
-$string['grade_upto'] = 'en minder dan';
 $string['none'] = '(geen)';
 $string['notavailableyet'] = 'Nog niet beschikbaar';
 $string['requires_completion_0'] = 'Niet beschikbaar tenzij de activiteit  <strong>{$a}</strong> niet voltooid is.';

@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Gebruik chat';
 $string['chat:deletelog'] = 'Verwijder chat logs';
 $string['chat:exportparticipatedsession'] = 'Exporteer je chatdeelname';
 $string['chat:exportsession'] = 'Exporteer een chatsessie';
+$string['chat:readlog'] = 'Bekijk chatlogs';
+$string['chat:talk'] = 'Praat in een chat';
 $string['chatintro'] = 'Inleidende tekst';
 $string['chatname'] = 'Naam van deze chatroom';
-$string['chat:readlog'] = 'Bekijk chatlogs';
 $string['chatreport'] = 'Chat-sessies';
-$string['chat:talk'] = 'Praat in een chat';
 $string['chattime'] = 'Volgende chattijd';
 $string['configmethod'] = 'De ajax chatmethode geeft een ajaxgebaseerde chatinterface die regelmatig de server contacteert voor updates. De gewone chatmethode laat de clients regelmatig contact opnemen met de server voor updates. Deze methode vraagt geen configuratie en werkt op alle servers, maar kan een zware belasting op de server veroorzaken wanneer er veel chatters tegelijk online zijn. Om een serverdaemon te kunnen gebruiken heb je  shell-toegang tot Unix nodig, maar je krijgt er een snelle, schaalbare chatomgeving mee.';
 $string['confignormalupdatemode'] = 'Chatrooms worden normaal gezien heel eficient geupdatet met de <em>Keep-Alive</em> functie van het HTTP 1.1 protocol, maar het geeft een grote belasting voor de server. Een meer geavanceerde methode is gebruik te maken van <em>Stream</em> om de updates tot bij de gebruikers te krijgen. Het gebruik van <em>Stream</em> geeft betere resultaten (gelijkwaardig met de chatd methode), maar het is mogelijk dat je server dat niet ondersteunt.';
@@ -81,8 +81,8 @@ $string['modulename_help'] = 'Met de chatmodule kunnen deelnemers een real-time 
 $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Berichten nooit verwijderen';
 $string['nextsession'] = 'Volgende geplande sessie';
-$string['nochat'] = 'Geen chatruimte gevonden';
 $string['no_complete_sessions_found'] = 'Geen volledige sessies gevonden.';
+$string['nochat'] = 'Geen chatruimte gevonden';
 $string['noguests'] = 'De chatruimte is niet toegankelijk voor gastgebruikers';
 $string['nomessages'] = 'Nog geen berichten';
 $string['nopermissiontoseethechatlog'] = 'Je hebt het recht  niet om de chat-logs te zien';
@@ -127,7 +127,7 @@ $string['usingchat_help'] = '<p>De chatmodule kent mogelijkheden die het chatten
 <dl>
 <dt><b>Smiley\'s</b></dt>
 <dd>Alle smiley-gezichten (emoticons) die je ook elders in Moodle kunt typen kunnen ook hier ingetoetst worden.
- Ze zullen op de juiste manier getoond worden. Bijvoorbeeld, :-) = <img alt src="pix/s/smiley.gif">  </dd>
+Ze zullen op de juiste manier getoond worden. Bijvoorbeeld, :-) = <img alt src="pix/s/smiley.gif">  </dd>
 
 <dt><b>Links</b></dt>
 <dd>Internetaddressen worden automatisch in links veranderd.</dd>
@@ -138,11 +138,11 @@ dan zal iedereen "Kim lacht!" zien</dd>
 
 <dt><b>Beep</b></dt>
 <dd>Je kunt een geluid naar andere mensen sturen door op de &quot;Beep&quot; -link naast hun naam te klikken. Een handige manier om in
- één keer alle mensen in de chat te roepen is door "Beep all" te typen.</dd>
+één keer alle mensen in de chat te roepen is door "Beep all" te typen.</dd>
 
 <dt><b>HTML</b></dt>
 <dd>Als je een beetje kennis hebt van HTML-code, dan kun je die in je tekst gebruiken om dingen als afbeeldingen
- te laten, geluiden af te spelen en de tekstkleur en -grootte te veranderen .</dd>
+te laten, geluiden af te spelen en de tekstkleur en -grootte te veranderen .</dd>
 
 </dl>';
 $string['viewreport'] = 'Bekijk voorbije chatsessies';

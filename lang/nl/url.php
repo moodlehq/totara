@@ -34,7 +34,6 @@ $string['configsecretphrase'] = 'De geheime zin wordt gebruikt om geëncrypteerd
 $string['contentheader'] = 'Inhoud';
 $string['displayoptions'] = 'Beschikbare schermopties';
 $string['displayselect'] = 'Toon';
-$string['displayselectexplain'] = 'Toon schermtype. Jammer genoeg zijn niet zlle types geschikt voor alle URL\'s.';
 $string['displayselect_help'] = 'Deze instelling, samen met het bestandstype van de URL en het toelaten door de browser van embedden, bepaalt hoe de URL wordt weergegeven. Mogelijke opties zijn:
 
 * Automatisch - De beste weergave van de URL wordt automatisch gekozen
@@ -44,6 +43,7 @@ $string['displayselect_help'] = 'Deze instelling, samen met het bestandstype van
 * In pop-up - De URL wordt weergegeven in een nieuw browservenster zonder menu\'s of een adressenbalk
 * In frame - De URL wordt weergegeven in een frame onder de navigatiebalk en de URL beschrijving.
 * Nieuw venster - De URL wordt weergegeven in een nieuw browservenster met menu\'s en een adressenbalk';
+$string['displayselectexplain'] = 'Toon schermtype. Jammer genoeg zijn niet zlle types geschikt voor alle URL\'s.';
 $string['externalurl'] = 'Externe URL';
 $string['framesize'] = 'Frame hoogte';
 $string['invalidstoredurl'] = 'Kan deze bron niet tonen, URL is niet geldig.';

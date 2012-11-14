@@ -31,9 +31,10 @@ $string['answered'] = 'Beantwoord';
 $string['atleastoneoption'] = 'Je moet minstens één mogelijk antwoord geven';
 $string['choice'] = 'Keuze {$a}';
 $string['choice:choose'] = 'Bewaar een keuze';
-$string['choiceclose'] = 'Tot';
 $string['choice:deleteresponses'] = 'Verwijder antwoorden';
 $string['choice:downloadresponses'] = 'Download antwoorden';
+$string['choice:readresponses'] = 'Lees antwoorden';
+$string['choiceclose'] = 'Tot';
 $string['choicefull'] = 'Deze keuze is vol - er zijn geen beschikbare plaatsen meer.';
 $string['choicename'] = 'Naam keuze';
 $string['choiceopen'] = 'Open';
@@ -41,7 +42,6 @@ $string['choiceoptions'] = 'Keuze-opties';
 $string['choiceoptions_help'] = '<p>Hier kun je ingeven welke keuzemogelijkheden de leerlingen aangeboden krijgen.</p>
 
 <p>Je hoeft ze niet allemaal in te vullen: je mag er een aantal blanco laten. Alleen de ingevulde velden zullen getoond worden.</p>';
-$string['choice:readresponses'] = 'Lees antwoorden';
 $string['choicesaved'] = 'Je keuze is bewaard';
 $string['choicetext'] = 'Keuzetekst';
 $string['chooseaction'] = 'Kies een actie...';

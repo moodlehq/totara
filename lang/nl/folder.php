@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Inhoud';
-$string['foldercontent'] = 'Bestanden en submappen';
 $string['folder:managefiles'] = 'Beheer bestanden in mappenmodule';
 $string['folder:view'] = 'Bekijk mapinhoud';
+$string['foldercontent'] = 'Bestanden en submappen';
 $string['modulename'] = 'Map';
 $string['modulenameplural'] = 'Mappen';
 $string['neverseen'] = 'Nooit gezien';

@@ -53,56 +53,6 @@ $string['aggregatesum'] = 'Som van cijfers';
 $string['aggregateweightedmean'] = 'Gewogen gemiddelde';
 $string['aggregateweightedmean2'] = 'Eenvoudig gewogen cijfergemiddelde';
 $string['aggregation'] = 'Aggregatie';
-$string['aggregationcoef'] = 'Aggregatiecoëfficiënt';
-$string['aggregationcoefextra'] = 'Bonus';
-$string['aggregationcoefextra_help'] = '<h2>Voor som van cijfers aggregatie</h2>
-<p>Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem als bonus dienen voor de categorie. Dit betekent dat het maximumcijfer van dat beoordelingsitem niet meegerekend wordt in het totaal, maar het behaalde cijfer wel. Bijvoorbeeld:</p>
-
-<ul>
-    <li>Item 1 wordt beoordeeld als 0-100</li>
-    <li>Item 2 wordt beoordeeld als 0-75</li>
-    <li>Item 1 heeft het bonuspunt vinkje, item 2 niet.</li>
-    <li>Beide items horen bij categorie 1, die de "som van cijfers" als aggregatiestrategie</li>
-    <li>Het totaal van van categorie 1 zal worden beoordeeld als 0-75</li>
-    <li>Een leerling wordt beoordeeld met 20 op item 1 en 70 op item 2</li>
-    <li>Zijn totaal voor category 1 zal  75/75 (20+70 = 90 maar item 1 geldt enkel als bonuspunten)</li>
-</ul>
-<h2>Voor gewogen gemiddeldes van cijfers (bonuspunten)</h2>
-<p>Een waarde groter dan nul behandelt de cijfers van dit beoordelingsitem als bonuspunt tijdens de aggregatie. Het getal is een factor waarmee de cijferwaarde zal vermenigvuldigd worden voor het toegevoegd wordt aan de som van alle cijfers, maar het item zelf zal niet betrokken worden in de deling. Bijvoorbeeld:</p>
-
-<ul>
-    <li>Item 1 wordt beoordeeld als 0-100 en de waarde voor bonuspunten is op 2 gezet</li>
-    <li>Item 2 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000</li>
-    <li>Item 3 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000</li>
-    <li>De 3 items horen bij categorie 1, die gemiddelde van cijfers met bonuspunten als aggregatiestrategie heeft</li>
-    <li>Een leerling krijgt 20 op item 1, 40 op item 2 en 70 op item 3</li>
-    <li>Het totaal van de leerling voor categorie 1 zal 95/100 zijn want 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
-$string['aggregationcoefextrasum'] = 'Bonus';
-$string['aggregationcoefextrasum_help'] = '<p>Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem ingesteld worden als bonusitem voor de categorie. Dit betekent dat het maximumcijfer voor dit item niet toegevoegd zal worden aan het maximumcijfer van de categorie, maar het cijfer van het beoordelingsitem zal wel meegerekend worden. Voorbeeld:</p>
-
-<ul>
-    <li>Item 1 wordt beoordeeld tussen 0-100</li>
-    <li>Item 2 wordt beoordeeld tussen 0-75</li>
-    <li>Item 1 heeft een vinkje bij "bonus", item 2 niet.</li>
-    <li>Beide items horen bij categorie 1, die "Som van cijfers" als aggregatiestrategie heeft</li>
-    <li>Het totaal van categorie 1 zal tussen 0-75 liggen</li>
-    <li>Een leerling krijgt als beoordelingen 20 voor item 1 en 70 voor item 2</li>
-    <li>Het totaal van de leerling voor categorie 1 zal 75/75 zijn (20+70 = 90, maar item 1 geldt als bonus en brengt zo het totaal tot het maximumcijfer voor de categorie)</li>
-</ul>';
-$string['aggregationcoefextraweight'] = 'Bonus weging';
-$string['aggregationcoefextraweight_help'] = '<p>Een waarde hoger dan 0 zorgt ervoor dat dit beoordelingsitem als bonus behandeld wordt tijdens aggregatie. Het getal is een factor waarmee dit cijfer wordt vermenigvuldigd voor het opgeteld wordt bij alle andere cijfers, maar het item zelf zal niet inbegrepen worden in de deling. Bijvoorbeeld:</p>
-
-<ul>
-    <li>Item 1 wordt beoordeeld tussen 0-100 en de  "Bonus"-waarde staat op 2</li>
-    <li>Item 2 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000</li>
-    <li>Item 3 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000</li>
-    <li>De 3 items staan in categorie 1, die als aggregatiestrategie "Gemiddelde van cijfers (met bonus) heeft</li>
-    <li>Een leerling krijgt als beoordelingen 20 op Item 1, 40 op Item 2 en 70 op Item 3</li>
-    <li>Het totaal voor categorie 1 voor deze leerling zal zijn: 75/100 (20*2 + 40 + 70) / 2</li>
-</ul>';
-$string['aggregationcoefweight'] = 'Weging beoordelingsitem';
-$string['aggregationcoefweight_help'] = '<p>Weging toegepast op alle cijfers in dit beoordelingsitem wanneer dit geaggregeerd wordt met andere beoordelingsitems.</p>';
 $string['aggregation_help'] = '<p>Met dit menu kun je kiezen voor een aggregatiestrategie die gebruikt zal worden om het totaalcijfer van elke deelnemer te berekenen. De verschillende mogelijkheden zijn hieronder uitgelegd.</p>
 
 <p>De cijfers worden eerst omgezet naar procentuele waarden (interval van 0 tot 1, dit heet normalisatie), dan geaggregeerd via één van onderstaande functies en uiteindelijk geconverteerd naar de gevraagde schaal of het geassocieerde categorie-itembereik (tussen <em>Minimum cijfer</em> en <em>Maximum cijfer</em>).</p>
@@ -110,44 +60,94 @@ $string['aggregation_help'] = '<p>Met dit menu kun je kiezen voor een aggregatie
 <p><strong>Belangrijk</strong>: Een lege beoordeling is gewoon een ontbrekende beoordeling in de cijferlijst en dat kan allerlei oorzaken hebben. Bijvoorbeeld een leerling die nog geen opdracht ingestuurd heeft, een opdracht die nog niet beoordeeld is door de leraar of een beoordeling die manueel verwijderd is door de beheerder van de cijferlijst. Het is dus belangrijk voorzichtig te zijn bij de interpretatie van deze "lege beoordelingen".</p>
 
 <dl id="grade-aggregation-help">
-    <dt>Gemiddelde van alle beoordelingen</dt>
-        <dd>Alle cijfers worden opgeteld en dan gedeeld door het aantal cijfers. Lege cijfers worden meegerekend (zij worden geïnterpreteerd als de minimumwaarde voor het beoordelingsitem).</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, category max 100:<br /><code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
+<dt>Gemiddelde van alle beoordelingen</dt>
+<dd>Alle cijfers worden opgeteld en dan gedeeld door het aantal cijfers. Lege cijfers worden meegerekend (zij worden geïnterpreteerd als de minimumwaarde voor het beoordelingsitem).</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, category max 100:<br /><code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
 
-    <dt>Gewogen gemiddelde</dt>
-        <dd>Elk beoordelingsitem kan een weging gegeven worden, die dan gebruikt wordt in het berekening van het aggregatiegemiddelde om het balang van elk item voor het algemeen gemiddelde te beïnvloeden.</dd>
-        <dd class="example">A1 70/100 weging 10, A2 20/80 weging 5, A3 10/10 weging 3, categorie max 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
+<dt>Gewogen gemiddelde</dt>
+<dd>Elk beoordelingsitem kan een weging gegeven worden, die dan gebruikt wordt in het berekening van het aggregatiegemiddelde om het balang van elk item voor het algemeen gemiddelde te beïnvloeden.</dd>
+<dd class="example">A1 70/100 weging 10, A2 20/80 weging 5, A3 10/10 weging 3, categorie max 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
 
 
-    <dt>Eenvoudig gewogen gemiddelde</dt>
-        <dd>Het verschil met <em>Gewogen gemiddelde</em> is dat de weging berekend is als <em>Maximum cijfer</em> - <em>Minimum cijfer</em> voor elk item. Een opdracht voor 100 punten krijgt een weging 100, een opdracht voor 10 punten krijgt een weging 10/</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
+<dt>Eenvoudig gewogen gemiddelde</dt>
+<dd>Het verschil met <em>Gewogen gemiddelde</em> is dat de weging berekend is als <em>Maximum cijfer</em> - <em>Minimum cijfer</em> voor elk item. Een opdracht voor 100 punten krijgt een weging 100, een opdracht voor 10 punten krijgt een weging 10/</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
 
-    <dt>Gemiddelde van cijfers (met bonuspunten)</dt>
-        <dd>Rekenkundig gemiddelde met een truukje. Een oude, nu niet meer ondersteunde manier van aggregeren, enkel hier voorzien voor terugwaartse compatibiliteit met oudere activiteitenmodules.</dd>
+<dt>Gemiddelde van cijfers (met bonuspunten)</dt>
+<dd>Rekenkundig gemiddelde met een truukje. Een oude, nu niet meer ondersteunde manier van aggregeren, enkel hier voorzien voor terugwaartse compatibiliteit met oudere activiteitenmodules.</dd>
 
-    <dt>Mediaan van alle beoordelingen</dt>
-        <dd>De mediaan wordt berekend door alle beoordelingen in volgorde te zetten en de middelste beoordelingen te nemen (of het gemiddelde van de twee middelste beoordelingen als het om een even aantal beoordelingen gaat). Het voordeel van de mediaan is dat die niet beïnvloed wordt door cijfers die ongewoon ver van het gemiddelde liggen. Lege beoordelingen worden meegerekend.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br />
-                         <code>median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
+<dt>Mediaan van alle beoordelingen</dt>
+<dd>De mediaan wordt berekend door alle beoordelingen in volgorde te zetten en de middelste beoordelingen te nemen (of het gemiddelde van de twee middelste beoordelingen als het om een even aantal beoordelingen gaat). Het voordeel van de mediaan is dat die niet beïnvloed wordt door cijfers die ongewoon ver van het gemiddelde liggen. Lege beoordelingen worden meegerekend.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br />
+<code>median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
 
-     <dt>Laagste cijfer</dt>
-        <dd>Het resultaat is het laagste cijfer na normalisatie. Dit is gewoonlijk gebruikt in combinatie met <em>Aggregeer alleen niet-lege cijfers</em>.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
+<dt>Laagste cijfer</dt>
+<dd>Het resultaat is het laagste cijfer na normalisatie. Dit is gewoonlijk gebruikt in combinatie met <em>Aggregeer alleen niet-lege cijfers</em>.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
 
-    <dt>Hoogste cijfer</dt>
-        <dd>Het resultaat is het hoogste cijfer na normalisatie.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
+<dt>Hoogste cijfer</dt>
+<dd>Het resultaat is het hoogste cijfer na normalisatie.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
 
-    <dt>Modus van cijfers</dt>
-        <dd>De modus is de beoordeling die het meest voorkomt. Dit wordt meer gebruikt voor niet-numerieke beoordelingen. Het voordeel boven het gemiddelde is dat het niet beïnvloed wordt door cijfers die uitzonderlijk ver van het gemiddelde liggen. De modus verliest wel zijn betekenis als er meer dan één cijfer het meest voorkomt (er wordt slechts één weerhouden) of wanneer alle cijfers verschillend zijn. Lege beoordelingen worden meegerekend.</dd>
-        <dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 categorie max 100:<br /><code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
+<dt>Modus van cijfers</dt>
+<dd>De modus is de beoordeling die het meest voorkomt. Dit wordt meer gebruikt voor niet-numerieke beoordelingen. Het voordeel boven het gemiddelde is dat het niet beïnvloed wordt door cijfers die uitzonderlijk ver van het gemiddelde liggen. De modus verliest wel zijn betekenis als er meer dan één cijfer het meest voorkomt (er wordt slechts één weerhouden) of wanneer alle cijfers verschillend zijn. Lege beoordelingen worden meegerekend.</dd>
+<dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 categorie max 100:<br /><code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
 
-    <dt>Som van cijfers</dt>
-        <dd>De som van alle cijferwaarden. Schaalwaarden worden genegeerd. Dit is het enige type dat intern de cijfers niet naar percentages converteert (normalisatie). Het <em>Maximum cijfer</em> van een geassocieerde categorie-item wordt automatisch berekend als de som van de maxima van alle geaggregeerde items.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
-                         <code>70 + 20 + 10 = 100/190</code></dd>
+<dt>Som van cijfers</dt>
+<dd>De som van alle cijferwaarden. Schaalwaarden worden genegeerd. Dit is het enige type dat intern de cijfers niet naar percentages converteert (normalisatie). Het <em>Maximum cijfer</em> van een geassocieerde categorie-item wordt automatisch berekend als de som van de maxima van alle geaggregeerde items.</dd>
+<dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
+<code>70 + 20 + 10 = 100/190</code></dd>
 </dl>';
+$string['aggregationcoef'] = 'Aggregatiecoëfficiënt';
+$string['aggregationcoefextra'] = 'Bonus';
+$string['aggregationcoefextra_help'] = '<h2>Voor som van cijfers aggregatie</h2>
+<p>Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem als bonus dienen voor de categorie. Dit betekent dat het maximumcijfer van dat beoordelingsitem niet meegerekend wordt in het totaal, maar het behaalde cijfer wel. Bijvoorbeeld:</p>
+
+<ul>
+<li>Item 1 wordt beoordeeld als 0-100</li>
+<li>Item 2 wordt beoordeeld als 0-75</li>
+<li>Item 1 heeft het bonuspunt vinkje, item 2 niet.</li>
+<li>Beide items horen bij categorie 1, die de "som van cijfers" als aggregatiestrategie</li>
+<li>Het totaal van van categorie 1 zal worden beoordeeld als 0-75</li>
+<li>Een leerling wordt beoordeeld met 20 op item 1 en 70 op item 2</li>
+<li>Zijn totaal voor category 1 zal  75/75 (20+70 = 90 maar item 1 geldt enkel als bonuspunten)</li>
+</ul>
+<h2>Voor gewogen gemiddeldes van cijfers (bonuspunten)</h2>
+<p>Een waarde groter dan nul behandelt de cijfers van dit beoordelingsitem als bonuspunt tijdens de aggregatie. Het getal is een factor waarmee de cijferwaarde zal vermenigvuldigd worden voor het toegevoegd wordt aan de som van alle cijfers, maar het item zelf zal niet betrokken worden in de deling. Bijvoorbeeld:</p>
+
+<ul>
+<li>Item 1 wordt beoordeeld als 0-100 en de waarde voor bonuspunten is op 2 gezet</li>
+<li>Item 2 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000</li>
+<li>Item 3 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000</li>
+<li>De 3 items horen bij categorie 1, die gemiddelde van cijfers met bonuspunten als aggregatiestrategie heeft</li>
+<li>Een leerling krijgt 20 op item 1, 40 op item 2 en 70 op item 3</li>
+<li>Het totaal van de leerling voor categorie 1 zal 95/100 zijn want 20*2 + (40 + 70)/2 = 95</li>
+</ul>';
+$string['aggregationcoefextrasum'] = 'Bonus';
+$string['aggregationcoefextrasum_help'] = '<p>Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem ingesteld worden als bonusitem voor de categorie. Dit betekent dat het maximumcijfer voor dit item niet toegevoegd zal worden aan het maximumcijfer van de categorie, maar het cijfer van het beoordelingsitem zal wel meegerekend worden. Voorbeeld:</p>
+
+<ul>
+<li>Item 1 wordt beoordeeld tussen 0-100</li>
+<li>Item 2 wordt beoordeeld tussen 0-75</li>
+<li>Item 1 heeft een vinkje bij "bonus", item 2 niet.</li>
+<li>Beide items horen bij categorie 1, die "Som van cijfers" als aggregatiestrategie heeft</li>
+<li>Het totaal van categorie 1 zal tussen 0-75 liggen</li>
+<li>Een leerling krijgt als beoordelingen 20 voor item 1 en 70 voor item 2</li>
+<li>Het totaal van de leerling voor categorie 1 zal 75/75 zijn (20+70 = 90, maar item 1 geldt als bonus en brengt zo het totaal tot het maximumcijfer voor de categorie)</li>
+</ul>';
+$string['aggregationcoefextraweight'] = 'Bonus weging';
+$string['aggregationcoefextraweight_help'] = '<p>Een waarde hoger dan 0 zorgt ervoor dat dit beoordelingsitem als bonus behandeld wordt tijdens aggregatie. Het getal is een factor waarmee dit cijfer wordt vermenigvuldigd voor het opgeteld wordt bij alle andere cijfers, maar het item zelf zal niet inbegrepen worden in de deling. Bijvoorbeeld:</p>
+
+<ul>
+<li>Item 1 wordt beoordeeld tussen 0-100 en de  "Bonus"-waarde staat op 2</li>
+<li>Item 2 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000</li>
+<li>Item 3 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000</li>
+<li>De 3 items staan in categorie 1, die als aggregatiestrategie "Gemiddelde van cijfers (met bonus) heeft</li>
+<li>Een leerling krijgt als beoordelingen 20 op Item 1, 40 op Item 2 en 70 op Item 3</li>
+<li>Het totaal voor categorie 1 voor deze leerling zal zijn: 75/100 (20*2 + 40 + 70) / 2</li>
+</ul>';
+$string['aggregationcoefweight'] = 'Weging beoordelingsitem';
+$string['aggregationcoefweight_help'] = '<p>Weging toegepast op alle cijfers in dit beoordelingsitem wanneer dit geaggregeerd wordt met andere beoordelingsitems.</p>';
 $string['aggregationposition'] = 'Aggregatiepositie';
 $string['aggregationposition_help'] = '<p>Definieert de positie van de totalenkolom van de aggregatie in het rapport tenopzichte van de cijfers die geaggregeerd worden.</p>';
 $string['aggregationsvisible'] = 'Beschikbare aggregatietypes';
@@ -170,9 +170,9 @@ $string['bonuspoints'] = 'Bonuspunten';
 $string['bulkcheckboxes'] = 'Selectievakjes voor bulkoperaties';
 $string['calculatedgrade'] = 'Berekend cijfer';
 $string['calculation'] = 'Berekening';
+$string['calculation_help'] = 'Een cijferberekening is een formule die gebruikt wordt om cijfers te bepalen. De formule moet beginnen met een gelijkheidsteken (=) en mag algemene wiskundige operators bevatten, zoals min, max, sum. Indien gewenst kunnen andere cijferelementen in de berekening betrokken worden door hun ID-nummer tussen dubbele vierkante haken op te nemen.';
 $string['calculationadd'] = 'Berekening toevoegen';
 $string['calculationedit'] = 'Berekening bewerken';
-$string['calculation_help'] = 'Een cijferberekening is een formule die gebruikt wordt om cijfers te bepalen. De formule moet beginnen met een gelijkheidsteken (=) en mag algemene wiskundige operators bevatten, zoals min, max, sum. Indien gewenst kunnen andere cijferelementen in de berekening betrokken worden door hun ID-nummer tussen dubbele vierkante haken op te nemen.';
 $string['calculationsaved'] = 'Berekening bewaard';
 $string['calculationview'] = 'Bekijk berekening';
 $string['cannotaccessgroup'] = 'Geen toegang tot de cijfers van de geselecteerde groep.';
@@ -268,9 +268,9 @@ $string['exportsettings'] = 'Exporteer instellingen';
 $string['exportto'] = 'Exporteer naar';
 $string['extracreditwarning'] = 'Opmerking: als je alle items van een categorie als \'Extra krediet\' instelt, haal je ze uit de berekening van de cijfers omdat er geen puntentotaal meer is';
 $string['feedback'] = 'Feedback';
+$string['feedback_help'] = '<p>Notities die de leraar kan maken om bij de beoordelingen te voegen. Dit kan uitgebreide, gepersonaliseerde feedback zijn of een eenvoudige code die verwijst naar een intern systeem of feedback.</p>';
 $string['feedbackadd'] = 'Voeg feedback toe';
 $string['feedbackedit'] = 'Bewerk feedback';
-$string['feedback_help'] = '<p>Notities die de leraar kan maken om bij de beoordelingen te voegen. Dit kan uitgebreide, gepersonaliseerde feedback zijn of een eenvoudige code die verwijst naar een intern systeem of feedback.</p>';
 $string['feedbacksaved'] = 'Feedback bewaard';
 $string['feedbackview'] = 'Bekijk feedback';
 $string['finalgrade'] = 'Totaal beoordeling';
@@ -355,9 +355,9 @@ $string['gradeview'] = 'Bekijk beoordeling';
 $string['gradeweighthelp'] = 'Help bij gewogen beoordelingen';
 $string['groupavg'] = 'Groepsgemiddelde';
 $string['hidden'] = 'Verborgen';
+$string['hidden_help'] = 'Beoordelingen worden verborgen voor leerlingen indien geselecteerd. Een verborgen tot-datum kan ingesteld worden indien gewenst. De cijfers worden pas getoond nadat het beoordelen klaar is.';
 $string['hiddenasdate'] = 'Toon de datum voor verborgen beoordelingen';
 $string['hiddenasdate_help'] = 'Als een gebruiker verborgen cijfers niet kan zien, toon dan de datum in de plaats van een \'-\'.';
-$string['hidden_help'] = 'Beoordelingen worden verborgen voor leerlingen indien geselecteerd. Een verborgen tot-datum kan ingesteld worden indien gewenst. De cijfers worden pas getoond nadat het beoordelen klaar is.';
 $string['hiddenuntil'] = 'Verborgen tot';
 $string['hiddenuntildate'] = 'Verborgen tot: {$a}';
 $string['hideadvanced'] = 'Verberg geavanceerde mogelijkheden';
@@ -496,6 +496,7 @@ $string['onascaleof'] = 'op een schaal van {$a->grademin} tot {$a->grademax}';
 $string['operations'] = 'Operatie';
 $string['options'] = 'Opties';
 $string['outcome'] = 'Competentie';
+$string['outcome_help'] = 'De competentie waarvoor dit beoordelingsitem staat.';
 $string['outcomeassigntocourse'] = 'Wijs nog een competentie toe aan deze cursus';
 $string['outcomecategory'] = 'Maak competenties in categorie';
 $string['outcomecategorynew'] = 'Nieuwe categorie';
@@ -503,7 +504,6 @@ $string['outcomeconfirmdelete'] = 'Ben je zeker dat je competentie "{$a}" wil ve
 $string['outcomecreate'] = 'Voeg een nieuwe competentie toe';
 $string['outcomedelete'] = 'Verwijder competentie';
 $string['outcomefullname'] = 'Volledige naam';
-$string['outcome_help'] = 'De competentie waarvoor dit beoordelingsitem staat.';
 $string['outcomeitem'] = 'Competentie-item';
 $string['outcomeitemsedit'] = 'Bewerk competentie-item';
 $string['outcomereport'] = 'Rapport competentie';

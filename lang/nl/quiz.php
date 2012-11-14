@@ -369,16 +369,16 @@ $string['history'] = 'Geschiedenis van antwoorden:';
 $string['howquestionsbehave_desc'] = 'Standaardinstelling voor de manier waarop vragen zich gedragen in een quiz.';
 $string['imagedisplay'] = 'Weer te geven afbeelding';
 $string['import'] = 'Importeer';
-$string['importcategory'] = 'importeer categorie';
-$string['importerror'] = 'Er is een fout opgetreden tijdens het importeren';
-$string['importfilearea'] = 'Importeer van een bestand uit de cursusbestanden';
-$string['importfileupload'] = 'Importeer van een geüpload bestand';
-$string['importfromthisfile'] = 'Importeer vanuit dit bestand';
 $string['import_help'] = 'Met deze functie kun je vragen importeren uit externe textbestanden.
 
 Je moet UTF8-encoding gebruiken. Wees vooral voorzichtig met bestanden die je met Microsoft Office genereert, omdat die meestal een encoding gebruiken die niet correct zal afgehandeld worden.
 
 Import- en exportbestandsformaten zijn plugins. Er kunnen optionele bestandsformaten beschikbaar zijn in de Modules and Plugins database op Moodle.org.';
+$string['importcategory'] = 'importeer categorie';
+$string['importerror'] = 'Er is een fout opgetreden tijdens het importeren';
+$string['importfilearea'] = 'Importeer van een bestand uit de cursusbestanden';
+$string['importfileupload'] = 'Importeer van een geüpload bestand';
+$string['importfromthisfile'] = 'Importeer vanuit dit bestand';
 $string['importingquestions'] = '{$a} vragen uit een bestand aan het importeren';
 $string['importmax10error'] = 'Er zit een fout in de vraag. Je mag niet meer dan tien mogelijke antwoorden geven.';
 $string['importmaxerror'] = 'Er zit een fout in de vraag. Er zijn te veel antwoorden.';
@@ -439,9 +439,9 @@ $string['navnojswarning'] = 'Waarschuwing: deze links zullen je antwoorden niet 
 $string['neverallononepage'] = 'Nooit, alle vragen op één pagina';
 $string['newattemptfail'] = 'Fout: kon geen nieuwe poging voor de test starten';
 $string['newpage'] = 'Nieuwe pagina';
-$string['newpageevery'] = 'Start automatisch een nieuwe pagina';
 $string['newpage_help'] = '<p>Voor langere testen is het een goed idee om deze te verdelen over verschillende pagina\'s door het aantal vragen per pagina te beperken. Wanneer je vragen aan de test toevoegt, worden de paginascheidingen automatisch ingevoegd, afhankelijk van de instelling die je hier gemaakt hebt. Je kunt de paginascheidingen later ook met de hand verplaatsen op de pagina voor het bewerken van de test.
 </p>';
+$string['newpageevery'] = 'Start automatisch een nieuwe pagina';
 $string['noanswers'] = 'Er zijn geen antwoorden geselecteerd!';
 $string['noattempts'] = 'Er zijn geen pogingen geweest om deze test te maken';
 $string['noattemptsfound'] = 'Geen pogingen gevonden';
@@ -565,22 +565,27 @@ $string['questiontextisempty'] = '[Lege vraag tekst]';
 $string['questiontype'] = 'Vraagtype {$a}';
 $string['questiontypesetupoptions'] = 'Instellingen voor vraagtypes';
 $string['quiz:attempt'] = 'Pogingen voor test';
-$string['quizavailable'] = 'De test is beschikbaar tot: {$a}';
-$string['quizclose'] = 'Sluit de test';
-$string['quizclosed'] = 'Deze test  wordt op {$a} gesloten';
-$string['quizcloses'] = 'Test gaat dicht';
-$string['quizcloseson'] = 'Deze test sluit op {$a}';
 $string['quiz:deleteattempts'] = 'Verwijder pogingen voor test';
 $string['quiz:emailconfirmsubmission'] = 'Stuur een e-mailbevestiging wanneer ik de test instuur';
 $string['quiz:emailnotifysubmission'] = 'Stuur e-mailnotificaties wanneer de test ingestuurd wordt';
 $string['quiz:grade'] = 'Testen bekijken';
 $string['quiz:ignoretimelimits'] = 'Negeert tijdslimiet op testen';
+$string['quiz:manage'] = 'Testen beheren';
+$string['quiz:manageoverrides'] = 'Beheer testoverschrijvingen';
+$string['quiz:preview'] = 'Testen bekijken';
+$string['quiz:regrade'] = 'Testpogingen opnieuw nakijken';
+$string['quiz:reviewmyattempts'] = 'Herlees je eigen pogingen';
+$string['quiz:view'] = 'Testinformatie bekijken';
+$string['quiz:viewreports'] = 'Testresultaten bekijken';
+$string['quizavailable'] = 'De test is beschikbaar tot: {$a}';
+$string['quizclose'] = 'Sluit de test';
+$string['quizclosed'] = 'Deze test  wordt op {$a} gesloten';
+$string['quizcloses'] = 'Test gaat dicht';
+$string['quizcloseson'] = 'Deze test sluit op {$a}';
 $string['quizisclosed'] = 'Deze test is gesloten';
 $string['quizisclosedwillopen'] = 'Test gesloten (opent {$a})';
 $string['quizisopen'] = 'Deze test is open';
 $string['quizisopenwillclose'] = 'Test open (sluit {$a})';
-$string['quiz:manage'] = 'Testen beheren';
-$string['quiz:manageoverrides'] = 'Beheer testoverschrijvingen';
 $string['quiznavigation'] = 'Testnavigatie';
 $string['quizopen'] = 'Open de test';
 $string['quizopenclose'] = 'Open en sluit data';
@@ -591,13 +596,8 @@ $string['quizopens'] = 'De test gaat open';
 $string['quizopenwillclose'] = 'Deze test is open en sluit op {$a} om';
 $string['quizordernotrandom'] = 'Volgorde van de vragen niet door elkaar gehaald';
 $string['quizorderrandom'] = '* Volgorde van de vragen door elkaar gehaald';
-$string['quiz:preview'] = 'Testen bekijken';
-$string['quiz:regrade'] = 'Testpogingen opnieuw nakijken';
-$string['quiz:reviewmyattempts'] = 'Herlees je eigen pogingen';
 $string['quizsettings'] = 'Instellingen van de test';
 $string['quiztimer'] = 'Test timer';
-$string['quiz:view'] = 'Testinformatie bekijken';
-$string['quiz:viewreports'] = 'Testresultaten bekijken';
 $string['quizwillopen'] = 'Deze test opent op {$a}';
 $string['random'] = 'Willekeurige vraag';
 $string['randomcreate'] = 'Maak willekeurige vragen';
@@ -752,7 +752,7 @@ $string['shufflewithin_help'] = '<p>Als je deze optie inschakeld, dan zullen de 
 <p>De bedoeling hiervan is om het de leerlingen moeilijker te maken om te spieken.</p>
 
 <p>Dit is natuurlijk alleen van toepassing op vragen die uit meerdere onderdelen bestaan, zoals
-   meerkeuzevragen en koppelvragen. Bij meerkeuzevragen wordt de volgorde van de antwoorden alleen verwisseld als deze instelling op &quot;ja&quot; staat. Voor koppelvragen worden de antwoorden altijd verwisseld. Met deze instelling kun je bepalen of ook nog eens de vraag-antwoord paren verwisseld worden.</p>
+meerkeuzevragen en koppelvragen. Bij meerkeuzevragen wordt de volgorde van de antwoorden alleen verwisseld als deze instelling op &quot;ja&quot; staat. Voor koppelvragen worden de antwoorden altijd verwisseld. Met deze instelling kun je bepalen of ook nog eens de vraag-antwoord paren verwisseld worden.</p>
 
 <p>Deze instelling heeft niets te maken met het gebruik van willekeurige vragen.</p>';
 $string['singleanswer'] = 'Kies een antwoord';
@@ -774,9 +774,9 @@ $string['submitallandfinish'] = 'Bewaar alles en beëindig test';
 $string['subneterror'] = 'Deze test is zo beveiligd dat hij alleen toegankelijk is vanop bepaalde plaatsen. Jouw computer staat niet in de lijst met toegelaten machines om deze test te maken.';
 $string['subnetnotice'] = 'De test is vastgezet, zodat hij alleen geopend kan worden vanop bepaalde locaties. Jouw computer staat niet op een toegelaten subnet. Als leraar kun je wel een voorbeeld bekijken';
 $string['subplugintype_quiz'] = 'Rapport';
+$string['subplugintype_quiz_plural'] = 'Rapporten';
 $string['subplugintype_quizaccess'] = 'Toegangsregel';
 $string['subplugintype_quizaccess_plural'] = 'Toegangsregels';
-$string['subplugintype_quiz_plural'] = 'Rapporten';
 $string['substitutedby'] = 'zal vervangen worden door';
 $string['summaryofattempt'] = 'Samenvatting van poging';
 $string['summaryofattempts'] = 'Samenvatting van al je pogingen';
@@ -787,8 +787,8 @@ $string['timecompleted'] = 'Voltooid';
 $string['timedelay'] = 'Je mag de test nog niet doen, omdat je nog niet lang genoeg gewacht hebt om deze test opnieuw te proberen';
 $string['timeleft'] = 'Resterende tijd';
 $string['timelimit'] = 'Tijdsduurlimiet';
-$string['timelimitexeeded'] = 'Sorry, de tijdsduur voor deze test is overschreden!';
 $string['timelimit_help'] = 'Indien ingeschakeld, krijg je een zwevend venster met de aftellende timer te zien (JavaScript vereist). Als de tijd verlopen is, wordt de test automatisch ingestuurd met alle tot dan toe ingevulde antwoorden.';
+$string['timelimitexeeded'] = 'Sorry, de tijdsduur voor deze test is overschreden!';
 $string['timelimitmin'] = 'Tijdslimiet (minuten)';
 $string['timelimitsec'] = 'Tijdslimiet (seconden)';
 $string['timestr'] = '%H:%M:%S op %d/%m/%y';

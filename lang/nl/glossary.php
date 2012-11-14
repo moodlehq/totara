@@ -136,13 +136,6 @@ $string['destination_help'] = '<p>Hier kun je instellen naar waar je de invoer w
 <li><strong>Nieuwe woordenlijst:</strong> zal een nieuwe woordenlijst maken, gebaseerd op de informatie uit het gekozen XML-bestand en de woordenlijst aanvullen.</li>
 </ul>';
 $string['displayformat'] = 'Kies opmaak';
-$string['displayformatcontinuous'] = 'Volledige lijst zonder auteur';
-$string['displayformatdictionary'] = 'Gewone, woordenboekstijl';
-$string['displayformatencyclopedia'] = 'Encyclopedie';
-$string['displayformatentrylist'] = 'Lijst met items';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Volledig met auteur';
-$string['displayformatfullwithoutauthor'] = 'Volledig zonder auteur';
 $string['displayformat_help'] = 'Er zijn 7 opmaakformaten:
 
 * Eenvoudig, woordenboekstijl - Er worden geen auteurs getoond en bijlagen worden als links getoond
@@ -152,6 +145,13 @@ $string['displayformat_help'] = 'Er zijn 7 opmaakformaten:
 * Encyclopedie - Zoals \'volledig met auteur\', maar met afbeeldingen als bijlage getoond op de pagina
 * Itemlijst - De concepten getoond als links
 * FAQ - De woorden VRAAG en ANTWOORD worden toegevoegd aan het concept en aan de definitie';
+$string['displayformatcontinuous'] = 'Volledige lijst zonder auteur';
+$string['displayformatdictionary'] = 'Gewone, woordenboekstijl';
+$string['displayformatencyclopedia'] = 'Encyclopedie';
+$string['displayformatentrylist'] = 'Lijst met items';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Volledig met auteur';
+$string['displayformatfullwithoutauthor'] = 'Volledig zonder auteur';
 $string['displayformats'] = 'Bekijk opmaakmogelijkheden';
 $string['displayformatssetup'] = 'Instellingen van de opmaakmogelijkheden';
 $string['duplicatecategory'] = 'Dupliceer categorie';
@@ -213,28 +213,28 @@ $string['fullmatch_help'] = '<p>Als automatische links is ingeschakeld, dan zorg
 woorden gelinkt worden.</p>
 
 <p>Bijvoorbeeld: voor het item "construct" in de woordenlijst wordt geen link gemaakt in het woord
- "constructivisme" als deze optie is ingeschakeld.</p>';
+"constructivisme" als deze optie is ingeschakeld.</p>';
 $string['glossary:approve'] = 'Nieuwe items goedkeuren';
 $string['glossary:comment'] = 'Commentaar toevoegen';
 $string['glossary:export'] = 'Items exporteren';
 $string['glossary:exportentry'] = 'Exporteer één item';
 $string['glossary:exportownentry'] = 'Exporteer één item van jouw';
 $string['glossary:import'] = 'Items importeren';
-$string['glossaryleveldefaultsettings'] = 'Standaardinstellingen woordenlijst';
 $string['glossary:managecategories'] = 'Categorieën beheren';
 $string['glossary:managecomments'] = 'Commentaren beheren';
 $string['glossary:manageentries'] = 'Items beheren';
 $string['glossary:rate'] = 'Items beoordelen';
-$string['glossarytype'] = 'Type woordenlijst';
-$string['glossarytype_help'] = '<p>Het woordenlijstsysteem maakt het mogelijk om definities van de secundaire woordenlijsten naar
-de hoofdwoordenlijst van deze cursus over te hevelen. Om dit te doen moet je de hoofdwoordenlijst specifiëren. </p>
-<p>Merk op dat je slechts één hoofdwoordenlijst per cursus kan hebben.</p>
-<p>Voor Moodle 1.7 konden enkel leraren de hoofdwoordenlijst bewerken. In Moodle 1.7 en later kun je dit aanpassen door wijzigingen te maken in de interface voor het overschrijven van rollen voor je woordenlijst.</p>';
 $string['glossary:view'] = 'Woordenlijsten bekijken';
 $string['glossary:viewallratings'] = 'Bekijk alle ruwe beoordelingsresultaten';
 $string['glossary:viewanyrating'] = 'Bekijk de totalen van de beoordelingsresultaten';
 $string['glossary:viewrating'] = 'Jouw beoordelingen bekijken';
 $string['glossary:write'] = 'Nieuwe items toevoegen';
+$string['glossaryleveldefaultsettings'] = 'Standaardinstellingen woordenlijst';
+$string['glossarytype'] = 'Type woordenlijst';
+$string['glossarytype_help'] = '<p>Het woordenlijstsysteem maakt het mogelijk om definities van de secundaire woordenlijsten naar
+de hoofdwoordenlijst van deze cursus over te hevelen. Om dit te doen moet je de hoofdwoordenlijst specifiëren. </p>
+<p>Merk op dat je slechts één hoofdwoordenlijst per cursus kan hebben.</p>
+<p>Voor Moodle 1.7 konden enkel leraren de hoofdwoordenlijst bewerken. In Moodle 1.7 en later kun je dit aanpassen door wijzigingen te maken in de interface voor het overschrijven van rollen voor je woordenlijst.</p>';
 $string['guestnoedit'] = 'Gasten mogen geen woordenlijsten bewerken';
 $string['importcategories'] = 'Importeer categorieën';
 $string['importedcategories'] = 'Geïmporteerde categorieën';

@@ -42,10 +42,12 @@ $string['allowresubmit_help'] = '<p>Standaard kunnen leerlingen hun opdracht nie
 
 <p>Deze optie is natuurlijk niet relevant voor offline opdrachten.</p>';
 $string['alreadygraded'] = 'Jouw opdracht is al beoordeeld en opnieuw insturen is niet toegelaten.';
-$string['assignmentdetails'] = 'De details van de opdracht';
 $string['assignment:exportownsubmission'] = 'Exporteer je opdracht';
 $string['assignment:exportsubmission'] = 'Exporteer inzending';
 $string['assignment:grade'] = 'Beoordeel opdracht';
+$string['assignment:submit'] = 'Stuur opdracht in';
+$string['assignment:view'] = 'Bekijk opdracht';
+$string['assignmentdetails'] = 'De details van de opdracht';
 $string['assignmentmail'] = '{$a->teacher} heeft feedback gepost voor je bijdrage aan de opdracht \'{$a->assignment}\'
 Hij is toegevoegd aan je ingestuurde opdracht:
 {$a->url}';
@@ -54,9 +56,7 @@ Hij is toegevoegd aan je ingestuurde <a href="{$a->url}">opdracht</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} heeft feedback voor jou geschreven over je ingestuurde opdracht voor  \'{$a->assignment}\' Je kunt de feedback lezen bij je ingestuurde opdracht.';
 $string['assignmentname'] = 'Naam van de opdracht';
 $string['assignmentsubmission'] = 'Ingestuurde opdrachten';
-$string['assignment:submit'] = 'Stuur opdracht in';
 $string['assignmenttype'] = 'Soort opdracht';
-$string['assignment:view'] = 'Bekijk opdracht';
 $string['availabledate'] = 'Inleveren kan vanaf';
 $string['cannotdeletefiles'] = 'Er is een fout opgetreden en de bestanden konden niet verwijderd worden';
 $string['cannotviewassignment'] = 'Je kunt deze opdracht niet bekijken';
@@ -197,8 +197,8 @@ $string['typeonline'] = 'Online activiteit';
 $string['typeupload'] = 'Geavanceerd uploaden van bestanden';
 $string['typeuploadsingle'] = 'Upload een bestand';
 $string['unfinalize'] = 'Terugzetten naar kladwerk';
-$string['unfinalizeerror'] = 'Er is een fout opgetreden. Deze inzending kon niet terug omgezet worden naar kladwerk.';
 $string['unfinalize_help'] = 'Het terugzetten naar kladwerk geeft een leerling de kans om terug aanpassingen te doen aan zijn opdracht';
+$string['unfinalizeerror'] = 'Er is een fout opgetreden. Deze inzending kon niet terug omgezet worden naar kladwerk.';
 $string['uploadafile'] = 'Upload een bestand';
 $string['uploadbadname'] = 'In deze bestandsnaam staan rare tekens, het bestand kon daardoor niet worden geüpload';
 $string['uploadedfiles'] = 'Ingestuurde bestanden';

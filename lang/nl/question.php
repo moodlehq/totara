@@ -233,11 +233,11 @@ $string['markoutofmax'] = '{$a->mark} punten op {$a->max}';
 $string['marks'] = 'Cijfers';
 $string['matcherror'] = 'Cijfers komen niet overeen met beoordelingsopties - vraag overgeslagen';
 $string['matchgrades'] = 'Koppel cijfers';
-$string['matchgradeserror'] = 'Fout als cijfer niet getoond';
 $string['matchgrades_help'] = 'Geïmporteerde cijfers moeten overeen komen met één uit de vaste lijst met geldige cijfers - 100, 90, 80, 75, 70, 66.666, 60, 50, 40, 33.333, 30, 25, 20, 16.666, 14.2857, 12.5, 11.111, 10, 5, 0 (ook negatieve cijfers). Indien dat niet het geval is, zijn er twee opties:
 
 * Fout als het cijfer niet in de lijst voorkomt - als een vraag cijfers bevat die niet in de lijst voorkomen, dan zal wordt er een foutmelding getoond en de vraag wordt niet geïmporteerd;
 * Dichtsbijzijnde cijfer indien niet in de lijst - Als een cijfer wordt gevonden dat niet overeenkomt met een cijfer in de lijst, dan wordt het cijfer gewijzigd naar de dichtsbijzijnde waarde in de lijst';
+$string['matchgradeserror'] = 'Fout als cijfer niet getoond';
 $string['matchgradesnearest'] = 'Dichtsbijliggende cijfer indien niet getoond';
 $string['missingcourseorcmid'] = 'Moet courseid of cmid opgeven voor print_question';
 $string['missingcourseorcmidtolink'] = 'Moet cursusid of cmid geven voor get_question_edit_link';

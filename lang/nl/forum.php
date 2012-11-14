@@ -44,8 +44,8 @@ $string['attachments'] = 'Bijlagen';
 $string['blockafter'] = 'Maximum berichten voor blokkeren';
 $string['blockafter_help'] = 'Deze instelling specificeert het maximum aantal berichten dat een gebruiker kan posten in een zekere tijdsspanne. Gebruikers met de mogelijkheid mod/forum:postwithoutthrottling hebben geen limiet.';
 $string['blockperiod'] = 'Blokkeertijd';
-$string['blockperioddisabled'] = 'Niet blokkeren';
 $string['blockperiod_help'] = 'Leerlingen kunnen geblokkeerd worden voor het versturen van berichten als ze meer dan een bepaald aantal berichten sturen in een gegeven tijdslimiet. Gebruikers met de mogelijkheid mod/forum:postwithoutthrottling hebben geen limiet.';
+$string['blockperioddisabled'] = 'Niet blokkeren';
 $string['blogforum'] = 'Standaardforum, getoond in blogstijl';
 $string['bynameondate'] = 'door  {$a->name}  - {$a->date}';
 $string['cannotadd'] = 'Kon de discussie niet toevoegen aan dit forum';
@@ -161,9 +161,6 @@ $string['forcessubscribe'] = 'Iedereen krijgt verplicht e-mail van dit forum';
 $string['forum'] = 'Forum';
 $string['forum:addnews'] = 'Voeg nieuws toe';
 $string['forum:addquestion'] = 'Voeg vraag toe';
-$string['forumauthorhidden'] = 'Auteur (verborgen)';
-$string['forumblockingalmosttoomanyposts'] = 'Je nadert de berichtenlimiet. Je hebt {$a->numposts} berichten in de afgelopen {$a->blockperiod} gepost en de limiet is {$a->blockafter} berichten.';
-$string['forumbodyhidden'] = 'Je kunt dit bericht niet bekijken, waarschijnlijk omdat je zelf nog niets gepost hebt in deze discussie of de maximum bewerktijd is nog niet verstreken.';
 $string['forum:createattachment'] = 'Bijlage toevoegen';
 $string['forum:deleteanypost'] = 'Gelijk welk bericht verwijderen (altijd)';
 $string['forum:deleteownpost'] = 'Eigen berichten verwijderen (binnen bepaalde tijd)';
@@ -171,20 +168,30 @@ $string['forum:editanypost'] = 'Gelijk welk bericht bewerken';
 $string['forum:exportdiscussion'] = 'Exporteer de hele discussie';
 $string['forum:exportownpost'] = 'Exporteer je eigen bericht';
 $string['forum:exportpost'] = 'Exporteer bericht';
-$string['forumintro'] = 'De inleiding van het forum';
 $string['forum:managesubscriptions'] = 'Beheer het ontvangen van e-mail';
 $string['forum:movediscussions'] = 'Discussies verplaatsen';
-$string['forumname'] = 'Naam van het forum';
-$string['forumposts'] = 'Forumberichten';
 $string['forum:postwithoutthrottling'] = 'Vrijgesteld van beperkingen om te posten';
 $string['forum:rate'] = 'Berichten beoordelen';
 $string['forum:replynews'] = 'Beantwoord nieuws';
 $string['forum:replypost'] = 'Berichten beantwoorden';
-$string['forums'] = 'Forums';
 $string['forum:splitdiscussions'] = 'Discussies splitsen';
 $string['forum:startdiscussion'] = 'Nieuwe discussies starten';
-$string['forumsubjecthidden'] = 'Onderwerp (verborgen)';
 $string['forum:throttlingapplies'] = 'Kan geblokkeerd worden';
+$string['forum:viewallratings'] = 'Bekijk de ruwe gegevens van de beoordelingen.';
+$string['forum:viewanyrating'] = 'Bekijk alle totaalbeoordelingen';
+$string['forum:viewdiscussion'] = 'Discussies bekijken';
+$string['forum:viewhiddentimedposts'] = 'Verborgen berichten bekijken';
+$string['forum:viewqandawithoutposting'] = 'Altijd Vraag en Antwoord berichten bekijken';
+$string['forum:viewrating'] = 'Bekijk jouw algemene beoordeling';
+$string['forum:viewsubscribers'] = 'Bekijk wie e-mail ontvangt';
+$string['forumauthorhidden'] = 'Auteur (verborgen)';
+$string['forumblockingalmosttoomanyposts'] = 'Je nadert de berichtenlimiet. Je hebt {$a->numposts} berichten in de afgelopen {$a->blockperiod} gepost en de limiet is {$a->blockafter} berichten.';
+$string['forumbodyhidden'] = 'Je kunt dit bericht niet bekijken, waarschijnlijk omdat je zelf nog niets gepost hebt in deze discussie of de maximum bewerktijd is nog niet verstreken.';
+$string['forumintro'] = 'De inleiding van het forum';
+$string['forumname'] = 'Naam van het forum';
+$string['forumposts'] = 'Forumberichten';
+$string['forums'] = 'Forums';
+$string['forumsubjecthidden'] = 'Onderwerp (verborgen)';
 $string['forumtracked'] = 'Volgen ongelezen post ingeschakeld';
 $string['forumtrackednot'] = 'Volgen ongelezen post uitgeschakeld';
 $string['forumtype'] = 'Soort forum';
@@ -195,13 +202,6 @@ $string['forumtype_help'] = 'Er zijn 5 forumtypes
 * Vraag- en antwoordforum - Leerlingen moeten eerst hun bericht posten voor ze de berichten van anderen kunnen zien
 * Standaardforum getoond in blog stijl format - een open forum waar iedereen een nieuwe discussie kan starten en waar de onderwerpen getoond worden op één pagina met \'Discussieer over dit onderwerp\' -links
 * Standaardforum voor algemeen gebruik - Een open fourm waar iedereen op elk moment een nieuwe discussie kan starten';
-$string['forum:viewallratings'] = 'Bekijk de ruwe gegevens van de beoordelingen.';
-$string['forum:viewanyrating'] = 'Bekijk alle totaalbeoordelingen';
-$string['forum:viewdiscussion'] = 'Discussies bekijken';
-$string['forum:viewhiddentimedposts'] = 'Verborgen berichten bekijken';
-$string['forum:viewqandawithoutposting'] = 'Altijd Vraag en Antwoord berichten bekijken';
-$string['forum:viewrating'] = 'Bekijk jouw algemene beoordeling';
-$string['forum:viewsubscribers'] = 'Bekijk wie e-mail ontvangt';
 $string['generalforum'] = 'Standaardforum voor algemeen gebruik';
 $string['generalforums'] = 'Algemene forums';
 $string['inforum'] = 'in {$a}';
@@ -388,9 +388,6 @@ $string['subscribersto'] = 'Krijgen e-mail van \'{$a}\'';
 $string['subscribestart'] = 'Stuur me een kopie per e-mail wanneer iemand een bericht op dit forum plaatst';
 $string['subscribestop'] = 'Ik wil geen kopie van inzendingen op dit forum per e-mail ontvangen';
 $string['subscription'] = 'E-mail krijgen';
-$string['subscriptionauto'] = 'Automatisch inschrijven';
-$string['subscriptiondisabled'] = 'Inschrijven uitgeschakeld';
-$string['subscriptionforced'] = 'Verplicht inschrijven';
 $string['subscription_help'] = '<p> Een persoon die ingeschreven is op een forum krijgt een kopie per e-mail van elk bericht in dat forum.
 De mails worden na ongeveer <?PHP echo $CFG->maxeditingtime/60 ?> minutem verzonden (nadat het bericht voor het eerst
 bewaard werd).</p>
@@ -402,6 +399,9 @@ van de cursus zullen kopieën per e-mail krijgen.</p>
 
 <p>Dit is vooral nuttig in het Nieuwsforum en aan het begin van een cursus (voor iedereen ontdekt heeft
 dat hij zich zelf kan inschrijven op deze e-mails).</p>';
+$string['subscriptionauto'] = 'Automatisch inschrijven';
+$string['subscriptiondisabled'] = 'Inschrijven uitgeschakeld';
+$string['subscriptionforced'] = 'Verplicht inschrijven';
 $string['subscriptionmode'] = 'Inschrijvingsmodus';
 $string['subscriptionmode_help'] = 'Wanneer een persoon ingeschreven wordt op een forum, dan betekent dit dat hij e-mailkopieën zal krijgen van elk bericht in dat forum.
 

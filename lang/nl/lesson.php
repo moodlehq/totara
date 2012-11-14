@@ -87,7 +87,7 @@ $string['casesensitive_help'] = '<p>Enkele vraagtypes hebben een optie die inges
 
 <ol>
 <li><p><b>Meerkeuzevragen</b> Er is een variant op de meerkeuzevragen die
-    <b>&quot;Meerkeuzevraag met meerdere antwoorden&quot;</b> genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven <i>hoeveel</i> antwoorden uit de set juist zijn. Bijvoorbeeld: &quot;Welke van de volgende personen waren Amerikaanse presidenten?&quot; tegenover &quot;Kies de twee Amerikaanse presidenten uit de onderstaande lijst.&quot;. Het aantal juiste antwoorden kan van <b>één</b> tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)</p></li>
+<b>&quot;Meerkeuzevraag met meerdere antwoorden&quot;</b> genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven <i>hoeveel</i> antwoorden uit de set juist zijn. Bijvoorbeeld: &quot;Welke van de volgende personen waren Amerikaanse presidenten?&quot; tegenover &quot;Kies de twee Amerikaanse presidenten uit de onderstaande lijst.&quot;. Het aantal juiste antwoorden kan van <b>één</b> tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)</p></li>
 <li><p><b>Kort antwoord</b> Standaard is hoofdlettergevoeligheid uitgeschakeld. Als de vraagoptie is aangevinkt, dan wordt er bij de verbetering met hoofdletters rekening gehouden.</p></li>
 <p>De andere vraagtypes gebruiken de vraagopties niet.</p>';
 $string['checkbranchtable'] = 'Controleer inhoudspagina';
@@ -221,7 +221,7 @@ $string['importppt_help'] = '<p> HOE TE GEBRUIKEN</p>
 
 <li>Het resultaat van stap 3 zou een htm bestand en een map met alle dia\'s, geconverteerd naar webpagina\'s.<br />
 
-  ZET DE MAP ALEEN IN EEN ZIP-BESTAND.</li>
+ZET DE MAP ALEEN IN EEN ZIP-BESTAND.</li>
 
 <li>Ga naar je Moodle-site en voeg een nieuwe les toe.</li>
 
@@ -379,13 +379,13 @@ $string['jumps_help'] = 'Elk antwoord (voor vragen) of beschrijving (voor inhoud
 $string['jumpsto'] = 'Verspringen naar  <em>{$a}</em>';
 $string['leftduringtimed'] = 'Je bent weggegaan tijdens een getimede les. <br />Klik op ga verder om de les te hervatten.';
 $string['leftduringtimednoretake'] = 'Je bent weggegaan tijdens een getimede les.  <br />Je mag niet verder werken.';
+$string['lesson:edit'] = 'Bewerk een les';
+$string['lesson:manage'] = 'Beheer een les';
 $string['lessonattempted'] = 'Poging';
 $string['lessonclosed'] = 'Deze les sluit op {$a}.';
 $string['lessoncloses'] = 'Les sluit';
 $string['lessoncloseson'] = 'Les sluit op {$a}';
-$string['lesson:edit'] = 'Bewerk een les';
 $string['lessonformating'] = 'Opmaken van de les';
-$string['lesson:manage'] = 'Beheer een les';
 $string['lessonmenu'] = 'Lesmenu';
 $string['lessonnotready'] = 'Deze les is nog niet klaar. Contacteer aub je {$a}';
 $string['lessonnotready2'] = 'Deze les is niet klaar om te starten';
@@ -444,7 +444,7 @@ $string['multianswer_help'] = '<p>Enkele vraagtypes hebben een optie die ingesch
 
 <ol>
 <li><p><b>Meerkeuzevragen</b> Er is een variant op de meerkeuzevragen die
-    <b>&quot;Meerkeuzevraag met meerdere antwoorden&quot;</b> genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven <i>hoeveel</i> antwoorden uit de set juist zijn. Bijvoorbeeld: &quot;Welke van de volgende personen waren Amerikaanse presidenten?&quot; tegenover &quot;Kies de twee Amerikaanse presidenten uit de onderstaande lijst.&quot;. Het aantal juiste antwoorden kan van <b>één</b> tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)</p></li>
+<b>&quot;Meerkeuzevraag met meerdere antwoorden&quot;</b> genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven <i>hoeveel</i> antwoorden uit de set juist zijn. Bijvoorbeeld: &quot;Welke van de volgende personen waren Amerikaanse presidenten?&quot; tegenover &quot;Kies de twee Amerikaanse presidenten uit de onderstaande lijst.&quot;. Het aantal juiste antwoorden kan van <b>één</b> tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)</p></li>
 <li><p><b>Kort antwoord</b> Standaard is hoofdlettergevoeligheid uitgeschakeld. Als de vraagoptie is aangevinkt, dan wordt er bij de verbetering met hoofdletters rekening gehouden.</p></li>
 <p>De andere vraagtypes gebruiken de vraagopties niet.</p>';
 $string['multichoice'] = 'Meerkeuze';
@@ -484,8 +484,8 @@ $string['numberofpagesviewed'] = 'Aantal beantwoorde vragen: {$a}';
 $string['numberofpagesviewednotice'] = 'Aantal beantwoorde vragen: {$a->nquestions}; (minimum aantal antwoorden: {$a->minquestions})';
 $string['numerical'] = 'Numeriek';
 $string['ongoing'] = 'Toon het huidige cijfer';
-$string['ongoingcustom'] = 'Dit is een les op {$a->score} punten. Je hebt nu al {$a->score} punten verdiend van de {$a->currenthigh} punten die er tot nu toe te verdienen waren.';
 $string['ongoing_help'] = '<p>Met dit ingeschakeld zal elke pagina het cijfer dat de leerling tot nu toe behaald heeft op het tot nu toe te halen maximum weergeven. Bijvoorbeeld: een leerling heeft 4 vragen op 5 punten beantwoord en heeft er één fout. Het cijfer tot nu toe zou op het scherm tonen dat de leerling 15/20 punten verdient heeft.</p>';
+$string['ongoingcustom'] = 'Dit is een les op {$a->score} punten. Je hebt nu al {$a->score} punten verdiend van de {$a->currenthigh} punten die er tot nu toe te verdienen waren.';
 $string['ongoingnormal'] = 'Je hebt {$a->correct} vragen van de {$a->viewed} juist beantwoord.';
 $string['onpostperpage'] = 'Slechts één bericht per cijfer';
 $string['options'] = 'Opties';
@@ -497,10 +497,10 @@ $string['overview'] = 'Overzicht';
 $string['overview_help'] = 'Een les is opgebouwd uit een aantal pagina\'s en optioneel een aantal inhoudspagina\'s. Een pagina bevat een zekere inhoud en eindigt gewoonlijk met een vraag.
 Aan elk antwoord op de vraag is een sprong verbonden. De sprong kan relatief zijn, zoals deze pagina of volgende pagina, of absoluut verwijzen naar om het even welke pagina in de les. Een inhoudspagina is een pagina die een reeks links naar andere pagina\'s in de les bevat, zoals bijvoorbeeld een inhoudstafel.';
 $string['page'] = 'Pagina: {$a}';
-$string['pagecontents'] = 'Inhoud van de pagina';
 $string['page-mod-lesson-edit'] = 'Bewerk lespagina';
 $string['page-mod-lesson-view'] = 'Bekijk of bekijk voorbeeld van lespagina';
 $string['page-mod-lesson-x'] = 'Elke lespagina';
+$string['pagecontents'] = 'Inhoud van de pagina';
 $string['pages'] = 'Pagina\'s';
 $string['pagetitle'] = 'Titel van de pagina';
 $string['password'] = 'Wachtwoord';
@@ -568,10 +568,10 @@ $string['showanunseenpage'] = 'Toon een ongeziene pagina';
 $string['singleanswer'] = 'Eén enkel antwoord';
 $string['skip'] = 'Sla navigatie over';
 $string['slideshow'] = 'Diavoorstelling';
-$string['slideshowbgcolor'] = 'Achtergrondkleur van de diavoorstelling';
-$string['slideshowheight'] = 'Hoogte van de diavoorstelling';
 $string['slideshow_help'] = '<p>Hiermee kun je de les als een diavoorstelling tonen, met een vaste breedte, hoogte en een aangepaste achtergrondkleur. Een op CSS gebaseerde rolbalk wordt getoond als de breedte of hoogte van de dia overschreden wordt door de inhoud van de pagina.
 Standaard worden vragen niet getoond in een diavoorstelling, alleen vertakkingstabellen verschijnen. Knoppen met labels voor "Terug" en "Verder" worden links en rechts van de dia getoond als die optie gekozen is. Andere knoppen worden in het midden van de dia geplaatst.</p>';
+$string['slideshowbgcolor'] = 'Achtergrondkleur van de diavoorstelling';
+$string['slideshowheight'] = 'Hoogte van de diavoorstelling';
 $string['slideshowwidth'] = 'Breedte van de diavoorstelling';
 $string['startlesson'] = 'Start de les';
 $string['studentattemptlesson'] = 'Pogingnummer {$a->attempt} van {$a->lastname}, {$a->firstname}';

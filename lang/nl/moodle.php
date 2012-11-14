@@ -288,7 +288,7 @@ browser afsluit dan wordt deze cookie verwijderd (binnen de browser en op de ser
 <p>De andere cookie is er alleen maar voor het gemak. Meestal heet deze iets als <b>MOODLEID</b>. Deze onthoudt slechts
 je gebruikersnaam binnen de browser. Deze cookie zorgt ervoor dat wanneer je terugkomt op deze site het veld met de gebruikersnaam ingevuld op
 de inlogpagina staat. Het is veilig om deze cookie te weigeren - je zult dan elke keer je gebruikersnaam opnieuw moeten
- intypen.</p>';
+intypen.</p>';
 $string['cookiesnotenabled'] = 'Het gebruik van cookies is door je browser niet toegelaten. Met deze instelling kun je deze site niet gebruiken.';
 $string['copy'] = 'Kopie';
 $string['copyasnoun'] = 'Kopie';
@@ -1367,7 +1367,7 @@ $string['resourcedisplaydownload'] = 'Download verplicht';
 $string['resourcedisplayembed'] = 'In browser';
 $string['resourcedisplayframe'] = 'In frame';
 $string['resourcedisplaynew'] = 'Nieuw venster';
-$string['resourcedisplayopen'] = 'Open ';
+$string['resourcedisplayopen'] = 'Open';
 $string['resourcedisplaypopup'] = 'In pop-up';
 $string['resources'] = 'Bronnen';
 $string['resources_help'] = 'Met bronnen kun je bijna alle soorten webinhoud aan je cursus toevoegen';
@@ -1424,7 +1424,7 @@ en onder contextgevoelige helpknoppen</p>
 <p>De schaal zelf wordt gedefinieerd door een geordende lijst van waarden, gerangschikt van negatief naar positief en gescheiden door komma\'s. Bijvoorbeeld:</p>
 
 <blockquote><em>
-   Teleurstellend, Niet goed genoeg, Matig, Goed, Zeer goed, Uitstekend!
+Teleurstellend, Niet goed genoeg, Matig, Goed, Zeer goed, Uitstekend!
 </em></blockquote>
 
 <p>Een schaal moet ook voorzien worden van een goede beschrijving over wat ze bedoelt en hoe ze zou moeten gebruikt worden.
@@ -1528,14 +1528,14 @@ $string['showgrades'] = 'Laat cijfers aan leerlingen zien';
 $string['showgrades_help'] = '<p>Voor de meeste activiteiten is het mogelijk cijfers te geven.</p>
 
 <p>De standaardinstelling is dat de resultaten van alle activiteiten binnen een
- cursus bekeken kunnen worden op de cijferpagina. Die is beschikbaar vanuit de hoofdpagina
- van de cursus.</p>
+cursus bekeken kunnen worden op de cijferpagina. Die is beschikbaar vanuit de hoofdpagina
+van de cursus.</p>
 
 <p>Als een leraar niet geïnteresseerd is in het gebruiken van cijfers binnen
- een cursus, of als hij de cijfers wil verbergen voor de leerlingen, dan
-  kan het tonen van cijfers uitgezet worden bij de vakinstellingen. Het is
-   dan nog wel mogelijk om cijfers te geven voor individuele activiteiten, de
-   cijfers zullen alleen niet worden getoond.</p>';
+een cursus, of als hij de cijfers wil verbergen voor de leerlingen, dan
+kan het tonen van cijfers uitgezet worden bij de vakinstellingen. Het is
+dan nog wel mogelijk om cijfers te geven voor individuele activiteiten, de
+cijfers zullen alleen niet worden getoond.</p>';
 $string['showlistofcourses'] = 'Laat de lijst met cursussen zien';
 $string['showmodulecourse'] = 'Toon een lijst met cursussen met deze activiteit';
 $string['showonly'] = 'Toon enkel';

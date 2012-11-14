@@ -90,10 +90,10 @@ $string['csvimport_help'] = '<p align="center"><strong>Importeren met een CSV be
 <p>Voorbeeld:
 
 <pre>
-  naam,grootte,gewicht
-  Kai,180cm,80kg
-  Kim,170cm,60kg
-  Koo,190cm,20kg
+naam,grootte,gewicht
+Kai,180cm,80kg
+Kim,170cm,60kg
+Koo,190cm,20kg
 </pre>
 </p>
 
@@ -112,7 +112,7 @@ $string['data:rate'] = 'Items beoordelen';
 $string['data:readentry'] = 'Lees items';
 $string['data:viewallratings'] = 'Bekijk alle gegeven beoordelingen';
 $string['data:viewalluserpresets'] = 'Bekijk sjabloonsets';
-$string['data:viewanyrating'] = 'Bekijk de gekregen totalen van beoordelingen ';
+$string['data:viewanyrating'] = 'Bekijk de gekregen totalen van beoordelingen';
 $string['data:viewentry'] = 'Bekijk items';
 $string['data:viewrating'] = 'Bekijk de totaalbeoordeling die je gekregen hebt';
 $string['data:writeentry'] = 'Voeg nieuw item toe';

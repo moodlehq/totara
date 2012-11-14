@@ -47,14 +47,14 @@ $string['always'] = 'Altijd';
 $string['automatic'] = 'Automatisch, gebaseerd op de Launch URL';
 $string['baseurl'] = 'Basis URL';
 $string['basiclti'] = 'LTI';
-$string['basicltiactivities'] = 'LTI activiteiten';
 $string['basiclti_base_string'] = 'LTI OAuth Base String';
 $string['basiclti_endpoint'] = 'LTI Launch Endpoint';
-$string['basicltifieldset'] = 'Aangepast voorbeeld veldset';
 $string['basiclti_in_new_window'] = 'Je activiteit heeft een nieuw venster geopend';
+$string['basiclti_parameters'] = 'LTI startparameters';
+$string['basicltiactivities'] = 'LTI activiteiten';
+$string['basicltifieldset'] = 'Aangepast voorbeeld veldset';
 $string['basicltiintro'] = 'Activiteitsbeschrijving';
 $string['basicltiname'] = 'Naam activiteit';
-$string['basiclti_parameters'] = 'LTI startparameters';
 $string['basicltisettings'] = 'Basis Learning Tool Interoperability instellingen';
 $string['cannot_delete'] = 'Je mag deze tool configuratie niet verwijderen.';
 $string['cannot_edit'] = 'Je mag deze toolconfiguratie niet bewerken.';
@@ -66,9 +66,9 @@ $string['configpreferwidth'] = 'Standaard voorkeursbreedte';
 $string['configresourceurl'] = 'Standaard bron URL';
 $string['configtoolurl'] = 'Standaard externe tool URL';
 $string['configtypes'] = 'LTI applicaties inschakelen';
+$string['course_tool_types'] = 'Cursus tooltypes';
 $string['courseid'] = 'Cursus ID nummer';
 $string['coursemisconf'] = 'Cursus is slecht geconfigureerd';
-$string['course_tool_types'] = 'Cursus tooltypes';
 $string['createdon'] = 'Gemaakt op';
 $string['curllibrarymissing'] = 'PHP Curl moet geïnstalleerd zijn om LTI te kunnen gebruiken';
 $string['custom'] = 'Eigen parameters';
@@ -141,13 +141,13 @@ $string['fixexistingconf'] = 'Gebruik een bestaande configuratie voor een fout g
 $string['fixnew'] = 'Nieuwe configuratie';
 $string['fixnewconf'] = 'Definieer een nieuwe configuratie voor de fout geconfigureerde instantie';
 $string['fixold'] = 'Gebruik bestaande';
-$string['forced_help'] = 'Deze instelling werd opgelegd in een tool configuratie op niveau van de cursus of de site. Je kunt dit niet veranderen vanuit deze interface.';
 $string['force_ssl'] = 'Dwing SSL af';
 $string['force_ssl_help'] = 'Door de keuze voor deze optie wordt  het gebruik van SSL verplicht bij alle lanceringen naar deze tool provider.
 
 Bijkomend zullen ook alle web service verzoeken van de tool provider gebruik maken van SSL.
 
 Indien je voor deze optie kiest, ga dan eerst na of de Moodle site en de tool provider SSL ondersteunen.';
+$string['forced_help'] = 'Deze instelling werd opgelegd in een tool configuratie op niveau van de cursus of de site. Je kunt dit niet veranderen vanuit deze interface.';
 $string['global_tool_types'] = 'Tool types op server niveau';
 $string['grading'] = 'Cijferlijst routing';
 $string['icon_url'] = 'URL icoontje';
@@ -158,8 +158,12 @@ $string['imsroleinstructor'] = 'Instructeur';
 $string['imsrolelearner'] = 'Leerling';
 $string['invalidid'] = 'LTI ID was foutief';
 $string['launch_in_moodle'] = 'Tool voor lancering in Moodle';
-$string['launchinpopup'] = 'Container voor lancering';
 $string['launch_in_popup'] = 'Tool voor lancering in een pop-up';
+$string['launch_url'] = 'URL voor lancering';
+$string['launch_url_help'] = 'De URL van lancering geeft het webadres aan van de externe tool, en kan ook bijkomende informatie bevatten, zoals de te tonen bron. Als je niet zeker bent welke URL van lancering je moet invoeren, contacteer dan de tool provider voor meer informatie.
+
+Indien je een specifiek tool type hebt gekozen, kan het onnodig zijn om een URL van lancering in te geven. Dit is meestal het geval wanneer de tool link enkel wordt gebruikt voor lancering in het systeem van de tool provider, en niet gaat naar een specifieke bron.';
+$string['launchinpopup'] = 'Container voor lancering';
 $string['launchinpopup_help'] = 'De container voor lancering beïnvloedt de wijze waarop de tool wordt getoond wanneer de lancering vanuit de cursus gebeurt. Sommige containers voor lancering bieden meer ruimte aan de tool op het scherm, andere zorgen voor een meer geïntegreerd geheel in de Moodle omgeving.
 
 * **Standaard** - Gebruik de container voor lancering die gespecificeerd staat in de tool configuratie.
@@ -168,15 +172,14 @@ $string['launchinpopup_help'] = 'De container voor lancering beïnvloedt de wijz
 * **Nieuw venster** - De tool opent in een nieuw venster, waar het alle beschikbare ruimte inneemt.
 Afhankelijk van de browser zal het openen in een nieuwe tab of in een pop-up venster. Het is mogelijk dat de browser het openen van een nieuw venster verhindert.';
 $string['launchoptions'] = 'Opties voor lancering';
-$string['launch_url'] = 'URL voor lancering';
-$string['launch_url_help'] = 'De URL van lancering geeft het webadres aan van de externe tool, en kan ook bijkomende informatie bevatten, zoals de te tonen bron. Als je niet zeker bent welke URL van lancering je moet invoeren, contacteer dan de tool provider voor meer informatie.
-
-Indien je een specifiek tool type hebt gekozen, kan het onnodig zijn om een URL van lancering in te geven. Dit is meestal het geval wanneer de tool link enkel wordt gebruikt voor lancering in het systeem van de tool provider, en niet gaat naar een specifieke bron.';
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'Waardering LTI activiteiten';
+$string['lti:grade'] = 'Waardering LTI activiteiten';
+$string['lti:manage'] = 'Bewerk LTI activiteiten';
+$string['lti:requesttooladd'] = 'Dien bij de beheerder een tool in voor configuratie.';
+$string['lti:view'] = 'Bekijk LTI activiteiten';
 $string['lti_administration'] = 'LTI administratie';
 $string['lti_errormsg'] = 'De tool zond de volgende foutmelding terug: "{$a}"';
-$string['lti:grade'] = 'Waardering LTI activiteiten';
 $string['lti_launch_error'] = 'Er is een fout opgetreden bij de lancering van de externe tool:';
 $string['lti_launch_error_tool_request'] = 'Indien je een verzoek wil richten aan een beheerder om de tool configuratie te vervolledigen, klik <a href="{$a->admin_request_url}" target="_top">hier</a>.';
 $string['lti_launch_error_unsigned_help'] = '<p>Deze fout is waarschijnlijk het resultaat van een ontbrekende consumentensleutel en gedeeld geheim voor de tool provider.
@@ -184,11 +187,8 @@ $string['lti_launch_error_unsigned_help'] = '<p>Deze fout is waarschijnlijk het 
 Indien je een consumentensleutel en een gedeeld geheim hebt, kun je deze invoeren wanneer je de externe tool instantie bewerkt (zorg ervoor dat de geadvanceerde opties zichtbaar zijn).<br />
 Een andere mogelijkheid is om <a href="{$a->course_tool_editor}">hier</a> een tool provider configuratie op cursus niveau aan te maken.
 </p>';
-$string['lti:manage'] = 'Bewerk LTI activiteiten';
-$string['lti:requesttooladd'] = 'Dien bij de beheerder een tool in voor configuratie.';
 $string['lti_tool_request_added'] = 'Het verzoek tot tool configuratie werd succesvol ingediend. Het is misschien nodig om een beheerder  te contacteren om de toolconfiguratie te voltooien.';
 $string['lti_tool_request_existing'] = 'Een tool configuratie voor het tool domein werd al eerder ingediend.';
-$string['lti:view'] = 'Bekijk LTI activiteiten';
 $string['main_admin'] = 'Algemene hulp';
 $string['main_admin_help'] = 'Externe tools laten Moodle gebruikers toe om probleemloos om te gaan met leermiddelen die gehost worden op afstand.  Via een speciaal lanceringsprotocol zal de externe tool toegang hebben tot bepaalde algemene informatie over de gebruiker die de tool lanceert. Bijvoorbeeld de naam van de instelling, cursus ID, gebruikers ID, en andere informatie zoals de naam of het e-mailadres van de gebruiker.
 
@@ -217,10 +217,10 @@ $string['modulenameplural'] = 'Basis LTIs';
 $string['modulenamepluralformatted'] = 'LTI instanties';
 $string['never'] = 'Nooit';
 $string['new_window'] = 'Nieuw venster';
-$string['noattempts'] = 'Er werden geen pogingen ondernomen op deze tool instantie.';
 $string['no_lti_configured'] = 'Er zijn geen actieve externe tools geconfigureerd.';
 $string['no_lti_pending'] = 'Er zijn geen externe tools in behandeling.';
 $string['no_lti_rejected'] = 'Er zijn geen externe tools verworpen.';
+$string['noattempts'] = 'Er werden geen pogingen ondernomen op deze tool instantie.';
 $string['noltis'] = 'Er zijn geen LTI instanties.';
 $string['noservers'] = 'Er werden geen servers aangetroffen.';
 $string['notypes'] = 'Er zijn op dit ogenblik geen LTI tools ingesteld in Moodle. Klik op de installatie link hierboven om er toe te voegen.';
@@ -332,42 +332,42 @@ $string['toolurl_help'] = 'De basis-URL van de tool wordt gebruikt om de juiste 
 Bijkomend wordt de basis URL gebruikt als start URL als er geen start URL is opgegeven in de configuratie van de externe tool
 
 <table>
-    <thead>
-        <tr>
-            <td>
-                <b>Basis URL</b>
-            </td>
-            <td>
-                <b>Gekoppeld met</b>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                tool.com
-            </td>
-            <td>
-                tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes
-            </td>
-        </tr>
-        <tr>
-            <td>
-                www.tool.com/quizzes
-            </td>
-            <td>
-                tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes
-            </td>
-        </tr>
-        <tr>
-            <td>
-                quiz.tool.com
-            </td>
-            <td>
-                quiz.tool.com, quiz.tool.com/take.php?id=10
-            </td>
-        </tr>
-    </tbody>
+<thead>
+<tr>
+<td>
+<b>Basis URL</b>
+</td>
+<td>
+<b>Gekoppeld met</b>
+</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+tool.com
+</td>
+<td>
+tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes
+</td>
+</tr>
+<tr>
+<td>
+www.tool.com/quizzes
+</td>
+<td>
+tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes
+</td>
+</tr>
+<tr>
+<td>
+quiz.tool.com
+</td>
+<td>
+quiz.tool.com, quiz.tool.com/take.php?id=10
+</td>
+</tr>
+</tbody>
 </table>
 
 Als er twee verschillende tool-configuraties voor hetzelfde domein zijn, dan zal de best passende gebruikt worden.';

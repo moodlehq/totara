@@ -58,7 +58,6 @@ Er is op dit ogenblik maar één manier en dat is door de zoekfunctie in de brow
 *Mijn titels passen niet op één lijn.*
 
 Herschrijf je titels of vraag je systeembeheerder om de breedte van de inhoudstafel te vergroten. Het wordt voor alle boeken bepaald op de configuratiepagina van de module.';
-$string['missingfilemanagement'] = 'Beste gebruikers van de boekmodule. Ik veronderstel dat jullie hebben gemerkt dat het niet mogelijk is om een bestand dat wordt gebruikt in hoofdstukken van een boek te verwijderen of te beheren. Stem aub in {$a} om dit op te lossen. Bedankt. Petr Škoda';
 $string['modulename'] = 'Boek';
 $string['modulename_help'] = 'Boek is eenvoudig studiemateriaal met meerdere pagina\'s.';
 $string['modulenameplural'] = 'Boeken';
