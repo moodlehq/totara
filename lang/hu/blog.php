@@ -128,12 +128,6 @@ $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'A felhasználók csak saját blogjaikat láthatják';
 $string['preferences'] = 'Beállítások';
 $string['publishto'] = 'Közzéteendő itt';
-$string['publishtocourse'] = 'Kurzustársai';
-$string['publishtocourseassoc'] = 'Kapcsolódó kurzustársak';
-$string['publishtocourseassocparam'] = '{$a} kurzustársai';
-$string['publishtogroup'] = 'Csoporttársai';
-$string['publishtogroupassoc'] = 'Kapcsolódó kurzusbeli csoporttársak';
-$string['publishtogroupassocparam'] = '{$a} csoporttársai';
 $string['publishto_help'] = '<p>Három beállítás közül választhat:</p>
 
 <p><strong>Csak én (piszkozat)</strong> - A bejegyzést Önön kívül csak a rendszergazdák láthatják.</p>
@@ -141,6 +135,12 @@ $string['publishto_help'] = '<p>Három beállítás közül választhat:</p>
 <p><strong>A portálon bárki</strong> - A bejegyzést minden portálra feliratkozott láthatja.</p>
 
 <p><strong>A világon bárki</strong> - A bejegyzést bárki, akár vendégek is láthatják.</p>';
+$string['publishtocourse'] = 'Kurzustársai';
+$string['publishtocourseassoc'] = 'Kapcsolódó kurzustársak';
+$string['publishtocourseassocparam'] = '{$a} kurzustársai';
+$string['publishtogroup'] = 'Csoporttársai';
+$string['publishtogroupassoc'] = 'Kapcsolódó kurzusbeli csoporttársak';
+$string['publishtogroupassocparam'] = '{$a} csoporttársai';
 $string['publishtonoone'] = 'Csak én (piszkozat)';
 $string['publishtosite'] = 'A portálon bárki';
 $string['publishtoworld'] = 'A világon bárki';

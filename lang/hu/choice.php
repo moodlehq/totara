@@ -31,9 +31,10 @@ $string['answered'] = 'Megválaszolva';
 $string['atleastoneoption'] = 'Legalább egy lehetséges választ meg kell adnia.';
 $string['choice'] = 'Válaszlehetőség';
 $string['choice:choose'] = 'Válaszlehetőség rögzítése';
-$string['choiceclose'] = 'Meddig';
 $string['choice:deleteresponses'] = 'Tanuló által adott válaszok törlése';
 $string['choice:downloadresponses'] = 'Tanuló által adott válaszok letöltése';
+$string['choice:readresponses'] = 'Tanuló által adott válaszok olvasása';
+$string['choiceclose'] = 'Meddig';
 $string['choicefull'] = 'Ez a válaszlehetőség betelt, többre nincs lehetőség.';
 $string['choicename'] = 'Válaszlehetőség neve';
 $string['choiceopen'] = 'Megnyitás';
@@ -41,7 +42,6 @@ $string['choiceoptions'] = 'Választási lehetőségek';
 $string['choiceoptions_help'] = '<p>Itt adhatja meg azokat a lehetőségeket, amelyekből a résztvevőknek választani kell.</p>
 
 <p>Ezekből tetszőleges számút kitölthet: ha nincs szüksége mind a 6 lehetőségre, néhányat közülük kitöltetlenül hagyhat. </p>';
-$string['choice:readresponses'] = 'Tanuló által adott válaszok olvasása';
 $string['choicesaved'] = 'Válaszlehetőség elmentve';
 $string['choicetext'] = 'Válaszlehetőség szövege';
 $string['chooseaction'] = 'Válasszon ki egy lépést...';

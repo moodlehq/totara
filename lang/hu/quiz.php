@@ -350,21 +350,21 @@ $string['history'] = 'Válaszok előzményei';
 $string['howquestionsbehave_desc'] = 'Alapbeállítás a kérdések teszten belüli kezeléséhez.';
 $string['imagedisplay'] = 'Megjelenítendő kép';
 $string['import'] = 'Importálás';
+$string['import_help'] = 'A funkcióval kérdéseket importálhat külső szöveges állományokból.
+Ha nem ascii-karaktereket tartalmaznak, az UTF-8 kódolást kell használnia. Különösen a Microsoft Office által előállított állományokkal legyen óvatos, mert ezek gyakran speciális, megfelelő módon kezelhetetlen kódolást használnak.
+Az importálási és exportálási formátumok használata választható. Egyéb formátumokat talál a Modulok és a Segédprogramok adatbázisban.';
 $string['importcategory'] = 'kategória importálása';
 $string['importerror'] = 'Hiba importálás feldolgozása közben';
 $string['importfilearea'] = 'Kurzusfájlok között már szereplő állomány importálása...';
 $string['importfileupload'] = 'Importálás fájlfeltöltésből...';
 $string['importfromthisfile'] = 'Importálás ebből az állományból';
-$string['import_help'] = 'A funkcióval kérdéseket importálhat külső szöveges állományokból.
-Ha nem ascii-karaktereket tartalmaznak, az UTF-8 kódolást kell használnia. Különösen a Microsoft Office által előállított állományokkal legyen óvatos, mert ezek gyakran speciális, megfelelő módon kezelhetetlen kódolást használnak.
-Az importálási és exportálási formátumok használata választható. Egyéb formátumokat talál a Modulok és a Segédprogramok adatbázisban.';
 $string['importingquestions'] = '{$a} kérdés importálása állományból';
 $string['importmax10error'] = 'Hiba a kérdésben. Tíznél több választ nem adhat meg.';
 $string['importmaxerror'] = 'Hiba a kérdésben. Túl sok a válasz.';
 $string['importquestions'] = 'Kérdések importálása állományból';
 $string['inactiveoverridehelp'] = '- A tanuló nem rendelkezik megfelelő csoporttal vagy szereppel a teszt megoldásához';
 $string['incorrect'] = 'Hibás';
-$string['indivresp'] = 'Az egyes tételekre leadott válaszok ';
+$string['indivresp'] = 'Az egyes tételekre leadott válaszok';
 $string['info'] = 'Infó';
 $string['infoshort'] = 'i';
 $string['inprogress'] = 'Folyamatban';
@@ -400,7 +400,7 @@ $string['matchanswer'] = 'Párosító válasz';
 $string['matchanswerno'] = 'Hozzáillő {$a} válasz';
 $string['max'] = 'Max.';
 $string['messageprovider:confirmation'] = 'Saját tesztleadásainak megerősítése';
-$string['messageprovider:submission'] = 'Értesítés tesztleadásokról ';
+$string['messageprovider:submission'] = 'Értesítés tesztleadásokról';
 $string['min'] = 'min.';
 $string['minutes'] = 'perc';
 $string['missingcorrectanswer'] = 'A helyes választ meg kell adni';
@@ -418,13 +418,13 @@ $string['navnojswarning'] = 'Vigyázat: az ugrópontokkal nem menti el válaszai
 $string['neverallononepage'] = 'Soha, minden kérdés egy oldalon.';
 $string['newattemptfail'] = 'Hiba: a tesztben nem lehetett új próbálkozást indítani';
 $string['newpage'] = 'Új oldal';
-$string['newpageevery'] = 'Új oldal automatikus megkezdése';
 $string['newpage_help'] = '<p>Hosszabb tesztek esetén célszerű azt több oldalra széthúzni
 az oldalanként jelzendő kérdések számának módosításával.
 A kérdések hozzáadása során ennek megfelelően automatikusan
 laptörések kerülnek az állományba. Ezeket később a szerkesztő
 oldalon kézzel módosíthatja.
 </p>';
+$string['newpageevery'] = 'Új oldal automatikus megkezdése';
 $string['noanswers'] = 'Nincs kiválasztva válasz!';
 $string['noattempts'] = 'A teszt megoldásával még nem próbálkoztak';
 $string['noattemptsfound'] = 'Nincs próbálkozás';
@@ -479,8 +479,7 @@ $string['orderandpaging_help'] = 'Az egyes kérdésekkel szemközti 10, 20, 30, 
 
 Ha a kérdésekhez oldaltörést kíván beszúrni, jelölje be a kérdések melletti négyzeteket, majd kattintson az "Új oldalak beszúrása a kiválasztott kérdések után" gombra.
 
-Ha a kérdések több oldalra férnek ki, kattintson az "Újratördelés" gombra és válassza ki az oldalankénti kérdések számát..
-';
+Ha a kérdések több oldalra férnek ki, kattintson az "Újratördelés" gombra és válassza ki az oldalankénti kérdések számát..';
 $string['orderingquiz'] = 'Sorrend és oldalszám';
 $string['outof'] = '{$a->grade} a maximum {$a->maxgrade} közül';
 $string['outofpercent'] = '{$a->grade} a maximum {$a->maxgrade} közül ({$a->percent}%)';
@@ -552,22 +551,27 @@ $string['questiontextisempty'] = '[Üres kérdésszöveg]';
 $string['questiontype'] = '{$a} típusú kérdés';
 $string['questiontypesetupoptions'] = 'Kérdéstípusok beállítási lehetőségei:';
 $string['quiz:attempt'] = 'Próbálkozás tesztekkel';
-$string['quizavailable'] = 'A teszt megoldható eddig: {$a}';
-$string['quizclose'] = 'Teszt lezárása';
-$string['quizclosed'] = 'Teszt lezárva ekkor: {$a}';
-$string['quizcloses'] = 'Teszt véget ér';
-$string['quizcloseson'] = 'Teszt véget ér ekkor: {$a}';
 $string['quiz:deleteattempts'] = 'Próbálkozások törlése';
 $string['quiz:emailconfirmsubmission'] = 'Leadáskor megerősítés e-mailben';
 $string['quiz:emailnotifysubmission'] = 'Leadásokról értesítés e-mailben';
 $string['quiz:grade'] = 'Tesztek kézi pontozása';
 $string['quiz:ignoretimelimits'] = 'Tesztek időkorlátjának mellőzése';
+$string['quiz:manage'] = 'Tesztek kezelése';
+$string['quiz:manageoverrides'] = 'Tesztfelülírások kezelése';
+$string['quiz:preview'] = 'Tesztek előzetes megtekintése';
+$string['quiz:regrade'] = 'Próbálkozások újrapontozása';
+$string['quiz:reviewmyattempts'] = 'Saját próbálkozások ellenőrzése';
+$string['quiz:view'] = 'Tesztadatok megtekintése';
+$string['quiz:viewreports'] = 'Tesztjelentések megtekintése';
+$string['quizavailable'] = 'A teszt megoldható eddig: {$a}';
+$string['quizclose'] = 'Teszt lezárása';
+$string['quizclosed'] = 'Teszt lezárva ekkor: {$a}';
+$string['quizcloses'] = 'Teszt véget ér';
+$string['quizcloseson'] = 'Teszt véget ér ekkor: {$a}';
 $string['quizisclosed'] = 'A teszt le van zárva.';
 $string['quizisclosedwillopen'] = 'A teszt le van zárva (nyitás: {$a})';
 $string['quizisopen'] = 'A teszt nyitva van.';
 $string['quizisopenwillclose'] = 'A teszt nyitva van ({$a} bezáródik)';
-$string['quiz:manage'] = 'Tesztek kezelése';
-$string['quiz:manageoverrides'] = 'Tesztfelülírások kezelése';
 $string['quiznavigation'] = 'Tesztnavigáció';
 $string['quizopen'] = 'Teszt megnyitása';
 $string['quizopenclose'] = 'Nyitás és zárás időpontja';
@@ -578,13 +582,8 @@ $string['quizopens'] = 'Teszt elérhető';
 $string['quizopenwillclose'] = 'A teszt elérhető, lezárásának időpontja: {$a}';
 $string['quizordernotrandom'] = 'A teszt sorrendje nincs összekeverve';
 $string['quizorderrandom'] = '* A teszt sorrendje össze van keverve';
-$string['quiz:preview'] = 'Tesztek előzetes megtekintése';
-$string['quiz:regrade'] = 'Próbálkozások újrapontozása';
-$string['quiz:reviewmyattempts'] = 'Saját próbálkozások ellenőrzése';
 $string['quizsettings'] = 'Teszt beállításai';
 $string['quiztimer'] = 'Teszt időmérője';
-$string['quiz:view'] = 'Tesztadatok megtekintése';
-$string['quiz:viewreports'] = 'Tesztjelentések megtekintése';
 $string['quizwillopen'] = 'A teszt elérhető lesz ekkor: {$a}.';
 $string['random'] = 'Véletlenszerű kérdés';
 $string['randomcreate'] = 'Véletlenszerű kérdések létrehozása';
@@ -771,9 +770,9 @@ $string['submitallandfinish'] = 'Az összes leadása és befejezés';
 $string['subneterror'] = 'Sajnos a teszt zárolva van és csak egyes helyekről érhető el. Jelenleg számítógépéről nem használhatja a tesztet.';
 $string['subnetnotice'] = 'Ez a teszt le van zárva, így csak egyes helyekről érhető el. Számítógépe nem ilyen alhálózaton van. Tanárként a tesztoldalakat egyébként megtekintheti.';
 $string['subplugintype_quiz'] = 'Jelentés';
+$string['subplugintype_quiz_plural'] = 'Jelentések';
 $string['subplugintype_quizaccess'] = 'Hozzáférési szabály';
 $string['subplugintype_quizaccess_plural'] = 'Hozzáférési szabályok';
-$string['subplugintype_quiz_plural'] = 'Jelentések';
 $string['substitutedby'] = 'helyett';
 $string['summaryofattempt'] = 'Próbálkozások összegzése';
 $string['summaryofattempts'] = 'Korábbi próbálkozásainak összegzése';
@@ -784,7 +783,6 @@ $string['timecompleted'] = 'Kész';
 $string['timedelay'] = 'Nem oldhatja meg a tesztet, mert még nem telt el a következő próbálkozásig előírt időköz';
 $string['timeleft'] = 'Hátralévő idő';
 $string['timelimit'] = 'Időkorlát';
-$string['timelimitexeeded'] = 'Sajnos a tesztidőt túllépte!';
 $string['timelimit_help'] = '<p>Alaphelyzetben a teszteknek nincs időbeli korlátjuk, így a tanulók annyi időt fordítanak a teszt
 kitöltésére, amennyire csak szükségük van.</p>
 
@@ -792,14 +790,15 @@ kitöltésére, amennyire csak szükségük van.</p>
 idő alatt kitöltsék:</p>
 
 <ul>
-  <li>A böngészőben a Javascript támogatása kötelezővé válik - ennek köszönhetően
-  az időmérő helyesen fog működni.</li>
-  <li>Egy folyamatjelző, visszaszámláló időmérő ablak jelenik meg a képernyőn.</li>
-  <li>Ha az időmérő lejár, a teszt leadása automatikusan megtörténik, függetlenül
-  attól, hogy mennyi válasz született meg akkorra.</li>
-  <li>Ha a tanuló csal és a kijelölt időnél 60 másodperccel többet tölt el, akkor a tesztre
-  automatikusan nulla pontot kap.</li>
+<li>A böngészőben a Javascript támogatása kötelezővé válik - ennek köszönhetően
+az időmérő helyesen fog működni.</li>
+<li>Egy folyamatjelző, visszaszámláló időmérő ablak jelenik meg a képernyőn.</li>
+<li>Ha az időmérő lejár, a teszt leadása automatikusan megtörténik, függetlenül
+attól, hogy mennyi válasz született meg akkorra.</li>
+<li>Ha a tanuló csal és a kijelölt időnél 60 másodperccel többet tölt el, akkor a tesztre
+automatikusan nulla pontot kap.</li>
 </ul>';
+$string['timelimitexeeded'] = 'Sajnos a tesztidőt túllépte!';
 $string['timelimitmin'] = 'Időkorlát (perc)';
 $string['timelimitsec'] = 'Időkorlát (másodperc)';
 $string['timestr'] = '%Ó:%P:%MPS %y/%m/%d időpontban';

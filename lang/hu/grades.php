@@ -53,50 +53,6 @@ $string['aggregatesum'] = 'Összes pont';
 $string['aggregateweightedmean'] = 'Pontok súlyozott átlaga';
 $string['aggregateweightedmean2'] = 'Pontok egyszerű súlyozott átlaga';
 $string['aggregation'] = 'Összegzés';
-$string['aggregationcoef'] = 'Összegzési együttható';
-$string['aggregationcoefextra'] = 'Külön kreditpont';
-$string['aggregationcoefextra_help'] = '<h2>A pontösszeg szerinti összesítéshez</h2>
-<p>A pontösszeg szerinti összesítés alkalmazása esetén a pontozási tétel lehet az adott kategóriához tartozó plusz kreditpont.
-Vagyis a kategória összes maximális pontjához nem a pontozási tételre adott maximális pont adódik hozzá, hanem a tételre adott pont. Íme egy példa:</p>
-
-<ul>
-    <li>Az 1. tétel 0-100 pontozású.</li>
-    <li>A 2. tétel 0-75 pontozású.</li>
-    <li>Az 1. tételnél a "Plusz kreditpontként működik" jelölőnégyzet be van jelölve, szemben a 2. tétellel.</li>
-    <li>Mindkét tétel az 1. kategóriához tartozik, amely a pontösszeg szerinti összesítést alkalmazza.</li>
-    <li>Az 1. kategóriához tartozó összesen 0-75 pontozású lesz.</li>
-    <li>Egy tanuló 20 pontot kap az 1. és 70-et a 2. tételre.</li>
-    <li>A tanuló esetén az 1. kategóriához tartozó összesen 75/75 lesz (20+70 = 90, de az 1. tétel csak plusz kreditpontként működik,
-    így annak összesenje eléri a maximumot).</li>
-</ul>
-<h2>Pontok súlyozott átlaga esetén (plusz kreditpont)</h2>
-<p>Összesítés során egy 0-nál nagyobb érték esetén a pontozási tételre adott pontokat a rendszer plusz kreditpontként kezeli.
-A szám az a tényező, amellyel a pontértéket meg kell szorozni, mielőtt hozzáadódik az összes pont összegéhez,
-de maga a tétel kimarad az osztásból. Pl.:</p>
-
-<ul>
-    <li>Az 1. tétel 0-100 pontozású, plusz kreditpontjának értéke 2.</li>
-    <li>A 2. tétel  0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.</li>
-    <li>A 3. tétel  0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.</li>
-    <li>Mindhárom tétel az 1. kategóriához tartozik, amely a pontok súlyozott átlagát alkalmazza (plusz kreditpontokkal).</li>
-    <li>Egy tanuló 20 pontot kap az 1., 40-et a 2. és 70-et a 3. tételre.</li>
-    <li>A tanuló esetén az 1. kategóriához tartozó összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95.</li>
-</ul>';
-$string['aggregationcoefextrasum'] = 'Külön kreditpont';
-$string['aggregationcoefextrasum_help'] = 'Ha a Pluszpont négyzet be van jelölve, a pontozási tétel maximális pontja nem adódik hozzá a kategória maximális pontjához. Így a kategórián belül a maximális pont (vagy, ha a rendszergazda engedélyezi, a maximális fölötti pont) anélkül érhető el, hogy minden pontozási tétel esetén meglenne a maximális pont.';
-$string['aggregationcoefextraweight'] = 'Külön kreditpont súlya';
-$string['aggregationcoefextraweight_help'] = '<p>A 0-nál nagyobb érték ezen pontozási tétel pontjait összegzés során külön kreditpontként kezeli. A szám az a tényező, amellyel a pontérték megszorzódik, mielőtt az összes pont összegéhez hozzáadódik, de maga a tétel az osztásba nem számít bele. Például:</p>
-
-<ul>
-    <li>Az 1. tétel pontja 0-100, "külön kreditpont" értéke pedig 2</li>
-    <li>A 2. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad</li>
-    <li>A 3. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad</li>
-    <li>Mindhárom tétel az 1. kategóriába tartozik, melynek "Pontátlaga (külön kreditpontokkal együtt)" jelenti összegzési stratégiáját</li>
-    <li>Egy tanuló az 1. tételre 20 pontot, a 2.-ra 40-et, a 3.-ra 70-et kap</li>
-    <li>A tanuló 1. kategóriára kapott pontja összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
-$string['aggregationcoefweight'] = 'Tétel súlya';
-$string['aggregationcoefweight_help'] = '<p>Az egyéb pontozási tételekkel való összegzés során a jelen pontozási tétel összes pontjára alkalmazott súly.</p>';
 $string['aggregation_help'] = 'Az összesítés szabja meg, hogy egy kategória esetén az osztályzatok miként kombinálódnak.
 
 * Osztályzatok átlaga - Az összes pont összege a pontok számával elosztva.
@@ -105,6 +61,50 @@ $string['aggregation_help'] = 'Az összesítés szabja meg, hogy egy kategória 
 * Legmagasabb osztályzat
 * Osztályzatok módusza - A módusz a leggyakrabban előforduló osztályzat
 * Osztályzatok összege - Az összes osztályzatérték összege. A skálaosztályzatokat a rendszer figyelmen kívül hagyja.';
+$string['aggregationcoef'] = 'Összegzési együttható';
+$string['aggregationcoefextra'] = 'Külön kreditpont';
+$string['aggregationcoefextra_help'] = '<h2>A pontösszeg szerinti összesítéshez</h2>
+<p>A pontösszeg szerinti összesítés alkalmazása esetén a pontozási tétel lehet az adott kategóriához tartozó plusz kreditpont.
+Vagyis a kategória összes maximális pontjához nem a pontozási tételre adott maximális pont adódik hozzá, hanem a tételre adott pont. Íme egy példa:</p>
+
+<ul>
+<li>Az 1. tétel 0-100 pontozású.</li>
+<li>A 2. tétel 0-75 pontozású.</li>
+<li>Az 1. tételnél a "Plusz kreditpontként működik" jelölőnégyzet be van jelölve, szemben a 2. tétellel.</li>
+<li>Mindkét tétel az 1. kategóriához tartozik, amely a pontösszeg szerinti összesítést alkalmazza.</li>
+<li>Az 1. kategóriához tartozó összesen 0-75 pontozású lesz.</li>
+<li>Egy tanuló 20 pontot kap az 1. és 70-et a 2. tételre.</li>
+<li>A tanuló esetén az 1. kategóriához tartozó összesen 75/75 lesz (20+70 = 90, de az 1. tétel csak plusz kreditpontként működik,
+így annak összesenje eléri a maximumot).</li>
+</ul>
+<h2>Pontok súlyozott átlaga esetén (plusz kreditpont)</h2>
+<p>Összesítés során egy 0-nál nagyobb érték esetén a pontozási tételre adott pontokat a rendszer plusz kreditpontként kezeli.
+A szám az a tényező, amellyel a pontértéket meg kell szorozni, mielőtt hozzáadódik az összes pont összegéhez,
+de maga a tétel kimarad az osztásból. Pl.:</p>
+
+<ul>
+<li>Az 1. tétel 0-100 pontozású, plusz kreditpontjának értéke 2.</li>
+<li>A 2. tétel  0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.</li>
+<li>A 3. tétel  0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.</li>
+<li>Mindhárom tétel az 1. kategóriához tartozik, amely a pontok súlyozott átlagát alkalmazza (plusz kreditpontokkal).</li>
+<li>Egy tanuló 20 pontot kap az 1., 40-et a 2. és 70-et a 3. tételre.</li>
+<li>A tanuló esetén az 1. kategóriához tartozó összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95.</li>
+</ul>';
+$string['aggregationcoefextrasum'] = 'Külön kreditpont';
+$string['aggregationcoefextrasum_help'] = 'Ha a Pluszpont négyzet be van jelölve, a pontozási tétel maximális pontja nem adódik hozzá a kategória maximális pontjához. Így a kategórián belül a maximális pont (vagy, ha a rendszergazda engedélyezi, a maximális fölötti pont) anélkül érhető el, hogy minden pontozási tétel esetén meglenne a maximális pont.';
+$string['aggregationcoefextraweight'] = 'Külön kreditpont súlya';
+$string['aggregationcoefextraweight_help'] = '<p>A 0-nál nagyobb érték ezen pontozási tétel pontjait összegzés során külön kreditpontként kezeli. A szám az a tényező, amellyel a pontérték megszorzódik, mielőtt az összes pont összegéhez hozzáadódik, de maga a tétel az osztásba nem számít bele. Például:</p>
+
+<ul>
+<li>Az 1. tétel pontja 0-100, "külön kreditpont" értéke pedig 2</li>
+<li>A 2. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad</li>
+<li>A 3. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad</li>
+<li>Mindhárom tétel az 1. kategóriába tartozik, melynek "Pontátlaga (külön kreditpontokkal együtt)" jelenti összegzési stratégiáját</li>
+<li>Egy tanuló az 1. tételre 20 pontot, a 2.-ra 40-et, a 3.-ra 70-et kap</li>
+<li>A tanuló 1. kategóriára kapott pontja összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95</li>
+</ul>';
+$string['aggregationcoefweight'] = 'Tétel súlya';
+$string['aggregationcoefweight_help'] = '<p>Az egyéb pontozási tételekkel való összegzés során a jelen pontozási tétel összes pontjára alkalmazott súly.</p>';
 $string['aggregationposition'] = 'Összegzési pozíció';
 $string['aggregationposition_help'] = '<p>Meghatározza az összegzés összege oszlopának a helyzetét a jelentésben az összegezendő pontokhoz viszonyítva.</p>';
 $string['aggregationsvisible'] = 'Használható összegzési típusok';
@@ -127,9 +127,9 @@ $string['bonuspoints'] = 'Jutalompontok';
 $string['bulkcheckboxes'] = 'Vegyes jelölőnégyzetek';
 $string['calculatedgrade'] = 'Számított pont';
 $string['calculation'] = 'Számítás';
+$string['calculation_help'] = 'A pontszámítás az osztályzat meghatározására használt képlet. A képlet egyenlőségjellel (=) kezdődik, és szokásos matematikai műveletjeleket -- pl. max, min és sum -- tartalmazhat. Szükség esetén egyéb pontozási tételek illeszthetők a számításba: ehhez kettős szögletes zárójelben adja meg az azonosítószámokat.';
 $string['calculationadd'] = 'Számítás hozzáadása';
 $string['calculationedit'] = 'Számítás szerkesztése';
-$string['calculation_help'] = 'A pontszámítás az osztályzat meghatározására használt képlet. A képlet egyenlőségjellel (=) kezdődik, és szokásos matematikai műveletjeleket -- pl. max, min és sum -- tartalmazhat. Szükség esetén egyéb pontozási tételek illeszthetők a számításba: ehhez kettős szögletes zárójelben adja meg az azonosítószámokat.';
 $string['calculationsaved'] = 'Számítás elmentve';
 $string['calculationview'] = 'Számítás megtekintése';
 $string['cannotaccessgroup'] = 'A kiválasztott csoport pontjai nem érhetők el.';
@@ -141,7 +141,7 @@ $string['categoryedit'] = 'Kategória szerkesztése';
 $string['categoryname'] = 'Kategória neve';
 $string['categorytotal'] = 'Kategória összes pontszáma';
 $string['categorytotalfull'] = '{$a->category} összesen';
-$string['categorytotalname'] = 'Kategória összegzésének neve ';
+$string['categorytotalname'] = 'Kategória összegzésének neve';
 $string['changedefaults'] = 'Alapbeállítások módosítása';
 $string['changereportdefaults'] = 'Jelentés alapbeállításainak módosítása';
 $string['chooseaction'] = 'Válasszon egy lépést ...';
@@ -224,9 +224,9 @@ $string['exportsettings'] = 'Beállítások exportálása';
 $string['exportto'] = 'Exportálás helye';
 $string['extracreditwarning'] = 'Megjegyzés: ha egy kategória minden tétele külön kreditponttal szerepel, akkor kimaradnak a pontszámításból, mert nem születik összegzett pontszám';
 $string['feedback'] = 'Visszajelzés';
+$string['feedback_help'] = '<p>A tanár által a pontokhoz fűzött megjegyzések. Lehet részletes, személyre szóló visszajelzés vagy egy egyszerű kód, amely a visszajelzés belső rendszerére utal.</p>';
 $string['feedbackadd'] = 'Visszajelzés hozzáadása';
 $string['feedbackedit'] = 'Visszajelzés szerkesztése';
-$string['feedback_help'] = '<p>A tanár által a pontokhoz fűzött megjegyzések. Lehet részletes, személyre szóló visszajelzés vagy egy egyszerű kód, amely a visszajelzés belső rendszerére utal.</p>';
 $string['feedbacksaved'] = 'Visszajelzés elmentve';
 $string['feedbackview'] = 'Visszajelzés megtekintése';
 $string['finalgrade'] = 'Végső pontszám';
@@ -315,9 +315,9 @@ $string['gradeview'] = 'Pont megtekintése';
 $string['gradeweighthelp'] = 'Súgó a pontozás súlyozásához';
 $string['groupavg'] = 'Csoportátlag';
 $string['hidden'] = 'Rejtve';
+$string['hidden_help'] = 'Bejelölése esetén a tanulók a pontokat nem látják. Szükség esetén beállítható egy elrejtési időtartam, így a pontok a pontozás befejezése után jelenhetnek meg.';
 $string['hiddenasdate'] = 'Rejtett pontoknál leadás dátumának megjelenítése';
 $string['hiddenasdate_help'] = 'Ha a felhasználó nem láthatja a rejtett pontokat, a \'-\' helyett jelenjen meg a leadás dátuma.';
-$string['hidden_help'] = 'Bejelölése esetén a tanulók a pontokat nem látják. Szükség esetén beállítható egy elrejtési időtartam, így a pontok a pontozás befejezése után jelenhetnek meg.';
 $string['hiddenuntil'] = 'Rejtve eddig';
 $string['hiddenuntildate'] = 'Rejtve eddig: {$a}';
 $string['hideadvanced'] = 'Részletes funkciók elrejtése';
@@ -453,6 +453,7 @@ $string['onascaleof'] = '{$a->grademin} és {$a->grademax} közötti skálán';
 $string['operations'] = 'Műveletek';
 $string['options'] = 'Lehetőségek';
 $string['outcome'] = 'Eredmény';
+$string['outcome_help'] = 'Ezen pontozási tétel eredménye.';
 $string['outcomeassigntocourse'] = 'Másik eredmény hozzárendelése a kurzushoz';
 $string['outcomecategory'] = 'Kategória eredményeinek létrehozása';
 $string['outcomecategorynew'] = 'Új kategória';
@@ -460,7 +461,6 @@ $string['outcomeconfirmdelete'] = 'Biztosan törli a(z) "{$a}" eredményt?';
 $string['outcomecreate'] = 'Új eredmény hozzáadása';
 $string['outcomedelete'] = 'Eredmény törlése';
 $string['outcomefullname'] = 'Teljes név';
-$string['outcome_help'] = 'Ezen pontozási tétel eredménye.';
 $string['outcomeitem'] = 'Eredménytétel';
 $string['outcomeitemsedit'] = 'Eredménytétel szerkesztése';
 $string['outcomereport'] = 'Eredményről szóló jelentés';

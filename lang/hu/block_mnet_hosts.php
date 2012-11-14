@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['error_authmnetneeded'] = 'A hálózati szerverek felsorolásának megtekintéséhez a hálózati hitelesítési segédprogramot be kell kapcsolni ';
+$string['error_authmnetneeded'] = 'A hálózati szerverek felsorolásának megtekintéséhez a hálózati hitelesítési segédprogramot be kell kapcsolni';
 $string['error_localusersonly'] = 'Távoli felhasználók erről a gazdagépről nem ugorhatnak át más hálózati szerverekhez';
-$string['error_roamcapabilityneeded'] = 'A felhasználóknak a hálózati szerverek listájának megtekintéséhez \'Áttérés egy távoli alkalmazásra hálózati Moodle segítségével\' képességre van szükségük. ';
+$string['error_roamcapabilityneeded'] = 'A felhasználóknak a hálózati szerverek listájának megtekintéséhez \'Áttérés egy távoli alkalmazásra hálózati Moodle segítségével\' képességre van szükségük.';
 $string['pluginname'] = 'Hálózati szerverek';
 $string['server'] = 'Szerver';

@@ -130,13 +130,6 @@ $string['destination_help'] = '<p>Itt adhatja meg, hová kívánja importálni a
 információ alapján létrehoz egy új fogalomtárat és az új fogalmakat ebbe rakja.</li>
 </ul>';
 $string['displayformat'] = 'Kijelzési forma';
-$string['displayformatcontinuous'] = 'Folyamatos, szerző nélkül';
-$string['displayformatdictionary'] = 'Egyszerű szótárforma';
-$string['displayformatencyclopedia'] = 'Enciklopédia';
-$string['displayformatentrylist'] = 'Fogalomlista';
-$string['displayformatfaq'] = 'GYIK';
-$string['displayformatfullwithauthor'] = 'Teljes, szerzővel';
-$string['displayformatfullwithoutauthor'] = 'Teljes, szerző nélkül';
 $string['displayformat_help'] = '7 megjelenítési forma közül választhat:
 * Egyszerű szótárforma - A szerző nincs megjelenítve és a csatolt állományok ugrópontokként láthatók.
 * Folyamatos, szerző nélkül - A fogalmak követik egymást, csak a szerkesztő ikonok választják el őket egymástól.
@@ -145,6 +138,13 @@ $string['displayformat_help'] = '7 megjelenítési forma közül választhat:
 * Enciklopédia - Akárcsak a teljes forma szerzővel együtt, de a csatolt képek a sorba beszúrva láthatók.
 * Fogalomlista - A fogalmakat ugrópontok formájában sorolja föl.
 * GYIK - A KÉRDÉS és VÁLASZ szavakat a fogalom, ill. a meghatározás után beilleszti';
+$string['displayformatcontinuous'] = 'Folyamatos, szerző nélkül';
+$string['displayformatdictionary'] = 'Egyszerű szótárforma';
+$string['displayformatencyclopedia'] = 'Enciklopédia';
+$string['displayformatentrylist'] = 'Fogalomlista';
+$string['displayformatfaq'] = 'GYIK';
+$string['displayformatfullwithauthor'] = 'Teljes, szerzővel';
+$string['displayformatfullwithoutauthor'] = 'Teljes, szerző nélkül';
 $string['displayformats'] = 'Kijelzési formák';
 $string['displayformatssetup'] = 'Kijelzési formák beállítása';
 $string['duplicatecategory'] = 'Ismétlődő kategória';
@@ -216,11 +216,16 @@ $string['glossary:export'] = 'Fogalmak exportálása';
 $string['glossary:exportentry'] = 'Egyetlen fogalom exportálása';
 $string['glossary:exportownentry'] = 'Egyetlen saját fogalom exportálása';
 $string['glossary:import'] = 'Fogalmak importálása';
-$string['glossaryleveldefaultsettings'] = 'Fogalomtárszintű alapbeállítások';
 $string['glossary:managecategories'] = 'Kategóriák kezelése';
 $string['glossary:managecomments'] = 'Megjegyzések kezelése';
 $string['glossary:manageentries'] = 'Fogalmak kezelése';
 $string['glossary:rate'] = 'Fogalmak értékelése';
+$string['glossary:view'] = 'Fogalomtár megtekintése';
+$string['glossary:viewallratings'] = 'Egyének általi összes nyers értékelés megtekintése';
+$string['glossary:viewanyrating'] = 'Bárki által kapott összes értékelés megtekintése';
+$string['glossary:viewrating'] = 'Az Ön által kapott összes értékelés megtekintése';
+$string['glossary:write'] = 'Új fogalmak létrehozása';
+$string['glossaryleveldefaultsettings'] = 'Fogalomtárszintű alapbeállítások';
 $string['glossarytype'] = 'Fogalomtár típusa';
 $string['glossarytype_help'] = '<p>A fogalomtárak rendszere lehetővé teszi, hogy fogalmakat exportáljon bármely másodlagos
 fogalomtárból a kurzus fő fogalomtárába.</p>
@@ -229,11 +234,6 @@ fogalomtárból a kurzus fő fogalomtárába.</p>
 
 <p>Megjegyzés: kurzusonként csak egy fő fogalomtárat használhat, és azt csakis tanár
 frissítheti.</p>';
-$string['glossary:view'] = 'Fogalomtár megtekintése';
-$string['glossary:viewallratings'] = 'Egyének általi összes nyers értékelés megtekintése';
-$string['glossary:viewanyrating'] = 'Bárki által kapott összes értékelés megtekintése';
-$string['glossary:viewrating'] = 'Az Ön által kapott összes értékelés megtekintése';
-$string['glossary:write'] = 'Új fogalmak létrehozása';
 $string['guestnoedit'] = 'Vendégek nem szerkeszthetnek szójegyzékeket.';
 $string['importcategories'] = 'Kategóriák importálása';
 $string['importedcategories'] = 'Importált kategóriák';

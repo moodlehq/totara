@@ -25,6 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['RPC_HTTPS_SELF_SIGNED'] = 'HTTPS (saját aláírású)';
+$string['RPC_HTTPS_VERIFIED'] = 'HTTPS (aláírt)';
+$string['RPC_HTTP_PLAINTEXT'] = 'kódolatlan HTTP';
+$string['RPC_HTTP_SELF_SIGNED'] = 'HTTP (saját aláírású)';
+$string['RPC_HTTP_VERIFIED'] = 'HTTP (aláírt)';
 $string['aboutyourhost'] = 'Szerverének névjegye';
 $string['accesslevel'] = 'Hozzáférési szint';
 $string['addhost'] = 'Gazdagép hozzáadása';
@@ -45,8 +50,8 @@ $string['couldnotgetcert'] = 'Nincs tanúsítvány itt: {$a}. Lehet, hogy a gazd
 $string['couldnotmatchcert'] = 'A tanúsítvány nem egyezik a jelenleg a webszerver által kiadottal.';
 $string['courses'] = 'kurzusok';
 $string['courseson'] = 'kurzusok itt:';
-$string['currentkey'] = 'Aktuális nyilvános kulcs';
 $string['current_transport'] = 'Aktuális továbbítás';
+$string['currentkey'] = 'Aktuális nyilvános kulcs';
 $string['databaseerror'] = 'Nem lehetett adatokat írni az adatbázisba.';
 $string['deleteaserver'] = 'Egy szerver törlése';
 $string['deletedhostinfo'] = 'A gazdagépet törölték. Ha vissza akarja állítani, a törölt állapotot állítsa át "Nem"-re.';
@@ -72,7 +77,7 @@ $string['expires'] = 'Érvényesség lejárata';
 $string['expireyourkey'] = 'Kulcs törlése';
 $string['expireyourkeyexplain'] = 'A Moodle automatikusan (alapbeállításban) 28 naponként cseréli kulcsait, de
 lehetősége van kézi úton bármikor érvényteleníteni a kulcsot. Ez csak akkor
- bizonyul hasznosnak, ha biztos abban, hogy a kulcsot illetéktelenek
+bizonyul hasznosnak, ha biztos abban, hogy a kulcsot illetéktelenek
 piszkálták. A rendszer azonnal automatikusan előállít egy másikat. A
 kulcs törlése miatt más alkalmazásokkal nem fog tudni kommunikálni
 mindaddig, amíg  kézzel az összes rendszergazdának meg nem adja új
@@ -96,9 +101,9 @@ $string['hostnamehelp'] = 'A távoli gazdagép teljesen érvényes doménneve, p
 $string['hostnotconfiguredforsso'] = 'A szerver nincs távoli belépésre beállítva.';
 $string['hostsettings'] = 'Gazdagép beállításai';
 $string['http_self_signed_help'] = 'A távoli gazdagépen saját aláírású DIY SSL-tanúsítvánnyal való csatlakozások engedélyezése.';
+$string['http_verified_help'] = 'A távoli gazdagépen PHP-ben ellenőrzött, de http-n (nem https-en) keresztüli, SSL-tanúsítvánnyal való csatlakozások engedélyezése.';
 $string['https_self_signed_help'] = 'A távoli gazdagépen PHP-ben saját aláírású DIY SSL-tanúsítvánnyal való http-n keresztüli csatlakozások engedélyezése.';
 $string['https_verified_help'] = 'A távoli gazdagépen ellenőrzött SSL-tanúsítvánnyal való csatlakozások engedélyezése.';
-$string['http_verified_help'] = 'A távoli gazdagépen PHP-ben ellenőrzött, de http-n (nem https-en) keresztüli, SSL-tanúsítvánnyal való csatlakozások engedélyezése.';
 $string['id'] = 'Azonosító';
 $string['idhelp'] = 'Az érték hozzárendelése automatikus és nem módosítható';
 $string['importfields'] = 'Importálandó mezők';
@@ -135,16 +140,15 @@ $string['methodsavailableonhostinservice'] = '{$a->service} szolgáltatás {$a->
 $string['methodsignature'] = '{$a} aláírási metódusa';
 $string['mnet'] = 'Hálózati Moodle';
 $string['mnet_concatenate_strings'] = '(Legfeljebb) 3 szövegdarab összefűzése és az eredmény visszaadása';
+$string['mnet_session_prohibited'] = 'Saját szerverének felhasználói jelenleg nem látogathatnak el ide: {$a}.';
 $string['mnetdisabled'] = 'A hálózati Moodle ki van kapcsolva.';
 $string['mnetidprovider'] = 'MNET-azonosító szolgáltatója';
-$string['mnetidproviderdesc'] = 'Ezzel elérhet egy belépésre használható ugrópontot, ha helyes e-mail címet tud megadni, amely megegyezik a korábban belépésre használt felhasználónévvel.
-';
+$string['mnetidproviderdesc'] = 'Ezzel elérhet egy belépésre használható ugrópontot, ha helyes e-mail címet tud megadni, amely megegyezik a korábban belépésre használt felhasználónévvel.';
 $string['mnetidprovidermsg'] = '{$a} szolgáltatójánál kell a belépést megejtenie';
 $string['mnetidprovidernotfound'] = 'Nincs további információ.';
 $string['mnetlog'] = 'Naplók';
 $string['mnetpeers'] = 'Társgépek';
 $string['mnetservices'] = 'Szolgáltatások';
-$string['mnet_session_prohibited'] = 'Saját szerverének felhasználói jelenleg nem látogathatnak el ide: {$a}.';
 $string['mnetsettings'] = 'A hálózati Moodle beállításai';
 $string['moodle_home_help'] = 'Az útvonal a távoli gazdagépen futó hálózati Moodle alkalmazásának honlapjához, pl. /moodle/.';
 $string['name'] = 'Név';
@@ -167,11 +171,11 @@ $string['nosuchpublickey'] = 'Nem érhető el nyilvános kulcs az aláírás-ell
 $string['nosuchservice'] = 'Az RPC-szolgáltatás ezen a gazdagépen nem működik.';
 $string['nosuchtransport'] = 'Nincs ilyen azonosítójú továbbítás.';
 $string['notBASE64'] = 'A szöveg formája nem base64 kódolású. Nem lehet érvényes a kulcs.';
-$string['notenoughidpinfo'] = 'Azonosítási szolgáltatója nem ad elég adatot fiókjának helyi létrehozásához vagy frissítéséhez.';
+$string['notPEM'] = 'A kulcs nem PEM-formájú. Nem fog működni.';
 $string['not_in_range'] = 'A(z) {$a} IP-cím nem egy érvényes és megbízható gazdagépé.';
+$string['notenoughidpinfo'] = 'Azonosítási szolgáltatója nem ad elég adatot fiókjának helyi létrehozásához vagy frissítéséhez.';
 $string['notinxmlrpcserver'] = 'A távoli hálózati Moodle elérése nem az XMLRPC szerver futása közben történt';
 $string['notmoodleapplication'] = 'FIGYELEM: Ez nem egy Moodle alkalmazás, ezért egyes vizsgáló metódusok esetleg nem megfelelően fognak működni.';
-$string['notPEM'] = 'A kulcs nem PEM-formájú. Nem fog működni.';
 $string['notpermittedtojump'] = 'Nem indíthat távoli folyamatot erről a Moodle-szerverről.';
 $string['notpermittedtojumpas'] = 'Ha másik felhasználóként van bejelentkezve, nem indíthat el távoli folyamatot.';
 $string['notpermittedtoland'] = 'Nincs engedélye távoli folyamat elkezdéséhez.';
@@ -209,11 +213,6 @@ $string['restore'] = 'Helyreállítás';
 $string['returnvalue'] = 'Visszatérési érték';
 $string['reviewhostdetails'] = 'Gazdagép adatainak ellenőrzése';
 $string['reviewhostservices'] = 'Gazdagép szolgáltatásainak ellenőrzése';
-$string['RPC_HTTP_PLAINTEXT'] = 'kódolatlan HTTP';
-$string['RPC_HTTP_SELF_SIGNED'] = 'HTTP (saját aláírású)';
-$string['RPC_HTTPS_SELF_SIGNED'] = 'HTTPS (saját aláírású)';
-$string['RPC_HTTPS_VERIFIED'] = 'HTTPS (aláírt)';
-$string['RPC_HTTP_VERIFIED'] = 'HTTP (aláírt)';
 $string['selectaccesslevel'] = 'A felsorolásból válasszon ki egy hozzáférési szintet.';
 $string['selectahost'] = 'Válasszon ki egy távoli gazdagépet.';
 $string['service'] = 'Szolgáltatás neve';

@@ -31,7 +31,7 @@ $string['addcommunitycourse'] = 'Közösségi kurzus hozzáadása';
 $string['addcourse'] = 'Keresés';
 $string['addedtoblock'] = 'Közösségkereső blokkjában a kurzushoz hozzáadtak egy ugrópontot.';
 $string['additionalcoursedesc'] = '{$a->lang} Készítő: {$a->creatorname} - Kiadó: {$a->publishername} - Tárgy: {$a->subject}
-    - Célközönség: {$a->audience} - Képzési szint: {$a->educationallevel} - Licenc: {$a->license}';
+- Célközönség: {$a->audience} - Képzési szint: {$a->educationallevel} - Licenc: {$a->license}';
 $string['addtocommunityblock'] = 'Ugrópont mentése a kurzushoz';
 $string['audience'] = 'Kiknek szól';
 $string['audience_help'] = 'Milyen kurzust keres?  Hagyományos, tanulóknak szánt kurzusok mellett kereshet oktatói vagy Moodle-rendszergazdai közösségeket is.';
@@ -85,8 +85,8 @@ $string['nocourse'] = 'Nincs kurzus';
 $string['noratings'] = 'Nincs értékelés';
 $string['operation'] = 'Művelet';
 $string['orderby'] = 'Rendezési szempont';
-$string['orderbyeldest'] = 'Legrégebbi';
 $string['orderby_help'] = 'A keresési eredmények megjelenítésének sorrendje.';
+$string['orderbyeldest'] = 'Legrégebbi';
 $string['orderbyname'] = 'Cím';
 $string['orderbynewest'] = 'Legújabb';
 $string['orderbypublisher'] = 'Kiadó';

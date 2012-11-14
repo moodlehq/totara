@@ -81,7 +81,7 @@ $string['changepublishstatuscat'] = '<a href="{$a->caturl}">kategória megosztá
 $string['check'] = 'Ellenőrzés';
 $string['chooseqtypetoadd'] = 'Válassza ki a hozzáadandó kérdéstípust.';
 $string['clearwrongparts'] = 'HIbás válaszok törlése';
-$string['clickflag'] = 'A kérdés megjelölése ';
+$string['clickflag'] = 'A kérdés megjelölése';
 $string['clicktoflag'] = 'A kérdés megjelölése későbbi hivatkozáshoz';
 $string['clicktounflag'] = 'A kérdés megjelölésének törlése';
 $string['clickunflag'] = 'A kérdés megjelölésének törlése';
@@ -136,8 +136,7 @@ Minden kategóriának van egy környezete, amely megadja, a kategórián belül 
 
 * Rendszer környezete - A kérdések a portál összes kurzusában és tevékenységében elérhetők
 
-A kategóriák véletlen kérdések esetén is használhatók, mivel a kérdések kiválasztására egy konkrét kategóriából kerül sor.
-';
+A kategóriák véletlen kérdések esetén is használhatók, mivel a kérdések kiválasztására egy konkrét kategóriából kerül sor.';
 $string['editcategory'] = 'Kategória szerkesztése';
 $string['editingcategory'] = 'Kategória szerkesztése';
 $string['editingquestion'] = 'Kérdés szerkesztése';
@@ -183,7 +182,7 @@ $string['exportquestions_help'] = '<p>Ezzel a funkcióval kérdések egész kate
 
 <p>Az importálási és exportálási formák külön használható programforrások. Más opcionális formátumokat találhat a modulok és segédprogramok adatbázisában.</p>';
 $string['feedback'] = 'Visszajelzés';
-$string['filecantmovefrom'] = 'A kérdésállományokat nem helyezheti át, mert nincs meg a jogosultsága az állományok eltávolításához ';
+$string['filecantmovefrom'] = 'A kérdésállományokat nem helyezheti át, mert nincs meg a jogosultsága az állományok eltávolításához';
 $string['filecantmoveto'] = 'A kérdésállományokat nem helyezheti át és nem másolhatja, mert nincs meg az állományok hozzáadásához a jogosultsága';
 $string['fileformat'] = 'Állományforma';
 $string['filesareacourse'] = 'a kurzusállományok területe';
@@ -249,29 +248,28 @@ $string['markoutofmax'] = '{$a->mark} közül {$a->max} leosztályozva';
 $string['marks'] = 'Osztályzatok';
 $string['matcherror'] = 'A pontok és a pontozási lehetőségek nem egyeznek - a kérdés kihagyva';
 $string['matchgrades'] = 'Pontok egyeztetése';
-$string['matchgradeserror'] = 'Hiba, ha a pont nincs felsorolva';
 $string['matchgrades_help'] = '<p>Az importált pontoknak meg <b>kell</b> felelni az érvényes pontszámok valamelyik rögzített értékének az alábbiak szerint...</p>
 <ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33,333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16,666%</li>
-  <li>14,2857</li>
-  <li>12,5%</li>
-  <li>11,111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
+<li>100%</li>
+<li>90%</li>
+<li>80%</li>
+<li>75%</li>
+<li>70%</li>
+<li>66.666%</li>
+<li>60%</li>
+<li>50%</li>
+<li>40%</li>
+<li>33,333</li>
+<li>30%</li>
+<li>25%</li>
+<li>20%</li>
+<li>16,666%</li>
+<li>14,2857</li>
+<li>12,5%</li>
+<li>11,111%</li>
+<li>10%</li>
+<li>5%</li>
+<li>0%</li>
 </ul>
 
 <p>A fenti felsorolás negatív értékei úgyszintén megengedettek.</p>
@@ -280,14 +278,15 @@ $string['matchgrades_help'] = '<p>Az importált pontoknak meg <b>kell</b> feleln
 meg nem feleltethető értékeket.</p>
 
 <ul>
-  <li><strong>Hiba, ha a pontszám nincs felsorolva</strong><br />
-  Ha egy kérdés a felsorolásban nem szereplő értéket tartalmaz, hibajelzés jelenik meg és a kérdés importálása elmarad.</li>
-  <li><strong>Legközelebbi pontszám, ha a pontszám nincs felsorolva</strong><br />
-  Ha a rendszer a felsorolásban nem szereplő pontszámra bukkan, a pontszámot a felsorolásban legközelebbi értéknek felelteti meg.
+<li><strong>Hiba, ha a pontszám nincs felsorolva</strong><br />
+Ha egy kérdés a felsorolásban nem szereplő értéket tartalmaz, hibajelzés jelenik meg és a kérdés importálása elmarad.</li>
+<li><strong>Legközelebbi pontszám, ha a pontszám nincs felsorolva</strong><br />
+Ha a rendszer a felsorolásban nem szereplő pontszámra bukkan, a pontszámot a felsorolásban legközelebbi értéknek felelteti meg.
 </li>
 </ul>
 
 <p><i>Megjegyzés: egyes egyedi importálási formátumok közvetlenül az adatbázisba írnak és kihagyják ezt az ellenőrzést.</i></p>';
+$string['matchgradeserror'] = 'Hiba, ha a pont nincs felsorolva';
 $string['matchgradesnearest'] = 'Legközlebbi, ha a pont nincs felsorolva';
 $string['missingcourseorcmid'] = 'Kurzusazonosító vagy cmid szükséges a print_questionhez.';
 $string['missingcourseorcmidtolink'] = 'A get_question_edit_link-hez courseid vagy cmid megadása szükséges.';

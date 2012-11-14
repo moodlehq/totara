@@ -45,18 +45,18 @@ hasznos, ha a tanár arra kívánja ösztönözni a tanulókat, hogy egy ismétl
 folyamat révén fejlődést érjenek el.</p>
 <p>Egyértelmű, hogy az ilyen opció irreleváns offline feladat esetén.</p>';
 $string['alreadygraded'] = 'Feladatának pontozása már megtörtént, újbóli leadásra nincs lehetőség.';
-$string['assignmentdetails'] = 'Feladat részletei';
 $string['assignment:exportownsubmission'] = 'Saját leadás exportálása';
 $string['assignment:exportsubmission'] = 'Leadás exportálása';
 $string['assignment:grade'] = 'Feladat pontozása';
+$string['assignment:submit'] = 'Feladat leadása';
+$string['assignment:view'] = 'Feladat megtekintése';
+$string['assignmentdetails'] = 'Feladat részletei';
 $string['assignmentmail'] = '{$a->teacher} véleményezte a(z) \'{$a->assignment}\' feladatot. A vélemény a feladathoz csatolva megtekinthető itt: {$a->url}';
 $string['assignmentmailhtml'] = '{$a->teacher} véleményezte a(z) \'{$a->assignment}\' feladatot.<br /><br />A vélemény a <a href="{$a->url}">leadott feladathoz csatolva</a> megtekinthető.';
 $string['assignmentmailsmall'] = '{$a->teacher} tanér visszajelzést küldött \'{$a->assignment}\' feladatához. A leadott munkához mellékelve jelenik meg.';
 $string['assignmentname'] = 'Feladat neve';
 $string['assignmentsubmission'] = 'Leadott feladatok';
-$string['assignment:submit'] = 'Feladat leadása';
 $string['assignmenttype'] = 'Feladat típusa';
-$string['assignment:view'] = 'Feladat megtekintése';
 $string['availabledate'] = 'Elérhető ekkortól:';
 $string['cannotdeletefiles'] = 'Hiba történt, az állományokat nem lehetett törölni';
 $string['cannotviewassignment'] = 'Ezt a feladatot nem tekintheti meg';
@@ -173,7 +173,7 @@ $string['quickgrade_help'] = '<p>Bekapcsolt gyors pontozás esetén egy oldalon 
 <p>A pontok és megjegyzések módosítása után nyomja meg a Mentés gombot az adott oldal összes módosításának mentéséhez.</p>
 
 <p>A jobb oldalon lévő szokásos pontozási gombok továbbra is használhatók, ha több helyre van szüksége.
-   A gyors pontozáshoz használt beállításait a rendszer elmenti és minden kurzus minden feladatánál ezt fogja használni.</p>';
+A gyors pontozáshoz használt beállításait a rendszer elmenti és minden kurzus minden feladatánál ezt fogja használni.</p>';
 $string['requiregrading'] = 'Pontozás előírása';
 $string['responsefiles'] = 'Tanulók által adott válaszok állományai';
 $string['reviewed'] = 'Ellenőrizve';
@@ -202,8 +202,8 @@ $string['typeonline'] = 'Online szöveg';
 $string['typeupload'] = 'Állományok továbbfejlesztett feltöltése';
 $string['typeuploadsingle'] = 'Egyetlen állomány feltöltése';
 $string['unfinalize'] = 'Visszaállítás piszkozattá';
-$string['unfinalizeerror'] = 'Hiba történt, a leadott munkát nem lehetett visszaalakítani piszkozattá';
 $string['unfinalize_help'] = 'Ha visszatér a piszkozathoz, a tanuló tovább módosíthat feladatán.';
+$string['unfinalizeerror'] = 'Hiba történt, a leadott munkát nem lehetett visszaalakítani piszkozattá';
 $string['uploadafile'] = 'Egy állomány feltöltése';
 $string['uploadbadname'] = 'Az állománynév hibás karaktereket tartalmaz, ezért nem tölthető fel';
 $string['uploadedfiles'] = 'feltöltött állományok';

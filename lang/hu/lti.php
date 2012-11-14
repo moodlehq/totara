@@ -49,14 +49,14 @@ $string['always'] = 'Mindig';
 $string['automatic'] = 'Automatikus, az indító URL alapján';
 $string['baseurl'] = 'alap-URL';
 $string['basiclti'] = 'LTI';
-$string['basicltiactivities'] = 'LTI-tevékenységek';
 $string['basiclti_base_string'] = 'LTI OAuth alapszöveg';
 $string['basiclti_endpoint'] = 'LTI indítása végpont';
-$string['basicltifieldset'] = 'Egyéni példa mezőhalmaza';
 $string['basiclti_in_new_window'] = 'Tevékenysége új ablakban nyílt meg.';
+$string['basiclti_parameters'] = 'LTI indítási paraméterei';
+$string['basicltiactivities'] = 'LTI-tevékenységek';
+$string['basicltifieldset'] = 'Egyéni példa mezőhalmaza';
 $string['basicltiintro'] = 'Tevékenységleírás';
 $string['basicltiname'] = 'Tevékenységnév';
-$string['basiclti_parameters'] = 'LTI indítási paraméterei';
 $string['basicltisettings'] = 'Alapvető LTI-beállítások';
 $string['cannot_delete'] = 'Az eszköz beállításait nem törölheti.';
 $string['cannot_edit'] = 'Az eszköz beállításait nem szerkesztheti.';
@@ -68,9 +68,9 @@ $string['configpreferwidth'] = 'Alapértelmezett egyéni szélesség';
 $string['configresourceurl'] = 'Alapértelmezett forrás-URL';
 $string['configtoolurl'] = 'Alapértelmezett távoli eszközhöz tartozó URL';
 $string['configtypes'] = 'LTI-alkalmazások bekapcsolása';
+$string['course_tool_types'] = 'Kurzuseszközök fajtái';
 $string['courseid'] = 'Kurzusazonosító szám';
 $string['coursemisconf'] = 'A kurzus beállítása hibás';
-$string['course_tool_types'] = 'Kurzuseszközök fajtái';
 $string['createdon'] = 'Létrehozás dátuma';
 $string['curllibrarymissing'] = 'Az LTI használatához telepíteni kell a PHP Curl könyvtárat';
 $string['custom'] = 'Egyedi paraméterek';
@@ -140,13 +140,13 @@ $string['fixexistingconf'] = 'A hibás beállítás helyett használjon egy lét
 $string['fixnew'] = 'Új beállítás';
 $string['fixnewconf'] = 'A hibás beállítás helyett adjon meg egy újat.';
 $string['fixold'] = 'Létező használata';
-$string['forced_help'] = 'Ezt a beállítást egy kurzus- vagy portálszintű eszköz beállítása írja elő.';
 $string['force_ssl'] = 'SSL előírása';
 $string['force_ssl_help'] = 'Kiválasztása esetén az ezen eszközszolgáltatóhoz érkező kezdeményezésekkel SSL-t kell használni.
 
 Emellett az eszközszolgáltatótól érkező minden webszolgáltatási kérelem is SSL-t fog használni.
 
 Használata esetén győződjön meg arrólk, hogy mind a Moodle, mind az eszközszolgáltató támogatja az SSL-t.';
+$string['forced_help'] = 'Ezt a beállítást egy kurzus- vagy portálszintű eszköz beállítása írja elő.';
 $string['global_tool_types'] = 'Globális eszköztípusok';
 $string['grading'] = 'Pontozás útvonala';
 $string['icon_url'] = 'Ikonos URL';
@@ -157,34 +157,34 @@ $string['imsroleinstructor'] = 'Oktató';
 $string['imsrolelearner'] = 'Tanuló';
 $string['invalidid'] = 'Hibás LTI-azonosító';
 $string['launch_in_moodle'] = 'Eszköz indítása a Moddle-ban';
-$string['launchinpopup'] = 'Tároló indítása';
 $string['launch_in_popup'] = 'Eszköz indítása előugró ablakban';
+$string['launch_url'] = 'Indítási URL';
+$string['launch_url_help'] = 'Az indítási URL a külső eszköz webcíme, mely egyéb információkat is tartalmazhat, pl. a megjelenítendő tananyagot. Ha nem tudja pontosan, hogyan kell megadni az indítási URL-t, forduljon az eszközszolgáltatóhoz.
+
+Ha kiválasztott egy konkrét eszközfajtát, előfordulhat, hogy nem kell megadnia indítási URL-t. Ilyen fordulhat elő például, ha az eszköz ugrópontja csak az eszközszolgáltató rendszerébe való bekapcsolódáshoz szükséges, de nem egy konkrét tananyag eléréséhez.';
+$string['launchinpopup'] = 'Tároló indítása';
 $string['launchinpopup_help'] = 'Az indítási tároló befolyásolja az eszköz kurzusból való indításakori megjelenését. Egyes indítási tárolók több területet engedélyeznek az eszköz számára, míg mások jobban egybeépülnek a Moodle környezetével.
 * **Alapbeállítás** - Az eszköz beállítása szerinti indítási tároló használata.
 * **Beágyazás** - Az eszköz a meglévő Moodle-ablakban jelenik meg a többi tevékenységtípus többségéhez hasonlóan.
 * **Beágyazás blokkok nélkül** - Az eszköz a meglévő Moodle-ablakban jelenik meg, az oldal tetején a csak a navigációs kezelőszervekkel.
 * **Új ablak** - Az eszköz egy új ablakban jelenik meg, a rendelkezésre álló területet teljes egészében kitöltve.
-   A böngészőtől függően új fülön vagy előbukkanó ablakban jelenik meg.
-   Elképzelhető, hogy a böngésző nem engedélyezi az új ablak megjelenését.';
+A böngészőtől függően új fülön vagy előbukkanó ablakban jelenik meg.
+Elképzelhető, hogy a böngésző nem engedélyezi az új ablak megjelenését.';
 $string['launchoptions'] = 'Indítási lehetőségek';
-$string['launch_url'] = 'Indítási URL';
-$string['launch_url_help'] = 'Az indítási URL a külső eszköz webcíme, mely egyéb információkat is tartalmazhat, pl. a megjelenítendő tananyagot. Ha nem tudja pontosan, hogyan kell megadni az indítási URL-t, forduljon az eszközszolgáltatóhoz.
-
-Ha kiválasztott egy konkrét eszközfajtát, előfordulhat, hogy nem kell megadnia indítási URL-t. Ilyen fordulhat elő például, ha az eszköz ugrópontja csak az eszközszolgáltató rendszerébe való bekapcsolódáshoz szükséges, de nem egy konkrét tananyag eléréséhez.';
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'LTI-tevékenységek pontozása';
+$string['lti:grade'] = 'LTI-tevékenységek pontozása';
+$string['lti:manage'] = 'LTI-tevékenységek szerkesztése';
+$string['lti:requesttooladd'] = 'Eszköz beküldése a rendszergazdáknak beállítás céljából';
+$string['lti:view'] = 'LTI-tevékenységek megtekintése';
 $string['lti_administration'] = 'LTI-adminisztráció';
 $string['lti_errormsg'] = 'Az eszköztől a következő hibaüzenet érkezett: "{$a}"';
-$string['lti:grade'] = 'LTI-tevékenységek pontozása';
 $string['lti_launch_error'] = 'Hiba a külső eszköz indítása közben';
 $string['lti_launch_error_tool_request'] = 'Ha egy rendszergazdától szeretné kérni az eszköz beállítását, kattintson a(z) <a href="{$a->admin_request_url}" target="_top">here</a>.pontra.';
 $string['lti_launch_error_unsigned_help'] = 'Ezt a hibát előidézheti egy hiányzó vásárlói kulcs és az eszközszolgáltatóhoz kapcsolódó megosztott kód.
 Ha rendelkezik vásárlói kulccsal és az eszközszolgáltatóhoz kapcsolódó megosztott kóddal, megadhatja őket a külső eszközpéldány szerkesztése közben.';
-$string['lti:manage'] = 'LTI-tevékenységek szerkesztése';
-$string['lti:requesttooladd'] = 'Eszköz beküldése a rendszergazdáknak beállítás céljából';
 $string['lti_tool_request_added'] = 'Az eszköz-beállítási kérelem leadása sikerült. Előfordulhat, hogy a beállítás elvégzéséhez rendszergazdához kell fordulnia.';
 $string['lti_tool_request_existing'] = 'Az eszköz tartományához más adtak le eszközbeállítást.';
-$string['lti:view'] = 'LTI-tevékenységek megtekintése';
 $string['main_admin'] = 'Általános súgó';
 $string['main_admin_help'] = 'Külső eszközökkel a Moodle felhasználói gond nélkül kapcsolódhatnak távoli gépeken lévő tananyagokhoz. Egy speciális indítási protokollnak köszönhetően a távoli eszköz általános adatokhoz jut a kapcsolatot kezdeményező felhasználóról. Ilyen például az intézmény neve, a kurzusazonosító, a felhasználó azonosítója, neve vagy e-mail címe. Az oldalon felsorolt eszközök három csoportra különülnek el:
 * **Aktív** - Ezeket az eszközszolgáltatókat rendszergazda hagyta jóvá és állította be. A Moodle ezen példányán bármely kurzusban használhatók. Ha fogyasztókulcsot és megosztott titkos jelet ad meg, megbízhatónak feltételezett kapcsolat létesül a Moodle ezen példánya és a távoli eszköz között, ami biztonságos kommunikációs csatornát nyit meg.
@@ -207,10 +207,10 @@ $string['modulenameplural'] = 'alapvető ltik';
 $string['modulenamepluralformatted'] = 'LTI-példányok';
 $string['never'] = 'Soha';
 $string['new_window'] = 'Új ablak';
-$string['noattempts'] = 'Ezen eszközpéldányon nem történt próbálkozás';
 $string['no_lti_configured'] = 'Nincs beállítva külső eszköz';
 $string['no_lti_pending'] = 'Nincs beállításra váró külső eszköz';
 $string['no_lti_rejected'] = 'Nincs elutasított külső eszköz';
+$string['noattempts'] = 'Ezen eszközpéldányon nem történt próbálkozás';
 $string['noltis'] = 'Nincsenek lti-példányok';
 $string['noservers'] = 'Nincs szerver';
 $string['notypes'] = 'Jelenleg a Moodle-ban nincs beállítva LTI-eszköz. Hozzáadáshoz kattintson a Telepítés pontra.';

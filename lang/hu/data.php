@@ -88,10 +88,10 @@ meghatározva (a mezőhatároló az a karakter, amely az egyes rekordokban az eg
 A tabulátorokat t, a soremelést n jelzi. </p>
 <p>Minta:
 <pre>
-  név,magasság,testsúly
-  Kai,180 cm,80kg
-  Kim,170 cm,60kg
-  Koo,190 cm,20kg
+név,magasság,testsúly
+Kai,180 cm,80kg
+Kim,170 cm,60kg
+Koo,190 cm,20kg
 </pre>
 </p>
 <p>Figyelmeztetés: előfordulhat, hogy a rendszer nem támogatja az összes mezőtípust.</p>';

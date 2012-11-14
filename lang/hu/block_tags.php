@@ -66,7 +66,7 @@ $string['moretags'] = 'További címkék megjelenítése és szűrése';
 $string['moretitle'] = 'További címkék';
 $string['morewelcome'] = 'Üdvözöljük a \'További címkék\' területen.
 A címkék felhasználók által létrehozott ugrópontok. A címkékkel névvel megjelölve sorolhatja be és láthatja el ugrópontokkal például kedvenc kurzusait, blogjait vagy profilját. Különféle címkecsoportokat jeleníthet meg ugrópontjaikkal a \'Megjelenít:\' soron,
-továbbá elrendezheti őket ugrópontjaikkal a \'Sorrend:\' soron. ';
+továbbá elrendezheti őket ugrópontjaikkal a \'Sorrend:\' soron.';
 $string['mycoursetag1'] = 'Kurzuscímkéim megjelenítése';
 $string['mycoursetag2'] = 'kurzuscímkéim';
 $string['mycoursetags'] = 'Kurzuscímkéim:';

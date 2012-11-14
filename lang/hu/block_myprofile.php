@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['contentsettings'] = 'A tartalomhoz tartozó beállítások megjelenítése ';
+$string['contentsettings'] = 'A tartalomhoz tartozó beállítások megjelenítése';
 $string['display_address'] = 'Cím kijelzése';
 $string['display_aim'] = 'AIM kijelzése';
 $string['display_city'] = 'Város kijelzése';

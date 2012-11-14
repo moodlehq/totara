@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Tartalom';
-$string['foldercontent'] = 'Állományok és almappák';
 $string['folder:managefiles'] = 'A mappamodul állományait kezeli';
 $string['folder:view'] = 'A mappa tartalmának megtekintése';
+$string['foldercontent'] = 'Állományok és almappák';
 $string['modulename'] = 'Mappa';
 $string['modulenameplural'] = 'Mappák';
 $string['neverseen'] = 'Ismeretlen';

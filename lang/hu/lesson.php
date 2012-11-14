@@ -134,13 +134,13 @@ másik lecke során elért teljesítményével.  Ha az ezzel kapcsolatos
 követelményeket nem teljesíti, akkor a tanuló számára ez a lecke nem lesz elérhető.</p>
 
 <p>Az összefüggést meghatározó feltételek a következők:
-    <ul>
-        <li><span style="font-weight: bold;">Eltöltött idő</span>: a tanulónak az adott leckével ennyi ideig kell foglalkoznia.</li>
-        <li><span style="font-weight: bold;">Elvégzés</span>: a tanulónak az adott leckét el kell végeznie.</li>
-        <li><span style="font-weight: bold;">Ponthatár</span>: a tanulónak az adott leckével kapcsolatban
-        a megadottnál magasabb pontot kell elérnie.</li>
-    </ul>
-    Szükség esetén a fentiek tetszés szerint kombinálhatók.
+<ul>
+<li><span style="font-weight: bold;">Eltöltött idő</span>: a tanulónak az adott leckével ennyi ideig kell foglalkoznia.</li>
+<li><span style="font-weight: bold;">Elvégzés</span>: a tanulónak az adott leckét el kell végeznie.</li>
+<li><span style="font-weight: bold;">Ponthatár</span>: a tanulónak az adott leckével kapcsolatban
+a megadottnál magasabb pontot kell elérnie.</li>
+</ul>
+Szükség esetén a fentiek tetszés szerint kombinálhatók.
 </p>';
 $string['description'] = 'Leírás';
 $string['detailedstats'] = 'Részletes statisztika';
@@ -221,7 +221,7 @@ $string['importppt_help'] = '<p> Használata</p>
 <li>Nyissa meg a PowerPoint prezentációját.</li>
 <li>Mentse el weboldalként (külön opciók nélkül)</li>
 <li>A 3. lépés eredménye egy htm-állomány vagy egy mappa, melyben minden dia weboldallá van átalakítva.<br />
-  CSAK A MAPPÁT tömörítse.</li>
+CSAK A MAPPÁT tömörítse.</li>
 <li>Térjen át a Moodle portálra és adjon hozzá egy új leckét.</li>
 <li>A lecke beállításainak mentése után 4 opciót lát a
 "Mit kíván tenni először?" alatt. Kattintson a "PowerPoint importálása" pontra.</li>
@@ -231,12 +231,11 @@ $string['importppt_help'] = '<p> Használata</p>
 </ol>
 </p>
 <p>Ha a PowerPoint képeket is tartalmazott, ezek kurzusállományként lettek elmentve a moddata/XY alá, ahol
- az X a lecke neve és az Y egy szám (rendszerint 0). Emellett az importálás alatt állományok jönnek
- létre a moodledata könyvtárban a temp/lesson alatt. Ezeket az állományokat az importppt.php most még nem törli.</p>
+az X a lecke neve és az Y egy szám (rendszerint 0). Emellett az importálás alatt állományok jönnek
+létre a moodledata könyvtárban a temp/lesson alatt. Ezeket az állományokat az importppt.php most még nem törli.</p>
 <p align="center"> </p>';
 $string['importquestions'] = 'Kérdések importálása';
-$string['importquestions_help'] = 'Ezzel a funkcióval külső, űrlapon keresztül feltöltött szöveges állományból importálhat különféle formájú kérdéseket.  
-';
+$string['importquestions_help'] = 'Ezzel a funkcióval külső, űrlapon keresztül feltöltött szöveges állományból importálhat különféle formájú kérdéseket.';
 $string['insertedpage'] = 'Oldal beszúrva';
 $string['invalidfile'] = 'Érvénytelen állomány';
 $string['invalidid'] = 'Nem került sor kurzusmodul-azonosító vagy leckeazonosító átadására';
@@ -248,13 +247,13 @@ $string['jumps_help'] = 'Minden (kérdésre adott) válaszhoz vagy (tartalomolda
 $string['jumpsto'] = 'Ugrások ide: {$a}';
 $string['leftduringtimed'] = 'Időméréses lecke közben távozott.<br />Kattintson a Folytatás gombra, és kezdje újra a leckét.';
 $string['leftduringtimednoretake'] = 'Időméréses lecke közben távozott, ezért nem ismételheti meg és nem folytathatja a leckét.';
+$string['lesson:edit'] = 'Lecketevékenység szerkesztése';
+$string['lesson:manage'] = 'Lecketevékenység kezelése';
 $string['lessonattempted'] = 'Elkezdett lecke';
 $string['lessonclosed'] = 'A lecke lezárult {$a} időpontban.';
 $string['lessoncloses'] = 'A lecke lezárul';
 $string['lessoncloseson'] = 'A lecke lezárul ekkor: {$a}';
-$string['lesson:edit'] = 'Lecketevékenység szerkesztése';
 $string['lessonformating'] = 'Lecke formázása';
-$string['lesson:manage'] = 'Lecketevékenység kezelése';
 $string['lessonmenu'] = 'Lecke menü';
 $string['lessonnotready'] = 'A lecke nem végezhető el. Forduljon a(z) {$a}-hoz.';
 $string['lessonnotready2'] = 'A lecke még nem végezhető el.';
@@ -357,11 +356,11 @@ $string['numberofpagesviewed'] = 'A megtekintett oldalak száma: {$a}';
 $string['numberofpagesviewednotice'] = 'Megválaszolt kérdések száma: {$a->nquestions}; (Megválaszolandó legalább: {$a->minquestions})';
 $string['numerical'] = 'Számjegyes';
 $string['ongoing'] = 'Pillanatnyi pont mutatása';
-$string['ongoingcustom'] = '{$a->score} pontot ért el az eddig elérhető {$a->currenthigh} pontból.';
 $string['ongoing_help'] = '<p>Bekapcsolása esetén az egyes oldalakon megjelenik a tanuló által az összes
- megszerezhető pontból ez idáig megszerzett pontok száma.
- Példa: egy tanuló négy 5 pontos kérdésre válaszolt és egyre hibás választ adott.
- Ekkor a pillanatnyi pont 15/20 pont lesz.</p>';
+megszerezhető pontból ez idáig megszerzett pontok száma.
+Példa: egy tanuló négy 5 pontos kérdésre válaszolt és egyre hibás választ adott.
+Ekkor a pillanatnyi pont 15/20 pont lesz.</p>';
+$string['ongoingcustom'] = '{$a->score} pontot ért el az eddig elérhető {$a->currenthigh} pontból.';
 $string['ongoingnormal'] = '{$a->correct} kérdést válaszolt meg helyesen az eddigi {$a->viewed} próbálkozásból';
 $string['onpostperpage'] = 'Pontonként csak egy hozzászólás';
 $string['options'] = 'Lehetőségek';
@@ -373,10 +372,10 @@ $string['overview'] = 'Áttekintés';
 $string['overview_help'] = 'Egy-egy lecke néhány oldalból és esetlegesen tartalomoldalakból épül föl.
 Egy oldalon valamilyen tartalom  jelenik meg, és általában egy kérdéssel végződik. A válaszokhoz hozzátartozik egy ugrópont. Az ugrópont lehet relatív - adott oldalhoz, következő oldalhoz való ugrás - vagy abszolút - a lecke bármely oldalára vagy a lecke végére ugrás. A tartalomoldal a lecke más oldalaira, például a tartalomjegyzékre  mutató ugrópontokat tartalmaz.';
 $string['page'] = 'Oldal: {$a}';
-$string['pagecontents'] = 'Oldal tartalma';
 $string['page-mod-lesson-edit'] = 'Leckeoldal szerkesztése';
 $string['page-mod-lesson-view'] = 'Lecke megtekintése vagy előnézete';
 $string['page-mod-lesson-x'] = 'Bármely leckeoldal';
+$string['pagecontents'] = 'Oldal tartalma';
 $string['pages'] = 'Oldalak';
 $string['pagetitle'] = 'Oldal címe';
 $string['password'] = 'Jelszó';
@@ -462,14 +461,14 @@ $string['showanunseenpage'] = 'Kihagyott oldal megjelenítése';
 $string['singleanswer'] = 'Egy válasz';
 $string['skip'] = 'Navigálás kihagyása';
 $string['slideshow'] = 'Bemutató';
-$string['slideshowbgcolor'] = 'Bemutató háttérszíne';
-$string['slideshowheight'] = 'Bemutató magassága';
 $string['slideshow_help'] = '<p>A leckét rögzített szélességű és magasságú, testre szabott hátterű
 bemutatóként jeleníti meg. CSS-alapú gördítősáv jelenik meg, ha a tartalom
 szélessége vagy magassága meghaladja a képkockáét. A kérdések \'kilépnek\'
 a bemutató módból, csak az oldalak (elágazási táblázatok) látszanak a
 képkockában. A képkocka jobb és bal szélén a "Következő" és a "Vissza" gombok jelennek meg,
 ha ez az opció az oldalon ki van választva. A többi gomb a képkocka alatt középen látszik.</p>';
+$string['slideshowbgcolor'] = 'Bemutató háttérszíne';
+$string['slideshowheight'] = 'Bemutató magassága';
 $string['slideshowwidth'] = 'Bemutató szélessége';
 $string['startlesson'] = 'Lecke elkezdése';
 $string['studentattemptlesson'] = '{$a->lastname} {$a->firstname} próbálkozásainak száma {$a->attempt}';

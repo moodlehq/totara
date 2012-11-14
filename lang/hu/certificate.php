@@ -43,18 +43,18 @@ $string['borderstyle'] = 'Szegélykép';
 $string['borderstyle_help'] = 'A Szegélykép segítségével a certificate/pix/borders mappából szegélyképet választhat a bizonyítványhoz. Ellenkező esetben válassza a Nincs szegély lehetőséget.';
 $string['certificate'] = 'Bizonyítványkód ellenőrzése';
 $string['certificate:manage'] = 'Bizonyítvány kezelése';
-$string['certificatename'] = 'Bizonyítvány megnevezése';
 $string['certificate:printteacher'] = 'Tanár nevének noymtatása';
+$string['certificate:student'] = 'Bizonyítvány átvétele';
+$string['certificate:view'] = 'Bizonyítvány megtekintése';
+$string['certificatename'] = 'Bizonyítvány megnevezése';
 $string['certificatereport'] = 'Bizonyítványokról szóló jelentés';
 $string['certificatesfor'] = 'Bizonyítvány témaköre';
-$string['certificate:student'] = 'Bizonyítvány átvétele';
 $string['certificatetype'] = 'Bizonyítvány típusa';
 $string['certificatetype_help'] = 'Itt adja meg a bizonyítvány elrendezését. A bizonyítványtípus  mappája négy alapértelmezett bizonyítványt tartalmaz: Az A4-es beágyazott betűs nyomatok A4 méretű papíron jelennek meg beágyazott betűtípussal. Az A4-es nem beágyazott betűs nyomatok beágyazott betűtípusok nélkül jelennek meg. A Letter beágyazott betűs nyomatok Letter méretű papíron jelennek meg beágyazott betűtípussal. A Letter nem beágyazott betűs nyomatok beágyazott betűtípusok nélkül készülnek.
 
 A nem beágyazott típusok Helvetica és Times betűtípust használnak. Ha úgy gondolja, hogy a felhasználók számítógépén nem lesznek meg ezek a betűtípusok, vagy ha a használt nyelvben vannak olyan karakterek vagy szimbólumok, amelyek nem kapnak helyet  a Helvetica és a Times betűtípusban, akkor válasszon beágyazott típust. Beágyazott típusokat használ a Dejavusans és a Dejavuserif. Ezekkel a PDF-fájlok meglehetősen terjedelmesek lesznek, így használatuk csak indokolt esertben ajánlott.
 
 Új típusokhoz mappákat hozhat létre a bizonyítvány/típus mappában. A mappa nevét és új nyelvek esetén az esetleges új szöveget hozzá kell adni a bizonyítvány nyelvi állományához.';
-$string['certificate:view'] = 'Bizonyítvány megtekintése';
 $string['certify'] = 'Ezennel tanúsítjuk, hogy';
 $string['code'] = 'Kód';
 $string['completiondate'] = 'Kurzus teljesítése';

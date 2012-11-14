@@ -35,7 +35,7 @@ $string['chaptertitle'] = 'Fejezet címe';
 $string['confchapterdelete'] = 'Biztosan törli ezt a fejezetet?';
 $string['confchapterdeleteall'] = 'Biztosan törli a fejezetet annak összes alfejezetével együtt?';
 $string['content'] = 'Tartalom';
-$string['customtitles'] = ' Egyedi címek';
+$string['customtitles'] = 'Egyedi címek';
 $string['customtitles_help'] = 'A fejezetcímek csak a tartalomjegyzékben jelennek meg automatikusan.';
 $string['editingchapter'] = 'Fejezet szerkesztése';
 $string['errorchapter'] = 'Hiba a fejezet olvasása közben.';
@@ -55,7 +55,6 @@ Jelenleg egyetlen módja létezik: a böngésző keresési funkciója a nyomtata
 *A címem nem fér ki egy soron.*
 
 Fogalmazza át a címet vagy kérje meg a rendszergazdát, hogy módosítsa a tartalomjegyzék szélességét. Ez a modul konfigurációs oldalán adható meg globálisan,. minden könyvhöz.';
-$string['missingfilemanagement'] = 'A Könyv modul felhasználóinak: bizonyára észrevették, hogy a Könyv fejezeteiben használt állományok nem törölhetők/kezelhetők. Ennek megváltoztatásához szavazzanak itt: {$a}. Köszönettel: Petr Škoda';
 $string['modulename'] = 'Könyv';
 $string['modulename_help'] = 'A könyv egyszerű, többoldalas tananyag.';
 $string['modulenameplural'] = 'Könyvek';

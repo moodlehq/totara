@@ -76,8 +76,8 @@ $string['groupinfo'] = 'Információk a kiválasztott csoportról';
 $string['groupinfomembers'] = 'Információk a kiválasztott tagokról';
 $string['groupinfopeople'] = 'Információk a kiválasztott személyekről';
 $string['grouping'] = 'Csoportosítás';
-$string['groupingdescription'] = 'Csoportosítás leírása';
 $string['grouping_help'] = 'A csoportosítás egy adott kurzuson belüli csoportok összessége.Csoportosítás kiválasztása esetén az azon belül csoportokba osztott tanulók együtt tevékenykedhetnek.';
+$string['groupingdescription'] = 'Csoportosítás leírása';
 $string['groupingname'] = 'Csoportosítás neve';
 $string['groupingnameexists'] = 'A(z) \'{$a}\' nevű csoport már szerepel ebben a kurzusban, válasszon másikat.';
 $string['groupings'] = 'Csoportosítások';
@@ -86,20 +86,20 @@ $string['groupmember'] = 'Csoporttag';
 $string['groupmemberdesc'] = 'Csoporttag szokásos szerepe.';
 $string['groupmembers'] = 'Csoporttagok';
 $string['groupmembersonly'] = 'Csak csoporttagok számára érhető el';
-$string['groupmembersonlyerror'] = 'Legalább egy ezen tevékenységhez kötődő csoportban tagnak kell lennie.';
 $string['groupmembersonly_help'] = 'Ha a jelölőnégyzet be van jelölve,
 akkor az adott tevékenységet (vagy tananyagot) csak a kiválasztott csoportosításon belüli tanulók érhetik el.';
+$string['groupmembersonlyerror'] = 'Legalább egy ezen tevékenységhez kötődő csoportban tagnak kell lennie.';
 $string['groupmemberssee'] = 'Csoporttagok megtekintése';
 $string['groupmembersselected'] = 'A kiválasztott csoport tagjai';
 $string['groupmode'] = 'Csoportos részvétel';
-$string['groupmodeforce'] = 'Csoportos részvétel előírása';
-$string['groupmodeforce_help'] = 'Csoportos részvétel előírása esetén ';
 $string['groupmode_help'] = 'A kurzusban való csoportos részvétel három szinten történhet:
 * Nincs csoport - nincsenek alcsoportok, mindenki egyetlen nagy közösséghez tartozik
 * Külön csoportok - az egyes csoportok csak a saját csoportjukat látják, a többi csoport számukra láthatatlan
 * Látható csoportok - az egyes csoportok saját csoportjukon belül tevékenykednek, de láthatják a többi csoportot is
 
 A kurzusszinten kialakított csoportos részvétel az adott kurzuson belül meghatározott összes tevékenység alapvető részvételi módja. A csoportokat támogató egyes tevékenységek meghatározhatják saját csoportosítási módjaikat. Ha a kurzus beállítása kurzusszinten előírt csoportos részvétel, akkor a rendszer figyelmen kívül hagyja az egyes tevékenységek beállítását.';
+$string['groupmodeforce'] = 'Csoportos részvétel előírása';
+$string['groupmodeforce_help'] = 'Csoportos részvétel előírása esetén';
 $string['groupmy'] = 'Csoportom';
 $string['groupname'] = 'Csoport neve';
 $string['groupnameexists'] = 'A(z) \'{$a}\' nevű csoport már szerepel ebben a kurzusban, válasszon másikat.';
