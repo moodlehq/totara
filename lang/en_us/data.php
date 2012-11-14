@@ -25,5 +25,4 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['deletenotenrolled'] = 'Delete entries by users not enrolled
-';
+$string['deletenotenrolled'] = 'Delete entries by users not enrolled';

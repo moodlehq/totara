@@ -25,5 +25,4 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['subscribeenrolledonly'] = 'Sorry, only enrolled users are allowed to subscribe to receive forum postings by email.
-';
+$string['subscribeenrolledonly'] = 'Sorry, only enrolled users are allowed to subscribe to receive forum postings by email.';

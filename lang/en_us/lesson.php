@@ -16,16 +16,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'grades', language 'en_us', branch 'MOODLE_22_STABLE'
+ * Strings for component 'lesson', language 'en_us', branch 'MOODLE_22_STABLE'
  *
- * @package   grades
+ * @package   lesson
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['errornocategorisedid'] = 'Could not get an uncategorized id!';
-$string['synclegacygrades'] = 'Synchronize legacy grades';
-$string['uncategorised'] = 'Not categorized';
-$string['userenrolmentsuspended'] = 'User enrollment suspended';
+$string['slideshowbgcolor'] = 'Slide show background color';

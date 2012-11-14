@@ -25,7 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['deletenotenrolled'] = 'Delete entries by users not enrolled
-';
+$string['deletenotenrolled'] = 'Delete entries by users not enrolled';
 $string['deletingnoneemptycategory'] = 'Deleting this category will not delete the entries it contains - they will be marked as uncategorized.';
 $string['notcategorised'] = 'Not categorized';
