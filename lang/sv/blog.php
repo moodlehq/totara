@@ -96,12 +96,6 @@ $string['permalink'] = 'Permalänk';
 $string['personalblogs'] = 'Användare kan endast se deras egen blogg';
 $string['preferences'] = 'Preferenser';
 $string['publishto'] = 'Publicera för';
-$string['publishtocourse'] = 'Användare som delar en kurs med Dig';
-$string['publishtocourseassoc'] = 'Deltagare i den kopplade kursen';
-$string['publishtocourseassocparam'] = 'Deltagare i {$a}';
-$string['publishtogroup'] = 'Användare som delar en grupp med Dig';
-$string['publishtogroupassoc'] = 'Dina gruppmedlemmar i den kopplade kursen';
-$string['publishtogroupassocparam'] = 'Dina gruppmedlemmar i {$a}';
 $string['publishto_help'] = '<p>Det finns tre möjliga inställningar här</p>
 
 <p><b>Dig själv (utkast)</b> - Bara du och administratörer kan se inlägget.</p>
@@ -109,6 +103,12 @@ $string['publishto_help'] = '<p>Det finns tre möjliga inställningar här</p>
 <p><b>Vem som helst på denna webbplats</b> - Alla som är registrerade användare på sajten kan se inlägget.</p>
 
 <p><b>Vem som helst (Även för gäster)</b> - Alla, inklusive gäster, kan se inlägget.</p>';
+$string['publishtocourse'] = 'Användare som delar en kurs med Dig';
+$string['publishtocourseassoc'] = 'Deltagare i den kopplade kursen';
+$string['publishtocourseassocparam'] = 'Deltagare i {$a}';
+$string['publishtogroup'] = 'Användare som delar en grupp med Dig';
+$string['publishtogroupassoc'] = 'Dina gruppmedlemmar i den kopplade kursen';
+$string['publishtogroupassocparam'] = 'Dina gruppmedlemmar i {$a}';
 $string['publishtonoone'] = 'Dig själv (utkast)';
 $string['publishtosite'] = 'Vem som helst på denna sajt';
 $string['publishtoworld'] = 'Vem som helst (även för gäster)';
@@ -149,7 +149,7 @@ $string['viewmodentries'] = 'Inlägg av typ modul';
 $string['viewmyentries'] = 'Mina inlägg';
 $string['viewmyentriesaboutcourse'] = 'Visa mina inlägg om den här kursen';
 $string['viewmyentriesaboutmodule'] = 'Visa mina inlägg om detta {$a}';
-$string['viewsiteentries'] = 'Visa alla inlägg ';
+$string['viewsiteentries'] = 'Visa alla inlägg';
 $string['viewuserentries'] = 'Visa alla inlägg av {$a}';
 $string['worldblogs'] = 'Alla på internet kan läsa inlägg som gjorts tillgängliga för vem som helst';
 $string['wrongpostid'] = 'Felaktigt ID för inlägg i blogg';

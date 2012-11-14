@@ -27,10 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['incby1'] = 'Öka med';
 $string['incby2'] = 'Alternativ ökning med';
+$string['incbydesc1'] = 'Detta är värdet avsnittet ökar varje gång avsnittslänken visas med början på 1.';
+$string['incbydesc2'] = 'Detta är värdet avsnittet ökar varje gång avsnittslänken visas med början på 1.';
 $string['jumptocurrenttopic'] = 'Hoppa till aktuellt &auml;mne';
 $string['jumptocurrentweek'] = 'Hoppa till aktuell vecka';
 $string['numsections1'] = 'Antal sektioner';
 $string['numsections2'] = 'Alternativt antal sektioner';
+$string['numsectionsdesc1'] = 'När antalet avsnitt i kursen når denna siffra används ökningen av värdet.';
+$string['numsectionsdesc2'] = 'När antalet avsnitt i kursen når denna siffra används den alternativa ökningen av värdet.';
 $string['pluginname'] = 'Länkar till sektioner';
 $string['topics'] = 'Ämnen';
 $string['weeks'] = 'Veckor';

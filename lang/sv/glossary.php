@@ -35,8 +35,8 @@ $string['aliases_help'] = '<p>Varje bidrag kan ha vara kopplat till en lista med
 <p><b>Skriv in varje synonym (alias) p&aring; en ny rad</b> (inte separerad med komman).</p>
 
 <p>De ord som anv&auml;nds synonymt (alias) kan anv&auml;ndas som alternativa s&auml;tt att referera till
-bidraget.  
-   Till exempel, om Du anv&auml;nder filtret f&ouml;r automatisk l&auml;nkning av bidrag s&aring; kommer synonymerna att anv&auml;ndas (liksom bidragets egentliga ledord) n&auml;r det g&ouml;rs ett val att ord ska l&auml;nka till detta bidrag.</p>';
+bidraget.
+Till exempel, om Du anv&auml;nder filtret f&ouml;r automatisk l&auml;nkning av bidrag s&aring; kommer synonymerna att anv&auml;ndas (liksom bidragets egentliga ledord) n&auml;r det g&ouml;rs ett val att ord ska l&auml;nka till detta bidrag.</p>';
 $string['allcategories'] = 'Alla kategorier';
 $string['allentries'] = 'ALLA';
 $string['allowcomments'] = 'Tillåt kommentarer till bidrag';
@@ -46,7 +46,7 @@ bidrag till ord- och begreppslistan.</p>
 <p>Distanslärare kan alltid lägga till kommentarer till bidrag till ord- och begreppslistor.</p>';
 $string['allowduplicatedentries'] = 'Det är tillåtet med dubblerade bidrag';
 $string['allowduplicatedentries_help'] = '<p>Du kan ange om det ska vara till&aring;tet eller inte att
-l&auml;gga till dubletter av bidrag till den aktuella 
+l&auml;gga till dubletter av bidrag till den aktuella
 ord- och begreppslistan.</p>';
 $string['allowprintview'] = 'Tillåt visning av utskrift';
 $string['allowprintview_help'] = '<p>Studenter/elever/deltagare/l&auml;rande kan f&aring; till&aring;telse att
@@ -66,13 +66,13 @@ till varje enskilt bidrag i en ord- och begreppslista.
 Denna fil laddas upp till servern och lagras tillsammans
 med Ditt bidrag</p>
 <p>Detta &auml;r anv&auml;ndbart n&auml;r Du vill visa en bild eller ett Word-dokument t.ex.</p>
-<p>Denna fil kan vara i valfritt format men rekommendationen &auml;r &auml;nd&aring; 
+<p>Denna fil kan vara i valfritt format men rekommendationen &auml;r &auml;nd&aring;
 att filen har ett namn med ett filtill&auml;gg p&aring; 3 tecken enligt standarden
 f&ouml;r Internet som t.ex. .doc, .jpg osv.
 Detta underl&auml;ttar f&ouml;r dem som vill ladda ner och se Dina bilagor i sina
 webbl&auml;sare.</p>
-<p>Om Du redigerar om ett bidrag och bifogar en ny fil s&aring; kommer de tidigare 
-bilagorna till bidraget att ers&auml;ttas med de nya.</p>   
+<p>Om Du redigerar om ett bidrag och bifogar en ny fil s&aring; kommer de tidigare
+bilagorna till bidraget att ers&auml;ttas med de nya.</p>
 <p>Om Du redigerar om ett bidrag med en bilaga och l&auml;mnar detta utrymme
 tomt s&aring; kommer den ursprungliga bilagan att bli kvar.</p>';
 $string['author'] = 'författare';
@@ -86,7 +86,7 @@ $string['casesensitive_help'] = '<p>Den h&auml;r inst&auml;llningen anger om ett
 med exakt samma storlek p&aring; bokst&auml;verna som det har f&ouml;r att
 det ska l&auml;nkas automatiskt.</p>
 <p>L&auml;gg m&auml;rke till att detta alternativ inte begr&auml;nsar det faktum
-att ett begrepp kan vara inb&auml;ddat i ett annat. Anv&auml;nd alternativet  
+att ett begrepp kan vara inb&auml;ddat i ett annat. Anv&auml;nd alternativet
 \'Matcha hela ord\' ist&auml;llet.</p>';
 $string['cat'] = 'kategori';
 $string['categories'] = 'Kategorier';
@@ -124,7 +124,7 @@ $string['date'] = 'datum';
 $string['dateview'] = 'Bläddra enligt datum';
 $string['defaultapproval'] = 'Standardval för godkännande';
 $string['defaultapproval_help'] = '<p>Du kan ange om bidrag fr&aring;n studenter/elever/deltagare/l&auml;rande
-ska vara automatiskt tillg&auml;ngliga f&ouml;r alla eller om bidragen f&ouml;rst ska 
+ska vara automatiskt tillg&auml;ngliga f&ouml;r alla eller om bidragen f&ouml;rst ska
 godk&auml;nnas av (distans)l&auml;raren.</p>';
 $string['defaulthook'] = 'Förvald \'krok\'';
 $string['defaultmode'] = 'Förvalt läge';
@@ -146,16 +146,9 @@ den f&ouml;r tillf&auml;llet &ouml;ppna ord- och begreppslistan.</li>
 som baseras p&aring; den information som som finns i den markerade importfilen och de nya bidragen kommer att infogas i den.</li>
 </ul>';
 $string['displayformat'] = 'Format för visning';
-$string['displayformatcontinuous'] = 'Fortlöpande men utan författare';
-$string['displayformatdictionary'] = 'Enkel ordboksstil';
-$string['displayformatencyclopedia'] = 'Encyklopedi';
-$string['displayformatentrylist'] = 'Lista över bidrag';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Komplett med författare';
-$string['displayformatfullwithoutauthor'] = 'Komplett utan författare';
-$string['displayformat_help'] = '<p>Systemet har tre inbyggda format f&ouml;r att visa bidrag. 
+$string['displayformat_help'] = '<p>Systemet har tre inbyggda format f&ouml;r att visa bidrag.
 Du kan skapa Ditt eget format om Du vill.</p>
-<p>Standardinst&auml;llningen inneb&auml;r en ganska enkel 
+<p>Standardinst&auml;llningen inneb&auml;r en ganska enkel
 form av presentation. Det ser ut som en vanlig ordlista (ordboksartikel).</p>
 <p>Det andra visningsformatet visar bidraget i ett forumliknande format,
 utan data om f&ouml;rfattaren.</p>
@@ -167,10 +160,17 @@ och ge den ett nummer som namn. Titta efter i mod/glossary/format f&ouml;r att
 f&aring; veta vilket det n&auml;sta numret b&ouml;r vara.</p>
 <p>Skapa sedan en funktion som Du kallar
 <b>glossary_print_entry_by_format($course, $cm, $glossary,
- $entry)</b> och fyll p&aring; med all Din kreativitet.</p>
+$entry)</b> och fyll p&aring; med all Din kreativitet.</p>
 <p>Det sista steget &auml;r att l&auml;gga in ett bidrag till varje spr&aring;kpaket
-som Du anv&auml;nder. Det kallar Du <b>displayformat[number]</b>, 
+som Du anv&auml;nder. Det kallar Du <b>displayformat[number]</b>,
 och ger det en meningsfull beskrivning.</p>';
+$string['displayformatcontinuous'] = 'Fortlöpande men utan författare';
+$string['displayformatdictionary'] = 'Enkel ordboksstil';
+$string['displayformatencyclopedia'] = 'Encyklopedi';
+$string['displayformatentrylist'] = 'Lista över bidrag';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Komplett med författare';
+$string['displayformatfullwithoutauthor'] = 'Komplett utan författare';
 $string['displayformats'] = 'Format för visning';
 $string['displayformatssetup'] = 'Visa hur formaten har skapats';
 $string['duplicateentry'] = 'Dubblerat bidrag';
@@ -194,11 +194,11 @@ $string['entryapproved'] = 'Det här bidraget har godkänts';
 $string['entrydeleted'] = 'Bidraget är borttaget';
 $string['entryexported'] = 'Bidraget har framgångsrikt exporterats';
 $string['entryishidden'] = '(det här bidraget är f n dolt)';
-$string['entryleveldefaultsettings'] = 'Standardval för inställningar på ingångsnivån ';
+$string['entryleveldefaultsettings'] = 'Standardval för inställningar på ingångsnivån';
 $string['entrysaved'] = 'Det här bidraget har sparats';
 $string['entryupdated'] = 'Det här bidraget har uppdaterats';
 $string['entryusedynalink'] = 'Det här bidraget bör<br /> vara automatiskt länkat';
-$string['entryusedynalink_help'] = '<p>Genom att aktivera det h&auml;r alternativet s&aring; kommer bidraget automatiskt 
+$string['entryusedynalink_help'] = '<p>Genom att aktivera det h&auml;r alternativet s&aring; kommer bidraget automatiskt
 att l&auml;nkas n&auml;rhelst begrepp, ord och fraser dyker n&aring;gon annanstans i samma kurs.
 Detta g&auml;ller f&ouml;r inl&auml;gg i forum, interna resurser, veckovisa sammanfattningar osv. </p>
 <p>Om Du inte vill att en viss text ska l&auml;nkas (i ett inl&auml;gg i ett forum t ex)
@@ -226,11 +226,11 @@ $string['filetoimport_help'] = '<p>Markera den XML-fil p&aring; Din dator som in
 $string['fillfields'] = '\'Begrepp\' och definition\' är obligatoriska fält';
 $string['filtername'] = 'Länka ord- och begreppslista automatiskt';
 $string['fullmatch'] = 'Matcha hela ord bara<br /><small>när de är automatiskt länkade</small>';
-$string['fullmatch_help'] = '<p>Om Du anger att ett bidrag kan l&auml;nkas automatiskt 
-fr&aring;n andra resurser, s&aring; kommer bara de ord som 
-matchar detta bidrag fullst&auml;ndigt att l&auml;nkas. 
+$string['fullmatch_help'] = '<p>Om Du anger att ett bidrag kan l&auml;nkas automatiskt
+fr&aring;n andra resurser, s&aring; kommer bara de ord som
+matchar detta bidrag fullst&auml;ndigt att l&auml;nkas.
 Om Du st&auml;ller in det h&auml;r alternativet allts&aring;.</p>
-<p>L&auml;gg  m&auml;rke till att det h&auml;r alternativet inte 
+<p>L&auml;gg  m&auml;rke till att det h&auml;r alternativet inte
 kr&auml;ver att bokst&auml;verna har samma storlek. Anv&auml;nd
 ist&auml;llet alternativet \'Skiftl&auml;gesk&auml;nslig\' f&ouml;r det.</p>';
 $string['glossary:approve'] = 'Godkänn icke-godkända bidrag';
@@ -239,27 +239,27 @@ $string['glossary:export'] = 'Exportera bidrag';
 $string['glossary:exportentry'] = 'Exportera ett enskilt bidrag';
 $string['glossary:exportownentry'] = 'Exportera ett enskilt eget bidrag';
 $string['glossary:import'] = 'Importera bidrag';
-$string['glossaryleveldefaultsettings'] = 'Standardval för inställningar på den globala nivån';
 $string['glossary:managecategories'] = 'Administrera kategorier';
 $string['glossary:managecomments'] = 'Administrera kommentarer';
 $string['glossary:manageentries'] = 'Administrera bidrag';
 $string['glossary:rate'] = 'Bedöm/värdera inlägg';
-$string['glossarytype'] = 'Typ av ord- och begreppslista';
-$string['glossarytype_help'] = '<p>Systemet till&aring;ter att bidrag exporteras till den &ouml;vergripande 
-ord- och begreppslistan f&ouml;r kursen 
-fr&aring;n vilken sekund&auml;r ord- och begreppslista som helst.</p>
-<p>F&ouml;r att g&ouml;ra detta b&ouml;r Du ange vilken ord- och begreppslista det &auml;r 
-som &auml;r den &ouml;vergripande.</p>
-<p>OBS! Du kan bara ha en &ouml;vergripande ord- och begreppslista per kurs.</p>
-
-<p>Före Moodle 1.7, kunde bara (distans)lärare redigera den &ouml;vergripande ord- och begreppslistan f&ouml;r kursen. I Moodle 
-1.7 och senare, kan du påverka detta med hjälp av att tilldela användare roller med utökade 
-rättigheter.</p>';
 $string['glossary:view'] = 'Visa ord-och begreppslista';
 $string['glossary:viewallratings'] = 'Visa alla betyg/omdömen som har avgivits av individer';
 $string['glossary:viewanyrating'] = 'Visa alla betyg/omdömen som någon har fått.';
 $string['glossary:viewrating'] = 'Visa de sammanlagda bedömningar/värderingar som Du har fått';
 $string['glossary:write'] = 'Skapa nya bidrag';
+$string['glossaryleveldefaultsettings'] = 'Standardval för inställningar på den globala nivån';
+$string['glossarytype'] = 'Typ av ord- och begreppslista';
+$string['glossarytype_help'] = '<p>Systemet till&aring;ter att bidrag exporteras till den &ouml;vergripande
+ord- och begreppslistan f&ouml;r kursen
+fr&aring;n vilken sekund&auml;r ord- och begreppslista som helst.</p>
+<p>F&ouml;r att g&ouml;ra detta b&ouml;r Du ange vilken ord- och begreppslista det &auml;r
+som &auml;r den &ouml;vergripande.</p>
+<p>OBS! Du kan bara ha en &ouml;vergripande ord- och begreppslista per kurs.</p>
+
+<p>Före Moodle 1.7, kunde bara (distans)lärare redigera den &ouml;vergripande ord- och begreppslistan f&ouml;r kursen. I Moodle
+1.7 och senare, kan du påverka detta med hjälp av att tilldela användare roller med utökade
+rättigheter.</p>';
 $string['guestnoedit'] = 'Gäster har inte tillstånd att redigera ord- coh begreppslistor';
 $string['importcategories'] = 'Importera kategorier';
 $string['importedcategories'] = 'Importerade kategorier';
@@ -269,25 +269,25 @@ $string['importentriesfromxml'] = 'Importera bidrag från XML-fil';
 $string['includegroupbreaks'] = 'Ta med gruppbrytningar';
 $string['isglobal'] = 'Är det här en global ord- och begreppslista?';
 $string['isglobal_help'] = '<p>Systemet med ord- och begreppslistor l&aring;ter Dig definiera
-begrepp som skulle kunna vara tillg&auml;ngliga p&aring; hela 
+begrepp som skulle kunna vara tillg&auml;ngliga p&aring; hela
 webbsajten. De beskrivs som globala.</p>
 <p>Du beh&ouml;ver allts&aring; ange vilken ord- och begreppslista som ska
 vara global.</p>
-<p>Du kan ha s&aring; m&aring;nga globala ord- och begreppslistor Du vill, och 
-de kan h&ouml;ra till vilken kurs som helst. Alla &ouml;vriga regler &auml;r 
+<p>Du kan ha s&aring; m&aring;nga globala ord- och begreppslistor Du vill, och
+de kan h&ouml;ra till vilken kurs som helst. Alla &ouml;vriga regler &auml;r
 giltiga &auml;ven f&ouml;r den h&auml;r typen.</p>
-<p>L&auml;gg m&auml;rke till att endast administrat&ouml;rer kan 
+<p>L&auml;gg m&auml;rke till att endast administrat&ouml;rer kan
 skapa globala ord- och begreppslistor.</p>';
 $string['letter'] = 'bokstav';
 $string['linkcategory'] = 'Länka den här kategorin automatiskt';
-$string['linkcategory_help'] = '<p>Du kan ange ifall Du vill att kategorierna ska vara 
+$string['linkcategory_help'] = '<p>Du kan ange ifall Du vill att kategorierna ska vara
 automatiskt l&auml;nkade eller inte.</p>
 <p>OBS! L&auml;nkning av kategorier baseras p&aring; skiftl&auml;gesk&auml;nslig, komplett matchning.</p>';
 $string['linking'] = 'Automatisk länkning';
 $string['mainglossary'] = 'Den övergripande (förklarande) ord- och begreppslistan';
 $string['maxtimehaspassed'] = 'Maxtiden för att redigera den här kommentaren har tyvärr gått ut ({$a})';
 $string['modulename'] = 'Ord- och begreppslista';
-$string['modulename_help'] = 'Modulen ord- och begreppslista gör det möjligt för deltagare att skapa och underhålla en lista över definitioner. Bidragen går att länka automatiskt varhelst de listade orden och fraserna uppträder i kursen.  ';
+$string['modulename_help'] = 'Modulen ord- och begreppslista gör det möjligt för deltagare att skapa och underhålla en lista över definitioner. Bidragen går att länka automatiskt varhelst de listade orden och fraserna uppträder i kursen.';
 $string['modulenameplural'] = 'Ord- och begreppslistor';
 $string['newentries'] = 'Nya bidrag till ord- och begreppslista';
 $string['newglossary'] = 'Ny ord- och begreppslista';
@@ -318,7 +318,7 @@ $string['rssarticles'] = 'Antal aktuella RSS-artiklar';
 $string['rssarticles_help'] = '<p>Det h&auml;r alternativet g&ouml;r det m&ouml;jligt f&ouml;r Dig att markera det antal
 artiklar som Du vill ta med i RSS-matningen.</p>
 <p>Ett antal mellan 5 och 20 b&ouml;r vara lagom f&ouml;r de flesta ord- och begreppslistor.
- &Ouml;ka detta antal om ord- och begreppslistan anv&auml;nds mycket flitigt.</p>';
+&Ouml;ka detta antal om ord- och begreppslistan anv&auml;nds mycket flitigt.</p>';
 $string['rsssubscriberss'] = 'Visa RSS-inmatningen för  \'{$a}\' koncept';
 $string['rsstype'] = 'RSS-flöde för den här aktiviteten';
 $string['rsstype_help'] = '<p>Det h&auml;r alternativet l&aring;ter Dig aktivera RSS-matningar till denna ord- och begreppslista.</p>
@@ -336,14 +336,14 @@ $string['showall_help'] = '<p>Du kan standardisera de s&auml;tt man kan anv&auml
 f&ouml;r att s&ouml;ka sig igenom en ord- och begreppslista.
 Att s&ouml;ka p&aring; kategorier och datum g&aring;r alltid.
 Du kan dock ange ytterligare tre alternativ:</p>
-<p><b>VISA SPECIAL</b> 
+<p><b>VISA SPECIAL</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av
 specialtecken som @, #, etc.</p>
-<p><b>VISA ALFABETET</b> 
+<p><b>VISA ALFABETET</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av bokst&auml;ver.</p>
-<p><b>VISA ALLA</b> 
+<p><b>VISA ALLA</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av att
 visa alla bidrag p&aring; en g&aring;ng.</p>';
@@ -352,14 +352,14 @@ $string['showalphabet_help'] = '<p>Du kan standardisera de s&auml;tt man kan anv
 f&ouml;r att s&ouml;ka sig igenom en ord- och begreppslista.
 Att s&ouml;ka p&aring; kategorier och datum g&aring;r alltid.
 Du kan dock ange ytterligare tre alternativ:</p>
-<p><b>VISA SPECIAL</b> 
+<p><b>VISA SPECIAL</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av
 specialtecken som @, #, etc.</p>
-<p><b>VISA ALFABETET</b> 
+<p><b>VISA ALFABETET</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av bokst&auml;ver.</p>
-<p><b>VISA ALLA</b> 
+<p><b>VISA ALLA</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av att
 visa alla bidrag p&aring; en g&aring;ng.</p>';
@@ -368,14 +368,14 @@ $string['showspecial_help'] = '<p>Du kan standardisera de s&auml;tt man kan anv&
 f&ouml;r att s&ouml;ka sig igenom en ord- och begreppslista.
 Att s&ouml;ka p&aring; kategorier och datum g&aring;r alltid.
 Du kan dock ange ytterligare tre alternativ:</p>
-<p><b>VISA SPECIAL</b> 
+<p><b>VISA SPECIAL</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av
 specialtecken som @, #, etc.</p>
-<p><b>VISA ALFABETET</b> 
+<p><b>VISA ALFABETET</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av bokst&auml;ver.</p>
-<p><b>VISA ALLA</b> 
+<p><b>VISA ALLA</b>
 <br />
 Aktivera eller avaktivera s&ouml;kning med hj&auml;lp av att
 visa alla bidrag p&aring; en g&aring;ng.</p>';
@@ -390,10 +390,10 @@ $string['totalentries'] = 'Totalt antal bidrag';
 $string['usedynalink'] = 'Länka bidrag automatiskt';
 $string['usedynalink_help'] = '<p align="center"><b>
 Att automatiskt l&auml;nka ord- och begreppslistor till andra moduler </b></p>
-<p>Om Du anger att en ord- och begreppslista ska l&auml;nkas automatiskt s&aring; 
-kommer de ber&ouml;rda bidragen automatiskt att l&auml;nkas n&auml;rhelst de 
+<p>Om Du anger att en ord- och begreppslista ska l&auml;nkas automatiskt s&aring;
+kommer de ber&ouml;rda bidragen automatiskt att l&auml;nkas n&auml;rhelst de
 dyker upp i andra resurser (forum, kommentarer osv)</p>
-<p>Om Du inte vill att ett visst bidrag ska l&auml;nkas 
+<p>Om Du inte vill att ett visst bidrag ska l&auml;nkas
 s&aring; b&ouml;r Du b&auml;dda in det mellan taggarna
 &lt;nolink> och &lt;/nolink> i HTML-(k&auml;ll)koden.</p>
 <p>Om det &auml;r en kategori som har hittats s&aring; kommer den ocks&aring;

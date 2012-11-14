@@ -75,21 +75,21 @@ $string['groupinfo'] = 'Info om vald grupp';
 $string['groupinfomembers'] = 'Info om valda  medlemmar';
 $string['groupinfopeople'] = 'Info om valda personer';
 $string['grouping'] = 'Gruppindelning';
-$string['groupingdescription'] = 'Beskrivning av gruppindelning';
 $string['grouping_help'] = '<p>En gruppering är en samling av grupper
- inom en kurs - ett nytt koncept som introducerades i Moodle 1.8.
+inom en kurs - ett nytt koncept som introducerades i Moodle 1.8.
 </p>
 
-<p>Avsikten är att olika grupperingar kan användas för olika aktiviteter 
-i kursen, så att grupperna i t.ex. 
- en "gruppering för samarbete" skulle användas för en grupp-wiki medan
+<p>Avsikten är att olika grupperingar kan användas för olika aktiviteter
+i kursen, så att grupperna i t.ex.
+en "gruppering för samarbete" skulle användas för en grupp-wiki medan
 en "gruppering för diskussioner" skulle användas för en forum-aktivitetet.
- 
+
 </p>
 
-<p>På sidan för inställningar för kurs så kan Du helt enkelt behålla det förinställda 
-standardvärdet (vilken gruppering som helst) eller välja den gruppering Du vill ha och spara Dina ändringar. 
+<p>På sidan för inställningar för kurs så kan Du helt enkelt behålla det förinställda
+standardvärdet (vilken gruppering som helst) eller välja den gruppering Du vill ha och spara Dina ändringar.
 </p>';
+$string['groupingdescription'] = 'Beskrivning av gruppindelning';
 $string['groupingname'] = 'Namn på gruppindelning';
 $string['groupingnameexists'] = 'Namnet \'{$a}\' för gruppindelning finns redan i den här kursen, var snäll och välj en annan.';
 $string['groupings'] = 'Gruppindelningar';
@@ -102,23 +102,23 @@ $string['groupmembersonlyerror'] = 'Du måste tyvärr vara medlem i åtminstone 
 $string['groupmemberssee'] = 'Se gruppmedlemmar';
 $string['groupmembersselected'] = 'Medlemmar i vald grupp';
 $string['groupmode'] = 'Gruppläge';
-$string['groupmodeforce'] = 'Framtvinga gruppläge';
 $string['groupmode_help'] = 'Du kan g&ouml;ra indelningar i grupper p&aring; f&ouml;ljande tre s&auml;tt:
-   <ul>
-      <li><b>Inga grupper</b> - det finns inga subgrupper utan alla tillh&ouml;r samma stora gemenskap (ung. klass).</li>
-      <li><b>Separata grupper</b> - deltagarna i varje grupp kan bara se sin egen grupp, &ouml;vriga grupper &auml;r dolda.</li>
-      <li><b>Synliga grupper</b>  - deltagarna i varje grupp arbetar i sin egen grupp men de kan ocks&aring; se de andra grupperna.</li>
-   </ul>
+<ul>
+<li><b>Inga grupper</b> - det finns inga subgrupper utan alla tillh&ouml;r samma stora gemenskap (ung. klass).</li>
+<li><b>Separata grupper</b> - deltagarna i varje grupp kan bara se sin egen grupp, &ouml;vriga grupper &auml;r dolda.</li>
+<li><b>Synliga grupper</b>  - deltagarna i varje grupp arbetar i sin egen grupp men de kan ocks&aring; se de andra grupperna.</li>
+</ul>
 <p>Gruppindelningen kan definieras p&aring; tv&aring; niv&aring;er:</p>
 <dl>
-   <dt><b>1. Kursniv&aring;</b></dt>
-   <dd>Gruppindelningen definieras p&aring; kursniv&aring; vilket &auml;r standardinst&auml;llningen f&ouml;r alla aktiviteter p&aring; den kursen.
-    <br /><br /></dd>
-   <dt><b>2. Aktivitetsniv&aring;</b></dt>
-   <dd>Varje enskild aktivitet som st&ouml;djer grupper kan ocks&aring; delas upp s&aring; att flera olika grupper arbetar med samma aktivitet.
-   Om kursen &auml;r inst&auml;lld f&ouml;r "<a href="help.php?module=moodle&file=groupmodeforce.html">Obligatorisk indelning i grupper</a>" d&aring; kommer 
-   inst&auml;llningen f&ouml;r varje enskild aktivitet att bli ogiltig.</dd>
+<dt><b>1. Kursniv&aring;</b></dt>
+<dd>Gruppindelningen definieras p&aring; kursniv&aring; vilket &auml;r standardinst&auml;llningen f&ouml;r alla aktiviteter p&aring; den kursen.
+<br /><br /></dd>
+<dt><b>2. Aktivitetsniv&aring;</b></dt>
+<dd>Varje enskild aktivitet som st&ouml;djer grupper kan ocks&aring; delas upp s&aring; att flera olika grupper arbetar med samma aktivitet.
+Om kursen &auml;r inst&auml;lld f&ouml;r "<a href="help.php?module=moodle&file=groupmodeforce.html">Obligatorisk indelning i grupper</a>" d&aring; kommer
+inst&auml;llningen f&ouml;r varje enskild aktivitet att bli ogiltig.</dd>
 </dl>';
+$string['groupmodeforce'] = 'Framtvinga gruppläge';
 $string['groupmy'] = 'Min grupp';
 $string['groupname'] = 'Group name';
 $string['groupnameexists'] = 'Gruppnamnet \'{$a}\' finns redan i den här kursen, var snäll och välj en annan,';
@@ -142,7 +142,7 @@ $string['namingscheme'] = 'Modell för namngivning';
 $string['newgrouping'] = 'Ny gruppindelning';
 $string['newpicture'] = 'Ny bild';
 $string['newpicture_help'] = '<p>Du kan ladda upp en bild fr&aring;n Din dator till den h&auml;r servern.
-Denna bild kommer att anv&auml;ndas i olika sammanhang f&ouml;r att 
+Denna bild kommer att anv&auml;ndas i olika sammanhang f&ouml;r att
 representera Dig.</p>
 <p>Av den h&auml;r anledningen &auml;r det b&auml;st med en
 n&auml;rbild p&aring; Ditt ansikte, men Du kan anv&auml;nda vilken bild Du vill.</p>
@@ -151,17 +151,17 @@ n&auml;rbild p&aring; Ditt ansikte, men Du kan anv&auml;nda vilken bild Du vill.
 <ol>
 <li>Du kan anv&auml;nda en digital kamera, vilket inneb&auml;r att Dina bilder
 sannolikt redan finns i Din dator och i r&auml;tt format.</li>
-<li>Du kan anv&auml;nda en scanner f&ouml;r att scanna en pappersbild.  
+<li>Du kan anv&auml;nda en scanner f&ouml;r att scanna en pappersbild.
 Se till att Du sparar den i JPG- eller PNG-format.</li>
-<li>Om Du &auml;r konstn&auml;rligt lagd s&aring; kan Du kanske teckna en bild 
+<li>Om Du &auml;r konstn&auml;rligt lagd s&aring; kan Du kanske teckna en bild
 med hj&auml;lp av ett grafiskt program.</li>
-<li>Slutligen kan Du hitta bilder p&aring; webben som n&aring;gon har st&auml;llt till fritt f&ouml;rfogande. 
-<br />Du b&ouml;r dock kontrollera att bilden verkligen &auml;r fri att anv&auml;nda. 
+<li>Slutligen kan Du hitta bilder p&aring; webben som n&aring;gon har st&auml;llt till fritt f&ouml;rfogande.
+<br />Du b&ouml;r dock kontrollera att bilden verkligen &auml;r fri att anv&auml;nda.
 <br />
 Normalt sett s&aring; &auml;r bilder upphovsr&auml;ttsskyddade
-och d&aring; m&aring;ste Du fr&aring;ga den som &auml;ger r&auml;ttigheterna om lov f&ouml;rst. 
+och d&aring; m&aring;ste Du fr&aring;ga den som &auml;ger r&auml;ttigheterna om lov f&ouml;rst.
 <br />
-<a target="google" href="http://images.google.com/">http://images.google.com</a> 
+<a target="google" href="http://images.google.com/">http://images.google.com</a>
 &auml;r en superb plats att leta efter bilder p&aring;. N&auml;r Du v&auml;l har funnit
 en kan Du \'h&ouml;gerklicka\' p&aring; den med musen och v&auml;lja \'Spara bild\' fr&aring;n
 menyn. Det kan skilja sig lite fr&aring;n dator till dator hur man g&ouml;r.</li>
@@ -172,7 +172,7 @@ p&aring; den h&auml;r sidan och v&auml;lja bilden fr&aring;n Din h&aring;rddisk.
 <p>OBS! F&ouml;rvissa Dig om att filen inte &auml;r st&ouml;rre &auml;n
 den angivna maxstorleken, annars laddas den inte upp.</p>
 <p>Klicka sedan p&aring; \'Uppdatera profil\' l&auml;ngst ner -
-bilden kommer att formas om till en kvadrat och skalas ner till en storlek av 
+bilden kommer att formas om till en kvadrat och skalas ner till en storlek av
 100x100 pixlar.</p>
 <p>N&auml;r Du kommer till Din personliga presentationssida kanske det visar sig att bilden inte
 har &auml;ndrats. Om det skulle vara s&aring; beh&ouml;ver Du bara anv&auml;nda funktionen

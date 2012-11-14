@@ -153,8 +153,7 @@ $string['autosubscribe'] = 'Automatisk prenumeration på forum';
 $string['autosubscribeno'] = 'Nej, jag vill inte bli automatiskt registrerad som prenumerant på forum.';
 $string['autosubscribeyes'] = 'Ja, registrera mig som prenumerant när jag gör ett inlägg i ett visst forum.';
 $string['availability'] = 'Tillgänglighet';
-$string['availability_help'] = 'Det här alternativet avgör om kursen visas på listan över kurser.Förutom (distans)-lärare och administratörer så får inga användare logga in på kursen.
-';
+$string['availability_help'] = 'Det här alternativet avgör om kursen visas på listan över kurser.Förutom (distans)-lärare och administratörer så får inga användare logga in på kursen.';
 $string['availablecourses'] = 'Tillgängliga kurser';
 $string['back'] = 'Tillbaka';
 $string['backto'] = 'Tillbaka till {$a}';
@@ -289,8 +288,8 @@ inneh&aring;lla en kort text. Servern kan lagra s&aring;dana filer p&aring; Din 
 N&auml;r Du &aring;terv&auml;nder till samma server s&aring; kan den komma ih&aring;g Dig.
 </p><p>Endast den server som har lagt in \'cookien\' kan l&auml;sa den. \'Cookies\' &auml;r inte en
 ink&ouml;rsport f&ouml;r datavirus. Du kan sj&auml;lv, via Din webbl&auml;sares inst&auml;llningar,
- best&auml;mma om Du vill till&aring;ta \'cookies\' eller ej.</p>
- <p>Den viktigaste &auml;r \'cookien\' f&ouml;r sessioner, vanligtvis kallad <b>MoodleSession</b>.
+best&auml;mma om Du vill till&aring;ta \'cookies\' eller ej.</p>
+<p>Den viktigaste &auml;r \'cookien\' f&ouml;r sessioner, vanligtvis kallad <b>MoodleSession</b>.
 Du m&aring;ste till&aring;ta denna \'cookie\' i Din webbl&auml;sare
 f&ouml;r att bibeh&aring;lla Din login-information fr&aring;n sida till sida i v&aring;r l&auml;romilj&ouml;.</p>
 <p>N&auml;r Du loggar ut eller st&auml;nger av webbl&auml;saren tas \'cookien\' automatiskt bort,
@@ -830,20 +829,20 @@ $string['groupmemberssee'] = 'Visa gruppmedlemmar';
 $string['groupmembersselected'] = 'Medlemmar i vald grupp';
 $string['groupmode'] = 'Gruppläge';
 $string['groupmode_help'] = 'Du kan g&ouml;ra indelningar i grupper p&aring; f&ouml;ljande tre s&auml;tt:
-   <ul>
-      <li><b>Inga grupper</b> - det finns inga subgrupper utan alla tillh&ouml;r samma stora gemenskap (ung. klass).</li>
-      <li><b>Separata grupper</b> - deltagarna i varje grupp kan bara se sin egen grupp, &ouml;vriga grupper &auml;r dolda.</li>
-      <li><b>Synliga grupper</b>  - deltagarna i varje grupp arbetar i sin egen grupp men de kan ocks&aring; se de andra grupperna.</li>
-   </ul>
+<ul>
+<li><b>Inga grupper</b> - det finns inga subgrupper utan alla tillh&ouml;r samma stora gemenskap (ung. klass).</li>
+<li><b>Separata grupper</b> - deltagarna i varje grupp kan bara se sin egen grupp, &ouml;vriga grupper &auml;r dolda.</li>
+<li><b>Synliga grupper</b>  - deltagarna i varje grupp arbetar i sin egen grupp men de kan ocks&aring; se de andra grupperna.</li>
+</ul>
 <p>Gruppindelningen kan definieras p&aring; tv&aring; niv&aring;er:</p>
 <dl>
-   <dt><b>1. Kursniv&aring;</b></dt>
-   <dd>Gruppindelningen definieras p&aring; kursniv&aring; vilket &auml;r standardinst&auml;llningen f&ouml;r alla aktiviteter p&aring; den kursen.
-    <br /><br /></dd>
-   <dt><b>2. Aktivitetsniv&aring;</b></dt>
-   <dd>Varje enskild aktivitet som st&ouml;djer grupper kan ocks&aring; delas upp s&aring; att flera olika grupper arbetar med samma aktivitet.
-   Om kursen &auml;r inst&auml;lld f&ouml;r "<a href="help.php?module=moodle&file=groupmodeforce.html">Obligatorisk indelning i grupper</a>" d&aring; kommer
-   inst&auml;llningen f&ouml;r varje enskild aktivitet att bli ogiltig.</dd>
+<dt><b>1. Kursniv&aring;</b></dt>
+<dd>Gruppindelningen definieras p&aring; kursniv&aring; vilket &auml;r standardinst&auml;llningen f&ouml;r alla aktiviteter p&aring; den kursen.
+<br /><br /></dd>
+<dt><b>2. Aktivitetsniv&aring;</b></dt>
+<dd>Varje enskild aktivitet som st&ouml;djer grupper kan ocks&aring; delas upp s&aring; att flera olika grupper arbetar med samma aktivitet.
+Om kursen &auml;r inst&auml;lld f&ouml;r "<a href="help.php?module=moodle&file=groupmodeforce.html">Obligatorisk indelning i grupper</a>" d&aring; kommer
+inst&auml;llningen f&ouml;r varje enskild aktivitet att bli ogiltig.</dd>
 </dl>';
 $string['groupmodeforce'] = 'Framtvinga gruppläge';
 $string['groupmodeforce_help'] = '<p>Om Du st&auml;ller in obligatorisk indelning i grupper p&aring; kursniv&aring;
@@ -977,30 +976,30 @@ $string['loginsite'] = 'Logga in till denna webbplats';
 $string['loginsteps'] = 'Hej!
 <br />
 Du måste bl.a. skapa ett nytt användarkonto på denna webbplats för att få tillgång till de kurser som Du vill delta i. Varje individuell kurs kan också ha en engångsnyckel "kursnyckel". Den behöver Du dock inte  förrän senare.
-   Så här skapar Du Ditt konto:
-   <ol size="2">
-   <li>Fyll i formuläret på sidan <a href={$a}>
+Så här skapar Du Ditt konto:
+<ol size="2">
+<li>Fyll i formuläret på sidan <a href={$a}>
 Nytt konto</a> med de efterfrågade
 uppgifterna om Dig själv.</li>
-   <li>Ett e-postmeddelande kommer därefter
+<li>Ett e-postmeddelande kommer därefter
 omedelbart att sändas till
 Din e-postadress.</li>
-   <li>Läs din e-post, och klicka på webblänken som den innehåller.</li>
-   <li>Ditt konto kommer därmed att bekräftas
+<li>Läs din e-post, och klicka på webblänken som den innehåller.</li>
+<li>Ditt konto kommer därmed att bekräftas
 och Du kommer att loggas in.</li>
-   <li>Nu kan Du välja vilken kurs Du
+<li>Nu kan Du välja vilken kurs Du
 vill delta i.</li>
-   <li>Om Du måste ange en "kursnyckel" - så
+<li>Om Du måste ange en "kursnyckel" - så
 får Du använda den som Din lärare  har
 givit Dig. Med den kan Du registrera
 Dig på en sådan kurs som kräver det.</li>
-   <li>Nu kan Du använda hela kursen.
+<li>Nu kan Du använda hela kursen.
 Från och med nu behöver Du bara skriva
 in Ditt användarnamn och lösenord
 (i formuläret till vänster på denna sida)
 för att logga in och för att nå de kurser
 som Du är registrerad på.</li>
-   </ol>
+</ol>
 OBS! Genom att Du bekräftar kontot så samtycker
 Du till databehandling enligt Personuppgiftslagen.
 Om Du är osäker på vad det innebär så kan Du hitta
@@ -1125,11 +1124,11 @@ Ditt lösenord på \'{$a->sitename}\' har blivit återställt
 och Du har fått en nytt tillfälligt lösenord.
 
 Din nuvarande inloggningsinformation är nu:
-   användarnamn: {$a->username}
-   lösenord: {$a->newpassword}
+användarnamn: {$a->username}
+lösenord: {$a->newpassword}
 
 Var vänlig besök denna sida för att ändra Ditt lösenord:
-   {$a->link}</p>
+{$a->link}</p>
 
 I de flesta e-postprogram kommer det att visas som
 en blå länk som Du bara behöver klicka på.
@@ -1321,9 +1320,9 @@ $string['passwordrecovery'] = 'Ja, hjälp mig att logga in.';
 $string['passwordsdiffer'] = 'Dessa lösenord matchar inte.';
 $string['passwordsent'] = 'Lösenord har skickats.';
 $string['passwordsenttext'] = '<p>Vi har skickat ett e-postbrev till Din adress:<br /> {$a->email}.</p>
-   <p><b>Läs e-postmeddelandet för att se Ditt nya lösenord</b></p>
-   <p>Detta lösenord har skapats automatiskt och om Du vill kan Du<br />
-   <a href="{$a->link}">ändra lösenordet</a>  till något som är lättare att komma ihåg.</p>';
+<p><b>Läs e-postmeddelandet för att se Ditt nya lösenord</b></p>
+<p>Detta lösenord har skapats automatiskt och om Du vill kan Du<br />
+<a href="{$a->link}">ändra lösenordet</a>  till något som är lättare att komma ihåg.</p>';
 $string['pathnotexists'] = 'Sökvägen finns inte på Din server!';
 $string['pathslasherror'] = 'Sökvägar kan inte avslutas med snedstreck (slash)!!';
 $string['paymentinstant'] = 'Använd knappen nedan för att betala och bli registrerad inom några minuter!';
@@ -1488,7 +1487,7 @@ som dyker upp i det givna sammanhanget.</p>
 viss ordning som str&auml;cker sig fr&aring;n det
 negativa till det positiva. Som till exempel: </p>
 <blockquote><i>
-   Otillfredsst&auml;llande, Inte tillr&auml;ckligt bra, Mittemellan, Bra, Mycket bra, Utm&auml;rkt
+Otillfredsst&auml;llande, Inte tillr&auml;ckligt bra, Mittemellan, Bra, Mycket bra, Utm&auml;rkt
 </i></blockquote>
 <p>Skalan b&ouml;r ocks&aring; inneh&aring;lla en bra beskrivning av vad den
 betyder och hur man f&ouml;rv&auml;ntas anv&auml;nda den. Denna beskrivning
@@ -1557,26 +1556,26 @@ att f&ouml;rest&auml;lla oss tv&aring; personer som exempel, en som framf&ouml;r
 <strong>enskilt (rationellt) inriktad vetare</strong> (Jonas)<br /> och den andra (Anna) som huvudsakligen &auml;r
 en <strong>socialt (empatiskt) inriktad vetare</strong>.</p>
 <ul>
-  <li>Jonas tycker om att f&ouml;rbli s&aring; \'objektiv\'
-  som m&ouml;jligt utan att inbegripa sina k&auml;nslor. N&auml;r han diskuterar med andra
-  m&auml;nniskor som kanske har andra &aring;sikter &auml;n honom, s&aring; tycker han om att
-  f&ouml;rsvara sina egna id&eacute;er genom att utnyttja logik f&ouml;r att hitta
-  luckor i den andres argumentation.
-  Jonas &auml;r en mycket starkt <strong>enskilt (rationellt) inriktad vetare</strong>.
-  <br /><br />
-  </li>
-  <li>
-  Anna &auml;r mer k&auml;nslig gentemot andra m&auml;nniskor.
-  Hon har utvecklad empatisk f&ouml;rm&aring;ga och hon tenderar att lyssna
-  och st&auml;lla fr&aring;gor tills hon k&auml;nner att hon f&aring;r kontakt
-  och kan f&ouml;rst&aring; den andres utg&aring;ngspunkter.
-  Hon l&auml;r sig genom att dela de erfarenheter som ledde till den kunskap hon finner
-  hos andra m&auml;nniskor.	N&auml;r hon talar med andra s&aring; undviker hon konfrontation
-  och f&ouml;rs&ouml;ker ofta att hj&auml;lpa den andre om hon ser en m&ouml;jlighet att g&ouml;r det,
-  genom att anv&auml;nda logiska f&ouml;rslag.
-  Anna &auml;r en mycket starkt <strong>socialt (empatiskt) inriktad vetare</strong>.
-   <br /><br />
-   </li>
+<li>Jonas tycker om att f&ouml;rbli s&aring; \'objektiv\'
+som m&ouml;jligt utan att inbegripa sina k&auml;nslor. N&auml;r han diskuterar med andra
+m&auml;nniskor som kanske har andra &aring;sikter &auml;n honom, s&aring; tycker han om att
+f&ouml;rsvara sina egna id&eacute;er genom att utnyttja logik f&ouml;r att hitta
+luckor i den andres argumentation.
+Jonas &auml;r en mycket starkt <strong>enskilt (rationellt) inriktad vetare</strong>.
+<br /><br />
+</li>
+<li>
+Anna &auml;r mer k&auml;nslig gentemot andra m&auml;nniskor.
+Hon har utvecklad empatisk f&ouml;rm&aring;ga och hon tenderar att lyssna
+och st&auml;lla fr&aring;gor tills hon k&auml;nner att hon f&aring;r kontakt
+och kan f&ouml;rst&aring; den andres utg&aring;ngspunkter.
+Hon l&auml;r sig genom att dela de erfarenheter som ledde till den kunskap hon finner
+hos andra m&auml;nniskor.	N&auml;r hon talar med andra s&aring; undviker hon konfrontation
+och f&ouml;rs&ouml;ker ofta att hj&auml;lpa den andre om hon ser en m&ouml;jlighet att g&ouml;r det,
+genom att anv&auml;nda logiska f&ouml;rslag.
+Anna &auml;r en mycket starkt <strong>socialt (empatiskt) inriktad vetare</strong>.
+<br /><br />
+</li>
 </ul>
 Lade Du m&auml;rke till den k&ouml;nsm&auml;ssiga skillnaden h&auml;r? En del studier tyder
 p&aring; att det statistiskt tycks finnas en tendens till en s&aring;dan skillnad. Enskilda m&auml;nniskor kan
@@ -1601,25 +1600,25 @@ hj&auml;lpa till att f&ouml;rb&auml;ttra kommunikationen och l&auml;randet.
 Om Du &auml;r intresserad s&aring; f&aring;r Du h&auml;r n&aring;gra referenser till
 de f&ouml;rfattare som ursprungligen utvecklade dessa id&eacute;er:
 <ul>
-  <li>Belenky, M.F., Clinchy, B.M., Goldberger, N.R., &amp; Tarule, J.M. (1986).
-    Women\'s ways of knowing: the development of self, voice, and mind. New York,
-    NY: Basic Books.</li>
-  <li>Clinchy, B.M. (1989a). The development of thoughtfulness in college women:
-    Integrating reason and care. American Behavioural Scientist, 32(6), 647-657.</li>
-  <li>Clinchy, B.M. (1989b). On critical thinking &amp; connected knowing. Liberal
-    education, 75(5), 14-19.</li>
-  <li>Clinchy, B.M. (1996). Connected and separate knowing; Toward a marriage
-    of two minds. In N.R. Goldberger, Tarule, J.M., Clinchy, B.M. &amp;</li>
-  <li>Belenky, M.F. (Eds.), Knowledge, Difference, and Power; Essays inspired
-    by &#8220;Women&#8217;s Ways of Knowing&#8221; (pp. 205-247). New York, NY:
-    Basic Books.</li>
-  <li>Galotti, K. M., Clinchy, B. M., Ainsworth, K., Lavin, B., &amp; Mansfield,
-    A. F. (1999). A New Way of Assessing Ways of Knowing: The Attitudes Towards
-    Thinking and Learning Survey (ATTLS). Sex Roles, 40(9/10), 745-766.</li>
-  <li>Galotti, K. M., Reimer, R. L., &amp; Drebus, D. W. (2001). Ways of knowing
-    as learning styles: Learning MAGIC with a partner. Sex Roles, 44(7/8), 419-436.
-    <br />
-  </li>
+<li>Belenky, M.F., Clinchy, B.M., Goldberger, N.R., &amp; Tarule, J.M. (1986).
+Women\'s ways of knowing: the development of self, voice, and mind. New York,
+NY: Basic Books.</li>
+<li>Clinchy, B.M. (1989a). The development of thoughtfulness in college women:
+Integrating reason and care. American Behavioural Scientist, 32(6), 647-657.</li>
+<li>Clinchy, B.M. (1989b). On critical thinking &amp; connected knowing. Liberal
+education, 75(5), 14-19.</li>
+<li>Clinchy, B.M. (1996). Connected and separate knowing; Toward a marriage
+of two minds. In N.R. Goldberger, Tarule, J.M., Clinchy, B.M. &amp;</li>
+<li>Belenky, M.F. (Eds.), Knowledge, Difference, and Power; Essays inspired
+by &#8220;Women&#8217;s Ways of Knowing&#8221; (pp. 205-247). New York, NY:
+Basic Books.</li>
+<li>Galotti, K. M., Clinchy, B. M., Ainsworth, K., Lavin, B., &amp; Mansfield,
+A. F. (1999). A New Way of Assessing Ways of Knowing: The Attitudes Towards
+Thinking and Learning Survey (ATTLS). Sex Roles, 40(9/10), 745-766.</li>
+<li>Galotti, K. M., Reimer, R. L., &amp; Drebus, D. W. (2001). Ways of knowing
+as learning styles: Learning MAGIC with a partner. Sex Roles, 44(7/8), 419-436.
+<br />
+</li>
 </ul></ul>';
 $string['serverlocaltime'] = 'Serverns lokala tid';
 $string['setcategorytheme'] = 'Ställ tema för kategori';
@@ -1828,7 +1827,7 @@ $string['thiscategorycontains'] = 'Den här kategorin innehåller';
 $string['time'] = 'Tid';
 $string['timezone'] = 'Tidszon';
 $string['to'] = 'Till';
-$string['tocreatenewaccount'] = 'Hoppa vidare för att skapa ett nytt konto. ';
+$string['tocreatenewaccount'] = 'Hoppa vidare för att skapa ett nytt konto.';
 $string['today'] = 'Idag';
 $string['todaylogs'] = 'Dagens loggar';
 $string['toeveryone'] = 'till alla';
@@ -1926,13 +1925,13 @@ $string['views'] = 'Vyer';
 $string['viewsolution'] = 'visa lösning';
 $string['virusfound'] = 'Påkallar systemadministratörens uppmärksamhet! Clam AV har hittat ett virus i den fil som laddades upp av {$a->user} till kursen {$a->course}. Här är resultatet av clamscan>';
 $string['virusfoundlater'] = 'En fil som Du laddade upp den {$a->date} med filnamnet {$a->filename} till kursen {$a->course} har visat sig innehålla ett virus. Här är ett sammandrag av vad som hände med Din fil:
- {$a->action}
+{$a->action}
 Om det var ett inskickat arbete så kanske Du vill skicka om det så att Din distanslärare kan se det.';
 $string['virusfoundlateradmin'] = 'Påkallar systemadministratörens uppmärksamhet! En fil som laddades upp den {$a->date} med filnamnet {$a->filename} till kursen {$a->course} av användaren {$a->user} har visat sig innehålla ett virus. Här är ett sammandrag av vad som hände med filen:
- {$a->action}
+{$a->action}
 Användaren har också meddelats.';
 $string['virusfoundlateradminnolog'] = 'Påkallar systemadministratörens uppmärksamhet! En fil som laddades upp med filnamnet {$a->filename}  har visat sig innehålla ett virus. Moodle kunde inte analysera problemet och returnera den informationen till användaren. Här är ett sammandrag av vad som hände med filen:
- {$a->action}';
+{$a->action}';
 $string['virusfoundsubject'] = '{$a}: Virus har hittats!';
 $string['virusfounduser'] = 'Den fil som Du laddade upp med namnet, {$a->filename}, har skannats med ett antivirusprogram och det visade sig att den innehöll ett virus! Din fil laddades INTE upp på rätt sätt.';
 $string['virusplaceholder'] = 'Den här filen som laddades upp visade sig innehålla ett virus. Den har flyttats eller tagits bort och användaren har meddelats.';
@@ -1950,7 +1949,7 @@ $string['welcometocoursetext'] = 'Varmt välkommen till {$a->coursename}!
 En av de första sakerna Du bör göra är att ändra Din profilsida
 inuti kursen så att vi kan lära oss mer om Dig:
 
-  {$a->profileurl}';
+{$a->profileurl}';
 $string['whattocallzip'] = 'Vad vill Du kalla  .zip-filen?';
 $string['whattodo'] = 'Saker att göra';
 $string['withchosenfiles'] = 'Med valda filer';

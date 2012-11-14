@@ -65,11 +65,11 @@ $string['changepassword'] = 'URL   till sida för att ändra lösenord';
 $string['changepasswordhelp'] = 'Här kan Du specificera en plats där Dina användare kan återställa eller ändra sina användarnamn/lösenord om de har glömt det. Detta kommer att visas för användarna som en knapp på sidan för inloggning och på deras användarsidor. Om Du lämnar detta tomt kommer inte knappen att visas.';
 $string['chooseauthmethod'] = 'Välj en metod för autenticering:';
 $string['chooseauthmethod_help'] = '<p>Den h&auml;r menyn l&aring;ter Dig &auml;ndra metoden f&ouml;r autenticering
-   f&ouml;r den h&auml;r specifike/a anv&auml;ndaren.</p>
-<p>Var sn&auml;ll och l&auml;gg m&auml;rke till att detta i h&ouml;g grad beror  p&aring; vilken metod f&ouml;r autenticering    
+f&ouml;r den h&auml;r specifike/a anv&auml;ndaren.</p>
+<p>Var sn&auml;ll och l&auml;gg m&auml;rke till att detta i h&ouml;g grad beror  p&aring; vilken metod f&ouml;r autenticering
 som Du har valt f&ouml;r den h&auml;r webbplatsen och vilka inst&auml;llningar den anv&auml;nder.</p>
 <p>En felaktig &auml;ndring h&auml;r kan g&ouml;ra det om&ouml;jligt f&ouml;r anv&auml;ndare att logga in eller
- t.o.m. ta bort deras konton helt och h&aring;llet s&aring; Du b&ouml;r bara genomf&ouml;ra detta om Du vet vad Du g&ouml;r.</p>';
+t.o.m. ta bort deras konton helt och h&aring;llet s&aring; Du b&ouml;r bara genomf&ouml;ra detta om Du vet vad Du g&ouml;r.</p>';
 $string['createpasswordifneeded'] = 'Skapa  ett lösenord om så behövs';
 $string['emailchangecancel'] = 'Avbryt ändring av e-postadress';
 $string['emailchangepending'] = 'Aktivera ändringen av Din e-postadress. Öppna länken som Du har fått i {$a->preference_newemail}.';
@@ -78,7 +78,7 @@ $string['emailupdate'] = 'Uppdatering av e-postadress';
 $string['emailupdatemessage'] = 'Käre/a  {$a->fullname},
 Du har begärt en ändring av Din e-postadress för Ditt användarkonto på  {$a->site}. Var snäll och öppna länken nedan i Din webbläsare för att bekräfta den här ändringen.
 
- {$a->url},';
+{$a->url},';
 $string['emailupdatesuccess'] = 'Användaren <em>{$a->fullname}</em>s e-postadress har framgångsrikt uppdaterats till <em>{$a->email}</em>.';
 $string['emailupdatetitle'] = 'Bekräftelse av uppdatering av e-postadress vid {$a->site}';
 $string['enterthenumbersyouhear'] = 'Mat a in de tal du hör';
@@ -105,7 +105,7 @@ $string['informminpasswordlength'] = 'minst {$a} tecken';
 $string['informminpasswordlower'] = 'minst {$a} tecken';
 $string['informminpasswordnonalphanum'] = 'minst {$a} icke-alfanumeriska tecken';
 $string['informminpasswordupper'] = 'minst {$a} stor/a bokstav/stäver';
-$string['informpasswordpolicy'] = 'Lösenordet måste innehåll {$a} ';
+$string['informpasswordpolicy'] = 'Lösenordet måste innehåll {$a}';
 $string['instructions'] = 'Instruktioner';
 $string['internal'] = 'Intern';
 $string['locked'] = 'Låst';

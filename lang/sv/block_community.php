@@ -26,14 +26,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['activities'] = 'Aktiviteter';
-$string['add'] = 'Lägg till ';
+$string['add'] = 'Lägg till';
 $string['addcourse'] = 'Sök';
 $string['addedtoblock'] = 'Det har lagts till en länk till den här kursen i Ditt block för sökning av gemenskaper';
 $string['addtocommunityblock'] = 'Spara en länk till den här kursen';
 $string['audience'] = 'Utvecklad för';
-$string['audience_help'] = 'Vilken typ av kurs letar Du efter? Du kan leta efter traditionella kurser för studenter/elever/deltagare/lärande eller gemenskaper för utbildare/(distans)lärare eller administratörer av Moodle. ';
-$string['blocks'] = 'Block ';
-$string['comments'] = 'Kommentarer ';
+$string['audience_help'] = 'Vilken typ av kurs letar Du efter? Du kan leta efter traditionella kurser för studenter/elever/deltagare/lärande eller gemenskaper för utbildare/(distans)lärare eller administratörer av Moodle.';
+$string['blocks'] = 'Block';
+$string['comments'] = 'Kommentarer';
 $string['contentinfo'] = 'Ämne {$a->subject} - Målgrupp: {$a->audience} - Utbildningsnivå: {$a->educationallevel}';
 $string['continue'] = 'Fortsätt';
 $string['contributors'] = '- Bidragande: {$a}';
@@ -54,7 +54,7 @@ $string['downloadtemplate'] = 'Skapa kurs med hjälp av en mall';
 $string['educationallevel'] = 'Utbildningsnivå';
 $string['educationallevel_help'] = 'Vilken utbildningsnivå letar Du efter? Om det handlar om gemenskaper för utbildare/(distans)lärare så beskriver detta den nivå som de undervisar på.';
 $string['enroldownload'] = 'Hitta';
-$string['enroldownload_help'] = 'En del kurser som är listade i den valda hubben utannonseras så att folk kan delta i dem på den ursprungliga webbplatsen. 
+$string['enroldownload_help'] = 'En del kurser som är listade i den valda hubben utannonseras så att folk kan delta i dem på den ursprungliga webbplatsen.
 
 Andra är mallar för kurser som Du kan ladda ner och använda på Din egen webbplats för Moodle';
 $string['enrollable'] = 'kurser som jag kan registrera mig på';
@@ -75,8 +75,8 @@ $string['nocourse'] = 'Det fanns inga kurser';
 $string['noratings'] = 'Inga omdömen';
 $string['operation'] = 'Operation';
 $string['orderby'] = 'Sortera enligt';
-$string['orderbyeldest'] = 'Äldsta';
 $string['orderby_help'] = 'Ordningsföljden som sökresultaten visas i.';
+$string['orderbyeldest'] = 'Äldsta';
 $string['orderbyname'] = 'Namn';
 $string['orderbynewest'] = 'Senaste';
 $string['orderbypublisher'] = 'Utgivare';

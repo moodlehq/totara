@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Åtkomst till ett rum för direktsamtal';
 $string['chat:deletelog'] = 'Ta bort loggar för direktsamtal';
 $string['chat:exportparticipatedsession'] = 'Exportera den session för direktsamtal som Du deltog i.';
 $string['chat:exportsession'] = 'Exportera vilken session för direktsamtal som helst';
+$string['chat:readlog'] = 'Läs loggar för direktsamtal';
+$string['chat:talk'] = 'Tala i ett direktsamtal';
 $string['chatintro'] = 'Introduktion';
 $string['chatname'] = 'Namnet på det här rummet för direktsamtal';
-$string['chat:readlog'] = 'Läs loggar för direktsamtal';
 $string['chatreport'] = 'Sessioner för direktsamtal';
-$string['chat:talk'] = 'Tala i ett direktsamtal';
 $string['chattime'] = 'Tid för nästa direktsamtal';
 $string['configmethod'] = 'Den metod för direktsamtal som erbjuder ett ajax-baserat gränssnitt  kontaktar regelbundet servern för uppdateringar.
 Den normala metoden för  direktsamtal innebär att klienterna regelbundet måste kontakta servern för uppdateringar. Det kräver ingen konfiguration och fungerar överallt men en mängd  direktsamtalare samtidigt kan skapa en stor arbetsbelastning för servern. Att använda en server demon kräver "shell"-tillgång till UNIX men det resulterar i en snabb, skalbar miljö för direktsamtal.';
@@ -77,15 +77,15 @@ $string['methodajax'] = 'Ajax-metoden';
 $string['methoddaemon'] = 'Serverdemon för  direktsamtal';
 $string['methodnormal'] = 'Normal metod';
 $string['modulename'] = 'Direktsamtal';
-$string['modulename_help'] = 'Aktivitetsmodulen Direktsamtal tillåter deltagarna att ha synkrona diskussioner (deltagarna är närvarande samtidigt) via webben. Det här är användbart om man vill förstå varandra och ämnet på ett alternativt sätt jämfört med asynkron kommunikation. ';
+$string['modulename_help'] = 'Aktivitetsmodulen Direktsamtal tillåter deltagarna att ha synkrona diskussioner (deltagarna är närvarande samtidigt) via webben. Det här är användbart om man vill förstå varandra och ämnet på ett alternativt sätt jämfört med asynkron kommunikation.';
 $string['modulenameplural'] = 'Direktsamtal';
 $string['neverdeletemessages'] = 'Radera aldrig några meddelanden';
 $string['nextsession'] = 'Nästa schemalagda session';
-$string['nochat'] = 'Det gick inte att hitta något direktsamtal';
 $string['no_complete_sessions_found'] = 'Det gick inte att hitta några fullföljda sessioner.';
+$string['nochat'] = 'Det gick inte att hitta något direktsamtal';
 $string['noguests'] = 'Direktsamtalet  är inte öppet för gäster';
 $string['nomessages'] = 'Inga meddelanden än';
-$string['nopermissiontoseethechatlog'] = 'Du har inte tillstånd att se loggarna för direktsamtal. ';
+$string['nopermissiontoseethechatlog'] = 'Du har inte tillstånd att se loggarna för direktsamtal.';
 $string['normalkeepalive'] = 'Håll_Liv_I';
 $string['normalstream'] = 'Strömma';
 $string['noscheduledsession'] = 'Ingen schemalagd session';
@@ -121,24 +121,24 @@ $string['updatemethod'] = 'Metod för uppdatering';
 $string['updaterate'] = 'Så snabbt uppdateras direktsamtalet:';
 $string['userlist'] = 'Lista över användare';
 $string['usingchat'] = 'Använder direktsamtal';
-$string['usingchat_help'] = '<p>Modulen f&ouml;r chat inneh&aring;ller n&aring;gra funktioner som ska g&ouml;ra det trevligare 
+$string['usingchat_help'] = '<p>Modulen f&ouml;r chat inneh&aring;ller n&aring;gra funktioner som ska g&ouml;ra det trevligare
 att chatta.</p>
 <dl>
-	<dt><b>Smilies</b></dt>
-		<dd>Alla "smilies (emoticons) som Du kan skriva in p&aring; andra st&auml;llen 
-		i Moodle kan Du &auml;ven skriva in h&auml;r och de kommer att visas p&aring; 
-		ett korrekt s&auml;tt. T ex  :-) = <img src="pix/s/smiley.gif" alt="smiley" /></dd>
-	<dt><b>L&auml;nkar</b></dt>
-		<dd>Internetadresser omvandlas automatiskt till l&auml;nkar.</dd>
-	<dt><b>Att uttrycka k&auml;nslor</b></dt>
-		<dd>Du kan inleda en rad med "/me" eller ":" f&ouml;r att uttrycka k&auml;nslor.
-		Om Du, till exempel, heter Lasse och skriver in ":skrattar"
-		eller "/me skrattar!"  s&aring; kommer alla att se "Lasse skrattar!"</dd>
-	<dt><b>Pipsignaler</b></dt>
-		<dd>Du kan skicka ett ljud till andra genom att klicka p&aring; "pip"-l&auml;nken bredvid deras namn.
-		Du kan ocks&aring; skicka en signal till alla samtidigt genom att skriva "beep all".</dd>
-	<dt><b>HTML</b></dt>
-		<dd>Om Du kan lite HTML-kod s&aring; kan Du anv&auml;nda det i Din text f&ouml;r att l&auml;gga in bilder,
-		spela upp ljud eller skapa text med olika f&auml;rger och storlekar.</dd>
+<dt><b>Smilies</b></dt>
+<dd>Alla "smilies (emoticons) som Du kan skriva in p&aring; andra st&auml;llen
+i Moodle kan Du &auml;ven skriva in h&auml;r och de kommer att visas p&aring;
+ett korrekt s&auml;tt. T ex  :-) = <img src="pix/s/smiley.gif" alt="smiley" /></dd>
+<dt><b>L&auml;nkar</b></dt>
+<dd>Internetadresser omvandlas automatiskt till l&auml;nkar.</dd>
+<dt><b>Att uttrycka k&auml;nslor</b></dt>
+<dd>Du kan inleda en rad med "/me" eller ":" f&ouml;r att uttrycka k&auml;nslor.
+Om Du, till exempel, heter Lasse och skriver in ":skrattar"
+eller "/me skrattar!"  s&aring; kommer alla att se "Lasse skrattar!"</dd>
+<dt><b>Pipsignaler</b></dt>
+<dd>Du kan skicka ett ljud till andra genom att klicka p&aring; "pip"-l&auml;nken bredvid deras namn.
+Du kan ocks&aring; skicka en signal till alla samtidigt genom att skriva "beep all".</dd>
+<dt><b>HTML</b></dt>
+<dd>Om Du kan lite HTML-kod s&aring; kan Du anv&auml;nda det i Din text f&ouml;r att l&auml;gga in bilder,
+spela upp ljud eller skapa text med olika f&auml;rger och storlekar.</dd>
 </dl>';
 $string['viewreport'] = 'Visa  de senaste sessionerna för direktsamtal';

@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Innehåll';
-$string['foldercontent'] = 'Filer och undermappar';
 $string['folder:managefiles'] = 'Administrera filer i modulen för mappar';
 $string['folder:view'] = 'Visa innehåll i mapp';
+$string['foldercontent'] = 'Filer och undermappar';
 $string['modulename'] = 'Mapp';
 $string['modulenameplural'] = 'Mappar';
 $string['neverseen'] = 'Har aldrig visats';

@@ -36,7 +36,7 @@ $string['cannotdeletecate'] = 'Du kan inte ta bort den här kategorin eftersom d
 $string['cannotdeletemissingqtype'] = 'Du kan inte ta bort den saknade frågetypen. Den är nödvändig för systemet.';
 $string['cannotdeleteqtypeinuse'] = 'Du kan inte ta bort frågetypen \'{$a}\'. Det finns frågor av den här typen i frågebanken.';
 $string['cannotdeleteqtypeneeded'] = 'Du kan inte ta bort frågetypen \'{$a}\'. Det finns andra frågetyper installerade som är beroende av denna.';
-$string['cannotenable'] = ' Det går inte att skapa frågetypen {$a} direkt.';
+$string['cannotenable'] = 'Det går inte att skapa frågetypen {$a} direkt.';
 $string['cannotfindcate'] = 'Det gick inte att hitta posten för kategori';
 $string['cannotfindquestionfile'] = 'Det gick inte att hitta datafilen för frågor i zip-filen';
 $string['cannotgetdsfordependent'] = 'Det gick inte att hitta det angivna datasetet för en fråga som är beroende av dataset! (question: {$a->id}, datasetitem: {$a->item})';
@@ -44,7 +44,7 @@ $string['cannotgetdsforquestion'] = 'Det gick inte att hitta det angivna dataset
 $string['cannotimportformat'] = 'Import av det här formatet är tyvärr ännu inte implementerat!';
 $string['cannotinsertquestioncatecontext'] = 'Det gick inte att foga in den nya kategorin {$a->cat} för frågor p g a ett ogiltigt \'contextid\' {$a->ctx}';
 $string['cannotloadquestion'] = 'Det gick inte att ladda fråga';
-$string['cannotmovequestion'] = 'Du kan inte använda det här skriptet för att flytta frågor som är associerade till filer från olika andra områden. ';
+$string['cannotmovequestion'] = 'Du kan inte använda det här skriptet för att flytta frågor som är associerade till filer från olika andra områden.';
 $string['cannotopenforwriting'] = 'Det går inte att öppna för att skriva: {$a}';
 $string['cannotpreview'] = 'Du kan inte förhandsgranska de här frågorna!';
 $string['cannotread'] = 'Det går inte att läsa den importerade filen ({$a}) eller också är den tom';
@@ -72,7 +72,7 @@ $string['cwrqpfsnoprob'] = 'Inga frågekategorier på Din webbplats påverkas av
 $string['defaultfor'] = 'Förinställt standardvärde för {$a}';
 $string['defaultinfofor'] = 'Det förinställda standardvärdet för frågor som är gemensamma i sammanhanget \'{$a}\'.';
 $string['deletecoursecategorywithquestions'] = 'Det finns frågor i frågebanken associerad med denna kurs kategori. Om du fortsätter kommer de att raderas. Du kanske vill flytta dem först, med hjälp av gränssnittet för frågebanken.';
-$string['deleteqtypeareyousure'] = 'Är Du säker på att Du vill ta bort frågetypen \'{$a}\' ';
+$string['deleteqtypeareyousure'] = 'Är Du säker på att Du vill ta bort frågetypen \'{$a}\'';
 $string['deleteqtypeareyousuremessage'] = 'Du håller på att ta bort frågetypen \'{$a}\' helt och hållet. Är Du säker på att Du vill avinstallera den?';
 $string['deletingqtype'] = 'Tar bort frågetypen\'{$a}\'';
 $string['disabled'] = 'Avaktiverad';
@@ -98,12 +98,12 @@ $string['errorupdatingattempt'] = 'Fel vid uppdatering av försök {$a->id} i da
 $string['exportcategory'] = 'Kategori för export';
 $string['exportcategory_help'] = '<p align="center"><b>Exportera kategori</b></p>
 
-<p><b>Kategori:</b> nedrullningsmenyn kan Du använda för att 
+<p><b>Kategori:</b> nedrullningsmenyn kan Du använda för att
 välja den kategori som innehåller de frågor som Du vill exportera.</p>
 
-<p>Vissa format för import (GIFT and XML Format) tillåter att 
+<p>Vissa format för import (GIFT and XML Format) tillåter att
 kategorin tas med i den skrivna filen vilket (som alternativ)
-gör det möjligt att återskapa kategorierna vid import. 
+gör det möjligt att återskapa kategorierna vid import.
 För att dessa data ska tas med så måste Du markera kryssrutan
 <b>Till fil</b>.</p>';
 $string['exportfilename'] = 'quiz';
@@ -112,10 +112,10 @@ $string['exportquestions_help'] = '<p>Den h&auml;r funktionen g&ouml;r det m&oum
 <p>L&auml;gg dock m&auml;rke till att i m&aring;nga filformat &auml;r det s&aring; att viss information
 f&ouml;rsvinner n&auml;r man exporterar fr&aring;gorna. Det beror p&aring; att det finns m&aring;nga format som inte
 st&ouml;djer alla de finesser som man kan anv&auml;nda i Moodle-fr&aring;gor.
-Du b&ouml;r inte f&ouml;rv&auml;nta Dig att kunna exportera och importera fr&aring;gor 
+Du b&ouml;r inte f&ouml;rv&auml;nta Dig att kunna exportera och importera fr&aring;gor
 samtidigt som Du bevarar dem i exakt samma format.
 Vissa typer av fr&aring;gor kanske inte g&aring;r att exportera alls.
-Du b&ouml;r allts&aring; testa exporterade fr&aring;gor innan Du anv&auml;nder dem 
+Du b&ouml;r allts&aring; testa exporterade fr&aring;gor innan Du anv&auml;nder dem
 i en skarp produktionsmilj&ouml;. </p>
 
 <p>De format som f n st&ouml;djs &auml;r:</p>
@@ -126,7 +126,7 @@ i en skarp produktionsmilj&ouml;. </p>
 exportera testfr&aring;gor av Moodle-typ till en textfil.
 Man har utformat det s&aring; att det ska vara en enkel metod f&ouml;r l&auml;rare att skriva fr&aring;gor som en textfil.
 Det st&ouml;djer flervalsfr&aring;gor, fr&aring;gor av typen Sant-Falskt, kortsvar, para-ihop och numeriska fr&aring;gor.
-Det st&ouml;djer &auml;ven test av typen: Vilket &auml;r det ord som saknas? L&auml;gg dock m&auml;rke till att test med inb&auml;ddade svar f n 
+Det st&ouml;djer &auml;ven test av typen: Vilket &auml;r det ord som saknas? L&auml;gg dock m&auml;rke till att test med inb&auml;ddade svar f n
 inte st&ouml;djs. Olika fr&aring;getyper kan blandas i en enda textfil. Formatet st&ouml;djer &auml;ven kommentarer till rader,
 namn p&aring; fr&aring;gor och procentviktade betyg/omd&ouml;men.
 <br /><br />
@@ -152,7 +152,7 @@ N&auml;r f&ouml;ddes Ulysses S. Grant?{#1822}
 
 <p>Exporterar i standardformatet IMS QTI (version 2.0). Lägg märke till att detta skapar en grupp filer inne i en enskild \'zip\'-fil.</p>
 <p class="moreinfo"><a href="http://www.imsglobal.org/question/" target="_qti">Mer information om IMS QTI </a>
- (extern webbplats i nytt fönster)</p>
+(extern webbplats i nytt fönster)</p>
 
 <p><b>XHTML</b></p>
 

@@ -34,17 +34,21 @@ $string['assessedexample'] = 'Inskickad exempeluppgift som är bedömd/värderad
 $string['assessedsubmission'] = 'Inskickad uppgift som är bedömd/värderad/betygssatt';
 $string['assessingexample'] = 'Bedömer/värderar/betygssätter inskickad exempeluppgift';
 $string['assessingsubmission'] = 'Bedömer/värderar/betygssätter inskickad uppgift';
+$string['assessment'] = 'Bedömning/värdering/betygssättning';
+$string['assessmentby'] = 'Bedömning/värdering/betygssättning av {$a}';
 $string['assessmentbyfullname'] = 'Bedömning/värdering/betygssättning av {$a}';
 $string['assessmentbyyourself'] = 'Bedömning/värdering/betygssättning av dig själv';
 $string['assessmentend'] = 'Sluttid för bedömningar/värderingar/betygssättningar';
 $string['assessmentenddatetime'] = 'Sluttid för bedömningar/värderingar/betygssättningar:
 {$a->daydatetime} ({$a->distanceday})';
+$string['assessmentendevent'] = 'Slut på bedömningar/värderingar/betygssättningar för {$a}';
 $string['assessmentform'] = 'Formulär för bedömningar/värderingar/betygssättningar';
 $string['assessmentofsubmission'] = '<a href="{$a->assessmenturl}">Bedömning/värdering/betygssättning</a> of <a href="{$a->submissionurl}">{$a->submissiontitle}</a>';
 $string['assessmentreference'] = 'Referens för bedömning/värdering/betygssättning';
 $string['assessmentsettings'] = 'Inställningar för bedömning/värdering/betygssättning';
 $string['assessmentstart'] = 'Öppen för bedömningar/värderingar/betygssättningar från';
 $string['assessmentstartdatetime'] = 'Öppen för bedömningar/värderingar/betygssättningar från  {$a->daydatetime} ({$a->distanceday})';
+$string['assessmentstartevent'] = 'Början på bedömningar/värderingar/betygssättningar för {$a}';
 $string['backtoeditform'] = 'Tillbaka till formuläret för att redigera';
 $string['byfullname'] = 'av <a href="{$a->url}">{$a->name}</a>';
 $string['calculategradinggradesdetails'] = 'förväntat:  {$a->expected}<br />calculated: {$a->calculated}';
@@ -52,7 +56,7 @@ $string['calculatesubmissiongradesdetails'] = 'förväntat:  {$a->expected}<br /
 $string['chooseuser'] = 'Välj användare...';
 $string['clearassessments'] = 'Töm bedömningar/värderingar/betyssättningar';
 $string['createsubmission'] = 'Skicka in';
-$string['daysago'] = 'för {$a} dagar sedan ';
+$string['daysago'] = 'för {$a} dagar sedan';
 $string['daystoday'] = 'idag';
 $string['daystomorrow'] = 'imorgon';
 $string['daysyesterday'] = 'igår';
@@ -80,14 +84,31 @@ $string['gradeitemassessment'] = '{$a->workshopname} (bedömning/värdering/bety
 $string['gradeitemsubmission'] = '{$a->workshopname} (inskickad uppgiftslösning)';
 $string['gradereceivedfrom'] = '&lt;';
 $string['gradinggrade'] = 'Betyg/omdöme för betygssättning/omdöme';
+$string['gradinggrade_help'] = '# Betyget/omdömet för studenternas/ elevernas/ deltagarnas/ de lärandes bedömningar/ värderingar/ betygssättningar
+
+Det här är det maximala betyg/omdöme som studenterna/ eleverna/ deltagarna/ de lärande kan få för bedömning/ värdering/ betygssättning av sina egna eller andras inskickade uppgiftslösningar
+
+Det faktiska betyget/ omdömet beräknas av Workshop-modulen på så sätt att en viss given bedömning/ värdering/ betygssättning jämförs med den "bästa" bedömningen/ värderingen/ betygssättningen av samma inskickade uppgiftslösning.
+
+Denna "bästa" bedömning/ värdering/ betygssättning är den som kommer närmast medelvärdet för alla bedömningar/ värderingar/ betygssättningar. Detta är ett "viktat" medelvärde om distanslärarens bedömning/ värdering/ betygssättning har givits en viktning på mer än ett.
+
+Lägg märke till att om det bara finns en bedömning/ värdering/ betygssättning av en inskickad uppgiftslösning så antas denna enda vara den "bästa". Om det finns två bedömningar/ värderingar/ betygssättningar av en inskickad uppgiftslösning så antas båda vara den "bästa". Det är bara när det finns tre bedömningar/ värderingar/ betygssättningar eller fler som modulen börjar göra åtskillnad mellan bedömningarna/ värderingarna/ betygssättningarna. 
+
+Det här betyget/omdömet kallas ibland "Betyg/ omdöme för betygssättning" och det är ***inte*** det maximala betyget/ omdömet på uppgiftslösningen. Det betyget/ omdömet kallas "Betyg/omdöme för inskickad uppgiftslösning".
+
+En students/ elevs/ deltagares/ lärandes betyg/omdöme för hela Workshop-uppgiften är summan av "Betyg/ omdöme för betygssättning" och "Betyg/ omdöme för inskickad uppgiftslösning".
+
+Alltså, om det (maximala) betyget/omdömet för bedömningar/ värderingar/ betygssättningar är angivet till 30 och för inskickade uppgiftslösning/ar till 70 då kommer det maximala övergripande betyget/omdömet för hela Workshop-uppgiften att vara 100.
+
+Du kan när som helst ändra det här värdet och effekterna av detta framgår omedelbart av de betyg/omdömen som visas.';
 $string['iamsure'] = 'Ja, jag är säker';
 $string['info'] = 'Info';
 $string['instructauthors'] = 'Instruktioner för inskickning av uppgiftslösningar';
 $string['instructreviewers'] = 'Instruktioner för bedömning/värdering/betygssättning';
 $string['introduction'] = 'Introduktioon';
 $string['latesubmissions'] = 'Sent inskickade uppgiftslösningar';
-$string['latesubmissionsallowed'] = 'Sent inskickade uppgiftslösningar accepteras';
 $string['latesubmissions_desc'] = 'Tillåt inskickning av uppgiftslösningar efter sluttiden.';
+$string['latesubmissionsallowed'] = 'Sent inskickade uppgiftslösningar accepteras';
 $string['maxbytes'] = 'Maximal filstorlek';
 $string['modulename'] = 'Workshop';
 $string['modulenameplural'] = 'Workshops';
@@ -98,8 +119,8 @@ $string['noworkshops'] = 'Det finns inga Workshops i den här kursen';
 $string['noyoursubmission'] = 'Du har inte skickat in Ditt arbete ännu';
 $string['nullgrade'] = '-';
 $string['participant'] = 'Deltagare';
-$string['participantrevierof'] = 'Deltagaren är utvärderare av ';
-$string['participantreviewedby'] = 'Deltagaren utvärderas av ';
+$string['participantrevierof'] = 'Deltagaren är utvärderare av';
+$string['participantreviewedby'] = 'Deltagaren utvärderas av';
 $string['phaseclosed'] = 'Stängd';
 $string['pluginadministration'] = 'Administration av workshop';
 $string['pluginname'] = 'Workshop';
@@ -116,9 +137,11 @@ $string['submissionattachment'] = 'Bilaga';
 $string['submissionby'] = 'Inskickad uppgiftslösning av {$a}';
 $string['submissionend'] = 'Sluttid för inskickning av uppgiftslösningar';
 $string['submissionenddatetime'] = 'Sluttid för inskickning av uppgiftslösningar: {$a->daydatetime} ({$a->distanceday})';
+$string['submissionendevent'] = 'Slut på inskickade uppgiftslösningar för {$a}';
 $string['submissiongrade'] = '';
 $string['submissionstart'] = 'Öppen för inskickning av uppgiftslösningar';
 $string['submissionstartdatetime'] = 'Öppen för inskickning av uppgiftslösningar från {$a->daydatetime} ({$a->distanceday})';
+$string['submissionstartevent'] = 'Början på inskickade uppgiftslösningar för {$a}';
 $string['submissiontitle'] = 'Titel';
 $string['taskassesspeersdetails'] = 'summa: {$a->total}<br />pending: {$a->todo}';
 $string['taskassessself'] = 'Bedöm/värdera/betygssätt dig själv';

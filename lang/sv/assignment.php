@@ -29,33 +29,35 @@ $string['addsubmission'] = 'Lägg till inskickat bidrag';
 $string['allowdeleting'] = 'Tillåt borttagande';
 $string['allowdeleting_help'] = '<p>Om du aktiverar detta så kommer deltagare att kunna ta bort uppladdade filer när som helst innan de skickar in dem för betygssättning. </p>';
 $string['allowmaxfiles'] = 'Maximalt antal uppladdade filer';
-$string['allowmaxfiles_help'] = '<p>Det maximala antalet filer som varje deltagare får ladda upp. 
+$string['allowmaxfiles_help'] = '<p>Det maximala antalet filer som varje deltagare får ladda upp.
 Detta antal visas inte för studenterna/eleverna/deltagarna/de lärande så
 om du vill att de ska veta det så måste du ta med det i instruktionen
 till uppgiften.</p>';
 $string['allownotes'] = 'Tillåt anteckningar';
-$string['allownotes_help'] = '<p>Om detta är aktiverat så kan deltagarna mata in anteckningar i en textyta. 
+$string['allownotes_help'] = '<p>Om detta är aktiverat så kan deltagarna mata in anteckningar i en textyta.
 Det ungefär samma sak som en textbaserad online uppgift.</p>
 
 <p>Den här textytan kan användas för kommunikation med den betygssättande personen,
 beskrivning av hur arbetet med uppgiften fortskrider eller vilken annan aktivitet
 som helst.</p>';
 $string['allowresubmit'] = 'Låt användarna skicka om sina bidrag';
-$string['allowresubmit_help'] = '<p>Standardvalet &auml;r att de l&auml;rande INTE kan 
+$string['allowresubmit_help'] = '<p>Standardvalet &auml;r att de l&auml;rande INTE kan
 skicka in sina uppgifter igen n&auml;r distansl&auml;raren
 v&auml;l har bed&ouml;mt/v&auml;rderat/betygssatt dem.</p>
-<p>Om Du aktiverar den h&auml;r valm&ouml;jligheten s&aring; kommer de l&auml;rande att kunna 
-skicka in sina (reviderade) uppgifter igen efter det att de har 
+<p>Om Du aktiverar den h&auml;r valm&ouml;jligheten s&aring; kommer de l&auml;rande att kunna
+skicka in sina (reviderade) uppgifter igen efter det att de har
 bed&ouml;mts/v&auml;rderats/betygssatts
 (s&aring; att Du kan bed&ouml;ma/v&auml;rdera/betygss&auml;tta dem igen).</p>
-<p>Det h&auml;r kan vara praktiskt om Du som distansl&auml;rare vill uppmuntra de l&auml;rande 
+<p>Det h&auml;r kan vara praktiskt om Du som distansl&auml;rare vill uppmuntra de l&auml;rande
 att f&ouml;rb&auml;ttra sina insatser i en iterativ process.</p>
 <p>Det g&auml;ller naturligtvis inte uppgifter som ska l&ouml;sas offline.</p>';
 $string['alreadygraded'] = 'Din uppgift har redan blivit betygssatt och det är inte tillåtet att skicka en ny version av uppgiften.';
-$string['assignmentdetails'] = 'Detaljer om uppgifter';
 $string['assignment:exportownsubmission'] = 'Exportera egna inskickade bidrag';
 $string['assignment:exportsubmission'] = 'Exportera inskickade bidrag';
 $string['assignment:grade'] = 'Betygssätt uppgift';
+$string['assignment:submit'] = 'Skicka in uppgift';
+$string['assignment:view'] = 'Visa uppgift';
+$string['assignmentdetails'] = 'Detaljer om uppgifter';
 $string['assignmentmail'] = '{$a->teacher} har skrivit in viss återkoppling på den uppgift \'{$a->assignment}\' som Du har skickat in.
 
 Du hittar den som ett tillägg till Ditt inskickade bidrag: {$a->url}';
@@ -63,16 +65,14 @@ $string['assignmentmailhtml'] = '{$a->teacher} har skrivit viss återkoppling p�
 Du hittar den som ett tillägg till Ditt <a href="{$a->url}">inskickade bidrag.</a>';
 $string['assignmentname'] = 'Uppgiftens namn';
 $string['assignmentsubmission'] = 'Bidrag inskickade i sb m uppgift';
-$string['assignment:submit'] = 'Skicka in uppgift';
 $string['assignmenttype'] = 'Uppgiftens typ';
-$string['assignment:view'] = 'Visa uppgift';
 $string['availabledate'] = 'Tillgänglig fr.o.m.';
 $string['cannotdeletefiles'] = 'Det inträffade ett fel och det gick inte att ta bort filerna.';
 $string['cannotviewassignment'] = 'Du kan inte visa den här uppgiften';
 $string['comment'] = 'Kommentar';
 $string['commentinline'] = 'Kommentar inne i dokument';
-$string['commentinline_help'] = '<p>Om det h&auml;r alternativet &auml;r f&ouml;rvalt s&aring; kommer den urprungliga 
-inskickade uppgiften att kopieras in i textf&auml;ltet f&ouml;r den kommenterande 
+$string['commentinline_help'] = '<p>Om det h&auml;r alternativet &auml;r f&ouml;rvalt s&aring; kommer den urprungliga
+inskickade uppgiften att kopieras in i textf&auml;ltet f&ouml;r den kommenterande
 &aring;terkopplingen n&auml;r uppgiften ska betygss&auml;ttas. Det g&ouml;r det l&auml;ttare att
 infoga kommentarer eller redigera direkt i uppgiften. Man kan t.ex. anv&auml;nda en annan
 textf&auml;rg.</p>';
@@ -96,19 +96,19 @@ $string['editthesefiles'] = 'Redigera dessa filer';
 $string['editthisfile'] = 'Uppdatera den här filen';
 $string['emailstudents'] = 'Påminnelser via e-post till studenter/elever/deltagare/lärande';
 $string['emailteachermail'] = '{$a->username} har uppdaterat sina inskickade uppgiftslösningar för
- \'{$a->assignment}\' den at {$a->timeupdated}
+\'{$a->assignment}\' den at {$a->timeupdated}
 
 Den är tillgänglig här:
 
-   {$a->url}';
+{$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} har uppdaterat sin inskickade uppgiftslösning för <i>\'{$a->assignment}\' den {$a->timeupdated}</i><br /><br />Den är <a href="{$a->url}"> tillgänglig på webbplatsen.';
 $string['emailteachers'] = 'Skicka ett e-postmeddelande med information till distanslärarna';
 $string['emailteachers_help'] = '<p>Om detta &auml;r aktiverat s&aring; blir (distans)l&auml;rare informerade via ett kort e-postmeddelande
- varje g&aring;ng en student/elev/deltagare/l&auml;rande l&auml;gger till eller uppdaterar en inskickad
- uppgiftsl&ouml;sning. </p>
-<p>Endast de (distans)l&auml;rare som har r&auml;tt att s&auml;tta betyg p&aring;/avge omd&ouml;men om 
-den aktuella inskickade uppgiftsl&ouml;sningen f&aring;r ett s&aring;dant meddelande. 
-Allts&aring;. om t.ex. kursen anv&auml;nder separata grupper s&aring; kommer de (distans)l&auml;rare   
+varje g&aring;ng en student/elev/deltagare/l&auml;rande l&auml;gger till eller uppdaterar en inskickad
+uppgiftsl&ouml;sning. </p>
+<p>Endast de (distans)l&auml;rare som har r&auml;tt att s&auml;tta betyg p&aring;/avge omd&ouml;men om
+den aktuella inskickade uppgiftsl&ouml;sningen f&aring;r ett s&aring;dant meddelande.
+Allts&aring;. om t.ex. kursen anv&auml;nder separata grupper s&aring; kommer de (distans)l&auml;rare
 som bara &auml;r f&ouml;rdelade p&aring; vissa grupper inte att f&aring; meddelanden om studenter/elever/deltagare/l&auml;rande i andra grupper.</p>
 <p>N&auml;r det g&auml;ller aktiviteter offline s&aring; skickas f&ouml;rst&aring;s aldrig n&aring;gra meddelanden, eftersom ingen skickar in n&aring;gra uppgiftsl&ouml;sningar.</p>';
 $string['emptysubmission'] = 'Du har inte skickat in någonting än';
@@ -145,20 +145,6 @@ $string['maximumsize'] = 'Maximum storlek';
 $string['maxpublishstate'] = 'Maximal synlighet för inlägg i blogg före datum för offentliggörande';
 $string['messageprovider:assignment_updates'] = 'Anteckningar om uppgifter';
 $string['modulename'] = 'Uppgift';
-$string['modulename_help'] = '<p><img src="<?php echo $CFG->wwwroot?>/mod/assignment/icon.gif" alt="" />&nbsp;<b>Uppgifter</b></p>
-<ul>
-<li>Uppgifter till&aring;ter distansl&auml;raren att formulera en uppgift som 
-inneb&auml;r att de l&auml;rande ska g&ouml;ra iordning digitalt inneh&aring;ll
-(i valfritt format) och skicka in det till servern.</li> 
-</ul>
-<ul>
-<li>Ess&auml;er, projekt, rapporter
-osv. &auml;r exempel p&aring; typiska uppgifter.</li> 
-</ul>
-<ul>
-<li>Den h&auml;r modulen till&aring;ter
-bed&ouml;mning/v&auml;rdering/betygss&auml;ttning.</li>
-</ul>';
 $string['modulenameplural'] = 'Uppgifter';
 $string['newsubmissions'] = 'Uppgifterna är inskickade';
 $string['noassignments'] = 'Det finns inga uppgifter ännu.';
@@ -216,8 +202,8 @@ $string['typeonline'] = 'Aktivitet online';
 $string['typeupload'] = 'Avancerad uppladdning av filer';
 $string['typeuploadsingle'] = 'Ladda upp en enskild fil';
 $string['unfinalize'] = 'Återställ till utkast';
-$string['unfinalizeerror'] = 'Det inträffade ett fel och det gick inte att omdefiniera den inskickade uppgiften till ett utkast.';
 $string['unfinalize_help'] = 'Att återställa uppgiften till ett utkast gör det möjligt för studenten/eleven/deltagaren/den lärande att ytterligare uppdatera sin uppgift.';
+$string['unfinalizeerror'] = 'Det inträffade ett fel och det gick inte att omdefiniera den inskickade uppgiften till ett utkast.';
 $string['uploadafile'] = 'Ladda upp en fil';
 $string['uploadbadname'] = 'Detta filnamn innehåller ej standardiserade tecken och filen kunde inte laddas upp';
 $string['uploadedfiles'] = 'Uppladdade filer';

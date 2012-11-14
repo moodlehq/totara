@@ -32,8 +32,34 @@ $string['confchapterdelete'] = 'Är Du säker på att vill ta bort det här kapi
 $string['confchapterdeleteall'] = 'Är Du säker på att vill ta bort det här kapitlet och alla underavdelningar?';
 $string['content'] = 'Innehåll';
 $string['customtitles'] = 'Standardtitlar';
+$string['customtitles_help'] = '<p align="center">
+  <b>Standardiserade titlar</b>
+</p>
+
+Titlar på kapitel visas automatiskt bara i innehållsförteckningen.';
 $string['editingchapter'] = 'Redigerar kapitel';
 $string['faq'] = 'FAQ för Bok';
+$string['faq_help'] = '<p align="center">
+  <b>Vanligt förekommande frågor om Modulen bok</b>
+</p>
+
+**Varför bara två nivåer?** 
+:   Två nivåer räcker vanligtvis för alla böcker, tre nivåer skulle leda till illa strukturerade dokument. Modulen bok är utformad för att skapa korta studiematerial som består av ett antal sidor. För längre dokument är det normalt sett bättre med Pdf-format. Det enklaste sättet att skapa Pdf-filer är virtuella skrivare (se <a  href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm"  target="_blank">PDFCreator</a>, <a  href="http://fineprint.com/products/pdffactory/index.html"  target="_blank"> PDFFactory</a>, <a  href="http://www.adobe.com/products/acrobatstd/main.html"  target="_blank">Adobe Acrobat</a>, etc.).   
+      
+    
+
+**Kan studenter/elever/deltagare/lärande redigera böcker?**
+:   Endast lärare kan skapa och redigera böcker. Det finns inga planer på att utvidga detta, men någon kan kanske skapa någonting liknande för studenter/elever/deltagare/lärande (Portfolio?). Den viktigaste orsaken är att den här modulen ska vara så enkel som möjligt.  
+      
+    
+
+**Hur söker jag i böckerna?** 
+:   F.n. finns det bara ett sätt, nämligen att använda webbläsarens sökfunktion i "Skriv ut". Global sökning går bara att göra i Moodles forum. Det vore trevligt med global sökning för alla resurser inklusive böcker, några frivilliga?  
+      
+    
+
+**Min titlar passar inte in på raden.** 
+:   Formulera antingen om dina titlar eller be din systemadministratör att öka vidden på innehållsförteckningen. Den är globalt definierad på sidan för konfiguration av modulen.';
 $string['modulename'] = 'Bok';
 $string['modulenameplural'] = 'Böcker';
 $string['navexit'] = 'Exit Book';

@@ -30,17 +30,17 @@ $string['allowupdate'] = 'Tillåt uppdatering av opinionsundersökning';
 $string['answered'] = 'Besvarade';
 $string['choice'] = 'Svarsalternativ {$a}';
 $string['choice:choose'] = 'Registrera en opinionsundersökning';
-$string['choiceclose'] = 'Till';
 $string['choice:deleteresponses'] = 'Ta bort responser';
 $string['choice:downloadresponses'] = 'Ladda ner responser';
+$string['choice:readresponses'] = 'Läs responser';
+$string['choiceclose'] = 'Till';
 $string['choicefull'] = 'Den här opinonsundersökningen är full och det finns inga tillgängliga platser.';
 $string['choicename'] = 'Opinionsundersökningens namn';
 $string['choiceopen'] = 'Öppna';
 $string['choiceoptions'] = 'Alternativ för opinonsundersökning';
 $string['choiceoptions_help'] = '<p>H&auml;r specifierar Du de alternativ som de l&auml;rande har att v&auml;lja bland.</p>
-<p>Du kan fylla i valfritt antal av dessa. Det g&aring;r bra 
+<p>Du kan fylla i valfritt antal av dessa. Det g&aring;r bra
 att l&auml;mna n&aring;gra tomma om Du inte beh&ouml;ver alla de sex alternativen.</p>';
-$string['choice:readresponses'] = 'Läs responser';
 $string['choicesaved'] = 'Din opinionsundersökning har sparats';
 $string['choicetext'] = 'Opinionsundersökningens text';
 $string['chooseaction'] = 'Välj en åtgärd...';
@@ -61,7 +61,7 @@ markera det. Om Du st&auml;ller in det till 0 s&aring; kan ingen v&auml;lja det.
 
 <p>Om Du inte aktiverar n&aring;gra begr&auml;nsningar s&aring; kan hur m&aring;nga deltagare som helst v&auml;lja alternativet.</p>';
 $string['modulename'] = 'Opinionsundersökning';
-$string['modulename_help'] = 'Modulen opinionsundersökning gör det möjligt för distansläraren att ställa en fråga och ange ett urval av svarsalternativ. ';
+$string['modulename_help'] = 'Modulen opinionsundersökning gör det möjligt för distansläraren att ställa en fråga och ange ett urval av svarsalternativ.';
 $string['modulenameplural'] = 'Opinionsundersökningar';
 $string['moveselectedusersto'] = 'Flytta de valda användarna till...';
 $string['mustchooseone'] = 'Du måste välja ett svar innan Du kan svara. Ingenting sparades.';

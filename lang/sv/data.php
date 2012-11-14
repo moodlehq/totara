@@ -53,7 +53,7 @@ $string['blank'] = 'Tom';
 $string['buttons'] = 'Åtgärder';
 $string['bynameondate'] = 'av {$a->name} - {$a->date}';
 $string['cancel'] = 'Avbryt';
-$string['cannotaccesspresentsother'] = 'Du har inte tillstånd att läsa andra användares förinställningar ';
+$string['cannotaccesspresentsother'] = 'Du har inte tillstånd att läsa andra användares förinställningar';
 $string['cannotadd'] = 'Det går inte att lägga till bidrag';
 $string['cannotdeletepreset'] = 'Fel vid borttagande av en förinställd mall!';
 $string['cannotunziptopreset'] = 'Det går inte att packa upp den förinställda mallen';
@@ -81,19 +81,19 @@ $string['csvimport_help'] = '<p align="center"><strong>Importera från en CSV-fi
 
 <p>Det förväntade filfomatet är en vanlig textfil med en lista över fältnamn
 som den första posten. Därefter följer data i form av en post per rad.</p>
-   
+
 <p>Fältavgränsaren är normalt sett ett kommatecken medan det inte finns någon standard (t.ex. parenteser) för att omsluta varje fält i varje post. </p>
-   
-<p>Posterna ska vara avskilda med nya rader (vanligtvis genererade genom att man trycker på RETURN 
-   eller ENTER i ordbehandlingsprogrammet). Tabbar kan anges genom att man använder t och nya rader med n. </p>
+
+<p>Posterna ska vara avskilda med nya rader (vanligtvis genererade genom att man trycker på RETURN
+eller ENTER i ordbehandlingsprogrammet). Tabbar kan anges genom att man använder t och nya rader med n. </p>
 
 <p>Exempel på fil:</p>
 
 <pre>
-  namn,längd,vikt
-  Kai,180cm,80kg
-  Kim,170cm,60kg
-  Koo,190cm,20kg
+namn,längd,vikt
+Kai,180cm,80kg
+Kim,170cm,60kg
+Koo,190cm,20kg
 </pre>
 
 <p>OBS! Det kanske inte finns stöd för alla fälttyper.</p>';
@@ -150,12 +150,12 @@ $string['expired'] = 'Den här aktiviteten stängdes tyvärr den {$a} och är in
 $string['export'] = 'Exportera';
 $string['exportaszip'] = 'Exportera som zip';
 $string['exportaszip_help'] = '<p align="center"><strong>Exportera som Zip</strong></p>
-<p>Det här gör det möjligt för dig att ladda ner mallarna till din egen dator. 
-Senare kan du ladda upp dem till en annan databas med hjälp av egenskapen 
+<p>Det här gör det möjligt för dig att ladda ner mallarna till din egen dator.
+Senare kan du ladda upp dem till en annan databas med hjälp av egenskapen
 Importera från Zip.</p>';
 $string['exportedtozip'] = 'Exporterade som tillfällig zip...';
 $string['exportentries'] = 'Exportera inlägg';
-$string['exportownentries'] = 'Exportera endast Dina egna bidrag? 
+$string['exportownentries'] = 'Exportera endast Dina egna bidrag?
 ({$a->mine}/{$a->all})';
 $string['failedpresetdelete'] = 'Fel i samband med att en förinställning skulle tas bort';
 $string['fieldadded'] = 'Det har lagts till ett fält';
@@ -171,18 +171,18 @@ $string['fieldids'] = 'Id för fält';
 $string['fieldmappings'] = 'Kartläggning av fält';
 $string['fieldmappings_help'] = '<p align="center"><strong>Mallar för fält</strong></p>
 <p>Den här menyn gör det möjligt för dig att behålla data
-från den befintliga databasen. För att bevara data i ett fält 
-så måste du göra en mall så att datan hamnar i och visas i ett 
+från den befintliga databasen. För att bevara data i ett fält
+så måste du göra en mall så att datan hamnar i och visas i ett
 nytt fält. Alla fält kan även lämnas tomma utan att det kopieras
 någon information till dem. Alla ursprungliga fält som inte finns
-med i den nya mallen kommer att gå förlorade och alla de data som 
+med i den nya mallen kommer att gå förlorade och alla de data som
 fanns där kommer att tas bort.</p>
 <p>
-Du kan bara göra mallar med fält av samma typ så varje 
+Du kan bara göra mallar med fält av samma typ så varje
 "dropdown" kommer att ha olika fält i sig. Dessutom måste
-du vara aktsam så att du inte försöker att göra en mall 
+du vara aktsam så att du inte försöker att göra en mall
 för ett gammalt fält som ska leda till mer än ett nytt fält.
- 
+
 </p>';
 $string['fieldname'] = 'Fältnamn';
 $string['fieldnotmatched'] = 'Följande fält i Din fil saknas i den här databasen:{$a}';
@@ -245,7 +245,7 @@ $string['maxsize'] = 'Maximal storlek';
 $string['menu'] = 'Meny';
 $string['menuchoose'] = 'Välj...';
 $string['missingdata'] = 'Det måste finnas ett data-ID eller objekt som tilldelas klassen för fältet';
-$string['missingfield'] = 'Programmerarfel: Du måste ange fält och/eller data när Du definierar klassen för fältet. ';
+$string['missingfield'] = 'Programmerarfel: Du måste ange fält och/eller data när Du definierar klassen för fältet.';
 $string['modulename'] = 'Databas';
 $string['modulename_help'] = 'Modulen för aktiviteten databas gör det möjligt för deltagare att skapa, underhålla och söka en bank av inlagda poster. Formatet och strukturen på dessa bidrag kan vara nästan vilket som helst, som t ex bilder, filer, URLer, tal, texter osv.';
 $string['modulenameplural'] = 'Databaser';
@@ -319,7 +319,7 @@ $string['requiredentries'] = 'Obligatoriska bidrag';
 $string['requiredentries_help'] = '<p align="center"><strong>Obligatoriska bidrag</strong></p>
 
 <p>Det antal bidrag som varje deltagare förväntas skicka in. Om de inte har skickat in de obligatoriska bidragen kommer deltagarna att få se en påminnelse om detta i samband med att de använder databasen.
-   </p>
+</p>
 
 <p>Aktiviteten kommer inte att godkännas som fullgjord förrän deltagaren har skickat in sina obligatoriska bidrag.</p>';
 $string['requiredentriestoview'] = 'Det krävs att man gör bidrag innan man får se innehållet i databasen';
