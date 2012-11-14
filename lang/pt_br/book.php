@@ -51,10 +51,9 @@ Só os professores podem criar e editar livros. Não há planos para implementar
 
 No momento, há apenas uma forma, a utilização da função de busca do navegador  na página de impressão. A busca global só é possível atualmente nos fóruns do Moodle. Seria ótimo ter uma busca global para todos os recursos, incluindo livros, algum voluntário?
 
- * Meus títulos não cabem numa linha .*
+* Meus títulos não cabem numa linha .*
 
 Ou você reformula seus títulos, ou peça ao seu administrador do site para alterar a largura da TOC. Ela é definida globalmente para todos os livros na página de configuração do módulo.';
-$string['missingfilemanagement'] = 'Prezado usuário do módulo Livro, eu suponho que você já tenha notado que não é possível excluir ou gerenciar arquivos utilizados em capítulos de um Livro. Por favor vote em {$a} para que isto seja consertado, obrigado. Petr Skoda';
 $string['modulename'] = 'Livro';
 $string['modulename_help'] = 'Livro é simplesmente um material de estudo com múltiplas páginas.';
 $string['modulenameplural'] = 'Livros';
@@ -73,7 +72,7 @@ $string['numbering_help'] = '* Nenhum - títulos de capítulos e sub-capítulos 
 * Marcadores - sub-capítulos são indentados, com marcadores (bullets)
 
 * Indentado - sub-capítulos são recuados';
-$string['numberingoptions'] = 'Disponível opções de numeração ';
+$string['numberingoptions'] = 'Disponível opções de numeração';
 $string['numberingoptions_help'] = 'Selecione as opções de numeração que deverão estar disponíveis ao criar novos livros.';
 $string['page-mod-book-x'] = 'Qualquer página do módulo Livro';
 $string['pluginadministration'] = 'Administração de livros';

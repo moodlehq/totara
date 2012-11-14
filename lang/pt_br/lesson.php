@@ -30,7 +30,7 @@ $string['actionaftercorrectanswer'] = 'Ação após uma Resposta Correta';
 $string['actionaftercorrectanswer_help'] = '<p>A ação padrão é seguir conforme especificado na resposta. Na maioria dos casos isso provavelmente mostrará a pŕoxima página da lição. O estudante passa pela lição de maneira linear, começando no ínicio e terminando no final.</p>
 
 <p>Entretanto, o módulo de lição também pode ser usado como uma tipo de tarefa <if>Flash Card</i> .
-    É mostrada alguma informação (opcional) e uma questão em ordem aleatória. Não há início nem final definidos. Apenas um conjunto de <i>Cards</i> (fichas) é mostrado um após outro sem uma ordem particular.</p>
+É mostrada alguma informação (opcional) e uma questão em ordem aleatória. Não há início nem final definidos. Apenas um conjunto de <i>Cards</i> (fichas) é mostrado um após outro sem uma ordem particular.</p>
 
 <p>Essa opção permite duas variantes similares de comportamento Flash Card. A opção "Mostrar uma página nunca vista" nunca permite que a mesma página seja mostrada duas vezes (mesmo se o estudante <b>não</b> responder a questão associada com o Card/Página corretamente). A outra opção não-padrão é "Mostrar uma página não respondida", que permite que os estudantes vejam páginas já navegadas, caso não as questões não tenham sido respondidas corretamente.</p>
 
@@ -92,8 +92,8 @@ $string['casesensitive_help'] = '<p>Alguns tipos de questão têm uma opção qu
 <li><p><b>Múltipla escolha</b> Há uma variante das questões de múltipla escolha chamadas questões de    <b>&quot;Múltipla escolha Multi-resposta&quot;</b>. Se essa opção for escolhida, então o estudante deve marcar todas as respostas corretas em um conjunto de respostas. A questão pode ou não dizer <i>quantas</i> respostas corretas existem. Por exemplo, &quot;Quais desses foram presidentes dos Estados Unidos?&quot; não diz, mas "Selecione dois presidentes dos Estados Unidos na lista a seguir." o faz. O número de respostas corretas pode variar de <b>um</b> até o número de alternativas. (Uma questão de Resposta Múltipla com uma resposta correta <b>é</b> diferente de uma questão Múltipla Escolha, já que a anterior permite que o estudante escolha mais de uma resposta.)</p></li>
 
 <li>
-  <p><b>Resposta Curta</b> Há dois tipos diferentes de sistemas de comparação para o tipo de questão de Resposta Curta: o mais simples é utilizado por padrão;
-      o sistema de &quot;Expressões Regulares&quot; é utilizado caso a opção &quot;Usar Expressões Regulares&quot; estiver marcada. Para mais informações, leia o arquivo de ajuda dos tipos de questões da Lição.</p>
+<p><b>Resposta Curta</b> Há dois tipos diferentes de sistemas de comparação para o tipo de questão de Resposta Curta: o mais simples é utilizado por padrão;
+o sistema de &quot;Expressões Regulares&quot; é utilizado caso a opção &quot;Usar Expressões Regulares&quot; estiver marcada. Para mais informações, leia o arquivo de ajuda dos tipos de questões da Lição.</p>
 </li>
 </ol>
 <p>Os outros tipos de questão não utilizam opções de questão.</p>';
@@ -149,12 +149,12 @@ lição do mesmo curso. Se as exigências de desempenho não forem atingidas, o 
 não terá acesso a esta lição.</p>
 
 <p>As condições para a dependência incluem:
-    <ul>
-        <li><b>Tempo Gasto:</b> o aluno deve gastar esta quantidade de tempo estabelecida na lição requerida.</li>
-        <li><b>Completada:</b> o aluno deve completar a lição requerida.</li>
-        <li><b>Nota melhor que:</b> o aluno deve obter uma nota na lição requerida maior que a especificada aqui.</li>
-    </ul></p>
-  <p>  Qualquer combinação das opções acima pode ser usada, se necessário.
+<ul>
+<li><b>Tempo Gasto:</b> o aluno deve gastar esta quantidade de tempo estabelecida na lição requerida.</li>
+<li><b>Completada:</b> o aluno deve completar a lição requerida.</li>
+<li><b>Nota melhor que:</b> o aluno deve obter uma nota na lição requerida maior que a especificada aqui.</li>
+</ul></p>
+<p>  Qualquer combinação das opções acima pode ser usada, se necessário.
 </p>';
 $string['description'] = 'Texto do link';
 $string['detailedstats'] = 'Estatísticas detalhadas';
@@ -182,7 +182,7 @@ $string['editlessonsettings'] = 'Editar as configurações desta lição';
 $string['editpage'] = 'Editar conteúdo de página';
 $string['editpagecontent'] = 'Editar o conteúdo desta página';
 $string['email'] = 'Email';
-$string['emailallgradedessays'] = 'Enviar email de todas as dissertações avaliadas ';
+$string['emailallgradedessays'] = 'Enviar email de todas as dissertações avaliadas';
 $string['emailgradedessays'] = 'Enviar email das dissertações avaliadas';
 $string['emailsuccess'] = 'Envio de email bem sucedido';
 $string['emptypassword'] = 'Senha não pode ser vazia';
@@ -217,9 +217,9 @@ $string['gradeis'] = 'Resultado: {$a}';
 $string['gradeoptions'] = 'Opções de avaliação';
 $string['handlingofretakes'] = 'Calculando o resultado das tentativas';
 $string['handlingofretakes_help'] = '<p>Quando são habilitadas novas tentativas na lição, esta opção permite que
-    o professor mostre a nota para a lição, por exemplo, na página de Notas,
-    tanto como a <b>média</b>, isto é, média aritmética das notas da primeira
-    tentativa e subsequentes, ou como a nota obtida nas <b>melhores</b> tentativas dos alunos.</p>
+o professor mostre a nota para a lição, por exemplo, na página de Notas,
+tanto como a <b>média</b>, isto é, média aritmética das notas da primeira
+tentativa e subsequentes, ou como a nota obtida nas <b>melhores</b> tentativas dos alunos.</p>
 
 <p>Esta opção pode ser mudada a qualquer momento.</p>';
 $string['havenotgradedyet'] = 'Ainda não foi avaliado';
@@ -239,7 +239,7 @@ $string['importppt_help'] = '<p>COMO USAR</p>
 <li>Salve-a como uma Página Web (sem opções especiais)</li>
 <li>O resultado do passo 3 deve ser um arquivo htm e uma pasta com todas as transparências convertidas para páginas web.<br />
 
-  COMPACTE (ZIP) apenas A PASTA.</li>
+COMPACTE (ZIP) apenas A PASTA.</li>
 
 <li>Vá até o curso no Moodle a adicione uma nova lição.</li>
 <li>Após salvar as configurações da lição você poderá ver 4 opções sob o título "O que você deseja fazer primeiro?" Clique em "Importar Powerpoint"</li>
@@ -250,19 +250,19 @@ $string['importppt_help'] = '<p>COMO USAR</p>
 <p>Se seu Powerpoint contiver imagens, elas terão sido salvas como arquivos do curso em moddata/XY onde X é o nome da sua lição e Y é um número (geralmente 0). Também, durante o processo de importação, são criados arquivos no diretório de dados do Moodle, dentro de temp/lesson. Esses arquivos ainda não são apagados por importppt.php.</p>';
 $string['importquestions'] = 'Importar questões';
 $string['importquestions_help'] = '<p>Isto permite que você importe questões de arquivos de texto
-   externos, enviados através de um formulário.</p>
+externos, enviados através de um formulário.</p>
 
 <p>Os arquivos podem ser enviados em vários formatos:</p>
 
 <h2>Formato GIFT</h2>
 <div class="indent">
 <p>GIFT é o formato de importação mais abrangente para a importação de
-   questões de questionário do Moodle, de um arquivo texto. Ele foi desenhado para ser um método fácil
-   para os professores escreverem questões como arquivos de texto. Ele suporta questões de Múltipla
-   Escolha, Verdadeiro-Falso, Resposta Breve, de Associação e Numéricas, bem como para o formato
-   inserção de _____ para a "palavra que está faltando". Vários tipos de questões podem ser
-   misturados em um único arquivo texto, e o formato também permite linhas de comentarios, nomes das questões,
-   retornos e notas com pesos percentuais. Seguem alguns exemplos:</p>
+questões de questionário do Moodle, de um arquivo texto. Ele foi desenhado para ser um método fácil
+para os professores escreverem questões como arquivos de texto. Ele suporta questões de Múltipla
+Escolha, Verdadeiro-Falso, Resposta Breve, de Associação e Numéricas, bem como para o formato
+inserção de _____ para a "palavra que está faltando". Vários tipos de questões podem ser
+misturados em um único arquivo texto, e o formato também permite linhas de comentarios, nomes das questões,
+retornos e notas com pesos percentuais. Seguem alguns exemplos:</p>
 <pre>
 Quem está enterrado na tumba de Grant?{~Grant ~Jefferson =ninguém}
 
@@ -310,12 +310,12 @@ nos tornamos estudantes de {=anatomia e fisiologia ~reflexologia
 <h2>AON</h2>
 <div class="indent">
 <p>Este é o mesmo formato que "Complete com a palavra que falta", exceto que após importar
-   as questões, todas as questões de resposta breve são convertidas, quatro de cada vez,
-   em Questões de Associação.</p>
+as questões, todas as questões de resposta breve são convertidas, quatro de cada vez,
+em Questões de Associação.</p>
 <p>Além disso, as respostas das questões de múltipla escolha são misturadas
-   aleatoriamente durante a importação.</p>
+aleatoriamente durante a importação.</p>
 <p>Recebeu este nome de uma organização que patrocinou o desenvolvimento de muitas
-   funcionalidade para os questionários</p>
+funcionalidade para os questionários</p>
 </div>
 
 <h2>Blackboard</h2>
@@ -345,16 +345,16 @@ de usar esta classe de importação.</p>
 <h2>Personalizar</h2>
 <div class="indent">
 <p>Se você tiver seu próprio formato que precisa importar, pode
-   implementá-lo por conta própria, editando mod/quiz/format/custom.php</p>
+implementá-lo por conta própria, editando mod/quiz/format/custom.php</p>
 
 <p>A quantidade necessária de código novo é bem pequena - apenas o suficiente
-   para analisar uma única questão de um texto dado.</p>
+para analisar uma única questão de um texto dado.</p>
 
 <p align="right"><a href="help.php?file=formatcustom.html&module=quiz">Mais informação sobr o formato "Personalizado"</a></p>
 </div>
 
 <p>Mais formatos virão, incluindo WebCT, IMS QTI e qualquer outro que os usuários do
-   Moodle possam contribuir! </p>';
+Moodle possam contribuir! </p>';
 $string['insertedpage'] = 'Página inserida';
 $string['invalidfile'] = 'Arquivo inválido';
 $string['invalidid'] = 'Nenhuma identificação de módulo ou de lição foi informada.';
@@ -363,40 +363,40 @@ $string['invalidpageid'] = 'Identificação de página inválido';
 $string['jump'] = 'Destinação';
 $string['jumps'] = 'Destinações';
 $string['jumps_help'] = '<p>Cada Resposta (para questões) ou Descrição (para páginas de ramificação) tem um link
-   Saltar-para. Quando esta opção é escolhida, a resposta para a pergunta
-    é mostrada ao aluno. Depois disso o aluno vê a página que aparece no link Saltar-para.
-    Esse link pode ser relativo ou absoluto. Links relativos são <b>Esta
-    página</b> e <b>Próxima página</b>. <b>Esta página</b> significa que o aluno vê a
-    página corrente novamente. <b>Próxima página</b> mostra a página seguinte a esta página na
-    ordem lógica das páginas. Um link absoluto para a página é especificado pela escolha do
-    <b>título</b> da página.</p>
+Saltar-para. Quando esta opção é escolhida, a resposta para a pergunta
+é mostrada ao aluno. Depois disso o aluno vê a página que aparece no link Saltar-para.
+Esse link pode ser relativo ou absoluto. Links relativos são <b>Esta
+página</b> e <b>Próxima página</b>. <b>Esta página</b> significa que o aluno vê a
+página corrente novamente. <b>Próxima página</b> mostra a página seguinte a esta página na
+ordem lógica das páginas. Um link absoluto para a página é especificado pela escolha do
+<b>título</b> da página.</p>
 <p>Note que um link Saltar-para <b>Próxima página</b> (relativo) pode mostrar uma página
-   diferente se as páginas forem movidas. Por outro lado, links Saltar-para que usam <b>títulos</b> de páginas sempre mostram a mesma página mesmo que páginas sejam movidas.</p>
+diferente se as páginas forem movidas. Por outro lado, links Saltar-para que usam <b>títulos</b> de páginas sempre mostram a mesma página mesmo que páginas sejam movidas.</p>
 <p>Saltos Especiais</p>
 <p>Questão não vista dentro de uma Seção</p>
 <p>Isto apontará para uma questão não vista (pelo aluno, nesta tentativa) escolhida aleatoriamente
-	entre esta tabela de ramificação e o Fim da Lição ou o próximo Fim de Ramificação.</p>
+entre esta tabela de ramificação e o Fim da Lição ou o próximo Fim de Ramificação.</p>
 
 <p>Questão aleatória dentro de uma Seção</p>
 <p>Isto apontará para uma questão escolhida aleatoriamente entre a tabela de ramificação corrente e
-	o Fim da Lição ou o próximo Fim da Ramificação. Se o aluno já viu a
-	questão e as tentativas são maiores que 1, ele terá outra chance de ganhar
-	os pontos para esta questão. Se as tentativas forem fixadas em 1, a questão será pulada
-	e outra questão aleatória será mostrada.</p>
+o Fim da Lição ou o próximo Fim da Ramificação. Se o aluno já viu a
+questão e as tentativas são maiores que 1, ele terá outra chance de ganhar
+os pontos para esta questão. Se as tentativas forem fixadas em 1, a questão será pulada
+e outra questão aleatória será mostrada.</p>
 
 <p>Painel de Navegação Aleatória</p>
 <p>Isto pulará para uma Painel de Navegação aleatória entre o Painel de Navegação corrente e o Fim
-	da Lição ou o próximo Fim da Seção.</p>';
+da Lição ou o próximo Fim da Seção.</p>';
 $string['jumpsto'] = 'Destinações para <em>{$a}</em>';
 $string['leftduringtimed'] = 'Você interrompeu uma lição com tempo de duração definido.<br />Por favor clique em Continuar para recomeçar a lição.';
 $string['leftduringtimednoretake'] = 'Você interrompeu uma lição com tempo de duração definido.<br />Não será possível continuar ou recomeçar.';
+$string['lesson:edit'] = 'Editar uma lição';
+$string['lesson:manage'] = 'Gerenciar uma lição';
 $string['lessonattempted'] = 'Tentativa da Lição';
 $string['lessonclosed'] = 'Esta lição foi fechada em {$a}.';
 $string['lessoncloses'] = 'A lição termina';
 $string['lessoncloseson'] = 'Lição termina em {$a}';
-$string['lesson:edit'] = 'Editar uma lição';
 $string['lessonformating'] = 'Formatação da lição';
-$string['lesson:manage'] = 'Gerenciar uma lição';
 $string['lessonmenu'] = 'Menu da lição';
 $string['lessonnotready'] = 'Esta lição ainda não pode ser acessada. Contate o seu {$a}.';
 $string['lessonnotready2'] = 'Esta lição não está pronta para ser utilizada.';
@@ -414,46 +414,46 @@ $string['matching'] = 'Associando';
 $string['matchingpair'] = 'Associando par {$a}';
 $string['maxgrade'] = 'Avaliação máxima';
 $string['maxgrade_help'] = '<p>Este valor determina a nota máxima que pode ser obtida na Lição.
-    O intervalo é de 0 a 100%. Este valor pode ser mudado a qualquer momento durante a
+O intervalo é de 0 a 100%. Este valor pode ser mudado a qualquer momento durante a
 lição. Qualquer mudança tem um efeito imediato na página de Notas e nas
 notas mostradas aos alunos em várias listas. Se a nota for fixada em 0
 a Lição não aparece em nenhum dos relatórios de Notas.</p>';
 $string['maxhighscores'] = 'Número de pontuações altas visualizado';
 $string['maximumnumberofanswersbranches'] = 'Número máximo de respostas/seções';
 $string['maximumnumberofanswersbranches_help'] = '<p>Este valor determina o número máximo de respostas que o professor pode usar.
-    O valor padrão é 4. Por exemplo, se a lição usar sempre questões VERDADEIRO ou FALSO,
-    é recomendável que este valor seja 2.</p>
+O valor padrão é 4. Por exemplo, se a lição usar sempre questões VERDADEIRO ou FALSO,
+é recomendável que este valor seja 2.</p>
 
 <p>Este parâmetro também define o número máximo de seções que pode ser usado em
-    uma Painel de Navegação</p>
+uma Painel de Navegação</p>
 
 <p>É seguro mudar o valor deste parâmetro em uma lição que já tem conteúdo.
-    Na realidade, se você quiser acrescentar uma questão com muitas alternativas ou uma
-    Painel de Navegação longa, será necessário mudar este parâmetro. Depois que a
-    questão ou Painel de Navegação pouco comum tiver sido acrescentada, este parâmetro
-    pode ser reduzido para valores mais comuns.</p>';
+Na realidade, se você quiser acrescentar uma questão com muitas alternativas ou uma
+Painel de Navegação longa, será necessário mudar este parâmetro. Depois que a
+questão ou Painel de Navegação pouco comum tiver sido acrescentada, este parâmetro
+pode ser reduzido para valores mais comuns.</p>';
 $string['maximumnumberofattempts'] = 'Número máximo de tentativas';
 $string['maximumnumberofattempts_help'] = '<p>Este valor determina o número máximo de tentativas que um Aluno tem
-    para responder <b>qualquer</b> uma das questões da lição. No caso de questões
-    que não fornecem a resposta, por exemplo questões de Resposta Breve
-    e questões Numéricas, este valor fornece uma necessária <i>via de fuga</i> para
-    a próxima página da lição. </p>
+para responder <b>qualquer</b> uma das questões da lição. No caso de questões
+que não fornecem a resposta, por exemplo questões de Resposta Breve
+e questões Numéricas, este valor fornece uma necessária <i>via de fuga</i> para
+a próxima página da lição. </p>
 
 <p>O valor padrão é 5. Valores menores podem desencorajar o aluno
-    a pensar sobre as questões. Valores maiores podem levar a mais
-    frustração.</p>
+a pensar sobre as questões. Valores maiores podem levar a mais
+frustração.</p>
 
 <p>Fixar este valor em 1 dá ao aluno apenas uma chance para responder cada
-    questão. Isto dá um tipo de tarefa parecida com o módulo Questionário, exceto
-    que as questões são apresentadas em páginas individuais.</p>
+questão. Isto dá um tipo de tarefa parecida com o módulo Questionário, exceto
+que as questões são apresentadas em páginas individuais.</p>
 
 <p>Note que esse valor é um parâmetro global e que ele se aplica a todas as
-    questões da lição, independentemente do seu tipo.</p>
+questões da lição, independentemente do seu tipo.</p>
 
 <p>Note que este parâmetro <b>não</b> se aplica ao professor quando estiver verificando as
-    questões ou navegando através da lição. A verificação do número de tentativas
-    baseia-se em valores armazenados na base de dados e as tentativas feitas pelos professores
-    não são registradas. Afinal de contas, o professor deve conhecer as respostas!</p>';
+questões ou navegando através da lição. A verificação do número de tentativas
+baseia-se em valores armazenados na base de dados e as tentativas feitas pelos professores
+não são registradas. Afinal de contas, o professor deve conhecer as respostas!</p>';
 $string['maximumnumberofattemptsreached'] = 'Número máximo de tentativas atingido - indo para a próxima página';
 $string['maxtime'] = 'Limite de tempo (minutos)';
 $string['maxtimewarning'] = 'Você tem {$a} minuto(s) para terminar esta lição.';
@@ -465,17 +465,17 @@ Além disso, um link que reabre a nova janela, se necessário, será adicionado 
 <p>Opcionalmente, a altura e largura da nova janela podem ser definidas e um botão "Fechar Janela" pode ser colocado na parte inferior.</p>
 
 <p>Tipos de arquivo suportados:</p>
-    <ul>
-        <li>MP3</li>
-        <li>Media Player</li>
-        <li>Quicktime</li>
-        <li>Realmedia</li>
-        <li>HTML</li>
-        <li>Plain Text</li>
-        <li>GIF</li>
-        <li>JPEG</li>
-        <li>PNG</li>
-    </ul>
+<ul>
+<li>MP3</li>
+<li>Media Player</li>
+<li>Quicktime</li>
+<li>Realmedia</li>
+<li>HTML</li>
+<li>Plain Text</li>
+<li>GIF</li>
+<li>JPEG</li>
+<li>PNG</li>
+</ul>
 <p>Outros tipo de formato serão indicados como links para download.</p>';
 $string['mediafilepopup'] = 'Clique aqui para ver o arquivo multimídia desta lição';
 $string['mediaheight'] = 'Altura da janela <em>popup</em>:';
@@ -520,8 +520,8 @@ $string['multianswer_help'] = '<p>Alguns tipos de questão têm uma opção que 
 <li><p><b>Múltipla escolha</b> Há uma variante das questões de múltipla escolha chamadas questões de    <b>&quot;Múltipla escolha Multi-resposta&quot;</b>. Se essa opção for escolhida, então o estudante deve marcar todas as respostas corretas em um conjunto de respostas. A questão pode ou não dizer <i>quantas</i> respostas corretas existem. Por exemplo, &quot;Quais desses foram presidentes dos Estados Unidos?&quot; não diz, mas "Selecione dois presidentes dos Estados Unidos na lista a seguir." o faz. O número de respostas corretas pode variar de <b>um</b> até o número de alternativas. (Uma questão de Resposta Múltipla com uma resposta correta <b>é</b> diferente de uma questão Múltipla Escolha, já que a anterior permite que o estudante escolha mais de uma resposta.)</p></li>
 
 <li>
-  <p><b>Resposta Curta</b> Há dois tipos diferentes de sistemas de comparação para o tipo de questão de Resposta Curta: o mais simples é utilizado por padrão;
-      o sistema de &quot;Expressões Regulares&quot; é utilizado caso a opção &quot;Usar Expressões Regulares&quot; estiver marcada. Para mais informações, leia o arquivo de ajuda dos tipos de questões da Lição.</p>
+<p><b>Resposta Curta</b> Há dois tipos diferentes de sistemas de comparação para o tipo de questão de Resposta Curta: o mais simples é utilizado por padrão;
+o sistema de &quot;Expressões Regulares&quot; é utilizado caso a opção &quot;Usar Expressões Regulares&quot; estiver marcada. Para mais informações, leia o arquivo de ajuda dos tipos de questões da Lição.</p>
 </li>
 </ol>
 <p>Os outros tipos de questão não utilizam opções de questão.</p>';
@@ -562,11 +562,11 @@ $string['numberofpagesviewed'] = 'Número de páginas vistas: {$a}';
 $string['numberofpagesviewednotice'] = 'Número de questões respondidas {$a->nquestions}; (Você deve responder pelo menos: {$a->minquestions})';
 $string['numerical'] = 'Numérico';
 $string['ongoing'] = 'Visualizar pontuação corrente';
-$string['ongoingcustom'] = 'Esta lição corresponde a {$a->score} pontos. Você recebeu {$a->score} ponto(s) de um total de {$a->currenthigh} pontos até agora.';
 $string['ongoing_help'] = '<p>Com isto ativado, cada página mostrará os pontos acumulados até este momento pelo aluno,
-    em relação ao total possível ao final. Por exemplo: um aluno respondeu quatro questões de
-    5 pontos e respondeu uma incorretamente. Na Pontuação Atual aparecerá que ele ganhou
-    até o momento 15/20 pontos.</p>';
+em relação ao total possível ao final. Por exemplo: um aluno respondeu quatro questões de
+5 pontos e respondeu uma incorretamente. Na Pontuação Atual aparecerá que ele ganhou
+até o momento 15/20 pontos.</p>';
+$string['ongoingcustom'] = 'Esta lição corresponde a {$a->score} pontos. Você recebeu {$a->score} ponto(s) de um total de {$a->currenthigh} pontos até agora.';
 $string['ongoingnormal'] = 'Você respondeu corretamente {$a->correct} questões de um total de {$a->viewed} .';
 $string['onpostperpage'] = 'Apenas uma mensagem por avaliação';
 $string['options'] = 'Opções';
@@ -589,7 +589,7 @@ $string['overview_help'] = '<ol>
 <li>É possível configurar uma página sem respostas. É mostrado para o estudante um link <b>Continuar</b> ao invés do conjunto de respostas embaralhadas.</li>
 <li>Se a Pontuação personalizada está desligada: para o propósito de avaliação de lições, respostas <b>certas</b> são aquelas que desviam para uma página que está mais <i>abaixo</i> na ordem lógica que a página atual.
 Respostas <b>erradas</b> são aquelas que desviam ou para a mesma página ou para uma página mais  <i>acima</i> na ordem lógica do que a página atual. Assim, se os desvios <i>não</i> são alterados, a primeira resposta é uma resposta correta e as outras respostas são erradas.
-    <br /><br />
+<br /><br />
 Se a Pontuação personalizada está ligada: avaliação de uma resposta é determinada pelo valor em pontos da resposta, o total de pontos ganhos serve como uma fração do valor total de pontos da lição, até 100%.</li>
 <li>Questões podem ter mais de uma resposta correta. Por exemplo, se duas das respostas desviam para a próxima página então ambas respostas são consideradas corretas. (Embora a mesma página de destino seja mostrada para o estudante, as respostas mostradas no caminho para aquela página podem ainda ser diferentes das duas respostas.)</li>
 <li>Na visão do professor da lição as repostas certas tem Rótulos de Respostas sublinhados.</li>
@@ -599,21 +599,21 @@ Se a Pontuação personalizada está ligada: avaliação de uma resposta é dete
 <li>Pode haver mais de um Painel de Navegação em uma lição. Por exemplo, uma lição pode ser estruturada de forma que assuntos especializados são sub-ramos dentro de ramos de assuntos principais.</li>
 <li>É importante dar aos estudantes uma forma de terminar a lição. Isto pode ser feito incluindo um link "Fim de Lição" no Painel de Navegação principal. Este desvia para a página (imaginária) <b>Fim de Lição</b>. Outra opção é no último ramo da lição (aqui "último" no sentido da ordem lógica) simplesmente continuar para o fim da lição, isto é, <i>não</i> é encerrada por uma página Fim de Lição.</li>
 <li>Com pontuação personalizada desligada, quando uma lição inclui um ou mais Painéis de Navegação é aconselhável configurar o parâmetro "Número Minimo de Questões" para algum valor razoável. Isto coloca um limite inferior no número de páginas vistas quando a nota é calculada. Sem este parametro o estudante poderá visitar um único ramo na lição, responder todas as suas questões corretamente e deixar a lição com nota máxima.
-    <br /><br />
-    Com pontuação personalizada ligada, um estudante é avaliado baseado no número de pontos que ele ganhou como uma porcentagem do total de pontos para a lição.</li>
+<br /><br />
+Com pontuação personalizada ligada, um estudante é avaliado baseado no número de pontos que ele ganhou como uma porcentagem do total de pontos para a lição.</li>
 <li>Além disto, com a pontuação personalizada desligada, quando existe um Painel de Navegação um estudante tem a oportunidade de re-visitar o mesmo ramo mais de uma vez. Entretanto, a nota é calculada usando o número de questões <i>únicas</i> respondidas. Assim respondendo repetidamente o mesmo conjunto de questões <i>não</i> aumenta a nota. (De fato, o inverso acontece, a nota diminui porque o contador do número de páginas vistas é usado no denominador quando o calculo da nota inclui repetições.) A fim de dar aos estudantes uma boa idéia de seus progressos na lição, é mostrado quantas questões eles responderam corretamente, o número de páginas vistas, e suas notas atuais em cada página de Painel de navegação.
-    <br /> <br />
-    Com a pontuação personalizada ligada, um estudante pode rever uma questão se o caminho de navegação permitir, e ganhar novamente os pontos para aquela questão, se tentativas é maior que 1. Para não permitir isto, coloque tentativas igual a 1.</li>
+<br /> <br />
+Com a pontuação personalizada ligada, um estudante pode rever uma questão se o caminho de navegação permitir, e ganhar novamente os pontos para aquela questão, se tentativas é maior que 1. Para não permitir isto, coloque tentativas igual a 1.</li>
 <li>O <b>fim da lição</b> é alcançado ou desviando para aquela localização explicitamente ou desviando para a próxima página a partir da última (ordem lógica) página da lição. Com a pontuação personalizada desligada, quando o fim da lição é alcançado, o estudante recebe uma mensagem de congratulações e é mostrada a sua nota. A nota é (o número de questões respondidas corretamente / número de páginas vistas) x a nota da lição. Com a pontuação personalizada ligada, a nota é os pontos ganhos em percentual do total de pontos (p.ex. 3 pontos ganhos para uma lição de 3 pontos = 100% de 3 pontos.</li>
 <li>Se o fim da lição <i>não</i> é alcançado e o estudante simplesmente sai, quando ele retorna na lição tem a chance de escolher entre começar do início ou a partir da última questão que ele respondeu corretamente.</li>
 <li>Para uma lição que permite repetição, o professor tem a escolha de usar a melhor nota ou a média das notas como nota "final" da lição. Esta nota é mostrada na página Notas, por exemplo.</li>
 <li>Página de Agrupamento: um agrupamento representa um conjunto de questões do qual uma ou mais podem ser escolhidas aleatoriamente. Agrupamentos devem ser terminados com uma página de Fim de Agrupamento para melhor funcionamento (Senão o Fim da Lição é tratado como o Fim de Agrupamento). Questões em um agrupamento são selecionadas aleatoriamente escolhendo "Questão Aleatória dentro de um Agrupamento" como um desvio. Questões em um agrupamento podem ou ligar ao Fim de Agrupamento para sair do agrupamento, ou desviar para uma questão não vista dentro do agrupamento, ou desviar para qualquer outra página na lição. Isto também permite a criação de cenários com um elemento aleatório usando o módulo lição.</li>
 </ol>';
 $string['page'] = 'Página: {$a}';
-$string['pagecontents'] = 'Conteúdo da página';
 $string['page-mod-lesson-edit'] = 'Editar página da Lição';
 $string['page-mod-lesson-view'] = 'Visualizar ou pré-visualizar página da lição';
 $string['page-mod-lesson-x'] = 'Qualquer página da lição';
+$string['pagecontents'] = 'Conteúdo da página';
 $string['pages'] = 'Páginas';
 $string['pagetitle'] = 'Título da página';
 $string['password'] = 'Senha';
@@ -637,17 +637,17 @@ $string['previouspage'] = 'Página anterior';
 $string['processerror'] = 'Ocorreu um erro durante o processamento!';
 $string['progressbar'] = 'Barra de progresso';
 $string['progressbar_help'] = '<p>Exibe uma barra de progresso na parte de baixo da Lição.
-   Atualmente, a barra de progresso é mais precisa com uma Lição linear.</p>
+Atualmente, a barra de progresso é mais precisa com uma Lição linear.</p>
 
 <p>No cálculo da percentagem completada, Painéis de Navegação e páginas de Questões
-   que foram respondidas corretamente contam para o progresso da Lição. No cálculo do
-   número total de páginas na lição, agrupamentos e páginas dentro de agrupamentos são
-   contadas como páginas simples e páginas de Fim de Agrupamento e Fim do Painel de Navegação são excluídas. Todas as outras páginas contam para o número total
-   de páginas na Lição.</p>
+que foram respondidas corretamente contam para o progresso da Lição. No cálculo do
+número total de páginas na lição, agrupamentos e páginas dentro de agrupamentos são
+contadas como páginas simples e páginas de Fim de Agrupamento e Fim do Painel de Navegação são excluídas. Todas as outras páginas contam para o número total
+de páginas na Lição.</p>
 
 <p>Nota: os estilos padrão para a barra de progresso não são espetaculares ;)
-   Tudo pode ser modificado nos estilos da barra de progresso (exm.: cores, imagens de fundo,
-   etc.) em mod/lição/estilos.php.';
+Tudo pode ser modificado nos estilos da barra de progresso (exm.: cores, imagens de fundo,
+etc.) em mod/lição/estilos.php.';
 $string['progressbarteacherwarning'] = 'Barra de progresso não é mostrada para {$a}';
 $string['progressbarteacherwarning2'] = 'Você não verá a barra de progresso porque você pode editar esta lição.';
 $string['progresscompleted'] = 'Você completou {$a}% da lição';
@@ -692,9 +692,9 @@ $string['showanunseenpage'] = 'Mostrar uma página que ainda não foi visitada';
 $string['singleanswer'] = 'Resposta única';
 $string['skip'] = 'Avançar navegação';
 $string['slideshow'] = 'Apresentação de Slides';
+$string['slideshow_help'] = '<p>Isso permite a exibição das lições como uma apresentação de slide, com largura e altura fixas e cor do plano de fundo alterável. Uma barra de rolagem em CSS será mostrada se o conteúdo do slide exceder o tamanho da página. Quando aparecer questões, a tela sairá do modo de slides, somente páginas (tabelas ramificadas) serão mostradas em um slide por padrão. Botões de Ir e Voltar, já traduzidos no idioma padrão, serão mostrados nas extremas direita e esquerda se essa opção for ativada. Outros botões serão centralizados abaixo do slide.</p>';
 $string['slideshowbgcolor'] = 'Cor do fundo da página da Apresentação de Slides';
 $string['slideshowheight'] = 'Altura da Apresentação de Slides';
-$string['slideshow_help'] = '<p>Isso permite a exibição das lições como uma apresentação de slide, com largura e altura fixas e cor do plano de fundo alterável. Uma barra de rolagem em CSS será mostrada se o conteúdo do slide exceder o tamanho da página. Quando aparecer questões, a tela sairá do modo de slides, somente páginas (tabelas ramificadas) serão mostradas em um slide por padrão. Botões de Ir e Voltar, já traduzidos no idioma padrão, serão mostrados nas extremas direita e esquerda se essa opção for ativada. Outros botões serão centralizados abaixo do slide.</p>';
 $string['slideshowwidth'] = 'Largura da Apresentação de Slides';
 $string['startlesson'] = 'Iniciar Lição';
 $string['studentattemptlesson'] = 'número da tentativa {$a->attempt} de {$a->lastname}, {$a->firstname}';

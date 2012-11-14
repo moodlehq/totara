@@ -80,24 +80,24 @@ $string['csvimport'] = 'Importação de arquivo CSV';
 $string['csvimport_help'] = '<p align="center"><strong>Importar de um arquivo CSV</strong></p>
 
 <p>CSV significa, em português, Valores Separados por Vírgulas (Comma-Separated-Values
-   em inglês). É um formato comum para intercâmbio de textos envolvendo dados.</p>
+em inglês). É um formato comum para intercâmbio de textos envolvendo dados.</p>
 
 <p>O formato é um arquivo de texto simples, com uma lista de nomes de
-   campos na primeira linha. Os dados vem em seguida, um registro por linha.</p>
+campos na primeira linha. Os dados vem em seguida, um registro por linha.</p>
 
 <p>O separador de campo padrão é a virgula e a delimitação de campo não é definida por padrão
-   (os delimitadores de campo são caracteres que marcam o começo e o fim do campo).
+(os delimitadores de campo são caracteres que marcam o começo e o fim do campo).
 
 <p>Os registros devem ser delimitados por novas linhas (normalmente geradas quando se
-   pressiona RETURN ou ENTER no seu editor de texto). As tabulações podem ser especificadas
-   usando-se t e novas linhas ou mudança de linha por n. </p>
+pressiona RETURN ou ENTER no seu editor de texto). As tabulações podem ser especificadas
+usando-se t e novas linhas ou mudança de linha por n. </p>
 
 <p>Arquivo de Exemplo:</p>
 <pre>
-  nome,altura,peso
-  Kai,180cm,80kg
-  Kim,170cm,60kg
-  Koo,190cm,20kg
+nome,altura,peso
+Kai,180cm,80kg
+Kim,170cm,60kg
+Koo,190cm,20kg
 </pre>
 </p>
 
@@ -213,8 +213,7 @@ $string['invalidfieldid'] = 'O ID do campo está incorreto';
 $string['invalidfieldname'] = 'Escolha um outro nome para este campo';
 $string['invalidfieldtype'] = 'Tipo de campo está incorreto';
 $string['invalidid'] = 'ID de dados incorreta';
-$string['invalidpreset'] = '	
-{$a} não é um pré-ajuste';
+$string['invalidpreset'] = '{$a} não é um pré-ajuste';
 $string['invalidrecord'] = 'Registro incorreto';
 $string['invalidurl'] = 'A URL inserida não é válida';
 $string['jstemplate'] = 'Modelo Javascript';
@@ -227,8 +226,7 @@ $string['latlongotherfields'] = 'Outros campos';
 $string['list'] = 'Ver lista';
 $string['listtemplate'] = 'Modelo de Lista';
 $string['longitude'] = 'Longitude';
-$string['mapexistingfield'] = '	
-Mapear para {$a}';
+$string['mapexistingfield'] = 'Mapear para {$a}';
 $string['mapnewfield'] = 'Criar um novo campo';
 $string['mappingwarning'] = 'Todos os campos antigos que não forem mapeados para um novo campo serão perdidos e todos os dados naquele campo serão removidos.';
 $string['maxentries'] = 'Máximo de itens';
@@ -288,7 +286,7 @@ $string['ods'] = '<acronym title="Planilha OpenDocument">ODS</acronym>(OpenOffic
 $string['optionaldescription'] = 'Descrição breve (opcional)';
 $string['optionalfilename'] = 'Nome do arquivo (opcional)';
 $string['other'] = 'Outro';
-$string['overrwritedesc'] = 'Subscrever se isto já existir ';
+$string['overrwritedesc'] = 'Subscrever se isto já existir';
 $string['overwrite'] = 'Substituir';
 $string['overwritesettings'] = 'Substituir configurações atuais';
 $string['page-mod-data-x'] = 'Qualquer página de banco de dados';

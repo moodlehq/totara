@@ -234,31 +234,30 @@ $string['markoutofmax'] = 'Atingiu {$a->mark} de {$a->max}';
 $string['marks'] = 'Pontos';
 $string['matcherror'] = 'Avaliações não correspondem às opções de avaliação -';
 $string['matchgrades'] = 'Avaliações associadas';
-$string['matchgradeserror'] = 'Erro caso notas não estejam listadas';
 $string['matchgrades_help'] = '<p>As notas importadas <b>devem</b> coincidir com uma das notas
 válidas da lista predeterminada, como abaixo...</p>
 
 <ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
+<li>100%</li>
+<li>90%</li>
+<li>80%</li>
+<li>75%</li>
+<li>70%</li>
+<li>66.666%</li>
+<li>60%</li>
+<li>50%</li>
+<li>40%</li>
+<li>33.333</li>
+<li>30%</li>
+<li>25%</li>
+<li>20%</li>
+<li>16.666%</li>
+<li>14.2857</li>
+<li>12.5%</li>
+<li>11.111%</li>
+<li>10%</li>
+<li>5%</li>
+<li>0%</li>
 </ul>
 
 <p>Valores negativos da lista também são
@@ -269,16 +268,17 @@ a rotina de importação trata os valores que não coincidem <strong>exatamente<
 com um dos valores da lista acima.</p>
 
 <ul>
-  <li><strong>Erro se a nota não está na lista</strong><br />
-  Se a pergunta contem qualquer nota não encontrada na lista um erro é mostrado
-  e a pergunta não será importada.</li>
-  <li><strong>Nota mais próxima se não está na lista</strong><br />
+<li><strong>Erro se a nota não está na lista</strong><br />
+Se a pergunta contem qualquer nota não encontrada na lista um erro é mostrado
+e a pergunta não será importada.</li>
+<li><strong>Nota mais próxima se não está na lista</strong><br />
 
-  Se a nota não coincide com um valor da lista, a nota é alterada
-  para o valor mais próximo da lista.</li>
+Se a nota não coincide com um valor da lista, a nota é alterada
+para o valor mais próximo da lista.</li>
 </ul>
 
 <p><i>Nota: alguns formatos personalizados de importação escrevem diretamente no banco de dados e podem ignorar esta checagem.</i></p>';
+$string['matchgradeserror'] = 'Erro caso notas não estejam listadas';
 $string['matchgradesnearest'] = 'Nota mais próxima, se não listada';
 $string['missingcourseorcmid'] = 'É necessário fornecer o courseid ou cmid para print_question.';
 $string['missingcourseorcmidtolink'] = 'É necessário fornecer o courseid ou cmid para get_question_edit_link.';
@@ -339,9 +339,9 @@ $string['parentcategory_help'] = '<h2>Categoria Pai</h2>
 
 <p>Veja também :</p>
 <ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">Categorias de questões</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">Contextos de categoria</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">Permissões de Questões</a></li>
+<li><a href="help.php?module=question&amp;file=categories.html">Categorias de questões</a></li>
+<li><a href="help.php?module=question&amp;file=categorycontexts.html">Contextos de categoria</a></li>
+<li><a href="help.php?module=question&amp;file=permissions.html">Permissões de Questões</a></li>
 </ul>';
 $string['parenthesisinproperclose'] = 'Os parênteses antes de ** não foram fechados corretamente em {$a}**';
 $string['parenthesisinproperstart'] = 'Os parênteses antes de ** não foram abertos corretamente em {$a}**';

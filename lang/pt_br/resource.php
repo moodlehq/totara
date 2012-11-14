@@ -43,7 +43,6 @@ $string['configpopupwidth'] = 'Qual é a largura predefinida das janelas popup?'
 $string['contentheader'] = 'Conteúdo';
 $string['displayoptions'] = 'Opções de exibição disponíveis';
 $string['displayselect'] = 'Exibir';
-$string['displayselectexplain'] = 'Escolha o tipo de exibição, infelizmente nem todos os tipos são adequados para todos os arquivos.';
 $string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arquivo e se o navegador permitir incorporação, determina como o arquivo é exibido. As opções podem incluir:
 
 Automático - A melhor opção de exibição para o tipo de arquivo é selecionado automaticamente
@@ -53,6 +52,7 @@ Abrir - o arquivo é exibido sozinho na janela do navegador
 Em pop-up - O arquivo é exibido em uma nova janela do navegador, sem menus ou uma barra de endereços
 No frame - O arquivo é exibido dentro de um quadro abaixo da barra de navegação e da descrição do arquivo
 Nova janela - O arquivo é exibido em uma nova janela do navegador com menus e uma barra de endereços';
+$string['displayselectexplain'] = 'Escolha o tipo de exibição, infelizmente nem todos os tipos são adequados para todos os arquivos.';
 $string['encryptedcode'] = 'Código cifrado';
 $string['filenotfound'] = 'Arquivo não encontrado, desculpe.';
 $string['filterfiles'] = 'Filtro de usuários em conteúdo de arquivo';
@@ -81,7 +81,7 @@ $string['printheading'] = 'Exibir o nome do recurso';
 $string['printheadingexplain'] = 'Exibe o nome recurso acima do conteúdo? Alguns tipos de exibição não podem exibir o nome do recurso mesmo se ativados.';
 $string['printintro'] = 'Exibir a descrição do recuros';
 $string['printintroexplain'] = 'Exibir descrição de recursos abaixo do conteúdo? Alguns tipos de exibição não podem exibir a descrição mesmo ativados.';
-$string['resourcecontent'] = 'Arquivos e subpastas';
 $string['resource:exportresource'] = 'Exportar recurso';
 $string['resource:view'] = 'Ver recurso';
+$string['resourcecontent'] = 'Arquivos e subpastas';
 $string['selectmainfile'] = 'Por favor, selecione o arquivo principal, clicando no ícone ao lado do nome do arquivo.';

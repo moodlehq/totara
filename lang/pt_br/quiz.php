@@ -25,16 +25,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['accessnoticesheader'] = 'Você pode visualizar este teste, mas se isto fosse uma tentativa real, você seria bloqueado porque:
-';
+$string['accessnoticesheader'] = 'Você pode visualizar este teste, mas se isto fosse uma tentativa real, você seria bloqueado porque:';
 $string['action'] = 'Ação';
 $string['adaptive'] = 'Modo adaptativo';
-$string['adaptive_help'] = 'Se ativado, várias respostas a uma pergunta são permitidas em uma mesma tentativa do questionário. Por exemplo, se uma resposta está marcada como incorreta, será permitido ao estudante tentar novamente. No entanto, dependendo da definicção de "Aplicar sanções", geralmente serão subtraídos pontos para cada tentativa errada.
-';
+$string['adaptive_help'] = 'Se ativado, várias respostas a uma pergunta são permitidas em uma mesma tentativa do questionário. Por exemplo, se uma resposta está marcada como incorreta, será permitido ao estudante tentar novamente. No entanto, dependendo da definicção de "Aplicar sanções", geralmente serão subtraídos pontos para cada tentativa errada.';
 $string['addaquestion'] = 'Adicionar uma pergunta...';
 $string['addarandomquestion'] = 'Adicionar uma pergunta aleatória';
-$string['addarandomquestion_help'] = 'Quando uma pergunta aleatória é adicionada, isso resulta em uma questão escolhida aleatoriamente a partir da categoria que está sendo inserida no questionário. Isto significa que diferentes alunos poderão receber uma seleção diferente de perguntas, e quando um questionário permite várias tentativas, para cada uma delas é possível conter uma nova seleção de perguntas.
-';
+$string['addarandomquestion_help'] = 'Quando uma pergunta aleatória é adicionada, isso resulta em uma questão escolhida aleatoriamente a partir da categoria que está sendo inserida no questionário. Isto significa que diferentes alunos poderão receber uma seleção diferente de perguntas, e quando um questionário permite várias tentativas, para cada uma delas é possível conter uma nova seleção de perguntas.';
 $string['adddescriptionlabel'] = 'Adicionar descrição/rótulo';
 $string['addingquestion'] = 'Adicionando uma questão';
 $string['addingquestions'] = 'Neste lado da página você administra a sua base de dados de questões. As questões são organizadas em categorias e podem ser usadas por qualquer questionário deste curso ou de outros cursos.
@@ -111,25 +108,22 @@ $string['bothattempts'] = 'Mostrar alunos com e sem tentativas';
 $string['browsersecurity'] = 'Segurança do navegador';
 $string['browsersecurity_help'] = 'Se a opção "Tela cheia pop-up com segurança JavaScript" estiver selecionada,
 
- * O teste só vai começar se o aluno tem um JavaScript habilitado no navegador.
+* O teste só vai começar se o aluno tem um JavaScript habilitado no navegador.
 * O questionário aparece em uma janela <em>pop-up</em> em tela cheia, que abrange todas as outras janelas e não tem controles de navegação
- * Estudantes são impedidos, na medida do possível, de usar os recursos como copiar e colar.';
+* Estudantes são impedidos, na medida do possível, de usar os recursos como copiar e colar.';
 $string['calculated'] = 'Calculado';
 $string['calculatedquestion'] = 'A Questão-Calculada da linha {$a} não é suportada. A questão será ignorada';
 $string['cannotcreatepath'] = 'Percurso não pode ser criado ({$a})';
 $string['cannoteditafterattempts'] = 'Você não pode adicionar ou remover perguntas, porque já foram registradas tentativas. ({$a})';
-$string['cannotfindprevattempt'] = 'Não foi possível encontrar tentativa anterior de construção.
-';
+$string['cannotfindprevattempt'] = 'Não foi possível encontrar tentativa anterior de construção.';
 $string['cannotfindquestionregard'] = 'Falha ao obter questões para reavaliação!';
 $string['cannotinsert'] = 'Impossível inserir questão';
-$string['cannotinsertrandomquestion'] = 'Não foi possível inserir uma nova pergunta aleatória!
-';
+$string['cannotinsertrandomquestion'] = 'Não foi possível inserir uma nova pergunta aleatória!';
 $string['cannotloadquestion'] = 'Não foi possível carregar as opções da pergunta';
 $string['cannotloadtypeinfo'] = 'Não foi possível carregar questiontype informações questão específica';
 $string['cannotopen'] = 'Impossível abrir arquivo de exportação ({$a})';
 $string['cannotrestore'] = 'Não foi possível restaurar as sessões de perguntas';
-$string['cannotreviewopen'] = 'Você não pode rever essa tentativa, ela ainda está aberta.
-';
+$string['cannotreviewopen'] = 'Você não pode rever essa tentativa, ela ainda está aberta.';
 $string['cannotsavelayout'] = 'Não foi possível salvar layout';
 $string['cannotsavenumberofquestion'] = 'Não foi possível salvar número de questões por página';
 $string['cannotsavequestion'] = 'Não foi possível salvar lista de questões';
@@ -157,16 +151,13 @@ $string['comment'] = 'Comentário';
 $string['commentorgrade'] = 'Faça um comentário ou modifique a avaliação';
 $string['comments'] = 'Comentários';
 $string['completedon'] = 'Completado em';
-$string['configadaptive'] = 'Se você escolher \'Sim\' para esta opção, então   será permitido ao estudante a utilização de múltiplas respostas a uma pergunta até mesmo em uma mesma tentativa do questionário.
-';
+$string['configadaptive'] = 'Se você escolher \'Sim\' para esta opção, então   será permitido ao estudante a utilização de múltiplas respostas a uma pergunta até mesmo em uma mesma tentativa do questionário.';
 $string['configattemptsallowed'] = 'Restrições no número de tentativas que estudantes tem permissão no questionário.';
 $string['configdecimaldigits'] = 'Número de dígitos que devem ser mostrados após o ponto decimal ao exibir notas.';
-$string['configdecimalplaces'] = 'Quantidade de dígitos que devem ser mostrados após o ponto decimal ao exibir a pontuação para o questionário. ';
-$string['configdecimalplacesquestion'] = 'Quantidade de dígitos que devem ser mostrados após o ponto decimal ao exibir a série para as perguntas individuais.
-';
+$string['configdecimalplaces'] = 'Quantidade de dígitos que devem ser mostrados após o ponto decimal ao exibir a pontuação para o questionário.';
+$string['configdecimalplacesquestion'] = 'Quantidade de dígitos que devem ser mostrados após o ponto decimal ao exibir a série para as perguntas individuais.';
 $string['configdelay1'] = 'Se você definir um intervalo de tempo, então um estudante tem que esperar que o tempo antes que eles podem tentar um teste após a primeira tentativa.';
-$string['configdelay1st2nd'] = 'Se você definir aqui um tempo, o aluno não pode iniciar a sua segunda tentativa, até que esse tempo tenha se passado desde o final da primeira tentativa.
-';
+$string['configdelay1st2nd'] = 'Se você definir aqui um tempo, o aluno não pode iniciar a sua segunda tentativa, até que esse tempo tenha se passado desde o final da primeira tentativa.';
 $string['configdelay2'] = 'Se você definir um período de tempo aqui, então um estudante tem que esperar que o tempo antes que eles possam tentar as suas tentativas de terceiros ou posterior.';
 $string['configdelaylater'] = 'Se você definir aqui um tempo, o aluno não pode iniciar a sua terceira, quarta ... tentativa até que este tempo tenha passado desde o fim da tentativa anterior.';
 $string['configeachattemptbuildsonthelast'] = 'Se forem permitidas tentativas múltiplas, então cada nova tentativa contém o resultado da anterior.';
@@ -184,7 +175,7 @@ $string['configshowuserpicture'] = 'Mostra a foto do usuário na tela durante as
 $string['configshufflequestions'] = 'Se você habilitar esta opção, então a ordem das perguntas no questionário serão expostas aleatoriamente toda vez que um aluno responder ao questionário.';
 $string['configshufflewithin'] = 'Se você habilitar esta opção, então as partes que compõem cada uma das perguntas será mudada aleatoriamente toda vez que um estudante iniciar uma tentativa no questionário, desde que a opção também esteja ativada nas configurações do questionário.';
 $string['configtimelimit'] = 'Limite de tempo padrão para testes em poucos minutos. 0 significa sem limite de tempo.';
-$string['configtimelimitsec'] = 'Limite padrão de tempo para questionário em segundos. \'Zero\' significa que não há limite de tempo. ';
+$string['configtimelimitsec'] = 'Limite padrão de tempo para questionário em segundos. \'Zero\' significa que não há limite de tempo.';
 $string['configurerandomquestion'] = 'Configurar questão';
 $string['confirmclose'] = 'Uma vez enviada, você não poderá alterar as respostas para esta tentativa.';
 $string['confirmserverdelete'] = 'Você quer mesmo remover o servidor <b>{$a}</b> da lista?';
@@ -382,16 +373,16 @@ $string['history'] = 'Histórico das respostas';
 $string['howquestionsbehave_desc'] = 'Configuração padrão para comportamento das questões no questionário.';
 $string['imagedisplay'] = 'Imagem a ser mostrada';
 $string['import'] = 'Importação';
-$string['importcategory'] = 'importar categoria';
-$string['importerror'] = 'Erro durante a importação';
-$string['importfilearea'] = 'Importação do arquivo já presente no curso...';
-$string['importfileupload'] = 'Importação de arquivo carregado...';
-$string['importfromthisfile'] = 'Importar deste arquivo';
 $string['import_help'] = 'Esta função permite que você importe perguntas de arquivos externos de texto.
 
 Se o arquivo contém caracteres em formato não-ASCII, você deverá usar a codificação UTF-8. Tenha especial cautela ao tratar com arquivos gerados por aplicativos do Microsoft Office, uma vez que estes geralmente usam codificação especial que não serão tratados adequadamente.
 
 Formatos de importação e exportação são um recurso conectável. Outros formatos opcionais podem estar disponíveis na Modules and Plugins database.';
+$string['importcategory'] = 'importar categoria';
+$string['importerror'] = 'Erro durante a importação';
+$string['importfilearea'] = 'Importação do arquivo já presente no curso...';
+$string['importfileupload'] = 'Importação de arquivo carregado...';
+$string['importfromthisfile'] = 'Importar deste arquivo';
 $string['importingquestions'] = 'Importando {$a} questões de arquivo';
 $string['importmax10error'] = 'Erro nesta questão: você não pode incluir mais de dez respostas.';
 $string['importmaxerror'] = 'Erro na questão: número de respostas superior ao limite máximo.';
@@ -452,12 +443,12 @@ $string['navnojswarning'] = '<b>Atenção</b>: esses <em>links</em> não vão sa
 $string['neverallononepage'] = 'Nunca, todas as questões em uma página';
 $string['newattemptfail'] = 'Erro: Não foi possível iniciar uma tentativa deste questionário';
 $string['newpage'] = 'Nova página';
-$string['newpageevery'] = 'Começar nova página automaticamente';
 $string['newpage_help'] = '<P>Para questionários longos faz sentido dividi-los em várias páginas limitando-se
 o números de perguntas por página. Quando se adicionarem perguntas no questionário serão
 inseridas quebras de página automaticamente de acordo com o valor escolhido.
 Contudo posteriormente pode-se também manualmente mover as quebras de página
 na edição da página. </P>';
+$string['newpageevery'] = 'Começar nova página automaticamente';
 $string['noanswers'] = 'Nenhuma resposta foi selecionada!';
 $string['noattempts'] = 'Nenhuma tentativa foi feita neste questionário';
 $string['noattemptsfound'] = 'Nenhuma tentativa encontrada.';
@@ -600,22 +591,27 @@ $string['questiontextisempty'] = '[Texto vazio de pergunta]';
 $string['questiontype'] = 'Tipo de questão {$a}';
 $string['questiontypesetupoptions'] = 'Opções de configuração de tipos de questão';
 $string['quiz:attempt'] = 'Responder questionários';
-$string['quizavailable'] = 'O questionário estará disponível até: {$a}';
-$string['quizclose'] = 'Encerrar o questionário';
-$string['quizclosed'] = 'Este questionário foi encerrado em {$a}';
-$string['quizcloses'] = 'O questionário se encerra';
-$string['quizcloseson'] = 'O questionário será fechado {$a}';
 $string['quiz:deleteattempts'] = 'Cancelar tentativas';
 $string['quiz:emailconfirmsubmission'] = 'Receber confirmação por email ao enviar';
 $string['quiz:emailnotifysubmission'] = 'Receber notificação dos envios por email';
 $string['quiz:grade'] = 'Avaliar manualmente';
 $string['quiz:ignoretimelimits'] = 'Ignorar limite de tempo';
+$string['quiz:manage'] = 'Gerenciar questionários';
+$string['quiz:manageoverrides'] = 'Anular administração do questionário';
+$string['quiz:preview'] = 'Visualização prévia';
+$string['quiz:regrade'] = 'Reclassificar as tentativas do questionário';
+$string['quiz:reviewmyattempts'] = 'Rever as suas tentativas';
+$string['quiz:view'] = 'Ver informação sobre o questionário';
+$string['quiz:viewreports'] = 'Ver relatórios';
+$string['quizavailable'] = 'O questionário estará disponível até: {$a}';
+$string['quizclose'] = 'Encerrar o questionário';
+$string['quizclosed'] = 'Este questionário foi encerrado em {$a}';
+$string['quizcloses'] = 'O questionário se encerra';
+$string['quizcloseson'] = 'O questionário será fechado {$a}';
 $string['quizisclosed'] = 'Este questionário está fechado';
 $string['quizisclosedwillopen'] = 'Questionário fechado (abre {$a})';
 $string['quizisopen'] = 'Este questionário está aberto';
 $string['quizisopenwillclose'] = 'Questionário aberto (fecha {$a})';
-$string['quiz:manage'] = 'Gerenciar questionários';
-$string['quiz:manageoverrides'] = 'Anular administração do questionário';
 $string['quiznavigation'] = 'Navegação do questionário';
 $string['quizopen'] = 'Abrir o questionário';
 $string['quizopenclose'] = 'Datas de abertura e fechamento';
@@ -626,13 +622,8 @@ $string['quizopens'] = 'O questionário inicia';
 $string['quizopenwillclose'] = 'Este questionário está aberto e será fechado em {$a} as';
 $string['quizordernotrandom'] = 'Ordem do questionário não embaralhada';
 $string['quizorderrandom'] = '* Ordem do questionário está embaralhada';
-$string['quiz:preview'] = 'Visualização prévia';
-$string['quiz:regrade'] = 'Reclassificar as tentativas do questionário';
-$string['quiz:reviewmyattempts'] = 'Rever as suas tentativas';
 $string['quizsettings'] = 'Configurações do questionário';
 $string['quiztimer'] = 'Cronômetro do questionário';
-$string['quiz:view'] = 'Ver informação sobre o questionário';
-$string['quiz:viewreports'] = 'Ver relatórios';
 $string['quizwillopen'] = 'Este questionário de aberto {$a}';
 $string['random'] = 'Pergunta aleatória';
 $string['randomcreate'] = 'Criar questões aleatórias';
@@ -691,12 +682,12 @@ que somente as pessoas de uma certa sala estiverem aptas a acessar o questionár
 <P>Por exemplo: <B>192.168. , 231.54.211.0/20, 231.3.56.211</B></P>
 <P>Existem três tipos de números que podem ser usados (não se podem utilizar nomes de domínios em texto como exemplo.com):
 <OL>
-  <LI>Endereços IP completos, tais como <B>192.168.10.1</B> designarão um simples
-  computador (ou proxy).
-  <LI>Endereços parciais, tais como <B>192.168</B> designarão qualquer um
-  iniciando com estes números.
-  <LI>Notação CIDR, tais como <B>231.54.211.0/20</B> permitirá que se especifiquem
-  sub-redes mais detalhadas. </LI></OL>
+<LI>Endereços IP completos, tais como <B>192.168.10.1</B> designarão um simples
+computador (ou proxy).
+<LI>Endereços parciais, tais como <B>192.168</B> designarão qualquer um
+iniciando com estes números.
+<LI>Notação CIDR, tais como <B>231.54.211.0/20</B> permitirá que se especifiquem
+sub-redes mais detalhadas. </LI></OL>
 
 <P>Os espaços são ignorados.</P>';
 $string['response'] = 'Resposta';
@@ -777,19 +768,19 @@ $string['shufflequestions'] = 'Misturar as perguntas';
 $string['shufflequestionsselected'] = 'Foram definidas perguntas embaralhadas, portanto, algumas ações relacionadas a páginas não estão disponíveis. Para alterar a opção de embaralhamento, {$a}.';
 $string['shufflewithin'] = 'Misturar entre as questões';
 $string['shufflewithin_help'] = '<p>Se esta opção estiver ativada, então as partes que compõem as perguntas
-   individualmente serão misturadas aleatoriamente toda vez que um estudante
-   inicia uma tentativa do questionário, contanto que esta opção esteja também
-   ativada na configuração das perguntas.</p>
+individualmente serão misturadas aleatoriamente toda vez que um estudante
+inicia uma tentativa do questionário, contanto que esta opção esteja também
+ativada na configuração das perguntas.</p>
 
 <p>A intenção é simplesmente tornar um pouco mais difícil que os estudantes
-   copiem as respostas entre eles.</p>
+copiem as respostas entre eles.</p>
 
 <p>Isto somente se aplica às perguntas que têm partes múltiplas, tais como
-   perguntas de múltipla escolha ou perguntas de associação. Para perguntas de múltipla escolha
-   a ordem das respostas é misturada somente quando esta opção estiver em
-   "Sim". Para perguntas de associação as respostas são sempre misturadas,
-   e esta opção controla se adicionalmente a ordem dos pares pergunta-resposta
-   serão misturados.</p>
+perguntas de múltipla escolha ou perguntas de associação. Para perguntas de múltipla escolha
+a ordem das respostas é misturada somente quando esta opção estiver em
+"Sim". Para perguntas de associação as respostas são sempre misturadas,
+e esta opção controla se adicionalmente a ordem dos pares pergunta-resposta
+serão misturados.</p>
 
 <p>Esta opção não está relacionada ao uso das perguntas aleatórias.</p>';
 $string['singleanswer'] = 'Escolher uma resposta.';
@@ -811,9 +802,9 @@ $string['submitallandfinish'] = 'Enviar tudo e terminar';
 $string['subneterror'] = 'O acesso a este questionário é limitado aos endereços de rede autorizados. Atualmente o pc que você está utilizando não tem esta autorização.';
 $string['subnetnotice'] = 'Este questionário pode ser acessado apenas em áreas definidas da rede. O seu computador não tem a permissão de acesso. Como professor você pode fazer uma prova de visualização.';
 $string['subplugintype_quiz'] = 'Relatório';
+$string['subplugintype_quiz_plural'] = 'Relatórios';
 $string['subplugintype_quizaccess'] = 'Regra de acesso';
 $string['subplugintype_quizaccess_plural'] = 'Regras de acesso';
-$string['subplugintype_quiz_plural'] = 'Relatórios';
 $string['substitutedby'] = 'será substituído por';
 $string['summaryofattempt'] = 'Resumo de tentativas';
 $string['summaryofattempts'] = 'Resumo das suas tentativas anteriores';
@@ -824,22 +815,22 @@ $string['timecompleted'] = 'Completo';
 $string['timedelay'] = 'Você ainda não pode resolver este questionário porque existe um tempo de espera definido entre a realização de duas tentativas.';
 $string['timeleft'] = 'Tempo restante';
 $string['timelimit'] = 'Limite de tempo';
-$string['timelimitexeeded'] = 'O limite de tempo do questionário foi superado!';
 $string['timelimit_help'] = '<P align=center><STRONG>Tempo Limite</STRONG></P>
 <P>Na configuração padrão os questionários não têm tempo limite, permitindo-se aos estudantes o tempo
 que for necessário para completar o questionário.</P>
 <P>Caso se especifique um tempo limite,  diversas coisas  são feitas para tentar e assegurar
 que os questionários sejam completados dentro deste tempo:</P>
 <UL>
-  <LI>O suporte  ao Javascript no navegador torna-se prioritário - isto permite que o
-  contador do tempo trabalhe corretamente.
-  <LI>Uma janela com o contador é mostrada com a contagem regressiva
-  <LI>Quando a contagem terminar, o questionário é submetido automaticamente com
-  as respostas que foram preenchidas até então
-  <LI>Se um estudante tentar enganar o sistema e gastar mais que 60 segundos acima do tempo permitido
-  então o questionário é automaticamente avaliado com zero.
+<LI>O suporte  ao Javascript no navegador torna-se prioritário - isto permite que o
+contador do tempo trabalhe corretamente.
+<LI>Uma janela com o contador é mostrada com a contagem regressiva
+<LI>Quando a contagem terminar, o questionário é submetido automaticamente com
+as respostas que foram preenchidas até então
+<LI>Se um estudante tentar enganar o sistema e gastar mais que 60 segundos acima do tempo permitido
+então o questionário é automaticamente avaliado com zero.
 </LI>
 </UL>';
+$string['timelimitexeeded'] = 'O limite de tempo do questionário foi superado!';
 $string['timelimitmin'] = 'Limite de tempo (minutos)';
 $string['timelimitsec'] = 'Limite de tempo (segundos)';
 $string['timestr'] = '%H:%M:%S em %d/%m/%y';

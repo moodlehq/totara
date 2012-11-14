@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'FAZER';
 $string['alreadyloggedin'] = 'Você já entrou como {$a}. É necessário sair para poder entrar como outro usuário.';
 $string['authnotexisting'] = 'Esse módulo de autorização não existe.';
 $string['backupcontainexternal'] = 'Este arquivo referencia Servidores da Rede Moodle externos que não estão configurados localmente';
@@ -207,8 +208,7 @@ $string['downloadedfilecheckfailed'] = 'A verificação do arquivo baixado falho
 $string['duplicatefieldname'] = 'Nome de campo duplicado "{$a}" identificado';
 $string['duplicateparaminsql'] = 'ERRO: nome do parâmetro duplicado na consulta';
 $string['duplicaterolename'] = 'Já há um papel com esse nome!';
-$string['duplicateroleshortname'] = 'Já há um papel com esse nome curto!
-';
+$string['duplicateroleshortname'] = 'Já há um papel com esse nome curto!';
 $string['duplicateusername'] = 'Nome de usuário duplicado - saltando linha';
 $string['emailfail'] = 'O envio de email falhou';
 $string['error'] = 'Ocorreu um erro';
@@ -229,8 +229,7 @@ $string['externalauthpassworderror'] = 'Senha não vazia para autenticação ext
 $string['failtoloadblocks'] = 'Há um ou mais blocos registrados no banco de dados, mas não foi possível carregar nenhum deles!';
 $string['fieldrequired'] = '"{$a}" é um campo obrigatório';
 $string['fileexists'] = 'O arquivo já existe';
-$string['filemismatch'] = 'Os nomes dos arquivos não conferem. O arquivo "{$a->current}" deveria ser {$a->file}
-';
+$string['filemismatch'] = 'Os nomes dos arquivos não conferem. O arquivo "{$a->current}" deveria ser {$a->file}';
 $string['filenotfound'] = 'Sinto muito, o arquivo não foi encontrado';
 $string['filenotreadable'] = 'Arquivo não é legível';
 $string['filterdoesnothavelocalconfig'] = 'O filtro {$a} não permite configuração local.';
@@ -299,8 +298,7 @@ $string['invalidgroupid'] = 'Especificação de ID de grupo incorreta';
 $string['invalidipformat'] = 'Formato inválido de endereço IP';
 $string['invaliditemid'] = 'Id de item incorreto';
 $string['invalidkey'] = 'Chave incorreta';
-$string['invalidlegacy'] = 'Definição de papel legado incorreta para o tipo: {$a}
-';
+$string['invalidlegacy'] = 'Definição de papel legado incorreta para o tipo: {$a}';
 $string['invalidmd5'] = 'A variável de verificação estava errada - tente novamente';
 $string['invalidmode'] = 'Modo inválido ({$a})';
 $string['invalidmodule'] = 'Módulo inválido';
@@ -345,12 +343,11 @@ $string['loginasnoenrol'] = 'Você não pode usar a inscrição enquanto a sess�
 $string['loginasonecourse'] = 'Impossível entrar nesse curso.<br /> Você precisa finalizar a sessão "Logar como" antes de entrar em outro curso.';
 $string['maxbytes'] = 'Este arquivo é maior que o tamanho máximo';
 $string['messagingdisable'] = 'As mensagens não estão habilitadas nesta instalação';
-$string['mimetexisnotexist'] = 'Seu sistema não está configurado para executar mimeTex. Você precisa baixar o arquivo executável apropriado para sua plataforma PHP_OS em <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, ou obter o código fonte C em <a href="http://www.forkosh.com/mimetex.zip">http://www.forkosh.com/mimetex.zip</ a>, compilar e colocar o seu executável no diretório moodle/filter/tex.
-';
+$string['mimetexisnotexist'] = 'Seu sistema não está configurado para executar mimeTex. Você precisa baixar o arquivo executável apropriado para sua plataforma PHP_OS em <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, ou obter o código fonte C em <a href="http://www.forkosh.com/mimetex.zip">http://www.forkosh.com/mimetex.zip</ a>, compilar e colocar o seu executável no diretório moodle/filter/tex.';
 $string['mimetexnotexecutable'] = 'O mimetex personalizado não é executável!';
+$string['missing_moodle_backup_xml_file'] = 'Falta o arquivo XML {$a} para poder fazer o arquivamento';
 $string['missingfield'] = 'O campo "{$a}" está faltando';
 $string['missingkeyinsql'] = 'ERRO: falta o parâmetro "{$a}" na consulta';
-$string['missing_moodle_backup_xml_file'] = 'Falta o arquivo XML {$a} para poder fazer o arquivamento';
 $string['missingparam'] = 'Falta o parâmetro requerido {$a}';
 $string['missingparameter'] = 'Falta um parâmetro';
 $string['missingrequiredfield'] = 'Faltam informações obrigatórias';
@@ -368,8 +365,7 @@ $string['multiplerestorenotallow'] = 'Restauração múltipla não é permitida!
 $string['mustbeloggedin'] = 'Você deve entrar no ambiente para fazer isto';
 $string['mustbeteacher'] = 'Apenas os professores podem consultar esta página';
 $string['myisamproblem'] = 'As tabelas do banco de dados estão usando a máquina MyISAM. Recomenda-se usar uma máquina de banco de dados compatível com ACID, com suporte completo a transações, como, por exemplo, InnoDB';
-$string['needcopy'] = 'Você precisa copiar algo primeiro!
-';
+$string['needcopy'] = 'Você precisa copiar algo primeiro!';
 $string['needcoursecategroyid'] = 'Deve ser especificado o ID do curso ou da categoria';
 $string['needphpext'] = 'Você deve acrescentar suporte {$a} para sua instalação de PHP';
 $string['noadmins'] = 'Não há administradores!';
@@ -395,7 +391,7 @@ $string['nopermissiontodelentry'] = 'Você não pode apagar as mensagens de outr
 $string['nopermissiontoeditcomment'] = 'Você não pode editar os comentários de outras pessoas!';
 $string['nopermissiontohide'] = 'Sem permissão para ocultar!';
 $string['nopermissiontoimportact'] = 'Você não possui as devidas permissões para importar atividades para este curso';
-$string['nopermissiontolock'] = 'Sem permissão para trancar! ';
+$string['nopermissiontolock'] = 'Sem permissão para trancar!';
 $string['nopermissiontomanagegroup'] = 'Você não term as permissões necessárias para gerenciar grupos';
 $string['nopermissiontorate'] = 'Não é permitido avaliar items!';
 $string['nopermissiontoshow'] = 'Sem permissão para ver isto!';
@@ -425,17 +421,16 @@ $string['prefixcannotbeempty'] = '<p> Erro: prefixo da tabela do banco de dados 
 $string['prefixtoolong'] = '<p> Erro: prefixo da tabela do banco de dados é muito grande ({$a->dbfamily})</p> <p> O administrador do site deve corrigir esse problema. Tamanho máximo para prefixos de tabela no {$a->dbfamily} é {$a->maxlength} caracteres.</p>';
 $string['processingstops'] = 'Processamento interrompido aqui. Os demais registros foram ignorados.';
 $string['protected_cc_not_supported'] = 'Cartuchos protegidos não suportados.';
-$string['redirecterrordetected'] = 'Detectado redirecionamento não suportado. A execução do script foi cancelada
-';
+$string['redirecterrordetected'] = 'Detectado redirecionamento não suportado. A execução do script foi cancelada';
 $string['refoundto'] = 'Pode ser reembolsado ao {$a}';
 $string['refoundtoorigi'] = 'Devolução do montante original: {$a}';
 $string['remotedownloaderror'] = 'O download do componente falhou, por favor verifique as configurações do proxy. A extensão cURL do PHP é altamente recomendada.<br /><br />Você precisar baixar o <a href="{$a->url}">arquivo</a> manualmente, copiar para "{$a->dest}" e descompactar lá.';
 $string['remotedownloadnotallowed'] = 'Não é permitido baixar componentes no seu servidor (allow_url_fopen está desabilitado).).<br /><br />Você deve baixar o arquivo <a href="{$a->url}">{$a->url}</a> manualmente, copiar em "{$a->dest}" no seu servidor e descomprimir o arquivo nesta posição.';
 $string['reportnotavailable'] = 'Este tipo de informe só está disponível para o curso global';
 $string['requireloginerror'] = 'Curso ou atividade não acessível.';
-$string['restorechecksumfailed'] = 'Erro ao restaurar a informação relativa à sessão. Controle os limites memory/DB do PHP.';
 $string['restore_path_element_missingmethod'] = 'Método de restauração {$a} está faltando. Precisa ser definido por um desenvolvedor.';
 $string['restore_path_element_noobject'] = 'Restauração do objeto {$a} não é um objeto.';
+$string['restorechecksumfailed'] = 'Erro ao restaurar a informação relativa à sessão. Controle os limites memory/DB do PHP.';
 $string['restrictedcontextexception'] = 'Desculpe, a execução da função externa viola restrição de contexto.';
 $string['restricteduser'] = 'Sinto muito, mas a sua conta atual, "{$a}" , não tem permissão para fazer isto.';
 $string['reverseproxyabused'] = 'Proxy reverso habilitado. Não é possível o acesso direto ao servidor. <br />Favor entre em contato com o administrador.';
@@ -468,7 +463,6 @@ $string['tagnotfound'] = 'O tag especificado não foi encontrado no banco de dad
 $string['targetdatabasenotempty'] = 'O banco de dados de destino não está vazio. Transferência cancelada por razões de segurança.';
 $string['textconditionsnotallowed'] = 'Não é permitida a comparação de condições de colunas de texto. Favor usar sql_compare_text() na sua consulta.';
 $string['themenotinstall'] = 'Este tema não está instalado!';
-$string['TODO'] = 'FAZER';
 $string['tokengenerationfailed'] = 'Não é possível gerar um novo token.';
 $string['transactionvoid'] = 'A transação não pode ser anulada porque já foi cancelada';
 $string['unenrolerror'] = 'Ocorreu um erro ao tentar desinscrever essa pessoa';
@@ -492,7 +486,7 @@ $string['unknownrole'] = 'Papel desconhecido: "{$a}"';
 $string['unknownsortcolumn'] = 'Coluna de ordenação desconhecida {$a}';
 $string['unknownuseraction'] = 'Sinto muito, não entendo esta ação de usuário';
 $string['unknownuserselector'] = 'Seletor de usuário não identificado';
-$string['unknoworder'] = 'Ordenação desconhecida ';
+$string['unknoworder'] = 'Ordenação desconhecida';
 $string['unknowparamtype'] = 'Tipo de parâmetro desconhecido: {$a}';
 $string['unknowquestiontype'] = 'Tipo de questão {$a} não suportado';
 $string['unknowuploadaction'] = 'Erro: Ação de envio de arquivo ({$a}) desconhecida';

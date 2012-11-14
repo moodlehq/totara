@@ -214,9 +214,9 @@ $string['category_help'] = '<p>Algumas categorias de curso devem ter sido defini
 <p>Por exemplo: "Ciências", "Economia", "Saúde Pública", etc.</p>
 
 <p>Escolha a categoria mais adequada ao seu curso.
-   A categoria escolhida determina a posição do seu curso
-   na lista de cursos para que os alunos o encontrem
-   com facilidade.</p>';
+A categoria escolhida determina a posição do seu curso
+na lista de cursos para que os alunos o encontrem
+com facilidade.</p>';
 $string['categoryadded'] = 'A categoria \'{$a}\' foi adicionada';
 $string['categorycontents'] = 'Subcategorias e cursos';
 $string['categorycurrentcontents'] = 'Conteúdos de {$a}';
@@ -1123,15 +1123,15 @@ $string['newsitem'] = 'Notícia';
 $string['newsitems'] = 'Notícias';
 $string['newsitemsnumber'] = 'Quantas notícias mostrar';
 $string['newsitemsnumber_help'] = '<P>"Últimas Notícias" é um fórum especial dos cursos que adotam os formatos "semanal" e "tópicos". É
-   um bom lugar para publicar avisos que devam ser vistos por todos os alunos.
-   Como regra predefinida, todos os alunos são assinantes deste fórum
-   e receberão uma cópia dos avisos via email.</p>
+um bom lugar para publicar avisos que devam ser vistos por todos os alunos.
+Como regra predefinida, todos os alunos são assinantes deste fórum
+e receberão uma cópia dos avisos via email.</p>
 
 <P>Esta configuração define o número de notícias recentes que serão visualizadas na
-   página principal do curso, no bloco "Últimas Notícias".</p>
+página principal do curso, no bloco "Últimas Notícias".</p>
 
 <P>Se você definir o valor como "0 itens" o bloco "Últimas Notícias"
-   não será visualizado.</p>';
+não será visualizado.</p>';
 $string['newuser'] = 'Novo usuário';
 $string['newusernewpasswordsubj'] = 'Nova conta de usuário';
 $string['newusernewpasswordtext'] = 'Oi {$a->firstname},
@@ -1437,7 +1437,7 @@ $string['scale_help'] = '<p>Os professores podem criar novas escalas e critério
 <p>Uma escala é definida por uma lista de valores ordenada, do mais negativo ao mais positivo, separados por vírgulas. Por exemplo:</p>
 
 <p class="indent"><i>
-   Insuficiente, Sofrível,Bom,Ótimo,Excelente
+Insuficiente, Sofrível,Bom,Ótimo,Excelente
 </i></p>
 
 <p>As escalas devem incluir uma boa descrição dos critérios e de como deve ser utilizada. Esta descrição é visualizada nas páginas de ajuda correspondentes.</p>
@@ -1512,9 +1512,9 @@ $string['shortname'] = 'Nome breve';
 $string['shortnamecollisionwarning'] = '[*] = Este nome breve já é utilizado por outro curso e deverá ser mudado depois da aprovação';
 $string['shortnamecourse'] = 'Nome breve do curso';
 $string['shortnamecourse_help'] = '<P>Muitas instituições adotam um nome breve ou código para identificar um curso, algo como
-   BP102 ou COMMS.  Se o seu curso não corresponde a um nome breve real, crie um. Este
-   nome breve será usado em alguns lugares onde a utilização do nome completo não é apropriada
-   (por exemplo: na descrição do assunto das mensagens de email).</P>';
+BP102 ou COMMS.  Se o seu curso não corresponde a um nome breve real, crie um. Este
+nome breve será usado em alguns lugares onde a utilização do nome completo não é apropriada
+(por exemplo: na descrição do assunto das mensagens de email).</P>';
 $string['shortnametaken'] = 'Este nome breve já é usado por um outro curso';
 $string['shortnameuser'] = 'Nome breve do usuário';
 $string['shortsitename'] = 'Nome breve do site';

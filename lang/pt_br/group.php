@@ -76,8 +76,8 @@ $string['groupinfo'] = 'Informações sobre o grupo selecionado';
 $string['groupinfomembers'] = 'Informações sobre os membros selecionados';
 $string['groupinfopeople'] = 'Informações sobre as pessoas selecionadas';
 $string['grouping'] = 'Agrupamento';
-$string['groupingdescription'] = 'Descrição do agrupamento';
 $string['grouping_help'] = 'O agrupamento é uma coleção de grupos dentro de um curso. Se um agrupamento é selecionado, os alunos associados aos grupos desse agrupamento poderão trabalhar juntos.';
+$string['groupingdescription'] = 'Descrição do agrupamento';
 $string['groupingname'] = 'Nome do agrupamento';
 $string['groupingnameexists'] = 'O nome do agrupamento \'{$a}\' já existe nesse curso, por favor escolha outro.';
 $string['groupings'] = 'Agrupamentos';
@@ -86,13 +86,11 @@ $string['groupmember'] = 'Membro do grupo';
 $string['groupmemberdesc'] = 'Função padrão de um membro de um grupo';
 $string['groupmembers'] = 'Membros do grupo';
 $string['groupmembersonly'] = 'Disponível apenas para membros do grupo';
-$string['groupmembersonlyerror'] = 'Sinto muito, você precisa ser membro de pelo menos um grupo incluído nessa atividade.';
 $string['groupmembersonly_help'] = 'Se esta caixa de seleção for marcada, a atividade (ou recurso) estará disponível para os alunos pertencentes aos grupos dentro do agrupamento selecionado.';
+$string['groupmembersonlyerror'] = 'Sinto muito, você precisa ser membro de pelo menos um grupo incluído nessa atividade.';
 $string['groupmemberssee'] = 'Ver membros do grupo';
 $string['groupmembersselected'] = 'Membros do grupo selecionado';
 $string['groupmode'] = 'Modalidade grupo';
-$string['groupmodeforce'] = 'Forçar modalidade grupo';
-$string['groupmodeforce_help'] = 'Se o modo de grupo é forçado, então o modo de grupo do curso é aplicado a todas as atividades do curso. Configurações do modo de grupo de cada atividade serão ignoradas.';
 $string['groupmode_help'] = 'Esta configuração possui 3 opções:
 
 * Nenhum grupo - Não há sub-grupos, todos fazem parte de uma grande comunidade
@@ -100,6 +98,8 @@ $string['groupmode_help'] = 'Esta configuração possui 3 opções:
 * Grupos visíveis - Cada membro do grupo trabalha no seu próprio grupo mas pode também ver outros grupos
 
 O tipo de grupo definido no nível do curso é o padrão para todas as atividades do curso. Cada atividade que suporta grupos pode também definir seu próprio tipo de grupo mas, se o tipo de grupo é forçado no nível do curso, o tipo de grupo para cada atividade é ignorado.';
+$string['groupmodeforce'] = 'Forçar modalidade grupo';
+$string['groupmodeforce_help'] = 'Se o modo de grupo é forçado, então o modo de grupo do curso é aplicado a todas as atividades do curso. Configurações do modo de grupo de cada atividade serão ignoradas.';
 $string['groupmy'] = 'Meu grupo';
 $string['groupname'] = 'Nome do grupo';
 $string['groupnameexists'] = 'O nome de grupo \'{$a}\' já existe nesse curso, por favor escolha outro.';

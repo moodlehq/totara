@@ -51,7 +51,6 @@ Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados
 
 <p> Nenhuma destas configuraços afetará o envio de mensagens pelos professores</p>';
 $string['blockperiod'] = 'Duração do bloqueio';
-$string['blockperioddisabled'] = 'Não bloquear';
 $string['blockperiod_help'] = '<p>O conceito de limite do envio de mensagens é muito simples.
 Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.</p>
 
@@ -60,6 +59,7 @@ Configurando o limite de mensagens enviadas como 0 (zero) o bloqueio é desabili
 Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.</p>
 
 <p> Nenhuma destas configuraços afetará o envio de mensagens pelos professores</p>';
+$string['blockperioddisabled'] = 'Não bloquear';
 $string['blogforum'] = 'Fórum padrão exibido em um formato de blog';
 $string['bynameondate'] = 'por {$a->name} - {$a->date}';
 $string['cannotadd'] = 'Não é possível adicionar a discussão a este fórum.';
@@ -85,7 +85,7 @@ $string['cannotpurgecachedrss'] = 'Não foi possível limpar feeds RSS em cache 
 $string['cannotremovesubscriber'] = 'Não foi possível remover assinante com id {$a} deste fórum!';
 $string['cannotreply'] = 'Não se pode responder a esta menssagem';
 $string['cannotsplit'] = 'Os debates a este fórum não podem ser divididos';
-$string['cannotsubscribe'] = 'Lamento, mas você deve ser membro do grupo para subscrevê-lo. ';
+$string['cannotsubscribe'] = 'Lamento, mas você deve ser membro do grupo para subscrevê-lo.';
 $string['cannottrack'] = 'Não é possível parar de rastrear este fórum.';
 $string['cannotunsubscribe'] = 'Não foi possível desligar sua assinatura deste fórum';
 $string['cannotupdatepost'] = 'Você não pode atualizar esta mensagem.';
@@ -177,9 +177,6 @@ $string['forcessubscribe'] = 'Todos os usuários deste fórum são assinantes';
 $string['forum'] = 'Fórum';
 $string['forum:addnews'] = 'Acrescentar notícia';
 $string['forum:addquestion'] = 'Adicionar questão';
-$string['forumauthorhidden'] = 'Autor (oculto)';
-$string['forumblockingalmosttoomanyposts'] = 'Você está atingindo o limite máximo de mensagens. Você publicou {$a->numposts} vezes nos últimos {$a->blockperiod} e o limite é de {$a->blockafter} mensagens.';
-$string['forumbodyhidden'] = 'Você não pode ver esta mensagem provavelmente porque ainda não publicou nada nesta discussão.';
 $string['forum:createattachment'] = 'Criar anexos';
 $string['forum:deleteanypost'] = 'Cancelar todas as mensagens (sempre)';
 $string['forum:deleteownpost'] = 'Cancelar as próprias mensagens (com limite de tempo)';
@@ -187,20 +184,30 @@ $string['forum:editanypost'] = 'Editar qualquer mensagem';
 $string['forum:exportdiscussion'] = 'Exportar todo o debate';
 $string['forum:exportownpost'] = 'Exportar a própria mensagem';
 $string['forum:exportpost'] = 'Exportar mensagem';
-$string['forumintro'] = 'Introdução ao Fórum';
 $string['forum:managesubscriptions'] = 'Gerenciar assinaturas';
 $string['forum:movediscussions'] = 'Mover discussões';
-$string['forumname'] = 'Nome do Fórum';
-$string['forumposts'] = 'Mensagens do fórum';
 $string['forum:postwithoutthrottling'] = 'Isento de limite de mensagem';
 $string['forum:rate'] = 'Avaliar mensagens';
 $string['forum:replynews'] = 'Responder às notícias';
 $string['forum:replypost'] = 'Responder às mensagens';
-$string['forums'] = 'Fóruns';
 $string['forum:splitdiscussions'] = 'Separar discussões';
 $string['forum:startdiscussion'] = 'Iniciar novas discussões';
-$string['forumsubjecthidden'] = 'Assunto (oculto)';
 $string['forum:throttlingapplies'] = 'Controle de fluxo de banda é aplicável';
+$string['forum:viewallratings'] = 'Ver todas as qualificações emitidas pelos usuários';
+$string['forum:viewanyrating'] = 'Ver todas as avaliações de todos os alunos';
+$string['forum:viewdiscussion'] = 'Ver discussões';
+$string['forum:viewhiddentimedposts'] = 'Ver mensagens escondidas';
+$string['forum:viewqandawithoutposting'] = 'Ver sempre mensagens Q e A';
+$string['forum:viewrating'] = 'Ver as suas avaliações';
+$string['forum:viewsubscribers'] = 'Ver assinantes';
+$string['forumauthorhidden'] = 'Autor (oculto)';
+$string['forumblockingalmosttoomanyposts'] = 'Você está atingindo o limite máximo de mensagens. Você publicou {$a->numposts} vezes nos últimos {$a->blockperiod} e o limite é de {$a->blockafter} mensagens.';
+$string['forumbodyhidden'] = 'Você não pode ver esta mensagem provavelmente porque ainda não publicou nada nesta discussão.';
+$string['forumintro'] = 'Introdução ao Fórum';
+$string['forumname'] = 'Nome do Fórum';
+$string['forumposts'] = 'Mensagens do fórum';
+$string['forums'] = 'Fóruns';
+$string['forumsubjecthidden'] = 'Assunto (oculto)';
 $string['forumtracked'] = 'As mensagens não lidas são evidenciadas';
 $string['forumtrackednot'] = 'As mensagens não lidas não são evidenciadas';
 $string['forumtype'] = 'Tipo de Fórum';
@@ -213,13 +220,6 @@ $string['forumtype_help'] = '<P>Os fóruns podem ter as seguintes característic
 <P><B>Cada usuário inicia apenas UM NOVO tópico</B> - cada participante pode abrir apenas um novo tópico de discussão, mas todos podem responder livremente as mensagens, sem limites de quantidades. Este formato é usado, por exemplo, nas atividades em que cada participante apresenta um tema a ser discutido e atua como moderador da discussão deste tema.</P>
 
 <p><b>Fórum Perguntas e Respostas</b> - neste fórum um estudante pode ler as mensagens de outros sómente após a publicação de sua mensagem. Depois disto pode também responder às mensagens do grupo. isto permite que a primeira mensagem de cada estudante seja original e independente.</p>';
-$string['forum:viewallratings'] = 'Ver todas as qualificações emitidas pelos usuários';
-$string['forum:viewanyrating'] = 'Ver todas as avaliações de todos os alunos';
-$string['forum:viewdiscussion'] = 'Ver discussões';
-$string['forum:viewhiddentimedposts'] = 'Ver mensagens escondidas';
-$string['forum:viewqandawithoutposting'] = 'Ver sempre mensagens Q e A';
-$string['forum:viewrating'] = 'Ver as suas avaliações';
-$string['forum:viewsubscribers'] = 'Ver assinantes';
 $string['generalforum'] = 'Fórum geral';
 $string['generalforums'] = 'Fóruns gerais';
 $string['inforum'] = 'em {$a}';
@@ -406,9 +406,6 @@ $string['subscribersto'] = 'Assinantes de \'{$a}\'';
 $string['subscribestart'] = 'Me mande cópias das mensagens deste fórum via Email';
 $string['subscribestop'] = 'Não quero receber cópias das mensagens deste fórum via email';
 $string['subscription'] = 'Assinatura';
-$string['subscriptionauto'] = 'Assinatura automática';
-$string['subscriptiondisabled'] = 'Assinatura desabilitada';
-$string['subscriptionforced'] = 'Assinatura forçada';
 $string['subscription_help'] = '<P>Um assinante é um usuário que recebe cópias de todas as mensagens de um fórum via email.
 Estas mensagens são enviadas via email minutos após a redação no fórum.</p>
 
@@ -419,6 +416,9 @@ Estas mensagens são enviadas via email minutos após a redação no fórum.</p>
 <P>Para que um participante seja assinante de um fórum específico, deve clicar a frase "Receber as mensagens deste fórum via email", no início daquele fórum. Para cancelar o recebimento, uma vez que alguém é assinante, deve clicar a frase Suspender o recebimento de mensagens deste fórum via email.</p>
 
 <p>Os participantes podem, ainda, escolher em suas páginas de edição de perfil, se querem que a assinatura seja automático nos fóruns aos quais este participante envia mensagens.</p>';
+$string['subscriptionauto'] = 'Assinatura automática';
+$string['subscriptiondisabled'] = 'Assinatura desabilitada';
+$string['subscriptionforced'] = 'Assinatura forçada';
 $string['subscriptionmode'] = 'Modo de assinatura';
 $string['subscriptionmode_help'] = '<P>Um assinante é um usuário que recebe cópias de todas as mensagens de um fórum via email.
 Estas mensagens são enviadas via email minutos após a redação no fórum.</p>

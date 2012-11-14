@@ -43,10 +43,12 @@ $string['allowresubmit_help'] = '<P>A configuração padrão proibe um aluno de 
 
 <P>Esta opção não é útil nas Tarefas Offline</P>';
 $string['alreadygraded'] = 'A sua tarefa já foi avaliada. Não é possível enviar outros documentos.';
-$string['assignmentdetails'] = 'Detalhes da tarefa';
 $string['assignment:exportownsubmission'] = 'Exportar a própria apresentação';
 $string['assignment:exportsubmission'] = 'Exportar envio';
 $string['assignment:grade'] = 'Avaliar tarefa';
+$string['assignment:submit'] = 'Enviar tarefa';
+$string['assignment:view'] = 'Ver tarefa';
+$string['assignmentdetails'] = 'Detalhes da tarefa';
 $string['assignmentmail'] = '{$a->teacher} escreveu comentários sobre a seguinte tarefa que você apresentou: \'{$a->assignment}\'
 
 Leia os comentários anexos à tarefa:
@@ -57,9 +59,7 @@ Leia os <a href="{$a->url}">comentários anexos à tarefa</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} publicou alguns comentários em sua tarefa apresentada para \'{$a->assignment}\'. Você pode visualizar estes comentários incluídos em sua tarefa apresentada';
 $string['assignmentname'] = 'Nome da tarefa';
 $string['assignmentsubmission'] = 'Apresentações de tarefa';
-$string['assignment:submit'] = 'Enviar tarefa';
 $string['assignmenttype'] = 'Tipo de tarefa';
-$string['assignment:view'] = 'Ver tarefa';
 $string['availabledate'] = 'Disponível a partir de';
 $string['cannotdeletefiles'] = 'Erro: os arquivos não foram apagados';
 $string['cannotviewassignment'] = 'Você não pode ver esta tarefa';
@@ -95,15 +95,15 @@ $string['emailteachermailhtml'] = '{$a->username} atualizou a sua tarefa <i>\'{$
 Esta pode ser acessada <a href="{$a->url}">no site</a>.';
 $string['emailteachers'] = 'Avisos por email aos professores';
 $string['emailteachers_help'] = '<p>Se habilitado, os professores serão avisados através de mensagens breves por correio
-   eletrônico sempre que os estudantes enviare um novo documento ou atualizarem um documento enviado.</p>
+eletrônico sempre que os estudantes enviare um novo documento ou atualizarem um documento enviado.</p>
 
 <p>Sómente os professores que são autorizados a avaliar um envio em particular são
-   notificados. Assim, por exemplo, se o curso usa grupos separados, então os professores
-   associados a um grupo particular não irão receber nenhum aviso sobre estudantes de outros
-   grupos.</p>
+notificados. Assim, por exemplo, se o curso usa grupos separados, então os professores
+associados a um grupo particular não irão receber nenhum aviso sobre estudantes de outros
+grupos.</p>
 
 <p>Para atividades offline, evidentemente, nenhuma mensagem será enviada, já
-   que os estudantes não enviam documentos.</p>';
+que os estudantes não enviam documentos.</p>';
 $string['emptysubmission'] = 'Você ainda não enviou nada';
 $string['enablenotification'] = 'Enviar notificação via email';
 $string['enablenotification_help'] = '<p>Ativando isto, os estudantes serão notificados por email sobre suas notas e feedback.</p>
@@ -177,14 +177,14 @@ $string['popupinnewwindow'] = 'Abrir uma janela popup';
 $string['preventlate'] = 'Impedir envio atrasado';
 $string['quickgrade'] = 'Permitir avaliação veloz';
 $string['quickgrade_help'] = '<p>Com a Avaliação Rápida ativada, você pode avaliar rapidamente diversos envios na
-   mesma página.</p>
+mesma página.</p>
 
 <p>Basta mudar a nota e os comentários e usar o botão Salvar no fim da página para gravar
-   todas as mudanças.</p>
+todas as mudanças.</p>
 
 <p>Os botões de acesso à página de avaliação individual continuam ativos, caso você precise de mais espaço para escrever feedbacks.
-   Suas preferências de Avaliação Rápida serão gravadas e aplicadas a todas as terefas, em todos os
-   cursos.</p>';
+Suas preferências de Avaliação Rápida serão gravadas e aplicadas a todas as terefas, em todos os
+cursos.</p>';
 $string['requiregrading'] = 'Requer pontuação (notas)';
 $string['responsefiles'] = 'Arquivos de resposta';
 $string['reviewed'] = 'Revisado';
@@ -213,8 +213,8 @@ $string['typeonline'] = 'Texto online';
 $string['typeupload'] = 'Modalidade avançada de carregamento de arquivos';
 $string['typeuploadsingle'] = 'Envio de  arquivo único';
 $string['unfinalize'] = 'Reverter a esboço';
-$string['unfinalizeerror'] = 'Erro: não foi possível reverter a esboço';
 $string['unfinalize_help'] = 'Reverter para rascunho permite ao estudante fazer novas atualizações em sua tarefa';
+$string['unfinalizeerror'] = 'Erro: não foi possível reverter a esboço';
 $string['uploadafile'] = 'Enviar um arquivo';
 $string['uploadbadname'] = 'O nome deste arquivo contém caracteres estranhos e não pode ser enviado';
 $string['uploadedfiles'] = 'Arquivos enviados';
@@ -226,8 +226,7 @@ $string['uploadnofilefound'] = 'Não foi encontrado nenhum arquivo - você tem c
 $string['uploadnotregistered'] = '\'{$a}\' foi recebido corretamente mas o envio não foi registrado!';
 $string['uploadsuccess'] = '\'{$a}\' enviado com sucesso!';
 $string['usermisconf'] = 'Configuração incorreta de usuário';
-$string['usernosubmit'] = 'Sentimos muito, mas você não tem permissão para apresentar atribuições.
-';
+$string['usernosubmit'] = 'Sentimos muito, mas você não tem permissão para apresentar atribuições.';
 $string['viewfeedback'] = 'Ver  avaliação e feedback';
 $string['viewmysubmission'] = 'Ver minha apresentação';
 $string['viewsubmissions'] = 'Ver {$a} tarefas enviadas';

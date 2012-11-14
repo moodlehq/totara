@@ -49,14 +49,14 @@ $string['always'] = 'Sempre';
 $string['automatic'] = 'Automático, baseado na URL acessada';
 $string['baseurl'] = 'URL Base';
 $string['basiclti'] = 'LTI';
-$string['basicltiactivities'] = 'Atividades LTI';
 $string['basiclti_base_string'] = 'Base de strings LTI OAuth';
 $string['basiclti_endpoint'] = 'Lançamento LTI Endpoint';
-$string['basicltifieldset'] = 'Fieldset personalizado de exemplo';
 $string['basiclti_in_new_window'] = 'Sua atividade foi aberta em uma nova janela';
+$string['basiclti_parameters'] = 'Parâmetro LTI';
+$string['basicltiactivities'] = 'Atividades LTI';
+$string['basicltifieldset'] = 'Fieldset personalizado de exemplo';
 $string['basicltiintro'] = 'Descrição da atividade';
 $string['basicltiname'] = 'Nome da atividade';
-$string['basiclti_parameters'] = 'Parâmetro LTI';
 $string['basicltisettings'] = 'Configurações de ferramenta de interoperabilidade básica de aprendizagem';
 $string['cannot_delete'] = 'Você não pode excluir a configuração desta ferramenta.';
 $string['cannot_edit'] = 'Você não deve editar a configuração desta ferramenta.';
@@ -68,9 +68,9 @@ $string['configpreferwidth'] = 'Largura padrão preferida';
 $string['configresourceurl'] = 'URL recurso padrão';
 $string['configtoolurl'] = 'URL da ferramenta remota padrão';
 $string['configtypes'] = 'Habilitar Aplicações LTI';
+$string['course_tool_types'] = 'Tipos de ferramentas de curso';
 $string['courseid'] = 'Número id do curso';
 $string['coursemisconf'] = 'Curso está desconfigurado';
-$string['course_tool_types'] = 'Tipos de ferramentas de curso';
 $string['createdon'] = 'Criada em';
 $string['curllibrarymissing'] = 'Biblioteca PHP Curl deve estar instalada para utilizar LTI';
 $string['custom'] = 'Parâmetros personalizados';
@@ -125,23 +125,23 @@ $string['external_tool_type_help'] = 'O principal objetivo de uma ferramenta de 
 Ele também fornece uma oportunidade para os padrões de configuração e criação de serviços adicionais fornecidos pela ferramenta.
 
 *** Automática, com base na URL Lançamento ** - Esta definição deve ser usado em quase todos os casos. Moodle irá selecionar a configuração da ferramenta mais adequada
-        com base na URL lançamento. Ferramentas configurados tanto por um administrador ou dentro deste curso será utilizado.
-        Quando o URL lançamento está especificado, o Moodle irá fornecer feedback sobre se reconhece ou não. Se o Moodle não reconhece a URL de Lançamento,
-        você pode precisar para entrar nos detalhes de configuração da ferramenta manualmente.
+com base na URL lançamento. Ferramentas configurados tanto por um administrador ou dentro deste curso será utilizado.
+Quando o URL lançamento está especificado, o Moodle irá fornecer feedback sobre se reconhece ou não. Se o Moodle não reconhece a URL de Lançamento,
+você pode precisar para entrar nos detalhes de configuração da ferramenta manualmente.
 *** Um tipo de ferramenta específica ** - Ao selecionar um tipo de ferramenta específica, você pode forçar Moodle para usar essa configuração de ferramentas de comunicação com o
-        provedor de ferramenta externa. Se o URL de lançamento não parecem pertencer ao fornecedor de ferramenta, aparecerá um aviso. Em alguns casos, não é necessário
-        para introduzir um URL de lançamento na prestação de um tipo de ferramenta específica (se não o lançamento de um recurso especial no âmbito do provedor de ferramenta).
+provedor de ferramenta externa. Se o URL de lançamento não parecem pertencer ao fornecedor de ferramenta, aparecerá um aviso. Em alguns casos, não é necessário
+para introduzir um URL de lançamento na prestação de um tipo de ferramenta específica (se não o lançamento de um recurso especial no âmbito do provedor de ferramenta).
 Configuração personalizada *** ** - Para configurar ferramenta de configuração personalizada em apenas um exemplo disso, mostrar as opções avançadas, e inserir a chave do consumidor e
-        segredo compartilhado si mesmo. Se você não tem uma chave do consumidor e segredo compartilhado, você pode ser capaz de solicitá-los a partir do fornecedor de ferramenta.
-        Nem todas as ferramentas necessitam de uma chave secreta do consumidor e partilhada, caso em que os campos podem ser deixados em branco.
+segredo compartilhado si mesmo. Se você não tem uma chave do consumidor e segredo compartilhado, você pode ser capaz de solicitá-los a partir do fornecedor de ferramenta.
+Nem todas as ferramentas necessitam de uma chave secreta do consumidor e partilhada, caso em que os campos podem ser deixados em branco.
 
- # # # Edição tipoFerramenta
+# # # Edição tipoFerramenta
 
 Três ícones estão disponíveis após a lista externo ferramenta de texto dropdown:
 
- ***Adicionar ** - Criar um curso de configuração de ferramentas de nível. Todas as instâncias de ferramentas externas neste curso podem usar a ferramenta de configuração.
- ***Editar ** - Escolha um tipo de curso ferramenta de nível no menu suspenso, clique neste ícone. Os pormenores da configuração da ferramenta pode ser editado.
- ***Excluir ** - Retire o selecionado tipo de curso ferramenta de nível.';
+***Adicionar ** - Criar um curso de configuração de ferramentas de nível. Todas as instâncias de ferramentas externas neste curso podem usar a ferramenta de configuração.
+***Editar ** - Escolha um tipo de curso ferramenta de nível no menu suspenso, clique neste ícone. Os pormenores da configuração da ferramenta pode ser editado.
+***Excluir ** - Retire o selecionado tipo de curso ferramenta de nível.';
 $string['external_tool_types'] = 'Tipos de ferramentas externas';
 $string['failedtoconnect'] = 'O Moodle não foi capaz de se comunicar com o sitema "{$a}"';
 $string['filter_basiclti_configlink'] = 'Configure seus sites preferidos e suas senhas';
@@ -152,13 +152,13 @@ $string['fixexistingconf'] = 'Usar uma configuração existente para a instancia
 $string['fixnew'] = 'Nova configuração';
 $string['fixnewconf'] = 'Definir uma nova configuração para a instância desconfigurada';
 $string['fixold'] = 'Utilizar existente';
-$string['forced_help'] = 'Esta configuração foi forçada em uma ferramenta de configuração de um curso ou ao nível do site. Você não pode modificar a partir da interface.';
 $string['force_ssl'] = 'Forçar SSL';
 $string['force_ssl_help'] = 'Selecionando esta opção é forçada a utilização de SSL para inicialização de ferramentas.
 
 Em adição, todos as requisições via web services do provedor da ferramenta utilizarão SSL.
 
 Caso utilizar esta opção, confirme que o site Moodle e o provedor SSL suportam SSL';
+$string['forced_help'] = 'Esta configuração foi forçada em uma ferramenta de configuração de um curso ou ao nível do site. Você não pode modificar a partir da interface.';
 $string['global_tool_types'] = 'Tipos globais de ferramentas';
 $string['grading'] = 'Grau de Roteamento';
 $string['icon_url'] = 'URL do ícone';
@@ -169,27 +169,27 @@ $string['imsroleinstructor'] = 'Instrutor';
 $string['imsrolelearner'] = 'Aprendiz';
 $string['invalidid'] = 'LTI ID está incorreta';
 $string['launch_in_moodle'] = 'Ferramenta de lançamento no moodle';
-$string['launchinpopup'] = 'Lançamento do Container';
 $string['launch_in_popup'] = 'Ferramenta de lançamento em pop-up';
-$string['launchinpopup_help'] = 'O recipiente de lançamento afecta a exibição da ferramenta, quando iniciado a partir do curso. Alguns recipientes de lançamento fornecer mais espaço na tela para a ferramenta, e outros proporcionar uma sensação mais integrada com o environemnt Moodle. Padrão *** ** - Use o recipiente lançamento especificado pela configuração da ferramenta. Incorporar *** ** - A ferramenta é exibido no interior da janela Moodle existente, de uma maneira semelhante à maioria dos tipos outra actividade. Incorporar ***, sem blocos ** - A ferramenta é exibido no interior da janela Moodle existente, com apenas os controlos neavigation no topo da página. Nova janela *** ** - A ferramenta abre em uma nova janela, ocupando todo o espaço disponível. Dependendo do navegador, ele vai abrir em uma nova aba ou janela pop-up. É possível que navegadores irá impedir que a janela de novo a partir da abertura.';
-$string['launchoptions'] = 'Opções de lançamento';
 $string['launch_url'] = 'Lançamento de URL';
 $string['launch_url_help'] = 'A URL de lançamento indica que o endereço web da ferramenta externa, e pode conter informações adicionais, tais como o recurso para mostrar.
 
 Se você não sabe o que para entrar para a URL de Lançamento, por favor verifique com o fornecedor de ferramenta para obter mais informações. Se você tiver selecionado um tipo de ferramenta específica, você pode não precisar digitar uma URL de lançamento. Se a ligação ferramenta é usada apenas para lançar no sistema do fornecedor de ferramenta, e não ir para um recurso específico, este será provavelmente o caso.';
+$string['launchinpopup'] = 'Lançamento do Container';
+$string['launchinpopup_help'] = 'O recipiente de lançamento afecta a exibição da ferramenta, quando iniciado a partir do curso. Alguns recipientes de lançamento fornecer mais espaço na tela para a ferramenta, e outros proporcionar uma sensação mais integrada com o environemnt Moodle. Padrão *** ** - Use o recipiente lançamento especificado pela configuração da ferramenta. Incorporar *** ** - A ferramenta é exibido no interior da janela Moodle existente, de uma maneira semelhante à maioria dos tipos outra actividade. Incorporar ***, sem blocos ** - A ferramenta é exibido no interior da janela Moodle existente, com apenas os controlos neavigation no topo da página. Nova janela *** ** - A ferramenta abre em uma nova janela, ocupando todo o espaço disponível. Dependendo do navegador, ele vai abrir em uma nova aba ou janela pop-up. É possível que navegadores irá impedir que a janela de novo a partir da abertura.';
+$string['launchoptions'] = 'Opções de lançamento';
 $string['lti'] = 'LTI';
 $string['lti:addcoursetool'] = 'Avaliar atividade LTI';
+$string['lti:grade'] = 'Avaliar atividades LTI';
+$string['lti:manage'] = 'Editar atividades LTI';
+$string['lti:requesttooladd'] = 'Enviar uma ferramenta aos administradores para configuração';
+$string['lti:view'] = 'Ver atividades LTI';
 $string['lti_administration'] = 'Administração do LTI';
 $string['lti_errormsg'] = 'A ferramenta retornou a mensagem de erro a seguir: "{$a}"';
-$string['lti:grade'] = 'Avaliar atividades LTI';
 $string['lti_launch_error'] = 'Ocorreu um erro ao lançar a ferramenta externa:';
 $string['lti_launch_error_tool_request'] = '<p>Para enviar uma requisição para o administrador para completar a ferramenta de configuração, clique <a href="{$a->admin_request_url}" target="_top">aqui</a></p>';
 $string['lti_launch_error_unsigned_help'] = '<p> Este erro pode ser um resultado de uma chave secreta consumidor ausente e partilhada para o prestador de ferramenta. </p><p> Se você tem uma chave secreta compartilhada do consumidor e, pode introduzi-lo ao editar a instância ferramenta externa (certifique-se opções avançadas são visíveis). <br /> Alternativamente, você pode criar um curso de nível configuração do provedor ferramenta <a href="{$a->course_tool_editor}">aqui</a> . </p>';
-$string['lti:manage'] = 'Editar atividades LTI';
-$string['lti:requesttooladd'] = 'Enviar uma ferramenta aos administradores para configuração';
 $string['lti_tool_request_added'] = 'Solicitação de pedido para configuração da ferramenta enviado com sucesso. Você talvez precise contatar o administrador para completar a configuração da ferramenta';
 $string['lti_tool_request_existing'] = 'A ferramenta de configuração para o domínio de ferramentas já foi apresentado.';
-$string['lti:view'] = 'Ver atividades LTI';
 $string['main_admin'] = 'Ajuda geral';
 $string['main_admin_help'] = 'Ferramentas externas permitem que os usuários do Moodle para interagir sem interferências com recursos de aprendizagem hospedados remotamente. Através de um protocolo especial de lançamento, a ferramenta remota terá acesso a algumas informações gerais sobre o usuário de lançamento. Por exemplo, o nome da instituição, curso ID, ID de usuário e outras informações como nome do usuário ou endereço de correio electrónico. Tipos de ferramentas listados nesta página são separados em três categorias: *** atividade ** - Estes provedores de ferramentas têm sido aprovado e configurado por um administrador. Eles podem ser usados a partir de qualquer curso nessa instância Moodle. Se uma chave secreta compartilhada do consumidor e são inseridos, uma relação de confiança é estabelecida entre esta instância Moodle ea ferramenta de controle remoto, proporcionando um canal de comunicação seguro. Enquanto *** ** - Estes fornecedores de ferramenta veio através de um pacote de importação, mas não foi configurado por um administrador. Os professores podem ainda utilizar ferramentas desses fornecedores se eles têm uma chave secreta compartilhada e consumidor, ou se nenhum for necessário. Rejeitado *** ** - Estes fornecedores de ferramentas são marcados como aqueles que um administrador não tem a intenção de disponibilizar para a instância Moodle inteiro. Os professores podem ainda utilizar ferramentas desses fornecedores se eles têm uma chave secreta compartilhada e consumidor, ou se nenhum for necessário.';
 $string['miscellaneous'] = 'Miscelânea';
@@ -202,10 +202,10 @@ $string['modulenameplural'] = 'basicltis';
 $string['modulenamepluralformatted'] = 'Instâncias LTI';
 $string['never'] = 'Nunca';
 $string['new_window'] = 'Nova janela';
-$string['noattempts'] = 'Nenhuma tentativa foi realizada nesta instância desta ferramenta';
 $string['no_lti_configured'] = 'Não há ferramentas externas ativas configuradas';
 $string['no_lti_pending'] = 'Não há ferramentas externas pendentes';
 $string['no_lti_rejected'] = 'Não há ferramentas externas rejeitadas';
+$string['noattempts'] = 'Nenhuma tentativa foi realizada nesta instância desta ferramenta';
 $string['noltis'] = 'Não há instâncias LTI';
 $string['noservers'] = 'Nao foram encontrados servidores';
 $string['notypes'] = 'No momento não existem ferramentas de configuração LTI no Moodle. Clique no link Install acima para adicionar alguns.';

@@ -44,8 +44,7 @@ $string['editmytagsfor'] = 'Editar minhas tags para {$a}';
 $string['editnopersonaltags'] = 'Nenhuma tag pessoal foi criada ainda.';
 $string['edittags'] = 'Editar minhas tags';
 $string['edittagthisunit'] = 'Adicionar tag para este curso:';
-$string['editthiscoursetags'] = '	
-Minhas tags para este curso são {$a}';
+$string['editthiscoursetags'] = 'Minhas tags para este curso são {$a}';
 $string['edittitle'] = 'Minhas tags';
 $string['entries'] = 'entradas';
 $string['entry'] = 'entrada';

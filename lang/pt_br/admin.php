@@ -87,8 +87,7 @@ $string['bookmarkalreadyexists'] = 'Você já marcou esta página';
 $string['bookmarkdeleted'] = 'Marcador de página excluído';
 $string['bookmarkthispage'] = 'Marcar esta página';
 $string['cachejs'] = 'Fazer cache do Javascript';
-$string['cachejs_help'] = 'As operações de "caching" e compressão do Javascript melhoram muito a performance da carga de páginas. Isso é altamente recomendável para sites de produção. Desenvolvedores, no entanto, provavelmente preferirão desabilitar esta opção.
-';
+$string['cachejs_help'] = 'As operações de "caching" e compressão do Javascript melhoram muito a performance da carga de páginas. Isso é altamente recomendável para sites de produção. Desenvolvedores, no entanto, provavelmente preferirão desabilitar esta opção.';
 $string['cachetext'] = 'Duração da memorização temporária de textos';
 $string['cachetype'] = 'Tipo de cache';
 $string['calendar_weekend'] = 'Dias de fim de semana';
@@ -113,7 +112,7 @@ $string['clistatusenabled'] = 'Estado: habilitado';
 $string['clitypevalue'] = 'Digite o valor';
 $string['clitypevaluedefault'] = 'digite o valor, pressione Enter para utilizar o valor padrão ({$a})';
 $string['cliunknowoption'] = 'Opções não reconhecidas:
-  {$a}
+{$a}
 Por favor use a opção --help.';
 $string['cliupgradefinished'] = 'Atualização via linha de comando terminada com sucesso.';
 $string['cliupgradenoneed'] = 'Não há necessidade de realização de atualização de versão para a versão instalada {$a}. Obrigado por nos visitar d equalquer maneira!';
@@ -256,8 +255,7 @@ $string['configmemcachedhosts'] = 'Para memcahed. Lista de servidores separados 
 $string['configmemcachedpconn'] = 'Para memcached. Use conexões persistentes. Usar com cuidado - isto pode travar o Apache/PHP após reiniciar o programa memchached.';
 $string['configmessaging'] = 'O sistema de mensagens pessoais deve ser habilitado?';
 $string['configmessagingdeletereadnotificationsdelay'] = 'Notificações já lidas podem ser excluídas para economizar espaço. Quanto tempo após a sua leitura uma notificação pode ser excluída?';
-$string['configmessaginghidereadnotifications'] = 'Ocultar notificações já lidas de eventos tais como mensagens em foruns quando visualizando o histórico de mensagens.
-';
+$string['configmessaginghidereadnotifications'] = 'Ocultar notificações já lidas de eventos tais como mensagens em foruns quando visualizando o histórico de mensagens.';
 $string['configminpassworddigits'] = 'Senhas devem ter no mínimo esta quantidade de dígitos.';
 $string['configminpasswordlength'] = 'Senhas devem ter no mínimo esta quantidade de caracteres.';
 $string['configminpasswordlower'] = 'Senhas devem ter no mínimo esta quantidade de caracteres minúsculos.';
@@ -587,7 +585,7 @@ $string['gradeexport'] = 'Métodos de exportação da avaliação primária';
 $string['groupenrolmentkeypolicy'] = 'Política de chave para inscrição em grupo';
 $string['groupenrolmentkeypolicy_desc'] = 'Habilitar esta opção fará com que o Moodle valide as chaves de inscrição em grupo contra uma política de senhas válida.';
 $string['guestroleid'] = 'Papel para convidados';
-$string['guestroleid_help'] = 'Este papel é atribuído automaticamente para o usuário convidado (guest). É também atribuído temporariamente a usuários não inscritos, que entram no curso através do plugin de inscrição de convidados. ';
+$string['guestroleid_help'] = 'Este papel é atribuído automaticamente para o usuário convidado (guest). É também atribuído temporariamente a usuários não inscritos, que entram no curso através do plugin de inscrição de convidados.';
 $string['helpadminseesall'] = 'Os administradores devem ver todos os eventos do calendário ou apenas os seus próprios eventos?';
 $string['helpcalendarsettings'] = 'Configura vários aspectos do calendário e de outras funções associadas a datas e horários';
 $string['helpforcetimezone'] = 'Você pode permitir que os usuários selecionem seus fusos horários ou deseja forçar um único fuso horário para todos.';
@@ -632,7 +630,7 @@ $string['langcache_desc'] = 'Cache o menu de idiomas. Se ativado, a lista de tra
 $string['langlist'] = 'Idiomas presentes na lista';
 $string['langmenu'] = 'Mostrar lista de idiomas';
 $string['langpackwillbeupdated'] = 'NOTA: O Moodle tentará fazer download de atualizações de seus pacotes de idioma durante esta atualização.';
-$string['langstringcache'] = 'Colocar todas as strings de idioma em cache ';
+$string['langstringcache'] = 'Colocar todas as strings de idioma em cache';
 $string['languagesettings'] = 'Configurações de idiomas';
 $string['latexpreamble'] = 'Preâmbulo LaTeX';
 $string['latexsettings'] = 'Configurações do renderizador LaTeX';
@@ -856,17 +854,14 @@ $string['profilingenabled'] = 'Habilitar agregação aos perfis';
 $string['profilingenabled_help'] = 'Se você habilitar essa opção, então a agregação aos perfis estará disponível neste site e você será capaz de definir seu comportamento através da configuração das opções a seguir.';
 $string['profilingexcluded'] = 'Excluir agregação ao perfil';
 $string['profilingexcluded_help'] = 'Lista de URLs a serem excluídas das que serão agregadas ao perfil, de acordo com a definição “Profile These” (separadas por vírgula, saltando wwwroot absoluto, que possam ser chamadas).';
-$string['profilingincluded'] = 'Agregar estas ao perfil
-';
+$string['profilingincluded'] = 'Agregar estas ao perfil';
 $string['profilingincluded_help'] = 'Lista de URLs  que serão automaticamente agregadas ao perfil, de acordo com a definição (separadas por vírgula, saltando wwwroot absoluto, que possam ser chamadas).
 Exemplos: /index.php, /course/view.php.
-Também aceita a substituição de caracteres pelo * em qualquer posição. Exemplos: /mod/forum/ * , /mod/*/ view.php.
-';
+Também aceita a substituição de caracteres pelo * em qualquer posição. Exemplos: /mod/forum/ * , /mod/*/ view.php.';
 $string['profilinglifetime'] = 'Manter a agregação a perfis em execução';
 $string['profilinglifetime_help'] = 'Especifica o tempo que se deseja manter informações sobre a execução de perfis antigos. As mais velhas serão excluidas periodicamente. Observe que isso exclui qualquer execução de perfis marcados como “execução de referência”.';
 $string['protectusernames'] = 'Proteger "usernames"';
-$string['proxybypass'] = 'Ignorar hosts proxy
-';
+$string['proxybypass'] = 'Ignorar hosts proxy';
 $string['proxyhost'] = 'Servidor de Proxy';
 $string['proxypassword'] = 'Senha de Proxy';
 $string['proxyport'] = 'Porta de Proxy';
@@ -938,8 +933,7 @@ $string['server'] = 'Servidor';
 $string['serverchecks'] = 'Verificações do servidor';
 $string['serverlimit'] = 'Limite do servidor';
 $string['sessionautostartwarning'] = '<p>Foi detectado um erro grave de configuração, por favor informe ao administrador do servidor.</p> <p>Para funcionar adequadamente, o Moodle necessita que o administrador modifique as configurações do PHP.</p><p>
-<code>session.auto_start</code> deve ser configurado para <code>off</code>.</p><p>Esta configuração é feita editando o <code>php.ini</code>, a configuração do Apache/IIS <br />ou o arquivo <code>.htaccess</code>no servidor.</p>
-';
+<code>session.auto_start</code> deve ser configurado para <code>off</code>.</p><p>Esta configuração é feita editando o <code>php.ini</code>, a configuração do Apache/IIS <br />ou o arquivo <code>.htaccess</code>no servidor.</p>';
 $string['sessioncookie'] = 'Prefixo do Cookie';
 $string['sessioncookiedomain'] = 'Domínio do Cookie';
 $string['sessioncookiepath'] = 'Caminho do Cookie';
@@ -1004,8 +998,7 @@ $string['techsupportemail'] = 'E-mail do suporte técnico';
 $string['techsupportemailhelp'] = 'Endereço de e-mail das pessoas que cuidam da maioria dos problemas técnicos relacionados à hospedagem no site';
 $string['techsupportphone'] = 'Número de telefone do suporte técnico';
 $string['techsupportphonehelp'] = 'Número de telefone das pessoas que cuidam da maioria dos problemas técnicos relacionados à hospedagem no site. (Incluir o código do país)';
-$string['themedesignermode'] = 'Modo de designer de tema
-';
+$string['themedesignermode'] = 'Modo de designer de tema';
 $string['themelist'] = 'Lista de temas';
 $string['themenoselected'] = 'Nenhum tema selecionado';
 $string['themeresetcaches'] = 'Limpar o cache de temas';
@@ -1057,8 +1050,7 @@ $string['upgradinglogs'] = 'Atualizando logs';
 $string['upgradingversion'] = 'Atualizando para nova versão';
 $string['upwards'] = 'para cima';
 $string['useblogassociations'] = 'Habilitar associações';
-$string['useexternalyui'] = 'Use bibliotecas YUI online
-';
+$string['useexternalyui'] = 'Use bibliotecas YUI online';
 $string['usehtmleditor'] = 'Usar editor HTML';
 $string['user'] = 'Usuário';
 $string['userbulk'] = 'Ações em lote sobre usuários';

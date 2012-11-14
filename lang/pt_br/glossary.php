@@ -76,7 +76,7 @@ $string['casesensitive'] = 'Item sensível à distinção entre maiúsculas e mi
 $string['casesensitive_help'] = '<P>Esta opção define se a criação automática de links a estes itens do glossário deve estabelecer uma correspondência exata entre as palavras, considerando as diferenças entre maiúsculas e minúsculas.</p>
 
 <p>Por exemplo: se esta opção for habilitada, uma palavra como "html" em uma mensagem do fórum
-   NÃO será linkada a um item do glossário chamado "HTML".</p>';
+NÃO será linkada a um item do glossário chamado "HTML".</p>';
 $string['cat'] = 'cat';
 $string['categories'] = 'Categorias';
 $string['category'] = 'Categoria';
@@ -131,13 +131,6 @@ $string['destination_help'] = '<P>Você pode especificar para onde quer importar
 <li><strong>Novo Glossário:</strong> Cria um novo glossário baseado nas informação contidas no arquivo que está sendo importado e insere os itens importados neste novo glossário.</li>
 </ul>';
 $string['displayformat'] = 'Formato de visualização';
-$string['displayformatcontinuous'] = 'Contínuo sem autor';
-$string['displayformatdictionary'] = 'Simples, estilo dicionário';
-$string['displayformatencyclopedia'] = 'Enciclopédia';
-$string['displayformatentrylist'] = 'Lista de itens';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Completo com autor';
-$string['displayformatfullwithoutauthor'] = 'Completo sem autor';
 $string['displayformat_help'] = '<P>Esta configuração define o modo em que cada item será visualizado no glossário. Os formatos predefinidos são:</p>
 
 <dl>
@@ -159,6 +152,13 @@ $string['displayformat_help'] = '<P>Esta configuração define o modo em que cad
 
 <hr />
 <p>Os Administradores podem criar novos formatos de visualização seguindo as instruções presentes no arquivo <b>mod/glossary/formats/README.txt</b>.</p>';
+$string['displayformatcontinuous'] = 'Contínuo sem autor';
+$string['displayformatdictionary'] = 'Simples, estilo dicionário';
+$string['displayformatencyclopedia'] = 'Enciclopédia';
+$string['displayformatentrylist'] = 'Lista de itens';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Completo com autor';
+$string['displayformatfullwithoutauthor'] = 'Completo sem autor';
 $string['displayformats'] = 'Mostrar formatos';
 $string['displayformatssetup'] = 'Mostrar configuração de formatos';
 $string['duplicatecategory'] = 'Duplicar categoria';
@@ -225,22 +225,22 @@ $string['glossary:export'] = 'Exportar itens';
 $string['glossary:exportentry'] = 'Exportar única entrada';
 $string['glossary:exportownentry'] = 'Exportar suas entradas únicas';
 $string['glossary:import'] = 'Importar itens';
-$string['glossaryleveldefaultsettings'] = 'Configurações predefinidas do glossário';
 $string['glossary:managecategories'] = 'Gerenciar categorias';
 $string['glossary:managecomments'] = 'Gerenciar comentários';
 $string['glossary:manageentries'] = 'Gerenciar itens';
 $string['glossary:rate'] = 'Avaliar itens';
+$string['glossary:view'] = 'Ver glossário';
+$string['glossary:viewallratings'] = 'Visualizar todas as avaliações enviadas por indivíduos';
+$string['glossary:viewanyrating'] = 'Ver avaliação total que todos receberam';
+$string['glossary:viewrating'] = 'Ver as suas avaliações';
+$string['glossary:write'] = 'Criar novos itens';
+$string['glossaryleveldefaultsettings'] = 'Configurações predefinidas do glossário';
 $string['glossarytype'] = 'Tipo de glossário';
 $string['glossarytype_help'] = '<P>O sistema de glossários permite que você exporte itens a partir de qualquer glossário secundário para o glossário principal do curso. Para tal, você deve definir um dos glossários do curso como glossário principal.</p>
 
 <p>Nota: cada curso pode ter apenas um glossário principal.</p>
 
 <p>Antes do Moodle 1.7, apenas os professores podiam editar o glossário principal. A partir do Moodle 1.7, se você desejar controlar quem pode editar qualquer glossário (incluindo o principal) você precisa usar a interface de funções de Sobreposição.</p>';
-$string['glossary:view'] = 'Ver glossário';
-$string['glossary:viewallratings'] = 'Visualizar todas as avaliações enviadas por indivíduos';
-$string['glossary:viewanyrating'] = 'Ver avaliação total que todos receberam';
-$string['glossary:viewrating'] = 'Ver as suas avaliações';
-$string['glossary:write'] = 'Criar novos itens';
 $string['guestnoedit'] = 'Visitantes não tem permissão para editar glossários';
 $string['importcategories'] = 'Importar categorias';
 $string['importedcategories'] = 'Categorias importadas';
@@ -297,10 +297,10 @@ $string['resetglossaries'] = 'Cancele itens de';
 $string['resetglossariesall'] = 'Cancele itens de todos os glossários';
 $string['rssarticles'] = 'Número de artigos RSS recentes';
 $string['rssarticles_help'] = '<P>Esta configuração permite que você selecione o número de artigos
-   a serem incluídos no feed RSS.</p>
+a serem incluídos no feed RSS.</p>
 
 <P>Um número entre 5 e 20 é considerado apropriado para a maioria dos
-   glossários. Aumente este número se o glossário for constantemente atualizado.</p>';
+glossários. Aumente este número se o glossário for constantemente atualizado.</p>';
 $string['rsssubscriberss'] = 'Mostrar \'{$a}\' conceitos no feed RSS';
 $string['rsstype'] = 'RSS feed para esta atividade';
 $string['rsstype_help'] = '<P>Esta opção permite que sejam criados alimentadores RSS neste glossário.
@@ -309,10 +309,10 @@ $string['rsstype_help'] = '<P>Esta opção permite que sejam criados alimentador
 
 <UL>
 <LI><B>Com autor -</B> os alimentadores criados incluem
-       o nome do autor em cada artigo.</li>
+o nome do autor em cada artigo.</li>
 
 <LI><B>Sem autor -</B> os alimentadores criados não incluem
-       o nome do autor em nenhum artigo.</li>
+o nome do autor em nenhum artigo.</li>
 </UL>';
 $string['searchindefinition'] = 'Buscar em todo o texto';
 $string['secondaryglossary'] = 'Glossário secundário';
@@ -350,7 +350,7 @@ $string['studentcanpost'] = 'Estudantes podem adicionar itens';
 $string['totalentries'] = 'Total de itens';
 $string['usedynalink'] = 'Fazer o link automático dos itens';
 $string['usedynalink_help'] = '<P>Esta opção habilita a criação automática de links que levam aos itens do glossário sempre que
-   as palavras ou frases definidas como itens estiverem presentes nos textos do curso. Isto inclui as mensagens do fórum, materiais do curso, sumários das semanas, diários, etc.</p>
+as palavras ou frases definidas como itens estiverem presentes nos textos do curso. Isto inclui as mensagens do fórum, materiais do curso, sumários das semanas, diários, etc.</p>
 
 <p>Se você não quiser que um texto tenha links, você deve adicionar os tags  &lt;nolink> e &lt;/nolink> ao redor do texto.</p>
 

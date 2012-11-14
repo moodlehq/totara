@@ -31,9 +31,10 @@ $string['answered'] = 'Respondido';
 $string['atleastoneoption'] = 'Você precisa providenciar ao menos uma possível resposta.';
 $string['choice'] = 'Escolha {$a}';
 $string['choice:choose'] = 'Registrar escolha';
-$string['choiceclose'] = 'Até';
 $string['choice:deleteresponses'] = 'Excluir respostas';
 $string['choice:downloadresponses'] = 'Baixar respostas';
+$string['choice:readresponses'] = 'Ler respostas';
+$string['choiceclose'] = 'Até';
 $string['choicefull'] = 'Esta opção atingiu o limite de escolhas permitidas e não há lugares disponíveis.';
 $string['choicename'] = 'Nome da Escolha';
 $string['choiceopen'] = 'Abrir';
@@ -41,7 +42,6 @@ $string['choiceoptions'] = 'Opções de escolha';
 $string['choiceoptions_help'] = '<p>Aqui você define as opções que os participantes podem escolher.</p>
 
 <p>Você pode preencher o número de respostas que você desejar. As caixas de texto em branco não serão visualizadas.</p>';
-$string['choice:readresponses'] = 'Ler respostas';
 $string['choicesaved'] = 'A opção escolhida foi gravada';
 $string['choicetext'] = 'Texto da Escolha';
 $string['chooseaction'] = 'Escolha uma ação';

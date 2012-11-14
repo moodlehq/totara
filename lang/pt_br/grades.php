@@ -53,6 +53,58 @@ $string['aggregatesum'] = 'Soma das notas';
 $string['aggregateweightedmean'] = 'Média ponderada das notas';
 $string['aggregateweightedmean2'] = 'Média ponderada simples das notas';
 $string['aggregation'] = 'Agregação';
+$string['aggregation_help'] = '<p>Esse menu lhe permite escolher a estratégia de agregação a ser utilizada para calcular a média final de cada participante para esta categoria. As diferentes opções são explicadas abaixo.</p>
+
+<p>As notas são inicialmente convertidas para valores percentuais (intervalo de 0 a 1, chamado de normalização), sendo então agregadas utilizando uma das funções abaixo e, finalmente, convertidas para o intervalo associado ao item de nota (entre a <em>Nota Mínima</em> e a <em>Nota Máxima</em>).</p>
+
+<p><strong>Importante</strong>: Uma nota vazia é simplesmente uma entrada ausente no livro de notas, podendo significar muitas coisas distintas. Por exemplo, poderia significar que um participante ainda não enviou uma tarefa, ou um envio de tarefas ainda não corrigido pelo professor, ou uma nota que foi apagada manualmente pelo administrador do livro de notas. Cuidado, portanto, ao interpretar essas notas em branco.</p>
+
+<dl id="grade-aggregation-help">
+<dt>Média das notas</dt>
+<dd>A soma de todas as notas dividida pelo número de notas.</dd>
+<dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+<code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
+
+
+<dt>Média ponderada das notas</dt>
+<dd>Pode ser atribuído um peso para cada nota, o qual é, então, utilizado na agregação de média aritmética para definir a importância de cada item na média final.</dd>
+<dd class="example">T1 70/100 peso 10, T2 20/80 peso 5, T3
+10/10 peso 3, máximo da categoria 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
+
+<dt>Média ponderada simples</dt>
+<dd>A diferença para a <em>Média Ponderada</em> é que o peso é calculado como <em>Nota máxima - Nota mínima</em>
+para cada item. Uma tarefa de 100 pontos tem peso 100, enquanto que uma de 10 pontos tem peso 10.</dd>
+<dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+<code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
+
+<dt>Média das notas (com pontos extras)</dt>
+<dd>Média aritmética com pontuação extra. Uma estratégia de agregação antiga e ultrapassada, mantida aqui apenas por questões de compatibilidade com algumas atividades antigas.</dd>
+
+<dt>Mediana das notas</dt>
+<dd>A nota do meio (ou a média de duas notas do meio, caso o número seja par), obtida após ordenação das notas. A vantagem sobre a média é que ela não é afetada por valores atípicos (notas que estão muito longe da média).</dd>
+<dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+<code>median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
+
+<dt>Menor nota</dt>
+<dd>O resultado é a menor nota após a normalização. É geralmente utilizada em combinação com <em>Agregar somente notas dadas</em>.</dd>
+<dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+<code>min(0.7 ; 0.25 ; 1.0) = 0.25 --> 25/100</code></dd>
+
+<dt>Maior nota</dt>
+<dd>O resultado é a maior nota após a normalização.</dd>
+<dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
+<code>max(0.7 ; 0.25 ; 1.0) = 1.0 --> 100/100</code></dd>
+
+<dt>Moda das notas</dt>
+<dd>A moda é a nota que ocorre com mais frequência. É mais utilizado com notas não-númericas. A vantagem sobre a média é que ela não é afetada por valores atípicos (notas que estão muito longe da média). Entretanto, ele perde significado quando há mais de uma nota mais frequente (apenas uma será escolhida), ou quando todas as notas são distintas entre si.</dd>
+<dd class="example">T1 70/100, T2 35/50, T3 20/80, T4 10/10, T5 7/10 máximo da categoria 100:<br />
+<code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
+
+<dt>Soma das notas</dt>
+<dd>A soma de todos as nota. As escalas são ignoradas. Esse é o único tipo de agregação que não converte internamente as notas para percentagem (normalização). A <em>Nota Máxima</em> do item associado à categoria é calculada automaticamente como a soma dos máximos de todos os itens agregados.</dd>
+<dd class="example">T1 70/100, T2 20/80, T3 10/10:<br />
+<code>70 + 20 + 10 = 100/190</code></dd>
+</dl>';
 $string['aggregationcoef'] = 'Coeficiente de agregação';
 $string['aggregationcoefextra'] = 'Crédito extra';
 $string['aggregationcoefextra_help'] = 'Se a agregação for \'Soma das notas\' ou \'Média ponderada simples\' e a caixa de crédito extra for marcada, a nota máxima do item não será acrescentada à nota máxima da categoria. Assim, será possível atingir a nota máxima da categoria (ou notas maiores que o máximo, se permitido pelo administrador do ambiente) sem ter nota máxima em todos os itens com nota.
@@ -61,79 +113,27 @@ Se a forma de agregação for \'Média das notas (com créditos extra)\' e o cr�
 $string['aggregationcoefextrasum'] = 'Crédito extra';
 $string['aggregationcoefextrasum_help'] = '<p>Quando a soma das notas é utilizada como estratégia de agregação, um item pode ser considerado crédito extra na categoria. Isto significa que a nota máxima do item não será adicionada à nota máxima da categoria mas a nota do item, sim. Por exemplo></p>
 <ul>
-    <li>Item 1 tem valor entre 0-100</li>
-    <li>Item 2 tem valor entre 0-75</li>
-    <li>Item 1 tem a opção "crédito extra" selecionada, Item 2 não.</li>
-    <li>Os dois itens pertencem à categoria 1, que tem "soma das notas" como estratégia de agregação</li>
-    <li>O total da Categoria 1\'s é entre 0-75</li>
-    <li>Um estudante obtém a nota 20 no Item 1 e 70 no Item 2</li>
-    <li>O total da Categoria 1 será 75/75 (20+70 = 90 mas o Item 1 é apenas um crédito extra e portanto aumenta o total até o máximo)</li>
+<li>Item 1 tem valor entre 0-100</li>
+<li>Item 2 tem valor entre 0-75</li>
+<li>Item 1 tem a opção "crédito extra" selecionada, Item 2 não.</li>
+<li>Os dois itens pertencem à categoria 1, que tem "soma das notas" como estratégia de agregação</li>
+<li>O total da Categoria 1\'s é entre 0-75</li>
+<li>Um estudante obtém a nota 20 no Item 1 e 70 no Item 2</li>
+<li>O total da Categoria 1 será 75/75 (20+70 = 90 mas o Item 1 é apenas um crédito extra e portanto aumenta o total até o máximo)</li>
 </ul>';
 $string['aggregationcoefextraweight'] = 'Peso do crédito extra';
 $string['aggregationcoefextraweight_help'] = '<p>Um valor maior que 0 trata esta nota como crédito extra durante a agregação. O número é o fator de multiplicação da nota antes que seja somado às outras notas mas o item não será contado na divisão. Por exemplo:</p>
 
 <ul>
-    <li>Item 1 é avaliado como 0-100 e o valor do "crédito extra" é 2</li>
-    <li>Item 2 é avaliado como 0-100 e o valor do "crédito extra" é 0.0000</li>
-    <li>Item 3 é avaliado como 0-100 e o valor do "crédito extra" é 0.0000</li>
-    <li>Os 3 items pertencem à Categoria 1, que tem a estratégia de agregação "Média das notas (com crédito extra)"</li>
-    <li>Um estudante obtém a nota 20 no Item 1, 40 no Item 2 e 70 no Item 3</li>
-    <li>O total da Categoria 1 será 95/100 pois 20*2 + (40 + 70)/2 = 95</li>
+<li>Item 1 é avaliado como 0-100 e o valor do "crédito extra" é 2</li>
+<li>Item 2 é avaliado como 0-100 e o valor do "crédito extra" é 0.0000</li>
+<li>Item 3 é avaliado como 0-100 e o valor do "crédito extra" é 0.0000</li>
+<li>Os 3 items pertencem à Categoria 1, que tem a estratégia de agregação "Média das notas (com crédito extra)"</li>
+<li>Um estudante obtém a nota 20 no Item 1, 40 no Item 2 e 70 no Item 3</li>
+<li>O total da Categoria 1 será 95/100 pois 20*2 + (40 + 70)/2 = 95</li>
 </ul>';
 $string['aggregationcoefweight'] = 'Peso do item';
 $string['aggregationcoefweight_help'] = '<p>Peso aplicado a todas as avaliações neste item de avaliação durante a agregação com outros itens de avaliação.</p>';
-$string['aggregation_help'] = '<p>Esse menu lhe permite escolher a estratégia de agregação a ser utilizada para calcular a média final de cada participante para esta categoria. As diferentes opções são explicadas abaixo.</p>
-
-<p>As notas são inicialmente convertidas para valores percentuais (intervalo de 0 a 1, chamado de normalização), sendo então agregadas utilizando uma das funções abaixo e, finalmente, convertidas para o intervalo associado ao item de nota (entre a <em>Nota Mínima</em> e a <em>Nota Máxima</em>).</p>
-
-<p><strong>Importante</strong>: Uma nota vazia é simplesmente uma entrada ausente no livro de notas, podendo significar muitas coisas distintas. Por exemplo, poderia significar que um participante ainda não enviou uma tarefa, ou um envio de tarefas ainda não corrigido pelo professor, ou uma nota que foi apagada manualmente pelo administrador do livro de notas. Cuidado, portanto, ao interpretar essas notas em branco.</p>
-
-<dl id="grade-aggregation-help">
-    <dt>Média das notas</dt>
-    <dd>A soma de todas as notas dividida pelo número de notas.</dd>
-    <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
-                     <code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
-
-
-    <dt>Média ponderada das notas</dt>
-        <dd>Pode ser atribuído um peso para cada nota, o qual é, então, utilizado na agregação de média aritmética para definir a importância de cada item na média final.</dd>
-        <dd class="example">T1 70/100 peso 10, T2 20/80 peso 5, T3
-                         10/10 peso 3, máximo da categoria 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
-
-    <dt>Média ponderada simples</dt>
-        <dd>A diferença para a <em>Média Ponderada</em> é que o peso é calculado como <em>Nota máxima - Nota mínima</em>
-                         para cada item. Uma tarefa de 100 pontos tem peso 100, enquanto que uma de 10 pontos tem peso 10.</dd>
-        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
-                         <code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
-
-    <dt>Média das notas (com pontos extras)</dt>
-        <dd>Média aritmética com pontuação extra. Uma estratégia de agregação antiga e ultrapassada, mantida aqui apenas por questões de compatibilidade com algumas atividades antigas.</dd>
-
-    <dt>Mediana das notas</dt>
-        <dd>A nota do meio (ou a média de duas notas do meio, caso o número seja par), obtida após ordenação das notas. A vantagem sobre a média é que ela não é afetada por valores atípicos (notas que estão muito longe da média).</dd>
-        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
-                         <code>median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
-
-    <dt>Menor nota</dt>
-        <dd>O resultado é a menor nota após a normalização. É geralmente utilizada em combinação com <em>Agregar somente notas dadas</em>.</dd>
-        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
-                         <code>min(0.7 ; 0.25 ; 1.0) = 0.25 --> 25/100</code></dd>
-
-    <dt>Maior nota</dt>
-        <dd>O resultado é a maior nota após a normalização.</dd>
-        <dd class="example">T1 70/100, T2 20/80, T3 10/10, máximo da categoria 100:<br />
-                         <code>max(0.7 ; 0.25 ; 1.0) = 1.0 --> 100/100</code></dd>
-
-    <dt>Moda das notas</dt>
-        <dd>A moda é a nota que ocorre com mais frequência. É mais utilizado com notas não-númericas. A vantagem sobre a média é que ela não é afetada por valores atípicos (notas que estão muito longe da média). Entretanto, ele perde significado quando há mais de uma nota mais frequente (apenas uma será escolhida), ou quando todas as notas são distintas entre si.</dd>
-        <dd class="example">T1 70/100, T2 35/50, T3 20/80, T4 10/10, T5 7/10 máximo da categoria 100:<br />
-                         <code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
-
-    <dt>Soma das notas</dt>
-        <dd>A soma de todos as nota. As escalas são ignoradas. Esse é o único tipo de agregação que não converte internamente as notas para percentagem (normalização). A <em>Nota Máxima</em> do item associado à categoria é calculada automaticamente como a soma dos máximos de todos os itens agregados.</dd>
-        <dd class="example">T1 70/100, T2 20/80, T3 10/10:<br />
-                         <code>70 + 20 + 10 = 100/190</code></dd>
-</dl>';
 $string['aggregationposition'] = 'Posição de agregação';
 $string['aggregationposition_help'] = '<p>Define a posição da coluna de total de agregação no relatório das avaliações.</p>';
 $string['aggregationsvisible'] = 'Tipos de agregação disponíveis';
@@ -156,9 +156,9 @@ $string['bonuspoints'] = 'Bônus';
 $string['bulkcheckboxes'] = 'Conjunto de caixas de marcação';
 $string['calculatedgrade'] = 'Nota calculada';
 $string['calculation'] = 'Cálculo';
+$string['calculation_help'] = 'A nota final pode ser calculada usando uma fórmula, que deve começar com um sinal de igual (=) e pode usar os operadores matemáticos usuais, como \'max\', \'min\' e \'sum\' (soma). Se desejado, outros items de nota podem ser incluídos no cálculo, escrevendo os números de ID entre colchetes duplos. Exemplo: =sum([[327]];[[511]])';
 $string['calculationadd'] = 'Adicionar cálculo';
 $string['calculationedit'] = 'Editar cálculo';
-$string['calculation_help'] = 'A nota final pode ser calculada usando uma fórmula, que deve começar com um sinal de igual (=) e pode usar os operadores matemáticos usuais, como \'max\', \'min\' e \'sum\' (soma). Se desejado, outros items de nota podem ser incluídos no cálculo, escrevendo os números de ID entre colchetes duplos. Exemplo: =sum([[327]];[[511]])';
 $string['calculationsaved'] = 'Cálculo salvo';
 $string['calculationview'] = 'Ver cálculo';
 $string['cannotaccessgroup'] = 'Desculpe, mas não foi possível acessar as notas do grupo selecionado.';
@@ -254,9 +254,9 @@ $string['exportsettings'] = 'Exportar configurações';
 $string['exportto'] = 'Exportar para';
 $string['extracreditwarning'] = 'Se todos os itens forem atribuídos a uma categoria com créditos adicionais, estes serão removidos do cálculo da avaliação. Não existe, neste caso, uma nota final total';
 $string['feedback'] = 'Avaliação';
+$string['feedback_help'] = '<p>Comentários adicionados à nota pelo professor. Eles podem ser gerais, personalizados ou um comentaŕio simples referente a um sistema interno de feedback.</p>';
 $string['feedbackadd'] = 'Adicionar feedback';
 $string['feedbackedit'] = 'Editar feedback';
-$string['feedback_help'] = '<p>Comentários adicionados à nota pelo professor. Eles podem ser gerais, personalizados ou um comentaŕio simples referente a um sistema interno de feedback.</p>';
 $string['feedbacksaved'] = 'Feedback salvo';
 $string['feedbackview'] = 'Ver feedback';
 $string['finalgrade'] = 'Média final';
@@ -341,9 +341,9 @@ $string['gradeview'] = 'Mostrar nota';
 $string['gradeweighthelp'] = 'Ajuda para peso de ponderação das notas';
 $string['groupavg'] = 'Média do grupo';
 $string['hidden'] = 'Oculto';
+$string['hidden_help'] = 'Se marcado, as notas permanecerão ocultas para os cursistas. Se desejado, pode-se fixar uma data a partir da qual as notas ficarão visíveis, por exemplo, quando as avaliações forem concluídas.';
 $string['hiddenasdate'] = 'Mostrar data de apresentação para notas ocultas';
 $string['hiddenasdate_help'] = 'Se usuários não podem ver notas ocultas, mostrar data do envio em vez de \'-\'.';
-$string['hidden_help'] = 'Se marcado, as notas permanecerão ocultas para os cursistas. Se desejado, pode-se fixar uma data a partir da qual as notas ficarão visíveis, por exemplo, quando as avaliações forem concluídas.';
 $string['hiddenuntil'] = 'Oculto até';
 $string['hiddenuntildate'] = 'Oculto até: {$a}';
 $string['hideadvanced'] = 'Ocultar Características Avançadas';
@@ -482,6 +482,7 @@ $string['onascaleof'] = 'em uma escala de {$a->grademin} até {$a->grademax}';
 $string['operations'] = 'Operações';
 $string['options'] = 'Opções';
 $string['outcome'] = 'Meta';
+$string['outcome_help'] = 'Especificar o resultado que o item de nota vai representar no relatório de notas. Somente resultaods associados a esse curso e ao site podem ser usados.';
 $string['outcomeassigntocourse'] = 'Atribuir um outro resultado para este curso';
 $string['outcomecategory'] = 'Criar resultados na categoria';
 $string['outcomecategorynew'] = 'Nova categoria';
@@ -489,7 +490,6 @@ $string['outcomeconfirmdelete'] = 'Voce tem certeza que deseja excluir a meta "{
 $string['outcomecreate'] = 'Adicionar uma novo resultado';
 $string['outcomedelete'] = 'Excluir resultado';
 $string['outcomefullname'] = 'Nome completo';
-$string['outcome_help'] = 'Especificar o resultado que o item de nota vai representar no relatório de notas. Somente resultaods associados a esse curso e ao site podem ser usados.';
 $string['outcomeitem'] = 'Item de resultado da aprendizagem';
 $string['outcomeitemsedit'] = 'Editar item de resultado da aprendizagem';
 $string['outcomereport'] = 'Quadro de resultado da aprendizagem';
