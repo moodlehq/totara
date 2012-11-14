@@ -46,12 +46,12 @@ $string['allowroletoswitch'] = 'אפשר למשתמשים עם תפקיד
 $string['allowswitch'] = 'ניהול החלפת תפקידים';
 $string['allsiteusers'] = 'כל משתמשי האתר';
 $string['archetype'] = 'אב טיפוס לתפקידים';
+$string['archetype_help'] = 'ה-archetype  של התפקיד קובע את ההרשאות כאשר התפקיד מאופס לברירת המחדר.
+זה גם קובע כל הרשאה חדשה עבור התפקיד כאשר האתר בשדרוג.';
 $string['archetypecoursecreator'] = 'אב טיפוס: יוצר קורסים';
 $string['archetypeeditingteacher'] = 'אב טיפוס: מורה (עורך)';
 $string['archetypefrontpage'] = 'אב טיפוס: יוצר קורסיםמשתמש מאומת על הדף הראשון';
 $string['archetypeguest'] = 'אב טיפוס: אורח';
-$string['archetype_help'] = 'ה-archetype  של התפקיד קובע את ההרשאות כאשר התפקיד מאופס לברירת המחדר.
-זה גם קובע כל הרשאה חדשה עבור התפקיד כאשר האתר בשדרוג.';
 $string['archetypemanager'] = 'אב טיפוס: מנהל';
 $string['archetypestudent'] = 'אב טיפוס: תלמיד';
 $string['archetypeteacher'] = 'אב טיפוס: מורה (לא עורך)';
@@ -102,7 +102,7 @@ $string['backup:backupactivity'] = 'פעיליות גיבוי';
 $string['backup:backupcourse'] = 'גבה קורסים';
 $string['backup:backupsection'] = 'יחידות גבויי';
 $string['backup:backuptargethub'] = 'גיבוי עבור שרת Hub';
-$string['backup:backuptargetimport'] = 'גבה בעבור יצוא ';
+$string['backup:backuptargetimport'] = 'גבה בעבור יצוא';
 $string['backup:configure'] = 'הגדר אפשרויות הגיבוי';
 $string['backup:downloadfile'] = 'הורדת קבצים מאיזור הגיבוי';
 $string['backup:userinfo'] = 'גיבוי מידע המשתמש';
@@ -257,8 +257,8 @@ $string['legacy:editingteacher'] = 'תפקיד מורש: מורה (עורך)';
 $string['legacy:guest'] = 'תפקיד מורש: אורח';
 $string['legacy:student'] = 'תפקיד מורש: סטודנט';
 $string['legacy:teacher'] = 'תפקיד מורש: מורה (לא עורך)';
-$string['legacytype'] = 'סוג תפקיד מורש';
 $string['legacy:user'] = 'תפקיד מורש: משתמש מאומת';
+$string['legacytype'] = 'סוג תפקיד מורש';
 $string['listallroles'] = 'רשום ברשימה את כל התפקידים';
 $string['localroles'] = 'הקצאת תפקידים';
 $string['mainadmin'] = 'ניהול מערכת ראשי';
@@ -290,8 +290,6 @@ $string['notset'] = 'לא מוגדר';
 $string['overrideanotherrole'] = 'עקיפת תפקיד נוסף';
 $string['overridecontext'] = 'עקיפת הקשר';
 $string['overridepermissions'] = 'עקוף הרשאות';
-$string['overridepermissionsforrole'] = 'עקיפת הרשאות עבור תפקיד
-\'{$a->role}\' ב- {$a->context}';
 $string['overridepermissions_help'] = '<p align="center"><b>עקיפות</b></p>
 
 <p>עקיפות הן למעשה הרשאות מסוימות שמתוכננות לעקוף תפקיד כלשהוא בהקשר מסוים ובכך מאפשרות לכם להתאים ולכוון את ההרשאות שלך.
@@ -312,6 +310,8 @@ $string['overridepermissions_help'] = '<p align="center"><b>עקיפות</b></p>
 <a href="help.php?file=assignroles.html">חלק תפקידים</a> and
 <a href="help.php?file=permissions.html">היתרים</a>.
 </p>';
+$string['overridepermissionsforrole'] = 'עקיפת הרשאות עבור תפקיד
+\'{$a->role}\' ב- {$a->context}';
 $string['overridepermissionsin'] = 'עקוף הרשאות ב{$a}';
 $string['overrideroles'] = 'עקוף את התפקידים';
 $string['overriderolesin'] = 'עקוף תפקידים ב{$a}';
@@ -331,7 +331,7 @@ $string['permission_help'] = '<p align="center"><b>הרשאות</b></p>
 <dl>
 <dt>לרשת</dt>
 <dd> לרוב זוהי ההגדרה שמשמשת כברירת המחדל. זוהי הגדרה ניטרלית שמשמעותה "השתמש בכל הגדרה שכבר יש למשתמש". אם משתמש כלשהוא ממונה לתפקיד (למשל בקורס) בעל הרשאה זו ליכולת כלשהיא, אז ההרשאה הממשית שלו פשוט תהיה זהה להרשאה שכבר יש לו ברמות הגבוהות יותר (למשל קטגוריות או רמת האתר). בסופו של דבר, אם בשום רמה לא ניתנת למשתמש הרשאה אז לא תהיה לו שום הרשאה ליכולת ההיא.
-    </dd>
+</dd>
 
 <dt>אפשר</dt>
 <dd>כשאתם בוחרים בזה, אתם למעשה נותנים לאנשים שממונים לתפקיד זה הרשאה ליכולת זו.
@@ -345,7 +345,7 @@ $string['permission_help'] = '<p align="center"><b>הרשאות</b></p>
 
 <dt>לאסור</dt>
 <dd>ערך זה נדרש לעתים רחוקות אבל יכול להיות שלעתים תרצו למנוע לחלוטין הרשאות לתפקיד בדרך שלא יהיה ניתן לעקוף אותה בכל הקשר נמוך יותר. דוגמא טובה לאפשרות שבה תזדקקו לזה היא כאשר מנהל רוצה לאסור על אדם אחד להתחיל בדיונים חדשים בכל פורום בכל האתר. במקרה זה הוא יכול ליצור תפקיד בו יכולות זו (לפתוח בדיונים חדשים) מוגדרת כ-\'אסור\' ואז למנות את המשתמש לתפקיד זה בתוך ההקשר של האתר.
-  </dd>
+</dd>
 
 </dl>
 </p>
@@ -356,7 +356,7 @@ $string['permission_help'] = '<p align="center"><b>הרשאות</b></p>
 </p>
 
 <p> אם לאותו אדם ממונים שני תפקידים באותו ההקשר, אחד אם \'אפשר\' ואחד עם \'מנע\', איזה מהם מנצח? במקרה זה מוודל יערוך חיפוש בעץ ההקשרים אחר "מחליט".
- </p>
+</p>
 
 <p>לדוגמא, לתלמיד יש שני תפקידים בקורס, אחד שמאפשר לו לפתוח בדיונים חדשים ואחד שמונע זאת ממנו.
 במקרה זה נבדוק את הקשרי הקטגוריות והאתר, כאשר אנו מחפשים אחר הרשאה מוגדרת אחרת שתעזור לנו להחליט.
@@ -418,24 +418,23 @@ $string['restore:uploadfile'] = 'העלה קבצים לאיזור הגיבויי
 $string['restore:userinfo'] = 'שחזר מידע משתמש';
 $string['restore:viewautomatedfilearea'] = 'שחזר קורסים מהגיבויים האוטומטיים';
 $string['risks'] = 'סיכונים';
+$string['role:assign'] = 'הקצאת תפקידים למשתמשים';
+$string['role:manage'] = 'יצירה וניהול תפקידים';
+$string['role:override'] = 'עקוף את הרשאות המשתמשים';
+$string['role:review'] = 'סקירת הרשאות עבור אחרים';
+$string['role:safeoverride'] = 'עקוף הרשאות מוגנות עבור אחרים';
+$string['role:switchroles'] = 'החלף לתפקידים אחרים';
 $string['roleallowheader'] = 'אפשר תפקיד:';
 $string['roleallowinfo'] = 'בחר בתפקיד שאותו תרצה להוסיף לרשימת התפקידים המאושרים בהקשר {$a->context},
 וביכולת {$a->cap}:';
-$string['role:assign'] = 'הקצאת תפקידים למשתמשים';
 $string['roleassignments'] = 'הקצאות התפקידים';
 $string['roledefinitions'] = 'הגדרות תפקיד';
 $string['rolefullname'] = 'שם';
 $string['roleincontext'] = '{$a->role} ב- {$a->context}';
-$string['role:manage'] = 'יצירה וניהול תפקידים';
-$string['role:override'] = 'עקוף את הרשאות המשתמשים';
 $string['roleprohibitheader'] = 'אסור תפקיד';
 $string['roleprohibitinfo'] = 'בחר בתפקיד שאותו תרצה להוסיף לרשימת התפקידים החסומים בהקשר {$a->context},
 וביכולת {$a->cap}:';
-$string['role:review'] = 'סקירת הרשאות עבור אחרים';
 $string['roles'] = 'תפקידים';
-$string['role:safeoverride'] = 'עקוף הרשאות מוגנות עבור אחרים';
-$string['roleselect'] = 'בחירת תפקיד';
-$string['rolesforuser'] = 'תפקידים עבור   {$a}';
 $string['roles_help'] = '<p align="center"><b>תפקידים</b></p>
 
 <p> תפקיד הוא אוסף של הרשאות שמוגדרות עבור האתר בכללותו, אותן אתם יכולים להעניק למשתמשים מסויימים בהקשרים מסויימים.
@@ -445,13 +444,13 @@ $string['roles_help'] = '<p align="center"><b>תפקידים</b></p>
 <p>
 
 <p>חובה שיהיה לתפקיד <strong>שם</strong>. אם אתם צריכים לתת לתפקיד שם עבור מספר שפות שונות, אם אתם רוצים בכך אתם יכולים להשתמש בתחביר רב-שפות (multilang), לדוגמא: <pre>
-  &lt;span lang="en">Teacher&lt;/span>
-  &lt;span lang="es_es">Profesor&lt;/span>
-  </pre>אם אתם בוחרים לעשות זאת, וודאו שההגדרה "לסנן מחרוזות" מופעלת עבור ההתקנה שלכם.
+&lt;span lang="en">Teacher&lt;/span>
+&lt;span lang="es_es">Profesor&lt;/span>
+</pre>אם אתם בוחרים לעשות זאת, וודאו שההגדרה "לסנן מחרוזות" מופעלת עבור ההתקנה שלכם.
 </p>
 
 <p>
- <strong>השם הקצר</strong> הוא הכרחי עבור התקני תקע אחרים במוודל, שיכול להיות ויצטרכו להתייחס לתפקידים שלכם (למשל: בזמן העלאת משתמשים מתוך קובץ או הגדרת הרשמות דרך התקן תקע שמשמש להרשמה).
+<strong>השם הקצר</strong> הוא הכרחי עבור התקני תקע אחרים במוודל, שיכול להיות ויצטרכו להתייחס לתפקידים שלכם (למשל: בזמן העלאת משתמשים מתוך קובץ או הגדרת הרשמות דרך התקן תקע שמשמש להרשמה).
 <p>
 
 <p>
@@ -465,8 +464,9 @@ $string['roles_help'] = '<p align="center"><b>תפקידים</b></p>
 <a href="help.php?file=assignroles.html">מנה לתפקידים</a> and
 <a href="help.php?file=overrides.html">עקיפות</a>.
 </p>';
+$string['roleselect'] = 'בחירת תפקיד';
+$string['rolesforuser'] = 'תפקידים עבור   {$a}';
 $string['roleshortname'] = 'שם מקוצר (באנגלית!)';
-$string['role:switchroles'] = 'החלף לתפקידים אחרים';
 $string['roletoassign'] = 'תפקיד שיש למנות אליו';
 $string['roletooverride'] = 'תפקיד שיש לעקוף אותו';
 $string['safeoverridenotice'] = 'הערה: יכולות עם סיכונים גבוהים נעולים מיכוון שאתה רשאי לעקוף רק יכולות מוגנות.';
@@ -476,7 +476,6 @@ $string['selectrole'] = 'בחר בתפקיד';
 $string['showallroles'] = 'הראה את כל התפקידים';
 $string['showthisuserspermissions'] = 'הצג הרשאות משתמש זה';
 $string['site:accessallgroups'] = 'גש לכל הקבוצות';
-$string['siteadministrators'] = 'מנהלי המערכת';
 $string['site:approvecourse'] = 'אשר יצירת קורס';
 $string['site:backup'] = 'גבה את הקורס';
 $string['site:config'] = 'שנה את הגדרות התצורה של האתר';
@@ -495,6 +494,7 @@ $string['site:viewfullnames'] = 'תמיד ראה את שמם המלא של המ�
 $string['site:viewparticipants'] = 'ראה משתתפים';
 $string['site:viewreports'] = 'ראה דוחות';
 $string['site:viewuseridentity'] = 'הצג זיהוי משתמש מלא ברשימות';
+$string['siteadministrators'] = 'מנהלי המערכת';
 $string['tag:create'] = 'צור תוויות חדשות';
 $string['tag:edit'] = 'ערוך תוויות קיימות';
 $string['tag:editblocks'] = 'ערוך משבצות־ניהול בדפי תוויות';
@@ -521,6 +521,12 @@ $string['user:manageownfiles'] = 'נהל קבצים באיזורי הקובץ ה
 $string['user:managesyspages'] = 'הגדר את תצורת העמוד כברירת המחדל עבור פרופילים של משתמשים ציבוריים';
 $string['user:readuserblogs'] = 'ראה את כל הבלוגים של כל המשתמשים';
 $string['user:readuserposts'] = 'ראה את כל הפירסומים של כל המשתמשים';
+$string['user:update'] = 'עדכן את פרופילי משתמשים';
+$string['user:viewalldetails'] = 'צפיה במידע המלא של המשתמש';
+$string['user:viewdetails'] = 'ראה את פרופילי משתמשים';
+$string['user:viewhiddendetails'] = 'ראה פרטי משתמשים מוסתרים';
+$string['user:viewuseractivitiesreport'] = 'ראה את דוחות פעילות המשתמשים';
+$string['user:viewusergrades'] = 'ראה את ציוני המשתמשים';
 $string['usersfrom'] = 'משתמשים מ {$a}';
 $string['usersfrommatching'] = 'משתמשים מ {$a->contextname} המתאימים
 \'{$a->search}\'';
@@ -529,18 +535,12 @@ $string['usersinthisxmatching'] = 'משתמשים ב {$a->contexttype}  זה ה�
 \'{$a->search}\'';
 $string['userswithrole'] = 'כל המשתמשים עם תפקיד';
 $string['userswiththisrole'] = 'משתמשים בעלי תפקידים';
-$string['user:update'] = 'עדכן את פרופילי משתמשים';
-$string['user:viewalldetails'] = 'צפיה במידע המלא של המשתמש';
-$string['user:viewdetails'] = 'ראה את פרופילי משתמשים';
-$string['user:viewhiddendetails'] = 'ראה פרטי משתמשים מוסתרים';
-$string['user:viewuseractivitiesreport'] = 'ראה את דוחות פעילות המשתמשים';
-$string['user:viewusergrades'] = 'ראה את ציוני המשתמשים';
 $string['useshowadvancedtochange'] = 'השתמש ב"הצג הגדרות מתקדמות" לשינוי';
 $string['viewingdefinitionofrolex'] = 'צפיה בהגדרת תפקיד
 \'{$a}\'';
 $string['viewrole'] = 'ראה את פרטי התפקיד';
 $string['webservice:createmobiletoken'] = 'יצירת אסימון web service עבור גישת ניידים';
-$string['webservice:createtoken'] = ' יצירת אסימון web service';
+$string['webservice:createtoken'] = 'יצירת אסימון web service';
 $string['whydoesuserhavecap'] = 'מדוע ל {$a->fullname}
 יש יכולת {$a->capability} בהקשר
 {$a->context}?';

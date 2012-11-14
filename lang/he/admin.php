@@ -92,7 +92,7 @@ $string['calendarsettings'] = 'לוח שנה';
 $string['cannotdeletemodfilter'] = 'לא ניתן להסיר את \'{$a->filter}\' ,  מכיוון שהוא חלק מרכיב ה-\'{$a->module}\' .';
 $string['cfgwwwrootslashwarning'] = '$ CFG->wwwroot הוגדר בצורה שגויה בקובץ config.php , התו \'/\' התווסף בסוף. אנא הסר אותו אחרת אתה עלול להתקל בשגיאות מוזרות כגון <a href=\'http://tracker.moodle.org/browse/MDL-11061\'>MDL-11061זו </a>.';
 $string['cfgwwwrootwarning'] = '$ CFG->wwwroot הוגדר בצורה שגויה בקובץ config.php , ואינו מתאים ל-URL שאתה משתמש לגשת עבור עמוד זה. אנא הסר אותו אחרת אתה עלול להתקל בשגיאות מוזרות כגון
- <a href=\'http://tracker.moodle.org/browse/MDL-11061\'>זו MDL-11061 </a>';
+<a href=\'http://tracker.moodle.org/browse/MDL-11061\'>זו MDL-11061 </a>';
 $string['change'] = 'שינוי';
 $string['checkboxno'] = 'לא';
 $string['checkboxyes'] = 'כן';
@@ -135,6 +135,8 @@ $string['configallowthemechangeonurl'] = 'אם מאופשר, ערכת הנושא
 או
 <br />&theme=themename to any internal Moodle URL (eg: mymoodlesite.com/course/view.php?id=2&theme=afterburner ).';
 $string['configallowuserblockhiding'] = 'האם אתה מרשה למשתמשים להציג/להסתיר משבצות באתר? תכונה זו משתמשת ב-Javascript ועוגיות כדי לזכור את המצב של כל משבצת  ניתן להסתרה, ומשפיע רק על האופן בו המשתמש עצמו צופה באתר.';
+$string['configallowuserswitchrolestheycantassign'] = 'By default, moodle/role:assign is required for users to switch roles. Enabling this setting removes this requirement, and results in the roles available in the "Switch role to" dropdown menu being determined by settings in the "Allow role assignments" table only.
+It is recommended that the settings in the "Allow role assignments" table do not allow users to switch to a role with more capabilities than their existing role.';
 $string['configallowuserthemes'] = 'אם תאפשר זאת, משתמשים יוכלו לבחור לעצמם ערכת נושא. ערכות נושא המוגדרות ע"י משתמשים רומסות את ערכת הנושא המוגדרת ברמת האתר (אך לא את ערכת הנושא שהוגדרה ברמת הקורס, אם יש כזו).';
 $string['configallusersaresitestudents'] = 'האם יש להתייחס לכל המשתמשים כסטודנטים עבור פעילויות בעמוד הראשי של האתר? אם התשובה היא "כן", אזי כל חשבון משתמש מאושר יורשה להשתתף כסטודנט בפעילויות אלו. אם התשובה היא "לא", אזי רק משתמשים הרשומים לקורס אחד לפחות יורשו לטול חלק בפעילויות המופיעות בעמוד הראשי. רק מנהלים ומורים שקיבלו הרשאה מיוחדת יכולים להחשב כמורים עבור פעילויות אלו בעמוד הראשי.';
 $string['configauthenticationplugins'] = 'אנא בחר את אימותי ההתקנים אשר תרצה להשתמש ומיינם לפי סדר הכשלונות הצפוי. הרשמה עצמית תטופל ע"י ההתקן הנבחר בעמודת ה-\'Registration\' (הרשמה בד"כ תתבצע ע"י \'email\').';
@@ -207,7 +209,9 @@ $string['configfrontpage'] = 'הפריטים שנבחרו מעל יוצגו בע
 $string['configfrontpageloggedin'] = 'הפריטים שנבחרו מעל יוצגו בעמוד הראשי של האתר כאשר משתמש מחובר לאתר.';
 $string['configfullnamedisplay'] = 'אפשרות זו מגדירה כיצד שמות יופיעו כאשר הם מוצגים בצורה מלאה.עבור מרבית האתרים המתשמשים אך ורק בשפה אחת ההגדרה היעילה ביותר היא הגדרת היסוד "שם פרטי + שם משפחה", אבל יש ביכולתך להעלים את שם השפחה או להשאיר החלטה זאת להתקנה הנוכחית של ערכת השפה מכיוון ולחלק משפות יש מוסכמות שונות.';
 $string['configgdversion'] = 'מורה על גירסת ה-GD המותקנת. הגירסה המופיעה כברירת מחדל היא זו אשר הובחנה בצורה אוטומטית. אל תשנה את הגדרה זו אלא אם כן אתה באמת יודע מה אתה עושה.';
+$string['configgeoipfile'] = 'Location of GeoIP City binary data file. This file is not part of Moodle distribution and must be obtained separately from <a href="http://www.maxmind.com/">MaxMind</a>. You can either buy a commercial version or use the free version.<br />Simply download <a href="http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" >http://www.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz</a> and extract it into "{$a}" directory on your server.';
 $string['configgetremoteaddrconf'] = 'אם האתר שלך נמצא תחת proxy הפוך, תוכל לציין בהגדרה זו אלו HTTP headers מהימנים להכיל את כתובת ה-IP מרוחקות. ה-headers יקראו בסדר מסויים כך שהשימוש יתחיל בראשון אשר יהיה זמין.';
+$string['configgooglemapkey'] = 'You need to enter a special key to use Google Maps for IP address lookup visualization. You can obtain the key free of charge at <a href="http://code.google.com/apis/maps/signup.html" >http://code.google.com/apis/maps/signup.html</a>.<br />Your web site URL is: {$a}';
 $string['configgradebookroles'] = 'הגדרה זו מאפשרת לך לקבוע מי יופיע בגליון הציונים. המשתמשים חייבים להיות משוייכים לפחות לאחד מהתפקידים האלו בקורס בכדי שציוניהם יופיעו בפנקס.';
 $string['configgradeexport'] = 'בחר אלו תסדירים של פנקסי הציונים המיוצאים יהיו שיטות עיקריות בעבור יצוא ציונים. תוספים שנבחרו יוגדרו וישתמשו בשדה ה"יצוא האחרון" לכל ציון. לדוגמה, תוצאה יכולה להיות ברשומה מיוצאת תזוהה כ"חדשה" או "מעודכנת". אם אינך בטוח לגבי זה השאר הכל ריק.';
 $string['confighiddenuserfields'] = 'בחר אילו בחר אילו שדות מידע של הסטודנט תרצה להסתיר ממשתמשים אחרים חוץ מאשר מורי הקורסמנהלים. דבר אשר יגדיל את אבטחת הסטודנט. החזק את מקש ה-CTRL לבחירת שדות מרובה.';
@@ -263,8 +267,7 @@ $string['configprofileroles'] = 'רשימת תפקידים אשר נראים ב�
 $string['configprofilesforenrolledusersonly'] = 'למנוע שימוש לרעה ע"י שולחי דואר זבל, תיאור פרופיל המשתמש עבור כאלו שעדיין לא נרשמו  לקורס יוסתר. משתמשים חדשים חייבים להירשם לקורס אחד לפחות לפני שיוכלו להוסיף תיאור לפרופיל המשתמש שלהם.';
 $string['configprotectusernames'] = 'כברירת מחדל forget_password.php לא מציגה רמזים שמאפשרים ניחוש שמות משתמש או כתובות דוא"ל.';
 $string['configproxybypass'] = 'רשימת כתובת מארחים או כתובות IP מופרדים בפסיק, אמורים לעקוף דרך פרוקסי.
-(e.g., 192.168., .mydomain.com)
-	';
+(e.g., 192.168., .mydomain.com)';
 $string['configproxyhost'] = 'אם <b>שרת זה</b> מצריך שימוש במחשב proxy (למשל חומת מגן) להתחברות לאינטרנט, אז ספק לשם משתמש למחשב ה proxy ומספר port. אחרת השאר ריק. <b>מילה </ b>';
 $string['configproxypassword'] = 'סיסמה נדרשת כדי לגשת לאינטרנט דרך proxy אם נדרש, השאר ריק אם אין שימוש בכך (נדרשת הרחבת PHP ו-cURL).';
 $string['configproxyport'] = 'אם שרת זה מצריך שימוש במחשב proxy, ספק את מספר ה port כאן.';
@@ -296,6 +299,7 @@ $string['configsectionstats'] = 'סטטיסטיקות';
 $string['configsectionuser'] = 'משתמש';
 $string['configsecureforms'] = 'מערכת Moodle תוכל להשתמש ברמה נוספת של אבטחה כאשר תקבל מידע מטפסי הרשת. באפשור הגדרה זו משתנה HTTP_REFERER של הדפדפן נבדק מול כתובת הטופס הנוכחי. במקרים מסויימים עלולות להיווצר בעיות אם משתמש המערכת משתמש בחומת מגן, למשל Zonealarm, ומורה לה למחוק את HTTP_REFERER מתעבורת רשת האינטרנט. סימנים לבעיות היא "תקיעה" בכת הצגת טופס. אם למשתמשים יש, למשל, תקלות בעמוד הרישום יתכן ותרצה למנוע הגדרה זאת, גם אם היא תשאיר את האתר שלך יותר חשוף לנסיונות חוזרים ונשנים של שבירת הסיסמאות. אם אתה בספק השאר את הערך "כן".';
 $string['configsessioncookie'] = 'הגדרה זו קובעת את שם העוגיה המשמשת את ההתקשרות למערכת Moodle. משתנה זה הינו רשות בלבד, ומשמש למניעת בלבול בין העוגיות כאשר יש יותר מעותק אחד של Moodle באותו אתר אינטרנט.';
+$string['configsessioncookiedomain'] = 'This allows you to change the domain that the Moodle cookies are available from. This is useful for Moodle customisations (e.g. authentication or enrolment plugins) that need to share Moodle session information with a web application on another subdomain. <strong>WARNING: it is strongly recommended to leave this setting at the default (empty) - an incorrect value will prevent all logins to the site.</strong>';
 $string['configsessioncookiepath'] = 'אם תרצה לשנות כאשר שדפדפנים שולחים עוגיות של Moodle, תוכל לשנות זאת כדי לציין תת-ספרייה לאתר שלך. אחרת סימת ברירת המחדל \'/\' יהיה מספיק.';
 $string['configsessiontimeout'] = 'אם המשתמשים המקושרים לאתר זה הינם מקושרים זמן ארוך (כלומר לא טוענים דפים) אז הם מנותקים אוטומטית (הקישור שלהם מופסק). משתנה זה מגדיר מה צריך להיות משך הזמן עד הניתוק.';
 $string['configshowcommentscount'] = 'הצג ספירת הערות, הדבל יעלה בשאילתא אחת או יותר בתצוגת קישור ההערות.';
@@ -391,14 +395,13 @@ $string['ctyperecommended'] = 'התקנת ההרחבה האופציונלית ct
 $string['ctyperequired'] = 'הרחבת ה-ctype PHP כעת נדרשת ע"י Moodle, כדי לשפר את ביצועי האתר ולהציע תאימות רב-לשונית.';
 $string['curlcache'] = 'cURL cache TTL';
 $string['curlrecommended'] = 'התקנת ספריית Curl, האופציונלית, מומלצת ביותר בכדי לאפשר ל-Moodle את פונקציונליות התקשורת';
-$string['curlrequired'] = 'התוסף cURL PHP נדרש ע"י המערכת בכדי להתקשר עם  Moodle Repositories
-';
+$string['curlrequired'] = 'התוסף cURL PHP נדרש ע"י המערכת בכדי להתקשר עם  Moodle Repositories';
 $string['curltimeoutkbitrate'] = 'Bitrate  כאשר משתמשים בחישוב זמני cURL (Kbps)';
 $string['currenttheme'] = 'ערכת הנושא הנוכחית';
 $string['customcheck'] = 'בדיקות אחרות';
 $string['custommenu'] = 'תפריט מותאם אישית';
 $string['custommenuitems'] = 'פריטי תפריט מותאם אישית';
-$string['datarootsecurityerror'] = '<p><strong>SECURITY WARNING!</strong></p><p>Your dataroot directory is in the wrong location and is exposed to the web. This means that all your private files are available to anyone in the world, and some of them could be used by a cracker to obtain unauthorised administrative access to your site!</p>\n<p>You <em>must</em> move dataroot directory ({$a}) to a new location that is not within your public web directory, and update the <code>\\$CFG->dataroot</code> setting in your config.php accordingly.</p>';
+$string['datarootsecurityerror'] = '<p><strong>SECURITY WARNING!</strong></p><p>Your dataroot directory is in the wrong location and is exposed to the web. This means that all your private files are available to anyone in the world, and some of them could be used by a cracker to obtain unauthorised administrative access to your site!</p>\n<p>You <em>must</em> move dataroot directory ({$a}) to a new location that is not within your public web directory, and update the <code>\$CFG->dataroot</code> setting in your config.php accordingly.</p>';
 $string['datarootsecuritywarning'] = 'תצורת האתר שלך עלולה להיות פרוצה. אנא וודא שספריית {$a} ה-dataroot שלך אינה נגישה באופן ישירמהרשת.';
 $string['dbmigrate'] = 'הגירת מסד הנתונים של Moodle.';
 $string['dbmigrateconnecerror'] = 'לא ניתן להתחבר למסד הנתונים המפורט כאן';
@@ -494,7 +497,7 @@ $string['enablestats'] = 'אפשר סטטיסטיקות';
 $string['enabletrusttext'] = 'אפשר תוכן אמין';
 $string['enablewebservices'] = 'אפשר web services';
 $string['enablewsdocumentation'] = 'תיעוד web services';
-$string['enrolinstancedefaults'] = 'ערכי ברירת מחדל למופעי רישום ';
+$string['enrolinstancedefaults'] = 'ערכי ברירת מחדל למופעי רישום';
 $string['enrolinstancedefaults_desc'] = 'הגדרות ברירת מחדר של הרישום קורסים חדשים.';
 $string['enrolmultipleusers'] = 'רשום את המשתמשים';
 $string['environment'] = 'סביבה';
@@ -593,6 +596,9 @@ $string['invaliduserchangeme'] = 'שם המשתמש "chaneme" שמור למער�
 $string['ipblocked'] = 'אתר זה איננו זמין כרגע.';
 $string['ipblocker'] = 'חסימת IP';
 $string['iplookup'] = 'חיפוש כתובת IP';
+$string['iplookupinfo'] = 'By default Moodle uses the free online NetGeo (The Internet Geographic Database) server to lookup location of IP addresses, unfortunately this database is not maintained anymore and may return <em>wildly incorrect</em> data.
+It is recommended to install local copy of free GeoLite City database from MaxMind.<br />
+IP address location is displayed on simple map or using Google Maps. Please note that you need to have a Google account and apply for free Google Maps API key to enable interactive maps.';
 $string['iplookupmaxmindnote'] = 'המוצר מכיל מידע GeoLite אשר נוצר ע"י MaxMind, זמין מ-<a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.';
 $string['iplookupnetgeonote'] = 'שרת ה-NetGeo נמצא בשימוש בכדי למצוא מידע גיאוגרפי. לתוצאות מדוייקות יותר אנו ממליצים להתקין העתק מקומי של מסד נתונים של MaxMind GeoLite.';
 $string['keeptagnamecase'] = 'הבדלה בין אותיות רשיות לרגילות בכל הנוגע לשמות תגיות';
@@ -674,7 +680,9 @@ $string['minpasswordnonalphanum'] = 'סימנים שאינם ספרות או א�
 $string['minpasswordupper'] = 'אותיות רישיות';
 $string['misc'] = 'שונות';
 $string['mnetrestore_extusers'] = '<strong> הודעה: </strong>קובץ גיבוי זה מכיל חשבונות משתמש Moodle Network מרחוק אשר יאוחסן כחלק מהתהליך.';
+$string['mnetrestore_extusers_admin'] = '<strong>Note:</strong> This backup file seems to come from a different Moodle installation and contains remote Moodle Network user accounts. The restore process will try to match the Moodle Network hosts for all created users. Those not matching will be automatically switched to internal authentication (instead of mnet one). The restore log will inform you about that.';
 $string['mnetrestore_extusers_mismatch'] = '<strong>הודעה: </strong> קובץ גיבוי זה לכאורה נוצר מהתקנת Moodle שונה ומכיל חשבונות משתמש Moodle Network מרחוק אשר עלול ליפול עבור שחזור. פעולה זו חסרת תמיכה. אם אתה בטוח שהקובץ כן נוצר בהתקנת Moodle זו, או שאתה יכול לוודא שכל Moodle Network Hosts הנחוצים מוגדרים, תוכל עדיין לנסות את השחזור.';
+$string['mnetrestore_extusers_noadmin'] = '<strong>Note:</strong> This backup file seems to come from a different Moodle installation and contains remote Moodle Network user accounts. You are not allowed to execute this type of restore. Contact the administrator of the site or, alternatively, restore this course without any user information (modules, files...)';
 $string['mnetrestore_extusers_switchuserauth'] = 'משתמש מרוחק של Moodle Network
 {$a->username} (מגיע מ- {$a->mnethosturl}) הוחלף לאימות משתמש מקומי   {$a->auth}';
 $string['modeditdefaults'] = 'ערך ברירת מחדל עבור הגדרות פעילות.';
@@ -683,7 +691,7 @@ $string['modulesecurity'] = 'אבטחת רכיב';
 $string['moodlerelease'] = 'מזהה גרסת Moodle';
 $string['multilangforceold'] = 'אלץ תחביר ישן של שפות מרובות (multilang) : <span> ללא המחלקה : class="multilang" וגם
 <lang>
- <lang>';
+<lang>';
 $string['mustenablestats'] = 'סטטיסטיקות לא אופשרו עדיין באתר זה';
 $string['mycoursesperpage'] = 'מספר מירבי של קורסים';
 $string['mydashboard'] = 'ברירת המחדל של לוח המחוונים של המערכת';
@@ -749,7 +757,7 @@ $string['performance'] = 'ביצועי מערכת';
 $string['pgcluster'] = 'אשכול PostgreSQL';
 $string['pgclusterdescription'] = 'פרמטרי אשכול/גירסת PostgreSQL עבור פעולות בשורת הפקודה. אם יש לך רק postgresql אחד במערכת או שאינך בטוח בהגדרה זו, השאר תיבה זו ריקה.';
 $string['php50restricted'] = 'קיים ל-PHP 5.0.x מספר בעיות ידועות, אנא שדרג ל-5.1 או הורד בדרגה לגירסה 4.3 או 4.4';
-$string['php533warning'] = 'מומלצת גרסת PHP 5.3.3 ומעלה ';
+$string['php533warning'] = 'מומלצת גרסת PHP 5.3.3 ומעלה';
 $string['phpfloatproblem'] = 'זוהתה בעיה בלתי צפויה לאחר טיפול במספרים מסוג float של PHP -
 {$a}';
 $string['phpversion'] = 'גרסת PHP';
@@ -805,8 +813,7 @@ $string['profileshortnamenotunique'] = 'שם קצר זה כבר בשימוש';
 $string['profilesignup'] = 'האם להציג על דף הרישום?';
 $string['profilespecificsettings'] = 'הגדרות מפורשות';
 $string['profilevisible'] = 'למי שדה זה גלוי';
-$string['profilevisible_help'] = '<p>לכל שדה מותאם אישית ניתן לתת אחת מתוך שלושת הגדרות הראות הבאות: בלתי נראה, כולם ומשתמש. הגדרת ה\'בלתי נראה\' תינתן לרוב על ידי מנהל שרוצה להסתיר מידע פרטי בנוגע למשתמשים. הגדרת ה\'משתמש\' תיבחר לרוב עבור שדה שמחזיק מידע רגיש, בעוד שבהגדרת ה\'כולם\' ניתן להשתמש עבור כל סוג של מידע.
-</p>';
+$string['profilevisible_help'] = 'לכל שדה מותאם אישית ניתן לתת אחת מתוך שלושת הגדרות הראות הבאות: בלתי נראה, כולם ומשתמש. הגדרת ה\'בלתי נראה\' תינתן לרוב על ידי מנהל שרוצה להסתיר מידע פרטי בנוגע למשתמשים. הגדרת ה\'משתמש\' תיבחר לרוב עבור שדה שמחזיק מידע רגיש, בעוד שבהגדרת ה\'כולם\' ניתן להשתמש עבור כל סוג של מידע';
 $string['profilevisibleall'] = 'גלוי לכולם';
 $string['profilevisiblenone'] = 'לא גלוי';
 $string['profilevisibleprivate'] = 'גלוי למשתמש';

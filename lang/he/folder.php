@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'תוכן';
-$string['foldercontent'] = 'קבצים ותת-תיקיות';
 $string['folder:managefiles'] = 'נהל קבצים ברכיב תצוגת תיקיית קבצים';
 $string['folder:view'] = 'צפה בתכני התיקיות';
+$string['foldercontent'] = 'קבצים ותת-תיקיות';
 $string['modulename'] = 'תצוגת תיקיית קבצים';
 $string['modulenameplural'] = 'תקיות קבצים';
 $string['neverseen'] = 'טרם נצפה';

@@ -49,13 +49,13 @@ $string['addrandom'] = 'הוסף {$a} שאלות אקראיות';
 $string['addrandom1'] = 'הוסף >>';
 $string['addrandom2'] = 'שאלות אקראיות';
 $string['addrandomfromcategory'] = 'הוסף שאלות אקראיות מהקטגוריה';
-$string['addrandomquestion'] = 'הוסף שאלות אקראיות ';
+$string['addrandomquestion'] = 'הוסף שאלות אקראיות';
 $string['addrandomquestiontoquiz'] = 'הוסף שאלות אקראיות לבוחן {$a}';
 $string['addselectedtoquiz'] = 'הוסף את הנבחרות לבוחן';
 $string['addtoquiz'] = 'הוסף לבוחן';
 $string['affectedstudents'] = '{$a} הושפעו';
-$string['aftereachquestion'] = 'לאחר הוספת כל שאלה ';
-$string['afternquestions'] = 'לאחר הוספת {$}a שאלות ';
+$string['aftereachquestion'] = 'לאחר הוספת כל שאלה';
+$string['afternquestions'] = 'לאחר הוספת {$}a שאלות';
 $string['age'] = 'גיל';
 $string['allattempts'] = 'כל נסיונות המענה';
 $string['allinone'] = 'בלתי מוגבל';
@@ -81,12 +81,12 @@ $string['attemptalreadyclosed'] = 'ניסיון זה כבר הסתיים.';
 $string['attemptclosed'] = 'הניסיון לא סגור עדיין.';
 $string['attemptduration'] = 'משך הזמן שלקח לענות';
 $string['attemptedon'] = 'נוסה ב-';
-$string['attempterror'] = 'אינך ראשי לנסות בוחן זה ';
+$string['attempterror'] = 'אינך ראשי לנסות בוחן זה';
 $string['attemptfirst'] = 'ניסיון מענה ראשון';
 $string['attemptincomplete'] = 'ניסיון מענה זה (ע"י {$a}) עדיין לא הושלם.';
 $string['attemptlast'] = 'נסיון מענה אחרון';
 $string['attemptnumber'] = 'נסיון מענה';
-$string['attemptquiznow'] = ' ענו על הבוחן כעת.';
+$string['attemptquiznow'] = 'ענו על הבוחן כעת.';
 $string['attempts'] = 'נסיונות מענה';
 $string['attemptsallowed'] = 'מספר נסיונות מותרים';
 $string['attemptsdeleted'] = 'נסיונות הבוחן הוסרו';
@@ -127,7 +127,7 @@ $string['cannotreviewopen'] = 'אין ביכולתך לבדוק  ניסיון ז
 $string['cannotsavelayout'] = 'לא ניתן לשמור את תצורת הבוחן';
 $string['cannotsavenumberofquestion'] = 'אין אפשרות לשמור את מספר השאלות שיופיעו בכל עמודא';
 $string['cannotsavequestion'] = 'אין אפשרות לשמור את רשימת השאלות';
-$string['cannotsetgrade'] = 'אין אפשרות להגדיר ערך מירבי חדש של ציונים לבוחן ';
+$string['cannotsetgrade'] = 'אין אפשרות להגדיר ערך מירבי חדש של ציונים לבוחן';
 $string['cannotsetsumgrades'] = 'כידלון בהגדרת ציונים מסוכמים';
 $string['cannotstartmissingquestion'] = 'לא ניתן להתחיל נסיון מענה בבוחן זה. הגדרת הבוחן מילה שאלה שאיננה קיים.';
 $string['cannotwrite'] = 'לא ניתן לכתוב בקובץ היצוא ({$a})';
@@ -294,7 +294,7 @@ $string['everyquestion'] = 'כל שאלה';
 $string['everythingon'] = 'הכל על';
 $string['export'] = 'יצוא';
 $string['exportcategory'] = 'ייצא קטגוריה';
-$string['exporterror'] = 'חלה שגיאה במהלך עיבוד היצוא ';
+$string['exporterror'] = 'חלה שגיאה במהלך עיבוד היצוא';
 $string['exportingquestions'] = 'שאלות מיוצאות לקובץ';
 $string['exportname'] = 'שם קובץ';
 $string['exportquestions'] = 'יצוא שאלות לקובץ';
@@ -385,17 +385,17 @@ $string['history'] = 'היסטוריית התגובות:';
 $string['howquestionsbehave_desc'] = 'הגדרות ברירת מחדל כיצד שאלות התנהגו בבוחן';
 $string['imagedisplay'] = 'תמונה להצגה';
 $string['import'] = 'יבוא';
-$string['importcategory'] = 'יבא קטגוריה';
-$string['importerror'] = 'חלה שגיאה במהלך עיבוד היבוא.';
-$string['importfilearea'] = 'יבא מתוך קובץ שכבר נמצא בקבצי הקורס...';
-$string['importfileupload'] = 'יבא מתוך קובץ מועלה';
-$string['importfromthisfile'] = 'יבא מתוך קובץ זה';
 $string['import_help'] = 'מתודה זו מאפשרת לך לייבא שאלות מקבצי טקסט חיצוניים.
 אם הקובץ שלך מכיל  תוי non-ascii עליך להשתמש בקידוד UTF-8.
 אהיה זהיר עם קבצים אשר נוצרו מתוכנות
 Microsoft Office, מכיוון שהם מכילות לפעמים קידוד תווים מיוחד  אשר עלול להיות בעיתי כאן.
 
 תסדירי יבוא ויצוא הם התקני משאבים. יתכן ותסדירים אחרים  יהיו זמינים מסד נתונים של "רכיבים ותוספים"';
+$string['importcategory'] = 'יבא קטגוריה';
+$string['importerror'] = 'חלה שגיאה במהלך עיבוד היבוא.';
+$string['importfilearea'] = 'יבא מתוך קובץ שכבר נמצא בקבצי הקורס...';
+$string['importfileupload'] = 'יבא מתוך קובץ מועלה';
+$string['importfromthisfile'] = 'יבא מתוך קובץ זה';
 $string['importingquestions'] = 'מיבא  {$a} שאלות מתוך הקובץ.';
 $string['importmax10error'] = 'בשאלה שלך יש שגיאה. אינך יכול להגדיר יותר מעשר תשובות.';
 $string['importmaxerror'] = 'בשאלה שלך יש שגיאה. קיימות יותר מדי תשובות.';
@@ -457,11 +457,11 @@ $string['navnojswarning'] = 'אזהרה: קישורים אלו לא ישמרו �
 $string['neverallononepage'] = 'לעולם לא, כל השאלות באותו עמוד';
 $string['newattemptfail'] = 'שגיאה: לא היה ניתן להתחיל בניסיון חדש לענות על הבוחן.';
 $string['newpage'] = 'עמוד חדש';
-$string['newpageevery'] = 'התחל עמוד חדש באופן אוטומטי';
 $string['newpage_help'] = '<p align="center"><b>שאלות בעמוד</b></p>
 
 <p>בבחנים ארוכים יותר הגיוני למתוח את הבוחן על כמה עמודים על ידי הגבלת מספר השאלות שיופיעו בכל עמוד. במהלך הוספת שאלות לעמוד הבוחן מעברי העמודים יוספו באופן אוטומטי לפי ההגדרה שתקבעו כאן. אבל תמיד תהיה בידכם האפשרות להזיז את מעברי העמודים מאוחר יותר באופן ידני בעמוד העריכה.
 </p>';
+$string['newpageevery'] = 'התחל עמוד חדש באופן אוטומטי';
 $string['noanswers'] = 'לא נבחרו תשובות!';
 $string['noattempts'] = 'לא נעשו ניסיונות לענות על בוחן זה';
 $string['noattemptsfound'] = 'לא נמצאו נסיונות מענה';
@@ -515,8 +515,7 @@ $string['orderandpaging'] = 'סדר ועימוד';
 $string['orderandpaging_help'] = '';
 $string['orderingquiz'] = 'סדר ועימוד';
 $string['outof'] = '{$a->grade} מתוך מקסימום של {$a->maxgrade}';
-$string['outofpercent'] = 'קיבלתם {$a->grade}  מתוך הציון המירבי  {$a->maxgrade}({$a->percent}%)
-';
+$string['outofpercent'] = 'קיבלתם {$a->grade}  מתוך הציון המירבי  {$a->maxgrade}({$a->percent}%)';
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'הערכה מילולית לבוחן (משוב כללי)';
 $string['overallfeedback_help'] = '<p align="center"><b>משוב כולל</b></p>
@@ -601,30 +600,34 @@ $string['questionsinclhidden'] = 'שאלות (כולל מוסתרות)';
 $string['questionsinthisquiz'] = 'שאלות בבוחן זה';
 $string['questionsperpage'] = 'שאלות בכל דף';
 $string['questionsperpageselected'] = 'שאלות לכל עמוד הוגדר כאן כך שהעימוד תוכן כרגע.
-כתוצאה מכך שליטת העימוד לא תאופשר. תוכל לשנות זאת כאן {$a}.
-';
+כתוצאה מכך שליטת העימוד לא תאופשר. תוכל לשנות זאת כאן {$a}.';
 $string['questionsperpagex'] = 'שאלות לכל עמוד: {$a}';
 $string['questiontext'] = 'טקסט השאלה';
 $string['questiontextisempty'] = '[שאלה ללא תוכן]';
 $string['questiontype'] = 'שאלה מסוג {$a}';
 $string['questiontypesetupoptions'] = 'אפשרויות הגדרת התצורה של סוגי השאלות:';
 $string['quiz:attempt'] = 'נסה לענות על הבחנים';
-$string['quizavailable'] = 'בוחן זה זמין עד: {$a}';
-$string['quizclose'] = 'סיום הבוחן';
-$string['quizclosed'] = 'בוחן זה מסתיים ב-{$a}';
-$string['quizcloses'] = 'סיום הבוחן';
-$string['quizcloseson'] = 'בוחן זה יסגר ב';
 $string['quiz:deleteattempts'] = 'מחק את הניסיונות שנעשו לענות על הבחנים';
 $string['quiz:emailconfirmsubmission'] = 'קבל אישור בדואר אלקטרוני כאשר אתה שולח מענה לבוחן';
 $string['quiz:emailnotifysubmission'] = 'קבל הודעה בדואר אלקטרוני על מענה הבוחן';
 $string['quiz:grade'] = 'בדוק ותן ציון לבחנים באופן ידני';
 $string['quiz:ignoretimelimits'] = 'מתעלם מהגבלת הזמן שיש לבחנים';
+$string['quiz:manage'] = 'נהל בחנים';
+$string['quiz:manageoverrides'] = 'ניהול עקיפות הבוחן';
+$string['quiz:preview'] = 'תצוגה מקדימה לבחנים';
+$string['quiz:regrade'] = 'תן ציון מחודש לנסיונות הבוחן';
+$string['quiz:reviewmyattempts'] = 'סקירת הניסיונות שלך';
+$string['quiz:view'] = 'ראה את המידע הנתון על הבוחן';
+$string['quiz:viewreports'] = 'ראה את דוחות הבוחן';
+$string['quizavailable'] = 'בוחן זה זמין עד: {$a}';
+$string['quizclose'] = 'סיום הבוחן';
+$string['quizclosed'] = 'בוחן זה מסתיים ב-{$a}';
+$string['quizcloses'] = 'סיום הבוחן';
+$string['quizcloseson'] = 'בוחן זה יסגר ב';
 $string['quizisclosed'] = 'בוחן זה נסגר';
 $string['quizisclosedwillopen'] = 'הבוחן סגור (יפתח ב  {$a})';
 $string['quizisopen'] = 'בוחן זה נפתח';
 $string['quizisopenwillclose'] = 'הבוחן נפתח (נסגר ב {$a})';
-$string['quiz:manage'] = 'נהל בחנים';
-$string['quiz:manageoverrides'] = 'ניהול עקיפות הבוחן';
 $string['quiznavigation'] = 'ניווט בוחן';
 $string['quizopen'] = 'תחילת הבוחן';
 $string['quizopenclose'] = 'פתיחה וסיום תאריכים';
@@ -633,15 +636,10 @@ $string['quizopened'] = 'הבוחן פתוח.';
 $string['quizopenedon'] = 'הבוחן יפתח ב-{$a}';
 $string['quizopens'] = 'תחילת הבוחן';
 $string['quizopenwillclose'] = 'הבוחן פתוח. הוא יסגר ב-{$a} ב-';
-$string['quizordernotrandom'] = ' לא עורבל סדר הבוחן';
+$string['quizordernotrandom'] = 'לא עורבל סדר הבוחן';
 $string['quizorderrandom'] = '* סדר הבוחן עורבל';
-$string['quiz:preview'] = 'תצוגה מקדימה לבחנים';
-$string['quiz:regrade'] = 'תן ציון מחודש לנסיונות הבוחן';
-$string['quiz:reviewmyattempts'] = 'סקירת הניסיונות שלך';
 $string['quizsettings'] = 'הגדרות הבוחן';
 $string['quiztimer'] = 'שעון עצר הבוחן';
-$string['quiz:view'] = 'ראה את המידע הנתון על הבוחן';
-$string['quiz:viewreports'] = 'ראה את דוחות הבוחן';
 $string['quizwillopen'] = 'הבוחן יפתח ב-{$a}';
 $string['random'] = 'שאלה אקראית';
 $string['randomcreate'] = 'צור שאלות אקראיות';
@@ -662,7 +660,7 @@ $string['regradenotallowed'] = 'אין לך היתר לתת ציון לבוחן 
 $string['regradingquestion'] = 'בודק מחדש את "{$a}".';
 $string['regradingquiz'] = 'בודק מחדש את בוחן "{$a}"';
 $string['remove'] = 'הסר';
-$string['removeallquizattempts'] = 'הסר את כל נסיונות הבוחן ';
+$string['removeallquizattempts'] = 'הסר את כל נסיונות הבוחן';
 $string['removeemptypage'] = 'סלק דפים ריקים';
 $string['removeselected'] = 'הסרת בחירה';
 $string['rename'] = 'שנה שם';
@@ -708,11 +706,11 @@ $string['requiresubnet_help'] = '<p>שדה זה הוא איננו חובה.</p>
 
 <ol>
 <li>כתובותצ  IP מלאות, כמו <b>192.168.10.1</b> שיתאימו למחשב פרטני (או
-    לאלא שקשורים אליו).</li>
+לאלא שקשורים אליו).</li>
 <li>כתובות חלקיות, כמו: <b>192.168</b> שיתאימו לכל דבר המתחיל באותם המספרים.</li>
 <li>סימון CIDR , כמו <b>231.54.211.0/20</b> שמאפשר לכם לציין תת-רשתות יותר מפורטות.</li>
 <li>טווח של כתובות IP <b>231.3.56.10-20</b>הטווח מוחל על החלק האחרון של הכתובת, שמשמעותו כל כתובות ה-IP החל מ- 231.3.56.10
-    ועד ל- 231.3.56.20.</li>
+ועד ל- 231.3.56.20.</li>
 </ol>
 
 <p>תוך התעלמות מהרווחים.</p>';
@@ -775,7 +773,7 @@ $string['serveridentifier'] = 'מזהה';
 $string['serverinfo'] = 'מידע על השרת';
 $string['servers'] = 'שרתים';
 $string['serverurl'] = 'כתובת ה-URL של השרת';
-$string['settingsoverrides'] = 'הגדרות של העקיפות ';
+$string['settingsoverrides'] = 'הגדרות של העקיפות';
 $string['shortanswer'] = 'תשובה קצרה';
 $string['show'] = 'הצג';
 $string['showall'] = 'הצג את כל השאלות בדף אחד';
@@ -831,9 +829,9 @@ $string['submitallandfinish'] = 'הגש הכל וסיים';
 $string['subneterror'] = 'סליחה, בוחן זה נחסם כך שניתן לגשת אליו רק ממקומות מסויימים. נכון לעכשיו, המחשב שלך הוא לא אחד ממקומות אלה, ולכן אינך יכול לנסות ולפתור את הבוחן.';
 $string['subnetnotice'] = 'בוחן זה ננעל כך שהגישה אליו מותרת רק ממיקומים מסויימים. המחשב שלך לא נמצא בתת-רשת מורשה. כמורה, מותר לך לחזות בתצוגה המקדימה בכל מקרה.';
 $string['subplugintype_quiz'] = 'דוח';
+$string['subplugintype_quiz_plural'] = 'דוחות';
 $string['subplugintype_quizaccess'] = 'תפקיד גישה';
 $string['subplugintype_quizaccess_plural'] = 'תפקידי גישה';
-$string['subplugintype_quiz_plural'] = 'דוחות';
 $string['substitutedby'] = 'יוחלף על ידי';
 $string['summaryofattempt'] = 'סיכום הנסיון';
 $string['summaryofattempts'] = 'סיכום ניסיונות המענה הקודמים שלך';
@@ -844,7 +842,6 @@ $string['timecompleted'] = 'הושלם';
 $string['timedelay'] = 'אתה לא יכול לנסות לפתור את הבוחן מפני שעדיין לא חלפה השהיית הזמן שרק לאחריה אתה יכול לנסות ולפתור עוד בוחן.';
 $string['timeleft'] = 'זמן נותר';
 $string['timelimit'] = 'הגבלת זמן';
-$string['timelimitexeeded'] = 'סליחה! עברת על מגבלת הזמן של הבוחן!';
 $string['timelimit_help'] = '<p align="center"><strong>הגבלת זמן</strong></p>
 
 <p>לפי ברירת המחדל לבחנים אין הגבלת זמן, מה שנותן לסטודנטים את כל הזמן שהם צריכים כדי להשלים את הבוחן.
@@ -854,13 +851,14 @@ $string['timelimit_help'] = '<p align="center"><strong>הגבלת זמן</strong
 </p>
 
 <ul>
-  <li>תמיכת Javascript בדפדפן הופכת לחובה, מה שמאפשר לשעון העצר לעבוד באופן נכון.
+<li>תמיכת Javascript בדפדפן הופכת לחובה, מה שמאפשר לשעון העצר לעבוד באופן נכון.
 </li>
-  <li>מוצג לסטודנטים חלון צף ובו שעון העצר שסופר את הזמן אחורנית.</li>
-  <li>כשמסתיימת הספירה של שעון העצר (כשנגמר הזמן), הבוחן מוגש באופן אוטומטי עם אי אלו שאלות שנענו בו עד אותו הזמן. </li>
-  <li>אם הסטודנט מצליח לרמות ולהישאר במסגרת הבוחן למעלה מ-60 שניות מעל הזמן המוקצב, הבוחן מקבל את הציון 0 באופן אוטומטי.
+<li>מוצג לסטודנטים חלון צף ובו שעון העצר שסופר את הזמן אחורנית.</li>
+<li>כשמסתיימת הספירה של שעון העצר (כשנגמר הזמן), הבוחן מוגש באופן אוטומטי עם אי אלו שאלות שנענו בו עד אותו הזמן. </li>
+<li>אם הסטודנט מצליח לרמות ולהישאר במסגרת הבוחן למעלה מ-60 שניות מעל הזמן המוקצב, הבוחן מקבל את הציון 0 באופן אוטומטי.
 </li>
 </ul>';
+$string['timelimitexeeded'] = 'סליחה! עברת על מגבלת הזמן של הבוחן!';
 $string['timelimitmin'] = 'משך הבחינה (בדקות)';
 $string['timelimitsec'] = 'מגבלת הזמן (שניות)';
 $string['timestr'] = '%H:%M:%S על %d/%m/%y';

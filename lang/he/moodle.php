@@ -338,8 +338,7 @@ $string['coursecreatorsdescription'] = 'יוצרי קורס יכולים ליצ�
 $string['coursedeleted'] = 'קורס {$a} נמחק';
 $string['coursefiles'] = 'קבצי הקורס כפי שנוהלו במהדורות קודמות';
 $string['coursefilesedit'] = 'עריכת קבצי הקורס כפי שנוהלו במהדורות קודמות';
-$string['coursefileswarning'] = 'ירידת ערכם של קבצי הקורס
-';
+$string['coursefileswarning'] = 'ירידת ערכם של קבצי הקורס';
 $string['coursefileswarning_help'] = 'ערכם של קבצי הקורס ירד החל ממוודל 2.0, השתמש ככל האפשר במאגרים חימוניים.';
 $string['courseformatdata'] = 'נתוני מבנה הקורס';
 $string['courseformats'] = 'תצורות תצוגת קורס';
@@ -393,8 +392,7 @@ $string['createcategory'] = 'צור קטגוריה';
 $string['createfolder'] = 'צור תיקייה ב{$a}';
 $string['createuserandpass'] = 'צור שם משתמש וסיסמה חדשה להיכנס איתם';
 $string['createziparchive'] = 'צור ארכיון זיפ';
-$string['creatingblocks'] = 'יצירת משבצות
-';
+$string['creatingblocks'] = 'יצירת משבצות';
 $string['creatingblocksroles'] = 'יצירת הקצאות תפקידים של רמת המשבצת ועקיפתן';
 $string['creatingblogsinfo'] = 'יצירת יצירת המידע של הבלוגים';
 $string['creatingcategoriesandquestions'] = 'יצירת קטגוריות ושאלות';
@@ -572,7 +570,7 @@ $string['emaildisplayyes'] = 'אפשר לכולם לראות את כתובת ה�
 $string['emailenable'] = 'כתובת הדואר אלקטרוני הזו מופעלת';
 $string['emailenableclick'] = 'לחץ כאן בכדי לאפשר מחדש משלוח של דואר אלקטרוני לכתובת זו';
 $string['emailexists'] = 'כתובת הדואר אלקטרוני הזו כבר בשימוש.';
-$string['emailformat'] = ' דואר אלקטרוני';
+$string['emailformat'] = 'דואר אלקטרוני';
 $string['emailmustbereal'] = 'הערה: כתובת הדואר אלקטרוני שלך חייבת להיות אמיתית';
 $string['emailnotallowed'] = 'כתובות דוא"ל במתחמים אלו ({$a}) אינן מורשות.';
 $string['emailnotfound'] = 'כתובת הדוא"ל לא נמצאה במסד הנתונים';
@@ -687,7 +685,7 @@ $string['frontpagecategorynames'] = 'הראה רשימה של קטגוריות';
 $string['frontpagecourselist'] = 'הראה רשימה של קורסים';
 $string['frontpagedescription'] = 'תיאור של עמוד ראשי';
 $string['frontpagedescriptionhelp'] = 'תיאור זה של האתר יוצג בעמוד הראשי.';
-$string['frontpageformat'] = ' תסדיר העמוד הראשי';
+$string['frontpageformat'] = 'תסדיר העמוד הראשי';
 $string['frontpageformatloggedin'] = 'תסדיר העמוד הראשי בעת כניסה למערכת';
 $string['frontpagenews'] = 'הראה פריטי חדשות';
 $string['frontpagesettings'] = 'הגדרות עמוד ראשי';
@@ -713,7 +711,7 @@ $string['gpl'] = 'Copyright (C) 1999 onwards   Martin Dougiamas  (http://dougiam
 
 תוכנית זו היא תוכנה חופשית; אתה יכול להפיצה מחדש ו/או לשנות אותה על-פי תנאי הרישיון הציבורי הכללי של GNU כפי שפורסם על ידי קרן התוכנה החופשית; בין אם גירסה 2 של הרישיון, ובין אם (לפי בחירתך) כל גירסה מאוחרת שלו.
 
- תוכנית זו מופצת בתקווה שתהיה מועילה, אבל בלא אחריות כלשהי; ואפילו ללא האחריות המשתמעת בדבר מסחריותה או התאמתה למטרה מסויימת. לפרטים נוספים, ראה את הרישיון הציבורי הכללי של GNU:
+תוכנית זו מופצת בתקווה שתהיה מועילה, אבל בלא אחריות כלשהי; ואפילו ללא האחריות המשתמעת בדבר מסחריותה או התאמתה למטרה מסויימת. לפרטים נוספים, ראה את הרישיון הציבורי הכללי של GNU:
 
 http://www.gnu.org/copyleft/gpl.html
 http://www.law.co.il/computer-law/gpl-hebrew.html';
@@ -800,7 +798,7 @@ $string['htmleditordisabled'] = 'בפרופיל המשתמש שלך מנעת א�
 $string['htmleditordisabledadmin'] = 'באתר זה המנהל מנע את עורך דף התוכן המעוצב';
 $string['htmleditordisabledbrowser'] = 'עורך דף התוכן המעוצב אינו זמין מפני שדפדפן הרשת שלך אינו מתאים';
 $string['htmlfilesonly'] = 'קבצי HTML בלבד';
-$string['htmlformat'] = ' תסדיר HTML נאה';
+$string['htmlformat'] = 'תסדיר HTML נאה';
 $string['icon'] = 'צלמית';
 $string['icqnumber'] = 'מספר ICQ';
 $string['idnumber'] = 'מספר זיהוי';
@@ -843,7 +841,7 @@ $string['interestslist'] = 'רשימת תחומי עניין (מופרדים ב�
 $string['interestslist_help'] = 'מלא את תחומי העניין שלך מופרדים בפסיקים';
 $string['invalidemail'] = 'כתובת דואר אלקטרוני לא תקפה';
 $string['invalidlogin'] = 'התחברות לא תקפה, אנא נסה שוב';
-$string['invalidusername'] = ' שם המשתמש יכול להכיל תווים בעלי אותיות קטנות אלפאנומריות, מקף תחתון(_), מקף(-), נקודה(.) או כרוכית( @)';
+$string['invalidusername'] = 'שם המשתמש יכול להכיל תווים בעלי אותיות קטנות אלפאנומריות, מקף תחתון(_), מקף(-), נקודה(.) או כרוכית( @)';
 $string['invalidusernameupload'] = 'שם משתמש לא תקף';
 $string['ip_address'] = 'כתובת IP';
 $string['jump'] = 'קפוץ';
@@ -926,7 +924,7 @@ $string['matchingsearchandrole'] = ',תוצאה \'{$a->search}\' ו- {$a->role}'
 $string['maxfilesize'] = 'הגודל המירבי לקבצים חדשים: {$a}';
 $string['maximumchars'] = 'מקסימום של {$a} תווים';
 $string['maximumgrade'] = 'ציון מירבי';
-$string['maximumgradex'] = 'הניקוד המשוקלל {$a} ';
+$string['maximumgradex'] = 'הניקוד המשוקלל {$a}';
 $string['maximumshort'] = 'מקסימום';
 $string['maximumupload'] = 'גודל העלאה מירבי';
 $string['maximumupload_help'] = '<p align="center"><b>גודל הקובץ המירבי אותו אפשר להעלות לקורס</b></p>
@@ -992,6 +990,7 @@ $string['moduledeletefiles'] = 'כל מידע הקשור למודול \'{$a->mod
 $string['moduleintro'] = 'הנחייה לפעילות';
 $string['modulesetup'] = 'יוצר טבלאות מודולים';
 $string['modulesuccess'] = 'טבלאות {$a} נוצרו בהצלחה';
+$string['months'] = 'חודשים';
 $string['moodledocs'] = 'Moodle Docs';
 $string['moodledocslink'] = 'מדריכי עזרה עבור עמוד זה';
 $string['moodlerelease'] = 'שחרור Moodle';
@@ -1376,7 +1375,7 @@ $string['scale_help'] = '<p align="center"><b>סולמות (ציונים)</b></p
 <p>הסולם עצמו מוגדר על ידי רשימת ערכים המופיעים לפי סדר, הנעים בטווח בין שלילי לחיובי ומופרדים על ידי פסיקים. לדוגמא:</p>
 
 <blockquote><i>
-   מאכזב, לא טוב מספיק, ממוצע, טוב, טוב מאוד, מצוין!
+מאכזב, לא טוב מספיק, ממוצע, טוב, טוב מאוד, מצוין!
 </i></blockquote>
 
 <p>בנוסף, על הסולמות להכיל תיאור המסביר את משמעותם ואת אופן השימוש בהם. תיאור זה יופיע בעמודי עזרה לסטודנטים ומורים כאחד.
@@ -1605,7 +1604,7 @@ $string['summary_help'] = '<p align="center"><b>סיכומים שבועייםנ�
 </p>
 
 <p>אם אתם מוצאים את עצמכם רוצים לכתוב יותר ממשפט או שניים אז כדאי לכם לשקול להוסיף משאב לנושא זה במקום (לדוגמא, הפעילות הראשונה יכולה להיות עמוד בעל הכותרת
- <b>על נושא זה</b>).</p>';
+<b>על נושא זה</b>).</p>';
 $string['summaryof'] = 'תקציר של {$a}';
 $string['supplyinfo'] = 'אנא ספק מספר נתונים על עצמך';
 $string['switchdevicedefault'] = 'החלף לערכת הנושא ההתקנית (standard)';

@@ -29,7 +29,7 @@ $string['activities'] = 'פעילויות';
 $string['add'] = 'הוסף';
 $string['addcommunitycourse'] = 'הוספת קורס ציבורי';
 $string['addcourse'] = 'חיפוש';
-$string['addedtoblock'] = 'קישור לקורס זה התווסף למשבצת מציאת קורסים ציבוריים ';
+$string['addedtoblock'] = 'קישור לקורס זה התווסף למשבצת מציאת קורסים ציבוריים';
 $string['additionalcoursedesc'] = 'יוצר שפה {$a->lang}:
 {$a->creatorname} -
 מפרסם: {$a->publishername} -
@@ -67,8 +67,7 @@ $string['educationallevel_help'] = 'איזו רמת השכלה הינך מחפש
 $string['enroldownload'] = 'מצא';
 $string['enroldownload_help'] = 'כמה קורסים ברשימת ה-HUB הנבחרת יתפרסמו כך שאנשים יוכלו לבוא ולהשתתף בהם באתר המקורי.
 
-אחרים הם תבניות קורס שסופקו עבורך להורדה ולשימוש באתר Moodle שלך.
-';
+אחרים הם תבניות קורס שסופקו עבורך להורדה ולשימוש באתר Moodle שלך.';
 $string['enrollable'] = 'קורסים אליהם אני יכול להירשם';
 $string['enrollablecourses'] = 'קורסים הניתנים לרישום';
 $string['errorcourselisting'] = 'שגיאה התרחשה כאשר התקבלה רשימת הקורסים מה-HUB הנבחר,
@@ -98,8 +97,8 @@ $string['nocourse'] = 'לא נמצאו קורסים';
 $string['noratings'] = 'אין דירוגים';
 $string['operation'] = 'פעולה';
 $string['orderby'] = 'מיון על-פי';
-$string['orderbyeldest'] = 'הישן ביותר';
 $string['orderby_help'] = 'סדר הצגת תוצאות החיפוש';
+$string['orderbyeldest'] = 'הישן ביותר';
 $string['orderbyname'] = 'שם';
 $string['orderbynewest'] = 'החדש ביותר';
 $string['orderbypublisher'] = 'מפרסם';

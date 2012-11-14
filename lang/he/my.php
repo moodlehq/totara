@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['addpage'] = 'הוסף עמוד';
-$string['defaultpage'] = 'ברירת מחדל עמוד ה-Moodle שלי ';
+$string['defaultpage'] = 'ברירת מחדל עמוד ה-Moodle שלי';
 $string['defaultprofilepage'] = 'עמוד פרופיל ברירת המחדל';
 $string['delpage'] = 'מחק עמוד';
 $string['managepages'] = 'ניהול עמודים';

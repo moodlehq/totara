@@ -154,13 +154,6 @@ $string['destination_help'] = '<p align="center"><b>הגדרת יעד לייבו
 </li>
 </ul>';
 $string['displayformat'] = 'מבנה התצוגה';
-$string['displayformatcontinuous'] = 'רציף בלי מחבר';
-$string['displayformatdictionary'] = 'פשוט, סגנון מילוני';
-$string['displayformatencyclopedia'] = 'אנציקלופדיה';
-$string['displayformatentrylist'] = 'רשימת מונחים';
-$string['displayformatfaq'] = 'שאלות ותשובות';
-$string['displayformatfullwithauthor'] = 'מלא עם מחבר';
-$string['displayformatfullwithoutauthor'] = 'מלא בלי מחבר';
 $string['displayformat_help'] = '<p align="center"><b>עיצוב התצוגה</b></p>
 
 <p>הגדרה זו מציינת באיזו דרך תוצג כל רשומה בתוך אגרון המונחים. עיצובי ברירת המחדל הינם:</p>
@@ -184,6 +177,13 @@ $string['displayformat_help'] = '<p align="center"><b>עיצוב התצוגה</b
 
 <hr />
 <p>מנהלי מוודל יכולים ליצור עיצובים חדשים, לפי ההוראות ב:<b>mod/glossary/formats/README.txt</b>.</p>';
+$string['displayformatcontinuous'] = 'רציף בלי מחבר';
+$string['displayformatdictionary'] = 'פשוט, סגנון מילוני';
+$string['displayformatencyclopedia'] = 'אנציקלופדיה';
+$string['displayformatentrylist'] = 'רשימת מונחים';
+$string['displayformatfaq'] = 'שאלות ותשובות';
+$string['displayformatfullwithauthor'] = 'מלא עם מחבר';
+$string['displayformatfullwithoutauthor'] = 'מלא בלי מחבר';
 $string['displayformats'] = 'מבני התצוגה';
 $string['displayformatssetup'] = 'הגדרת מבני התצוגה';
 $string['duplicatecategory'] = 'סיווג כפול';
@@ -262,11 +262,16 @@ $string['glossary:export'] = 'יצוא רשומות';
 $string['glossary:exportentry'] = 'יצוא רשומה בודדת';
 $string['glossary:exportownentry'] = 'יצוא רשומות בודדות השייכות לך';
 $string['glossary:import'] = 'יבוא רשומות';
-$string['glossaryleveldefaultsettings'] = 'הגדרות ברירת המחדל ברמת אגרון המונחים';
 $string['glossary:managecategories'] = 'נהל הסיווגים';
 $string['glossary:managecomments'] = 'נהל הערות';
 $string['glossary:manageentries'] = 'נהל מונחים';
 $string['glossary:rate'] = 'דרג מונחים';
+$string['glossary:view'] = 'ראה את אגרון המונחים';
+$string['glossary:viewallratings'] = 'צפיה בכל שורת הדירוגים הניתנים על-ידי אנשים';
+$string['glossary:viewanyrating'] = 'צפיה בדירוגים הכוללניים שכל אחד קיבל';
+$string['glossary:viewrating'] = 'הצג את הדירוגים';
+$string['glossary:write'] = 'צור מונחים חדשים';
+$string['glossaryleveldefaultsettings'] = 'הגדרות ברירת המחדל ברמת אגרון המונחים';
 $string['glossarytype'] = 'סוג אגרון המונחים';
 $string['glossarytype_help'] = '<p align="center"><b>הגדרת אגרון המונחים העיקרי של הקורס</b></p>
 
@@ -277,11 +282,6 @@ $string['glossarytype_help'] = '<p align="center"><b>הגדרת אגרון המ�
 <p>שימו לב: יכול להיות לכם רק אגרון מונחים עיקרי אחד בכל קורס ולמורים בלבד מותר לעדכן אותו. </p>
 
 <p>לפני Moodle 1.7 רק מורים יכלו לערוך את אגרון המונחים העיקרי. בגרסת moodle 1.7 ומאוחר יותר, אם תרצה לשלוט על מי שיוכל לערוך כל אגרון מונחים (כולל האגרון העיקרי) , תצטרך להשתמש בממשק עקיפת תפקידים.</p>';
-$string['glossary:view'] = 'ראה את אגרון המונחים';
-$string['glossary:viewallratings'] = 'צפיה בכל שורת הדירוגים הניתנים על-ידי אנשים';
-$string['glossary:viewanyrating'] = 'צפיה בדירוגים הכוללניים שכל אחד קיבל';
-$string['glossary:viewrating'] = 'הצג את הדירוגים';
-$string['glossary:write'] = 'צור מונחים חדשים';
 $string['guestnoedit'] = 'אורחים אינם יכולים לערוך מונחים';
 $string['importcategories'] = 'יבוא סיווגים';
 $string['importedcategories'] = 'הסיווגים מיובאים';
