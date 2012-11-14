@@ -26,11 +26,22 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['anycategory'] = 'أي تصنيف';
+$string['autosvehicles'] = 'السيارات &amp و المركبات';
 $string['category'] = 'تصنيف';
+$string['comedy'] = 'كوميدي';
 $string['configtitle'] = 'عنوان';
 $string['education'] = 'تعليم';
 $string['entertainment'] = 'ترفية';
+$string['filmsanimation'] = 'الافلام &amp والرسوم المتحركة';
+$string['gadgetsgames'] = 'الأدوات &amp والألعاب';
+$string['howtodiy'] = 'كيف &amp DIY';
+$string['includeonlyvideosfromplaylist'] = 'تضمين الفيديوهات الموجودة في قائمة التشغيل فقط مع المعرف';
 $string['music'] = 'موسيقى';
+$string['newspolitics'] = 'اخبار &amp والسياسة';
 $string['numberofvideos'] = 'عدد الفيديو';
+$string['peopleblogs'] = 'الناس &amp والمدونات';
+$string['petsanimals'] = 'الحيوانات &amp والحيوانات الاليفة';
 $string['pluginname'] = 'يو تيوب';
+$string['scienceandtech'] = 'العلوم &amp والتقنية';
 $string['sports'] = 'رياضة';
+$string['travel'] = 'السفر &amp والاماكن';

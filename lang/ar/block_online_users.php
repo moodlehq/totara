@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['configtimetosee'] = 'عدد الدقائق التي خلالها يتم التعرف على مستخدم متواجد حالياً';
 $string['online_users:viewlist'] = 'معاينة قائمة المستخدمين الموجدين على الموقع الآن';
-$string['periodnminutes'] = 'الدقائق الاخيرة {$a} ';
+$string['periodnminutes'] = 'الدقائق الاخيرة {$a}';
 $string['pluginname'] = 'المستخدمين الموجدين على الموقع الآن';
+$string['timetosee'] = 'إزالة بعد الخمول (بالدقائق)';

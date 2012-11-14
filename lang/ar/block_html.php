@@ -29,4 +29,4 @@ $string['configcontent'] = 'المحتوى';
 $string['configtitle'] = 'عنوان الكتلة';
 $string['leaveblanktohide'] = 'يترك فارغاً لإخفاء العنوان';
 $string['newhtmlblock'] = '(كتلة أتش تي ام ال جديدة)';
-$string['pluginname'] = ' أتش تي ام ال';
+$string['pluginname'] = 'أتش تي ام ال';
