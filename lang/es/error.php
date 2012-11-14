@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'POR HACER';
 $string['alreadyloggedin'] = 'Usted ya está registrado como {$a}, es necesario cerrar la sesión antes de registrarse como usuario diferente.';
 $string['authnotexisting'] = 'El plugin de autorización no existe';
 $string['backupcontainexternal'] = 'Este archivo de copia de seguridad contiene Moodle Network Hosts externos que no están configurados localmente';
@@ -345,9 +346,9 @@ $string['maxbytes'] = 'El tamaño de este archivo supera el máximo permitidfo';
 $string['messagingdisable'] = 'El envío de mensajes esta deshabilitado en este sitio';
 $string['mimetexisnotexist'] = 'Su sistema no está configurado para ejecutar mimeTeX. Usted necesita descargar el ejecutable adecuado para su plataforma PHP_OS de <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, o obtener el código fuente C de <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>, compilarlo y colocar el ejecutable dentro de su directorio moodle/filter/tex/';
 $string['mimetexnotexecutable'] = 'MimeTeX personalizado no es ejecutable!';
+$string['missing_moodle_backup_xml_file'] = 'La copia de seguridad no tiene el archivo XML: {$a}';
 $string['missingfield'] = 'Falta el campo "{$a}"';
 $string['missingkeyinsql'] = 'ERROR: falta el parámetro "{$a}" en su consulta';
-$string['missing_moodle_backup_xml_file'] = 'La copia de seguridad no tiene el archivo XML: {$a}';
 $string['missingparam'] = 'Un parámetro necesario ({$a}) faltaba';
 $string['missingparameter'] = 'Falta parámetro';
 $string['missingrequiredfield'] = 'Falta algún campo necesario';
@@ -430,9 +431,9 @@ $string['remotedownloaderror'] = 'Falló la descarga del componente a su servido
 $string['remotedownloadnotallowed'] = 'No está permitido descargar los componentes a su servidor (allow_url_fopen está deshabilitado).<br /><br />Debe descargar el archivo <a href="{$a->url}">{$a->url}</a> manualmente, y copiarlo a "{$a->dest}"';
 $string['reportnotavailable'] = 'Este tipo de informe sólo está disponible para el curso del sitio';
 $string['requireloginerror'] = 'Curso o actividad no accesible.';
-$string['restorechecksumfailed'] = 'Ha ocurrido algún problema con la información de restauración almacenada en su sesión. Por favor, compruebe los límites del tamaño de la memoria PHP/paquete DB. Restauración detenida.';
 $string['restore_path_element_missingmethod'] = 'No se encuentra el método de restauración {$a}. Debe ser definido por un programador.';
 $string['restore_path_element_noobject'] = 'El objeto de restauración {$a} no es un objeto.';
+$string['restorechecksumfailed'] = 'Ha ocurrido algún problema con la información de restauración almacenada en su sesión. Por favor, compruebe los límites del tamaño de la memoria PHP/paquete DB. Restauración detenida.';
 $string['restrictedcontextexception'] = 'Lo sentimos, la ejecución de una función externa viola la restricción del contexto.';
 $string['restricteduser'] = 'Lo sentimos, su cuenta "{$a}" no puede hacer esto';
 $string['reverseproxyabused'] = 'El proxy inverso esta habilitado, el servidor no se puede acceder directamente, lo siento. <br /> Por favor, póngase en contacto con el administrador del servidor.';
@@ -465,7 +466,6 @@ $string['tagnotfound'] = 'No se ha encontrado la marca especificada en la base d
 $string['targetdatabasenotempty'] = 'La base de datos destino no está vacía. La transferencia a sido cancelada por razones de seguridad.';
 $string['textconditionsnotallowed'] = 'No se permiten comparaciones de las condiciones de columna de texto. Por favor, use sql_compare_text () en la consulta.';
 $string['themenotinstall'] = 'Este tema no esta instalado!';
-$string['TODO'] = 'POR HACER';
 $string['tokengenerationfailed'] = 'No se puede generar una nueva ficha.';
 $string['transactionvoid'] = 'La transacción no puede ser anulada porque ya ha sido anulada';
 $string['unenrolerror'] = 'Se produjo un error al intentar desmatricular a esta persona';

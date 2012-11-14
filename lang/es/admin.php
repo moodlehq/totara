@@ -33,7 +33,7 @@ $string['additionalhtml_heading'] = 'HTML adicional que se añade a cada página
 $string['additionalhtmlfooter'] = 'Antes de cerrar BODY';
 $string['additionalhtmlfooter_desc'] = 'Este contenido se agregará a cada página justo antes de que se cierre la etiqueta BODY.';
 $string['additionalhtmlhead'] = 'Dentro del Encabezado';
-$string['additionalhtmlhead_desc'] = 'Este contenido se agregará al final de la etiqueta HEAD en cada página. ';
+$string['additionalhtmlhead_desc'] = 'Este contenido se agregará al final de la etiqueta HEAD en cada página.';
 $string['additionalhtmltopofbody'] = 'Cuando BODY está abierto';
 $string['additionalhtmltopofbody_desc'] = 'Este contenido se agregará a cada página justo después de que se abra la etiqueta BODY.';
 $string['adminseesall'] = 'Los administradores ven todo';
@@ -61,8 +61,7 @@ $string['aspellpath'] = 'Ruta a aspell';
 $string['assessorroleid'] = 'Rol del asesor';
 $string['authentication'] = 'Identificación';
 $string['authpreventaccountcreation'] = 'Evitar la creación de cuentas al identificarse';
-$string['authpreventaccountcreation_help'] = 'Cuando un usuario se identifica, si aún no existe su cuenta, se crea una en el sitio de forma automática. Si se utiliza una base de datos externa para la identificación, por ejemplo LDAP, pero se desea restringir el acceso al sitio solo a los usuarios con una cuenta existente, esta opción debe estar habilitada. Las nuevas cuentas tendrán que ser creadas manualmente o mediante la función de carga de usuarios. Tenga en cuenta que este ajuste no se aplica a la autenticación MNet.
-	';
+$string['authpreventaccountcreation_help'] = 'Cuando un usuario se identifica, si aún no existe su cuenta, se crea una en el sitio de forma automática. Si se utiliza una base de datos externa para la identificación, por ejemplo LDAP, pero se desea restringir el acceso al sitio solo a los usuarios con una cuenta existente, esta opción debe estar habilitada. Las nuevas cuentas tendrán que ser creadas manualmente o mediante la función de carga de usuarios. Tenga en cuenta que este ajuste no se aplica a la autenticación MNet.';
 $string['authsettings'] = 'Gestionar identificación';
 $string['autolang'] = 'Detectar idioma automáticamente';
 $string['autologinguests'] = 'Acceso automático de invitados';
@@ -856,7 +855,7 @@ $string['profilingincluded_help'] = 'Lista de URLs (absolutas quitando la parte 
 $string['profilinglifetime'] = 'Mantener perfilado de ejecuciones';
 $string['profilinglifetime_help'] = 'Especifique cuanto tiempo desea mantener la información de anteriores ejecuciones de perfilado. Las más antiguas se eliminarán automáticamente. Note que esto excluye cualquier ejecución de perfilado marcada como \'ejecución de referencia\'.';
 $string['protectusernames'] = 'Proteger nombres de usuario';
-$string['proxybypass'] = 'Servidores que saltan el proxy ';
+$string['proxybypass'] = 'Servidores que saltan el proxy';
 $string['proxyhost'] = 'Host proxy';
 $string['proxypassword'] = 'Contraseña del proxy';
 $string['proxyport'] = 'Puerto proxy';
@@ -911,8 +910,7 @@ $string['riskspam'] = 'Los usuarios podrían enviar \'spam\' a usuarios del siti
 $string['riskspamshort'] = 'Riesgo de spam';
 $string['riskxss'] = 'Los usuarios podrían agregar archivos y textos que permiten \'scripting\' a través del sitio (XSS)';
 $string['riskxssshort'] = 'Riesgo XSS';
-$string['roleswithexceptions'] = '{$a->roles}, con {$a->exceptions}
-';
+$string['roleswithexceptions'] = '{$a->roles}, con {$a->exceptions}';
 $string['rssglobaldisabled'] = 'Deshabilitado en el nivel servidor';
 $string['runclamavonupload'] = 'Usar clam AV en archivos subidos';
 $string['save'] = 'Guardar';
@@ -1028,8 +1026,7 @@ $string['updatecomponent'] = 'Actualizar componente';
 $string['upgrade197notice'] = '<p>Moodle 1.9.7 contiene una serie de correcciones de seguridad para las contraseñas de usuario y las copias de seguridad, para proteger los datos de usuario de su sitio. Como resultado algunos de sus ajustes y permisos referentes a las copias de seguridad han cambiado<br />Vea las <a href="http://docs.moodle.org/19/es/Notas_de_Moodle_1.9.7" target="_blank">notas de Moodle 1.9.7 </a> para tener todos los detalles.</p>';
 $string['upgrade197noticesubject'] = 'Noticias de seguridad de la actualización a Moodle 1.9.7';
 $string['upgrade197salt'] = 'Para reducir el riesgo de robo de contraseñas, se recomienda establecer una contraseña salt. <br/> Ver la href="{$a}" <a target="_blank">documentación sobre contraseñas salt</a> para más detalles.';
-$string['upgradeerror'] = 'Error desconocido de actualización {$a->plugin} a la versión {$a->version}, no se puede continuar.
-';
+$string['upgradeerror'] = 'Error desconocido de actualización {$a->plugin} a la versión {$a->version}, no se puede continuar.';
 $string['upgradeforumread'] = 'Se ha incorporado a Moodle 1.5 una nueva característica para rastrear mensajes enviados al foro leídos y no leídos.<br />Para hacer uso de esta funcionalidad, necesita <a href="{$a}">actualizar sus tablas</a>.';
 $string['upgradeforumreadinfo'] = 'Se ha incorporado a Moodle 1.5 una nueva funcionalidad para rastrear mensajes enviados al foro leídos y no leídos. Para hacer uso de ella, necesita actualizar sus tablas con toda la información concerniente a los mensajes existentes. Dependiendo del tamaño del sitio, esto puede llevar mucho tiempo (horas) y hacer un uso intensivo de la base de datos, de modo que es mejor llevar a cabo esta operación durante un período de tranquilidad. Sin embargo, el sitio continuará funcionando durante la actualización y los usuarios no se verán afectados. Una vez que comience este proceso, debería dejarlo terminar (i.e., mantenga abierta la ventana del navegador). En todo caso, si detiene el proceso cerrando la ventana, no se preocupe, siempre podrá recomenzar.<br /><br />¿Desea comenzar el proceso de actualización ahora?';
 $string['upgradelogs'] = 'Para conseguir una funcionalidad total, sus registros antiguos deben ser actualizados. <a href="{$a}">Más información</a>';

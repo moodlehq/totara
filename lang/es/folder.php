@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Contenido';
-$string['foldercontent'] = 'Archivos y subcarpetas';
 $string['folder:managefiles'] = 'Gestionar archivos en el módulo de carpetas';
 $string['folder:view'] = 'Ver el contenido de la carpeta';
+$string['foldercontent'] = 'Archivos y subcarpetas';
 $string['modulename'] = 'Carpeta';
 $string['modulenameplural'] = 'Carpetas';
 $string['neverseen'] = 'Nunca visto';

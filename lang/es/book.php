@@ -57,8 +57,6 @@ Sería bueno tener un buscador a nivel global de todos los recursos, incluyendo 
 * Mis títulos no caben en una línea .*
 
 Trate de reformular con otras palabras su título o pregúntele al administrador del sitio para que cambie el ancho de la tabla de contenido (TOC). Se define a nivel global para todos los libros en la página de configuración del módulo.';
-$string['missingfilemanagement'] = 'Querido usuario, supongo que se ha dado cuenta de que no es posible eliminar y gestionar los archivos utilizados en los capítulos del Libro. Por favor, vote en {$a} para solucionar esto. Gracias
-Petr Škoda';
 $string['modulename'] = 'Libro';
 $string['modulename_help'] = 'El libro es un simple material de estudio de múltiples páginas.';
 $string['modulenameplural'] = 'Libros';
@@ -73,8 +71,7 @@ $string['numbering3'] = 'Indentidad';
 $string['numbering_help'] = '* Ninguno - los títulos de capítulos y subcapítulos no tienen formato alguno, utilicelos si desea definir estilos especiales de numeración. Por ejemplo, letras: escriba en el título del capítulo "Un Primer Capítulo", "A.1 Algún Subcapítulo",...
 * Números - los capítulos y subcapítulos son numerados (1, 1.1, 1.2, 2, ...)
 * Viñetas - los subcapítulos son indentados y son mostrados con viñetas
-* Sangría - los subcapítulos son indentados
-';
+* Sangría - los subcapítulos son indentados';
 $string['numberingoptions'] = 'Validar opciones de numeración';
 $string['numberingoptions_help'] = 'Seleccionar opciones de numeración que estaran disponibles al crear nuevos libros.';
 $string['page-mod-book-x'] = 'Cualquier página del módulo libro';

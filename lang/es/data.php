@@ -89,10 +89,10 @@ $string['csvimport_help'] = '<p align="center"><strong>Importar de un archivo CV
 <p>Archivo de muestra:</p>
 
 <pre>
-  nombre,estatura,peso
-  Manolo,180cm,80kg
-  Juan,170cm,60kg
-  Luis,190cm,20kg
+nombre,estatura,peso
+Manolo,180cm,80kg
+Juan,170cm,60kg
+Luis,190cm,20kg
 </pre>
 
 <p>ADVERTENCIA: es posible que no se admitan todos los tipos de campo.</p>';
@@ -110,8 +110,7 @@ $string['data:rate'] = 'Calificar entradas';
 $string['data:readentry'] = 'Leer entradas';
 $string['data:viewallratings'] = 'Ver todas las calificaciones emitidas por los usuarios';
 $string['data:viewalluserpresets'] = 'Ver ajustes previos de todos los usuarios';
-$string['data:viewanyrating'] = 'Ver el total de calificaciones que alguien recibió
-	';
+$string['data:viewanyrating'] = 'Ver el total de calificaciones que alguien recibió';
 $string['data:viewentry'] = 'Ver entradas';
 $string['data:viewrating'] = 'Ver calificación total recibida';
 $string['data:writeentry'] = 'Escribir entradas';
@@ -309,7 +308,7 @@ $string['requiredentries'] = 'Entradas requeridas';
 $string['requiredentries_help'] = '<p align="center"><strong>Número de entradas exigido</strong></p>
 
 <p>Número de entradas que se exige enviar a cada participante.
-   Los usuarios verán un mensaje recordatorio que les informa si no han enviado el número de entradas exigido.</p>
+Los usuarios verán un mensaje recordatorio que les informa si no han enviado el número de entradas exigido.</p>
 
 <p>La actividad no se considerará completada en tanto el usuario no haya enviado el número de entradas exigido.</p>';
 $string['requiredentriestoview'] = 'Entradas requeridas antes de verse';
@@ -337,10 +336,8 @@ $string['showall'] = 'Mostrar todas las entradas';
 $string['single'] = 'Ver uno por uno';
 $string['singletemplate'] = 'Plantilla simple';
 $string['subplugintype_datafield'] = 'Tipo de campo de la base de datos';
-$string['subplugintype_datafield_plural'] = '	
-Tipos de campo de la base de datos';
-$string['subplugintype_datapreset'] = '	
-Tipos de campo de la base de datos';
+$string['subplugintype_datafield_plural'] = 'Tipos de campo de la base de datos';
+$string['subplugintype_datapreset'] = 'Tipos de campo de la base de datos';
 $string['subplugintype_datapreset_plural'] = 'Ajustes previos';
 $string['teachersandstudents'] = '{$a->teachers} y {$a->students}';
 $string['templates'] = 'Plantillas';

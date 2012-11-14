@@ -235,8 +235,7 @@ $string['download'] = 'Haga clic para descargar el archivo de categorías export
 $string['downloadextra'] = '(el archivo se almacena también en el directorio /quiz de archivos del curso)';
 $string['duplicateresponse'] = 'Este envío ha sido pasado por alto debido a que usted dio una respuesta equivalente con anterioridad.';
 $string['eachattemptbuildsonthelast'] = 'Cada intento se basa en el anterior';
-$string['eachattemptbuildsonthelast_help'] = '<p>Si se permiten varios intentos y se selecciona <B>Sí</B>, cada nuevo intento contendrá el resultado del anterior. Esto permite completar un cuestionario haciendo varios intentos partiendo en cada uno del resultado anterior.</p>
-';
+$string['eachattemptbuildsonthelast_help'] = '<p>Si se permiten varios intentos y se selecciona <B>Sí</B>, cada nuevo intento contendrá el resultado del anterior. Esto permite completar un cuestionario haciendo varios intentos partiendo en cada uno del resultado anterior.</p>';
 $string['editcategories'] = 'Editar categorías';
 $string['editcategory'] = 'Editar categoría';
 $string['editcatquestions'] = 'Editar preguntas categóricas';
@@ -370,16 +369,16 @@ $string['history'] = 'Historial de respuestas';
 $string['howquestionsbehave_desc'] = 'Configuración predeterminada del comportamiento de las preguntas en un cuestionario.';
 $string['imagedisplay'] = 'Imagen a mostrar';
 $string['import'] = 'Importar';
-$string['importcategory'] = 'importar categoría';
-$string['importerror'] = 'Ha ocurrido un error durante el procesamiento de la importación';
-$string['importfilearea'] = 'Importar de un archivo que ya está en los archivos del curso...';
-$string['importfileupload'] = 'Importar de subida de archivo...';
-$string['importfromthisfile'] = 'Importar de este archivo';
 $string['import_help'] = 'Esta función permite importar preguntas de archivos externos.
 
 Si su archivo contiene caracteres no ascii, utilice la codificación UTF-8. Sea especialmente cuidadoso con los archivos generados por aplicaciones Microsoft Office, puesto que normalmente utilizan una codificación especial que puede no ser manejada correctamente.
 
 Los formatos de Importar y Exportar son un recurso extensible. Pueden encontrarse disponibles otros formatos opcionales en la base de datos de Módulos y Extensiones.';
+$string['importcategory'] = 'importar categoría';
+$string['importerror'] = 'Ha ocurrido un error durante el procesamiento de la importación';
+$string['importfilearea'] = 'Importar de un archivo que ya está en los archivos del curso...';
+$string['importfileupload'] = 'Importar de subida de archivo...';
+$string['importfromthisfile'] = 'Importar de este archivo';
 $string['importingquestions'] = 'Importando {$a} preguntas del archivo';
 $string['importmax10error'] = 'Hay un error en la pregunta. Usted no puede tener más de diez respuestas';
 $string['importmaxerror'] = 'Hay un error en la pregunta.
@@ -426,6 +425,7 @@ $string['min'] = 'Mín';
 $string['minutes'] = 'Minutos';
 $string['missingcorrectanswer'] = 'Debe especificar la respuesta correcta';
 $string['missingitemtypename'] = 'Nombre perdido';
+$string['missingquestion'] = 'Falta una etiqueta de pregunta después de la línea {$a}';
 $string['modulename'] = 'Cuestionario';
 $string['modulename_help'] = 'El módulo Cuestionario permite al profesor diseñar y plantear cuestionarios con preguntas tipo opción múltiple, verdadero/falso, coincidencia y otras. Cada intento es registrado, y el profesor puede elegir si hacer comentarios de retroalimentación y/o mostrar las respuestas correctas.';
 $string['modulenameplural'] = 'Cuestionarios';
@@ -438,9 +438,9 @@ $string['navnojswarning'] = 'Advertencia: estos vínculos no guardarán sus resp
 $string['neverallononepage'] = 'Nunca, todas las preguntas en una página';
 $string['newattemptfail'] = 'Error: No se ha podido comenzar un nuevo intento en el cuestionario';
 $string['newpage'] = 'Página nueva';
-$string['newpageevery'] = 'Comenzar automáticamente una nueva página';
 $string['newpage_help'] = '<p>En los cuestionarios más extensos tiene sentido alargar el cuestionario en varias páginas limitando el número de preguntas por página. Cuando se añaden preguntas al cuestionario se insetarán automáticamente saltos de página de acuerdo con el ajuste que se introduzca aquí. Sin embargo, uster podrá cambiar a mano los saltos de página más tarde en la página de edición.
 </p>';
+$string['newpageevery'] = 'Comenzar automáticamente una nueva página';
 $string['noanswers'] = 'No se seleccionó ninguna respuesta';
 $string['noattempts'] = 'No se ha intentado responder este cuestionario';
 $string['noattemptsfound'] = 'No se encontraron intentos';
@@ -564,20 +564,25 @@ $string['questiontextisempty'] = '[Texto de pregunta vacía]';
 $string['questiontype'] = 'Tipo de pregunta {$a}';
 $string['questiontypesetupoptions'] = 'Ajuste de opciones para los tipos de pregunta:';
 $string['quiz:attempt'] = 'Intentar resolver cuestionarios';
-$string['quizavailable'] = 'El cuestionario está disponible hasta el {$a}';
-$string['quizclose'] = 'Cerrar cuestionario';
-$string['quizclosed'] = 'Este cuestionario está cerrado el {$a}';
-$string['quizcloses'] = 'Cuestionario cerrado';
-$string['quizcloseson'] = 'Este cuestionario se cerrará el {$a}';
 $string['quiz:deleteattempts'] = 'Eliminar intentos';
 $string['quiz:emailconfirmsubmission'] = 'Confirmación por email al enviar';
 $string['quiz:emailnotifysubmission'] = 'Recibir una notificación por email cuando se envía un intento';
 $string['quiz:grade'] = 'Calificar cuestionarios manualmente';
 $string['quiz:ignoretimelimits'] = 'Pasa por alto el límite de tiempo en los cuestionarios';
+$string['quiz:manage'] = 'Gestionar cuestionarios';
+$string['quiz:preview'] = 'Vista previa de cuestionarios';
+$string['quiz:regrade'] = 'Recalificar los intentos de resolver el cuestionario';
+$string['quiz:reviewmyattempts'] = 'Revisar sus propios intentos';
+$string['quiz:view'] = 'Ver información sobre el cuestionario';
+$string['quiz:viewreports'] = 'Ver informes de cuestionarios';
+$string['quizavailable'] = 'El cuestionario está disponible hasta el {$a}';
+$string['quizclose'] = 'Cerrar cuestionario';
+$string['quizclosed'] = 'Este cuestionario está cerrado el {$a}';
+$string['quizcloses'] = 'Cuestionario cerrado';
+$string['quizcloseson'] = 'Este cuestionario se cerrará el {$a}';
 $string['quizisclosed'] = 'Este cuestionario está cerrado';
 $string['quizisopen'] = 'Este cuestionario está abierto';
 $string['quizisopenwillclose'] = 'El cuestionario se abre (se cierra {$a})';
-$string['quiz:manage'] = 'Gestionar cuestionarios';
 $string['quiznavigation'] = 'Navegación por el cuestionario';
 $string['quizopen'] = 'Abrir cuestionario';
 $string['quizopenclose_help'] = 'Los estudiantes sólo pueden comenzar sus intentos después de la fecha de apertura y deben finalizarlos antes de la fecha de cierre.';
@@ -587,13 +592,8 @@ $string['quizopens'] = 'Cuestionario abierto';
 $string['quizopenwillclose'] = 'Este cuestionario está abierto, se cerrará en {$a}';
 $string['quizordernotrandom'] = 'Orden no aleatorio';
 $string['quizorderrandom'] = 'Orden aleatorio';
-$string['quiz:preview'] = 'Vista previa de cuestionarios';
-$string['quiz:regrade'] = 'Recalificar los intentos de resolver el cuestionario';
-$string['quiz:reviewmyattempts'] = 'Revisar sus propios intentos';
 $string['quizsettings'] = 'Ajustes del cuestionario';
 $string['quiztimer'] = 'Temporizador del cuestionario';
-$string['quiz:view'] = 'Ver información sobre el cuestionario';
-$string['quiz:viewreports'] = 'Ver informes de cuestionarios';
 $string['quizwillopen'] = 'Este cuestionario se abrirá en {$a}';
 $string['random'] = 'Pregunta aleatoria';
 $string['randomcreate'] = 'Crear preguntas aleatorias';
@@ -738,11 +738,11 @@ $string['shownoattemptsonly'] = 'Mostrar sólo estudiantes sin intentos';
 $string['showteacherattempts'] = 'Mostrar intentos del profesor';
 $string['showuserpicture'] = 'Mostrar la imagen del usuario';
 $string['showuserpicture_help'] = '<p> Si usted habilita esta opción, el nombre del estudiante y su imagen serán
-    mostradas en la pantalla durante un intento, y en la pantalla de revisión.</p>
+mostradas en la pantalla durante un intento, y en la pantalla de revisión.</p>
 
 <p> Un ejemplo en el que usted quisiera hacer esto es en cuestionarios proctorados
-    (vigilados en el aula) para hacer más sencillo el verificar la identidad del usuario
-    que intenta el cuestionario.</p>';
+(vigilados en el aula) para hacer más sencillo el verificar la identidad del usuario
+que intenta el cuestionario.</p>';
 $string['shuffle'] = 'Orden al azar';
 $string['shuffleanswers'] = 'Respuestas ordenadas al azar';
 $string['shuffledrandomly'] = 'Presentadas al azar';
@@ -751,7 +751,7 @@ $string['shufflequestionsselected'] = 'Las preguntas aparecerán ordenadas al az
 $string['shufflewithin'] = 'Ordenar al azar dentro de las preguntas';
 $string['shufflewithin_help'] = '<p>Si habilita esta opción, las partes que componen las preguntas individuales se ordenarán al azar cada vez que un estudiante comienza a contestar el cuestionario, suponiendo que la opción también esté habilitada en los ajustes de la pregunta.</p>
 
-<p>Esta opción sólo es aplicable a preguntas que tienen elementos  múltiples, como las preguntas de elección múltiple o de emparejamiento. ';
+<p>Esta opción sólo es aplicable a preguntas que tienen elementos  múltiples, como las preguntas de elección múltiple o de emparejamiento.';
 $string['singleanswer'] = 'Seleccione una respuesta.';
 $string['sortage'] = 'Ordenar por edad';
 $string['sortalpha'] = 'Ordenar alfabéticamente';
@@ -771,9 +771,9 @@ $string['submitallandfinish'] = 'Enviar todo y terminar';
 $string['subneterror'] = 'Lo sentimos, este cuestionario ha sido bloqueado de modo que sólo es accesible desde ciertas direcciones. En este momento su ordenador no está autorizado para usar este cuestionario.';
 $string['subnetnotice'] = 'Este cuestionario ha sido bloqueado, de modo que sólo es accesible desde ciertas ubicaciones. Su ordenador no está en una sub-red habilitada. Como profesor, puede acceder en cualquier caso a la vista previa.';
 $string['subplugintype_quiz'] = 'Informe';
+$string['subplugintype_quiz_plural'] = 'Informes';
 $string['subplugintype_quizaccess'] = 'Regla de acceso';
 $string['subplugintype_quizaccess_plural'] = 'Reglas de acceso';
-$string['subplugintype_quiz_plural'] = 'Informes';
 $string['substitutedby'] = 'serán sustituídas por';
 $string['summaryofattempt'] = 'Resumen del intento';
 $string['summaryofattempts'] = 'Resumen de sus intentos previos';
@@ -784,8 +784,8 @@ $string['timecompleted'] = 'Completado';
 $string['timedelay'] = 'No se le permite a realizar el cuestionario debido q que no ha transcurrido el tiempo necesario antes de intentarlo de nuevo.';
 $string['timeleft'] = 'Tiempo restante';
 $string['timelimit'] = 'Límite de tiempo';
-$string['timelimitexeeded'] = 'Lo sentimos. Se ha sobrepasado el límite de tiempo.';
 $string['timelimit_help'] = 'Si está activado, un temporizador se visualiza en una ventana flotante (se requiere JavaScript) mostrando una cuenta atrás. Cuando el plazo se finaliza, el cuestionario se envía automáticamente con las respuestas realizadas hasta el momento.';
+$string['timelimitexeeded'] = 'Lo sentimos. Se ha sobrepasado el límite de tiempo.';
 $string['timelimitmin'] = 'Límite de tiempo (en minutos)';
 $string['timelimitsec'] = 'Límite de tiempo (en segundos)';
 $string['timestr'] = '%H:%M:%S on %d/%m/%y';

@@ -50,11 +50,11 @@ $string['selectedlist_help'] = '<h2>Lista de usuarios seleccionados...</h2>
 
 </ul>';
 $string['users'] = 'Usuarios';
-$string['usersfound'] = '{$a} usuario(s) encontrado(s).';
 $string['users_help'] = '<h2>Listas de usuarios</h2>
 
 <p>La lista <strong>disponible</strong> contiene a los usuarios que han superado los filtros activos. Por ejemplo, si la sección de filtros activos contienen sólo un filtro para los usuarios cuyo país es España, entonces la lista disponible contendrá únicamente a los usuarios que hayan señalado España como su país en la página de perfil.</p>
 
 <p>La lista <strong>seleccionada</strong> contiene a los usuarios que han sido agregados a la lista por usted, utilizando los botones de la sección <em>Lista de usuarios seleccionados...</em>. Cuando se pulsa el botón <em>Ir</em> en <em>Con los usuarios seleccionados...</em>, la operación seleccionada en esta sección se llevará a cabo sobre los usuarios de esta lista.</p>';
+$string['usersfound'] = '{$a} usuario(s) encontrado(s).';
 $string['usersinlist'] = 'Usuarios en lista';
 $string['usersselected'] = '{$a} usuario(s) seleccionado(s).';

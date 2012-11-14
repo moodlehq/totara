@@ -31,9 +31,10 @@ $string['answered'] = 'Contestado';
 $string['atleastoneoption'] = 'Necesita proporcionar al menos una respuesta posible.';
 $string['choice'] = 'Opción';
 $string['choice:choose'] = 'Registrar una elección';
-$string['choiceclose'] = 'Hasta';
 $string['choice:deleteresponses'] = 'Eliminar respuestas';
 $string['choice:downloadresponses'] = 'Descargar respuestas';
+$string['choice:readresponses'] = 'Leer respuestas';
+$string['choiceclose'] = 'Hasta';
 $string['choicefull'] = 'Esta opción está completa y no hay espacios disponibles.';
 $string['choicename'] = 'Título de la consulta';
 $string['choiceopen'] = 'Abrir';
@@ -41,7 +42,6 @@ $string['choiceoptions'] = 'Opciones de la Consulta';
 $string['choiceoptions_help'] = '<P>Aquí es donde usted especifica las opciones que los participantes tienen para escoger.
 <P>Puede rellenar cualquier número de éstas, es decir, puede dejar alguna en blanco si
 no necesita las 6 opciones. Las opciones no rellenadas no aparecerán en el cuestionario.';
-$string['choice:readresponses'] = 'Leer respuestas';
 $string['choicesaved'] = 'Su elección ha sido guardada';
 $string['choicetext'] = 'Pregunta a responder';
 $string['chooseaction'] = 'Elija una acción ...';
@@ -55,14 +55,14 @@ $string['havetologin'] = 'Debe entrar antes de remitir su elección';
 $string['limit'] = 'Límite';
 $string['limitanswers'] = 'Limitar el número de respuestas permitidas';
 $string['limitanswers_help'] = '<p>Esta opción le permite limitar el número de participantes que
-   pueden seleccionar cada opción en particular.</p>
+pueden seleccionar cada opción en particular.</p>
 
 <p>Una vez que se ha activado, cada opción puede fijar un límite.
-   Cuando se alcanza, nadie más puede seleccionar esa opción. Un
-   límite de cero (0) significa que nadie puede seleccionar esa opción.</p>
+Cuando se alcanza, nadie más puede seleccionar esa opción. Un
+límite de cero (0) significa que nadie puede seleccionar esa opción.</p>
 
 <p>Si está desactivada, cualquier número de participantes puede
-   seleccionar cualquiera de las opciones.</p>';
+seleccionar cualquiera de las opciones.</p>';
 $string['modulename'] = 'Consulta';
 $string['modulename_help'] = 'El módulo Consulta permite al profesor hacer una pregunta y especificar diferentes opciones.';
 $string['modulenameplural'] = 'Consultas';

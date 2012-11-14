@@ -28,24 +28,24 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = 'Control de acceso';
 $string['actionaftercorrectanswer'] = 'Acción posterior a la respuesta correcta';
 $string['actionaftercorrectanswer_help'] = '<p>La acción normal es seguir el salto de página tal como se ha especificado en la respuesta.
-    En la mayoría de los casos se mostrará la página siguiente de la lección. Se conduce al
-    estudiante a través de la lección siguiendo un camino lógico desde el principio hasta el final.</p>
+En la mayoría de los casos se mostrará la página siguiente de la lección. Se conduce al
+estudiante a través de la lección siguiendo un camino lógico desde el principio hasta el final.</p>
 
 <p>Sin embargo, el módulo Lección puede también usarse como si fuera una tarea a base de <i>tarjetas</i> (<I>flash-cards</I>).
-    Se muestra (opcionalmente) al estudiante alguna información y se le formula una pregunta
-    habitualmente de forma aleatoria. No hay ni principio ni final establecidos, sino simplemente
-    un conjunto de <i>fichas</i> que se muestran unas junto a otras sin ajustarse a un orden
-    particular.</p>
+Se muestra (opcionalmente) al estudiante alguna información y se le formula una pregunta
+habitualmente de forma aleatoria. No hay ni principio ni final establecidos, sino simplemente
+un conjunto de <i>fichas</i> que se muestran unas junto a otras sin ajustarse a un orden
+particular.</p>
 
 <p>Esta opción permite dos variantes muy similares al comportamiento de las tarjetas. La opción
-    "Ir a una página no vista" nunca muestra dos veces la misma página (incluso aunque el estudiante
-    <b>no</b> haya contestado correctamente la pregunta asociada con la página o la tarjeta. La otra
-    opción ("Mostrar unan página no contestada") permite al estudiante ver páginas que pueden haber
-    aparecido antes, pero sólo si ha contestado erróneamente a la pregunta asociada.</p>
+"Ir a una página no vista" nunca muestra dos veces la misma página (incluso aunque el estudiante
+<b>no</b> haya contestado correctamente la pregunta asociada con la página o la tarjeta. La otra
+opción ("Mostrar unan página no contestada") permite al estudiante ver páginas que pueden haber
+aparecido antes, pero sólo si ha contestado erróneamente a la pregunta asociada.</p>
 
 <p>En las lecciones a base de tarjetas el profesor puede decidir si utiliza bien todas las páginas/tarjeta
-    de la lección o sólo un subconjunto aleatorio. Esto se lleva a cabo a través del parámetro &quot; Número
-    de Páginas (Tarjetas) a mostrar&quot;.</p>';
+de la lección o sólo un subconjunto aleatorio. Esto se lleva a cabo a través del parámetro &quot; Número
+de Páginas (Tarjetas) a mostrar&quot;.</p>';
 $string['actions'] = 'Acciones';
 $string['activitylink'] = 'Enlace a una actividad';
 $string['activitylink_help'] = '<p>El menú emergente contiene todas las actividades del curso. Si se selecciona una de ellas, al final de la        lección aparecerá un enlace a dicha actividad.</p>';
@@ -144,9 +144,9 @@ $string['correctresponse'] = 'Comentario (correcto)';
 $string['credit'] = 'Crédito';
 $string['customscoring'] = 'Puntuación personalizada';
 $string['customscoring_help'] = '<p>Esta opción le permite asignar un valor numérico a cada respuesta. Las respuestas
-   pueden tener valores negativos o positivos. Se asignará automáticamente a las preguntas
-   importadas 1 punto a cada respuesta correcta y 0 puntos a cada respuesta incorrecta,
-   si bien usted puede cambiar esto después de importarlas.</p>';
+pueden tener valores negativos o positivos. Se asignará automáticamente a las preguntas
+importadas 1 punto a cada respuesta correcta y 0 puntos a cada respuesta incorrecta,
+si bien usted puede cambiar esto después de importarlas.</p>';
 $string['deadline'] = 'Fecha final';
 $string['defaultessayresponse'] = 'Su ensayo será calificado por el instructor del curso.';
 $string['deleteallattempts'] = 'Eliminar todos los intentos de resolver la lección';
@@ -158,12 +158,12 @@ $string['dependencyon'] = 'Dependiente de';
 $string['dependencyon_help'] = '<p>Esta opción permite que la lección actual dependa del rendimiento de los estudiantes en otra lección del         mismo curso. Si no alcanza el rendimiento exigido, el estudiante no podrá acceder a esta lección.</p>
 
 <p>Las condiciones de la dependencia incluyen:
-    <ul>
-        <li><b>Tiempo empleado:</b> el estudiante debe emplear en la lección el tiempo que aquí se señale.</li>
-        <li><b>Completa:</b> el estudiante debe completar la lección.</li>
-        <li><b>Calificación superior a:</b> el estudiante debe alcanzar en la lección una calificación superior     a la especificada en esta opción.</li>
-    </ul>
-    Puede usarse cualquier combinación de las opciones anteriores.
+<ul>
+<li><b>Tiempo empleado:</b> el estudiante debe emplear en la lección el tiempo que aquí se señale.</li>
+<li><b>Completa:</b> el estudiante debe completar la lección.</li>
+<li><b>Calificación superior a:</b> el estudiante debe alcanzar en la lección una calificación superior     a la especificada en esta opción.</li>
+</ul>
+Puede usarse cualquier combinación de las opciones anteriores.
 </p>';
 $string['description'] = 'Descripción';
 $string['detailedstats'] = 'Estadísticas detalladas';
@@ -255,7 +255,7 @@ $string['importppt_help'] = '<p> FORMA DE USARLO</p>
 
 <li>El resultado del paso 3 debería ser un archivo HTML y una carpeta con todas las diapositivas convertidas a páginas web.<br />
 
-  COMPRIMA sólo LA CARPETA.</li>
+COMPRIMA sólo LA CARPETA.</li>
 
 <li>Vaya a su sitio Moodle y agrege una nueva lección.</li>
 
@@ -383,13 +383,13 @@ absoluto o relativo. Los enlaces relativos son <b>Esta página </b>y <b>Siguient
 $string['jumpsto'] = 'Saltos a <em>{$a}</em>';
 $string['leftduringtimed'] = 'Se ha interrumpido una lección con tiempo fijo.<br>Por favor, haga clic en Continuar para volver a empezar la lección.';
 $string['leftduringtimednoretake'] = 'Se ha interrumpido una lección con tiempo fijo y<br>no se permite volver a empezar o continuar la lección.';
+$string['lesson:edit'] = 'Editar una actividad de lección';
+$string['lesson:manage'] = 'Gestionar una actividad de lección';
 $string['lessonattempted'] = 'Lección intentada';
 $string['lessonclosed'] = 'Esta lección se cerró el {$a}.';
 $string['lessoncloses'] = 'La lección se cierra';
 $string['lessoncloseson'] = 'La lección se cierra el {$a}';
-$string['lesson:edit'] = 'Editar una actividad de lección';
 $string['lessonformating'] = 'Formateado de la Lección';
-$string['lesson:manage'] = 'Gestionar una actividad de lección';
 $string['lessonmenu'] = 'Menú Lección';
 $string['lessonnotready'] = 'Esta lección no está lista para practicar. Por favor, contacte con su {$a}.';
 $string['lessonnotready2'] = 'Esta lección no está preparada.';
@@ -459,11 +459,11 @@ $string['modulename'] = 'Lección';
 $string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/lesson/icon.gif" />&nbsp;<b>Lección</b></p>
 <div class="indent">
 <p>Una lección proporciona contenidos de forma interesante y flexible. Consiste en una
-    serie de páginas. Cada una de ellas normalmente termina con una pregunta y un
-    número de respuestas posibles. Dependiendo de cuál sea la elección del estudiante,
-    progresará a la próxima página o volverá a una página anterior. La navegación a
-    través de la lección puede ser simple o compleja, dependiendo en gran medida de
-    la estructura del material que se está presentando.</p>
+serie de páginas. Cada una de ellas normalmente termina con una pregunta y un
+número de respuestas posibles. Dependiendo de cuál sea la elección del estudiante,
+progresará a la próxima página o volverá a una página anterior. La navegación a
+través de la lección puede ser simple o compleja, dependiendo en gran medida de
+la estructura del material que se está presentando.</p>
 </div>';
 $string['modulenameplural'] = 'Lecciones';
 $string['move'] = 'Mover página';
@@ -523,8 +523,8 @@ $string['numberofpagesviewed'] = 'Número de páginas vistas: {$a}';
 $string['numberofpagesviewednotice'] = 'Número de preguntas contestadas: {$a->nquestions}; (Debería contestar al menos: {$a->minquestions})';
 $string['numerical'] = 'Numérica';
 $string['ongoing'] = 'Mostrar puntuación acumulada';
-$string['ongoingcustom'] = 'Esta es una lección de {$a->score} puntos. Usted ha obtenido {$a->score} punto(s) sobre {$a->currenthigh} hasta ahora.';
 $string['ongoing_help'] = '<p>Cuando se activa esta opción, cada página mostrará los puntos que el estudiante ha obtenido del total de          puntos posible. Por ejemplo, si un estudiante ha contestado correctamente cuatro preguntas de 5 puntos y ha      fallado una pregunta, la puntuación provisional será de 15/20 puntos.</p>';
+$string['ongoingcustom'] = 'Esta es una lección de {$a->score} puntos. Usted ha obtenido {$a->score} punto(s) sobre {$a->currenthigh} hasta ahora.';
 $string['ongoingnormal'] = 'Usted ha respondido correctamente {$a->correct} pregunta(s) de un total de {$a->viewed} pregunta(s).';
 $string['onpostperpage'] = 'Solo un mensaje por calificación';
 $string['options'] = 'Opciones';
@@ -535,10 +535,10 @@ $string['outof'] = 'Fuera de {$a}';
 $string['overview'] = 'Revisión';
 $string['overview_help'] = 'Una lección se compone de un conjunto de páginas y, ocasionalmente, de páginas de contenido. Una página contiene información y normalmente termina con una pregunta. Con cada respuesta a la pregunta está asociado un salto. Este puede ser relativo (e.g., a la página actual o a la siguiente) o absoluto (e.g., a cualquiera de las páginas de la lección). Una página de contenido es aquella que contiene un conjunto de enlaces a otras páginas de la lección, e.g., una Tabla de Contenidos.';
 $string['page'] = 'Página: {$a}';
-$string['pagecontents'] = 'Contenido de la página';
 $string['page-mod-lesson-edit'] = 'Editar página de la lección';
 $string['page-mod-lesson-view'] = 'Visualizar o previsualizar página de la lección';
 $string['page-mod-lesson-x'] = 'Cualquier página de lección';
+$string['pagecontents'] = 'Contenido de la página';
 $string['pages'] = 'Páginas';
 $string['pagetitle'] = 'Título de la página';
 $string['password'] = 'Contraseña';
@@ -584,15 +584,15 @@ $string['reports'] = 'Informes';
 $string['response'] = 'Comentario';
 $string['retakesallowed'] = 'Se permite volver a tomar la lección';
 $string['retakesallowed_help'] = '<p>Esta opción determina si los alumnos pueden tomar una lección más de una vez.
-   El profesor puede decidir que la lección contiene material que los alumnos
-     deben conocer en profundidad, en cuyo caso se debería permitir que el alumno repita
-     la lección. Por otro lado, si el material se utiliza como examen esto no debería
-     permitirse.
+El profesor puede decidir que la lección contiene material que los alumnos
+deben conocer en profundidad, en cuyo caso se debería permitir que el alumno repita
+la lección. Por otro lado, si el material se utiliza como examen esto no debería
+permitirse.
 </p>
 
 <p>Cuando a los alumnos se les permite repetir la lección, la <b>calificación</b> que aparece
-    en la página Calificaciones corresponde bien al <B>promedio</B> de calificaciones, bien al <b>mejor</b> resultado obtenido en las repeticiones.
-    El siguiente parámetro determina cuál de esas dos alternativas de calificación se utilizará.
+en la página Calificaciones corresponde bien al <B>promedio</B> de calificaciones, bien al <b>mejor</b> resultado obtenido en las repeticiones.
+El siguiente parámetro determina cuál de esas dos alternativas de calificación se utilizará.
 </p>
 <p>Advierta que el <b>Análisis de Pregunta</b> siempre utiliza las respuestas de los primeros intentos, y que las repeticiones subsiguientes no son tenidas en cuenta.</p>
 <p>La opción por defecto es <b>Sí</b>, lo que significa que los alumnos pueden retomar la lección. Se
@@ -618,8 +618,6 @@ $string['showanunseenpage'] = 'Mostrar una página no vista';
 $string['singleanswer'] = 'Una sola respuesta';
 $string['skip'] = 'Pasar por alto la navegación';
 $string['slideshow'] = 'Pase de diapositivas';
-$string['slideshowbgcolor'] = 'Color de fondo del pase de diapositivas';
-$string['slideshowheight'] = 'Altura del pase de diapositivas';
 $string['slideshow_help'] = '<p>Esta opción permite mostrar la lección como una sesión de diapositivas, con una
 anchura, altura y color de fondo personalizado fijos. Se mostrará una barra de
 desplazamiento basada en CSS si el contenido de la página excede la anchura o la altura
@@ -629,6 +627,8 @@ diapositiva. Los botones etiquetados por el idioma por defecto como "Siguiente" 
 "Anterior" aparecerán en los extremos derecho e izquierdo de la diapositiva si
 tal opción es seleccionada en la página. El resto de los botones aparecerán centrados
 debajo de la diapositiva.</p>';
+$string['slideshowbgcolor'] = 'Color de fondo del pase de diapositivas';
+$string['slideshowheight'] = 'Altura del pase de diapositivas';
 $string['slideshowwidth'] = 'Anchura del pase de diapositivas';
 $string['startlesson'] = 'Comenzar lección';
 $string['studentattemptlesson'] = 'Intento número {$a->attempt} de {$a->lastname}, {$a->firstname}';

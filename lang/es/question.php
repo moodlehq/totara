@@ -131,17 +131,17 @@ $string['editcategories_help'] = '<p>En lugar de guardar todas sus preguntas en 
 
 <p>Usted puede ordenar sus categorías en una jerarquía de modo que resulten de fácil manejo. La edición de categorías se hace en la pestaña \'Categorías\' en el banco de preguntas.</p>
 
-   <ul><li>En la página principal bajo la pestaña \'Categorías\' en el banco de preguntas:
-   <ul><li>las flechas arriba y abajo cambian el orden en que se listan las categorías que pertenecen al mismo nivel.</li>
-   <li>En la pestaña \'Categorías\' del banco de preguntas, podrá asimismo trasladar una categoría a un nuevo contexto mediante las flechas arriba y abajo.</li>
-   <li>Las flechas izquierda y derecha se usan para cambiar la categoría padre de una categoría determinada.</li></ul></li>
-   <li>Tal vez una forma más rápida de mover las categorías sea pulsar en el icono de edición de la pestaña \'Categorías\' del banco de preguntas y usar seguidamente la casilla de selección para seleccionar una nueva categoría padre.</li></ul></p>
+<ul><li>En la página principal bajo la pestaña \'Categorías\' en el banco de preguntas:
+<ul><li>las flechas arriba y abajo cambian el orden en que se listan las categorías que pertenecen al mismo nivel.</li>
+<li>En la pestaña \'Categorías\' del banco de preguntas, podrá asimismo trasladar una categoría a un nuevo contexto mediante las flechas arriba y abajo.</li>
+<li>Las flechas izquierda y derecha se usan para cambiar la categoría padre de una categoría determinada.</li></ul></li>
+<li>Tal vez una forma más rápida de mover las categorías sea pulsar en el icono de edición de la pestaña \'Categorías\' del banco de preguntas y usar seguidamente la casilla de selección para seleccionar una nueva categoría padre.</li></ul></p>
 
 <p>Vea también:</p>
 <ul>
-  <li><a href="help.php?module=question&file=categorycontexts.html">Contextos de categorías</a></li>
-  <li><a href="help.php?module=question&file=permissions.html">Permisos (preguntas)</a></li>
-  <li><a href="http://docs.moodle.org/en/Question_categories">Ayuda sobre categorías de preguntas en Moodle Docs</a></li>
+<li><a href="help.php?module=question&file=categorycontexts.html">Contextos de categorías</a></li>
+<li><a href="help.php?module=question&file=permissions.html">Permisos (preguntas)</a></li>
+<li><a href="http://docs.moodle.org/en/Question_categories">Ayuda sobre categorías de preguntas en Moodle Docs</a></li>
 </ul>';
 $string['editcategory'] = 'Ediar categoría';
 $string['editingcategory'] = 'Edición de una categoría';
@@ -180,30 +180,30 @@ $string['exportfilename'] = 'preguntas';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
 $string['exportquestions'] = 'Exportar preguntas a un archivo';
 $string['exportquestions_help'] = '<P>Esta función permite exportar una categoría completa de preguntas a un
-   archivo de texto.</p>
+archivo de texto.</p>
 
 <p>Por favor, advierta que en muchos formatos de archivo se pierde alguna
-   información cuando se exportan las preguntas. Esto se debe a que muchos
-   formatos no poseen todas las características existentes en las preguntas
-   de Moodle. No puede esperarse exportar preguntas y luego importarlas de
-   modo que ambas sean idénticas. Asimismo, algunos tipos de preguntas no
-   pueden exportarse en absoluto. Compruebe los datos exportados antes de
-   usarlos en un contexto de producción.</p>
+información cuando se exportan las preguntas. Esto se debe a que muchos
+formatos no poseen todas las características existentes en las preguntas
+de Moodle. No puede esperarse exportar preguntas y luego importarlas de
+modo que ambas sean idénticas. Asimismo, algunos tipos de preguntas no
+pueden exportarse en absoluto. Compruebe los datos exportados antes de
+usarlos en un contexto de producción.</p>
 
 <P>Los formatos posibles actualmente son:</p>
 
 <P><B>Formato GIFT</B></P>
 <ul>
 <p>GIFT es el formato de importación/exportación más comprensivo de que se
-   dispone para exportar preguntas Moodle a un archivo de texto. Fue diseñado
-   para que los profesores escribieran fácilmente preguntas en un archivo de
-   texto. Soporta los formatos de elección múltiple, verdadero-falso, respuesta
-   corta, emparejamiento, preguntas numéricas, así como la inserción de _______
-   en el formato de "palabra perdida". Advierta que las preguntas incrustadas
-   ("cloze") no se incluyen por el momento. En un archivo de texto pueden
-   mezclarse preguntas de distinto tipo, y el formato soporta asimismo comentarios,
-   nombres de las preguntas, retroalimentación y calificaciones ponderadas (en
-   porcentajes). He aquí algunos ejemplos:</p>
+dispone para exportar preguntas Moodle a un archivo de texto. Fue diseñado
+para que los profesores escribieran fácilmente preguntas en un archivo de
+texto. Soporta los formatos de elección múltiple, verdadero-falso, respuesta
+corta, emparejamiento, preguntas numéricas, así como la inserción de _______
+en el formato de "palabra perdida". Advierta que las preguntas incrustadas
+("cloze") no se incluyen por el momento. En un archivo de texto pueden
+mezclarse preguntas de distinto tipo, y el formato soporta asimismo comentarios,
+nombres de las preguntas, retroalimentación y calificaciones ponderadas (en
+porcentajes). He aquí algunos ejemplos:</p>
 <pre>
 ¿En qué mes de 1492 Colón descubrió América?{~Noviembre ~Septiembre =Octubre}
 
@@ -231,7 +231,7 @@ una transformación XSLT.</p>
 <p>Las preguntas se exportan en el formato IMS QTI estándar (version 2.0) format. Note que este modo de
 exportación genera un grupo de archivos dentro de un único archivo \'zip\'.</p>
 <p class="moreinfo"><a href="http://www.imsglobal.org/question/" target="_qti">Más información sobre el sitio IMS QTI</a>
- (sitio externo en una ventana nueva)</p>
+(sitio externo en una ventana nueva)</p>
 </ul>
 
 <p><b>XHTML</b></p>
@@ -242,7 +242,7 @@ sección &lt;body&gt; para posibilitar acciones tales como \'mailto\'.</p>
 </ul>
 
 <P>¡Pronto se dispondrá de más formatos, incluyendo WebCT y cualesquiera otros
-   que los usuarios de Moodle quieran incorporar! </p>';
+que los usuarios de Moodle quieran incorporar! </p>';
 $string['feedback'] = 'Retroalimentación';
 $string['filecantmovefrom'] = 'Los archivos de preguntas no se pueden mover porque usted no tiene permiso para trasladar archivos del lugar desde el que está intentando hacerlo.';
 $string['filecantmoveto'] = 'Los archivos de preguntas no se pueden mover o copiar porque usted no tiene permiso para añadir archivos del lugar al que está intentando hacerlo.';
@@ -308,30 +308,29 @@ $string['markoutofmax'] = 'Puntúa {$a->mark} sobre {$a->max}';
 $string['marks'] = 'Puntos';
 $string['matcherror'] = 'Las calificaciones no corresponden con las opciones de calificación - preguntas saltadas';
 $string['matchgrades'] = 'Emparejar calificaciones';
-$string['matchgradeserror'] = 'Error si la calificación no está en la lista';
 $string['matchgrades_help'] = '<p>Las calificaciones importadas <b>deben</b> corresponderse con alguna de las que figuran en la lista fija de calificaciones válidas, de este modo:</p>
 
 <ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
+<li>100%</li>
+<li>90%</li>
+<li>80%</li>
+<li>75%</li>
+<li>70%</li>
+<li>66.666%</li>
+<li>60%</li>
+<li>50%</li>
+<li>40%</li>
+<li>33.333</li>
+<li>30%</li>
+<li>25%</li>
+<li>20%</li>
+<li>16.666%</li>
+<li>14.2857</li>
+<li>12.5%</li>
+<li>11.111%</li>
+<li>10%</li>
+<li>5%</li>
+<li>0%</li>
 </ul>
 
 <p>se admiten asimismo los valores negativos de la lista anterior.</p>
@@ -339,13 +338,14 @@ $string['matchgrades_help'] = '<p>Las calificaciones importadas <b>deben</b> cor
 <p>Esta opción tiene dos posibilidades, que afectan a la forma en que la rutina de importación trata los valores que no se corresponden <strong>exactamente</strong> con cualquiera de los valores de la lista</p>
 
 <ul>
-  <li><strong>Error si la calificación no está en la lista</strong><br />
-  Si una pregunta contiene cualesquiera calificaciones que no se correspondan con los valores de la lista, se mostrará un mensaje de error y esa pregunta no se importará.</li>
-  <li><strong>Calificación más próxima si no está en la lista</strong><br />
-  Si se encuentra una calificación que no se corresponde con uno de los valores de la lista, se toma el valor más próximo de la lista</li>
+<li><strong>Error si la calificación no está en la lista</strong><br />
+Si una pregunta contiene cualesquiera calificaciones que no se correspondan con los valores de la lista, se mostrará un mensaje de error y esa pregunta no se importará.</li>
+<li><strong>Calificación más próxima si no está en la lista</strong><br />
+Si se encuentra una calificación que no se corresponde con uno de los valores de la lista, se toma el valor más próximo de la lista</li>
 </ul>
 
 <p><i>Nota: algunos formatos de importación personalizados pueden escribir directamente en la base de datos y no quedar afectados por esta comprobación</i></p>';
+$string['matchgradeserror'] = 'Error si la calificación no está en la lista';
 $string['matchgradesnearest'] = 'Calificación más próxima si no está en lista';
 $string['missingcourseorcmid'] = 'Es necesario proporcionar courseid o cmid a print_question';
 $string['missingcourseorcmidtolink'] = 'Es necesario proporcionar courseid o cmid a get_question_edit_link';
@@ -404,9 +404,9 @@ $string['parentcategory_help'] = '<h2>Padre</h2>
 
 <p>Vea también:</p>
 <ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">Categorías de pregunta</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">Contextos de categorías</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">Permisos (preguntas)</a></li>
+<li><a href="help.php?module=question&amp;file=categories.html">Categorías de pregunta</a></li>
+<li><a href="help.php?module=question&amp;file=categorycontexts.html">Contextos de categorías</a></li>
+<li><a href="help.php?module=question&amp;file=permissions.html">Permisos (preguntas)</a></li>
 </ul>';
 $string['parenthesisinproperclose'] = 'El paréntesis antes de ** no se ha cerrado correctamente en {$a}**';
 $string['parenthesisinproperstart'] = 'El paréntesis antes de ** no se ha abierto correctamente en {$a}**';

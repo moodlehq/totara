@@ -43,7 +43,6 @@ $string['configpopupwidth'] = '¿Qué ancho deben tener por defecto las ventanas
 $string['contentheader'] = 'Contenido';
 $string['displayoptions'] = 'Opciones para mostrar disponibles';
 $string['displayselect'] = 'Mostrar';
-$string['displayselectexplain'] = 'Elegir tipo (desafortunadamente no todos los tipos funcionan en todos los archivos).';
 $string['displayselect_help'] = 'Este parámetro, junto con el tipo de archivo, y siempre que el navegador permita incorporar código, determina cómo se muestra el archivo.
 Las opciones pueden incluir:
 * Automático - Se selecciona de forma automática la mejor opción para visualizar el archivo
@@ -51,6 +50,7 @@ Las opciones pueden incluir:
 * Forzar descarga - Se le pregunta al usuario si desea descargar el fichero.
 * Abrir - Sólo se muestra la dirección en la ventana del navegador
 * En ventana emergente - La URL se muestra en una ventana nueva del navegador sin menús y sin barra de direcciones';
+$string['displayselectexplain'] = 'Elegir tipo (desafortunadamente no todos los tipos funcionan en todos los archivos).';
 $string['encryptedcode'] = 'Código encriptado';
 $string['filenotfound'] = 'Lo sentimos, el archivo no se ha encontrado.';
 $string['filterfiles'] = 'Utilice filtros del contenido del archivo';
@@ -79,7 +79,7 @@ $string['printheading'] = 'Mostrar nombre del recurso';
 $string['printheadingexplain'] = '¿Mostrar nombre del recurso encima del contenido? Algunos tipos pueden no mostrar el nombre del recurso incluso aunque esté activado.';
 $string['printintro'] = 'Mostrar descripción del recurso';
 $string['printintroexplain'] = '¿Mostrar la descripción del recurso debajo del contenido? Algunos tipos pueden no mostrar la descripción incluso aunque esté activada esa opción.';
-$string['resourcecontent'] = 'Archivos y subcarpetas';
 $string['resource:exportresource'] = 'Exportar recurso';
 $string['resource:view'] = 'Ver recurso';
+$string['resourcecontent'] = 'Archivos y subcarpetas';
 $string['selectmainfile'] = 'Por favor, seleccione el archivo principal haciendo clic en el icono junto a su nombre.';

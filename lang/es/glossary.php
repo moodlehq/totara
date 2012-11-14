@@ -35,9 +35,9 @@ $string['aliases_help'] = '<p>Cada entrada del glosario puede tener asociada una
 <p><b>Introduzca cada alias en una nueva línea</b> (sin separarlos con comas).</p>
 
 <p>Las palabras y frases con alias pueden utilizarse como método alternativo para referirse
-   a la entrada. Por ejemplo, si usted está utilizando el filtro de auto-enlace del glosario,
-   entonces se usarán los alias (así como el nombre principal de la entrada) para decidir
-   qué palabras enlazar a esta entrada.</p>';
+a la entrada. Por ejemplo, si usted está utilizando el filtro de auto-enlace del glosario,
+entonces se usarán los alias (así como el nombre principal de la entrada) para decidir
+qué palabras enlazar a esta entrada.</p>';
 $string['allcategories'] = 'Todas las categorías';
 $string['allentries'] = 'TODAS';
 $string['allowcomments'] = 'Permitir comentar las entradas';
@@ -63,23 +63,23 @@ $string['areyousureexport'] = '¿Realmente desea exportar esta entrada a';
 $string['ascending'] = '(ascendente)';
 $string['attachment'] = 'Adjunto';
 $string['attachment_help'] = '<p>De forma opcional, usted puede adjuntar UN archivo desde su propio
-   ordenador a cualquier entrada del glosario. Este archivo se sube
-   al servidor y se almacena con su entrada.</p>
+ordenador a cualquier entrada del glosario. Este archivo se sube
+al servidor y se almacena con su entrada.</p>
 
 <p>Esta opción resulta útil cuando usted desea, por ejemplo, compartir
-   una imagen o un documento Word.</p>
+una imagen o un documento Word.</p>
 
 <p>El archivo en cuestión puede ser de cualquier tipo, pero se recomienda
-   que se denomine utilizando los sufijos estándar de 3 letras usados en
-   internet, tales como .doc para un documento Word, .jpg o .png para una
-   imagen, y así sucesivamente. Esto facilitará a otras personas descargar
-   y ver en sus navegadores el archivo enviado.</p>
+que se denomine utilizando los sufijos estándar de 3 letras usados en
+internet, tales como .doc para un documento Word, .jpg o .png para una
+imagen, y así sucesivamente. Esto facilitará a otras personas descargar
+y ver en sus navegadores el archivo enviado.</p>
 
 <p>Si usted reedita una entrada y adjunta un nuevo archivo, quedarán
-   reemplazados cualesquiera archivos asociados a dicha entrada.</p>
+reemplazados cualesquiera archivos asociados a dicha entrada.</p>
 
 <p>Si usted reedita una entrada con un archivo adjunto y deja este espacio
-   en blanco, entonces el archivo adjunto original se conservará.</p>';
+en blanco, entonces el archivo adjunto original se conservará.</p>';
 $string['author'] = 'autor';
 $string['authorview'] = 'Vista por Autor';
 $string['back'] = 'Volver';
@@ -143,19 +143,12 @@ $string['destination'] = 'Destino de las entradas importadas';
 $string['destination_help'] = '<P>Puede especificar dónde desea importar las entradas:</p>
 <ul>
 <li><strong>Glosario actual: </strong>Las entradas importadas se añadirán
-  en el glosario abierto.</li>
+en el glosario abierto.</li>
 <li><strong>Glosario nuevo: </strong>Se creará un nuevo glosario basado en la
-  información encontrada en el archivo importado y luego las entradas serán
-  añadidas al mismo.</li>
+información encontrada en el archivo importado y luego las entradas serán
+añadidas al mismo.</li>
 </ul>';
 $string['displayformat'] = 'Formato de muestra de entradas';
-$string['displayformatcontinuous'] = 'Continuo sin autor';
-$string['displayformatdictionary'] = 'Simple, estilo diccionario';
-$string['displayformatencyclopedia'] = 'Enciclopedia';
-$string['displayformatentrylist'] = 'Lista de entradas';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Completo con autor';
-$string['displayformatfullwithoutauthor'] = 'Completo sin autor';
 $string['displayformat_help'] = '<P>Esta variable define la manera cómo se mostrará cada entrada dentro del glosario.
 Los formatos disponibles son:</p>
 <blockquote>
@@ -184,6 +177,13 @@ añade las palabras Pregunta y Respuesta en el concepto y la definición respect
 <hr />
 <p>Los administradores de Moodle pueden crear nuevos formatos siguiendo las instrucciones que
 aparecen en el archivo <b>mod/glossary/formats/README.txt</b> de su instalación.</p>';
+$string['displayformatcontinuous'] = 'Continuo sin autor';
+$string['displayformatdictionary'] = 'Simple, estilo diccionario';
+$string['displayformatencyclopedia'] = 'Enciclopedia';
+$string['displayformatentrylist'] = 'Lista de entradas';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Completo con autor';
+$string['displayformatfullwithoutauthor'] = 'Completo sin autor';
 $string['displayformats'] = 'Formatos de visualización';
 $string['displayformatssetup'] = 'Ajustar formatos de visualización';
 $string['duplicatecategory'] = 'Categoría duplicada';
@@ -251,18 +251,18 @@ $string['glossary:export'] = 'Exportar entradas';
 $string['glossary:exportentry'] = 'Exportar una sola entrada';
 $string['glossary:exportownentry'] = 'Exportar una sola entrada de las suyas';
 $string['glossary:import'] = 'Importar entradas';
-$string['glossaryleveldefaultsettings'] = 'Ajustes por defecto del nivel de glosario';
 $string['glossary:managecategories'] = 'Gestionar categorías';
 $string['glossary:managecomments'] = 'Gestionar comentarios';
 $string['glossary:manageentries'] = 'Gestionar entradas';
 $string['glossary:rate'] = 'Clasificar entradas';
-$string['glossarytype'] = 'Tipo de glosario';
-$string['glossarytype_help'] = 'Un glosario principal es un glosario en el que se pueden importar entradas de glosarios secundarios. Solo puede haber un glosario principal en cada curso. Si no se necesita importar entradas entre glosarios, todos los glosarios en el curso pueden ser de tipo secundario.';
 $string['glossary:view'] = 'Ver glosario';
 $string['glossary:viewallratings'] = 'Ver todas las calificaciones emitidas por las usuarios';
 $string['glossary:viewanyrating'] = 'Ver el total de calificaciones que alguien recibió';
 $string['glossary:viewrating'] = 'Ver calificación total recibida';
 $string['glossary:write'] = 'Crear nuevas entradas';
+$string['glossaryleveldefaultsettings'] = 'Ajustes por defecto del nivel de glosario';
+$string['glossarytype'] = 'Tipo de glosario';
+$string['glossarytype_help'] = 'Un glosario principal es un glosario en el que se pueden importar entradas de glosarios secundarios. Solo puede haber un glosario principal en cada curso. Si no se necesita importar entradas entre glosarios, todos los glosarios en el curso pueden ser de tipo secundario.';
 $string['guestnoedit'] = 'Los invitados no pueden editar glosarios';
 $string['importcategories'] = 'Importar categorías';
 $string['importedcategories'] = 'Categorías importadas';

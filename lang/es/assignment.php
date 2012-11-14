@@ -45,10 +45,12 @@ mejor trabajo en un proceso iterativo.</P>
 
 <P>Obviamente, esta opción no es aplicable para las tareas "Fuera de línea".</P>';
 $string['alreadygraded'] = 'Su tarea ya ha sido calificada. No se permite enviarla de nuevo.';
-$string['assignmentdetails'] = 'Detalles de la tarea';
 $string['assignment:exportownsubmission'] = 'Exportar envío propio';
 $string['assignment:exportsubmission'] = 'Exportar envío';
 $string['assignment:grade'] = 'Calificar tarea';
+$string['assignment:submit'] = 'Enviar tarea';
+$string['assignment:view'] = 'Ver tarea';
+$string['assignmentdetails'] = 'Detalles de la tarea';
 $string['assignmentmail'] = 'El profesor {$a->teacher} ha hecho algunos comentarios en su envío de tarea \'{$a->assignment}\'
 
 Puede verlos añadidos en su evío de tarea:
@@ -62,18 +64,16 @@ $string['assignmentmailsmall'] = 'El profesor {$a->teacher} ha hecho comentarios
 Puede verlos añadidos en su evío de tarea.';
 $string['assignmentname'] = 'Nombre de la tarea';
 $string['assignmentsubmission'] = 'Envíos de tareas';
-$string['assignment:submit'] = 'Enviar tarea';
 $string['assignmenttype'] = 'Tipo de tarea';
-$string['assignment:view'] = 'Ver tarea';
 $string['availabledate'] = 'Disponible desde';
 $string['cannotdeletefiles'] = 'Ha ocurrido un error y los archivos no han podido eliminarse';
 $string['cannotviewassignment'] = 'No puede ver esta tarea';
 $string['comment'] = 'Comentario';
 $string['commentinline'] = 'Comentario en línea';
 $string['commentinline_help'] = '<p>Cuando la opción está seleccionada, el envío original se copiará en
-   el comentario de retroalimentación durante la calificación, facilitando
-   los comentarios en línea (quizás por medio de un color diferente)
-   o bien la edición del texto original.</p>';
+el comentario de retroalimentación durante la calificación, facilitando
+los comentarios en línea (quizás por medio de un color diferente)
+o bien la edición del texto original.</p>';
 $string['configitemstocount'] = 'Naturaleza de los ítems a contar en los envíos de los estudiantes en tareas fuera de línea.';
 $string['configmaxbytes'] = 'Tamaño máximo permitido por defecto para todas las tareas del sitio (sujeto a los límites del curso y otras variables del servidor)';
 $string['configshowrecentsubmissions'] = 'Todos pueden ver las notificaciones de los envíos en los informes de actividad reciente.';
@@ -105,8 +105,7 @@ Está <a href="{$a->url}">disponible en el sitio web</a>.';
 $string['emailteachers'] = 'Alertas de email a los profesores';
 $string['emailteachers_help'] = '<p>Si se activa, los profesores recibirán un correo siempre que los estudiantes añadan o actualicen el envío de una tarea.</p>
 
-<p>Sólo se avisará a los profesores con permiso para calificar ese envío en particular. De este modo, si, por ejemplo, el curso usa grupos separados, los profesores asignados a un determinado grupo no recibirán información sobre los estudiantes pertenecientes a otros grupos.</p>
-';
+<p>Sólo se avisará a los profesores con permiso para calificar ese envío en particular. De este modo, si, por ejemplo, el curso usa grupos separados, los profesores asignados a un determinado grupo no recibirán información sobre los estudiantes pertenecientes a otros grupos.</p>';
 $string['emptysubmission'] = 'Usted aún no ha enviado nada';
 $string['enablenotification'] = 'Enviar emails de notificación';
 $string['enablenotification_help'] = '<p>Si selecciona esta opción, los estudiantes recibirán las calificaciones y comentarios por email.</p>
@@ -212,8 +211,8 @@ $string['typeonline'] = 'Texto en línea';
 $string['typeupload'] = 'Subida avanzada de archivos';
 $string['typeuploadsingle'] = 'Subir un solo archivo';
 $string['unfinalize'] = 'Volver a borrador';
-$string['unfinalizeerror'] = 'Ha ocurrido un error y la tarea no ha podido devolverse al estado de borrador';
 $string['unfinalize_help'] = 'Volver a \'Borrador\' permite que el estudiante pueda realizar actualizaciones de su tarea';
+$string['unfinalizeerror'] = 'Ha ocurrido un error y la tarea no ha podido devolverse al estado de borrador';
 $string['uploadafile'] = 'Subir un archivo';
 $string['uploadbadname'] = 'El nombre contiene caracteres incompatibles y no se pudo subir';
 $string['uploadedfiles'] = 'archivos subidos';

@@ -818,16 +818,16 @@ $string['hiddenassign'] = 'Tarea oculta';
 $string['hiddenfromstudents'] = 'Oculto de estudiantes';
 $string['hiddensections'] = 'Temas ocultos';
 $string['hiddensections_help'] = '<P>Esta opción le permite decidir cómo se mostrarán a los estudiantes las
-   secciones ocultas del curso.</p>
+secciones ocultas del curso.</p>
 
 <p>Por defecto se muestra un área pequeña (en forma colapsada, normalmente
-   en gris) para indicar dónde está la sección oculta, si bien los estudiantes
-   no pueden ver realmente las actividades y textos ocultos. Esto es
-   especialmente útil en el formato semanal, de modo que las semanas sin
-   clase aparecerán limpias.</p>
+en gris) para indicar dónde está la sección oculta, si bien los estudiantes
+no pueden ver realmente las actividades y textos ocultos. Esto es
+especialmente útil en el formato semanal, de modo que las semanas sin
+clase aparecerán limpias.</p>
 
 <p>Si usted lo elige, pueden estar completamente ocultas, de forma que los
-   estudiantes ni siquiera saben qué secciones del curso están ocultas.</p>';
+estudiantes ni siquiera saben qué secciones del curso están ocultas.</p>';
 $string['hiddensectionscollapsed'] = 'Las secciones ocultas se muestran en forma colapsada';
 $string['hiddensectionsinvisible'] = 'Las secciones ocultas son totalmente invisibles';
 $string['hide'] = 'Ocultar';
@@ -988,7 +988,7 @@ $string['maximumgradex'] = 'Calificación máxima {$a}';
 $string['maximumshort'] = 'Máx.';
 $string['maximumupload'] = 'Tamaño máximo para archivos cargados por usuarios';
 $string['maximumupload_help'] = '<P>Esta variable determina el tamaño máximo permitido para los archivos subidos
- por los estudiantes a este curso, limitado por el tamaño máximo del sitio, que es determinado por el administrador.
+por los estudiantes a este curso, limitado por el tamaño máximo del sitio, que es determinado por el administrador.
 
 <P>También es posible limitar el tamaño en las variables presentes en cada módulo de actividades.';
 $string['maxnumberweeks'] = 'Número máximo de semanas/temas';
@@ -1096,11 +1096,11 @@ La contraseña de su cuenta en \'{$a->sitename}\' se ha
 cancelado y se le ha otorgado una nueva contraseña temporal.
 
 Su nueva información de acceso es:
-   Nombre de usuario: {$a->username}
-   Contraseña: {$a->newpassword}
+Nombre de usuario: {$a->username}
+Contraseña: {$a->newpassword}
 
 Diríjase por favor a esta página y cambie su contraseña temporal por una que pueda recordar mejor:
-   {$a->link}
+{$a->link}
 
 En la mayoría de los programas de correo electrónico el
 enlace anterior aparecerá como una línea de texto en azul
@@ -1467,7 +1467,7 @@ como en los botones de ayuda sensibles al contexto.</p>
 a positivo, separados por comas. Por ejemplo:</p>
 
 <blockquote><i>
-   Insuficiente, Regular, Promedio, Bueno, Muy bueno, Excelente!
+Insuficiente, Regular, Promedio, Bueno, Muy bueno, Excelente!
 </i></blockquote>
 
 <p>Las escalas deberían asimismo incluir una descripción adecuada de lo
@@ -1565,15 +1565,15 @@ $string['showgrades'] = 'Mostrar calificaciones a los estudiantes';
 $string['showgrades_help'] = '<p>Muchas de las actividades permiten otorgar calificaciones.</p>
 
 <p>Por defecto, los resultados de todas las calificaciones
-   del curso aparecen en la sección de Calificaciones,
-   disponible en la página principal del curso.</p>
+del curso aparecen en la sección de Calificaciones,
+disponible en la página principal del curso.</p>
 
 <p>Si un profesor no está interesado en usar calificaciones
-   en un curso o, simplemente quiere ocultarlas a los
-   alumnos, puede desactivar la visualización de las
-   calificaciones en la Configuración del Curso. Esto no impide usar o establecer calificaciones para actividades
-   individuales: únicamente impide que los alumnos vean
-   los resultados.</p>';
+en un curso o, simplemente quiere ocultarlas a los
+alumnos, puede desactivar la visualización de las
+calificaciones en la Configuración del Curso. Esto no impide usar o establecer calificaciones para actividades
+individuales: únicamente impide que los alumnos vean
+los resultados.</p>';
 $string['showlistofcourses'] = 'Mostrar listas de cursos';
 $string['showmodulecourse'] = 'Mostrar lista de cursos que contienen actividad';
 $string['showonly'] = 'Mostrar sólo';
@@ -1855,7 +1855,7 @@ $string['welcometocoursetext'] = 'Bienvenido a {$a->coursename}
 
 Lo primero que debe hacer es actualizar su información personal: así podremos saber algo más sobre usted.
 
-  {$a->profileurl}';
+{$a->profileurl}';
 $string['whattocallzip'] = '¿Para qué quiere el archivo zip?';
 $string['whattodo'] = 'Qué hacer';
 $string['windowclosing'] = 'Esta ventana debería cerrarse automáticamente. De no ser así, ciérrela ahora, por favor.';
