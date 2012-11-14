@@ -76,8 +76,8 @@ $string['groupinfo'] = 'Info zu ausgewählten Gruppen';
 $string['groupinfomembers'] = 'Info zu ausgewählten Mitglieder';
 $string['groupinfopeople'] = 'Info zu ausgewählten Personen';
 $string['grouping'] = 'Gruppierung';
-$string['groupingdescription'] = 'Beschreibung der Gruppierung';
 $string['grouping_help'] = 'Eine Gruppierung ist eine Sammlung von Gruppen innerhalb eines Kurses. Wenn eine Gruppierung ausgewählt ist, dann können Teilnehmer/innen aus unterschiedlichen Gruppen innerhalb der Gruppierung zusammenarbeiten.';
+$string['groupingdescription'] = 'Beschreibung der Gruppierung';
 $string['groupingname'] = 'Name der Gruppierung';
 $string['groupingnameexists'] = 'Der Name der Gruppierung \'{$a}\' existiert bereits in diesem Kurs. Bitte wählen Sie einen anderen Namen.';
 $string['groupings'] = 'Gruppierungen';
@@ -86,19 +86,19 @@ $string['groupmember'] = 'Gruppenmitglied';
 $string['groupmemberdesc'] = 'Standard-Rolle für Mitglieder einer Gruppe';
 $string['groupmembers'] = 'Gruppenmitglieder';
 $string['groupmembersonly'] = 'Nur für Gruppenmitglieder';
-$string['groupmembersonlyerror'] = 'Sie müssen Mitglied in einer Gruppe sein, die diese Aktivität nutzt.';
 $string['groupmembersonly_help'] = 'Wenn die Option aktiviert ist, ist das Material oder die Aktivität nur für Gruppenmitglieder verfügbar, die der jeweiligen Gruppierung zugeordnet sind.';
+$string['groupmembersonlyerror'] = 'Sie müssen Mitglied in einer Gruppe sein, die diese Aktivität nutzt.';
 $string['groupmemberssee'] = 'Gruppenmitglieder anzeigen';
 $string['groupmembersselected'] = 'Mitglieder der markierten Gruppe';
 $string['groupmode'] = 'Gruppenmodus';
-$string['groupmodeforce'] = 'Gruppenmodus erzwingen';
-$string['groupmodeforce_help'] = 'Wenn der Gruppenmodus erzwungen wird, dann wird der Gruppenmodus des Kurses auch auf jede Aktivität im Kurs angewendet. Die Gruppeneinstellungen in jeder Aktivität werden ignoriert.';
 $string['groupmode_help'] = 'Für den Gruppenmodus stehen drei Einstellungen zur Verfügung:
 * Keine Gruppen - es gibt keine Gruppen im Kurs
 * Getrennte Gruppen - es gibt getrennte Gruppen im Kurs, d.h. ein Gruppenmitglied kann nur die Mitglieder der eigenen Gruppe sehen, alle andern sind unsichtbar.
 * Sichtbare Gruppen - es gibt sichtbare Gruppen im Kurs, d.h. jede Gruppe arbeitet in der eigenen Gruppe, kann aber die anderen Gruppen sehen.
 
 Der Gruppenmodus auf Kursebene ist der Standardmodus für alle Aktivitäten im Kurs. Jede Aktivität, die Gruppen unterstützt, kann aber auch ihren eigenen Gruppenmodus haben. Falls der Gruppenmodus auf Kursebene festgelegt wird, werden die Einstellungen zum Gruppenmodus für alle Aktivitäten ignoriert.';
+$string['groupmodeforce'] = 'Gruppenmodus erzwingen';
+$string['groupmodeforce_help'] = 'Wenn der Gruppenmodus erzwungen wird, dann wird der Gruppenmodus des Kurses auch auf jede Aktivität im Kurs angewendet. Die Gruppeneinstellungen in jeder Aktivität werden ignoriert.';
 $string['groupmy'] = 'Meine Gruppe';
 $string['groupname'] = 'Gruppenname';
 $string['groupnameexists'] = 'Der Gruppenname \'{$a}\' existiert in diesem Kurs bereits, wählen Sie bitte einen anderen.';

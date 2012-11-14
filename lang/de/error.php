@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'Zu erledigen';
 $string['alreadyloggedin'] = 'Sie sind bereits als {$a} angemeldet. Bitte melden Sie sich ab, bevor Sie sich mit einem anderen Anmeldenamen wieder anmelden.';
 $string['authnotexisting'] = 'Das Authorisierungsplugin existiert nicht';
 $string['backupcontainexternal'] = 'Diese Backup-Datei enthält externe Moodle Netzwerkverbindungen (MNET), die nicht lokal konfiguriert wurden.';
@@ -345,9 +346,9 @@ $string['maxbytes'] = 'Diese Datei ist größer als die Maximalgröße';
 $string['messagingdisable'] = 'Das Messaging-System ist für diese Website deaktiviert';
 $string['mimetexisnotexist'] = 'Ihr System ist nicht richtig konfiguriert, um mimeTeX ausführen zu können. Sie müssen das geeignete Programm für Ihr Betriebssystem unter der Adresse <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a> herunterladen. Alternativ können Sie sich auch den C-Quellcode unter <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a> herunterladen, kompilieren und dann das ausführbare Programm in das Verzeichnis moodle/filter/tex/ legen.';
 $string['mimetexnotexecutable'] = 'Das spezifische Programm mimetex ist nicht ausführbar!';
+$string['missing_moodle_backup_xml_file'] = 'XML-Datei im Backup fehlt: {$a}';
 $string['missingfield'] = 'Feld "{$a}" fehlt';
 $string['missingkeyinsql'] = 'Fehler: fehlender Parameter "{$a}" in der Abfrage';
-$string['missing_moodle_backup_xml_file'] = 'XML-Datei im Backup fehlt: {$a}';
 $string['missingparam'] = 'Notwendiger Parameter "{$a}" fehlt';
 $string['missingparameter'] = 'Fehlender Parameter';
 $string['missingrequiredfield'] = 'Einige erforderliche Felder sind nicht ausgefüllt.';
@@ -396,7 +397,7 @@ $string['nopermissiontomanagegroup'] = 'Sie haben nicht die Berechtigung, um Gru
 $string['nopermissiontorate'] = 'Bewertung von Beiträgen ist nicht erlaubt!';
 $string['nopermissiontoshow'] = 'Keine Berechtigung zum Anzeigen!';
 $string['nopermissiontounlock'] = 'Keine Berechtigung zum Freigeben!';
-$string['nopermissiontoupdatecalendar'] = 'Sie haben derzeit keine Berechtigung, um den Termin zu aktualisieren ';
+$string['nopermissiontoupdatecalendar'] = 'Sie haben derzeit keine Berechtigung, um den Termin zu aktualisieren';
 $string['nopermissiontoviewgrades'] = 'Bewertungen können nicht angezeigt werden';
 $string['nopermissiontoviewletergrade'] = 'Fehlende Berechtigung zur Anzeige von Notenstufen';
 $string['nopermissiontoviewpage'] = 'Sie haben keinen Zugriff auf diese Seite';
@@ -430,9 +431,9 @@ $string['remotedownloaderror'] = 'Der Download auf Ihren Server konnte nicht aus
 $string['remotedownloadnotallowed'] = 'Der Download von Komponenten auf Ihren Server ist nicht erlaubt (allow_url_fopen ist deaktiviert). <br /><br /> Die Datei <a href="{$a->url}">{$a->url}</a> muss manuell heruntergeladen werden. Kopieren Sie die Datei nach "{$a->dest}" auf Ihren Server und entpacken Sie sie dort.';
 $string['reportnotavailable'] = 'Dieser Berichtstyp ist nur für die Startseite verfügbar';
 $string['requireloginerror'] = 'Kurs oder Aktivität nicht benutzbar';
-$string['restorechecksumfailed'] = 'Bei der Wiederherstellung sind Probleme aufgetreten. Bitte prüfen Sie die Einstellungen \'PHP memory limit\' und \'DB package size\'.';
 $string['restore_path_element_missingmethod'] = 'Die Wiederherstellungsmethode {$a} fehlt. Sie muss von einem Entwickler definiert werden.';
 $string['restore_path_element_noobject'] = 'Wiederherstellungsobjekt {$a} ist kein Objekt.';
+$string['restorechecksumfailed'] = 'Bei der Wiederherstellung sind Probleme aufgetreten. Bitte prüfen Sie die Einstellungen \'PHP memory limit\' und \'DB package size\'.';
 $string['restrictedcontextexception'] = 'Missachtung von Kontextbeschränkungen beim Ausführen einer externen Funktion';
 $string['restricteduser'] = 'Mit Ihrer aktuellen Anmeldung \'{$a}\' sind Sie nicht zu dieser Aktion berechtigt.';
 $string['reverseproxyabused'] = 'Die Einstellung Reverse Proxy wurde aktiviert. Entschuldigung, aber Sie können nicht direkt auf einen anderen Server zugreifen.<br />Bitte nehmen Sie Kontakt mit Ihrem Administrator auf.';
@@ -463,9 +464,8 @@ $string['storedfileproblem'] = 'Unbekannter Fehler mit lokalen Dateien ({$a})';
 $string['tagdisabled'] = 'Schlagworte sind deaktiviert!';
 $string['tagnotfound'] = 'Der verwendete Tag wurde in der Datenbank nicht gefunden.';
 $string['targetdatabasenotempty'] = 'Die Zieldatenbank ist nicht leer. Aus Sicherheitsgründen wurde die Übertragung abgebrochen.';
-$string['textconditionsnotallowed'] = 'Ein Vergleich der Textspaltenbedingungen ist nicht zugelassen. Bitte verwenden Sie in Ihrer Abfrage sql_compare_text() . ';
+$string['textconditionsnotallowed'] = 'Ein Vergleich der Textspaltenbedingungen ist nicht zugelassen. Bitte verwenden Sie in Ihrer Abfrage sql_compare_text() .';
 $string['themenotinstall'] = 'Dieses Design ist nicht verfügbar!';
-$string['TODO'] = 'Zu erledigen';
 $string['tokengenerationfailed'] = 'Das neue Token kann nicht erzeugt werden';
 $string['transactionvoid'] = 'Transaktion konnte nicht geleert werden, da sie bereits leer war.';
 $string['unenrolerror'] = 'Beim Austragen der Person ist ein Fehler aufgetreten.';

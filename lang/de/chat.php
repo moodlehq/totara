@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Chat betreten';
 $string['chat:deletelog'] = 'Chat-Logdaten löschen';
 $string['chat:exportparticipatedsession'] = 'Chat-Sitzung mit eigener Teilnahme exportieren';
 $string['chat:exportsession'] = 'Alle Chat-Sitzungen exportieren';
+$string['chat:readlog'] = 'Chat-Logdaten sehen';
+$string['chat:talk'] = 'Im Chat sprechen';
 $string['chatintro'] = 'Beschreibung';
 $string['chatname'] = 'Name des Chats';
-$string['chat:readlog'] = 'Chat-Logdaten sehen';
 $string['chatreport'] = 'Chat-Protokolle';
-$string['chat:talk'] = 'Im Chat sprechen';
 $string['chattime'] = 'Nächster Chat';
 $string['configmethod'] = 'Die Methode \'Ajax-Chat\'  bietet eine ajaxbasierte Oberfläche, die sich regelmäßig mit dem Server zur Aktualisierung verbindet. Diese Methode funktioniert nur mit modernen Browsern und aktiviertem Ajax/JavaScript.
 <br />Bei der Methode \'Standard-Chat\' laden alle Clients regelmäßig die gesamte Chat-Seite neu vom Server, was zwar keine Konfiguration erfordert und immer funktioniert, aber durch dauernde Anfragen zu einer sehr hohen Serverbelastung führen kann.
@@ -84,8 +84,8 @@ In einem Chat können die unterschiedlichen Positionen zu einem Thema von allen 
 $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Nie löschen';
 $string['nextsession'] = 'Nächste Sitzung';
-$string['nochat'] = 'Kein Chat gefunden';
 $string['no_complete_sessions_found'] = 'Keine beendete Sitzung gefunden';
+$string['nochat'] = 'Kein Chat gefunden';
 $string['noguests'] = 'Der Chat ist für Gäste nicht zugänglich';
 $string['nomessages'] = 'Bisher keine Mitteilungen';
 $string['nopermissiontoseethechatlog'] = 'Sie sind nicht berechtigt, die Chat-Protokolle anzusehen.';

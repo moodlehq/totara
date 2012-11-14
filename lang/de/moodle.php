@@ -527,8 +527,7 @@ $string['editthisactivity'] = 'Aktivität bearbeiten';
 $string['editthiscategory'] = 'Kursbereich bearbeiten';
 $string['edituser'] = 'Nutzerkonten bearbeiten';
 $string['email'] = 'E-Mail-Adresse';
-$string['emailactive'] = 'E-Mail-Adresse aktiv
-';
+$string['emailactive'] = 'E-Mail-Adresse aktiv';
 $string['emailagain'] = 'E-Mail (wiederholen)';
 $string['emailcharset'] = 'E-Mail-Zeichensatz';
 $string['emailconfirm'] = 'Bestätigen Sie Ihren Zugang.';
@@ -538,7 +537,7 @@ wir freuen uns, dass Sie sich im Lernmanagementsystem Moodle \'{$a->sitename}\' 
 
 Wir haben bei uns eine neue Nutzerregistrierung erhalten, bei der Ihre E-Mailadresse eingetragen wurde. Wenn dies richtig ist, bestätigen Sie bitte die Anmeldung über den folgenden Link:
 
-  {$a->link}
+{$a->link}
 
 Kontrollieren Sie bitte zunächst, ob alle Zeichen der obigen Zeile in dem Link enthalten sind. Falls im Anmeldenamen ein Leerzeichen enthalten ist, kann der Link unterbrochen sein. Klicken Sie dann auf den Link und ergänzen Sie im Browser in der URL-Adresse die restlichen Zeichen des Links.
 
@@ -668,8 +667,7 @@ wir erinnern Sie daran, dass Ihre Teilnahmedauer für den Kurs {$a->course} in {
 
 Nehmen Sie bitte mit Ihren Trainer/innen Kontakt auf, falls Sie weiterhin im Kurs eingeschrieben bleiben wollen.';
 $string['expirythreshold'] = 'Wie lange vorher';
-$string['expirythreshold_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, dann gibt diese Einstellung an, wie viele Tage vorher die Teilnehmer/innen über das Einschreibungsende informiert werden.
-';
+$string['expirythreshold_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, dann gibt diese Einstellung an, wie viele Tage vorher die Teilnehmer/innen über das Einschreibungsende informiert werden.';
 $string['explanation'] = 'Erläuterung';
 $string['extendenrol'] = 'Anmeldung verlängern (individuell)';
 $string['extendperiod'] = 'Verlängerter Zeitraum';
@@ -713,8 +711,7 @@ $string['format_help'] = 'Die Kursformate legen das Layout der Kursseite fest.
 * SCORM-Format - Ein Lernpaket (SCORM) wird im ersten Kursabschnitt angezeigt, alternativ zur Verwendung des Moduls \'Lernpaket\' (SCORM/AICC)
 * Soziales Format - Ein Forum wird auf der Kursseite angezeigt
 * Themenformat - Die Kursseite wird in Themenabschnitte eingeteilt
-* Wochenformat - Die Kursseite wird in Wochenabschnitte eingeteilt, beginnend mit der ersten Woche nach dem Kursbeginn
-';
+* Wochenformat - Die Kursseite wird in Wochenabschnitte eingeteilt, beginnend mit der ersten Woche nach dem Kursbeginn';
 $string['formathtml'] = 'HTML-Format';
 $string['formatmarkdown'] = 'Markdown-Format';
 $string['formatplain'] = 'Reines Textformat';
@@ -755,16 +752,14 @@ Dieses Programm ist freie Software. Sie dürfen die Software weiterverbreiten un
 
 Dieses Programm wurde in der Hoffnung erstellt, dass es nützlich sein könnte, allerdings OHNE IRGENDEINE GARANTIE, sogar ohne die implizierte Garantie der Marktfähigkeit oder der Eignung für einen bestimmten Zweck.
 
-Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License
-';
+Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License';
 $string['gpl3'] = 'Copyright (C)1999 onwards Martin Dougiamas http://moodle.com
 
 Dieses Programm ist freie Software. Sie dürfen die Software weiterverbreiten und/oder verändern, und zwar im Rahmen der GNU General Public License, wie sie von der Free Software Foundation veröffentlicht wurde. Es gilt die Version 3 der Lizenz oder (falls Sie dies wünschen) auch jede spätere Version.
 
 Dieses Programm wurde in der Hoffnung erstellt, dass es nützlich sein könnte, allerdings OHNE IRGENDEINE GARANTIE, sogar ohne die implizierte Garantie der Marktfähigkeit oder der Eignung für einen bestimmten Zweck.
 
-Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License
-';
+Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License';
 $string['gpllicense'] = 'GPL-Lizenz';
 $string['grade'] = 'Bewertung';
 $string['grades'] = 'Bewertungen';
@@ -838,8 +833,7 @@ $string['htmleditordisabledadmin'] = 'Die Administrator/innen haben den HTML-Edi
 $string['htmleditordisabledbrowser'] = 'Der HTML-Editor ist nicht verfügbar, weil Ihr Browser nicht kompatibel ist. Bitte nutzen Sie eine neuere Browserversion oder einen anderen Browser.';
 $string['htmlfilesonly'] = 'Nur HTML-Dateien';
 $string['htmlformat'] = 'HTML-Format';
-$string['icon'] = 'Icon
-';
+$string['icon'] = 'Icon';
 $string['icqnumber'] = 'ICQ';
 $string['idnumber'] = 'ID-Nummer';
 $string['idnumbercourse'] = 'Kurs-ID';
@@ -1089,8 +1083,8 @@ $string['newpasswordtext'] = 'Guten Tag {$a->firstname},
 Ihr Kennwort auf \'{$a->sitename}\' wurde zurückgesetzt. Ihnen ist ein neues, temporäres Kennwort zugewiesen worden.
 
 Ihre Zugangsdaten lauten jetzt:
-   Anmeldename: {$a->username}
-   Kennwort: {$a->newpassword}
+Anmeldename: {$a->username}
+Kennwort: {$a->newpassword}
 
 Bitte folgen Sie diesem Link und ändern Sie Ihr Kennwort:
 {$a->link}
@@ -1450,7 +1444,7 @@ $string['screenreaderuse_help'] = 'Mit der Einstellung \'Ja\' wird ein barrieref
 $string['screenreaderyes'] = 'Ja';
 $string['screenshot'] = 'Bildschirmfoto';
 $string['search'] = 'Suchen';
-$string['search_help'] = 'Einfache Suche von einem oder mehreren Wörtern, die im Text vorkommen. Zwischen den Suchwörtern bitte Leerzeichen eingeben. Gesuchte Begriffe müssen mindestens drei Zeichen lang sein. ';
+$string['search_help'] = 'Einfache Suche von einem oder mehreren Wörtern, die im Text vorkommen. Zwischen den Suchwörtern bitte Leerzeichen eingeben. Gesuchte Begriffe müssen mindestens drei Zeichen lang sein.';
 $string['searchagain'] = 'Erneut suchen';
 $string['searchbyemail'] = 'Über die E-Mail-Adresse suchen';
 $string['searchbyusername'] = 'Über den Anmeldenamen suchen';

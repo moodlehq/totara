@@ -64,8 +64,7 @@ $string['moreshowmytags'] = 'Meine Schlagworte';
 $string['moreshowofficialtags'] = 'Offizielle Schlagworte';
 $string['moretags'] = 'Weitere Schlagworte anzeigen und filtern';
 $string['moretitle'] = 'Weitere Schlagworte';
-$string['morewelcome'] = 'Schlagworte sind nutzererstellte Links zu beliebigen Begriffen. Schlagworte erlauben eine Kategorisierung und Verlinkung von Kursen, Blogs oder Profilen. Unterschiedliche Schlagwortgruppen können gewählt werden. 
-';
+$string['morewelcome'] = 'Schlagworte sind nutzererstellte Links zu beliebigen Begriffen. Schlagworte erlauben eine Kategorisierung und Verlinkung von Kursen, Blogs oder Profilen. Unterschiedliche Schlagwortgruppen können gewählt werden.';
 $string['mycoursetag1'] = 'Meine Kurs-Schlagworte anzeigen';
 $string['mycoursetag2'] = 'Meine Kurs-Schlagworte';
 $string['mycoursetags'] = 'Meine Kurs-Schlagworte:';

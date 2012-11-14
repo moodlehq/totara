@@ -127,17 +127,17 @@ $string['permalink'] = 'Dauerlink';
 $string['personalblogs'] = 'Nach Anmeldung nur eigener Blog sichtbar';
 $string['preferences'] = 'Voreinstellungen';
 $string['publishto'] = 'Veröffentlichen für';
+$string['publishto_help'] = 'Es gibt 3 Optionen für Blogveröffentlichungen:
+
+* Persönlich - Nur Sie und die Administration können diesen Beitrag lesen
+* Alle auf dieser Website - Alle auf dieser Website registrieren Personen können den Beitrag lesen
+* Weltweit öffentlich - Alle können den Beitrag lesen (auch Gäste und Suchmaschinen)';
 $string['publishtocourse'] = 'Mitglieder in gemeinsamen Kursen';
 $string['publishtocourseassoc'] = 'Mitglieder des verbundenen Kurses';
 $string['publishtocourseassocparam'] = 'Mitglieder von {$a}';
 $string['publishtogroup'] = 'Mitglieder in gemeinsamer Gruppe';
 $string['publishtogroupassoc'] = 'Mitglieder in gemeinsamer Gruppe im verbundenen Kurs';
 $string['publishtogroupassocparam'] = 'Mitglieder in gemeinsamer Gruppe in {$a}';
-$string['publishto_help'] = 'Es gibt 3 Optionen für Blogveröffentlichungen:
-
-* Persönlich - Nur Sie und die Administration können diesen Beitrag lesen
-* Alle auf dieser Website - Alle auf dieser Website registrieren Personen können den Beitrag lesen
-* Weltweit öffentlich - Alle können den Beitrag lesen (auch Gäste und Suchmaschinen)';
 $string['publishtonoone'] = 'Persönlich';
 $string['publishtosite'] = 'Alle auf dieser Website';
 $string['publishtoworld'] = 'Weltweit öffentlich';

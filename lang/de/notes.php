@@ -57,10 +57,9 @@ $string['personalnotes'] = 'Persönliche Anmerkungen';
 $string['publishstate'] = 'Kontext';
 $string['publishstate_help'] = 'Der Kontext für eine Anmerkung bestimmt, wer die Anmerkung sehen darf.
 
- * Persönlich - die Anmerkung ist nur für Sie alleine sichtbar
- * Kurs - die Anmerkung ist für die Trainer/innen dieses Kurses sichtbar
- * Website - die Anmerkung ist für alle Trainer/innen aller Kursen sichtbar
- ';
+* Persönlich - die Anmerkung ist nur für Sie alleine sichtbar
+* Kurs - die Anmerkung ist für die Trainer/innen dieses Kurses sichtbar
+* Website - die Anmerkung ist für alle Trainer/innen aller Kursen sichtbar';
 $string['site'] = 'Website';
 $string['sitenotes'] = 'Anmerkungen für alle Trainer/innen sichtbar (kursübergreifend)';
 $string['unknown'] = 'unbekannt';

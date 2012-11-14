@@ -47,8 +47,7 @@ $string['availabletags_help'] = 'Elemente sind Platzhalter in einer Vorlage, die
 
 Nutzerdefinierte Felder haben das Format [[feldname]]. Alle anderen Elemente (Tags) haben das Format ##tag##.
 
-Nur die Elemente, die in der Liste "Verfügbare Elemente" aufgeführt sind, können in der Vorlage verwendet werden.
-';
+Nur die Elemente, die in der Liste "Verfügbare Elemente" aufgeführt sind, können in der Vorlage verwendet werden.';
 $string['availabletodate'] = 'Verfügbar bis';
 $string['blank'] = 'Leer';
 $string['buttons'] = 'Aktionen';
@@ -184,8 +183,7 @@ $string['intro'] = 'Beschreibung';
 $string['invalidaccess'] = 'Seite wurde nicht richtig aufgerufen';
 $string['invalidfieldid'] = 'Feld-ID ist falsch';
 $string['invalidfieldname'] = 'Wählen Sie bitte einen anderen Namen für dieses Feld.';
-$string['invalidfieldtype'] = 'Ungültiger Feldtyp
-';
+$string['invalidfieldtype'] = 'Ungültiger Feldtyp';
 $string['invalidid'] = 'Falsche Daten-ID';
 $string['invalidpreset'] = '{$a} ist kein Vorlagensatz.';
 $string['invalidrecord'] = 'Falscher Eintrag';

@@ -149,7 +149,7 @@ $string['errorduringproc'] = 'Fehler bei Prozessausführung';
 $string['errorduringregrade'] = 'Frage {$a->qid} konnte nicht neu bewertet werden - Status: {$a->stateid}';
 $string['errorfilecannotbecopied'] = 'Fehler: Datei {$a} kann nicht kopiert werden.';
 $string['errorfilecannotbemoved'] = 'Fehler: Datei {$a} kann nicht verschoben werden.';
-$string['errorfileschanged'] = 'Fehler: Dateien, die in Fragen verwendet werden, haben sich seit der letzten Anzeige geändert. ';
+$string['errorfileschanged'] = 'Fehler: Dateien, die in Fragen verwendet werden, haben sich seit der letzten Anzeige geändert.';
 $string['errormanualgradeoutofrange'] = 'Die Bewertung {$a->grade} für die Frage {$a->name} liegt nicht zwischen \'0\' und {$a->maxgrade}. Punkte und Kommentare wurde nicht gespeichert.';
 $string['errormovingquestions'] = 'Fehler beim Verschieben von Fragen mit Ids {$a}.';
 $string['errorpostprocess'] = 'Fehler beim Post-Processing';
@@ -217,7 +217,7 @@ $string['importfromupload'] = 'Wählen Sie eine Datei zum Hochladen...';
 $string['importingquestions'] = '{$a} Frage(n) werden aus der Datei importiert';
 $string['importparseerror'] = 'Fehler beim Einlesen der Importdatei gefunden. Es wurden daher keine Fragen importiert. Zum Einlesen fehlerfreier Fragen setzen Sie die Einstellung \'Bei Fehler stoppen\' auf \'Nein\'.';
 $string['importquestions'] = 'Fragen aus Datei importieren';
-$string['importquestions_help'] = 'Die Funktion ermöglicht es Ihnen Fragen mit verschiedene Fragetypen aus eienr Textdatei zu importieren. Achtung: die Datei muss im UTF-8 Format codiert sein. ';
+$string['importquestions_help'] = 'Die Funktion ermöglicht es Ihnen Fragen mit verschiedene Fragetypen aus eienr Textdatei zu importieren. Achtung: die Datei muss im UTF-8 Format codiert sein.';
 $string['importwrongfiletype'] = 'Die Inhalte der Datei ({$a->actualtype}) passen nicht zum Format der gewählten Importdatei ({$a->expectedtype}).';
 $string['impossiblechar'] = 'Unzulässiges Zeichen {$a} innerhalb der Klammern entdeckt';
 $string['includesubcategories'] = 'Fragen aus Unterkategorien anzeigen';
@@ -246,32 +246,31 @@ $string['markoutofmax'] = 'Erreichte Punkte {$a->mark} von {$a->max}';
 $string['marks'] = 'Punkte';
 $string['matcherror'] = 'Bewertungen passen nicht zu den Bewertungsoptionen - Fragen wurden übersprungen';
 $string['matchgrades'] = 'Bewertungen abgleichen';
-$string['matchgradeserror'] = 'Fehler wenn Bewertung nicht gelistet';
 $string['matchgrades_help'] = '<h2>Bewertungen zuordnen</h2>
 
 <p>Importierte Bewertungen <b>müssen</b> zu einer der gültigen Bewertungen passen, die in der folgenden Liste aufgeführt sind.</p>
 
 <ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
+<li>100%</li>
+<li>90%</li>
+<li>80%</li>
+<li>75%</li>
+<li>70%</li>
+<li>66.666%</li>
+<li>60%</li>
+<li>50%</li>
+<li>40%</li>
+<li>33.333</li>
+<li>30%</li>
+<li>25%</li>
+<li>20%</li>
+<li>16.666%</li>
+<li>14.2857</li>
+<li>12.5%</li>
+<li>11.111%</li>
+<li>10%</li>
+<li>5%</li>
+<li>0%</li>
 </ul>
 
 <p>Negative Werte zu der obigen Liste sind auch zulässig.</p>
@@ -279,13 +278,14 @@ $string['matchgrades_help'] = '<h2>Bewertungen zuordnen</h2>
 <p>Es gibt hierfür zwei Einstellungen. Sie legen fest, wie mit Werten umgegangen werden soll, die nicht <strong>exakt</strong> mit den obigen Werten übereinstimmen.</p>
 
 <ul>
-  <li><strong>Fehlermeldung, wenn Bewertung nicht in der Liste enthalten ist</strong><br />
-  Wenn die Frage eine Bewertung enthält, die nicht in der Liste steht, wird die Frage beim Import zurückgewiesen und ein Fehler angezeigt.</li>
-  <li><strong>Nächstliegenden Wert aus der Liste eintragen</strong><br />
-  Wenn ein Wert beim Import nicht gefunden wird, wird er ersetzt durch den nächstliegenden Wert aus der Liste.</li>
+<li><strong>Fehlermeldung, wenn Bewertung nicht in der Liste enthalten ist</strong><br />
+Wenn die Frage eine Bewertung enthält, die nicht in der Liste steht, wird die Frage beim Import zurückgewiesen und ein Fehler angezeigt.</li>
+<li><strong>Nächstliegenden Wert aus der Liste eintragen</strong><br />
+Wenn ein Wert beim Import nicht gefunden wird, wird er ersetzt durch den nächstliegenden Wert aus der Liste.</li>
 </ul>
 
 <p><i>Anmerkung: Einige Importfunktionen schreiben ihre Daten direkt in die Datenbank und können diese Prüfung umgehen.</i></p>';
+$string['matchgradeserror'] = 'Fehler wenn Bewertung nicht gelistet';
 $string['matchgradesnearest'] = 'Nächstliegende Bewertung verwenden';
 $string['missingcourseorcmid'] = 'courseid oder cmid muss für print_question  angegeben werden';
 $string['missingcourseorcmidtolink'] = 'courseid oder cmid erforderlich, um get_question_edit_link anzuzeigen.';
@@ -345,9 +345,9 @@ $string['parentcategory_help'] = '<h2>Hierarchieebenen für Fragenkategorien</h2
 
 <p>Siehe auch:</p>
 <ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">Fragenkategorien</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">Kontexte von Fragenkategorien</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">Berechtigungen für Fragen</a></li>
+<li><a href="help.php?module=question&amp;file=categories.html">Fragenkategorien</a></li>
+<li><a href="help.php?module=question&amp;file=categorycontexts.html">Kontexte von Fragenkategorien</a></li>
+<li><a href="help.php?module=question&amp;file=permissions.html">Berechtigungen für Fragen</a></li>
 </ul>';
 $string['parenthesisinproperclose'] = 'Die Klammer vor ** ist nicht richtig geschlossen bei {$a}**';
 $string['parenthesisinproperstart'] = 'Die Klammer vor ** ist nicht richtig geöffnet bei {$a}**';
@@ -421,7 +421,7 @@ $string['started'] = 'Begonnen';
 $string['state'] = 'Status';
 $string['step'] = 'Schritt';
 $string['stoponerror'] = 'Bei Fehler anhalten';
-$string['stoponerror_help'] = 'Die Einstellung legt fest, ob der Importprozess gestoppt werden soll, wenn ein Fehler entdeckt wird. In dem Fall wird keine Frage importiert. Andernfalls werden korrekte Fragen importiert, fehlerhafte ignoriert. ';
+$string['stoponerror_help'] = 'Die Einstellung legt fest, ob der Importprozess gestoppt werden soll, wenn ein Fehler entdeckt wird. In dem Fall wird keine Frage importiert. Andernfalls werden korrekte Fragen importiert, fehlerhafte ignoriert.';
 $string['submissionoutofsequence'] = 'Benutzen Sie nicht den Zurück-Button, wenn Sie Fragen bearbeiten.';
 $string['submissionoutofsequencefriendlymessage'] = 'Sie haben Daten außerhalb der vorgesehenen Reihenfolge eingegeben. Dies kann passieren wenn Sie die Browserfunktion \'Vor\' und \'Zurück\' benutzen. Bitte verwenden Sie nicht die Browserfunktionen, um im Test zwischen Seiten zu wechseln. Dies ist auch möglich, wenn Sie etwas anklicken während die Seite noch geladen wird. Verwenden Sie nur die Taste <strong>Weiter</strong>.';
 $string['submit'] = 'Abgabe';

@@ -43,7 +43,6 @@ $string['configpopupwidth'] = 'Welche Breite sollen Popup-Fenster standardmäßi
 $string['contentheader'] = 'Inhalt';
 $string['displayoptions'] = 'Mögliche Anzeigeoptionen';
 $string['displayselect'] = 'Anzeigen';
-$string['displayselectexplain'] = 'Wählen Sie die Anzeigeart, aber nicht alle Arten sind für alle Dateien sinnvoll';
 $string['displayselect_help'] = 'Diese Einstellung bestimmt zusammen mit dem Dateityp (und den Fähigkeiten des Browsers), wie die Datei angezeigt wird. Folgende Optionen sind möglich:
 
 * Automatisch - Die beste Anzeigeoption für die Datei wird automatisch ausgewählt
@@ -53,6 +52,7 @@ $string['displayselect_help'] = 'Diese Einstellung bestimmt zusammen mit dem Dat
 * Als Popup - Die Datei wird in einem Popup-Fenster ohne Menüs und ohne Adressleiste angezeigt
 * Im Frame - Die Datei wird in einem Frame unterhalb der Navigationsleiste angezeigt, zusammen mit der Dateibeschreibung
 * Neues Fenster - Die Datei wird in einem neuen Browserfenster mit Menüs und mit Adressleiste angezeigt';
+$string['displayselectexplain'] = 'Wählen Sie die Anzeigeart, aber nicht alle Arten sind für alle Dateien sinnvoll';
 $string['encryptedcode'] = 'Verschlüsselter Code';
 $string['filenotfound'] = 'Datei nicht gefunden';
 $string['filterfiles'] = 'Filter für den Dateiinhalt benutzen';
@@ -81,7 +81,7 @@ $string['printheading'] = 'Dateiname anzeigen';
 $string['printheadingexplain'] = 'Soll der Dateiname oberhalb des Inhalts angezeigt werden? Einige Anzeigetypen können den Dateinamen nicht anzeigen, selbst wenn diese Option aktiviert ist.';
 $string['printintro'] = 'Beschreibung anzeigen';
 $string['printintroexplain'] = 'Beschreibung unterhalb des Inhalts anzeigen? Einige Anzeigetypen können die Beschreibung nicht anzeigen, selbst wenn diese Option aktiviert ist.';
-$string['resourcecontent'] = 'Dateien und Unterverzeichnisse';
 $string['resource:exportresource'] = 'Material exportieren';
 $string['resource:view'] = 'Material sehen';
+$string['resourcecontent'] = 'Dateien und Unterverzeichnisse';
 $string['selectmainfile'] = 'Bitte wählen Sie die Datei durch einen Klick auf das Icon neben dem Dateinamen aus';

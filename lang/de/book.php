@@ -64,13 +64,9 @@ Aktuell gibt es nur eine Möglichkeit, das gesamte Buch zu durchsuchen. Benutzen
 
 *Meine Überschriften passen nicht in eine Zeile*
 
-Kürzen Sie die Kapitelüberschriften oder Sie bitten den Administrator der Website, die Breite des Inhaltsverzeichnisses in den Moduleinstellungen zu vergrößern. Dies ist allerdings eine globale Einstellung für alle Bücher in Ihrem Moodle und könnte an anderer Stelle Probleme bereiten.
-';
-$string['missingfilemanagement'] = 'Liebe Nutzer/innen,
-wahrscheinlich haben Sie bereits bemerkt, dass es im Modul \'Buch\' nicht möglich ist, Dateien innerhalb eines Buchkapitels zu verwalten. Bitte stimmen Sie auf der Seite {$a} dafür ab, dass dieses Problem behoben werden soll.
-Petr Škoda';
+Kürzen Sie die Kapitelüberschriften oder Sie bitten den Administrator der Website, die Breite des Inhaltsverzeichnisses in den Moduleinstellungen zu vergrößern. Dies ist allerdings eine globale Einstellung für alle Bücher in Ihrem Moodle und könnte an anderer Stelle Probleme bereiten.';
 $string['modulename'] = 'Buch';
-$string['modulename_help'] = 'Das Buch ist ein einfach strukturiertes, mehrseitiges Lernmaterial. ';
+$string['modulename_help'] = 'Das Buch ist ein einfach strukturiertes, mehrseitiges Lernmaterial.';
 $string['modulenameplural'] = 'Bücher';
 $string['navexit'] = 'Buch schließen';
 $string['navnext'] = 'weiter';

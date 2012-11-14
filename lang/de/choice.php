@@ -31,9 +31,10 @@ $string['answered'] = 'Beantwortet';
 $string['atleastoneoption'] = 'Sie müssen mindestens eine mögliche Option angeben.';
 $string['choice'] = 'Abstimmung';
 $string['choice:choose'] = 'Abstimmung vornehmen';
-$string['choiceclose'] = 'bis';
 $string['choice:deleteresponses'] = 'Stimmabgaben löschen';
 $string['choice:downloadresponses'] = 'Stimmabgaben herunterladen';
+$string['choice:readresponses'] = 'Stimmabgaben sehen';
+$string['choiceclose'] = 'bis';
 $string['choicefull'] = 'Diese Abstimmoption ist voll und hat keine weiteren Plätze verfügbar.';
 $string['choicename'] = 'Abstimmungsname';
 $string['choiceopen'] = 'von';
@@ -41,12 +42,10 @@ $string['choiceoptions'] = 'Abstimmoptionen';
 $string['choiceoptions_help'] = 'Tragen Sie hier die einzelnen Optionen ein, zwischen denen sich die Teilnehmer/innen entscheiden können.
 
 Sie können jedes der vorhandenen Felder ausfüllen, Sie dürfen aber auch nicht benötigte Felder leer lassen, die dann in der Abstimmung nicht angezeigt werden. Benötigen Sie weitere Optionen, so klicken Sie auf den Knopf "Weitere Optionen hinzufügen".';
-$string['choice:readresponses'] = 'Stimmabgaben sehen';
 $string['choicesaved'] = 'Ihre Abstimmung wurde gespeichert';
 $string['choicetext'] = 'Abstimmungstext';
 $string['chooseaction'] = 'Aktion auswählen...';
-$string['completionsubmit'] = 'Als abgeschlossen anzeigen, wenn die Abstimmung durchgeführt wurde
- ';
+$string['completionsubmit'] = 'Als abgeschlossen anzeigen, wenn die Abstimmung durchgeführt wurde';
 $string['displayhorizontal'] = 'Horizontal anzeigen';
 $string['displaymode'] = 'Anzeigemodus';
 $string['displayvertical'] = 'Vertikal anzeigen';

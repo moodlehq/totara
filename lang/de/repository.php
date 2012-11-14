@@ -46,8 +46,7 @@ $string['attachment'] = 'Anhang';
 $string['author'] = 'Autor/in';
 $string['automatedbackup'] = 'Automatisierte Sicherungen';
 $string['back'] = '« Zurück';
-$string['backtodraftfiles'] = '	
-« Zurück zur einfachen Dateiverwaltung';
+$string['backtodraftfiles'] = '« Zurück zur einfachen Dateiverwaltung';
 $string['cachecleared'] = 'Cache-Dateien gelöscht';
 $string['cacheexpire'] = 'Cache ungültig';
 $string['cannotaccessparentwin'] = 'Falls das übergeordnete Fenster HTTPS benutzt, darf das Objekt window.opener nicht benutzt werden. Deswegen kann die Anzeige nicht automatisch aktualisiert werden. Bitte gehen Sie zurück in die Dateiauswahl und wählen Sie das Repository erneut aus. Jetzt sollte es funktionieren!';

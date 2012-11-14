@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Inhalt';
-$string['foldercontent'] = 'Dateien und Unterverzeichnisse';
 $string['folder:managefiles'] = 'Dateien im Verzeichnismodul verwalten';
 $string['folder:view'] = 'Verzeichnisinhalt sehen';
+$string['foldercontent'] = 'Dateien und Unterverzeichnisse';
 $string['modulename'] = 'Verzeichnis';
 $string['modulenameplural'] = 'Verzeichnisse';
 $string['neverseen'] = 'Nie gesehen';

@@ -58,6 +58,65 @@ $string['aggregatesum'] = 'Summe';
 $string['aggregateweightedmean'] = 'Gewichteter Durchschnittswert';
 $string['aggregateweightedmean2'] = 'Einfach gewichteter Durchschnittswert';
 $string['aggregation'] = 'Gesamtergebnis';
+$string['aggregation_help'] = '<h2>Category aggregation</h2><b>ToDo</b>
+<p>In dieser Einstellung können Sie auswählen, wie die Gesamtbewertung eines Teilnehmenden für diese Kategorie berechnet wird.</p>
+<p><strong>Wichtig</strong>: Eine leere Bewertung ist ein fehlender Eintrag in den Bewertungen und kann verschiedenes bedeuten: Z.B. kann es sich um einen Teilnehmenden handeln, der eine Aufgabe noch nicht eingereicht hat. Oder es handelt sich um eine Aufgabe, die noch nicht von den Trainer/innen bewertet wurde. Oder es handelt sich um eine Bewertung, die von jemandem manuell gelöscht wurde, der berechtigt ist, die Bewertungen zu verwalten. Daher ist bei der Interpretation von "leeren Bewertungen" Vorsicht geboten.</p>
+<p>Folgende Auswahlmöglichkeiten zur Berechnung der Gesamtbewertung für eine Kategorie stehen zur Verfügung:</p>
+<table class="generaltable boxaligncenter" cellpadding="4" cellspacing="1" summary="Berechnungsmöglichkeiten für Gesamtbewertungen in einer Bewertungskategorie">
+<tr>
+<th class="header">Berechnungsmöglichkeit</th><th class="header">Beschreibung</th>
+</tr>
+<tr>
+<td class="cell">Durchschnitt aller Bewertungen</td>
+<td class="cell">Alle Bewertungen werden addiert und anschließend durch die Anzahl der Bewertungen geteilt. Leere Bewertungen werden mitgezählt (sie gehen mit Wert gleich 0 in die Aufsummierung ein).</td>
+</tr>
+<tr>
+<td class="cell">Mean of non-empty grades</td>
+<td class="cell">Same as above, except that empty grades are ignored.</td>
+</tr>
+<tr>
+<td class="cell">Median of all grades</td>
+<td class="cell">The median is calculated by counting all the grades and selecting the grade that falls in the middle of that count (or the mean between the two middle grades if there is an even number of grades). The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included.</td>
+</tr>
+<tr>
+<td class="cell">Median of non-empty grades</td>
+<td class="cell">Same as above, except that empty grades are ignored.</td>
+</tr>
+<tr>
+<td class="cell">Smallest grade of non-empty grades</td>
+<td class="cell">Only the smallest grade is kept. Empty grades are ignored.</td>
+</tr>
+<tr>
+<td class="cell">Highest grade of non-empty grades</td>
+<td class="cell">Only the highest grade is kept. Empty grades are ignored.</td>
+</tr>
+<tr>
+<td class="cell">Mode of all grades</td>
+<td class="cell">The mode is the grade that occurs the most frequently. It is more often used for non-numerical  The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included.</td>
+</tr>
+<tr>
+<td class="cell">Mode of non-empty grades</td>
+<td class="cell">Same as above, except that empty grades are ignored.</td>
+</tr>
+<tr>
+<td class="cell">Weighted mean of all grades</td>
+<td class="cell">Each grade item can be given a weight, which is then used in the arithmetic mean aggregation to influence the importance of each item in the overall mean. Empty grades are included.</td>
+</tr>
+<tr>
+<td class="cell">Weighted mean of non-empty grades</td>
+<td class="cell">Same as above, except that empty grades are ignored.</td>
+</tr>
+<tr>
+<td class="cell">Mean of all grades (extra credits)</td>
+<td class="cell">Arithmetic mean with a twist. An old, now unsupported aggregation strategy provided here only
+for backward compatibility with old activities. Empty grades are included.</td>
+</tr>
+<tr>
+<td class="cell">Mean of non-empty grades (extra credits)</td>
+<td class="cell">Same as above, except that empty grades are ignored.</td>
+</tr>
+
+</table>';
 $string['aggregationcoef'] = 'Summenkoeffizient';
 $string['aggregationcoefextra'] = 'Zusatzwertung';
 $string['aggregationcoefextra_help'] = 'If the aggregation is Sum of grades or Simple weighted mean and the extra credit checkbox is ticked, the grade item\'s maximum grade is not added to the category\'s maximum grade, resulting in the possibility of achieving the maximum grade (or grades over the maximum if enabled by the site administrator) in the category without having the maximum grade in all the grade items.
@@ -69,13 +128,13 @@ $string['aggregationcoefextrasum_help'] = '<h2>Als Extrapunkte-Bewertung festleg
 Das folgende Beispiel kann dies verdeutlichen:</p>
 
 <ul>
-    <li>Wert 1 ist bewertet mit 0-100</li>
-    <li>Wert 2 ist bewertet mit 0-75</li>
-    <li>Wert 1 ist als "Extrapunkte" aktiviert, Wert 2 jedoch nicht.</li>
-    <li>Beide Werte gehören zur Kategorie 1. Für diese gilt, dass die Summe der Bewertungen ermittelt werden soll </li>
-    <li>Kategorie 1 wird gesamt mit 0-75 bewertet</li>
-    <li>Ein Teilnehmer erhält nun die Bewertung 20 für Wert 1 und 75 für Wert 2</li>
-    <li>Die Berechnung für Kategorie 1 ist nun 75/75 (20+70 = 95; Wert 1 wird als Extrapunkte gewertet. Der Höchstwert kann jedoch nur 75 sein, daher ist die Endnote 75.)</li>
+<li>Wert 1 ist bewertet mit 0-100</li>
+<li>Wert 2 ist bewertet mit 0-75</li>
+<li>Wert 1 ist als "Extrapunkte" aktiviert, Wert 2 jedoch nicht.</li>
+<li>Beide Werte gehören zur Kategorie 1. Für diese gilt, dass die Summe der Bewertungen ermittelt werden soll </li>
+<li>Kategorie 1 wird gesamt mit 0-75 bewertet</li>
+<li>Ein Teilnehmer erhält nun die Bewertung 20 für Wert 1 und 75 für Wert 2</li>
+<li>Die Berechnung für Kategorie 1 ist nun 75/75 (20+70 = 95; Wert 1 wird als Extrapunkte gewertet. Der Höchstwert kann jedoch nur 75 sein, daher ist die Endnote 75.)</li>
 </ul>';
 $string['aggregationcoefextraweight'] = 'Gewichtung von Zusatzpunkten';
 $string['aggregationcoefextraweight_help'] = '<h2>Extrapunkteberechnung</h2>
@@ -83,76 +142,17 @@ $string['aggregationcoefextraweight_help'] = '<h2>Extrapunkteberechnung</h2>
 </p>
 
 <ul>
-    <li>Wert 1 wird bewertet mit 0-100 und "Extrapunkte" Wert wird gesetzt auf 2</li>
-    <li>Wert 2 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
-    <li>Wert 3 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
-    <li>Alle 3 Werte gehören in Kategorie 1, mit der Bewertungsstrategie "Durchschnitt der Einzelbewertungen (mit Extrapunkten)" als Berechnungsverfahren</li>
-    <li>Ein Teilnehmer erhält nun folgende Einzelbewertungen 20 für Wert 1, 40 für Wert 2 und 70 für Wert 3</li>
-    <li>Die Gesamtbewertung für Kategorie 1 ist nun 50/100 (20*2 + 40 + 70) / 3</li>
+<li>Wert 1 wird bewertet mit 0-100 und "Extrapunkte" Wert wird gesetzt auf 2</li>
+<li>Wert 2 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
+<li>Wert 3 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
+<li>Alle 3 Werte gehören in Kategorie 1, mit der Bewertungsstrategie "Durchschnitt der Einzelbewertungen (mit Extrapunkten)" als Berechnungsverfahren</li>
+<li>Ein Teilnehmer erhält nun folgende Einzelbewertungen 20 für Wert 1, 40 für Wert 2 und 70 für Wert 3</li>
+<li>Die Gesamtbewertung für Kategorie 1 ist nun 50/100 (20*2 + 40 + 70) / 3</li>
 </ul>';
 $string['aggregationcoefweight'] = 'Gewichtung der Aspekte';
 $string['aggregationcoefweight_help'] = '<h2>Gewichtung des Wertes</h2>
 <p>Gewichtung der Bewertungen dieser Aktivität bei der Berechnung der Teil- oder Gesamtnote.
 </p>';
-$string['aggregation_help'] = '<h2>Category aggregation</h2><b>ToDo</b>
-<p>In dieser Einstellung können Sie auswählen, wie die Gesamtbewertung eines Teilnehmenden für diese Kategorie berechnet wird.</p>
-<p><strong>Wichtig</strong>: Eine leere Bewertung ist ein fehlender Eintrag in den Bewertungen und kann verschiedenes bedeuten: Z.B. kann es sich um einen Teilnehmenden handeln, der eine Aufgabe noch nicht eingereicht hat. Oder es handelt sich um eine Aufgabe, die noch nicht von den Trainer/innen bewertet wurde. Oder es handelt sich um eine Bewertung, die von jemandem manuell gelöscht wurde, der berechtigt ist, die Bewertungen zu verwalten. Daher ist bei der Interpretation von "leeren Bewertungen" Vorsicht geboten.</p>
-<p>Folgende Auswahlmöglichkeiten zur Berechnung der Gesamtbewertung für eine Kategorie stehen zur Verfügung:</p>
-<table class="generaltable boxaligncenter" cellpadding="4" cellspacing="1" summary="Berechnungsmöglichkeiten für Gesamtbewertungen in einer Bewertungskategorie">
-    <tr>
-        <th class="header">Berechnungsmöglichkeit</th><th class="header">Beschreibung</th>
-    </tr>
-    <tr>
-        <td class="cell">Durchschnitt aller Bewertungen</td>
-        <td class="cell">Alle Bewertungen werden addiert und anschließend durch die Anzahl der Bewertungen geteilt. Leere Bewertungen werden mitgezählt (sie gehen mit Wert gleich 0 in die Aufsummierung ein).</td>
-    </tr>
-    <tr>
-        <td class="cell">Mean of non-empty grades</td>
-        <td class="cell">Same as above, except that empty grades are ignored.</td>
-    </tr>
-    <tr>
-        <td class="cell">Median of all grades</td>
-        <td class="cell">The median is calculated by counting all the grades and selecting the grade that falls in the middle of that count (or the mean between the two middle grades if there is an even number of grades). The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included.</td>
-    </tr>
-    <tr>
-        <td class="cell">Median of non-empty grades</td>
-        <td class="cell">Same as above, except that empty grades are ignored.</td>
-    </tr>
-    <tr>
-        <td class="cell">Smallest grade of non-empty grades</td>
-        <td class="cell">Only the smallest grade is kept. Empty grades are ignored.</td>
-    </tr>
-    <tr>
-        <td class="cell">Highest grade of non-empty grades</td>
-        <td class="cell">Only the highest grade is kept. Empty grades are ignored.</td>
-    </tr>
-    <tr>
-        <td class="cell">Mode of all grades</td>
-        <td class="cell">The mode is the grade that occurs the most frequently. It is more often used for non-numerical  The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included.</td>
-    </tr>
-    <tr>
-        <td class="cell">Mode of non-empty grades</td>
-        <td class="cell">Same as above, except that empty grades are ignored.</td>
-    </tr>
-    <tr>
-        <td class="cell">Weighted mean of all grades</td>
-        <td class="cell">Each grade item can be given a weight, which is then used in the arithmetic mean aggregation to influence the importance of each item in the overall mean. Empty grades are included.</td>
-    </tr>
-    <tr>
-        <td class="cell">Weighted mean of non-empty grades</td>
-        <td class="cell">Same as above, except that empty grades are ignored.</td>
-    </tr>
-    <tr>
-        <td class="cell">Mean of all grades (extra credits)</td>
-        <td class="cell">Arithmetic mean with a twist. An old, now unsupported aggregation strategy provided here only
-            for backward compatibility with old activities. Empty grades are included.</td>
-    </tr>
-    <tr>
-        <td class="cell">Mean of non-empty grades (extra credits)</td>
-        <td class="cell">Same as above, except that empty grades are ignored.</td>
-    </tr>
-
-</table>';
 $string['aggregationposition'] = 'Anzeige des Gesamtergebnisses';
 $string['aggregationposition_help'] = '<h2>Anzeigeposition des Gesamtergebnisses</h2>
 <p>Legt fest an welcher Stelle der Tabelle das Gesamtergebnis angezeigt wird.
@@ -180,11 +180,11 @@ $string['bonuspoints'] = 'Extrapunkte';
 $string['bulkcheckboxes'] = 'Checkboxes';
 $string['calculatedgrade'] = 'Bewertung berechnen';
 $string['calculation'] = 'Berechnung';
-$string['calculationadd'] = 'Berechnung hinzufügen';
-$string['calculationedit'] = 'Berechnung bearbeiten';
 $string['calculation_help'] = 'Eine Berechnung ist eine Formel zur Bestimmung von Gesamtbewertungen. Die Formel sollte mit einem Gleichheitszeichen (=) beginnen und kann die üblichen mathematischen Operatoren (wie etwa max, min, sum) enthalten.
 
 Sie können auch andere Bewertungselemente in die Rechnung einbeziehen, indem Sie die ID-Nummer in eine doppelte eckige Klammer [[ID]] einfügen.';
+$string['calculationadd'] = 'Berechnung hinzufügen';
+$string['calculationedit'] = 'Berechnung bearbeiten';
 $string['calculationsaved'] = 'Berechnung gespeichert';
 $string['calculationview'] = 'Berechnung ansehen';
 $string['cannotaccessgroup'] = 'Bei der gewählten Gruppe kann nicht auf die Bewertung zugegriffen werden.';
@@ -283,11 +283,11 @@ $string['exportsettings'] = 'Exporteinstellungen';
 $string['exportto'] = 'Export nach';
 $string['extracreditwarning'] = 'Anmerkung: Wenn für alle Elemente einer Kategorie Extrapunkte vergeben werden, dann werden sie bei der Gesamtbewertung nicht berücksichtigt. Es wird keine Gesamtpunktzahl ermittelt.';
 $string['feedback'] = 'Feedback';
-$string['feedbackadd'] = 'Feedback hinzufügen';
-$string['feedbackedit'] = 'Feedback bearbeiten';
 $string['feedback_help'] = '<h2>Feedback</h2>
 <p>Anmerkungen zur Bewertung durch den/die Trainer/in. Das Feedback kann ein ausführlicher Text, eine sehr persönliche Rückmeldung oder ein Code sein, der üblicherweise in der Bildungseinrichtung verwandt wird.
 </p>';
+$string['feedbackadd'] = 'Feedback hinzufügen';
+$string['feedbackedit'] = 'Feedback bearbeiten';
 $string['feedbacksaved'] = 'Feedback gespeichert';
 $string['feedbackview'] = 'Feedback ansehen';
 $string['finalgrade'] = 'Endbewertung';
@@ -360,8 +360,7 @@ $string['gradeoutcomeitem'] = 'Lernziel bewerten';
 $string['gradeoutcomes'] = 'Lernziele';
 $string['gradeoutcomescourses'] = 'Kurs-Lernziele';
 $string['gradepass'] = 'Bewertung zum Bestehen';
-$string['gradepass_help'] = 'Diese Option legt die erforderliche Mindestbewertung für das Bestehen fest. Der Wert wird beim Aktivitäts- und beim Kursabschluss verwendet, außerdem wird bei der Bewertung ein Bestehen in grün und ein Scheitern in rot markiert.
-';
+$string['gradepass_help'] = 'Diese Option legt die erforderliche Mindestbewertung für das Bestehen fest. Der Wert wird beim Aktivitäts- und beim Kursabschluss verwendet, außerdem wird bei der Bewertung ein Bestehen in grün und ein Scheitern in rot markiert.';
 $string['gradepreferences'] = 'Bewertungseinstellungen';
 $string['gradepreferenceshelp'] = 'Hilfe für Bewertungseinstellungen';
 $string['gradepublishing'] = 'Veröffentlichen erlauben';
@@ -380,9 +379,9 @@ $string['gradeview'] = 'Bewertung ansehen';
 $string['gradeweighthelp'] = 'Hilfe zur Bewertung';
 $string['groupavg'] = 'Gruppendurchschnitt';
 $string['hidden'] = 'Verborgen';
+$string['hidden_help'] = 'Die Option verbirgt die Bewertungen vor den Teilnehmer/innen. \'Verborgen bis...\' kann auf Wunsch eingestellt werden, um die Bewert ungen so lange zu verbergen, bis der Bewertungsdurchlauf abgeschlossen wurde.';
 $string['hiddenasdate'] = 'Erstellungsdatum für verborgene Bewertungen anzeigen';
 $string['hiddenasdate_help'] = 'Falls Nutzer/innen verborgene Bewertungen nicht sehen können, soll das Abgabedatum anstelle von \'-\' angezeigt werden.';
-$string['hidden_help'] = 'Die Option verbirgt die Bewertungen vor den Teilnehmer/innen. \'Verborgen bis...\' kann auf Wunsch eingestellt werden, um die Bewert ungen so lange zu verbergen, bis der Bewertungsdurchlauf abgeschlossen wurde. ';
 $string['hiddenuntil'] = 'Verborgen bis';
 $string['hiddenuntildate'] = 'Verborgen bis: {$a}';
 $string['hideadvanced'] = 'Erweiterte Funktionen verbergen';
@@ -420,7 +419,7 @@ $string['importfilemissing'] = 'Es konnte keine Datei importiert werden. Gehen S
 $string['importfrom'] = 'Import von';
 $string['importoutcomenofile'] = 'Die hochgeladene Datei ist leer oder fehlerhaft. Prüfen Sie die Datei noch einmal. Das Problem trat in Zeile {$a} auf. Die Meldung erscheint, wenn in den Datenzeilen nicht genau so viele Einträge vorhanden sind wie in der Kopfzeile angelegt wurden, oder ein Fehler in der Kopfzeile vorliegt. Wenn Sie einen Export vornehmen, können Sie darin die richtige Struktur der Kopfzeile erkennen.';
 $string['importoutcomes'] = 'Lernziele importieren';
-$string['importoutcomes_help'] = 'Lernziele können als csv-Datei importiert werden. Erstellen Sie einen Export von Lernzielen, um sich das Format für den Import anzuschauen. ';
+$string['importoutcomes_help'] = 'Lernziele können als csv-Datei importiert werden. Erstellen Sie einen Export von Lernzielen, um sich das Format für den Import anzuschauen.';
 $string['importoutcomesuccess'] = 'Lernziel "{$a->name}" mit ID #{$a->id} importieren';
 $string['importplugins'] = 'Import-Plugins';
 $string['importpreview'] = 'Importvorschau';
@@ -462,7 +461,7 @@ $string['linkedactivity_help'] = '<h2>Verlinkte Aktivität</h2>
 $string['linktoactivity'] = 'Link zur Aktivität {$a->name}';
 $string['lock'] = 'Sperren';
 $string['locked'] = 'Gesperrt';
-$string['locked_help'] = 'Mit der Aktivierung werden die Bewertungen nicht mehr automatisch durch die Lernaktivität aktualisiert. ';
+$string['locked_help'] = 'Mit der Aktivierung werden die Bewertungen nicht mehr automatisch durch die Lernaktivität aktualisiert.';
 $string['locktime'] = 'Gesperrt bis';
 $string['locktimedate'] = 'Gesperrt nach: {$a}';
 $string['lockverbose'] = '{$a->category} {$a->itemmodule} {$a->itemname} sperren';
@@ -523,6 +522,7 @@ $string['onascaleof'] = 'auf einer Skala von {$a->grademin} bis {$a->grademax}';
 $string['operations'] = 'Vorgänge';
 $string['options'] = 'Einstellungen';
 $string['outcome'] = 'Lernziel';
+$string['outcome_help'] = 'Lernziel, das zu diesem Bewertungsaspekt passt';
 $string['outcomeassigntocourse'] = 'Ein anderes Lernziel diesem Kurs zuweisen';
 $string['outcomecategory'] = 'Lernziele in der Kategorie erstellen';
 $string['outcomecategorynew'] = 'Neue Kategorie';
@@ -530,7 +530,6 @@ $string['outcomeconfirmdelete'] = 'Sind Sie sicher, dass Lernziel "{$a}" gelösc
 $string['outcomecreate'] = 'Neues Lernziel hinzufügen';
 $string['outcomedelete'] = 'Lernziel löschen';
 $string['outcomefullname'] = 'Vollständiger Name';
-$string['outcome_help'] = 'Lernziel, das zu diesem Bewertungsaspekt passt';
 $string['outcomeitem'] = 'Lernziel';
 $string['outcomeitemsedit'] = 'Lernziel bearbeiten';
 $string['outcomereport'] = 'Übersicht über die Lernziele';
@@ -588,7 +587,7 @@ $string['quickgrading_help'] = '<h2>Schnelle Bewertung</h2>
 <p>Die Schnelle Bewertung ergänzt ein Eingabefeld in jeder Zelle der Bewertungstabelle. Damit können  mehrere Bewertungen auf einer Seite schnell eingegeben werden. Mit einem Klick auf den Aktualisierungsbutton werden alle Bewertungen auf einmal abgespeichert. </p>';
 $string['range'] = 'Bereich';
 $string['rangedecimals'] = 'Dezimalstellen für Spannbreite';
-$string['rangedecimals_help'] = 'Zahl der Dezimalstellen, um die Spannbreite der Ergebnisse anzuanzeigen ';
+$string['rangedecimals_help'] = 'Zahl der Dezimalstellen, um die Spannbreite der Ergebnisse anzuanzeigen';
 $string['rangesdecimalpoints'] = 'Nachkommastellen in Bereichen';
 $string['rangesdecimalpoints_help'] = '<h2>Dezimalwerte  anzeigen im Bewertungsbereich</h2>
 <p>Festlegung der Zahl der Dezimalziffern für jeden Bewertungsbereich. Die Einstellung kann für jede einzelne Bewertungsspalte überschrieben werden.</p>';

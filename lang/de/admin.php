@@ -29,8 +29,7 @@ $string['accessdenied'] = 'Kein Zugriff';
 $string['accounts'] = 'Nutzerkonten';
 $string['additionalhtml'] = 'Zusätzliches HTML';
 $string['additionalhtml_desc'] = 'Die folgenden Felder erlauben die Eingabe von HTML-Code, der automatisch auf jeder Seite eingefügt wird. Vorgesehen sind Anweisungen innerhalb des HEAD-Bereichs, direkt am Anfang des BODY-Bereichs und direkt am Ende des BODY-Bereichs. <br /><br />Auf diese Weise können benutzerdefinierte Kopf- oder Fußzeilen auf jeder Seite eingefügt werden. Zur Einbindung von externen Diensten wie Google Analytics ist es sehr einfach, die notwendigen Anweisungen hier einzutragen und unabhängig vom gewählten Design zu benutzen.';
-$string['additionalhtml_heading'] = 'Zusätzlicher HTML-Code für jede Seite
-';
+$string['additionalhtml_heading'] = 'Zusätzlicher HTML-Code für jede Seite';
 $string['additionalhtmlfooter'] = 'Vor dem Schließen von BODY';
 $string['additionalhtmlfooter_desc'] = 'Dieser HTML-Code wird auf jeder Seite direkt vor dem Ende des BODY-Bereichs eingefügt';
 $string['additionalhtmlhead'] = 'Innerhalb von HEAD';
@@ -113,7 +112,7 @@ $string['clistatusenabled'] = 'Status: aktiviert';
 $string['clitypevalue'] = 'Wert eingeben';
 $string['clitypevaluedefault'] = 'Wert eingeben oder Standardwert benutzen ({$a})';
 $string['cliunknowoption'] = 'Nicht erkannte Optionen:
-  {$a}
+{$a}
 Hilfe wird über die Option -help angezeigt.';
 $string['cliupgradefinished'] = 'Die Aktualisierung wurde erfolgreich beendet';
 $string['cliupgradenoneed'] = 'Für die installierte Version {$a} ist kein Upgrade notwendig. Danke für den Versuch!';
@@ -207,8 +206,7 @@ $string['configenableajax'] = 'Diese Einstellung erlaubt es Ihnen, die Benutzung
 $string['configenablecalendarexport'] = 'Exportieren oder Abonnieren von Kalendern erlauben';
 $string['configenablecomments'] = 'Kommentare erlauben';
 $string['configenablecourserequests'] = 'Erlaubt es allen Nutzer/innen, Anfragen zur Einrichtung von Kursen zu stellen.';
-$string['configenabledevicedetection'] = 'Diese Option erlaubt die Erkennung von Mobiltelefonen, Smartphones, Tablets oder Standardgeräten (PCs, Laptops, usw.), um spezielle Designs und andere Funktionen zu aktivieren.
-';
+$string['configenabledevicedetection'] = 'Diese Option erlaubt die Erkennung von Mobiltelefonen, Smartphones, Tablets oder Standardgeräten (PCs, Laptops, usw.), um spezielle Designs und andere Funktionen zu aktivieren.';
 $string['configenablegroupmembersonly'] = 'Die Einstellung aktiviert die Funktion \'nur für Gruppenmitglieder verfügbar\'. Die Funktion wirkt sich auf die Serverbelastung aus. Sie ist erforderlich, um einige erweiterte Optionen im Bewertungsbereich zu verwenden. Bewertungskategorien müssen so eingerichtet werden, dass diese Aktivitäten für Nichtmitglieder der Gruppen auch dort unsichtbar bleiben.';
 $string['configenablemobilewebservice'] = 'Aktivieren Sie den Mobile Webservice für die offizielle Moodle App und alle anderen Apps, die dies ebenfalls verlangen. Weitere Informationen: {$a}';
 $string['configenablerssfeeds'] = 'Diese Option aktiviert RSS-Feeds für die gesamte Website. Zusätzlich ist erforderlich, die RSS-Feeds in den einzelnen Modulen zu aktivieren. Öffnen Sie dazu in der Administration die Moduleinstellungen.';
@@ -274,9 +272,9 @@ $string['configminpasswordupper'] = 'Kennworte müssen mindestens die angegebene
 $string['configmycoursesperpage'] = 'Maximale Zahl der gezeigten Kurse in Übersicht \'Meine Kurse\'';
 $string['configmymoodleredirect'] = 'Die Einstellung führt Nicht-Admins beim Login automatisch zur Seite /my und ersetzt die normale Navigation durch /my';
 $string['configmypagelocked'] = 'Diese Option schützt die standardmäßig gezeigte Seite vor Änderungen durch Nicht-Admins';
-$string['confignavcourselimit'] = 'Die Zahl legt die Anzahl der maximal in der Navigation angezeigten Kurse fest, falls Nutzer/innen nicht eingeloggt oder noch in keinem Kurs eingetragen sind ';
+$string['confignavcourselimit'] = 'Die Zahl legt die Anzahl der maximal in der Navigation angezeigten Kurse fest, falls Nutzer/innen nicht eingeloggt oder noch in keinem Kurs eingetragen sind';
 $string['confignavshowallcourses'] = 'Mit dieser Option werden immer alle Kurse der Website in der Navigation angezeigt. Standardmäßig werden nur Kurse angezeigt, die bereits angesehen wurden.';
-$string['confignavshowcategories'] = 'Kurskategorien in Navigationsleiste und Navigationsblöcken anzeigen. ';
+$string['confignavshowcategories'] = 'Kurskategorien in Navigationsleiste und Navigationsblöcken anzeigen.';
 $string['confignotifyloginfailures'] = 'E-Mail-Mitteilungen können versandt werden, wenn Login-Fehler aufgezeichnet wurden. Wer soll diese Mitteilungen lesen können?';
 $string['confignotifyloginthreshold'] = 'Nach wie vielen gescheiterten Anmeldeversuchen hintereinander von einer IP-Adresse aus soll eine E-Mail-Mitteilung erfolgen (nur wenn diese auch aufgezeichnet werden)?';
 $string['confignotloggedinroleid'] = 'Nicht auf der Website eingeloggte Nutzer/innen werden behandelt, als ob sie diese Rolle hätten. Die Rolle "Gast" ist hier meistens brauchbar. Sie können aber auch neue Rollen erstellen, die mehr oder weniger Einschränkungen vornehmen. Dinge, wie Beiträge zu verfassen, erfordern allerdings immer eine ordnungsgemäße Anmeldung.';
@@ -309,8 +307,8 @@ $string['configrequiremodintro'] = 'Deaktivieren Sie diese Option, wenn die Eing
 $string['configrestrictbydefault'] = 'Soll bei neu angelegten Kursen dieser Kategorie die Nutzung der Module als Voreinstellung eingeschränkt werden?';
 $string['configrestrictmodulesfor'] = 'Welche Kurse sollen die Einstellung zum Deaktivieren von Lernaktivitäten haben? Beachten Sie, dass diese Einstellung nur Trainer/innen betrifft. Administrator/innen dürfen weiterhin alle Aktivitäten zu einem Kurs hinzufügen.';
 $string['configrunclamavonupload'] = 'Wenn dies aktiviert ist, dann wird ClamAV benutzt, um alle hochgeladenen Dateien auf Viren zu untersuchen.';
-$string['configrunclamonupload'] = 'ClamAV für hochgeladene Dateien nutzen? Sie müssen zusätzlich einen Pfad zu ClamAV in pathtoclam eintragen. ClamAV ist ein freier Virenscanner (http.//www.clamav.net).';
-$string['configsectioninterface'] = 'Gestaltung';
+$string['configrunclamonupload'] = 'ClamAV für hochgeladene Dateien nutzen? Sie müssen zusätzlich einen Pfad zu ClamAV in pathtoclam eintragen. ClamAV ist ein freier Virenscanner (http.
+$string[\'configsectioninterface\'] = \'Gestaltung';
 $string['configsectionmail'] = 'E-Mail';
 $string['configsectionmaintenance'] = 'Wartung';
 $string['configsectionmisc'] = 'Verschiedenes';
@@ -319,8 +317,7 @@ $string['configsectionpermissions'] = 'Rechte ändern';
 $string['configsectionrequestedcourse'] = 'Kursanträge';
 $string['configsectionsecurity'] = 'Sicherheit';
 $string['configsectionstats'] = 'Statistiken';
-$string['configsectionuser'] = 'Nutzer/in
-';
+$string['configsectionuser'] = 'Nutzer/in';
 $string['configsecureforms'] = 'Moodle kann eine erhöhte Sicherheitsstufe für Daten aus Web-Formularen nutzen. Sofern dies eingeschaltet ist, wird die Variable HTTP_REFERER gegen die Adresse des aktuellen Formulars geprüft.
 In einigen wenigen Fällen kann das Probleme verursachen, wenn der Nutzer eine Firewall benutzt (z.B. Zonealarm), die so konfiguriert ist, dass der HTTP_REFERER nicht mitgesendet wird.
 Das Ergebnis ist, dass Sie bei einem Formular nicht weiterkommen.
@@ -643,16 +640,12 @@ $string['ipblockersyntax'] = 'Schreiben Sie jeden IP-Eintrag im Textfeld in eine
 </ul>';
 $string['iplookup'] = 'IP-Adressen-Suche';
 $string['iplookupinfo'] = 'Standardmäßig nutzt Moodle die freie Datenbank NetGeo, um IP-Adressen zu lokalisieren. Leider wird die Datenbank nicht gepflegt und liefert oft ziemlich seltsame Daten. Die Installation der freien Datenbank GeoCityLite von MaxMind wird empfohlen.
-<br />Die Lokalisierung der IP-Adressen wird auf einer einfachen Übersichtskarte angezeigt. Mit einem Googlekonto und einen freien API Key können Sie auch interaktive Karten über Google Maps verwenden.
-';
-$string['iplookupmaxmindnote'] = 'Diese Software benutzt GeoLiteCity-Daten von MaxMind, die unter <a href="http://www.maxmind.com"> http://www.maxmind.com </a> zur Verfügung stehen.
-';
-$string['iplookupnetgeonote'] = 'Aktuell ist die Datenbank NetGeo zur Anzeige geografischen Informationen eingestellt. Um zuverlässigere Ergebnisse zu erhalten, wird die Installation der Datenbank GeoLiteCity von MaxMind empfohlen.
-';
+<br />Die Lokalisierung der IP-Adressen wird auf einer einfachen Übersichtskarte angezeigt. Mit einem Googlekonto und einen freien API Key können Sie auch interaktive Karten über Google Maps verwenden.';
+$string['iplookupmaxmindnote'] = 'Diese Software benutzt GeoLiteCity-Daten von MaxMind, die unter <a href="http://www.maxmind.com"> http://www.maxmind.com </a> zur Verfügung stehen.';
+$string['iplookupnetgeonote'] = 'Aktuell ist die Datenbank NetGeo zur Anzeige geografischen Informationen eingestellt. Um zuverlässigere Ergebnisse zu erhalten, wird die Installation der Datenbank GeoLiteCity von MaxMind empfohlen.';
 $string['keeptagnamecase'] = 'Schreibweise der Schlagworte beibehalten';
 $string['lang'] = 'Sprache';
-$string['langcache'] = 'Sprachmenü-Cache
-';
+$string['langcache'] = 'Sprachmenü-Cache';
 $string['langcache_desc'] = 'Cache für Sprachmenü. Wenn diese Option aktiviert ist, werden die in Moodle aktivierten Sprachpakete zwischengespeichert. Der Cache wird automatisch aktualisiert, wenn Sie ein Sprachpaket über die Sprachverwaltung installieren oder löschen. Falls Sie ein neues Sprachpaket manuell auf den Server kopieren, müssen Sie den Cache löschen, um die zwischengespeicherten Sprachpakete zu aktualisieren.';
 $string['langlist'] = 'Sprachen im Sprachmenü';
 $string['langmenu'] = 'Sprachmenü';
@@ -677,8 +670,7 @@ $string['logguests'] = 'Gastzugriff loggen';
 $string['logguests_help'] = 'Diese Einstellung legt fest, ob die Aktionen über den Gastzugang unabhängig von den anderen Nutzerkonten geloggt werden soll. Es wird dringend empfohlen, bei produktiven Websites diese Einstellung zu aktivieren, auch wenn zur Verringerung der Serverlast die Deaktivierung von Logdaten für den Gastzugang erwogen wird.';
 $string['loginhttps'] = 'Login über HTTPS';
 $string['loginpageautofocus'] = 'Autofokus auf Login';
-$string['loginpageautofocus_help'] = 'Das Aktivieren dieser Option verbessert die Benutzbarkeit der Loginseite, aber der Autofokus auf bestimmte Felder könnte Probleme hinsichtlich der Barrierefreiheit bereiten.
-';
+$string['loginpageautofocus_help'] = 'Das Aktivieren dieser Option verbessert die Benutzbarkeit der Loginseite, aber der Autofokus auf bestimmte Felder könnte Probleme hinsichtlich der Barrierefreiheit bereiten.';
 $string['loginpasswordautocomplete'] = 'Automatische Vervollständigung von Kennworten verhindern';
 $string['loginpasswordautocomplete_help'] = 'Wenn diese Options deaktiviert ist, können Anmeldekennworte im Browser gespeichert werden. Ein Aktivierung der Option hat zur Folge, dass Ihre Website nicht mehr die Regeln "XHTML strict validation" einhält.';
 $string['loglifetime'] = 'Logdaten speichern';

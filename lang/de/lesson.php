@@ -31,8 +31,7 @@ $string['actionaftercorrectanswer_help'] = 'Nachdem eine Frage richtig beantwort
 
 * Normal - dem Pfad der Lektion folgen
 * Ungesehene Seite zeigen - die Seiten werden in zufälliger Reihenfolge gezeigt, ohne eine Seite doppelt aufzurufen
-* Unbeantwortete Seite zeigen - die Seiten werden in zufälliger Reihenfolge gezeigt, wobei Seiten mit unbeantworteten Fragen auch nochmal aufgerufen werden
-';
+* Unbeantwortete Seite zeigen - die Seiten werden in zufälliger Reihenfolge gezeigt, wobei Seiten mit unbeantworteten Fragen auch nochmal aufgerufen werden';
 $string['actions'] = 'Aktionen';
 $string['activitylink'] = 'Folgeaktivität';
 $string['activitylink_help'] = 'Um einen Link am Ende der Lektion zu einer weiteren Aktivität im Kurs einzufügen, wählen Sie die Aktivität aus dem  Auswahlmenü.';
@@ -221,13 +220,13 @@ $string['jumps_help'] = 'Jede Antwort (bei Fragen) oder jede Beschreibung (bei I
 $string['jumpsto'] = 'Sprung zu <em>{$a}</em>';
 $string['leftduringtimed'] = 'Sie haben die Lektion abgebrochen. Die Bearbeitung der Lektion ist zeitlich begrenzt. <br />Klicken Sie auf Fortsetzen, um die Lektion erneut zu beginnen.';
 $string['leftduringtimednoretake'] = 'Sie haben die Lektion abgebrochen. Die Bearbeitung der Lektion ist zeitlich begrenzt. <br />Sie können diese Lektion nicht mehr bearbeiten.';
+$string['lesson:edit'] = 'Lektion bearbeiten';
+$string['lesson:manage'] = 'Lektion verwalten';
 $string['lessonattempted'] = 'Lektion wurde versucht';
 $string['lessonclosed'] = 'Die Lektion war verfügbar bis {$a}';
 $string['lessoncloses'] = 'Verfügbarkeit der Lektion endet';
 $string['lessoncloseson'] = 'Verfügbarkeit der Lektion endet: {$a}';
-$string['lesson:edit'] = 'Lektion bearbeiten';
 $string['lessonformating'] = 'Lektion wird formatiert';
-$string['lesson:manage'] = 'Lektion verwalten';
 $string['lessonmenu'] = 'Seitenmenü';
 $string['lessonnotready'] = 'Diese Lektion ist noch nicht verfügbar. Nehmen Sie bitte mit {$a} Kontakt auf.';
 $string['lessonnotready2'] = 'Diese Lektion kann noch nicht bearbeitet werden.';
@@ -246,8 +245,7 @@ $string['matchingpair'] = 'Passendes Paar {$a}';
 $string['maxgrade'] = 'Maximale Bewertung';
 $string['maxgrade_help'] = 'Dieser Wert bestimmt die maximale Bewertung für die Lektion. Wenn Sie diesen Wert auf 0 setzen, erscheint die Lektion in der Bewertungsübersicht.';
 $string['maxhighscores'] = 'Länge der Bestenliste';
-$string['maximumnumberofanswersbranches'] = 'Höchstzahl der Antworten
-';
+$string['maximumnumberofanswersbranches'] = 'Höchstzahl der Antworten';
 $string['maximumnumberofanswersbranches_help'] = 'Dieser Wert legt fest, wie viele Antworten bzw. Verzweigungen in der Lektion pro Frage benutzt werden dürfen. Wenn ausschließlich Wahr/Falsch-Fragen vorkommen, kann der Wert auf 2 gesetzt werden. Die Einstellung kann jederzeit geändert werden. Eingegebene Daten werden bei der Änderung nicht berührt.';
 $string['maximumnumberofattempts'] = 'Höchstzahl der Versuche';
 $string['maximumnumberofattempts_help'] = 'Dieser Wert legt die Zahl der maximal zulässigen Versuche für jede einzelne Frage fest. Wenn die Höchstzahl der zulässigen Versuche erreicht ist, wird automatisch die nächste Seite der Lektion angezeigt.';
@@ -315,8 +313,8 @@ $string['numberofpagesviewed'] = 'Beantwortete Fragen: {$a}';
 $string['numberofpagesviewednotice'] = 'Beantwortete Fragen: {$a->nquestions} (mindestens zu beantworten: {$a->minquestions})';
 $string['numerical'] = 'Numerisch';
 $string['ongoing'] = 'Aktuelle Bewertung anzeigen';
-$string['ongoingcustom'] = 'Gesamtpunktzahl: {$a->score} / {$a->currenthigh}';
 $string['ongoing_help'] = 'Wenn diese Option aktiviert ist, wird den Teilnehmer/innen auf jeder Seite ihre aktuelle Bewertung zusammen mit der maximal erreichbaren Bewertung angezeigt.';
+$string['ongoingcustom'] = 'Gesamtpunktzahl: {$a->score} / {$a->currenthigh}';
 $string['ongoingnormal'] = 'Richtige Antworten: {$a->correct} / {$a->viewed}';
 $string['onpostperpage'] = 'Nur eine Mitteilung pro Bewertung';
 $string['options'] = 'Optionen';
@@ -331,10 +329,10 @@ Eine Seite stellt den Lerninhalt bereit und endet normalerweise mit einer Frage.
 
 Eine Inhaltsseite enthält eine ganze Reihe von Links zu anderen Seiten der Lektion, wie beispielsweise ein Inhaltsverzeichnis.';
 $string['page'] = 'Seite: {$a}';
-$string['pagecontents'] = 'Seiteninhalt';
 $string['page-mod-lesson-edit'] = 'Lektionsbearbeitungsseite';
 $string['page-mod-lesson-view'] = 'Lektionsansichtsseite';
 $string['page-mod-lesson-x'] = 'Alle Lektionsseiten';
+$string['pagecontents'] = 'Seiteninhalt';
 $string['pages'] = 'Seiten';
 $string['pagetitle'] = 'Seitentitel';
 $string['password'] = 'Kennwort';
@@ -396,9 +394,9 @@ $string['showanunseenpage'] = 'Noch nicht angezeigte Seite anzeigen';
 $string['singleanswer'] = 'Einzelne Antwort';
 $string['skip'] = 'Keine Navigation';
 $string['slideshow'] = 'Slideshow';
+$string['slideshow_help'] = 'Wenn diese Option aktiviert ist, wird die Lektion als Diashow mit einer festgelegten Breite und Höhe gezeigt.';
 $string['slideshowbgcolor'] = 'Hintergrundfarbe für Slideshow';
 $string['slideshowheight'] = 'Höhe für Slideshow';
-$string['slideshow_help'] = 'Wenn diese Option aktiviert ist, wird die Lektion als Diashow mit einer festgelegten Breite und Höhe gezeigt.';
 $string['slideshowwidth'] = 'Breite für Slideshow';
 $string['startlesson'] = 'Lektion bearbeiten';
 $string['studentattemptlesson'] = '{$a->lastname}, {$a->firstname}: Versuch Nr. {$a->attempt}';
