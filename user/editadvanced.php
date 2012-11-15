@@ -68,7 +68,16 @@ if ($id == -1) {
     // editing existing user
     require_capability('moodle/user:update', $systemcontext);
     $user = $DB->get_record('user', array('id'=>$id), '*', MUST_EXIST);
-    $PAGE->set_context(context_user::instance($user->id));
+
+    if ($user->deleted) {
+        $PAGE->set_context(context_system::instance());
+        echo $OUTPUT->header();
+        echo $OUTPUT->notification(get_string('userdeleted'));
+        echo $OUTPUT->footer();
+        die;
+    }
+    $PAGE->set_context(get_context_instance(CONTEXT_USER, $user->id));
+
     if ($user->id == $USER->id) {
         if ($course->id != SITEID && $node = $PAGE->navigation->find($course->id, navigation_node::TYPE_COURSE)) {
             $node->make_active();
@@ -90,13 +99,6 @@ if ($user->id != $USER->id and is_siteadmin($user) and !is_siteadmin($USER)) {  
 
 if (isguestuser($user->id)) { // the real guest user can not be edited
     print_error('guestnoeditprofileother');
-}
-
-if ($user->deleted) {
-    echo $OUTPUT->header();
-    echo $OUTPUT->heading(get_string('userdeleted'));
-    echo $OUTPUT->footer();
-    die;
 }
 
 //load user preferences

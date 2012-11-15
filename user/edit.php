@@ -96,6 +96,14 @@ if ($editurl = $userauth->edit_profile_url()) {
     redirect($editurl);
 }
 
+if ($user->deleted) {
+    $PAGE->set_context(context_system::instance());
+    echo $OUTPUT->header();
+    echo $OUTPUT->notification(get_string('userdeleted'));
+    echo $OUTPUT->footer();
+    die;
+}
+
 if ($course->id == SITEID) {
     $coursecontext = context_system::instance();   // SYSTEM context
 } else {
@@ -122,13 +130,6 @@ if ($user->id == $USER->id) {
     if (is_siteadmin($user) and !is_siteadmin($USER)) {  // Only admins may edit other admins
         print_error('useradmineditadmin');
     }
-}
-
-if ($user->deleted) {
-    echo $OUTPUT->header();
-    echo $OUTPUT->heading(get_string('userdeleted'));
-    echo $OUTPUT->footer();
-    die;
 }
 
 // Process email change cancellation
