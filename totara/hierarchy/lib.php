@@ -1508,14 +1508,12 @@ class hierarchy {
         // the itemid must be a valid item
         $olditem = $DB->get_record($this->shortprefix, array('id' => $itemid));
 
-        if ($newitem->parentid != $olditem->parentid) {
-            // the item is being moved. First update without changing the parent, then move afterwards
+        if ($newitem->parentid != $olditem->parentid || $newitem->frameworkid != $olditem->frameworkid) {
+            // The item is being moved - first update item without changing parent or framework, then move afterwards
             $oldparentid = $olditem->parentid;
             $newparentid = $newitem->parentid;
             $newitem->parentid = $oldparentid;
-        }
-        if ($newitem->frameworkid != $olditem->frameworkid) {
-            // the item is being moved. First update without changing the framework, then move afterwards
+
             $oldframeworkid = $olditem->frameworkid;
             $newframeworkid = $newitem->frameworkid;
             $newitem->frameworkid = $oldframeworkid;

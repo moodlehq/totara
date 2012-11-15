@@ -149,9 +149,11 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             $this->addlog(get_string('frameworkxnotfound', 'tool_totara_sync', $newitem->frameworkidnumber), 'error', 'syncitem');
             return false;
         }
-        // Ensure newitem's parent is synced first
-        if (!empty($newitem->parentidnumber) && !$parentid = $DB->get_field($elname, 'id', array('idnumber' => $newitem->parentidnumber))) {
-            // Sync/create parent first (recursive)
+        // Ensure newitem's parent is synced first - only non-existent or not already synced parent items
+        if (!empty($newitem->parentidnumber)
+            && !$parentid = $DB->get_field_select($elname, 'id', "idnumber = ? AND timemodified = ?", array($newitem->parentidnumber, $newitem->timemodified))) {
+
+            // Sync parent first (recursive)
             $sql = "SELECT *
                       FROM {{$synctable}}
                      WHERE idnumber = ? ";
