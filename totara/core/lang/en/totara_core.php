@@ -26,6 +26,7 @@
  */
 
 $string['pluginname'] = 'Totara core';
+$string['totaraversion'] = 'Totara Version';
 //date picker variables
 $string['datepickerdisplayformat'] = 'dd/mm/y'; //how the datepicker displays the date, see jQuery documentation
 $string['datepickerplaceholder'] = 'dd/mm/yy'; //how the datepicker placeholder hint displays the default

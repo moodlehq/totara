@@ -259,7 +259,7 @@ class core_admin_renderer extends plugin_renderer_base {
         $output .= $this->box_start();
         $output .= html_writer::tag('div', get_string('adminhelpenvironment'));
         $select = new single_select(new moodle_url('/admin/environment.php'), 'version', $versions, $version, null);
-        $select->label = get_string('moodleversion');
+        $select->label = get_string('totaraversion', 'totara_core');
         $output .= $this->render($select);
         $output .= $this->box_end();
 
