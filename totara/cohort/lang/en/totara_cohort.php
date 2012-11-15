@@ -267,8 +267,8 @@ If you have a query about these alerts, please contact {$a->supportemail}.
 Thank you.';
 $string['msg:membersremoved_toall_notice'] = '{$a->affectedcount} members have now left your audience "{$a->cohortname}"';
 $string['mustselectonecriteria'] = 'You must select at least one criterion';
-$string['name'] = 'Name';
-$string['namelink'] = 'Name (with link)';
+$string['name'] = 'Audience Name';
+$string['namelink'] = 'Audience Name (with link)';
 $string['nocohorts'] = 'No audiences have been defined.';
 $string['nocomponent'] = 'Created manually';
 $string['nocriteriaset'] = '(no criteria set, delete this audience)';
