@@ -1119,7 +1119,7 @@ function upgrade_log($type, $plugin, $info, $details=null, $backtrace=null) {
  * @global object
  */
 function upgrade_started($preinstall=false) {
-    global $CFG, $DB, $PAGE, $OUTPUT;
+    global $CFG, $DB, $PAGE, $OUTPUT, $TOTARA;
 
     static $started = false;
 
@@ -1135,7 +1135,7 @@ function upgrade_started($preinstall=false) {
             $strupgrade  = get_string('upgradingversion', 'admin');
             $PAGE->set_pagelayout('maintenance');
             upgrade_init_javascript();
-            $PAGE->set_title($strupgrade.' - Moodle '.$CFG->target_release);
+            $PAGE->set_title($strupgrade.' - Totara '.$TOTARA->release);
             $PAGE->set_heading($strupgrade);
             $PAGE->navbar->add($strupgrade);
             $PAGE->set_cacheable(false);

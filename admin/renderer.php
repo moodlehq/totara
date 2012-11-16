@@ -66,12 +66,12 @@ class core_admin_renderer extends plugin_renderer_base {
      * @return string HTML to output.
      */
     public function install_environment_page($maturity, $envstatus, $environment_results, $release) {
-        global $CFG;
+        global $CFG, $TOTARA;
         $output = '';
 
         $output .= $this->header();
         $output .= $this->maturity_warning($maturity);
-        $output .= $this->heading("Totara {$release} : Based on Moodle {$CFG->target_release}");
+        $output .= $this->heading("Totara {$TOTARA->release} : Based on Moodle {$CFG->target_release}");
         $output .= $this->release_notes_link();
 
         $output .= $this->environment_check_table($envstatus, $environment_results);
@@ -116,11 +116,11 @@ class core_admin_renderer extends plugin_renderer_base {
      * @return string HTML to output.
      */
     public function upgrade_environment_page($release, $envstatus, $environment_results) {
-        global $CFG;
+        global $CFG, $TOTARA;
         $output = '';
 
         $output .= $this->header();
-        $output .= $this->heading("Totara {$release} : Based on Moodle {$CFG->target_release}");
+        $output .= $this->heading("Totara {$TOTARA->release} : Based on Moodle {$CFG->target_release}");
         $output .= $this->release_notes_link();
         $output .= $this->environment_check_table($envstatus, $environment_results);
 
