@@ -59,7 +59,6 @@ $string['educationallevel'] = 'Livello formativo';
 $string['educationallevel_help'] = 'Il livello formativo che stai cercando. Nel caso di comunità di formatori indica il livello insegnato.';
 $string['enroldownload'] = 'Trova';
 $string['enroldownload_help'] = 'Alcuni corsi reclamizzati nell\'hub scelto permettono alle persone di frequentarli nel loro sito originario.
-
 Altri corsi sono dei template scaricabili da usare nel tuo sito.';
 $string['enrollable'] = 'Corsi ai quali iscriversi';
 $string['enrollablecourses'] = 'Corsi ai quali iscriversi';

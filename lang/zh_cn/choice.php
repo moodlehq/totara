@@ -40,7 +40,6 @@ $string['choicename'] = '投票名称';
 $string['choiceopen'] = '开始时间';
 $string['choiceoptions'] = '投票选项';
 $string['choiceoptions_help'] = '在这里您可以指定参与者应当选择的选项。
-
 您可以输入任意数目的选项。空选项会被忽略。如果您需要超过8个选项，请点击“增加3个选项”按钮。';
 $string['choicesaved'] = '已经保存了您的选择';
 $string['choicetext'] = '投票描述';
@@ -55,7 +54,6 @@ $string['havetologin'] = '只有登录后才能提交您的选择';
 $string['limit'] = '限制';
 $string['limitanswers'] = '是否使用限制投票的次数';
 $string['limitanswers_help'] = '这个选项允许您限制选择某一选项的参与者数目。如果达到此限制，那么任何人都不能再选择此选项。
-
 如果限制功能关闭，则不会限制选择某一选项的人数。';
 $string['modulename'] = '投票';
 $string['modulename_help'] = '在投票模块中，教师可以提出一个问题，并给出多个应答选项。';

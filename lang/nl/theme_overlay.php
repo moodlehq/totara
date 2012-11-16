@@ -43,7 +43,7 @@ $string['choosereadme'] = '<div class="clearfix">
 Dit thema werd gecodeerd en wordt onderhouden door John Stabinger van NewSchool Learning. Hij kan worden gecontacteerd via email op contact@newschoollearning.com. </p>
 <h2>Licentie</h2>
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['configtitle'] = 'Overlay instellingen';
 $string['customcss'] = 'Aangepaste CSS';

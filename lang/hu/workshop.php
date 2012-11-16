@@ -198,7 +198,6 @@ $string['sortasc'] = 'Növekvő sorrendben';
 $string['sortdesc'] = 'Csökkenő sorrendben';
 $string['strategy'] = 'Pontozási stratégia';
 $string['strategy_help'] = 'A pontozási stratégia határozza meg a használandó értékelő űrlapot és a leadott munkák pontozásának mikéntjét. 4 lehetőség közül választhat:
-
 * Összegző pontozás - Meghatározott szempontok szerint és pontot tartalmaz
 * Megjegyzések - Meghatározott szempontok szerint megjegyzéseket tartalmaz, de pontot nem
 * Hibaszám - Megjegyzéseket és egy meghatározott szempontok szerint állításra vonatkozó igen/nem értékelést tartalmaz

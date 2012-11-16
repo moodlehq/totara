@@ -69,7 +69,6 @@ $string['completionscorerequired'] = 'Vaadi minimipistemäärä';
 $string['completionstatus_completed'] = 'Suoritettu';
 $string['completionstatus_failed'] = 'Hylätty';
 $string['completionstatus_help'] = '# Aktiviteetin suorittaminen: Vaadi tietty tila
-
 Yhden tai useamman tilan valitseminen tarkoittaa sitä, että käyttäjän tulee saavuttaa ainakin yksi valituista tiloista, jotta tämä SCORM-aktiviteetti merkitään hänen osaltaan suoritetuksi, muiden mahdollisten aktiviteetin suorittamisvaatimusten lisäksi.';
 $string['completionstatus_passed'] = 'Hyväksytty';
 $string['completionstatusrequired'] = 'Vaadi tieto suorituksen tilasta';
@@ -135,7 +134,6 @@ $string['gradeforattempt'] = 'Suorituskerran arvosana';
 $string['gradehighest'] = 'Korkein arviointi';
 $string['grademethod'] = 'Arviointitapa';
 $string['grademethod_help'] = 'Arviointimenetelmä määrittelee, miten kunkin suorituskerran arvosana määräytyy. Arviointimenetelmiä on neljä:
-
 * Oppimisaihiot: suoritettujen oppimisaihioiden lukumäärä
 * Korkein arvosana: Kaikista suoritetuista oppimisaihioista saatu korkein arvosana
 * Arvosanojen keskiarvo: kaikkien saatujen arvosanojen keskiarvo
@@ -268,15 +266,10 @@ $string['scormopen'] = 'Auki';
 $string['scormresponsedeleted'] = 'Poistettiin käyttäjän suorituskerrat';
 $string['scormtype'] = 'Tyyppi';
 $string['scormtype_help'] = 'Tämä asetus määrittelee, miten SCORM-paketti liitetään kurssialueelle. Tähän on jopa neljä eri vaihtoehtoa:
-
 * Ladattu paketti: voit valita SCORM-paketin tiedostonvalitsimesta
-
 * Ulkoinen SCORM-manifesti: voit määritellä imsmanifest.xml-tiedoston osoitteen. HUOM: jos osoite on muualla kuin omalla palvelimellasi, seuraava "Ladattava paketti" -vaihtoehto on parempi, koska muuten arvosanoja ei tallenneta.
-
 * Ladattava paketti: voit määritellä sen verkko-osoitteen, josta paketti ladataan. Paketti puretaan ja tallennetaan paikallisesti, ja päivitettään automaattisesti aina kun ulkoinen SCORM-paketti päivittyy.
-
 * Paikallinen IMS-sisältörepositorio: paketin voi valita IMS-repositoriosta
-
 * Ulkoinen AICC: valittu verkko-osoite on aloitussivu yksittäiselle AICC-aktiviteetille. Tätä varten tehdään pseudo-paketti Moodleen.';
 $string['scrollbars'] = 'Salli ikkunan vieritys';
 $string['selectall'] = 'Valitse kaikki';
@@ -326,11 +319,9 @@ $string['viewallreports'] = 'Näytä raportit {$a} suorituskerrasta';
 $string['viewalluserreports'] = 'Näytä raportit {$a} käyttäjistä';
 $string['whatgrade'] = 'Arvioidut suorituskerrat';
 $string['whatgrade_help'] = 'Jos olet sallinut useita suorituskertoja, tämä asetus määrittelee, tallennetaanko arviointikirjaan suoritusten arvosanoista korkein, keskiarvo, ensimmäinen vai viimeinen.
-
 Useiden suorituskertojen käsittely
-
 * mahdollisuus uuden suorituskerran aloittamiseen tarjotaan osallistujalle valintaruutuna sisällön rakenne -sivulla, joten tarkista, että opiskelijoille on pääsy tuolle sivulle, jos haluat sallia useamman kuin yhden suorituskerran.
-* Joissain SCORM-paketeissa on valmiudet peräkkäisten  suorituskertojen käsittelyyn, mutta monissa ei ole. Tämä tarkoittaa, että jos osallistuja palaa jo tallennettuun suorituskertaan ja SCORM-sisällössä ei ole sisäistä käsittelyä aiempien suorituskertojen päällekirjoittamisen estämiseksi, aiempi suorituskerta voi tästä johtuen tuhoutua päällekirjoitettuna, vaikka se olisikin tallennettu "valmiina" tai "suoritettuna".
+* Joissain SCORM-paketeissa on valmiudet peräkkäisten suorituskertojen käsittelyyn, mutta monissa ei ole. Tämä tarkoittaa, että jos osallistuja palaa jo tallennettuun suorituskertaan ja SCORM-sisällössä ei ole sisäistä käsittelyä aiempien suorituskertojen päällekirjoittamisen estämiseksi, aiempi suorituskerta voi tästä johtuen tuhoutua päällekirjoitettuna, vaikka se olisikin tallennettu "valmiina" tai "suoritettuna".
 * Asetuksissa "pakota suoritetuksi", "pakota uusi suorituskerta" ja "lukitse viimeisen suorituskerran jälkeen" on lisää useiden suorituskertojen säätömahdollisuuksia.';
 $string['whatgradedesc'] = 'Tämä asetus määrittää arvioitavan suorituskerran oletusarvon';
 $string['width'] = 'Leveys';

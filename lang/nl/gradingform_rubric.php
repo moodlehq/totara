@@ -59,9 +59,9 @@ $string['restoredfromdraft'] = 'OPMERKING: de laatste beoordelingspoging voor de
 $string['rubric'] = 'Rubric';
 $string['rubricmapping'] = 'Score naar cijfer mappingregels';
 $string['rubricmappingexplained'] = 'De kleinst mogelijke score voor deze rubric is <b>{$a->minscore}</b> en zal omgezet worden naar het minimumcijfer beschikbaar in deze module (welke nul is, tenzij de schaal wordt gebruikt).
- De maximumscore <b>{$a->maxscore} punten</b> zal omgezet worden naar het maximumcijfer.<br />
- Tussenliggende scores worden omgezet en afgerond naar het dichtstbijzijnde beschikbare cijfer.<br />
- Als er een schaal gebruikt wordt in plaats van een cijfer, dan zal de score omgezet worden naar de schaalelementen alsof ze opeenvolgende gehele getallen waren.';
+De maximumscore <b>{$a->maxscore} punten</b> zal omgezet worden naar het maximumcijfer.<br />
+Tussenliggende scores worden omgezet en afgerond naar het dichtstbijzijnde beschikbare cijfer.<br />
+Als er een schaal gebruikt wordt in plaats van een cijfer, dan zal de score omgezet worden naar de schaalelementen alsof ze opeenvolgende gehele getallen waren.';
 $string['rubricnotcompleted'] = 'Kies iets voor elk criterium';
 $string['rubricoptions'] = 'Rubric opties';
 $string['rubricstatus'] = 'Huidige rubric status';

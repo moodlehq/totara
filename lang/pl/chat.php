@@ -117,27 +117,20 @@ $string['talk'] = 'Dyskusja';
 $string['updatemethod'] = 'Metoda aktualizacji';
 $string['userlist'] = 'Lista użytkowników';
 $string['usingchat'] = 'Korzystanie z czatu';
-$string['usingchat_help'] = '<p>Moduł Czat posiada pewne cechy, aby nieco umilić rozmowy.</p>
+$string['usingchat_help'] = 'Moduł Czat posiada pewne cechy, aby nieco umilić rozmowy.
 
-<dl>
-<dt><b>Emotikony</b></dt>
-<dd>Dowolne emotikony, które mogą zostać wprowadzone gdziekolwiek indziej w Moodle, mogą zostać
-wprowadzone także tu i zostaną wyświetlone poprawnie. Na przykład,  :-) = <img src="pix/s/smiley.gif">  </dd>
-
-<dt><b>Linki</b></dt>
-<dd>Adresy internetowe zostaną zamienione na linki automatycznie.</dd>
-
-<dt><b>Stan ducha</b></dt>
-<dd>Możesz rozpocząć linię z "/me" lub ":", aby okazać swój stan ducha. Na przykład, jeżeli Twoje imię to Jan i
-wpiszesz ":śmieje się!" lub "/me śmieje się!", wszyscy zobaczą "Jan śmieje się!"</dd>
-
-<dt><b>Bzyczenie</b></dt>
-<dd>Możesz wysłać dĽwięk do innych ludzi naciskając na link "bzzz" obok ich imienia. Użytecznym
-skrótem, aby wysłać bzyczenie do wszystkich ludzi na czacie jednocześnie jest "beep all".</dd>
-
-<dt><b>HTML</b></dt>
-<dd>Jeśli znasz nieco kod HTML, możesz używać go w swym tekście, aby wprowadzać obrazy, odgrywać dĽwięki
-lub odpowiednio formatować tekst.</dd>
-
-</dl>';
+**Emotikony**
+: Dowolne emotikony, które mogą zostać wprowadzone gdziekolwiek indziej w Moodle, mogą zostać
+wprowadzone także tu i zostaną wyświetlone poprawnie. Na przykład, :-) 
+**Linki**
+: Adresy internetowe zostaną zamienione na linki automatycznie.
+**Stan ducha**
+: Możesz rozpocząć linię z "/me" lub ":", aby okazać swój stan ducha. Na przykład, jeżeli Twoje imię to Jan i
+wpiszesz ":śmieje się!" lub "/me śmieje się!", wszyscy zobaczą "Jan śmieje się!"
+**Bzyczenie**
+: Możesz wysłać dĽwięk do innych ludzi naciskając na link "bzzz" obok ich imienia. Użytecznym
+skrótem, aby wysłać bzyczenie do wszystkich ludzi na czacie jednocześnie jest "beep all".
+**HTML**
+: Jeśli znasz nieco kod HTML, możesz używać go w swym tekście, aby wprowadzać obrazy, odgrywać dĽwięki
+lub odpowiednio formatować tekst.';
 $string['viewreport'] = 'Zobacz minione sesje czat';

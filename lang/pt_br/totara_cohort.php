@@ -97,10 +97,9 @@ $string['numlearners'] = '# estudantes';
 $string['ok'] = 'OK';
 $string['or'] = 'ou';
 $string['organisation'] = 'Organização';
-$string['orgincludechildren_help'] = '<h1>Grupo inclui organizações de descendência</h1>
-
-<p>Se a caixa de diálogo \'Incluir descendência\' for marcada, então todos os usuários da organização selecionada e qualquer organização abaixo da organização selecionada na hierarquia será incluido nesse grupo.</p>
-<p>Se \'Incluir descendência\' não estiver selecionado, somente os usuários que foram designados na organização selecionada é que serão designados para o grupo.</p>';
+$string['orgincludechildren_help'] = '# Grupo inclui organizações de descendência
+Se a caixa de diálogo \'Incluir descendência\' for marcada, então todos os usuários da organização selecionada e qualquer organização abaixo da organização selecionada na hierarquia será incluido nesse grupo.
+Se \'Incluir descendência\' não estiver selecionado, somente os usuários que foram designados na organização selecionada é que serão designados para o grupo.';
 $string['overview'] = 'Visão geral';
 $string['pleaseentervaliddate'] = 'Entre com uma data válida no formato {$a}.';
 $string['pleaseentervalidreason'] = 'Entrar com uma razão válida';
@@ -110,16 +109,14 @@ $string['pleasesearchmore'] = 'Refinar a busca';
 $string['pleasesetcompletiontimes'] = 'Configurar tempo de término para todos os itens.';
 $string['pleaseusesearch'] = 'Usar a busca';
 $string['position'] = 'Posição';
-$string['positionincludechildren_help'] = '<h1>Grupo inclui organizações de descendência</h1>
-
-<p>Se a caixa de diálogo \'Incluir descendência\' for marcada, então todos os usuários da organização selecionada e qualquer organização abaixo da organização selecionada na hierarquia será incluido nesse grupo.</p>
-<p>Se \'Incluir descendência\' não estiver selecionado, somente os usuários que foram designados na organização selecionada é que serão designados para o grupo.</p>';
+$string['positionincludechildren_help'] = '# Grupo inclui organizações de descendência
+Se a caixa de diálogo \'Incluir descendência\' for marcada, então todos os usuários da organização selecionada e qualquer organização abaixo da organização selecionada na hierarquia será incluido nesse grupo.
+Se \'Incluir descendência\' não estiver selecionado, somente os usuários que foram designados na organização selecionada é que serão designados para o grupo.';
 $string['potusers'] = 'Usuários potenciais';
 $string['potusersmatching'] = 'Usuários relacionados potenciais';
-$string['profilefieldvalues_help'] = '<h1>Valores do campo de perfil do grupo</h1>
-
-<p>Se selecionado, os membros do grupo dinâmico serão escolhidos com base naqueles que tiverem um campo de perfil de usuário relacionado a um valor em particular.</p>
-<p>Os valores poderão ser uma série de texto simples ou uma lista separada por vírgula com várias séries de texto. Se for fornecida uma lista separada por vírgula, os usuários relacionados a quaisquer séries individuais serão inclusos no grupo.</p>';
+$string['profilefieldvalues_help'] = '# Valores do campo de perfil do grupo
+Se selecionado, os membros do grupo dinâmico serão escolhidos com base naqueles que tiverem um campo de perfil de usuário relacionado a um valor em particular.
+Os valores poderão ser uma série de texto simples ou uma lista separada por vírgula com várias séries de texto. Se for fornecida uma lista separada por vírgula, os usuários relacionados a quaisquer séries individuais serão inclusos no grupo.';
 $string['reportsto'] = 'relatórios para';
 $string['role'] = 'Função';
 $string['saveallchanges'] = 'Salvar todas as alterações';
@@ -136,12 +133,11 @@ $string['thiscohortwillhave'] = 'Este grupo terá membros {$a} neste espaço de 
 $string['toomanyusersmatchsearch'] = 'Muitos usuários relacionados a busca';
 $string['toomanyuserstoshow'] = 'Existem muitos usuários para mostrar';
 $string['type'] = 'Tipo';
-$string['type_help'] = '<h1>Tipo do grupo</h1>
-
-<p>O tipo do grupo pode ser \'configurado\' ou \'dinâmico\'.</p>
-<p>Configurar os grupos são uma lista de usuários pré-definidos, criada manualmente pelo criador do grupo. O criador pode adicionar ou renover usuários, além disso a lista é estática.</p>
-<p>Os grupos dinâmicos são determinados por uma regra ou grupo de regras e os usuários inclusos no grupo serão atualizados de maneira dinâmica a fim de incluir usuários relacionados a estes regras(and e remover usuários que não estejam mais relacionados).</p>
-<p>Os membros de um grupo configurado podem ser mudados a qualquer tempo, mas as regras que definem um grupo dinâmico não podem mudar depois que o grupo estiver salvo.</p>';
+$string['type_help'] = '# Tipo do grupo
+O tipo do grupo pode ser \'configurado\' ou \'dinâmico\'.
+Configurar os grupos são uma lista de usuários pré-definidos, criada manualmente pelo criador do grupo. O criador pode adicionar ou renover usuários, além disso a lista é estática.
+Os grupos dinâmicos são determinados por uma regra ou grupo de regras e os usuários inclusos no grupo serão atualizados de maneira dinâmica a fim de incluir usuários relacionados a estes regras(and e remover usuários que não estejam mais relacionados).
+Os membros de um grupo configurado podem ser mudados a qualquer tempo, mas as regras que definem um grupo dinâmico não podem mudar depois que o grupo estiver salvo.';
 $string['userprofilefield'] = 'Campo perfil do usuário';
 $string['values'] = 'Valores';
 $string['viewmembers'] = 'Visualizar membros';

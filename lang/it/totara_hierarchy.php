@@ -109,11 +109,8 @@ $string['competencyaddnew'] = 'Aggiungi una nuova competenza';
 $string['competencyaddnewframework'] = 'Aggiungi nuovo quadro di competenza';
 $string['competencyaggregationmethod'] = 'Metodo di aggregazione';
 $string['competencyaggregationmethod_help'] = 'Il metodo di aggregazione definisce il modo in cui il sistema calcola il raggiungimento della competenza.
-
 Se il metodo di aggregazione è impostato su Tutti, tutte le competenze secondarie dovranno essere raggiunte per la competenza principale prima che siano dichiarate complete.
-
 Se il metodo di aggregazione è impostato su Qualsiasi, solo una delle competenze secondarie deve essere soddisfatta per raggiungere la competenza principale (e le sue relative competenze secondarie).
-
 Se il metodo di aggregazione è impostato su Off, allora il aggiungimento automatico è disattivato per quella competenza. (Può comunque essere contrassegnata come completa manualmente).';
 $string['competencyassigndeletecheck'] = 'Si desidera eliminare questa assegnazione di competenze?';
 $string['competencybacktoallframeworks'] = 'Torna ai quadri delle competenze';
@@ -148,13 +145,10 @@ $string['competencyevidence'] = 'Prova di competenza';
 $string['competencyevidenceassessmenttype'] = 'Tipo di valutazione';
 $string['competencyevidenceassessmenttype_help'] = 'Il campo del tipo di valutazione è un campo a testo libero per l\'immissione di informazioni aggiuntive sulla valutazione di questa competenza. I contenuti possono variare e il campo è opzionale.';
 $string['competencyevidenceassessor_help'] = 'E\' possibile selezionare un valutatore, cioè un utente che ha valutato l\'abilità dell\'utente nella competenza in questione. Il campo del Valutatore è opzionale quindi nell\'elenco a discesa selezionare l\'opzione \'Seleziona un valutatore...\' se non si vuole assegnare un valutatore.
-
 L\'elenco a discesa presenta tutti gli utenti moodle che hanno il ruolo di valutatore. Se l\'utente che si desidera aggiungere non è presente o non ci sono opzioni disponibili, rivolgersi a un amministratore per aggiungere quell\'utente al ruolo di valutatore.';
 $string['competencyevidenceassessorname_help'] = 'Il campo Nome del valutatore si riferisce al nome dell\'organizzazione che ha eseguito la valutazione dell\'utente per quella competenza. Si tratta di un campo opzionale che può essere lasciato vuoto.';
 $string['competencyevidencecompetency_help'] = 'La competenza da assegnare all\'utente. Se si modifica un elemento di prova della competenza esistente, questo non può essere modificato. Tuttavia, è possibile creare un nuovo elemento di prova della competenza (se si è autorizzati) visitando la pagina Record personali dell\'utente e facendo clic sul pulsante \'Aggiungi prova di competenza\'.
-
 Quando viene creato un nuovo elemento di prova della competenza, si può scegliere di aggiungere una prova per una competenza esistente o di creare una nuova competenza. Se si sceglie \'Seleziona una competenza\', nella finestra a comparsa visualizzata occorre selezionare una delle competenze dell\'elenco. Se si sceglie \'Crea una nuova competenza\' viene visualizzato un modulo in cui occorre scegliere un quadro e definire la nuova competenza.
-
 Non è possibile creare due elementi di prova delle competenze che si riferiscono allo stesso utente e competenza. Se si cerca di farlo, viene visualizzato un link per modificare il record originale o scegliere un\'altra competenza.';
 $string['competencyevidencecount'] = 'Elementi di prova';
 $string['competencyevidenceorganisation_help'] = 'Questa opzione indica l\'organizzazione in cui si trovava l\'utente al momento del completamento dell\'elemento di prova della competenza. Nella maggior parte dei casi, corrisponde all\'organizzazione corrente dell\'utente. Dato che gli utenti cambiano con il tempo, qui è mantenuto un record di dove si trovavano al momento del completamento. Questo campo è opzionale.';
@@ -171,21 +165,16 @@ $string['competencyframeworkfullname'] = 'Nome completo';
 $string['competencyframeworkfullname_help'] = 'Il nome completo del quadro è il titolo completo del quadro.';
 $string['competencyframeworkgeneral'] = 'Quadro di competenza';
 $string['competencyframeworkgeneral_help'] = '**I quadri di competenza **permettono di raggruppare le abilità, le conoscenze e i comportamenti richiesti al personale.
-
 Le competenze possono essere raggruppate in diversi tipi di quadri. Ad esempio, un quadro potrebbe includere tutti gli standard di competenza nazionale del settore (presi da un ente governativo), e un altro potrebbe includere le competenze specifiche definite internamente.
-
 Prima di impostare un quadro di competenza, occorre impostare una **Scala di competenza**.';
 $string['competencyframeworkidnumber'] = 'Numero ID';
 $string['competencyframeworkidnumber_help'] = 'Il numero ID del quadro è un numero unico che può essere usato per rappresentare il quadro.</h1>';
 $string['competencyframeworkmanage'] = 'Gestisci quadri';
 $string['competencyframeworks'] = 'Quadri di competenze';
 $string['competencyframeworks_help'] = '**I quadri di competenza **permettono di raggruppare le abilità, le conoscenze e i comportamenti richiesti al personale.
-
 Le competenze possono essere raggruppate in diversi tipi di quadri. Ad esempio, un quadro potrebbe includere tutti gli standard di competenza nazionale del settore (presi da un ente governativo), e un altro potrebbe includere le competenze specifiche definite internamente.
-
 Prima di impostare un quadro di competenza, occorre impostare una **Scala di competenza**.';
 $string['competencyframeworkscale_help'] = 'Le scale di competenza permettono di definire i criteri per misurare una competenza. Ad esempio, una scala può avere tre valori ‘competente, competente con supervisione, not competente’.
-
 Usare l\'opzione delle scale di competenza per aggiungere una nuova scala, quindi aggiungere i valori della scala che sono usati per definire l\'evoluzione di uno studente in una competenza. E\' possibile aggiungere il numero di valori desiderati. Ci sono impostazioni di valore Predefinito ed Esperto.';
 $string['competencyframeworkshortname_help'] = 'Il nome abbreviato del quadro è un riferimento rapido al nome del quadro e può essere usato ai fini di visualizzazione.';
 $string['competencyframeworkview'] = 'Visualizza quadri';
@@ -203,19 +192,14 @@ $string['competencynoframeworkssetup'] = 'Non ci sono quadri di competenza defin
 $string['competencynotypes'] = 'Non ci sono tipi di competenze';
 $string['competencyparent'] = 'Principale';
 $string['competencyparent_help'] = '**Parent competency** permette di gestire le relazioni principale/secondario fra due competenze.
-
 Selezionare la **Competenza principale** dall\'elenco a discesa. Selezionare **Top** se si desidera che la competenza sia collocata al livello superiore della gerarchia.
-
 Se si modifica la competenza principale di un componente, questo passa a un livello inferiore rispetto al principale e tutti i secondari si spostano di conseguenza.
-
 **Nota:** per impostare delle relazioni principale/secondario, occorre avere almeno un altro elemento nell\'ambito. Altrimenti, l\'opzione non verrà visualizzata.';
 $string['competencyplural'] = 'Competenze';
 $string['competencyreturntoframework'] = 'Tornare al quadro di competenza';
 $string['competencyscale'] = 'Scala di competenze';
 $string['competencyscale_help'] = '**La Scala** è il nome della Scala di competenza che è usata nel quadro di competenza.
-
 La scala di competenza è impostata nel quadro di competenza. Solo una scala di competenza può essere usata in ciascun quadro.
-
 E\' possibile impostare una nuova scala di competenza in Gerarchie/Competenze/Gestion quadri del menu \'Amministrazione sito\'.';
 $string['competencyscaleassign'] = 'Scala di competenze';
 $string['competencyscaleassign_help'] = 'Una Scala di competenza definisce i criteri di misurazione di una competenza. Si tratta del nome di scala cui viene aggiunto il valore.';
@@ -226,29 +210,25 @@ $string['competencyscaleinuse'] = 'Questa scala è in uso (ad es. gli utenti han
 $string['competencyscaleproficient'] = 'Valore competente';
 $string['competencyscaleproficient_help'] = 'Il valore di Esperto è un modo con cui il sistema tiene traccia dell\'abilità in una particolare competenza. Permette di seguire l\'evoluzione dei piani di formazione e visualizza gli avvisi di scadenza soltanto per le competenze incomplete.
 Un utente è considerato \'Esperto\' se il valore di scala impostato ha \'esperto\' selezionato. Ci possono essere più valori di scala impostati su Esperto, e almeno un valore di scala deve essere impostato su Esperto. Questo valore può essere modificato mediante il valore di scala.
-
 Il valore di scala inferiore che è contrassegnato come esperto è attribuito automaticamente a un utente che ha dimostrato l\'abilità richiesta dall\'elemento di prova specificata della competenza (ad es., completamento del corso/attività, superamento del livello di corso/attività).';
 $string['competencyscales'] = 'Scale di competenza';
 $string['competencyscalescalename'] = 'Nome';
 $string['competencyscalescalename_help'] = 'Il nome di scala della competenza che si trova nel riquadro Competenza.';
 $string['competencyscalescalevalues'] = 'Valori';
 $string['competencyscalescalevalues_help'] = 'Immettere i valori per la scala per le competenze (uno per riga), dal più competente al meno competente. Ad esempio:
-
-<p class="indent">
-<i> Competente<br /> Competente con supervisione<br /> Non competente<br /> </i>
-</p>';
+* Competente
+* Competente con supervisione
+* Non competente
+';
 $string['competencyscalesgeneral'] = 'Scala di competenze';
 $string['competencyscalesgeneral_help'] = '**Le Scale di competenza **permettono di definire i criteri di misurazione di una competenza. Ad esempio, una scala potrebbe avere tre valori \'competente, competente con supervisione e non competente\'.
-
 Impostare una scala di competenza prima di definire un quadro o qualsiasi altra competenza.';
 $string['competencyscalevaluedescription'] = 'Descrizione';
 $string['competencyscalevalueidnumber'] = 'Numero ID del valore di scala';
 $string['competencyscalevalueidnumber_help'] = 'Il numero ID della scala è un numero unico usato per rappresentare il valore della scala.';
 $string['competencyscalevaluename'] = 'Nome del valore di scala';
 $string['competencyscalevaluename_help'] = '**Il Nome del valore della scala** è il nome del valore della scala di competenza che viene aggiunto o modificato.
-
 Un valore di scala permette di definire l\'evoluzione dello studente in una competenza. E\' possibile aggiungere il numero desiderato di valori di scala.
-
 **Nota: **ricordarsi di impostare il valore Predefinito ed Esperto.';
 $string['competencyscalevaluenumericalvalue'] = 'Valore numerico del valore di scala';
 $string['competencyscalevaluenumericalvalue_help'] = 'Il valore numerico del valore di scala è il valore numerico associato al valore della scala.';
@@ -256,7 +236,6 @@ $string['competencyshortname'] = 'Nome abbreviato di competenza';
 $string['competencyshortname_help'] = 'Il nome abbreviato della competenza è il nome di riferimento rapido della competenza e può essere usato ai fini della visualizzazione.';
 $string['competencytemplatefullname_help'] = 'Il nome completo del modello è il titolo completo del modello di competenza impostato.';
 $string['competencytemplategeneral_help'] = 'Un **Modello di competenza** permette di raggruppare le competenze contenute in un quadro di competenza.
-
 Quando si crea un evento di formazione, ad esempio un corso introduttivo, lo si può collegare a un Modello di competenza chiamato \'nuove competenze del dipendente\'; e prenderne automaticamente le varie competenze, anziché selezionare le competenze una ad una.';
 $string['competencytemplatemanage'] = 'Gestisci modelli';
 $string['competencytemplates'] = 'Modelli di competenza';
@@ -591,11 +570,10 @@ $string['organisationframeworkdescription'] = 'Descrizione';
 $string['organisationframeworkdescription_help'] = 'La descrizione del quadro è un campo di testo per la memorizzazione di informazioni aggiuntive sul quadro. E\' visualizzato sulla pagina di gestione delle organizzazioni, sopra la tabella delle organizzazioni.';
 $string['organisationframeworkfullname_help'] = 'Il nome completo del quadro è il titolo completo del quadro.';
 $string['organisationframeworkidnumber'] = 'Numero ID';
-$string['organisationframeworkidnumber_help'] = 'Il numero ID del quadro è un numero unico che può essere usato per rappresentare il quadro.</h1>';
+$string['organisationframeworkidnumber_help'] = 'Il numero ID del quadro è un numero unico che può essere usato per rappresentare il quadro.';
 $string['organisationframeworkmanage'] = 'Gestisci quadri';
 $string['organisationframeworks'] = 'Quadri di organizzazione';
 $string['organisationframeworks_help'] = 'Un **quadro dell\'organizzazione** è impostato per mantenere la struttura organizzativa dell\'organizzazione.
-
 E\' possibile impostare più quadri dell\'organizzazione. Ad esempio: impostare un quadro per le sottodivisioni o le sussidiarie di un\'azienda.';
 $string['organisationframeworkshortname_help'] = 'Il nome abbreviato del quadro è un riferimento rapido al nome completo del quadro e può essere usato per i fini di visualizzazione.';
 $string['organisationfullname'] = 'Nome completo dell\'organizzazione';
@@ -612,11 +590,8 @@ $string['organisationnoframeworkssetup'] = 'Non ci sono impostazioni di settore 
 $string['organisationnotypes'] = 'Nessun tipo di organizzazione';
 $string['organisationparent'] = 'Principale';
 $string['organisationparent_help'] = '**L\'organizzazione principale** permette di gestire le relazioni principale/secondario fra le organizzazioni.
-
 Selezionare **Organizzazione principale** dal menu a discesa. Selezionare **Alto** se si desidera posizionare l\'organizzazione al primo posto della gerarchia.
-
 Se si modifica l\'organizzazione principale di un elemento, questo si sposta per lasciare posto al nuovo principale e tutti i secondari si spostano conseguentemente.
-
 **Nota:** per impostare una relazione principale/secondario occorre avere almeno un elemento nel quadro. Altrimenti, l\'opzione non viene visualizzata.';
 $string['organisationplural'] = 'Organizzazioni';
 $string['organisationreturntoframework'] = 'Torna al quadro di organizzazione';
@@ -684,7 +659,6 @@ $string['positionframeworkidnumber_help'] = 'Il Numero ID del quadro è un numer
 $string['positionframeworkmanage'] = 'Gestisci settori';
 $string['positionframeworks'] = 'Settori di posizione';
 $string['positionframeworks_help'] = 'A **Il quadro di posizione** è usato per impostare e mantenere le diverse posizioni nell\'organizzazione.
-
 E\' possibile impostare tassonomie di più posizioni (quadri) entro un\'organizzazione.';
 $string['positionframeworkshortname_help'] = 'Il Nome abbreviato del quadro è un riferimento rapido per il nome completo del quadro ai fini della visualizzazione.';
 $string['positionfullname'] = 'Nome completo di posizione';
@@ -702,11 +676,8 @@ $string['positionnoframeworkssetup'] = 'Non ci sono impostazioni di settori di p
 $string['positionnotypes'] = 'Nessun tipo di posizione';
 $string['positionparent'] = 'Principale';
 $string['positionparent_help'] = '**La posizione principale** permette di gestire le relazioni principale/secondario fra le posizioni.
-
 Selezionare la **Posizione principale** dal menu a discesa. Selezionare **Alto** se si desidera posizionare al primo posto della gerarchia.
-
 Se si modifica la posizione del principale di un elemento questo viene spostato al di sotto del suo principale e tutti i secondari sono spostati conseguentemente.
-
 **Nota:** per impostare una relazione principale/secondario occorre avere almeno un elemento nel quadro. Altrimenti, questa opzione non viene visualizzata.';
 $string['positionplural'] = 'Posizioni';
 $string['positionreturntoframework'] = 'Torna al settore di posizione';

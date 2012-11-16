@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = '图书打印';
+$string['print:print'] = '打印图书';
 $string['printbook'] = '打印图书';
 $string['printchapter'] = '打印本章节';
 $string['printdate'] = '日期';
 $string['printedby'] = '打印';
-$string['print:print'] = '打印图书';

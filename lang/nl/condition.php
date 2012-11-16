@@ -30,7 +30,6 @@ $string['addgrades'] = 'Voeg {no} cijfervoorwaarden toe aan formulier';
 $string['availabilityconditions'] = 'Beperk toegang';
 $string['availablefrom'] = 'Toegankelijk vanaf';
 $string['availablefrom_help'] = 'Toegang van/tot datums bepalen wanneer leerlingen toegang tot de activiteit hebben via een link op de cursuspagina.
-
 Het verschil tussen toegang van/tot datums en de beschikbaarheidsinstelling voor de activiteit is dat buiten de datums de leerlingen de activiteitsbeschrijving kunnen zien, terwijl met de toegang van/tot datums de toegang volledig verhinderd wordt.';
 $string['availableuntil'] = 'Toegankelijk tot';
 $string['badavailabledates'] = 'Ongeldige data. Als je beide data instelt, dan moet de \'Toegankelijk vanaf\'-datum voor de \'Toegankelijk tot\'-datum zijn.';
@@ -41,7 +40,6 @@ $string['completion_incomplete'] = 'moet niet als voltooid gemarkeerd worden';
 $string['completion_pass'] = 'moet voltooid zijn en een voldoende behaald';
 $string['completioncondition'] = 'Voorwaarde voltooide activiteit';
 $string['completioncondition_help'] = 'Deze instelling bepaalt of er bepaalde delen van de cursus voltooid moeten zijn voor toegang tot deze activiteit mogelijk wordt. Merk op dat het opvolgen van voltooien eerst moet ingeschakeld zijn.
-
 Meerdere voorwaarden voor voltooide activiteiten kunnen ingesteld worden indien gewenst. In dat geval zal de toegang tot de activiteit slecht mogelijk worden als aan alle voorwaarden voldaan is.';
 $string['configenableavailability'] = 'Wanneer dit ingeschakeld is, dan kun je voorwaarden instellen (gebaseerd op datum, cijfer of voltooid) die controleren wanneer toegang tot een activiteit of bron mogelijk is.';
 $string['enableavailability'] = 'Voorwaardelijke toegang inschakelen';
@@ -49,7 +47,6 @@ $string['grade_atleast'] = 'minstens';
 $string['grade_upto'] = 'en minder dan';
 $string['gradecondition'] = 'Cijfervoorwaarde';
 $string['gradecondition_help'] = 'Deze instelling bepaalt of er aan bepaalde cijfervoorwaarden moet voldaan worden voor toegang tot deze activiteit mogelijk wordt.
-
 Meerdere cijfervoorwaarden kunnen ingesteld worden indien gewenst. In dat geval zal toegang tot de activiteit slecht mogelijk worden als aan alle cijfervoorwaarden voldaan is.';
 $string['gradeitembutnolimits'] = 'Je moet een bovenlimiet, een onderlimiet of beide ingeven.';
 $string['gradelimitsbutnoitem'] = 'Je moet een beoordelingsitem ingeven.';

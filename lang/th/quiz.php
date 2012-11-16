@@ -147,9 +147,8 @@ $string['download'] = 'คลิกเพื่อทำการดาวน์
 $string['downloadextra'] = '(ไฟล์ถูกจัดเก็บไว้ในไฟล์ของรายวิชาในแฟ้ม quiz)';
 $string['duplicateresponse'] = 'ไม่นับการส่งคำตอบในครั้งนี้เพราะว่าตอบคำถามไม่ต่างจากครั้งที่ผ่านมา';
 $string['eachattemptbuildsonthelast'] = 'อนุญาตให้ทำต่อจากครั้งที่แล้ว';
-$string['eachattemptbuildsonthelast_help'] = '<p>If multiple attempts are allowed and this setting is set to <b>Yes</b>, then each new attempt contains the results of the previous attempt.  This allows a quiz to be completed over several attempts.</p>
-
-<p>To show a fresh quiz on every attempt, select <b>No</b> for this setting.';
+$string['eachattemptbuildsonthelast_help'] = 'If multiple attempts are allowed and this setting is set to **Yes**, then each new attempt contains the results of the previous attempt. This allows a quiz to be completed over several attempts.
+To show a fresh quiz on every attempt, select **No** for this setting.';
 $string['editcategories'] = 'แก้ไขประเภท';
 $string['editcategory'] = 'แก้ไขประเภท';
 $string['editcatquestions'] = 'แก้ไขประเภทคำถาม';
@@ -223,25 +222,16 @@ $string['gradeboundary'] = 'ขอบเขตเกรด';
 $string['gradeessays'] = 'ให้คะแนนความเรียง';
 $string['gradehighest'] = 'คะแนนสูงสุด';
 $string['grademethod'] = 'วิธีตัดเกรด';
-$string['grademethod_help'] = '<P ALIGN=CENTER><B>การให้คะแนน</B></P>
-
-<P>เมื่อให้ทดลองตอบคำถามหลายครั้ง จึงมีวิธีการให้คะแนนหลายวิธี
+$string['grademethod_help'] = 'เมื่อให้ทดลองตอบคำถามหลายครั้ง จึงมีวิธีการให้คะแนนหลายวิธี
 เพื่อคำนวณคะแนนสุดท้ายในการตอบคำถามของนักเรียน
-<P><B>คะแนนสูงสุด</B><P>
-<UL>
-<P>คะแนนสุดท้ายคือคะแนนที่สูงที่สูด (ดีที่สุด)ของการทดลอง ทั้งหมด</UL>
-
-<P><B>คะแนนเฉลี่ย</B><P>
-<UL>
-<P>คะแนนสุดท้ายคือค่าเฉลี่ย (ค่ากลาง) ของการทดลองทั้งหมด</UL>
-
-<P><B>คะแนนครั้งแรก</B><P>
-<UL>
-<P>คะแนนสุดท้ายคือ คะแนนที่ได้จากการทดลองตอบคำถามในครั้งแรก (ครั้งอื่นๆ ไม่นับ)</UL>
-
-<P><B>คะแนนครั้งสุดท้าย</B><P>
-<UL>
-<P>คะแนนสุดท้ายจะได้จากการทดลองตอบคำถามครั้งล่าสุดเท่านั้น</UL>';
+**คะแนนสูงสุด**
+คะแนนสุดท้ายคือคะแนนที่สูงที่สูด (ดีที่สุด)ของการทดลอง ทั้งหมด
+**คะแนนเฉลี่ย**
+คะแนนสุดท้ายคือค่าเฉลี่ย (ค่ากลาง) ของการทดลองทั้งหมด
+**คะแนนครั้งแรก**
+คะแนนสุดท้ายคือ คะแนนที่ได้จากการทดลองตอบคำถามในครั้งแรก (ครั้งอื่นๆ ไม่นับ)
+**คะแนนครั้งสุดท้าย**
+คะแนนสุดท้ายจะได้จากการทดลองตอบคำถามครั้งล่าสุดเท่านั้น';
 $string['gradesdeleted'] = 'แบบทดสอบผลการเรียนที่ถูกลบ';
 $string['gradingdetails'] = 'คะแนนที่ได้ : {$a->raw}/{$a->max}.';
 $string['gradingdetailsadjustment'] = 'หักคะแนนจากครั้งก่อนรวมแล้วได้ <strong>{$a->cur}/{$a->max}</strong>';
@@ -414,37 +404,30 @@ $string['reportresponses'] = 'ข้อความโต้ตอบอย่�
 $string['reports'] = 'รายงาน';
 $string['reportsimplestat'] = 'สถิติอย่างง่าย';
 $string['requirepassword'] = 'ต้องใส่รหัสผ่าน';
-$string['requirepassword_help'] = '<p>This field is optional</p>
-
-<p>If you specify a password in here then participants must
+$string['requirepassword_help'] = 'This field is optional
+If you specify a password in here then participants must
 enter the same password before they are allowed to make an
-attempt on the quiz.</p>';
+attempt on the quiz.';
 $string['requiresubnet'] = 'ต้องมีที่อยู่เน็ตเวิร์ก';
-$string['requiresubnet_help'] = '<p>This field is optional.</p>
-
-<p>You can restrict access for a quiz to particular subnets
+$string['requiresubnet_help'] = 'This field is optional.
+You can restrict access for a quiz to particular subnets
 on the LAN or Internet by specifying a comma-separated list of
-partial or full IP address numbers.</p>
-
-<p>This is especially useful for a proctored quiz, where you want
+partial or full IP address numbers.
+This is especially useful for a proctored quiz, where you want
 to be sure that only people in a certain room are able to
-access the quiz.</p>
-
-<p>For example:  <b>192.168. , 231.54.211.0/20, 231.3.56.211</b></p>
-
-<p>There are three types of numbers you can use (you can not use
+access the quiz.
+For example: **192.168. , 231.54.211.0/20, 231.3.56.211**
+There are three types of numbers you can use (you can not use
 text based domain names like example.com):
-<ol>
-<li>Full IP addresses, such as <b>192.168.10.1</b> which will match
-a single computer (or proxy).</li>
-<li>Partial addresses, such as <b>192.168</b> which will match anything
-starting with those numbers.</li>
-<li>CIDR notation, such as <b>231.54.211.0/20</b> which allows you to specify
-more detailed subnets.</li>
-</ol>
-</p>
+1. Full IP addresses, such as **192.168.10.1** which will match
+a single computer (or proxy).
+2. Partial addresses, such as **192.168** which will match anything
+starting with those numbers.
+3. CIDR notation, such as **231.54.211.0/20** which allows you to specify
+more detailed subnets.
 
-<p>Spaces are ignored.</p>';
+
+Spaces are ignored.';
 $string['response'] = 'ข้อที่เลือก';
 $string['responses'] = 'ข้อที่เลือก';
 $string['results'] = 'ผลสอบ';
@@ -517,23 +500,19 @@ $string['timecompleted'] = 'ทำเสร็จเมื่อ';
 $string['timedelay'] = 'คุณยังไม่สามารถทำแบบทดสอบเพราะคุณยังไม่ถึงกำหนดเวลาที่จะทำแบบทดสอบครั้งต่อไปได้';
 $string['timeleft'] = 'เหลือเวลา';
 $string['timelimit'] = 'ให้เวลา';
-$string['timelimit_help'] = '<p align="center"><strong>Time limit</strong></p>
-
-<p>By default, quizzes do not have a time limit, which allows
+$string['timelimit_help'] = '**Time limit**
+By default, quizzes do not have a time limit, which allows
 students as much time as they need to complete the quiz.
+If you do specify a time limit, the several things are done to try and
+ensure that quizzes are completed within that time:
 
-<p>If you do specify a time limit, the several things are done to try and
-ensure that quizzes are completed within that time:</p>
-
-<ul>
-<li>Javascript support in the brower becomes mandatory - this allows
-the timer to work correctly.</li>
-<li>A floating timer window is shown with a countdown</li>
-<li>When the timer has run out, the quiz is submitted automatically
-with whatever answers have been filled in so far</li>
-<li>If a student manages to cheat and spends more than 60 seconds
-over the allotted time then the quiz is automatically graded zero</li>
-</ul>';
+* Javascript support in the brower becomes mandatory - this allows
+the timer to work correctly.
+* A floating timer window is shown with a countdown
+* When the timer has run out, the quiz is submitted automatically
+with whatever answers have been filled in so far
+* If a student manages to cheat and spends more than 60 seconds
+over the allotted time then the quiz is automatically graded zero';
 $string['timelimitexeeded'] = 'ขออภัยค่ะ หมดเวลาทำแบบทดสอบแล้ว';
 $string['timelimitmin'] = 'วงเงินเวลา (นาที)';
 $string['timestr'] = '%H:%M:%S on %d/%m/%y';

@@ -198,7 +198,6 @@ $string['sortasc'] = 'Tri ascendant';
 $string['sortdesc'] = 'Tri descendant';
 $string['strategy'] = 'Stratégie d\'évaluation';
 $string['strategy_help'] = 'La stratégie d\'évaluation détermine le formulaire d\'évaluation utilisé ainsi que la méthode d\'évaluation des travaux remis. Il y a 4 possibilités :
-
 * Évaluation cumulative : des commentaires et une note sont donnés sur différents aspects spécifiés
 * Commentaires : des commentaires sont donnés sur différents aspects spécifiés, mais sans note
 * Numbre d\'erreurs : des commentaires sont donnés ainsi qu\'une évaluation oui/non sur des affirmations spécifiées

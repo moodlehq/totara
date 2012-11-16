@@ -38,8 +38,8 @@ $string['savedconfigsuccess'] = 'Plagioinnineston asetukset tallennettu';
 $string['showwhenclosed'] = 'Koska Aktiviteetti suljettu';
 $string['similarity'] = 'URKUND';
 $string['studentdisclosure'] = 'Opiskelijajulkaisu';
-$string['studentdisclosuredefault'] = 'Kaikki ladatut tiedostot lähetetään plagioinnintunnistuspalvelu URKUND:iin. Jos haluat estää dokumenttisi käytön muiden yritysten analyysin lähteenä tämän sivuston ulkopuolella, voit käyttää "jättäydy pois" -linkkiä, joka annetaan raportin luomisen jälkeen.';
 $string['studentdisclosure_help'] = 'Tämä teksti näytetään kaikille opiskelijoille tiedostonlataussivulla.';
+$string['studentdisclosuredefault'] = 'Kaikki ladatut tiedostot lähetetään plagioinnintunnistuspalvelu URKUND:iin. Jos haluat estää dokumenttisi käytön muiden yritysten analyysin lähteenä tämän sivuston ulkopuolella, voit käyttää "jättäydy pois" -linkkiä, joka annetaan raportin luomisen jälkeen.';
 $string['studentemailcontent'] = 'Moduuliin {$a->modulename} kurssilla {$a->coursename} lähettämäsi tiedosto on nyt plagioinninestotyökalu URKUND:in käsittelemä.
 {$a->modulelink}
 
@@ -54,9 +54,7 @@ $string['unsupportedfiletype'] = 'URKUND ei tue tätä tiedostotyyppiä';
 $string['urkund'] = 'URKUND plagioinninestomoduuli';
 $string['urkund_api'] = 'URKUND Integraatio-osoite';
 $string['urkund_api_help'] = 'Tämä on URKUND API:n osoite';
-$string['urkunddefaults'] = 'URKUND-oletukset';
 $string['urkund_draft_submit'] = 'Milloin tiedosto tulisi lähettää URKUND:iin';
-$string['urkundexplain'] = 'Lisätietoa tästä moduulista: <a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['urkund_lang'] = 'Kieli';
 $string['urkund_lang_help'] = 'URKUND:in antama kielikoodi';
 $string['urkund_password'] = 'Salasana';
@@ -71,4 +69,6 @@ $string['urkund_studentemail'] = 'Lähetä opiskelijalle sähköposti';
 $string['urkund_studentemail_help'] = 'Tämä lähettää sähköpostin opiskelijalle kun tiedosto on käsitelty ja raportti on saatavilla. Sähköposti sisältää myös "jättäydy pois" -linkin.';
 $string['urkund_username'] = 'Käyttäjätunnus';
 $string['urkund_username_help'] = 'URKUND:in antama käyttäjätunnus API:in';
+$string['urkunddefaults'] = 'URKUND-oletukset';
+$string['urkundexplain'] = 'Lisätietoa tästä moduulista: <a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['useurkund'] = 'Aktivoi URKUND';

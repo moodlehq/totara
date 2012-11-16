@@ -43,15 +43,14 @@ $string['uploadpicture_cannotsave'] = '不能保存用户{$a}的图片，片，�
 $string['uploadpicture_cannotunzip'] = '不能解压图片文件。';
 $string['uploadpicture_invalidfilename'] = '图片文件名含有非法字符，跳过。';
 $string['uploadpicture_overwrite'] = '覆盖已有的用户头像？';
-$string['uploadpictures'] = '上传头像';
-$string['uploadpictures_help'] = '用户头像可以通过zip文件或图片文件上传。图像文件应按chosen-user-attribute.extension的形式命名。例如，用户user1234的头像文件名应为user1234.jpg。';
 $string['uploadpicture_userfield'] = '用来匹配图片的用户属性：';
 $string['uploadpicture_usernotfound'] = '用户字段\'{$a->userfield}\'，值 \'{$a->uservalue}\' 不存在，跳过。';
 $string['uploadpicture_userskipped'] = '跳过用户{$a}(已经有一张图片)';
 $string['uploadpicture_userupdated'] = '{$a}的图片已更新。';
+$string['uploadpictures'] = '上传头像';
+$string['uploadpictures_help'] = '用户头像可以通过zip文件或图片文件上传。图像文件应按chosen-user-attribute.extension的形式命名。例如，用户user1234的头像文件名应为user1234.jpg。';
 $string['uploadusers'] = '上传用户';
 $string['uploadusers_help'] = '可以通过文本文件上传（并能直接选课）用户。文件的格式如下：
-
 * 文件的每行包含一条记录
 * 每条记录是一系列被逗号（或其它分隔符）分隔的数据
 * 第一行记录是字段名列表，定义文件的格式

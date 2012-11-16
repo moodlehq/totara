@@ -34,7 +34,7 @@ $string['additionalcoursedesc'] = '{$a->lang} Készítő: {$a->creatorname} - Ki
 - Célközönség: {$a->audience} - Képzési szint: {$a->educationallevel} - Licenc: {$a->license}';
 $string['addtocommunityblock'] = 'Ugrópont mentése a kurzushoz';
 $string['audience'] = 'Kiknek szól';
-$string['audience_help'] = 'Milyen kurzust keres?  Hagyományos, tanulóknak szánt kurzusok mellett kereshet oktatói vagy Moodle-rendszergazdai közösségeket is.';
+$string['audience_help'] = 'Milyen kurzust keres? Hagyományos, tanulóknak szánt kurzusok mellett kereshet oktatói vagy Moodle-rendszergazdai közösségeket is.';
 $string['blocks'] = 'Blokkok';
 $string['cannotselecttopsubject'] = 'Nem lehet felső szintű tárgyat kiválasztani.';
 $string['comments'] = 'Megjegyzések ({$a})';
@@ -57,10 +57,9 @@ $string['downloadingcourse'] = 'Kurzus letöltése';
 $string['downloadingsize'] = 'Várjon, a kurzusállomány ({$a->total}MB) letöltése folyamatban...';
 $string['downloadtemplate'] = 'Kurzus létrehozása sablonból';
 $string['educationallevel'] = 'Képzési szint';
-$string['educationallevel_help'] = 'Milyen képzési szintet keres?  Oktatói közösségek esetén ez a szint az általuk oktatott szintet írja le.';
+$string['educationallevel_help'] = 'Milyen képzési szintet keres? Oktatói közösségek esetén ez a szint az általuk oktatott szintet írja le.';
 $string['enroldownload'] = 'Keresés';
 $string['enroldownload_help'] = 'A kiválasztott elosztóban felsorolt egyes kurzusok úgy vannak meghirdetve, hogy azokba az eredeti portálon lehessen bekapcsolódni.
-
 A többi olyan kurzussablon, amelyet letölthet és saját Moodle-portálján használhat.';
 $string['enrollable'] = 'kurzusok, melyeket felvehetek';
 $string['enrollablecourses'] = 'Felvehető kurzusok';

@@ -572,7 +572,6 @@ $string['positionframeworkidnumber'] = 'Azonosító szám';
 $string['positionframeworkmanage'] = 'Struktúra kezelése';
 $string['positionframeworks'] = 'Munkakör struktúrák';
 $string['positionframeworks_help'] = 'A **Munkakör struktúra** lehetővé teszi a munkakörök hierarchiájának felépítését a szervezet számára.
-
 Egyidejűleg több, egymástól független munkakör struktúra is létrehozható.';
 $string['positionfullname'] = 'Munkakör teljes név';
 $string['positionhistory'] = 'Munkakör történet';
@@ -588,11 +587,8 @@ $string['positionnoframeworkssetup'] = 'Nincsenek munkakör struktúrák beáll�
 $string['positionnotypes'] = 'Nincsenek munkakör típusok.';
 $string['positionparent'] = 'Szülő';
 $string['positionparent_help'] = 'A **Szülő munkakör** lehetővé teszi, hogy a munkakörök szülő és gyermek, azaz vezető és beosztott kapcsolatait menedzseljük.
-
 Válassza ki a **Szülő munkakört** a legördülő listából. Válassza a **Felső** elemet, ha azt szeretné, hogy ennek a pozíciónak ne legyen szülője, azaz felettese ebben a hierarchiában.
-
 Ha egy munkakör szülő munkakörét (felettesét) módosítja, akkor a munkakör áthelyezésre kerül a hierarchián belül, és vele együtt az összes gyermek (beosztott) munkakör is át lesz helyezve.
-
 **Megjegyzés:** A munkakör felettesének a beállításához a hierarchián belül további munkaköröknek kell már lenniük, hogy be lehessen azokat felettesnek állítani. Ellenkező esetben ez a beállítási lehetőség nem jelenik meg.';
 $string['positionplural'] = 'Munkakörök';
 $string['positionreturntoframework'] = 'Vissza a munkakör struktúrához';

@@ -86,7 +86,6 @@ Ce travail est disponible ici :
 $string['emailteachermailhtml'] = '{$a->username} a modifié son travail remis pour le devoir « <em>{$a->assignment}</em> » le {$a->timeupdated}.<br /><br />Le travail remis est <a href="{$a->url}">disponible sur le site web</a>.';
 $string['emailteachers'] = 'Envoyer aux enseignants les alertes par courriel';
 $string['emailteachers_help'] = 'Si cette option est activée, les enseignants reçoivent un bref message lorsque les étudiants ajoutent ou mettent à jour leur devoir en ligne.
-
 Seuls les enseignants ayant l\'autorisation d\'évaluer le travail reçoivent le message. Ainsi, par exemple, si le cours utilise des groupes séparés, les enseignants restreints à un groupe particulier ne reçoivent pas les alertes concernant les étudiants des autres groupes.';
 $string['emptysubmission'] = 'Vous n\'avez encore rien remis';
 $string['enablenotification'] = 'Envoyer les courriels de notification';

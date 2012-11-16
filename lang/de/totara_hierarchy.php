@@ -109,11 +109,8 @@ $string['competencyaddnew'] = 'Neue Kompetenz hinzufügen';
 $string['competencyaddnewframework'] = 'Neues Kompetenzprofil hinzufügen';
 $string['competencyaggregationmethod'] = 'Methode zur Zusammenfassung';
 $string['competencyaggregationmethod_help'] = 'Die Berechnungsmethode bestimmt, wie das System das Erreichen einer Kompetenz berechnet.
-
 Wenn die Berechnungsmethode auf Alle gestellt wird, dann müssen alle Kinderkompetenzen erreicht werden, um ein Erreichen der Elternkompetenz zu ermöglichen.
-
 Wenn die Berechnungsmethode auf Beliebig gestellt wird, dann muss nur eine der Kinderkompetenzen erreicht werden, um ein erfolgreiches Erreichen der Elternkompetenz (und der zugehörigen Kinderkompetenz) zu ermöglichen.
-
 Wenn die Berechnungsmethode auf Aus gestellt wird, dann wird das automatische Erreichen für diese Kompetenz deaktiviert. (Es kann aber immer noch manuell als erreicht markiert werden.)';
 $string['competencyassigndeletecheck'] = 'Sind Sie sicher, dass Sie diese Kompetenzzuweisung löschen möchten?';
 $string['competencybacktoallframeworks'] = 'Zurück zu Kompetenzprofilen';
@@ -148,13 +145,10 @@ $string['competencyevidence'] = 'Kompetenznachweis';
 $string['competencyevidenceassessmenttype'] = 'Beurteilungstyp';
 $string['competencyevidenceassessmenttype_help'] = 'Das Feld Bewertungstyp ist ein freies Textfeld für jedwede zusätzlichen Informationen zur Bewertung dieser Kompetenz. Der Inhalt ist kann unterschiedlich ausfallen und das Feld ist optional.';
 $string['competencyevidenceassessor_help'] = 'Sie können einen Bewerter auswählen, der dann ein Nutzer ist, der den aktuellen Nutzer in der aktuellen Kompetenz als fähig bewertet hat. Bewerter ist ein optionales Feld. Belassen Sie daher das Pulldown-Menü bei der Option \'Einen Bewerter auswählen ...\', wenn Sie keinen Bewerter zuweisen möchten.
-
 Das Pulldown-Menü listet alle moodle-Nutzer auf, die sich in der Rolle des Bewerters befinden. Wenn der Nutzer, den Sie hinzufügen möchten, nicht vorhanden ist oder keine Optionen angezeigt werden, dann müssen Sie Ihren Administrator bitten, diesen Nutzer zur Bewerterrolle hinzuzufügen.';
 $string['competencyevidenceassessorname_help'] = 'Das Feld Bewertername bezieht sich auf den Namen der Organisation, die die Bewertung für diese Kompetenz vorgenommen hat. Dies ist ein optionales Feld, das leer bleiben kann.';
 $string['competencyevidencecompetency_help'] = 'Die dem Nutzer zuzuweisende Kompetenz. Wenn Sie ein bestehendes Element eines Kompetenznachweises bearbeiten, dann kann dies nicht verändert werden. Sie können allerdings ein neues Element für den Kompetenznachweis erstellen (wenn Sie dazu befugt sind), indem Sie die Seite Meine Aufzeichnungen des Nutzers besuchen und auf \'Kompetenznachweis hinzufügen\' klicken.
-
 Wenn Sie ein neues Kompetenznachweiselement erstellen, können Sie wählen, ob Sie einen Nachweis für eine bestehende Kompetenz hinzufügen möchten oder eine neue Kompetenz erstellen möchten. Wenn Sie \'Eine Kompetenz auswählen\' wählen, können Sie in einem Popup aus den bestehenden Kompetenzen wählen. Wenn Sie \'Eine neue Kompetenz erstellen\' wählen, wird ein Formular angezeigt, mit dem Sie einen Typ auswählen und die neue Kompetenz definieren können.
-
 Beachten Sie, dass Sie keine zwei Kompetenznachweiselemente erstellen können, die sich auf den selben Nutzer und die selbe Kompetenz beziehen. Wenn Sie dies versuchen, wird Ihnen eine Verknüpfung angezeigt, mit der Sie den originalen Datensatz bearbeiten oder eine andere Kompetenz auswählen können.';
 $string['competencyevidencecount'] = 'Nachweisbelege';
 $string['competencyevidenceorganisation_help'] = 'Diese Option verzeichnet die Organisation, in der sich der Nutzer bei Abschluss des Kompetenznachweiselements befunden hat. In den meisten Fällen ist dies die selbe Organisation wie die gegenwärtige Organisation des Nutzers. Da Nutzer die Organisation im Laufe der Zeit wechseln, kann hiermit eine Aufzeichnung dazu geführt werden, wo sich der Nutzer zum Zeitpunkt des Abschlusses befunden hat. Dies ist ein optionales Feld.';
@@ -171,28 +165,23 @@ $string['competencyframeworkfullname'] = 'Kompetenzprofil vollständiger Name';
 $string['competencyframeworkfullname_help'] = 'Der vollständige Typenname ist die vollständige Bezeichnung des Typs.';
 $string['competencyframeworkgeneral'] = 'Kompetenzprofil';
 $string['competencyframeworkgeneral_help'] = '**Kompetenztypen **enthalten die Fähigkeiten, das Wissen und die Verhaltenskompetenzen, die durch Ihre Belegschaft erreicht werden sollen.
-
 Kompetenzen können unter verschiedenen Typen gruppiert sein. Beispiel: Ein Typ kann alle nationalen Kompetenzstandards der Branche umfassen (von einem Organ der Branche übernommen), während ein anderer Typ spezielle unternehmensinterne Kompetenzen umfassen kann.
-
 Vor dem Einstellen eines Kompetenztyps müssen Sie eine **Kompetenzskala** einstellen.';
 $string['competencyframeworkidnumber'] = 'ID';
 $string['competencyframeworkidnumber_help'] = 'Die Typ-ID-Nummer ist eine einmalig vergebene Nummer zur Erkennung des Typs.</h1>';
 $string['competencyframeworkmanage'] = 'Vorlagen verwalten';
 $string['competencyframeworks'] = 'Kompetenzprofile';
 $string['competencyframeworks_help'] = '**Kompetenztypen **enthalten die Fähigkeiten, das Wissen und die Verhaltenskompetenzen, die durch Ihre Belegschaft erreicht werden sollen.
-
 Kompetenzen können unter verschiedenen Typen gruppiert sein. Beispiel: Ein Typ kann alle nationalen Kompetenzstandards der Branche umfassen (von einem Organ der Branche übernommen), während ein anderer Typ spezielle unternehmensinterne Kompetenzen umfassen kann.
-
 Vor dem Einstellen eines Kompetenztyps müssen Sie eine **Kompetenzskala** einstellen.';
 $string['competencyframeworkscale_help'] = 'Kompetenzskalen ermöglichen es Ihnen, die Kriterien zu bestimmen, mit denen eine Kompetenz bemessen werden kann. Beispiel: Eine Skala kann drei Werte umfassen - ‘kompetent, kompetent mit Überwachung, nicht kompetent’.
-
 Der erste Schritt umfasst die Option Kompetenzskalen, um eine neue Skala hinzuzufügen. Dann werden die Skalenwerte hinzugefügt, mit denen der Fortschritt des Lernenden für eine Kompetenz bestimmt wird. Sie können beliebig viele Werte hinzufügen. Beachten Sie auch die Einstellungen für Standardwert und Fähigkeitswert.';
 $string['competencyframeworkshortname_help'] = 'Der Typenkurzname ist eine kurze Bezeichnung für den vollständigen Typennamen und kann für Anzeigezwecke verwendet werden.';
 $string['competencyframeworkview'] = 'Profil anzeigen';
 $string['competencyfullname'] = 'Kompetenz vollständiger Name';
 $string['competencyfullname_help'] = 'Der vollständige Kompetenzname ist die vollständige Bezeichnung der Kompetenz.';
 $string['competencyidnumber'] = 'Kompetenz ID';
-$string['competencyidnumber_help'] = 'Die Kompetenz-ID-Nummer ist eine einmalig vergebene Nummer zur Erkennung der Kompetenz.</h1>';
+$string['competencyidnumber_help'] = 'Die Kompetenz-ID-Nummer ist eine einmalig vergebene Nummer zur Erkennung der Kompetenz.';
 $string['competencymanage'] = 'Kompetenzen verwalten';
 $string['competencymissingname'] = 'Fehlender Kompetenzname';
 $string['competencymissingnameframework'] = 'Fehlender Kompetenzprofilname';
@@ -203,19 +192,14 @@ $string['competencynoframeworkssetup'] = 'Für diese Seite sind keine Kompetenzp
 $string['competencynotypes'] = 'Keine Kompetenztypen';
 $string['competencyparent'] = 'Überkompetenz';
 $string['competencyparent_help'] = 'Die **Elternkompetenz** ermöglicht es Ihnen, die Eltern-Kind-Beziehung zwischen Kompetenzen zu verwalten.
-
 Wählen Sie die **Elternkompetenz** im Dropdown-Menü. Wählen Sie **Oben**, wenn die Kompetenz ganz oben in der Hierarchie stehen soll.
-
 Wenn Sie die Elternkompetenz eines Elements ändern, dann wird diese mit allen Kinderkompetenzen unter die neue Elternkompetenz verschoben.
-
 **Hinweis:** Zur Einstellung der Eltern-Kind-Beziehungen müssen Sie über mindestens ein anderes Element in Typ verfügen. Andernfalls wird die Option nicht angezeigt.';
 $string['competencyplural'] = 'Kompetenzen';
 $string['competencyreturntoframework'] = 'Zurück zum Kompetenzprofil';
 $string['competencyscale'] = 'Kompetenzskala';
 $string['competencyscale_help'] = '**Skala** ist der Name der Kompetenzskala, die im Kompetenztyp verwendet wird.
-
 Die Kompetenzskala wird im Kompetenztyp eingestellt. In jedem Typ kann nur eine Kompetenzskala verwendet werden.
-
 Eine neue Kompetenzskala kann unter Hierarchien/Kompetenzen/Typen verwalten im Menü unter \'Website-Administration\' eingestellt werden.';
 $string['competencyscaleassign'] = 'Kompetenzskala';
 $string['competencyscaleassign_help'] = 'Eine Kompetenzskala definiert die Kriterien, mit denen eine Kompetenz bemessen werden kann. Dies ist der Name der Skala, zu der der Wert hinzugefügt wird.';
@@ -226,29 +210,25 @@ $string['competencyscaleinuse'] = 'Die Skala ist schon zugewiesen worden, d.h. B
 $string['competencyscaleproficient'] = 'Kenntnisse Wert';
 $string['competencyscaleproficient_help'] = 'Fähigkeitswerte bieten für das System eine Möglichkeit nachzuverfogen, ob der Nutzer für eine bestimmte Kompetenz \'kompetent\' ist. Dies wird genutzt, um den Fortschritt bei Lernplänen aufzuzeigen, und zeigt nur überfällige Mitteilungen für unvollständige Kompetenzen an.
 Ein Nutzer wird als \'kompetent\' erachtet, wenn für den eingestellten Skalenwert \'fähig\' markiert wurde. Sie können mehrere Skalenwerte auf fähig setzen, es muss jedoch mindestens ein Skalenwert als fähig markiert werden. Der Fähigkeitswert wird durch Bearbeiten des Skalenwerts bearbeitet.
-
 Der niedrigste Skalenwert, der als fähig markiert wurde, wird automatisch jedem Nutzer zugewiesen, der die Fähigkeiten gezeigt hat, die gemäß den durch die Kompetenz festgelegten Nachweiselementen erforderlich sind (z.B. Abschluss von Kurs/Aktivität oder Erlangung von Kurs-/Aktivitätsbewertung).';
 $string['competencyscales'] = 'Kompetenzskalen';
 $string['competencyscalescalename'] = 'Name';
 $string['competencyscalescalename_help'] = 'Der Name der Kompetenzskala, die durch die Kompetenztyp verwendet wird.';
 $string['competencyscalescalevalues'] = 'Werte';
 $string['competencyscalescalevalues_help'] = 'Geben Sie Werte für die Kompetenzskala ein (einer pro Zeile), von am meisten kompetent zu am wenigsten kompetent. Beispiel:
-
-<p class="indent">
-<i> Kompetent<br /> Kompetent mit Überwachung<br /> Nicht kompetent<br /> </i>
-</p>';
+* Kompetent
+* Kompetent mit Überwachung
+* Nicht kompetent
+';
 $string['competencyscalesgeneral'] = 'Kompetenzskala';
 $string['competencyscalesgeneral_help'] = '**Kompetenzskalen **ermöglichen es Ihnen, die Kriterien zu bestimmen, mit denen eine Kompetenz bemessen werden kann. Beispiel: Eine Skala kann drei Werte umfassen - ‘kompetent, kompetent mit Überwachung, nicht kompetent’.
-
 Vor dem Einstellen einer Kompetenzskala muss ein Kompetenztyp oder eine Kompetenz eingestellt werden.';
 $string['competencyscalevaluedescription'] = 'Beschreibung';
 $string['competencyscalevalueidnumber'] = 'Skalenwert ID';
 $string['competencyscalevalueidnumber_help'] = 'Die Skalenwert-ID-Nummer ist eine einmalig vergebene Nummer zur Erkennung des Skalenwerts.</h1>';
 $string['competencyscalevaluename'] = 'Skalenwert Name';
 $string['competencyscalevaluename_help'] = 'Der **Skalenwertname** ist der Name des Kompetenzskalenwerts, den Sie hinzufügen oder bearbeiten.
-
 Ein Skalenwert wird verwendet, um den Fortschritt eines Lernenden für eine Kompetenz zu bestimmen. Sie können beliebig viele Skalenwerte hinzufügen.
-
 **Hinweis: **Denken Sie daran, die Einstellungen für Standardwert und Fähigkeitswert vorzunehmen.';
 $string['competencyscalevaluenumericalvalue'] = 'Skalenwert numerischer Wert';
 $string['competencyscalevaluenumericalvalue_help'] = 'Der numerische Skalenwert ist der numerische Wert, der mit dem Skalenwert verknüpft ist.';
@@ -256,7 +236,6 @@ $string['competencyshortname'] = 'Kompetenz Kurzbezeichnung';
 $string['competencyshortname_help'] = 'Der Kompetenzenkurzname ist eine kurze Bezeichnung für den vollständigen Kompetenzennamen und kann für Anzeigezwecke verwendet werden.';
 $string['competencytemplatefullname_help'] = 'Der vollständige Vorlagenname ist die vollständige Bezeichnung der eingestellten Kompetenzvorlage.';
 $string['competencytemplategeneral_help'] = 'Eine **Kompetenzvorlage** ist eine Möglichkeit zur gemeinsamen Gruppierung von Kompetenzen aus einem Kompetenztyp.
-
 Wenn ein Ausbildungsereignis eingestellt wird, z.B. ein Einarbeitungskurs, dann kann dies mit einer Kompetenzvorlage \'Kompetenzen neue Mitarbeiter\' verknüpft werden, wobei automatisch eine Reihe von Kompetenzen einbezogen wird und nicht jede Kompetenz einzeln ausgewählt werden muss.';
 $string['competencytemplatemanage'] = 'Vorlagen verwalten';
 $string['competencytemplates'] = 'Kompetenzvorlagen';
@@ -598,11 +577,10 @@ $string['organisationframeworkdescription'] = 'Beschreibung';
 $string['organisationframeworkdescription_help'] = 'Die Typbeschreibung ist ein Textfeld zum Speichern von zusätzlichen Informationen über den Typ. Sie wird auf der Seite Organisationen verwalten angezeigt, direkt über der Tabelle mit den Organisationen.';
 $string['organisationframeworkfullname_help'] = 'Der vollständige Typenname ist die vollständige Bezeichnung des Typs.';
 $string['organisationframeworkidnumber'] = 'ID';
-$string['organisationframeworkidnumber_help'] = 'Die Typ-ID-Nummer ist eine eindeutige Nummer, die für den Typ verwendet werden kann.</h1>';
+$string['organisationframeworkidnumber_help'] = 'Die Typ-ID-Nummer ist eine eindeutige Nummer, die für den Typ verwendet werden kann.';
 $string['organisationframeworkmanage'] = 'Profile verwalten';
 $string['organisationframeworks'] = 'Organisationsprofile';
 $string['organisationframeworks_help'] = 'Ein **Organisationstyp** enthält die Organisationsstruktur Ihrer Organisation.
-
 Sie können mehrere Organisationstypen erstellen. Beispiel: ein Typ für Unterabteilungen oder Tochtergesellschaften eines Unternehmens.';
 $string['organisationframeworkshortname_help'] = 'Der Typenkurzname ist eine Kurzbezeichnung für den vollständigen Typennamen und kann für Anzeigezwecke verwendet werden.';
 $string['organisationfullname'] = 'Organisation vollständiger Name';
@@ -619,11 +597,8 @@ $string['organisationnoframeworkssetup'] = 'Für diese Seite existieren keine Or
 $string['organisationnotypes'] = 'Keine Organisationstypen';
 $string['organisationparent'] = 'Mutterorganisation';
 $string['organisationparent_help'] = 'Mit **Elternorganisation** können Sie Eltern-Kind-Beziehungen zwischen Organisationen verwalten.
-
 Wählen Sie **Elternorganisation** aus dem Dropdown-Menü. Wählen Sie **Oben**, wenn Sie die Organisation auf die oberste Ebene der Hierarchie stellen wollen.
-
 Wenn Sie die Elternorganisation eines Elements ändern, wird dieses unter dem neuen Elternteil sitzen und alle Kinder werden ebenfalls mitgezogen.
-
 **Hinweis:** Um Eltern-Kind-Beziehungen einstellen zu können, müssen Sie über mindestens ein anderes Element in dem Typ verfügen. Andernfalls wird die Option nicht angezeigt.';
 $string['organisationplural'] = 'Organisationen';
 $string['organisationreturntoframework'] = 'Zurück zum Organisationsprofil';
@@ -691,7 +666,6 @@ $string['positionframeworkidnumber_help'] = 'Die Typ-ID-Nummer ist eine eindeuti
 $string['positionframeworkmanage'] = 'Profile verwalten';
 $string['positionframeworks'] = 'Positionsprofile';
 $string['positionframeworks_help'] = 'Ein **Positionstyp** wird verwendet, um die verschiedenen Positionen in der Organisation einzustellen und zu beinhalten.
-
 Sie können Taxonomien (Typen) für mehrere Positionen innerhalb einer Organisation einstellen.';
 $string['positionframeworkshortname_help'] = 'Der Typenkurzname ist eine Kurzbezeichnung für den vollständigen Typennamen und kann für Anzeigezwecke verwendet werden.';
 $string['positionfullname'] = 'Position vollständiger Name';
@@ -709,11 +683,8 @@ $string['positionnoframeworkssetup'] = 'Für diese Seite existieren keine Positi
 $string['positionnotypes'] = 'Keine Postionstypen';
 $string['positionparent'] = 'Mutterposition';
 $string['positionparent_help'] = 'Mit **Elternposition** können Sie Eltern-Kind-Beziehungen zwischen Positionen verwalten.
-
 Wählen Sie **Elternposition** aus dem Dropdown-Menü. Wählen Sie **Oben**, wenn Sie die Position auf die oberste Ebene der Hierarchie stellen wollen.
-
 Wenn Sie die Elternposition eines Elements ändern, wird dieses unter dem neuen Elternteil sitzen und alle Kinder werden ebenfalls mitgezogen.
-
 **Hinweis:** Um Eltern-Kind-Beziehungen einstellen zu können, müssen Sie über mindestens ein anderes Element in dem Typ verfügen. Andernfalls wird die Option nicht angezeigt.';
 $string['positionplural'] = 'Positionen';
 $string['positionreturntoframework'] = 'Zurück zum Positionsprofil';

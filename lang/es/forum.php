@@ -42,7 +42,7 @@ $string['attachment_help'] = 'Si lo desea, puede adjuntar uno o más archivos a 
 $string['attachmentnopost'] = 'No puede exportar archivos adjuntos sin una id de mensaje';
 $string['attachments'] = 'Archivos adjuntos';
 $string['blockafter'] = 'Umbral de mensajes para bloqueo';
-$string['blockafter_help'] = 'Este ajuste especifica el número máximo de aportaciones que un usuario puede publicar en el período de tiempo especificado. Los usuarios con el permiso \'mod/forum:postwithoutthrottling\'  están exentos de esta limitación.';
+$string['blockafter_help'] = 'Este ajuste especifica el número máximo de aportaciones que un usuario puede publicar en el período de tiempo especificado. Los usuarios con el permiso \'mod/forum:postwithoutthrottling\' están exentos de esta limitación.';
 $string['blockperiod'] = 'Período de tiempo para bloqueo';
 $string['blockperiod_help'] = 'Se puede impedir que los estudiantes puedan publicar más aportaciones que las especificadas por número determinado dentro de un periodo de tiempo.
 Los usuarios con el permiso \'moodle/forum:ostwithoutthrottling\' están exentos de esta limitación.';
@@ -130,19 +130,15 @@ $string['discussionsstartedbyrecent'] = 'Debate recientemente comenzado por {$a}
 $string['discussionsstartedbyuserincourse'] = 'Discusiones iniciadas por {$a->fullname} en {$a->coursename}';
 $string['discussthistopic'] = 'Ver mensajes';
 $string['displayend'] = 'Mostrar final';
-$string['displayend_help'] = '<p>Puede elegir si los mensajes del foro se muestran a partir de una fecha determinada, expiran en una fecha concreta o son visibles sólo a lo largo de un determinado período.</p>
-
-<p>Deje sin seleccionar la(s) opcion(es) de deshabilitar para activar las fechas inicial y final en que son visibles los mensajes.</p>
-
-<p>Note que los usuarios con acceso de Administrador verán los mensajes antes de su fecha de aparición y después de su fecha de expiración.</p>';
+$string['displayend_help'] = 'Puede elegir si los mensajes del foro se muestran a partir de una fecha determinada, expiran en una fecha concreta o son visibles sólo a lo largo de un determinado período.
+Deje sin seleccionar la(s) opcion(es) de deshabilitar para activar las fechas inicial y final en que son visibles los mensajes.
+Note que los usuarios con acceso de Administrador verán los mensajes antes de su fecha de aparición y después de su fecha de expiración.';
 $string['displaymode'] = 'Mostrar modo';
 $string['displayperiod'] = 'Mostrar período';
 $string['displaystart'] = 'Mostrar inicio';
-$string['displaystart_help'] = '<p>Puede elegir si los mensajes del foro se muestran a partir de una fecha determinada, expiran en una fecha concreta o son visibles sólo a lo largo de un determinado período.</p>
-
-<p>Deje sin seleccionar la(s) opcion(es) de deshabilitar para activar las fechas inicial y final en que son visibles los mensajes.</p>
-
-<p>Note que los usuarios con acceso de Administrador verán los mensajes antes de su fecha de aparición y después de su fecha de expiración.</p>';
+$string['displaystart_help'] = 'Puede elegir si los mensajes del foro se muestran a partir de una fecha determinada, expiran en una fecha concreta o son visibles sólo a lo largo de un determinado período.
+Deje sin seleccionar la(s) opcion(es) de deshabilitar para activar las fechas inicial y final en que son visibles los mensajes.
+Note que los usuarios con acceso de Administrador verán los mensajes antes de su fecha de aparición y después de su fecha de expiración.';
 $string['eachuserforum'] = 'Cada persona plantea un tema';
 $string['edit'] = 'Editar';
 $string['editedby'] = 'Editado por {$a->name} - envío original {$a->date}';
@@ -196,17 +192,12 @@ $string['forumsubjecthidden'] = 'Tema (oculto)';
 $string['forumtracked'] = 'Se están rastreando los mensajes no leídos';
 $string['forumtrackednot'] = 'Los mensajes no leídos no se están rastreando l';
 $string['forumtype'] = 'Tipo de foro';
-$string['forumtype_help'] = '<P>Hay cinco tipos diferentes de foros entre los que elegir:
-
-<P><B>Cada persona plantea un tema.</B> Cada persona puede plantear un nuevo tema de debate (y todos pueden responder). Esta modalidad es útil cuando usted quiere que cada estudiante empiece una discusión sobre, digamos, sus reflexiones sobre el tema de la semana, y que todos los demás le respondan.
-
-<P><B>Un debate sencillo.</B> Es simplemente un intercambio de ideas sobre un solo tema, todo en un página. Útil para debates cortos y concretos.
-
-<P><B>Foro P y R: Pregunta y Respuestas.</B> Los estudiantes primero deben fijar sus puntos de vista antes de ver los mensajes de los demás.
-
-<P><B>Foro General con formato de Blog.</B> Un foro abierto donde cualquiera puede iniciar un nuevo debate en cualquier momento y en el que los temas de discusión se muestran en una página con enlaces "Discute este tema".
-
-<P><B>Foro para uso general.</B> Es un foro abierto donde cualquiera puede empezar un nuevo tema de debate cuando quiera. Este es el foro más adecuado, para uso general.';
+$string['forumtype_help'] = 'Hay cinco tipos diferentes de foros entre los que elegir:
+**Cada persona plantea un tema.** Cada persona puede plantear un nuevo tema de debate (y todos pueden responder). Esta modalidad es útil cuando usted quiere que cada estudiante empiece una discusión sobre, digamos, sus reflexiones sobre el tema de la semana, y que todos los demás le respondan.
+**Un debate sencillo.** Es simplemente un intercambio de ideas sobre un solo tema, todo en un página. Útil para debates cortos y concretos.
+**Foro P y R: Pregunta y Respuestas.** Los estudiantes primero deben fijar sus puntos de vista antes de ver los mensajes de los demás.
+**Foro General con formato de Blog.** Un foro abierto donde cualquiera puede iniciar un nuevo debate en cualquier momento y en el que los temas de discusión se muestran en una página con enlaces "Discute este tema".
+**Foro para uso general.** Es un foro abierto donde cualquiera puede empezar un nuevo tema de debate cuando quiera. Este es el foro más adecuado, para uso general.';
 $string['generalforum'] = 'Foro para uso general';
 $string['generalforums'] = 'Foros generales';
 $string['inforum'] = 'en {$a}';
@@ -234,10 +225,9 @@ $string['markunreadbutton'] = 'Marcar<br />no leídos';
 $string['maxattachments'] = 'Número máximo de archivos adjuntos';
 $string['maxattachments_help'] = 'Este ajuste determina el número máximo de archivos que se pueden adjuntar a un mensaje en el foro.';
 $string['maxattachmentsize'] = 'Tamaño máximo del archivo adjunto';
-$string['maxattachmentsize_help'] = '<P>El tamaño de los archivos adjuntos pueden ser limitado por la persona
+$string['maxattachmentsize_help'] = 'El tamaño de los archivos adjuntos pueden ser limitado por la persona
 que configura el foro.
-
-<P>En ocasiones es posible subir un archivo de un tamaño mayor al especificado,
+En ocasiones es posible subir un archivo de un tamaño mayor al especificado,
 pero en este caso no se guardará en el servidor y aparecerá un mensaje de error.';
 $string['maxtimehaspassed'] = 'Lo sentimos, pero el tiempo máximo para editar ({$a}) ya venció.';
 $string['message'] = 'Mensaje';
@@ -344,23 +334,19 @@ $string['resetforumsall'] = 'Eliminar todos los mensajes';
 $string['resetsubscriptions'] = 'Eliminar todas las suscripciones al foro';
 $string['resettrackprefs'] = 'Eliminar todas las preferencias de rastreo de los foros';
 $string['rssarticles'] = 'Número de artículos recientes RSS';
-$string['rssarticles_help'] = '<P>Esta opción le permite seleccionar el número de artículos a incluir
+$string['rssarticles_help'] = 'Esta opción le permite seleccionar el número de artículos a incluir
 en el Canal RSS.
-
-<P>Un número comprendido entre 5 y 20 debería ser apropiado para la mayoría
+Un número comprendido entre 5 y 20 debería ser apropiado para la mayoría
 de los foros. Auméntelo si se trata de un foro muy utilizado.';
 $string['rsssubscriberssdiscussions'] = 'Canal RSS de debates';
 $string['rsssubscriberssposts'] = 'Canal RSS de mensajes';
 $string['rsstype'] = 'Canal RSS de esta actividad';
-$string['rsstype_help'] = '<P>Esta opción le permite habilitar los canales RSS en este foro.
-
-<P>Puede escoger entre dos tipos de foros:
-<UL>
-<LI><B>Debates:</B> Con esta opción, los datos generados incluirán nuevas
+$string['rsstype_help'] = 'Esta opción le permite habilitar los canales RSS en este foro.
+Puede escoger entre dos tipos de foros:
+* **Debates:** Con esta opción, los datos generados incluirán nuevas
 discusiones en el foro con su mensaje inicial.
-<LI><B>Mensajes:</B> Con esta opción, los datos generados incluirán cada
-nuevo mensaje en el foro.
-</UL>';
+* **Mensajes:** Con esta opción, los datos generados incluirán cada
+nuevo mensaje en el foro.';
 $string['search'] = 'Buscar';
 $string['searchdatefrom'] = 'Los mensajes deben ser más recientes que éste';
 $string['searchdateto'] = 'Los mensajes deben ser más antiguos que éste';
@@ -398,9 +384,7 @@ $string['subscriptiondisabled'] = 'Suscripción deshabilitada';
 $string['subscriptionforced'] = 'Suscripción forzosa';
 $string['subscriptionmode'] = 'Modalidad de suscripción';
 $string['subscriptionmode_help'] = 'Cuando alguien se subscribe a un foro recibirá por correo electrónico una copia de cada mensaje enviado a ese foro.
-
 Hay 4 modos de suscripción:
-
 * Opcional - Los participantes pueden elegir si desean ser suscritos.
 * Forzosa - Todos están suscritos y no puede darse de baja.
 * Automática - Todos están suscritos inicialmente pero cada usuario puede desactivar la suscripción en cualquier momento.
@@ -416,20 +400,17 @@ $string['trackingoff'] = 'Desconectado';
 $string['trackingon'] = 'Conectado';
 $string['trackingoptional'] = 'Opcional';
 $string['trackingtype'] = '¿Leer rastreo de este foro?';
-$string['trackingtype_help'] = '<p>Si los foros tienen activada la opción de seguimiento
+$string['trackingtype_help'] = 'Si los foros tienen activada la opción de seguimiento
 (forum_trackreadposts), los usuarios pueden realizar
 el seguimiento de mensajes leídos y no leídos
 en los foros y las discusiones. El profesor puede
 obligar a realizar cierto tipo de seguimiento
-en un foro utilizando este ajuste.</p>
-
-<p>Existen tres posibilidades:</p>
-<ul>
-<li>Opcional [por defecto]: los estudiante pueden activar
-o desactivar el seguimiento a su discreción.</li>
-<li>Conectado: El seguimiento siempre está activo.</li>
-<li>Desconectado: El seguimiento siempre está inactivo.</li>
-</ul>';
+en un foro utilizando este ajuste.
+Existen tres posibilidades:
+* Opcional [por defecto]: los estudiante pueden activar
+o desactivar el seguimiento a su discreción.
+* Conectado: El seguimiento siempre está activo.
+* Desconectado: El seguimiento siempre está inactivo.';
 $string['unread'] = 'No leído';
 $string['unreadposts'] = 'Mensajes no leídos';
 $string['unreadpostsnumber'] = '{$a} mensajes no leídos';

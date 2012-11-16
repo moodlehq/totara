@@ -71,24 +71,22 @@ $string['delete_old_items'] = 'Alte Elemente löschen';
 $string['delete_template'] = 'Vorlage löschen';
 $string['delete_templates'] = 'Vorlagen löschen...';
 $string['depending'] = 'Abhängige Elemente';
-$string['depending_help'] = 'Abhängige Elemente erlauben es Ihnen zu zeigen, wie Elemente mit den Werten anderer Elemente zusammenhängen<br /><br />
-<strong>Beispiel für abhängige Elemente:</strong>
-<ul>
-<li>Zuerst legen Sie das Element an, von dem andere Elemente abhängen sollen.</li>
-<li>Jetzt fügen Sie einen Seitenumbruch hinzu.</li>
-<li>Danach fügen Sie die Elemente hinzu, die von dem vorherigen Elementewert abhängen sollen.<br />
-Wählen Sie bei der Erstellung das Format "Abhängiges Element" und setzen Sie den notwendigen Wert auf "Abhängiger Wert"</li>
-</ul>
-<strong>Die Struktur sollte folgendermaßen aussehen:</strong>
-<ol>
-<li>Element - Frage: Haben Sie ein Auto? Antwort: ja/nein</li>
-<li>Seitenumbruch</li>
-<li>Element - Frage: Welche Farbe hat Ihr Auto?<br />
-(Dieses Element bezieht sich auf den Wert \'ja\' des Elements 1)</li>
-<li>Element - Frage: Warum haben Sie kein Auto?<br />
-(Dieses Element bezieht sich auf den Wert \'nein\' des Elements 1)</li>
-<li> ... weitere Elemente</li>
-</ol>
+$string['depending_help'] = 'Abhängige Elemente erlauben es Ihnen zu zeigen, wie Elemente mit den Werten anderer Elemente zusammenhängen
+**Beispiel für abhängige Elemente:**
+* Zuerst legen Sie das Element an, von dem andere Elemente abhängen sollen.
+* Jetzt fügen Sie einen Seitenumbruch hinzu.
+* Danach fügen Sie die Elemente hinzu, die von dem vorherigen Elementewert abhängen sollen.
+Wählen Sie bei der Erstellung das Format "Abhängiges Element" und setzen Sie den notwendigen Wert auf "Abhängiger Wert"
+
+**Die Struktur sollte folgendermaßen aussehen:**
+1. Element - Frage: Haben Sie ein Auto? Antwort: ja/nein
+2. Seitenumbruch
+3. Element - Frage: Welche Farbe hat Ihr Auto?
+(Dieses Element bezieht sich auf den Wert \'ja\' des Elements 1)
+4. Element - Frage: Warum haben Sie kein Auto?
+(Dieses Element bezieht sich auf den Wert \'nein\' des Elements 1)
+5. ... weitere Elemente
+
 Das war schon alles. Viel Erfolg!';
 $string['dependitem'] = 'Abhängiges Element';
 $string['dependvalue'] = 'Abhängiger Wert';
@@ -145,7 +143,6 @@ $string['infotype'] = 'Informationstyp';
 $string['insufficient_responses'] = 'Unzulängliche Antworten';
 $string['insufficient_responses_for_this_group'] = 'Es gibt unzulängliche Antworten für diese Gruppe';
 $string['insufficient_responses_help'] = 'Es gibt unzulängliche Antworten für diese Gruppe.
-
 Um das Feedback anonym zu halten, müssen mindestens zwei Antworten abgegeben werden.';
 $string['item_label'] = 'Beschriftung';
 $string['item_name'] = 'Name des Elementes';
@@ -154,7 +151,6 @@ $string['label'] = 'Textfeld';
 $string['line_values'] = 'Werte';
 $string['mapcourse'] = 'Kurs zuordnen';
 $string['mapcourse_help'] = 'Standardmäßig sind Feedbacks, die Sie auf Ihrer Startseite erstellt haben, auf der gesamten Website verfügbar und werden über den Block Feedback in allen Kursen auftauchen.
-
 Sie können das Erscheinen in jedem Kurs erzwingen, indem Sie einen festen Block erzeugen. Andererseits können Sie das Feedback auf ausgewählte Kurse einschränken, indem Sie das Feedback mit bestimmten Kursen verknüpfen.';
 $string['mapcourseinfo'] = 'Dies ist ein globales Feedback. Es ist in allen Kursen verfügbar, die den Feedback-Block nutzen. Die Kurse in denen das Feedback erscheinen sollen, können begrenzt werden durch explizites Zuordnen. Dazu muss der Kurs gesucht und diesem Feedback zugeordnet werden.';
 $string['mapcoursenone'] = 'Keinem Kurs zugeordnet. Dieses Feedback ist in allen Kursen verfügbar';

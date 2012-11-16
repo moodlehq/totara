@@ -33,13 +33,11 @@ $string['aggregatenone'] = 'No hay calificaciones';
 $string['aggregatesum'] = 'Suma de calificaciones';
 $string['aggregatetype'] = 'Tipo de consolidación';
 $string['aggregatetype_help'] = 'El tipo de consolidación define cómo se combinan las puntuaciones para formar la nota final en el libro de calificaciones.
-
 * Promedio de califiaciones- La media de todas las calificaciones
 * Número de calificaciones - El número de elementos calificados se convierte en la nota final. Tenga en cuenta que el total no puede exceder la nota máxima de la actividad
 * Máxima calificación - La calificación más alta se convierte en la nota final
 * Mínima calificación - La calificación más baja se convierte en la nota final
 * Suma de calificaciones- Todas las calificaciones se suman. Tenga en cuenta que el total no puede exceder la nota máxima de la actividad.
-
 Si "No hay valoraciones" está seleccionado, entonces la actividad no aparecen en el libro de calificaciones.';
 $string['allowratings'] = '¿Permitir que los ítems sean calificados?';
 $string['allratingsforitem'] = 'Todas las clasificaciones emitidas';
@@ -55,4 +53,4 @@ $string['rating'] = 'Calificación';
 $string['ratings'] = 'Calificaciones';
 $string['ratingtime'] = 'Limitar las calificaciones a los elementos con fechas en este rango:';
 $string['rolewarning'] = 'Roles con permiso para calificar';
-$string['rolewarning_help'] = 'Para enviar calificaciones de usuario se requiere el permiso \'moodle/rating:rate\'  y cualquier permiso específico sobre el módulo. Los usuarios asignados a los roles siguientes deberían poder calificar items. La lista de roles puede ser modificada a través del enlace a permisos en el bloque de configuración.';
+$string['rolewarning_help'] = 'Para enviar calificaciones de usuario se requiere el permiso \'moodle/rating:rate\' y cualquier permiso específico sobre el módulo. Los usuarios asignados a los roles siguientes deberían poder calificar items. La lista de roles puede ser modificada a través del enlace a permisos en el bloque de configuración.';

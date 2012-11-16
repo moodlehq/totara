@@ -50,7 +50,6 @@ $string['endswith'] = 'päättyy';
 $string['filterallwarning'] = 'Suotimien käyttäminen otsikoissa sisältöjen lisäksi, saattaa kasvattaa huomattavasti palvelimesi rasitusta. Ole hyvä ja käytä \'Käytä kohteelle\' -asetusta säästäväisesti. Pääkäyttö on multilang-suotimen kanssa.';
 $string['filtersettings'] = 'Suotimen asetukset';
 $string['filtersettings_help'] = 'Tällä sivulla voit laittaa suodattimia päälle ja poistaa käytöstä sivuston tietyssä osassa.
-
 Joihinkin suodattimiin saattaa saada paikallisia asetuksia, missä tapauksessa niiden nimen vierestä löytyy linkki asetuksiin.';
 $string['filtersettingsforin'] = 'Suodatinasetukset suodattimelle {$a->filter} kontekstissa {$a->context}';
 $string['filtersettingsin'] = 'Suotimen asetukset {$a} :ssa';

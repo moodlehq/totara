@@ -55,9 +55,7 @@ A4 嵌入式打印在 A4 大小的纸上，使用嵌入字体。
 A4 非嵌入式打印在 A4 大小的纸上，不使用嵌入字体。
 信件嵌入式打印在信件大小的纸上，使用嵌入字体。
 信件非嵌入式打印在信件大小的纸上，不使用嵌入字体。
-
 非嵌入类型使用 Helvetica 和 Times 字体。如果您担心您的用户的电脑上没有这种字体，或者您的语言使用的字符或符号无法接受Helvetica 和 Times 字体，那么选择一种嵌入类型。嵌入类型使用 Dejavusans 和 Dejavuserif 字体。这会使得 PDF 文件变得相当大；因此不建议使用嵌入类型，除非您必须使用。
-
 新类型文件夹可以添加到 certificate/type 文件夹里。文件夹的名字和新类型使用的任何语言字符串必须添加到证书的语言文件里。';
 $string['certify'] = '这是为了验证';
 $string['code'] = '编码';
@@ -67,7 +65,6 @@ $string['coursegrade'] = '课程成绩';
 $string['coursename'] = '课程';
 $string['credithours'] = '学时';
 $string['customtext'] = '自定义文本';
-$string['customtext_help'] = '如果您想让证书打印除已经分配为教师以外的不同教师的名字，不要选择打印教师或除线条图像以外的任何签名图像。在文本框里以您想要它们出现的形式输入教师的名字。默认情况下，这个文本被放置在证书的左下角。以下 HTML 标签可用： <br>，<p>，<b>，<i>，<u>，<img> （src 和 width（或 height）是强制性的），<a>（href 是强制性的），<font> （可能的属性是：color，（hex color code）, face， (arial，times，courier，helvetica，symbol））。';
 $string['date'] = '在';
 $string['datefmt'] = '日期格式';
 $string['datefmt_help'] = '选择在证书上打印的日期的格式。或者选择最后一项来按户选择的语言的日期格式来打印日期。';
@@ -103,7 +100,6 @@ $string['grade'] = '成绩';
 $string['gradedate'] = '评分日期';
 $string['gradefmt'] = '成绩格式';
 $string['gradefmt_help'] = '如果您选择在证书上打印成绩，有三种可用的格式：
-
 百分比成绩：以百分比形式打印成绩。
 分数成绩：以分数值形式打印成绩。
 信件成绩：以信件形式打印百分比成绩。';
@@ -155,7 +151,7 @@ $string['printoutcome_help'] = '您可以将任何课程能力名和用户得到
 $string['printseal'] = '印章或标志图片';
 $string['printseal_help'] = '这个选项允许您从 certificate/pix/seals 文件夹选择一个印章或标志打印在证书上。默认情况下，这个图片被放在证书的右下角。';
 $string['printsignature'] = '签名图片';
-$string['printsignature_help'] = '这个选项允许您从  certificate/pix/signatures 文件夹打印一个签名图片。您可以打印一个图形表示的签名或打印一个用来书写签名的直线。默认情况下，这个图片被放在证书的左下角。';
+$string['printsignature_help'] = '这个选项允许您从 certificate/pix/signatures 文件夹打印一个签名图片。您可以打印一个图形表示的签名或打印一个用来书写签名的直线。默认情况下，这个图片被放在证书的左下角。';
 $string['printteacher'] = '打印老师的名字';
 $string['printteacher_help'] = '为在证书上打印教师的名字， 设置教师的角色在模块水平上。举例来说，如果您课程里有不止一个教师，或者您课程里有不止一个证书，并且您想要在每一个证书上打印不同的教师名字，就要这样做。点击编辑证书，然后点击“本地分配的角色” 选项卡。然后分配角色教师（编辑教师）给证书（他们不一定是此课程中的教师 —— 您可以将角色分配给任何人）。这些名字将会作为教师打印在证书上。';
 $string['printwmark'] = '水印图像';

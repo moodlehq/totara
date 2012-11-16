@@ -45,77 +45,51 @@ $string['addremovecourse'] = '添加/删除课程';
 $string['addrpl'] = '添加 RPL';
 $string['addtemplate'] = '添加新模板';
 $string['advancedsettingscompetencypermissions_help'] = '# Competency Permissions
-
 **Competency permissions** allow you to define the types of actions that can be performed by the Learner and Manager for competencies within the learning plan.
-
 There are four permission levels available:
-
-*   **Allow** allows the user to perform the action
-*   **Deny** prevents the user from performing the action
-*   **Request** allows the user to request that this action is performed
-*   **Approve** allows the user to approve a requested action.';
+\* **|Allow** allows the user to perform the action
+\* **|Deny** prevents the user from performing the action
+\* **|Request** allows the user to request that this action is performed
+\* **|Approve** allows the user to approve a requested action.';
 $string['advancedsettingscompetencysettings_help'] = '# Competency Settings
-
 **Competency settings** allow you to define which settings are available for competencies within the plan.
-
 Select the **‘Due dates’** setting. When **‘Due dates’** is set to ‘None’ the column does not appear on the learning plan.
-
 Select the **‘Priorities’ **setting. When you are using **‘Priorities’** you need a **‘Priority Scale’**. Click the dropdown menu to select the priority scale.
-
 ** Note: **The option to set up such a scale is in Learning Plans>Priority Scales.
 **Automatic assignment **enables you to automatically display competencies in a learning plan which have previously been assigned to a user’s position or organisation.';
 $string['advancedsettingscoursepermissions_help'] = '# Course Permissions
-
 **Course permissions** allow you to define which course settings are available and the types of actions that can be performed by the Learner and Manager in the learning plan.
-
 There are four available permission levels:
-
-*   **Allow** allows the user to perform the action
-*   **Deny** prevents the user from performing the action
-*   **Request** allows the user to request that this action
-*   **Approve** allows the user to approve a action.';
+\* **|Allow** allows the user to perform the action
+\* **|Deny** prevents the user from performing the action
+\* **|Request** allows the user to request that this action
+\* **|Approve** allows the user to approve a action.';
 $string['advancedsettingscoursesettings_help'] = '# Course Settings
-
 **Course settings** allow you to define the settings available for courses within the plan.
-
 Select the **‘Due dates’** setting. When **‘Due dates’** is set to ‘None’ the column does not appear on the learning plan.
-
 Select the **‘Priorities’ **setting. When **‘Priorities’ **is set to ‘None’ the column does not appear on the learning plan.
-
 When you are using **‘Priorities’** you need a **‘Priority Scale’**. Click the dropdown menu to select the priority scale.
-
 **Note: **The option to set up such a scale is in Learning Plans>Priority Scales.';
 $string['advancedsettingsobjectivepermissions_help'] = '# Objectives Permissions
-
 **Objective permissions** allow you to define the actions that can be performed by the Learner and Manager in the learning plan when setting up objectives.
-
 There are four available permission levels:
-
-*   **Allow** allows the user to perform the action
-*   **Deny** prevents the user from performing the action
-*   **Request** allows the user to request that this action
-*   **Approve** allows the user to approve the action.';
+\* **|Allow** allows the user to perform the action
+\* **|Deny** prevents the user from performing the action
+\* **|Request** allows the user to request that this action
+\* **|Approve** allows the user to approve the action.';
 $string['advancedsettingsobjectivesettings_help'] = '# Objective Settings
-
 **Objective settings **allow you define the settings available for objectives within the plan.
-
 Select the **‘Due dates’** setting. When **‘Due dates’** is set to ‘None’ the column does not appear on the learning plan.
-
 Select the **‘Priorities’ **setting. When **‘Priorities’ **is set to ‘None’ the column does not appear on the learning plan.
-
 When you are using **‘Priorities’** you need a **‘Priority Scale’**. Click the dropdown menu to select the priority scale.
-
 **Note: **The option to set up such a scale is in Learning Plans>Priority Scales.
-
 **Objective scale** is used to measure a learners’ progress towards their objectives. Set up objective scales using the menu option under Site Administration>Learning Plans.';
 $string['advancedsettingsplanpermissions_help'] = '# Plan Permissions
-
 The advanced workflow settings allows you to define the type of actions which can be performed by learners and managers. For each type of action there are four permission levels available:
-
-*   **Allow** allows the user to perform the action.
-*   **Deny** prevents the user from performing the action.
-*   **Request** allows the user to request that this action is performed.
-*   **Approve** allows the user to approve an action.';
+\* **|Allow** allows the user to perform the action.
+\* **|Deny** prevents the user from performing the action.
+\* **|Request** allows the user to request that this action is performed.
+\* **|Approve** allows the user to approve an action.';
 $string['advancedworkflow'] = '高级工作流设置';
 $string['after'] = '之后';
 $string['allcompetencies'] = '所有能力';
@@ -166,7 +140,6 @@ $string['competency_instructions_manager'] = '您的团队成员的学习计划�
 $string['competency_instructions_request'] = '点击 "更新所申请的能力" 将允许您申请为此学习计划添加新能力。';
 $string['competencycompleted'] = '能力已完成';
 $string['competencyevidencestatus_help'] = '# Status
-
 This field records the user\'s status in the assigned competency. The options that appear in the pulldown depend on the competency scale assigned to the chosen competency, so the competency must be selected before this field can be modified. A value scale must be set to add or update a competency evidence record.';
 $string['competencyname'] = '能力名称';
 $string['competencypermissions'] = '能力权限';
@@ -448,43 +421,32 @@ $string['objectivepriority'] = '目标优先级';
 $string['objectives'] = '目标';
 $string['objectivescale'] = '目标等级';
 $string['objectivescaleassign_help'] = '# Objective Scale
-
 A Objective scales define the criteria by which an objective can be measured. This is the name of scale the value is being added to.';
 $string['objectivescaledefault_help'] = '# Default Value
-
 The **Default Value** is the value automatically assigned to an objective in a learning plan when the objective is added by a learner or manager.';
 $string['objectivescalename_help'] = '# Objective Scale Name
-
 The name of the objective scale used by a learning plan.';
 $string['objectivescales'] = '目标等级';
 $string['objectivescalesdisabledtemplateinuse'] = '注意：无法更改目标等级 - 有一些计划正在使用此模板';
 $string['objectivescalevalueachieved_help'] = '# Achieved
-
 When **Achieved** is checked this objective scale value will be used to indicate the objective is achieved by the learner.
-
 You can have multiple values marked as **Achieved** allowing degrees of achievement.';
 $string['objectivescalevalueid'] = '目标熟练程度';
 $string['objectivescalevalueidnumber'] = '等级值 ID 编号';
 $string['objectivescalevalueidnumber_help'] = '# Scale value ID number
-
 Scale ID number is a unique number used to represent the scale value.';
 $string['objectivescalevaluename'] = '等级值名';
 $string['objectivescalevaluename_help'] = '# Scale Value Name
-
 **Scale value name** is the name of the objective scale value you are adding or editing.
-
 A scale value is used to measure the learning plan objectives. You can add as many scale values as required.';
 $string['objectivescalevaluenumeric'] = '目标等级数字值';
 $string['objectivescalevaluenumeric_help'] = '# Objective Scale value numerical value
-
 **Objective scale value numerical value** allows you to assign a numerical value alongside a description (name) for the scale value.';
 $string['objectivescalevalues_help'] = '# Scale Values
-
 Enter a list of values for the new objective scale (one value per line), in order from highest to lowest. For example:
-
-<p class="indent">
-<i> High<br /> Medium<br /> Low </i>
-</p>';
+* High
+Medium
+Low *';
 $string['objectivesettings'] = '目标设置';
 $string['objectivesnotupdated'] = '未更新目标';
 $string['objectivesscalecreate'] = '添加新目标等级';
@@ -543,7 +505,6 @@ $string['plan_instructions_delete'] = '您可以通过点击 "删除计划" 按�
 $string['plan_instructions_edit'] = '您可以点击 "编辑详细信息" 按钮来修改学习计划标题、简短描述或完成日期。';
 $string['plan_instructions_learner'] = '下面给出了您的学习计划的简短概要。';
 $string['plan_instructions_manager'] = '下面给出了您的团队成员的学习计划的简短概要。';
-$string['planapprovalrequested'] = '已为 <a href="\$CFG->wwwroot/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a> 申请计划审批';
 $string['planapproved'] = '计划 "{$a}"已批准';
 $string['plancomplete'] = '完成计划';
 $string['plancompleted'] = '此计划已标记为完成。不再可编辑，所有状态指标均显示在计划完成时的状态。';
@@ -575,38 +536,29 @@ $string['priority'] = '优先级';
 $string['prioritymode'] = '优先级';
 $string['priorityscale'] = '优先级等级';
 $string['priorityscaleassign_help'] = '# Priority Scale
-
 A **Priority scale** is the name of the priority scale you are working in.';
 $string['priorityscalecreate'] = '添加新优先级等级';
 $string['priorityscaledefault_help'] = '# Default Value
-
 The **Default Value** is the value which is automatically assigned to a learning plan item when the priority scale first appears in the learner\'s plan. The priority value can be changed by the learner/manager once active within the learning plan.';
 $string['priorityscalename_help'] = '# Priority Scale Name
-
 The name of the priority scale used by a learning plan.';
 $string['priorityscales'] = '优先级等级';
 $string['priorityscalesdisabledtemplateinuse'] = '注意：无法更改优先级等级 - 有一些计划正在使用此模板';
 $string['priorityscalevalueidnumber'] = '等级值 ID 编号';
 $string['priorityscalevalueidnumber_help'] = '# Scale value ID number
-
 Scale ID number is a unique number used to represent the scale value.';
 $string['priorityscalevaluename'] = '等级值名';
 $string['priorityscalevaluename_help'] = '# Scale Value Name
-
 **Scale value name** is the name of the value you are adding or editing for a specific priority scale.
-
 A scale value is used to define the priority for a learning plan item. You can add as many scale values as required.';
 $string['priorityscalevaluenumeric'] = '优先级等级数字值';
 $string['priorityscalevaluenumeric_help'] = '# Priority Scale value numerical value
-
 **Priority scale value numerical value** enables you to assign a numerical value to this scale value as well as the description (name).';
 $string['priorityscalevalues_help'] = '# Scale Values
-
 Enter a list of values for the new priority scale (one priority per line), in order from highest priority to lowest. For example:
-
-<p class="indent">
-<i> High<br /> Medium<br /> Low </i>
-</p>';
+* High
+Medium
+Low *';
 $string['priorityvalues'] = '优先级值';
 $string['proficiency'] = '熟练程度';
 $string['progress'] = '进度';
@@ -648,15 +600,11 @@ $string['startdate'] = '开始日期';
 $string['status'] = '状态';
 $string['teammembers'] = '团队成员';
 $string['templatecomponentsettings_help'] = '# Component Settings
-
 The **Component Settings** allows you to show/hide components in the learning plan and define the order in which they appear.
-
 Click **Hide** to remove a component from the learning plan template.
-
 Use the up and down arrows to change the order of the components.';
 $string['templateenddate'] = '计划模板完成日期';
 $string['templateenddate_help'] = '# End Date
-
 Click the calendar icon to select the **End date** for the learning plan template.';
 $string['templateinstances'] = '模板实例';
 $string['thefollowingitemsarepending_p'] = '此计划包含以下待定项目：';

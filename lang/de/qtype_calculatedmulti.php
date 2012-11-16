@@ -26,7 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Berechnete Multiple-Choice-Frage';
+$string['pluginname_help'] = 'Berechnete Multiple-Choice-Fragen entsprechen normalen MultipleChoice-Fragen, können aber zusätzlich Variablen in geschweiften Klammern (Wildcards) enthalten. In diese Variablen werden bei der Testdurchführung gegen zufällige Zahlen aus der Wertemenge eingesetzt.
+Beispiel: Auf die Frage "Welche Fläche hat ein Rechteck mit der Länge {l} und der Breite {b}?" wäre die Antwort "{={l}*{b}}". Der Stern (*) steht für die Multiplikation.';
 $string['pluginnameadding'] = 'Berechnete Multiple-Choice-Frage hinzufügen';
 $string['pluginnameediting'] = 'Berechnete Multiple-Choice-Frage bearbeiten';
-$string['pluginname_help'] = 'Berechnete Multiple-Choice-Fragen entsprechen normalen MultipleChoice-Fragen, können aber zusätzlich Variablen in geschweiften Klammern  (Wildcards) enthalten. In diese Variablen werden bei der Testdurchführung gegen zufällige Zahlen aus der Wertemenge eingesetzt. <p>Beispiel: Auf die Frage "Welche Fläche hat ein Rechteck mit der Länge {l} und der Breite {b}?" wäre  die Antwort "{={l}*{b}}". Der Stern (*) steht für die Multiplikation.';
 $string['pluginnamesummary'] = 'Berechnete Multiple-Choice-Fragen können Variablen enthalten, in die bei der Testdurchführung zufällige Zahlen aus der Wertemenge eingesetzt werden.';

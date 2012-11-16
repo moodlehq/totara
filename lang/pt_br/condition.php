@@ -30,7 +30,6 @@ $string['addgrades'] = 'Adicionar (não) condições de avaliação ao formulár
 $string['availabilityconditions'] = 'Acesso restrito';
 $string['availablefrom'] = 'Permitir o acesso de';
 $string['availablefrom_help'] = 'As datas de acesso desde/até determinam quando os cursistas podem ter acesso às atividades pelas referências na página do curso.
-
 A diferença entre as data de acesso deste/até e a configuração de data de disponibilidade da atividade é que fora das datas configuradas esta última opção permite que os cursistas vejam a descrição da atividade, enquanto as datas de acesso desde/até impede qualquer acesso.';
 $string['availableuntil'] = 'Permitir o acesso até';
 $string['badavailabledates'] = 'Datas inválidas. Se você definir ambas as datas, a data "Permitir acesso de " deve ser anterior à data "até".';
@@ -41,7 +40,6 @@ $string['completion_incomplete'] = 'não deve ser marcada como concluída';
 $string['completion_pass'] = 'deve ser concluída com nota de aprovação';
 $string['completioncondition'] = 'Condição de conclusão de atividades';
 $string['completioncondition_help'] = 'Esta configuração determina qualquer condição de completação de outras atividades que deva ser satisfeita para ter acesso a esta atividade. Note que antes deve ter sido habilitado o acompanhamento de completação de atividades.
-
 Se desejado pode se estabelecer múltiplas condições de completação. Nesse caso, o acesso à atividade só será permitido quando TODAS as condições forem satisfeitas.';
 $string['configenableavailability'] = 'Se habilitada, esta opção permite configurar condições que controlam quando é permitido o acesso a uma atividade, baseado em datas, notas ou completação de outras atividades.';
 $string['enableavailability'] = 'Permitir o acesso condicional';
@@ -49,7 +47,6 @@ $string['grade_atleast'] = 'deve ser pelo menos';
 $string['grade_upto'] = 'e menos de';
 $string['gradecondition'] = 'Condição para a nota';
 $string['gradecondition_help'] = 'Esta configuração determina qualquer condição de avaliação que tenha que ser satisfeita para ter acesso à atividade.
-
 Podem ser estabelecidas condições de avaliação múltiplas. Nesse caso, a atividade só permitirá o acesso quando TODAS as condições de avaliação forem satisfeitas.';
 $string['gradeitembutnolimits'] = 'Você deve escolher um limite alto ou baixo , ou ambos.';
 $string['gradelimitsbutnoitem'] = 'Você deve escolher um item de nota';

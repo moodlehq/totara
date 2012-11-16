@@ -35,7 +35,6 @@ $string['contentheader'] = 'Inhoud';
 $string['displayoptions'] = 'Beschikbare schermopties';
 $string['displayselect'] = 'Toon';
 $string['displayselect_help'] = 'Deze instelling, samen met het bestandstype van de URL en het toelaten door de browser van embedden, bepaalt hoe de URL wordt weergegeven. Mogelijke opties zijn:
-
 * Automatisch - De beste weergave van de URL wordt automatisch gekozen
 * Embed - De URL wordt weergegeven binnen de pagina onder de navigatiebalk, samen met de URL beschrijving en andere blokken
 * Gedwongen download - De gebruiker wordt gevraagd om het URL bestand te downloaden

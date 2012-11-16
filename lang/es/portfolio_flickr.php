@@ -47,5 +47,4 @@ $string['set'] = 'Ajustar';
 $string['setupinfo'] = 'Instrucciones de instalación';
 $string['sharedsecret'] = 'Cadena secreta';
 $string['title'] = 'Título';
-$string['uploadfailed'] = 'No se ha podido subir la imagen(es) a flickr.com: {$a}
-';
+$string['uploadfailed'] = 'No se ha podido subir la imagen(es) a flickr.com: {$a}';

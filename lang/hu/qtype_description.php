@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = 'Tájékoztató szöveg';
 $string['pluginname'] = 'Leírás';
-$string['pluginnameadding'] = 'Leírás hozzáadása';
-$string['pluginnameediting'] = 'Leírás szerkesztése';
 $string['pluginname_help'] = 'A leírás nem kérdéstípus. Mindössze választ nem igénylő szöveg megjelenítésére szolgál, hasonlóan a kurzusoldal címkéjéhez.
 A kérdés szövege próbálkozás során és ellenőrzés közben egyaránt megjelenik.
 Az esetleges általános visszajelzés csak az ellenőrzés oldalán látható.';
+$string['pluginnameadding'] = 'Leírás hozzáadása';
+$string['pluginnameediting'] = 'Leírás szerkesztése';
 $string['pluginnamesummary'] = 'A leírás nem kérdés. Bizonyos utasítások, táblázatok és egyéb tartalmak teszthez való hozzáadására szolgál.
 A kurzusoldal címkéjéhez hasonlóan tartalom kurzusoldalba való beillesztésére használható.';

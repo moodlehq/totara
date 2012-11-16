@@ -41,22 +41,17 @@ $string['editingchapter'] = '章を編集';
 $string['errorchapter'] = 'ブックの章の読み込み中にエラーが発生しました。';
 $string['faq'] = 'ブック FAQ';
 $string['faq_help'] = '*なぜ2レベルのみですか?*
-
-通常、すべてのブック (書籍)において2レベルで十分であり、3レベルになると貧弱な構造のドキュメントとなってしまいます。ブックモジュールは短めの複数ページの学習コンテンツを作成するために設計されました。さらに長いドキュメントでは、通常PDFフォーマットを使用した方が良いでしょう。PDFを作成する簡単な方法は仮想プリンタを使用する方法です (詳細は次のページをご覧ください: <a href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm" target="_blank">PDFCreator</a>,
-<a href="http://fineprint.com/products/pdffactory/index.html" target="_blank">PDFFactory</a>,
-<a href="http://www.adobe.com/products/acrobatstd/main.html" target="_blank">Adobe Acrobat</a>, etc.)。
-
-*学生はブックを編集できますか?*
-
+通常、すべてのブック (書籍)において2レベルで十分であり、3レベルになると貧弱な構造のドキュメントとなってしまいます。ブックモジュールは短めの複数ページの学習コンテンツを作成するために設計されました。さらに長いドキュメントでは、通常PDFフォーマットを使用した方が良いでしょう。PDFを作成する簡単な方法は仮想プリンタを使用する方法です (詳細は次のページをご覧ください:
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+, etc.)。
+* 学生はブックを編集できますか? *
 教師のみブックを作成および編集することができます。学生によるブック編集機能を実装する予定はありませんが、誰かが学生用の機能 (ポートフォリオ?) を開発することでしょう。作成および編集を教師のみに限定する理由は、ブックモジュールを可能な限りシンプルにすることにあります。
-
-*どのようにブックを検索すれば良いのですか?*
-
+* どのようにブックを検索すれば良いのですか? *
 現在、印刷ページをブラウザで検索する機能のみ提供されています。現在、グローバルサーチはMoodleフォーラムのみで利用できます。
 Iブックを含むリソースすべてにおいて、グローバルサーチ機能が実装されることは素晴らしいと思いませんか? どなたかボランティアで開発しませんか?
-
-*私のタイトルが1行に収まりません*
-
+* 私のタイトルが1行に収まりません *
 あなたのタイトルを変更するか、TOCの幅を変更するようサイト管理者にお尋ねください。モジュール設定ページにて、すべてのブックモジュールに適用される値を変更することができます。';
 $string['modulename'] = 'ブック';
 $string['modulename_help'] = 'ブックはシンプルな複数ページの学習コンテンツです。';

@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'Voltooiingsdatum';
 $string['completion:view'] = 'Bekijk voltooiingsrapport voor de cursus';
+$string['completiondate'] = 'Voltooiingsdatum';
 $string['page-report-completion-index'] = 'Rapport cursus voltooien';
 $string['page-report-completion-user'] = 'Gebruikersrapport cursus voltooien';
 $string['page-report-completion-x'] = 'Elk voltooiingsrapport';

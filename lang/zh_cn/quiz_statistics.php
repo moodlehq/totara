@@ -66,9 +66,7 @@ $string['median'] = '成绩中值（{$a}）';
 $string['modelresponse'] = '回答模式';
 $string['negcovar'] = '成绩与所有试卷成绩的负值协方差';
 $string['negcovar_help'] = '此题在此试卷集合中的成绩与测验中所有试卷的成绩相比，是向相反的方向变化。也就是说，或者整体试卷成绩低于平均值而此题成绩高于平均值，或者正相反。
-
 我们计算实际题目权重的公式此时无效。如果高亮显示的有负值协方差的题目最高分设为 0 分，那么测验中其它题目的实际权重就是这些题目的实际权重。
-
 如果您编辑一个测验，让有负值协方差的题目的最高分为 0，那么这些题目的实际权重会是 0，其它题目的实际权重会按当前情况计算。';
 $string['nostudentsingroup'] = '此小组中还没有学生';
 $string['optiongrade'] = '得分比例';
@@ -94,7 +92,7 @@ $string['standarddeviationq'] = '标准偏差';
 $string['standarderror'] = '标准错误（{$a}）';
 $string['statistics'] = '统计';
 $string['statistics:componentname'] = '测验统计报告';
+$string['statistics:view'] = '查看统计报表';
 $string['statisticsreport'] = '统计报告';
 $string['statisticsreportgraph'] = '每题统计';
-$string['statistics:view'] = '查看统计报表';
 $string['statsfor'] = '测验统计（{$a}）';

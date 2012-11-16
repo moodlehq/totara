@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'Datum des Kursabschlusses';
 $string['completion:view'] = 'Übersicht zu Kursabschlüssen';
+$string['completiondate'] = 'Datum des Kursabschlusses';
 $string['page-report-completion-index'] = 'Kursabschlussbericht';
 $string['page-report-completion-user'] = 'Nutzer-Kursabschlussbericht';
 $string['page-report-completion-x'] = 'Alle Abschlussberichte';

@@ -43,120 +43,84 @@ $string['aggregatemedian'] = 'Median aller Bewertungen';
 $string['aggregatemin'] = 'Niedrigste Bewertung';
 $string['aggregatemode'] = 'Modus (Modalwert) aller Bewertungen';
 $string['aggregateonlygraded'] = 'Zusammenfassen, leere Felder ignorieren';
-$string['aggregateonlygraded_help'] = '<h2>Berechne nur nicht-leere Felder</h2>
-<p>Nicht vorhandene Bewertungen (z.B. weil der Test nicht vom Teilnehmer bearbeitet wurde) können mit dem niedrigsten Bewertungswert (z.B. 0 Punkte) verarbeitet werden oder bei der Ermittlung der Gesamtnote ignoriert werden.</p>';
+$string['aggregateonlygraded_help'] = '## Berechne nur nicht-leere Felder
+Nicht vorhandene Bewertungen (z.B. weil der Test nicht vom Teilnehmer bearbeitet wurde) können mit dem niedrigsten Bewertungswert (z.B. 0 Punkte) verarbeitet werden oder bei der Ermittlung der Gesamtnote ignoriert werden.';
 $string['aggregateoutcomes'] = 'Lernziele in die Gesamtergebnisse einbeziehen';
-$string['aggregateoutcomes_help'] = '<h2>Lernziele beim Gesamtergebnis berücksichtigen oder nicht</h2>
-<p>Die Berücksichtigung der Lernziele bei der Ermittlung des Gesamtergebnisses kann zu Verzerrungen führen, die nicht erwünscht sind. Sie haben daher die Möglichkeit, diese einzubeziehen oder zu ignorieren.
-</p>';
+$string['aggregateoutcomes_help'] = '## Lernziele beim Gesamtergebnis berücksichtigen oder nicht
+Die Berücksichtigung der Lernziele bei der Ermittlung des Gesamtergebnisses kann zu Verzerrungen führen, die nicht erwünscht sind. Sie haben daher die Möglichkeit, diese einzubeziehen oder zu ignorieren.';
 $string['aggregatesonly'] = 'Nur Gesamtwerte';
 $string['aggregatesubcats'] = 'Zusammenfassen, Kategorien einbeziehen';
-$string['aggregatesubcats_help'] = '<h2>Berechnen auf der Grundlage der Unterkategorien </h2>
-<p>Die Gesamtbewertung wird meist auf Grundlage der Zwischennoten vorgenommen. Es ist jedoch auch möglich, die ursprünglichen Einzelnoten direkt zur Ermittlung der Gesamtnote zu verwenden.
-</p>';
+$string['aggregatesubcats_help'] = '## Berechnen auf der Grundlage der Unterkategorien
+Die Gesamtbewertung wird meist auf Grundlage der Zwischennoten vorgenommen. Es ist jedoch auch möglich, die ursprünglichen Einzelnoten direkt zur Ermittlung der Gesamtnote zu verwenden.';
 $string['aggregatesum'] = 'Summe';
 $string['aggregateweightedmean'] = 'Gewichteter Durchschnittswert';
 $string['aggregateweightedmean2'] = 'Einfach gewichteter Durchschnittswert';
 $string['aggregation'] = 'Gesamtergebnis';
-$string['aggregation_help'] = '<h2>Category aggregation</h2><b>ToDo</b>
-<p>In dieser Einstellung können Sie auswählen, wie die Gesamtbewertung eines Teilnehmenden für diese Kategorie berechnet wird.</p>
-<p><strong>Wichtig</strong>: Eine leere Bewertung ist ein fehlender Eintrag in den Bewertungen und kann verschiedenes bedeuten: Z.B. kann es sich um einen Teilnehmenden handeln, der eine Aufgabe noch nicht eingereicht hat. Oder es handelt sich um eine Aufgabe, die noch nicht von den Trainer/innen bewertet wurde. Oder es handelt sich um eine Bewertung, die von jemandem manuell gelöscht wurde, der berechtigt ist, die Bewertungen zu verwalten. Daher ist bei der Interpretation von "leeren Bewertungen" Vorsicht geboten.</p>
-<p>Folgende Auswahlmöglichkeiten zur Berechnung der Gesamtbewertung für eine Kategorie stehen zur Verfügung:</p>
-<table class="generaltable boxaligncenter" cellpadding="4" cellspacing="1" summary="Berechnungsmöglichkeiten für Gesamtbewertungen in einer Bewertungskategorie">
-<tr>
-<th class="header">Berechnungsmöglichkeit</th><th class="header">Beschreibung</th>
-</tr>
-<tr>
-<td class="cell">Durchschnitt aller Bewertungen</td>
-<td class="cell">Alle Bewertungen werden addiert und anschließend durch die Anzahl der Bewertungen geteilt. Leere Bewertungen werden mitgezählt (sie gehen mit Wert gleich 0 in die Aufsummierung ein).</td>
-</tr>
-<tr>
-<td class="cell">Mean of non-empty grades</td>
-<td class="cell">Same as above, except that empty grades are ignored.</td>
-</tr>
-<tr>
-<td class="cell">Median of all grades</td>
-<td class="cell">The median is calculated by counting all the grades and selecting the grade that falls in the middle of that count (or the mean between the two middle grades if there is an even number of grades). The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included.</td>
-</tr>
-<tr>
-<td class="cell">Median of non-empty grades</td>
-<td class="cell">Same as above, except that empty grades are ignored.</td>
-</tr>
-<tr>
-<td class="cell">Smallest grade of non-empty grades</td>
-<td class="cell">Only the smallest grade is kept. Empty grades are ignored.</td>
-</tr>
-<tr>
-<td class="cell">Highest grade of non-empty grades</td>
-<td class="cell">Only the highest grade is kept. Empty grades are ignored.</td>
-</tr>
-<tr>
-<td class="cell">Mode of all grades</td>
-<td class="cell">The mode is the grade that occurs the most frequently. It is more often used for non-numerical  The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included.</td>
-</tr>
-<tr>
-<td class="cell">Mode of non-empty grades</td>
-<td class="cell">Same as above, except that empty grades are ignored.</td>
-</tr>
-<tr>
-<td class="cell">Weighted mean of all grades</td>
-<td class="cell">Each grade item can be given a weight, which is then used in the arithmetic mean aggregation to influence the importance of each item in the overall mean. Empty grades are included.</td>
-</tr>
-<tr>
-<td class="cell">Weighted mean of non-empty grades</td>
-<td class="cell">Same as above, except that empty grades are ignored.</td>
-</tr>
-<tr>
-<td class="cell">Mean of all grades (extra credits)</td>
-<td class="cell">Arithmetic mean with a twist. An old, now unsupported aggregation strategy provided here only
-for backward compatibility with old activities. Empty grades are included.</td>
-</tr>
-<tr>
-<td class="cell">Mean of non-empty grades (extra credits)</td>
-<td class="cell">Same as above, except that empty grades are ignored.</td>
-</tr>
+$string['aggregation_help'] = '## Category aggregation
+**ToDo**
+In dieser Einstellung können Sie auswählen, wie die Gesamtbewertung eines Teilnehmenden für diese Kategorie berechnet wird.
+**Wichtig**: Eine leere Bewertung ist ein fehlender Eintrag in den Bewertungen und kann verschiedenes bedeuten: Z.B. kann es sich um einen Teilnehmenden handeln, der eine Aufgabe noch nicht eingereicht hat. Oder es handelt sich um eine Aufgabe, die noch nicht von den Trainer/innen bewertet wurde. Oder es handelt sich um eine Bewertung, die von jemandem manuell gelöscht wurde, der berechtigt ist, die Bewertungen zu verwalten. Daher ist bei der Interpretation von "leeren Bewertungen" Vorsicht geboten.
+Folgende Auswahlmöglichkeiten zur Berechnung der Gesamtbewertung für eine Kategorie stehen zur Verfügung:
 
-</table>';
+
+
+
+
+
+
+
+
+
+
+
+
+| Berechnungsmöglichkeit | Beschreibung|
+| \---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|- | \---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---|\---| |
+| Durchschnitt aller Bewertungen | Alle Bewertungen werden addiert und anschließend durch die Anzahl der Bewertungen geteilt. Leere Bewertungen werden mitgezählt (sie gehen mit Wert gleich 0 in die Aufsummierung ein).|
+| Mean of non-empty grades | Same as above, except that empty grades are ignored.|
+| Median of all grades | The median is calculated by counting all the grades and selecting the grade that falls in the middle of that count (or the mean between the two middle grades if there is an even number of grades). The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included. |
+| Median of non-empty grades | Same as above, except that empty grades are ignored.|
+| Smallest grade of non-empty grades | Only the smallest grade is kept. Empty grades are ignored.|
+| Highest grade of non-empty grades| Only the highest grade is kept. Empty grades are ignored. |
+| Mode of all grades | The mode is the grade that occurs the most frequently. It is more often used for non-numerical The advantage over the mean is that it is not affected by outliers (grades which are uncommonly far from the mean). Empty grades are included. |
+| Mode of non-empty grades | Same as above, except that empty grades are ignored.|
+| Weighted mean of all grades| Each grade item can be given a weight, which is then used in the arithmetic mean aggregation to influence the importance of each item in the overall mean. Empty grades are included. |
+| Weighted mean of non-empty grades| Same as above, except that empty grades are ignored.|
+| Mean of all grades (extra credits) | Arithmetic mean with a twist. An old, now unsupported aggregation strategy provided here only
+for backward compatibility with old activities. Empty grades are included.|
+| Mean of non-empty grades (extra credits) | Same as above, except that empty grades are ignored.|';
 $string['aggregationcoef'] = 'Summenkoeffizient';
 $string['aggregationcoefextra'] = 'Zusatzwertung';
 $string['aggregationcoefextra_help'] = 'If the aggregation is Sum of grades or Simple weighted mean and the extra credit checkbox is ticked, the grade item\'s maximum grade is not added to the category\'s maximum grade, resulting in the possibility of achieving the maximum grade (or grades over the maximum if enabled by the site administrator) in the category without having the maximum grade in all the grade items.
-
-Wenn die Berechnung auf Basis des Durchschnitts (mit Extrapunkten)  gesetzt ist und Extrapunkte einen Wert größer als Null haben, so wird der Wert für den Extrapunkte erst multipliziert und dann dem Durchschnitt der Bewertungen hinzuaddiert.';
+Wenn die Berechnung auf Basis des Durchschnitts (mit Extrapunkten) gesetzt ist und Extrapunkte einen Wert größer als Null haben, so wird der Wert für den Extrapunkte erst multipliziert und dann dem Durchschnitt der Bewertungen hinzuaddiert.';
 $string['aggregationcoefextrasum'] = 'Zusatzpunkte';
-$string['aggregationcoefextrasum_help'] = '<h2>Als Extrapunkte-Bewertung festlegen</h2>
-<p>Bei der Einstellung "Summe der Bewertungen" als Berechnungsverfahren kann eine Bewertung als Sonderpunkte definiert werden. Das bedeutet, dass die höchste hierbei mögliche Bewertung nicht in die Summe der Bewertungen der Kategorie eingerechnet wird. Die Bewertung selber wird als Bonus dennoch mit berechnet.
-Das folgende Beispiel kann dies verdeutlichen:</p>
+$string['aggregationcoefextrasum_help'] = '## Als Extrapunkte-Bewertung festlegen
+Bei der Einstellung "Summe der Bewertungen" als Berechnungsverfahren kann eine Bewertung als Sonderpunkte definiert werden. Das bedeutet, dass die höchste hierbei mögliche Bewertung nicht in die Summe der Bewertungen der Kategorie eingerechnet wird. Die Bewertung selber wird als Bonus dennoch mit berechnet.
+Das folgende Beispiel kann dies verdeutlichen:
 
-<ul>
-<li>Wert 1 ist bewertet mit 0-100</li>
-<li>Wert 2 ist bewertet mit 0-75</li>
-<li>Wert 1 ist als "Extrapunkte" aktiviert, Wert 2 jedoch nicht.</li>
-<li>Beide Werte gehören zur Kategorie 1. Für diese gilt, dass die Summe der Bewertungen ermittelt werden soll </li>
-<li>Kategorie 1 wird gesamt mit 0-75 bewertet</li>
-<li>Ein Teilnehmer erhält nun die Bewertung 20 für Wert 1 und 75 für Wert 2</li>
-<li>Die Berechnung für Kategorie 1 ist nun 75/75 (20+70 = 95; Wert 1 wird als Extrapunkte gewertet. Der Höchstwert kann jedoch nur 75 sein, daher ist die Endnote 75.)</li>
-</ul>';
+* Wert 1 ist bewertet mit 0-100
+* Wert 2 ist bewertet mit 0-75
+* Wert 1 ist als "Extrapunkte" aktiviert, Wert 2 jedoch nicht.
+* Beide Werte gehören zur Kategorie 1. Für diese gilt, dass die Summe der Bewertungen ermittelt werden soll
+* Kategorie 1 wird gesamt mit 0-75 bewertet
+* Ein Teilnehmer erhält nun die Bewertung 20 für Wert 1 und 75 für Wert 2
+* Die Berechnung für Kategorie 1 ist nun 75/75 (20+70 = 95; Wert 1 wird als Extrapunkte gewertet. Der Höchstwert kann jedoch nur 75 sein, daher ist die Endnote 75.)';
 $string['aggregationcoefextraweight'] = 'Gewichtung von Zusatzpunkten';
-$string['aggregationcoefextraweight_help'] = '<h2>Extrapunkteberechnung</h2>
-<p>Bei der Berechnung der Extrapunkte wird folgendes Verfahren angewandt. Bewertungen für die  Extrapunkte vergeben werden werden erst mit dem Multiplikator multipliziert. Dann werden die Einzelwerte addiert und durch die Zahl der Bewertungen dividiert. Die Zahl durch die dividiert wird   umfasst nur die Berwertungen, für die es keine Extrapunkte gibt. Im folgenden Beispiel erfolgt daher nur eine Division durch 2 und nicht durch 3.
-</p>
+$string['aggregationcoefextraweight_help'] = '## Extrapunkteberechnung
+Bei der Berechnung der Extrapunkte wird folgendes Verfahren angewandt. Bewertungen für die Extrapunkte vergeben werden werden erst mit dem Multiplikator multipliziert. Dann werden die Einzelwerte addiert und durch die Zahl der Bewertungen dividiert. Die Zahl durch die dividiert wird umfasst nur die Berwertungen, für die es keine Extrapunkte gibt. Im folgenden Beispiel erfolgt daher nur eine Division durch 2 und nicht durch 3.
 
-<ul>
-<li>Wert 1 wird bewertet mit 0-100 und "Extrapunkte" Wert wird gesetzt auf 2</li>
-<li>Wert 2 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
-<li>Wert 3 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000</li>
-<li>Alle 3 Werte gehören in Kategorie 1, mit der Bewertungsstrategie "Durchschnitt der Einzelbewertungen (mit Extrapunkten)" als Berechnungsverfahren</li>
-<li>Ein Teilnehmer erhält nun folgende Einzelbewertungen 20 für Wert 1, 40 für Wert 2 und 70 für Wert 3</li>
-<li>Die Gesamtbewertung für Kategorie 1 ist nun 50/100 (20*2 + 40 + 70) / 3</li>
-</ul>';
+* Wert 1 wird bewertet mit 0-100 und "Extrapunkte" Wert wird gesetzt auf 2
+* Wert 2 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000
+* Wert 3 wird bewertet mit 0-100 und "Extrapunkte" Wert bleibt auf 0.0000
+* Alle 3 Werte gehören in Kategorie 1, mit der Bewertungsstrategie "Durchschnitt der Einzelbewertungen (mit Extrapunkten)" als Berechnungsverfahren
+* Ein Teilnehmer erhält nun folgende Einzelbewertungen 20 für Wert 1, 40 für Wert 2 und 70 für Wert 3
+* Die Gesamtbewertung für Kategorie 1 ist nun 50/100 (20*2 + 40 + 70) / 3';
 $string['aggregationcoefweight'] = 'Gewichtung der Aspekte';
-$string['aggregationcoefweight_help'] = '<h2>Gewichtung des Wertes</h2>
-<p>Gewichtung der Bewertungen dieser Aktivität bei der Berechnung der Teil- oder Gesamtnote.
-</p>';
+$string['aggregationcoefweight_help'] = '## Gewichtung des Wertes
+Gewichtung der Bewertungen dieser Aktivität bei der Berechnung der Teil- oder Gesamtnote.';
 $string['aggregationposition'] = 'Anzeige des Gesamtergebnisses';
-$string['aggregationposition_help'] = '<h2>Anzeigeposition des Gesamtergebnisses</h2>
-<p>Legt fest an welcher Stelle der Tabelle das Gesamtergebnis angezeigt wird.
-</p>';
+$string['aggregationposition_help'] = '## Anzeigeposition des Gesamtergebnisses
+Legt fest an welcher Stelle der Tabelle das Gesamtergebnis angezeigt wird.';
 $string['aggregationsvisible'] = 'Mögliche Summierungsarten';
 $string['aggregationsvisiblehelp'] = 'Wählen Sie alle Summierungsarten, die nutzbar sein sollen. Benutzen Sie <strg> bzw. <ctrl>, um mehrere Arten zu markieren.';
 $string['allgrades'] = 'Alle Bewertungen nach Kategorien';
@@ -166,12 +130,11 @@ $string['autosort'] = 'Auto-Sortierung';
 $string['availableidnumbers'] = 'Verfügbare ID-Nummern';
 $string['average'] = 'Durchschnitt';
 $string['averagesdecimalpoints'] = 'Nachkommastellen in den Spaltendurchschnitten';
-$string['averagesdecimalpoints_help'] = '<h2>Dezimalziffern bei der Anzeige der Durchschnittswerte</h2>
-<p>Legt die Zahl der angezeigten Dezimalziffern des errechneten Durchschnittswerts in der Tabelle fest.  Wenn \'vererbt\' ausgewählt wird, wird die  Festlegung für die Spaltenwerte übernommen.
-</p>';
+$string['averagesdecimalpoints_help'] = '## Dezimalziffern bei der Anzeige der Durchschnittswerte
+Legt die Zahl der angezeigten Dezimalziffern des errechneten Durchschnittswerts in der Tabelle fest. Wenn \'vererbt\' ausgewählt wird, wird die Festlegung für die Spaltenwerte übernommen.';
 $string['averagesdisplaytype'] = 'Spaltendurchschnittsanzeige';
-$string['averagesdisplaytype_help'] = '<h2>Anzeige der Spalte Durchschnitt</h2>
-<p>Legt die Anzeige des Durchschnitts in jeder Spalte fest.  Wenn \'Vererben\' gewählt wird, wird der Wert in allen Spalten verwandt.</p>';
+$string['averagesdisplaytype_help'] = '## Anzeige der Spalte Durchschnitt
+Legt die Anzeige des Durchschnitts in jeder Spalte fest. Wenn \'Vererben\' gewählt wird, wird der Wert in allen Spalten verwandt.';
 $string['backupwithoutgradebook'] = 'Die Sicherung enthält keine Bewertungskonfiguration';
 $string['badgrade'] = 'Ungültige Bewertung';
 $string['badlyformattedscale'] = 'Bitte tragen Sie eine kommagetrennte Liste von Werten ein (mindestens zwei Werte)';
@@ -181,7 +144,6 @@ $string['bulkcheckboxes'] = 'Checkboxes';
 $string['calculatedgrade'] = 'Bewertung berechnen';
 $string['calculation'] = 'Berechnung';
 $string['calculation_help'] = 'Eine Berechnung ist eine Formel zur Bestimmung von Gesamtbewertungen. Die Formel sollte mit einem Gleichheitszeichen (=) beginnen und kann die üblichen mathematischen Operatoren (wie etwa max, min, sum) enthalten.
-
 Sie können auch andere Bewertungselemente in die Rechnung einbeziehen, indem Sie die ID-Nummer in eine doppelte eckige Klammer [[ID]] einfügen.';
 $string['calculationadd'] = 'Berechnung hinzufügen';
 $string['calculationedit'] = 'Berechnung bearbeiten';
@@ -223,8 +185,8 @@ $string['csv'] = 'CSV';
 $string['currentparentaggregation'] = 'Aktuelle übergeordnete Gesamtsumme';
 $string['curveto'] = 'Ändern auf';
 $string['decimalpoints'] = 'Dezimalstellen';
-$string['decimalpoints_help'] = '<h2>Dezimalzeichen</h2>
-<p>Legt die Zahl der angezeigten Dezimalzeichen einer Bewertung fest. Die Einstellung wirkt sich nicht auf die Genauigkeit der Berechnungen aus. Bei Berechnungen wird eine Genauigkeit von bis zu fünf Dezimalziffern mit beachtet.</p>';
+$string['decimalpoints_help'] = '## Dezimalzeichen
+Legt die Zahl der angezeigten Dezimalzeichen einer Bewertung fest. Die Einstellung wirkt sich nicht auf die Genauigkeit der Berechnungen aus. Bei Berechnungen wird eine Genauigkeit von bis zu fünf Dezimalziffern mit beachtet.';
 $string['default'] = 'Standard';
 $string['defaultprev'] = 'Voreinstellung ({$a})';
 $string['deletecategory'] = 'Kategorie löschen';
@@ -236,8 +198,8 @@ $string['displaypoints'] = 'Punktwerte anzeigen';
 $string['displayweighted'] = 'Gewichtete Bewertungen anzeigen';
 $string['dropdown'] = 'Dropdown-Menü';
 $string['droplow'] = 'Niedrigste Bewertungen herausnehmen';
-$string['droplow_help'] = '<h2>Niedrigste Bewertungen auslassen</h2>
-<p>Mit dieser Funktion werden die x niedrigsten Bewertungen einfach ignoriert und bei der Berechnung der Gesamtnote übersprungen. X steht für die Zahl der niedrigsten Resultate. Damit kann folgendes Szenario umgesetzt werden: Bei fünf Tests eines Kurses werden die schlechtesten beiden Ergebnisse nicht für die Gesamtnote berücksichtigt.  </p>';
+$string['droplow_help'] = '## Niedrigste Bewertungen auslassen
+Mit dieser Funktion werden die x niedrigsten Bewertungen einfach ignoriert und bei der Berechnung der Gesamtnote übersprungen. X steht für die Zahl der niedrigsten Resultate. Damit kann folgendes Szenario umgesetzt werden: Bei fünf Tests eines Kurses werden die schlechtesten beiden Ergebnisse nicht für die Gesamtnote berücksichtigt.';
 $string['dropped'] = 'herausgenommen';
 $string['dropxlowest'] = 'Die X niedrigsten <br />herausnehmen';
 $string['dropxlowestwarning'] = 'Anmerkung: Wenn Sie die Option "die X niedrigsten herausnehmen" verwenden, wird angenommen, dass alle Elemente der Kategorie die gleiche Punktzahl haben. Wenn die Punktwerte differieren, werden die Ergebnisse unkalkulierbar.';
@@ -272,8 +234,8 @@ $string['errorupdatinggradecategoryaggregatesubcats'] = 'Es ist ein Fehler beim 
 $string['errorupdatinggradecategoryaggregation'] = 'Es ist ein Fehler beim Aktualisieren des Typs der Zusammenfassung in der Bewertungskategorie mit der ID {$a->id} aufgetreten.';
 $string['errorupdatinggradeitemaggregationcoef'] = 'Es ist ein Fehler beim Aktualisieren des Summenkoeffizients (Gewichtung oder Zusatzpunkte) des Bewertungselements mit der ID {$a->id} aufgetreten.';
 $string['excluded'] = 'Unberücksichtigt';
-$string['excluded_help'] = '<h2>Bewertung ausgrenzen</h2>
-<p>Wenn - ausgrenzen/ausschließen - aktiviert ist, werden diese Bewertungen bei der weiteren Gesamtnotenberechnung übersprungen und nicht einbezogen.</p>';
+$string['excluded_help'] = '## Bewertung ausgrenzen
+Wenn - ausgrenzen/ausschließen - aktiviert ist, werden diese Bewertungen bei der weiteren Gesamtnotenberechnung übersprungen und nicht einbezogen.';
 $string['expand'] = 'Kategorie erweitern';
 $string['export'] = 'Export';
 $string['exportalloutcomes'] = 'Alle Lernziele exportieren';
@@ -283,15 +245,14 @@ $string['exportsettings'] = 'Exporteinstellungen';
 $string['exportto'] = 'Export nach';
 $string['extracreditwarning'] = 'Anmerkung: Wenn für alle Elemente einer Kategorie Extrapunkte vergeben werden, dann werden sie bei der Gesamtbewertung nicht berücksichtigt. Es wird keine Gesamtpunktzahl ermittelt.';
 $string['feedback'] = 'Feedback';
-$string['feedback_help'] = '<h2>Feedback</h2>
-<p>Anmerkungen zur Bewertung durch den/die Trainer/in. Das Feedback kann ein ausführlicher Text, eine sehr persönliche Rückmeldung oder ein Code sein, der üblicherweise in der Bildungseinrichtung verwandt wird.
-</p>';
+$string['feedback_help'] = '## Feedback
+Anmerkungen zur Bewertung durch den/die Trainer/in. Das Feedback kann ein ausführlicher Text, eine sehr persönliche Rückmeldung oder ein Code sein, der üblicherweise in der Bildungseinrichtung verwandt wird.';
 $string['feedbackadd'] = 'Feedback hinzufügen';
 $string['feedbackedit'] = 'Feedback bearbeiten';
 $string['feedbacksaved'] = 'Feedback gespeichert';
 $string['feedbackview'] = 'Feedback ansehen';
 $string['finalgrade'] = 'Endbewertung';
-$string['finalgrade_help'] = '<p>Gesamtnote nachdem alle Bewertungen berechnet wurden.</p>';
+$string['finalgrade_help'] = 'Gesamtnote nachdem alle Bewertungen berechnet wurden.';
 $string['fixedstudents'] = 'Feste Spaltenbreite';
 $string['fixedstudents_help'] = 'Feste Breite der Spalten, dadurch horizontales Scrollen.';
 $string['forceoff'] = 'Festgelegt: Aus';
@@ -309,8 +270,8 @@ $string['gradebook'] = 'Bewertungen';
 $string['gradebookhiddenerror'] = 'Die Bewertungen sind zur Zeit für die Teilnehmer/innen nicht sichtbar.';
 $string['gradebookhistories'] = 'Bewertungsverlauf';
 $string['gradeboundary'] = 'Untere Grenze für Note';
-$string['gradeboundary_help'] = '<h2>Bewertungsgrenze</h2>
-<p>Eine prozentuale Grenze über der die Bewertung einer bestimmten Note (Buchstaben) zugeordnet wird. </p>';
+$string['gradeboundary_help'] = '## Bewertungsgrenze
+Eine prozentuale Grenze über der die Bewertung einer bestimmten Note (Buchstaben) zugeordnet wird.';
 $string['gradecategories'] = 'Bewertungskategorien';
 $string['gradecategory'] = 'Bewertungskategorie';
 $string['gradecategoryonmodform'] = 'Bewertungskategorie';
@@ -318,8 +279,8 @@ $string['gradecategoryonmodform_help'] = 'Die Einstellung legt fest in welcher K
 $string['gradecategorysettings'] = 'Bewertungskategorie-Einstellungen';
 $string['gradedisplay'] = 'Bewertungsanzeige';
 $string['gradedisplaytype'] = 'Bewertungsanzeige-Typ';
-$string['gradedisplaytype_help'] = '<h2>Anzeigetyp für Bewertungen</h2>
-<p>Bewertungen können als reale Bewertungen, Prozentwerte (relativ zum höchsten/ niedrigsten Wert), oder als Buchstaben (A,B,C,..) angezeigt werden.</p>';
+$string['gradedisplaytype_help'] = '## Anzeigetyp für Bewertungen
+Bewertungen können als reale Bewertungen, Prozentwerte (relativ zum höchsten/ niedrigsten Wert), oder als Buchstaben (A,B,C,..) angezeigt werden.';
 $string['gradedon'] = '{$a} bewertet';
 $string['gradeexport'] = 'Bewertungsexport';
 $string['gradeexportdecimalpoints'] = 'Dezimalstellen bei Bewertungsexport';
@@ -344,18 +305,18 @@ $string['gradeitems'] = 'Bewertungsaspekte';
 $string['gradeitemsettings'] = 'Bewertungsaspekte';
 $string['gradeitemsinc'] = 'Einzuschließende Bewertungsaspekte';
 $string['gradeletter'] = 'Note';
-$string['gradeletter_help'] = '<h2>Bewertung mit Buchstaben</h2>
-<p>Ein Buchstabe oder eine andere Bezeichnung als Symbol zur Wiedergabe eines Bewertungsbereichs (z.B. sehr gut für 100-97 Punkte).</p>';
+$string['gradeletter_help'] = '## Bewertung mit Buchstaben
+Ein Buchstabe oder eine andere Bezeichnung als Symbol zur Wiedergabe eines Bewertungsbereichs (z.B. sehr gut für 100-97 Punkte).';
 $string['gradeletternote'] = 'Füllen Sie die letzte Zeile und speichern Sie, <br />um eine neue Leerzeile für eine weitere Note zu erhalten.';
 $string['gradeletters'] = 'Notenstufen';
 $string['gradelocked'] = 'Bewertung ist gesperrt';
 $string['gradelong'] = '{$a->grade} / {$a->max}';
 $string['grademax'] = 'Maximale Bewertung';
-$string['grademax_help'] = '<h2>Höchste Bewertung</h2>
-<p>Wenn der Wert-Typ der Bewertung verwandt wird, kann hier eine oberste oder höchste Bewertung festgesetzt werden. Die Festlegung erfolgt auf der Seite mit den Einstellungen zur einzelnen Lernaktivität.</p>';
+$string['grademax_help'] = '## Höchste Bewertung
+Wenn der Wert-Typ der Bewertung verwandt wird, kann hier eine oberste oder höchste Bewertung festgesetzt werden. Die Festlegung erfolgt auf der Seite mit den Einstellungen zur einzelnen Lernaktivität.';
 $string['grademin'] = 'Minimale Bewertung';
-$string['grademin_help'] = '<h2>Niedrigste Bewertung</h2>
-<p>Wenn der Wert-Typ der Bewertung verwandt wird, kann hier eine unterste oder niedrigste Bewertung festgesetzt werden.</p>';
+$string['grademin_help'] = '## Niedrigste Bewertung
+Wenn der Wert-Typ der Bewertung verwandt wird, kann hier eine unterste oder niedrigste Bewertung festgesetzt werden.';
 $string['gradeoutcomeitem'] = 'Lernziel bewerten';
 $string['gradeoutcomes'] = 'Lernziele';
 $string['gradeoutcomescourses'] = 'Kurs-Lernziele';
@@ -364,7 +325,7 @@ $string['gradepass_help'] = 'Diese Option legt die erforderliche Mindestbewertun
 $string['gradepreferences'] = 'Bewertungseinstellungen';
 $string['gradepreferenceshelp'] = 'Hilfe für Bewertungseinstellungen';
 $string['gradepublishing'] = 'Veröffentlichen erlauben';
-$string['gradepublishing_help'] = 'Aktiviert die Export und Importfunktion: Exportierte Bewertungen können für andere verlinkt werden, ohne dass sie sich im Moodle-System einloggen müssen.  Bewertungen können auf die gleiche Art und Weise importiert werden. Damit können Bewertungen, die aus anderen Systemen stammen integriert werden. Normalerweise können nur Administratoren diese Funktion nutzen. Falls dieses Recht weitergegeben wird, sind die betroffenen Personen darauf hinzuweisen, dass mit entsprechender Sorgfalt mit diesen persönlichen Daten umgegangen wird.';
+$string['gradepublishing_help'] = 'Aktiviert die Export und Importfunktion: Exportierte Bewertungen können für andere verlinkt werden, ohne dass sie sich im Moodle-System einloggen müssen. Bewertungen können auf die gleiche Art und Weise importiert werden. Damit können Bewertungen, die aus anderen Systemen stammen integriert werden. Normalerweise können nur Administratoren diese Funktion nutzen. Falls dieses Recht weitergegeben wird, sind die betroffenen Personen darauf hinzuweisen, dass mit entsprechender Sorgfalt mit diesen persönlichen Daten umgegangen wird.';
 $string['gradereport'] = 'Bewertungsbericht';
 $string['graderreport'] = 'Bewerterübersicht';
 $string['grades'] = 'Bewertung';
@@ -372,9 +333,8 @@ $string['gradesforuser'] = 'Bewertung für {$a->user}';
 $string['gradesonly'] = 'Nur Bewertung';
 $string['gradessettings'] = 'Bewertungseinstellungen';
 $string['gradetype'] = 'Bewertungstyp';
-$string['gradetype_help'] = '<h2>Bewertungstyp</h2>
-<p>Legt den verwendeten Bewertungstyp fest: keine (keine Bewertung möglich), Werte(aktiviert die maximalen/minimalen Notenwerte), Skala (aktiviert die Einstellung einer Skala) oder Text (nur freie Feedbacktexte). Nur Werte und Skalen können weiter als Grundlage für Berechnungen genutzt werden. Der Bewertungstyp einer Lernaktivität wird in den Einstellungen der jeweiligen Lernaktivität im Kurs festgelegt.
-</p>';
+$string['gradetype_help'] = '## Bewertungstyp
+Legt den verwendeten Bewertungstyp fest: keine (keine Bewertung möglich), Werte(aktiviert die maximalen/minimalen Notenwerte), Skala (aktiviert die Einstellung einer Skala) oder Text (nur freie Feedbacktexte). Nur Werte und Skalen können weiter als Grundlage für Berechnungen genutzt werden. Der Bewertungstyp einer Lernaktivität wird in den Einstellungen der jeweiligen Lernaktivität im Kurs festgelegt.';
 $string['gradeview'] = 'Bewertung ansehen';
 $string['gradeweighthelp'] = 'Hilfe zur Bewertung';
 $string['groupavg'] = 'Gruppendurchschnitt';
@@ -399,7 +359,7 @@ $string['hidequickfeedback'] = 'Schnelles Feedback verbergen';
 $string['hideranges'] = 'Stufen verbergen';
 $string['hidetotalifhiddenitems'] = 'Summen verbergen, wenn sie verborgene Elemente enthalten';
 $string['hidetotalifhiddenitems_help'] = 'Die Einstellung legt fest ob die Gesamtbewertung angezeigt wird oder durch ein (-) ersetzt wird, wenn es verborgene Einzelbewertungen gibt. Soll sie angezeigt werden kann festgelegt werden, ob die verborgene Bewertung in das angezeigte Gesamtergebnisse einbezogen wird oder nicht.
-Wenn verborgene Werte ausgeschlossen werden, ist die sichtbare Gesamtbewertung die der Trainer sieht und die der Teilnehmer sieht, nicht identisch.  Der Trainer sieht immer sichtbare und verborgene Ergebnisse als Gesamtergebnis. Sollen verborgene Werte für Teilnehmer nicht sichtbar sein, können diese von den Teilnehmern u.U. aus dem Gesamtergebnis errechnet werden.';
+Wenn verborgene Werte ausgeschlossen werden, ist die sichtbare Gesamtbewertung die der Trainer sieht und die der Teilnehmer sieht, nicht identisch. Der Trainer sieht immer sichtbare und verborgene Ergebnisse als Gesamtergebnis. Sollen verborgene Werte für Teilnehmer nicht sichtbar sein, können diese von den Teilnehmern u.U. aus dem Gesamtergebnis errechnet werden.';
 $string['hidetotalshowexhiddenitems'] = 'Summen anzeigen, ausgenommen der verborgenen Elemente';
 $string['hidetotalshowinchiddenitems'] = 'Summen anzeigen, inclusive der verborgenen Elemente';
 $string['hideverbose'] = '{$a->category} {$a->itemmodule} {$a->itemname} verbergen';
@@ -438,8 +398,8 @@ $string['inherit'] = 'Vererben';
 $string['intersectioninfo'] = 'Info zu Teilnehmer/Bewertung';
 $string['item'] = 'Aspekt';
 $string['iteminfo'] = 'Info zum Aspekt';
-$string['iteminfo_help'] = '<h2>Information zum Wert</h2>
-<p>Raum zum Eingeben weiterer Informationen über den Wert. Der Text wird nicht an einer anderen Stelle angezeigt.</p>';
+$string['iteminfo_help'] = '## Information zum Wert
+Raum zum Eingeben weiterer Informationen über den Wert. Der Text wird nicht an einer anderen Stelle angezeigt.';
 $string['itemname'] = 'Name des Aspekts';
 $string['itemnamehelp'] = 'Name des Aspekts, der vom Modul festgelegt wird.';
 $string['items'] = 'Aspekte';
@@ -455,9 +415,8 @@ $string['letterpercentage'] = 'Note (Prozent)';
 $string['letterreal'] = 'Note (dezimal)';
 $string['letters'] = 'Notenstufen';
 $string['linkedactivity'] = 'Verknüpfte Aktivität';
-$string['linkedactivity_help'] = '<h2>Verlinkte Aktivität</h2>
-<p>Festlegung der Zuordnung einer Aktivität zu einem Lernziel. Dies ist sinnvoll, um Leistungen der Teilnehmer/innen zu messen, die nicht über Notendimensionen erfasst werden sollen.
-</p>';
+$string['linkedactivity_help'] = '## Verlinkte Aktivität
+Festlegung der Zuordnung einer Aktivität zu einem Lernziel. Dies ist sinnvoll, um Leistungen der Teilnehmer/innen zu messen, die nicht über Notendimensionen erfasst werden sollen.';
 $string['linktoactivity'] = 'Link zur Aktivität {$a->name}';
 $string['lock'] = 'Sperren';
 $string['locked'] = 'Gesperrt';
@@ -485,8 +444,8 @@ $string['morethanmax'] = 'Die eingegeben Bewertung für {$a->itemname} für {$a-
 $string['moveselectedto'] = 'Ausgewählte Aspekte verschieben nach:';
 $string['movingelement'] = '{$a} verschieben';
 $string['multfactor'] = 'Multiplikator';
-$string['multfactor_help'] = '<h2>Multiplikator</h2>
-<p>Faktor mit dem jeder Wert dieser Benotung multipliziert wird. Damit können die Ergebnisse unterschiedlich gewichtet werden.</p>';
+$string['multfactor_help'] = '## Multiplikator
+Faktor mit dem jeder Wert dieser Benotung multipliziert wird. Damit können die Ergebnisse unterschiedlich gewichtet werden.';
 $string['mypreferences'] = 'Meine Einstellungen';
 $string['myreportpreferences'] = 'Meine Einstellungen für Berichte';
 $string['navmethod'] = 'Navigationsmethode';
@@ -543,18 +502,17 @@ $string['outcomeshortname'] = 'Kurzbezeichnung';
 $string['outcomesstandard'] = 'Standard-Lernziele';
 $string['outcomesstandardavailable'] = 'Verfügbare Standard-Lernziele';
 $string['outcomestandard'] = 'Standard-Lernziel';
-$string['outcomestandard_help'] = '<h2>Standard-Lernziele</h2>
-<p>Ein Standard-Lernziel steht in jedem Kurs des gesamten Systems zur Verfügung.</p>';
+$string['outcomestandard_help'] = '## Standard-Lernziele
+Ein Standard-Lernziel steht in jedem Kurs des gesamten Systems zur Verfügung.';
 $string['overallaverage'] = 'Gesamtdurchschnitt';
 $string['overridden'] = 'Überschrieben';
-$string['overridden_help'] = '<h2>Überschreiben</h2>
-<p>Wenn Sie diese Funktion verwenden, verhindern Sie jeden weiteren Versuch des Teilnehmers und damit die Änderung der Bewertung in der Tabelle. Eine manuell vorgenommene Bewertung in der Tabelle kann also nicht mehr durch einen weiteren Testversuch korrigiert werden. Versuche aus der Lernaktivität heraus neue Daten in die Tabelle zu schreiben sind nicht mehr möglich. </p>
-<p>Diese Funktion wird vielfach automatisch durch das Bewertungssystem aktiviert. Sie kann manuell an dieser Stelle an- und ausgeschaltet werden.</p>';
+$string['overridden_help'] = '## Überschreiben
+Wenn Sie diese Funktion verwenden, verhindern Sie jeden weiteren Versuch des Teilnehmers und damit die Änderung der Bewertung in der Tabelle. Eine manuell vorgenommene Bewertung in der Tabelle kann also nicht mehr durch einen weiteren Testversuch korrigiert werden. Versuche aus der Lernaktivität heraus neue Daten in die Tabelle zu schreiben sind nicht mehr möglich.
+Diese Funktion wird vielfach automatisch durch das Bewertungssystem aktiviert. Sie kann manuell an dieser Stelle an- und ausgeschaltet werden.';
 $string['overriddennotice'] = 'Die endgültige Bewertung zu dieser Aktivität wurde manuell bearbeitet.';
 $string['overridesitedefaultgradedisplaytype'] = 'Voreinstellungen überschreiben';
-$string['overridesitedefaultgradedisplaytype_help'] = '<h2>Voreinstellungen für Site überschreiben</h2>
-<p>Die Checkkox erlaubt die systemweiten Voreinstellungen für die Bewertungen zu überschreiben. Danach besteht die Möglichkeit Gesamtnotenumrechnungen (Punktwerte in Noten) oder Begrenzungen anzupassen.
-</p>';
+$string['overridesitedefaultgradedisplaytype_help'] = '## Voreinstellungen für Site überschreiben
+Die Checkkox erlaubt die systemweiten Voreinstellungen für die Bewertungen zu überschreiben. Danach besteht die Möglichkeit Gesamtnotenumrechnungen (Punktwerte in Noten) oder Begrenzungen anzupassen.';
 $string['parentcategory'] = 'Übergeordnete Kategorie';
 $string['pctoftotalgrade'] = '% der Gesamtbewertung';
 $string['percent'] = 'Prozent';
@@ -565,8 +523,8 @@ $string['percentascending'] = '% aufsteigend sortieren';
 $string['percentdescending'] = '% absteigend sortieren';
 $string['percentshort'] = '%';
 $string['plusfactor'] = 'Offset';
-$string['plusfactor_help'] = '<h2>Zuschlag</h2>
-<p>Wert, der zu jeder Bewertung für diese Note hinzuaddiert wird nachdem der Multiplikationsfaktor ausgeführt wurde.</p>';
+$string['plusfactor_help'] = '## Zuschlag
+Wert, der zu jeder Bewertung für diese Note hinzuaddiert wird nachdem der Multiplikationsfaktor ausgeführt wurde.';
 $string['points'] = 'Punkte';
 $string['pointsascending'] = 'sortieren, Punkte aufsteigend';
 $string['pointsdescending'] = 'sortieren, Punkte absteigend';
@@ -583,17 +541,17 @@ $string['profilereport_help'] = 'Der Bewertungsbericht wird auf der Seite des Nu
 $string['publishing'] = 'Veröffentlichen';
 $string['quickfeedback'] = 'Schnelles Feedback';
 $string['quickgrading'] = 'Schnelle Bewertung';
-$string['quickgrading_help'] = '<h2>Schnelle Bewertung</h2>
-<p>Die Schnelle Bewertung ergänzt ein Eingabefeld in jeder Zelle der Bewertungstabelle. Damit können  mehrere Bewertungen auf einer Seite schnell eingegeben werden. Mit einem Klick auf den Aktualisierungsbutton werden alle Bewertungen auf einmal abgespeichert. </p>';
+$string['quickgrading_help'] = '## Schnelle Bewertung
+Die Schnelle Bewertung ergänzt ein Eingabefeld in jeder Zelle der Bewertungstabelle. Damit können mehrere Bewertungen auf einer Seite schnell eingegeben werden. Mit einem Klick auf den Aktualisierungsbutton werden alle Bewertungen auf einmal abgespeichert.';
 $string['range'] = 'Bereich';
 $string['rangedecimals'] = 'Dezimalstellen für Spannbreite';
 $string['rangedecimals_help'] = 'Zahl der Dezimalstellen, um die Spannbreite der Ergebnisse anzuanzeigen';
 $string['rangesdecimalpoints'] = 'Nachkommastellen in Bereichen';
-$string['rangesdecimalpoints_help'] = '<h2>Dezimalwerte  anzeigen im Bewertungsbereich</h2>
-<p>Festlegung der Zahl der Dezimalziffern für jeden Bewertungsbereich. Die Einstellung kann für jede einzelne Bewertungsspalte überschrieben werden.</p>';
+$string['rangesdecimalpoints_help'] = '## Dezimalwerte anzeigen im Bewertungsbereich
+Festlegung der Zahl der Dezimalziffern für jeden Bewertungsbereich. Die Einstellung kann für jede einzelne Bewertungsspalte überschrieben werden.';
 $string['rangesdisplaytype'] = 'Bereichsanzeige';
-$string['rangesdisplaytype_help'] = '<h2>Anzeige des Bewertungsbereichs</h2>
-<p>Festlegung wie der Bewertungsbereich angezeigt wird. Wenn \'Vererben\' ausgewählt wurde, wird der Anzeigetyp in jeder Spalte verwendet.</p>';
+$string['rangesdisplaytype_help'] = '## Anzeige des Bewertungsbereichs
+Festlegung wie der Bewertungsbereich angezeigt wird. Wenn \'Vererben\' ausgewählt wurde, wird der Anzeigetyp in jeder Spalte verwendet.';
 $string['rank'] = 'Rang';
 $string['rawpct'] = 'Rohwert %';
 $string['real'] = 'Punkte';
@@ -628,8 +586,8 @@ $string['setting'] = 'Einstellung';
 $string['settings'] = 'Einstellungen';
 $string['setweights'] = 'Kategorien gewichten';
 $string['showactivityicons'] = 'Aktivitätssymbole zeigen';
-$string['showactivityicons_help'] = '<h2>Anzeige der Icons für Lernaktivitäten</h2>
-<p>Ergänzt eine Anzeige der Icons der verschiedenen Lernaktivitäten neben dem Namen der bewerteten Lernaktivität.</p>';
+$string['showactivityicons_help'] = '## Anzeige der Icons für Lernaktivitäten
+Ergänzt eine Anzeige der Icons der verschiedenen Lernaktivitäten neben dem Namen der bewerteten Lernaktivität.';
 $string['showallhidden'] = 'Verborgene anzeigen';
 $string['showallstudents'] = 'Alle Teilnehmer/innen anzeigen';
 $string['showanalysisicon'] = 'Icon zur Bewertungsanalyse anzeigen';
@@ -650,9 +608,8 @@ $string['showgrade_help'] = 'Spalte für Bewertung anzeigen?';
 $string['showgroups'] = 'Gruppen anzeigen';
 $string['showhiddenitems'] = 'Verborgene Werte anzeigen';
 $string['showhiddenitems_help'] = 'Diese Einstellung legt fest, ob verborgene Elemente angezeigt werden.
-
 * Verborgene anzeigen - Verborgene Bewertungselemente werden grau gezeigt, wobei die Bewertung unsichtbar bleibt
-* Nur verborgen bis - Bewertungselemente mit einem Zeitpunkt "Verborgen bis" werden grau gezeigt, wobei die Bewertung  unsichtbar ist. Ab dem gesetzten Zeitpunkt wird das Element vollständig angezeigt
+* Nur verborgen bis - Bewertungselemente mit einem Zeitpunkt "Verborgen bis" werden grau gezeigt, wobei die Bewertung unsichtbar ist. Ab dem gesetzten Zeitpunkt wird das Element vollständig angezeigt
 * Nicht anzeigen - Bewertungselemente sind vollständig unsichtbar';
 $string['showhiddenuntilonly'] = 'Nur verborgen bis';
 $string['showlettergrade'] = 'Notenbewertung anzeigen';
@@ -705,8 +662,8 @@ $string['turnfeedbackoff'] = 'Feedback einschalten';
 $string['turnfeedbackon'] = 'Feedback ausschalten';
 $string['typenone'] = 'Keines';
 $string['typescale'] = 'Skala';
-$string['typescale_help'] = '<h2>Bewertungsskala</h2>
-<p>Wenn eine Skalenbewertung verwendet wird, kann diese aus den vorhandenen Skalentypen ausgewählt werden. Die Bewertungsskala für eine Lernaktivität wird auf der Einstellungsseite der jeweiligen Lernaktivität vorgenommen.</p>';
+$string['typescale_help'] = '## Bewertungsskala
+Wenn eine Skalenbewertung verwendet wird, kann diese aus den vorhandenen Skalentypen ausgewählt werden. Die Bewertungsskala für eine Lernaktivität wird auf der Einstellungsseite der jeweiligen Lernaktivität vorgenommen.';
 $string['typetext'] = 'Text';
 $string['typevalue'] = 'Wert';
 $string['uncategorised'] = 'Nicht kategorisiert';

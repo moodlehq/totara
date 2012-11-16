@@ -29,7 +29,7 @@ $string['addsubmission'] = 'Aggiungi consegna';
 $string['allowdeleting'] = 'Consenti ripensamenti';
 $string['allowdeleting_help'] = 'I partecipanti potranno eliminare i file caricati prima di segnalare la consegna come completata.';
 $string['allowmaxfiles'] = 'Numero massimo di file da inviare';
-$string['allowmaxfiles_help'] = 'Numero massimo di file che ogni studente può caricare. Questo numero non viene visualizzato  agli studenti per cui può essere utile renderlo noto nella descrizione del compito.';
+$string['allowmaxfiles_help'] = 'Numero massimo di file che ogni studente può caricare. Questo numero non viene visualizzato agli studenti per cui può essere utile renderlo noto nella descrizione del compito.';
 $string['allownotes'] = 'Consenti annotazioni';
 $string['allownotes_help'] = 'Con le annotazioni i partecipanti potranno inserire informazioni. E\' simile ai Compiti online.';
 $string['allowresubmit'] = 'Consenti consegne ripetute';
@@ -86,7 +86,6 @@ $string['emailteachermailhtml'] = '{$a->username} ha modificato la propria conse
 <br />Il compito è disponibile a <a href="{$a->url}">questo link</a>.';
 $string['emailteachers'] = 'Avvisi ai docenti via email';
 $string['emailteachers_help'] = 'I docenti possono essere avvisati via email ogni volta che gli studenti consegnano o modificano la consegna di un compito.
-
 Saranno avvisati solamente i docenti abilitati a valutare il compito. Ad esempio, se il corso utilizza la modalità gruppi separati, i docenti assegnati ad un gruppo non riceveranno email riguardanti compiti consegnati da studenti di altri gruppi.';
 $string['emptysubmission'] = 'Non hai effettuato consegne';
 $string['enablenotification'] = 'Invia email di notifica';

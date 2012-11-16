@@ -63,7 +63,6 @@ $string['completion-title-manual-y'] = 'Marcar como não concluído: {$a}';
 $string['completion-y'] = 'Concluído';
 $string['completion_automatic'] = 'Mostrar atividade como concluída quando as condições forem satisfeitas';
 $string['completion_help'] = 'Se habilitada, a conclusão de atividade é acompanhada, manual ou automaticamente, sob certas condições. Se desejado, podem ser configuradas múltiplas condições. Nesse caso, a atividade só será considerada concluída quando TODAS as condições forem satisfeitas.
-
 Uma marca próximo ao nome da atividade na página do curso indica que ela foi concluída.';
 $string['completion_manual'] = 'Os alunos podem marcar manualmente a atividade como concluída';
 $string['completion_none'] = 'Não indicar a conclusão de atividade';
@@ -73,9 +72,7 @@ $string['completionexpected'] = 'Espere conclusão em';
 $string['completionexpected_help'] = 'Esta configuração especifica a data em que a atividade está prevista para ser concluída. A data não é mostrada aos alunos e só é exibida no relatório de conclusão da atividade.';
 $string['completionicons'] = 'Caixa para marcar atividades como concluídas';
 $string['completionicons_help'] = 'Uma marca próxima ao nome da atividade pode ser usada para indicar que a atividade foi concluída.
-
 Se forem mostrados pontinhos, você pode clicar neles para marcar quando achar que já concluiu a atividade. (Se mudar de ideia é só clicar novamente). A marca é opcional e é só uma forma de acompanhar seu avanço no curso.
-
 Se for mostrada uma caixa em branco, a marca aparecerá automaticamente quando você concluir a atividade de acordo com as condições estabelecidas pelo professor.';
 $string['completionmenuitem'] = 'Completação';
 $string['completionnotenabled'] = 'Rastreamento de conclusão não habilitado';

@@ -51,20 +51,17 @@ $string['notenoughanswers'] = 'Je moet minstens één antwoord ingeven.';
 $string['nounitdisplay'] = 'Eenheid wordt niet beoordeeld';
 $string['numericalmultiplier'] = 'Vermenigvuldigtal';
 $string['numericalmultiplier_help'] = 'Het vermenigvuldigtal is de factor waarmee het juiste numerieke antwoord vermenigvuldigd zal worden.
-
 De eerste eenheid (eenheid 1) heeft een standaard vermenigvuldigtal 1. Dus als het juiste numerieke antwoord 5500 is en je hebt W als eenheid bij eenheid 1 die 1 als standaard vermenigvuldigtal heeft, dan is het juiste antwoord 5500 W.
-
 Als je de eenheid kW toevoegt met vermenigvuldigtal 0,001, dan zal dit 5,5 kW als juist antwoord toevoegen. Dit betekent dat de antwoorden 5500 W en 5,5 kW beide als juist gerekend worden.
-
 Merk op dat de fouttolerantie ook mee vermenigvuldigd wordt. Een fouttolerantie van 100 W zou dan een fouttolerantie van 0,1 kW worden.';
 $string['oneunitshown'] = 'Eenheid 1 wordt automatisch in het antwoordvak getoond.';
 $string['onlynumerical'] = 'Eenheden worden helemaal niet gebruikt. Enkel de numerieke waarde wordt beoordeeld.';
 $string['pleaseenterananswer'] = 'Geef een antwoord';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Geef je antwoord zonder scheidingsteken voor de duizendtallen ({$a}).';
 $string['pluginname'] = 'Numeriek';
+$string['pluginname_help'] = 'Vanuit het perspectief van de leerling lijkt een numerieke vraag hetzelfde als een kort antwoordvraag. Het verschil is dat numerieke vragen een foutentolerantie kunnen hebben. Dit maakt het mogelijk om een reeks antwoorden als juist antwoord te laten beoordelen. Als het juiste antwoord bijvoorbeeld 10 is met een foutenmarge van 2, dan zal elk getal tussen 8 en 12 juist gerekend worden.';
 $string['pluginnameadding'] = 'Numerieke vraag toevoegen';
 $string['pluginnameediting'] = 'Numerieke vraag bewerken';
-$string['pluginname_help'] = 'Vanuit het perspectief van de leerling lijkt een numerieke vraag hetzelfde als een kort antwoordvraag. Het verschil is dat numerieke vragen een foutentolerantie kunnen hebben. Dit maakt het mogelijk om een reeks antwoorden als juist antwoord te laten beoordelen. Als het juiste antwoord bijvoorbeeld 10 is met een foutenmarge van 2, dan zal elk getal tussen 8 en 12 juist gerekend worden.';
 $string['pluginnamesummary'] = 'Maakt het mogelijk een numeriek antwoord te laten geven, zelfs met eenheden en toleranties. Dat antwoord kan beoordeeld worden met verschillende modelantwoorden,';
 $string['relative'] = 'Relatief';
 $string['rightexample'] = 'rechts, bijvoorbeeld 1,00cm of 1,00km';
@@ -82,25 +79,20 @@ $string['unithdr'] = 'Unit {$a}';
 $string['unitincorrect'] = 'Je hebt de juiste eenheid niet gegeven';
 $string['unitmandatory'] = 'Verplicht';
 $string['unitmandatory_help'] = '* Het antwoord wordt beoordeeld met de geschreven eenheid.
-
 * Het strafpunt voor de eenheid wordt toegepast als het veld voor de eenheid leeg is.';
 $string['unitnotselected'] = 'Je moet een eenheid selecteren.';
 $string['unitonerequired'] = 'Je moet minstens één eenheid selecteren';
 $string['unitoptional'] = 'Optionele eenheid';
 $string['unitoptional_help'] = '* Als het eenheidsveld niet leeg is, dan wordt het antwoord beoordeeld met de gegeven eenheid.
-
 * Als de eenheid fout geschreven is of onbekend, dan zal het antwoord als fout beschouwd worden;';
 $string['unitpenalty'] = 'Strafpunt voor de eenheid';
 $string['unitpenalty_help'] = 'Dit strafpunt wordt toegepast als
-
 * de foute eenheidsnaam is ingegeven in het veld voor de eenheid, of
 * als er een eenheid is ingegeven in het veld voor de waarde';
 $string['unitposition'] = 'Waar eenheden staan';
 $string['unitselect'] = 'een rolmenu';
 $string['validnumberformats'] = 'Geldige getalopmaak';
 $string['validnumberformats_help'] = '* gewone getallen 13500.67, 13 500.67, 13500,67 of 13 500,67
-
 * als je een scheidingsteken voor duizendtallen gebruikt, moet je altijd een . gebruiken voor de decimalen, zoals in 13,500.67 : 13,500.
-
 * voor exponenten zoals 1.350067 * 10<sup>4</sup>, gebruik je 1.350067 E4 : 1.350067 E04';
 $string['validnumbers'] = '13500.67, 13 500.67, 13,500.67, 13500,67, 13 500,67, 1.350067 E4 of 1.350067 E04';

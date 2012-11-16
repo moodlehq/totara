@@ -43,117 +43,99 @@ $string['aggregatemedian'] = 'Mediana dei voti';
 $string['aggregatemin'] = 'Voto più basso';
 $string['aggregatemode'] = 'Moda dei voti';
 $string['aggregateonlygraded'] = 'Aggrega solo i voti ricevuti';
-$string['aggregateonlygraded_help'] = '<p>I voti non ancora ricevuti possono essere aggregati considerandoli come voto minimo oppure possono essere ignorati durante l\'aggregazione.</p>';
+$string['aggregateonlygraded_help'] = 'I voti non ancora ricevuti possono essere aggregati considerandoli come voto minimo oppure possono essere ignorati durante l\'aggregazione.';
 $string['aggregateoutcomes'] = 'Aggrega gli obiettivi';
-$string['aggregateoutcomes_help'] = '<p>E\' possibile includere gli obiettivi nella aggregazione dei voti ma non è detto che si ottenga sempre il risultato desiderato, pertanto è possibile scegliere se includere od escludere gli obiettivi dall\'aggregazione dei voti.</p>';
+$string['aggregateoutcomes_help'] = 'E\' possibile includere gli obiettivi nella aggregazione dei voti ma non è detto che si ottenga sempre il risultato desiderato, pertanto è possibile scegliere se includere od escludere gli obiettivi dall\'aggregazione dei voti.';
 $string['aggregatesonly'] = 'Solo le colonne con l\'aggregazione di voti';
 $string['aggregatesubcats'] = 'Aggrega includendo le sotto categorie';
-$string['aggregatesubcats_help'] = '<p>Per default l\'aggregazione dei voti di una categoria include solamente gli elementi di primo livello. Con questa impostazione è possibile includere anche i voti presenti in tutte le sotto categorie, esclusi i totali parziali.</p>';
+$string['aggregatesubcats_help'] = 'Per default l\'aggregazione dei voti di una categoria include solamente gli elementi di primo livello. Con questa impostazione è possibile includere anche i voti presenti in tutte le sotto categorie, esclusi i totali parziali.';
 $string['aggregatesum'] = 'Somma dei voti';
 $string['aggregateweightedmean'] = 'Media ponderale dei voti';
 $string['aggregateweightedmean2'] = 'Media ponderale semplice dei voti';
 $string['aggregation'] = 'Aggregazione dei voti';
-$string['aggregation_help'] = '<p>Il menù a discesa permette di scegliere la strategia di aggregazione da utilizzare per calcolare la valutazione complessiva per una data categoria. Questo help spiega il calcolo e le diverse strategie di aggregazione disponibili.</p>
+$string['aggregation_help'] = 'Il menù a discesa permette di scegliere la strategia di aggregazione da utilizzare per calcolare la valutazione complessiva per una data categoria. Questo help spiega il calcolo e le diverse strategie di aggregazione disponibili.
+I voti sono dapprima convertiti in valori percentuali (intervallo da 0 a 1, fase di normalizzazione), successivamente aggregati usando la strategia di prescelta. Il totale ottenuto viene quindi convertito in accordo all\'intervallo di voti impostato per la categoria stessa
+(ossia tra il *Voto minimo* ed il *Voto massimo*).
+**Importante**: Una voto non presente è di fatto un elemento mancante nel registro delle valutazioni ma può significare cose differenti. Per esempio potrebbe significare che un partecipante non ha ancora consegnato un compito, oppure il compito è stato consegnato ma non ancora valutato dal docente, oppure una valutazione che è stata eliminata manualmente dall\'amministratore del registro. Bisogna quindi porre molta attenzione nell\'interpretare i "Voti non ricevuti".
 
-<p>I voti sono dapprima convertiti in valori percentuali (intervallo da 0 a 1, fase di normalizzazione), successivamente aggregati usando la strategia di prescelta. Il totale ottenuto viene quindi convertito in accordo all\'intervallo di voti impostato per la categoria stessa
-(ossia tra il <em>Voto minimo</em> ed il <em>Voto massimo</em>).</p>
-
-<p><strong>Importante</strong>: Una voto non presente è di fatto un elemento mancante nel registro delle valutazioni ma può significare cose differenti. Per esempio potrebbe significare che un partecipante non ha ancora consegnato un compito, oppure il compito è stato consegnato ma non ancora valutato dal docente, oppure una valutazione che è stata eliminata manualmente dall\'amministratore del registro. Bisogna quindi porre molta attenzione nell\'interpretare i "Voti non ricevuti".</p>
-
-<dl id="grade-aggregation-help">
-<dt>Media dei voti</dt>
-<dd>La somma di tutti i voti diviso per il numero totale di voti.</dd>
-<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-<code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
-
-<dt>Media ponderale dei voti</dt>
-<dd>Ad ogni voto può essere dato un peso che sarà utilizzato nel calcolo della media aritmetica, stabilendo l\'importanza di ogni elemento nella media generale.</dd>
-<dd class="example">A1 70/100 peso 10, A2 20/80 peso 5, A3
-10/10 peso 3, massimo categoria 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
-
-<dt>Media ponderale semplice dei voti</dt>
-<dd>La differenza rispetto alla <em>Media ponderale dei voti</em> è che il peso per ogni elemento viene calcolato come <em>Voto massimo</em> - <em>Voto minimo</em>. Un compito da 100 punti ha peso 100, un compito da 10 punti ha peso 10.</dd>
-<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-<code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
-
-<dt>Voto medio (con credito extra)</dt>
-<dd>Media aritmetica con una variante: è una strategia di aggregazione obsoleta e non più supportata ed è presente solo per compatibilità con versioni precedenti di moduli di attività.</dd>
-
-<dt>Mediana dei voti</dt>
-<dd>La mediana è calcolata mettendo in ordine tutti i voti e selezionando quello che si trova a metà (o la media tra le due valutazioni di mezzo se queste sono in numero pari). Il vantaggio rispetto alla media è che la Mediana dei voti  risente meno di deviazioni eccessive (ossia valutazioni troppo lontane dalla media).</dd>
-<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-<code>1.0 + 0.7 + 0.25 --> 0.7 --> 70/100</code></dd>
-
-<dt>Voto più basso</dt>
-<dd>Il risultato è la il voto più basso dopo la normalizzazione. E\' di solito utilizzato in combinazione con l\'impostazione <em>Aggrega solo i voti ricevuti</em>.</dd>
-<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-<code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
-
-<dt>Voto più alto</dt>
-<dd>Il risultato è lil voto più alto dopo la normalizzazione.</dd>
-<dd class="example">A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:<br />
-<code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
-
-<dt>Moda dei voti</dt>
-<dd>La moda è una strategia di aggregazione molto frequente, in particolare per valutazioni non numeriche. Il vantaggio rispetto alla media è che la moda non è condizionata da deviazioni eccessive (ossia valutazioni troppo lontane dalla media). Tuttavia la moda perde di efficacia quando sono presenti più una valutazione ottenuta più frequentemente (ne viene mantenuta solo una) oppure quando tutte le valutazioni sono diverse fra loro.</dd>
-<dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 massimo categoria 100:<br />
-<code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
-
-<dt>Somma dei voti</dt>
-<dd>La somma di tutti i voti. Le scale di valutazione non vengono considerate. E\' il solo tipo di aggregazione che non converte le valutazioni in percentuali (normalizzazione). Il <em>Voto massimo</em> della categoria viene calcolato automaticamente come somma dei massimi fra tutti gli elementi aggregati.</dd>
-<dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
-<code>70 + 20 + 10 = 100/190</code></dd>
-</dl>';
+Media dei voti
+: La somma di tutti i voti diviso per il numero totale di voti.
+: A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:
+\`(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100\`
+Media ponderale dei voti
+: Ad ogni voto può essere dato un peso che sarà utilizzato nel calcolo della media aritmetica, stabilendo l\'importanza di ogni elemento nella media generale.
+: A1 70/100 peso 10, A2 20/80 peso 5, A3
+10/10 peso 3, massimo categoria 100:
+\`(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100\`
+Media ponderale semplice dei voti
+: La differenza rispetto alla *Media ponderale dei voti* è che il peso per ogni elemento viene calcolato come *Voto massimo* - *Voto minimo*. Un compito da 100 punti ha peso 100, un compito da 10 punti ha peso 10.
+: A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:
+\`(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100\`
+Voto medio (con credito extra)
+: Media aritmetica con una variante: è una strategia di aggregazione obsoleta e non più supportata ed è presente solo per compatibilità con versioni precedenti di moduli di attività.
+Mediana dei voti
+: La mediana è calcolata mettendo in ordine tutti i voti e selezionando quello che si trova a metà (o la media tra le due valutazioni di mezzo se queste sono in numero pari). Il vantaggio rispetto alla media è che la Mediana dei voti risente meno di deviazioni eccessive (ossia valutazioni troppo lontane dalla media).
+: A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:
+\`1.0 + 0.7 + 0.25 --> 0.7 --> 70/100\`
+Voto più basso
+: Il risultato è la il voto più basso dopo la normalizzazione. E\' di solito utilizzato in combinazione con l\'impostazione *Aggrega solo i voti ricevuti*.
+: A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:
+\`min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100\`
+Voto più alto
+: Il risultato è lil voto più alto dopo la normalizzazione.
+: A1 70/100, A2 20/80, A3 10/10, massimo categoria 100:
+\`max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100\`
+Moda dei voti
+: La moda è una strategia di aggregazione molto frequente, in particolare per valutazioni non numeriche. Il vantaggio rispetto alla media è che la moda non è condizionata da deviazioni eccessive (ossia valutazioni troppo lontane dalla media). Tuttavia la moda perde di efficacia quando sono presenti più una valutazione ottenuta più frequentemente (ne viene mantenuta solo una) oppure quando tutte le valutazioni sono diverse fra loro.
+: A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 massimo categoria 100:
+\`mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100\`
+Somma dei voti
+: La somma di tutti i voti. Le scale di valutazione non vengono considerate. E\' il solo tipo di aggregazione che non converte le valutazioni in percentuali (normalizzazione). Il *Voto massimo* della categoria viene calcolato automaticamente come somma dei massimi fra tutti gli elementi aggregati.
+: A1 70/100, A2 20/80, A3 10/10:
+\`70 + 20 + 10 = 100/190\`';
 $string['aggregationcoef'] = 'Coefficiente di aggregazione';
 $string['aggregationcoefextra'] = 'Credito extra';
-$string['aggregationcoefextra_help'] = '<h2>Per il tipo di aggregazione Somma dei voti</h2>
-<p>Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
-<ul>
-<li>Intervallo di voti per l\'Elemento 1: 0-100</li>
-<li>Intervallo di voti per l\'Elemento 2: 0-75</li>
-<li>Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.</li>
-<li>Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.</li>
-<li>L\'intervallo dei voti della Categoria 1 è 0-75</li>
-<li>Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2</li>
-<li>Il totale ottenuto dallo studente nella Categoria 1 sarà  75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)</li>
-</ul>
-<h2>Per il tipo di aggregazione Voto medio (con crediti extra)</h2>
-<p>Con questo tipo di aggregazione impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:</p>
+$string['aggregationcoefextra_help'] = '## Per il tipo di aggregazione Somma dei voti
+Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
+* Intervallo di voti per l\'Elemento 1: 0-100
+* Intervallo di voti per l\'Elemento 2: 0-75
+* Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.
+* Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.
+* L\'intervallo dei voti della Categoria 1 è 0-75
+* Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2
+* Il totale ottenuto dallo studente nella Categoria 1 sarà 75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)
 
-<ul>
-<li>Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2</li>
-<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-<li>I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"</li>
-<li>Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3</li>
-<li>Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
+## Per il tipo di aggregazione Voto medio (con crediti extra)
+Con questo tipo di aggregazione impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:
+
+* Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2
+* Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000
+* Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000
+* I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"
+* Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3
+* Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95';
 $string['aggregationcoefextrasum'] = 'Credito extra';
-$string['aggregationcoefextrasum_help'] = '<p>Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
-<ul>
-<li>Intervallo di voti per l\'Elemento 1: 0-100</li>
-<li>Intervallo di voti per l\'Elemento 2: 0-75</li>
-<li>Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.</li>
-<li>Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.</li>
-<li>L\'intervallo dei voti della Categoria 1 è 0-75</li>
-<li>Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2</li>
-<li>Il totale ottenuto dallo studente nella Categoria 1 sarà  75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)</li>
-</ul>';
+$string['aggregationcoefextrasum_help'] = 'Usando la strategia di aggregazione \'Somma dei voti\' è possibile usare un elemento di valutazione come Credito Extra della categoria. In pratica l\'elemento anziché essere aggregato sarà sommato al totale della categoria.il voto dell\'elemento al posto del voto massimo. Esempio:
+* Intervallo di voti per l\'Elemento 1: 0-100
+* Intervallo di voti per l\'Elemento 2: 0-75
+* Per l\'Elemento 1 il checkbox "Credito Extra" è stato selezionato, mentre per l\'elemento 2 no.
+* Entrambi gli elementi appartenegono alla Categoria 1, la cui strategia di aggregazione è "Somma dei voti.
+* L\'intervallo dei voti della Categoria 1 è 0-75
+* Uno studente riceve i voti 20 nell\'Elemento 1 e 70 nell\'Elemento 2
+* Il totale ottenuto dallo studente nella Categoria 1 sarà 75/75 (20+70 = 90 tuttavia l\'Elemento 1 funge solamente come Credito Extra e di conseguenza porta il totale al Voto massimo)';
 $string['aggregationcoefextraweight'] = 'Peso credito extra';
-$string['aggregationcoefextraweight_help'] = '<p>Impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:</p>
+$string['aggregationcoefextraweight_help'] = 'Impostando un valore maggiore di 0 in "Credito Extra", durante l\'aggregazione l\'elemento di valutazione sarà trattato come credito extra. Il valore impostato è il fattore moltiplicativo per il quale il voto ottenuto sarà moltiplicato prima di essere aggregato. L\'elemento di valutazione però non sarà tenuto in considerazione durante la divisione. Esempio:
 
-<ul>
-<li>Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2</li>
-<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-<li>Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000</li>
-<li>I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"</li>
-<li>Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3</li>
-<li>Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
+* Elemento 1: intervallo di voti 0-100 e "Credito Extra" pari a 2
+* Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000
+* Elemento 2: intervallo di voti 0-100 e "Credito Extra" lasciato a 0.0000
+* I tre elementi appartengono alla Categoria 1, la cui strategia di aggregazione è impostata a "Voto medio (con crediti extra)"
+* Uno studente riceve i voti 20 nell\'Elemento 1, 40 nell\'elemento 2, on Item 2 e 70 nell\'elemento 3
+* Il totale ottenuto dallo studente nella Categoria 1 sarà 95/100 poiché 20*2 + (40 + 70)/2 = 95';
 $string['aggregationcoefweight'] = 'Peso dell\'elemento';
-$string['aggregationcoefweight_help'] = '<p>Peso applicato ai voti durante l\'aggregazione.</p>';
+$string['aggregationcoefweight_help'] = 'Peso applicato ai voti durante l\'aggregazione.';
 $string['aggregationposition'] = 'Posizione colonna aggregazione dei voti';
-$string['aggregationposition_help'] = '<p>Permette di impostare la posizione della colonna contenente l\'aggregazione dei voti. La posizione è relativa rispetto alle colonne dei voti da aggregare.</p>';
+$string['aggregationposition_help'] = 'Permette di impostare la posizione della colonna contenente l\'aggregazione dei voti. La posizione è relativa rispetto alle colonne dei voti da aggregare.';
 $string['aggregationsvisible'] = 'Tipi di aggregazione disponibili';
 $string['aggregationsvisiblehelp'] = 'Selezionate tutti i tipi di aggregazione che saranno disponibili nel registro del valutatore. Per selezionarne più di una, fate click con il mouse tenendo premuto il tasto Ctrl.';
 $string['allgrades'] = 'Valutazioni per categoria';
@@ -163,9 +145,9 @@ $string['autosort'] = 'Ordina automaticamente';
 $string['availableidnumbers'] = 'Numeri id disponibili';
 $string['average'] = 'Media';
 $string['averagesdecimalpoints'] = 'Decimali nelle media di colonna';
-$string['averagesdecimalpoints_help'] = '<p>Specifica il numero di cifre decimali da usare nella visualizzazione delle medie di colonna. Se selezionate Eredita, verrà utilizzato il numero di decimali già impostato per ciascuna colonna.</p>';
+$string['averagesdecimalpoints_help'] = 'Specifica il numero di cifre decimali da usare nella visualizzazione delle medie di colonna. Se selezionate Eredita, verrà utilizzato il numero di decimali già impostato per ciascuna colonna.';
 $string['averagesdisplaytype'] = 'Visualizza le medie di colonna come';
-$string['averagesdisplaytype_help'] = '<p>Specifica il tipo di visualizzazione delle media di colonna. Se selezionate Eredita, verrà utilizzato il tipo di visualizzazione già impostata per ciascuna colonna.</p>';
+$string['averagesdisplaytype_help'] = 'Specifica il tipo di visualizzazione delle media di colonna. Se selezionate Eredita, verrà utilizzato il tipo di visualizzazione già impostata per ciascuna colonna.';
 $string['backupwithoutgradebook'] = 'Il backup non contiene la configurazione del Registro valutazioni';
 $string['badgrade'] = 'Il voto inserito non è valido';
 $string['badlyformattedscale'] = 'Per favore inserisci un elenco separato da virgole (sono necessari almeno due elementi)';
@@ -304,7 +286,7 @@ $string['gradecategoryonmodform_help'] = 'Permette di impostare la categoria del
 $string['gradecategorysettings'] = 'Impostazioni categorie';
 $string['gradedisplay'] = 'Visualizzazione della valutazione';
 $string['gradedisplaytype'] = 'Visualizza i voti come';
-$string['gradedisplaytype_help'] = '<p>i voti possono essere visualizzati come punteggio, come percentuali (in riferimento al voto minimo e massimo) o come graduatoria letterale (A, B, C, ecc.).</p>';
+$string['gradedisplaytype_help'] = 'i voti possono essere visualizzati come punteggio, come percentuali (in riferimento al voto minimo e massimo) o come graduatoria letterale (A, B, C, ecc.).';
 $string['gradedon'] = 'Valutato: {$a}';
 $string['gradeexport'] = 'Esportazione valutazioni';
 $string['gradeexportdecimalpoints'] = 'Cifre decimali da usare nelle esportazioni';
@@ -329,15 +311,15 @@ $string['gradeitems'] = 'Elementi valutazione';
 $string['gradeitemsettings'] = 'Impostazioni elementi';
 $string['gradeitemsinc'] = 'Elementi valutazione da includere';
 $string['gradeletter'] = 'Livello';
-$string['gradeletter_help'] = '<p>Espressione alfanumerica che rappresenta un dato livello di valutazione.</p>';
+$string['gradeletter_help'] = 'Espressione alfanumerica che rappresenta un dato livello di valutazione.';
 $string['gradeletternote'] = 'Per eliminare una graduatoria letterale eliminare il contenuto di <br /> una delle tre aree di testo e salvare le modifiche.';
 $string['gradeletters'] = 'Graduatoria letterale';
 $string['gradelocked'] = 'La valutazione è bloccata';
 $string['gradelong'] = '{$a->grade} / {$a->max}';
 $string['grademax'] = 'Voto massimo';
-$string['grademax_help'] = '<p>Scegliendo il Tipo di Valutazione \'Valore\', tramite questa impostazione è possibile impostare il Voto massimo. Il voto massimo di un elemento di valutazione basato su una attività si imposta nella pagina di modifica dell\'attività.</p>';
+$string['grademax_help'] = 'Scegliendo il Tipo di Valutazione \'Valore\', tramite questa impostazione è possibile impostare il Voto massimo. Il voto massimo di un elemento di valutazione basato su una attività si imposta nella pagina di modifica dell\'attività.';
 $string['grademin'] = 'Voto minimo';
-$string['grademin_help'] = '<p>Scegliendo il Tipo di Valutazione \'Valore\', tramite questa impostazione è possibile impostare il Voto minimo.</p>';
+$string['grademin_help'] = 'Scegliendo il Tipo di Valutazione \'Valore\', tramite questa impostazione è possibile impostare il Voto minimo.';
 $string['gradeoutcomeitem'] = 'Elemento raggiungimento obiettivo';
 $string['gradeoutcomes'] = 'Obiettivi';
 $string['gradeoutcomescourses'] = 'Obiettivi di corso';
@@ -354,7 +336,7 @@ $string['gradesforuser'] = 'Voti di {$a->user}';
 $string['gradesonly'] = 'Solo le colonne con i voti';
 $string['gradessettings'] = 'Impostazioni generali';
 $string['gradetype'] = 'Tipo valutazione';
-$string['gradetype_help'] = '<p>Specifica il tipo di valutazione da usare: Nessuno (non è possibile dare un voto), Valore (consente l\'impostazione del Voto massimo e minimo), Scala (consente l\'uso di una scala di valutazione), Testo (consente solo l\'uso dei feedback). Solamente i tipi Valore e Scala possono essere aggregati. Il tipo di valutazione per un elemento basato su un\'attività si imposta nella pagina di modifica dell\'attività.</p>';
+$string['gradetype_help'] = 'Specifica il tipo di valutazione da usare: Nessuno (non è possibile dare un voto), Valore (consente l\'impostazione del Voto massimo e minimo), Scala (consente l\'uso di una scala di valutazione), Testo (consente solo l\'uso dei feedback). Solamente i tipi Valore e Scala possono essere aggregati. Il tipo di valutazione per un elemento basato su un\'attività si imposta nella pagina di modifica dell\'attività.';
 $string['gradeview'] = 'Vedi valutazione';
 $string['gradeweighthelp'] = 'Help peso valutazioni';
 $string['groupavg'] = 'Media di gruppo';
@@ -378,8 +360,7 @@ $string['hidenooutcomes'] = 'Visualizza obiettivi';
 $string['hidequickfeedback'] = 'Nascondi feedback rapido';
 $string['hideranges'] = 'Nascondi intervalli';
 $string['hidetotalifhiddenitems'] = 'Nascondei totali se contengono elementi nascosti';
-$string['hidetotalifhiddenitems_help'] = 'L\'impostazione determina come saranno visualizzati agli studenti i totali che aggregano voti nascosti, sostituiti con un meno (-) o visualizzati. Se  saranno visualizzati, il totale potrà aggregare i voti nascosti oppure no.
-
+$string['hidetotalifhiddenitems_help'] = 'L\'impostazione determina come saranno visualizzati agli studenti i totali che aggregano voti nascosti, sostituiti con un meno (-) o visualizzati. Se saranno visualizzati, il totale potrà aggregare i voti nascosti oppure no.
 Se i voti nascosti non vengono aggregati, i totali visibili agli studenti potranno essere diversi dagli stessi totali visualizzati dai docenti poiché i docenti visualizzano tutti i voti, compresi quelli nascosti. Se i voti nascosti non vengono aggregati, gli studenti potrebbero essere in grado di ricavarli.';
 $string['hidetotalshowexhiddenitems'] = 'Visualizza i totali escludendo gli elementi nascosti';
 $string['hidetotalshowinchiddenitems'] = 'Visualizza i totali inclusivi di elementi nascosti';
@@ -435,7 +416,7 @@ $string['letterpercentage'] = 'Letterale (percentuale)';
 $string['letterreal'] = 'Letterale (vera)';
 $string['letters'] = 'Graduatoria letterale';
 $string['linkedactivity'] = 'Attività collegata';
-$string['linkedactivity_help'] = '<p>Indica l\'attività (o le attività) alla quale è collegato l\'obiettivo. Gli obiettivi sono utili per misurare le performance di uno studente in base a criteri diversi dal voto.</p>';
+$string['linkedactivity_help'] = 'Indica l\'attività (o le attività) alla quale è collegato l\'obiettivo. Gli obiettivi sono utili per misurare le performance di uno studente in base a criteri diversi dal voto.';
 $string['linktoactivity'] = 'Collegamento all\'attività {$a->name}';
 $string['lock'] = 'Blocca';
 $string['locked'] = 'Bloccato';
@@ -463,7 +444,7 @@ $string['morethanmax'] = 'La valutazione immessa per {$a->itemname} for {$a->use
 $string['moveselectedto'] = 'Sposta gli elementi sezionanti in';
 $string['movingelement'] = 'Spostamento {$a}';
 $string['multfactor'] = 'Moltiplicatore';
-$string['multfactor_help'] = '<p>Fattore di moltiplicazione dei voti di questo elemento. Il tetto è sempre il Voto massimo.</p>';
+$string['multfactor_help'] = 'Fattore di moltiplicazione dei voti di questo elemento. Il tetto è sempre il Voto massimo.';
 $string['mypreferences'] = 'Preferenze';
 $string['myreportpreferences'] = 'Preferenze';
 $string['navmethod'] = 'Modalità di navigazione';
@@ -520,13 +501,13 @@ $string['outcomeshortname'] = 'Nome abbreviato';
 $string['outcomesstandard'] = 'Obiettivi standard';
 $string['outcomesstandardavailable'] = 'Obiettivi standard disponibili';
 $string['outcomestandard'] = 'Obiettivo standard';
-$string['outcomestandard_help'] = '<p>E\' un obiettivo definito a livello di sito e disponibile in qualsiasi corso.</p>';
+$string['outcomestandard_help'] = 'E\' un obiettivo definito a livello di sito e disponibile in qualsiasi corso.';
 $string['overallaverage'] = 'Media generale';
 $string['overridden'] = 'Sostituito';
-$string['overridden_help'] = '<p>L\'opzione Sostituito evita che un voto possa essere aggiornato automaicamente. Spesso l\'opzione viene impostata internamente dal registro delle valuatzioni, tuttavia in questa pagina è possibile selezionare o deselezionare l\'opzione secondo necessità.</p>';
+$string['overridden_help'] = 'L\'opzione Sostituito evita che un voto possa essere aggiornato automaicamente. Spesso l\'opzione viene impostata internamente dal registro delle valuatzioni, tuttavia in questa pagina è possibile selezionare o deselezionare l\'opzione secondo necessità.';
 $string['overriddennotice'] = 'La tua valutazione finale da questa attività è stata modificata manualmente.';
 $string['overridesitedefaultgradedisplaytype'] = 'Sostituisci il default del sito';
-$string['overridesitedefaultgradedisplaytype_help'] = '<p>Permette di modificare la graduatorie letterale di default attivando gli elementi del form che vi consentono di inserire una graduatoria letterale personalizzata.</p>';
+$string['overridesitedefaultgradedisplaytype_help'] = 'Permette di modificare la graduatorie letterale di default attivando gli elementi del form che vi consentono di inserire una graduatoria letterale personalizzata.';
 $string['parentcategory'] = 'Categoria superiore';
 $string['pctoftotalgrade'] = '% del voto finale';
 $string['percent'] = 'Percentuale';
@@ -537,7 +518,7 @@ $string['percentascending'] = 'Ordina per percentuale crescente';
 $string['percentdescending'] = 'Ordina per percentuale decrescente';
 $string['percentshort'] = '%';
 $string['plusfactor'] = 'Incremento';
-$string['plusfactor_help'] = '<p>Valore numerico che sarà sommato ai voti. La somma avviene dopo aver applicato il Moltiplicatore.</p>';
+$string['plusfactor_help'] = 'Valore numerico che sarà sommato ai voti. La somma avviene dopo aver applicato il Moltiplicatore.';
 $string['points'] = 'Punti';
 $string['pointsascending'] = 'Ordina per punti crescenti';
 $string['pointsdescending'] = 'Ordina per punti decrescenti';
@@ -554,14 +535,14 @@ $string['profilereport_help'] = 'Il tipo di report da visualizzare nella pagina 
 $string['publishing'] = 'Pubblicazione';
 $string['quickfeedback'] = 'Feedback rapido';
 $string['quickgrading'] = 'Valutazione rapida';
-$string['quickgrading_help'] = '<p>La valutazione rapida aggiunge una casella di input di testo per ogni elemento presente nel registro delle valutazioni, consentendo di inserire più velocemente i voti. Cliccando sul pulsante Aggiorna tutte le modifiche saranno salvate contemporaneamente.</p>';
+$string['quickgrading_help'] = 'La valutazione rapida aggiunge una casella di input di testo per ogni elemento presente nel registro delle valutazioni, consentendo di inserire più velocemente i voti. Cliccando sul pulsante Aggiorna tutte le modifiche saranno salvate contemporaneamente.';
 $string['range'] = 'Intervallo';
 $string['rangedecimals'] = 'Cifre decimali intervallo';
 $string['rangedecimals_help'] = 'Il numero di cifre decimali da usare per l\'intervallo';
 $string['rangesdecimalpoints'] = 'Decimali negli intervalli';
-$string['rangesdecimalpoints_help'] = '<p>Permette di specificare il numero di cifre decimali da usare nella visualizzazione degli intervalli dei voti. Questa impostazione può essere modificata per ciascun elemento di valutazione.</p>';
+$string['rangesdecimalpoints_help'] = 'Permette di specificare il numero di cifre decimali da usare nella visualizzazione degli intervalli dei voti. Questa impostazione può essere modificata per ciascun elemento di valutazione.';
 $string['rangesdisplaytype'] = 'Visualizza intervalli come';
-$string['rangesdisplaytype_help'] = '<p>Specifica il tipo di visualizzazione degli intervalli dei voti. Scegliendo Eredita, verrà utilizzato il tipo di visualizzazione già impostato per ciascuna colonna.</p>';
+$string['rangesdisplaytype_help'] = 'Specifica il tipo di visualizzazione degli intervalli dei voti. Scegliendo Eredita, verrà utilizzato il tipo di visualizzazione già impostato per ciascuna colonna.';
 $string['rank'] = 'Classifica';
 $string['rawpct'] = '% grezza';
 $string['real'] = 'Punteggio';
@@ -608,7 +589,7 @@ Gli studenti potrebbero essere in gradi di ricavare i voti degli altri studenti 
 $string['showaverages'] = 'Visualizza medie di colonna';
 $string['showaverages_help'] = 'Visualizza le medie di colonna nel registro del valutatore.';
 $string['showcalculations'] = 'Visualizza calcolatrice';
-$string['showcalculations_help'] = 'Mostra l\'icona della calcolatrice accanto agli elementi di valutazione ed alle  categorie. Tramite l\'icona calcolatrice è possibile accedere alle funzioni di calcolo personalizzato. Nel registro del valutatore le colonne che contengono calcoli personalizzati sono evidenziate tramite un icona di calcolatrice più grande presente nell\'intestazione della colonna.';
+$string['showcalculations_help'] = 'Mostra l\'icona della calcolatrice accanto agli elementi di valutazione ed alle categorie. Tramite l\'icona calcolatrice è possibile accedere alle funzioni di calcolo personalizzato. Nel registro del valutatore le colonne che contengono calcoli personalizzati sono evidenziate tramite un icona di calcolatrice più grande presente nell\'intestazione della colonna.';
 $string['showeyecons'] = 'Visualizza icona visibilità';
 $string['showeyecons_help'] = 'Visualizza l\'icona visibilità accanto ad ogni voto. L\'icona visibilità permette di nascondere i voti attribuiti agli utenti.';
 $string['showfeedback'] = 'Visualizza feedback';
@@ -618,7 +599,6 @@ $string['showgrade_help'] = 'Se visualizzare o meno la colonna dei voti';
 $string['showgroups'] = 'Visualizza medie di gruppo';
 $string['showhiddenitems'] = 'Visualizza voti nascosti';
 $string['showhiddenitems_help'] = 'Specifica come visualizzare agli studenti gli elementi di valutazione nascosti
-
 * Visualizza elementi con voti nascosti - i voti saranno nascosti ma il nome dell\'elemento di valutazione sarà visibile
 * Solo elementi con voti nascosti a tempo -
 Gli elementi di valutazione e i voti saranno invisibili fino alla data prefissata, trascorsa la quale diventeranno visibili

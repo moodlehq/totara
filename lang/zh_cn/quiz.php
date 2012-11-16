@@ -106,7 +106,6 @@ $string['bestgrade'] = '最好成绩';
 $string['bothattempts'] = '显示已答题和未答题的学生';
 $string['browsersecurity'] = '浏览器安全';
 $string['browsersecurity_help'] = '如果选择了“全屏幕弹出窗口（JavaScript保障安全）”，
-
 * 只有学生使用启用了JavaScript的web浏览器时，测验才会启动
 * 测验显示在一个全屏幕的弹出窗口中，覆盖所有其它窗口，没有导航控件
 * 会尽可能地阻止学生使用拷贝/粘贴之类的功能';
@@ -240,7 +239,6 @@ $string['editcatquestions'] = '编辑分类试题';
 $string['editingquestion'] = '编辑试题';
 $string['editingquiz'] = '编辑测验';
 $string['editingquiz_help'] = '创建测验的主要思路是：
-
 * 测验可以在一个或多个页面中放置题目
 * 题库中保存着所有试题，按类别组织
 * 随机题 - 同一名学生的不同次答题可能得到不同的题目。不同学生也会得到不同的题目';
@@ -322,7 +320,6 @@ $string['gradeessays'] = '批改简答';
 $string['gradehighest'] = '最高分';
 $string['grademethod'] = '评分办法';
 $string['grademethod_help'] = '当允许学生多次参加测验，提交了多份试卷时，可以用下面方法计算最终成绩：
-
 * 所有试卷中的最高分
 * 所有试卷的平均分
 * 第一次答题（其它次都被忽略）
@@ -344,9 +341,7 @@ $string['howquestionsbehave_desc'] = '测验中题目行为的缺省设置。';
 $string['imagedisplay'] = '要显示的图片';
 $string['import'] = '导入';
 $string['import_help'] = '您可以用此功能导入外部文本文件中的题目。
-
 如果您的文件包含非 ascii 字符，那么它必须使用 UTF-8 编码。要特别小心 Microsoft Office 生成的文件，它们常常使用不能被正确处理的特殊编码。
-
 导入和导出格式是插件式的。其它可选格式在模块和插件数据库中可以找到。';
 $string['importcategory'] = '导入类别';
 $string['importerror'] = '导入过程发生错误';
@@ -466,9 +461,7 @@ $string['openclosedatesupdated'] = '测验开放和关闭日期已更新';
 $string['optional'] = '可选';
 $string['orderandpaging'] = '顺序与分页';
 $string['orderandpaging_help'] = '每道题目后面的10、20、30这样的数字表明题目的顺序。数字以10为步长递增，是为了给后添加的题目留空间。要改变题目顺序，请修改数字，然后点击“重新排序试题”按钮。
-
 要在指定题目后添加分页符，勾选紧挨题目复选框，再点击“在所选题目后添加新页面”按钮。
-
 要将题目分配在几个页面，点击重新分页按钮，然后选择期望每页几道题。';
 $string['orderingquiz'] = '顺序与分页';
 $string['outof'] = '{$a->grade}/满分{$a->maxgrade}';
@@ -639,7 +632,6 @@ $string['reviewopen'] = '晚一些，但测验仍然开放';
 $string['reviewoptions'] = '学生可以回顾';
 $string['reviewoptionsheading'] = '回顾设置';
 $string['reviewoptionsheading_help'] = '当用户回顾试卷或看测验报告时，这些选项可以控制用户能看到什么信息。
-
 “刚刚答完”的意思是答完题目后的两分钟内。“晚一些，但测验仍然开放”的意思是答完2分钟后到测验关闭的这段时间。“测验关闭后”指的是已经过了测验关闭时间的时候。如果测验没有设定关闭时间，此状态不会生效。';
 $string['reviewresponse'] = '检查答案';
 $string['reviewresponsetoq'] = '回顾答案（题目：{$a}）';

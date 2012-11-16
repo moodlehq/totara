@@ -77,20 +77,20 @@ $string['anreferer'] = 'הגדר את כתובת הURL המפנה, אם הקמת
 $string['anreview'] = 'סקירה';
 $string['anreviewdesc'] = 'סקירת ההזמנה לפני ביצוע סליקת כרטיס האשראי.';
 $string['antestmode'] = 'הרץ עיסקאות במצב נסיוני בלבד (לא יימשך כסף)';
-$string['antestmodedesc'] = 'הרץ עסקאות במצב נסיון בלבד (לא ימשך כסף) ';
+$string['antestmodedesc'] = 'הרץ עסקאות במצב נסיון בלבד (לא ימשך כסף)';
 $string['antrankey'] = 'Authorize.net: מפתח עיסקה';
 $string['approvedreview'] = 'סקירה מאושרת';
 $string['authcaptured'] = 'אושר , נלכד';
 $string['authcode'] = 'קוד אישור';
 $string['authorize:config'] = 'מופעי רישום
 Configure Authorize.Net';
-$string['authorizedpendingcapture'] = 'לכידה מאושרת  מחכה להכרעה';
-$string['authorizeerror'] = 'Authorize.Net Error: {$a}';
 $string['authorize:manage'] = 'ניהול משתמשים רשומים';
 $string['authorize:managepayments'] = 'נהל תשלומים';
 $string['authorize:unenrol'] = 'הסר משתמשים מרישום לקורס';
 $string['authorize:unenrolself'] = 'הסר עצמך מרישום לקורס';
 $string['authorize:uploadcsv'] = 'העלה קובץ CSV';
+$string['authorizedpendingcapture'] = 'לכידה מאושרת  מחכה להכרעה';
+$string['authorizeerror'] = 'Authorize.Net Error: {$a}';
 $string['avsa'] = 'הכתובת תואמת (רחוב), המיקוד לא';
 $string['avsb'] = 'לא סופקו נתוני כתובת';
 $string['avse'] = 'שגיאה במערכת אימות הכתובת';
@@ -144,7 +144,7 @@ $string['enrolenddate'] = 'תאריך סיום';
 $string['enrolenddaterror'] = 'תאריך סיום הרישום אינו יכול להיות מוקדם יותר מתאריך ההתחלה';
 $string['enrolname'] = 'מחשב Gateway (המשמש לחיבור בין שתי רשתות) המשמש לעיבוד תשלומי Authorize.net';
 $string['enrolperiod'] = 'תקופת הרישום';
-$string['enrolstartdate'] = 'תחילת התאריך ';
+$string['enrolstartdate'] = 'תחילת התאריך';
 $string['expired'] = 'פג תוקף';
 $string['expiremonth'] = 'חודש תפוגה';
 $string['expireyear'] = 'שנת תפוגה';
@@ -252,8 +252,7 @@ $string['unenrolstudent'] = 'הוצא את הסטודנט מרשימת הקור�
 $string['uploadcsv'] = 'העלה קובץ CSV';
 $string['usingccmethod'] = 'הירשם באמצעות <a href="{$a->url}"><strong>כרטיס אשראי </strong></a>';
 $string['usingecheckmethod'] = 'הירשם באמצעות <a href="{$a->url}"><strong>המחאה דיגיטליתk</strong></a>';
-$string['verifyaccount'] = 'אימות חשבון סוחר ה-authorize.Net
-';
+$string['verifyaccount'] = 'אימות חשבון סוחר ה-authorize.Net';
 $string['verifyaccountresult'] = '<b>תוצאת האימות:</b> {$a}';
 $string['void'] = 'חסר תוקף';
 $string['voidyes'] = 'העיסקה תבוטל, האם אתה בטוח?';

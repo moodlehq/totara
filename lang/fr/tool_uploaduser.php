@@ -45,15 +45,14 @@ $string['uploadpicture_cannotsave'] = 'Impossible d\'enregistrer l\'avatar pour 
 $string['uploadpicture_cannotunzip'] = 'Impossible de décompresser le fichier d\'avatars.';
 $string['uploadpicture_invalidfilename'] = 'Le nom du fichier image {$a} a des caractères non valides. Il sera ignoré.';
 $string['uploadpicture_overwrite'] = 'Écraser les avatars déjà existants ?';
-$string['uploadpictures'] = 'Déposer des avatars';
-$string['uploadpictures_help'] = 'Les avatars des utilisateurs peuvent être déposés sous la forme d\'un fichier compressé (zip) de fichiers images. Le nom des fichiers images doit être de la forme <i>attribut-choisi.extension</i>. Par exemple, si vous choisissez pour la correspondance des images l\'attribut « nom d\'utilisateur » et que le nom d\'utilisateur de l\'utilisateur concerné est « user1234 », le nom de fichier devrait être « user1234.jpg ».';
 $string['uploadpicture_userfield'] = 'Attribut utilisateur à utiliser pour la correspondance des avatars :';
 $string['uploadpicture_usernotfound'] = 'Il n\'y a pas d\'utilisateur dont l\'attribut « {$a->userfield} » a la valeur « {$a->uservalue} ». Il sera ignoré.';
 $string['uploadpicture_userskipped'] = 'Utilisateur {$a} ignoré (il possède déjà un avatar).';
 $string['uploadpicture_userupdated'] = 'Avatar de l\'utilisateur {$a} modifié.';
+$string['uploadpictures'] = 'Déposer des avatars';
+$string['uploadpictures_help'] = 'Les avatars des utilisateurs peuvent être déposés sous la forme d\'un fichier compressé (zip) de fichiers images. Le nom des fichiers images doit être de la forme *attribut-choisi.extension*. Par exemple, si vous choisissez pour la correspondance des images l\'attribut « nom d\'utilisateur » et que le nom d\'utilisateur de l\'utilisateur concerné est « user1234 », le nom de fichier devrait être « user1234.jpg ».';
 $string['uploadusers'] = 'Importation d\'utilisateurs';
 $string['uploadusers_help'] = 'Il est possible d\'importer manuellement des comptes utilisateurs (et optionnellement inscrits à des cours) à partir d\'un fichier texte, ce fichier doit être formaté de la façon suivante :
-
 * chaque ligne du fichier contient un enregistrement ;
 * les données de chaque enregistrement sont séparées par une virgule (ou un autre caractère de séparation) ;
 * le premier enregistrement contient le nom des champs qui composent les enregistrements, et détermine ainsi la structure de la suite du fichier ;

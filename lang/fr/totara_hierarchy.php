@@ -109,11 +109,8 @@ $string['competencyaddnew'] = 'Ajouter une nouvelle compétence';
 $string['competencyaddnewframework'] = 'Ajouter un nouveau cadre de compétences';
 $string['competencyaggregationmethod'] = 'Méthode de tendances centrales';
 $string['competencyaggregationmethod_help'] = 'La méthode d\'aggrégation configure la manière dont le système calcule l\'achèvement des compétences.
-
 Si la méthode d\'aggrégation est réglée sur Toutes alors toutes les compétences enfants devront être achevées pour que la compétence parent soit considérée achevée.
-
 Si la méthode d\'aggrégation est réglée sur N\'importe laquelle, alors une seule des compétences enfant devra être achevée pour que la compétence parent le soit aussi.
-
 Si la méthode d\'aggrégation est réglée sur Désactivée alors l\'achèvement automatique sera désactivé pour cette compétence. (La compétence peut être marquée comme achevée manuellement.)';
 $string['competencyassigndeletecheck'] = 'Etes vous sûr de vouloir désattribuer cette compétence?';
 $string['competencybacktoallframeworks'] = 'Retour aux cadres de compétence';
@@ -145,13 +142,10 @@ $string['competencyevidence'] = 'Preuves de compétence';
 $string['competencyevidenceassessmenttype'] = 'Genre d\'évaluation';
 $string['competencyevidenceassessmenttype_help'] = 'Le type d\'appréciation est un champ texte libre pour toute information supplémentaire sur l\'évaluation de cette compétence. Les contenus peuvent varier et ce champ est optionnel.';
 $string['competencyevidenceassessor_help'] = 'Vous pouvez choisir un évaluateur, qui est un utilisateur qui a évalué le niveau de compétence actuel de l\'utilisateur pour la compétence donnée. C\'est un champ optionnel, laissez la liste déroulante sur "Sélectionnez un évaluateur" si vous ne souhaitez pas désigner un évaluateur
-
 La liste déroulante liste tous les utilisateurs moodle ayant un rôle d\'évaluateur. Si l\'utilisateur que vous souhaitez ajouter manque ou qu\'aucune option ne figure, vous devrez demander à un administrateur d\'ajouter le rôle d\'évaluateur à cet utilisateur.';
 $string['competencyevidenceassessorname_help'] = 'Le nom de l\'évaluateur réfère au nom de l\'organisation qui a évalué l\'utilisateur pour cette compétence. C\'est un champ optionnel qui peut être laissé vide.';
 $string['competencyevidencecompetency_help'] = 'La compétence à attribuer à l\'utilisateur. Si vous modifiez un élément de preuve de compétence existant, ceci ne peut être modifié. Vous pouvez cependant créer un nouvel élément de preuve de compétence (si vous en avez la permissiion) en visitant la page Mes enregistrements de l\'utilisateur.
-
 Lors de la création d\'un nouvel élément de preuve de compétence, vous pouvez choisir entre l\'ajout d\'une preuve pour une compétence existante ou créer une nouvelle compétence. Si vous choisissez \'Choisir une compétence\', un popup vous permettra de choisir entre les compétences existantes. Si vous choisissez \'Créer une nouvelle compétence\', un formulaire apparaîtra et vous permettra de choisir un cadre et de définir une nouvelle compétence.
-
 Veuillez noter que vous ne pouvez pas créer deux élément de preuve de compétence se référant au même utilisateur et à la même compétence. Si vous essayez de le faire, il vous sera montré un lien pour éditer l\'enregistrement original ou choisir une autre compétence.';
 $string['competencyevidencecount'] = 'Elements de justification';
 $string['competencyevidenceorganisation_help'] = 'Cette option enregistre l\'organisation dans laquelle l\'utilisateur figurait lors de l\'achèvement de l\'élément de preuve de compétence. Dans la plupart des cas, il s\'agira de l\'organisation actuelle de l\'utilisateur. Les utilisateurs changeant d\'organisation au cours du temps, cette option permet de garder une trace du lieu où les utilisateurs se trouvaient lors de l\'achèvement. Ce champ est optionnel.';
@@ -168,21 +162,16 @@ $string['competencyframeworkfullname'] = 'Nom complèt de cadre de compétences'
 $string['competencyframeworkfullname_help'] = 'Le nom complet du cadre est le titre complet de celui-ci.';
 $string['competencyframeworkgeneral'] = 'Cadre de compétences';
 $string['competencyframeworkgeneral_help'] = '**Les cadres de compétences **sont configurés pour retenir les capacités, connaissances et compétences comportementales que votre personnel doivent atteindre.
-
 Les compétences peuvent être groupées sous différents types de cadres. Par exemple, un cadre peut contenir tous les standards de compétence industrielle nationale (venant du corps de l\'industrie), alors qu\'un autre cadre peut contenir les compétences définies en interne.
-
 Avant de configurer un cadre de compétences, vous devez définir une **échelle de compétence**.';
 $string['competencyframeworkidnumber'] = 'Numéro d\'identification';
 $string['competencyframeworkidnumber_help'] = 'L\'ID du cadre est un nombre unique qui peut être utilisé pour représenter le cadre.</h1>';
 $string['competencyframeworkmanage'] = 'Gérer les cadres';
 $string['competencyframeworks'] = 'Cadres de compétences';
 $string['competencyframeworks_help'] = '**Les cadres de compétence **sont configurés pour contenir les capacités, connaissances et compétences comportementales que vous attendez de votre personnel.
-
 Les compétences peuvent être groupées selon différents types de cadres. Par exemple, un cadre peut contenir tous les standards de compétence industrielle nationale (issue du corps de l\'industrie), alors qu\'un autre peut contenir les compétences spécifiques définies en interne.
-
 Avant de configurer un cadre de compétences, vous devez avoir défini une **échelle de compétence**.';
 $string['competencyframeworkscale_help'] = 'Les échelles de compétence vous permettent de définir les critères selon lesquels une compétence peut être mesurée. Par exemple, une échelle peut avoir trois valeurs \'compétent, compétent sous supervision, non compétent\'.
-
 La première étape consiste à utiliser l\'option échelles de compétence pour ajouter une nouvelle échelle. Ensuite, vous pouvez ajouter les valeurs d\'échelle utilisées pour définir les progrès d\'un apprenti pour une compétence. Vous pouvez ajouter autant de valeurs que vous le souhaitez. Veuillez noter les valeurs de paramètre Défaut et Compétent';
 $string['competencyframeworkshortname_help'] = 'Le nom abrégé du cadre est une référence rapide au nom complet du cadre et peut être utilisé pour faciliter l\'affichage.';
 $string['competencyframeworkview'] = 'Voir le cadre';
@@ -200,19 +189,14 @@ $string['competencynoframeworkssetup'] = 'Aucune configuration de cadres de comp
 $string['competencynotypes'] = 'Aucun type de compétence';
 $string['competencyparent'] = 'Compétence mère';
 $string['competencyparent_help'] = '**La compétence parent** vous permet de générer les relations parent/enfant entre compétences.
-
 Choisissez **Compétence parent** dans le menu déroulant. Choisissez **Top** si vous souhaitez que la compétence se situe au sommet de la hiérarchie.
-
 Si vous modifiez la compétence parent d\'un objet, celui-ci se déplacera pour se trouver sous son nouveau parent, ainsi que tous ses enfants.
-
 **Note :** pour configurer les relations parent/enfant vous devez avoir au moins un autre objet dans le cadre. Sinon l\'option ne figurera pas.';
 $string['competencyplural'] = 'Compétences';
 $string['competencyreturntoframework'] = 'Retourner vers le cadre de compétences';
 $string['competencyscale'] = 'Echelle de compétences';
 $string['competencyscale_help'] = '**Echelle** est le nom de l\'échelle de compétence utilisée dans le cadre de compétences.
-
 L\'échelle de compétences est configurée dans le cadre de compétences. Seule une échelle de compétence peut être utilisée par cadre.
-
 Une nouvelle échelle de compétence peut être configurée sous Hiérarchies/Compétences/Gérer les cadres dans le menu \'Administration du site\'.';
 $string['competencyscaleassign'] = 'Echelle de compétences';
 $string['competencyscaleassign_help'] = 'Une échelle de compétence définit les critères selon lesquels une compétence peut être mesurée. Il s\'agit du nom de l\'échelle de valeur qui est ajoutée.';
@@ -228,22 +212,19 @@ $string['competencyscalescalename'] = 'Nom';
 $string['competencyscalescalename_help'] = 'Le nom de l\'échelle de compétence utilisée par le cadre de compétences.';
 $string['competencyscalescalevalues'] = 'Valeurs';
 $string['competencyscalescalevalues_help'] = 'Entrez les valeurs d\'échelle pour l\'échelle de compétences (une par ligne), du plus compétent au moins compétent. Par exemple :
-
-<p class="indent">
-<i> Compéent<br /> Compétent sous supervision<br /> Non compétent<br /> </i>
-</p>';
+* Compéent
+* Compétent sous supervision
+* Non compétent
+';
 $string['competencyscalesgeneral'] = 'Echelle de compétences';
 $string['competencyscalesgeneral_help'] = '**Les échelles de compétences **vous permettent de définir les critères selon lesquels une compétence peut être mesurée. Par exemple, une échelle peut avoir trois valeurs \'compétent, compétent sous supervision, non compétent\'.
-
 Vous devez avoir configuré une échelle de compétences avant de configurer un cadre de compétences, ou toute compétence.';
 $string['competencyscalevaluedescription'] = 'Description de la valeur d\'échelle';
 $string['competencyscalevalueidnumber'] = 'Numéro d\'identification de la valeur d\'échelle';
 $string['competencyscalevalueidnumber_help'] = 'Le numéro ID de l\'échelle de valeurs est un nombre unique représentant la valeur d\'échelle.';
 $string['competencyscalevaluename'] = 'Nom de la valeur d\'échelle';
 $string['competencyscalevaluename_help'] = '**Le nom de la valeur d\'échelle** est le nom de la valeur d\'échelle de compétence que vous ajoutez ou modifiez.
-
 une valeur d\'échelle permet de définir les progrès d\'un apprenti pour une compétence. Vous pouvez ajoutez autant de valeurs d\'échelle que vous le souhaitez.
-
 **Note : **n\'oubliez pas de configurer les valeurs Défaut et Compétent.';
 $string['competencyscalevaluenumericalvalue'] = 'Valeur numérique de la valeur d\'échelle';
 $string['competencyscalevaluenumericalvalue_help'] = 'La valeur numérique de valeur d\'échelle est la valeur numérique associée à une valeur d\'échelle.';
@@ -251,7 +232,6 @@ $string['competencyshortname'] = 'Nom abrègé de la compétence';
 $string['competencyshortname_help'] = 'Le nom abrégé de la compétence est une rapide référence au nom complet de la compétence et permet de faciliter l\'affichage.';
 $string['competencytemplatefullname_help'] = 'Le nom complet du modèle est le titre complet du modèle configuré.';
 $string['competencytemplategeneral_help'] = 'Un **modèle de compétence** permet de grouper des compétences d\'un ou plusieurs cadres ensemble.
-
 Quand vous configurez un événement de formation, par exemple un cours introductoire, ce cours peut être lié à un modèle de compétence appelé \'compétences nouvel employé\'; créeant automatiquement un nombre de compétences, plutôt que d\'avoir à les choisir à nouveau une à une.';
 $string['competencytemplatemanage'] = 'Gérer les modèles';
 $string['competencytemplates'] = 'Modèles de compétences';
@@ -590,11 +570,10 @@ $string['organisationframeworkdescription'] = 'Description';
 $string['organisationframeworkdescription_help'] = 'La description du cadre est un champ texte utilisé pour conserver des informations supplémentaires sur le cadre. Elle est affichée sur la page de gestion des organisations, juste au dessus du tableau des organisations.';
 $string['organisationframeworkfullname_help'] = 'Le nom complet du cadre est son titre complet.';
 $string['organisationframeworkidnumber'] = 'Numèro d\'identification';
-$string['organisationframeworkidnumber_help'] = 'L\'ID du cadre est un identifiant unique représentant le cadre.</h1>';
+$string['organisationframeworkidnumber_help'] = 'L\'ID du cadre est un identifiant unique représentant le cadre.';
 $string['organisationframeworkmanage'] = 'Gérer les cadres';
 $string['organisationframeworks'] = 'Cadres de structures de l\'entreprise';
 $string['organisationframeworks_help'] = 'Un **cadre organisationnel** est paramétré pour conserver la structure organisationnelle de votre organisation.
-
 Vous pouvez configurer plusieurs cadres organisationnel. Par exemple : un cadre pour les sous-divisions et filiales d\'une entreprise.';
 $string['organisationframeworkshortname_help'] = 'Le nom abrégé du cadre est une rapide référence au nom complet et facilite l\'affichage.';
 $string['organisationfullname'] = 'Nom complèt du structure';
@@ -611,11 +590,8 @@ $string['organisationnoframeworkssetup'] = 'Pas de mise en place de structure d\
 $string['organisationnotypes'] = 'Pas de types d\'organisation';
 $string['organisationparent'] = 'Structure mère';
 $string['organisationparent_help'] = 'Les **organisations parent** vous permettent de générer les relations parent/enfant entre les organisations.
-
 Sélectionnez l\'**organisation parent** dans le menu déroulant. Sélectionnez **Top** si vous voulez que l\'organisation soit au sommet de la hiérarchie.
-
 Si vous modifiez l\'organisation parent d\'un objet, celui-ci et ses enfants se déplaceront en dessous du nouveau parent.
-
 **Note :** pour gérer les relations parent/enfant vous devez avoir au moins un autre objet dans le cadre, sans quoi l\'option ne figurera pas.';
 $string['organisationplural'] = 'Structures';
 $string['organisationreturntoframework'] = 'Retourner vers le cadre de structures';
@@ -684,7 +660,6 @@ $string['positionframeworkidnumber_help'] = 'Le numéro ID du cadre est un nombr
 $string['positionframeworkmanage'] = 'Gérer les cadres';
 $string['positionframeworks'] = 'Cadres de postes de l\'entreprise';
 $string['positionframeworks_help'] = 'Un **cadre de postes** est utilisé pour configurer et conserver les différents postes d\'une organisation.
-
 Vous pouvez configurer plusieurs taxinomies de postes (cadres) au sein d\'une organisation.';
 $string['positionframeworkshortname_help'] = 'Le nom abrégé du cadre est une rapide référence à son nom complet et est utilisé pour faciliter l\'affichage.';
 $string['positionfullname'] = 'Nom complèt de poste';
@@ -702,11 +677,8 @@ $string['positionnoframeworkssetup'] = 'Pas de cadres de poste réglés pour ce 
 $string['positionnotypes'] = 'Pas de types de poste';
 $string['positionparent'] = 'Poste mère';
 $string['positionparent_help'] = 'Le **Poste parent** vous permet de gérer les relations enfant/parent entre postes.
-
 Choissez **Poste parent** dans le menu déroulant. Sélectionnez **Top** si vous voulez que le poste se trouve au sommet de la hiérarchie.
-
 Si vous modifiez le poste parent d\'un objet, celui-ci ainsi que tous ses enfants se déplaceront sous le nouveau parent.
-
 **Note :** pour configurer les relations parent/enfant vous devez avoir au moins un autre objet dans le cadre, sans quoi l\'option n\'apparaîtra pas.';
 $string['positionplural'] = 'Postes';
 $string['positionreturntoframework'] = 'Retourner vers le cadre de postes';

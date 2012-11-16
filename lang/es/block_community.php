@@ -59,7 +59,6 @@ $string['educationallevel'] = 'Nivel educativo';
 $string['educationallevel_help'] = '¿Qué nivel educativo está buscando? En el caso de las comunidades de educadores, este nivel describe el nivel en el que enseñan.';
 $string['enroldownload'] = 'Encontrar';
 $string['enroldownload_help'] = 'A algunos cursos listados en el centro seleccionado se les ha notificado que se puede participar en ellos en el sitio original.
-
 Otros son plantillas de curso que se facilitan para que usted pueda descargarlas y usarlas en su propio sitio Moodle';
 $string['enrollable'] = 'cursos en los que me puedo matricular';
 $string['enrollablecourses'] = 'Cursos para matricularse';

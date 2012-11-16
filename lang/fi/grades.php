@@ -44,7 +44,6 @@ $string['aggregatemin'] = 'Alin arvosana';
 $string['aggregatemode'] = 'Arvosanojen moodi';
 $string['aggregateonlygraded'] = 'Kokoa yhteen vain täytetyt arvosanat';
 $string['aggregateonlygraded_help'] = 'Tyhjä arvosana on arviointikirjasta puuttuva arvosana. Syynä voi olla esim. arvioimaton tehtäväpalautus tai vielä tekemätön tentti.
-
 Tämä asetus määrittelee, käsitelläänkö puuttuvia arvosanoja arvosanakoosteessa minimiarvosanoina vai eikö niitä huomioida ollenkaan.';
 $string['aggregateoutcomes'] = 'Sisällytä tulos kokonaispistemäärään';
 $string['aggregateoutcomes_help'] = 'Tavoitesarakkeen sisällyttäminen kokonaispisrtemäärään ei välttämättä johda tavoiteltuun lopputulokseen, joten sen voi halutessaan jättää pois kokonaispistemäärän laskemisesta.';
@@ -56,7 +55,6 @@ $string['aggregateweightedmean'] = 'Arvosanojen painotettu keskiarvo';
 $string['aggregateweightedmean2'] = 'Arvosanojen yksinkertainen painotettu keskiarvo';
 $string['aggregation'] = 'Yhteenveto';
 $string['aggregation_help'] = 'Koostaminen määrittää kuinka kategorian arvosanat on yhdistetty
-
 * Arvosanojen keskiarvo - Kaikkien arvosanojen summa jaettuna niiden määrällä
 * Arvosanojen mediaani - Keskimmäinen arvo kun arvosanat ovat kokojärjestyksessä
 * Alin arvosana
@@ -66,7 +64,6 @@ $string['aggregation_help'] = 'Koostaminen määrittää kuinka kategorian arvos
 $string['aggregationcoef'] = 'Kokonaispistemäärän kerroin';
 $string['aggregationcoefextra'] = 'Lisäpisteet';
 $string['aggregationcoefextra_help'] = 'Jos arvosanakooste on Arvosanojen summa tai Yksinkertainen painotettu keskiarvo ja lisäpisteet -valintalaatikko on valittuna, arvosanakohteiden ylintä arvosanaa ei lisätä kategorian ylimpään arvosanaan, jolloin on mahdollista saavuttaa ylin arvosana (tai arvosanat yli maksimin, jos sallittu ylläpitäjän toimesta) kategoriassa ilman että kaikissa arvosanakohteissa olisi ylintä arvosanaa.
-
 Jos arvosanakooste on Arvosanojen keskiarvo (lisäpisteillä) ja lisäpisteiden painotus on asetettu suuremmaksi kuin nolla, lisäpiste on kerroin, jolla arvosana kerrotaan ennen sen lisäämistä kokonaismäärään keskiarvon laskemisen jälkeen.';
 $string['aggregationcoefextrasum'] = 'Lisäpisteet';
 $string['aggregationcoefextrasum_help'] = 'Jos lisäpisteet -valintalaatikko on valittuna, arvosanakohteiden ylintä arvosanaa ei lisätä kategorian ylimpään arvosanaan, jolloin on mahdollista saavuttaa ylin arvosana (tai arvosanat yli maksimin, jos sallittu ylläpitäjän toimesta) kategoriassa ilman että kaikissa arvosanakohteissa olisi ylintä arvosanaa.';
@@ -226,7 +223,6 @@ $string['gradecategorysettings'] = 'Arvosanakategorian asetukset';
 $string['gradedisplay'] = 'Arvioinnin näyttö';
 $string['gradedisplaytype'] = 'Arvioinnin näyttö';
 $string['gradedisplaytype_help'] = 'Tämä asetus määrittää kuinka arvosanat näytetään arvioijan ja käyttäjän raporteissa.
-
 * Todellinen - Todelliset arvosanat
 * Prosentuaalinen
 * Kirjain - Kirjaimia tai sanoja käytetään ilmaisemaan arvosanarajoja';
@@ -280,12 +276,10 @@ $string['gradesonly'] = 'Vain arvioinnit';
 $string['gradessettings'] = 'Arviointien asetukset';
 $string['gradetype'] = 'Arviointityyppi';
 $string['gradetype_help'] = 'Arvosanatyyppejä on neljä erilaista:
-
 * Ei mitään - Arviointi ei ole mahdollista
 * Arvo - Numeerinen arvo maksimilla ja minimillä
 * Asteikko - Vaihtoehto listasta
 * Teksti - Vain palaute
-
 Vain Arvo- ja Asteikko-tyyppisistä arvosanoista voidaan tehdä kooste. Arvosanatyyppi aktiviteettipohjaiselle arvosanalle määritellään aktiviteetin asetussivulla.';
 $string['gradeview'] = 'Näytä arvosana';
 $string['gradeweighthelp'] = 'Ohje arvosanan painotukseen';
@@ -311,7 +305,6 @@ $string['hidequickfeedback'] = 'Piilota pikapalaute';
 $string['hideranges'] = 'Piilota vaihteluvälit';
 $string['hidetotalifhiddenitems'] = 'Piilota yhteispisteet jos ne sisältävät piilotettuja kohteita';
 $string['hidetotalifhiddenitems_help'] = 'Tämä asetus määrittelee näytetäänkö piilotettuja kohteita sisältävät loppuarvosanat opiskelijoille vai korvataanko ne väliviivalla (-). Jos näytetään, voidaan loppuarvosana laskea joko pois jättäen tai sisällyttäen piilotetut kohteet.
-
 Jos piilotetut kohteet jätetään pois, loppuarvosana on eri kuin se, joka näkyy opettajalle arviointiraportissa, koska opettaja näkee aina yhteissummat kaikista näkyvistä sekä piilotetuista kohteista. Jos piilotetut kohteet on sisällytetty, opiskelijat saattavat pystyä laskemaan piilotetut kohteet.';
 $string['hidetotalshowexhiddenitems'] = 'Näytä yhteispisteet ilman piilotettuja kohteita';
 $string['hidetotalshowinchiddenitems'] = 'Näytä yhteispisteet mukaanlukien piilotetut kohteet';
@@ -395,7 +388,7 @@ $string['morethanmax'] = 'Arvosana joa annettiin {$a->itemname} :sta {$a->userna
 $string['moveselectedto'] = 'Siirrä valitut';
 $string['movingelement'] = 'Siirretään {$a}';
 $string['multfactor'] = 'Kerroin';
-$string['multfactor_help'] = 'Kertoja on kerroin, jolla kaikki tämän arvosanakohteen arvosanat  kerrotaan maksimiarvosanan maksimiarvon kanssa. Esimerkiksi jos kertoja on 2 ja maksimiarvosana on 100, silloin kaikki alle 50 arvosanat kerrotaan kahdella ja kaikki arvosanat yli 50:n muutetaan sadaksi.';
+$string['multfactor_help'] = 'Kertoja on kerroin, jolla kaikki tämän arvosanakohteen arvosanat kerrotaan maksimiarvosanan maksimiarvon kanssa. Esimerkiksi jos kertoja on 2 ja maksimiarvosana on 100, silloin kaikki alle 50 arvosanat kerrotaan kahdella ja kaikki arvosanat yli 50:n muutetaan sadaksi.';
 $string['mypreferences'] = 'Omat asetukset';
 $string['myreportpreferences'] = 'Omat raportin asetukset';
 $string['navmethod'] = 'Navigointitapa';
@@ -456,7 +449,6 @@ $string['outcomestandard_help'] = 'Vakiotavoite on käytettävissä koko sivusto
 $string['overallaverage'] = 'Kaikkien keskiarvo';
 $string['overridden'] = 'Ylitetty';
 $string['overridden_help'] = 'Jos valittu, arvosanaa ei voida enää muuttaa arvosanaan liittyvästä aktiviteetista.
-
 Kun arvosanaa muokataan arviointiraportissa, \'ohitettu\' -valintalaatikko on valittuna automaattisesti. Valinta voidaan kuitenkin poistaa jolloin arvosanan muuttaminen aktiviteetista on mahdollista.';
 $string['overriddennotice'] = 'Sinun arvosanasi tältä aktiviteetilta käsiteltiin manuaalisesti.';
 $string['overridesitedefaultgradedisplaytype'] = 'Ylitä sivuston oletukset';
@@ -489,7 +481,6 @@ $string['publishing'] = 'Julkaistaan';
 $string['quickfeedback'] = 'Pikapalaute';
 $string['quickgrading'] = 'Pika-arviointi';
 $string['quickgrading_help'] = 'Jos sallittu, kun muokkaus laitetaan päälle, ilmestyy jokaiselle arvosanalle tekstikenttä, jotka mahdollistavat useiden arvosanojen muokkaamisen yhtä aikaa. Muutokset tallennetaan ja korostetaan kun päivitä -painiketta klikataan.
-
 Huomaa että kun arvosanaa muokataan arviontiraportissa, asetetaan ohitettu merkintä, joka tarkoittaa että arvosanaa ei voida enää muuttaa arvosanaan liittyvässä aktiviteetissa.';
 $string['range'] = 'Vaihteluväli';
 $string['rangedecimals'] = 'Vaihteluvälin desimaalit';
@@ -553,9 +544,8 @@ $string['showgrade_help'] = 'Näytä arvosanasarake?';
 $string['showgroups'] = 'Näytä ryhmät';
 $string['showhiddenitems'] = 'Näytä piilotetut kohteet';
 $string['showhiddenitems_help'] = 'Määrittelee kuinka piilotetut arvosanat näytetään. Jos Piilota on valittu, ne ovat kokonaan piilossa.
-
 * Näytä piilotetut - Piilotettu arvosana-kenttä näytetään mutta opiskelijan arvosanat piilotetaan
-* Piilotettu saakka - Arvosanat jotka  on määritelty asetus "piilotettu saakka", näytetään vasta määriteltynä päivänä
+* Piilotettu saakka - Arvosanat jotka on määritelty asetus "piilotettu saakka", näytetään vasta määriteltynä päivänä
 * Älä näytä - Piilotetut arvosanat on kokonaan piilossa';
 $string['showhiddenuntilonly'] = 'Vain piilossa';
 $string['showlettergrade'] = 'Näytä arvosanakirjaimet';
@@ -575,7 +565,7 @@ $string['showrange_help'] = 'Näytä vaihteluvälisarake?';
 $string['showranges'] = 'Näytä vaihteluvälit';
 $string['showranges_help'] = 'Näytetäänkö jokaisen palstan arvosanojen asteikko erillisellä rivillä.';
 $string['showrank'] = 'Näytä sijoitus';
-$string['showrank_help'] = 'Näytetäänkö opiskelijan suoritus  kustakin arviointikohteesta suhteutettuna muihin kurssilaisiin?';
+$string['showrank_help'] = 'Näytetäänkö opiskelijan suoritus kustakin arviointikohteesta suhteutettuna muihin kurssilaisiin?';
 $string['showuserimage'] = 'Näytä käyttäjäprofiilien kuvat';
 $string['showuserimage_help'] = 'Näytetäänkö käyttäjän profiilikuva nimen vieressä arviointiraportissa.';
 $string['showverbose'] = 'Näytä {$a->category}{$a->itemmodule} {$a->itemname}';

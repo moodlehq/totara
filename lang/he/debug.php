@@ -39,8 +39,7 @@ $string['codingerror'] = 'נמצא טעות בקוד, נדרש לתקנה ע"י 
 $string['configmoodle'] = 'Moodle לא הוגדר עדיין. יש צורך להגדיר את קובץ
 config.php קודם לכן';
 $string['erroroccur'] = 'טעות התרחשה בעת תהליך זה.';
-$string['invalidarraysize'] = 'גודל שגוי של מערכים בפרטרים של {$a}
-';
+$string['invalidarraysize'] = 'גודל שגוי של מערכים בפרטרים של {$a}';
 $string['invalideventdata'] = 'מידע אירועים שגוי שהוגש {$a}';
 $string['invalidparameter'] = 'ערך פרמטי לא חוקי התגלה.';
 $string['invalidresponse'] = '.ערך תגובה לא חוקי  התגלה';

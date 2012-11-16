@@ -69,7 +69,6 @@ $string['completionscorerequired'] = 'Minumumpunktzahl wird benötigt';
 $string['completionstatus_completed'] = 'Abgeschlossen';
 $string['completionstatus_failed'] = 'Nicht bestanden';
 $string['completionstatus_help'] = '# Aktivitätsabschluss: Status erforderlich
-
 Wenn ein oder mehrere Status markiert sind, muss der Nutzer mindestens einen der markierten Status erreichen, um in dieser SCORM-Aktivität als abgeschlossen markiert werden zu können, und es müssen alle sonstigen Anforderungen zum Aktivitätsabschluss erfüllt sein.';
 $string['completionstatus_passed'] = 'Bestanden';
 $string['completionstatusrequired'] = 'Status wird benötigt';
@@ -90,9 +89,8 @@ $string['directories'] = 'Verzeichnislinks anzeigen';
 $string['disabled'] = 'Deaktiviert';
 $string['display'] = 'Lernpaket anzeigen';
 $string['displayattemptstatus'] = 'Status der Versuche anzeigen';
-$string['displayattemptstatus_help'] = '<h2>Anzeige der durchgeführten Versuche</h2>
-
-<p>Zeigt den Status der Versuche im Lernpaket für die Teilnehmer/innen an. Angezeigt werden Versuche, Bewertung und die in den Bewertungsbereich übergebenen Punkte (bei mehreren Versuchen)</p>';
+$string['displayattemptstatus_help'] = '## Anzeige der durchgeführten Versuche
+Zeigt den Status der Versuche im Lernpaket für die Teilnehmer/innen an. Angezeigt werden Versuche, Bewertung und die in den Bewertungsbereich übergebenen Punkte (bei mehreren Versuchen)';
 $string['displayattemptstatusdesc'] = 'Diese Einstellung setzt den Standardwert für die Einstellung "Status der Versuche anzeigen"';
 $string['displaycoursestructure'] = 'Kursstruktur anzeigen';
 $string['displaycoursestructure_help'] = 'Wenn diese Option aktiviert ist, wird die Inhaltsstruktur des Lernpakets neben dem Inhalt angezeigt.';
@@ -125,9 +123,8 @@ $string['forcejavascript'] = 'Zur Aktivierung von JavaScript auffordern';
 $string['forcejavascript_desc'] = 'Lernpakete erfordern im Browser Javascript zur Kommunikation zwischen dem Lernpaket und Moodle, z.B. um Bewertungen zu übergeben. Mit dieser Funktion wird der Zugriff auf ein Lernpaket unterbunden, wenn JavaScript nicht verfügbar ist. Es wird empfohlen, diese Funktion zu aktivieren.';
 $string['forcejavascriptmessage'] = 'Um dieses Objekt anzuzeigen ist JavaScript notwendig. Bitte aktivieren Sie JavaScript für Ihren Browser und versuchen Sie es nochmal.';
 $string['forcenewattempt'] = 'Neuen Versuch erzwingen';
-$string['forcenewattempt_help'] = '<h2>Neuen Versuch erzwingen</h2>
-
-<p>Jeder neue Aufruf des Lernpakets wird als neuer Versuch betrachtet. Auch wenn der vorherige Versuch nicht abgeschlossen wurde.</p>';
+$string['forcenewattempt_help'] = '## Neuen Versuch erzwingen
+Jeder neue Aufruf des Lernpakets wird als neuer Versuch betrachtet. Auch wenn der vorherige Versuch nicht abgeschlossen wurde.';
 $string['forcenewattemptdesc'] = 'Diese Einstellung setzt den Standardwert für die Einstellung "Neuen Versuch erzwingen"';
 $string['found'] = 'Manifest gefunden';
 $string['frameheight'] = 'Die Einstellung definiert die Höhe der Darstellung.';
@@ -139,7 +136,6 @@ $string['gradeforattempt'] = 'Bewertung für Versuch';
 $string['gradehighest'] = 'Höchstnote';
 $string['grademethod'] = 'Bewertungsmethode';
 $string['grademethod_help'] = 'Die Bewertungsmethoden legen fest, wie ein Versuch ausgewertet wird:
-
 * Zahl der Lernobjekte - Zahl der abgeschlossenen bzw. erfolgreichen Lernobjekte
 * Höchstbewertung - Die höchste Bewertung der erfolgreichen Lernobjekte wird übernommen
 * Durchschnitt - Die Durchschnittswerte aller Bewertungen werden errechnet
@@ -328,7 +324,6 @@ $string['viewallreports'] = 'Bericht für {$a} Versuch/e anzeigen';
 $string['viewalluserreports'] = 'Berichte für {$a} Nutzer anzeigen';
 $string['whatgrade'] = 'Bewertung der Versuche';
 $string['whatgrade_help'] = 'Wenn mehrere Versuche erlaubt sind, dann legt diese Einstellung fest, wie die Ergebnisse in die Bewertung einfließen (z.B. beste Bewertung, erste oder letzte Bewertung oder Durchschnittswert).
-
 * Die Option zum Starten eines neuen Versuchs wird mit einer Checkbox auf der Übersichtsseite angezeigt. Prüfen Sie, ob Sie mehr als einen Versuch zulassen möchten.
 * Einige Lernpakete unterstützen erneute Versuchen, viele aber nicht. Wenn Teilnehmer/innen erneut in einen bereits beendeten Versuch einsteigen, könnte die Bewertung des vorherigen Versuchs überschrieben werden, selbst wenn der Versuch als \'abgeschlossen\' oder \'erfolgreich\' markiert war.
 * Die Einstellungen \'Abschluss einfordern\', \'Neuen Versuch erzwingen\' und \'Nach letztem Versuch sperren\' bieten zusätzliche Möglichkeiten für mehrerer Versuche.';

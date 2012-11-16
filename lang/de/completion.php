@@ -65,7 +65,6 @@ $string['completion-title-manual-y'] = 'Als nicht abgeschlossen markieren: {$a}'
 $string['completion-y'] = 'Abgeschlossen';
 $string['completion_automatic'] = 'Abschluss, wenn alle Bedingungen erfüllt sind';
 $string['completion_help'] = 'Wenn diese Option aktiviert ist, dann werden die Aktivitätsfortschritte manuell oder automatisch entsprechend den gesetzten Bedingungen protokolliert. Mehrfachbedingungen können gesetzt sein, falls dies gewünscht ist. Ist dies der Fall, so wird eine Aktivität erst dann abgeschlossen, wenn ALLE Bedingungen zutreffen.
-
 Ein Häkchen direkt neben den Aktivitätsnamen signalisiert auf der Kursseite, dass diese Aktivität abgeschlossen ist.';
 $string['completion_manual'] = 'Abschluss wird manuell markiert';
 $string['completion_none'] = 'Abschluss wird nicht angezeigt';
@@ -75,9 +74,7 @@ $string['completionexpected'] = 'Abschlusstermin';
 $string['completionexpected_help'] = 'Diese Einstellung legt den Zeitpunkt fest, wann für die Aktivität der Bearbeitungsabschluss erwartet wird. Der Zeitpunkt ist für die Teilnehmer/innen nicht sichtbar, sondern er wird nur im Fortschrittsbericht angezeigt.';
 $string['completionicons'] = 'Fortschrittsanzeige';
 $string['completionicons_help'] = 'Mit einem Häkchen neben einem Aktivitätsnamen können Sie signalisieren, dass Sie diese Aktivität abgeschlossen haben.
-
-Falls ein gepunktetes Häkchen zu sehen, so können Sie darauf klicken und das Häkchen zu setzen,  wenn diese Aktivität Ihrer Meinung nach abgeschlossen ist. Ein erneuter Klick entfernt das Häkchen wieder, falls Sie Ihre Meinung nachträglich ändern sollten. Das Häkchen ist optional und bietet eine einfache Möglichkeit, Ihre Fortschritte im Kurs festzuhalten.
-
+Falls ein gepunktetes Häkchen zu sehen, so können Sie darauf klicken und das Häkchen zu setzen, wenn diese Aktivität Ihrer Meinung nach abgeschlossen ist. Ein erneuter Klick entfernt das Häkchen wieder, falls Sie Ihre Meinung nachträglich ändern sollten. Das Häkchen ist optional und bietet eine einfache Möglichkeit, Ihre Fortschritte im Kurs festzuhalten.
 Wenn statt des Häkchens ein leeres Feld gezeigt wird, wird das Häkchen automatisch erscheinen, sobald Sie die Aktivität entsprechend den Trainervorgaben abgeschlossen haben.';
 $string['completionmenuitem'] = 'Abschluss';
 $string['completionnotenabled'] = 'Abschluss ist nicht aktiviert';

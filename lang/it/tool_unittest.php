@@ -32,8 +32,9 @@ $string['codecoveragecompletereport'] = '(visualizza il report dell\'analisi)';
 $string['codecoveragedisabled'] = 'In questo server non è possibile abilitare il code coverage (manca l\'estensione xdebug)';
 $string['codecoveragelatestdetails'] = '(al {$a->date} su {$a->files} l\'analisi è al {$a->percentage})';
 $string['codecoveragelatestreport'] = 'visualizza il report di code coverage più recente';
-$string['confignonwritable'] = 'Il file config.php non è scrivibile dal web server. Cambia i suoi attributi, o modificalo con un account abilitato. e aggiungi la seguente riga prima del tag di chiusura del php: <br />
-$CFG->unittestprefix = \'tst_\' // Modificare tst_  in un prefisso diverso da $CFG->prefix';
+$string['confignonwritable'] = 'Il file config.php non è scrivibile dal web server. Cambia i suoi attributi, o modificalo con un account abilitato. e aggiungi la seguente riga prima del tag di chiusura del php:
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Linee analizzate';
 $string['coveredpercentage'] = 'Code coverage complessivo';
 $string['dbtest'] = 'Functional DB test';

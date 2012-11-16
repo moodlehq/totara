@@ -50,7 +50,6 @@ $string['endswith'] = 'slutar med';
 $string['filterallwarning'] = 'Om Du tillämpar filter på rubriker liksom på innehåll så kan det öka belastningen på Din server. Var snäll och använd inställningen "Tillämpa på" sparsamt. Den mest typiska användningen gäller multilang-filtret.';
 $string['filtersettings'] = 'Inställningar för filter';
 $string['filtersettings_help'] = 'Den här sidan låter Dig ställa in filter som "av" eller "på" i ett specifikt område på webbplatsen.
-
 En del filter kan också tillåta Dig att ange lokala inställningar och isåfall kommer det att finnas en länk bredvid namnen på dessa.';
 $string['filtersettingsforin'] = 'Inställningar för filter för {$a->filter} i {$a->context}';
 $string['filtersettingsin'] = 'Inställningar för filter i {$a}';

@@ -95,7 +95,6 @@ $string['groupmode_help'] = 'Für den Gruppenmodus stehen drei Einstellungen zur
 * Keine Gruppen - es gibt keine Gruppen im Kurs
 * Getrennte Gruppen - es gibt getrennte Gruppen im Kurs, d.h. ein Gruppenmitglied kann nur die Mitglieder der eigenen Gruppe sehen, alle andern sind unsichtbar.
 * Sichtbare Gruppen - es gibt sichtbare Gruppen im Kurs, d.h. jede Gruppe arbeitet in der eigenen Gruppe, kann aber die anderen Gruppen sehen.
-
 Der Gruppenmodus auf Kursebene ist der Standardmodus für alle Aktivitäten im Kurs. Jede Aktivität, die Gruppen unterstützt, kann aber auch ihren eigenen Gruppenmodus haben. Falls der Gruppenmodus auf Kursebene festgelegt wird, werden die Einstellungen zum Gruppenmodus für alle Aktivitäten ignoriert.';
 $string['groupmodeforce'] = 'Gruppenmodus erzwingen';
 $string['groupmodeforce_help'] = 'Wenn der Gruppenmodus erzwungen wird, dann wird der Gruppenmodus des Kurses auch auf jede Aktivität im Kurs angewendet. Die Gruppeneinstellungen in jeder Aktivität werden ignoriert.';
@@ -116,7 +115,6 @@ $string['grouptemplate'] = 'Gruppe @';
 $string['hidepicture'] = 'Bild verbergen';
 $string['importgroups'] = 'Gruppen importieren';
 $string['importgroups_help'] = 'Gruppen können als Textdatei importiert werden, die folgendermaßen formatiert wird:
-
 * Jede Zeile enthält genau einen Datensatz
 * Jeder Datensatz ist eine kommagetrennte Folge von Daten
 * Der erste Datensatz enthält alle Felder, die das Format der übrigen Datei festlegen
@@ -128,7 +126,6 @@ $string['members'] = 'Mitglieder pro Gruppe';
 $string['membersofselectedgroup'] = 'Mitglieder in:';
 $string['namingscheme'] = 'Namenschema';
 $string['namingscheme_help'] = 'Das Symbol \'@\' kann benutzt werden, um Gruppen zu erzeugen, die Buchstaben im Namen haben (Gruppe @ erzeugt z.B. die Gruppennamen Gruppe A, Gruppe B, Gruppe C, ...)
-
 Das Symbol \'#\' kann benutzt werden, um Gruppen zu erzeugen, die Zahlen im Namen haben (Gruppe # erzeugt z.B. die Gruppennamen Gruppe 1, Gruppe 2, Gruppe 3, ...)';
 $string['newgrouping'] = 'Neue Gruppierung';
 $string['newpicture'] = 'Neues Bild';

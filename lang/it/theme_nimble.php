@@ -38,4 +38,4 @@ $string['pluginname'] = 'NImble';
 $string['region-side-post'] = 'Destra';
 $string['region-side-pre'] = 'Sinistra';
 $string['tagline'] = 'Tagline';
-$string['taglinedesc'] = 'Un breve tagline da visualizzare nella pagina home sotto al nome del sito. ';
+$string['taglinedesc'] = 'Un breve tagline da visualizzare nella pagina home sotto al nome del sito.';

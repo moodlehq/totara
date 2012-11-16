@@ -57,89 +57,60 @@ $string['addremoveprogram'] = 'Aggiungi/elimina programmi';
 $string['addrpl'] = 'Aggiungi RPL';
 $string['addtemplate'] = 'Aggiungi nuovo modello';
 $string['advancedsettingscompetencypermissions_help'] = '# Autorizzazioni di competenza
-
 **Le Autorizzazioni di competenza** permettono di definire i tipi di azioni che possono essere eseguiti dal Formatore e dal Manager per le competenza all\'interno del piano di formazione.
-
 Ci sono quattro livelli di autorizzazione disponibili:
-
-*   **Consenti** permette all\'utnete di esegurie l\'azione
-*   **Nega** impedisce all\'utente di eseguire l\'azione
-*   **Richiedi** permette all\'utente di richiedere che questa azione sia eseguita
-*   **Approva** permette all\'utente di approvare un\'azione richiesta.';
+\* **|Consenti** permette all\'utnete di esegurie l\'azione
+\* **|Nega** impedisce all\'utente di eseguire l\'azione
+\* **|Richiedi** permette all\'utente di richiedere che questa azione sia eseguita
+\* **|Approva** permette all\'utente di approvare un\'azione richiesta.';
 $string['advancedsettingscompetencysettings_help'] = '# Impostazioni di competenze
-
 **Le Impostazioni di competenze** permettono di definire le impostazioni che sono disponibili per le competenze nel piano.
-
 Selezionare l\'impostazione della **‘Data dovuta’**. Quando **‘Data di scadenza’** è impostato su ‘Nessuna’ la colonna non viene visualizzata sul piano di formazione.
-
 Selezionare l\'impostazione **‘Priorità’ **. Quando si usa **‘Priorità’** occorre una **‘Scala di priorità’**. Fare clic sul menu a discesa per selezionare la scala di priorità.
-
 ** Nota: **L\'opzione per impostare questa scala si trova nelle scale di priorità dei Piani di formazione>
 **Assegnazione automatica **permette di visualizzare automaticamente le competente in un piano di formazione che è stato assegnato precedentemente a una posizione o organizzazione di utente’.
-
 **Stato predefinito** determina lo stato di una competenza quando è prima approvata all\'interno di un piano. Se \'Assegna competenza recentemente approvate nel loro stato predefinito\' è selezionato, tutte le competenze sono assegnate allo stato predefinito per quella scala di competenzza al momento in cui la competenza è approvata. Se non è selezionata, non viene impostato alcuno stato iniziale.';
 $string['advancedsettingscoursepermissions_help'] = '# Autorizzazioin di corso
-
 **Le autorizzazioni di corso** permettono di definire le impostazioni di corso che sono disponibili e i tipi di azioni che possono essere eseguiti dal formatore e dal manager nel piano di formazione.
-
 Ci sono quattro livelli di autorizzazioni disponibili:
-
-*   **Consenti** consente all\'utente di eseguire l\'azione
-*   **Nega** impedisce all\'utente di eseguire l\'azione
-*   **Richiedi** permette all\'utente di richiedere quell\'azione
-*   **Approva** permette all\'utente di approvare l\'azione.';
+\* **|Consenti** consente all\'utente di eseguire l\'azione
+\* **|Nega** impedisce all\'utente di eseguire l\'azione
+\* **|Richiedi** permette all\'utente di richiedere quell\'azione
+\* **|Approva** permette all\'utente di approvare l\'azione.';
 $string['advancedsettingscoursesettings_help'] = '# Impostazioni del corso
-
 **Impostazioni del corso** permette di definire le impostazioni disponibili per i corsi entro il piano.
-
 Selezionare l\'impostazione **‘Data di scadenza’**. Quando **‘Data di scadenza’** è impostato su ‘Nessuna’ la colonna non viene visualizzata nel piano di formazione.
-
 Selezionare l\'impostazione di **‘Priorità’ **. Quando **‘Priorità’ **è impostato su ‘Nessuno’ la colonna non viene visualizzata nel piano di formazione.
-
 Quando si usa **‘Prioritàrsquo;** occorre una **‘Scala di priorità’**. Fare clic sul menu a discesa per selezionare la scala di priorità.
-
 **Nota: **l\'opzione per impostare questa scala si trova nelle Scale di priorità dei Piani di formazione>.';
 $string['advancedsettingsobjectivepermissions_help'] = '# Autorizzazioni degli obiettivi
-
 **Le autorizzazioni degli obiettivi** permettono di definire le azioni che possono essere eseguite dal docente e dal manager nel piano di formazione quando sono definitii gli obiettivi.
-
 Ci sono quattro livelli di autorizzazione disponibili:
-
-*   **Consenti** consente all\'utente di eseguire l\'azione
-*   **Nega** impedisce all\'utente di eseguire l\'azione
-*   **Richiedi** permette all\'utente di richiedere che questa azione
-*   **Approva** permette all\'utente di approvare l\'azione.';
+\* **|Consenti** consente all\'utente di eseguire l\'azione
+\* **|Nega** impedisce all\'utente di eseguire l\'azione
+\* **|Richiedi** permette all\'utente di richiedere che questa azione
+\* **|Approva** permette all\'utente di approvare l\'azione.';
 $string['advancedsettingsobjectivesettings_help'] = '# Impostazioni degli obiettivi
-
 **Le impostazioni degli obiettivi **permettono di definire le impostazioni disponibili per gli obiettivi all\'interno del piano.
-
 Selezionare l\'impostazione **‘Date di scadenza’**. Quando **‘Date di scadenza’** è impostato su ‘Nessuna’ la colonna non viene visualizzata sul piano di formazione.
-
 Selezionare l\'impostazione **‘Priorità’ **. Quando **‘Priorità’ **è impostato su ‘Nessuna’ la colonna non viene visualizzata sul piano di formazione.
-
 Quando si usa **‘Priorità’** occorre una **‘Scala di priorità’**. Fare clic sul menu a discesa per selezionare la scala di priorità.
-
 **Nota: **L\'opzione per impostare questa scala si trova nelle scale di priorità dei Piani di formazione >.
-
 **Scala di obiettivi** è usato per misurarre il progresso di uno studente’ verso i loro obiettivi. Impostare le scale di obiettivi usando l\'opzione di menu in piani di formazione di Amministrazione del sito>.';
 $string['advancedsettingsplanpermissions_help'] = '# Autorizzazioni di piano
-
 Le impostazioni del flusso di lavoro avanzato permettono di definire il tipo di azioni che possono essere eseguite dai formatori e dai manager. Per ciascun tipo di azione ci sono quattro livelli di formazione disponibili:
-
-*   **Consenti** permette all\'utente di eseguire l\'azione.
-*   **Nega** impedisce all\'utente di eseguire l\'azione.
-*   **Richiedi** permette all\'utente di richiedere che tale azione sia eseguita.
-*   **Approva** permette all\'utente di approvare un\'azione.';
+\* **|Consenti** permette all\'utente di eseguire l\'azione.
+\* **|Nega** impedisce all\'utente di eseguire l\'azione.
+\* **|Richiedi** permette all\'utente di richiedere che tale azione sia eseguita.
+\* **|Approva** permette all\'utente di approvare un\'azione.';
 $string['advancedsettingsplansettings_help'] = '# Impostazioni di piano
-
 **Le impostazioni di piano **permettono di definire le impostazioni generali per il piano.
-
 Il piano di formazione può essere contrassegnato come completo in base alle seguenti scelte.
-*   **Manualmente, da un utente con autorizzazione \'completa\'**
+\* **|Manualmente, da un utente con autorizzazione \'completa\'**
 Il piano di formazione può essere contrassegnato come completo da un formatore o manager che ha selezionato Autorizza nella riga delle approvazioni delle autorizzazioni del piano.
-*   **Automaticamente, quando tutti gli elementi sono stati completati**
+\* **|Automaticamente, quando tutti gli elementi sono stati completati**
 Il piano di formazione è contrassegnato come completato quando tutti i corsi, le competenze, gli obiettivi e i programmi che sono inclusi nel piano di formazione sono stati contrassegnati come completati
-*   **Automaticamente, quando la data di completamento del piano è stata raggiunta**
+\* **|Automaticamente, quando la data di completamento del piano è stata raggiunta**
 Il piano di formazione è contrassegnato come completo quando la data di completamento che è stata salvata con il Piano di formazione è stata raggiunta';
 $string['advancedworkflow'] = 'Impostazioni del flusso di lavoro avanzate';
 $string['after'] = 'Dopo';
@@ -219,7 +190,6 @@ $string['competency_instructions_manager'] = 'Tutte le competenze che sono inclu
 $string['competency_instructions_request'] = 'Fare clic su Aggiorna competenze richieste per richiedere l\'aggiunta di nuove competenze a questo piano di formazione.';
 $string['competencycompleted'] = 'Competenza completata';
 $string['competencyevidencestatus_help'] = '# Stato
-
 Questo campo registra lo stato dell\'utente nella competenza assegnata. Le opzioni che sono visualizzate nel menu a discesa dipendono dalla scala di competenze assegnata alla competenza scelta, quindi la competenza deve essere selezionata prima che questo campo possa essere modificato. Deve essere impostata una scala di valore per aggiungere o aggiornare il record di prova di competenza.';
 $string['competencyname'] = 'Nome di competenza';
 $string['competencypermissions'] = 'Autorizzazioni di competenza';
@@ -539,47 +509,36 @@ $string['objectives'] = 'Obiettivi';
 $string['objectivescale'] = 'Scala di obiettivi';
 $string['objectivescaleadded'] = 'Scala di obiettivi "{$a}" aggiunta';
 $string['objectivescaleassign_help'] = '# Scala di obiettivi
-
 Una scala di obiettivi definisce i criteri per cui un obiettivo può essere misurato. Questo è il nome della scala e il valore che viene aggiunto.';
 $string['objectivescaledefault_help'] = '# Valore predefinito
-
 Il **Valore predefinito** è il valore assegnato automaticamente a un obiettivo nel piano di formazione quando l\'obiettivo è aggiunto prima da un formatore o manager.';
 $string['objectivescaledefaultupdated'] = 'Il valore della scala predefinito è stato aggiornato';
 $string['objectivescaleinuse'] = 'La scala è in uso (ad es. gli utenti hanno obiettivi contrassegnati con i valori di questa scala). I valori della scala non possono essere creati, riordinati o eliminati per mantenere l\'integrità dei dati. E\' comunque possibile rinominare i valori della scala ma questo potrebbe confondere l\'utente quando il loro stato di obiettivo viene modificato senza avviso.';
 $string['objectivescalename_help'] = '# Nome della scala di obiettivi
-
 Il nome della scala di obiettivi usato da un piano di formazione.';
 $string['objectivescales'] = 'Scale di obiettivo';
 $string['objectivescalesdisabledtemplateinuse'] = 'NOTA: impossibile modificare la scala di obiettivi. Alcuni piani usano questo modello';
 $string['objectivescaleupdated'] = 'Scala di obiettivo "{$a}" aggiornato';
 $string['objectivescalevalueachieved_help'] = '# Raggiunto
-
 Quando **Raggiunto** è selezionato questo valore di scala di obiettivi viene usato per indicare che l\'obiettivo è raggiunto dal formatore.
-
 Ci possono essere più valori contrassegnati come **Raggiunti** che permettono gradi di raggiungimento.';
 $string['objectivescalevalueadded'] = 'Valore della scala di obiettivo "{$a}" aggiunto';
 $string['objectivescalevalueid'] = 'Preparazione obiettivo';
 $string['objectivescalevalueidnumber'] = 'Numero ID valore di scala';
 $string['objectivescalevalueidnumber_help'] = '# Numero ID del valore di scala
-
 Numero ID di scala è un numero unico usato per rappresentare il valore di scala.';
 $string['objectivescalevaluename'] = 'Nome valore di scala';
 $string['objectivescalevaluename_help'] = '# Nome di valore di scala
-
 **Il nome di valore di scala** è il nome del valore di scala di obiettivi che viene aggiunto o modificato.
-
 Un valore di scala è usato per misurare gli obiettivi del piano di formazione. E\' possibile aggiungere il numero di valori di scala richiesto.';
 $string['objectivescalevaluenumeric'] = 'Valore numerico della scala di obiettivi';
 $string['objectivescalevaluenumeric_help'] = '# Valore numerico del valore di scala di obiettivi
-
 **Il valore numerico del valore di scala di obiettivi** permette di assegnare un valore numerico oltre a una descrizione (nome) del valore di scala.';
 $string['objectivescalevalues_help'] = '# Valori di scala
-
 Inserire un elenco di valori per la nuova scala di obiettivi (un valore per riga), dal più elevato al meno elevato. Ad esempio:
-
-<p class="indent">
-<i> Alto<br /> Medio<br /> Basso </i>
-</p>';
+* Alto
+Medio
+Basso *';
 $string['objectivescalevalueupdated'] = 'Valore di scala di obiettivi "{$a}" aggiornato';
 $string['objectivescalex'] = 'Scala di obiettivo "{$a}"';
 $string['objectivesettings'] = 'Impostazioni di obiettivo';
@@ -646,7 +605,6 @@ $string['plan_instructions_delete'] = 'E\' possibile eliminare il piano di forma
 $string['plan_instructions_edit'] = 'Fare clic sul pulsante Modifica dettagli per modificare il titolo del piano di formazione, la sintesi descrittiva o la data di completamento.';
 $string['plan_instructions_learner'] = 'Segue un breve riepilogo del piano di formazione.';
 $string['plan_instructions_manager'] = 'Segue un breve riepilogo del piano di formazione del membro del team.';
-$string['planapprovalrequested'] = 'Approvazione di piano richiesta per <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Il piano "{$a}" è stato approvato';
 $string['planautocompleteddate'] = 'Questo piano è stato completato automaticamente perché la data di fine del piano è stata superata';
 $string['planautocompleteditems'] = 'Questo piano è stato completato automaticamente perché tutti i suoi elementi sono stati completati';
@@ -686,16 +644,13 @@ $string['prioritymode'] = 'Priorità';
 $string['priorityscale'] = 'Scala di priorità';
 $string['priorityscaleadded'] = 'Scala di priorità "{$a}" aggiunta';
 $string['priorityscaleassign_help'] = '# Scala di priorità
-
 Una **Scala di priorità** è il nome della scala di priorità in cui si sta lavorando.';
 $string['priorityscalecreate'] = 'Aggiungi una nuova scala di priorità';
 $string['priorityscaledefault_help'] = '# Valore predefinito
-
 Il **Valore predefinito** è il valore che viene assegnato automaticamente all\'elemento del piano di formazione quando la la scala di priorità viene visualizzata nel piano del formatore. La priorità può essere modificata dal docente/manager quando è attiva nel piano di formazione.';
 $string['priorityscaledefaultupdated'] = 'Il valore predefinito della scala è stato aggiornato';
 $string['priorityscaleinuse'] = 'La scala è in uso (ad es. gli utenti hanno elementi contrassegnati da questa scala). I valore della scala non sono creati, riordinati o eliminati per mantenere l\'integrità dei dati. E\' possibile rinominare i valori di scala ma questo può confondere gli utenti quando le loro priorità cambiano senza avviso';
 $string['priorityscalename_help'] = '# Nome della scala di priorità
-
 Il nome della scala di priorità usato da un piano di formazione.';
 $string['priorityscales'] = 'Scale di priorità';
 $string['priorityscalesdisabledtemplateinuse'] = 'NOTA: impossibile modificare la scala di priorità. Dei piani usano questo modello';
@@ -703,25 +658,19 @@ $string['priorityscaleupdated'] = 'Scala di priorità "{$a}" aggiornata';
 $string['priorityscalevalueadded'] = 'Valore della scala di priorità "{$a}" aggiunto';
 $string['priorityscalevalueidnumber'] = 'Numero ID del valore della scala';
 $string['priorityscalevalueidnumber_help'] = '# Numero ID del valore di scala
-
 Il numero ID del valore di scala è un numero unico che è usato per rappresentare il valore della scala.';
 $string['priorityscalevaluename'] = 'Nome del valore della scala';
 $string['priorityscalevaluename_help'] = '# Nome del valore di scala
-
 **Il nome di valore di scala** è il nome del valore che si aggiunge o modifica per una scala di priorità specifica.
-
 Un valore di scala è usato per definire la priorità per un elemento del piano di apprendimento. E\' possibile aggiungere il numero di valori di scala richiesti.';
 $string['priorityscalevaluenumeric'] = 'Valore numerico della scala di priorità';
 $string['priorityscalevaluenumeric_help'] = '# Valore numerico del valor di scala
-
 **Il valore numerico del valore di scala** permette di assegnare un valore numerico a questo valore di scala e una descrizione (nome).';
 $string['priorityscalevalues_help'] = '# Valori di scala
-
 Inserire un elenco dei valori per la nuova scala di priorità (una priorità per riga), dalla priorità più elevata alla meno elevata. Ad esempio:
-
-<p class="indent">
-<i> Alta<br /> Media<br /> Bassa </i>
-</p>';
+* Alta
+Media
+Bassa *';
 $string['priorityscalevalueupdated'] = 'Valore della scala di priorità "{$a}" aggiornato';
 $string['priorityscalex'] = 'Scala di priorità "{$a}"';
 $string['priorityvalues'] = 'Valori di priorità';
@@ -787,15 +736,11 @@ $string['startdate'] = 'Data di inizio';
 $string['status'] = 'Stato';
 $string['teammembers'] = 'Membri del team';
 $string['templatecomponentsettings_help'] = '# Impostazioni di componente
-
 Le **Impostazioni di componente **permettono di mostrare/nascondere i componenti nel piano di formazione e definire l\'ordine in cui sono visualizzati.
-
 Fare clic su **Nascondi** per rimuoevere un componente da un modello di piano di formazione.
-
 Usare le frecce verso l\'alto e verso il basso per modificare l\'ordine dei componenti.';
 $string['templateenddate'] = 'Data di fine di modello di piano';
 $string['templateenddate_help'] = '# Data di fine
-
 Fare clic sulli\'icona del calandario per selezionare la **Data di fine** per il modello del piano di formazione.';
 $string['templateinstances'] = 'Istanze di modello';
 $string['thefollowingitemsarepending_p'] = 'Questo piano contiene i seguenti componenti pendenti:';

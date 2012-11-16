@@ -29,13 +29,10 @@ $string['accessnoticesheader'] = 'Możesz obejrzeć ten quiz, ale gdyby to była
 $string['action'] = 'Akcja';
 $string['adaptive'] = 'Tryb adaptacyjny';
 $string['adaptive_help'] = '# Tryb dostosowania
-
 Po wybraniu opcji Tak uczeń może odpowiadać wielokrotnie na pytanie nawet podczas tego samego podejścia do quizu. A więc np. jeśli odpowiedź ucznia zostanie zaznaczona jako niepoprawna, uczeń może spróbować ponownie. Jednakże każdorazowa pomyłka skutkuje odjęciem punktów( liczba odejmowanych punktów jest uzależniona od współczynnika kary, ustawionego w następnej opcji).
-
 Ten tryb pozwala także dostosować pytania które mogą samoistnie zamieniać się w odpowiedzi. Tak definiuje pytania IMS QTI:
-
-> Adaptator pozwala na zaadoptowanie wyglądu, wartości (Proces Odpowiedzi) lub ich obu w odpowiedzi na każdą próbę kandydata. Np. adaptator może pojawić się jako podpowiedź dla kandydata w postaci ramki do wprowadzania własnych notatek, otrzymawszy niezadowalającą odpowiedź prezentuje skutki pojedynczego wyboru i przyznaje kilka stopni w procesie dalszej identyfikacji poprawnej odpowiedzi. Adaptatory pozwalają autorom na tworzenie scenariuszy gotowych do użycia w nowo zaistniałych sytuacjach, które pomogą nakierować kandydatów w otrzymanych zadaniach, równocześnie nie sugerując odpowiedzi i dbając o obiektywizm wyniku. 
-W trybie adaptacyjnym dodatkowy <?php print_string(\'mark\', \'quiz\') ?> przycisk jest pokazywany dla każdego pytania. Jeśli uczeń naciśnie przycisk wówczas odpowiedź do poszczególnego pytania jest dodawana do wyniku i zaznaczenie zostaje wyświetlone. Jeśli pytanie jest pytaniem adaptacyjnym wówczas wyświetlone zostaje z nowym statusem, odpowiedź zostaje zaliczona i w wielu przypadkach uczeń zostanie poproszony o wprowadzenie innej odpowiedzi. W najprostszych pytaniach adaptacyjnych nowy status może różnić się tylko komentarzem i skłaniać ucznia by spróbował ponownie. W bardziej skomplikowanych pytaniach może różnić się treścią a nawet kolejnością.';
+> Adaptator pozwala na zaadoptowanie wyglądu, wartości (Proces Odpowiedzi) lub ich obu w odpowiedzi na każdą próbę kandydata. Np. adaptator może pojawić się jako podpowiedź dla kandydata w postaci ramki do wprowadzania własnych notatek, otrzymawszy niezadowalającą odpowiedź prezentuje skutki pojedynczego wyboru i przyznaje kilka stopni w procesie dalszej identyfikacji poprawnej odpowiedzi. Adaptatory pozwalają autorom na tworzenie scenariuszy gotowych do użycia w nowo zaistniałych sytuacjach, które pomogą nakierować kandydatów w otrzymanych zadaniach, równocześnie nie sugerując odpowiedzi i dbając o obiektywizm wyniku.
+W trybie adaptacyjnym dodatkowyprzycisk jest pokazywany dla każdego pytania. Jeśli uczeń naciśnie przycisk wówczas odpowiedź do poszczególnego pytania jest dodawana do wyniku i zaznaczenie zostaje wyświetlone. Jeśli pytanie jest pytaniem adaptacyjnym wówczas wyświetlone zostaje z nowym statusem, odpowiedź zostaje zaliczona i w wielu przypadkach uczeń zostanie poproszony o wprowadzenie innej odpowiedzi. W najprostszych pytaniach adaptacyjnych nowy status może różnić się tylko komentarzem i skłaniać ucznia by spróbował ponownie. W bardziej skomplikowanych pytaniach może różnić się treścią a nawet kolejnością.';
 $string['addaquestion'] = 'Dodaj pytanie...';
 $string['addarandomquestion'] = 'Dodaj losowe pytanie...';
 $string['adddescriptionlabel'] = 'Dodaj opis / etykietę';
@@ -110,45 +107,30 @@ $string['bestgrade'] = 'Najlepsza ocena';
 $string['bothattempts'] = 'Pokaż wszystkich studentów';
 $string['browsersecurity'] = '';
 $string['browsersecurity_help'] = '# Bezpieczeństwo przeglądarki
-
 Ta opcja oferuje różne metody ograniczania sposobów \'oszukiwania\' przez studentów podczas rozwiązywania kwizu. Nie jest to jednak prosta kwestia i to, co w jednej sytuacji jest uważane za \'oszukiwanie\', w innej sytuacji może być tylko skutecznym sposobem korzystania z informatyki. (Na przykład możliwość szybkiego znajdowania odpowiedzi za pomocą wyszukiwarki.)
-
 Należy również zauważyć, że nie jest to tylko problem technologii z rozwiązaniem technicznym. Oszukiwanie pojawiło się na długo przed komputerami i chociaż komputery łatwiej wykonują pewne czynności, takie jak kopiowanie i wklejanie, ułatwiają one również wykładowcom wykrywanie oszustw - na przykład za pomocą raportów z kwizów. Udostępniane tutaj opcje nie są nie do zepsucia i chociaż utrudniają one uczestnikom pewne formy oszukiwania, powodują również pewne niedogodności w rozwiązywaniu kwizów przez uczestników i nie są nie do zepsucia.
-
 Należy również rozważyć inne sposoby utrudniania uczestnikom oszukiwanie podczas kwizu:
-
-*   Można użyć dużego banku pytań, z którego pytania są wybierane losowo, więc różni uczestnicy zobaczą różne, ale podobne pytania.
-*   Można użyć opcji mieszania odpowiedzi, więc poprawną odpowiedzią na pytanie 1 nie zawsze będzie opcja A.
-*   Można również zadać pytania wymagające od uczestników przeanalizowania podanych informacji, a nie tylko przywołania faktów.</p> 
+* Można użyć dużego banku pytań, z którego pytania są wybierane losowo, więc różni uczestnicy zobaczą różne, ale podobne pytania.
+* Można użyć opcji mieszania odpowiedzi, więc poprawną odpowiedzią na pytanie 1 nie zawsze będzie opcja A.
+* Można również zadać pytania wymagające od uczestników przeanalizowania podanych informacji, a nie tylko przywołania faktów.</p>
 Mając na uwadze powyższe przestrogi, poniżej znajdziecie opis dostępnych opcji.
-
 ### Brak
-
 Na drodze uczestników próbujących rozwiązać kwiz nie zostaną umieszczone żadne przeszkody.
-
 ### Pełnoekranowe okienko podręczne z pewnymi zabezpieczeniami JavaScript
-
 Istnieje limit tego, co kwiz działający na serwerze internetowym może zrobić, aby ograniczyć to, co siedzący przed swoim komputerem uczestnik może zrobić podczas rozwiązywania kwizu. Jednak ta opcja robi to, co jest możliwe:
-
-*   Kwiz zostanie uruchomiony tylko, gdy uczestnik włączy w przeglądarce obsługę skryptów JavaScript.
-*   Kwiz jest wyświetlany jako pełnoekranowe okienko podręczne zakrywające wszystkie inne okna i niemające elementów sterujących nawigacją.
-*   Uczestnikom uniemożliwia się, na ile jest to możliwe, korzystanie z takich funkcji, jak kopiowanie i wklejanie.
-
+* Kwiz zostanie uruchomiony tylko, gdy uczestnik włączy w przeglądarce obsługę skryptów JavaScript.
+* Kwiz jest wyświetlany jako pełnoekranowe okienko podręczne zakrywające wszystkie inne okna i niemające elementów sterujących nawigacją.
+* Uczestnikom uniemożliwia się, na ile jest to możliwe, korzystanie z takich funkcji, jak kopiowanie i wklejanie.
 ### Wymagaj użycia bezpiecznej przeglądarki egzaminacyjnej
-
 Ta opcja będzie wyświetlana tylko, gdy zostanie włączona przez administratora.
-
-[Bezpieczna przeglądarka egzaminacyjna][1] to dostosowana przeglądarka internetowa, która musi zostać pobrana i zainstalowana na komputerze używanym przez uczestnika do rozwiązywania kwizu. Ograniczenia nakładane na uczestnika są podobne do stosowanych w przypadku okienka podręcznego, ale ponieważ bezpieczna przeglądarka egzaminacyjna to oprogramowanie działające na komputerze uczestnika, może ono dużo skuteczniej realizować zadanie ograniczania jego czynności. Jeśli wybierzesz tę opcję:
-
-*   Uczestnicy będą mogli rozwiązać kwiz tylko, jeśli używają bezpiecznej przeglądarki egzaminacyjnej.
-*   Okno przeglądarki zajmie cały ekran (bez żadnych elementów nawigacyjnych).
-*   Okna nie będzie można zamknąć do chwili przesłania testu.
-*   Klawisze skrótów, takie jak Win, Ctrl+Alt+Del, Alt+F4, F1, Ctrl+P, Printscreen, będą wyłączone.
-*   Wyłączone będzie kopiowanie i wklejanie oraz menu kontekstowe.
-*   Nie można będzie się przełączyć na inną aplikację.
-*   Zabronione będzie przechodzenie do innych witryn internetowych.
-
- [1]: http://www.safeexambrowser.org/';
+[Bezpieczna przeglądarka egzaminacyjna](http://www.safeexambrowser.org) to dostosowana przeglądarka internetowa, która musi zostać pobrana i zainstalowana na komputerze używanym przez uczestnika do rozwiązywania kwizu. Ograniczenia nakładane na uczestnika są podobne do stosowanych w przypadku okienka podręcznego, ale ponieważ bezpieczna przeglądarka egzaminacyjna to oprogramowanie działające na komputerze uczestnika, może ono dużo skuteczniej realizować zadanie ograniczania jego czynności. Jeśli wybierzesz tę opcję:
+* Uczestnicy będą mogli rozwiązać kwiz tylko, jeśli używają bezpiecznej przeglądarki egzaminacyjnej.
+* Okno przeglądarki zajmie cały ekran (bez żadnych elementów nawigacyjnych).
+* Okna nie będzie można zamknąć do chwili przesłania testu.
+* Klawisze skrótów, takie jak Win, Ctrl+Alt+Del, Alt+F4, F1, Ctrl+P, Printscreen, będą wyłączone.
+* Wyłączone będzie kopiowanie i wklejanie oraz menu kontekstowe.
+* Nie można będzie się przełączyć na inną aplikację.
+* Zabronione będzie przechodzenie do innych witryn internetowych.';
 $string['calculated'] = 'Obliczeniowe';
 $string['calculatedquestion'] = 'Kalkulowane pytanie nie w linii {$a}. Pytanie zostanie zignorowane.';
 $string['cannotcreatepath'] = 'Ścieżka nie może zostać utworzona ({$a})';
@@ -219,7 +201,7 @@ $string['datasetnumber'] = 'Liczba';
 $string['daysavailable'] = 'Dni dostępności';
 $string['decimaldigits'] = 'Cyfry dziesiętne w ocenie';
 $string['decimalplaces'] = 'Miejsca dziesiętne w ocenach';
-$string['decimalplaces_help'] = '<p> Przez użycie tej opcji można wybierać liczbę punktów dziesiętnych pokazywanych w ocenie dla każdej próby </p>';
+$string['decimalplaces_help'] = 'Przez użycie tej opcji można wybierać liczbę punktów dziesiętnych pokazywanych w ocenie dla każdej próby';
 $string['decimalplacesquestion'] = 'Miejsca dziesiętne w ocenie pytania';
 $string['decimalpoints'] = 'Punkty dziesiętne';
 $string['default'] = 'Domyślny';
@@ -241,9 +223,8 @@ $string['download'] = 'Pobierz plik z kategoriami';
 $string['downloadextra'] = '(Plik jest przechowywany w plikach kursu/katalogu quizu)';
 $string['duplicateresponse'] = 'Ta próba jest zignorowana, ponieważ podałeś wcześniej równoważne odpowiedzi';
 $string['eachattemptbuildsonthelast'] = 'Każda nowa próba na podstawie poprzedniej';
-$string['eachattemptbuildsonthelast_help'] = '<p>Jeżeli dozwolone są wielokrotne próby, a ta opcja ustawiona jest na <B>Tak</B>, wtedy każda nowa próba już zawiera rozwiązania z poprzedniej próby. Pozwala to na uzupełnienie quizu w kilku podejściach.</p>
-
-<p>Aby za każdą próbą pokazać nienaruszony quiz, wybierz <B>Nie</B> dla tego ustawienia.';
+$string['eachattemptbuildsonthelast_help'] = 'Jeżeli dozwolone są wielokrotne próby, a ta opcja ustawiona jest na **Tak**, wtedy każda nowa próba już zawiera rozwiązania z poprzedniej próby. Pozwala to na uzupełnienie quizu w kilku podejściach.
+Aby za każdą próbą pokazać nienaruszony quiz, wybierz **Nie** dla tego ustawienia.';
 $string['editcategories'] = 'Edytuj kategorie';
 $string['editcategory'] = 'Edytuj kategorię';
 $string['editcatquestions'] = 'Edytuj pytania kategorii';
@@ -313,11 +294,8 @@ $string['fromfile'] = 'z pliku:';
 $string['functiondisabledbysecuremode'] = 'Ta funkcjonalność jest obecnie wyłączona';
 $string['generalfeedback'] = 'Ogólna informacja zwrotna';
 $string['generalfeedback_help'] = '# Ogólna opinia do pytania
-
 Ogólna opinia do pytania to pewien tekst wyświetlany dla uczestnika po próbie odpowiedzi na pytanie. W odróżnieniu od opinii, która zależy od typu pytania i udzielonej przez uczestnika odpowiedzi, ten sam tekst opinii ogólnej będzie wyświtlany dla wszystkich uczestników.
-
 Moment wyświetlenia opinii ogólnej dla uczestników można kontrolować za pomocą pól wyboru "Uczestnicy mogą przejrzeć:" w formularzu edycji kwizu.
-
 Opinii ogólnej można użyć do przekazania uczestnikom informacji o tym, jaką wiedzę sprawdza pytanie, lub udostępnić łącze do dalszych informacji, jeśli nie zrozumieli pytań.';
 $string['grade'] = 'Ocena';
 $string['gradeall'] = 'Wszystkie oceny';
@@ -326,29 +304,19 @@ $string['gradeboundary'] = 'Granica oceny';
 $string['gradeessays'] = 'Ocena pytania \'Dłuższa odpowiedź\'';
 $string['gradehighest'] = 'Najwyższa ocena';
 $string['grademethod'] = 'Metoda oceniania';
-$string['grademethod_help'] = '<P ALIGN=CENTER><B>Metoda oceniania</B></P>
+$string['grademethod_help'] = 'Jeżeli dozwolone są wielokrotne próby rozwiązania quizu, to istnieją różne sposoby wykorzystania ocen za poszczególne próby do obliczenia ostatecznej oceny za rozwiązanie quizu.
+**Ocena najwyższa**
+Oceną ostateczną jest najwyższa (najlepsza) ocena spośród wszystkich ocen za poszczególne próby.
 
-<P>Jeżeli dozwolone są wielokrotne próby rozwiązania quizu, to istnieją różne sposoby wykorzystania ocen za poszczególne próby do obliczenia ostatecznej oceny za rozwiązanie quizu.
+**Ocena średnia**
+Oceną ostateczną jest średnia ocen za wszystkie próby.
 
-<P><B>Ocena najwyższa</B><P>
-<UL>
-<P>Oceną ostateczną jest najwyższa (najlepsza) ocena spośród wszystkich ocen za poszczególne próby.
-</UL>
+**Ocena pierwsza**
+Oceną ostateczną jest ocena za pierwszą próbę rozwiązania (inne próby są zignorowane).
 
-<P><B>Ocena średnia</B><P>
-<UL>
-<P>Oceną ostateczną jest średnia ocen za wszystkie próby.
-</UL>
-
-<P><B>Ocena pierwsza</B><P>
-<UL>
-<P>Oceną ostateczną jest ocena za pierwszą próbę rozwiązania (inne próby są zignorowane).
-</UL>
-
-<P><B>Ocena ostatnia</B><P>
-<UL>
-<P>Oceną ostateczną jest ocena przyznana za ostatnią próbę rozwiązania.
-</UL>';
+**Ocena ostatnia**
+Oceną ostateczną jest ocena przyznana za ostatnią próbę rozwiązania.
+';
 $string['gradesdeleted'] = 'Oceny quizu usunięte';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}';
 $string['gradingdetails'] = 'Ocena dla tego zadania: {$a->raw}/{$a->max}.';
@@ -363,87 +331,47 @@ $string['history'] = 'Historia odpowiedzi';
 $string['howquestionsbehave_desc'] = 'Domyślne ustawienia dla zachowań pytań w quizie.';
 $string['imagedisplay'] = 'Obrazek do wyświetlenia';
 $string['import'] = 'Import';
-$string['import_help'] = '<P ALIGN=CENTER>**Importowanie nowych pytań**</P> 
-Ta funkcja pozwala Ci zaimportować pytania z zewnętrznego pliku tekstowego, przesłanego na serwer za pomocą formularza. 
-Import obsługuje kilka formatów. 
+$string['import_help'] = 'Ta funkcja pozwala Ci zaimportować pytania z zewnętrznego pliku tekstowego, przesłanego na serwer za pomocą formularza.
+Import obsługuje kilka formatów.
 **Format GIFT**
-
 Format GIFT jest najbardziej wszechstronnym formatem. Został zaprojektowany jako prosta metoda dla nauczycieli tworzacych pytania jako plik tekstowy. GIFT obsługuje pytania Wielokrotnego wyboru, Prawda-Fałsz, Krótkie odpowiedzi, Dopasuj odpowiedź, Numeryczne jak i zadania typu "wstaw brakujące słowo".
-
-Kilka typów pytań może być użyytych w jednym pliku tekstowym. Ponadto format ten zezwala na umieszczanie komentarzy, nazw pytań, informacji zwrotnych i ważenie ocen. 
-
+Kilka typów pytań może być użyytych w jednym pliku tekstowym. Ponadto format ten zezwala na umieszczanie komentarzy, nazw pytań, informacji zwrotnych i ważenie ocen.
 Oto kilka przykładów:
-
-<pre>CzasNaE-Biznes to?{~codzienna gazeta ~książka =serwis www i e-zin}
-
+CzasNaE-Biznes to?{~codzienna gazeta ~książka =serwis www i e-zin}
 CzasNaE-Biznes to {~codzienna gazeta ~książka =serwis www} o marketingu i biznesie.
-
 CzasNaE-Biznes to codzienna gazeta.{FALSE}
-
 CzasNaE-Biznes to?{=serwis www =e-zin}
-
 Kiedy powstał CzasNaE-Biznes?{#2000}
-</pre><p align=right>
-
-[Więcej o formacie GIFT][1]</p> 
 
 **Format Aiken**
-
 Format Akien to bardzo prosty sposób tworzenia pytań wielokrotnego wyboru używając łatwego dla człowieka formatu. Oto przykład:
-
-<pre>Jaka jest poprawna odpowiedĽ na to pytanie?
+Jaka jest poprawna odpowiedĽ na to pytanie?
 A. Czy to ta odpowiedĽ?
 B. A może ta?
 C. A może jednak ta?
 D. Czy jednak może ta?
 ANSWER: D
-</pre><p align=right>
-
-[Więcej o formacie "Aiken"][2]</p> 
 
 **Brakujące słowo**
-
-Format ten obsługuje jedynie pytania wielokrotnego wyboru. Kaza odpowiedź jest oddzielona tylką (~). Poprawna odpowiedź jest poprzedzona znakiem równości (=). Oto przykład: 
-> Bedąc jeszcze niemowlęciami, gdy tylko rozpoczniemy poznawać własne ciało, stajemy się studentami {=anatomii i fizjologii ~prawa ~psychologii}. <p align=right>[Więcej o formacie "Brakujące słowo"][3]
-
+Format ten obsługuje jedynie pytania wielokrotnego wyboru. Kaza odpowiedź jest oddzielona tylką (~). Poprawna odpowiedź jest poprzedzona znakiem równości (=). Oto przykład:
+> Bedąc jeszcze niemowlęciami, gdy tylko rozpoczniemy poznawać własne ciało, stajemy się studentami {=anatomii i fizjologii ~prawa ~psychologii}.
 **AON**
-
 Jest to inna wersja formatu "Brakujące słowo". W AON po zaimportowaniu pytań, wszystkie pytania typu krótkie odpowiedzi są konwertowane po 4 na raz w pytania typu dopasuj odpowiedź.
-
-Dodatkowo odpowiedzi pytań wielokrotnego wyboru są losowo wymieszane. 
-Format ten jest nazwany na czejść organizacji, która wspierała stworzenie wielu cech quizu.</UL> 
-
+Dodatkowo odpowiedzi pytań wielokrotnego wyboru są losowo wymieszane.
+Format ten jest nazwany na czejść organizacji, która wspierała stworzenie wielu cech quizu.
 **Blackboard**
-
-Ten moduł potrafi importować pytania zapisane w formacie eksportowym Blackboard. Opiera się on o funkcje XML.<p align=right>
-
-[Więcej o formacie "Blackboard"][4]</p> 
+Ten moduł potrafi importować pytania zapisane w formacie eksportowym Blackboard. Opiera się on o funkcje XML.
 
 ** CTM ("Course Test Manager")**
-
-Moduł ten pozwala importować pytania stworzone przy pomocy programu Course Test Manager. Pliki CTM są zapisane w formacie Microsoft Access, więc sposób importowanie zależny jest od tego, czy Moodle działa na Windows czy na Unixie. 
-
-W przypadku Windows możesz po prostu zaimportować plik z bazą danych pytań tak, jak każdy inny plik. 
-
+Moduł ten pozwala importować pytania stworzone przy pomocy programu Course Test Manager. Pliki CTM są zapisane w formacie Microsoft Access, więc sposób importowanie zależny jest od tego, czy Moodle działa na Windows czy na Unixie.
+W przypadku Windows możesz po prostu zaimportować plik z bazą danych pytań tak, jak każdy inny plik.
 W przypadku Linuxa musisz włączyć maszynę windows w tej samej sieci z zainstalowaną bazą CTM oraz programeme ODBC Socket Server, który prześle dane w formacie XML do Moodle.
-
-Przeczytaj plik pomocy zanim zaczniesz importować w tym formacie.<p align=right>
-
-[Więcej o formacie "CTM"][5]</p> 
+Przeczytaj plik pomocy zanim zaczniesz importować w tym formacie.
 
 **Własny format**
-
-Jeśli masz swój własny format, możesz go uzywać, jeśli odpowiednio zmodyfikujesz mod/quiz/format/custom.php 
-Liczba niezbędnego nowego kodu jest dosyć niewielka - tylko tyle aby przetworzyć tekst na pytanie. <p align=right>[Więcej o Własnym formacie][6]</UL> 
-
-Tworzymy już nowe formaty: WebCT, IMS QTI i cokolwiek jeszcze zapragną członkowie społeczności Moodle!
-
- [1]: help.php?file=formatgift.html&module=quiz
- [2]: help.php?file=formataiken.html&module=quiz
- [3]: help.php?file=formatmissingword.html&module=quiz
- [4]: help.php?file=formatblackboard.html&module=quiz
- [5]: help.php?file=formatctm.html&module=quiz
- [6]: help.php?file=formatcustom.html&module=quiz';
+Jeśli masz swój własny format, możesz go uzywać, jeśli odpowiednio zmodyfikujesz mod/quiz/format/custom.php
+Liczba niezbędnego nowego kodu jest dosyć niewielka - tylko tyle aby przetworzyć tekst na pytanie.
+Tworzymy już nowe formaty: WebCT, IMS QTI i cokolwiek jeszcze zapragną członkowie społeczności Moodle!';
 $string['importcategory'] = 'importuj kategorię';
 $string['importerror'] = 'Błąd podczas importu pliku';
 $string['importfilearea'] = 'Importuj z pliku znajdującego się w plikach kursu';
@@ -500,7 +428,7 @@ $string['navnojswarning'] = 'Uwaga: te linki nie zapiszą twoich odpowiedzi. Uż
 $string['neverallononepage'] = 'Nigdy, wszystkie pytania na jednej stronie';
 $string['newattemptfail'] = 'Błąd: Nie można uruchomić na nowo quizu.';
 $string['newpage'] = 'Nowa strona';
-$string['newpage_help'] = '<p>Dla dłuższych quizów można podzielić quiz na strony. Przy wstawianiu pytania podział na strony będzie tworzony automatycznie zgodnie z tym ustawieniem. Można później ręcznie zmieniać granice strony.</p>';
+$string['newpage_help'] = 'Dla dłuższych quizów można podzielić quiz na strony. Przy wstawianiu pytania podział na strony będzie tworzony automatycznie zgodnie z tym ustawieniem. Można później ręcznie zmieniać granice strony.';
 $string['newpageevery'] = 'Automatycznie rozpocznij nową stronę';
 $string['noanswers'] = 'Nie wybrano odpowiedzi!';
 $string['noattempts'] = 'Nie ma podejść do quizu';
@@ -557,20 +485,15 @@ $string['outofpercent'] = '{$a->grade} przekracza maksimum okreslone na  {$a->ma
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'Całościowa informacja zwrotna';
 $string['overallfeedback_help'] = '# Opinia ogólna
-
 Opinia ogólna to tekst wyświetlany dla uczestnika po zakończeniu rozwiązywania kwizu. Wyświtlany tekst zależy od oceny uzyskanej przez uczestnika.
-
 Na przykład w razie wprowadzenia:
-
-Granica oceny: 100%  
-Opinia: Dobra robota  
-Granica oceny: 40%  
-Opinia: Jeszcze raz zapoznaj się z pracami z tego tygodnia  
-...  
+Granica oceny: 100%
+Opinia: Dobra robota
+Granica oceny: 40%
+Opinia: Jeszcze raz zapoznaj się z pracami z tego tygodnia
+...
 Granica oceny: 0%
-
 Następnie uczestnicy, którzy uzyskali wynik w przedziale od 100% do 40%, zobaczą komunikat "Dobra robota", a uczestnicy, którzy uzyskają wynik w przedziale od 39,99% do 0% zobaczą inny komunikat. Czyli granice oceny definiują zakresy ocen, zaś każdy ciąg opinii jest wyświetlany dla ocen w odpowiednim zakresie.
-
 Granice ocen można określić jako wartości procentowe, na przykład "31,41%", albo jako liczby, na przykład "7". Jeśli dany kwiz ma skalę ocen do 10, granica oceny równa 7 oznacza wynik 7/10 lub lepszy.';
 $string['overdue'] = 'Zaległy';
 $string['override'] = 'Zastąp';
@@ -583,9 +506,8 @@ $string['parsingquestions'] = 'Przetwarzanie pytań z importowanego pliku.';
 $string['partiallycorrect'] = 'Częściowo poprawnie';
 $string['penalty'] = 'Kara';
 $string['penaltyscheme'] = 'Zastosuj kary';
-$string['penaltyscheme_help'] = '<p> Jeżeli quiz jest uruchomiaony w odpowiednim trybie student może spróbować ponownie rozwiązać quiz po tym jak źle odpowie. W tym przypadku można chciać nakładać kary dla złych odpowiedzi odejmowane od końcowej oceny za pytanie. Ilość sankcji karnej jest wybierana indywidualnie dla każdego pytania podczas tworzenia albo edycji pytania. </p>
-
-<p>Ustawienie nie ma żadnego wpływu jeżeli quiz nie jest uruchomiony w odpowiednim trybie.</p>';
+$string['penaltyscheme_help'] = 'Jeżeli quiz jest uruchomiaony w odpowiednim trybie student może spróbować ponownie rozwiązać quiz po tym jak źle odpowie. W tym przypadku można chciać nakładać kary dla złych odpowiedzi odejmowane od końcowej oceny za pytanie. Ilość sankcji karnej jest wybierana indywidualnie dla każdego pytania podczas tworzenia albo edycji pytania.
+Ustawienie nie ma żadnego wpływu jeżeli quiz nie jest uruchomiony w odpowiednim trybie.';
 $string['percentcorrect'] = 'Procent poprawnych odpowiedzi';
 $string['pleaseclose'] = 'Żądanie zostało wykonane. Można już zamknąć okno.';
 $string['pluginadministration'] = 'Administracja quizu';
@@ -699,30 +621,22 @@ $string['reportresponses'] = 'Szczegółowe odpowiedzi';
 $string['reports'] = 'Raporty';
 $string['reportsimplestat'] = 'Proste statystyki';
 $string['requirepassword'] = 'Wymagane hasło';
-$string['requirepassword_help'] = '<p>To pole jest opcjonalne</p>
-
-<p>Jeśli wpiszesz tutaj hasło, studenci bedą musieli je podać aby
-wypełnić quiz.</p>';
+$string['requirepassword_help'] = 'To pole jest opcjonalne
+Jeśli wpiszesz tutaj hasło, studenci bedą musieli je podać aby
+wypełnić quiz.';
 $string['requiresubnet'] = 'Potrzebny adres sieci';
-$string['requiresubnet_help'] = '<p align=center><b>Wymagaj adresu w sieci</b></p>
-
-<p>To pole jest opcjonalne.</p>
-
-<p>Możesz ograniczyć dostęp do quizu do konkretnych studentów
-łączących się za pomocą sieci LAN lub Internetu definiując listę oddzielonych przecinkami pełnych lub częściowych adresów IP.</p>
-
-<p>Przykład:  <b>192.168. , 231.54.211.0/20, 231.3.56.211</b></p>
-
-<p>Są dostępne trzy sposoby zapisu adresu IP (nie możesz używać
+$string['requiresubnet_help'] = 'To pole jest opcjonalne.
+Możesz ograniczyć dostęp do quizu do konkretnych studentów
+łączących się za pomocą sieci LAN lub Internetu definiując listę oddzielonych przecinkami pełnych lub częściowych adresów IP.
+Przykład: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Są dostępne trzy sposoby zapisu adresu IP (nie możesz używać
 nazwy hostów czy domeny, tylko adresy IP):
-<ol>
-<li>Pełen adres IP, taki jak <b>192.168.10.1</b> który jest przypisany do jednego komputera lub do serwera proxy.</li>
-<li>Częściowy adres, taki jak <b>192.168</b>, który wpuści wszystkie adresy zaczynające się od tych cyfr.</li>
-<li>Zapis CIDR, taki jak <b>231.54.211.0/20</b>, który zezwala Ci na zdefiniowanie konkretnych podsieci.</li>
-</ol>
-</p>
+1. Pełen adres IP, taki jak **192.168.10.1** który jest przypisany do jednego komputera lub do serwera proxy.
+2. Częściowy adres, taki jak **192.168**, który wpuści wszystkie adresy zaczynające się od tych cyfr.
+3. Zapis CIDR, taki jak **231.54.211.0/20**, który zezwala Ci na zdefiniowanie konkretnych podsieci.
 
-<p>Spacje są ignorowane.</p>';
+
+Spacje są ignorowane.';
 $string['response'] = 'Odpowiedź';
 $string['responses'] = 'Udzielone odpowiedzi';
 $string['results'] = 'Wyniki';
@@ -786,13 +700,9 @@ $string['shuffledrandomly'] = 'Ułóż losowo';
 $string['shufflequestions'] = 'Zmień kolejność pytań';
 $string['shufflewithin'] = 'Zmień kolejność wewnątrz pytania';
 $string['shufflewithin_help'] = '# Mieszaj w ramach pytań
-
 W przypadku włączenia tej opcji części tworzące poszczególne pytania zostaną losowo wymieszane przy każdej próbie rozwiązania kwizu przez uczestnika, zakładając że opcja ta jest również włączona w ustawieniach pytania.
-
 Celem jest pewne utrudnienie uczestnikom ściągania od siebie.
-
 Dotyczy to tylko pytań mających wiele części, takich jak pytania wielokrotnego wyboru lub zgodności. W przypadku pytań wielokrotnego wyboru kolejność odpowiedzi jest mieszana tylko, gdy ta opcja jest ustawiona na "Tak". W przypadku pytań zgodności odpowiedzi są zawsze mieszane, a to ustawienie kontroluje, czy dodatkowo zostanie wymieszana kolejność par pytanie-odpowiedź.
-
 Ta opcja nie jest powiązana z użyciem pytań losowych.';
 $string['singleanswer'] = 'Wybierz odpowiedź';
 $string['sortage'] = 'Sortuj według wieku';
@@ -820,20 +730,16 @@ $string['timecompleted'] = 'Zakończono';
 $string['timedelay'] = 'Nie możesz rozpocząć quizu, gdyż nie upłynął ustalony czas pomiędzy kolejnymi quizami';
 $string['timeleft'] = 'Pozostały czas';
 $string['timelimit'] = 'Limit czasu';
-$string['timelimit_help'] = '<p align="center"><strong>Ograniczenie czasowe</strong></p>
+$string['timelimit_help'] = '**Ograniczenie czasowe**
+Domyślnie quizy nie mają ograniczenia czasowego. Student więc ma tyle czasu ile mu potrzeba na wypełnienie quizu.
+Jeśli ustalisz ograniczenie czasowe, Moodle robi kilka rzeczy aby
+zapewnić jego przestrzeganie:
 
-<p>Domyślnie quizy nie mają ograniczenia czasowego. Student więc ma tyle czasu ile mu potrzeba na wypełnienie quizu.
-
-<p>Jeśli ustalisz ograniczenie czasowe, Moodle robi kilka rzeczy aby
-zapewnić jego przestrzeganie:</p>
-
-<ul>
-<li>Wymagana jest obsługa JS w przeglądarce - dzięki temu działa stoper.</li>
-<li>Na stronie pokazuje się stoper odliczający czas.</li>
-<li>Gdy czas dobiegnie końca, quiz jest automatycznie wysyłany z takimi odpowiedziami,
-jakich udzielił do tej pory student.</li>
-<li>Jeśli studentowi udało się oszukać i poświęcił na quiz więcej niż 60 sekund ponad limit, otrzyma ocenę równą 0.</li>
-</ul>';
+* Wymagana jest obsługa JS w przeglądarce - dzięki temu działa stoper.
+* Na stronie pokazuje się stoper odliczający czas.
+* Gdy czas dobiegnie końca, quiz jest automatycznie wysyłany z takimi odpowiedziami,
+jakich udzielił do tej pory student.
+* Jeśli studentowi udało się oszukać i poświęcił na quiz więcej niż 60 sekund ponad limit, otrzyma ocenę równą 0.';
 $string['timelimitexeeded'] = 'Upłynął limit czasu!';
 $string['timelimitmin'] = 'Limit czasu (w minutach)';
 $string['timelimitsec'] = 'Limit czasu (w sekundach)';

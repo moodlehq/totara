@@ -46,7 +46,7 @@ $string['editfeeds'] = 'ערוך, הרשם כמנוי או בטל רישום ל�
 $string['editnewsfeeds'] = 'ערוך הזנת חדשות';
 $string['editrssblock'] = 'ערוך את משבצת כותרות ה-RSS';
 $string['enableautodiscovery'] = 'אפשר גילוי-אוטומטי של הזנות';
-$string['enableautodiscovery_help'] = 'אם מאופשר, ההזנות על עמודי האתר ימצאו באופן אוטומטי. למשל, אם הכתובת  http://docs.moodle.org
+$string['enableautodiscovery_help'] = 'אם מאופשר, ההזנות על עמודי האתר ימצאו באופן אוטומטי. למשל, אם הכתובת http://docs.moodle.org
 מוכנסת, הכתובת הזו: http://docs.moodle.org/en/index.php?title=Special:RecentChanges&feed=rss
 תמצא.';
 $string['errorloadingfeed'] = 'שגיאה בעת טעינת הזנת RSS זו ({$a})';

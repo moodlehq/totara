@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'הדפסת ספר';
+$string['print:print'] = 'הדפסת ספר';
 $string['printbook'] = 'הדפסת הספר';
 $string['printchapter'] = 'הדפסת פרק זה';
 $string['printdate'] = 'תאריך';
 $string['printedby'] = 'הודפס על-ידי';
-$string['print:print'] = 'הדפסת ספר';

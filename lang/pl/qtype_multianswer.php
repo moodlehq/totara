@@ -41,5 +41,5 @@ $string['questiondeleted'] = 'Pytanie usunięte';
 $string['questionsaveasedited'] = 'Pytanie zostanie zapisane jako edytowane';
 $string['questiontypechanged'] = 'Typ pytania został zmieniony';
 $string['subqresponse'] = 'część {$a->i}: {$a->response}';
-$string['warningquestionmodified'] = ' <b>UWAGA</ b>';
+$string['warningquestionmodified'] = '<b>UWAGA</ b>';
 $string['youshouldnot'] = '<b> NIE POWINIENEŚ </ b>';

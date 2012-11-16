@@ -783,7 +783,7 @@ $string['pathdvips'] = 'Pfad zu <i>dvips</i>';
 $string['pathlatex'] = 'Pfad zu <i>latex</i>';
 $string['pathtoclam'] = 'Pfad zu ClamAV';
 $string['pathtodot'] = 'Pfad zu <i>dot</i>';
-$string['pathtodot_help'] = 'Pfad zu dot, üblicherweise /usr/bin/dot. Um Grafiken aus DOT-Dateien generieren zu können, muss das Programm dot installiert und hier darauf verwiesen sein. Dies wird aktuell ausschließlich für das Profiling in Moodle gebraucht.  (Entwicklung > Profiling)';
+$string['pathtodot_help'] = 'Pfad zu dot, üblicherweise /usr/bin/dot. Um Grafiken aus DOT-Dateien generieren zu können, muss das Programm dot installiert und hier darauf verwiesen sein. Dies wird aktuell ausschließlich für das Profiling in Moodle gebraucht. (Entwicklung > Profiling)';
 $string['pathtodu'] = 'Pfad zu <i>du</i>';
 $string['pathtopgdump'] = 'Pfad zu <i>pg_dump</i>';
 $string['pathtopgdumpdesc'] = 'Sie benötigen diese Einstellung nur, wenn mehr als ein pg_dump auf dem System vorhanden ist (z.B. wenn mehr als eine Version von PostgreSQL installiert ist).';
@@ -854,9 +854,8 @@ $string['profileshortnamenotunique'] = 'Dieser Kurzname wird bereits benutzt';
 $string['profilesignup'] = 'Auf der Anmeldeseite zeigen?';
 $string['profilespecificsettings'] = 'Weitere Einstellungen';
 $string['profilevisible'] = 'Für wen ist dieses Feld sichtbar?';
-$string['profilevisible_help'] = '<h2>Sichtbarkeit von Profilfeldern</h2>
-
-<p>Jedem Einstellungsfeld kann eine von drei Sichtbarkeitseinstellungen gegeben werden: unsichtbar, alle und Nutzer/in. Die Einstellung "unsichtbar" wird normalerweise vom Administrator gesetzt, der private Aufzeichnungen über die Nutzer/innen notieren möchte. Die Einstellung "Nutzer/in" wird für ein Feld ausgewählt, das persönliche Daten enthält. Für alle anderen Informationen kann die Einstellung "alle" benutzt werden.</p>';
+$string['profilevisible_help'] = '## Sichtbarkeit von Profilfeldern
+Jedem Einstellungsfeld kann eine von drei Sichtbarkeitseinstellungen gegeben werden: unsichtbar, alle und Nutzer/in. Die Einstellung "unsichtbar" wird normalerweise vom Administrator gesetzt, der private Aufzeichnungen über die Nutzer/innen notieren möchte. Die Einstellung "Nutzer/in" wird für ein Feld ausgewählt, das persönliche Daten enthält. Für alle anderen Informationen kann die Einstellung "alle" benutzt werden.';
 $string['profilevisibleall'] = 'Sichtbar für alle';
 $string['profilevisiblenone'] = 'Nicht sichtbar';
 $string['profilevisibleprivate'] = 'Sichtbar für Teilnehmer/innen';
@@ -979,9 +978,9 @@ $string['sitemaintenancewarning'] = 'Die Website ist momentan im Wartungsmodus. 
 $string['sitemaintenancewarning2'] = 'Die Website ist momentan im Wartungsmodus. Die Anmeldung ist ausschließlich für Administrator/innen möglich. <br /><a href="{$a}"> Wartungsmodus beenden </a>.';
 $string['sitepolicies'] = 'Website-Rechte';
 $string['sitepolicy'] = 'URL zur Zustimmungserklärung';
-$string['sitepolicy_help'] = 'Wenn Sie eine Zustimmungserklärung verwenden, die alle Nutzer/innen vor der Registrierung akzeptieren müssen, können Sie hier die URL für diese Seite festlegen. Dies kann z.B. das Verzeichnis der Startseite sein. (Beispiel:  http://domain.de/file.php/1/zustimmung.html)';
+$string['sitepolicy_help'] = 'Wenn Sie eine Zustimmungserklärung verwenden, die alle Nutzer/innen vor der Registrierung akzeptieren müssen, können Sie hier die URL für diese Seite festlegen. Dies kann z.B. das Verzeichnis der Startseite sein. (Beispiel: http://domain.de/file.php/1/zustimmung.html)';
 $string['sitepolicyguest'] = 'URL zur Zustimmungserklärung für Gäste';
-$string['sitepolicyguest_help'] = 'Wenn Sie eine Zustimmungserklärung verwenden, die alle Gäste vor der Nutzung Ihrer Website akzeptieren müssen, können Sie hier die URL für diese Seite festlegen. Dies kann z.B. das Verzeichnis der Startseite sein. (Beispiel:  http://domain.de/file.php/1/zustimmung_gast.html)';
+$string['sitepolicyguest_help'] = 'Wenn Sie eine Zustimmungserklärung verwenden, die alle Gäste vor der Nutzung Ihrer Website akzeptieren müssen, können Sie hier die URL für diese Seite festlegen. Dies kann z.B. das Verzeichnis der Startseite sein. (Beispiel: http://domain.de/file.php/1/zustimmung_gast.html)';
 $string['sitesectionhelp'] = 'Falls Sie dies wählen, wird ein Themenbereich auf der Startseite angezeigt.';
 $string['siteshortname'] = 'Seite Kurzname';
 $string['slasharguments'] = 'Slash-Parameter benutzen';

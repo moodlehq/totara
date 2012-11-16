@@ -57,87 +57,59 @@ $string['addremoveprogram'] = 'Programme hinzufügen/löschen';
 $string['addrpl'] = 'RPL hinzufügen';
 $string['addtemplate'] = 'Schablone hinzufügen';
 $string['advancedsettingscompetencypermissions_help'] = '# Kompetenzerlaubnisse
-
 **Kompetenzerlaubnisse** ermöglichen Ihnen die Festlegung der Aktionsarten, die vom Lernenden und Manager für Kompetenzen im Lernplan durchgeführt werden können.
-
 Es sind vier Erlaubnisebenen verfügbar:
-
-*   **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen
-*   **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann
-*   **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen
-*   **Annehmen**ermöglicht es dem Nutzer, eine beantragte Aktion anzunehmen.';
+* **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen
+* **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann
+* **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen
+* **Annehmen**ermöglicht es dem Nutzer, eine beantragte Aktion anzunehmen.';
 $string['advancedsettingscompetencysettings_help'] = '# Kompetenzeinstellungen
-
 **Kompetenzeinstellungen** ermöglichen es Ihnen, festzulegen, welche Einstellungen für Kompetenzen im Plan verfügbar sein werden.
-
 Wählen Sie die Einstellung **‘Fälligkeitsdaten’**. Wird **‘Fälligkeitsdaten’** auf ‘Keine’ gesetzt, erscheint die Spalte nicht im Lernplan.
-
 Wählen Sie die Einstellung **‘Prioritäten’ **. Bei der Verwendung von **‘Prioritäten’** benötigen Sie eine **‘Prioritäts-Skala’**. Klicken Sie zur Auswahl der Prioritäts-Skala auf das Dropdown-Menü.
-
 ** Anmerkung: **Die Option, eine solche Skala zu erstellen, befindet sich unter Lernpläne>Prioritäts-Skalen.
 **Automatische Zuordnung**ermöglicht es Ihnen, Kompetenzen in einem Lernplan automatisch anzuzeigen, die zuvor einer Nutzerposition oder -organisation zugeordnet wurden.';
 $string['advancedsettingscoursepermissions_help'] = '# Kurserlaubnisse
-
 **Kurserlaubnisse** ermöglichen Ihnen die Festlegung, welche Kurseinstellungen verfügbar sein sollen und welche Aktionsarten vom Lernenden und Manager im Lernplan durchgeführt werden können.
-
 Es sind vier Erlaubnisebenen verfügbar:
-
-*   **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen
-*   **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann
-*   **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen
-*   **Annehmen**ermöglicht es dem Nutzer, eine Aktion zu anzunehmen.';
+* **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen
+* **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann
+* **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen
+* **Annehmen**ermöglicht es dem Nutzer, eine Aktion zu anzunehmen.';
 $string['advancedsettingscoursesettings_help'] = '# Kurseinstellungen
-
 **Kurseinstellungen** ermöglichen Ihnen die Festlegung der Einstellungen für geplante Kurse.
-
 Wählen Sie die Einstellung **‘Fälligkeitsdaten’**. Wird **‘Fälligkeitsdaten’** auf ‘Keine’ gesetzt, erscheint die Spalte nicht im Lernplan.
-
 Wählen Sie die Einstellung **‘Prioritäten’**. Wird **‘Prioritäten’** auf ‘Keine’ gesetzt, erscheint die Spalte nicht im Lernplan.
-
 Bei der Verwendung von **‘Prioritäten’** benötigen Sie eine **‘Prioritäts-Skala’**. Klicken Sie zur Auswahl der Prioritäts-Skala auf das Dropdown-Menü.
-
 **Anmerkung: **Die Option, eine solche Skala zu erstellen, befindet sich unter Lernpläne>Prioritäts-Skalen.';
 $string['advancedsettingsobjectivepermissions_help'] = '# Zielerlaubnisse
-
 **Zielerlaubnisse** ermöglichen Ihnen bei der Zielplanung die Festlegung der Aktionen, die vom Lernenden und Manager im Lernplan durchgeführt werden können.
-
 Es sind vier Erlaubnisebenen verfügbar:
-
-*   **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen
-*   **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann
-*   **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen
-*   **Annehmen**ermöglicht es dem Nutzer, die Aktion anzunehmen.';
+* **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen
+* **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann
+* **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen
+* **Annehmen**ermöglicht es dem Nutzer, die Aktion anzunehmen.';
 $string['advancedsettingsobjectivesettings_help'] = '# Zieleinstellungen
-
 **Zieleinstellungen** ermöglichen Ihnen die Festlegung der verfügbaren Einstellungen für geplante Ziele.
-
 Wählen Sie die Einstellung **‘Fälligkeitsdaten’**. Wird **‘Fälligkeitsdaten’** auf ‘Keine’ gesetzt, erscheint die Spalte nicht im Lernplan.
-
 Wählen Sie die Einstellung **‘Prioritäten’**. Wird **‘Prioritäten’** auf ‘Keine’ gesetzt, erscheint die Spalte nicht im Lernplan.
-
 Bei der Verwendung von **‘Prioritäten’** benötigen Sie eine **‘Prioritäts-Skala’**. Klicken Sie zur Auswahl der Prioritäts-Skala auf das Dropdown-Menü.
-
 **Anmerkung: **Die Option, eine solche Skala zu erstellen, befindet sich unter Lernpläne>Prioritäts-Skalen.
-
 **Ziel-Skala** wird zur Messung des Lernfortschritts’ hin zu den Lernzielen verwendet. Sie erstellen Ziel-Skalen durch die Verwendung der Menü-Option unter Siteverwaltung>Lernpläne.';
 $string['advancedsettingsplanpermissions_help'] = '# Planerlaubnisse
-
 Die erweiterten Arbeitsablauf-Einstellungen ermöglichen Ihnen die Festlegung der Aktionsarten, die von Lernenden und Managern durchgeführt werden können. Für jede Aktionsart stehen vier Erlaubnisebenen zur Verfügung:
-
-*   **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen.
-*   **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann.
-*   **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen.
-*   **Annehmen**ermöglicht es dem Nutzer, eine Aktion zu anzunehmen.';
+* **Erlauben** ermöglicht es dem Nutzer, die Aktion durchzuführen.
+* **Ablehnen** verhindert, dass der Nutzer die Aktion durchführen kann.
+* **Anfragen** ermöglicht es dem Nutzer, eine Anfrage für die Durchführung dieser Aktion zu stellen.
+* **Annehmen**ermöglicht es dem Nutzer, eine Aktion zu anzunehmen.';
 $string['advancedsettingsplansettings_help'] = '# Planeinstellungen
-
 Mit **Planeinstellungen **können Sie allgemeine Einstellungen für den Plan definieren.
-
 Der Lernplan kann auf Grundlage der folgenden Auswahlmöglichkeiten als abgeschlossen markiert werden.
-*   **Manuell, durch einen Nutzer mit der Befugnis für \'abgeschlossen\'**
+* **Manuell, durch einen Nutzer mit der Befugnis für \'abgeschlossen\'**
 Der Lernplan kann durch einen Lernenden oder einen Manager, der Erlauben in der Zeile Genehmigen in den Planbefugnissen gewählt hat, als abgeschlossen markiert werden.
-*   **Automatisch, wenn alle Elemente abgeschlossen wurden**
+* **Automatisch, wenn alle Elemente abgeschlossen wurden**
 Der Lernplan wird als abgeschlossen markiert, wenn alle Kurse, Kompetenzen, Ziele oder Programme, die in den Lernplan eingeschlossen sind, als abgeschlossen markiert wurden.
-*   **Automatisch, wenn das Abschlussdatum für den Plan erreicht wurde**
+* **Automatisch, wenn das Abschlussdatum für den Plan erreicht wurde**
 Der Lernplan wird als abgeschlossen markiert, wenn das Abschlussdatum, das für den Lernplan gespeichert wurde, erreicht wurde.';
 $string['advancedworkflow'] = 'Erweiterte Workflow Einstellungen';
 $string['after'] = 'Nach';
@@ -217,7 +189,6 @@ $string['competency_instructions_manager'] = 'Alle Kompetenzen, die von dem Lern
 $string['competency_instructions_request'] = 'Durch das Anklicken von "Angeforderte Kompetenzen aktualisieren" können Sie neue Kompetenzen zu diesem Lernplan hinzufügen.';
 $string['competencycompleted'] = 'Kompetenz erreicht';
 $string['competencyevidencestatus_help'] = '# Status
-
 Dieses Feld erfasst den Nutzerstatus für die zugeordnete Kompetenz. Die im Pulldown-Menü erscheinenden Optionen hängen von der Kompetenz-Skala ab, die der gewählten Kompetenz zugeordnet wurde. Die Kompetenz muss demnach gewählt werden, bevor dieses Feld geändert werden kann. Eine Werte-Skala muss erstellt werden, um einen Kompetenznachweis hinzuzufügen oder zu aktualisieren.';
 $string['competencyname'] = 'Kompetenzname';
 $string['competencypermissions'] = 'Kompetenzrechte';
@@ -539,46 +510,34 @@ $string['objectives'] = 'Ziele';
 $string['objectivescale'] = 'Zielskala';
 $string['objectivescaleadded'] = 'Zielskala "{$a}" hinzugefügt';
 $string['objectivescaleassign_help'] = '# Ziel-Skala
-
 Eine Ziel-Skala legt die Kriterien fest, nach denen ein Ziel gemessen werden kann. Dies ist der Name der Skala, zu der der Wert hinzugefügt wird.';
 $string['objectivescaledefault_help'] = '# Voreingestellter Wert
-
 Der **Voreingestellte Wert** ist der Wert, der einem Ziel im Lernplan automatisch zugeordnet wird, wenn das Ziel zum ersten Mal von einem Lernenden oder Manager hinzugefügt wird.';
 $string['objectivescaledefaultupdated'] = 'Der Vorgabewert der Skala wurde geändert';
 $string['objectivescaleinuse'] = 'Die Skala ist in Benutzung, d.h. Benutzer haben Werte der Skala Zielen zugewiesen. Skalenwerte können nicht erstellt, umsortiert oder gelöscht werden um die Datenintegrität zu erhalten. Sie können die Skalenwerte umbenennen; allerdings wird das potentiell Benutzer verwirren, wenn dies ohne Warnung geschieht.';
 $string['objectivescalename_help'] = '# Name der Ziel-Skala
-
 Der Name einer in einem Lernplan verwendeten Ziel-Skala.';
 $string['objectivescales'] = 'Zielskalen';
 $string['objectivescalesdisabledtemplateinuse'] = 'HINWEIS: Die Zielskala kann nicht gelöscht werden, da sie von Plänen verwendet wird.';
 $string['objectivescaleupdated'] = 'Zielskala "{$a}" geändert';
 $string['objectivescalevalueachieved_help'] = '# Erreicht
-
 Wird **Erreicht** markiert, wird dieser Ziel-Skalenwert verwendet, um anzuzeigen, ob das Ziel vom Lernenden erreicht wurde.
-
 Sie können mehrere Werte als **Erreicht** markieren, wodurch verschiedene Fortschrittsgrade ermöglicht werden.';
 $string['objectivescalevalueadded'] = 'Zielskalenwert "{$a}" hinzugefügt';
 $string['objectivescalevalueid'] = 'Zielkenntnisse';
 $string['objectivescalevalueidnumber'] = 'Skalenwert-ID';
 $string['objectivescalevalueidnumber_help'] = '# Skalenwert-ID-Nummer
-
 Die Skalenwert-ID-Nummer ist eine einmalige Nummer, die für den Skalenwert steht.';
 $string['objectivescalevaluename'] = 'Skalenwert Name';
 $string['objectivescalevaluename_help'] = '# Name des Skalenwerts
-
 Der **Name des Skalenwerts** ist der Name des Ziel-Skalenwertes, den Sie hinzufügen oder ändern.
-
 Ein Skalenwert wird zur Messung der Lernplanziele verwendet. Sie können so viele Skalenwerte wie nötig hinzufügen.';
 $string['objectivescalevaluenumeric'] = 'Zielskala numerischer Wert';
 $string['objectivescalevaluenumeric_help'] = '# Numerischer Wert des Ziel-Skalenwerts
-
 Der **Numerische Wert des Ziel-Skalenwerts** ermöglicht Ihnen die Zuordnung eines numerischen Wertes sowie einer Beschreibung (Name) für den Skalenwert.';
 $string['objectivescalevalues_help'] = '# Skalenwerte
-
 Geben Sie eine Liste an Werten in der Reihenfolge vom höchsten bis zum niedrigsten Wert für die neue Ziel-Skala (ein Wert pro Zeile) ein. Zum Beispiel:
-
-<p class="indent">
-<i></p>';
+*</p>';
 $string['objectivescalevalueupdated'] = 'Zielskalenwert "{$a}" geändert';
 $string['objectivescalex'] = 'Zielskala "{$a}"';
 $string['objectivesettings'] = 'Zieleinstellungen';
@@ -645,7 +604,6 @@ $string['plan_instructions_delete'] = 'Dieser Plan kann durch das Anklicken von 
 $string['plan_instructions_edit'] = 'Lernplantitel, Kurzbeschreibung und Abschlussdatum können durch das Anklicken von "Details ändern" modifiziert werden.';
 $string['plan_instructions_learner'] = 'Im Folgenden sehen Sie eine kurze Zusammenfassung Ihres Lernplans.';
 $string['plan_instructions_manager'] = 'Im Folgenden sehen Sie eine kurze Zusammenfassung des Lernplans Ihres Teams.';
-$string['planapprovalrequested'] = 'Plangenehmigungsantrag von <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Plan "{$a}" wurde genehmigt';
 $string['planautocompleteddate'] = 'Der Plan wurde automatisch abgeschlossen, da das Endedatum erreicht wurde';
 $string['planautocompleteditems'] = 'Der Plan wurde automatisch abgeschlossen, da alle Plan-Elemente abgeschlossen wurde.';
@@ -685,16 +643,13 @@ $string['prioritymode'] = 'Prioritäten';
 $string['priorityscale'] = 'Prioritätenskala';
 $string['priorityscaleadded'] = 'Prioritätenskala "{$a}" wurde hinzugefügt';
 $string['priorityscaleassign_help'] = '# Prioritäts-Skala
-
 **Prioritäts-Skala **ist der Name der Prioritäts-Skala, in der Sie gerade arbeiten.';
 $string['priorityscalecreate'] = 'Neuen Prioritätenskala hinzufügen';
 $string['priorityscaledefault_help'] = '# Voreingestellter Wert
-
 Der **Voreingestellte Wert** ist der Wert, der einem Lernplanposten automatisch zugeordnet wird, wenn die Prioritäts-Skala zum ersten Mal im Lernplan erscheint. Die Priorität kann später vom Lernenden/Manager geändert werden, sobald sie im Lernplan aktiviert wurde.';
 $string['priorityscaledefaultupdated'] = 'Der Vorgabewert der Skala wurde aktualisiert';
 $string['priorityscaleinuse'] = 'Die Skala ist in Benutzung, d.h. Benutzer haben Werte der Skala Zielen zugewiesen. Skalenwerte können nicht erstellt, umsortiert oder gelöscht werden um die Datenintegrität zu erhalten. Sie können die Skalenwertze umbenennen; allerdings wird das potentiell Benutzer verwirren, wenn dies ohne Warnung geschieht.';
 $string['priorityscalename_help'] = '# Name der Prioritäts-Skala
-
 Der Name einer in einem Lernplan verwendeten Prioritäts-Skala.';
 $string['priorityscales'] = 'Prioritätenskalen';
 $string['priorityscalesdisabledtemplateinuse'] = 'HINWEIS: Die Prioritätenskala kann nicht gelöscht werden, da sie von Plänen verwendet wird.';
@@ -702,24 +657,16 @@ $string['priorityscaleupdated'] = 'Prioritätenskala "{$a}" aktualisiert';
 $string['priorityscalevalueadded'] = 'Prioritätenskalenwert "{$a}" aktualisiert';
 $string['priorityscalevalueidnumber'] = 'Skalenwert-ID';
 $string['priorityscalevalueidnumber_help'] = '# Skalenwert-ID-Nummer
-
 Die Skalenwert-ID-Nummer ist eine einmalige Nummer, die für den Skalenwert steht.';
 $string['priorityscalevaluename'] = 'Skalenwert Name';
 $string['priorityscalevaluename_help'] = '# Name des Skalenwerts
-
 Der **Name des Skalenwerts** ist der Name des Wertes, den Sie bei einer bestimmten Prioritäts-Skala hinzufügen oder ändern.
-
 Ein Skalenwert wird zur Festlegung der Priorität eines Lernplanpostens verwendet. Sie können so viele Skalenwerte wie nötig hinzufügen.';
 $string['priorityscalevaluenumeric'] = 'Prioritäetenskalenwert numerischer Wert';
 $string['priorityscalevaluenumeric_help'] = '# Numerischer Wert des Prioritäts-Skalenwertes
-
 Der **Numerische Wert des Prioritäts-Skalenwertes** ermöglicht es Ihnen, diesem Skalenwert neben der Beschreibung (Name) einen numerischen Wert zuzuordnen.';
 $string['priorityscalevalues_help'] = '# Skalenwerte
-
-Geben Sie eine Liste an Werten in der Reihenfolge von der höchsten Priorität bis zur niedrigsten Priorität für die neue Prioritäts-Skala (eine Priorität pro Zeile) ein. Zum Beispiel:
-
-<p class="indent">
-<i></p>';
+Geben Sie eine Liste an Werten in der Reihenfolge von der höchsten Priorität bis zur niedrigsten Priorität für die neue Prioritäts-Skala (eine Priorität pro Zeile) ein. Zum Beispiel';
 $string['priorityscalevalueupdated'] = 'Prioritäetenskalenwert "{$a}" aktualisiert';
 $string['priorityscalex'] = 'Prioritäetenskalenwert "{$a}"';
 $string['priorityvalues'] = 'Prioritätenwerte';
@@ -785,15 +732,11 @@ $string['startdate'] = 'Startdatum';
 $string['status'] = 'Status';
 $string['teammembers'] = 'Team Mitglieder';
 $string['templatecomponentsettings_help'] = '# Komponenteneinstellungen
-
 **Komponenteneinstellungen **ermöglicht es Ihnen, Komponenten im Lernplan anzuzeigen/auszublenden und die Reihenfolge, in der diese erscheinen, festzulegen.
-
 Klicken Sie zum Entfernen einer Komponente von der Lernplanvorlage auf **Ausblenden**.
-
 Verwenden Sie die Aufwärts- und Abwärts-Pfeile zur Änderung der Komponentenreihenfolge.';
 $string['templateenddate'] = 'Planvorlage Enddatum';
 $string['templateenddate_help'] = '# Enddatum
-
 Klicken Sie zur Auswahl des**Enddatums** für die Lernplanvorlage auf das Kalendersymbol.';
 $string['templateinstances'] = 'Vorlageninstanzen';
 $string['thefollowingitemsarepending_p'] = 'Der Plan beinhaltet die folgenden unvollständigen Elemente:';

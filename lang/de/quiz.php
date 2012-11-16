@@ -105,8 +105,7 @@ $string['basicideasofquiz'] = 'Die Basisideen zur Testerstellung';
 $string['bestgrade'] = 'Beste Bewertung';
 $string['bothattempts'] = 'Teilnehmer/innen mit und ohne durchgeführte Versuche anzeigen';
 $string['browsersecurity'] = 'Browsersicherheit';
-$string['browsersecurity_help'] = 'Wenn \'Volbildmodus mit Javascript-Sicherheit\'  ausgewählt wird
-
+$string['browsersecurity_help'] = 'Wenn \'Volbildmodus mit Javascript-Sicherheit\' ausgewählt wird
 * startet der Test nur wenn der Teilnehmer Javascript im Browser aktiviert hat
 * wird der Test im Vollbildmodus ohne weitere Navigationsmöglichkeiten ausgeführt
 * sind - soweit dies möglich ist - Funktionen wie Kopieren und Einfügen inaktiv.';
@@ -212,20 +211,19 @@ $string['decimaldigits'] = 'Dezimalziffern bei der Bewertung';
 $string['decimalplaces'] = 'Dezimalzahlen in Gesamtbewertung';
 $string['decimalplaces_help'] = 'Mit dieser Einstellung wird die Anzahl der angezeigten Nachkommastellen für eine Bewertung festgelegt. Die Einstellung beeinflusst ausschließlich die angezeigten Werte, nicht aber die gespeicherten Werte in der Datenbank oder die internen Berechnungen.';
 $string['decimalplacesquestion'] = 'Dezimalzahlen in Fragenbewertung';
-$string['decimalplacesquestion_help'] = 'Die Einstellung legt die Zahl der angezeigten  Dezimalziffern bei der Bewertung von Fragen fest.';
+$string['decimalplacesquestion_help'] = 'Die Einstellung legt die Zahl der angezeigten Dezimalziffern bei der Bewertung von Fragen fest.';
 $string['decimalpoints'] = 'Dezimalstellen';
 $string['default'] = 'Standard';
 $string['defaultgrade'] = 'Standardbewertung (Punkte)';
 $string['defaultinfo'] = 'Die Standardkategorie für Fragen';
 $string['delay1'] = 'Pause zwischen 1. und 2. Versuch';
 $string['delay1st2nd'] = 'Erzwungener Abstand zwischen 1. und 2. Versuch';
-$string['delay1st2nd_help'] = '<h2>Pause zwischen 1. und 2. Versuch</h2>
-
-<p>Wenn Sie hier eine Pause einrichten, lässt sich ein zweiter Testversuch erst nach Ablauf dieser Pause durchführen.</p>';
+$string['delay1st2nd_help'] = '## Pause zwischen 1. und 2. Versuch
+Wenn Sie hier eine Pause einrichten, lässt sich ein zweiter Testversuch erst nach Ablauf dieser Pause durchführen.';
 $string['delay2'] = 'Pause bei späteren Versuchen';
 $string['delaylater'] = 'Erzwungener Abstand zwischen weiteren Versuchen';
-$string['delaylater_help'] = '<h2>Pause bei weiteren Testversuchen</h2>
-<p>Wenn Sie hier eine Pause einrichten, lassen sich der dritte und weitere Testversuche erst nach Ablauf dieser Pause starten.</p>';
+$string['delaylater_help'] = '## Pause bei weiteren Testversuchen
+Wenn Sie hier eine Pause einrichten, lassen sich der dritte und weitere Testversuche erst nach Ablauf dieser Pause starten.';
 $string['deleteattemptcheck'] = 'Sind Sie wirklich sicher, dass Sie diese Versuche löschen wollen?';
 $string['deleteselected'] = 'Auswahl löschen';
 $string['deletingquestionattempts'] = 'Löschen der Testversuche';
@@ -236,22 +234,20 @@ $string['download'] = 'Klick zum Download der exportierten Kategorien';
 $string['downloadextra'] = '(Datei ist auch im Kursverzeichnis backupdata/quiz abgelegt.)';
 $string['duplicateresponse'] = 'Ihre Antwort wurde ignoriert, weil Sie früher bereits eine gleichwertige Antwort gegeben haben.';
 $string['eachattemptbuildsonthelast'] = 'Jeder Versuch basiert auf dem vorigen';
-$string['eachattemptbuildsonthelast_help'] = '<h2>Jeder Versuch basiert auf dem vorigen</h2>
-<p>Sind mehrere Versuche erlaubt und ist bei dieser Einstellung <b>Ja </b>gewählt, so enthält
+$string['eachattemptbuildsonthelast_help'] = '## Jeder Versuch basiert auf dem vorigen
+Sind mehrere Versuche erlaubt und ist bei dieser Einstellung **Ja **gewählt, so enthält
 jeder neue Versuch das Ergebnis des vorherigen. Dies erlaubt
-die Fertigstellung eines Tests mit Hilfe mehrerer Versuche.</p>
-<p>Um für jeden Versuch einen neuen Test bereitzustellen, wählen
-Sie für diese Einstellung <b>Nein</b>.
-</p>';
+die Fertigstellung eines Tests mit Hilfe mehrerer Versuche.
+Um für jeden Versuch einen neuen Test bereitzustellen, wählen
+Sie für diese Einstellung **Nein**.';
 $string['editcategories'] = 'Kategorien bearbeiten';
 $string['editcategory'] = 'Kategorie bearbeiten';
 $string['editcatquestions'] = 'Fragen bearbeiten';
 $string['editingquestion'] = 'Frage wird bearbeitet';
 $string['editingquiz'] = 'Test wird bearbeitet';
 $string['editingquiz_help'] = 'Für die Zusammenstellung von Tests gibt es mehrere Möglichkeiten:
-
 * Test - Ein Test enthält Fragen, die auf einer oder über mehrere Seiten verteilt angezeigt werden
-* Fragensammlung - Ein Test wird aus der  Fragensammlung zusammengestellt, in der alle Fragen kategorisiert als Kopie vorkommen
+* Fragensammlung - Ein Test wird aus der Fragensammlung zusammengestellt, in der alle Fragen kategorisiert als Kopie vorkommen
 * Zufallsfragen - Jede Person erhält bei jedem neuen Versuch andere Fragen. Unterschiedliche Personen bekommen unterschiedliche Fragen vorgelegt';
 $string['editoverride'] = 'Änderung bearbeiten';
 $string['editqcats'] = 'Kategorien bearbeiten';
@@ -323,11 +319,9 @@ $string['fractionsnomax'] = 'Eine dieser Antworten sollte 100% sein, damit
 $string['fromfile'] = 'aus der Datei:';
 $string['functiondisabledbysecuremode'] = 'Diese Funktion ist momentan deaktiviert';
 $string['generalfeedback'] = 'Standard-Feedback';
-$string['generalfeedback_help'] = '<h2>Allgemeines Fragen-Feedback</h2>
-
-<p>Das allgemeine Fragen-Feedback besteht aus dem Text, den der/die Teilnehmer/in nach dem Versuch sieht, eine Frage zu beantworten. Anders als das Feedback, das vom Fragetyp und der Nutzerantwort abhängt, wird der Text des allgemeinen Fragen-Feedbacks allen Teilnehmern/innen gezeigt.</p>
-
-<p>Sie können einstellen, wann das generelle Feedback erscheint.</p>';
+$string['generalfeedback_help'] = '## Allgemeines Fragen-Feedback
+Das allgemeine Fragen-Feedback besteht aus dem Text, den der/die Teilnehmer/in nach dem Versuch sieht, eine Frage zu beantworten. Anders als das Feedback, das vom Fragetyp und der Nutzerantwort abhängt, wird der Text des allgemeinen Fragen-Feedbacks allen Teilnehmern/innen gezeigt.
+Sie können einstellen, wann das generelle Feedback erscheint.';
 $string['grade'] = 'Bewertung';
 $string['gradeall'] = 'Alle bewerten';
 $string['gradeaverage'] = 'Durchschnitt';
@@ -335,27 +329,20 @@ $string['gradeboundary'] = 'Bewertungsgrenze';
 $string['gradeessays'] = 'Freitexte bewerten';
 $string['gradehighest'] = 'Bester Versuch';
 $string['grademethod'] = 'Bewertungsmethode';
-$string['grademethod_help'] = '<h2>Bewertungsmethode</h2>
-<p>Wenn mehrere Versuche erlaubt sind, gibt es unterschiedliche
-Möglichkeiten, eine abschließende Bewertung für die Teilnehmer/innen festzulegen.</p>
-<p><b>Bester Versuch</b></p>
-<div style="margin-left: 2em">
-<p>Es zählt die Bewertung des besten Versuchs.</p>
-</div>
-<p><b>Durchschnitt</b></p>
-<div style="margin-left: 2em">
-<p>Die abschließende Bewertung ergibt sich aus dem Durchschnitt der Bewertungen aller Versuche.</p>
-</div>
-<p><b>Erster Versuch</b></p>
-<div style="margin-left: 2em">
-<p>Es zählt die Bewertung des
-ersten Versuchs (die anderen Versuche werden
-ignoriert).</p>
-</div>
-<p><b>Letzter Versuch</b></p>
-<div style="margin-left: 2em">
-<p>Es zählt die Bewertung des letzten Versuchs.</p>
-</div>';
+$string['grademethod_help'] = '## Bewertungsmethode
+Wenn mehrere Versuche erlaubt sind, gibt es unterschiedliche
+Möglichkeiten, eine abschließende Bewertung für die Teilnehmer/innen festzulegen.
+**Bester Versuch**
+Es zählt die Bewertung des besten Versuchs.
+
+**Durchschnitt**
+Die abschließende Bewertung ergibt sich aus dem Durchschnitt der Bewertungen aller Versuche.
+
+**Erster Versuch**
+Es zählt die Bewertung des ersten Versuchs (die anderen Versuche werden ignoriert).
+
+**Letzter Versuch**
+Es zählt die Bewertung des letzten Versuchs.';
 $string['gradesdeleted'] = 'Testbewertungen wurden gelöscht';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Punkte: {$a->raw}/{$a->max}.';
@@ -493,35 +480,27 @@ $string['openclosedatesupdated'] = 'Start- und Schlusstermin des Tests wurden ak
 $string['optional'] = 'optional';
 $string['orderandpaging'] = 'Reihenfolge und Seitenumbrüche';
 $string['orderandpaging_help'] = 'Die Zahlen 10, 20, 30, ... neben jeder Frage zeigt deren Reihenfolge an. Die Zahlenfolge in 10er-Schritten lässt Platz, um weitere Fragen einfügen zu können. Um die Reihenfolge der Fragen zu ändern, ändern Sie die Zahlen und klicken auf die Taste \'Neu sortieren\'.
-
 Um Seitenumbrüche nach bestimmten Fragen einzufügen, markieren Sie das Kontrollfeld \'Neue Seite nach markierter Frage hinzufügen\'.
-
 Um Fragen über eine Reihe von Seiten anzuordnen, klicken Sie auf die Taste \'Seitenumbrüche durchführen\' und wählen die gewünschte Anzahl von Fragen pro Seite.';
 $string['orderingquiz'] = 'Reihenfolge und Seitenumbrüche';
 $string['outof'] = '{$a->grade} von maximal {$a->maxgrade}';
 $string['outofpercent'] = '{$a->grade} von maximal {$a->maxgrade} ({$a->percent}%)';
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'Gesamt-Feedback';
-$string['overallfeedback_help'] = '<h2>Gesamt-Feedback </h2>
+$string['overallfeedback_help'] = '## Gesamt-Feedback
+Das Gesamt-Feedback wird am Ende eines Testdurchlaufs angezeigt. Der Text kann je nach Testergebnis unterschiedlich lauten.
+Ein Beispiel: Tragen Sie ein: "Gut gemacht" im ersten Feedback-Feld, 40%
+im ersten Bewertungsgrenzfeld, und "Bitte wiederhole den Inhalt dieser Woche noch einmal"
+im zweiten Feedback-Feld. In diesem Fall erhalten Teilnehmende mit einem Ergebnis von 40% richtig oder einem höheren Wert das Feedback "Gut gemacht". Alle anderen erhalten die andere Rückmeldung.
+Mit den Zahlenwerten werden Intervalle beschrieben. Wenn das Testergebnis zwischen dem Wert über und dem Wert unter dem Feedback-Text liegt, wird der zwischen den Werten liegende Feedback-Text angezeigt.
 
-<p>Das Gesamt-Feedback wird am Ende eines Testdurchlaufs angezeigt. Der Text kann je nach Testergebnis unterschiedlich lauten.</p>
-
-<p>Ein Beispiel: Tragen Sie ein: "Gut gemacht" im ersten Feedback-Feld, 40%
-im ersten Bewertungsgrenzfeld, und  "Bitte wiederhole den Inhalt dieser Woche noch einmal"
-im zweiten Feedback-Feld. In diesem Fall erhalten Teilnehmende mit einem Ergebnis von 40% richtig oder einem höheren Wert das Feedback "Gut gemacht". Alle anderen erhalten die andere Rückmeldung.  </p>
-
-<p>Mit den Zahlenwerten werden Intervalle beschrieben. Wenn das Testergebnis zwischen dem Wert über und dem Wert unter dem Feedback-Text liegt, wird der zwischen den Werten liegende  Feedback-Text angezeigt.</p>
-
-<p>
-Beispiel: 	100%</p><p>
-Feedback: 	Gutes Ergebnis</p><p>
-Bewertungsgrenzen: 80 %	</p><p>
-Feedback: 	Befriedigend</p><p>
-Bewertungsgrenzen: 60 %</p>
-
-<p> In diesem Fall wird für Ergebnisse zwischen  100% und 80 % der Feedbacktext "Gutes Ergebnis"	 angezeigt.</p>
-
-<p>Die Bewertungsgrenze kann als Prozentwert (z.B. 31.3%) oder als Zahlwert (z.B. 7) eingetragen werden. Wenn bei Ihrem Test 10 Punkte zu erreichen sind, bedeutet der Wert 7, dass 7 von 10 Punkten erreicht werden müssen. Bei Prozentwerten darf kein Leerzeichen zwischen der Zahl und dem Prozentwert stehen. </p>';
+Beispiel: 100%
+Feedback: Gutes Ergebnis
+Bewertungsgrenzen: 80 %
+Feedback: Befriedigend
+Bewertungsgrenzen: 60 %
+In diesem Fall wird für Ergebnisse zwischen 100% und 80 % der Feedbacktext "Gutes Ergebnis" angezeigt.
+Die Bewertungsgrenze kann als Prozentwert (z.B. 31.3%) oder als Zahlwert (z.B. 7) eingetragen werden. Wenn bei Ihrem Test 10 Punkte zu erreichen sind, bedeutet der Wert 7, dass 7 von 10 Punkten erreicht werden müssen. Bei Prozentwerten darf kein Leerzeichen zwischen der Zahl und dem Prozentwert stehen.';
 $string['overdue'] = 'Überfällig';
 $string['override'] = 'Überschreiben';
 $string['overridedeletegroupsure'] = 'Sind Sie sicher, dass Sie die Änderung für die Gruppe {$a} löschen möchten?';
@@ -540,11 +519,9 @@ $string['parsingquestions'] = 'Fragen aus der Importdatei werden ausgewertet (pa
 $string['partiallycorrect'] = 'Teilweise richtig';
 $string['penalty'] = 'Abzug';
 $string['penaltyscheme'] = 'Abzüge festlegen';
-$string['penaltyscheme_help'] = '<h2>Punktabzüge verwenden</h2>
-
-<p>Wenn ein Test im adaptiven Modus abläuft, kann ein/e Teilnehmer/in Fragen noch einmal bearbeiten, die nicht korrekt beantwortet wurden. In diesem Fall können Sie einen Punktabzug festlegen, wenn die Frage nicht beim ersten Mal richtig beantwortet wird. Für jeden weiteren Versuch erfolgt der wiederholte Punktabzug. Die Einstellung muss für jede Frage separat festgelegt werden.</p>
-
-<p>Die Einstellung zeigt nur Wirkung, wenn der adaptive Modus aktiviert ist.</p>';
+$string['penaltyscheme_help'] = '## Punktabzüge verwenden
+Wenn ein Test im adaptiven Modus abläuft, kann ein/e Teilnehmer/in Fragen noch einmal bearbeiten, die nicht korrekt beantwortet wurden. In diesem Fall können Sie einen Punktabzug festlegen, wenn die Frage nicht beim ersten Mal richtig beantwortet wird. Für jeden weiteren Versuch erfolgt der wiederholte Punktabzug. Die Einstellung muss für jede Frage separat festgelegt werden.
+Die Einstellung zeigt nur Wirkung, wenn der adaptive Modus aktiviert ist.';
 $string['percentcorrect'] = 'Richtig in Prozent';
 $string['pleaseclose'] = 'Ihre Anfrage wurde bearbeitet. Sie können das Fenster jetzt schließen.';
 $string['pluginadministration'] = 'Test-Administration';
@@ -670,7 +647,7 @@ $string['requirepassword_help'] = 'Wenn Sie ein Kennwort festlegen, müssen die 
 erst das Kennwort eingeben, bevor sie den Test
 versuchen können.';
 $string['requiresubnet'] = 'IP-Adresse';
-$string['requiresubnet_help'] = 'Sie können den Testzugriff auf bestimmte Rechner oder IP-Adressen beschränken, wenn beispielsweise nur Teilnehmer/innen in einem bestimmten Raum den Test durchführen dürfen. Die zugelassenen IP-Adressen geben Sie in einer kommagetrennten Liste teilweise oder vollständig an (z.B. <b>192.168. , 231.54.211.0/20, 231.3.56.211</b>).';
+$string['requiresubnet_help'] = 'Sie können den Testzugriff auf bestimmte Rechner oder IP-Adressen beschränken, wenn beispielsweise nur Teilnehmer/innen in einem bestimmten Raum den Test durchführen dürfen. Die zugelassenen IP-Adressen geben Sie in einer kommagetrennten Liste teilweise oder vollständig an (z.B. **192.168. , 231.54.211.0/20, 231.3.56.211**).';
 $string['response'] = 'Eingabe TN';
 $string['responses'] = 'Eigene Eingaben';
 $string['results'] = 'Ergebnisse';
@@ -690,18 +667,13 @@ $string['reviewofpreview'] = 'Vorschauansicht überprüfen';
 $string['reviewopen'] = 'Später, während der Test noch geöffnet ist';
 $string['reviewoptions'] = 'Was sollen die Teilnehmer/innen zu welchem Zeitpunkt sehen';
 $string['reviewoptionsheading'] = 'Berichtsoptionen';
-$string['reviewoptionsheading_help'] = '<h2>Rückschau zulassen</h2>
-
-<p>Mit diesen Optionen legen Sie fest, welche Informationen Teilnehmer/innen angezeigt bekommen, wenn sie einen Testversuch wiederholen oder sich den Ergebnisbericht anschauen.</p>
-
-<p>Direkt nach dem Versuch bedeutet, innerhalb der nächsten beiden Minuten nach dem sie den Test beendet und abgespeichert haben.</p>
-
-<p>Später, während der Test noch offen ist bedeutet, nach den beiden Minuten (siehe oben) und bevor der Testbearbeitungszeitraum abgeschlossen ist.</p>
-
-<p>Nach Beendigung des Tests meint, nach Ende des Bearbeitungszeitraums. Wenn kein solcher Termin definiert ist, ist diese Einstellung nicht sinnvoll. </p>
-
-<p>Nutzer mit der Berechtigung \'Verborgene Bewertungen sehen\' [moodle/grade:viewhidden]
-(normalerweie Trainer/innen oder Admins) sind von diesen Einstellungen nicht betroffen und können die Informationen jederzeit sehen.</p>';
+$string['reviewoptionsheading_help'] = '## Rückschau zulassen
+Mit diesen Optionen legen Sie fest, welche Informationen Teilnehmer/innen angezeigt bekommen, wenn sie einen Testversuch wiederholen oder sich den Ergebnisbericht anschauen.
+Direkt nach dem Versuch bedeutet, innerhalb der nächsten beiden Minuten nach dem sie den Test beendet und abgespeichert haben.
+Später, während der Test noch offen ist bedeutet, nach den beiden Minuten (siehe oben) und bevor der Testbearbeitungszeitraum abgeschlossen ist.
+Nach Beendigung des Tests meint, nach Ende des Bearbeitungszeitraums. Wenn kein solcher Termin definiert ist, ist diese Einstellung nicht sinnvoll.
+Nutzer mit der Berechtigung \'Verborgene Bewertungen sehen\' [moodle/grade:viewhidden]
+(normalerweie Trainer/innen oder Admins) sind von diesen Einstellungen nicht betroffen und können die Informationen jederzeit sehen.';
 $string['reviewresponse'] = 'Antwort erneut anzeigen';
 $string['reviewresponsetoq'] = 'Antwort erneut anzeigen (Frage {$a})';
 $string['reviewthisattempt'] = 'Einsicht in die eigenen Antworten dieses Versuchs';
@@ -757,16 +729,12 @@ $string['shuffledrandomly'] = 'Zufälllige Reihenfolge';
 $string['shufflequestions'] = 'Fragen mischen';
 $string['shufflequestionsselected'] = 'Es wurde die zufällige Fragenreihenfolge gewählt. Dadurch können einige Funktion zur Anordnung der Fragen nicht genutzt werden. Sie können dies in {$a} ändern.';
 $string['shufflewithin'] = 'Antworten innerhalb der Fragen mischen';
-$string['shufflewithin_help'] = '<h2>Antworten innerhalb der Fragen mischen</h2>
+$string['shufflewithin_help'] = '## Antworten innerhalb der Fragen mischen
+Mit dieser Option werden die Antworten innerhalb einzelner Fragen bei jedem Versuch zufällig gemischt, vorausgesetzt, diese Option ist auch in den Fragen-Einstellungen aktiviert.
 
-<p>Mit dieser Option werden die Antworten innerhalb einzelner Fragen bei jedem Versuch zufällig gemischt, vorausgesetzt, diese Option ist auch in den Fragen-Einstellungen aktiviert.
-</p>
-
-<p>Absicht dieser Funktion ist es, den Teilnehmenden das Kopieren voneinander zu erschweren.</p>
-
-<p>Die Funktion hat nur dann Auswirkungen, wenn Fragen aus mehreren Teilen bestehen (Multiple-Choice- oder Zuordnungsfragen). Bei Multiple-Choice-Fragen werden die Antworten nur gemischt, wenn diese Option auf &quot;Ja&quot; gestellt ist.  Bei Zuordnungsfragen werden die Antworten immer gemischt. Die Funktion bewirkt dann, dass die Frage-Antwort-Paare auch gemischt werden.</p>
-
-<p>Die Option hat keinen Bezug zur Zufallsfragenfunktion.</p>';
+Absicht dieser Funktion ist es, den Teilnehmenden das Kopieren voneinander zu erschweren.
+Die Funktion hat nur dann Auswirkungen, wenn Fragen aus mehreren Teilen bestehen (Multiple-Choice- oder Zuordnungsfragen). Bei Multiple-Choice-Fragen werden die Antworten nur gemischt, wenn diese Option auf "Ja" gestellt ist. Bei Zuordnungsfragen werden die Antworten immer gemischt. Die Funktion bewirkt dann, dass die Frage-Antwort-Paare auch gemischt werden.
+Die Option hat keinen Bezug zur Zufallsfragenfunktion.';
 $string['singleanswer'] = 'Antwort wählen:';
 $string['sortage'] = 'Sortieren nach Alter';
 $string['sortalpha'] = 'Alphabetisch sortieren';
@@ -799,24 +767,22 @@ $string['timecompleted'] = 'Beendet';
 $string['timedelay'] = 'Bis zum nächsten Testversuch muss einige Zeit verstreichen.';
 $string['timeleft'] = 'Verbleibende Zeit';
 $string['timelimit'] = 'Zeitbegrenzung';
-$string['timelimit_help'] = '<h2>Zeitbegrenzung</h2>
-<p>In der Grundeinstellung haben Tests kein Zeitlimit.</p>
-<p>Wenn Sie eine Zeitbegrenzung festlegen, passiert Folgendes:</p>
-<ul>
+$string['timelimit_help'] = '## Zeitbegrenzung
+In der Grundeinstellung haben Tests kein Zeitlimit.
+Wenn Sie eine Zeitbegrenzung festlegen, passiert Folgendes:
 
-<li>Ein Zeitfenster wird eingeblendet und zeigt die verbleibende
-Zeit.</li>
-<li>Wenn die Zeit abgelaufen ist, wird der Test automatisch
+* Ein Zeitfenster wird eingeblendet und zeigt die verbleibende
+Zeit.
+* Wenn die Zeit abgelaufen ist, wird der Test automatisch
 gespeichert und im letzten Zustand der Bearbeitung
-abgegeben.</li>
-<li>Wenn ein/e Teilnehmer/in zu schummeln versucht und mehr als
+abgegeben.
+* Wenn ein/e Teilnehmer/in zu schummeln versucht und mehr als
 60 Sekunden über die zugewiesene Zeit verwendet, dann wird
-der Test automatisch mit Null bewertet.</li>
-<li>Wird der Test vor dem Versuch verlassen, wird die Zeit am
-Server weitergezählt!!!</li>
-<li>Hinweis: Javascript-Unterstützung im Browser ist obligatorisch,
-damit die Zeitfunktion korrekt läuft.</li>
-</ul>';
+der Test automatisch mit Null bewertet.
+* Wird der Test vor dem Versuch verlassen, wird die Zeit am
+Server weitergezählt!!!
+* Hinweis: Javascript-Unterstützung im Browser ist obligatorisch,
+damit die Zeitfunktion korrekt läuft.';
 $string['timelimitexeeded'] = 'Die Zeit für den Test ist abgelaufen!';
 $string['timelimitmin'] = 'Zeitbegrenzung (in Minuten)';
 $string['timelimitsec'] = 'Zeitbegrenzung (Sekunden)';

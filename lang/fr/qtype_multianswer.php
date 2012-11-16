@@ -38,17 +38,17 @@ $string['layoutvertical'] = 'Colonne verticale de boutons radio';
 $string['nooptionsforsubquestion'] = 'Impossible d\'obtenir les options de la partie de question no {$a->sub} (question->id={$a->id})';
 $string['noquestions'] = 'La question Cloze (multianswer) « <strong>{$a}</strong> » ne contient aucune question';
 $string['pluginname'] = 'Question Cloze';
+$string['pluginname_help'] = 'Les questions à réponses intégrées (Cloze) sont formées d\'un texte au sein duquel dont inclues des questions à choix multiples et des questions à réponse courte.';
 $string['pluginnameadding'] = 'Ajout d\'une question Cloze';
 $string['pluginnameediting'] = 'Modification d\'une question Cloze';
-$string['pluginname_help'] = 'Les questions à réponses intégrées (Cloze) sont formées d\'un texte au sein duquel dont inclues des questions à choix multiples et des questions à réponse courte.';
 $string['pluginnamesummary'] = 'Les questions de ce type sont très flexibles, mais ne peuvent être créées qu\'en tapant du texte suivant un format particulier avec des codes spécifiques qui crééent des questions à choix multiples, des questions à réponses courtes et des questions numériques intégrées.';
 $string['qtypenotrecognized'] = 'Le type de question {$a} est inconnu';
 $string['questiondefinition'] = 'Définition de question';
 $string['questiondeleted'] = 'Question supprimée';
 $string['questioninquiz'] = '<ul>
-  <li>ajouter ou supprimer des questions,</li>
-  <li>modifier l\'ordre des questions dans le texte,</li>
-  <li>modifier le type de question (numérique, à réponse courte, à choix multiple).</li>
+<li>ajouter ou supprimer des questions,</li>
+<li>modifier l\'ordre des questions dans le texte,</li>
+<li>modifier le type de question (numérique, à réponse courte, à choix multiple).</li>
 </ul>';
 $string['questionnadded'] = 'Question ajoutée';
 $string['questionnotfound'] = 'Impossible de trouver la partie {$a} de la question';

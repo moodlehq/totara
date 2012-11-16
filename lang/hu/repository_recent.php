@@ -30,5 +30,5 @@ $string['emptyfilelist'] = 'Nincs megjeleníthető állomány';
 $string['notitle'] = 'notitle';
 $string['pluginname'] = 'Mostanában használt állományok';
 $string['pluginname_help'] = 'Az aktuális felhasználó által mostanában használt állományok';
-$string['recentfilesnumber'] = 'Mostanában használt állományok száma';
 $string['recent:view'] = 'A mostanában használt állományok tárolójának megtekintésére való segédprogram';
+$string['recentfilesnumber'] = 'Mostanában használt állományok száma';

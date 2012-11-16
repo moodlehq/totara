@@ -37,7 +37,7 @@ $string['noauthtoken'] = 'Nem sikerült a folyamatban használandó hitelesítő
 $string['notarget'] = 'A feltöltéshez egy meglévő vagy egy új mappát kell megadnia.';
 $string['noticket'] = 'A hitelesítési folyamat elkezdéséhez nem sikerült beolvasni a box.net jegyét.';
 $string['password'] = 'Az Ön box.net jelszava (nem tárolódik)';
-$string['pluginname'] = 'Box.net ';
+$string['pluginname'] = 'Box.net';
 $string['sendfailed'] = 'Nem sikerült a tartalom elküldése  a box.net-hez: {$a}';
 $string['setupinfo'] = 'Beállítási utasítások';
 $string['setupinfodetails'] = 'API-kulcs beszerzéséhez lépjen be a Box.net portálra és látogasson el az <a href="{$a->servicesurl}">OpenBox development page</a> oldalra. A \'Developer Tools\' alatt válassza a \'Create new application\' pontot és hozzon létre egy új kérelmet Moodle-portálja számára. Az API-kulcs a kérelemszerkesztő űrlapon a \'Backend parameters\' alatt található. Az űrlapon a \'Redirect URL\' mezőt <br /><code>{$a->callbackurl}</code><br />formában töltse ki.<br />Választhatóan adatokat adhat meg Moodle-portáljáról. Ezeket az értékeket később a \'View my applications\' oldalon szerkesztheti.';

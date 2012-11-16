@@ -277,202 +277,122 @@ $string['report:startdate'] = 'Data de início';
 $string['reportbuilder'] = 'Criador de relatórios';
 $string['reportbuilder:managereports'] = 'Criar, editar e excluir os relatórios do criador de relatórios';
 $string['reportbuilderaccessmode_help'] = '# Modo de acesso
-
 Os controles de acesso são usados para restringir quais usuários podem visualizar o relatório.
-
 **Restringir acesso** define a configuração do acesso geral para o relatório.
-
 Quando configurado como **Todos os usuários podem visualizar este relatório**, nenhuma restrição é aplicada ao relatório e todos os usuários podem visualizá-lo.
-
 Quando configurado como **Apenas certos usuários podem visualizar este relatório**, ele será restrito aos grupos de usuários selecionados abaixo.
-
 **Nota:** as restrições de acesso só controlam quem pode visualizar o relatório, não os registros que ele contém. Consulte a guia \'Conteúdo\' para controlar o conteúdo do relatório.';
 $string['reportbuilderbaseitem_help'] = '# Criador de relatórios: Item de base
-
 Ao agrupar um conjunto de atividades, você está indicando que elas têm algo em comum, o que permite que os relatórios sejam gerados para todas as atividades em um grupo. O item de base define as propriedades que são consideradas quando a agregação é realizada em cada membro do grupo.';
 $string['reportbuildercolumns_help'] = '# Colunas
-
 **Colunas do relatório** permite personalizar as colunas que aparecem no seu relatório. As colunas disponíveis são determinadas pela **Fonte** de dados do relatório. Cada fonte do relatório possui um conjunto de colunas padrão configuradas.
-
 As colunas podem ser adicionadas, removidas, renomeadas ou classificadas.
-
 **Adicionando colunas:** Para adicionar uma nova coluna ao relatório, escolha a coluna exigida na lista suspensa \'Adicionar outra coluna...\' e clique em **Salvar alterações**. A nova coluna será adicionada ao final da lista.
-
 **Nota:** Você só pode criar uma coluna de cada tipo dentro de um único relatório. Você receberá um erro de validação se tentar incluir a mesma coluna mais de uma vez.
-
 **Ocultando colunas:** Por padrão, todas as colunas aparecem quando um usuário visualiza o relatório. Utilize o botão \'mostrar/ocultar\' (o ícone do olho) para ocultar as colunas que você não deseja que os usuários visualizem por padrão.
-
 **Nota:** A coluna oculta ainda está disponível para o usuário que visualiza o relatório. Exclua as colunas (o ícone da cruz) que os usuários não devem ver.
-
 **Movendo colunas:** As colunas irão aparecer no relatório na ordem em que estão listadas. Use as setas para cima e para baixo para alterar a ordem.
-
 **Excluindo colunas:** Clique no botão \'Excluir\' (o ícone da cruz) à direita da coluna do relatório para removê-la.
-
 **Renomeando colunas:** Você pode personalizar o nome de uma coluna alterando o nome do **Cabeçalho** e clicando em **Salvar alterações**. O **Cabeçalho** é o nome que irá aparecer no relatório.
-
 **Alterando vários tipos de coluna:** Você pode modificar vários tipos de colunas ao mesmo tempo selecionando uma coluna diferente no menu suspenso e clicando em **Salvar alterações**.';
 $string['reportbuildercompletedorg_help'] = '# Mostrar por organização concluída
-
 Quando **Mostrar registros concluídos na organização do usuário** é selecionado, o registro exibe os registros concluídos diferentes, dependendo da organização à qual o usuário foi atribuído. (Um usuário é atribuído a uma organização em seu \'Perfil do usuário\' na guia \'Posições\').
-
 Quando **Incluir registros das organizações filiais** está configurado como:
-
-*   **Sim** o usuário que visualizar o relatório poderá ver relatórios concluídos relacionados à sua organização e quaisquer filiais da mesma
-*   **Não** o usuário só pode ver relatórios concluídos relacionados à sua organização.';
+\* **|Sim** o usuário que visualizar o relatório poderá ver relatórios concluídos relacionados à sua organização e quaisquer filiais da mesma
+\* **|Não** o usuário só pode ver relatórios concluídos relacionados à sua organização.';
 $string['reportbuildercontentmode_help'] = '# Modo de conteúdo
-
 Os controles de conteúdo permitem restringir os registros e as informações disponíveis quando um relatório é visualizado.
-
 **Conteúdo do relatório** permite selecionar as configurações gerais do controle de conteúdo para este relatório:
-
 Quando **Mostrar todos os registros** for selecionado, cada registro disponível para esta fonte será mostrado e nenhuma restrição será colocada no conteúdo disponível.
-
 Quando **Mostrar registros que correspondem a qualquer critério marcado** for selecionado, o relatório irá exibir os registros que correspondem a qualquer critério configurado baixo.
-
 **Nota:** Se nenhum critério for configurado, o relatório não mostrará registros.
-
 Quando **Mostrar registros que correspondem a todos os critérios marcados** for selecionado, o relatório irá exibir os registros que correspondem a todos os critérios configurados abaixo.
 **Nota:** Se nenhum critério for configurado, o relatório não mostrará registros.';
 $string['reportbuildercontext_help'] = '# Restringir acesso por função
-
 Contexto é o local ou nível dentro do sistema ao qual o usuário tem acesso. Por exemplo, um Administrador do site pode ter o acesso em nível do Sistema (contexto), enquanto o aluno pode ter apenas o acesso em nível do Curso (contexto).
-
 **Contexto** permite configurar o contexto em que o usuário foi atribuído a uma função para visualizar o relatório.
-
 Ao usuário pode ser atribuída uma função em nível do sistema, fornecendo acesso a todo o site ou apenas dentro de um contexto específico. Por exemplo, ao instrutor pode ser atribuída apenas uma função em nível do curso.
-
 Quando **Usuários devem ter função no contexto do sistema** estiver selecionado, ao usuário deve ser atribuída uma função em nível do sistema (isto é, em todo o site) para poder visualizar o relatório.
-
 Quando **Usuário pode ter função em qualquer contexto** estiver selecionado, o usuário pode visualizar o relatório quando a ele tiver sido atribuída a função selecionada em qualquer lugar do sistema.';
 $string['reportbuildercoursetag_help'] = '# Criador de relatórios: Mostrar por marca do curso
-
 Esse critério é ativado marcando a caixa de seleção ´Mostrar registros por marca do curso\'. Se selecionado, o relatório irá mostrar os resultados com base no fato de pertencer ou não a um curso que tem marcas específicas.
-
 Se qualquer marca na seção \'Incluir registros marcados com\' for selecionada, apenas os registros que pertencem a um curso marcado com todas as marcas selecionadas serão mostrados. Os registros que pertencem a cursos sem marcas **não** serão mostrados.
-
 Se qualquer marca na seção \'Excluir registros marcados com\' for selecionada, os registros que pertencem aos cursos marcados com as marcas selecionadas **não** serão mostrados. Todos os registros que pertencem aos cursos sem marcas serão mostrados.
-
 É possível incluir e excluir as marcas ao mesmo tempo, mas uma única marca não pode ser incluída e excluída.';
 $string['reportbuildercurrentorg_help'] = '# Mostrar por organização atual
-
 Quando **Mostrar registros da equipe na organização do usuário** está selecionado, o relatório exibe resultados diferentes dependendo da organização à qual o usuário foi atribuído. (Um usuário é atribuído a uma organização em seu \'Perfil do usuário\' na guia \'Posições\').
-
 Quando **Incluir registros das organizações filiais** está configurado como:
-
-*   **Sim** o usuário que visualizar o relatório poderá ver os registros relacionados à sua organização e quaisquer filiais dessa organização
-*   **Não** o usuário só pode ver os registros relacionados à sua organização.';
+\* **|Sim** o usuário que visualizar o relatório poderá ver os registros relacionados à sua organização e quaisquer filiais dessa organização
+\* **|Não** o usuário só pode ver os registros relacionados à sua organização.';
 $string['reportbuildercurrentpos_help'] = '# Mostrar por posição atual
-
 Quando **Mostrar registros da equipe na posição do usuário** está selecionado, o relatório exibe os registros diferentes de acordo com a sua posição atribuída (é atribuída uma posição ao usuário no \'Perfil do usuário\' na guia \'Posições\').
-
 Quando **Incluir registros das posições filiais** está configurado como:
-
-*   **Sim** o usuário que visualizar o relatório pode ver os registros relacionados às suas posições e qualquer posições filiais da mesma
-*   **Não** o usuário que visualizar o relatório só pode ver os registros relacionados à sua posição.';
+\* **|Sim** o usuário que visualizar o relatório pode ver os registros relacionados às suas posições e qualquer posições filiais da mesma
+\* **|Não** o usuário que visualizar o relatório só pode ver os registros relacionados à sua posição.';
 $string['reportbuilderdate_help'] = '# Mostrar por data
-
 Quando **Mostrar registros com base na data do registro** está selecionado, o relatório só exibe os registros dentro do cronograma selecionado.
-
 A opção **Incluir registros de** permite configurar o cronograma para o relatório:
-
-*   Quando configurado como **O passado**, o relatório só mostra registros com data mais antiga que a atual.
-*   Quando configurado como **O futuro**, o relatório só mostra registros com data futura em relação à atual.
-*   Quando configurado como **Os últimos 30 dias**, o relatório só mostra registros entre o momento atual e 30 dias antes.
-*   Quando configurado como **Os próximos 30 dias**, o relatório só mostra registros entre o momento atual e 30 dias no futuro.';
+* Quando configurado como **O passado**, o relatório só mostra registros com data mais antiga que a atual.
+* Quando configurado como **O futuro**, o relatório só mostra registros com data futura em relação à atual.
+* Quando configurado como **Os últimos 30 dias**, o relatório só mostra registros entre o momento atual e 30 dias antes.
+* Quando configurado como **Os próximos 30 dias**, o relatório só mostra registros entre o momento atual e 30 dias no futuro.';
 $string['reportbuilderdescription_help'] = '# Descrição
-
 Quando uma descrição de relatório é criada, as informações são exibidas em uma caixa acima dos filtros de pesquisa na página do relatório.';
 $string['reportbuilderdialogfilter_help'] = '# Criador de relatórios: Filtro do diálogo
-
 Esse filtro permite filtrar as informações com base na hierarquia. O filtro tem as seguintes opções:
-
-*   tem qualquer valor - essa opção desativa o filtro (isto é, todas as informações são aceitas por este filtro)
-*   é igual a - essa opção permite apenas as informações iguais ao valor selecionado na lista
-*   não é igual a - essa opção permite apenas as informações diferentes do valor selecionado na lista
-
+* tem qualquer valor - essa opção desativa o filtro (isto é, todas as informações são aceitas por este filtro)
+* é igual a - essa opção permite apenas as informações iguais ao valor selecionado na lista
+* não é igual a - essa opção permite apenas as informações diferentes do valor selecionado na lista
 Depois que um item de estrutura foi selecionado, você pode usar a caixa de seleção \'Incluir filiais?\' para escolher se irá corresponder apenas a esse item, ou a esse item e aqualquer subitem que pertença a ele.';
 $string['reportbuilderexportoptions_help'] = '# Configurações da exportação de relatório
-
 **Configurações da exportação de relatório** permitem que o usuário com as permissões apropriadas especifique as opções de exportação disponíveis para os usuários no final da página do relatório. Essa configuração afeta todos os relatórios do **Criador de relatórios**.
-
 Quando várias opções são selecionadas, o usuário pode escolher suas opções preferidas no menu suspenso da exportação.
-
 Quando nenhuma opção estiver selecionada, a função de exportação é desativada..';
 $string['reportbuilderfilters_help'] = '# Opções de pesquisa (filtros)
-
 **Opções de pesquisa** permite personalizar os filtros que aparecem no seu relatório. Os filtros disponíveis são determinados pela **Fonte** do relatório. Cada fonte do relatório possui um conjunto de filtros padrão.
-
 Os filtros podem ser adicionados, classificados e removidos.
-
 **Adicionando filtros:** Para adicionar um novo filtro ao relatório, escolha o filtro exigido no menu suspenso \'Adicionar outro filtro...\' e clique em **Salvar alterações**. Quando **Avançado** é marcado, o filtro não aparece na caixa \'Pesquisar por\' por padrão, o usuário pode clicar em **Mostrar avançado** para ver esses filtros.
-
 **Movendo filtros:** Os filtros irão aparecer na caixa \'Pesquisar por\' na ordem em que estão listados. Use as setas para cima e para baixo para alterar a ordem.
-
 **Excluindo filtros:** Clique no botão **Excluir** (o ícone da cruz) à direita do filtro do relatório para removê-lo
-
 **Alterando vários tipos de filtro:** Você pode modificar vários tipos de filtros ao mesmo tempo selecionando um filtro diferente no menu suspenso e clicando em **Salvar alterações**.';
 $string['reportbuilderfullname_help'] = '# Nome do relat�rio
-
 Este � o nome que ir� aparecer no topo da p�gina do relat�rio, no bloco "Gerente do relat�rio".';
 $string['reportbuilderglobalsettings'] = 'Configurações globais do criador de relatórios';
 $string['reportbuildergroupname_help'] = '# Criador de relatórios: Nome do grupo
-
 O nome do grupo. Permite identificar o grupo quando você deseja criar um novo relatório com base nele. Procure o nome no menu suspenso da fonte do relatório.';
 $string['reportbuildergrouptag_help'] = '# Criador de relatórios: Marca do grupo
-
 Quando você cria um grupo usando uma marca, qualquer atividade que tenha a marca oficial especificada automaticamente fará parte do grupo. Se você adicionar ou remover as marcas de uma atividade, o grupo será atualizado para incluir/excluir essa atividade.';
 $string['reportbuilderhidden_help'] = '# Ocultar nos Meus relatórios
-
 Quando **Ocultar nos meus relatórios** está marcado, o relatório não aparece na página \'Meus relatórios\' para qualquer usuário conectado.
-
 **Nota:** A opção **Ocultar nos meus relatórios** só oculta o link para o relatório. Os usuários com as permissões de acesso corretas ainda podem acessar o relatório usando o URL.';
 $string['reportbuilderrecordsperpage_help'] = '# Número de registros por página
-
 **Número de registros por página** permite definir quantos registros diferentes são exibidos em uma página do relatório.
-
 O número máximo de registros que podem ser exibidos em uma página é 5000. Quanto mais registros configurados para exibir na página, mais a exibição demora.
-
 A recomendação é **limitar o número de registros por página a 40**.';
 $string['reportbuilderrolesaccess_help'] = '# Funções com acesso
-
 Quando **Restringir acesso** estiver configurado como **Apenas certos usuários podem visualizar este relatório**, você pode especificar quais funções podem visualizar o relatório, usando ** Funções com permissão para visualizar o relatório**.
-
 Você pode selecionar uma ou várias funções na lista.
-
 Quando **Restringir acesso** estiver configurado como **configurado como Todos os usuários podem visualizar este relatório**, essas opções são desativadas.';
 $string['reportbuildershortname_help'] = '# Criador de relatórios: Nome exclusivo
-
 O nome curto é usado pelo Moodle para rastrear este relatório. Dois relatórios não podem receber o mesmo nome curto, mesmo que sejam baseados na mesma fonte. Evite usar caracteres especiais neste texto (texto, números e sublinhado são permitidos).';
 $string['reportbuildersorting_help'] = '# Classificação
-
 **Classificação** permite configurar uma coluna padrão e uma ordem de classificação em um relatório.
-
 O usuário ainda poderá classificar o relatório manualmente enquanto o visualiza. As preferências do usuário serão salvas durante a sessão ativa. Quando ele terminar a sessão, o relatório retorna às configurações padrão de classificação definidas aqui.';
 $string['reportbuildersource_help'] = '# Fonte
-
 A **Fonte** do relatório define o tipo primário dos dados usados. As opções adicionais de filtragem estão disponíveis assim você começa a editar o relatório.
-
 Depois de salva, a fonte do relatório não pode ser alterada.
-
 **Nota:** Se nenhuma opção estiver disponível no campo **Fonte**, ou se a fonte exigida não aparecer, você precisará que a instalação do Totara seja configurada para incluir os dados da fonte exigida (isso pode ser feito na interface do Totara).';
 $string['reportbuildertrainer_help'] = '# Criador de relatórios: Mostrar por instrutor
-
 Esse critério é ativado marcando a caixa de seleção "Mostrar registros por instrutor". Se selecionado, o relatório irá mostrar registros diferentes dependendo de qual instrutor pessoal forneceu o feedback.
-
 Se "Mostrar registros em que o usuário é o instrutor" for selecionado, o relatório mostrar o feedback das sessões em que o usuário que visualiza o relatório foi o instrutor.
-
 Se "Registros em que um dos subordinados diretos do usuário é o instrutor" for selecionado, o relatório mostrará os registros das sessões treinadas pela equipe da pessoa que visualiza o relatório.
-
 Se "Ambos" for selecionado, os dois registros acima serão mostrados.';
 $string['reportbuilderuser_help'] = '# Mostrar por usuário
-
 Quando **Mostrar registros por usuário** estiver selecionado, o relatório irá mostrar diferentes registros dependendo do usuário que visualiza o relatório e sua relação com outros usuários.
-
 **Incluir registros de um usuário específico** controla quais registros o usuário que visualiza o relatório pode ver:
-
-*   Quando configurado como **Os registros do próprio usuário**, o usuário só pode ver seus registros.
-*   Quando configurado como **Registros dos subordinados diretos do usuário**, o usuário pode ver os registros que pertençam a qualquer usuário que seja seu subordinado (um usuário é atribuído a um gerente no seu perfil de usuário na guia \'Posições\').
-*   Quando configurado como **Ambos**, o usuário pode ver seus próprios registros e os dos seus subordinados diretos.';
+* Quando configurado como **Os registros do próprio usuário**, o usuário só pode ver seus registros.
+* Quando configurado como **Registros dos subordinados diretos do usuário**, o usuário pode ver os registros que pertençam a qualquer usuário que seja seu subordinado (um usuário é atribuído a um gerente no seu perfil de usuário na guia \'Posições\').
+* Quando configurado como **Ambos**, o usuário pode ver seus próprios registros e os dos seus subordinados diretos.';
 $string['reportcolumns'] = 'Colunas do relatório';
 $string['reportconfirmdelete'] = 'Tem certeza que deseja excluir este relatório?';
 $string['reportconfirmreload'] = 'Este é um relatório incorporado, portanto você não pode excluí-lo (isso deve ser feito pelo desenvolvedor do site). Você pode optar por redefinir as configurações do relatório para seus valores originais. Deseja continuar?';

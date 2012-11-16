@@ -247,7 +247,6 @@ $string['surveyname'] = 'Name der Umfrage';
 $string['surveysaved'] = 'Umfrage gespeichert';
 $string['surveytype'] = 'Typ der Umfrage';
 $string['surveytype_help'] = 'Es gibt 3 verfügbare Umfragetypen:
-
 * Attitudes to Thinking and Learning Survey (ATTLS) - Umfrage zum Denk- und Lernverhalten. Sie zielt auf die Untersuchung, in welchem Umfang eine Person ein \'verbundener Wissender\' (kooperativ, auf Ideen anderer aufbauend, mit anderen zusammen) oder ein \'isolierter Wissender\' (kritisch, argumentierend, auf sich selbst verlassend) ist.
 * Critical Incidents survey - Untersuchung kritischer Vorfälle
 * Constructivist On-line Learning Environment Survey (COLLES) - Umfrage zur Untersuchung einer konstruktivistischen Online-Lernumgebung. Sie dient der Erfassung, in welchem Ausmaß die interaktiven Möglichkeiten des Internets auf die Lernmotivation in dynamischen Lernmethoden wirken.';

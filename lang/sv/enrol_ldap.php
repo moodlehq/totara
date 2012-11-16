@@ -39,7 +39,7 @@ $string['course_summary'] = 'Valfritt: LDAP-fält att hämta sammanfattningen fr
 $string['editlock'] = 'Låsets värde';
 $string['enrolname'] = 'LDAP';
 $string['general_options'] = 'Allmänna alternativ';
-$string['host_url'] = 'Ange LDAP-värden i URL-form som \'ldap://ldap.myorg.com/\' 
+$string['host_url'] = 'Ange LDAP-värden i URL-form som \'ldap://ldap.myorg.com/\'
 eller \'ldaps://ldap.myorg.com/\'';
 $string['memberattribute'] = 'Attribut för medlem i LDAP';
 $string['objectclass'] = 'objectClass som används för att söka kurser. Vanligtvis \'posixGroup\'.';

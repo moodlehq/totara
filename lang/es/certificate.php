@@ -55,9 +55,7 @@ A4 Embebido imprime tamaño A4 con la fuente (tipografia) embebida.
 A4 No-Embebido imprime tamaño A4 sin embeber las tipografia.
 Letter Embebido imprime tamaño Letter embebiendo la tipografia.
 Letter No-Embebido imprime Letter sin embeber la tipografia.
-
 Los tipos no-embebidos usan las fuente: Helvetica y Time New Roman. Si consideras que los usuarios no van a tener estas fuentes instaladas en sus computadoras, entonces debes escoger la opción de "tipografía embebida". Las fuentes embebidas son: Dejavusans y Dejavuserif. Esto hará que el PDF sea más pesado, pero asegura su correcta visualización.
-
 Pueden ser agregados nuevos tipos dentro de la carpeta certificate/type folder. El nombre de la carpeta y cada nuevo string de lenguaje debe ser agregado en el archivo de lenguajes del módulo certificado.';
 $string['certify'] = 'Por la siguiente certifico que';
 $string['code'] = 'Código';
@@ -67,7 +65,6 @@ $string['coursegrade'] = 'Calificación del curso';
 $string['coursename'] = 'Curso';
 $string['credithours'] = 'Horas Acreditadas';
 $string['customtext'] = 'Texto por default';
-$string['customtext_help'] = 'Si querés que el certificado imprima distintos nombres de profesores en lugar de aquellos que estan designados con el rol de profesor, no selecciones "Imprimir Profesor". Ingresa el nombre de los docentes según como quieres que aparezcan. Por defecto el texto será ubicado abajo a la izquierda del certificado. Lo siguientes campos HTML son válidos: &lt;br&gt;, &lt;p&gt;, &lt;b&gt;, &lt;i&gt;, &lt;u&gt;, &lt;img&gt; (src and width (or height) are mandatory), &lt;a&gt; (href is mandatory), &lt;font&gt; (possible attributes are: color, (hex color code), face, (arial, times, courier, helvetica, symbol)).';
 $string['date'] = 'On';
 $string['datefmt'] = 'Formato de Fecha';
 $string['datefmt_help'] = 'Seleccione un formato de fecha para mostrarlo en el certificado. O, seleccione la última opción para que se imprima en el formato en el que el usuario tiene el lenguaje definido.';
@@ -105,7 +102,6 @@ $string['grade'] = 'Calificación';
 $string['gradedate'] = 'Fecha de Calificación';
 $string['gradefmt'] = 'Formato de Calificación';
 $string['gradefmt_help'] = 'Existen tres formatos disponibles si escoges mostrar la calificacion en el certificado:
-
 Calificación Porcentual: Imprime la calificación como un porcentaje.
 Calificación Numérica: Imprime el valor numérico de la calificación.
 Calificación por Letra: Imprime el porcentaje de calificación como una letra.';

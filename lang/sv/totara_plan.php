@@ -455,7 +455,6 @@ $string['plan_instructions_delete'] = 'Du kan radera denna utbildningsplan genom
 $string['plan_instructions_edit'] = 'Du kan klicka knappen "Redigera detaljer" för att ändra namnet på utbildningsplanen, kort beskrivning eller datum för färdigställande.';
 $string['plan_instructions_learner'] = 'Nedan är en kort sammanfattning av din utbildningsplan.';
 $string['plan_instructions_manager'] = 'Nedan är en kort sammanfattning av din medarbetares utbildningsplan.';
-$string['planapprovalrequested'] = 'Godkännandeförfrågan för plan <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Plan "{$a}" har godkänts';
 $string['plancomplete'] = 'Färdigställ plan';
 $string['plancompleted'] = 'Denna plan har markerats som avklarad. Den kan inte längre redigeras och alla statusindikatorer visar status vid planens avklarande.';

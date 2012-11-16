@@ -69,8 +69,7 @@ Ver detalles en {$a->url}.';
 $string['emailacceptsubject'] = '[Contribución AMOS] Aceptada';
 $string['emailcontributionbody'] = 'El usuario {$a->author} ha enviado una nueva traducción #{$a->id} {$a->subject}.
 
-Ver detalles en {$a->url}.
-';
+Ver detalles en {$a->url}.';
 $string['emailcontributionsubject'] = '[Contribución AMOS] Enviada nueva traducción';
 $string['emailrejectbody'] = 'El coordinador del paquete de idioma {$a->assignee} ha rechazado su contribución a la traducción #{$a->id} {$a->subject}.
 
@@ -97,8 +96,8 @@ $string['filtermisfwog'] = 'sin cadenas en gris';
 $string['filtersid'] = 'Identificador de cadena';
 $string['filtersid_desc'] = 'La clave en la matriz de cadenas';
 $string['filtertxt'] = 'Sub-cadena';
-$string['filtertxtcasesensitive'] = 'sensible a mayúsculas';
 $string['filtertxt_desc'] = 'La cadena debe contener un texto dado';
+$string['filtertxtcasesensitive'] = 'sensible a mayúsculas';
 $string['filtertxtregex'] = 'regex';
 $string['filterver'] = 'Versiones';
 $string['filterver_desc'] = 'Mostrar cadenas de estas versiones de Moodle';

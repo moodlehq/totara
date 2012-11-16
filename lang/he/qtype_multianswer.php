@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['confirmquestionsaveasedited'] = 'אני מאשר כי ברצוני שהשאלה תשמר כפי שנערכה';
-$string['confirmsave'] = 'אשר ולאחר מכן שמור {$a}
-';
+$string['confirmsave'] = 'אשר ולאחר מכן שמור {$a}';
 $string['correctanswer'] = 'תשובה נכונה';
 $string['correctanswerandfeedback'] = 'תשובה נכונה ומשוב';
 $string['decodeverifyquestiontext'] = 'פיענוח ואימות תחביר טקסט השאלה';
@@ -42,14 +41,13 @@ $string['noquestions'] = 'שאלת ה-Cloze (תשובה מרובה)
 "<strong>{$a}</strong>"
 לא מכילה אף שאלה.';
 $string['pluginname'] = 'תשובות משובצות (Cloze)';
+$string['pluginname_help'] = 'תשובות משובצות (Cloze) מורכבות מקטע של טקסט עם שאלות כגון מרובות-בחירה ןשאלות קצרות מוכללות בהן.';
 $string['pluginnameadding'] = 'הוספת תשובות משובצות (Cloze)';
 $string['pluginnameediting'] = 'עריכת תשובות משובצות  (Cloze)';
-$string['pluginname_help'] = 'תשובות משובצות (Cloze) מורכבות מקטע של טקסט עם שאלות כגון מרובות-בחירה ןשאלות קצרות מוכללות בהן.';
 $string['pluginnamesummary'] = 'שאלות מסוג זה הן גמישות ביותר, אולם ניתן ליוצרן רק על ידי בכנסת טקסט הכולל קודים מיוחדים היוצרים שאלות מרובות-בחירה, תשובות-קצרות ומספריות מוכללות.';
 $string['qtypenotrecognized'] = 'סוג שאלה (questiontype) {$a} לא מזוהה';
 $string['questiondefinition'] = 'הגדרת שאלה';
-$string['questiondeleted'] = 'השאלה הוסרה
-';
+$string['questiondeleted'] = 'השאלה הוסרה';
 $string['questioninquiz'] = '<ul>
 <li> הוסף או מחק שאלות, </li>
 <li> שנה את סדר השאלות בטקסט, </li>
@@ -59,11 +57,10 @@ $string['questioninquiz'] = '<ul>
 $string['questionnadded'] = '"השאלה התווספה"';
 $string['questionnotfound'] = 'לא ניתן למצוא שאלה מחלק השאלה #{$a}';
 $string['questionsaveasedited'] = 'השאלה תשמר כפי שנערכה';
-$string['questionsless'] = ' {$a} פחות שאלות מאשר שאלות מרובות תשובות  נשמרו במסד הנתונים';
+$string['questionsless'] = '{$a} פחות שאלות מאשר שאלות מרובות תשובות  נשמרו במסד הנתונים';
 $string['questionsmissing'] = 'טקסט השאלה חייב להכיל לפחות תשובה משובצת אחת לפחות.';
 $string['questionsmore'] = '{$a} יותר שאלות מאשר שאלות מרובות תשובות  נשמרו במסד הנתונים';
-$string['questiontypechanged'] = 'סוג השאלה השתנה
-';
+$string['questiontypechanged'] = 'סוג השאלה השתנה';
 $string['questiontypechangedcomment'] = 'לפחות סוג שאלה אחד השתנה.
 <br>
 האם הוספת, מחקת או הזזתה שאלה?

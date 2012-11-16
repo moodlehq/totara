@@ -123,7 +123,6 @@ $string['updaterate'] = 'Modifier la vitesse :';
 $string['userlist'] = 'Liste d\'utilisateurs';
 $string['usingchat'] = 'Utilisation du chat';
 $string['usingchat_help'] = 'Le module de chat contient quelques fonctions rendant le chat un peu plus sympathique.
-
 *Binettes : toutes les binettes (emoticons) que vous pouvez utiliser dans Moodle peuvent aussi être tapées ici, par exemple, :-)
 * Liens : les adresses Internet (URLs) sont automatiquement transformées en liens actifs.
 * Personnalisation : vous pouvez commencer une ligne avec « /me » ou « : » pour personnaliser vos interventions. Si votre nom est Héloïse, et que vous tapez « :rigole ! » ou « /me rigole ! », tout le monde lira « Héloïse rigole ! ».

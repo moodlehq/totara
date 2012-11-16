@@ -25,12 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Zobacz repozytorium alfresco';
 $string['alfresco_url'] = 'Adres URL alfresco';
 $string['alfrescourltext'] = 'Adres URL interfejsu API Alfresco powinien być następujący: http://yoursite.com/alfresco/api';
-$string['alfresco:view'] = 'Zobacz repozytorium alfresco';
 $string['configplugin'] = 'Konfiguracja alfresco';
 $string['password'] = 'Hasło';
 $string['pluginname'] = 'Repozytorium alfresco';
-$string['pluginname_help'] = 'Wtyczka dla systemu CMS Alfresco ';
+$string['pluginname_help'] = 'Wtyczka dla systemu CMS Alfresco';
 $string['soapmustbeenabled'] = 'Rozszerzenie SOAP musi być włączone dla wtyczki alfresco';
 $string['username'] = 'Nazwa użytkownika';

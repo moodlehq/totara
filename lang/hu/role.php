@@ -250,7 +250,6 @@ $string['overrides'] = 'Felülírja';
 $string['overridesbycontext'] = 'Felülírások (környezet)';
 $string['permission'] = 'Engedély';
 $string['permission_help'] = 'Az engedélyek konkrét lehetőségekre módot adó beállítások. Négy érték közül választhat:
-
 * Nincs beállítva
 * Engedélyez - Engedélyezi a lehetőség használatát
 * Megakadályoz - A lehetőség használatától megvonja az engedélyt, még akkor is, ha ez egy magasabb környezetben engedélyezve van.

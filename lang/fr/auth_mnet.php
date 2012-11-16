@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'Si ce réglage est activé, un enregistrement d\'utilisateur local est créé automatiquement quand un utilisateur distant se connecte pour la première fois.';
-$string['auth_mnetdescription'] = 'Les utilisateurs s\'authentifient à travers un réseau de serveurs Moodle défini par vos réglages Réseau Moodle.';
 $string['auth_mnet_roamin'] = 'Les utilisateurs de ces serveurs peuvent accéder à votre Moodle';
 $string['auth_mnet_roamout'] = 'Vos utilisateurs peuvent accéder à ces serveurs';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'Délai en secondes pour l\'authentification par transport XMLRPC.';
+$string['auth_mnetdescription'] = 'Les utilisateurs s\'authentifient à travers un réseau de serveurs Moodle défini par vos réglages Réseau Moodle.';
 $string['auto_add_remote_users'] = 'Ajouter automatiquement les utilisateurs distants';
 $string['pluginname'] = 'Authentification MNet';
 $string['rpc_negotiation_timeout'] = 'Délai de négociation RPC échu';

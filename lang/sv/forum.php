@@ -42,7 +42,7 @@ $string['attachment_help'] = 'Alternativt kan Du bifoga en eller flera filer til
 $string['attachmentnopost'] = 'Du kan inte exportera bilagor utan ett ID för inlägget.';
 $string['attachments'] = 'Bilagor';
 $string['blockafter'] = 'Tröskel för blockering av inlägg';
-$string['blockafter_help'] = 'Den här inställningen specificerar det maximala antalet inlägg som en användare kan göra inom den givna tiden.  Användare med kapaciteten mod/forum:postwithoutthrottling är undantagna från den här begränsningen.';
+$string['blockafter_help'] = 'Den här inställningen specificerar det maximala antalet inlägg som en användare kan göra inom den givna tiden. Användare med kapaciteten mod/forum:postwithoutthrottling är undantagna från den här begränsningen.';
 $string['blockperiod'] = 'Tidsperiod för blockering';
 $string['blockperiod_help'] = 'Studenter/elever/deltagare/lärande kan blockeras från att göra fler än det givna antalet inlägg inom tidsperioden. Användare med kapaciteten mod/forum:postwithoutthrottling är undantagna från den här begränsningen.';
 $string['blockperioddisabled'] = 'Blockera inte';
@@ -126,19 +126,15 @@ $string['discussionsstartedby'] = '{$a}  inledde det här diskussionsämnet';
 $string['discussionsstartedbyrecent'] = 'Diskussioner som nyligen har inletts av \'{$a}\'.';
 $string['discussthistopic'] = 'Diskutera detta ämne';
 $string['displayend'] = 'Visa slut';
-$string['displayend_help'] = '<p>Du kan v&auml;lja om Ditt inl&auml;gg i ett forum ska visas fr.o.m. ett visst datum, utg&aring; efter ett visst datum eller om det bara ska visas under en viss period.</p>
-
-<p>Avmarkera alternativet/en Avaktivera f&ouml;r att aktivera ett start- och/eller ett slutdatum. </p>
-
-<p>L&auml;gg m&auml;rke tilll att anv&auml;ndare med r&auml;ttigheter som administrat&ouml;rer kommer att kunna se meddelandena innan de publiceras och efter det att de har \'tagits bort\'. </p>';
+$string['displayend_help'] = 'Du kan välja om Ditt inlägg i ett forum ska visas fr.o.m. ett visst datum, utgå efter ett visst datum eller om det bara ska visas under en viss period.
+Avmarkera alternativet/en Avaktivera för att aktivera ett start- och/eller ett slutdatum.
+Lägg märke tilll att användare med rättigheter som administratörer kommer att kunna se meddelandena innan de publiceras och efter det att de har \'tagits bort\'.';
 $string['displaymode'] = 'Läge för visning';
 $string['displayperiod'] = 'Visa period';
 $string['displaystart'] = 'Visa start';
-$string['displaystart_help'] = '<p>Du kan v&auml;lja om Ditt inl&auml;gg i ett forum ska visas fr.o.m. ett visst datum, utg&aring; efter ett visst datum eller om det bara ska visas under en viss period.</p>
-
-<p>Avmarkera alternativet/en Avaktivera f&ouml;r att aktivera ett start- och/eller ett slutdatum. </p>
-
-<p>L&auml;gg m&auml;rke tilll att anv&auml;ndare med r&auml;ttigheter som administrat&ouml;rer kommer att kunna se meddelandena innan de publiceras och efter det att de har \'tagits bort\'. </p>';
+$string['displaystart_help'] = 'Du kan välja om Ditt inlägg i ett forum ska visas fr.o.m. ett visst datum, utgå efter ett visst datum eller om det bara ska visas under en viss period.
+Avmarkera alternativet/en Avaktivera för att aktivera ett start- och/eller ett slutdatum.
+Lägg märke tilll att användare med rättigheter som administratörer kommer att kunna se meddelandena innan de publiceras och efter det att de har \'tagits bort\'.';
 $string['eachuserforum'] = 'Var och en  bidrar med ett  diskussionsämne';
 $string['edit'] = 'Redigera';
 $string['editedby'] = 'Redigerad av  {$a->name} - {$a->date}';
@@ -190,20 +186,21 @@ $string['forumsubjecthidden'] = 'Ämne (dolt)';
 $string['forumtracked'] = 'Olästa inlägg spåras';
 $string['forumtrackednot'] = 'Olästa inlägg spåras inte';
 $string['forumtype'] = 'Typ av forum';
-$string['forumtype_help'] = '<p>Det flera olika typer av forum som Du kan välja mellan:</p>
-<p><b>Ett enda enskilt diskussionsämne</b> -
+$string['forumtype_help'] = 'Det flera olika typer av forum som Du kan välja mellan:
+**Ett enda enskilt diskussionsämne** -
 det är bara ett tema, allt på en sida.
-Detta passar bra för korta fokuserade diskussioner.</p>
-<p><b>Standardforum för allmänt bruk</b> -
+Detta passar bra för korta fokuserade diskussioner.
+**Standardforum för allmänt bruk** -
 det är ett öppet forum där var och en kan
 initiera ett nytt diskussionsämne när som helst.
-Detta är det bästa forumet för allmänna ändamål.</p>
-<p><b>Varje person initierar ett diskussionsämne</b> - Varje person kan
+Detta är det bästa forumet för allmänna ändamål.
+**Varje person initierar ett diskussionsämne** - Varje person kan
 initiera exakt ett nytt diskussionsämne (alla kan dock svara).
 Detta passar bra när Du vill att varje enskild student/elev/deltagare/lärande
 ska initiera en diskussion t ex om deras reflektioner angående veckans ämne, och alla
-andra ska kunna ge respons på dessa.</p><p>Fråga/Svar-forum  Varje enskild student/elev/deltagare/lärande måste först göra inlägg om sina egna perspektiv innan de kan visa de andras. </p>
-<p>(Detta kommer att utvecklas mer i kommande versioner av Moodle)</p>';
+andra ska kunna ge respons på dessa.
+Fråga/Svar-forum Varje enskild student/elev/deltagare/lärande måste först göra inlägg om sina egna perspektiv innan de kan visa de andras.
+(Detta kommer att utvecklas mer i kommande versioner av Moodle)';
 $string['generalforum'] = 'Standardforum för allmänt bruk';
 $string['generalforums'] = 'Allmänna forum';
 $string['inforum'] = 'i {$a}';
@@ -231,11 +228,11 @@ $string['markunreadbutton'] = 'Markera <br  />som oläst';
 $string['maxattachments'] = 'Maximalt antal bilagor';
 $string['maxattachments_help'] = 'Den här inställningen anger maximalt antal filer som man får bifoga till ett inlägg i ett forum.';
 $string['maxattachmentsize'] = 'Maximal storlek på bifogad fil';
-$string['maxattachmentsize_help'] = '<p>Den person som har satt upp ett forum kan s&auml;tta begr&auml;nsningar
-f&ouml;r hur stora de bifogade filerna f&aring;r vara. </p>
-<p>Ibland &auml;r det m&ouml;jligt att ladda upp en fil som &ouml;verskrider denna
-storlek men filen kommer inte att lagras p&aring; servern och Du kan f&aring; ett
-felmeddelande.</p>';
+$string['maxattachmentsize_help'] = 'Den person som har satt upp ett forum kan sätta begränsningar
+för hur stora de bifogade filerna får vara.
+Ibland är det möjligt att ladda upp en fil som överskrider denna
+storlek men filen kommer inte att lagras på servern och Du kan få ett
+felmeddelande.';
 $string['maxtimehaspassed'] = 'Tyvärr, men maximitiden för att redigera detta inlägg ({$a}) har passerat!';
 $string['message'] = 'Meddelande';
 $string['messageprovider:digests'] = 'Sammanfattningar av forum som man har prenumererat på';
@@ -252,11 +249,10 @@ $string['movedmarker'] = '(Flyttad)';
 $string['movethisdiscussionto'] = 'Flytta det här diskussionsämnet  till...';
 $string['mustprovidediscussionorpost'] = 'Du måste ange antingen ett ID för diskussion eller ID för inlägg för att kunna exportera.';
 $string['namenews'] = 'Nyhetsforum';
-$string['namenews_help'] = '<p>Nyhetsforumet är ett speciellt forum som skapas automatiskt för varje kurs och för
+$string['namenews_help'] = 'Nyhetsforumet är ett speciellt forum som skapas automatiskt för varje kurs och för
 ingångssidan på webbplatsen. Det är en plats där man kan publicera allmänna meddelanden.
-Du kan bara ha ett nyhetsforum per kurs.</p>
-
-<p>Blocket "Senaste nytt" kommer att visa de senaste och mest aktuella diskussionena från det här speciella forumet (även om du döper om det). Av den här orsaken kommer forumet automatiskt att återskapas av Moodle om du använder blocket "Senaste nytt".</p>';
+Du kan bara ha ett nyhetsforum per kurs.
+Blocket "Senaste nytt" kommer att visa de senaste och mest aktuella diskussionena från det här speciella forumet (även om du döper om det). Av den här orsaken kommer forumet automatiskt att återskapas av Moodle om du använder blocket "Senaste nytt".';
 $string['namesocial'] = 'Gemenskapsforum';
 $string['nameteacher'] = 'Lärarforum';
 $string['newforumposts'] = 'Nya inlägg i forum';
@@ -335,21 +331,19 @@ $string['resetforumsall'] = 'Ta bort alla poster';
 $string['resetsubscriptions'] = 'Ta bort alla prenumerationer på forum';
 $string['resettrackprefs'] = 'Ta bort allt förval angående spårning av forum';
 $string['rssarticles'] = 'Antal aktuella RSS-artiklar';
-$string['rssarticles_help'] = '<p>Det h&auml;r alternativet l&aring;ter Dig v&auml;lja vilket antal RSS-artiklar
-Du vill ta med i RSS-matningen.</p>
-<p>Ett antal mellan 5 och 20 b&ouml;r vara l&auml;mpligt f&ouml;r de flesta forum.
-&Ouml;ka antalet om det &auml;r ett forum som anv&auml;nds mycket.</p>';
+$string['rssarticles_help'] = 'Det här alternativet låter Dig välja vilket antal RSS-artiklar
+Du vill ta med i RSS-matningen.
+Ett antal mellan 5 och 20 bör vara lämpligt för de flesta forum.
+Öka antalet om det är ett forum som används mycket.';
 $string['rsssubscriberssdiscussions'] = 'RSS-flöde med diskussionsämnen';
 $string['rsssubscriberssposts'] = 'RSS-flöde med inlägg';
 $string['rsstype'] = 'RSS-flöde för den här aktiviteten';
-$string['rsstype_help'] = '<p>Det h&auml;r alternativet l&aring;ter Dig aktivera RSS-matningar fr&aring;n det h&auml;r forumet.</p>
-<p>Du kan v&auml;lja mellan tv&aring; typer av forum:</p>
-<ul>
-<li><b>Diskussions&auml;mnen:</b> Om Du anv&auml;nder det h&auml;r s&aring; kommer de nya
-diskussions&auml;mnen i forumet, inklusive de inledande bidragen till dessa, att ing&aring; i de genererade utmatningarna.</li>
-<li><b>Bidrag:</b> Om Du anv&auml;nder det h&auml;r s&aring; kommer varje nytt bidrag i forumet att ing&aring;
-i de genererade utmatningarna.</li>
-</ul>';
+$string['rsstype_help'] = 'Det här alternativet låter Dig aktivera RSS-matningar från det här forumet.
+Du kan välja mellan två typer av forum:
+\* **|Diskussionsämnen:** Om Du använder det här så kommer de nya
+diskussionsämnen i forumet, inklusive de inledande bidragen till dessa, att ingå i de genererade utmatningarna.
+\* **|Bidrag:** Om Du använder det här så kommer varje nytt bidrag i forumet att ingå
+i de genererade utmatningarna.';
 $string['search'] = 'Sök';
 $string['searchdatefrom'] = 'Inlägget måste vara nyare än så här';
 $string['searchdateto'] = 'Inlägget måste vara äldre än så här';
@@ -397,19 +391,16 @@ $string['trackingoff'] = 'Av';
 $string['trackingon'] = 'På';
 $string['trackingoptional'] = 'Valfri';
 $string['trackingtype'] = 'Spåra läsningen av detta forum?';
-$string['trackingtype_help'] = '<p>Om \'spårning av lästa\' för forum är aktiverat kan användare
+$string['trackingtype_help'] = 'Om \'spårning av lästa\' för forum är aktiverat kan användare
 spåra lästa och olästa meddelanden i forum och diskussionsämnen.
 (Distans)läraren kan välja att tvinga fram en typ av spårning för
 ett forum som använder denna inställning.
-</p>
 
-<p>Det finns tre alternativ för den här inställningen:</p>
-<ul>
-<li> Valfritt [standardmässigt förval]: studenter/elever/deltagare/lärande kan
-koppla på eller av spårning frö forumet som de vill.</li>
-<li>På: Spårning är alltid på.</li>
-<li>Av: Spårning är alltid av.</li>
-</ul>';
+Det finns tre alternativ för den här inställningen:
+* Valfritt [standardmässigt förval]: studenter/elever/deltagare/lärande kan
+koppla på eller av spårning frö forumet som de vill.
+* På: Spårning är alltid på.
+* Av: Spårning är alltid av.';
 $string['unread'] = 'Oläst';
 $string['unreadposts'] = 'Olästa inlägg';
 $string['unreadpostsnumber'] = '{$a} olästa inlägg';

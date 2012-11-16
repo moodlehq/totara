@@ -66,9 +66,7 @@ $string['median'] = 'Mediaancijfer (voor {$a})';
 $string['modelresponse'] = 'Voorbeeldantwoord';
 $string['negcovar'] = 'Negatieve cijfercovariantie met totaalcijfer van de poging';
 $string['negcovar_help'] = 'Het cijfer voor deze vraag van deze set testpogingen wijkt in tegenovergestelde richting af van het algemeen cijfer van de pogingen. Dit betekent dat het algemene gemiddelde van de poging is eerder lager dan het gemiddelde wanneer het cijfer voor deze vraag boven het gemiddelde is en omgekeerd.
-
 Onze vergelijking voor effectieve vraagweging kan in dit geval niet berekend worden. De berekeningen voor effectieve vraagweging voor andere vragen in deze test zijn de effectieve vraagwegingen voor deze vragen als de gemarkeerde vragen met een negatieve covariantie een maximumcijfer 0 gegeven worden.
-
 Als je een test bewerkt en de vragen met een negatieve covariantie een maximumcijfer 0 geeft, dat zal de weging van deze vraag 0 zijn en zal de echte weging van deze vraag 0 zijn en zullen de echte effectieve wegingen van de andere vragen berekend worden.';
 $string['nostudentsingroup'] = 'Er zijn nog geen leerlingen in deze groep';
 $string['optiongrade'] = 'Gedeeltelijk krediet';
@@ -94,7 +92,7 @@ $string['standarddeviationq'] = 'Standaarddeviatie';
 $string['standarderror'] = 'Standaardafwijking (voor {$a})';
 $string['statistics'] = 'Statistieken';
 $string['statistics:componentname'] = 'Rapport teststatistieken';
+$string['statistics:view'] = 'Bekijk rapport teststatistieken';
 $string['statisticsreport'] = 'Statistisch rapport';
 $string['statisticsreportgraph'] = 'Statistiek voor vraagposities';
-$string['statistics:view'] = 'Bekijk rapport teststatistieken';
 $string['statsfor'] = 'Teststatistieken (voor {$a})';

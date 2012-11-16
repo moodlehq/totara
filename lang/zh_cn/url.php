@@ -35,7 +35,6 @@ $string['contentheader'] = '内容';
 $string['displayoptions'] = '可用的显示选项';
 $string['displayselect'] = '显示';
 $string['displayselect_help'] = '此设置，URL文件的类型，及浏览器是否允许嵌入，一起决定如何显示文件。选项可能包括：
-
 * 自动 - 对类型可以自动选择的文件，这是最好的选项
 * 嵌入 - 在导航栏下的页面中显示文件、文件描述和各种版块
 * 强制下载 - 用户会被提示下载此文件

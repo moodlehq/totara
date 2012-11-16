@@ -1,5 +1,27 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.1
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'zh_cn', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = '正在添加 {$a} 中的新课程';
 $string['addmanageremailaddress'] = '添加管理者的电子邮件地址';
@@ -13,11 +35,18 @@ $string['addsession'] = '添加新课程';
 $string['addstudent'] = '添加学生';
 $string['alllocations'] = '所有位置';
 $string['allowoverbook'] = '允许超额预约';
+$string['allowoverbook_help'] = '﻿
+# 允许超额预订
+选中“允许超额预订”后，即使某个面授学习班的名额已满，学员仍然可以报名参加。
+学员在报名参加名额已满的学习班后，会收到一封电子邮件，通知他们已被列入该学习班的申请人名单中，并且将在有名额空出时接到通知。';
 $string['allsessionsin'] = '{$a} 中的所有课程';
 $string['alreadysignedup'] = '您已注册了本次面授活动。';
 $string['answer'] = '登录';
 $string['answercancel'] = '注销';
 $string['approvalreqd'] = '需要审批';
+$string['approvalreqd_help'] = '﻿
+# 需要批准
+检查完“需要批准”后，学员需要从其负责人处获得批准才能参加面授学习班。';
 $string['approve'] = '批准';
 $string['assessmentyour'] = '您的评定';
 $string['attendance'] = '参与人数';
@@ -38,13 +67,24 @@ $string['cancelbooking'] = '取消预约';
 $string['cancelbookingfor'] = '取消 {$a} 的预约';
 $string['cancellation'] = '取消';
 $string['cancellationconfirm'] = '您确定要取消本课程的预约吗？';
+$string['cancellationinstrmngr_help'] = '﻿
+# 管理器通知
+选中**向管理器发送通知**时，**管理器通知**字段中的文本将会发送到学员的管理器中，通知他们已经取消了预订的面授学习班。';
 $string['cancellationmessage'] = '取消消息';
+$string['cancellationmessage_help'] = '﻿
+# 取消消息
+每当用户取消预订学习班时，系统会发出此消息。';
 $string['cancellations'] = '取消';
 $string['cancellationsent'] = '您应立即收到一封取消电子邮件。';
 $string['cancellationsentmgr'] = '您和您的管理者应立即收到一封取消电子邮件。';
 $string['cancellationstablesummary'] = '已取消课程注册的人员名单。';
 $string['cancelreason'] = '原因';
 $string['capacity'] = '容量';
+$string['capacity_help'] = '﻿
+# 名额数
+**名额数**是学习班中的可用名额。
+面授学习班达到最大名额数时，将不会在课程页面上显示学习班详细信息。该详细信息将以灰色显示在“查看所有学习班”页面上，并且学员将无法参与学习班。
+ ';
 $string['changemanageremailaddress'] = '更改管理者的电子邮件地址';
 $string['changemanageremailinstruction'] = '请在下方输入您当前管理者的电子邮件地址。';
 $string['clearall'] = '全部清除';
@@ -54,7 +94,13 @@ $string['conditionsexplanation'] = '必须满足所有这些标准，才能将�
 $string['confirm'] = '确认';
 $string['confirmanager'] = '确认管理者的电子邮件地址';
 $string['confirmation'] = '确认';
+$string['confirmationinstrmngr_help'] = '﻿
+# 管理器通知
+选中“向管理器发送通知”时，“管理器通知”字段中的文本将发送到管理器中，通知工作人员已注册面授学习班。';
 $string['confirmationmessage'] = '确认消息';
+$string['confirmationmessage_help'] = '﻿
+# 确认消息
+当用户登录到学习班后，系统会发出此消息。';
 $string['confirmationsent'] = '您应立即收到一封确认电子邮件。';
 $string['confirmationsentmgr'] = '您和您的管理者应立即收到一封确认电子邮件。';
 $string['confirmmanageremailaddress'] = '确认管理者的电子邮件地址';
@@ -80,12 +126,35 @@ $string['deletesession'] = '删除课程';
 $string['deletesessionconfirm'] = '您确定要删除本课程及本课程的所有注册吗？';
 $string['deletingsession'] = '正在删除 {$a} 中的课程';
 $string['description'] = '简要描述';
+$string['description_help'] = '﻿
+# 描述
+**描述**是在学员在参加面授学习班时显示的课程描述。
+**描述**也将显示在培训日历中。';
 $string['details'] = '详细信息';
+$string['details_help'] = '﻿
+对每个学习班的详细信息进行跟踪。
+如果在详细信息字段中填充了文本，则此详细信息文本将显示在用户注册页面上。
+默认情况下，此详细信息文本也会显示在确认、提示、申请人等待以及取消等用途的电子邮件中。';
 $string['discountcode'] = '折扣代码';
+$string['discountcode_help'] = '﻿
+折扣代码是在跟踪员工培训的折扣费用时需要用到的代码。
+如果员工不输入折扣代码，则培训记录中将会显示标准费用。';
 $string['discountcost'] = '折扣费用';
+$string['discountcost_help'] = '﻿
+折扣费用是对具有会员 ID 的员工所收取的金额。
+如果员工在报名参加学习班时输入会员 ID，则课程成绩簿的费用列中将显示折扣费用。';
 $string['discountcosthinttext'] = '';
 $string['due'] = '截止时间';
 $string['duration'] = '周期';
+$string['duration_help'] = '﻿
+# 持续时间
+**持续时间**是培训的总时长。
+例如：
+* “2 小时”可输入为 **2** 或 **2:00**
+* “1 小时 30 分钟”可输入为 **1:30**
+* “45 分钟”可输入为 **0:45**
+* “20 分钟”可输入为 **0:20**。
+如果在两个或更多的时间段内开展培训，则持续时间为这些时间段的总和。';
 $string['early'] = '{$a} 之前';
 $string['edit'] = '编辑';
 $string['editingsession'] = '正在编辑 {$a} 中的课程';
@@ -94,6 +163,15 @@ $string['email:instrmngr'] = '管理者通知';
 $string['email:message'] = '正文';
 $string['email:subject'] = '主题';
 $string['emailmanager'] = '向管理者发送通知';
+$string['emailmanagercancellation_help'] = '﻿
+# 向负责人发送通知
+选中“向负责人发送通知”后，学员的负责人将会收到一封电子邮件，通知他们面授学习班预定已取消。';
+$string['emailmanagerconfirmation_help'] = '﻿
+# 向负责人发送通知
+选中“向负责人发送通知”后，如果学员报名参加面授学习班，学员的负责人将会收到一封确认电子邮件。';
+$string['emailmanagerreminder_help'] = '﻿
+# 向负责人发送通知
+选中“向负责人发送通知”后，学员的负责人将在面授学习班开始的前几天收到一条提示消息。';
 $string['emptylocation'] = '位置为空';
 $string['enrolled'] = '已选修';
 $string['error:addalreadysignedupattendee'] = '{$a} 已注册了本次面授活动。';
@@ -177,6 +255,11 @@ $string['import'] = '导入';
 $string['info'] = '信息';
 $string['late'] = '\'{$a}\' 之后';
 $string['location'] = '来自';
+$string['location_help'] = '﻿
+# 位置
+**位置**描述了学习班的临近位置（市、县、地区等）。
+**位置**将显示在课程页面、“注册页面”和“查看所有学习班”页面以及所有电子邮件通知中。
+在“查看所有学习班”页面上，可根据位置筛选所列出的学习班。';
 $string['lookfor'] = '搜索';
 $string['manageradded'] = '您管理者的电子邮件地址已被接受。';
 $string['managerchanged'] = '您管理者的电子邮件地址已更改。';
@@ -194,6 +277,11 @@ $string['message'] = '课程 {$a->coursename} 的预约已更改！
 
 课程 {$a->coursename} 中日期为 {$a->duedate} ({$a->name}) 的课程有一个空缺位置。
 您已注册。如果日期不再合适，请通过 <a href=\'{$a->url}\'>{$a->url}</a> 取消注册。';
+$string['mods_help'] = '﻿
+# 面授活动
+面授活动用于对学员培训进行跟踪，需提前预定。
+将在一个或多个相同的学习班中提供每个活动。这些学习班可以持续多天。
+系统将在学习班的计划开始日期之前的几天向用户及其负责人发送提醒消息。在用户注册或取消学习班时，系统将发送确认信息。';
 $string['modulename'] = '面授';
 $string['modulenameplural'] = '面授';
 $string['moreinfo'] = '更多信息';
@@ -205,6 +293,9 @@ $string['nofacetofaces'] = '无面授活动';
 $string['none'] = '无';
 $string['noremindersneedtobesent'] = '无需发送提醒。';
 $string['normalcost'] = '正常费用';
+$string['normalcost_help'] = '﻿
+正常费用是对没有会员 ID 的人员收取的金额。
+正常费用将显示在每位参加学习班的成员的课程成绩簿的费用列中（成员在注册学习班时输入了折扣费用并输入了会员 ID 的情况除外）。';
 $string['normalcosthinttext'] = '';
 $string['nosignedupusers'] = '无用户注册此课程。';
 $string['nositenotices'] = '<p>未定义站点通知。</p>';
@@ -216,6 +307,12 @@ $string['notificationboth'] = '电子邮件通知和电子日历约会';
 $string['notificationemail'] = '仅电子邮件通知';
 $string['notificationical'] = '仅电子日历约会';
 $string['notificationtype'] = '通知类型';
+$string['notificationtype_help'] = '﻿
+# 通知类型
+“通知类型”允许学员选择他们接收预定情况通知的方式。
+* 仅 iCalendar 约会
+* 仅电子邮件通知
+* 电子邮件通知和 iCalendar 约会';
 $string['notsignedup'] = '您未注册此课程。';
 $string['notsubmittedyet'] = '尚未评价';
 $string['noupcoming'] = '<p><i>没有即将开始的课程</i></p>';
@@ -248,11 +345,31 @@ $string['really'] = '您确实要删除此面授的所有结果吗？';
 $string['registeredon'] = '注册时间';
 $string['registrations'] = '注册';
 $string['reminder'] = '提醒';
+$string['reminderinstrmngr_help'] = '﻿
+# 管理器通知
+选中**向管理器发送通知**时，**管理器通知**字段中的文本将发送到学员的管理器中，通知他们已注册面授学习班。';
 $string['remindermessage'] = '提醒消息';
+$string['remindermessage_help'] = '﻿
+# 提醒消息
+系统将在学习班开始日期的前几天发出此消息。';
 $string['reminderperiod'] = '发送消息之前的天数';
+$string['reminderperiod_help'] = '﻿
+# 提醒期间
+系统将在学习班开始前的此时间发送提醒消息。';
 $string['requestmessage'] = '申请消息';
+$string['requestmessage_help'] = '﻿
+# 请求消息
+启用**需要批准**时，**请求消息**部分将可用。
+**请求消息**部分显示了将发送到学员及其负责人的、关于学员参加面授学习班的批准流程的注意事项。
+**主题：**是显示在发送到负责人和学员的请求批准电子邮件上的主题行。
+**消息：**是将发送给学员的电子邮件文本，用于通知他们其参加面授学习班的请求已发送给其负责人进行批准。
+**负责人的注意事项：**是发送给学员的负责人的电子邮件文本，用于请求批准学员参加面授学习班。';
 $string['requeststablesummary'] = '申请参与本课程的人员。';
 $string['room'] = '教室';
+$string['room_help'] = '﻿
+# 房间
+**房间**是用于进行培训活动的房间的名称/编号/标识符。
+将在“注册”页面、“查看所有学习班”页面以及所有电子邮件通知中显示**房间**。';
 $string['saveallfeedback'] = '保存所有响应';
 $string['saveattendance'] = '保存参与人数';
 $string['scheduledsession'] = '预定课程';
@@ -262,8 +379,22 @@ $string['seeattendees'] = '查看参与者';
 $string['sentremindermanager'] = '向用户管理者发送提醒电子邮件';
 $string['sentreminderuser'] = '向用户发送提醒电子邮件';
 $string['sessiondate'] = '课程日期';
+$string['sessiondate_help'] = '﻿
+学习班日期是学习班的发生日期。';
 $string['sessiondatetime'] = '课程日期/时间';
 $string['sessiondatetimeknown'] = '课程日期/时间已知';
+$string['sessiondatetimeknown_help'] = '﻿
+**如果学习班的日期/时间已知**
+如果为此设置输入“是”，将在课程页面（如果学习班即将开始并且可用）、“查看所有学习班页面”、学习班注册页面以及与此学习班相关的所有电子邮件通知中显示学习班日期和时间。
+在成员注册具有已知日期和时间的学习班时：
+* 系统将会向成员和成员的负责人发送确认电子邮件（即，按照面授实例设置的“确认消息”部分设计格式的邮件）。
+* 系统将会向成员发送电子邮件提醒消息（即，按照面授实例设置的“提醒消息”部分设计格式的邮件）。根据“发送消息前的天数”设置（也可在面授实例设置的“提醒消息”部分找到），系统将在学习班开始前的几天发送提醒。
+**如果学习班的日期/时间未知（或等待列出）**
+如果为此设置输入“否”，将在课程页面、“查看所有学习班页面”、学习班注册页面以及所有与此学习班相关的电子邮件通知中显示文本“等待列出”。
+在成员注册等待列出的学习班时：
+* 系统将会向成员发送电子邮件确认消息（即，按照面授实例设置的“等待列出的消息”部分设计格式的邮件）。
+* 系统将不会向成员发送电子邮件提醒消息。
+* 系统将不会向成员的负责人发送确认和取消电子邮件。';
 $string['sessionfinishtime'] = '课程完成时间';
 $string['sessioninprogress'] = '进行中的课程';
 $string['sessionisfull'] = '本课程目前名额已满！您需要选择另一个时间或者与教师沟通。';
@@ -273,6 +404,9 @@ $string['sessionroles'] = '课程角色';
 $string['sessions'] = '课程';
 $string['sessionsdetailstablesummary'] = '当前课程的完整描述。';
 $string['sessionsoncoursepage'] = '课程页面中显示的课程';
+$string['sessionsoncoursepage_help'] = '﻿
+# 课程页面上的学习班数
+这是将显示在主课程页面上的每个面授活动的学习班数。';
 $string['sessionstartdate'] = '课程开始日期';
 $string['sessionstarttime'] = '课程开始时间';
 $string['sessionvenue'] = '课程场地';
@@ -281,12 +415,10 @@ $string['setting:addchangemanageremail_caption'] = '管理者的电子邮件：'
 $string['setting:addchangemanageremaildefault'] = '请用户提供其管理者的电子邮件地址。';
 $string['setting:defaultcancellationinstrmngr'] = '发送给管理者的默认取消消息。';
 $string['setting:defaultcancellationinstrmngr_caption'] = '取消消息（管理者）';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [名] [姓] 的预约取消信息复制如下 ****';
 $string['setting:defaultcancellationinstrmngrdefault'] = '*** 仅用于通知 ****
 
-本邮件是为了通知将您列为团队主管/管理者的 [名] [姓] 不再注册以下课程
-
-';
-$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [名] [姓] 的预约取消信息复制如下 ****';
+本邮件是为了通知将您列为团队主管/管理者的 [名] [姓] 不再注册以下课程';
 $string['setting:defaultcancellationmessage'] = '发送给用户的默认取消消息。';
 $string['setting:defaultcancellationmessage_caption'] = '取消消息';
 $string['setting:defaultcancellationmessagedefault'] = '本邮件是为了通知您已取消以下课程的预约：
@@ -308,14 +440,12 @@ $string['setting:defaultcancellationsubject_caption'] = '取消主题';
 $string['setting:defaultcancellationsubjectdefault'] = '课程预约取消';
 $string['setting:defaultconfirmationinstrmngr'] = '发送给管理者的默认确认消息。';
 $string['setting:defaultconfirmationinstrmngr_caption'] = '确认消息（管理者）';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [名] [姓] 的预约确认信息复制如下 ****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '*** 仅用于通知 ****
 
 本邮件是为了通知将您列为团队主管/管理者的 [名] [姓] 已预约以下课程。
 
-如果您不是其团队主管/管理者，并且确信您错误地收到了这封电子邮件，请回复本电子邮件。如果您有任何与参与本课程的员工相关的问题，请直接与这些员工沟通。
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [名] [姓] 的预约确认信息复制如下 ****';
+如果您不是其团队主管/管理者，并且确信您错误地收到了这封电子邮件，请回复本电子邮件。如果您有任何与参与本课程的员工相关的问题，请直接与这些员工沟通。';
 $string['setting:defaultconfirmationmessage'] = '发送给用户的默认确认消息。';
 $string['setting:defaultconfirmationmessage_caption'] = '确认消息';
 $string['setting:defaultconfirmationmessagedefault'] = '本邮件是为了确认您已预约以下课程：
@@ -345,14 +475,12 @@ $string['setting:defaultconfirmationsubject_caption'] = '确认主题';
 $string['setting:defaultconfirmationsubjectdefault'] = '课程预约确认：[面授名称]、[开始时间]-[结束时间]、[课程日期]';
 $string['setting:defaultreminderinstrmngr'] = '发送给管理者的默认提醒消息。';
 $string['setting:defaultreminderinstrmngr_caption'] = '提醒消息（管理者）';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [名] [姓] 的提醒电子邮件复制如下 ****';
 $string['setting:defaultreminderinstrmngrdefault'] = '*** 仅用于提醒 ****
 
 您的员工 [名] [姓] 预约参与上述课程，并且已收到了这封提醒电子邮件。
 
-如果您不是其团队主管/管理者，并且确信您错误地收到了这封电子邮件，请回复本电子邮件。
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [名] [姓] 的提醒电子邮件复制如下 ****';
+如果您不是其团队主管/管理者，并且确信您错误地收到了这封电子邮件，请回复本电子邮件。';
 $string['setting:defaultremindermessage'] = '发送给用户的默认提醒消息。';
 $string['setting:defaultremindermessage_caption'] = '提醒消息';
 $string['setting:defaultremindermessagedefault'] = '本邮件是为了提醒您已预约以下课程：
@@ -378,6 +506,7 @@ $string['setting:defaultremindermessagedefault'] = '本邮件是为了提醒您�
 $string['setting:defaultremindersubject'] = '提醒电子邮件的默认主题行。';
 $string['setting:defaultremindersubject_caption'] = '提醒主题';
 $string['setting:defaultremindersubjectdefault'] = '课程预约提醒：[面授名称]、[开始时间]-[结束时间]、[课程日期]';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [名] [姓] 的预约申请信息复制如下 ****';
 $string['setting:defaultrequestinstrmngrdefault'] = '本邮件是为了通知将您列为团队主管/管理者的 [名] [姓] 已申请预约以下课程。
 
 课程：   [面授名称]
@@ -392,10 +521,7 @@ $string['setting:defaultrequestinstrmngrdefault'] = '本邮件是为了通知将
 教室：   [课程：教室]
 
 请访问以下链接来批准申请：
-[参与者链接]
-
-';
-$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [名] [姓] 的预约申请信息复制如下 ****';
+[参与者链接]';
 $string['setting:defaultrequestmessagedefault'] = '您对以下课程的预约申请已发送给您的管理者：
 
 参与者：   [名] [姓]
@@ -450,8 +576,14 @@ $string['setting:sessionroles'] = '可以跟踪分配给一个课程中选定角
 $string['setting:sessionroles_caption'] = '课程角色：';
 $string['setting:showinsummary'] = '在导出和列表中显示';
 $string['setting:type'] = '字段类型';
+$string['shortname_help'] = '﻿
+# 简称
+**简称**是在启用**在日历上显示**时，显示在培训日历上的学习班描述信息。';
 $string['showbylocation'] = '按位置显示';
 $string['showoncalendar'] = '在日历上显示';
+$string['showoncalendar_help'] = '﻿
+# 在日历上显示
+启用**在日历上显示**时，面授活动学习班会显示在培训日历上。';
 $string['sign-ups'] = '注册';
 $string['signup'] = '注册';
 $string['signupfor'] = '注册 {$a}';
@@ -476,16 +608,31 @@ $string['submit'] = '提交';
 $string['submitted'] = '提交时间';
 $string['summary'] = '概要';
 $string['suppressemail'] = '禁止电子邮件通知';
+$string['suppressemail_help'] = '﻿
+# 禁用电子邮件通知
+如果您要以静默方式从面授学习班中添加/移除用户，请使用此选项。切换到此选项时，系统将不会向所选用户发送常规确认电子邮件。';
 $string['takeattendance'] = '点名';
 $string['thirdpartyemailaddress'] = '第三方电子邮件地址';
+$string['thirdpartyemailaddress_help'] = '﻿
+# 第三方电子邮件地址
+**第三方电子邮件地址**是一个可选字段，用于指定在用户注册学习班时将接收确认消息的第三方（例如外部教师）。
+输入**多个电子邮件地址**时，请用逗号分隔每个地址。例如：bob@example.com,joe@example.com';
 $string['thirdpartywaitlist'] = '通知第三方已加入等待名单的课程';
+$string['thirdpartywaitlist_help'] = '﻿
+# 向第三方通知等待列出的学习班
+选中**向第三方通知等待列出的学习班**时，系统将在学员注册等候批准的学习班时通知第三方。 未启用
+**向第三方通知等待列出的学习班**时，系统将不会在用户注册（或取消）预订学习班时通知第三方。';
 $string['time'] = '时间';
 $string['timecancelled'] = '取消时间';
 $string['timedue'] = '注册最后期限';
 $string['timefinish'] = '完成时间';
+$string['timefinish_help'] = '﻿
+完成时间是学习班的结束时间。';
 $string['timerequested'] = '申请时间';
 $string['timesignedup'] = '注册时间';
 $string['timestart'] = '开始时间';
+$string['timestart_help'] = '﻿
+开始时间是学习班的开始时间。';
 $string['unapprovedrequests'] = '未批准的申请';
 $string['unknowndate'] = '（未知日期）';
 $string['unknowntime'] = '（未知时间）';
@@ -498,210 +645,19 @@ $string['usersignedupon'] = '用户在 {$a} 注册';
 $string['userwillbewaitlisted'] = '本课程目前名额已满。点击"注册"按钮后，您将加入本课程的等待名单。';
 $string['validation:needatleastonedate'] = '您需要提供至少一个日期或将此课程标记为已加入等待名单。';
 $string['venue'] = '场地';
+$string['venue_help'] = '﻿
+# 地点
+**地点**是将开展学习班的大楼。
+将在“注册”页面、“查看所有学习班”页面以及所有电子邮件通知中显示**地点**。';
 $string['viewallsessions'] = '查看所有课程';
 $string['viewsubmissions'] = '查看提交信息';
 $string['wait-list'] = '等待名单';
 $string['wait-listed'] = '已加入等待名单';
 $string['waitlistedmessage'] = '已加入等待名单消息';
+$string['waitlistedmessage_help'] = '﻿
+# 列入申请人名单消息
+在用户报名参加申请人名单中的学习班后，系统会发送该消息。';
 $string['xhours'] = '{$a} 小时';
 $string['xminutes'] = '{$a} 分钟';
 $string['youarebooked'] = '您预约了以下课程';
 $string['youremailaddress'] = '您的电子邮件地址';
-$string['requestmessage_help'] = '﻿
-# 请求消息
-
-启用**需要批准**时，**请求消息**部分将可用。
-
-**请求消息**部分显示了将发送到学员及其负责人的、关于学员参加面授学习班的批准流程的注意事项。
-
-**主题：**是显示在发送到负责人和学员的请求批准电子邮件上的主题行。
-
-**消息：**是将发送给学员的电子邮件文本，用于通知他们其参加面授学习班的请求已发送给其负责人进行批准。
-
-**负责人的注意事项：**是发送给学员的负责人的电子邮件文本，用于请求批准学员参加面授学习班。';
-$string['room_help'] = '﻿
-# 房间
-
-**房间**是用于进行培训活动的房间的名称/编号/标识符。
-
-将在“注册”页面、“查看所有学习班”页面以及所有电子邮件通知中显示**房间**。';
-$string['sessiondatetimeknown_help'] = '﻿
-**如果学习班的日期/时间已知**
-
-如果为此设置输入“是”，将在课程页面（如果学习班即将开始并且可用）、“查看所有学习班页面”、学习班注册页面以及与此学习班相关的所有电子邮件通知中显示学习班日期和时间。
-
-在成员注册具有已知日期和时间的学习班时：
-
-*   系统将会向成员和成员的负责人发送确认电子邮件（即，按照面授实例设置的“确认消息”部分设计格式的邮件）。
-*   系统将会向成员发送电子邮件提醒消息（即，按照面授实例设置的“提醒消息”部分设计格式的邮件）。根据“发送消息前的天数”设置（也可在面授实例设置的“提醒消息”部分找到），系统将在学习班开始前的几天发送提醒。
-
-**如果学习班的日期/时间未知（或等待列出）**
-
-如果为此设置输入“否”，将在课程页面、“查看所有学习班页面”、学习班注册页面以及所有与此学习班相关的电子邮件通知中显示文本“等待列出”。
-
-在成员注册等待列出的学习班时：
-
-*   系统将会向成员发送电子邮件确认消息（即，按照面授实例设置的“等待列出的消息”部分设计格式的邮件）。
-*   系统将不会向成员发送电子邮件提醒消息。
-*   系统将不会向成员的负责人发送确认和取消电子邮件。';
-$string['reminderperiod_help'] = '﻿
-# 提醒期间
-
-系统将在学习班开始前的此时间发送提醒消息。';
-$string['sessiondate_help'] = '﻿
-学习班日期是学习班的发生日期。';
-$string['remindermessage_help'] = '﻿
-# 提醒消息
-
-系统将在学习班开始日期的前几天发出此消息。';
-$string['normalcost_help'] = '﻿
-正常费用是对没有会员 ID 的人员收取的金额。
-
-正常费用将显示在每位参加学习班的成员的课程成绩簿的费用列中（成员在注册学习班时输入了折扣费用并输入了会员 ID 的情况除外）。';
-$string['notificationtype_help'] = '﻿
-# 通知类型
-
-“通知类型”允许学员选择他们接收预定情况通知的方式。
-
-*   仅 iCalendar 约会</i> 
-    *   仅电子邮件通知</i> 
-        *   电子邮件通知和 iCalendar 约会</i> </ul>';
-$string['reminderinstrmngr_help'] = '﻿
-# 管理器通知
-
-选中**向管理器发送通知**时，**管理器通知**字段中的文本将发送到学员的管理器中，通知他们已注册面授学习班。';
-$string['sessionsoncoursepage_help'] = '﻿
-# 课程页面上的学习班数
-
-这是将显示在主课程页面上的每个面授活动的学习班数。';
-$string['shortname_help'] = '﻿
-# 简称
-
-**简称**是在启用**在日历上显示**时，显示在培训日历上的学习班描述信息。';
-$string['timestart_help'] = '﻿
-开始时间是学习班的开始时间。';
-$string['venue_help'] = '﻿
-# 地点
-
-**地点**是将开展学习班的大楼。
-
-将在“注册”页面、“查看所有学习班”页面以及所有电子邮件通知中显示**地点**。';
-$string['waitlistedmessage_help'] = '﻿
-# 列入申请人名单消息
-
-在用户报名参加申请人名单中的学习班后，系统会发送该消息。';
-$string['timefinish_help'] = '﻿
-完成时间是学习班的结束时间。';
-$string['thirdpartywaitlist_help'] = '﻿
-# 向第三方通知等待列出的学习班
-
-选中**向第三方通知等待列出的学习班**时，系统将在学员注册等候批准的学习班时通知第三方。 未启用
-
-**向第三方通知等待列出的学习班**时，系统将不会在用户注册（或取消）预订学习班时通知第三方。';
-$string['showoncalendar_help'] = '﻿
-# 在日历上显示
-
-启用**在日历上显示**时，面授活动学习班会显示在培训日历上。';
-$string['suppressemail_help'] = '﻿
-# 禁用电子邮件通知
-
-如果您要以静默方式从面授学习班中添加/移除用户，请使用此选项。切换到此选项时，系统将不会向所选用户发送常规确认电子邮件。';
-$string['thirdpartyemailaddress_help'] = '﻿
-# 第三方电子邮件地址
-
-**第三方电子邮件地址**是一个可选字段，用于指定在用户注册学习班时将接收确认消息的第三方（例如外部教师）。 
-输入**多个电子邮件地址**时，请用逗号分隔每个地址。例如：bob@example.com,joe@example.com';
-$string['mods_help'] = '﻿
-# 面授活动
-
-面授活动用于对学员培训进行跟踪，需提前预定。
-
-将在一个或多个相同的学习班中提供每个活动。这些学习班可以持续多天。
-
-系统将在学习班的计划开始日期之前的几天向用户及其负责人发送提醒消息。在用户注册或取消学习班时，系统将发送确认信息。';
-$string['location_help'] = '﻿
-# 位置
-
-**位置**描述了学习班的临近位置（市、县、地区等）。
-
-**位置**将显示在课程页面、“注册页面”和“查看所有学习班”页面以及所有电子邮件通知中。
-
-在“查看所有学习班”页面上，可根据位置筛选所列出的学习班。';
-$string['capacity_help'] = '﻿
-# 名额数
-
-**名额数**是学习班中的可用名额。
-
-面授学习班达到最大名额数时，将不会在课程页面上显示学习班详细信息。该详细信息将以灰色显示在“查看所有学习班”页面上，并且学员将无法参与学习班。
-
- ';
-$string['confirmationinstrmngr_help'] = '﻿
-# 管理器通知
-
-选中“向管理器发送通知”时，“管理器通知”字段中的文本将发送到管理器中，通知工作人员已注册面授学习班。';
-$string['confirmationmessage_help'] = '﻿
-# 确认消息
-
-当用户登录到学习班后，系统会发出此消息。';
-$string['cancellationmessage_help'] = '﻿
-# 取消消息
-
-每当用户取消预订学习班时，系统会发出此消息。';
-$string['cancellationinstrmngr_help'] = '﻿
-# 管理器通知
-
-选中**向管理器发送通知**时，**管理器通知**字段中的文本将会发送到学员的管理器中，通知他们已经取消了预订的面授学习班。';
-$string['allowoverbook_help'] = '﻿
-# 允许超额预订
-
-选中“允许超额预订”后，即使某个面授学习班的名额已满，学员仍然可以报名参加。
-
-学员在报名参加名额已满的学习班后，会收到一封电子邮件，通知他们已被列入该学习班的申请人名单中，并且将在有名额空出时接到通知。';
-$string['approvalreqd_help'] = '﻿
-# 需要批准
-
-检查完“需要批准”后，学员需要从其负责人处获得批准才能参加面授学习班。';
-$string['details_help'] = '﻿
-对每个学习班的详细信息进行跟踪。
-
-如果在详细信息字段中填充了文本，则此详细信息文本将显示在用户注册页面上。
-
-默认情况下，此详细信息文本也会显示在确认、提示、申请人等待以及取消等用途的电子邮件中。';
-$string['description_help'] = '﻿
-# 描述
-
-**描述**是在学员在参加面授学习班时显示的课程描述。 
-
-**描述**也将显示在培训日历中。';
-$string['emailmanagerconfirmation_help'] = '﻿
-# 向负责人发送通知
-
-选中“向负责人发送通知”后，如果学员报名参加面授学习班，学员的负责人将会收到一封确认电子邮件。';
-$string['emailmanagerreminder_help'] = '﻿
-# 向负责人发送通知
-
-选中“向负责人发送通知”后，学员的负责人将在面授学习班开始的前几天收到一条提示消息。';
-$string['duration_help'] = '﻿
-# 持续时间
-
-**持续时间**是培训的总时长。 
-例如： 
-*   “2 小时”可输入为 **2** 或 **2:00** 
-*   “1 小时 30 分钟”可输入为 **1:30**
-*   “45 分钟”可输入为 **0:45**
-*   “20 分钟”可输入为 **0:20**。
-
-如果在两个或更多的时间段内开展培训，则持续时间为这些时间段的总和。';
-$string['emailmanagercancellation_help'] = '﻿
-# 向负责人发送通知
-
-选中“向负责人发送通知”后，学员的负责人将会收到一封电子邮件，通知他们面授学习班预定已取消。';
-$string['discountcost_help'] = '﻿
-折扣费用是对具有会员 ID 的员工所收取的金额。
-
-如果员工在报名参加学习班时输入会员 ID，则课程成绩簿的费用列中将显示折扣费用。';
-$string['discountcode_help'] = '﻿
-折扣代码是在跟踪员工培训的折扣费用时需要用到的代码。
-
-如果员工不输入折扣代码，则培训记录中将会显示标准费用。';
-

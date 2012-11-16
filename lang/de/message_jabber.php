@@ -36,5 +36,5 @@ $string['jabberpassword'] = 'Jabber Kennwort';
 $string['jabberport'] = 'Jabber Port';
 $string['jabberserver'] = 'Jabber Server-ID';
 $string['jabberusername'] = 'Jabber Anmeldename';
-$string['notconfigured'] = 'Der Jabber-Server ist nicht konfiguriert, so dass keine Jabber-Nachrichten versandt werden können. ';
+$string['notconfigured'] = 'Der Jabber-Server ist nicht konfiguriert, so dass keine Jabber-Nachrichten versandt werden können.';
 $string['pluginname'] = 'Jabber-Mitteilung';

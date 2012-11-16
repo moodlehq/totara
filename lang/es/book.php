@@ -41,21 +41,16 @@ $string['editingchapter'] = 'Edición de capítulo';
 $string['errorchapter'] = 'Error al leer el capítulo de libro.';
 $string['faq'] = 'Libro FAQ';
 $string['faq_help'] = '*¿Por qué sólo dos niveles?*
-
 Dos niveles son generalmente suficientes para todos los libros, tres niveles daría lugar a documentos pobremente estructurados. El módulo Libro está diseñado para la creación de varias páginas cortas del material de estudio. En general es mejor utilizar el formato PDF para documentos más largos. La forma más fácil de crear archivos PDF son con impresoras virtuales (ver
-<a href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm" target="_blank">PDFCreator</a>, <a href="http://fineprint.com/products/pdffactory/index.html" target="_blank">PDFFactory</a>, <a href="http://www.adobe.com/products/acrobatstd/main.html" target="_blank">Adobe Acrobat</a>, etc.).
-
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html), etc.).
 * ¿Pueden los estudiantes editar libros? *
-
 Sólo los profesores pueden crear y editar libros. No hay planes para implementar la edición de libros por parte de los estudiantes, pero alguien puede crear algo similar para los estudiantes (Portfolio?). La razón principal es mantener el módulo Libro tan simple como sea posible.
-
 * ¿Cómo puedo buscar en los libros? *
-
 En la actualidad sólo hay una manera, usar la capacidad de búsqueda de los navegadores en la página de impresión. La búsqueda global es ahora posible solamente en los foros de Moodle.
 Sería bueno tener un buscador a nivel global de todos los recursos, incluyendo libros, algún voluntario?
-
 * Mis títulos no caben en una línea .*
-
 Trate de reformular con otras palabras su título o pregúntele al administrador del sitio para que cambie el ancho de la tabla de contenido (TOC). Se define a nivel global para todos los libros en la página de configuración del módulo.';
 $string['modulename'] = 'Libro';
 $string['modulename_help'] = 'El libro es un simple material de estudio de múltiples páginas.';

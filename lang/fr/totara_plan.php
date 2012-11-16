@@ -57,83 +57,58 @@ $string['addremoveprogram'] = 'Ajouter/supprimer des programmes';
 $string['addrpl'] = 'Ajouter RPL';
 $string['addtemplate'] = 'Ajouter un nouveau modèle';
 $string['advancedsettingscompetencypermissions_help'] = '# Permissions de compétences
-
 **Les permissions de compétences** vous permettent de définir les types d\'actions qui peuvent être effectuées par l\'apprenti et le gestionnaire pour les compétences du projet d\'apprentissage.
-
 Quatre niveaux de permissions sont disponibles :
-
-*   **Autoriser** autorise l\'utilisateur à effectuer une action
-*   **Refiser** empêche l\'utilisateur d\'effectuer une action
-*   **Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
-*   **Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
+\* **|Autoriser** autorise l\'utilisateur à effectuer une action
+\* **|Refiser** empêche l\'utilisateur d\'effectuer une action
+\* **|Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
+\* **|Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
 $string['advancedsettingscompetencysettings_help'] = '# Paramètres de compétences
-
 **Les paramètres de compétences** vous permettent de déterminer quels paramètres sont disponibles pour les compétences du projet.
-
 Choisir le paramètre **‘Date limite’**. Quand **‘Dates limites’** est réglé sur ‘Aucune’ la colonne ne figure pas dans le plan d\'apprentissage.
-
 Choisir le paramètre **‘Priorités’ **. Quand vous utilisez des **‘Priorités’** vous devez avoir une **‘échelle de priorités’**. Cliquez sur le menu déroulant pour choisir une échelle de priorités.
-
 ** Note : **L\'option permettant de configurer de telles échelles figure dans Plans d\'apprentissage>Echelles de priorités.
 **Attribution automatique **vous permet d\'afficher automatiquement les compétences d\'un projet d\'apprentissage préalablement attribué au poste ou à l\'organisation d\'un utilisateur.
-
 **Le statut par défaut** détermine le statut d\'une compétence quand elle est approuvée pour la première fois dans un projet. Si \'Attribuer le statut par défaut aux nouvelles compétences\' est coché, toutes les compétences obtiendront le statut par défaut de cette échelle de compétence au moment de leur approbation. Si cette case est décochée, aucun statut initial n\'est défini.';
 $string['advancedsettingscoursepermissions_help'] = '# Permissions de cours
-
 **Les permissions de cours** vous permettent de déterminer les paramètres du cours disponibles et les types d\'actions qui peuvent être effectuées par les apprentis et gestionnaires dans le projet d\'apprentissage.
-
 Quatre niveaux de permission sont disponibles :
-
-*   **Autoriser** autorise l\'utilisateur à effectuer une action
-*   **Refiser** empêche l\'utilisateur d\'effectuer une action
-*   **Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
-*   **Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
+\* **|Autoriser** autorise l\'utilisateur à effectuer une action
+\* **|Refiser** empêche l\'utilisateur d\'effectuer une action
+\* **|Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
+\* **|Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
 $string['advancedsettingscoursesettings_help'] = '# Paramètres du cours
-
 **Les paramètres du cours** vous permettent de déterminer quels paramètres sont disponibles pour les cours du projet.
-
 Choisir le paramètre **‘Date limite’**. Quand **‘Dates limites’** est réglé sur ‘Aucune’ la colonne ne figure pas dans le plan d\'apprentissage.
-
 Choisir le paramètre **‘Priorités’ **. Quand vous utilisez des **‘Priorités’** vous devez avoir une **‘échelle de priorités’**. Cliquez sur le menu déroulant pour choisir une échelle de priorités.
-
 ** Note : **L\'option permettant de configurer de telles échelles figure dans Plans d\'apprentissage>Echelles de priorités.';
 $string['advancedsettingsobjectivepermissions_help'] = '# Permissions d\'objectifs
-
 **Les permissions d\'objectifs** vous permettent de déterminer les types d\'actions qui peuvent être effectuées par les apprentis et gestionnaires lors de la configuration des objectifs.
-
 Quatre niveaux de permission sont disponibles :
-
-*   **Autoriser** autorise l\'utilisateur à effectuer une action
-*   **Refiser** empêche l\'utilisateur d\'effectuer une action
-*   **Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
-*   **Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
+\* **|Autoriser** autorise l\'utilisateur à effectuer une action
+\* **|Refiser** empêche l\'utilisateur d\'effectuer une action
+\* **|Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
+\* **|Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
 $string['advancedsettingsobjectivesettings_help'] = '# Paramètres d\'objectifs
-
 **Les paramètres d\'objectifs** vous permettent de déterminer quels paramètres sont disponibles pour les objectifs du projet.
-
 Choisir le paramètre **‘Date limite’**. Quand **‘Dates limites’** est réglé sur ‘Aucune’ la colonne ne figure pas dans le plan d\'apprentissage.
-
 Choisir le paramètre **‘Priorités’ **. Quand vous utilisez des **‘Priorités’** vous devez avoir une **‘échelle de priorités’**. Cliquez sur le menu déroulant pour choisir une échelle de priorités.
-
 ** Note : **L\'option permettant de configurer de telles échelles figure dans Plans d\'apprentissage>Echelles de priorités.</p>
 **Objective scale** is used to measure a learners’ progress towards their objectives. Set up objective scales using the menu option under Site Administration>Learning Plans.';
 $string['advancedsettingsplanpermissions_help'] = '# Permissions du projet
-
 Les paramètres avancés du cadre vous permettent de déterminer les types d\'actions qui peuvent être effectuées par les apprentis et gestionnaires. Pour chaque type d\'action quatre niveaux de permission sont disponibles :
-*   **Autoriser** autorise l\'utilisateur à effectuer une action
-*   **Refiser** empêche l\'utilisateur d\'effectuer une action
-*   **Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
-*   **Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
+\* **|Autoriser** autorise l\'utilisateur à effectuer une action
+\* **|Refiser** empêche l\'utilisateur d\'effectuer une action
+\* **|Demander** permet à l\'utilisateur de demander à ce que l\'action soit effectuée
+\* **|Approuver** permet à l\'utilisateur d\'approuver une action demandée.';
 $string['advancedsettingsplansettings_help'] = '# Paramètres du projet
-
 **Les paramètres du projet **vous permettent de définir des paramètres d\'ensemble pour le projet.
-
 Le projet d\'apprentissage peut être marqué achevé selon les choix suivants.
-*   **Manuellement, par un utilisateur avec la permission \'achever\'**
+\* **|Manuellement, par un utilisateur avec la permission \'achever\'**
 Le projet d\'apprentissage peut être marqué achevé par un apprenti ou un gestionnaire ayant Autoriser séllectionné sur la ligne Approuver des Permissions du projet.
-*   **Automatiquement, quand tous les objets sont achevés**
+\* **|Automatiquement, quand tous les objets sont achevés**
 Le projet d\'apprentissage est marqué achevé quand tous les cours, compétences, objectifs ou programmes inclus dans le plan d\'apprentissage sont marqués achevés.
-*   **Automatiquement, quand la date de fin du projet est passée**
+\* **|Automatiquement, quand la date de fin du projet est passée**
 Le plan d\'apprentissage est marqué achevé quand la date de fin enregistrée pour ce projet d\'apprentissage est dépassée.';
 $string['advancedworkflow'] = 'Paramètres de déroulement avancés';
 $string['after'] = 'Après';
@@ -213,7 +188,6 @@ $string['competency_instructions_manager'] = 'Tout les compétences qui font par
 $string['competency_instructions_request'] = '"Modifier les compétences demandées" vous permet de demander l\'ajout de compétences à votre projet de formation.';
 $string['competencycompleted'] = 'Compétence achèvée';
 $string['competencyevidencestatus_help'] = '# Statut
-
 Ce champ enregistre le statut de l\'utilisateur dans une compétence attribuée. Les options apparaissant dans le menu déroulant dépendent de l\'échelle de compétence attribuée à la compétence, la compétence doit donc être sélectionnée avant que ce champ puisse être modifiée. Une échelle de valeurs doit être configurée pour ajouter ou modifier des enregistrements d\'élément de preuve de compétence.';
 $string['competencyname'] = 'Nom de la compétence';
 $string['competencypermissions'] = 'Permissions de la compétence';
@@ -536,47 +510,36 @@ $string['objectives'] = 'Objectifs';
 $string['objectivescale'] = 'Echelle d\'objectifs';
 $string['objectivescaleadded'] = 'L\'échelle d\'objectifs "{$a}" a été ajoutée';
 $string['objectivescaleassign_help'] = '# Echelle d\'objectif
-
 Une échelle d\'objectif définit les critères permettant de mesurer l\'objectif. Il s\'agit du nom de l\'échelle à laquelle une valeur est ajoutée.';
 $string['objectivescaledefault_help'] = '# Valeur par défaut
-
 La **valeur par défaut** est la valeur automatiquement attribuée à un objectif dans un projet d\'apprentissage quand l\'objectif est d\'abord ajouté par un apprenti ou gestionnaire.';
 $string['objectivescaledefaultupdated'] = 'La valeur par défaut de l\'échelle à été modifier';
 $string['objectivescaleinuse'] = 'Cette échelle est déjà utilisée (il y a des utilisateurs qui emploi des objectifs marquées avec des valeurs de cette échelle). Des valeurs ne peuvent pas être créées, réorganisées ou supprimées pour cette échelle car l\'intégrité des données doit être conservé. Il est possible de renommer les valeurs d\'échelle mais celà pourrait porter confusion aux utilisateurs (le statut de leurs objectifs changerait sans avertissement).';
 $string['objectivescalename_help'] = '# Nom de l\'échelle d\'objectif
-
 Le nom de l\'échelle d\'objectif utilisée par un projet d\'apprentissage.';
 $string['objectivescales'] = 'Echelles d\'objectifs';
 $string['objectivescalesdisabledtemplateinuse'] = 'REMARQUE: Modification de l\'échelle d\'objectifs impossible car il existe des projets utilisant ce modèle';
 $string['objectivescaleupdated'] = 'L\'échelle d\'objectifs "{$a}" a été modifiée';
 $string['objectivescalevalueachieved_help'] = '# Atteint
-
 Quand **Atteint** est coché cette valeur d\'échelle d\'objectif sera utilisée pour indiqué que l\'objectif a été atteint.
-
 Vous pouvez avoir plusieurs valeurs marquées **Atteint** ce qui vous permet d\'avoir plusieurs degrés de réussite.';
 $string['objectivescalevalueadded'] = 'La valeur de l\'échelle d\'objectifs : "{$a}" a été modifiée';
 $string['objectivescalevalueid'] = 'Compétence d\'objectif';
 $string['objectivescalevalueidnumber'] = 'Numéro d\'identification de la valeur d\'échelle';
 $string['objectivescalevalueidnumber_help'] = '# Numéro ID de valeur d\'échelle
-
 Le numéro ID de valeur d\'échelle est un nombre unique utilisé pour représenter la valeur d\'échelle.';
 $string['objectivescalevaluename'] = 'Nom de la valeur d\'échelle';
 $string['objectivescalevaluename_help'] = '# Nom de la valeur d\'échelle
-
 Le **nom de la valeur d\'échelle** est le nom de la valeur d\'échelle d\'objectif que vous ajoutez ou modifiez.
-
 La valeur d\'échelle est utilisée pour mesurer les objectifs du projet d\'apprentissage. Vous pouvez ajouter autant de valeurs d\'échelle que vous le souhaitez.';
 $string['objectivescalevaluenumeric'] = 'Valeur numérique d\'échelle d\'objectifs';
 $string['objectivescalevaluenumeric_help'] = '# Valeur numérique de la valeur d\'échelle d\'objectif
-
 La **valeur numérique de la valeur d\'échelle d\'objectif** vous permet d\'attribuer une valeur numérique ainsi qu\'une description (nom) à la valeur d\'échelle.';
 $string['objectivescalevalues_help'] = '# Valeurs d\'échelle
-
 Entrez une liste de valeurs pour la nouvelle échelle d\'objectif (une valeur par ligne), de la plus haute à la plus basse, par exemple:
-
-<p class="indent">
-<i> Haut<br /> Moyen<br /> Faible </i>
-</p>';
+* Haut
+Moyen
+Faible *';
 $string['objectivescalevalueupdated'] = 'La valeur d\'échelle d\'objectifs "{$a}" a été modifiée';
 $string['objectivescalex'] = 'Echelle d\'objectifs "{$a}"';
 $string['objectivesettings'] = 'Paramètres d\'objectif';
@@ -643,7 +606,6 @@ $string['plan_instructions_delete'] = 'Le bouton "Supprimer projet" vous permet 
 $string['plan_instructions_edit'] = 'Le bouton "Modifier les détails" permet de modifier le titre du projet de formation, son description ou date d\'achèvement.';
 $string['plan_instructions_learner'] = 'Un court résumé de votre projet de formation se trouve ci-dessous.';
 $string['plan_instructions_manager'] = 'Un court résumé du projet de formation de votre coéquipier se trouve ci-dessous.';
-$string['planapprovalrequested'] = 'Demande d\'approbation du projet pour <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Le projet "{$a}" a été approuvé';
 $string['planautocompleteddate'] = 'Ce projet a été automatiquement achevé car la date de fin du projet a été dépassée.';
 $string['planautocompleteditems'] = 'Ce projet a été automatiquement achevé car tous les objets ont été achevés.';
@@ -683,16 +645,13 @@ $string['prioritymode'] = 'Priorités';
 $string['priorityscale'] = 'Echelle de priorités';
 $string['priorityscaleadded'] = 'Echelle de priorités "{$a}" ajoutée';
 $string['priorityscaleassign_help'] = '# Echelle de priorités
-
 Une **échelle de priorités** est le nom de l\'échelle de priorités sur laquelle vous travaillez.';
 $string['priorityscalecreate'] = 'Ajouter une nouvelle échelle de priorités';
 $string['priorityscaledefault_help'] = '# Valeur par défaut
-
 La **valeur par défaut** est la valeur automatiquement attribuée à un objet du projet d\'apprentissage quand l\'échelle de la priorité apparaît pour la première fois dans le proket de l\'apprenti. La priorité peut être modifiée ultérieurement par un apprenti/gestionnaire une fois qu\'elle est active dans le projet d\'apprentissage.';
 $string['priorityscaledefaultupdated'] = 'La valeur par défaut de l\'échelle a été modifiée';
 $string['priorityscaleinuse'] = 'Cette échelle est déjà utilisée (il y a des utilisateurs qui emploi des éléments marquées avec des valeurs de cette échelle). Des valeurs ne peuvent pas être créées, réorganisées ou supprimées pour cette échelle car l\'intégrité des données doit être conservé. Il est possible de renommer les valeurs d\'échelle mais celà pourrait porter confusion aux utilisateurs (leurs priorités changerait sans avertissement).';
 $string['priorityscalename_help'] = '# Nom de l\'échelle de priorité
-
 Le nom de l\'échelle de priorité utilisée pour un projet d\'apprentissage.';
 $string['priorityscales'] = 'Echelles de priorités';
 $string['priorityscalesdisabledtemplateinuse'] = 'REMARQUE: Modification de l\'échelle d\'priorités impossible car il existe des projets utilisant ce modèle';
@@ -700,25 +659,19 @@ $string['priorityscaleupdated'] = 'Echelle de priorités "{$a}" modifiée';
 $string['priorityscalevalueadded'] = 'Valeur d\'échelle de priorités "{$a}" ajoutée';
 $string['priorityscalevalueidnumber'] = 'Numéro d\'identification de la valeur d\'échelle';
 $string['priorityscalevalueidnumber_help'] = '# Numéro ID d\'échelle de valeurs
-
 Le numéro ID d\'échelle est un nombre unique représentant l\'échelle de valeurs.';
 $string['priorityscalevaluename'] = 'Nom de la valeur d\'échelle';
 $string['priorityscalevaluename_help'] = '# Nom de la valeur d\'échelle
-
 **Le nom de la valeur d\'échelle** est le nom de la valeur que vous ajoutez ou modifiez pour une échelle de priorités spécifique.
-
 Une valeur d\'échelle est utilisée pour définir la priorité d\'un objet de plan d\'apprentissage. Vous pouvez ajouter autant de valeurs d\'échelle que vous le souhaites.';
 $string['priorityscalevaluenumeric'] = 'La valeur numérique d\'échelle de priorités';
 $string['priorityscalevaluenumeric_help'] = '# Valeur numérique de la valeur d\'échelle de priorités
-
 **La valeur numérique de la valeur d\'échelle de priorités** vous permet d\'assigner une valeur numérique à cette valeur d\'échelle ainsi qu\'à sa description (nom).';
 $string['priorityscalevalues_help'] = '# Valeurs d\'échelle
-
 Entrez une liste de valeurs pour la nouvelle échelle de priorité (une priorité par ligne), de la plus haute à la plus basse, par exemple :
-
-<p class="indent">
-<i> Haute<br /> Moyenne<br /> Faible </i>
-</p>';
+* Haute
+Moyenne
+Faible *';
 $string['priorityscalevalueupdated'] = 'La valeur d\'échelle de priorités "{$a}" a été modifiée';
 $string['priorityscalex'] = 'Echelle de priorités "{$a}"';
 $string['priorityvalues'] = 'Valeurs de priorités';
@@ -784,15 +737,11 @@ $string['startdate'] = 'Date de début';
 $string['status'] = 'Statut';
 $string['teammembers'] = 'Equipiers';
 $string['templatecomponentsettings_help'] = '# Paramètres des composants
-
 Les **paramètres des composants **vous permettent d\'afficher/cacher les composants dans le projet d\'apprentissage et définir leur ordre d\'apparition.
-
 Cliquez sur **Cacher** pour retirer un composant du modèle de projet d\'apprentissage.
-
 Utilisez les flèches haut et bas pour modifier l\'ordre des composants.';
 $string['templateenddate'] = 'Date de fin du modèle de projet';
 $string['templateenddate_help'] = '# Date de fin
-
 Cliquez sur l\'icône calendrier pour choisir la **date de fin** du modèle de projet d\'apprentissage.';
 $string['templateinstances'] = 'Instances de modèle';
 $string['thefollowingitemsarepending_p'] = 'Les éléments suivants du projet sont en attente:';

@@ -41,7 +41,7 @@ $string['pluginname'] = 'Box.net';
 $string['sendfailed'] = 'Non è stato possibile inviare contenuti a box.net: {$a}';
 $string['setupinfo'] = 'Istruzioni per il setup';
 $string['setupinfodetails'] = 'Per ottenere una API Key, autenticati su Box.net e visita la pagina <a href="{$a->servicesurl}">OpenBox development</a>. Crea una nuova applicazione tramite \'Developer Tools\' e \'Create new application\'. L\'API Key è visualizzata nella sezione \'Backend parameters\' del form di modifica dell\'applicazione.
-In questo form, compila il campo \'Redirect URL\' con il seguente valore <br /><code>{$a->callbackurl}</code><br />. Se lo desideri, puoi fornire ulteriori informazioni sul tuo sito Moodle, tali informazioni possono essere modificate successivamente in \'View my applications\' ';
+In questo form, compila il campo \'Redirect URL\' con il seguente valore <br /><code>{$a->callbackurl}</code><br />. Se lo desideri, puoi fornire ulteriori informazioni sul tuo sito Moodle, tali informazioni possono essere modificate successivamente in \'View my applications\'';
 $string['sharedfolder'] = 'Condiviso';
 $string['sharefile'] = 'Condividere questo file?';
 $string['sharefolder'] = 'Condividere questo nuovo folder?';

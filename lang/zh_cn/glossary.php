@@ -31,7 +31,6 @@ $string['addingcomment'] = '添加一条评论';
 $string['alias'] = '关键词';
 $string['aliases'] = '关键词';
 $string['aliases_help'] = '词汇表中的每个词条都可以与一些关键词（或别名）相关联。如果词条被自动链接，那么关键词也会被自动链接。
-
 每个关键词独占一行（不是以逗号分割）。';
 $string['allcategories'] = '所有类别';
 $string['allentries'] = '全部';
@@ -109,7 +108,6 @@ $string['destination'] = '词条导入目标';
 $string['destination_help'] = '词条可以导入到当前词汇表，也可以导入到新词汇表。新词汇表会按 XML 文件中的信息创建。';
 $string['displayformat'] = '显示格式';
 $string['displayformat_help'] = '有 7 种显示格式：
-
 * 简单字典风格 - 不显示作者，附件显示为链接
 * 连续（不含作者）- 词条后面跟着词条，除了编辑图标，没有任何分隔
 * 详细（含作者）- 论坛一样的显示格式，显示作者信息，附件显示为链接

@@ -41,19 +41,16 @@ $string['enrolstartdate_help'] = 'Se habilitado, os usuários só podem inscreve
 $string['groupkey'] = 'Usar chaves de inscrição de grupo';
 $string['groupkey_desc'] = 'Usar chaves de inscrição de grupo por padrão.';
 $string['groupkey_help'] = 'Além de restringir acesso ao curso apenas para aqueles que conhecem a chave, o uso de uma chave de inscrição de grupo faz com que os usuários sejam automaticamente incluídos ao grupo quando eles se inscrevem no curso.
-
 Para utilizar uma chave de inscrição de grupo uma chave de inscrição deve ser definida nas configurações do curso assim como a chave de inscrição de grupo nas configurações de grupo.';
 $string['longtimenosee'] = 'Cancelar inscrição de usuário inativo';
 $string['longtimenosee_help'] = 'Caso um usuário não tenha acessado um curso por um longo período de tempo, então eles terão sua inscrição automaticamente cancelada. Este parâmetro especifica o limite de tempo';
 $string['maxenrolled'] = 'Máximo de usuários inscritos';
-$string['maxenrolled_help'] = 'Especifica o número máximo de usuários que podem realizar  auto - inscrição. ) significa sem limite.';
+$string['maxenrolled_help'] = 'Especifica o número máximo de usuários que podem realizar auto - inscrição. ) significa sem limite.';
 $string['maxenrolledreached'] = 'Número máximo de usuários com permissão para auto-inscrição já foi alcançado.';
 $string['nopassword'] = 'Nenhuma chave de inscrição é necessária.';
 $string['password'] = 'Chave de inscrição';
 $string['password_help'] = 'Uma chave de inscrição habilita para que o acesso ao curso seja restrito apenas para quem possua a chave.
-
 Caso este campo esteja vazio, qualquer usuário poderá se inscrever no curso.
-
 Caso uma chave de inscrição seja especificada, em qualquer tentativa de inscrição será solicitada a informação da chave. Note que o usuário apenas precisa informar a chave de inscrição apenas UMA VEZ, no momento em qyue realizam a inscrição.';
 $string['passwordinvalid'] = 'Chave de inscrição incorreta, por favor tente novamente';
 $string['passwordinvalidhint'] = 'Código de inscrição errado, por favor tente novamente<br /> (uma dica - começa com \'{$a}\')';

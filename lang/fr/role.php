@@ -238,18 +238,11 @@ $string['notset'] = 'Non défini';
 $string['overrideanotherrole'] = 'Définir une dérogation pour un autre rôle';
 $string['overridecontext'] = 'Contexte de dérogation';
 $string['overridepermissions'] = 'Définir des dérogations aux permissions';
-$string['overridepermissions_help'] = '<!-- $Id$ -->
-
-
-<p>Les dérogations sont des permissions spécifiques destinées à remplacer celles d\'un rôle dans un contexte spécifique, vous permettant de régler plus finement vos permissions suivant vos besoins.</p>
-
-<p>Par exemple, si des utilisateurs avec un rôle Étudiant dans votre cours peuvent commencer des discussions dans des forums, et que vous voulez que dans un forum déterminé ils ne puissent le faire, vous pouvez définir une dérogation qui EMPÊCHE pour les étudiants la capacité de « Commencer des discussions ».</p>
-
-<p>Les dérogations peuvent aussi être utilisées pour donner plus de droits dans certaines zones de votre site et cours, lorsque cela peut être utile. Par exemple, vous pouvez essayer d\'expérimenter la capacité pour les étudiants de donner des notes à certains devoirs.</p>
-
-<p>L\'interface est similaire à celle destinée à définir les rôles, à part que seules les capacités pertinentes sont affichées, et que vous y verrez certaines capacités mises en évidence pour vous montrer quelle permission aurait ce rôle sans dérogation active (c\'est-à-dire lorsque la dérogation est réglée sur HÉRITER).</p>
-
-<p>Voir aussi <a href="help.php?file=roles.html">Rôles</a>, <a href="help.php?file=contexts.html">Contextes</a>, <a href="help.php?file=assignroles.html">Attribuer des rôles</a> et <a href="help.php?file=permissions.html">Permissions</a>.</p>';
+$string['overridepermissions_help'] = 'Les dérogations sont des permissions spécifiques destinées à remplacer celles d\'un rôle dans un contexte spécifique, vous permettant de régler plus finement vos permissions suivant vos besoins.
+Par exemple, si des utilisateurs avec un rôle Étudiant dans votre cours peuvent commencer des discussions dans des forums, et que vous voulez que dans un forum déterminé ils ne puissent le faire, vous pouvez définir une dérogation qui EMPÊCHE pour les étudiants la capacité de « Commencer des discussions ».
+Les dérogations peuvent aussi être utilisées pour donner plus de droits dans certaines zones de votre site et cours, lorsque cela peut être utile. Par exemple, vous pouvez essayer d\'expérimenter la capacité pour les étudiants de donner des notes à certains devoirs.
+L\'interface est similaire à celle destinée à définir les rôles, à part que seules les capacités pertinentes sont affichées, et que vous y verrez certaines capacités mises en évidence pour vous montrer quelle permission aurait ce rôle sans dérogation active (c\'est-à-dire lorsque la dérogation est réglée sur HÉRITER).
+';
 $string['overridepermissionsforrole'] = 'Définir des dérogations pour le rôle {$a->role} dans {$a->context}';
 $string['overridepermissionsin'] = 'Définir des dérogations aux permissions dans {$a}';
 $string['overrideroles'] = 'Définir des dérogations aux rôles';
@@ -258,7 +251,6 @@ $string['overrides'] = 'Dérogations';
 $string['overridesbycontext'] = 'Dérogations (par contexte)';
 $string['permission'] = 'Permission';
 $string['permission_help'] = 'Les permissions sont les réglages que vous accordez pour des capacités spécifiques. Il y a quatre possibilités pour les permissions :
-
 * Non défini
 * Autoriser : la permission est donnée pour cette capacité
 * Empêcher : la permission n\'est pas donnée pour cette capacité
@@ -320,29 +312,19 @@ $string['roleincontext'] = '{$a->role} dans {$a->context}';
 $string['roleprohibitheader'] = 'Interdire le rôle';
 $string['roleprohibitinfo'] = 'Sélectionner un rôle à ajouter à la liste des rôles avec interdiction pour la capacité {$a->cap} dans le contexte {$a->context} :';
 $string['roles'] = 'Rôles';
-$string['roles_help'] = '<!-- $Id$ -->
+$string['roles_help'] = 'Un rôle est une collection de permissions définies pour la totalité d\'un système Moodle, que l\'on peut attribuer à des utilisateurs déterminés dans des contextes déterminés.
+Par exemple, un rôle appelé « Enseignant » peut être défini, permettant à des enseignants d\'effectuer certaines actions (et non d\'autres). Si un tel rôle existe, il est possible de l\'attribuer dans un cours à un utilisateur, pour en faire un enseignant dans ce cours. Vous pouvez également attribuer ce rôle dans le contexte d\'une catégorie de cours, pour en faire un « Enseignant » dans tous les cours de cette catégorie, ou attribuer ce rôle à quelqu\'un dans un seul forum, lui donnant ces capacités dans ce seul forum.
+Un rôle doit avoir un **nom**. Si vous devez dénommer un rôle dans diverses langues, vous pouvez utiliser la syntaxe du filtre multilingue, par exemple
 
+Enseignant
+Dozent
+Teacher
+Profesor
 
-<p>Un rôle est une collection de permissions définies pour la totalité d\'un système Moodle, que l\'on peut attribuer à des utilisateurs déterminés dans des contextes déterminés.</p>
-
-<p>Par exemple, un rôle appelé « Enseignant » peut être défini, permettant à des enseignants d\'effectuer certaines actions (et non d\'autres). Si un tel rôle existe, il est possible de l\'attribuer dans un cours à un utilisateur, pour en faire un enseignant dans ce cours. Vous pouvez également attribuer ce rôle dans le contexte d\'une catégorie de cours, pour en faire un « Enseignant » dans tous les cours de cette catégorie, ou attribuer ce rôle à quelqu\'un dans un seul forum, lui donnant ces capacités dans ce seul forum.</p>
-
-<p>Un rôle doit avoir un <strong>nom</strong>. Si vous devez dénommer un rôle dans diverses langues, vous pouvez utiliser la syntaxe du filtre multilingue, par exemple</p>
-
-<pre>
-&lt;span lang="fr" class="multilang"&gt;Enseignant&lt;/span&gt;
-&lt;span lang="de" class="multilang"&gt;Dozent&lt;/span&gt;
-&lt;span lang="en" class="multilang"&gt;Teacher&lt;/span&gt;
-&lt;span lang="es_es" class="multilang"&gt;Profesor&lt;/span&gt;
-</pre>
-
-<p>Si vous le faites, assurez-vous que le réglage « Filtrer toutes les chaînes de caractères » soit activé sur votre Moodle.</p>
-
-<p>Le <strong>Nom abrégé</strong> est nécessaire pour pouvoir être utilisé par d\'autres composants de Moodle devant se référer à vos rôles (par exemple lors de l\'importation de nouveaux utilisateurs à partir d\'un fichier ou de l\'inscription aux cours par une méthode d\'inscription).</p>
-
-<p>La <strong>description</strong> sert simplement à décrire le rôle dans vos propres mots, afin que l\'on puisse comprendre facilement à quoi correspond ce rôle.</p>
-
-<p>Voir aussi <a href="help.php?file=contexts.html">Contextes</a>, <a href="help.php?file=permissions.html">Permissions</a>, <a href="help.php?file=assignroles.html">Attribuer des rôles</a> et <a href="help.php?file=overrides.html">Dérogations</a>.</p>';
+Si vous le faites, assurez-vous que le réglage « Filtrer toutes les chaînes de caractères » soit activé sur votre Moodle.
+Le **Nom abrégé** est nécessaire pour pouvoir être utilisé par d\'autres composants de Moodle devant se référer à vos rôles (par exemple lors de l\'importation de nouveaux utilisateurs à partir d\'un fichier ou de l\'inscription aux cours par une méthode d\'inscription).
+La **description** sert simplement à décrire le rôle dans vos propres mots, afin que l\'on puisse comprendre facilement à quoi correspond ce rôle.
+';
 $string['roleselect'] = 'Sélectionner rôle';
 $string['rolesforuser'] = 'Rôles de l\'utilisateur {$a}';
 $string['roleshortname'] = 'Nom abrégé';

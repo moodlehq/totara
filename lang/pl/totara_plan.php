@@ -57,89 +57,60 @@ $string['addremoveprogram'] = 'Dodaj/usuń programy';
 $string['addrpl'] = 'Dodaj RPL';
 $string['addtemplate'] = 'Dodaj nowy szablon';
 $string['advancedsettingscompetencypermissions_help'] = '# Uprawnienia kompetencji
-
 **Uprawnienia kompetencji** umożliwiają zdefiniowanie typów czynności, które może wykonać uczestnik i kierownik dla kompetencji w ramach planu nauczania.
-
 Dostępne są cztery poziomy kompetencji:
-
-*   **Zezwalaj** umożliwia użytkownikowi wykonywanie czynności
-*   **Zabraniaj** zapobiega wykonaniu czynności przez użytkownika
-*   **Żądaj** umożliwia użytkownikowi zażądanie wykonania danej czynności
-*   **Zatwierdź** umożliwia użytkownikowi zatwierdzenie żądanej czynności.';
+\* **|Zezwalaj** umożliwia użytkownikowi wykonywanie czynności
+\* **|Zabraniaj** zapobiega wykonaniu czynności przez użytkownika
+\* **|Żądaj** umożliwia użytkownikowi zażądanie wykonania danej czynności
+\* **|Zatwierdź** umożliwia użytkownikowi zatwierdzenie żądanej czynności.';
 $string['advancedsettingscompetencysettings_help'] = '# Ustawienia kompetencji
-
 **Ustawienia kompetencji** umożliwiają zdefiniowanie ustawień dostępnych dla kompetencji w ramach planu.
-
 Wybierz ustawienie **‘Terminy’**. Gdy ustawienie **‘Terminy’** ma wartość ‘Brak’, kolumna nie jest wyświetlana na planie nauki.
-
 Wybierz ustawienie **‘Priorytety’**. W przypadku używania ustawienia **‘Priorytety’** potrzebna jest **‘Skala priorytetu’**. Kliknij menu rozwijane, aby wybrać skalę priorytetu.
-
 ** Uwaga: **Opcja do konfigurowania takiej skali jest dostępna po wybraniu Plany nauki>Skale priorytetu.
 **Przypisanie automatyczne** umożliwia automatyczne wyświetlenie w planie nauki kompetencji, które zostały wcześniej przypisane do stanowiska lub organizacji użytkownika.
-
 **Stan domyślny** określa stan kompetencji, gdy jest ona po raz pierwszy akceptowana w ramach planu. Jeśli jest zaznaczone pole \'Przypisz nowo zatwierdzonym kompetencjom ich domyślny stan\', wszystkie kompetencje będą miały stan domyślny dla tej skali kompetencji w chwili zatwierdzenia kompetencji. W przypadku braku zaznaczenia nie zostanie ustawiony żaden stan początkowy.';
 $string['advancedsettingscoursepermissions_help'] = '# Uprawnienia kursu
-
 **Uprawnienia kursu** umożliwiają definiowanie dostępnych ustawień kursu i typów czynności, które może wykonać Uczestnik i Kierownik w planie nauki.
-
 Istnieją cztery dostępne poziomy uprawnień:
-
-*   **Zezwalaj** umożliwia użytkownikowi wykonanie czynności
-*   **Zabraniaj** uniemożliwia użytkownikowi wykonanie czynności
-*   **Żądaj** umożliwia użytkownikowi zażądanie wykonania tej czynności
-*   **Zatwierdź** umożliwia użytkownikowi zatwierdzenie czynności.';
+\* **|Zezwalaj** umożliwia użytkownikowi wykonanie czynności
+\* **|Zabraniaj** uniemożliwia użytkownikowi wykonanie czynności
+\* **|Żądaj** umożliwia użytkownikowi zażądanie wykonania tej czynności
+\* **|Zatwierdź** umożliwia użytkownikowi zatwierdzenie czynności.';
 $string['advancedsettingscoursesettings_help'] = '# Ustawienia kursu
-
 **Ustawienia kursu** umożliwiają zdefiniowanie ustawień kursu dostępnych w ramach planu.
-
 Wybierz ustawienie **‘Terminy’**. Gdy ustawienie **‘Terminy’** ma wartość ‘Brak’, kolumna nie zostanie wyświetlona w planie nauki.
-
 Wybierz ustawienie **‘Priorytety’**. Gdy ustawienie **‘Priorytety’** będzie miało wartość ‘Brak’, kolumna nie zostanie wyświetlona w planie nauki.
-
 W przypadku używania ustawienia **‘Priorytety’** trzeba mieć **‘Skalę priorytetu’**. Kliknij menu rozwijane, aby wybrać skalę priorytetu.
-
 **Uwaga: **Opcja do konfigurowania takiej skali jest dostępna po wybraniu Plany nauki>Skale priorytetu.';
 $string['advancedsettingsobjectivepermissions_help'] = '# Uprawnienia celów
-
 **Uprawnienia celów** umożliwia definiowanie czynności, które mogą wykonać uczestnik i kierownik w planie nauki, podczas konfigurowania celów.
-
 Istnieją cztery dostępne poziomy uprawnień:
-
-*   **Zezwalaj** umożliwia użytkownikowi wykonanie czynności
-*   **Zabraniaj** uniemożliwia użytkownikowi wykonanie czynności
-*   **Żądanie** umożliwia użytkownikowi żądanie wykonania tej czynności
-*   **Zatwierdź** umożliwia użytkownikowi zatwierdzenie czynności.';
+\* **|Zezwalaj** umożliwia użytkownikowi wykonanie czynności
+\* **|Zabraniaj** uniemożliwia użytkownikowi wykonanie czynności
+\* **|Żądanie** umożliwia użytkownikowi żądanie wykonania tej czynności
+\* **|Zatwierdź** umożliwia użytkownikowi zatwierdzenie czynności.';
 $string['advancedsettingsobjectivesettings_help'] = '# Ustawienia celu
-
 **Ustawienia celu** umożliwiają zdefiniowanie ustawień dostępnych dla celów w ramach planu.
-
 Wybierz ustawienie **‘Terminy’**. Gdy ustawienie **‘Terminy’** ma wartość ‘Brak’, kolumna nie zostanie wyświetlona w planie nauki.
-
 Wybierz ustawienie **‘Priorytety’**. Gdy ustawienie **‘Priorytety’** ma wartość ‘Brak’, kolumna nie zostanie wyświetlona w planie nauki.
-
 W przypadku używania ustawienia **‘Priorytety’** potrzebna jest **‘Skala priorytetu’**. Kliknij menu rozwijane, aby wybrać skalę priorytetu.
-
 **Uwaga: **Opcja do konfigurowania takiej skali jest dostępna po wybraniu Plany nauki>Skale priorytetu.
-
 **Skala celu** służy do pomiaru postępów uczestnika względem jego celów. Konfiguracja skal celu jest możliwa za pomocą opcji menu dostępnej po wybraniu Administracja witryny>Plany nauki.';
 $string['advancedsettingsplanpermissions_help'] = '# Uprawnienia planu
-
 Zaawansowane ustawienia przepływu pracy umożliwiają zdefiniowanie typu czynności, które mogą wykonywać uczestnicy i kierownicy. Dla każdego typu czynności są dostępne cztery poziomy uprawnień:
-
-*   **Zezwalaj** umożliwia użytkownikowi wykonanie czynności.
-*   **Zabraniaj** uniemożliwia użytkownikowi wykonanie czynności.
-*   **Żądaj** umożliwia użytkownikowi żądanie wykonania tej czynności.
-*   **Zatwierdź** umożliwia użytkownikowi zatwierdzenie czynności.';
+\* **|Zezwalaj** umożliwia użytkownikowi wykonanie czynności.
+\* **|Zabraniaj** uniemożliwia użytkownikowi wykonanie czynności.
+\* **|Żądaj** umożliwia użytkownikowi żądanie wykonania tej czynności.
+\* **|Zatwierdź** umożliwia użytkownikowi zatwierdzenie czynności.';
 $string['advancedsettingsplansettings_help'] = '# Ustawienia planu
-
 **Ustawienia planu** umożliwiają zdefiniowanie ustawień ogólnych planu.
-
 Plan nauki można oznaczyć jako wykonany na podstawie następujących opcji.
-*   **Ręcznie przez użytkownika z uprawnieniem \'ukończ\'**
+\* **|Ręcznie przez użytkownika z uprawnieniem \'ukończ\'**
 Plan nauki może zostać oznaczony jako wykonany przez uczestnika lub kierownika, dla którego w wierszu Zatwierdź uprawnień planu została wybrana wartość Zezwalaj.
-*   **Automatycznie, gdy zostaną ukończone wszystkie elementy**
+\* **|Automatycznie, gdy zostaną ukończone wszystkie elementy**
 Plan nauki może zostać oznaczony jako wykonany, gdy wszystkie kursy, kompetencje, cele lub programy uwzględnione w planie nauki zostały oznaczone jako ukończone.
-*   **Automatycznie, gdy minęła data ukończenia planu**
+\* **|Automatycznie, gdy minęła data ukończenia planu**
 Plan nauki może zostać oznaczony jako wykonany, gdy minęła data ukończenia zapisana wraz z planem nauki.';
 $string['advancedworkflow'] = 'Zaawansowane ustawienia przepływu pracy';
 $string['after'] = 'Po';
@@ -219,7 +190,6 @@ $string['competency_instructions_manager'] = 'Poniżej zostały pokazane wszystk
 $string['competency_instructions_request'] = 'Kliknięcie opcji Aktualizuj żądane kompetencje umożliwi zażądanie dodania nowych kompetencji do tego planu nauki.';
 $string['competencycompleted'] = 'Ukończone kompetencje';
 $string['competencyevidencestatus_help'] = '# Stan
-
 To pole rejestruje stan użytkownika dla przypisanej kompetencji. Opcje wyświetlane w menu rozwijanym zależą od skali kompetencji przypisanej do wybranej kompetencji, co oznacza, że przed zmodyfikowaniem tego pola należy wybrać kompetencję. Aby dodać lub zaktualizować rekord dowodu kompetencji, wartość skali musi być ustawiona.';
 $string['competencyname'] = 'Nazwa kompetencji';
 $string['competencypermissions'] = 'Uprawnienia kompetencji';
@@ -539,47 +509,36 @@ $string['objectives'] = 'Cele';
 $string['objectivescale'] = 'Skala celu';
 $string['objectivescaleadded'] = 'Dodano skalę celu "{$a}"';
 $string['objectivescaleassign_help'] = '# Skala celu
-
 Skale celu definiują kryteria używane do pomiaru celu. To jest nazwa skali, do której jest dodawana wartość.';
 $string['objectivescaledefault_help'] = '# Wartość domyślna
-
 **Wartość domyślna** to wartość automatycznie przypisywana do celu w planie nauki, gdy cel jest po raz pierwszy dodawany przez uczestnika lub kierownika.';
 $string['objectivescaledefaultupdated'] = 'Wartość domyślna skali została zaktualizowana';
 $string['objectivescaleinuse'] = 'Ta skala jest używana (tzn. użytkownicy mają cele oznaczone wartościami z tej skali). W celu zachowania spójności danych wartości skali nie można utworzyć, zmienić ich uporządkowania ani usunąć. Nadal można zmienić nazwy wartości skali, ale może to wprowadzić w błąd użytkowników, gdy ich stan celu zmieni się bez ostrzeżenia.';
 $string['objectivescalename_help'] = '# Nazwa skali celu
-
 Nazwa skali celu użytej przez plan nauki.';
 $string['objectivescales'] = 'Skale celu';
 $string['objectivescalesdisabledtemplateinuse'] = 'UWAGA: Nie można zmienić skali celu - istnieją plany używające tego szablonu';
 $string['objectivescaleupdated'] = 'Zaktualizowano skalę celu "{$a}"';
 $string['objectivescalevalueachieved_help'] = '# Osiągnięte
-
 Gdy jest zaznaczone pole **Osiągnięte**, ta wartość skali celu zostanie użyta do wskazania, że cel został osiągnięty przez uczestnika.
-
 Może istnieć wiele wartości oznaczonych jako **Osiągnięte**, co umożliwia stopniowanie osiągnięć.';
 $string['objectivescalevalueadded'] = 'Dodano wartość skali celi "{$a}"';
 $string['objectivescalevalueid'] = 'Biegłość celu';
 $string['objectivescalevalueidnumber'] = 'Numer ID wartości skali';
 $string['objectivescalevalueidnumber_help'] = '# Numer ID wartości skali
-
 Numer ID skali to unikalny numer służący do reprezentacji wartości skali.';
 $string['objectivescalevaluename'] = 'Nazwa wartości skali';
 $string['objectivescalevaluename_help'] = '# Nazwa wartości skali
-
 **Nazwa wartości skali** to nazwa dodawanej lub edytowanej wartości skali celu.
-
 Wartość skali służy do mierzenia celów planu nauki. Można dodać tyle wartości skali, ile potrzeba.';
 $string['objectivescalevaluenumeric'] = 'Wartość numeryczna skali celu';
 $string['objectivescalevaluenumeric_help'] = '# Wartość numeryczna wartości skali celu
-
 **Wartość numeryczna wartości skali celu** umożliwia przypisanie do wartości skali, oprócz opisu (nazwy), wartości numerycznej.';
 $string['objectivescalevalues_help'] = '# Wartości skali
-
 Wprowadź listę wartości dla nowej skali celu (po jednej wartości w wierszu) w kolejności od najwyższej do najniższej. Na przykład:
-
-<p class="indent">
-<i> Wysoki<br /> Średni<br /> Niski </i>
-</p>';
+* Wysoki
+Średni
+Niski *';
 $string['objectivescalevalueupdated'] = 'Zaktualizowano wartość skali celu "{$a}"';
 $string['objectivescalex'] = 'Skala celu "{$a}"';
 $string['objectivesettings'] = 'Ustawienia celu';
@@ -646,7 +605,6 @@ $string['plan_instructions_delete'] = 'Możesz usunąć plan nauki, klikając pr
 $string['plan_instructions_edit'] = 'Możesz kliknąć przycisk Edytuj szczegóły, aby uzupełnić tytuł, skrócony opis lub datę ukończenia planu nauki.';
 $string['plan_instructions_learner'] = 'Poniżej znajduje się skrócone podsumowanie Twojego planu nauki.';
 $string['plan_instructions_manager'] = 'Poniżej znajduje się skrócone podsumowanie planu nauki członka zespołu.';
-$string['planapprovalrequested'] = 'Zażądano zatwierdzenia planu dla <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Plan "{$a}" został zatwierdzony';
 $string['planautocompleteddate'] = 'Ten plan został automatycznie ukończony, ponieważ data zakończenia planu minęła.';
 $string['planautocompleteditems'] = 'Ten plan został automatycznie ukończony, ponieważ wszystkie jego elementy zostały ukończone.';
@@ -686,16 +644,13 @@ $string['prioritymode'] = 'Priorytety';
 $string['priorityscale'] = 'Skala priorytetu';
 $string['priorityscaleadded'] = 'Dodano skalę priorytetu "{$a}"';
 $string['priorityscaleassign_help'] = '# Skala priorytetu
-
 **Skala priorytetu** to nazwa używanej skali priorytetu.';
 $string['priorityscalecreate'] = 'Dodaj nową skalę priorytetu';
 $string['priorityscaledefault_help'] = '# Wartość domyślna
-
 **wartość domyślna** to wartość automatycznie przypisywana do elementu planu nauki, gdy skala priorytetu jest po raz pierwszy wyświetlana w planie uczestnika. Priorytet może później zmienić uczestnik/kierownik, jeśli będzie aktywny w ramach planu nauki.';
 $string['priorityscaledefaultupdated'] = 'Wartość domyślna skali została zaktualizowana';
 $string['priorityscaleinuse'] = 'Ta skala jest używana (tzn. użytkownicy mają elementy oznaczone wartościami z tej skali). W celu zachowania spójności danych nie można tworzyć, ponownie porządkować ani usuwać wartości skali. Nadal możesz zmienić nazwy wartości skali, ale może to wprowadzić w błąd użytkowników, gdy bez ostrzeżenia zmienią się ich priorytety.';
 $string['priorityscalename_help'] = '# Nazwa skali priorytetu
-
 Nazwa skali priorytetu używana przez plan nauki.';
 $string['priorityscales'] = 'Skale priorytetu';
 $string['priorityscalesdisabledtemplateinuse'] = 'UWAGA: Nie można zmienić skali priorytetu - istnieją plany korzystające z tego szablonu';
@@ -703,25 +658,19 @@ $string['priorityscaleupdated'] = 'Zaktualizowano skalę priorytetu "{$a}"';
 $string['priorityscalevalueadded'] = 'Dodano skalę priorytetu "{$a}"';
 $string['priorityscalevalueidnumber'] = 'Numer ID wartości skali';
 $string['priorityscalevalueidnumber_help'] = '# Numer ID wartości skali
-
 Numer ID skali to unikalny numer reprezentujący wartość skali.';
 $string['priorityscalevaluename'] = 'Nazwa wartości skali';
 $string['priorityscalevaluename_help'] = '# Nazwa wartości skali
-
 **Nazwa wartości skali** to nazwa wartości dodawanej lub edytowanej dla konkretnej skali priorytetu.
-
 Wartość skali służy do definiowania priorytetu dla elementu plany nauki. Można dodać tyle wartości skali, ile trzeba.';
 $string['priorityscalevaluenumeric'] = 'Wartość numeryczna skali priorytetu';
 $string['priorityscalevaluenumeric_help'] = '# Wartość numeryczna wartości skali priorytetu
-
 **Wartość numeryczna wartości skali priorytetu** umożliwia przypisanie wartości numerycznej oraz opisu (nazwy) do wartości skali.';
 $string['priorityscalevalues_help'] = '# Wartości skali
-
 Wprowadź listę wartości nowej skali priorytetu (po jednym priorytecie w wierszu) w kolejności od najwyższego do najniższego. Na przykład:
-
-<p class="indent">
-<i> Wysoki<br /> Średni<br /> Niski </i>
-</p>';
+* Wysoki
+Średni
+Niski *';
 $string['priorityscalevalueupdated'] = 'Zaktualizowano wartość skali priorytetu "{$a}"';
 $string['priorityscalex'] = 'Skala priorytetu "{$a}"';
 $string['priorityvalues'] = 'Wartości priorytetu';
@@ -787,15 +736,11 @@ $string['startdate'] = 'Data rozpoczęcia';
 $string['status'] = 'Stan';
 $string['teammembers'] = 'Członkowie zespołu';
 $string['templatecomponentsettings_help'] = '# Ustawienia składnika
-
 **Ustawienia składnika** umożliwiają pokazywanie/ukrywanie składników planu nauki i definiowanie kolejności ich wyświetlania.
-
 Kliknij przycisk **Ukryj**, aby usunąć składnik z szablonu planu nauki.
-
 Za pomocą strzałek w górę i w dół można zmieniać kolejność składników.';
 $string['templateenddate'] = 'Data zakończenia szablonu planu';
 $string['templateenddate_help'] = '# Data zakończenia
-
 Kliknij ikonę kalendarza, aby wybrać **datę zakończenia** dla szablonu planu nauki.';
 $string['templateinstances'] = 'Wystąpienia szablonu';
 $string['thefollowingitemsarepending_p'] = 'Ten plan zawiera następujące oczekujące elementy:';

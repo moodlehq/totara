@@ -38,7 +38,8 @@ $string['auth_data_mapping'] = 'Mapeado de datos';
 $string['auth_fieldlock'] = 'Bloquear valor';
 $string['auth_fieldlock_expl'] = '<p><b>Bloquear valor:</b> Si se activa, los usuarios y administradores de Moodle no podrán editar directamente el campo. Utilice esta opción si mantiene estos datos en el sistema de identificación externo. </p>';
 $string['auth_fieldlocks'] = 'Bloquear campos de usuario';
-$string['auth_fieldlocks_help'] = '<p>Usted puede bloquear los campos de datos de los usuarios, lo que resulta útil en sitios donde esos datos están mantenidos por administradores de forma manual, editando los registros de los usuarios o subiéndolos mediante la utilidad \'Subir usuarios\'. Si usted bloquea campos requeridos por Moodle, asegúrese de que proporciona esos datos al crear las cuentas de los usuarios; de otro modo las cuentas no serán utilizables.</p><p>Considere fijar esta opción de bloqueo en \'Desbloqueado si está vacío\', para evitar este problema.</p>';
+$string['auth_fieldlocks_help'] = 'Usted puede bloquear los campos de datos de los usuarios, lo que resulta útil en sitios donde esos datos están mantenidos por administradores de forma manual, editando los registros de los usuarios o subiéndolos mediante la utilidad \'Subir usuarios\'. Si usted bloquea campos requeridos por Moodle, asegúrese de que proporciona esos datos al crear las cuentas de los usuarios; de otro modo las cuentas no serán utilizables.
+Considere fijar esta opción de bloqueo en \'Desbloqueado si está vacío\', para evitar este problema.';
 $string['auth_invalidnewemailkey'] = 'Error: Si está intentando confirmar un cambio de dirección email. debe haber cometido un error al copiar la URL que le enviamos por email. Por favor, copie la dirección y pruebe de nuevo.';
 $string['auth_multiplehosts'] = 'Es posible especificar múltiples servidores (por ej. servidor1.com;servidor2.com;servidor3.com';
 $string['auth_outofnewemailupdateattempts'] = 'Ha hecho más intentos de los permitidos para actualizar su dirección email. Su solicitud de actualización ha sido cancelada.';
@@ -64,17 +65,15 @@ $string['auto_add_remote_users'] = 'Añadir automáticamente usuarios remotos';
 $string['changepassword'] = 'Cambiar contraseña URL';
 $string['changepasswordhelp'] = 'Aquí puede especificar dónde pueden sus usuarios recuperar o cambiar su nombre de usuario/contraseña si lo han olvidado. Para ello, aparecerá un botón en la página de entrada. Si deja esto en blanco, este botón no se mostrará.';
 $string['chooseauthmethod'] = 'Escoger un método de identificación:';
-$string['chooseauthmethod_help'] = '<p>Este menú le permite modificar el método de identificación
-para este usuario en particular.</p>
-
-<p>Por favor, tenga cuidado porque este ajuste depende directamente
+$string['chooseauthmethod_help'] = 'Este menú le permite modificar el método de identificación
+para este usuario en particular.
+Por favor, tenga cuidado porque este ajuste depende directamente
 de los métodos de identificación que haya definido en el sitio,
-y de los ajustes que estén siendo utilizados.</p>
-
-<p>Una modificación incorrecta aquí podría impedir el acceso de
+y de los ajustes que estén siendo utilizados.
+Una modificación incorrecta aquí podría impedir el acceso de
 la persona al servidor o incluso el borrado de su cuenta
 de forma completa, así que, por favor, utilice esta opción
-si sabe qué es lo que está haciendo.</p>';
+si sabe qué es lo que está haciendo.';
 $string['createpasswordifneeded'] = 'Crear contraseña si es necesario';
 $string['emailchangecancel'] = 'Cancelar cambio de email';
 $string['emailchangepending'] = 'Cambio pendiente. Abra el enlace enviado en {$a->preference_newemail}.';
@@ -130,7 +129,6 @@ $string['pluginnotinstalled'] = 'El conector (plugin) de identificación \'{$a}\
 $string['potentialidps'] = 'Identifíquese usando su cuenta en:';
 $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = 'El CAPTCHA se utiliza para impedir abusos de programas automáticos. Simplemente escriba las palabras en la caja, en orden y separadas por un espacio.
-
 Si no está seguro de qué palabras son, puede conseguir otro CAPTCHA, o un CAPTCHA de audio.';
 $string['selfregistration'] = 'Registrarse a sí mismo';
 $string['selfregistration_help'] = 'Escoja qué conector (\'plugin\') de identificación manejar cuando los usuarios se registren a sí mismos.';

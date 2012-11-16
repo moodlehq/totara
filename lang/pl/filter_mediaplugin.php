@@ -38,7 +38,6 @@ $string['legacywmp'] = 'Windows Media Player';
 $string['legacywmp_help'] = 'Pliki z rozszerzeniem *.avi i *.wmv. W pełni kompatybilne z Internet Explorer w systemie Windows. W przypadku innych przeglądarek i systemów operacyjnych mogą wystąpić problemy .';
 $string['mp3audio_help'] = 'Pliki z rozszerzeniem *. mp3. Odtwarzanie audio za pomocą FlowPlayer wymaga wtyczki Flash.';
 $string['sitevimeo'] = 'Vimeo';
-$string['sitevimeo_help'] = 'Vimeo - serwis umożliwiający oglądanie i udostępnianie plików wideo. ';
-$string['siteyoutube'] = 'YouTube
-';
-$string['siteyoutube_help'] = 'YouTube - serwis umożliwiający oglądanie i udostępnianie plików wideo. ';
+$string['sitevimeo_help'] = 'Vimeo - serwis umożliwiający oglądanie i udostępnianie plików wideo.';
+$string['siteyoutube'] = 'YouTube';
+$string['siteyoutube_help'] = 'YouTube - serwis umożliwiający oglądanie i udostępnianie plików wideo.';

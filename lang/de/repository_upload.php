@@ -28,13 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'Plugin-Konfiguration zum Hochladen';
 $string['pluginname'] = 'Datei hochladen';
 $string['pluginname_help'] = 'Datei in Moodle hochladen';
+$string['upload:view'] = 'Hochladen in der Dateiauswahl sehen';
 $string['upload_error_cant_write'] = 'Fehler beim Speichern der Datei';
 $string['upload_error_extension'] = 'Eine PHP Extension hat das Hochladen der Datei abgebrochen';
-$string['upload_error_form_size'] = 'Die ausgewählte Datei ist größer als MAX_FILE_SIZE
-';
-$string['upload_error_ini_size'] = 'Die ausgewählte Datei ist größer als UPLOAD_MAX_FILESIZE in der Datei php.ini
-';
+$string['upload_error_form_size'] = 'Die ausgewählte Datei ist größer als MAX_FILE_SIZE';
+$string['upload_error_ini_size'] = 'Die ausgewählte Datei ist größer als UPLOAD_MAX_FILESIZE in der Datei php.ini';
 $string['upload_error_no_file'] = 'Keine Datei hochgeladen';
 $string['upload_error_no_tmp_dir'] = 'PHP benötigt ein temporäres Verzeichnis';
 $string['upload_error_partial'] = 'Die ausgewählte Datei wurde nur teilweise hochgeladen';
-$string['upload:view'] = 'Hochladen in der Dateiauswahl sehen';

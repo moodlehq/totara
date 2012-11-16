@@ -33,10 +33,10 @@ $string['formatplain'] = 'Egyszerű szöveg';
 $string['graderinfo'] = 'Tájékoztató értékelők számára';
 $string['nlines'] = '{$a} sor';
 $string['pluginname'] = 'Esszé';
-$string['pluginnameadding'] = 'Esszékérdés hozzáadása';
-$string['pluginnameediting'] = 'Esszékérdés szerkesztése';
 $string['pluginname_help'] = '(Esetleg képet tartalmazó) kérdésre a válaszadó egy-két bekezdésnyi szöveggel válaszol.
 Az esszékérdés osztályozására csak akkor kerül sor, ha a tanár ellenőrizte és kézzel leosztályozta.';
+$string['pluginnameadding'] = 'Esszékérdés hozzáadása';
+$string['pluginnameediting'] = 'Esszékérdés szerkesztése';
 $string['pluginnamesummary'] = 'Több mondatból vagy bekezdésből álló választ tesz lehetővé. Osztályozása kézzel történik.';
 $string['responsefieldlines'] = 'Szövegbeviteli mező mérete';
 $string['responseformat'] = 'Válasz formája';

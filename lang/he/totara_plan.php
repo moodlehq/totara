@@ -531,7 +531,6 @@ $string['plan_instructions_delete'] = 'אתה יכול למחוק תכנית ל�
 $string['plan_instructions_edit'] = 'אתה יכול ללחוץ על כפתור "ערוך פרטים" כדי לשנות את השם, התיאור הקצר או תאריך הסיום.';
 $string['plan_instructions_learner'] = 'לפניך סיכום קצר של תכנית הלמידה שלך.';
 $string['plan_instructions_manager'] = 'לפניך סיכום קצר של תכנית הלמידה של חבר הצוות שלך.';
-$string['planapprovalrequested'] = 'הוגשה בקשת אישור תכנית עבור <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'תכנית "{$a}" אושרה';
 $string['planautocompleteddate'] = 'תכנית זו סומנה כהושלמה באופן אוטומטי מכיוון שתאריך היעד שלה חלף.';
 $string['planautocompleteditems'] = 'תכנית זו סומנה כהושלמה באופן אוטומטי מכיוון שכל הפריטים שלה הושלמו.';

@@ -55,7 +55,6 @@ $string['personal'] = 'osobiste';
 $string['personalnotes'] = 'Notatki osobiste';
 $string['publishstate'] = 'Status';
 $string['publishstate_help'] = 'Typ zawartości notatki określa, kto będzie mógł ją odczytać.
-
 * Prywatna - notatka jest widoczna tylko dla ciebie;
 * Kursu - notatka będzie widoczna dla nauczycieli w tym kursie;
 * Strony - notatka będzie widoczna dla nauczycieli we wszystkich kursach.';

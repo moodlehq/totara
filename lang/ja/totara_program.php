@@ -41,31 +41,19 @@ $string['addorganisationtoprogram'] = '組織をプログラムに追加する';
 $string['addorremovecourses'] = 'コースを追加／削除する';
 $string['addpositiontoprogram'] = 'ポジションをプログラムに追加する';
 $string['addprogramcontent_help'] = '# プログラムコンテンツの追加
-
 様々なコースのセットを追加することでプログラムの学習パスを構築することができます。セットを追加するとセット関係を定義することができます。セットの作成は、手動によるコースの追加、予め定義されたコンピテンシーの選択、または反復する単一のコースのセットアップを通じて行います。
-
 多数のセットを作成すると、セットディバイダーを使用して各セット間のシークエンス（依存関係）を作成できます。一例として、4つのコースセットが定義されたプログラムは以下のような依存関係をもつことができます：
-
-*   学習者はセット1の1つのコース（コースAまたはコースB）を完了すれば、セット2に進むことができる。
-*   学習者はセット2のすべてのコース（コースC、コースD、コースE）を完了すれば、セット3またはセット4に進むことができる。
-*   学習者はセット3の1つのコース（コースE）、またはセット4のすべてのコース（コースFおよびコースG)を完了しなければならない。
-
+* 学習者はセット1の1つのコース（コースAまたはコースB）を完了すれば、セット2に進むことができる。
+* 学習者はセット2のすべてのコース（コースC、コースD、コースE）を完了すれば、セット3またはセット4に進むことができる。
+* 学習者はセット3の1つのコース（コースE）、またはセット4のすべてのコース（コースFおよびコースG)を完了しなければならない。
 学習パスが完了すれば学習者はプログラムを終了します。
-
 セットの作成には次を追加します：
-
 ## コースのセット
-
 依存関係をもつ複数のコースのセットを作成できます。
-
 ## コンピテンシー
-
 予め定義されたコンピテンシーエビデンスから複数のコースのセットを作成できます。コンピテンシーを使ったセットを作成する場合、それはリジッドとなり変更はできません。
-
 ## 単一のコース
-
 反復する単一のコースを余剰とします。
-
 コースのセットまたはコンピテンシーが選択されると、反復する単一のコースはリストから削除されます。';
 $string['affectedusercount'] = 'これらの変更で影響を受ける学習者の数：';
 $string['afterprogramiscompleted'] = 'プログラムの完了後';
@@ -121,11 +109,8 @@ $string['cohorts'] = 'コーホート';
 $string['cohorts_category'] = 'コーホート';
 $string['competency'] = 'コンピテンシー';
 $string['competencycourseset_help'] = '# コンピテンシーコースセット
-
 このセットは予め定義されたコンピテンシーを基に作成されています。
-
 セットの作成にコンピテンシーを使用すると、そのセットはリジッドとなり変更できません。セット内のコースも編集できません。このセット内のコースを変更したい場合は、手動のコースセットを作成してコースを個々に追加していく必要があります。
-
 コンピテンシーコースセット（「1つのコース」または「すべてのコース」）のオペレータオプションは、予め定義されたコンピテンシー設定により決定されます。';
 $string['complete'] = '完了';
 $string['completeallcourses'] = 'このセットにあるすべてのコースを完了しなければいけません（任意のセットである場合を除く）';
@@ -141,7 +126,6 @@ $string['completionofprogram'] = 'プログラムの完了';
 $string['completionstatus'] = 'ステータス';
 $string['completiontimeunknown'] = '完了時間が不明です';
 $string['completiontype_help'] = '# 完了タイプ
-
 セット内のオペレータオプション（「学習者は完了しなければならない」）は「または」を意味する「1つのコース」、もしくは、「および」を意味する「すべてのコース」です。これはテキストを人間が読める形式に保つことが目的です。選択したオプションによってコースの前にあるテキストは自動的に変更されます。';
 $string['confirmassignmentchanges'] = '課題の変更を確認する';
 $string['confirmcontentchanges'] = 'コンテンツの変更を確認する';
@@ -154,24 +138,19 @@ $string['couldnotinsertnewrecord'] = '新規レコードを挿入できません
 $string['course'] = 'コース';
 $string['coursecompletion'] = 'コースの完了';
 $string['coursecreation_help'] = '# コースの作成
-
 コースの作成では、コースをコピーまたは再作成する時を定義します。
-
 これはコース設定で指定されている開始日および終了日をもとにしています。';
 $string['coursename'] = 'コース名';
 $string['coursenamelink'] = 'コース名';
 $string['courses'] = 'コース';
 $string['coursesetcompleted'] = 'コースセットが完了しました';
 $string['coursesetcompletedmessage_help'] = '# コースセット完了メッセージ
-
 このメッセージはコースセットが完了した時に送信されます。';
 $string['coursesetdue'] = 'コースセット期限';
 $string['coursesetduemessage_help'] = '# コースセット期限メッセージ
-
 このメッセージは、コースセットの期限が来る前の指定された時に送信されます。';
 $string['coursesetoverdue'] = 'コースセットが期限切れです';
 $string['coursesetoverduemessage_help'] = '# コースセット期限切れメッセージ
-
 このメッセージは、コースセットの期限経過後の指定された時に送信されます。';
 $string['createandnext'] = '作成し次の手順に進む';
 $string['createandreturn'] = '作成し概観に戻る';
@@ -214,7 +193,6 @@ $string['editprogramroleassignments'] = 'プログラムロールの課題を編
 $string['editprograms'] = 'プログラムを追加/編集する';
 $string['endnote'] = 'プログラムおよびノート';
 $string['enrolmentmessage_help'] = '# 登録メッセージ
-
 このメッセージは、ユーザがプログラムに自動的に割り当てられた時に送信されます。';
 $string['error:availibileuntilearlierthanfrom'] = '日付が開始日以降となるまで利用可能';
 $string['error:badcheckvariable'] = 'チェック変数が正しくありません－もう一度試してください';
@@ -253,7 +231,6 @@ $string['error:updateextensionstatus'] = 'エラーが発生し、延長ステ�
 $string['errorsinform'] = 'このフォームにはエラーがあります。以下のリストを見直して、保存する前にエラーを修正してください。';
 $string['eventnotfound'] = 'ID{$a} をもつプログラム課題イベントが見つかりませんでした';
 $string['exceptionreportmessage_help'] = '# 例外レポートメッセージ
-
 このメッセージは、新規例外がプログラムの例外レポートに追加された場合にサイト管理者に送信されます。';
 $string['exceptions'] = '例外レポート（{$a} ）';
 $string['exceptionsreport'] = '例外レポート';
@@ -270,7 +247,6 @@ $string['extensionrequestfailed'] = '延長リクエストが失敗しました�
 $string['extensionrequestfailed:nomanager'] = '延長リクエストが送信されませんでした。マネージャーが見つかりません';
 $string['extensionrequestmessage'] = '<p>あるユーザがプログラム<em>{$a->programfullname}</em>の延長をリクエストしました。リクエストの詳細：</p><ul><li>日付：{$a->extensiondatestr}</li><li>理由：{$a->extensionreason}</li></ul>';
 $string['extensionrequestmessage_help'] = '# 延長リクエストメッセージ
-
 このメッセージは、プログラム延長のリクエストがされた場合に学生のマネージャーに送信されます。';
 $string['extensionrequestnotsent'] = '延長リクエストは送信できませんでした。もう一度試してください。';
 $string['extensionrequestsent'] = '延長リクエストが正常に送信されました';
@@ -320,7 +296,6 @@ $string['launchprogram'] = 'プログラムを開始する';
 $string['learnerenrolled'] = '学習者が登録されました';
 $string['learnerfollowup'] = '学習者のフォローアップ';
 $string['learnerfollowupmessage_help'] = '# フォローアップメッセージ
-
 このメッセージは、プログラム完了後の指定された時に学生に送信されます。';
 $string['learnersassigned'] = '{$a->total}学習者が割り当てられました。{$a->assignments}学習者がアクティブですが、{$a->exceptions}が例外です';
 $string['learnersselected'] = '学習者が選択されました';
@@ -339,22 +314,14 @@ $string['legend:programoverduemessage'] = 'プログラム期限切れメッセ�
 $string['legend:recurringcourseset'] = '繰り返しコースセット';
 $string['legend:unenrolmentmessage'] = '登録削除メッセージ';
 $string['mainmessage_help'] = '# メッセージ本文
-
 メッセージ本文はメッセージ受信者のダッシュボードに表示されます。
-
-メッセージ本文には、メッセージの送信時に置き換えられる様々な変数を含めることができます。どのような変数が置き換えられるかについて、詳しくは以下を参照してください。 [ 変数の置換 ][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+メッセージ本文には、メッセージの送信時に置き換えられる様々な変数を含めることができます。';
 $string['manageextensionrequests'] = '例外レポートを表示して延長リクエストを許可または拒否する';
 $string['manageextensions'] = '延長を管理する';
 $string['managementhierarchy'] = '管理履歴';
 $string['managermessage_help'] = '# マネージャーへの通知
-
 「マネージャーに通知する」ボックスにチェックを入れると、メッセージ受信者のマネージャーにも、このフィールドで指定する通知が送信されます。
-
-マネージャーへの通知には、メッセージの送信時に置き換えられる様々な変数を含めることができます。どのような変数が置き換えられるかについて、詳しくは以下を参照してください。 [ 変数の置換 ][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+マネージャーへの通知には、メッセージの送信時に置き換えられる様々な変数を含めることができます。';
 $string['managername'] = 'マネージャー名';
 $string['managers_category'] = '管理チーム';
 $string['mandatory'] = '強制';
@@ -362,21 +329,15 @@ $string['memberofcohort'] = 'コーホート\'{$a}\'のメンバー';
 $string['memberoforg'] = '組織\'{$a}\'のメンバー';
 $string['messages'] = 'メッセージ';
 $string['messagesubject_help'] = '# メッセージの件名
-
 メッセージの件名はメッセージ受信者のダッシュボードに表示されます。最大文字数は255です。
-
-件名には送信時に置き換えられる様々な変数を含めることができます。どのような変数が置き換えられるかについて、詳しくは以下を参照してください。 [ 変数の置換 ][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+件名には送信時に置き換えられる様々な変数を含めることができます。';
 $string['missingshortname'] = '省略名が欠けています';
 $string['months'] = '月';
 $string['movedown'] = '下へ移動する';
 $string['moveselectedprogramsto'] = '選択されたプログラムを次へ移動してください...';
 $string['moveup'] = '上へ移動する';
 $string['multicourseset_help'] = '# コースのセット
-
 これは、コースカタログから個々に選択されたコースのセットです。
-
 セットの名前、学習者が完了しなければならないのは1つのコースか、それともすべてのコースか、またセットの完了に与えられる全体の時間といったことを定義することができます。';
 $string['nocoursecontent'] = 'コースコンテンツがありません。';
 $string['nocourses'] = 'コースがありません';
@@ -392,7 +353,6 @@ $string['noprogramsyet'] = 'このカテゴリにプログラムはありませ�
 $string['norequiredlearning'] = '必要な学習はありません';
 $string['notavailable'] = '利用できません';
 $string['notifymanager_help'] = '# マネージャーに通知を送信する
-
 このボックスにチェックを入れると、メッセージ受信者のマネージャーにも通知が送信されます。';
 $string['notmanager'] = 'あなたはマネージャーではありません';
 $string['nouserextensions'] = '{$a} には保留中の延長リクエストはありません';
@@ -448,24 +408,16 @@ $string['program:viewprogram'] = 'プログラムを表示する';
 $string['programassignments'] = 'プログラム課題';
 $string['programassignmentssaved'] = 'プログラム課題が正常に保存されました';
 $string['programavailability_help'] = '# プログラムの利用可能性
-
 このオプションによりあなたのプログラムを完全に「非表示」にすることができます。
-
 この設定を使うと、管理者以外にはどのプログラムリストにも表示されません。
-
 学習者がプログラムURLに直接アクセスしようとしても、アクセスは拒否されます。
-
 「利用可能初日」および「利用可能最終日」を設定すると、学習者はこの日付が指定する期間はプログラムを検索しアクセスすることができますが、それ以外の期間にはアクセスが拒否されます。';
 $string['programcategory_help'] = '# プログラム／コースのカテゴリ
-
 Moodle管理者は複数のプログラム／コースカテゴリをセットアップすることができます。
-
 例えば、「サイエンス」、「人文学科」、「公衆衛生」などです。
-
 カテゴリはプログラムに最適なものを選択してください。この選択はプログラムリスト内のプログラムの表示に影響を与えます。また学生がプログラムを見つけやすいものとなるよう注意してください。';
 $string['programcompleted'] = 'プログラムが完了しました';
 $string['programcompletedmessage_help'] = '# プログラム完了メッセージ
-
 このメッセージはプログラムが完了した時に送信されます。';
 $string['programcompletion'] = 'プログラムの完了';
 $string['programcontent'] = 'プログラムコンテンツ';
@@ -479,19 +431,16 @@ $string['programdetailssaved'] = 'プログラムの詳細が正常に保存さ�
 $string['programdue'] = 'プログラムの期限です';
 $string['programduedate'] = 'プログラムの期日';
 $string['programduemessage_help'] = '# プログラム期限メッセージ
-
 このメッセージは、プログラムの期限が来る前の指定された時に送信されます。';
 $string['programends'] = 'プログラムが終了します';
 $string['programexceptions'] = 'プログラムの例外';
 $string['programfullname_help'] = '# プログラム正式名
-
 プログラムの正式名は画面のトップおよびプログラムリストに表示されます。';
 $string['programicon'] = 'プログラムアイコン';
 $string['programid'] = 'プログラムID';
 $string['programidnotfound'] = '次のIDにはプログラムが存在しません：{$a}';
 $string['programidnumber'] = 'プログラムID番号';
 $string['programidnumber_help'] = '# プログラムID番号
-
 プログラムのID番号は外部システムに対するコースの参照番号としてのみ使用され、Moodle内で表示されることはありません。このプログラムの正式なコードネームがある場合は、ここではそちらを使用してください。そうでない場合は空白のままにしてください。';
 $string['programlive'] = '注意：プログラムがライブです';
 $string['programmandatory'] = 'プログラムは必須です';
@@ -504,14 +453,12 @@ $string['programnotcurrentlyavailable'] = 'このプログラムは現在学生�
 $string['programnotlive'] = 'プログラムはライブではありません';
 $string['programoverdue'] = 'プログラムが期限切れです';
 $string['programoverduemessage_help'] = '# プログラム期限切れメッセージ
-
 このメッセージは、プログラムの期限経過後の指定された時に送信されます。';
 $string['programrecurring'] = 'プログラムが繰り返しています';
 $string['programs'] = 'プログラム';
 $string['programscomplete'] = 'プログラムの完了';
 $string['programshortname'] = 'プログラム省略名';
 $string['programshortname_help'] = '# プログラム省略名
-
 プログラムの省略名は、正式名の使用が適当でない複数の場所（アラートメッセージの件名など）で使用されます。';
 $string['programsinthiscategory'] = 'このカテゴリ（{$a} ）にあるプログラム';
 $string['programsmovedout'] = 'プログラムが{$a} から移動しました';
@@ -520,25 +467,19 @@ $string['programupdatecancelled'] = 'プログラムのアップデートがキ�
 $string['programupdatefail'] = 'プログラムのアップデートが失敗しました';
 $string['programupdatesuccess'] = 'プログラムが正常にアップデートされました';
 $string['programvisibility_help'] = '# プログラムの可視性
-
 プログラムを可視に設定すると、プログラムリストと検索結果に表示され、学生はプログラムのコンテンツを閲覧することができます。
-
 プログラムを非可視に設定すると、プログラムリストや検索結果には表示されません。しかしプログラムに割り当てられている学生の学習プランには表示されるほか、そのプログラムのURLを知っている学生はなおプログラムにアクセスすることができます。';
 $string['progress'] = '進捗';
 $string['reason'] = '延長理由';
 $string['reasonforextension'] = '延長の理由';
 $string['recurrence_help'] = '# 反復
-
 反復では、反復コースが反復されるまでの期間を定義します。反復は日数、週数、月数で指定することができます。';
 $string['recurring'] = '繰り返し';
 $string['recurringcourse'] = '繰り返しコース';
 $string['recurringcourse_help'] = '# 反復コース
-
 選択した反復コースを表示します。
-
 反復として選択できるのは1つのコースのみです。コースを変更するには、ドロップダウンメニューから新しいコースを選択し、「コースを変更する」をクリックして変更を保存します。';
 $string['recurringcourseset_help'] = '# 反復コースセット
-
 反復コースセットで選択できるのは単一のコースのみです。コースセットおよびコンピテンシーの複数のコースは定義できませｎ。';
 $string['recurringprogramhistory'] = '繰り返しプログラム{$a} の履歴レコード';
 $string['recurringprogramhistoryfor'] = '{$a->username}の繰り返しプログラム{$a->progname}の履歴レコード';
@@ -561,9 +502,7 @@ $string['selectcourse'] = 'コースを選択する...';
 $string['setcompletion'] = '完了を設定する';
 $string['setfixedcompletiondate'] = '固定完了日を設定する';
 $string['setlabel_help'] = '# コースセットのラベル
-
 セット内のコースのグループに名前を付けるには、コースセットのラベルを使用します。
-
 これによってそれぞれのセットが分かりやすくなり、学習者が学習パスを理解するのにも役立ちます。例えば、最初のコースセットには「第一段階 - 導入」、次のコースセットには「第二段階 - 健康と安全」とラベルを付けることができます。';
 $string['setofcourses'] = 'コースのセット';
 $string['setrealistictimeallowance'] = '現実的な割り当て時間を設定する';
@@ -582,7 +521,6 @@ $string['thisactioncannotbeundone'] = 'この操作は元に戻すことがで�
 $string['thiswillaffect'] = 'これにより{$a} 学習者が影響を受けます';
 $string['timeallowance'] = '割り当て時間';
 $string['timeallowance_help'] = '# 割り当て時間
-
 セット内のコースの完了に割り当てる時間を設定します。これはセットの完了にかかる時間の一般的指標であり、コースの完了に実際にかかった時間ではありません。コース完了にかかる実際の時間はコースレベルで設定できます。';
 $string['toprogram'] = 'プログラムに';
 $string['tosaveassignments'] = '課題の変更を全て保存するには、\'全ての変更を保存する\'をクリックしてください。課題の変更を編集するには\'課題を編集する\'をクリックしてください。課題を保存すると元に戻すことはできません。';
@@ -591,17 +529,13 @@ $string['tosavemessages'] = 'メッセージの変更を全て保存するには
 $string['total'] = '合計';
 $string['totalassignments'] = '潜在的な課題の合計';
 $string['totalassignments_help'] = '# 割り当ての合計数
-
 プログラムの割り当てページおよび概観ページに表示される割り当ての合計数は、割り当てられたカテゴリすべての学習者の合計数を表しています。プログラムに現在割り当てられている学習者の数ではありません。
-
 学習者がプログラムに割り当てられた組織に属しており、なおかつプログラムに割り当てられたポジションにも就いている場合は、その学習者はそれぞれのカテゴリでカウントされます（ただしプログラムへの割り当ては1度になります）。';
 $string['trigger_help'] = '# トリガ
-
 トリガ時間は、メッセージの送信時をイベントとの関係に基づいて決定します（例えば、プログラム完了から4週間後など）。';
 $string['type'] = 'タイプ';
 $string['unenrolment'] = '登録削除';
 $string['unenrolmentmessage_help'] = '# 登録削除メッセージ
-
 このメッセージは、ユーザがプログラムから登録削除した時に送信されます。';
 $string['unknownexception'] = '不明の例外';
 $string['unknownusersrequiredlearning'] = '不明なユーザの必修学習';
@@ -614,14 +548,11 @@ $string['updateextensions'] = '延長のアップデート';
 $string['updateextensionsuccess'] = 'すべての延長が正常にアップデートされました';
 $string['userid'] = 'ユーザID';
 $string['variablesubstitution_help'] = '# 変数の置換
-
 プログラムのメッセージでは、一定の変数を件名およびメッセージ本文に挿入し、送信時に真の値に変換されるようにすることができます。変数は以下に示す通り正確にテキストに挿入してください。使用することができるのは以下の変数です：
-
 %programfullname%
-:   これはプログラムの正式名に置き換えられます
-
+: これはプログラムの正式名に置き換えられます
 %setlabel%
-:   これはコースセットラベルに置き換えられます（メッセージがコースセットに関係している場合のみ）';
+: これはコースセットラベルに置き換えられます（メッセージがコースセットに関係している場合のみ）';
 $string['viewallprograms'] = 'すべてのプログラムを表示する';
 $string['viewallrequiredlearning'] = 'すべてを表示する';
 $string['viewexceptions'] = 'イシューを解決するために例外レポートを表示する';

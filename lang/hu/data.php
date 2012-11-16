@@ -43,10 +43,10 @@ $string['autogenallforms'] = 'Minden alapsablon előállítása';
 $string['autolinkurl'] = 'URL automatikus kapcsolása';
 $string['availablefromdate'] = 'Ekkortól érhető el:';
 $string['availabletags'] = 'Meglévő címkék';
-$string['availabletags_help'] = '<p align="center"><strong>Rendelkezésre álló címkék</strong></p>
-<p>A címkék olyan helykitöltők a sablonban, amelyeket mezők vagy más elemek, például egy szerkesztőikon vált fel a bejegyzések szerkesztése vagy megtekintése során.</p>
-<p>A mezők [[fieldname]] formájúak. Az összes többi címke formája ##sometag##.</p>
-<p>Csak a &quot;Rendelkezésre álló címkék&quot; listáján szereplő címkék használhatók az adott sablon esetén.</p>';
+$string['availabletags_help'] = '**Rendelkezésre álló címkék**
+A címkék olyan helykitöltők a sablonban, amelyeket mezők vagy más elemek, például egy szerkesztőikon vált fel a bejegyzések szerkesztése vagy megtekintése során.
+A mezők [[fieldname]] formájúak. Az összes többi címke formája ##sometag##.
+Csak a "Rendelkezésre álló címkék" listáján szereplő címkék használhatók az adott sablon esetén.';
 $string['availabletodate'] = 'Eddig érhető el:';
 $string['blank'] = 'Üres';
 $string['buttons'] = 'Lépések';
@@ -76,25 +76,22 @@ $string['csstemplate'] = 'CSS-sablon';
 $string['csvfailed'] = 'A CSV-állományból nem sikerül kiolvasni a nyers adatokat.';
 $string['csvfile'] = 'CSV-állomány';
 $string['csvimport'] = 'CSV-állomány importálása';
-$string['csvimport_help'] = '<p align="center"><strong>Importálás CSV-fájlból</strong></p>
-
-<p>A CSV a szöveges adatcsere elterjedt formája, jelentése: Comma Separated Values
-(vesszővel elválasztott értékek).</p>
-<p>A szükséges fájlformátum egyszerű szöveges állomány, első rekordként a
+$string['csvimport_help'] = '**Importálás CSV-fájlból**
+A CSV a szöveges adatcsere elterjedt formája, jelentése: Comma Separated Values
+(vesszővel elválasztott értékek).
+A szükséges fájlformátum egyszerű szöveges állomány, első rekordként a
 mezőneveket tartalmazza. Ezután következnek az adatok, soronként egy rekord.
-<p>A mezőhatároló alapértelmezésben a vessző, a mezőt záró határoló nincs
+A mezőhatároló alapértelmezésben a vessző, a mezőt záró határoló nincs
 meghatározva (a mezőhatároló az a karakter, amely az egyes rekordokban az egyes mezőket körülveszi).
-<p>A rekordokat egymástól soremelés (a RETURN vagy ENTER billentyű lenyomása) választja el.
-A tabulátorokat t, a soremelést n jelzi. </p>
-<p>Minta:
-<pre>
+A rekordokat egymástól soremelés (a RETURN vagy ENTER billentyű lenyomása) választja el.
+A tabulátorokat t, a soremelést n jelzi.
+Minta:
 név,magasság,testsúly
 Kai,180 cm,80kg
 Kim,170 cm,60kg
 Koo,190 cm,20kg
-</pre>
-</p>
-<p>Figyelmeztetés: előfordulhat, hogy a rendszer nem támogatja az összes mezőtípust.</p>';
+
+Figyelmeztetés: előfordulhat, hogy a rendszer nem támogatja az összes mezőtípust.';
 $string['csvwithselecteddelimiter'] = '<acronym title="Vesszővel elválasztott értékek">CSV</acronym>-szöveg kiválasztott határolóval:';
 $string['data:approve'] = 'Jóvá nem hagyott bejegyzések jóváhagyása';
 $string['data:comment'] = 'Megjegyzések írása';
@@ -147,9 +144,9 @@ $string['excel'] = 'Excel';
 $string['expired'] = 'A tevékenység {$a} időpontban lezárult és már nem érhető el.';
 $string['export'] = 'Exportálás';
 $string['exportaszip'] = 'Exportálás tömörítve';
-$string['exportaszip_help'] = '<p align="center"><strong>Exportálás tömörített állományként</strong></p>
-<p>A sablonokat számítógépére mentheti, melyeket a későbbiek folyamán az
-importálás tömörített állományból funkcióval egy másik adatbázisba tölthet fel.</p>';
+$string['exportaszip_help'] = '**Exportálás tömörített állományként**
+A sablonokat számítógépére mentheti, melyeket a későbbiek folyamán az
+importálás tömörített állományból funkcióval egy másik adatbázisba tölthet fel.';
 $string['exportedtozip'] = 'Exportálva ideiglenes ... tömörített állományba';
 $string['exportentries'] = 'Fogalmak exportálása';
 $string['exportownentries'] = 'Csak a saját tételeit exportálja? ({$a->mine}/{$a->all})';
@@ -165,15 +162,13 @@ $string['fieldheightlistview'] = 'Magasság felsorolási nézetben';
 $string['fieldheightsingleview'] = 'Magasság egyszeres nézetben';
 $string['fieldids'] = 'Mezőazonosítók';
 $string['fieldmappings'] = 'Mezőillesztések';
-$string['fieldmappings_help'] = '<p align="center"><strong>Mezőmásolás</strong></p>
-<p>Ez a menü lehetővé teszi adatok megőrzését a meglévő adatbázisból.
+$string['fieldmappings_help'] = '**Mezőmásolás**
+Ez a menü lehetővé teszi adatok megőrzését a meglévő adatbázisból.
 Egy adott mező adatainak a megőrzéséhez át kell őket másolni egy új mezőbe, ahol
 majd megjelennek. Bármely mező akár üresen is hagyható, így nem másolódik bele semmilyen információ.
-Az új mezőbe át nem másolt régi mező adataival együtt elvész.</p>
-<p>
+Az új mezőbe át nem másolt régi mező adataival együtt elvész.
 Csak azonos típusú mezők másolhatók, így minden lenyíló
-ablakban más-más mezők szerepelnek. Ügyeljen arra, hogy egy régi mezőt csakis egy új mezőbe másoljon át.
-</p>';
+ablakban más-más mezők szerepelnek. Ügyeljen arra, hogy egy régi mezőt csakis egy új mezőbe másoljon át.';
 $string['fieldname'] = 'Mezőnév';
 $string['fieldnotmatched'] = 'Állományának alábbi mezői nem szerepelnek az adatbázisban: {$a}';
 $string['fieldoptions'] = 'Választási lehetőségek (soronként egy)';
@@ -191,8 +186,7 @@ $string['forcelinkname'] = 'Kapcsolat kötelező neve';
 $string['foundnorecords'] = 'Nincsenek rekordok (<a href="{$a->reseturl}">Szűrők visszaállítása</a>)';
 $string['foundrecords'] = 'Vannak rekordok: {$a->num}/{$a->max} (<a href="{$a->reseturl}">Szűrők visszaállítása</a>)';
 $string['fromfile'] = 'Importálás tömörített állományból';
-$string['fromfile_help'] = '<p align=\'center\'><strong>Előzetes beállítások importálása tömörített állományból</strong></p>
-<p>Az exportálási funkcióval számítógépre mentett előzetes beállítások feltöltésére szolgál.</p>';
+$string['fromfile_help'] = 'Az exportálási funkcióval számítógépre mentett előzetes beállítások feltöltésére szolgál.';
 $string['generateerror'] = 'Nem minden állomány jött létre!';
 $string['header'] = 'Fejléc';
 $string['headeraddtemplate'] = 'Fogalmak szerkesztésénél megadja a felületet';
@@ -228,9 +222,8 @@ $string['mapexistingfield'] = 'Illesztés erre: {$a}';
 $string['mapnewfield'] = 'Új mező létrehozása';
 $string['mappingwarning'] = 'Minden új mezőhöz nem illesztett régi mező elvész, adatai pedig törlődnek.';
 $string['maxentries'] = 'Bejegyzések maximális száma';
-$string['maxentries_help'] = '<p align="center"><strong>Maximális fogalomszám</strong></p>
-
-<p>A tevékenységhez egy résztvevő által leadható fogalmak maximális száma.</p>';
+$string['maxentries_help'] = '**Maximális fogalomszám**
+A tevékenységhez egy résztvevő által leadható fogalmak maximális száma.';
 $string['maxsize'] = 'Maximális méret';
 $string['menu'] = 'Menü';
 $string['menuchoose'] = 'Választás...';
@@ -259,11 +252,9 @@ $string['nametextarea'] = 'Szövegnégyzet mezője';
 $string['nameurl'] = 'URL-mező';
 $string['newentry'] = 'Új bejegyzés';
 $string['newfield'] = 'Új mező létrehozása';
-$string['newfield_help'] = '<p align="center"><strong>Mezők</strong></p>
-
-<p>Ezen a képernyőn mezőket hozhat létre, melyek adatbázisa részét fogják képezni.</p>
-
-<p>Az egyes mezőkben különféle típusú adatok rögzíthetők más-más felülettel.</p>';
+$string['newfield_help'] = '**Mezők**
+Ezen a képernyőn mezőket hozhat létre, melyek adatbázisa részét fogják képezni.
+Az egyes mezőkben különféle típusú adatok rögzíthetők más-más felülettel.';
 $string['noaccess'] = 'Ehhez az oldalhoz nem férhet hozzá';
 $string['nodefinedfields'] = 'Az új előre beállított tételhez nincsenek megadva mezők!';
 $string['nofieldcontent'] = 'A mező tartalma nem található';
@@ -303,20 +294,16 @@ $string['recorddeleted'] = 'Bejegyzés törölve';
 $string['recordsnotsaved'] = 'Nem került sor bejegyzés elmentésére. Ellenőrizze a feltöltött állomány formáját.';
 $string['recordssaved'] = 'bejegyzés elmentve';
 $string['requireapproval'] = 'Legyen jóváhagyás?';
-$string['requireapproval_help'] = '<p align="center"><strong>Jóváhagyással</strong></p>
-
-<p>Jóvá kell a tanárnak hagyni a fogalmakat, mielőtt azt a többi tanuló láthatja? Ez a funkció hasznos lehet potenciálisan bántó vagy helytelen tartalmak kiszűréséhez.</p>';
+$string['requireapproval_help'] = '**Jóváhagyással**
+Jóvá kell a tanárnak hagyni a fogalmakat, mielőtt azt a többi tanuló láthatja? Ez a funkció hasznos lehet potenciálisan bántó vagy helytelen tartalmak kiszűréséhez.';
 $string['requiredentries'] = 'Előírt fogalmak';
-$string['requiredentries_help'] = '<p align="center"><strong>Fogalmak szükséges száma</strong></p>
-
-<p>Egy résztvevő által leadandó fogalmak száma. A felhasználók figyelmeztető üzenetet látnak, ha nem adják le a kellő számú fogalmat.</p>
-
-<p>A tevékenység mindaddig nem tekinthető teljesítettnek, ameddig a felhasználó a szükséges számú fogalmat le nem adta.</p>';
+$string['requiredentries_help'] = '**Fogalmak szükséges száma**
+Egy résztvevő által leadandó fogalmak száma. A felhasználók figyelmeztető üzenetet látnak, ha nem adják le a kellő számú fogalmat.
+A tevékenység mindaddig nem tekinthető teljesítettnek, ameddig a felhasználó a szükséges számú fogalmat le nem adta.';
 $string['requiredentriestoview'] = 'Megtekintéshez szükséges fogalmak';
-$string['requiredentriestoview_help'] = '<p align="center"><strong>Megtekintés előtt szükséges fogalmak száma</strong></p>
-
-<p>Egy résztvevő által leadandó fogalmak száma, mielőtt megnézhetnek bármely fogalmat
-ezen adatbázishoz kapcsolódó tevékenység során.</p>';
+$string['requiredentriestoview_help'] = '**Megtekintés előtt szükséges fogalmak száma**
+Egy résztvevő által leadandó fogalmak száma, mielőtt megnézhetnek bármely fogalmat
+ezen adatbázishoz kapcsolódó tevékenység során.';
 $string['resetsettings'] = 'Szűrők visszaállítása';
 $string['resettemplate'] = 'Sablon visszaállítása';
 $string['resizingimages'] = 'Miniatűr képek átméretezése';
@@ -328,10 +315,10 @@ $string['save'] = 'Mentés';
 $string['saveandadd'] = 'Mentés és egy másik hozzáadása';
 $string['saveandview'] = 'Mentés és megtekintés';
 $string['saveaspreset'] = 'Mentés előzetes beállításként';
-$string['saveaspreset_help'] = '<p align="center"><strong>Mentés előzetes beállításként</strong></p>
-<p>Ezzel a meglévő sablonokat előzetes beállításként menti el, melyeket
+$string['saveaspreset_help'] = '**Mentés előzetes beállításként**
+Ezzel a meglévő sablonokat előzetes beállításként menti el, melyeket
 a portálon bárki megtekinthet és használhat. Az előzetes beállítás
-megjelenik az előzetes beállítások felsorolásában. Eltávolítása bármikor lehetséges.</p>';
+megjelenik az előzetes beállítások felsorolásában. Eltávolítása bármikor lehetséges.';
 $string['savesettings'] = 'Beállítások mentése';
 $string['savesuccess'] = 'A mentés sikerült. Előzetes beállítása az egész portálon elérhető lesz.';
 $string['savetemplate'] = 'Sablon mentése';
@@ -359,18 +346,16 @@ $string['updatefield'] = 'Meglévő mező frissítése';
 $string['uploadfile'] = 'Állomány feltöltése';
 $string['uploadrecords'] = 'Bejegyzések feltöltése állományból';
 $string['uploadrecords_help'] = 'A fogalmak feltölthetők szöveges állományból. Ennek formátuma a következő:
-
 * Minden sorban egy rekord szerepel
 * Minden rekord vesszőkkel (vagy egyéb határolókkal) elválasztott adatsorból áll
 * Az első rekord tartalmazza az állomány többi részhét meghatározó mezőnevek felsorolását.
-
 A mezőhatároló az egyes rekordok mezőit egymástól elválasztó karakter. Általában nem szükséges megadni.';
 $string['url'] = 'URL';
 $string['usestandard'] = 'Előzetes beállítás használata';
-$string['usestandard_help'] = '<p align="center"><strong>Használat előzetes beállításként</strong></p>
-<p>Az egész portálon elérhető sablont használja.</p>
-<p> Ha az előzetes beállítást a könyvtárba a \'Mentés előzetes beállításként\'
-funkcióval mentette el, akkor törölheti is.</p>';
+$string['usestandard_help'] = '**Használat előzetes beállításként**
+Az egész portálon elérhető sablont használja.
+Ha az előzetes beállítást a könyvtárba a \'Mentés előzetes beállításként\'
+funkcióval mentette el, akkor törölheti is.';
 $string['viewfromdate'] = 'Megtekinthető ekkortól';
 $string['viewtodate'] = 'Megtekinthető eddig';
 $string['wrongdataid'] = 'Hibás adatazonosítót adott meg';

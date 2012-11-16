@@ -30,5 +30,5 @@ $string['emptyfilelist'] = 'Ei näytettäviä tiedostoja';
 $string['notitle'] = 'eiotsikkoa';
 $string['pluginname'] = 'Viimeaikaiset tiedostot';
 $string['pluginname_help'] = 'Käyttäjän viimeksi käyttämät tiedostot';
-$string['recentfilesnumber'] = 'Viimeaikaisten tiedostojen määrä';
 $string['recent:view'] = 'Näytä viimeaikaiset tiedostot -tiedostopankkimoduuli';
+$string['recentfilesnumber'] = 'Viimeaikaisten tiedostojen määrä';

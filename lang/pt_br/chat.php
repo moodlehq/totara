@@ -122,23 +122,16 @@ $string['updatemethod'] = 'Método de atualização';
 $string['updaterate'] = 'porcentagem de atualização:';
 $string['userlist'] = 'Lista de usuários';
 $string['usingchat'] = 'Usando chat';
-$string['usingchat_help'] = '<p>O módulo Chat tem alguns alguns instrumentos que facilitam o bate-papo.</p>
+$string['usingchat_help'] = 'O módulo Chat tem alguns alguns instrumentos que facilitam o bate-papo.
 
-<dl>
-<dt><b>Carinhas</b></dt>
-<dd>Todas as carinhas (emoticons) que você usa nos editores de texto podem ser utilizadas no chat. Por exemplo  :-) = <img src="pix/s/smiley.gif">  </dd>
-
-<dt><b>Links</b></dt>
-<dd>Endereços web são automaticamente transformados em links</dd>
-
-<dt><b>Emoções</b></dt>
-<dd>Você pode iniciar uma frase com  "/me" or ":" para representar emoções.  Por exemplo, se o seu nome é Kim e você digita  ":laughs!" or "/me laughs!" todos vão ler "Kim laughs!"</dd>
-
-<dt><b>Bips</b></dt>
-<dd>Você pode tocar um som para outras pessoas clicando o link  "beep" ao lado do nome delas.  Escrevendo "beep all", todas as pessoas vão ouvir o bip.</dd>
-
-<dt><b>HTML</b></dt>
-<dd>Você pode usar código html para inserir imagens no texto do chat e mudar a cor e o tamanho das letras.</dd>
-
-</dl>';
+**Carinhas**
+: Todas as carinhas (emoticons) que você usa nos editores de texto podem ser utilizadas no chat.
+**Links**
+: Endereços web são automaticamente transformados em links
+**Emoções**
+: Você pode iniciar uma frase com "/me" or ":" para representar emoções. Por exemplo, se o seu nome é Kim e você digita ":laughs!" or "/me laughs!" todos vão ler "Kim laughs!"
+**Bips**
+: Você pode tocar um som para outras pessoas clicando o link "beep" ao lado do nome delas. Escrevendo "beep all", todas as pessoas vão ouvir o bip.
+**HTML**
+: Você pode usar código html para inserir imagens no texto do chat e mudar a cor e o tamanho das letras.';
 $string['viewreport'] = 'Ver sessões encerradas';

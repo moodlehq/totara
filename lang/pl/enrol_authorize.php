@@ -111,6 +111,6 @@ Dziękujemy za wykonanie płatności. Zostałeś zapisany na następujące kursy
 {$a->courses}
 
 Możesz zobaczyć szczegół swojej płatności lub edytować swój profil:
- {$a->paymenturl}
- {$a->profileurl}';
+{$a->paymenturl}
+{$a->profileurl}';
 $string['zipcode'] = 'kod pocztowy';

@@ -25,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'تاريخ الإتمام';
 $string['completion:view'] = 'معاينة تقرير إتمام مقرر دراسي';
+$string['completiondate'] = 'تاريخ الإتمام';
 $string['pluginname'] = 'إتمام مقرر دراسي';

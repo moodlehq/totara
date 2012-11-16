@@ -57,92 +57,61 @@ $string['addremoveprogram'] = 'Lisää/poista kurssiohjelmia';
 $string['addrpl'] = 'Lisää RPL';
 $string['addtemplate'] = 'Lisää uusi templaatti';
 $string['advancedsettingscompetencypermissions_help'] = '# Kompetenssioikeudet
-
 Kohdasta **Kompetenssioikeudet** voit määrittää mitä toimenpiteitä oppijat ja esimiehet voivat tehdä oppimissuunnitelmassa oleville kompetensseille.
-
 Oikeuksia on neljän tasoisia:
-
-*   **Salli** antaa käyttäjän tehdä valitun toiminnon
-*   **Kumoa** estää käyttäjän tekemästä valitun toiminnon
-*   **Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
-*   **Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
+\* **|Salli** antaa käyttäjän tehdä valitun toiminnon
+\* **|Kumoa** estää käyttäjän tekemästä valitun toiminnon
+\* **|Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
+\* **|Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
 $string['advancedsettingscompetencysettings_help'] = '# Kompetenssiasetukset
-
 Kohdasta **Kompetenssiasetukset** voit määrittää mitä asetuksia oppimissuunnitelmassa on käytössä kompetenssien kohdalla.
-
 **Viimeiset suorittamispäivät:** jos tästä kohdasta on valittu arvo "Ei mitään", tätä saraketta ei näytetä suunnitelmassa lainkaan.
-
 **Prioriteetit:** jos käytät prioriteetteja, valitse seuraavasta kohdasta mitä prioriteettiasteikkos suunnitelmaan sovelletaan.
-
 ** Huomaa: **Asteikot luodaan kohdassa Oppimissuunnitelmat > Prioriteettiasteikot.
-
 **Automaattinen osoittaminen:** kompetenssit näytetään automaattisesti oppimissuunnitelmassa käyttäjälle määritetyn aseman tai organisaation mukaisesti.
-
 **Oletustila** määrittää kompetenssin tilan, kun se on hyväksytty osana suunnitelmaa. Jos \'Aseta juuri hyväksytyille kompetensseille niiden oletustila\' on valittuna, kompetenssille annetaan hyväksyntähetkellä kompetenssiasteikon mukainen oletustila (esim. "Pätevä"). Jos valintaa ei käytetä, kompetenssille ei määritetä tilaa.';
 $string['advancedsettingscoursepermissions_help'] = '# Kurssin oikeudet
-
 Kohdasta **Kurssin oikeudet** voit määrittää mitä kurssin asetuksia on käytettävissä ja mitä toimenpiteitä oppijat ja esimiehet voivat tehdä oppimissuunnitelmassa oleville kursseille.
-
 Oikeuksia on neljän tasoisia:
-
-*   **Salli** antaa käyttäjän tehdä valitun toiminnon
-*   **Kumoa** estää käyttäjän tekemästä valitun toiminnon
-*   **Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
-*   **Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
+\* **|Salli** antaa käyttäjän tehdä valitun toiminnon
+\* **|Kumoa** estää käyttäjän tekemästä valitun toiminnon
+\* **|Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
+\* **|Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
 $string['advancedsettingscoursesettings_help'] = '# Kurssiasetukset
-
 Kohdasta **Kurssiasetukset** voit määrittää mitä asetuksia oppimissuunnitelmassa käytetään kursseille.
-
 **Viimeiset suorittamispäivät:** jos tästä kohdasta on valittu arvo "Ei mitään", tätä saraketta ei näytetä suunnitelmassa lainkaan.
-
 **Prioriteetit:** jos käytät prioriteetteja, valitse seuraavasta kohdasta mitä prioriteettiasteikkos suunnitelmaan sovelletaan.
-
 ** Huomaa: **Asteikot luodaan kohdassa Oppimissuunnitelmat > Prioriteettiasteikot.
-
 **Automaattinen osoittaminen:** kompetenssit näytetään automaattisesti oppimissuunnitelmassa käyttäjälle määritetyn aseman tai organisaation mukaisesti.';
 $string['advancedsettingsobjectivepermissions_help'] = '# Tavoitteen oikeudet
-
 Kohdasta **Tavoitteen oikeudet** voit määrittää mitä toimenpiteitä oppijat ja esimiehet voivat tehdä oppimissuunnitelmassa oleville tavoitteille.
-
 Oikeuksia on neljän tasoisia:
-
-*   **Salli** antaa käyttäjän tehdä valitun toiminnon
-*   **Kumoa** estää käyttäjän tekemästä valitun toiminnon
-*   **Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
-*   **Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
+\* **|Salli** antaa käyttäjän tehdä valitun toiminnon
+\* **|Kumoa** estää käyttäjän tekemästä valitun toiminnon
+\* **|Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
+\* **|Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
 $string['advancedsettingsobjectivesettings_help'] = '# Tavoitteen asetukset
-
 Kohdasta **Tavoitteen asetukset** voit määrittää mitä asetuksia oppimissuunnitelmassa on käytössä tavoitteille.
-
 **Viimeiset suorittamispäivät:** jos tästä kohdasta on valittu arvo "Ei mitään", tätä saraketta ei näytetä suunnitelmassa lainkaan.
-
 **Prioriteetit:** jos käytät prioriteetteja, valitse seuraavasta kohdasta mitä prioriteettiasteikkos suunnitelmaan sovelletaan.
-
 ** Huomaa: **Asteikot luodaan kohdassa Oppimissuunnitelmat > Prioriteettiasteikot.
-
 **Automaattinen osoittaminen:** kompetenssit näytetään automaattisesti oppimissuunnitelmassa käyttäjälle määritetyn aseman tai organisaation mukaisesti.
-
 **Tavoiteasteikko** määrittää oppijan edistymisen kohti tavoitteitaan. Tämä asteikko luodaan kohdassa Sivuston hallinta > Oppimissuunnitelmat.';
 $string['advancedsettingsplanpermissions_help'] = '# Suunnitelmaoikeudet
-
 Suunnitelmaoikeuksista voit määrittää mitä toimenpiteitä oppijat ja esimiehet voivat tehdä oppimissuunnitelmissa.
-
 Oikeuksia on neljän tasoisia:
-
-*   **Salli** antaa käyttäjän tehdä valitun toiminnon
-*   **Kumoa** estää käyttäjän tekemästä valitun toiminnon
-*   **Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
-*   **Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
+\* **|Salli** antaa käyttäjän tehdä valitun toiminnon
+\* **|Kumoa** estää käyttäjän tekemästä valitun toiminnon
+\* **|Pyyntö** sallii käyttäjän pyytää, että valittu toiminto tehdään
+\* **|Hyväksy** antaa käyttäjän hyväksyä valitun toiminnon.';
 $string['advancedsettingsplansettings_help'] = '# Suunnitelman asetukset
-
 Kohdasta **Suunnitelman asetukset** voit määrittää oppimissuunnitelman yleisasetukset.
-
 Oppimissuunnitelma voidaan merkitä hyväksytyksi seuraavin tavoin:
-*   **Manuaalisesti/käyttäjä, jolla on oikeudet \'suorittamisen merkitsemiseen\'**
+\* **|Manuaalisesti/käyttäjä, jolla on oikeudet \'suorittamisen merkitsemiseen\'**
 Oppija tai esimies, jolle Hyväksyntä-toiminto on sallittu allaolevassa Suunnitelmaoikeudet-kohdassa.
-*   **Automaattisesti kun kaikki on suoritettu**
+\* **|Automaattisesti kun kaikki on suoritettu**
 Oppimissuunnitelma hyväksytään, kun kaikki siihen liitetyt kurssit, kompetenssit, tavoitteet tai kurssiohjelmat on suoritettu.
-*   **Automaattisesti kun suunnitelman suorituspäivä on ohitettu**
+\* **|Automaattisesti kun suunnitelman suorituspäivä on ohitettu**
 Oppimissuunnitelma hyväksytään, kun sille merkitty viimeinen suorituspäivä on mennyt.';
 $string['advancedworkflow'] = 'Työnkulun lisäasetukset';
 $string['after'] = 'Jälkeen';
@@ -223,7 +192,6 @@ $string['competency_instructions_manager'] = 'Kaikki tiiminjäsenesi oppimissuun
 $string['competency_instructions_request'] = 'Klikkaamalla "Päivitä anotut kompetenssit" -painiketta pääset anomaan uusia kompetensseja tähän suunnitelmaan.';
 $string['competencycompleted'] = 'Kompetenssi saavutettu';
 $string['competencyevidencestatus_help'] = '# Tila
-
 Tämä kenttä näyttää käyttäjän etenemistilanteen hänelle määritellyssä kompetenssissa. Alasvetovalikon vaihtoehdot riippuvat kompetenssiin määritetystä kompetenssiasteikosta, joten kompetenssi tulee olla valittuna ennenkuin tätä kenttää voi muokata. Kompetenssitodisteen lisäämiseksi tai päivittämiseksi tulee olla määritettynä asteikko.';
 $string['competencyname'] = 'Kompetenssin nimi';
 $string['competencypermissions'] = 'Kompetenssioikeudet';
@@ -545,47 +513,36 @@ $string['objectives'] = 'Tavoitteet';
 $string['objectivescale'] = 'Tavoiteasteikko';
 $string['objectivescaleadded'] = 'Tavoiteasteikko "{$a}" lisättiin';
 $string['objectivescaleassign_help'] = '# Tavoiteasteikko
-
 Tavoiteasteikko määrittää tavoitteen arviointikriteerit. Tämä on sen asteikon nimi, johon arvo lisätään.';
 $string['objectivescaledefault_help'] = '# Oletusarvo
-
 **Oletusarvo** on oppimissuunnitelmassa olevalle tavoitteelle automaattisesti annettu arvo, kun tavoitteen on lisännyt joko oppija tai esimies.';
 $string['objectivescaledefaultupdated'] = 'Asteikon oletusarvo on päivitetty';
 $string['objectivescaleinuse'] = 'Tämä asteikko on käytössä (käyttäjät ovat käyttäneet asteikon arvoja tavoitteissaan). Asteikon arvoja ei voida luoda, järjestää uudelleen tai poistaa, jotta tietojen yhdenmukaisuus säilyy. Voit nimetä asteikon arvoja uudelleen mutta tämä saattaa hämmentää käyttäjiä kun heidän tavoitteensa tila muuttuu ilman varoitusta.';
 $string['objectivescalename_help'] = '# Tavoiteasteikon nimi
-
 Oppimissuunnitelman käyttämän tavoiteasteikon nimi.';
 $string['objectivescales'] = 'Tavoiteasteikot';
 $string['objectivescalesdisabledtemplateinuse'] = 'HUOM: Tavoiteasteikkoa ei voida vaihtaa, jotkin suunnitelmat käyttävät tätä mallipohjaa';
 $string['objectivescaleupdated'] = 'Tavoiteasteikko "{$a}" päivitettiin';
 $string['objectivescalevalueachieved_help'] = '# Saavutettu
-
 Kun kohta **Saavutettu** on valittuna, tätä tavoiteasteikon arvoa käytetään osoittamaan onko oppija saavuttanut tavoitteen.
-
 Tässä kohdassa voi olla useita erilaisia saavutusta kuvaavia arvoja.';
 $string['objectivescalevalueadded'] = 'Tavoiteasteikon arvo "{$a}" lisättiin';
 $string['objectivescalevalueid'] = 'Tavoiteltu pätevyys';
 $string['objectivescalevalueidnumber'] = 'Asteikon arvon ID-numero';
 $string['objectivescalevalueidnumber_help'] = '# Asteikon tunniste
-
 Asteikon tunniste on asteikon arvolle annettu yksilöity ID-numero.';
 $string['objectivescalevaluename'] = 'Asteikon arvon nimi';
 $string['objectivescalevaluename_help'] = '# Asteikon arvon nimi
-
 Lisättävänä tai muokattavana oleva tavoiteasteikon arvon nimi.
-
 Asteikkoa käytetään oppimissuunnitelman tavoitteiden arviointiin. Voit lisätä useitakin arvoja tarvittaessa.';
 $string['objectivescalevaluenumeric'] = 'Tavoiteasteikon numeerinen arvo';
 $string['objectivescalevaluenumeric_help'] = '# Tavoiteasteikon numeerinen arvo
-
 Tässä kohdassa voit määrittää tavoiteasteikon kohdalle numeerisen arvon sekä kuvauksen (nimen).';
 $string['objectivescalevalues_help'] = '# Asteikon arvot
-
 Syötä tähän uuden tavoiteasteikon arvot listana (yksi arvo riviä kohti), korkeimmasta matalimpaan. Esimerkiksi:
-
-<p class="indent">
-<i> Tärkeä<br /> Keskitaso <br /> Vähäinen </i>
-</p>';
+* Tärkeä
+Keskitaso
+Vähäinen *';
 $string['objectivescalevalueupdated'] = 'Tavoiteasteikon arvo "{$a}" päivitettiin';
 $string['objectivescalex'] = 'Tavoiteasteikko "{$a}"';
 $string['objectivesettings'] = 'Tavoitteen asetukset';
@@ -691,16 +648,13 @@ $string['prioritymode'] = 'Prioriteetit';
 $string['priorityscale'] = 'Prioriteettiasteikko';
 $string['priorityscaleadded'] = 'Prioriteettiasteikko "{$a}" lisättiin';
 $string['priorityscaleassign_help'] = '# Prioriteettiasteikko
-
 Määritä tässä kohdassa käytössäsi olevan prioriteettiasteikon nimi.';
 $string['priorityscalecreate'] = 'Lisää uusi prioriteettiasteikko';
 $string['priorityscaledefault_help'] = '# Oletusarvo
-
 Tämä arvo näytetään automaattisesti oppimissuunnitelmassa, kun prioriteettiasteikko otetaan käyttöön. Sekä oppija että esimies voivat myöhemmin muuttaa tätä arvoa.';
 $string['priorityscaledefaultupdated'] = 'Asteikon oletusarvo on päivitetty';
 $string['priorityscaleinuse'] = 'Tämä asteikko on käytössä (käyttäjät ovat käyttäneet asteikon arvoja). Asteikon arvoja ei voida luoda, järjestää uudelleen tai poistaa, jotta tietojen yhdenmukaisuus säilyy. Voit nimetä asteikon arvoja uudelleen mutta tämä saattaa hämmentää käyttäjiä kun heidän prioriteettinsä muuttuvat ilman varoitusta.';
 $string['priorityscalename_help'] = '# Prioriteettiasteikon nimi
-
 Oppimissuunnitelmassa käytettävän prioriteettiasteikon nimi.';
 $string['priorityscales'] = 'Prioriteettiasteikot';
 $string['priorityscalesdisabledtemplateinuse'] = 'HUOM: Prioriteettiasteikkoa ei voida vaihtaa, jotkin suunnitelmat käyttävät tätä mallipohjaa';
@@ -708,25 +662,19 @@ $string['priorityscaleupdated'] = 'Prioriteettiasteikko "{$a}" päivitettiin';
 $string['priorityscalevalueadded'] = 'Prioriteettiasteikon arvo "{$a}" lisättiin';
 $string['priorityscalevalueidnumber'] = 'Asteikon arvon ID-numero';
 $string['priorityscalevalueidnumber_help'] = '# Asteikon arvon tunniste
-
 Tämä kohta edustaa yhtä asteikon arvoa. Sen tunnisteena on yksilöity ID-numero.';
 $string['priorityscalevaluename'] = 'Asteikon arvon nimi';
 $string['priorityscalevaluename_help'] = '# Asteikon arvon nimi
-
 Tämä kohta on lisäämäsi tai muokkaamasi prioriteettiasteikon arvon nimi.
-
 Asteikon arvoa käytetään määrittämään oppimissuunnitelmassa olevan kohteen tärkeyttä. Asteikolla voi olla useita arvoja, tarpeen mukaan.';
 $string['priorityscalevaluenumeric'] = 'Prioriteettiasteikon numeerinen arvo';
 $string['priorityscalevaluenumeric_help'] = '# Prioriteettiasteikon kohdan numeerinen arvo
-
 Tässä kohdassa voit määrittää asteikon arvolle numeerisen arvon ja kuvauksen (nimen).';
 $string['priorityscalevalues_help'] = '# Asteikon arvot
-
 Syötä tähän uuden prioriteettiasteikon arvot listana (yksi arvo riviä kohti), korkeimmasta matalimpaan. Esimerkiksi:
-
-<p class="indent">
-<i> Tärkeä<br /> Keskitaso <br /> Vähäinen </i>
-</p>';
+* Tärkeä
+Keskitaso
+Vähäinen *';
 $string['priorityscalevalueupdated'] = 'Prioriteettiasteikon arvo "{$a}" päivitettiin';
 $string['priorityscalex'] = 'Prioriteettiasteikko "{$a}"';
 $string['priorityvalues'] = 'Prioriteettiarvot';
@@ -792,15 +740,11 @@ $string['startdate'] = 'Aloituspäivä';
 $string['status'] = 'Tila';
 $string['teammembers'] = 'Tiimin jäsenet';
 $string['templatecomponentsettings_help'] = '# Osioasetukset
-
 Tästä kohdasta voit näyttää/piilottaa oppimissuunnitelmassa olevia osioita sekä määrittää niiden järjestyksen.
-
 Napsauta **Piilota** poistaaksesi osion oppimissuunnitelman mallipohjasta.
-
 Käytä ylös- ja alas-nuolia vaihtaaksesi osioiden järjestystä.';
 $string['templateenddate'] = 'Kurssin mallipohjan erääntymispäivä';
 $string['templateenddate_help'] = '# Voimassaolo päättyy
-
 Napsauta kalenteri-ikonia määrittääksesi oppimissuunnitelman mallipohjan voimassaolon **päättymispäivän**.';
 $string['templateinstances'] = 'Mallipohjan kohdat';
 $string['thefollowingitemsarepending_p'] = 'Seuraavat osiot ovat avoinna tässä suunnitelmassa:';

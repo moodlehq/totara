@@ -84,7 +84,6 @@ $string['emailteachermailhtml'] = '{$a->username} hat die Aufgabe <i>\'{$a->assi
 Die Abgabe ist <br /><a href="{$a->url}">auf der Website verfügbar</a>.';
 $string['emailteachers'] = 'E-Mail-Benachrichtung an Trainer/innen';
 $string['emailteachers_help'] = 'Wenn diese Option aktiviert ist, werden Trainer/innen per E-Mail benachrichtigt, wenn Teilnehmer/innen eine Aufgaben abgeben oder aktualisieren.
-
 Benachrichtigt werden nur diejenigen Trainer/innen, die zur Bewertung der Aufgaben berechtigt sind. Wenn z.B. der Kurs getrennte Gruppen nutzt, dann werden nur jene Trainer/innen mit der betreffenden Gruppenzugehörigkeit benachrichtigt.';
 $string['emptysubmission'] = 'Sie haben noch nichts eingereicht';
 $string['enablenotification'] = 'Mitteilungen senden';
@@ -108,7 +107,7 @@ $string['helpupload'] = '<p>Dieser Aufgabentyp ermöglicht es den Teilnehmer/inn
 <p>Die Abgabe dieses Aufgabentyps muss von den Teilnehmer/innen manuell beendet werden. Sie können sich jederzeit den Bearbeitungsstand ansehen. Aufgabenbearbeitungen, die noch nicht fertig sind, werden als "Entwurf" gekennzeichnet. Sie können jede Lösung, die Sie noch nicht bewertet haben, wieder in des Entwurfstatus versetzen.';
 $string['helpuploadsingle'] = '<p>Dieser Aufgabentyp ermöglicht es den Teilnehmer/innen, eine Datei als Lösung hochzuladen (z.B. Text-, Bild-, Zip- oder andere Datei). Bitte geben Sie in der Aufgabenbeschreibung an, welche Art von Lösungsdatei Sie erwarten.</p>';
 $string['hideintro'] = 'Beschreibung vor dem Veröffentlichungszeitpunkt verbergen';
-$string['hideintro_help'] = 'Wenn diese Option aktiviert ist, wird die Aufgabenbeschreibung bis zum Bearbeitungsstart verborgen. Lediglich der Name der Aufgabe wird angezeigt.</p>';
+$string['hideintro_help'] = 'Wenn diese Option aktiviert ist, wird die Aufgabenbeschreibung bis zum Bearbeitungsstart verborgen. Lediglich der Name der Aufgabe wird angezeigt.';
 $string['invalidassignment'] = 'Ungültige Aufgabe';
 $string['invalidfileandsubmissionid'] = 'Fehlende Datei oder Abgabe-ID';
 $string['invalidid'] = 'Ungültige Aufgaben-ID';

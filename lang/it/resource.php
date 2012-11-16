@@ -43,8 +43,7 @@ $string['configpopupwidth'] = 'Larghezza di default (in pixel) delle finestre po
 $string['contentheader'] = 'Contenuto';
 $string['displayoptions'] = 'Modalità di visualizzazione disponibili';
 $string['displayselect'] = 'Visualizzazione';
-$string['displayselect_help'] = 'L\'impostazione, assieme al tipo di file e  alla possibilità di effettuare un embed nel browser, determina come sarà visualizzato il file. Le modalità di visualizzazione possono essere:
-
+$string['displayselect_help'] = 'L\'impostazione, assieme al tipo di file e alla possibilità di effettuare un embed nel browser, determina come sarà visualizzato il file. Le modalità di visualizzazione possono essere:
 * Automatica - La modalità di visualizzazione migliore viene scelta automaticamente
 * Embed - Il file viene visualizzato all\'interno della pagina sotto la barra di navigazione assieme alla descrizione e ai blocchi
 * Forza download - Viene visualizzata un finestra di dialogo per scaricare il file

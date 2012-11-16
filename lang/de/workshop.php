@@ -75,7 +75,7 @@ $string['clearaggregatedgrades'] = 'Lösche alle errechneten Punkte';
 $string['clearaggregatedgrades_help'] = 'Die errechneten Punkte für die Einreichung und die Beurteilungen werden zurückgesetzt. Sie können diese Punkte in der Bewertungsphase von Grund auf neu berechnen.';
 $string['clearaggregatedgradesconfirm'] = 'Sind Sie sich sicher, dass Sie alle berechneten Punkte  für die Einreichung und die Beurteilung löschen wollen?';
 $string['clearassessments'] = 'Lösche die Bewertungen';
-$string['clearassessments_help'] = 'Die berechneten Bewertungen für Einreichungen und  Beurteilungen werden zurückgesetzt. Die Information in den ausgefüllten Beurteilungsformularen bleiben erhalten. Alle Bewerter müssen jedoch das Formular noch einmal aufrufen und wieder speichern, damit die Bewertungen neu errechnet werden.';
+$string['clearassessments_help'] = 'Die berechneten Bewertungen für Einreichungen und Beurteilungen werden zurückgesetzt. Die Information in den ausgefüllten Beurteilungsformularen bleiben erhalten. Alle Bewerter müssen jedoch das Formular noch einmal aufrufen und wieder speichern, damit die Bewertungen neu errechnet werden.';
 $string['clearassessmentsconfirm'] = 'Sind Sie sich sicher, dass Sie alle Punkte aus der Bewertung löschen wollen? Sie sind nicht in der Lage, diesen Vorgang rückgängig zu machen. Die Beurteilenden müssen die Einreichungen erneut beurteilen.';
 $string['configexamplesmode'] = 'Standardmodus für Beispieleinreichungen in Workshops';
 $string['configgrade'] = 'Standardwert max. Einreichungspunktzahl in Workshops';
@@ -198,7 +198,6 @@ $string['sortasc'] = 'Aufwärts sortieren';
 $string['sortdesc'] = 'Abwärts sortieren';
 $string['strategy'] = 'Punktestrategie';
 $string['strategy_help'] = 'Die Bewertungsstrategie das verwendete Bewertungsformular und die Bewertungsmethode der Einreichungen. Es gibt vier Optionen:
-
 * Akkumulative Bewertung: Kommentare und Bewertungen für vordefinierte Aspekte
 * Kommentare: Es gibt nur Kommentare zu vordefinierten Aspekten, jedoch keine Bewertungen
 * Anzahl der Fehler: Kommentare und Ja/Nein Bewertungen zu vordefinierten Aussagen
@@ -246,7 +245,7 @@ $string['useexamples_desc'] = 'Beispieleinreichungen sind für Praxiserfahrungen
 $string['useexamples_help'] = 'Mit dieser Funktion können Teilnehmende eine oder mehrere Musterlösungen selber bewerten und ihre Bewertung mit der Referenzbewertung des Trainers abgleichen. Die Bewertung wird bei der Gesamtbewertung des Workshops nicht berücksichtigt.';
 $string['usepeerassessment'] = 'Gegenseitiges Beurteilen benutzen';
 $string['usepeerassessment_desc'] = 'Teilnehmer/innen beurteilen Einreichungen von anderen';
-$string['usepeerassessment_help'] = 'Mit dieser Funktion erhält der Teilnehmende  Lösungen anderer Teilnehmender zur Bewertung. Er/sie erhält dafür ebenfalls eine Bewertung, die der Bewertung für die eigene Lösung zugerechnet wird.';
+$string['usepeerassessment_help'] = 'Mit dieser Funktion erhält der Teilnehmende Lösungen anderer Teilnehmender zur Bewertung. Er/sie erhält dafür ebenfalls eine Bewertung, die der Bewertung für die eigene Lösung zugerechnet wird.';
 $string['userdatecreated'] = 'eingereicht am <span>{$a}</span>';
 $string['userdatemodified'] = 'geändert am <span>{$a}</span>';
 $string['userplan'] = 'Workshop-Navigator';

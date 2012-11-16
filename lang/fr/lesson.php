@@ -28,16 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = 'Contrôle d\'accès';
 $string['actionaftercorrectanswer'] = 'Action après réponse correcte';
 $string['actionaftercorrectanswer_help'] = 'Après une réponse correcte, il y a 3 possibilités pour la page suivante :
-
 * Normale : suivre la leçon dans l\'ordre logique
 * Afficher une page non vue : les pages sont affichées aléatoirement sans qu\'aucune page ne soit affichée deux fois
 * Afficher une page sans réponse : les pages sont affichées aléatoirement, certaines pages déjà vues par l\'étudiant lui étant montrée une nouvelle fois, s\'il n\'y a pas répondu ou s\'il y a répondu incorrectement';
 $string['actions'] = 'Actions';
 $string['activitylink'] = 'Lien vers une activité';
-$string['activitylink_help'] = '<!-- $Id$ -->
-
-
-<p>Le menu déroulant présente toutes les activités de ce cours. En en choisissant une, un lien vers cette activité apparaîtra à la fin de la leçon.</p>';
+$string['activitylink_help'] = 'Le menu déroulant présente toutes les activités de ce cours. En en choisissant une, un lien vers cette activité apparaîtra à la fin de la leçon.';
 $string['activitylinkname'] = 'Allez à {$a}';
 $string['addabranchtable'] = 'Ajouter une table de contenu';
 $string['addanendofbranch'] = 'Ajouter une fin de branchement';
@@ -86,20 +82,12 @@ $string['cannotfindtimer'] = 'Impossible de trouver les enregistrements de la ta
 $string['cannotfinduser'] = 'Impossible de trouver les utilisateurs';
 $string['canretake'] = 'Les étudiants peuvent refaire la leçon';
 $string['casesensitive'] = 'Utiliser les expressions régulières';
-$string['casesensitive_help'] = '<!-- $Id$ -->
+$string['casesensitive_help'] = 'Quelques types de question ont une option pouvant être activée en cochant cette case. Les types de question concernés et les détails de l\'option correspondante sont décrits ci-dessous.
 
+1. **Question à choix multiples.** Une variante des questions à choix multiples sont les « **Questions à choix multiples et à réponses multiples** ». Si l\'option est activée, l\'étudiant doit alors cocher toutes les réponses correctes par l\'ensemble proposé. La question peut indiquer ou non le \*nombre\* de bonnes réponses. Par exemple « Choisir deux rois de France dans la liste des personnages suivants » dans le premier cas, et « Lesquels de ces personnages ont été des rois de France ? » Le nombre des bonnes réponses peut varier de 1 au nombre de choix proposés. Une telle question avec une seule bonne réponse est **différente** d\'une simple question à choix multiples, car contrairement à celle-ci, elle permet à l\'étudiant de choisir plusieurs réponses.
+2. **Question à réponse courte.** Par défaut, le programme compare la (ou les) réponse(s) attendue(s) avec la réponse saisie par l\'étudiant en utilisant le système d\'analyse simple. Cochez la case **Utiliser les expressions régulières:** si vous souhaitez utiliser cet autre système.
 
-<p>Quelques types de question ont une option pouvant être activée en cochant cette case. Les types de question concernés et les détails de l\'option correspondante sont décrits ci-dessous.</p>
-
-<ol>
-
-<li><p><strong>Question à choix multiples.</strong> Une variante des questions à choix multiples sont les « <strong>Questions à choix multiples et à réponses multiples</strong> ». Si l\'option est activée, l\'étudiant doit alors cocher toutes les réponses correctes par l\'ensemble proposé. La question peut indiquer ou non le <em>nombre</em> de bonnes réponses. Par exemple « Choisir deux rois de France dans la liste des personnages suivants » dans le premier cas, et « Lesquels de ces personnages ont été des rois de France ? » Le nombre des bonnes réponses peut varier de 1 au nombre de choix proposés. Une telle question avec une seule bonne réponse est <strong>différente</strong> d\'une simple question à choix multiples, car contrairement à celle-ci, elle permet à l\'étudiant de choisir plusieurs réponses.</p></li>
-
-<li><p><strong>Question à réponse courte.</strong> Par défaut, le programme compare la (ou les) réponse(s) attendue(s) avec la réponse saisie par l\'étudiant en utilisant le système d\'analyse simple. Cochez la case <strong>Utiliser les expressions régulières:</strong> si vous souhaitez utiliser cet autre système.</p></li>
-
-</ol>
-
-<p>Les autres types de questions n\'utilisent pas l\'option de question.</p>';
+Les autres types de questions n\'utilisent pas l\'option de question.';
 $string['checkbranchtable'] = 'Vérifier la page de contenu';
 $string['checkedthisone'] = 'ont coché cette option.';
 $string['checknavigation'] = 'Vérifier la navigation';
@@ -136,10 +124,7 @@ $string['correctanswerscore'] = 'Score des réponses correctes';
 $string['correctresponse'] = 'Feedback réponse correcte';
 $string['credit'] = 'Crédit';
 $string['customscoring'] = 'Score personnalisé';
-$string['customscoring_help'] = '<!-- $Id$ -->
-
-
-<p>Cette option vous permettra d\'affecter une valeur numérique à chaque réponse. Les réponses peuvent avoir une valeur négative ou positive. Les questions importées auront automatiquement la valeur 1 pour les réponses correctes et 0 pour les réponses incorrectes. Toutefois, vous pourrez changer ces valeurs après l\'importation.</p>';
+$string['customscoring_help'] = 'Cette option vous permettra d\'affecter une valeur numérique à chaque réponse. Les réponses peuvent avoir une valeur négative ou positive. Les questions importées auront automatiquement la valeur 1 pour les réponses correctes et 0 pour les réponses incorrectes. Toutefois, vous pourrez changer ces valeurs après l\'importation.';
 $string['deadline'] = 'À faire jusqu\'au';
 $string['defaultessayresponse'] = 'Votre composition sera évaluée par un enseignant de ce cours.';
 $string['deleteallattempts'] = 'Supprimer toutes les tentatives des leçons';
@@ -148,35 +133,21 @@ $string['deletedpage'] = 'Page supprimée';
 $string['deleting'] = 'En cours de suppression';
 $string['deletingpage'] = 'Suppression de la page ? {$a}';
 $string['dependencyon'] = 'Dépend de';
-$string['dependencyon_help'] = '<!-- $Id$ -->
+$string['dependencyon_help'] = 'Grâce à ce réglage, l\'accès à cette leçon peut dépendre des résultats de l\'étudiant à d\'autres leçons. Si les résultats attendus ne sont pas atteints, l\'étudiant n\'aura pas accès à cette leçon.
+Les conditions applicables sont les suivantes.
 
+\* **|Durée utilisée :** l\'étudiant doit avoir passé au moins cette durée sur la leçon considérée.
+\* **|Terminé :** l\'étudiant doit avoir terminé la leçon considérée.
+\* **|Note plus haute que :** la note obtenue à leçon considérée doit avoir été supérieure à la note définie ici.
 
-<p>Grâce à ce réglage, l\'accès à cette leçon peut dépendre des résultats de l\'étudiant à d\'autres leçons. Si les résultats attendus ne sont pas atteints, l\'étudiant n\'aura pas accès à cette leçon.</p>
-
-<p>Les conditions applicables sont les suivantes.</p>
-
-<ul>
-
-<li><b>Durée utilisée :</b> l\'étudiant doit avoir passé au moins cette durée sur la leçon considérée.</li>
-
-<li><b>Terminé :</b> l\'étudiant doit avoir terminé la leçon considérée.</li>
-
-<li><b>Note plus haute que :</b> la note obtenue à leçon considérée doit avoir été supérieure à la note définie ici.</li>
-
-</ul>
-
-<p>Autant que de besoin, il est possible de combiner ces différents critères.</p>';
+Autant que de besoin, il est possible de combiner ces différents critères.';
 $string['description'] = 'Description';
 $string['detailedstats'] = 'Statistiques détaillées';
 $string['didnotanswerquestion'] = 'N\'a pas répondu à cette question';
 $string['didnotreceivecredit'] = 'N\'a pas reçu de point';
 $string['displaydefaultfeedback'] = 'Afficher le feedback par défaut';
-$string['displaydefaultfeedback_help'] = '<!-- $Id$ -->
-
-
-<p>Réglé sur <strong>Oui</strong>, ce paramètre permet d\'afficher un feedback par défaut lorsqu\'aucun autre n\'a été défini spécifiquement. Les feedbacks par défaut sont « C\'est une réponse correcte » et « C\'est une mauvaise réponse ».</p>
-
-<p>Réglé sur <strong>Non</strong>, ce paramètre n\'affiche aucun feedback s\'il n\'a pas été défini. Dans ce cas, l\'utilisateur est directement envoyé à la question suivante.</p>';
+$string['displaydefaultfeedback_help'] = 'Réglé sur **Oui**, ce paramètre permet d\'afficher un feedback par défaut lorsqu\'aucun autre n\'a été défini spécifiquement. Les feedbacks par défaut sont « C\'est une réponse correcte » et « C\'est une mauvaise réponse ».
+Réglé sur **Non**, ce paramètre n\'affiche aucun feedback s\'il n\'a pas été défini. Dans ce cas, l\'utilisateur est directement envoyé à la question suivante.';
 $string['displayhighscores'] = 'Afficher les meilleurs résultats';
 $string['displayinleftmenu'] = 'Afficher dans le menu à gauche ?';
 $string['displayleftif'] = 'N\'afficher le menu de gauche que si la note est supérieure à';
@@ -228,12 +199,8 @@ $string['gradeessay'] = 'Évaluer les questions de composition ({$a->notgradedco
 $string['gradeis'] = 'La note est {$a}';
 $string['gradeoptions'] = 'Options des notes';
 $string['handlingofretakes'] = 'Traitement des différentes tentatives';
-$string['handlingofretakes_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsque les étudiants ont le droit de répéter la leçon, cette option permet à l\'enseignant d\'afficher comme note de la leçon, par exemple dans la page des notes, la note <strong>moyenne</strong> de toutes les tentatives ou la note de la <strong>meilleure</strong> tentative des étudiants.
-
-<p>Cette option peut être modifiée en tout temps.</p>';
+$string['handlingofretakes_help'] = 'Lorsque les étudiants ont le droit de répéter la leçon, cette option permet à l\'enseignant d\'afficher comme note de la leçon, par exemple dans la page des notes, la note **moyenne** de toutes les tentatives ou la note de la **meilleure** tentative des étudiants.
+Cette option peut être modifiée en tout temps.';
 $string['havenotgradedyet'] = 'Pas encore été notée.';
 $string['here'] = 'ici';
 $string['highscore'] = 'Meilleure note';
@@ -241,152 +208,83 @@ $string['highscores'] = 'Meilleures notes';
 $string['hightime'] = 'Plus longue durée';
 $string['importcount'] = 'Importation de {$a} questions';
 $string['importppt'] = 'Importer un diaporama PowerPoint';
-$string['importppt_help'] = '<!-- $Id$ -->
+$string['importppt_help'] = '## Avertissement
+Cette fonctionnalité présente des problèmes d\'utilisation importants, qui ont fait l\'objet d\'une longue discussion dans les forums de Moodle. Vous pouvez utilement [vous y reporter](http://moodle.org/mod/forum/discuss.php?d=86054). Il y est notamment suggéré de convertir la présentation au format Flash, à l\'aide d\'outils tels que Speechi, Flashpoint ou OpenOffice.Org. Une autre possibilité évoquée consiste à générer un document PDF à partir de la présentation. Les documents Flash ou PDF ainsi obtenus sont, eux, aisément intégrables dans Moodle.
+## Utilisation de l\'importation PowerPoint
+Toutes les diapositives de la présentation PowerPoint sont importées comme des tables de branchement, comportant des boutons Précédent et Suivant.
 
+1. Ouvrez votre présentation PowerPoint.
+2. Enregistrez-la au format HTML (sans option particulière).
+3. Vous obtenez un fichier .htm et un dossier contenant toutes les diapositives converties en pages web.
+Compressez en ZIP le dossier **uniquement**.
+4. Rendez-vous sur votre site Moodle et créez une nouvelle leçon.
+5. Après avoir défini les paramètres de la leçon, à la question « Par quoi voulez-vous commencer ? », quatres propositions vous sont faites. Cliquez sur « Importer Powerpoint ».
+6. À l\'aide du bouton « Parcourir » retrouvez le fichier ZIP créé à l\'étape 3. Puis cliquez sur « Déposer ce fichier ».
+7. Si tout s\'est bien déroulé, la page suivante affiche un bouton « Continuer ».
 
-<h2>Avertissement</h2>
-
-<p>Cette fonctionnalité présente des problèmes d\'utilisation importants, qui ont fait l\'objet d\'une longue discussion dans les forums de Moodle. Vous pouvez utilement <a href="http://moodle.org/mod/forum/discuss.php?d=86054">vous y reporter</a>. Il y est notamment suggéré de convertir la présentation au format Flash, à l\'aide d\'outils tels que Speechi, Flashpoint ou OpenOffice.Org. Une autre possibilité évoquée consiste à générer un document PDF à partir de la présentation. Les documents Flash ou PDF ainsi obtenus sont, eux, aisément intégrables dans Moodle.</p>
-
-<h2>Utilisation de l\'importation PowerPoint</h2>
-
-<p>Toutes les diapositives de la présentation PowerPoint sont importées comme des tables de branchement, comportant des boutons Précédent et Suivant.</p>
-
-<ol>
-
-<li>Ouvrez votre présentation PowerPoint.</li>
-
-<li>Enregistrez-la au format HTML (sans option particulière).</li>
-
-<li>Vous obtenez un fichier .htm et un dossier contenant toutes les diapositives converties en pages web.<br />Compressez en ZIP le dossier <b>uniquement</b>.</li>
-
-<li>Rendez-vous sur votre site Moodle et créez une nouvelle leçon.</li>
-
-<li>Après avoir défini les paramètres de la leçon, à la question « Par quoi voulez-vous commencer ? », quatres propositions vous sont faites. Cliquez sur « Importer Powerpoint ».</li>
-
-<li>À l\'aide du bouton « Parcourir » retrouvez le fichier ZIP créé à l\'étape 3. Puis cliquez sur « Déposer ce fichier ».</li>
-
-<li>Si tout s\'est bien déroulé, la page suivante affiche un bouton « Continuer ».</li>
-
-</ol>
-
-<p>Si votre présentation comporte des images, elles sont enregistrées avec les fichiers du cours, dans le dossier moddata/XY, où X représente le nom de votre leçon, et Y est un chiffre (habituellement 0). De même, à l\'occasion de l\'importation, des fichiers sont créés dans le répertoire moodledata, dans un dossier temp/lesson. A priori, ces fichiers ne sont pas supprimés par importppt.php.</p>';
+Si votre présentation comporte des images, elles sont enregistrées avec les fichiers du cours, dans le dossier moddata/XY, où X représente le nom de votre leçon, et Y est un chiffre (habituellement 0). De même, à l\'occasion de l\'importation, des fichiers sont créés dans le répertoire moodledata, dans un dossier temp/lesson. A priori, ces fichiers ne sont pas supprimés par importppt.php.';
 $string['importquestions'] = 'Importer des questions';
-$string['importquestions_help'] = '<!-- $Id$ -->
+$string['importquestions_help'] = 'Cette fonction vous permet d\'importer des questions depuis des fichiers texte externes, déposés dans Moodle à l\'aide d\'un formulaire.
+Plusieurs formats de fichier sont supportés :
+## Format GIFT
 
+Le format GIFT est le format le plus complet disponible pour l\'importation de questions de tests dans Moodle. Il a été conçu pour permettre aux enseignants d\'écrire facilement des questions dans un fichier texte. Il supporte les questions à Choix multiples, Vrai-Faux, à Réponse courte, d\'Appariement, Numériques, ainsi que l\'insertion de \_\_\_|\_\_ pour le format Mot manquant. Ces différents types de questions peuvent être mélangés dans un même fichier texte, et le format permet en outre des lignes de commentaires, des noms pour les questions, les feedbacks et les notes pondérées (en %). Voici quelques exemples :
 
-<p>Cette fonction vous permet d\'importer des questions depuis des fichiers texte externes, déposés dans Moodle à l\'aide d\'un formulaire.</p>
-
-<p>Plusieurs formats de fichier sont supportés :</p>
-
-<h2>Format GIFT</h2>
-
-<div class="indent">
-
-<p>Le format GIFT est le format le plus complet disponible pour l\'importation de questions de tests dans Moodle. Il a été conçu pour permettre aux enseignants d\'écrire facilement des questions dans un fichier texte. Il supporte les questions à Choix multiples, Vrai-Faux, à Réponse courte, d\'Appariement, Numériques, ainsi que l\'insertion de _____ pour le format Mot manquant. Ces différents types de questions peuvent être mélangés dans un même fichier texte, et le format permet en outre des lignes de commentaires, des noms pour les questions, les feedbacks et les notes pondérées (en %). Voici quelques exemples :</p>
-
-<pre>
 Quelle était la couleur de la jument blanche de Napoléon ?{~Verte ~Noire =Blanche}
-
 La monture de Napoléon était {=une jument ~un étalon ~un mulet}.
-
 La jument de Napoléon était verte.{FALSE}
-
 Quelle était la nationalité de Napoléon ?{=Corse =Française}
-
 En quelle année Napoléon est-il mort ?{#1821}
-</pre>
 
-<p class="moreinfo"><a href="help.php?file=formatgift.html&amp;module=quiz">Plus d\'informations sur le format GIFT</a></p>
+[Plus d\'informations sur le format GIFT](help.php?file=formatgift.html&module=quiz)
 
-</div>
+## Format Aiken
 
-<h2>Format Aiken</h2>
+Le format Aiken fournit une manière très simple de créer des questions à choix multiples dans un format facile à lire. Voici un exemple de ce format :
 
-<div class="indent">
-
-<p>Le format Aiken fournit une manière très simple de créer des questions à choix multiples dans un format facile à lire. Voici un exemple de ce format :</p>
-
-<pre>
 Quelle est la réponse correcte à cette question ?
 A. Celle-ci ?
 B. Peut-être cette réponse ?
 C. Ou celle-ci ?
 D. Voilà la bonne !
 ANSWER: D
-</pre>
 
-<p class="moreinfo"><a href="help.php?file=formataiken.html&amp;module=quiz">Plus d\'informations sur le format Aiken</a></p>
+[Plus d\'informations sur le format Aiken](help.php?file=formataiken.html&module=quiz)
 
-</div>
+## Format « Mots manquants »
 
-<h2>Format « Mots manquants »</h2>
+Ce format ne supporte que les questions à choix multiples. Chaque réponse proposée est préfixée par un tilde (~), et la réponse correcte est préfixée par un signe égal (=). Voici un exemple :
 
-<div class="indent">
+Dès le moment où, enfants, nous explorons notre corps, nous devenons des étudiants en {=anatomie et physiologie ~réflexologie ~science ~expérimentation}, et dans un sens nous restons des étudiants pour toute notre vie.
 
-<p>Ce format ne supporte que les questions à choix multiples. Chaque réponse proposée est préfixée par un tilde (~), et la réponse correcte est préfixée par un signe égal (=). Voici un exemple :</p>
+[Plus d\'informations sur le format « Mots manquants »](help.php?file=formatmissingword.html&module=quiz)
 
-<div class="indent">
+## Format AON
 
-<p>Dès le moment où, enfants, nous explorons notre corps, nous devenons des étudiants en {=anatomie et physiologie ~réflexologie ~science ~expérimentation}, et dans un sens nous restons des étudiants pour toute notre vie.</p>
+Ce format est identique au format « Mots manquants », mais lors de l\'importation, les questions à réponse courte sont 4 par 4 converties en questions d\'appariement.
+En outre, les réponses sont mélangées aléatoirement durant l\'importation.
+Le nom de ce format provient de l\'institution qui a parrainé le développement de nombreuses fonctionnalité des tests.
 
-</div>
+## Format Blackboard
 
-<p class="moreinfo"><a href="help.php?file=formatmissingword.html&amp;module=quiz">Plus d\'informations sur le format « Mots manquants »</a></p>
+Les questions exportées en format Blackboard peuvent également être importées, grâce aux fonctions XML intégrées dans PHP.
+[Plus d\'informations sur le format Blackboard](help.php?file=formatblackboard.html&module=quiz)
 
-</div>
+## Format CTM (Course Test Manager)
 
-<h2>Format AON</h2>
+Les questions en format CTM peuvent également être importées, pour autant que votre Moodle puisse avoir accès à la base de données Access qui les contient. La procédure d\'importation dépend du serveur sur lequel tourne votre Moodle.
+Sous Windows, la base Access peut être directement importée comme n\'importe quelle autre fichier.
+Avec Linux, vous devez configurer dans le même réseau que votre serveur un ordinateur Windows avec la base de données CTM et le logiciel ODBC Socket Server, qui utilisera XML pour transférer les données sur le moodle de votre serveur Linux.
+Veuillez SVP lire attentivement le fichier d\'aide ci-dessous avant d\'utiliser cette importation.
+[Plus d\'informations sur le format CTM](help.php?file=formatctm.html&module=quiz)
 
-<div class="indent">
+## Format personnalisé
 
-<p>Ce format est identique au format « Mots manquants », mais lors de l\'importation, les questions à réponse courte sont 4 par 4 converties en questions d\'appariement.</p>
+Si vous désirez importer votre propre format, vous pouvez l\'implémenter directement en modifiant le fichier mod/quiz/format/custom.php.
+Il y a peu de code à écrire, juste de quoi extraire une simple question à partir d\'un texte donné.
+[Plus d\'informations sur le format personnalisé.](help.php?file=formatcustom.html&module=quiz)
 
-<p>En outre, les réponses sont mélangées aléatoirement durant l\'importation.</p>
-
-<p>Le nom de ce format provient de l\'institution qui a parrainé le développement de nombreuses fonctionnalité des tests.</p>
-
-</div>
-
-<h2>Format Blackboard</h2>
-
-<div class="indent">
-
-<p>Les questions exportées en format Blackboard peuvent également être importées, grâce aux fonctions XML intégrées dans PHP.</p>
-
-<p class="moreinfo"><a href="help.php?file=formatblackboard.html&amp;module=quiz">Plus d\'informations sur le format Blackboard</a></p>
-
-</div>
-
-<h2>Format CTM (Course Test Manager)</h2>
-
-<div class="indent">
-
-<p>Les questions en format CTM peuvent également être importées, pour autant que votre Moodle puisse avoir accès à la base de données Access qui les contient. La procédure d\'importation dépend du serveur sur lequel tourne votre Moodle.</p>
-
-<p>Sous Windows, la base Access peut être directement importée comme n\'importe quelle autre fichier.</p>
-
-<p>Avec Linux, vous devez configurer dans le même réseau que votre serveur un ordinateur Windows avec la base de données CTM et le logiciel ODBC Socket Server, qui utilisera XML pour transférer les données sur le moodle de votre serveur Linux.</p>
-
-<p>Veuillez SVP lire attentivement le fichier d\'aide ci-dessous avant d\'utiliser cette importation.</p>
-
-<p class="moreinfo"><a href="help.php?file=formatctm.html&amp;module=quiz">Plus d\'informations sur le format CTM</a></p>
-
-</div>
-
-<h2>Format personnalisé</h2>
-
-<div class="indent">
-
-<p>Si vous désirez importer votre propre format, vous pouvez l\'implémenter directement en modifiant le fichier mod/quiz/format/custom.php.</p>
-
-<p>Il y a peu de code à écrire, juste de quoi extraire une simple question à partir d\'un texte donné.</p>
-
-<p class="moreinfo"><a href="help.php?file=formatcustom.html&amp;module=quiz">Plus d\'informations sur le format personnalisé.</a></p>
-
-</div>
-
-<p>D\'autres formats seront bientôt disponibles pour l\'importation, notamment WebCT, IMS QTI et tout ceux que les utilisateurs de Moodle pourront apporter !</p>';
+D\'autres formats seront bientôt disponibles pour l\'importation, notamment WebCT, IMS QTI et tout ceux que les utilisateurs de Moodle pourront apporter!';
 $string['insertedpage'] = 'Page insérée';
 $string['invalidfile'] = 'Fichier non valide';
 $string['invalidid'] = 'Aucun identifiant de cours ou de leçon n\'a été fourni';
@@ -421,10 +319,7 @@ $string['matchesanswer'] = 'Correspond avec la réponse';
 $string['matching'] = 'Correspondant';
 $string['matchingpair'] = 'Paire correspondante {$a}';
 $string['maxgrade'] = 'Note maximale';
-$string['maxgrade_help'] = '<!-- $Id$ -->
-
-
-<p>Cette valeur détermine la note maximale pouvant être accordée dans cette leçon. Elle doit se situer entre 0 et 100%. Cette valeur peut être modifiée en tout temps durant la leçon. Tout changement aura un effet immédiat dans la page des notes, ainsi que dans les différentes listes affichées pour les étudiants. Si l\'ont met 0 pour cette valeur, la leçon n\'apparaîtra dans aucune des pages de notes.</p>';
+$string['maxgrade_help'] = 'Cette valeur détermine la note maximale pouvant être accordée dans cette leçon. Elle doit se situer entre 0 et 100%. Cette valeur peut être modifiée en tout temps durant la leçon. Tout changement aura un effet immédiat dans la page des notes, ainsi que dans les différentes listes affichées pour les étudiants. Si l\'ont met 0 pour cette valeur, la leçon n\'apparaîtra dans aucune des pages de notes.';
 $string['maxhighscores'] = 'Nombre de meilleurs résultats affichés';
 $string['maximumnumberofanswersbranches'] = 'Nombre maximal de réponses';
 $string['maximumnumberofanswersbranches_help'] = 'Cette valeur détermine le nombre maximal de réponses utilisables dans la leçon. Si une leçon n\'utilise que des questions vrai/faux, elle peut être fixée à 2. Ce paramètre peut être modifié à tout moment, car il n\'a d\'effet que sur ce que voit l\'enseignant, pas sur les données.';
@@ -435,81 +330,46 @@ $string['maxtime'] = 'Durée maximale (minutes)';
 $string['maxtimewarning'] = 'Il vous reste {$a} minute(s) pour terminer la leçon.';
 $string['mediaclose'] = 'Afficher un bouton fermer :';
 $string['mediafile'] = 'Pop-up vers fichier ou page web';
-$string['mediafile_help'] = '<!-- $Id$ -->
+$string['mediafile_help'] = 'Cette option créera au début de la leçon une fenêtre surgissante contenant un fichier (par exemple un fichier mp3) ou une page web. En outre, un lien permettant de rouvrir cette fenêtre sera affiché sur chacune des pages de la leçon.
+Un bouton « Fermer la fenêtre » peut être affiché optionnellement au bas de la fenêtre surgissante. la taille de la fenêtre (hauteur et largeur) peut également être spécifiée.
+Les types de fichiers ci-dessous peuvent être placés dans une telle fenêtre.
 
+* MP3
+* Quicktime
+* Realmedia
+* Windows Media Player
+* HTML
+* Texte
+* GIF
+* JPEG
+* PNG
 
-<p>Cette option créera au début de la leçon une fenêtre surgissante contenant un fichier (par exemple un fichier mp3) ou une page web. En outre, un lien permettant de rouvrir cette fenêtre sera affiché sur chacune des pages de la leçon.</p>
-
-<p>Un bouton « Fermer la fenêtre » peut être affiché optionnellement au bas de la fenêtre surgissante. la taille de la fenêtre (hauteur et largeur) peut également être spécifiée.</p>
-
-<p>Les types de fichiers ci-dessous peuvent être placés dans une telle fenêtre.</p>
-
-<ul>
-
-<li>MP3</li>
-
-<li>Quicktime</li>
-
-<li>Realmedia</li>
-
-<li>Windows Media Player</li>
-
-<li>HTML</li>
-
-<li>Texte</li>
-
-<li>GIF</li>
-
-<li>JPEG</li>
-
-<li>PNG</li>
-
-</ul>
-
-<p>Tous les autres types de fichiers seront indiqués par un lien pour téléchargement.</p>';
+Tous les autres types de fichiers seront indiqués par un lien pour téléchargement.';
 $string['mediafilepopup'] = 'Cliquer ici pour afficher';
 $string['mediaheight'] = 'Hauteur fenêtre :';
 $string['mediawidth'] = 'Largeur :';
 $string['messageprovider:graded_essay'] = 'Notification d\'évaluation de composition';
 $string['minimumnumberofquestions'] = 'Nombre minimal de questions';
 $string['minimumnumberofquestions_help'] = 'Ce paramètre spécifie le nombre minimum de questions qui seront utilisées pour calculer la note de l\'activité. Si la leçon contient une ou plusieurs pages de contenu, le nombre minimum de questions doit être fixé à zéro.
-
 S\'il est fixé à 20, cela signifie que le texte suivant sera ajouté à la page d\'accueil de la leçon : « Dans cette leçon, vous devez répondre à au moins 20 questions. Vous pouvez répondre répondre à plus de questions si vous le souhaitez. Quoiqu\'il en soit, si vous répondez à moins de 20 questions, votre note sera calculée comme si vous en aviez traité 20.»';
 $string['missingname'] = 'Veuillez saisir un pseudo';
 $string['modattempts'] = 'Permettre la relecture par les étudiants';
-$string['modattempts_help'] = '<!-- $Id$ -->
-
-
-<p>Ce réglage permet aux étudiants de revenir sur une leçon passée pour modifier leurs réponses.</p>';
+$string['modattempts_help'] = 'Ce réglage permet aux étudiants de revenir sur une leçon passée pour modifier leurs réponses.';
 $string['modattemptsnoteacher'] = 'La critique par les étudiants ne fonctionne que pour les étudiants.';
 $string['modulename'] = 'Leçon';
-$string['modulename_help'] = '<!-- $Id$ -->
-
-<p><img alt="Leçon" src="<?php echo $CFG->wwwroot?>/mod/lesson/icon.gif" /> <strong>Leçon</strong></p>
-
-<div class="indent">
-Une leçon permet de transmettre des informations de façon très flexible. Elle se compose de plusieurs pages qui chacune se termine normalement par une question et un choix de réponses. Selon le choix de l\'étudiant, la leçon peut se poursuivre par la page suivante ou par une autre page. Le parcours suivi peut être simple ou complexe, selon la structure du matériel présenté.
-</div>';
+$string['modulename_help'] = 'Une leçon permet de transmettre des informations de façon très flexible. Elle se compose de plusieurs pages qui chacune se termine normalement par une question et un choix de réponses. Selon le choix de l\'étudiant, la leçon peut se poursuivre par la page suivante ou par une autre page. Le parcours suivi peut être simple ou complexe, selon la structure du matériel présenté.';
 $string['modulenameplural'] = 'Leçons';
 $string['move'] = 'Déplacer la page';
 $string['movedpage'] = 'Page déplacée';
 $string['movepagehere'] = 'Déplacer la page ici';
 $string['moving'] = 'Déplacement de la page : {$a}';
 $string['multianswer'] = 'Plusieurs réponses';
-$string['multianswer_help'] = '<!-- $Id$ -->
+$string['multianswer_help'] = 'Quelques types de question ont une option pouvant être activée en cochant cette case. Les types de question concernés et les détails de l\'option correspondante sont décrits ci-dessous.
 
+1. **Question à choix multiples.** Une variante des questions à choix multiples sont les « **Questions à choix multiples et à réponses multiples** ». Si l\'option est activée, l\'étudiant doit alors cocher toutes les réponses correctes par l\'ensemble proposé. La question peut indiquer ou non le \*nombre\* de bonnes réponses. Par exemple « Choisir deux rois de France dans la liste des personnages suivants » dans le premier cas, et « Lesquels de ces personnages ont été des rois de France ? » Le nombre des bonnes réponses peut varier de 1 au nombre de choix proposés. Une telle question avec une seule bonne réponse est **différente** d\'une simple question à choix multiples, car contrairement à celle-ci, elle permet à l\'étudiant de choisir plusieurs réponses.
+2. **Question à réponse courte.** Par défaut, le programme compare la (ou les) réponse(s) attendue(s) avec la réponse saisie par l\'étudiant en utilisant le système d\'analyse simple. Cochez la case **Utiliser les expressions régulières:** si vous souhaitez utiliser cet autre système.
 
-<p>Quelques types de question ont une option pouvant être activée en cochant cette case. Les types de question concernés et les détails de l\'option correspondante sont décrits ci-dessous.</p>
-
-<ol>
-
-<li><p><strong>Question à choix multiples.</strong> Une variante des questions à choix multiples sont les « <strong>Questions à choix multiples et à réponses multiples</strong> ». Si l\'option est activée, l\'étudiant doit alors cocher toutes les réponses correctes par l\'ensemble proposé. La question peut indiquer ou non le <em>nombre</em> de bonnes réponses. Par exemple « Choisir deux rois de France dans la liste des personnages suivants » dans le premier cas, et « Lesquels de ces personnages ont été des rois de France ? » Le nombre des bonnes réponses peut varier de 1 au nombre de choix proposés. Une telle question avec une seule bonne réponse est <strong>différente</strong> d\'une simple question à choix multiples, car contrairement à celle-ci, elle permet à l\'étudiant de choisir plusieurs réponses.</p></li>
-
-<li><p><strong>Question à réponse courte.</strong> Par défaut, le programme compare la (ou les) réponse(s) attendue(s) avec la réponse saisie par l\'étudiant en utilisant le système d\'analyse simple. Cochez la case <strong>Utiliser les expressions régulières:</strong> si vous souhaitez utiliser cet autre système.</p></li>
-
-</ol>
-
-<p>Les autres types de questions n\'utilisent pas l\'option de question.</p>';
+Les autres types de questions n\'utilisent pas l\'option de question.';
 $string['multichoice'] = 'Choix multiples';
 $string['multipleanswer'] = 'Réponses multiples';
 $string['nameapproved'] = 'Nom approuvé';
@@ -540,20 +400,13 @@ $string['notitle'] = 'Pas de titre';
 $string['numberofcorrectanswers'] = 'Nombre de réponses correctes : {$a}';
 $string['numberofcorrectmatches'] = 'Nombre d\'appariements corrects : {$a}';
 $string['numberofpagestoshow'] = 'Nombre de pages à afficher';
-$string['numberofpagestoshow_help'] = '<!-- $Id$ -->
-
-
-<p>Ce paramètre n\'est utilisé que pour les leçons de type « cartes éclair » (flash cards). La valeur par défaut est de 0, ce qui signifie que toutes la pages (cartes) sont affichées dans une leçon. Une valeur non-nulle de ce paramètre définit le nombre de pages à afficher. La leçon est terminée après que ce nombre de pages a été affiché et la note est présentée à l\'étudiant.</p>
-
-<p>Si la valeur de ce paramètre dépasse le nombre effectif de pages de la leçon, la fin de la leçon a lieu après l\'affichage de toutes les pages.</p>';
+$string['numberofpagestoshow_help'] = 'Ce paramètre n\'est utilisé que pour les leçons de type « cartes éclair » (flash cards). La valeur par défaut est de 0, ce qui signifie que toutes la pages (cartes) sont affichées dans une leçon. Une valeur non-nulle de ce paramètre définit le nombre de pages à afficher. La leçon est terminée après que ce nombre de pages a été affiché et la note est présentée à l\'étudiant.
+Si la valeur de ce paramètre dépasse le nombre effectif de pages de la leçon, la fin de la leçon a lieu après l\'affichage de toutes les pages.';
 $string['numberofpagesviewed'] = 'Nombre de questions répondues : {$a}';
 $string['numberofpagesviewednotice'] = 'Nombre de questions répondues : {$a->nquestions} ; (vous devez répondre au moins à {$a->minquestions})';
 $string['numerical'] = 'Numérique';
 $string['ongoing'] = 'Afficher le score actuel';
-$string['ongoing_help'] = '<!-- $Id$ -->
-
-
-<p>Grâce à cette option, l\'étudiant pourra voir, sur chaque page, son nombre de points par rapport au maximum possible. Par exemple : sur quatre questions à 5 points, l\'étudiant s\'est trompé à une. Il sera affiché qu\'il a a obtenu 15 points sur 20.</p>';
+$string['ongoing_help'] = 'Grâce à cette option, l\'étudiant pourra voir, sur chaque page, son nombre de points par rapport au maximum possible. Par exemple : sur quatre questions à 5 points, l\'étudiant s\'est trompé à une. Il sera affiché qu\'il a a obtenu 15 points sur 20.';
 $string['ongoingcustom'] = 'Vous avez jusqu\'ici reçu {$a->score} sur un maximum de {$a->currenthigh} point(s).';
 $string['ongoingnormal'] = 'Vous avez répondu correctement à {$a->correct} tentatives sur {$a->viewed}.';
 $string['onpostperpage'] = 'Seulement un message par note';
@@ -585,10 +438,7 @@ $string['postprocesserror'] = 'Erreur lors du post-traitement !';
 $string['postsuccess'] = 'Message envoyé avec succès';
 $string['pptsuccessfullimport'] = 'Pages correctement importées de la présentation PowerPoint';
 $string['practice'] = 'Leçon d\'entraînement';
-$string['practice_help'] = '<!-- $Id$ -->
-
-
-<p>Le résultat d\'une leçon d\'entraînement n\'apparaîtra pas dans le carnet de notes.</p>';
+$string['practice_help'] = 'Le résultat d\'une leçon d\'entraînement n\'apparaîtra pas dans le carnet de notes.';
 $string['preprocesserror'] = 'Erreur lors du pré-traitement !';
 $string['preview'] = 'Prévisualisation';
 $string['previewlesson'] = 'Prévisualiser {$a}';
@@ -613,16 +463,10 @@ $string['report'] = 'Rapport';
 $string['reports'] = 'Rapports';
 $string['response'] = 'Feedback';
 $string['retakesallowed'] = 'Plusieurs tentatives permises';
-$string['retakesallowed_help'] = '<!-- $Id$ -->
-
-
-<p>Cette option détermine si les étudiants peuvent suivre la leçon une seule fois ou à plusieurs reprises. Il est préférable de permettre aux étudiants de suivre la leçon à plusieurs reprises lorsque l\'enseignant estime que le sujet doit être approfondi et très bien compris. Dans le cas où la leçon sert plutôt de test, l\'étudiant ne devrait faire la leçon qu\'une seule fois.</p>
-
-<p>La note retenue dans la page <strong>Notes</strong> est soit la note <strong>moyenne</strong>, soit la note <strong>maximale</strong> obtenue lors des différents essais, dans le cas où la leçon est faite plusieurs fois. Un paramètre permet de choisir laquelle de ces deux options est utilisée.</p>
-
-<p>Toutefois, l\'outil d\'analyse des résultats aux questions utilise uniquement les réponses faites lors de la première tentative, et que les autres tentatives des étudiants sont ignorées.</p>
-
-<p>Par défaut, cette option est réglée sur <strong>Non</strong>, ce qui veut dire que les étudiants peuvent suivre la leçon à plusieurs reprises. On considère que seules des circonstances exceptionnelles devraient mener à régler cette valeur sur <strong>Oui</strong>.';
+$string['retakesallowed_help'] = 'Cette option détermine si les étudiants peuvent suivre la leçon une seule fois ou à plusieurs reprises. Il est préférable de permettre aux étudiants de suivre la leçon à plusieurs reprises lorsque l\'enseignant estime que le sujet doit être approfondi et très bien compris. Dans le cas où la leçon sert plutôt de test, l\'étudiant ne devrait faire la leçon qu\'une seule fois.
+La note retenue dans la page **Notes** est soit la note **moyenne**, soit la note **maximale** obtenue lors des différents essais, dans le cas où la leçon est faite plusieurs fois. Un paramètre permet de choisir laquelle de ces deux options est utilisée.
+Toutefois, l\'outil d\'analyse des résultats aux questions utilise uniquement les réponses faites lors de la première tentative, et que les autres tentatives des étudiants sont ignorées.
+Par défaut, cette option est réglée sur **Non**, ce qui veut dire que les étudiants peuvent suivre la leçon à plusieurs reprises. On considère que seules des circonstances exceptionnelles devraient mener à régler cette valeur sur **Oui**.';
 $string['returnto'] = 'Retour à {$a}';
 $string['returntocourse'] = 'Retour au cours';
 $string['review'] = 'Relecture';
@@ -643,10 +487,7 @@ $string['showanunseenpage'] = 'Afficher une page non vue';
 $string['singleanswer'] = 'Réponse simple';
 $string['skip'] = 'Sauter la navigation';
 $string['slideshow'] = 'Diaporama';
-$string['slideshow_help'] = '<!-- $Id$ -->
-
-
-<p>Ce réglage permet d\'afficher la leçon à la manière d\'une présentation, avec une largeur et une hauteur déterminées, et une couleur de fond personnalisée. Le cas échéant, une barre de défilement s\'affichera. Les pages de questions échapperont à ce mode, seules les pages de tables de branchements s\'afficheront par défaut comme une présentation. Des boutons avec l\'inscription (dans la langue par défaut) « Précédent » et « Suivant » apparaîtront dans le coin inférieur droit de la présentation si la page a prévu cette option. Les autres boutons seront centrés en bas de la présentation.</p>';
+$string['slideshow_help'] = 'Ce réglage permet d\'afficher la leçon à la manière d\'une présentation, avec une largeur et une hauteur déterminées, et une couleur de fond personnalisée. Le cas échéant, une barre de défilement s\'affichera. Les pages de questions échapperont à ce mode, seules les pages de tables de branchements s\'afficheront par défaut comme une présentation. Des boutons avec l\'inscription (dans la langue par défaut) « Précédent » et « Suivant » apparaîtront dans le coin inférieur droit de la présentation si la page a prévu cette option. Les autres boutons seront centrés en bas de la présentation.';
 $string['slideshowbgcolor'] = 'Couleur de fond du diaporama';
 $string['slideshowheight'] = 'Hauteur du diaporama';
 $string['slideshowwidth'] = 'Largeur du diaporama';
@@ -679,10 +520,7 @@ $string['updatefailed'] = 'Modification échouée';
 $string['usemaximum'] = 'Utiliser le maximum';
 $string['usemean'] = 'Utiliser la moyenne';
 $string['usepassword'] = 'Leçon protégée par mot de passe';
-$string['usepassword_help'] = '<!-- $Id$ -->
-
-
-<p>L\'étudiant doit saisir un mot de passe pour accéder à la leçon.</p>';
+$string['usepassword_help'] = 'L\'étudiant doit saisir un mot de passe pour accéder à la leçon.';
 $string['viewgrades'] = 'Afficher les notes';
 $string['viewhighscores'] = 'Afficher les meilleurs résultats.';
 $string['viewreports'] = 'Afficher les {$a->attempts} tentatives terminées';

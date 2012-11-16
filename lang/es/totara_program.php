@@ -40,31 +40,19 @@ $string['addorganisationtoprogram'] = 'Añadir organización al programa';
 $string['addorremovecourses'] = 'Añadir/eliminar cursos';
 $string['addpositiontoprogram'] = 'Añadir posición al programa';
 $string['addprogramcontent_help'] = '# Añadir el contenido del programa
-
 Agregando conjuntos de cursos, puede abrirse camino en la ruta del aprendizaje del programa. Una vez que los conjuntos se añadieron, se pueden definir las relaciones entre ellos. Se pueden crear los conjuntos añadiéndolos manualmente, seleccionando una competencia predefinida o configurando un curso sencillo con recurrencia.
-
 Una vez que una cantidad de conjuntos se haya creado, se utilizarán los divisores del conjunto para permitir la creación de secuencias (es decir, dependencias) entre cada conjunto. Un ejemplo del programa con cuatro conjunto de cursos definidos, podría tener las siguientes dependencias:
-
-*   Desde el conjunto uno, el aprendiz debe completar un curso (cursoA o cursoB) antes de proceder al conjunto dos.
-*   Desde el conjunto dos, el aprendiz debe completar todos los cursos (cursoC, cursoD y cursoE) antes de proceder al conjunto tres o cuatro.
-*   Desde el congunto tres, el aprendiz debe completar un curso (cursoE) o todos los cursos del conjunto cuatro (cursoF y cursoG).
-
+* Desde el conjunto uno, el aprendiz debe completar un curso (cursoA o cursoB) antes de proceder al conjunto dos.
+* Desde el conjunto dos, el aprendiz debe completar todos los cursos (cursoC, cursoD y cursoE) antes de proceder al conjunto tres o cuatro.
+* Desde el congunto tres, el aprendiz debe completar un curso (cursoE) o todos los cursos del conjunto cuatro (cursoF y cursoG).
 Una vez que la ruta del aprendizaje está completada, el aprendiz ha terminado el programa.
-
 Se pueden crear conjuntos añadiendo:
-
 ## Conjuntos de cursos
-
 Permite la creación de conjuntos múltiples de cursos con dependencias.
-
 ## Competencia
-
 Permite la creación de conjuntos múltiples de cursos desde una evidencia de competencias predefinida. Cuando una competencia es utilizada para crear un conjunto, ésta se transforma en rígida y no puede ser cambiada.
-
 ## Curso sencillo
-
 Obliga la asignación de un curso sencillo con recurrencia.
-
 Una vez que se selecciona un conjunto de cursos o una competencia, el curso sencillo con recurrencia es eliminado de la lista.';
 $string['affectedusercount'] = 'Número de alumnoS afectados por este cambio:';
 $string['allbelow'] = 'Todos los de abajo';
@@ -114,11 +102,8 @@ $string['cohorts'] = 'Cohortes';
 $string['cohorts_category'] = 'cohort(es)';
 $string['competency'] = 'Competencia';
 $string['competencycourseset_help'] = '# Conjunto de curso de competencia
-
 Se ha creado este conjunto desde una competencia predefinida.
-
 Cuando se usa una competencia para crear un conjunto, se transforma en rígida y no puede ser cambiada. No se pueden editar los cursos dentro del conjunto. Si los cursos dentro de este conjunto necesitan ser modificados, se debe crear un conjunto manual de cursos, donde los cursos se añadirán individualmente.
-
 Las opciones del operador dentro de un conjunto de curso de competencia ("un curso" o "todos los cursos") son determinadas por una configuración de competencia predefinida.';
 $string['complete'] = 'Completar';
 $string['completeallcourses'] = 'Todos los cursos en este conjunto deben ser completados (a menos que sea un conjunto opcional).';
@@ -132,7 +117,6 @@ $string['completiondate'] = 'Fecha de realización';
 $string['completionstatus'] = 'Estado';
 $string['completiontimeunknown'] = 'Tiempo de realización desconocido';
 $string['completiontype_help'] = '# Tipo de competencia
-
 Las opciones del operador ("El aprendiz debe estar completo") dentro de un conjunto son "un curso", que significa O, o "todos los cursos", que significa Y. La idea es mantener el flujo lo más legible posible. Dependiendo en la opción que se seleccione, el texto adelante de los cursos cambia automáticamente.';
 $string['confirmassignmentchanges'] = 'Confirmar cambios de tarea';
 $string['confirmcontentchanges'] = 'Confirmar cambios de contenido';
@@ -145,24 +129,19 @@ $string['couldnotinsertnewrecord'] = 'No se puede insertar el registro nuevo';
 $string['course'] = 'Curso';
 $string['coursecompletion'] = 'Realización del curso';
 $string['coursecreation_help'] = '# Creación del curso
-
 La creación del curso define cuándo se debe copiar y recrear el curso.
-
 Se basa en la fecha de inicio y finalización especificada en la configuración del curso.';
 $string['coursename'] = 'Nombre del curso';
 $string['coursenamelink'] = 'Nombre del curso';
 $string['courses'] = 'Cursos';
 $string['coursesetcompleted'] = 'Conjunto del curso completado';
 $string['coursesetcompletedmessage_help'] = '# Mensaje de realización del conjunto del curso
-
 Se enviará este mensaje siempre que se complete un conjunto del curso.';
 $string['coursesetdue'] = 'Conjunto del curso caducado';
 $string['coursesetduemessage_help'] = '# Mensaje de caducidad del conjunto del curso
-
 Se enviará este mensaje a una hora especificada antes de la caducidad de un conjunto del curso.';
 $string['coursesetoverdue'] = 'Conjunto del curso retrasado';
 $string['coursesetoverduemessage_help'] = '# Mensaje de retraso del conjunto del curso
-
 Se enviará este mensaje a una hora especificada luego de la caducidad de un conjunto del curso.';
 $string['createandnext'] = 'Crear e ir al siguiente paso';
 $string['createandreturn'] = 'Crear y regresar a panorama';
@@ -204,7 +183,6 @@ $string['editprogramroleassignments'] = 'Editar tareas del rol del programa';
 $string['editprograms'] = 'Añadir/editar programas';
 $string['endnote'] = 'Nota de final de programa';
 $string['enrolmentmessage_help'] = '# Mensaje de inscripción
-
 Se enviará este mensaje siempre que un usuario sea asignado automáticamente a un programa.';
 $string['error:availibileuntilearlierthanfrom'] = 'Disponible hasta la fecha. No puede ser anterior que desde la fecha';
 $string['error:badcheckvariable'] = 'La variable de revisión era incorrecta - inténtelo nuevamente';
@@ -242,7 +220,6 @@ $string['error:updateextensionstatus'] = 'Error al actualizar el estado de la ex
 $string['errorsinform'] = 'Hay errores en este formulario. Por favor revea la lista de abajo y corrija cualquier error antes de guardar.';
 $string['eventnotfound'] = 'No se pudo encontrar el evento de la tarea del programa con el id {$a}';
 $string['exceptionreportmessage_help'] = '# Mensaje de informe de excepción
-
 Se enviará este mensaje al administrador del sitio siempre que se añadan nuevas excepciones al informe de excepción del programa.';
 $string['exceptions'] = 'Informe de excepción ({$a})';
 $string['exceptionsreport'] = 'Informe de excepciones';
@@ -259,7 +236,6 @@ $string['extensionrequestfailed'] = 'La solicitud de extensión falló. Por favo
 $string['extensionrequestfailed:nomanager'] = 'La solicitud de extensión no fue enviada. No se encontró el gestor';
 $string['extensionrequestmessage'] = '<p>Un usuario solicitó una extensión para el programa <em>{$a->programfullname}</em>. Los detalles de la solicitud son:</p><ul><li>Fecha: {$a->extensiondatestr}</li><li>Razón: {$a->extensionreason}</li></ul>';
 $string['extensionrequestmessage_help'] = '# Mensaje de solicitud de extensión
-
 Se enviará este mensaje al gestor del estudiante siempre que se solicite una extensión del programa.';
 $string['extensionrequestnotsent'] = 'La solicitud de extensión NO se pudo enviar. Por favor inténtelo nuevamente.';
 $string['extensionrequestsent'] = 'La solicitud de extensión se envió correctamente';
@@ -308,7 +284,6 @@ $string['launchprogram'] = 'Inicializar programa';
 $string['learnerenrolled'] = 'Alumno inscrito';
 $string['learnerfollowup'] = 'Seguimiento del aprendiz';
 $string['learnerfollowupmessage_help'] = '# Mensaje de seguimiento
-
 Se enviará este mensaje al estudiante a una hora especificada luego de que se haya completado el programa.';
 $string['learnersassigned'] = '{$a->total} de aprendices asignados. {$a->assignments} aprendices están activos, {$a->exceptions} con excepcion(es)';
 $string['learnersselected'] = 'aprendices seleccionados';
@@ -327,42 +302,28 @@ $string['legend:programoverduemessage'] = 'MENSAJE DE RETRASO DE PROGRAMA';
 $string['legend:recurringcourseset'] = 'Conjunto recurrente del curso';
 $string['legend:unenrolmentmessage'] = 'MENSAJE DE DESCVINCULAMIENTO';
 $string['mainmessage_help'] = '# Cuerpo del mensaje
-
 Se mostrará el cuerpo del mensaje a sus receptores en sus tableros de control.
-
-El cuerpo del mensaje puede contener variables que serán remplazadas cuando el mensaje sea enviado. Para ver más detalles acerca de qué variables serán sustituidas, vea [ sustitución de variables ][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+El cuerpo del mensaje puede contener variables que serán remplazadas cuando el mensaje sea enviado.';
 $string['manageextensionrequests'] = 'Ver el informe de excepción para otorgar o denegar las solicitudes de extensión';
 $string['manageextensions'] = 'Ajustar extensiones';
 $string['managementhierarchy'] = 'Ajustar jerarquía';
 $string['managermessage_help'] = '# Aviso para el gestor
-
 Si se selecciona la casilla de "Enviar aviso al gestor". el gestor del receptor del mensaje también recibirá una notificación que puede ser especificada en este campo.
-
-El aviso para el gestor puede contener variables que pueden ser reemplazadas cuando el mensaje es enviado. Para más detalles acerca de qué variables serán sustituidas, vea [ sustitución de variables ][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+El aviso para el gestor puede contener variables que pueden ser reemplazadas cuando el mensaje es enviado.';
 $string['managername'] = 'Ajustar nombre';
 $string['managers_category'] = 'equipo(s) de gestoría';
 $string['mandatory'] = 'Obligatorio';
 $string['messages'] = 'Mensajes';
 $string['messagesubject_help'] = '# Asunto del mensaje
-
 Se mostrará el asunto del mensaje a sus receptores en su tablero de control. Máx de 255 caracteres.
-
-El asunto puede contener variables que pueden ser reemplazadas cuando el mensaje es enviado. Para más detalles acerca de qué variables serán sustituidas, vea [ sustitución de variables ][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+El asunto puede contener variables que pueden ser reemplazadas cuando el mensaje es enviado.';
 $string['missingshortname'] = 'El nombre corto no se encuentra';
 $string['months'] = 'Mes(es)';
 $string['movedown'] = 'Mover hacia abajo';
 $string['moveselectedprogramsto'] = 'Mover los programas seleccionados a...';
 $string['moveup'] = 'Mover hacia arriba';
 $string['multicourseset_help'] = '# Conjunto de cursos
-
 Esto es un conjunto de cursos seleccionados individualmente para el catálogo del curso.
-
 Puede definir el nombre del conjunto, ya sea que el Aprendiz deba completar uno o todos los cursos y la asignación de tiempo general para completar el conjunto.';
 $string['nocourses'] = 'No hay cursos';
 $string['noduedate'] = 'No hay fecha de caducidad';
@@ -377,7 +338,6 @@ $string['noprogramsyet'] = 'No hay programas en esta categoría';
 $string['norequiredlearning'] = 'No se requiere aprendizaje';
 $string['notavailable'] = 'No está disponible';
 $string['notifymanager_help'] = '# Enviar aviso al gestor
-
 Seleccione esta casilla si también quiere mandar un aviso al gestor del receptor del mensaje.';
 $string['notmanager'] = 'No es un gestor';
 $string['nouserextensions'] = '{$a} no tiene ninguna solicitud pendiente de extensión';
@@ -432,22 +392,15 @@ $string['program:viewprogram'] = 'Ver programas';
 $string['programassignments'] = 'Tareas del programa';
 $string['programassignmentssaved'] = 'Las tareas del programa se guardaron exitosamente';
 $string['programavailability_help'] = '# Disponibilidad del programa
-
 Esta opción le permite "ocultar" completamente su programa.
-
 No aparecerá en el listado de ningún programa, excepto a los administradores.
-
 Incluso si los estudiantes intentan acceder a la URL del programa directamente, no tendrán permiso para entrar.';
 $string['programcategory_help'] = '# Categorías del programa/curso
-
 Su administrador Moodle puede tener varias categorías de programas/cursos configuradas.
-
 Por ejemplo, "Ciencias", "Humanidades", "Salud pública", etc
-
 Seleccione el que más se ajuste a su programa. Esta selección modificará el lugar donde se muestre el programa en el listado de programas y puede ayudar a los estudiantes a encontrarlo más fácilmente.';
 $string['programcompleted'] = 'Programa completado';
 $string['programcompletedmessage_help'] = '# Mensaje de realización del programa
-
 Se enviará este mensaje siempre que se complete un programa.';
 $string['programcompletion'] = 'Realización del programa';
 $string['programcontent'] = 'Contenido del programa';
@@ -461,19 +414,16 @@ $string['programdetailssaved'] = 'Los detalles del programa se guardaron exitosa
 $string['programdue'] = 'Caducidad del programa';
 $string['programduedate'] = 'Fecha de caducidad del programa';
 $string['programduemessage_help'] = '# Mensaje de caducidad de programa
-
 Se enviará este mensaje a la hora especificada antes de la caducidad de un programa.';
 $string['programends'] = 'El programa ha finalizado';
 $string['programexceptions'] = 'Excepciones del programa';
 $string['programfullname_help'] = '# Nombre completo del programa
-
 Se mostrará el nombre completo del programa en la sección superior de la pantalla y en el listado de prgramas.';
 $string['programicon'] = 'Ícono del programa';
 $string['programid'] = 'Id del programa';
 $string['programidnotfound'] = 'El programa no existe para el ID: {$a}';
 $string['programidnumber'] = 'Número Id del programa';
 $string['programidnumber_help'] = '# Número de ID del programa
-
 El número ID de un programa solo se utiliza cuando se debe hacer concordar este curso con sistemas externos - nunca se mostrará dentro de Moodle. Si tiene un nombre oficial de código para este programa, entonces utilícelo aquí... Caso contrario, puede dejarlo en blanco.';
 $string['programlive'] = 'Precaución: El programa está en vivo';
 $string['programmandatory'] = 'Programa obligatorio';
@@ -486,14 +436,12 @@ $string['programnotcurrentlyavailable'] = 'Actualmente, este programa no está d
 $string['programnotlive'] = 'El programa no está en vivo';
 $string['programoverdue'] = 'Programa retrasado';
 $string['programoverduemessage_help'] = '# Mensaje de programa retrasado
-
 Se enviará este mensaje a una hora especificada luego de la caducidad de un programa.';
 $string['programrecurring'] = 'Programa recurrente';
 $string['programs'] = 'Programas';
 $string['programscomplete'] = 'Programas completos';
 $string['programshortname'] = 'Nombre corto del programa';
 $string['programshortname_help'] = '# Nombre corto del programa
-
 Se utilizará el nombre corto del programa en varios sitios cuando el nombre completo es inapropiado (como en el asunto de un mensaje de alerta).';
 $string['programsinthiscategory'] = 'Programas en esta categoría ({$a})';
 $string['programsmovedout'] = 'Programas movidos fuera de {$a}';
@@ -501,25 +449,19 @@ $string['programupdatecancelled'] = 'Actualización del programa cancelada';
 $string['programupdatefail'] = 'Error en la actualización del programa';
 $string['programupdatesuccess'] = 'Actualización exitosa del programa';
 $string['programvisibility_help'] = '# visibilidad del programa
-
 Si el programa es visible, aparecerá en el listado de programas y en los resultados de búsquedas, donde los estudiantes podrán ver el contenido del programa.
-
 Si el programa no es visible, no aparecerá en el listado de programas o en los resultados de búsquedas, pero sí será mostrado en los planes de aprendizaje de cualquier estudiante que esté asignado a tal programa. Los estudiantes podrán acceder al programa si conocen su URL.';
 $string['progress'] = 'Progreso';
 $string['reason'] = 'Razón de la extensión';
 $string['reasonforextension'] = 'Razón de la extensión';
 $string['recurrence_help'] = '# Recurrencia
-
 La recurrencia define el período de tiempo en el que el curso recurrente debe ser repetido. Se puede especificar la recurrencia con cualquier cantidad de días, semanas o meses.';
 $string['recurring'] = 'Recurrente';
 $string['recurringcourse'] = 'Curso recurrente';
 $string['recurringcourse_help'] = '# Curso recurrente
-
 Muestra el curso recurrente seleccionado.
-
 Se puede seleccionar solo un curso como recurrente. Para cambiar el curso, seleccione uno nuevo de la lista desplegable y cliquee "Cambiar curso" para guardar los cambios.';
 $string['recurringcourseset_help'] = '# Conjunto de cursos recurrentes
-
 Un conjunto de cursos recurrentes solo permite la selección de un curso sencillo. No se pueden definir los cursos múltiples de las competencias y de los conjuntos de cursos.';
 $string['recurringprogramhistory'] = 'Registro del historial para los programas recurrentes {$a}';
 $string['recurringprogramhistoryfor'] = 'Registro del historial para {$a->username} para el programa recurrente {$a->progname}';
@@ -541,9 +483,7 @@ $string['selectcourse'] = 'Seleccionar un curso...';
 $string['setcompletion'] = 'Configurar realización';
 $string['setfixedcompletiondate'] = 'Configurar fecha de realización';
 $string['setlabel_help'] = '# Etiqueta de conjunto del curso
-
 Utilice la etiqueta de conjunto del curso para describir el agrupamiento de los cursos dentro de un conjunto.
-
 La finalidad es que cada uno de los conjuntos sea más legible, así como ayudar a los Aprendices a entender la ruta del aprendizaje. Por ejemplo, el primer conjunto de cursos puede ser llamado "Fase uno - Introducción" y el segundo "Fase dos - Salud &amp: Seguridad".';
 $string['setofcourses'] = 'Conjunto de cursos';
 $string['setrealistictimeallowance'] = 'Configurar una asignación temporal realista';
@@ -561,7 +501,6 @@ $string['thisactioncannotbeundone'] = 'Esta operación no puede deshacerse';
 $string['thiswillaffect'] = 'Esto afectará a {$a} alumnos';
 $string['timeallowance'] = 'Asignación de tiempo';
 $string['timeallowance_help'] = '# Asignación de tiempo
-
 Configura la cantidad de tiempo asignado para completar los cursos dentro del conjunto. Ésta es una indicación general del tiempo transcurrido para completar el conjunto, no el tiempo real que lleva completar el curso. El tiempo real para completar el curso se puede configurar en el nivel del curso.';
 $string['toprogram'] = 'al programa';
 $string['tosaveassignments'] = 'Para guardar todos los cambios en las tareas, haga clic en "Guardar todos los cambios". Para editar los cambios haga clic en "Editar tareas". Las tareas guardadas no pueden deshacerse.';
@@ -570,17 +509,13 @@ $string['tosavemessages'] = 'Para guardar todos los cambios en los mensajes, hag
 $string['total'] = 'Total';
 $string['totalassignments'] = 'Total de tareas potenciales';
 $string['totalassignments_help'] = '# Tareas totales
-
 La cantidad total de tareas que se muestra en la página de tareas del programa y en la página de panorama/visión general representa el número total de aprendices en todas las categorías asignadas, y no la cantidad de aprendices que están actualmente asignados al programa.
-
 Si un aprendiz pertenece a una organización que está asignada al programa y también tiene una posición asignada al mismo, entonces se contará al aprendiz en cada categoría (pero será asignado al programa sólo una vez).';
 $string['trigger_help'] = '# Señal
-
 La señal de tiempo determina cuándo un mensaje será enviado en relación con el evento descrito (p. ej. cuatro semanas luego de que el programa fue completado).';
 $string['type'] = 'Tipo';
 $string['unenrolment'] = 'Desvinculación';
 $string['unenrolmentmessage_help'] = '# Mensaje de desvinculación
-
 Se enviará este mensaje siempre que un usuario sea desvinculado de un programa.';
 $string['unknownexception'] = 'Excepción desconocida';
 $string['unknownusersrequiredlearning'] = 'No se conoce el aprendizaje requerido del usuario';
@@ -593,14 +528,11 @@ $string['updateextensions'] = 'Actualizar extensiones';
 $string['updateextensionsuccess'] = 'Todas las extensiones fueron exitosamente actualizadas';
 $string['userid'] = 'ID del usuario';
 $string['variablesubstitution_help'] = '# Sustitución de variables
-
 En los mensajes de programas, ciertas variables pueden ser insertadas en el asunto y/o en el cuerpo del mensaje, para que sean reemplazadas con valores reales cuando el mensaje es enviado. Las variables deben ser insertadas en el texto exactamente como se muestran a continuación. Se puede utilizar las siguientes variables:
-
 %programfullname%
-:   Esto será reemplazado por el nombre completo del programa
-
+: Esto será reemplazado por el nombre completo del programa
 %setlabel%
-:   Esto será reemplazado por la etiqueta del conjunto del curso (sólo será reemplazado si el mensaje está relacionado a un conjunto del curso).';
+: Esto será reemplazado por la etiqueta del conjunto del curso (sólo será reemplazado si el mensaje está relacionado a un conjunto del curso).';
 $string['viewallprograms'] = 'Ver todos los programas';
 $string['viewallrequiredlearning'] = 'Ver todo';
 $string['viewexceptions'] = 'Ver el informe de excepción para resolver problema(s).';

@@ -32,7 +32,8 @@ $string['codecoveragecompletereport'] = '(view code coverage complete report)';
 $string['codecoveragedisabled'] = 'Cannot enable code coverage in this server (missing xdebug extension).';
 $string['codecoveragelatestdetails'] = '(on {$a->date}, with {$a->files} files, {$a->percentage} covered)';
 $string['codecoveragelatestreport'] = 'view latest code coverage complete report';
-$string['confignonwritable'] = 'The file config.php is not writeable by the web server. Either change its permissions, or edit it with the appropriate user account, and add the following line before the closing php tag: <br />
+$string['confignonwritable'] = 'The file config.php is not writeable by the web server. Either change its permissions, or edit it with the appropriate user account, and add the following line before the closing php tag:
+
 $CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Covered lines';
 $string['coveredpercentage'] = 'Overall code coverage';

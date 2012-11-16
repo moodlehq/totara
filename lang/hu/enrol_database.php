@@ -36,8 +36,7 @@ $string['dbsybasequoting'] = 'Sybase-idézőjelek használata';
 $string['dbsybasequoting_desc'] = 'A sybase-szerű egyszeres idézőjelek használata - Oracle, MS SQL és néhány másik adatbázis esetén használatos. Ne használja MySQL-hez!';
 $string['dbtype'] = 'Adatbázis-meghajtó';
 $string['dbtype_desc'] = 'Az ADOdb adatbázis-meghajtó neve, a külső adatbázismotor típusa';
-$string['dbuser'] = '    
-Adatbázis-felhasználó';
+$string['dbuser'] = 'Adatbázis-felhasználó';
 $string['debugdb'] = 'Az ADOdb hibaelhárítása';
 $string['debugdb_desc'] = 'Az ADOdb külső adatbázishoz való kapcsolódásában keletkezett hiba elhárítása - akkor használandó, amikor belépéskor üres oldal jelenik meg. Éles portálokra nem alkalmas!';
 $string['defaultcategory'] = 'Alapbeállítás szerinti új kurzuskategória';
@@ -70,4 +69,4 @@ $string['settingsheaderlocal'] = 'Helyi mező megfeleltetése';
 $string['settingsheadernewcourses'] = 'Új kurzusok létrehozása';
 $string['settingsheaderremote'] = 'Távoli beiratkozások szinkronizálása';
 $string['templatecourse'] = 'Új kurzussablon';
-$string['templatecourse_desc'] = 'Választható: az automatikusan létrejövő kurzusok beállításaikat átvehetik egy kurzussablonból. Itt adja meg a kurzussablon rövid nevét. ';
+$string['templatecourse_desc'] = 'Választható: az automatikusan létrejövő kurzusok beállításaikat átvehetik egy kurzussablonból. Itt adja meg a kurzussablon rövid nevét.';

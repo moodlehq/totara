@@ -97,10 +97,9 @@ $string['numlearners'] = '# de alumnos';
 $string['ok'] = 'OK';
 $string['or'] = 'o';
 $string['organisation'] = 'Organización';
-$string['orgincludechildren_help'] = '<h1>El cohorte incluye la organización hija</h1>
-
-<p>Si se selecciona la casilla de verificación de "Incluir hijos", se incluirán en este cohorte todos los usuarios en la organización seleccionada, y en cualquiera de las organizaciones inferiores a la seleccionada en la jerarquía.</p>
-<p>Si no se selecciona "Incluir hijos", solo se asignarán al cohorte los usuarios que formen parte de la misma organización seleccionada.</p>';
+$string['orgincludechildren_help'] = '# El cohorte incluye la organización hija
+Si se selecciona la casilla de verificación de "Incluir hijos", se incluirán en este cohorte todos los usuarios en la organización seleccionada, y en cualquiera de las organizaciones inferiores a la seleccionada en la jerarquía.
+Si no se selecciona "Incluir hijos", solo se asignarán al cohorte los usuarios que formen parte de la misma organización seleccionada.';
 $string['overview'] = 'Panorama';
 $string['pleaseentervaliddate'] = 'Por favor ingrese una fecha válida del formato {$a}.';
 $string['pleaseentervalidreason'] = 'Por favor ingrese una razón válida';
@@ -110,16 +109,14 @@ $string['pleasesearchmore'] = 'Por favor haga la búsqueda más específica';
 $string['pleasesetcompletiontimes'] = 'Por favor configure los tiempos de realización para todos los elementos';
 $string['pleaseusesearch'] = 'Por favor utilice la búsqueda';
 $string['position'] = 'Posición';
-$string['positionincludechildren_help'] = '<h1>Cohorte que incluye las posiciones hijas</h1>
-
-<p>Si se selecciona la casilla de verificación de "Incluir hijos", se incluirán en este cohorte todos los usuarios en la posición seleccionada, y en cualquiera de las posiciones inferiores a la seleccionada en la jerarquía.</p>
-<p>Si no se selecciona "Incluir hijos", solo se asignarán al cohorte los usuarios que formen parte de la misma posición seleccionada.</p>';
+$string['positionincludechildren_help'] = '# Cohorte que incluye las posiciones hijas
+Si se selecciona la casilla de verificación de "Incluir hijos", se incluirán en este cohorte todos los usuarios en la posición seleccionada, y en cualquiera de las posiciones inferiores a la seleccionada en la jerarquía.
+Si no se selecciona "Incluir hijos", solo se asignarán al cohorte los usuarios que formen parte de la misma posición seleccionada.';
 $string['potusers'] = 'Usuarios potenciales';
 $string['potusersmatching'] = 'Usuarios potenciales que pueden concordar';
-$string['profilefieldvalues_help'] = '<h1>Valores del campo del perfil del cohorte</h1>
-
-<p>Si se selecciona, se podrán elegir los miembros del cohorte dinámico si tienen un perfil del usuario que concuerde con un valor particular.</p>
-<p> Los valores pueden ser una cadena de texto simple, una lista separada por comas o varias cadenas de texto. SI se proporciona una lista separada por comas, se incluirán en el cohorte los usuarios que concuerden con cualquiera de las cadenas individuales.</p>';
+$string['profilefieldvalues_help'] = '# Valores del campo del perfil del cohorte
+Si se selecciona, se podrán elegir los miembros del cohorte dinámico si tienen un perfil del usuario que concuerde con un valor particular.
+Los valores pueden ser una cadena de texto simple, una lista separada por comas o varias cadenas de texto. SI se proporciona una lista separada por comas, se incluirán en el cohorte los usuarios que concuerden con cualquiera de las cadenas individuales.';
 $string['reportsto'] = 'informes a';
 $string['role'] = 'Rol';
 $string['saveallchanges'] = 'Guardar todos los cambios';
@@ -136,12 +133,11 @@ $string['thiscohortwillhave'] = 'Este cohorte tendrá {$a} miembros en este punt
 $string['toomanyusersmatchsearch'] = 'Demasiados usuarios concuerdan con la búsqueda';
 $string['toomanyuserstoshow'] = 'Hay demasiados usuarios para mostar';
 $string['type'] = 'Tipo';
-$string['type_help'] = '<h1>Tipo de cohortes</h1>
-
-<p>El tipo de cohorte puede ser "configurado" o "dinámico"</p>
-<p>Los cohortes configurados son una lista predeterminada de usuarios, manualmente diseñada por el creador del cohorte. El creador solo puede añadir o eliminar a los usuarios, el resto de las características son estáticas.</p>
-<p>Los cohortes dinámicos están determinados por una regla o conjunto de ellas, y los usuarios incluidos en él podrán hacer actualizaciones dinámicas incluyendo a usuarios que concuerden con esas reglas (y eliminar a usuarios que ya no lo hagan).</p>
-<p>Se pueden cambiar los miembros de un cohorte configurado cuando desee, pero las reglas que definen a un cohorte dinámico no pueden ser cambiadas una vez que el cohorte se ha guardado.</p>';
+$string['type_help'] = '# Tipo de cohortes
+El tipo de cohorte puede ser "configurado" o "dinámico"
+Los cohortes configurados son una lista predeterminada de usuarios, manualmente diseñada por el creador del cohorte. El creador solo puede añadir o eliminar a los usuarios, el resto de las características son estáticas.
+Los cohortes dinámicos están determinados por una regla o conjunto de ellas, y los usuarios incluidos en él podrán hacer actualizaciones dinámicas incluyendo a usuarios que concuerden con esas reglas (y eliminar a usuarios que ya no lo hagan).
+Se pueden cambiar los miembros de un cohorte configurado cuando desee, pero las reglas que definen a un cohorte dinámico no pueden ser cambiadas una vez que el cohorte se ha guardado.';
 $string['userprofilefield'] = 'Utilizar el campo del usuario';
 $string['values'] = 'valores';
 $string['viewmembers'] = 'Ver miembros';

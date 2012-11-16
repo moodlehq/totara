@@ -48,10 +48,10 @@ $string['pluginname_desc'] = '该方法会反复在您指定的位置检查和�
 </pre>
 例如：
 <pre class="informationbox">
-   add, student, 5, CF101
-   add, teacher, 6, CF101
-   add, teacheredit, 7, CF101
-   del, student, 8, CF101
-   del, student, 17, CF101
-   add, student, 21, CF101, 1091115000, 1091215000
+add, student, 5, CF101
+add, teacher, 6, CF101
+add, teacheredit, 7, CF101
+del, student, 8, CF101
+del, student, 17, CF101
+add, student, 21, CF101, 1091115000, 1091215000
 </pre>';

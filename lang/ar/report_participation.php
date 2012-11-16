@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['participation:view'] = 'معاينة تقرير مشاركات مقرر دراسي';
-$string['pluginname'] = ' مشاركات مقرر دراسي';
+$string['pluginname'] = 'مشاركات مقرر دراسي';

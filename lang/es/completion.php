@@ -61,7 +61,6 @@ $string['completion-title-manual-y'] = 'Marcar como no finalizado';
 $string['completion-y'] = 'Finalizado';
 $string['completion_automatic'] = 'Mostrar la actividad como completada cuando se cumplan las condiciones';
 $string['completion_help'] = 'Si se activa esta opción, se rastrea el grado de finalización de cualquier actividad, bien manual, bien automáticamente, basándose en determinadas condiciones. Si se desea, se pueden fijar múltiples condiciones. Si se hace así, la actividad únicamente se considerará completa si se cumplen TODAS las condiciones.
-
 Una marca al lado del nombre de la actividad enla página del curso indica cuándo la actividad está completa.';
 $string['completion_manual'] = 'Los estudiantes pueden marcar manualmente la actividad como completada';
 $string['completion_none'] = 'No indicar finalización de la actividad';
@@ -71,9 +70,7 @@ $string['completionexpected'] = 'Se espera completarlo en';
 $string['completionexpected_help'] = 'Esta opción especifica la fecha en que se espera que la actividad esté finalizada. La fecha no se muestra a los estudiantes y aparece únicamente en el informe de progreso.';
 $string['completionicons'] = 'Casillas para marcar el grado de finalización';
 $string['completionicons_help'] = 'Una marca junto al nombre de la actividad puede utilizarse para indicar que una actividad se completó.
-
 Si se muestra una casilla punteada, entonces será posible hacer clic sobre ella para activarla e indicar que la actividad se ha realizado. Si se vuelve a hacer clic sobre ella, la marca desaparece. Esto es una acción opcional que se utiliza para llevar un seguimiento personal del progreso a través del curso.
-
 Si se muestra una casilla en blanco, la marca aparecerá cuando se haya completado la actividad de acuerdo con las condiciones establecidas por el profesor.';
 $string['completionmenuitem'] = 'Finalización';
 $string['completionnotenabled'] = 'Completar curso no está habilitada';

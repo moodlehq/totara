@@ -34,13 +34,13 @@ $string['callbackwarning'] = '<ol>
 <li>Obtenha uma <a href="http://www.flickr.com/services/api/keys/">Chave dea  API do Flickr e senha</a> para esse site Moodle.</li>
 <li>Insera estes detalhes aqui, clique Salvar e depois vá pra configurações para voltar a essa página.</li>
 <li>Edite sua chave do <a href="http://www.flickr.com/services/api/keys/">Flickr</a> e configure a URL DE callback. </li></ol>';
-$string['configplugin'] = 'Configuração do Flickr ';
+$string['configplugin'] = 'Configuração do Flickr';
 $string['emailaddress'] = 'Endereço de email';
 $string['flickr:view'] = 'Visualizar o repositório Flickr';
 $string['invalidemail'] = 'Endereço de e-mail inválido para o Flickr';
 $string['notitle'] = 'sem título';
 $string['nullphotolist'] = 'Não há fotos nesta conta';
-$string['pluginname'] = 'Flickr ';
+$string['pluginname'] = 'Flickr';
 $string['pluginname_help'] = 'Repositório em flickr.com';
 $string['remember'] = 'Lembrar-me';
 $string['secret'] = 'Segredo';

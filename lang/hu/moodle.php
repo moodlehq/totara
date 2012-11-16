@@ -210,12 +210,10 @@ $string['cancel'] = 'Mégse';
 $string['cancelled'] = 'Törölve';
 $string['categories'] = 'Kurzuskategóriák';
 $string['category'] = 'Kategória';
-$string['category_help'] = '<p>A Moodle-rendszergazda néhány kurzuskategóriát előre elkészíthet.</p>
-
-<p>Például létrehozhat "Természettudományok", "Bölcsészettudományok", "Egészségügy" stb. elnevezésű kategóriákat.</p>
-
-<p>Válassza ki a kurzusának leginkább megfelelőt. Ez a választás határozza majd meg, hogy a
-kurzuslistán hol jelenik meg a kurzus. Emellett megkönnyítheti a tanulók számára a kurzus megtalálását. </p>';
+$string['category_help'] = 'A Moodle-rendszergazda néhány kurzuskategóriát előre elkészíthet.
+Például létrehozhat "Természettudományok", "Bölcsészettudományok", "Egészségügy" stb. elnevezésű kategóriákat.
+Válassza ki a kurzusának leginkább megfelelőt. Ez a választás határozza majd meg, hogy a
+kurzuslistán hol jelenik meg a kurzus. Emellett megkönnyítheti a tanulók számára a kurzus megtalálását.';
 $string['categoryadded'] = 'A(z) \'{$a}\' kategória hozzáadva';
 $string['categorycontents'] = 'Alkategóriák és kurzusok';
 $string['categorycurrentcontents'] = 'A(z) {$a} tartalma';
@@ -284,15 +282,13 @@ $string['continue'] = 'Folytatás';
 $string['continuetocourse'] = 'A kurzusba való belépéshez kattintson ide';
 $string['convertingwikitomarkdown'] = 'Wiki átalakítása Markdown-formába';
 $string['cookiesenabled'] = 'a böngészőjében engedélyeznie kell a sütiket';
-$string['cookiesenabled_help'] = '<p>Ez a portál kétféle sütit használ.</p>
-
-<p>Ezek közül az alapvetően fontos süti az általában <strong>MoodleSession</strong> néven ismert folyamatrögzítő süti. Ezt a sütit engedélyezni kell a böngészőben, ha folyamatosan szeretne dolgozni, eközben belépése oldalról oldalra érvényes marad. Kilépéskor vagy a böngésző bezárásakor ez a süti megsemmisül (mind a böngészőben, mind a szerveren).</p>
-
-<p>A másik süti kizárólag kényelmi célokat szolgál és rendszerint
-a <strong>MOODLEID</strong> vagy ehhez hasonló nevet viseli. Ennek csak annyi a szerepe, hogy emlékezzen a
+$string['cookiesenabled_help'] = 'Ez a portál kétféle sütit használ.
+Ezek közül az alapvetően fontos süti az általában **MoodleSession** néven ismert folyamatrögzítő süti. Ezt a sütit engedélyezni kell a böngészőben, ha folyamatosan szeretne dolgozni, eközben belépése oldalról oldalra érvényes marad. Kilépéskor vagy a böngésző bezárásakor ez a süti megsemmisül (mind a böngészőben, mind a szerveren).
+A másik süti kizárólag kényelmi célokat szolgál és rendszerint
+a **MOODLEID** vagy ehhez hasonló nevet viseli. Ennek csak annyi a szerepe, hogy emlékezzen a
 böngészőn belül a felhasználónévre. Ez azt jelenti, hogy ha visszatér erre a weboldalra,
 a belépési oldalon a felhasználónév már kitöltve jelenik meg. Ha nem kívánja
-ezt a sütit használni, minden gond nélkül lemondhat róla, ez mindössze azzal jár, hogy minden alkalommal belépéskor újból be kell írnia a nevét.</p>';
+ezt a sütit használni, minden gond nélkül lemondhat róla, ez mindössze azzal jár, hogy minden alkalommal belépéskor újból be kell írnia a nevét.';
 $string['cookiesnotenabled'] = 'Böngészőjében a sütik használata nincs engedélyezve.';
 $string['copy'] = 'másol';
 $string['copyasnoun'] = 'másolat';
@@ -344,10 +340,8 @@ $string['courselegacyfiles'] = 'Kurzusállományok';
 $string['courselegacyfiles_help'] = 'A Kurzusállományok területe némi visszamenőleges kompatibilitást biztosít a
 Moodle 1.9 és korábbi verziókkal. A területen lévő összes állományt a kurzus minden résztvevője elérheti
 (akár hozzájuk kapcsolja, akár nem), és nem deríthető ki, ezeket az állományokat a Moodle éppen hol használja.
-
 Ha ezen a területen kurzusállományokat tárol, különféle titkossági és biztonsági problémának teszi ki magát, emellett
 a biztonsági mentésekből és kurzusimportálásokból állományok maradhatnak ki, ha a tartalmat megosztják vagy újból felhasználják. Ezért csak akkor használja ezt a területet, ha biztosan tudja, mit cselekszik.
-
 Az alábbi ugrópontról részletes információkat érhet el és megismerkedhet az állományok Moodle 2 alatti kezelésének megfelelőbb módjaival.';
 $string['coursemessage'] = 'Üzenet a kurzus felhasználóinak';
 $string['coursenotaccessible'] = 'Ez a kurzus nem mindenki számára hozzáférhető';
@@ -634,13 +628,9 @@ $string['forgottenduplicate'] = 'Az e-mail cím több felhasználói fiókhoz ta
 $string['forgotteninvalidurl'] = 'Érvénytelen jelszó-visszaállítási URL';
 $string['format'] = 'Forma';
 $string['format_help'] = 'A kurzusoldal elrendezését meghatározó kurzusforma.
-
 * SCORM-forma - Ez a forma a kurzus kezdőoldalán egy SCORM-csomagot jelenít meg. (A SCORM/AICC-modul a SCORM-csomag kurzuson belüli megjelenítéséhez alternatív módszert biztosít.)
-
 * Fórumforma - A kurzusoldalon egy fórum jelenik meg.
-
 * Témaforma - A kurzus témákba szerveződik.
-
 * Heti forma - A kurzus hetenkénti elrendezésben szerepel, az első hét a kurzus kezdési időpontjával indul.';
 $string['formathtml'] = 'HTML-forma';
 $string['formatmarkdown'] = 'Markdown-forma';
@@ -754,9 +744,9 @@ $string['icon'] = 'Ikon';
 $string['icqnumber'] = 'ICQ-szám';
 $string['idnumber'] = 'Azonosítószám';
 $string['idnumbercourse'] = 'A kurzus azonosítószáma';
-$string['idnumbercourse_help'] = '<p>Egy kurzus azonosítószáma csak akkor használatos, amikor az adott kurzust külső
+$string['idnumbercourse_help'] = 'Egy kurzus azonosítószáma csak akkor használatos, amikor az adott kurzust külső
 rendszerekkel hozza kapcsolatba - a Moodle ezt sohasem jeleníti meg. Ha a kurzus hivatalos kódnévvel
-rendelkezik, azt használja itt, egyébként hagyja üresen.</p>';
+rendelkezik, azt használja itt, egyébként hagyja üresen.';
 $string['idnumbercoursecategory'] = 'Kategória azonosítószáma';
 $string['idnumbercoursecategory_help'] = 'Egy kurzuskategória azonosítószáma csak a kategória külső rendszerekhez való illesztésére használatos, és a portálon sehol nem látható. Ha a kategória hivatalos kódnévvel rendelkezik, azt itt m,egadhatja, ellenkező esetben a mezőt üresen hagyhatja.';
 $string['idnumbermod'] = 'Azonosítószám';
@@ -870,10 +860,9 @@ $string['maximumgrade'] = 'Maximális pont';
 $string['maximumgradex'] = 'Maximális pont: {$a}';
 $string['maximumshort'] = 'Max.';
 $string['maximumupload'] = 'Maximális feltöltési méret';
-$string['maximumupload_help'] = '<p>Ez a beállítás határozza meg azt a legnagyobb állományméretet,
-amelyet a tanulók a kurzus folyamán feltöltethetnek és amelyet a rendszergazda a portál beállítása során határoz meg.</p>
-
-<p>Ezt a méretet tovább csökkentheti az egyes tevékenységmodulokhoz tartozó beállításokon keresztül. </p>';
+$string['maximumupload_help'] = 'Ez a beállítás határozza meg azt a legnagyobb állományméretet,
+amelyet a tanulók a kurzus folyamán feltöltethetnek és amelyet a rendszergazda a portál beállítása során határoz meg.
+Ezt a méretet tovább csökkentheti az egyes tevékenységmodulokhoz tartozó beállításokon keresztül.';
 $string['maxnumberweeks'] = 'Hetek/témák maximális száma';
 $string['maxnumberweeks_desc'] = 'Ezzel állítható be a kurzusokhoz a megjelenítendő Hetek/témák száma maximuma.';
 $string['maxnumcoursesincombo'] = '<a href="{$a->link}">{$a->numberofcourses} kurzus</a> böngészése.';
@@ -980,14 +969,13 @@ $string['newpicture_help'] = 'Egy képet feltöltéséhez válasszon egy JPG vag
 $string['newsitem'] = 'hír';
 $string['newsitems'] = 'hírek';
 $string['newsitemsnumber'] = 'Megjelenítendő hírek száma';
-$string['newsitemsnumber_help'] = '<p>A heti és a téma szerinti kurzusformának része egy speciális Hírek
+$string['newsitemsnumber_help'] = 'A heti és a téma szerinti kurzusformának része egy speciális Hírek
 elnevezésű fórum. Ez a fórum alkalmas olyan üzenetek küldésére,
-amelyeket minden tanuló olvashat. (Alaphelyzetben a rendszer minden tanulót felvesz a fórumba, az üzeneteket a tanulók e-mailben kapják meg.)</p>
-<p>Ez a beállítás határozza meg, hány friss üzenet jelenjen meg a kurzus
-oldalán, jobbra lent, egy híreket tartalmazó négyzetben.</p>
-
-<p>Ha ezt az értéket 0-ra állítja, akkor a híreket tartalmazó
-négyzet meg sem jelenik. </p>';
+amelyeket minden tanuló olvashat. (Alaphelyzetben a rendszer minden tanulót felvesz a fórumba, az üzeneteket a tanulók e-mailben kapják meg.)
+Ez a beállítás határozza meg, hány friss üzenet jelenjen meg a kurzus
+oldalán, jobbra lent, egy híreket tartalmazó négyzetben.
+Ha ezt az értéket 0-ra állítja, akkor a híreket tartalmazó
+négyzet meg sem jelenik.';
 $string['newuser'] = 'Új felhasználó';
 $string['newusernewpasswordsubj'] = 'Új fiók';
 $string['newusernewpasswordtext'] = 'Üdvözöljük, {$a->firstname}! A(z) \'{$a->sitename}\' portálon egy új felhasználói nevet és ideiglenes jelszót kapott. A jelenlegi belépési információi:  felhasználónév: {$a->username}, jelszó: {$a->newpassword} (első belépésekor a jelszót meg kell változtatnia). A(z) \'{$a->sitename}\' használatához lépjen be itt: {$a->link}. Általában a levelező programokban ez kék ugrópontként jelenik meg, amelyre csak kattintania kell. Ha ez nem működik, másolja ki a címet a böngészőablak tetején lévő címsorba. Üdvözlettel: \'{$a->sitename}\' rendszergazda, {$a->signoff}';
@@ -1263,33 +1251,28 @@ $string['savedat'] = 'Mentés időpontja:';
 $string['savepreferences'] = 'Beállítások mentése';
 $string['saveto'] = 'Mentés helye';
 $string['scale'] = 'Skála';
-$string['scale_help'] = '<p>A tanárok új saját skálákat hozhatnak létre a kurzus során végzendő
-bármely pontozási tevékenység céljára.</p>
-
-<p>A skála nevét úgy kell megválasztani, hogy az egyértelmű
+$string['scale_help'] = 'A tanárok új saját skálákat hozhatnak létre a kurzus során végzendő
+bármely pontozási tevékenység céljára.
+A skála nevét úgy kell megválasztani, hogy az egyértelmű
 azonosítást tegyen lehetővé: ez meg fog jelenni a skálaválasztási listákon,
-valamint a környezetérzékeny súgó gombjain.</p>
-
-<p>Magát a skálát egymástól vesszővel elválasztott,
+valamint a környezetérzékeny súgó gombjain.
+Magát a skálát egymástól vesszővel elválasztott,
 negatívtól pozitívig terjedő értékek egy rendezett listája határozza meg.
-Például:</p>
-
-<blockquote><i>
-Kiábrándító, Nem elég jó, Átlagos, Jó, Nagyon jó, Kitűnő!
-</i></blockquote>
-
-<p>A skálákhoz rendelni kell egy megfelelő leírást is azok tartalmáról és használatának módjáról.
-Ez a leírás jelenik meg a tanár és a tanuló súgójának oldalain.</p>
-
-<p>Végezetül használható egy vagy több "szokásos" skála is, amelyet a rendszergazda az oldalhoz
-meghatároz. Ezek minden kurzus számára elérhetők.</p>';
+Például:
+> *
+> Kiábrándító, Nem elég jó, Átlagos, Jó, Nagyon jó, Kitűnő!
+> *
+A skálákhoz rendelni kell egy megfelelő leírást is azok tartalmáról és használatának módjáról.
+Ez a leírás jelenik meg a tanár és a tanuló súgójának oldalain.
+Végezetül használható egy vagy több "szokásos" skála is, amelyet a rendszergazda az oldalhoz
+meghatároz. Ezek minden kurzus számára elérhetők.';
 $string['scales'] = 'Skálák';
 $string['scalescustom'] = 'Saját skálák';
 $string['scalescustomcreate'] = 'Új skála hozzáadása';
 $string['scalescustomno'] = 'Nincsenek még létrehozva saját skálák';
 $string['scalesstandard'] = 'Standard skálák';
 $string['scalestandard'] = 'Standard skála';
-$string['scalestandard_help'] = '<p>A standard skála az egész portálon, minden kurzusban használható skála.</p>';
+$string['scalestandard_help'] = 'A standard skála az egész portálon, minden kurzusban használható skála.';
 $string['scalestip'] = 'Saját skálák használatához a kurzusadminisztrációs menüből válassza ki a \'Skálák ...\' ugrópontot.';
 $string['scalestip2'] = 'Egyedi skálák létrehozásához kattintson a kurzusadminisztrációs menüben a Pontok ugrópontra, majd válassza a Szerkesztés/Skálák pontot.';
 $string['schedule'] = 'Ütemezés';
@@ -1300,7 +1283,6 @@ $string['screenreaderyes'] = 'Van';
 $string['screenshot'] = 'Képernyőkép';
 $string['search'] = 'Keresés';
 $string['search_help'] = 'A szövegben való kereséshez írja be a szavakat szóközökkel elválasztva. Minden két karakternél hosszabb szót felhasznál a rendszer.
-
 Részletes kereséshez a részletes keresés űrlapjára áttérhet, ha megnyomja a Keresés gombot, de a keresőnégyzetet üresen hagyja';
 $string['searchagain'] = 'Keresés ismétlése';
 $string['searchbyemail'] = 'Keresés e-mail cím alapján';
@@ -1365,15 +1347,13 @@ $string['showcommentsnonjs'] = 'Megjegyzések megjelenítése';
 $string['showdescription'] = 'Leírás megjelenítése a kurzusoldalon';
 $string['showdescription_help'] = 'Bekapcsolása esetén a fenti bevezető / leírás megjelenik a kurzusoldalon a tevékenység / tananyag ugrópontja alatt.';
 $string['showgrades'] = 'Pontok megjelenítése a tanulók számára';
-$string['showgrades_help'] = '<p>Számos tevékenységhez rendelhet pontokat.</p>
-
-<p>Kiinduló helyzetben egy kurzuson belül minden pont megtekinthető a Pontok oldalon, amely a fő kurzusoldalról érhető el.</p>
-
-<p>Ha a tanár nem kívánja az adott kurzust pontozni,
+$string['showgrades_help'] = 'Számos tevékenységhez rendelhet pontokat.
+Kiinduló helyzetben egy kurzuson belül minden pont megtekinthető a Pontok oldalon, amely a fő kurzusoldalról érhető el.
+Ha a tanár nem kívánja az adott kurzust pontozni,
 vagy ha csak el akarja rejteni a pontokat a tanulók elől, akkor kikapcsolhatja a pontok
 megjelenítését a kurzusbeállításokban. Ettől még az
 egyes tevékenységekhez használhat vagy beállíthat pontokat, itt csak
-azt kapcsolja ki, hogy a tanulók lássák az eredményt.</p>';
+azt kapcsolja ki, hogy a tanulók lássák az eredményt.';
 $string['showlistofcourses'] = 'Tanfolyamok felsorolásának megjelenítése';
 $string['showmodulecourse'] = 'Tevékenységet tartalmazó kurzusok felsorolásának megjelenítése';
 $string['showonly'] = 'Csak megjelenítés';
@@ -1382,19 +1362,16 @@ $string['showonlyweek'] = 'Csak {$a} hét megjelenítése';
 $string['showperpage'] = 'Oldalanként {$a} megjelenítése';
 $string['showrecent'] = 'Legutóbbi tevékenység megjelenítése';
 $string['showreports'] = 'Tevékenységjelentés megjelenítése';
-$string['showreports_help'] = '<p>A tevékenységekről szóló jelentések az adott kurzusban tevékenységet
+$string['showreports_help'] = 'A tevékenységekről szóló jelentések az adott kurzusban tevékenységet
 végző résztvevők mindegyike számára elérhetők. A beküldött anyagok
 felsorolásán túl ezek a jelentések részletes naplózást adnak a rendszerbe való
-belépésekről.</p>
-
-<p>A tanárok az egyes személyek profilját tartalmazó oldalakon lévő gomb segítségével mindig hozzáférhetnek ezekhez a jelentésekhez.</p>
-
-<p>A tanulók saját jelentéseihez való hozzáférését a tanár szabályozza a kurzusbeállításon keresztül. Egyes kurzusok esetén ezek a jelentések hasznos eszközt jelenthetnek a tanuló számára, mivel képet
-kapnak arról, hogyan szerepeltek az online környezetben, más kurzusok esetén viszont ez nem feltétlenül szükséges.</p>
-
-<p>Egy másik ok ennek az opciónak a kikapcsolására az, hogy a jelentés előállítása során megterheli a szervert. Nagy és hosszan tartó osztálykurzusok
+belépésekről.
+A tanárok az egyes személyek profilját tartalmazó oldalakon lévő gomb segítségével mindig hozzáférhetnek ezekhez a jelentésekhez.
+A tanulók saját jelentéseihez való hozzáférését a tanár szabályozza a kurzusbeállításon keresztül. Egyes kurzusok esetén ezek a jelentések hasznos eszközt jelenthetnek a tanuló számára, mivel képet
+kapnak arról, hogyan szerepeltek az online környezetben, más kurzusok esetén viszont ez nem feltétlenül szükséges.
+Egy másik ok ennek az opciónak a kikapcsolására az, hogy a jelentés előállítása során megterheli a szervert. Nagy és hosszan tartó osztálykurzusok
 esetén ezért hatékonyabb lehet, ha a tevékenységekről szóló jelentések
-készítését kikapcsolt állapotban tartja.<p>';
+készítését kikapcsolt állapotban tartja.';
 $string['showsettings'] = 'Beállítások megjelenítése';
 $string['showtheselogs'] = 'Ezen naplók megjelenítése';
 $string['showthishelpinlanguage'] = 'A súgó megjelenítése {$a} nyelven.';

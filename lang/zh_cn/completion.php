@@ -60,7 +60,6 @@ $string['completion-title-manual-y'] = '标记为未完成：{$a}';
 $string['completion-y'] = '已完成';
 $string['completion_automatic'] = '当条件都满足时，将活动标为完成';
 $string['completion_help'] = '如果启用，将基于给定的条件，人工或自动跟踪活动的完成状态。如需要，可以设置多个条件，那么只有所有条件都满足时活动才被看作已完成。
-
 在课程页面，当活动已完成时，活动名后面会有一个标记。';
 $string['completion_manual'] = '学生可以手工标记此活动为完成';
 $string['completion_none'] = '不标示活动完成状态';
@@ -70,9 +69,7 @@ $string['completionexpected'] = '预期完成时间';
 $string['completionexpected_help'] = '此选项设置此活动预期的完成日期。这个日期只显示在活动进度报告中，不会显示给学生。';
 $string['completionicons'] = '完成状态标记框';
 $string['completionicons_help'] = '当活动已完成时，活动名后面会有一个标记。
-
 如果显示的是一个圆点标记，那么当您觉得已经完成此活动时，就勾选它。（如果您改变了主意，就再点它一下来取消勾选。）此动作并不是必须做的，它只是跟踪您课程学习进度的一个简单方法。
-
 如果显示的是一个空的标记框，那么当你达到了教师为此活动设定的条件时，它会自动被标记。';
 $string['completionmenuitem'] = '学习进度';
 $string['completionnotenabled'] = '进度跟踪功能未启用';

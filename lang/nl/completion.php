@@ -64,7 +64,6 @@ $string['completion-title-manual-y'] = 'Markeer als niet voltooid: {$a}';
 $string['completion-y'] = 'Voltooid';
 $string['completion_automatic'] = 'Toon activiteit als voltooid als aan de voorwaarden voldaan is';
 $string['completion_help'] = 'Indien ingeschakeld wordt het voltooien van activiteiten opgevolgd, ofwel manueel ofwel automatisch, gebaseerd op bepaalde voorwaarden. Meerdere voorwaarden kunnen ingesteld worden indien gewenst. Indien er meerdere voorwaarden zijn, wordt de activiteit pas als voltooid beschouwd als aan alle voorwaarden voldaan is.
-
 Een vinkje naast de activiteitsnaam op de cursuspagina geeft aan of de activiteit voltooid is.';
 $string['completion_manual'] = 'Gebruikers kunnen de activiteit manueel als voltooid markeren';
 $string['completion_none'] = 'Voltooide activiteiten niet aanduiden';
@@ -74,9 +73,7 @@ $string['completionexpected'] = 'Voltooien verwacht op';
 $string['completionexpected_help'] = 'Deze instelling geeft de datum op wanneer de activiteit hoort voltooid te zijn. De datum wordt niet aan leerlingen getoond en wordt enkel in het voltooiingsrapport getoond.';
 $string['completionicons'] = 'Selectievakjes voor voltooien';
 $string['completionicons_help'] = 'Een vinkje in het selectievakje naast een activiteitsnaam kan worden gebruikt om aan te duiden dat de activiteit voltooid is.
-
 Wanneer je een selectievakje ziet met een puntje in, dan kan je er zelf in klikken om aan te vinken dat de activiteit volgens jou voltooid is. (Je kunt er achteraf nog eens in klikken om het vinkje te verwijderen wanneer je je bedenkt.) Het aanvinken is optioneel; het is enkel een manier om je vooruitgang in de cursus bij te houden.
-
 Wanneer het selectievakje leeg is, zal dit automatisch aangevinkt worden wanneer je de activiteit hebt voltooid volgens de voorwaarden die door de leraar zijn opgesteld.';
 $string['completionmenuitem'] = 'Voltooien';
 $string['completionnotenabled'] = 'Voltooien is niet ingeschakeld';

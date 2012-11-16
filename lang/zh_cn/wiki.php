@@ -55,7 +55,6 @@ $string['creating'] = '正在创建wiki页面';
 $string['creole'] = 'Creole 格式';
 $string['defaultformat'] = '缺省格式';
 $string['defaultformat_help'] = '此设置决定编辑wiki页面时使用的缺省格式。
-
 * HTML - 会提供HTML编辑器
 * Creole - 一个常用的wiki标记语言，会提供一个小型编辑工具条
 * Nwiki - Mediawiki风格的标记语言，在Nwiki模块中使用';
@@ -88,15 +87,12 @@ $string['format_help'] = '* HTML - 可以使用HTML编辑器
 * Nwiki - Mediawiki风格的标记语言，由Nwiki模块支持';
 $string['formatcreole'] = 'Creole格式';
 $string['formatcreole_help'] = 'Creole是一种常用的wiki标记语言。通过它的编辑工具条可以直接插入想要的标记。
-
 要建立新页面，只需输入新页面名，并在前后加上双方括号。例如[[页面2]]。';
 $string['formathtml'] = 'HTML格式';
 $string['formathtml_help'] = '可以使用HTML编辑器对文字排版。
-
 要建立新页面，只需输入新页面名，并在前后加上双方括号。例如[[页面2]]。';
 $string['formatnwiki'] = 'NWiki格式';
 $string['formatnwiki_help'] = 'Nwiki是Mediawiki风格的标记语言，由Nwiki模块支持。
-
 要建立新页面，只需输入新页面名，并在前后加上双方括号。例如[[页面2]]。';
 $string['history'] = '历史';
 $string['history_help'] = '历史会列出所有此页面先前版本的链接。';

@@ -1,5 +1,27 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.1
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'pt_br', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = 'Adicionando uma nova sessão no {$a}';
 $string['addmanageremailaddress'] = 'Adicionar endereço de email do gerente';
@@ -13,11 +35,16 @@ $string['addsession'] = 'Adicionar uma nova sessão';
 $string['addstudent'] = 'Adicionar aluno';
 $string['alllocations'] = 'Todos os locais';
 $string['allowoverbook'] = 'Permitir overbooking';
+$string['allowoverbook_help'] = '# Permitir overbooking
+Quando "Permitir overbooking" for marcado, o aluno poderá se inscrever em uma sessão pessoal mesmo que ela já esteja completa.
+Quando um aluno se inscreve em uma sessão que está completa, ele recebe um email avisando que foi colocado na lista de espera e será notificado quando uma reserva se tornar disponível.';
 $string['allsessionsin'] = 'Todas as sessões no {$a}';
 $string['alreadysignedup'] = 'Você já se inscreveu nessa atividade pessoal.';
 $string['answer'] = 'Inscrever';
 $string['answercancel'] = 'Remover inscrição';
 $string['approvalreqd'] = 'Aprovação exigida';
+$string['approvalreqd_help'] = '# Aprovação exigida
+Quando "Aprovação exigida" for marcada, o aluno precisa de aprovação do gerente para poder participar de uma sessão pessoal.';
 $string['approve'] = 'Aprovar';
 $string['approveinstruction'] = 'Para aprovar o registro da sessão, pressione aceitar';
 $string['assessmentyour'] = 'Sua avaliação';
@@ -40,7 +67,11 @@ $string['cancelbooking'] = 'Cancelar reserva';
 $string['cancelbookingfor'] = 'Cancelar reserva para {$a}';
 $string['cancellation'] = 'Cancelamento';
 $string['cancellationconfirm'] = 'Tem certeza que deseja cancelar sua reserva para essa sessão?';
+$string['cancellationinstrmngr_help'] = '# Notificação ao gerente
+Quando **Enviar notificação ao gerente**está marcado, o texto no campo **Notificação ao gerente** é enviado ao gerente do aluno, avisando que ele cancelou uma reserva pessoal.';
 $string['cancellationmessage'] = 'Mensagem de cancelamento';
+$string['cancellationmessage_help'] = '# Mensagem de cancelamento
+Esta mensagem é enviada sempre que o usuário cancela sua reserva em uma sessão.';
 $string['cancellations'] = 'Cancelamentos';
 $string['cancellationsent'] = 'Você deve receber um email de cancelamento imediatamente.';
 $string['cancellationsentmgr'] = 'Você e seu gerente devem receber um email de cancelamento imediatamente.';
@@ -51,6 +82,10 @@ $string['cancelusersession'] = 'Cancelado para {$a->usermsg} sessão {$a->url}';
 $string['cannotsignupsessioninprogress'] = 'Você não pode se inscrever, essa sessão está em andamento';
 $string['cannotsignupsessionover'] = 'Você não pode se inscrever, essa sessão terminou.';
 $string['capacity'] = 'Capacidade';
+$string['capacity_help'] = '# Capacidade
+**Capacidade** é o número de lugares disponíveis em uma sessão.
+Quando a sessão pessoal atinge a capacidade, seus detalhes não aparecem na página do curso. Os detalhes aparecerão em cinza na página \'Exibir todas as sessões\' e o aluno não poderá se inscrever.
+ ';
 $string['changemanageremailaddress'] = 'Adicionar endereço de email do gerente';
 $string['changemanageremailinstruction'] = 'Insira abaixo o endereço de email do seu gerente atual.';
 $string['clearall'] = 'Limpar tudo';
@@ -60,7 +95,11 @@ $string['conditionsexplanation'] = 'Todos esses critérios devem ser cumpridos p
 $string['confirm'] = 'Confirmar';
 $string['confirmanager'] = 'Confirmar endereço de email do gerente';
 $string['confirmation'] = 'Confirmação';
+$string['confirmationinstrmngr_help'] = '# Notificação ao gerente
+Quando "Enviar notificação ao gerente" estiver marcado, o texto no campo "Notificação ao gerente" é enviado ao gerente, avisando que um membro da equipe se inscreveu em uma sessão pessoal.';
 $string['confirmationmessage'] = 'Mensagem de confirmação';
+$string['confirmationmessage_help'] = '# Mensagem de confirmação
+Esta mensagem é enviada sempre que o usuário se inscreve em uma sessão.';
 $string['confirmationsent'] = 'Você deve receber email de confirmação imediatamente.';
 $string['confirmationsentmgr'] = 'Você e seu gerente devem receber email de confirmação imediatamente.';
 $string['confirmmanageremailaddress'] = 'Confirmar endereço de email do gerente';
@@ -86,12 +125,30 @@ $string['deletesession'] = 'Excluir sessão';
 $string['deletesessionconfirm'] = 'Tem certeza total de que deseja excluir esta sessão e todas suas inscrições nesta sessão?';
 $string['deletingsession'] = 'Excluindo sessão no {$a}';
 $string['description'] = 'Texto de introdução';
+$string['description_help'] = '# Descrição
+Esta é a **Descrição** do curso exibida quando um aluno se inscreve em uma sessão pessoal.
+A **Descrição** também é exibida no calendário do treinamento.';
 $string['details'] = 'Detalhes';
+$string['details_help'] = 'Os detalhes são rastreados com base na sessão.
+Se o texto for preenchido no campo de detalhes, ele será exibido na página de inscrição do usuário.
+Por padrão, o texto também aparece nas mensagens de confirmação, lembrete, lista de espera e cancelamento.';
 $string['discountcode'] = 'Código de desconto';
+$string['discountcode_help'] = 'O código do desconto é exigido para que o custo do desconto seja rastreado para o treinamento de um membro da equipe.
+Se o membro da equipe não inserir o código do desconto, o custo normal aparecerá no registro do treinamento.';
 $string['discountcost'] = 'Custo do desconto';
+$string['discountcost_help'] = 'Custo do desconto é o valor cobrado dos membros da equipe que possuem um ID de associação.
+Quando um membro da equipe insere o ID da associação ao se inscrever na sessão, o custo do desconto aparece na coluna do custo no livro de notas do curso.';
 $string['discountcosthinttext'] = '';
 $string['due'] = 'vencimento';
 $string['duration'] = 'Duração';
+$string['duration_help'] = '# Duração
+**Duração** é a extensão total do treinamento em horas.
+Por exemplo:
+* "2 horas" é inserido como **2** ou **2:00**
+* "1 hora e 30 minutos" é inserido como **1:30**
+* "45 minutos" é inserido como **0:45**
+* "20 minutos" é inserido como **0:20**.
+Se o treinamento ocorrer por dois períodos ou mais, a duração é o total combinado.';
 $string['early'] = '{$a} precoce';
 $string['edit'] = 'Editar';
 $string['editingsession'] = 'Editando sessão no {$a}';
@@ -100,6 +157,12 @@ $string['email:instrmngr'] = 'Notificação ao gerente';
 $string['email:message'] = 'Mensagem';
 $string['email:subject'] = 'Assunto';
 $string['emailmanager'] = 'Enviar notificação ao gerente';
+$string['emailmanagercancellation_help'] = '# Enviar notificação ao gerente
+Quando "Enviar notificação ao gerente" for marcado, um email será enviado ao gerente do aluno, avisando que a reserva pessoal foi cancelada.';
+$string['emailmanagerconfirmation_help'] = '# Enviar notificação ao gerente
+Quando "Enviar notificação ao gerente" for marcado, um email de confirmação será enviado ao gerente do aluno quando o aluno se inscrever em uma sessão pessoal.';
+$string['emailmanagerreminder_help'] = '# Enviar notificação ao gerente
+Quando "Enviar notificação ao gerente" for marcado, uma mensagem de lembrete será enviada ao gerente do aluno alguns dias antes da data de início da sessão pessoal.';
 $string['emptylocation'] = 'Localização estava vazio';
 $string['enrolled'] = 'inscrito';
 $string['error:addalreadysignedupattendee'] = '{$a} já se inscreveu nessa atividade pessoal.';
@@ -188,6 +251,10 @@ $string['import'] = 'Importar';
 $string['info'] = 'Info';
 $string['late'] = '{$a} atrasado';
 $string['location'] = 'Local';
+$string['location_help'] = '# Local
+**Local** descreve o local da sessão (cidade, região, etc.).
+**Local** é exibido nas páginas do curso, \'Inscrever\' e \'Exibir todas as sessões\' e em todas as notificações por email.
+Na página \'Exibir todas as sessões\', as sessões listadas podem ser filtradas por local.';
 $string['lookfor'] = 'Pesquisar';
 $string['manageradded'] = 'O endereço de email do seu gerente foi aceito.';
 $string['managerchanged'] = 'O endereço de email do seu gerente foi alterado.';
@@ -202,6 +269,10 @@ $string['managerupdated'] = 'O endereço de email do seu gerente foi atualizado.
 $string['maximumpoints'] = 'Número máximo de pontos';
 $string['maximumsize'] = 'Número máximo de participantes';
 $string['message'] = 'Alteração na reserva no curso {$a->coursename}! Havia um lugar livre na sessão {$a->duedate} ({$a->name}) no curso {$a->coursename}. Você foi registrado. Se a data não for mais possível, remova seu registro em <a href=\'{$a->url}\'>{$a->url}</a>.';
+$string['mods_help'] = '# Atividade pessoal
+As atividades pessoais so usadas para rastrear os treinamentos pessoais que exigem reservas com antecedncia.
+Cada atividade oferecida em uma ou mais sesses idnticas. Essas sesses podem ser fornecidas em diversos dias.
+Mensagens de lembrete so enviadas para os usurios e seus gerentes alguns dias antes da data agendada para o incio da sesso. A mensagem de confirmao enviada sempre que o usurio se inscreve em uma sesso.';
 $string['modulename'] = 'Pessoal';
 $string['modulenameplural'] = 'Pessoal';
 $string['moreinfo'] = 'Mais info';
@@ -213,6 +284,8 @@ $string['nofacetofaces'] = 'Não há atividades pessoais';
 $string['none'] = 'nenhum';
 $string['noremindersneedtobesent'] = 'Nenhum lembrete precisa ser enviado.';
 $string['normalcost'] = 'Custo normal';
+$string['normalcost_help'] = 'Custo normal é o valor cobrado dos membros da equipe que não possuem ID de associação.
+O custo normal aparecerá na coluna do custo no livro de notas do curso, para cada membro da equipe que participou da sessão (a menos que um custo de desconto seja inserido e o membro da equipe insira a ID de associação ao se inscrever na sessão).';
 $string['normalcosthinttext'] = '';
 $string['nosignedupusers'] = 'Nenhum usuário se inscreveu nessa sessão.';
 $string['nositenotices'] = '<p>Nenhuma notificação de site  definida.</p>';
@@ -224,6 +297,11 @@ $string['notificationboth'] = 'Notificação por email e compromisso do iCalenda
 $string['notificationemail'] = 'Notificação por email somente';
 $string['notificationical'] = 'Compromisso do iCalendar somente';
 $string['notificationtype'] = 'Tipo de notificação';
+$string['notificationtype_help'] = '# Tipo de notificação
+O Tipo de notificação permite ao aluno selecionar como gostaria de ser notificado de sua reserva.
+* Compromisso do iCalendar somente
+* Notificação por email somente
+* Notificação por email e compromisso do iCalendar';
 $string['notsignedup'] = 'Você não está inscrito nessa sessão.';
 $string['notsubmittedyet'] = 'Não avaliado ainda';
 $string['noupcoming'] = '<p><i>Nenhuma sessão futura</i></p>';
@@ -257,14 +335,29 @@ $string['registeredon'] = 'Registrado em';
 $string['registrations'] = 'Registros';
 $string['rejectinstruction'] = 'Para rejeitar o registro da sessão, pressione rejeitar';
 $string['reminder'] = 'Lembrete';
+$string['reminderinstrmngr_help'] = '# Notificação ao gerente
+Quando **Enviar notificação ao gerente** está marcado, o texto no campo **Notificação ao gerente** é enviado ao gerente do aluno, avisando que ele se inscreveu em uma sessão pessoal.';
 $string['remindermessage'] = 'Mensagem de lembrete';
+$string['remindermessage_help'] = '# Mensagem de lembrete
+Essa mensagem é enviada alguns dias antes da data de início da sessão.';
 $string['reminderperiod'] = 'Dias antes que a mensagem seja enviada';
+$string['reminderperiod_help'] = '# Período do lembrete
+A mensagem de lembrete será enviada este número de dias antes do início da sessão.';
 $string['requestattendsession'] = 'Solicitar para atender sessão {$a}';
 $string['requestattendsessionsent'] = 'Solicitar para atender a sessão {$a} enviado para o gerente';
 $string['requestmessage'] = 'Mensagem de solicitação';
+$string['requestmessage_help'] = '# Mensagem de solicitação
+Quando **Aprovação exigida** for ativada, a seção **Mensagem de solicitação** fica disponível.
+A seção **Mensagem de solicitação** exibe as notificações enviadas ao aluno e seu gerente sobre o processo de aprovação para que o aluno participe da sessão pessoal.
+**Assunto:** é a linha do assunto que aparece nos emails de aprovação da solicitação enviados para o gerente e o aluno.
+**Mensagem:** é o texto do email enviado ao aluno, avisando que sua solicitação para participar da sessão pessoal foi enviada ao gerente para a aprovação.
+**Notificação ao gerente:** é o texto de email enviado ao gerente do aluno, solicitando a aprovação para participar da sessão pessoal.';
 $string['requeststablesummary'] = 'Pessoas que solicitaram participar desta sessão.';
 $string['requestuserattendsession'] = 'Solicitar por {$a->usermsg} para atender a sessão {$a->url}';
 $string['room'] = 'Sala';
+$string['room_help'] = '# Sala
+**Sala** é o nome/número/identificador da sala usada para a sessão de treinamento
+**Sala** é exibido nas páginas \'Inscrever\' e \'Exibir todas as sessões\' e em todas as notificações por email.';
 $string['saveallfeedback'] = 'Salvar todas as respostas';
 $string['saveattendance'] = 'Salvar frequência';
 $string['scheduledsession'] = 'Sessão agendada';
@@ -274,8 +367,20 @@ $string['seeattendees'] = 'Ver participantes';
 $string['sentremindermanager'] = 'Email de lembrete enviado ao gerente do usuário';
 $string['sentreminderuser'] = 'Email de lembrete enviado ao usuário';
 $string['sessiondate'] = 'Data da sessão';
+$string['sessiondate_help'] = 'Data da sessão é a data em que a sessão ocorre.';
 $string['sessiondatetime'] = 'Data/horário da sessão';
 $string['sessiondatetimeknown'] = 'Data/horário da sessão conhecido';
+$string['sessiondatetimeknown_help'] = '**Se data/horário de início da sessão forem conhecidos**
+Se configurado como "Sim", a data e horário da sessão serão exibidos na página do curso (se a sessão for futura e estiver disponível), nas páginas "Exibir todas as seções" e de inscrição e também em todas as notificações por email relacionadas à sessão.
+Quando um membro da equipe se inscreve em uma sessão com data e horário conhecidos:
+* O membro da equipe e seu gerente recebem um email de confirmação (formatado conforme a seção "Mensagem de confirmação" das configurações da instância pessoal).
+* O membro da equipe recebe um email de lembrete (formatado conforme a seção "Mensagem de lembrete" das configurações da instância pessoal). Um lembrete é enviado alguns dias antes da sessão, de acordo com a configuração "Dias antes do envio da mensagem" também encontrada na seção "Mensagem de lembrete" das configurações da instância pessoal).
+**Se a data/horário da sessão não forem conhecidos (ou estiverem em lista de espera)**
+Se configurado como "Não", o texto "em lista de espera" será exibido nas páginas do curso, "Exibir todas as seções" e de inscrição e também em todas as notificações por email relacionadas à sessão.
+Quando um membro da equipe se inscreve em uma sessão em lista de espera:
+* O membro da equipe recebe um email de confirmação (formatado conforme a seção "Mensagem de lista de espera" das configurações da instância pessoal).
+* O membro da equipe não recebe uma mensagem de email de lembrete.
+* O gerente do membro da equipe não recebe as mensagens de confirmação e cancelamento.';
 $string['sessionfinishtime'] = 'Horário de término da sessão';
 $string['sessioninprogress'] = 'sessão em andamento';
 $string['sessionisfull'] = 'Esta sessão está completa agora. Você precisará selecionar em outro momento ou conversar com o instrutor.';
@@ -285,6 +390,8 @@ $string['sessionroles'] = 'Funções da sessão';
 $string['sessions'] = 'Sessões';
 $string['sessionsdetailstablesummary'] = 'Descrição completa da sessão atual.';
 $string['sessionsoncoursepage'] = 'Sessões exibidas na página do curso';
+$string['sessionsoncoursepage_help'] = '# Sessões na página do curso
+Este é o número de sessões para cada atividade pessoal que será mostrada na página principal do curso.';
 $string['sessionstartdate'] = 'Data de início da sessão';
 $string['sessionstarttime'] = 'Horário de início da sessão';
 $string['sessionvenue'] = 'Local da sessão';
@@ -293,12 +400,10 @@ $string['setting:addchangemanageremail_caption'] = 'Email do gerente:';
 $string['setting:addchangemanageremaildefault'] = 'Perguntar ao usuário o endereço de email do gerente.';
 $string['setting:defaultcancellationinstrmngr'] = 'Mensagem de cancelamento padrão enviada aos gerentes.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Mensagem de cancelamento (gerentes)';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking cancellation is copied below ****';
 $string['setting:defaultcancellationinstrmngrdefault'] = '*** Advice only ****
 
-This is to advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.
-
-';
-$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking cancellation is copied below ****';
+This is to advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.';
 $string['setting:defaultcancellationmessage'] = 'Mensagem de cancelamento padrão enviada ao usuário.';
 $string['setting:defaultcancellationmessage_caption'] = 'Mensagem de cancelamento';
 $string['setting:defaultcancellationmessagedefault'] = 'Mensagem para avisar que sua reserva no seguinte curso foi cancelada: ***RESERVA CANCELADA*** Participante: [firstname] [lastname] Curso: [facetofacename] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room]';
@@ -307,14 +412,12 @@ $string['setting:defaultcancellationsubject_caption'] = 'Assunto do cancelamento
 $string['setting:defaultcancellationsubjectdefault'] = 'Cancelamento da reserva no curso';
 $string['setting:defaultconfirmationinstrmngr'] = 'Mensagem de confirmação padrão enviada aos gerentes.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Mensagem de confirmação (gerentes)';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking confirmation is copied below ****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '*** Advice only ****
 
 This is to advise that [firstname] [lastname] has been booked for the following course and listed you as their Team Leader / Manager.
 
-If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking confirmation is copied below ****';
+If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.';
 $string['setting:defaultconfirmationmessage'] = 'Mensagem de confirmação padrão enviada aos usuários.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Mensagem de confirmação';
 $string['setting:defaultconfirmationmessagedefault'] = 'Mensagem para confirmar que você está reservado no seguinte curso: Participante: [firstname] [lastname] Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] ***Chegue 10 minutos antes do início do curso*** Para reagendar ou cancelar sua reserva, você precisar cancelar esta reserva e reservar uma nova sessão. Para cancelar sua reserva, retorne ao site e na página deste curso selecione \'cancelar\' na tela de informações da reserva. [details] Você receberá um lembrete [reminderperiod] dias úteis antes do curso.';
@@ -323,24 +426,20 @@ $string['setting:defaultconfirmationsubject_caption'] = 'Assunto da confirmaçã
 $string['setting:defaultconfirmationsubjectdefault'] = 'Confirmação da reserva no curso: [facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaultreminderinstrmngr'] = 'Mensagem de lembrete padrão enviada aos gerentes.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Mensagem de lembrete (gerentes)';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s reminder email is copied below ****';
 $string['setting:defaultreminderinstrmngrdefault'] = '*** Reminder only ****
 
 Your staff member [firstname] [lastname] is booked to attend and above course and has also received this reminder email.
 
-If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s reminder email is copied below ****';
+If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.';
 $string['setting:defaultremindermessage'] = 'Mensagem de lembrete padrão enviada aos usuários.';
 $string['setting:defaultremindermessage_caption'] = 'Mensagem de lembrete';
 $string['setting:defaultremindermessagedefault'] = 'Este é um lembrete de que você está reservado no seguinte curso: Participante: [firstname] [lastname] Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] ***Chegue 10 minutos antes do início do curso*** Para reagendar ou cancelar sua reserva, você precisar cancelar esta reserva e reservar uma nova sessão. Para cancelar sua reserva, retorne ao site e na página deste curso selecione \'cancelar\' na tela de informações da reserva. [details]';
 $string['setting:defaultremindersubject'] = 'Linha de assunto padrão para emails de lembrete.';
 $string['setting:defaultremindersubject_caption'] = 'Assunto do lembrete';
 $string['setting:defaultremindersubjectdefault'] = 'Lembrete da reserva no curso: [facetofacename], [starttime]-[finishtime], [sessiondate]';
-$string['setting:defaultrequestinstrmngrdefault'] = 'Mensagem para avisar que [firstname] [lastname] solicitou uma reserva no seguinte curso e você está listado como seu líder de equipe/gerente. Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] Siga o link abaixo para aprovar a solicitação: [attendeeslink]
-
-';
 $string['setting:defaultrequestinstrmngrcopybelow'] = '*** A solicitação de reserva de [firstname] [lastname] foi copiada abaixo ****';
+$string['setting:defaultrequestinstrmngrdefault'] = 'Mensagem para avisar que [firstname] [lastname] solicitou uma reserva no seguinte curso e você está listado como seu líder de equipe/gerente. Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room] Siga o link abaixo para aprovar a solicitação: [attendeeslink]';
 $string['setting:defaultrequestmessagedefault'] = 'Sua solicitação de reserva no seguinte curso foi enviada ao seu gerente: Participante: [firstname] [lastname] Curso: [facetofacename] Custo: [cost] Duração: [duration] Data(s): [alldates] Local: [session:location] Local: [session:venue] Sala: [session:room]';
 $string['setting:defaultrequestsubjectdefault'] = 'Solicitação de reserva no curso: [facetofacename], [starttime]-[finishtime]';
 $string['setting:defaultvalue'] = 'Valor padrão';
@@ -373,8 +472,12 @@ $string['setting:sessionroles'] = 'Os usuários atribuídos as funções selecio
 $string['setting:sessionroles_caption'] = 'Funções da sessão:';
 $string['setting:showinsummary'] = 'Mostrar em exportações e listas';
 $string['setting:type'] = 'Tipo de campo';
+$string['shortname_help'] = '# Nome curto
+**Nome curto** é a descrição da sessão que aparece no calendário do treinamento quando **Mostrar no calendário** está ativado.';
 $string['showbylocation'] = 'Mostrar por local';
 $string['showoncalendar'] = 'Mostrar no calendário';
+$string['showoncalendar_help'] = '# Mostrar no calendário
+Quando **Mostrar no calendário** está ativado, a sessão da atividade pessoal aparece no calendário do treinamento.';
 $string['sign-ups'] = 'Inscrições';
 $string['signup'] = 'Inscrever';
 $string['signupfor'] = 'Inscrever em {$a}';
@@ -399,16 +502,26 @@ $string['submit'] = 'Enviar';
 $string['submitted'] = 'Enviado';
 $string['summary'] = 'Resumo';
 $string['suppressemail'] = 'Suprimir notificação por email';
+$string['suppressemail_help'] = '# Suprimir notificao por email
+Use esta opo se deseja adicionar/remover os usurios silenciosamente de uma sesso pessoal. Quando essa opo desativada, a confirmao de rotina por email no enviada aos usurios selecionados.';
 $string['takeattendance'] = 'Obter frequência';
 $string['thirdpartyemailaddress'] = 'Endereços de email do terceiro';
+$string['thirdpartyemailaddress_help'] = '# Endereços de email do terceiro
+**Endereços de email do terceiro** é um campo opcional usado para especificar um email de um terceiro (como um instrutor externo) que receberá mensagens de confirmação sempre que um usuário se inscrever em uma sessão.
+Ao inserir **diversos endereços de email**, separe-os com vírgulas. Por exemplo: bob@example.com,joe@example.com';
 $string['thirdpartywaitlist'] = 'Notificar terceiro das sessões em lista de espera';
+$string['thirdpartywaitlist_help'] = '# Notificar terceiro das sessões em lista de espera
+Quando **Notificar terceiro das sessões em lista de espera** estiver selecionado, os terceiros serão avisados quando um aluno se inscrever em uma sessão em lista de espera. Quando
+**Notificar terceiro das sessões em lista de espera** não estiver ativado, os terceiros só serão avisados quando um aluno se inscrever (ou cancelar) em uma sessão agendada.';
 $string['time'] = 'Horário';
 $string['timecancelled'] = 'Horário do cancelamento';
 $string['timedue'] = 'Prazo do registro';
 $string['timefinish'] = 'Horário de término';
+$string['timefinish_help'] = 'Horário de término é o horário em que a sessão termina.';
 $string['timerequested'] = 'Horário da solicitação';
 $string['timesignedup'] = 'Horário da inscrição';
 $string['timestart'] = 'Horário de início';
+$string['timestart_help'] = 'Horário de início é o horário em que a sessão começa.';
 $string['unapprovedrequests'] = 'Solicitações não aprovadas';
 $string['unknowndate'] = '(data desconhecida)';
 $string['unknowntime'] = '(horário desconhecido)';
@@ -421,175 +534,18 @@ $string['usersignedupon'] = 'Usuário inscrito em {$a}';
 $string['userwillbewaitlisted'] = 'Esta sessão está completa atualmente. Clicando no botão "Inscrever", você será colocado na lista de espera da sessão.';
 $string['validation:needatleastonedate'] = 'Você precisa fornecer pelo menos uma data ou marcar a sessão como em lista de espera.';
 $string['venue'] = 'Local';
+$string['venue_help'] = '# Local
+**Local** é o edifício em que a sessão irá ocorrer.
+**Local** é exibido nas páginas \'Inscrever\' e \'Exibir todas as sessões\' e em todas as notificações por email.';
 $string['viewallsessions'] = 'Exibir todas as sessões';
 $string['viewsubmissions'] = 'Exibir envios';
 $string['wait-list'] = 'Lista de espera';
 $string['wait-listed'] = 'Colocado na lista de espera';
 $string['waitlistedforsession'] = 'Lista de espera para a sessão {$a}';
 $string['waitlistedmessage'] = 'Mensagem de lista de espera';
+$string['waitlistedmessage_help'] = '# Mensagem de lista de espera
+Esta mensagem é enviada sempre que o usuário se inscreve em uma sessão em lista de espera.';
 $string['xhours'] = '{$a} horas';
 $string['xminutes'] = '{$a} minutos';
 $string['youarebooked'] = 'Você está reservado para a seguinte sessão';
 $string['youremailaddress'] = 'Seu endereço de email';
-$string['requestmessage_help'] = '# Mensagem de solicitação
-
-Quando **Aprovação exigida** for ativada, a seção **Mensagem de solicitação** fica disponível.
-
-A seção **Mensagem de solicitação** exibe as notificações enviadas ao aluno e seu gerente sobre o processo de aprovação para que o aluno participe da sessão pessoal.
-
-**Assunto:** é a linha do assunto que aparece nos emails de aprovação da solicitação enviados para o gerente e o aluno.
-
-**Mensagem:** é o texto do email enviado ao aluno, avisando que sua solicitação para participar da sessão pessoal foi enviada ao gerente para a aprovação.
-
-**Notificação ao gerente:** é o texto de email enviado ao gerente do aluno, solicitando a aprovação para participar da sessão pessoal.';
-$string['room_help'] = '# Sala
-
-**Sala** é o nome/número/identificador da sala usada para a sessão de treinamento
-
-**Sala** é exibido nas páginas \'Inscrever\' e \'Exibir todas as sessões\' e em todas as notificações por email.';
-$string['sessiondatetimeknown_help'] = '**Se data/horário de início da sessão forem conhecidos**
-
-Se configurado como "Sim", a data e horário da sessão serão exibidos na página do curso (se a sessão for futura e estiver disponível), nas páginas "Exibir todas as seções" e de inscrição e também em todas as notificações por email relacionadas à sessão.
-
-Quando um membro da equipe se inscreve em uma sessão com data e horário conhecidos:
-
-*   O membro da equipe e seu gerente recebem um email de confirmação (formatado conforme a seção "Mensagem de confirmação" das configurações da instância pessoal).
-*   O membro da equipe recebe um email de lembrete (formatado conforme a seção "Mensagem de lembrete" das configurações da instância pessoal). Um lembrete é enviado alguns dias antes da sessão, de acordo com a configuração "Dias antes do envio da mensagem" também encontrada na seção "Mensagem de lembrete" das configurações da instância pessoal).
-
-**Se a data/horário da sessão não forem conhecidos (ou estiverem em lista de espera)**
-
-Se configurado como "Não", o texto "em lista de espera" será exibido nas páginas do curso, "Exibir todas as seções" e de inscrição e também em todas as notificações por email relacionadas à sessão.
-
-Quando um membro da equipe se inscreve em uma sessão em lista de espera:
-
-*   O membro da equipe recebe um email de confirmação (formatado conforme a seção "Mensagem de lista de espera" das configurações da instância pessoal).
-*   O membro da equipe não recebe uma mensagem de email de lembrete.
-*   O gerente do membro da equipe não recebe as mensagens de confirmação e cancelamento.';
-$string['reminderperiod_help'] = '# Período do lembrete
-
-A mensagem de lembrete será enviada este número de dias antes do início da sessão.';
-$string['sessiondate_help'] = 'Data da sessão é a data em que a sessão ocorre.';
-$string['remindermessage_help'] = '# Mensagem de lembrete
-
-Essa mensagem é enviada alguns dias antes da data de início da sessão.';
-$string['normalcost_help'] = 'Custo normal é o valor cobrado dos membros da equipe que não possuem ID de associação.
-
-O custo normal aparecerá na coluna do custo no livro de notas do curso, para cada membro da equipe que participou da sessão (a menos que um custo de desconto seja inserido e o membro da equipe insira a ID de associação ao se inscrever na sessão).';
-$string['notificationtype_help'] = '# Tipo de notificação
-
-O Tipo de notificação permite ao aluno selecionar como gostaria de ser notificado de sua reserva.
-
-*   Compromisso do iCalendar somente</i> 
-    *   Notificação por email somente</i> 
-        *   Notificação por email e compromisso do iCalendar</i> </ul>';
-$string['reminderinstrmngr_help'] = '# Notificação ao gerente
-
-Quando **Enviar notificação ao gerente** está marcado, o texto no campo **Notificação ao gerente** é enviado ao gerente do aluno, avisando que ele se inscreveu em uma sessão pessoal.';
-$string['sessionsoncoursepage_help'] = '# Sessões na página do curso
-
-Este é o número de sessões para cada atividade pessoal que será mostrada na página principal do curso.';
-$string['shortname_help'] = '# Nome curto
-
-**Nome curto** é a descrição da sessão que aparece no calendário do treinamento quando **Mostrar no calendário** está ativado.';
-$string['timestart_help'] = 'Horário de início é o horário em que a sessão começa.';
-$string['venue_help'] = '# Local
-
-**Local** é o edifício em que a sessão irá ocorrer.
-
-**Local** é exibido nas páginas \'Inscrever\' e \'Exibir todas as sessões\' e em todas as notificações por email.';
-$string['waitlistedmessage_help'] = '# Mensagem de lista de espera
-
-Esta mensagem é enviada sempre que o usuário se inscreve em uma sessão em lista de espera.';
-$string['timefinish_help'] = 'Horário de término é o horário em que a sessão termina.';
-$string['thirdpartywaitlist_help'] = '# Notificar terceiro das sessões em lista de espera
-
-Quando **Notificar terceiro das sessões em lista de espera** estiver selecionado, os terceiros serão avisados quando um aluno se inscrever em uma sessão em lista de espera. Quando 
-
-**Notificar terceiro das sessões em lista de espera** não estiver ativado, os terceiros só serão avisados quando um aluno se inscrever (ou cancelar) em uma sessão agendada.';
-$string['showoncalendar_help'] = '# Mostrar no calendário
-
-Quando **Mostrar no calendário** está ativado, a sessão da atividade pessoal aparece no calendário do treinamento.';
-$string['suppressemail_help'] = '# Suprimir notificao por email
-
-Use esta opo se deseja adicionar/remover os usurios silenciosamente de uma sesso pessoal. Quando essa opo  desativada, a confirmao de rotina por email no  enviada aos usurios selecionados.';
-$string['thirdpartyemailaddress_help'] = '# Endereços de email do terceiro
-
-**Endereços de email do terceiro** é um campo opcional usado para especificar um email de um terceiro (como um instrutor externo) que receberá mensagens de confirmação sempre que um usuário se inscrever em uma sessão. 
-Ao inserir **diversos endereços de email**, separe-os com vírgulas. Por exemplo: bob@example.com,joe@example.com';
-$string['mods_help'] = '# Atividade pessoal
-
-As atividades pessoais so usadas para rastrear os treinamentos pessoais que exigem reservas com antecedncia.
-
-Cada atividade  oferecida em uma ou mais sesses idnticas. Essas sesses podem ser fornecidas em diversos dias.
-
-Mensagens de lembrete so enviadas para os usurios e seus gerentes alguns dias antes da data agendada para o incio da sesso. A mensagem de confirmao  enviada sempre que o usurio se inscreve em uma sesso.';
-$string['location_help'] = '# Local
-
-**Local** descreve o local da sessão (cidade, região, etc.).
-
-**Local** é exibido nas páginas do curso, \'Inscrever\' e \'Exibir todas as sessões\' e em todas as notificações por email.
-
-Na página \'Exibir todas as sessões\', as sessões listadas podem ser filtradas por local.';
-$string['capacity_help'] = '# Capacidade
-
-**Capacidade** é o número de lugares disponíveis em uma sessão.
-
-Quando a sessão pessoal atinge a capacidade, seus detalhes não aparecem na página do curso. Os detalhes aparecerão em cinza na página \'Exibir todas as sessões\' e o aluno não poderá se inscrever.
-
- ';
-$string['confirmationinstrmngr_help'] = '# Notificação ao gerente
-
-Quando "Enviar notificação ao gerente" estiver marcado, o texto no campo "Notificação ao gerente" é enviado ao gerente, avisando que um membro da equipe se inscreveu em uma sessão pessoal.';
-$string['confirmationmessage_help'] = '# Mensagem de confirmação
-
-Esta mensagem é enviada sempre que o usuário se inscreve em uma sessão.';
-$string['cancellationmessage_help'] = '# Mensagem de cancelamento
-
-Esta mensagem é enviada sempre que o usuário cancela sua reserva em uma sessão.';
-$string['cancellationinstrmngr_help'] = '# Notificação ao gerente
-
-Quando **Enviar notificação ao gerente**está marcado, o texto no campo **Notificação ao gerente** é enviado ao gerente do aluno, avisando que ele cancelou uma reserva pessoal.';
-$string['allowoverbook_help'] = '# Permitir overbooking
-
-Quando "Permitir overbooking" for marcado, o aluno poderá se inscrever em uma sessão pessoal mesmo que ela já esteja completa.
-
-Quando um aluno se inscreve em uma sessão que está completa, ele recebe um email avisando que foi colocado na lista de espera e será notificado quando uma reserva se tornar disponível.';
-$string['approvalreqd_help'] = '# Aprovação exigida
-
-Quando "Aprovação exigida" for marcada, o aluno precisa de aprovação do gerente para poder participar de uma sessão pessoal.';
-$string['details_help'] = 'Os detalhes são rastreados com base na sessão.
-
-Se o texto for preenchido no campo de detalhes, ele será exibido na página de inscrição do usuário.
-
-Por padrão, o texto também aparece nas mensagens de confirmação, lembrete, lista de espera e cancelamento.';
-$string['description_help'] = '# Descrição
-
-Esta é a **Descrição** do curso exibida quando um aluno se inscreve em uma sessão pessoal. 
-
-A **Descrição** também é exibida no calendário do treinamento.';
-$string['emailmanagerconfirmation_help'] = '# Enviar notificação ao gerente
-
-Quando "Enviar notificação ao gerente" for marcado, um email de confirmação será enviado ao gerente do aluno quando o aluno se inscrever em uma sessão pessoal.';
-$string['emailmanagerreminder_help'] = '# Enviar notificação ao gerente
-
-Quando "Enviar notificação ao gerente" for marcado, uma mensagem de lembrete será enviada ao gerente do aluno alguns dias antes da data de início da sessão pessoal.';
-$string['duration_help'] = '# Duração
-
-**Duração** é a extensão total do treinamento em horas. 
-Por exemplo: 
-*   "2 horas" é inserido como **2** ou **2:00** 
-*   "1 hora e 30 minutos" é inserido como **1:30**
-*   "45 minutos" é inserido como **0:45**
-*   "20 minutos" é inserido como **0:20**.
-
-Se o treinamento ocorrer por dois períodos ou mais, a duração é o total combinado.';
-$string['emailmanagercancellation_help'] = '# Enviar notificação ao gerente
-
-Quando "Enviar notificação ao gerente" for marcado, um email será enviado ao gerente do aluno, avisando que a reserva pessoal foi cancelada.';
-$string['discountcost_help'] = 'Custo do desconto é o valor cobrado dos membros da equipe que possuem um ID de associação.
-
-Quando um membro da equipe insere o ID da associação ao se inscrever na sessão, o custo do desconto aparece na coluna do custo no livro de notas do curso.';
-$string['discountcode_help'] = 'O código do desconto é exigido para que o custo do desconto seja rastreado para o treinamento de um membro da equipe.
-
-Se o membro da equipe não inserir o código do desconto, o custo normal aparecerá no registro do treinamento.';
-

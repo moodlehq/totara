@@ -128,7 +128,6 @@ $string['personalblogs'] = 'Gli utenti possono vedere solo i propri blog';
 $string['preferences'] = 'Preferenze';
 $string['publishto'] = 'Pubblicazione';
 $string['publishto_help'] = 'Sono disponibili 3 opzioni:
-
 * Te stesso (draft) - L\'intervento è visualizzabile solo da te e dagli amministratori
 * Utenti autenticati - L\'intervento è visualizzabile da qualsiasi utente che abbia un account su questo sito
 * Chiunque - L\'intervento è visualizzabile da chiunque, inclusi gli ospiti';

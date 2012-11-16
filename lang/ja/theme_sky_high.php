@@ -32,8 +32,7 @@ $string['customcssdesc'] = 'このテーマのカスタマイズを容易にす�
 $string['footnote'] = 'フットノート';
 $string['footnotedesc'] = 'このテキストエリアのコンテンツはすべてのページのフッタに表示されます。';
 $string['logo'] = 'ロゴ';
-$string['logodesc'] = '	
-このサイトのロゴとして使用されるイメージのURIを入力してください。次のように入力します: http://www.yoursite.com/path/to/logo.png　ロゴの高さは50pxにしてください。';
+$string['logodesc'] = 'このサイトのロゴとして使用されるイメージのURIを入力してください。次のように入力します: http://www.yoursite.com/path/to/logo.png　ロゴの高さは50pxにしてください。';
 $string['pluginname'] = 'Sky High';
 $string['region-side-post'] = '右';
 $string['region-side-pre'] = '左';

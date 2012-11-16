@@ -35,11 +35,10 @@ $string['notenoughqsandas'] = 'Kysymyksiä tarvitaan vähintään {$a->q} ja vas
 $string['notenoughquestions'] = 'Anna vähintään {$a} kysymys-vastaus-paria.';
 $string['pleaseananswerallparts'] = 'Ole hyvä ja vastaa kaikkiin kysymyksen kohtiin.';
 $string['pluginname'] = 'Yhdistämistehtävä';
+$string['pluginname_help'] = 'Yhdistämistehtävässä vastaajan tulee yhdistää väitteet (kysymykset) oikein toisen listan väitteisiin (vastaukset)';
 $string['pluginnameadding'] = 'Lisätään Yhdistämistehtävä';
 $string['pluginnameediting'] = 'Muokataan Yhdistämistehtävää';
-$string['pluginname_help'] = 'Yhdistämistehtävässä vastaajan tulee yhdistää väitteet (kysymykset) oikein toisen listan väitteisiin (vastaukset)';
 $string['pluginnamesummary'] = 'Kunkin alikysymyksen vastaukset tulee valita listasta vaihtoehtoja.';
 $string['shuffle'] = 'Sekoita';
-$string['shuffle_help'] = '<h2>Kysymysten sekoittaminen</h2>
-
-<p>Kun tämä asetus on valittuna, samat kysymykset arvotaan uuteen järjestykseen joka kerta, kun vastaaja yrittää tenttiä. Ajatuksena on myös vaikeuttaa oikeiden vastausten kopioimista vierustoverilta suoritettaessa tenttiä samanaikaisesti ahtaassa luokkatilassa.</p>';
+$string['shuffle_help'] = '## Kysymysten sekoittaminen
+Kun tämä asetus on valittuna, samat kysymykset arvotaan uuteen järjestykseen joka kerta, kun vastaaja yrittää tenttiä. Ajatuksena on myös vaikeuttaa oikeiden vastausten kopioimista vierustoverilta suoritettaessa tenttiä samanaikaisesti ahtaassa luokkatilassa.';

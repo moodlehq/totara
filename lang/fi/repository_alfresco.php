@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Näytä alfresco repository';
 $string['alfresco_url'] = 'Alfrescon URL-osoite';
 $string['alfrescourltext'] = 'Alfresco API web-osoitteen pitäisi olla: http://yoursite.com/alfresco/api';
-$string['alfresco:view'] = 'Näytä alfresco repository';
 $string['configplugin'] = 'Alfrescon konfiguraatio';
 $string['notitle'] = 'eiotsikkoa';
 $string['password'] = 'Salasana';

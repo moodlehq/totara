@@ -43,8 +43,7 @@ $string['configpopupwidth'] = 'Largeur par défaut des fenêtres pop-up';
 $string['contentheader'] = 'Contenu';
 $string['displayoptions'] = 'Options d\'affichage disponibles';
 $string['displayselect'] = 'Affichage';
-$string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier et la capacité du navigateur à intégrer des objets (<i>embedding</i>), détermine la façon dont le fichier est affiché. Les options sont :
-
+$string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier et la capacité du navigateur à intégrer des objets (*embedding*), détermine la façon dont le fichier est affiché. Les options sont :
 * Automatique : la meilleure option d\'affichage pour le type de fichier concerné est automatiquement sélectionnée
 * Intégrer : le fichier est affiché dans la page au-dessous de la barre de navigation, avec la description du fichier et tous les blocs
 * Forcer le téléchargement : l\'utilisateur est invité à télécharger le fichier

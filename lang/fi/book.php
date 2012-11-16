@@ -41,23 +41,16 @@ $string['editingchapter'] = 'Luvun muokkaus';
 $string['errorchapter'] = 'Virhe luettaessa kirjan lukua.';
 $string['faq'] = 'Usein kysytyt kysymykset';
 $string['faq_help'] = '*Miksi vain kaksi tasoa?*
-
 Yleensä kaksi tasoa on riittävästi kaikille kirjoille, kolme tasoa johtaisi huonosti jäsenneltyihin dokumentteihin. Kirjamoduuli on suunniteltu lyhyiden monisivuisten oppimateriaalien luomiseen. On yleensä parempi käyttää PDF-muotoa pidemmille dokumenteille. Helpoin tapa luoda PDF-tiedostoja ovat
 virtuaaliset tulostimet (katso
-<a href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm" target="_blank">PDFCreator</a>,
-<a href="http://fineprint.com/products/pdffactory/index.html" target="_blank">PDFFactory</a>,
-<a href="http://www.adobe.com/products/acrobatstd/main.html" target="_blank">Adobe Acrobat</a>, jne.).
-
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html), jne.).
 *Voivatko opiskelijat muokata kirjoja?*
-
 Vain opettajat voivat muokata kirjoja. Toistaiseksi ei ole suunnitelmia toteuttaa opiskelijoille editointimahdollisuutta, mutta jonain päivänä saatetaan luoda jotain samankaltaista opiskelijoille (Portfolio?). Päällimmäinen syy on kirjamoduulin pitäminen mahdollisimman yksinkertaisena.
-
 *Kuinka etsin sisältöä kirjasta?*
-
 Toistaiseksi ainoa tapa on käyttää selaimen hakutoimintoa kirjan tulostussivulla. Haku on nyt mahdollista Moodlessa vain keskustelualueilla. Olisi hyvä saada hakutoiminto kaikkiin resursseihin, mukaanlukien kirja, onko vapaaehtoisia?
-
 *Otsikkoni eivät mahdu yhdelle riville.*
-
 Muokkaa otsikoitasi tai pyydä sivuston ylläpitäjää muuttamaan sisällysluettelon leveyttä. Leveys määritellään yleisesti kaikille kirjoille moduulin asetussivulla.';
 $string['modulename'] = 'Kirja';
 $string['modulename_help'] = 'Kirja on yksinkertainen monisivuinen oppimateriaali.';

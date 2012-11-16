@@ -31,7 +31,6 @@ $string['addingcomment'] = 'Aggiungi un commento';
 $string['alias'] = 'Alias';
 $string['aliases'] = 'Alias (parole alternative)';
 $string['aliases_help'] = 'Ciascun termine del glossario può essere associato ad un elenco di alias (parole alternative per lo stesso concetto). Gli alias saranno anche collegati automaticamente al termine associato.
-
 Inserisci gli alias uno per riga (senza separali da virgole).';
 $string['allcategories'] = 'Tutte le categorie';
 $string['allentries'] = 'TUTTI';
@@ -109,7 +108,6 @@ $string['destination'] = 'Destinazione dei termini importati';
 $string['destination_help'] = 'E\' possibile importare voci nel glossario in uso o in un glossario nuovo. Nel secondo caso verrà creato un nuovo glossario con le impostazioni contenute nel file XML.';
 $string['displayformat'] = 'Formato di visualizzazione';
 $string['displayformat_help'] = 'Sono disponibili 7 formati di visualizzazione:
-
 * Semplice, stile dizionario - Non sono visualizzati gli autori e gli eventuali allegati sono disponibili tramite link.
 * Continuo senza autore - I termini vengono visualizzati di seguito senza separazioni eccetto le icone di modifica.
 * Completo con autore - Visualizzazione tipo forum completa dei dati dell\'autore. Gli allegati sono disponibili tramite link.
@@ -236,10 +234,10 @@ $string['rejectionrpt'] = 'Report termini non approvati';
 $string['resetglossaries'] = 'Elimina i termini da';
 $string['resetglossariesall'] = 'Elimina i termini da tutti i glossari';
 $string['rssarticles'] = 'Numero di articoli RSS';
-$string['rssarticles_help'] = 'L\'imposatzione stabilisce  il numero di termini da includere nel feed RSS. In genere un valore tra 5 e 20 è adeguato.';
+$string['rssarticles_help'] = 'L\'imposatzione stabilisce il numero di termini da includere nel feed RSS. In genere un valore tra 5 e 20 è adeguato.';
 $string['rsssubscriberss'] = 'Mostra gli RSS per \'{$a}\' concetti';
 $string['rsstype'] = 'Feed RSS per questa attività';
-$string['rsstype_help'] = 'L\'opzione abilita i feed RSS per l\'attività.  E\' possibile scegliere se far comparire o meno l\'autore nel feed.';
+$string['rsstype_help'] = 'L\'opzione abilita i feed RSS per l\'attività. E\' possibile scegliere se far comparire o meno l\'autore nel feed.';
 $string['searchindefinition'] = 'Cerca anche nelle definizioni';
 $string['secondaryglossary'] = 'Glossario secondario';
 $string['showall'] = 'Visualizza link \'TUTTI\'';
@@ -247,7 +245,7 @@ $string['showall_help'] = 'L\'impostazione permette di visualizzare tutti i term
 $string['showalphabet'] = 'Visualizza alfabeto';
 $string['showalphabet_help'] = 'L\'impostazione permette ai partecipanti di filtrare i termini usando le lettere dell\'alfabeto';
 $string['showspecial'] = 'Visualizza link \'Caratteri speciali\'';
-$string['showspecial_help'] = 'L\'impostazione permette ai partecipanti di filtrare i termini  usando caratteri speciali (ad esempio @ e #).';
+$string['showspecial_help'] = 'L\'impostazione permette ai partecipanti di filtrare i termini usando caratteri speciali (ad esempio @ e #).';
 $string['sortby'] = 'Ordina per';
 $string['sortbycreation'] = 'Data di creazione';
 $string['sortbylastupdate'] = 'Ultimo aggiornamento';

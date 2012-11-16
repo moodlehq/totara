@@ -36,7 +36,6 @@ $string['gradingmanagement'] = 'Geavanceerd beoordelen';
 $string['gradingmanagementtitle'] = 'Geavanceerd beoordelen: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Beoordelingsmethode';
 $string['gradingmethod_help'] = 'Kies de geavanceerde beoordelingsmethode die zou moeten gebruikt worden voor het berekenen van de cijfers in de gegeven context.
-
 Om geavanceerd beoordelen uit te schakelen en terug te gaan naar het standaard beoordelingsmechanisme, kies \'Eenvoudig rechtstreeks beoordelen\'';
 $string['gradingmethodnone'] = 'Eenvoudig rechtstreeks beoordelen';
 $string['gradingmethods'] = 'Beoordelingsmethodes';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = 'Geen sjabloon gevonden';
 $string['searchownforms'] = 'voeg mijn eigen formulieren toe';
 $string['searchtemplate'] = 'Beoordelingsformulieren zoeken';
 $string['searchtemplate_help'] = 'Je kunt zoeken naar een beoordelingsformulier en het hier als sjabloon gebruiken voor een nieuw beoordelingsformulier. Typ woorden die in de formuliernaam, de beschrijving of in het formulier zelf zouden moeten voorkomen. Om een zin te zoeken, plaats je de woorden tussen dubbele aanhalingstekens.
-
 Standaard worden alleen beoordelingsformulieren die als gedeelde sjablonen bewaard zijn getoond. Je kunt ook al je eigen formulieren in de zoekresultaten opnemen. Hiermee kun je eenvoudig je eigen formulieren hergebruiken zonder ze te moeten delen. Enkel formulieren die gemarkeerd zijn met \'Klaar voor gebruik\' kunnen op deze manier herbruikt worden.';
 $string['statusdraft'] = 'Klad';
 $string['statusready'] = 'Klaar voor gebruik';

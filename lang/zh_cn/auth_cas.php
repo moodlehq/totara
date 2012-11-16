@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['CASform'] = '选择认证方式';
 $string['accesCAS'] = 'CAS 用户';
 $string['accesNOCAS'] = '其他用户';
 $string['auth_cas_auth_user_create'] = '创建外部用户';
@@ -41,7 +42,6 @@ $string['auth_cas_certificate_path_key'] = '证书路径';
 $string['auth_cas_changepasswordurl'] = '更改密码 URL';
 $string['auth_cas_create_user'] = '如果您希望将 CAS 认证用户加入到 Moodle 数据库中，请选择是。否则只有已经存在于 Moodle 数据库中的用户可以登录。';
 $string['auth_cas_create_user_key'] = '创建用户';
-$string['auth_casdescription'] = '这个方法使用 CAS 服务器(中央认证服务)，在单点登录(SSO)环境中认证用户。您也可以使用简单的 LDAP 认证。如果给定的用户名和密码在 CAS 中有效，Moodle 会在数据库中创建信用户账号，并从 LDAP 中取出需要的属性。在后续的登录中，只检查用户名和密码。';
 $string['auth_cas_enabled'] = '如果您希望使用 CAS 认证请开启此选项。';
 $string['auth_cas_hostname'] = 'CAS 服务器主机名<br />例如: host.domain.fr';
 $string['auth_cas_hostname_key'] = '主机名';
@@ -53,7 +53,6 @@ $string['auth_cas_logoutcas'] = '如果您希望与Moodle断开连接时登出CA
 $string['auth_cas_logoutcas_key'] = '登出CAS选项';
 $string['auth_cas_multiauth'] = '如果您想支持多种身份认证方式（CAS + 其他认证），请选“是”';
 $string['auth_cas_multiauth_key'] = '多种验证方式';
-$string['auth_casnotinstalled'] = '不能使用 CAS 认证方式，因为 PHP LDAP 模块没有安装。';
 $string['auth_cas_port'] = 'CAS 服务器端口';
 $string['auth_cas_port_key'] = '端口';
 $string['auth_cas_proxycas'] = '如果在代理模式下使用CAS，请选“是”';
@@ -62,6 +61,7 @@ $string['auth_cas_server_settings'] = 'CAS 服务配置';
 $string['auth_cas_text'] = '安全连接';
 $string['auth_cas_use_cas'] = '使用 CAS';
 $string['auth_cas_version'] = '使用哪个CAS协议版本';
-$string['CASform'] = '选择认证方式';
+$string['auth_casdescription'] = '这个方法使用 CAS 服务器(中央认证服务)，在单点登录(SSO)环境中认证用户。您也可以使用简单的 LDAP 认证。如果给定的用户名和密码在 CAS 中有效，Moodle 会在数据库中创建信用户账号，并从 LDAP 中取出需要的属性。在后续的登录中，只检查用户名和密码。';
+$string['auth_casnotinstalled'] = '不能使用 CAS 认证方式，因为 PHP LDAP 模块没有安装。';
 $string['noldapserver'] = 'CAS没有配置LDAP服务器！因此同步被禁用。';
 $string['pluginname'] = 'CAS 服务器(单点登录)';

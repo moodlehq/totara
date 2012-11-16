@@ -129,25 +129,23 @@ $string['discussionsstartedbyrecent'] = '最近由 {$a} 发起的话题';
 $string['discussionsstartedbyuserincourse'] = '{$a->fullname}在{$a->coursename}中发起的话题';
 $string['discussthistopic'] = '讨论这个话题';
 $string['displayend'] = '结束时间';
-$string['displayend_help'] = '<p align="center"><b>讨论区显示时期</b></p>
-
-<p>可以选择是否将讨论区帖子在一定的时间显示。</p>
-
-<p>激活选项后可以选择开始和结束的日期。</p>
-
-<p>注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月4日</span><br />';
+$string['displayend_help'] = '**讨论区显示时期**
+可以选择是否将讨论区帖子在一定的时间显示。
+激活选项后可以选择开始和结束的日期。
+注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月4日';
 $string['displaymode'] = '显示模式';
 $string['displayperiod'] = '可视时段';
 $string['displaystart'] = '开始时间';
-$string['displaystart_help'] = '<p align="center"><b>讨论区显示时期</b></p>
-
-<p>可以选择是否将讨论区帖子在一定的时间显示。</p>
-
-<p>激活选项后可以选择开始和结束的日期。</p>
-
-<p>注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月4日</span><br />';
+$string['displaystart_help'] = '**讨论区显示时期**
+可以选择是否将讨论区帖子在一定的时间显示。
+激活选项后可以选择开始和结束的日期。
+注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月4日';
 $string['eachuserforum'] = '每个人发表一个话题';
 $string['edit'] = '编辑';
 $string['editedby'] = '由 {$a->name} 修改 - 原提交时间 {$a->date}';
@@ -202,7 +200,6 @@ $string['forumtracked'] = '跟踪未读帖子';
 $string['forumtrackednot'] = '不跟踪未读帖子';
 $string['forumtype'] = '讨论区类型';
 $string['forumtype_help'] = '有5种讨论区类型：
-
 * 单个简单话题 - 一个简单的话题，每个人都可以回复
 * 每人发布一个话题 - 每名学生都可以发布一个（也只能一个）新话题，所有人都可以回复。
 * 提问与回答讨论区 - 学生必须先发表他的见解，才能看到别人的帖子。
@@ -235,11 +232,9 @@ $string['markunreadbutton'] = '标记<br />未读';
 $string['maxattachments'] = '附件个数上限';
 $string['maxattachments_help'] = '此项设置决定了一个帖子可以拥有的最大附件数。';
 $string['maxattachmentsize'] = '允许上传的附件大小';
-$string['maxattachmentsize_help'] = '<p align="center"><b>最大附件尺寸</b></p>
-
-<p>附件的文件尺寸是可以限制的，创建讨论区的人可以设置它。</p>
-
-<p>有时，您可以提交一个比这个尺寸大的文件，但这个文件不会被保存下来，且您会看到一个错误信息。</p>';
+$string['maxattachmentsize_help'] = '**最大附件尺寸**
+附件的文件尺寸是可以限制的，创建讨论区的人可以设置它。
+有时，您可以提交一个比这个尺寸大的文件，但这个文件不会被保存下来，且您会看到一个错误信息。';
 $string['maxtimehaspassed'] = '很抱歉，编辑该帖的时间限制({$a})已过！';
 $string['message'] = '正文';
 $string['messageprovider:digests'] = '订阅讨论区摘要';
@@ -346,25 +341,18 @@ $string['resetforumsall'] = '删除所有的帖子';
 $string['resetsubscriptions'] = '删除所有讨论区订阅';
 $string['resettrackprefs'] = '删除讨论区中的所有跟踪参数';
 $string['rssarticles'] = 'RSS最近文章数';
-$string['rssarticles_help'] = '<p align="center"><b>在RSS中包含的文章数目</b></p>
-
-<p>这个选项允许您设置在RSS种子中包含的文章数目。</p>
-
-<p>对于大多数讨论区来说，5至20之间就可以了，如果您的讨论区用户真的很多，可以设大一些。</p>';
+$string['rssarticles_help'] = '**在RSS中包含的文章数目**
+这个选项允许您设置在RSS种子中包含的文章数目。
+对于大多数讨论区来说，5至20之间就可以了，如果您的讨论区用户真的很多，可以设大一些。';
 $string['rsssubscriberssdiscussions'] = '话题的RSS种子';
 $string['rsssubscriberssposts'] = '帖子的RSS种子';
 $string['rsstype'] = '本活动的RSS种子';
-$string['rsstype_help'] = '<p align="center"><b>讨论区的RSS种子</b></p>
+$string['rsstype_help'] = '**讨论区的RSS种子**
+这个选项允许您开启这个讨论区的RSS种子。
+您可以选择两种类型：
 
-<p>这个选项允许您开启这个讨论区的RSS种子。</p>
-
-<p>您可以选择两种类型：</p>
-
-<ul>
-<li><b>话题：</b>在这种情况下，RSS种子中会包括新的话题。</li>
-
-<li><b>帖子：</b>在这种情况下，RSS种子中会包含每一篇新的帖子。</li>
-</ul>';
+\* **|话题：**在这种情况下，RSS种子中会包括新的话题。
+\* **|帖子：**在这种情况下，RSS种子中会包含每一篇新的帖子。';
 $string['search'] = '搜索';
 $string['searchdatefrom'] = '帖子必须在此时间之后发布';
 $string['searchdateto'] = '帖子必须在此时间之前发布';
@@ -403,9 +391,7 @@ $string['subscriptiondisabled'] = '禁止订阅';
 $string['subscriptionforced'] = '强制订阅';
 $string['subscriptionmode'] = '订阅模式';
 $string['subscriptionmode_help'] = '当用户订阅了讨论区时，他们会通过email收到帖子的拷贝。
-
 有四种订阅模式选项：
-
 * 可选订阅 - 用户可以选择设法订阅
 * 强制订阅 - 每个人都被订阅，而且不能取消订阅
 * 自动订阅 - 每个人最初都被订阅，但是随时可以选择是否退订
@@ -422,9 +408,7 @@ $string['trackingon'] = '开启';
 $string['trackingoptional'] = '可选';
 $string['trackingtype'] = '是否跟踪此讨论区的阅读情况';
 $string['trackingtype_help'] = '如果激活，用户可以跟踪讨论区和话题里已阅读和没阅读的消息。
-
 有三个选项：
-
 * 可选 - 用户可以自行决定跟踪或不跟踪
 * 开启 - 跟踪永远打开
 * 关闭 - 跟踪永远关闭';

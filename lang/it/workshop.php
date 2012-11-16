@@ -198,7 +198,6 @@ $string['sortasc'] = 'Ordinamento ascendente';
 $string['sortdesc'] = 'Ordinamento discendente';
 $string['strategy'] = 'Criterio di votazione';
 $string['strategy_help'] = 'Il criterio di votazione determina la scheda di valutazione usata e il metodo di votazione delle consegne. Sono disponibili 4 opzioni:
-
 * Voto cumulativo - sarà possibile dare voti e fornire commenti riguardanti elementi specifici
 * Commenti - sarà possibile fornire commenti riguardanti elementi specifici senza la possibilità di dare voti
 * Numero di errori - sarà possibile fornire commenti e valutare con si/no delle specifiche affermazioni

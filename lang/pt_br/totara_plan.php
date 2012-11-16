@@ -57,87 +57,59 @@ $string['addremoveprogram'] = 'Adicionar/remover programas';
 $string['addrpl'] = 'Adicionar RPL';
 $string['addtemplate'] = 'Adicionar novo modelo';
 $string['advancedsettingscompetencypermissions_help'] = '# Permissões de competência
-
 **Permissões de competência** permite definir os tipos de ações que podem ser realizadas pelo aluno e o gerente para as competências dentro do plano de aprendizado.
-
 Existem quatro níveis de permissão disponíveis:
-
-*   **Permitir** permite ao usuário executar a ação
-*   **Negar** impede o usuário de executar a ação
-*   **Solicitar** permite ao usuário solicitar que essa ação seja executada
-*   **Aprovar** permite ao usuário aprovar uma ação solicitada.';
+\* **|Permitir** permite ao usuário executar a ação
+\* **|Negar** impede o usuário de executar a ação
+\* **|Solicitar** permite ao usuário solicitar que essa ação seja executada
+\* **|Aprovar** permite ao usuário aprovar uma ação solicitada.';
 $string['advancedsettingscompetencysettings_help'] = '# Configurações da competência
-
 **Configurações da competência** permite definir as configurações disponíveis para as competências dentro do plano.
-
 Selecione a configuração **‘Datas de vencimento’**. Quando **‘Datas de vencimento’** for configurado como ‘Nenhum’, a coluna não aparece no plano de aprendizado.
-
 Selecione a configuração **‘Prioridades’**. Quando você estiver usando **‘Prioridades’**, precisará de uma **‘Escala da prioridade’**. Clique no menu suspenso para selecionar a escala da prioridade.
-
 ** Nota: **A opção para configurar essa escala está em Planos de aprendizado>Escalas da prioridade
 **Tarefa automática** permite exibir automaticamente as competências de um plano de aprendizado que foram previamente atribuídas à posição ou organização de um usuário.’';
 $string['advancedsettingscoursepermissions_help'] = '# Permissões do curso
-
 **Permissões do curso** permite definir as configurações do curso que estão disponíveis e os tipos de ações que podem ser realizadas pelo aluno e o gerente no plano de aprendizado.
-
 Existem quatro níveis de permissão disponíveis:
-
-*   **Permitir** permite ao usuário executar a ação
-*   **Negar** impede o usuário de executar a ação
-*   **Solicitar** permite ao usuário solicitar essa ação
-*   **Aprovar** permite ao usuário aprovar uma ação.';
+\* **|Permitir** permite ao usuário executar a ação
+\* **|Negar** impede o usuário de executar a ação
+\* **|Solicitar** permite ao usuário solicitar essa ação
+\* **|Aprovar** permite ao usuário aprovar uma ação.';
 $string['advancedsettingscoursesettings_help'] = '# Configurações do curso
-
 **Configurações do curso** permite definir as configurações disponíveis para os cursos dentro do plano.
-
 Selecione a configuração **‘Datas de vencimento’**. Quando **‘Datas de vencimento’** for configurado como ‘Nenhum’, a coluna não aparece no plano de aprendizado.
-
 Selecione a configuração **‘Prioridades’**. Quando **‘Prioridades’** for configurado como ‘Nenhum’, a coluna não aparece no plano de aprendizado.
-
 Quando você estiver usando **‘Prioridades’**, precisará de uma **‘Escala da prioridade’**. Clique no menu suspenso para selecionar a escala da prioridade.
-
 **Nota: **A opção para configurar essa escala está em Planos de aprendizado>Escalas da prioridade';
 $string['advancedsettingsobjectivepermissions_help'] = '# Permissões do objetivo
-
 **Permissões do objetivo** permite definir as ações que podem ser realizadas pelo aluno e o gerente do plano de aprendizado, ao configurar os objetivos.
-
 Existem quatro níveis de permissão disponíveis:
-
-*   **Permitir** permite ao usuário executar a ação
-*   **Negar** impede o usuário de executar a ação
-*   **Solicitar** permite ao usuário solicitar essa ação
-*   **Aprovar** permite ao usuário aprovar a ação.';
+\* **|Permitir** permite ao usuário executar a ação
+\* **|Negar** impede o usuário de executar a ação
+\* **|Solicitar** permite ao usuário solicitar essa ação
+\* **|Aprovar** permite ao usuário aprovar a ação.';
 $string['advancedsettingsobjectivesettings_help'] = '# Configurações do objetivo
-
 **Configurações do objetivo** permite definir as configurações disponíveis para os objetivos dentro do plano.
-
 Selecione a configuração **‘Datas de vencimento’**. Quando **‘Datas de vencimento’** for configurado como ‘Nenhum’, a coluna não aparece no plano de aprendizado.
-
 Selecione a configuração **‘Prioridades’**. Quando **‘Prioridades’** for configurado como ‘Nenhum’, a coluna não aparece no plano de aprendizado.
-
 Quando você estiver usando **‘Prioridades’**, precisará de uma **‘Escala da prioridade’**. Clique no menu suspenso para selecionar a escala da prioridade.
-
 **Nota: **A opção para configurar essa escala está em Planos de aprendizado>Escalas da prioridade
-
 **Escala do objetivo** é usada para medir o progresso do aluno na direção de seus objetivos.’ Configure as escalas do objetivo usando a opção do menu em Administração do site>Planos de aprendizado.';
 $string['advancedsettingsplanpermissions_help'] = '# Permissões do plano
-
 As configurações avançadas do fluxo de trabalho permitem definir o tipo de ação que pode ser executada pelos alunos e gerentes. Para cada tipo de ação, existem quatro níveis de permissão disponíveis:
-
-*   **Permitir** permite ao usuário executar a ação.
-*   **Negar** impede o usuário de executar a ação.
-*   **Solicitar** permite ao usuário solicitar que essa ação seja executada.
-*   **Aprovar** permite ao usuário aprovar uma ação.';
+\* **|Permitir** permite ao usuário executar a ação.
+\* **|Negar** impede o usuário de executar a ação.
+\* **|Solicitar** permite ao usuário solicitar que essa ação seja executada.
+\* **|Aprovar** permite ao usuário aprovar uma ação.';
 $string['advancedsettingsplansettings_help'] = '# Configurações do Planejamento
-
 **Configurações de planejamento **permite com que você defina as configurações gerais do planejamento.
-
 O Planejamento da Aprendizagem é capaz de ser marcado totalmente baseado nas escolhas a seguir.
-*   **Manualmente, pelo usuário com permissão \'completa\'**
+\* **|Manualmente, pelo usuário com permissão \'completa\'**
 O planejamento da aprendizagem é capaz de ser marcado como completo pelo Aluno ou Gerente que tenha a Permissão selecionada na linha Aprovação do Planejamento de Permissões.
-*   **Automaticamente, quando todos os itens estiverem completos**
+\* **|Automaticamente, quando todos os itens estiverem completos**
 O planejamento de aprendizagem é marcado como completo quando todos os cursos, competências, objetivos ou programas que estejam incluídos no planejamento de aprendizagem estejam marcados como completos
-*   **Automaticamente, quando a data para se completar o planejamento expirou**
+\* **|Automaticamente, quando a data para se completar o planejamento expirou**
 O planejamento de aprendizagem é marcado como completo quando a data de término que foi salva no Planejamento de Aprendizagem expirou';
 $string['advancedworkflow'] = 'Configurações avançadas do fluxo de trabalho';
 $string['after'] = 'Depois';
@@ -211,7 +183,6 @@ $string['competency_instructions_manager'] = 'Todas as competências que serão 
 $string['competency_instructions_request'] = 'Clicar em "Atualizar competências solicitadas" permite solicitar a adição de novas competências a este plano de aprendizado.';
 $string['competencycompleted'] = 'Competência concluída';
 $string['competencyevidencestatus_help'] = '# Status
-
 Este campo registra o status do usuário na competência atribuída. As opções que aparecem na lista suspensa dependem da escala atribuída à competência escolhida, de forma que a competência deve ser selecionada antes que esse campo possa ser modificado. Uma escala de valor deve ser configurada para adicionar ou atualizar um registro de evidência da competência.';
 $string['competencyname'] = 'Nome da competência';
 $string['competencypermissions'] = 'Permissões de competência';
@@ -533,47 +504,36 @@ $string['objectives'] = 'Objetivos';
 $string['objectivescale'] = 'Escala do objetivo';
 $string['objectivescaleadded'] = 'Escala do objetivo "{$a}" adicionada';
 $string['objectivescaleassign_help'] = '# Escala do objetivo
-
 As escalas do objetivo definem os crit�rios pelos quais um objetivo pode ser medido. Este � o nome da escala � qual o valor est� sendo adicionado.';
 $string['objectivescaledefault_help'] = '# Valor padrão
-
 O **Valor padrão** é o valor automaticamente atribuído a um objetivo no plano de aprendizado, quando o plano é adicionado pela primeira vez por um aluno ou gerente.';
 $string['objectivescaledefaultupdated'] = 'O valor padrão da escala foi atualizado';
 $string['objectivescaleinuse'] = 'Essa escala está em uso (isto é, os usuários têm objetivos marcados com valores desta escala) Os valores da escala não podem ser criados, reordenados ou excluídos para preservar a integridade dos dados. Você ainda pode renomear os valores da escala, mas isso pode confundir os usuários quando seus objetivos mudarem sem aviso.';
 $string['objectivescalename_help'] = '# Nome da escala do objetivo
-
 O nome da escala do objetivo usada pelo plano de aprendizado.';
 $string['objectivescales'] = 'Escalas do objetivo';
 $string['objectivescalesdisabledtemplateinuse'] = 'NOTA: não é possível alterar escala do objetivo - existem planos que usam este modelo';
 $string['objectivescaleupdated'] = 'Escala do objetivo "{$a}" atualizada';
 $string['objectivescalevalueachieved_help'] = '# Atingido
-
 Quando **Atingido** é marcado, este valor da escala do objetivo será usado para indicar que o objetivo foi atingido pelo aluno.
-
 Diversos valores podem ser marcados como **Atingido**, permitindo graus de realização.';
 $string['objectivescalevalueadded'] = 'Valor da escala do objetivo "{$a}" adicionado';
 $string['objectivescalevalueid'] = 'Proficiência do objetivo';
 $string['objectivescalevalueidnumber'] = 'Número de ID do valor da escala';
 $string['objectivescalevalueidnumber_help'] = '# N�mero de ID do valor da escala
-
 N�mero de ID da escala � um n�mero exclusivo usado para representar o valor da escala.';
 $string['objectivescalevaluename'] = 'Nome do valor da escala';
 $string['objectivescalevaluename_help'] = '# Nome do valor da escala
-
 **Nome do valor da escala** é o nome do valor da escala do objetivo que você está adicionando ou editando.
-
 Um valor da escala é usado para medir os objetivos do plano de aprendizado. Você pode adicionar qualquer número necessário de valores de escala.';
 $string['objectivescalevaluenumeric'] = 'Valor numérico da escala do objetivo';
 $string['objectivescalevaluenumeric_help'] = '# Valor numérico do valor da escala do objetivo
-
 **Valor numérico do valor da escala do objetivo** permite atribuir um valor numérico junto com uma descrição (nome) para o valor da escala.';
 $string['objectivescalevalues_help'] = '# Valores da escala
-
 Insira uma lista de valores para a nova escala do objetivo (um valor por linha) do mais alto para o mais baixo. Por exemplo:
-
-<p class="indent">
-<i> Alto<br /> M�dio<br /> Baixo </i>
-</p>';
+* Alto
+M�dio
+Baixo *';
 $string['objectivescalevalueupdated'] = 'Valor da escala do objetivo "{$a}" atualizado';
 $string['objectivescalex'] = 'Escala do objetivo "{$a}"';
 $string['objectivesettings'] = 'Configurações do objetivo';
@@ -640,7 +600,6 @@ $string['plan_instructions_delete'] = 'Você pode excluir esse plano de aprendiz
 $string['plan_instructions_edit'] = 'Você pode clicar no botão "Editar detalhes" para corrigir o título, a descrição curta ou a data de conclusão do plano de aprendizado.';
 $string['plan_instructions_learner'] = 'Abaixo está um pequeno resumo do seu plano de aprendizado.';
 $string['plan_instructions_manager'] = 'Abaixo está um pequeno resumo do plano de aprendizado do membro da equipe.';
-$string['planapprovalrequested'] = 'Aprovação do plano solicitada para <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Plano"{$a}" foi aprovado';
 $string['planautocompleteddate'] = 'Este plano foi concluído automaticamente porque sua data de término passou.';
 $string['planautocompleteditems'] = 'Este plano foi concluído automaticamente porque todos os seus itens foram concluídos.';
@@ -680,16 +639,13 @@ $string['prioritymode'] = 'Prioridades';
 $string['priorityscale'] = 'Escala da prioridade';
 $string['priorityscaleadded'] = 'Escala da prioridade "{$a}" adicionada';
 $string['priorityscaleassign_help'] = '# Escala da prioridade
-
 **Escala da prioridade** é o nome da escala da prioridade em que você está trabalhando.';
 $string['priorityscalecreate'] = 'Adicionar uma nova escala da prioridade';
 $string['priorityscaledefault_help'] = '# Valor padrão
-
 **Valor padrão** é o valor automaticamente atribuído a um item do plano de aprendizado, quando a escala de prioridade aparece pela primeira vez no plano do aluno. Mais tarde, a prioridade pode ser alterada pelo aluno/gerente depois que estiver ativa dentro do plano de aprendizado.';
 $string['priorityscaledefaultupdated'] = 'O valor padrão da escala foi atualizado';
 $string['priorityscaleinuse'] = 'Essa escala está em uso (isto é, os usuários têm itens marcados com valores desta escala). Os valores da escala não podem ser criados, reordenados ou excluídos para preservar a integridade dos dados. Você ainda pode renomear os valores da escala, mas isso pode confundir os usuários quando suas prioridades mudarem sem aviso.';
 $string['priorityscalename_help'] = '# Nome da escala da prioridade
-
 O nome da escala da prioridade usada pelo plano de aprendizado.';
 $string['priorityscales'] = 'Escalas da prioridade';
 $string['priorityscalesdisabledtemplateinuse'] = 'NOTA: não é possível alterar a escala da prioridade - existem planos que usam este modelo';
@@ -697,25 +653,19 @@ $string['priorityscaleupdated'] = 'Escala da prioridade "{$a}" atualizada';
 $string['priorityscalevalueadded'] = 'Valor da escala da prioridade "{$a}" adicionado';
 $string['priorityscalevalueidnumber'] = 'Número de ID do valor da escala';
 $string['priorityscalevalueidnumber_help'] = '# Número de ID do valor da escala
-
 Número de ID da escala é um número exclusivo usado para representar o valor da escala.';
 $string['priorityscalevaluename'] = 'Nome do valor da escala';
 $string['priorityscalevaluename_help'] = '# Nome do valor da escala
-
 **Nome do valor da escala** é o nome do valor que você está adicionando ou editando para uma escala de prioridade específica.
-
 Um valor da escala é usado para definir a prioridade do item do plano de aprendizado. Você pode adicionar qualquer número necessário de valores de escala.';
 $string['priorityscalevaluenumeric'] = 'Valor numérico da escala da prioridade';
 $string['priorityscalevaluenumeric_help'] = '# Valor numérico do valor da escala da prioridade
-
 **Valor numérico do valor da escala da prioridade** permite atribuir um valor numérico a este valor da escala e também a descrição (nome).';
 $string['priorityscalevalues_help'] = '# Valores da escala
-
 Insira uma lista de valores para a nova escala de prioridade (uma prioridade por linha), da mais alta prioridade at� a mais baixa. Por exemplo:
-
-<p class="indent">
-<i> Alto<br /> M�dio<br /> Baixo </i>
-</p>';
+* Alto
+M�dio
+Baixo *';
 $string['priorityscalevalueupdated'] = 'Valor da escala da prioridade "{$a}" atualizado';
 $string['priorityscalex'] = 'Escala da prioridade "{$a}"';
 $string['priorityvalues'] = 'Valores da prioridade';
@@ -781,15 +731,11 @@ $string['startdate'] = 'Data de início';
 $string['status'] = 'Status';
 $string['teammembers'] = 'Membros da equipe';
 $string['templatecomponentsettings_help'] = '# Configurações do componente
-
 As **Configurações do componente** permitem mostrar/ocultar os componentes do plano de aprendizado e definir a ordem em que eles aparecem.
-
 Clique em **Ocultar** para remover um componente do modelo do plano de aprendizado.
-
 Use as setas para cima e para baixo para alterar a ordem dos componentes.';
 $string['templateenddate'] = 'Data de término do modelo do plano';
 $string['templateenddate_help'] = '# Data de t�rmino
-
 Clique no �cone do calend�rio para selecionar a **Data de t�rmino** para o modelo do plano de aprendizado.';
 $string['templateinstances'] = 'Instâncias de modelo';
 $string['thefollowingitemsarepending_p'] = 'Este plano contém os seguintes itens pendentes:';

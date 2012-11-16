@@ -108,11 +108,8 @@ $string['competencyaddnew'] = 'Adicionar uma nova competência';
 $string['competencyaddnewframework'] = 'Adicionar novo quadro de competências';
 $string['competencyaggregationmethod'] = 'método de agregação';
 $string['competencyaggregationmethod_help'] = 'O método de agregação define como o sistema irá calcular a aquisição da competência.
-
 Se esse método foi configurado como Todos, então as competências filhos terão que ser adquiridas para que a competência pai seja declarada adquirida.
-
 Se o método de agregação foi configurado como Qualquer, apenas uma das competências filhos precisa ser cumprida para adquirir com sucesso a competência pai (e suas competências filhos relacionadas).
-
 Se o método de agregação foi configurado como Desativado, a aquisição automática será desativada para esta competência. (Ela ainda pode ser marcada como adquirida manualmente).';
 $string['competencyassigndeletecheck'] = 'Tem certeza que gostaria de remover essa atribuição de competência?';
 $string['competencybacktoallframeworks'] = 'Voltar para todos os quadros de competência';
@@ -147,13 +144,10 @@ $string['competencyevidence'] = 'provas de competência';
 $string['competencyevidenceassessmenttype'] = 'Tipo de avaliações';
 $string['competencyevidenceassessmenttype_help'] = 'O campo do tipo de avaliação é um campo de texto livre, para qualquer informação adicional sobre a avaliação desta competência. O conteúdo pode variar e o campo é opcional.';
 $string['competencyevidenceassessor_help'] = 'Você pode selecionar um avaliador, que é um usuário que avaliou que o usuário atual é proficiente na competência atual. O avaliador é um campo opcional, portanto deixe a lista suspensa na opção \'Selecionar um avaliador...\' se não deseja atribuir um avaliador.
-
 A lista suspensa mostra todos os usuários do Moodle com a função de avaliador. Se o usuário que você deseja adicionar está ausente ou se nenhuma opção for mostrada, você precisará pedir ao administrador para adicionar este usuário à função de avaliador.';
 $string['competencyevidenceassessorname_help'] = 'O campo Nome do avaliador se refere ao nome da organização que fez a avaliação do usuário para esta competência. É um campo opcional, portanto pode ser deixado em branco.';
 $string['competencyevidencecompetency_help'] = 'A competência a ser atribuída ao usuário. Se você está editando um item existente da evidência de competência, isso não pode ser alterado. No entanto, você pode criar um novo item de evidência da competência (se tiver permissão) visitando a página Meus registros do usuário e clicando no botão \'Adicionar evidência de competência\'.
-
 Ao criar um novo item de evidência da competência, você pode escolher entre adicionar a evidência para uma competência existente ou criar uma nova competência. Se você escolher \'Selecionar uma competência\', um popup permitirá que você escolha entre as competências existentes. Se você escolher \'Criar uma nova competência\', será exibido um formulário onde você pode escolher uma estrutura e definir a nova competência.
-
 Observe que você não pode criar dois itens de evidência da competência que se refiram ao mesmo usuário e competência. Se você tentar fazer isso, receberá um link para editar o registro original ou escolher uma competência diferente.';
 $string['competencyevidencecount'] = 'itens evidência';
 $string['competencyevidenceorganisation_help'] = 'Esta opção registra a organização em que o usuário estava no momento em que concluiu o item de evidência da competência. Na maioria dos casos, será a mesma organização atual do usuário. Como os usuários mudam de organização com o passar do tempo, isso permite que seja mantido um registro de onde eles estavam no momento da conclusão. Este é um campo opcional.';
@@ -170,21 +164,16 @@ $string['competencyframeworkfullname'] = 'Nome completo';
 $string['competencyframeworkfullname_help'] = 'Nome completo da estrutura é o título completo da estrutura.';
 $string['competencyframeworkgeneral'] = 'quadro de Competências';
 $string['competencyframeworkgeneral_help'] = '**Estruturas da competência** são definidas para conter as competências de capacidade, conhecimento e comportamento que você espera que a equipe adquira.
-
 As competências podem ser agrupadas em diferentes tipos de estruturas. Por exemplo, uma estrutura pode conter todos os padrões de competência nacionais do setor (obtidos de uma associação do setor), enquanto outra pode conter as competências específicas definidas internamente.
-
 Antes de definir uma estrutura da competência, você deve ter uma **Escala de competência** configurada.';
 $string['competencyframeworkidnumber'] = 'Número ID';
 $string['competencyframeworkidnumber_help'] = 'O número de ID da estrutura é um número exclusivo que pode ser usado para representar a estrutura.</h1>';
 $string['competencyframeworkmanage'] = 'gerenciar frameworks';
 $string['competencyframeworks'] = 'frameworks de competência';
 $string['competencyframeworks_help'] = '**Estruturas da competência** são definidas para conter as competências de capacidade, conhecimento e comportamento que você espera que a equipe adquira.
-
 As competências podem ser agrupadas em diferentes tipos de estruturas. Por exemplo, uma estrutura pode conter todos os padrões de competência nacionais do setor (obtidos de uma associação do setor), enquanto outra pode conter as competências específicas definidas internamente.
-
 Antes de definir uma estrutura da competência, você deve ter uma **Escala de competência** configurada.';
 $string['competencyframeworkscale_help'] = 'As escalas da competência permitem definir os critérios pelo qual uma competência pode ser medida. Por exemplo, uma escala pode ter três valores: \'competente, competente com supervisão, incompetente\'.
-
 A primeira etapa é usar a opção Escalas da competência para adicionar uma nova escala e depois adicionar os valores de escala que são usados para definir o progresso do aluno em uma competência. Você pode adicionar quantos valores desejar. Observe também as configurações do valor Padrão e Proficiente.';
 $string['competencyframeworkshortname_help'] = 'O nome curto da estrutura é uma referência rápida ao nome completo da estrutura e pode ser usado para fins de exibição.';
 $string['competencyframeworkview'] = 'Ver quadro';
@@ -202,19 +191,14 @@ $string['competencynoframeworkssetup'] = 'Não há quadros de competência confi
 $string['competencynotypes'] = 'Sem tipos de competência';
 $string['competencyparent'] = 'competência principal';
 $string['competencyparent_help'] = '**Competência pai** permite criar relações de pai/filho entre as competências na estrutura, usando níveis de profundidade.
-
 Selecione a **Competência pai** no menu suspenso. Selecione **Superior** se deseja que a competência fique no nível superior da hierarquia.
-
 Quando houver apenas um nível de profundidade configurado na estrutura da competência, a competência pai é configurada como **Superior**.
-
 **Nota: **para configurar relações de pai/filho, você precisa ter pelo menos dois níveis de profundidade configurados.';
 $string['competencyplural'] = 'competências';
 $string['competencyreturntoframework'] = 'Return to competency framework';
 $string['competencyscale'] = 'escala de competência';
 $string['competencyscale_help'] = '**Escala** é o nome do valor da Escala da competência usada na estrutura da competência.
-
 A escala da competência é configurada na estrutura da competência. Apenas uma escala da competência pode ser usada em cada estrutura.
-
 Uma nova escala da competência pode ser configurada em Hierarquias/Competências/Gerenciar estruturas no menu \'Administração do site\'.';
 $string['competencyscaleassign'] = 'escala de competência';
 $string['competencyscaleassign_help'] = 'As escalas da competência definem os critérios pelos quais uma competência pode ser medida. Este é o nome da escala à qual o valor está sendo adicionado.';
@@ -225,29 +209,25 @@ $string['competencyscaleinuse'] = 'Esta escala está em uso (ou seja, os usuári
 $string['competencyscaleproficient'] = 'valor proficiente';
 $string['competencyscaleproficient_help'] = 'O valor proficiente é uma maneira de o sistema rastrear se um usuário é \'competente\' em determinada competência. Ele é usado para mostrar o progresso nos planos de aprendizado e só mostra as notas vencidas para as competências que não foram concluídas.
 Um usuário é considerado \'competente\' se no valor da escala configurado constar marcado \'proficiente\'. Você pode ter diversos valores de escala configurados como proficientes, mas deve ter pelo menos um deles marcado como proficiente. O valor proficiente é editado através do valor da escala.
-
 O menor valor de escala marcado como proficiente é atribuído automaticamente a qualquer usuário que demonstrou a proficiência exigida pelos itens de evidência da competência especificada (por exemplo, conclusão do curso/atividade ou nota de aprovação no curso/atividade).';
 $string['competencyscales'] = 'escalas de competência';
 $string['competencyscalescalename'] = 'Nome';
 $string['competencyscalescalename_help'] = 'O nome da Escala da competência que será usada pelas estruturas da competência.';
 $string['competencyscalescalevalues'] = 'Valores';
 $string['competencyscalescalevalues_help'] = 'Insira os valores para a escala de competência (um por linha) do mais competente para o menos competente. Por exemplo:
-
-<p class="indent">
-<i> Competente<br /> Competente com supervisão<br /> Não competente<br /> </i>
-</p>';
+* Competente
+* Competente com supervisão
+* Não competente
+';
 $string['competencyscalesgeneral'] = 'escala de competência';
 $string['competencyscalesgeneral_help'] = '**Escala da competência** permite definir os critérios pelo qual uma competência pode ser medida. Por exemplo, uma escala pode ter três valores: \'competente, competente com supervisão, incompetente\'.
-
 Você deve ter uma escala de competência configurada antes de definir uma estrutura da competência ou quaisquer competências.';
 $string['competencyscalevaluedescription'] = 'Descrição';
 $string['competencyscalevalueidnumber'] = 'Número de identificação escala de valores';
 $string['competencyscalevalueidnumber_help'] = 'Número de ID da escala é um número exclusivo usado para representar o valor da escala.';
 $string['competencyscalevaluename'] = 'Nome do valor de escala';
 $string['competencyscalevaluename_help'] = '**Nome do valor da escala** é o nome do valor da escala da competência que você está adicionando ou editando.
-
 Um valor da escala é usado para definir o progresso de um aluno em uma competência.’ Você pode adicionar qualquer número necessário de valores de escala.
-
 **Nota: **lembre-se de definir as configurações do valor Padrão e Proficiente.';
 $string['competencyscalevaluenumericalvalue'] = 'Valor da escala de valor numérico';
 $string['competencyscalevaluenumericalvalue_help'] = 'Valor numérico do valor da escala é o valor numérico associado ao valor da escala.';
@@ -255,7 +235,6 @@ $string['competencyshortname'] = 'Competência nome curto';
 $string['competencyshortname_help'] = 'Nome curto da competência é um nome de referência rápida da competência e pode ser usado para fins de exibição.';
 $string['competencytemplatefullname_help'] = 'Nome completo do modelo é o título completo do modelo de competência que está sendo configurado.';
 $string['competencytemplategeneral_help'] = 'Um **Modelo da competência** é uma maneira de agrupar competências de uma estrutura.
-
 Ao configurar um evento de treinamento, por exemplo um curso de indução, ele pode ser vinculado a um modelo de competência chamado \'competências do novo funcionário\', reunindo automaticamente várias competências em vez de selecionar cada uma delas repetidamente.';
 $string['competencytemplatemanage'] = 'gerenciar modelos';
 $string['competencytemplates'] = 'modelos de competência';
@@ -587,11 +566,10 @@ $string['organisationframeworkdescription'] = 'Descrição';
 $string['organisationframeworkdescription_help'] = 'A descrição da estrutura de trabalho é um campo de texto para armazenar informações adicionais sobre a estrutura. Ele será exibido na página de gerenciamento de organizações, logo acima da tabela de organizações.';
 $string['organisationframeworkfullname_help'] = 'Nome completo da estrutura é o título completo da estrutura.';
 $string['organisationframeworkidnumber'] = 'Número de ID';
-$string['organisationframeworkidnumber_help'] = 'O número de ID da estrutura é um número exclusivo que pode ser usado para representar a estrutura.</h1>';
+$string['organisationframeworkidnumber_help'] = 'O número de ID da estrutura é um número exclusivo que pode ser usado para representar a estrutura.';
 $string['organisationframeworkmanage'] = 'Gerenciar estruturas';
 $string['organisationframeworks'] = 'Estruturas da organização';
 $string['organisationframeworks_help'] = 'Uma **Estrutura organizacional** é configurada para conter a estrutura da sua organização.
-
 Você pode configurar diversas estruturas organizacionais. Por exemplo: configure uma estrutura para as subdivisões ou subsidiárias de uma empresa.';
 $string['organisationframeworkshortname_help'] = 'O nome curto da estrutura é uma referência rápida ao nome completo da estrutura e pode ser usado para fins de exibição.';
 $string['organisationfullname'] = 'Nome completo da organização';
@@ -608,11 +586,8 @@ $string['organisationnoframeworkssetup'] = 'Não há configuração de estrutura
 $string['organisationnotypes'] = 'Sem tipos de organização';
 $string['organisationparent'] = 'Organização pai';
 $string['organisationparent_help'] = '**Organização pai** permite criar relações de pai/filho entre as organizações na estrutura, usando níveis de profundidade.
-
 Selecione a **Organização pai** no menu suspenso. Selecione **Superior** se deseja que a organização fique no nível superior da hierarquia.
-
 Quando houver apenas um nível de profundidade configurado na estrutura da organização, a organização pai é configurada como **Superior**.
-
 **Nota: **para configurar relações de pai/filho, você precisa ter pelo menos dois níveis de profundidade configurados.';
 $string['organisationplural'] = 'Organizações';
 $string['organisationreturntoframework'] = 'Retornar a estrutura da organização';
@@ -680,7 +655,6 @@ $string['positionframeworkidnumber_help'] = 'O número de ID da estrutura é um 
 $string['positionframeworkmanage'] = 'Gerenciar estruturas';
 $string['positionframeworks'] = 'Estruturas de posição';
 $string['positionframeworks_help'] = 'Uma **Estrutura de posição** é usada para configurar e conter as diferentes posições na organização.
-
 Você pode configurar diversas taxonomias de posição (estruturas) dentro da organização.';
 $string['positionframeworkshortname_help'] = 'O nome curto da estrutura é uma referência rápida ao nome completo da estrutura e pode ser usado para fins de exibição.';
 $string['positionfullname'] = 'Nome completo da posição';
@@ -698,11 +672,8 @@ $string['positionnoframeworkssetup'] = 'Não há configuração de estruturas de
 $string['positionnotypes'] = 'Sem tipos de posição';
 $string['positionparent'] = 'Posição pai';
 $string['positionparent_help'] = '**Posição pai** permite criar relações de pai/filho entre as posições na estrutura.
-
 Selecione a **Posição pai** no menu suspenso. Selecione **Superior** se deseja que a posição fique no nível superior da hierarquia.
-
 Quando houver apenas um nível de profundidade configurado na estrutura da posição, a posição pai é configurada como **Superior**.
-
 **Nota: **para configurar relações de pai/filho, você precisa ter pelo menos dois níveis de profundidade configurados.';
 $string['positionplural'] = 'Posições';
 $string['positionreturntoframework'] = 'Retornar a estrutura de posição';

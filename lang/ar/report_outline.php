@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['outline:view'] = 'معاينة تقرير نشاط مقرر دراسي';
-$string['pluginname'] = ' نشاط مقرر دراسي';
+$string['pluginname'] = 'نشاط مقرر دراسي';

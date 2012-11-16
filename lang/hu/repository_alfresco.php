@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Alfresco-adattár megtekintése';
 $string['alfresco_url'] = 'Alfresco URL-je';
 $string['alfrescourltext'] = 'Az Afresco felületének url-je: http://yoursite.com/alfresco/api';
-$string['alfresco:view'] = 'Alfresco-adattár megtekintése';
 $string['configplugin'] = 'Alfresco beállítása';
 $string['notitle'] = 'nincs cím';
 $string['password'] = 'Jelszó';

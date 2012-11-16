@@ -56,7 +56,6 @@ $string['personal'] = 'personale';
 $string['personalnotes'] = 'Annotazioni personali';
 $string['publishstate'] = 'Contesto';
 $string['publishstate_help'] = 'Il contesto delle annotazioni determina chi le può leggere:
-
 * Personali: visibile solo a te
 * Corso: l\'annotazione sarà visibile ai docenti del corso
 * Sito: l\'annotazione sarà visibile a qualsiasi docente in tutti i corsi.';

@@ -85,7 +85,6 @@ $string['emailteachermail'] = '{$a->username}在{$a->timeupdated}更新了作业
 $string['emailteachermailhtml'] = '{$a->username}在<i>{$a->timeupdated}</i>更新了作业<i>“{$a->assignment}”</i><br /><br />可以在<a href="{$a->url}">网站上查看</a>。';
 $string['emailteachers'] = '用Email提醒教师';
 $string['emailteachers_help'] = '如果启用，当学生上传或更新作业时教师都会收到一封提醒邮件。
-
 只有有权给该作业评分的教师才会收到邮件。因此，如果课程使用了分割小组，则某个小组的教师不会收到其它小组学生交作业的通知。';
 $string['emptysubmission'] = '您尚未提交任何内容';
 $string['enablenotification'] = '发送Email通知';

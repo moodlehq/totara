@@ -69,7 +69,6 @@ $string['completionscorerequired'] = 'Richiede punteggio minimo';
 $string['completionstatus_completed'] = 'Completato';
 $string['completionstatus_failed'] = 'Non superato';
 $string['completionstatus_help'] = '# Completamento di attività: richiesta di stato
-
 Per verificare uno o più stati, l\'utente deve soddisfare almeno uno degli stati selezionati per essere contrassegnato come completato per l\'attività SCORM in questione e per qualsiasi altra requisito di completamento di attività.';
 $string['completionstatus_passed'] = 'Superato';
 $string['completionstatusrequired'] = 'Richiede stato';
@@ -90,7 +89,7 @@ $string['directories'] = 'Visualizza collegamenti';
 $string['disabled'] = 'Disabilitato';
 $string['display'] = 'Visualizzazione pacchetto';
 $string['displayattemptstatus'] = 'Visualizza  lo stato dei tentativi';
-$string['displayattemptstatus_help'] = 'Visualizza lo stato dei tentativi ed i punteggi  nella pagina di riepilogo del pacchetto SCORM.';
+$string['displayattemptstatus_help'] = 'Visualizza lo stato dei tentativi ed i punteggi nella pagina di riepilogo del pacchetto SCORM.';
 $string['displayattemptstatusdesc'] = 'Imposta il valore di default per la visualizzazione dello stato dei tentativi';
 $string['displaycoursestructure'] = 'Visualizza la struttura del corso nella pagina di ingresso';
 $string['displaycoursestructure_help'] = 'Visualizza la struttura del corso nella pagina di riepilogo SCORM.';
@@ -135,9 +134,7 @@ $string['gradeforattempt'] = 'Valutazione del tentativo';
 $string['gradehighest'] = 'Voto migliore';
 $string['grademethod'] = 'Metodo di valutazione';
 $string['grademethod_help'] = 'Il metodo di valutazione definisce come valutare uno specifico tentativo.
-
 Sono disponibili quattro metodi di valutazione:
-
 * Learning object - Il numero di Learning object completati/superati.
 * Voto migliore - Il voto più alto ottenuto nei Learning object superati
 * Media dei voti - La media di tutti i voti
@@ -278,10 +275,9 @@ $string['scormopen'] = 'Dal';
 $string['scormresponsedeleted'] = 'I tentativi degli utenti sono stati eliminati';
 $string['scormtype'] = 'Tipo';
 $string['scormtype_help'] = 'L\'impostazione stabilisce come sarà incluso il pacchetto nel corso. Sono disponibili 5 opzioni:
-
 * Pacchetto caricato - Permette di scegliere un pacchetto SCORM tramite file picker
 * Manifest SCORM esterno - Permette di specificare un URL per il file imsmanifest.xml. Nota: se l\'URL appartiene ad un dominio diverso rispetto a questo sito, è preferibile usare "Pacchetto da scaricare", altrimenti le valutazioni voti non saranno salvate.
-* Pacchetto da scaricare - Permette di specificare l\' URL del pacchetto che sarà scaricato,  decompresso localmente ed aggiornato se il pacchetto viene aggiornato.
+* Pacchetto da scaricare - Permette di specificare l\' URL del pacchetto che sarà scaricato, decompresso localmente ed aggiornato se il pacchetto viene aggiornato.
 * Repository locale IMS - Permette di scegliere un pacchetto da un repository IMS.
 * URL AICC esterna - l\'URL di lancio per una attività AICC. Attorno all\'URL verrà costruito uno pseudo package';
 $string['scrollbars'] = 'Permetti le barre di scorrimento';
@@ -332,9 +328,7 @@ $string['viewallreports'] = 'Visualizza lo stato dei {$a} tentativi';
 $string['viewalluserreports'] = 'Visualizza il report per {$a} utenti';
 $string['whatgrade'] = 'Valutazione tentativi';
 $string['whatgrade_help'] = 'Se sono consentiti più tentativi, con questa impostazione è possibile stabilire cosa memorizzare nel registro valutatore: il voto più alto, la media, il primo o l\'ultimo tentativo.
-
 Gestione di tentativi multipli
-
 * Per avviare un nuovo tentativo è necessario spuntare la relativa casella sopra il pulsante Entra nella pagina con la struttura del corso. Accertarsi di consentire l\'accesso a questa pagina se si desidera consentire più tentativi.
 * Alcuni pacchetti gestiscono bene i nuovi tentativi mentre altri no. Nel secondo caso si può verificare una sovra scrittura dei dati se lo studente entra nuovamente nello stesso tentativo, anche se il tentativo risulta "completato" o "superato".
 * Le impostazioni "Forza completamento", "Forza un nuovo tentativo" e "Blocca dopo l\'ultimo tentativo" permettono di gestire al meglio i tentativi multipli.';

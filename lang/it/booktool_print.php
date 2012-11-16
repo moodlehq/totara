@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Stampa libro';
+$string['print:print'] = 'Stampare libro';
 $string['printbook'] = 'Stampa libro';
 $string['printchapter'] = 'Stampa questo capitolo';
 $string['printdate'] = 'Data';
 $string['printedby'] = 'Stampato da';
-$string['print:print'] = 'Stampare libro';

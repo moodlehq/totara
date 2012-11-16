@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Ensayo';
+$string['pluginname_help'] = 'En respuesta a una pregunta (puede incluir una imagen) el alumno escribe una respuesta de uno o dos párrafos. La pregunta de ensayo no se le asignará una calificación hasta que haya sido revisada por el profesor y calificada de forma manual.';
 $string['pluginnameadding'] = 'Agregando una pregunta de ensayo';
 $string['pluginnameediting'] = 'Editando una pregunta de ensayo';
-$string['pluginname_help'] = 'En respuesta a una pregunta (puede incluir una imagen) el alumno escribe una respuesta de uno o dos párrafos. La pregunta de ensayo no se le asignará una calificación hasta que haya sido revisada por el profesor y calificada de forma manual.';
 $string['pluginnamesummary'] = 'Permite una respuesta de unas pocas frases o párrafos. Se deberá calificar manualmente.';

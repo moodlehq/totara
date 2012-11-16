@@ -55,12 +55,10 @@ $string['page-notes-x'] = 'Bármely megjegyzéssel ellátott oldal';
 $string['personal'] = 'személyes';
 $string['personalnotes'] = 'Személyes megjegyzések';
 $string['publishstate'] = 'Környezet';
-$string['publishstate_help'] = '<p>3 lehetséges beállítás közül választhat</p>
-<ul>
-<li><strong>Személyes</strong> - A megjegyzést csak Ön láthatja</li>
-<li><strong>Kurzusszintű</strong> - A megjegyzést a kurzus tanárai láthatják</li>
-<li><strong>Portál</strong> - A megjegyzést az összes kurzus tanárai láthatják</li>
-</ul>';
+$string['publishstate_help'] = '3 lehetséges beállítás közül választhat
+\* **|Személyes** - A megjegyzést csak Ön láthatja
+\* **|Kurzusszintű** - A megjegyzést a kurzus tanárai láthatják
+\* **|Portál** - A megjegyzést az összes kurzus tanárai láthatják';
 $string['site'] = 'portál';
 $string['sitenotes'] = 'Portállal kapcsolatos megjegyzések';
 $string['unknown'] = 'ismeretlen';

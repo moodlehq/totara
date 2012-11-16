@@ -33,13 +33,11 @@ $string['aggregatenone'] = 'Keine Bewertung';
 $string['aggregatesum'] = 'Summe der Bewertungen';
 $string['aggregatetype'] = 'Summierungstyp';
 $string['aggregatetype_help'] = 'Der Summierungstyp legt fest wie die Einzelwertungen zu einer Endwertung zusammengefasst werden.
-
 * Mittelwert - Der Mittelwert aus allen Einzelwertungen wird die Endwertung
-* Anzahl -  Die Anzahl aller erreichten Wertungen wird die Endwertung. Die Anzahl kann nicht höher werden als die erreichbare Maximalwertung.
+* Anzahl - Die Anzahl aller erreichten Wertungen wird die Endwertung. Die Anzahl kann nicht höher werden als die erreichbare Maximalwertung.
 * Maximalwert - Die größte erreichte Bewertung wird die Endwertung
 * Minimalwert - Die kleinste erreichte Bewertung wird die Endwertung
-* Summe - Die Summe aller erreichten  Bewertungen wird die Endwertung. Die Summe kann nicht höher werden als die erreichbare Maximalwertung.
-
+* Summe - Die Summe aller erreichten Bewertungen wird die Endwertung. Die Summe kann nicht höher werden als die erreichbare Maximalwertung.
 Wenn \'Keine Bewertung\' ausgewählt wird, erscheint die Aktivität nicht in der Bewertungsübersicht.';
 $string['allowratings'] = 'Bewertung von Beiträgen erlauben?';
 $string['allratingsforitem'] = 'Alle abgegebenen Bewertungen';

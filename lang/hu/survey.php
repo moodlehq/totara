@@ -221,7 +221,6 @@ $string['surveyname'] = 'Felmérés neve';
 $string['surveysaved'] = 'Felmérés elmentve';
 $string['surveytype'] = 'Felmérés típusa';
 $string['surveytype_help'] = 'Háromféle felmérés közül választhat:
-
 * Gondolkodási és tanulási hozzáállás felmérése (ATTLS) - Annak mérésére, hogy valaki mennyire rendelkezik \'kapcsolt ismeretekkel\' (jobban élvezi a tanulást, együttműködőbb, hajlamos mások ötleteit kiaknázni), vagy \'elkülönült ismeretekkel\' (kritikusabb és vitatkozóbb a tanulás iránti viszonyulása)
 * Kritikus események felmérése
 * Konstruktivista online tanulási környezet felmérése (COLLES) - Annak mérésére, hogy az internet interaktivitása mennyire fogható hadra a tanulók dinamikus tanulásba való bevonásában';

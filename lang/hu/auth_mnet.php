@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'Ha igenre állítja, automatikusan létrejön egy helyi felhasználói rekord, amikor egy távoli felhasználó első alkalommal jelentkezik be.';
-$string['auth_mnetdescription'] = 'A felhasználók hitelesítése a hálózati Moodle beállításaiban Ön által megadott megbízhatósági háló alapján történik.';
 $string['auth_mnet_roamin'] = 'Ezen gazdagép felhasználói beléphetnek a portáljára';
 $string['auth_mnet_roamout'] = 'Felhasználói ellátogathatnak ezen gazdagépekre';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'XMLRPC-n keresztüli átvitelhez való hitelesítés lejárata másodpercben.';
+$string['auth_mnetdescription'] = 'A felhasználók hitelesítése a hálózati Moodle beállításaiban Ön által megadott megbízhatósági háló alapján történik.';
 $string['auto_add_remote_users'] = 'Távoli felhasználók automatikus hozzáadása';
 $string['pluginname'] = 'Hálózati Moodle hitelesítése';
 $string['rpc_negotiation_timeout'] = 'RPC-rákapcsolódás lejárati ideje';

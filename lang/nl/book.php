@@ -41,22 +41,16 @@ $string['editingchapter'] = 'Bewerk hoofdstuk';
 $string['errorchapter'] = 'Fout bij het lezen van het hoofdstuk';
 $string['faq'] = 'Boek FAQ';
 $string['faq_help'] = '*Waarom maar twee niveaus?*
-
-Twee niveaus zijn doorgaans genoeg voor alle boeken, drie niveaus zou leiden tot slecht gestructureerde documenten. De boekmodule is ontworpen voor de creatie van kort studie materiaal met meerdere pagina\'s. Het is aangeraden om het PDF formaat te gebruiken voor langere documenten. De gemakkelijkste manier om PDFs te maken zijn virtuele printers (zie <a  href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm"  target="_blank">PDFCreator</a>,
-<a  href="http://fineprint.com/products/pdffactory/index.html"  target="_blank">PDFFactory</a>,
-<a  href="http://www.adobe.com/products/acrobatstd/main.html"  target="_blank">Adobe Acrobat</a>,
+Twee niveaus zijn doorgaans genoeg voor alle boeken, drie niveaus zou leiden tot slecht gestructureerde documenten. De boekmodule is ontworpen voor de creatie van kort studie materiaal met meerdere pagina\'s. Het is aangeraden om het PDF formaat te gebruiken voor langere documenten. De gemakkelijkste manier om PDFs te maken zijn virtuele printers (zie 
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
 etc.).
-
 *Kunnen leerlingen boeken bewerken?*
-
 Enkel leraren kunnen boeken maken en bewerken. Er zijn geen plannen om studenten boeken te laten bewerken, maar misschien kan iemand iets dergelijks maken (Portfolio?). De belangrijkste reden om het niet te doen is om de Book module eenvoudig te houden.
-
 *Hoe zoek ik in de boeken?*
-
 Er is op dit ogenblik maar één manier en dat is door de zoekfunctie in de browser te gebruiken. Globaar zoeken kan enkel in de Moodle forums.
-
 *Mijn titels passen niet op één lijn.*
-
 Herschrijf je titels of vraag je systeembeheerder om de breedte van de inhoudstafel te vergroten. Het wordt voor alle boeken bepaald op de configuratiepagina van de module.';
 $string['modulename'] = 'Boek';
 $string['modulename_help'] = 'Boek is eenvoudig studiemateriaal met meerdere pagina\'s.';

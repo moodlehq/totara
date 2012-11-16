@@ -33,13 +33,11 @@ $string['aggregatenone'] = 'Nincs értékelés';
 $string['aggregatesum'] = 'Értékelések összege';
 $string['aggregatetype'] = 'Összegző típus';
 $string['aggregatetype_help'] = 'Az összegző típus azt szabja meg, hogy az értékelések milyen kombinációban alakítják ki az osztályozónaplóban a végső osztályzatot.
-
 * Értékelések átlaga - Az összes értékelés számtani közepe
 * Értékelések száma - Az értékelt elemek száma lesz a végső osztályzat. A végösszeg nem lehet magasabb, mint a tevékenységre adható maximális pontszám.
 * Maximum - A legmagasabb értékelés lesz a végső osztályzat.
 * Minimum - A legalacsonyabb értékelés lesz a végső osztályzat.
 * Összeg - Az összes értékelés összeadódik. A végösszeg nem lehet magasabb, mint a tevékenységre adható maximális pontszám.
-
 Ha a "Nincs értékelés" van kiválasztva, akkor a tevékenység nem fog megjelenni az osztályozónaplóban.';
 $string['allowratings'] = 'Értékelhetők legyenek az elemek?';
 $string['allratingsforitem'] = 'Minden leadott értékelés';

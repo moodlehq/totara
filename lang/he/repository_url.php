@@ -30,5 +30,5 @@ $string['download'] = 'הורדה';
 $string['pluginname'] = 'קישור להורדה';
 $string['rename'] = 'שם';
 $string['url'] = 'URL';
-$string['url:view'] = 'אפשר הורדת כתובות אינטרנט בחלונית בחירת קובץ  ';
+$string['url:view'] = 'אפשר הורדת כתובות אינטרנט בחלונית בחירת קובץ';
 $string['validname'] = 'חובה לספק שם תקף';

@@ -31,11 +31,10 @@ $string['cc2moodle_manifest_dont_load'] = 'לא ניתן להטעין את ה-XM
 $string['cc2moodle_req_auth'] = 'שגיאה: חבילת ה-The Common Cartridge מצריכה הרשאה.';
 $string['cc2moodle_valid_schema'] = 'סכימה תקפה';
 $string['cc_import_req_dom'] = 'שגיאה: יבוא ה- The Common Cartridge מצריך הרחבת DOM';
-$string['cc_import_req_libxml'] = 'שגיאה: יבוא ה-The Common Cartridge מצריך הרחבת LIBXML ';
+$string['cc_import_req_libxml'] = 'שגיאה: יבוא ה-The Common Cartridge מצריך הרחבת LIBXML';
 $string['cc_import_req_libxmlminversion'] = 'שגיאה: יבוא ה-The Common Cartridge מצריך LIBXML בגרסה 2.6.30 או חדש יותר';
 $string['cc_import_req_php5'] = 'שגיאה: יבוא ה-The Common Cartridge מצריך PHP 5  או חדש יותר';
 $string['cc_import_req_xsl'] = 'שגיאה: יבוא ה-The Common Cartridge מצריך XSL';
 $string['checkingforimscc'] = 'בדיקה עבור IMS-CC...';
 $string['enable_cc_import'] = 'מאפשר יבוא CC';
-$string['enable_cc_import_description'] = 'הגדרה זו מאפשרת את יבוא חבילת ה- Common Cartridge (IMS-CC) כשמשתמשים בפונקציונליות השחזור הרגילה. דע כי הדבר מצריך PHP5, DOM, XSL והרחבת LIBXML (2.6.30 או חדשה יותר) אשר יותקנו בשרת.
-';
+$string['enable_cc_import_description'] = 'הגדרה זו מאפשרת את יבוא חבילת ה- Common Cartridge (IMS-CC) כשמשתמשים בפונקציונליות השחזור הרגילה. דע כי הדבר מצריך PHP5, DOM, XSL והרחבת LIBXML (2.6.30 או חדשה יותר) אשר יותקנו בשרת.';

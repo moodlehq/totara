@@ -54,8 +54,7 @@ $string['createpage'] = 'Maak pagina';
 $string['creating'] = 'Maak een wiki-pagina';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Standaardopmaak';
-$string['defaultformat_help'] = 'Deze instelling  bepaalt de standaard opmaak die gebruikt wordt bij het bewerken van wiki-pagina\'s.
-
+$string['defaultformat_help'] = 'Deze instelling bepaalt de standaard opmaak die gebruikt wordt bij het bewerken van wiki-pagina\'s.
 *HTML - Gebruik de HTML-editor
 *Creole - Een veel gebruikte wiki opmaaktaal waarvoor een kleine werkbalk beschikbaar is
 *Nwiki - Mediawiki-achtige opmaaktaal die in de Nwiki module gebruikt wordt.';
@@ -88,16 +87,13 @@ $string['format_help'] = '*HTML - Gebruik de HTML-editor
 *Creole - Een veel gebruikte wiki opmaaktaal waarvoor een kleine werkbalk beschikbaar is
 *Nwiki - Mediawiki-achtige opmaaktaal die in de Nwiki module gebruikt wordt.';
 $string['formatcreole'] = 'Creole-opmaak';
-$string['formatcreole_help'] = 'Creole is een veel gebruikte  wiki opmaaktaal met een werkbalk voor het invoeren van de juiste opmaak.
-
+$string['formatcreole_help'] = 'Creole is een veel gebruikte wiki opmaaktaal met een werkbalk voor het invoeren van de juiste opmaak.
 Typ een nieuwe paginanaam tussen dubbele vierkante haken om een nieuwe pagina te maken, bijvoorbeeld [[Pagina 2]].';
 $string['formathtml'] = 'HTML-opmaak';
 $string['formathtml_help'] = 'De HTML-editor kan gebruikt worden om de tekst op te maken.
-
 Typ een paginanaam tussen dubbele vierkante haken om een nieuwe pagina te maken, bijvoorbeeld [[pagina 2]]';
 $string['formatnwiki'] = 'NWiki-opmaak';
 $string['formatnwiki_help'] = '*Nwiki - Mediawiki-achtige opmaaktaal die in de Nwiki module gebruikt wordt.
-
 Typ een nieuwe paginanaam tussen dubbele vierkante haken om een nieuwe pagina te maken, bijvoorbeeld [[Pagina 2]].';
 $string['history'] = 'Geschiedenis';
 $string['history_help'] = 'De geschiedenis toont links naar vorige versies van deze pagina';

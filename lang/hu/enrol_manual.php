@@ -45,13 +45,12 @@ $string['manual:unenrol'] = 'Felhasználók kiiratkoztatása a kurzusból';
 $string['manual:unenrolself'] = 'Kurzus leadása';
 $string['pluginname'] = 'Kézi beiratkozások';
 $string['pluginname_desc'] = 'A kézi beiratkozások segédprogramjával a felhasználók a kurzusadminisztráció beállításain keresztül kézileg iratkoztathatók be megfelelő jogosultságú személy, pl. tanár által. A segédprogramot célszerű bekapcsolni, mert más beiratkozási segédprogramoknak,
-pl. az önbeíratási segédprogramnak szükségük van rá.
-';
+pl. az önbeíratási segédprogramnak szükségük van rá.';
 $string['status'] = 'Kézi beiratkozások bekapcsolása';
 $string['status_desc'] = 'Belsőleg beiratkozottak számára engedélyezi a kurzushoz való hozzáférést. Többnyire célszerű bekapcsolni.';
+$string['status_help'] = 'Ez a beállítás rögzíti, hogy megfelelő jogosultságú személy, pl. tanár kézzel a kurzusadminisztráció beállításain keresztül iratkoztathat-e be felhasználókat.';
 $string['statusdisabled'] = 'Kikapcsolva';
 $string['statusenabled'] = 'Bekapcsolva';
-$string['status_help'] = 'Ez a beállítás rögzíti, hogy megfelelő jogosultságú személy, pl. tanár kézzel a kurzusadminisztráció beállításain keresztül iratkoztathat-e be felhasználókat.';
 $string['unenrol'] = 'Felhasználó kiiratkoztatása';
 $string['unenrolselectedusers'] = 'A kiválasztott felhasználók kiiratkoztatása';
 $string['unenrolselfconfirm'] = 'Biztosan leadja a(z) "{$a}" kurzust?';

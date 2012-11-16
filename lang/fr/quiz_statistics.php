@@ -66,9 +66,7 @@ $string['median'] = 'Note médiane pour {$a}';
 $string['modelresponse'] = 'Réponse modèle';
 $string['negcovar'] = 'Covariance négative de la note de cette question avec la note de la totalité de la tentative';
 $string['negcovar_help'] = 'La note donnée à cette question pour cet ensemble de tentatives du test varie de façon opposée à la note globale de la tentative. Cela signifie que la note de la tentative tend à être au-dessous de la moyenne lorsque la note pour cette question est au-dessus, et vice-versa.
-
 L\'équation pour une pondération efficace ne peut pas être calculée dans ce cas. Les calculs pour la pondération de question efficace des autres questions de ce test ne sont valables que si la note maximale donnée aux questions avec une covariance négative (surlignée) est de 0.
-
 Si vous modifiez un test et donnez à ces questions à covariance négative une note maximale de zéro, alors leur pondération efficace sera nulle et les pondérations efficaces des autres questions seront calculées adéquatement.';
 $string['nostudentsingroup'] = 'Il n\'y a pas encore d\'étudiant dans ce groupe';
 $string['optiongrade'] = 'Crédit partiel';
@@ -94,7 +92,7 @@ $string['standarddeviationq'] = 'Écart type';
 $string['standarderror'] = 'Erreur standard pour {$a}';
 $string['statistics'] = 'Statistiques';
 $string['statistics:componentname'] = 'Rapport de statistiques des tests';
+$string['statistics:view'] = 'Consulter le rapport de statistiques';
 $string['statisticsreport'] = 'Rapport de statistiques';
 $string['statisticsreportgraph'] = 'Statistique des positions de question';
-$string['statistics:view'] = 'Consulter le rapport de statistiques';
 $string['statsfor'] = 'Statistiques de test pour {$a}';

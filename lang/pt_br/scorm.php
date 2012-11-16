@@ -53,9 +53,8 @@ $string['attempts'] = 'Tentativas';
 $string['attemptsx'] = '{$a} tentativas';
 $string['attr_error'] = 'Valor errado para o atributo ({$a->attr}) no tag {$a->tag}.';
 $string['autocontinue'] = 'Continuação Automática';
-$string['autocontinue_help'] = '<p>Se Continuação Automática estiver assinalada como SIM, quando um SCO chamar o método "close communication", automaticamente o próximo SCO disponível será iniciado.</p>
-
-<p>Se estiver assinalado NÃO, os usuários terão de usar o botão "Continue" para seguir adiante.</p>';
+$string['autocontinue_help'] = 'Se Continuação Automática estiver assinalada como SIM, quando um SCO chamar o método "close communication", automaticamente o próximo SCO disponível será iniciado.
+Se estiver assinalado NÃO, os usuários terão de usar o botão "Continue" para seguir adiante.';
 $string['autocontinuedesc'] = 'Esta opção define como padrão a continuação automática';
 $string['averageattempt'] = 'Média de tentativas';
 $string['badmanifest'] = 'Erros no manifesto: consulte o relatório de erros';
@@ -71,7 +70,6 @@ $string['completionscorerequired'] = 'Necessita de pontuação mínima';
 $string['completionstatus_completed'] = 'Completo';
 $string['completionstatus_failed'] = 'Sem sucesso';
 $string['completionstatus_help'] = '# Conclusão da atividade: Exigir status
-
 Marcar um ou mais status exige que o usuário atinja pelo menos um dos status selecionados para ser marcado como concluído nesta atividade do SCORM, bem como qualquer outro requisito de Conclusão da atividade.';
 $string['completionstatus_passed'] = 'Passou';
 $string['completionstatusrequired'] = 'Situação necessária';
@@ -119,7 +117,7 @@ $string['finishscormlinkname'] = 'clique aqui para voltar à página do curso';
 $string['firstaccess'] = 'Primeiro acesso';
 $string['firstattempt'] = 'Primeira tentativa';
 $string['forcecompleted'] = 'Forçar completar';
-$string['forcecompleted_help'] = 'Se ativado, o status da tentativa atual é forçado a &quot;concluído&quot;. Essa configuração só é aplicável a pacotes SCORM 1.2. É útil se o pacote SCORM não lidar com revisitar uma tentativa corretamente, em revisão ou o modo de navegação, ou incorretamente questões do status de conclusão.';
+$string['forcecompleted_help'] = 'Se ativado, o status da tentativa atual é forçado a "concluído". Essa configuração só é aplicável a pacotes SCORM 1.2. É útil se o pacote SCORM não lidar com revisitar uma tentativa corretamente, em revisão ou o modo de navegação, ou incorretamente questões do status de conclusão.';
 $string['forcecompleteddesc'] = 'Esta preferência define o valor padrão para a força de configuração concluída';
 $string['forcejavascript'] = 'Força usuários a utilizarem Javascript';
 $string['forcejavascript_desc'] = 'Se ativado (recomendado) isso impede o acesso a objetos SCORM quando o JavaScript não é suportado / habilitado em um navegador dos usuários. Se desabilitado o usuário pode visualizar o SCORM, mas API comunicação falhará e nenhuma informação grau será salvo';
@@ -136,13 +134,15 @@ $string['gradeaverage'] = 'Média das notas';
 $string['gradeforattempt'] = 'Avaliação por tentativa';
 $string['gradehighest'] = 'Nota mais alta';
 $string['grademethod'] = 'Método de avaliação';
-$string['grademethod_help'] = '<p>Os resultados de uma atividade SCORM/AICC mostrada nas Páginas de Avaliação podem ser calculados em vários modos:</p>
-<ul>
-<li><b>Estado dos SCOes</b><br />Este modo apresenta o número de SCOes completados na atividade. O valor máximo é o número de SCOes.</li>
-<li><b>Nota mais alta</b><br />A página de Avaliação irá mostrar o maior resultado obtido pelos usuários em todos os SCOes completados.</li>
-<li><b>Média das Notas</b><br />Caso você escolha este modo, o será calculada a média de todos os resultados.</li>
-<li><b>Soma de notas</b><br />Com este modo todos os resultados serão somados.</li>
-</ul>';
+$string['grademethod_help'] = 'Os resultados de uma atividade SCORM/AICC mostrada nas Páginas de Avaliação podem ser calculados em vários modos:
+**|Estado dos SCOes**
+Este modo apresenta o número de SCOes completados na atividade. O valor máximo é o número de SCOes.
+**|Nota mais alta**
+A página de Avaliação irá mostrar o maior resultado obtido pelos usuários em todos os SCOes completados.
+**|Média das Notas**
+Caso você escolha este modo, o será calculada a média de todos os resultados.
+**|Soma de notas**
+Com este modo todos os resultados serão somados.';
 $string['grademethoddesc'] = 'Esta opção define a modalidade padrão de avaliação';
 $string['gradereported'] = 'Nota recebida';
 $string['gradescoes'] = 'Objetos de aprendizagem';
@@ -151,11 +151,9 @@ $string['gradesum'] = 'Soma de notas';
 $string['height'] = 'Altura';
 $string['hidden'] = 'Escondido';
 $string['hidebrowse'] = 'Esconder botão Prévia';
-$string['hidebrowse_help'] = '<p>Se essa opção estiver marcado como Sim, o botão de Prévia na página de visualização do pacote SCORM/AICC será escondido.</p>
-
-<p>O aluno pode escolher prever a atividade (modo de navegação), ou tentar respondê-la, no modo normal.</p>
-
-<p>Quando um Objeto de Aprendizado for completado no modo de prévia (navegação), ele fica marcado com o <img src="<?php echo $CFG->wwwroot.\'/mod/scorm/pix/browsed.gif\' ?>" alt="<?php print_string(\'browsed\',\'scorm\') ?>" title="<?php print_string(\'browsed\',\'scorm\') ?>" /> ícone de navegação.</p>';
+$string['hidebrowse_help'] = 'Se essa opção estiver marcado como Sim, o botão de Prévia na página de visualização do pacote SCORM/AICC será escondido.
+O aluno pode escolher prever a atividade (modo de navegação), ou tentar respondê-la, no modo normal.
+Quando um Objeto de Aprendizado for completado no modo de prévia (navegação), ele fica marcado com o ícone de navegação.';
 $string['hidebrowsedesc'] = 'Esta opção define se habilitar ou não a prévia';
 $string['hideexit'] = 'Esconder o botão Sair';
 $string['hidenav'] = 'Esconder botões de navegação';
@@ -196,7 +194,8 @@ $string['lastattemptlockdesc'] = 'Esta preferência define o valor padrão para 
 $string['location'] = 'Mostrar a barra de endereço';
 $string['max'] = 'Pontuação máxima';
 $string['maximumattempts'] = 'Número de tentativas';
-$string['maximumattempts_help'] = '<p>Isso define o número de tentativas permitidas ao usuário.<br />Isso funciona apenas com pacotes SCORM1.2 e AICC. SCORM2004 tem sua pŕopria definição do número máximo de tentativas</p>';
+$string['maximumattempts_help'] = 'Isso define o número de tentativas permitidas ao usuário.
+Isso funciona apenas com pacotes SCORM1.2 e AICC. SCORM2004 tem sua pŕopria definição do número máximo de tentativas';
 $string['maximumattemptsdesc'] = 'Esta opção define o padrão para número máximo de tentativas';
 $string['maximumgradedesc'] = 'Esta opção define o padrão para o cálculo da pontuação máxima';
 $string['menubar'] = 'Mostrar a barra de menu';
@@ -289,19 +288,16 @@ $string['selectnone'] = 'Desmarcar todos';
 $string['show'] = 'Exibir';
 $string['sided'] = 'Ao lado esquerdo';
 $string['skipview'] = 'O estudante salta a página de menu';
-$string['skipview_help'] = '<p>Se você adicionar pacotes com apenas um Objeto de Aprendizado, você pode permitir que o Moodle salte a página de estrutura de conteúdo quando os usuários clicarem numa atividade do SCORM, na página do curso.</p>
+$string['skipview_help'] = 'Se você adicionar pacotes com apenas um Objeto de Aprendizado, você pode permitir que o Moodle salte a página de estrutura de conteúdo quando os usuários clicarem numa atividade do SCORM, na página do curso.
+Você pode escolher:
 
-<p>Você pode escolher:</p>
-
-<ul>
-<li><strong>Nunca</strong> saltar a página de estrutura do conteúdo</li>
-<li><strong>Primeiro acesso</strong> saltar a página de estrutura do conteúdo apenas na primeira vez</li>
-<li><strong>Sempre</strong> saltar a página de estrutura do conteúdo</li>
-</ul>';
+\* **|Nunca** saltar a página de estrutura do conteúdo
+\* **|Primeiro acesso** saltar a página de estrutura do conteúdo apenas na primeira vez
+\* **|Sempre** saltar a página de estrutura do conteúdo';
 $string['skipviewdesc'] = 'Esta opção define o padrão relativo a quando saltar a estrutura de conteúdos de uma página';
 $string['slashargs'] = 'Atenção: slash arguments está desabilitado neste site e isto pode afetar o funcionamento dos objetos';
 $string['stagesize'] = 'Tamanho da Tela/Frame';
-$string['stagesize_help'] = '<p>Essas duas opções definema altura e a largura da janela/frame dos Objetos de Aprendizado.</p>';
+$string['stagesize_help'] = 'Essas duas opções definema altura e a largura da janela/frame dos Objetos de Aprendizado.';
 $string['started'] = 'Iniciado em';
 $string['status'] = 'Estado';
 $string['statusbar'] = 'Mostrar a barra de estado';
@@ -338,7 +334,7 @@ $string['versionwarning'] = 'A versão do manifesto é anterior à 1.3, atençã
 $string['viewallreports'] = 'Ver relatório de {$a} tentativas';
 $string['viewalluserreports'] = 'Ver relatórios de {$a} usuários';
 $string['whatgrade'] = 'Tentativas avaliadas';
-$string['whatgrade_help'] = '<p>Quando você permitir tentativas múltipaas para os usuários, você pode escolher como usar os resultados dessas tentativas no relatório de notas.</p>';
+$string['whatgrade_help'] = 'Quando você permitir tentativas múltipaas para os usuários, você pode escolher como usar os resultados dessas tentativas no relatório de notas.';
 $string['whatgradedesc'] = 'Esta opção define o padrão de avaliação das tentativas';
 $string['width'] = 'Largura';
 $string['window'] = 'Frame/Janela';

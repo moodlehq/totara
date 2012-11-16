@@ -248,7 +248,6 @@ $string['overrides'] = 'Sobrepõe';
 $string['overridesbycontext'] = 'Substituições (pelo contexto)';
 $string['permission'] = 'Permissão';
 $string['permission_help'] = 'Permissões configurações de capbility. Existem 4 opções:
-
 * Não definido
 * Permitir - A permissão é dada para a capability
 * Previnir - A permissão é removida da capability, mesmo quando permitida em um contexto superior

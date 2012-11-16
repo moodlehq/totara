@@ -51,20 +51,17 @@ $string['notenoughanswers'] = 'Legalább egy választ meg kell adnia.';
 $string['nounitdisplay'] = 'Egység pontozása nélkül';
 $string['numericalmultiplier'] = 'Szorzó';
 $string['numericalmultiplier_help'] = 'A szorzó az a tényező, amellyel a helyes számjegyes választ meg kell szorozni.
-
 Az első egység (1. egység) alapszorzója az 1. Így a helyes számjegyes válasz az 5500, az 1. egységnél beállított egység a W lesz, alapszorzója 1, a helyes válasz pedig 5500 W.
-
 Ha a kW egységet 0,001 szorzóval adja hozzá, a helyes válasz 5,5 kW lesz. Vagyis mind az 5500 W, mind az 5,5 kW válasz helyes lesz.
-
 Ügyeljen arra, hogy a szorzás vonatkozik az elfogadott hibára is, így a megengedett 100 W hiba 0,1 kW hibának felel meg.';
 $string['oneunitshown'] = 'Az 1. egység a válasznégyzet mellett automatikusan megjelenik';
 $string['onlynumerical'] = 'Csak számérték pontozására kerül sor, egységek egyáltalán nem szerepeltethetők!';
 $string['pleaseenterananswer'] = 'Adjon meg egy választ.';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Adjon meg egy választ az ezreseket elválasztó ({$a}) jel nélkül.';
 $string['pluginname'] = 'Számjegyes';
+$string['pluginname_help'] = 'A tanuló szemszögéből a számjegyes kérdés megegyezik a kiegészítendő kérdéssel. A különbség az, hogy a számjegyesek esetén elfogadható hiba vehető figyelembe. Így egy adott tartományon belül több válasz egyetlen válaszként vehető figyelembe. Ha pl. a válasz 10 és az elfogadható hiba 2, akkor a 8 és 12 közé eső válaszok mindegyikét helyesként fogadja el a rendszer.';
 $string['pluginnameadding'] = 'Számjegyes kérdés hozzáadása';
 $string['pluginnameediting'] = 'Számjegyes kérdés szerkesztése';
-$string['pluginname_help'] = 'A tanuló szemszögéből a számjegyes kérdés megegyezik a kiegészítendő kérdéssel. A különbség az, hogy a számjegyesek esetén elfogadható hiba vehető figyelembe. Így egy adott tartományon belül több válasz egyetlen válaszként vehető figyelembe. Ha pl. a válasz 10 és az elfogadható hiba 2, akkor a 8 és 12 közé eső válaszok mindegyikét helyesként fogadja el a rendszer.';
 $string['pluginnamesummary'] = 'Számjegyes, esetleg egységeket tartalmazó választ tesz lehetővé, melynek pontozása különféle mintaválaszokkal való összehasonlítás alapján, esetleg tűréshatárokkal pontozható.';
 $string['relative'] = 'Relatív';
 $string['rightexample'] = 'JOBB értéke, pl. 1.00 cm vagy 1.00 km';
@@ -96,6 +93,6 @@ $string['unitposition'] = 'Egység helyzete';
 $string['unitselect'] = 'lenyíló menü';
 $string['validnumberformats'] = 'Érvényes számformátumok';
 $string['validnumberformats_help'] = '* reguláris számok 13500.67 : 13 500.67 : 13500,67: 13 500,67
-* ha az ezreseket , választja el, *mindig* . legyen a tizedesjel, pl. 13,500.67 : 13,500.
+* ha az ezreseket , választja el, \*mindig\* . legyen a tizedesjel, pl. 13,500.67 : 13,500.
 * kitevő, pl. 1.350067 * 10<sup>4</sup> használja az 1.350067 E4 : 1.350067 E04 alakot';
 $string['validnumbers'] = '13500.67 : 13 500.67 : 13,500.67 : 13500,67: 13 500,67 : 1.350067 E4 : 1.350067 E04';

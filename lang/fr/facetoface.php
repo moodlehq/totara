@@ -1,7 +1,27 @@
-<?php // facetoface.php - created with Moodle 1.8.3 + (2007021532)
-      //
-      // Created by Jerome Decuq <jerome451 AT free DOT fr>
-      // Released under the same terms as the Facetoface module
+<?php
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'fr', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = 'Ajouter une nouvelle session';
 $string['addmanageremailaddress'] = 'Ajouter l\'adresse courriel du responsable';
@@ -10,10 +30,15 @@ $string['addremoveattendees'] = 'Ajouter/enlever des inscriptions';
 $string['addsession'] = 'Ajouter une nouvelle session.';
 $string['addstudent'] = 'Ajouter un étudiant';
 $string['alllocations'] = 'Toutes les villes';
+$string['allowoverbook_help'] = '# Autoriser le surbooking
+Quand "autoriser le surbooking" est coché, les apprentis pour s\'enregistrer pour une session face-to-face même si elle est déjà pleine.
+Quand un apprenti s\'inscrit à une session déjà pleine, il recevra un e-mail l\'avertissant qu\'il est sur liste d\'attente pour la session et sera notifié si une réservation devient disponible.';
 $string['allsessionsin'] = 'Toutes les sessions de {$a}';
 $string['alreadysignedup'] = 'Vous vous êtes déjà inscrit(e) à cette activité.';
 $string['answer'] = 'S\'inscrire';
 $string['answercancel'] = 'Se désinscrire';
+$string['approvalreqd_help'] = '# Approbation requise
+Quand "approbation requise" est coché, l\'apprenti devra recevoir l\'approbation de son gestionnaire pour être autorisé à participer à la session face-to-face.';
 $string['assessmentyour'] = 'Votre évaluation';
 $string['attendance'] = 'Présence';
 $string['attendanceinstructions'] = 'Sélectionner les utilisateurs qui ont assisté à la session';
@@ -30,12 +55,21 @@ $string['calendareventdescriptionsession'] = 'Vous avez créé <a href="{$a}">ce
 $string['cancelbooking'] = 'Annuler l\'inscription';
 $string['cancelbookingfor'] = 'Annuler l\'inscription pour {$a}';
 $string['cancellation'] = 'Annulation';
-$string['cancellations'] = 'Annulations';
 $string['cancellationconfirm'] = 'Etes vous sûr(e) de vouloir annuler votre inscription à cette session?';
+$string['cancellationinstrmngr_help'] = '# Notication au gestionnaire
+Quand **Envoyer une notification au gestionnaire** est coché, le texte du champ **Notication au gestionnaire** est envoyé au gestionnaire de l\'apprenti pour l\'informer de l\'annulation d\'une session face-to-face.';
 $string['cancellationmessage'] = 'Message d\'annulation';
+$string['cancellationmessage_help'] = '# Message d\'annulation
+Ce message est envoyé par courriel quand un utilisateur annule son inscription à une session.';
+$string['cancellations'] = 'Annulations';
 $string['cancellationsent'] = 'Vous devriez recevoir un courriel d\'annulation immédiatement.';
 $string['cancellationsentmgr'] = 'Vous et votre responsable devriez recevoir un courriel d\'annulation immédiatement.';
 $string['capacity'] = 'Places réservées';
+$string['capacity_help'] = 'C\'est le nombre de places disponibles à une session.
+Quand une session planifiée atteint ce nombre, il n\'est plus possible aux utilisateurs de s\'y inscrire.
+Si une session est complète:
+* Elle ne sera pas visible sur la page de cours dans "s\'inscrire à une session disponible."
+* Elle apparaitra dans la liste "Afficher toutes les sessions" en grisé et n\'aura pas de lien pour s\'inscrire.';
 $string['changemanageremailaddress'] = 'Changer l\'adresse courriel du responsable';
 $string['changemanageremailinstruction'] = 'Merci d\'entrer l\'adresse courriel de votre responsable ci-dessous.';
 $string['clearall'] = 'Tout effacer';
@@ -43,16 +77,20 @@ $string['closed'] = 'Fermé';
 $string['confirm'] = 'Confirmez';
 $string['confirmanager'] = 'Confirmez l\'adresse courriel de votre responsable';
 $string['confirmation'] = 'Confirmation';
+$string['confirmationinstrmngr_help'] = '# Notification au gestionnaire
+Quand "Envoyer notification au gestionnaire" est coché, le texte du champ "Notification au gestionnaire" est envoyé au gestionnaire l\'avertissant qu\'un membre d\'équipe s\'est inscrit à une session face-to-face.';
 $string['confirmationmessage'] = 'Message de confirmation';
+$string['confirmationmessage_help'] = '# Message de confirmation
+Ce message est envoyé par courriel quand un utilisateur s\'inscrit à une session.';
 $string['confirmationsent'] = 'Vous devriez recevoir un courriel de confirmation immédiatement.';
 $string['confirmationsentmgr'] = 'Vous et votre responsable devriez recevoir un courriel de confirmation immédiatement.';
 $string['confirmmanageremailaddress'] = 'Confirmez l\'adresse courriel de votre responsable';
 $string['confirmmanageremailaddressquestion'] = 'Est-ce que <b>{$a}</b> est toujours l\'adresse courriel de votre responsable?';
 $string['confirmmanageremailinstruction1'] = 'Vous avez précédemment fourni l\'adresse courriel suivante comme étant celle de votre responsable.';
 $string['confirmmanageremailinstruction2'] = 'Est-ce que c\'est toujours l\'adresse courriel de votre responsable?';
+$string['copy'] = 'Copier';
 $string['copyingsession'] = 'Copier en tant que nouvelle session';
 $string['copysession'] = 'Copier la session';
-$string['copy'] = 'Copier';
 $string['cost'] = 'Coût';
 $string['date'] = 'Date';
 $string['dateadd'] = 'Ajouter une nouvelle date';
@@ -63,11 +101,22 @@ $string['deletesession'] = 'Supprimer la session';
 $string['deletesessionconfirm'] = 'Etes vous sûr(e) de vouloir supprimer cette session et toutes les inscriptions pour cette session?';
 $string['deletingsession'] = 'Suppression de la session à {$a}';
 $string['description'] = 'Texte d\'introduction';
+$string['description_help'] = '# Description
+La **description** est la description de cours affichée quand un apprenti s\'engage dans une session face-to-face.
+La **description** s\'affiche également dans le calendrier d\'apprentissage.';
 $string['details'] = 'Détails';
+$string['details_help'] = 'Les détails sont liés à chaque session.
+Si la zone Détails est remplie, ce texte sera affiché sur la page d\'inscription pour les utilisateurs.
+Par défaut, ce texte apparaît également dans les courriels de confirmation, de rappel, d\'annulation et de placement en liste d\'attente.';
 $string['discountcode'] = 'Code de réduction';
+$string['discountcode_help'] = 'Ce code est le code demandé pour obtenir une réduction sur le prix de la formation.
+Si l\'utilisateur ne tape pas le code de réduction, c\'est le le prix normal qui est pris en compte lors de l\'inscription.';
 $string['discountcost'] = 'Coût réduit';
+$string['discountcost_help'] = 'Le prix réduit est le montant demandé aux utilisateurs qui ont une carte de membre.
+Si un utilisateur entre son identifiant de membre lors de l\'inscription, c\'est le prix réduit qui apparaît dans la colonne prix.';
 $string['due'] = 'du';
 $string['duration'] = 'Durée';
+$string['duration_help'] = 'La durée est la durée totale de la formation en heures.';
 $string['early'] = '{$a} tôt';
 $string['editingsession'] = 'Edition de la session de {$a}';
 $string['editsession'] = 'Editer la session';
@@ -75,6 +124,12 @@ $string['email:instrmngr'] = 'Information du responsable';
 $string['email:message'] = 'Message';
 $string['email:subject'] = 'Sujet';
 $string['emailmanager'] = 'Envoyer information au responsable';
+$string['emailmanagercancellation_help'] = '# Envoyer notification au gestionnaire
+Quand "Envoyer notification au gestionnaire" est coché, un e-mail sera envoyé au gestionnaire de l\'apprenti pour l\'avertir quand une réservation face-to-face est annulée.';
+$string['emailmanagerconfirmation_help'] = '# Envoyer notification au gestionnaire
+Quand "Envoyer notification au gestionnaire" est coché, un e-mail de confirmation sera envoyé au gestionnaire de l\'apprenti quand celui-ci s\'inscrit à une session face-to-face.';
+$string['emailmanagerreminder_help'] = '# Envoyer notification au gestionnaire
+Quand "envoyer une notification au gestionnaire" est coché, un message de rappel sera envoyé au gestionnaire de l\'apprenti quelques jours avant la date de début de la session face-to-face.';
 $string['emptylocation'] = 'Ville est vide';
 $string['error:addalreadysignedupattendee'] = '{$a} est déjà inscrit(e) à cette activité.';
 $string['error:addattendee'] = 'Impossible d\'ajouter {$a} à cette session.';
@@ -108,8 +163,8 @@ $string['error:problemsigningup'] = 'Il y a eu un problème pour vous inscrire';
 $string['error:removeattendee'] = 'Impossible d\'enlever {$a} de cette session.';
 $string['excelformat'] = 'Excel';
 $string['export'] = 'Exporter';
-$string['exporttofile'] = 'Exporter vers un fichier';
 $string['exportattendance'] = 'Exporter la présence';
+$string['exporttofile'] = 'Exporter vers un fichier';
 $string['facetoface'] = 'Inscriptions';
 $string['facetoface:addattendees'] = 'Ajouter des étudiants d\'une session de formation';
 $string['facetoface:editsessions'] = 'Ajouter, copier et supprimer des sessions de formation';
@@ -134,6 +189,9 @@ $string['import'] = 'Importation';
 $string['info'] = 'Information';
 $string['late'] = '{$a} en retard';
 $string['location'] = 'Ville';
+$string['location_help'] = 'Lieu indique le lieu de la session (ville, département, région, etc).
+Le lieu est affiché sur la page de cours avec les dates et heures de début et de fin de session. Il est aussi indiqué sur la page d\'inscription, la page "Afficher toutes les sessions" et tous les courriels envoyés.
+Sur la page "Afficher toutes les sessions", la liste des sessions peut aussi être filtrée par lieu.';
 $string['lookfor'] = 'Recherche';
 $string['manageradded'] = 'L\'adresse courriel de votre responsable a été acceptée';
 $string['managerchanged'] = 'L\'adresse courriel de votre responsable a été changée';
@@ -150,6 +208,10 @@ $string['message'] = 'Changement d\'inscription à la formation {$a->coursename}
 
 Une place s\'est libérée pour la session du  {$a->duedate} ({$a->name}) dnas le cours {$a->coursename}.
 Vous avez été inscrit. Si la date ne vous convient plus, veuillez vous désinscrire: <a href=\'{$a->url}\'>{$a->url}</a>.';
+$string['mods_help'] = '# Activités de formation
+Ces activités sont utilisées pour gérer des séances qui nécessitent une inscription préalable.
+Chaque activité est proposée en tant qu\'une ou plusieurs sessions identiques. Ces sessions peuvent être organisées sur un ou plusieurs jours.
+Des messages de rappel sont envoyés aux utilisateurs et à leurs responsables quelques jours avant que la session ne commence. Les utilisateurs peuvent s\'inscrire ou annuler leur inscription.';
 $string['modulename'] = 'Inscription';
 $string['modulenameplural'] = 'Inscriptions';
 $string['moreinfo'] = 'Plus d\'information';
@@ -159,13 +221,20 @@ $string['nofacetofaces'] = 'Il n\'y a pas d\'inscriptions';
 $string['none'] = 'Aucun';
 $string['noremindersneedtobesent'] = 'Aucun rappel ne nécessite d\'être envoyé';
 $string['normalcost'] = 'Coût normal';
+$string['normalcost_help'] = 'Le prix normal est celui demandé aux utilisateurs qui n\'ont pas de carte de membre.
+Le prix normal est celui affiché dans le carnet de notes, à moins que l\'utilisateur n\'est donné un identifiant de membre lors de l\'inscription.';
 $string['nosignedupusers'] = 'Aucun utilisateur n\'est inscrit pour cette session';
 $string['note'] = 'Note';
 $string['notefull'] = 'Même si la session est complète, vous pouvez encore vous inscrire: vous serez mis sur liste d\'attente (en rouge). Si quelqu\'un se désinscrit, le premier étudiant de la liste sera placé dans la liste des inscrits et recevra une confirmation par courriel.';
-$string['notificationtype'] = 'Type de notification';
 $string['notificationboth'] = 'Courriel et iCalendar';
 $string['notificationemail'] = 'Courriel seulement';
 $string['notificationical'] = 'iCalendar seulement';
+$string['notificationtype'] = 'Type de notification';
+$string['notificationtype_help'] = '# Type de notification
+Le type de notification permet à l\'apprenti de choisir la manière dont ils souhaitent être informés de leur réservation.
+* Rendez-vous iCalendar seulement
+* E-mail de notification seulement
+* E-mail de notification et rendez-vous iCalendar';
 $string['notsubmittedyet'] = 'Pas encore évalué';
 $string['noupcoming'] = 'Aucune session prévue';
 $string['odsformat'] = 'OpenDocument';
@@ -195,9 +264,23 @@ $string['really'] = 'Voulez-vous vraiment supprimer tous les résultats pour cet
 $string['registeredon'] = 'Inscrit(e) le';
 $string['registrations'] = 'Inscriptions';
 $string['reminder'] = 'Rappel';
+$string['reminderinstrmngr_help'] = '# Notification pour gestionnaire
+Quand **Envoyer notification au gestionnaire** est cochée, le texte du champ **Notice pour gestionnaire** est envoyé au gestionnaire de l\'apprenti lui signifiant que l\'apprenti s\'est inscrit à une session face-to-face.';
 $string['remindermessage'] = 'Message de rappel';
+$string['remindermessage_help'] = '# Message de rappel
+Ce message est envoyé par courriel quelques jours avant le début de la session.';
 $string['reminderperiod'] = 'Envoyer le rappel combien de jours avant?';
+$string['reminderperiod_help'] = '# Période de rappel
+Le message de rappel sera envoyé ce nombre de jours avant le début de la session.';
+$string['requestmessage_help'] = '# Messages de requête
+Quand **approbation requise** est activé, la section **Message de requête** est disponible.
+La section **Message de requête** affiche les notifications envoyées à l\'apprenti et son gestionnaire à propos du processus d\'approbation pour la participation de l\'apprenti aux sessions face-to-face.
+**Sujet :** est la ligne de sujet qui apparaît dans les e-mails de demande d\'approbation envoyées au gestionnaire et à l\'apprenti.
+**Message :** est le texte de l\'e-mail envoyé à l\'apprenti et leur signifiant que leur requête pour assister à la session face-to-face a été envoyée à leur gestionnaire pour approbation.
+**Notification pour gestionnaires :** est le texte de l\'e-mail envoyé au gestionnaire de l\'apprenti demandant à assister à une session face-to-face.';
 $string['room'] = 'Salle';
+$string['room_help'] = 'C\'est le numéro de la salle ou a lieu la formation.
+Ce numéro est affiché sur la page d\'inscription, la page "Afficher toutes les sessions et dans tous les courriels.';
 $string['saveallfeedback'] = 'Enregistrer toutes les réponses';
 $string['saveattendance'] = 'Enregistrer la présence';
 $string['scheduledsession'] = 'Session à venir';
@@ -207,12 +290,26 @@ $string['seeattendees'] = 'Afficher les inscrits';
 $string['sentremindermanager'] = 'Envoyer un courriel de rappel au responsable de l\'utilisateur';
 $string['sentreminderuser'] = 'Envoyer un courriel de rappel à l\'utilisateur';
 $string['sessiondate'] = 'Date de la session';
+$string['sessiondate_help'] = 'La date de session est la date à laquelle la session est programmée.';
 $string['sessiondatetime'] = 'Date et heure de la session';
 $string['sessiondatetimeknown'] = 'Date et heure de la session connues';
+$string['sessiondatetimeknown_help'] = '**Si les date et heure de la session sont connues**
+Si \'Oui\' est donné comme valeur pour ce paramètre ces dates et heures seront affichées sur la page de la formation (si la session est à venir et ouverte à l\'inscription), la page "Afficher toutes les sessions," la page d\'inscription, ainsi que tous les courriels liés à la session.
+Quand un utilisateur s\'inscrit à une session avec dates et heures connues:
+* L\'utilisateur et son responsable recevront un courriel de confirmation (celui configuré par les champs "Sujet de la confirmation" et "message de confirmation" dans les paramètres de la formation).
+* Ils recevront aussi un courriel de rappel (celui configuré par les champs "Sujet du rappel" et "message de rappel" dans les paramètres de la formation. Le rappel sera envoyé le nombre de jours donné par "Période de rappel" avant la session.)
+**Si les date et heure de la session ne sont pas connues**
+Si \'Oui\' est donné comme valeur pour ce paramètre, le texte "A définir" sera affiché sur la page de la formation, la page "Afficher toutes les sessions," la page d\'inscription, ainsi que tous les courriels liés à la session.
+Quand un utilisateur s\'inscrit à une session "à définir":
+* il ne reçoit pas le message de confirmation, mais celui configuré par les champs "Sujet de message d\'attente" et "message d\'attente" dans les paramètres de la formation.).
+* il ne recevra pas de rappel.
+* il ne recevra pas de courriel d\'annulation.';
 $string['sessionfinishtime'] = 'Heure de fin de session';
 $string['sessionover'] = 'Session terminée';
 $string['sessions'] = 'Sessions';
 $string['sessionsoncoursepage'] = 'Sessions affichées sur la page du cours';
+$string['sessionsoncoursepage_help'] = '# Sessions sur la page d\'inscription
+C\'est le nombre de sessions de formation affichées par page.';
 $string['sessionstartdate'] = 'Date de début de la session';
 $string['sessionstarttime'] = 'Heure de début de la session';
 $string['sessionvenue'] = 'Lieu de la session';
@@ -220,12 +317,10 @@ $string['setting:addchangemanageremail'] = 'Demander aux utilisateurs l\'adresse
 $string['setting:addchangemanageremail_caption'] = 'Courriel du responsable :';
 $string['setting:defaultcancellationinstrmngr'] = 'Messages d\'annulation par défaut envoyés aux responsables.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Message d\'annulation (responsable)';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** L\'annulation de l\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultcancellationinstrmngrdefault'] = '***Information***
 
-L\'inscription de [firstname] [lastname] a été annulée pour la formation suivante et vous êtes désigné comme son responsable.
-
-';
-$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** L\'annulation de l\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
+L\'inscription de [firstname] [lastname] a été annulée pour la formation suivante et vous êtes désigné comme son responsable.';
 $string['setting:defaultcancellationmessage'] = 'Message d\'annulation par défaut envoyés aux utilisateurs.';
 $string['setting:defaultcancellationmessage_caption'] = 'Message d\'annulation';
 $string['setting:defaultcancellationmessagedefault'] = 'Ce message vous confirme que votre inscription à la session suivante a été annulée:
@@ -246,14 +341,12 @@ $string['setting:defaultcancellationsubject_caption'] = 'Sujet d\'annulation';
 $string['setting:defaultcancellationsubjectdefault'] = 'Annulation de l\'inscription à la formation';
 $string['setting:defaultconfirmationinstrmngr'] = 'Messages de confirmation par défaut envoyés aux responsables.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Message de confirmation (responsable)';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** L\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '***Information***
 
 [firstname] [lastname] a été inscrit pour la formation suivante et vous avez été désigné comme son responsable.
 
-Si vous n\'êtes pas son responsable et avez reçu ce message par erreur,merci de le signaler en y répondant.
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** L\'inscription de [firstname] [lastname] est en copie ci-dessous ****';
+Si vous n\'êtes pas son responsable et avez reçu ce message par erreur,merci de le signaler en y répondant.';
 $string['setting:defaultconfirmationmessage'] = 'Messages de confirmation par défaut envoyés aux utilisateurs.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Message de confirmation';
 $string['setting:defaultconfirmationmessagedefault'] = 'Ce message vous confirme que vous êtes inscrit(e) à la formation suivante:
@@ -284,14 +377,12 @@ $string['setting:defaultconfirmationsubject_caption'] = 'Sujet de confirmation';
 $string['setting:defaultconfirmationsubjectdefault'] = 'Confirmation d\'inscription:[facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaultreminderinstrmngr'] = 'Messages de rappel par défaut envoyés aux responsables.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Message de rappel (responsable)';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Le courriel de rappel à [firstname] [lastname] est en copie ci-dessous ****';
 $string['setting:defaultreminderinstrmngrdefault'] = '***Rappel***
 
 [firstname] [lastname] est inscrit pour assister à la formation ci-dessus et a également reçu ce message de rappel.
 
-Si vous n\'êtes pas le responsable de cette personne et pensez avoir reçu ce message par erreur, merci d\'y répondre pour le signaler.
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Le courriel de rappel à [firstname] [lastname] est en copie ci-dessous ****';
+Si vous n\'êtes pas le responsable de cette personne et pensez avoir reçu ce message par erreur, merci d\'y répondre pour le signaler.';
 $string['setting:defaultremindermessage'] = 'Messages de rappel par défaut envoyés aux utilisateurs.';
 $string['setting:defaultremindermessage_caption'] = 'Message de rappel';
 $string['setting:defaultremindermessagedefault'] = 'Ce message vous rappelle que vous êtes inscrit(e) à la session suivante:
@@ -318,6 +409,7 @@ Pour annuler votre inscription, retournez sur le site, ensuite à la page de cet
 $string['setting:defaultremindersubject'] = 'Sujet par défaut des messages de rappel.';
 $string['setting:defaultremindersubject_caption'] = 'Sujet de rappel';
 $string['setting:defaultremindersubjectdefault'] = 'Rappel d\'inscription:[facetofacename], [starttime]-[finishtime], [sessiondate]';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La demande de réservation de l\'utilisateur [firstname] [lastname] se trouve en copie ci-dessous ****';
 $string['setting:defaultrequestinstrmngrdefault'] = 'Ce message vous informe que votre coéquipier [firstname] [lastname] a demandé une réservation au cours affiché ci-dessous.
 
 Cours: [facetofacename]
@@ -332,11 +424,7 @@ Lieu: [session:venue]
 Salle: [session:room]
 
 Veuillez suivre le lien suivant afin d\'approuver la demande:
-[attendeeslink]
-
-';
-$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La demande de réservation de l\'utilisateur [firstname] [lastname] se trouve en copie ci-dessous ****';
-
+[attendeeslink]';
 $string['setting:defaultwaitlistedmessage'] = 'Messages de liste d\'attente par défaut envoyés aux utilisateurs.';
 $string['setting:defaultwaitlistedmessage_caption'] = 'Message de liste d\'attente';
 $string['setting:defaultwaitlistedmessagedefault'] = 'Ce message vous informe que vous avez été ajouté(e) à la liste d\'attente pour:
@@ -357,6 +445,10 @@ $string['setting:disableicalcancel_caption'] = 'Désactiver les annulations iCal
 $string['setting:fromaddress'] = 'Ce qui apparaîtra dans le champ "De" des courriels de rappel envoyés par ce module.';
 $string['setting:fromaddress_caption'] = 'Courriel d\'envoi :';
 $string['setting:fromaddressdefault'] = 'cachin@exemple.com';
+$string['setting:hidecost'] = 'Masquer les deux champs de coût.';
+$string['setting:hidecost_caption'] = 'Masquer le coût :';
+$string['setting:hidediscount'] = 'Masquer seulement le champ de coût réduit.';
+$string['setting:hidediscount_caption'] = 'Masquer le coût réduit :';
 $string['setting:manageraddressformat'] = 'Suffixe qui doit être présent dans l\'adresse de courriel du responsable pour que celle-ci soit considérée valide.';
 $string['setting:manageraddressformat_caption'] = 'Suffixe obligatoire :';
 $string['setting:manageraddressformatreadable'] = 'Description rapide des restrictions en matière d\'adresse courriel des responsables. Ce paramètre n\'a aucun effet si le précédent n\'est pas utilisé.';
@@ -364,11 +456,11 @@ $string['setting:manageraddressformatreadable_caption'] = 'Exemple du format :';
 $string['setting:manageraddressformatreadabledefault'] = 'nom.prénom@site.fr';
 $string['setting:oneemailperday'] = 'Envoyer un seul message de confirmation pour les sessions de plus d\'une journée.';
 $string['setting:oneemailperday_caption'] = 'Un message par jour :';
-$string['setting:hidecost'] = 'Masquer les deux champs de coût.';
-$string['setting:hidecost_caption'] = 'Masquer le coût :';
-$string['setting:hidediscount'] = 'Masquer seulement le champ de coût réduit.';
-$string['setting:hidediscount_caption'] = 'Masquer le coût réduit :';
+$string['shortname_help'] = '# Nom abrégé
+Le **nom abrégé** est la description de la session apparaissant sur le calendrier d\'apprentissage quand **Afficher sur le calendrier** est activé.';
 $string['showbylocation'] = 'Montrer par ville';
+$string['showoncalendar_help'] = '# Afficher sur le calendrier
+Quand **Afficher sur le calendrier** est coché les sessions d\'activité face-to-face s\'affichent sur le calendrier d\'apprentissage.';
 $string['sign-ups'] = 'Inscriptions';
 $string['signup'] = 'Inscription';
 $string['signupfor'] = 'Inscription pour {$a}';
@@ -380,15 +472,25 @@ $string['submit'] = 'S\'inscrire';
 $string['submitted'] = 'Inscrit';
 $string['summary'] = 'Résumé';
 $string['suppressemail'] = 'Empêcher les envois de courriels';
+$string['suppressemail_help'] = '# Empêcher l\'envoi de courriels
+Utilisez cette option si vous désirez ajouter/enlever des utilisateurs à cette sesssion sans que les avis par courriel ne soient envoyés.';
 $string['takeattendance'] = 'Noter la présence';
 $string['thirdpartyemailaddress'] = 'Adresse du tiers';
+$string['thirdpartyemailaddress_help'] = '# Adresse courriel d\'un tiers
+Vous pouvez spécifier l\'adresse courriel d\'un tiers (comme un formateur externe par exemple) qui recevra un courriel à chaque fois qu\'un utilisateur s\'inscrit à une session.';
 $string['thirdpartywaitlist'] = 'Aviser le tiers des ajouts à la liste d\'attente';
+$string['thirdpartywaitlist_help'] = '# Aviser le tiers des ajouts à la liste d\'attente
+Si vous désirez aviser le tiers par courriel lorsque des utilisateurs s\'incrivent sur une liste d\'attente, activez cette option.
+Si cette option est désactivée, le tiers ne recevra des avis par courriels que lors d\'une inscription ou d\'une annulation dans une session prévue.
+Cette option est utile dans le cas où un tiers désire attendre qu\'il y ait un certain nombre d\'inscriptions avant d\'offrir une session.';
 $string['time'] = 'Heure';
+$string['timecancelled'] = 'Heure d\'annulation';
 $string['timedue'] = 'Limite d\'inscription';
 $string['timefinish'] = 'Heure de fin';
-$string['timecancelled'] = 'Heure d\'annulation';
+$string['timefinish_help'] = 'C\'est le moment auquel la session se termine.';
 $string['timesignedup'] = 'Heure d\'inscription';
 $string['timestart'] = 'Heure de début';
+$string['timestart_help'] = 'C\'est le moment auquel la session commence.';
 $string['unknowndate'] = '(date inconnue)';
 $string['unknowntime'] = '(heure inconnue)';
 $string['upcomingsessions'] = 'Sessions futures';
@@ -397,164 +499,18 @@ $string['usernotsignedup'] = 'Statut: non-inscrit';
 $string['usersignedup'] = 'Statut: inscrit';
 $string['usersignedupon'] = 'L\'utilisateur s\'est inscrit le {$a}';
 $string['venue'] = 'Lieu';
+$string['venue_help'] = 'C\'est l\'endroit ou la session aura lieu.
+Il est affiché pour le personnel sur la page d\'inscription, la page "Afficher toutes les sessions" et dans tous les messages par courriel.';
 $string['viewallsessions'] = 'Afficher toutes les sessions';
 $string['viewsubmissions'] = 'Afficher les inscriptions';
 $string['wait-list'] = 'Liste d\'attente';
 $string['wait-listed'] = 'A définir';
+$string['waitedlistmessage_help'] = '# Message de liste d\'attente
+Ce message est envoyé quand les utilisateurs s\'inscrivent à une session en attente.';
 $string['waitlistedmessage'] = 'Message de liste d\'attente';
+$string['waitlistedmessage_help'] = '# Message de liste d\'attente
+Ce message est envoyé chaque fois qu\'un utilisateur s\'inscrit en liste d\'attente.';
 $string['xhours'] = '{$a} heures';
 $string['xminutes'] = '{$a} minutes';
 $string['youarebooked'] = 'Vous êtes inscrit(e) à la session suivante';
 $string['youremailaddress'] = 'Votre adresse de courriel';
-$string['sessionsoncoursepage_help'] = '# Sessions sur la page d\'inscription
-
-C\'est le nombre de sessions de formation affichées par page.';
-$string['sessiondatetimeknown_help'] = '**Si les date et heure de la session sont connues**
-
-Si \'Oui\' est donné comme valeur pour ce paramètre ces dates et heures seront affichées sur la page de la formation (si la session est à venir et ouverte à l\'inscription), la page "Afficher toutes les sessions," la page d\'inscription, ainsi que tous les courriels liés à la session.
-
-Quand un utilisateur s\'inscrit à une session avec dates et heures connues:
-
-*   L\'utilisateur et son responsable recevront un courriel de confirmation (celui configuré par les champs "Sujet de la confirmation" et "message de confirmation" dans les paramètres de la formation).
-*   Ils recevront aussi un courriel de rappel (celui configuré par les champs "Sujet du rappel" et "message de rappel" dans les paramètres de la formation. Le rappel sera envoyé le nombre de jours donné par "Période de rappel" avant la session.)
-
-**Si les date et heure de la session ne sont pas connues**
-
-Si \'Oui\' est donné comme valeur pour ce paramètre, le texte "A définir" sera affiché sur la page de la formation, la page "Afficher toutes les sessions," la page d\'inscription, ainsi que tous les courriels liés à la session.
-
-Quand un utilisateur s\'inscrit à une session "à définir":
-
-*   il ne reçoit pas le message de confirmation, mais celui configuré par les champs "Sujet de message d\'attente" et "message d\'attente" dans les paramètres de la formation.).
-*   il ne recevra pas de rappel.
-*   il ne recevra pas de courriel d\'annulation.';
-$string['suppressemail_help'] = '# Empêcher l\'envoi de courriels
-
-Utilisez cette option si vous désirez ajouter/enlever des utilisateurs à cette sesssion sans que les avis par courriel ne soient envoyés.';
-$string['room_help'] = 'C\'est le numéro de la salle ou a lieu la formation.
-
-Ce numéro est affiché sur la page d\'inscription, la page "Afficher toutes les sessions et dans tous les courriels.';
-$string['thirdpartyemailaddress_help'] = '# Adresse courriel d\'un tiers
-
-Vous pouvez spécifier l\'adresse courriel d\'un tiers (comme un formateur externe par exemple) qui recevra un courriel à chaque fois qu\'un utilisateur s\'inscrit à une session.';
-$string['sessiondate_help'] = 'La date de session est la date à laquelle la session est programmée.';
-$string['timefinish_help'] = 'C\'est le moment auquel la session se termine.';
-$string['waitedlistmessage_help'] = '# Message de liste d\'attente
-
-Ce message est envoyé quand les utilisateurs s\'inscrivent à une session en attente.';
-$string['venue_help'] = 'C\'est l\'endroit ou la session aura lieu.
-
-Il est affiché pour le personnel sur la page d\'inscription, la page "Afficher toutes les sessions" et dans tous les messages par courriel.';
-$string['timestart_help'] = 'C\'est le moment auquel la session commence.';
-$string['reminderperiod_help'] = '# Période de rappel
-
-Le message de rappel sera envoyé ce nombre de jours avant le début de la session.';
-$string['thirdpartywaitlist_help'] = '# Aviser le tiers des ajouts à la liste d\'attente
-
-Si vous désirez aviser le tiers par courriel lorsque des utilisateurs s\'incrivent sur une liste d\'attente, activez cette option.
-
-Si cette option est désactivée, le tiers ne recevra des avis par courriels que lors d\'une inscription ou d\'une annulation dans une session prévue.
-
-Cette option est utile dans le cas où un tiers désire attendre qu\'il y ait un certain nombre d\'inscriptions avant d\'offrir une session.';
-$string['normalcost_help'] = 'Le prix normal est celui demandé aux utilisateurs qui n\'ont pas de carte de membre.
-
-Le prix normal est celui affiché dans le carnet de notes, à moins que l\'utilisateur n\'est donné un identifiant de membre lors de l\'inscription.';
-$string['details_help'] = 'Les détails sont liés à chaque session.
-
-Si la zone Détails est remplie, ce texte sera affiché sur la page d\'inscription pour les utilisateurs.
-
-Par défaut, ce texte apparaît également dans les courriels de confirmation, de rappel, d\'annulation et de placement en liste d\'attente.';
-$string['confirmationmessage_help'] = '# Message de confirmation
-
-Ce message est envoyé par courriel quand un utilisateur s\'inscrit à une session.';
-$string['capacity_help'] = 'C\'est le nombre de places disponibles à une session.
-
-Quand une session planifiée atteint ce nombre, il n\'est plus possible aux utilisateurs de s\'y inscrire.
-
-Si une session est complète:
-
-*   Elle ne sera pas visible sur la page de cours dans "s\'inscrire à une session disponible."
-*   Elle apparaitra dans la liste "Afficher toutes les sessions" en grisé et n\'aura pas de lien pour s\'inscrire.';
-$string['cancellationmessage_help'] = '# Message d\'annulation
-
-Ce message est envoyé par courriel quand un utilisateur annule son inscription à une session.';
-$string['discountcode_help'] = 'Ce code est le code demandé pour obtenir une réduction sur le prix de la formation.
-
-Si l\'utilisateur ne tape pas le code de réduction, c\'est le le prix normal qui est pris en compte lors de l\'inscription.';
-$string['discountcost_help'] = 'Le prix réduit est le montant demandé aux utilisateurs qui ont une carte de membre.
-
-Si un utilisateur entre son identifiant de membre lors de l\'inscription, c\'est le prix réduit qui apparaît dans la colonne prix.';
-$string['mods_help'] = '# Activités de formation
-
-Ces activités sont utilisées pour gérer des séances qui nécessitent une inscription préalable.
-
-Chaque activité est proposée en tant qu\'une ou plusieurs sessions identiques. Ces sessions peuvent être organisées sur un ou plusieurs jours.
-
-Des messages de rappel sont envoyés aux utilisateurs et à leurs responsables quelques jours avant que la session ne commence. Les utilisateurs peuvent s\'inscrire ou annuler leur inscription.';
-$string['remindermessage_help'] = '# Message de rappel
-
-Ce message est envoyé par courriel quelques jours avant le début de la session.';
-$string['location_help'] = 'Lieu indique le lieu de la session (ville, département, région, etc).
-
-Le lieu est affiché sur la page de cours avec les dates et heures de début et de fin de session. Il est aussi indiqué sur la page d\'inscription, la page "Afficher toutes les sessions" et tous les courriels envoyés.
-
-Sur la page "Afficher toutes les sessions", la liste des sessions peut aussi être filtrée par lieu.';
-$string['duration_help'] = 'La durée est la durée totale de la formation en heures.';
-$string['requestmessage_help'] = '# Messages de requête
-
-Quand **approbation requise** est activé, la section **Message de requête** est disponible.
-
-La section **Message de requête** affiche les notifications envoyées à l\'apprenti et son gestionnaire à propos du processus d\'approbation pour la participation de l\'apprenti aux sessions face-to-face.
-
-**Sujet :** est la ligne de sujet qui apparaît dans les e-mails de demande d\'approbation envoyées au gestionnaire et à l\'apprenti.
-
-**Message :** est le texte de l\'e-mail envoyé à l\'apprenti et leur signifiant que leur requête pour assister à la session face-to-face a été envoyée à leur gestionnaire pour approbation.
-
-**Notification pour gestionnaires :** est le texte de l\'e-mail envoyé au gestionnaire de l\'apprenti demandant à assister à une session face-to-face.';
-$string['notificationtype_help'] = '# Type de notification
-
-Le type de notification permet à l\'apprenti de choisir la manière dont ils souhaitent être informés de leur réservation.
-
-*   Rendez-vous iCalendar seulement</i> 
-    *   E-mail de notification seulement</i> 
-        *   E-mail de notification et rendez-vous iCalendar</i> </ul>';
-$string['reminderinstrmngr_help'] = '# Notification pour gestionnaire
-
-Quand **Envoyer notification au gestionnaire** est cochée, le texte du champ **Notice pour gestionnaire** est envoyé au gestionnaire de l\'apprenti lui signifiant que l\'apprenti s\'est inscrit à une session face-to-face.';
-$string['shortname_help'] = '# Nom abrégé
-
-Le **nom abrégé** est la description de la session apparaissant sur le calendrier d\'apprentissage quand **Afficher sur le calendrier** est activé.';
-$string['showoncalendar_help'] = '# Afficher sur le calendrier
-
-Quand **Afficher sur le calendrier** est coché les sessions d\'activité face-to-face s\'affichent sur le calendrier d\'apprentissage.';
-$string['waitlistedmessage_help'] = '# Message de liste d\'attente
-
-Ce message est envoyé chaque fois qu\'un utilisateur s\'inscrit en liste d\'attente.';
-$string['confirmationinstrmngr_help'] = '# Notification au gestionnaire
-
-Quand "Envoyer notification au gestionnaire" est coché, le texte du champ "Notification au gestionnaire" est envoyé au gestionnaire l\'avertissant qu\'un membre d\'équipe s\'est inscrit à une session face-to-face.';
-$string['description_help'] = '# Description
-
-La **description** est la description de cours affichée quand un apprenti s\'engage dans une session face-to-face. 
-
-La **description** s\'affiche également dans le calendrier d\'apprentissage.';
-$string['allowoverbook_help'] = '# Autoriser le surbooking
-
-Quand "autoriser le surbooking" est coché, les apprentis pour s\'enregistrer pour une session face-to-face même si elle est déjà pleine.
-
-Quand un apprenti s\'inscrit à une session déjà pleine, il recevra un e-mail l\'avertissant qu\'il est sur liste d\'attente pour la session et sera notifié si une réservation devient disponible.';
-$string['approvalreqd_help'] = '# Approbation requise
-
-Quand "approbation requise" est coché, l\'apprenti devra recevoir l\'approbation de son gestionnaire pour être autorisé à participer à la session face-to-face.';
-$string['cancellationinstrmngr_help'] = '# Notication au gestionnaire
-
-Quand **Envoyer une notification au gestionnaire** est coché, le texte du champ **Notication au gestionnaire** est envoyé au gestionnaire de l\'apprenti pour l\'informer de l\'annulation d\'une session face-to-face.';
-$string['emailmanagerreminder_help'] = '# Envoyer notification au gestionnaire
-
-Quand "envoyer une notification au gestionnaire" est coché, un message de rappel sera envoyé au gestionnaire de l\'apprenti quelques jours avant la date de début de la session face-to-face.';
-$string['emailmanagercancellation_help'] = '# Envoyer notification au gestionnaire
-
-Quand "Envoyer notification au gestionnaire" est coché, un e-mail sera envoyé au gestionnaire de l\'apprenti pour l\'avertir quand une réservation face-to-face est annulée.';
-$string['emailmanagerconfirmation_help'] = '# Envoyer notification au gestionnaire
-
-Quand "Envoyer notification au gestionnaire" est coché, un e-mail de confirmation sera envoyé au gestionnaire de l\'apprenti quand celui-ci s\'inscrit à une session face-to-face.';
-

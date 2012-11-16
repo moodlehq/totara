@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'Instellingen voor uploadplugin';
 $string['pluginname'] = 'Upload een bestand';
 $string['pluginname_help'] = 'Upload een bestand naar Moodle';
+$string['upload:view'] = 'Gebruik uploaden in de file picker';
 $string['upload_error_cant_write'] = 'Kon bestand niet op schijf bewaren';
 $string['upload_error_extension'] = 'Een PHP-extentie heeft de bestandsupload gestopt.';
 $string['upload_error_form_size'] = 'Het geüploade bestand is groter dan de MAX_FILE_SIZE instelling die in het HTML-formulier was opgegeven.';
@@ -35,4 +36,3 @@ $string['upload_error_ini_size'] = 'Het geüploade bestand is groter dan de uplo
 $string['upload_error_no_file'] = 'Geen bestand geüploaded.';
 $string['upload_error_no_tmp_dir'] = 'PHP heeft geen tijdelijke map';
 $string['upload_error_partial'] = 'Het geüploade bestand is slechts gedeeltelijk geüploaded.';
-$string['upload:view'] = 'Gebruik uploaden in de file picker';

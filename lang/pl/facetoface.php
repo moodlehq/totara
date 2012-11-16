@@ -1,5 +1,27 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.1
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'pl', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = 'Dodawanie nowej sesji w {$a}';
 $string['addmanageremailaddress'] = 'Dodaj adres e-mail kierownika';
@@ -13,11 +35,16 @@ $string['addsession'] = 'Dodaj nową sesję';
 $string['addstudent'] = 'Dodaj uczestnika';
 $string['alllocations'] = 'Wszystkie lokalizacje';
 $string['allowoverbook'] = 'Zezwalaj na nadmierne rezerwacje';
+$string['allowoverbook_help'] = '# Dopuszczaj nadmierne rezerwacje
+W przypadku zaznaczenia pola "Dopuszczaj nadmierne rezerwacje" uczestnicy będą mogli zapisać się na sesję bezpośrednią nawet, jeśli jest już zapełniona.
+Jeśli uczestnik zapisze się na sesję, która jest już zapełniona, otrzyma wiadomość e-mail z informacją, że został umieszczony na liście oczekujących na sesję i że otrzyma powiadomienie, gdy zapis będzie możliwy.';
 $string['allsessionsin'] = 'Wszystkie sesje w {$a}';
 $string['alreadysignedup'] = 'Masz już rejestrację na tę czynność bezpośrednią.';
 $string['answer'] = 'Zarejestruj się';
 $string['answercancel'] = 'Wyrejestruj się';
 $string['approvalreqd'] = 'Wymagane zatwierdzenie';
+$string['approvalreqd_help'] = '# Wymagane zatwierdzenie
+W przypadku zaznaczenia opcji "Wymagane zatwierdzenie" uczestnik będzie potrzebował zatwierdzenia od kierownika, aby móc uczestniczyć w sesji bezpośredniej.';
 $string['approve'] = 'Zatwierdź';
 $string['approveinstruction'] = 'Aby zatwierdzić rejestrację na sesję, naciśnij przycisk akceptacji';
 $string['assessmentyour'] = 'Twój przydział';
@@ -40,7 +67,11 @@ $string['cancelbooking'] = 'Anuluj rezerwację';
 $string['cancelbookingfor'] = 'Anuluj rezerwację na {$a}';
 $string['cancellation'] = 'Anulowanie';
 $string['cancellationconfirm'] = 'Czy na pewno chcesz anulować rezerwację na tę sesję?';
+$string['cancellationinstrmngr_help'] = '# Informacje dla kierownika
+W przypadku zaznaczenia opcji **Wyślij informacje do kierownika** tekst w polu **Informacje dla kierownika** jest wysyłany do kierownika uczestnika, powiadamiając, że rezerwacja bezpośrednia została anulowana.';
 $string['cancellationmessage'] = 'Wiadomość o anulowaniu';
+$string['cancellationmessage_help'] = '# Wiadomość o anulowaniu
+Ta wiadomość jest wysyłana zawsze, gdy użytkownik anuluje swoją rezerwację na sesję.';
 $string['cancellations'] = 'Anulowania';
 $string['cancellationsent'] = 'Wiadomość e-mail o anulowaniu powinna zostać wysłana natychmiast.';
 $string['cancellationsentmgr'] = 'Wiadomość e-mail o anulowaniu powinna zostać wysłana natychmiast do Ciebie i Twojego kierownika.';
@@ -51,6 +82,10 @@ $string['cancelusersession'] = 'Anulowano dla sesji {$a->usermsg} {$a->url}';
 $string['cannotsignupsessioninprogress'] = 'Nie możesz się zapisać, ta sesja już trwa';
 $string['cannotsignupsessionover'] = 'Nie możesz się zapisać, ta sesja już się skończyła';
 $string['capacity'] = 'Pojemność';
+$string['capacity_help'] = '# Pojemność
+**Pojemność** to liczba miejsc dostępna na sesji.
+Gdy sesja bezpośrednia osiągnie swoją pojemność, szczegóły sesji nie pojawiają się na stronie kursu. Szczegóły będą wyszarzone na stronie \'Wyświetl wszystkie sesje\' i uczestnik nie będzie się mógł zapisać na sesję.
+ ';
 $string['changemanageremailaddress'] = 'Zmień adres e-mail kierownika';
 $string['changemanageremailinstruction'] = 'Podaj poniżej adres e-mail swojego obecnego kierownika.';
 $string['clearall'] = 'Wyczyść wszystko';
@@ -60,7 +95,11 @@ $string['conditionsexplanation'] = 'Wszystkie te kryteria muszą zostać spełni
 $string['confirm'] = 'Potwierdź';
 $string['confirmanager'] = 'Potwierdź adres e-mail kierownika';
 $string['confirmation'] = 'Potwierdzenie';
+$string['confirmationinstrmngr_help'] = '# Informacje dla kierownika
+W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" tekst w polu "Informacje dla kierownika" jest wysyłany do kierownika, informując, że pracownik zarejestrował się na sesję bezpośrednią.';
 $string['confirmationmessage'] = 'Wiadomość potwierdzająca';
+$string['confirmationmessage_help'] = '# Wiadomość potwierdzająca
+Ta wiadomość jest wysyłana zawsze, gdy użytkownik zapisze się na sesję.';
 $string['confirmationsent'] = 'Potwierdzająca wiadomość e-mail powinna zostać wysłana natychmiast.';
 $string['confirmationsentmgr'] = 'Ty i Twój kierownik powinniście natychmiast otrzymać potwierdzającą wiadomość e-mail.';
 $string['confirmmanageremailaddress'] = 'Potwierdź adres e-mail kierownika';
@@ -85,11 +124,29 @@ $string['deletesession'] = 'Usuń sesję';
 $string['deletesessionconfirm'] = 'Czy masz całkowitą pewność, że chcesz usunąć tę sesję i wszystkie rejestracje na tę sesję?';
 $string['deletingsession'] = 'Usuwanie sesji w {$a}';
 $string['description'] = 'Tekst wprowadzenia';
+$string['description_help'] = '# Opis
+**Opis** to opis kursu wyświetlany, gdy uczestnik zapisze się na sesję bezpośrednią.
+**Opis** jest również wyświetlany w kalendarzu szkoleń.';
 $string['details'] = 'Szczegóły';
+$string['details_help'] = 'Szczegóły są śledzone na podstawie poszczególnych sesji.
+Jeśli pole szczegółów zostanie zapełnione tekstem, tekst szczegółów zostanie wyświetlony na stronie rejestracji użytkownika.
+Domyślnie tekst szczegółów zostanie również wyświetlony w wiadomościach e-mail zawierających potwierdzenie, przypomnienie, listę oczekujących i anulowanie.';
 $string['discountcode'] = 'Kod zniżki';
+$string['discountcode_help'] = 'Kod zniżki jest to kod wymagany do śledzenia obniżonego kosztu szkolenia pracownika.
+Jeśli pracownik nie wprowadzi kodu zniżki, w rekordzie szkolenie zostanie wyświetlony normalny koszt.';
 $string['discountcost'] = 'Koszt zniżki';
+$string['discountcost_help'] = 'Koszt zniżki to kwota w USD, którą są obciążani pracownicy mający id członkostwa.
+Jeśli pracownik poda id członkostwa podczas zapisywania się na sesję, w dzienniku ocen w kolumnie kosztu zostanie wyświetlony koszt zniżki.';
 $string['due'] = 'termin';
 $string['duration'] = 'Czas trwania';
+$string['duration_help'] = '# Czas trwania
+**Czas trwania** to łączna długość szkolenia w godzinach.
+Na przykład:
+* "2 godziny" wprowadza się jako **2** lub **2:00**
+* "1 godzina 30 minut" wprowadza się jako **1:30**
+* "45 minut" wprowadza się jako **0:45**
+* "20 minut" wprowadza się jako **0:20**.
+Jeśli szkolenie jest prowadzone w dwóch lub więcej okresach, czas trwania to czas łączny okresów.';
 $string['early'] = '{$a} wcześniej';
 $string['edit'] = 'Edytuj';
 $string['editingsession'] = '?Edytiowanie sesji w {$a}';
@@ -98,6 +155,12 @@ $string['email:instrmngr'] = 'Notatka dla kierownika';
 $string['email:message'] = 'Wiadomość';
 $string['email:subject'] = 'Temat';
 $string['emailmanager'] = 'Wyślij notatkę do kierownika';
+$string['emailmanagercancellation_help'] = '# Wyślij informacje do kierownika
+W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" do kierownika uczestnika zostanie wysłana wiadomość e-mail z informacją, że rezerwacja bezpośrednia została anulowana.';
+$string['emailmanagerconfirmation_help'] = '# Wyślij informacje do kierownika
+W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" potwierdzająca wiadomość e-mail zostanie wysłana do kierownika uczestnika, gdy uczestnik zapisze się na sesję bezpośrednią.';
+$string['emailmanagerreminder_help'] = '# Wyślij informacje do kierownika
+W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" wiadomość z przypomnieniem zostanie wysłana do kierownika uczestnika na kilka dni przed datą rozpoczęcia sesji bezpośredniej.';
 $string['emptylocation'] = 'Lokalizacja była pusta';
 $string['enrolled'] = 'zarejestrowano';
 $string['error:addalreadysignedupattendee'] = '{$a} ma już rejestrację na tę czynność bezpośrednią.';
@@ -186,6 +249,10 @@ $string['import'] = 'Importuj';
 $string['info'] = 'Informacje';
 $string['late'] = 'Opóźnienie {$a}';
 $string['location'] = 'Lokalizacja';
+$string['location_help'] = '# Lokalizacja
+**Lokalizacja** opisuje otoczenie sesji (miasto, gminę, region itd.).
+**Lokalizacja** jest wyświetlana na stronie kursu, stronie \'Rejestracja\', stronie \'Wyświetl wszystkie sesje\' i we wszystkich powiadomieniach e-mail.
+Na stronie \'Wyświetl wszystkie sesje\' wyświetlone sesje można filtrować wg lokalizacji.';
 $string['lookfor'] = 'Wyszukaj';
 $string['manageradded'] = 'Adres e-mail Twojego kierownika został zaakceptowany.';
 $string['managerchanged'] = 'Adres e-mail Twojego kierownika został zmieniony.';
@@ -203,6 +270,10 @@ $string['message'] = 'Zmiana rezerwacji na kurs {$a->coursename}!
 
 Było wolne miejsce na sesji w dniu {$a->duedate} ({$a->name}) na kures {$a->coursename}.
 Masz rejestrację. Jeśli data Ci nie odpowiada, wyrejestruj się pod adresem <a href=\'{$a->url}\'>{$a->url}</a>.';
+$string['mods_help'] = '# Czynność bezpośrednia
+Czynności bezpośrednie służą do śledzenia szkoleń osobistych wymagających wcześniejszej rezerwacji.
+Każda czynność jest oferowana w ramach jednej lub więcej identycznych sesji. Te sesje mogą trwać wiele dni.
+Wiadomości przypominające są wysyłane do użytkowników i ich kierowników na kilka dni przed zaplanowanym rozpoczęciem sesji. Wiadomości potwierdzające są wysyłane, gdy użytkownicy zarejestrują się na sesję lub anulują rejestrację.';
 $string['modulename'] = 'Bezpośrednio';
 $string['modulenameplural'] = 'Bezpośrednio';
 $string['moreinfo'] = 'Więcej informacji';
@@ -214,6 +285,8 @@ $string['nofacetofaces'] = 'Nie ma czynności bezpośrednich';
 $string['none'] = 'brak';
 $string['noremindersneedtobesent'] = 'Nie trzeba wysyłać żadnych przypomnień.';
 $string['normalcost'] = 'Normalny koszt';
+$string['normalcost_help'] = 'Koszt normalny to kwota w USD, którą mają do zapłacenia pracownicy niemający id członkostwa.
+Normalny koszt będzie wyświetlany w kolumnie kosztu w dzienniku ocen kursu dla każdego pracownika uczestniczącego w sesji (chyba że zostanie wprowadzony koszt zniżkowy i pracownik poda id członkostwa podczas zapisywania się na sesję).';
 $string['nosignedupusers'] = 'Na tę sesję nie zapisali się żadni użytkownicy.';
 $string['nositenotices'] = '<p>Nie zdefiniowano notatek dla witryny.</p>';
 $string['note'] = 'Uwaga';
@@ -224,6 +297,11 @@ $string['notificationboth'] = 'Powiadomienie w wiadomości e-mail i spotkanie iC
 $string['notificationemail'] = 'Tylko powiadomienie w wiadomości e-mail';
 $string['notificationical'] = 'Tylko spotkanie iCalendar';
 $string['notificationtype'] = 'Typ powiadomienia';
+$string['notificationtype_help'] = '# Typ powiadomienia
+Typ powiadomienia umożliwia uczestnikowi wybranie pożądanego sposobu powiadomienia o rezerwacji.
+* Tylko termin iCalendar
+* Tylko powiadomienie w wiadomości e-mail
+* Powiadomienie w wiadomości e-mail i termin iCalendar';
 $string['notsignedup'] = 'Nie masz rejestracji na tę sesję.';
 $string['notsubmittedyet'] = 'Jeszcze nie oceniono';
 $string['noupcoming'] = '<p><i>Brak nadchodzących sesji</i></p>';
@@ -257,14 +335,29 @@ $string['registeredon'] = 'Zarejestrowano dnia';
 $string['registrations'] = 'Rejestracje';
 $string['rejectinstruction'] = 'Aby odrzucić rejestrację na sesję, naciśnij przycisk Odrzuć.';
 $string['reminder'] = 'Przypomnienie';
+$string['reminderinstrmngr_help'] = '# Informacje dla kierownika
+W przypadku zaznaczenia opcji **Wyślij informacje do kierownika** tekst w polu **Informacje dla kierownika** zostanie wysłany do kierownika uczestnika, informując o zapisaniu się uczestnika na sesję bezpośrednią.';
 $string['remindermessage'] = 'Wiadomość przypominająca';
+$string['remindermessage_help'] = '# Wiadomość przypominająca
+Ta wiadomość jest wysyłana na kilka dni przed datą rozpoczęcia sesji.';
 $string['reminderperiod'] = 'Dni przed wysłaniem wiadomości';
+$string['reminderperiod_help'] = '# Okres przypomnienia
+Wiadomość przypominająca zostanie wysłana na tyle dni przed rozpoczęciem sesji.';
 $string['requestattendsession'] = 'Żądanie uczestnictwa w sesji {$a}';
 $string['requestattendsessionsent'] = 'Żądanie uczestnictwa w sesji {$a} wysłano do kierownika';
 $string['requestmessage'] = 'Wiadomość z żądaniem';
+$string['requestmessage_help'] = '# Wiadomość z żądaniem
+W przypadku włączenia opcji **Wymagane zatwierdzenie** dostępna będzie sekcja **Wiadomość z żądaniem**.
+W sekcji **Wiadomość z żądaniem** jest wyświetlane powiadomienie wysyłane do uczestnika i jego kierownika dotyczące procesu zatwierdzania udziału uczestnika w sesji bezpośredniej.
+**Temat:** to wiersz tematu wyświetlany w wiadomościach e-mail z żądaniem zatwierdzenia wysyłanych do kierownika i uczestnika.
+**Wiadomość:** to tekst wiadomości e-mail wysyłanej do uczestnika i informującej o wysłaniu żądania udziału w sesji bezpośredniej do kierownika w celu zatwierdzenia.
+**Informacje dla kierownika:** to tekst wiadomości e-mail wysyłanej do kierownika uczestnika i zawierającej żądanie zatwierdzenia udziału w sesji bezpośredniej.';
 $string['requeststablesummary'] = 'Osoby żądające uczestnictwa w tej sesji.';
 $string['requestuserattendsession'] = 'Żądanie dla {$a->usermsg} uczestnictwa w sesji {$a->url}';
 $string['room'] = 'Pomieszczenie';
+$string['room_help'] = '# Pomieszczenie
+**Pomieszczenie** to nazwa/numer/identyfikator pomieszczenia używanego do sesji szkoleniowej.
+**Pomieszczenie** jest wyświetlane na stronie \'Rejestracja\', stronie \'Wyświetl wszystkie sesja\' i we wszystkich powiadomieniach e-mail.';
 $string['saveallfeedback'] = 'Zapisz wszystkie odpowiedzi';
 $string['saveattendance'] = 'Zapisz uczestnictwo';
 $string['scheduledsession'] = 'Zaplanowana sesja';
@@ -274,8 +367,20 @@ $string['seeattendees'] = 'Zobacz uczestników';
 $string['sentremindermanager'] = 'Wyślij wiadomość e-mail z przypomnieniem do kierownika użytkownika';
 $string['sentreminderuser'] = 'Wyślij wiadomość e-mail z przypomnieniem do użytkownika';
 $string['sessiondate'] = 'Data sesji';
+$string['sessiondate_help'] = 'Data sesji to data odbycia sesji.';
 $string['sessiondatetime'] = 'Data/godzina sesji';
 $string['sessiondatetimeknown'] = 'Znana data/godzina sesji';
+$string['sessiondatetimeknown_help'] = '**Jeśli znana jest data/godzina sesji**
+Jeśli to ustawienie ma wartość "Tak", data i godzina sesji zostaną wyświetlone na stronie kursu (jeśli sesja się zbliża i jest dostępna), na stronie "Wyświetl wszystkie sesje", na stronie rejestracji na sesję oraz w powiadomieniach e-mail związanych z sesją.
+Gdy pracownik zapisuje się na sesję ze znaną datą i godziną:
+* Do pracownika i jego kierownika zostaną wysłane potwierdzające wiadomości e-mail (tj. wiadomości sformatowane zgodnie z sekcją "Wiadomość potwierdzająca" ustawień wystąpienia bezpośredniego).
+* Do pracownika zostanie wysłana przypominająca wiadomość e-mail (tj. wiadomość sformatowana zgodne z sekcją "Wiadomość przypominająca" ustawień wystąpienia bezpośredniego). Przypomnienie zostanie wysłane pewną liczbę dni przed sesją zgodnie z ustawieniem "Dni przed wysłaniem wiadomości" znajdującym się również w sekcji "Wiadomość przypominająca" ustawień wystąpienia bezpośredniego.
+**Jeśli data/godzina sesji nie jest znana (lub jest lista oczekujących)**
+Jeśli to ustawienie ma wartość "Nie", tekst "lista oczekujących" zostanie wyświetlony na stronie kursu, na stronie "Wyświetl wszystkie sesje", na stronie rejestracji na sesję oraz we wszystkich powiadomieniach e-mail związanych z sesją.
+Jeśli pracownik zapisze się na sesję z listą oczekujących:
+* Pracownik otrzyma potwierdzającą wiadomość e-mail (tj. wiadomość sformatowaną zgodnie z sekcją "Wiadomość o liście oczekujących" w ustawieniach wystąpienia bezpośredniego).
+* Do pracownika nie zostanie wysłana przypominająca wiadomość e-mail.
+* Do kierownika pracownika nie zostanie wysłana ani potwierdzająca ani anulująca wiadomość e-mail.';
 $string['sessionfinishtime'] = 'Godzina zakończenia sesji';
 $string['sessioninprogress'] = 'sesja w trakcie';
 $string['sessionisfull'] = 'Te sesja jest teraz pełna. Musisz wybrać inną godzinę lub porozmawiać z wykładowcą.';
@@ -285,6 +390,8 @@ $string['sessionroles'] = 'Role sesji';
 $string['sessions'] = 'Sesje';
 $string['sessionsdetailstablesummary'] = 'Pełny opis bieżącej sesji.';
 $string['sessionsoncoursepage'] = 'Sesje wyświetlane na stronie kursu';
+$string['sessionsoncoursepage_help'] = '# Sesji na stronie kursu
+Jest to liczba sesji dla każdej czynności bezpośredniej wyświetlanych na stronie głównej kursu.';
 $string['sessionstartdate'] = 'Data rozpoczęcia sesji';
 $string['sessionstarttime'] = 'Godzina rozpoczęcia sesji';
 $string['sessionvenue'] = 'Miejsce sesji';
@@ -293,12 +400,10 @@ $string['setting:addchangemanageremail_caption'] = 'Adres e-mail kierownika:';
 $string['setting:addchangemanageremaildefault'] = 'Poproś użytkowników o adresy e-mail ich kierowników.';
 $string['setting:defaultcancellationinstrmngr'] = 'Domyślna wiadomość o anulowaniu została wysłana do kierowników.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Wiadomość o anulowaniu (kierownicy)';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** Kopia anulowania rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
 $string['setting:defaultcancellationinstrmngrdefault'] = '*** Tylko informacja ***
 
-Informujemy, że [firstname] [lastname] nie ma już rejestracji na następujący kurs i otrzymaliśmy informację, że jesteś liderem zespołu/kierownikiem, pod którego podlega.
-
-';
-$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** Kopia anulowania rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
+Informujemy, że [firstname] [lastname] nie ma już rejestracji na następujący kurs i otrzymaliśmy informację, że jesteś liderem zespołu/kierownikiem, pod którego podlega.';
 $string['setting:defaultcancellationmessage'] = 'Domyślna wiadomość o anulowaniu została wysłana do użytkownika.';
 $string['setting:defaultcancellationmessage_caption'] = 'Wiadomość o anulowaniu';
 $string['setting:defaultcancellationmessagedefault'] = 'Informujemy, że Twoja rezerwacja na następujący kurs została anulowana:
@@ -320,14 +425,12 @@ $string['setting:defaultcancellationsubject_caption'] = 'Temat anulowania';
 $string['setting:defaultcancellationsubjectdefault'] = 'Anulowanie rezerwacji kursu';
 $string['setting:defaultconfirmationinstrmngr'] = 'Domyślna wiadomość potwierdzająca została wysłana do kierowników.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Wiadomość potwierdzająca (kierownicy)';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** Kopia potwierdzenia rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '*** Tylko informacja ***
 
 Informujemy, że [firstname] [lastname] ma rejestrację na następujący kurs i otrzymaliśmy informację, że jesteś liderem zespołu/kierownikiem, pod którego podlega.
 
-Jeśli tak nie jest i uważasz, że ta wiadomość została przysłana przez pomyłkę, odpowiedz na nią. Jeśli masz wątpliwości dotyczące uczestnictwa podwładnego w tym kursie, przedyskutuj to z nim bezpośrednio.
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** Kopia potwierdzenia rezerwacji dla [firstname] [lastname] znajduje się poniżej ****';
+Jeśli tak nie jest i uważasz, że ta wiadomość została przysłana przez pomyłkę, odpowiedz na nią. Jeśli masz wątpliwości dotyczące uczestnictwa podwładnego w tym kursie, przedyskutuj to z nim bezpośrednio.';
 $string['setting:defaultconfirmationmessage'] = 'Domyślna wiadomość potwierdzająca została wysłana do użytkowników.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Wiadomość potwierdzająca';
 $string['setting:defaultconfirmationmessagedefault'] = 'Potwierdzamy, że masz rezerwację na następujący kurs:
@@ -357,14 +460,12 @@ $string['setting:defaultconfirmationsubject_caption'] = 'Temat potwierdzenia';
 $string['setting:defaultconfirmationsubjectdefault'] = 'Potwierdzenie rezerwacji kursu: [facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaultreminderinstrmngr'] = 'Domyślna wiadomość przypominająca została wysłana do kierowników.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Wiadomość przypominająca (kierownicy)';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Poniżej znajduje się kopia wiadomości e-mail o przypomnieniu dla [firstname] [lastname]****';
 $string['setting:defaultreminderinstrmngrdefault'] = '*** Tylko przypomnienie ****
 
 Twój pracownik [firstname] [lastname] ma rezerwację uczestnictwa w powyższym kursie i do niego została również przesłana ta wiadomość e-mail o potwierdzeniu.
 
-Jeśli nie jesteś liderem zespołu/kierownikiem i uważasz, że ta wiadomość została przysłana przez pomyłkę, odpowiedz na nią.
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '*** Poniżej znajduje się kopia wiadomości e-mail o przypomnieniu dla [firstname] [lastname]****';
+Jeśli nie jesteś liderem zespołu/kierownikiem i uważasz, że ta wiadomość została przysłana przez pomyłkę, odpowiedz na nią.';
 $string['setting:defaultremindermessage'] = 'Domyślna wiadomość przypominająca została wysłana do użytkowników.';
 $string['setting:defaultremindermessage_caption'] = 'Wiadomość przypominająca';
 $string['setting:defaultremindermessagedefault'] = 'Jest to przypomnienie, że masz rezerwację na następujący kurs:
@@ -390,6 +491,7 @@ Aby zmienić daty rezerwacji musisz anulować tę rezerwację, a następnie zare
 $string['setting:defaultremindersubject'] = 'Domyślny wiersz tematu dla wiadomości e-mail z przypomnieniem';
 $string['setting:defaultremindersubject_caption'] = 'Temat przypomnienia';
 $string['setting:defaultremindersubjectdefault'] = 'Przypomnienie o rezerwacji kursu: [facetofacename], [starttime]-[finishtime], [sessiondate]';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** Poniżej znajduje się kopia żądania rezerwacji [firstname] [lastname] ****';
 $string['setting:defaultrequestinstrmngrdefault'] = 'Informujemy, że [firstname] [lastname] zażądał rezerwacji na następujący kurs i otrzymaliśmy informację, że jesteś jego liderem zespołu/kierownikiem.
 
 Kurs: [facetofacename]
@@ -404,10 +506,7 @@ Miejsce: [session:venue]
 Pomieszczenie: [session:room]
 
 Użyj poniższego łącza, aby zatwierdzić żądanie:
-[attendeeslink]
-
-';
-$string['setting:defaultrequestinstrmngrcopybelow'] = '*** Poniżej znajduje się kopia żądania rezerwacji [firstname] [lastname] ****';
+[attendeeslink]';
 $string['setting:defaultrequestmessagedefault'] = 'Twoje żądanie rezerwacji na następujący kurs zostało wysłane do Twojego kierownika:
 
 Uczestnik: [firstname] [lastname]
@@ -461,8 +560,12 @@ $string['setting:sessionroles'] = 'Użytkownicy przypisani do wybranych ról na 
 $string['setting:sessionroles_caption'] = 'Role sesji:';
 $string['setting:showinsummary'] = 'Pokaż w eksporcie i na listach';
 $string['setting:type'] = 'Typ pola';
+$string['shortname_help'] = '# Nazwa skrócona
+**Nazwa skrócona** to opis sesji wyświetlany w kalendarzu szkolenia w razie włączenia opcji **Pokaż w kalendarzu**.';
 $string['showbylocation'] = 'Pokaż wg lokalizacji';
 $string['showoncalendar'] = 'Pokaż w kalendarzu';
+$string['showoncalendar_help'] = '# Pokaż w kalendarzu
+W przypadku włączenia opcji **Pokaż w kalendarzu** sesje czynności bezpośredniej zostaną pokazane w kalendarzu szkolenia.';
 $string['sign-ups'] = 'Rejestracje';
 $string['signup'] = 'Zarejestruj';
 $string['signupfor'] = 'Zapisz się na {$a}';
@@ -487,16 +590,26 @@ $string['submit'] = 'Prześlij';
 $string['submitted'] = 'Przesłano';
 $string['summary'] = 'Podsumowanie';
 $string['suppressemail'] = 'Pomiń powiadomienie w wiadomości e-mail';
+$string['suppressemail_help'] = '# Wycofaj powiadomienie e-mail
+Tej opcji należy użyć, jeśli należy po cichu dodać/usunąć użytkowników z sesji bezpośredniej. Po zaznaczeniu tej opcji zwyczajowe potwierdzające wiadomości e-mail nie są wysyłane do wybranych użytkowników.';
 $string['takeattendance'] = 'Weź udział';
 $string['thirdpartyemailaddress'] = 'Adres e-mail innej osoby';
+$string['thirdpartyemailaddress_help'] = '# Adres (adresy) e-mail strony trzeciej
+**Adres (adresy) e-mail strony trzeciej** to pole opcjonalne służące do określania adresu e-mail strony trzeciej (takiej jak instruktor zewnętrzny), która następnie otrzyma wiadomości potwierdzające zawsze, gdy użytkownik zapisze się na sesję.
+Podczas wprowadzania **wielu adresów e-mail** należy każdy adres oddzielić przecinkiem. Na przykład: bob@example.com,joe@example.com';
 $string['thirdpartywaitlist'] = 'Powiadom inną osobę o sesjach na liście oczekujących';
+$string['thirdpartywaitlist_help'] = '# Powiadom stronę trzecią o sesjach z listą oczekujących
+W przypadku wybrania opcji **Powiadom stronę trzecią o sesjach z listą oczekujących** strona trzecia zostanie powiadomiona, gdy uczestnik zapisze się na sesję z listą oczekujących. Jeśli opcja
+**Powiadom stronę trzecią o sesjach z listą oczekujących** nie zostanie wybrana, strona trzecia zostanie powiadomiona tylko, gdy użytkownik zarejestruje się lub anuluje rejestrację na zaplanowaną sesję.';
 $string['time'] = 'Godzina';
 $string['timecancelled'] = 'Anulowano godzinę';
 $string['timedue'] = 'Termin rejestracji';
 $string['timefinish'] = 'Godzina zakończenia';
+$string['timefinish_help'] = 'Godzina zakończenia to godzina, o której sesja się kończy.';
 $string['timerequested'] = 'Żądana godzina';
 $string['timesignedup'] = 'Godzina rejestracji';
 $string['timestart'] = 'Godzina rozpoczęcia';
+$string['timestart_help'] = 'Godzina rozpoczęcia to godzina, o której sesja się zaczyna.';
 $string['unapprovedrequests'] = 'Niezatwierdzone żądania';
 $string['unknowndate'] = '(nieznana data)';
 $string['unknowntime'] = '(nieznana godzina)';
@@ -509,175 +622,18 @@ $string['usersignedupon'] = 'Użytkownik zarejestrowany na {$a}';
 $string['userwillbewaitlisted'] = 'Ta sesja jest obecnie pełna. Po kliknięciu przycisku Zarejestruj użytkownik zostanie umieszczony na liście oczekujących sesji.';
 $string['validation:needatleastonedate'] = 'Musisz podać przynajmniej jedną datę lub oznaczyć sesję do umieszczenia na liście oczekujących.';
 $string['venue'] = 'Miejsce';
+$string['venue_help'] = '# Miejsce
+**Miejsce** to budynek, w którym odbędzie się sesja.
+**Miejsce** jest wyświetlane na stronie \'Rejestracja\', stronie \'Wyświetl wszystkie sesje\' i we wszystkich powiadomieniach e-mail.';
 $string['viewallsessions'] = 'Wyświetl wszystkie sesje';
 $string['viewsubmissions'] = 'Wyświetl przesłania';
 $string['wait-list'] = 'Lista oczekujących';
 $string['wait-listed'] = 'Na liście oczekujących';
 $string['waitlistedforsession'] = 'Na liście oczekujących na sesję {$a}';
 $string['waitlistedmessage'] = 'Wiadomość o umieszczeniu na liście oczekujących';
+$string['waitlistedmessage_help'] = '# Wiadomość o liście oczekujących
+Ta wiadomość jest wysyłana zawsze, gdy użytkownik zapisze się na sesję z listą oczekujących.';
 $string['xhours'] = '{$a} godzin';
 $string['xminutes'] = '{$a} minut';
 $string['youarebooked'] = 'Masz rezerwację na następującą sesję';
 $string['youremailaddress'] = 'Twój adres e-mail';
-$string['requestmessage_help'] = '# Wiadomość z żądaniem
-
-W przypadku włączenia opcji **Wymagane zatwierdzenie** dostępna będzie sekcja **Wiadomość z żądaniem**.
-
-W sekcji **Wiadomość z żądaniem** jest wyświetlane powiadomienie wysyłane do uczestnika i jego kierownika dotyczące procesu zatwierdzania udziału uczestnika w sesji bezpośredniej.
-
-**Temat:** to wiersz tematu wyświetlany w wiadomościach e-mail z żądaniem zatwierdzenia wysyłanych do kierownika i uczestnika.
-
-**Wiadomość:** to tekst wiadomości e-mail wysyłanej do uczestnika i informującej o wysłaniu żądania udziału w sesji bezpośredniej do kierownika w celu zatwierdzenia.
-
-**Informacje dla kierownika:** to tekst wiadomości e-mail wysyłanej do kierownika uczestnika i zawierającej żądanie zatwierdzenia udziału w sesji bezpośredniej.';
-$string['room_help'] = '# Pomieszczenie
-
-**Pomieszczenie** to nazwa/numer/identyfikator pomieszczenia używanego do sesji szkoleniowej.
-
-**Pomieszczenie** jest wyświetlane na stronie \'Rejestracja\', stronie \'Wyświetl wszystkie sesja\' i we wszystkich powiadomieniach e-mail.';
-$string['sessiondatetimeknown_help'] = '**Jeśli znana jest data/godzina sesji**
-
-Jeśli to ustawienie ma wartość "Tak", data i godzina sesji zostaną wyświetlone na stronie kursu (jeśli sesja się zbliża i jest dostępna), na stronie "Wyświetl wszystkie sesje", na stronie rejestracji na sesję oraz w powiadomieniach e-mail związanych z sesją.
-
-Gdy pracownik zapisuje się na sesję ze znaną datą i godziną:
-
-*   Do pracownika i jego kierownika zostaną wysłane potwierdzające wiadomości e-mail (tj. wiadomości sformatowane zgodnie z sekcją "Wiadomość potwierdzająca" ustawień wystąpienia bezpośredniego).
-*   Do pracownika zostanie wysłana przypominająca wiadomość e-mail (tj. wiadomość sformatowana zgodne z sekcją "Wiadomość przypominająca" ustawień wystąpienia bezpośredniego). Przypomnienie zostanie wysłane pewną liczbę dni przed sesją zgodnie z ustawieniem "Dni przed wysłaniem wiadomości" znajdującym się również w sekcji "Wiadomość przypominająca" ustawień wystąpienia bezpośredniego.
-
-**Jeśli data/godzina sesji nie jest znana (lub jest lista oczekujących)**
-
-Jeśli to ustawienie ma wartość "Nie", tekst "lista oczekujących" zostanie wyświetlony na stronie kursu, na stronie "Wyświetl wszystkie sesje", na stronie rejestracji na sesję oraz we wszystkich powiadomieniach e-mail związanych z sesją.
-
-Jeśli pracownik zapisze się na sesję z listą oczekujących:
-
-*   Pracownik otrzyma potwierdzającą wiadomość e-mail (tj. wiadomość sformatowaną zgodnie z sekcją "Wiadomość o liście oczekujących" w ustawieniach wystąpienia bezpośredniego).
-*   Do pracownika nie zostanie wysłana przypominająca wiadomość e-mail.
-*   Do kierownika pracownika nie zostanie wysłana ani potwierdzająca ani anulująca wiadomość e-mail.';
-$string['reminderperiod_help'] = '# Okres przypomnienia
-
-Wiadomość przypominająca zostanie wysłana na tyle dni przed rozpoczęciem sesji.';
-$string['sessiondate_help'] = 'Data sesji to data odbycia sesji.';
-$string['remindermessage_help'] = '# Wiadomość przypominająca
-
-Ta wiadomość jest wysyłana na kilka dni przed datą rozpoczęcia sesji.';
-$string['normalcost_help'] = 'Koszt normalny to kwota w USD, którą mają do zapłacenia pracownicy niemający id członkostwa.
-
-Normalny koszt będzie wyświetlany w kolumnie kosztu w dzienniku ocen kursu dla każdego pracownika uczestniczącego w sesji (chyba że zostanie wprowadzony koszt zniżkowy i pracownik poda id członkostwa podczas zapisywania się na sesję).';
-$string['notificationtype_help'] = '# Typ powiadomienia
-
-Typ powiadomienia umożliwia uczestnikowi wybranie pożądanego sposobu powiadomienia o rezerwacji.
-
-*   Tylko termin iCalendar</i> 
-    *   Tylko powiadomienie w wiadomości e-mail</i> 
-        *   Powiadomienie w wiadomości e-mail i termin iCalendar</i> </ul>';
-$string['reminderinstrmngr_help'] = '# Informacje dla kierownika
-
-W przypadku zaznaczenia opcji **Wyślij informacje do kierownika** tekst w polu **Informacje dla kierownika** zostanie wysłany do kierownika uczestnika, informując o zapisaniu się uczestnika na sesję bezpośrednią.';
-$string['sessionsoncoursepage_help'] = '# Sesji na stronie kursu
-
-Jest to liczba sesji dla każdej czynności bezpośredniej wyświetlanych na stronie głównej kursu.';
-$string['shortname_help'] = '# Nazwa skrócona
-
-**Nazwa skrócona** to opis sesji wyświetlany w kalendarzu szkolenia w razie włączenia opcji **Pokaż w kalendarzu**.';
-$string['timestart_help'] = 'Godzina rozpoczęcia to godzina, o której sesja się zaczyna.';
-$string['venue_help'] = '# Miejsce
-
-**Miejsce** to budynek, w którym odbędzie się sesja.
-
-**Miejsce** jest wyświetlane na stronie \'Rejestracja\', stronie \'Wyświetl wszystkie sesje\' i we wszystkich powiadomieniach e-mail.';
-$string['waitlistedmessage_help'] = '# Wiadomość o liście oczekujących
-
-Ta wiadomość jest wysyłana zawsze, gdy użytkownik zapisze się na sesję z listą oczekujących.';
-$string['timefinish_help'] = 'Godzina zakończenia to godzina, o której sesja się kończy.';
-$string['thirdpartywaitlist_help'] = '# Powiadom stronę trzecią o sesjach z listą oczekujących
-
-W przypadku wybrania opcji **Powiadom stronę trzecią o sesjach z listą oczekujących** strona trzecia zostanie powiadomiona, gdy uczestnik zapisze się na sesję z listą oczekujących. Jeśli opcja 
-
-**Powiadom stronę trzecią o sesjach z listą oczekujących** nie zostanie wybrana, strona trzecia zostanie powiadomiona tylko, gdy użytkownik zarejestruje się lub anuluje rejestrację na zaplanowaną sesję.';
-$string['showoncalendar_help'] = '# Pokaż w kalendarzu
-
-W przypadku włączenia opcji **Pokaż w kalendarzu** sesje czynności bezpośredniej zostaną pokazane w kalendarzu szkolenia.';
-$string['suppressemail_help'] = '# Wycofaj powiadomienie e-mail
-
-Tej opcji należy użyć, jeśli należy po cichu dodać/usunąć użytkowników z sesji bezpośredniej. Po zaznaczeniu tej opcji zwyczajowe potwierdzające wiadomości e-mail nie są wysyłane do wybranych użytkowników.';
-$string['thirdpartyemailaddress_help'] = '# Adres (adresy) e-mail strony trzeciej
-
-**Adres (adresy) e-mail strony trzeciej** to pole opcjonalne służące do określania adresu e-mail strony trzeciej (takiej jak instruktor zewnętrzny), która następnie otrzyma wiadomości potwierdzające zawsze, gdy użytkownik zapisze się na sesję. 
-Podczas wprowadzania **wielu adresów e-mail** należy każdy adres oddzielić przecinkiem. Na przykład: bob@example.com,joe@example.com';
-$string['mods_help'] = '# Czynność bezpośrednia
-
-Czynności bezpośrednie służą do śledzenia szkoleń osobistych wymagających wcześniejszej rezerwacji.
-
-Każda czynność jest oferowana w ramach jednej lub więcej identycznych sesji. Te sesje mogą trwać wiele dni.
-
-Wiadomości przypominające są wysyłane do użytkowników i ich kierowników na kilka dni przed zaplanowanym rozpoczęciem sesji. Wiadomości potwierdzające są wysyłane, gdy użytkownicy zarejestrują się na sesję lub anulują rejestrację.';
-$string['location_help'] = '# Lokalizacja
-
-**Lokalizacja** opisuje otoczenie sesji (miasto, gminę, region itd.).
-
-**Lokalizacja** jest wyświetlana na stronie kursu, stronie \'Rejestracja\', stronie \'Wyświetl wszystkie sesje\' i we wszystkich powiadomieniach e-mail.
-
-Na stronie \'Wyświetl wszystkie sesje\' wyświetlone sesje można filtrować wg lokalizacji.';
-$string['capacity_help'] = '# Pojemność
-
-**Pojemność** to liczba miejsc dostępna na sesji.
-
-Gdy sesja bezpośrednia osiągnie swoją pojemność, szczegóły sesji nie pojawiają się na stronie kursu. Szczegóły będą wyszarzone na stronie \'Wyświetl wszystkie sesje\' i uczestnik nie będzie się mógł zapisać na sesję.
-
- ';
-$string['confirmationinstrmngr_help'] = '# Informacje dla kierownika
-
-W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" tekst w polu "Informacje dla kierownika" jest wysyłany do kierownika, informując, że pracownik zarejestrował się na sesję bezpośrednią.';
-$string['confirmationmessage_help'] = '# Wiadomość potwierdzająca
-
-Ta wiadomość jest wysyłana zawsze, gdy użytkownik zapisze się na sesję.';
-$string['cancellationmessage_help'] = '# Wiadomość o anulowaniu
-
-Ta wiadomość jest wysyłana zawsze, gdy użytkownik anuluje swoją rezerwację na sesję.';
-$string['cancellationinstrmngr_help'] = '# Informacje dla kierownika
-
-W przypadku zaznaczenia opcji **Wyślij informacje do kierownika** tekst w polu **Informacje dla kierownika** jest wysyłany do kierownika uczestnika, powiadamiając, że rezerwacja bezpośrednia została anulowana.';
-$string['allowoverbook_help'] = '# Dopuszczaj nadmierne rezerwacje
-
-W przypadku zaznaczenia pola "Dopuszczaj nadmierne rezerwacje" uczestnicy będą mogli zapisać się na sesję bezpośrednią nawet, jeśli jest już zapełniona.
-
-Jeśli uczestnik zapisze się na sesję, która jest już zapełniona, otrzyma wiadomość e-mail z informacją, że został umieszczony na liście oczekujących na sesję i że otrzyma powiadomienie, gdy zapis będzie możliwy.';
-$string['approvalreqd_help'] = '# Wymagane zatwierdzenie
-
-W przypadku zaznaczenia opcji "Wymagane zatwierdzenie" uczestnik będzie potrzebował zatwierdzenia od kierownika, aby móc uczestniczyć w sesji bezpośredniej.';
-$string['details_help'] = 'Szczegóły są śledzone na podstawie poszczególnych sesji.
-
-Jeśli pole szczegółów zostanie zapełnione tekstem, tekst szczegółów zostanie wyświetlony na stronie rejestracji użytkownika.
-
-Domyślnie tekst szczegółów zostanie również wyświetlony w wiadomościach e-mail zawierających potwierdzenie, przypomnienie, listę oczekujących i anulowanie.';
-$string['description_help'] = '# Opis
-
-**Opis** to opis kursu wyświetlany, gdy uczestnik zapisze się na sesję bezpośrednią. 
-
-**Opis** jest również wyświetlany w kalendarzu szkoleń.';
-$string['emailmanagerconfirmation_help'] = '# Wyślij informacje do kierownika
-
-W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" potwierdzająca wiadomość e-mail zostanie wysłana do kierownika uczestnika, gdy uczestnik zapisze się na sesję bezpośrednią.';
-$string['emailmanagerreminder_help'] = '# Wyślij informacje do kierownika
-
-W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" wiadomość z przypomnieniem zostanie wysłana do kierownika uczestnika na kilka dni przed datą rozpoczęcia sesji bezpośredniej.';
-$string['duration_help'] = '# Czas trwania
-
-**Czas trwania** to łączna długość szkolenia w godzinach. 
-Na przykład: 
-*   "2 godziny" wprowadza się jako **2** lub **2:00** 
-*   "1 godzina 30 minut" wprowadza się jako **1:30**
-*   "45 minut" wprowadza się jako **0:45**
-*   "20 minut" wprowadza się jako **0:20**.
-
-Jeśli szkolenie jest prowadzone w dwóch lub więcej okresach, czas trwania to czas łączny okresów.';
-$string['emailmanagercancellation_help'] = '# Wyślij informacje do kierownika
-
-W przypadku zaznaczenia opcji "Wyślij informacje do kierownika" do kierownika uczestnika zostanie wysłana wiadomość e-mail z informacją, że rezerwacja bezpośrednia została anulowana.';
-$string['discountcost_help'] = 'Koszt zniżki to kwota w USD, którą są obciążani pracownicy mający id członkostwa.
-
-Jeśli pracownik poda id członkostwa podczas zapisywania się na sesję, w dzienniku ocen w kolumnie kosztu zostanie wyświetlony koszt zniżki.';
-$string['discountcode_help'] = 'Kod zniżki jest to kod wymagany do śledzenia obniżonego kosztu szkolenia pracownika.
-
-Jeśli pracownik nie wprowadzi kodu zniżki, w rekordzie szkolenie zostanie wyświetlony normalny koszt.';
-

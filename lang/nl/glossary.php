@@ -30,25 +30,21 @@ $string['addentry'] = 'Voeg een item toe';
 $string['addingcomment'] = 'Commentaar toevoegen';
 $string['alias'] = 'Alias';
 $string['aliases'] = 'Alias(sen)';
-$string['aliases_help'] = '<p>Elk item in de woordenlijst kan een geassocieerde lijst aliassen of sleutelwoorden hebben.</p>
-
-<p><b>Voeg elke alias toe op een nieuwe regel</b> (niet gescheiden door komma\'s).</p>
-
-<p>De aliassen kunnen gebruikt worden als een alternatieve manier om naar het woordenlijstitem te verwijzen. Als je bijvoorbeeld de autolink-filter van de woordenlijst gebruikt, dan zullen zowel het hoofdwoord als de aliassen als link naar het woord uit de woordenlijst verschijnen.</p>';
+$string['aliases_help'] = 'Elk item in de woordenlijst kan een geassocieerde lijst aliassen of sleutelwoorden hebben.
+**Voeg elke alias toe op een nieuwe regel** (niet gescheiden door komma\'s).
+De aliassen kunnen gebruikt worden als een alternatieve manier om naar het woordenlijstitem te verwijzen. Als je bijvoorbeeld de autolink-filter van de woordenlijst gebruikt, dan zullen zowel het hoofdwoord als de aliassen als link naar het woord uit de woordenlijst verschijnen.';
 $string['allcategories'] = 'Alle categorieën';
 $string['allentries'] = 'Alles';
 $string['allowcomments'] = 'Commentaar toevoegen toelaten';
-$string['allowcomments_help'] = '<p>Het is mogelijk om leerlingen commentaar te laten toevoegen bij items in de woordenlijst.</p>
-<p>Je kunt kiezen om deze optie in te schakelen of niet.</p>';
+$string['allowcomments_help'] = 'Het is mogelijk om leerlingen commentaar te laten toevoegen bij items in de woordenlijst.
+Je kunt kiezen om deze optie in te schakelen of niet.';
 $string['allowduplicatedentries'] = 'Woord meer keren invoegen toelaten';
-$string['allowduplicatedentries_help'] = '<p>Hiermee kun je het systeem toelaten om meerdere definities per item te accepteren.</p>
-<p>Als je wil, kun je een item meerdere keren laten voorkomen in de lijst, telkens met een andere definitie.</p>';
+$string['allowduplicatedentries_help'] = 'Hiermee kun je het systeem toelaten om meerdere definities per item te accepteren.
+Als je wil, kun je een item meerdere keren laten voorkomen in de lijst, telkens met een andere definitie.';
 $string['allowprintview'] = 'Afdrukbare versie tonen toelaten';
-$string['allowprintview_help'] = '<p>Je kunt leerlingen toelaten een afdrukbare versie van de woordenlijst te zien.</p>
-
-<p>Je kunt ervoor kiezen deze optie in te schakelen of uit te schakelen.</p>
-
-<p>Leraren kunnen altijd de afdrukbare versie zien.</p>';
+$string['allowprintview_help'] = 'Je kunt leerlingen toelaten een afdrukbare versie van de woordenlijst te zien.
+Je kunt ervoor kiezen deze optie in te schakelen of uit te schakelen.
+Leraren kunnen altijd de afdrukbare versie zien.';
 $string['andmorenewentries'] = 'en nog {$a} nieuwe items';
 $string['answer'] = 'Antwoord';
 $string['approve'] = 'Goedkeuren';
@@ -57,15 +53,11 @@ $string['areyousuredeletecomment'] = 'Wil je deze commentaar echt verwijderen ?'
 $string['areyousureexport'] = 'Weet je zeker dat je dit item wil exporteren naar';
 $string['ascending'] = 'oplopend';
 $string['attachment'] = 'Bijlage';
-$string['attachment_help'] = '<p>Je kunt optionneel één bestand uploaden als bijlage bij een woordenlijstitem. Dit bestand wordt op de server bij jouw woordenlijstitem bewaard.</p>
-
-<p>Dit kan nuttig zijn als je bijvoorbeeld een afbeelding of een Word-document wil delen.</p>
-
-<p>Dit bestand kan van gelijk welk bestandstype zijn, al is het aan te raden alleen bestanden te gebruiken die een naam hebben, gevolgd door een standaard 3 lettersuffix, zoals .doc voor Word-bestanden of .jpg voor een foto enz. Dit zal het voor je lezers gemakkelijker maken deze bestanden te downloaden en te bekijken in hun browser.</p>
-
-<p>Als je je woordenlijstitem opnieuw bewerkt en een nieuw bestand als bijlage uploadt, zal je vorige bestand vervangen worden.</p>
-
-<p>Als je een woordenlijstitem met een bijlage opnieuw bewerkt en je laat deze ruimte leeg, dan wordt de originele bijlage behouden.</p>';
+$string['attachment_help'] = 'Je kunt optionneel één bestand uploaden als bijlage bij een woordenlijstitem. Dit bestand wordt op de server bij jouw woordenlijstitem bewaard.
+Dit kan nuttig zijn als je bijvoorbeeld een afbeelding of een Word-document wil delen.
+Dit bestand kan van gelijk welk bestandstype zijn, al is het aan te raden alleen bestanden te gebruiken die een naam hebben, gevolgd door een standaard 3 lettersuffix, zoals .doc voor Word-bestanden of .jpg voor een foto enz. Dit zal het voor je lezers gemakkelijker maken deze bestanden te downloaden en te bekijken in hun browser.
+Als je je woordenlijstitem opnieuw bewerkt en een nieuw bestand als bijlage uploadt, zal je vorige bestand vervangen worden.
+Als je een woordenlijstitem met een bijlage opnieuw bewerkt en je laat deze ruimte leeg, dan wordt de originele bijlage behouden.';
 $string['author'] = 'Auteur';
 $string['authorview'] = 'Blader volgens auteur';
 $string['back'] = 'Terug';
@@ -73,11 +65,10 @@ $string['cantinsertcat'] = 'Kan geen categorie toevoegen';
 $string['cantinsertrec'] = 'Kan geen record toevoegen';
 $string['cantinsertrel'] = 'Kan geen relatie tussen categorie en invoer toevoegen';
 $string['casesensitive'] = 'Dit woord is hoofdlettergevoelig';
-$string['casesensitive_help'] = '<p>Met deze instelling kun je kiezen of er bij het maken van automatische links naar deze items
-rekening gehouden moet worden met hoofdletters of niet.</p>
-
-<p>Als de instelling op ja staat, dan wordt een woord als \'html\' in een forum niet gelinkt aan het item \'HTML\'
-in de woordenlijst.</p>';
+$string['casesensitive_help'] = 'Met deze instelling kun je kiezen of er bij het maken van automatische links naar deze items
+rekening gehouden moet worden met hoofdletters of niet.
+Als de instelling op ja staat, dan wordt een woord als \'html\' in een forum niet gelinkt aan het item \'HTML\'
+in de woordenlijst.';
 $string['cat'] = 'cat';
 $string['categories'] = 'Categorieën';
 $string['category'] = 'Categorie';
@@ -113,10 +104,9 @@ $string['currentglossary'] = 'Huidige woordenlijst';
 $string['date'] = 'datum';
 $string['dateview'] = 'Blader op datum';
 $string['defaultapproval'] = 'Standaardinstelling goedkeuring';
-$string['defaultapproval_help'] = '<p>Je kunt kiezen of de bijdragen van de leerlingen automatisch gepubliceerd worden of dat ze eerst door de
-leraar moeten goedgekeurd worden.</p>
-
-<p>Voor nieuwe items die leerlingen toevoegen kun je de standaardstatus instellen.</p>';
+$string['defaultapproval_help'] = 'Je kunt kiezen of de bijdragen van de leerlingen automatisch gepubliceerd worden of dat ze eerst door de
+leraar moeten goedgekeurd worden.
+Voor nieuwe items die leerlingen toevoegen kun je de standaardstatus instellen.';
 $string['defaulthook'] = 'Standaard haak';
 $string['defaultmode'] = 'Standaard modus';
 $string['defaultsortkey'] = 'Standaard sorteersleutel';
@@ -129,15 +119,12 @@ $string['deletingcomment'] = 'Verwijder commentaar';
 $string['deletingnoneemptycategory'] = 'Door deze categorie te verwijderen zullen de woorden die ze bevat niet verdwijnen - ze zullen als niet-gecategoriseerd gemerkt worden';
 $string['descending'] = 'aflopend';
 $string['destination'] = 'Bestemming van geïmporteerde items';
-$string['destination_help'] = '<p>Hier kun je instellen naar waar je de invoer wil importeren
-</p>
-<ul>
-<li><strong>Huidige woordenlijst:</strong> zal de geïmporteerde invoer toevoegen aan de huidige woordenlijst.</li>
-<li><strong>Nieuwe woordenlijst:</strong> zal een nieuwe woordenlijst maken, gebaseerd op de informatie uit het gekozen XML-bestand en de woordenlijst aanvullen.</li>
-</ul>';
+$string['destination_help'] = 'Hier kun je instellen naar waar je de invoer wil importeren
+
+* **Huidige woordenlijst:** zal de geïmporteerde invoer toevoegen aan de huidige woordenlijst.
+* **Nieuwe woordenlijst:** zal een nieuwe woordenlijst maken, gebaseerd op de informatie uit het gekozen XML-bestand en de woordenlijst aanvullen.';
 $string['displayformat'] = 'Kies opmaak';
 $string['displayformat_help'] = 'Er zijn 7 opmaakformaten:
-
 * Eenvoudig, woordenboekstijl - Er worden geen auteurs getoond en bijlagen worden als links getoond
 * Doorlopend zonder auteur - Items worden één na één getoond zonder scheiding buiten de bewerk-icoontjes
 * Volledig met auteur - Een forumachtige opmaak met de auteursgegevens en de bijlagen getoond als links
@@ -157,15 +144,11 @@ $string['displayformatssetup'] = 'Instellingen van de opmaakmogelijkheden';
 $string['duplicatecategory'] = 'Dupliceer categorie';
 $string['duplicateentry'] = 'Dupliceer item';
 $string['editalways'] = 'Bewerk altijd';
-$string['editalways_help'] = '<p>Met deze optie kun je beslissen of je wil toelaten dat de leerlingen hun bijdragen altijd kunnen blijven bewerken.</p>
+$string['editalways_help'] = 'Met deze optie kun je beslissen of je wil toelaten dat de leerlingen hun bijdragen altijd kunnen blijven bewerken.
+Je kunt kiezen voor:
 
-<p>Je kunt kiezen voor:</p>
-
-<ul>
-<li><b>Ja:</b> De bijdragen kunnen altijd bewerkt worden.</li>
-
-<li><b>Nee:</b> De bijdragen kunnen bewerkt worden tijdens de ingestelde bewerkingstijd.</li>
-</ul>';
+* **Ja:** De bijdragen kunnen altijd bewerkt worden.
+* **Nee:** De bijdragen kunnen bewerkt worden tijdens de ingestelde bewerkingstijd.';
 $string['editcategories'] = 'Bewerk categorieën';
 $string['editentry'] = 'Bewerk item';
 $string['editingcomment'] = 'Bewerk commentaar';
@@ -182,11 +165,9 @@ $string['entryleveldefaultsettings'] = 'Standaardinstellingen invoer';
 $string['entrysaved'] = 'Dit item is bewaard';
 $string['entryupdated'] = 'Dit item is geüpdatet';
 $string['entryusedynalink'] = 'Dit item wordt<br />automatisch gelinkt';
-$string['entryusedynalink_help'] = '<p>Door deze optie in te schakelen zal naar dit item automatisch een link gemaakt worden, telkens wanneer dit concept van woorden en zinnen ergens in dezelfde cursus gebruikt wordt. Dit gebeurt in forums, interne bronnen, weekbeschrijvingen enzovoort.</p>
-
-<p>Als je bepaalde tekst niet gelinkt wil hebben (bijvoorbeeld in een forum), dan kun je rond dat stukje tekst &lt;nolink&gt; en &lt;/nolink&gt;-tags zetten.</p>
-
-<p>Om deze functie te  kunnen inschakelen moet autolinken ingeschakeld zijn op niveau van de instellingen van de woordenlijst.</p>';
+$string['entryusedynalink_help'] = 'Door deze optie in te schakelen zal naar dit item automatisch een link gemaakt worden, telkens wanneer dit concept van woorden en zinnen ergens in dezelfde cursus gebruikt wordt. Dit gebeurt in forums, interne bronnen, weekbeschrijvingen enzovoort.
+Als je bepaalde tekst niet gelinkt wil hebben (bijvoorbeeld in een forum), dan kun je rond dat stukje tekst en tags zetten.
+Om deze functie te kunnen inschakelen moet autolinken ingeschakeld zijn op niveau van de instellingen van de woordenlijst.';
 $string['errcannoteditothers'] = 'Je kunt de items van anderen niet bewerken';
 $string['errconceptalreadyexists'] = 'Dit item bestaat al. In deze woordenlijst mogen geen dubbels voorkomen.';
 $string['errdeltimeexpired'] = 'Je kunt dit niet verwijderen. Tijd verstreken!';
@@ -205,15 +186,14 @@ $string['exportfile'] = 'Exporteer invoer naar bestand';
 $string['exportglossary'] = 'Exporteer de woordenlijst';
 $string['exporttomainglossary'] = 'Exporteer naar hoofdwoordenlijst';
 $string['filetoimport'] = 'Te importeren bestand';
-$string['filetoimport_help'] = '<p>Kies het XML-bestand op je computer dat items bevat die je wil invoeren.</p>';
+$string['filetoimport_help'] = 'Kies het XML-bestand op je computer dat items bevat die je wil invoeren.';
 $string['fillfields'] = 'Concept en definitie zijn verplichte velden.';
 $string['filtername'] = 'Automatisch links maken van de woordenlijst';
 $string['fullmatch'] = 'Alleen volledige woorden gebruiken<br /><small>(wanneer automatisch gelinkt)</small>';
-$string['fullmatch_help'] = '<p>Als automatische links is ingeschakeld, dan zorgt het inschakelen van deze optie ervoor dat alleen volledige
-woorden gelinkt worden.</p>
-
-<p>Bijvoorbeeld: voor het item "construct" in de woordenlijst wordt geen link gemaakt in het woord
-"constructivisme" als deze optie is ingeschakeld.</p>';
+$string['fullmatch_help'] = 'Als automatische links is ingeschakeld, dan zorgt het inschakelen van deze optie ervoor dat alleen volledige
+woorden gelinkt worden.
+Bijvoorbeeld: voor het item "construct" in de woordenlijst wordt geen link gemaakt in het woord
+"constructivisme" als deze optie is ingeschakeld.';
 $string['glossary:approve'] = 'Nieuwe items goedkeuren';
 $string['glossary:comment'] = 'Commentaar toevoegen';
 $string['glossary:export'] = 'Items exporteren';
@@ -231,10 +211,10 @@ $string['glossary:viewrating'] = 'Jouw beoordelingen bekijken';
 $string['glossary:write'] = 'Nieuwe items toevoegen';
 $string['glossaryleveldefaultsettings'] = 'Standaardinstellingen woordenlijst';
 $string['glossarytype'] = 'Type woordenlijst';
-$string['glossarytype_help'] = '<p>Het woordenlijstsysteem maakt het mogelijk om definities van de secundaire woordenlijsten naar
-de hoofdwoordenlijst van deze cursus over te hevelen. Om dit te doen moet je de hoofdwoordenlijst specifiëren. </p>
-<p>Merk op dat je slechts één hoofdwoordenlijst per cursus kan hebben.</p>
-<p>Voor Moodle 1.7 konden enkel leraren de hoofdwoordenlijst bewerken. In Moodle 1.7 en later kun je dit aanpassen door wijzigingen te maken in de interface voor het overschrijven van rollen voor je woordenlijst.</p>';
+$string['glossarytype_help'] = 'Het woordenlijstsysteem maakt het mogelijk om definities van de secundaire woordenlijsten naar
+de hoofdwoordenlijst van deze cursus over te hevelen. Om dit te doen moet je de hoofdwoordenlijst specifiëren.
+Merk op dat je slechts één hoofdwoordenlijst per cursus kan hebben.
+Voor Moodle 1.7 konden enkel leraren de hoofdwoordenlijst bewerken. In Moodle 1.7 en later kun je dit aanpassen door wijzigingen te maken in de interface voor het overschrijven van rollen voor je woordenlijst.';
 $string['guestnoedit'] = 'Gasten mogen geen woordenlijsten bewerken';
 $string['importcategories'] = 'Importeer categorieën';
 $string['importedcategories'] = 'Geïmporteerde categorieën';
@@ -243,16 +223,13 @@ $string['importentries'] = 'Importeer inhoud';
 $string['importentriesfromxml'] = 'Items importeren uit XML-bestand';
 $string['includegroupbreaks'] = 'Scheiding invoegen';
 $string['isglobal'] = 'Is dit een globale woordenlijst?';
-$string['isglobal_help'] = '<p>Enkel beheerders en andere gebruikers met de mogelijkheid site:doanything toegelaten kunnen een globale woordenlijst definiëren.</p>
-
-<p>Elke cursus kan een globale woordenlijst bevatten, maar vooral de startpagina is hiervoor geschikt.</p>
-
-<p>Het verschil met een gewone lokale woordenlijst is dat de items die erin gebruikt worden voor autolinks, in heel de site automatisch links aanmaken en niet alleen in de cursus waar de woordenlijst staat.</p>';
+$string['isglobal_help'] = 'Enkel beheerders en andere gebruikers met de mogelijkheid site:doanything toegelaten kunnen een globale woordenlijst definiëren.
+Elke cursus kan een globale woordenlijst bevatten, maar vooral de startpagina is hiervoor geschikt.
+Het verschil met een gewone lokale woordenlijst is dat de items die erin gebruikt worden voor autolinks, in heel de site automatisch links aanmaken en niet alleen in de cursus waar de woordenlijst staat.';
 $string['letter'] = 'letter';
 $string['linkcategory'] = 'Link deze categorie automatisch';
-$string['linkcategory_help'] = '<p>Je kunt instellen of je categorieën automatisch wil linken of niet.</p>
-
-<p>Merk op: Het linken van categorieën is hoofdlettergevoelig.</p>';
+$string['linkcategory_help'] = 'Je kunt instellen of je categorieën automatisch wil linken of niet.
+Merk op: Het linken van categorieën is hoofdlettergevoelig.';
 $string['linking'] = 'Automatisch linken';
 $string['mainglossary'] = 'Hoofdwoordenlijst';
 $string['maxtimehaspassed'] = 'Sorry, maar de maximumtijd voor het bewerken van deze commentaar ({$a}) is voorbij!';
@@ -289,49 +266,37 @@ $string['rejectionrpt'] = 'Verwerpingsrapport';
 $string['resetglossaries'] = 'Verwijder items van';
 $string['resetglossariesall'] = 'Verwijder items uit alle woordenlijsten';
 $string['rssarticles'] = 'Aantal RSS recente artikels';
-$string['rssarticles_help'] = '<p>Met deze instelling kun je kiezen hoeveel artikels je in de RSS-feed wil zetten.</p>
-
-<p>Een getal tussen 5 en 20 zou goed moeten zijn voor de meeste woordenlijsten. Verhoog het getal als de woordenlijst erg veel gebruikt wordt.</p>';
+$string['rssarticles_help'] = 'Met deze instelling kun je kiezen hoeveel artikels je in de RSS-feed wil zetten.
+Een getal tussen 5 en 20 zou goed moeten zijn voor de meeste woordenlijsten. Verhoog het getal als de woordenlijst erg veel gebruikt wordt.';
 $string['rsssubscriberss'] = 'Toon de RSS-feed voor \'{$a}\' items';
 $string['rsstype'] = 'RSS-feed voor deze activiteit';
-$string['rsstype_help'] = '<p>Met deze optie kun je een RSS-feed maken van deze woordenlijst.</p>
-<p>Je kunt kiezen tussen twee types:</p>
-<ul>
-<li><B>Met auteur:</b>Met deze instelling zal in de gegenereerde feeds de naam van de auteur bij elk artikel staan.</li>
-<li><B>Zonder auteur:</b> Met deze instelling de naam van de auteur niet zal in de gegenereerde feeds staan.</li>
-</ul>';
+$string['rsstype_help'] = 'Met deze optie kun je een RSS-feed maken van deze woordenlijst.
+Je kunt kiezen tussen twee types:
+* **Met auteur:**Met deze instelling zal in de gegenereerde feeds de naam van de auteur bij elk artikel staan.
+* **Zonder auteur:** Met deze instelling de naam van de auteur niet zal in de gegenereerde feeds staan.';
 $string['searchindefinition'] = 'Zoek ook in definities';
 $string['secondaryglossary'] = 'Secundaire woordenlijst';
 $string['showall'] = 'Toon de link \'Alles\'';
-$string['showall_help'] = '<p>Je kunt de manier waarop een gebruiker door de woordenlijst kan bladeren, aanpassen. Zoeken, bladeren volgens
-categorieën of op datum zijn altijd zichtbaar, maar je kunt drie opties toevoegen.</p>
-
-<p><b>Toon speciaal</b> Maakt het mogelijk of onmogelijk om te bladeren volgens speciale tekens,
-zoals @, #, enz.</p>
-
-<p><b>Toon alfabet</b> Maakt het mogelijk of onmogelijk om te bladeren volgens letters.</p>
-
-<p><b>Toon alles</b> Maakt het mogelijk of onmogelijk om de inhoud van alle letters tegelijk te zien.</p>';
+$string['showall_help'] = 'Je kunt de manier waarop een gebruiker door de woordenlijst kan bladeren, aanpassen. Zoeken, bladeren volgens
+categorieën of op datum zijn altijd zichtbaar, maar je kunt drie opties toevoegen.
+**Toon speciaal** Maakt het mogelijk of onmogelijk om te bladeren volgens speciale tekens,
+zoals @, #, enz.
+**Toon alfabet** Maakt het mogelijk of onmogelijk om te bladeren volgens letters.
+**Toon alles** Maakt het mogelijk of onmogelijk om de inhoud van alle letters tegelijk te zien.';
 $string['showalphabet'] = 'Toon alfabet';
-$string['showalphabet_help'] = '<p>Je kunt de manier waarop een gebruiker door de woordenlijst kan bladeren, aanpassen. Zoeken, bladeren volgens
-categorieën of op datum zijn altijd zichtbaar, maar je kunt drie opties toevoegen.</p>
-
-<p><b>Toon speciaal</b> Maakt het mogelijk of onmogelijk om te bladeren volgens speciale tekens,
-zoals @, #, enz.</p>
-
-<p><b>Toon alfabet</b> Maakt het mogelijk of onmogelijk om te bladeren volgens letters.</p>
-
-<p><b>Toon alles</b> Maakt het mogelijk of onmogelijk om de inhoud van alle letters tegelijk te zien.</p>';
+$string['showalphabet_help'] = 'Je kunt de manier waarop een gebruiker door de woordenlijst kan bladeren, aanpassen. Zoeken, bladeren volgens
+categorieën of op datum zijn altijd zichtbaar, maar je kunt drie opties toevoegen.
+**Toon speciaal** Maakt het mogelijk of onmogelijk om te bladeren volgens speciale tekens,
+zoals @, #, enz.
+**Toon alfabet** Maakt het mogelijk of onmogelijk om te bladeren volgens letters.
+**Toon alles** Maakt het mogelijk of onmogelijk om de inhoud van alle letters tegelijk te zien.';
 $string['showspecial'] = 'Toon link \'Speciale tekens\'';
-$string['showspecial_help'] = '<p>Je kunt de manier waarop een gebruiker door de woordenlijst kan bladeren, aanpassen. Zoeken, bladeren volgens
-categorieën of op datum zijn altijd zichtbaar, maar je kunt drie opties toevoegen.</p>
-
-<p><b>Toon speciaal</b> Maakt het mogelijk of onmogelijk om te bladeren volgens speciale tekens,
-zoals @, #, enz.</p>
-
-<p><b>Toon alfabet</b> Maakt het mogelijk of onmogelijk om te bladeren volgens letters.</p>
-
-<p><b>Toon alles</b> Maakt het mogelijk of onmogelijk om de inhoud van alle letters tegelijk te zien.</p>';
+$string['showspecial_help'] = 'Je kunt de manier waarop een gebruiker door de woordenlijst kan bladeren, aanpassen. Zoeken, bladeren volgens
+categorieën of op datum zijn altijd zichtbaar, maar je kunt drie opties toevoegen.
+**Toon speciaal** Maakt het mogelijk of onmogelijk om te bladeren volgens speciale tekens,
+zoals @, #, enz.
+**Toon alfabet** Maakt het mogelijk of onmogelijk om te bladeren volgens letters.
+**Toon alles** Maakt het mogelijk of onmogelijk om de inhoud van alle letters tegelijk te zien.';
 $string['sortby'] = 'Sorteer op';
 $string['sortbycreation'] = 'Op datum van aanmaken';
 $string['sortbylastupdate'] = 'Op datum van laatste wijziging';
@@ -341,15 +306,13 @@ $string['standardview'] = 'Blader alfabetisch';
 $string['studentcanpost'] = 'Leerlingen kunnen items toevoegen';
 $string['totalentries'] = 'Totaal aantal items';
 $string['usedynalink'] = 'Link de items uit de woordenlijst automatisch';
-$string['usedynalink_help'] = '<p>Als je deze optie inschakelt, dan worden alle items in deze woordenlijst automatisch links en dat overal
+$string['usedynalink_help'] = 'Als je deze optie inschakelt, dan worden alle items in deze woordenlijst automatisch links en dat overal
 waar dat woord of die zinnen voorkomen binnen deze cursus. Dus ook in forumbijdragen,
-interne bronnen, weeksamenvattingen  enz.</p>
-<p>Merk op dat het inschakelen van linken er niet automatisch voor zorgt dat alle items gelinkt worden - het linken moet voor elk item individueel ingeschakeld worden.</p>
-
-<p>Als je een bepaald stuk tekst niet gelinkt wil zien (in een forumbijdrage, bijvoorbeeld) dan kun je
-&lt;nolink>- en &lt;/nolink>- tags rond de tekst zetten.</p>
-
-<p>Merk op dat categoriën ook gelinkt worden.</p>';
+interne bronnen, weeksamenvattingen enz.
+Merk op dat het inschakelen van linken er niet automatisch voor zorgt dat alle items gelinkt worden - het linken moet voor elk item individueel ingeschakeld worden.
+Als je een bepaald stuk tekst niet gelinkt wil zien (in een forumbijdrage, bijvoorbeeld) dan kun je
+- en - tags rond de tekst zetten.
+Merk op dat categoriën ook gelinkt worden.';
 $string['waitingapproval'] = 'Nog goedkeuren';
 $string['warningstudentcapost'] = '(Alleen van toepassing als de woordenlijst niet de hoofdwoordenlijst is)';
 $string['withauthor'] = 'Items met auteur';

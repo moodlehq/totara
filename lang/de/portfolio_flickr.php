@@ -47,6 +47,6 @@ $string['setupinfo'] = 'Einstellungsanleitung';
 $string['setupinfodetails'] = 'Sie erhalten Ihren API-Key und Ihr Secret für Flickr über <a href="{$a->applyurl}">Apply for a new key</a>. Sobald der neue Key und das Secret für Sie generiert wurde, klicken Sie auf den Link \'Edit auth flow for this app\'. Setzen Sie den \'App Type\' als \'Web Application\'. Kopieren Sie in das Feld \'Callback URL\' den folgenden Text: <br /><code> {$a->callbackurl} </code><br />
 
 Optional können Sie weitere Informationen über Ihre Moodle-Instanz und ein Logo angeben. Alle Angaben können auch später noch bearbeitet werden, und zwar in der <a href="{$a->keysurl}"> Liste Ihrer Flickr-Anwendungen </a>.';
-$string['sharedsecret'] = 'API-Secret ';
+$string['sharedsecret'] = 'API-Secret';
 $string['title'] = 'Titel';
 $string['uploadfailed'] = 'Fehler beim Hochladen von Bildern zu flickr.com: {$a}';

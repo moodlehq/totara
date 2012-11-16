@@ -210,13 +210,10 @@ $string['cancel'] = 'Anuluj';
 $string['cancelled'] = 'Anulowane';
 $string['categories'] = 'Kategorie kursów';
 $string['category'] = 'Kategoria';
-$string['category_help'] = '<P ALIGN=CENTER><B>Kategorie kursów</B></P>
-
-<P>Administrator Twojej platformy Moodle mógł określić kilka kategorii kursów.</p>
-
-<P>Przykładowo: &quot;Nauki Ścisłe&quot;, &quot;Nauki humanistyczne&quot;, &quot;Ochrona zdrowia&quot; itp.</p>
-
-<P>Wybierz kategorię najbardziej odpowiednią dla Twojego kursu. Twój wybór będzie miał wpływ na to gdzie kurs będzie się znajdował na liście kursów i może ułatwić studentom jego odnalezienie.</p>';
+$string['category_help'] = '<P ALIGN=CENTER>**Kategorie kursów**</P>
+Administrator Twojej platformy Moodle mógł określić kilka kategorii kursów.
+Przykładowo: "Nauki Ścisłe", "Nauki humanistyczne", "Ochrona zdrowia" itp.
+Wybierz kategorię najbardziej odpowiednią dla Twojego kursu. Twój wybór będzie miał wpływ na to gdzie kurs będzie się znajdował na liście kursów i może ułatwić studentom jego odnalezienie.';
 $string['categoryadded'] = 'Kategoria \'{$a}\' została dodana';
 $string['categorycontents'] = 'Podkategorie i kursy';
 $string['categorycurrentcontents'] = 'Zawartość {$a}';
@@ -285,11 +282,9 @@ $string['continue'] = 'Kontynuuj';
 $string['continuetocourse'] = 'Kliknij tutaj, aby wejść do kursu';
 $string['convertingwikitomarkdown'] = 'Konwersja formatu WIKI do formatu Markdown';
 $string['cookiesenabled'] = 'Przyjmowanie cookies (ciasteczek) musi być włączone w Twojej przeglądarce';
-$string['cookiesenabled_help'] = '<p>Ta strona korzysta z dwóch cookies.</p>
-
-<p>Bardzo istotnym jest ten poświęcony sesjom, nazwany zazwyczaj <b>MoodleSession</b>. Musisz zezwolić przeglądarce na umieszczenie tego cookie aby zachować ciągłość pracy, a także aby zachować twoje zalogowanie przy przechodzeniu między stronami. Kiedy się wylogowujesz, lub kończysz działanie przeglądarki ten cookie zostaje usunięty (z Twojej przeglądarki i z serwera).</p>
-
-<p>Drugi cookie jest używany dla czystej wygody i zazwyczaj nazywany jest <b>MOODLEID</b>. Zapamiętana w nim jest twoja nazwa użytkownika. Oznacza to, że jeśli wrócisz na tą stronę pole \'nazwa użytkownika\' na ekranie logowania będzie automatycznie uzupełniane. Możesz spokojnie zrezygnować z tego cookie - będziesz po prostu musiał każdorazowo wprowadzać swoją nazwę użytkownika podczas procesu logowania.</p>';
+$string['cookiesenabled_help'] = 'Ta strona korzysta z dwóch cookies.
+Bardzo istotnym jest ten poświęcony sesjom, nazwany zazwyczaj **MoodleSession**. Musisz zezwolić przeglądarce na umieszczenie tego cookie aby zachować ciągłość pracy, a także aby zachować twoje zalogowanie przy przechodzeniu między stronami. Kiedy się wylogowujesz, lub kończysz działanie przeglądarki ten cookie zostaje usunięty (z Twojej przeglądarki i z serwera).
+Drugi cookie jest używany dla czystej wygody i zazwyczaj nazywany jest **MOODLEID**. Zapamiętana w nim jest twoja nazwa użytkownika. Oznacza to, że jeśli wrócisz na tą stronę pole \'nazwa użytkownika\' na ekranie logowania będzie automatycznie uzupełniane. Możesz spokojnie zrezygnować z tego cookie - będziesz po prostu musiał każdorazowo wprowadzać swoją nazwę użytkownika podczas procesu logowania.';
 $string['cookiesnotenabled'] = 'Obsługa cookies (ciasteczek) nie jest włączona w Twojej przeglądarce';
 $string['copy'] = 'kopiuj';
 $string['copyasnoun'] = 'kopiuj';
@@ -666,25 +661,16 @@ $string['forgotten'] = 'Zapomniałeś(aś) nazwy użytkownika lub hasła?';
 $string['forgottenduplicate'] = 'Ten adres e-mail należy do kilku kont. Wpisz nazwę użytkownika.';
 $string['forgotteninvalidurl'] = 'Link do zmiany hasła wygasł';
 $string['format'] = 'Format';
-$string['format_help'] = '<P ALIGN=CENTER><B>Formaty kursów w Moodle</B></P>
+$string['format_help'] = '<P ALIGN=CENTER>**Formaty kursów w Moodle**</P>
+**Format tygodniowy**
 
-<P><B>Format tygodniowy</B></P>
+Kurs zorganizowany jest w cyklu tygodniowym z dokładnie określoną datą rozpoczęcia i zakończenia. Każdy tydzień składa się z pewnej liczby składowych kursu. Niektóre z nich, takie jak dzienniki, mogą mieć czasowo ograniczone "okno dostępu", czyli okres trwający np. dwa tygodnie, po zakończeniu którego przestają być dostępne.
 
-<UL>
-Kurs zorganizowany jest w cyklu tygodniowym z dokładnie określoną datą rozpoczęcia i zakończenia. Każdy tydzień składa się z pewnej liczby składowych kursu. Niektóre z nich, takie jak dzienniki, mogą mieć czasowo ograniczone &quot;okno dostępu&quot;, czyli okres trwający np. dwa tygodnie, po zakończeniu którego przestają być dostępne.
-</UL>
-
-
-<P><B>Format tematyczny</B></P>
-<UL>
+**Format tematyczny**
 Format ten jest bardzo zbliżony do formatu tygodniowego, z wyjątkiem tego, że kurs zamiast na tygodnie podzielony jest na tematy. Tematy nie mają żadnych ograniczeń czasowych i nie musisz podawać żadnych dat.
-</UL>
 
-
-<P><B>Format towarzyski</B></P>
-<UL>
-Jest to format zorientowany na jedno główne forum - Forum towarzyskie - które wyświetlone jest na stronie głównej. Format ten jest przydatny w sytuacjach, w których forma działania nie jest sprecyzowana. Nie muszą być to nawet kursy, przykładowym zastosowaniem jest wydziałowa tablica ogłoszeń.
-</UL>';
+**Format towarzyski**
+Jest to format zorientowany na jedno główne forum - Forum towarzyskie - które wyświetlone jest na stronie głównej. Format ten jest przydatny w sytuacjach, w których forma działania nie jest sprecyzowana. Nie muszą być to nawet kursy, przykładowym zastosowaniem jest wydziałowa tablica ogłoszeń.';
 $string['formathtml'] = 'Format HTML';
 $string['formatmarkdown'] = 'Format Markdown';
 $string['formatplain'] = 'Format tekstu zwykłego';
@@ -761,12 +747,10 @@ $string['helpwiththis'] = 'Pomóż z tym';
 $string['hiddenassign'] = 'Ukryte zadanie';
 $string['hiddenfromstudents'] = 'Ukryte przed studentami';
 $string['hiddensections'] = 'Ukryte sekcje';
-$string['hiddensections_help'] = '<P>Opcja ta pozwala Ci zdecydować, jak mają być wyświetlane studentom ukryte sekcje.</p>
+$string['hiddensections_help'] = 'Opcja ta pozwala Ci zdecydować, jak mają być wyświetlane studentom ukryte sekcje.
+Domyślnie mały obszar (zwinięty, zwykle szary) jest pokazany w miejscu ukrytej sekcji. Student nie może zobaczyć ukrytych składowych i tekstów. Szczególnie użyteczna jest ta forma w formacie tygodniowym.
 
-<p>Domyślnie mały obszar (zwinięty, zwykle szary) jest pokazany w miejscu ukrytej sekcji. Student nie może zobaczyć ukrytych składowych i tekstów. Szczególnie użyteczna jest ta forma w formacie tygodniowym.
-</p>
-
-<p>Jeśli chcesz, możesz kompletnie ukryć sekcje, tak że studenci nie wiedzą nawet, że coś jest ukryte.</p>';
+Jeśli chcesz, możesz kompletnie ukryć sekcje, tak że studenci nie wiedzą nawet, że coś jest ukryte.';
 $string['hiddensectionscollapsed'] = 'Ukryte sekcje są pokazane w zminimalizowanej postaci';
 $string['hiddensectionsinvisible'] = 'Ukryte sekcje są całkowicie niewidoczne';
 $string['hide'] = 'Ukryj';
@@ -795,9 +779,8 @@ $string['icon'] = 'Ikona';
 $string['icqnumber'] = 'Numer ICQ';
 $string['idnumber'] = 'Numer ID';
 $string['idnumbercourse'] = 'ID kursu';
-$string['idnumbercourse_help'] = '<P ALIGN=CENTER><B>Numer ID kursu</B></P>
-
-<P>Wartość używana tylko w przypadku zewnętrznej kontroli zapisu. Nie ujrzysz jej nigdy w Moodle. Jeśli masz jakiś oficjalny kod dla kursu, użyj go tutaj.</p>';
+$string['idnumbercourse_help'] = '<P ALIGN=CENTER>**Numer ID kursu**</P>
+Wartość używana tylko w przypadku zewnętrznej kontroli zapisu. Nie ujrzysz jej nigdy w Moodle. Jeśli masz jakiś oficjalny kod dla kursu, użyj go tutaj.';
 $string['idnumbercoursecategory'] = 'ID kategorii';
 $string['idnumbermod'] = 'Numer ID';
 $string['idnumbertaken'] = 'Ten numer ID jest już zajęty';
@@ -907,14 +890,12 @@ $string['maximumgrade'] = 'Maksymalna ocena';
 $string['maximumgradex'] = 'Maksymalna ocena: {$a}';
 $string['maximumshort'] = 'Max';
 $string['maximumupload'] = 'Maksymalny rozmiar pliku';
-$string['maximumupload_help'] = '<P ALIGN=CENTER><B>Maksymalny dopuszczalny rozmiar pliku w ramach jednego kursu.</B></P>
-
-<P>Ten paramter definiuje największy dopuszczalny rozmiar pliku
+$string['maximumupload_help'] = '<P ALIGN=CENTER>**Maksymalny dopuszczalny rozmiar pliku w ramach jednego kursu.**</P>
+Ten paramter definiuje największy dopuszczalny rozmiar pliku
 który może być przesłany przez studenta w ramach danego kursu.
 Ten paramter nie może przekroczyć parametru maksymalnej wielkości pliku dla całej strony internetowej,
 którego sprecyzowanie należy do zadań administratora sieci.
-
-<P>Możliwe jest dalsze ograniczenie rozmiaru pliku poprzez odpowiednie zmiany
+Możliwe jest dalsze ograniczenie rozmiaru pliku poprzez odpowiednie zmiany
 ustawień w ramach każdego modułu aktywności (activity module).';
 $string['maxnumberweeks'] = 'Maksymalna liczba tygodni / tematów';
 $string['maxnumcoursesincombo'] = 'Przeglądaj <a href="{$a->link}">{$a->numberofcourses} kursy(ów)</a>.';
@@ -1030,34 +1011,26 @@ W większości skrzyenk mailowych ten adres powinien wyświetlać się jako nieb
 Pozdrowienia od administratora
 {$a->signoff}';
 $string['newpicture'] = 'Nowy obraz';
-$string['newpicture_help'] = '<P ALIGN=CENTER><B>Przesyłanie grafiki</B></P>
+$string['newpicture_help'] = 'Możesz przesłać na ten serwer plik graficzny ze swojego komputera. Plik ten będzie Cię reprezentował w różnych miejscach.
+Z podanego powyżej powodu najlepszym wizerunkiem będzie Twój portret z bliska, ale możesz wykorzystać dowolną inną grafikę.
+Plik graficzny musi mieć format JPG lub PNG (tzn. jego nazwa powinna mieć rozszerzenie .jpg lub .png).
+Są cztery sposoby uzyskania pliku graficznego:
+1.Zdjęcia wykonane cyfrowym aparatem fotograficznym zapisane w Twoim komputerze najprawdopodobniej będą już we właściwym formacie.
+2. Możesz zeskanować odbitkę fotograficzną - pamiętaj o zapisaniu pliku w formacie JPG lub PNG.
+3. Jeżeli masz zdolności artystyczne, możesz sam zrobić rysunek używając programu do malowania.
+4. Możesz "podkraść" plik graficzny z sieci WWW. [http://images.google.com](http://images.google.com) to znakomite miejsce do szukania grafiki. Po znalezieniu odpowiedniego pliku, kliknij prawym przyciskiem myszy i wybierz polecenie "Zapisz rysunek" z menu (procedura ta może się trochę różnić w zależności od komputera).
 
-<P>Możesz przesłać na ten serwer plik graficzny ze swojego komputera.  Plik ten będzie Cię reprezentował w różnych miejscach.
-<P>Z podanego powyżej powodu najlepszym wizerunkiem będzie Twój portret z bliska, ale możesz wykorzystać dowolną inną grafikę.
-<P>Plik graficzny musi mieć format JPG lub PNG (tzn. jego nazwa powinna mieć rozszerzenie .jpg lub .png).
-<P>Są cztery sposoby uzyskania pliku graficznego:
-
-<OL>
-<LI>Zdjęcia wykonane cyfrowym aparatem fotograficznym zapisane w Twoim komputerze najprawdopodobniej będą już we właściwym formacie.
-<LI>Możesz zeskanować odbitkę fotograficzną - pamiętaj o zapisaniu pliku w formacie JPG lub PNG.
-<LI>Jeżeli masz zdolności artystyczne, możesz sam zrobić rysunek używając programu do malowania.
-<LI>Możesz &quot;podkraść&quot; plik graficzny z sieci WWW.  <A TARGET=google HREF="http://images.google.com/">http://images.google.com</A> to znakomite miejsce do szukania grafiki. Po znalezieniu odpowiedniego pliku, kliknij prawym przyciskiem myszy i wybierz polecenie &quot;Zapisz rysunek&quot; z menu (procedura ta może się trochę różnić w zależności od komputera).
-</OL>
-
-<P>W celu przesłania pliku graficznego, kliknij przycisk &quot;Przeglądaj&quot; na niniejszej stronie edycji i wybierz odpowiedni plik z twardego dysku.</p>
-<P>UWAGA: Upewnij się że plik ten nie przekracza podanego maksymalnego rozmiaru, w przeciwnym razie nie zostanie on przesłany.</p>
-<P>Następnie kliknij &quot;Aktualizuj mój profil&quot; na dole ekranu  - obraz zostanie przycięty i zmniejszony do rozmiaru 100 na 100 pikseli.</p>
-<P>Gdy powrócisz na stronę profilu, być może nie zmieni się wygląd reprezentującej Cię grafiki. W takim przypadku kliknij w swojej przeglądarce przycisk &quot;Odśwież&quot;.</p>';
+W celu przesłania pliku graficznego, kliknij przycisk "Przeglądaj" na niniejszej stronie edycji i wybierz odpowiedni plik z twardego dysku.
+UWAGA: Upewnij się że plik ten nie przekracza podanego maksymalnego rozmiaru, w przeciwnym razie nie zostanie on przesłany.
+Następnie kliknij "Aktualizuj mój profil" na dole ekranu - obraz zostanie przycięty i zmniejszony do rozmiaru 100 na 100 pikseli.
+Gdy powrócisz na stronę profilu, być może nie zmieni się wygląd reprezentującej Cię grafiki. W takim przypadku kliknij w swojej przeglądarce przycisk "Odśwież".';
 $string['newsitem'] = 'Wiadomość';
 $string['newsitems'] = 'Wiadomości';
 $string['newsitemsnumber'] = 'Wiadomości do pokazania';
-$string['newsitemsnumber_help'] = '<P ALIGN=CENTER><B>Aktualności kursu</B></P>
-
-<P>Specjalne forum &quot;Aktualności&quot; pojawia się w kursach o formacie tygodniowym lub tematycznym. Jest to dobre miejsce do umieszczania wiadomości przeznaczonych dla wszystkich studentów. (W ustawieniu domyślnym wszyscy studenci są zapisani na to forum i otrzymują Twoje wiadomości pocztą elektroniczną.)</p>
-
-<P>Funkcja ta określa ile ostatnich pozycji wyświetlanych jest na stronie głównej Twojego kursu, w ramce najświeższe wiadomości w prawym górnym narożniku ekranu.</p>
-
-<P>Ustawienie tej funkcji na &quot;0 aktualności&quot; sprawi, że ramka najświeższe wiadomości w ogóle się nie pojawi.</p>';
+$string['newsitemsnumber_help'] = '<P ALIGN=CENTER>**Aktualności kursu**</P>
+Specjalne forum "Aktualności" pojawia się w kursach o formacie tygodniowym lub tematycznym. Jest to dobre miejsce do umieszczania wiadomości przeznaczonych dla wszystkich studentów. (W ustawieniu domyślnym wszyscy studenci są zapisani na to forum i otrzymują Twoje wiadomości pocztą elektroniczną.)
+Funkcja ta określa ile ostatnich pozycji wyświetlanych jest na stronie głównej Twojego kursu, w ramce najświeższe wiadomości w prawym górnym narożniku ekranu.
+Ustawienie tej funkcji na "0 aktualności" sprawi, że ramka najświeższe wiadomości w ogóle się nie pojawi.';
 $string['newuser'] = 'Nowy użytkownik';
 $string['newusernewpasswordsubj'] = 'Nowe konto użytkownika';
 $string['newusernewpasswordtext'] = 'Cześć {$a->firstname}
@@ -1342,19 +1315,14 @@ $string['savedat'] = 'Zachowane w:';
 $string['savepreferences'] = 'Zapisz ustawienia';
 $string['saveto'] = 'Zapisz do';
 $string['scale'] = 'Skala';
-$string['scale_help'] = '<p>Prowadzący mogą tworzyć nowe, niestandardowe skale ocen, które mogą zostać następnie wykorzystane do wystawiania ocen w dowolnej składowej kursu.</p>
-
-<p>Nazwa skali powinna być słowem lub zwrotem, który jasno określa skalę : będzie ona widoczna ma liście wyboru skali, a także na wrażliwych na kontekst przyciskach pomocy.</p>
-
-<p>Sama skala jest określana za pomocą uporządkowanej liście wartości. Zacząć należy od najbardziej negatywnej, a skończyć na najbardziej pozytywnej wartości. Kolejne pozycje powinny być określane przecinkami. Przykładowo : </p>
-
-<blockquote><i>
-Niedostateczny, Dopuszczający, Dostateczny, Dobry, Bardzo Dobry, Celujący
-</i></blockquote>
-
-<p>Skala powinna zawierać również dokładny opis znaczenia poszczególnych ocen, a także sposobu jej użycia. Opis ten będzie dostępny na stronach pomocy zarówno dla prowadzących jak i studentów.</p>
-
-<p>Dodatkowo może istnieć kilka skal \'Standardowych\', określanych przez administratora. Będą one dostępne we wszystkich kursach w obrębie tego serwisu.</p>';
+$string['scale_help'] = 'Prowadzący mogą tworzyć nowe, niestandardowe skale ocen, które mogą zostać następnie wykorzystane do wystawiania ocen w dowolnej składowej kursu.
+Nazwa skali powinna być słowem lub zwrotem, który jasno określa skalę : będzie ona widoczna ma liście wyboru skali, a także na wrażliwych na kontekst przyciskach pomocy.
+Sama skala jest określana za pomocą uporządkowanej liście wartości. Zacząć należy od najbardziej negatywnej, a skończyć na najbardziej pozytywnej wartości. Kolejne pozycje powinny być określane przecinkami. Przykładowo :
+> *
+> Niedostateczny, Dopuszczający, Dostateczny, Dobry, Bardzo Dobry, Celujący
+> *
+Skala powinna zawierać również dokładny opis znaczenia poszczególnych ocen, a także sposobu jej użycia. Opis ten będzie dostępny na stronach pomocy zarówno dla prowadzących jak i studentów.
+Dodatkowo może istnieć kilka skal \'Standardowych\', określanych przez administratora. Będą one dostępne we wszystkich kursach w obrębie tego serwisu.';
 $string['scales'] = 'Skale';
 $string['scalescustom'] = 'Niestandardowe skale';
 $string['scalescustomcreate'] = 'Dodaj nową skalę';
@@ -1419,9 +1387,8 @@ $string['settings'] = 'Ustawienia';
 $string['shortname'] = 'Skrócona nazwa';
 $string['shortnamecollisionwarning'] = 'Ten skrót jest już używany w kursie i należy go zmienić.';
 $string['shortnamecourse'] = 'Krótka nazwa kursu';
-$string['shortnamecourse_help'] = '<P ALIGN=CENTER><B>Skrócona nazwa kursu</B></P>
-
-<P>Wiele instytucji stosuje skrócone nazwy kursów, np. BP102 lub COMMS. Nawet jeżeli nie wprowadziłeś dotychczas skróconej nazwy swojego kursu, zrób to tutaj. Nazwa skrócona będzie wykorzystywana w kilku miejscach, w których pełna nazwa nie byłaby odpowiednia (np. w temacie wiadomości e-mail).</P>';
+$string['shortnamecourse_help'] = '<P ALIGN=CENTER>**Skrócona nazwa kursu**</P>
+Wiele instytucji stosuje skrócone nazwy kursów, np. BP102 lub COMMS. Nawet jeżeli nie wprowadziłeś dotychczas skróconej nazwy swojego kursu, zrób to tutaj. Nazwa skrócona będzie wykorzystywana w kilku miejscach, w których pełna nazwa nie byłaby odpowiednia (np. w temacie wiadomości e-mail).';
 $string['shortnametaken'] = 'Nazwa skrócona jest już wykorzystana przez inny kurs ({$a})';
 $string['shortnameuser'] = 'Krótka nazwa użytkownika';
 $string['shortsitename'] = 'Skrócona nazwa serwisu';
@@ -1439,11 +1406,9 @@ $string['showcommentsnonjs'] = 'Pokaż komentarze';
 $string['showdescription'] = 'Wyświetl opis na strone kursu';
 $string['showdescription_help'] = 'Jeśli opcja jest włączona, wprowadzenie / opis będzie wyświetlany na stronie kursu tuż poniżej linku z aktywnością / zasobami.';
 $string['showgrades'] = 'Pokaż dziennik ocen studentom';
-$string['showgrades_help'] = '<P>Wiele składowych kursów umożliwia wystawianie studentom ocen.</p>
-
-<p>Domyślnie wszystkie oceny wystawione na danym kursie są widoczne na stronie \'oceny\' dostępnej z poziomu głównej strony kursu.</p>
-
-<p>Jeśli prowadzący nie chce używać ocen w swoim kursie, lub nie chce ujawniać ich studentom, to istnieje możliwość wyłączenia wyświetlania ocen w Ustawieniach Kursu. Nie uniemożliwia to wystawiania ocen za poszczególne składowe, a jedynie wyłącza opcję pokazywania ocen studentom.</p>';
+$string['showgrades_help'] = 'Wiele składowych kursów umożliwia wystawianie studentom ocen.
+Domyślnie wszystkie oceny wystawione na danym kursie są widoczne na stronie \'oceny\' dostępnej z poziomu głównej strony kursu.
+Jeśli prowadzący nie chce używać ocen w swoim kursie, lub nie chce ujawniać ich studentom, to istnieje możliwość wyłączenia wyświetlania ocen w Ustawieniach Kursu. Nie uniemożliwia to wystawiania ocen za poszczególne składowe, a jedynie wyłącza opcję pokazywania ocen studentom.';
 $string['showlistofcourses'] = 'Pokaż listę kursów';
 $string['showmodulecourse'] = 'Pokaż listę kursów zawierających składową';
 $string['showonly'] = 'Wyświetl tylko';
@@ -1452,17 +1417,15 @@ $string['showonlyweek'] = 'Pokaż tylko tydzień {$a}';
 $string['showperpage'] = 'Pokaż {$a} na stronę';
 $string['showrecent'] = 'Pokaż ostatnie wydarzenia';
 $string['showreports'] = 'Pokaż raporty aktywności';
-$string['showreports_help'] = '<P>Raporty aktywności są dostępne dla każdego z partycypujących w kursie.
-Raporty te zawierają dzienniki dostępu użytkownika a także informacje dotyczace aktywności użytkownika.</p>
-
-<p>Nauczyciele zawsze mają dostęp do tych raportów, używąc przycisku znajdującego się na stronie na której
-znajduje się profil danego studenta.<p>
-
-<p>Z kolei dostęp studentów do tych raportów kontrolowany jest przez nauczycieli. W przypadku niektórych kursów
-umożliwienie takiego dostępu może okazać się bardzo pomocne, ponieważ pokaże to  studentowi jego wysiłek i wkład w pracę online.
+$string['showreports_help'] = 'Raporty aktywności są dostępne dla każdego z partycypujących w kursie.
+Raporty te zawierają dzienniki dostępu użytkownika a także informacje dotyczace aktywności użytkownika.
+Nauczyciele zawsze mają dostęp do tych raportów, używąc przycisku znajdującego się na stronie na której
+znajduje się profil danego studenta.
+Z kolei dostęp studentów do tych raportów kontrolowany jest przez nauczycieli. W przypadku niektórych kursów
+umożliwienie takiego dostępu może okazać się bardzo pomocne, ponieważ pokaże to studentowi jego wysiłek i wkład w pracę online.
 Jednakże w przypadku niektórych kursów studenci mogą mieć ten dostęp ograniczony.
 Ponadto, udostępnienie tych raportów studentom spowoduje dodatkowe obciążenie serwera co w przypadku licznych klas czy dłuższych
-kursów może skłonić administratora do wyłączenia tej opcji.</p>';
+kursów może skłonić administratora do wyłączenia tej opcji.';
 $string['showsettings'] = 'Pokaż ustawienia';
 $string['showtheselogs'] = 'Pokaż te logi';
 $string['showthishelpinlanguage'] = 'Pokaż tą pomoc w języku: {$a}';
@@ -1505,17 +1468,12 @@ $string['specifyname'] = 'Musisz podać imię.';
 $string['standard'] = 'Standard';
 $string['starpending'] = '([*] = Zatwierdzenie kursu oczekującego)';
 $string['startdate'] = 'Data rozpoczęcia kursu';
-$string['startdate_help'] = '<P ALIGN=CENTER><B>Data rozpoczęcia kursu</B></P>
-
-<P>W tym miejscu określasz termin rozpoczęcia kursu (w swojej strefie czasowej).</p>
-
-<P>Jeżeli stosujesz tygodniowy format kursu, ustawienie daty rozpoczęcia będzie miało wpływ na sposób wyświetlania poszczególnych tygodni. Pierwszy tydzień rozpocznie się w dniu określonym tutaj.</p>
-
-<P>Ustawienie to nie będzie miało wpływu na kursy stosujące format towarzyski lub tematyczny.</p>
-
-<P>Wpłynie ono jednak na wyświetlanie logów, które przyjmują podaną tu datę jako najwcześniejszą możliwą do wyświetlenia.</p>
-
-<P>Zasadniczo, jeżeli Twój kurs ma faktyczną datę rozpoczęcia, warto ją tutaj wprowadzić bez względu na to jaki format kursu stosujesz.</p>';
+$string['startdate_help'] = '<P ALIGN=CENTER>**Data rozpoczęcia kursu**</P>
+W tym miejscu określasz termin rozpoczęcia kursu (w swojej strefie czasowej).
+Jeżeli stosujesz tygodniowy format kursu, ustawienie daty rozpoczęcia będzie miało wpływ na sposób wyświetlania poszczególnych tygodni. Pierwszy tydzień rozpocznie się w dniu określonym tutaj.
+Ustawienie to nie będzie miało wpływu na kursy stosujące format towarzyski lub tematyczny.
+Wpłynie ono jednak na wyświetlanie logów, które przyjmują podaną tu datę jako najwcześniejszą możliwą do wyświetlenia.
+Zasadniczo, jeżeli Twój kurs ma faktyczną datę rozpoczęcia, warto ją tutaj wprowadzić bez względu na to jaki format kursu stosujesz.';
 $string['startingfrom'] = 'Rozpoczynający się od';
 $string['startsignup'] = 'Zacznij teraz od utworzenia nowego konta!';
 $string['state'] = 'Stan/prowincja';
@@ -1571,14 +1529,10 @@ $string['subcategories'] = 'Podkategorie';
 $string['submit'] = 'Prześlij';
 $string['success'] = 'Gotowe';
 $string['summary'] = 'Streszczenie';
-$string['summary_help'] = '<p align=center><b>Streszczenia tematu/tygodnia</b></p>
-
-<p>Streszczenia mogą być krótkimi tekstami mającymi przygotować studentów do zajęć prowadzonych w ramach danego tematu (lub tygodnia)</p>
-
-<p>Streszczenia powinny być stosunkowo krótkie, by nie zwiększać niepotrzebnie rozmiaru strony głównej kursu</p>
-
-<p> Jeśli chcesz na wstępie przekazać więcej informacji, rozważ dodanie zasobu opisującego dany temat. Przykładowo pierwszą składową kursu może być strona zatytułowana <b>Na temat tego tygodnia ... </b>
-</p>';
+$string['summary_help'] = '<p align=center>**Streszczenia tematu/tygodnia**</p>
+Streszczenia mogą być krótkimi tekstami mającymi przygotować studentów do zajęć prowadzonych w ramach danego tematu (lub tygodnia)
+Streszczenia powinny być stosunkowo krótkie, by nie zwiększać niepotrzebnie rozmiaru strony głównej kursu
+Jeśli chcesz na wstępie przekazać więcej informacji, rozważ dodanie zasobu opisującego dany temat. Przykładowo pierwszą składową kursu może być strona zatytułowana **Na temat tego tygodnia ... **';
 $string['summaryof'] = 'Streszczenie {$a}';
 $string['supplyinfo'] = 'Proszę wpisać kilka informacji o sobie';
 $string['switchdevicedefault'] = 'Przełącz na standardowy schemat graficzny';

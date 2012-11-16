@@ -97,11 +97,9 @@ $string['numlearners'] = '# oppijat';
 $string['ok'] = 'OK';
 $string['or'] = 'tai';
 $string['organisation'] = 'Organisaatio';
-$string['orgincludechildren_help'] = '<h1>Organisaatio: ota alakohteet mukaan</h1>
-
-<p>Jos tämä ruutu on valittuna, kaikki valitun organisaation ja sille hierarkiassa mahdollisesti määriteltyjen aliorganisaatioiden käyttäjät otetaan mukaan tähän kohortti-ryhmään. </p>
-
-<p>Jos tämä ruutu ei ole valittuna, ainoastaan määritetyn organisaation käyttäjät lisätään kohortti-ryhmään. </p>';
+$string['orgincludechildren_help'] = '# Organisaatio: ota alakohteet mukaan
+Jos tämä ruutu on valittuna, kaikki valitun organisaation ja sille hierarkiassa mahdollisesti määriteltyjen aliorganisaatioiden käyttäjät otetaan mukaan tähän kohortti-ryhmään.
+Jos tämä ruutu ei ole valittuna, ainoastaan määritetyn organisaation käyttäjät lisätään kohortti-ryhmään.';
 $string['overview'] = 'Yleiskatsaus';
 $string['pleaseentervaliddate'] = 'Anna kelpaava päivämäärä muodossa pp/kk/vvvv';
 $string['pleaseentervalidreason'] = 'Anna peruste';
@@ -111,17 +109,14 @@ $string['pleasesearchmore'] = 'Tarkenna hakua';
 $string['pleasesetcompletiontimes'] = 'Aseta kaikille kohteille suoritusajat';
 $string['pleaseusesearch'] = 'Käytä hakua';
 $string['position'] = 'Asema';
-$string['positionincludechildren_help'] = '<h1>Asemat: ota alakohteet mukaan</h1>
-
-<p>Jos tämä ruutu on valittuna, kaikki valitussa asemassa olevat ja sille hierarkiassa mahdollisesti määriteltyjen alisteisten asemien käyttäjät otetaan mukaan tähän kohortti-ryhmään. </p>
-
-<p>Jos tämä ruutu ei ole valittuna, ainoastaan määritetyssä asemassa olevat käyttäjät lisätään kohortti-ryhmään. </p>';
+$string['positionincludechildren_help'] = '# Asemat: ota alakohteet mukaan
+Jos tämä ruutu on valittuna, kaikki valitussa asemassa olevat ja sille hierarkiassa mahdollisesti määriteltyjen alisteisten asemien käyttäjät otetaan mukaan tähän kohortti-ryhmään.
+Jos tämä ruutu ei ole valittuna, ainoastaan määritetyssä asemassa olevat käyttäjät lisätään kohortti-ryhmään.';
 $string['potusers'] = 'Mahdolliset käyttäjät';
 $string['potusersmatching'] = 'Mahdolliset ehtoja vastaavat käyttäjät';
-$string['profilefieldvalues_help'] = '<h1>Käyttäjäprofiilin kentät</h1>
-
-<p>Voit valita dynaamisen kohortti-ryhmän jäsenet automaattisesti perustuen tässä määriteltyihin ehtoihin, jos heidän käyttäjäprofiilistaan löytyy ehdot täyttäviä tietoja. </p>
-<p>Arvo voi olla yksittäinen merkkijono tai useampia pilkulla erotettuna listana. Jos annat tässä useita arvoja, ryhmään lisätään käyttäjät, joiden tiedoista löytyy mikä tahansa näistä ehdoista. </p>';
+$string['profilefieldvalues_help'] = '# Käyttäjäprofiilin kentät
+Voit valita dynaamisen kohortti-ryhmän jäsenet automaattisesti perustuen tässä määriteltyihin ehtoihin, jos heidän käyttäjäprofiilistaan löytyy ehdot täyttäviä tietoja.
+Arvo voi olla yksittäinen merkkijono tai useampia pilkulla erotettuna listana. Jos annat tässä useita arvoja, ryhmään lisätään käyttäjät, joiden tiedoista löytyy mikä tahansa näistä ehdoista.';
 $string['reportsto'] = 'raportoi käyttäjälle';
 $string['role'] = 'Rooli';
 $string['saveallchanges'] = 'Tallenna kaikki muutokset';
@@ -138,13 +133,11 @@ $string['thiscohortwillhave'] = 'Tässä ryhmässä on {$a} jäsentä';
 $string['toomanyusersmatchsearch'] = 'Haku tuotti liian paljon tuloksia';
 $string['toomanyuserstoshow'] = 'Haku tuotti liian paljon tuloksia';
 $string['type'] = 'Tyyppi';
-$string['type_help'] = '<h1>Kohortti-ryhmän tyyppi</h1>
-
-<p>Kohortti-ryhmän tyyppi voi olla joko \'manuaalinen\' tai \'dynaaminen\'. </p>
-<p>Manuaaliset ryhmät ovat määriteltyjä ryhmiä, jotka kohortin perustaja luo käsin. Perustaja voi lisätä tai poistaa käyttäjiä, mutta muilta osin lista on staattinen. </p>
-<p>Dynaamiset kohortit perustetaan määrittämällä sääntö tai sääntöjoukko, jonka perusteella käyttäjiä otetaan mukaan ryhmään automaattisesti (tai poistetaan ne käyttäjät, jotka eivät enää sovi näihin ehtoihin). </p>
-<p>Manuaalisen ryhmän jäseniä voi muokata koska vain, mutta dynaamista kohortti-ryhmää ohjaavia sääntöjä ei voi muuttaa enää sen jälkeen, kun kohortti on talletettu.
-</p>';
+$string['type_help'] = '# Kohortti-ryhmän tyyppi
+Kohortti-ryhmän tyyppi voi olla joko \'manuaalinen\' tai \'dynaaminen\'.
+Manuaaliset ryhmät ovat määriteltyjä ryhmiä, jotka kohortin perustaja luo käsin. Perustaja voi lisätä tai poistaa käyttäjiä, mutta muilta osin lista on staattinen.
+Dynaamiset kohortit perustetaan määrittämällä sääntö tai sääntöjoukko, jonka perusteella käyttäjiä otetaan mukaan ryhmään automaattisesti (tai poistetaan ne käyttäjät, jotka eivät enää sovi näihin ehtoihin).
+Manuaalisen ryhmän jäseniä voi muokata koska vain, mutta dynaamista kohortti-ryhmää ohjaavia sääntöjä ei voi muuttaa enää sen jälkeen, kun kohortti on talletettu.';
 $string['userprofilefield'] = 'Käyttäjäprofiilin kenttä';
 $string['values'] = 'Arvot';
 $string['viewmembers'] = 'Tarkastele jäseniä';

@@ -27,24 +27,24 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['accesscontrol'] = 'Styrning av tillgänglighet';
 $string['actionaftercorrectanswer'] = 'Det som händer vid rätt svar';
-$string['actionaftercorrectanswer_help'] = '<p>Det normala om svaret är rätt, är att följa hoppet så som det är angivet i svaret.
+$string['actionaftercorrectanswer_help'] = 'Det normala om svaret är rätt, är att följa hoppet så som det är angivet i svaret.
 I de flesta fall kommer detta antagligen att visa Nästa sida i lektionen, alltså i situationer
 när studenten/ eleven/ deltagaren/ den lärande leds genom lektionen på ett logiskt sätt
-med start på sidan ett och med avslutning på den sista.</p>
-<p>Lektionsmodulen kan emellertid också användas som en sorts uppgift av typ <i>Flash-kort</i>.
+med start på sidan ett och med avslutning på den sista.
+Lektionsmodulen kan emellertid också användas som en sorts uppgift av typ \*Flash-kort\*.
 Studenten/ eleven/ deltagaren/ den lärande får se en viss information (valfritt) och en fråga
 i slumpmässig ordning. Det finns egentligen ingen klar början och tydligt slut, utan
-bara en uppsättning  <i>kort</i> som visas den ena efter den andra i en slumpmässig ordning.</p>
-<p>Det här alternativet möjliggör två väldigt likartade beteenden för Flash-kort.
+bara en uppsättning \*kort\* som visas den ena efter den andra i en slumpmässig ordning.
+Det här alternativet möjliggör två väldigt likartade beteenden för Flash-kort.
 Alternativet "Visa en ny sida" visar aldrig samma sida två gånger (inte ens om studenten/ eleven/ deltagaren/ den lärande
-<b> inte</b> lämnade ett korrekt svar på den fråga som var kopplad till sidan/kortet).
+** inte** lämnade ett korrekt svar på den fråga som var kopplad till sidan/kortet).
 Det andra, icke-standardmässiga alternativet "Visa en obesvarad sida" låter studenten/ eleven/ deltagaren/ den lärande
-se sidor som kan ha förekommit tidigare men bara om den därtill hörande frågan har besvarats felaktigt.</p>
-<p>I båda dessa lektioner av typ Flash-kort kan Du som t ex (distans)lärare
-bestämma Dig för att använda antingen alla sidorna/korten i lektionen eller bara en (slumpmässig) deluppsättning. Detta styr Du med parametern "Antal sidor/kort att visa".</p>';
+se sidor som kan ha förekommit tidigare men bara om den därtill hörande frågan har besvarats felaktigt.
+I båda dessa lektioner av typ Flash-kort kan Du som t ex (distans)lärare
+bestämma Dig för att använda antingen alla sidorna/korten i lektionen eller bara en (slumpmässig) deluppsättning. Detta styr Du med parametern "Antal sidor/kort att visa".';
 $string['actions'] = 'Åtgärder';
 $string['activitylink'] = 'Länk till en aktivitet';
-$string['activitylink_help'] = '<p>Nedrullningsmenyn innehåller alla aktiviteter för den här kursen. Om Du väljer en då kommer det att skapas en länk till den. Länken kommer att visas i slutet på Lektionen.</p>';
+$string['activitylink_help'] = 'Nedrullningsmenyn innehåller alla aktiviteter för den här kursen. Om Du väljer en då kommer det att skapas en länk till den. Länken kommer att visas i slutet på Lektionen.';
 $string['activitylinkname'] = 'Gå till: {$a}';
 $string['addabranchtable'] = 'Lägg till en sida med innehåll';
 $string['addanendofbranch'] = 'Lägg till ett slut på förgrening';
@@ -93,25 +93,24 @@ $string['cannotfindtimer'] = 'Fel: det gick inte att hitta lesson_timer records'
 $string['cannotfinduser'] = 'Fel: det gick inte att hitta användare';
 $string['canretake'] = '{$a} kan göra om';
 $string['casesensitive'] = 'Använd standarduttryck';
-$string['casesensitive_help'] = '<p>Några av frågetyperna har ett alternativ som Du aktiverar genom att markera
-en kryssruta. Du hittar en detaljerad beskrivning av frågetyperna och innebörden av alternativen här nedan:</p>
-<ol>
-<li><b>Multichoice (flervalsfrågor)</b><br />
-Det finns en variant av flervalsfrågor som kallas <b>"Flervals/Flersvarsfrågor"</b>
+$string['casesensitive_help'] = 'Några av frågetyperna har ett alternativ som Du aktiverar genom att markera
+en kryssruta. Du hittar en detaljerad beskrivning av frågetyperna och innebörden av alternativen här nedan:
+1.**Multichoice (flervalsfrågor)**
+Det finns en variant av flervalsfrågor som kallas **"Flervals/Flersvarsfrågor"**
 Om man väljer Alternativ för fråga så ombeds man att välja alla de svarsalternativ som är korrekta.
-Det kan, eller inte, framgå av frågan  <i>hur många</i> korrekta svar det finns.
+Det kan, eller inte, framgå av frågan *hur många* korrekta svar det finns.
 Ett exempel: "Vilka av de följande personerna var presidenter i USA?" talar inte om hur många det är.
 "Välj de två personer som har varit presidenter i USA" gör det.
 Det faktiska antalet korrekta svar kan vara allt från ett till samtliga svarsalternativ.
 En fråga av typen flervalssvar med ett korrekt svar skiljer sig från
 en Flervalsfråga på så sätt att den förra ger Dig möjlighet att välja mer än ett svar
 vilket den andra inte gör.
-</li>
-<li><b>Kortsvarsfråga</b><br /> Som standard så är jämförelsen inte skiftlägeskänslig.
+2.**Kortsvarsfråga**
+Som standard så är jämförelsen inte skiftlägeskänslig.
 Om Du har markerat Alternativ för fråga så kommer det att vara skillnad på
-stor och liten bokstav. </li>
-</ol>
-<p>Övriga frågetyper använder inte Alternativ för fråga.</p>';
+stor och liten bokstav.
+
+Övriga frågetyper använder inte Alternativ för fråga.';
 $string['checkbranchtable'] = 'Kontrollera innehållsida';
 $string['checkedthisone'] = 'kontrollerade den här.';
 $string['checknavigation'] = 'Kontrollera navigation';
@@ -147,9 +146,9 @@ $string['correctanswerscore'] = 'Resultat avseende korrekta svar';
 $string['correctresponse'] = 'Korrekt svar';
 $string['credit'] = 'Tillgodoräknande';
 $string['customscoring'] = 'Egen utformning av resultat';
-$string['customscoring_help'] = '<p>Det här ger Dig möjlighet att ange ett numeriskt värde (en siffra) för varje svar.
+$string['customscoring_help'] = 'Det här ger Dig möjlighet att ange ett numeriskt värde (en siffra) för varje svar.
 Svar kan antingen ha negativa eller positiva värden. Importerade frågor kommer att automatiskt
-tilldelas 1 poäng för rätt svar och 0 poäng för felaktiga svar. Detta kan Du dock ändra efter det att Du har importerat frågorna.</p>';
+tilldelas 1 poäng för rätt svar och 0 poäng för felaktiga svar. Detta kan Du dock ändra efter det att Du har importerat frågorna.';
 $string['deadline'] = 'Stoppdatum/tid';
 $string['defaultessayresponse'] = 'Din essä kommer att få ett betyg/omdöme av kursens distanslärare.';
 $string['deleteallattempts'] = 'Ta bot alla försök att genomföra lektionen';
@@ -158,25 +157,21 @@ $string['deletedpage'] = 'Borttagen sida';
 $string['deleting'] = 'Tar bort';
 $string['deletingpage'] = 'Tar bort sidan: {$a}';
 $string['dependencyon'] = 'Beror på';
-$string['dependencyon_help'] = '<p>Med den här inställningen kan Du göra den aktuella lektionen beroende av hur studenten/ eleven/ deltagaren/ den lärande har presterat i en annan lektion som är del av samma kurs. Om kraven på prestation inte har uppfyllts då kommer studenten/ eleven/ deltagaren/ den lärande inte att få tillgång till den här lektionen.</p>
+$string['dependencyon_help'] = 'Med den här inställningen kan Du göra den aktuella lektionen beroende av hur studenten/ eleven/ deltagaren/ den lärande har presterat i en annan lektion som är del av samma kurs. Om kraven på prestation inte har uppfyllts då kommer studenten/ eleven/ deltagaren/ den lärande inte att få tillgång till den här lektionen.
+I villkoren för beroendet kan följande ingå:
+\* **|Den tid som har använts:** studenten/ eleven/ deltagaren/ den lärande måste använda den här angivna tiden för att genomföra lektionen.
+\* **|Genomförd:** studenten/eleven/deltagaren/den lärande måste genomföra den obligatoriska lektionen.
+\* **|Betyg/omdöme högre än:** studenten/ eleven/ deltagaren/ den lärande måste uppnå ett betyg/omdöme som är högre än det som är angivet här.
 
-<p>I villkoren för beroendet kan följande ingå:
-<ul>
-<li><b>Den tid som har använts:</b> studenten/ eleven/ deltagaren/ den lärande måste använda den här angivna tiden för att genomföra lektionen.</li>
-<li><b>Genomförd:</b>  studenten/eleven/deltagaren/den lärande måste genomföra den obligatoriska lektionen.</li>
-<li><b>Betyg/omdöme högre än:</b> studenten/ eleven/ deltagaren/ den lärande måste  uppnå ett betyg/omdöme som är högre än det som är angivet här. </li>
-</ul>
-Alla kombinationer av det ovanstående kan användas om det behövs.
-</p>';
+Alla kombinationer av det ovanstående kan användas om det behövs.';
 $string['description'] = 'Beskrivning';
 $string['detailedstats'] = 'Detaljerad statistik';
 $string['didnotanswerquestion'] = 'Besvarade inte den här frågan';
 $string['didnotreceivecredit'] = 'Fick inte tillgodoräkna sig resultat';
 $string['displaydefaultfeedback'] = 'Visa förinställd återkoppling';
-$string['displaydefaultfeedback_help'] = '<p align="center"><strong>Visa standardiserad återkoppling </strong></p>
-
-<p>Om detta är inställt till <strong>Ja</strong>, då kommer, när det inte går att hitta något förslag till återkoppling för en viss fråga, den standardiserade återkopplingen \'Det är ett korrekt svar\' eller \'Det är ett felaktigt svar\' att användas. </p>
-<p>Om detta är inställt till <strong>Nej</strong>, då kommer, när det inte går att hitta något förslag till återkoppling för en viss fråga, ingen återkoppling alls att visas.  Användaren skickas istället automatiskt vidare till nästa sida i lektionen. </p>';
+$string['displaydefaultfeedback_help'] = '**Visa standardiserad återkoppling **
+Om detta är inställt till **Ja**, då kommer, när det inte går att hitta något förslag till återkoppling för en viss fråga, den standardiserade återkopplingen \'Det är ett korrekt svar\' eller \'Det är ett felaktigt svar\' att användas.
+Om detta är inställt till **Nej**, då kommer, när det inte går att hitta något förslag till återkoppling för en viss fråga, ingen återkoppling alls att visas. Användaren skickas istället automatiskt vidare till nästa sida i lektionen.';
 $string['displayhighscores'] = 'Visa höga resultat';
 $string['displayinleftmenu'] = 'Visa i den vänstra menyn?';
 $string['displayleftif'] = 'Visa den vänstra menyn bara om betyg/omdöme är högre än:';
@@ -185,8 +180,8 @@ $string['displayleftmenu'] = 'Visa vänster meny';
 $string['displayleftmenu_help'] = 'Om det här är aktiverat så kommer en lista över sidor att visas';
 $string['displayofgrade'] = 'Visning av betyg/omdöme';
 $string['displayreview'] = 'Tillhandahåll ett alternativ att försöka svara på en fråga igen';
-$string['displayreview_help'] = '<p>Det här kommer om det är aktiverat att visa en knapp efter en fråga som har besvarats felaktigt. Då kan studenten/ eleven/ deltagaren/ den lärande antingen göra ett nytt försök att besvara frågan men utan att få poäng för det eller att fortsätta. Det fungerar inte
-med essäfrågor så aktivera inte detta om Du använder sådana frågor.</p>';
+$string['displayreview_help'] = 'Det här kommer om det är aktiverat att visa en knapp efter en fråga som har besvarats felaktigt. Då kan studenten/ eleven/ deltagaren/ den lärande antingen göra ett nytt försök att besvara frågan men utan att få poäng för det eller att fortsätta. Det fungerar inte
+med essäfrågor så aktivera inte detta om Du använder sådana frågor.';
 $string['displayscorewithessays'] = 'Du har uppnått {$a->score} av {$a->tempmaxgrade} för de frågor som betygssätts automatiskt.<br>Din/a {$a->essayquestions} essäfråga/or kommer att betygsättas och läggas till<br>Ditt slutresultat vid ett senare tillfälle.<br><br>Ditt aktuella betyg utan essäfråga/or är {$a->score} av {$a->grade}';
 $string['displayscorewithoutessays'] = 'Ditt resultat är {$a->score} (av {$a->grade}).';
 $string['edit'] = 'Redigera';
@@ -228,12 +223,11 @@ $string['gradeessay'] = 'Betygssätt essäfrågor';
 $string['gradeis'] = 'Betyget/omdömet är {$a}';
 $string['gradeoptions'] = 'Alternativ för betyg/omdömen';
 $string['handlingofretakes'] = 'Hantering av omtagningar';
-$string['handlingofretakes_help'] = '<p>När studenterna/ eleverna/ deltagarna/ de lärande får tillåtelse att
+$string['handlingofretakes_help'] = 'När studenterna/ eleverna/ deltagarna/ de lärande får tillåtelse att
 göra om lektionen så gör det här alternativet det möjligt för (distans)läraren att visa betygen/omdömena
 för lektionen t ex på betygs/ omdömessidan antingen som \'medelbetyget\' av det första och efterföljande försök
 eller som det \'högsta\' betyget som uppnåtts under försöken.
-</p>
-<p>Du kan ändra det här alternativet när som helst.</p>';
+Du kan ändra det här alternativet när som helst.';
 $string['havenotgradedyet'] = 'har inte satt betyg/avgett omdöme än.';
 $string['here'] = 'här';
 $string['highscore'] = 'Högt resultat';
@@ -243,105 +237,83 @@ $string['importcount'] = 'Importerar frågor';
 $string['importppt'] = 'Importera PowerPoint';
 $string['importppt_help'] = 'Den här egenskapen gör det möjligt att importera en zippad fil av PowerPoint 2003 format (sparad som webbsidor) till lektionen.';
 $string['importquestions'] = 'Importera frågor';
-$string['importquestions_help'] = '<p>Den här funktionen låter Dig importera frågor från externa textfiler som
-är uppladdade via ett formulär.</p>
-
-<p>Det finns ett antal filtyper som stöds:</p>
-<p><b>GIFT formatet</b></p>
-<ul>
-<li>GIFT är det mest heltäckande formatet som är tillgängligt för att
+$string['importquestions_help'] = 'Den här funktionen låter Dig importera frågor från externa textfiler som
+är uppladdade via ett formulär.
+Det finns ett antal filtyper som stöds:
+**GIFT formatet**
+* GIFT är det mest heltäckande formatet som är tillgängligt för att
 importera testfrågor av Moodletyp från en textfil. Det är utformat för att
 vara en enkel metod för (distans)lärare som skriver frågor som en textfil.
 Formatet stödjer Multiple-Choice (flervalsfrågor), Sant-Falskt, kortsvar, para-ihop och
 numeriska frågor liksom infogande av lucktexter. Du kan blanda olika frågetyper i en enskild textfil
 och formatet stödjer också kommentarer till en rad, namn på frågor, återkoppling och procentviktade
-betyg/omdömen. Här nedan är några exempel:</li>
-<li><pre>
+betyg/omdömen. Här nedan är några exempel:
+*
 Vem är begravd i Grants grav? {~Grant ~Jefferson =ingen}
-
-Grant är {~begravd  ~lever} i Grants grav.
-
+Grant är {~begravd~lever} i Grants grav.
 Grant är begravd i Grants grav.{FALSE}
-
 Vem är begravd i Grants grav?{=ingen =inte någon alls}
-
 När föddes Ulysses S. Grant?{#1822}
-</pre></li>
-</ul>
-<p align="right"><a href="help.php?file=formatgift.html&module=quiz">Mer info om "GIFT"-formatet</a></p>
 
-<p><b>Aiken-formatet</b></p>
-<ul>
-<li>Aiken-formatet är ett mycket enkelt sätt att skapa flervalsfrågor
+[Mer info om "GIFT"-formatet](help.php?file=formatgift.html&module=quiz)
+
+**Aiken-formatet**
+* Aiken-formatet är ett mycket enkelt sätt att skapa flervalsfrågor
 genom att använda ett format som är mycket tydligt och läsbart för människor.
 Här är ett exempel på formatet:
-
-<pre>
 Vad är avsikten med första hjälpen?
-
 A. Att rädda liv, att förebygga ytterligare skador, att bevara en god hälsa
 B. Att tillhandahålla medicinsk behandling till vilken skadad person som helst
 C. Att förebygga ytterligare skador
 D. Att hjälpa offer som ber om hjälp
 SVAR: A
-</pre>
-</li>
-</ul>
-<p align="right"><a href="help.php?file=formataiken.html&module=quiz">Mer info om  "Aiken"-formatet</a></p>
-<p><b>Lucktexter</b></p>
-<ul>
-<li>Det här formatet stödjer bara flervalsfrågor. Varje svar åtskiljs med ett tilde-tecken
-(~), och det korrekta svaret har likhetstecknet (=) som prefix.  Här är ett exempel:
 
-<blockquote>
-Så snart vi börjar undersöka våra kroppar som barn så blir vi
-studenter av {=anatomi och fysik ~reflexologi
-~vetenskap ~experiment}, och på ett sätt förblir vi studenter för resten av livet.
-</blockquote>
-</li>
-</ul>
-<p align="right"><a href="help.php?file=formatmissingword.html&module=quiz">Mer info om "Lucktext"-formatet</a></p>
 
-<p><b>AON</b></p>
-<ul>
-<li>Det här är samma format som lucktexten förutom det att efter det att
+[Mer info om "Aiken"-formatet](help.php?file=formataiken.html&module=quiz)
+
+**Lucktexter**
+* Det här formatet stödjer bara flervalsfrågor. Varje svar åtskiljs med ett tilde-tecken
+(~), och det korrekta svaret har likhetstecknet (=) som prefix. Här är ett exempel:
+>
+> Så snart vi börjar undersöka våra kroppar som barn så blir vi
+> studenter av {=anatomi och fysik ~reflexologi
+> ~vetenskap ~experiment}, och på ett sätt förblir vi studenter för resten av livet.
+>
+
+[Mer info om "Lucktext"-formatet](help.php?file=formatmissingword.html&module=quiz)
+
+**AON**
+* Det här är samma format som lucktexten förutom det att efter det att
 Du har importerat frågorna så omvandlas alla kortsvarsfrågor fyra åt gången till
 para-ihop-frågor.
 Dessutom så blandas svaren till flervalsfrågor slumpmässigt under importen.
 Formatet har fått sitt namn av en organisation som sponsrade många av
 egenskaperna hos testet/övningen.
-</li>
-</ul>
 
-<p><b>Blackboard</b></p>
-<ul>
-<li>Den här modulen kan importera frågor som är sparade i Blackboards exportformat.
-Det använder sig av XML-funktioner som kompileras över till Din PHP-kod.</li>
-</ul>
-<p align="right"><a href="help.php?file=formatblackboard.html&module=quiz">Mer info om "Blackboard"-formatet</a></p>
-<p><b>"Course Test Manager"</b></p>
-<ul>
-<li>Den här modulen kan importera frågor som är sparade i en testbank av "Course Test Manager"-typ.
+**Blackboard**
+* Den här modulen kan importera frågor som är sparade i Blackboards exportformat.
+Det använder sig av XML-funktioner som kompileras över till Din PHP-kod.
+
+[Mer info om "Blackboard"-formatet](help.php?file=formatblackboard.html&module=quiz)
+
+**"Course Test Manager"**
+* Den här modulen kan importera frågor som är sparade i en testbank av "Course Test Manager"-typ.
 Det använder sig av olika sätt att få tillgång till testbanken (som ligger i en Microsoft Access
 databas) beroende på om Moodle körs på en Windows- eller Linuxserver.
-På Windows kan Du ladda upp Accessdatabasen precis som Du gör med vilken annan importerad datafil som helst.</li>
-<li>På Linux, måste Du ställa in en windowsmaskin på samma nätverk som med databasen av typ "Course Test
-Manager"  och ett program som kallas ODBC Socket Server, som använder XML för att överföra data till Moodle på Linuxservern.</li>
-<li>Var snäll och läs hela hjälpfilen nedan innan Du använder denna klass av import.</li>
-</ul>
-<p align="right"><a href="help.php?file=formatctm.html&module=quiz">Mer info om "CTM"-formatet</a></p>
+På Windows kan Du ladda upp Accessdatabasen precis som Du gör med vilken annan importerad datafil som helst.
+* På Linux, måste Du ställa in en windowsmaskin på samma nätverk som med databasen av typ "Course Test
+Manager" och ett program som kallas ODBC Socket Server, som använder XML för att överföra data till Moodle på Linuxservern.
+* Var snäll och läs hela hjälpfilen nedan innan Du använder denna klass av import.
 
-<p><b>Egen standard</b></p>
-<ul>
-<li>Om Du har skapat ett eget format som Du behöver importera så kan Du implementera det själv genom att redigera mod/quiz/format/custom.php
+[Mer info om "CTM"-formatet](help.php?file=formatctm.html&module=quiz)
+
+**Egen standard**
+* Om Du har skapat ett eget format som Du behöver importera så kan Du implementera det själv genom att redigera mod/quiz/format/custom.php
 Det är rätt lite kod som behövs, bara så att det går att (parse) tolka
-en enskild fråga från en given text.</li>
-</ul>
-<p align="right"><a href="help.php?file=formatcustom.html&module=quiz">Mer info om formatet
-"Egen standard"</a></p>
+en enskild fråga från en given text.
 
-<p>Det kommer att tillkomma fler format, inklusive WebCT, IMS QTI och vad helst någon Moodlare kan komma att bidra med.
-</p>';
+[Mer info om formatet "Egen standard"](help.php?file=formatcustom.html&module=quiz)
+Det kommer att tillkomma fler format, inklusive WebCT, IMS QTI och vad helst någon Moodlare kan komma att bidra med.';
 $string['insertedpage'] = 'Infogad sida';
 $string['invalidfile'] = 'Ogiltig fil';
 $string['invalidid'] = 'Det avgavs ingen ID för modul eller lektion';
@@ -349,25 +321,23 @@ $string['invalidlessonid'] = 'ID för lektion var inte korrekt';
 $string['invalidpageid'] = 'Ogiltigt ID för sida';
 $string['jump'] = 'Hoppa till';
 $string['jumps'] = 'Hopp';
-$string['jumps_help'] = '<p>Varje svar har en hoppa-till-länk. När någon har valt ett svar så visas återkopplingen på
+$string['jumps_help'] = 'Varje svar har en hoppa-till-länk. När någon har valt ett svar så visas återkopplingen på
 svaret för studenten/ eleven/ deltagaren/ den lärande. Efter det visas den sida om hoppa-till-länken refererar till.
-Denna länk kan vara relativ eller absolut. Relativa länkar är <b>Den här sidan</b> och <b>Nästa sida</b>.
-<b>Den här sidan</b> betyder att samma sida visas igen. <b>Nästa sida</b>
+Denna länk kan vara relativ eller absolut. Relativa länkar är **Den här sidan** och **Nästa sida**.
+**Den här sidan** betyder att samma sida visas igen. **Nästa sida**
 visar den sida som följer efter denna i en logisk följd av sidor. En
-absolut länk till en sida anger Du genom att välja sidans <b>titel</b>.</p>
-<p>Lägg märke till att en (relativ) <b>Nästa sida</b> hoppa-till-länk kan visa en
+absolut länk till en sida anger Du genom att välja sidans **titel**.
+Lägg märke till att en (relativ) **Nästa sida** hoppa-till-länk kan visa en
 annan sida efter det att sidor har flyttats. En hoppa-till-länk som använder sig av
-sido<b>titlar</b> visar däremot alltid samma sida även efter det att sidor har flyttats.
-</p>
-<b><p>Specialhopp</p>
-<p>Ej visad fråga inom en förgrening</p></b>
-<p>Det här blir en länk till en slumpmässigt vald (av studenten/ eleven/ deltagaren/ den lärande) ej visad fråga mellan den här förgreningstabellen och slutet på lektionen eller nästa slut på en förgrening. </p>
-
-<p><b>Slumpmässig fråga inom en förgrening</b></p>
-<p>Det här blir en länk till en slumpmässigt vald fråga mellan den aktuella förgreningstabellen och  slutet på lektionen eller nästa slut på en förgrening. Om studenten/ eleven/ deltagaren/ den lärande redan har sett frågan och antalet försök är fler än 1 då kommer de att få ytterligare en möjlighet att skaffa sig poängen för frågan. Om antalet försök är inställt till 1 då kommer frågan att hoppas över och istället visas en annan slumpmässig fråga.</p>
-
-<p><b>Slumpmässig förgreningstabell</b></p>
-<p>Det här blir ett hopp till en slumpmässig förgreningstabell mellan den aktuella och  slutet på lektionen eller nästa slut på en förgrening.</p>';
+sido**titlar** visar däremot alltid samma sida även efter det att sidor har flyttats.
+**
+Specialhopp
+Ej visad fråga inom en förgrening**
+Det här blir en länk till en slumpmässigt vald (av studenten/ eleven/ deltagaren/ den lärande) ej visad fråga mellan den här förgreningstabellen och slutet på lektionen eller nästa slut på en förgrening.
+**Slumpmässig fråga inom en förgrening**
+Det här blir en länk till en slumpmässigt vald fråga mellan den aktuella förgreningstabellen och slutet på lektionen eller nästa slut på en förgrening. Om studenten/ eleven/ deltagaren/ den lärande redan har sett frågan och antalet försök är fler än 1 då kommer de att få ytterligare en möjlighet att skaffa sig poängen för frågan. Om antalet försök är inställt till 1 då kommer frågan att hoppas över och istället visas en annan slumpmässig fråga.
+**Slumpmässig förgreningstabell**
+Det här blir ett hopp till en slumpmässig förgreningstabell mellan den aktuella och slutet på lektionen eller nästa slut på en förgrening.';
 $string['jumpsto'] = 'Hopp till <em>{$a}</em>';
 $string['leftduringtimed'] = 'Du har avbrutit under en tidsstyrd lektion.<br>Var snäll och välj "Fortsätt" för att starta om lektionen.';
 $string['leftduringtimednoretake'] = 'Du har avbrutit under en tidsstyrd lektion<br> och Du får inte göra om, eller gå vidare med, lektionen.';
@@ -394,77 +364,74 @@ $string['matchesanswer'] = 'Passar ihop med svar';
 $string['matching'] = 'Matchning';
 $string['matchingpair'] = 'Matchande par {$a}';
 $string['maxgrade'] = 'Maximalt betyg/omdöme';
-$string['maxgrade_help'] = '<p>Det här värdet bestämmer maxbetyget/omdömet som man kan få på lektionen.
+$string['maxgrade_help'] = 'Det här värdet bestämmer maxbetyget/omdömet som man kan få på lektionen.
 Dess omfång är 0 till 100. Du kan ändra detta värde när som helst under lektionen.
 Varje ändring återspeglas omedelbart på sidan för betyg/omdömen och på de betyg/omdömen som visas för
 studenterna/eleverna/deltagarna/de lärande på olika listor.Om Du väljer betyget 0 så
-kommer lektionen inte att visas på betygs/omdömessidan.</p>';
+kommer lektionen inte att visas på betygs/omdömessidan.';
 $string['maxhighscores'] = 'Antal visade höga resultat';
 $string['maximumnumberofanswersbranches'] = 'Maximalt antal svar';
-$string['maximumnumberofanswersbranches_help'] = '<p>Det här värdet avgör det maximala antalet svar som (distans)läraren kan använda.
+$string['maximumnumberofanswersbranches_help'] = 'Det här värdet avgör det maximala antalet svar som (distans)läraren kan använda.
 Det förinställda standardvärdet är 4.
 Om lektionen bara använder, säg, SANT och FALSKT-frågor genomgående,
 då är det rimligt att ställa in detta värde till 2.
-</p>
-<p>Den här parametern ställer även in det maximala antalet förgreningar som kan användas i tabellen för förgreningar.</p>
-<p>Du kan lugnt  ändra värdet på den här parametern i en lektion som redan har ett innehåll.
+Den här parametern ställer även in det maximala antalet förgreningar som kan användas i tabellen för förgreningar.
+Du kan lugnt ändra värdet på den här parametern i en lektion som redan har ett innehåll.
 Faktum är att om Du vill lägga till en fråga med många svarsalternativ eller en lång förgreningstabell
 så måste Du ändra det här värdet. Efter det att Du har lagt till den (ovanliga) frågan eller förgreningstabellen
-så kan Du återställa det här värdet till ett mer "standardmässigt" värde.</p>';
+så kan Du återställa det här värdet till ett mer "standardmässigt" värde.';
 $string['maximumnumberofattempts'] = 'Maximalt antal försök';
-$string['maximumnumberofattempts_help'] = '<p>Det här värdet anger det maximala antalet gånger som en student/elev/deltagare/lärande får
-försöka besvara <b>någon</b> fråga vilken som helst i lektionen.
+$string['maximumnumberofattempts_help'] = 'Det här värdet anger det maximala antalet gånger som en student/elev/deltagare/lärande får
+försöka besvara **någon** fråga vilken som helst i lektionen.
 I de fall där det inte ingår svarsalternativ i frågorna som t ex kortsvarsfrågor och numeriska frågor
-så tilhandahåller det här värdet en nödvändig <i>"escape"-rutin</i> till nästa fråga i lektionen. </p>
-<p>Standardvärdet är 5. Mindre värden kan minska studenternas/elevernas/deltagarnas/de lärandes
-intresse för att tänka på frågorna. Större värden kan leda till mer frustration.</p>
-<p>Om Du ställer in det här värdet till bara 1 så kan frågan bara besvaras en gång.
+så tilhandahåller det här värdet en nödvändig \*"escape"-rutin\* till nästa fråga i lektionen.
+Standardvärdet är 5. Mindre värden kan minska studenternas/elevernas/deltagarnas/de lärandes
+intresse för att tänka på frågorna. Större värden kan leda till mer frustration.
+Om Du ställer in det här värdet till bara 1 så kan frågan bara besvaras en gång.
 Då blir det en uppgift av samma typ som med modulen Test förutom det att frågorna
-presenteras på individuella sidor.</p>
-<p>Lägg märke till att det här värdet är en global parameter
-vilket innebär att den gäller för alla frågor i lektionen oavsett typ.</p>
-<p>Lägg även märke till att den här parametern <b>inte</b> går att tillämpa på (distans)lärare
+presenteras på individuella sidor.
+Lägg märke till att det här värdet är en global parameter
+vilket innebär att den gäller för alla frågor i lektionen oavsett typ.
+Lägg även märke till att den här parametern **inte** går att tillämpa på (distans)lärare
 som kollar frågorna eller navigerar genom lektionen. Att kontrollera antalet försök beror
 på värden som är lagrade i databasen och (distans)lärares försök att besvara frågorna
-registreras inte. Som(distans)lärare förväntas Du förstås veta svaren!</p>';
+registreras inte. Som(distans)lärare förväntas Du förstås veta svaren!';
 $string['maximumnumberofattemptsreached'] = 'Du har uppnått maximalt antal tillåtna försök - Du flyttas nu vidare till nästa sida.';
 $string['maxtime'] = 'Tidsbegränsning (minuter)';
 $string['maxtimewarning'] = 'Du har ??? minut/er på Dig att avsluta lektionen.';
 $string['mediaclose'] = 'Visa en knapp för att stänga:';
 $string['mediafile'] = 'Popup-fönster för fil eller webbsida';
-$string['mediafile_help'] = '<p>Det här kommer att skapa ett popup-fönster innehållande en fil (t.ex. en mp3-fil) eller en webbsida i början av en lektion. Det kommer också att skapas en länk på varje sida i lektionen. Med den länken kan man öppna popup-fönstret igen om det skulle behövas.</p>
-
-<p>Alternativt kommer det att skapas en knapp "Stäng fönster" längst ner på popup-fönstret. Du kan även ställa in höjd och bredd på fönstret. </p>';
+$string['mediafile_help'] = 'Det här kommer att skapa ett popup-fönster innehållande en fil (t.ex. en mp3-fil) eller en webbsida i början av en lektion. Det kommer också att skapas en länk på varje sida i lektionen. Med den länken kan man öppna popup-fönstret igen om det skulle behövas.
+Alternativt kommer det att skapas en knapp "Stäng fönster" längst ner på popup-fönstret. Du kan även ställa in höjd och bredd på fönstret.';
 $string['mediafilepopup'] = 'Klicka här för att visa';
 $string['mediaheight'] = 'Höjd på popup-fönster:';
 $string['mediawidth'] = 'Bredd på popup-fönster::';
 $string['messageprovider:graded_essay'] = 'Meddelande om betygsatt essä';
 $string['minimumnumberofquestions'] = 'Minimalt antal frågor';
-$string['minimumnumberofquestions_help'] = '<p>När en lektion innehåller en eller flera förgreningstabeller så bör Du som (distans)lärare
+$string['minimumnumberofquestions_help'] = 'När en lektion innehåller en eller flera förgreningstabeller så bör Du som (distans)lärare
 normalt sett ställa in den här parametern. Dess värde sätter en lägre gräns för det antal frågor
 som ingår i beräkningen av betyg/omdömen.
-Det tvingar<b> inte</b> studenter/ elever/ deltagare/ lärande att besvara så många frågor i lektionen.</p>
-<p>Om parametern är inställd till t ex 20, så innebär det att betygen/ omdömena sätts som om
-studenterna/ eleverna/ deltagarna/ de lärande <b>åtminstone</b> har sett det här antalet frågor.
+Det tvingar** inte** studenter/ elever/ deltagare/ lärande att besvara så många frågor i lektionen.
+Om parametern är inställd till t ex 20, så innebär det att betygen/ omdömena sätts som om
+studenterna/ eleverna/ deltagarna/ de lärande **åtminstone** har sett det här antalet frågor.
 Låt oss säga att en student/ elev/ deltagare/ lärande ser bara en enskild förgrening i en lektion med, säg, 5 sidor
 och svarar korrekt på alla de aktuella frågorna. Denne skulle kunna välja att avsluta lektionen
 (under förutsättning att det alternativet finns med på den övergripande förgreningstabellen,
 vilket man kan anta att det gör). Om denna parameter inte var aktiverad så skulle
 deras betyg/omdöme bli 5 av 5 vilket blir 100%. Om parametern däremot är inställd till 20 så skulle betyget/omdömet reduceras till 5 av 20,
 dvs 25%. Ifall en annan person går igenom alla förgreningar och ser, säg, 25 sidor och besvarar alla utom två av frågorna korrekt
-så kommer betyget att bli 23 av 25, dvs 92%.</p>
-<p>Om den här parametern används så kommer den första sidan i lektionen att innehålla någonting i stil med:</p>
-<blockquote>På den här lektionen förväntas Du försöka besvara åtminstone n frågor. Du kan försöka besvara fler
-om Du vill. Dock är det så att om Du besvarar färre än n frågor så kommer Ditt betyg/omdöme att beräknas utifrån förutsättningen
-att Du försökt besvara n frågor.</blockquote>
-<p>"n" ersätts förstås av det faktiska talet (värdet) som den här parametern är inställd till.</p>
-<p>När den här parametern är inställd så får studenten/ eleven/ deltagaren/ den lärande veta hur många frågor han/hon har
-försökt besvara och hur många han/hon förväntas besvara.
-</p>';
+så kommer betyget att bli 23 av 25, dvs 92%.
+Om den här parametern används så kommer den första sidan i lektionen att innehålla någonting i stil med:
+> På den här lektionen förväntas Du försöka besvara åtminstone n frågor. Du kan försöka besvara fler
+> om Du vill. Dock är det så att om Du besvarar färre än n frågor så kommer Ditt betyg/omdöme att beräknas utifrån förutsättningen
+> att Du försökt besvara n frågor.
+"n" ersätts förstås av det faktiska talet (värdet) som den här parametern är inställd till.
+När den här parametern är inställd så får studenten/ eleven/ deltagaren/ den lärande veta hur många frågor han/hon har
+försökt besvara och hur många han/hon förväntas besvara.';
 $string['missingname'] = 'Var snäll och mata in ett smeknamn';
 $string['modattempts'] = 'Tillåt studenter/elever/deltagare/lärande att se igen';
-$string['modattempts_help'] = '<p>Det här kommer att låta studenterna/ eleverna/ deltagarna/ de lärande
-att navigera bakåt genom lektionen för att ändra sina svar.</p>';
+$string['modattempts_help'] = 'Det här kommer att låta studenterna/ eleverna/ deltagarna/ de lärande
+att navigera bakåt genom lektionen för att ändra sina svar.';
 $string['modattemptsnoteacher'] = 'Upprepad visning för studenter/elever/deltagare/lärande fungerar bara för dem.';
 $string['modulename'] = 'Lektion';
 $string['modulenameplural'] = 'Lektioner';
@@ -473,25 +440,24 @@ $string['movedpage'] = 'Flyttad sida';
 $string['movepagehere'] = 'Flytta sidan hit';
 $string['moving'] = 'Flyttar sidan: {$a}';
 $string['multianswer'] = 'Flerfaldiga svar';
-$string['multianswer_help'] = '<p>Några av frågetyperna har ett alternativ som Du aktiverar genom att markera
-en kryssruta. Du hittar en detaljerad beskrivning av frågetyperna och innebörden av alternativen här nedan:</p>
-<ol>
-<li><b>Multichoice (flervalsfrågor)</b><br />
-Det finns en variant av flervalsfrågor som kallas <b>"Flervals/Flersvarsfrågor"</b>
+$string['multianswer_help'] = 'Några av frågetyperna har ett alternativ som Du aktiverar genom att markera
+en kryssruta. Du hittar en detaljerad beskrivning av frågetyperna och innebörden av alternativen här nedan:
+1.**Multichoice (flervalsfrågor)**
+Det finns en variant av flervalsfrågor som kallas **"Flervals/Flersvarsfrågor"**
 Om man väljer Alternativ för fråga så ombeds man att välja alla de svarsalternativ som är korrekta.
-Det kan, eller inte, framgå av frågan  <i>hur många</i> korrekta svar det finns.
+Det kan, eller inte, framgå av frågan *hur många* korrekta svar det finns.
 Ett exempel: "Vilka av de följande personerna var presidenter i USA?" talar inte om hur många det är.
 "Välj de två personer som har varit presidenter i USA" gör det.
 Det faktiska antalet korrekta svar kan vara allt från ett till samtliga svarsalternativ.
 En fråga av typen flervalssvar med ett korrekt svar skiljer sig från
 en Flervalsfråga på så sätt att den förra ger Dig möjlighet att välja mer än ett svar
 vilket den andra inte gör.
-</li>
-<li><b>Kortsvarsfråga</b><br /> Som standard så är jämförelsen inte skiftlägeskänslig.
+2.**Kortsvarsfråga**
+Som standard så är jämförelsen inte skiftlägeskänslig.
 Om Du har markerat Alternativ för fråga så kommer det att vara skillnad på
-stor och liten bokstav. </li>
-</ol>
-<p>Övriga frågetyper använder inte Alternativ för fråga.</p>';
+stor och liten bokstav.
+
+Övriga frågetyper använder inte Alternativ för fråga.';
 $string['multichoice'] = 'Flerval';
 $string['multipleanswer'] = 'Flera svar';
 $string['nameapproved'] = 'Namnet är godkänt';
@@ -522,19 +488,18 @@ $string['notitle'] = 'Ingen titel';
 $string['numberofcorrectanswers'] = 'Antal rätta svar: {$a}';
 $string['numberofcorrectmatches'] = 'Antal rätta matchningar:  {$a}';
 $string['numberofpagestoshow'] = 'Antal sidor (kort) att visa';
-$string['numberofpagestoshow_help'] = '<p>Den här parametern används bara i samband med lektioner av typen "Flash"-kort. Standardvärdet
+$string['numberofpagestoshow_help'] = 'Den här parametern används bara i samband med lektioner av typen "Flash"-kort. Standardvärdet
 är noll vilket betyder att alla sidorna/korten visas i en lektion.
 Om Du ställer in den här parametern till ett värde som inte är noll så visas det antalet sidor.
 När det antalet sidor/kort har visats är man framme vid lektionens slut och studenten/ eleven/ deltagaren/ den lärande
-får se sitt betyg/omdöme.</p>
-<p>Om den här parametern  är inställt på ett högre tal än det faktiska antalet sidor
-då kommer man att nå slutet på lektionen när alla sidor har visats.
-</p>';
+får se sitt betyg/omdöme.
+Om den här parametern är inställt på ett högre tal än det faktiska antalet sidor
+då kommer man att nå slutet på lektionen när alla sidor har visats.';
 $string['numberofpagesviewed'] = 'Antal sidor som har visats:  {$a}';
 $string['numberofpagesviewednotice'] = 'Antal besvarade frågor: {$a->nquestions}; (Du bör besvara åtminstone: {$a->minquestions})';
 $string['numerical'] = 'Numerisk';
 $string['ongoing'] = 'Visa pågående resultat';
-$string['ongoing_help'] = '<p>Om Du har aktiverat det här så kommer varje sida att visa det aktuella resultatet (så här långt) som andel av det möjliga sammanlagda resultatet.  Exempel:  Någon har besvarat 4 frågor värda 5 poäng vardera och besvarat en felaktigt. Det hittills ackumulerade resultatet skulle visa att vederbörande   att f.n. har uppnått 15/20 poäng.</p>';
+$string['ongoing_help'] = 'Om Du har aktiverat det här så kommer varje sida att visa det aktuella resultatet (så här långt) som andel av det möjliga sammanlagda resultatet. Exempel: Någon har besvarat 4 frågor värda 5 poäng vardera och besvarat en felaktigt. Det hittills ackumulerade resultatet skulle visa att vederbörande att f.n. har uppnått 15/20 poäng.';
 $string['ongoingcustom'] = 'Du har uppnått {$a->score} poäng av {$a->currenthigh} poäng så hä långt.';
 $string['ongoingnormal'] = 'Du har lämnat korrekt/a svar på {$a->correct} fråga/or av {$a->viewed} fråga/or.';
 $string['onpostperpage'] = 'Endast ett bidrag per betyg/omdöme';
@@ -544,104 +509,92 @@ $string['ordered'] = 'Ordnad';
 $string['other'] = 'Övrigt';
 $string['outof'] = 'Av  {$a}';
 $string['overview'] = 'Överblick';
-$string['overview_help'] = '<ol>
-<li>En lektion är uppbyggd av ett antal
-<b>sidor</b> och som valfri möjlighet av <b>förgreningstabeller</b>.</li>
-<li>En sida har ett visst <b>innehåll</b> och den avslutas normalt sett med en
-<b>fråga</b>. Därav begreppet <b>Frågesidan</b>.</li>
-<li>Varje sida har normalt sett en uppsättning <b>svar</b>. </li>
-<li>Varje svar kan visa ett kort stycke text efter det att användaren har valt ett svar.
-Detta stycke kallas för <b>återkoppling</b>.</li>
-<li>Något som också är kopplat till varje sida är ett <b>hopp</b>. Hoppet kan vara relativt -
+$string['overview_help'] = '1.En lektion är uppbyggd av ett antal
+**sidor** och som valfri möjlighet av **förgreningstabeller**.
+2.En sida har ett visst **innehåll** och den avslutas normalt sett med en
+**fråga**. Därav begreppet **Frågesidan**.
+3.Varje sida har normalt sett en uppsättning **svar**.
+4.Varje svar kan visa ett kort stycke text efter det att användaren har valt ett svar.
+Detta stycke kallas för **återkoppling**.
+5.Något som också är kopplat till varje sida är ett **hopp**. Hoppet kan vara relativt -
 den här sidan, nästa sida eller absolut. Om det är absolut så refererar det till vilken som helst
-av sidorna i lektionen eller lektionens slut.</li>
-<li>Som standard så hoppar det första "rätta" svaret till <b>nästa sida</b> i lektionen.
+av sidorna i lektionen eller lektionens slut.
+6.Som standard så hoppar det första "rätta" svaret till **nästa sida** i lektionen.
 De därpå följande svaren hoppar till samma sida. Dvs att studenten/eleven/deltagaren/den lärande
-visas samma sida i lektionen igen om de inte väljer det första "rätta"  svaret.</li>
-<li>Vad som är nästa sida avgörs av lektionens <b>logiska följd</b>. Det är den följd som (distans)läraren
-har arrangerat sidorna i. Du kan ändra på den följden genom att flytta sidor inom lektionen.</li>
-<li>Lektionen har också en <b>navigationsföljd</b>. Det är den följd som studenterna/ eleverna/ deltagarna/ de lärande
+visas samma sida i lektionen igen om de inte väljer det första "rätta" svaret.
+7.Vad som är nästa sida avgörs av lektionens **logiska följd**. Det är den följd som (distans)läraren
+har arrangerat sidorna i. Du kan ändra på den följden genom att flytta sidor inom lektionen.
+8.Lektionen har också en **navigationsföljd**. Det är den följd som studenterna/ eleverna/ deltagarna/ de lärande
 ser sidorna i. Detta avgörs av de hopp som är angivna för varje individuellt svar
 och denna följd kan skilja sig mycket från den logiska följden.
-(Även om standardvärdena för hoppen <i>inte</i> har ändrats så är de två starkt relaterade till varandra.)
-Som (distans)lärare har Du alternativet att markera navigationsföljden.</li>
-<li>När svaren visas för studenterna/ eleverna/ deltagarna/ de lärande så är de vanligtvis
+(Även om standardvärdena för hoppen \*inte\* har ändrats så är de två starkt relaterade till varandra.)
+Som (distans)lärare har Du alternativet att markera navigationsföljden.
+9.När svaren visas för studenterna/ eleverna/ deltagarna/ de lärande så är de vanligtvis
 blandade. Dvs, det första svaret som Du anger behöver inte nödvändigtvis vara det första svar som visas
 för studenterna/ eleverna/ deltagarna/ de lärande. (Vidare så är det så att svaren kommer att visas i en ny följd
 varje gång.) Undantaget från detta är uppsättningar av svar på frågor av typen para-ihop.
-Här visas nämligen svaren i samma följd som Du som (distans)lärare har angivit.</li>
-<li>Antalet svar kan variera från sida till sida. Det går t ex att låta några sidor sluta med
-en SANT/FALSKT-fråga medan andra har frågor med ett korrekt svar och, säg tre, felaktiga. </li>
-<li>Det är möjligt att skapa en sida utan svar. Studenterna/eleverna/deltagarna/de lärande får då se en
-<b>Fortsätt</b>-länk istället för en uppsättning blandade svar.</li>
-<li>I syfte att sätta betyg/omdömen på lektioner så är <b>korrekta</b> svar sådana som är hoppar till en
-sida som är längre <i>ner</i> i den logiska följden än den aktuella sidan.
-<b>Felaktiga</b> svar är sådana som antingen hoppar till samma sida eller till en sida
-som är längre <i>upp</i> i den logiska följden än den aktuella sidan. Sålunda är det så att om hoppen
-<i>inte</i> ändras så är det första svaret det som är korrekt och de andra svaren är felaktiga.</li>
-
-<li>Frågor kan ha mer än ett korrekt svar. Om t ex två av svaren hoppar till nästa sida då är båda godkända som korrekta svar.
+Här visas nämligen svaren i samma följd som Du som (distans)lärare har angivit.
+10. Antalet svar kan variera från sida till sida. Det går t ex att låta några sidor sluta med
+en SANT/FALSKT-fråga medan andra har frågor med ett korrekt svar och, säg tre, felaktiga.
+11. Det är möjligt att skapa en sida utan svar. Studenterna/eleverna/deltagarna/de lärande får då se en
+**Fortsätt**-länk istället för en uppsättning blandade svar.
+12. I syfte att sätta betyg/omdömen på lektioner så är **korrekta** svar sådana som är hoppar till en
+sida som är längre \*ner\* i den logiska följden än den aktuella sidan.
+**Felaktiga** svar är sådana som antingen hoppar till samma sida eller till en sida
+som är längre \*upp\* i den logiska följden än den aktuella sidan. Sålunda är det så att om hoppen
+\*inte\* ändras så är det första svaret det som är korrekt och de andra svaren är felaktiga.
+13. Frågor kan ha mer än ett korrekt svar. Om t ex två av svaren hoppar till nästa sida då är båda godkända som korrekta svar.
 (Även om samma målsida visas för studenterna/ eleverna/ deltagarna/ de lärande så kan den återkoppling som visas
-på vägen till denna sida mycket väl vara olika för de två olika svaren.)</li>
-<li>På den (lektions)sida som visas för (distans)läraren så har de korrekta svaren
-svarsetiketter som är understrukna.</li>
-<li><b>Förgreningstabeller</b> är helt enkelt sidor som har en uppsättning länkar till andra sidor i lektionen.
-Det  vanliga är att en lektion inleds med en förgreningstabell som fungerar som en <b>Tabell över innehåll</b>.</li>
-
-<li>Varje länk i en förgreningstabell har två komponenter, en beskrivning och
-och titeln på sidan länken ska hoppa till. </li>
-
-<li>En förgreningstabell delar effektivt in lektionen i ett antal
-<b>förgreningar</b> (eller sektioner). Varje förgrening kan innehålla ett antal sidor (som antagligen relaterar
-till samma ämne). Slutet på förgreningen är vanligtvis markerad med en <b>Slut på förgrening</b>-sida.
+på vägen till denna sida mycket väl vara olika för de två olika svaren.)
+14. På den (lektions)sida som visas för (distans)läraren så har de korrekta svaren
+svarsetiketter som är understrukna.
+15. **Förgreningstabeller** är helt enkelt sidor som har en uppsättning länkar till andra sidor i lektionen.
+Det vanliga är att en lektion inleds med en förgreningstabell som fungerar som en **Tabell över innehåll**.
+16. Varje länk i en förgreningstabell har två komponenter, en beskrivning och
+och titeln på sidan länken ska hoppa till.
+17. En förgreningstabell delar effektivt in lektionen i ett antal
+**förgreningar** (eller sektioner). Varje förgrening kan innehålla ett antal sidor (som antagligen relaterar
+till samma ämne). Slutet på förgreningen är vanligtvis markerad med en **Slut på förgrening**-sida.
 Det här är en speciell sida som, som standard, tar studenten/ eleven/ deltagaren/ den lärande tillbaka till den föregående
 förgreningstabellen.
 "tillbaka"-hoppet på en Slut-på-förgreningen-sida kan Du, om det behövs, ändra genom att redigera sidan.
-</li>
-
-<li>Det kan finnas mer än en förgreningstabell i en lektion. En lektion kan t ex
+18. Det kan finnas mer än en förgreningstabell i en lektion. En lektion kan t ex
 vara användbart strukturerad så att fördjupningar och specialfall läggs in i under-förgreningar
-inom huvudämnets förgreningar.</li>
-
-<li>Det är viktigt att studententerna/ eleverna/ deltagarna/ de lärande har
+inom huvudämnets förgreningar.
+19. Det är viktigt att studententerna/ eleverna/ deltagarna/ de lärande har
 möjligheter att avsluta lektionen. Detta kan t ex ske genom att Du tar med
 en länk för att "Avsluta lektionen" i den övergripande förgreningen.
-Detta gör att användaren hoppar till en (tänkt) sida för  <b>Slut på lektionen</b>.
+Detta gör att användaren hoppar till en (tänkt) sida för **Slut på lektionen**.
 En annan möjlighet är att den sista förgreningen i lektionen (här används "sista" i meningen
 logisk ordning) helt enkelt fortsätter till slutet på lektionen,
-dvs, den avslutas <i>inte</i> med en Slut-på-förgreningen-sida.</li>
-
-<li>När en lektion innehåller mer än en förgreningstabell så bör Du ställa in
+dvs, den avslutas \*inte\* med en Slut-på-förgreningen-sida.
+20. När en lektion innehåller mer än en förgreningstabell så bör Du ställa in
 parametern "Minimalt antal frågor" till ett rimligt värde. Detta
 anger en lägre gräns för det antal sidor som räknas in när betyget/omdömet beräknas.
 Utan denna parameter skulle studenten/ eleven/ deltagaren/ den lärande kunna gå igenom en
 enskild förgrening i lektionen, besvara alla frågorna där korrekt och sedan
-lämna lektionen och få ut ett maximalt betyg/omdöme för hela lektionen.</li>
-<li>
+lämna lektionen och få ut ett maximalt betyg/omdöme för hela lektionen.
+21.
 Vidare, när en förgreningstabell finns tillgänglig så har en student/elev/deltagare/lärande
 möjlighet att gå igenom samma förgrening flera gånger. Det är dock så att betyget/omdömet
-beräknas genom att man använder antalet <i>unika</i> frågor som är besvarade. Att man
+beräknas genom att man använder antalet \*unika\* frågor som är besvarade. Att man
 svarar flera gånger på samma uppsättning frågor höjer alltså inte betyget/omdömet.
 I själva verket är det tvärtom så att det sänker betyget/omdömet eftersom räknaren
 av visade sidor används i nämnaren när beräkningen av betyg/omdömen inkluderar
 flerfaldig visning av sidor. I syfte att ge studenterna/ eleverna/ deltagarna/ de lärande en rimlig uppfattning om
 hur de presterar under lektionens gång så får de, på varje förgreningstabell, se detaljer angående hur många frågor
-de har besvarat korrekt, antal sidor som är visade och deras aktuella betyg/omdöme.</li>
-
-<li><b>Slutet på lektionen</b> når de antingen genom att uttryckligen hoppa till den platsen
+de har besvarat korrekt, antal sidor som är visade och deras aktuella betyg/omdöme.
+22. **Slutet på lektionen** når de antingen genom att uttryckligen hoppa till den platsen
 eller genom att hoppa till nästa sida från den sista (logiska) sidan av lektionen.
 När de har nått slutet på lektionen så får de se ett gratulationsmeddelande och sitt betyg/omdöme.
 Betyget/omdömet är lika med (antal frågor som har besvarats korrekt/antal sidor som har visats) * betyget/omdömet för lektionen.
-</li>
-<li>Om slutet på lektionen <i>inte</i> är uppnått och studenten/ eleven/ deltagaren/ den lärande avbryter den någonstans inne i den,
+23. Om slutet på lektionen \*inte\* är uppnått och studenten/ eleven/ deltagaren/ den lärande avbryter den någonstans inne i den,
 så får han/hon nästa gång då han/hon återupptar lektionen, möjlighet att välja om han/hon vill börja om från början
 eller om han/hon vill fortsätta där han/hon lämnade sitt senaste korrekta svar.
-</li>
-<li>När det gäller lektioner som man får göra om så kan (distans)läraren välja om han/hon
-ska använda det bästa betyget eller medelbetyget för alla försök som det  "slutliga" betyget/omdömet på lektionen.
-Det betyget/omdömet visas t ex på sidan för Betyg/omdömen.</li>
-<li>Klustersidor: ett kluster representerar en uppsättning frågor och det går att välja en eller eller flera frågor ur på den på ett slumpmässigt sätt. Kluster bör kompletteras med en sida för Slut på kluster för att det ska bli bästa möjliga resultat annars kommer de att hantera Slut på lektion som Slut på kluster. Frågor inom ett kluster väljs ut slumpmässigt genom att du ställer in "Slumpmässig fråga inom kluster" som ett hopp. Frågor inom ett kluster kan antingen länka till Slut på kluster eller hoppa till en inte-visad fråga inom klustret eller hoppa till vilken annan sida som helst i  lektionen. Det här aktiverar även skapandet av scenarior med en slumpmässig komponent som använder modulen Lektion.</li>
-</ol>';
+24. När det gäller lektioner som man får göra om så kan (distans)läraren välja om han/hon
+ska använda det bästa betyget eller medelbetyget för alla försök som det "slutliga" betyget/omdömet på lektionen.
+Det betyget/omdömet visas t ex på sidan för Betyg/omdömen.
+25. Klustersidor: ett kluster representerar en uppsättning frågor och det går att välja en eller eller flera frågor ur på den på ett slumpmässigt sätt. Kluster bör kompletteras med en sida för Slut på kluster för att det ska bli bästa möjliga resultat annars kommer de att hantera Slut på lektion som Slut på kluster. Frågor inom ett kluster väljs ut slumpmässigt genom att du ställer in "Slumpmässig fråga inom kluster" som ett hopp. Frågor inom ett kluster kan antingen länka till Slut på kluster eller hoppa till en inte-visad fråga inom klustret eller hoppa till vilken annan sida som helst i lektionen. Det här aktiverar även skapandet av scenarior med en slumpmässig komponent som använder modulen Lektion.';
 $string['page'] = 'Sida:  {$a}';
 $string['pagecontents'] = 'Innehåll på sidor';
 $string['pages'] = 'Sidor';
@@ -659,19 +612,19 @@ $string['postprocesserror'] = 'Ett fel uppstod i sb m bearbetning av bidrag';
 $string['postsuccess'] = 'Inlägget har registrerats framgångsrikt';
 $string['pptsuccessfullimport'] = 'Sidorna från den uppladdade PowerPoint-presentationen importerades framgångsrikt';
 $string['practice'] = 'Övningslektion';
-$string['practice_help'] = '<p>En &ouml;vningslektion kommer inte att visas i betygskatalogen.</p>';
+$string['practice_help'] = 'En övningslektion kommer inte att visas i betygskatalogen.';
 $string['preprocesserror'] = 'Ett fel uppstod i sb m förbearbetning';
 $string['preview'] = 'Förhandsgranska';
 $string['previewlesson'] = 'Förhandsgranska {$a}';
 $string['previouspage'] = 'Föregående sida';
 $string['processerror'] = 'Ett fel uppstod i sb m bearbetning';
 $string['progressbar'] = 'Rad som visar hur något fortskrider';
-$string['progressbar_help'] = '<p>Detta visar längst ner på sidan en rad som visar hur processen fortgår.
-F.n. så är denna rad den som passar bäst ihop med en linjär Lektion.</p>
-<p>I samband med beräkning av procentandelen fullgjord del av Lektionen så beräknas
+$string['progressbar_help'] = 'Detta visar längst ner på sidan en rad som visar hur processen fortgår.
+F.n. så är denna rad den som passar bäst ihop med en linjär Lektion.
+I samband med beräkning av procentandelen fullgjord del av Lektionen så beräknas
 förgreningstabeller och frågesidor i förhållande till hur Lektionsprocessen fortgår.
-I samband med beräkning av det sammanlagda antalet sidor i Lektionen så bedöms kluster och sidor inom kluster att vara bara en enskild sida och Slut på kluster och Slut på sidor för förgreningstabell ingår inte. Alla andra sidor beräknas i förhållande till det sammanlagda antalet sidor i Lektionen.</p>
-<p>OBS: den aktuella stilen på raden är inte så imponerande ;-)  Alla stilreglerna (eg: colors, background images, etc) kan redigeras i in mod/lesson/styles.php.';
+I samband med beräkning av det sammanlagda antalet sidor i Lektionen så bedöms kluster och sidor inom kluster att vara bara en enskild sida och Slut på kluster och Slut på sidor för förgreningstabell ingår inte. Alla andra sidor beräknas i förhållande till det sammanlagda antalet sidor i Lektionen.
+OBS: den aktuella stilen på raden är inte så imponerande ;-) Alla stilreglerna (eg: colors, background images, etc) kan redigeras i in mod/lesson/styles.php.';
 $string['progressbarteacherwarning'] = 'Fortskridning av processen visas inte för {$a}';
 $string['progressbarteacherwarning2'] = 'Du kan inte se raden för fortskridande eftersom Du kan redigera den här lektionen';
 $string['qtype'] = 'Typ av sida';
@@ -688,20 +641,20 @@ $string['report'] = 'Redovisning';
 $string['reports'] = 'Rapporter';
 $string['response'] = 'Återkoppling på svar';
 $string['retakesallowed'] = 'Det är tillåtet att göra flera försök';
-$string['retakesallowed_help'] = '<p>Den här inställningen avgör om studenter/ elever/ deltagare/ lärande ska kunna gå igenom
+$string['retakesallowed_help'] = 'Den här inställningen avgör om studenter/ elever/ deltagare/ lärande ska kunna gå igenom
 en lektion mer än en gång.
 Distansläraren kan bestämma om lektionen innehåller material som studenten/ eleven/ deltagaren/ den lärande
 ska behärska ordentligt. Isåfall bör det vara tillåtet att göra om lektionen.
-Om lektionen däremot ingår i examinationen så bör det inte vara tillåtet att göra om den.</p>
-<p>När studenter/ elever/ deltagare/ lärande tillåts göra om en lektion
-så kommer de <b>betyg/omdömen</b> som visas på sidan för betyg/omdömen att vara antingen
-deras <b>medel-</b>betyg/omdöme eller det <b>bästa</b> som de har uppnått.
-Den följande parametern avgör vilken av dessa två metoder som används.</p>
-<p>Lägg märke till att alternativet <b>Analys av fråga</b> alltid använder svaren från
-de första försöken på lektionen. Hänsyn tas inte till efterföljande försök.</p>
-<p>Som standard så är detta alternativ inställt till  <b>Nej</b>, vilket betyder att det inte är tillåtet att
+Om lektionen däremot ingår i examinationen så bör det inte vara tillåtet att göra om den.
+När studenter/ elever/ deltagare/ lärande tillåts göra om en lektion
+så kommer de **betyg/omdömen** som visas på sidan för betyg/omdömen att vara antingen
+deras **medel-**betyg/omdöme eller det **bästa** som de har uppnått.
+Den följande parametern avgör vilken av dessa två metoder som används.
+Lägg märke till att alternativet **Analys av fråga** alltid använder svaren från
+de första försöken på lektionen. Hänsyn tas inte till efterföljande försök.
+Som standard så är detta alternativ inställt till **Nej**, vilket betyder att det inte är tillåtet att
 göra om lektionen. Bara under speciella omständigheter finns det anledning att
-välja alternativet <b>Ja</b>.</p>';
+välja alternativet **Ja**.';
 $string['returnto'] = 'Tillbaka till {$a}';
 $string['returntocourse'] = 'Tillbaka till kursen';
 $string['review'] = 'Granska';
@@ -722,7 +675,7 @@ $string['showanunseenpage'] = 'Visa en tidigare inte visad sida';
 $string['singleanswer'] = 'Enskilt svar';
 $string['skip'] = 'Hoppa över navigationen';
 $string['slideshow'] = 'Bildspel';
-$string['slideshow_help'] = '<p>Med det här kan Du aktivera att lektionen visas som ett bildspel, med en fixerad bredd och höjd och med en standardmässig bakgrundsfärg. En CSS-baserad skrollningslist kommer att visas om bredden eller höjden på sidan är större än den aktuella skärmen. Frågorna kommer att "brytas ut ur" bildspelsformatet. Endast sidor (förgreningstabeller) kommer att visas i en delbild i bildspelet som standardmässigt förval. Knappar med texten \'Nästa\' och \'Föregående\' kommer att visas längst ute till vänster och höger om det alternativet är valt för den aktuella bilden.  Övriga knappar kommer att vara centrerade under bilden.</p>';
+$string['slideshow_help'] = 'Med det här kan Du aktivera att lektionen visas som ett bildspel, med en fixerad bredd och höjd och med en standardmässig bakgrundsfärg. En CSS-baserad skrollningslist kommer att visas om bredden eller höjden på sidan är större än den aktuella skärmen. Frågorna kommer att "brytas ut ur" bildspelsformatet. Endast sidor (förgreningstabeller) kommer att visas i en delbild i bildspelet som standardmässigt förval. Knappar med texten \'Nästa\' och \'Föregående\' kommer att visas längst ute till vänster och höger om det alternativet är valt för den aktuella bilden. Övriga knappar kommer att vara centrerade under bilden.';
 $string['slideshowbgcolor'] = 'Bakgrundsfärg på bildspel';
 $string['slideshowheight'] = 'Bildspelets höjd';
 $string['slideshowwidth'] = 'Bildspelets bredd';
@@ -754,7 +707,7 @@ $string['updatefailed'] = 'Uppdateringen misslyckades';
 $string['usemaximum'] = 'Använd maximum';
 $string['usemean'] = 'Använd medel';
 $string['usepassword'] = 'Lektion som kräver lösenord';
-$string['usepassword_help'] = '<p>Det här innebär att studenterna/eleverna/deltagarna/de lärande inte kommer att kunna göra lektionen om de inte skriver in lösenordet.</p>';
+$string['usepassword_help'] = 'Det här innebär att studenterna/eleverna/deltagarna/de lärande inte kommer att kunna göra lektionen om de inte skriver in lösenordet.';
 $string['viewgrades'] = 'Visa betyg/omdömen';
 $string['viewhighscores'] = 'Visa listan över höga resultat';
 $string['viewreports'] = 'Visa {$a->attempts} fullföljda {$a->student} försök';

@@ -220,10 +220,10 @@ $string['defaultgrade'] = 'Standaardbeoordeling vraag';
 $string['defaultinfo'] = 'De standaardcategorie voor vragen.';
 $string['delay1'] = 'Tijdsverschil tussen eerste en tweede poging';
 $string['delay1st2nd'] = 'Verplichte wachttijd tussen 1ste en 2de poging';
-$string['delay1st2nd_help'] = '<p>Als je hier een tijd instelt, dan zal de leerling die bepaalde tijd moeten wachten voor hij een tweede poging voor deze test kan doen.</p>';
+$string['delay1st2nd_help'] = 'Als je hier een tijd instelt, dan zal de leerling die bepaalde tijd moeten wachten voor hij een tweede poging voor deze test kan doen.';
 $string['delay2'] = 'Tijdsverschil tussen volgende pogingen';
 $string['delaylater'] = 'Verplichtte wachttijd tussen latere pogingen';
-$string['delaylater_help'] = '<p>Als je hier een tijd instelt, zullen leerlingen deze tijd moeten wachten voor alle pogingen die ze willen doen, volgend op de tweede poging.</p>';
+$string['delaylater_help'] = 'Als je hier een tijd instelt, zullen leerlingen deze tijd moeten wachten voor alle pogingen die ze willen doen, volgend op de tweede poging.';
 $string['deleteattemptcheck'] = 'Ben je er zeker van dat je deze pogingen wil verwijderen?';
 $string['deleteselected'] = 'Selectie verwijderen';
 $string['deletingquestionattempts'] = 'Testpogingen aan het verwijderen';
@@ -234,17 +234,15 @@ $string['download'] = 'Klik om het bestand met de geëxporteerde categorie te do
 $string['downloadextra'] = '(dit bestand is ook bewaard bij de bestanden van je cursus in de map /backupdata/quiz)';
 $string['duplicateresponse'] = 'De inzending werd genegeerd omdat je eerder al een gelijkaardig antwoord gaf.';
 $string['eachattemptbuildsonthelast'] = 'Elke poging bouwt voort op de vorige';
-$string['eachattemptbuildsonthelast_help'] = '<p>Als meerdere pogingen toegestaan worden en deze instelling wordt op <b>ja</b> gezet, dan zal elke nieuwe poging
-de resultaten van de vorige poging bevatten. Dit maakt het mogelijk een begonnen test later verder af te werken.</p>
-
-<p>Om bij elke poging een lege test te tonen, kies je <b>Nee</b> voor deze instelling.</p>';
+$string['eachattemptbuildsonthelast_help'] = 'Als meerdere pogingen toegestaan worden en deze instelling wordt op **ja** gezet, dan zal elke nieuwe poging
+de resultaten van de vorige poging bevatten. Dit maakt het mogelijk een begonnen test later verder af te werken.
+Om bij elke poging een lege test te tonen, kies je **Nee** voor deze instelling.';
 $string['editcategories'] = 'Bewerk de categorieën';
 $string['editcategory'] = 'Bewerk categorie';
 $string['editcatquestions'] = 'Bewerk vragen van de categorie';
 $string['editingquestion'] = 'Een vraag bewerken';
 $string['editingquiz'] = 'Bewerk test';
 $string['editingquiz_help'] = 'Bij het maken van een test zijn de belangrijkste concepten:
-
 * De test, met vragen op één of meerdere pagina\'s
 * De vragenbank, die kopieën bewaart van alle vragen, georganiseerd in categorieën
 * Willekeurige vragen - Een leerling krijgt verschillende vragen telkens wanneer ze de test doen en verschillende leerlingen kunnen ook verschillende vragen krijgen';
@@ -328,29 +326,21 @@ $string['gradeboundary'] = 'Cijfermarge';
 $string['gradeessays'] = 'Beoordeel open vragen';
 $string['gradehighest'] = 'Hoogste cijfer';
 $string['grademethod'] = 'Beoordelingsmethode';
-$string['grademethod_help'] = '<p>
-Wanneer je meerdere pogingen toelaat, zijn er verschillende manieren waarop je de cijfers kunt gebruiken
+$string['grademethod_help'] = 'Wanneer je meerdere pogingen toelaat, zijn er verschillende manieren waarop je de cijfers kunt gebruiken
 om het totaalcijfer op de test te berekenen.
 
-<p><b>Hoogste cijfer</b><p>
-<blockquote>
-<p>Het eindcijfer op is het hoogste cijfer bij elke poging.
-</blockquote>
+**Hoogste cijfer**
+Het eindcijfer op is het hoogste cijfer bij elke poging.
 
-<p><b>Gemiddelde cijfer</b><p>
-<blockquote>
-<p>Het eindcijfer is het gemiddelde cijfer van alle pogingen.
-</blockquote>
+**Gemiddelde cijfer**
+Het eindcijfer is het gemiddelde cijfer van alle pogingen.
 
-<p><b>Eerste poging</b><p>
-<blockquote>
-<p>Het eindcijfer is het cijfer behaald bij de eerste poging. Alle andere pogingen worden niet in rekening gebracht.
-</blockquote>
+**Eerste poging**
+Het eindcijfer is het cijfer behaald bij de eerste poging. Alle andere pogingen worden niet in rekening gebracht.
 
-<p><b>Laatste poging</b><p>
-<blockquote>
-<p>Het eindcijfer is het cijfer behaald bij de laatste poging die de leerling gedaan heeft om de vraag te beantwoorden.
-</blockquote>';
+**Laatste poging**
+Het eindcijfer is het cijfer behaald bij de laatste poging die de leerling gedaan heeft om de vraag te beantwoorden.
+';
 $string['gradesdeleted'] = 'Cijfers van de test verwijderd';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}';
 $string['gradingdetails'] = 'Punten voor deze inzending:
@@ -370,9 +360,7 @@ $string['howquestionsbehave_desc'] = 'Standaardinstelling voor de manier waarop 
 $string['imagedisplay'] = 'Weer te geven afbeelding';
 $string['import'] = 'Importeer';
 $string['import_help'] = 'Met deze functie kun je vragen importeren uit externe textbestanden.
-
 Je moet UTF8-encoding gebruiken. Wees vooral voorzichtig met bestanden die je met Microsoft Office genereert, omdat die meestal een encoding gebruiken die niet correct zal afgehandeld worden.
-
 Import- en exportbestandsformaten zijn plugins. Er kunnen optionele bestandsformaten beschikbaar zijn in de Modules and Plugins database op Moodle.org.';
 $string['importcategory'] = 'importeer categorie';
 $string['importerror'] = 'Er is een fout opgetreden tijdens het importeren';
@@ -439,8 +427,7 @@ $string['navnojswarning'] = 'Waarschuwing: deze links zullen je antwoorden niet 
 $string['neverallononepage'] = 'Nooit, alle vragen op één pagina';
 $string['newattemptfail'] = 'Fout: kon geen nieuwe poging voor de test starten';
 $string['newpage'] = 'Nieuwe pagina';
-$string['newpage_help'] = '<p>Voor langere testen is het een goed idee om deze te verdelen over verschillende pagina\'s door het aantal vragen per pagina te beperken. Wanneer je vragen aan de test toevoegt, worden de paginascheidingen automatisch ingevoegd, afhankelijk van de instelling die je hier gemaakt hebt. Je kunt de paginascheidingen later ook met de hand verplaatsen op de pagina voor het bewerken van de test.
-</p>';
+$string['newpage_help'] = 'Voor langere testen is het een goed idee om deze te verdelen over verschillende pagina\'s door het aantal vragen per pagina te beperken. Wanneer je vragen aan de test toevoegt, worden de paginascheidingen automatisch ingevoegd, afhankelijk van de instelling die je hier gemaakt hebt. Je kunt de paginascheidingen later ook met de hand verplaatsen op de pagina voor het bewerken van de test.';
 $string['newpageevery'] = 'Start automatisch een nieuwe pagina';
 $string['noanswers'] = 'Er zijn geen antwoorden geselecteerd!';
 $string['noattempts'] = 'Er zijn geen pogingen geweest om deze test te maken';
@@ -519,9 +506,8 @@ $string['parsingquestions'] = 'Vragen uit het geïmporteerd bestand aan het verw
 $string['partiallycorrect'] = 'Gedeeltelijk juist';
 $string['penalty'] = 'Strafpunt';
 $string['penaltyscheme'] = 'Gebruik strafpunten';
-$string['penaltyscheme_help'] = '<p>Als een test in de adaptieve modus loopt, dan mag een leerling nog eens proberen na het geven van een fout antwoord. In dit geval wil je misschien voor elk fout antwoord strafpunten geven die dan afgetrokken worden van het totaalcijfer van de vraag. Het aantal strafpunten wordt voor elke vraag afzonderlijk gekozen wanneer je de vraag ingeeft of bewerkt.</p>
-
-<p>Deze instelling heeft geen effect, tenzij de test in adaptieve modus loopt.</p>';
+$string['penaltyscheme_help'] = 'Als een test in de adaptieve modus loopt, dan mag een leerling nog eens proberen na het geven van een fout antwoord. In dit geval wil je misschien voor elk fout antwoord strafpunten geven die dan afgetrokken worden van het totaalcijfer van de vraag. Het aantal strafpunten wordt voor elke vraag afzonderlijk gekozen wanneer je de vraag ingeeft of bewerkt.
+Deze instelling heeft geen effect, tenzij de test in adaptieve modus loopt.';
 $string['percentcorrect'] = 'Percentage juist';
 $string['pleaseclose'] = 'Je vraag is verwerkt. Je mag dit venster nu sluiten.';
 $string['pluginadministration'] = 'Test beheer';
@@ -643,27 +629,20 @@ $string['reportresponses'] = 'Antwoorddetails';
 $string['reports'] = 'Rapporten';
 $string['reportsimplestat'] = 'Eenvoudige statistieken';
 $string['requirepassword'] = 'Wachtwoord nodig';
-$string['requirepassword_help'] = '<p>Dit veld is optioneel</p>
-
-<p>Als je hier een wachtwoord ingeeft, dan moet elke deelnemer dit wachtwoord ingeven voor hij aan deze test mag beginnen.</p>';
+$string['requirepassword_help'] = 'Dit veld is optioneel
+Als je hier een wachtwoord ingeeft, dan moet elke deelnemer dit wachtwoord ingeven voor hij aan deze test mag beginnen.';
 $string['requiresubnet'] = 'Netwerkadres is nodig';
-$string['requiresubnet_help'] = '<p>Dit veld is optioneel.</p>
+$string['requiresubnet_help'] = 'Dit veld is optioneel.
+Je kunt de toegang tot deze test beperken tot bepaalde subnetten van het LAN of internet door hier een lijst te plaatsen van hele of gedeeltelijke IP-adressen, door komma\'s gescheiden.
+Dit is vooral nuttig voor een afgeschermde test, waarbij je er zeker van wil zijn dat alleen de mensen in een bepaalde kamer deze test kunnen doen.
+Bijvoorbeeld: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Er zijn drie types IP-adressen die je kunt gebruiken (je kunt geen domeinnamen geven zoals voorbeeld.com):
+1. Volledige IP-adressen, zoals **192.168.10.1** die bij één enkele computer horen (of proxyserver).
+2. Delen van IP-adressen, zoals **192.168** die horen bij alle computers waarvan de IP-adressen beginnen met die getallen.
+3. CIDR-notatie, zoals **231.54.211.0/20** die je de mogelijkheid geeft om gedetailleerde subnetten te specifiëren.
 
-<p>Je kunt de toegang tot deze test beperken tot bepaalde subnetten van het LAN of internet door hier een lijst te plaatsen van hele of gedeeltelijke IP-adressen, door komma\'s gescheiden.</p>
 
-<p>Dit is vooral nuttig voor een afgeschermde test, waarbij je er zeker van wil zijn dat alleen de mensen in een bepaalde kamer deze test kunnen doen.</p>
-
-<p>Bijvoorbeeld:  <b>192.168. , 231.54.211.0/20, 231.3.56.211</b></p>
-
-<p>Er zijn drie types IP-adressen die je kunt gebruiken (je kunt geen domeinnamen geven zoals voorbeeld.com):
-<ol>
-<li>Volledige IP-adressen, zoals <b>192.168.10.1</b> die bij één enkele computer horen (of proxyserver).</li>
-<li>Delen van IP-adressen, zoals <b>192.168</b> die horen bij alle computers waarvan de IP-adressen beginnen met die getallen.</li>
-<li>CIDR-notatie, zoals <b>231.54.211.0/20</b> die je de mogelijkheid geeft om gedetailleerde subnetten te specifiëren.</li>
-</ol>
-</p>
-
-<p>Spaties worden genegeerd.</p>';
+Spaties worden genegeerd.';
 $string['response'] = 'Antwoord';
 $string['responses'] = 'Eigen antwoorden';
 $string['results'] = 'Resultaten';
@@ -683,13 +662,10 @@ $string['reviewofpreview'] = 'Voorbeeld nakijken';
 $string['reviewopen'] = 'Later, terwijl de test nog open is';
 $string['reviewoptions'] = 'Leerlingen mogen nakijken';
 $string['reviewoptionsheading'] = 'Opties voor herbekijken';
-$string['reviewoptionsheading_help'] = '<p>Met deze optie controleer je welke informatie gebruikers kunnen zien waneer zij een test nalezen of wanneer ze naar de testrapporten kijken.</p>
-
-<p>Onmiddellijk na een poging betekent binnen de twee minuten nadat de gebruiker de test beeindigd heeft door op \'Bewaar alles en beeindig test\' te klikken.</p>
-
-<p>Later, terwijl de test nog open is, betekent na die twee minuten en voor de test sluit.</p>
-
-<p>Nadat de test gesloten is betekent wanneer de sluittijd/datum verstreken is. Als voor de test geen sluittijd ingesteld is, wordt deze toestand nooit bereikt.</p>';
+$string['reviewoptionsheading_help'] = 'Met deze optie controleer je welke informatie gebruikers kunnen zien waneer zij een test nalezen of wanneer ze naar de testrapporten kijken.
+Onmiddellijk na een poging betekent binnen de twee minuten nadat de gebruiker de test beeindigd heeft door op \'Bewaar alles en beeindig test\' te klikken.
+Later, terwijl de test nog open is, betekent na die twee minuten en voor de test sluit.
+Nadat de test gesloten is betekent wanneer de sluittijd/datum verstreken is. Als voor de test geen sluittijd ingesteld is, wordt deze toestand nooit bereikt.';
 $string['reviewresponse'] = 'Kijk antwoord na';
 $string['reviewresponsetoq'] = 'Antwoord bekijken (vraag {$a})';
 $string['reviewthisattempt'] = 'Nakijken van je antwoorden voor deze poging';
@@ -738,23 +714,19 @@ $string['shownoattempts'] = 'leerlingen die de test nog niet gemaakt hebben';
 $string['shownoattemptsonly'] = 'Toon enkel leerlingen zonder pogingen';
 $string['showteacherattempts'] = 'Toon de pogingen van de leraar';
 $string['showuserpicture'] = 'Toon de foto van de gebruiker';
-$string['showuserpicture_help'] = '<p>Als je deze optie inschakeld, dan zal de naam en foto van de leerling zichtbaar op het scherm gehouden worden tijdens een poging van de test en tijdens het nalezen.</p>
-
-<p>Eén voorbeeld van wanneer je dit zou willen doen is tijdens het afnemen van examens waarbij je zelf aanwezig bent, zodat je kan zien of de leerling wel als zichzelf is aangemeld.</p>';
+$string['showuserpicture_help'] = 'Als je deze optie inschakeld, dan zal de naam en foto van de leerling zichtbaar op het scherm gehouden worden tijdens een poging van de test en tijdens het nalezen.
+Eén voorbeeld van wanneer je dit zou willen doen is tijdens het afnemen van examens waarbij je zelf aanwezig bent, zodat je kan zien of de leerling wel als zichzelf is aangemeld.';
 $string['shuffle'] = 'Willekeurige volgorde';
 $string['shuffleanswers'] = 'Mix de antwoorden';
 $string['shuffledrandomly'] = 'Willekeurige volgorde';
 $string['shufflequestions'] = 'Mix de vragen';
 $string['shufflequestionsselected'] = 'Vragen door elkaar halen is ingeschakeld. Daarom is de knop om de volgorde van de vragen te wijzigen uitgeschakeld. Je kunt dit wijzigen in {$a}.';
 $string['shufflewithin'] = 'Haal antwoordvolgorde door elkaar';
-$string['shufflewithin_help'] = '<p>Als je deze optie inschakeld, dan zullen de onderdelen waaruit elke vraag bestaat willekeurig door elkaar gehaald worden bij elke poging dat een leerling doet om de test te maken - gesteld dat deze optie ook ingesteld is bij de vragen van de test.</p>
-
-<p>De bedoeling hiervan is om het de leerlingen moeilijker te maken om te spieken.</p>
-
-<p>Dit is natuurlijk alleen van toepassing op vragen die uit meerdere onderdelen bestaan, zoals
-meerkeuzevragen en koppelvragen. Bij meerkeuzevragen wordt de volgorde van de antwoorden alleen verwisseld als deze instelling op &quot;ja&quot; staat. Voor koppelvragen worden de antwoorden altijd verwisseld. Met deze instelling kun je bepalen of ook nog eens de vraag-antwoord paren verwisseld worden.</p>
-
-<p>Deze instelling heeft niets te maken met het gebruik van willekeurige vragen.</p>';
+$string['shufflewithin_help'] = 'Als je deze optie inschakeld, dan zullen de onderdelen waaruit elke vraag bestaat willekeurig door elkaar gehaald worden bij elke poging dat een leerling doet om de test te maken - gesteld dat deze optie ook ingesteld is bij de vragen van de test.
+De bedoeling hiervan is om het de leerlingen moeilijker te maken om te spieken.
+Dit is natuurlijk alleen van toepassing op vragen die uit meerdere onderdelen bestaan, zoals
+meerkeuzevragen en koppelvragen. Bij meerkeuzevragen wordt de volgorde van de antwoorden alleen verwisseld als deze instelling op "ja" staat. Voor koppelvragen worden de antwoorden altijd verwisseld. Met deze instelling kun je bepalen of ook nog eens de vraag-antwoord paren verwisseld worden.
+Deze instelling heeft niets te maken met het gebruik van willekeurige vragen.';
 $string['singleanswer'] = 'Kies een antwoord';
 $string['sortage'] = 'Sorteer op datum';
 $string['sortalpha'] = 'Sorteer alfabetisch';

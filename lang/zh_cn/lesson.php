@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = '访问控制';
 $string['actionaftercorrectanswer'] = '回答正确之后的动作';
 $string['actionaftercorrectanswer_help'] = '正确回答问题之后，有三个选项决定下一页跳转到哪里：
-
 * 正常 - 跟随教程路径继续
 * 显示一个没看过的页面 - 按随机顺序显示页面。每个页面只会显示一次
 * 显示一个未回答的页面 - 按随机顺序显示页面。有未回答的问题的页面会被重新显示';
@@ -250,7 +249,6 @@ $string['mediawidth'] = '弹出窗口宽度：';
 $string['messageprovider:graded_essay'] = '文章评分通知';
 $string['minimumnumberofquestions'] = '至少回答题目数';
 $string['minimumnumberofquestions_help'] = '此设置决定用来计算此活动成绩的最少题目数量。如果此教程包含一个或多个内容页面，那么最小题目数应设为0。
-
 假如它被设为20，那么在教程的起始页会显示下面文字：“在此教程中，希望您回答至少20个问题。 如果愿意，您可以回答更多问题。但是，如果您回答少于20个问题，您的成绩将按照回答了20个问题的方式计算。”';
 $string['missingname'] = '请输入昵称';
 $string['modattempts'] = '允许学生检查';

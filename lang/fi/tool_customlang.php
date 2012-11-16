@@ -51,8 +51,7 @@ $string['modifiedno'] = 'Ei muokattuja merkkijonoja lähetettäväksi.';
 $string['modifiednum'] = 'Muokattuja merkkijonoja on {$a}. Säilyttääksesi ne sinun täytyy lähettää ne levylle.';
 $string['nostringsfound'] = 'Hakua vastaavia merkkijonoja ei löytynyt; muuta suodatinasetuksia.';
 $string['placeholder'] = 'Paikkamerkit';
-$string['placeholder_help'] = 'Paikkamerkit ovat erityisiä lauseita kuten `{$a}` tai `{$a->something}` merkkijonon sisällä. Ne korvataan arvolla kun merkkijono tulostetaan.
-
+$string['placeholder_help'] = 'Paikkamerkit ovat erityisiä lauseita kuten \`{$a}\` tai \`{$a->something}\` merkkijonon sisällä. Ne korvataan arvolla kun merkkijono tulostetaan.
 On tärkeää kopioida ne tarkalleen kuten ne ovat alkuperäisessä merkkijonossa. Älä käännä niitä tai muuta niiden vasemmalta-oikealle suuntaa.';
 $string['placeholderwarning'] = 'merkkijonossa on paikkamerkki';
 $string['pluginname'] = 'Kielen räätälöinti';

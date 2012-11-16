@@ -36,7 +36,6 @@ $string['gradingmanagement'] = 'מתן ציון מתקדם';
 $string['gradingmanagementtitle'] = 'מתן ציון מתקדם: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'שיטת מתן ציון';
 $string['gradingmethod_help'] = 'בחר את שיטת מתן הציון אשר בה תשתמש עבור חישוב ציונים בהקשר שינתן.
-
 בכדי לכבות את אפשרות מתן ציון מתקדם ולחזור למנגנות מתן ציון של ברירת המחדל, בחר \'ציון מספרי או מדרגת-הערכה\'.';
 $string['gradingmethodnone'] = 'ציון מספרי או מדרגת-הערכה';
 $string['gradingmethods'] = 'שיטות מתן ציון';

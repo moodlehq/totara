@@ -55,14 +55,13 @@ $string['advice_wikirecentchanges_changes_nohighlight'] = '<p>Diese Übersicht z
 <p>Über die Links können Sie sehen, wie die Seite bei einer bestimmten Änderung aussah und was sich in diesem Moment geändert hat.</p>';
 $string['advice_wikirecentchanges_pages'] = '<p>Diese Übersicht zeigt, wann jede Seite zum Wiki hinzugefügt wurde, beginnend mit der zuletzt angelegten Seite.</p>';
 $string['ajaxnotenabled'] = 'AJAX ist in Ihrem Nutzerprofil nicht aktiviert.';
-$string['allowediting_help'] = '<p>Wenn diese Option aktiviert ist, wird das Wiki bis zum angegebenen Datum schreibgeschützt. Nutzer/innen können in diesem Modus alle Seiten und Versionen sehen, sich an der Diskussion beteiligen, aber keine Änderungen vornehmen.</p>
-
-<h2>Änderungen verhindern ab</h2>
-Wenn diese Option aktiviert ist, wird das Wiki ab dem angegebenen Datum schreibgeschützt.</p>';
+$string['allowediting_help'] = 'Wenn diese Option aktiviert ist, wird das Wiki bis zum angegebenen Datum schreibgeschützt. Nutzer/innen können in diesem Modus alle Seiten und Versionen sehen, sich an der Diskussion beteiligen, aber keine Änderungen vornehmen.
+## Änderungen verhindern ab
+Wenn diese Option aktiviert ist, wird das Wiki ab dem angegebenen Datum schreibgeschützt.';
 $string['annotate'] = 'Anmerken';
 $string['annotatingpage'] = 'Seite für Anmerkungen';
 $string['annotation'] = 'Anmerkung';
-$string['annotation_help'] = '<p>Nutzer/innen mit dem Recht, Anmerkungen vorzunehmen, können Anmerkungen in den Wikitext einfügen.</p>';
+$string['annotation_help'] = 'Nutzer/innen mit dem Recht, Anmerkungen vorzunehmen, können Anmerkungen in den Wikitext einfügen.';
 $string['annotationmarker'] = 'Anmerkungshinweis';
 $string['annotations'] = 'Anmerkungen';
 $string['annotationsystem'] = 'Anmerkungssystem';
@@ -106,7 +105,7 @@ $string['displayversion'] = 'OU Wiki-Version: <strong>{$a}</strong>';
 $string['downloadspreadsheet'] = 'Als Tabelle herunterladen';
 $string['duplicatepagetitle'] = 'Der Titel der neuen Seite darf nicht mit dem einer vorhandenen Seite übereinstimmen.';
 $string['editbegin'] = 'Änderungen erlauben ab';
-$string['editbegin_help'] = '<p>Wenn diese Option aktiviert ist, wird das Wiki bis zum angegebenen Datum schreibgeschützt. Nutzer/innen können in diesem Modus alle Seiten und Versionen sehen, sich an der Diskussion beteiligen, aber keine Änderungen vornehmen.</p>';
+$string['editbegin_help'] = 'Wenn diese Option aktiviert ist, wird das Wiki bis zum angegebenen Datum schreibgeschützt. Nutzer/innen können in diesem Modus alle Seiten und Versionen sehen, sich an der Diskussion beteiligen, aber keine Änderungen vornehmen.';
 $string['editedby'] = 'Bearbeitet von {$a}';
 $string['editend'] = 'Änderungen verhindern ab';
 $string['editend_help'] = 'Wenn diese Option aktiviert ist, wird das Wiki ab dem angegebenen Datum schreibgeschützt.';
@@ -150,8 +149,8 @@ $string['lockediting'] = 'Wiki sperren - keine Änderungen möglich';
 $string['lockpage'] = 'Seite sperren';
 $string['missingpages'] = 'Fehlende Seiten';
 $string['modulename'] = 'OU Wiki';
-$string['modulename_help'] = '<p>Ein Wiki ist ein webbasiertes System, das Nutzer/innen erlaubt, eine Menge von verlinkten Seiten zu bearbeiten. In Moodle wird ein Wiki normalerweise benutzt, wenn Teilnehmer/innen Texte schreiben sollen.</p>
-<p>Das OU Wiki verfügt über eine Vielfalt an Optionen. Bitte schauen Sie in die Einzelhilfen zu jeder Einstellmöglichkeit, um weitere Informationen zu erhalten.</p>';
+$string['modulename_help'] = 'Ein Wiki ist ein webbasiertes System, das Nutzer/innen erlaubt, eine Menge von verlinkten Seiten zu bearbeiten. In Moodle wird ein Wiki normalerweise benutzt, wenn Teilnehmer/innen Texte schreiben sollen.
+Das OU Wiki verfügt über eine Vielfalt an Optionen. Bitte schauen Sie in die Einzelhilfen zu jeder Einstellmöglichkeit, um weitere Informationen zu erhalten.';
 $string['modulenameplural'] = 'OU Wikis';
 $string['mustspecify2'] = 'Sie müssen zwei Versionen auswählen, um sie zu vergleichen.';
 $string['myparticipation'] = 'Meine Mitarbeit';
@@ -233,13 +232,10 @@ $string['savegrades'] = 'Bewertungen sichern';
 $string['savetemplate'] = 'Wiki als Vorlage sichern';
 $string['search'] = 'Wiki durchsuchen';
 $string['search_help'] = 'Geben Sie Ihren Suchbegriff ein.
-
 Um exakte Ausdrücke zu suchen, nutzen Sie bitte die Anführungszeichen.
-
 Um ein Wort aus der Suche auszuschließen, setzen Sie ein Minuszeichen direkt vor das Wort.
-
 Beispiel:
-Der Suchbegriff <tt>picasso -skulptur "frühe werke"</tt> wird Ergebnisse liefern für ‘picasso’ oder für ‘frühe werke’, aber alle Elemente ausschließen, in denen ‘skulptur’ vorkommt.';
+Der Suchbegriff picasso -skulptur "frühe werke" wird Ergebnisse liefern für ‘picasso’ oder für ‘frühe werke’, aber alle Elemente ausschließen, in denen ‘skulptur’ vorkommt.';
 $string['seedetails'] = 'Alle Versionen';
 $string['showwordcounts'] = 'Wortanzahl zeigen';
 $string['showwordcounts_help'] = 'Wenn diese Option aktiviert ist, wird die Wortanzahl jeder Seite bestimmt und am unteren Ende des Textes angezeigt.';
@@ -248,26 +244,20 @@ $string['startpage'] = 'Startseite';
 $string['startpagedoesnotexist'] = 'Die Startseite des Wikis wurde noch nicht erstellt.';
 $string['subwikis'] = 'Teilwikis';
 $string['subwikis_groups'] = 'Getrennte Wikis für jede Gruppe';
-$string['subwikis_help'] = '<ul>
-<li><strong>Wiki für den gesamten Kurs</strong><br />
-Dieses Wiki verhält sich wie ein einzelnes Wiki. Jede Person im Kurs sieht die gleichen Wikiseiten.</li>
-<li><strong>Getrennte Wikis für jede Gruppe</strong><br />
+$string['subwikis_help'] = '
+* **Wiki für den gesamten Kurs**
+Dieses Wiki verhält sich wie ein einzelnes Wiki. Jede Person im Kurs sieht die gleichen Wikiseiten.
+* **Getrennte Wikis für jede Gruppe**
 Die Mitglieder jeder Gruppe sehen eine völlig unterschiedliche Kopie des Wikis (Teilwiki), u.z. bezogen auf ihre Gruppe. Sie können nur auf Seiten zugreifen, die von Mitgliedern der gleichen Gruppe erstellt wurden. Wenn Sie Mitglied in mehr als eine Gruppe sind oder wenn Sie das Recht besitzen, alle Gruppen anzuzeigen, können Sie die Gruppen über ein Menü auswählen.
-<li><strong>Getrennte Wikis für alle Nutzer/innen</strong><br />
-Alle Einzelnutzer/innen erhalten ein völlig anderes Wiki. Alle können nur sein eigenes Wiki sehen und bearbeiten. Wenn Sie das Recht besitzen, alle Personen anzuzeigen, können Sie die Personen über ein Menü auswählen.   (This can be used as a way for students to contribute work, although you should
-consider other ways to achieve this such as the Assessment activity.)</li>
-</ul>
-
-<p>
-Note that the group option works with the chosen grouping. It will ignore groups in other
-groupings.
-</p>';
+* **Getrennte Wikis für alle Nutzer/innen**
+Alle Einzelnutzer/innen erhalten ein völlig anderes Wiki. Alle können nur sein eigenes Wiki sehen und bearbeiten. Wenn Sie das Recht besitzen, alle Personen anzuzeigen, können Sie die Personen über ein Menü auswählen. (This can be used as a way for students to contribute work, although you should
+consider other ways to achieve this such as the Assessment activity.)
+Note that the group option works with the chosen grouping. It will ignore groups in other groupings.';
 $string['subwikis_individual'] = 'Getrennte Wikis für alle Nutzer/innen';
 $string['subwikis_single'] = 'Wiki für den gesamten Kurs';
 $string['summary'] = 'Beschreibung';
-$string['summary_help'] = '<p>Wenn Sie eine Beschreibung eintragen, wird diese Beschreibung auf der Startseite des Wikis angezeigt, u.z. oberhalb des normalen bearbeitbaren Wikitextes. </p>
-
-<p>Eine Beschreibung ist optional. Sie kann von Teilnehmer/innen nicht geändert werden. Wenn Sie keine Beschreibung brauchen, lassen Sie das Textfeld einfach leer.</p>';
+$string['summary_help'] = 'Wenn Sie eine Beschreibung eintragen, wird diese Beschreibung auf der Startseite des Wikis angezeigt, u.z. oberhalb des normalen bearbeitbaren Wikitextes.
+Eine Beschreibung ist optional. Sie kann von Teilnehmer/innen nicht geändert werden. Wenn Sie keine Beschreibung brauchen, lassen Sie das Textfeld einfach leer.';
 $string['system'] = 'das System';
 $string['tab_annotate'] = 'Anmerken';
 $string['tab_discuss'] = 'Diskussion';

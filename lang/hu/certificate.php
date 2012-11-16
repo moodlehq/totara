@@ -50,10 +50,8 @@ $string['certificatename'] = 'Bizonyítvány megnevezése';
 $string['certificatereport'] = 'Bizonyítványokról szóló jelentés';
 $string['certificatesfor'] = 'Bizonyítvány témaköre';
 $string['certificatetype'] = 'Bizonyítvány típusa';
-$string['certificatetype_help'] = 'Itt adja meg a bizonyítvány elrendezését. A bizonyítványtípus  mappája négy alapértelmezett bizonyítványt tartalmaz: Az A4-es beágyazott betűs nyomatok A4 méretű papíron jelennek meg beágyazott betűtípussal. Az A4-es nem beágyazott betűs nyomatok beágyazott betűtípusok nélkül jelennek meg. A Letter beágyazott betűs nyomatok Letter méretű papíron jelennek meg beágyazott betűtípussal. A Letter nem beágyazott betűs nyomatok beágyazott betűtípusok nélkül készülnek.
-
-A nem beágyazott típusok Helvetica és Times betűtípust használnak. Ha úgy gondolja, hogy a felhasználók számítógépén nem lesznek meg ezek a betűtípusok, vagy ha a használt nyelvben vannak olyan karakterek vagy szimbólumok, amelyek nem kapnak helyet  a Helvetica és a Times betűtípusban, akkor válasszon beágyazott típust. Beágyazott típusokat használ a Dejavusans és a Dejavuserif. Ezekkel a PDF-fájlok meglehetősen terjedelmesek lesznek, így használatuk csak indokolt esertben ajánlott.
-
+$string['certificatetype_help'] = 'Itt adja meg a bizonyítvány elrendezését. A bizonyítványtípus mappája négy alapértelmezett bizonyítványt tartalmaz: Az A4-es beágyazott betűs nyomatok A4 méretű papíron jelennek meg beágyazott betűtípussal. Az A4-es nem beágyazott betűs nyomatok beágyazott betűtípusok nélkül jelennek meg. A Letter beágyazott betűs nyomatok Letter méretű papíron jelennek meg beágyazott betűtípussal. A Letter nem beágyazott betűs nyomatok beágyazott betűtípusok nélkül készülnek.
+A nem beágyazott típusok Helvetica és Times betűtípust használnak. Ha úgy gondolja, hogy a felhasználók számítógépén nem lesznek meg ezek a betűtípusok, vagy ha a használt nyelvben vannak olyan karakterek vagy szimbólumok, amelyek nem kapnak helyet a Helvetica és a Times betűtípusban, akkor válasszon beágyazott típust. Beágyazott típusokat használ a Dejavusans és a Dejavuserif. Ezekkel a PDF-fájlok meglehetősen terjedelmesek lesznek, így használatuk csak indokolt esertben ajánlott.
 Új típusokhoz mappákat hozhat létre a bizonyítvány/típus mappában. A mappa nevét és új nyelvek esetén az esetleges új szöveget hozzá kell adni a bizonyítvány nyelvi állományához.';
 $string['certify'] = 'Ezennel tanúsítjuk, hogy';
 $string['code'] = 'Kód';
@@ -63,7 +61,6 @@ $string['coursegrade'] = 'Kurzusosztályzat';
 $string['coursename'] = 'Kurzus';
 $string['credithours'] = 'Kreditóra';
 $string['customtext'] = 'Egyedi szöveg';
-$string['customtext_help'] = 'Ha a bizonyítványon a tanár nevét más betűkkel szeretni nyomtatni, mint a tanár szerepével rendelkezőkét, akkor ne válassza a Tanár nyomtatása pontot és az aláírásképet, csak a vonalképet adja meg. Nyomtatáshoz írja be a tanár nevét a szövegdobozba. Alapesetben ez a szöveg a bizonyítvány bal alsó sarkába kerül. A következő html-címkéket használhatja: <br>, <p> <b>, <i>, <u>, <img> (az src és a width (vagy a height) megadása kötelező), <a> (a href kötelező) , <font> (lehetséges attribútumai: color, (hex. színkód), face, (arial, times, courier, helvetica, symbol)).';
 $string['date'] = 'Dátum';
 $string['datefmt'] = 'Dátumforma';
 $string['datefmt_help'] = 'Válasszon dátumformát a bizonyítványra nyomtatáshoz, vagy válassza az utolsó elemet, ha a dátumot a felhasználó nyelvének megfelelő formában kívánja kinyomtatni.';
@@ -72,7 +69,7 @@ $string['deletissuedcertificates'] = 'Kiállított bizonyítványok törlése';
 $string['delivery'] = 'Kézbesítés';
 $string['delivery_help'] = 'Itt adja meg, hogyan kapják meg a tanulók a bizonyítványt.
 Böngészőben megnyitva: megnyitja a bizonyítványt egy új böngészőablakban. Letöltés előírása: megnyitja a böngésző fájlletöltő ablakát.
-Bizonyítvány e-mailben: a tanuló a bizonyítványt  e-mail mellékleteként kapja meg. Miután a felhasználó megkapta a bizonyítványt, a kurzus kezdőoldalán a bizonyítványra kattintva megnézheti, mikort kapta a bizonyítványt, és ellenőrizheti annak tartalmát.';
+Bizonyítvány e-mailben: a tanuló a bizonyítványt e-mail mellékleteként kapja meg. Miután a felhasználó megkapta a bizonyítványt, a kurzus kezdőoldalán a bizonyítványra kattintva megnézheti, mikort kapta a bizonyítványt, és ellenőrizheti annak tartalmát.';
 $string['designoptions'] = 'Kialakítási lehetőségek';
 $string['download'] = 'Letöltés előírása';
 $string['emailcertificate'] = 'E-mail (a Mentést is ki kell választani!)';
@@ -151,7 +148,7 @@ $string['reportcert'] = 'Bizonyítványokkal kapcsolatos jelentés';
 $string['reportcert_help'] = 'Igen választása esetén a bizonyítvány átvételének napja, kódszáma és a kurzus neve megjelenik a felhasználó bizonyítvánnyal kapcsolatos jelentésében. Ha osztályzatot kíván a bizonyítványon feltüntetni, akkor az is megjelenik a felhasználó bizonyítvánnyal kapcsolatos jelentésében.';
 $string['reviewcertificate'] = 'Bizonyítványának ellenőrzése';
 $string['savecert'] = 'Bizonyítványok mentése';
-$string['savecert_help'] = 'Ha ezt választja, az egyes felhasználók bizonyítványairól pdf-fájl készül a kurzus moddata mappájában. A bizonyítvánnyal kapcsolatos jelentésben ugrópont jelenik meg az egyes  felhasználók elmentett bizonyítványához.';
+$string['savecert_help'] = 'Ha ezt választja, az egyes felhasználók bizonyítványairól pdf-fájl készül a kurzus moddata mappájában. A bizonyítvánnyal kapcsolatos jelentésben ugrópont jelenik meg az egyes felhasználók elmentett bizonyítványához.';
 $string['sigline'] = 'vonal';
 $string['statement'] = 'elvégezte a kurzust';
 $string['summaryofattempts'] = 'Korábban átvett bizonyítványok összegzése';

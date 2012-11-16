@@ -128,7 +128,6 @@ $string['personalblogs'] = 'Käyttäjät voivat nähdä vain oman bloginsa';
 $string['preferences'] = 'Asetukset';
 $string['publishto'] = 'Julkaise';
 $string['publishto_help'] = 'Sinulla on kolme vaihtoehtoa:
-
 * Sinä (luonnostila) - Vain sinä ja ylläpitäjät näkevät merkinnän
 * Kirjautuneet käyttäjät - Kaikki Moodleen kirjautuneet voivat lukea merkinnän
 * Koko maailma - Kaikki, mukaanlukien vierailijat, voivat lukea tämän merkinnän';

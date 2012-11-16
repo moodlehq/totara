@@ -65,10 +65,9 @@ $string['lastcalculated'] = 'Utolsó számítás {$a->lastcalculated} óta {$a->
 $string['median'] = 'Medián pont ({$a} esetén)';
 $string['modelresponse'] = 'Válaszminta';
 $string['negcovar'] = 'A pont negatív kovarianciája az összes próbálkozás pontjával.';
-$string['negcovar_help'] = '
-<p>A kérdésre adott pontszám a teszten végrehajtott próbálkozásokat illetően az összes próbálkozásra adott pontszámmal ellentétesen módosul. Vagyis az összes próbálkozásra adott pontszám rendszerint az átlag alatt marad, ha a kérdésre adott pontszám meghaladja az átlagot, és megfordítva.</p>
-<p>Ez esetben a konkrét kérdés súlyának egyenlete nem számítható ki. A konkrét kérdés súlyának a teszt többi kérdéséhez viszonyított kiszámítása a kérdések tényleges kérdéssúlya, ha a negatív kovarianciájú kijelölt kérdések nulla maximális pontszámot kapnak.</p>
-<p>Amikor tesztet szerkeszt és ezen negatív kovarianciájú kérdés(ek)nek nulla maximális pontszámot ad, akkor a kérdések tényleges kérdéssúlya nulla, a többi kérdés tényleges kérdéssúlya pedig a most kiszámított lesz.</p>';
+$string['negcovar_help'] = 'A kérdésre adott pontszám a teszten végrehajtott próbálkozásokat illetően az összes próbálkozásra adott pontszámmal ellentétesen módosul. Vagyis az összes próbálkozásra adott pontszám rendszerint az átlag alatt marad, ha a kérdésre adott pontszám meghaladja az átlagot, és megfordítva.
+Ez esetben a konkrét kérdés súlyának egyenlete nem számítható ki. A konkrét kérdés súlyának a teszt többi kérdéséhez viszonyított kiszámítása a kérdések tényleges kérdéssúlya, ha a negatív kovarianciájú kijelölt kérdések nulla maximális pontszámot kapnak.
+Amikor tesztet szerkeszt és ezen negatív kovarianciájú kérdés(ek)nek nulla maximális pontszámot ad, akkor a kérdések tényleges kérdéssúlya nulla, a többi kérdés tényleges kérdéssúlya pedig a most kiszámított lesz.';
 $string['nostudentsingroup'] = 'A csoportban még nincsenek tanulók.';
 $string['optiongrade'] = 'Részkredit';
 $string['pluginname'] = 'Statisztika';
@@ -93,7 +92,7 @@ $string['standarddeviationq'] = 'Szórás';
 $string['standarderror'] = 'Standard hiba ({$a} esetén)';
 $string['statistics'] = 'Statisztika';
 $string['statistics:componentname'] = 'Statisztikai jelentés a tesztről';
+$string['statistics:view'] = 'Statisztikai jelentés megtekintése';
 $string['statisticsreport'] = 'Statisztikai jelentés';
 $string['statisticsreportgraph'] = 'Kérdéshelyzetek statisztikája';
-$string['statistics:view'] = 'Statisztikai jelentés megtekintése';
 $string['statsfor'] = 'Tesztstatisztika ({$a} esetén)';

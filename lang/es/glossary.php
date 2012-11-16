@@ -30,30 +30,24 @@ $string['addentry'] = 'Agregar entrada';
 $string['addingcomment'] = 'Agregar un comentario';
 $string['alias'] = 'Palabra clave';
 $string['aliases'] = 'Palabra(s) clave';
-$string['aliases_help'] = '<p>Cada entrada del glosario puede tener asociada una lista de palabras clave o alias.</p>
-
-<p><b>Introduzca cada alias en una nueva línea</b> (sin separarlos con comas).</p>
-
-<p>Las palabras y frases con alias pueden utilizarse como método alternativo para referirse
+$string['aliases_help'] = 'Cada entrada del glosario puede tener asociada una lista de palabras clave o alias.
+**Introduzca cada alias en una nueva línea** (sin separarlos con comas).
+Las palabras y frases con alias pueden utilizarse como método alternativo para referirse
 a la entrada. Por ejemplo, si usted está utilizando el filtro de auto-enlace del glosario,
 entonces se usarán los alias (así como el nombre principal de la entrada) para decidir
-qué palabras enlazar a esta entrada.</p>';
+qué palabras enlazar a esta entrada.';
 $string['allcategories'] = 'Todas las categorías';
 $string['allentries'] = 'TODAS';
 $string['allowcomments'] = 'Permitir comentar las entradas';
-$string['allowcomments_help'] = '<p>Es posible permitir a los alumnos que agreguen comentarios a las entradas del glosario.</p>
-
-<p>Usted puede escoger habilitar o no esta característica.</p>
-
-<p>Los profesores siempre pueden añadir comentarios a las entradas del glosario</p>';
+$string['allowcomments_help'] = 'Es posible permitir a los alumnos que agreguen comentarios a las entradas del glosario.
+Usted puede escoger habilitar o no esta característica.
+Los profesores siempre pueden añadir comentarios a las entradas del glosario';
 $string['allowduplicatedentries'] = 'Permitir entradas duplicadas';
-$string['allowduplicatedentries_help'] = '<P>Si está habilitada, puede haber varias entradas con el mismo nombre de concepto.';
+$string['allowduplicatedentries_help'] = 'Si está habilitada, puede haber varias entradas con el mismo nombre de concepto.';
 $string['allowprintview'] = 'Permitir vista impresión';
-$string['allowprintview_help'] = '<p>Se puede permitir que los estudiantes usen la vista de impresión del glosario.</p>
-
-<p>Usted puede elegir si desea activar o desactivar esta opción.</p>
-
-<p>Los profesores pueden utilizar la vista de impresión en todo momento.</p>';
+$string['allowprintview_help'] = 'Se puede permitir que los estudiantes usen la vista de impresión del glosario.
+Usted puede elegir si desea activar o desactivar esta opción.
+Los profesores pueden utilizar la vista de impresión en todo momento.';
 $string['andmorenewentries'] = 'y {$a} nuevas entradas más.';
 $string['answer'] = 'Respuesta';
 $string['approve'] = 'Aprobar';
@@ -62,24 +56,20 @@ $string['areyousuredeletecomment'] = '¿Está seguro de que desea borrar este co
 $string['areyousureexport'] = '¿Realmente desea exportar esta entrada a';
 $string['ascending'] = '(ascendente)';
 $string['attachment'] = 'Adjunto';
-$string['attachment_help'] = '<p>De forma opcional, usted puede adjuntar UN archivo desde su propio
+$string['attachment_help'] = 'De forma opcional, usted puede adjuntar UN archivo desde su propio
 ordenador a cualquier entrada del glosario. Este archivo se sube
-al servidor y se almacena con su entrada.</p>
-
-<p>Esta opción resulta útil cuando usted desea, por ejemplo, compartir
-una imagen o un documento Word.</p>
-
-<p>El archivo en cuestión puede ser de cualquier tipo, pero se recomienda
+al servidor y se almacena con su entrada.
+Esta opción resulta útil cuando usted desea, por ejemplo, compartir
+una imagen o un documento Word.
+El archivo en cuestión puede ser de cualquier tipo, pero se recomienda
 que se denomine utilizando los sufijos estándar de 3 letras usados en
 internet, tales como .doc para un documento Word, .jpg o .png para una
 imagen, y así sucesivamente. Esto facilitará a otras personas descargar
-y ver en sus navegadores el archivo enviado.</p>
-
-<p>Si usted reedita una entrada y adjunta un nuevo archivo, quedarán
-reemplazados cualesquiera archivos asociados a dicha entrada.</p>
-
-<p>Si usted reedita una entrada con un archivo adjunto y deja este espacio
-en blanco, entonces el archivo adjunto original se conservará.</p>';
+y ver en sus navegadores el archivo enviado.
+Si usted reedita una entrada y adjunta un nuevo archivo, quedarán
+reemplazados cualesquiera archivos asociados a dicha entrada.
+Si usted reedita una entrada con un archivo adjunto y deja este espacio
+en blanco, entonces el archivo adjunto original se conservará.';
 $string['author'] = 'autor';
 $string['authorview'] = 'Vista por Autor';
 $string['back'] = 'Volver';
@@ -87,11 +77,10 @@ $string['cantinsertcat'] = 'No se puede insertar la categoría';
 $string['cantinsertrec'] = 'No se puede insertar el registro';
 $string['cantinsertrel'] = 'No se puede insertar la relación registro-categoría';
 $string['casesensitive'] = 'Esta entrada es en Mayúsculas y minúsculas';
-$string['casesensitive_help'] = '<P>Esta variable especifica si las mayúsculas y minúsculas deben coincidir
-exactamente para crear el enlace automático a las entradas.</p>
-
-<p>Por ejemplo, si se encuentra habilitada, la palabra "html" en un mensaje de
-un foro no generará un hiperenlace a la entrada "HTML".</p>';
+$string['casesensitive_help'] = 'Esta variable especifica si las mayúsculas y minúsculas deben coincidir
+exactamente para crear el enlace automático a las entradas.
+Por ejemplo, si se encuentra habilitada, la palabra "html" en un mensaje de
+un foro no generará un hiperenlace a la entrada "HTML".';
 $string['cat'] = 'cat';
 $string['categories'] = 'Categorías';
 $string['category'] = 'Categoría';
@@ -140,43 +129,36 @@ $string['deletingcomment'] = 'Borrando comentario';
 $string['deletingnoneemptycategory'] = 'Eliminar una categoría no eliminará las entradas. Si desea eliminar las entradas tendrá que hacerlo manualmente.';
 $string['descending'] = 'descendente';
 $string['destination'] = 'Destino de las entradas importadas';
-$string['destination_help'] = '<P>Puede especificar dónde desea importar las entradas:</p>
-<ul>
-<li><strong>Glosario actual: </strong>Las entradas importadas se añadirán
-en el glosario abierto.</li>
-<li><strong>Glosario nuevo: </strong>Se creará un nuevo glosario basado en la
+$string['destination_help'] = 'Puede especificar dónde desea importar las entradas:
+* **Glosario actual: **Las entradas importadas se añadirán
+en el glosario abierto.
+* **Glosario nuevo: **Se creará un nuevo glosario basado en la
 información encontrada en el archivo importado y luego las entradas serán
-añadidas al mismo.</li>
-</ul>';
+añadidas al mismo.';
 $string['displayformat'] = 'Formato de muestra de entradas';
-$string['displayformat_help'] = '<P>Esta variable define la manera cómo se mostrará cada entrada dentro del glosario.
-Los formatos disponibles son:</p>
-<blockquote>
-<dl>
-<dt><b>Diccionario simple</b>:</dt>
-<dd>Luce como un diccionario convencional, con las entradas separadas. No se
-muestra a ningún autor y los archivos adjuntos aparecen como enlaces.</dd>
-<dt><b>Contínuo</b>:</dt>
-<dd>Presenta las entradas una después de la otra sin otra separación que los
-iconos de separación.</dd>
-<dt><b>Completo con autor</b>:</dt>
-<dd>Un formato semajante al de los foros, que muestra la información del autor
-de cada entrada. Los archivos adjuntos aparecen como enlaces.</dd>
-<dt><b>Completo sin autor</b>:</dt>
-<dd>Un formato semajante al de los foros, que no muestra la información del autor
-de cada entrada. Los archivos adjuntos aparecen como enlaces.</dd>
-<dt><b>Enciclopedia</b>:</dt>
-<dd>Semejante a \'Completo con autor\' pero en el que las imágenes adjuntas se muestran
-en línea.</dd>
-<dt><b>FAQ</b>:</dt>
-<dd>Útil para presentar listas de Preguntas Frecuentemente Respondidas. Automáticamente
-añade las palabras Pregunta y Respuesta en el concepto y la definición respectivamente.</dd>
-</dl>
-</blockquote>
+$string['displayformat_help'] = 'Esta variable define la manera cómo se mostrará cada entrada dentro del glosario.
+Los formatos disponibles son:
 
-<hr />
-<p>Los administradores de Moodle pueden crear nuevos formatos siguiendo las instrucciones que
-aparecen en el archivo <b>mod/glossary/formats/README.txt</b> de su instalación.</p>';
+
+**Diccionario simple**:
+Luce como un diccionario convencional, con las entradas separadas. No se muestra a ningún autor y los archivos adjuntos aparecen como enlaces.
+
+**Contínuo**:
+Presenta las entradas una después de la otra sin otra separación que los iconos de separación.
+
+**Completo con autor**:
+Un formato semajante al de los foros, que muestra la información del autor de cada entrada. Los archivos adjuntos aparecen como enlaces.
+
+**Completo sin autor**:
+Un formato semajante al de los foros, que no muestra la información del autor de cada entrada. Los archivos adjuntos aparecen como enlaces.
+
+**Enciclopedia**:
+Semejante a \'Completo con autor\' pero en el que las imágenes adjuntas se muestran en línea.
+
+**FAQ**:
+Útil para presentar listas de Preguntas Frecuentemente Respondidas. Automáticamente añade las palabras Pregunta y Respuesta en el concepto y la definición respectivamente.
+
+Los administradores de Moodle pueden crear nuevos formatos siguiendo las instrucciones que aparecen en el archivo **mod/glossary/formats/README.txt** de su instalación.';
 $string['displayformatcontinuous'] = 'Continuo sin autor';
 $string['displayformatdictionary'] = 'Simple, estilo diccionario';
 $string['displayformatencyclopedia'] = 'Enciclopedia';
@@ -189,16 +171,11 @@ $string['displayformatssetup'] = 'Ajustar formatos de visualización';
 $string['duplicatecategory'] = 'Categoría duplicada';
 $string['duplicateentry'] = 'Entrada duplicada';
 $string['editalways'] = 'Editar siempre';
-$string['editalways_help'] = '<P>Esta opción permite decidir si los estudiantes pueden editar sus entradas
+$string['editalways_help'] = 'Esta opción permite decidir si los estudiantes pueden editar sus entradas
 en cualquier momento.
-
-<P>Usted puede seleccionar:
-
-<UL>
-<LI><B>Sí:</B> Las entradas pueden editarse siempre.
-
-<LI><B>No:</B> Las entradas son editables durante un período especificado.
-</UL>';
+Usted puede seleccionar:
+* **|Sí:** Las entradas pueden editarse siempre.
+* **|No:** Las entradas son editables durante un período especificado.';
 $string['editcategories'] = 'Editar categorías';
 $string['editentry'] = 'Editar entrada';
 $string['editingcomment'] = 'Editando un comentario';
@@ -215,7 +192,7 @@ $string['entryleveldefaultsettings'] = 'Ajustes por defecto del nivel de entrada
 $string['entrysaved'] = 'Esta entrada ha sido guardada';
 $string['entryupdated'] = 'Esta entrada ha sido actualizada';
 $string['entryusedynalink'] = 'Esta entrada será enlazada automáticamente';
-$string['entryusedynalink_help'] = 'Si el <strong>Enlace automático al glosario</strong> ha sido habilitada por un administrador y esta opción está activada, la opción del formulario "Agregar una nueva entrada" permite vincular automáticamente las palabras y frases del concepto allá donde aparezcan en el resto del curso.';
+$string['entryusedynalink_help'] = 'Si el **Enlace automático al glosario** ha sido habilitada por un administrador y esta opción está activada, la opción del formulario "Agregar una nueva entrada" permite vincular automáticamente las palabras y frases del concepto allá donde aparezcan en el resto del curso.';
 $string['errcannoteditothers'] = 'No puede editar entradas de otras personas.';
 $string['errconceptalreadyexists'] = 'Este concepto ya existe. En este glosario no se permiten duplicados.';
 $string['errdeltimeexpired'] = 'No puede eliminar esto: el tiempo ha expirado.';
@@ -234,17 +211,13 @@ $string['exportfile'] = 'Exportar entradas a un archivo';
 $string['exportglossary'] = 'Exportar glosario';
 $string['exporttomainglossary'] = 'Exportar al glosario principal';
 $string['filetoimport'] = 'Archivo a importar';
-$string['filetoimport_help'] = '<P ALIGN=CENTER><b>Archivos a importar</b></P>
-
-<P>Seleccione en su computadora los archivos XML que contienen las entradas a
-importar.</p>';
+$string['filetoimport_help'] = 'Seleccione en su computadora los archivos XML que contienen las entradas a importar.';
 $string['fillfields'] = 'Los campos Concepto y Definición son obligatorios.';
 $string['filtername'] = 'Enlace automático a glosario';
 $string['fullmatch'] = 'Sólo enlazar palabras completas';
-$string['fullmatch_help'] = '<p>Esta variable define si el enlace automático se hará con palabras completas o no.
-
-<p>Por ejemplo, si está habilitada, la entrada "casa" no se enlazará automáticamente
-con la palabra "casamiento".</p>';
+$string['fullmatch_help'] = 'Esta variable define si el enlace automático se hará con palabras completas o no.
+Por ejemplo, si está habilitada, la entrada "casa" no se enlazará automáticamente
+con la palabra "casamiento".';
 $string['glossary:approve'] = 'Aprobar entradas pendientes';
 $string['glossary:comment'] = 'Crear comentarios';
 $string['glossary:export'] = 'Exportar entradas';
@@ -274,7 +247,7 @@ $string['isglobal'] = '¿Este es el glosario global?';
 $string['isglobal_help'] = 'Un glosario global tiene entradas que están enlazadas desde cualquier lugar del sitio, no solo desde el curso en que reside el glosario. Únicamente los administradores pueden determinar que un glosario sea global.';
 $string['letter'] = 'letra';
 $string['linkcategory'] = 'Enlazar automáticamente esta categoría';
-$string['linkcategory_help'] = 'Si la opción <strong>Enlace automático al glosario</strong> ha sido habilitada por un administrador y la opción <Hiperenlace automático</strong> está habilitada en el glosario, el nombre de la categoría se enlazará automáticamente cuando aparezca en cualquier otro sitio del curso. Cuando un participante siga un enlace de nombre de la categoría, será llevado a la "Búsqueda por categoría" en la página del glosario.';
+$string['linkcategory_help'] = 'Si la opción **Enlace automático al glosario** ha sido habilitada por un administrador y la opción <Hiperenlace automático</strong> está habilitada en el glosario, el nombre de la categoría se enlazará automáticamente cuando aparezca en cualquier otro sitio del curso. Cuando un participante siga un enlace de nombre de la categoría, será llevado a la "Búsqueda por categoría" en la página del glosario.';
 $string['linking'] = 'Auto-enlace';
 $string['mainglossary'] = 'Glosario principal';
 $string['maxtimehaspassed'] = 'Lo sentimos, pero ya excedió el tiempo máximo de edición.';
@@ -311,20 +284,14 @@ $string['rejectionrpt'] = 'Informe de rechazo';
 $string['resetglossaries'] = 'Eliminar entradas de';
 $string['resetglossariesall'] = 'Eliminar entradas de todos los glosarios';
 $string['rssarticles'] = 'Número de artículos recientes RSS';
-$string['rssarticles_help'] = '<P>Esta opción le permite seleccionar el número de artículos a incluir en el Canal RSS.
-
-<P>Un número entre 5 y 20 debería ser apropiado para la mayoría de los glosarios. Auméntelo si se trata de un glosario muy utilizado.';
+$string['rssarticles_help'] = 'Esta opción le permite seleccionar el número de artículos a incluir en el Canal RSS.
+Un número entre 5 y 20 debería ser apropiado para la mayoría de los glosarios. Auméntelo si se trata de un glosario muy utilizado.';
 $string['rsssubscriberss'] = 'Mostrar canal RSS para los conceptos \'{$a}\'';
 $string['rsstype'] = 'Canal RSS de esta actividad';
-$string['rsstype_help'] = '<P>Esta opción le permite habilitar los canales RSS en este glosario.
-
-<P>Puede escoger entre dos tipos:
-
-<UL>
-<LI><B>Con autor:</B> Con esta opción, los datos generados incluirán el nombre del autor en cada artículo.
-
-<LI><B>Sin autor:</B> Con esta opción, los datos generados no incluirán el nombre del autor en cada artículo.
-</UL>';
+$string['rsstype_help'] = 'Esta opción le permite habilitar los canales RSS en este glosario.
+Puede escoger entre dos tipos:
+* **|Con autor:** Con esta opción, los datos generados incluirán el nombre del autor en cada artículo.
+* **|Sin autor:** Con esta opción, los datos generados no incluirán el nombre del autor en cada artículo.';
 $string['searchindefinition'] = '¿Buscar en conceptos y definiciones?';
 $string['secondaryglossary'] = 'Glosario secundario';
 $string['showall'] = 'Mostrar enlace \'TODAS\'';
@@ -342,7 +309,7 @@ $string['standardview'] = 'Vista Alfabética';
 $string['studentcanpost'] = 'Los estudiantes pueden agregar entradas';
 $string['totalentries'] = 'Total de entradas';
 $string['usedynalink'] = 'Hiperenlace automático';
-$string['usedynalink_help'] = 'Si el <strong>Enlace automático al glosario</strong> ha sido habilitada por un administrador y esta opción está activada, la opción del formulario "Agregar una nueva entrada" permite vincular automáticamente las palabras y frases del concepto allá donde aparezcan en el resto del curso.';
+$string['usedynalink_help'] = 'Si el **Enlace automático al glosario** ha sido habilitada por un administrador y esta opción está activada, la opción del formulario "Agregar una nueva entrada" permite vincular automáticamente las palabras y frases del concepto allá donde aparezcan en el resto del curso.';
 $string['waitingapproval'] = 'Esperando aprobación';
 $string['warningstudentcapost'] = '(Esto sólo aplica si el glosario no es el principal)';
 $string['withauthor'] = 'Conceptos con autor';

@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Beépített válaszok (Kitöltendő)';
-$string['pluginname_help'] = 'A  beépített (kitöltendő) válaszok segítségével pl. beépített  feleletválasztós és kiegészítendő kérdéseket tartalmazó szöveget importálhat.';
+$string['pluginname_help'] = 'A beépített (kitöltendő) válaszok segítségével pl. beépített feleletválasztós és kiegészítendő kérdéseket tartalmazó szöveget importálhat.';

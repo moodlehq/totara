@@ -50,7 +50,6 @@ $string['endswith'] = '以...结束';
 $string['filterallwarning'] = '对标题和内容使用过滤器会大大增加您的服务器的负荷。请谨慎使用“应用到”设置。其主要用途是针对multilang过滤器。';
 $string['filtersettings'] = '过滤器设置';
 $string['filtersettings_help'] = '本页使您可以在本站指定部分打开或关闭过滤器。
-
 可能有些过滤器允许您做局部设置，在它们的名字后面会有一个设置链接。';
 $string['filtersettingsforin'] = '在{$a->context}中过滤器{$a->filter}的设置';
 $string['filtersettingsin'] = '{$a}中的过滤器设置';

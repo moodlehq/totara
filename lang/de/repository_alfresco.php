@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Alfresco Dateiverwaltung anzeigen';
 $string['alfresco_url'] = 'Alfresco-URL';
 $string['alfrescourltext'] = 'Die URL der Alfresco-API sollte lauten: http://ihreseite.de/alfresco/api';
-$string['alfresco:view'] = 'Alfresco Dateiverwaltung anzeigen';
 $string['configplugin'] = 'Einstellungen für Alfresco';
 $string['notitle'] = 'unbenannt';
 $string['password'] = 'Passwort';

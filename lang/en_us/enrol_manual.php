@@ -25,13 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['confirmbulkdeleteenrolment'] = 'Are you sure you want to delete these users enrollments?
-';
+$string['confirmbulkdeleteenrolment'] = 'Are you sure you want to delete these users enrollments?';
 $string['defaultperiod'] = 'Default enrollment period';
 $string['defaultperiod_desc'] = 'Default length of the default enrollment period setting (in seconds).';
 $string['deleteselectedusers'] = 'Delete selected user enrollments';
-$string['editenrolment'] = 'Edit enrollment
-';
+$string['editenrolment'] = 'Edit enrollment';
 $string['editselectedusers'] = 'Edit selected user enrollments';
 $string['enrolledincourserole'] = 'Enrolled in "{$a->course}" as "{$a->role}"';
 $string['enrolusers'] = 'Enroll users';
@@ -43,14 +41,10 @@ $string['manual:unenrolself'] = 'Unenroll self from the course';
 $string['pluginname'] = 'Manual enrollments';
 $string['pluginname_desc'] = 'The manual enrollments plugin allows users to be enrolled manually via a link in the course administration settings, by a user with appropriate permissions such as a teacher. The plugin should normally be enabled, since certain other enrollment plugins, such as self enrollment, require it.';
 $string['status'] = 'Enable manual enrollments';
-$string['status_desc'] = 'Allow course access of internally enrolled users. This should be kept enabled in most cases.
-';
-$string['status_help'] = 'This setting determines whether users can be enrolled manually, via a link in the course administration settings, by a user with appropriate permissions such as a teacher.
-';
-$string['unenrol'] = 'Unenroll user
-';
-$string['unenrolselectedusers'] = 'Unenroll selected users
-';
+$string['status_desc'] = 'Allow course access of internally enrolled users. This should be kept enabled in most cases.';
+$string['status_help'] = 'This setting determines whether users can be enrolled manually, via a link in the course administration settings, by a user with appropriate permissions such as a teacher.';
+$string['unenrol'] = 'Unenroll user';
+$string['unenrolselectedusers'] = 'Unenroll selected users';
 $string['unenrolselfconfirm'] = 'Do you really want to unenroll yourself from course "{$a}"?';
 $string['unenroluser'] = 'Do you really want to unenroll "{$a->user}" from course "{$a->course}"?';
 $string['unenrolusers'] = 'Unenroll users';

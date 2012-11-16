@@ -38,14 +38,9 @@ $string['allunsubscribe'] = 'Se désabonner de tous les forums';
 $string['alreadyfirstpost'] = 'Ce message est déjà le premier de la discussion';
 $string['anyfile'] = 'Tout fichier';
 $string['attachment'] = 'Annexe';
-$string['attachment_help'] = '<!-- $Id$ -->
-
-
-<p>Il vous est possible de joindre un ou plusieurs fichiers (le nombre dépend des réglages du forum) de votre ordinateur à chaque message que vous postez dans un forum.</p>
-
-<p>Ceci s\'avère particulièrement utile lorsque vous souhaitez partager une image ou un document avec les autres participants du cours.</p>
-
-<p>Ce fichier peut être de n\'importe quel type. Il est cependant fortement recommandé que son nom utilise la convention des 3 lettres d\'extension utilisée sur Internet, par exemple « <b>.doc</b> » pour un document Word, « <b>.jpg</b> » ou « <b>.png</b> » pour une image, « <b>.zip</b> » pour un fichier compressé, etc. Cela facilitera le téléchargement et l\'ouverture de ce document dans le navigateur des utilisateurs.</p>';
+$string['attachment_help'] = 'Il vous est possible de joindre un ou plusieurs fichiers (le nombre dépend des réglages du forum) de votre ordinateur à chaque message que vous postez dans un forum.
+Ceci s\'avère particulièrement utile lorsque vous souhaitez partager une image ou un document avec les autres participants du cours.
+Ce fichier peut être de n\'importe quel type. Il est cependant fortement recommandé que son nom utilise la convention des 3 lettres d\'extension utilisée sur Internet, par exemple « **.doc** » pour un document Word, « **.jpg** » ou « **.png** » pour une image, « **.zip** » pour un fichier compressé, etc. Cela facilitera le téléchargement et l\'ouverture de ce document dans le navigateur des utilisateurs.';
 $string['attachmentnopost'] = 'Vous ne pouvez pas exporter les annexes sans identifiant de message';
 $string['attachments'] = 'Annexes';
 $string['blockafter'] = 'Nombre maximal de messages';
@@ -136,25 +131,15 @@ $string['discussionsstartedbyrecent'] = 'Discussions récentes lancées par {$a}
 $string['discussionsstartedbyuserincourse'] = 'Discussions commencées par {$a->fullname} dans {$a->coursename}';
 $string['discussthistopic'] = 'Discuter sur ce sujet';
 $string['displayend'] = 'Fin de l\'affichage';
-$string['displayend_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez choisir de faire afficher votre message à partir d\'une certaine date, jusqu\'à une certaine date ou durant une période déterminée.</p>
-
-<p>Décochez la case de désactivation pour faire afficher une date de début et/ou de fin.</p>
-
-<p>Veuillez remarquer que les utilisateurs avec droit d\'administration verront les messages avant la date de parution et après la date de fin de parution indiquée.</p>';
+$string['displayend_help'] = 'Vous pouvez choisir de faire afficher votre message à partir d\'une certaine date, jusqu\'à une certaine date ou durant une période déterminée.
+Décochez la case de désactivation pour faire afficher une date de début et/ou de fin.
+Veuillez remarquer que les utilisateurs avec droit d\'administration verront les messages avant la date de parution et après la date de fin de parution indiquée.';
 $string['displaymode'] = 'Type d\'affichage';
 $string['displayperiod'] = 'Période d\'affichage';
 $string['displaystart'] = 'Début de l\'affichage';
-$string['displaystart_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez choisir de faire afficher votre message à partir d\'une certaine date, jusqu\'à une certaine date ou durant une période déterminée.</p>
-
-<p>Décochez la case de désactivation pour faire afficher une date de début et/ou de fin.</p>
-
-<p>Veuillez remarquer que les utilisateurs avec droit d\'administration verront les messages avant la date de parution et après la date de fin de parution indiquée.</p>';
+$string['displaystart_help'] = 'Vous pouvez choisir de faire afficher votre message à partir d\'une certaine date, jusqu\'à une certaine date ou durant une période déterminée.
+Décochez la case de désactivation pour faire afficher une date de début et/ou de fin.
+Veuillez remarquer que les utilisateurs avec droit d\'administration verront les messages avant la date de parution et après la date de fin de parution indiquée.';
 $string['eachuserforum'] = 'Chaque personne lance une discussion';
 $string['edit'] = 'Modifier';
 $string['editedby'] = 'Modifié par {$a->name}. Écrit initialement le {$a->date}';
@@ -209,7 +194,6 @@ $string['forumtracked'] = 'Les messages non lus sont marqués';
 $string['forumtrackednot'] = 'Les messages non lus ne sont pas marqués';
 $string['forumtype'] = 'Type de forum';
 $string['forumtype_help'] = 'Il y a 5 types de forums :
-
 * Une seule discussion simple : un seul sujet de discussion sur lequel chacun peut s\'exprimer.
 * Chaque personne commence une seule discussion : chaque étudiant ne peut entamer qu\'une seule discussion, à laquelle chacun peut répondre.
 * Forum questions/réponses : les étudiants doivent poster un message avant de pouvoir consulter et répondre aux questions et messages des autres participants.
@@ -240,17 +224,10 @@ $string['markreadbutton'] = 'Marquer<br />comme lu';
 $string['markunread'] = 'Marquer comme non lu';
 $string['markunreadbutton'] = 'Marquer comme<br />non lu';
 $string['maxattachments'] = 'Nombre maximal d\'annexes';
-$string['maxattachments_help'] = '<!-- $Id$ -->
-
-
-<p>Ce réglage vous permet de fixer le nombre maximal d\'annexes que vous voulez autoriser pour chaque message posté dans ce forum.</p>';
+$string['maxattachments_help'] = 'Ce réglage vous permet de fixer le nombre maximal d\'annexes que vous voulez autoriser pour chaque message posté dans ce forum.';
 $string['maxattachmentsize'] = 'Taille maximale de l\'annexe';
-$string['maxattachmentsize_help'] = '<!-- $Id$ -->
-
-
-<p>Il est possible de limiter la taille des annexes. Cette limite est fixée par la personne qui met en place le forum.</p>
-
-<p>Il est cependant parfois possible de déposer un fichier de taille supérieure à cette valeur. Dans ce cas, le fichier n\'est pas enregistré sur le serveur et un message d\'erreur est affiché.</p>';
+$string['maxattachmentsize_help'] = 'Il est possible de limiter la taille des annexes. Cette limite est fixée par la personne qui met en place le forum.
+Il est cependant parfois possible de déposer un fichier de taille supérieure à cette valeur. Dans ce cas, le fichier n\'est pas enregistré sur le serveur et un message d\'erreur est affiché.';
 $string['maxtimehaspassed'] = 'Le délai pour modifier ce message ({$a}) est échu';
 $string['message'] = 'Message';
 $string['messageprovider:digests'] = 'Abonnements aux digests de forum';
@@ -261,25 +238,15 @@ $string['modeflatoldestfirst'] = 'Réponses en ligne, la plus ancienne en premie
 $string['modenested'] = 'Réponses emboîtées';
 $string['modethreaded'] = 'Réponses en fils de discussions';
 $string['modulename'] = 'Forum';
-$string['modulename_help'] = '<!-- $Id$ -->
-
-<p><img alt="Forum" src="<?php echo $CFG->wwwroot?>/mod/forum/icon.gif" /> <strong>Forums</strong></p>
-
-<div class="indent">
-Le forum est un des modules les plus importants de Moodle ! C\'est là qu\'ont lieu la plupart des discussions entre les participants au cours. Les forums peuvent être structurés de différentes manières. Ils peuvent permettre l\'évaluation par les pairs de chacun des messages. Divers formats d\'affichage sont disponibles, et les messages peuvent avoir des annexes (fichiers joints). En s\'abonnant à un forum, les participants reçoivent par courriel des copies de chaque nouvelle contribution. L\'enseignant peut imposer l\'abonnement, de sorte que chaque participant reçoive par courriel tous les messages d\'un forum, si besoin est.
-</div>';
+$string['modulename_help'] = 'Le forum est un des modules les plus importants de Moodle ! C\'est là qu\'ont lieu la plupart des discussions entre les participants au cours. Les forums peuvent être structurés de différentes manières. Ils peuvent permettre l\'évaluation par les pairs de chacun des messages. Divers formats d\'affichage sont disponibles, et les messages peuvent avoir des annexes (fichiers joints). En s\'abonnant à un forum, les participants reçoivent par courriel des copies de chaque nouvelle contribution. L\'enseignant peut imposer l\'abonnement, de sorte que chaque participant reçoive par courriel tous les messages d\'un forum, si besoin est.';
 $string['modulenameplural'] = 'Forums';
 $string['more'] = 'plus';
 $string['movedmarker'] = '(Déplacée)';
 $string['movethisdiscussionto'] = 'Déplacer cette discussion vers...';
 $string['mustprovidediscussionorpost'] = 'Vous devez fournir l\'identifiant soit de la discussion, soit du message à exporter';
 $string['namenews'] = 'Forum des nouvelles';
-$string['namenews_help'] = '<!-- $Id$ -->
-
-
-<p>Le forum des nouvelles est un forum spécial, automatiquement créé dans chaque nouveau cours ainsi que sur la page d\'accueil de votre Moodle. Il est destiné spécifiquement aux annonces générales. Il n\'est possible d\'avoir qu\'un seul forum des nouvelles par cours.</p>
-
-<p>Le bloc « Dernières nouvelles » affiche les discussions récentes de ce forum spécial, même si vous modifiez son nom. Pour cette raison, ce forum sera recréé automatiquement par Moodle si vous l\'avez supprimé et que vous utilisez le bloc « Dernières nouvelles ».</p>';
+$string['namenews_help'] = 'Le forum des nouvelles est un forum spécial, automatiquement créé dans chaque nouveau cours ainsi que sur la page d\'accueil de votre Moodle. Il est destiné spécifiquement aux annonces générales. Il n\'est possible d\'avoir qu\'un seul forum des nouvelles par cours.
+Le bloc « Dernières nouvelles » affiche les discussions récentes de ce forum spécial, même si vous modifiez son nom. Pour cette raison, ce forum sera recréé automatiquement par Moodle si vous l\'avez supprimé et que vous utilisez le bloc « Dernières nouvelles ».';
 $string['namesocial'] = 'Forum informel';
 $string['nameteacher'] = 'Forum des enseignants';
 $string['newforumposts'] = 'Nouveaux messages dans les forums';
@@ -367,21 +334,15 @@ $string['resetforumsall'] = 'Supprimer tous les messages';
 $string['resetsubscriptions'] = 'Supprimer tous les abonnements aux forums';
 $string['resettrackprefs'] = 'Supprimer toutes les préférences de suivi des messages du forum';
 $string['rssarticles'] = 'Nombre d\'articles récents RSS';
-$string['rssarticles_help'] = '<p>Cette option vous permet de fixer le nombre d\'articles récents à inclure dans le flux RSS.</p>
-
-<p>Un nombre entre 5 et 20 est adéquat pour la plupart des forums. Si le forum est très actif, il est souhaitable d\'augmenter ce nombre.</p>';
+$string['rssarticles_help'] = 'Cette option vous permet de fixer le nombre d\'articles récents à inclure dans le flux RSS.
+Un nombre entre 5 et 20 est adéquat pour la plupart des forums. Si le forum est très actif, il est souhaitable d\'augmenter ce nombre.';
 $string['rsssubscriberssdiscussions'] = 'Flux RSS des discussions';
 $string['rsssubscriberssposts'] = 'Flux RSS des messages';
 $string['rsstype'] = 'Flux RSS de cette activité';
-$string['rsstype_help'] = '<p>Cette option vous permet d\'activer le flux RSS de ce forum.</p>
-
-<p>Vous pouvez choisir entre deux types de flux RSS :
-
-<ul>
-<li><strong>Discussions :</strong> le flux généré comprendra les nouvelles discussions du forum avec leur message initial.</li>
-
-<li><strong>Messages :</strong> le flux généré comprendra tous les nouveaux messages postés dans le forum.</li>
-</ul>';
+$string['rsstype_help'] = 'Cette option vous permet d\'activer le flux RSS de ce forum.
+Vous pouvez choisir entre deux types de flux RSS :
+\* **|Discussions :** le flux généré comprendra les nouvelles discussions du forum avec leur message initial.
+\* **|Messages :** le flux généré comprendra tous les nouveaux messages postés dans le forum.';
 $string['search'] = 'Rechercher';
 $string['searchdatefrom'] = 'Dans les messages postérieurs à';
 $string['searchdateto'] = 'Dans les messages antérieurs à';
@@ -420,9 +381,7 @@ $string['subscriptiondisabled'] = 'Abonnement désactivé';
 $string['subscriptionforced'] = 'Abonnement imposé';
 $string['subscriptionmode'] = 'Mode d\'abonnement';
 $string['subscriptionmode_help'] = 'Lorsqu\'un participant est abonné à un forum, il reçoit par courriel une copie de tous les messages postés sur ce forum.
-
 Il existe 4 options pour l\'abonnement :
-
 * Abonnement facultatif : les participants peuvent décider de s\'abonner ou non à chaque forum.
 * Abonnement imposé : tous les participants du cours sont abonnés et ne peuvent pas se désabonner.
 * Abonnement automatique : tous les participants du cours sont initialement abonnés, mais peuvent choisir de se désabonner quand il le veulent.
@@ -439,9 +398,7 @@ $string['trackingon'] = 'Activé';
 $string['trackingoptional'] = 'Facultatif';
 $string['trackingtype'] = 'Suivi des messages lus dans ce forum ?';
 $string['trackingtype_help'] = 'Si ce réglage est activé, les participants peuvent d\'un coup d\'oeil distinguer les messages qu\'ils n\'ont pas encore lus de ceux qu\'ils ont déjà lus.
-
 Il existe 3 options pour ce réglage :
-
 * Facultatif : les participants peuvent activer ou désactiver à discrétion le suivi des messages du forum.
 * Activé : le suivi est toujours activé.
 * Désactivé : le suivi est toujours désactivé.';

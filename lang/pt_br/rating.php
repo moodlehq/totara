@@ -33,13 +33,11 @@ $string['aggregatenone'] = 'Nenhuma avaliação';
 $string['aggregatesum'] = 'Soma das avaliações';
 $string['aggregatetype'] = 'Tipo agregado';
 $string['aggregatetype_help'] = 'O tipo de agregação define como as avaliações são combinadas para forma a nota final no livro de notas.
-
 *Média das avaliações - A média das notas
 *Contágem das avaliações - O número de itens avaliados geram a nota final. Note que o total não pode exceder a nota máxima para a atividade.
 *Máxima - A melhor avaliação se torna a nota final
 *Mínimo - A pior avaliação se torana a nota final
 *Soma - Todas as notas juntas. Note que o total não pode exceder a nota máxima para a atividade.
-
 Se "Nenhuma avaliação" estiver selecionado, a atividade não aparecerá no livro de notas.';
 $string['allowratings'] = 'Permitir que os itens sejam avaliados?';
 $string['allratingsforitem'] = 'Todas as avaliações enviadas';

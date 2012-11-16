@@ -121,25 +121,19 @@ $string['updatemethod'] = 'Päivitysmenetelmä';
 $string['updaterate'] = 'Päivitysnopeus';
 $string['userlist'] = 'Osallistujalista';
 $string['usingchat'] = 'Chat käytössä';
-$string['usingchat_help'] = '<p align="center"><strong>Chatin käyttäminen </strong></p>
-<p>Chat-moduuli sisältää ominaisuuksia joilla keskusteleminen saadaan mukavammaksi. </p>
-<p><strong>Hymiöt</strong></p>
-<p> Mitkä tahansa hymiöt jotka voit kirjoittaa muualla moodlessa, voidaan kirjoitaa täällä samoin ja ne näytetään oikein. Esimerkiksi: :-) = <img src="pix/s/smiley.gif"></p>
-<dl>
-<dt><strong>Linkit</strong></dt>
-</dl>
+$string['usingchat_help'] = '**Chatin käyttäminen **
+Chat-moduuli sisältää ominaisuuksia joilla keskusteleminen saadaan mukavammaksi.
+**Hymiöt**
+Mitkä tahansa hymiöt jotka voit kirjoittaa muualla moodlessa, voidaan kirjoitaa täällä samoin ja ne näytetään oikein. Esimerkiksi: :-)
+**Linkit**
 
-<p>Internetosoiteet muunnetaan linkeiksi automaattisesti </p>
-<dl>
-<dt><strong>Tunteilu</strong></dt>
-</dl>
-<p>Voit aloittaa rivin "/me" tai ":" tunteillaksesi. Tällä voit kuvaila tekemisisäsi ja tunnetilojasi siten että se erottuu muun tekstin joukosta. Jos nimesi on Pekka ja kirjoitat "/me nauraa!" Tulee chattiin rivi "Pekka nauraa!" </p>
-<dl>
-<dt><strong>Kutsut</strong></dt>
-</dl>
-<p>Voit lähettää muille kutsumisäänen painamalla "kutsu" linkkiä heidän nimensä vieressä. Voit kutsua kaikkia helposti kirjoittamalla: "beeb all".</p>
-<dl>
-<dt><b>HTML</b></dt>
-<dd>Jos osaat HTML-koodausta voit värittää tekstejäsi, lisätä kuvia yms...</dd>
-</dl>';
+Internetosoiteet muunnetaan linkeiksi automaattisesti
+**Tunteilu**
+
+Voit aloittaa rivin "/me" tai ":" tunteillaksesi. Tällä voit kuvaila tekemisisäsi ja tunnetilojasi siten että se erottuu muun tekstin joukosta. Jos nimesi on Pekka ja kirjoitat "/me nauraa!" Tulee chattiin rivi "Pekka nauraa!"
+**Kutsut**
+
+Voit lähettää muille kutsumisäänen painamalla "kutsu" linkkiä heidän nimensä vieressä. Voit kutsua kaikkia helposti kirjoittamalla: "beeb all".
+**HTML**
+: Jos osaat HTML-koodausta voit värittää tekstejäsi, lisätä kuvia yms...';
 $string['viewreport'] = 'Näytä menneet keskustelut';

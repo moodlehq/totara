@@ -65,9 +65,7 @@ $string['changepassword'] = 'Jelszó-módosítási URL';
 $string['changepasswordhelp'] = 'Itt megadhat egy helyet, ahol a felhasználók visszakereshetik vagy módosíthatják felhasználónevüket/jelszavukat, ha elfelejtették. Ez egy gombon érhető el a bejelentkező oldalon és az adott felhasználó oldalán. Ha üresen hagyja, nem jelenik meg ilyen gomb.';
 $string['chooseauthmethod'] = 'Válasszon egy hitelesítési eljárást';
 $string['chooseauthmethod_help'] = 'Ezzel a menüvel módosíthatja az adott felhasználó hitelesítési módszerét.
-
 Ne feledje, hogy ez nagy mértékben függ a portálhoz beállított hitelesítési módtól és a használt beállításoktól.
-
 Hibás módosítás esetén a felhasználót kizárhatja a portálról, sőt, teljesen törölheti is. Ezért csak akkor használja, ha a következményekkel tisztában van.';
 $string['createpasswordifneeded'] = 'Szükség esetén hozzon létre egy jelszót';
 $string['emailchangecancel'] = 'E-mail cím módosításának törlése';
@@ -126,7 +124,7 @@ $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = 'A CAPTCHA az automatizált programokkal való visszaélés megakadályozására használatos. Írja be a négyzetben látható szavakat a megfelelő sorrendben, szóközzel elválasztva.
 Ha nem biztos abban, hogy felismerte a szavakat, kérjen egy másik szöveget vagy egy hangos CAPTCHA-t.';
 $string['selfregistration'] = 'Önregisztráció';
-$string['selfregistration_help'] = 'Ha hitelesítő segédprogramot, például e-mail alapú önregisztrációt választ, akkor a potenciális felhasználók regisztrálhatják magukat és fiókokat hozhatnak létre. Ezzel a levélszemetet gyártók fiókokat hozhatnak létre fórumüzenetek és blogüzenetek levélszeméttel való megtöltéséhez. Ennek elkerülésére az önregisztrációt ki kell kapcsolni vagy az <em>Engedélyezett e-mail doménekre </em> kell korlátozni.';
+$string['selfregistration_help'] = 'Ha hitelesítő segédprogramot, például e-mail alapú önregisztrációt választ, akkor a potenciális felhasználók regisztrálhatják magukat és fiókokat hozhatnak létre. Ezzel a levélszemetet gyártók fiókokat hozhatnak létre fórumüzenetek és blogüzenetek levélszeméttel való megtöltéséhez. Ennek elkerülésére az önregisztrációt ki kell kapcsolni vagy az *Engedélyezett e-mail doménekre * kell korlátozni.';
 $string['sha1'] = 'SHA-1 titkosítás';
 $string['showguestlogin'] = 'Megjelenítheti vagy elrejtheti a bejelentkező oldalon a vendég belépésére való gombot.';
 $string['stdchangepassword'] = 'Szokásos jelszó-módosítási oldal használata';

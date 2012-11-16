@@ -41,7 +41,6 @@ $string['enrolstartdate_help'] = 'Si ce réglage est activé, les utilisateurs p
 $string['groupkey'] = 'Utiliser les clefs d\'inscription aux groupes';
 $string['groupkey_desc'] = 'Utiliser par défaut les clefs d\'inscription aux groupes';
 $string['groupkey_help'] = 'En plus de restreindre l\'accès au cours aux seuls utilisateurs qui connaissent la clef, l\'utilisation d\'une clef d\'inscription de groupe permet d\'ajouter automatiquement les utilisateurs à un groupe lors de leur inscription au cours.
-
 Pour utiliser une clef d\'inscription de groupe, une clef d\'inscription doit être indiquée dans les réglages du cours, ainsi qu\'une clef d\'inscription de groupe dans les réglages du groupe.';
 $string['longtimenosee'] = 'Inscription inactive après';
 $string['longtimenosee_help'] = 'Si un participant ne visite pas un cours durant ce laps de temps, il est automatiquement désinscrit de ce cours.';
@@ -51,9 +50,7 @@ $string['maxenrolledreached'] = 'Le nombre maximum d\'utilisateurs autorisés à
 $string['nopassword'] = 'Aucune clef d\'inscription requise.';
 $string['password'] = 'Clef d\'inscription';
 $string['password_help'] = 'Une clef d\'inscription permet de restreindre l\'accès au cours aux seuls utilisateurs qui connaissent la clef.
-
 Si le champ n\'est pas renseigné, n\'importe qui peut s\'inscrire au cours.
-
 Si une clef d\'inscription est spécifiée, les utilisateurs tentant de s\'inscrire au cours devront saisir cette clef, uniquement lors de leur premier accès au cours.';
 $string['passwordinvalid'] = 'Clef d\'inscription incorrecte. Veuillez réessayer';
 $string['passwordinvalidhint'] = 'Cette clef d\'inscription est incorrecte, veuillez réessayer<br />(La clef commence par « {$a} ».)';

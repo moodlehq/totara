@@ -106,7 +106,6 @@ $string['bestgrade'] = 'Legjobb pont';
 $string['bothattempts'] = 'Próbálkozó és nem próbálkozó tanulók megjelenítése';
 $string['browsersecurity'] = 'A böngésző biztonságossága';
 $string['browsersecurity_help'] = 'Ha a "Teljes képernyős előugró ablak némi javascript biztonsággal" van kiválasztva,
-
 * A teszt csak akkor kezdődik, ha a tanuló böngészője bekapcsolt javascripttel rendelkezik
 * A teszt teljes képernyős előugró ablakban jelenik meg, amely elfedi az összes többi ablakot, és nincsenek rajta navigációs eszközök
 * A tanulók az adott lehetőségek függvényében nem használhatnak olyan funkciókat, mint a másolás és a beillesztés';
@@ -210,21 +209,21 @@ $string['datasetnumber'] = 'Szám';
 $string['daysavailable'] = 'Hátralévő napok';
 $string['decimaldigits'] = 'Tizedesjegyek a pontozásban';
 $string['decimalplaces'] = 'Pontok tizedeshelyei';
-$string['decimalplaces_help'] = '<p>Itt választhatja ki, hány tizedesjegyig jelenjenek meg a próbálkozásokra adott pontok. \'0\' kiválasztása esetén a pontok egész számokra kerekítődnek.</p>
-<p>Ez a beállítás csak a pontok kijelzésére van hatással. Nem befolyásolja a belső számolásokat és a pontok kerekítését.</p>';
+$string['decimalplaces_help'] = 'Itt választhatja ki, hány tizedesjegyig jelenjenek meg a próbálkozásokra adott pontok. \'0\' kiválasztása esetén a pontok egész számokra kerekítődnek.
+Ez a beállítás csak a pontok kijelzésére van hatással. Nem befolyásolja a belső számolásokat és a pontok kerekítését.';
 $string['decimalplacesquestion'] = 'Kérdéspontok tizedeshelyei';
-$string['decimalplacesquestion_help'] = '<p>Az egyes kérdésekhez a globálisak tesztpontszámmal szemben egyedi pontosságot adhat meg a pontok megjelenítéséhez. Például kerekítheti a teszt végső pontszámát a
-legközelebbi egész számra, miközben az egyes kérdések továbbra is tört értékeket tartalmaznak.</p>';
+$string['decimalplacesquestion_help'] = 'Az egyes kérdésekhez a globálisak tesztpontszámmal szemben egyedi pontosságot adhat meg a pontok megjelenítéséhez. Például kerekítheti a teszt végső pontszámát a
+legközelebbi egész számra, miközben az egyes kérdések továbbra is tört értékeket tartalmaznak.';
 $string['decimalpoints'] = 'Tizedesjegyek';
 $string['default'] = 'Alapbeállítás';
 $string['defaultgrade'] = 'Alapbeállítás szerinti kérdéspont';
 $string['defaultinfo'] = 'Kérdések alapkategóriája.';
 $string['delay1'] = 'Az első és a második próbálkozás közötti időköz';
 $string['delay1st2nd'] = 'Kivárás az 1. és a 2. próbálkozás között.';
-$string['delay1st2nd_help'] = '<p>Időköz beállítása esetén a tanulónak az első próbálkozás után a teszt újrapróbálásával várnia kell a megadott ideig.</p>';
+$string['delay1st2nd_help'] = 'Időköz beállítása esetén a tanulónak az első próbálkozás után a teszt újrapróbálásával várnia kell a megadott ideig.';
 $string['delay2'] = 'A későbbi próbálkozások közötti időköz';
 $string['delaylater'] = 'Kivárás a későbbi próbálkozások között.';
-$string['delaylater_help'] = '<p>Időköz beállítása esetén a tanulónak a második próbálkozás után várnia kell a megadott ideig a teszt harmadik vagy további újrapróbálásaival.</p>';
+$string['delaylater_help'] = 'Időköz beállítása esetén a tanulónak a második próbálkozás után várnia kell a megadott ideig a teszt harmadik vagy további újrapróbálásaival.';
 $string['deleteattemptcheck'] = 'Biztosan törölni akarja az összes próbálkozást?';
 $string['deleteselected'] = 'A kiválasztott törlése';
 $string['deletingquestionattempts'] = 'Kérdéssel való próbálkozások törlése';
@@ -235,10 +234,9 @@ $string['download'] = 'Az exportált kategóriafájl letöltéséhez kattintson'
 $string['downloadextra'] = '(a fájl szerepel a kurzusállományok között is a /backupdata/quiz mappában)';
 $string['duplicateresponse'] = 'A leadott munka figyelmen kívül hagyva, mert korábban már adott le ezzel egyenértékű választ.';
 $string['eachattemptbuildsonthelast'] = 'Minden próbálkozás az előzőre épül';
-$string['eachattemptbuildsonthelast_help'] = '<p>Ha többszöri próbálkozásra van lehetőség és ez a beállítás
-<strong>Igen</strong>-re van állítva, akkor minden egyes új próbálkozás  tartalmazni fogja a korábbi próbálkozás eredményét. Ennek eredményeként a teszt több próbálkozással is teljesíthető.</p>
-
-<p>Ha ez a beállítás <strong>Nem</strong>, akkor minden próbálkozás esetén friss teszt jelenik meg.</p>';
+$string['eachattemptbuildsonthelast_help'] = 'Ha többszöri próbálkozásra van lehetőség és ez a beállítás
+**Igen**-re van állítva, akkor minden egyes új próbálkozás tartalmazni fogja a korábbi próbálkozás eredményét. Ennek eredményeként a teszt több próbálkozással is teljesíthető.
+Ha ez a beállítás **Nem**, akkor minden próbálkozás esetén friss teszt jelenik meg.';
 $string['editcategories'] = 'Kategóriák szerkesztése';
 $string['editcategory'] = 'Kategória szerkesztése';
 $string['editcatquestions'] = 'Kategóriakérdések szerkesztése';
@@ -304,15 +302,14 @@ $string['fractionsnomax'] = 'Az egyik válaszlehetőségnek 100%-nak kell lenni 
 $string['fromfile'] = 'forrásállomány:';
 $string['functiondisabledbysecuremode'] = 'Ez a funkció jelenlen ki van kapcsolva';
 $string['generalfeedback'] = 'Általános visszajelzés';
-$string['generalfeedback_help'] = '<p>A kérdéshez kapcsolódó általános szöveget a tanuló a kérdéssel való próbálkozás után látja.
+$string['generalfeedback_help'] = 'A kérdéshez kapcsolódó általános szöveget a tanuló a kérdéssel való próbálkozás után látja.
 A visszajelzéstől eltérően, amely a kérdésfajtától és a tanuló válaszától függően változik,
-az általános szöveget minden tanuló látja.</p>
-
-<p>Az általános szöveg megjelenítését a tesztszerkesztő űrlapon lévő "A tanulók megtekinthetik:" jelölőnégyzetekkel
-állíthatja be.</p>
-<p>Az általános szöveggel a tanulókat tájékoztathatja arról, hogy a kérdés milyen ismereteket
+az általános szöveget minden tanuló látja.
+Az általános szöveg megjelenítését a tesztszerkesztő űrlapon lévő "A tanulók megtekinthetik:" jelölőnégyzetekkel
+állíthatja be.
+Az általános szöveggel a tanulókat tájékoztathatja arról, hogy a kérdés milyen ismereteket
 ellenőriz, illetve ugrópontokat adhat meg nekik, melyeken keresztül a kérdésről részletesebben
-tájékozódhatnak.</p>';
+tájékozódhatnak.';
 $string['grade'] = 'Pont';
 $string['gradeall'] = 'Az összes pontozása';
 $string['gradeaverage'] = 'Átlagpont';
@@ -320,20 +317,15 @@ $string['gradeboundary'] = 'Ponthatár';
 $string['gradeessays'] = 'Esszék pontozása';
 $string['gradehighest'] = 'Legmagasabb pont';
 $string['grademethod'] = 'Pontozási módszer';
-$string['grademethod_help'] = '<p>Ha többszöri próbálkozást enged meg, többféleképpen hasznosíthatja a pontokat a tanuló adott tesztben elért végső pontszámának a kiszámításához.</p>
-
-<h2>Legmagasabb pont</h2>
-<p>A végső pontszám minden egyes próbálkozás esetén a legmagasabb (legjobb) pontszám.</p>
-
-<h2>Átlagpont</h2>
-<p>A végső pontszám az összes próbálkozás alapján számított átlagos (egyszerű számtani középarányos) pontszám.
-</p>
-<h2>Első próbálkozás</h2>
-<p>A végső pontszám az első próbálkozás során szerzett pontszám (a többi próbálkozást a rendszer figyelmen kívül hagyja).
-</p>
-<h2>Utolsó próbálkozás</h2>
-<p>A végső pontszám kizárólag a legutóbbi próbálkozás során elért pontszámot tartalmazza.
-</p>';
+$string['grademethod_help'] = 'Ha többszöri próbálkozást enged meg, többféleképpen hasznosíthatja a pontokat a tanuló adott tesztben elért végső pontszámának a kiszámításához.
+## Legmagasabb pont
+A végső pontszám minden egyes próbálkozás esetén a legmagasabb (legjobb) pontszám.
+## Átlagpont
+A végső pontszám az összes próbálkozás alapján számított átlagos (egyszerű számtani középarányos) pontszám.
+## Első próbálkozás
+A végső pontszám az első próbálkozás során szerzett pontszám (a többi próbálkozást a rendszer figyelmen kívül hagyja).
+## Utolsó próbálkozás
+A végső pontszám kizárólag a legutóbbi próbálkozás során elért pontszámot tartalmazza.';
 $string['gradesdeleted'] = 'Tesztpontok törölve';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Leadott munka pontjai: {$a->raw}/{$a->max}.';
@@ -418,12 +410,11 @@ $string['navnojswarning'] = 'Vigyázat: az ugrópontokkal nem menti el válaszai
 $string['neverallononepage'] = 'Soha, minden kérdés egy oldalon.';
 $string['newattemptfail'] = 'Hiba: a tesztben nem lehetett új próbálkozást indítani';
 $string['newpage'] = 'Új oldal';
-$string['newpage_help'] = '<p>Hosszabb tesztek esetén célszerű azt több oldalra széthúzni
+$string['newpage_help'] = 'Hosszabb tesztek esetén célszerű azt több oldalra széthúzni
 az oldalanként jelzendő kérdések számának módosításával.
 A kérdések hozzáadása során ennek megfelelően automatikusan
 laptörések kerülnek az állományba. Ezeket később a szerkesztő
-oldalon kézzel módosíthatja.
-</p>';
+oldalon kézzel módosíthatja.';
 $string['newpageevery'] = 'Új oldal automatikus megkezdése';
 $string['noanswers'] = 'Nincs kiválasztva válasz!';
 $string['noattempts'] = 'A teszt megoldásával még nem próbálkoztak';
@@ -476,16 +467,14 @@ $string['openclosedatesupdated'] = 'A teszt kezdési és befejezési időpontjai
 $string['optional'] = 'opcionális';
 $string['orderandpaging'] = 'Sorrend és oldalszám';
 $string['orderandpaging_help'] = 'Az egyes kérdésekkel szemközti 10, 20, 30, ... szám a kérdések sorrendjére utal. A számok későbbi kérdésekhez további hely biztosítása érdekében 10-esével növekednek. Újrarendezésükhöz módosítsa a számokat, majd kattintson a "Kérdések újrarendezése" gombra.
-
 Ha a kérdésekhez oldaltörést kíván beszúrni, jelölje be a kérdések melletti négyzeteket, majd kattintson az "Új oldalak beszúrása a kiválasztott kérdések után" gombra.
-
 Ha a kérdések több oldalra férnek ki, kattintson az "Újratördelés" gombra és válassza ki az oldalankénti kérdések számát..';
 $string['orderingquiz'] = 'Sorrend és oldalszám';
 $string['outof'] = '{$a->grade} a maximum {$a->maxgrade} közül';
 $string['outofpercent'] = '{$a->grade} a maximum {$a->maxgrade} közül ({$a->percent}%)';
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'Globális visszajelzés';
-$string['overallfeedback_help'] = 'A globális visszajelzés olyan szöveg, amelyet a tanuló egy teszt megoldását követően lát. (Százalékban vagy számmal megadott) ponthatárok  esetén a szöveg a tanuló által szerzett pontoktól függően változhat.';
+$string['overallfeedback_help'] = 'A globális visszajelzés olyan szöveg, amelyet a tanuló egy teszt megoldását követően lát. (Százalékban vagy számmal megadott) ponthatárok esetén a szöveg a tanuló által szerzett pontoktól függően változhat.';
 $string['overdue'] = 'Lejárt';
 $string['override'] = 'Felülírás';
 $string['overridedeletegroupsure'] = 'Biztosan törli {$a} csoport felülírását?';
@@ -504,10 +493,9 @@ $string['parsingquestions'] = 'Importált állomány kérdéseinek feldolgozása
 $string['partiallycorrect'] = 'Részben helyes';
 $string['penalty'] = 'Büntetés';
 $string['penaltyscheme'] = 'Büntetőpontok alkalmazása';
-$string['penaltyscheme_help'] = '<p>Ha egy teszt adaptív módban működik, akkor a tanuló a rossz válasz után újból
-próbálkozhat. Ez esetben a kérdésre adott végleges osztályzatból a rossz válaszokra büntetőpont vonható le. Ennek mennyisége az egyes kérdésekre külön-külön adható meg a kérdés beállítása vagy szerkesztése során.</p>
-
-<p>Ez a beállítás csak adaptív módban bír jelentőséggel.</p>';
+$string['penaltyscheme_help'] = 'Ha egy teszt adaptív módban működik, akkor a tanuló a rossz válasz után újból
+próbálkozhat. Ez esetben a kérdésre adott végleges osztályzatból a rossz válaszokra büntetőpont vonható le. Ennek mennyisége az egyes kérdésekre külön-külön adható meg a kérdés beállítása vagy szerkesztése során.
+Ez a beállítás csak adaptív módban bír jelentőséggel.';
 $string['percentcorrect'] = 'százalék helyes';
 $string['pleaseclose'] = 'Kérését feldolgoztuk. Bezárhatja ezt az ablakot.';
 $string['pluginadministration'] = 'Teszt kezelése';
@@ -629,34 +617,27 @@ $string['reportresponses'] = 'Részletes tanulói válaszok';
 $string['reports'] = 'Jelentések';
 $string['reportsimplestat'] = 'Egyszerű statisztika';
 $string['requirepassword'] = 'Jelszó előírása';
-$string['requirepassword_help'] = '<p>Ez a mező opcionális.</p>
-
-<p>Ha itt megad egy jelszót, akkor a résztvevőknek ugyanezt a jelszót kell megadniuk ahhoz, hogy
-megpróbálkozhassanak a teszttel.</p>';
+$string['requirepassword_help'] = 'Ez a mező opcionális.
+Ha itt megad egy jelszót, akkor a résztvevőknek ugyanezt a jelszót kell megadniuk ahhoz, hogy
+megpróbálkozhassanak a teszttel.';
 $string['requiresubnet'] = 'Hálózati cím előírása';
-$string['requiresubnet_help'] = '<p>Ez a mező opcionális.</p>
-
-<p>Helyi hálózaton vagy az Interneten egy teszt elérhetőségét konkrét alhálózatokhoz
+$string['requiresubnet_help'] = 'Ez a mező opcionális.
+Helyi hálózaton vagy az Interneten egy teszt elérhetőségét konkrét alhálózatokhoz
 kötheti oly módon, hogy megad egy vesszőkkel határolt, részleges vagy teljes IP-címet tartalmazó
-listát.</p>
+listát.
+Ez különösen ellenőrzött teszt esetén hasznos, ahol biztos akar lenni abban, hogy csakis egy
+meghatározott teremben lévők számára legyen hozzáférhető a teszt.
+Például: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Háromféle számot használhat (nincs mód szöveges doménnevek használatára):
+1. Teljes IP-címek, például **192.168.10.1**, amelyek egy konkrét számítógépet
+(vagy proxy-t) azonosítanak.
+2. Részleges címek, például **192.168**, amely bármely adott számokkal
+kezdődő helyet azonosít.
+3. CIDR-jelölés, például **231.54.211.0/20**, mellyel részletesebb alhálózatokat
+jelölhet.
 
-<p>Ez különösen ellenőrzött teszt esetén hasznos, ahol biztos akar lenni abban, hogy csakis egy
-meghatározott teremben lévők számára legyen hozzáférhető a teszt.</p>
 
-<p>Például: <strong>192.168. , 231.54.211.0/20, 231.3.56.211</strong></p>
-
-<p>Háromféle számot használhat (nincs mód szöveges doménnevek használatára):
-<ol>
-<li>Teljes IP-címek, például <strong>192.168.10.1</strong>, amelyek egy konkrét számítógépet
-(vagy proxy-t) azonosítanak.</li>
-<li>Részleges címek, például <strong>192.168</strong>, amely bármely adott számokkal
-kezdődő helyet azonosít.</li>
-<li>CIDR-jelölés, például <strong>231.54.211.0/20</strong>, mellyel részletesebb alhálózatokat
-jelölhet.</li>
-</ol>
-</p>
-
-<p>A szóközöket a rendszer figyelmen kívül hagyja.</p>';
+A szóközöket a rendszer figyelmen kívül hagyja.';
 $string['response'] = 'Tanuló válasza';
 $string['responses'] = 'Tanuló válaszai';
 $string['results'] = 'Eredmények';
@@ -676,17 +657,13 @@ $string['reviewofpreview'] = 'Előzetes megtekintés ellenőrzése';
 $string['reviewopen'] = 'Később, amíg a teszt elérhető';
 $string['reviewoptions'] = 'Tanulók ellenőrizhetik';
 $string['reviewoptionsheading'] = 'Ellenőrzési lehetőségek';
-$string['reviewoptionsheading_help'] = '<p>Ezek a lehetőségek szabályozzák, milyen adatokat láthatnak a felhasználók egy teszttel való próbálkozás ellenőrzése vagy tesztjelentések megtekintése során.</p>
+$string['reviewoptionsheading_help'] = 'Ezek a lehetőségek szabályozzák, milyen adatokat láthatnak a felhasználók egy teszttel való próbálkozás ellenőrzése vagy tesztjelentések megtekintése során.
+A **Közvetlenül a próbálkozás után ** azt jelenti, hogy két percen belül attól számítva, hogy a felhasználó **Az összes próbálkozás leadása és befejezés** gombra kattint.
 
-<p>A <b>Közvetlenül a próbálkozás után </b> azt jelenti, hogy két percen belül attól számítva, hogy a felhasználó <b>Az összes próbálkozás leadása és befejezés</b> gombra kattint.
-</p>
-
-<p>A <b>Később, amíg a teszt elérhető</b> azt jelenti, hogy ezt követően, de még a teszt lezárási időpontja előtt.</p>
-
-<p><b>A teszt lezárása után</b> pedig azt jelenti, hogy azt követően, hogy a teszt lezárási időpontja letelt. Ha a teszthez nincs lezárási időpont, akkor ez az állapot sosem következik be.</p>
-
-<p>A "Rejtett pontok megtekintése" [moodle/grade:viewhidden] engedéllyel rendelkező felhasználók (általában tanárok és rendszergazdák) lehetőségeit ezek a beállítások nem érintik,
-így mindenkor megtekinthetnek minden, egy tanuló próbálkozására vonatkozó adatot.</p>';
+A **Később, amíg a teszt elérhető** azt jelenti, hogy ezt követően, de még a teszt lezárási időpontja előtt.
+**A teszt lezárása után** pedig azt jelenti, hogy azt követően, hogy a teszt lezárási időpontja letelt. Ha a teszthez nincs lezárási időpont, akkor ez az állapot sosem következik be.
+A "Rejtett pontok megtekintése" [moodle/grade:viewhidden] engedéllyel rendelkező felhasználók (általában tanárok és rendszergazdák) lehetőségeit ezek a beállítások nem érintik,
+így mindenkor megtekinthetnek minden, egy tanuló próbálkozására vonatkozó adatot.';
 $string['reviewresponse'] = 'Tanuló válaszának ellenőrzése';
 $string['reviewresponsetoq'] = 'Tanuló válaszának ellenőrzése ({$a} kérdés)';
 $string['reviewthisattempt'] = 'Ellenőrizze az ezen próbálkozásra adott válaszait.';
@@ -735,22 +712,18 @@ $string['shownoattempts'] = 'Próbálkozás nélküli tanulók megjelenítése';
 $string['shownoattemptsonly'] = 'Csak a próbálkozás nélküli tanulók megjelenítése';
 $string['showteacherattempts'] = 'Tanári próbálkozások megjelenítése';
 $string['showuserpicture'] = 'Felhasználó képének megjelenítése';
-$string['showuserpicture_help'] = '<p>Bekapcsolása esetén próbálkozás közben és az ellenőrző képernyőn látható lesz a tanuló neve és képe.</p>
-
-<p>Erre szükség lehet például felügyelet mellett zajló vizsga esetén, mert így könnyebben ellenőrizhető, hogy valóban a felhasználó lépett-e be.</p>';
+$string['showuserpicture_help'] = 'Bekapcsolása esetén próbálkozás közben és az ellenőrző képernyőn látható lesz a tanuló neve és képe.
+Erre szükség lehet például felügyelet mellett zajló vizsga esetén, mert így könnyebben ellenőrizhető, hogy valóban a felhasználó lépett-e be.';
 $string['shuffle'] = 'Összekeverés';
 $string['shuffleanswers'] = 'Válaszok összekeverése';
 $string['shuffledrandomly'] = 'Véletlenszerű összekeverés';
 $string['shufflequestions'] = 'Kérdések összekeverése';
 $string['shufflequestionsselected'] = 'A kérdések összekeverése be van állítva, így az oldalakhoz kapcsolódó egyes tevékenységeket nem hajthatja végre. Az összekeverést módosíthatja: {$a}.';
 $string['shufflewithin'] = 'Kérdéseken belüli összekeverés';
-$string['shufflewithin_help'] = '<p>Az opció bekapcsolása esetén az egyes kérdések részei véletlenszerűen összekeverednek, ha egy tanuló a teszttel próbálkozik, feltéve, hogy az opció a kérdések beállításában is be van kapcsolva.</p>
-
-<p>Ennek az a célja, hogy kissé megnehezítse azt, hogy a tanulók egymástól átmásoljanak megoldásokat.</p>
-
-<p>Az opció csak a több részből felépülő kérdések, például a feleletválasztós és a párosító kérdések esetén használható. Feleletválasztós kérdések esetén a válaszok sorrendje csak akkor keveredik össze, ha ez az opció &quot;Igen&quot;-re van állítva. Párosító kérdéseknél a válaszok mindig összekeverednek. Ez a beállítás a kérdés-válasz párok sorrendjének a felcserélését is érinti.</p>
-
-<p>Ugyanakkor a beállítás nem érinti a véletlenszerű kérdések használatát.</p>';
+$string['shufflewithin_help'] = 'Az opció bekapcsolása esetén az egyes kérdések részei véletlenszerűen összekeverednek, ha egy tanuló a teszttel próbálkozik, feltéve, hogy az opció a kérdések beállításában is be van kapcsolva.
+Ennek az a célja, hogy kissé megnehezítse azt, hogy a tanulók egymástól átmásoljanak megoldásokat.
+Az opció csak a több részből felépülő kérdések, például a feleletválasztós és a párosító kérdések esetén használható. Feleletválasztós kérdések esetén a válaszok sorrendje csak akkor keveredik össze, ha ez az opció "Igen"-re van állítva. Párosító kérdéseknél a válaszok mindig összekeverednek. Ez a beállítás a kérdés-válasz párok sorrendjének a felcserélését is érinti.
+Ugyanakkor a beállítás nem érinti a véletlenszerű kérdések használatát.';
 $string['singleanswer'] = 'Válasszon egy választ.';
 $string['sortage'] = 'Rendezés kor szerint';
 $string['sortalpha'] = 'Rendezés név szerint';
@@ -783,21 +756,18 @@ $string['timecompleted'] = 'Kész';
 $string['timedelay'] = 'Nem oldhatja meg a tesztet, mert még nem telt el a következő próbálkozásig előírt időköz';
 $string['timeleft'] = 'Hátralévő idő';
 $string['timelimit'] = 'Időkorlát';
-$string['timelimit_help'] = '<p>Alaphelyzetben a teszteknek nincs időbeli korlátjuk, így a tanulók annyi időt fordítanak a teszt
-kitöltésére, amennyire csak szükségük van.</p>
+$string['timelimit_help'] = 'Alaphelyzetben a teszteknek nincs időbeli korlátjuk, így a tanulók annyi időt fordítanak a teszt
+kitöltésére, amennyire csak szükségük van.
+Ha viszont megad egy időkorlátot, egy sor dolog történik annak érdekében, hogy a teszteket ezen
+idő alatt kitöltsék:
 
-<p>Ha viszont megad egy időkorlátot, egy sor dolog történik annak érdekében, hogy a teszteket ezen
-idő alatt kitöltsék:</p>
-
-<ul>
-<li>A böngészőben a Javascript támogatása kötelezővé válik - ennek köszönhetően
-az időmérő helyesen fog működni.</li>
-<li>Egy folyamatjelző, visszaszámláló időmérő ablak jelenik meg a képernyőn.</li>
-<li>Ha az időmérő lejár, a teszt leadása automatikusan megtörténik, függetlenül
-attól, hogy mennyi válasz született meg akkorra.</li>
-<li>Ha a tanuló csal és a kijelölt időnél 60 másodperccel többet tölt el, akkor a tesztre
-automatikusan nulla pontot kap.</li>
-</ul>';
+* A böngészőben a Javascript támogatása kötelezővé válik - ennek köszönhetően
+az időmérő helyesen fog működni.
+* Egy folyamatjelző, visszaszámláló időmérő ablak jelenik meg a képernyőn.
+* Ha az időmérő lejár, a teszt leadása automatikusan megtörténik, függetlenül
+attól, hogy mennyi válasz született meg akkorra.
+* Ha a tanuló csal és a kijelölt időnél 60 másodperccel többet tölt el, akkor a tesztre
+automatikusan nulla pontot kap.';
 $string['timelimitexeeded'] = 'Sajnos a tesztidőt túllépte!';
 $string['timelimitmin'] = 'Időkorlát (perc)';
 $string['timelimitsec'] = 'Időkorlát (másodperc)';

@@ -50,7 +50,6 @@ $string['endswith'] = 'termina con';
 $string['filterallwarning'] = 'Applicare filtri alle intestazioni oltre che al contenuto potrebbe aumentare notevolmente il carico sul server. Si raccomanda di utilizzare l\'impostazione "Applica a" con moderazione, il suo uso principale è relativo al filtro multi-lingua.';
 $string['filtersettings'] = 'Impostazioni filtro';
 $string['filtersettings_help'] = 'In questa pagina è possibile attivare o disattivare i filtri per specifiche parti del sito.
-
 Alcuni filtri possono avere impostazioni locali, nel qual caso sarà presente un link \'Impostazioni\' accanto al nome dl filtro.';
 $string['filtersettingsforin'] = 'Impostazione di {$a->filter} in {$a->context}';
 $string['filtersettingsin'] = 'Impostazione filtri {$a}';

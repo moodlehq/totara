@@ -37,8 +37,8 @@ $string['savedconfigfailed'] = '输入的用户名/密码组合不正确，URKUN
 $string['savedconfigsuccess'] = '反抄袭设置已保存';
 $string['showwhenclosed'] = '当活动关闭';
 $string['similarity'] = 'URKUND';
-$string['studentdisclosuredefault'] = '所有的文件都将上传到抄袭检测服务 URKUND，如果您不希望您的文档被该站以外的其他机构用作分析材料，您可以在报告生成后使用选择退出链接。';
 $string['studentdisclosure_help'] = '该文本将在文件上传页面上为所有学生可见。';
+$string['studentdisclosuredefault'] = '所有的文件都将上传到抄袭检测服务 URKUND，如果您不希望您的文档被该站以外的其他机构用作分析材料，您可以在报告生成后使用选择退出链接。';
 $string['studentemailcontent'] = '您 {$a->coursename}中提交给{$a->modulename}的文件现在已被反抄袭工具 URKUND 处理。
 {$a->modulelink}
 
@@ -53,9 +53,7 @@ $string['unsupportedfiletype'] = 'URKUND 不支持该文件类型';
 $string['urkund'] = 'URKUND 反抄袭插件';
 $string['urkund_api'] = 'URKUND 集成地址';
 $string['urkund_api_help'] = '此为 URKUND API 地址';
-$string['urkunddefaults'] = 'URKUND 默认';
 $string['urkund_draft_submit'] = '文件什么时候提交到 URKUND';
-$string['urkundexplain'] = '若想了解更多关于该插件的信息，请查看：<a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['urkund_lang'] = '语言';
 $string['urkund_lang_help'] = '由 URKUND 提供的语言代码';
 $string['urkund_password'] = '密码';
@@ -70,4 +68,6 @@ $string['urkund_studentemail'] = '向学生发送电子邮件';
 $string['urkund_studentemail_help'] = '在文件被处理后会向学生发送一封电子邮件，来通知他们报告已经生成完毕，该邮件也包含了选择退出链接。';
 $string['urkund_username'] = '用户名';
 $string['urkund_username_help'] = 'URKUND 提供的用于访问 API 的用户名';
+$string['urkunddefaults'] = 'URKUND 默认';
+$string['urkundexplain'] = '若想了解更多关于该插件的信息，请查看：<a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['useurkund'] = '启用 URKUND';

@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'תצורה לתוסף העלאה';
 $string['pluginname'] = 'העלאת קובץ';
 $string['pluginname_help'] = 'העלאת קובץ למוודל';
+$string['upload:view'] = 'אפשר העלאת קבצים בחלונית בחירת קובץ';
 $string['upload_error_cant_write'] = 'שגיאה בניסיון לכתובת לדיסק';
 $string['upload_error_extension'] = 'הרחבת PHP הפסיקה את העלאה של הקובץ';
 $string['upload_error_form_size'] = 'הקובץ המועלה הגיע ל MAX_FILE_SIZE
@@ -36,4 +37,3 @@ $string['upload_error_ini_size'] = 'הקובץ המועלה הגיע ל מכסה
 $string['upload_error_no_file'] = 'לא הועלה אף קובץ';
 $string['upload_error_no_tmp_dir'] = 'חסר ל-PHP תיקיית זמנית (temporary folder)';
 $string['upload_error_partial'] = 'הקובץ הועלה באופן חלקי בלבד';
-$string['upload:view'] = 'אפשר העלאת קבצים בחלונית בחירת קובץ';

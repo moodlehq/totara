@@ -71,24 +71,21 @@ $string['delete_old_items'] = 'Supprimer anciens éléments';
 $string['delete_template'] = 'Supprimer modèle';
 $string['delete_templates'] = 'Supprimer modèle...';
 $string['depending'] = 'Questions conditionnelles';
-$string['depending_help'] = 'Les questions conditionnelles vous permettent d\'afficher des questions selon la réponse donnée à une autre question.<br />
-<strong>Voici comment construire un exemple simple :</strong><br />
-<ol>
-<li>créez d\'abord une question dont d\'autres vont dépendre ;</li>
-<li>ajouter un saut de page ;</li>
-<li>ajouter les questions qui vont dépendre de la réponse à la question créée précédemment.<br />
-Dans le formulaire présenté lors de la création de la question, sélectionnez dans la liste « Question conditionnelle » la question adéquate et indiquez la valeur de la réponse attendue dans le champ « Réponse attendue ».</li>
-</ol>
-<strong>La structure devrait ressembler à cela :</strong>
-<ol>
-<li>Question : avez-vous une voiture ? Réponse : Oui/Non</li>
-<li>Saut de page</li>
-<li>Question : de quelle couleur est votre voiture ?<br />
-(cette question dépend de la première, et la valeur attendue pour la réponse est Oui)</li>
-<li>Question : pourquoi n\'avez-vous pas de voiture ?<br />
-(cette question dépend de la première, et la valeur attendue pour la réponse est Oui)</li>
-<li> ... autres questions</li>
-</ol>';
+$string['depending_help'] = 'Les questions conditionnelles vous permettent d\'afficher des questions selon la réponse donnée à une autre question.
+**Voici comment construire un exemple simple :**
+* créez d\'abord une question dont d\'autres vont dépendre ;
+* ajouter un saut de page ;
+* ajouter les questions qui vont dépendre de la réponse à la question créée précédemment.
+Dans le formulaire présenté lors de la création de la question, sélectionnez dans la liste « Question conditionnelle » la question adéquate et indiquez la valeur de la réponse attendue dans le champ « Réponse attendue ».
+
+**La structure devrait ressembler à cela :**
+1. Question : avez-vous une voiture ? Réponse : Oui/Non
+2. Saut de page
+3. Question : de quelle couleur est votre voiture ?
+(cette question dépend de la première, et la valeur attendue pour la réponse est Oui)
+4. Question : pourquoi n\'avez-vous pas de voiture ?
+(cette question dépend de la première, et la valeur attendue pour la réponse est Oui)
+5. ... autres questions';
 $string['dependitem'] = 'Question conditionnelle';
 $string['dependvalue'] = 'Réponse attendue';
 $string['description'] = 'Description';
@@ -143,7 +140,6 @@ $string['infotype'] = 'Type d\'information';
 $string['insufficient_responses'] = 'Nombre insuffisant de réponses';
 $string['insufficient_responses_for_this_group'] = 'Il n\'y a pas assez de réponses pour ce groupe';
 $string['insufficient_responses_help'] = 'Il n\'y a pas assez de réponses dans ce groupe.
-
 Pour que ce feedback reste anonyme, un minimum de 2 réponses doit être donné.';
 $string['item_label'] = 'Étiquette';
 $string['item_name'] = 'Question';

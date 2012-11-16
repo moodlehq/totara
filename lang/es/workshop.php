@@ -194,10 +194,11 @@ $string['someuserswosubmission'] = 'Al menos un autor aún no ha enviado su trab
 $string['sortasc'] = 'Clasificacion ascendente';
 $string['sortdesc'] = 'Clasificación descendente';
 $string['strategy'] = 'Estrategia de calificación';
-$string['strategy_help'] = '<p>La estrategia de clasificación determina la forma de evaluación utilizados y el método de califiación de los envíos. Hay 4 opciones:</p>
-<p> * Clasificación acumulativa - Se realizan comentarios y calificaciones sobre los aspectos especificados.>7p>
-* <p>Comentarios - Se hacen comentarios sobre aspectos específicos, pero no se califica.</p>
-<p> * Número de errores - Se realizan comentarios y una calificacion tipo sí/no sobre las afirmaciones realizadas.</p>
+$string['strategy_help'] = 'La estrategia de clasificación determina la forma de evaluación utilizados y el método de califiación de los envíos. Hay 4 opciones:
+* Clasificación acumulativa - Se realizan comentarios y calificaciones sobre los aspectos especificados.>7p>
+*
+Comentarios - Se hacen comentarios sobre aspectos específicos, pero no se califica.
+* Número de errores - Se realizan comentarios y una calificacion tipo sí/no sobre las afirmaciones realizadas.
 * Rúbrica - Se realiza una evaluación de nivel respecto a los criterios especificados';
 $string['strategyhaschanged'] = 'La estrategia de calificación del taller ha cambiado desde que el formulario fue abierto para editarlo.';
 $string['submission'] = 'Envío';

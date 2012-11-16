@@ -25,4 +25,4 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ملف إكس إم إل ';
+$string['pluginname'] = 'ملف إكس إم إل';

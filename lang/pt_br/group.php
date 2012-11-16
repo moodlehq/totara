@@ -92,11 +92,9 @@ $string['groupmemberssee'] = 'Ver membros do grupo';
 $string['groupmembersselected'] = 'Membros do grupo selecionado';
 $string['groupmode'] = 'Modalidade grupo';
 $string['groupmode_help'] = 'Esta configuração possui 3 opções:
-
 * Nenhum grupo - Não há sub-grupos, todos fazem parte de uma grande comunidade
 * Grupos separados - Cada membro de grupo pode ver apenas seu próprio grupos, os outros são invisíveis
 * Grupos visíveis - Cada membro do grupo trabalha no seu próprio grupo mas pode também ver outros grupos
-
 O tipo de grupo definido no nível do curso é o padrão para todas as atividades do curso. Cada atividade que suporta grupos pode também definir seu próprio tipo de grupo mas, se o tipo de grupo é forçado no nível do curso, o tipo de grupo para cada atividade é ignorado.';
 $string['groupmodeforce'] = 'Forçar modalidade grupo';
 $string['groupmodeforce_help'] = 'Se o modo de grupo é forçado, então o modo de grupo do curso é aplicado a todas as atividades do curso. Configurações do modo de grupo de cada atividade serão ignoradas.';
@@ -117,7 +115,6 @@ $string['grouptemplate'] = 'Grupo @';
 $string['hidepicture'] = 'Esconder imagem';
 $string['importgroups'] = 'Importar grupos';
 $string['importgroups_help'] = 'Grupos podem ser importados a partir de um arquivo de texto. O formato de arquivo deve ser da seguinte forma:
-
 * Cada linha do arquivo deve conter apenas um registro
 * Cada registro é uma série de dados separados por vírgulas
 * O primeiro registro deve conter a lista de nomes de campos, definindo o formato do resto do arquivo
@@ -128,26 +125,23 @@ $string['members'] = 'Membros por grupo';
 $string['membersofselectedgroup'] = 'Membros de:';
 $string['namingscheme'] = 'Esquema de nomes';
 $string['namingscheme_help'] = 'O símbolo de arroba (@) pode ser usado para criar grupos com nomes que contenham letras. Por exemplo, o Grupo @ irá gerar grupos, denominados Grupo A, Grupo B, Grupo C, ...
-
 O símbolo de cerquilha (#) pode ser usado para criar grupos com nomes que contenham números. Por exemplo, o Grupo # irá gerar grupos, denominados Grupo 1, Grupo 2, Grupo 3, ...';
 $string['newgrouping'] = 'Novo agrupamento';
 $string['newpicture'] = 'Nova imagem';
-$string['newpicture_help'] = '<P>Você pode transferir uma foto do seu computador para este servidor. Esta imagem será usada em algumas páginas para identificá-lo.</p>
-<P>A imagem ideal é um retrato que mostre seu rosto de perto mas você pode usar outras imagens, se preferir.</p>
-<P>A imagem deve ser em formato JPG ou PNG (o nome do arquivo termina em .jpg ou .png).</p>
-<P>Você pode obter uma imagem usando um destes 4 métodos:</p>
+$string['newpicture_help'] = 'Você pode transferir uma foto do seu computador para este servidor. Esta imagem será usada em algumas páginas para identificá-lo.
+A imagem ideal é um retrato que mostre seu rosto de perto mas você pode usar outras imagens, se preferir.
+A imagem deve ser em formato JPG ou PNG (o nome do arquivo termina em .jpg ou .png).
+Você pode obter uma imagem usando um destes 4 métodos:
 
-<OL>
-<LI>Usando uma máquina fotográfica digital. As fotos terão, provavelmente, o formato adequado.</li>
-<LI>Usando um scanner para digitalizar uma fotografia impressa. Selecione, como formato de arquivo, JPG ou PNG.</li>
-<LI>Para obter uma imagem "artística", crie um desenho com o seu software preferido.</li>
-<LI>Como última opção, você pode obter imagens prontas em diversos endereços Web como <A TARGET=google HREF="http://images.google.com/">http://images.google.com</A>. Para transferir a imagem para o seu computador, selecione-a e utilize o botão direito do mouse para ativar, no menu, o item "salvar imagem" (o texto varia em função do navegador).</li>
-</OL>
+1.Usando uma máquina fotográfica digital. As fotos terão, provavelmente, o formato adequado.
+2.Usando um scanner para digitalizar uma fotografia impressa. Selecione, como formato de arquivo, JPG ou PNG.
+3.Para obter uma imagem "artística", crie um desenho com o seu software preferido.
+4.Como última opção, você pode obter imagens prontas em diversos endereços Web como [http://images.google.com](http://images.google.com). Para transferir a imagem para o seu computador, selecione-a e utilize o botão direito do mouse para ativar, no menu, o item "salvar imagem" (o texto varia em função do navegador).
 
-<P>Para transferir a imagem para o servidor do curso, clique o botão "Procurar" nesta página de edição e selecione a imagem no diretório do seu computador.</p>
-<P>ATENÇÃO: Arquivos com tamanho maior que o indicado não serão aceitos.</p>
-<P>Enfim, clique o botão "Atualizar Perfil" no fim do formulário. A imagem será redimensionada a um quadrado de 100X100 pixels.</p>
-<P>Quando você retornar à página do seu perfil, se a nova imagem não for visualizada, use o botão do navegador para atualizar a página.</p>';
+Para transferir a imagem para o servidor do curso, clique o botão "Procurar" nesta página de edição e selecione a imagem no diretório do seu computador.
+ATENÇÃO: Arquivos com tamanho maior que o indicado não serão aceitos.
+Enfim, clique o botão "Atualizar Perfil" no fim do formulário. A imagem será redimensionada a um quadrado de 100X100 pixels.
+Quando você retornar à página do seu perfil, se a nova imagem não for visualizada, use o botão do navegador para atualizar a página.';
 $string['noallocation'] = 'Nenhum membro inserido';
 $string['nogroups'] = 'Ainda não há grupos definidos nesse curso';
 $string['nogroupsassigned'] = 'Nenhum grupo atribuído';

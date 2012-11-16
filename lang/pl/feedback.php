@@ -127,13 +127,11 @@ $string['label'] = 'Etykieta';
 $string['line_values'] = 'Ocena';
 $string['mapcourse'] = 'Mapuj kurs';
 $string['mapcourse_help'] = 'Domyślnie formularze opinii utworzone na stronie głównej systemu Moodle są dostępne w całej witrynie i będą wyświetlane we wszystkich kursach używających bloku opinii. Można również wymusić, aby opinia była wyświetlana, określając ją jako blok samoprzylepny.
-
 Można jednak ograniczyć kursy, gdzie będzie wyświetlany formularz opinii, mapując go na konkretne kursy.';
 $string['mapcourseinfo'] = 'Jest to opinia ogólna dla całej witryny, która jest dostępna dla wszystkich kursów za pomocą bloku opinii. Można jednak ograniczyć kursu, dla których będzie ona wyświetlana, mapując je. Wyszukaj kurs i zmapuj go do tej opinii.';
 $string['mapcoursenone'] = 'Brak zmapowanych kursów. Opinia dostępna dla wszystkich kursów.';
 $string['mapcourses'] = 'Mapuj opinię na kursy';
 $string['mapcourses_help'] = 'Po wybraniu odpowiedniego kursu (kursów0 i/lub programu (programów) do wyszukania można powiązać je z tą opinią za pomocą mapowania kursów. Za pomocą klawisza Ctrl można wybrać wiele kursów, zaś za pomocą klawisza Shift można wybrać szereg kursów.
-
 W każdej chwili można usunąć powiązanie kursu lub programu z opinią.';
 $string['mappedcourses'] = 'Zmapowane kursy';
 $string['max_args_exceeded'] = 'Można obsłużyć do 6 argumentów. Za dużo argumentów dla';
@@ -250,7 +248,7 @@ $string['typemissing'] = 'brakująca wartość "typ"';
 $string['update_item'] = 'Zapisz zmiany w pytaniu';
 $string['url_for_continue'] = 'URL dla przycisku kontynuacji';
 $string['url_for_continue_button'] = 'Adres URL dla przycisku kontynuacji';
-$string['url_for_continue_help'] = 'Domyślnie po przesłaniu opinii miejscem docelowym przycisku kontynuacji jest strona kursu.  
+$string['url_for_continue_help'] = 'Domyślnie po przesłaniu opinii miejscem docelowym przycisku kontynuacji jest strona kursu.
 Można tutaj zdefiniować inny docelowy adres URL dla tego przycisku kontynuacji.';
 $string['use_one_line_for_each_value'] = '<br /> Użyj jednej linii dla każdej odpowiedzi!';
 $string['use_this_template'] = 'Użyj tego szablonu';

@@ -51,20 +51,17 @@ $string['notenoughanswers'] = 'Anna vähintään yksi vastaus.';
 $string['nounitdisplay'] = 'Ei yksikön arvostelua';
 $string['numericalmultiplier'] = 'Kerroin';
 $string['numericalmultiplier_help'] = 'Kerroin on tekijä, jolla vastauksen numeerinen osa kerrotaan.
-
 Ensimmäiseksi lisättävällä mittayksiköllä on oletuskerroin 1. Jos siis oikea numeerinen vastaus on 5500 ja laitat ensimmäiseksi mittayksiköksi W, oikea vastaus on 5500W.
-
 Jos lisäät toiseksi mittayksiköksi kW ja sille kertoimeksi 0,001, lisäät samalla oikeaksi vastausvaihtoehdoksi 5,5kW. Näin oikeita vastausvaihtoehtoja on yhteensä kaksi: 5500W ja 5,5kW.
-
 Huomaa myös, että jos käytät hyväksyttävää virhemarginaalia, sekin kerrotaan annetulla kertoimella. Näin esimerkiksi 100W:n virhemarginaali muunnettaisiin virhemarginaaliksi 0,1kW.';
 $string['oneunitshown'] = 'Yksikkö 1 näytetään automaattisesti vastauslaatikon vieressä.';
 $string['onlynumerical'] = 'Yksikköjä ei käytetä; vain numeerinen vastaus arvioidaan.';
 $string['pleaseenterananswer'] = 'Ole hyvä ja anna vastaus.';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Ole hyvä ja anna vastauksesi ilman tuhaterotinta ({$a}).';
 $string['pluginname'] = 'Numeerinen kysymys';
+$string['pluginname_help'] = 'Opiskelijan näkökulmasta numeerinen kysymys näyttää lyhytvastaus-kysymykseltä. Erona on, että numeerisessa vastauksessa saa olla hyväksyttävä virhemarginaali. Näin voit yhden hyväksytyn vastauksen sijaan hyväksyä rajatun vastausjoukon. Esimerkiksi jos oikea vastaus on 10 ja hyväksyttävä virhemarginaali on 2, kaikki vastaukset välillä 8-12 hyväksytään oikeiksi vastauksiksi.';
 $string['pluginnameadding'] = 'Lisätään numeerinen kysymys';
 $string['pluginnameediting'] = 'Muokataan numeerista kysymystä';
-$string['pluginname_help'] = 'Opiskelijan näkökulmasta numeerinen kysymys näyttää lyhytvastaus-kysymykseltä. Erona on, että numeerisessa vastauksessa saa olla hyväksyttävä virhemarginaali. Näin voit yhden hyväksytyn vastauksen sijaan hyväksyä rajatun vastausjoukon. Esimerkiksi jos oikea vastaus on 10 ja hyväksyttävä virhemarginaali on 2, kaikki vastaukset välillä 8-12 hyväksytään oikeiksi vastauksiksi.';
 $string['pluginnamesummary'] = 'Numeeriset vastaukset, mahdollisesti mittayksikön kera, joita verratan mallivastauksiin, mahdollisesti virhemarginaalin kera.';
 $string['relative'] = 'Suhteellinen';
 $string['rightexample'] = 'oikealla, esimerkiksi 1.00cm tai 1.00km';
@@ -82,25 +79,20 @@ $string['unithdr'] = 'Yksikkö {$a}';
 $string['unitincorrect'] = 'Et antanut oikeata yksikköä.';
 $string['unitmandatory'] = 'Pakollinen';
 $string['unitmandatory_help'] = '* Vastaus arvioidaan käyttäen kirjoitettua yksikköä.
-
 * Yksikön pistevähennys tehdään jos yksikkökenttä on tyhjä.';
 $string['unitnotselected'] = 'Sinun on valittava yksikkö.';
 $string['unitonerequired'] = 'Sinun on annettava ainakin yksi yksikkö';
 $string['unitoptional'] = 'Valinnainen yksikkö';
 $string['unitoptional_help'] = '* Jos yksikkökenttä ei ole tyhjä, vastaus arvioidaan käyttäen tätä yksikköä.
-
 * Jos yksikkö on huonosti kirjoitettu tai tuntematon, vastausta pidetään virheellisenä.';
 $string['unitpenalty'] = 'Yksikkörangaistus';
 $string['unitpenalty_help'] = 'Pistevähennys tehdään jos
-
 * yksikkökenttään syötetään väärä yksikkö, tai
 * yksikkö syötetään arvokenttään';
 $string['unitposition'] = 'Yksiköt';
 $string['unitselect'] = 'pudotusvalikko';
 $string['validnumberformats'] = 'Validit numeroformaatit';
 $string['validnumberformats_help'] = '* desimaalinumerot pilkulla tai pisteellä erotettuna, kuten 13500.67, 13 500.67, 13500,67 or 13 500,67
-
 * jos käytät pilkkua "," tuhansien erottajana, muista käyttää pistettä "." desimaalierottimena, kuten 13,500.67 : 13,500.
-
-* käytä eksponenttiin kuten 1.350067 * 10<sup>4</sup> muotoa 1.350067 E4  tai 1.350067 E04';
+* käytä eksponenttiin kuten 1.350067 * 10<sup>4</sup> muotoa 1.350067 E4 tai 1.350067 E04';
 $string['validnumbers'] = '13500.67, 13 500.67, 13,500.67, 13500,67, 13 500,67, 1.350067 E4 tai 1.350067 E04';

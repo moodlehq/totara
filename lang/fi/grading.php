@@ -36,7 +36,6 @@ $string['gradingmanagement'] = 'Edistynyt arviointi';
 $string['gradingmanagementtitle'] = 'Edistynyt arviointi: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Arviointimenetelmä';
 $string['gradingmethod_help'] = 'Valitse arviointimenetelmä, jota käytetään arvosanojen laskemiseen tässä kontekstissa.
-
 Oletusarviointimenetelmä on \'Yksinkertainen suora arviointi\'. Valitse se, jos et halua monimutkaisempaa arviointimenetelmää.';
 $string['gradingmethodnone'] = 'Yksinkertainen, suora arviointi';
 $string['gradingmethods'] = 'Arviointimenetelmät';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = 'Mallipohjaa ei löytynyt';
 $string['searchownforms'] = 'Sisällytä omat arviointimatriisini';
 $string['searchtemplate'] = 'Arviointimatriisien haku';
 $string['searchtemplate_help'] = 'Voit etsiä valmiista arviointimatriiseista ja käyttää löydettyä matriisia pohjana uudelle arviointimatriisille täällä. Voit etsiä sanoja matriisin nimessä, kuvauksessa tai sisällössä. Kirjoita etsittävä teksti lainausmerkkeihin ("etsittävä teksti").
-
 Oletuksena vain ne arviointimatriisit, jotka on tallennettu jaettuina pohjina, ovat mukana hakutuloksissa. Voit myös sisällyttää omat arviointimatriisisi hakutuloksiin. Tällä tavalla voit käyttää arviointimatriisejasi uudelleen jakamatta niitä muille. Vain matriiseja, jotka on merkitty \'Valmis käyttöön\' voidaan käyttää uudelleen näin.';
 $string['statusdraft'] = 'Luonnos';
 $string['statusready'] = 'Valmis käyttöön';

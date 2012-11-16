@@ -25,6 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'Datum för fullföljande';
 $string['completion:view'] = 'Visa rapport om fullföljning av kurs';
+$string['completiondate'] = 'Datum för fullföljande';
 $string['pluginname'] = 'Fullföljning av kurs';

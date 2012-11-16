@@ -60,7 +60,6 @@ $string['educationallevel'] = '教育水平';
 $string['educationallevel_help'] = '你在寻找什么样的教育等级？就教育工作者的社区而言，这个等级描述了他们所教的学生的等级。';
 $string['enroldownload'] = '查找';
 $string['enroldownload_help'] = '所选hub中的一些课程正在打广告，所以人们可以直接在原网站参与。
-
 其它的课程以模板形式提供给您，可以在您自己的Moodle网站下载和使用。';
 $string['enrollable'] = '可以参与的课程';
 $string['enrollablecourses'] = '可加入课程';

@@ -123,14 +123,11 @@ $string['disterror'] = 'La distribution {$a} a causé des problèmes';
 $string['donothing'] = 'Ne pas copier ou déplacer les fichiers, ni modifier les liens.';
 $string['editcategories'] = 'Modifier catégories';
 $string['editcategories_help'] = 'Plutôt que de conserver toutes vos questions dans une longue liste, vous avez la possibilité de créer des catégories et sous-catégories pour les classer.
-
 Chaque catégorie a un contexte qui détermine où les questions peuvent être utilisées :
-
 * le contexte de l\'activité : les questions ne sont disponibles que dans un module d\'activité ;
 * le contexte du cours : les questions sont disponibles dans tous les modules d\'activité du cours ;
 * le contexte de catégorie de cours : les questions sont disponibles dans tous les modules d\'activité et tous les cours de la catégorie ;
 * le contexte système : les questions sont disponibles dans tous les cours et toutes les activités de votre site.
-
 Les catégories sont aussi utilisées pour les questions aléatoires, puisque les questions sont alors tirées dans une catégorie.';
 $string['editcategory'] = 'Modifier la catégorie';
 $string['editingcategory'] = 'Modifier une catégorie';
@@ -160,7 +157,6 @@ $string['errorsavingflags'] = 'Erreur durant l\'enregistrement de l\'indicateur 
 $string['errorupdatingattempt'] = 'Erreur lors de la mise à jour dans la base de données de la tentative {$a->id}.';
 $string['exportcategory'] = 'Exporter catégorie';
 $string['exportcategory_help'] = 'Ce réglage détermine la catégorie dont il faut tirer les questions à exporter.
-
 Certains formats (par exemple GIFT et Moodle XML) permettent l\'inclusion de la catégorie et du contexte dans le fichier d\'exportation, donnant ainsi la possibilité de la recréer au cours de l\'importation. Le cas échéant, les cases adéquates devront être cochées.';
 $string['exporterror'] = 'Des erreurs sont survenues lors de l\'exportation !';
 $string['exportfilename'] = 'quiz';
@@ -181,7 +177,6 @@ $string['formquestionnotinids'] = 'Le formulaire contient une question qui n\'ap
 $string['fractionsnomax'] = 'L\'une des réponses doit donner un score de 100% afin qu\'il soit possible d\'obtenir la totalité des points pour cette question.';
 $string['generalfeedback'] = 'Feedback général';
 $string['generalfeedback_help'] = 'Le feedback général est affiché aux étudiants après qu\'ils aient tenté une question. À la différence du feedback, qui dépend du type de la question et de la réponse donnée par le participant, le même feedback général est affiché à tous les participants.
-
 Vous pouvez utiliser le feedback général pour donner à vos participants des indications sur les connaissances testées par la question, ou leur fournir des liens qu\'ils pourront utiliser s\'ils n\'ont pas compris la question.';
 $string['getcategoryfromfile'] = 'Obtenir la catégorie à partir du fichier';
 $string['getcontextfromfile'] = 'Obtenir le contexte à partir du fichier';
@@ -194,7 +189,6 @@ Vous pourriez aussi souhaiter que les étudiants envoient chaque question au fur
 $string['ignorebroken'] = 'Ignorer les liens cassés';
 $string['importcategory'] = 'Catégorie d\'importation';
 $string['importcategory_help'] = 'Ce réglage détermine la catégorie dans laquelle les questions importées seront placées.
-
 Certains formats (par exemple GIFT et Moodle XML) permettent d\'inclure la catégorie et le contexte dans le fichier d\'importation. Pour que ces données soient exploitées, les cases adéquates devront être cochées. Les catégories indiquées dans le fichier d\'importation seront créées si elles n\'existent pas encore.';
 $string['importerror'] = 'Une erreur est survenue durant le traitement de l\'importation';
 $string['importerrorquestion'] = 'Erreur lors de l\'importation des questions';
@@ -233,7 +227,6 @@ $string['marks'] = 'Notes';
 $string['matcherror'] = 'Les notes ne correspondent pas aux options de notation - question ignorée';
 $string['matchgrades'] = 'Faire correspondre les notes';
 $string['matchgrades_help'] = 'Les notes importées doivent correspondre à la liste des notes acceptables : 100, 90, 80, 75, 70, 66.666, 60, 50, 40, 33.333, 30, 25, 20, 16.666, 14.2857, 12.5, 11.111, 10, 5, 0. Des valeurs négatives sont également permises. Dans le cas contraire, il y a deux options :
-
 * erreur si la note n\'est pas répertoriée : si une question prévoit une note qui n\'est pas répertoriée dans la liste, une erreur est affichée et la question n\'est pas importée ;
 * note la plus proche si elle n\'est pas répertoriée : si une note ne correspond à celles prévues dans la liste, elle est adaptée à la valeur la plus proche de la liste.';
 $string['matchgradeserror'] = 'Erreur si la note n\'est pas listée';
@@ -287,20 +280,16 @@ $string['page-question-import'] = 'Page d\'importation de questions';
 $string['page-question-x'] = 'Toute page de questions';
 $string['parent'] = 'Parent';
 $string['parentcategory'] = 'Catégorie parente';
-$string['parentcategory_help'] = 'La catégorie parente est celle dans laquelle la nouvelle catégorie sera placée. Le plus haut niveau signifie que cette catégorie n\'est contenue dans aucune autre. Les  contextes de catégories sont en caractères gras. Il faut avoir au moins une catégorie par contexte.';
+$string['parentcategory_help'] = 'La catégorie parente est celle dans laquelle la nouvelle catégorie sera placée. Le plus haut niveau signifie que cette catégorie n\'est contenue dans aucune autre. Les contextes de catégories sont en caractères gras. Il faut avoir au moins une catégorie par contexte.';
 $string['parenthesisinproperclose'] = 'La parenthèse avant ** n\'est pas fermée correctement dans {$a}**';
 $string['parenthesisinproperstart'] = 'La parenthèse avant ** n\'est pas ouverte correctement dans {$a}**';
 $string['parsingquestions'] = 'Analyse des questions du fichier d\'importation.';
 $string['partiallycorrect'] = 'Partiellement correct';
 $string['partiallycorrectfeedback'] = 'Pour toute réponse partiellement correcte';
 $string['penaltyfactor'] = 'Facteur de pénalité';
-$string['penaltyfactor_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez déterminer, pour chaque mauvaise réponse, quelle proportion de la note obtenue sera retirée. Cela n\'est intéressant que si le test est effectué en mode adaptatif. Ainsi, l\'étudiant peut apporter une nouvelle réponse à la question. Le facteur de pénalité doit être un nombre compris entre 0 et 1. Un facteur de pénalité de 1 signifie que l\'étudiant doit fournir la bonne réponse au premier essai, sous peine de n\'obtenir aucun point. Un facteur de pénalité de 0 indique que l\'étudiant peut réessayer autant qu\'il le veut et pourra obtenir tous les points.</p>';
+$string['penaltyfactor_help'] = 'Vous pouvez déterminer, pour chaque mauvaise réponse, quelle proportion de la note obtenue sera retirée. Cela n\'est intéressant que si le test est effectué en mode adaptatif. Ainsi, l\'étudiant peut apporter une nouvelle réponse à la question. Le facteur de pénalité doit être un nombre compris entre 0 et 1. Un facteur de pénalité de 1 signifie que l\'étudiant doit fournir la bonne réponse au premier essai, sous peine de n\'obtenir aucun point. Un facteur de pénalité de 0 indique que l\'étudiant peut réessayer autant qu\'il le veut et pourra obtenir tous les points.';
 $string['penaltyforeachincorrecttry'] = 'Pénalité pour tout essai incorrect';
 $string['penaltyforeachincorrecttry_help'] = 'Lorsque vous utilisez le mode « Interactif avec tentatives multiples » ou « Adaptatif » les participants ont plusieurs essais pour trouver la bonne réponse. Cette option contrôle comment ils seront pénalisés pour chaque essai incorrect.
-
 La pénalité est un pourcentage de la note totale de la question, donc si la question est notée sur 3 points et que la pénalité est de 0,3333333, alors le participant aura 3 points s\'il répond correctement à la question au premier essai, 2 points s\'il répond correctement au deuxième essai, et 1 point s\'il répond correctement au troisième essai.';
 $string['permissionedit'] = 'Modifier cette question';
 $string['permissionmove'] = 'Déplacer cette question';

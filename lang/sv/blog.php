@@ -96,13 +96,10 @@ $string['permalink'] = 'Permalänk';
 $string['personalblogs'] = 'Användare kan endast se deras egen blogg';
 $string['preferences'] = 'Preferenser';
 $string['publishto'] = 'Publicera för';
-$string['publishto_help'] = '<p>Det finns tre möjliga inställningar här</p>
-
-<p><b>Dig själv (utkast)</b> - Bara du och administratörer kan se inlägget.</p>
-
-<p><b>Vem som helst på denna webbplats</b> - Alla som är registrerade användare på sajten kan se inlägget.</p>
-
-<p><b>Vem som helst (Även för gäster)</b> - Alla, inklusive gäster, kan se inlägget.</p>';
+$string['publishto_help'] = 'Det finns tre möjliga inställningar här
+**Dig själv (utkast)** - Bara du och administratörer kan se inlägget.
+**Vem som helst på denna webbplats** - Alla som är registrerade användare på sajten kan se inlägget.
+**Vem som helst (Även för gäster)** - Alla, inklusive gäster, kan se inlägget.';
 $string['publishtocourse'] = 'Användare som delar en kurs med Dig';
 $string['publishtocourseassoc'] = 'Deltagare i den kopplade kursen';
 $string['publishtocourseassocparam'] = 'Deltagare i {$a}';

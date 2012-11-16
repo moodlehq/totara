@@ -46,7 +46,6 @@ $string['creating'] = 'Tworzenie strony wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Domyślny format';
 $string['defaultformat_help'] = 'To ustawienie określa domyślny format używany podczas edycji stron wiki.
-
 * HTML - edytor HTML
 * Creole - język znaczników wiki z małym paskiem edycji
 * Nwiki jest jak język znaczników Mediawiki, używany w module Nwikii';
@@ -77,15 +76,12 @@ $string['format_help'] = '* HTML - edytor HTML
 * Nwiki - język znaczników Mediawiki, używany w module Nwiki';
 $string['formatcreole'] = 'Format Creole';
 $string['formatcreole_help'] = 'Creole jest język znaczników wiki z małym paskiem edycji do wstawiania odpowiedniego kodu.
-
 Aby utworzyć nową stronę, wpisz nową nazwę strony zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].';
 $string['formathtml'] = 'Format HTML';
 $string['formathtml_help'] = 'Edytor HTML może być używany do formatowania treści.
-
 Aby utworzyć nową stronę, wpisz nową nazwę strony w zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].';
 $string['formatnwiki'] = 'Format NWiki';
 $string['formatnwiki_help'] = 'Nwiki jest jak język znaczników Mediawiki, używany w module Nwiki
-
 Aby utworzyć nową stronę, wpisz nową nazwę strony zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].';
 $string['history'] = 'Historia';
 $string['history_help'] = 'Lista wcześniejszych wersji tej strony.';

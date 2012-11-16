@@ -59,7 +59,6 @@ $string['educationallevel'] = 'Nível de escolaridade';
 $string['educationallevel_help'] = 'Qual nível de escolaridade que você está procurando? No caso das comunidades de educadores, esse nível descreve o nível que os educadores lecionam.';
 $string['enroldownload'] = 'Pesquisar';
 $string['enroldownload_help'] = 'Alguns cursos listados no hub selecionado informam que as pessoas podem acessar e participar dos mesmos no site original.
-
 Outros são modelos de cursos fornecidos para você baixar e usar em seu próprio site Moodle.';
 $string['enrollable'] = 'cursos que posso me inscrever';
 $string['enrollablecourses'] = 'Cursos que aceitam inscrição';

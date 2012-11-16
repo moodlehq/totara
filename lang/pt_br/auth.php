@@ -38,7 +38,8 @@ $string['auth_data_mapping'] = 'Mapeamento dos dados';
 $string['auth_fieldlock'] = 'Bloquear valor';
 $string['auth_fieldlock_expl'] = '<p><b>Bloquear valor:</b> Quando ativado, impede que usuários e administradores modifiquem o campo diretamente. usar esta opção quando os dados são mantidos em sistemas de autenticação externos. </p>';
 $string['auth_fieldlocks'] = 'Bloquear campos de usuário';
-$string['auth_fieldlocks_help'] = '<p>Você pode bloquear campos de dados de usuários. Isto é útil em sites mantidos pelo administrador manualmente, editando os registros dos usuários ou usando a função \'Upload de usuários\'. Se você bloquear campos exigidos pelo Moodle, forneça estes dados quando criar as contas de usuários &emdash; ou as contas não serão utilizáveis.</p><p>Considere a possibilidade de configurar o bloqueio como \'Desbloqueado se vazio\' para evitar este problema.</p>';
+$string['auth_fieldlocks_help'] = 'Você pode bloquear campos de dados de usuários. Isto é útil em sites mantidos pelo administrador manualmente, editando os registros dos usuários ou usando a função \'Upload de usuários\'. Se você bloquear campos exigidos pelo Moodle, forneça estes dados quando criar as contas de usuários &emdash; ou as contas não serão utilizáveis.
+Considere a possibilidade de configurar o bloqueio como \'Desbloqueado se vazio\' para evitar este problema.';
 $string['auth_invalidnewemailkey'] = 'Erro: se você está tentando confirmar a mudança de endereço email, provavelmente copiou o URL incompleto. Tente novamente.';
 $string['auth_multiplehosts'] = 'Hosts múltiplos podem ser definidos, por exemplo: host1.com;host2.com;host3.com';
 $string['auth_outofnewemailupdateattempts'] = 'Você superou o número máximo de tentativas para atualizar seu endereço de email. O seu pedido de atualização foi cancelado.';
@@ -64,11 +65,9 @@ $string['auto_add_remote_users'] = 'Adicionar usuários remotos automaticamente'
 $string['changepassword'] = 'URL para mudança de senha';
 $string['changepasswordhelp'] = 'Aqui você pode especificar um endereço onde os usuários podem recuperar ou modificar a senha e o "username" esquecidos. Este será publicado como um botão na página de login e na página do usuário. Se deixar este espaço em branco o botão não aparecerá.';
 $string['chooseauthmethod'] = 'Escolha um método de autenticação';
-$string['chooseauthmethod_help'] = '<p>Esse menu permite que você mude o método de autenticação para um usuário específico.</p>
-
-<p>Por favor, esteja ciente que isso depende de quais métodos de autenticação você especificou para o site, e quais configurações eles estejam usando.</p>
-
-<p>Uma mudança errada aqui pode impedir a autenticação de um usuário ou até mesmo excluir completamente sua conta de acesso, então pense bem antes de fazer isto.</p>';
+$string['chooseauthmethod_help'] = 'Esse menu permite que você mude o método de autenticação para um usuário específico.
+Por favor, esteja ciente que isso depende de quais métodos de autenticação você especificou para o site, e quais configurações eles estejam usando.
+Uma mudança errada aqui pode impedir a autenticação de um usuário ou até mesmo excluir completamente sua conta de acesso, então pense bem antes de fazer isto.';
 $string['createpasswordifneeded'] = 'Criar senha se necessário';
 $string['emailchangecancel'] = 'Excluir mudança no email';
 $string['emailchangepending'] = 'Atualização pendente. Seguir as indicações do email enviado a {$a->preference_newemail}.';
@@ -124,17 +123,14 @@ $string['pluginnotenabled'] = 'Plugin de autenticação \'{$a}\' não está ativ
 $string['pluginnotinstalled'] = 'Plugin de autenticação \'{$a}\' não está instalado.';
 $string['potentialidps'] = 'Autenticar usando sua conta em:';
 $string['recaptcha'] = 'reCAPTCHA';
-$string['recaptcha_help'] = '<h2>Descrição</h2>
-<p>CAPTCHA é um programa que verifica se seu usuário é um humano ou um computador. CAPTCHAs são usados por muitos sites na web para combater invasões de "bots" ou programas automáticos escritos para gerar spam. Nenhum programa de computador pode ler texto retorcido tão bem quanto as pessoas.</p>
-
-<h2>Instruções</h2>
-<p>Digite os caracteres que você vê desenhados na mesma ordem e separadas por um espaço branco. Fazendo isto você nos ajuda a evitar que programas mal intencionados prejudiquem o serviço.</p>
-
-<p>Se você não tem certeza de quais são os caracteres siga o link "Obter outro CAPTCHA". </p>
-
-<p>Usuários com deficiências visuais podem seguir o link "Obter um CAPTCHA em audio" para ouvir um conjunto de caracteres ao invés do desafio visual.</p>';
+$string['recaptcha_help'] = '## Descrição
+CAPTCHA é um programa que verifica se seu usuário é um humano ou um computador. CAPTCHAs são usados por muitos sites na web para combater invasões de "bots" ou programas automáticos escritos para gerar spam. Nenhum programa de computador pode ler texto retorcido tão bem quanto as pessoas.
+## Instruções
+Digite os caracteres que você vê desenhados na mesma ordem e separadas por um espaço branco. Fazendo isto você nos ajuda a evitar que programas mal intencionados prejudiquem o serviço.
+Se você não tem certeza de quais são os caracteres siga o link "Obter outro CAPTCHA".
+Usuários com deficiências visuais podem seguir o link "Obter um CAPTCHA em audio" para ouvir um conjunto de caracteres ao invés do desafio visual.';
 $string['selfregistration'] = 'Auto-registro';
-$string['selfregistration_help'] = 'Se um plugin de autenticação, como o auto-inscrição por e-mail, é selecionado, existe a possibilidade de potenciais usuários registrarem-se e criarem contas. Isto resulta na possibilidade de criação de contas por spammers para enviar mensagens a foruns, entradas em blogs, etc. Para evitar esse risco, a auto-inscrição deve ser desativada ou limitada pela configuração <em>Domínios de e-mail permitidos</em>.';
+$string['selfregistration_help'] = 'Se um plugin de autenticação, como o auto-inscrição por e-mail, é selecionado, existe a possibilidade de potenciais usuários registrarem-se e criarem contas. Isto resulta na possibilidade de criação de contas por spammers para enviar mensagens a foruns, entradas em blogs, etc. Para evitar esse risco, a auto-inscrição deve ser desativada ou limitada pela configuração *Domínios de e-mail permitidos*.';
 $string['sha1'] = 'HAsh SHA-1';
 $string['showguestlogin'] = 'Você pode esconder ou mostrar o botão de entrada para visitantes na página de ingresso.';
 $string['stdchangepassword'] = 'Usar página padrão para mudança de senha';

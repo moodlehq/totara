@@ -28,13 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = 'Toegangscontrole';
 $string['actionaftercorrectanswer'] = 'Actie na juist antwoord';
 $string['actionaftercorrectanswer_help'] = 'Na een juist antwoord op een vraag zijn er 3 opties voor de volgende pagina:
-
 * Normaal - Volgt het lesverloop
 * Toon een ongeziene pagina - Toont een willekeurige pagina die nog niet eerder werd getoond, één enkele keer
 * Toon een onbeantwoorde pagina - Toont een willekeurige pagina die nog niet eerder werd beantwoord, hoewel misschien eerder getoond';
 $string['actions'] = 'Acties';
 $string['activitylink'] = 'Link naar een activiteit';
-$string['activitylink_help'] = '<p>In dit rolmenu zitten alle activiteiten van deze cursus. Als er één van geselecteerd wordt, dan zal er aan het eind van de les een link verschijnen naar die activiteit.</p>';
+$string['activitylink_help'] = 'In dit rolmenu zitten alle activiteiten van deze cursus. Als er één van geselecteerd wordt, dan zal er aan het eind van de les een link verschijnen naar die activiteit.';
 $string['activitylinkname'] = 'Ga naar {$a}';
 $string['addabranchtable'] = 'Voeg een pagina toe';
 $string['addanendofbranch'] = 'Voeg het einde van een tak toe';
@@ -83,13 +82,12 @@ $string['cannotfindtimer'] = 'Fout: kon records van lestimer niet vinden';
 $string['cannotfinduser'] = 'Fout: kon geen gebruikers vinden';
 $string['canretake'] = '{$a} mag de les opnieuw doen';
 $string['casesensitive'] = 'Regular expressions gebruiken';
-$string['casesensitive_help'] = '<p>Enkele vraagtypes hebben een optie die ingeschakeld kan worden door deze checkbox aan te vinken. De vraagtypes en de bedoeling van de opties worden hier in detail overlopen.</p>
+$string['casesensitive_help'] = 'Enkele vraagtypes hebben een optie die ingeschakeld kan worden door deze checkbox aan te vinken. De vraagtypes en de bedoeling van de opties worden hier in detail overlopen.
 
-<ol>
-<li><p><b>Meerkeuzevragen</b> Er is een variant op de meerkeuzevragen die
-<b>&quot;Meerkeuzevraag met meerdere antwoorden&quot;</b> genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven <i>hoeveel</i> antwoorden uit de set juist zijn. Bijvoorbeeld: &quot;Welke van de volgende personen waren Amerikaanse presidenten?&quot; tegenover &quot;Kies de twee Amerikaanse presidenten uit de onderstaande lijst.&quot;. Het aantal juiste antwoorden kan van <b>één</b> tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)</p></li>
-<li><p><b>Kort antwoord</b> Standaard is hoofdlettergevoeligheid uitgeschakeld. Als de vraagoptie is aangevinkt, dan wordt er bij de verbetering met hoofdletters rekening gehouden.</p></li>
-<p>De andere vraagtypes gebruiken de vraagopties niet.</p>';
+1.**Meerkeuzevragen** Er is een variant op de meerkeuzevragen die
+**"Meerkeuzevraag met meerdere antwoorden"** genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven \*hoeveel\* antwoorden uit de set juist zijn. Bijvoorbeeld: "Welke van de volgende personen waren Amerikaanse presidenten?" tegenover "Kies de twee Amerikaanse presidenten uit de onderstaande lijst.". Het aantal juiste antwoorden kan van **één** tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)
+2.**Kort antwoord** Standaard is hoofdlettergevoeligheid uitgeschakeld. Als de vraagoptie is aangevinkt, dan wordt er bij de verbetering met hoofdletters rekening gehouden.
+De andere vraagtypes gebruiken de vraagopties niet.';
 $string['checkbranchtable'] = 'Controleer inhoudspagina';
 $string['checkedthisone'] = 'Deze is gecontroleerd';
 $string['checknavigation'] = 'Controleer de navigatie';
@@ -126,7 +124,7 @@ $string['correctanswerscore'] = 'Cijfer bij juist antwoord';
 $string['correctresponse'] = 'Juist antwoord';
 $string['credit'] = 'Krediet';
 $string['customscoring'] = 'Aangepaste cijfers';
-$string['customscoring_help'] = '<p>Hiermee kun je een numerieke puntenwaarde geven voor elk antwoord. Antwoorden kunnen een negatief of een positief cijfer krijgen. Geïmporteerde vragen zullen automatisch 1 punt voor een juist en 0 punten voor een fout antwoord krijgen. Je kunt dit wijzigen na het importeren.</p>';
+$string['customscoring_help'] = 'Hiermee kun je een numerieke puntenwaarde geven voor elk antwoord. Antwoorden kunnen een negatief of een positief cijfer krijgen. Geïmporteerde vragen zullen automatisch 1 punt voor een juist en 0 punten voor een fout antwoord krijgen. Je kunt dit wijzigen na het importeren.';
 $string['deadline'] = 'Deadline';
 $string['defaultessayresponse'] = 'Je antwoord op deze open vraag zal door de leraar beoordeeld worden.';
 $string['deleteallattempts'] = 'Verwijder alle pogingen';
@@ -141,10 +139,9 @@ $string['detailedstats'] = 'Gedetailleerde statistieken';
 $string['didnotanswerquestion'] = 'Deze vraag niet beantwoord';
 $string['didnotreceivecredit'] = 'Geen cijfers gekregen';
 $string['displaydefaultfeedback'] = 'Toon standaard feedback';
-$string['displaydefaultfeedback_help'] = '<p align="center"><strong>Toon standaardfeedback</strong></p>
-
-<p>Als deze instelling op <strong>ja</strong> gezet wordt, dan zal bij het ontbreken van feedback, de standaardfeedback "Juist antwoord" en "Fout antwoord" gebruikt worden.</p>
-<p>Als deze instelling op <strong>Nee</strong> gezet wordt, dan zal er bij het ontbreken van feedback niets getoond worden. De gebruiker wordt dan automatisch naar de volgende pagina van de les gebracht worden.</p>';
+$string['displaydefaultfeedback_help'] = '**Toon standaardfeedback**
+Als deze instelling op **ja** gezet wordt, dan zal bij het ontbreken van feedback, de standaardfeedback "Juist antwoord" en "Fout antwoord" gebruikt worden.
+Als deze instelling op **Nee** gezet wordt, dan zal er bij het ontbreken van feedback niets getoond worden. De gebruiker wordt dan automatisch naar de volgende pagina van de les gebracht worden.';
 $string['displayhighscores'] = 'Toon hoogste cijfers';
 $string['displayinleftmenu'] = 'Toon in linkermenu?';
 $string['displayleftif'] = 'Toon linkermenu enkel als cijfer het groter is dan';
@@ -197,9 +194,8 @@ $string['gradeessay'] = 'Beoordeel open vragen';
 $string['gradeis'] = 'Cijfer is {$a}';
 $string['gradeoptions'] = 'Beoordelingsopties';
 $string['handlingofretakes'] = 'Behandeling van nieuwe pogingen';
-$string['handlingofretakes_help'] = '<p>Als leerlingen een les opnieuw mogen proberen, dan kan de leraar met deze instelling bepalen of voor het cijfer voor deze les het <b>gemiddelde</b> cijfer van alle pogingen gebruikt wordt of het <b>beste</b> cijfer van alle pogingen.</p>
-
-<p>Deze instelling mag altijd veranderd worden.</p>';
+$string['handlingofretakes_help'] = 'Als leerlingen een les opnieuw mogen proberen, dan kan de leraar met deze instelling bepalen of voor het cijfer voor deze les het **gemiddelde** cijfer van alle pogingen gebruikt wordt of het **beste** cijfer van alle pogingen.
+Deze instelling mag altijd veranderd worden.';
 $string['havenotgradedyet'] = 'Nog geen cijfer gegeven';
 $string['here'] = 'hier';
 $string['highscore'] = 'Hoogste score';
@@ -207,51 +203,33 @@ $string['highscores'] = 'Hoogste scores';
 $string['hightime'] = 'Langste duur';
 $string['importcount'] = '{$a} vragen importeren';
 $string['importppt'] = 'Importeer Powerpoint';
-$string['importppt_help'] = '<p> HOE TE GEBRUIKEN</p>
+$string['importppt_help'] = 'HOE TE GEBRUIKEN
+Alle PowerPointdia\'s worden geïmporteerd als vertakkingstabellen met Vorige en Volgende knoppen.
 
-<p>Alle PowerPointdia\'s worden geïmporteerd als vertakkingstabellen met Vorige en Volgende knoppen.</p>
+1.Open je PowerPoint presentatie.
+2.Bewaar ze als Webpagina (geen speciale opties)
+3.Het resultaat van stap 3 zou een htm bestand en een map met alle dia\'s, geconverteerd naar webpagina\'s.
+ZET DE MAP ALEEN IN EEN ZIP-BESTAND.
+4.Ga naar je Moodle-site en voeg een nieuwe les toe.
+5.Na het bewaren van de instellingen van de les, zou je vier opties moeten zien onder "Wat wil je eerst doen?" Klik op "Importeer PowerPoint"
+6.Gebruik de "Bladeren..."-knop om je zip-bestand uit stap 3 te zoeken. Klik dan op "Upload dit bestand"
+7.Als alles werkte zoals het hoort, zou je volgende scherm alleen een ga verder-knop moeten tonen.
 
-<p>
 
-<ol>
-
-<li>Open je PowerPoint presentatie.</li>
-
-<li>Bewaar ze als Webpagina (geen speciale opties)</li>
-
-<li>Het resultaat van stap 3 zou een htm bestand en een map met alle dia\'s, geconverteerd naar webpagina\'s.<br />
-
-ZET DE MAP ALEEN IN EEN ZIP-BESTAND.</li>
-
-<li>Ga naar je Moodle-site en voeg een nieuwe les toe.</li>
-
-<li>Na het bewaren van de instellingen van de les, zou je vier opties moeten zien onder &quot;Wat wil je eerst doen?&quot; Klik op &quot;Importeer PowerPoint&quot;</li>
-
-<li>Gebruik de &quot;Bladeren...&quot;-knop om je zip-bestand uit stap 3 te zoeken. Klik dan op  &quot;Upload dit bestand&quot;</li>
-
-<li>Als alles werkte zoals het hoort, zou je volgende scherm alleen een ga verder-knop moeten tonen.</li>
-
-</ol>
-
-</p>
-
-<p>Als er afbeeldingen in je Powerpoint presentatie waren, dan zouden die bewaard moeten zij als cursusbestanden in moddata/XY waar X de naam van je les is en Y een getal is (gewoonlijk 0). Er worden tijdens het importeerproces nog meer bestanden gemaakt in de map temp/lesson. Deze bestanden worden tot nu toe nog niet verwijderd door importppt.php.</p>
-
-<p align="center">&nbsp;</p>';
+Als er afbeeldingen in je Powerpoint presentatie waren, dan zouden die bewaard moeten zij als cursusbestanden in moddata/XY waar X de naam van je les is en Y een getal is (gewoonlijk 0). Er worden tijdens het importeerproces nog meer bestanden gemaakt in de map temp/lesson. Deze bestanden worden tot nu toe nog niet verwijderd door importppt.php.
+ ';
 $string['importquestions'] = 'Importeer vragen';
-$string['importquestions_help'] = '<p>
-Met deze functie kun je vragen importeren uit tekstbestanden op je eigen computer door ze te uploaden via een
-formulier.</p>
-<p>Een aantal bestandsformaten worden ondersteund:</p>
+$string['importquestions_help'] = 'Met deze functie kun je vragen importeren uit tekstbestanden op je eigen computer door ze te uploaden via een
+formulier.
+Een aantal bestandsformaten worden ondersteund:
+**GIFT**
 
-<p><b>GIFT</b></p>
-<blockquote>
-<p>GIFT is het meest uitgebreide importformaat beschikbaar voor het importeren van Moodle-vragen vanuit een
+GIFT is het meest uitgebreide importformaat beschikbaar voor het importeren van Moodle-vragen vanuit een
 tekstbestand. Het is ontworpen als gemakkelijke importeermethode voor Moodle-vragen vanuit tekstbestanden. Het ondersteunt
-meerkeuzevragen, waar/onwaar, kort antwoord, koppelvragen en numerieke vragen, evenals het invoeren van een __________ voor
+meerkeuzevragen, waar/onwaar, kort antwoord, koppelvragen en numerieke vragen, evenals het invoeren van een \_\_\_|\_\_\_|\_\_\_|\_ voor
 het gatentekstformaat. Verschillende vragentypes kunnen gemixt worden in één tekstbestand en de opmaak ondersteunt ook
-commentaar, vraagnamen, feedback en procentuele weging van cijfers. Hieronder enkele voorbeelden:</p>
-<pre>
+commentaar, vraagnamen, feedback en procentuele weging van cijfers. Hieronder enkele voorbeelden:
+
 Wie is er begraven in de tombe van Grant?{~Grant ~Jefferson =niemand}
 
 Grant is {~begraven =bijgezet ~levend} in Grants tombe.
@@ -261,113 +239,99 @@ Grant is begraven in Grants tombe.{FALSE}
 Wie is begraven in Grants tombe?{=niemand =helemaal niemand}
 
 Wanneer werd Ulysses S. Grant geboren?{#1822:1}
-</pre>
 
-<p align="right"><a href="help.php?file=formatgift.html&amp;module=quiz">Meer info over "GIFT"</a></p>
-</blockquote>
+[Meer info over "GIFT"](help.php?file=formatgift.html&module=quiz)
 
-<p><b>Aiken</b></p>
-<blockquote>
-<p>De Aiken bestandsopmaak is een heel eenvoudige manier om meerkeuzevragen te creëren door gebruik te maken van een
-duidelijk, voor mensen leesbare opmaak. Hieronder een voorbeeld van de opmaak:</p>
-<pre>
+**Aiken**
+
+De Aiken bestandsopmaak is een heel eenvoudige manier om meerkeuzevragen te creëren door gebruik te maken van een
+duidelijk, voor mensen leesbare opmaak. Hieronder een voorbeeld van de opmaak:
+
 Wat is het doel van eerste hulp?
 A. Levens redden, verdere kwetsuren voorkomen, goede gezondheid bewaren
 B. Medicijnen toedienen aan een gekwetste of gewonde persoon
 C. Verdere kwetsuren voorkomen
 D. Slachtoffers die hulp zoeken helpen
 ANSWER: A
-</pre>
 
-<p align="right"><a href="help.php?file=formataiken.html&amp;module=quiz">Meer info over "Aiken"</a></p>
-</blockquote>
-<p><b>Gatentekst</b></p>
-<blockquote>
-<p>
+[Meer info over "Aiken"](help.php?file=formataiken.html&module=quiz)
+
+**Gatentekst**
+
+
 Elk antwoord wordt gescheiden door een tilde (~). Het juiste antwoord wordt voorafgegaan door een gelijkheidsteken (=).
 Tussen de vragen moet je één vrije regel laten.
-Enkele voorbeelden:<br /><br />
-<u>Meerkeuzevragen</u>
-<blockquote>
+Enkele voorbeelden:
+
+Meerkeuzevragen
+
 Zodra we als kind onze lichaamsdelen beginnen te verkennen, bestuderen we
-{=anatomie ~wetenschappen ~reflexen ~experimenten} en in feite blijven we studenten voor de rest van ons
-leven.
-</blockquote>
+{=anatomie ~wetenschappen ~reflexen ~experimenten} en in feite blijven we studenten voor de rest van onsleven.
 
-<p align="right"><a href="help.php?file=formatmissingword.html&amp;module=quiz">Meer info over "Gatentekst"</a></p>
-</blockquote>
+[Meer info over "Gatentekst"](help.php?file=formatmissingword.html&module=quiz)
 
+**AON**
+Dit is hetzelfde als het \'Gatentekst\'-formaat, behalve dat alle \'korte antwoord\' vragen per vier geconverteerd worden in koppelvragen
 
-<p><b>AON</b></p>
-<blockquote>
-<p>Dit is hetzelfde als het \'Gatentekst\'-formaat, behalve dat alle \'korte antwoord\' vragen per vier geconverteerd worden in koppelvragen</p>
-<p>Het formaat is genoemd naar een organisatie die de ontwikkeling van testen gesponsord heeft.</p>
-<blockquote>
-1 m is gelijk aan ...<br />
-{<br />
-=100 cm;<br />
-~1 cm;<br />
-~10 cm;<br />
-~1000 cm;<br />
-}<br />
-</blockquote>
+Het formaat is genoemd naar een organisatie die de ontwikkeling van testen gesponsord heeft.
 
-</blockquote>
+1 m is gelijk aan ...
 
+{
 
-<p><b>Blackboard</b></p>
-<blockquote>
-<p>Met deze module kun je vragen importeren die in het exportformaat van Blackboard gemaakt zijn. Het steunt
-op XML-functies die door PHP gecompileerd worden.</p>
+=100 cm;
 
-<p align="right"><a href="help.php?file=formatblackboard.html&amp;module=quiz">Meer info over "Blackboard"-formaat</a></p>
-</blockquote>
+ ~1 cm;
 
+ ~10 cm;
 
-<p><b>WebCT</b></p>
-<blockquote>
-<p>Deze module kan vragen importeren vanuit het tekstgebaseerde vragenformaat van WebCT.</p>
+ ~1000 cm;
 
-<p align="right"><a href="help.php?file=formatwebct.html&amp;module=quiz">Meer informatie over het "WebCT"-formaat</a></p>
-</blockquote>
+}
 
-<p><b>Course Test Manager</b></p>
-<blockquote>
-<p>Deze module kan vragen importeren die bewaard zijn in een Course Test Manager toetsenbank.
+**Blackboard**
+
+Met deze module kun je vragen importeren die in het exportformaat van Blackboard gemaakt zijn. Het steunt
+op XML-functies die door PHP gecompileerd worden.
+
+[Meer info over "Blackboard"-formaat](help.php?file=formatblackboard.html&module=quiz)
+
+**WebCT**
+Deze module kan vragen importeren vanuit het tekstgebaseerde vragenformaat van WebCT.
+
+[Meer informatie over het "WebCT"-formaat](help.php?file=formatwebct.html&module=quiz)
+
+**Course Test Manager**
+
+Deze module kan vragen importeren die bewaard zijn in een Course Test Manager toetsenbank.
 Het steunt op verschillende manieren om de testbank, die in een Microsoft Access databank zit, te koppelen.
-De manier hangt ervan af of je Moodle-installatie op een Microsoft of op een Linux webserver loopt.</p>
-<p>Op Windows laat het je gewoon je access databank uploaden zoals je gelijk welk ander gegevensbestand zou importeren.</p>
-<p>Op Linux moet je eerst een windowsmachine installeren op hetzelfde netwerk als de  Course Test
+De manier hangt ervan af of je Moodle-installatie op een Microsoft of op een Linux webserver loopt.
+
+Op Windows laat het je gewoon je access databank uploaden zoals je gelijk welk ander gegevensbestand zou importeren.
+
+Op Linux moet je eerst een windowsmachine installeren op hetzelfde netwerk als de Course Test
 Manager databank en een stukje software installeren, nl de ODBC Socket Server, die XML gebruikt om data door te zenden
-naar Moodle op de Linux server.</p>  <p>Lees best eerst de volledige documentatie voor je deze importfilter
-gebruikt.</p>
+naar Moodle op de Linux server.
 
+Lees best eerst de volledige documentatie voor je deze importfilter gebruikt.
 
-<p align="right"><a href="help.php?file=formatctm.html&amp;module=quiz">Meer info over het "CTM"-formaat</a></p>
-</blockquote>
+[Meer info over het "CTM"-formaat](help.php?file=formatctm.html&module=quiz)
 
-<p><b>Ingebedde antwoorden (Cloze)</b></p>
-<blockquote>
-<p>Met dit importformaat kun je slechts één soort vragen importeren: de ingebedde antwoorden (ook bekend als "cloze")</p>
-<p align="right"><a href="help.php?file=multianswer.html&amp;module=quiz">Meer informatie over het "Cloze"-formaat</a></p>
-</blockquote>
+**Ingebedde antwoorden (Cloze)**
 
+Met dit importformaat kun je slechts één soort vragen importeren: de ingebedde antwoorden (ook bekend als "cloze")
 
-<p><b>Aangepast</b></p>
-<blockquote>
-<p>Als je je eigen opmaak hebt die geïmporteerd moet worden, dan kan je dit bouwen door mod/quiz/format/custom.php te bewerken.
-</p>
+[Meer informatie over het "Cloze"-formaat](help.php?file=multianswer.html&module=quiz)
 
-<p>
+**Aangepast**
+
+Als je je eigen opmaak hebt die geïmporteerd moet worden, dan kan je dit bouwen door mod/quiz/format/custom.php te bewerken.
+
 De hoeveelheid nieuwe code die je moet maken is klein - juist genoeg om een stukje tekst om te zetten in een vraag.
-</p>
 
-<p align="right"><a href="help.php?file=formatcustom.html&amp;module=quiz">Meer info over het aangepast formaat</a></p>
-</blockquote>
+[Meer info over het aangepast formaat](help.php?file=formatcustom.html&module=quiz)
 
-
-<p>
-Er zijn nog meer formaten in ontwikkeling, zoals WebCT, IMS, QTI en gelijk welk formaat dat uitgewerkt wordt door Moodle-gebruikers!</p>';
+Er zijn nog meer formaten in ontwikkeling, zoals WebCT, IMS, QTI en gelijk welk formaat dat uitgewerkt wordt door Moodle-gebruikers!';
 $string['insertedpage'] = 'Pagina ingevoegd';
 $string['invalidfile'] = 'Ingeldig bestand';
 $string['invalidid'] = 'Geen cursusmodule ID of le ID is doorgegeven';
@@ -402,7 +366,7 @@ $string['matchesanswer'] = 'Komt overeen met antwoord';
 $string['matching'] = 'Koppelen';
 $string['matchingpair'] = 'Gekoppeld paar {$a}';
 $string['maxgrade'] = 'Maximum cijfer';
-$string['maxgrade_help'] = '<p>Deze waarde bepaalt het maximumcijfer dat gegeven kan worden voor deze les. Het bereik is van 0 tot 100%. Deze waarde kan op elk moment gewijzigd worden. Elke wijziging heeft onmiddellijk effect op de overzichtstabel en op de cijfers die via verschillende lijsten aan de leerlingen getoond worden.</p>';
+$string['maxgrade_help'] = 'Deze waarde bepaalt het maximumcijfer dat gegeven kan worden voor deze les. Het bereik is van 0 tot 100%. Deze waarde kan op elk moment gewijzigd worden. Elke wijziging heeft onmiddellijk effect op de overzichtstabel en op de cijfers die via verschillende lijsten aan de leerlingen getoond worden.';
 $string['maxhighscores'] = 'Aantal getoonde hoogste cijfers';
 $string['maximumnumberofanswersbranches'] = 'Maximumaantal antwoorden';
 $string['maximumnumberofanswersbranches_help'] = 'Deze waarde bepaalt het maximum aantal antwoorden dat kan worden gebruikt in de les. Als de les enkel waar/onwaar-vragen gebruikt, dan kun je deze optie beter op 2 zetten.
@@ -414,39 +378,33 @@ $string['maxtime'] = 'Tijdslimiet (minuten)';
 $string['maxtimewarning'] = 'Je hebt {$a} minuten om de les af te werken.';
 $string['mediaclose'] = 'Toon knop om te sluiten';
 $string['mediafile'] = 'Mediabestand';
-$string['mediafile_help'] = '<p>Hiermee zal een popup-venster gemaakt worden met een link naar een bestand (bijvoorbeeld een mp3-bestand) aan het begin van een les of op een webpagina. Er zal ook een link getoond worden op elke lespagina waarmee het popup-venster opnieuw kan geopend worden indien nodig.</p>
-
-<p>Optioneel kan er een "Sluit venster" -knop gezet worden onderaan het popup-venster, de hoogte en breedte van het venster kan ook ingesteld worden.</p>';
+$string['mediafile_help'] = 'Hiermee zal een popup-venster gemaakt worden met een link naar een bestand (bijvoorbeeld een mp3-bestand) aan het begin van een les of op een webpagina. Er zal ook een link getoond worden op elke lespagina waarmee het popup-venster opnieuw kan geopend worden indien nodig.
+Optioneel kan er een "Sluit venster" -knop gezet worden onderaan het popup-venster, de hoogte en breedte van het venster kan ook ingesteld worden.';
 $string['mediafilepopup'] = 'Klik hier om te bekijken';
 $string['mediaheight'] = 'Hoogte popup-venster:';
 $string['mediawidth'] = 'Breedte popup-venster:';
 $string['messageprovider:graded_essay'] = 'Melding beoordeling open vraag';
 $string['minimumnumberofquestions'] = 'Minimumaantal vragen';
 $string['minimumnumberofquestions_help'] = 'Deze instelling specifieert het minimum aantal vragen dat het mogelijk maakt om het cijfer voor de activiteit te berekenen. Indien de les een of meer inhoudspagina\'s bevat, dan moet de waarde worden ingesteld op nul.
-
 Indien ingesteld op 20, bijvoorbeeld, dan voeg je best de volgende tekst toe in de openingspagina: "In deze les wordt van je verwacht dat je minstens 20 vragen beantwoordt. Je mag er meer beantwoorden als je wil, maar als je er minder maakt dan 20, dan zal je cijfer berekend worden alsof je er 20 gemaakt hebt."';
 $string['missingname'] = 'Geef een schuilnaam';
 $string['modattempts'] = 'Laat leerling nalezen';
-$string['modattempts_help'] = '<p>Deze instelling zal leerlingen toelaten opnieuw door de les te navigeren en antwoorden te wijzigen.</p>';
+$string['modattempts_help'] = 'Deze instelling zal leerlingen toelaten opnieuw door de les te navigeren en antwoorden te wijzigen.';
 $string['modattemptsnoteacher'] = 'Nalezen werkt alleen voor leerlingen';
 $string['modulename'] = 'Les';
-$string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/lesson/icon.gif" />&nbsp;<b>Les</b></p>
-<div class="indent">
-Een les biedt inhoud op een interessante en flexibele manier aan. Ze is opgebouwd uit een aantal pagina\'s. Elke pagina eindigt met een vraag en een aantal mogelijke antwoorden. Afhankelijk van de keuze van de leerling wordt hij naar de volgende pagina of opnieuw naar de vorige of naar nog een andere pagina gebracht. Navigatie door de les kan lineair of complex zijn, grotendeels afhankelijk van de structuur van het aangeboden materiaal.
-</div>';
+$string['modulename_help'] = 'Een les biedt inhoud op een interessante en flexibele manier aan. Ze is opgebouwd uit een aantal pagina\'s. Elke pagina eindigt met een vraag en een aantal mogelijke antwoorden. Afhankelijk van de keuze van de leerling wordt hij naar de volgende pagina of opnieuw naar de vorige of naar nog een andere pagina gebracht. Navigatie door de les kan lineair of complex zijn, grotendeels afhankelijk van de structuur van het aangeboden materiaal.';
 $string['modulenameplural'] = 'Lessen';
 $string['move'] = 'Verplaats pagina';
 $string['movedpage'] = 'Pagina verplaatst';
 $string['movepagehere'] = 'Verplaats de pagina naar hier';
 $string['moving'] = 'Bezig met pagina {$a} verplaatsen';
 $string['multianswer'] = 'Meer antwoorden';
-$string['multianswer_help'] = '<p>Enkele vraagtypes hebben een optie die ingeschakeld kan worden door deze checkbox aan te vinken. De vraagtypes en de bedoeling van de opties worden hier in detail overlopen.</p>
+$string['multianswer_help'] = 'Enkele vraagtypes hebben een optie die ingeschakeld kan worden door deze checkbox aan te vinken. De vraagtypes en de bedoeling van de opties worden hier in detail overlopen.
 
-<ol>
-<li><p><b>Meerkeuzevragen</b> Er is een variant op de meerkeuzevragen die
-<b>&quot;Meerkeuzevraag met meerdere antwoorden&quot;</b> genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven <i>hoeveel</i> antwoorden uit de set juist zijn. Bijvoorbeeld: &quot;Welke van de volgende personen waren Amerikaanse presidenten?&quot; tegenover &quot;Kies de twee Amerikaanse presidenten uit de onderstaande lijst.&quot;. Het aantal juiste antwoorden kan van <b>één</b> tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)</p></li>
-<li><p><b>Kort antwoord</b> Standaard is hoofdlettergevoeligheid uitgeschakeld. Als de vraagoptie is aangevinkt, dan wordt er bij de verbetering met hoofdletters rekening gehouden.</p></li>
-<p>De andere vraagtypes gebruiken de vraagopties niet.</p>';
+1.**Meerkeuzevragen** Er is een variant op de meerkeuzevragen die
+**"Meerkeuzevraag met meerdere antwoorden"** genoemd wordt. Als de vraagoptie aangevinkt is, dan wordt de leerling verwacht alle juiste opties te selecteren uit de aangeboden set antwoorden. In de vraag kun je al dan niet aangeven \*hoeveel\* antwoorden uit de set juist zijn. Bijvoorbeeld: "Welke van de volgende personen waren Amerikaanse presidenten?" tegenover "Kies de twee Amerikaanse presidenten uit de onderstaande lijst.". Het aantal juiste antwoorden kan van **één** tot een willekeurig aantal zijn. (Meerkeuzevragen met de mogelijkheid om meerdere antwoorden te kiezen en waar maar één antwoord juist is, dat kan ook: het geeft de leerling de mogelijkheid meerdere antwoorden aan te duiden, terwijl een gewone meerkeuzevraag die mogelijkheid niet geeft.)
+2.**Kort antwoord** Standaard is hoofdlettergevoeligheid uitgeschakeld. Als de vraagoptie is aangevinkt, dan wordt er bij de verbetering met hoofdletters rekening gehouden.
+De andere vraagtypes gebruiken de vraagopties niet.';
 $string['multichoice'] = 'Meerkeuze';
 $string['multipleanswer'] = 'Meer antwoorden';
 $string['nameapproved'] = 'Naam goedgekeurd';
@@ -477,14 +435,13 @@ $string['notitle'] = 'Geen titel';
 $string['numberofcorrectanswers'] = 'Aantal juiste antwoorden: {$a}';
 $string['numberofcorrectmatches'] = 'Aantal juiste koppelingen: {$a}';
 $string['numberofpagestoshow'] = 'Aantal te tonen pagina\'s';
-$string['numberofpagestoshow_help'] = '<p>Deze pagina wordt alleen maar gebruikt in lessen met Flash Cards. De standaardwaarde is nul, wat betekent dat alle pagina\'s/Flash Cards in de les getoond worden. Door deze parameter op een andere waarde dan nul te zetten, worden slechts dat aantal pagina\'s getoond. Als dat aantal pagina\'s/Flash Cards getoond is, krijgt de leerling te zien dat het einde van de les bereikt is en wordt zijn cijfer getoond.</p>
-
-<p>Als deze parameter op een getal groter dan het aantal pagina\'s in de les is ingesteld, dan wordt het einde van de les bereikt als alle pagina\'s getoond zijn.</p>';
+$string['numberofpagestoshow_help'] = 'Deze pagina wordt alleen maar gebruikt in lessen met Flash Cards. De standaardwaarde is nul, wat betekent dat alle pagina\'s/Flash Cards in de les getoond worden. Door deze parameter op een andere waarde dan nul te zetten, worden slechts dat aantal pagina\'s getoond. Als dat aantal pagina\'s/Flash Cards getoond is, krijgt de leerling te zien dat het einde van de les bereikt is en wordt zijn cijfer getoond.
+Als deze parameter op een getal groter dan het aantal pagina\'s in de les is ingesteld, dan wordt het einde van de les bereikt als alle pagina\'s getoond zijn.';
 $string['numberofpagesviewed'] = 'Aantal beantwoorde vragen: {$a}';
 $string['numberofpagesviewednotice'] = 'Aantal beantwoorde vragen: {$a->nquestions}; (minimum aantal antwoorden: {$a->minquestions})';
 $string['numerical'] = 'Numeriek';
 $string['ongoing'] = 'Toon het huidige cijfer';
-$string['ongoing_help'] = '<p>Met dit ingeschakeld zal elke pagina het cijfer dat de leerling tot nu toe behaald heeft op het tot nu toe te halen maximum weergeven. Bijvoorbeeld: een leerling heeft 4 vragen op 5 punten beantwoord en heeft er één fout. Het cijfer tot nu toe zou op het scherm tonen dat de leerling 15/20 punten verdient heeft.</p>';
+$string['ongoing_help'] = 'Met dit ingeschakeld zal elke pagina het cijfer dat de leerling tot nu toe behaald heeft op het tot nu toe te halen maximum weergeven. Bijvoorbeeld: een leerling heeft 4 vragen op 5 punten beantwoord en heeft er één fout. Het cijfer tot nu toe zou op het scherm tonen dat de leerling 15/20 punten verdient heeft.';
 $string['ongoingcustom'] = 'Dit is een les op {$a->score} punten. Je hebt nu al {$a->score} punten verdiend van de {$a->currenthigh} punten die er tot nu toe te verdienen waren.';
 $string['ongoingnormal'] = 'Je hebt {$a->correct} vragen van de {$a->viewed} juist beantwoord.';
 $string['onpostperpage'] = 'Slechts één bericht per cijfer';
@@ -516,7 +473,7 @@ $string['postprocesserror'] = 'Fout opgetreden tijdens de verwerking!';
 $string['postsuccess'] = 'Posten gelukt';
 $string['pptsuccessfullimport'] = 'Importeren van de geüploade PowerPoint presentatie gelukt';
 $string['practice'] = 'Oefenles';
-$string['practice_help'] = '<p>Een oefenles zal niet in het puntenboek verschijnen.</p>';
+$string['practice_help'] = 'Een oefenles zal niet in het puntenboek verschijnen.';
 $string['preprocesserror'] = 'Fout opgetreden tijdens de voorbereiding!';
 $string['preview'] = 'Voorbeeld';
 $string['previewlesson'] = 'Voorbeeld van {$a}';
@@ -541,13 +498,10 @@ $string['report'] = 'Rapport';
 $string['reports'] = 'Rapporten';
 $string['response'] = 'Respons';
 $string['retakesallowed'] = 'Opnieuw doen toegelaten';
-$string['retakesallowed_help'] = '<p>Deze instelling bepaalt of de leerlingen de les meer dan eens kunnen doormaken of slechts één keer. De leraar kan beslissen of deze les materiaal bevat dat de leerlingen erg grondig moeten kennen. In dat geval moet het herhaald bekijken van de les toegelaten worden. Als het materaal eerder gebruikt wordt om te testen, dan kun je er beter voor kiezen de les maar één keer te laten doornemen.</p>
-
-<p>Als de leerlingen de les mogen overdoen, dan wordt voor de <b>cijfers</b> in de cijfertabel hun <b>beste</b> poging gekozen. Nochtans worden voor de <b>vragen analyse</b> altijd de antwoorden van de eerste pogingen genomen. De volgende antwoorden worden genegeerd.</p>
-
-<p>Merk op: de <b>Vraaganalyse</b> gebruikt altijd de antwoorden van de eerste poging van de les. De volgende pogingen worden genegeerd.</p>
-
-<p>De standaardinstelling van deze optie is <b>Ja</b>, wat wil zeggen dat leerlingen de les opnieuw mogen doornemen. Waarschijnlijk moet deze optie slechts in uitzonderlijke gevallen op <b>Nee</b> gezet worden.</p>';
+$string['retakesallowed_help'] = 'Deze instelling bepaalt of de leerlingen de les meer dan eens kunnen doormaken of slechts één keer. De leraar kan beslissen of deze les materiaal bevat dat de leerlingen erg grondig moeten kennen. In dat geval moet het herhaald bekijken van de les toegelaten worden. Als het materaal eerder gebruikt wordt om te testen, dan kun je er beter voor kiezen de les maar één keer te laten doornemen.
+Als de leerlingen de les mogen overdoen, dan wordt voor de **cijfers** in de cijfertabel hun **beste** poging gekozen. Nochtans worden voor de **vragen analyse** altijd de antwoorden van de eerste pogingen genomen. De volgende antwoorden worden genegeerd.
+Merk op: de **Vraaganalyse** gebruikt altijd de antwoorden van de eerste poging van de les. De volgende pogingen worden genegeerd.
+De standaardinstelling van deze optie is **Ja**, wat wil zeggen dat leerlingen de les opnieuw mogen doornemen. Waarschijnlijk moet deze optie slechts in uitzonderlijke gevallen op **Nee** gezet worden.';
 $string['returnto'] = 'Keer terug naar {$a}';
 $string['returntocourse'] = 'Keer terug naar de cursuspagina';
 $string['review'] = 'Nalezen';
@@ -568,8 +522,8 @@ $string['showanunseenpage'] = 'Toon een ongeziene pagina';
 $string['singleanswer'] = 'Eén enkel antwoord';
 $string['skip'] = 'Sla navigatie over';
 $string['slideshow'] = 'Diavoorstelling';
-$string['slideshow_help'] = '<p>Hiermee kun je de les als een diavoorstelling tonen, met een vaste breedte, hoogte en een aangepaste achtergrondkleur. Een op CSS gebaseerde rolbalk wordt getoond als de breedte of hoogte van de dia overschreden wordt door de inhoud van de pagina.
-Standaard worden vragen niet getoond in een diavoorstelling, alleen vertakkingstabellen verschijnen. Knoppen met labels voor "Terug" en "Verder" worden links en rechts van de dia getoond als die optie gekozen is. Andere knoppen worden in het midden van de dia geplaatst.</p>';
+$string['slideshow_help'] = 'Hiermee kun je de les als een diavoorstelling tonen, met een vaste breedte, hoogte en een aangepaste achtergrondkleur. Een op CSS gebaseerde rolbalk wordt getoond als de breedte of hoogte van de dia overschreden wordt door de inhoud van de pagina.
+Standaard worden vragen niet getoond in een diavoorstelling, alleen vertakkingstabellen verschijnen. Knoppen met labels voor "Terug" en "Verder" worden links en rechts van de dia getoond als die optie gekozen is. Andere knoppen worden in het midden van de dia geplaatst.';
 $string['slideshowbgcolor'] = 'Achtergrondkleur van de diavoorstelling';
 $string['slideshowheight'] = 'Hoogte van de diavoorstelling';
 $string['slideshowwidth'] = 'Breedte van de diavoorstelling';
@@ -602,7 +556,7 @@ $string['updatefailed'] = 'Update mislukt';
 $string['usemaximum'] = 'Beste';
 $string['usemean'] = 'Gemiddelde';
 $string['usepassword'] = 'Les beschermd met wachtwoord';
-$string['usepassword_help'] = '<p>Hiermee zullen leerlingen die het wachtwoord niet kunnen intypen de les niet kunnen beginnen.</p>';
+$string['usepassword_help'] = 'Hiermee zullen leerlingen die het wachtwoord niet kunnen intypen de les niet kunnen beginnen.';
 $string['viewgrades'] = 'Bekijk de cijfers';
 $string['viewhighscores'] = 'Bekijk de lijst met de hoogste cijfers';
 $string['viewreports'] = 'Bekijk {$a->attempts} voltooide pogingen van {$a->student}';

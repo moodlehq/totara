@@ -66,9 +66,7 @@ $string['median'] = 'Mediana dei voti (per {$a})';
 $string['modelresponse'] = 'Modello di risposta';
 $string['negcovar'] = 'Covarianza negativa del voto rispetto al voto del tentativo complessivo';
 $string['negcovar_help'] = 'Il voto di questa domanda relativo a questo insieme di tentativi varia in modo opposto rispetto al voto complessivo di tutti i tentativi. Questo significa che che il voto complessivo tende ad essere inferiore alla media quando il voto per questa domanda è superiore alla media e vice-versa.
-
 In questo caso la nostra equazione per ricavare il peso ottimale della domanda non funziona. The calculations for effective question weight for other questions in this quiz are the effective question weight for these questions if the highlighted questions with a negative covariance are given a maximum grade of zero.
-
 If you edit a quiz and give these question(s) with negative covariance a max grade of zero then the effective question weight of these questions will be zero and the real effective question weight of other questions will be as calculated now.';
 $string['nostudentsingroup'] = 'In questo gruppo non ci sono studenti';
 $string['optiongrade'] = 'Credito parziale';
@@ -94,7 +92,7 @@ $string['standarddeviationq'] = 'Deviazione standard';
 $string['standarderror'] = 'Errore standard (per {$a})';
 $string['statistics'] = 'Statistiche';
 $string['statistics:componentname'] = 'Statistiche quiz';
+$string['statistics:view'] = 'Visualizzare report statistici';
 $string['statisticsreport'] = 'Report statistico';
 $string['statisticsreportgraph'] = 'Statistiche sulla posizione delle domande';
-$string['statistics:view'] = 'Visualizzare report statistici';
 $string['statsfor'] = 'Statistiche quiz (per {$a})';

@@ -31,7 +31,7 @@ $string['choosereadme'] = '<div class="clearfix"> <div class="theme_screenshot">
 
 <h2>Előzmények</h2><p>A stílus a Base és a Canvas alapján készült, amelyek a Moodle alapcsomagját képező stílusok. Ha módosítani szeretné a stílust, ajánlatos előzőleg másolatot készíteni róla. Ezzel elkerülheti, hogy egyedi stílusát felülírják a Moodle jövőbeli frissítései, ráadásul kavarodás esetén az eredeti állományai megmaradnak.</p>
 <h2>Köszönetnyilvánítás</h2>
-	<p>A stílust Patrick Malley (patrick@newschoollearning.com) készítette John Stabinger (john@newschoollearning.com) közreműködésével. </p>
+<p>A stílust Patrick Malley (patrick@newschoollearning.com) készítette John Stabinger (john@newschoollearning.com) közreműködésével. </p>
 <h2>Licenc</h2><p>A többi stílussal együtt ez is a Moodle alapcsomag része, használatára a <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a> érvényes.</div></div>';
 $string['footerline'] = 'Lábléc';
 $string['footerlinedesc'] = 'Szöveg (jogi tudnivalók stb.) hozzáadása a lábléchez';

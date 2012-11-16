@@ -45,19 +45,17 @@ $string['uploadpicture_cannotsave'] = 'Das Nutzerbild für {$a} kann nicht gespe
 $string['uploadpicture_cannotunzip'] = 'Die Bilddateien können nicht entpackt werden.';
 $string['uploadpicture_invalidfilename'] = 'Die Bilddatei {$a} enthält ungültige Zeichen im Namen und wird nicht benutzt.';
 $string['uploadpicture_overwrite'] = 'Vorhandene Nutzerbilder überschreiben?';
-$string['uploadpictures'] = 'Nutzerbilder hochladen';
-$string['uploadpictures_help'] = '<h2>Nutzerbilder gepackt hochladen</h2>
-
-<p>Nutzerbilder können als gezipptes Paket mit mehreren Dateien hochgeladen werden. Moodle kann dann die darin enthaltenen Dateien den einzelnen Nutzern als Portrait zuordnen. Die Bilddateien müssen dazu in geeigneter Weise benannt sein <i>gewählte Nutzerattribut-Erweiterung</i>. Wenn Sie als Nutzerattribut den Nutzernammen gewählt haben und dieser lautet nutzer1234, dann muss die Bilddatei nutzer1234.jpg heißen.</p>
-<p>zulässige Bilddateitypen sind gif, jpg und png.</p>
-<p>Groß- und Kleinschreibung bei den Dateinamen wird nicht berücksichtigt.</p>';
 $string['uploadpicture_userfield'] = 'Nutzereigenschaft, die fürdie Zuordnung der Nutzerbilder verwandt werden soll:';
 $string['uploadpicture_usernotfound'] = 'Nutzer/in mit \'{$a->userfield}\'-Wert von \'{$a->uservalue}\' existiert nicht. Wird übersprungen.';
 $string['uploadpicture_userskipped'] = 'Nutzerbild {$a} exitiert bereits und wird nicht überschrieben.';
 $string['uploadpicture_userupdated'] = 'Nutzerbild {$a} aktualisiert';
+$string['uploadpictures'] = 'Nutzerbilder hochladen';
+$string['uploadpictures_help'] = '## Nutzerbilder gepackt hochladen
+Nutzerbilder können als gezipptes Paket mit mehreren Dateien hochgeladen werden. Moodle kann dann die darin enthaltenen Dateien den einzelnen Nutzern als Portrait zuordnen. Die Bilddateien müssen dazu in geeigneter Weise benannt sein *gewählte Nutzerattribut-Erweiterung*. Wenn Sie als Nutzerattribut den Nutzernammen gewählt haben und dieser lautet nutzer1234, dann muss die Bilddatei nutzer1234.jpg heißen.
+zulässige Bilddateitypen sind gif, jpg und png.
+Groß- und Kleinschreibung bei den Dateinamen wird nicht berücksichtigt.';
 $string['uploadusers'] = 'Nutzerliste hochladen';
 $string['uploadusers_help'] = 'Nutzer/innen können als Textdatei hochgeladen (und optional auch in Kurse eingeschrieben) werden.
-
 Das Format der Textdatei sollte folgendermaßen aussehen:
 * Jede Zeile der Datei enthält genau einen Datensatz
 * Jeder Datensatz besteht aus einer Reihe von Datenfeldern, die durch Kommas (oder andere Trennzeichen) getrennt sind

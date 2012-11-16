@@ -35,7 +35,6 @@ $string['contentheader'] = 'Contenuto';
 $string['displayoptions'] = 'Modalità di visualizzazione disponibili';
 $string['displayselect'] = 'Visualizzazione';
 $string['displayselect_help'] = 'L\'impostazione, assieme al tipo di URL e ciò che supporta il browser, determina la visualizzazione dell\'URL. Opzioni disponibili:
-
 * Automatica - La visualizzazione migliore sarà scelta automaticamente
 * Embed - L\'URL sarà visualizzato all\'interno della pagina sotto la barra di navigazione assieme alla descrizione ed ai blocchi laterali
 * Forza download - All\'utente sarà richiesto di scaricare il file

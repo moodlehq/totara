@@ -27,10 +27,9 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = 'טקסט מידע';
 $string['pluginname'] = 'תאור (לא שאלה)';
-$string['pluginnameadding'] = 'הוסף תיאור';
-$string['pluginnameediting'] = 'ערוך תיאור';
 $string['pluginname_help'] = 'תאור איננו לאמיתו של דבר סוג של שאלה. הוא מאפשר להציג טקסט ללא כל דרישה של תשובה, בדומה לתוית על דף הקורס.
-<br />
 טקסט השאלה מופיעה גם בנסיון המענה וגם בתצוגה המקדימה.
 כל משוב מוצג בדף התצוגה בלבד';
+$string['pluginnameadding'] = 'הוסף תיאור';
+$string['pluginnameediting'] = 'ערוך תיאור';
 $string['pluginnamesummary'] = 'זאת למעשה איננה שאלה. זאת היא אפשרות להוסיף מספר הוראות, טבלת בדיקה או תוכן אחר לבוחן. הדבר דומה לדרך שבה משתמשים במשאב מסוג פסקה־מעוצבת להוסיף תוכן עשיר לדף הקורס הראשי.';

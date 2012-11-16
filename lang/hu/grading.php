@@ -37,7 +37,6 @@ $string['gradingmanagementtitle'] = 'Részletes pontozás
 {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Pontozási módszer';
 $string['gradingmethod_help'] = 'Az adott környezetben a pontok kiszámításához válassza a részletes pontozási módszert.
-
 Kikapcsolásához és az alapbeállítás szerinti pontozáshoz válassza az \'Egyszerű közvetlen pontozás\' pontot.';
 $string['gradingmethodnone'] = 'Egyszerű közvetlen pontozás';
 $string['gradingmethods'] = 'Pontozási módszerek';
@@ -61,7 +60,6 @@ $string['nosharedformfound'] = 'Nem található sablon';
 $string['searchownforms'] = 'saját űrlapjaim hozzáadása';
 $string['searchtemplate'] = 'Pontozási űrlapok keresése';
 $string['searchtemplate_help'] = 'Itt kereshet pontozási űrlapokat, melyeket sablonként hasznosíthat az új pontozáshoz. Írjon be olyan szavakat, amelyek az űrlap nevében, leírásában vagy törzsrészében szerepelnek. Kifejezésre kereséshez használjon előtte és utána kettős idézőjelet.
-
 Alapesetben csak a megosztott sablonként elmentett pontozási űrlapok vesznek részt a keresésben. Saját pontozási űrlapjait úgyszintén beleveheti a keresésbe. Ily módon anélkül használhatja fel pontozási űrlapjait, hogy megosztaná őket. Csak a \'Használatra kész\' megjelölésű űrlapokat használhatja fel újból.';
 $string['statusdraft'] = 'Piszkozat';
 $string['statusready'] = 'Használatra kész';

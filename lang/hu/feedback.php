@@ -71,7 +71,22 @@ $string['delete_old_items'] = 'Régi tételek törlése';
 $string['delete_template'] = 'Sablon törlése';
 $string['delete_templates'] = 'Sablon törlése...';
 $string['depending'] = 'függő tételek';
-$string['depending_help'] = 'A függő tételekkel megtekintheti a más tételek értékétől függő tételeket.<br /> <strong>Íme egy szemléltető példa:</strong><br /> <ul> <li>Először hozzon létre egy tételt, melynek értékétől egyéb tételek függnek.</li> <li>Ezután szúrjon be egy oldaltörést.</li> <li>Ezután adjon hozzá tételeket, melyek az előző tétel értékétől függnek<br /> A tételkészítő űrlapon lévő listáról válassza ki a "függő tétel"-t és a "függő érték" szövegmezőbe írja be a szükséges értéket.</li> </ul> <strong>A szerkezet ekként néz ki:</strong> <ol> <li>Tételkérdés: van autója? V: van/nincs</li> <li>Oldaltörés</li> <li>Tételkérdés: milyen színű az autója?<br /> (ez a tétel az első = igen értékétől függ)</li> <li>Tételkérdés: miért nincs autója?<br /> (ez a tétel az első = nem értékétől függ)</li> <li> ... további tételek</li> </ol> Ennyi az egész. Sok sikert!';
+$string['depending_help'] = 'A függő tételekkel megtekintheti a más tételek értékétől függő tételeket.
+**Íme egy szemléltető példa:**
+* Először hozzon létre egy tételt, melynek értékétől egyéb tételek függnek.
+* Ezután szúrjon be egy oldaltörést.
+* Ezután adjon hozzá tételeket, melyek az előző tétel értékétől függnek
+A tételkészítő űrlapon lévő listáról válassza ki a "függő tétel"-t és a "függő érték" szövegmezőbe írja be a szükséges értéket.
+**A szerkezet ekként néz ki:**
+1. Tételkérdés: van autója? V: van/nincs
+2. Oldaltörés
+3. Tételkérdés: milyen színű az autója?
+(ez a tétel az első = igen értékétől függ)
+4. Tételkérdés: miért nincs autója?
+(ez a tétel az első = nem értékétől függ)
+5. ... további tételek
+
+Ennyi az egész. Sok sikert!';
 $string['dependitem'] = 'függő tétel';
 $string['dependvalue'] = 'függő érték';
 $string['description'] = 'Leírás';

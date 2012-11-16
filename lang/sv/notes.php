@@ -51,12 +51,10 @@ $string['nouser'] = 'Du måste välja en användare';
 $string['personal'] = 'personlig';
 $string['personalnotes'] = 'Personliga anteckningar';
 $string['publishstate'] = 'Sammanhang';
-$string['publishstate_help'] = '<p>Det finns tre möjliga inställningar här</p>
-<ul>
-<li><strong>Personlig</strong> - Den enda som kan se anteckningen är du.</li>
-<li><strong>Kurs</strong> - anteckningen kommer att vara synlig för lärarna på kursen.</li>
-<li><strong>Webbplats</strong> - anteckningen kommer att vara synlig för lärarna på alla kurser.</li>
-</ul>';
+$string['publishstate_help'] = 'Det finns tre möjliga inställningar här
+\* **|Personlig** - Den enda som kan se anteckningen är du.
+\* **|Kurs** - anteckningen kommer att vara synlig för lärarna på kursen.
+\* **|Webbplats** - anteckningen kommer att vara synlig för lärarna på alla kurser.';
 $string['site'] = 'webbplats';
 $string['sitenotes'] = 'Anteckningar på webbplatsnivå';
 $string['unknown'] = 'okänd';

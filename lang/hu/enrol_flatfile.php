@@ -33,7 +33,7 @@ $string['mailstudents'] = 'Tanulók értesítése e-mailben';
 $string['mailteachers'] = 'Tanárok értesítése e-mailben';
 $string['mapping'] = 'Megfeleltetés egyszerű állomány alapján';
 $string['messageprovider:flatfile_enrolment'] = 'Egyszerű állománnyal való beiratkozás üzenetei';
-$string['pluginname'] = 'Egyszerű (CSV) állomány ';
+$string['pluginname'] = 'Egyszerű (CSV) állomány';
 $string['pluginname_desc'] = 'Ez a módszer ismételten ellenőrzi és feldolgozza a megadott helyen lévő, speciális formázású szöveget.
 A szöveg vesszőkkel elválasztott állomány, soronkét négy--hat mezővel:
 <pre class="informationbox">

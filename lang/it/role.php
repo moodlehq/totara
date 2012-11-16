@@ -58,7 +58,7 @@ $string['assignrole'] = 'Assegna ruolo';
 $string['assignrolenameincontext'] = 'Assegna ruolo \'{$a->role}\' in {$a->context}';
 $string['assignroles'] = 'Ruoli';
 $string['assignroles_help'] = 'Assegnando un ruolo ad un utente in uno dato contesto, l\'utente riceverà tutti i privilegi previsti dal ruolo nel contesto di assegnazione ed in tutti i contesti sottostanti.
-Ad esempio, assegnando ad un utente il ruolo studente in un corso, l\'utente avrà tale ruolo nel corso, in tutti  blocchi ed in tutte le attività appartenenti al medesimo corso.';
+Ad esempio, assegnando ad un utente il ruolo studente in un corso, l\'utente avrà tale ruolo nel corso, in tutti blocchi ed in tutte le attività appartenenti al medesimo corso.';
 $string['assignrolesin'] = 'Assegna ruoli nel contesto \'{$a}\'';
 $string['assignrolesrelativetothisuser'] = 'Assegna ruoli relativi a questo utente';
 $string['backtoallroles'] = 'Torna all\'elenco di tutti i ruoli';
@@ -239,28 +239,13 @@ $string['notset'] = 'Non impostato';
 $string['overrideanotherrole'] = 'Modifica un altro ruolo';
 $string['overridecontext'] = 'Modifica un contesto';
 $string['overridepermissions'] = 'Modifica autorizzazioni';
-$string['overridepermissions_help'] = '<p>
-Le modifiche dei ruoli permettono di alterare i privilegi in un determinato contesto in base ad esigenze specifiche.</p>
+$string['overridepermissions_help'] = 'Le modifiche dei ruoli permettono di alterare i privilegi in un determinato contesto in base ad esigenze specifiche.
 
-<p>
 Ad esempio, se si desidera che in un dato forum gli studenti non abbiano il privilegio di "iniziare nuove discussioni", è possibile modificare il ruolo nel contesto dell\'attività forum negando tale privilegio al ruolo Studente.
-</p>
 
-<p>
 Le modifiche dei ruoli possono anche essere usate per concedere alcuni privilegi extra in aree del proprio sito o dei propri corsi: ad esempio si potrebbe desiderare che gli Studenti possano valutare i compiti di altri studenti.
-</p>
 
-<p>
-L\'interfaccia per la modifica dei ruoli è simile a quella per la definizione dei ruoli ma vengono visualizzati solo i privilegi rilevanti per il contesto di riferimento. L\'interfaccia visualizza anche l\'impostazione che avrebbe il privilegio in assenza di modifiche (ossia con la impostazione  ad "Eredita").
-</p>
-
-<p>
-Vedi anche
-<a href="help.php?file=roles.html">Ruoli</a>,
-<a href="help.php?file=contexts.html">Contesti</a>,
-<a href="help.php?file=assignroles.html">Assegnazione di ruoli</a> e
-<a href="help.php?file=permissions.html">Privilegi</a>.
-</p>';
+L\'interfaccia per la modifica dei ruoli è simile a quella per la definizione dei ruoli ma vengono visualizzati solo i privilegi rilevanti per il contesto di riferimento. L\'interfaccia visualizza anche l\'impostazione che avrebbe il privilegio in assenza di modifiche (ossia con la impostazione ad "Eredita").';
 $string['overridepermissionsforrole'] = 'Modifica autorizzazioni per il ruolo \'{$a->role}\' nel contesto {$a->context}';
 $string['overridepermissionsin'] = 'Modifica autorizzazioni nel contesto \'{$a}\'';
 $string['overrideroles'] = 'Modifica ruoli';
@@ -269,7 +254,6 @@ $string['overrides'] = 'Modifiche';
 $string['overridesbycontext'] = 'Modifiche (per contesto)';
 $string['permission'] = 'Autorizzazione';
 $string['permission_help'] = 'I privilegi hanno 4 opzioni disponibili:
-
 * Non impostato
 * Consenti - Il privilegio è concesso
 * Previeni - Il privilegio viene revocato, anche se già concesso in un contesto più alto

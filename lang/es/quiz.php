@@ -29,7 +29,7 @@ $string['accessnoticesheader'] = 'Puede previsualizar este cuestionario, pero si
 $string['action'] = 'Acción';
 $string['adaptive'] = 'Modo adaptativo';
 $string['adaptive_help'] = 'Si se activa, se permite más de un intento de respuesta a una pregunta dentro del mismo intento de resolver el cuestionario.
-Por ejemplo, si una respuesta se marca como incorrecta, el alumno podrá volver a intentarlo de inmediato. Sin embargo, según se establezca  "Aplicar penalizaciones", se restará una penalización por cada intento equivocado.';
+Por ejemplo, si una respuesta se marca como incorrecta, el alumno podrá volver a intentarlo de inmediato. Sin embargo, según se establezca "Aplicar penalizaciones", se restará una penalización por cada intento equivocado.';
 $string['addaquestion'] = 'Agregar una pregunta...';
 $string['addarandomquestion'] = 'Agregar una pregunta aleatoria...';
 $string['addarandomquestion_help'] = 'Cuando se añade una pregunta al azar, se traduce en que en el cuestionario se inserta una pregunta seleccionada aleatoriamente de entre las que componen la categoría. Esto significa que los distintos alumnos tendrán probablemente una selección distinta de preguntas. Por otra parte, cuando el cuestionario permite múltiples intentos, cada uno de ellos probablemente contendrá una nueva selección de preguntas.';
@@ -107,9 +107,8 @@ $string['bestgrade'] = 'Calificación máxima';
 $string['bothattempts'] = 'Mostrar estudiantes con y sin intentos';
 $string['browsersecurity'] = 'Seguridad del navegador';
 $string['browsersecurity_help'] = 'Si está seleccionada la "Pantalla completa emergente con cierta seguridad JavaScript",
-
 * El cuestionario sólo se iniciará si el estudiante tiene un navegador con JavaScript activado
-* El cuestionario aparece en una ventana emergente  a pantalla completa que cubre todas las otras ventanas y no tiene controles de navegación
+* El cuestionario aparece en una ventana emergente a pantalla completa que cubre todas las otras ventanas y no tiene controles de navegación
 * Se impide a los estudiantes, en la medida de lo posible, el uso de acciones como copiar y pegar';
 $string['calculated'] = 'Calculadas';
 $string['calculatedquestion'] = 'Pregunta calculada no permitida en la línea {$a}. La pregunta no se tendrá en cuenta';
@@ -209,22 +208,22 @@ $string['datasetnumber'] = 'Número';
 $string['daysavailable'] = 'Días disponible';
 $string['decimaldigits'] = 'Número de decimales en calificaciones';
 $string['decimalplaces'] = 'Decimales en las calificaciones';
-$string['decimalplaces_help'] = '<p>Mediante esta opción usted puede seleccionar el número de
-decimales mostrados en la calificación de cada intento.</p>';
+$string['decimalplaces_help'] = 'Mediante esta opción usted puede seleccionar el número de
+decimales mostrados en la calificación de cada intento.';
 $string['decimalplacesquestion'] = 'Decimales en las calificaciones de las preguntas';
-$string['decimalplacesquestion_help'] = '<p>Usted puede elegir una precisión diferente cuando se muestran las calificaciones de
+$string['decimalplacesquestion_help'] = 'Usted puede elegir una precisión diferente cuando se muestran las calificaciones de
 preguntas individuales, a diferencia de la puntuación general del cuestionario. Por ejemplo,
-es posible que la puntuación final del cuestionario de redondeado al número entero más cercano, mientras que se tienen puntuaciones fraccionarias en las preguntas individuales</p>';
+es posible que la puntuación final del cuestionario de redondeado al número entero más cercano, mientras que se tienen puntuaciones fraccionarias en las preguntas individuales';
 $string['decimalpoints'] = 'Puntos decimales';
 $string['default'] = 'Por defecto';
 $string['defaultgrade'] = 'Calificación por defecto de la pregunta';
 $string['defaultinfo'] = 'Categoría por defecto para las preguntas.';
 $string['delay1'] = 'Tiempo entre el primer y el segundo intento';
 $string['delay1st2nd'] = 'Forzar demora entre los intentos primero y segundo';
-$string['delay1st2nd_help'] = '<p>Si especifica un lapso de tiempo, el estudiante tendrá que esperar ese tiempo antes de poder volver a contestar el cuestionario después del primer intento.</p>';
+$string['delay1st2nd_help'] = 'Si especifica un lapso de tiempo, el estudiante tendrá que esperar ese tiempo antes de poder volver a contestar el cuestionario después del primer intento.';
 $string['delay2'] = 'Tiempo entre los intentos posteriores';
 $string['delaylater'] = 'Forzar demora entre intentos posteriores';
-$string['delaylater_help'] = '<p>Si especifica un lapso de tiempo, el estudiante tendrá que esperar a que transcurra ese tiempo antes de poder intentar contestar el cuestionario por tercera vez o en lo sucesivo.</p>';
+$string['delaylater_help'] = 'Si especifica un lapso de tiempo, el estudiante tendrá que esperar a que transcurra ese tiempo antes de poder intentar contestar el cuestionario por tercera vez o en lo sucesivo.';
 $string['deleteattemptcheck'] = '¿Está totalmente seguro que quiere borrar definitivamente estos intentos?';
 $string['deleteselected'] = 'Eliminar seleccionados';
 $string['deletingquestionattempts'] = 'Eliminando intentos de resolver el cuestionario';
@@ -235,14 +234,13 @@ $string['download'] = 'Haga clic para descargar el archivo de categorías export
 $string['downloadextra'] = '(el archivo se almacena también en el directorio /quiz de archivos del curso)';
 $string['duplicateresponse'] = 'Este envío ha sido pasado por alto debido a que usted dio una respuesta equivalente con anterioridad.';
 $string['eachattemptbuildsonthelast'] = 'Cada intento se basa en el anterior';
-$string['eachattemptbuildsonthelast_help'] = '<p>Si se permiten varios intentos y se selecciona <B>Sí</B>, cada nuevo intento contendrá el resultado del anterior. Esto permite completar un cuestionario haciendo varios intentos partiendo en cada uno del resultado anterior.</p>';
+$string['eachattemptbuildsonthelast_help'] = 'Si se permiten varios intentos y se selecciona **Sí**, cada nuevo intento contendrá el resultado del anterior. Esto permite completar un cuestionario haciendo varios intentos partiendo en cada uno del resultado anterior.';
 $string['editcategories'] = 'Editar categorías';
 $string['editcategory'] = 'Editar categoría';
 $string['editcatquestions'] = 'Editar preguntas categóricas';
 $string['editingquestion'] = 'Editando pregunta';
 $string['editingquiz'] = 'Editando cuestionario';
 $string['editingquiz_help'] = 'Cuando se crea un cuestionario, los conceptos básicos son:
-
 * El cuestionario, que contiene preguntas en una o más páginas
 * El banco de preguntas, que almacena copias de todas las preguntas organizadas en categorías
 * Preguntas aleatorias: Cada vez que se intenta resolver el cuestionario aparecen preguntas diferentes (los estudiantes tienen preguntas diferentes)';
@@ -318,11 +316,9 @@ $string['fractionsnomax'] = 'Una de las preguntas debe ser 100% para que sea<br 
 $string['fromfile'] = 'desde archivo:';
 $string['functiondisabledbysecuremode'] = 'Esa funcionalidad está actualmente deshabilitada';
 $string['generalfeedback'] = 'Retroalimentación general';
-$string['generalfeedback_help'] = '<p>La retroalimentación general sobre las preguntas es un texto que se muestra al estudiante una vez que ha intentado responder a una pregunta. A diferencia de la retroalimentación, que depende del tipo de pregunta y de la respuesta dada por el estudiante, aquí se muestra el mismo texto de retroalimentación general a todos los estudiantes.</p>
-
-<p>Usted puede controlar cuándo se muestra a los estudiantes la retroalimentación general utilizando las casillas de verificación "Los estudiantes pueden revisar:" del formulario de edición del cuestionario.</p>
-
-<p>Puede usar la retroalimentación general para dar a los estudiantes información sobre qué conocimientos tratan de comprobar las preguntas, o bien para suministrarles un enlace a más información que podrían usar en el caso de no entender las preguntas.</p>';
+$string['generalfeedback_help'] = 'La retroalimentación general sobre las preguntas es un texto que se muestra al estudiante una vez que ha intentado responder a una pregunta. A diferencia de la retroalimentación, que depende del tipo de pregunta y de la respuesta dada por el estudiante, aquí se muestra el mismo texto de retroalimentación general a todos los estudiantes.
+Usted puede controlar cuándo se muestra a los estudiantes la retroalimentación general utilizando las casillas de verificación "Los estudiantes pueden revisar:" del formulario de edición del cuestionario.
+Puede usar la retroalimentación general para dar a los estudiantes información sobre qué conocimientos tratan de comprobar las preguntas, o bien para suministrarles un enlace a más información que podrían usar en el caso de no entender las preguntas.';
 $string['grade'] = 'Calificación';
 $string['gradeall'] = 'Calificar todo';
 $string['gradeaverage'] = 'Promedio de calificaciones';
@@ -330,27 +326,19 @@ $string['gradeboundary'] = 'Límites de calificación';
 $string['gradeessays'] = 'Calificar ensayos';
 $string['gradehighest'] = 'Calificación más alta';
 $string['grademethod'] = 'Método de calificación';
-$string['grademethod_help'] = '<P>Cuando se permiten múltiples intentos, hay diferentes maneras en las que puede
+$string['grademethod_help'] = 'Cuando se permiten múltiples intentos, hay diferentes maneras en las que puede
 usar las distintas calificaciones obtenidas para calcular la puntuación final del examen.
+**Calificación más alta**
+La puntuación final es la más alta en cualquiera de los intentos.
 
-<P><B>Calificación más alta</B><P>
-<UL>
-<P>La puntuación final es la más alta en cualquiera de los intentos.
-</UL>
+**Puntuación media**
+La puntuación final es el promedio (la media simple) de la puntuación de todos los intentos.
 
-<P><B>Puntuación media</B><P>
-<UL>
-<P> La puntuación final es el promedio (la media simple) de la puntuación de
-todos los intentos.</UL>
+**Primera calificación**
+La puntuación final es la obtenida en el primer intento (se ignoran los demás intentos).
 
-<P><B>Primera calificación</B><P>
-<UL>
-<P>La puntuación final es la obtenida en el primer intento (se ignoran los
-demás intentos).</UL>
-
-<P><B>Última calificación</B><P>
-<UL>
-<P>La calificación final es la obtenida en el intento más reciente.</UL>';
+**Última calificación**
+La calificación final es la obtenida en el intento más reciente.';
 $string['gradesdeleted'] = 'Eliminadas calificaciones del cuestionario';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Puntos para este envío:
@@ -370,9 +358,7 @@ $string['howquestionsbehave_desc'] = 'Configuración predeterminada del comporta
 $string['imagedisplay'] = 'Imagen a mostrar';
 $string['import'] = 'Importar';
 $string['import_help'] = 'Esta función permite importar preguntas de archivos externos.
-
 Si su archivo contiene caracteres no ascii, utilice la codificación UTF-8. Sea especialmente cuidadoso con los archivos generados por aplicaciones Microsoft Office, puesto que normalmente utilizan una codificación especial que puede no ser manejada correctamente.
-
 Los formatos de Importar y Exportar son un recurso extensible. Pueden encontrarse disponibles otros formatos opcionales en la base de datos de Módulos y Extensiones.';
 $string['importcategory'] = 'importar categoría';
 $string['importerror'] = 'Ha ocurrido un error durante el procesamiento de la importación';
@@ -438,8 +424,7 @@ $string['navnojswarning'] = 'Advertencia: estos vínculos no guardarán sus resp
 $string['neverallononepage'] = 'Nunca, todas las preguntas en una página';
 $string['newattemptfail'] = 'Error: No se ha podido comenzar un nuevo intento en el cuestionario';
 $string['newpage'] = 'Página nueva';
-$string['newpage_help'] = '<p>En los cuestionarios más extensos tiene sentido alargar el cuestionario en varias páginas limitando el número de preguntas por página. Cuando se añaden preguntas al cuestionario se insetarán automáticamente saltos de página de acuerdo con el ajuste que se introduzca aquí. Sin embargo, uster podrá cambiar a mano los saltos de página más tarde en la página de edición.
-</p>';
+$string['newpage_help'] = 'En los cuestionarios más extensos tiene sentido alargar el cuestionario en varias páginas limitando el número de preguntas por página. Cuando se añaden preguntas al cuestionario se insetarán automáticamente saltos de página de acuerdo con el ajuste que se introduzca aquí. Sin embargo, uster podrá cambiar a mano los saltos de página más tarde en la página de edición.';
 $string['newpageevery'] = 'Comenzar automáticamente una nueva página';
 $string['noanswers'] = 'No se seleccionó ninguna respuesta';
 $string['noattempts'] = 'No se ha intentado responder este cuestionario';
@@ -495,17 +480,15 @@ $string['outof'] = '{$a->grade} de un máximo de {$a->maxgrade}';
 $string['outofpercent'] = '{$a->grade} de un máximo de {$a->maxgrade} ({$a->percent}%)';
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'Retroalimentación global';
-$string['overallfeedback_help'] = '<p>La retroalimentación global consiste en un texto que se muestra al estudiante una vez que ha completado un intento de resolver el cuestionario. El texto puede
-depender de la calificación que el estudiante haya obtenido.</p>
-
-<p>Por ejemplo, si usted escribe "¡Buen trabajo!" en la primera caja de retroalimentación,
+$string['overallfeedback_help'] = 'La retroalimentación global consiste en un texto que se muestra al estudiante una vez que ha completado un intento de resolver el cuestionario. El texto puede
+depender de la calificación que el estudiante haya obtenido.
+Por ejemplo, si usted escribe "¡Buen trabajo!" en la primera caja de retroalimentación,
 escribe 40% en la primera caja de límites de la calificación y escribe "Por favor, vuelve a
 revisar el trabajo de esta semana", los estudiantes que puntúen 40% o más verán el mensaje
-"¡Buen trabajo!", en tanto que los que hayan puntuado menos del 40% verán el otro mensaje.</p>
-
-<p>Los límites de las calificaciones pueden especificarse en forma de porcentajes, por ejemplo
+"¡Buen trabajo!", en tanto que los que hayan puntuado menos del 40% verán el otro mensaje.
+Los límites de las calificaciones pueden especificarse en forma de porcentajes, por ejemplo
 "31.41%", o en forma de números, por ejemplo "7". Si el cuestionario tiene 10 notas, un límite
-de calificación de 7 significa 7/10 o superior.</p>';
+de calificación de 7 significa 7/10 o superior.';
 $string['overdue'] = 'Vencido';
 $string['override'] = 'Anular';
 $string['overridedeletegroupsure'] = '¿Está seguro que desea eliminar la modificación del grupo {$a}?';
@@ -521,9 +504,8 @@ $string['parsingquestions'] = 'Analizando preguntas del archivo de importación.
 $string['partiallycorrect'] = 'Parcialmente correcto';
 $string['penalty'] = 'Penalización';
 $string['penaltyscheme'] = 'Aplicar penalizaciones';
-$string['penaltyscheme_help'] = '<p>Si un cuestionario se ejecuta en modo adaptativo, se permitirá al estudiante intentar responder de nuevo tras una respuesta errónea. En este caso, tal vez usted quiera imponer una penalización por cada respuesta equivocada que sea substraída de la puntuación final de la pregunta. La cantidad de penalización se elige individualmente para cada pregunta cuando se formula o se edita la pregunta.</p>
-
-<p>Este ajuste no tiene efecto a menos que el cuestionario se administre en modo adaptativo.</p>';
+$string['penaltyscheme_help'] = 'Si un cuestionario se ejecuta en modo adaptativo, se permitirá al estudiante intentar responder de nuevo tras una respuesta errónea. En este caso, tal vez usted quiera imponer una penalización por cada respuesta equivocada que sea substraída de la puntuación final de la pregunta. La cantidad de penalización se elige individualmente para cada pregunta cuando se formula o se edita la pregunta.
+Este ajuste no tiene efecto a menos que el cuestionario se administre en modo adaptativo.';
 $string['percentcorrect'] = 'Porcentaje correcto';
 $string['pleaseclose'] = 'Su petición ha sido procesada. Puede ahora cerrar la ventana';
 $string['pluginadministration'] = 'Administración del cuestionario';
@@ -639,30 +621,20 @@ $string['reportresponses'] = 'Respuestas detalladas';
 $string['reports'] = 'Informes';
 $string['reportsimplestat'] = 'Estadística simple';
 $string['requirepassword'] = 'Se requiere contraseña';
-$string['requirepassword_help'] = '<p>Es un campo opcional</p>
-
-<p>Si añadimos una contraseña los alumnos deben escribir la misma contraseña antes de que puedan comenzar un intento en el cuestionario.</p>';
+$string['requirepassword_help'] = 'Es un campo opcional
+Si añadimos una contraseña los alumnos deben escribir la misma contraseña antes de que puedan comenzar un intento en el cuestionario.';
 $string['requiresubnet'] = 'Se requiere dirección de red';
-$string['requiresubnet_help'] = '<p align=center><b>Se requiere dirección de red</b></p>
+$string['requiresubnet_help'] = 'Es un campo opcional.
+Podemos restringir el acceso a un cuestionario a una subred particular como una red local (LAN) o Internet especificando una lista separada por comas de los números parciales o completos del dirección IP.
+Esto es especialmente útil para a proteger el cuestionario y asegurarnos de sólo se realiza desde una determinada aula o red.
+Por ejemplo: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Hay tres tipos de números que podemos utilizar (no podemos utilizar dominios basados en texto como example.com):
+1. Direcciones IP completas, tales como 192.168.10.1 que se asocian a un único ordenador (o
+Proxy).
+2. Direcciones parciales, tales como 192.168 que se asocian a cualquier red que comience con esos números.
+3. Notación CIDR, como **231.54.211.0/20** que permiten habilitar con más precisión subredes.
 
-<p>Es un campo opcional.</p>
-
-<p>Podemos restringir el acceso a un cuestionario a una subred particular como una red local (LAN) o Internet especificando una lista separada por comas de los números parciales o completos del dirección IP.</p>
-
-<p>Esto es especialmente útil para a proteger el cuestionario y asegurarnos de sólo se realiza desde una determinada aula o red.</p>
-
-<p>Por ejemplo:  <b>192.168. , 231.54.211.0/20, 231.3.56.211</b></p>
-
-<p>Hay tres tipos de números que podemos utilizar (no podemos utilizar dominios basados en texto como example.com):
-<ol>
-<li>Direcciones IP completas, tales como 192.168.10.1 que se asocian a un único ordenador (o
-Proxy).</li>
-<li>Direcciones parciales, tales como 192.168 que se asocian a cualquier red que comience con esos números.</li>
-<li>Notación CIDR, como <b>231.54.211.0/20</b> que permiten habilitar con más precisión subredes.</li>
-</ol>
-</p>
-
-<p>Los espacios en blanco son ignorados.</p>';
+Los espacios en blanco son ignorados.';
 $string['response'] = 'Respuesta';
 $string['responses'] = 'Respuestas -';
 $string['results'] = 'Resultados';
@@ -682,16 +654,12 @@ $string['reviewofpreview'] = 'Revisión de la vista previa';
 $string['reviewopen'] = 'Más tarde, mientras el cuestionario está aún abierto';
 $string['reviewoptions'] = 'Los estudiantes pueden revisar';
 $string['reviewoptionsheading'] = 'Revisar opciones';
-$string['reviewoptionsheading_help'] = '<p>Estas opciones controlan qué información pueden ver los usuarios cuando revisan un intento de resolver el cuestionario o cuando consultan los correspondientes informes.</p>
-
-<p>Immediatamente después del intento: la revisión podrá hacerse en los dos minutos siguientes al final de un intento (i.e., tras haber pulsado el usuario \'Enviar todo y terminar\').</p>
-
-<p>Más tarde, mientras el cuestionario está aún abierto: la revisión podrá hacerse en cualquier momento previo a la fecha de cierre.</p>
-
-<p>Una vez que el cuestionario está cerrado: la revisión podrá realizarse una vez que haya pasado la fecha de cierre del cuestionario. Obviamente, si el cuestionario no tiene fecha de cierre, esta opción no es posible.</p>
-
-<p>A los usuarios con permiso para \'Ver calificaciones ocultas\' [moodle/grade:viewhidden]
-(normalmente profesores y administradores) no les afectan estas restricciones, de modo que podrán en cualquier momento revisar toda la información relativa a los intentos que los estudiantes hayan hecho de resolver el cuestionario.</p>';
+$string['reviewoptionsheading_help'] = 'Estas opciones controlan qué información pueden ver los usuarios cuando revisan un intento de resolver el cuestionario o cuando consultan los correspondientes informes.
+Immediatamente después del intento: la revisión podrá hacerse en los dos minutos siguientes al final de un intento (i.e., tras haber pulsado el usuario \'Enviar todo y terminar\').
+Más tarde, mientras el cuestionario está aún abierto: la revisión podrá hacerse en cualquier momento previo a la fecha de cierre.
+Una vez que el cuestionario está cerrado: la revisión podrá realizarse una vez que haya pasado la fecha de cierre del cuestionario. Obviamente, si el cuestionario no tiene fecha de cierre, esta opción no es posible.
+A los usuarios con permiso para \'Ver calificaciones ocultas\' [moodle/grade:viewhidden]
+(normalmente profesores y administradores) no les afectan estas restricciones, de modo que podrán en cualquier momento revisar toda la información relativa a los intentos que los estudiantes hayan hecho de resolver el cuestionario.';
 $string['reviewresponse'] = 'Revisar respuesta';
 $string['reviewresponsetoq'] = 'Revisar respuesta (pregunta {$a})';
 $string['reviewthisattempt'] = 'Revisar sus respuestas en este intento';
@@ -737,21 +705,19 @@ $string['shownoattempts'] = 'Mostrar estudiantes sin intentos';
 $string['shownoattemptsonly'] = 'Mostrar sólo estudiantes sin intentos';
 $string['showteacherattempts'] = 'Mostrar intentos del profesor';
 $string['showuserpicture'] = 'Mostrar la imagen del usuario';
-$string['showuserpicture_help'] = '<p> Si usted habilita esta opción, el nombre del estudiante y su imagen serán
-mostradas en la pantalla durante un intento, y en la pantalla de revisión.</p>
-
-<p> Un ejemplo en el que usted quisiera hacer esto es en cuestionarios proctorados
+$string['showuserpicture_help'] = 'Si usted habilita esta opción, el nombre del estudiante y su imagen serán
+mostradas en la pantalla durante un intento, y en la pantalla de revisión.
+Un ejemplo en el que usted quisiera hacer esto es en cuestionarios proctorados
 (vigilados en el aula) para hacer más sencillo el verificar la identidad del usuario
-que intenta el cuestionario.</p>';
+que intenta el cuestionario.';
 $string['shuffle'] = 'Orden al azar';
 $string['shuffleanswers'] = 'Respuestas ordenadas al azar';
 $string['shuffledrandomly'] = 'Presentadas al azar';
 $string['shufflequestions'] = 'Ordenar las preguntas al azar';
 $string['shufflequestionsselected'] = 'Las preguntas aparecerán ordenadas al azar. Como resultado, el botón Volver a ordenar las preguntas se ha desactivado. Puede cambiar esto en {$a}.';
 $string['shufflewithin'] = 'Ordenar al azar dentro de las preguntas';
-$string['shufflewithin_help'] = '<p>Si habilita esta opción, las partes que componen las preguntas individuales se ordenarán al azar cada vez que un estudiante comienza a contestar el cuestionario, suponiendo que la opción también esté habilitada en los ajustes de la pregunta.</p>
-
-<p>Esta opción sólo es aplicable a preguntas que tienen elementos  múltiples, como las preguntas de elección múltiple o de emparejamiento.';
+$string['shufflewithin_help'] = 'Si habilita esta opción, las partes que componen las preguntas individuales se ordenarán al azar cada vez que un estudiante comienza a contestar el cuestionario, suponiendo que la opción también esté habilitada en los ajustes de la pregunta.
+Esta opción sólo es aplicable a preguntas que tienen elementos múltiples, como las preguntas de elección múltiple o de emparejamiento.';
 $string['singleanswer'] = 'Seleccione una respuesta.';
 $string['sortage'] = 'Ordenar por edad';
 $string['sortalpha'] = 'Ordenar alfabéticamente';

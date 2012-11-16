@@ -72,19 +72,17 @@ $string['delete_template'] = 'Sjabloon wissen';
 $string['delete_templates'] = 'Sjablonen wissen...';
 $string['depending'] = 'afhankelijke vragen';
 $string['depending_help'] = 'Met afhankelijke vragen kun je vragen tonen die afhankelijk zijn van antwoorden op andere vragen.
-
 Een voorbeeld om te tonen hoe het werkt:
 * Maak een vraag waarvan andere vragen zullen afhankelijk zijn.
 * Voeg een paginascheiding toe.
 * Voeg dan de vragen toe die afhankelijk zijn van het antwoord op de vorige vraag.
 Kies in het formulier waarmee je de vraag maakt de vraag in de lijst "afhankelijke vraag" en zet de benodigde waarde in het tekstvak "afhankelijke waarde".
-
 De structuur zou er dan als volgt moeten uitzien:
-* Vraag 1: Heb je een auto? Ja/Nee
-* Paginascheiding
-* Vraag 2: Welke kleur heeft jouw auto? (deze vraag hangt af van vraag 1 met antwoord=Ja)
-* Vraag 3: Waarom heb je geen auto? (deze vraag hangt af van vraag 1 met antwoord=Nee)
-* ... andere vragen';
+1. Vraag 1: Heb je een auto? Ja/Nee
+2. Paginascheiding
+3. Vraag 2: Welke kleur heeft jouw auto? (deze vraag hangt af van vraag 1 met antwoord=Ja)
+4. Vraag 3: Waarom heb je geen auto? (deze vraag hangt af van vraag 1 met antwoord=Nee)
+5. ... andere vragen';
 $string['dependitem'] = 'hangt af van vraag';
 $string['dependvalue'] = 'hangt af van waarde';
 $string['description'] = 'Beschrijving';

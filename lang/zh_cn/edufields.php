@@ -46,8 +46,7 @@ $string['field1010709'] = '土壤学';
 $string['field1010711'] = '水文学';
 $string['field1010713'] = '海洋学';
 $string['field1010799'] = '地球科学（其它）';
-$string['field10109'] = '生物科学
-';
+$string['field10109'] = '生物科学';
 $string['field1010901'] = '生物化学与细胞生物学';
 $string['field1010903'] = '植物学';
 $string['field1010905'] = '生态与进化';

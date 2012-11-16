@@ -59,7 +59,6 @@ $string['educationallevel'] = 'Degré d\'enseignement';
 $string['educationallevel_help'] = 'Pour quel degré d\'enseignement ? Dans le cas de communautés d\'enseignants, ce degré décrit le niveau d\'enseignement.';
 $string['enroldownload'] = 'Trouver';
 $string['enroldownload_help'] = 'Certains cours du serveur d\'échanges sélectionné sont fournis par leurs auteurs dans le but d\'être utilisés sur leur site d\'origine.
-
 D\'autres sont des modèles de cours que vous pouvez télécharger et installer dans votre propre Moodle.';
 $string['enrollable'] = 'Cours où s\'inscrire';
 $string['enrollablecourses'] = 'Cours disponibles pour inscription';

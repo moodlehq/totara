@@ -41,27 +41,20 @@ $string['editingchapter'] = 'Kapitel bearbeiten';
 $string['errorchapter'] = 'Fehler beim Lesen des Buchkapitels';
 $string['faq'] = 'FAQ zum Buch';
 $string['faq_help'] = 'FAQ zum Buch - Häufig gestellte Fragen
-
 *Warum gibt es nur zwei Ebenen im Buch?*
-
 Zwei Ebenen reichen normalerweise für alle Bücher völlig aus. Zusätzliche Ebenen können zu schlecht strukturierten Dokumenten führen. Das Modul \'Buch\' ist dafür ausgelegt, kurze mehrseitige Lernmaterialien und Dokumente zu erstellen. Für längere Texte sind oft PDF-Dateien besser handhabbar.
-
 *Wie wandle ich ein Buch in PDF um?*
-
-Wenn Sie virtuelle Drucker auf Ihrem Computer installieren, können Sie das gesamte Buch oder einzelne Kapitel als PDF umwandeln.  (Siehe
-<a  href="http://www.pdfforge.org/pdfcreator"  target="_blank">PDFCreator</a>,
-<a  href="http://fineprint.com/products/pdffactory/index.html"  target="_blank">PDFFactory</a>,
-<a  href="http://www.adobe.com/products/acrobatstandard.html"  target="_blank">Adobe Acrobat</a>,
+Wenn Sie virtuelle Drucker auf Ihrem Computer installieren, können Sie das gesamte Buch oder einzelne Kapitel als PDF umwandeln. (Siehe
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
 usw.)
-
 *Dürfen Teilnehmer/innen in Büchern schreiben?*
 
 Nein, ausschließlich die Trainer/innen eines Kurses dürfen Bücher erstellen und bearbeiten. Es ist nicht beabsichtigt, eine Bearbeitungsmöglichkeit für Teilnehmer/innen zu integrieren. Der Grund dafür ist, dass das Modul \'Buch\' möglichst einfach bleiben soll.
-
 *Kann ich Bücher durchsuchen?*
 
 Aktuell gibt es nur eine Möglichkeit, das gesamte Buch zu durchsuchen. Benutzen Sie dafür die Browsersuche in der Vorschau von \'Gesamtes Buch drucken\'. Vielleicht gibt es ja Freiwillige, die die globale Suche für beliebige Materialien (incl. Buch) programmieren möchten.
-
 *Meine Überschriften passen nicht in eine Zeile*
 
 Kürzen Sie die Kapitelüberschriften oder Sie bitten den Administrator der Website, die Breite des Inhaltsverzeichnisses in den Moduleinstellungen zu vergrößern. Dies ist allerdings eine globale Einstellung für alle Bücher in Ihrem Moodle und könnte an anderer Stelle Probleme bereiten.';
@@ -77,7 +70,6 @@ $string['numbering1'] = 'Zahlen';
 $string['numbering2'] = 'Punkte';
 $string['numbering3'] = 'Einrückung';
 $string['numbering_help'] = 'Überschriften der Kapitel und Unterkapitel können im Buch automatisch gegliedert werden.
-
 * Keine - Kapitel und Unterkapitel werden nicht automatisch nummeriert. Hiermit sind eigene Formate möglich, z.B. mit Buchstaben und Ziffern (A, A.1, A.2, B, B.1,...)
 * Zahlen - Kapitel und Unterkapitel werden nummeriert (1, 1.1, 1.2, 2, 2.1,...)
 * Punkte - Unterkapitel werden eingerückt und mit Punkten markiert

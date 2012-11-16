@@ -127,13 +127,10 @@ $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'Os usuários podem acessar apenas o próprio blog';
 $string['preferences'] = 'Preferências';
 $string['publishto'] = 'Publicar em';
-$string['publishto_help'] = '<p>Existem 3 opções:</p>
-
-<p><b>Para si mesmo (rascunho)</b> - Apenas você e os administradores do site podem acessar este texto.</p>
-
-<p><b>Todos os usuários do site</b> - Todos os usuários deste site podem acessar este texto.</p>
-
-<p><b>Todo mundo</b> - Qualquer pessoa, inclusive os visitantes, podem acessar este texto.</p>';
+$string['publishto_help'] = 'Existem 3 opções:
+**Para si mesmo (rascunho)** - Apenas você e os administradores do site podem acessar este texto.
+**Todos os usuários do site** - Todos os usuários deste site podem acessar este texto.
+**Todo mundo** - Qualquer pessoa, inclusive os visitantes, podem acessar este texto.';
 $string['publishtocourse'] = 'Usuários que compartilham o curso com você';
 $string['publishtocourseassoc'] = 'Membros do curso associado';
 $string['publishtocourseassocparam'] = 'Membros de {$a}';

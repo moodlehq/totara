@@ -29,16 +29,12 @@ $string['allowdeleting'] = 'อนุญาตให้ลบ';
 $string['allowmaxfiles'] = 'จำนวนมากที่สุดของไฟล์ที่อัพโหลดได้';
 $string['allownotes'] = 'อนุญาตการโน๊ต';
 $string['allowresubmit'] = 'อนุญาตให้ส่งการบ้านซ้ำอีกครั้ง';
-$string['allowresubmit_help'] = '<p>By default, students cannot resubmit assignments once the teacher has graded them ค่าที่ตั้งไว้คือนักเรียนไม่สามารถส่งการบ้านใหม่ได้ หลังจากครูให้คะแนนแล้ว</p>
-
-<p>If you turn this option on, then students will be allowed to resubmit assignments
-after they have been graded (for you to re-grade).  This may be useful if the
+$string['allowresubmit_help'] = 'By default, students cannot resubmit assignments once the teacher has graded them ค่าที่ตั้งไว้คือนักเรียนไม่สามารถส่งการบ้านใหม่ได้ หลังจากครูให้คะแนนแล้ว
+If you turn this option on, then students will be allowed to resubmit assignments
+after they have been graded (for you to re-grade). This may be useful if the
 teacher wants to encourage students to do better work in an iterative process. ถ้าหากครูเลือกให้ส่งการบ้านใหม่ได้ นักเรียนจะสามารถส่งการบ้านหลังจากที่ครูตรวจแล้ว เพื่อให้ตรวจให้คะแนนใหม่ได้ วิธีนี้มีประโยชน์ในกรณีที่ต้องการกระตุ้นเด็กให้พัฒนางานให้ดีขึ้นกว่าเดิม
 
-</p>
-
-<p>Obviously, this option is not relevant for offline assignments. ตัวเลือกนี้ไม่เกี่ยวข้องกับการให้ส่งการบ้านนอกเว็บแต่อย่างใด
-</p>';
+Obviously, this option is not relevant for offline assignments. ตัวเลือกนี้ไม่เกี่ยวข้องกับการให้ส่งการบ้านนอกเว็บแต่อย่างใด';
 $string['alreadygraded'] = 'การกำหนดของคุณได้ถูกจัดลำดับชั้นแล้วและไม่อนุญาตให้กำหนดซ้ำ';
 $string['assignment:grade'] = 'การกำหนดลำดับชั้น';
 $string['assignment:submit'] = 'การกำหนดการส่งงาน';
@@ -95,11 +91,8 @@ $string['late'] = '{$a} ช้ากว่ากำหนด';
 $string['maximumgrade'] = 'คะแนนเต็ม';
 $string['maximumsize'] = 'ขนาดสูงสุด';
 $string['modulename'] = 'การบ้าน';
-$string['modulename_help'] = '<p><img valign="middle" SRC="<?php echo $CFG->wwwroot?>/mod/assignment/icon.gif">&nbsp;<b>การบ้าน</b></p>
-<ul>
-<p>เป็นส่วนที่ครูมอบหมายการบ้านให้นักเรียนทำ (เป็นเนื้อหาดิจิตอลในรูปแบบใดก็ได้) จากนั้น นักเรียนส่งชิ้นงานโดยการอัพโหลดไฟล์ขึ้นสู่เซิร์ฟเวอร์ ตัวอย่างการบ้าน ได้แก่ เรียงความ งานโปรเจ็คท์ รายงาน และอื่นๆ ซึ่งส่วนนี้จะประมวลผลการให้คะแนนนักเรียนได้ด้วย
-</p>
-</ul>';
+$string['modulename_help'] = ' **การบ้าน**
+เป็นส่วนที่ครูมอบหมายการบ้านให้นักเรียนทำ (เป็นเนื้อหาดิจิตอลในรูปแบบใดก็ได้) จากนั้น นักเรียนส่งชิ้นงานโดยการอัพโหลดไฟล์ขึ้นสู่เซิร์ฟเวอร์ ตัวอย่างการบ้าน ได้แก่ เรียงความ งานโปรเจ็คท์ รายงาน และอื่นๆ ซึ่งส่วนนี้จะประมวลผลการให้คะแนนนักเรียนได้ด้วย';
 $string['modulenameplural'] = 'การบ้าน';
 $string['newsubmissions'] = 'การบ้านที่ส่งแล้ว';
 $string['noassignments'] = 'ยังไม่มีการบ้าน';

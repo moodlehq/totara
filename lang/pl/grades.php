@@ -189,7 +189,6 @@ $string['gradecategorysettings'] = 'Ustawienia kategorii oceny';
 $string['gradedisplay'] = 'Wyświetl oceny';
 $string['gradedisplaytype'] = 'Typ wyświetlanej oceny';
 $string['gradedisplaytype_help'] = 'To ustawienie określa w jaki sposób wyświetlane są oceny w dzienniku oraz w raporcie użytkownika.
-
 * Punkty - aktualne oceny punktowe
 * Procentowo
 * Nazwa stopnia - litery lub słowa wykorzystywane w zakresie oceniania';

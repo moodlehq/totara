@@ -41,18 +41,16 @@ $string['editingchapter'] = 'Edição de capítulo';
 $string['errorchapter'] = 'Erro ao ler capítulo de livro';
 $string['faq'] = 'Perguntas sobre Livro';
 $string['faq_help'] = '* Por que apenas dois níveis? *
-Dois níveis geralmente são suficientes para todos os livros, três níveis poderiam resultar em documentos mal estruturados. O módulo Livro foi desenhado para a criação de materiais de estudo curtos, com várias páginas. Geralmente é melhor usar o formato PDF para documentos maiores. A maneira mais fácil para criar PDFs é usar as impressoras virtuais (veja  <a href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm" target="_blank"> PDFCreator </ a>, <a href = "http : / fineprint.com / products / pdfFactory / "target =" index.html _blank "> PDFFactory </ a>, <a href =" http://www.adobe.com/products/acrobatstd/main.html "target = "_blank"> Adobe Acrobat </ a>, etc.)
-
+Dois níveis geralmente são suficientes para todos os livros, três níveis poderiam resultar em documentos mal estruturados. O módulo Livro foi desenhado para a criação de materiais de estudo curtos, com várias páginas. Geralmente é melhor usar o formato PDF para documentos maiores. A maneira mais fácil para criar PDFs é usar as impressoras virtuais (veja 
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+ etc.)
 * Os alunos podem editar livros? *
-
 Só os professores podem criar e editar livros. Não há planos para implementar a edição de livros por estudantes, mas alguém poderia criar algo similar para estudantes (Portfólios?). O principal motivo é para manter o módulo Livro tão simples quanto possível.
-
 * Como faço uma busca nos livros? *
-
-No momento, há apenas uma forma, a utilização da função de busca do navegador  na página de impressão. A busca global só é possível atualmente nos fóruns do Moodle. Seria ótimo ter uma busca global para todos os recursos, incluindo livros, algum voluntário?
-
+No momento, há apenas uma forma, a utilização da função de busca do navegador na página de impressão. A busca global só é possível atualmente nos fóruns do Moodle. Seria ótimo ter uma busca global para todos os recursos, incluindo livros, algum voluntário?
 * Meus títulos não cabem numa linha .*
-
 Ou você reformula seus títulos, ou peça ao seu administrador do site para alterar a largura da TOC. Ela é definida globalmente para todos os livros na página de configuração do módulo.';
 $string['modulename'] = 'Livro';
 $string['modulename_help'] = 'Livro é simplesmente um material de estudo com múltiplas páginas.';
@@ -66,11 +64,8 @@ $string['numbering1'] = 'Números';
 $string['numbering2'] = 'Bolinhas';
 $string['numbering3'] = 'Indentado';
 $string['numbering_help'] = '* Nenhum - títulos de capítulos e sub-capítulos não são formatados, use se você quiser definir um estilo especial de numeração. Por exemplo, letras: em um título do capítulo do tipo "A primeiro capítulo", "A.1 Algum sub-capítulo ",...
-
 * Números - capítulos e sub-capítulos são numerados (1, 1,1, 1,2, 2, ...)
-
 * Marcadores - sub-capítulos são indentados, com marcadores (bullets)
-
 * Indentado - sub-capítulos são recuados';
 $string['numberingoptions'] = 'Disponível opções de numeração';
 $string['numberingoptions_help'] = 'Selecione as opções de numeração que deverão estar disponíveis ao criar novos livros.';

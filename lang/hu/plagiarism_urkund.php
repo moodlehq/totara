@@ -38,8 +38,8 @@ $string['savedconfigsuccess'] = 'A plágium-beállítások elmentve';
 $string['showwhenclosed'] = 'Amikor a tevékenység lezárul';
 $string['similarity'] = 'URKUND';
 $string['studentdisclosure'] = 'Tanulói nyilvánosságra hozatal';
-$string['studentdisclosuredefault'] = 'Minden feltöltött állomány átkerül az URKUND plágium-ellenőrző szolgáltatásához. Ha dokumentumát nem kívánja a portálon kívül más szervezetek számára elemzési forrásként rendelkezésre bocsátani, megtagadhatja ezt a jelentés után elkészülő ugrópont segítségével.';
 $string['studentdisclosure_help'] = 'Ezt a szöveget látják a tanulók az állományfeltöltő oldalon';
+$string['studentdisclosuredefault'] = 'Minden feltöltött állomány átkerül az URKUND plágium-ellenőrző szolgáltatásához. Ha dokumentumát nem kívánja a portálon kívül más szervezetek számára elemzési forrásként rendelkezésre bocsátani, megtagadhatja ezt a jelentés után elkészülő ugrópont segítségével.';
 $string['studentemailcontent'] = 'A(z) {$a->modulename} modulban a(z) {$a->coursename} kurzusban leadott állományát az URKUND plágium-ellenőrző feldolgozta: {$a->modulelink}
 
 Ha dokumentumát nem kívánja a portálon kívül más szervezetek számára elemzési forrásként rendelkezésre bocsátani, megtagadhatja ezt az alábbi ugrópont segítségével: {$a->optoutlink}.';
@@ -52,9 +52,7 @@ $string['unsupportedfiletype'] = 'Az állománytípust az URKUND nem támogatja'
 $string['urkund'] = 'URKUND plágium-ellenőrző segédprogram';
 $string['urkund_api'] = 'URKUND integrációs cím';
 $string['urkund_api_help'] = 'Ez az URKUND-alkalmazás címe';
-$string['urkunddefaults'] = 'Az URKUND alapbeállításai';
 $string['urkund_draft_submit'] = 'Mikor történjen az állomány leadása az URKUND számára';
-$string['urkundexplain'] = 'További információk a segédprogrammal kapcsolatban: <a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['urkund_lang'] = 'Nyelv';
 $string['urkund_lang_help'] = 'Az URKUND által megadott nyelvkód';
 $string['urkund_password'] = 'Jelszó';
@@ -69,4 +67,6 @@ $string['urkund_studentemail'] = 'Tanulói e-mail elküldése';
 $string['urkund_studentemail_help'] = 'Ez az állomány feldolgozását követően e-mailt küld a tanulónak, melyben közli, hogy a jelentés elkészült, továbbá tartalmaz egy elutasítási ugrópontot is';
 $string['urkund_username'] = 'Felhasználónév';
 $string['urkund_username_help'] = 'Az URKUND által alkalmazás eléréséhez az megadott felhasználónév';
+$string['urkunddefaults'] = 'Az URKUND alapbeállításai';
+$string['urkundexplain'] = 'További információk a segédprogrammal kapcsolatban: <a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['useurkund'] = 'Az URKUND bekapcsolása';

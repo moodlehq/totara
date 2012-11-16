@@ -33,10 +33,10 @@ $string['mustbenumeric'] = 'Debe escribir un número aquí.';
 $string['mustnotbenumeric'] = 'No puede ser un número.';
 $string['newsetwildcardvalues'] = 'nueva(s) serie(s) de valores para el comodín';
 $string['pluginname'] = 'Calculada simple';
-$string['pluginnameadding'] = 'Añadiendo una pregunta Calculada Simple';
-$string['pluginnameediting'] = 'Editando una pregunta Calculada Simple';
 $string['pluginname_help'] = 'Las preguntas Calculadas Simples permiten crear preguntas numéricas utilizando comodines que son sustituidos por valores concretos cuando se realiza el cuestionario.
 Las preguntas Calculadas Simples ofrecen las opciones más utilizadas en las preguntas calculadas con una interfaz de creación más sencilla.';
+$string['pluginnameadding'] = 'Añadiendo una pregunta Calculada Simple';
+$string['pluginnameediting'] = 'Editando una pregunta Calculada Simple';
 $string['pluginnamesummary'] = 'Una versión más simple de pregunta calculada, que son como las preguntas numéricas, pero con los valores seleccionados aleatoriamente de un conjunto cuando se formula la pregunta.';
 $string['setno'] = 'Valor {$a} del conjunto';
 $string['setwildcardvalues'] = 'serie(s) de valores para el comodín';

@@ -44,9 +44,7 @@ $string['autolinkurl'] = 'URL automatisch verlinken';
 $string['availablefromdate'] = 'Verfügbar ab';
 $string['availabletags'] = 'Verfügbare Elemente';
 $string['availabletags_help'] = 'Elemente sind Platzhalter in einer Vorlage, die durch Textfelder oder Knöpfe (z.B. das Icon zum Bearbeiten) ersetzt werden, sobald Einträge in die Datenbank vorgenommen oder vorhandene Einträge anzeigt werden.
-
 Nutzerdefinierte Felder haben das Format [[feldname]]. Alle anderen Elemente (Tags) haben das Format ##tag##.
-
 Nur die Elemente, die in der Liste "Verfügbare Elemente" aufgeführt sind, können in der Vorlage verwendet werden.';
 $string['availabletodate'] = 'Verfügbar bis';
 $string['blank'] = 'Leer';
@@ -146,9 +144,8 @@ $string['fieldheightlistview'] = 'Höhe in Listenansicht';
 $string['fieldheightsingleview'] = 'Höhe in Einzelansicht';
 $string['fieldids'] = 'Feldnummern';
 $string['fieldmappings'] = 'Feldübersicht';
-$string['fieldmappings_help'] = '<p>Dieses Menü ermöglicht es Ihnen, die Daten aus der bestehenden Datenbank zu erhalten, wenn Sie die Datenbank neu anlegen. Um die Daten zu behalten, die in einem Feld gesammelt sind, müssen Sie das Feld in ein neues Feld übertragen ("mappen"), in dem die Daten dann erscheinen. Felder können dabei auch leer gelassen werden. Jedes alte Feld, das nicht in ein neues übertragen wird, geht verloren und alle Daten darin sind unwiederbringlich weg.</p>
-
-<p>Sie können nur Felder desselben Typs übertragen. Deshalb enthält das Klappmenü jedes Mal andere Felder zur Auswahl. Versuchen Sie bitte auch nicht, ein altes Feld in mehr als ein neues Feld zu übertragen.</p>';
+$string['fieldmappings_help'] = 'Dieses Menü ermöglicht es Ihnen, die Daten aus der bestehenden Datenbank zu erhalten, wenn Sie die Datenbank neu anlegen. Um die Daten zu behalten, die in einem Feld gesammelt sind, müssen Sie das Feld in ein neues Feld übertragen ("mappen"), in dem die Daten dann erscheinen. Felder können dabei auch leer gelassen werden. Jedes alte Feld, das nicht in ein neues übertragen wird, geht verloren und alle Daten darin sind unwiederbringlich weg.
+Sie können nur Felder desselben Typs übertragen. Deshalb enthält das Klappmenü jedes Mal andere Felder zur Auswahl. Versuchen Sie bitte auch nicht, ein altes Feld in mehr als ein neues Feld zu übertragen.';
 $string['fieldname'] = 'Feldname';
 $string['fieldnotmatched'] = 'Die folgenden Felder in Ihrer Datei sind in der Datenbank unbekannt: {$a}';
 $string['fieldoptions'] = 'Optionen (eine pro Zeile)';
@@ -232,7 +229,6 @@ $string['nameurl'] = 'URL-Feld';
 $string['newentry'] = 'Neuer Eintrag';
 $string['newfield'] = 'Neues Feld erstellen';
 $string['newfield_help'] = 'Auf dieser Seite können Sie die Felder anlegen, die Teil der Datenbank sein sollen. Für jedes Feld können unterschiedliche Datentypen festgelegt werden, zu denen jeweils unterschiedliche Formulare für datenspezifische Angaben gehören.
-
 Jedes Feld muss einen eindeutigen Feldnamen bekommen, die Feldbeschreibung ist optional.';
 $string['noaccess'] = 'Sie haben keinen Zugriff auf diese Seite.';
 $string['nodefinedfields'] = 'Neuer Vorlagensatz besitzt keine definierten Felder!';
@@ -278,7 +274,6 @@ $string['requiredentries'] = 'Erforderliche Einträge';
 $string['requiredentries_help'] = 'Die erforderliche Zahl der Einträge gibt die Zahl der eigenen Einträge an, die Teilnehmer/innen liefern müssen, bevor die Aktivität als unvollständig bearbeitet gewertet wird.';
 $string['requiredentriestoview'] = 'Erforderliche Einträge vor der Ansicht aller Daten';
 $string['requiredentriestoview_help'] = 'Die erforderliche Zahl der Einträge gibt die Zahl der eigenen Einträge an, die Teilnehmer/innen liefern müssen, bevor sie Einträge anderer Teilnehmer/innen einsehen dürfen.
-
 Hinweis: Falls Einträge vor der Ansicht notwendig sind, sollte die Autoverlinkung für die Datenbank deaktiviert sein. Die Autoverlinkung kann nämlich nicht entscheiden, ob jemand die erforderliche Anzahl von Einträgen bereits geliefert hat.';
 $string['resetsettings'] = 'Filter zurücksetzen';
 $string['resettemplate'] = 'Vorlage zurücksetzen';
@@ -319,11 +314,9 @@ $string['updatefield'] = 'Bestehendes Feld aktualisieren';
 $string['uploadfile'] = 'Datei hochladen';
 $string['uploadrecords'] = 'Datensätze als Datei hochladen';
 $string['uploadrecords_help'] = 'Einträge können als Textdatei hochgeladen werden, wobei das Dateiformat folgendermaßen strukturiert sein muss:
-
 * Jede Zeile der Datei beinhaltet einen neuen Datensatz
 * Jeder Datensatz besteht aus einer Reihe von Daten, die durch Kommas (oder andere Trennzeichen) getrennt sind
 * Der erste Datensatz enthält eine Liste von Feldnamen, die das Format der restlichen Datei festlegen
-
 Die Feldbegrenzung ist ein Zeichen, dass jedes Feld im jedem Datensatz zusätzlich abgrenzt. Normalerweise ist es nicht gesetzt.';
 $string['url'] = 'URL';
 $string['usestandard'] = 'Vorlagensatz benutzen';

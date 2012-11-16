@@ -29,10 +29,10 @@ $string['action'] = 'פעולה';
 $string['alreadydone'] = 'הכל כבר הומר';
 $string['areyousure'] = 'האם אתה בטוח?';
 $string['areyousuremessage'] = 'האם ברצונך להמשיך עם השדרוג של כל
- {$a->numtoconvert}
+{$a->numtoconvert}
 נסיונות המענה של הבוחן
 \'{$a->name}\' בקורס
- {$a->shortname}?';
+{$a->shortname}?';
 $string['areyousureresetmessage'] = 'לבוחן \'{$a->name}\' בקורס
 {$a->shortname}
 קיימים

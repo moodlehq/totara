@@ -39,7 +39,7 @@ $string['commitmessage'] = 'Rögzítéshez kapcsolódó üzenet';
 $string['commitstage'] = 'Előkészített szövegek rögzítése';
 $string['commitstage_help'] = 'Előkészített fordítások végleges tárolása az AMOS adattárában. A szövegtár rögzítése előtt automatikus törlésre és frissítésre kerül sor.';
 $string['committableall'] = 'minden nyelv';
-$string['committablenone'] = 'nincs elérhető nyelv - forduljon az AMOS vezetőjéhez. ';
+$string['committablenone'] = 'nincs elérhető nyelv - forduljon az AMOS vezetőjéhez.';
 $string['componentsall'] = 'Mind';
 $string['componentsnone'] = 'Egy sem';
 $string['componentsstandard'] = 'Standard';
@@ -47,14 +47,12 @@ $string['confirmaction'] = 'A leadás nem vonható vissza! Folytatja?';
 $string['contribaccept'] = 'Elfogadás';
 $string['contribactions'] = 'Hozzájárulás a fordításhoz';
 $string['contribactions_help'] = 'Jogosultságától és a munkafolyamatba való bekapcsolódásától függően az alábbi tevékenységeket hajthatja végre:
-
 * Alkalmaz - átmásolja a leadott fordítást az Ön tárolójába, de nem módosítja a kapcsolódó bejegyzést
 * Hozzárendel - beállítja a leadott fordításért és annak beépítéséért felelős személyt
 * Visszavon - törli a leadott fordításért felelős személyt
 * Ellenőriz - a leadott fordításért Önt állítja be felelős személynek, a fordítást \'Ellenőrzés folyamatban\' állapotba állítja és átmásolja a leadott fordítást az Ön tárolójába
 * Elfogad - a leadott fordítást elfogadottként jelöli meg
 * Elutasít - a leadott fordítást elutasítottként jelöli meg; megjegyzésben indokolja meg.
-
 A fordító e-mailben értesítést kap, ha a leadott fordítás állapota módosul.';
 $string['contribapply'] = 'Alkalmaz';
 $string['contribassignee'] = 'Jelölt';
@@ -66,7 +64,7 @@ $string['contribclosedyes'] = 'Ellenőrzött fordítások megjelenítése';
 $string['contribcomponents'] = 'Összetevők';
 $string['contribid'] = 'Azonosító';
 $string['contribincomingnone'] = 'Nem érkezett fordítás';
-$string['contribincomingsome'] = 'Beérkezett fordítások ({$a}) ';
+$string['contribincomingsome'] = 'Beérkezett fordítások ({$a})';
 $string['contriblanguage'] = 'Nyelv';
 $string['contribreject'] = 'Elutasít';
 $string['contribresign'] = 'Visszavon';
@@ -80,7 +78,6 @@ $string['contribstatus10'] = 'Ellenőrzés folyamatban';
 $string['contribstatus20'] = 'Elutasítva';
 $string['contribstatus30'] = 'Elfogadva';
 $string['contribstatus_help'] = 'Egy leadott fordítás munkafolyamata az alábbi:
-
 * Új - a fordítást leadták, de még nem ellenőrizték
 * Ellenőrzés folyamatban - a leadott fordítást egy nyelvi csomagért felelős megkapta és ellenőrzésre eltárolta
 * Elutasítva - a nyelvi csomagért felelős elutasította a fordítást és feltehetőleg indoklást fűzött hozzá
@@ -143,28 +140,25 @@ $string['filtersid'] = 'Szöveg azonosítója';
 $string['filtersid_desc'] = 'A szövegtömb kulcsa';
 $string['filtersidpartial'] = 'részleges egyezés';
 $string['filtertxt'] = 'Részszöveg';
-$string['filtertxtcasesensitive'] = 'betűérzékeny';
 $string['filtertxt_desc'] = 'A szövegben előforduló szövegrész';
+$string['filtertxtcasesensitive'] = 'betűérzékeny';
 $string['filtertxtregex'] = 'reguláris kifejezés';
 $string['filterver'] = 'Verziók';
 $string['filterver_desc'] = 'Ezen Moodle-verziók szövegeinek megjelenítése';
 $string['found'] = 'Összesen: {$a->found} &nbsp;&nbsp;&nbsp; Hiányzik: {$a->missing} ({$a->missingonpage})';
 $string['foundinfo'] = 'Összes szöveg';
-$string['foundinfo_help'] = 'Megmutatja a fordítói táblázat sorainak számát, a hiányzó fordítások számát, valamint az adott oldalon előforduló, hiányzó fordítások számát, ';
+$string['foundinfo_help'] = 'Megmutatja a fordítói táblázat sorainak számát, a hiányzó fordítások számát, valamint az adott oldalon előforduló, hiányzó fordítások számát,';
 $string['gotofirst'] = 'áttérés ez első oldalra';
 $string['gotoprevious'] = 'áttérés ez előző oldalra';
 $string['greylisted'] = 'Elavult szövegek';
 $string['greylisted_help'] = 'Korábbi fejlesztések miatt előfordul, hogy a Moodle nyelvi csomagjában használaton kívüli, de még nem törölt szövegek fordulnak elő. Ezek az \'elavult\' szövegek. Amikor egy elavult szövegről kiderül, hogy biztosan nincs rá szükség, akkor kikerül a nyelvi csomagból.
-
 Ha olyan elavult szöveget talál, amely továbbra is megjelenik a Moodle--ban küldjön erről egy üzenetet a Translating Moodle fórumra. Az elavult szövegek kihagyásával számottevő fordítási időt takaríthat meg.';
 $string['greylistedwarning'] = 'a szöveg elavult';
 $string['importfile'] = 'Lefordított szövegek importálása állományból';
 $string['importfile_help'] = 'Ha offline fordít szövegeket, ezzel az űrlappal helyezheti őket a szövegtárba.
 Feltételek:
-
-* Az állomány érvényes Moodle PHP szövegdefiníciós fájl legyen. Példákért tekintse meg a Moodle aktuális telepítésének `/lang/en/` könyvtárát.
-* Az állomány neve ugyanaz legyen, mint az angol eredetié (pl. `moodle.php`, `assignment.php` vagy `enrol_manual.php`).
-
+* Az állomány érvényes Moodle PHP szövegdefiníciós fájl legyen. Példákért tekintse meg a Moodle aktuális telepítésének \`/lang/en/\` könyvtárát.
+* Az állomány neve ugyanaz legyen, mint az angol eredetié (pl. \`moodle.php\`, \`assignment.php\` vagy \`enrol_manual.php\`).
 Az állományban szereplő összes szöveg bekerül az adott verzió és nyelv szövegtárába.';
 $string['language'] = 'Nyelv';
 $string['languages'] = 'Nyelvek';
@@ -210,22 +204,21 @@ $string['numofcommitsabovelimit'] = '{$a->found} leadott szöveg felel meg a sz�
 $string['numofcommitsunderlimit'] = '{$a->found} leadott szöveg felel meg a szűrőnek.';
 $string['numofmatchingstrings'] = '{$a->commits} módosítása közül {$a->strings}  felel meg a szövegszűrőnek';
 $string['outdatednotcommitted'] = 'Elavult szöveg';
-$string['outdatednotcommitted_help'] = 'Az AMOS szerint a szöveg elavult lehet, mert az angol szöveget később módosították. Ellenőrizze a fordítást. ';
+$string['outdatednotcommitted_help'] = 'Az AMOS szerint a szöveg elavult lehet, mert az angol szöveget később módosították. Ellenőrizze a fordítást.';
 $string['outdatednotcommittedwarning'] = 'elavult';
 $string['ownstashactions'] = 'Gyűjtőfájlhoz tartozó tevékenységek';
 $string['ownstashactions_help'] = '* Alkalmaz - a gyűjtőfájlból a szövegtárba másolja a lefordított szövegeket, a gyűjtőfájl nem módosul. A meglévőket felülírja.
 * Átvisz - a gyűjtőfájlból a szövegtárba helyezi át a lefordított szövegeket vagyis Alkalmaz és Elvet).
 * Elvet - elveti az összes szövegtárba helyezett szöveget.
 * Lead - megnyit egy űrlapot, amelyen a szövegtár benyújtható a nyelvi csomagért felelős fordítóhoz.';
-$string['ownstashes'] = 'Az Ön gyűjtőfájljai ';
+$string['ownstashes'] = 'Az Ön gyűjtőfájljai';
 $string['ownstashes_help'] = 'Az Ön gyűjtőfájljainak listája';
 $string['ownstashesnone'] = 'Nincs gyűjtőfájlja';
 $string['permalink'] = 'permalink';
 $string['placeholder'] = 'Helyőrző';
-$string['placeholder_help'] = 'A helyőrző a szövegben megjelenő utasítás, például: `{$a}` vagy `{$a->valami}`. A szöveg megjelenésekor a helyére érték kerül.
-
-Ezeket a fordításban meg kell őrizni. ';
-$string['placeholderwarning'] = 'a szöveg helyőrzőt tartalmaz ';
+$string['placeholder_help'] = 'A helyőrző a szövegben megjelenő utasítás, például: \`{$a}\` vagy \`{$a->valami}\`. A szöveg megjelenésekor a helyére érték kerül.
+Ezeket a fordításban meg kell őrizni.';
+$string['placeholderwarning'] = 'a szöveg helyőrzőt tartalmaz';
 $string['pluginclasscore'] = 'Alapvető alrendszerek';
 $string['pluginclassnonstandard'] = 'Nem szabványos segédprogramok';
 $string['pluginclassstandard'] = 'Szabványos segédprogramok';
@@ -236,40 +229,38 @@ $string['presetcommitmessage3'] = 'A {$a->versiona} és {$a->versionb} verziók 
 $string['privileges'] = 'Jogosultságai';
 $string['privilegesnone'] = 'A nyilvános információhoz csak olvasási jogosultsággal rendelkezik';
 $string['propagate'] = 'Fordítások átvitele';
-$string['propagatednone'] = 'Nem került sor fordítások átvitelére';
-$string['propagatedsome'] = '{$a} szövegtárban lévő fordítás átvitelére került sor.';
-$string['propagate_help'] = 'A szövegtárban lévő fordításokat átviheti a kiválasztott fejlesztési verziókba. Az AMOS végigmegy a szövegtárban lévő fordításokon és megpróbálja átemelni őket  a kiválasztott fejlesztési verziókba. Az átvitel nem hajtható végre, ha:
-
+$string['propagate_help'] = 'A szövegtárban lévő fordításokat átviheti a kiválasztott fejlesztési verziókba. Az AMOS végigmegy a szövegtárban lévő fordításokon és megpróbálja átemelni őket a kiválasztott fejlesztési verziókba. Az átvitel nem hajtható végre, ha:
 * a szöveg angol eredetije a forrásverzióban és a célverzióban eltér;
 * a szöveg többször, más-más fordítással került a szövegtárba.';
+$string['propagatednone'] = 'Nem került sor fordítások átvitelére';
+$string['propagatedsome'] = '{$a} szövegtárban lévő fordítás átvitelére került sor.';
 $string['propagaterun'] = 'Átvitel';
 $string['requestactions'] = 'Tevékenység';
 $string['requestactions_help'] = '* Alkalmaz - a lefordított szövegeket átmásolja a szövegtárba. A meglévőt felülírja.
 * Elrejt - az átmásolandó szöveget elrejti.';
 $string['savefilter'] = 'Szűrőbeállítások mentése';
 $string['script'] = 'AMOScript';
-$string['scriptexecute'] = 'Végrehajtás és az eredmény szövegtárba helyezése';
 $string['script_help'] = 'Az AMOScript a szövegtárolón végrehajtandó műveletek utasításainak készlete';
+$string['scriptexecute'] = 'Végrehajtás és az eredmény szövegtárba helyezése';
 $string['sourceversion'] = 'Forrásverzió';
 $string['stage'] = 'Szövegtár';
 $string['stageactions'] = 'Szövegtárhoz kapcsolódó tevékenységek';
-$string['stageactions_help'] = '* Szövegtárba helyezett szöveg szerkesztése  - módosítja a fordító szűrőbeállításait, így csak a szövegtárba helyezett szövegek lesznek láthatók.
+$string['stageactions_help'] = '* Szövegtárba helyezett szöveg szerkesztése - módosítja a fordító szűrőbeállításait, így csak a szövegtárba helyezett szövegek lesznek láthatók.
 * Nem rögzíthető szövegek eltávolítása - kiveszi a szövegtárból azokat a szövegeket, amelyek rögzítésére nincs jogosultsága. A szövegtár rögzítés előtt automatikusan kiürül.
 * Frissítés - kiveszi a szövegtárból azokat a szövegeket, amelyek vagy nem változtak, vagy régebbiek az adattárban lévőknél. A szövegtár rögzítés előtt automatikusan frissítődik.
 * Szövegtár ürítése - törli a szövegtárat, a szövegtárba leadott fordítások elvesznek.';
 $string['stageedit'] = 'A szövegtár szerkesztése';
 $string['stagelang'] = 'Nyelv';
 $string['stageoriginal'] = 'Eredeti';
-$string['stageprune'] = 'Nem rögzíthető szövegek eltávolítása ';
+$string['stageprune'] = 'Nem rögzíthető szövegek eltávolítása';
 $string['stagerebase'] = 'Frissítés';
 $string['stagestring'] = 'Szöveg';
 $string['stagestringsnocommit'] = 'A szövegtár {$a->staged} szöveget tartalmaz';
-$string['stagestringsnone'] = 'A szövegtár nem tartalmaz szöveget ';
+$string['stagestringsnone'] = 'A szövegtár nem tartalmaz szöveget';
 $string['stagestringssome'] = 'A szövegtár {$a->staged} szöveget tartalmaz, ebből {$a->committable} a rögzíthető';
 $string['stagesubmit'] = 'Leadás a fordításért felelős személynek';
 $string['stagetranslation'] = 'Fordítás';
 $string['stagetranslation_help'] = 'Megjeleníti a rögzítendő, szövegtárban lévő fordítást. A cella háttérszínének jelentése:
-
 * Zöld - hozzáadott egy hiányzó fordítást, és most rögzítheti.
 * Sárga - módosított egy szöveget, és most rögzítheti a változtatást.
 * Kék - módosította a szöveget vagy hozzáadott egy hiányzó fordítást, de nem rögzítheti.
@@ -296,10 +287,10 @@ $string['stashtitledefault'] = 'WIP - {$a->time}';
 $string['stringhistory'] = 'Előzmény';
 $string['strings'] = 'Szövegek';
 $string['submitting'] = 'Fordítás leadása';
-$string['submitting_help'] = 'Elküldi a lefordított szövegeket a fordításért felelős személynek, aki beépíti azt a nyelvi csomagba. Az üzenetben tájékoztathatja őt a munka részleteiről és arról, miért szeretné a fordítását a nyelvi csomagba beépíteni. ';
+$string['submitting_help'] = 'Elküldi a lefordított szövegeket a fordításért felelős személynek, aki beépíti azt a nyelvi csomagba. Az üzenetben tájékoztathatja őt a munka részleteiről és arról, miért szeretné a fordítását a nyelvi csomagba beépíteni.';
 $string['targetversion'] = 'Célnyelvi változat';
 $string['translatorlang'] = 'Nyelv';
-$string['translatorlang_help'] = 'Megjeleníti a célnyelvi szöveg nyelvkódját. A <strong>+-</strong>-ra kattintva megtekintheti az adott szöveg időbeli alakulását.';
+$string['translatorlang_help'] = 'Megjeleníti a célnyelvi szöveg nyelvkódját. A **+-**-ra kattintva megtekintheti az adott szöveg időbeli alakulását.';
 $string['translatororiginal'] = 'Eredeti';
 $string['translatororiginal_help'] = 'Megjeleníti az eredeti angol szöveget. Alatta van egy ugrópont, amellyel a szöveget automatikusan lefordíthatja a Google Translate segítségével (ha a böngészője támogatja ezt, és be van kapcsolva a javascript).Emellett alul megjelenhetnek egyéb információk is, pl. az, hogy a szöveg helyőrzőt tartalmaz.';
 $string['translatorstring'] = 'Szöveg';
@@ -307,13 +298,11 @@ $string['translatorstring_help'] = 'Megjeleníti a Moodle verzióját (változat
 $string['translatortool'] = 'Fordító';
 $string['translatortranslation'] = 'Fordítás';
 $string['translatortranslation_help'] = 'A szerkesztő megnyitásához kattintson a cellára. Írja be a fordítást, a fordítás szövegtárba helyezéséhez kattintson a cellán kívül. A cella háttérszínének jelentése:
-
 * Zöld - a szöveg már le van fordítva, de a fordítást módosíthatjha.
 * Sárga - a szöveg elavult lehet . Az angol változat módosulhatott a szöveg lefordítása után.
 * Piros - a szöveg nincs lefordítva.
 * Kék - módosította a fordítást, és az a szövegtárba került.
 * Szürke - Az AMOS-szal nem fordítható. Például a korábbi 19.es Moodle szövegeit csak a korábbi CVS-en keresztül lehet szerkeszteni.
-
 A nyelvi csomagot kezelők a leadható szövegek cellájának sarkában egy kis piros jelet látnak..';
 $string['typecontrib'] = 'Nem szabványos segédprogramok';
 $string['typecore'] = 'Alapvető alrendszerek';

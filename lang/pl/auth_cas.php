@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['CASform'] = 'Wybór uwierzytelniania';
 $string['accesCAS'] = 'Użytkownicy CAS';
 $string['accesNOCAS'] = 'inni użytkownicy';
 $string['auth_cas_auth_user_create'] = 'Utwórz użytkowników zewnętrznie';
@@ -38,7 +39,6 @@ $string['auth_cas_certificate_path_key'] = 'Ścieżka do certyfikatu';
 $string['auth_cas_changepasswordurl'] = 'URL strony do zmiany hasła użytkownika.';
 $string['auth_cas_create_user'] = 'Włącz to, jeżeli chcesz użytkowników uwierzytelnianych przez serwer CAS wstawić do bazy danych Moodle. Jeżeli nie włączysz to tylko użytkownicy istniejący w bazie Moodle będą mogli się logować.';
 $string['auth_cas_create_user_key'] = 'Utwórz użytkownika';
-$string['auth_casdescription'] = 'Metoda używa serwera CAS (Central Authentication Service) do uwierzytelnienia użytkowników w środowisku Single Sign On (SSO). Możesz też użyć uwierzytelniania LDAP. Jeżeli podana nazwa użytkownika i hasło są zgodne z CAS, Moodle utworzy nowego użytkownika w swojej bazie danych, pobierając wymagane atrybuty użytkownika z LDAP. Przy następnych logowaniach tylko nazwa użytkownika i hasło będą sprawdzane.';
 $string['auth_cas_enabled'] = 'Włącz to, jeżeli chcesz wykorzystywać autoryzacje serwer CAS';
 $string['auth_cas_hostname'] = 'Nazwa serwer CAS <br/> np:host.domain.fr';
 $string['auth_cas_hostname_key'] = 'Nazwa hosta';
@@ -54,5 +54,5 @@ $string['auth_cas_server_settings'] = 'Konfiguracja serwera CAS';
 $string['auth_cas_text'] = 'Bezpieczne połączenie';
 $string['auth_cas_use_cas'] = 'Użyj CAS';
 $string['auth_cas_version'] = 'Wersja CAS';
-$string['CASform'] = 'Wybór uwierzytelniania';
+$string['auth_casdescription'] = 'Metoda używa serwera CAS (Central Authentication Service) do uwierzytelnienia użytkowników w środowisku Single Sign On (SSO). Możesz też użyć uwierzytelniania LDAP. Jeżeli podana nazwa użytkownika i hasło są zgodne z CAS, Moodle utworzy nowego użytkownika w swojej bazie danych, pobierając wymagane atrybuty użytkownika z LDAP. Przy następnych logowaniach tylko nazwa użytkownika i hasło będą sprawdzane.';
 $string['pluginname'] = 'Użyj serwera CAS (SSO)';

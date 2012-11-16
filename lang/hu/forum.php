@@ -130,21 +130,17 @@ $string['discussionsstartedbyrecent'] = '{$a} által nemrég indított viták';
 $string['discussionsstartedbyuserincourse'] = 'A vitát {$a->fullname} kezdeményezte a(z) ({$a->coursename} kurzusban';
 $string['discussthistopic'] = 'Téma megvitatása';
 $string['displayend'] = 'Megjelenítés vége';
-$string['displayend_help'] = '<p>Megadhatja, hogy egy fórumüzenet egy meghatározott naptól legyen látható, egy megadott napon túl már
-ne legyen látható, illetve csak egy megadott időszakban legyen látható.</p>
-
-<p>A kijelzés kezdetét/végét a kikapcsoló opció kijelölésének megszüntetésével kapcsolhatja be.</p>
-
-<p>A rendszergazdák az üzeneteket megjelenésük előtt és levételük után is láthatják.</p>';
+$string['displayend_help'] = 'Megadhatja, hogy egy fórumüzenet egy meghatározott naptól legyen látható, egy megadott napon túl már
+ne legyen látható, illetve csak egy megadott időszakban legyen látható.
+A kijelzés kezdetét/végét a kikapcsoló opció kijelölésének megszüntetésével kapcsolhatja be.
+A rendszergazdák az üzeneteket megjelenésük előtt és levételük után is láthatják.';
 $string['displaymode'] = 'Megjelenítési mód';
 $string['displayperiod'] = 'Megjelenítési időtartam';
 $string['displaystart'] = 'Megjelenítés kezdete';
-$string['displaystart_help'] = '<p>Megadhatja, hogy egy fórumüzenet egy meghatározott naptól legyen látható, egy megadott napon túl már
-ne legyen látható, illetve csak egy megadott időszakban legyen látható.</p>
-
-<p>A kijelzés kezdetét/végét a kikapcsoló opció kijelölésének megszüntetésével kapcsolhatja be.</p>
-
-<p>A rendszergazdák az üzeneteket megjelenésük előtt és levételük után is láthatják.</p>';
+$string['displaystart_help'] = 'Megadhatja, hogy egy fórumüzenet egy meghatározott naptól legyen látható, egy megadott napon túl már
+ne legyen látható, illetve csak egy megadott időszakban legyen látható.
+A kijelzés kezdetét/végét a kikapcsoló opció kijelölésének megszüntetésével kapcsolhatja be.
+A rendszergazdák az üzeneteket megjelenésük előtt és levételük után is láthatják.';
 $string['eachuserforum'] = 'Mindenki egy vitatémát ad meg';
 $string['edit'] = 'Szerkesztés';
 $string['editedby'] = 'Szerkesztette {$a->name} - eredeti leadás ideje: {$a->date}';
@@ -199,14 +195,13 @@ $string['forumtracked'] = 'Az olvasatlan hozzászólások figyelése';
 $string['forumtrackednot'] = 'Az olvasatlan hozzászólások figyelmen kívül hagyása';
 $string['forumtype'] = 'Fórum típusa';
 $string['forumtype_help'] = 'Ötféle fórumfajta közül választhat:
-
 * Egyszeri egyszerű megbeszélés - mindössze egyetlen téma, amelyre bárki válaszolhat.
 * Mindenki egy megbeszélendőt küld Minden tanuló csakis egy új megbeszélendőt küldhet, melyre bárki válaszolhat.
 * Kérdés--felelet fórum - A tanulók a többi tanuló üzenetének megtekintése előtt beküldik álláspontjukat.
 - Standard, blogszerű fórum - Olyan nyitott fórum, ahol bárki bármikor
 új témát kezdeményezhet. A témák az "Adott téma megvitatása" ugróponttal összekapcsolt oldalakon jelennek meg.
 * Standard általános fórum -
-<p><strong></strong> - Olyan nyitott fórum, ahol bárki bármikor
+**\*|\* - Olyan nyitott fórum, ahol bárki bármikor
 új témát kezdeményezhet.';
 $string['generalforum'] = 'Általános célú fórum';
 $string['generalforums'] = 'Általános fórumok';
@@ -233,12 +228,12 @@ $string['markreadbutton'] = 'Elolvasottnak<br />jelöl';
 $string['markunread'] = 'Elolvasatlannak jelöl';
 $string['markunreadbutton'] = 'Elolvasatlannak<br />jelöl';
 $string['maxattachments'] = 'Csatolt állományok max. száma';
-$string['maxattachments_help'] = '<p>Itt állíthatja be, hány állomány csatolható a fórumon belül egy-egy hozzászóláshoz.</p>';
+$string['maxattachments_help'] = 'Itt állíthatja be, hány állomány csatolható a fórumon belül egy-egy hozzászóláshoz.';
 $string['maxattachmentsize'] = 'Csatolt állomány maximális mérete';
-$string['maxattachmentsize_help'] = '<p>A csatolt állományok mérete bizonyos értékre mérsékelhető, melyet a fórumot
-létrehozó személy választhat ki.</p>
-<p>Esetenként ennél nagyobb állomány is feltölthető, de az adott állomány nem
-tárolódik a szerveren, és esetlegesen hibajelzés jelenhet meg. </p>';
+$string['maxattachmentsize_help'] = 'A csatolt állományok mérete bizonyos értékre mérsékelhető, melyet a fórumot
+létrehozó személy választhat ki.
+Esetenként ennél nagyobb állomány is feltölthető, de az adott állomány nem
+tárolódik a szerveren, és esetlegesen hibajelzés jelenhet meg.';
 $string['maxtimehaspassed'] = 'A hozzászólás szerkesztéséhez rendelkezésére álló idő ({$a}) lejárt.';
 $string['message'] = 'Üzenet';
 $string['messageprovider:digests'] = 'Járatott fórum összesítései';
@@ -249,22 +244,20 @@ $string['modeflatoldestfirst'] = 'Válaszok egymás után, a legrégebbivel kezd
 $string['modenested'] = 'Válaszok beágyazott formában';
 $string['modethreaded'] = 'Válaszok témánkénti formában';
 $string['modulename'] = 'Fórum';
-$string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/forum/icon.gif" />&nbsp;<strong>Fórum</strong></p>
-<div class="indent">A tevékenység lehet akár a legfontosabb is - ez az a hely, ahol a megbeszélés túlnyomó
+$string['modulename_help'] = 'A tevékenység lehet akár a legfontosabb is - ez az a hely, ahol a megbeszélés túlnyomó
 része zajlik. A fórum különféle módokon strukturálható, emellett szerepelhet benne az egyes
 üzenetek csoporttársi értékelése is. Az üzenetek számos változatban
 megjeleníthetők és tartalmazhatnak csatolt állományt is. A fórumra való feliratkozással a
 részvevők minden egyes üzenetből kapnak egy-egy példányt a levelesládájukba. A tanár adott
-esetben mindenki számára előírhatja a feliratkozást.</div>';
+esetben mindenki számára előírhatja a feliratkozást.';
 $string['modulenameplural'] = 'Fórumok';
 $string['more'] = 'tovább';
 $string['movedmarker'] = '(Áthelyezve)';
 $string['movethisdiscussionto'] = 'A téma áthelyezése a következő helyre...';
 $string['mustprovidediscussionorpost'] = 'Exportáláshoz meg kell adnia egy vitaazonosítót vagy egy hozzászólás-azonosítót';
 $string['namenews'] = 'Hírfórum';
-$string['namenews_help'] = '<p>A hírfórum speciális, minden egyes kurzushoz és a portál kezdőoldalához automatikusan létrehozott fórum, melyen általános bejelentések tehetők közzé. Kurzusonként legfeljebb egy hírfórumot működtethet.</p>
-
-<p>A "Friss hírek" blokkban ezen fórum legutóbbi megbeszélései jelennek meg (akkor is, ha átnevezi).  Ezért a fórum automatikusan újból létrejön, ha a Friss hírek blokkot használja.</p>';
+$string['namenews_help'] = 'A hírfórum speciális, minden egyes kurzushoz és a portál kezdőoldalához automatikusan létrehozott fórum, melyen általános bejelentések tehetők közzé. Kurzusonként legfeljebb egy hírfórumot működtethet.
+A "Friss hírek" blokkban ezen fórum legutóbbi megbeszélései jelennek meg (akkor is, ha átnevezi). Ezért a fórum automatikusan újból létrejön, ha a Friss hírek blokkot használja.';
 $string['namesocial'] = 'Társas fórum';
 $string['nameteacher'] = 'Tanári fórum';
 $string['newforumposts'] = 'A fórum új hozzászólásai';
@@ -352,10 +345,9 @@ $string['resetforumsall'] = 'Az összes hozzászólás törlése';
 $string['resetsubscriptions'] = 'Összes fórumra való feliratkozás törlése';
 $string['resettrackprefs'] = 'A fórum összes nyomon követési beállításának törlése';
 $string['rssarticles'] = 'Legfrissebb RSS-hírek száma';
-$string['rssarticles_help'] = '<p>Itt kiválaszthatja, hány cikk kerüljön az RSS-hírek közé.</p>
-
-<p>A legtöbb fórum esetén egy 5 és 20 közötti szám megadása elegendő.
-Növelje meg a hírek számát, ha a fórumot sűrűn használja.</p>';
+$string['rssarticles_help'] = 'Itt kiválaszthatja, hány cikk kerüljön az RSS-hírek közé.
+A legtöbb fórum esetén egy 5 és 20 közötti szám megadása elegendő.
+Növelje meg a hírek számát, ha a fórumot sűrűn használja.';
 $string['rsssubscriberssdiscussions'] = 'Vitákhoz kapcsolódó RSS-hírek';
 $string['rsssubscriberssposts'] = 'Hozzászólásokhoz kapcsolódó RSS-hírek';
 $string['rsstype'] = 'A tevékenységhez kapcsolódó RSS-hírek';
@@ -399,9 +391,7 @@ $string['subscriptiondisabled'] = 'Feliratkozás kikapcsolva';
 $string['subscriptionforced'] = 'Kötelező feliratkozás';
 $string['subscriptionmode'] = 'Feliratkozási mód';
 $string['subscriptionmode_help'] = 'Ha valaki feliratkozik egy fórumra, a fórum minden hozzászólásából kap e-mailben egy másolatot.
-
 A fórumra négyféleképpen iratkozhat fel.
-
 * Választható feliratkozás - A résztvevő dönti el, feliratkozik-e
 * Kötelező feliratkozás - Mindenki feliratkozik és nem iratkozhat le
 * Automatikus feliratkozás - Kezdetben mindenki feliratkozik, de bármikor leiratkozhat
@@ -419,7 +409,6 @@ $string['trackingoptional'] = 'Opcionális';
 $string['trackingtype'] = 'Elolvassa a fórum nyomon követését?';
 $string['trackingtype_help'] = 'Ha be van kapcsolva, akkor a résztvevők
 nyomon követhetik az elolvasott és az el nem olvasott fórumüzeneteket.
-
 A beállításhoz három lehetőség áll rendelkezésre:
 * Választható: a résztvevők maguk állíthatják be a
 nyomon követést.

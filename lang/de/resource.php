@@ -44,7 +44,6 @@ $string['contentheader'] = 'Inhalt';
 $string['displayoptions'] = 'Mögliche Anzeigeoptionen';
 $string['displayselect'] = 'Anzeigen';
 $string['displayselect_help'] = 'Diese Einstellung bestimmt zusammen mit dem Dateityp (und den Fähigkeiten des Browsers), wie die Datei angezeigt wird. Folgende Optionen sind möglich:
-
 * Automatisch - Die beste Anzeigeoption für die Datei wird automatisch ausgewählt
 * Eingebettet - Die Datei wird innerhalb der Seite unterhalb der Navigationsleiste angezeigt, zusammen mit der Dateibeschreibung und allen Blöcken
 * Download erzwingen - Die Datei wird zum Download angeboten

@@ -30,5 +30,5 @@ $string['emptyfilelist'] = '表示するファイルはありません。';
 $string['notitle'] = 'タイトルなし';
 $string['pluginname'] = '最近のファイル';
 $string['pluginname_help'] = '現在のユーザから最近使用されたファイルです。';
-$string['recentfilesnumber'] = '最近のファイル数';
 $string['recent:view'] = '最近のファイルリポジトリプラグインを表示する';
+$string['recentfilesnumber'] = '最近のファイル数';

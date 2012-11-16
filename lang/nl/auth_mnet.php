@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'Wanneer dit op ja staat, wordt er automatisch een locale gebruiker aangemaakt wanneer een externe gebruiker zich voor de eerste keer aanmeldt.';
-$string['auth_mnetdescription'] = 'Gebruikers zijn aangemeld volgens de vertrouwensrelaties, gedefinieerd in je Moodle Netwerk instellingen.';
 $string['auth_mnet_roamin'] = 'Deze gebruiker van deze host kunnen zich op jouw site aanmelden.';
 $string['auth_mnet_roamout'] = 'Jouw gebruikers kunnen zich op deze hosts aanmelden.';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'De timeout in seconden voor authenticatie over XMLRPC-transport.';
+$string['auth_mnetdescription'] = 'Gebruikers zijn aangemeld volgens de vertrouwensrelaties, gedefinieerd in je Moodle Netwerk instellingen.';
 $string['auto_add_remote_users'] = 'Voeg externe gebruikers automatisch toe';
 $string['pluginname'] = 'MNet authenticatie';
 $string['rpc_negotiation_timeout'] = 'RPC-negotiatie time-out';

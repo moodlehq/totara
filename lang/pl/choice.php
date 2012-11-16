@@ -39,11 +39,9 @@ $string['choicefull'] = 'To głosowanie jest pełne i nie ma więcej wolnych mie
 $string['choicename'] = 'Nazwa głosowania';
 $string['choiceopen'] = 'Otwórz';
 $string['choiceoptions'] = 'Opcje wyboru odpowiedzi';
-$string['choiceoptions_help'] = '<P ALIGN=CENTER><B>Wybór odpowiedzi</B></P>
-
-<P>W tym miejscu określasz odpowiedzi, z których uczestnicy mają dokonać wyboru.</P>
-
-<P>Możesz wypełnić dowolną ich liczbę i pozostawić niektóre puste, jeżeli nie potrzebujesz wszystkich sześciu.</P>';
+$string['choiceoptions_help'] = '<P ALIGN=CENTER>**Wybór odpowiedzi**</P>
+W tym miejscu określasz odpowiedzi, z których uczestnicy mają dokonać wyboru.
+Możesz wypełnić dowolną ich liczbę i pozostawić niektóre puste, jeżeli nie potrzebujesz wszystkich sześciu.';
 $string['choicesaved'] = 'Twój wybór został zapisany';
 $string['choicetext'] = 'Treść pytania';
 $string['chooseaction'] = 'Wybierz akcję ...';
@@ -56,12 +54,10 @@ $string['full'] = '(pełne)';
 $string['havetologin'] = 'Musisz się zalogować. zanim odpowiesz';
 $string['limit'] = 'Maksymalna liczba głosów na tę opcję';
 $string['limitanswers'] = 'Ogranicz liczbę możliwych głosów';
-$string['limitanswers_help'] = '<p> Pozwala ograniczyć ile głosów można oddać na daną opcje</p>
-
-<p> Jeżeli jest włączony, to przy każdej opcji wyboru można ustawić ilość możliwych głosów.
-Każdy głos na daną opcje powoduje umniejszenie liczby możliwych głosów. Kiedy dojdzie do zera, nie można głosować za daną opcją.</p>
-
-<p> Jeżeli ograniczenie jest wyłączone mozna oddawać dowolną liczbę głosów</p>';
+$string['limitanswers_help'] = 'Pozwala ograniczyć ile głosów można oddać na daną opcje
+Jeżeli jest włączony, to przy każdej opcji wyboru można ustawić ilość możliwych głosów.
+Każdy głos na daną opcje powoduje umniejszenie liczby możliwych głosów. Kiedy dojdzie do zera, nie można głosować za daną opcją.
+Jeżeli ograniczenie jest wyłączone mozna oddawać dowolną liczbę głosów';
 $string['modulename'] = 'Głosowanie';
 $string['modulename_help'] = 'Moduł głosowania umożliwia nauczycielowi zadawanie pytań i określenie listy wielokrotnych odpowiedzi.';
 $string['modulenameplural'] = 'Głosowania';

@@ -43,18 +43,12 @@ $string['auth_ldap_create_context_key'] = 'Kontext für neue Nutzer/innen';
 $string['auth_ldap_create_error'] = 'Fehler beim Anlegen des Nutzerkontos in LDAP';
 $string['auth_ldap_creators'] = 'Liste von Gruppen oder Kontexten, deren Mitglieder Kurse verwalten und neu anlegen dürfen (Liste der Kursersteller/innen). Mehrere Gruppen werden durch ein \';\' (Semikolon) getrennt. Normalerweise hat der Eintrag diese Form: \'cn=teachers,ou=staff,o=myorg\'';
 $string['auth_ldap_creators_key'] = 'Kursersteller/innen';
-$string['auth_ldapdescription'] = '<p>Diese Anmeldemethode ermöglicht die Authentifizierung über einen externen LDAP-Server.
-
-<p>Um ein neues LDAP-basiertes Nutzerkonto in Moodle anzulegen, muss vorher das LDAP-Nutzerkonto existieren. Beim ersten Login wird automatisch ein neues Nutzerkonto in der Moodle-Datenbank, wobei Anmeldename und Kennwort vorher von LDAP geprüft werden. Das Modul sorgt dafür, dass ausgewählte Nutzerdaten von LDAP in die Moodle-Datenbank übernommen werden können. Wenn das Kennwort weiterhin ausschließlich von LDAP verwaltet wird, ermöglicht dies einheitliche Anmeldedaten in unterschiedlichen Moodle-Instanzen und bei anderen Servern.
-
-<p>Bei allen weiteren Logins werden weiterhin Anmeldename und Kennwort vom LDAP-Server überprüft.';
 $string['auth_ldap_expiration_desc'] = 'Setzen Sie \'Nein\' (\'no\'), um das Gültigkeitsende für Kennworte nicht zu prüfen. Wenn Sie \'LDAP\' wählen, wird diese Überprüfung direkt über LDAP abgewickelt.';
 $string['auth_ldap_expiration_key'] = 'Gültigkeitsende';
 $string['auth_ldap_expiration_warning_desc'] = 'Diese Zahl gibt an, wie viele Tage vor dem Gültigkeitsende von Kennworten eine Warnung versandt wird.';
 $string['auth_ldap_expiration_warning_key'] = 'Warnung zum Gültigkeitsende';
 $string['auth_ldap_expireattr_desc'] = 'Optional: Merkmal für Gültigkeitsende ändern';
 $string['auth_ldap_expireattr_key'] = 'Merkmal für Gültigkeitsende';
-$string['auth_ldapextrafields'] = 'Die folgenden Felder sind optional. Im Nutzerprofil können automatisch einige Moodle-Felder mit ausgewählten Nutzerdaten aus <b>LDAP-Feldern</b> vorbelegt werden. <p>Wenn Sie die nachfolgenden Einträge leer lassen, wird nichts von LDAP übertragen und Moodle-Voreinstellungen werden verwendet. In diesem Fall muss das Nutzerprofil beim ersten Login selbst fertig ausgefüllt werden. <p>Zusätzlich wird eingestellt, welche Felder im Nutzerprofil bearbeitbar sein sollen.';
 $string['auth_ldap_graceattr_desc'] = 'Optional: Merkmal für GraceLogin ändern';
 $string['auth_ldap_gracelogin_key'] = 'Merkmal für GraceLogin';
 $string['auth_ldap_gracelogins_desc'] = 'LDAP-GraceLogin aktivieren. Wenn das Gültigkeitsende von Kennworten erreicht ist, können sich die Nutzer/innen noch solange weiter einloggen, bis der GraceLogin-Zähler den Wert 0 hat. Nach dem Aktivieren der Einstellung wird eine GraceLogin-Mitteilung angezeigt, sobald die Gültigkeitsende erreicht ist.';
@@ -70,11 +64,10 @@ $string['auth_ldap_memberattribute'] = 'Optional: Mitgliedsmerkmal ändern, mit 
 $string['auth_ldap_memberattribute_isdn'] = 'Optional: Gebrauch von Mitgliedsmerkmalen ändern, entweder 0 oder 1';
 $string['auth_ldap_memberattribute_isdn_key'] = 'Mitgliedsmerkmal nutzt dn';
 $string['auth_ldap_memberattribute_key'] = 'Mitgliedsmerkmal';
+$string['auth_ldap_no_mbstring'] = 'Die PHP-Erweiterung mbstrings ist erforderlich, um Nutzer/innen in LDAP anzulegen.';
 $string['auth_ldap_noconnect'] = 'LDAP-Modul kann keine Verbindung zum Server herstellen: {$a}';
 $string['auth_ldap_noconnect_all'] = 'LDAP-Modul kann keine Verbindung zu irgendeinem Server herstellen: {$a}';
 $string['auth_ldap_noextension'] = 'Die PHP-Extension LDAP scheint nicht verfügbar zu sein. Prüfen Sie bitte, ob die Extension installiert und aktiviert ist, wenn Sie die AUthentifizierung über LDAP benutzen möchten.';
-$string['auth_ldap_no_mbstring'] = 'Die PHP-Erweiterung mbstrings ist erforderlich, um Nutzer/innen in LDAP anzulegen.';
-$string['auth_ldapnotinstalled'] = 'Die LDAP-Authentifizierung kann nicht genutzt werden, da die PHP-Erweiterung LDAP nicht auf dem Server installiert ist.';
 $string['auth_ldap_objectclass'] = 'Optional: ObjectClass zur Nutzersuche in LDAP (ldap_user_type) ändern. Die Voreinstellung ist \'objectClass=*\' und liefert alle Objekte aus LDAP, was normalerweise nicht geändert werden muss.';
 $string['auth_ldap_objectclass_key'] = 'ObjectClass';
 $string['auth_ldap_opt_deref'] = 'Legt fest wie Aliasbezeichnungen bei der Suche behandelt werden. Wählen Sie einen der folgenden Werte: \'Nein\' (ldap_deref_never) oder \'Ja\' (ldap_deref_always)';
@@ -99,6 +92,13 @@ $string['auth_ldap_usertypeundefined'] = 'config.user_type ist nicht definiert o
 $string['auth_ldap_usertypeundefined2'] = 'config.user_type ist nicht definiert oder Funktion ldap_unixi2expirationtime unterstützt den ausgewählten Typ nicht!';
 $string['auth_ldap_version'] = 'LDAP-Version, die der LDAP-Server benutzt';
 $string['auth_ldap_version_key'] = 'Version';
+$string['auth_ldapdescription'] = '<p>Diese Anmeldemethode ermöglicht die Authentifizierung über einen externen LDAP-Server.
+
+<p>Um ein neues LDAP-basiertes Nutzerkonto in Moodle anzulegen, muss vorher das LDAP-Nutzerkonto existieren. Beim ersten Login wird automatisch ein neues Nutzerkonto in der Moodle-Datenbank, wobei Anmeldename und Kennwort vorher von LDAP geprüft werden. Das Modul sorgt dafür, dass ausgewählte Nutzerdaten von LDAP in die Moodle-Datenbank übernommen werden können. Wenn das Kennwort weiterhin ausschließlich von LDAP verwaltet wird, ermöglicht dies einheitliche Anmeldedaten in unterschiedlichen Moodle-Instanzen und bei anderen Servern.
+
+<p>Bei allen weiteren Logins werden weiterhin Anmeldename und Kennwort vom LDAP-Server überprüft.';
+$string['auth_ldapextrafields'] = 'Die folgenden Felder sind optional. Im Nutzerprofil können automatisch einige Moodle-Felder mit ausgewählten Nutzerdaten aus <b>LDAP-Feldern</b> vorbelegt werden. <p>Wenn Sie die nachfolgenden Einträge leer lassen, wird nichts von LDAP übertragen und Moodle-Voreinstellungen werden verwendet. In diesem Fall muss das Nutzerprofil beim ersten Login selbst fertig ausgefüllt werden. <p>Zusätzlich wird eingestellt, welche Felder im Nutzerprofil bearbeitbar sein sollen.';
+$string['auth_ldapnotinstalled'] = 'Die LDAP-Authentifizierung kann nicht genutzt werden, da die PHP-Erweiterung LDAP nicht auf dem Server installiert ist.';
 $string['auth_ntlmsso'] = 'NTLM SSO';
 $string['auth_ntlmsso_enabled'] = 'Aktivieren Sie diese Einstellung, um die einmalige Anmeldung (Single Sign On) mit der NTML-Domain zu versuchen. Anmerkung: Zusätzlich sind Einstellungen für den Webserver notwendig. Siehe <a href="http://docs.moodle.org/en/NTLM_authentication">http://docs.moodle.org/en/NTLM_authentication</a>';
 $string['auth_ntlmsso_enabled_key'] = 'Aktivieren';
@@ -144,9 +144,9 @@ $string['updateremfailamb'] = 'Fehler beim Aktualisieren von LDAP mit mehrdeutig
 <br />Alter Moodle-Wert: \'{$a->ouvalue}\' - neuer Wert: \'{$a->nuvalue}\'';
 $string['updateusernotfound'] = 'Nutzereintrag konnte bei der externen Aktualisierung nicht gefunden werden.
 <br />Details: search base: \'{$a->userdn}\'; search filter: \'(objectClass=*)\'; search attributes: {$a->attribs}';
-$string['useracctctrlerror'] = 'Fehler beim Lesen von userAccountControl für {$a}';
 $string['user_activatenotsupportusertype'] = 'auth: ldap user_activate() unterstützt nicht den ausgewählten Nutzertyp: {$a}';
 $string['user_disablenotsupportusertype'] = 'auth: ldap user_disable() unterstützt nicht den ausgewählten Nutzertyp: {$a}';
+$string['useracctctrlerror'] = 'Fehler beim Lesen von userAccountControl für {$a}';
 $string['userentriestoadd'] = 'Nutzerkonten zum Hinzufügen: {$a}';
 $string['userentriestoremove'] = 'Nutzerkonten zum Löschen: {$a}';
 $string['userentriestorevive'] = 'Nutzerkonten zur Reaktivierung: {$a}';

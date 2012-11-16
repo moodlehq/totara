@@ -44,7 +44,6 @@ $string['contentheader'] = 'Sisältö';
 $string['displayoptions'] = 'Saatavilla olevat näyttöasetukset';
 $string['displayselect'] = 'Näyttö';
 $string['displayselect_help'] = 'Tämä asetus, tiedoston tyyppi sekä salliiko selain upotusta, määrittävät kuinka tiedosto näytetään. Vaihtoehdot saattavat sisältää:
-
 * Automaattinen - Paras tiedoston näyttötapa valitaan automaattisesti
 * Upotus - Tiedosto näytetään sivulla navigaatiopalkin alapuolella kuvauksen sekä mahdollisten lohkojen kanssa
 * Pakota lataus - Käyttäjää kehotetaan lataamaan tiedosto

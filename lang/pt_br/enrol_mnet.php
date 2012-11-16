@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['error_multiplehost'] = 'Algumas instâncias de inscrição MNet já existem para este servidor. Apenas uma instãncia por servidor  e/ou uma instância para todos "Todos servidores" é permitida';
 $string['instancename'] = 'Nome do método de inscrição';
-$string['instancename_help'] = 'Você pode opcionalmente renomear esta instância do método de inscrição  MNET. Caso deixar este campo vazio, a instância padrão o nome padrão será utilizado, contendo o nome do servidor remoto e o papel associado para este usuário.';
+$string['instancename_help'] = 'Você pode opcionalmente renomear esta instância do método de inscrição MNET. Caso deixar este campo vazio, a instância padrão o nome padrão será utilizado, contendo o nome do servidor remoto e o papel associado para este usuário.';
 $string['mnet_enrol_description'] = 'Publique este serviço para permitir que administradores de {$a} inscrevam estudantes em cursos que você criou no seu servidor.<br/><ul><li><em>Dependência</em>: Você deve também <strong>publicar</strong> o serviço SSO (Provedor de Serviço) para {$a}.</li><li><em>Dependência</em>: Você deve também <strong>subscrever</strong> no serviço SSO (Provedor de Identidade) em {$a}.</li></ul><br/>Subscrever este serviço para ser capaz de inscrever seus alunos em cursos em {$a}.<br/><ul><li><em>Dependência</em>: Você deve também <strong>subscrever</strong> o serviço SSO (Provedor de Serviço) em {$a}.</li><li><em>Dependência</em>: Você deve também <strong>publicar</strong> o serviço SSO (Provedor de Identidade) em {$a}.</li></ul><br/>';
 $string['mnet_enrol_name'] = 'Cadastramento na Rede Moodle';
 $string['pluginname'] = 'Inscrições remotas MNet';

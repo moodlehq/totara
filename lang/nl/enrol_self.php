@@ -41,8 +41,7 @@ $string['enrolstartdate_help'] = 'Indien ingeschakeld kunnen gebruikers zich sle
 $string['groupkey'] = 'Gebruik sleutels voor groepsaanmelding';
 $string['groupkey_desc'] = 'Gebruik sleutels voor groepsaanmelding als standaardinstelling';
 $string['groupkey_help'] = 'Het gebruik van een groepsaanmeldingssleutel zal de toegang tot de cursus niet alleen beperken tot diegenen die de sleutel kennen, maar de leerlingen zullen ook ingedeeld worden in hun juiste groep.
-
-Om een groepsaanmeldingssleutel te kunnen gebruiken, moet er een aanmeldingssleutel opgegeven worden, zowel in  \'Aanmeldingsbeheer\', \'Zelf aanmelden\' als in de instellingen van de groep.';
+Om een groepsaanmeldingssleutel te kunnen gebruiken, moet er een aanmeldingssleutel opgegeven worden, zowel in \'Aanmeldingsbeheer\', \'Zelf aanmelden\' als in de instellingen van de groep.';
 $string['longtimenosee'] = 'Afmelden indien langer inactief dan';
 $string['longtimenosee_help'] = 'Als gebruikers een cursus een lange tijd niet meer bezocht hebben, dan worden ze automatisch afgemeld. Deze parameter bepaalt deze limiet';
 $string['maxenrolled'] = 'Maxi aangemelde gebruikers';
@@ -51,9 +50,7 @@ $string['maxenrolledreached'] = 'Maximum aantal gebruikers die zich mogen aanmel
 $string['nopassword'] = 'Geen aanmeldingssleutel nodig';
 $string['password'] = 'Aanmeldingssleutel';
 $string['password_help'] = 'Een aanmeldingssleutel beperkt de toegang tot een cursus tot diegenen die de sleutel kennen.
-
 Indien de sleutel leeg gelaten wordt, kan elke gebruiker zich aanmelden in de cursus.
-
 Indien een sleutel opgegeven wordt, dan zal elke gebruiker die de cursus wil binnen gaan de sleutel moeten geven. Merk op dat een gebruiker de sleutel slechts één keer moet opgeven, namelijk wanneer de gebruiker zich aanmeld bij de cursus.';
 $string['passwordinvalid'] = 'Je sleutel is fout - probeer nog eens';
 $string['passwordinvalidhint'] = 'Die \'Cursussleutel\' was niet correct. Probeer het nog eens.<br />

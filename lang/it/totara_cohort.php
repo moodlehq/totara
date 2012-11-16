@@ -97,10 +97,9 @@ $string['numlearners'] = 'n. di studenti';
 $string['ok'] = 'OK';
 $string['or'] = 'o';
 $string['organisation'] = 'Organizzazione';
-$string['orgincludechildren_help'] = '<h1>Coorte includi organizzazioni secondarie</h1>
-
-<p>Se la casella di controllo \'Includi secondari\' è selezionata, tutti gli utenti nell\'organizzazione selezionata e un\'organizzazione sotto all\'organizzazione selezionata nella gerarchia sarà visualizzata nella coorte.</p>
-<p>Se \'Includi secondari\' non è selezionato, soltanto gli utenti cui è assegnata l\'organizzazione selezionata saranno assegnati alla coorte.</p>';
+$string['orgincludechildren_help'] = '# Coorte includi organizzazioni secondarie
+Se la casella di controllo \'Includi secondari\' è selezionata, tutti gli utenti nell\'organizzazione selezionata e un\'organizzazione sotto all\'organizzazione selezionata nella gerarchia sarà visualizzata nella coorte.
+Se \'Includi secondari\' non è selezionato, soltanto gli utenti cui è assegnata l\'organizzazione selezionata saranno assegnati alla coorte.';
 $string['overview'] = 'Panoramica';
 $string['pleaseentervaliddate'] = 'Inserire una data valida nel formato {$a}.';
 $string['pleaseentervalidreason'] = 'Inserire una ragione valida';
@@ -110,16 +109,14 @@ $string['pleasesearchmore'] = 'Affinare la ricerca';
 $string['pleasesetcompletiontimes'] = 'Impostare le ore di completamento per tutti i componenti';
 $string['pleaseusesearch'] = 'Usare questa ricerca';
 $string['position'] = 'Posizione';
-$string['positionincludechildren_help'] = '<h1>Coorte include le posizioni secondarie</h1>
-
-<p>Se la casella di controllo \'Includi secondari\' è selezionata tutti gli utenti nella posiizone selezionata e tutte le posizioni sotto la posizione selezionata nella gerarchia sono visualizzati in questa coorte.</p>
-<p>Se \'Includi secondari\' non è selezionato, soltanto gli utenti cui è assegnata la posizione esatta selezionata saranno assegnati alla coorte.</p>';
+$string['positionincludechildren_help'] = '# Coorte include le posizioni secondarie
+Se la casella di controllo \'Includi secondari\' è selezionata tutti gli utenti nella posiizone selezionata e tutte le posizioni sotto la posizione selezionata nella gerarchia sono visualizzati in questa coorte.
+Se \'Includi secondari\' non è selezionato, soltanto gli utenti cui è assegnata la posizione esatta selezionata saranno assegnati alla coorte.';
 $string['potusers'] = 'Utenti potenziali';
 $string['potusersmatching'] = 'Potenziali utenti corrispondenti';
-$string['profilefieldvalues_help'] = '<h1>Valori del campo di profilo di coorte</h1>
-
-<p>Se selezionato, i membri della coorte dinamica saranno scelti in base a quelli che hanno un campo di profilo utente che corrisponde a un particolare valore.</p>
-<p>I valori possono essere una singola stringa di testo o un elenco separato da virgola di diverse stringhe di testo. Se un elenco separato da virgola è fornito, gli utenti che corrispondono alle stringhe individuali saranno inclusi nella coorte.</p>';
+$string['profilefieldvalues_help'] = '# Valori del campo di profilo di coorte
+Se selezionato, i membri della coorte dinamica saranno scelti in base a quelli che hanno un campo di profilo utente che corrisponde a un particolare valore.
+I valori possono essere una singola stringa di testo o un elenco separato da virgola di diverse stringhe di testo. Se un elenco separato da virgola è fornito, gli utenti che corrispondono alle stringhe individuali saranno inclusi nella coorte.';
 $string['reportsto'] = 'riporta a';
 $string['role'] = 'Ruolo';
 $string['saveallchanges'] = 'Salva tutte le modifiche';
@@ -136,12 +133,11 @@ $string['thiscohortwillhave'] = 'Questa coorte avrà {$a} membri in questo momen
 $string['toomanyusersmatchsearch'] = 'Troppi utenti corrispondono alla ricerca';
 $string['toomanyuserstoshow'] = 'Ci sono troppi utenti visualizzati';
 $string['type'] = 'Tipo';
-$string['type_help'] = '<h1>Tipo di coorte</h1>
-
-<p>Il tipo di coorte può essere \'fisso\' o \'dinamico\'.</p>
-<p>Le coorti fisse sono un elenco predefinito di utenti, creati manualmente dal creatore di coorte. Il creatore può aggiungere o rimuovere gli utenti ma altrimenti l\'elenco è statico.</p>
-<p>Le coorti dinamiche sono determinate da una regola o set di regole e gli utenti inclusi nella coorte aggiornano dinamicamente per includere gli utenti che corrispondono a quelle regole (e rimuovere gli utenti che non corrispondono).</p>
-<p>I membri di una coorte fissa possono essere modificati in qualsiasi momento, ma le regole che definiscono una coorte dinamica non possono essere modificate quando la coorte è stata salvata.</p>';
+$string['type_help'] = '# Tipo di coorte
+Il tipo di coorte può essere \'fisso\' o \'dinamico\'.
+Le coorti fisse sono un elenco predefinito di utenti, creati manualmente dal creatore di coorte. Il creatore può aggiungere o rimuovere gli utenti ma altrimenti l\'elenco è statico.
+Le coorti dinamiche sono determinate da una regola o set di regole e gli utenti inclusi nella coorte aggiornano dinamicamente per includere gli utenti che corrispondono a quelle regole (e rimuovere gli utenti che non corrispondono).
+I membri di una coorte fissa possono essere modificati in qualsiasi momento, ma le regole che definiscono una coorte dinamica non possono essere modificate quando la coorte è stata salvata.';
 $string['userprofilefield'] = 'Campo profilo utente';
 $string['values'] = 'Valori';
 $string['viewmembers'] = 'Visualizza membri';

@@ -63,7 +63,6 @@ $string['completion-title-manual-y'] = '未完了マークする: {$a}';
 $string['completion-y'] = '完了';
 $string['completion_automatic'] = '条件を満たした場合、活動完了を表示する';
 $string['completion_help'] = '有効にした場合、コンディションに基づき手動または自動の活動完了がトラッキングされます。必要に応じて複数のコンディションを設定することができます。その場合、すべてのコンディションに合致したときのみ活動が完了したとみなされます。
-
 活動が完了した場合、コースページの活動名の横にチェックが表示されます。';
 $string['completion_manual'] = 'ユーザが手動で活動を完了マークできる';
 $string['completion_none'] = '活動完了を表示しない';
@@ -73,9 +72,7 @@ $string['completionexpected'] = '期待される完了日';
 $string['completionexpected_help'] = 'この設定では期待される活動完了日を指定します。日付は学生に表示されず、活動完了レポートのみに表示されます。';
 $string['completionicons'] = '完了チェックボックス';
 $string['completionicons_help'] = '活動目の横にあるチェックボックスにより、活動の完了時期を指定します。
-
 ドット付きのチェックマークが表示された場合、あなたはボックスをチェックすることができます (あなたの気持ちが変わった場合、ボックスを再度クリックすることで、チェックを外すことができます)。>
-
 空白のチェックボックスが表示された場合、教師により設定されたコンディションにしたがってあなたが活動を完了した時点で、チェックマークが自動的に表示されます。';
 $string['completionmenuitem'] = '完了';
 $string['completionnotenabled'] = '完了は有効にされていません。';

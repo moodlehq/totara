@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = 'Pääsyrajoitteet';
 $string['actionaftercorrectanswer'] = 'Toiminto oikean vastauksen jälkeen';
 $string['actionaftercorrectanswer_help'] = 'Vastattaessa kysymykseen oikein, annetaan kolme etenemisvaihtoehtoa:
-
 * Tavallinen – Seuraa oppitunnin polkua
 * Näytä sivu jota ei ole tarkasteltu – Sivut näytetään satunnaisessa järjestyksessä, samaa sivua ei näytetä kahdesti
 * Näytä vastaamaton sivu – Sivut näytetään satunnaisessa järjestyksessä, sivut joilla on vastaamattomia kysymyksiä näytetään uudelleen';
@@ -83,16 +82,11 @@ $string['cannotfindtimer'] = 'Virhe: ei löydetty oppitunti_ajastimen tietoja';
 $string['cannotfinduser'] = 'Virhe: ei löydetty käyttäjiä';
 $string['canretake'] = '{$a} voi aloittaa uudelleen';
 $string['casesensitive'] = 'Käytä säännöllisiä lausekkeita';
-$string['casesensitive_help'] = '<p align="center"><strong>Kysymysten asetukset </strong></p>
-
-<p>Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
-<ol>
-
-<li><p> </p>
-<p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
-<p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
-
-</li>';
+$string['casesensitive_help'] = '**Kysymysten asetukset **
+Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
+1.
+**Monivalinta** On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta *kuinka monta* oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella **on** erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.)
+**Lyhyt Vastaus** Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia.';
 $string['checkbranchtable'] = 'Tarkista sisältösivu';
 $string['checkedthisone'] = 'valitsi tämän.';
 $string['checknavigation'] = 'Tarkista navigointi';
@@ -259,34 +253,24 @@ $string['mediawidth'] = 'Ponnahdusikkunan leveys:';
 $string['messageprovider:graded_essay'] = 'Ilmoitus esseen arvioinnista';
 $string['minimumnumberofquestions'] = 'Kysymysten minimimäärä';
 $string['minimumnumberofquestions_help'] = 'Tämä asetus määrittää aktiviteetin arvosanan laskemiseen käytettävien kysymysten minimimäärän. Jos oppitunnilla on yksi tai useampi sisältösivu, arvoksi pitäisi antaa nolla.
-
 Jos arvoksi annetaan esim. 20, olisi hyvä lisätä seuraava teksti oppitunnin aloitussivulle: "Tällä oppitunnilla sinun oletetaan yrittävän ainakin 20:tä kysymystä. Voit yrittää useampaakin. Kuitenkin, jos vastaat alle 20:een kysymykseen, arvosanasi lasketaan kuin olisit yrittänyt 20:tä."';
 $string['missingname'] = 'Annan lempinimi';
 $string['modattempts'] = 'Salli opiskelijoiden esikatselu';
 $string['modattempts_help'] = 'Jos käytössä, opiskelijat voivat selata oppitunnin uudelleen alusta alkaen.';
 $string['modattemptsnoteacher'] = 'Vain opiskelijat voivat esikatsella';
 $string['modulename'] = 'Oppitunti';
-$string['modulename_help'] = '<img valign="middle" src="<?php echo $CFG->wwwroot?>/mod/lesson/icon.gif"> <strong>Oppitunti</strong>
-
-<blockquote>
-Oppitunti välittää sisällön kiinnostavalla ja joustavalla tavalla. Oppitunti koostuu joukosta sivuja. Jokainen sivu loppuu tyypillisesti kysymykseen ja mahdollisiin vastausvaihtoehtoihin. Opiskelijan vastauksesta riippuen hän joko jatkaa seuraavalle sivulle tai joutuu takaisin edelliselle sivulle. Oppitunnin läpi liikkuminen voi olla suoraviivaista tai monimutkaista, riippuen paljolti esitetyn materiaalin rakenteesta.
-</blockquote>';
+$string['modulename_help'] = 'Oppitunti välittää sisällön kiinnostavalla ja joustavalla tavalla. Oppitunti koostuu joukosta sivuja. Jokainen sivu loppuu tyypillisesti kysymykseen ja mahdollisiin vastausvaihtoehtoihin. Opiskelijan vastauksesta riippuen hän joko jatkaa seuraavalle sivulle tai joutuu takaisin edelliselle sivulle. Oppitunnin läpi liikkuminen voi olla suoraviivaista tai monimutkaista, riippuen paljolti esitetyn materiaalin rakenteesta.';
 $string['modulenameplural'] = 'Oppitunnit';
 $string['move'] = 'Siirrä sivu';
 $string['movedpage'] = 'Siirretty sivu';
 $string['movepagehere'] = 'Siirrä sivu tähän';
 $string['moving'] = 'Siirretään sivu {$a}';
 $string['multianswer'] = 'Monivastaus';
-$string['multianswer_help'] = '<p align="center"><strong>Kysymysten asetukset </strong></p>
-
-<p>Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
-<ol>
-
-<li><p> </p>
-<p><strong>Monivalinta</strong> On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta <em>kuinka monta</em> oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella <strong>on</strong> erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.) </p>
-<p><strong>Lyhyt Vastaus</strong> Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia. </p>
-
-</li>';
+$string['multianswer_help'] = '**Kysymysten asetukset **
+Muutamilla kysymystyypeistä on asetuksia jotka aktivoidaan napsauttamalla asetuspainiketta. Kysymystyypit ja asetusten merkitykset on käsitelty yksityiskohtaisemmin alapuolella.
+1.
+**Monivalinta** On useita Monivalintakysymyksiä joita kutsutaan "Monivalinta-Monivastaus" kysymyksiksi. Jos tämä vaihtoehto on valittu, opiskelijaa vaaditaan valitsemaan kaikki oikeat vastaukset vastausten sarjasta. Kysymys saattaa kertoa tai olla kertomatta *kuinka monta* oikeaa vastausta on. Esimerkiksi "Ketkä seuraavista olivat Yhdysvaltain presidenttejä?" ei kerro. Kun taas "Valitse kaksi Yhdysvaltain presidenttiä seuraavalta listalta" kertoo. Oikeiden vastausten määrä voi olla yhdestä useaan vaihtoehtoon. (Monivalinta monivastaus kysymys yhdellä oikealla vastauksella **on** erilainen kuin Monivalinta kysymys, koska ensimmäinen sallii opiskelijan valita enemmän kuin yhden vaihtoehdon, samalla kun jäljempi ei salli.)
+**Lyhyt Vastaus** Oletuksena vertailu jättää aakkoskoon huomiotta. Jos kysymysvaihtoehto on valittu, vertailut ovat aakkoskoosta riippuvia.';
 $string['multichoice'] = 'Monivalinta';
 $string['multipleanswer'] = 'Useita vastauksia';
 $string['nameapproved'] = 'Nimi hyväksytty';
@@ -378,11 +362,10 @@ $string['report'] = 'Raportti';
 $string['reports'] = 'Raportit';
 $string['response'] = 'Palaute';
 $string['retakesallowed'] = 'Uusinnat sallittu';
-$string['retakesallowed_help'] = '<p>Tämä asetus määrittää, voivatko opiskelijat tehdä tehtävän useammin kuin kerran vai eivät. Opettaja voi päättää, että tehtävä sisältää materiaalia, joka opiskelijan tulisi tuntea läpikotaisin. Silloin kannattaa sallia useita suorituskertoa. Jos materiaalia käytetään tentin tyylisesti, silloin opiskelijoiden ei kannata antaa uusia tehtävää. </p>
-<p>Kun opiskelijat savat uusia tehtäviä, arvosanasivulla näytettävät <strong>arvosanat</strong> ovat joko <strong>keskiarvo</strong> uusinnoista tai niiden<strong> paras</strong> tulos. Seuraava parametri määrittelee, mikä näistä arvosanavaihtoehdoista on käytössä. </p>
-<p>Huomaa, että <strong>Kysymys Analyysi</strong>  käyttää aina vastauksia tehtävän ensimmäisestä suorituskerrasta,  uusinnat tämän jälkeen jätetään huomiotta. </p>
-
-<p>Oletuksena tämä valinta on<strong> Kyllä</strong>, tarkoittaen, että opiskelijat voivat uusia tehtävän, sillä oletettavasti harvemmin tämä valinta olisi <strong>Ei</strong>.</p>';
+$string['retakesallowed_help'] = 'Tämä asetus määrittää, voivatko opiskelijat tehdä tehtävän useammin kuin kerran vai eivät. Opettaja voi päättää, että tehtävä sisältää materiaalia, joka opiskelijan tulisi tuntea läpikotaisin. Silloin kannattaa sallia useita suorituskertoa. Jos materiaalia käytetään tentin tyylisesti, silloin opiskelijoiden ei kannata antaa uusia tehtävää.
+Kun opiskelijat savat uusia tehtäviä, arvosanasivulla näytettävät **arvosanat** ovat joko **keskiarvo** uusinnoista tai niiden** paras** tulos. Seuraava parametri määrittelee, mikä näistä arvosanavaihtoehdoista on käytössä.
+Huomaa, että **Kysymys Analyysi** käyttää aina vastauksia tehtävän ensimmäisestä suorituskerrasta, uusinnat tämän jälkeen jätetään huomiotta.
+Oletuksena tämä valinta on** Kyllä**, tarkoittaen, että opiskelijat voivat uusia tehtävän, sillä oletettavasti harvemmin tämä valinta olisi **Ei**.';
 $string['returnto'] = 'Palaa {$a}';
 $string['returntocourse'] = 'Palaa kurssiin';
 $string['review'] = 'Tarkastele';

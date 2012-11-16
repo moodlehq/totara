@@ -109,11 +109,8 @@ $string['competencyaddnew'] = 'Lisää uusi kompetenssi';
 $string['competencyaddnewframework'] = 'Lisää uusi kompetenssirakenne';
 $string['competencyaggregationmethod'] = 'Kompetenssin saavuttaminen';
 $string['competencyaggregationmethod_help'] = 'Yhteenvetomenetelmä on tapa, jolla järjestelmä laskee onko kompetenssi saavutettu vai ei.
-
 Jos valittuna on Kaikki, kaikkien alakompetenssien tulee täyttyä, jotta yläkompetenssi voidaan merkitä suoritetuksi.
-
 Jos valittuna on Mikä tahansa, yhden alakompetensseista riittää täyttyä, jotta yläkompetenssi (ja siihen liittyvät muut alikompetenssit) voidaan merkitä suoritetuiksi.
-
 Jos toimintoa ei ole valittu käytettäväksi, järjestelmä ei kerää tälle kompetenssille automaattisia yhteenvetotietoja, mutta suoritusmerkinnät voidaan silti antaa käsin.';
 $string['competencyassigndeletecheck'] = 'Oletko varma, että haluat poistaa tämän kompetenssitehtävän?';
 $string['competencybacktoallframeworks'] = 'Takaisin kompetenssirakenteisiin';
@@ -139,13 +136,10 @@ $string['competencyevidence'] = 'Kompetenssitodisteet';
 $string['competencyevidenceassessmenttype'] = 'Arviointityyppi';
 $string['competencyevidenceassessmenttype_help'] = 'Vapaa tekstikenttä, johon voit halutessasi syöttää lisätietoa tämän kompetenssin arviointitavasta.';
 $string['competencyevidenceassessor_help'] = 'Valitse henkilö, joka arvioi käyttäjän pätevyyden tässä kompetenssissa. Arvioijan määrittäminen on valinnaista, joten voit jättää tämän kohdan myös tyhjäksi.
-
 Alavetovalikko näyttää kaikki käyttäjät, jotka on määritetty olemaan \'Arvioijan\' roolissa. Jos etsimäsi käyttäjä puuttuu listalta tai yhtään vaihtoehtoa ei ole määritetty, käänny järjestelmän hallinnoijan puoleen.';
 $string['competencyevidenceassessorname_help'] = 'Tässä kentässä näkyy sen organisaation nimi, jota teki käyttäjästä arvioinnin tätä kompetenssia varten. Kenttä on vapaaehtoinen ja sen voi jättää tyhjäksi.';
 $string['competencyevidencecompetency_help'] = 'Käyttäjälle määritettävä kompetenssi, jota ei voi muuttaa, jos siihen on jo liitetty kompetenssitodiste. Jos käyttäjäoikeutesi sallivat, voit luoda käyttäjälle uuden todiste-nimikkeen hänen profiilinsa välilehdeltä **Omat suoritukset**, klikkaamalla painiketta **Lisää kompetenssitodiste**.
-
 Uutta todiste-nimikettä luodessasi voit valita lisäätkö todisteen olemassaolevaan kompetenssiin vai luotko kokonaan uuden. Jos valitset ensimmäisen vaihtoehdon, voit valita haluamasi kompetenssin ponnahdusikkunan listalta. Jos valitset jälkimmäisen vaihtoehdon, voit luoda uuden kompetenssin haluaamasi rakenteeseen.
-
 Huomaa, että yhdelle käyttäjälle ei voi olla määritettynä kahta eri todistetta yhtä kompetenssia kohden. Tällöin joudut joko muokkaamaan alkuperäistä suoritusta tai valitsemaan eri kompetenssin.';
 $string['competencyevidencecount'] = 'Suoritusmerkinnät';
 $string['competencyevidenceorganisation_help'] = 'Tämä valinnainen kenttä näyttää missä organisaatiossa käyttäjä oli saadessaan kompetenssinäytön valmiiksi. Useimmissa tapauksissa tämä on sama kuin käyttäjän nykyinen organisaatio. Koska monet ihmiset siirtyvät organisaatioiden välillä ajan kuluessa, tämän toiminnon avulla suoritusten historiaa voi seurata.';
@@ -162,21 +156,16 @@ $string['competencyframeworkfullname'] = 'Koko nimi kohteelle';
 $string['competencyframeworkfullname_help'] = 'Tämä on rakenteen täydellinen nimi.';
 $string['competencyframeworkgeneral'] = 'Kompetenssirakenne';
 $string['competencyframeworkgeneral_help'] = '**Kompetenssirakenteet **luodaan tukemaan henkilöstöltä vaadittavien taitojen, tiedon ja kompetenssien verkostoa.
-
 Kompetenssit voidaan ryhmitellä erilaisten rakenteiden alle. Esimerkiksi yhdessä rakenteessa voi olla kaikki alan kansallisen tason standardikompetenssit (virallisista lähteistä) ja toisessa rakenteessa voi olla yrityksen sisäiset kompetenssit.
-
 Ennenkuin voit rakentaa kompetenssirakenteen, **kompetenssiasteikko** tulee olla luotuna.';
 $string['competencyframeworkidnumber'] = 'ID';
 $string['competencyframeworkidnumber_help'] = 'Rakenteen tunnus on yksilöllinen numero, joka edustaa kyseistä rakennetta.</h1>';
 $string['competencyframeworkmanage'] = 'Hallinnoi rakenteita';
 $string['competencyframeworks'] = 'Kompetenssirakenteet';
 $string['competencyframeworks_help'] = '**Kompetenssirakenteet **luodaan tukemaan henkilöstöltä vaadittavien taitojen, tiedon ja kompetenssien verkostoa.
-
 Kompetenssit voidaan ryhmitellä erilaisten rakenteiden alle. Esimerkiksi yhdessä rakenteessa voi olla kaikki alan kansallisen tason standardikompetenssit (virallisista lähteistä) ja toisessa rakenteessa voi olla yrityksen sisäiset kompetenssit.
-
 Ennenkuin voit rakentaa kompetenssirakenteen, **kompetenssiasteikko** tulee olla luotuna.';
 $string['competencyframeworkscale_help'] = 'Kompetenssiasteikkojen avulla voit määritellä sen millä kriteereillä kompetenssia arvotetaan. Esimekiksi, asteikossa voi olla kolme arvoa: \'pätevä, pätevä valvonnassa, ei pätevä\'.
-
 Ensimmäisenä sinun tulee lisätä uusi asteikko, sen jälkeen asteikon arvot, joilla mitataan oppijan edistymistä kompetenssin suhteen. Voit lisätä niin monta arvoa kuin haluat. Huomaa myös oletus- ja pätevyysarvojen asetukset.';
 $string['competencyframeworkshortname_help'] = 'Rakenteen lyhenne helpottaa rakenteen löytämistä joissakin näkymissä.';
 $string['competencyframeworkview'] = 'Tarkastele rakennetta';
@@ -194,19 +183,14 @@ $string['competencynoframeworkssetup'] = 'Tälle sivustolle ei ole määritelty 
 $string['competencynotypes'] = 'Ei kompetenssityyppejä';
 $string['competencyparent'] = 'Yläkompetenssi';
 $string['competencyparent_help'] = '**Yläkompetenssi** mahdollistaa kompetenssienvälisten suhteiden hallinnoimisen.
-
 Valitse **yläkompetenssi** alasvetovalikosta. from the dropdown menu. Valitse **Ylin** mikäli haluast kompetenssin olevan ylimpänä koko hierarkiassa.
-
 Jos muutat jonkin kohteen toisen yläkompetenssin alle, kaikki sen allaolevat kohteet siirtyvät mukana.
-
 **Huomio:** Jotta voit hallinnoida kompetenssienvälisiä suhteita, rakenteessa tulee olla vähintään kaksi kohdetta. Muussa tapauksessa hallinnointimahdollisuutta ei näytetä.';
 $string['competencyplural'] = 'Kompetenssit';
 $string['competencyreturntoframework'] = 'Palaa kompetenssirakenteeseen';
 $string['competencyscale'] = 'Kompetenssiasteikko';
 $string['competencyscale_help'] = '**Asteikko** on sen kompetenssiasteikon nimi, jota käytetään kompetenssirakenteessa.
-
 Kompetenssiasteikko määritellään kompetenssirakenteessa. Vain yhtä asteikkoa voidaan käyttää yhdessä rakenteessa.
-
 Uuden kompetenssiasteikon voi määritellä täällä: Hierarkiat/Kompetenssit/Hallinnoi rakenteita hallinnointivalikossa vasemmalla.';
 $string['competencyscaleassign'] = 'Kompetenssiasteikko';
 $string['competencyscaleassign_help'] = 'Kompetenssiasteikko määrittelee sen, millä kriteereillä kompetenssia mitataan. Tämä on sen asteikon nimi, johon arvoa ollaan lisäämässä.';
@@ -216,31 +200,26 @@ $string['competencyscaledescription'] = 'Kohteen Kompetenssiasteikko kuvaus';
 $string['competencyscaleinuse'] = 'Tämä asteikko on käytössä (eli käyttäjien kompetenssit määräytyvät tämän asteikon mukaan). Asteikon arvoja ei voida luoda, järjestää uudestaan tai poistaa, jotta tietojen yhtenäisyys säilyy. Voit nimetä asteikon arvoja uudelleen mutta tämä saattaa hämmentää käyttäjiä koska heidän pätevyystietonsa muuttuvat ilmoittamatta.';
 $string['competencyscaleproficient'] = 'Pätevyyden arvo numerolla';
 $string['competencyscaleproficient_help'] = 'Pätevyyden arvo osoittaa onko käyttäjä pätevä tietyssä osaamisalueessa. Tämän arvon perusteella voidaan seurata oppimissuunnitelmien etenemistä ja näyttää myöhästymishuomautuksia puutteellisesta osaamisesta.
-
 Asteikossa voi olla useita arvoja, mutta vähintään yhden niistä tulee olla valittuna hyväksytyksi pätevyydeksi. Tätä asetusta voit muuttaa asteikon arvon muokkaustilassa.
-
 Asteikon alin pätevyyden arvo annetaan automaattisesti käyttäjälle, joka on saavuttanut kompetenssiin vaaditut näytöt (esim. kurssin/aktiviteetin suorittaminen, kurssista/aktiviteetista arvosanan saaminen).';
 $string['competencyscales'] = 'Kompetenssiasteikot';
 $string['competencyscalescalename'] = 'Nimi';
 $string['competencyscalescalename_help'] = 'Kompetenssiasteikon nimi, jota käytetään kompetenssihierarkioissa.';
 $string['competencyscalescalevalues'] = 'Arvot';
 $string['competencyscalescalevalues_help'] = 'Syötä kompetenssiasteikon arvot (yksi per rivi) järjestyksessä kaikkein pätevimmästä vähiten pätevään. Esimerkiksi:
-
-<p class="indent">
-<i> Pätevä<br /> Ohjausta vaativa<br /> Ei osaamista<br /> </i>
-</p>';
+* Pätevä
+* Ohjausta vaativa
+* Ei osaamista
+';
 $string['competencyscalesgeneral'] = 'Kompetenssiasteikko';
 $string['competencyscalesgeneral_help'] = '**Kompetenssiasteikkojen **avulla voit määritellä sen millä kriteereillä kompetenssia arvotetaan. Esimekiksi, asteikossa voi olla kolme arvoa: \'pätevä, pätevä valvonnassa, ei pätevä\'.
-
 Sinun tulee määritellä ensin kompetenssiasteikko, jotta voit rakentaa kompetenssirakenteen ja määritellä kompetenssit.';
 $string['competencyscalevaluedescription'] = 'Kohteen arvon kuvaus';
 $string['competencyscalevalueidnumber'] = 'Asteikon arvon ID';
 $string['competencyscalevalueidnumber_help'] = 'Asteikon arvon tunnus on yksilöllinen numero, joka edustaa asteikon arvoa.';
 $string['competencyscalevaluename'] = 'Asteikon arvon nimi';
 $string['competencyscalevaluename_help'] = '**Asteikon arvon nimi** on sen kompetenssiasteikon arvon nimi, jota olet lisäämässä tai muokkaamassa.
-
 Arvolla mitataan oppijan edistymistä kompetenssin osalta. Voit lisätä niin monta arvoa kuin on tarpeellista.
-
 **Huomio: **Muista asettaa oletus- ja pätevyysarvot.';
 $string['competencyscalevaluenumericalvalue'] = 'Asteikon arvo numerona';
 $string['competencyscalevaluenumericalvalue_help'] = 'Asteikon numeerinen arvo.';
@@ -248,7 +227,6 @@ $string['competencyshortname'] = 'Kompetenssin lyhenne';
 $string['competencyshortname_help'] = 'Kompetenssin lyhenne helpottaa kompetenssin löytämistä joissakin näkymissä.';
 $string['competencytemplatefullname_help'] = 'Mallipohjan täydellinen nimi.';
 $string['competencytemplategeneral_help'] = '**Kompetenssimallipohjan** avulla voit ryhmitellä saman kompetenssirakenteen kompetensseja yhteen.
-
 Kun rakennat koulutusta, esim. työhöntulokurssia, voit linkittää sen kompetenssimallipohjaan nimeltään \'uuden työntekijän kompetenssit\' sen sijaan, että valitsisit kompetenssit yksitellen.';
 $string['competencytemplatemanage'] = 'Hallinnoi mallipohjia';
 $string['competencytemplates'] = 'Kompetenssimallipohjat';
@@ -584,11 +562,10 @@ $string['organisationframeworkdescription'] = 'Kuvaus kohteelle Organisaatiorake
 $string['organisationframeworkdescription_help'] = 'Rakenteen kuvaus- kentässä voit antaa mahdollisia lisätietoja rakenteesta. Se näytetään organisaation hallinnointisivulla, organisaatiotaulukon yläpuoella.';
 $string['organisationframeworkfullname_help'] = 'Määrittele rakenteen täydellinen nimi.';
 $string['organisationframeworkidnumber'] = 'ID-numero';
-$string['organisationframeworkidnumber_help'] = 'Rakenteen tunnus on yksilöllinen numero, joka edustaa rakennetta.</h1>';
+$string['organisationframeworkidnumber_help'] = 'Rakenteen tunnus on yksilöllinen numero, joka edustaa rakennetta.';
 $string['organisationframeworkmanage'] = 'Hallinnoi rakenteita';
 $string['organisationframeworks'] = 'Organisaatiorakenteet';
 $string['organisationframeworks_help'] = '**Organisaatiorakenne** rakennetaan kuvaamaan sitä millainen organisaatiosi on.
-
 Voit luoda useita rakenteita. Voit esimerkiksi luoda rakenteet yrityksen alaosastoille tai tytäryhtiöille.';
 $string['organisationframeworkshortname_help'] = 'Rakenteen lyhenne toimii käyttöä nopeuttavana viittauksena rakenteen koko nimeen.';
 $string['organisationfullname'] = 'Organisaation koko nimi';
@@ -605,11 +582,8 @@ $string['organisationnoframeworkssetup'] = 'Tällä sivustolla ei ole vielä org
 $string['organisationnotypes'] = 'Ei organisaatiotyyppejä';
 $string['organisationparent'] = 'Yläorganisaatio';
 $string['organisationparent_help'] = '**Yläorganisaatio** mahdollistaa ylä- ja alaorganisaatioiden suhteiden hallinnoimisen.
-
 Valitse **yläorganisaatio** alasvetovalikosta. Valitse **Ylin** , jos haluat organisaation olevan hiearkian huipulla.
-
 Jos muutat jonkin kohteen yläorganisaatiota, se siirtyy uuden yläorganisaationsa alle ottaen mukaansa allaolevat kohteet.
-
 **Huomaa:** Jotta voit luoda näitä suhteita, sinulla tulee olla vähintään kaksi kohdetta rakenteessa. Muutoin tätä vaihtoehtoa ei ole saatavilla.';
 $string['organisationplural'] = 'Organisaatiot';
 $string['organisationreturntoframework'] = 'Palaa organisaatiorakenteeseen';
@@ -675,7 +649,6 @@ $string['positionframeworkidnumber_help'] = 'Rakenteen tunnusnumero on yksilöll
 $string['positionframeworkmanage'] = 'Hallinnoi rakenteita';
 $string['positionframeworks'] = 'Asemarakenteet';
 $string['positionframeworks_help'] = 'A **Asemarakenne** on kehikko, joka kuvastaa eri asemien paikkaa organisaatiossa.
-
 Voit luoda useita asemien luokittelutapoja (rakenteita) yhdessä organisaatiossa.';
 $string['positionframeworkshortname_help'] = 'Rakenteen lyhenne on helppo tapa viitata rakenteen koko nimeen ja sitä voidaan käyttää eri näkymissä.';
 $string['positionfullname'] = 'Aseman koko nimi';
@@ -693,11 +666,8 @@ $string['positionnoframeworkssetup'] = 'Tällä sivustolla ei ole yhtään asema
 $string['positionnotypes'] = 'Ei asematyyppejä';
 $string['positionparent'] = 'Ylempi asema';
 $string['positionparent_help'] = '**Ylempi asema** -toiminnon avulla voit hallinnoida asemien hierarkisia suhteita.
-
 Valitse **Ylempi asema** alasvetovalikosta. Valitse **Ylin**, jos haluat aseman sijoittuvan hierarkian ylimmälle tasolle.
-
 Jos muutat jonkin aseman yläasemaa, se siirtyy tämän uuden aseman alle ja kaikki sen alla olevat asemat siirtyvät mukana.
-
 **Huomio:** Jotta voit luoda hierkisia suhteita, sinulla tulee olla vähintään kaksi kohdetta rakenteessa. Muussa tapauksessa tämä vaihtoehto ei ole käytettävissä.';
 $string['positionplural'] = 'Asemat';
 $string['positionreturntoframework'] = 'Palaa asemarakenteeseen';

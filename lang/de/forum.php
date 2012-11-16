@@ -188,7 +188,6 @@ $string['forumtracked'] = 'Ungelesene Beiträge werden verfolgt';
 $string['forumtrackednot'] = 'Ungelesene Beiträge werden nicht verfolgt';
 $string['forumtype'] = 'Forumstyp';
 $string['forumtype_help'] = 'Es gibt fünf verschiedene Forentypen:
-
 * Diskussion zu einem Thema - Forum zu nur einem einzigen Thema, zu dem alle etwas schreiben dürfen. Dies ermöglicht kurze und sehr spezielle Diskussionen.
 * Jede Person postet genau ein Thema - Forum in dem jede Person genau ein einziges Diskussionsthema eröffnen darf. Zu jedem Thema dürfen alle anderen etwas antworten.
 * Frage- und Antwort-Forum - Forum, bei dem die Teilnehmer/innen zuerst ihre eigene Position posten müssen, bevor sie die anderen Beiträge sehen und darauf antworten können.
@@ -366,16 +365,13 @@ $string['subscribestart'] = 'Beiträge per E-Mail an mich senden';
 $string['subscribestop'] = 'Keine Beiträge als E-Mail an mich senden';
 $string['subscription'] = 'Abonnement';
 $string['subscription_help'] = 'Wenn Sie ein Forum abonnieren, werden alle Beiträge dieses Forums per E-Mail an Sie gesandt.
-
 Normalerweise dürfen Sie auswählen, ob Sie dieses Abonnement wünschen. Manche Foren sind allerdings so eingestellt, dass ein Abonnement verpflichtend ist und jeder alle Beiträge per E-Mail bekommt.';
 $string['subscriptionauto'] = 'Automatisch';
 $string['subscriptiondisabled'] = 'Deaktiviert';
 $string['subscriptionforced'] = 'Verpflichtend';
 $string['subscriptionmode'] = 'Abonnement';
 $string['subscriptionmode_help'] = 'Alle, die ein Forum abonnieren, bekommen die Beiträge dieses Forums per E-Mail zugesandt.
-
 Es gibt 4 Modi für ein Abonnement:
-
 * Optional - alle dürfen auswählen, ob sie das Forum abonnieren möchten oder nicht
 * Verpflichtend - alle haben das Forum abonniert und niemand kann es abbestellen
 * Automatisch - alle haben das Forum abonniert, dürfen es aber jederzeit abbestellen
@@ -392,11 +388,9 @@ $string['trackingon'] = 'An';
 $string['trackingoptional'] = 'Optional';
 $string['trackingtype'] = 'Lesemarkierung';
 $string['trackingtype_help'] = 'Wenn diese Option aktiviert ist, sehen Teilnehmer/innen gelesene und ungelesene Beiträge unterschiedlich markiert im Forum.
-
 Es stehen drei Optionen zur Verfügung:
-
 * Optional - Die Markierung ist ein- und ausschaltbar
-* An  - Die Markierung ist immer an
+* An - Die Markierung ist immer an
 * Aus - Die Markierung ist immer aus';
 $string['unread'] = 'Ungelesen';
 $string['unreadposts'] = 'Ungelesene Beiträge';

@@ -242,8 +242,8 @@ $string['memorylimithelp'] = '<p>您服务器的PHP内存限制是{$a}。</p>
 <p>然而，在一些服务器上这会让<b>所有</b>PHP页面无法正常工作(在访问页面时会有错误)，因此您可能不得不删除.htaccess文件。</p></li>
 </ol>';
 $string['mssql'] = 'SQL*Server(mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP的MSSQL 扩展并未安装正确，因此无法与SQL*Server通信。请检查您的php.ini文件或重新编译PHP。';
 $string['mssql_n'] = '支持UTF-8的SQL*Server(mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP的MSSQL 扩展并未安装正确，因此无法与SQL*Server通信。请检查您的php.ini文件或重新编译PHP。';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP的MySQL扩展并未安装正确，因此无法与MySQL通信。请检查您的php.ini文件或重新编译PHP。';
 $string['mysqli'] = '改进的Mysql(mysqli)';
@@ -267,8 +267,8 @@ $string['nativesqlsrvnodriver'] = 'Microsoft 为 PHP 提供的 SQL Server 驱动
 $string['nativesqlsrvnonwindows'] = 'Microsoft 为 PHP 提供的 SQL Server 驱动程序只能在Windows 系统上使用。';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP的OCI8扩展并未安装正确，因此无法与Oracle通信。请检查您的php.ini文件或重新编译PHP。';
-$string['odbcextensionisnotpresentinphp'] = 'PHP的ODBC扩展并未安装正确，因此无法与SQL*Server通信。请检查您的php.ini文件或重新编译PHP。';
 $string['odbc_mssql'] = '基于ODBC的SQL*Server (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP的ODBC扩展并未安装正确，因此无法与SQL*Server通信。请检查您的php.ini文件或重新编译PHP。';
 $string['pass'] = '通过';
 $string['paths'] = '路径';
 $string['pathserrcreatedataroot'] = '安装程序无法建立数据目录({$a->dataroot})。';
@@ -288,8 +288,7 @@ $string['phpversion'] = 'PHP版本';
 $string['phpversionhelp'] = '<p>Moodle需要PHP 4.3.0或5.1.0（5.0.x有若干已知的问题）以上的版本。</p>
 <p>您当前使用的是{$a}</p>
 <p>您必须升级PHP或者转移到一个有新版PHP的服务器上！<br />
-（如果正使用5.0.x，您也可以降级到4.4.x版）</p>
-';
+（如果正使用5.0.x，您也可以降级到4.4.x版）</p>';
 $string['postgres7'] = 'PostgreSQL (postgres7)';
 $string['releasenoteslink'] = '想了解本版本Moodle的信息，请访问发行说明：{$a}';
 $string['safemode'] = '安全模式';

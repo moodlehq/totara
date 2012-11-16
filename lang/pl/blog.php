@@ -118,7 +118,6 @@ $string['personalblogs'] = 'Użytkownicy mogą wyświetlać tylko własny blog';
 $string['preferences'] = 'Ustawienia';
 $string['publishto'] = 'Opublikuj do';
 $string['publishto_help'] = 'Dostępne są 3 opcje:
-
 * Wpis prywatny (szkic) - tylko ty i administrator może zobaczyć wpis
 * Wpis widoczny dla wszystkich - każdy kto jest zarejestrowany w tym serwisie może przeczytać wpis
 * Wpis widoczny dla wszystkich na świecie - każdy, włączając gości, może zobaczyć ten wpis';

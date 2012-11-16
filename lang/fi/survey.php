@@ -243,11 +243,8 @@ $string['surveyname'] = 'Kyselyn nimi';
 $string['surveysaved'] = 'Kysely tallennettu';
 $string['surveytype'] = 'Kyselyn tyyppi';
 $string['surveytype_help'] = 'Kyselyssä on kolme vaihtoehtoa:
-
 * Attitudes to Thinking and Learning Survey (ATTLS) - sen mittaamiseen, missä määrin osallistuja on sosiaalinen oppija (kokee yleensä oppimisen mukavaksi, tekee usein yhteistyötä ja halukas rakentamaan myös muiden ideoille) ja missä määrin eristynyt oppija (suhtautuu oppimiseen helposti kriittisesti)
-
 * Critical incidents survey
-
 * Constructivist On-line Learning Environment Survey (COLLES) sen mallintamiseen, missä määrin www:n interaktiviista kapasiteettia on mahdollista hyödyntää opiskelijoiden dynaamisten oppimiskäytäntöjen aktivoimiseen.';
 $string['thanksforanswers'] = 'Kiitos vastauksestasi tähän kyselyyn, {$a}';
 $string['time'] = 'Aika';

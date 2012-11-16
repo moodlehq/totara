@@ -44,9 +44,9 @@ $string['attempts'] = 'Próby';
 $string['attemptsx'] = '{$a} prób';
 $string['attr_error'] = 'Nieprawidłowa wartość atrybutu ({$a->attr}) w tagu {$a->tag}.';
 $string['autocontinue'] = 'Automatyczna kontynuacja';
-$string['autocontinue_help'] = '<p><b>Auto-Kontynuacja</b></p>
-<p> Jeżeli automatyczna kontynuacja jest ustawiona na "tak", wtedy SCO wywołuje metodę "close communication", automatycznie następny SCO będzie dostępny.</p>
-<p>Jeżeli jest ustawione "Nie", uzytkownik musi użyć przycisku "kontynuuj" żeby kontynuować.</p>';
+$string['autocontinue_help'] = '**Auto-Kontynuacja**
+Jeżeli automatyczna kontynuacja jest ustawiona na "tak", wtedy SCO wywołuje metodę "close communication", automatycznie następny SCO będzie dostępny.
+Jeżeli jest ustawione "Nie", uzytkownik musi użyć przycisku "kontynuuj" żeby kontynuować.';
 $string['autocontinuedesc'] = 'To ustawienie włącza aktywność automatycznej kontynuacji';
 $string['averageattempt'] = 'Średnia prób';
 $string['badmanifest'] = 'Błedy manifestów: zobacz logi błędów';
@@ -62,7 +62,6 @@ $string['completionscorerequired'] = 'Wymagaj wyniku minimalnego';
 $string['completionstatus_completed'] = 'Ukończone';
 $string['completionstatus_failed'] = 'Niezaliczone';
 $string['completionstatus_help'] = '# Ukończenie czynności: wymagaj stanu
-
 Zaznaczenie jednego lub więcej stanów będzie wymagało, aby użytkownik uzyskał przynajmniej jeden z zaznaczonych stanów w celu zaznaczenia wykonania tej czynności SCORM, oraz wszelkich innych wymagań ukończenia czynności.';
 $string['completionstatus_passed'] = 'Zaliczone';
 $string['completionstatusrequired'] = 'Wymagaj stanu';
@@ -113,19 +112,16 @@ $string['general'] = 'Dane ogólne';
 $string['gradeaverage'] = 'Średnia ocena';
 $string['gradehighest'] = 'Najwyższa ocena';
 $string['grademethod'] = 'Metoda oceniania';
-$string['grademethod_help'] = '<p><b>Metody oceniania</b></p>
-<p>
+$string['grademethod_help'] = '**Metody oceniania**
 Wynik czynności SCORM/AICC pokazany na stronach ocen może być przedstawiony w kilku trybach:
-<ul>
-<li><b>Sytuacja SCO</b><br/>
+**Sytuacja SCO**
 Ten tryb pokazuje liczbę zakończonych/zdanych SCOes dla czynności. Wartością maksymalną jest ilość SCO.
-<li><b>Najlepsza ocena</b><br/>
+**Najlepsza ocena**
 Strona ocenianie wyświetla najwyższy wynik uzyskanych przez uczestników we wszystkich zdanych SCOes.
-<li><b>Ocena przeciętna</b><br/>
+**Ocena przeciętna**
 Jeśli wybierasz ten tryb Moodle określi średnią wszystkich wyników.
-<li><b>Ocena zsumowana</b><br/>
+**Ocena zsumowana**
 W tym trybie wszystkie wyniki zostaną zsumowane.
-</li></p>
 
 Funkcje autokontynuacji
 Jak pokazać/ukryć przycisk trybu przeglądania
@@ -140,14 +136,9 @@ $string['height'] = 'Wysokość';
 $string['hidden'] = 'Ukryty';
 $string['hidebrowse'] = 'Wyłącz tryb pokazu wstępnego';
 $string['hidebrowse_help'] = '# Ukryj przycisk Podgląd
-
 Jeśli ta opcja jest ustawiona na Tak, przycisk Podgląd zostanie ukryty na stronie widoku czynności pakietu SCORM/AICC.
-
 Uczestnik może wybrać podgląd (tryb przeglądania) czynności lub próby w trybie normalnym.
-
-Gdy obiekt nauki zostanie ukończony w trybie podglądu (przeglądania), zostanie on oznaczony ikoną przeglądu ![<?php print_string(\'browsed\',\'scorm\') ?>][1].
-
- [1]: <?php echo $CFG->wwwroot.\'/mod/scorm/pix/browsed.gif\' ?> "<?php print_string(\'browsed\',\'scorm\') ?>"';
+Gdy obiekt nauki zostanie ukończony w trybie podglądu (przeglądania), zostanie on oznaczony ikoną przeglądu';
 $string['hidebrowsedesc'] = 'Ta preferencja ustawia wartość domyślną lub to, czy włączyć, czy też wyłączyć tryb podglądu';
 $string['hideexit'] = 'Ukryj link do wyjścia';
 $string['hidenav'] = 'Ukryj przyciski nawigacji';
@@ -206,21 +197,17 @@ $string['organizations'] = 'Organizacje';
 $string['othersettings'] = 'Dodatkowe ustawienia';
 $string['othertracks'] = 'Inne drogi';
 $string['package'] = 'Plik pakietu';
-$string['package_help'] = '<p><b>Plik pakietu</b></p>
-
-<p>Pakiet jest plikiem z rozszerzeniem <b>zip</b> (lub pif) i zawiera pliki definicji kursu AICC lub SCORM.</p>
-
-<p>Pakiet <b>SCORM</b> musi zawierać w sobie pliki o nazwie <b>imsmanifest.xml</b> który definiuje strukturę kursu SCORM, lokalizację zasobów i wiele innych rzeczy.<p>
-
-<p>Pakiet <b>AICC</b> jest określany przez kilka plików (od 4 do 7) z określonymi rozszerzeniami. Poniżej znajdziesz oznaczenia rozszerzeń:
-<ul>
-<li>CRS &#8211; Plik Opisu Kursu
-<li>AU &#8211; Plik Jednostki Zadaniowej
-<li>DES &#8211; Plik Opisowy
-<li>CST &#8211; Plik Struktury Kursu
-<li>ORE &#8211; Plik Zależności Obiektywnych (opcjonalny)
-<li>PRE &#8211; Plik Założeń Wstępnych (opcjonalny)
-<li>CMP &#8211; Plik Wymogu Ukończenia (opcjonalny)
+$string['package_help'] = '**Plik pakietu**
+Pakiet jest plikiem z rozszerzeniem **zip** (lub pif) i zawiera pliki definicji kursu AICC lub SCORM.
+Pakiet **SCORM** musi zawierać w sobie pliki o nazwie **imsmanifest.xml** który definiuje strukturę kursu SCORM, lokalizację zasobów i wiele innych rzeczy.
+Pakiet **AICC** jest określany przez kilka plików (od 4 do 7) z określonymi rozszerzeniami. Poniżej znajdziesz oznaczenia rozszerzeń:
+* CRS – Plik Opisu Kursu
+* AU – Plik Jednostki Zadaniowej
+* DES – Plik Opisowy
+* CST – Plik Struktury Kursu
+* ORE – Plik Zależności Obiektywnych (opcjonalny)
+* PRE – Plik Założeń Wstępnych (opcjonalny)
+* CMP – Plik Wymogu Ukończenia (opcjonalny)
 </ul>';
 $string['packagedir'] = 'Błąd systemu plików: Nie można utworzyć folderu dla pakietu';
 $string['packagefile'] = 'Nie wskazano pliku';
@@ -268,19 +255,15 @@ $string['show'] = 'Pokaż';
 $string['sided'] = 'Z boku';
 $string['skipview'] = 'Uczestnik pominął zawartość strony struktury';
 $string['skipview_help'] = '# Uczestnik pomija stronę struktury zawartości
-
 W przypadku dodania pakietu zawierającego tylko jeden obiekt nauki można wybrać automatyczne pomijanie strony struktury zawartości, gdy użytkownik kliknie czynność SCORM na stronie kursu.
-
 Można wybrać:
-
-*   **Nigdy** pomiń stronę struktury zawartości
-*   **Pierwszy dostęp** tylko za pierwszym razem pomiń stronę struktury zawartości
-*   **Zawsze** pomiń stronę struktury zawartości';
+\* **|Nigdy** pomiń stronę struktury zawartości
+\* **|Pierwszy dostęp** tylko za pierwszym razem pomiń stronę struktury zawartości
+\* **|Zawsze** pomiń stronę struktury zawartości';
 $string['skipviewdesc'] = 'Ta preferencja określa, kiedy domyślnie ma zostać pominięta struktura zawartości strony';
 $string['slashargs'] = 'OSTRZEŻENIE: argumenty z ukośnikiem są wyłączone w tej witrynie i obiekty mogą nie działać zgodnie z oczekiwaniami!';
 $string['stagesize'] = 'Rozmiar ramki/okna';
 $string['stagesize_help'] = '# Rozmiar
-
 Te dwa ustawienia określają wysokość i szerokość ramki/okna obiektów nauki.';
 $string['started'] = 'Rozpoczęte o';
 $string['status'] = 'Stan';
@@ -315,7 +298,6 @@ $string['viewallreports'] = 'Przejrzyj raportu dla {$a} prób';
 $string['viewalluserreports'] = 'Przejrzyj raporty dla {$a} studentów';
 $string['whatgrade'] = 'Oceń próby';
 $string['whatgrade_help'] = '# Ocenianie prób
-
 W przypadku udostępnienia użytkownikom wielu prób można określić sposób wykorzystywania wynikowej liczby prób w dzienniku ocen.';
 $string['whatgradedesc'] = 'Ta preferencja ustawia domyślne ocenianie prób';
 $string['width'] = 'Szerokość';

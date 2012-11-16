@@ -72,10 +72,22 @@ $string['delete_template'] = 'מחק תבנית';
 $string['delete_templates'] = 'מחק תבנית...';
 $string['depending'] = 'פריטים תלויים';
 $string['depending_help'] = 'פריטים תלויים מאפשרים לך להציג פריטים התלויים בערכים מפריטים אחרים.
-<br /> <strong> להלן דוגמה לשימוש זה:
-</strong><br /> <ul> <li>ראשית, צור פריט אשר לכל ערך פריטים אחרים תלויים בו.</li> <li>שנית, הוסף שבירת עמוד.</li> <li>לאחר מכן הוסף את הפריטים תלויים בערך הפריט שלפניהם.<br /> בחר את טופס יצירת הפריט ,את הפריט שברשימה פריט תלוי""
+** להלן דוגמה לשימוש זה**
+* ראשית, צור פריט אשר לכל ערך פריטים אחרים תלויים בו.
+* שנית, הוסף שבירת עמוד.
+* לאחר מכן הוסף את הפריטים תלויים בערך הפריט שלפניהם.
+בחר את טופס יצירת הפריט ,את הפריט שברשימה פריט תלוי""
 והכנס את הערך הרצוי לתוך תיבת הטקסט ה"ערך התלוי"
-</li> </ul> <strong>המבנה אמור להיות כך:</strong> <ol> <li>Item Q: do you have a car? A: yes/no</li> <li>Pagebreak</li> <li>Item Q: what color has your car?<br /> (this item depends on item 1 with value = yes)</li> <li>Item Q: why you have not a car?<br /> (this item depends on item 1 with value = no)</li> <li> ... other items</li> </ol> זה הכל - בהצלחה!';
+**המבנה אמור להיות כך:**
+1. Item Q: do you have a car? A: yes/no
+2. Pagebreak
+3. Item Q: what color has your car?
+(this item depends on item 1 with value = yes)
+4. Item Q: why you have not a car?
+(this item depends on item 1 with value = no)
+5. ... other items
+
+זה הכל - בהצלחה!';
 $string['dependitem'] = 'פריט תלוי';
 $string['dependvalue'] = 'ערך תלוי';
 $string['description'] = 'תיאור (הנחייה)';
@@ -142,7 +154,7 @@ $string['mapcourse_help'] = 'כברירת מחדל, טפסי הסקרים שנב
 $string['mapcourseinfo'] = 'זהו סקר אשר זמין לרוחב האתר כולו הזמין לכל הקורסים על-ידי שימוש במשבצת סקר. ניתן להגביל את הקורסים ולקבוע מי יופיע  בה על-ידי מיפוי הסקרים. חפש את הקורס ומפה אותו לסקר זה.';
 $string['mapcoursenone'] = 'לא מופו קורסים. הסקר זמין לכל הקורסים';
 $string['mapcourses'] = 'מיפוי סקר עבור הקורסים';
-$string['mapcourses_help'] = 'ברגע בחירת הקורס(ים) הרלוונטים מהחיפוש שלך. ניתן לשייך אותם עם סקר זה על-ידי מיפוי קורסים.קורסים מרובים ניתנים לבחירה על-ידי החזקת מקש ה-Apple או ה-Ctrl  ברשימה והקלקה על השמות לבחירה. יתכן כי קורס ינותק מהסקר בכל זמן נתון.';
+$string['mapcourses_help'] = 'ברגע בחירת הקורס(ים) הרלוונטים מהחיפוש שלך. ניתן לשייך אותם עם סקר זה על-ידי מיפוי קורסים.קורסים מרובים ניתנים לבחירה על-ידי החזקת מקש ה-Apple או ה-Ctrl ברשימה והקלקה על השמות לבחירה. יתכן כי קורס ינותק מהסקר בכל זמן נתון.';
 $string['mappedcourses'] = 'קורסים אשר מופו';
 $string['max_args_exceeded'] = 'ניתן לטפל ב6 משתנים  לכל היותר, יותר מידי משתנים עבור.';
 $string['maximal'] = 'מירבי';
@@ -150,7 +162,7 @@ $string['messageprovider:message'] = 'הודעות תזכורת להזנת מש�
 $string['messageprovider:submission'] = 'הודעות פעילות "סקר"';
 $string['mode'] = 'מצב';
 $string['modulename'] = 'סקר';
-$string['modulename_help'] = 'תוסף הסקר מאפשר יצירת  סקרים המותאמים אישית.';
+$string['modulename_help'] = 'תוסף הסקר מאפשר יצירת סקרים המותאמים אישית.';
 $string['modulenameplural'] = 'סקר';
 $string['move_here'] = 'העבר לכאן';
 $string['move_item'] = 'הזז את שאלה זו';
@@ -226,7 +238,7 @@ $string['saving_failed'] = 'השמירה נכשלה';
 $string['saving_failed_because_missing_or_false_values'] = 'השמירה נכשלה מפני שהערכים היו חסרים או ערכי שקר.';
 $string['search_course'] = 'חיפוש קורס';
 $string['searchcourses'] = 'חיפוש קורסים';
-$string['searchcourses_help'] = 'חפש שם או קוד של הקורס(ים)  אשר תרצה לקשרו עם הסקר הזה.';
+$string['searchcourses_help'] = 'חפש שם או קוד של הקורס(ים) אשר תרצה לקשרו עם הסקר הזה.';
 $string['selected_dump'] = 'בחירת אינדקסים של משתני $SESSION
 אשר מרוקנים למטה';
 $string['send'] = 'שליחה';

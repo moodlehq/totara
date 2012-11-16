@@ -27,35 +27,32 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['adminneworder'] = 'Dear Admin,
 
-  You have received a new pending order:
+You have received a new pending order:
 
-   Order ID: {$a->orderid}
-   Transaction ID: {$a->transid}
-   User: {$a->user}
-   Course: {$a->course}
-   Amount: {$a->amount}
+Order ID: {$a->orderid}
+Transaction ID: {$a->transid}
+User: {$a->user}
+Course: {$a->course}
+Amount: {$a->amount}
 
-   SCHEDULED-CAPTURE ENABLED?: {$a->acstatus}
+SCHEDULED-CAPTURE ENABLED?: {$a->acstatus}
 
-  If scheduled-capture enabled the credit card will be captured on {$a->captureon}
-  and then student will be enrolled to course, otherwise it will be expired
-  on {$a->expireon} and cannot be captured after this day.
+If scheduled-capture enabled the credit card will be captured on {$a->captureon}
+and then student will be enrolled to course, otherwise it will be expired
+on {$a->expireon} and cannot be captured after this day.
 
-  Also you can accept/deny the payment to enroll the student immediately following this link:
-  {$a->url}';
+Also you can accept/deny the payment to enroll the student immediately following this link:
+{$a->url}';
 $string['authorize:config'] = 'Configure Authorize.Net enroll instances';
-$string['authorize:manage'] = 'Manage enrolled users
-';
+$string['authorize:manage'] = 'Manage enrolled users';
 $string['authorize:unenrol'] = 'Unenroll users from course';
 $string['authorize:unenrolself'] = 'Unenroll self from the course';
-$string['captureyes'] = 'The credit card will be captured and the student will be enrolled to the course. Are you sure?
-';
+$string['captureyes'] = 'The credit card will be captured and the student will be enrolled to the course. Are you sure?';
 $string['choosemethod'] = 'If you know the enrollment key of the course, please enter it below;  <br/>Otherwise you need to pay for this course.';
 $string['description'] = 'The Authorize.net module allows you to set up paid courses via CC providers.  If the cost for any course is zero, then students are not asked to pay for entry.  Two ways to set the course cost (1) a site-wide cost as a default for the whole site or (2) a course setting that you can set for each course individually. The course cost overrides the site cost.<br /><br /><b>Note:</b> If you enter an enrollment key in the course settings, then students will also have the option to enroll using a key. This is useful if you have a mixture of paying and non-paying students.';
 $string['enrolenddaterror'] = 'Enrollment end date cannot be earlier than start date';
 $string['enrolperiod'] = 'Enrollment period';
-$string['nocost'] = 'There is no cost associated with enrolling in this course via Authorize.Net!
-';
+$string['nocost'] = 'There is no cost associated with enrolling in this course via Authorize.Net!';
 $string['pendingecheckemail'] = 'Dear manager,
 
 There are {$a->count} pending echecks now and you have to upload a csv file to get the users enrolled.
@@ -86,5 +83,5 @@ Thanks for your payments. You have enrolled in these courses:
 {$a->courses}
 
 You may view your payment details or edit your profile:
- {$a->paymenturl}
- {$a->profileurl}';
+{$a->paymenturl}
+{$a->profileurl}';

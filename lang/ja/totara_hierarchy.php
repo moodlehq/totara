@@ -109,11 +109,8 @@ $string['competencyaddnew'] = '新しいコンピテンシーを追加する';
 $string['competencyaddnewframework'] = '新しいコンピテンシーフレームワークを追加する';
 $string['competencyaggregationmethod'] = '集約方法';
 $string['competencyaggregationmethod_help'] = '集約方法は、システムがコンピテンシーの達成を産出する方法を設定します。
-
 集約方法が「すべて」に設定された場合は、親コンピテンシーの達成が宣言されるには、すべての子コンピテンシーを達成することが条件となります。
-
 集約方法が「いずれか」に設定された場合は、親コンピテンシーの達成にはどれか1つの子コンピテンシーのみを達成すればよいことになります。
-
 集約方法が「オフ」に設定された場合は、そのコンピテンシーの自動達成は非アクティブとなります。（ただし達成を手動でマークすることは可能です。）';
 $string['competencyassigndeletecheck'] = 'このコンピテンシー割り当てを削除してもよろしいですか？';
 $string['competencybacktoallframeworks'] = 'すべてのコンピテンシーフレームワークに戻る';
@@ -147,13 +144,10 @@ $string['competencyevidence'] = 'コンピテンシーエビデンス';
 $string['competencyevidenceassessmenttype'] = 'アセスメントタイプ';
 $string['competencyevidenceassessmenttype_help'] = 'アセスメントタイプ・フィールドは、このコンピテンシーのアセスメントに関する追加的情報のための自由記入フィールドです。 コンテンツは様々であり、このフィールドは任意です。';
 $string['competencyevidenceassessor_help'] = 'アセッサーを選択すると、現在のユーザの現在のコンピテンシーに関する熟達度についてアセスメントを行います。アセッサーは任意のフィールドですので、アセッサーを必要としない場合は「アセッサーを選択する」オプションのプルダウンメニューをそのままにしてください。
-
 プルダウンメニューにはアセッサーのロールをもつすべてのmoodleユーザがリストアップされています。アセッサーに追加したいユーザが見当たらない、またはオプションが何も表示されない場合は、そのユーザをアセッサーのロールに追加するよう管理者に要請する必要があります。';
 $string['competencyevidenceassessorname_help'] = 'アセッサー名フィールドには、このコンピテンシーについてユーザのアセスメントを行った組織の名前を入力します。任意のフィールドですので空白のままにすることもできます。';
 $string['competencyevidencecompetency_help'] = 'ユーザに割り当てられるコンピテンシー。コンピテンシーエビデンスの既存のアイテムを編集している場合、これを変更することはできません。 ただしコンピテンシーエビデンスの新規アイテムは（その権限がある場合に限り）作成することができます。ユーザのマイレコード・ページで、「コンピテンシーエビデンスを追加する」ボタンをクリックしてください。
-
 新規コンピテンシーエビデンスアイテムを作成する時に、既存のコンピテンシーにエビデンスを追加するか、または新規コンピテンシーを作成するかのどちらかを選択します。「コンピテンシーを選択する」を選ぶと、ポップアップ画面が開き、そこで既存のコンピテンシーを選択できます。「新規コンピテンシーを作成する」を選ぶと、フォームが開きますので、フレームワークを選択して新規コンピテンシーを定義してください。
-
 同一のユーザとコンピテンシーについて2つのコンピテンシーエビデンスアイテムを作成することはできないのでご注意ください。もしこれを試みた場合は、オリジナルのレコードの編集、または別のコンピテンシーを選択するためのリンクが表示されます。';
 $string['competencyevidencecount'] = 'エビデンスアイテム';
 $string['competencyevidenceorganisation_help'] = 'このオプションでは、ユーザがコンピテンシーエビデンスのアイテムを完了した時に所属していた組織が記録されます。ほとんどの場合、これはユーザの現在の組織と同一です。 しかし時間が経過してユーザが組織を変更した場合に備え、この設定によって完了時の組織を記録しておくことができるようになります。 これは任意のフィールドです。';
@@ -170,21 +164,16 @@ $string['competencyframeworkfullname'] = '正式名';
 $string['competencyframeworkfullname_help'] = 'フレームワークの正式名はフレームワークの正式な名称のことです。';
 $string['competencyframeworkgeneral'] = 'コンピテンシーフレームワーク';
 $string['competencyframeworkgeneral_help'] = '**コンピテンシーフレームワーク**はスタッフに達成してほしいスキル、知識、行動に関するコンピテンシーをまとめるためにセットアップします。
-
 コンピテンシーは様々な種類のフレームワークのもとにグループ化することができます。例えば、1つのフレームワークには当該国の全産業に関わるコンピテンシー標準（関係機関の情報に基づくもの）を含める一方、別のフレームワークには自社設定の特定コンピテンシーのみを含める、といったことができます。
-
 コンピテンシーフレームワークをセットアップする前に、**コンピテンシー尺度**をセットアップする必要があります。';
 $string['competencyframeworkidnumber'] = 'IDナンバー';
 $string['competencyframeworkidnumber_help'] = 'フレームワークID番号はそのフレームワークを表すユニークな番号です。</h1>';
 $string['competencyframeworkmanage'] = 'フレームワークを管理する';
 $string['competencyframeworks'] = 'コンピテンシーフレームワーク';
 $string['competencyframeworks_help'] = '**コンピテンシーフレームワーク**はスタッフに達成してほしいスキル、知識、行動に関するコンピテンシーをまとめるためにセットアップします。
-
 コンピテンシーは様々な種類のフレームワークのもとにグループ化することができます。例えば、1つのフレームワークには当該国の全産業に関わるコンピテンシー標準（関係機関の情報に基づくもの）を含める一方、別のフレームワークには自社設定の特定コンピテンシーのみを含める、といったことができます。
-
 コンピテンシーフレームワークをセットアップする前に、**コンピテンシー尺度**をセットアップする必要があります。';
 $string['competencyframeworkscale_help'] = 'コンピテンシー尺度はコンピテンシーの測定基準を定義するために使用します。例えば尺度には「コンピテント、監督付きでコンピテント、コンピテントでない」の3つの値を設定することができます。
-
 まずコンピテンシー尺度オプションを使って新規尺度を追加し、その尺度に学習者のコンピテンシーの進捗状況を定義する値を追加します。値はいくつでも追加できます。その際、デフォルト値と熟達値の設定についても注意してください。';
 $string['competencyframeworkshortname_help'] = 'フレームワーク省略名はフレームワーク正式名を簡便に表記したもので、表示用に使うことができます。';
 $string['competencyframeworkview'] = 'フレームワークを表示する';
@@ -202,19 +191,14 @@ $string['competencynoframeworkssetup'] = 'このサイトにセットアップ�
 $string['competencynotypes'] = 'コンピテンシータイプはありません';
 $string['competencyparent'] = '親';
 $string['competencyparent_help'] = '**親コンピテンシー**ではコンピテンシー間の親／子関係を管理することができます。
-
 ドロップダウンメニューから**親コンピテンシー**を選択してください。当該コンピテンシーを階層のトップに置きたい場合は、**トップ**を選択します。
-
 アイテムの親コンピテンシーを変更すると、新しい親コンピテンシーの下部に移動します。この時、その子もすべて一緒に移動します。
-
 **注意：**親／子関係をセットアップするには、フレームワークに少なくとももう1つのアイテムがなければいけません。そうでない場合、このオプションは表示されません。';
 $string['competencyplural'] = 'コンピテンシー';
 $string['competencyreturntoframework'] = 'コンピテンシーフレームワークに戻る';
 $string['competencyscale'] = 'コンピテンシー尺度';
 $string['competencyscale_help'] = '**尺度**はコンピテンシーフレームワークで使用されるコンピテンシー尺度を指します。
-
 コンピテンシー尺度はコンピテンシーフレームワークで設定します。コンピテンシー尺度はフレームワークごとに1つのみ使用できます。
-
 新規コンピテンシー尺度は、「サイト管理者」メニューにある階層／コンピテンシー／フレームワークの管理でセットアップすることができます。';
 $string['competencyscaleassign'] = 'コンピテンシー尺度';
 $string['competencyscaleassign_help'] = 'コンピテンシー尺度はコンピテンシーの測定基準を定義します。これは値を追加する尺度の名称です。';
@@ -225,29 +209,25 @@ $string['competencyscaleinuse'] = 'この尺度は使用中です（つまり、
 $string['competencyscaleproficient'] = '熟達値';
 $string['competencyscaleproficient_help'] = '熟達値は、ユーザが特定のコンピテンシーに関して「コンピテント」であるかどうかをシステムが測定する方法です。学習プランの進捗状況を示すために使われ、未完了のコンピテンシーについては期限切れの通知のみを表示します。
 尺度値で「熟達」がチェックされると、ユーザは「コンピテント」とみなされます。複数の尺度値を熟達として設定できますが、少なくとも必ず1つの尺度値を熟達としてマークしてください。熟達値は尺度値の編集を通じて編集できます。
-
 熟達としてマークされた最小の尺度値は、コンピテンシーの特定のエビデンスアイテムで要求される熟達度（例えばコース／活動の完了、コース／活動の合格評定など）を実証したユーザに自動的に与えられます。';
 $string['competencyscales'] = 'コンピテンシー尺度';
 $string['competencyscalescalename'] = '名前';
 $string['competencyscalescalename_help'] = 'コンピテンシーフレームワークで使用されるコンピテンシー尺度の名称です。';
 $string['competencyscalescalevalues'] = '値';
 $string['competencyscalescalevalues_help'] = 'コンピテンシー尺度にコンピテントが最も高いものから低いものへという順番で値を入力します（ラインごとに1つ入力してください）。例えば次の通りです:
-
-<p class="indent">
-<i> コンピテント<br /> 監督付きでコンピテント<br /> コンピテントでない<br /> </i>
-</p>';
+* コンピテント
+* 監督付きでコンピテント
+* コンピテントでない
+*';
 $string['competencyscalesgeneral'] = 'コンピテンシー尺度';
 $string['competencyscalesgeneral_help'] = '**コンピテンシー尺度**はコンピテンシーの測定基準を定義するために使用します。例えば尺度には「コンピテント、監督付きでコンピテント、コンピテントでない」の3つの値を設定することができます。
-
 コンピテンシーフレームワークまたはどのようなコンピテンシーのセットアップにも、それに先立ってコンピテンシー尺度をセットアップしておく必要があります。';
 $string['competencyscalevaluedescription'] = '説明';
 $string['competencyscalevalueidnumber'] = '尺度値のID番号';
 $string['competencyscalevalueidnumber_help'] = '尺度値ID番号はその尺度値を表すユニークな番号です。';
 $string['competencyscalevaluename'] = '尺度値の名前';
 $string['competencyscalevaluename_help'] = '**尺度値名**は、追加・編集しているコンピテンシー尺度値の名称です。
-
 尺度値は学習者のコンピテンシーの進捗状況を定義するために使います。尺度値は必要に応じいくつでも追加することができます。
-
 **注意：**デフォルト値および熟達値の設定も必ず行ってください。';
 $string['competencyscalevaluenumericalvalue'] = '尺度意の数値';
 $string['competencyscalevaluenumericalvalue_help'] = '尺度値数値は尺度値に関連付けられた数値です。';
@@ -255,7 +235,6 @@ $string['competencyshortname'] = 'コンピテンシー省略名';
 $string['competencyshortname_help'] = 'コンピテンシー省略名はコンピテンシーの簡便な参照名で、表示用に使うことができます。';
 $string['competencytemplatefullname_help'] = 'テンプレート正式名は、セットアップ中のコンピテンシーテンプレートの正式な名称です。';
 $string['competencytemplategeneral_help'] = '**コンピテンシーテンプレート**を使用すると、1つのコンピテンシーフレームワークにあるコンピテンシーをグループにまとめることができます。
-
 トレーニングイベント、例えば導入コースをセットアップする時に、これを「新規従業員コンピテンシー」という名前のコンピテンシーテンプレートにリンクさせると、多数のコンピテンシーを自動的に利用していくことができ、1つずつ選択を繰り返していく必要がありません。';
 $string['competencytemplatemanage'] = 'テンプレートを管理する';
 $string['competencytemplates'] = 'コンピテンシーテンプレート';
@@ -591,11 +570,10 @@ $string['organisationframeworkdescription'] = '説明';
 $string['organisationframeworkdescription_help'] = 'フレームワークの説明はフレームワークについての追加的情報を保存するためのテキストフィールドです。「組織の管理」ページ内、組織テーブルのすぐ上に表示されます。';
 $string['organisationframeworkfullname_help'] = 'フレームワーク正式名はフレームワークの正式な名称です。';
 $string['organisationframeworkidnumber'] = 'ID番号';
-$string['organisationframeworkidnumber_help'] = 'フレームワークID番号はフレームワークを表すために使用するユニークな番号です。</h1>';
+$string['organisationframeworkidnumber_help'] = 'フレームワークID番号はフレームワークを表すために使用するユニークな番号です。';
 $string['organisationframeworkmanage'] = 'フレームワークを管理する';
 $string['organisationframeworks'] = '組織フレームワーク';
 $string['organisationframeworks_help'] = '**組織フレームワーク**をセットアップすると、あなたの組織の組織構造を保持することができます。
-
 多重組織フレームワークもセットアップが可能です。例えば、ビジネスの下位部門または子会社のフレームワークのセットアップなどです。';
 $string['organisationframeworkshortname_help'] = 'フレームワーク省略名はフレームワーク正式名の略称で、表示用に使用することができます。';
 $string['organisationfullname'] = '組織の正式名';
@@ -612,11 +590,8 @@ $string['organisationnoframeworkssetup'] = 'このサイトにセットアップ
 $string['organisationnotypes'] = '組織タイプがありません';
 $string['organisationparent'] = '親';
 $string['organisationparent_help'] = '**親組織**を使うと組織間の親／子関係を管理することができます。
-
 ドロップダウンメニューから**親組織**を選択します。この組織を階層の最上位に置きたい場合は**トップ**を選択してください。
-
 アイテムの親組織を変更すると、元の親組織は新しい親組織の下に移動します。その際、子組織もすべて一緒に移動します。
-
 **注意：**親／子関係をセットアップするには、フレームワークに少なくとも1つのアイテムがある必要があります。そうでない場合このオプションは表示されません。';
 $string['organisationplural'] = '組織';
 $string['organisationreturntoframework'] = '組織フレームワークに戻る';
@@ -684,7 +659,6 @@ $string['positionframeworkidnumber_help'] = 'フレームワークID番号はフ
 $string['positionframeworkmanage'] = 'フレームワークを管理する';
 $string['positionframeworks'] = 'ポジションフレームワーク';
 $string['positionframeworks_help'] = '**ポジションフレームワーク**をセットアップすると、様々なポジションを組織内に保持できます。
-
 多重のポジション分類（フレームワーク）を組織内にセットアップすることもできます。';
 $string['positionframeworkshortname_help'] = 'フレームワーク省略名はフレームワーク正式名の略称で、表示用に使うことができます。';
 $string['positionfullname'] = 'ポジションの正式名';
@@ -702,11 +676,8 @@ $string['positionnoframeworkssetup'] = 'このサイトにセットアップさ�
 $string['positionnotypes'] = 'ポジションタイプはありません';
 $string['positionparent'] = '親';
 $string['positionparent_help'] = '**親ポジション**では、ポジション間の親／子関係を管理することができます。
-
 ドロップダウンメニューから**親ポジション**を選択してください。そのポジションを階層の最上位に置きたい場合は**トップ**を選択します。
-
 アイテムの親ポジションを変更すると、元の親ポジションは新しい親ポジションの下位に移動します。その際、子ポジションもすべて一緒に移動します。
-
 **注意：**親／子関係をセットアップするには、フレームワークに少なくとももう1つのアイテムがある必要があります。そうでない場合このオプションは表示されません。';
 $string['positionplural'] = 'ポジション';
 $string['positionreturntoframework'] = 'ポジションフレームワークに戻る';

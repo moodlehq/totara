@@ -44,11 +44,9 @@ $string['attempts'] = 'Försök';
 $string['attemptsx'] = '{$a} försök';
 $string['attr_error'] = 'Olämpligt värde för attributet ({$a->attr}) i taggen {$a->tag}.';
 $string['autocontinue'] = 'Fortsätt automatiskt';
-$string['autocontinue_help'] = '<p><b>Forts&auml;tt automatiskt</b></p>
-
-<p>Om "Forts&auml;tt automatiskt" &auml;r aktiverat (Ja) s&aring; kommer n&auml;sta tillg&auml;ngliga SCORM att automatiskt startas n&auml;r  den f&ouml;reg&aring;ende &auml;r slutf&ouml;rd.</p>
-
-<p>Om detta inte &auml;r aktiverat (Nej) m&aring;ste anv&auml;ndaren sj&auml;lv anv&auml;nda knappen "Forts&auml;tt" f&ouml;r att g&aring; vidare. </p>';
+$string['autocontinue_help'] = '**Fortsätt automatiskt**
+Om "Fortsätt automatiskt" är aktiverat (Ja) så kommer nästa tillgängliga SCORM att automatiskt startas när den föregående är slutförd.
+Om detta inte är aktiverat (Nej) måste användaren själv använda knappen "Fortsätt" för att gå vidare.';
 $string['autocontinuedesc'] = 'Det här alternativet anger standard för automatisk fortsättning för aktiviteten.';
 $string['averageattempt'] = 'Medel av försök';
 $string['badmanifest'] = 'Några fel med manifestet: se loggarna över fel';
@@ -116,7 +114,6 @@ $string['gradeforattempt'] = 'Betyg/omdöme för försök';
 $string['gradehighest'] = 'Högsta betyg/omdöme';
 $string['grademethod'] = 'Metod för betyg/omdömen';
 $string['grademethod_help'] = 'De resultat av en SCORM/AICC aktivitet som visas på sidan för betyg kan graderas med många olika mått:
-
 * Lärobjekt - Antalet genomförda/godkända lärobjekt för aktiviteten. Maxvärdet är det totala antalet lärobjekt.
 * Högsta betyget - Det högsta resultat som har uppnåtts av användare i alla godkända lärobjekt.
 * Medelbetyg - Medelvärdet av alla resultat.
@@ -147,7 +144,8 @@ $string['lastattemptlockdesc'] = 'Det här alternativet anger standardvärdet f�
 $string['location'] = 'Visa en rad som visar placeringen';
 $string['max'] = 'Max resultat';
 $string['maximumattempts'] = 'Antal försök';
-$string['maximumattempts_help'] = '<p>Här anger du det antal försök som användarna får göra<br />Det fungerar bara med SCORM1.2- och AICC-paket. SCORM2004 har ett eget sätt att definiera max antal försök.</p>';
+$string['maximumattempts_help'] = 'Här anger du det antal försök som användarna får göra
+Det fungerar bara med SCORM1.2- och AICC-paket. SCORM2004 har ett eget sätt att definiera max antal försök.';
 $string['maximumattemptsdesc'] = 'Denna inställning sätter standard för maximalt antal försök för en aktivitet';
 $string['maximumgradedesc'] = 'Det här alternativet anger maxbetyget för en aktivitet.';
 $string['menubar'] = 'Visa menyraden';
@@ -184,23 +182,18 @@ $string['organizations'] = 'Organisationer';
 $string['othersettings'] = 'Kompletterande inställningar';
 $string['othertracks'] = 'Andra spår';
 $string['package'] = 'Paketfil';
-$string['package_help'] = '<p><b>Paketfiler</b></p>
-
-<p>Paketet &auml;r en specifik fil med ett <b>zip</b> (eller pif) som filnamnstill&auml;gg och som inneh&aring;ller giltiga filer som definierar kurser av typen AICC eller SCORM.</p>
-
-<p>Ett <b>SCORM</b> paket m&aring;ste inneh&aring;lla en fil med namnet  <b>imsmanifest.xml</b > som ska ligga i roten p&aring; den zippade filen. Imsmanifestet inneh&aring;ller en beskrivning av SCORM-kursens struktur, placeringen av resurser och m&aring;nga andra saker.</p>
-
-<p>Ett <b>AICC</b>-paket definieras  av &aring;tskilliga filer (mellan 4 och 7) med definierade filnamnstill&auml;gg.
-H&auml;r kan Du se vad filnamnstill&auml;ggen betyder:</p>
-<ul>
-<li>CRS - \'Course Description file\' - fil som beskriver kursen (obligatorisk)</li>
-<li>AU  - \'Assignable Unit file\' (obligatorisk)</li>
-<li>DES - \'Descriptor file\' (obligatorisk)</li>
-<li>CST - \'Course Structure file\' - fil som beskriver kursens struktur (obligatorisk)</li>
-<li>ORE - \'Objective Relationship file\' - fil f&ouml;r relationer mellan m&aring;l(valfritt)</li>
-<li>PRE - \'Prerequisites file\' - fil f&ouml;r f&ouml;rkunskaper (valfritt)</li>
-<li>CMP - \'Completition Requirements file\' - fil som inneh&aring;ller krav p&aring; fullf&ouml;ljande  (valfritt)</li>
-</ul>';
+$string['package_help'] = '**Paketfiler**
+Paketet är en specifik fil med ett **zip** (eller pif) som filnamnstillägg och som innehåller giltiga filer som definierar kurser av typen AICC eller SCORM.
+Ett **SCORM** paket måste innehålla en fil med namnet **imsmanifest.xml** som ska ligga i roten på den zippade filen. Imsmanifestet innehåller en beskrivning av SCORM-kursens struktur, placeringen av resurser och många andra saker.
+Ett **AICC**-paket definieras av åtskilliga filer (mellan 4 och 7) med definierade filnamnstillägg.
+Här kan Du se vad filnamnstilläggen betyder:
+* CRS - \'Course Description file\' - fil som beskriver kursen (obligatorisk)
+* AU - \'Assignable Unit file\' (obligatorisk)
+* DES - \'Descriptor file\' (obligatorisk)
+* CST - \'Course Structure file\' - fil som beskriver kursens struktur (obligatorisk)
+* ORE - \'Objective Relationship file\' - fil för relationer mellan mål(valfritt)
+* PRE - \'Prerequisites file\' - fil för förkunskaper (valfritt)
+* CMP - \'Completition Requirements file\' - fil som innehåller krav på fullföljande (valfritt)';
 $string['packagedir'] = 'Fel i filsystemet: det går inte att skapa en katalog för paketet';
 $string['packagefile'] = 'Ingen paketfil har angivits';
 $string['packageurl'] = 'URL';
@@ -245,19 +238,16 @@ $string['selectnone'] = 'Avmarkera alla';
 $string['show'] = 'Visa';
 $string['sided'] = 'På sidan';
 $string['skipview'] = 'Student kan hoppa över sidan som visar innehållets struktur';
-$string['skipview_help'] = '<p>Om du lägger till ett paket med bara ett lärobjekt i så kan du välja att automatiskt hoppa över sidan som visar strukturen på innehållet när användare klickar på en SCORM-aktivitet på kursens sida.</p>
+$string['skipview_help'] = 'Om du lägger till ett paket med bara ett lärobjekt i så kan du välja att automatiskt hoppa över sidan som visar strukturen på innehållet när användare klickar på en SCORM-aktivitet på kursens sida.
+Du kan välja:
 
-<p>Du kan välja:</p>
-
-<ul>
-<li> Hoppa <strong>Aldrig</strong> över sidan som visar strukturen på innehållet.</li>
-<li> hoppa över sidan som visar strukturen på innehållet endast <strong>Vid första visningen</strong> (den första gången som användaren visar SCORM-paketet).</li>
-<li> Hoppa <strong>Alltid</strong> över sidan som visar strukturen på innehållet.</li>
-</ul>';
+* Hoppa **Aldrig** över sidan som visar strukturen på innehållet.
+* hoppa över sidan som visar strukturen på innehållet endast **Vid första visningen** (den första gången som användaren visar SCORM-paketet).
+* Hoppa **Alltid** över sidan som visar strukturen på innehållet.';
 $string['skipviewdesc'] = 'Denna inställning sätter standard för när innehållsstrukturen för en sida skall hoppas över';
 $string['slashargs'] = 'VARNING: slash-argument är inaktiverade på denna site och saker kanske inte fungerar som väntat!';
 $string['stagesize'] = 'Storlek på ram/fönster';
-$string['stagesize_help'] = '<p>De här två inställningarna definierar höjden och bredden på ramen för lärobjektet.</p>';
+$string['stagesize_help'] = 'De här två inställningarna definierar höjden och bredden på ramen för lärobjektet.';
 $string['started'] = 'Storlek på scen';
 $string['status'] = 'Status';
 $string['statusbar'] = 'Visa statusraden';
@@ -285,7 +275,7 @@ $string['versionwarning'] = 'Den här versionen av manifestet är äldre än 1.3
 $string['viewallreports'] = 'Visa rapporter för {$a} försök';
 $string['viewalluserreports'] = 'Visa rapporter för {$a} användare';
 $string['whatgrade'] = 'Bedömning/betygssättning av försök';
-$string['whatgrade_help'] = '<p>När du tillåter att användare att göra flera försök så kan du välja hur du ska använda resultatet av försöken när de ska infogas i betygskatalogen.</p>';
+$string['whatgrade_help'] = 'När du tillåter att användare att göra flera försök så kan du välja hur du ska använda resultatet av försöken när de ska infogas i betygskatalogen.';
 $string['whatgradedesc'] = 'Denna inställnings sätter standard för antal betygsförsök';
 $string['width'] = 'Bredd';
 $string['window'] = 'ram/fönster';

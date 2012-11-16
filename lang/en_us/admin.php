@@ -47,29 +47,19 @@ $string['datarootsecurityerror'] = '<p><strong>SECURITY WARNING!</strong></p><p>
 $string['enrolinstancedefaults'] = 'Enrollment instance defaults';
 $string['enrolinstancedefaults_desc'] = 'Default enrollment settings in new courses.';
 $string['enrolmentkey_help'] = '# Course Enrollment Key
-
 A course enrollment key is what keeps unwanted people out of your course.
-
 If you leave this blank, then anyone who has created a Moodle username on this site will be able to enroll in your course simply by going in to it.
-
 If you put something here, then students who are trying to get in for the FIRST TIME ONLY will be asked to supply this word or phrase.
-
 The idea is that you will supply the key to authorized people using another means like private email, snail mail, on the phone or even verbally in a face to face class.
-
 If this password "gets out" and you have unwanted people enrolling, you can unenroll them (see their user profile page) and change this key. Any legitimate students who have already enrolled will not be affected, but the unwanted people won\'t be able to get back in.';
 $string['enrolmultipleusers'] = 'Enroll the users';
 $string['groupenrolmentkeypolicy'] = 'Group enrollment key policy';
 $string['groupenrolmentkeypolicy_desc'] = 'Turning this on will make Moodle check group enrollment keys against a valid password policy.';
 $string['guestaccess_help'] = '# Guest Access
-
 You have the choice of allowing "guests" into your course.
-
 People can log in as guests using the "Login as a guest" button on the login screen.
-
 Guests ALWAYS have "read-only" access - meaning they can\'t leave any posts or otherwise mess up the course for real students.
-
 This can be handy when you want to let a colleague in to look around at your work, or to let students see a course before they have decided to enroll.
-
 Note that you have a choice between two types of guest access: with the enrollment key or without. If you choose to allow guests who have the key, then the guest will need to provide the current enrollment key EVERY TIME they log in (unlike students who only need to do it once). This lets you restrict your guests. If you choose to allow guests without a key, then anyone can get straight into your course.';
 $string['guestroleid_help'] = 'This role is automatically assigned to the guest user. It is also temporarily assigned to not enrolled users that enter the course via guest enrollment plugin.';
 $string['helpweekenddays'] = 'Which days of the week are treated as "weekend" and shown with a different color?';

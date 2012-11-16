@@ -103,10 +103,9 @@ $string['noupcomingevents'] = 'Es gibt keine weiteren Termine';
 $string['oneevent'] = '1 Termin';
 $string['pref_lookahead'] = 'Terminvorschau';
 $string['pref_lookahead_help'] = 'Diese Einstellung setzt die (maximale) Anzahl von Tagen, die ein bevorstehender Termin in der Zukunft liegen darf, um in der Terminvorschau angezeigt zu werden. Noch spätere Termine werden nicht angezeigt.
-
 Bitte bedenken Sie, dass eventuell nicht alle Termine in diesem Zeitfenster angezeigt werden können, wenn es zu viele, nämlich mehr Termine als die "Höchstzahl bevorstehender Termine" sind.';
 $string['pref_maxevents'] = 'Höchstzahl bevorstehender Termine';
-$string['pref_maxevents_help'] = 'Diese Einstellung setzt die  Höchstzahl bevorstehender Termine, die angezeigt werden. Wenn Sie hier eine große Zahl wählen, ist es möglich, dass die Anzeige der bevorstehenden Termine viel Platz auf der Webseite verbraucht.';
+$string['pref_maxevents_help'] = 'Diese Einstellung setzt die Höchstzahl bevorstehender Termine, die angezeigt werden. Wenn Sie hier eine große Zahl wählen, ist es möglich, dass die Anzeige der bevorstehenden Termine viel Platz auf der Webseite verbraucht.';
 $string['pref_persistflt'] = 'Filtereinstellungen merken';
 $string['pref_persistflt_help'] = 'Wenn diese Option aktiviert ist, wird Moodle sich Ihre letzten Terminfiltereinstellungen merken und immer automatisch wiederherstellen, wenn Sie sich einloggen.';
 $string['pref_startwday'] = 'Wochenbeginn';

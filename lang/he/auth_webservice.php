@@ -27,4 +27,4 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['auth_webservicedescription'] = 'שימוש בשיטת אימות זו תנתן עבור חשבונות באופן בלעדי  עבור משתמש על-ידי לקוחות ה-web service.';
 $string['pluginname'] = 'אימות
-Web services ';
+Web services';

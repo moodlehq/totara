@@ -43,8 +43,8 @@ $string['auth_data_mapping'] = 'Tietojen yhdistäminen';
 $string['auth_fieldlock'] = 'Lukitse arvo';
 $string['auth_fieldlock_expl'] = '<p><b>Lukitse arvo:</b>Päällä ollessaan tämä asetus estää Moodlen käyttäjiä ja ylläpitäjiä muokkaamasta kenttää suoraan. Käytä täta asetusta, jos hallinnoit tätä tietoa ulkoisesta järjestelmästä.</p>';
 $string['auth_fieldlocks'] = 'Lukitse käyttäjien kentät';
-$string['auth_fieldlocks_help'] = '<p>Voit lukita käyttäjien tietokentät. Tämä on hyödyllistä sivustoilla, joilla ylläpitäjät hallinnoivat käyttäjätietoja käsin muokkaamalla käyttäjärekistereitä tai kopioimalla palvelimelle käyttäen ´Lähetä käyttäjät´-toimintoa. Jos lukitset kenttiä joita Moodle tarvitsee, varmista että annat kenttien tiedot luodessasi käyttäjiä tai muuten käyttäjätilit ovat käyttökelvottomia.</p>
-<p>Harkitse ´Lukitsematon, jos tyhjä´-asetuksen käyttöä välttääksesi tämän ongelman.</p>';
+$string['auth_fieldlocks_help'] = 'Voit lukita käyttäjien tietokentät. Tämä on hyödyllistä sivustoilla, joilla ylläpitäjät hallinnoivat käyttäjätietoja käsin muokkaamalla käyttäjärekistereitä tai kopioimalla palvelimelle käyttäen ´Lähetä käyttäjät´-toimintoa. Jos lukitset kenttiä joita Moodle tarvitsee, varmista että annat kenttien tiedot luodessasi käyttäjiä tai muuten käyttäjätilit ovat käyttökelvottomia.
+Harkitse ´Lukitsematon, jos tyhjä´-asetuksen käyttöä välttääksesi tämän ongelman.';
 $string['auth_invalidnewemailkey'] = 'Virhe: jos yrität vahvistaa sähköpostiosoitteen vaihtamisen, olet tehnyt virheen kopioidessasi web-osoitteen saamastasi sähköpostiviestistä. Kopioi osoite toisen kerran www-selaimeesi ja yritä uudelleen.';
 $string['auth_multiplehosts'] = 'Voit määritellä useita osoitteita ( joku.jossain.com;joku.toinen.com;... )';
 $string['auth_outofnewemailupdateattempts'] = 'Olet yrittänyt vaihtaa sähköpostiosoitetta liian monta kertaa. Pyyntösi on peruutettu.';
@@ -71,7 +71,7 @@ $string['auto_add_remote_users'] = 'Lisää automaattisesti etäkäyttäjät';
 $string['changepassword'] = 'Salasanan vaihto -osoite';
 $string['changepasswordhelp'] = 'Voit määritellä osoitteen jossa käyttäjät voivat vaihtaa unohtamansa salasanan. Käyttäjille tämä näkyy painikkeena kirjautumissivulla ja heidän käyttäjätietosivullaan. Jos jätät kentän tyhjäksi, painiketta ei näytetä.';
 $string['chooseauthmethod'] = 'Valitse käyttäjäntunnistusmetodi:';
-$string['chooseauthmethod_help'] = 'Tämä asetus määrittelee autentikointimetodin käyttäjän kirjautuessa sisään. Vain määriteltyjä autentikointimalleja tulisi käyttää, sillä muuten käyttäjä ei kykene kirjautumaan. Estääksesi käyttäjää  kirjautumasta valitse "Ei kirjautumista".';
+$string['chooseauthmethod_help'] = 'Tämä asetus määrittelee autentikointimetodin käyttäjän kirjautuessa sisään. Vain määriteltyjä autentikointimalleja tulisi käyttää, sillä muuten käyttäjä ei kykene kirjautumaan. Estääksesi käyttäjää kirjautumasta valitse "Ei kirjautumista".';
 $string['createpasswordifneeded'] = 'Luo salasana tarvittaessa';
 $string['emailchangecancel'] = 'Peruuta sähköpostiosoitteen muuttaminen';
 $string['emailchangepending'] = 'Vaihda avoimet. Avaa sinulle lähetetty linkkit {$a->preference_newemail}.';
@@ -127,10 +127,9 @@ $string['pluginnotinstalled'] = 'Autentikointimoduulia \'{$a}\' ei ole asennettu
 $string['potentialidps'] = 'Kirjaudu sisään käyttäen tiliäsi kohteessa:';
 $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = 'Roskapostivarmennetta (captcha tai reCaptcha) käytetään postiautomaattien häirinnän estämiseen. Kirjoita laatikossa olevat sanat järjestyksessä ja välillä erotettuina.
-
 Jos et saa sanoista selvää, voit vaihtaa varmenteen tai kokeilla äänivarmennetta.';
 $string['selfregistration'] = 'Itserekisteröityminen';
-$string['selfregistration_help'] = 'Jos autentikointimoduuli, kuten sähköpostivarmistus, on valittu, se antaa mahdollisten käyttäjien rekisteröidä itsensä ja luoda tilejä. Tämä saattaa johtaa roskapostittajien tilien luomiseen, käyttääkseen keskustelualueita, blogeja jne. roskapostin levittämiseen. Tätä riskiä estääkseen, itsekirjautuminen pitäisi estää tai sitä pitäisi rajoittaa <em>Sallitut sähköpostitoimialueet</em> -asetuksella.';
+$string['selfregistration_help'] = 'Jos autentikointimoduuli, kuten sähköpostivarmistus, on valittu, se antaa mahdollisten käyttäjien rekisteröidä itsensä ja luoda tilejä. Tämä saattaa johtaa roskapostittajien tilien luomiseen, käyttääkseen keskustelualueita, blogeja jne. roskapostin levittämiseen. Tätä riskiä estääkseen, itsekirjautuminen pitäisi estää tai sitä pitäisi rajoittaa *Sallitut sähköpostitoimialueet* -asetuksella.';
 $string['sha1'] = 'SHA-1 -tiiviste';
 $string['showguestlogin'] = 'Voit näyttää tai piilottaa Kirjaudu vierailijana -painikkeen kirjautumissivulla.';
 $string['stdchangepassword'] = 'Käytä normaalia Vaihda salasana -sivua';

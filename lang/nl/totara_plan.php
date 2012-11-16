@@ -527,7 +527,6 @@ $string['plan_instructions_delete'] = 'Klik op "Studieplan verwijderen" om dit s
 $string['plan_instructions_edit'] = 'Klik op "Details aanpassen" om titel, omschrijving of vervaldatum aan te passen.';
 $string['plan_instructions_learner'] = 'Hieronder wordt een samenvatting van je studieplan getoond.';
 $string['plan_instructions_manager'] = 'Hieronder wordt een samenvatting van het studieplan van je teamlid getoond.';
-$string['planapprovalrequested'] = 'Goedkeuring aangevraagd voor studieplan <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'Studieplan "{$a}" goedgekeurd';
 $string['planautocompleteddate'] = 'Studieplan is automatisch voltooid omdat de vervaldatum is verstreken.';
 $string['planautocompleteditems'] = 'Studieplan is automatisch voltooid omdat alle onderdelen zijn voltooid.';

@@ -279,200 +279,121 @@ $string['report:startdate'] = 'Date de début';
 $string['reportbuilder'] = 'Générateur de rapports';
 $string['reportbuilder:managereports'] = 'Créer, modifier ou supprimer des rapports du générateur de rapports';
 $string['reportbuilderaccessmode_help'] = '# Mode d\'accès
-
 Les contrôles d\'accès sont utilisés pour restreindre les utilisateurs pouvant voir le rapport.
-
 **Restreindre l\'accès** paramètre les réglages d\'accès généraux pour ce rapport.
-
 Quand réglé sur **Tous les utilisateurs peuvent voir ce rapport** aucune restriction n\'est appliquée au rapport et tous les utilisateurs pourront voir le rapport.
-
 Quand réglé sur **Seuls certains utilisateurs peuvent voir ce rapport** le rapport sera restreint aux utilisateurs sélectionnés en dessous.
-
 **Note :** les restrictions d\'accès ne contrôlent que les utilisateur pouvant voir le rapport, pas les enregistrements contenus. Voir l\'onglet \'Contenus\' pour contrôler les contenus du rapport.';
 $string['reportbuilderbaseitem_help'] = '# Générateur de rapport : objet de base
-
 En groupant un ennsemble d\'activités, vous dites qu\'elles ont quelque chose en commun, ce qui autorisera les rapports générés pour toutes les activités d\'un groupe. L\'objet de base définit les propriétés à considérer lors de l\'aggrégation de chaque membre du groupe.';
 $string['reportbuildercolumns_help'] = '# Colonnes
-
 Les **colonnes du rapport** vous permettent de personnaliser les colonnes apparaissant dans votre rapport. Les colonnes disponibles sont déterminées par la **source** du rapport. Chaque rapport a un ensemble de colonnes configurées par défaut.
-
 Les colonnes peuvent être ajoutées, supprimées, renommées et triées.
-
 **Ajouter des colonnes :** Pour ajouter une colonne, sélectionnez la colonne voulue dans le menu déroulant \'Ajoutez une autre colonne...\' et cliquez sur **Enregistrer les modifications**. La nouvelle colonne sera ajoutée à la fin de la liste.
-
 **Note :** Vous pouvez seulement créer une colonne de chaque type par rapport. Vous recevrez une erreur de validation si vous essayez à nouveau d\'inclure une colonne présente.
-
 **Cacher des colonnes :** Par défaut toutes les colonnes sont montrées quand un utilisateur voit le rapport. Utilisez le bouton \'montrer/cacher\' (l\'icône oeil) pour cacher les colonnes que vous ne souhaitez pas montrer aux utilisateurs par défaut.
-
 **Note :** Une colonne cachée est toujours disponible pour les utilisateurs visualisant le rapport. Supprimez les colonnes (l\'icône croix) si vous souhaitez qu\'ils ne voient pas la colonne du tout.
-
 **Déplacer des colonnes :** Les colonnes apparaissent dans le rapport dans l\'ordre dans lequel elles ont été listées. Utilisez les flèches haut et bas pour modifier l\'ordre.
-
 **Supprimer des colonnes :** Cliquez sur le bouton \'Supprimer\' (l\'icône croix) à droite de la colonne du rapport pour supprimer la colonne du rapport.
-
 **Renommer des colonnes :** Vous pouvez personnaliser le nom d\'une colonne en changeant le **nom d\'entête** et en cliquant sur **Enregistrer les modifications**. Le **nom d\'entête** est le nom qui figurera dans le rapport.
-
 **Modifier plusieurs types de colonnes :** Vous pouvez modifier plusieurs types de colonne à la fois en sélectionnant une autre colonne du menu déroulant et en cliquant sur **Enregistrer les modifications**.';
 $string['reportbuildercompletedorg_help'] = '# Afficher par organisation achevée
-
 Quand **Afficher les enregistrements achevés dans l\'organisation de l\'utilisateur** est sélectionné le rapport affiche des enregistrements achevés différents selon l\'organisation dans laquelle l\'utilisateur a été affecté.
-
 Quand **Inclure les rapports d\'organisations enfant** est réglé sur :
-
-*   **Oui** l\'utilisateur visualisant le rapport pourra voir les enregistrements achevés liés à leur organisation et les organisations enfant de celle-ci
-*   **Non** l\'utilisateur ne pourra voir que les enregistrements achevés liés à leur organisation.';
+\* **|Oui** l\'utilisateur visualisant le rapport pourra voir les enregistrements achevés liés à leur organisation et les organisations enfant de celle-ci
+\* **|Non** l\'utilisateur ne pourra voir que les enregistrements achevés liés à leur organisation.';
 $string['reportbuildercontentmode_help'] = '# Mode de contenus
-
 Les contrôles de contenus vous permettent de restreindre les enregistrements et informations disponibles lors de la visualisation d\'un rapport.
-
 **Contenus du rapport** vous permet de choisir les paramètres de contrôle des contenus généraux pour ce rapport :
-
 Quand **Afficher tous les enregistrements** est sélectionné, chaque enregistrement disponible pour cette source sera affiché et aucune restriction ne sera placée sur les contenus disponibles.
-
 Quand **Afficher les enregistrements correspondant à un des critères sélectionnés** est sélectionné le rapport affichera les enregistrements correspondant à un des critères.
-
 **Note :** Si aucun critère n\'est sélectionné aucun enregistrement ne sera affiché.
-
 Quand **Afficher les enregistrements correspondant à tous les critères** est sélectionné le rapport n\'affichera que les enregistrements correspondant à tous les critères sélectionnés dessous.
 **Note :** Si aucun critère n\'est sélectionné aucun enregistrement ne sera affiché.';
 $string['reportbuildercontext_help'] = '# Restreindre l\'accès par rôle
-
 Le contexte est le lieu ou niveau de système auquel l\'utilisateur a accès. Par exemple, un administrateur de site peut avoir un accès au niveau système (contexte), alors qu\'un apprenti peut n\'avoir qu\'un accès (contexte) de niveau cours.
-
 Le **contexte** vous permet de configurer le contexte dans lequel un utilisateur a été affecté à un rôle pour voir le rapport.
-
 Un utilisateur peut être affecté à un rôle au niveau système leur donnant un accès général au site ou juste au sein d\'un contexte particulier. Par example un enseignant peut être affecté à un rôle au niveau du cours.
-
 Quand **Les utilisateurs doivent avoir un rôle dans un contexte de système** est sélectionné l\'utilisateur doit avoir été affecté à un rôle au niveau système (par exemple ensemble du site) pour pouvoir voir le rapport.
-
 Quand **Les utilisateurs peuvent avoir un rôle dans tout contexte** est sélectionné, un utilisateur peut voir le rapport dès lors qu\'ils ont été affectés au rôle sélectionné n\'importe où dans le système.';
 $string['reportbuildercoursetag_help'] = '# Générateur de rapport : afficher par tag de cours
-
 Ce critère est activé en cochant la case \'Afficher enregistrements par tag de cours\'. Si cochée, le rapport affichera les résultats selon l\'appartenance ou non d\'un enregistrement à un cours tagué avec des tags spécifiques.
-
 Si des tags de la section \'Inclure les enregistrements tagués avec\' sont sélectionnés, seuls les enregistrements appartenant à des cours tagués avec un de ces tags seront affichés. Les enregistrements appartenant à des cours tagués avec tous les tags seront aussi affichés. Les enregistrements appartenant à des cours non tagués avec un de ces tags ne seront **pas** affichés.
-
 Si des tags de la section \'Exclure les cours tagués avec\' sont sélectionnés, les enregistrements appartenant à des cours tagués avec un de ces tags ne seront **pas** affichés. Tous les autres enregistrements seront affichés.
-
 Il est possible d\'inclure et d\'exclure des tags en même temps, à condition de ne pas inclure et exclure le même tag.';
 $string['reportbuildercurrentorg_help'] = '# Afficher par organisation actuelle
-
 Quand **Afficher les enregistrements de l\'équipe de l\'organisation d\'un utilisateur** est sélectionné le rapport affiche différents résultats selon l\'organisation de l\'utilisateur (Un utilisateur est affecté à une organisation dans leur \'Profil d\'utilisateur\' dans l\'onglet \'Postes\').
-
 Quand **Inclure les enregistrements d\'organisations enfant** est réglé sur :
-
-*   **Oui** l\'utilisateur visualisant le rapport peut voir les enregistrements liés à leur organisation et les organisations enfant de celle-ci
-*   **Non** l\'utilisateur ne voit que les enregistrements liés à son organisation.';
+\* **|Oui** l\'utilisateur visualisant le rapport peut voir les enregistrements liés à leur organisation et les organisations enfant de celle-ci
+\* **|Non** l\'utilisateur ne voit que les enregistrements liés à son organisation.';
 $string['reportbuildercurrentpos_help'] = '# Afficher par poste actuel
-
 Quand **Afficher les enregistrements de l\'employé au poste de l\'utilisateur** est sélectionné, le rapport affichera différents enregistrements selon le poste affecté à l\'utilisateur (un utilisateur se voit affecter un poste dans leur \'Profil d\'utilisateur\', onglet \'Postes\').
-
 Quand **Inclure les enregistrements de postes enfants ** est réglé sur :
-
-*   **Oui** l\'utilisateur visualisant le rapport peut voir les enregistrements liées à leur poste et tous les postes enfants liés à celui-ci
-*   **Non** l\'utilisateur visualisant le rapport ne peut voir que les enregistrements liés à leur poste.';
+\* **|Oui** l\'utilisateur visualisant le rapport peut voir les enregistrements liées à leur poste et tous les postes enfants liés à celui-ci
+\* **|Non** l\'utilisateur visualisant le rapport ne peut voir que les enregistrements liés à leur poste.';
 $string['reportbuilderdate_help'] = '# Afficher par date
-
 Quand **Afficher les enregistrements selon la date d\'enregistrement** est sélectionné le rapport n\'affiche que les enregistrements de la période sélectionnée.
-
 Les options **Inclure les enregistrements de** vous permettent de définir la période pour le rapport :
-
-*   Quand réglé sur **Les passés** le rapport n\'affiche que les enregistrements avec une date antérieure à la date actuelle.
-*   Quand réglé sur **Les futurs** le rapport n\'affiche que les enregistrements avec une date ultérieure à la date actuelle
-*   Quand réglé sur **Les 30 derniers jours** le rapport n\'affiche que les enregistrements entre la date actuelle et 30 jours avant.
-*   When set to **Les 30 prochains jours** le rapport n\'affiche que les enregistrements entre la date actuelle et 30 jours après.';
+* Quand réglé sur **Les passés** le rapport n\'affiche que les enregistrements avec une date antérieure à la date actuelle.
+* Quand réglé sur **Les futurs** le rapport n\'affiche que les enregistrements avec une date ultérieure à la date actuelle
+* Quand réglé sur **Les 30 derniers jours** le rapport n\'affiche que les enregistrements entre la date actuelle et 30 jours avant.
+* When set to **Les 30 prochains jours** le rapport n\'affiche que les enregistrements entre la date actuelle et 30 jours après.';
 $string['reportbuilderdescription_help'] = '# Description
-
 Quand une description de rapport est créée, l\'information est affichée dans une boîte au dessus des filtres de recherche sur la page de rapport.';
 $string['reportbuilderdialogfilter_help'] = '# Générateur de rapports : Filtre de dialogues
-
 Ce filtre vous permet de filtrer les informations selon une hiérarchie. Le filtre possède les options suivantes :
-
-*   est de toute valeur - cette option désactive le filtre (toutes les informations sont acceptées par ce filtre)
-*   est égal à - cette option permet seulement les informations égales à la valeur sélectionnée dans la liste
-*   n\'est pas égal à - cette option n\'autorise que les informations n\'étant pas égales à la valeur choisie dans la liste
-
+* est de toute valeur - cette option désactive le filtre (toutes les informations sont acceptées par ce filtre)
+* est égal à - cette option permet seulement les informations égales à la valeur sélectionnée dans la liste
+* n\'est pas égal à - cette option n\'autorise que les informations n\'étant pas égales à la valeur choisie dans la liste
 Une fois un objet de cadre sélectionné vous pouvez utilisez la case \'Inclure enfants ?\' pour choisir si vous voulez inclure seulement cet objet, ou faire correspondre cet objet avec tous les sous-objets lui appartenant.';
 $string['reportbuilderexportoptions_help'] = '# Paramètres d\'exportation de rapports
-
 Les **paramètres d\'exportation de rapports** permettent à un utilisateur avec les permissions adaptées de spécifier les options d\'exportation disponibles pour les utilisateurs au bas d\'une page de rapport. Ce paramètre affecte tous les rapports du **générateur de rapport**.
-
 Quand plusieurs options sont sélectionnées l\'utilisateur peut choisir ses options préférées à partir du menu déroulant.
-
 Quand aucune option n\'est sélectionnées la fonction d\'exportation est désactivée..';
 $string['reportbuilderfilters_help'] = '# Options de recherche (Filtres)
-
 Les **options de recherche** vous permettent de personnaliser les filtres qui apparaissent dans votre rapport. Les filtres disponibles sont définis par la **Source** du rapport. Chaque source de rapport a un ensemble de filtres par défaut.
-
 **Ajout de filtres :** Pour ajouter un nouveau filtre au rapport choisissez le filtre voulu dans le menu déroulant \'Ajouter un autre filtre...\' et cliquez sur **Enregistrer les modifications**. Quand **Avancé** est coché le filtre n\'apparaîtra pas dans la boîte \'Chercher par\' par défaut, mais les utilisateurs peuvent cliquez sur **Afficher avancés** pour voir ces filtres.
-
 **Déplacer des filtres :** Les filtres apparaîtront dans la boîte \'Chercher par\' dans l\'ordre dans lequel ils sont listés. Utilisez les flèches haut et bas pour modifier l\'ordre.
-
 **Supprimerdes filtres :** Cliquez sur le bouton **Supprimer** (l\'icône de croix) sur la droite du filtre de rapport pour supprimer le filtre.
-
 **Modifier plusieurs types de filtres :** Vous pouvez modifier plusieurs types de filtres à la fois en sélectionnant un filtre différent dans le menu déroulant et en cliquant sur **Enregistrer les modifications**.';
 $string['reportbuilderfullname_help'] = '# Nom du rapport
-
 Il s\'agit du nom qui apparaîtra au sommet de votre page de rapport et dans le bloc \'Gestionnaire de rapports\'.';
 $string['reportbuilderglobalsettings'] = 'Paramètres globaux du générateur de rapports';
 $string['reportbuildergroupname_help'] = '# Générateur de rapports : nom du groupe
-
 Le nom du groupe. Il vous permet d\'identifier le groupe quand vous souhaitez créer un rapport pour celui-ci. Cherchez le nom dans le menu déroulant source du rapport.';
 $string['reportbuildergrouptag_help'] = '# Générateur de rapports : Tag de groupe
-
 Quand vous créez un groupe en utilisant un tag, toutes les activités taguées avec le tag officiel spécifié forment une partie du groupe. Si vous ajoutez ou supprimez des tags d\'une activité, le groupe sera mise à jour pour inclure/exclure cette activité.';
 $string['reportbuilderhidden_help'] = '# Cacher dans Mes rapports
-
 Quand **Cacher dans Mes rapports** est coché le rapport n\'apparaîtra pas dans la page \'Mes rapports\' pour tout utilisateur connecté.
-
 **Note :** L\'option **Cacher dans Mes rapports** ne cache que le lien vers le rapport. Les utilisateurs avec les permissions adéquates pourront encore accéder au rapport via son URL.';
 $string['reportbuilderrecordsperpage_help'] = '# Nombre d\'enregistrements par page
-
 Le **Nombre d\'enregistrements par page** permet de définir le nombre d\'enregistrements à afficher sur une page de rapport.
-
 Le nombre maximum d\'enregistrements pouvant être affichés sur une page est de 5000. Plus vous affichez d\'enregistrements par page, plus la page de rapport prendra du temps pour s\'afficher.
-
 Il est conseillé de **limiter le nombre d\'enregistrements par page à 40**.';
 $string['reportbuilderrolesaccess_help'] = '# Rôles avec accès
-
 Quand **Restreindre l\'accès** est réglé sur **Seuls certains utilisateurs peuvent voir ce rapport** vous pouvez spécifier quels rôles peuvent voir le apport en utilisant ** Rôles avec permission pour voir le rapport**.
-
 Vous pouvez choisir un ou plusieurs rôles dans cette liste.
-
 Quand **Restreindre l\'accès** est réglé sur **Touts les utilisateurs peuvent voir ce rapport**, ces options sont désactivées.';
 $string['reportbuildershortname_help'] = '# Générateur de rapports : nom unique
-
 Le nom abrégé est utilisé par moodle pour garder une trace du rapport. Deux rapports ne peuvent avoir le même nom abrégé, même s\'ils sont basés sur la même source. Evitez l\'utilisation de caractères spéciaux pour ce champ (les textes, nombres et tirets bas sont acceptés).';
 $string['reportbuildersorting_help'] = '# Tri
-
 Le **tri** vous permet de configurer une colonne par défaut et l\'ordre de tri dans un rapport.
-
 Un utilisateur peut toujours trier un rapport manuellement en le visualisant. Les préférences des utilisateurs seront enregistrées lors de la session active. Quand la session sera terminée, le rapport reviendra à ses paramètres de tri par défaut configurés ici.';
 $string['reportbuildersource_help'] = '# Source
-
 La **Source** d\'un rapport définit le type primaire de données utilisées. Des options de filtrage supplémentaires sont disponibles après avoir débuté la modification du rapport.
-
 Une fois enregistrée, la source du rapport ne peut être modifiée.
-
 **Note :** Si aucune option n\'est disponible dans le champ **Source** , ou que la source que vous demandez n\'apparaît pas, vous devrez configurer votre installation Totara pour qu\'elle embarque la source dont vous avez besoin (Ceci ne peut être effectué via l\'interface Totara).';
 $string['reportbuildertrainer_help'] = '# Générateur de rapports : afficher par enseignant
-
 Ce critère est activé en cochant la case \'Afficher les enregistrements par enseignant\'. Si cochée, le rapport affichera différents enregistrements selon la personne avec qui l\'enseignant face-to-face était pour le feedback donné.
-
 Si \'Afficher les enregistrements où l\'utilisateur était l\'enseignant\' est sélectionné, le rapport affichera le feedback pour les sessions où l\'utilisateur visualisant le rapport était l\'enseignant.
-
 Si \'Enregistrements où un des rapports directs de l\'utilisateur est l\'enseignant\' est sélectionné, le rapport affichera les sessions dirigées par l\'équipe de la personne visualisant le rapport.
-
 Si \'Les deux\' est sélectionné, les deux types d\'enregistrements ci-dessus seront affichés.';
 $string['reportbuilderuser_help'] = '# Afficher par utilisateur
-
 Quand **Afficher les enregistrements par utilisateur** est sélectionné le rapport affichera différents enregistrements selon l\'utilisateur visualisant le rapport et sa relation avec les autres utilisateurs.
-
 **Inclure les enregistrements d\'un utilisateur spécifique** contrôle les enregistrements qu\'un utilisateur peut voir :
-
-*   Quand réglé sur **Les enregistrements de l\'utilisateurs** l\'utilisateur ne peut voir que ses enregistrements.
-*   Quand réglé sur **Les enregistrements des rapports directs de l\'utilisateur** l\'utilisateur peut voir les enregistrements appartenant à tout utilisateur en rapport avec lui (Un utilisateur est affecté à un gestionnaire dans son profil utilisateur dans l\'onglet \'Postes\').
-*   Quand réglé sur **Les deux** l\'utilisateur peut voir ses enregistrements et ceux de ses rapports directs.';
+* Quand réglé sur **Les enregistrements de l\'utilisateurs** l\'utilisateur ne peut voir que ses enregistrements.
+* Quand réglé sur **Les enregistrements des rapports directs de l\'utilisateur** l\'utilisateur peut voir les enregistrements appartenant à tout utilisateur en rapport avec lui (Un utilisateur est affecté à un gestionnaire dans son profil utilisateur dans l\'onglet \'Postes\').
+* Quand réglé sur **Les deux** l\'utilisateur peut voir ses enregistrements et ceux de ses rapports directs.';
 $string['reportcolumns'] = 'Colonnes du rapport';
 $string['reportconfirmdelete'] = 'Etes-vous sûr de vouloir supprimer ce rapport?';
 $string['reportconfirmreload'] = 'Ce rapport s\'agit d\'un rapport intégré; seulement votre développeur peut le supprimer. Cependant vous pouvez réinitialiser les paramètres du rapport, souhaitez vous continuer?';

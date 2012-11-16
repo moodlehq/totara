@@ -248,7 +248,6 @@ $string['overrides'] = 'Änderungen';
 $string['overridesbycontext'] = 'Änderungen (im Kontext)';
 $string['permission'] = 'Recht';
 $string['permission_help'] = 'Rechte sind Einstellungen für bestimmte Nutzerfähigkeiten, für die es 4 Optionen gibt:
-
 * Nicht gesetzt - Die Fähigkeit wird vererbt, d.h. sie wird unverändert von einem übergeordneten (weniger speziellen) Kontext übernommen
 * Erlauben - Die Fähigkeit wird erlaubt und darf ausgeführt werden
 * Entziehen - Die Fähigkeit wird entzogen, auch wenn sie in übergeordnetem Kontext erlaubt ist

@@ -247,7 +247,6 @@ $string['overrides'] = '修改';
 $string['overridesbycontext'] = '腐败（按场景）';
 $string['permission'] = '权限';
 $string['permission_help'] = '权限是关于能力的设置。有四个选项：
-
 * 无设置
 * 允许 - 有使用此能力的权限
 * 阻止 - 无使用此能力的权限，即使在更高级的环境中被允许

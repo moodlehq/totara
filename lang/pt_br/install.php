@@ -241,8 +241,8 @@ Com esta operação Moodle será capaz de configurar o limite de memória sózin
 <p>Alguns servidores não aceitam este procedimento e <b>todas</b> as páginas PHP do servidor ficam bloqueadas ou imprimem mensagens de erro. Neste caso será necessário excluir o arquivo .htaccess .</p>
 </li></ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão MSSQL para que possa se comunicar com o servidor SQL*Server.. Por favor, verifique o seu arquivo php.ini ou recompile o PHP.';
 $string['mssql_n'] = 'SQL*Server com suporte a UTF-8 (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão MSSQL para que possa se comunicar com o servidor SQL*Server.. Por favor, verifique o seu arquivo php.ini ou recompile o PHP.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão MySQL para que possa se comunicar com MySQL. Por favor, verifique o seu arquivo php.ini ou faça a recompilação do PHP.';
 $string['mysqli'] = 'Improved MySQL (mysqli)';
@@ -266,8 +266,8 @@ $string['nativesqlsrvnodriver'] = 'Drivers da Microsoft para SQL Server do PHP n
 $string['nativesqlsrvnonwindows'] = 'Drivers da Microsoft para SQL Server do PHP estão disponíveis omente para Windows OS';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão OCI8 para que possa se comunicar com Oracle. Por favor, verifique o seu arquivo php.ini ou faça a recompilação do PHP.';
-$string['odbcextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão ODBC para que possa se comunicar com o servidor SQL. Por favor, verifique o seu arquivo php.ini ou faça a recompilação do PHP.';
 $string['odbc_mssql'] = 'Servidor SQL em ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'O PHP não foi configurado corretamente com a extensão ODBC para que possa se comunicar com o servidor SQL. Por favor, verifique o seu arquivo php.ini ou faça a recompilação do PHP.';
 $string['pass'] = 'OK';
 $string['paths'] = 'Caminhos';
 $string['pathserrcreatedataroot'] = 'O diretório de dados ({$a->dataroot}) não pode ser criado pelo instalador.';

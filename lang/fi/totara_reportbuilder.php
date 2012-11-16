@@ -283,192 +283,116 @@ $string['report:startdate'] = 'Aloituspäivämäärä';
 $string['reportbuilder'] = 'Raporttityökalu';
 $string['reportbuilder:managereports'] = 'Luo, muokkaa ja poista raporttityökalun raportteja';
 $string['reportbuilderaccessmode_help'] = '# Oikeuksien rajoittaminen
-
 Käyttöoikeuksia rajoittamalla voit määrittää ketkä käyttäjät pääsevät katsomaan raporttia.
-
 **Rajaa pääsyä** määrittää raportin yleiset lukuoikeudet.
-
 Kun valittuna on **Kaikki käyttäjät näkevät tämän raportin**, mitään rajoituksia ei käytetä.
-
 Kun valittuna on **Vain tietyt käyttäjät näkevät tämän raportin**, raportin käyttöoikeudet rajataan alempana määritettäville käyttäjäryhmille.
-
 **Huom:** käyttörajoitukset määrittävät ainoastaan lukuoikeudet, ei raportin sisältämiä tietueita. Näitä voit muokata \'Sisältö\'-välilehdellä.';
 $string['reportbuilderbaseitem_help'] = '# Raporttityökalu: Pohja-aktiviteetti
-
 Aktiviteettien ryhmittelyllä voit osoittaa, että aktiviteeteilla on jotain yhteistä. Tämän pohjalta raportteja voidaan generoida kaikista ryhmään kuuluvista aktiviteeteista. Pohja-aktiviteetti määrittää ne asetukset, joiden pohjalta ryhmän tiedot koostetaan.';
 $string['reportbuildercolumns_help'] = '# Raportin sarakkeet
-
 **Raportin sarakkeet** -kohdassa voit valita sarakkeet, jotka näkyvät raportissa. Käytettävissä olevat sarakkeet riippuvat siitä, mikä raportin **Lähde** on. Jokaiselle raporttilähteelle on oletuksena määritetty tietyt sarakkeet.
-
 Voit lisätä, poistaa, nimetä uudelleen ja lajitella sarakkeita.
-
 **Lisää sarakkeita:** Valitse alasvetovalikosta **Lisää uusi sarake...**, valitse haluamasi tyyppi, ja klikkaa **Lisää**-painiketta ja sen jälkeen **Tallenna muutokset**. Uusi sarake lisätään listan loppuun.
-
 **Huomaa:** Voit luoda vain yhden sarakkeen kutakin tyyppiä per raportti. Jos yrität lisätä saman tyyppisen sarakkeen monta kertaa, saat virheilmoituksen.
-
 **Piilota sarakkeita:** Oletuksena kaikki sarakkeet ovat näkyvissä, kun käyttäjä katsoo raporttia. Jos et halua jonkin tietyn sarakkeen näkyvän käyttäjille, klikkaa \'Näytä/Piilota\' -painiketta (silmä-ikoni) sen riviltä.
-
 **Huom:** Piilotettu sarake on edelleen olemassa. Jos et halua käyttäjien näkevän saraketta ollenkaan, klikkaa **Poista**-painiketta poistaaksesi sarakkeen.
-
 **Siirrä sarakkeita:** Sarakkeet näkyvät raportissa siinä järjestyksessä missä ne on lisätty. Voit vaihtaa sarakkeiden järjestystä nuolipainikkeilla.
-
 **Poista sarakkeita:** Napsauta **Poista**-painiketta poistaaksesi sarakkeen raportista.
-
 **Nimeä sarakkeita uudelleen:** Voit muokata sarakkeen nimeä ruksimalla sen rivillä olevan valintalaatikon ja syöttämällä uuden nimen viereiseen kenttään. Valitse sen jälkeen **Tallenna muutokset**.';
 $string['reportbuildercompletedorg_help'] = '# Lajitteluperuste: organisaatio suorituksen jälkeen
-
 Kun valittuna on **Näytä suoritukset, jotka on tehty käyttäjän organisaatiossa**, raportti näyttää erilaisia suorituksia riippuen organisaatiota, johon käyttäjä on määritetty. (Kunkin käyttäjän organisaatio määritetään heidän käyttäjäprofiilinsa \'Asemat\'-välilehdellä.)
-
 Kun **Ota mukaan suoritukset lapsiorganisaatioista**-kohdassa on valinta:
-
-*   **Kyllä**: käyttäjä voi tarkastella raportteja, jotka kuuluvat heidän omaan organisaatioonsa sekä mihin tahansa aliorganisaatioon.
-*   **Ei**: käyttäjä voi tarkastella ainoastaan omaan organisaatioonsa kuuluvia suoritustietoja.';
+\* **|Kyllä**: käyttäjä voi tarkastella raportteja, jotka kuuluvat heidän omaan organisaatioonsa sekä mihin tahansa aliorganisaatioon.
+\* **|Ei**: käyttäjä voi tarkastella ainoastaan omaan organisaatioonsa kuuluvia suoritustietoja.';
 $string['reportbuildercontentmode_help'] = '# Sisältö
-
 Raporttien sisältöä koskevat valinnat määrittävät tietueiden ja muun tiedon näkymisen.
-
 **Raportin sisältö**-kohdasta voit valita raporttia koskevat yleisasetukset:
-
 Kun **Näytä kaikki suoritukset** on valittu, kaikki tätä tietolähdettä koskevat käytettävissä olevat tietueet näytetään ilman rajoituksia.
-
 Kun **Näytä suoritukset, jotka täyttävät minkä tahansa alla merkityistä kriteereistä** on valittu, raportti näyttää tietueet, jotka sopivat mihin tahansa alla määriteltyihin ehtoihin.
-
 **Huom:** Jos yhtään kriteeriä ei ole määritetty, raportti on tyhjä.
-
 Kun **Näytä suoritukset, jotka täyttävät kaikki alla merkityt kriteerit** on valittu, raportti näyttää tietueet, jotka sopivat kaikkiin ehtoihin.
-
 **Huom:** Jos yhtää kriteeriä ei ole määritetty, raportti on tyhjä.';
 $string['reportbuildercontext_help'] = '# Rajaa pääsyä rooliin perustuen
-
 Konteksti on se toiminnallinen järjestelmän taso, johon käyttäjällä on pääsy. Esimerkiksi järjestelmän hallinnoijalla on pääsy koko Totara-asennusta koskeviin tietoihin (järjestelmäkonteksti), kun taas oppijalla voi olla pääsy ainoastaan kurssitason kontekstiin.
-
 **Kontekstin**-kohdan avulla voit määrittää kontekstin, joka käyttäjältä vaaditaan.
-
 Kun **Käyttäjällä tulee olla rooli systeemissä** on valittu, käyttäjä tulee olla lisättynä koko järjestelmätason kontekstiin nähdäkseen raportin.
-
 Kun **Käyttäjällä voi olla rooli missä tahansa kontekstissa** on valittu, käyttäjä voi olla lisättynä mihin tahansa kontekstiin nähdäkseen raportin.';
 $string['reportbuildercoursetag_help'] = '# Raporttityökalu: Näytä kurssin merkin mukaan
-
 Valitsemalla **Näytä tiedot kurssimerkin mukaan** laatikon, raportti näyttää tulokset kurssille määritetyn merkin (tägin) mukaan.
-
 Jos valitset merkkejä osiosta \'Sisällytä merkityt tietueet\', vain valituille merkeille liitetyt kurssit näytetään, ei muita.
-
 Jos valitset merkkejä osiosta \'Älä näytä merkittyjä tietueita\', valituille merkeille liitetyt kurssit jätetään näyttämättä. Kaikki kurssit, joilla ei ole merkkejä (tägejä), näytetään.
-
 On mahdollista sekä sisällyttää että jättää pois merkittyjä kursseja samanaikaisesti, mutta samaa tägiä ei voi käyttää molemmilla tavoilla samanaikaisesti.';
 $string['reportbuildercurrentorg_help'] = '# Lajitteluperuste: käyttäjän tämänhetkinen organisaatio
-
 Kun **Näytä käyttäjän organisaation henkilöstön suoritukset** on valittu, raportti näyttää eri tuloksia riippuen organisaatiosta, johon käyttäjä on määritetty. (Organisaatio valitaan käyttäjäprofiilin \'Asema\'-tiedoissa.)
-
 Kun **Ota mukaan suoritukset lapsiorganisaatioista**-kohdasta on valittu, voit määrittää näytetään suoritukset vain käyttäjän organisaation henkilöstöstä, myös alemmista organisaatioista, vai molemmista.';
 $string['reportbuildercurrentpos_help'] = '# Lajitteluperuste: käyttäjän tämänhetkinen asema
-
 Kun **Näytä käyttäjän kanssa samassa asemassa olevan henkilöstön suoritukset** on valittu, raportti näyttää eri asioita riippuen mihin asemaan käyttäjä on määritetty. (Asema määritetään käyttäjäprofiilin välilehdellä \'Asema\').
-
 Kohdassa **Ota mukaan suoritukset lapsiasemista** voit määrittää, otetaanko raporttiin mukaan käyttäjän kanssa samalla tasolla ja alempana oleva henkilökunta, samassa asemassa olevat, vaiko alemmassa asemassa oleva henkilöstö.';
 $string['reportbuilderdate_help'] = '# Lajitteluperuste: Suorituspäivä
-
 Kun **Näytä suoritukset, jotka perustuvat suorituspäivään** on valittuna, valitussa raportissa näytetään vain valitun ajanjakson sisään kuuluvat tietueet.
-
 Voit valita käytettävän ajanjakson kohdan **Ota mukaan suoritukset täältä** valinnoista:
-
-*   Kun valittuna on **Menneisyys**, raportti näyttää vain tietueet, jotka ovat nykyistä päivämäärää vanhempia.
-*   Kun valittuna on **Tulevaisuus**, raportti näyttää vain tietueet, jotka ovat nykyistä päivämäärää uudempia.
-*   Kun valittuna on **Edelliset 30 päivää**, raportti näyttää vain tietueet nykyisen päivän ja sitä edeltäneiden 30 päivän ajalta.
-*   Kun valittuna on **Seuraavat 30 päivää**, raportti näyttää vain tietueet nykyisen päivän ja sitä seuraavien 30 päivän ajalta.';
+* Kun valittuna on **Menneisyys**, raportti näyttää vain tietueet, jotka ovat nykyistä päivämäärää vanhempia.
+* Kun valittuna on **Tulevaisuus**, raportti näyttää vain tietueet, jotka ovat nykyistä päivämäärää uudempia.
+* Kun valittuna on **Edelliset 30 päivää**, raportti näyttää vain tietueet nykyisen päivän ja sitä edeltäneiden 30 päivän ajalta.
+* Kun valittuna on **Seuraavat 30 päivää**, raportti näyttää vain tietueet nykyisen päivän ja sitä seuraavien 30 päivän ajalta.';
 $string['reportbuilderdescription_help'] = '# Kuvaus
-
 Raportille annettu kuvaus näkyy hakusuotimien yläpuolella olevassa kentässä raporttisivulla.';
 $string['reportbuilderdialogfilter_help'] = '# Raporttityökalu: valintaikkunasta määritettävät hakuehdot
-
 Tämän suotimen avulla voi suodattaa hakutuloksia hierarkioihin perustuen. Suotimen on mahdollista saada seuraavia arvoja:
-
-*   On mikä tahansa - tämä valinta ottaa suodatuksen pois käytöstä eli kaikki tiedot haetaan
-*   On yhtä suuri kuin - tämä valinta näyttää ainoastaan tiedot, jotka ovat samoja kuin valintaikkunan listalta valittava arvo
-*   On erisuuri kuin - tämä valinta näyttää ainoastaan tiedot, jotka eroavat valintaikkunan listalta valitusta arvosta
-
+* On mikä tahansa - tämä valinta ottaa suodatuksen pois käytöstä eli kaikki tiedot haetaan
+* On yhtä suuri kuin - tämä valinta näyttää ainoastaan tiedot, jotka ovat samoja kuin valintaikkunan listalta valittava arvo
+* On erisuuri kuin - tämä valinta näyttää ainoastaan tiedot, jotka eroavat valintaikkunan listalta valitusta arvosta
 Kun olet valinnut haluamasi hierarkian osan, voit valita **Alakategoriat mukaan?** laatikon, jotta hierarkiatasoon kuuluvat mahdolliset alatasot sisällytetään hakuun myös.';
 $string['reportbuilderexportoptions_help'] = '# Raportin ulosvientivalinnat
-
 **Raportin ulosvientivalinnoissa** käyttäjä voi oikeuksiensa puitteissa määrittää, mitä raportin siirtämiseen liittyviä vaihtoehtoja näytetään raporttisivun alalaidassa. Tämä asetus koskee kaikkia Raporttityökalulla tehtyjä raportteja.
-
 Jos useampia ulosvientitapoja on määritetty täällä, käyttäjä voi valita haluamansa sivun lopussa olevasta valintalistasta.
-
 Jos valintoja ei ole määritetty täällä, ulosvientitoiminto ei ole käytössä. .';
 $string['reportbuilderfilters_help'] = '# Raportin hakuvalinnat (Suotimet)
-
 **Hakuvalinnoissa** voit räätälöidä mitkä suotimet näkyvät raportissasi. Käytössä olevat suotimet määritetään raportin **Lähde**-valinnan avulla. Kullakin tietolähteellä on tietyt oletus-suotimet.
-
 Voit lisätä, lajitella ja poistaa suotimia.
-
 **Lisää suodin:** Voit lisätä uuden suotimen valitsemalla kohdan \'Lisää uusi suodin\' valintalistalta. Napsauta sen jälkeen **Tallenna**-painiketta. Kun **Lisäasetukset** on valittu, kyseinen suodin ei näy oletuksena hakuehtojen joukossa, vaan käyttäjä sen näkyviin valittuaan hakutuloslistauksessa **Näytä lisäkentät**.
-
 **Siirrä suodin:** Suotimet näkyvät hakuehdoissa tässä määritetyssä järjestyksessä. Voit vaihtaa suodinten järjestystä siirtämällä niitä nuoli-painikkeita käyttäen.
-
 **Poista suodin:** Napsauta **Poista**-painiketta (ristin muotoinen kuvake) poistaaksesi suotimen raportista.
-
 **Vaihda useita suodinlajeja:** Voit muokata useita suotimia yhdellä kertaa vaihtamalla valintalistasta eri suotimen ja painamalla sen jälkeen **Tallenna**-painiketta.';
 $string['reportbuilderfullname_help'] = '# Raportin otsikko/h1>
 Tämä nimi näkyy raporttisivun ylälaidassa sekä Raporttityökalu-lohkossa.';
 $string['reportbuilderglobalsettings'] = 'Raporttityökalun yleiset asetukset';
 $string['reportbuildergroupname_help'] = '# Raporttityökalu: Ryhmän nimi
-
 Nimen avulla voit määrittää ryhmän, jota käytetään uuden raportin pohjana. Voit nähdä nimen raportin lähdetiedot sisältävässä alasvetovalikosssa.';
 $string['reportbuildergrouptag_help'] = '# Raporttityökalu: Ryhmän tunniste
-
 Kun luot ryhmän käyttäen tunnistetta (tägiä), kaikki aktiviteetit, jotka on merkitty virallisella tunnisteella, kuuluvat automaattisesti ryhmään. Jos lisäät tai poistat tunnisteita aktiviteetista, ryhmän tunnisteet päivitetään lisäyksen tai poiston mukaisesti.';
 $string['reportbuilderhidden_help'] = '# Piilota omissa raporteissa
-
 Kun **Piilota omissa raporteissa** on valittuna, raporttia ei näytetä **Omat raportit** välilehdellä yhdellekään käyttäjälle.
-
 **Huomaa:** Tämä valinta poistaa näkyvistä vain raporttiin vievän linkin. Käyttäjäoikeuksista riippuen jotkut käyttäjät voivat edelleen nähdä raportin, jos heillä on linkki käytössään.';
 $string['reportbuilderrecordsperpage_help'] = '# Suoritusten määrä per sivu
-
 Tämän valinnan avulla voit määrittää kuinka monta tietuetta sivulla näytetään.
-
 Tietueiden enimmäismäärä sivua kohti on 5000. Mitä useampia tietueita olet määrittänyt näkymään, sitä kauemmin raporttisivun avautuminen kestää.
-
 Suosittelemme **rajoittamaan näytettävien tietueiden määrän 40:een.**.';
 $string['reportbuilderrolesaccess_help'] = '# Roolit, joilla on oikeus nähdä tämä raportti
-
 Kun **Rajaa pääsyä** -kohdan valintana on **Vain tietyt käyttäjät näkevät tämän raportin**, voit määrittää millä rooleilla on oikeus nähdä raportti.
-
 Voit valita yhden tai useamman roolin.
-
 Nämä valinnat eivät ole käytössä, jos **Rajaa pääsyä** -kohdassa on valittu **Kaikki käyttäjät näkevät tämän raportin**.';
 $string['reportbuildershortname_help'] = '# Raporttityökalu: Yksilöllinen nimi
-
 Oppimisympäristö käyttää tässä annettua nimeä raportin tunnistamiseen. Kahdella raportilla ei voi olla samaa nimeä, vaikka ne perustuisivat samaan tietolähteeseen. Vältä erikoismerkkejä tässä kentässä (teksti, numerot ja alaviivat ovat sallittuja).';
 $string['reportbuildersorting_help'] = '# Järjestäminen
-
 **Järjestämisasetuksilla** voit määrittää raportin oletussarakkeen sekä lajittelujärjestyksen (nouseva tai laskeva).
-
 Käyttäjä voi raporttia tarkastellessaan myös lajitella sarakkeita manuaalisesti. Käyttäjän omat asetukset tallennetaan istunnon ajaksi. Istunnon sulkemisen jälkeen raportin järjestys palaa oletusarvoihin.';
 $string['reportbuildersource_help'] = '# Lähde
-
 Raportin **Lähde** viittaa pääasiallisesti käytettävän tiedon tyyppiin. Lisää suodausasetuksia tulee käyttöön kun raporttia aletaan editoida.
-
 Kun lähde on kerran määritetty, sitä ei voi enää muuttaa.
-
 **Huomaa:** Jos **Lähde**-kentässä ei näy mitään arvoja, tai siinä ei ole tarvitsemaasi lähdettä, ympäristön hallinnoija voi auttaa sinua saamaan ne näkyviin Totaran asetuksista.';
 $string['reportbuildertrainer_help'] = '# Lajitteluperuste: Näytä kouluttajan mukaan
-
 Jos **Näytä tiedot kouluttajan mukaan** on valittuna, raportti näyttää eri asioita riippuen siitä, miten lähikoulutuksen järjestävän kouluttajan tiedot näytetään.
-
 Jos **Näytä tiedot, joissa käyttäjä on kouluttaja** on valittuna, raportti näyttää tapahtumat, joissa raporttia tarkasteleva käyttäjä on ollut kouluttajana.
-
 Jos **Tiedot, joissa yksi käyttäjän suorista alaisista on kouluttajana** on valittuna, raportti näyttää tiedot raporttia tarkastelevan käyttäjän tiimiin kuuluvasta henkilöstä, joka on ollut kouluttajana.
-
 Jos **Molemmat** on valittuna, molemmat tiedot näytetään.';
 $string['reportbuilderuser_help'] = '# Lajitteluperuste: Näytä käyttäjän mukaan
-
 Kun **Näytä suoritukset jotka perustuvat käyttäjään** on valittuna, raportti näyttää eri asioita riippuen siitä kuka käyttäjä raporttia tarkastelee ja mikä on hänen suhteensa muihin käyttäjiin.
-
 Valinta **Sisällytä suoritukset tietyltä käyttäjältä** määrittää mitä tietoja raporttia tarkasteleva käyttäjä näkee:
-
-*   Kun valinta on **Käyttäjän omat suoritukset**, käyttäjä näkee vain omat suorituksensa.
-*   Kun valinta on **Käyttäjän suorien alaisten suoritukset**, käyttäjä näkee kaikkien tiimiinsä kuuluvien käyttäjien suoritukset. (Käyttäjän esimies määritetään profiilin asetuksista "Asemat"-välilehdellä.)
-*   Kun valinta on **Molemmat**, käyttäjä näkee sekä omat että alaistensa suoritustiedot.';
+* Kun valinta on **Käyttäjän omat suoritukset**, käyttäjä näkee vain omat suorituksensa.
+* Kun valinta on **Käyttäjän suorien alaisten suoritukset**, käyttäjä näkee kaikkien tiimiinsä kuuluvien käyttäjien suoritukset. (Käyttäjän esimies määritetään profiilin asetuksista "Asemat"-välilehdellä.)
+* Kun valinta on **Molemmat**, käyttäjä näkee sekä omat että alaistensa suoritustiedot.';
 $string['reportcolumns'] = 'Raportin sarakkeet';
 $string['reportconfirmdelete'] = 'Oletko varma, että haluat poistaa tämän raportin?';
 $string['reportconfirmreload'] = 'Tämä on on sulautettu raportti, joten et voi poistaa sitä (sen voi poistaa hallinnoija). Voit palauttaa raportin asetukset alkuperäisiksi. Haluatko jatkaa?';

@@ -45,86 +45,93 @@ $string['uploadpicture_cannotsave'] = 'ユーザ {$a} の画像を保存でき�
 $string['uploadpicture_cannotunzip'] = '画像ファイルを解凍できません。';
 $string['uploadpicture_invalidfilename'] = '画像ファイル {$a} のファイル名に無効な文字があります。スキップします。';
 $string['uploadpicture_overwrite'] = '既存のユーザ画像を上書きしますか?';
-$string['uploadpictures'] = 'ユーザ画像をアップロードする';
-$string['uploadpictures_help'] = 'ZIP圧縮したイメージファイルをユーザ画像としてアップロードすることができます。イメージファイルは、「選択されたユーザ属性.拡張子」という形で名前付けをする必要があります。例えば、「user1234.jpg」はusernameが「user1234」のユーザ用となります。';
 $string['uploadpicture_userfield'] = '画像にマッチさせるユーザ属性';
 $string['uploadpicture_usernotfound'] = '「 {$a->userfield} 」の値が「 {$a->uservalue} 」のユーザは存在しません。スキップします。';
 $string['uploadpicture_userskipped'] = 'ユーザ {$a} をスキップします (画像登録済みです)。';
 $string['uploadpicture_userupdated'] = 'ユーザ {$a} の画像が更新されました。';
+$string['uploadpictures'] = 'ユーザ画像をアップロードする';
+$string['uploadpictures_help'] = 'ZIP圧縮したイメージファイルをユーザ画像としてアップロードすることができます。イメージファイルは、「選択されたユーザ属性.拡張子」という形で名前付けをする必要があります。例えば、「user1234.jpg」はusernameが「user1234」のユーザ用となります。';
 $string['uploadusers'] = 'ユーザをアップロードする';
-$string['uploadusers_help'] = '<p>最初に、<strong>通常は大量ユーザをインポートする必要はありません</strong> - あなたの保守作業を減らすため、外部データベースへの接続またはユーザに新しいアカウントを作成できるようにしている等、認証方法が手動メンテナンスを必要としないようになっているか調査してください。詳細は管理メニューの認証セクションをご覧ください。</p>
-<p>あなたが本当にテキストファイルから複数のユーザアカウントをインポートしたい場合、テキストファイルを次のフォーマットにしてください:</p>
+$string['uploadusers_help'] = '最初に、**通常は大量ユーザをインポートする必要はありません** - あなたの保守作業を減らすため、外部データベースへの接続またはユーザに新しいアカウントを作成できるようにしている等、認証方法が手動メンテナンスを必要としないようになっているか調査してください。詳細は管理メニューの認証セクションをご覧ください。
+あなたが本当にテキストファイルから複数のユーザアカウントをインポートしたい場合、テキストファイルを次のフォーマットにしてください:
 
-<ul>
-  <li>ファイルの各行に1レコードを記述します。</li>
-  <li>それぞれのレコードをカンマ (またはデリミタ) で区切ります。</li>
-  <li>最初のレコードは特別な意味を持ち、フィールド名一覧を含みます。これは残りのファイルのフォーマットを定義します。
-    <blockquote>
-      <p><strong>必須フィールド名:</strong> これらのフィールドは最初のレコードに記述し、ユーザごとに定義する必要があります。</p>
-      <p>追加時に<code>firstname、lastname</code>または更新時に<code>username</code>を記述してください。</p>
-      <p><strong>オプションフィールド名: </strong> これらのフィールドすべては完全に任意です。フィールドの値がファイルに存在する場合、その値が使用されます。そうでない場合、フィールドのデフォルト値が使用されます。</p>
-      <p><code>institution, department, city, country, lang, auth, ajax, timezone, idnumber, icq, phone1, phone2, address, url, description, mailformat, maildisplay, htmleditor, autosubscribe, emailstop</code></p>
-      <p><strong>カスタムプロファイルフィールド名 (任意):</strong> xxxxx は実際のカスタムユーザプロファイルフィールド名です (例 ユニークな省略名)。</p>
-      <p><code>profile_field_xxxxx</code></p>
-      <p><strong>特別フィールド名:</strong> ユーザ名の変更またはユーザの削除に使用されます。下記をご覧ください。</p>
-      <p><code>deleted, oldusername</code></p>
-      <p><strong>登録フィールド名 (任意): </strong> courseはコースの「コース省略名」です - 記述されている場合、学生はこれらのコースに登録されます。groupは対応するcourseのグループに関連付ける必要があります。typeはコース登録時に関連付けられるロールのタイプです。設定値「1」はデフォルトのコースロール、「2」は教師のレガシーロール、「3」は編集権のない教師のレガシーロールです。ロールを直接指定する代わりに、ロールフィールドを使用することができます - ロール省略名またはIDを使用してください (ロールの数字名はサポートされません)。ユーザをコースのグループに割り当てることもできます (course1のgroup1、course2のgroup2等)。グループはグループ名またはIDで指定することもできます (グループの数字名はサポートされません)。それぞれのコースの利用有効期間を日数で設定することもできます (course1のenrolperiod1、course2のenrolperiod2等)。</p>
-      <p><code>course1, type1, role1, group1, enrolperiod1, course2, type2, role2, group2, enrolperiod2, etc.</code></p>
-    </blockquote>
-    </li>
-  <li>データ中のカンマは &amp;#44 にエンコードしてください - エンコードされたものをスクリプトが自動的にカンマにデコードします。</li>
-  <li>論理型フィールドには、falseの場合「0」を、trueの場合「1」を設定してください。</li>
-</ul>
-<p>下記は有効なインポートファイルの例です:</p>
-<p><code>username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1, type1, enrolperiod1<br />
-jonest, verysecret, Tom, Jones, jonest@someplace.edu, en_utf8, 3663737, 1, Intro101, Section 1, 1, 30<br />
+* ファイルの各行に1レコードを記述します。
+* それぞれのレコードをカンマ (またはデリミタ) で区切ります。
+* 最初のレコードは特別な意味を持ち、フィールド名一覧を含みます。これは残りのファイルのフォーマットを定義します。
+>
+> **必須フィールド名:** これらのフィールドは最初のレコードに記述し、ユーザごとに定義する必要があります。
+>
+>
+> 追加時に\`firstname、lastname\`または更新時に\`username\`を記述してください。
+>
+>
+> **オプションフィールド名: ** これらのフィールドすべては完全に任意です。フィールドの値がファイルに存在する場合、その値が使用されます。そうでない場合、フィールドのデフォルト値が使用されます。
+>
+>
+> \`institution, department, city, country, lang, auth, ajax, timezone, idnumber, icq, phone1, phone2, address, url, description, mailformat, maildisplay, htmleditor, autosubscribe, emailstop\`
+>
+>
+> **カスタムプロファイルフィールド名 (任意):** xxxxx は実際のカスタムユーザプロファイルフィールド名です (例 ユニークな省略名)。
+>
+>
+> \`profile\_field\_xxxxx\`
+>
+>
+> **特別フィールド名:** ユーザ名の変更またはユーザの削除に使用されます。下記をご覧ください。
+>
+>
+> \`deleted, oldusername\`
+>
+>
+> **登録フィールド名 (任意): ** courseはコースの「コース省略名」です - 記述されている場合、学生はこれらのコースに登録されます。groupは対応するcourseのグループに関連付ける必要があります。typeはコース登録時に関連付けられるロールのタイプです。設定値「1」はデフォルトのコースロール、「2」は教師のレガシーロール、「3」は編集権のない教師のレガシーロールです。ロールを直接指定する代わりに、ロールフィールドを使用することができます - ロール省略名またはIDを使用してください (ロールの数字名はサポートされません)。ユーザをコースのグループに割り当てることもできます (course1のgroup1、course2のgroup2等)。グループはグループ名またはIDで指定することもできます (グループの数字名はサポートされません)。それぞれのコースの利用有効期間を日数で設定することもできます (course1のenrolperiod1、course2のenrolperiod2等)。
+>
+>
+> \`course1, type1, role1, group1, enrolperiod1, course2, type2, role2, group2, enrolperiod2, etc.\`
+>
+>
+>
+* データ中のカンマは &#44 にエンコードしてください - エンコードされたものをスクリプトが自動的にカンマにデコードします。
+* 論理型フィールドには、falseの場合「0」を、trueの場合「1」を設定してください。
+
+下記は有効なインポートファイルの例です:
+`username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1, type1, enrolperiod1
+jonest, verysecret, Tom, Jones, jonest@someplace.edu, en_utf8, 3663737, 1, Intro101, Section 1, 1, 30
 reznort, somesecret, Trent, Reznor, reznort@someplace.edu, ja_utf8, 6736733, 0, Advanced202, Section 3, 3, 90
-</code></p>
+`
+## テンプレート
+次のコードには、テンプレートとしてデフォルト値が適用されます:
+* \`%l\`は、lastnameと置換されます。
+* \`%f\`は、firstnameと置換されます。
+* \`%u\`は、usernameと置換されます。
+* \`%%\`は、% と置換されます。
 
-<h2>テンプレート</h2>
-<p>次のコードには、テンプレートとしてデフォルト値が適用されます:</p>
-<ul>
-<li><code>%l</code>は、lastnameと置換されます。</li>
-<li><code>%f</code>は、firstnameと置換されます。</li>
-<li><code>%u</code>は、usernameと置換されます。</li>
-<li><code>%%</code>は、% と置換されます。</li>
-</ul>
-<p>パーセント (%) および文字 (l、f、u) の間には次の修飾語句を使用することができます:</p>
-<ul>
-<li>マイナスサイン (-) - このコード文字が付けられた情報は、小文字に変換されます。</li>
-<li>プラスサイン (+) - このコード文字が付けられた情報は、大文字に変換されます。</li>
-<li>(~) チルダサイン - このコード文字が付けられた情報は、タイトルケースに変換されます。</li>
-<li>10進数 - このコード文字が付加された情報は、指定された文字数に切り詰められます。</li>
+パーセント (%) および文字 (l、f、u) の間には次の修飾語句を使用することができます:
+* マイナスサイン (-) - このコード文字が付けられた情報は、小文字に変換されます。
+* プラスサイン (+) - このコード文字が付けられた情報は、大文字に変換されます。
+* (~) チルダサイン - このコード文字が付けられた情報は、タイトルケースに変換されます。
+* 10進数 - このコード文字が付加された情報は、指定された文字数に切り詰められます。
 
-</ul>
+例えば、firstnameがJohn、そしてlastnameがDoeの場合、指定されたテンプレートで次の値を取得することができます:
+* %l%f = DoeJohn
+* %l%1f = DoeJ
+* %-l%+f = doeJOHN
+* %-f\_%-l = john\_doe
+* http://www.example.com/~%u/ = http://www.example.com/~jdoe/ (ユーザ名: jdoe または %-1f%-l を使用する場合)
 
-<p>例えば、firstnameがJohn、そしてlastnameがDoeの場合、指定されたテンプレートで次の値を取得することができます:</p>
-<ul>
-<li>%l%f = DoeJohn</li>
-<li>%l%1f = DoeJ</li>
-<li>%-l%+f = doeJOHN</li>
-<li>%-f_%-l = john_doe</li>
-<li>http://www.example.com/~%u/ = http://www.example.com/~jdoe/ (ユーザ名: jdoe または %-1f%-l を使用する場合)</li>
-</ul>
-<p>テンプレートは、デフォルト値のみで処理され、CSVファイルから検索された値では処理されません。</p>
-<p>正確なMoodleユーザ名を生成するため、usernameは常に小文字に変換されます。さらに、サイトポリシーページで「ユーザ名に拡張文字を許可する」が無効にされている場合、文字、数字、ダッシュ (-) およびドット (.) と異なる文字は取り除かれます。例えば、firstnameが「John Jr.」、lastnameが「Doe」で「ユーザ名に拡張文字を許可する」が有効にされている場合、username %-f_%-l は「john jr._doe」を生成し、「ユーザ名に拡張文字を許可する」が無効にされている場合、「johnjr.doe」を生成します。</p>
-<p>「新しいユーザ名の重複取り扱い」で「カウンタを追加する」が設定されている場合、テンプレートで生成されたユーザ名と重複しているユーザ名にオートインクリメント (自動増加) のカウンタが追加されます。例えば、CSVファイルが明確なユーザ名を含まず、ユーザの氏名「John Doe」「Jane Doe」「Jenny Doe」を含んでいるとします。デフォルトユーザ名が「%-1f%-l」および「新しいユーザ名の重複取り扱い」で「カウンタを追加する」が設定されている場合、生成されるユーザ名は「jdoe」「jdoe2」「jdoe3」となります。</p>
-
-<h2>既存アカウントの更新</h2>
-<p>あなたが新しいアカウントを作成するとMoodleは想定して、デフォルトでは既存のアカウントとユーザ名が合致するレコードをスキップします。しかし、「既存のアカウントを更新する」オプションを<b>Yes</b>にした場合、既存のユーザアカウントは更新されます。</p>
-
-<p>既存のアカウントを更新する場合、ユーザ名を更新することもできます。「リネームを許可する」を<b>Yes</b>に設定して、ファイルに<code class="example1">oldusername</code>フィールドを入れてください。</p>
-
-<p><b>警告:</b> 既存のアカウント更新時に発生したエラーは、ユーザに悪い影響を及ぼします。既存のアカウントを更新するオプションを使用するときは注意してください。</p>
-
-<h2>アカウントの削除</h2>
-<p><code>deleted</code>フィールドが存在している場合、値「1」が設定されたユーザは削除されます。この場合、<code>username</code>以外のフィールドは省略されます。</p>
-<p>アカウントの削除およびアップロードは、単一のCSVファイルで実行することができます。例えば、次のファイルはユーザ「Tom Jones」を追加し、ユーザ「reznort」を削除します:</p>
-
-<p><code>username, firstname, lastname, deleted<br />
-jonest, Tom, Jones, 0<br />
+テンプレートは、デフォルト値のみで処理され、CSVファイルから検索された値では処理されません。
+正確なMoodleユーザ名を生成するため、usernameは常に小文字に変換されます。さらに、サイトポリシーページで「ユーザ名に拡張文字を許可する」が無効にされている場合、文字、数字、ダッシュ (-) およびドット (.) と異なる文字は取り除かれます。例えば、firstnameが「John Jr.」、lastnameが「Doe」で「ユーザ名に拡張文字を許可する」が有効にされている場合、username %-f\_%-l は「john jr.\_doe」を生成し、「ユーザ名に拡張文字を許可する」が無効にされている場合、「johnjr.doe」を生成します。
+「新しいユーザ名の重複取り扱い」で「カウンタを追加する」が設定されている場合、テンプレートで生成されたユーザ名と重複しているユーザ名にオートインクリメント (自動増加) のカウンタが追加されます。例えば、CSVファイルが明確なユーザ名を含まず、ユーザの氏名「John Doe」「Jane Doe」「Jenny Doe」を含んでいるとします。デフォルトユーザ名が「%-1f%-l」および「新しいユーザ名の重複取り扱い」で「カウンタを追加する」が設定されている場合、生成されるユーザ名は「jdoe」「jdoe2」「jdoe3」となります。
+## 既存アカウントの更新
+あなたが新しいアカウントを作成するとMoodleは想定して、デフォルトでは既存のアカウントとユーザ名が合致するレコードをスキップします。しかし、「既存のアカウントを更新する」オプションを**Yes**にした場合、既存のユーザアカウントは更新されます。
+既存のアカウントを更新する場合、ユーザ名を更新することもできます。「リネームを許可する」を**Yes**に設定して、ファイルに\`oldusername\`フィールドを入れてください。
+**警告:** 既存のアカウント更新時に発生したエラーは、ユーザに悪い影響を及ぼします。既存のアカウントを更新するオプションを使用するときは注意してください。
+## アカウントの削除
+\`deleted\`フィールドが存在している場合、値「1」が設定されたユーザは削除されます。この場合、\`username\`以外のフィールドは省略されます。
+アカウントの削除およびアップロードは、単一のCSVファイルで実行することができます。例えば、次のファイルはユーザ「Tom Jones」を追加し、ユーザ「reznort」を削除します:
+`username, firstname, lastname, deleted
+jonest, Tom, Jones, 0
 reznort, , , 1
-</code></p>';
+`';
 $string['uploaduserspreview'] = 'アップロードユーザプレビュー';
 $string['uploadusersresult'] = 'アップロードユーザ結果';
 $string['useraccountupdated'] = 'ユーザが更新されました。';

@@ -35,7 +35,7 @@ $string['association'] = 'Kapcsolódás';
 $string['associations'] = 'Kapcsolódások';
 $string['associationunviewable'] = 'Az üzenetet mások csak akkor tekinthetik meg, ha kurzust kapcsol hozzá vagy módosítja az \'Értesítendő\' mezőt.';
 $string['autotags'] = 'Címkék hozzáadása';
-$string['autotags_help'] = '<p>A külső blogjából ezen portálra másolandó blogüzenetekhez automatikusan kapcsolódó címkék vesszővel elválasztott felsorolása. A címkékkel szűrheti a blogüzeneteket és fellelheti azokat, amelyek a külső bloghoz kapcsolódnak.</p>';
+$string['autotags_help'] = 'A külső blogjából ezen portálra másolandó blogüzenetekhez automatikusan kapcsolódó címkék vesszővel elválasztott felsorolása. A címkékkel szűrheti a blogüzeneteket és fellelheti azokat, amelyek a külső bloghoz kapcsolódnak.';
 $string['backupblogshelp'] = 'Bekapcsolásakor a blogok bekerülnek a PORTÁL automatikusan mentett állományai közé';
 $string['blockexternalstitle'] = 'Külső blogok';
 $string['blocktitle'] = 'Blogcímkék blokkcíme';
@@ -70,7 +70,7 @@ $string['courseblog'] = '{$a} kurzusblog';
 $string['courseblogdisable'] = 'A kurzusblog nincs bekapcsolva';
 $string['courseblogs'] = 'A felhasználók csak a kurzusban részt vevők számára írt blogüzeneteket láthatják';
 $string['deleteblogassociations'] = 'Blogkapcsolatok törlése';
-$string['deleteblogassociations_help'] = '<p>A blogüzenetek megmaradnak, de már nem kapcsolódnak a kurzushoz vagy annak tevékenységeihez és forrásaihoz.</p>';
+$string['deleteblogassociations_help'] = 'A blogüzenetek megmaradnak, de már nem kapcsolódnak a kurzushoz vagy annak tevékenységeihez és forrásaihoz.';
 $string['deleteexternalblog'] = 'A külső blog törlése a bejegyzésből';
 $string['deleteotagswarn'] = 'Biztosan eltávolítja ez(eke)t a címké(ke)t minden blogüzenetből és törli a rendszerből?';
 $string['description'] = 'Leírás';
@@ -128,13 +128,10 @@ $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'A felhasználók csak saját blogjaikat láthatják';
 $string['preferences'] = 'Beállítások';
 $string['publishto'] = 'Közzéteendő itt';
-$string['publishto_help'] = '<p>Három beállítás közül választhat:</p>
-
-<p><strong>Csak én (piszkozat)</strong> - A bejegyzést Önön kívül csak a rendszergazdák láthatják.</p>
-
-<p><strong>A portálon bárki</strong> - A bejegyzést minden portálra feliratkozott láthatja.</p>
-
-<p><strong>A világon bárki</strong> - A bejegyzést bárki, akár vendégek is láthatják.</p>';
+$string['publishto_help'] = 'Három beállítás közül választhat:
+**Csak én (piszkozat)** - A bejegyzést Önön kívül csak a rendszergazdák láthatják.
+**A portálon bárki** - A bejegyzést minden portálra feliratkozott láthatja.
+**A világon bárki** - A bejegyzést bárki, akár vendégek is láthatják.';
 $string['publishtocourse'] = 'Kurzustársai';
 $string['publishtocourseassoc'] = 'Kapcsolódó kurzustársak';
 $string['publishtocourseassocparam'] = '{$a} kurzustársai';

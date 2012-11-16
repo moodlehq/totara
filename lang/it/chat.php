@@ -76,7 +76,7 @@ $string['methodajax'] = 'Metodo Ajax';
 $string['methoddaemon'] = 'Server chat';
 $string['methodnormal'] = 'Metodo standard';
 $string['modulename'] = 'Chat';
-$string['modulename_help'] = 'Il modulo chat permette di collaborare in modo sincrono via web. E\' molto utile per avere una punto di vista diverso sugli altri  mentre si discute su un argomento in quanto l\'interazione è molto diversa da quella riscontrabile nei forum asincroni.';
+$string['modulename_help'] = 'Il modulo chat permette di collaborare in modo sincrono via web. E\' molto utile per avere una punto di vista diverso sugli altri mentre si discute su un argomento in quanto l\'interazione è molto diversa da quella riscontrabile nei forum asincroni.';
 $string['modulenameplural'] = 'Chat';
 $string['neverdeletemessages'] = 'Sempre';
 $string['nextsession'] = 'Prossima sessione programmata';
@@ -122,7 +122,6 @@ $string['updaterate'] = 'Velocità di aggiornamento:';
 $string['userlist'] = 'Elenco utenti';
 $string['usingchat'] = 'Usano la chat';
 $string['usingchat_help'] = 'Il modulo Chat contiene alcune caratteristiche che rendono l\'attività più gradevole.
-
 * Faccine - Come in molte altre parti di Moodle, le faccine (emoticon) possono essere usate anche nella chat. Ad esempio, :-)
 * Link - Gli indirizzi Internet verranno trasformati automaticamente in hyperlink.
 * Emozioni - E\' possibile inserire testo preceduto da "/me" or ":" per manifestare emozioni. Per esempio, se il tuo nome è Mario e scrivi ":ride!" o "/me ride!" nella chat apparirà "Mario ride!"

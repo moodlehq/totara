@@ -128,7 +128,6 @@ $string['personalblogs'] = 'Gebruikers kunnen enkel hun eigen blogs zien';
 $string['preferences'] = 'Voorkeuren';
 $string['publishto'] = 'Publiceer naar';
 $string['publishto_help'] = 'Er zijn 3 opties
-
 * Jezelf (klad) - Enkel jij en de beheerders kunnen dit item zien
 * Iedereen op deze site - Iedreen die geregistreerd si op deze site kan dit blogbericht lezen
 * Iedereen ter wereld - Iedereen, gasten ook, kunnen dit blogbericht lezen';

@@ -34,8 +34,7 @@ $string['configsecretphrase'] = 'Esta frase secreta é utilizada para produzir u
 $string['contentheader'] = 'Conteúdo';
 $string['displayoptions'] = 'Opções de exibição disponíveis';
 $string['displayselect'] = 'Exibir';
-$string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arquivo URL,  determina como a URL será exibida, caso o navegador permita incorporação. As opções podem incluir:
-
+$string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arquivo URL, determina como a URL será exibida, caso o navegador permita incorporação. As opções podem incluir:
 * Automática - A melhor opção de exibição para a URL é automaticamente seleccionada
 * Incorporar - A URL é exibido dentro da página, abaixo da barra de navegação em conjunto com a descrição da URL e todos os blocos
 * Forçar download - O usuário é solicitado a baixar o arquivo da URL

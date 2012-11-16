@@ -48,10 +48,10 @@ where:
 </pre>
 Het zou er kunnen uitzien zoals dit:
 <pre class="informationbox">
-   add, student, 5, CF101
-   add, teacher, 6, CF101
-   add, teacheredit, 7, CF101
-   del, student, 8, CF101
-   del, student, 17, CF101
-   add, student, 21, CF101, 1091115000, 1091215000
+add, student, 5, CF101
+add, teacher, 6, CF101
+add, teacheredit, 7, CF101
+del, student, 8, CF101
+del, student, 17, CF101
+add, student, 21, CF101, 1091115000, 1091215000
 </pre>';

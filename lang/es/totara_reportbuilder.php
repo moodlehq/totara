@@ -277,202 +277,122 @@ $string['report:startdate'] = 'Fecha de inicio';
 $string['reportbuilder'] = 'Generador de informes';
 $string['reportbuilder:managereports'] = 'Crear, editar y eliminar informes del generador de informes';
 $string['reportbuilderaccessmode_help'] = '# Modo de acceso
-
 Se utilizan controles de acceso para limitar los usuarios que pueden visualizar el informe.
-
 **Restringir acceso** establece el valor general de acceso del informe.
-
 Cuando se establece en **Todos los usuarios pueden ver este informe**, no se aplican restricciones al informe y todos los usuarios pueden visualizarlo.
-
 Cuando se establece en **Sólo determinados usuarios pueden ver este informe**, el informe queda restringido a los grupos de usuarios seleccionados más adelante.
-
 **Nota:** las restricciones de acceso solo controlan los usuarios que pueden ver el informe, no los registros que contiene. Consulte la pestaña “Contenido” para controlar el contenido del informe.';
 $string['reportbuilderbaseitem_help'] = '# Generador de informes: Elemento base
-
 Al agrupar un conjunto de actividades, el usuario está afirmando que tienen algo en común, lo cual permitirá generar informes para todas las actividades de un grupo. El elemento base define las propiedades que se tienen en cuenta cuando se añade a cada miembro del grupo.';
 $string['reportbuildercolumns_help'] = '# Columnas
-
 **Columnas del informe** permite personalizar las columnas que aparecen en el informe. Las columnas disponibles se determinan mediante la **Fuente** de datos del informe. La fuente de cada informe tiene un conjunto de columnas predeterminadas configurado.
-
 Se pueden añadir, eliminar y ordenar las columnas, así como cambiarles el nombre.
-
 **Añadir columnas:** para añadir una columna nueva al informe, elija la columna necesaria de la lista desplegable “Añadir otra columna...” y haga clic en **Guardar cambios**. La columna nueva se añadirá al final de la lista.
-
 **Nota:** sólo se puede crear una columna de cada tipo dentro de un informe. Recibirá un error de validación si intenta incluir la misma columna más de una vez.
-
 **Ocultar columnas:** cuando un usuario visualiza el informe, aparecen todas las columnas por defecto. Utilice el botón “Mostrar/Ocultar” (icono de ojo) para ocultar las columnas que no desee que visualicen los usuarios de forma predeterminada.
-
 **Nota:** los usuarios que visualizan el informe podrán ver las columnas ocultas. Elimine las columnas (icono de cruz) que no desee que visualicen los usuarios.
-
 **Desplazar columnas:** las columnas aparecerán en el informe en el orden en el que se muestran. Utilice las flechas arriba y abajo para cambiar el orden.
-
 **Eliminar columnas:** haga clic en el botón “Eliminar” (icono de cruz) situado a la derecha de la columna para eliminarla del informe.
-
 **Renombrar columnas:** para personalizar el nombre de una columna, debe cambiarlo en **Título** y hacer clic en **Guardar cambios**. El **Título** es el nombre que aparecerá en el informe.
-
 **Cambiar varios tipos de columnas:** para modificar varios tipos de columnas a la vez, debe seleccionar una columna diferente en el menú desplegable y hacer clic en **Guardar cambios**.';
 $string['reportbuildercompletedorg_help'] = '# Mostrar por organización completada
-
 Al seleccionar **Mostrar registros completados en la organización del usuario**, el informe muestra varios registros completados según la organización a la que se haya asignado el usuario (a un usuario se le asigna una organización en su “Perfil de usuario” de la ficha “Cargos”).
-
 Cuando se establece la opción **Incluir registros de organizaciones secundarias** en:
-
-*   **Sí** el usuario que visualiza el informe podrá ver los registros completados en relación con su organización, así como las organizaciones secundarias de esa organización.
-*   **No** el usuario sólo podrá ver los registros completados relacionados con su organización.';
+* **|Sí** el usuario que visualiza el informe podrá ver los registros completados en relación con su organización, así como las organizaciones secundarias de esa organización.
+* **|No** el usuario sólo podrá ver los registros completados relacionados con su organización.';
 $string['reportbuildercontentmode_help'] = '# Modo de contenido
-
 Los controles del contenido permiten restringir los registros y la información disponibles cuando se visualiza un informe.
-
 **Contenido del informe** permite seleccionar los valores generales de control del contenido de este informe:
-
 Al seleccionar **Mostrar todos los registros**, se mostrará cada uno de los registros disponibles para esta fuente, y no se limitará de modo alguno el contenido disponible.
-
 Al seleccionar **Mostrar registros que coincidan con alguno de los criterios marcados**, el informe muestra los registros que coinciden con alguno de los criterios configurados más adelante.
-
 **Nota:** si no se han establecido criterios, el informe no mostrará ningún registro.
-
 Al seleccionar **Mostrar registros que coincidan con todos los criterios marcados**, el informe mostrará los registros que coincidan con todos los criterios establecidos más abajo.
 **Nota:** si no se han establecidos criterios, el informe no mostrará ningún registro.';
 $string['reportbuildercontext_help'] = '# Restringir acceso por función
-
 El contexto es, dentro del sistema, la ubicación o el nivel al que tiene acceso el usuario. Por ejemplo, un administrador del sitio tendría acceso de nivel de sistema (contexto), mientras que un alumno solo tendría acceso de nivel de curso (contexto).
-
 **Contexto** permite establecer el contexto en el que se ha asignado una función a un usuario para visualizar el informe.
-
 Para asignar una función a un usuario en el nivel de sistema, concédale acceso a todo el sitio o solo a un contexto concreto. Por ejemplo, a un instructor solo se le puede asignar la función en el nivel de curso.
-
 Al seleccionar **Los usuarios deben tener una función en el contexto del sistema**, al usuario se le debe asignar la función de un nivel de sistema (es decir, un nivel de todo el sitio) para que pueda visualizar el informe.
-
 Al seleccionar **El usuario puede tener una función en cualquier contexto**, un usuario puede visualizar el informe cuando se le haya asignado la función seleccionada en cualquier lugar del sistema.';
 $string['reportbuildercoursetag_help'] = '# Generador de informes: Mostrar por etiqueta de curso
-
 Para habilitar estos criterios, seleccione la casilla de verificación “Mostrar registros por etiqueta de curso”. En ese caso, el informe mostrará los resultados en función de si el registro pertenece a un curso que está marcado con etiquetas concretas.
-
 Si se ha seleccionado alguna etiqueta en la sección “Incluir registros etiquetados con”, solo se mostrarán los registros que pertenezcan a un curso etiquetado con todas las etiquetas seleccionadas. Los registros que pertenecen a cursos sin ninguna etiqueta **no** se mostrarán.
-
 Al seleccionar alguna etiqueta de la sección “Excluir registros etiquetados con”, **no** se mostrarán los registros que pertenezcan a un curso etiquetado con las etiquetas seleccionadas. En cambio, se mostrarán todos los registros que pertenezcan a cursos sin ninguna etiqueta.
-
 Es posible incluir y excluir varias etiquetas al mismo tiempo, pero no se puede incluir y excluir la misma etiqueta a la vez.';
 $string['reportbuildercurrentorg_help'] = '# Mostrar por organización actual
-
 Al seleccionar **Mostrar registros del personal en la organización del usuario**, el informe muestra varios resultados según la organización a la que se haya asignado el usuario (a un usuario se le asigna una organización en su “Perfil de usuario” en la pestaña “Cargos”).
-
 Cuando se establece la opción **Incluir registros de organizaciones secundarias** en:
-
-*   **Sí** el usuario que visualiza el informe podrá ver los registros en relación con su organización, así como las organizaciones secundarias de esa organización.
-*   **No** el usuario solo podrá ver los registros relacionados con su organización.';
+\* **|Sí** el usuario que visualiza el informe podrá ver los registros en relación con su organización, así como las organizaciones secundarias de esa organización.
+\* **|No** el usuario solo podrá ver los registros relacionados con su organización.';
 $string['reportbuildercurrentpos_help'] = '# Mostrar por cargo actual
-
 Al seleccionar la opción **Mostrar registros del personal en el cargo del usuario**, el informe mostrará varios registros según el cargo asignado (a un usuario se le asigna un cargo en su “Perfil de usuario” de la pestaña “Cargos”).
-
 Cuando se establece la opción **Incluir registros de cargos secundarios** en:
-
-*   **Sí** el usuario que visualiza el informe puede ver los registros relacionados con sus cargos, así como los cargos secundarios relacionados con sus cargos.
-*   **No** el usuario que visualiza el informe solo puede ver los registros relacionados con su cargo.';
+* **|Sí** el usuario que visualiza el informe puede ver los registros relacionados con sus cargos, así como los cargos secundarios relacionados con sus cargos.
+* **|No** el usuario que visualiza el informe solo puede ver los registros relacionados con su cargo.';
 $string['reportbuilderdate_help'] = '# Mostrar por fecha
-
 Al seleccionar la opción **Mostrar registros según la fecha de registro**, el informe solo muestra los registros del periodo seleccionado.
-
 Las opciones de **Incluir registros de ** permiten establecer el periodo del informe:
-
-*   Cuando se establece en **El pasado**, el informe solo muestra los registros con una fecha anterior a la actual.
-*   Cuando se establece en **El futuro**, el informe solo muestra los registros con una fecha posterior establecida a partir de la fecha actual.
-*   Cuando se establece en **Los últimos 30 días**, el informe muestra solo los registros entre el momento actual y 30 días antes.
-*   Cuando se establece en **Los 30 días siguientes**, el informe muestra solo los registros comprendidos entre el momento actual y los 30 días posteriores.';
+* Cuando se establece en **El pasado**, el informe solo muestra los registros con una fecha anterior a la actual.
+* Cuando se establece en **El futuro**, el informe solo muestra los registros con una fecha posterior establecida a partir de la fecha actual.
+* Cuando se establece en **Los últimos 30 días**, el informe muestra solo los registros entre el momento actual y 30 días antes.
+* Cuando se establece en **Los 30 días siguientes**, el informe muestra solo los registros comprendidos entre el momento actual y los 30 días posteriores.';
 $string['reportbuilderdescription_help'] = '# Descripción
-
 Cuando se crea una descripción del informe, la información aparece en un recuadro sobre los filtros de búsqueda en la página del informe.';
 $string['reportbuilderdialogfilter_help'] = '# Generador de informes: Filtro de cuadro de diálogo
-
 Este filtro permite filtrar información en función de una jerarquía. El filtro cuenta con las opciones siguientes:
-
-*   es cualquier valor: esta opción desactiva el filtro (es decir, el filtro acepta toda la información).
-*   es igual a: esta opción permite únicamente la información que es igual al valor seleccionado de la lista.
-*   no es igual a: esta opción permite únicamente la información que es distinta del valor seleccionado de la lista.
-
+* es cualquier valor: esta opción desactiva el filtro (es decir, el filtro acepta toda la información).
+* es igual a: esta opción permite únicamente la información que es igual al valor seleccionado de la lista.
+* no es igual a: esta opción permite únicamente la información que es distinta del valor seleccionado de la lista.
 Cuando ya se ha seleccionado un elemento de marco, puede utilizar la casilla de verificación “¿Incluir elementos secundarios?" para elegir si desea ver solo los que coincidan con ese elemento, o bien, con ese elemento y sus subordinados.';
 $string['reportbuilderexportoptions_help'] = '# Configuración de exportación de informes
-
 **Configuración de exportación de informes** permite a un usuario con los permisos adecuados especificar las opciones de exportación disponibles para los usuarios al final de la página de un informe. Esta configuración afecta a todos los informes del **Generador de informes**.
-
 Al seleccionar varias opciones, el usuario puede elegir sus favoritas en el menú desplegable de exportación.
-
 Si no se selecciona ninguna opción, la función de exportación se desactiva..';
 $string['reportbuilderfilters_help'] = '# Opciones de búsqueda (filtros)
-
 **Opciones de búsqueda** permite personalizar los filtros que aparecen en el informe. Los filtros disponibles se determinan mediante la **Fuente** del informe. La fuente de cada informe tiene un conjunto de filtros predeterminados.
-
 Los filtros se pueden añadir, ordenar y eliminar.
-
 **Añadir filtros:** para añadir un nuevo filtro al informe, seleccione el filtro necesario en el menú desplegable “Añadir otro filtro...” y pulse **Guardar cambios**. Al seleccionar **Opciones avanzadas** el filtro no aparecerá en el recuadro “Buscar por” de forma predeterminada. Se puede pulsar **Mostrar opciones avanzadas** para ver estos filtros.
-
 **Desplazar filtros:** los filtros aparecerán en el recuadro “Buscar por” en el orden en el que se muestran. Utilice las flechas arriba y abajo para cambiar el orden.
-
 **Eliminar filtros:** pulse el botón **Eliminar** (icono de cruz) situado a la derecha del filtro de informe para eliminar ese filtro del informe.
-
 **Cambiar varios tipos de filtros:** para modificar varios tipos de filtros a la vez, seleccione un filtro distinto del menú desplegable y haga clic en **Guardar cambios**.';
 $string['reportbuilderfullname_help'] = '# Nombre del informe
-
 Nombre que aparecerá en la parte superior de la página de informe del bloque “Gestor de informes”.';
 $string['reportbuilderglobalsettings'] = 'Configuración global del generador de informes';
 $string['reportbuildergroupname_help'] = '# Generador de informes: Nombre del grupo
-
 El nombre del grupo. Permite identificar el grupo cuando se desea crear un nuevo informe basándose en él. Busque el nombre en el menú desplegable de la fuente del informe.';
 $string['reportbuildergrouptag_help'] = '# Generador de informes: Etiqueta de grupo
-
 Al crear un grupo mediante una etiqueta, las actividades que se etiquetan con la etiqueta oficial especificada automáticamente forman parte del grupo. Si añade o elimina etiquetas de una actividad, el grupo se actualizará para incluirla o excluirla.';
 $string['reportbuilderhidden_help'] = '# Ocultar en Mis informes
-
 Al seleccionar **Ocultar en Mis informes**, el informe no aparecerá en la página “Mis informes” para los usuarios que han iniciado sesión.
-
 **Nota:** la opción **Ocultar en Mis informes** solo oculta el enlace que dirige al informe. Los usuarios que tengan los permisos de acceso correctos siguen pudiendo acceder al informe mediante la dirección URL.';
 $string['reportbuilderrecordsperpage_help'] = '# Número de registros por página
-
 **Número de registros por página** permite definir cuántos registros aparecen en una página del informe.
-
 El número máximo de registros que se puede mostrar en una página es 5.000. Cuantos más registros se puedan visualizar en una página, más tardarán en aparecer las páginas del informe.
-
 Se recomienda **limitar el número de registros por página a 40**.';
 $string['reportbuilderrolesaccess_help'] = '# Funciones con acceso
-
 Cuando se establece **Restringir acceso** en **Solo determinados usuarios pueden ver este informe**, puede especificar qué funciones pueden ver el informe mediante **Funciones con permisos para ver el informe**.
-
 Puede seleccionar una o varias funciones de la lista.
-
 Cuando se establece **Restringir acceso** en **Todos los usuarios pueden ver este informe**, estas opciones se desactivarán.';
 $string['reportbuildershortname_help'] = '# Generador de informes: Nombre único
-
 Moodle utiliza el nombre corto para realizar un seguimiento de este informe. No se puede asignar el mismo nombre corto a dos informes, incluso si se basan en la misma fuente. Evite utilizar caracteres especiales en este campo (el texto, los números y los guiones bajos están permitidos).';
 $string['reportbuildersorting_help'] = '# Ordenación
-
 **Ordenación** permite seleccionar una columna predeterminada y el orden de clasificación de un informe.
-
 Aun así, los usuarios pueden ordenar manualmente un informe mientras lo visualizan. Las preferencias de los usuarios se guardarán durante la sesión activa. Cuando finalice la sesión, el informe volverá a los valores de ordenación predeterminados establecidos en esta opción.';
 $string['reportbuildersource_help'] = '# Fuente
-
 La **Fuente** de un informe define el tipo principal de datos utilizado. Cuando se empieza a editar el informe hay disponibles más opciones de filtrado.
-
 Una vez guardado, la fuente del informe no se puede cambiar.
-
 **Nota:** si no hay opciones disponibles en el campo **Fuente**, o si la fuente que necesita no aparece, deberá configurar su Totara para que incluya los datos que necesite de la fuente (esto no puede hacerse con la interfaz de Totara).';
 $string['reportbuildertrainer_help'] = '# Generador de informes: Mostrar por instructor
-
 Para activar este criterio, seleccione la casilla de verificación “Mostrar registros por instructor”. En ese caso, el informe mostrará varios registros según quién haya sido el instructor presencial de la retroalimentación proporcionada.
-
 Si se selecciona “Mostrar registros en los que el usuario sea el instructor”, el informe mostrará los comentarios de las sesiones en las que el usuario que visualiza el informe fue el instructor.
-
 Al seleccionar “Los registros en los que uno de los informes directos del usuario es el instructor”, el informe mostrará los registros para las sesiones impartidas por personal de quien visualiza el informe.
-
 Al seleccionar “Ambos”, se mostrarán los dos registros anteriores.';
 $string['reportbuilderuser_help'] = '# Mostrar por usuario
-
 Al seleccionar **Mostrar registros por usuario**, el informe muestra varios registros según quién sea el usuario que visualiza el informe y su relación con los otros usuarios.
-
 **Incluir registros de un usuario concreto** controla qué registros puede ver un usuario que visualiza el informe:
-
-*   Cuando se establece en **Los registros propios de un usuario**, el usuario solo puede visualizar sus propios registros.
-*   Cuando se establece en **Registros para los informes directos del usuario**, el usuario puede visualizar los registros que pertenezcan a cualquier usuario que le remita sus informes (a un usuario se le asigna un gestor en su perfil de usuario de la pestaña “Cargos”).
-*   Cuando se establece en **Ambos**, el usuario puede visualizar tanto sus propios registros como los de sus informes directos.';
+* Cuando se establece en **Los registros propios de un usuario**, el usuario solo puede visualizar sus propios registros.
+* Cuando se establece en **Registros para los informes directos del usuario**, el usuario puede visualizar los registros que pertenezcan a cualquier usuario que le remita sus informes (a un usuario se le asigna un gestor en su perfil de usuario de la pestaña “Cargos”).
+* Cuando se establece en **Ambos**, el usuario puede visualizar tanto sus propios registros como los de sus informes directos.';
 $string['reportcolumns'] = 'Columnas de los Informes';
 $string['reportconfirmdelete'] = '¿Estás seguro que quieres eliminar este informe?';
 $string['reportconfirmreload'] = 'Este es un informe incrustado por lo que no puede ser eliminado (debe ser echo por el desarrollador de su sitio). Usted puede elegir restablecer la configuración de los informes a sus valores originales. ¿Desea continuar?';

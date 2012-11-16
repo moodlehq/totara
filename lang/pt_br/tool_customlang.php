@@ -45,14 +45,13 @@ $string['headinglocal'] = 'Personalização local';
 $string['headingstandard'] = 'Texto padrão';
 $string['headingstringid'] = 'Texto';
 $string['markinguptodate'] = 'Marcar a personalização como atualizada';
-$string['markinguptodate_help'] = 'Traduções personalizadas podem ficar desatualizadas se a "string" original em inglês ou a tradução principal forem modificadas depois  que a string for personalizada no seu site. Revise a tradução personalizada. Se ela estiver atualizada, clique no checkbox. Caso contrário, edite a "string".';
+$string['markinguptodate_help'] = 'Traduções personalizadas podem ficar desatualizadas se a "string" original em inglês ou a tradução principal forem modificadas depois que a string for personalizada no seu site. Revise a tradução personalizada. Se ela estiver atualizada, clique no checkbox. Caso contrário, edite a "string".';
 $string['markuptodate'] = 'marcar como atualizado';
 $string['modifiedno'] = 'Não há strings modificadas para salvar.';
 $string['modifiednum'] = 'Há {$a} strings modificadas. Você deseja salvar essas alterações no pacote de idioma local?';
 $string['nostringsfound'] = 'Nenhuma string encontrada, por favor altere as configurações de filtragem';
 $string['placeholder'] = 'Placeholders';
-$string['placeholder_help'] = 'Placeholders são declarações como `{$a}` or `{$a->algumacoisa}` dentro das strings. Estes são substituidos por valores quando a string é impressa.
-
+$string['placeholder_help'] = 'Placeholders são declarações como \`{$a}\` or \`{$a->algumacoisa}\` dentro das strings. Estes são substituidos por valores quando a string é impressa.
 É importante copiá-los exatamente como na string original. Não os traduza ou modifique sua orientação left-to-right';
 $string['placeholderwarning'] = 'string contém um placehoder';
 $string['pluginname'] = 'Personalização de idioma';

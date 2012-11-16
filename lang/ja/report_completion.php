@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = '完了データ';
 $string['completion:view'] = 'コース完了レポートを表示する';
+$string['completiondate'] = '完了データ';
 $string['page-report-completion-index'] = 'コース完了レポート';
 $string['page-report-completion-user'] = 'ユーザコース完了レポート';
 $string['page-report-completion-x'] = 'すべての完了レポート';

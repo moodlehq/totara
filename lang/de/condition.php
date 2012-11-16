@@ -30,8 +30,7 @@ $string['addgrades'] = '{no} Bewertungsbedingungen hinzufügen';
 $string['availabilityconditions'] = 'Bedingte Verfügbarkeit';
 $string['availablefrom'] = 'Verfügbar ab';
 $string['availablefrom_help'] = 'Die Verfügbarkeitsdauer (von/bis) bestimmt den Zeitraum, in dem im Kurs auf die Aktivität zugegriffen werden kann.
-
-Im Gegensatz zu den Verfügbarkeitsbedingungen, die den Teilnehmerzugriff an die Erfüllung von Lernfortschritten oder Bewertungen knüpfen, verhindert eine eingestellte  Verfügbarkeitsdauer (von/bis) den Zugriff außerhalb des gesetzten Zeitraums vollständig.';
+Im Gegensatz zu den Verfügbarkeitsbedingungen, die den Teilnehmerzugriff an die Erfüllung von Lernfortschritten oder Bewertungen knüpfen, verhindert eine eingestellte Verfügbarkeitsdauer (von/bis) den Zugriff außerhalb des gesetzten Zeitraums vollständig.';
 $string['availableuntil'] = 'Verfügbar bis';
 $string['badavailabledates'] = 'Ungültige Daten! Wenn Sie beide Daten eintragen, muss der Eintrag \'Verfügbar ab\' zeitlich vor dem Eintrag \'Verfügbar bis\' liegen.';
 $string['badgradelimits'] = 'Wenn Sie eine obere und eine untere Bewertungsgrenze festlegen, muss die obere Grenze größer als die untere sein.';
@@ -41,7 +40,6 @@ $string['completion_incomplete'] = 'darf nicht als abgeschlossen markiert sein';
 $string['completion_pass'] = 'muss erfolgreich abgeschlossen sein';
 $string['completioncondition'] = 'Aktivitätsabschlussbedingung';
 $string['completioncondition_help'] = 'Diese Einstellung legt Bedingungen von anderen Aktivitäten fest, die erfüllt sein müssen, bevor diese Aktivität für die Teilnehmer/innen verfügbar wird. Beachten Sie, dass hierzu die Funktion Abschlussverfolgung auf Systemebene aktiviert sein muss.
-
 Eventuell kann auch eine Kombination aus mehreren Aktivitätsabschlussbedingungen sinnvoll sein. Es müssen dann alle angegebenen ALLE Aktivitätsabschlussbedingungen erfüllt sein.';
 $string['configenableavailability'] = 'Diese Option erlaubt die Festlegung von Bedingungen (basierend auf Zeit, Bewertung oder Fertigstellung), die die Verfügbarkeit von Aktivitäten in Kursen steuern.';
 $string['enableavailability'] = 'Bedingte Verfügbarkeit';
@@ -49,7 +47,6 @@ $string['grade_atleast'] = 'mehr als';
 $string['grade_upto'] = 'weniger als';
 $string['gradecondition'] = 'Bewertungsbedingung';
 $string['gradecondition_help'] = 'Diese Einstellung legt Bewertungsbedingungen fest, die erfüllt sein müssen, bevor diese Aktivität für die Teilnehmer/innen verfügbar wird.
-
 Eventuell kann auch eine Kombination aus mehreren Bewertungsbedingungen sinnvoll sein, wobei aber dann die Aktivität nur verfügbar ist, wenn wirklich ALLE Bewertungsbedingungen erfüllt sind.';
 $string['gradeitembutnolimits'] = 'Sie müssen eine obere oder untere Grenze, oder beide, festelegen.';
 $string['gradelimitsbutnoitem'] = 'Sie müssen einen Bewertung auswählen';

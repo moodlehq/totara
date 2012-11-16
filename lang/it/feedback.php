@@ -71,16 +71,19 @@ $string['delete_old_items'] = 'Elimina vecchi elementi';
 $string['delete_template'] = 'Elimina modello';
 $string['delete_templates'] = 'Eliminazione modello...';
 $string['depending'] = 'elementi dipendenti';
-$string['depending_help'] = 'Gli elementi dipendenti permettono di visualizzare domande in funzione della risposta data a domande precedenti.<br />
-<strong>Di seguito un esempio di creazione:</strong><br /><ul>
-<li>Creare una domanda con più risposte.</li>
-<li>Aggiungere una interruzione di pagina.</li>
-<li>Aggiungere la domanda dipendente dalla risposta precedente ed impostare il valore "dipendente da" e la risposta in "con questa risposta".</li>
-</ul><strong>Esempio:</strong>
-<ol><li>Domanda A: possiedi un\'automobile? Possibili risposte: si/no</li>
-<li>Interruzione di pagina</li>
-<li>Domanda B: quale è il colore della tua automobile<br /> (domanda dipendente dalla risposta "si" alla domanda A)</li>
-<li>Domanda C: Come mai non possiedi un\'automobile?<br /> (domanda dipendente dalla risposta "no" alla domanda A)</li> <li> ... altre domande</li> </ol>';
+$string['depending_help'] = 'Gli elementi dipendenti permettono di visualizzare domande in funzione della risposta data a domande precedenti.
+**Di seguito un esempio di creazione:**
+* Creare una domanda con più risposte.
+* Aggiungere una interruzione di pagina.
+* Aggiungere la domanda dipendente dalla risposta precedente ed impostare il valore "dipendente da" e la risposta in "con questa risposta".
+**Esempio:**
+1. Domanda A: possiedi un\'automobile? Possibili risposte: si/no
+2. Interruzione di pagina
+3. Domanda B: quale è il colore della tua automobile
+(domanda dipendente dalla risposta "si" alla domanda A)
+4. Domanda C: Come mai non possiedi un\'automobile?
+(domanda dipendente dalla risposta "no" alla domanda A)
+5. ... altre domande';
 $string['dependitem'] = 'dipendente da';
 $string['dependvalue'] = 'con questa risposta';
 $string['description'] = 'Descrizione';
@@ -136,7 +139,6 @@ $string['infotype'] = 'Tipo informazione';
 $string['insufficient_responses'] = 'risposte insufficienti';
 $string['insufficient_responses_for_this_group'] = 'Questo gruppo ha fornito un numero di risposte insufficienti';
 $string['insufficient_responses_help'] = 'Questo gruppo ha fornito un numero di risposte insufficienti.
-
 Per mantenere il questionario anonimo, devono pervenire almeno due risposte.';
 $string['item_label'] = 'Etichetta';
 $string['item_name'] = 'Testo della domanda';

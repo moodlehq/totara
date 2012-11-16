@@ -30,29 +30,22 @@ $string['addentry'] = 'Lisää uusi hakusana';
 $string['addingcomment'] = 'Lisää kommentti';
 $string['alias'] = 'Avainsana';
 $string['aliases'] = 'Avainsana(t)';
-$string['aliases_help'] = '<h2>Avainsanat</h2>
-
-<p>Jokaisessa sanaston merkinnässä voi olla aiheeseen liittyvä lista avainsanoja (aliaksia). Näitä sanoja voidaan käyttää vaihtoehtoisina tapoina viittaamaan merkintään. Niitä käytetään esimerkiksi silloin, kun luodaan automaattisia linkkejä.</p>
-
-<p>Erottele avainsanat toisistaan rivinvaihdoilla (ei esim. pilkuilla).</p>';
+$string['aliases_help'] = '## Avainsanat
+Jokaisessa sanaston merkinnässä voi olla aiheeseen liittyvä lista avainsanoja (aliaksia). Näitä sanoja voidaan käyttää vaihtoehtoisina tapoina viittaamaan merkintään. Niitä käytetään esimerkiksi silloin, kun luodaan automaattisia linkkejä.
+Erottele avainsanat toisistaan rivinvaihdoilla (ei esim. pilkuilla).';
 $string['allcategories'] = 'Kaikki kategoriat';
 $string['allentries'] = 'Kaikki';
 $string['allowcomments'] = 'Salli hakusanojen kommentit';
-$string['allowcomments_help'] = '<h2>Salli hakusanojen kommentointi</h2>
-
-<p>Opiskelijoiden voi antaa kirjoittaa kommentteja hakusanoille. Voit valita onko tämä ominaisuus käytössä vai ei. </p>
-
-<p>Opettajat voivat aina lisätä kommentteja hakusanoille. </p>';
+$string['allowcomments_help'] = '## Salli hakusanojen kommentointi
+Opiskelijoiden voi antaa kirjoittaa kommentteja hakusanoille. Voit valita onko tämä ominaisuus käytössä vai ei.
+Opettajat voivat aina lisätä kommentteja hakusanoille.';
 $string['allowduplicatedentries'] = 'Salli samannimiset hakusanat';
-$string['allowduplicatedentries_help'] = '<h2>Salli samannimiset hakusanat</h2>
-
-<p>Jos haluat sallia samannimiset hakusanat, voi samalla käsitteellä eli sanaston sanalla olla useita selityksiä.</p>';
+$string['allowduplicatedentries_help'] = '## Salli samannimiset hakusanat
+Jos haluat sallia samannimiset hakusanat, voi samalla käsitteellä eli sanaston sanalla olla useita selityksiä.';
 $string['allowprintview'] = 'Salli tulostusnäkymä';
-$string['allowprintview_help'] = '<h2>Salli tulostusnäkymä</h2>
-
-<p>Opiskelijoiden sallitaan nähdä sanaston tulostusnäkymä.</p>
-
-<p>Opettajat saavat aina käyttää tulostusnäkymää.</p>';
+$string['allowprintview_help'] = '## Salli tulostusnäkymä
+Opiskelijoiden sallitaan nähdä sanaston tulostusnäkymä.
+Opettajat saavat aina käyttää tulostusnäkymää.';
 $string['andmorenewentries'] = 'ja {$a} lisää uusia merkintöjä.';
 $string['answer'] = 'Vastaus';
 $string['approve'] = 'Vahvista';
@@ -61,15 +54,11 @@ $string['areyousuredeletecomment'] = 'Haluatko todella poistaa tämän kommentin
 $string['areyousureexport'] = 'Haluatko todella viedä tämän hakusanan sanastoon';
 $string['ascending'] = 'nouseva';
 $string['attachment'] = 'Liite';
-$string['attachment_help'] = '<h2>Hakusanojen liitteet</h2>
-
-<p>Voit ladata sanastoon halutessasi <em>yhden</em> liittetiedoston per hakusana. Liitetiedostoa voi käyttää esim. kuvien tai dokumenttien jakamiseen.</p>
-
-<p>Tiedosto voi olla minkä tyyppinen vain, mutta on suositeltavaa käyttää vakiomuotoisia, kolmikirjaimisia tiedostopäätteitä, kuten .doc Word-dokumentille tai .jpg kuvatiedostolle. Näin muiden käyttäjien on helpompi avata tarjolla olevat liitteet.</p>
-
-<p>Jos hakusanaa muokatessa liittää siihen uuden liitetiedoston, korvaa uusi tiedosto mahdollisen olemassa olevan liitetiedoston.</p>
-
-<p>Jos hakusanaa muokatessa jättää liitetiedosto-kentän tyhjäksi, olemassa oleva liitetiedosto säilyy paikallaan.</p>';
+$string['attachment_help'] = '## Hakusanojen liitteet
+Voit ladata sanastoon halutessasi \*yhden\* liittetiedoston per hakusana. Liitetiedostoa voi käyttää esim. kuvien tai dokumenttien jakamiseen.
+Tiedosto voi olla minkä tyyppinen vain, mutta on suositeltavaa käyttää vakiomuotoisia, kolmikirjaimisia tiedostopäätteitä, kuten .doc Word-dokumentille tai .jpg kuvatiedostolle. Näin muiden käyttäjien on helpompi avata tarjolla olevat liitteet.
+Jos hakusanaa muokatessa liittää siihen uuden liitetiedoston, korvaa uusi tiedosto mahdollisen olemassa olevan liitetiedoston.
+Jos hakusanaa muokatessa jättää liitetiedosto-kentän tyhjäksi, olemassa oleva liitetiedosto säilyy paikallaan.';
 $string['author'] = 'tekijä';
 $string['authorview'] = 'Selaa kirjoittajan mukaan';
 $string['back'] = 'Takaisin';
@@ -77,11 +66,9 @@ $string['cantinsertcat'] = 'Kategoriaa ei voi lisätä';
 $string['cantinsertrec'] = 'Hakusanaa ei voi lisätä';
 $string['cantinsertrel'] = 'Yhteyttä kategorian ja hakusanan välille ei voi lisätä';
 $string['casesensitive'] = 'Kirjasinkoolla on merkitystä';
-$string['casesensitive_help'] = '<h2>Kirjasinkoon vaikutus</h2>
-
-<p>Tämä asetus määrittää, onko isojen ja pienten kirjainten käytöllä merkitystä linkitettäessä sanoja automaattisesti ko. hakusanaan.</p>
-
-<p>Esimerkiksi, jos kirjasinkoolla <em>on</em> merkitystä, tekstissä käytetty sana "html" <em>ei</em> linkity hakusanaan "HTML". </p>';
+$string['casesensitive_help'] = '## Kirjasinkoon vaikutus
+Tämä asetus määrittää, onko isojen ja pienten kirjainten käytöllä merkitystä linkitettäessä sanoja automaattisesti ko. hakusanaan.
+Esimerkiksi, jos kirjasinkoolla \*on\* merkitystä, tekstissä käytetty sana "html" \*ei\* linkity hakusanaan "HTML".';
 $string['cat'] = 'kategoria';
 $string['categories'] = 'Kategoriat';
 $string['category'] = 'Kategoria';
@@ -117,9 +104,8 @@ $string['currentglossary'] = 'Nykyinen sanasto';
 $string['date'] = 'päivämäärä';
 $string['dateview'] = 'Selaa päiväysten mukaan';
 $string['defaultapproval'] = 'Hakusanat julkaistaan heti';
-$string['defaultapproval_help'] = '<h2>Hakusanat julkaistaan heti</h2>
-
-<p>Tämä asetus määrittelee, mitä tapahtuu opiskelijoiden lisäämille hakusanoille. Ne voidaan automaattisesti julkaista eli laittaa näkyville kaikille. Muuten opettajan täytyy hyväksyä jokainen opiskelijan lisäämä hakusana erikseen.</p>';
+$string['defaultapproval_help'] = '## Hakusanat julkaistaan heti
+Tämä asetus määrittelee, mitä tapahtuu opiskelijoiden lisäämille hakusanoille. Ne voidaan automaattisesti julkaista eli laittaa näkyville kaikille. Muuten opettajan täytyy hyväksyä jokainen opiskelijan lisäämä hakusana erikseen.';
 $string['defaulthook'] = 'Oletuskoukku';
 $string['defaultmode'] = 'Oletustila';
 $string['defaultsortkey'] = 'Järjestämisen oletusperuste';
@@ -132,45 +118,59 @@ $string['deletingcomment'] = 'Poistetaan kommenttia';
 $string['deletingnoneemptycategory'] = 'Tämän kategorian poistaminen ei poista sen sisältämiä hakusanoja - ne merkitään kategorisoimattomiksi.';
 $string['descending'] = 'laskeva';
 $string['destination'] = 'Tuotujen merkintöjen kohde';
-$string['destination_help'] = '<p>Voit määritellä mihin haluat tuoda hakusanat: </p>
-<ul>
-<li><strong>Nykyinen sanasto:</strong> Liittää tuodut hakusanat parhaillaan auki olevaan sanastoon.</li>
-<li><strong>Uusi sanasto:</strong> Luo uuden sanaston, joka perustuu tietoon valituissa tuoduissa tiedostoissa, ja syöttää uudet hakusanat siihen.</li>
-</ul>';
+$string['destination_help'] = 'Voit määritellä mihin haluat tuoda hakusanat:
+* **|Nykyinen sanasto:** Liittää tuodut hakusanat parhaillaan auki olevaan sanastoon.
+* **|Uusi sanasto:** Luo uuden sanaston, joka perustuu tietoon valituissa tuoduissa tiedostoissa, ja syöttää uudet hakusanat siihen.';
 $string['displayformat'] = 'Sanaston selaustapa';
-$string['displayformat_help'] = '<h2>Sanaston hakusanojen selaustapa</h2>
-
-<p>Tämä asetus määrittelee hakusanojen selaustavan sanastossa. Oletusmuodot ovat:</p>
-<blockquote>
-<dl>
-
-<dt><b>Hakusanalista</b>:</dt>
-<dd>Näyttää hakusanat linkkeinä.</dd>
-
-<dt><strong>Jatkuva</strong>:</dt>
-<dd>näyttää hakusanat peräkkäin ilman erottelua, muotoilukuvakkeita lukuun ottamatta.</dd>
-
-<dt><b>Kaikki tiedot</b>:</dt>
-<dd>Keskustenlualueen kaltainen näyttömuoto, joka näyttää myös laatijan tiedot. Liitetiedostot näytetään linkkeinä.</dd>
-
-<dt><b>Kaikki tiedot paitsi tekijä</b>:</dt>
-<dd>Keskustelualueen kaltainen näyttömuoto, joka ei näytä laatijan tietoja. Liitetiedostot näytetään linkkeinä.</dd>
-
-<dt><b>Tietosanakirja</b>:</dt>
-<dd>Kuten \'Kaikki tiedot\', lisäksi kuvat näytetään tekstin joukossa.</dd>
-
-<dt><b>Usein kysytyt kysymykset (FAQ) </b>:</dt>
-<dd>Käytännöllinen &quot;usein kysytyt kysymykset&quot; listojen näyttämiseen. Automaattisesti liittää loppuun sanat: KYSYMYS ja VASTAUS, ko. aiheesta ja  mainitussa järjestyksessä. </dd>
-
-<dt><b>Yksinkertainen sanakirja:</b></dt>
-<dd>näyttää tavanomaiselta sanakirjalta hakusanoineen. Laatijoita ei näytetä ja liitetiedostot näytetään linkkeinä.</dd>
-
-</dl>
-<p>&nbsp;</p>
-</blockquote>
-
-<hr />
-<p>Moodlen ylläpitäjät voivat luoda uusia esitysmuotoja seuraamalla ohjeita <b>mod/glossary/formats/README.txt</b>.</p>';
+$string['displayformat_help'] = '## Sanaston hakusanojen selaustapa
+Tämä asetus määrittelee hakusanojen selaustavan sanastossa. Oletusmuodot ovat:
+>
+>
+>
+> **Hakusanalista**:
+>
+> : Näyttää hakusanat linkkeinä.
+>
+>
+> **Jatkuva**:
+>
+> : näyttää hakusanat peräkkäin ilman erottelua, muotoilukuvakkeita lukuun ottamatta.
+>
+>
+> **Kaikki tiedot**:
+>
+> : Keskustenlualueen kaltainen näyttömuoto, joka näyttää myös laatijan tiedot. Liitetiedostot näytetään linkkeinä.
+>
+>
+> **Kaikki tiedot paitsi tekijä**:
+>
+> : Keskustelualueen kaltainen näyttömuoto, joka ei näytä laatijan tietoja. Liitetiedostot näytetään linkkeinä.
+>
+>
+> **Tietosanakirja**:
+>
+> : Kuten \'Kaikki tiedot\', lisäksi kuvat näytetään tekstin joukossa.
+>
+>
+> **Usein kysytyt kysymykset (FAQ) **:
+>
+> : Käytännöllinen "usein kysytyt kysymykset" listojen näyttämiseen. Automaattisesti liittää loppuun sanat: KYSYMYS ja VASTAUS, ko. aiheesta ja mainitussa järjestyksessä.
+>
+>
+> **Yksinkertainen sanakirja:**
+>
+> : näyttää tavanomaiselta sanakirjalta hakusanoineen. Laatijoita ei näytetä ja liitetiedostot näytetään linkkeinä.
+>
+>
+>
+>
+>
+>  
+>
+>
+>
+* * *
+Moodlen ylläpitäjät voivat luoda uusia esitysmuotoja seuraamalla ohjeita **mod/glossary/formats/README.txt**.';
 $string['displayformatcontinuous'] = 'Jatkuva';
 $string['displayformatdictionary'] = 'Yksinkertainen sanakirja';
 $string['displayformatencyclopedia'] = 'Tietosanakirja';
@@ -183,16 +183,12 @@ $string['displayformatssetup'] = 'Esitysmuodon valinta';
 $string['duplicatecategory'] = 'Kopioi kategoria';
 $string['duplicateentry'] = 'Samanniminen hakusana';
 $string['editalways'] = 'Hakusanat aina muokattavissa';
-$string['editalways_help'] = '<h2>Hakusanat aina muokkattavissa</h2>
+$string['editalways_help'] = '## Hakusanat aina muokkattavissa
+Tällä valinnalla päätät, voivatko opiskelijat muokata merkintöjään milloin vain.
+Voit valita:
 
-<p>Tällä valinnalla päätät, voivatko opiskelijat muokata merkintöjään milloin vain. </p>
-<p>Voit valita:</p>
-
-<ul>
-<li><b>Kyllä:</b> Merkinnät ovat aina muokattavissa.</li>
-
-<li><b>Ei:</b> Merkinnät ovat muokattavissa vain valittuna muokkausaikana.</li>
-</ul>';
+* **|Kyllä:** Merkinnät ovat aina muokattavissa.
+* **|Ei:** Merkinnät ovat muokattavissa vain valittuna muokkausaikana.';
 $string['editcategories'] = 'Muokkaa kategorioita';
 $string['editentry'] = 'Muokkaa hakusanaa';
 $string['editingcomment'] = 'Muokkaa kommenttia';
@@ -209,13 +205,10 @@ $string['entryleveldefaultsettings'] = 'Hakusanojen oletusasetukset';
 $string['entrysaved'] = 'Hakusana on tallennettu';
 $string['entryupdated'] = 'Hakusana on päivitetty';
 $string['entryusedynalink'] = 'Linkitä automaattisesti';
-$string['entryusedynalink_help'] = '<h2>Hakusanan automaatinen linkitys</h2>
-
-<p>Tämän toiminnon päälle kytkeminen mahdollistaa hakusanojen automaattisen linkityksen aina, kun ko. sanoja ja fraaseja käytetään kurssilla, esimerkiksi keskustelualueilla, sisäisissä resurssseissa, viikkoyhteenvedoissa, ja päiväkirjoissa. </p>
-
-<p>Jos et halua tiettyä tekstiä linkitetyksi (esim. keskustelualueen ilmoituksessa), lisää silloin NOLINK ja /NOLINK -elementit tekstin ympärille.</p>
-
-<p>Jotta tämän toiminnon voi kytkeä päälle, tulee automaattisen linkityksen olla aktivoituna sanastossa.</p>';
+$string['entryusedynalink_help'] = '## Hakusanan automaatinen linkitys
+Tämän toiminnon päälle kytkeminen mahdollistaa hakusanojen automaattisen linkityksen aina, kun ko. sanoja ja fraaseja käytetään kurssilla, esimerkiksi keskustelualueilla, sisäisissä resurssseissa, viikkoyhteenvedoissa, ja päiväkirjoissa.
+Jos et halua tiettyä tekstiä linkitetyksi (esim. keskustelualueen ilmoituksessa), lisää silloin NOLINK ja /NOLINK -elementit tekstin ympärille.
+Jotta tämän toiminnon voi kytkeä päälle, tulee automaattisen linkityksen olla aktivoituna sanastossa.';
 $string['errcannoteditothers'] = 'Et voi muokata toisten käyttäjien tekemiä hakusanoja.';
 $string['errconceptalreadyexists'] = 'Tämä käsite on jo olemassa. Tähän sanastoon ei voi lisätä keskenään samannimisiä hakusanoja.';
 $string['errdeltimeexpired'] = 'Et voi poistaa tätä. Aika loppui!';
@@ -234,13 +227,12 @@ $string['exportfile'] = 'Tallenna hakusanat tiedostoksi';
 $string['exportglossary'] = 'Vie sanasto';
 $string['exporttomainglossary'] = 'Vie pääsanastoon';
 $string['filetoimport'] = 'Tuontitiedosto';
-$string['filetoimport_help'] = '<p>Valitse tietokoneeltasi se XML-tiedosto, joka sisältää tuotavat hakusanat.</p>';
+$string['filetoimport_help'] = 'Valitse tietokoneeltasi se XML-tiedosto, joka sisältää tuotavat hakusanat.';
 $string['fillfields'] = 'Käsite ja määritelmä ovat pakollisia kenttiä.';
 $string['filtername'] = 'Sanaston automaattinen linkitys';
 $string['fullmatch'] = 'Linkitä vain kokonaisiin sanoihin';
-$string['fullmatch_help'] = '<h2>Vain kokonaiset sanat</h2>
-
-<p>Jos automaattinen linkitys on päällä, sallii tämän asetus ainoastaan kokonaiset sanat linkittymään keskenään, esimerkiksi, "pallo" ei silloin linkity sanaan "pallokala". Hakusanan on siis vastattava tarkalleen kurssialueella käytettyä sanaa, jotta se linkittyy.';
+$string['fullmatch_help'] = '## Vain kokonaiset sanat
+Jos automaattinen linkitys on päällä, sallii tämän asetus ainoastaan kokonaiset sanat linkittymään keskenään, esimerkiksi, "pallo" ei silloin linkity sanaan "pallokala". Hakusanan on siis vastattava tarkalleen kurssialueella käytettyä sanaa, jotta se linkittyy.';
 $string['glossary:approve'] = 'Hakusanojen hyväksyminen';
 $string['glossary:comment'] = 'Kommenttien luonti';
 $string['glossary:export'] = 'Hakusanojen vienti';
@@ -258,11 +250,9 @@ $string['glossary:viewrating'] = 'Tarkastele saamiasi arviointeja';
 $string['glossary:write'] = 'Luo uusia hakusanoja';
 $string['glossaryleveldefaultsettings'] = 'Sanastojen oletusasetukset';
 $string['glossarytype'] = 'Sanaston tyyppi';
-$string['glossarytype_help'] = '<h2>Kurssin pääsanaston määrittäminen</h2>
-
-<p>Sanastojärjestelmä mahdollistaa hakusanojen viennin kurssialueen mistä tahansa toissijaisesta sanastosta kurssialueen pääsanastoon. Tehdäksesi tämän sinun pitää määritellä, mikä sanasto on tämä pääsanasto. Kurssialueella voi olla vain yksi pääsanasto.</p>
-
-<p>Oletusarvoisesti vain opettajat saavat päivittää pääsanastoa.</p>';
+$string['glossarytype_help'] = '## Kurssin pääsanaston määrittäminen
+Sanastojärjestelmä mahdollistaa hakusanojen viennin kurssialueen mistä tahansa toissijaisesta sanastosta kurssialueen pääsanastoon. Tehdäksesi tämän sinun pitää määritellä, mikä sanasto on tämä pääsanasto. Kurssialueella voi olla vain yksi pääsanasto.
+Oletusarvoisesti vain opettajat saavat päivittää pääsanastoa.';
 $string['guestnoedit'] = 'Vierailijat eivät voi muokata sanastoja';
 $string['importcategories'] = 'Tuo kategorioita';
 $string['importedcategories'] = 'Tuodut kategoriat';
@@ -271,27 +261,19 @@ $string['importentries'] = 'Tuo hakusanoja';
 $string['importentriesfromxml'] = 'Tuo hakusanoja XML-tiedostosta';
 $string['includegroupbreaks'] = 'Sisällytä ryhmäjaot';
 $string['isglobal'] = 'Onko tämä sanasto yhteinen kaikille kurssialueille?';
-$string['isglobal_help'] = '<h2>Yhteisen sanaston määrittely</h2>
-
-<p>Ylläpitäjät voivat määritellä sanaston olevan yhteisesti kaikkien kurssialueiden käytössä.</p>
-
-<p>Nämä sanastot voivat olla osa mitä tahansa kurssia, mutta yleensä ne ovat etusivulla. </p>
-
-<p>Erona kurssikohtaiseen sanastoon on, että yhteisen sanaston hakusanoilla voidaan luoda linkkejä mille tahansa kurssialueelle, ei ainoastaan sillä kurssialueella, jolle sanasto kuuluu.</p>';
+$string['isglobal_help'] = '## Yhteisen sanaston määrittely
+Ylläpitäjät voivat määritellä sanaston olevan yhteisesti kaikkien kurssialueiden käytössä.
+Nämä sanastot voivat olla osa mitä tahansa kurssia, mutta yleensä ne ovat etusivulla.
+Erona kurssikohtaiseen sanastoon on, että yhteisen sanaston hakusanoilla voidaan luoda linkkejä mille tahansa kurssialueelle, ei ainoastaan sillä kurssialueella, jolle sanasto kuuluu.';
 $string['letter'] = 'kirjain';
 $string['linkcategory'] = 'Linkitä tämä kategoria automaattisesti';
-$string['linkcategory_help'] = '<p>Tässä määrittelet linkitetäänko kategoria nimet aytomaatisesti vai ei.</p>
-
-<p>Kategoriat linkitetään aina kokonaisiin sanoihin kirjainkoko huomioiden.</p>';
+$string['linkcategory_help'] = 'Tässä määrittelet linkitetäänko kategoria nimet aytomaatisesti vai ei.
+Kategoriat linkitetään aina kokonaisiin sanoihin kirjainkoko huomioiden.';
 $string['linking'] = 'Automaattinen linkitys';
 $string['mainglossary'] = 'Pääsanasto';
 $string['maxtimehaspassed'] = 'Kommentin ({$a}) sallittu muokkausaika on ylittynyt.';
 $string['modulename'] = 'Sanasto';
-$string['modulename_help'] = '<p><img valign="middle" src="<?php echo $CFG->wwwroot?>/mod/glossary/icon.gif"> <strong>Sanasto</strong></p>
-
-<BLOCKQUOTE>
-Sanastossa kurssialueen osallistujat voivat luoda ja ylläpitää listaa hakusanoista tai vaikkapa kerätä yhteistä lähdeluetteloa. Hakusanojen selausvaihtoehtoja on useita. Opettajat voivat myös tuoda saman kurssin sisällä hakusanoja yhdestä sanastosta toiseen eli pääsanastoon. Kurssin aineistoissa ja aktiviteeteissa mainitut hakusanat on myös mahdollista linkittää automaattisesti sanastojen määritelmiin.
-</BLOCKQUOTE>';
+$string['modulename_help'] = 'Sanastossa kurssialueen osallistujat voivat luoda ja ylläpitää listaa hakusanoista tai vaikkapa kerätä yhteistä lähdeluetteloa. Hakusanojen selausvaihtoehtoja on useita. Opettajat voivat myös tuoda saman kurssin sisällä hakusanoja yhdestä sanastosta toiseen eli pääsanastoon. Kurssin aineistoissa ja aktiviteeteissa mainitut hakusanat on myös mahdollista linkittää automaattisesti sanastojen määritelmiin.';
 $string['modulenameplural'] = 'Sanastot';
 $string['newentries'] = 'Uudet sanaston hakusanat';
 $string['newglossary'] = 'Uusi sanasto';
@@ -323,43 +305,31 @@ $string['rejectionrpt'] = 'Hylkäysraportti';
 $string['resetglossaries'] = 'Poista hakusanoja';
 $string['resetglossariesall'] = 'Poista hakusanat kaikista sanastoista';
 $string['rssarticles'] = 'Uutissyötteiden viimeisimpien merkintöjen määrä';
-$string['rssarticles_help'] = '<p>Tämä valinta antaa sinun määritellä niiden merkintöjen määrän, joka sisällytetään uutissyötteeseen.</p>
-<p>Määrä 5:n ja 20:n välillä olisi normaali suurimmalle osalle sanastoista. Kasvata määrää, jos sanastoa päivitetään usein.</p>';
+$string['rssarticles_help'] = 'Tämä valinta antaa sinun määritellä niiden merkintöjen määrän, joka sisällytetään uutissyötteeseen.
+Määrä 5:n ja 20:n välillä olisi normaali suurimmalle osalle sanastoista. Kasvata määrää, jos sanastoa päivitetään usein.';
 $string['rsssubscriberss'] = 'Näytä uutissyötteet {$a}';
 $string['rsstype'] = 'Tämän aktiviteetin uutissyöte';
-$string['rsstype_help'] = '<p>Tällä valinnalla voit näyttää uutissyötteitä tästä sanastosta. Voit valita kahden syöttötyypin välillä:</p>
-<ul>
-<li><b>Nimen kanssa:</b> Syötteet sisältävät tekijöiden nimet.
-<li><b>Ilman nimeä:</b> Syötteet eivät sisällä tekijöiden nimiä.
-</ul>';
+$string['rsstype_help'] = 'Tällä valinnalla voit näyttää uutissyötteitä tästä sanastosta. Voit valita kahden syöttötyypin välillä:
+* **|Nimen kanssa:** Syötteet sisältävät tekijöiden nimet.
+* **|Ilman nimeä:** Syötteet eivät sisällä tekijöiden nimiä.';
 $string['searchindefinition'] = 'Vapaatekstihaku';
 $string['secondaryglossary'] = 'Toissijainen sanasto';
 $string['showall'] = 'Näytä linkki "Kaikki merkinnät"';
-$string['showall_help'] = '<h2>Selailu aakkostetussa näkymässä</h2>
-
-<p>Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa: </p>
-
-<p><b>Näytä erikoismerkit</b> mahdollistaa tai estää selaamisen erikoismerkkien, kuten @, #, mukaan.</p>
-
-<p><strong>Näytä aakkosittain</strong> mahdollistaa tai estää selaamisen aakkosjärjestyksessä.</p>
-
-<p><strong>Näytä kaikki</strong> mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.</p>';
+$string['showall_help'] = '## Selailu aakkostetussa näkymässä
+Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa:
+**Näytä erikoismerkit** mahdollistaa tai estää selaamisen erikoismerkkien, kuten @, #, mukaan.
+**Näytä aakkosittain** mahdollistaa tai estää selaamisen aakkosjärjestyksessä.
+**Näytä kaikki** mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.';
 $string['showalphabet'] = 'Näytä aakkosittain';
-$string['showalphabet_help'] = '<p>Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa: </p>
-
-<p><b>Näytä erikoismerkit</b> mahdollistaa tai estää selaamisen erikoismerkkien, kuten @, #, mukaan.</p>
-
-<p><strong>Näytä aakkosittain</strong> mahdollistaa tai estää selaamisen aakkosjärjestyksessä.</p>
-
-<p><strong>Näytä kaikki</strong> mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.</p>';
+$string['showalphabet_help'] = 'Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa:
+**Näytä erikoismerkit** mahdollistaa tai estää selaamisen erikoismerkkien, kuten @, #, mukaan.
+**Näytä aakkosittain** mahdollistaa tai estää selaamisen aakkosjärjestyksessä.
+**Näytä kaikki** mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.';
 $string['showspecial'] = 'Näytä linkki "Erikoismerkit"';
-$string['showspecial_help'] = '<p>Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa: </p>
-
-<p><b>Näytä erikoismerkit</b> mahdollistaa tai estää selaamisen erikoismerkkien, kuten @, #, mukaan.</p>
-
-<p><strong>Näytä aakkosittain</strong> mahdollistaa tai estää selaamisen aakkosjärjestyksessä.</p>
-
-<p><strong>Näytä kaikki</strong> mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.</p>';
+$string['showspecial_help'] = 'Voit mukauttaa tapoja, joilla käyttäjä selaa sanastoa. Selaaminen ja etsiminen ovat aina saatavilla, mutta voit määrittää kolme muutakin valintaa:
+**Näytä erikoismerkit** mahdollistaa tai estää selaamisen erikoismerkkien, kuten @, #, mukaan.
+**Näytä aakkosittain** mahdollistaa tai estää selaamisen aakkosjärjestyksessä.
+**Näytä kaikki** mahdollistaa tai estää kaikkien hakusanojen selaamisen kerralla.';
 $string['sortby'] = 'Lajittele...';
 $string['sortbycreation'] = 'Luontiajan mukaan';
 $string['sortbylastupdate'] = 'Viimeisimmän päivityksen mukaan';
@@ -369,14 +339,11 @@ $string['standardview'] = 'Selaa aakkosjärjestyksessä';
 $string['studentcanpost'] = 'Opiskelijat voivat lisätä hakusanoja';
 $string['totalentries'] = 'Hakusanojen kokonaismäärä';
 $string['usedynalink'] = 'Sanaston automaattinen linkitys';
-$string['usedynalink_help'] = '<h2>Sanaston automaattinen linkitys</h2>
-
-<p>Tämän toiminnon käyttö sallii sanaston yksittäisten hakusanojen linkittyä automaattisesti aina, kun käsitesanoja ja fraaseja käytetään kurssialueella. Linkitys toimii kaikissa aktiviteeteissa, kuten keskustelualueilla, resursseissa ja yhteenvedoissa.</p>
-
-<p>Huomaa, että linkityksen mahdollistaminen sanastolle ei automaattisesti kytke päälle linkitystä hakusanoille, vaan linkitys täytyy asettaa jokaiselle hakusanalle erikseen. </p>
-<p>Jos et halua tiettyä tekstiä linkitetyksi (esim. keskustelualueen ilmoituksessa), lisää silloin  &lt;nolink&gt; ja &lt;/nolink&gt; -merkinnät ko. tekstin ympärille.</p>
-
-<p>Huomaa, että myös kategorianimet linkitetään.</p>';
+$string['usedynalink_help'] = '## Sanaston automaattinen linkitys
+Tämän toiminnon käyttö sallii sanaston yksittäisten hakusanojen linkittyä automaattisesti aina, kun käsitesanoja ja fraaseja käytetään kurssialueella. Linkitys toimii kaikissa aktiviteeteissa, kuten keskustelualueilla, resursseissa ja yhteenvedoissa.
+Huomaa, että linkityksen mahdollistaminen sanastolle ei automaattisesti kytke päälle linkitystä hakusanoille, vaan linkitys täytyy asettaa jokaiselle hakusanalle erikseen.
+Jos et halua tiettyä tekstiä linkitetyksi (esim. keskustelualueen ilmoituksessa), lisää silloin ja -merkinnät ko. tekstin ympärille.
+Huomaa, että myös kategorianimet linkitetään.';
 $string['waitingapproval'] = 'Odottamassa hyväksyntää';
 $string['warningstudentcapost'] = '(Soveltuu vain jos sanasto ei ole pääsanasto)';
 $string['withauthor'] = 'Käsitteet kirjoittajineen';

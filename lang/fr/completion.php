@@ -63,7 +63,6 @@ $string['completion-title-manual-y'] = 'Marquer comme non terminé : {$a}';
 $string['completion-y'] = 'Terminé';
 $string['completion_automatic'] = 'Afficher l\'activité comme terminée dès que les conditions sont remplies';
 $string['completion_help'] = 'Cette option permet d\'activer le suivi de l\'achèvement des activités, manuellement ou automatiquement, sur la base de conditions choisies. Plusieurs conditions peuvent être exigées simultanément. Dans ce cas, l\'activité sera considérée comme terminée si toutes les conditions sont requises.
-
 Une coche à côté du nom de l\'activité indique sur la page de cours lorsqu\'une activité est terminée.';
 $string['completion_manual'] = 'Les participants peuvent marquer manuellement cette activité comme terminée';
 $string['completion_none'] = 'Ne pas afficher l\'état d\'achèvement';
@@ -73,9 +72,7 @@ $string['completionexpected'] = 'Achèvement attendu le';
 $string['completionexpected_help'] = 'Cette option vous permet d\'indiquer une date à laquelle l\'activité devrait être terminée. Cette date n\'est pas visible pour les participants et n\'est affichée que dans le rapport de l\'état d\'achèvement.';
 $string['completionicons'] = 'Coches d\'achèvement';
 $string['completionicons_help'] = 'Une coche à côté du nom de l\'activité peut être utilisée pour indiquer sur la page de cours lorsqu\'une activité est terminée.
-
 Si la coche est traitillée, vous pouvez la cliquer lorsque vous pensez avoir terminé l\'activité. Vous pouvez cliquer une nouvelle fois si vous changez d\'avis. La coche est optionnelle et vous permet simplement de savoir où vous en êtes dans le cours.
-
 Si une case blanche est affichée, une coche apparaîtra automatiquement lorsque l\'activité sera terminée d\'après les conditions fixées par l\'enseignant.';
 $string['completionmenuitem'] = 'Achèvement';
 $string['completionnotenabled'] = 'L\'achèvement n\'est pas activé';

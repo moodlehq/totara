@@ -43,29 +43,18 @@ $string['addorganisationtoprogram'] = 'Lisää organisaatio kurssiohjelmaan';
 $string['addorremovecourses'] = 'Lisää/poista kursseja';
 $string['addpositiontoprogram'] = 'Lisää asema kurssiohjelmaan';
 $string['addprogramcontent_help'] = '# Luo kurssiohjelman sisältö
-
 Kurssikokonaisuuksia lisäämällä voit rakentaa ohjelmalle etenemispolun. Kun kokonaisuudet on lisätty, voit määrittää niiden välisiä suhteita. Kokonaisuuksia voi luoda lisäämällä yksittäisiä kursseja, valitsemalla kompetenssin, tai määrittämällä yksittäisen kurssin toistuvaksi.
-
 Kun useampia kokonaisuuksia on luotu, niiden välille voidaan luoda riippuvuuksien avulla etenemisjärjestyksiä. Esimerkki-kurssiohjelman neljälle kurssikokonaisuudelle voidaan määrittää vaikkapa seuraava järjestys:
-
-*   Oppijan täytyy suorittaa yksi kurssi (KurssiA tai KurssiB) kokonaisuudesta 1 ennen siirtymistään kokonaisuuteen 2.
-*   Oppijan täytyy suorittaa kaikki kurssit (KurssiC ja KurssiD ja KurssiE) kokonaisuudesta 2 ennen siirtymistään kokonaisuuteen 3 tai 4.
-*   Oppijan täytyy suorittaa yksi kurssi (KurssiE) kokonaisuudesta 3, tai kaikki kurssit (KurssiF ja KurssiG) kokonaisuudesta 4.
-
+* Oppijan täytyy suorittaa yksi kurssi (KurssiA tai KurssiB) kokonaisuudesta 1 ennen siirtymistään kokonaisuuteen 2.
+* Oppijan täytyy suorittaa kaikki kurssit (KurssiC ja KurssiD ja KurssiE) kokonaisuudesta 2 ennen siirtymistään kokonaisuuteen 3 tai 4.
+* Oppijan täytyy suorittaa yksi kurssi (KurssiE) kokonaisuudesta 3, tai kaikki kurssit (KurssiF ja KurssiG) kokonaisuudesta 4.
 Kun polku on käyty loppuun näillä kriteereillä, oppija on suorittanut kurssiohjelman.
-
 Voit lisätä:
-
 ## Kurssikokonaisuuksia
-
 Sallii useiden kokonaisuuksien luomisen ja niille riippuvuuksien määrittämisen.
-
 ## Kompetensseja
-
 Sallii useiden kurssikokonaisuuksien luomisen ennalta määritetyn kompetenssitodisteen pohjalta. Kun kompetenssia käytetään kokonaisuuden luomiseen, siitä tulee rajoittavampi eikä sitä voida enää jälkikäteen muuttaa.
-
 ## Yksittäinen kurssi
-
 Yksittäinen, toistuva kurssi esitetään pakotettuna. Jos olet valinnut alussa joko kurssikokonaisuuden tai kompentessin kurssiohjelman kriteeriksi, tämä vaihtoehto ei ole enää valittavissa.';
 $string['affectedusercount'] = 'Oppijat, joita nämä muutokset koskevat:';
 $string['afterprogramiscompleted'] = 'Kun kurssiohjelma on suoritettu';
@@ -121,11 +110,8 @@ $string['cohorts'] = 'Ryhmät';
 $string['cohorts_category'] = 'ryhmä(t)';
 $string['competency'] = 'Kompetenssi';
 $string['competencycourseset_help'] = '# Kompetenssiin perustuva kurssikokonaisuus
-
 Tämä kurssikokonaisuus on luotu olemassaolevan kompetenssin pohjalta.
-
 Kun kokonaisuus luodaan kompetenssin pohjalta, sitä ei voi enää muuttaa jälkikäteen, eikä sen sisällä olevia kursseja voi muokata. Muokataksesi kursseja joudut luomaan uuden kurssikokonaisuuden ja lisäämään kurssit sinne yksitellen.
-
 Kompetenssiin perustuvan kurssikokonaisuuden asetukset (\'yksi kurssi\' tai \'kaikki kurssit\') pohjautuvat kompetenssin asetuksiin.';
 $string['complete'] = 'Suoritettu';
 $string['completeallcourses'] = 'Kaikki tämän kokonaisuuden kurssit on suoritettava (ellei tämä ole valinnainen kurssikokonaisuus).';
@@ -141,7 +127,6 @@ $string['completionofprogram'] = 'kurssiohjelman suorittaminen';
 $string['completionstatus'] = 'Tila';
 $string['completiontimeunknown'] = 'Suorittamisaika ei tiedossa';
 $string['completiontype_help'] = '# Valmius-tyyppi
-
 Kurssikokonaisuuden valmiusasetukset on pyritty pitämään yksinkertaisina. Suoritettavaksi vaaditaan joko \'yksi kurssi\' (merkityksellä TAI), tai \'kaikki kurssit\' (merkityksellä JA). Kurssin edessä oleva teksti muuttuu tämän mukaan automaattisesti.';
 $string['confirmassignmentchanges'] = 'Vahvista muutokset testävään';
 $string['confirmcontentchanges'] = 'Vahvista muutokset sisältöön';
@@ -154,24 +139,19 @@ $string['couldnotinsertnewrecord'] = 'Uutta kirjausta ei voitu tehdä';
 $string['course'] = 'Kurssi';
 $string['coursecompletion'] = 'Kurssin suorittaminen';
 $string['coursecreation_help'] = '# Kurssin luominen
-
 Tällä valinnalla voit määrittää, milloin toistuva kurssi kopioidaan ja luodaan uudelleen.
-
 Tämä perustuu kurssin asetuksissa määritettyihin aloitus- ja päättymispäiviin.';
 $string['coursename'] = 'Kurssin nimi';
 $string['coursenamelink'] = 'Kurssin nimi';
 $string['courses'] = 'Kurssit';
 $string['coursesetcompleted'] = 'Kurssikokonaisuus suoritettu';
 $string['coursesetcompletedmessage_help'] = '# Kurssikokonaisuuden päättymisviesti
-
 Tämä viesti lähetetään, kun kurssikokonaisuus on suoritettu.';
 $string['coursesetdue'] = 'Kurssikokonaisuus erääntymässä';
 $string['coursesetduemessage_help'] = '# Kurssikokonaisuuden määräajan umpeutumisviesti
-
 Tämä viesti lähetetään määritettynä ajankohtana ennen kurssikokonaisuuden määräajan umpeutumista.';
 $string['coursesetoverdue'] = 'Kurssikokonaisuus on myöhässä';
 $string['coursesetoverduemessage_help'] = '# Kurssikokonaisuuden myöhästymisilmoitus
-
 Tämä viesti lähetetään määritetyn ajan jälkeen kurssikokonaisuuden määräajan umpeuduttua.';
 $string['createandnext'] = 'Luo ja siirry seuraavaan vaiheeseen';
 $string['createandreturn'] = 'Luo ja palaa yleisnäkymään';
@@ -214,7 +194,6 @@ $string['editprogramroleassignments'] = 'Muokkaa kurssiohjelman roolien tehtävi
 $string['editprograms'] = 'Lisää/muokkaa kurssiohjelmia';
 $string['endnote'] = 'Kurssiohjelman loppumistiedote';
 $string['enrolmentmessage_help'] = '# Ilmoittautumisviesti
-
 Tämä viesti lähetetään, kun käyttäjä on automaattisesti lisätty kurssiohjelmaan.';
 $string['error:addinguserassignment'] = 'Tehtävää lisätessä tapahtui virhe';
 $string['error:availibileuntilearlierthanfrom'] = 'Erääntymispäivä ei voi olla aikaisempi kuin aloituspäivä';
@@ -259,7 +238,6 @@ $string['error:updatingprogramassignment'] = 'Kurssiohjelman osoitustietoja päi
 $string['errorsinform'] = 'Tässä lomakkeessa on virheitä. Ole hyvä ja tarkista allaoleva lista ja korjaa virheet ennen tallentamista.';
 $string['eventnotfound'] = 'Kurssiohjelman osoitustapahtumaa ei löytynyt tunnuksella {$a}';
 $string['exceptionreportmessage_help'] = '# Poikkeusraportteja koskeva viesti
-
 Tämä viesti lähetetään hallinnoijalle, kun kurssiohjelman poikkeusraportteihin on tullut uusia kohtia, jotka vaativat huomiota.';
 $string['exceptions'] = 'Poikkeusraportti ({$a})';
 $string['exceptionsreport'] = 'Virheraportti';
@@ -278,7 +256,6 @@ $string['extensionrequestfailed'] = 'Lisäaikapyyntö epäonnistui. Yritä uudel
 $string['extensionrequestfailed:nomanager'] = 'Lisäaikapyyntöä ei lähetetty. Esimiestä ei löytynyt.';
 $string['extensionrequestmessage'] = '<p>Käyttäjä on pyytänyt lisäaikaa kurssiohjelmalle <em>{$a->programfullname}</em>. Pyynnön tiedot:</p><ul><li>Päivämäärä: {$a->extensiondatestr}</li><li>Peruste: {$a->extensionreason}</li></ul>';
 $string['extensionrequestmessage_help'] = '# Lisäajan/lykkäyksen pyyntöviesti
-
 Tämä viesti lähetetään oppijan esimiehelle, kun oppija on anonut lisäaikaa tai lykkäystä kurssiohjelman suorittamiselle.';
 $string['extensionrequestnotsent'] = 'Lisäaikapyyntöä ei lähetetty. Ole hyvä ja yritä uudestaan.';
 $string['extensionrequestsent'] = 'Lisäaikapyyntö lähetettiin.';
@@ -327,7 +304,6 @@ $string['launchprogram'] = 'Aloita kurssiohjelma';
 $string['learnerenrolled'] = 'Oppija ilmoittatunut';
 $string['learnerfollowup'] = 'Oppijan seuranta';
 $string['learnerfollowupmessage_help'] = '# Seurantaviesti
-
 Tämä viesti lähetetään oppijalle määritettynä ajankohtana sen jälkeen, kun kurssiohjelma on suoritettu.';
 $string['learnersassigned'] = '{$a->total} osoitettua oppijaa. {$a->assignments} aktiivista oppijaa, {$a->exceptions} poikkeusta';
 $string['learnersselected'] = 'valitut oppijat';
@@ -346,22 +322,14 @@ $string['legend:programoverduemessage'] = 'KURSSIOHJELMAN ERÄÄNTYMISVIESTI';
 $string['legend:recurringcourseset'] = 'Toistuva kurssikokonaisuus';
 $string['legend:unenrolmentmessage'] = 'ILMOITTAUTUMISEN PERUMISVIESTI';
 $string['mainmessage_help'] = '# Viestin sisältö
-
 Tämä sisältö näytetään viestin vastaanottajille heidän omalla työpöydällään.
-
-Voit käyttää tekstissä muuttujia, joiden sisältö päivittyy automaattisesti kun viesti lähetetään. Katso [lisätietoja muuttujien käytöstä][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+Voit käyttää tekstissä muuttujia, joiden sisältö päivittyy automaattisesti kun viesti lähetetään.';
 $string['manageextensionrequests'] = 'Tarkastele virheraporttia hyväksyäksesi tai hylätäksesi lisäaikapyyntöjä';
 $string['manageextensions'] = 'Hallinnan lisäaikoja';
 $string['managementhierarchy'] = 'Johdon hierarkia';
 $string['managermessage_help'] = '# Esimiehelle lähetettävä tiedote
-
 Jos valinta \'Lähetä viesti esimiehelle\' on valittuna, tässä kentässä laadittava tiedote lähtee myös viestin vastaanottajan esimiehelle.
-
-Voit käyttää tekstissä muuttujia, joiden sisältö päivittyy automaattisesti kun viesti lähetetään. Katso [lisätietoja muuttujien käytöstä][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+Voit käyttää tekstissä muuttujia, joiden sisältö päivittyy automaattisesti kun viesti lähetetään.';
 $string['managername'] = 'Esimihien nimi';
 $string['managers_category'] = 'johdon tiimi(t)';
 $string['mandatory'] = 'Pakollinen';
@@ -369,21 +337,15 @@ $string['memberofcohort'] = 'Ryhmän \'{$a}\' jäsen.';
 $string['memberoforg'] = 'Organisaation \'{$a}\' jäsen.';
 $string['messages'] = 'Viestit';
 $string['messagesubject_help'] = '# Viestin aihe
-
 Viestin aihe näytetään vastaanottajille heidän omalla työpöydällään. Aihekentän pituus on enintään 255 merkkiä.
-
-Voit käyttää aiherivillä muuttujia, joiden sisältö päivittyy automaattisesti kun viesti lähetetään. Katso [lisätietoja muuttujien käytöstä][1].
-
-[1]: help.php?module=local_program&file=variablesubstitution.html';
+Voit käyttää aiherivillä muuttujia, joiden sisältö päivittyy automaattisesti kun viesti lähetetään.';
 $string['missingshortname'] = 'Puuttuva lyhenne';
 $string['months'] = 'Kuukaudet';
 $string['movedown'] = 'Siirrä alaspäin';
 $string['moveselectedprogramsto'] = 'Siirrä valitut kurssiohjelmat kohteeseen...';
 $string['moveup'] = 'Siirrä ylöspäin';
 $string['multicourseset_help'] = '# Kurssikokonaisuus
-
 Kurssit, jotka lisätään ohjelmaan kurssilistauksesta, muodostavat yhden kokonaisuuden.
-
 Voit määrittää kokonaisuudelle nimen, suorituskriteerit (suorittaako oppija yhden vai kaikki siihen sisältyvät kurssit), sekä sen suorittamiselle käytössä olevan ajan.';
 $string['nocoursecontent'] = 'Ei kurssisisältöä.';
 $string['nocourses'] = 'Ei kursseja';
@@ -399,7 +361,6 @@ $string['noprogramsyet'] = 'Tässä kategoriassa ei ole kurssiohjelmia';
 $string['norequiredlearning'] = 'Ei vaadittua osaamista';
 $string['notavailable'] = 'Ei saatavilla';
 $string['notifymanager_help'] = '# Lähetä tiedote esimiehelle
-
 Valitse tämä valintaruutu, jos haluat lähettää tiedotteen myös viestin vastaanottajan esimiehelle.';
 $string['notmanager'] = 'Et ole esimies';
 $string['nouserextensions'] = 'Käyttäjällä {$a} ei ole yhtään odottavaa lisäaikapyyntöä';
@@ -454,24 +415,16 @@ $string['program:viewprogram'] = 'Tarkastele kurssiohjelmia';
 $string['programassignments'] = 'Kurssiohjelman tehtävät';
 $string['programassignmentssaved'] = 'Kurssiohjelman tehtävät tallennettiin';
 $string['programavailability_help'] = '# Kurssiohjelman saatavuus
-
 Tällä asetuksella voi piilotaa kurssiohjelman näkyvistä.
-
 Tällöin se ei listaudu kurssiohjelmien joukossa ja on ainoastaan hallinnoijien saatavissa.
-
 Vaikka oppijalla olisi käytössä suora linkki kurssiohjelman sivulle, he eivät pääse sisälle.
-
 Jos määrität ohjelman voimassaololle alku- ja loppupäivämäärät, oppijat näkevät sen hakutuloksissa ja pääsevät kirjautumaan sille ainoastaan tämän ajanjakson aikana.';
 $string['programcategory_help'] = '# Ohjelma- ja kurssikategoriat
-
 Ympäristösi hallinnoija on voinut määrittää käyttöösi kategorioita kurssien ja kurssiohjelmien ylläpitoa varten.
-
 Kategoriat on yleensä jaoteltu aihepiirin mukaan, esim. "Terveydenhuolto", "Tekniikka" tai "Turvallisuus".
-
 Voit valita kurssiohjelmaasi sopivimman kategorian. Tämä auttaa myös oppijoita hakemaan kursseja ja kurssiohjelmia tehokkaammin.';
 $string['programcompleted'] = 'Kurssiohjelma suoritettu';
 $string['programcompletedmessage_help'] = '# Ohjelman päättymisviesti
-
 Tämä viesti lähetetään, kun kurssiohjelma on suoritettu.';
 $string['programcompletion'] = 'Kurssiohjelman suorittaminen';
 $string['programcontent'] = 'Kurssiohjelman sisältö';
@@ -485,19 +438,16 @@ $string['programdetailssaved'] = 'Kurssiohjelman tiedot tallennettiin';
 $string['programdue'] = 'Kurssiohjelman viimeinen suorituspäivä';
 $string['programduedate'] = 'Kurssiohjelman viimeinen suorituspäivä';
 $string['programduemessage_help'] = '# Ohjelman määräajan umpeutumisviesti
-
 Tämä viesti lähetetään määritettynä aikana ennen kurssiohjelman määräajan umpeutumista.';
 $string['programends'] = 'Kurssiohjelma loppuu';
 $string['programexceptions'] = 'Kurssiohjelman poikkeukset';
 $string['programfullname_help'] = '# Ohjelman koko nimi
-
 Kurssiohjelman täydellinen nimi näytetään sekä näytön yläreunassa että kurssiohjelmien luetteloissa.';
 $string['programicon'] = 'Kurssiohjelman kuvake';
 $string['programid'] = 'Kurssiohjelman tunnusnumero';
 $string['programidnotfound'] = 'Kurssiohjelmaa, jonka tunnus on {$a}, ei ole';
 $string['programidnumber'] = 'Kurssiohjelman tunnusnumero';
 $string['programidnumber_help'] = '# Kurssiohjelman tunnistenumero
-
 Kurssiohjelman tunnistenumeroa käytetään vain, kun kurssia verrataan ulkoisiin järjestelmiin. Sitä ei koskaan näytetä oppimisjärjestelmän sisällä. Jos sinulla on virallinen koodinimike tälle ohjelmalle, käytä sitä tässä. Muuten voit jättää kohdan tyhjäksi.';
 $string['programlive'] = 'Varoitus: kurssiohjelma ei ole saatavilla';
 $string['programmandatory'] = 'Pakollinen kurssiohjelma';
@@ -510,14 +460,12 @@ $string['programnotcurrentlyavailable'] = 'Tämä kurssiohjelma ei ole tällä h
 $string['programnotlive'] = 'Kurssiohjelma ei ole saatavilla';
 $string['programoverdue'] = 'Kurssiohjelma erääntynyt';
 $string['programoverduemessage_help'] = '# Kurssiohjelman myöhästymisilmoitus
-
 Tämä viesti lähetetään määritettynä aikana kurssiohjelman määräajan umpeuduttua.';
 $string['programrecurring'] = 'Ohjelman toistuvuus';
 $string['programs'] = 'Kurssiohjelmat';
 $string['programscomplete'] = 'Suoritetut kurssiohjelmat';
 $string['programshortname'] = 'Kurssiohjelman lyhenne';
 $string['programshortname_help'] = '# Kurssiohjelman lyhenne
-
 Kurssiohjelman lyhennettä käytetään paikoissa, joissa pitkä nimi on hankala, esim. sähköpostin aiherivillä.';
 $string['programsinthiscategory'] = 'Kurssiohjelmat tässä kategoriassa ({$a})';
 $string['programsmovedout'] = 'Kurssiohjelmat siirretty pois kohteesta {$a}';
@@ -526,25 +474,19 @@ $string['programupdatecancelled'] = 'Kurssiohjelman päivitys peruutettiin';
 $string['programupdatefail'] = 'Kurssiohjelman päivitys epäonnistui';
 $string['programupdatesuccess'] = 'Kurssiohjelman päivitys onnistui';
 $string['programvisibility_help'] = '# Kurssiohjelman näkyvyys
-
 Jos ohjelma on määritetty näkyväksi, se on mukana kaikissa kurssiohjelmien listauksissa ja hakutuloksissa. Oppijat pystyvät myös tarkastelemaan sen sisältöä.
-
 Jos ohjelma ei ole näkyvissä, se vastaavasti piilotetaan kaikilta listoilta ja hakutuloksista, mutta on edelleen näkyvissä ohjelmaan lisättyjen oppijoiden oppimissuunnitelmissa. Tällaiset oppijat voivat tarkastella kurssiohjelman sisältöä, jos heillä on käytössään sille vievä suora linkki.';
 $string['progress'] = 'Edistyminen';
 $string['reason'] = 'Lisäajan peruste';
 $string['reasonforextension'] = 'Lisäajan peruste';
 $string['recurrence_help'] = '# Toistuvuus
-
 Tämä arvo määrittää aikajakson, jonka kuluessa toistuvaksi määritetty kurssi tulee suorittaa uudelleen. Toiston väli on vapaasti määritettävissä päiviksi, viikoiksi tai kuukausiksi.';
 $string['recurring'] = 'Toistuva';
 $string['recurringcourse'] = 'Toistuva kurssi';
 $string['recurringcourse_help'] = '# Toistuva kurssi
-
 Näyttää valitun toistuvan kurssin.
-
 Vain yksi kurssi voidaan määrittää toistuvaksi. Jos haluat vaihtaa kurssin, valitse uusi alasvetovalikosta ja napsauta "Vaihda kurssi" tallettaaksesi muutokset.';
 $string['recurringcourseset_help'] = '# Toistuva kurssikokonaisuus
-
 Jos käytössä on toistuva kurssikokonaisuus, valittavanasi on sille vain yksi kurssi. Useampia kursseja ei ole mahdollista valita kokonaisuuksista tai kompetensseista.';
 $string['recurringprogramhistory'] = 'Toistuvan kurssiohjelman {$a} historiatiedot';
 $string['recurringprogramhistoryfor'] = 'Käyttäjän {$a->username} historiatiedot toistuvassa kurssiohjelmassa {$a->progname}';
@@ -569,9 +511,7 @@ $string['selectcourse'] = 'Valitse kurssi...';
 $string['setcompletion'] = 'Kokonaisuuden suorittaminen';
 $string['setfixedcompletiondate'] = 'Aseta suorituspäivä';
 $string['setlabel_help'] = '# Kurssikokonaisuuden nimike
-
 Voit kuvata samaan kokonaisuuteen kuuluvia kursseja määrittämällä sille kuvaavan nimikkeen.
-
 Tämän tarkoituksena on auttaa oppijoita tunnistamaan kunkin kokonaisuuden sisältö ja hahmottamaan se osana omaa oppimispolkuaan. Esimerkiksi: ensimmäinen kurssikokonaisuus voisi olla nimeltään "Vaihe 1 - Perehdytys" ja toinen "Vaihe 2 - Työturvallisuus".';
 $string['setofcourses'] = 'Joukko kursseja';
 $string['setrealistictimeallowance'] = 'Aseta realistinen suoritusaika';
@@ -590,7 +530,6 @@ $string['thisactioncannotbeundone'] = 'Tätä toimenpidettä ei voi perua';
 $string['thiswillaffect'] = 'Tämä vaikuttaa {$a} oppijaan';
 $string['timeallowance'] = 'Annettu suoritusaika';
 $string['timeallowance_help'] = '# Sallittu aika
-
 Voit määrittää kuinka paljon aikaa oppijalle on sallittu kokonaisuuteen kuuluvien kurssien suorittamiseen. Aika on yleinen arvio suoritukseen menevästä ajasta, ei pakollinen aikaraja. Varsinaisen suorittamiseen kuluvan aikarajan voit määrittää kurssitason asetuksissa.';
 $string['toprogram'] = 'kurssiohjelmaan';
 $string['tosaveassignments'] = 'Tallentaaksesi tehtävämuutokset, valitse \'Tallenna kaikki muutokset\'. Muokataksesi tehtäviä, valitse \'Muokkaa tehtäviä\'. Tehtävämuutoksia ei voi perua.';
@@ -599,17 +538,13 @@ $string['tosavemessages'] = 'Tallentaaksesi kaikki viestimuutokset, valitse \'Ta
 $string['total'] = 'Yhteensä';
 $string['totalassignments'] = 'Mahdolliset tehtävät yhteensä';
 $string['totalassignments_help'] = '# Kategorioiden kautta liitettyjen oppijoiden kokonaismäärä
-
 Tämä summa viittaa oppijoiden kokonaismäärään kaikissa ohjelmaan määritetyissä kategorioissa, se ei siis viittaa yksittäiseen koulutusohjelmaan liitettyjen oppijoiden määrään.
-
 Jos oppija kuuluu organisaatioon, joka on liitetty koulutusohjelmaan ja hänellä on toisaalta myös positio, joka on liitetty ohjelmaan, oppija lasketaan molemmista näistä kategorioista mukaan (mutta on liitetty ohjelmaan vain kertaalleen).';
 $string['trigger_help'] = '# Lähetysaika
-
 Lähetysaika määrittää koska viesti lähetetään suhteessa tapahtumaan (esim. 4 viikkoa ohjelman suorittamisen jälkeen).';
 $string['type'] = 'Tyyppi';
 $string['unenrolment'] = 'Ilmoittautumisen peruminen';
 $string['unenrolmentmessage_help'] = '# Poiskirjautumisviesti
-
 Tämä viesti lähetetään, kun käyttäjä on kirjattu pois kurssiohjelmasta.';
 $string['unknownexception'] = 'Tuntematon poikkeus';
 $string['unknownusersrequiredlearning'] = 'Tuntemattoman käyttäjän vaadittu osaaminen';
@@ -622,14 +557,11 @@ $string['updateextensions'] = 'Päivitä lisäajat';
 $string['updateextensionsuccess'] = 'Kaikki lisäajat päivitettiin';
 $string['userid'] = 'Käyttäjätunnus';
 $string['variablesubstitution_help'] = '# Muuttujien käyttäminen
-
 Voit käyttää muuttujia kurssiohjelmaan liittyvien viestien otsikko- ja sisältökentissä. Kun viesti lähetetään, muuttuja korvataan varsinaisella arvolla. Muuttujat tulee syöttää tekstiin täsmälleen alla ohjeistetussa muodossa:
-
 %programfullname%
-:   Tämä muuttuja korvataan kurssiohjelman täydellisellä nimellä
-
+: Tämä muuttuja korvataan kurssiohjelman täydellisellä nimellä
 %setlabel%
-:   Tämä muuttuja korvataan kurssikokonaisuuden otsikolla (tehdään vain, jos viesti liittyy kurssikokonaisuuteen)';
+: Tämä muuttuja korvataan kurssikokonaisuuden otsikolla (tehdään vain, jos viesti liittyy kurssikokonaisuuteen)';
 $string['viewallprograms'] = 'Kaikki kurssiohjelmat';
 $string['viewallrequiredlearning'] = 'Kaikki';
 $string['viewexceptions'] = 'Tarkastele poikkeusraporttia ratkaistaksesi ongelmia.';

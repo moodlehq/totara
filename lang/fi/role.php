@@ -247,7 +247,6 @@ $string['overrides'] = 'Kumoaa';
 $string['overridesbycontext'] = 'Ohitukset (kontekstin mukaan)';
 $string['permission'] = 'Oikeus';
 $string['permission_help'] = 'Oikeudet ovat kykyasetuksia. Vaihtoehtoja on 4:
-
 * Ei asetettu
 * Salli - Oikeus on annettu kyvylle
 * Estä - Oikeus on poistettu kyvyltä, myös jos sallittu ylemmässä kontekstissa

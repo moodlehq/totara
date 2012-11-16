@@ -30,7 +30,6 @@ $string['addgrades'] = 'Ajouter {no} conditions de note';
 $string['availabilityconditions'] = 'Restreindre la disponibilité';
 $string['availablefrom'] = 'Disponible dès le';
 $string['availablefrom_help'] = 'Les dates de disponibilité dès le/jusqu\'au détermine la période durant laquelle les participants peuvent accéder à l\'activité via un lien sur la page du cours.
-
 La différence entre ces dates et les dates d\'accès indiquées dans les réglages de l\'activité est que ces dernières permettent de voir la description de l\'activité, tandis que les dates de disponibilité empêchent totalement l\'accès à l\'activité.';
 $string['availableuntil'] = 'Disponible jusqu\'au';
 $string['badavailabledates'] = 'Dates non valables. Si vous définissez les deux dates, assurez-vous que la date de début de disponibilité soit antérieure à celle de fin.';
@@ -41,7 +40,6 @@ $string['completion_incomplete'] = 'ne doit pas être marqué comme terminé';
 $string['completion_pass'] = 'doit être terminé avec une note de réussite';
 $string['completioncondition'] = 'Condition de fin d\'activité';
 $string['completioncondition_help'] = 'Ce réglage détermine les conditions sur l\'achèvement d\'autres activités pour que l\'activité soit rendue disponible. Le suivi d\'achèvement des activités doit bien entendu être activé avant qu\'une telle condition puisse être fixée.
-
 Plusieurs conditions d\'achèvement peuvent être spécifiées. Dans ce cas, l\'activité sera rendue disponible lorsque toutes les conditions d\'achèvement d\'activité seront remplies.';
 $string['configenableavailability'] = 'Permet de définir des conditions (basées sur la date, une note ou la fin d\'une activité) qui déterminent si une activité ou une ressource est disponible.';
 $string['enableavailability'] = 'Activer la disponibilité conditionnelle';
@@ -49,7 +47,6 @@ $string['grade_atleast'] = 'doit être supérieur à';
 $string['grade_upto'] = 'et inférieur à';
 $string['gradecondition'] = 'Condition de note';
 $string['gradecondition_help'] = 'Ce réglage détermine les conditions sur les notes pour que l\'activité soit rendue disponible.
-
 Plusieurs conditions sur les notes peuvent être spécifiées. Dans ce cas, l\'activité sera rendue disponible lorsque toutes les conditions seront remplies.';
 $string['gradeitembutnolimits'] = 'Veuillez saisir une limite supérieure ou une limite inférieure, ou les deux.';
 $string['gradelimitsbutnoitem'] = 'Vous devez sélectionner un élément d\'évaluation.';

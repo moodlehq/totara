@@ -40,7 +40,6 @@ $string['choicename'] = 'Abstimmungsname';
 $string['choiceopen'] = 'von';
 $string['choiceoptions'] = 'Abstimmoptionen';
 $string['choiceoptions_help'] = 'Tragen Sie hier die einzelnen Optionen ein, zwischen denen sich die Teilnehmer/innen entscheiden können.
-
 Sie können jedes der vorhandenen Felder ausfüllen, Sie dürfen aber auch nicht benötigte Felder leer lassen, die dann in der Abstimmung nicht angezeigt werden. Benötigen Sie weitere Optionen, so klicken Sie auf den Knopf "Weitere Optionen hinzufügen".';
 $string['choicesaved'] = 'Ihre Abstimmung wurde gespeichert';
 $string['choicetext'] = 'Abstimmungstext';
@@ -55,7 +54,6 @@ $string['havetologin'] = 'Sie müssen sich erst anmelden, bevor Sie sich an der 
 $string['limit'] = 'Obergrenze';
 $string['limitanswers'] = 'Obergrenzen für Abstimmung';
 $string['limitanswers_help'] = 'Diese Option setzt die maximale Anzahl von möglichen Stimmabgaben für die betreffende Abstimmoption. Sobald diese Obergrenze erreicht ist, kann sich niemand mehr für diese Abstimmoption entscheiden.
-
 Wenn die Obergrenzen deaktiviert sind, gibt es keine Beschränkung bei der Abstimmung.';
 $string['modulename'] = 'Abstimmung';
 $string['modulename_help'] = 'Das Modul \'Abstimmung\' ermöglicht es, Fragen mit mehreren vorgegebenen Antwortmöglichkeiten zu stellen und ein vollständiges Antwortbild zu erhalten.';

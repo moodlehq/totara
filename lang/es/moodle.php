@@ -279,15 +279,13 @@ $string['continue'] = 'Continuar';
 $string['continuetocourse'] = 'Haga clic aquí para entrar a su curso';
 $string['convertingwikitomarkdown'] = 'Convirtiendo Wiki a Markdown';
 $string['cookiesenabled'] = 'Las \'Cookies\' deben estar habilitadas en su navegador';
-$string['cookiesenabled_help'] = '<p>Este sitio utiliza dos "cookies".</p>
-
-<p>La esencial es la de sesión, normalmente llamada <b>MoodleSession</b>.
+$string['cookiesenabled_help'] = 'Este sitio utiliza dos "cookies".
+La esencial es la de sesión, normalmente llamada **MoodleSession**.
 Debe permitir que su navegador la acepte para poder mantener el servicio
-funcionando de una página a otra. Cuando sale de la plataforma o cierra su navegador la \'cookie\' se destruye (en su navegador y en el servidor).</p>
-
-<p>La otra \'cookie\', normalmente llamada <b>MOODLEID</b>, es para su comodidad. Se limita a recordar su nombre de usuario dentro del navegador. Esto significa que cuando
+funcionando de una página a otra. Cuando sale de la plataforma o cierra su navegador la \'cookie\' se destruye (en su navegador y en el servidor).
+La otra \'cookie\', normalmente llamada **MOODLEID**, es para su comodidad. Se limita a recordar su nombre de usuario dentro del navegador. Esto significa que cuando
 regrese al sitio se escribirá automáticamente su nombre en el campo nombre de usuario
-(userid). Si desea mayor seguridad no utilice esta opción: sólo tendrá que escribir su nombre manualmente cada vez que quiera ingresar.</p>';
+(userid). Si desea mayor seguridad no utilice esta opción: sólo tendrá que escribir su nombre manualmente cada vez que quiera ingresar.';
 $string['cookiesnotenabled'] = 'Las \'cookies\' no están habilitadas en su navegador';
 $string['copy'] = 'copia';
 $string['copyasnoun'] = 'copia';
@@ -337,10 +335,7 @@ $string['coursehidden'] = 'Este curso no es accesible de momento a los estudiant
 $string['courseinfo'] = 'Información del curso';
 $string['courselegacyfiles'] = 'Archivos de curso heredados';
 $string['courselegacyfiles_help'] = 'El área de archivos del curso proporciona cierta compatibilidad hacia atrás con las versiones de Moodle 1.9 y anteriores. Todos los archivos de este área son siempre accesible a todos los participantes en el curso (tanto si enlaza a ellos como si no) y no hay manera de saber dónde se pueden estar usando en Moodle cualquiera de estos archivos.
-
 Si utiliza este área para almacenar archivos de curso, puede exponerse a una serie de riesgos de privacidad y de seguridad, así como a la pérdida de archivos en las copias de seguridad, en las importaciones de cursos o cada vez que el contenido del curso sea compartido o reutilizado. Por ello se recomienda que no utilice esta área a menos que realmente sepa lo que está haciendo.
-
-
 El siguiente enlace proporciona más información acerca de todo esto y le mostrará maneras mejores de gestionar archivos en Moodle 2.';
 $string['coursemessage'] = 'Mensaje a usuarios de curso';
 $string['coursenotaccessible'] = 'Este curso no permite acceso público';
@@ -700,32 +695,21 @@ $string['forgotten'] = '¿Olvidó su nombre de usuario o contraseña?';
 $string['forgottenduplicate'] = 'La dirección email es compartida por varias cuentas: por favor, utilice el nombre de usuario en su lugar.';
 $string['forgotteninvalidurl'] = 'Contraseña no válida, reiniciar URL';
 $string['format'] = 'Formato';
-$string['format_help'] = '<h2>Formato LAMS</h2>
-<p class="indent">
-Este formato convierte la interfaz LAMS (Learning Activity Management System) en el aspecto central del curso. Los ajustes LAMS deben ser realizados por un administrador para poder utilizar este formato.</p>
-
-<h2>Formato SCORM</h2>
-<p class="indent">
-Este formato muestra un paquete SCORM en la primera sección de la portada del curso. (El módulo SCORM/AICC proporciona un método alternativo para mostrar un paquete SCORM en un curso).</p>
-
-<h2>Formato social</h2>
-<p class="indent">
+$string['format_help'] = '## Formato LAMS
+Este formato convierte la interfaz LAMS (Learning Activity Management System) en el aspecto central del curso. Los ajustes LAMS deben ser realizados por un administrador para poder utilizar este formato.
+## Formato SCORM
+Este formato muestra un paquete SCORM en la primera sección de la portada del curso. (El módulo SCORM/AICC proporciona un método alternativo para mostrar un paquete SCORM en un curso).
+## Formato social
 Este formato se orienta en torno al foro central, el Foro Social, que aparece en
-la página principal. Resulta útil en situaciones de formato más libre. Incluso puede no ser un curso: por ejemplo, podría utilizarse como tablón de anuncios de un departamento.</p>
-
-<h2>Formato por temas</h2>
-<p class="indent">
-El curso se organiza en secciones o temas. Cada tema consiste en una serie de actividades.</p>
-
-<h2>Formato semanal</h2>
-<p class="indent">
+la página principal. Resulta útil en situaciones de formato más libre. Incluso puede no ser un curso: por ejemplo, podría utilizarse como tablón de anuncios de un departamento.
+## Formato por temas
+El curso se organiza en secciones o temas. Cada tema consiste en una serie de actividades.
+## Formato semanal
 El curso se organiza por semanas, con fecha de inicio y fin.
 Cada semana contiene sus propias actividades. Algunas de ellas,
-como los diarios, pueden durar más de una semana, antes de cerrarse.</p>
-
-<h2>Formato semanal - CSS/Sin tablas</h2>
-<p class="indent">
-El curso se organiza semana por semana, sin usar tablas en el formato.</p>';
+como los diarios, pueden durar más de una semana, antes de cerrarse.
+## Formato semanal - CSS/Sin tablas
+El curso se organiza semana por semana, sin usar tablas en el formato.';
 $string['formathtml'] = 'Formato HTML';
 $string['formatmarkdown'] = 'Formado Markdown';
 $string['formatplain'] = 'Formato de texto plano';
@@ -817,17 +801,15 @@ $string['helpwiththis'] = 'Ayuda';
 $string['hiddenassign'] = 'Tarea oculta';
 $string['hiddenfromstudents'] = 'Oculto de estudiantes';
 $string['hiddensections'] = 'Temas ocultos';
-$string['hiddensections_help'] = '<P>Esta opción le permite decidir cómo se mostrarán a los estudiantes las
-secciones ocultas del curso.</p>
-
-<p>Por defecto se muestra un área pequeña (en forma colapsada, normalmente
+$string['hiddensections_help'] = 'Esta opción le permite decidir cómo se mostrarán a los estudiantes las
+secciones ocultas del curso.
+Por defecto se muestra un área pequeña (en forma colapsada, normalmente
 en gris) para indicar dónde está la sección oculta, si bien los estudiantes
 no pueden ver realmente las actividades y textos ocultos. Esto es
 especialmente útil en el formato semanal, de modo que las semanas sin
-clase aparecerán limpias.</p>
-
-<p>Si usted lo elige, pueden estar completamente ocultas, de forma que los
-estudiantes ni siquiera saben qué secciones del curso están ocultas.</p>';
+clase aparecerán limpias.
+Si usted lo elige, pueden estar completamente ocultas, de forma que los
+estudiantes ni siquiera saben qué secciones del curso están ocultas.';
 $string['hiddensectionscollapsed'] = 'Las secciones ocultas se muestran en forma colapsada';
 $string['hiddensectionsinvisible'] = 'Las secciones ocultas son totalmente invisibles';
 $string['hide'] = 'Ocultar';
@@ -856,7 +838,7 @@ $string['icon'] = 'Icono';
 $string['icqnumber'] = 'Número de ICQ';
 $string['idnumber'] = 'Número de ID';
 $string['idnumbercourse'] = 'Número ID del curso';
-$string['idnumbercourse_help'] = '<P>El número ID de un curso únicamente se usa cuando se compara este curso contra un sistema externo - lo cual nunca es mostrado dentro de Moodle. Si tiene un código oficial para este curso úselo aquí ... de otra forma lo puede dejar en blanco.</p>';
+$string['idnumbercourse_help'] = 'El número ID de un curso únicamente se usa cuando se compara este curso contra un sistema externo - lo cual nunca es mostrado dentro de Moodle. Si tiene un código oficial para este curso úselo aquí ... de otra forma lo puede dejar en blanco.';
 $string['idnumbercoursecategory'] = 'Número ID de la catagoría';
 $string['idnumbercoursecategory_help'] = 'El número de identificación ID de una categoría de cursos sólo se usa cuando se compara la categoría contra un sistema externo y no se muestra en ningún lugar del sitio. Si la categoría tiene un código oficial, este puede ser introducido, de lo contrario, el campo puede dejarse en blanco.';
 $string['idnumbermod'] = 'Número ID';
@@ -987,10 +969,9 @@ $string['maximumgrade'] = 'Calificación máxima';
 $string['maximumgradex'] = 'Calificación máxima {$a}';
 $string['maximumshort'] = 'Máx.';
 $string['maximumupload'] = 'Tamaño máximo para archivos cargados por usuarios';
-$string['maximumupload_help'] = '<P>Esta variable determina el tamaño máximo permitido para los archivos subidos
+$string['maximumupload_help'] = 'Esta variable determina el tamaño máximo permitido para los archivos subidos
 por los estudiantes a este curso, limitado por el tamaño máximo del sitio, que es determinado por el administrador.
-
-<P>También es posible limitar el tamaño en las variables presentes en cada módulo de actividades.';
+También es posible limitar el tamaño en las variables presentes en cada módulo de actividades.';
 $string['maxnumberweeks'] = 'Número máximo de semanas/temas';
 $string['maxnumberweeks_desc'] = 'Controla el valor máximo que aparece en el parámetro "Número de semanas / temas" de los cursos.';
 $string['maxnumcoursesincombo'] = 'Consultar <a href="{$a->link}">{$a->numberofcourses} cursos</a>.';
@@ -1110,48 +1091,43 @@ pegue la dirección en la barra de direcciones de su navegador.
 Atte. El Administrador de \'{$a->sitename}\',
 {$a->signoff}';
 $string['newpicture'] = 'Imagen nueva';
-$string['newpicture_help'] = '<P>Usted puede subir una imagen desde su ordenador al servidor, y esta imagen se
+$string['newpicture_help'] = 'Usted puede subir una imagen desde su ordenador al servidor, y esta imagen se
 utilizará en varios lugares para identificarlo.
-<P>Por este motivo, las mejores imágenes son las de estilo identificación, aunque
+Por este motivo, las mejores imágenes son las de estilo identificación, aunque
 puede utilizar la imagen que desee.
-<P>La imagen debe ser formato JPG o PNG (lo que significa que el nombre de la imagen
+La imagen debe ser formato JPG o PNG (lo que significa que el nombre de la imagen
 terminará en .jpg o en .png) y debe tener un tamaño de 100 x 100 píxeles o más.
-<P>Puede colocar una imagen utilizando uno de estos cuatro métodos:
-
-<OL>
-<LI>Utilizando una cámara digital, es muy sencillo, dado que sus fotos seguramente
+Puede colocar una imagen utilizando uno de estos cuatro métodos:
+1.Utilizando una cámara digital, es muy sencillo, dado que sus fotos seguramente
 ya estarán en el formato correcto en su ordenador.
-<LI>Utilizando un "scanner" para digitalizar una fotografía impresa. Asegúrese de
+2. Utilizando un "scanner" para digitalizar una fotografía impresa. Asegúrese de
 guardar la imagen en formato JPG o PNG.
-<LI>Si usted es una artista, puede dibujar una imagen utilizando algún programa de diseño.
-<LI>También puede conseguir una imagen que lo identifique en la red.
-<A TARGET=google HREF="http://images.google.com/">http://images.google.com</A>
+3. Si usted es una artista, puede dibujar una imagen utilizando algún programa de diseño.
+4. También puede conseguir una imagen que lo identifique en la red.
+[http://images.google.com](http://images.google.com)
 es un excelente lugar para buscar imágenes. Una vez encontrada, coloque el cursor
 sobre ella y pulsando el botón derecho del ratón elija la opción "Guardar imagen como".
 (Diferentes ordenadores pueden variar en este procedimiento)
-</OL>
 
-<P>Para subir la imagen, haga clic en el botón "Examinar" en esta página y seleccione
+Para subir la imagen, haga clic en el botón "Examinar" en esta página y seleccione
 la imagen en su disco duro.
-<P>IMPORTANTE: Asegúrese de no subir una imagen que exceda el tamaño
+IMPORTANTE: Asegúrese de no subir una imagen que exceda el tamaño
 máximo permitido, en bites, pues no se cargará.
-<P>Luego haga clic en "Actualizar información personal" en la parte inferior de la página; si la imagen
+Luego haga clic en "Actualizar información personal" en la parte inferior de la página; si la imagen
 es mayor a 100 x 100 píxeles se cortará.
-<P>Cuando acabe de cambiar su imagen es posible que no vea el cambio; si eso sucede
+Cuando acabe de cambiar su imagen es posible que no vea el cambio; si eso sucede
 actualice la página (oprimiendo F5 o el botón actualizar).';
 $string['newsitem'] = 'ítem de noticias';
 $string['newsitems'] = 'ítems de noticias';
 $string['newsitemsnumber'] = 'Items de noticias para ver';
-$string['newsitemsnumber_help'] = '<P>En los formatos semanal y de temas aparece un foro llamado
+$string['newsitemsnumber_help'] = 'En los formatos semanal y de temas aparece un foro llamado
 "Novedades". Es un buen lugar para
 colocar los mensajes que se desea que lean los alumnos.
 (Dado que todos los alumnos son automáticamente suscritos
-a este foro, recibirán en su correo los mensajes que se coloquen aquí).</P>
-
-<P>Este parámetro determina cuántos de los últimos mensajes
-aparecerán en la página de inicio del curso, en la casilla de novedades en la parte derecha de la página.</P>
-
-<P>Si su elección es "0" no se mostrarán novedades en la página.</P>';
+a este foro, recibirán en su correo los mensajes que se coloquen aquí).
+Este parámetro determina cuántos de los últimos mensajes
+aparecerán en la página de inicio del curso, en la casilla de novedades en la parte derecha de la página.
+Si su elección es "0" no se mostrarán novedades en la página.';
 $string['newuser'] = 'Nuevo usuario';
 $string['newusernewpasswordsubj'] = 'Cuenta de nuevo usuario';
 $string['newusernewpasswordtext'] = 'Hola, {$a->firstname},
@@ -1436,8 +1412,10 @@ $string['revert'] = 'Revertir';
 $string['role'] = 'Rol';
 $string['rolemappings'] = 'Mapeos de rol';
 $string['rolerenaming'] = 'Renombrar rol';
-$string['rolerenaming_help'] = 'Esta configuración permite cambiar los nombres mostrados en los roles usados en el curso. <P>Sólo se cambia el nombre mostrado - los permisos de los roles no se vean afectados. <P>Los nuevos nombres de los roles aparecerán en la página de participantes en el curso y allá donde se muestren estos.
-<P>Si el rol renombrado corresponde a un rol de gestor del curso, asignado por el administardor, el nuevo nombre del rol también aparecerá como parte de las listas de cursos.';
+$string['rolerenaming_help'] = 'Esta configuración permite cambiar los nombres mostrados en los roles usados en el curso.
+Sólo se cambia el nombre mostrado - los permisos de los roles no se vean afectados.
+Los nuevos nombres de los roles aparecerán en la página de participantes en el curso y allá donde se muestren estos.
+Si el rol renombrado corresponde a un rol de gestor del curso, asignado por el administardor, el nuevo nombre del rol también aparecerá como parte de las listas de cursos.';
 $string['roles'] = 'Roles';
 $string['rss'] = 'RSS';
 $string['rssarticles'] = 'Número de artículos recientes RSS';
@@ -1455,35 +1433,30 @@ $string['savedat'] = 'Guardado en:';
 $string['savepreferences'] = 'Guardar preferencias';
 $string['saveto'] = 'Guardar en';
 $string['scale'] = 'Escala';
-$string['scale_help'] = '<p>En cualquier curso los profesores pueden crear nuevas escalas
+$string['scale_help'] = 'En cualquier curso los profesores pueden crear nuevas escalas
 personalizadas con el objeto de llevar a cabo cualquier actividad de
-evaluación.</p>
-
-<p>El nombre de la escala debería ser una frase que la identifique con
+evaluación.
+El nombre de la escala debería ser una frase que la identifique con
 claridad: ese nombre aparecerá tanto en listas de selección de escalas
-como en los botones de ayuda sensibles al contexto.</p>
-
-<p>La propia escala se define como una lista jerárquica de valores, de negativo
-a positivo, separados por comas. Por ejemplo:</p>
-
-<blockquote><i>
-Insuficiente, Regular, Promedio, Bueno, Muy bueno, Excelente!
-</i></blockquote>
-
-<p>Las escalas deberían asimismo incluir una descripción adecuada de lo
+como en los botones de ayuda sensibles al contexto.
+La propia escala se define como una lista jerárquica de valores, de negativo
+a positivo, separados por comas. Por ejemplo:
+> *
+> Insuficiente, Regular, Promedio, Bueno, Muy bueno, Excelente!
+> *
+Las escalas deberían asimismo incluir una descripción adecuada de lo
 que significan y cómo deberían utilizarse. Esta descripción aparecerá
-en las páginas de ayuda para profesores y estudiantes.</p>
-
-<p>Por último, puede haber una o más escalas "estándar" definidas en el
+en las páginas de ayuda para profesores y estudiantes.
+Por último, puede haber una o más escalas "estándar" definidas en el
 sitio por el administrador del sistema. Estas escalas estarán
-disponibles en todos los cursos.</p>';
+disponibles en todos los cursos.';
 $string['scales'] = 'Escalas';
 $string['scalescustom'] = 'Escalas personalizadas';
 $string['scalescustomcreate'] = 'Agregar una nueva escala';
 $string['scalescustomno'] = 'Aún no se han creado nuevas escalas';
 $string['scalesstandard'] = 'Escalas estándar';
 $string['scalestandard'] = 'Escala estándar';
-$string['scalestandard_help'] = '<p>Una escala estándar es una que esta disponible globalmente en el sitio, para todos los cursos.</p>';
+$string['scalestandard_help'] = 'Una escala estándar es una que esta disponible globalmente en el sitio, para todos los cursos.';
 $string['scalestip'] = 'Para crear escalas personalizadas utilice el enlace \'Escalas...\' en el menú de administración del curso.';
 $string['scalestip2'] = 'Para crear escalas personalizadas, haga clic en el enlace Calificaciones del menú de administración del curso, luego seleccione Editar, Escalas.';
 $string['schedule'] = 'Programación';
@@ -1494,7 +1467,6 @@ $string['screenreaderyes'] = 'Sí';
 $string['screenshot'] = 'Pantallazo';
 $string['search'] = 'Buscar';
 $string['search_help'] = 'Para realizar una búsqueda básica de una o más palabras en cualquier lugar del texto, simplemente escríbalas separadas por espacios. Se usarán todas las palabras de más de dos caracteres.
-
 Para realizar una búsqueda avanzada, pulse el botón de búsqueda sin teclear nada en la caja de texto.';
 $string['searchagain'] = 'Volver a buscar';
 $string['searchbyemail'] = 'Buscar por dirección email';
@@ -1540,11 +1512,10 @@ $string['settings'] = 'Configuración';
 $string['shortname'] = 'Nombre corto';
 $string['shortnamecollisionwarning'] = '[*] = Este nombre corto ya está en uso por un curso, y necesita cambiarse hasta que se apruebe';
 $string['shortnamecourse'] = 'Nombre corto del curso';
-$string['shortnamecourse_help'] = '<P>Muchas instituciones asignan nombres cortos a sus cursos para efectos
+$string['shortnamecourse_help'] = 'Muchas instituciones asignan nombres cortos a sus cursos para efectos
 administrativos, como BP102 o 4H-LIT. Si ya lo hace, escríbalo aquí; si no,
 invente uno y escríbalo aquí. Se utilizará en diferentes lugares en los que
-un nombre completo sería inadecuado, como en la linea "asunto" del correo.
-</P>';
+un nombre completo sería inadecuado, como en la linea "asunto" del correo.';
 $string['shortnametaken'] = 'Este nombre corto ya está en uso en otro curso ({$a})';
 $string['shortnameuser'] = 'Nombre corto del usuario';
 $string['shortsitename'] = 'Nombre corto para el sitio (una palabra)';
@@ -1562,18 +1533,16 @@ $string['showcommentsnonjs'] = 'Mostrar comentarios';
 $string['showdescription'] = 'Muestra la descripcicón en la página del curso';
 $string['showdescription_help'] = 'Si se activada, la introducción/descripción anterior se mostrará en la página del curso justo debajo del enlace a la actividad/recurso.';
 $string['showgrades'] = 'Mostrar calificaciones a los estudiantes';
-$string['showgrades_help'] = '<p>Muchas de las actividades permiten otorgar calificaciones.</p>
-
-<p>Por defecto, los resultados de todas las calificaciones
+$string['showgrades_help'] = 'Muchas de las actividades permiten otorgar calificaciones.
+Por defecto, los resultados de todas las calificaciones
 del curso aparecen en la sección de Calificaciones,
-disponible en la página principal del curso.</p>
-
-<p>Si un profesor no está interesado en usar calificaciones
+disponible en la página principal del curso.
+Si un profesor no está interesado en usar calificaciones
 en un curso o, simplemente quiere ocultarlas a los
 alumnos, puede desactivar la visualización de las
 calificaciones en la Configuración del Curso. Esto no impide usar o establecer calificaciones para actividades
 individuales: únicamente impide que los alumnos vean
-los resultados.</p>';
+los resultados.';
 $string['showlistofcourses'] = 'Mostrar listas de cursos';
 $string['showmodulecourse'] = 'Mostrar lista de cursos que contienen actividad';
 $string['showonly'] = 'Mostrar sólo';
@@ -1582,13 +1551,10 @@ $string['showonlyweek'] = 'Mostrar sólo la semana {$a}';
 $string['showperpage'] = 'Mostrar {$a} por página';
 $string['showrecent'] = 'Mostrar actividad reciente';
 $string['showreports'] = 'Mostrar informes de actividad';
-$string['showreports_help'] = '<p>Los informes de actividades están disponibles para todos los participantes que muestren sus actividades en el presente curso. Al igual que las listas de contribuciones, estos informes incluyen un detallado registro de los accesos.</p>
-
-<p>Los profesores siempre tendrán acceso a estos informes usando el enlace existente en el página de información personal de cada participante.</p>
-
-<p>El acceso de los estudiantes a sus propios informes es controlado por el profesor a través la configuración misma del curso. En algunos cursos estos informes pueden ser una herramienta muy útil para que el estudiante sepa su evolucion en el curso, si bien en otros casos es posible que no sea necesario.</p>
-
-<p>Otra razón para deshabilitarlo es que los informes pueden recargar ligeramnete el servidor cuando se generan. Para grandes grupos puede ser más eficiente mantenerlo deshabilitado.</p>';
+$string['showreports_help'] = 'Los informes de actividades están disponibles para todos los participantes que muestren sus actividades en el presente curso. Al igual que las listas de contribuciones, estos informes incluyen un detallado registro de los accesos.
+Los profesores siempre tendrán acceso a estos informes usando el enlace existente en el página de información personal de cada participante.
+El acceso de los estudiantes a sus propios informes es controlado por el profesor a través la configuración misma del curso. En algunos cursos estos informes pueden ser una herramienta muy útil para que el estudiante sepa su evolucion en el curso, si bien en otros casos es posible que no sea necesario.
+Otra razón para deshabilitarlo es que los informes pueden recargar ligeramnete el servidor cuando se generan. Para grandes grupos puede ser más eficiente mantenerlo deshabilitado.';
 $string['showsettings'] = 'Mostrar ajustes';
 $string['showtheselogs'] = 'Mostrar estos registros';
 $string['showthishelpinlanguage'] = 'Mostrar esta ayuda en el idioma: \'{$a}\'';

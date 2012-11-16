@@ -50,7 +50,6 @@ $string['creating'] = 'إنشاء صفحة ويكي';
 $string['creole'] = 'كريول';
 $string['defaultformat'] = 'التنسيق الافتراضي';
 $string['defaultformat_help'] = 'هذا الخيار يحدد التنسيق الافتراضي المستخدم في تحرير صفحات ويكي.
-
 * HTML - محرر HTML متوافر
 * كريول - لغة تأشير عامة خاصة بويكي والتي يوجد لها شريط أدوات صغير
 * Nwiki - لغة تأشير شبيهة بويكيميديا تستخدم مع وحدة Nwiki';
@@ -73,16 +72,18 @@ $string['firstpagetitle_help'] = 'عنوان الصفحة الرئيسية لل�
 $string['forceformat'] = 'إجبار التنسيق';
 $string['format'] = 'تنسيق';
 $string['format_help'] = 'التنسيق المستخدم في تحرير صفحات ويكي.
-
 * HTML - محرر HTML متوافر
 * كريول - لغة تأشير عامة خاصة بويكي والتي يوجد لها شريط أدوات صغير
 * Nwiki - لغة تأشير شبيهة بويكيميديا تستخدم مع وحدة Nwiki';
 $string['formatcreole'] = 'تنسيق كريول';
-$string['formatcreole_help'] = '<a href="http://docs.moodle.org/en/Creole_format">تنسيق كريول</a>';
+$string['formatcreole_help'] = 'تنسيق كريول
+http://docs.moodle.org/en/Creole_format';
 $string['formathtml'] = 'تنسيق HTML';
-$string['formathtml_help'] = '<a href="http://docs.moodle.org/en/HTML_format">تنسيق HTML</a>';
+$string['formathtml_help'] = 'تنسيق HTML
+http://docs.moodle.org/en/HTML_format';
 $string['formatnwiki'] = 'تنسيق Nwiki';
-$string['formatnwiki_help'] = '<a href="http://docs.moodle.org/en/NWiki_format">تنسيق NWiki</a>';
+$string['formatnwiki_help'] = 'تنسيق NWiki
+http://docs.moodle.org/en/NWiki_format';
 $string['history'] = 'تاريخ';
 $string['html'] = 'صياغة HTML';
 $string['insertcomment'] = 'إدراج تعليق';

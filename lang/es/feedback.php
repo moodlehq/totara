@@ -71,7 +71,22 @@ $string['delete_old_items'] = 'Borrar ítems antiguos';
 $string['delete_template'] = 'Borrar plantilla';
 $string['delete_templates'] = 'Borrar plantilla...';
 $string['depending'] = 'ítems dependientes';
-$string['depending_help'] = 'Elementos (preguntas de la encuenta) dependientes le permiten ver los elementos que dependen de los valores de otros elementos/> <br <strong> He aquí un ejemplo de cómo crearlos: </ strong> <br /> <li> En primer lugar cree un elemento de cuyo valor dependerán otros elementos. </ li> <li> A continuación añada un salto de página. </ li> <li> Seguidamente añada los elementos que dependen del valor del elemento anterior <br />En el formulario de creción del elemento seleccione el elemento de la lista "Elemento dependiente" y ponga el valor correspondiente en el campo "valor dependiente"  </ li> </ ul> <strong> La estructura tendrá el siguiente aspecto:. </ strong> <ol> <li> Elemento 1-Pregunta: ¿Tiene usted coche? R: sí / no </ li> <li> Salto de página </ li> <li> Elemento 2-Pregunta: ¿Qué color tiene su coche /> <br (este elemento depende del elemento 1 con valor = sí) </ li> <? li> Artículo Q: ¿por qué no tener un coche /> <br (este elemento  depende del elemento 1 con  valor = no) </ li> <li> ...? otros ....otros elementos </ li> </ ol> Eso es todo. ¡Que se diviertan!';
+$string['depending_help'] = 'Elementos (preguntas de la encuenta) dependientes le permiten ver los elementos que dependen de los valores de otros elementos ** He aquí un ejemplo de cómo crearlos:
+* En primer lugar cree un elemento de cuyo valor dependerán otros elementos.
+* A continuación añada un salto de página.
+* Seguidamente añada los elementos que dependen del valor del elemento anterior
+En el formulario de creción del elemento seleccione el elemento de la lista "Elemento dependiente" y ponga el valor correspondiente en el campo "valor dependiente" 
+
+** La estructura tendrá el siguiente aspecto:**
+1. Elemento 1-Pregunta: ¿Tiene usted coche? R: sí / no
+2. Salto de página
+3. Elemento 2-Pregunta: ¿Qué color tiene su coche 
+ (este elemento depende del elemento 1 con valor = sí)
+4. Artículo Q: ¿por qué no tener un coche 
+ (este elemento depende del elemento 1 con valor = no)
+5. ...? otros ....otros elementos
+
+Eso es todo. ¡Que se diviertan!';
 $string['dependitem'] = 'Depende del item';
 $string['dependvalue'] = 'Depende del valor';
 $string['description'] = 'Descripción';
@@ -127,7 +142,6 @@ $string['infotype'] = 'Información Tipo';
 $string['insufficient_responses'] = 'Respuestas insuficientes';
 $string['insufficient_responses_for_this_group'] = 'Este grupo no tiene suficientes respuestas';
 $string['insufficient_responses_help'] = 'El número de respuestas para este grupo es insuficiente.
-
 Para mantener los comentarios anónimos debe haber un mínimo de 2 respuestas realizadas.';
 $string['item_label'] = 'Etiqueta';
 $string['item_name'] = 'Pregunta';
@@ -140,7 +154,6 @@ $string['mapcourseinfo'] = 'Esta encuesta está disponible en todos los cursos q
 $string['mapcoursenone'] = 'No hay cursos asignados. La encuesta está disponible en todos los cursos';
 $string['mapcourses'] = 'Asignar encuesta a cursos';
 $string['mapcourses_help'] = 'Una vez de que ya ha seleccionado el curso o cursos relevantes de su búsqueda, puede asociarlos con esta retroalimentación usando Asignar Cursos. Usted puede seleccionar varios cursos mediante la tecla Ctrl o seleccionar una serie de ellos con la tecla Mayúsculas.
-
 Puede asimismo desvincular un curso o programa de una retroalimentación en cualquier momento.';
 $string['mappedcourses'] = 'Cursos asignados';
 $string['max_args_exceeded'] = 'Se admite un máximo de 6 argumentos; demasiados argumentos para';

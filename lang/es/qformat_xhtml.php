@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Formato XHTML';
-$string['pluginname_help'] = 'El formato XHTML permite exportar todas las preguntas de la categoría a una única página en estricto  XHTML para su utilización en otra aplicación.';
+$string['pluginname_help'] = 'El formato XHTML permite exportar todas las preguntas de la categoría a una única página en estricto XHTML para su utilización en otra aplicación.';

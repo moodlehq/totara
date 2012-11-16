@@ -35,7 +35,7 @@ $string['alreadyexporting'] = 'כבר קיים לך יצוא תיק עבודות
 $string['availableformats'] = 'תסדירי יצוא זמינים';
 $string['callbackclassinvalid'] = 'מחלקת ה-Callback לא תקפה או שאיננה חלק מאיררכיית portfolio_caller';
 $string['callercouldnotpackage'] = 'נכשל בנסיון לארוז את המידע שלך עבור יצוא: הודעה מקורית הייתה {$a}';
-$string['cannotsetvisible'] = 'לא ניתן להגדיר זאת לגלוי- הרכיב כלל לא מאופשר באתר ';
+$string['cannotsetvisible'] = 'לא ניתן להגדיר זאת לגלוי- הרכיב כלל לא מאופשר באתר';
 $string['commonportfoliosettings'] = 'הגדרות של תיק עבודות';
 $string['configexport'] = 'הגדר את מידע היצוא';
 $string['configplugin'] = 'הגדר את תוסף תיק העבודות';
@@ -106,11 +106,9 @@ $string['invalidbuttonproperty'] = 'לא ניתן היה למצוא את מאפ�
 ({$a})
 של
 portfolio_button';
-$string['invalidconfigproperty'] = 'לא ניתן למצוא את מאפיין ההגדרה ({$a->property} מ- {$a->class})
-';
+$string['invalidconfigproperty'] = 'לא ניתן למצוא את מאפיין ההגדרה ({$a->property} מ- {$a->class})';
 $string['invalidexportproperty'] = 'לא ניתן למצוא את מאפיין הגדרת היצוא
-({$a->property} מ- {$a->class})
-';
+({$a->property} מ- {$a->class})';
 $string['invalidfileareaargs'] = 'ערך משתנה של הקובץ לא תקין הועבר ל
 set_file_and_format_data
 חובה להכיל contextid
@@ -135,16 +133,14 @@ $string['leap2a_filecontent'] = 'מנסה להגדיר את התוכן של ער
 מאשר להשתמש ב-subclass של הקובץ.';
 $string['leap2a_invalidentryfield'] = 'ניסית להגדיר שדה מערך אשר לא קיים ({$a}) או שאינו ניתן להגדרה ישירות.';
 $string['leap2a_invalidentryid'] = 'ניסית לגשת לערך על-ידי id אשר לא היה קיים
-({$a})
-';
+({$a})';
 $string['leap2a_missingfield'] = 'נדרש שדה ערך Leap2A
 חסר {$a}';
 $string['leap2a_nonexistantlink'] = 'ערך Leap2A
 ({$a->from}) מנסה לקשר ערך אשר לא קיים
 ({$a->to}) with rel {$a->rel}';
 $string['leap2a_overwritingselection'] = 'כתיבה מחדש של סוג המקור של ערך ({$a}) לבחירה ב
-make_selection
-';
+make_selection';
 $string['leap2a_selflink'] = 'ערך Leap2A ({$a->id})
 ניסה לקשר לעצמו עם
 rel {$a->rel}';
@@ -170,7 +166,7 @@ $string['multipleinstancesdisallowed'] = 'מנסה ליצור מופע נוסף 
 $string['mustsetcallbackoptions'] = 'עליך להגדיר את אפשרויות callback  אפילו ב
 portfolio_add_button
 בבנייה או שימוש במתודה
-set_callback_options ';
+set_callback_options';
 $string['noavailableplugins'] = 'לצערנו, לא נמצאו עבורך תיקי עבודות ליצוא';
 $string['nocallbackclass'] = 'לא ניתן היה למצוא את  מחלקת callback
 עבור שימוש ב-({$a})';
@@ -209,8 +205,7 @@ $string['selectedformat'] = 'תסדיר יצוא נבחר';
 $string['selectedwait'] = 'נבחרו להמתנה?';
 $string['selectplugin'] = 'בחירת יעד';
 $string['singleinstancenomultiallowed'] = 'רק מופע של תוסף תיק עבודות אחד  זמין , הוא איננו תומך ביצוא מרובה לכל מושב, יכול להיות רק יצוא פעיל אחד במושב שמשתמש בתוסף זה!';
-$string['somepluginsdisabled'] = 'כמה תוספים של ערכי תיק העבודות לא אופשרו מפני שהם לא מוגדרים בצורה תקינה או  שהם תלויים בדברים אחרים כמו:
-';
+$string['somepluginsdisabled'] = 'כמה תוספים של ערכי תיק העבודות לא אופשרו מפני שהם לא מוגדרים בצורה תקינה או  שהם תלויים בדברים אחרים כמו:';
 $string['sure'] = 'האם אהינך בטוח כי ברצונך למחוק את \'{$a}\'? לא ניתן לחזור אחורה לאחר מכן.';
 $string['transfertime'] = 'זמן תעבורה';
 $string['unknownplugin'] = 'לא ידוע ( כנראה שהוסר על-ידי מנהל המערכת)';

@@ -31,7 +31,6 @@ $string['addingcomment'] = 'Kommentar hinzufügen';
 $string['alias'] = 'Alternativbegriff';
 $string['aliases'] = 'Alternativbegriffe';
 $string['aliases_help'] = 'Zu jedem Eintrag im Glossar kann eine Reihe von Alternativbegriffen (Synonyme, Keywords, Aliases) angegeben werden. Tragen Sie jeden Alternativbegriff in einer neuen Zeile ein (und nicht als kommagetrennte Liste!).
-
 Wenn ein Glossareintrag automatisch verlinkt wird, dann ist jeder Alternativbegriff ebenfalls so markiert.';
 $string['allcategories'] = 'Alle Kategorien';
 $string['allentries'] = 'Alle';
@@ -94,7 +93,6 @@ $string['date'] = 'Datum';
 $string['dateview'] = 'Nach Datum';
 $string['defaultapproval'] = 'Ohne Prüfung';
 $string['defaultapproval_help'] = 'Diese Option legt fest, ob Glossareinträge sofort ohne Prüfung sichtbar werden:
-
 * Ja - Einträge werden sofort nach dem Speichern für alle angezeigt
 * Nein - Einträge werden von Trainer/innen geprüft und freigegeben';
 $string['defaulthook'] = 'Standardverbindung';
@@ -110,12 +108,10 @@ $string['deletingnoneemptycategory'] = 'Wenn diese Kategorie gelöscht wird, wer
 $string['descending'] = '(absteigend)';
 $string['destination'] = 'Ziel für importierte Einträge';
 $string['destination_help'] = 'Beim Import können Sie wählen, wo importierte Glossareinträge abgelegt werden sollen:
-
 * Aktuelles Glossar - die Einträge werden zum aktuellen Glossar hinzugefügt
 * Neues Glossar - mit den Informationen der XML-Datei wird ein neues Glossar erstellt und die Einträge dahin übernommen';
 $string['displayformat'] = 'Anzeigeformat';
 $string['displayformat_help'] = 'Für ein Glossar können 7 Anzeigeformate gewählt werden:
-
 * Wörterbuch (mit Synonymen) - Ähnlich wie ein konventionelles Wörterbuch. Begriff und Erläuterung werden in einem Absatz angezeigt. Angabe von synonymen Begriffen. Ohne Autor/in. Anhänge werden als Links angezeigt.
 * Wörterbuch (ohne Synonyme) - Zeigt die Einträge fortlaufend mit Begriff und Erläuterung, ohne Angabe synonymer Begriffe.
 * Vollständig (mit Autor/in) - Einträge werden wie Forenbeiträge mit Datum und Autor/in dargestellt. Anhänge werden als Links angezeigt.
@@ -136,7 +132,6 @@ $string['duplicatecategory'] = 'Kategorie duplizieren';
 $string['duplicateentry'] = 'Eintrag duplizieren';
 $string['editalways'] = 'Immer bearbeitbar';
 $string['editalways_help'] = 'Diese Option legt fest, wie Teilnehmer/innen ihre Einträge bearbeiten dürfen:
-
 * Ja - Einträge sind jederzeit bearbeitbar
 * Nein - Einträge sind nur im festgelegten Zeitraum bearbeitbar (standardmäßig 30 min)';
 $string['editcategories'] = 'Kategorien bearbeiten';
@@ -156,7 +151,6 @@ $string['entrysaved'] = 'Der Eintrag wurde gespeichert';
 $string['entryupdated'] = 'Der Eintrag wurde geändert';
 $string['entryusedynalink'] = 'Eintrag automatisch verlinken';
 $string['entryusedynalink_help'] = 'Wenn diese Option aktiviert ist, werden Einträge automatisch verlinkt. Wenn der Begriff in einem innerhalb des Kurses erstellten Text vorkommt, wird dieser Begriff automatisch mit diesem Eintrag verlinkt. In hochgeladen Dateien (doc, odt, pdf) werden keine Links erzeugt.
-
 Voraussetzung ist die globale Freischaltung der Glossarverlinkung durch die Administrator/innen.';
 $string['errcannoteditothers'] = 'Sie dürfen keine fremden Einträge bearbeiten.';
 $string['errconceptalreadyexists'] = 'Diesen Begriff gibt es bereits. In diesem Glossar sind keine Doppeleinträge möglich.';
@@ -251,7 +245,6 @@ $string['rssarticles_help'] = 'Diese Option legt fest, wie viele neue Glossarbeg
 $string['rsssubscriberss'] = 'RSS-Feed-Anzeige für \'{$a}\' Begriffe';
 $string['rsstype'] = 'RSS-Feed für dieses Glossar';
 $string['rsstype_help'] = 'Diese Option ermöglicht es, RSS-Feeds für dieses Glossar zu aktivieren, wobei im Feed die Begriffe mit Autor/in oder ohne Autor/in einbezogen werden können.
-
 Vorausgesetzt wird, dass RSS-Feeds für die Website aktiviert sind.';
 $string['searchindefinition'] = 'Volltext-Suche';
 $string['secondaryglossary'] = 'Glossar';
@@ -271,7 +264,6 @@ $string['studentcanpost'] = 'Teilnehmer/innen können eigene Einträge anlegen, 
 $string['totalentries'] = 'Gesamtzahl der Einträge';
 $string['usedynalink'] = 'Automatisch verlinken';
 $string['usedynalink_help'] = 'Wenn diese Option aktiviert ist, wird beim Hinzufügen eines neuen Eintrages die Option "Eintrag automatisch verlinken" angezeigt.
-
 Voraussetzung ist die globale Freischaltung der Glossarverlinkung durch die Administrator/innen.';
 $string['waitingapproval'] = 'Einträge zur Prüfung';
 $string['warningstudentcapost'] = '(gilt nur, wenn dieses Glossar kein Hauptglossar ist)';

@@ -30,5 +30,5 @@ $string['emptyfilelist'] = 'Er zijn geen bestanden om te tonen';
 $string['notitle'] = 'Geen titel';
 $string['pluginname'] = 'Recente bestanden';
 $string['pluginname_help'] = 'Bestanden, recent gebruikt door de huidige gebruiker';
-$string['recentfilesnumber'] = 'Aantal te tonen recente bestanden';
 $string['recent:view'] = 'Bekijk de recente bestanden opslagruimte-plugin';
+$string['recentfilesnumber'] = 'Aantal te tonen recente bestanden';

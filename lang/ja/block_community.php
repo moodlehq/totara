@@ -59,7 +59,6 @@ $string['educationallevel'] = '教育レベル';
 $string['educationallevel_help'] = 'あなたはどのような教育レベルを探していますか?教育コミュニティに関して、このレベルでは教えるレベルを指します。';
 $string['enroldownload'] = '探す';
 $string['enroldownload_help'] = '選択されたハブ内に一覧表示されたいくつかのコースではユーザがオリジナルサイトにアクセスして参加することができます。
-
 他のコースはあなたがダウンロードして自分のMoodleサイトに使用できるテンプレートとして提供されています。';
 $string['enrollable'] = '私が受講登録できるコース';
 $string['enrollablecourses'] = '受講登録可能なコース';

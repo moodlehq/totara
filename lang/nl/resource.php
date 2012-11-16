@@ -44,7 +44,6 @@ $string['contentheader'] = 'Inhoud';
 $string['displayoptions'] = 'Beschikbare opties om te tonen';
 $string['displayselect'] = 'Toon';
 $string['displayselect_help'] = 'Deze instelling, samen met het bestandstype en of de browser ingebed tonen toestaat, bepaalt hoe een bestand getoond wordt. Mogelijke opties zijn:
-
 * Automatisch - De beste optie om het bestand te tonen wordt automatisch geselecteerd
 * Ingebed - Het bestand wordt getoond op de pagina onder de navigatiebalk, samen met de bestandsbeschrijving en de blokken op de pagina
 * Download verplicht - De gebruiker krijgt de vraag om het bestand te downloaden

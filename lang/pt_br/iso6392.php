@@ -125,8 +125,7 @@ $string['cus'] = 'Línguas Cushitic';
 $string['cym'] = 'Galês';
 $string['dak'] = 'Dakota';
 $string['dan'] = 'Dinamarquês';
-$string['dar'] = 'Dargwa
-';
+$string['dar'] = 'Dargwa';
 $string['day'] = 'Idiomas das terras Dayak';
 $string['del'] = 'Delaware';
 $string['den'] = 'Slave (Athabascan)';
@@ -268,8 +267,7 @@ $string['kur'] = 'Curdo';
 $string['kut'] = 'Kutenai';
 $string['lad'] = 'Ladino';
 $string['lah'] = 'Lahnda';
-$string['lam'] = 'Lamba
-';
+$string['lam'] = 'Lamba';
 $string['lao'] = 'Lao';
 $string['lat'] = 'Latim';
 $string['lav'] = 'Letã';

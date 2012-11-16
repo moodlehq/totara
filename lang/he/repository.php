@@ -45,8 +45,7 @@ $string['attachedfiles'] = 'קבצים מצורפים';
 $string['attachment'] = 'קובץ מצורף';
 $string['author'] = 'מחבר';
 $string['automatedbackup'] = 'גיבויים אוטומטיים';
-$string['back'] = '&laquo; חזרה
-';
+$string['back'] = '&laquo; חזרה';
 $string['backtodraftfiles'] = '&laquo; חזרה לניהול קבצי טיוטה';
 $string['cachecleared'] = 'קבצי מתמון הוסרו';
 $string['cacheexpire'] = 'מטמון פג תוקף';

@@ -35,7 +35,6 @@ $string['contentheader'] = 'Inhalt';
 $string['displayoptions'] = 'Mögliche Anzeigeoptionen';
 $string['displayselect'] = 'Anzeigen';
 $string['displayselect_help'] = 'Diese Einstellung bestimmt zusammen mit dem URL-Dateityp (und den Fähigkeiten des Browsers), wie die URL angezeigt wird. Folgende Optionen sind möglich:
-
 * Automatisch - Die beste Anzeigeoption für die URL wird automatisch ausgewählt
 * Eingebettet - Die URL wird innerhalb der Seite unterhalb der Navigationsleiste angezeigt, zusammen mit der URL-Beschreibung und allen Blöcken
 * Download erzwingen - Die URL-Datei wird zum Download angeboten

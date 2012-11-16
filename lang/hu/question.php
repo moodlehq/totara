@@ -125,17 +125,11 @@ $string['disterror'] = 'A(z) {$a} szétosztás hibákat okozott';
 $string['donothing'] = 'Ne másoljon vagy helyezzen át állományokat, és ne módosítson ugrópontokat.';
 $string['editcategories'] = 'Kategóriák szerkesztése';
 $string['editcategories_help'] = 'Egyetlen hosszú felsorolás helyett kérdéseit tárolhatja kategóriákba és alkategóriákba rendezve.
-
 Minden kategóriának van egy környezete, amely megadja, a kategórián belül hol használhatók a kérdések.
-
 * Tevékenység környezete - A kérdések csak a tevékenységmodulon belül érhetők el.
-
 * Kurzus környezete - A kérdések a kurzuson belüli összes tevékenységmodulban elérhetők
-
 * Kurzuskategória környezete - A kérdések a kurzuskategórián belüli összes tevékenységmodulban és kurzusban elérhetők
-
 * Rendszer környezete - A kérdések a portál összes kurzusában és tevékenységében elérhetők
-
 A kategóriák véletlen kérdések esetén is használhatók, mivel a kérdések kiválasztására egy konkrét kategóriából kerül sor.';
 $string['editcategory'] = 'Kategória szerkesztése';
 $string['editingcategory'] = 'Kategória szerkesztése';
@@ -164,23 +158,18 @@ $string['errorsavingcomment'] = 'Hiba történt az adatbázis {$a->name} kérdé
 $string['errorsavingflags'] = 'Hiba a megjelölt állapot mentése közben';
 $string['errorupdatingattempt'] = 'Hiba történt az adatbázis {$a->id} azonosítójú próbálkozásának frissítése közben';
 $string['exportcategory'] = 'Kategória exportálása';
-$string['exportcategory_help'] = '<p align="center"><b>Exportálási kategória</b></p>
-
-<p>A <b>Kategória:</b> a lenyíló menüből választhatja ki, mely kategóriából jöjjenek az exportált kérdések.</p>
-
-<p>Egyes importálási formátumok (GIFT és XML) esetén a kategória bekerülhet az írott állományba, így a kategóriák (választhatóan) importáláskor újból előállíthatók. Ezen adatok hozzáadásához jelölje be a <b>Kategória kiírása állományba </b> négyzetet. Ennek kiválasztása esetén beépítheti a kategória környezetét is, ha bejelöli a <b>Környezet kiírása állományba</b> négyzetet. A Moodle régebbi változataival való kompatibilitáshoz szüntesse meg a környezet kiválasztását.</p>';
+$string['exportcategory_help'] = '**Exportálási kategória**
+A **Kategória:** a lenyíló menüből választhatja ki, mely kategóriából jöjjenek az exportált kérdések.
+Egyes importálási formátumok (GIFT és XML) esetén a kategória bekerülhet az írott állományba, így a kategóriák (választhatóan) importáláskor újból előállíthatók. Ezen adatok hozzáadásához jelölje be a **Kategória kiírása állományba ** négyzetet. Ennek kiválasztása esetén beépítheti a kategória környezetét is, ha bejelöli a **Környezet kiírása állományba** négyzetet. A Moodle régebbi változataival való kompatibilitáshoz szüntesse meg a környezet kiválasztását.';
 $string['exporterror'] = 'Hiba történt exportálás közben!';
 $string['exportfilename'] = 'teszt';
 $string['exportnameformat'] = '%É%h%n-%Ó%P';
 $string['exportquestions'] = 'Kérdések exportálása állományba';
-$string['exportquestions_help'] = '<p>Ezzel a funkcióval kérdések egész kategóriáját exportálhatjuk egy szöveges állományba.
+$string['exportquestions_help'] = 'Ezzel a funkcióval kérdések egész kategóriáját exportálhatjuk egy szöveges állományba.
+Ne feledje, hogy egy sor fájlformátum esetén bizonyos információk elvesznek, ha exportálja a kérdéseket. Ennek az az oka, hogy számos formátum nem rendelkezik az összes olyan jellemzővel, amellyel a Moodle kérdései fel vannak ruházva. Nem várhatjuk el, hogy a kérdések exportálása és importálása után azok majd azonosak is lesznek. Ráadásul előfordulhat, hogy egyes kérdéstípusokat egyáltalán nem lehet exportálni. Ajánlatos az exportált adatokat ellenőrizni, mielőtt konkrét előállítási környezetben használná őket.
+Egy sor állományformátumot támogat a rendszer. Az egyes súgóállományokban és a [Moodle Docs](http://docs.moodle.org/en/question/import) -ban megtalálja a részleteket.
 
-<p>Ne feledje, hogy egy sor fájlformátum esetén bizonyos információk elvesznek, ha exportálja a kérdéseket. Ennek az az oka, hogy számos formátum nem rendelkezik az összes olyan jellemzővel, amellyel a Moodle kérdései fel vannak ruházva. Nem várhatjuk el, hogy a kérdések exportálása és importálása után azok majd azonosak is lesznek. Ráadásul előfordulhat, hogy egyes kérdéstípusokat egyáltalán nem lehet exportálni. Ajánlatos az exportált adatokat ellenőrizni, mielőtt konkrét előállítási környezetben használná őket.</p>
-
-<p>Egy sor állományformátumot támogat a rendszer. Az egyes súgóállományokban és a <a href="http://docs.moodle.org/en/question/import">Moodle Docs</a>-ban megtalálja a részleteket.</p>
-
-
-<p>Az importálási és exportálási formák külön használható programforrások. Más opcionális formátumokat találhat a modulok és segédprogramok adatbázisában.</p>';
+Az importálási és exportálási formák külön használható programforrások. Más opcionális formátumokat találhat a modulok és segédprogramok adatbázisában.';
 $string['feedback'] = 'Visszajelzés';
 $string['filecantmovefrom'] = 'A kérdésállományokat nem helyezheti át, mert nincs meg a jogosultsága az állományok eltávolításához';
 $string['filecantmoveto'] = 'A kérdésállományokat nem helyezheti át és nem másolhatja, mert nincs meg az állományok hozzáadásához a jogosultsága';
@@ -195,7 +184,6 @@ $string['formquestionnotinids'] = 'Az űrlapon kérdésazonosítóval nem rendel
 $string['fractionsnomax'] = 'Valamelyik válasz pontszámának 100%-nak kell lenni a kérdés teljes pontozhatósága érdekében.';
 $string['generalfeedback'] = 'Általános visszajelzés';
 $string['generalfeedback_help'] = 'Az általános visszajelzést a tanulók a kérdésre adott válasz nyomán látják. A kérdéstípustól és az adott választól függően más-más visszajelzés helyett az általános visszajelzés szövege minden tanuló esetén azonos.
-
 Az általános visszajelzés használható a kérdés témájának vagy egy további uigrópontnak a megadására, ha netán a kérdést nem értették meg.';
 $string['getcategoryfromfile'] = 'Kategória átvétele állományból';
 $string['getcontextfromfile'] = 'Környezet átvétele állományból';
@@ -206,12 +194,10 @@ $string['howquestionsbehave'] = 'A kérdések viselkedése';
 $string['howquestionsbehave_help'] = 'A tanulók a teszt kérdéseivel különböző módokon kommunikálhatnak. Például: a tanár minden kérdésre választ kérhet a teljes teszt leadása, bármilyen osztályozás vagy egy visszajelzés megjelenítése előtt. Erre "halasztott visszajelzés" üzemmódban nyílik lehetőség. Másik megoldásként a tanulóknak minden választ azonnal be kell küldeni azért, hogy azonnal visszajelzést kapjanak, és ha a válaszuk egyből nem sikerült, kevesebb pontért ismét próbálkozhatnak. Ez az "interaktív üzemmód többszöri prüóbálkozással".';
 $string['ignorebroken'] = 'Hibás ugrópontok kihagyása';
 $string['importcategory'] = 'Kategória importálása';
-$string['importcategory_help'] = '<p>A <b>Kategória:</b> lenyíló ablakból választható ki, mely kategóriába kerüljenek az importált kérdések.</p>
-
-<p>Egyes importálási formátumok (GIFT és XML) esetén a kategória megadható az importálandó állományon belül.
-Ehhez be kell jelölnie a <b>Kategória átvétele állományból</b> négyzetet. Ha nem, a kérdések az állományban lévő esetleges utasításoktól függetlenül a kiválasztott kategóriába kerülnek. A Moodle-ból exportált formátumokban szerepelhet a kategória szövegébe beépített kategóriakörnyezet. Az alapkörnyezet használatához szüntesse meg a <b>Környezet átvétele állományból</b> bejelölését.</p>
-
-<p>Ha a kategóriák az importálandó állományon belül vannak megadva, de még nem léteznek, a rendszer létrehozza őket.</p>';
+$string['importcategory_help'] = 'A **Kategória:** lenyíló ablakból választható ki, mely kategóriába kerüljenek az importált kérdések.
+Egyes importálási formátumok (GIFT és XML) esetén a kategória megadható az importálandó állományon belül.
+Ehhez be kell jelölnie a **Kategória átvétele állományból** négyzetet. Ha nem, a kérdések az állományban lévő esetleges utasításoktól függetlenül a kiválasztott kategóriába kerülnek. A Moodle-ból exportált formátumokban szerepelhet a kategória szövegébe beépített kategóriakörnyezet. Az alapkörnyezet használatához szüntesse meg a **Környezet átvétele állományból** bejelölését.
+Ha a kategóriák az importálandó állományon belül vannak megadva, de még nem léteznek, a rendszer létrehozza őket.';
 $string['importerror'] = 'Hiba történt az importált adatok feldolgozása közben.';
 $string['importerrorquestion'] = 'HIba történt a kérdés importálása közben.';
 $string['importfromcoursefiles'] = '... vagy válasszon ki egy importálandó állományt.';
@@ -248,44 +234,38 @@ $string['markoutofmax'] = '{$a->mark} közül {$a->max} leosztályozva';
 $string['marks'] = 'Osztályzatok';
 $string['matcherror'] = 'A pontok és a pontozási lehetőségek nem egyeznek - a kérdés kihagyva';
 $string['matchgrades'] = 'Pontok egyeztetése';
-$string['matchgrades_help'] = '<p>Az importált pontoknak meg <b>kell</b> felelni az érvényes pontszámok valamelyik rögzített értékének az alábbiak szerint...</p>
-<ul>
-<li>100%</li>
-<li>90%</li>
-<li>80%</li>
-<li>75%</li>
-<li>70%</li>
-<li>66.666%</li>
-<li>60%</li>
-<li>50%</li>
-<li>40%</li>
-<li>33,333</li>
-<li>30%</li>
-<li>25%</li>
-<li>20%</li>
-<li>16,666%</li>
-<li>14,2857</li>
-<li>12,5%</li>
-<li>11,111%</li>
-<li>10%</li>
-<li>5%</li>
-<li>0%</li>
-</ul>
+$string['matchgrades_help'] = 'Az importált pontoknak meg **kell** felelni az érvényes pontszámok valamelyik rögzített értékének az alábbiak szerint...
+* 100%
+* 90%
+* 80%
+* 75%
+* 70%
+* 66.666%
+* 60%
+* 50%
+* 40%
+* 33,333
+* 30%
+* 25%
+* 20%
+* 16,666%
+* 14,2857
+* 12,5%
+* 11,111%
+* 10%
+* 5%
+* 0%
 
-<p>A fenti felsorolás negatív értékei úgyszintén megengedettek.</p>
+A fenti felsorolás negatív értékei úgyszintén megengedettek.
+Ehhez a kapcsolóhoz kétféle beállítás létezik. Ezek határozzák meg azt, hogy az importálási rutin miként kezeli a fenti felsorolásnak **pontosan**
+meg nem feleltethető értékeket.
 
-<p>Ehhez a kapcsolóhoz kétféle beállítás létezik. Ezek határozzák meg azt, hogy az importálási rutin miként kezeli a fenti felsorolásnak <strong>pontosan</strong>
-meg nem feleltethető értékeket.</p>
-
-<ul>
-<li><strong>Hiba, ha a pontszám nincs felsorolva</strong><br />
-Ha egy kérdés a felsorolásban nem szereplő értéket tartalmaz, hibajelzés jelenik meg és a kérdés importálása elmarad.</li>
-<li><strong>Legközelebbi pontszám, ha a pontszám nincs felsorolva</strong><br />
+\* **|Hiba, ha a pontszám nincs felsorolva**
+Ha egy kérdés a felsorolásban nem szereplő értéket tartalmaz, hibajelzés jelenik meg és a kérdés importálása elmarad.
+\* **|Legközelebbi pontszám, ha a pontszám nincs felsorolva**
 Ha a rendszer a felsorolásban nem szereplő pontszámra bukkan, a pontszámot a felsorolásban legközelebbi értéknek felelteti meg.
-</li>
-</ul>
 
-<p><i>Megjegyzés: egyes egyedi importálási formátumok közvetlenül az adatbázisba írnak és kihagyják ezt az ellenőrzést.</i></p>';
+*Megjegyzés: egyes egyedi importálási formátumok közvetlenül az adatbázisba írnak és kihagyják ezt az ellenőrzést.*';
 $string['matchgradeserror'] = 'Hiba, ha a pont nincs felsorolva';
 $string['matchgradesnearest'] = 'Legközlebbi, ha a pont nincs felsorolva';
 $string['missingcourseorcmid'] = 'Kurzusazonosító vagy cmid szükséges a print_questionhez.';
@@ -342,10 +322,9 @@ $string['parsingquestions'] = 'Kérdések feldolgozása az importált állomány
 $string['partiallycorrect'] = 'Részben helyes';
 $string['partiallycorrectfeedback'] = 'Részben helyes válasz esetén';
 $string['penaltyfactor'] = 'Büntetési tényező';
-$string['penaltyfactor_help'] = '<p>Megadhatja, hogy az elért pontok közül mennyied rész legyen levonva az egyes rossz válaszokért. Ennek csak akkor van jelentősége, ha a teszt adaptív módban üzemel és a tanuló újból próbálkozhat. A büntetési tényező egy 0 és 1 közötti szám. Az 1 azt jelenti, hogy a tanulónak már az első válasznál helyesen kell felelnie ahhoz, hogy egyáltalán pontot kapjon. 0 esetén a tanuló tetszése szerinti alkalommal próbálkozhat, mégis a teljes pontszámot kapja.</p>';
+$string['penaltyfactor_help'] = 'Megadhatja, hogy az elért pontok közül mennyied rész legyen levonva az egyes rossz válaszokért. Ennek csak akkor van jelentősége, ha a teszt adaptív módban üzemel és a tanuló újból próbálkozhat. A büntetési tényező egy 0 és 1 közötti szám. Az 1 azt jelenti, hogy a tanulónak már az első válasznál helyesen kell felelnie ahhoz, hogy egyáltalán pontot kapjon. 0 esetén a tanuló tetszése szerinti alkalommal próbálkozhat, mégis a teljes pontszámot kapja.';
 $string['penaltyforeachincorrecttry'] = 'Levonás egy-egy helytelen próbálkozásért';
 $string['penaltyforeachincorrecttry_help'] = 'Ha kérdéseit \'Interaktív többszöri próbálkozással\' vagy \'Adaptív üzemmód\' mellett futtatja és a tanuló többször próbálkozhat a kérdés helyes megválaszolása érdekében, akkor ez a beállítás szabályozza a levonásokat egy-egy hibás válasz esetén.
-
 A levonás a kérdés összpontszámának százalékos aránya, így he egy kérdés három pontot ér és a levonás 0,333333, a tanuló az első helyes próbálkozására 3, a másodikra 2, a harmadikra 1 pontot kap.';
 $string['permissionedit'] = 'Kérdés szerkesztése';
 $string['permissionmove'] = 'Kérdés áthelyezése';

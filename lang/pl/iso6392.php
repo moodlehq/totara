@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['ang'] = 'angielski (od 450 do 1100)';
 $string['ara'] = 'arabski';
 $string['arg'] = 'aragoński';
-$string['art'] = 'języki sztuczne ';
+$string['art'] = 'języki sztuczne';
 $string['bat'] = 'języki bałtyckie';
 $string['bel'] = 'białoruski';
 $string['ben'] = 'bengalski';

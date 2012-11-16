@@ -40,24 +40,20 @@ $string['customtitles_help'] = 'Tytuły rozdziałów są automatycznie wyświetl
 $string['editingchapter'] = 'Edycja rozdziału';
 $string['errorchapter'] = 'Błąd podczas odczytu książki';
 $string['faq'] = 'FAQ Książki';
-$string['faq_help'] = '<p align="center">
-  <b>Często Zadawane Pytania dotyczace książek</b>
-</p>
+$string['faq_help'] = '**Często Zadawane Pytania dotyczace książek**
 
-**Dlaczego tylko dwa poziomy?** 
-:   Dwa poziomy są zasadniczno wystarczające dla wszystkich książęk, trzy i więcej mogłyby prowadzić do źle ustruturyzowanych dokumentów. Moduł książka jest zaprojektowany do tworzenia krótkich, kilkustronicowych materiałów. Dla długich dokumentów lepiej użyć formtu PDF. Najprostszy sposób tworzenia plików PDF to wykorzystanie wirtualnych drukarek (zobacz <a  href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm"  target="_blank">PDFCreator</a>, <a  href="http://fineprint.com/products/pdffactory/index.html"  target="_blank"> PDFFactory</a>, <a  href="http://www.adobe.com/products/acrobatstd/main.html"  target="_blank">Adobe Acrobat</a>, itp.).   
-    
-  
-**Czy studenci mogą edytowac książki?** 
-:   Tylko nauczyciele mogą tworzyć i edytować książki. Nie ma planów implementacji takiej funkcjonalności, ale ktoś może stworzyć coś podobnego dla studnetów (Portfolio?). Główny powód to utrzymanie modułu tak prostym jak to tylko możliwe.   
-    
-  
-**Jak mogę przeszukiwać książki?** 
-:   Obecnie jest tylko jeden sposób, użyj funkcji przeglądarki w widoku wydruku. Globalne przeszukiwanie jest możliwe tylko w forach Moodla. Byłoby dobrze posiadać globalne wyszukiwanie we wszystkich zasobach włączając książki, są chętni?   
-    
-  
-**Moje tytuły nie mieszczą się.** 
-:   Przeformułuj swoje tytuły lub poproś admina, żeby zmienił szerokość spisu treści. Jest ona definiowalna globalnie dla wszystkich książek na stronie konfiguracji Moodla.';
+**Dlaczego tylko dwa poziomy?**
+: Dwa poziomy są zasadniczno wystarczające dla wszystkich książęk, trzy i więcej mogłyby prowadzić do źle ustruturyzowanych dokumentów. Moduł książka jest zaprojektowany do tworzenia krótkich, kilkustronicowych materiałów. Dla długich dokumentów lepiej użyć formtu PDF. Najprostszy sposób tworzenia plików PDF to wykorzystanie wirtualnych drukarek (zobacz 
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+, itp.).
+**Czy studenci mogą edytowac książki?**
+Tylko nauczyciele mogą tworzyć i edytować książki. Nie ma planów implementacji takiej funkcjonalności, ale ktoś może stworzyć coś podobnego dla studnetów (Portfolio?). Główny powód to utrzymanie modułu tak prostym jak to tylko możliwe.
+**Jak mogę przeszukiwać książki?**
+Obecnie jest tylko jeden sposób, użyj funkcji przeglądarki w widoku wydruku. Globalne przeszukiwanie jest możliwe tylko w forach Moodla. Byłoby dobrze posiadać globalne wyszukiwanie we wszystkich zasobach włączając książki, są chętni?
+**Moje tytuły nie mieszczą się.**
+Przeformułuj swoje tytuły lub poproś admina, żeby zmienił szerokość spisu treści. Jest ona definiowalna globalnie dla wszystkich książek na stronie konfiguracji Moodla.';
 $string['modulename'] = 'Książka';
 $string['modulename_help'] = 'Książka jest prostym materiałem do studiowania.';
 $string['modulenameplural'] = 'Książki';

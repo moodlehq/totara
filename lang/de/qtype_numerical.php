@@ -51,20 +51,17 @@ $string['notenoughanswers'] = 'Sie müssen mindestens eine Antwort eingeben.';
 $string['nounitdisplay'] = 'Keine Abschnittsbewertung';
 $string['numericalmultiplier'] = 'Multiplikator';
 $string['numericalmultiplier_help'] = 'Der Multiplikator ist der Faktor, mit welchem die richtige numerische Antwort multipliziert wird.
-
 Der erste Abschnitt (Abschnitt 1) hat einen Standardmultiplikator von 1. Wenn also die richtige numerische Antwort 5500 lautet und als Einheit ist W (Watt) angegeben, ergibt dies mit dem Multiplikator von 1 die richtige Antwort von 5500 W.
-
 Wenn Sie die Einheit kW (Kilowatt) mit dem Multiplikator 0,001 hinzufügen, ergibt dies eine weitere richtige Antwort von 5,5 kW. 5500 W sowieso 5,5 kW werden dann als richtig anerkannt.
-
 Bedenken Sie, dass auch die eingeräumte Fehlertoleranz multipliziert wird; Liegt diese bei 100 W, wird sie automatisch auch zu 0,1 kW.';
 $string['oneunitshown'] = 'Die Einheit wird automatisch neben der Texteingabe angezeigt.';
 $string['onlynumerical'] = 'Die Einheit werden nicht benutzt. Nur der Zahlenwert wird bewertet.';
 $string['pleaseenterananswer'] = 'Bitte geben Sie eine Antwort ein';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Bitte geben Sie Ihre Antwort ohne eine Trennung zwischen den Tausendern ein ({$a}).';
 $string['pluginname'] = 'Numerisch';
+$string['pluginname_help'] = 'Aus Nutzersicht sehen numerische Fragen wie gewöhnliche Kurztextfragen aus. Der Unterschied liegt darin, dass numerische Fragen mit einer Fehlertoleranz versehen werden können. Beispiel: Ist die Antwort 10 und die Fehlertoleranz liegt bei 2, so sind alle Antworten von 8 bis 12 richtig.';
 $string['pluginnameadding'] = 'Numerische Frage hinzufügen';
 $string['pluginnameediting'] = 'Numerische Frage ändern';
-$string['pluginname_help'] = 'Aus Nutzersicht sehen numerische Fragen wie gewöhnliche Kurztextfragen aus. Der Unterschied liegt darin, dass numerische Fragen mit einer Fehlertoleranz versehen werden können. Beispiel: Ist die Antwort 10 und die Fehlertoleranz liegt bei 2, so sind alle Antworten von 8 bis 12 richtig.';
 $string['pluginnamesummary'] = 'Erlaubt eine numerische Antwort (auch mit Einheiten), die gegen einige Modellantworten, ggf. mit Toleranzen, bewertet wird.';
 $string['relative'] = 'Relative';
 $string['rightexample'] = 'Rechts, z.B. 1.00cm oder 1.000km';
@@ -82,24 +79,20 @@ $string['unithdr'] = 'Einheit {$a}';
 $string['unitincorrect'] = 'Sie haben nicht die richtige Einheit angegeben';
 $string['unitmandatory'] = 'Obligatorisch';
 $string['unitmandatory_help'] = '* Die Antwort wird zusammen mit der eingegebenen Einheit bewertet.
-
 * Der Abzug wird berechnet, wenn das Einheitenfeld leer ist';
 $string['unitnotselected'] = 'Sie müssen eine Einheit auswählen';
 $string['unitonerequired'] = 'Sie müssen mindestens eine Einheit angeben';
 $string['unitoptional'] = 'Optionale Einheit';
 $string['unitoptional_help'] = '* Wenn das Einheitenfeld nicht leer ist, wird die Antwort zusammen mit der EInheit gewertet.
-
-* Wenn die Einheit falsch geschrieben oder unbekannt ist, wird die Antwort zusammen mit der Einheit als ungültig gewertet. ';
+* Wenn die Einheit falsch geschrieben oder unbekannt ist, wird die Antwort zusammen mit der Einheit als ungültig gewertet.';
 $string['unitpenalty'] = 'Abzug wegen falscher Einheit';
 $string['unitpenalty_help'] = 'Der Abzug wird berechnet, wenn
-
 * eine undefinierte Einheit in das Einheitenfeld eingetragen ist oder
-
 * eine Einheit in das Zahlenfeld eingetragen ist';
 $string['unitposition'] = 'Units go';
 $string['unitselect'] = 'ein Drop-Down-menu';
 $string['validnumberformats'] = 'Gültige Zahlenformate';
 $string['validnumberformats_help'] = '* Zahlenschreibweise 13500,67 : 13 500,67 : 13500,67 : 13 500,67
-* Bei Verwendung des Tausendertrennzeichens muss IMMER das Dezimalkomma gesetzt sein  13,500.67 : 13.500
-* Exponentschreibweise 1,350067 * 10<sup>4</ sup> wird so notiert 1,350067 E4 : 1,350067 E04';
+* Bei Verwendung des Tausendertrennzeichens muss IMMER das Dezimalkomma gesetzt sein 13,500.67 : 13.500
+* Exponentschreibweise 1,350067 * 10<sup>4</sup> wird so notiert 1,350067 E4 : 1,350067 E04';
 $string['validnumbers'] = '13500.67 : 13 500.67 : 13500,67: 13 500,67 : 1.350067 E4 : 1.350067 E04';

@@ -33,13 +33,11 @@ $string['aggregatenone'] = 'Senza voto';
 $string['aggregatesum'] = 'Somma dei voti';
 $string['aggregatetype'] = 'Modalità di aggregazione';
 $string['aggregatetype_help'] = 'La modalità di aggregazione definisce come verranno calcolati i voti presenti nel registro del valutatore.
-
 * Media dei voti - La media di tutti i voti
 * Numero di voti - Il voto finale è pari al numero di elementi valutati. Il totale non può comunque superare il voto massimo impostato nell\'attività.
 * Voto più alto - Il voto finale è pari al voto più alto
 * Voto più basso - Il voto finale è pari al voto più basso
 * Somma dei voti - Tutti i voti sono sommati. Il totale non può comunque superare il voto massimo impostato nell\'attività.
-
 Se si sceglie "Non aggregare i voti" l\'attività non comparirà nel registro del valutatore.';
 $string['allowratings'] = 'Consenti la valutazione degli elementi';
 $string['allratingsforitem'] = 'Tutte le valutazioni inviate';

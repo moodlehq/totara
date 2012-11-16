@@ -49,10 +49,9 @@ $string['doesnotcontain'] = 'nem tartalmaz';
 $string['endswith'] = 'vége';
 $string['filterallwarning'] = 'A fejlécek és a tartalom szűrése esetén nagyban megnőhet a szerver terhelése. A \'Mire alkalmazandó\' beállításaival gazdálkodjon takarékosan. Ennek fő használata a multilang szűrőt érinti.';
 $string['filtersettings'] = 'Szűrőbeállítások';
-$string['filtersettings_help'] = '<p>Ezen az oldalon kapcsolhat be és ki szűrőket a portál egy adott részéhez.
-Csak azokhoz a szűrőkhöz fér hozzá, amelyeket a rendszergazda bekapcsolt..</p>
-
-<p>Egyes szűrőkkel helyi beállításokat és végrehajthat, mely esetben a név mellett megjelenik a  \'Beállítások\' ugrópont.</p>';
+$string['filtersettings_help'] = 'Ezen az oldalon kapcsolhat be és ki szűrőket a portál egy adott részéhez.
+Csak azokhoz a szűrőkhöz fér hozzá, amelyeket a rendszergazda bekapcsolt..
+Egyes szűrőkkel helyi beállításokat és végrehajthat, mely esetben a név mellett megjelenik a \'Beállítások\' ugrópont.';
 $string['filtersettingsforin'] = 'A(z) {$a->filter} szűrőbeállításai {$a->context} esetén';
 $string['filtersettingsin'] = 'A(z) {$a} szűrőbeállításai';
 $string['firstaccess'] = 'Első hozzáférés';

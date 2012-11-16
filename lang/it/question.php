@@ -124,14 +124,11 @@ $string['disterror'] = 'La distribuzione {$a} ha causato problemi';
 $string['donothing'] = 'Non copiare o spostare files o cambiare links.';
 $string['editcategories'] = 'Modifica categorie';
 $string['editcategories_help'] = 'Le domande possono essere utilmente raccolte in categorie.
-
 Ciascuna categoria appartiene ad un contesto che determina dove le relative domande possono essere utilizzate:
-
 * Contesto dell\'attività . Le domande sono utilizzabili solo all\'interno del modulo di attività
 * Contesto del corso - le domande possono essere utilizzate nelle attività del corso
-- Contesto della categoria di corso - le domande possono essere utilizzate nelle attività dei corsi che appartengono alla categoria
-- Contesto di sistema - le domande possono essere utilizzate nelle attività dei corsi di tutto il sito
-
+* Contesto della categoria di corso - le domande possono essere utilizzate nelle attività dei corsi che appartengono alla categoria
+* Contesto di sistema - le domande possono essere utilizzate nelle attività dei corsi di tutto il sito
 le categorie sono utili anche per le domande casuali che possono essere selezionate da specifiche categorie.';
 $string['editcategory'] = 'Modifica categoria';
 $string['editingcategory'] = 'Modifica una categoria';
@@ -161,7 +158,6 @@ $string['errorsavingflags'] = 'Si è verificato un errore durante il salvataggio
 $string['errorupdatingattempt'] = 'Errore durante l\'aggiornamento del tentativo {$a->id} nel database.';
 $string['exportcategory'] = 'Esporta categoria';
 $string['exportcategory_help'] = 'L\'impostazione determina la categoria dalla quale esportare le domande.
-
 Alcuni formati di importazione come GIFT e Moodle XML permettono che la categoria e i dati di contesto siano specificati all\'interno del file, in modo da poter scegliere se ricrearli o meno durante l\'importazione. Nel caso, spuntare le caselle opportune.';
 $string['exporterror'] = 'Si è verificato un errore durante l\'esportazione!';
 $string['exportfilename'] = 'domande';
@@ -183,7 +179,6 @@ $string['formquestionnotinids'] = 'Il form contiene una domanda non presente tra
 $string['fractionsnomax'] = 'Una delle risposte dovrebbe avere un punteggio del 100% affinché sia possibile ottenere un voto pieno per questa domanda.';
 $string['generalfeedback'] = 'Feedback generale';
 $string['generalfeedback_help'] = 'Il feedback generale viene mostrato allo studente dopo aver riposto alla domanda. A differenza del feedback specifico, che dipende dal tipo di domanda e dalla riposta data dallo studente, il feedback generale viene mostrato uguale a tutti gli studenti.
-
 Puoi utilizzare il feedback generale per dare agli studenti alcune informazioni relative alle conoscenze necessarie per rispondere alla domanda, oppure per fornire link utili per capire meglio la domanda.';
 $string['getcategoryfromfile'] = 'Categoria da file';
 $string['getcontextfromfile'] = 'Contesto da file';
@@ -195,7 +190,6 @@ $string['howquestionsbehave_help'] = 'Gli studenti possono interagire con le dom
 $string['ignorebroken'] = 'Ignora link interrotti';
 $string['importcategory'] = 'Importa categoria';
 $string['importcategory_help'] = 'L\'impostazione permette di scegliere la categoria dove importare le domande.
-
 Alcuni formati di importazione come GIFT e Moodle XML permettono che la categoria e i dati di contesto siano specificati all\'interno del file. Per usare questi dati si devono selezionare le caselle di spunta opportune, senza selezionare la categoria. Qualora la categoria presente nel file non dovesse esistere, sarà creata automaticamente.';
 $string['importerror'] = 'Si è verificato un errore durante il processo di importazione delle domande';
 $string['importerrorquestion'] = 'Errore durante l\'importazione delle domande';
@@ -233,43 +227,38 @@ $string['markoutofmax'] = 'Punteggio ottenuto {$a->mark} su {$a->max}';
 $string['marks'] = 'Punteggio';
 $string['matcherror'] = 'Le valutazioni non corrispondono alle opzioni di valutazione - la domanda è stata saltata.';
 $string['matchgrades'] = 'Allinea voti';
-$string['matchgrades_help'] = '<p>Le valutazioni importate <b>devono</b> corrispondere a uno dei valori della lista fissata, come segue...</p>
+$string['matchgrades_help'] = 'Le valutazioni importate **devono** corrispondere a uno dei valori della lista fissata, come segue...
 
-<ul>
-<li>100%</li>
-<li>90%</li>
-<li>80%</li>
-<li>75%</li>
-<li>70%</li>
-<li>66.666%</li>
-<li>60%</li>
-<li>50%</li>
-<li>40%</li>
-<li>33.333</li>
-<li>30%</li>
-<li>25%</li>
-<li>20%</li>
-<li>16.666%</li>
-<li>14.2857</li>
-<li>12.5%</li>
-<li>11.111%</li>
-<li>10%</li>
-<li>5%</li>
-<li>0%</li>
-</ul>
+* 100%
+* 90%
+* 80%
+* 75%
+* 70%
+* 66.666%
+* 60%
+* 50%
+* 40%
+* 33.333
+* 30%
+* 25%
+* 20%
+* 16.666%
+* 14.2857
+* 12.5%
+* 11.111%
+* 10%
+* 5%
+* 0%
 
-<p>sono anche permessi valori negativi della lista precedente.</p>
+sono anche permessi valori negativi della lista precedente.
+Ci sono due possibilità per questa impostazione. Esse definiscono come il modulo di importazione tratta i valori che non corrispondono **esattamente** a uno dei valori della lista
 
-<p>Ci sono due possibilità per questa impostazione. Esse definiscono come il modulo di importazione tratta i valori che non corrispondono <b>esattamente</b> a uno dei valori della lista</p>
+\* **|Errore se valutazione non in elenco**
+Se una domanda contiene valutazioni non elencate nella lista, è mostrato un errore e la domanda non sarà importata.
+\* **|Valutazione più vicina se non in elenco**
+Se si trova una valutazione che non corrisponde ad alcun valore della lista, la stessa è sostituita dal valore più vicino trovato nella lista
 
-<ul>
-<li><b>Errore se valutazione non in elenco</b><br />
-Se una domanda contiene valutazioni non elencate nella lista, è mostrato un errore e la domanda non sarà importata.</li>
-<li><b>Valutazione più vicina se non in elenco</b><br />
-Se si trova una valutazione che non corrisponde ad alcun valore della lista, la stessa è sostituita dal valore più vicino trovato nella lista</li>
-</ul>
-
-<p><i>Nota: alcuni formati di importazione scrivono direttamente nel database e possono bypassare questo controllo</i></p>';
+*Nota: alcuni formati di importazione scrivono direttamente nel database e possono bypassare questo controllo*';
 $string['matchgradeserror'] = 'Errore se la valutazione non è presente nell\'elenco';
 $string['matchgradesnearest'] = 'Voto più vicino se non presente nell\'elenco';
 $string['missingcourseorcmid'] = 'Bisogna fornire courseid o cmid a print_questione.';
@@ -329,10 +318,9 @@ $string['parsingquestions'] = 'Analisi domande presenti nel file di importazione
 $string['partiallycorrect'] = 'Parzialmente corretta';
 $string['partiallycorrectfeedback'] = 'Per ciascuna risposta parzialmente corretta';
 $string['penaltyfactor'] = 'Fattore di penalità';
-$string['penaltyfactor_help'] = '<p>Per ogni risposta errata può essere definita la frazione di punteggio raggiunto che deve essere sottratta. Questo è significativo solamente se il quiz è eseguito in modo adattativo tale per cui allo studente è permesso di rispondere più volte alla domanda. Il fattore di penalità può essere un numero tra 0 e 1. Un fattore uguale a 1 significa che lo studente deve rispondere correttamente al primo tentativo se vuole ottenere qualche punto dalla domanda in questione. Un fattore uguale a 0 significa che lo studente può provare quante volte vuole e ancora aspirare al massimo punteggio per la stessa domanda.</p>';
+$string['penaltyfactor_help'] = 'Per ogni risposta errata può essere definita la frazione di punteggio raggiunto che deve essere sottratta. Questo è significativo solamente se il quiz è eseguito in modo adattativo tale per cui allo studente è permesso di rispondere più volte alla domanda. Il fattore di penalità può essere un numero tra 0 e 1. Un fattore uguale a 1 significa che lo studente deve rispondere correttamente al primo tentativo se vuole ottenere qualche punto dalla domanda in questione. Un fattore uguale a 0 significa che lo studente può provare quante volte vuole e ancora aspirare al massimo punteggio per la stessa domanda.';
 $string['penaltyforeachincorrecttry'] = 'Penalità per ciascuna scelta non corretta';
-$string['penaltyforeachincorrecttry_help'] = 'Se le domande usano i comportamenti \'Interattivo con tentativi multipli\' oppure \'Modo adattativo" per dare allo studente  che lo studente abbia a disposizione più scelte per rispondere correttamente, questa opzione permette di controllare quanto penalizzare lo studente per le scelte sbagliate.
-
+$string['penaltyforeachincorrecttry_help'] = 'Se le domande usano i comportamenti \'Interattivo con tentativi multipli\' oppure \'Modo adattativo" per dare allo studente che lo studente abbia a disposizione più scelte per rispondere correttamente, questa opzione permette di controllare quanto penalizzare lo studente per le scelte sbagliate.
 La penalità è in proporzione al punteggio totale della domanda, ad esempio se la domanda ha un punteggio pari a tre e la penalità è 0.3333333, lo studente otterrà un punteggio pari a tre se indovina la risposta subito, pari a 2 se indovina la risposta alla seconda scelta, e pari a 1 alla terza scelta.';
 $string['permissionedit'] = 'Modificare questa domanda';
 $string['permissionmove'] = 'Spostare questa domanda';

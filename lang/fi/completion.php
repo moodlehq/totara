@@ -59,7 +59,6 @@ $string['completion-title-manual-n'] = 'Merkitse suoritetuksi: {$a}';
 $string['completion-title-manual-y'] = 'Merkitse suorittamattomaksi: {$a}';
 $string['completion_automatic'] = 'Näytä aktiviteetti suoritetuksi kun ehdot täyttyvät';
 $string['completion_help'] = 'Jos sallittu, aktiviteettien suorituksia seurataan joko manuaalisesti tai automaattisesti, perustuen tiettyihin ehtoihin. Haluttaessa voidaan asettaa myös useita ehtoja. Jos useita ehtoja on asetettu, aktiviteetti on suoritettu vasta kun KAIKKI ehdot täyttyvät.
-
 Valintaruutu aktiviteetin nimen vieressä kurssisivulla näyttää milloin aktiviteetti on suoritettu.';
 $string['completion_manual'] = 'Opiskelijat voivat manuaalisesti merkitä tämän aktiviteetin suoritetuksi';
 $string['completion_none'] = 'Älä huomioi aktiivisuuden suorituksia';
@@ -69,9 +68,7 @@ $string['completionexpected'] = 'Odotettu suoritusaika';
 $string['completionexpected_help'] = 'Tämä asetus määrittää päivämäärän, jolloin aktiviteetti pitäisi olla suoritettu. Päivämäärää ei näytetä opiskelijoille ja se on näkyvissä ainoastaan aktiviteettien suoritusraportissa.';
 $string['completionicons'] = 'Suoritusten valintalaatikot';
 $string['completionicons_help'] = 'Valintaruutua aktiviteetin nimen vieressä voidaan käyttää ilmaisemaan milloin aktiviteetti on suoritettu.
-
 Jos valintaruudun merkintä näytetään katkoviivalla, voit klikata sitä kun olet mielestäsi suorittanut aktiviteetin. (Uudelleenklikkaaminen poistaa valinnan jos muutat mielesi.) Valintaruudun merkkaaminen on vapaavalintaista ja ainoastaan tapa seurata edistymistä kurssilla.
-
 Jos valintaruutu on tyhjä, merkintä ilmestyy automaattisesti kun olet suorittanut aktiviteetin opettajan asettamien ehtojen mukaan.';
 $string['completionmenuitem'] = 'Suoritus';
 $string['completionnotenabled'] = 'Suorituksia ei ole käytössä';

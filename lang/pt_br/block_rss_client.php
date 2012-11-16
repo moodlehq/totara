@@ -46,7 +46,7 @@ $string['editfeeds'] = 'Editar, fazer ou cancelar assinatura de alimentadores de
 $string['editnewsfeeds'] = 'Editar alimentadores de notícias';
 $string['editrssblock'] = 'Editar título do bloco RSS';
 $string['enableautodiscovery'] = 'Ativar auto-descoberta de feeds?';
-$string['enableautodiscovery_help'] = 'Se ativado, feeds em páginas da web são localizados automaticamente. Por exemplo,  se  o endereço http://docs.moodle.org for informado, então http://docs.moodle.org/en/index.php?title=Special:RecentChanges&feed=rss seria encontrado.';
+$string['enableautodiscovery_help'] = 'Se ativado, feeds em páginas da web são localizados automaticamente. Por exemplo, se o endereço http://docs.moodle.org for informado, então http://docs.moodle.org/en/index.php?title=Special:RecentChanges&feed=rss seria encontrado.';
 $string['errorloadingfeed'] = 'Erro ao carregar este feed RSS ({$a})';
 $string['feed'] = 'Alimentador';
 $string['feedadded'] = 'Alimentador de notícias adicionado';

@@ -34,8 +34,7 @@ $string['configsecretphrase'] = 'Ce texte secret est utilisé pour générer une
 $string['contentheader'] = 'Contenu';
 $string['displayoptions'] = 'Options d\'affichage disponibles';
 $string['displayselect'] = 'Affichage';
-$string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier de l\'URL et la capacité du navigateur à intégrer des objets (<i>embedding</i>), détermine la façon dont le l\'URL est affichée. Les options sont :
-
+$string['displayselect_help'] = 'Ce réglage, ainsi que le type de fichier de l\'URL et la capacité du navigateur à intégrer des objets (*embedding*), détermine la façon dont le l\'URL est affichée. Les options sont :
 * Automatique : la meilleure option d\'affichage pour l\'URL concernée est automatiquement sélectionnée
 * Intégrer : l\'URL est affichée dans la page au-dessous de la barre de navigation, avec la description de l\'URL et tous les blocs
 * Forcer le téléchargement : l\'utilisateur est invité à télécharger le fichier de l\'URL

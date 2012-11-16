@@ -44,7 +44,7 @@ $string['allowcoursethemes'] = 'Zezwól na kompozycję kursów';
 $string['allowediplist'] = 'Lista dozwolonych adresów IP';
 $string['allowemailaddresses'] = 'Dozwolone domeny poczty elektronicznej';
 $string['allowframembedding'] = 'Zezwalaj na umieszczanie ramek';
-$string['allowframembedding_help'] = 'Zezwalaj na umieszczanie tej strony w ramkach na  zewnętrznych stronach. Włączenie tej funkcji nie jest zalecane ze względów bezpieczeństwa.';
+$string['allowframembedding_help'] = 'Zezwalaj na umieszczanie tej strony w ramkach na zewnętrznych stronach. Włączenie tej funkcji nie jest zalecane ze względów bezpieczeństwa.';
 $string['allowobjectembed'] = 'Zezwalaj na znaczniki EMBED i OBJECT';
 $string['allowthemechangeonurl'] = 'Zezwalaj na zmiany szablonu graficznego w adresie URL';
 $string['allowuserblockhiding'] = 'Zezwalaj użytkownikom na ukrywanie bloków';
@@ -737,9 +737,7 @@ $string['profilesignup'] = 'Wyświetlić na stronie zapisów?';
 $string['profilespecificsettings'] = 'Specyficzne ustawienia';
 $string['profilevisible'] = 'Dla kogo jest widoczne to pole?';
 $string['profilevisible_help'] = '* Nie widoczny - tylko dla prywatnych informacji widzianych przez administratora
-
 * Widoczny dla użytkownika - tylko dla prywatnych informacji widzianych przez użytkownika oraz administratora
-
 * Widoczny dla wszystkich';
 $string['profilevisibleall'] = 'Widoczny dla wszystkich';
 $string['profilevisiblenone'] = 'Nie widoczny';

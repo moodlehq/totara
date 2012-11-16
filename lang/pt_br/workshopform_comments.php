@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['addmoredimensions'] = 'Em branco para {$a} mais aspectos ';
+$string['addmoredimensions'] = 'Em branco para {$a} mais aspectos';
 $string['dimensioncomment'] = 'Comentário';
 $string['dimensiondescription'] = 'Descrição';
 $string['dimensionnumber'] = 'Aspecto {$a}';

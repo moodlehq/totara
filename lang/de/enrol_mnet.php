@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['error_multiplehost'] = 'Es existieren mehrere MNet Einschreibungs Plugins für diesen Host. Nur eine Instanz für jeden Host und/oder \'Alle Hosts\'ist erlaubt.';
 $string['instancename'] = 'Einschreibemethode';
-$string['instancename_help'] = 'Sie haben die Möglichkeit, diese Instanz der MNet Einschreibemethode umzubenennen. Wenn das Feld leer bleibt, wird der Standardwert genutzt. Dieser enthält den Namen des externen Hosts und die dort zugewiesenen Rollenbezeichnungen für Nutzer. ';
+$string['instancename_help'] = 'Sie haben die Möglichkeit, diese Instanz der MNet Einschreibemethode umzubenennen. Wenn das Feld leer bleibt, wird der Standardwert genutzt. Dieser enthält den Namen des externen Hosts und die dort zugewiesenen Rollenbezeichnungen für Nutzer.';
 $string['mnet_enrol_description'] = 'Veröffentlichen Sie diesen Dienst, um Administrator/innen von {$a} zu erlauben, deren Teilnehmer/innen in Kursen anzumelden, die Sie auf Ihrem Server erstellt haben.<br/>
 <ul><li><em>Voraussetzung</em>: Sie müssen den SSO-Dienst (Service Provider) für {$a} <strong> veröffentlichen </strong>.</li>
 <li><em>Voraussetzung</em>: Sie müssen auch den SSO-Dienst (Identity Provider) von {$a} <strong>abonnieren</strong>. </li></ul><br/>
@@ -36,10 +36,10 @@ Abonnieren Sie diesen Dienst, um die Teilnehmer/innen Ihres Moodles in Kursen au
 <ul><li><em>Voraussetzung</em>: Sie müssen den SSO-Dienst (Service Provider) von {$a} <strong>abonnieren</strong>. </li>
 <li><em>Voraussetzung</em>: Sie müssen den SSO-Dienst (Identity Provider) für {$a} <strong> veröffentlichen</strong>.</li></ul><br/>';
 $string['mnet_enrol_name'] = 'Service externe Einschreibung';
-$string['pluginname'] = 'Externe MNet Einschreibungen ';
+$string['pluginname'] = 'Externe MNet Einschreibungen';
 $string['pluginname_desc'] = 'Ermöglicht externen MNet Hosts ihre Nutzer auf diesem System in Kurse einzuschreiben.';
 $string['remotesubscriber'] = 'Remote Host';
-$string['remotesubscriber_help'] = 'Mit der Funktion \'Alle Hosts\' wird dieser Kurs für alle MNet Peers, denen die externe Einschreibung erlaubt ist, geöffnet. Wählen Sie statt dessennureinen bestimmten Host aus, haben nur dessen Nutzer Zugriff auf den Kurs.  ';
+$string['remotesubscriber_help'] = 'Mit der Funktion \'Alle Hosts\' wird dieser Kurs für alle MNet Peers, denen die externe Einschreibung erlaubt ist, geöffnet. Wählen Sie statt dessennureinen bestimmten Host aus, haben nur dessen Nutzer Zugriff auf den Kurs.';
 $string['remotesubscribersall'] = 'Alle Hosts';
 $string['roleforremoteusers'] = 'Rolle für Ihre Nutzer';
 $string['roleforremoteusers_help'] = 'Welche Rolle der Remotenutzer aus dem gewählten Host erhält.';

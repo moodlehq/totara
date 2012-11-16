@@ -32,8 +32,9 @@ $string['codecoveragecompletereport'] = '(bekijk volledig coderapport';
 $string['codecoveragedisabled'] = 'Kan inbegrepen code niet inschakelen op deze server (xdebug-extentie ontbreekt).';
 $string['codecoveragelatestdetails'] = '(op {$a->date}, met {$a->files} bestanden, {$a->percentage} inbegrepen)';
 $string['codecoveragelatestreport'] = 'Bekijk het laatste volledig coderapport';
-$string['confignonwritable'] = 'Het bestand config.php is niet beschrijfbaar door de webserver. Ofwel moet je de rechten  veranderen, ofwel moet je het bewerken met de juiste gebruikersaccount en volgende lijn toevoegen voor de afsluitende php-tag:<br />
-$CFG->unittestprefix = \'tst_\' // Wijzig tst_ naar een prefix die je verkiest, anders dan $CFG->prefix';
+$string['confignonwritable'] = 'Het bestand config.php is niet beschrijfbaar door de webserver. Ofwel moet je de rechten  veranderen, ofwel moet je het bewerken met de juiste gebruikersaccount en volgende lijn toevoegen voor de afsluitende php-tag:
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Inbegrepen lijnen';
 $string['coveredpercentage'] = 'Algemeen inbegrepen coderapport';
 $string['dbtest'] = 'Functionele DB-testen';

@@ -51,21 +51,17 @@ $string['notenoughanswers'] = 'Você tem que definir pelo menos uma resposta.';
 $string['nounitdisplay'] = 'Sem classificação da unidade';
 $string['numericalmultiplier'] = 'Multiplicador';
 $string['numericalmultiplier_help'] = 'O multiplicador é o fator pelo qual a resposta numérica correta será multiplicado.
-
 A primeira unidade (Unidade 1) tem um padrão multiplicador de 1, assim, se a resposta numérica correta é 5500 e você definir W como unidade na Unidade 1, que tem como 1 como multiplicador padrão, a resposta correta é 5500 W.
-
 Se você adicionar a unidade de kW com um multiplicador de 0,001, isto irá resultar em uma resposta correta 5,5 kW. Isto significa que tanto as respostas 5500W, como 5.5kW serão consideradas corretas.
-
 Note-se que a margem de erro também é aceita, logo um erro permitido de 100W passa a ser um erro de 0.1kW.';
 $string['oneunitshown'] = 'Unidade 1 é automaticamente exibida ao lado da caixa de resposta.';
 $string['onlynumerical'] = 'Unidades não são usadas. Apenas valores numéricos são avaliados.';
 $string['pleaseenterananswer'] = 'Por favor digite uma resposta.';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Por favor digite uma resposta sem o separador de milhar ({$a}).';
 $string['pluginname'] = 'Numérico';
+$string['pluginname_help'] = 'Na perspectiva do aluno, uma questão numérica parece exatamente uma pergunta de resposta curta. A diferença é que as respostas numéricas têm permissão de ter uma margem de erro. Isso permite um intervalo fixo de respostas a ser avaliada como uma resposta. Por exemplo, se a resposta é 10, com uma margem de erro 2, então qualquer número entre 8 e 12 serão aceitos como corretos.';
 $string['pluginnameadding'] = 'Adicionando uma pergunta numérica';
 $string['pluginnameediting'] = 'Editando uma pergunta Numérica';
-$string['pluginname_help'] = 'Na perspectiva do aluno, uma questão numérica parece exatamente uma pergunta de resposta curta. A diferença é que as respostas numéricas têm permissão de ter uma margem de erro. Isso permite um intervalo fixo de respostas a ser avaliada como uma resposta. Por exemplo, se a resposta é 10, com uma margem de erro 2, então qualquer número entre 8 e 12 serão aceitos como corretos.
-';
 $string['pluginnamesummary'] = 'Permite uma resposta numérica, possivelmente com unidades, que é avaliada pela comparação com vários modelos de respostas, possivelmente com tolerâncias.';
 $string['relative'] = 'Relativo';
 $string['rightexample'] = 'á direita, por exemplo 1.00cm ou 1.00km';
@@ -91,15 +87,12 @@ $string['unitoptional_help'] = '* Se o campo unidade não estiver vazio, a respo
 * Se a unidade for mal escrita ou desconhecida, a resposta será considerada como não válida.';
 $string['unitpenalty'] = 'Penalidade de unidade';
 $string['unitpenalty_help'] = 'A penalidade é aplicada se:
-
 * o nome da unidade errada for digitada
 * O nome da unidade é indicado no elemento de resposta \'Número\'';
 $string['unitposition'] = 'Unidades aparecem';
 $string['unitselect'] = 'um menu de opções';
 $string['validnumberformats'] = 'Formatos válidos de números';
 $string['validnumberformats_help'] = '* números regulares 13500.67 : 13 500.67 : 13500,67: 13 500,67
-
 * se você utilizar vírgula (,) como separador de milhares, SEMPRE utilize ponto (.) como separador de decimais, como em 13,500.67 : 13,500.
-
 * para formato de expoente para 1.350067 * 10<sup>4</sup>, use 1.350067 E4 : 1.350067 E04';
 $string['validnumbers'] = '13500.67, 13 500.67, 13,500.67, 13500,67, 13 500,67, 1.350067 E4 ou 1.350067 E04';

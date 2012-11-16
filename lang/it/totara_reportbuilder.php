@@ -279,198 +279,120 @@ $string['report:startdate'] = 'Data di inizio';
 $string['reportbuilder'] = 'Creazione di report';
 $string['reportbuilder:managereports'] = 'Crea, modifica ed elimina i report della creazione di report';
 $string['reportbuilderaccessmode_help'] = '# Modalità di accesso
-
 I controlli di accesso sono usati per limitare quali utenti possono visualizzare il report.
-
 **Restringi accesso** imposta l\'impostazione di accesso complessiva per il report.
-
 Quando impostato su **Tutti gli utenti possono visualizzare questo report** non ci sono restrizioni applicate al report e tutti gli utenti sono in grado di visualizzare il report.
-
 Quando impostata su **Solo alcuni utenti possono visualizzare questo report** il report viene limitato ai gruppi di utenti selezionati di seguito.
-
 **Nota:** le restrizioin di accesso controllano soltanto chi può visualizzare il report, non quali record esso contiene. Vedere la scheda \'Contenuti\' per il controllo dei contenuti del report.';
 $string['reportbuilderbaseitem_help'] = '# Costruttore di report: elemento comune
-
 Se si raggruppa un set di attività si considera che abbiano qualcosa in comune che permette di generare i report per tutte le attività in un gruppo. L\'elemento di base definisce le proprietà che sono considerata quando viene eseguita l\'aggregazione su ciascun membro del gruppo.';
 $string['reportbuildercolumns_help'] = '# Colonne
-
 **Colonne di report** consente di personalizzare le colonne che sono visualizzate sul report. Le colonne disponibili sono determinate dai dati**Origine** del report. Ciascuna origine di report ha un set di colonne predefinite.
-
 Le colonne possono essere aggiunte, rimosse, rinominate e ordinate.
-
 **Aggiunta di colonne:** Per aggiungere una nuova colonna al report scegliere la colonna richiesta dal menu a discesa \'Aggiungi un\'altra colonna...\' e fare clic su **Salva modifiche**. La nuova colonna viene aggiunta alla fine dell\'elenco.
-
 **Nota:** è possibile creare soltanto una colonna per ciascun tipo all\'interno di un report. L\'utente riceve un errore di report di convalida se cerca di includere la stessa colonna più di una volta.
-
 **Nascondere le colonne:** per impostazione predefinita, tutte le colonne sono visualizzate quando un utente visualizza il report. Usare il pulsante \'mostra/nascondi\' (l\'icona dell\'occhio) per nascondere le colonne che non si vogliono mostrare agli utenti per impostazione predefinita.
-
 **Nota:** Una colonna nascosta è comunque disponibile all\'utente per visualizzare il report. Eliminare le colonne (l\'icona della croce) che non si vogliono mostrare agli utenti.
-
 **Spostare le colonne:** Le colonne sono visualizzate sul report nell\'ordinte in cui sono elencate. Usare le frecce su e giù per modificare l\'ordine.
-
 **Eliminare le colonne:** Fare clic sul pulsante \'Elimina\' (l\'icona della croce) a destra della colonna di report per eliminare la colonna dal report.
-
 **Ridenominare le colonne:** E\' possibile personalizzare il nome di una colonna modificando il nome di **Titolo** e facendo clic su **Salva modifiche**. Il **Titolo** è il nome che viene visualizzato sul report.
-
 **Modificare più tipi di colonna:** E\' possibile modificare più tipi di colonna allo stesso tempo selezionando un\'altra colonna dal menu a discesa e facendo clic su **Salva modifiche**.';
 $string['reportbuildercompletedorg_help'] = '# Mostra per organizzazione completata
-
 Quando **Mostra record completati nell\'organizzazione utente** è selezionato, il report visualizza diversi record completati in base all\'organizzazione cui l\'utente è stato assegnato. (L\'utente è assegnato a un\'organizzazione in \'Profilo utente\' della scheda \'Posizioni\').
-
 Quando **Includi record dalle organizzazioni secondarie** è impostato su:
-
-*   **Si** l\'utente che visualizza il report è in grado di visualizzare i record completati in base alla loro organizzazione e tutte le organizzazioni secondarie della stessa
-*   **No** l\'utente può visualizzare soltanto i record completati relativi alla loro organizzazione.';
+\* **|Si** l\'utente che visualizza il report è in grado di visualizzare i record completati in base alla loro organizzazione e tutte le organizzazioni secondarie della stessa
+\* **|No** l\'utente può visualizzare soltanto i record completati relativi alla loro organizzazione.';
 $string['reportbuildercontentmode_help'] = '# Modalità di contenuto
-
 I controlli di contenuto permettono di restringere i record e le informazioni che sono disponibili quando viene visualizzato un report.
-
 **Contenuto di report** permette di selezionare le impostazioni di contenuto generali per questo report:
-
 Quando **Mostra tutti i record** è selezionato, tutti i record disponibili per questa sorgente sono mostrati e non sono imposte restrizioni sul contenuto disponibile.
-
 Quando **Mostra i record che corrispondono a uno dei criteri selezionati** è selezionato, il report visualizza i record che corrispondono a uno dei criteri impostati di sotto.
-
 **Nota:** Se non viene impostato alcun criterio il report non visualizza alcun record.
-
 Quando **Mostra i record che corrispondono a tutti i criteri selezionati** è selezionato, il report visualizza i record che corrispondono a tutti i criteri definiti di sotto.
 **Nota:** Se non è impostato alcun criterio il report non visualizza alcun record.';
 $string['reportbuildercontext_help'] = '# Restrizione di accesso per ruolo
-
 Il contesto è la posizione o il livello di sistema cui l\'utente ha accesso. Ad esempio, un Amministratore di sito ha accesso di livello Sistema (contesto), mentre uno studente potrebbe avere soltanto un accesso a livello di Corso (contesto).
-
 **Contesto** permette di impostare il contesto in cui un utente è stato assegnato a un ruolo per visualizzare il report.
-
 Un utente può essere assegnato a un ruole a livello di sistema che gli dà amplio accesso o soltanto accesso a un particolare contesto. Ad esempio, un formatore potrebbe essere assegnato solo al ruolo di livllo di corso.
-
 Quando **Gli utenti devono avere un ruolo nel contesto di sistema** è selezionato, l\'utente deve essere assgnato a un ruolo a livello di sistema(ad es. a livello di sito) per essere in grado di visualizzare il report.
-
 Quando **L\'utente può avere un ruolo in un contesto qualsiasi** è selezionato, un utente può visualizzare il report quando sono assegnati al ruolo selezionato in un punto qualsiasi del sistema.';
 $string['reportbuildercoursetag_help'] = '# Costruttore di report: mostra per tag di corso
-
 Questo criterio è abilitato selezinando la casella di controllo \'Mostra record per tag di corso\'. Se selezionata, il report mostra i risultati in base al fatto che il record appartenga a un corso che è contrassegnato con un tag particolare.
-
 Se i tag nella sezione \'Includi record con tag\' sono selezionati, soltanto i record che appartengono a un corso contrassegnato con tutti i tag selezionati sarà mostrato. I record che appartengono ai corsi senza tag **non** saranno visualizzati.
-
 Se i tag nella sezione \'Esclusi i record con tag\' sono selezionati, i record che appartentono a un corso contrassegnato con i taga selezionati **non** sono visualizzti. Tutti i record che appartengono ai corsi senza tag sarannno visualizzati.';
 $string['reportbuildercurrentorg_help'] = '# Mostra per organizzazione corrente
-
 Quando **Mostra record dallo staff nell\'organizzazione dell\'utente** è selezionato, il report visualizza diversi risultati in base all\'organizzazione cui l\'utente è assegnato. (Un utente è assegnato a un\'organizzazione nel \'Profilo utente\' della scheda \'Posizioni\').
-
 Quando **Includi record dalle organizzazioni secondarie** è impostato su:
-
-*   **Si** l\'utente che visualizza il report è in grado di visualizzare i record relativi all\'organizzazione e alle organizzazioni secondarie della medesima
-*   **No** l\'utente è in grado di visualizzare soltanto i record relativi alla loro organizzazione.';
+\* **|Si** l\'utente che visualizza il report è in grado di visualizzare i record relativi all\'organizzazione e alle organizzazioni secondarie della medesima
+\* **|No** l\'utente è in grado di visualizzare soltanto i record relativi alla loro organizzazione.';
 $string['reportbuildercurrentpos_help'] = '# Mostra per posizione corrente
-
 Quando **Mostra record dallo staff nella posizione dell\'utente** è selezionato, il report visualizza diversi record in base alla loro posizione asseganta (Un utente è asseganto a una posizione in \'Profilo utente\' della scheda \'Posizioni\').
-
 Quando **Includi i record dalle posizioni secondarie** è impostato su:
-
-*   **Si** l\'utnete che visualizza il report può visualizzare i record relativi alle loro posizioni e alle posizioni secondarie delle medesime
-*   **No** l\'utente che visualizza il report può visualizzare soltanto i record relativi alle loro posizioni.';
+\* **|Si** l\'utnete che visualizza il report può visualizzare i record relativi alle loro posizioni e alle posizioni secondarie delle medesime
+\* **|No** l\'utente che visualizza il report può visualizzare soltanto i record relativi alle loro posizioni.';
 $string['reportbuilderdate_help'] = '# Mostra per data
-
 Quando **Mostra record in base alla data del record** è selezionatol il report visualizza soltanto i record nell\'arco temporale selezionato.
-
 Le opzioni **Includi record da** permettono di impostare l\'arco temporale per il report:
-
-*   Quando impostato su **Passato** il report mostra soltanto i record con una data precedente alla corrente.
-*   Quando impostato su **Futuro** il report mostra soltanto i record con una data futura rispetto alla corrente.
-*   Quando impostato su **Gli ultimi 30 giorni** il report mostra soltanto i record fra la data corrente e i 30 giorni precedenti.
-*   Quando impostato su **I prossimi 30 giorni** il report mostra soltanto i record fra la data corrente e i 30 giorni in futuro.';
+* Quando impostato su **Passato** il report mostra soltanto i record con una data precedente alla corrente.
+* Quando impostato su **Futuro** il report mostra soltanto i record con una data futura rispetto alla corrente.
+* Quando impostato su **Gli ultimi 30 giorni** il report mostra soltanto i record fra la data corrente e i 30 giorni precedenti.
+* Quando impostato su **I prossimi 30 giorni** il report mostra soltanto i record fra la data corrente e i 30 giorni in futuro.';
 $string['reportbuilderdescription_help'] = '# Descrizione
-
 Quando una descrizione di report viene creata, le informazioni sono visualizzate in un riquadro al di sopra dei filtri di ricerca sulla pagina del report.';
 $string['reportbuilderdialogfilter_help'] = '# Costruttore di report: filtro di dialogo
-
 Questo filtro consente di filtrare le informazioni in base a una gerarchia. Il filtro ha le seguenti opzioni:
-
-*   è un valore qualsiasi - questa opzione disabilita il filtro (ad es. tutte le informazioni sono accettate dal filtro)
-*   è un valore uguale a - questa opzione permette soltanto le informazioni che sono uguali al valore selezionato dall\'elenco
-*   non è uguale a - questa opzione permette soltanto le informazioni che sono diverse dal valore selezionato nell\'elenco';
+* è un valore qualsiasi - questa opzione disabilita il filtro (ad es. tutte le informazioni sono accettate dal filtro)
+* è un valore uguale a - questa opzione permette soltanto le informazioni che sono uguali al valore selezionato dall\'elenco
+* non è uguale a - questa opzione permette soltanto le informazioni che sono diverse dal valore selezionato nell\'elenco';
 $string['reportbuilderexportoptions_help'] = '# Impostazioni di esportazione dei report
-
 **Le impostazioni di esportazione dei report** permettono a un utente con le autorizzazioni adeguate di specificare le opzioni di esportazione che sono disponibili per gli utenti in fondo alla pagina del report. Questa impostazione ha effetto su tutti i report **Costruttore di report**.
-
 Quando sono selezionate più opzioni, l\'utente può scegliere le opzioni preferite dal menu a discesa di esportazione.
-
 Se non sono selezionate opzioni, la funzione di esportazione è disabilitata..';
 $string['reportbuilderfilters_help'] = '# Opzioni di ricerca (Filtri)
-
 **Le Opzioni di ricerca** permettono di personalizzare i filtri che sono visualizzati sul report. I filtri disponibili sono determinati da **Origine** del report. Ogni Origine di report ha un set di filtri predefiniti.
-
 E\' possibile aggiungere, ordinare ed eliminare i filtri.
-
 **Aggiungere i filtri:** Per aggiungere un nuovo filtro al report scegliere il filtro ricihesto dal menu a discesa \'Aggiungi un altro filtro...\' e fare clic su **Salva modifiche**. Quando **Avanzato** è selezionato, il filtro non viene visualizzato nel riquadro \'Ricerca per\' per impostazione predefinita, e l\'utente può fare clic su **Mostra avanzate** per visualizzare questi filtri.
-
 **Spostare i filtri:** I filtri sono visualizzati nel riquadro \'Ricerca per\' nell\'ordine in cui sono elencati. Usare le frecce su e giù per modificare l\'ordine.
-
 **Eliminare i filtri:** Fare clic sul pulsante **Elimina** (l\'icona della croce) a destra del filtro del report per eliminare il filtro dal report.
-
 **Modificare più tipi di filtro:** E\' possibile modificare più tipi di filtro allo stesso tempo selezionando un filtro diverso dal menu a discesa e facendo clic su **Salva modifiche**.';
 $string['reportbuilderfullname_help'] = '# Nome di report
-
 E\' il nome che viene visualizzato nella parte superiore della pagina di report e nel blocco \'Gestione di report\'.';
 $string['reportbuilderglobalsettings'] = 'Impostazioni globali della creazione di report';
 $string['reportbuildergroupname_help'] = '# Costruttore di report: nome di gruppo
-
 Il nome del gruppo. Questo permette di identificare il gruppo quando si desidera creare un nuovo report basato sul medesimo. Cercare il nome nel menu a discesa di origine del report.';
 $string['reportbuildergrouptag_help'] = '# Costruttore di report: tag di gruppo
-
 Quando si crea un gruppo usando un tag, tutte le attività che sono contrassegnate con il tag ufficiale specificato automaticamente formano parte del gruppo. Se si aggiungono o eliminano i tag da un\'attività, il gruppo viene aggiornato per includere/escludere quell\'attività.';
 $string['reportbuilderhidden_help'] = '# Nascondi nei Report personali
-
 Quando **Nascondi nei Report personali** è selezionato il report non viene visualizzato sulla pagina \'Report personali\' a tutti gli utenti che hanno accesso al sito.
-
 **Nota:** l\'opzione **Nascondi nei Report personali** nasconde soltanto il link al report. Gli utenti con le autorizzazioni di accesso possono comunque accedere al report usando l\'URL.';
 $string['reportbuilderrecordsperpage_help'] = '# Numero di record per pagina
-
 **Numero di record per pagina** consente di definire il numero di record visualizzati sulla pagina di un report.
-
 Il numero massimo di record che può essere visualizzato su una pagina è di 5000. Più record sono visualizzati su una pagina, maggiore sarà il tempo di visualizzazione del report.
-
 Si raccomanda di **limitare il numero di record per pagina a 40**.';
 $string['reportbuilderrolesaccess_help'] = '# Ruoli con accesso
-
 Quando **Restringi accesso** è impostato su **Solo alcuni utenti possono visualizzare questo report** è possibile specificare i ruoli che il report può visualizzare in **Ruoli con autorizzazione per visualizzare il report**.
-
 E\' possibile selezionare uno o più ruoli dall\'elenco.
-
 Quando **Limita l\'accesso** è impostato su **Tutti gli utenti possono visualizzare questo report** tali opzioni sono disabilitate.';
 $string['reportbuildershortname_help'] = '# Costruttore di report: nome unico
-
 Il nome abbreviato è usato da moodle per tenere traccia di questo report. Non ci sono due report con lo stesso nome, anche se hanno la stessa sorgente. Si raccomanda di non utilizzare caratteri speciali in questo campo (testo, numeri e underscore vanno bene).';
 $string['reportbuildersorting_help'] = '# Ordinamento
-
 **L\'Ordinamento** permette di impostare una colonna predefinita e di ordinare un report.
-
 Un utente è in grado di ordinare manualmente un report mentre lo visualizza. Le preferenze dell\'utente sono salvate durante la sessione attiva. Al termine della sessione, il report viene riportato alle impostazioni di ordinamento predefinite qui.';
 $string['reportbuildersource_help'] = '# Sorgente
-
 La **Sorgente** è un report che definisce il tipo primario di dati utilizzati. Sono disponibli altre opzioni di filtro dopo aver iniziato la modifica del report.
-
 Una volta salvato, la sorgente del report non può essere modificata.
-
 **Nota:** se non sono disponibili opzioni nel campo **Sorgente** o se la sorgente richiesta non viene visualizzata occorre configurare l\'installazione Totara per includere i dati di sorgenti richiesti (Questo non può essere fatto dall\'interfaccia Totara).';
 $string['reportbuildertrainer_help'] = '# Costruttore di report: mostra per formatore
-
 Questo criterio è abilitato selezionando la casella di controllo \'Mostra record per fomatore\'. Se selezionato, il report mostra diversi record in base a chi era il formatore in aula per il feedback dato.
-
 Se \'Mostra record dove l\'utente è il formatore\' è selezionato, il report mostra il feedback per le sessioni in cui l\'utente che visualizza il report era il formatore.
-
 Se \'Record in cui uno dei report diretti dell\'utente è il formatore\' è selezionato, il report mostra i record per le sessioni formate dal staff della persona che visualizza il report.
-
 Se \'Entrambi\' è selezionato, entrambi i record di sopra sono visualizzati.';
 $string['reportbuilderuser_help'] = '# MOstra per utente
-
 Quando **Mostra records per utente** è selezionato, il report mostra diversi record in base all\'utente che visualizza il report e la loro relazione con gli altri utenti.
-
 **Includi i record da un particolare utente** controlla quali record un utente che visualizza il report può vedere:
-
-*   Quando impostato su **I record personali dell\'utente** l\'utente può visualizzare soltanto i propri record.
-*   Quando impostato su **Record dai reporti diretti dell\'utente** l\'utente può visualizzare i record che appartengono a un utente che fa loro un report (un utente è assegnato a un manager nel profilo utente della scheda \'Posizioni\').
-*   Quando impostato su **Entrambi** l\'utente può visualizzare i propri record e quelli dei loro report diretti.';
+* Quando impostato su **I record personali dell\'utente** l\'utente può visualizzare soltanto i propri record.
+* Quando impostato su **Record dai reporti diretti dell\'utente** l\'utente può visualizzare i record che appartengono a un utente che fa loro un report (un utente è assegnato a un manager nel profilo utente della scheda \'Posizioni\').
+* Quando impostato su **Entrambi** l\'utente può visualizzare i propri record e quelli dei loro report diretti.';
 $string['reportcolumns'] = 'Colonne di report';
 $string['reportconfirmdelete'] = 'Si desidera eliminare questo report?';
 $string['reportconfirmreload'] = 'Questo è un report integrato che non è possibile eliminare. Questo deve essere fatto dallo sviluppatore di sito. Si può scegliere di ridefinire le impostazioni di report ai valori originali. Continuare?';

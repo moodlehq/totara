@@ -39,22 +39,17 @@ $string['alreadyfirstpost'] = 'Tämä on jo keskustelun ensimmäinen viesti';
 $string['anyfile'] = 'Mikä tahansa tiedosto';
 $string['attachment'] = 'Liite';
 $string['attachment_help'] = 'Voit lisätä yhden tai useamman liitetiedoston viestiisi. Jos lisäät kuvan, se näytetään tekstisi jälkeen.
-
 Tästä ominaisuudesta on hyötyä, kun haluat jakaa tiedostoja kaikkien osallistujien kesken. Keskustelualuetta voikin hyvin käyttää kurssituotosten palautukseen, niistä keskusteluun ja myös niiden arviointiin, näin halutessasi.
-
 Liitetiedostot voivat olla minkä tyyppisiä tahansa. Suositeltavaa on kuitenkin, että tiedostot nimetään käyttäen kolmikirjaimisia tiedostopäätteitä, kuten .doc Word -asiakirjoissa ja .jpg tai .png kuvissa. Näin toisten kurssilaisten on helpointa avata ja katsoa liitettäsi omalla selaimellaan.';
 $string['attachmentnopost'] = 'Et voi viedä liitteitä ilman viestin id:tä';
 $string['attachments'] = 'Liitteet';
 $string['blockafter'] = 'Postituksen raja';
 $string['blockafter_help'] = 'Tällä asetuksella määrittelet yhden osallistujan kirjoittamien viestien enimmäismäärän seuraavaksi määrittelemäsi ajanjakson aikana.';
 $string['blockperiod'] = 'Ajanjakso';
-$string['blockperiod_help'] = '<h2>Postituksen rajoittaminen</h2>
-
-<p>Postituksen rajoittamisen idea on yksinkertainen: käyttäjältä estetään viestien lähettäminen keskustelualueelle valitun viestimäärän jälkeen, valitulla ajanjaksolla, ja tätä rajaa lähestyessään käyttäjä saa varoitusviestin aiheesta.</p>
-
-<p>Asettamalla varoituksen rajan 0:ksi kytkeytyy varoitusviesti pois käytöstä, ja asettamalla postitusrajan 0:ksi kytkeytyy viestien rajoitus pois käytöstä. Jos viestien rajoitus on pois käytöstä, varoituskin automaattisesti on.</p>
-
-<p>Mikään näistä asetuksista ei rajoita opettajien viestien lähettämistä.</p>';
+$string['blockperiod_help'] = '## Postituksen rajoittaminen
+Postituksen rajoittamisen idea on yksinkertainen: käyttäjältä estetään viestien lähettäminen keskustelualueelle valitun viestimäärän jälkeen, valitulla ajanjaksolla, ja tätä rajaa lähestyessään käyttäjä saa varoitusviestin aiheesta.
+Asettamalla varoituksen rajan 0:ksi kytkeytyy varoitusviesti pois käytöstä, ja asettamalla postitusrajan 0:ksi kytkeytyy viestien rajoitus pois käytöstä. Jos viestien rajoitus on pois käytöstä, varoituskin automaattisesti on.
+Mikään näistä asetuksista ei rajoita opettajien viestien lähettämistä.';
 $string['blockperioddisabled'] = 'Rajoitus ei käytössä';
 $string['blogforum'] = 'Normaali keskustelualue näytetään blogimaisessa muodossa';
 $string['bynameondate'] = '{$a->name} - {$a->date}';
@@ -197,21 +192,14 @@ $string['forumsubjecthidden'] = 'Otsikko (piilotettu)';
 $string['forumtracked'] = 'Uusia viestejä seurataan';
 $string['forumtrackednot'] = 'Uusia viestejä ei seurata';
 $string['forumtype'] = 'Keskustelualueen tyyppi';
-$string['forumtype_help'] = '<h2>Keskustelualueet</h2>
-
-<p>Vaihtoehtoina on valikoima erilaisia keskustelualueita:</p>
-
-<p><b>Yksi keskustelu</b> - vain yksittäinen aihe, joka on kokonaisuudessaan yhdellä sivulla. Käyttökelpoinen lyhyissä, tarkasti rajatuissa keskusteluissa.</p>
-
-<p><b>Keskustelualue yleiseen käyttöön</b> - avoin keskustelualue, jossa kuka tahansa voi aloittaa uuden keskustelunaiheen milloin tahansa. Tämä on paras vaihtoehto yleiskäyttöön.</p>
-
-<p><b>Jokainen avaa yhden uuden keskustelun </b> - Jokainen voi lähettää tasan yhden uuden keskustelunaiheen (kaikki voivat kuitenkin vastata jokaiseen). Tämä vaihtoehto on käytännöllinen, jos haluat, että jokainen opiskelija aloittaa uuden keskustelun esim. siitä, millaisia ajatuksia viikon aihe on heissä herättänyt, ja kaikki muut vastaavat.</p>
-
-<p><b>Kysymys- ja vastausalue</b> - vaatii opiskelijoilta oman viestin ennen kuin he pääsevät näkemään muiden opiskelijoiden viestejä. Ensimmäisen viestinsä jälkeen opiskelijat voivat lukea muiden opiskelijoiden viestejä ja vastata niihin. Tämä ominaisuus mahdollistaa kaikille osallistujille yhtäläisen mahdollisuuden tuottaa oma alustuksensa, kannustaen itsenäiseen ajatteluun.</p>
-
-<p>Blogi-tyyppinen keskustelu - avoin keskustelualue, jonka keskusteluaiheet listataan yhdellä sivulla ja kussakin on linkki "keskustele tästä aiheesta".</p>
-
-<p>Lisäksi kullakin kurssialueella on keskustelualue <b>Uutiset</b>, jolle vain opettajat voivat kirjoittaa ja viestit pakotetaan kaikkien osallistujien sähköpostiin.</p>';
+$string['forumtype_help'] = '## Keskustelualueet
+Vaihtoehtoina on valikoima erilaisia keskustelualueita:
+**Yksi keskustelu** - vain yksittäinen aihe, joka on kokonaisuudessaan yhdellä sivulla. Käyttökelpoinen lyhyissä, tarkasti rajatuissa keskusteluissa.
+**Keskustelualue yleiseen käyttöön** - avoin keskustelualue, jossa kuka tahansa voi aloittaa uuden keskustelunaiheen milloin tahansa. Tämä on paras vaihtoehto yleiskäyttöön.
+**Jokainen avaa yhden uuden keskustelun ** - Jokainen voi lähettää tasan yhden uuden keskustelunaiheen (kaikki voivat kuitenkin vastata jokaiseen). Tämä vaihtoehto on käytännöllinen, jos haluat, että jokainen opiskelija aloittaa uuden keskustelun esim. siitä, millaisia ajatuksia viikon aihe on heissä herättänyt, ja kaikki muut vastaavat.
+**Kysymys- ja vastausalue** - vaatii opiskelijoilta oman viestin ennen kuin he pääsevät näkemään muiden opiskelijoiden viestejä. Ensimmäisen viestinsä jälkeen opiskelijat voivat lukea muiden opiskelijoiden viestejä ja vastata niihin. Tämä ominaisuus mahdollistaa kaikille osallistujille yhtäläisen mahdollisuuden tuottaa oma alustuksensa, kannustaen itsenäiseen ajatteluun.
+Blogi-tyyppinen keskustelu - avoin keskustelualue, jonka keskusteluaiheet listataan yhdellä sivulla ja kussakin on linkki "keskustele tästä aiheesta".
+Lisäksi kullakin kurssialueella on keskustelualue **Uutiset**, jolle vain opettajat voivat kirjoittaa ja viestit pakotetaan kaikkien osallistujien sähköpostiin.';
 $string['generalforum'] = 'Keskustelualue yleiseen käyttöön';
 $string['generalforums'] = 'Yleiset keskustelualueet';
 $string['inforum'] = '{$a} :ssa';
@@ -239,9 +227,8 @@ $string['markunreadbutton'] = 'Merkitse<br />lukemattomaksi';
 $string['maxattachments'] = 'Liitetiedostojen maksimimäärä';
 $string['maxattachments_help'] = 'Tällä asetuksella määrittelet yhteen keskusteluviestiin lisättävien liitetiedostojen enimmäismäärän.';
 $string['maxattachmentsize'] = 'Liitteen maksimikoko';
-$string['maxattachmentsize_help'] = '<h2>Liitetiedoston maksimikoko</h2>
-
-<P>Keskustelualueen perustaja voi määritellä liitetiedostoille maksimikoon tai estää halutessaan liitetiedostojen lataamisen.</p>';
+$string['maxattachmentsize_help'] = '## Liitetiedoston maksimikoko
+Keskustelualueen perustaja voi määritellä liitetiedostoille maksimikoon tai estää halutessaan liitetiedostojen lataamisen.';
 $string['maxtimehaspassed'] = 'Valitettavasti suurin sallittu muokkausaika on ylittynyt tämän ({$a}) viestin osalta!';
 $string['message'] = 'Viesti';
 $string['messageprovider:digests'] = 'Tilatut keskustelutiivistelmät';
@@ -345,25 +332,15 @@ $string['resetforumsall'] = 'Poista kaikki viestit';
 $string['resetsubscriptions'] = 'Poista keskustelualueen tilaukset';
 $string['resettrackprefs'] = 'Poista kaikki keskustelualueen seurannan asetukset';
 $string['rssarticles'] = 'Viimeisimpien RSS-viestien määrä';
-$string['rssarticles_help'] = '<P ALIGN=CENTER><B>Viimeisimpien merkintöjen määrä</B></P>
-
-<P>Tässä voit valita kuinka monta viestiä haluat ottaa mukaan uutissyötteeseen.
-
-
-<P>Useimmille keskustelualueille riittää 5-20 viestiä. Määrää kannattaa suurentaa, jos keskustelualuetta käytetään paljon.';
+$string['rssarticles_help'] = 'Tässä voit valita kuinka monta viestiä haluat ottaa mukaan uutissyötteeseen.
+Useimmille keskustelualueille riittää 5-20 viestiä. Määrää kannattaa suurentaa, jos keskustelualuetta käytetään paljon.';
 $string['rsssubscriberssdiscussions'] = 'Näytä keskustelueen uutissyöte';
 $string['rsssubscriberssposts'] = 'Näytä alueen "{$a}" viestien uutissyöte';
 $string['rsstype'] = 'Tämän aktiviteetin syöte';
-$string['rsstype_help'] = '<P ALIGN=CENTER><B>Uutissyöte tältä keskustelualueelta</B></P>
+$string['rsstype_help'] = 'Voit valita kahden eri uutissyötteen väliltä:
 
-<P>Voit valita kahden eri uutissyötteen väliltä:</p>
-
-<UL>
-<LI><B>Keskustelut:</B> Tätä käytettäessä syötteeseen otetaan mukaan keskustelualueille aloitetut uudet keskustelut.</li>
-
-
-<LI><B>Viestit:</B> Tätä käytettäessä syötteeseen otetaan mukaan kaikki keskustelualueelle tulleet uudet viestit. </li>
-</UL>';
+* **Keskustelut:** Tätä käytettäessä syötteeseen otetaan mukaan keskustelualueille aloitetut uudet keskustelut.
+* **Viestit:** Tätä käytettäessä syötteeseen otetaan mukaan kaikki keskustelualueelle tulleet uudet viestit.';
 $string['search'] = 'Etsi';
 $string['searchdatefrom'] = 'Viestien on oltava tätä uudempia';
 $string['searchdateto'] = 'Viestien on oltava tätä vanhempia';
@@ -396,24 +373,10 @@ $string['subscribersto'] = 'Tilaa \'{$a}\'';
 $string['subscribestart'] = 'Lähetä sähköpostiini kopiot viesteistä tälle keskustelualueelle';
 $string['subscribestop'] = 'En halua kopioita tälle keskustelualueelle lähetetyistä viesteistä';
 $string['subscription'] = 'Tilaus';
-$string['subscription_help'] = '<h2>Keskustelualueen tilaaminen</h2>
-
-<p>Keskustelualueen tilaaminen merkitsee sitä, että tilaajalle lähetetään sähköpostilla kopio jokaisesta kyseiseen foorumiin lähetettävästä viestistä. Viestit lähetetään <?PHP echo $CFG->maxeditingtime/60 ?> minuuttia sen jälkeen kuin kirjoittaja on ne laatinut. Tuon ajan sisään kirjoittajalla on myös mahdollista muokata viestiään siten, että muokkaus ehtii lähteviin sähköposteihin.</p>
-
-<p>Tavallisesti osallistuja voi valita, tilaako hän keskustelualueen vai ei. Jos opettaja kuitenkin edellyttää tietyn keskustelualueen tilaamisen, tämä valintamahdollisuus ei päde, vaan jokainen kurssilainen saa sähköpostikopiot. Pakotettu tilaus sopii erityisen hyvin Uutisiin, ja muillekin keskustelualueille kurssin alussa, ennen kuin kaikille on selvää, että he voivat tilata näitä sähköposteja itse.</p>';
 $string['subscriptionauto'] = 'Automaattitilaus';
 $string['subscriptiondisabled'] = 'Tilaus pois päältä';
 $string['subscriptionforced'] = 'Pakotettu tilaus';
 $string['subscriptionmode'] = 'Tilauksen tila';
-$string['subscriptionmode_help'] = '<h2>Keskustelualueen tilaaminen</h2>
-
-<P>Keskustelualueen tilaaminen merkitsee sitä, että tilaajalle lähetetään sähköpostilla kopio jokaisesta kyseiselle keskustelualueelle lähetettävästä viestistä (viestit lähetetään <?PHP echo $CFG->maxeditingtime/60 ?> minuuttia sen jälkeen kuin kirjoittaja on ne laatinut).</P>
-
-<P>Tyypillisesti kurssialueen osallistujien annetaan valita, haluaako hän tilata keskustelualueen vai ei. Joskus on kuitenkin syytä pakottaa osallistujat tietyn keskustelualueen tilaamiseen, jolloin kaikki käyttäjät liitetään sen tilaajiksi automaattisesti. Tämä vaihtoehto sopii erityisen hyvin Uutisille ja keskustelualueisiin kurssin alussa, ennen kuin kaikille on selvää, että he voivat tilata näitä sähköposteja itse.</P>
-
-<p>Jos valitset vaihtoehdon "<strong>Kyllä, aluksi</strong>", kaikki nykyiset ja tulevat käyttäjät liitetään tilaajiksi automaattisesti, mutta he voivat perua tilauksen koska tahansa. Jos valitset "<strong>Kyllä, pysyvästi</strong>", käyttäjät eivät voi itse perua tilausta.</p>
-
-<p>Huomaa kuinka "Kyllä, aluksi" -vaihtoehto toimii olemassa olevaa keskustelualuetta päivitettäessä: vaihdettaessa "Kyllä, aluksi" vaihtoehdosta vaihtoehtoon "Ei", olemassa olevia tilaajia ei poisteta, vaan valinta vaikuttaa vain tuleviin käyttäjiin. Samoin jos myöhemmin valitsee "Kyllä, aluksi", vaikuttaa sekin vain tuleviin käyttäjiin eikä kurssilla jo oleviin.</p>';
 $string['subscriptionoptional'] = 'Valinnainen tilaus';
 $string['subscriptions'] = 'Tilaukset';
 $string['thisforumisthrottled'] = 'Keskustelualueelle lähetettävien viestien määrää on rajoitettu. Voit lähettää {$a->blockafter} viestiä {$a->blockperiod}';
@@ -425,16 +388,12 @@ $string['trackingoff'] = 'Pois päältä';
 $string['trackingon'] = 'Päällä';
 $string['trackingoptional'] = 'Valinnainen';
 $string['trackingtype'] = 'Luettujen viestien seuranta';
-$string['trackingtype_help'] = '<h2>Luettujen viestien seuranta</h2>
-
-<p>Jos luettujen viestien seuranta on päällä, keskustelualueen viesteistä näytetään osallistujan lukemat ja lukemattomat viestit. Halutessaan opettaja voi pakottaa viestien seurannan päälle.</p>
-
-<p>Asetuksella on kolme vaihtoehtoa:</p>
-<ul>
-<li> Valinnainen [oletus]: osallistujat voivat laittaa asetuksen päälle tai pois mielensä mukaan.</li>
-<li>Päällä: Seuranta on aina päällä.</li>
-<li>Pois päältä: Seuranta on aina pois päältä.</li>
-</ul>';
+$string['trackingtype_help'] = '## Luettujen viestien seuranta
+Jos luettujen viestien seuranta on päällä, keskustelualueen viesteistä näytetään osallistujan lukemat ja lukemattomat viestit. Halutessaan opettaja voi pakottaa viestien seurannan päälle.
+Asetuksella on kolme vaihtoehtoa:
+* Valinnainen [oletus]: osallistujat voivat laittaa asetuksen päälle tai pois mielensä mukaan.
+* Päällä: Seuranta on aina päällä.
+* Pois päältä: Seuranta on aina pois päältä.';
 $string['unread'] = 'Lukematta';
 $string['unreadposts'] = 'Lukemattomia viestejä';
 $string['unreadpostsnumber'] = '{$a} lukematonta viestiä';

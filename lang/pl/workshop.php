@@ -71,13 +71,9 @@ $string['gradeinfo'] = 'Ocena: {$a->received} / {$a->max}';
 $string['gradereceivedfrom'] = '&lt;';
 $string['gradinggrade'] = 'Stopniuj stopnie';
 $string['gradinggrade_help'] = '# Stopień za oceny Studenta
-
 Jest to maksymalny stopień jaki można dać studentom za otrzymane oceny podczas pracy. Jest to stopień wystawiony za ich oceny. Stopnie są obliczane w module warsztaty porównanie oceny z "najlepszą" oceną za te samo zadanie. "Najlepszą" oceną jest ta która jest najbliższa średniej wszystkich ocen.(Może być średnia ważona, jeżeli prowadzący ustawi wagi większe niż jeden). Jeżeli jest tylko jedna ocena za zadanie to jest ona wzięta jako najlepsza. Jeżeli są dwie oceny za zadanie, obie są uważane za "najlepsze". Tylko gdy jest trzy lub więcej ocen moduł liczy między nimi różnice.
-
-Ten stopień czasem jest nazywany "stopniowaniem stopni" i ***nie jest ***maksymalnym stopieniem dawanym za pracę, ten jest nazwany "stopień za zadanie". 
-
-Stopień studenta z warsztatu jest sumą tego stopnia i stopnia za zadanie/zadania. Jeżeli maksymalny stopień dla Studenckich ocen jest 20 i maksymalny stopień za zadanie jest do 80, to maksymalny stopień dla warsztatu jest 100 
-
+Ten stopień czasem jest nazywany "stopniowaniem stopni" i \***|nie jest \***|maksymalnym stopieniem dawanym za pracę, ten jest nazwany "stopień za zadanie".
+Stopień studenta z warsztatu jest sumą tego stopnia i stopnia za zadanie/zadania. Jeżeli maksymalny stopień dla Studenckich ocen jest 20 i maksymalny stopień za zadanie jest do 80, to maksymalny stopień dla warsztatu jest 100
 Ta wartość może być zmieniana w każdej chwili i stopnie zostaną przeliczone.';
 $string['gradingsettings'] = 'Ustawienia oceniania';
 $string['iamsure'] = 'Tak, jestem pewien(a)';

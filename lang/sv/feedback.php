@@ -71,19 +71,22 @@ $string['delete_old_items'] = 'Ta bort gamla komponenter';
 $string['delete_template'] = 'Ta bort mall';
 $string['delete_templates'] = 'Ta bort mallar...';
 $string['depending'] = 'beroende komponenter';
-$string['depending_help'] = 'Möjligheten att använda "beroende komponenter" tillåter Dig att visa olika komponenter eller vissa komponenter på olika sätt, detta beroende på andra, föregående, komponenters värden. <br /><strong)Här finns ett ett exempel på hur man kan använda detta:</strong><br /><ul><li>Börja med att skapa en komponent med värden som andra, efterföljande komponenter är beroende av.</li><li>Lägg sedan till en sidbrytning.</li><li>Ange sedan att den följande komponenten ska vara beroende av värdet på en föregående komponent.<br />
-Välj sedan, i formuläret för att skapa komponenter, denna komponent i listan över "beroende komponenter" och mata in det aktuella, nödvändiga värdet i i textrutan "beroende-värde".</li>
-</ul>
-<strong>Strukturen bör se ut så här:</strong>
-<ol>
-<li>Komponent 1 F(råga): Har Du en bil? S(var): Ja/Nej</li>
-<li>Sidbrytning</li>
-<li>Komponent 2 F: Vilken färg har Din bil?<br />
-(den här komponenten är beroende av att komponent 1 har värdet= Ja)</li>
-<li>Komponent 3 F: Varför har Du ingen bil?<br />
-(den här komponenten är beroende av att komponent 1 har värdet=Nej)</li>
-<li> ... övriga komponenter</li>
-</ol>
+$string['depending_help'] = 'Möjligheten att använda "beroende komponenter" tillåter Dig att visa olika komponenter eller vissa komponenter på olika sätt, detta beroende på andra, föregående, komponenters värden.
+**Här finns ett ett exempel på hur man kan använda detta:**
+* Börja med att skapa en komponent med värden som andra, efterföljande komponenter är beroende av.
+* Lägg sedan till en sidbrytning.
+* Ange sedan att den följande komponenten ska vara beroende av värdet på en föregående komponent.
+Välj sedan, i formuläret för att skapa komponenter, denna komponent i listan över "beroende komponenter" och mata in det aktuella, nödvändiga värdet i i textrutan "beroende-värde".
+
+**Strukturen bör se ut så här:**
+1. Komponent 1 F(råga): Har Du en bil? S(var): Ja/Nej
+2. Sidbrytning
+3. Komponent 2 F: Vilken färg har Din bil?
+(den här komponenten är beroende av att komponent 1 har värdet= Ja)
+4. Komponent 3 F: Varför har Du ingen bil?
+(den här komponenten är beroende av att komponent 1 har värdet=Nej)
+5. ... övriga komponenter
+
 Det är det hela. Mycket nöje!';
 $string['dependitem'] = 'beroende komponent';
 $string['dependvalue'] = 'beroende värde';
@@ -139,7 +142,6 @@ $string['infotype'] = 'Typ av information';
 $string['insufficient_responses'] = 'otillräckliga svar';
 $string['insufficient_responses_for_this_group'] = 'Det finns otillräckliga svar för den här gruppen.';
 $string['insufficient_responses_help'] = 'Svaren för den här gruppen är otillräckliga.
-
 För att bibehålla denna Egen enkät som anonym så måste minst 2 svar ha avlämnats.';
 $string['item_label'] = 'Etikett';
 $string['item_name'] = 'Namn på komponent';

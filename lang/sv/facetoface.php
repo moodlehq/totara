@@ -1,5 +1,27 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.0
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'sv', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = 'Lägg till en ny session i {$a}';
 $string['addmanageremailaddress'] = 'Lägg till chefs e-postadress';
@@ -283,13 +305,11 @@ $string['setting:addchangemanageremail_caption'] = 'Chefs e-post:';
 $string['setting:addchangemanageremaildefault'] = 'Fråga användare efter deras chefs e-postadress.';
 $string['setting:defaultcancellationinstrmngr'] = 'Standardmeddelande vid inställt som skickas till chefer.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Meddelande vid inställt (chefer)';
-$string['setting:defaultcancellationinstrmngrdefault'] = 'Detta är ett meddelande om att [förnamn][efternamn] inte längre är bokad på följande kur och har listat dig som sin chef.
-
-';
 $string['setting:defaultcancellationinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s avbokning är kopierad nedan***';
+$string['setting:defaultcancellationinstrmngrdefault'] = 'Detta är ett meddelande om att [förnamn][efternamn] inte längre är bokad på följande kur och har listat dig som sin chef.';
 $string['setting:defaultcancellationmessage'] = 'Standardmeddelande vid inställt som skickas till användaren.';
 $string['setting:defaultcancellationmessage_caption'] = 'Meddelande vid inställt';
-$string['setting:defaultcancellationmessagedefault'] = 'Detta är ett meddelande om att din bokning på följande kurs har avbokats: 
+$string['setting:defaultcancellationmessagedefault'] = 'Detta är ett meddelande om att din bokning på följande kurs har avbokats:
 
 ***AVBOKNING***
 
@@ -307,14 +327,12 @@ $string['setting:defaultcancellationsubject_caption'] = 'Ämne för avbokning';
 $string['setting:defaultcancellationsubjectdefault'] = 'Inställning av kursbokning';
 $string['setting:defaultconfirmationinstrmngr'] = 'Standar bekräftelse skickad till chefer.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Bekräftelse (chefer)';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s bokningsbekräftelse är kopierad nedan****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '***Meddelande****
 
 Detta är ett meddelande om att [förnamn][efternamn] har bokats på följade kurs och har angett dig som sin chef.
 
-Om du inte är chef och tror att du har fått denna e-post av misstag var vänlig att svara på denna e-post. Om du har funderingar över att din medarbetare tar denna kurs var vänligt att diskuter direkt med personen.
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s bokningsbekräftelse är kopierad nedan****';
+Om du inte är chef och tror att du har fått denna e-post av misstag var vänlig att svara på denna e-post. Om du har funderingar över att din medarbetare tar denna kurs var vänligt att diskuter direkt med personen.';
 $string['setting:defaultconfirmationmessage'] = 'Standard bekräftelsemeddelande skickat till användare.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Bekräftelse';
 $string['setting:defaultconfirmationmessagedefault'] = 'Härmed bekräftas att du är bokad på följande kurs:
@@ -344,12 +362,10 @@ $string['setting:defaultconfirmationsubjectdefault'] = 'Kursbokningsbekräftelse
 [facetofacenamn], [starttid]-[sluttid], [sessionsdatum]';
 $string['setting:defaultreminderinstrmngr'] = 'Standardpåminnelse skickad till chefer.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Påminnelse (chefer)';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s e-postpåminnelse är kopierad nedan****';
 $string['setting:defaultreminderinstrmngrdefault'] = 'Din medarbetare [förnamn][efternamn] är bokad att delta i kursen ovan och har också fått denna e-postpåminnelse.
 
-Om du inte är chef och tror att du har fått denna e-post av misstag var vänlig att svara på denna e-post.
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s e-postpåminnelse är kopierad nedan****';
+Om du inte är chef och tror att du har fått denna e-post av misstag var vänlig att svara på denna e-post.';
 $string['setting:defaultremindermessage'] = 'Standarpåminnelse som skickas till användarna';
 $string['setting:defaultremindermessage_caption'] = 'Påminnelsemeddelande';
 $string['setting:defaultremindermessagedefault'] = 'Detta är en påminnelse att du är bokad på följande kurs:
@@ -374,6 +390,7 @@ För att boka om måste du avboka denna bokning och sedan boka en ny session. F�
 $string['setting:defaultremindersubject'] = 'Standar ämnesrad för e-postpåminnelse.';
 $string['setting:defaultremindersubject_caption'] = 'Påminnelseämne';
 $string['setting:defaultremindersubjectdefault'] = 'Kursbokningspåminnelse: [facetofacenamn], [starttid]-[sluttid], [sessionsdatum]';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s bokningsförfrågan är kopierad nedan****';
 $string['setting:defaultrequestinstrmngrdefault'] = 'Detta ett meddelande om att [förnamn][efternamn] vill delta i följande kurs och har angett dig som sin chef.
 
 Deltagare: [förnamn][efternamn]
@@ -388,10 +405,7 @@ Plats: [session:plats]
 Rum: [session:rum]
 
 Var vänlig följ nedanstående länk för att godkänna förfrågan:
-[deltagarlänk]
-
-';
-$string['setting:defaultrequestinstrmngrcopybelow'] = '***[förnamn][efternamn]\'s bokningsförfrågan är kopierad nedan****';
+[deltagarlänk]';
 $string['setting:defaultrequestmessagedefault'] = 'Din förfrågan att delta i följande kurs har skickats till din chef:
 
 Deltagare: [förnamn][efternamn]
@@ -501,5 +515,3 @@ $string['xhours'] = '{$a} timmar';
 $string['xminutes'] = '{$a} minuter';
 $string['youarebooked'] = 'Du är bokad på följande session';
 $string['youremailaddress'] = 'Din e-postadress';
-
-?>

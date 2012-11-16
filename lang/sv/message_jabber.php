@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['configjabberhost'] = 'Den server som ska kontaktas för att sända meddelanden till jabber.';
 $string['configjabberpassword'] = 'Det lösenord som ska användas vid kontakt med jabber-servern.';
-$string['configjabberport'] = ' Den port som ska användas vid kontakt med jabber-servern.';
+$string['configjabberport'] = 'Den port som ska användas vid kontakt med jabber-servern.';
 $string['configjabberserver'] = 'Värd ID för MPP (detta kan lämnas tomt om det är det samma som jabber-värden)';
 $string['jabberhost'] = 'Jabber värd';
 $string['jabberpassword'] = 'Jabber lösenord';

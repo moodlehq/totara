@@ -96,7 +96,6 @@ $string['groupmode_help'] = 'A kurzusban való csoportos részvétel három szin
 * Nincs csoport - nincsenek alcsoportok, mindenki egyetlen nagy közösséghez tartozik
 * Külön csoportok - az egyes csoportok csak a saját csoportjukat látják, a többi csoport számukra láthatatlan
 * Látható csoportok - az egyes csoportok saját csoportjukon belül tevékenykednek, de láthatják a többi csoportot is
-
 A kurzusszinten kialakított csoportos részvétel az adott kurzuson belül meghatározott összes tevékenység alapvető részvételi módja. A csoportokat támogató egyes tevékenységek meghatározhatják saját csoportosítási módjaikat. Ha a kurzus beállítása kurzusszinten előírt csoportos részvétel, akkor a rendszer figyelmen kívül hagyja az egyes tevékenységek beállítását.';
 $string['groupmodeforce'] = 'Csoportos részvétel előírása';
 $string['groupmodeforce_help'] = 'Csoportos részvétel előírása esetén';

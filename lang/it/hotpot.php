@@ -58,7 +58,6 @@ $string['noresponses'] = 'Non trovata alcuna informazione sulle singole domande 
 $string['outputformat'] = 'Formato output';
 $string['outputformat_best'] = 'migliore';
 $string['outputformat_help'] = 'L\'impostazione determina il formato di visualizzazione dei quiz.
-
 * Migliore - Il formato migliore per il browser
 * v6+ - Formato Drag and drop per browser v6+
 * v6 - Formato per browser v6';

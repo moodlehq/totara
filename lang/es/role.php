@@ -57,38 +57,29 @@ $string['assignmentoptions'] = 'Opciones de asignación';
 $string['assignrole'] = 'Asignar rol';
 $string['assignrolenameincontext'] = 'Asignar rol \'{$a->role}\' en {$a->context}';
 $string['assignroles'] = 'Asignar roles';
-$string['assignroles_help'] = '<p>
-Al asignar un rol a un usuario en un contexto, usted
+$string['assignroles_help'] = 'Al asignar un rol a un usuario en un contexto, usted
 le está garantizando los permisos propios de ese rol
 en el contexto actual y en todos los contextos de
 rango \'inferior\'.
-</p>
 
-<p>
 Contextos:
-<ol>
-<li>Sitio/Sistema</li>
-<li>Categorías de cursos</li>
-<li>Cursos</li>
-<li>Bloques y Actividades</li>
-</ol>
-</p>
+1.Sitio/Sistema
+2.Categorías de cursos
+3.Cursos
+4.Bloques y Actividades
 
-<p>
+
 Así, si le da a un estudiante el rol de usuario de un
 curso, tendrá ese rol para ese curso, pero también para
 todos los bloques y actividades dentro del curso. Sus
 permisos reales dependerán de otros roles y anularán
 los que han sido definidos.
-</p>
 
-<p>
 Vea también
-<a href="help.php?file=roles.html">Roles</a>,
-<a href="help.php?file=contexts.html">Contextos</a>,
-<a href="help.php?file=permissions.html">Permisos</a> y
-<a href="help.php?file=overrides.html">Anulaciones</a>.
-</p>';
+[Roles](help.php?file=roles.html),
+[Contextos](help.php?file=contexts.html),
+[Permisos](help.php?file=permissions.html) y
+[Anulaciones](help.php?file=overrides.html).';
 $string['assignrolesin'] = 'Asignar roles en {$a}';
 $string['assignrolesrelativetothisuser'] = 'Asignar roles relativos a este usuario';
 $string['backtoallroles'] = 'Regresar a la lista de todos los roles';
@@ -279,7 +270,6 @@ $string['overridesbycontext'] = 'Modificaciones (por contexto)';
 $string['permission'] = 'Permiso';
 $string['permission_help'] = 'Los permisos son los ajustes con los que usted otorga la posibilidad de llevar a cabo determinadas acciones.
 Hay 4 opciones:
-
 * No ajustado
 * Permitir: se concede el permiso para actuar.
 * Prevenir: se retira el permiso, incluso aunque se admita en un contexto más alto.
@@ -340,36 +330,19 @@ $string['rolefullname'] = 'Nombre';
 $string['roleprohibitheader'] = 'Prohibir rol';
 $string['roleprohibitinfo'] = 'Seleccione un rol para añadir a la lista de roles prohibidos en el contexto {$a->context}, permiso {$a-> cap}:';
 $string['roles'] = 'Roles';
-$string['roles_help'] = '<p>
-Un rol es un conjunto de permisos definidos para todo el sitio que usted puede asignar a usuarios específicos en contextos específicos.
-</p>
+$string['roles_help'] = 'Un rol es un conjunto de permisos definidos para todo el sitio que usted puede asignar a usuarios específicos en contextos específicos.
 
-<p>
 Por ejemplo, puede tener un rol denominado "Profesor" que se ajusta para permitir que los profesores (y no otros usuarios) puedan hacer ciertas cosas. Una vez que dicho rol existe, usted puede asignarlo a algún usuario del curso y convertirlo en "Profesor" de ese curso. Usted podría asimismo asignar el rol a un usuario en la categoría de cursos y convertirlo en "Profesor" de todos los cursos pertenecientes a tal categoría, o asignar el rol a un usuario simplemente en un foro, restringiendo las posibilidades a ese foro en concreto.
-</p>
 
-<p>
-Un rol debe tener un <strong>nombre</strong>.  Si necesita denominar el rol en varios idiomas, puede utilizar la sintaxis multi-idioma (\'multilang\') si así lo desea, como, por ejemplo <pre>
-&lt;span lang="en">Maestro&lt;/span>
-&lt;span lang="es_es">Profesor&lt;/span>
-</pre>Si lo hace así, asegúrese de que las "cadenas de filtro" ("filter strings") están activadas en su insstalación.
-</p>
+Un rol debe tener un **nombre**. Si necesita denominar el rol en varios idiomas, puede utilizar la sintaxis multi-idioma (\'multilang\') si así lo desea, como, por ejemplo
+Maestro
+Profesor
+Si lo hace así, asegúrese de que las "cadenas de filtro" ("filter strings") están activadas en su insstalación.
 
-<p>
-El <strong>nombre corto</strong> es necesario para otros conectores (\'plugins\') de Moodle que puedan necesitar referirse a sus Roles (e.g., cuando se cargan usuarios desde un archivo o cuando se llevan a cabo matriculaciones a través de un conector -\'plugin\'- de matriculación).
-</p>
+El **nombre corto** es necesario para otros conectores (\'plugins\') de Moodle que puedan necesitar referirse a sus Roles (e.g., cuando se cargan usuarios desde un archivo o cuando se llevan a cabo matriculaciones a través de un conector -\'plugin\'- de matriculación).
 
-<p>
-La <strong>descripción</strong> consiste en describir el rol con sus propias palabras, de forma que cualquiera entienda en qué consiste.
-</p>
-
-<p>
-Vea también
-<a href="help.php?file=contexts.html">Contextos</a>,
-<a href="help.php?file=permissions.html">Permisos</a>,
-<a href="help.php?file=assignroles.html">Asignación de Roles</a> y
-<a href="help.php?file=overrides.html">Anulaciones</a>.
-</p>';
+La **descripción** consiste en describir el rol con sus propias palabras, de forma que cualquiera entienda en qué consiste.
+';
 $string['roleselect'] = 'Seleccionar rol';
 $string['roleshortname'] = 'Nombre corto';
 $string['roletoassign'] = 'Rol a asignar';

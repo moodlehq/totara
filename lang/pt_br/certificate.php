@@ -55,14 +55,12 @@ A4 com fontes incorporadas, que imprime em papel tamanho A4, com as fontes inclu
 A4 sem fontes incorporados, que imprime em papel tamanho A4, sem incluir as fontes ao arquivo.
 Carta com fontes incorporadas, que imprime em papel tamanho carta, com as fontes inclusas no arquivo.
 Carta sem fontes incorporados, que imprime em papel tamanho carta, sem incluir as fontes ao arquivo.
-
 Os tipos sem fontes incorporadas usam as fontes Helvetica e Times.
 Se você não tiver certeza que seus usuários terão essas fontes nos seus computadores, ou se o seu idioma
 utiliza caracteres ou símbolos que não são inclusos nas fontes Helvetica e Times, recomenda-se optar por
 um tipo com fontes incorporadas. Os tipos com fontes incorporadas usam as fontes Dejavusans e Dejavuserif.
 Esta opção criará arquivos pdf significativamente maiores, portanto não recomenda-se o uso de um tipo com
 fontes incorporadas, a menos que você julgue necessário.
-
 Pastas como novos tipos de layouts podem ser adicionadas a pasta certificate/type. O nome da pasta e
 quaisquer novas palavras traduzidas para estes novos tipos devem ser adicionadas aos arquivos de idiomas
 do módulo certificado.';
@@ -74,9 +72,6 @@ $string['coursegrade'] = 'Notas do curso';
 $string['coursename'] = 'Curso';
 $string['credithours'] = 'Carga-horária';
 $string['customtext'] = 'Texto personalizado';
-$string['customtext_help'] = 'Se você quiser que o certificado imprima nomes diferentes para o professor do que aqueles que são atribuídos ao curso
-com o papel de professor, não selecione Imprimir Professor ou qualquer imagem de assinatura, exceto para a imagem de linha.
-Digite os nomes dos professores nesta caixa de texto como você gostaria que eles aparecessem. Por padrão, esse texto será colocado no canto inferior esquerdo do certificado. As seguintes tags html estão disponíveis: &lt;br&gt;, &lt;p&gt;, &lt;b&gt;, &lt;i&gt;, &lt;u&gt;, &lt;img&gt; (src e width (ou height) são obrigatórios), &lt;a&gt; (href é obrigatório), &lt;font&gt; (atributos possíveis são: color, (utilizando código de cor hexadecimal), face, (arial, times, courier, helvetica, symbol)).';
 $string['date'] = 'Em';
 $string['datefmt'] = 'Formato da data';
 $string['datefmt_help'] = 'Escolha um formato de data para imprimir a data no certificado. Ou, escolha a última opção para imprimir a data no formato da linguagem escolhida pelo usuário.';
@@ -111,7 +106,6 @@ $string['grade'] = 'Nota';
 $string['gradedate'] = 'Data da nota';
 $string['gradefmt'] = 'Formato da nota';
 $string['gradefmt_help'] = 'Existem três formatos disponíveis se você optar por imprimir uma nota no certificado:
-
 Nota Percentual: Imprime a nota como uma porcentagem.
 Nota em Pontos: Imprime o valor do ponto da nota. Nota em Letras: Imprime a nota percentual como uma letra.';
 $string['gradeletter'] = 'Nota em Letra';

@@ -57,8 +57,7 @@ $string['status_nodb'] = 'Keine Datenbank';
 $string['status_upgrade'] = 'Wird aktualisiert';
 $string['status_uptodate'] = 'aktuell';
 $string['systemname'] = 'Identifizierung';
-$string['type_auth'] = 'Plugin zur Authentifizierung
-';
+$string['type_auth'] = 'Plugin zur Authentifizierung';
 $string['type_auth_plural'] = 'Plugins zur Authentifizierung';
 $string['type_block'] = 'Block';
 $string['type_block_plural'] = 'Blöcke';

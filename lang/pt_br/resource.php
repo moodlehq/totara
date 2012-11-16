@@ -44,7 +44,6 @@ $string['contentheader'] = 'Conteúdo';
 $string['displayoptions'] = 'Opções de exibição disponíveis';
 $string['displayselect'] = 'Exibir';
 $string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arquivo e se o navegador permitir incorporação, determina como o arquivo é exibido. As opções podem incluir:
-
 Automático - A melhor opção de exibição para o tipo de arquivo é selecionado automaticamente
 Incorporado - O arquivo é exibido dentro da página, abaixo da barra de navegação em conjunto com a descrição do arquivo e todos os blocos
 Forçar download - O usuário é solicitado a baixar o arquivo

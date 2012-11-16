@@ -38,7 +38,8 @@ $string['auth_data_mapping'] = 'Appariement des données';
 $string['auth_fieldlock'] = 'Verrouillage';
 $string['auth_fieldlock_expl'] = '<p><strong>Verrouiller cette valeur :</strong> si cette option est activée, elle empêchera les utilisateurs et les administrateurs de modifier le champ directement. Utilisez cette option si vous maintenez ces données dans le système d\'authentification externe.</p>';
 $string['auth_fieldlocks'] = 'Verrouiller les champs utilisateur';
-$string['auth_fieldlocks_help'] = '<p>Vous pouvez verrouiller des champs utilisateurs. Ceci est utile sur les sites où les données des utilisateurs sont gérées manuellement par les administrateurs (en modifiant manuellement les enregistrements des utilisateurs) ou en utilisant l\'option « Importer des utilisateurs ». Si vous verrouillez des champs requis par Moodle, assurez-vous que vous fournissez les données en question lors de la création des comptes, sans quoi ceux-ci seront inutilisables.</p><p>Pour éviter ce problème, vous pouvez choisir comme mode de verrouillage « Déverrouillé si vide ».</p>';
+$string['auth_fieldlocks_help'] = 'Vous pouvez verrouiller des champs utilisateurs. Ceci est utile sur les sites où les données des utilisateurs sont gérées manuellement par les administrateurs (en modifiant manuellement les enregistrements des utilisateurs) ou en utilisant l\'option « Importer des utilisateurs ». Si vous verrouillez des champs requis par Moodle, assurez-vous que vous fournissez les données en question lors de la création des comptes, sans quoi ceux-ci seront inutilisables.
+Pour éviter ce problème, vous pouvez choisir comme mode de verrouillage « Déverrouillé si vide ».';
 $string['auth_invalidnewemailkey'] = 'Erreur : si vous avez tenté de confirmer la modification de votre adresse de courriel, il se peut que vous ayez fait une erreur lors de la copie de l\'URL qui vous a été envoyé. Veuillez essayer à nouveau.';
 $string['auth_multiplehosts'] = 'Vous pouvez indiquer ici plusieurs hôtes ou adresses IP (par exemple host1.com;host2.com;host3.com ou 192.168.1.100;172.23.92.1)';
 $string['auth_outofnewemailupdateattempts'] = 'Le nombre de tentatives permises pour modifier votre adresse de courriel est dépassé. Votre demande de modification a été annulée.';
@@ -120,10 +121,9 @@ $string['pluginnotinstalled'] = 'Le plugin d\'authentification {$a} n\'est pas i
 $string['potentialidps'] = 'Se connecter au moyen du compte :';
 $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = 'Un CAPTCHA est un programme capable de distinguer si son utilisateur est un humain ou un ordinateur, destiné à éviter les abus de programmes automatiques pour faire du spam. Saisissez dans le champ les mots que vous lisez, dans l\'ordre et séparés par un espace.
-
 Si vous n\'êtes pas sûr des mots présentés, essayez de deviner ou suivez le lien « Obtenir un nouveau CAPTCHA » ou « Obtenir un CAPTCHA audio ».';
 $string['selfregistration'] = 'Auto-enregistrement';
-$string['selfregistration_help'] = 'Si vous choisissez un plugin d\'authentification gérant l\'auto-enregistrement, par exemple par courriel, vous permettez aux utilisateurs potentiels de créer des comptes pour eux-mêmes. Il est par conséquent possible que des spammeurs créent des comptes dans le but d\'écrire du spam dans des messages dans les forums, des articles de blog, etc. Si vous voulez éviter ce risque, vous devez désactiver l\'auto-enregistrement ou au moins le limiter en utilisant le réglage <em> Domaines courriel autorisés</em>.';
+$string['selfregistration_help'] = 'Si vous choisissez un plugin d\'authentification gérant l\'auto-enregistrement, par exemple par courriel, vous permettez aux utilisateurs potentiels de créer des comptes pour eux-mêmes. Il est par conséquent possible que des spammeurs créent des comptes dans le but d\'écrire du spam dans des messages dans les forums, des articles de blog, etc. Si vous voulez éviter ce risque, vous devez désactiver l\'auto-enregistrement ou au moins le limiter en utilisant le réglage * Domaines courriel autorisés*.';
 $string['sha1'] = 'Hachage SHA-1';
 $string['showguestlogin'] = 'Vous pouvez choisir d\'afficher ou non sur la page de connexion le bouton de connexion anonyme.';
 $string['stdchangepassword'] = 'Utiliser la page de changement de mot de passe standard';

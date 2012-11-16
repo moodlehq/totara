@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['adminacceptccs'] = 'Vilka typer av kredit/betalkort kommer att accepteras?';
 $string['adminaccepts'] = 'Välj vilka metoder för betalning som ska vara tillåtna och deras typer.';
-$string['adminauthorizeccapture'] = 'Översyn av beställningar och inställningar för 
+$string['adminauthorizeccapture'] = 'Översyn av beställningar och inställningar för
 \'Auto-Capture\' (automatiskt notera/registrera?)';
 $string['adminauthorizeemail'] = 'Inställningar för sändning av e-post';
 $string['adminauthorizesettings'] = 'Inställningar för Authorize.net';
@@ -53,16 +53,16 @@ Summa: {$a->amount}
 
 MANUELL NOTERING AKTIVERAD?: {$a->acstatus}
 
-Om Manuell notering är aktiverat så kommer 
+Om Manuell notering är aktiverat så kommer
 kreditkortet att \'noteras\' {$a->captureon}
 och sedan kommer studenten/eleven/deltagaren/
 den lärande att registreras på kursen annars
-kommer det att utgå på {$a->expireon} och då går 
-det inte att notera efter denna dag. 
+kommer det att utgå på {$a->expireon} och då går
+det inte att notera efter denna dag.
 
 Du kan även omedelbart acceptera/avslå betalningen
 för att registrera studenten/eleven/deltagaren/den
-lärande genom att följa denna länk: 
+lärande genom att följa denna länk:
 {$a->url}';
 $string['adminnewordersubject'] = '{$a->course}; Ny avvaktande beställning: ({$a->orderid})';
 $string['adminpendingorders'] = 'Du har avaktiverat egenskapen schemalagd dag för notering.<br />Det totala antalet {$a->count} transaktioner med statusen \'Auktoriserad/avvaktande notering\' kommer att avbrytas om Du inte markerar detta.<br />För att acceptera betalningar gå till sidan för <a href=\'{$a->url}\'>Administration av betalningar</a>.';
@@ -71,20 +71,20 @@ $string['allpendingorders'] = 'Alla avvaktande beställningar';
 $string['amount'] = 'Summa';
 $string['anlogin'] = 'Authorize.net: Namn för inloggning';
 $string['anpassword'] = 'Authorize.net: Lösenord';
-$string['anreferer'] = 'Definiera \'referer URL\' om det är nödvändigt. 
-Detta skickar raden \'Referer: URL\' som en 
+$string['anreferer'] = 'Definiera \'referer URL\' om det är nödvändigt.
+Detta skickar raden \'Referer: URL\' som en
 inbäddad del  webb-förfrågan.';
 $string['antestmode'] = 'Testa bara transaktionerna (inga pengar kommer att dras)';
 $string['antrankey'] = 'Authorize.net: Transaktionskod';
 $string['approvedreview'] = 'Gokänd granskning';
 $string['authcaptured'] = 'Auktoriserad/Noterad';
 $string['authcode'] = 'Kod för auktorisation';
-$string['authorizedpendingcapture'] = 'Auktoriserad/Avvaktar notering';
 $string['authorize:manage'] = 'Administrera registrerade användare';
 $string['authorize:managepayments'] = 'Administrera betalningar';
 $string['authorize:unenrol'] = 'Avregistrera användare från kursen';
 $string['authorize:unenrolself'] = 'Avregistrera sig själv från kursen';
 $string['authorize:uploadcsv'] = 'Ladda upp CSV-fil';
+$string['authorizedpendingcapture'] = 'Auktoriserad/Avvaktar notering';
 $string['avsa'] = 'Adress (gata) matchar med postnumret gör det inte.';
 $string['avsb'] = 'Det finns ingen angiven adress.';
 $string['avse'] = 'Systemfel angående verifikation av adress';
@@ -117,13 +117,13 @@ $string['cctype'] = 'Typ av kreditkort';
 $string['ccvv'] = 'Verifiering av kort';
 $string['ccvvhelp'] = 'Se på kortets baksida (de tre sista siffrorna)';
 $string['choosemethod'] = 'Om Du har kursnyckeln för att registrera Dig på
-kursen - skriv då in den; annars måste Du betala 
+kursen - skriv då in den; annars måste Du betala
 för den här kursen.';
 $string['chooseone'] = 'Fyll i det ena eller båda av de följande fälten. Lösenordet visas inte.';
 $string['cost'] = 'Kostnad';
 $string['costdefaultdesc'] = '<strong>Mata in -1 i inställningarna för kurs,</strong> för att få fältet kostnad (cost) att använda den här förinställda standardkostnaden.';
 $string['currency'] = 'Valuta';
-$string['cutofftime'] = 'Avbrott av transaktion. ';
+$string['cutofftime'] = 'Avbrott av transaktion.';
 $string['delete'] = 'Förstör';
 $string['description'] = 'Modulen Authorize.net gör det möjligt för Dig att
 arrangera betalkurser. Det finns två sätt att ställa in kostnaden för kursen 1) en standardkostnad för alla kurser på webbplatsen eller 2) en inställning där Du kan ställa in kostnaden för enskilda kurser. Kostnaden på kursnivå överskrider kostnaden på webbplatsnivå.';
@@ -150,10 +150,10 @@ $string['httpsrequired'] = 'Tyvärr kan vi inte behandla Din förfrågan just nu
 Konfigurationen av den här webbplatsen fungerade
 inte korrekt. <br /><br />
 Var snäll och mata inte in numret på Ditt kreditkort
-om Du inte ser ett gult lås längst ner på webbläsaren. 
+om Du inte ser ett gult lås längst ner på webbläsaren.
 Det betyder att alla data som sänds mellan klienten
-och servern krypteras. Så informationen är skyddad 
-under förflyttningen mellan två datorer och ingen 
+och servern krypteras. Så informationen är skyddad
+under förflyttningen mellan två datorer och ingen
 kan fånga upp Ditt kortnummer under den proceduren.';
 $string['invalidaba'] = 'Ogiltigt ABA-nummer';
 $string['invalidaccnum'] = 'Ogiltigt kontonummer';
@@ -164,7 +164,7 @@ $string['logindesc'] = 'Det här alternativet måste vara PÅ.
 <br /><br />
 Vi rekommenderar starkt att Du ställer in  alternativet
 <a href="{$a->url}">loginhttps ON</a> i Admin>> Variabler>> Säkerhet.
-<br /><br /> 
+<br /><br />
 Om Du aktiverar detta så kommer Moodle att använda en säker https anslutning enbart för sidorna för inloggning och betalning.';
 $string['logininfo'] = 'Av säkerhetsskäl så visas inte inloggningsnamn, lösenord och nyckel för transaktion. Det är inte nödvändigt att mata in detta igen om Du har konfigurerat dessa fält tidigare. Du kommer att se en grön text till vänster om textytan om några av fälten redan är konfigurerade. Om Du matar in uppgifter i dessa fält för första gången så är Ditt inloggningsnamn obligatoriskt och Du måste mata in <strong>antingen</strong> transaktionsnyckeln (#1) <strong>eller </strong> lösenordet (#2) i rätt textyta. Vi rekommenderar att Du av säkerhetsskäl matar in transaktionsnyckeln. Om Du vill ta bort det aktuella lösenordet så gör Du en markering i kryssrutan.';
 $string['methodcc'] = 'Kreditkort';
@@ -192,7 +192,7 @@ $string['paymentmethod'] = 'Betalningssätt';
 $string['paymentpending'] = 'Din betalning för den här kursen är avvaktande enligt det här beställningsnumret {$a->orderid}.';
 $string['pendingecheckemail'] = 'Käre/a administratör!
 
-Det finns {$a->count} avvaktande e-checkar nu och Du måste ladda up en csv-fil för att användarna ska registreras. 
+Det finns {$a->count} avvaktande e-checkar nu och Du måste ladda up en csv-fil för att användarna ska registreras.
 
 Klicka på länken och läs hjälpfilen på den sida som visas:
 {$a->url}';
@@ -200,7 +200,7 @@ $string['pendingechecksubject'] = '{$a->course}: Avvaktande e-checkar({$a->count
 $string['pendingordersemail'] = 'Käre administratör!
 {$a->pending} transaktioner för kursen "{$a->course}" kommer att gå ut om Du inte accepterar betalning inom {$a->days} dagar.
 
-Det här är ett varningsmeddelande, eftersom Du inte har aktiverat schemalagd notering. Det innebär att Du måste acceptera eller avslå betalningar manuellt. 
+Det här är ett varningsmeddelande, eftersom Du inte har aktiverat schemalagd notering. Det innebär att Du måste acceptera eller avslå betalningar manuellt.
 
 För att acceptera/avslå avvaktande betalningar gå till:
 {$a->url}
@@ -210,7 +210,7 @@ Att aktivera schemalagd-noteringar innebär att du inte kommer att få några fl
 $string['pendingordersemailteacher'] = 'Käre lärare!
 Giltighetstiden för {$a->pending} transaktioner som kostade {$a->currency} {$a->sumcost} för kursen "{$a->course}" kommer att gå ut om Du inte accepterar betalning inom {$a->days} dagar.
 
-Det här är ett varningsmeddelande, eftersom Din systemadministratör inte har aktiverat schemalagd notering. Det innebär att Du måste acceptera eller avslå betalningar manuellt. 
+Det här är ett varningsmeddelande, eftersom Din systemadministratör inte har aktiverat schemalagd notering. Det innebär att Du måste acceptera eller avslå betalningar manuellt.
 {$a->url}';
 $string['pendingorderssubject'] = 'VARNING: Giltighetstiden för {$a->course}, {$a->pending} beställning(ar) kommer att gå ut inom {$a->days} dag(ar).';
 $string['pluginname'] = 'Auktorisera';

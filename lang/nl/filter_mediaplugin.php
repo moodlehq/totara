@@ -36,7 +36,7 @@ $string['html5audio'] = 'HTML 5 audio';
 $string['html5audio_help'] = 'Audiobestanden met de extentie *.ogg, *.aac en andere. Enkel compatibel met recente browsers. Er is jammer genoeg geen bestandsformaat dat ondersteund wordt door alle browsers.
 Dit kan omzeilt worden door meerdere bestanden op te geven, gescheiden door een # (vb: http://example.org/audio.aac#http://example.org/audio.mp3#), QuickTime player wordt gebruikt voor oude browsers.';
 $string['html5video'] = 'HTML 5 video';
-$string['html5video_help'] = 'Videobestanden met extentie *.webm, *.m4v, *.ogv, *.mp4  en andere. Dit is enkel compatibel met recente browsers. Er is jammer genoeg geen bestandsformaat dat ondersteund wordt door alle browsers.
+$string['html5video_help'] = 'Videobestanden met extentie *.webm, *.m4v, *.ogv, *.mp4 en andere. Dit is enkel compatibel met recente browsers. Er is jammer genoeg geen bestandsformaat dat ondersteund wordt door alle browsers.
 Dit kan omzeilt worden door meerdere bestanden op te geven, gescheiden door een # (vb: http://example.org/audio.m4v#http://example.org/audio.ogv#d=640x480), QuickTime player wordt gebruikt voor oude browsers.';
 $string['legacyheading'] = 'Verouderde mediaspelers';
 $string['legacyheading_help'] = 'Volgende bestandsformaten worden niet aangeraden voor algemeen gebruik. Ze worden meestal gebruikt in intranetinstallaties met centraal beheerde clients.';

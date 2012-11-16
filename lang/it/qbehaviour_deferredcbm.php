@@ -28,8 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['assumingcertainty'] = 'Non hai scelto il livello di confidenza. Si considererà: {$a}.';
 $string['certainty1'] = 'Poco (meno del 67%)';
 $string['certainty2'] = 'Abbastanza (più del 67%)';
-$string['certainty3'] = 'Molto (più del 80%)
-';
+$string['certainty3'] = 'Molto (più del 80%)';
 $string['howcertainareyou'] = 'Quanto sei confidente? {$a}';
 $string['markadjustment'] = 'Sulla base della confidenza fornita, il tuo punteggio base di {$a->rawmark} è stato aggiustato in  {$a->mark}.';
 $string['pluginname'] = 'Feedback differito con CBM';

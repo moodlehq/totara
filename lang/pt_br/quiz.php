@@ -107,9 +107,8 @@ $string['bestgrade'] = 'Melhor nota';
 $string['bothattempts'] = 'Mostrar alunos com e sem tentativas';
 $string['browsersecurity'] = 'Segurança do navegador';
 $string['browsersecurity_help'] = 'Se a opção "Tela cheia pop-up com segurança JavaScript" estiver selecionada,
-
 * O teste só vai começar se o aluno tem um JavaScript habilitado no navegador.
-* O questionário aparece em uma janela <em>pop-up</em> em tela cheia, que abrange todas as outras janelas e não tem controles de navegação
+* O questionário aparece em uma janela \*pop-up\* em tela cheia, que abrange todas as outras janelas e não tem controles de navegação
 * Estudantes são impedidos, na medida do possível, de usar os recursos como copiar e colar.';
 $string['calculated'] = 'Calculado';
 $string['calculatedquestion'] = 'A Questão-Calculada da linha {$a} não é suportada. A questão será ignorada';
@@ -221,10 +220,10 @@ $string['defaultgrade'] = 'Avaliação predefinida';
 $string['defaultinfo'] = 'Categoria predefinida para perguntas';
 $string['delay1'] = 'Intervalo entre a primeira e a segunda tentativa';
 $string['delay1st2nd'] = 'Força demora entre a primeira e a segunda tentativas.';
-$string['delay1st2nd_help'] = '<p>Se você configurar um Lapso temporal, um estudante tem que esperar este período após a primeira tentativa, antes que possa fazer a segunda tentativa.</p>';
+$string['delay1st2nd_help'] = 'Se você configurar um Lapso temporal, um estudante tem que esperar este período após a primeira tentativa, antes que possa fazer a segunda tentativa.';
 $string['delay2'] = 'Intervalo entre a segunda e outras tentativas';
 $string['delaylater'] = 'Força demora entre tentativas posteriores.';
-$string['delaylater_help'] = '<p>Se você configurar um Lapso temporal aqui, então um estudante tem que esperar este período antes que possa fazer outras tentativas.</p>';
+$string['delaylater_help'] = 'Se você configurar um Lapso temporal aqui, então um estudante tem que esperar este período antes que possa fazer outras tentativas.';
 $string['deleteattemptcheck'] = 'Você tem certeza que quer excluir estas tentativas completamente?';
 $string['deleteselected'] = 'Excluir selecionadas';
 $string['deletingquestionattempts'] = 'Excluir tentativas';
@@ -235,18 +234,17 @@ $string['download'] = 'Clique para baixar o arquivo de categoria exportado';
 $string['downloadextra'] = '(o arquivo pode ser encontrado também na pasta /quiz da seção arquivos do curso)';
 $string['duplicateresponse'] = 'Esta tentativa foi ignorada porque você já deu uma resposta idêntica em data anterior.';
 $string['eachattemptbuildsonthelast'] = 'Cada tentativa se baseia na última';
-$string['eachattemptbuildsonthelast_help'] = '<P>Caso forem permitidas tentativas múltiplas e esta opção for colocada em <B>Sim</B>, então
+$string['eachattemptbuildsonthelast_help'] = 'Caso forem permitidas tentativas múltiplas e esta opção for colocada em **Sim**, então
 cada nova tentativa contém o resultado da tentativa anterior. Isto permite que o questionário seja
-completado após várias tentativas.</P>
-<P>Para mostrar um questionário vazio em cada tentativa, seleciona-se <B>Não</B> para esta
-opção.</P>';
+completado após várias tentativas.
+Para mostrar um questionário vazio em cada tentativa, seleciona-se **Não** para esta
+opção.';
 $string['editcategories'] = 'Editar categorias';
 $string['editcategory'] = 'Editar categoria';
 $string['editcatquestions'] = 'Editar questões da categoria';
 $string['editingquestion'] = 'Editando uma pergunta';
 $string['editingquiz'] = 'Editando questionário';
 $string['editingquiz_help'] = 'Ao se criar um questionário, os conceitos principais são:
-
 * O questionário contém perguntas que estejam em uma ou mais páginas
 * O banco de questões, que armazena cópias de todas as perguntas organizadas em categorias
 * Perguntas aleatórias - Um aluno recebe perguntas diferentes a cada tentativa de resposta ao questionário e estudantes diferentes podem obter diferentes perguntas.';
@@ -324,11 +322,9 @@ $string['fractionsnomax'] = 'Uma das respostas deve ser 100% para que seja
 $string['fromfile'] = 'do arquivo:';
 $string['functiondisabledbysecuremode'] = 'Esta funcionalidade está desativada neste momento';
 $string['generalfeedback'] = 'Comentários gerais';
-$string['generalfeedback_help'] = '<p>Feedback geral da Questão é um texto mostrado para os estudantes depois que eles responderam a questão. Diferente do feedback simples, que depende do tipo de questão e da resposta que o estudante deu, no feedback geral da Questão o mesmo texto é mostrado para todos os estudantes.</p>
-
-<p>Você pode controlar quando o feedback geral é mostrado para os estudantes usando a caixa de maracação de escolha "Estudantes podem rever:" no formulário de edição do questionário.</p>
-
-<p>Você pode usar o feedback geral para dar aos estudantes mais informações sobre qual conhecimento a questão estava testando. Ou dar a eles referências de outras informações para estudo caso eles não tenham entendido as questões.</p>';
+$string['generalfeedback_help'] = 'Feedback geral da Questão é um texto mostrado para os estudantes depois que eles responderam a questão. Diferente do feedback simples, que depende do tipo de questão e da resposta que o estudante deu, no feedback geral da Questão o mesmo texto é mostrado para todos os estudantes.
+Você pode controlar quando o feedback geral é mostrado para os estudantes usando a caixa de maracação de escolha "Estudantes podem rever:" no formulário de edição do questionário.
+Você pode usar o feedback geral para dar aos estudantes mais informações sobre qual conhecimento a questão estava testando. Ou dar a eles referências de outras informações para estudo caso eles não tenham entendido as questões.';
 $string['grade'] = 'Avaliar';
 $string['gradeall'] = 'Avaliar todos';
 $string['gradeaverage'] = 'Nota média';
@@ -336,27 +332,19 @@ $string['gradeboundary'] = 'Limite das notas';
 $string['gradeessays'] = 'Avaliar dissertações';
 $string['gradehighest'] = 'Nota mais alta';
 $string['grademethod'] = 'Método de avaliação';
-$string['grademethod_help'] = '<P>Quando são permitidas diversas tentativas de resposta ao questionário, podem ser configurados 4 modos diversos de cálculo da nota final.
+$string['grademethod_help'] = 'Quando são permitidas diversas tentativas de resposta ao questionário, podem ser configurados 4 modos diversos de cálculo da nota final.
+## Nota mais alta
+A nota final é a nota mais alta obtida nas diversas tentativas.
 
-<h2>Nota mais alta</h2>
-<UL>
-<P>A nota final é a nota mais alta obtida nas diversas tentativas.
-</UL>
+## Média dos resultados
+A nota final é a média entre as notas de todas as tentativas.
 
-<h2>M&eacute;dia dos resultados</h2>
-<UL>
-<P>A nota final é a média entre as notas de todas as tentativas.
-</UL>
+## Primeira nota
+Apenas os resultados da primeira tentativa são considerados.
 
-<h2>Primeira nota</h2>
-<UL>
-<P>Apenas os resultados da primeira tentativa são considerados.
-</UL>
-
-<h2>Última nota</h2>
-<UL>
-<P>Apenas o resultado da última tentativa é considerado..
-</UL>';
+## Última nota
+Apenas o resultado da última tentativa é considerado..
+';
 $string['gradesdeleted'] = 'Excluir notas de questionário';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Notas relativas a este envio: {$a->raw}/{$a->max}.';
@@ -374,9 +362,7 @@ $string['howquestionsbehave_desc'] = 'Configuração padrão para comportamento 
 $string['imagedisplay'] = 'Imagem a ser mostrada';
 $string['import'] = 'Importação';
 $string['import_help'] = 'Esta função permite que você importe perguntas de arquivos externos de texto.
-
 Se o arquivo contém caracteres em formato não-ASCII, você deverá usar a codificação UTF-8. Tenha especial cautela ao tratar com arquivos gerados por aplicativos do Microsoft Office, uma vez que estes geralmente usam codificação especial que não serão tratados adequadamente.
-
 Formatos de importação e exportação são um recurso conectável. Outros formatos opcionais podem estar disponíveis na Modules and Plugins database.';
 $string['importcategory'] = 'importar categoria';
 $string['importerror'] = 'Erro durante a importação';
@@ -432,7 +418,7 @@ $string['missingcorrectanswer'] = 'A resposta correta deve ser especificada';
 $string['missingitemtypename'] = 'Falta o nome';
 $string['missingquestion'] = 'Esta questão parece não existir mais';
 $string['modulename'] = 'Questionário';
-$string['modulename_help'] = 'O módulo de questionário permite ao professor criar e configurar testes de múltipla escolha, verdadeiro ou falso, correspondência e outros tipos de perguntas. Cada tentativa é corrigida automaticamente e o professor pode optar por fornecer <em>feedback</em> e / ou mostrar as respostas corretas.';
+$string['modulename_help'] = 'O módulo de questionário permite ao professor criar e configurar testes de múltipla escolha, verdadeiro ou falso, correspondência e outros tipos de perguntas. Cada tentativa é corrigida automaticamente e o professor pode optar por fornecer *feedback* e / ou mostrar as respostas corretas.';
 $string['modulenameplural'] = 'Questionários';
 $string['moveselectedonpage'] = 'Move as questões selecionadas para página: {$a}';
 $string['multichoice'] = 'Múltipla Escolha';
@@ -443,11 +429,11 @@ $string['navnojswarning'] = '<b>Atenção</b>: esses <em>links</em> não vão sa
 $string['neverallononepage'] = 'Nunca, todas as questões em uma página';
 $string['newattemptfail'] = 'Erro: Não foi possível iniciar uma tentativa deste questionário';
 $string['newpage'] = 'Nova página';
-$string['newpage_help'] = '<P>Para questionários longos faz sentido dividi-los em várias páginas limitando-se
+$string['newpage_help'] = 'Para questionários longos faz sentido dividi-los em várias páginas limitando-se
 o números de perguntas por página. Quando se adicionarem perguntas no questionário serão
 inseridas quebras de página automaticamente de acordo com o valor escolhido.
 Contudo posteriormente pode-se também manualmente mover as quebras de página
-na edição da página. </P>';
+na edição da página.';
 $string['newpageevery'] = 'Começar nova página automaticamente';
 $string['noanswers'] = 'Nenhuma resposta foi selecionada!';
 $string['noattempts'] = 'Nenhuma tentativa foi feita neste questionário';
@@ -500,29 +486,23 @@ $string['openclosedatesupdated'] = 'Datas de abertura e encerramento do question
 $string['optional'] = 'opcional';
 $string['orderandpaging'] = 'Ordem e paginação';
 $string['orderandpaging_help'] = 'Os números 10, 20, 30, ... em frente de cada pergunta indicam a a sua ordem. Os números aumentam em intervalos de 10 para possibilitar espaço para questões adicionais a serem inseridas. Para reordená-las, modificar os números e clicar no botão "Reordenar questões".
-
 Para adicionar quebras de página após a perguntas particulares, marque as caixas ao seu lado e, em seguida, clique em "Adicionar nova página, após as perguntas selecionadas ".
-
 Para ordenar as perguntas em um número de páginas, clique no botão "Repaginar" e selecione o número desejado de perguntas por página.';
 $string['orderingquiz'] = 'Ordenar e paginar';
 $string['outof'] = '{$a->grade} de um máximo de {$a->maxgrade}';
 $string['outofpercent'] = '{$a->grade} de um máximo de {$a->maxgrade}({$a->percent}%)';
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'Feedback final';
-$string['overallfeedback_help'] = '<p>Feedback final é um texto mostrado para o estudante depois que ele terminou, uma tentativa, de responder o questionário. O texto que é mostrado pode depender da nota que o estudante obteve.</p>
-
-<p>Por exemplo, se voce entrou com:</p>
-
-<p>Limite de notas: 100%<br />
-Feedback: Muito Bom<br />
-Limite de notas: 40%<br />
-Feedback: Por favor estude outra vez o trabalho desta semana<br />
-...<br />
-Limite de notas: 0%</p>
-
-<p>Assim, estudantes com avaliação entre 100% e 40% irão ver a mensagem "Muito Bom", e estudantes com avaliação entre 39.99% e 0% irão ver a outra mensagem. Isto é, os limites de notas definem intervalos de notas, e cada mensagem de feedback global é mostrada de acordo com o intervalo.</p>
-
-<p>Os intervalos de notas podem ser especificados tanto em percentagem, por exemplo "31.41%", ou em um número, por exemplo "7". Se o seu questionário vale 10, um limite de notas de 7 significa 7 em 10 ou melhor.</p>';
+$string['overallfeedback_help'] = 'Feedback final é um texto mostrado para o estudante depois que ele terminou, uma tentativa, de responder o questionário. O texto que é mostrado pode depender da nota que o estudante obteve.
+Por exemplo, se voce entrou com:
+Limite de notas: 100%
+Feedback: Muito Bom
+Limite de notas: 40%
+Feedback: Por favor estude outra vez o trabalho desta semana
+...
+Limite de notas: 0%
+Assim, estudantes com avaliação entre 100% e 40% irão ver a mensagem "Muito Bom", e estudantes com avaliação entre 39.99% e 0% irão ver a outra mensagem. Isto é, os limites de notas definem intervalos de notas, e cada mensagem de feedback global é mostrada de acordo com o intervalo.
+Os intervalos de notas podem ser especificados tanto em percentagem, por exemplo "31.41%", ou em um número, por exemplo "7". Se o seu questionário vale 10, um limite de notas de 7 significa 7 em 10 ou melhor.';
 $string['overdue'] = 'Expirado';
 $string['override'] = 'Anular';
 $string['overridedeletegroupsure'] = 'Você tem certeza que deseja apagar a anulação do grupo {$a}?';
@@ -541,13 +521,13 @@ $string['parsingquestions'] = 'Analisando questões do arquivo importado.';
 $string['partiallycorrect'] = 'Parcialmente correta';
 $string['penalty'] = 'Penalidade';
 $string['penaltyscheme'] = 'Aplicar penalidades';
-$string['penaltyscheme_help'] = '<P>Se um questionário estiver rodando no modo adaptativo então é permitida uma nova tentativa
+$string['penaltyscheme_help'] = 'Se um questionário estiver rodando no modo adaptativo então é permitida uma nova tentativa
 após uma resposta errada. Neste caso pode-se desejar impor uma penalidade para cada
 resposta errada sendo subtraída da marca final para a pergunta. O valor da
 penalidade é escolhida individualmente para cada pergunta durante a configuração ou a edição da
-pergunta.</P>
-<P>Esta configuração não tem efeito a menos que o questionário rode no modo
-adaptativo.</P>';
+pergunta.
+Esta configuração não tem efeito a menos que o questionário rode no modo
+adaptativo.';
 $string['percentcorrect'] = 'Percentual correto';
 $string['pleaseclose'] = 'O seu pedido foi processado. Você já pode fechar esta janela';
 $string['pluginadministration'] = 'Administração do questionário';
@@ -669,27 +649,26 @@ $string['reportresponses'] = 'Respostas detalhadas';
 $string['reports'] = 'Relatórios';
 $string['reportsimplestat'] = 'Estatísticas simples';
 $string['requirepassword'] = 'Senha necessária';
-$string['requirepassword_help'] = '<P>Este campo é opcional</P>
-<P>Caso se especifique uma senha neste campo então os participantes devem digitar a mesma
+$string['requirepassword_help'] = 'Este campo é opcional
+Caso se especifique uma senha neste campo então os participantes devem digitar a mesma
 senha para receberem a permissão para fazer uma tentativa no
-questionário.</P>';
+questionário.';
 $string['requiresubnet'] = 'Requer endereço de rede';
-$string['requiresubnet_help'] = '<P>Este campo é opcional.</P>
-<P>Pode-se restringir o acesso a um questionário a sub-redes particulares numa LAN ou
-Internet especificando-se uma lista separada por vírgulas dos endereços IP completos ou parciais.</P>
-<P>Isto é especialmente útil para um questionário pré-determinado ("proctored quiz"), onde se desejar certeza
-que somente as pessoas de uma certa sala estiverem aptas a acessar o questionário.</P>
-<P>Por exemplo: <B>192.168. , 231.54.211.0/20, 231.3.56.211</B></P>
-<P>Existem três tipos de números que podem ser usados (não se podem utilizar nomes de domínios em texto como exemplo.com):
-<OL>
-<LI>Endereços IP completos, tais como <B>192.168.10.1</B> designarão um simples
+$string['requiresubnet_help'] = 'Este campo é opcional.
+Pode-se restringir o acesso a um questionário a sub-redes particulares numa LAN ou
+Internet especificando-se uma lista separada por vírgulas dos endereços IP completos ou parciais.
+Isto é especialmente útil para um questionário pré-determinado ("proctored quiz"), onde se desejar certeza
+que somente as pessoas de uma certa sala estiverem aptas a acessar o questionário.
+Por exemplo: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Existem três tipos de números que podem ser usados (não se podem utilizar nomes de domínios em texto como exemplo.com):
+1. Endereços IP completos, tais como **192.168.10.1** designarão um simples
 computador (ou proxy).
-<LI>Endereços parciais, tais como <B>192.168</B> designarão qualquer um
+2. Endereços parciais, tais como **192.168** designarão qualquer um
 iniciando com estes números.
-<LI>Notação CIDR, tais como <B>231.54.211.0/20</B> permitirá que se especifiquem
-sub-redes mais detalhadas. </LI></OL>
+3. Notação CIDR, tais como **231.54.211.0/20** permitirá que se especifiquem
+sub-redes mais detalhadas.
 
-<P>Os espaços são ignorados.</P>';
+Os espaços são ignorados.';
 $string['response'] = 'Resposta';
 $string['responses'] = 'Respostas';
 $string['results'] = 'Resultados';
@@ -710,7 +689,6 @@ $string['reviewopen'] = 'Mais tarde, enquanto ainda estiver aberto';
 $string['reviewoptions'] = 'Estudantes podem fazer revisão';
 $string['reviewoptionsheading'] = 'Opções de revisão';
 $string['reviewoptionsheading_help'] = 'Estas opções controlam qual informação os estudantes podem ver quando revisam uma tentantiva ou visualizam os relatórios do questionário.
-
 "Imediatamente após a tentativa" significa até dois minutos após a tentativa terminada. "Mais tarde, enquanto o questionário estiver aberto" significa após isso e antes da data de encerramento do questionário. "Após o encerramento do questionário" significa após a data de encerramento do questionário. Se o questionário não tem uma data de encerramenteo, este estado nunca é alcançado.';
 $string['reviewresponse'] = 'Resposta da revisão';
 $string['reviewresponsetoq'] = 'Resposta da revisão (question {$a})';
@@ -748,7 +726,7 @@ $string['shortanswer'] = 'Resposta breve';
 $string['show'] = 'Visualizar';
 $string['showall'] = 'Mostrar todas as questões em uma página';
 $string['showblocks'] = 'Mostrar blocos durante as tentativas do questionário';
-$string['showblocks_help'] = 'Se definido como \'sim\', então será mostrado o  bloco normal durante as tentativas do questionário';
+$string['showblocks_help'] = 'Se definido como \'sim\', então será mostrado o bloco normal durante as tentativas do questionário';
 $string['showbreaks'] = 'Mostrar interrupções de página';
 $string['showcategorycontents'] = 'Mostra o conteúdo da categoria {$a->arrow}';
 $string['showcorrectanswer'] = 'Visualizar respostas corretas no feedback?';
@@ -767,22 +745,19 @@ $string['shuffledrandomly'] = 'Embaralhar aleatoriamente';
 $string['shufflequestions'] = 'Misturar as perguntas';
 $string['shufflequestionsselected'] = 'Foram definidas perguntas embaralhadas, portanto, algumas ações relacionadas a páginas não estão disponíveis. Para alterar a opção de embaralhamento, {$a}.';
 $string['shufflewithin'] = 'Misturar entre as questões';
-$string['shufflewithin_help'] = '<p>Se esta opção estiver ativada, então as partes que compõem as perguntas
+$string['shufflewithin_help'] = 'Se esta opção estiver ativada, então as partes que compõem as perguntas
 individualmente serão misturadas aleatoriamente toda vez que um estudante
 inicia uma tentativa do questionário, contanto que esta opção esteja também
-ativada na configuração das perguntas.</p>
-
-<p>A intenção é simplesmente tornar um pouco mais difícil que os estudantes
-copiem as respostas entre eles.</p>
-
-<p>Isto somente se aplica às perguntas que têm partes múltiplas, tais como
+ativada na configuração das perguntas.
+A intenção é simplesmente tornar um pouco mais difícil que os estudantes
+copiem as respostas entre eles.
+Isto somente se aplica às perguntas que têm partes múltiplas, tais como
 perguntas de múltipla escolha ou perguntas de associação. Para perguntas de múltipla escolha
 a ordem das respostas é misturada somente quando esta opção estiver em
 "Sim". Para perguntas de associação as respostas são sempre misturadas,
 e esta opção controla se adicionalmente a ordem dos pares pergunta-resposta
-serão misturados.</p>
-
-<p>Esta opção não está relacionada ao uso das perguntas aleatórias.</p>';
+serão misturados.
+Esta opção não está relacionada ao uso das perguntas aleatórias.';
 $string['singleanswer'] = 'Escolher uma resposta.';
 $string['sortage'] = 'Ordenar por idade';
 $string['sortalpha'] = 'Ordenar alfabeticamente';
@@ -815,20 +790,18 @@ $string['timecompleted'] = 'Completo';
 $string['timedelay'] = 'Você ainda não pode resolver este questionário porque existe um tempo de espera definido entre a realização de duas tentativas.';
 $string['timeleft'] = 'Tempo restante';
 $string['timelimit'] = 'Limite de tempo';
-$string['timelimit_help'] = '<P align=center><STRONG>Tempo Limite</STRONG></P>
-<P>Na configuração padrão os questionários não têm tempo limite, permitindo-se aos estudantes o tempo
-que for necessário para completar o questionário.</P>
-<P>Caso se especifique um tempo limite,  diversas coisas  são feitas para tentar e assegurar
-que os questionários sejam completados dentro deste tempo:</P>
-<UL>
-<LI>O suporte  ao Javascript no navegador torna-se prioritário - isto permite que o
+$string['timelimit_help'] = '<P align=center>**Tempo Limite**</P>
+Na configuração padrão os questionários não têm tempo limite, permitindo-se aos estudantes o tempo
+que for necessário para completar o questionário.
+Caso se especifique um tempo limite, diversas coisas são feitas para tentar e assegurar
+que os questionários sejam completados dentro deste tempo:
+* O suporte ao Javascript no navegador torna-se prioritário - isto permite que o
 contador do tempo trabalhe corretamente.
-<LI>Uma janela com o contador é mostrada com a contagem regressiva
-<LI>Quando a contagem terminar, o questionário é submetido automaticamente com
+* Uma janela com o contador é mostrada com a contagem regressiva
+* Quando a contagem terminar, o questionário é submetido automaticamente com
 as respostas que foram preenchidas até então
-<LI>Se um estudante tentar enganar o sistema e gastar mais que 60 segundos acima do tempo permitido
+* Se um estudante tentar enganar o sistema e gastar mais que 60 segundos acima do tempo permitido
 então o questionário é automaticamente avaliado com zero.
-</LI>
 </UL>';
 $string['timelimitexeeded'] = 'O limite de tempo do questionário foi superado!';
 $string['timelimitmin'] = 'Limite de tempo (minutos)';

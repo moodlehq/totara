@@ -109,11 +109,8 @@ $string['competencyaddnew'] = 'Agregue una nueva competencia';
 $string['competencyaddnewframework'] = 'Agregar un marco de competencia nuevo';
 $string['competencyaggregationmethod'] = 'Método de acumulación';
 $string['competencyaggregationmethod_help'] = 'El método de acumulación establece la forma en que el sistema calculará el logro de una competencia.
-
 Si el método de acumulación está establecido en Todas, deberán cumplirse todas las competencias secundarias para que se declare lograda la competencia principal.
-
 Si el método de acumulación está establecido en Alguna, solo será necesario cumplir una de las competencias secundarias para lograr la competencia principal (y sus competencias secundarias).
-
 Si el método de acumulación está establecido en Desactivado, se desactivará el logro automático de esa competencia. (Podrá marcarse como lograda manualmente).';
 $string['competencyassigndeletecheck'] = '¿Está seguro de que querría eliminar esta tarea de competencia?';
 $string['competencybacktoallframeworks'] = 'Volver a todos los cuadros de competencias';
@@ -148,13 +145,10 @@ $string['competencyevidence'] = 'Evidencia de la competencia';
 $string['competencyevidenceassessmenttype'] = 'Tipo de evaluación';
 $string['competencyevidenceassessmenttype_help'] = 'El campo del tipo de evaluación es un campo de texto libre en el que se puede incluir información adicional sobre la evaluación de la competencia. Este campo es opcional y su contenido puede variar.';
 $string['competencyevidenceassessor_help'] = 'Puede seleccionar un evaluador, que es el usuario que evaluó que el usuario actual es diestro en esa competencia. El evaluador es un campo opcional, por tanto no abra la opción "Seleccionar un asesor..." si no desea asignar uno.
-
 La lista desplegable muestra todos los usuarios moodle que tienen la función de evaluadores. Si el usuario que desea agregar no aparece o no se muestran opciones, deberá pedir al administrador que lo agregue a la función de evaluador.';
 $string['competencyevidenceassessorname_help'] = 'El campo Nombre del evaluador indica el nombre de la organización que realizó la evaluación del usuario sobre esta competencia. Es un campo opcional, de modo que se puede dejar en blanco.';
 $string['competencyevidencecompetency_help'] = 'La competencia que se asignará al usuario. Si está modificando un elemento existente de la evidencia de competencia, esta no se puede cambiar. Sí puede crear, sin embargo, un nuevo elemento de evidencia de competencia (si tiene permiso para hacerlo), visitando la página Mis registros del usuario y haciendo clic en el botón "Agregar evidencia de competencia".
-
 Al crear un nuevo elemento de evidencia de competencia, puede elegir entre agregar evidencia a una competencia existente o crear una nueva competencia. Si elige "Seleccionar una competencia", se abre una ventana emergente que le permitirá elegir de entre las competencias existentes. Si elige "Crear una nueva competencia", se abrirá un formulario en el que puede elegir el marco y definir la nueva competencia.
-
 Tenga en cuenta que no puede crear dos elementos de evidencia de competencia que se refieran al mismo usuario y competencia. Si intenta hacerlo, se le mostrará un enlace para modificar el registro original o elegir una competencia diferente.';
 $string['competencyevidencecount'] = 'Elementos de evidencia';
 $string['competencyevidenceorganisation_help'] = 'Esta opción registra la organización en la que se encontraba el usuario en el momento de realizar el elemento de evidencia de competencia. En la mayoría de los casos, será la misma que la organización actual del usuario. Como los usuarios cambian de organización con el tiempo, esto permite mantener un registro de dónde se encontraban en el momento de realizarla. Este campo es opcional.';
@@ -171,21 +165,16 @@ $string['competencyframeworkfullname'] = 'Nombre completo';
 $string['competencyframeworkfullname_help'] = 'El nombre completo del marco es el título completo del marco.';
 $string['competencyframeworkgeneral'] = 'Cuadro de la competencia';
 $string['competencyframeworkgeneral_help'] = '**Los marcos de competencias **se establecen para contener las habilidades, conocimientos y competencias conductuales que se espera que cumpla el personal.
-
 Las competencias se pueden agrupar bajo diferentes tipos de marcos. Por ejemplo, un marco podría contener los estándares de competencia nacionales del sector (tomados de un organismo del sector), mientras que otro marco podría contener las competencias específicas establecidas en la empresa.
-
 Antes de establecer un marco de competencia, debe tener establecida una **escala de competencia**.';
 $string['competencyframeworkidnumber'] = 'Número ID';
 $string['competencyframeworkidnumber_help'] = 'El número de ID del marco es un número único que se puede utilizar para indicar el marco.</h1>';
 $string['competencyframeworkmanage'] = 'Ajuste cuadros';
 $string['competencyframeworks'] = 'Cuadros de competencias';
 $string['competencyframeworks_help'] = '**Los marcos de competencias **se establecen para contener las habilidades, conocimientos y competencias conductuales que se espera que cumpla el personal.
-
 Las competencias se pueden agrupar bajo diferentes tipos de marcos. Por ejemplo, un marco podría contener los estándares de competencia nacionales del sector (tomados de un organismo del sector), mientras que otro marco podría contener las competencias específicas establecidas en la empresa.
-
 Antes de establecer un marco de competencia, debe tener establecida una **escala de competencia**.';
 $string['competencyframeworkscale_help'] = 'Las escalas de competencias le permiten definir los criterios para medir las competencias. Por ejemplo, una escala puede tener tres valores: "diestro, diestro con supervisión, no diestro".
-
 El primer paso es utilizar la opción de Escalas de competencias para agregar una nueva escala y, a continuación, agregar los valores de la escala que se utilizan para definir el progreso del usuario en una competencia. Puede agregar tantos valores como quiera. Tenga en cuenta también las opciones de los valores Predeterminado y Diestro.';
 $string['competencyframeworkshortname_help'] = 'El nombre corto del marco es una referencia rápida al nombre completo del marco y se puede utilizar para fines de visualización.';
 $string['competencyframeworkview'] = 'Ver cuadro';
@@ -203,19 +192,14 @@ $string['competencynoframeworkssetup'] = 'No hay cuadros de competencias configu
 $string['competencynotypes'] = 'No hay tipos de competencias';
 $string['competencyparent'] = 'Padre';
 $string['competencyparent_help'] = 'La **competencia principal** le permite crear relaciones principal/secundarias entre competencias en el marco de competencias utilizando niveles de profundidad.
-
 Seleccione la **competencia principal** en el menú desplegable. Seleccione **Superior** si quiere que la competencia esté en el nivel superior de la jerarquía.
-
 Cuando solo haya un nivel de profundidad establecido en el marco de competencia, la competencia principal estará en el nivel **superior**.
-
 **Nota: **para establecer relaciones principal/secundarias, tiene que tener al menos dos niveles de profundidad.';
 $string['competencyplural'] = 'Competencias';
 $string['competencyreturntoframework'] = 'Regrese al cuadro de la competencia';
 $string['competencyscale'] = 'Escala de competencia';
 $string['competencyscale_help'] = '**Escala** es el nombre de la escala de competencia que se utiliza en el marco de competencia.
-
 La escala de competencia se establece en el marco de competencia. Solo se puede utilizar una escala de competencia en cada marco.
-
 En Jerarquías/Competencias/Gestionar marcos del menú "Administración del centro" se puede establecer una nueva escala de competencia.';
 $string['competencyscaleassign'] = 'Escala de competencia';
 $string['competencyscaleassign_help'] = 'Una escala de competencia define los criterios para medir la competencia. Es el nombre de la escala a la que se agrega el valor.';
@@ -226,28 +210,24 @@ $string['competencyscaleinuse'] = 'Esta escala está en uso (es decir, los usuar
 $string['competencyscaleproficient'] = 'Valor de habilidad';
 $string['competencyscaleproficient_help'] = 'Los valores de destreza constituyen la forma en que el sistema controla si el usuario es "competente" en una competencia específica. Esto se utiliza para mostrar el progreso en los planes de aprendizaje y solo muestra avisos de plazos incumplidos de las competencias incompletas.
 Un usuario se considera "competente" si está marcada la opción "diestro" en el valor de la escala. Dispone de múltiples opciones de valores de escala, pero debe contar al menos con un valor de escala marcado como diestro. El valor diestro se cambia modificando el valor de escala.
-
 El valor de escala más bajo marcado como diestro se asigna automáticamente a un usuario que ha demostrado la destreza requerida por el elemento de evidencia de competencia especificado (realización de curso/actividad, o calificación de apto en curso/actividad).';
 $string['competencyscales'] = 'Escalas de competencia';
 $string['competencyscalescalename'] = 'Nombre';
 $string['competencyscalescalename_help'] = 'El nombre de la escala de competencia que utilizarán los marcos de competencia.';
 $string['competencyscalescalevalues'] = 'valores';
 $string['competencyscalescalevalues_help'] = 'Introduzca valores para la escala de competencia (una por línea), en orden de más competente a menos competente. Por ejemplo:
-
-<p class="indent">
-<i>CompetenteCompetente con supervisión No competente </p>';
+*Competente
+*Competente con supervisión
+*No competente';
 $string['competencyscalesgeneral'] = 'Escala de competencia';
 $string['competencyscalesgeneral_help'] = 'Las **escalas de competencia **le permiten definir los criterios para medir las competencias. Por ejemplo, una escala puede tener tres valores: "diestro, diestro con supervisión, no diestro".
-
 Antes de establecer un marco de competencia, debe tener establecida una escala de competencia.';
 $string['competencyscalevaluedescription'] = 'Descripción';
 $string['competencyscalevalueidnumber'] = 'Número ID del valor de la escala';
 $string['competencyscalevalueidnumber_help'] = 'El número de ID de la escala es un número único utilizado para indicar el valor de escala.';
 $string['competencyscalevaluename'] = 'Nombre del valor de la escala';
 $string['competencyscalevaluename_help'] = 'El **nombre de valor de escala** es el nombre del valor de escala de la competencia que está agregando o modificando.
-
 Un valor de escala se utiliza para definir el progreso del usuario en una competencia. Puede agregar tantos valores de escala como necesite.
-
 **Nota: **recuerde establecer las opciones de valores Predeterminado y Destreza.';
 $string['competencyscalevaluenumericalvalue'] = 'Valor numérico del valor de la escala';
 $string['competencyscalevaluenumericalvalue_help'] = 'El valor numérico del valor de escala es el valor numérico asociado con el valor de escala.';
@@ -255,7 +235,6 @@ $string['competencyshortname'] = 'Nombre corto de la competencia';
 $string['competencyshortname_help'] = 'El nombre corto de competencia es el nombre de referencia rápida de la competencia y se puede utilizar con fines de visualización.';
 $string['competencytemplatefullname_help'] = 'El nombre completo de la plantilla es el título completo de la plantilla de la competencia que se está estableciendo.';
 $string['competencytemplategeneral_help'] = 'Una **plantilla de competencia** es una forma de agrupar competencias de un marco de competencia.
-
 Al establecer un evento de formación, por ejemplo un curso de introducción, esto se podría vincular a una plantilla de competencia llamada "competencias de nuevo empleado", incorporando automáticamente diversas competencias en lugar de seleccionar repetidamente las competencias una a una.';
 $string['competencytemplatemanage'] = 'Ajustar plantillas';
 $string['competencytemplates'] = 'Plantillas de competencia';
@@ -591,11 +570,10 @@ $string['organisationframeworkdescription'] = 'Descripción';
 $string['organisationframeworkdescription_help'] = 'La descripción de cuadro es un campo de texto para guardar información adicional del cuadro. Se muestra en la página para ajustar organizaciones, justo arriba de la tabla de organizaciones.';
 $string['organisationframeworkfullname_help'] = 'El nombre completo del marco es el título completo del marco.';
 $string['organisationframeworkidnumber'] = 'Número ID';
-$string['organisationframeworkidnumber_help'] = 'El número de ID del marco es un número único que se puede utilizar para indicar el marco.</h1>';
+$string['organisationframeworkidnumber_help'] = 'El número de ID del marco es un número único que se puede utilizar para indicar el marco.';
 $string['organisationframeworkmanage'] = 'Ajustar cuadros';
 $string['organisationframeworks'] = 'Cuadros de la organización';
 $string['organisationframeworks_help'] = 'Un **marco de organización** se establece para mantener la estructura organizativa de su organización.
-
 Puede establecer múltiples marcos organizativos. Por ejemplo: establezca un marco para las subdivisiones o filiales de una empresa.';
 $string['organisationframeworkshortname_help'] = 'El nombre corto del marco es una referencia rápida al nombre completo del marco y se puede utilizar para fines de visualización.';
 $string['organisationfullname'] = 'Nombre completo de la organización';
@@ -612,11 +590,8 @@ $string['organisationnoframeworkssetup'] = 'No hay configurados cuadros de organ
 $string['organisationnotypes'] = 'No hay tipos de organizaciones';
 $string['organisationparent'] = 'Padre';
 $string['organisationparent_help'] = 'La **organización principal** le permite crear relaciones principal/secundarias entre organizaciones en el marco de organizaciones utilizando niveles de profundidad.
-
 Seleccione la **Organización principal** en el menú desplegable. Seleccione **Superior** si quiere que la organización esté en el nivel superior de la jerarquía.
-
 Cuando solo haya un nivel de profundidad establecido en el marco de organización, la organización principal estará en el nivel **superior**.
-
 **Nota: **para establecer relaciones principal/secundarias, tiene que tener al menos dos niveles de profundidad.';
 $string['organisationplural'] = 'Organizaciones';
 $string['organisationreturntoframework'] = 'Regrese al cuadro de la organización';
@@ -684,7 +659,6 @@ $string['positionframeworkidnumber_help'] = 'El número de ID del marco es un n�
 $string['positionframeworkmanage'] = 'Ajustar cuadros';
 $string['positionframeworks'] = 'Cuadros de posición';
 $string['positionframeworks_help'] = 'Un **marco de puestos** se utiliza para establecer y mantener los diferentes puestos de la organización.
-
 Puede tener múltiples taxonomías de puestos (marcos) en una organización.';
 $string['positionframeworkshortname_help'] = 'El nombre corto del marco es una referencia rápida al nombre completo del marco y se puede utilizar con fines de visualización.';
 $string['positionfullname'] = 'Nombre completo de la posición';
@@ -702,11 +676,8 @@ $string['positionnoframeworkssetup'] = 'No hay una configuración de cuadros de 
 $string['positionnotypes'] = 'No hay tipos de posición';
 $string['positionparent'] = 'Padre';
 $string['positionparent_help'] = 'La opción **Puesto principal** le permite crear relaciones principal/secundarios entre puestos en un marco de puestos.
-
 Seleccione el **Puesto principal** en el menú desplegable. Seleccione **Superior** si quiere que el puesto esté en el nivel superior de la jerarquía.
-
 Cuando solo haya un nivel de profundidad establecido en el marco de puestos, el puesto principal estará en el nivel **superior**.
-
 **Nota: **para establecer relaciones principal/secundarias, tiene que tener al menos dos niveles de profundidad.';
 $string['positionplural'] = 'Posiciones';
 $string['positionreturntoframework'] = 'Regresar al cuadro de posición';

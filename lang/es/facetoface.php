@@ -1,5 +1,27 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.1
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'es', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = 'Añadir una nueva sesión en {$a}';
 $string['addmanageremailaddress'] = 'Añadir dirección de correo electrónico del supervisor';
@@ -13,11 +35,16 @@ $string['addsession'] = 'Añadir nueva sesión';
 $string['addstudent'] = 'Aádir estudiante';
 $string['alllocations'] = 'Todas las locaciones';
 $string['allowoverbook'] = 'Permitir exceso de capacidad de servicio';
+$string['allowoverbook_help'] = '# Permitir exceso de reservas
+Cuando la opción “Permitir exceso de reservas” está seleccionada, los alumnos podrán inscribirse a una sesión presencial aunque esté completa.
+Si un estudiante se inscribe en una sesión que ya está completa, recibirá un correo electrónico en el que se le comunicará que está en la lista de espera y se le avisará cuando haya una vacante disponible.';
 $string['allsessionsin'] = 'Todas las sesiones en {$a}';
 $string['alreadysignedup'] = 'Usted ha quedado inscrito para esta actividad cara-a-cara.';
 $string['answer'] = 'Ingresar';
 $string['answercancel'] = 'Salir';
 $string['approvalreqd'] = 'Aprobación requerida';
+$string['approvalreqd_help'] = '# Aprobación requerida
+Cuando la opción “Aprobación requerida” está seleccionada, significa que el estudiante necesita la aprobación de su director para asistir a una sesión presencial.';
 $string['approve'] = 'Aprobar';
 $string['approveinstruction'] = 'Para aprobar el registro de la sesión, presione aceptar';
 $string['assessmentyour'] = 'Su evaluación';
@@ -40,7 +67,11 @@ $string['cancelbooking'] = 'Cancelar inscripción';
 $string['cancelbookingfor'] = 'Cancelar inscripción para {$a}';
 $string['cancellation'] = 'Cancelación';
 $string['cancellationconfirm'] = '¿Está usted seguro que quiere cancelar su inscripción para esta sesión?';
+$string['cancellationinstrmngr_help'] = '# Aviso para el director
+Cuando la opción **Enviar aviso al director** está seleccionada, el texto del campo **Aviso para el director** se envía al director del estudiante para informarle de que se ha cancelado una reserva presencial.';
 $string['cancellationmessage'] = 'Mensaje de cancelación';
+$string['cancellationmessage_help'] = '# Mensaje de cancelación
+Este mensaje se envía cuando un usuario cancela la reserva de una sesión.';
 $string['cancellations'] = 'Cancelaciones';
 $string['cancellationsent'] = 'Usted deberá recibir Inmediatamente un correo electrónico de cancelación.';
 $string['cancellationsentmgr'] = 'Usted y su supervisor deberán recibir inmediatamente un correo de cancelación.';
@@ -51,6 +82,10 @@ $string['cancelusersession'] = 'Cancelado para la sesión {$a->usermsg} {$a->url
 $string['cannotsignupsessioninprogress'] = 'No puede inscribirse, esta sesión está en progreso';
 $string['cannotsignupsessionover'] = 'No puede inscribirse, esta sesión ha finalizado.';
 $string['capacity'] = 'Capacidad';
+$string['capacity_help'] = '# Capacidad
+**Capacidad** es el número de plazas disponibles en una sesión.
+Cuando una sesión personalizada alcanza el número máximo de reservas, la información acerca de esta sesión no aparece en la página del curso. Los detalles aparecerán en color gris en la página “Ver todas las sesiones” y el estudiante no podrá matricularse en esta sesión.
+ ';
 $string['changemanageremailaddress'] = 'Cambiar dirección de correo electrónico del supervisor';
 $string['changemanageremailinstruction'] = 'A continuación ingrese la dirección de correo electónico de su actual supervisor.';
 $string['clearall'] = 'Limpiar todo';
@@ -60,7 +95,11 @@ $string['conditionsexplanation'] = 'Todos estos criterios deben cumplirse para q
 $string['confirm'] = 'Confirmar';
 $string['confirmanager'] = 'Confirmar el correo electrónico del supervisor';
 $string['confirmation'] = 'Confirmación';
+$string['confirmationinstrmngr_help'] = '# Aviso para el director
+Cuando la opción “Enviar aviso al director” aparece marcada, el texto del campo “Aviso para el director” se envía al director para informarle de que un empleado se ha inscrito en una sesión presencial.';
 $string['confirmationmessage'] = 'Mensaje de confirmación';
+$string['confirmationmessage_help'] = '# Mensaje de confirmación
+Este mensaje se envía cuando un usuario se inscribe a una sesión.';
 $string['confirmationsent'] = 'Usted deberá recibir inmediatamente un correo electrónico de confirmación.';
 $string['confirmationsentmgr'] = 'Usted y su supervisor deberá recibir inmediatamente un correo electrónico de confirmación.';
 $string['confirmmanageremailaddress'] = 'Confirmar correo electrónico del supervisor';
@@ -85,11 +124,29 @@ $string['deletesession'] = 'Eliminar sesión';
 $string['deletesessionconfirm'] = '¿Esta usted completamente seguro que quiere eliminar esta sesión y todas las inscripciones para esta sesión?';
 $string['deletingsession'] = 'Eliminar sesión en {$a}';
 $string['description'] = 'Texto de Introducción';
+$string['description_help'] = '# Descripción
+**Descripción** es la descripción del curso a disposición de los alumnos durante la matricula a una sesión presencial.
+La **Descripción** también se muestra en el calendario de formación.';
 $string['details'] = 'Detalles';
+$string['details_help'] = 'Se realiza el seguimiento de la información por sesiones.
+Si se escribe el texto en el campo de detalles, la información se mostrará en la página de inscripción de usuarios.
+La información aparece también por defecto en los correos electrónicos de confirmación, recordatorio, lista de espera y cancelación.';
 $string['discountcode'] = 'Código de descuento';
+$string['discountcode_help'] = 'El código de descuento es el código requerido para realizar el seguimiento del descuento en la formación de los empleados.
+Si el empleado no introduce el código de descuento, aparecerá el precio normal en el registro de formación.';
 $string['discountcost'] = 'Costo de descuento';
+$string['discountcost_help'] = 'El coste de descuento es el precio en dólares que se cobra a los empleados que tienen una acreditación de miembro.
+Si un empleado introduce la acreditación de miembro cuando se inscribe a una sesión, el descuento aparecerá en la columna Precio del expediente del curso.';
 $string['due'] = 'Deuda';
 $string['duration'] = 'Duración';
+$string['duration_help'] = '# Duración
+**Duración** es la duración total, en horas, de la formación.
+Por ejemplo:
+* “2 horas” sería **2** o **2:00**
+* “1 hora y 30 minutos” sería **1:30**
+* “45 minutos” sería **0:45**
+* “20 minutos” sería **0:20**.
+Si la formación tiene lugar durante dos o más períodos de tiempo, la duración será la suma de todos los períodos de tiempo.';
 $string['early'] = '{$a} temprana';
 $string['edit'] = 'Editar';
 $string['editingsession'] = 'Editando sesión en {$a}';
@@ -98,6 +155,12 @@ $string['email:instrmngr'] = 'Aviso para el supervisor';
 $string['email:message'] = 'Mensaje';
 $string['email:subject'] = 'Asunto';
 $string['emailmanager'] = 'Enviar aviso al supervisor';
+$string['emailmanagercancellation_help'] = '# Enviar aviso al director
+Cuando la opción “Enviar aviso al director" aparece marcada, se enviará un correo electrónico al director del alumno para informarle de que la reserva presencial se ha cancelado.';
+$string['emailmanagerconfirmation_help'] = '# Enviar aviso al director
+Cuando la opción “Enviar aviso al director” aparece marcada, se enviará un correo electrónico al director del alumno cuando este se inscriba en una sesión presencial.';
+$string['emailmanagerreminder_help'] = '# Enviar aviso al director
+Cuando la opción “Enviar aviso al director” aparece marcada, se enviará un recordatorio al director del estudiante unos días antes del inicio de la sesión presencial.';
 $string['emptylocation'] = 'Ubicación estaba vacia';
 $string['enrolled'] = 'Inscrito';
 $string['error:addalreadysignedupattendee'] = '{$a} está ahora inscrito para esta actividad Cara-a-cara.';
@@ -186,6 +249,10 @@ $string['import'] = 'Importar';
 $string['info'] = 'Información';
 $string['late'] = '{$a} tarde';
 $string['location'] = 'Localización';
+$string['location_help'] = '# Ubicación
+**Ubicación** describe el lugar en el que se realizará la sesión (ciudad, condado, región, etc.).
+**La ubicación** se muestra en la página del curso, en la página de inscripciones, en la página "Ver todas las sesiones” y en todas las notificaciones enviadas por correo electrónico.
+En la página “Ver todas las sesiones” puede filtrar todas las sesiones por ubicación.';
 $string['lookfor'] = 'Buscar';
 $string['manageradded'] = 'La dirección de correo electrónico de su supervisor ha sido aceptada.';
 $string['managerchanged'] = 'La dirección de correo electrónico de su supervisor ha sido cambiada.';
@@ -203,6 +270,10 @@ $string['message'] = 'Cambio en la inscripción en el curso {$a->coursename}!
 
 Hay un lugar libre en la sesión de {$a->duedate} ({$a->name}) en el curso {$a->coursename}.
 Usted ha sido registrado. Si la fecha no le conviene más, por favor, anular el registro en <a href=\'{$a->url}\'>{$a->url}</a>.';
+$string['mods_help'] = '# Actividad presencial
+Las actividades presenciales se utilizan para realizar el seguimiento de las formaciones en persona para lo cual se necesita realizar una reserva por adelantado.
+Todas las actividades están disponibles en una o más sesiones idénticas. Estas sesiones se pueden impartir durante varios días.
+Los mensajes recordatorio se envían a los directores unos días antes de la fecha de inicio de la sesión. Los mensajes de confirmación se envían cuando los usuarios se inscriben o cancelan la reserva de una sesión.';
 $string['modulename'] = 'Cara-a-cara';
 $string['modulenameplural'] = 'Cara-a-cara';
 $string['moreinfo'] = 'Más información';
@@ -214,6 +285,8 @@ $string['nofacetofaces'] = 'No hay actividades Cara-a-cara';
 $string['none'] = 'nada';
 $string['noremindersneedtobesent'] = 'No hay avisos para ser enviados.';
 $string['normalcost'] = 'Costo normal';
+$string['normalcost_help'] = 'El precio sin descuento es el precio en dólares que se cobra a los empleados que no disponen de una acreditación de miembro.
+El precio sin descuento aparecerá en la columna Precio en el expediente del curso de todos los empleados que asistan a la sesión (a menos que se tenga un descuento y el empleado introduzca una acreditación de miembro al inscribirse en la sesión).';
 $string['nosignedupusers'] = 'Ningún usuario se ha inscrito para esta sesión.';
 $string['nositenotices'] = '<p>No están definidos avisos del sitio.</p>';
 $string['note'] = 'Nota';
@@ -224,6 +297,11 @@ $string['notificationboth'] = 'Notificaciones por correo electrónico y citas en
 $string['notificationemail'] = 'Solo notificaciones por correo electrónico';
 $string['notificationical'] = 'Solo citas en el calendario';
 $string['notificationtype'] = 'Tipo de notificación';
+$string['notificationtype_help'] = '# Tipo de notificación
+El Tipo de notificación permite que el estudiante seleccione cómo desea que se le notifique su reserva.
+* Solo Cita en iCalendar
+* Solo notificación por correo electrónico
+* Notificación por correo electrónico y cita en iCalendar';
 $string['notsignedup'] = 'Usted no esta inscrito para esta sesión';
 $string['notsubmittedyet'] = 'Aún no evaluado';
 $string['noupcoming'] = '<p><i>No hay sesiones entrantes</i></p>';
@@ -257,14 +335,29 @@ $string['registeredon'] = 'Registrado en';
 $string['registrations'] = 'Inscripciones';
 $string['rejectinstruction'] = 'Para rechazar el registro de sesión, presione rechazar';
 $string['reminder'] = 'Recordatorio';
+$string['reminderinstrmngr_help'] = '# Aviso para el director
+Cuando la opción **Enviar aviso al director** aparece marcada, el texto del campo **Aviso para el director** se envía al director del estudiante para informarle de que se ha apuntado a una sesión presencial.';
 $string['remindermessage'] = 'Mensaje recordatorio';
+$string['remindermessage_help'] = '# Mensaje recordatorio
+Este mensaje se envía unos días antes de la fecha de inicio de la sesión.';
 $string['reminderperiod'] = 'Días antes que el mensaje sea enviado';
+$string['reminderperiod_help'] = '# Período del recordatorio
+El mensaje recordatorio se enviará unos días antes del comienzo de la sesión.';
 $string['requestattendsession'] = 'Solicitud de asistencia a la sesión {$a}';
 $string['requestattendsessionsent'] = 'La solicitud de asistencia a la sesión {$a} fue enviada al gestor';
 $string['requestmessage'] = 'Mensaje de solicitud';
+$string['requestmessage_help'] = '# Solicitar mensaje
+Cuando la opción **Aprobación requerida** aparece marcada, la opción **Solicitar mensaje** está disponible.
+La sección **Solicitar mensaje** muestra los avisos enviados al estudiante y a su director relativos al proceso de aprobación para que el estudiante asista a una sesión presencial.
+**Asunto:** es la línea del asunto que aparece en la opción Solicitar correos electrónicos que se envían al director y al estudiante.
+**Mensaje:** es el cuerpo del correo electrónico que se envía al estudiante para informarle de que la solicitud para asistir a una sesión presencial se ha enviado a su director y se encuentra a la espera de autorización.
+**Aviso para el director:** es el texto que aparece en el correo electrónico que se envía al director del estudiante para que autorice la asistencia del estudiante a la sesión presencial.';
 $string['requeststablesummary'] = 'Personas que solicitaron atender a esta sesión.';
 $string['requestuserattendsession'] = 'Solicitud para que {$a->usermsg} asista a la sesión {$a->url}';
 $string['room'] = 'Sala';
+$string['room_help'] = '# Aula
+**Aula** es el nombre, número o identificador del aula utilizada para la sesión de formación.
+El **Aula** se muestra en la página del curso, en la página de inscripciones, en la página “Ver todas las sesiones” y en todas las notificaciones enviadas por correo electrónico.';
 $string['saveallfeedback'] = 'Guardar todas las respuestas';
 $string['saveattendance'] = 'Guardar la asistencia';
 $string['scheduledsession'] = 'Sesión programada';
@@ -274,8 +367,20 @@ $string['seeattendees'] = 'Ver asistentes';
 $string['sentremindermanager'] = 'Enviar correo electrónico recordatorio al supervisor';
 $string['sentreminderuser'] = 'Enviar correo electrónico recordatorio al usuario';
 $string['sessiondate'] = 'Fecha de la sesión';
+$string['sessiondate_help'] = 'La fecha de sesión es la fecha en que se realiza la sesión.';
 $string['sessiondatetime'] = 'Fecha/hora de la sesión';
 $string['sessiondatetimeknown'] = 'Fecha/hora de la sesión conocida';
+$string['sessiondatetimeknown_help'] = '**Si conoce la hora o fecha de la sesión**
+Si la respuesta a esta opción es “Sí”, la hora y fecha de la sesión aparecerán en la página del curso (en caso de que la sesión esté disponible y vaya a celebrarse pronto), la página “Ver todas las sesiones”, la página de inscripción y las notificaciones por correo electrónico relacionadas con la sesión.
+Cuando un empleado se inscribe en una sesión con fecha y hora confirmadas:
+* El empleado y su director recibirán un correo electrónico de confirmación (por ejemplo, el mensaje formateado en la sección “Mensaje de confirmación” de la configuración del ejemplo presencial).
+* El empleado recibirá un recordatorio por correo electrónico (por ejemplo, el mensaje formateado en la sección “Mensaje de recordatorio” de la configuración del ejemplo presencial). El recordatorio se enviará unos días antes de la sesión, según la configuración “Días previos al envío del mensaje” que se encuentra también en la sección “Mensaje de recordatorio” de la configuración del ejemplo presencial.
+**Si desconoce la hora o fecha de la sesión (o lista de espera)**
+Si la respuesta para esta opción es “No”, aparecerá el mensaje “en lista de espera” en la página del curso, la página “Ver todas las sesiones”, la página de inscripción y las notificaciones por correo electrónico relacionadas con la sesión.
+Cuando un empleado se inscribe en una sesión en lista de espera:
+* El empleado recibirá un correo electrónico de confirmación (por ejemplo, el mensaje formateado en la sección “Mensaje en lista de espera” de la configuración del ejemplo presencial).
+* El empleado no recibirá un recordatorio por correo electrónico.
+* No se enviarán mensajes de confirmación o cancelación por correo electrónico al director del empleado.';
 $string['sessionfinishtime'] = 'Hora de finalización de la sesión';
 $string['sessioninprogress'] = 'sesión en progreso';
 $string['sessionisfull'] = 'Esta sesión esta llena ahora. Usted deberá escoger otra hora o hable con el instructor.';
@@ -285,6 +390,8 @@ $string['sessionroles'] = 'Roles de sesión';
 $string['sessions'] = 'Sesiones';
 $string['sessionsdetailstablesummary'] = 'Descripción completa de la sesión actual.';
 $string['sessionsoncoursepage'] = 'Sesiones mostradas en la página del curso';
+$string['sessionsoncoursepage_help'] = '# Sesiones en la página del curso
+Se trata del número de sesiones de las actividades presenciales que se mostrarán en la página principal del curso.';
 $string['sessionstartdate'] = 'Fecha de inicio de la sesión';
 $string['sessionstarttime'] = 'Hora de inicio de la sesión';
 $string['sessionvenue'] = 'Lugar de la sesión';
@@ -293,12 +400,10 @@ $string['setting:addchangemanageremail_caption'] = 'Correo electrónico del supe
 $string['setting:addchangemanageremaildefault'] = 'Preguntar a los usuarios por los correos electrónicos de sus supervisores';
 $string['setting:defaultcancellationinstrmngr'] = 'Mensaje por defecto de cancelación enviado a los supervisores.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'Mensaje de cancelación (supervisores)';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** La cancelación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
 $string['setting:defaultcancellationinstrmngrdefault'] = '*** Información ****
 
-Esto es para informarle que [nombre] [apellido] ya no se encuentra inscrito en el curso siguiente y usted figura como su Jefe de Equipo / Supervisor.
-
-';
-$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** La cancelación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
+Esto es para informarle que [nombre] [apellido] ya no se encuentra inscrito en el curso siguiente y usted figura como su Jefe de Equipo / Supervisor.';
 $string['setting:defaultcancellationmessage'] = 'Mensaje por defecto de cancelación enviado al usuario.';
 $string['setting:defaultcancellationmessage_caption'] = 'Mensaje de cancelación';
 $string['setting:defaultcancellationmessagedefault'] = 'Esto es para informarle que su inscripción en el siguiente curso ha sido cancelada:
@@ -320,14 +425,12 @@ $string['setting:defaultcancellationsubject_caption'] = 'Asunto de cancelación'
 $string['setting:defaultcancellationsubjectdefault'] = 'Cancelación de la inscripción del curso';
 $string['setting:defaultconfirmationinstrmngr'] = 'Mensaje de confirmación por defecto enviado a los supervisores.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'Mensaje de confirmación (supervisores)';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '*** Información ****
 
 Esto es para informarle que [nombre] [apellido], ha sido inscrito en el curso siguiente y usted figura como su Jefe de Equipo / Supervisor.
 
-Si usted no es su Jefe de Equipo / Supervisor y cree que ha recibido este mensaje por error, por favor, responda a este correo electrónico. Si tiene dudas acerca de sus miembros del staff tomamndo este curso por favor, hable con ellos directamente.
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
+Si usted no es su Jefe de Equipo / Supervisor y cree que ha recibido este mensaje por error, por favor, responda a este correo electrónico. Si tiene dudas acerca de sus miembros del staff tomamndo este curso por favor, hable con ellos directamente.';
 $string['setting:defaultconfirmationmessage'] = 'Mensaje de confirmación enviado a los usuarios por defecto.';
 $string['setting:defaultconfirmationmessage_caption'] = 'Mensaje de confirmación';
 $string['setting:defaultconfirmationmessagedefault'] = 'Esto es para confirmar que usted esta ahora inscrito para el siguiente curso:
@@ -357,14 +460,12 @@ $string['setting:defaultconfirmationsubject_caption'] = 'Asunto para confirmaci�
 $string['setting:defaultconfirmationsubjectdefault'] = 'Confirmación en la inscripción al curso:[nombrecaraacara], [horadeinicio]-[horadefinalización], [fechadelasesión]';
 $string['setting:defaultreminderinstrmngr'] = 'Mensaje recordatorio por defecto enviado a los supervisores.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'Mensaje recordatorio (supervisores)';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** El correo electrónico recordatorio de [nombre] [apellido] se escribe a continuación ****';
 $string['setting:defaultreminderinstrmngrdefault'] = '*** Recordatorio ****
 
 Su miembro [nombre] [apellido] está inscrito para asistir y también ha recibido este correo electrónico recordatorio.
 
-Si usted no es su Jefe de Equipo / Supervisor y cree que ha recibido este mensaje por error, por favor, responda a este correo electrónico.
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '*** El correo electrónico recordatorio de [nombre] [apellido] se escribe a continuación ****';
+Si usted no es su Jefe de Equipo / Supervisor y cree que ha recibido este mensaje por error, por favor, responda a este correo electrónico.';
 $string['setting:defaultremindermessage'] = 'Mensaje recordatorio por defecto enviado a los usuarios.';
 $string['setting:defaultremindermessage_caption'] = 'Mensaje recordatorio';
 $string['setting:defaultremindermessagedefault'] = 'Este es un recordatorio de que usted está inscrito en el siguiente curso:
@@ -390,6 +491,7 @@ Para volver a programar su inscripción tiene que cancelar esta inscripción y v
 $string['setting:defaultremindersubject'] = 'Asunto por defecto en los correos electrónicos recordatorios.';
 $string['setting:defaultremindersubject_caption'] = 'Asusto recordatorio';
 $string['setting:defaultremindersubjectdefault'] = 'Recordatorio de inscripción al curso inscrito: [nombrecaraacara], [horadeinicio]-[horadefinalización], [fechadelasesión]';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
 $string['setting:defaultrequestinstrmngrdefault'] = 'Esto es para informarle que [nombre] [apellido], ha solicitado ser inscrito en el curso siguiente, y usted figura como su Jefe de Equipo / Supervisor.
 
 Curso: [nombrecaraacara]
@@ -404,10 +506,7 @@ Lugar: [session:venue]
 Sala: [session:room]
 
 Por favor siga el enlace a continuación para aprobar la solicitud:
-[enlaceasistentes]
-
-';
-$string['setting:defaultrequestinstrmngrcopybelow'] = '*** La confirmación de la inscripción de [nombre] [apellido] es descrito a continuación ****';
+[enlaceasistentes]';
 $string['setting:defaultrequestmessagedefault'] = 'Su solicitud para la inscripción del siguiente curso ha sido enviada a su supervisor:
 
 Participante: [nombre] [apellido]
@@ -461,8 +560,12 @@ $string['setting:sessionroles'] = 'Los usuarios asignados a los roles selecciona
 $string['setting:sessionroles_caption'] = 'Roles de sesión:';
 $string['setting:showinsummary'] = 'Mostrar en exportaciones y listas';
 $string['setting:type'] = 'Tipo de campo';
+$string['shortname_help'] = '# Nombre corto
+**Nombre corto** es la descripción de la sesión que aparece en el calendario de formación cuando la opción **Mostrar en el calendario** está activada.';
 $string['showbylocation'] = 'Mostrar por ubicación';
 $string['showoncalendar'] = 'Mostrar en el calendario';
+$string['showoncalendar_help'] = '# Mostrar en el calendario
+Cuando la opción **Mostrar en el calendario** está activada, las sesiones presenciales se muestran en el calendario de formación.';
 $string['sign-ups'] = 'Inscripciones';
 $string['signup'] = 'Regístrate';
 $string['signupfor'] = 'Regístrate a {$a}';
@@ -487,16 +590,26 @@ $string['submit'] = 'Enviar';
 $string['submitted'] = 'Enviado';
 $string['summary'] = 'Resumen';
 $string['suppressemail'] = 'Suprimir notificación por correo electrónico';
+$string['suppressemail_help'] = '# Eliminar notificaciones por correo electrónico
+Utilice esta opción si desea añadir o eliminar usuarios de una sesión presencial. Cuando esta opción está seleccionada, no se envía la confirmación por correo electrónico a los usuarios seleccionados.';
 $string['takeattendance'] = 'Tomar asistencia';
 $string['thirdpartyemailaddress'] = 'Dirección(es) de correo electrónico de terceros';
+$string['thirdpartyemailaddress_help'] = '# Direcciones de correo electrónico de terceros
+**Direcciones de correo electrónico de terceros** es un campo opcional que se utiliza para especificar las direcciones de correo electrónico de terceros (por ejemplo, un profesor externo) que recibirán mensajes de confirmación cuando un usuario se inscriba en una sesión.
+Cuando introduzca **diversas direcciones de correo electrónico**, debe separarlas con comas. Por ejemplo: bob@example.com,joe@example.com';
 $string['thirdpartywaitlist'] = 'Notificar a terceros acerca de las sesiones en lista de espera';
+$string['thirdpartywaitlist_help'] = '# Notificar a terceros las sesiones en lista de espera
+Al seleccionar la opción **Notificar a terceros las sesiones en lista de espera**, estas personas recibirán una notificación cuando un estudiante se inscriba en una sesión en lista de espera. Cuando la opción
+**Notificar a terceros las sesiones en lista de espera** está desactivada, estas personas solo recibirán una notificación cuando un usuario se inscriba (o cancele) una sesión programada.';
 $string['time'] = 'Hora';
 $string['timecancelled'] = 'Hora cancelada';
 $string['timedue'] = 'Límite de tiempo de registro';
 $string['timefinish'] = 'Hora de finalización';
+$string['timefinish_help'] = 'La hora de finalización es la hora en que concluye una sesión.';
 $string['timerequested'] = 'Tiempo de solicitud';
 $string['timesignedup'] = 'Tiempo de registro';
 $string['timestart'] = 'Hora de inicio';
+$string['timestart_help'] = 'La hora de inicio es la hora en que comienza una sesión.';
 $string['unapprovedrequests'] = 'Solicitudes sin aprobación';
 $string['unknowndate'] = 'Fecha desconocida';
 $string['unknowntime'] = 'Hora desconocida';
@@ -509,175 +622,18 @@ $string['usersignedupon'] = 'Usuario registrado en {$a}';
 $string['userwillbewaitlisted'] = 'Esta sesión actualmente se encuentra llena. Al hacer clic en el botón "Registrarse", usted será ingresado en la lista de espera de esta sesión.';
 $string['validation:needatleastonedate'] = 'Usted necesita proporcionar al menos una fecha o marcar que la sesión se encuentra en lista de espera';
 $string['venue'] = 'Lugar';
+$string['venue_help'] = '# Lugar
+**Lugar** es el edificio en que tiene lugar una sesión.
+El **Lugar** se muestra en la página de inscripciones, en la página “Ver todas las sesiones” y en todas las notificaciones enviadas por correo electrónico.';
 $string['viewallsessions'] = 'Ver todas las sesiones';
 $string['viewsubmissions'] = 'Ver todos los enviados';
 $string['wait-list'] = 'Lista de espera';
 $string['wait-listed'] = 'En lista de espera';
 $string['waitlistedforsession'] = 'En lista de espera para la sesión {$a}';
 $string['waitlistedmessage'] = 'Mensaje cuando se encuentren en lista de espera';
+$string['waitlistedmessage_help'] = '# Mensaje en lista de espera
+Este mensaje se envía cuando un usuario se apunta a una sesión en lista de espera.';
 $string['xhours'] = '{$a} horas';
 $string['xminutes'] = '{$a} minutos';
 $string['youarebooked'] = 'Usted está inscrito en la siguiente sesión';
 $string['youremailaddress'] = 'Su dirección de correo electrónico';
-$string['requestmessage_help'] = '# Solicitar mensaje
-
-Cuando la opción **Aprobación requerida** aparece marcada, la opción **Solicitar mensaje** está disponible.
-
-La sección **Solicitar mensaje** muestra los avisos enviados al estudiante y a su director relativos al proceso de aprobación para que el estudiante asista a una sesión presencial.
-
-**Asunto:** es la línea del asunto que aparece en la opción Solicitar correos electrónicos que se envían al director y al estudiante.
-
-**Mensaje:** es el cuerpo del correo electrónico que se envía al estudiante para informarle de que la solicitud para asistir a una sesión presencial se ha enviado a su director y se encuentra a la espera de autorización.
-
-**Aviso para el director:** es el texto que aparece en el correo electrónico que se envía al director del estudiante para que autorice la asistencia del estudiante a la sesión presencial.';
-$string['room_help'] = '# Aula
-
-**Aula** es el nombre, número o identificador del aula utilizada para la sesión de formación.
-
-El **Aula** se muestra en la página del curso, en la página de inscripciones, en la página “Ver todas las sesiones” y en todas las notificaciones enviadas por correo electrónico.';
-$string['sessiondatetimeknown_help'] = '**Si conoce la hora o fecha de la sesión**
-
-Si la respuesta a esta opción es “Sí”, la hora y fecha de la sesión aparecerán en la página del curso (en caso de que la sesión esté disponible y vaya a celebrarse pronto), la página “Ver todas las sesiones”, la página de inscripción y las notificaciones por correo electrónico relacionadas con la sesión.
-
-Cuando un empleado se inscribe en una sesión con fecha y hora confirmadas:
-
-*   El empleado y su director recibirán un correo electrónico de confirmación (por ejemplo, el mensaje formateado en la sección “Mensaje de confirmación” de la configuración del ejemplo presencial).
-*   El empleado recibirá un recordatorio por correo electrónico (por ejemplo, el mensaje formateado en la sección “Mensaje de recordatorio” de la configuración del ejemplo presencial). El recordatorio se enviará unos días antes de la sesión, según la configuración “Días previos al envío del mensaje” que se encuentra también en la sección “Mensaje de recordatorio” de la configuración del ejemplo presencial.
-
-**Si desconoce la hora o fecha de la sesión (o lista de espera)**
-
-Si la respuesta para esta opción es “No”, aparecerá el mensaje “en lista de espera” en la página del curso, la página “Ver todas las sesiones”, la página de inscripción y las notificaciones por correo electrónico relacionadas con la sesión.
-
-Cuando un empleado se inscribe en una sesión en lista de espera:
-
-*   El empleado recibirá un correo electrónico de confirmación (por ejemplo, el mensaje formateado en la sección “Mensaje en lista de espera” de la configuración del ejemplo presencial).
-*   El empleado no recibirá un recordatorio por correo electrónico.
-*   No se enviarán mensajes de confirmación o cancelación por correo electrónico al director del empleado.';
-$string['reminderperiod_help'] = '# Período del recordatorio
-
-El mensaje recordatorio se enviará unos días antes del comienzo de la sesión.';
-$string['sessiondate_help'] = 'La fecha de sesión es la fecha en que se realiza la sesión.';
-$string['remindermessage_help'] = '# Mensaje recordatorio
-
-Este mensaje se envía unos días antes de la fecha de inicio de la sesión.';
-$string['normalcost_help'] = 'El precio sin descuento es el precio en dólares que se cobra a los empleados que no disponen de una acreditación de miembro.
-
-El precio sin descuento aparecerá en la columna Precio en el expediente del curso de todos los empleados que asistan a la sesión (a menos que se tenga un descuento y el empleado introduzca una acreditación de miembro al inscribirse en la sesión).';
-$string['notificationtype_help'] = '# Tipo de notificación
-
-El Tipo de notificación permite que el estudiante seleccione cómo desea que se le notifique su reserva.
-
-*   Solo Cita en iCalendar</i> 
-    *   Solo notificación por correo electrónico</i> 
-        *   Notificación por correo electrónico y cita en iCalendar</i> </ul>';
-$string['reminderinstrmngr_help'] = '# Aviso para el director
-
-Cuando la opción **Enviar aviso al director** aparece marcada, el texto del campo **Aviso para el director** se envía al director del estudiante para informarle de que se ha apuntado a una sesión presencial.';
-$string['sessionsoncoursepage_help'] = '# Sesiones en la página del curso
-
-Se trata del número de sesiones de las actividades presenciales que se mostrarán en la página principal del curso.';
-$string['shortname_help'] = '# Nombre corto
-
-**Nombre corto** es la descripción de la sesión que aparece en el calendario de formación cuando la opción **Mostrar en el calendario** está activada.';
-$string['timestart_help'] = 'La hora de inicio es la hora en que comienza una sesión.';
-$string['venue_help'] = '# Lugar
-
-**Lugar** es el edificio en que tiene lugar una sesión.
-
-El **Lugar** se muestra en la página de inscripciones, en la página “Ver todas las sesiones” y en todas las notificaciones enviadas por correo electrónico.';
-$string['waitlistedmessage_help'] = '# Mensaje en lista de espera
-
-Este mensaje se envía cuando un usuario se apunta a una sesión en lista de espera.';
-$string['timefinish_help'] = 'La hora de finalización es la hora en que concluye una sesión.';
-$string['thirdpartywaitlist_help'] = '# Notificar a terceros las sesiones en lista de espera
-
-Al seleccionar la opción **Notificar a terceros las sesiones en lista de espera**, estas personas recibirán una notificación cuando un estudiante se inscriba en una sesión en lista de espera. Cuando la opción 
-
-**Notificar a terceros las sesiones en lista de espera** está desactivada, estas personas solo recibirán una notificación cuando un usuario se inscriba (o cancele) una sesión programada.';
-$string['showoncalendar_help'] = '# Mostrar en el calendario
-
-Cuando la opción **Mostrar en el calendario** está activada, las sesiones presenciales se muestran en el calendario de formación.';
-$string['suppressemail_help'] = '# Eliminar notificaciones por correo electrónico
-
-Utilice esta opción si desea añadir o eliminar usuarios de una sesión presencial. Cuando esta opción está seleccionada, no se envía la confirmación por correo electrónico a los usuarios seleccionados.';
-$string['thirdpartyemailaddress_help'] = '# Direcciones de correo electrónico de terceros
-
-**Direcciones de correo electrónico de terceros** es un campo opcional que se utiliza para especificar las direcciones de correo electrónico de terceros (por ejemplo, un profesor externo) que recibirán mensajes de confirmación cuando un usuario se inscriba en una sesión. 
-Cuando introduzca **diversas direcciones de correo electrónico**, debe separarlas con comas. Por ejemplo: bob@example.com,joe@example.com';
-$string['mods_help'] = '# Actividad presencial
-
-Las actividades presenciales se utilizan para realizar el seguimiento de las formaciones en persona para lo cual se necesita realizar una reserva por adelantado.
-
-Todas las actividades están disponibles en una o más sesiones idénticas. Estas sesiones se pueden impartir durante varios días.
-
-Los mensajes recordatorio se envían a los directores unos días antes de la fecha de inicio de la sesión. Los mensajes de confirmación se envían cuando los usuarios se inscriben o cancelan la reserva de una sesión.';
-$string['location_help'] = '# Ubicación
-
-**Ubicación** describe el lugar en el que se realizará la sesión (ciudad, condado, región, etc.).
-
-**La ubicación** se muestra en la página del curso, en la página de inscripciones, en la página "Ver todas las sesiones” y en todas las notificaciones enviadas por correo electrónico.
-
-En la página “Ver todas las sesiones” puede filtrar todas las sesiones por ubicación.';
-$string['capacity_help'] = '# Capacidad
-
-**Capacidad** es el número de plazas disponibles en una sesión.
-
-Cuando una sesión personalizada alcanza el número máximo de reservas, la información acerca de esta sesión no aparece en la página del curso. Los detalles aparecerán en color gris en la página “Ver todas las sesiones” y el estudiante no podrá matricularse en esta sesión.
-
- ';
-$string['confirmationinstrmngr_help'] = '# Aviso para el director
-
-Cuando la opción “Enviar aviso al director” aparece marcada, el texto del campo “Aviso para el director” se envía al director para informarle de que un empleado se ha inscrito en una sesión presencial.';
-$string['confirmationmessage_help'] = '# Mensaje de confirmación
-
-Este mensaje se envía cuando un usuario se inscribe a una sesión.';
-$string['cancellationmessage_help'] = '# Mensaje de cancelación
-
-Este mensaje se envía cuando un usuario cancela la reserva de una sesión.';
-$string['cancellationinstrmngr_help'] = '# Aviso para el director
-
-Cuando la opción **Enviar aviso al director** está seleccionada, el texto del campo **Aviso para el director** se envía al director del estudiante para informarle de que se ha cancelado una reserva presencial.';
-$string['allowoverbook_help'] = '# Permitir exceso de reservas
-
-Cuando la opción “Permitir exceso de reservas” está seleccionada, los alumnos podrán inscribirse a una sesión presencial aunque esté completa.
-
-Si un estudiante se inscribe en una sesión que ya está completa, recibirá un correo electrónico en el que se le comunicará que está en la lista de espera y se le avisará cuando haya una vacante disponible.';
-$string['approvalreqd_help'] = '# Aprobación requerida
-
-Cuando la opción “Aprobación requerida” está seleccionada, significa que el estudiante necesita la aprobación de su director para asistir a una sesión presencial.';
-$string['details_help'] = 'Se realiza el seguimiento de la información por sesiones.
-
-Si se escribe el texto en el campo de detalles, la información se mostrará en la página de inscripción de usuarios.
-
-La información aparece también por defecto en los correos electrónicos de confirmación, recordatorio, lista de espera y cancelación.';
-$string['description_help'] = '# Descripción
-
-**Descripción** es la descripción del curso a disposición de los alumnos durante la matricula a una sesión presencial. 
-
-La **Descripción** también se muestra en el calendario de formación.';
-$string['emailmanagerconfirmation_help'] = '# Enviar aviso al director
-
-Cuando la opción “Enviar aviso al director” aparece marcada, se enviará un correo electrónico al director del alumno cuando este se inscriba en una sesión presencial.';
-$string['emailmanagerreminder_help'] = '# Enviar aviso al director
-
-Cuando la opción “Enviar aviso al director” aparece marcada, se enviará un recordatorio al director del estudiante unos días antes del inicio de la sesión presencial.';
-$string['duration_help'] = '# Duración
-
-**Duración** es la duración total, en horas, de la formación. 
-Por ejemplo: 
-*   “2 horas” sería **2** o **2:00** 
-*   “1 hora y 30 minutos” sería **1:30**
-*   “45 minutos” sería **0:45**
-*   “20 minutos” sería **0:20**.
-
-Si la formación tiene lugar durante dos o más períodos de tiempo, la duración será la suma de todos los períodos de tiempo.';
-$string['emailmanagercancellation_help'] = '# Enviar aviso al director
-
-Cuando la opción “Enviar aviso al director" aparece marcada, se enviará un correo electrónico al director del alumno para informarle de que la reserva presencial se ha cancelado.';
-$string['discountcost_help'] = 'El coste de descuento es el precio en dólares que se cobra a los empleados que tienen una acreditación de miembro.
-
-Si un empleado introduce la acreditación de miembro cuando se inscribe a una sesión, el descuento aparecerá en la columna Precio del expediente del curso.';
-$string['discountcode_help'] = 'El código de descuento es el código requerido para realizar el seguimiento del descuento en la formación de los empleados.
-
-Si el empleado no introduce el código de descuento, aparecerá el precio normal en el registro de formación.';
-

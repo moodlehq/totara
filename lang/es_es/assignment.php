@@ -26,9 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['allownotes_help'] = '# Permitir notas
-
 Si se activa esta opción, los participantes pueden escribir notas en el área de texto. Es semejante a una tarea de texto en línea.
-
 La caja de texto puede usarse como comunicación con la persona a la que se califica, con la descripción del progreso de la tarea o con cualquier otra actividad escrita.';
 $string['allowresubmit'] = 'Permitir reenvío';
 $string['assignmentdetails'] = 'Detalles de la tarea';

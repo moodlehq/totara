@@ -1,5 +1,27 @@
 <?php
-// facetoface.php - created with Totara langimport script version 1.1
+
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2012 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Strings for component 'facetoface', language 'he', branch 'totara-2.2'
+ * @package totara
+ * @subpackage facetoface
+ */
 
 $string['addingsession'] = 'מוסיף מחזור חדש ב-{$a}';
 $string['addmanageremailaddress'] = 'הוסף כתובת דוא"ל של מנהל';
@@ -305,6 +327,8 @@ $string['setting:addchangemanageremail_caption'] = 'כתובת דוא"ל של ה
 $string['setting:addchangemanageremaildefault'] = 'בקש מהמשתתפים את כתובת הדוא"ל של המנהל שלהם.';
 $string['setting:defaultcancellationinstrmngr'] = 'תבנית הודעת ביטול השתתפות למנהלים.';
 $string['setting:defaultcancellationinstrmngr_caption'] = 'הודעת ביטול (למנהלים)';
+$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** העתק בקשת הביטול שנשלחה מופיע למטה [firstname] [lastname] ****
+*** [firstname] [lastname]\'s booking cancellation is copied below ****';
 $string['setting:defaultcancellationinstrmngrdefault'] = '*** לידיעה בלבד ****
 
 הודעה זו נועדה ליידע אותך ש[firstname] [lastname] שציין אותך כמנהל שלו, כבר אינו רשום לקורס הבא:
@@ -313,11 +337,7 @@ English Version
 ---------------
 *** Advice only ****
 
-This is advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.
-
-';
-$string['setting:defaultcancellationinstrmngrcopybelow'] = '*** העתק בקשת הביטול שנשלחה מופיע למטה [firstname] [lastname] ****
-*** [firstname] [lastname]\'s booking cancellation is copied below ****';
+This is advise that [firstname] [lastname] is no longer signed-up for the following course and listed you as their Team Leader / Manager.';
 $string['setting:defaultcancellationmessage'] = 'תבנית הודעת ביטול השתתפות לעובד';
 $string['setting:defaultcancellationmessage_caption'] = 'הודעת ביטול';
 $string['setting:defaultcancellationmessagedefault'] = 'זוהי הודעה שנועדה להודיע לך שהרישום שלך להדרכה המפורטת מטה בוטל:
@@ -356,6 +376,8 @@ $string['setting:defaultcancellationsubject_caption'] = 'נושא הודעת ה�
 $string['setting:defaultcancellationsubjectdefault'] = 'ביטול רישום להדרכה';
 $string['setting:defaultconfirmationinstrmngr'] = 'ברירת מחדל לנושא של הודעות אישור רישום.';
 $string['setting:defaultconfirmationinstrmngr_caption'] = 'הודעת אישור רישום (למנהלים)';
+$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** העתק בקשת הרישום שנשלחה לעובד מופיע למטה [firstname] [lastname] ****
+*** [firstname] [lastname]\'s booking confirmation is copied below ****';
 $string['setting:defaultconfirmationinstrmngrdefault'] = '*** לידיעה בלבד ****
 
 הודעה זו נועדה ליידע אותך ש[firstname] [lastname] שציין אותך כמנהל שלו, נרשם להדרכה ההמפורטת למטה.
@@ -369,11 +391,7 @@ English Version
 
 This is advise that [firstname] [lastname] has been booked for the following course and listed you as their Team Leader / Manager.
 
-If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.
-
-';
-$string['setting:defaultconfirmationinstrmngrcopybelow'] = '*** העתק בקשת הרישום שנשלחה לעובד מופיע למטה [firstname] [lastname] ****
-*** [firstname] [lastname]\'s booking confirmation is copied below ****';
+If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.  If have concerns about your staff member taking this course please discuss this with them directly.';
 $string['setting:defaultconfirmationmessage'] = 'הודעת ברירת מחדל לשליחה למשתתפים.';
 $string['setting:defaultconfirmationmessage_caption'] = 'הודעת אישור רישום';
 $string['setting:defaultconfirmationmessagedefault'] = 'זוהי הודעה שנועדה לאשר את הרישום שלך להדרכה המפורטת מטה.
@@ -430,6 +448,8 @@ $string['setting:defaultconfirmationsubject_caption'] = 'נושא להודעת �
 $string['setting:defaultconfirmationsubjectdefault'] = 'אישור רישום להדרכה: [facetofacename], [starttime]-[finishtime], [sessiondate]';
 $string['setting:defaultreminderinstrmngr'] = 'ברירת מחדל להודעת תזכורת הנשלחת למנהלים.';
 $string['setting:defaultreminderinstrmngr_caption'] = 'הודעת תזכורת (למנהלים)';
+$string['setting:defaultreminderinstrmngrcopybelow'] = '*** הודעת התזכורת שנשלחה ל- [firstname] [lastname] ****
+*** [firstname] [lastname]\'s reminder email is copied below ****';
 $string['setting:defaultreminderinstrmngrdefault'] = '*** הודעת תזכורת בלבד ****
 
 העובד [firstname] [lastname] רשום להדרכה המפורטת, וקיבל גם הוא הודעת תזכורת.
@@ -443,11 +463,7 @@ English Version
 
 Your staff member [firstname] [lastname] is booked to attend and above course and has also received this reminder email.
 
-If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.
-
-';
-$string['setting:defaultreminderinstrmngrcopybelow'] = '*** הודעת התזכורת שנשלחה ל- [firstname] [lastname] ****
-*** [firstname] [lastname]\'s reminder email is copied below ****';
+If you are not their Team Leader / Manager and believe you have received this email by mistake please reply to this email.';
 $string['setting:defaultremindermessage'] = 'ברירת המחדל להודעת התזכורת הנשלחת למשתתפים.';
 $string['setting:defaultremindermessage_caption'] = 'הודעת תזכורת';
 $string['setting:defaultremindermessagedefault'] = 'זוהי הודעת תזכורת על השתתפותך בהדרכה המפורטת מטה:
@@ -496,6 +512,7 @@ To re-schedule your booking you need to cancel this booking and then re-book a n
 $string['setting:defaultremindersubject'] = 'ברירת מחדל לנושא של הודעת התזכורת.';
 $string['setting:defaultremindersubject_caption'] = 'נושא למייל תזכורת';
 $string['setting:defaultremindersubjectdefault'] = 'תזכורת רישום להדרכה: [facetofacename], [starttime]-[finishtime], [sessiondate]';
+$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking request is copied below ****';
 $string['setting:defaultrequestinstrmngrdefault'] = 'הודעה זו נועדה ליידע אותך ש[firstname] [lastname] שציין אותך כמנהל שלו, ביקש להירשם להדרכה ההמפורטת למטה.
 
 המשתתף: [firstname] [lastname]
@@ -529,10 +546,7 @@ Venue: [session:venue]
 Room: [session:room]
 
 Please follow the link below to approve the request:
-[attendeeslink]
-
-';
-$string['setting:defaultrequestinstrmngrcopybelow'] = '*** [firstname] [lastname]\'s booking request is copied below ****';
+[attendeeslink]';
 $string['setting:defaultrequestmessagedefault'] = 'בקשתך להירשם לקורס הבא נשלחה למנהל שלך:
 our request to book into the following course has been sent to your manager:
 
@@ -679,5 +693,3 @@ $string['xhours'] = '{$a} שעות';
 $string['xminutes'] = '{$a} דקות';
 $string['youarebooked'] = 'אתה רשום למחזור זה';
 $string['youremailaddress'] = 'כתובת הדוא"ל שלך';
-
-?>

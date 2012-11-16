@@ -38,17 +38,17 @@ $string['layoutvertical'] = 'Eine vertikale Spalte mit Einfach-Auswahl-Möglichk
 $string['nooptionsforsubquestion'] = 'Optionen für den Frageteil # {$a->sub} (question->id={$a->id}) konnten nicht gefunden werden';
 $string['noquestions'] = 'Die Lückentext-Frage (Cloze) "<strong>{$a}</strong>" enthält keine Frage.';
 $string['pluginname'] = 'Lückentext-Frage (Cloze)';
+$string['pluginname_help'] = 'Lückentext-Fragen (Cloze) bestehen aus Textpassagen, die z.B. Multiple-Choice- oder Kurztextfragen enthalten.';
 $string['pluginnameadding'] = 'Lückentext-Frage hinzufügen (Cloze)';
 $string['pluginnameediting'] = 'Lückentext-Frage bearbeiten (Cloze)';
-$string['pluginname_help'] = 'Lückentext-Fragen (Cloze) bestehen aus Textpassagen, die z.B. Multiple-Choice- oder Kurztextfragen enthalten.';
 $string['pluginnamesummary'] = 'Fragen dieses Typs sind sehr flexibel. Beim Erzeugen muss der Text speziell codiert werden, um Multiple-Choice-Fragen, Kurztextfragen oder numerische Fragen einzubinden.';
 $string['qtypenotrecognized'] = 'Fragetyp {$a} nicht verstanden';
 $string['questiondefinition'] = 'Fragendefinition';
 $string['questiondeleted'] = 'Frage entfernt';
 $string['questioninquiz'] = '<ul>
-  <li>Fragen löschen oder hinzufügen, </li>
-  <li>die Reihenfolge der Fragen ändern,</li>
-  <li>den Fragetyp (numerisch, Kurzantwort, Multiple-Choice) ändern. </li></ul>';
+<li>Fragen löschen oder hinzufügen, </li>
+<li>die Reihenfolge der Fragen ändern,</li>
+<li>den Fragetyp (numerisch, Kurzantwort, Multiple-Choice) ändern. </li></ul>';
 $string['questionnadded'] = 'Frage hinzugefügt';
 $string['questionnotfound'] = 'Frage zum Frageteil # {$a} kann nicht gefunden werden';
 $string['questionsaveasedited'] = 'Die Frage wird als bearbeitet gespeichert';

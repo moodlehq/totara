@@ -188,7 +188,6 @@ $string['forumtracked'] = 'Gli interventi non letti sono tracciati';
 $string['forumtrackednot'] = 'Gli interventi non letti non sono tracciati';
 $string['forumtype'] = 'Tipo di forum';
 $string['forumtype_help'] = 'Sono disponibili 5 tipi di forum:
-
 * Forum monotematico - Forum costituito da un solo argomento di discussione, tutti i partecipanti possono intervenire
 * Ciascuno avvia una sola discussione - Ogni partecipante può avviere un\'unica discussione su un argomento e gli altri partecipanti possono intervenire.
 * Domande e Risposte* - Il forum Domande e Risposte obbliga i partecipanti ad intervenire prima di poter visualizzare gli interventi degli altri.
@@ -221,7 +220,7 @@ $string['markunreadbutton'] = 'Segna come <br/> non letto';
 $string['maxattachments'] = 'Numero massimo allegati';
 $string['maxattachments_help'] = 'L\'impostazione permette di definire il numero massimo di file allegabili in ciascun intervento nel forum.';
 $string['maxattachmentsize'] = 'Dimensione massima allegati';
-$string['maxattachmentsize_help'] = 'L\'impostazione  limita la dimensione massima dei file  allegabili ai messaggi del forum.';
+$string['maxattachmentsize_help'] = 'L\'impostazione limita la dimensione massima dei file allegabili ai messaggi del forum.';
 $string['maxtimehaspassed'] = 'Spiacente, il tempo massimo concesso per modificare questo intervento ({$a}) è trascorso!';
 $string['message'] = 'Messaggio';
 $string['messageprovider:digests'] = 'Raccolte forum sottoscritte';
@@ -370,9 +369,7 @@ $string['subscriptiondisabled'] = 'Disabilitata';
 $string['subscriptionforced'] = 'Obbligatoria';
 $string['subscriptionmode'] = 'Modalità sottoscrizione';
 $string['subscriptionmode_help'] = 'La sottoscrizione di un forum consente di ricevere copie degli interventi via email
-
 Sono disponibili 4 modalità di sottoscrizione:
-
 * Facoltativa - I partecipanti possono scegliere se sottoscrivere il forum o meno
 * Obbligatoria - Tutti i partecipanti sottoscrivono il forum e non possono rimuovere la propria sottoscrizione
 * Automatica - Tutti i partecipanti sottoscrivono il forum ma possono rimuovere la propria sottoscrizione se lo desiderano
@@ -389,9 +386,7 @@ $string['trackingon'] = 'Abilitato';
 $string['trackingoptional'] = 'A scelta';
 $string['trackingtype'] = 'Evidenzia messaggi non letti';
 $string['trackingtype_help'] = 'L\'impostazione permette di scegliere se abilitare l\'evidenziamento dei messaggi letti e non letti.
-
 Le impostazioni possibili sono:
-
 * A scelta: i partecipanti possono attivare l\'evidenziamento
 * Abilitato: l\'evidenziamento è sempre attivo
 * Disabilitato: l\'evidenziamento non è mai attivo';

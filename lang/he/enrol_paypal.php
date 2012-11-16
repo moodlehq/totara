@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['assignrole'] = 'הקצאת תפקיד';
-$string['businessemail'] = 'דוא"ל של חשבון ה-PayPal של העסק שלך ';
-$string['businessemail_desc'] = 'כתובת דוא"ל של חשבון ה-PayPal של העסק שלך ';
+$string['businessemail'] = 'דוא"ל של חשבון ה-PayPal של העסק שלך';
+$string['businessemail_desc'] = 'כתובת דוא"ל של חשבון ה-PayPal של העסק שלך';
 $string['cost'] = 'עלות הרישום';
 $string['costerror'] = 'עלות הרישום איננה מספרית';
 $string['costorkey'] = 'אנא בחר באחת משיטות ההרשמה הבאות.';
@@ -47,11 +47,11 @@ $string['mailstudents'] = 'הודעה לסטודנטים';
 $string['mailteachers'] = 'הודעה למורים';
 $string['messageprovider:paypal_enrolment'] = 'הודעות רישם PayPal';
 $string['nocost'] = 'אין כל מחיר המיוחס לרישום בקורס זה!';
-$string['paypalaccepted'] = 'התקבלו תשלומי Paypal';
 $string['paypal:config'] = 'הגדר מופעי רישום PayPal';
 $string['paypal:manage'] = 'נהל משתמשים רשומים';
 $string['paypal:unenrol'] = 'הסר משתמשים מהקורס';
 $string['paypal:unenrolself'] = 'הסר עצמך מרישום לקורס';
+$string['paypalaccepted'] = 'התקבלו תשלומי Paypal';
 $string['pluginname'] = 'PayPal';
 $string['pluginname_desc'] = 'רכיב ה-PayPal מאפשר לך להגדיר קורסים בתשלום. אם המחיר לכל קורס הוא אפס, הסטודנטים לא יתבקשו לשלם עבור כניסה.
 ישנו מחיר כלל מערכתי באתר אשר תוכל להגדיר כאן כברירת מחדל לכל האתר ולאחר מכן הגדרת קורס שתוכל להגדיר לכל קורס באופן עצמאי. מחיר הקורס הזה עוקף את מחיר האתר.';

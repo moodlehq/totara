@@ -38,18 +38,17 @@ $string['layoutvertical'] = '纵向排列的单选按钮';
 $string['nooptionsforsubquestion'] = '不能获取题目 #{$a->sub} 的选项(question->id={$a->id})';
 $string['noquestions'] = '完形题“<strong>{$a}</strong>”中没有任何问题';
 $string['pluginname'] = '内嵌答案(完形填空)';
+$string['pluginname_help'] = '内嵌答案(完形填空)题是一段文字，中间可以夹杂多道题目，例如选择题、填空题。';
 $string['pluginnameadding'] = '添加内嵌答案(完形填空)题';
 $string['pluginnameediting'] = '修改内嵌答案(完形填空)';
-$string['pluginname_help'] = '内嵌答案(完形填空)题是一段文字，中间可以夹杂多道题目，例如选择题、填空题。';
 $string['pluginnamesummary'] = '这种类型的题目非常灵活，但创建题目时必须输入特殊代码。可以内嵌的题目包括选择题、填空题和数字题。';
 $string['qtypenotrecognized'] = '不能识别题型 {$a}';
 $string['questiondefinition'] = '问题定义';
 $string['questiondeleted'] = '题目已删除';
 $string['questioninquiz'] = '<ul>
-  <li>添加或删除题目，</li>
-  <li>在文本中改变题目顺序，</li>
-  <li>改变题目类型（数字、填空、选择）。</li></ul>
-';
+<li>添加或删除题目，</li>
+<li>在文本中改变题目顺序，</li>
+<li>改变题目类型（数字、填空、选择）。</li></ul>';
 $string['questionnadded'] = '题目已添加';
 $string['questionnotfound'] = '找不到题目 #{$a}';
 $string['questionsaveasedited'] = '题目将按所编辑的样子保存';

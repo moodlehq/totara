@@ -31,10 +31,10 @@ $string['admindirsetting'] = '<p>Muy pocos servidores web usan /admin como URL e
 Así se corregirán los enlaces admin en Moodle.</p>';
 $string['admindirsettinghead'] = 'Seleccionar el directorio admin...';
 $string['admindirsettingsub'] = 'Muy pocos servidores web usan /admin como URL especial para permitirle acceder
-    a un panel de control o similar. Desgraciadamente, esto entra en conflicto con la ubicación estándar
-    de las páginas de administración de Moodle. Usted puede corregir esto renombrando el directorio admin
-    en su instalación, y poniendo aquí ese nuevo nombre. Por ejemplo: <br /> <br /><b>moodleadmin</b><br /> <br />
-    Así se corregirán los enlaces admin en Moodle.';
+a un panel de control o similar. Desgraciadamente, esto entra en conflicto con la ubicación estándar
+de las páginas de administración de Moodle. Usted puede corregir esto renombrando el directorio admin
+en su instalación, y poniendo aquí ese nuevo nombre. Por ejemplo: <br /> <br /><b>moodleadmin</b><br /> <br />
+Así se corregirán los enlaces admin en Moodle.';
 $string['availablelangs'] = 'Lista de idiomas disponibles';
 $string['caution'] = 'Precaución';
 $string['chooselanguage'] = 'Seleccionar idioma';
@@ -55,7 +55,7 @@ $string['configfilenotwritten'] = '<p>El script de instalación no ha podido cre
 $string['configfilewritten'] = 'config.php se ha creado con éxito';
 $string['configurationcomplete'] = 'Configuración completa';
 $string['configurationcompletehead'] = 'Configuración completa';
-$string['configurationcompletesub'] = 'Moodle ha creado su fichero de configuración. ';
+$string['configurationcompletesub'] = 'Moodle ha creado su fichero de configuración.';
 $string['database'] = 'Base de datos';
 $string['databasecreationsettings'] = 'Ahora necesita configurar los ajustes de la base de datos donde se almacenarán la mayoría de los datos de Moodle. El instalador creará la base de datos con los ajustes especificados más abajo.<br />
 <br /> <br />
@@ -252,8 +252,8 @@ a, digamos, 40M. Si no lo tiene, pida a su administrador que lo haga por usted.<
 (podrá ver los errores cuando mire las páginas) de modo que tendrá que eliminar el archivo .htaccess.</p></li>
 </ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP no se ha configurado adecuadamente con la extensión MSSQL de modo que pueda comunicarse con el SQL*Server. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
 $string['mssql_n'] = 'SQL*Server con UTF-8 (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP no se ha configurado adecuadamente con la extensión MSSQL de modo que pueda comunicarse con el SQL*Server. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión MySQL de modo que pueda comunicarse con MySQL. Por favor, compruebe el archivo php.ini o recompile PHP.';
 $string['mysqli'] = 'MySQL Mejorado (mysqli)';
@@ -269,8 +269,8 @@ $string['nativepgsqlhelp'] = 'Ahora tiene que configurar la base de datos donde 
 $string['nativesqlsrvhelp'] = 'Ahora tiene que configurar la base de datos donde se almacenarán la mayoría de los datos de Moodle. Esta base de datos debe estar creada previamente, al igual que un nombre de usuario y su contraseña, para poder acceder a ella. El prefijo de la tabla es obligatorio.';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión OCI8 de modo que pueda comunicarse con Oracle. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
-$string['odbcextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión ODBC de modo que pueda comunicarse con SQL*Server. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
 $string['odbc_mssql'] = 'SQL*Server over ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP no ha sido adecuadamente configurado con la extensión ODBC de modo que pueda comunicarse con SQL*Server. Por favor, compruebe el archivo php.ini o vuelva a compilar PHP.';
 $string['pass'] = 'Correcto';
 $string['paths'] = 'Rutas';
 $string['pathserrcreatedataroot'] = 'El directorio de los datos ({$a->dataroot}) no puede ser creado por el instalador.';
@@ -311,16 +311,16 @@ $string['upgradingqtypeplugin'] = 'Actualizando el Plugin Pregunta/tipo';
 $string['welcomep10'] = '{$a->installername} ({$a->installerversion})';
 $string['welcomep20'] = 'Si está viendo esta página es porque ha podido ejecutar el paquete <strong>{$a->packname} {$a->packversion}</strong> en su ordenador. !Enhorabuena!';
 $string['welcomep30'] = 'Esta versión de <strong>{$a->installername}</strong> incluye las
-    aplicaciones necesarias para que <strong>Moodle</strong> funcione en su ordenador,
-    principalmente:';
+aplicaciones necesarias para que <strong>Moodle</strong> funcione en su ordenador,
+principalmente:';
 $string['welcomep40'] = 'El paquete también incluye <strong>Moodle {$a->moodlerelease} ({$a->moodleversion})</strong>.';
 $string['welcomep50'] = 'El uso de todas las aplicaciones del paquete está gobernado por sus respectivas
-    licencias. El programa <strong>{$a->installername}</strong> es
-    <a href="http://www.opensource.org/docs/definition_plain.html">código abierto</a> y se distribuye
-    bajo licencia <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a>.';
+licencias. El programa <strong>{$a->installername}</strong> es
+<a href="http://www.opensource.org/docs/definition_plain.html">código abierto</a> y se distribuye
+bajo licencia <a href="http://www.gnu.org/copyleft/gpl.html">GPL</a>.';
 $string['welcomep60'] = 'Las siguientes páginas le guiarán a través de algunos sencillos pasos para configurar
-    y ajustar <strong>Moodle</strong> en su ordenador. Puede utilizar los valores por defecto sugeridos o,
-    de forma opcional, modificarlos para que se ajusten a sus necesidades.';
+y ajustar <strong>Moodle</strong> en su ordenador. Puede utilizar los valores por defecto sugeridos o,
+de forma opcional, modificarlos para que se ajusten a sus necesidades.';
 $string['welcomep70'] = 'Pulse en el botón "Siguiente" para continuar con la configuración de <strong>Moodle</strong>.';
 $string['wwwroot'] = 'Dirección Web';
 $string['wwwrooterror'] = 'La \'Dirección Web\' parece incorrecta. No se pudo encontrar una instalación de Moodle. El valor ha sido cambiado por el original.';

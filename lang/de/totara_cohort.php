@@ -97,10 +97,9 @@ $string['numlearners'] = '# Lerner';
 $string['ok'] = 'OK';
 $string['or'] = 'oder';
 $string['organisation'] = 'Organisation';
-$string['orgincludechildren_help'] = '<h1>Kohorte umfasst Kinderorganisationen</h1>
-
-<p>Wenn das Markierungsfeld \'Kinder einschließen\' markiert ist, dann werden alle Nutzer in der gewählten Organisation und alle Organisationen unter der gewählten Organisation in der Hierarchie in diese Kohorte eingeschlossen.</p>
-<p>Wenn \'Kinder einschließen\' nicht gewählt ist, dann werden nur die Nutzer, die genau den gewählten Organisationen zugewiesen wurden, der Kohorte zugewiesen.</p>';
+$string['orgincludechildren_help'] = '# Kohorte umfasst Kinderorganisationen
+Wenn das Markierungsfeld \'Kinder einschließen\' markiert ist, dann werden alle Nutzer in der gewählten Organisation und alle Organisationen unter der gewählten Organisation in der Hierarchie in diese Kohorte eingeschlossen.
+Wenn \'Kinder einschließen\' nicht gewählt ist, dann werden nur die Nutzer, die genau den gewählten Organisationen zugewiesen wurden, der Kohorte zugewiesen.';
 $string['overview'] = 'Übersicht';
 $string['pleaseentervaliddate'] = 'Bitte Datum in dem Format {$a} eingeben';
 $string['pleaseentervalidreason'] = 'Bitte einen gültigen Grund eingeben';
@@ -110,16 +109,14 @@ $string['pleasesearchmore'] = 'Bitte Suche verfeinern';
 $string['pleasesetcompletiontimes'] = 'Bitte Abschlusszeiten für alle Elemente angeben';
 $string['pleaseusesearch'] = 'Bitte die Suche verwenden';
 $string['position'] = 'Position';
-$string['positionincludechildren_help'] = '<h1>Kohorte umfasst Kinderpositionen</h1>
-
-<p>Wenn das Markierungsfeld \'Kinder einschließen\' markiert ist, dann werden alle Nutzer in der gewählten Position und alle Positionen unter der gewählten Position in der Hierarchie in diese Kohorte eingeschlossen.</p>
-<p>Wenn \'Kinder einschließen\' nicht gewählt ist, dann werden nur die Nutzer, die genau den gewählten Positionen zugewiesen wurden, der Kohorte zugewiesen.</p>';
+$string['positionincludechildren_help'] = '# Kohorte umfasst Kinderpositionen
+Wenn das Markierungsfeld \'Kinder einschließen\' markiert ist, dann werden alle Nutzer in der gewählten Position und alle Positionen unter der gewählten Position in der Hierarchie in diese Kohorte eingeschlossen.
+Wenn \'Kinder einschließen\' nicht gewählt ist, dann werden nur die Nutzer, die genau den gewählten Positionen zugewiesen wurden, der Kohorte zugewiesen.';
 $string['potusers'] = 'Mögliche Nutzer/innen';
 $string['potusersmatching'] = 'Mögliche passende Nutzer/innen';
-$string['profilefieldvalues_help'] = '<h1>Kohortenprofilfeldwerte</h1>
-
-<p>Falls gewählt, werden die Mitglieder der dynamischen Kohorte auf der Grundlage ausgewählt, ob sie über ein Nutzerprofilfeld verfügen, das einem bestimmten Wert entspricht.</p>
-<p>Die Werte können ein einfacher Textstring oder eine durch Kommas getrennte Liste mit mehrenen Textstrings sein. Wenn eine durch Kommas getrennte Liste genutzt wird, dann werden die Nutzer, die einem der jeweiligen Strings entsprechen, in die Kohorte eingeschlossen.</p>';
+$string['profilefieldvalues_help'] = '# Kohortenprofilfeldwerte
+Falls gewählt, werden die Mitglieder der dynamischen Kohorte auf der Grundlage ausgewählt, ob sie über ein Nutzerprofilfeld verfügen, das einem bestimmten Wert entspricht.
+Die Werte können ein einfacher Textstring oder eine durch Kommas getrennte Liste mit mehrenen Textstrings sein. Wenn eine durch Kommas getrennte Liste genutzt wird, dann werden die Nutzer, die einem der jeweiligen Strings entsprechen, in die Kohorte eingeschlossen.';
 $string['reportsto'] = 'berichtet an';
 $string['role'] = 'Rolle';
 $string['saveallchanges'] = 'Alle Änderungen speichern';
@@ -136,12 +133,11 @@ $string['thiscohortwillhave'] = 'Diese globale Gruppe wird zu diesem Zeitpunkt {
 $string['toomanyusersmatchsearch'] = 'Zu viele Nutzer/innen passen zu der Suche';
 $string['toomanyuserstoshow'] = 'Es sind zu vielen Nutzer/innen für die Anzeige';
 $string['type'] = 'Typ';
-$string['type_help'] = '<h1>Kohortentyp</h1>
-
-<p>Der Kohortentyp kann \'eingestellt\' oder \'dynamisch\' sein.</p>
-<p>Eingestellte Kohorten sind vordefinierte Listen mit Nutzern, die manuell durch den Kohortenersteller erstellt wurden. Der Ersteller kann Nutzer hinzufügen oder entfernen, sonst ist die Liste aber statisch.</p>
-<p>Dynamische Kohorten werden durch eine Regel oder eine Reihe von Regeln bestimmt, und die in der Kohorte eingeschlossenen Nutzer werden dynamisch aktualisiert, um Nutzer einzuschließen, die diese Regeln erfüllen (und Nutzer zu entfernen, die diese Regeln nicht mehr erfüllen).</p>
-<p>Die Mitglieder einer eingestellten Kohorte können jederzeit geändert werden. Die Regeln, die eine dynamische Kohorte definieren, können nicht mehr geändert werden, sobald die Kohorte gespeichert wurde.</p>';
+$string['type_help'] = '# Kohortentyp
+Der Kohortentyp kann \'eingestellt\' oder \'dynamisch\' sein.
+Eingestellte Kohorten sind vordefinierte Listen mit Nutzern, die manuell durch den Kohortenersteller erstellt wurden. Der Ersteller kann Nutzer hinzufügen oder entfernen, sonst ist die Liste aber statisch.
+Dynamische Kohorten werden durch eine Regel oder eine Reihe von Regeln bestimmt, und die in der Kohorte eingeschlossenen Nutzer werden dynamisch aktualisiert, um Nutzer einzuschließen, die diese Regeln erfüllen (und Nutzer zu entfernen, die diese Regeln nicht mehr erfüllen).
+Die Mitglieder einer eingestellten Kohorte können jederzeit geändert werden. Die Regeln, die eine dynamische Kohorte definieren, können nicht mehr geändert werden, sobald die Kohorte gespeichert wurde.';
 $string['userprofilefield'] = 'Profilfeld';
 $string['values'] = 'Werte';
 $string['viewmembers'] = 'Mitgliedeansicht';

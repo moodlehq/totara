@@ -97,10 +97,9 @@ $string['numlearners'] = 'liczba uczestników';
 $string['ok'] = 'OK';
 $string['or'] = 'lub';
 $string['organisation'] = 'Organizacja';
-$string['orgincludechildren_help'] = '<h1>Generacja zawiera organizacje podrzędne</h1>
-
-<p>Jeśli jest zaznaczone pole wyboru \'Uwzględniaj obiekty podrzędne\', wszyscy użytkownicy w wybranej organizacji i wszystkie organizacje poniżej wybranej organizacji w hierarchii zostaną uwzględnione w tej generacji.</p>
-<p>Jeśli pole \'Uwzględniaj obiekty podrzędne\' nie jest zaznaczone, do generacji zostaną wybrani tylko użytkownicy, którzy zostali przypisani dokładnie do wybranej organizacji.</p>';
+$string['orgincludechildren_help'] = '# Generacja zawiera organizacje podrzędne
+Jeśli jest zaznaczone pole wyboru \'Uwzględniaj obiekty podrzędne\', wszyscy użytkownicy w wybranej organizacji i wszystkie organizacje poniżej wybranej organizacji w hierarchii zostaną uwzględnione w tej generacji.
+Jeśli pole \'Uwzględniaj obiekty podrzędne\' nie jest zaznaczone, do generacji zostaną wybrani tylko użytkownicy, którzy zostali przypisani dokładnie do wybranej organizacji.';
 $string['overview'] = 'Przegląd';
 $string['pleaseentervaliddate'] = 'Podaj poprawną datę w formacie dd/mm/rrrr';
 $string['pleaseentervalidreason'] = 'Podaj poprawną przyczynę';
@@ -110,16 +109,14 @@ $string['pleasesearchmore'] = 'Sprecyzuj wyszukiwanie';
 $string['pleasesetcompletiontimes'] = 'Ustaw czasy ukończenia dla wszystkich elementów';
 $string['pleaseusesearch'] = 'Użyj wyszukiwania';
 $string['position'] = 'Stanowisko';
-$string['positionincludechildren_help'] = '<h1>Generacja zawiera stanowiska podrzędne</h1>
-
-<p>Jeśli jest zaznaczone pole \'Uwzględnij obiekty podrzędne\', wszyscy użytkownicy na wybranym stanowisku i wszelkie stanowiska poniżej wybranego stanowiska w hierarchii zostaną włączone do tej generacji.</p>
-<p>Jeśli pole \'Uwzględnij obiekty podrzędne\' nie jest wybrane, do generacji zostaną przypisani tylko użytkownicy z przypisanym dokładnie wybranym stanowiskiem.</p>';
+$string['positionincludechildren_help'] = '# Generacja zawiera stanowiska podrzędne
+Jeśli jest zaznaczone pole \'Uwzględnij obiekty podrzędne\', wszyscy użytkownicy na wybranym stanowisku i wszelkie stanowiska poniżej wybranego stanowiska w hierarchii zostaną włączone do tej generacji.
+Jeśli pole \'Uwzględnij obiekty podrzędne\' nie jest wybrane, do generacji zostaną przypisani tylko użytkownicy z przypisanym dokładnie wybranym stanowiskiem.';
 $string['potusers'] = 'Potencjalni użytkownicy';
 $string['potusersmatching'] = 'Potencjalni zgodni użytkownicy';
-$string['profilefieldvalues_help'] = '<h1>Wartości pola profilu generacji</h1>
-
-<p>W razie wybrania tej opcji członkowie generacji dynamicznej zostaną wybrani na podstawie zgodności pola profilu użytkownika z konkretną wartością.</p>
-<p>Wartością może być pojedynczy ciąg tekstowy lub rozdzielana przecinkami lista kilku ciągów tekstowych. Jeśli zostanie podana lista rozdzielana przecinkami, do generacji zostaną włączeni użytkownicy mający zgodność z dowolnym oddzielnym ciągiem.</p>';
+$string['profilefieldvalues_help'] = '# Wartości pola profilu generacji
+W razie wybrania tej opcji członkowie generacji dynamicznej zostaną wybrani na podstawie zgodności pola profilu użytkownika z konkretną wartością.
+Wartością może być pojedynczy ciąg tekstowy lub rozdzielana przecinkami lista kilku ciągów tekstowych. Jeśli zostanie podana lista rozdzielana przecinkami, do generacji zostaną włączeni użytkownicy mający zgodność z dowolnym oddzielnym ciągiem.';
 $string['reportsto'] = 'raportuje do';
 $string['role'] = 'Rola';
 $string['saveallchanges'] = 'Zapisz wszystkie zmiany';
@@ -136,12 +133,11 @@ $string['thiscohortwillhave'] = 'Ta generacja będzie miała w tym momencie {$a}
 $string['toomanyusersmatchsearch'] = 'Za dużo użytkowników odpowiada wyszukiwaniu';
 $string['toomanyuserstoshow'] = 'Istnieje za dużo użytkowników do wyświetlenia';
 $string['type'] = 'Typ';
-$string['type_help'] = '<h1>Typ generacji</h1>
-
-<p>Typ generacji może być \'stały\' lub \'dynamiczny\'.</p>
-<p>Generacje stałe to wstępnie zdefiniowane listy użytkowników ręcznie utworzone przez twórcę generacji. Twórca może dodawać i usuwać użytkowników, ale w przeciwnym razie lista jest statyczna.</p>
-<p>Generacje dynamiczne są określane przez regułę lub zestaw reguł, zaś użytkownicy włączeni do generacji będą dynamicznie aktualizowani tak, aby uwzględniać użytkowników zgodnych z tymi regułami (i usuwać użytkowników, którzy już do nich nie pasują).</p>
-<p>Członków generacji stałej można zmienić w dowolnej chwili, ale reguły definiujące generację dynamiczną nie mogą zostać zmienione po zapisaniu generacji.</p>';
+$string['type_help'] = '# Typ generacji
+Typ generacji może być \'stały\' lub \'dynamiczny\'.
+Generacje stałe to wstępnie zdefiniowane listy użytkowników ręcznie utworzone przez twórcę generacji. Twórca może dodawać i usuwać użytkowników, ale w przeciwnym razie lista jest statyczna.
+Generacje dynamiczne są określane przez regułę lub zestaw reguł, zaś użytkownicy włączeni do generacji będą dynamicznie aktualizowani tak, aby uwzględniać użytkowników zgodnych z tymi regułami (i usuwać użytkowników, którzy już do nich nie pasują).
+Członków generacji stałej można zmienić w dowolnej chwili, ale reguły definiujące generację dynamiczną nie mogą zostać zmienione po zapisaniu generacji.';
 $string['userprofilefield'] = 'Pole profilu użytkownika';
 $string['values'] = 'Wartości';
 $string['viewmembers'] = 'Wyświetl członków';

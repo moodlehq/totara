@@ -38,17 +38,17 @@ $string['layoutvertical'] = 'Pystysarake valintanappeja';
 $string['nooptionsforsubquestion'] = 'Kysymyksen osalle {$a->sub} (question->id = {$a->id}) ei löytynyt vaihtoehtoja';
 $string['noquestions'] = 'Aukkotehtävä "<strong>{$a}</strong>" ei sisällä kysymystä';
 $string['pluginname'] = 'Aukkotehtävät';
+$string['pluginname_help'] = 'Aukkotehtävä muodostuu tekstistä, johon on upotettu tehtäviä kuten monivalintoja ja tekstikenttiä.';
 $string['pluginnameadding'] = 'Lisätään Aukkotehtävää';
 $string['pluginnameediting'] = 'Muokataan Aukkotehtävää';
-$string['pluginname_help'] = 'Aukkotehtävä muodostuu tekstistä, johon on upotettu tehtäviä kuten monivalintoja ja tekstikenttiä.';
 $string['pluginnamesummary'] = 'Tämän tyyppiset kysymykset ovat joustavia vastaajalle mutta voidaan toteuttaa vain lisäämällä tekstiä sisältäen valmiina koodit, joilla upotetut kysymykset toteutetaan.';
 $string['qtypenotrecognized'] = 'tunnistamaton kysymystyyppi {$a}';
 $string['questiondefinition'] = 'Kysymyksen määrittely';
 $string['questiondeleted'] = 'Kysymys poistettu';
 $string['questioninquiz'] = '<ul>
- <li>lisää tai poista kysymyksiä, </li>
- <li>muuta kysymysten järjestystä tekstissä,</li>
- <li>muuta kysymysten tyyppiä (numeerinen, lyhyt vastaus, monivalinta). </li></ul>';
+<li>lisää tai poista kysymyksiä, </li>
+<li>muuta kysymysten järjestystä tekstissä,</li>
+<li>muuta kysymysten tyyppiä (numeerinen, lyhyt vastaus, monivalinta). </li></ul>';
 $string['questionnadded'] = 'Kysymys lisätty';
 $string['questionnotfound'] = 'Kysymyksen osalle {$a} ei löytynyt kysymystä';
 $string['questionsaveasedited'] = 'Kysymys tallennetaan niin kuin se on muokattu';

@@ -62,7 +62,6 @@ $string['chooseapacket'] = '选择或更新一个包';
 $string['completed'] = '已完成';
 $string['completionstatus_help'] = '﻿
 # 活动完成：需要状态
-
 对一个或多个状态的检查需要用户至少达到一个可将此 SCORM 活动标记为完成的审查过的状态，同时也需要其他所有活动完成的要求。';
 $string['confirmloosetracks'] = '警告：课件包已更新。如果该课件包的结构发生了变化，则用户的学习记录可能会在更新时丢失。';
 $string['contents'] = '内容';
@@ -125,9 +124,7 @@ $string['gradeforattempt'] = '尝试的得分';
 $string['gradehighest'] = '最高分';
 $string['grademethod'] = '评分方法';
 $string['grademethod_help'] = '评分方法决定了对此活动的每次尝试如何获得成绩。
-
 有4种评分方法：
-
 * 学习对象 - 完成或通过的学习对象数量
 * 最高分 - 在所有已完成的学习对象中取最高分
 * 平均分 - 所有分数的平均分
@@ -258,7 +255,6 @@ $string['scormopen'] = '开放';
 $string['scormresponsedeleted'] = '删除用户学习记录';
 $string['scormtype'] = '类型';
 $string['scormtype_help'] = '此设置决定课件如何放入课程。有 4 中选项：
-
 * 上传课件 - 通过文件选取器选择 SCORM 课件
 * 外部 SCORM manifest - 指定一个 imsmanifest.xml 网址。注意：如果此 URL 与您的网站域名不同，那么最好用“下载课件”，否则不能保存成绩。
 * 下载课件 - 指定一个课件 URL。课件会被解压缩并保存在本地，并随着外部 SCORM 课件更新而更新。
@@ -312,9 +308,7 @@ $string['viewallreports'] = '查看 {$a} 次学习该内容的报表';
 $string['viewalluserreports'] = '查看 {$a} 个用户的报表';
 $string['whatgrade'] = '多次学习评分策略';
 $string['whatgrade_help'] = '如果允许多次答题，那么此设置决定是将最高分、平均分、第一次得分还是最后一次完成的得分记入成绩单。
-
 对多次答题的处理
-
 * 开始新试答的选项是一个复选框，它在内容结构页的进入按钮上面。因此，如果您想允许多次答题的话，一定要允许用户访问此页。
 * 有些scorm包能智能处理新试答，有些则不能。这意味着如果学习者重新进入一个已有的试答，当该SCORM没有避免旧试答被覆盖的逻辑时，它们就可能被覆盖，哪怕这些试答已经“完成”或者“通过”。
 * “强制完成”、“强制新试答”和“结束试答后锁定”三个设置提供了进一步的多次答题管理功能。';

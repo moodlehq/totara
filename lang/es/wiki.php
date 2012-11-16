@@ -55,7 +55,6 @@ $string['creating'] = 'Creando página wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Formato por defecto';
 $string['defaultformat_help'] = 'Este ajuste determina el formato por defecto usado cuando se editan páginas wiki.
-
 * HTML - El editor HTML está disponible
 * Creole - Lenguaje común de marcas wiki que tiene disponible una pequeña barra de herramientas de edición
 * Nwiki - Lenguaje de marcas parecido al Mediawiki usado en el módulo Nwiki';
@@ -87,12 +86,11 @@ $string['format_help'] = '* HTML - El editor HTML está disponible
 * Creole - Lenguaje común de marcas wiki que tiene disponible una pequeña barra de herramientas de edición
 * Nwiki - Lenguaje de marcas parecido al Mediawiki usado en el módulo Nwiki';
 $string['formatcreole'] = 'Formato Creole';
-$string['formatcreole_help'] = 'Creole es un lenguage de marcas wiki habitual con una barra de herramientas de edición para la inserción de las marcas apropiadas. Para crear una nueva página, escriba el nombre de la página nueva encerrada entre  corchetes dobles, por ejemplo [[Página 2]].';
+$string['formatcreole_help'] = 'Creole es un lenguage de marcas wiki habitual con una barra de herramientas de edición para la inserción de las marcas apropiadas. Para crear una nueva página, escriba el nombre de la página nueva encerrada entre corchetes dobles, por ejemplo [[Página 2]].';
 $string['formathtml'] = 'Formato HTML';
 $string['formathtml_help'] = 'El editor de HTML se pueden utilizar para dar formato a contenidos. Para crear una nueva página, escriba el nombre de la página encerrada entre corchetes dobles, por ejemplo [[Página 2]].';
 $string['formatnwiki'] = 'Formato NWIKI';
 $string['formatnwiki_help'] = 'Nwiki es el lenguaje de marcas tipo Mediawiki usado en el módulo Nwiki.
-
 Para crear una página nueva, escriba el nombre de la página dentro de corchetes dobles, e.g., [[Página 2]].';
 $string['history'] = 'Historia';
 $string['history_help'] = 'Historia de las listas de enlaces a las versiones anteriores de la página.';

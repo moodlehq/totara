@@ -32,7 +32,9 @@ $string['codecoveragecompletereport'] = '(ver relatório de cobertura de código
 $string['codecoveragedisabled'] = 'Não é possível permitir a cobertura de código neste servidor (falta a extensão xdebug)';
 $string['codecoveragelatestdetails'] = '(Em {$a->date}, com arquivos {$a->files}, {$a->percentage} coberto)';
 $string['codecoveragelatestreport'] = 'Exibir último relatório de cobertura de código completo';
-$string['confignonwritable'] = 'O config.php arquivo não é gravável pelo servidor web. Altere suas permissões, ou editá-lo com a conta de usuário apropriado e adicionar a seguinte linha antes da tag de fechamento php: <br /> $ CFG-&gt; unittestprefix = \'tst_\' / Alterar / tst_ a um prefixo de sua escolha, diferente de $ CFG-&gt; prefix';
+$string['confignonwritable'] = 'O config.php arquivo não é gravável pelo servidor web. Altere suas permissões, ou editá-lo com a conta de usuário apropriado e adicionar a seguinte linha antes da tag de fechamento php:
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Linhas cobertas';
 $string['coveredpercentage'] = 'Cobertura de código global';
 $string['dbtest'] = 'Testes funcionais de Banco de Dados';

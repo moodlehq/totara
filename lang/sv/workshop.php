@@ -85,21 +85,13 @@ $string['gradeitemsubmission'] = '{$a->workshopname} (inskickad uppgiftslösning
 $string['gradereceivedfrom'] = '&lt;';
 $string['gradinggrade'] = 'Betyg/omdöme för betygssättning/omdöme';
 $string['gradinggrade_help'] = '# Betyget/omdömet för studenternas/ elevernas/ deltagarnas/ de lärandes bedömningar/ värderingar/ betygssättningar
-
 Det här är det maximala betyg/omdöme som studenterna/ eleverna/ deltagarna/ de lärande kan få för bedömning/ värdering/ betygssättning av sina egna eller andras inskickade uppgiftslösningar
-
 Det faktiska betyget/ omdömet beräknas av Workshop-modulen på så sätt att en viss given bedömning/ värdering/ betygssättning jämförs med den "bästa" bedömningen/ värderingen/ betygssättningen av samma inskickade uppgiftslösning.
-
 Denna "bästa" bedömning/ värdering/ betygssättning är den som kommer närmast medelvärdet för alla bedömningar/ värderingar/ betygssättningar. Detta är ett "viktat" medelvärde om distanslärarens bedömning/ värdering/ betygssättning har givits en viktning på mer än ett.
-
-Lägg märke till att om det bara finns en bedömning/ värdering/ betygssättning av en inskickad uppgiftslösning så antas denna enda vara den "bästa". Om det finns två bedömningar/ värderingar/ betygssättningar av en inskickad uppgiftslösning så antas båda vara den "bästa". Det är bara när det finns tre bedömningar/ värderingar/ betygssättningar eller fler som modulen börjar göra åtskillnad mellan bedömningarna/ värderingarna/ betygssättningarna. 
-
-Det här betyget/omdömet kallas ibland "Betyg/ omdöme för betygssättning" och det är ***inte*** det maximala betyget/ omdömet på uppgiftslösningen. Det betyget/ omdömet kallas "Betyg/omdöme för inskickad uppgiftslösning".
-
+Lägg märke till att om det bara finns en bedömning/ värdering/ betygssättning av en inskickad uppgiftslösning så antas denna enda vara den "bästa". Om det finns två bedömningar/ värderingar/ betygssättningar av en inskickad uppgiftslösning så antas båda vara den "bästa". Det är bara när det finns tre bedömningar/ värderingar/ betygssättningar eller fler som modulen börjar göra åtskillnad mellan bedömningarna/ värderingarna/ betygssättningarna.
+Det här betyget/omdömet kallas ibland "Betyg/ omdöme för betygssättning" och det är **\*|inte***| det maximala betyget/ omdömet på uppgiftslösningen. Det betyget/ omdömet kallas "Betyg/omdöme för inskickad uppgiftslösning".
 En students/ elevs/ deltagares/ lärandes betyg/omdöme för hela Workshop-uppgiften är summan av "Betyg/ omdöme för betygssättning" och "Betyg/ omdöme för inskickad uppgiftslösning".
-
 Alltså, om det (maximala) betyget/omdömet för bedömningar/ värderingar/ betygssättningar är angivet till 30 och för inskickade uppgiftslösning/ar till 70 då kommer det maximala övergripande betyget/omdömet för hela Workshop-uppgiften att vara 100.
-
 Du kan när som helst ändra det här värdet och effekterna av detta framgår omedelbart av de betyg/omdömen som visas.';
 $string['iamsure'] = 'Ja, jag är säker';
 $string['info'] = 'Info';

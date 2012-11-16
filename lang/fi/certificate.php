@@ -41,63 +41,18 @@ $string['certificatetype'] = 'Kurssitodistuksen tyyppi';
 $string['course'] = 'Käyttäjälle';
 $string['credithours'] = 'Tunnit';
 $string['customtext'] = 'Vapaa tekstikenttä';
-$string['customtext_help'] = '<p align="center">
-  <b>Vapaa tekstikenttä</b>
-</p>
-
-Jos haluat näyttää kurssitodituksessa kouluttajan nimenä eri nimen kuin kouluttaja-roolissa olevan henkilön, valitse ylläolevasta "Tulosta kouluttajan nimi" -listasta arvoksi **Ei** sekä "Allekirjoituskuva" -listasta niin ikään arvoksi **Ei**. Syötä sen jälkeen halutut nimet tähän kenttään siinä järjestyksessä kuin haluavat niiden näkyvän todistuksessa. Oletuksena nimet tulostuvat todistuksen vasempaan alareunaan. Voit muuttaa tätä asemointia certificate.php-tiedostossa (hakemistossa certificate/type/"type name").
-
-Etsi aivan tiedoston lopusta seuraavan kaltainen koodinpätkä: 
-
-cert_printtext(150, 450, \'\', \'\', \'\', \'\', \'\'); 
-
-Kaksi numeroa viittaavat tekstin X- ja Y-asemointeihin (X vasemmalta ja Y ylhäältä päin). Voit halutessasi muuttaa näitä arvoja. 
-
-Voit myös syöttää tekstikenttään html-koodia. Voit esim. lisätä linkin tai kuvan.
-
-<div style="border: 1px solid black;font-size: 12px">
-  Seuraavat html-tägit ovat käytössä: <ul type="square">
-    <li>
-      <br> ja <p>
-    </li>
-    <li>
-      <b>, <i> ja <u>
-    </li>
-    <li>
-      <img> (src ja width (tai height) ovat pakollisia)
-    </li>
-    <li>
-      <a> (href on pakollinen)
-    </li>
-    <li>
-      <font>: voi saada attribuutit:<br /> color: hex color code<br /> face: arial, times, courier, helvetica, symbol
-    </li>
-  </ul>
-</div>
-
-Esimerkki-html:
-
-Mr. James Salesman, Manager<br><br>Sales Department<br><br><font color="#0000CC"><b>Your Company<font face="Symbol">&Ograve;</font></b></font><img src="http://yourmoodle.com/mod/certificate/pix/seals/Logo.png" width="100"><p><a href="http://www.site.com target="_blank">Click here</a></p>';
 $string['date'] = 'Ajankohta';
-$string['datefmt_help'] = '<p align="center">
-  <b>Tulostusmuoto</b>
-</p>
+$string['datefmt_help'] = '**Tulostusmuoto**
 
 Määritä missä muodossa päivämäärä tulostetaan kurssitodistukseen.';
-$string['delivery_help'] = '<p align="center">
-  <b>Toimitustapa</b>
-</p>
+$string['delivery_help'] = '**Toimitustapa**
 
-Määritä tässä kuinka kurssitodistus toimitetaan oppijoille. 
-
-**Avaa uudessa ikkunassa:** avaa todistuksen uudessa selainikkunassa.   
-**Pakotettu lataus:** avaa tiedoston latausikkunan. **(Huomaa: **Internet Explorer ei tue latausikkunan kautta avaamista. Talleta tiedosto ensin.)  
+Määritä tässä kuinka kurssitodistus toimitetaan oppijoille.
+**Avaa uudessa ikkunassa:** avaa todistuksen uudessa selainikkunassa.
+**Pakotettu lataus:** avaa tiedoston latausikkunan. **(Huomaa: **Internet Explorer ei tue latausikkunan kautta avaamista. Talleta tiedosto ensin.)
 **Lähetä sähköpostitse:** lähettää todistuksen oppijalle sähköpostin liitetiedostona.
-
 Kun oppija on saanut todistuksen, he pääsevät linkkiä klikkaamalla tarkastelemaan sitä uudelleen.';
-$string['emailothers_help'] = '<p align="center">
-  <b>Lähetä tiedotteet seuraaville</b>
-</p>
+$string['emailothers_help'] = '**Lähetä tiedotteet seuraaville**
 
 Jos haluat lähettää sähköpostitiedotteen henkilöille, joiden tulee saada tieto oppijoiden kurssitodistusten saamisesta, syötä tähän kenttään sähköpostiosoitteet pilkulla eroteltuna.';
 $string['emailstudenttext'] = 'Liitteenä on kurssitodistus kurssista {$a->course}.';
@@ -111,26 +66,20 @@ $string['emailteachermailhtml'] = '{$a->student} on saanut kurssitodistuksen \'<
 Voit tarkastella sitä täältä:
 
 <a href="{$a->url}">Kurssitodistusraportti</a>.';
-$string['emailteachers_help'] = '<p align="center">
-  <b>Lähetä tiedote kouluttajille</b>
-</p>
+$string['emailteachers_help'] = '**Lähetä tiedote kouluttajille**
 
 Jos **Kyllä** on valittuna, kurssin kouluttajat saavat lyhyen sähköpostitiedotteen aina, kun oppijat saavat todistuksen.';
 $string['entercode'] = 'Syötä kurssitodistuksen koodi vahvistaaksesi:';
 $string['getcertificate'] = 'Hanki kurssitodistus';
 $string['grade'] = 'Arvosana';
 $string['gradedate'] = 'Arvosnana päivämäärä';
-$string['gradefmt_help'] = '<p align="center">
-  <strong>Arvosanan muoto</strong>
-</p>
+$string['gradefmt_help'] = '**Arvosanan muoto**
 
-<p align="left">
-  Todistukseen tulostettava arvosana voi olla kolmessa muodossa:
-</p>
+Todistukseen tulostettava arvosana voi olla kolmessa muodossa:
 
-<p align="left">
-  <strong>Prosenttiarvosana:</strong> Tulostaa arvostelun prosentteina. <strong><br /> Pistearvosana: </strong>Tulostaa arvostelun pisteinä. <br /> <strong>Kirjainarvosana:</strong> Tulostaa arvostelun kirjaimina. Voit muokata käytettävissä olevia arvosanakirjaimia type/certificate.php -tiedostossa.
-</p>';
+**Prosenttiarvosana:** Tulostaa arvostelun prosentteina. **
+Pistearvosana: **Tulostaa arvostelun pisteinä.
+**Kirjainarvosana:** Tulostaa arvostelun kirjaimina. Voit muokata käytettävissä olevia arvosanakirjaimia type/certificate.php -tiedostossa.';
 $string['gradeletter'] = 'Kirjainarvosana';
 $string['gradepercent'] = 'Prosenttiarvosana';
 $string['gradepoints'] = 'Pistearvosana';
@@ -154,42 +103,29 @@ $string['opendownload'] = 'Klikkaa alla olevaa painiketta tallentaaksesi kurssit
 $string['openemail'] = 'Klikkaa alla olevaa painiketta lähettääksesi kurssitodistuksesi sähköpostiisi.';
 $string['openwindow'] = 'Klikkaa alla olevaa painiketta avataksesi kurssitodistuksesi uudessa ikkunassa.';
 $string['printdate'] = 'Tulostuspäivä';
-$string['printdate_help'] = '<p align="center">
-  <b>Tulostuspäivä</b>
-</p>
+$string['printdate_help'] = '**Tulostuspäivä**
 
 Jos tulostuspäivä on valittu näkyväksi, jompi kumpi näistä päivämääristä tulostetaan.
-
-Jos kurssin loppupäivä on valittu, määritä kurssin ajanjakso ja loppumispäivämäärä kurssin asetuksista. Jos kurssin loppupäivää ei ole määritetty, käytetään todistuksen myöntämispäivää käytetään sen sijasta. Voit myös valita tulostettavaksi päivän, jolloin jokin aktiviteetti on arvosteltu. Jos todistus myönnetään ennen tuon aktiviteetin arviointipäivää, käytetään todistuksen myöntämispäivää. 
-
+Jos kurssin loppupäivä on valittu, määritä kurssin ajanjakso ja loppumispäivämäärä kurssin asetuksista. Jos kurssin loppupäivää ei ole määritetty, käytetään todistuksen myöntämispäivää käytetään sen sijasta. Voit myös valita tulostettavaksi päivän, jolloin jokin aktiviteetti on arvosteltu. Jos todistus myönnetään ennen tuon aktiviteetin arviointipäivää, käytetään todistuksen myöntämispäivää.
 Huomaa, että kertaalleen todistukseen tulostettua päivämäärää voi muuttaa ainoastaan muokkaamalla type/certificate.php -tiedostoa.';
 $string['printerfriendly'] = 'Tulostusversio';
 $string['printgrade'] = 'Tulosta arvosana';
 $string['printhours'] = 'Tulosta tunnit';
-$string['printhours_help'] = '<p align="center">
-  <b>Tulosta opintotunnit</b>
-</p>
+$string['printhours_help'] = '**Tulosta opintotunnit**
 
 Syötä tähän kenttään todistukseen tulostettavien opintotuntien/-pisteiden määrä.';
-$string['printnumber_help'] = '<p align="center">
-  <b>Tulosta koodi</b>
-</p>
+$string['printnumber_help'] = '**Tulosta koodi**
 
 Voit valita todistukseen tulostettavaksi yksilöidyn 10-merkkisen koodin, joka koostuu sattumanvaraisesti valituista kirjaimista ja numeroista. Sama koodi tulostuu myös kouluttajan ajamaan raporttiin kaikista myönnetyistä kurssitodistuksista. Koodeja vertaamalla voi siis vahvistaa todistuksen oikeellisuuden.';
 $string['printoutcome'] = 'Tulosta lopputulokset';
 $string['printseal'] = 'Leiman tai logon kuva';
 $string['printsignature'] = 'Allekirjoituskuva';
-$string['printteacher_help'] = '<p align="center">
-  <b>Tulosta kouluttajan nimi</b>
-</p>
+$string['printteacher_help'] = '**Tulosta kouluttajan nimi**
 
-Jos haluat tulostaa kouluttajan nimen todistukseen, määritä kouluttajan rooli moduulitasolla. Tee näin, jos esimerkiksi kurssia pitää useampi kuin yksi kouluttaja tai haluat käyttää kurssilla useampia todistuspohjia ja tulostaa kullekin niistä eri kouluttajan nimen. 
-
+Jos haluat tulostaa kouluttajan nimen todistukseen, määritä kouluttajan rooli moduulitasolla. Tee näin, jos esimerkiksi kurssia pitää useampi kuin yksi kouluttaja tai haluat käyttää kurssilla useampia todistuspohjia ja tulostaa kullekin niistä eri kouluttajan nimen.
 Valitse todistuksen muokkaustilassa **Paikallisesti jaetut roolit** -välilehti. Määritä sitten Kouluttajan (Trainer tai Editing Trainer) rooli haluamallesi yhdelle tai useammalle henkilölle. Tämä nimi (tai useampi nimi) tulostuu todistukseen Kouluttaja-nimikkeen alle.';
 $string['receivedcerts'] = 'Saadut kurssitodistukset';
-$string['reportcert_help'] = '<p align="center">
-  <b>Kurssitodistusraportit</b>
-</p>
+$string['reportcert_help'] = '**Kurssitodistusraportit**
 
 Jos valitset tässä **Kyllä**, tämän todistuksen myöntämispäivä, koodi ja kurssin nimi näytetään käyttäjän kurssitodistusraporteissa. Jos sallit arvosanatietojen tulostumisen tähän todistukseen, myös se näytetään raporteissa.';
 $string['reviewcertificate'] = 'Tarkastele kurssitodistustasi';

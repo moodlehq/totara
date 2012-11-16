@@ -32,7 +32,9 @@ $string['authenticationoptions'] = 'Authentication options';
 $string['auth_fieldlock'] = 'Lock value';
 $string['auth_fieldlock_expl'] = '<p><b>Lock value:</b> If enabled, will prevent Moodle users and admins from editing the field directly. Use this option if you are maintaining this data in the external auth system. </p>';
 $string['auth_fieldlocks'] = 'Lock user fields';
-$string['auth_fieldlocks_help'] = '<p>You can lock user data fields. This is useful for sites where the user data is maintained by the administrators manually by editing user records or uploading using the \'Upload users\' facility. If you are locking fields that are required by Moodle, make sure that you provide that data when creating user accounts or the accounts will be unusable.</p><p>Consider setting the lock mode to \'Unlocked if empty\' to avoid this problem.</p>';
+$string['auth_fieldlocks_help'] = 'You can lock user data fields. This is useful for sites where the user data is maintained by the administrators manually by editing user records or uploading using the \'Upload users\' facility. If you are locking fields that are required by Moodle, make sure that you provide that data when creating user accounts or the accounts will be unusable.
+
+Consider setting the lock mode to \'Unlocked if empty\' to avoid this problem.';
 $string['auth_changepasswordhelp'] = 'Change password help';
 $string['auth_changepasswordhelp_expl'] = 'Display lost password help to users who have lost their {$a} password. This will be displayed either as well as or instead of the <strong>Change Password URL</strong> or Internal Moodle password change.';
 $string['auth_changepasswordurl'] = 'Change password URL';

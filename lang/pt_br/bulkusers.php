@@ -38,21 +38,17 @@ $string['removeall'] = 'Remova todos';
 $string['removesel'] = 'Remova da seleção';
 $string['selected'] = 'Selecionados';
 $string['selectedlist'] = 'Lista de usuários selecionados...';
-$string['selectedlist_help'] = '<h2>Lista de usuários selecionados...</h2>
+$string['selectedlist_help'] = '## Lista de usuários selecionados...
 
-<ul>
-<li>Adicionar à seleção - adiciona os usuários marcados da lista de usuários Disponíveis na lista de usuários Selecionados.
-Uma seleção múltipla de usuários pode ser feita pressionando e segurando a tecla Apple ou Ctrl enquanto você clica nos nomes de usuários.</li>
-<li>Adicionar todos - adiciona todos os usuários da lista de usuários Disponíveis na lista dos usuários Selecionados.</li>
-<li>Remover da seleção - remove os usuários marcados da lista de usuários Selecionados.</li>
-<li>Remover todos - remove todos os usuários da lista de usuários Selecionados.</li>
-</ul>';
+* Adicionar à seleção - adiciona os usuários marcados da lista de usuários Disponíveis na lista de usuários Selecionados.
+Uma seleção múltipla de usuários pode ser feita pressionando e segurando a tecla Apple ou Ctrl enquanto você clica nos nomes de usuários.
+* Adicionar todos - adiciona todos os usuários da lista de usuários Disponíveis na lista dos usuários Selecionados.
+* Remover da seleção - remove os usuários marcados da lista de usuários Selecionados.
+* Remover todos - remove todos os usuários da lista de usuários Selecionados.';
 $string['users'] = 'Usuários';
-$string['users_help'] = '<h2>Listas de Usuários</h2>
-
-<p>A lista de usuários <strong>Disponíveis</strong> contém os usuários que passaram pelos Filtros Ativos. Por exemplo, se a seção dos Filtros ativos contém somente um filtro para usuários cujo país é a Rômenia, então a lista dos usuários Disponíveis conterá apenas usuários que definiram a Romênia como seu país na página de perfil.</p>
-
-<p>A lista de usuários<strong>Selecionados</strong> contém os usuários que foram adicionados a esta lista por você, usando os botões da seção <em>Lista de usuários selecionados...</em>. Quando o botão <em>Vá</em> da seção <em>Com os usuários selecionados...</em> é pressionado, a operação escolhida será executada com relação aos usuários da lista.</p>';
+$string['users_help'] = '## Listas de Usuários
+A lista de usuários **Disponíveis** contém os usuários que passaram pelos Filtros Ativos. Por exemplo, se a seção dos Filtros ativos contém somente um filtro para usuários cujo país é a Rômenia, então a lista dos usuários Disponíveis conterá apenas usuários que definiram a Romênia como seu país na página de perfil.
+A lista de usuários**Selecionados** contém os usuários que foram adicionados a esta lista por você, usando os botões da seção *Lista de usuários selecionados...*. Quando o botão \*Vá\* da seção *Com os usuários selecionados...* é pressionado, a operação escolhida será executada com relação aos usuários da lista.';
 $string['usersfound'] = '{$a} usuários encontrados';
 $string['usersinlist'] = 'Usuários na lista';
 $string['usersselected'] = '{$a} usuário(s) selecionados';

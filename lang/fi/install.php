@@ -58,7 +58,7 @@ $string['configurationcompletehead'] = 'Asetukset suoritettu';
 $string['configurationcompletesub'] = 'Moodle yritti tallentaa asetustiedostoa "config.php" moodlen asennuskansioon.';
 $string['database'] = 'Tietokanta';
 $string['databasecreationsettings'] = 'Nyt sinun täytyy asettaa asetukset tietokannalle, johon suurin osa Moodlen tiedoista tallennetaan. <br />
- <br /> <br />
+<br /> <br />
 <b>Type:</b> asennusohjelma asettaa asetusarvoksi "mysql"<br />
 <b>Host:</b> asennusohjelma asettaa asetusarvoksi "localhost"<br />
 <b>Name:</b> tietokannan nimi, esim. moodle<br />
@@ -73,11 +73,11 @@ $string['databasecreationsettingssub'] = '<b>Tyyppi:</b> Asennusohjelman lukitse
 <b>Salasana:</b> Tietokannan salasana<br />
 <b>Talukon etuliite:</b> Etuliite kaikille tietokannan tauluille';
 $string['databasecreationsettingssub2'] = '<b>Tyyppi:</b> asennusohjelma korjasi muotoon "mysqli"<br />
- <b>Isäntä:</b>asennusohjelma korjasi muotoon "localhost"<br />
- <b>Nimi:</b> tietokannan nimi, esim. moodle<br />
- <b>Käyttäjä:</b> asennusohjelma korjasi muotoon "root"<br />
- <b>Salasana:</b> tietokantasi salasana<br />
- <b>Taulujen Etuliite:</b> valinnainen etuliite kaikkien taulujen nimille';
+<b>Isäntä:</b>asennusohjelma korjasi muotoon "localhost"<br />
+<b>Nimi:</b> tietokannan nimi, esim. moodle<br />
+<b>Käyttäjä:</b> asennusohjelma korjasi muotoon "root"<br />
+<b>Salasana:</b> tietokantasi salasana<br />
+<b>Taulujen Etuliite:</b> valinnainen etuliite kaikkien taulujen nimille';
 $string['databasehead'] = 'Tietokannan asetukset';
 $string['databasehost'] = 'Tietokannan isäntä';
 $string['databasename'] = 'Tietokannan nimi';
@@ -214,8 +214,8 @@ $string['globalsquoteshelp'] = '<p>Ei ole suositeltavaa yhtäaikaa estää magic
 <p>Suositeltu asetus on <b>magic_quotes_gpc = On</b> ja <b>register_globals = Off</b> php.ini:ssä</p>
 
 <p>Jos sinulla ei ole pääsyä php.ini-tiedostoon, pystyt ehkä lisäämään seuraavan rivin tiedostoon .htaccess Moodle hakemistossasi:</p>
- <blockquote><div>php_value magic_quotes_gpc On</div></blockquote>
- <blockquote><div>php_value register_globals Off</div></blockquote>';
+<blockquote><div>php_value magic_quotes_gpc On</div></blockquote>
+<blockquote><div>php_value register_globals Off</div></blockquote>';
 $string['inputdatadirectory'] = 'Datahakemisto:';
 $string['inputwebadress'] = 'Web-osoite:';
 $string['inputwebdirectory'] = 'Moodle-hakemisto:';
@@ -249,8 +249,8 @@ Tämä sallii Moodlen asettaa muistirajan itse.</li>
 <p>Kuitenkin, joillain palvelimilla tämä estää  <b>kaikkia</b> PHP sivuja toimimasta (näet virheet, kun katsot sivuja), joten sinun täytyy poistaa .htaccess tiedosto.</p></li>
 </ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP:ta ei ole oikein konfiguroitu MSSQL-lisäosan kanssa, jotta se voisi kommunnikoida SQL*Palvelimen kanssa. Ole hyvä ja tarkasta php.ini -tiedostosi tai käännä PHP uudestaan.';
 $string['mssql_n'] = 'SQL*Server jossa UTF-8 -tuki (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP:ta ei ole oikein konfiguroitu MSSQL-lisäosan kanssa, jotta se voisi kommunnikoida SQL*Palvelimen kanssa. Ole hyvä ja tarkasta php.ini -tiedostosi tai käännä PHP uudestaan.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP:tä ei ole kunnolla valittu asetukseksi MySQL -laajennuksen kanssa, jotta se voisi kommunikoida MySQL:n kanssa. Tarkista php.ini -tiedostosi tai käännä PHP uudelleen.';
 $string['mysqli'] = 'Parannettu MySQL (mysqli)';
@@ -267,8 +267,8 @@ $string['nativesqlsrv'] = 'SQL*Server Microsoft (native/sqlsrv)';
 $string['nativesqlsrvhelp'] = 'Nyt sinun tulee konfiguroida tietokanta, jossa suurin osa Moodlen tiedoista säilytetään. Tämän tietokannan, sekä käyttäjätunnuksen ja salasanan sille, tulee olla jo luotu. Taulun etuliite on pakollinen.';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP:ta ei ole oikein konfiguroitu OCI8-lisäosan kanssa, jotta se voisi kommunnikoida Oraclen kanssa. Ole hyvä ja tarkasta php.ini -tiedostosi tai käännä PHP uudestaan.';
-$string['odbcextensionisnotpresentinphp'] = 'PHP:ta ei ole oikein konfiguroitu ODBC-lisäosan kanssa, jotta se voisi kommunnikoida SQL*Palvelimen kanssa. Ole hyvä ja tarkasta php.ini -tiedostosi tai käännä PHP uudestaan.';
 $string['odbc_mssql'] = 'SQL*Palvelin yli ODBC:n (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP:ta ei ole oikein konfiguroitu ODBC-lisäosan kanssa, jotta se voisi kommunnikoida SQL*Palvelimen kanssa. Ole hyvä ja tarkasta php.ini -tiedostosi tai käännä PHP uudestaan.';
 $string['pass'] = 'Tarkastettu';
 $string['paths'] = 'Polut';
 $string['pathserrcreatedataroot'] = 'Asennusohjelma ei voi luoda datahakemistoa ({$a->dataroot}).';

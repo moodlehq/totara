@@ -69,19 +69,17 @@ $string['csstemplate'] = 'szablon CSS';
 $string['csvfailed'] = 'Nie można odczytać nieprzetworzonych danych z pliku CSV';
 $string['csvfile'] = 'plik CSV';
 $string['csvimport'] = 'import pliku CSV';
-$string['csvimport_help'] = '<p align="center"><strong>Import z pliku CSV </strong></p>
-<p> CSV oznacza Wartości Odseparowane Przecinkiem i jest typowym formatem zmienności tekstu.</p>
-<p> Spodziewany format pliku jest równym tekstem z listą nazw jako pierwszy rekord. Dane następujące to, jeden rekord na 1 linię.
-<p> Pole separatora domyślnego przecinek i pole załącznika domyślnego nie są ustawiane domyślnie (pole domyślne umieszcza znaki tak że każde pole otacza jeden rekord).
-
-<p> Rekordy powinny być odseparowane nowymi liniami (przeważnie poprzez naciśnięcie klawisza return lub enter w edytorze tekstu). Tabele mogą być wykonywane poprzez zaznaczenie t i nową linię poprzez n. </p>
-<p> Plik przykładowy:
-<pre>  nazwa, wysykość, szerokość
+$string['csvimport_help'] = '**Import z pliku CSV **
+CSV oznacza Wartości Odseparowane Przecinkiem i jest typowym formatem zmienności tekstu.
+Spodziewany format pliku jest równym tekstem z listą nazw jako pierwszy rekord. Dane następujące to, jeden rekord na 1 linię.
+Pole separatora domyślnego przecinek i pole załącznika domyślnego nie są ustawiane domyślnie (pole domyślne umieszcza znaki tak że każde pole otacza jeden rekord).
+Rekordy powinny być odseparowane nowymi liniami (przeważnie poprzez naciśnięcie klawisza return lub enter w edytorze tekstu). Tabele mogą być wykonywane poprzez zaznaczenie t i nową linię poprzez n.
+Plik przykładowy:
+nazwa, wysykość, szerokość
 Kai,180cm,80kg
 Kim,170cm,60kg
 Koo,190cm,20kg
-</pre></p>
-<p>Uwaga: wszystkie typy pól mogą nie być wspierane</p>';
+Uwaga: wszystkie typy pól mogą nie być wspierane';
 $string['csvwithselecteddelimiter'] = '<acronym title="Wartości rozdzielane przecinkami">CSV</acronym> - tekst z wybranym separatorem:';
 $string['data:approve'] = 'Zatwierdź niezatwierdzone wpisy';
 $string['data:comment'] = 'Napisz komentarz';
@@ -146,12 +144,9 @@ $string['fieldheightlistview'] = 'Wysokość listy widoku';
 $string['fieldheightsingleview'] = 'Wysokość w pojedynczym widoku';
 $string['fieldids'] = 'Identyfikatory pól';
 $string['fieldmappings'] = 'Mapowanie pól';
-$string['fieldmappings_help'] = '<p align="center">
-  <strong>Mapowania pól</strong>
-</p>
+$string['fieldmappings_help'] = '**Mapowania pól**
 
 To menu umożliwia zachowanie danych z istniejącej bazy danych. Aby zachować dane w polu, musisz je zmapować na nowe pole, gdzie zostaną one wyświetlone. Każde pole może również pozostać puste i nie zawierać żadnych skopiowanych informacji. Dowolne stare pole, które nie zostanie zmapowane na nowe, zostanie utracone i wszystkie jego dane zostaną usunięte.
-
 Można mapować tylko pola tego samego typu, więc każda lista rozwijana będzie zawierać różne pola. Ponadto należy uważać, aby nie próbować zmapować jednego starego pola na więcej niż jedno nowe pole.';
 $string['fieldname'] = 'Nazwa pola';
 $string['fieldnotmatched'] = 'Następujące pola w twoim pliku nie są znane w tej bazie danych: {$a}';
@@ -201,9 +196,8 @@ $string['longitude'] = 'Długość geogr.';
 $string['mapnewfield'] = 'Utwórz nowe pole';
 $string['mappingwarning'] = 'Wszystkie stare pola, które nie zostały zmapowane na nowe pole, zostaną utracone i wszystkie dane w tym polu zostaną usunięte.';
 $string['maxentries'] = 'Maksymalna liczba wpisów';
-$string['maxentries_help'] = '<p align="center"><strong>Maksymalna lczba wejść</strong></p>
-
-<p>Maksymalna liczba wejść uczestnika które mogę być oddane do rozpatrzenia dla tej aktywoności.</p>';
+$string['maxentries_help'] = '**Maksymalna lczba wejść**
+Maksymalna liczba wejść uczestnika które mogę być oddane do rozpatrzenia dla tej aktywoności.';
 $string['maxsize'] = 'Maksymalny rozmiar';
 $string['menu'] = 'Menu';
 $string['menuchoose'] = 'Wybierz...';
@@ -229,11 +223,9 @@ $string['nametextarea'] = 'Obszar tekstu';
 $string['nameurl'] = 'Adres URL';
 $string['newentry'] = 'nowy wpis';
 $string['newfield'] = 'utwórz nowe pole';
-$string['newfield_help'] = '<p align="center"><strong>Pola</strong></p>
-
-<p>Tutaj możesz utworzyć pola które będą częścią Twojej bazy danych.</p>
-
-<p>Każde pole pozwala na różne typy danych, z róznymi połaczeniami.</p>';
+$string['newfield_help'] = '**Pola**
+Tutaj możesz utworzyć pola które będą częścią Twojej bazy danych.
+Każde pole pozwala na różne typy danych, z róznymi połaczeniami.';
 $string['noaccess'] = 'Nie masz praw dostępu do tej strony';
 $string['nodefinedfields'] = 'Nowe ustawienia wstępne nie mają zdefiniowanych pól';
 $string['nofieldcontent'] = 'Zawartość pola nie znaleziona';
@@ -271,18 +263,16 @@ $string['recorddeleted'] = 'Wpis usunięty';
 $string['recordsnotsaved'] = 'Żaden wpis nie został zapisany. Sprawdź format pobieranego pliku.';
 $string['recordssaved'] = 'Wpisy zapisano';
 $string['requireapproval'] = 'Wymagają zatwierdzenia?';
-$string['requireapproval_help'] = '<p align="center"><strong>Wymagają zatwierdzenia</strong></p>
-
-<p>Wymagać aby wpisy były zatwierdzone przez nauczyciela zanim one będą widziane przez studentów? Jest użyteczny dla zmniejszenia zawartości która potencjalnie może nieodpowiednia .</p>';
+$string['requireapproval_help'] = '**Wymagają zatwierdzenia**
+Wymagać aby wpisy były zatwierdzone przez nauczyciela zanim one będą widziane przez studentów? Jest użyteczny dla zmniejszenia zawartości która potencjalnie może nieodpowiednia .';
 $string['requiredentries'] = 'Wymagane wpisy';
-$string['requiredentries_help'] = '<p align="center"><strong>wymagane wpisy</strong></p>
-<p> Liczba wpisów jest wymagana poprzez potwierdzenie uczestnika.
-Użytkownicy zobaczą wiadomość przypominającą na ekranie monitora jeżeli nie potwierdzą ilości wymaganych wpisów.</p>
-<p> Ćwiczenie nie będzie rozważane w całości dopóki użytkownik nie potwierdzi wymaganej liczby wpisów</p>';
+$string['requiredentries_help'] = '**wymagane wpisy**
+Liczba wpisów jest wymagana poprzez potwierdzenie uczestnika.
+Użytkownicy zobaczą wiadomość przypominającą na ekranie monitora jeżeli nie potwierdzą ilości wymaganych wpisów.
+Ćwiczenie nie będzie rozważane w całości dopóki użytkownik nie potwierdzi wymaganej liczby wpisów';
 $string['requiredentriestoview'] = 'Wpisy wymagane przed przeglądaniem';
-$string['requiredentriestoview_help'] = '<p align="center"><strong>Wymagane wpis przed oglądaniem</strong></p>
-
-<p>Liczba wpisów wymaganych od użytkownika zanim bedzie mógł on przeglądać tą bazę danych.</p>';
+$string['requiredentriestoview_help'] = '**Wymagane wpis przed oglądaniem**
+Liczba wpisów wymaganych od użytkownika zanim bedzie mógł on przeglądać tą bazę danych.';
 $string['resetsettings'] = 'Resetuj pola';
 $string['resettemplate'] = 'Resetuj szablon';
 $string['resizingimages'] = 'Zmienianie rozmiarów obrazu thumbnails...';

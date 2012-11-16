@@ -92,13 +92,9 @@ $string['groupmemberssee'] = 'Visualizza membri del gruppo';
 $string['groupmembersselected'] = 'Membri del gruppo selezionato';
 $string['groupmode'] = 'Modalità gruppo';
 $string['groupmode_help'] = 'L\'impostazione ha 3 opzioni:
-
 * Senza gruppi- la modalità gruppi non è attiva, ogni partecipante fa parte della stessa comunità
-
 * Gruppi separati - ciascun partecipante è membro del gruppo al quale è stato assegnato e non ha facoltà di vedere i lavoro svolto dai membri degli altri gruppi
-
 * Gruppi visibili - ciascun partecipante è membro del gruppo al quale è stato assegnato ma può vedere il lavoro svolto dagli altri gruppi.
-
 La modalità gruppo definita nell impostazioni del corso è la modalità di deafult per le attività del corso. La modalità gruppo può essere gestita per ciascuna attività del corso purché l\'attività supporti i gruppi e la modalità gruppo non sia stata forzata a livello di corso.';
 $string['groupmodeforce'] = 'Forza modalità gruppo';
 $string['groupmodeforce_help'] = 'Forzando la modalità gruppo, tale modalità sarà applicata a tutte le attività del corso. Eventuali modalità gruppo diverse non saranno prese in considerazione.';
@@ -119,7 +115,6 @@ $string['grouptemplate'] = 'Group @';
 $string['hidepicture'] = 'Nascondi immagine';
 $string['importgroups'] = 'Importa gruppi';
 $string['importgroups_help'] = 'E\' possibile importare gruppi attraverso un file di testo. Il formato del file è descritto di seguito:
-
 * ciascuna linea deve contenere un record
 * ciascun record è una serie di campi separati da virgole
 * il primo record deve contenere i nomi dei campi che specificano il contenuto di ciascun campo
@@ -130,7 +125,6 @@ $string['members'] = 'Membri per gruppo';
 $string['membersofselectedgroup'] = 'Membri di:';
 $string['namingscheme'] = 'Schema denominazione';
 $string['namingscheme_help'] = 'Il simbolo at (@) può essere utilizzato per creare gruppi con nomi che contengono lettere. Per esempio, Gruppo @ genererà i nomi Gruppo A, Gruppo B, Gruppo C, eccetera.
-
 Il simbolo hash (#) può essere utilizzato per creare gruppi con nomi che contengono numeri. Per esempio, Gruppo # genererà i nomi Gruppo 1, Gruppo 2, Gruppo 3, eccetera.';
 $string['newgrouping'] = 'Nuovo raggrupamento';
 $string['newpicture'] = 'Nuova immagine';

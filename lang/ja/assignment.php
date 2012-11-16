@@ -85,13 +85,11 @@ $string['emailteachermailhtml'] = '{$a->username} が「 {$a->assignment} 」の
 <a href="{$a->url}">ウェブサイトにて閲覧可能です</a>。';
 $string['emailteachers'] = '教師にメール通知する';
 $string['emailteachers_help'] = '有効にした場合、学生が課題を提出または更新するといつでも短い通知メールが教師に送信されます。
-
 通知メールは、提出課題を評定できる教師のみに送信されます。例えば、コースが分離グループを使用する場合、特定のグループに制限されている教師は、他のグループの学生に関する通知メールを受け取りません。';
 $string['emptysubmission'] = 'あなたはまだ何も提出していません。';
 $string['enablenotification'] = '通知メールを送信する';
-$string['enablenotification_help'] = '<p>あなたがこの設定を有効にした場合、評定およびフィードバックの更新が学生にメール通知されます。</p>
-
-<p>あなたの個人設定は保存され、あなたが評定するすべての提出課題に適用されます。</p>';
+$string['enablenotification_help'] = 'あなたがこの設定を有効にした場合、評定およびフィードバックの更新が学生にメール通知されます。
+あなたの個人設定は保存され、あなたが評定するすべての提出課題に適用されます。';
 $string['errornosubmissions'] = 'ダウンロード可能な提出はありません。';
 $string['existingfiledeleted'] = '登録済みファイルが削除されました: {$a}';
 $string['failedupdatefeedback'] = 'ユーザ {$a} のフィードバック更新に失敗しました';

@@ -128,7 +128,6 @@ $string['personalblogs'] = 'Les utilisateurs ne peuvent voir que les articles de
 $string['preferences'] = 'Préférences';
 $string['publishto'] = 'Publier pour';
 $string['publishto_help'] = 'Il y a trois options :
-
 * Vous-même (brouillon) : seul vous et les administrateurs pourront voir cet article
 * Tout le monde sur le site : tous les utilisateurs enregistrés sur ce site pourront voir cet article
 * Tout le monde : n\'importe qui pourra voir cet article, y compris des visiteurs anonymes';

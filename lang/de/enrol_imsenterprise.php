@@ -27,14 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['aftersaving...'] = 'Nachdem Sie die Einstellungen gespeichert haben, können Sie folgendes tun:';
 $string['allowunenrol'] = 'IMS-Datei das <strong>Löschen</string> von Teilnehmer/innen bzw. Trainer/innen erlauben';
-$string['allowunenrol_desc'] = 'Wenn diese Option aktiviert ist, werden Kurseineinschreibungen aufgehoben, wenn dies in der IMS-Enterprise-Datei eingetragen ist. ';
+$string['allowunenrol_desc'] = 'Wenn diese Option aktiviert ist, werden Kurseineinschreibungen aufgehoben, wenn dies in der IMS-Enterprise-Datei eingetragen ist.';
 $string['basicsettings'] = 'Grundeinstellungen';
 $string['coursesettings'] = 'Kurseinstellungen';
 $string['createnewcategories'] = 'Erstelle neue (verborgene) Kurskategorien, wenn nicht in Moodle gefunden';
 $string['createnewcategories_desc'] = 'Wenn das <org><orgunit> Element in der importierten Datei enthalten ist, wird es benutzt um einen Kurs einer Kurskategorie zuzuordnen, sofern der Kurs neu angelegt wird. Bereits bestehende Kurse werden dadurch NICHT verschoben.
 Wenn keine Kategorie mit dem Namen existiert wird diese neu als verborgene Kategorie angelegt.';
 $string['createnewcourses'] = 'Erstelle neue (verborgene) Kurse, wenn nicht in Moodle gefunden';
-$string['createnewcourses_desc'] = 'Funktion: Das IMS-Einschreibungsplugin kann neue Kurse anlegen wenn es diese in der IMS Datei, nicht aber in der Moodle-Datenbank findet. Jeder neue Kurs wird so angelegt, dasser für Teilnehmer nicht verfügbar ist. ';
+$string['createnewcourses_desc'] = 'Funktion: Das IMS-Einschreibungsplugin kann neue Kurse anlegen wenn es diese in der IMS Datei, nicht aber in der Moodle-Datenbank findet. Jeder neue Kurs wird so angelegt, dasser für Teilnehmer nicht verfügbar ist.';
 $string['createnewusers'] = 'Erstelle neue Nutzerzugänge, wenn Nutzer noch nicht in Moodle registriert';
 $string['createnewusers_desc'] = 'Die IMS Enterprise Einschreibungsdatei enthält in der Regel eine Reihe von Teilnehmern. Mit der Funktion kann für jeden Nutzer, der noch nicht in Moodle registriert ist, ein Account angelegt werden.
 Teilnehmer werden zunächst aufgrund der ID-Nummer und dann nach dem Anmeldenamen in Moodle gesucht. Aus dem IMS Enterprise Plugin werden keine Kennwörter importiert. Hierfür wird die Nutzung eines Authentifizierungsplugin empfohlen.';
@@ -61,7 +61,7 @@ $string['processphoto'] = 'Nutzerfoto zu Profil hinzufügen';
 $string['processphotowarning'] = 'Warnung: Die Bildverarbeitung stellt hohe Anforderungen an die Leistung des Servers. Es wird empfohlen, diese Funktion nicht zu nutzen, wenn eine große Zahl von Nutzer/innen auf diesem Wege ins System integriert werden soll.';
 $string['restricttarget'] = 'Daten nur verarbeiten, wenn das folgende Ziel angegeben ist';
 $string['restricttarget_desc'] = 'Eine IMS Enterprise Datei kann für verschiedene Verwaltungssysteme eine Bildungseinrichtungen verwandt werden. Dazu wird in der IMS Enterprise Datei das Zielsystem im <target> Tag innerhalb des <properties> Tags festgelegt.
-Meistens brauchen Sie sich hierüber keine Gedanken zu machen. Lassen Sie den Eintrag leer und Moodle verarbeitet die alle Daten aus der Datei. Andernfalls tragen Sie hier den Wert ein, der in der IMS-Enterprise Datei als Wert für Moodle in <targtet> verwendet wird. ';
+Meistens brauchen Sie sich hierüber keine Gedanken zu machen. Lassen Sie den Eintrag leer und Moodle verarbeitet die alle Daten aus der Datei. Andernfalls tragen Sie hier den Wert ein, der in der IMS-Enterprise Datei als Wert für Moodle in <targtet> verwendet wird.';
 $string['roles'] = 'Rollen';
 $string['sourcedidfallback'] = '"sourcedid" statt "userid" für die Nutzer-ID verwenden, wenn das Feld "userid" nicht gefunden wird';
 $string['sourcedidfallback_desc'] = 'Im IMS Datensatz wird im <sourceid> Feld die dauerhafte persönliche ID -Bezeichnung des Nutzers aus dem Ursprungssystem hinterlegt.  Das <userid> Feld ist ein zusätzliches Feld und enthält einen ID Code mit dem der Nutzer sich einloggen kann. Manchmal - jedoch nicht immer - sind die Einträge identisch.

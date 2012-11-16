@@ -247,7 +247,6 @@ $string['surveyname'] = 'Nom de la consultation';
 $string['surveysaved'] = 'Consultation enregistrée';
 $string['surveytype'] = 'Type de consultation';
 $string['surveytype_help'] = 'Il y a trois types de consultations disponibles :
-
 * ATTLS - Consultation sur les Attitudes envers la réflexion et l\'apprentissage (Attitudes to Thinking and Learning Survey)
 * Incidents critiques
 * COLLES - Consultation sur les environnements d\'apprentissage constructivistes en ligne (Constructivist On-Line Learning Environment Survey)';

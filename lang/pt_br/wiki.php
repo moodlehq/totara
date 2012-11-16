@@ -55,7 +55,6 @@ $string['creating'] = 'Criar uma página wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Formato padrão';
 $string['defaultformat_help'] = 'Essa configuração determina o formato padrão usando quando está editando páginas wiki.
-
 * HTML - Editor HTML disponível
 * Creole - Uma linguagem de marcação onde uma pequena barra de edição está disponível
 * Nwiki - Linguagem de marcação como a Mediawiki usada no módulo Nwiki';
@@ -88,15 +87,12 @@ $string['format_help'] = '* HTML - Editor HTML disponível
 * Nwiki - Linguagem de marcação como a Mediawiki usada no módulo Nwiki';
 $string['formatcreole'] = 'Formato Creole';
 $string['formatcreole_help'] = 'Creole é uma linguagem de marcação wiki com uma barra de ferramentas de edição para inserir marcação apropriada.
-
 Para criar uma nova página, digite o nome da nova página dentro de duplos colchetes, por exemplo [[Página 2]]';
 $string['formathtml'] = 'Formato HTML';
 $string['formathtml_help'] = 'O editor HTML pode ser usado para formatação de conteúdo.
-
 Para criar uma nova página, digite o nome da nova página dentro de colchetes duplos, por exemplo [[Página 2]]';
 $string['formatnwiki'] = 'Formato NWiki';
 $string['formatnwiki_help'] = 'Nwiki é uma linguagem de marcação no estilo Mediawiki utilizada no módulo Nwiki (fornecido por terceiros).
-
 Para criar uma nova página, digite o nome da nova página dentro de duplos colchetes, por exemplo [[Página 2]]';
 $string['history'] = 'Histórico';
 $string['history_help'] = 'O histórico lista links para versões anteriores da página.';

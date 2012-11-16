@@ -128,7 +128,6 @@ $string['personalblogs'] = '用户只能浏览自己的博客';
 $string['preferences'] = '偏好设置';
 $string['publishto'] = '发布给';
 $string['publishto_help'] = '有三个选择：
-
 * 自己（草稿）——只有您和管理员能查看此博客
 * 网站里的所有人——所有在此网站注册的人都能阅读此博客
 * 世界上的任何人——任何人，包括访客，都能阅读此博客';

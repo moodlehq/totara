@@ -28,16 +28,13 @@ defined('MOODLE_INTERNAL') || die();
 $string['actenrolshhdr'] = 'Available course enrollment plugins';
 $string['deleteinstanceconfirm'] = 'Do you really want to delete enroll plugin instance "{$a->name}" with {$a->users} enrolled users?';
 $string['enrol'] = 'Enroll';
-$string['enrolcandidates'] = 'Not enrolled users
-';
-$string['enrolcandidatesmatching'] = 'Matching not enrolled users
-';
+$string['enrolcandidates'] = 'Not enrolled users';
+$string['enrolcandidatesmatching'] = 'Matching not enrolled users';
 $string['enrolcohort'] = 'Enroll cohort';
 $string['enrolcohortusers'] = 'Enroll users';
 $string['enrollednewusers'] = 'Successfully enrolled {$a} new users';
 $string['enrolledusers'] = 'Enrolled users';
-$string['enrolledusersmatching'] = 'Matching enrolled users
-';
+$string['enrolledusersmatching'] = 'Matching enrolled users';
 $string['enrolme'] = 'Enroll me in this course';
 $string['enrolmentinstances'] = 'Enrollment methods';
 $string['enrolmentnew'] = 'New enrollment in {$a}';
@@ -51,26 +48,21 @@ $string['enroltimestart'] = 'Enrollment starts';
 $string['enrolusage'] = 'Instances / enrollments';
 $string['enrolusers'] = 'Enroll users';
 $string['errajaxfailedenrol'] = 'Failed to enroll user';
-$string['erroreditenrolment'] = 'An error occurred while trying to edit a users enrollment
-';
+$string['erroreditenrolment'] = 'An error occurred while trying to edit a users enrollment';
 $string['errorenrolcohort'] = 'Error creating cohort sync enrollment instance in this course.';
-$string['errorenrolcohortusers'] = 'Error enrolling cohort members in this course.
-';
-$string['errorwithbulkoperation'] = 'There was an error while processing your bulk enrollment change.
-';
+$string['errorenrolcohortusers'] = 'Error enrolling cohort members in this course.';
+$string['errorwithbulkoperation'] = 'There was an error while processing your bulk enrollment change.';
 $string['extremovedaction'] = 'External unenroll action';
 $string['extremovedaction_help'] = 'Select action to carry out when user enrollment disappears from external enrollment source. Please note that some user data and settings are purged from course during course unenrollment.';
 $string['extremovedkeep'] = 'Keep user enrolled';
 $string['extremovedsuspend'] = 'Disable course enrollment';
 $string['extremovedsuspendnoroles'] = 'Disable course enrollment and remove roles';
 $string['extremovedunenrol'] = 'Unenroll user from course';
-$string['finishenrollingusers'] = 'Finish enrolling users
-';
+$string['finishenrollingusers'] = 'Finish enrolling users';
 $string['invalidenrolinstance'] = 'Invalid enrollment instance';
 $string['manageenrols'] = 'Manage enroll plugins';
 $string['notenrollable'] = 'You can not enroll yourself in this course.';
-$string['otheruserdesc'] = 'The following users are not enrolled in this course but do have roles, inherited or assigned within it.
-';
+$string['otheruserdesc'] = 'The following users are not enrolled in this course but do have roles, inherited or assigned within it.';
 $string['totalenrolledusers'] = '{$a} enrolled users';
 $string['unenrol'] = 'Unenroll';
 $string['unenrolconfirm'] = 'Do you really want to unenroll user "{$a->user}" from course "{$a->course}"?';

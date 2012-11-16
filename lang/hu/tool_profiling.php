@@ -43,5 +43,5 @@ $string['referencerun'] = 'Referenciaprofil/megjegyzés';
 $string['runid'] = 'Profilkészítés azonosítója';
 $string['summaryof'] = '{$a} rész összegzése';
 $string['viewdetails'] = 'Profilkészítés részleteinek megtekintése';
-$string['viewdiff'] = 'Az utolsó referenciaprofil szerinti profilkészítési különbségek megtekintése ';
-$string['viewdiffdetails'] = 'Profilkészítési különbségek részleteinek megtekintése ';
+$string['viewdiff'] = 'Az utolsó referenciaprofil szerinti profilkészítési különbségek megtekintése';
+$string['viewdiffdetails'] = 'Profilkészítési különbségek részleteinek megtekintése';

@@ -36,7 +36,6 @@ $string['gradingmanagement'] = '高度な評定';
 $string['gradingmanagementtitle'] = '高度な評定: {$a->component} ({$a->area})';
 $string['gradingmethod'] = '評定方法';
 $string['gradingmethod_help'] = 'コンテクスト内で評定計算に使用される高度な評定方法を選択してください。
-
 高度な評定方法を無効にして、デフォルト評定方法に戻すには、「シンプル直接評定」を選択してください。';
 $string['gradingmethodnone'] = 'シンプル直接評定';
 $string['gradingmethods'] = '評定方法';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = 'テンプレートはありません。';
 $string['searchownforms'] = '私のフォームを含む';
 $string['searchtemplate'] = '評定フォーム検索';
 $string['searchtemplate_help'] = 'あなたは評定フォームを検索して、新しいフォームのテンプレートとして、ここで使用することができます。フォーム名、説明またはフォーム本文に使われている単語を入力してください。言葉を検索するには、検索後を二十引用符 (") で囲んでください。
-
 デフォルトでは、共有テンプレートとして保存されているテンプレートは検索結果に含まれます。あなたは自分の評定フォームを検索結果に含むこともできます。このようにすることで、あなたの評定フォームを共有せずに再利用することができます。「利用可能」とマークされているフォームのみ再利用することができます。';
 $string['statusdraft'] = '下書き';
 $string['statusready'] = '利用可能';

@@ -368,7 +368,7 @@ $string['cron_execution_running'] = 'פעולת  Cron רצה כעת';
 $string['cron_execution_status'] = 'סטטוס';
 $string['cron_execution_stopped'] = 'פעולת Cron עצרה';
 $string['cron_execution_watch'] = 'ביצוע Cron';
-$string['cron_help'] = 'תסריט ה-cron.php עוזר לרכיבי המערכת לבצע מטלות  מתוזמנות כמו שליחת דוא"ל מפרסומי הפורומים. נדרש מכניזם לריצת התסריט , בדר"כ כל 5 דקות.';
+$string['cron_help'] = 'תסריט ה-cron.php עוזר לרכיבי המערכת לבצע מטלות מתוזמנות כמו שליחת דוא"ל מפרסומי הפורומים. נדרש מכניזם לריצת התסריט , בדר"כ כל 5 דקות.';
 $string['cron_kill_mail_fail_notify_msg'] = 'משך ביצוע ה- Cron חרג מזמן הביצוע המירבי המותר וביטול אוטומטי נכשל! אנא בדקו את הגדרות השרת שלכם.';
 $string['cron_kill_mail_fail_notify_title'] = 'אזהרה: ביטול אוטומטי של ביצוע Cron כשל!';
 $string['cron_kill_mail_notify_msg'] = 'משך ביצוע ה- Cron חרג מזמן הביצוע המירבי המותר והוא בוטל באופן אוטומטי! אנא בדקו את הגדרות השרת שלכם.';
@@ -487,7 +487,7 @@ $string['enablecourseajax_desc'] = 'אפשר AJAX בזמן עריכת עמודי
 $string['enablecourserequests'] = 'אפשר בקשות קורס';
 $string['enabledevicedetection'] = 'אפשר זיהוי התקן';
 $string['enablegravatar'] = 'איפשור Gravatar';
-$string['enablegravatar_help'] = 'כאשר מאפשרים, Moodle  ינסה להתאים את תמונת המשתמש מה-Gravatar  אם המשתמש לא העלאה אף תמונה.';
+$string['enablegravatar_help'] = 'כאשר מאפשרים, Moodle ינסה להתאים את תמונת המשתמש מה-Gravatar אם המשתמש לא העלאה אף תמונה.';
 $string['enablegroupmembersonly'] = 'אפשר חברי קבוצה בלבד';
 $string['enablemobilewebservice'] = 'אפשר web services  עבור התקן נייד (mobile)';
 $string['enablerecordcache'] = 'אפשר שימוש בזיכרון מטמון לרשומות.';
@@ -614,7 +614,7 @@ $string['latexsettings'] = 'הגדרות לביצוע LaTex';
 $string['latinexcelexport'] = 'קידוד Excel';
 $string['learnerroleid'] = 'תפקיד עבור לומד';
 $string['legacyfilesinnewcourses'] = 'ירושת קבצי הקורס בקורסים חדשים.';
-$string['legacyfilesinnewcourses_help'] = 'כברירת מחדל, ירושת איזורי קבצי הקורס זמינים רק כאשר משדרגם קורסים. אנא שים לב לתכונות כמו  פעילות יחידה, גיבוי ושחזור אשר אינן מותאמות להגדרות אלו.';
+$string['legacyfilesinnewcourses_help'] = 'כברירת מחדל, ירושת איזורי קבצי הקורס זמינים רק כאשר משדרגם קורסים. אנא שים לב לתכונות כמו פעילות יחידה, גיבוי ושחזור אשר אינן מותאמות להגדרות אלו.';
 $string['licensesettings'] = 'הגדרות רשיון';
 $string['loading'] = 'טוען';
 $string['localetext'] = 'הגדרות מקומיות התופסות לאתר כולו';
@@ -726,7 +726,7 @@ $string['numberofstrings'] = 'סה"כ מספר מחרוזות: {$a->strings}<br 
 חסר: {$a->missing} ({$a->missingpercent}&nbsp;%)';
 $string['numcoursesincombo'] = 'מספר מירבי של קורסים אשר יוצגו ברשימת התפריט הנפתח';
 $string['numcoursesincombo_help'] = 'רשימת התפריט הנפתח לא עובד באופן תקין עם מספר רב של קורסים.
-כאשר המספר הכללי של הקורסים באתר גדול מהגדרה זו הקישור לרשימת הקורס המיועד  יוצג במקום הניסיון להציג את כל הקורסים בעמוד הראשי.';
+כאשר המספר הכללי של הקורסים באתר גדול מהגדרה זו הקישור לרשימת הקורס המיועד יוצג במקום הניסיון להציג את כל הקורסים בעמוד הראשי.';
 $string['opensslrecommended'] = 'התקנת ספרייה אופציונלית OpenSSL ממולצת מאוד -- מאפשרת את פנקציונליות Moodle Networking.';
 $string['opentogoogle'] = 'פתח ל-Google';
 $string['optionalmaintenancemessage'] = 'הודעת תחזוקה אופציונלית';

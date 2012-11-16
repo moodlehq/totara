@@ -55,7 +55,6 @@ $string['creating'] = 'Wikioldal létrehozása';
 $string['creole'] = 'Kreol';
 $string['defaultformat'] = 'Alapformátum';
 $string['defaultformat_help'] = 'Ez a beállítás szabja meg a wikioldalak szerkesztésekor használt alapformátumot.
-
 * HTML - A HTML-szerkesztő használható
 * Kreol - Elterjedt wikijelölő nyelv, melyhez egy kis szerkesztő eszközsor használható
 * Nwiki - A mediawikihez hasonló jelölő nyelv, melyet a mellékelt Nwiki modulhoz használtak';
@@ -88,15 +87,12 @@ $string['format_help'] = '* HTML - A HTML-szerkesztő használható
 * Nwiki - A mediawikihez hasonló jelölő nyelv, melyet a mellékelt Nwiki modulhoz használnak';
 $string['formatcreole'] = 'Kreol formátum';
 $string['formatcreole_help'] = 'A Kreol egy elterjedt wikis jelölőnyelv, mely a megfelelő jelölők beillesztésére szerkesztő eszközsávot használ.
-
 Új oldal létrehozásához dupla szögletes zárójelek között írja be az új oldal címét, pl. így: [[2. oldal]].';
 $string['formathtml'] = 'HTML-formátum';
 $string['formathtml_help'] = 'A HTML-szerkesztővel tartalmakat szerkeszthet.
-
 Új oldal létrehozásához dupla szögletes zárójelek között írja be az új oldal címét, pl. így: [[2. oldal]].';
 $string['formatnwiki'] = 'NWiki-formátum';
 $string['formatnwiki_help'] = 'Az Nwiki a Mediawikihez hasonló jelölő nyelv, melyet a mellékelt Nwiki modulhoz használnak.
-
 Új oldal létrehozásához dupla szögletes zárójelek között írja be az új oldal címét, pl. így: [[2. oldal]].';
 $string['history'] = 'Előzmények';
 $string['history_help'] = 'Az előzmények listája az oldal korábbi változatához kapcsolódik';

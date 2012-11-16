@@ -41,22 +41,17 @@ $string['enrolstartdate_help'] = 'Wenn diese Option aktiviert ist, können Nutze
 $string['groupkey'] = 'Einschreibeschlüssel für Gruppen';
 $string['groupkey_desc'] = 'Standardmäßig einen Einschreibeschlüssel für Gruppen benutzen';
 $string['groupkey_help'] = 'Ergänzend zur Zugriffssteuerung über einen Einschreibeschlüssel für den Kurs können zusätzliche Einschreibeschlüssel für Gruppen festgelegt werden, die bei der Kurseinschreibung automatisch alle Nutzer/innen einer bestimmten Gruppe zuweisen.
-
 Um Einschreibeschlüssel für Gruppen verwenden zu können, muss ein Einschreibeschlüssel für den Kurs vergeben sein, den aber eigentlich niemand kennen muss. Der Einschreibeschlüssel für die jeweilige Gruppe wird in den Gruppeneinstellungen festgelegt.';
-$string['longtimenosee'] = 'Inaktive abmelden
-';
+$string['longtimenosee'] = 'Inaktive abmelden';
 $string['longtimenosee_help'] = 'Wenn Personen lange Zeit nicht mehr auf einen Kurs zugegriffen haben, werden sie automatisch abgemeldet. Dieser Parameter legt die maximale Inaktivitätsdauer fest.';
 $string['maxenrolled'] = 'Einschreibungen (max.)';
 $string['maxenrolled_help'] = 'Diese Option legt die Maximalzahl möglicher Nutzer/innen mit Selbsteinschreibung fest. (0= unbeschränkt)';
-$string['maxenrolledreached'] = 'Die maximale Anzahl der erlaubten Nutzer/innen mit Selbsteinschreibung ist bereits erreicht.
-';
+$string['maxenrolledreached'] = 'Die maximale Anzahl der erlaubten Nutzer/innen mit Selbsteinschreibung ist bereits erreicht.';
 $string['nopassword'] = 'Kein Einschreibeschlüssel notwendig';
 $string['password'] = 'Einschreibeschlüssel';
 $string['password_help'] = 'Ein Einschreibeschlüssel erlaubt den Kurszugriff ausschließlich für diejenigen, die den Einschreibeschlüssel kennen.
-
 Wenn das Feld leer bleibt, können sich alle Nutzer/innen im Kurs einschreiben.
-
-Wenn ein Einschreibeschlüssel angegeben ist, müssen alle Nutzer/innen notwendigerweise bei der Kurseinschreibung den Einschreibeschlüssel eingeben. Beachten Sie, dass Nutzer/innen den Einschreibeschlüssel nur einmal bei der Kurseinschreibung eingeben müssen und danach dauerhaft eingeschriebene Kursteilnehmer/innen sind. ';
+Wenn ein Einschreibeschlüssel angegeben ist, müssen alle Nutzer/innen notwendigerweise bei der Kurseinschreibung den Einschreibeschlüssel eingeben. Beachten Sie, dass Nutzer/innen den Einschreibeschlüssel nur einmal bei der Kurseinschreibung eingeben müssen und danach dauerhaft eingeschriebene Kursteilnehmer/innen sind.';
 $string['passwordinvalid'] = 'Falscher Einschreibeschlüssel';
 $string['passwordinvalidhint'] = 'Falscher Einschreibeschlüssel (Hinweis: Das erste Zeichen ist \'{$a}\')';
 $string['pluginname'] = 'Selbsteinschreibung';

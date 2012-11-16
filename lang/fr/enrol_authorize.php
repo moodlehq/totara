@@ -44,13 +44,13 @@ $string['adminneworder'] = 'Cher administrateur,
 
 Vous avez reçu une nouvelle commande en attente :
 
-    No de commande : {$a->orderid}
-    No de transaction : {$a->transid}
-    Utilisateur : {$a->user}
-    Cours : {$a->course}
-    Montant : {$a->amount}
+No de commande : {$a->orderid}
+No de transaction : {$a->transid}
+Utilisateur : {$a->user}
+Cours : {$a->course}
+Montant : {$a->amount}
 
-    SAISIE PROGRAMMÉE ACTIVE ? {$a->acstatus}
+SAISIE PROGRAMMÉE ACTIVE ? {$a->acstatus}
 
 Si la saisie programmée est activée, il est prévu que les infos de carte de
 crédit seront saisies le {$a->captureon} et que l\'étudiant sera inscrit au
@@ -88,13 +88,13 @@ $string['approvedreview'] = 'Contrôle approuvé';
 $string['authcaptured'] = 'Autorisé / Saisi';
 $string['authcode'] = 'Code d\'autorisation';
 $string['authorize:config'] = 'Configurer les instances d\'inscription Authorize.Net';
-$string['authorizedpendingcapture'] = 'Autorisé / En attente de saisie';
-$string['authorizeerror'] = 'Erreur Authorize.Net : {$a}';
 $string['authorize:manage'] = 'Gérer les utilisateurs inscrits';
 $string['authorize:managepayments'] = 'Gérer les paiements';
 $string['authorize:unenrol'] = 'Désinscrire les utilisateurs d\'un cours';
 $string['authorize:unenrolself'] = 'Se désinscrire d\'un cours';
 $string['authorize:uploadcsv'] = 'Télécharger un fichier CSV';
+$string['authorizedpendingcapture'] = 'Autorisé / En attente de saisie';
+$string['authorizeerror'] = 'Erreur Authorize.Net : {$a}';
 $string['avsa'] = 'L\'adresse (rue) correspond, mais pas le code postal';
 $string['avsb'] = 'L\'adresse n\'est pas renseignée';
 $string['avse'] = 'Erreur du système de vérification d\'adresse (AVS)';

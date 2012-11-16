@@ -194,8 +194,8 @@ $string['invalidsurveyid'] = 'ID de la encuesta incorrecto';
 $string['invalidtmptid'] = 'Id de plantilla no válido';
 $string['ipreferthat'] = 'Prefiero esto';
 $string['modulename'] = 'Encuesta';
-$string['modulename_help'] = '<p>El módulo de encuesta proporciona tres tipos de encuestas diferentes que permiten al profesor evaluar y estimular el aprendizaje en el entorno en línea. </p>
-<p>El profesor puede utilizarlos para recopilar información que le ayude a conocer mejor su clase y reflexionar sobre su propia enseñanza.';
+$string['modulename_help'] = 'El módulo de encuesta proporciona tres tipos de encuestas diferentes que permiten al profesor evaluar y estimular el aprendizaje en el entorno en línea.
+El profesor puede utilizarlos para recopilar información que le ayude a conocer mejor su clase y reflexionar sobre su propia enseñanza.';
 $string['modulenameplural'] = 'Encuestas';
 $string['name'] = 'Nombre';
 $string['newsurveyresponses'] = 'Nuevas respuestas a la encuesta';
@@ -232,11 +232,11 @@ $string['surveygraph'] = 'Gráfico de la encuesta';
 $string['surveyname'] = 'Nombre de la encuesta';
 $string['surveysaved'] = 'Encuesta guardada';
 $string['surveytype'] = 'Tipo de encuesta';
-$string['surveytype_help'] = '<p>Hay disponibles tres tipos de encuesta diferentes:</p>
-<p>* ATTLS - Attitudes to thinking and Learning Survey, o lo que es lo mimo, Actitudes de pensamiento y aprendizaje. Sirve para medir el grado en el que un alumno es un "conocedor conectado" (tiende a disfrutar más del aprendizaje, es más colaborativo y está dispuesto a aprender de las ideas de los demás), o bien un "conocedor desconectado" (tiende a tomar una actitud de aprendizaje más
-crítica y argumentativa).</P>
-<p>* Critical incidents survey, o Encuesta de Incidentes Críticos</p>
-<p>* COLLES - Constructivist on line Learning Enviroment Survey, o lo que es lo mismo, Encuesta en línea sobre el Ambiente de Aprendizaje Constructivista. Sirve para hacer el seguimiento del nivel en que la capacidad interactiva de la World Wide Web puede ser explotado para los estudiantes involucrarse en prácticas educativas dinámicas.';
+$string['surveytype_help'] = 'Hay disponibles tres tipos de encuesta diferentes:
+* ATTLS - Attitudes to thinking and Learning Survey, o lo que es lo mimo, Actitudes de pensamiento y aprendizaje. Sirve para medir el grado en el que un alumno es un "conocedor conectado" (tiende a disfrutar más del aprendizaje, es más colaborativo y está dispuesto a aprender de las ideas de los demás), o bien un "conocedor desconectado" (tiende a tomar una actitud de aprendizaje más
+crítica y argumentativa).
+* Critical incidents survey, o Encuesta de Incidentes Críticos
+* COLLES - Constructivist on line Learning Enviroment Survey, o lo que es lo mismo, Encuesta en línea sobre el Ambiente de Aprendizaje Constructivista. Sirve para hacer el seguimiento del nivel en que la capacidad interactiva de la World Wide Web puede ser explotado para los estudiantes involucrarse en prácticas educativas dinámicas.';
 $string['thanksforanswers'] = 'Gracias por responder a esta encuesta, {$a}';
 $string['time'] = 'Tiempo';
 $string['viewsurveyresponses'] = 'Ver las respuestas a la encuesta {$a}';

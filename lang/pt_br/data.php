@@ -43,11 +43,11 @@ $string['autogenallforms'] = 'Criar todos os modelos padrão';
 $string['autolinkurl'] = 'Criar link automático à URL';
 $string['availablefromdate'] = 'Disponível a partir de';
 $string['availabletags'] = 'Tags disponíveis';
-$string['availabletags_help'] = '<p align="center"><strong>Tags disponíveis</strong></p>
-<p>As tags indicam, no modelo, os lugares em que serão posicionados os campos e botões quando os itens forem editados ou acessados.</p>
-<p>Os campos tem o seguinte formato: [[fieldname]]</p>
-<p>Os botões tem o seguinte formato: ##somebutton##</p>
-<p>Apenas as tags presentes na lista de  "Tags disponíveis" podem ser utilizadas neste modelo.</p>';
+$string['availabletags_help'] = '**Tags disponíveis**
+As tags indicam, no modelo, os lugares em que serão posicionados os campos e botões quando os itens forem editados ou acessados.
+Os campos tem o seguinte formato: [[fieldname]]
+Os botões tem o seguinte formato: ##somebutton##
+Apenas as tags presentes na lista de "Tags disponíveis" podem ser utilizadas neste modelo.';
 $string['availabletodate'] = 'Disponível até';
 $string['blank'] = 'Vazio';
 $string['buttons'] = 'Botões';
@@ -77,31 +77,23 @@ $string['csstemplate'] = 'Modelo CSS';
 $string['csvfailed'] = 'Impossível ler os dados deste arquivo CSV';
 $string['csvfile'] = 'Arquivo CSV';
 $string['csvimport'] = 'Importação de arquivo CSV';
-$string['csvimport_help'] = '<p align="center"><strong>Importar de um arquivo CSV</strong></p>
-
-<p>CSV significa, em português, Valores Separados por Vírgulas (Comma-Separated-Values
-em inglês). É um formato comum para intercâmbio de textos envolvendo dados.</p>
-
-<p>O formato é um arquivo de texto simples, com uma lista de nomes de
-campos na primeira linha. Os dados vem em seguida, um registro por linha.</p>
-
-<p>O separador de campo padrão é a virgula e a delimitação de campo não é definida por padrão
+$string['csvimport_help'] = '**Importar de um arquivo CSV**
+CSV significa, em português, Valores Separados por Vírgulas (Comma-Separated-Values
+em inglês). É um formato comum para intercâmbio de textos envolvendo dados.
+O formato é um arquivo de texto simples, com uma lista de nomes de
+campos na primeira linha. Os dados vem em seguida, um registro por linha.
+O separador de campo padrão é a virgula e a delimitação de campo não é definida por padrão
 (os delimitadores de campo são caracteres que marcam o começo e o fim do campo).
-
-<p>Os registros devem ser delimitados por novas linhas (normalmente geradas quando se
+Os registros devem ser delimitados por novas linhas (normalmente geradas quando se
 pressiona RETURN ou ENTER no seu editor de texto). As tabulações podem ser especificadas
-usando-se t e novas linhas ou mudança de linha por n. </p>
-
-<p>Arquivo de Exemplo:</p>
-<pre>
+usando-se t e novas linhas ou mudança de linha por n.
+Arquivo de Exemplo:
 nome,altura,peso
 Kai,180cm,80kg
 Kim,170cm,60kg
 Koo,190cm,20kg
-</pre>
-</p>
 
-<p>Atenção: Alguns tipos de campos podem não estar de acordo com os formatos suportados.</p>';
+Atenção: Alguns tipos de campos podem não estar de acordo com os formatos suportados.';
 $string['csvwithselecteddelimiter'] = '<acronym title="Valores separados por vírgulas">CSV</acronym> texto com valores separados por vírgulas:';
 $string['data:approve'] = 'Aprovar itens pendentes';
 $string['data:comment'] = 'Escrever comentário';
@@ -154,8 +146,8 @@ $string['excel'] = 'Excel';
 $string['expired'] = 'Sinto muito, mas esta atividade foi fechada em {$a} e não está mais disponível';
 $string['export'] = 'Exportar';
 $string['exportaszip'] = 'Exportar como zip';
-$string['exportaszip_help'] = '<p align="center"><strong>Exportar como Zip</strong></p>
-<p>Isso permite que você baixe os modelos para seu computador, que podem ser enviados mais tarde para outro banco de dados, com o comando de importar arquivos zip.</p>';
+$string['exportaszip_help'] = '**Exportar como Zip**
+Isso permite que você baixe os modelos para seu computador, que podem ser enviados mais tarde para outro banco de dados, com o comando de importar arquivos zip.';
 $string['exportedtozip'] = 'Exportar em zip provisório';
 $string['exportentries'] = 'Exportar conteúdo';
 $string['exportownentries'] = 'Exportar somente as suas próprias entradas? ({$a->mine}/{$a->all})';
@@ -171,11 +163,9 @@ $string['fieldheightlistview'] = 'Altura das listas';
 $string['fieldheightsingleview'] = 'Altura de item único';
 $string['fieldids'] = 'IDs dos campos';
 $string['fieldmappings'] = 'Mapeamento dos campos';
-$string['fieldmappings_help'] = '<p align="center"><strong>Mapeamento de Campos</strong></p>
-<p>Esse menu permite guardar os dados de um banco de dados existente. Para preservar os dados em um campo, você deve mapeá-lo para um novo campo, onde os dados aparecerão. Os campos também podem ficar em branco, para que nenhuma informação seja copiada nele. Os campos antigos não mapeados para um novo serão perdidos e os dados, removidos.</p>
-<p>
-Você só pode mapear campos de um mesmo tipo, em modo que cada caixa de seleção tenha campos diferentes. Também tenha cuidado para não tentar mapear um campo antigo para mais de um campo novo.
-</p>';
+$string['fieldmappings_help'] = '**Mapeamento de Campos**
+Esse menu permite guardar os dados de um banco de dados existente. Para preservar os dados em um campo, você deve mapeá-lo para um novo campo, onde os dados aparecerão. Os campos também podem ficar em branco, para que nenhuma informação seja copiada nele. Os campos antigos não mapeados para um novo serão perdidos e os dados, removidos.
+Você só pode mapear campos de um mesmo tipo, em modo que cada caixa de seleção tenha campos diferentes. Também tenha cuidado para não tentar mapear um campo antigo para mais de um campo novo.';
 $string['fieldname'] = 'Nome do Campo';
 $string['fieldnotmatched'] = 'Os seguintes campos do seu arquivo não são conhecidos neste database: {$a}';
 $string['fieldoptions'] = 'Opções (uma por linha)';
@@ -193,8 +183,7 @@ $string['forcelinkname'] = 'Nome obrigatório do link';
 $string['foundnorecords'] = 'Nenhum conteúdo encontrado (<a href="{$a->reseturl}">Reconfigurar filtros</a>)';
 $string['foundrecords'] = 'Encontrados: {$a->num}/{$a->max} (<a href="{$a->reseturl}">Reconfigurar filtros</a>)';
 $string['fromfile'] = 'Importar de arquivo zip';
-$string['fromfile_help'] = '<p align=\'center\'><strong>Importar predefinições de um Zip</strong></p>
-<p>Use isso para enviar predefinições que foram salvas no seu computador usando a opção de exportar.</p>';
+$string['fromfile_help'] = 'Use isso para enviar predefinições que foram salvas no seu computador usando a opção de exportar.';
 $string['generateerror'] = 'Nem todos os arquivos gerados!';
 $string['header'] = 'Cabeçalho';
 $string['headeraddtemplate'] = 'Define a interface para inserção de novos itens';
@@ -230,9 +219,8 @@ $string['mapexistingfield'] = 'Mapear para {$a}';
 $string['mapnewfield'] = 'Criar um novo campo';
 $string['mappingwarning'] = 'Todos os campos antigos que não forem mapeados para um novo campo serão perdidos e todos os dados naquele campo serão removidos.';
 $string['maxentries'] = 'Máximo de itens';
-$string['maxentries_help'] = '<p align="center"><strong>Número Máximo Itens</strong></p>
-
-<p>O número máximo de itens que um aluno pode criar nesta atividade.</p>';
+$string['maxentries_help'] = '**Número Máximo Itens**
+O número máximo de itens que um aluno pode criar nesta atividade.';
 $string['maxsize'] = 'Tamanho máximo';
 $string['menu'] = 'Menu';
 $string['menuchoose'] = 'Selecionar...';
@@ -261,11 +249,9 @@ $string['nametextarea'] = 'Campo Textarea';
 $string['nameurl'] = 'Campo URL';
 $string['newentry'] = 'Novo item';
 $string['newfield'] = 'Criar novo campo';
-$string['newfield_help'] = '<p align="center"><strong>Campos</strong></p>
-
-<p>Nesta tela você pode criar os campos que serão parte de sua base de dados.</p>
-
-<p>Cada campo permite diferentes tipos de dados, com diferentes interfaces.</p>';
+$string['newfield_help'] = '**Campos**
+Nesta tela você pode criar os campos que serão parte de sua base de dados.
+Cada campo permite diferentes tipos de dados, com diferentes interfaces.';
 $string['noaccess'] = 'Você não tem permissão de acesso a esta página';
 $string['nodefinedfields'] = 'O novo conjunto de modelos não tem campos definidos!';
 $string['nofieldcontent'] = 'Conteúdo do campo não encontrado';
@@ -305,19 +291,15 @@ $string['recorddeleted'] = 'Item cancelado';
 $string['recordsnotsaved'] = 'Nenhum item foi registrado. Por favor controle o formato do arquivo carregado no servidor.';
 $string['recordssaved'] = 'Item gravado';
 $string['requireapproval'] = 'Exigir aprovação?';
-$string['requireapproval_help'] = '<p align="center"><strong>Exigir aprovação</strong></p>
-
-<p>As entradas devem ser aprovadas pelo professor antes que sejam acessíveis aos estudantes? Isto é útil para moderar a publicação de conteúdos que podem ser potencialmente ofensivos ou impróprios.</p>';
+$string['requireapproval_help'] = '**Exigir aprovação**
+As entradas devem ser aprovadas pelo professor antes que sejam acessíveis aos estudantes? Isto é útil para moderar a publicação de conteúdos que podem ser potencialmente ofensivos ou impróprios.';
 $string['requiredentries'] = 'Itens obrigatórios';
-$string['requiredentries_help'] = '<p align="center"><strong>Itens Obrigatórios</strong></p>
-
-<p>O número de itens obrigatórios que um participante deve enviar. Os usuários verão um lembrete se eles não submeteram o número requerido de itens.</p>
-
-<p>A atividade não será considerada completa antes que o usuário tenha enviado o número requerido de itens</p>';
+$string['requiredentries_help'] = '**Itens Obrigatórios**
+O número de itens obrigatórios que um participante deve enviar. Os usuários verão um lembrete se eles não submeteram o número requerido de itens.
+A atividade não será considerada completa antes que o usuário tenha enviado o número requerido de itens';
 $string['requiredentriestoview'] = 'Itens obrigatórios antes da visualização';
-$string['requiredentriestoview_help'] = '<p align="center"><strong>Itens Obrigatórios antes da Permissão de Visualização</strong><p>
-
-<p>O número de itens que um participante deve enviar antes que lhe seja permitido acessar itens criados por outros usuários nesta atividade de banco de dados.</p>';
+$string['requiredentriestoview_help'] = '**Itens Obrigatórios antes da Permissão de Visualização**
+O número de itens que um participante deve enviar antes que lhe seja permitido acessar itens criados por outros usuários nesta atividade de banco de dados.';
 $string['resetsettings'] = 'Reconfigurar filtros';
 $string['resettemplate'] = 'Restaurar modelo';
 $string['resizingimages'] = 'Redimensionando imagem minimizada...';
@@ -329,8 +311,8 @@ $string['save'] = 'Gravar';
 $string['saveandadd'] = 'Gravar e acrescentar outro';
 $string['saveandview'] = 'Gravar e mostrar';
 $string['saveaspreset'] = 'Salvar como modelo';
-$string['saveaspreset_help'] = '<p align="center"><strong>Salvar como Predefinição</strong></p>
-<p>Isto publica os modelos atuais como uma predefinição que qualquer um no site pode ver ou usar. Ela aparecerá na lista de predefinições. Você será habilitado a removê-la a qualquer momento.</p>';
+$string['saveaspreset_help'] = '**Salvar como Predefinição**
+Isto publica os modelos atuais como uma predefinição que qualquer um no site pode ver ou usar. Ela aparecerá na lista de predefinições. Você será habilitado a removê-la a qualquer momento.';
 $string['savesettings'] = 'Gravar configuração';
 $string['savesuccess'] = 'Arquivado com sucesso. O seu conjunto-padrão foi compartilhado.';
 $string['savetemplate'] = 'Gravar modelo';
@@ -358,17 +340,15 @@ $string['updatefield'] = 'Atualizar campo existente';
 $string['uploadfile'] = 'Carregar arquivo';
 $string['uploadrecords'] = 'Carregar itens a partir de um arquivo';
 $string['uploadrecords_help'] = 'É possível fazer o upload de registros via arquivos de texto. O formato do arquivo deve ser da seguinte forma:
-
 * Cada linha do arquivo contém um registro
 * Cada registro é uma série de dados separados por vírgula (ou outros delimitadores)
 * O primeiro registro contém uma lista dos nomes dos campos definindo o formato do restante do arquivo
-
 O limitador de campo é um caractere que envolve cada campo em cada registro. Ele pode ser normalmente deixado indefinido.';
 $string['url'] = 'Url';
 $string['usestandard'] = 'Usar um conjunto';
-$string['usestandard_help'] = '<p align="center"><strong>Usar Predefinição</strong></p>
-<p> Usar um modelo disponível para o site inteiro.</p>
-<p> Se você adicionou a predefinição à biblioteca usando a opção \'Salvar como Predefinição\', você pode apagá-la.</p>';
+$string['usestandard_help'] = '**Usar Predefinição**
+Usar um modelo disponível para o site inteiro.
+Se você adicionou a predefinição à biblioteca usando a opção \'Salvar como Predefinição\', você pode apagá-la.';
 $string['viewfromdate'] = 'Visível a partir de';
 $string['viewtodate'] = 'Visível até';
 $string['wrongdataid'] = 'ID de dados errado';

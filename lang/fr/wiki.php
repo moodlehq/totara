@@ -55,7 +55,6 @@ $string['creating'] = 'Création d\'une page wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Format par défaut';
 $string['defaultformat_help'] = 'Ce réglage détermine le format par défaut utilisé pour l\'édition des pages wiki.
-
 * HTML : l\'éditeur WYSIWYG est disponible
 * Creole : un format utilisé fréquemment pour les wikis, avec une barre d\'édition
 * Nwiki : le format utilisé dans le module Nwiki';
@@ -89,15 +88,12 @@ $string['format_help'] = '* WYSIWYG : l\'éditeur WYSIWYG est disponible
 * Nwiki : une syntaxe du type Mediawiki, utilisée dans le module tiers Nwiki';
 $string['formatcreole'] = 'Format Creole';
 $string['formatcreole_help'] = 'Le format Creole est un langage de formatage wiki répandu, avec une barre d\'édition pour insérer les balises adéquates.
-
 Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['formathtml'] = 'Format WYSIWYG';
 $string['formathtml_help'] = 'L\'éditeur WYSIWYG peut être utilisé pour formater le contenu.
-
 Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['formatnwiki'] = 'Format NWiki';
 $string['formatnwiki_help'] = 'Nwiki est une syntaxe du type Mediawiki, utilisée dans le module tiers Nwiki.
-
 Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['history'] = 'Historique';
 $string['history_help'] = 'L\'historique liste les liens vers les anciennes versions de la page.';

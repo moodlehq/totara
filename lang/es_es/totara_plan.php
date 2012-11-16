@@ -529,7 +529,6 @@ $string['plan_instructions_delete'] = 'Puedes eliminar este plan de formación h
 $string['plan_instructions_edit'] = 'Puede hacer clic en el botón "Editar detalles" para modificar el título del plan de formación, la breve descripción o la fecha de terminación.';
 $string['plan_instructions_learner'] = 'A continuación se presenta un breve resumen de su plan de formación.';
 $string['plan_instructions_manager'] = 'A continuación se presenta un breve resumen del plan de formación de un miembro de su equipo.';
-$string['planapprovalrequested'] = 'Solicitud de aprobación para el plan <a href="{\$CFG->wwwroot}/local/plan/view.php?id={$a->planid}&userid={$a->userid}">{$a->planname}</a>';
 $string['planapproved'] = 'plan de "{$a}" ha sido aprobado';
 $string['planautocompleteddate'] = 'Este plan se ha completado de forma automática debido a que la fecha final para el plan ya ha pasado.';
 $string['planautocompleteditems'] = 'Este plan ha sido completado automáticamente, porque todos los elementos que se han completado.';
@@ -572,7 +571,6 @@ $string['priorityscalecreate'] = 'Añadir una nueva escala de prioridades';
 $string['priorityscaledefaultupdated'] = 'El valor de la escala por defecto se ha actualizado';
 $string['priorityscaleinuse'] = 'Esta escala está en uso (es decir, los usuarios tienen items marcados con valores de esta escala). Con el fin de preservar la integridad de los datos los valores de la escala no pueden ser creados, re-ordenados o eliminados. Usted puede cambiar el nombre de los valores de la escala, pero esto puede confundir a los usuarios cuando sus prioridades cambien sin previo aviso.';
 $string['priorityscalename_help'] = '# Nombre de escala de prioridades
-
 Es el nombre de la escala de prioridades que utiliza un plan de formación.';
 $string['priorityscales'] = 'Escalas de prioridades';
 $string['priorityscalesdisabledtemplateinuse'] = 'NOTA: No se puede cambiar la escala de prioridades - hay planes usando esta plantilla';

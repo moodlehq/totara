@@ -277,209 +277,126 @@ $string['report:startdate'] = 'Startdatum';
 $string['reportbuilder'] = 'Reportgenerator';
 $string['reportbuilder:managereports'] = 'Erstellen, ändern und löschen von Berichten';
 $string['reportbuilderaccessmode_help'] = '# Zugangsmodus
-
 Es werden Zugangskontrollen verwendet, um festzulegen, welche Nutzer den Bericht einsehen können und welche nicht.
-
 **Zugang beschränken** dient der Vornahme der allgemeinen Zugangseinstellungen für den Bericht.
-
 Bei Einstellung auf **Alle Nutzer können diesen Bericht sehen** bestehen keine Einschränkungen für den Bericht und alle Nutzer können ihn einsehen.
-
 Bei Einstellung auf **Nur bestimmte Nutzer können diesen Bericht sehen** ist der Bericht auf die darunter gewählten Nutzergruppen beschränkt.
-
 **Anmerkung:** Zugangsbeschränkungen steuern nur, wer den Bericht sehen kann, nicht, welche Eintragungen dieser enthält. S. „Inhalts“-Tabelle zur Steuerung der Berichtinhalte.';
 $string['reportbuilderbaseitem_help'] = '# Berichtersteller: Basisposten
-
 Durch die Gruppierung einer Reihe an Aktivitäten zeigen Sie, dass diese Aktivitäten gewisse Gemeinsamkeiten aufweisen, wodurch die Erstellung gemeinsamer Berichte für sämtliche Aktivitäten der Gruppe ermöglicht wird. Der Basisposten legt die Eigenschaften fest, die bei der Gruppierung eines jeden Gruppenmitglieds berücksichtigt werden.';
 $string['reportbuildercolumns_help'] = '# Spalten
-
 **Berichtspalten** ermöglicht es Ihnen, die in Ihrem Bericht erscheinenden Spalten individuell einzustellen. Die verfügbaren Spalten werden durch die **Datenquelle** des Berichts festgelegt. Jede Berichtsquelle verfügt über eine Reihe an voreingestellten Spalten.
-
 Spalten können hinzugefügt, entfernt, umbenannt und sortiert werden.
-
 **Spalten hinzufügen:** Zum Hinzufügen einer neuen Spalte zum Bericht wählen Sie die gewünschte Spalte aus der Dropdown-Liste „Spalte hinzufügen...“ und klicken auf **Änderungen speichern**. Die neue Spalte wird am Ende der Liste hinzugefügt.
-
 **Anmerkung:** Sie können nur eine Spalte jeder Art in einem Bericht erstellen. Sie erhalten einen Validierungsfehler, wenn Sie versuchen, dieselbe Spalte mehr als einmal hinzuzufügen.
-
 **Spalten ausblenden:** Standardmäßig erscheinen alle Spalten bei Ansicht eines Berichtes. Verwenden Sie die Schaltfläche „anzeigen/ausblenden“ (das Augensymbol) zum Ausblenden von Spalten, von denen Sie nicht möchten, dass sie von Nutzern gesehen werden.
-
 **Anmerkung:** Eine ausgeblendete Spalte steht dem Nutzer, der den Bericht liest, noch immer zur Verfügung. Löschen Sie Spalten (das Kreuzsymbol), die von den Nutzern in keinem Fall gesehen werden sollen.
-
 **Spalten verschieben:** Die Spalten erscheinen im Bericht in der Reihenfolge, in der sie aufgelistet sind. Verwenden Sie zur Änderung der Reihenfolge die Aufwärts- und Abwärtspfeile.
-
 **Spalten löschen:** Klicken Sie auf die Schaltfläche „Löschen“ (das Kreuzsymbol) rechts von der Berichtsspalte zum Entfernen dieser Spalte aus dem Bericht.
-
 **Spalten umbenennen:** Sie können den Titel einer Spalte personalisieren, indem Sie die **Überschrift** ändern und auf **Änderungen speichern** klicken. Die **Überschrift** ist der Titel, der auf dem Bericht erscheint.
-
 **Änderung mehrerer Spaltentypen:** Sie können mehrere Spaltentypen gleichzeitig ändern, indem Sie eine andere Spalte aus dem Dropdown-Menü auswählen und auf **Änderungen speichern** klicken.';
 $string['reportbuildercompletedorg_help'] = '# Abgeschlossene Berichte nach Organisation anzeigen
-
 Wird **In der Nutzerorganisation abgeschlossene Eintragungen** gewählt, erscheinen im Bericht verschiedene vollständige Eintragungen je nach Organisation, der der Nutzer zugeordnet wurde. (Nutzern wird in ihrem „Nutzer-Profil“ auf der Registerkarte „Positionen“ eine Organisation zugeordnet).
-
 Bei Einstellung von **Berichte von untergeordneten Organisationen einbeziehen** auf:
-
-*   **Ja** ist der den Bericht lesende Nutzer in der Lage, die vollständigen Eintragungen in Bezug auf seine Organisation und deren untergeordnete Organisationen zu sehen
-*   **Nein** kann der Nutzer nur die vollständigen Eintragungen in Bezug auf seine Organisation sehen.';
+* **Ja** ist der den Bericht lesende Nutzer in der Lage, die vollständigen Eintragungen in Bezug auf seine Organisation und deren untergeordnete Organisationen zu sehen
+* **Nein** kann der Nutzer nur die vollständigen Eintragungen in Bezug auf seine Organisation sehen.';
 $string['reportbuildercontentmode_help'] = '# Inhaltsmodus
-
 Inhaltskontrollen ermöglichen Ihnen die Steuerung der Eintragungen und Informationen, die bei Ansicht eines Berichts verfügbar gemacht werden.
-
 **Berichtsinhalt** ermöglicht Ihnen die Auswahl der Kontrolleinstellungen für den allgemeinen Inhalt des Berichts:
-
 Wird **Alle Eintragungen anzeigen** gewählt, wird jede für diese Quelle verfügbare Eintragung angezeigt und es bestehen keine Einschränkungen in Bezug auf den verfügbaren Inhalt.
-
 Wird **Eintragungen anzeigen, die den gewählten Kriterien entsprechen** gewählt, erscheinen im Bericht nur die Eintragungen, die einem oder mehreren der unten gewählten Kriterien entsprechen.
-
 **Anmerkung:** Wird kein Kriterium ausgewählt, erscheinen keine Eintragungen im Bericht.
-
 Wird **Eintragungen anzeigen, die allen gewählten Kriterien entsprechen** gewählt, erscheinen im Bericht nur die Eintragungen, die allen unten gewählten Kriterien entsprechen.
 **Anmerkung:** Wird kein Kriterium ausgewählt, erscheinen keine Eintragungen im Bericht.';
 $string['reportbuildercontext_help'] = '# Zugang nach Rollen einschränken
-
 Der Kontext ist der Ort oder die Ebene im System, zu dem/der Nutzer Zugang hat. So wäre es z. B. möglich, dass ein Site-Administrator Systemebenen-Zugang (Kontext) hat, während ein Lernender nur Kursebenen-Zugang (Kontext) hat.
-
 **Kontext** ermöglicht Ihnen die Einstellung eines Kontexts, in dem ein Nutzer eine Rolle zur Einsicht von Berichten zugewiesen bekommen hat.
-
 Einem Nutzer kann eine Rolle auf Systemebene zugewiesen werden, die ihm Website-weiten Zugang oder auch nur Zugang in einem bestimmten Kontext verleiht. Einem Trainer kann z. B. seine Rolle nur auf Kursebene zugewiesen werden.
-
 Wird **Nutzer müssen Rolle im System-Kontext haben** gewählt, muss dem Nutzer eine Rolle auf Systemebene (d. h. auf Website-weiter Ebene) zugewiesen werden, damit er den Bericht einsehen kann.
-
 Wird **Nutzer darf Rolle in jedem Kontext haben** gewählt, kann ein Nutzer den Bericht lesen, wenn ihm die gewählte Rolle zugewiesen wurde, unabhängig von der Stelle im System.';
 $string['reportbuildercoursetag_help'] = '# Berichtersteller: Nach Kurs-Tag anzeigen
-
 Dieses Kriterium wird durch Anwahl des Feldes „Eintragungen nach Kurs-Tag anzeigen“ aktiviert. Dabei erscheinen im Bericht die Ergebnisse in Abhängigkeit von der Tatsache, ob die Eintragungen zu einem Kurs gehören, der mit bestimmten Tags versehen ist oder nicht.
-
 Wurden im Abschnitt „Eintragungen mit Tags einbeziehen“ Tags gewählt, werden ausschließlich Eintragungen in Bezug auf Kurse, die mit den gewählten Tags versehen wurden, angezeigt. Eintragungen zu Kursen ohne Tags werden **nicht** angezeigt.
-
 Wurden im Abschnitt „Eintragungen mit Tags ausschließen“ Tags gewählt, werden Eintragungen in Bezug auf Kurse, die mit den gewählten Tags versehen wurden, **nicht** angezeigt. Sämtliche Eintragungen zu Kursen ohne Tags werden angezeigt.
-
 Es ist möglich, Tags gleichzeitig ein- und auszuschließen, ein einzelner Tag kann jedoch nicht sowohl ein- als auch ausgeschlossen werden.';
 $string['reportbuildercurrentorg_help'] = '# Abgeschlossene Berichte nach Organisation anzeigen
-
 Wird **Eintragungen von Angestellten in der Nutzerorganisation anzeigen** gewählt, erscheinen im Bericht verschiedene Ergebnisse je nach Organisation, der der Nutzer zugeordnet wurde. (Nutzern wird in ihrem „Nutzer-Profil“ auf der Registerkarte „Positionen“ eine Organisation zugeordnet).
-
 Bei Einstellung von **Berichte von untergeordneten Organisationen einbeziehen** auf:
-
-*   **Ja** ist der den Bericht lesende Nutzer in der Lage, die Eintragungen in Bezug auf seine Organisation und deren untergeordnete Organisationen zu sehen
-*   **Nein** kann der Nutzer nur die Eintragungen in Bezug auf seine Organisation sehen.';
+* **Ja** ist der den Bericht lesende Nutzer in der Lage, die Eintragungen in Bezug auf seine Organisation und deren untergeordnete Organisationen zu sehen
+* **Nein** kann der Nutzer nur die Eintragungen in Bezug auf seine Organisation sehen.';
 $string['reportbuildercurrentpos_help'] = '# Nach derzeitiger Position anzeigen
-
 Wird **Eintragungen von Angestellten in der Nutzerposition anzeigen** gewählt, erscheinen im Bericht verschiedene Eintragungen je nach Position, die dem Nutzer zugeordnet wurde. (Nutzern wird in ihrem „Nutzer-Profil“ auf der Registerkarte „Positionen“ eine Position zugeordnet).
-
 Bei Einstellung von **Berichte von untergeordneten Positionen einbeziehen** auf:
-
-*   **Ja** ist der den Bericht lesende Nutzer in der Lage, die Eintragungen in Bezug auf seine Position und die mit ihr verbundenen untergeordneten Positionen zu sehen
-*   **Nein** ist der den Bericht lesende Nutzer in der Lage, nur die Eintragungen in Bezug auf seine Position zu sehen.';
+* **Ja** ist der den Bericht lesende Nutzer in der Lage, die Eintragungen in Bezug auf seine Position und die mit ihr verbundenen untergeordneten Positionen zu sehen
+* **Nein** ist der den Bericht lesende Nutzer in der Lage, nur die Eintragungen in Bezug auf seine Position zu sehen.';
 $string['reportbuilderdate_help'] = '# Nach Datum anzeigen
-
 Wird **Eintragungen nach Eintragungsdatum anzeigen** gewählt, erscheinen im Bericht nur die Eintragungen aus dem gewählten Zeitraum.
-
 Die Option **Eintragungen anzeigen aus** ermöglicht Ihnen die Festlegung eines Berichtszeitraums:
-
-*   Wird **Vergangenheit** gewählt, erscheinen im Bericht nur Eintragungen mit einem älteren Datum als dem laufenden Datum.
-*   Wird **Zukunft** gewählt, erscheinen im Bericht nur Eintragungen mit einem zukünftigem Datum im Vergleich mit dem laufenden Datum.
-*   Wird **Letzte 30 Tage** gewählt, erscheinen im Bericht nur Eintragungen zwischen dem laufenden Datum und den 30 Tagen zuvor.
-*   Wird **Nächste 30 Tage** gewählt, erscheinen im Bericht nur Eintragungen zwischen dem laufenden Datum und den nächsten 30 Tagen.';
+* Wird **Vergangenheit** gewählt, erscheinen im Bericht nur Eintragungen mit einem älteren Datum als dem laufenden Datum.
+* Wird **Zukunft** gewählt, erscheinen im Bericht nur Eintragungen mit einem zukünftigem Datum im Vergleich mit dem laufenden Datum.
+* Wird **Letzte 30 Tage** gewählt, erscheinen im Bericht nur Eintragungen zwischen dem laufenden Datum und den 30 Tagen zuvor.
+* Wird **Nächste 30 Tage** gewählt, erscheinen im Bericht nur Eintragungen zwischen dem laufenden Datum und den nächsten 30 Tagen.';
 $string['reportbuilderdescription_help'] = '# Beschreibung
-
 Wird eine Beschreibung erstellt, erscheinen die Informationen in einem Kasten über den Suchfiltern auf der Berichtsseite.';
 $string['reportbuilderdialogfilter_help'] = '# Berichtersteller: Dialog-Filter
-
 Dieser Filter ermöglicht Ihnen die Filterung von Informationen je nach Hierarchie. Der Filter verfügt über folgende Optionen:
-
-*   ist jeder Wert – Diese Option deaktiviert den Filter (d. h. sämtliche Informationen werden vom Filter akzeptiert)
-*   ist gleich – Diese Option erlaubt nur Informationen, die dem aus der Liste gewählten Wert entsprechen
-*   ist nicht gleich – Diese Option erlaubt nur Informationen, die sich von dem aus der Liste gewählten Wert unterscheiden
-
+* ist jeder Wert – Diese Option deaktiviert den Filter (d. h. sämtliche Informationen werden vom Filter akzeptiert)
+* ist gleich – Diese Option erlaubt nur Informationen, die dem aus der Liste gewählten Wert entsprechen
+* ist nicht gleich – Diese Option erlaubt nur Informationen, die sich von dem aus der Liste gewählten Wert unterscheiden
 Wurde ein Rahmenposten gewählt, können Sie das Feld „Untergeordnete Elemente einbeziehen?“ verwenden, um zu entscheiden, ob sie nur diesen Posten filtern wollen oder diesen Posten und alle seine Unterposten.';
 $string['reportbuilderexportoption_help'] = '# Bericht-Exporteinstellungen
-
 **Bericht-Exporteinstellungen** ermöglichen es einem Nutzer mit der entsprechenden Genehmigung, die Exportoptionen, die den Nutzern am Ende einer Berichtsseite zur Verfügung stehen, einzustellen. Diese Einstellung betrifft alle Berichte des **Berichterstellers**.
-
 Werden mehrere Optionen gewählt, kann der Nutzer seine bevorzugten Optionen aus dem Dropdown-Menü auswählen.
-
 Werden keine Optionen gewählt, ist die Exportfunktion deaktiviert..';
 $string['reportbuilderexportoptions_help'] = '# Berichtexporteinstellungen
-
 Die **Berichtexporteinstellungen** ermöglichen es einem Nutzer mit den entsprechenden Berechtigungen, die Exportoptionen festzulegen, die für die Nutzer unten auf einer Berichtsseite verfügbar sind. Diese Einstellung betrifft alle **Reportgenerator**-Berichte.
-
 Wenn mehrere Optionen ausgewählt werden, kann der Nutzer die bevorzugten Optionen aus dem Export-Dropdown-Menü wählen.
-
 Wenn keine Optionen ausgewählt werden, wird die Exportfunktion deaktiviert..';
 $string['reportbuilderfilters_help'] = '# Suchoptionen (Filter)
-
 **Suchoptionen** ermöglicht Ihnen die Personalisierung der Filter, die in Ihrem Bericht erscheinen. Die verfügbaren Filter werden von der **Quelle** des Berichts festgelegt. Jede Berichtsquelle verfügt über eine Reihe an voreingestellten Filtern.
-
 Filter können hinzugefügt, sortiert und gelöscht werden.
-
 **Filter hinzufügen: **Zum Hinzufügen eines neuen Filters zum Bericht wählen Sie den gewünschten Filter aus dem Dropdown-Menü „Filter hinzufügen...“ und klicken auf **Änderungen speichern**. Wird **Erweiterte Optionen** markiert, erscheint der Filter nicht automatisch im „Suche nach“-Kasten. Die Nutzer können zur Ansicht dieser Filter **Erweiterte Optionen anzeigen** anklicken.
-
 **Filter verschieben:** Die Filter erscheinen im „Suche nach“-Kasten in der Reihenfolge, in der sie aufgelistet sind. Verwenden Sie zur Änderung der Reihenfolge die Aufwärts- und Abwärtspfeile.
-
 **Filter löschen:** Klicken Sie auf die Schaltfläche **Löschen** (das Kreuzsymbol) rechts vom Berichtsfilter zum Entfernen dieses Filters aus dem Bericht.
-
 **Änderung mehrerer Filtertypen:** Sie können mehrere Filtertypen gleichzeitig ändern, indem Sie einen anderen Filter aus dem Dropdown-Menü auswählen und auf **Änderungen speichern** klicken.';
 $string['reportbuilderfullname_help'] = '# Berichtsname
-
 Dies ist der Name, der oben auf Ihrer Berichtsseite und im „Berichts-Manager“-Block erscheint.';
 $string['reportbuilderglobalsettings'] = 'Reportgenerator globale Einstellungen';
 $string['reportbuildergroupname_help'] = '# Berichtersteller: Gruppenname
-
 Der Name der Gruppe. Dies ermöglicht Ihnen die Identifizierung der Gruppe, wenn Sie einen neuen Bericht über sie erstellen möchten. Den Namen finden Sie im Pulldown-Menü der Berichtsquelle.';
 $string['reportbuildergrouptag_help'] = '# Berichtersteller: Gruppen-Tag
-
 Verwenden Sie bei der Erstellung einer Gruppe Tags, werden sämtliche mit dem offiziellen Tag versehenen Aktivitäten automatisch Teil der Gruppe. Wenn Sie Tags zu einer Aktivität hinzufügen oder aus ihr entfernen, wird die Gruppe aktualisiert, so dass diese Aktivität zu ihr gehört/nicht mehr zu ihr gehört.';
 $string['reportbuilderhidden_help'] = '# In Meine Berichte ausblenden
-
 Wird **In Meine Berichte ausblenden** markiert, erscheint der Bericht nicht auf der Seite „Meine Berichte“ der angemeldeten Nutzer.
-
 **Anmerkung:** Die Option **In Meine Berichte ausblenden** blendet lediglich den Link zum Bericht aus. Nutzer mit der entsprechenden Zugangsberechtigung können noch immer über die URL Zugang zum Bericht erlangen.';
 $string['reportbuilderrecordsperpage_help'] = '# Anzahl an Berichten pro Seite
-
 **Anzahl an Berichten pro Seite** ermöglicht Ihnen die Festlegung, wie viele Berichte auf einer Berichtsseite angezeigt werden sollen.
-
 Die Höchstzahl der auf einer Seite anzeigbaren Berichte ist 5000. Je mehr Berichte auf einer Seite erscheinen sollen, desto länger dauert es, bis die Berichtsseite angezeigt werden kann.
-
 Es wird empfohlen, die **Anzahl der Berichte pro Seite auf 40 zu beschränken**.';
 $string['reportbuilderrolesaccess_help'] = '# Rollen mit Zugang
-
 Bei Einstellung von **Zugang beschränken**auf **Nur bestimmte Nutzer können diesen Bericht sehen** können Sie durch Verwendung von **Rollen mit Genehmigung zur Ansicht des Berichtes** angeben, welche Rollen den Bericht sehen können.
-
 Sie können eine oder mehrere Rollen aus der Liste auswählen.
-
 Bei Einstellung von **Zugang beschränken**auf **Alle Nutzer können diesen Bericht sehen** werden diese Optionen deaktiviert.';
 $string['reportbuildershortname_help'] = '# Berichtersteller: Eindeutiger Name
-
 Der Kurzname wird von Moodle zur Verfolgung dieses Berichts verwendet. Zwei Berichten kann nicht derselbe Kurzname verliehen werden, auch wenn sie auf derselben Quelle basieren. Vermeiden Sie die Verwendung von Sonderzeichen (Text, Zahlen und Unterstriche sind in Ordnung) in diesem Feld.';
 $string['reportbuildersorting_help'] = '# Sortierung
-
 **Sortierung** ermöglicht Ihnen die Festlegung einer voreingestellten Spalte und Sortierung für einen Bericht.
-
 Ein Nutzer kann den Bericht noch immer beim Lesen manuell sortieren. Die Nutzereinstellungen werden während der laufenden Sitzung gespeichert. Bei Beendigung der Sitzung kehrt der Bericht jedoch zur hier voreingestellten Sortierung zurück.';
 $string['reportbuildersource_help'] = '# Quelle
-
 Die **Quelle** eines Berichtes legt die Hauptart der verwendeten Daten fest. Weitere Filteroptionen stehen bei Änderung des Berichts zur Verfügung.
-
 Nach deren Speicherung kann die Berichtsquelle nicht mehr verändert werden.
-
 **Anmerkung:** Stehen im **Quelle**-Feld keine Optionen zur Verfügung oder erscheint die von Ihnen gewünschte Quelle nicht, muss Ihre Totara-Installation derart konfiguriert werden, dass Sie die von Ihnen benötigten Quelldaten beinhaltet (Dies kann nicht über die Totara-Schnittstelle erfolgen).';
 $string['reportbuildertrainer_help'] = '# Berichtersteller: Nach Trainer anzeigen
-
 Dieses Kriterium wird aktiviert, indem Sie das Feld „Eintragungen nach Trainer anzeigen“ markieren. Dadurch erscheinen im Bericht verschiedene Eintragungen je nachdem, welcher persönliche Trainer das Feedback gegeben hat.
-
 Wird „Eintragungen anzeigen, bei denen der Nutzer der Trainer ist“ gewählt, zeigt der Bericht das Feedback für Sitzungen, bei denen der Nutzer, der den Bericht liest, auch der Trainer war.
-
 Wird „Eintragungen anzeigen, bei denen einer der direkten Berichte des Nutzers der Trainer ist“ gewählt, zeigt der Bericht die Eintragungen für Sitzungen, bei denen ein Angestellter der Person, die den Bericht liest, Trainer war.
-
 Wird „Beides“ gewählt, werden beide der o. g. Eintragungen angezeigt.';
 $string['reportbuilderuser_help'] = '# Nach Nutzer anzeigen
-
 Wird **Eintragungen nach Nutzer anzeigen** gewählt, zeigt der Bericht verschiedene Eintragungen je nach Nutzer, der den Bericht liest, und dessen Beziehung zu anderen Nutzern.
-
 **Eintragungen von einem bestimmten Nutzer mit aufnehmen** steuert, welche Eintragungen ein den Bericht lesender Nutzer sehen kann:
-
-*   Bei Einstellung auf **Eigene Eintragungen eines Nutzers** kann der Nutzer nur seine eigenen Eintragungen sehen.
-*   Bei Einstellung auf **Eintragungen in direkte Berichte des Nutzers** kann der Nutzer die Eintragungen sehen, die von den Nutzern vorgenommen wurden, die ihm unterstehen (einem Nutzer wird in seinem Nutzerprofil auf der Registerkarte „Positionen“ ein Manager zugewiesen).
-*   Bei Einstellung auf **Beide** kann der Nutzer sowohl seine eigenen Eintragungen als auch die Eintragungen in seinen direkten Berichten sehen.';
+* Bei Einstellung auf **Eigene Eintragungen eines Nutzers** kann der Nutzer nur seine eigenen Eintragungen sehen.
+* Bei Einstellung auf **Eintragungen in direkte Berichte des Nutzers** kann der Nutzer die Eintragungen sehen, die von den Nutzern vorgenommen wurden, die ihm unterstehen (einem Nutzer wird in seinem Nutzerprofil auf der Registerkarte „Positionen“ ein Manager zugewiesen).
+* Bei Einstellung auf **Beide** kann der Nutzer sowohl seine eigenen Eintragungen als auch die Eintragungen in seinen direkten Berichten sehen.';
 $string['reportcolumns'] = 'Berichtespalten';
 $string['reportconfirmdelete'] = 'Sind Sie sicher, dass dieser Bericht gelöscht werden soll?';
 $string['reportconfirmreload'] = 'Dieser Bericht kann nicht gelöscht werden, da es sich um einen eingebetteten Bericht handelt (nur Entwickler können diese löschen). Sie können allerdings die Einstellungen des Berichtes zurücksetzen. Wollen Sie damit fortfahren?';

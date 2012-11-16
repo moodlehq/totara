@@ -101,7 +101,6 @@ $string['evaluategradeswait'] = 'Odota kunnes vertaispalautteet on annettu ja ar
 $string['evaluation'] = 'Palautteiden arviointi';
 $string['evaluationmethod'] = 'Palautteiden arviointitapa';
 $string['evaluationmethod_help'] = 'Palautteiden arviointitapa määrittelee, kuinka annettujen vertaispalautteiden arvosana lasketaan. Toistaiseksi on vain yksi vaihtoehto: vertailu vertaisarviointien keskiarvoon.
-
 HUOMAA: jos vertaisarvioijia on kaksi ja he ovat antaneet eri arvosanat, kummankaan antama arvosana ei voi olla keskiarvo. Tämä kompensoidaan antamalla kummallekin arvioijalle joka tapauksessa täydet vertaisarviointipisteet. Tämän korjaamiseksi voit antaa itse kolmannen arvioinnin tai vahvistaa jommankumman vertaisarvioinnin painotusta. Lisätietoja löydät ohjeesta http://docs.moodle.org/22/en/Using_Workshop';
 $string['example'] = 'Esimerkkipalautus';
 $string['exampleadd'] = 'Lisää esimerkkipalautus';
@@ -200,7 +199,6 @@ $string['sortasc'] = 'Nouseva järjestys';
 $string['sortdesc'] = 'Laskeva järjestys';
 $string['strategy'] = 'Arviointimenetelmä';
 $string['strategy_help'] = 'Arviointimenetelmä määrittelee käytetyn vertaisarviointitavan ja töiden pisteytystavan. Tähän on neljä eri vaihtoehtoa:
-
 * Kertyvä arviointi - Määriteltyjen kriteerien perusteella annetaan palaute ja arvosana
 * Kommentit - Määriteltyjen kriteerien perusteella annetaan palaute mutta ei arvosanaa
 * Virheiden määrä - Kommentteja sekä kyllä/ei arvio annetaan määriteltyjen väitteiden suhteen

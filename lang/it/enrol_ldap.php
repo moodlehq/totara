@@ -25,8 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['assignrole'] = 'Assegnazione del ruolo \'{$a->role_shortname}\' all\'utente \'{$a->user_username}\' nel corso \'{$a->course_shortname}\' (id {$a->course_id})
-';
+$string['assignrole'] = 'Assegnazione del ruolo \'{$a->role_shortname}\' all\'utente \'{$a->user_username}\' nel corso \'{$a->course_shortname}\' (id {$a->course_id})';
 $string['assignrolefailed'] = 'Errore nell\'assegnazione del ruolo \'{$a->role_shortname}\' all\'utente \'{$a->user_username}\' nel corso \'{$a->course_shortname}\' (id {$a->course_id})';
 $string['autocreate'] = 'I corsi possono essere creati automaticamente se in LDAP esistono iscrizioni ad un corso che ancora non sono è acceso in Moodle.</p><p>Se viene utilizzata la creazione automatica di corsi, si raccomanda di togliere i seguenti privilegi dai ruoli interessati, al fine di evitare modifiche indesiderate ai campi Numero ID, titolo, titolo abbreviato e descrizione:
 moodle/course:changeidnumber, moodle/course:changeshortname, moodle/course:changefullname moodle/course:changesummary.</p>';
@@ -46,7 +45,6 @@ $string['course_fullname'] = 'Opzionale: atributo LDAP che contiene il titolo de
 $string['course_fullname_key'] = 'Titolo';
 $string['course_idnumber'] = 'Attributo LDAP che contiene lil numero ID del corso, ad esmepio \'cn\' o \'uid\'.';
 $string['course_idnumber_key'] = 'Numero ID';
-$string['coursenotexistskip'] = 'Il corso \'{$a}\'  non esiste e la creazione automatica è disabilitata; dati ignorati.';
 $string['course_search_sub'] = 'Cerca l\'appartenenza al gruppo anche nei sotto contesti.';
 $string['course_search_sub_key'] = 'Cerca nei sotto contesti';
 $string['course_settings'] = 'Impostazioni iscrizione corsi';
@@ -54,6 +52,7 @@ $string['course_shortname'] = 'Opzionale: attributo LDAP che contiene il titolo 
 $string['course_shortname_key'] = 'Titolo abbreviato';
 $string['course_summary'] = 'Opzionale: attributo LDAP che contiene la descrizione del corso.';
 $string['course_summary_key'] = 'Descrizione';
+$string['coursenotexistskip'] = 'Il corso \'{$a}\'  non esiste e la creazione automatica è disabilitata; dati ignorati.';
 $string['createcourseextid'] = 'L\'utente CREATE è iscritto ad un corso che non esiste \'{$a->courseextid}\'';
 $string['createnotcourseextid'] = 'L\'utente è iscritto ad un corso che non esiste \'{$a->courseextid}\'';
 $string['creatingcourse'] = 'Creazione del corso \'{$a}\'...';
@@ -69,15 +68,15 @@ $string['extremovedsuspendnoroles'] = 'Iscrizione disabilitata e ruolo rimosso p
 $string['extremovedunenrol'] = 'Disiscrizione utente \'{$a->user_username}\' dal corso \'{$a->course_shortname}\' (id {$a->course_id})';
 $string['failed'] = 'Errore!';
 $string['general_options'] = 'Opzioni generali';
-$string['group_memberofattribute'] = 'Nome dell\'attributo che specifica i gruppi di appartenenza degli utenti, ad esempio memberOf, groupMembership, eccetera. ';
+$string['group_memberofattribute'] = 'Nome dell\'attributo che specifica i gruppi di appartenenza degli utenti, ad esempio memberOf, groupMembership, eccetera.';
 $string['group_memberofattribute_key'] = 'Attributo \'Member of\'';
 $string['host_url'] = 'URL dell\'Host LDAP (es. \'ldap://ldap.miosito.com/\' oppure \'ldaps://ldap.miosito.com/\')';
 $string['host_url_key'] = 'Host URL';
 $string['idnumber_attribute'] = 'Se l\'appartenenza al gruppo contiene distinguised name, specificare lo stesso attributo configurato nella mappatura dati del plugin di autenticazione LDAP';
 $string['idnumber_attribute_key'] = 'Attributo numero ID';
+$string['ldap:manage'] = 'Gestire istanze iscrizione LDAP';
 $string['ldap_encoding'] = 'Indicare la codifica utilizzata da LDAP. Spesso la codifica è UTF-8, MS AD usa codifiche di default come cp1252, cp1250, eccetera.';
 $string['ldap_encoding_key'] = 'Codifica LDAP';
-$string['ldap:manage'] = 'Gestire istanze iscrizione LDAP';
 $string['memberattribute'] = 'Identificativo univoco  LDAP degli utenti';
 $string['memberattribute_isdn'] = 'Se l\'appartenenza al gruppo contiene distinguised name, specificarlo qui e configurare anche le altre impostazioni di questa sezione.';
 $string['memberattribute_isdn_key'] = 'L\'attributo member usa dn';

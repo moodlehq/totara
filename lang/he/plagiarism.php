@@ -28,8 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['availableplugins'] = 'תוספים זמינים';
 $string['configenableplagiarism'] = 'זה יאשפר למנהלים להגדיר את תוספי הגנבה סיפרותית (באם הותקנו)';
 $string['configplagiarismplugins'] = 'בחר את תוסף הגנבה סיפרותית שברצוהך להגדיר';
-$string['enableplagiarism'] = 'אפשר תוספים של גנבה סיפרותית
-';
+$string['enableplagiarism'] = 'אפשר תוספים של גנבה סיפרותית';
 $string['manageplagiarism'] = 'ניהול תוספים של גנבה סיפרותית';
 $string['nopluginsinstalled'] = 'תוספים לטיפול בגנבה סיפרותית לא הותקנו';
 $string['plagiarism'] = 'מניעת גנבה סיפרותית';

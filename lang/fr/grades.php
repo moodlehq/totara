@@ -54,7 +54,6 @@ $string['aggregateweightedmean'] = 'Moyenne pondérée des notes';
 $string['aggregateweightedmean2'] = 'Simple moyenne pondérée des notes';
 $string['aggregation'] = 'Tendance centrale';
 $string['aggregation_help'] = 'La tendance centrale détermine comment les notes d\'une catégorie sont combinées.
-
 * Moyenne des notes : la somme de toutes les notes divisée par le nombre total de notes.
 * Moyenne pondérée des notes : une pondération est donnée à chaque élément d\'évaluation et influence le calcul de la moyenne des notes. Ainsi, la somme des notes de tous les éléments d\'évaluation multipliés par leur pondération est calculée, et cette somme est divisée par la somme des pondérations pour donner le total du cours.
 * Simple moyenne pondérée des notes : la différence entre cette moyenne et la moyenne pondérée des notes est que la pondération est calculée au moyen des notes maximale et minimale pour chaque élément d\'évaluation. Un travail qui vaut 100 points a une pondération de 100, et un travail qui vaut 10 points a une pondération de 10.
@@ -67,74 +66,41 @@ $string['aggregation_help'] = 'La tendance centrale détermine comment les notes
 $string['aggregationcoef'] = 'Coefficient';
 $string['aggregationcoefextra'] = 'Points supplémentaires';
 $string['aggregationcoefextra_help'] = 'Lorsque la tendance centrale choisie est la « Somme des notes », un élément d\'évaluation peut compter pour des points supplémentaires dans une catégorie. Cela signifie que la note maximale de l\'élément d\'évaluation ne sera pas compté dans le maximum du total des notes, mais que les points obtenus par chaque participant pour cet élément seront ajoutés à leur total.
-
 Voici un exemple :
-
 * l\'élément 1 est noté de 0 à 100 ;
-
 * l\'élément 2 est noté de 0 à 75 ;
-
 * l\'élément 1 a l\'option « Compte comme points supplémentaires » cochée, l\'élément 2 ne l\'a pas ;
-
 * les deux éléments font partie de la catégorie 1, dont la tendance centrale choisie est « Somme des notes » ;
-
 * Le total de la catégorie 1 sera noté de 0 à 75 ;
-
 * un participant a obtenu 20 pour l\'élément 1 et 70 pour l\'élément 2 ;
-
 * la note du participant pour la catégorie 1 sera de 75 sur 75 (20 + 70 = 90, mais l\'élément 1 compte comme points supplémentaires, et pousse donc la note à son maximum de 75, et non de 175).
-
-
 ## Lorsque la tendance centrale choisie est la « Moyenne des notes (points supplémentaires) »
-
 Une valeur plus grande que 0 a pour effet le traitement de la note de cet élément d\'évaluation comme points supplémentaires lors du calcul de la tendance centrale. Le nombre est un facteur par lequel la valeur de la note sera multipliée avant d\'être ajoutée à la somme de toutes les notes, mais l\'élément lui-même ne sera pas compté dans la division.
-
 Voici un exemple :
-
 * l\'élément 1 est noté de 0 à 100 et sa valeur « Points supplémentaires » est de 2 ;
-
 * l\'élément 2 est noté de 0 à 100 et sa valeur « Points supplémentaires » est laissée à 0.0000 ;
-
 * l\'élément 3 est noté de 0 à 100 et sa valeur « Points supplémentaires » est laissée à 0.0000 ;
-
 * Les trois éléments 3 font partie de la catégorie 1, dont la tendance centrale choisie est « Moyenne des notes (points supplémentaires) » ;
-
 * un participant a obtenu 20 pour l\'élément 1, 40 pour l\'élément 2 et 70 pour l\'élément 3 ;
-
 * la note du participant pour la catégorie 1 sera de 95 sur 100 puisque 20*2 + (40 + 70)/2 = 95.';
 $string['aggregationcoefextrasum'] = 'Points supplémentaires';
 $string['aggregationcoefextrasum_help'] = 'Lorsque la tendance centrale choisie est la « Somme des notes », un élément d\'évaluation peut compter pour des points supplémentaires dans une catégorie. Cela signifie que la note maximale de l\'élément d\'évaluation ne sera pas compté dans le maximum du total des notes, mais que les points obtenus par chaque participant pour cet élément seront ajoutés à leur total.
-
 Voici un exemple :
-
 * l\'élément 1 est noté de 0 à 100 ;
-
 * l\'élément 2 est noté de 0 à 75 ;
-
 * l\'élément 1 a l\'option « Compte comme points supplémentaires » cochée, l\'élément 2 ne l\'a pas ;
-
 * les deux éléments font partie de la catégorie 1, dont la tendance centrale choisie est « Somme des notes » ;
-
 * Le total de la catégorie 1 sera noté de 0 à 75 ;
-
 * un participant a obtenu 20 pour l\'élément 1 et 70 pour l\'élément 2 ;
-
 * le total du participant pour la catégorie 1 sera de 75 sur 75 (20 + 70 = 90, mais puisque l\'élément 1 compte comme points supplémentaires, et pousse donc la note à son maximum de 75, et non de 175).';
 $string['aggregationcoefextraweight'] = 'Coefficient de points supplémentaires';
 $string['aggregationcoefextraweight_help'] = 'Une valeur supérieure à 0 dans ce champ aura pour effet que la note obtenue pour cet élément d\'évaluation sera traitée comme des points supplémentaires lors du calcul de la tendance centrale. Cette valeur est un facteur par lequel la valeur de la note sera multipliée avant d\'être ajoutée à la somme de toutes les notes. L\'élément lui-même ne sera pas utilisé dans la division.
-
 Voici un exemple :
-
 * l\'élément 1 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est 2 ;
-
 * l\'élément 2 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est laissée à 0 ;
-
 * l\'élément 3 est noté de 0 à 100 et sa valeur pour le coefficient de points supplémentaires est laissée à 0 ;
-
 * Tous les 3 éléments font partie de la catégorie 1, dont la tendance centrale choisie est la « Moyenne des notes (avec points supplémentaires) » ;
-
-* Un participant obtient la note 20 pour l\'élément 1, 40  pour l\'élément 2 et 70 pour l\'élément 3 ;
-
+* Un participant obtient la note 20 pour l\'élément 1, 40 pour l\'élément 2 et 70 pour l\'élément 3 ;
 * La note du participant pour la catégorie 1 sera de 95/100 puisque 95 = 20*2 + (40 + 70)/2.';
 $string['aggregationcoefweight'] = 'Coefficient de l\'élément';
 $string['aggregationcoefweight_help'] = 'Pondération appliquée à toutes les notes de cet élément d\'évaluation lors du calcul de la tendance centrale.';
@@ -232,7 +198,7 @@ $string['editverbose'] = 'Modifier {$a->category} {$a->itemmodule} {$a->itemname
 $string['enableajax'] = 'Activer AJAX';
 $string['enableajax_help'] = 'Ajoute des fonctionnalités AJAX au rapport de l\'évaluateur, pour simplifier et accélérer les opérations habituelles. Nécessite l\'activation de Javascript sur le navigateur de l\'utilisateur.';
 $string['enableoutcomes'] = 'Activer les objectifs';
-$string['enableoutcomes_help'] = 'L\'activation des objectifs (compétences, buts, standards ou critères) permet d\'évaluer les résultats d\'après un ou plusieurs barèmes liés à des énoncés d\'objectifs. L\'activation de ce réglage active cette option  pour tout le site.';
+$string['enableoutcomes_help'] = 'L\'activation des objectifs (compétences, buts, standards ou critères) permet d\'évaluer les résultats d\'après un ou plusieurs barèmes liés à des énoncés d\'objectifs. L\'activation de ce réglage active cette option pour tout le site.';
 $string['encoding'] = 'Encodage';
 $string['errorcalculationnoequal'] = 'La formule doit commencer par un signe d\'égalité (=1+2)';
 $string['errorcalculationunknown'] = 'Formule non valide';
@@ -365,9 +331,7 @@ $string['hidequickfeedback'] = 'Cacher le feedback rapide';
 $string['hideranges'] = 'Cacher les valeurs possibles';
 $string['hidetotalifhiddenitems'] = 'Cacher les totaux contenant des éléments cachés';
 $string['hidetotalifhiddenitems_help'] = 'Ce réglage détermine si les totaux contenant un ou plusieurs éléments d\'évaluation cachés seront affichés pour les participants ou remplacés par un tiret (-). S\'ils sont affichés, les totaux seront calculés soit en incluant, soit en excluant les éléments d\'évaluation cachés.
-
 Si les éléments cachés sont exclus, le total vu par les participants sera différent de celui vu dans le rapport d\'évaluation par l\'enseignant, puisque celui-ci voit toujours les totaux calculés à partir de tous les éléments, qu\'ils soient cachés ou non.
-
 Si les éléments cachés sont inclus, les participants seront potentiellement en mesure de déduire par le calcul la valeur des éléments cachés.';
 $string['hidetotalshowexhiddenitems'] = 'Afficher les totaux en excluant les éléments cachés';
 $string['hidetotalshowinchiddenitems'] = 'Afficher les totaux en incluant les éléments cachés';
@@ -413,7 +377,7 @@ $string['itemnamehelp'] = 'Le nom de cet élément, fourni par le module.';
 $string['items'] = 'Éléments';
 $string['itemsedit'] = 'Modifier un élément d\'évaluation';
 $string['keephigh'] = 'Garder les plus hautes';
-$string['keephigh_help'] = 'Cette option permet de ne considérer que les <i>n</i> notes les plus élevées, le nombre <i>n</i> étant sélectionné dans le menu déroulant.';
+$string['keephigh_help'] = 'Cette option permet de ne considérer que les *n* notes les plus élevées, le nombre *n* étant sélectionné dans le menu déroulant.';
 $string['keymanager'] = 'Gestionnaire de clefs';
 $string['lessthanmin'] = 'La note saisie dans {$a->itemname} pour {$a->username} est inférieure au minimum permis';
 $string['letter'] = 'Lettre';
@@ -605,7 +569,6 @@ $string['showgrade_help'] = 'Si ce réglage est activé, la colonne avec la note
 $string['showgroups'] = 'Afficher les groupes';
 $string['showhiddenitems'] = 'Afficher les éléments cachés';
 $string['showhiddenitems_help'] = 'Spécifie si les éléments d\'évaluations cachés sont totalement invisibles ou si les noms des éléments d\'évaluations cachés sont visibles pour les étudiants.
-
 * Afficher les éléments cachés : les noms des éléments d\'évaluations cachés sont affichés, mais les notes sont cachées
 * Cacher les éléments jusqu\'au : les éléments d\'évaluation et les notes sont totalement invisibles, jusqu\'à l\'échéance de la date fixée, s\'il y en a une. Une fois le date passée, l\'élément et les notes sont affichées
 * Cacher les éléments : les éléments d\'évaluation et les notes sont totalement invisibles';

@@ -27,21 +27,18 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addsubmission'] = 'Adicionar apresentação';
 $string['allowdeleting'] = 'Permitir cancelamento';
-$string['allowdeleting_help'] = '<p>Se habilitado, os participantes podem excluir arquivos enviados a qualquer momento, antes de serem avaliados.</p>';
+$string['allowdeleting_help'] = 'Se habilitado, os participantes podem excluir arquivos enviados a qualquer momento, antes de serem avaliados.';
 $string['allowmaxfiles'] = 'Número máximo de arquivos carregados';
-$string['allowmaxfiles_help'] = '<p>Número máximo de arquivos que cada participante pode carregar.
-Esse número não é mostrado aos estudantes automaticamente. Escreva o número de arquivos permitidos na descrição da tarefa.</p>';
+$string['allowmaxfiles_help'] = 'Número máximo de arquivos que cada participante pode carregar.
+Esse número não é mostrado aos estudantes automaticamente. Escreva o número de arquivos permitidos na descrição da tarefa.';
 $string['allownotes'] = 'Permitir notas';
-$string['allownotes_help'] = '<p>Se habilitada, os participantes podem fazer anotações na área de texto.
-É semelhante ao recurso texto online.</p>
-
-<p>Esta caixa de texto pode ser usada para comunicação com quem avalia a tarefa, para registrar a descrição do progresso da tarefa ou para qualquer outra atividade escrita.</p>';
+$string['allownotes_help'] = 'Se habilitada, os participantes podem fazer anotações na área de texto.
+É semelhante ao recurso texto online.
+Esta caixa de texto pode ser usada para comunicação com quem avalia a tarefa, para registrar a descrição do progresso da tarefa ou para qualquer outra atividade escrita.';
 $string['allowresubmit'] = 'Permitir novo envio';
-$string['allowresubmit_help'] = '<P>A configuração padrão proibe um aluno de enviar novamente a mesma tarefa depois que ela foi avaliada.</P>
-
-<P>Se você ativar esta opção, os alunos poderão enviar novas versões da mesma tarefa mesmo depois que ela for avaliada. Isto é útil quando o professor quer encorajar os alunos a melhorarem os resultados ou quando é previsto um processo de avaliação iterativo, com sucessivas revisões.</P>
-
-<P>Esta opção não é útil nas Tarefas Offline</P>';
+$string['allowresubmit_help'] = 'A configuração padrão proibe um aluno de enviar novamente a mesma tarefa depois que ela foi avaliada.
+Se você ativar esta opção, os alunos poderão enviar novas versões da mesma tarefa mesmo depois que ela for avaliada. Isto é útil quando o professor quer encorajar os alunos a melhorarem os resultados ou quando é previsto um processo de avaliação iterativo, com sucessivas revisões.
+Esta opção não é útil nas Tarefas Offline';
 $string['alreadygraded'] = 'A sua tarefa já foi avaliada. Não é possível enviar outros documentos.';
 $string['assignment:exportownsubmission'] = 'Exportar a própria apresentação';
 $string['assignment:exportsubmission'] = 'Exportar envio';
@@ -65,7 +62,7 @@ $string['cannotdeletefiles'] = 'Erro: os arquivos não foram apagados';
 $string['cannotviewassignment'] = 'Você não pode ver esta tarefa';
 $string['comment'] = 'Comentário';
 $string['commentinline'] = 'Comentário inserido na frase';
-$string['commentinline_help'] = '<p>Se esta opção for selecionada, o envio original será copiado no campo de comentário para que seja mais fácil fazer comentários no texto durante a avaliação (talvez usando uma cor diferente) ou para editar o texto original.</p>';
+$string['commentinline_help'] = 'Se esta opção for selecionada, o envio original será copiado no campo de comentário para que seja mais fácil fazer comentários no texto durante a avaliação (talvez usando uma cor diferente) ou para editar o texto original.';
 $string['configitemstocount'] = 'Tipo de elemento a ser considerado como envio em tarefas online.';
 $string['configmaxbytes'] = 'Maior tamanho definido para todas as tarefas do site (sujeita aos limites do curso e às configurações locais).';
 $string['configshowrecentsubmissions'] = 'Todos podem ver listas de novos envios no relatório de atividades recentes';
@@ -94,21 +91,18 @@ Para acessar a nova versão:
 $string['emailteachermailhtml'] = '{$a->username} atualizou a sua tarefa <i>\'{$a->assignment}\' em{$a->timeupdated} </i><br /><br />
 Esta pode ser acessada <a href="{$a->url}">no site</a>.';
 $string['emailteachers'] = 'Avisos por email aos professores';
-$string['emailteachers_help'] = '<p>Se habilitado, os professores serão avisados através de mensagens breves por correio
-eletrônico sempre que os estudantes enviare um novo documento ou atualizarem um documento enviado.</p>
-
-<p>Sómente os professores que são autorizados a avaliar um envio em particular são
+$string['emailteachers_help'] = 'Se habilitado, os professores serão avisados através de mensagens breves por correio
+eletrônico sempre que os estudantes enviare um novo documento ou atualizarem um documento enviado.
+Sómente os professores que são autorizados a avaliar um envio em particular são
 notificados. Assim, por exemplo, se o curso usa grupos separados, então os professores
 associados a um grupo particular não irão receber nenhum aviso sobre estudantes de outros
-grupos.</p>
-
-<p>Para atividades offline, evidentemente, nenhuma mensagem será enviada, já
-que os estudantes não enviam documentos.</p>';
+grupos.
+Para atividades offline, evidentemente, nenhuma mensagem será enviada, já
+que os estudantes não enviam documentos.';
 $string['emptysubmission'] = 'Você ainda não enviou nada';
 $string['enablenotification'] = 'Enviar notificação via email';
-$string['enablenotification_help'] = '<p>Ativando isto, os estudantes serão notificados por email sobre suas notas e feedback.</p>
-
-<p>Sua preferência pessoal é salva e será aplicada a todas tarefas enviadas que você avaliar.</p>';
+$string['enablenotification_help'] = 'Ativando isto, os estudantes serão notificados por email sobre suas notas e feedback.
+Sua preferência pessoal é salva e será aplicada a todas tarefas enviadas que você avaliar.';
 $string['errornosubmissions'] = 'Não existem submissões para download.';
 $string['existingfiledeleted'] = 'Este arquivo foi cancelado: {$a}';
 $string['failedupdatefeedback'] = 'Falhou a atualização do feedback da tarefa do usuário {$a}';
@@ -128,7 +122,7 @@ $string['helpupload'] = '<p>Este tipo de tarefa permite a cada participante um o
 <p>Este tipo também permite ao professor o envio de um ou mais arquivos de resposta em qualquer formato.</p>';
 $string['helpuploadsingle'] = '<p>Este tipo de tarefa prevê que cada estudante envie um documento ao servidor, no formato que for desejado, como Word, imagens, coleções de documentos em arquivo zip, etc.</p>';
 $string['hideintro'] = 'Esconder descrição antes da data de abertura';
-$string['hideintro_help'] = '<p>Se habilitado, a descrição da tarefa não é visualizada antes da data de abertura.</p>';
+$string['hideintro_help'] = 'Se habilitado, a descrição da tarefa não é visualizada antes da data de abertura.';
 $string['invalidassignment'] = 'Tarefa inválida';
 $string['invalidfileandsubmissionid'] = 'Arquivo não enviado ou ID do envio inválido';
 $string['invalidid'] = 'ID da tarefa inválido';
@@ -143,10 +137,7 @@ $string['maximumsize'] = 'Tamanho máximo';
 $string['maxpublishstate'] = 'Visiblidade máxima para a entrada antes da data programada.';
 $string['messageprovider:assignment_updates'] = 'Notificações de Atribuição';
 $string['modulename'] = 'Tarefa';
-$string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/assignment/icon.gif" />&nbsp;<b>Tarefas</b></p>
-<div class="indent">
-Uma tarefa consiste na descrição ou enunciado de uma atividade a ser desenvolvida pelo participante, que pode ser enviada em formato digital ao servidor do curso utilizando a plataforma.  Alguns exemplos: redações, projetos, relatórios, imagens, etc. Este módulo inclui a possibilidade de descrever tarefas a serem realizadas offline - na sala de aula por exemplo - e de publicar o resultado da avaliação.
-</div>';
+$string['modulename_help'] = 'Uma tarefa consiste na descrição ou enunciado de uma atividade a ser desenvolvida pelo participante, que pode ser enviada em formato digital ao servidor do curso utilizando a plataforma. Alguns exemplos: redações, projetos, relatórios, imagens, etc. Este módulo inclui a possibilidade de descrever tarefas a serem realizadas offline - na sala de aula por exemplo - e de publicar o resultado da avaliação.';
 $string['modulenameplural'] = 'Tarefas';
 $string['newsubmissions'] = 'Tarefas apresentadas';
 $string['noassignments'] = 'Ainda não há nenhuma tarefa';
@@ -176,15 +167,13 @@ $string['pluginname'] = 'Tarefa';
 $string['popupinnewwindow'] = 'Abrir uma janela popup';
 $string['preventlate'] = 'Impedir envio atrasado';
 $string['quickgrade'] = 'Permitir avaliação veloz';
-$string['quickgrade_help'] = '<p>Com a Avaliação Rápida ativada, você pode avaliar rapidamente diversos envios na
-mesma página.</p>
-
-<p>Basta mudar a nota e os comentários e usar o botão Salvar no fim da página para gravar
-todas as mudanças.</p>
-
-<p>Os botões de acesso à página de avaliação individual continuam ativos, caso você precise de mais espaço para escrever feedbacks.
+$string['quickgrade_help'] = 'Com a Avaliação Rápida ativada, você pode avaliar rapidamente diversos envios na
+mesma página.
+Basta mudar a nota e os comentários e usar o botão Salvar no fim da página para gravar
+todas as mudanças.
+Os botões de acesso à página de avaliação individual continuam ativos, caso você precise de mais espaço para escrever feedbacks.
 Suas preferências de Avaliação Rápida serão gravadas e aplicadas a todas as terefas, em todos os
-cursos.</p>';
+cursos.';
 $string['requiregrading'] = 'Requer pontuação (notas)';
 $string['responsefiles'] = 'Arquivos de resposta';
 $string['reviewed'] = 'Revisado';
@@ -206,7 +195,7 @@ $string['submittedfiles'] = 'Arquivos enviados';
 $string['subplugintype_assignment'] = 'Tipo de tarefa';
 $string['subplugintype_assignment_plural'] = 'Tipos de tarefa';
 $string['trackdrafts'] = 'Habilitar Envio para Avaliação';
-$string['trackdrafts_help'] = '<p>O botão "Enviar para avaliação" permite que os usuários comuniquem aos professores que eles terminaram uma tarefa. Os professores podem reverter o status do envio para rascunho (caso o trabalho precise ser melhorado, por exemplo).</p>';
+$string['trackdrafts_help'] = 'O botão "Enviar para avaliação" permite que os usuários comuniquem aos professores que eles terminaram uma tarefa. Os professores podem reverter o status do envio para rascunho (caso o trabalho precise ser melhorado, por exemplo).';
 $string['typeblog'] = 'Postagem em blog';
 $string['typeoffline'] = 'Atividade offline';
 $string['typeonline'] = 'Texto online';

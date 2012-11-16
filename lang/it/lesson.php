@@ -28,7 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = 'Controllo accesso';
 $string['actionaftercorrectanswer'] = 'Azione dopo una risposta corretta';
 $string['actionaftercorrectanswer_help'] = 'Dopo aver riposto correttamente ad una domanda, sono disponibili 3 opzioni per la pagina successiva:
-
 * Normale - segui il flusso della lezione
 * Visualizza una pagina non vista - Le pagine vengono visualizzate casualmente evitando di visualizzare due volte la stessa pagina.
 * Visualizza una pagina dove non è stata data una riposta - Le pagine vengono visualizzate casualmente e le pagine dove non è stata data una risposta vengono visualizzate di nuovo';
@@ -136,7 +135,7 @@ $string['detailedstats'] = 'Statistiche dettagliate';
 $string['didnotanswerquestion'] = 'Non è stata data risposta a questa domanda.';
 $string['didnotreceivecredit'] = 'Credito non ricevuto';
 $string['displaydefaultfeedback'] = 'Visualizza il feedback di default';
-$string['displaydefaultfeedback_help'] = 'Permette di utilizzare le risposte di  default "Risposta corretta" o "Risposta sbagliata" quando non sono definite risposte specifiche.';
+$string['displaydefaultfeedback_help'] = 'Permette di utilizzare le risposte di default "Risposta corretta" o "Risposta sbagliata" quando non sono definite risposte specifiche.';
 $string['displayhighscores'] = 'Visualizza i voti migliori';
 $string['displayinleftmenu'] = 'Visualizzare nel menu di sinistra?';
 $string['displayleftif'] = 'Visualizza il menu solo dopo una valutazione maggiore di:';
@@ -206,7 +205,7 @@ $string['invalidlessonid'] = 'ID lezione non valido';
 $string['invalidpageid'] = 'ID pagina non valido';
 $string['jump'] = 'Salta a..';
 $string['jumps'] = 'Salti';
-$string['jumps_help'] = 'Ciascuna risposta (per le  domande) o ciascuna descrizione (per le pagine con contenuto) hanno un salto corrispondente. Il salto può essere relativo (ad esempio, questa pagina o la pagina successiva) oppure assoluto verso una qualsiasi pagina della lezione.';
+$string['jumps_help'] = 'Ciascuna risposta (per le domande) o ciascuna descrizione (per le pagine con contenuto) hanno un salto corrispondente. Il salto può essere relativo (ad esempio, questa pagina o la pagina successiva) oppure assoluto verso una qualsiasi pagina della lezione.';
 $string['jumpsto'] = 'Salti a <em>{$a}</em>';
 $string['leftduringtimed'] = 'Hai abbandonato il tentativo durante una lezione a tempo.<br />Clicca su Continua per ricominciare la lezione.';
 $string['leftduringtimednoretake'] = 'Hai abbandonato il tentativo durante una lezione a tempo e <br />non puoi riprovare o continuare la lezione.';
@@ -251,8 +250,7 @@ $string['mediawidth'] = 'Larghezza finestra popup';
 $string['messageprovider:graded_essay'] = 'Notifiche valutazione di testi liberi';
 $string['minimumnumberofquestions'] = 'Numero minimo di domande';
 $string['minimumnumberofquestions_help'] = 'Imposta il numero minimo di domande da utilizzare per calcolare il punteggio. Se la lezione contiene una o più pagine di contenuto, il numero minimo di domande dovrebbe essere impostato a zero.
-
-Impostandolo ad un valore più alto, ad esempio 20,  è opportuno aggiungere il seguente testo nella pagina di apertura della lezione: "in questa lezione si richiede di rispondere ad almeno 20 domande. E\' possibile rispondere ad un numero maggiore di domande, tuttavia se si risponde a meno di 20 domande il voto sarà comunque calcolato come se si avesse risposto a 20 domande.';
+Impostandolo ad un valore più alto, ad esempio 20, è opportuno aggiungere il seguente testo nella pagina di apertura della lezione: "in questa lezione si richiede di rispondere ad almeno 20 domande. E\' possibile rispondere ad un numero maggiore di domande, tuttavia se si risponde a meno di 20 domande il voto sarà comunque calcolato come se si avesse risposto a 20 domande.';
 $string['missingname'] = 'Inserisci uno pseudonimo';
 $string['modattempts'] = 'Possibilità  di revisione';
 $string['modattempts_help'] = 'Permetterà allo studente di navigare all\'interno della lezione ripartendo dall\'inizio.';
@@ -296,7 +294,7 @@ $string['notitle'] = 'Senza titolo';
 $string['numberofcorrectanswers'] = 'Numero di risposte corrette: {$a}';
 $string['numberofcorrectmatches'] = 'Numero di corrispondenze corrette: {$a}';
 $string['numberofpagestoshow'] = 'Numero di pagine da visualizzare';
-$string['numberofpagestoshow_help'] = 'L\'impostazione determina il numero di pagine visualizzate nella  lezione. L\'impostazione è valida solo per le pagine visualizzate in sequenza casuale (ossia quando "Azione dopo una risposta" corretta è impostato a "Visualizza una pagina che non è stata vista" oppure "Visualizza una pagina dove non è stata data una risposta"). Se il valore è 0, saranno visualizzate tutte le pagine.';
+$string['numberofpagestoshow_help'] = 'L\'impostazione determina il numero di pagine visualizzate nella lezione. L\'impostazione è valida solo per le pagine visualizzate in sequenza casuale (ossia quando "Azione dopo una risposta" corretta è impostato a "Visualizza una pagina che non è stata vista" oppure "Visualizza una pagina dove non è stata data una risposta"). Se il valore è 0, saranno visualizzate tutte le pagine.';
 $string['numberofpagesviewed'] = 'Numero di domande risposte: {$a}';
 $string['numberofpagesviewednotice'] = 'Numero di domande risposte: {$a->nquestions}; (Ne devi rispondere almeno: {$a->minquestions})';
 $string['numerical'] = 'Numerica';
@@ -311,7 +309,7 @@ $string['ordered'] = 'Ordinato';
 $string['other'] = 'Altro';
 $string['outof'] = 'su {$a}';
 $string['overview'] = 'Riepilogo';
-$string['overview_help'] = 'Una lezione è composta da un insieme di pagine con domande e, opzionalmente,  pagine di diramazione. Una pagina con domanda contiene del contenuto e propone una domanda. Ad ogni possibile riposta è associato un salto verso altre pagine. Il salto può essere relativo, ad esempio la stessa pagina o la pagina seguente, oppure assoluto, ossia una qualsiasi delle pagine che compongono una lezione. Una pagina con diramazione è una pagina che contiene una serie di collegamenti ad altre pagine della lezione, come ad esempio un sommario.';
+$string['overview_help'] = 'Una lezione è composta da un insieme di pagine con domande e, opzionalmente, pagine di diramazione. Una pagina con domanda contiene del contenuto e propone una domanda. Ad ogni possibile riposta è associato un salto verso altre pagine. Il salto può essere relativo, ad esempio la stessa pagina o la pagina seguente, oppure assoluto, ossia una qualsiasi delle pagine che compongono una lezione. Una pagina con diramazione è una pagina che contiene una serie di collegamenti ad altre pagine della lezione, come ad esempio un sommario.';
 $string['page'] = 'Pagina: {$a}';
 $string['page-mod-lesson-edit'] = 'Modifica pagina della lezione';
 $string['page-mod-lesson-view'] = 'Visualizzazione o anteprima della pagina della lezione';

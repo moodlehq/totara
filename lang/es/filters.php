@@ -50,7 +50,6 @@ $string['endswith'] = 'termina en';
 $string['filterallwarning'] = 'Aplicar filtros a las cabeceras y al contenido puede incrementar la sobrecarga del servidor. Por favor, use los ajustes \'Aplicar a\' con moderación. El uso principal es con el filtro multi-idioma.';
 $string['filtersettings'] = 'Ajustes de filtro';
 $string['filtersettings_help'] = 'Esta página le permite activar y desactivar los filtros en una parte concreta del sitio.
-
 Algunos filtros permiten ajustes locales, en cuyo caso habrá un enlace a los ajustes al lado de su nombre.';
 $string['filtersettingsforin'] = 'Ajustes de filtro para {$a->filter} in {$a->context}';
 $string['filtersettingsin'] = 'Ajustes de filtro en {$a}';

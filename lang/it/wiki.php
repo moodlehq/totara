@@ -55,7 +55,6 @@ $string['creating'] = 'Creazione pagina wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Formato di default';
 $string['defaultformat_help'] = 'Imposta il formato di default utilizzato durante la redazione delle pagine wiki.
-
 * HTML - Rende disponibile l\'editor HTML
 * Creole - Un diffuso linguaggio di markup wiki con una toolbar minimale
 * Nwiki - Il linguaggio di markup utilizzato nel modulo contrib Nwiki, simile al linugaggio usato da Mediawiki.';
@@ -88,15 +87,12 @@ $string['format_help'] = '* HTML - Rende disponibile l\'editor HTML
 * Nwiki - Il linguaggio di markup utilizzato nel modulo contrib Nwiki, simile al linguaggio usato da Mediawiki';
 $string['formatcreole'] = 'Formato Creole';
 $string['formatcreole_help'] = 'Creole è un diffuso linguaggio di markup wiki che fornisce una barra di strumenti per facilitare l\'inserimento del markup.
-
-Per creare una pagina,  racchiudi il nome della pagina stessa tra doppie partentesi quadre, ad esempio [[Pagina 2]]';
+Per creare una pagina, racchiudi il nome della pagina stessa tra doppie partentesi quadre, ad esempio [[Pagina 2]]';
 $string['formathtml'] = 'Formato HTML';
 $string['formathtml_help'] = 'L\'editor HTML semplifica la formattazione del contenuto.
-
-Per creare una pagina,  racchiudete il nome della pagina stessa tra doppie partentesi quadre, ad esempio [[Pagina 2]]';
+Per creare una pagina, racchiudete il nome della pagina stessa tra doppie partentesi quadre, ad esempio [[Pagina 2]]';
 $string['formatnwiki'] = 'Formato NWiki';
 $string['formatnwiki_help'] = 'Nwiki è Il linguaggio di markup utilizzato nel modulo contrib Nwiki.
-
 Per creare una pagina, racchiudi il nome della pagina stessa tra doppie parentesi quadre, ad esempio [[Pagina 2]]';
 $string['history'] = 'Storico';
 $string['history_help'] = 'Lo storico elenca i link alle versioni precedenti della pagina.';

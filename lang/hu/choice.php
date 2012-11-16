@@ -39,9 +39,8 @@ $string['choicefull'] = 'Ez a válaszlehetőség betelt, többre nincs lehetős�
 $string['choicename'] = 'Válaszlehetőség neve';
 $string['choiceopen'] = 'Megnyitás';
 $string['choiceoptions'] = 'Választási lehetőségek';
-$string['choiceoptions_help'] = '<p>Itt adhatja meg azokat a lehetőségeket, amelyekből a résztvevőknek választani kell.</p>
-
-<p>Ezekből tetszőleges számút kitölthet: ha nincs szüksége mind a 6 lehetőségre, néhányat közülük kitöltetlenül hagyhat. </p>';
+$string['choiceoptions_help'] = 'Itt adhatja meg azokat a lehetőségeket, amelyekből a résztvevőknek választani kell.
+Ezekből tetszőleges számút kitölthet: ha nincs szüksége mind a 6 lehetőségre, néhányat közülük kitöltetlenül hagyhat.';
 $string['choicesaved'] = 'Válaszlehetőség elmentve';
 $string['choicetext'] = 'Válaszlehetőség szövege';
 $string['chooseaction'] = 'Válasszon ki egy lépést...';
@@ -54,11 +53,11 @@ $string['full'] = '(Teljes)';
 $string['havetologin'] = 'Válaszlehetőség megadása előtt be kell jelentkeznie';
 $string['limit'] = 'Korlát';
 $string['limitanswers'] = 'Engedélyezett válaszok számának korlátozása';
-$string['limitanswers_help'] = '<p>Ezzel korlátozhatja az egyes lehetőségeket választó résztvevők számát.</p>
-<p>A határértékek bekapcsolása esetén minden lehetőséghez beállíthat egy
+$string['limitanswers_help'] = 'Ezzel korlátozhatja az egyes lehetőségeket választó résztvevők számát.
+A határértékek bekapcsolása esetén minden lehetőséghez beállíthat egy
 határértéket. Ennek elérését követően már senki nem választhatja az
-adott lehetőséget. 0 esetén az adott lehetőséget senki nem választhatja.</p>
-<p>Kikapcsolása esetén bárki bármelyik lehetőséget választhatja.</p>';
+adott lehetőséget. 0 esetén az adott lehetőséget senki nem választhatja.
+Kikapcsolása esetén bárki bármelyik lehetőséget választhatja.';
 $string['modulename'] = 'Válaszlehetőség';
 $string['modulename_help'] = 'A választási modullal a tanár kérdést tehet fel és több választ adhat meg hozzá.';
 $string['modulenameplural'] = 'Válaszlehetőségek';

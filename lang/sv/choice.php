@@ -38,9 +38,9 @@ $string['choicefull'] = 'Den här opinonsundersökningen är full och det finns 
 $string['choicename'] = 'Opinionsundersökningens namn';
 $string['choiceopen'] = 'Öppna';
 $string['choiceoptions'] = 'Alternativ för opinonsundersökning';
-$string['choiceoptions_help'] = '<p>H&auml;r specifierar Du de alternativ som de l&auml;rande har att v&auml;lja bland.</p>
-<p>Du kan fylla i valfritt antal av dessa. Det g&aring;r bra
-att l&auml;mna n&aring;gra tomma om Du inte beh&ouml;ver alla de sex alternativen.</p>';
+$string['choiceoptions_help'] = 'Här specifierar Du de alternativ som de lärande har att välja bland.
+Du kan fylla i valfritt antal av dessa. Det går bra
+att lämna några tomma om Du inte behöver alla de sex alternativen.';
 $string['choicesaved'] = 'Din opinionsundersökning har sparats';
 $string['choicetext'] = 'Opinionsundersökningens text';
 $string['chooseaction'] = 'Välj en åtgärd...';
@@ -53,13 +53,11 @@ $string['full'] = '(Full)';
 $string['havetologin'] = 'Du måste logga in innan Du kan skicka Ditt/Dina svar';
 $string['limit'] = 'Begränsning';
 $string['limitanswers'] = 'Begränsa det antal svar som är tillåtna';
-$string['limitanswers_help'] = '<p>Med den h&auml;r inst&auml;llningen kan Du begr&auml;nsa antalet deltagare som kan v&auml;lja
-varje specifikt alternativ.</p>
-
-<p>N&auml;r Du v&auml;l har best&auml;mt Dig f&ouml;r att aktivera begr&auml;nsningar s&aring; g&aring;r det att st&auml;lla in s&aring;dana f&ouml;r varje alternativ. N&auml;r r&auml;tt antal deltagare har valt alternativet s&aring; g&aring;r det inte l&auml;ngre att
-markera det. Om Du st&auml;ller in det till 0 s&aring; kan ingen v&auml;lja det.</p>
-
-<p>Om Du inte aktiverar n&aring;gra begr&auml;nsningar s&aring; kan hur m&aring;nga deltagare som helst v&auml;lja alternativet.</p>';
+$string['limitanswers_help'] = 'Med den här inställningen kan Du begränsa antalet deltagare som kan välja
+varje specifikt alternativ.
+När Du väl har bestämt Dig för att aktivera begränsningar så går det att ställa in sådana för varje alternativ. När rätt antal deltagare har valt alternativet så går det inte längre att
+markera det. Om Du ställer in det till 0 så kan ingen välja det.
+Om Du inte aktiverar några begränsningar så kan hur många deltagare som helst välja alternativet.';
 $string['modulename'] = 'Opinionsundersökning';
 $string['modulename_help'] = 'Modulen opinionsundersökning gör det möjligt för distansläraren att ställa en fråga och ange ett urval av svarsalternativ.';
 $string['modulenameplural'] = 'Opinionsundersökningar';

@@ -53,10 +53,9 @@ $string['attempts'] = 'Próbálkozások';
 $string['attemptsx'] = '{$a} próbálkozás';
 $string['attr_error'] = 'Hibás érték a(z) {$a->tag} elem attribútumánál ({$a->attr}).';
 $string['autocontinue'] = 'Automatikus folytatás';
-$string['autocontinue_help'] = '<p>Ha az automatikus folytatás be van kapcsolva, a SCO "kommunikáció lezárása" metódus
-meghívásakor automatikusan elindul a következő meglévő SCO.</p>
-
-<p>Kikapcsolása esetén a folytatáshoz a tanulónak meg kell nyomnia a "Tovább" gombot.</p>';
+$string['autocontinue_help'] = 'Ha az automatikus folytatás be van kapcsolva, a SCO "kommunikáció lezárása" metódus
+meghívásakor automatikusan elindul a következő meglévő SCO.
+Kikapcsolása esetén a folytatáshoz a tanulónak meg kell nyomnia a "Tovább" gombot.';
 $string['autocontinuedesc'] = 'Ez állítja be a tevékenységhez az alapbeállítás szerinti automatikus folytatást.';
 $string['averageattempt'] = 'Próbálkozások átlaga';
 $string['badmanifest'] = 'Hibás tananyagleírás: lásd a hibanaplót';
@@ -90,11 +89,11 @@ $string['directories'] = 'Könyvtárkapcsolatok megjelenítése';
 $string['disabled'] = 'Kikapcsolva';
 $string['display'] = 'Csomag megjelenítése';
 $string['displayattemptstatus'] = 'Próbálkozás állapotának megjelenítése';
-$string['displayattemptstatus_help'] = '<p>A próbálkozási állapot megjelenítésével szabályozható, hogy egy tanuló SCORM-próbálkozásainak az állapota megjelenjen-e a SCORM leíró oldalán. </p>
-<p>Az állapot megjeleníti a próbálkozásokat, a pontszámokat és az osztályozónaplóba rögzített osztályzatot.</P>';
+$string['displayattemptstatus_help'] = 'A próbálkozási állapot megjelenítésével szabályozható, hogy egy tanuló SCORM-próbálkozásainak az állapota megjelenjen-e a SCORM leíró oldalán.
+Az állapot megjeleníti a próbálkozásokat, a pontszámokat és az osztályozónaplóba rögzített osztályzatot.';
 $string['displayattemptstatusdesc'] = 'Ezzel állítja be a próbálkozás állapotának megjelenítéséhez az alapértéket.';
 $string['displaycoursestructure'] = 'Kurzusstruktúra megjelenítése a belépési oldalon';
-$string['displaycoursestructure_help'] = '<p>A kurzusszerkezet megjelenítésével szabályozható, hogy a SCORM-tartalomjegyzék látsszon-e a SCORM leíró oldalán. </p>';
+$string['displaycoursestructure_help'] = 'A kurzusszerkezet megjelenítésével szabályozható, hogy a SCORM-tartalomjegyzék látsszon-e a SCORM leíró oldalán.';
 $string['displaycoursestructuredesc'] = 'Ezzel állítja be a belépési oldalon a kurzusszerkezet megjelenítéséhez az alapértéket.';
 $string['displaydesc'] = 'Ezzel állítja be, hogy egy tevékenységhez a csomag megjelenjen-e.';
 $string['displaysettings'] = 'Megjelenítési beállítások';
@@ -118,14 +117,14 @@ $string['finishscormlinkname'] = 'ide kattintva térjen vissza a kurzusoldalra.'
 $string['firstaccess'] = 'Első hozzáférés';
 $string['firstattempt'] = 'Első próbálkozás';
 $string['forcecompleted'] = 'Befejezés előírása';
-$string['forcecompleted_help'] = '<p>Befejezés előírása esetén az adott próbálkozás kötelezően "befejezett" állapotba kerül cmi.core.score.raw esetén, s mint ilyen, csak SCORM 1.2 csomagok esetén releváns. </p>
-<p>Ez akkor hasznos, ha a SCORM-csomag ellenőrző vagy böngésző üzemmódban helytelenül kezeli az újrapróbálkozást, vagy más okból hibásan állítja be a befejezés állapotát.</p>';
+$string['forcecompleted_help'] = 'Befejezés előírása esetén az adott próbálkozás kötelezően "befejezett" állapotba kerül cmi.core.score.raw esetén, s mint ilyen, csak SCORM 1.2 csomagok esetén releváns.
+Ez akkor hasznos, ha a SCORM-csomag ellenőrző vagy böngésző üzemmódban helytelenül kezeli az újrapróbálkozást, vagy más okból hibásan állítja be a befejezés állapotát.';
 $string['forcecompleteddesc'] = 'Ezzel állítja be a befejezés előírásához az alapértéket.';
 $string['forcejavascript'] = 'JavaScript bekapcsolásának előírása';
 $string['forcejavascript_desc'] = 'Bekapcsolása esetén (ajánlott!) megakadályozza SCORM-objektumok elérését, ha a felhasználó böngészőjében a JavaScript nem használható/ki van kapcsolva. Ilyenkor a felhasználó megtekintheti a SCORM-ot, de az alkalmazással való kommunikáció nem fog működni és az osztályzatokkal kapcsolatos információk mentésére sem kerül sor';
 $string['forcejavascriptmessage'] = 'Az objektum megtekintéséhez böngészőjében kapcsolja be a JavaScript használatát, majd próbálja meg újra.';
 $string['forcenewattempt'] = 'Új próbálkozás előírása';
-$string['forcenewattempt_help'] = '<p>Új próbálkozás előírása esetén a SCORM-csomag minden egyes elérése egy új próbálkozásnak számít. </p>';
+$string['forcenewattempt_help'] = 'Új próbálkozás előírása esetén a SCORM-csomag minden egyes elérése egy új próbálkozásnak számít.';
 $string['forcenewattemptdesc'] = 'Ezzel állítja be a új próbálkozás előírásához az alapértéket.';
 $string['found'] = 'Tananyagleírás megvan';
 $string['frameheight'] = 'Ezzel állítja be a keret vagy ablak alapmagasságát.';
@@ -137,9 +136,7 @@ $string['gradeforattempt'] = 'Próbálkozásra adott pont';
 $string['gradehighest'] = 'Legmagasabb pont';
 $string['grademethod'] = 'Pontozási módszer';
 $string['grademethod_help'] = 'A pontozási módszer szabja meg, miként állapítja meg a tevékenységhez kapcsolódó egyetlen próbálkozásra adott pontot.
-
 4 pontozási módszer létezik:
-
 * Tanulási objektumok - Jelzi a tevékenység során teljesített tanulási objektumok számát
 * Legmagasabb pont - A tanulók által az összes teljesített tanulási objektumra kapott legmagasabb pont
 * Átlagpont - Az összes pontszám átlaga
@@ -152,11 +149,9 @@ $string['gradesum'] = 'Összes pont';
 $string['height'] = 'Magasság';
 $string['hidden'] = 'Rejtve';
 $string['hidebrowse'] = 'Előzetes megtekintés kikapcsolása';
-$string['hidebrowse_help'] = '<p>Ha ez a lehetőség Igen-re van beállítva, az Előnézet gomb a SCORM/AICC csomag tevékenységének nézetéből rejtve marad.</p>
-
-<p>A tanuló választhatja a tevékenység előnézeti (böngésző módban) való megtekintését vagy próbálkozhat vele normál módban.</p>
-
-<p>Amikor egy tanulási objektumot előnézet (böngésző) módban sajátít el, erre az  <img src="<?php echo $CFG->wwwroot.\'/mod/scorm/pix/browsed.gif\' ?>" alt="<?php print_string(\'browsed\',\'scorm\') ?>" title="<?php print_string(\'browsed\',\'scorm\') ?>" /> ikon utal.</p>';
+$string['hidebrowse_help'] = 'Ha ez a lehetőség Igen-re van beállítva, az Előnézet gomb a SCORM/AICC csomag tevékenységének nézetéből rejtve marad.
+A tanuló választhatja a tevékenység előnézeti (böngésző módban) való megtekintését vagy próbálkozhat vele normál módban.
+Amikor egy tanulási objektumot előnézet (böngésző) módban sajátít el, erre az ikon utal.';
 $string['hidebrowsedesc'] = 'Ezzel állítja be, hogy az előzetes megtekintés alaphelyzetben bekapcsolt vagy kikapcsolt állapotban legyen-e.';
 $string['hideexit'] = 'Kilépő ugrópont elrejtése';
 $string['hidenav'] = 'Navigációs gombok elrejtése';
@@ -192,13 +187,14 @@ $string['last'] = 'Utolsó hozzáférés időpontja';
 $string['lastaccess'] = 'Utolsó hozzáférés';
 $string['lastattempt'] = 'Utolsó befejezett próbálkozás';
 $string['lastattemptlock'] = 'Lezárás az utolsó próbálkozás után';
-$string['lastattemptlock_help'] = '<p>Ezzel bekapcsolja a SCORM-lejátszó lezárását, ha a tanuló a rendelkezésére álló összes próbálkozást kihasználta.</p>
-<p>A tanuló továbbra is ellátogathat a kurzust leíró oldalra és (ha be van kapcsolva) megtekintheti a próbálkozások állapotára vonatkozó információkat, de nem választhatja az "Enter" gombot a lejátszó elindítására.</p>';
+$string['lastattemptlock_help'] = 'Ezzel bekapcsolja a SCORM-lejátszó lezárását, ha a tanuló a rendelkezésére álló összes próbálkozást kihasználta.
+A tanuló továbbra is ellátogathat a kurzust leíró oldalra és (ha be van kapcsolva) megtekintheti a próbálkozások állapotára vonatkozó információkat, de nem választhatja az "Enter" gombot a lejátszó elindítására.';
 $string['lastattemptlockdesc'] = 'Ezzel állítja be az utolsó próbálkozás utáni lezárás alapértékét.';
 $string['location'] = 'Helysáv megjelenítése';
 $string['max'] = 'Max. pontszám';
 $string['maximumattempts'] = 'Próbálkozások száma';
-$string['maximumattempts_help'] = '<p>Itt adhatja meg a próbálkozások megengedett számát.<br />Csak SCORM 1.2 és AICC csomaggal működik. A SCORM 2004 a próbálkozások maximális számának megadására saját eljárást használ.</p>';
+$string['maximumattempts_help'] = 'Itt adhatja meg a próbálkozások megengedett számát.
+Csak SCORM 1.2 és AICC csomaggal működik. A SCORM 2004 a próbálkozások maximális számának megadására saját eljárást használ.';
 $string['maximumattemptsdesc'] = 'Ezzel állítja be egy tevékenység próbálkozásainak alapértelmezett maximális számát.';
 $string['maximumgradedesc'] = 'Ezzel állítja be egy tevékenység pontjainak alapértelmezett maximális számát.';
 $string['menubar'] = 'Menüsáv megjelenítése';
@@ -285,7 +281,6 @@ $string['scormopen'] = 'Nyitva';
 $string['scormresponsedeleted'] = 'Törölt felhasználói próbálkozások';
 $string['scormtype'] = 'Típus';
 $string['scormtype_help'] = 'Ez szabja meg, hogy kerüljön a csomag a kurzusba. Legfeljebb 4 lehetőség közül választhat:
-
 * Feltöltött csomag - Lehetővé teszi SCORM-csomag kiválasztását az állományválasztón keresztül
 * Külső SCORM-jegyzékfájl - Lehetővé teszi imsmanifest.xml URL megadását. Megjegyzés: ha az URL-nek az Ön portáljáétól eltérő a doménneve, akkor jobb megoldás a "Letöltött csomag", mert ellenkező esetben nem kerül sor a pontok mentésére.
 * Letöltött csomag - Lehetővé teszi csomag URL-jének megadását. A csomagot kibontja és helyben elmenti, a külső SCORM-csomag frissítésekor pedig frissíti.
@@ -297,19 +292,15 @@ $string['selectnone'] = 'Összes kijelölés törlése';
 $string['show'] = 'Megjelenítés';
 $string['sided'] = 'Oldalra';
 $string['skipview'] = 'A tanuló kihagyja a tartalmi struktúra oldalát';
-$string['skipview_help'] = '<p>Ha csak egy tanulási objektumot tartalmazó csomagot ad a tananyaghoz, beállíthatja a tartalmi szerkezet oldalának automatikus átugrását, ha a felhasználók a kurzusoldalon a SCORM-tevékenyégre kattintanak.</p>
-
-<p>Választható beállítások:
-<ul>
-<li><strong>Soha</strong> ne ugorja át a tartalmi szerkezet oldalát</li>
-<li><strong>Első eléréskor</strong> csakis az első megtekintéskor ugorja át a tartalmi szerkezet oldalát</li>
-<li><strong>Mindig</strong> ugorja át a tartalmi szerkezet oldalát</li>
-</ul>
-</p>';
+$string['skipview_help'] = 'Ha csak egy tanulási objektumot tartalmazó csomagot ad a tananyaghoz, beállíthatja a tartalmi szerkezet oldalának automatikus átugrását, ha a felhasználók a kurzusoldalon a SCORM-tevékenyégre kattintanak.
+Választható beállítások:
+\* **|Soha** ne ugorja át a tartalmi szerkezet oldalát
+\* **|Első eléréskor** csakis az első megtekintéskor ugorja át a tartalmi szerkezet oldalát
+\* **|Mindig** ugorja át a tartalmi szerkezet oldalát';
 $string['skipviewdesc'] = 'Ezzel állítja be, hogy egy oldalon mikor maradjon ki a tartalomszerkezet';
 $string['slashargs'] = 'VIGYÁZAT: a portálon a perjeles argumentumok ki vannak kapcsolva és az objektumok viselkedése szokatlan lehet!';
 $string['stagesize'] = 'Keret/ablak mérete';
-$string['stagesize_help'] = '<p>Ezen két beállítás határozza meg a tanulási objektum keretének/ablakának a magasságát és szélességét.</p>';
+$string['stagesize_help'] = 'Ezen két beállítás határozza meg a tanulási objektum keretének/ablakának a magasságát és szélességét.';
 $string['started'] = 'Kezdés ideje';
 $string['status'] = 'Állapot';
 $string['statusbar'] = 'Állapotsor megjelenítése';
@@ -347,9 +338,7 @@ $string['viewallreports'] = '{$a} próbálkozás jelentéseinek megtekintése';
 $string['viewalluserreports'] = '{$a} felhasználó jelentéseinek megtekintése';
 $string['whatgrade'] = 'Próbálkozások pontozása';
 $string['whatgrade_help'] = 'Ha többszöri próbálkozást engedélyez, kiválaszthatja, hogy a legmagasabb, az átlag, az első vagy az utolsó próbálkozás kerüljön-e az osztályozónaplóba.
-
 Többszöri próbálkozás kezelése
-
 * Új próbálkozás a tartalomszerkezet oldalán a Belépés gomb fölötti jelölőnégyzettel indítható, így csak akkor engedélyezze azon oldal elérését, ha többszöri próbálkozásra akar lehetőséget adni.
 * Nem minden SCORM.csomag kezeli az új próbálkozásokat megfelelően. Ha logikailag nem úgy épül föl, lehetővé teheti adott próbálkozás felülírását akkor is, ha az "kész van" vagy "sikerült".
 * A "Teljesítés előírása", az "Új próbálkozás előírása" és a "Lezárás utolsó próbálkozás után" beállításával további lehetőségeket használhat ki többszöri próbálkozások esetén.';

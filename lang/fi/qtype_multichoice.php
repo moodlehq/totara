@@ -29,10 +29,10 @@ $string['addmorechoiceblanks'] = 'Lisää kenttiä {no} vaihtoehdolle';
 $string['answerhowmany'] = 'Yksi vai useita vaihtoehtoja?';
 $string['answernumbering'] = 'Vaihtoehtojen numerointi';
 $string['answernumbering123'] = '1., 2., 3., ...';
-$string['answernumberingabc'] = 'a., b., c., ...';
 $string['answernumberingABCD'] = 'A., B., C., ...';
-$string['answernumberingiii'] = 'i., ii., iii., ...';
 $string['answernumberingIIII'] = 'I., II., III., ...';
+$string['answernumberingabc'] = 'a., b., c., ...';
+$string['answernumberingiii'] = 'i., ii., iii., ...';
 $string['answernumberingnone'] = 'Ei numerointia';
 $string['answersingleno'] = 'Salli useampi vaihtoehto';
 $string['answersingleyes'] = 'Vain yksi vaihtoehto';
@@ -58,15 +58,14 @@ $string['partiallycorrectfeedback'] = 'Mille tahansa osittain oikealle vastaukse
 $string['pleaseselectananswer'] = 'Ole hyvä ja valitse vastaus.';
 $string['pleaseselectatleastoneanswer'] = 'Ole hyvä ja valitse ainakin yksi vastaus.';
 $string['pluginname'] = 'Monivalinta';
+$string['pluginname_help'] = 'Vastaukseksi kysymykseen (joka voi sisältää kuvan) vastaaja valitsee vastauksensa annetuista vaihtoehdoista. Monivalintakysymyksiä on kahdentyyppisiä: valintapainikkeet, joista voi valita tasan yhden vaihtoehdon, ja valintaruudut, joista voi valita useita vaihtoehtoja.';
 $string['pluginnameadding'] = 'Lisätään monivalinta';
 $string['pluginnameediting'] = 'Muokataan monivalintaa';
-$string['pluginname_help'] = 'Vastaukseksi kysymykseen (joka voi sisältää kuvan) vastaaja valitsee vastauksensa annetuista vaihtoehdoista. Monivalintakysymyksiä on kahdentyyppisiä: valintapainikkeet, joista voi valita tasan yhden vaihtoehdon, ja valintaruudut, joista voi valita useita vaihtoehtoja.';
 $string['pluginnamesummary'] = 'Vastauksena on yksi tai useita valintoja annetuista vaihtoehdoista.';
 $string['selectmulti'] = 'Valitse yksi tai useampi:';
 $string['selectone'] = 'Valitse yksi:';
 $string['shuffleanswers'] = 'Sekoita vaihtoehdot';
-$string['shuffleanswers_help'] = '<h2>Kysymysten sekoittaminen</h2>
-
-<p>Kun tämä asetus on valittuna, samat kysymykset arvotaan uuteen järjestykseen joka kerta, kun vastaaja yrittää tenttiä. Ajatuksena on myös vaikeuttaa oikeiden vastausten kopioimista vierustoverilta suoritettaessa tenttiä samanaikaisesti ahtaassa luokkatilassa.</p>';
+$string['shuffleanswers_help'] = '## Kysymysten sekoittaminen
+Kun tämä asetus on valittuna, samat kysymykset arvotaan uuteen järjestykseen joka kerta, kun vastaaja yrittää tenttiä. Ajatuksena on myös vaikeuttaa oikeiden vastausten kopioimista vierustoverilta suoritettaessa tenttiä samanaikaisesti ahtaassa luokkatilassa.';
 $string['singleanswer'] = 'Valitse yksi vaihtoehto';
 $string['toomanyselected'] = 'Olet valinnut liian monta vaihtoehtoa.';

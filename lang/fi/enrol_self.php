@@ -41,7 +41,6 @@ $string['enrolstartdate_help'] = 'Jos tämä on aktivoitu, käyttäjät voivat l
 $string['groupkey'] = 'Käytä ryhmäavaimia';
 $string['groupkey_desc'] = 'Käytä oletuksena ryhmäavaimia.';
 $string['groupkey_help'] = 'Sen lisäksi, että kurssiavaimen avulla osallistuja voi liittää itsensä kurssille, ryhmäavaimen käyttö lisää käyttäjät automaattisesti tiettyyn ryhmään kurssialueelle liittymisen yhteydessä.
-
 Kun haluat käyttää ryhmäavaimia, määrittele kurssiasetuksiin kurssiavain JA kunkin ryhmän asetuksiin oma ryhmäavain.';
 $string['longtimenosee'] = 'Poista passiiviset käyttäjät kun';
 $string['longtimenosee_help'] = 'Jos käyttäjät eivät ole käyneet kurssilla pitkään aikaan, heidät kirjataan automaattisesti pois. Tämä parametri määrittelee tuon aikarajan.';
@@ -51,9 +50,7 @@ $string['maxenrolledreached'] = 'Itserekisteröitymistä käyttävien osallistuj
 $string['nopassword'] = 'Kurssiavainta ei vaadita.';
 $string['password'] = 'Kurssiavain';
 $string['password_help'] = 'Kurssiavaimella voit rajoittaa kurssille pääsyn vain niihin, jotka tietävät avaimen.
-
 Jos kenttä jätetään tyhjäksi, kuka tahansa voi liittyä kurssille.
-
 Jos kurssiavain on määritelty, kaikkien kurssille liittyvien täytyy antaa avain. Huomaa, että käyttäjien täytyy antaa avain vain KERRAN eli silloin kun he liittyvät kurssialueelle.';
 $string['passwordinvalid'] = 'Väärä kurssiavain, yritä uudelleen.';
 $string['passwordinvalidhint'] = 'Tarjottu kurssiavain ei kelpaa, yritä uudelleen<br />
@@ -84,4 +81,4 @@ $string['welcometocoursetext'] = 'Tervetuloa kurssille {$a->coursename}!
 
 Ensimmäiseksi sinun kannattaa muokata käyttäjätietojasi, jotta muut voivat tutustua sinuun:
 
-  {$a->profileurl}';
+{$a->profileurl}';

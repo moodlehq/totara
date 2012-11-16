@@ -55,7 +55,6 @@ $string['creating'] = 'Wikiページを作成する';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'デフォルトフォーマット';
 $string['defaultformat_help'] = 'この設定ではWikiページの編集時に使用するデフォルトフォーマットを指定します。
-
 * HTML - HTMLエディタを使用できます。
 * クレオール - 小さな編集ツールバーの一般的なWikiマークアップ言語を使用できます。
 * Nwiki - Nwikiモジュールで使用される、Mediawikiのようなマークアップ言語です。';
@@ -89,15 +88,12 @@ $string['format_help'] = '* HTML - HTMLエディタを使用できます。
 * Nwiki - Nwikiモジュールで使用される、Mediawikiのようなマークアップ言語です。';
 $string['formatcreole'] = 'クレオールフォーマット';
 $string['formatcreole_help'] = 'クレオールフォーマットは適切なマークアップを挿入するための編集ツールバーを持った一般的なWIkiマークアップ言語です。
-
 新しいページを作成するには、例えば [[ページ2 ]] のように2重角括弧で閉じたページ名を入力します。';
 $string['formathtml'] = 'HTMLフォーマット';
 $string['formathtml_help'] = 'HTMLエディタはコンテンツのフォーマットに使用することができます。
-
 新しいページを作成するには、例えば [[ページ2 ]] のように2重角括弧で閉じられたページ名を入力します。';
 $string['formatnwiki'] = 'NWiki フォーマット';
 $string['formatnwiki_help'] = 'NwikiはNwikiモジュール内で使用されるMediawikiのようなマークアップ言語です。
-
 新しいページを作成するには、例えば [[ページ2 ]] のように2重角括弧で閉じたページ名を入力します。';
 $string['history'] = '履歴';
 $string['history_help'] = '前のバージョンのページの履歴一覧リンクです。';

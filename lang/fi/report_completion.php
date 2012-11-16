@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'Suorituspäivämäärä';
 $string['completion:view'] = 'Näytä kurssin suoritusraportti';
+$string['completiondate'] = 'Suorituspäivämäärä';
 $string['page-report-completion-index'] = 'Kurssin suoritusraportti';
 $string['page-report-completion-user'] = 'Käyttäjän kurssin suoritusraportti';
 $string['page-report-completion-x'] = 'Mikä tahansa suoritusraportti';

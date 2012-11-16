@@ -52,8 +52,7 @@ $string['modifiedno'] = 'Er zijn geen aangepast strings om te bewaren.';
 $string['modifiednum'] = 'Er zijn {$a} aangepaste strings. Wil je deze wijzigingen bewaren in je lokaal taalpakket?';
 $string['nostringsfound'] = 'Er zijn geen strings gevonden. Wijzig je filterinstellingen';
 $string['placeholder'] = 'Plaatshouders';
-$string['placeholder_help'] = 'Plaatshouders zijn speciale tekenreeksen binnen een string, zoals  `{$a}` of `{$a->something}`. Ze worden vervangen door een waarde wanneer de string getoond wordt.
-
+$string['placeholder_help'] = 'Plaatshouders zijn speciale tekenreeksen binnen een string, zoals \`{$a}\` of \`{$a->something}\`. Ze worden vervangen door een waarde wanneer de string getoond wordt.
 Het is belangrijk om de plaatshouders exact te kopiëren, zoals ze in de originele string voorkomen. Vertaal ze niet en wijzig ook hun links-naar-rechts richting niet.';
 $string['placeholderwarning'] = 'String met plaatshouder';
 $string['pluginname'] = 'Taalpakket aanpassingen';

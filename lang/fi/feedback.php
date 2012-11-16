@@ -71,20 +71,20 @@ $string['delete_old_items'] = 'Poista vanhat palautteet';
 $string['delete_template'] = 'Poista mallipohja';
 $string['delete_templates'] = 'Poista mallipohja...';
 $string['depending'] = 'Riippuvuudet';
-$string['depending_help'] = 'Riippuvuuksilla määrittelet aiemmista kysymyksistä riippuvia jatkokysymyksiä. Tee näin:<br />
-<ul>
-<li>Luo ensin kysymys, jonka vastausvaihtoehtojen arvoista muut kysymykset riippuvat. Tähän kannattaa käyttää monivalintakysymysvaihtoehtoja mieluummin kuin avoimia tekstikenttiä.</li>
-<li><strong>Lisää sitten sivunvaihto.</strong></li>
-<li>Lisää sitten kysymykset, jotka riippuvat aiemmasta kysymyksestä. Valitse riippuvuuden lähdekysymys kohdasta "Tämä kysymys riippuu kysymyksestä" ja lisää tekstikenttään "Riippuvuuden arvo" lähdekysymyksen vastausvaihtoehto, joka pitää olla valittuna.</li>
-</ul>
-<strong>Tässä on käytännön esimerkki:</strong>
-<ol>
-<li>Kohde Q: onko sinulla auto? A: kyllä/ei</li>
-<li>Sivunvaihto</li>
-<li>Kohde Q: minkä värinen autosi on?<br /> (tämä kohde riippuu kohteesta 1 arvolla = kyllä)</li>
-<li>Kohde Q: miksi sinulla ei ole autoa?<br /> (tämä kohde riippuu kohteesta 1 arvolla = ei)</li>
-<li> ... muut kohteet</li>
-</ol>
+$string['depending_help'] = 'Riippuvuuksilla määrittelet aiemmista kysymyksistä riippuvia jatkokysymyksiä. Tee näin:
+* Luo ensin kysymys, jonka vastausvaihtoehtojen arvoista muut kysymykset riippuvat. Tähän kannattaa käyttää monivalintakysymysvaihtoehtoja mieluummin kuin avoimia tekstikenttiä.
+* **|Lisää sitten sivunvaihto.**
+* Lisää sitten kysymykset, jotka riippuvat aiemmasta kysymyksestä. Valitse riippuvuuden lähdekysymys kohdasta "Tämä kysymys riippuu kysymyksestä" ja lisää tekstikenttään "Riippuvuuden arvo" lähdekysymyksen vastausvaihtoehto, joka pitää olla valittuna.
+
+**Tässä on käytännön esimerkki:**
+1. Kohde Q: onko sinulla auto? A: kyllä/ei
+2. Sivunvaihto
+3. Kohde Q: minkä värinen autosi on?
+(tämä kohde riippuu kohteesta 1 arvolla = kyllä)
+4. Kohde Q: miksi sinulla ei ole autoa?
+(tämä kohde riippuu kohteesta 1 arvolla = ei)
+5. ... muut kohteet
+
 Siinä kaikki. Pidä hauskaa!';
 $string['dependitem'] = 'Tämä kysymys riippuu kysymyksestä';
 $string['dependvalue'] = 'Riippuvuuden arvo';
@@ -141,7 +141,6 @@ $string['infotype'] = 'Taustatiedon tyyppi';
 $string['insufficient_responses'] = 'riittämättömät vastaukset';
 $string['insufficient_responses_for_this_group'] = 'Tällä ryhmällä on riittämättömiä vastauksia';
 $string['insufficient_responses_help'] = 'Tällä ryhmällä on riittämättömiä vastauksia.
-
 Vähintään 2 vastausta tarvitaan, jotta palaute voidaan pitää anonyyminä.';
 $string['item_label'] = 'Kysymyksen tunniste';
 $string['item_name'] = 'Kysymys';
@@ -162,9 +161,7 @@ $string['messageprovider:submission'] = 'Palautteen ilmoitukset';
 $string['mode'] = 'Tila';
 $string['modulename'] = 'Palaute';
 $string['modulename_help'] = 'Palaute-aktiviteetilla voit tehdä omia kyselyjä. Tarjolla on monivalinta-, kyllä/ei- ja avointen tekstikysymystyyppien lisäksi ohjeteksti väliohjeita varten, sivunvaihto ja sekä taustatietoja. Lisäksi voit rakentaa riippuvuuksia kysymysten välille.
-
 Palautteen vastaukset ovat halutessasi anonyymejä, ja voit valita näyttää vastausten yhteenvedon kaikille osallistujille tai rajata vain opettajien näkyville. Moodlen pääsivulle voi myös lisätä Palaute-aktiviteetteja, joihin myös kirjautumattomat käyttäjät voivat tällöin vastata (tällaisen voi lisätä vain Moodlen pääkäyttäjä).
-
 Palaute-aktiviteettia voi käyttää esimerkiksi
 * kesken kurssin osallistujien jatkotarpeiden ja -toiveiden esittämiseen
 * kurssin lopussa kurssipalautteen kieräämiseen (paitsi jos organisaatiossasi on käytössä muu kurssipalautteen keruutapa)

@@ -55,7 +55,6 @@ $string['creating'] = 'Wikiseite wird erstellt';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Standardformat';
 $string['defaultformat_help'] = 'Diese Einstellung bestimmt das vorgegebene Format beim Bearbeiten von Wikiseiten.
-
 * HTML - Der Texteditor ist verfügbar
 * Creole - Eine übliche Markup-Sprache für Wikis ist zusammen mit einer kleinen Bearbeitungsleiste verfügbar
 * NWiki - Die spezifische Markup-Sprache des verwendeten NWiki ist verfügbar';
@@ -85,21 +84,17 @@ $string['forceformat'] = 'Vorgegebenes Format';
 $string['forceformat_help'] = 'Wenn das Format vorgegeben wird, gibt es keine Möglichkeit, bei der Bearbeitung das Format zu verändern.';
 $string['format'] = 'Format';
 $string['format_help'] = 'Format zur Bearbeitung von Wikiseiten
-
 * HTML - Der Texteditor ist verfügbar
 * Creole - Eine übliche Markup-Sprache für Wikis ist zusammen mit einer kleinen Werkzeugleiste verfügbar
 * NWiki - Die spezifische Markup-Sprache des verwendeten NWiki ist verfügbar';
 $string['formatcreole'] = 'Creole-Format';
 $string['formatcreole_help'] = 'Creole ist eine übliche Markup-Sprache für Wikis mit einer Werkzeugleiste zum Einfügen der entsprechenden Formatierungszeichen.
-
 Um eine neue Seite zu erstellen, geben Sie den neuen Seitennamen in doppelte Eckige Klammern ein, z.B. [[Neue Seite]].';
 $string['formathtml'] = 'HTML-Format';
 $string['formathtml_help'] = 'Der HTML-Editor kann benutzt werden, um Inhalte zu formatieren.
-
 Um eine neue Seite zu erstellen, geben Sie den neuen Seitennamen in doppelte Eckige Klammern ein, z.B. [[Neue Seite]].';
 $string['formatnwiki'] = 'NWiki-Format';
 $string['formatnwiki_help'] = 'NWiki ist eine dem MediaWiki ähnliche Markup-Sprache, die für das in Moodle enthaltene Modul NWiki verwendet wird.
-
 Um eine neue Seite zu erstellen, geben Sie den neuen Seitennamen in doppelte Eckige Klammern ein, z.B. [[Neue Seite]].';
 $string['history'] = 'Versionen';
 $string['history_help'] = 'Der Link \'Versionen\' führt zu älteren Versionen der Seite';

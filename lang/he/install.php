@@ -260,8 +260,8 @@ $string['memorylimithelp'] = '<p>
 
 </p>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת MSSQL בכדי שהוא יוכל לתקשר עם SQL*SERVER. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['mssql_n'] = 'SQL*Server with UTF-8 support (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת MSSQL בכדי שהוא יוכל לתקשר עם SQL*SERVER. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת MySQL בכדי שהוא יוכל לתקשר עם MySQL. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['mysqli'] = 'Improved MySQL (mysqli)';
@@ -282,8 +282,8 @@ $string['nativesqlsrvhelp'] = 'כעת תצטרך להגדיר את מסד הנת
 תחילית הטבלה הכרחית אף היא.';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת OCI8 בכדי שהוא יוכל לתקשר עם Oracle. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
-$string['odbcextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת ODBC בכדי שהוא יוכל לתקשר עם SQL*Server. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['odbc_mssql'] = 'SQL*Server over ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP לא הוגדר כהלכה עם הרחבת ODBC בכדי שהוא יוכל לתקשר עם SQL*Server. אנא בדוק את קובץ הגדרות הPHP שלך- php.ini או הדר את ה-PHP שלך.';
 $string['pass'] = 'עבר';
 $string['paths'] = 'נתיבים';
 $string['pathserrcreatedataroot'] = 'ספריית המידע (Data Directory) - ({$a->dataroot}) לא יכולה להיווצר על-ידי המתקין.';
@@ -303,7 +303,7 @@ $string['phpversionhelp'] = '<p>גרסת PHP חייבת להיות לפחות 4.
 (במקרים של גרסת 5.0.x תוכל גם לרדת בגרסה ל- 4.4.x)
 </p>';
 $string['postgres7'] = 'PostgreSQL (postgres7';
-$string['releasenoteslink'] = 'למידע על גרסת Moodle זו, נא הכנס להסבר כאן {$a} ';
+$string['releasenoteslink'] = 'למידע על גרסת Moodle זו, נא הכנס להסבר כאן {$a}';
 $string['safemode'] = 'מצב בטוח (Safe Mode)';
 $string['safemodeerror'] = 'ל-Moodle קיימת בעיה עם איפשור מצב הבטוח (safe mode)';
 $string['safemodehelp'] = '<p>

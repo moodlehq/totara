@@ -109,11 +109,8 @@ $string['competencyaddnew'] = 'Dodaj nową kompetencję';
 $string['competencyaddnewframework'] = 'Dodaj nową platformę kompetencji';
 $string['competencyaggregationmethod'] = 'Metoda agregacji';
 $string['competencyaggregationmethod_help'] = 'Metoda agregacji określa sposób obliczania przez system osiągnięć kompetencyjnych.
-
 Jeśłi metoda agregacji zostanie ustawiona na Wszystko, trzeba będzie osiągnąć wszystkie kompetencje podrzędne, aby kompetencję nadrzędną można było zadeklarować jako osiągniętą.
-
 Jeśli metoda agregacji zostanie ustawiona na Dowolna, trzeba będzie uzyskać tylko jedną spośród kompetencji podrzędnych, aby pomyślnie osiągnąć kompetencję nadrzędną.
-
 Jeśli metoda agregacji zostanie ustawiona na Wyłączona, automatyczne osiągnięcia zostaną wyłączone dla tej kompetencji. (Można ją nadal będzie oznaczyć ręcznie jako osiągniętą.)';
 $string['competencyassigndeletecheck'] = 'Czy na pewno chcesz usunąć to przypisanie kompetencji?';
 $string['competencybacktoallframeworks'] = 'Powrót do wszystkich platform kompetencji';
@@ -148,13 +145,10 @@ $string['competencyevidence'] = 'Podstawy kompetencji';
 $string['competencyevidenceassessmenttype'] = 'Typ oceny';
 $string['competencyevidenceassessmenttype_help'] = 'Pole typu oceny jest polem tekstowym przeznaczonym na wszelkie dodatkowe informacje dotyczące oceny tej kompetencji. Treść może być różna a pole jest opcjonalne.';
 $string['competencyevidenceassessor_help'] = 'Można wybrać oceniającego, który jest użytkownikiem oceniającym, czy bieżący użytkownik jest biegły w danej kompetencji. Pole Oceniający jest opcjonalne, więc można zostawić w menu rozwijanym opcję Wybierz oceniającego..., jeśli nie chcesz przypisać oceniającego.
-
 Na liście rozwijanej znajdują się wszyscy użytkownicy system Moodle, którzy mają rolę oceniającego. Jeśli użytkownika, którego chcesz dodać, nie ma na liście lub nie są wyświetlane żadne opcje, należy poprosić administratora o dodanie tego użytkownika do roli oceniającego.';
 $string['competencyevidenceassessorname_help'] = 'Pole Nazwa oceniającego odwoluje się do nazwy organizacji, która dokonała oceny użytkownika dla tej kompetencji. Jest to pole opcjonalne, więc może pozostać puste.';
 $string['competencyevidencecompetency_help'] = 'kompetencja, która ma zostać przypisana użytkownikowi. Jeśli edytujesz istniejący element dowodu kompetencji, nie można tego zmienić. Możesz jednak utworzyć nowy element dowodu kompetencji (o ile masz do tego uprawnienia), odwiedzając stronę Moje rekordy danego użytkownika i klikając przycisk Dodaj dowód kompetencji.
-
 Podczas tworzenia nowego elementu dowodu kompetencji można wybrać między dodaniem dowodu dla istniejącej kompetencji i utworzeniem nowej kompetencji. Jeśli wybierzesz opcję Wybierz kompetencję, okno podręczne umożliwi wybranie spośród istniejących kompetencji. Jeśli wybierzesz opcję Utwórz nową kompetencję, zostanie wyświetlony formularz, gdzie można wybrać platformę i zdefiniować nową kompetencję.
-
 Należy zauważyć, że nie można utworzyć dwóch elementów dowodu kompetencji odwołujących się do tego samego użytkownika i kompetencji. Jeśli spróbujesz to zrobić, otrzymasz łącze do edycji oryginalnego rekordu lub wybrania innej kompetencji.';
 $string['competencyevidencecount'] = 'Elementy dowodu';
 $string['competencyevidenceorganisation_help'] = 'Ta opcja rejestruje organizację, do której należał użytkownik w chwili ukończenia elementu dowodu kompetencji. W większości przypadków będzie to to samo, co bieżąca organizacja użytkownika. Ponieważ użytkownicy zmieniają z czasem organizacje, umożliwia to rejestrację tego, gdzie byli w chwili ukończenia. Jest to pole opcjonalne.';
@@ -171,21 +165,16 @@ $string['competencyframeworkfullname'] = 'Pełna nazwa';
 $string['competencyframeworkfullname_help'] = 'Pełna nazwa platformy to kompletny tytuł platformy.';
 $string['competencyframeworkgeneral'] = 'Platforma kompetencji';
 $string['competencyframeworkgeneral_help'] = '**Platformy kompetencji **są konfigurowane w celu przechowywania umiejętności, wiedzy i kompetencji behawioralnych, które mają zostać osiągnięte przez personel.
-
 Kompetencje mogą być zgrupowane w ramach różnych rodzajów platform. Na przykład jedna platforma może przechowywać krajowe przemysłowe standardy kompetencji (uzyskane od organu przemysłowego), zaś inna platforma może przechowywać konkretne kompetencje skonfigurowane w danej firmie.
-
 Przed skonfigurowaniem platformy kompetencji musi zostać skonfigurowana **skala kompetencji**.';
 $string['competencyframeworkidnumber'] = 'Numer identyfikacyjny';
 $string['competencyframeworkidnumber_help'] = 'Numer ID platformy to unikalny numer, którego można użyć do reprezentowania platformy.</h1>';
 $string['competencyframeworkmanage'] = 'Zarządzanie platformami';
 $string['competencyframeworks'] = 'Platformy kompetencji';
 $string['competencyframeworks_help'] = '**Platformy kompetencji **są konfigurowane do przechowywania umiejętności, wiedzy i kompetencji behawioralnych, które ma osiągnąć personel.
-
 Kompetencja można grupować w ramach różnych platform. Na przykład jedna platforma może przechowywać wszystkie krajowe przemysłowe standardy kompetencji (uzyskane od organu przemysłowego), zaś inna platforma może przechowywać konkretne kompetencje skonfigurowane w danej firmie.
-
 Przed skonfigurowaniem platformy kompetencji musi zostać skonfigurowana **skala kompetencji**.';
 $string['competencyframeworkscale_help'] = 'Skale kompetencji umożliwiają zdefiniowanie kryteriów, według których można mierzyć kompetencje. Na przykład skala może mieć trzy wartości : kompetentny, kompetentny pod nadzorem, niekompetentny.
-
 Pierwszym krokiem jest użycie opcji Skale kompetencji do dodania nowej skali, a następnie do dodania wartości skali używanych do definiowania postępów uczestnika dla kompetencji. Można dodać tyle wartości. ile się chce. Należy pamiętać również o ustawieniach wartości Domyślny i Biegły.';
 $string['competencyframeworkshortname_help'] = 'Skrócona nazwa platformy jest to szybkie odwołanie do pełnej nazwy platformy i może służyć do wyświetlania.';
 $string['competencyframeworkview'] = 'Wyświetl platformę';
@@ -203,19 +192,14 @@ $string['competencynoframeworkssetup'] = 'W tej witrynie brak skonfigurowanych p
 $string['competencynotypes'] = 'Brak typów kompetencji';
 $string['competencyparent'] = 'Nadrzędny';
 $string['competencyparent_help'] = '**Kompetencja nadrzędna** umożliwia zarządzanie relacjami nadrzędny/podrzędny między kompetencjami.
-
 Wybierz opcję **Kompetencja nadrzędna** z menu rozwijanego. Wybierz opcję **Najwyższy**, jeśli kompetencja ma się znajdować na najwyższym poziomie hierarchii.
-
 Jeśli zmienisz kompetencję nadrzędną elementu, przesunie się on tak, aby znaleźć się pod swoim nowym obiektem nadrzędnym i wszystkie jego obiekty podrzędne zostaną przeniesione wraz z nim.
-
 **Uwaga:** aby skonfigurować relację nadrzędny/podrzędny trzeba mieć przynajmniej jeden element na platformie. W przeciwnym razie ta opcja nie zostanie wyświetlona.';
 $string['competencyplural'] = 'Kompetencje';
 $string['competencyreturntoframework'] = 'Powrót do platformy kompetencji';
 $string['competencyscale'] = 'Skala kompetencji';
 $string['competencyscale_help'] = '**Skala** to nazwa skali kompetencji używanej na platformie kompetencji.
-
 Skala kompetencji jest ustawiana na platformie kompetencji. Na każdej platformie można używać tylko jednej skali kompetencji.
-
 Nową skalę kompetencji można skonfigurować w opcji Hierarchie/Kompetencje/Zarządzaj platformami w menu Administrowanie witryną.';
 $string['competencyscaleassign'] = 'Skala kompetencji';
 $string['competencyscaleassign_help'] = 'Skala kompetencji definiuje kryteria służące do mierzenia kompetencji. Jest to nazwa skali, do której jest dodawana wartość.';
@@ -226,29 +210,25 @@ $string['competencyscaleinuse'] = 'Ta skala jest używana (tzn. użytkownicy maj
 $string['competencyscaleproficient'] = 'Wartość biegłości';
 $string['competencyscaleproficient_help'] = 'Wartości biegłości zapewniają systemowi sposób śledzenia, czy użytkownik jest "kompetentny" w ramach konkretnej kompetencji. Służy to do pokazywania postępu w planach nauki i wyświetla tylko powiadomienia o przeterminowaniu dla niekompletnych kompetencji.
 Użytkownik jest uważany za kompetentnego,jeśli w zestawie wartości skali jest zaznaczona wartość "biegły". Może istnieć wiele wartości skali ustawionych na biegłość, ale musi istnieć przynajmniej jedna wartość skali oznaczona jako biegłość. Wartość biegłości jest edytowana w ramach edycji wartości skali.
-
 Najniższa wartości skali oznaczona jako biegłość jest automatycznie nadawana dowolnemu użytkownikowi, który wykazał się biegłością wymaganą przez elementy dowodu określane przez kompetencję (np. ukończenie kursu/czynności, uzyskanie oceny zaliczającej kurs/czynność).';
 $string['competencyscales'] = 'Skale kompetencji';
 $string['competencyscalescalename'] = 'Nazwa';
 $string['competencyscalescalename_help'] = 'Nazwa skali kompetencji, która będzie używana przez platformy kompetencji.';
 $string['competencyscalescalevalues'] = 'Wartości';
 $string['competencyscalescalevalues_help'] = 'Wprowadź wartości skali kompetencji (po jednej w wierszu) w kolejności od najbardziej kompetentnych do najmniej kompetentnych. Na przykład:
-
-<p class="indent">
-<i> Kompetentny<br /> Kompetentny pod nadzorem<br /> Niekompetentny<br /> </i>
-</p>';
+* Kompetentny
+* Kompetentny pod nadzorem
+* Niekompetentny
+';
 $string['competencyscalesgeneral'] = 'Skala kompetencji';
 $string['competencyscalesgeneral_help'] = '**Skale kompetencji **umożliwiają zdefiniowanie kryteriów mierzenia kompetencji. Na przykład skala może mieć trzy wartości: kompetentny, kompetentny pod nadzorem i niekompetentny.
-
 Skala kompetencji musi zostać skonfigurowana przed skonfigurowaniem platformy kompetencji lub dowolnych kompetencji.';
 $string['competencyscalevaluedescription'] = 'Opis';
 $string['competencyscalevalueidnumber'] = 'Numer identyfikacyjny wartości skali';
 $string['competencyscalevalueidnumber_help'] = 'Numer ID skali to unikalny numer służący do reprezentowania wartości skali.';
 $string['competencyscalevaluename'] = 'Nazwa wartości skali';
 $string['competencyscalevaluename_help'] = '**Nazwa skali wartości** to nazwa dodawanej lub edytowanej wartości skali kompetencji.
-
 Wartość skali służy do definiowania postępu uczestnika dla kompetencji. Można dodać tyle wartości skali, ile potrzeba.
-
 **Uwaga: **należy pamiętać o ustawieniach wartości Domyślne i Biegły.';
 $string['competencyscalevaluenumericalvalue'] = 'Wartość numeryczna wartości skali';
 $string['competencyscalevaluenumericalvalue_help'] = 'Wartość numeryczna wartości skali to wartość numeryczna powiązana z wartością skali.';
@@ -256,7 +236,6 @@ $string['competencyshortname'] = 'Skrócona nazwa kompetencji';
 $string['competencyshortname_help'] = 'Nazwa skrócona kompetencji jest tonazwą szybkiego odwołania do kompetencji i może służyć do wyświetlania.';
 $string['competencytemplatefullname_help'] = 'Pełna nazwa szablonu to kompletny tytuł konfigurowanego szablonu kompetencji.';
 $string['competencytemplategeneral_help'] = '**Szablon kompetencji** to sposób grupowania kompetencji z jednej platformy kompetencji.
-
 Podczas konfigurowania szkolenia, na przykład kursu wprowadzającego, można je powiązać z szablonem szkolenia o nazwie "kompetencje nowego pracownika" automatycznie zawierającym wiele kompetencji zamiast wielokrotnego wybierania kompetencji po jednej naraz.';
 $string['competencytemplatemanage'] = 'Zarządzaj szablonami';
 $string['competencytemplates'] = 'Szablony kompetencji';
@@ -592,11 +571,10 @@ $string['organisationframeworkdescription'] = 'Opis';
 $string['organisationframeworkdescription_help'] = 'Opis platformy jest to pole tekstowe do zapisywania dodatkowych informacji o platformie. Jest on wyświetlany na stronie zarządzania organizacjami nad samą tabelą organizacji.';
 $string['organisationframeworkfullname_help'] = 'Pełna nazwa platformy to kompletny tytuł platformy.';
 $string['organisationframeworkidnumber'] = 'Numer ID';
-$string['organisationframeworkidnumber_help'] = 'Numer ID platformy to unikalny numer, którego można używać do reprezentacji platformy.</h1>';
+$string['organisationframeworkidnumber_help'] = 'Numer ID platformy to unikalny numer, którego można używać do reprezentacji platformy.';
 $string['organisationframeworkmanage'] = 'Zarządzaj platformami';
 $string['organisationframeworks'] = 'Platformy organizacji';
 $string['organisationframeworks_help'] = '**Platforma organizacyjna** jest to konfiguracja przechowująca strukturę organizacyjną danej organizacji.
-
 Można skonfigurować wiele platform organizacyjnych. Na przykład: konfiguracja platformy dla oddziałów lub firm zależnych działalności.';
 $string['organisationframeworkshortname_help'] = 'Nazwa skrócona platformy to szybkie odwołanie do pełnej nazwy platformy i może być używana podczas wyświetlania.';
 $string['organisationfullname'] = 'Pełna nazwa organizacji';
@@ -613,11 +591,8 @@ $string['organisationnoframeworkssetup'] = 'Nie ma konfiguracji platform organiz
 $string['organisationnotypes'] = 'Brak typów organizacji';
 $string['organisationparent'] = 'Obiekt nadrzędny';
 $string['organisationparent_help'] = '**Organizacja nadrzędna** umożliwia zarządzanie relacjami nadrzędny/podrzędny między organizacjami.
-
 Wybierz opcję **Organizacja nadrzędna** z menu rozwijanego. Wybierz opcję **Góra**, jeśli chcesz, aby organizacja znajdowała się na najwyższym poziomie hierarchii.
-
 W przypadku zmiany organizacji nadrzędnej elementu zostanie on przeniesiony tak, aby znaleźć się poniżej nowego obiektu nadrzędnego, a wraz z nim zostaną przeniesione wszystkie jego obiekty podrzędne.
-
 **Uwaga:** aby skonfigurować relacje nadrzędny/podrzędny trzeba mieć przynajmniej jeden inny element na platformie. W przeciwnym razie opcja nie zostanie wyświetlona.';
 $string['organisationplural'] = 'Organizacje';
 $string['organisationreturntoframework'] = 'Powrót do platformy organizacji';
@@ -685,7 +660,6 @@ $string['positionframeworkidnumber_help'] = 'Numer ID platformy to unikalny nume
 $string['positionframeworkmanage'] = 'Zarządzaj platformami';
 $string['positionframeworks'] = 'Platformy stanowiska';
 $string['positionframeworks_help'] = '**Platforma stanowiska** służy do konfigurowania i przechowywania różnych stanowisk w organizacji.
-
 Można skonfigurować wiele taksonomii (platform) stanowisk w ramach organizacji.';
 $string['positionframeworkshortname_help'] = 'Nazwa skrócona platformy to szybkie odwołanie do pełnej nazwy platformy i można jej użyć do wyświetlania.';
 $string['positionfullname'] = 'Pełna nazwa stanowiska';
@@ -703,11 +677,8 @@ $string['positionnoframeworkssetup'] = 'Brak konfiguracji platform stanowisk dla
 $string['positionnotypes'] = 'Brak typów stanowisk';
 $string['positionparent'] = 'Obiekt nadrzędny';
 $string['positionparent_help'] = '**Stanowisko nadrzędne** umożliwia zarządzanie relacjami nadrzędne/podrzędne między stanowiskami.
-
 Wybierz opcję **Stanowisko nadrzędne** z menu rozwijanego. Wybierz opcję **Góra**, jeśli stanowisko ma się znaleźć na najwyższym poziomie hierarchii.
-
 W przypadku zmiany stanowiska nadrzędnego elementu zostanie on przeniesiony tak, aby znajdował się pod nowym obiektem nadrzędnym, i wszystkie jego obiekty podrzędne zostaną przeniesione wraz z nim.
-
 **Uwaga:** aby ustawić relacje nadrzędne/podrzędne, na platformie musi istnieć przynajmniej jeden inny element. W przeciwnym razie opcja nie zostanie wyświetlona.';
 $string['positionplural'] = 'Stanowiska';
 $string['positionreturntoframework'] = 'Powrót do platformy stanowiska';

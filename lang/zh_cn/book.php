@@ -41,21 +41,17 @@ $string['editingchapter'] = '编辑章节';
 $string['errorchapter'] = '读取章节发生错误';
 $string['faq'] = '书籍FAQ';
 $string['faq_help'] = '*为什么仅有两级？*
-
 因为通常对于绝大多数的书，两级已经足够了 ，三级就会导致结构不良。图书模块是为了制作简短的多页学习材料而设计的。通常对于更长的文档用PDF格式较好。最简单的制作PDF的方法是用虚拟打印机（参考
-<a  href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm"  target="_blank">PDFCreator</a>、<a  href="http://fineprint.com/products/pdffactory/index.html"  target="_blank">PDFFactory</a>、<a  href="http://www.adobe.com/products/acrobatstd/main.html"  target="_blank">Adobe Acrobat</a>,
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+
 等）。
-
-*学生能编辑图书吗？*
-
+* 学生能编辑图书吗？ *
 只有老师才能制作和编辑图书。目前我们还没有使学生能够编辑的计划，但是有人为学生做了些类似的东西。这样做主要是为了让图书模块尽可能保持简洁。
-
-*我该怎样搜索图书呢？*
-
+* 我该怎样搜索图书呢？ *
 目前只有一个办法，那就是在打印页面中使用浏览器的搜索功能。现在只在Moodle讨论区里可以全文搜索。如果能够全面的搜索所有资源，包括图书，那将会很棒。有志愿者愿意做吗？
-
-*我的标题一行容纳不下。*
-
+* 我的标题一行容纳不下。 *
 修改标题或者让网站管理员修改目录的宽度。它是一个影响所有图书的全局配置，在模块配置页面修改。';
 $string['modulename'] = '图书';
 $string['modulename_help'] = '图书是一种简单的多页学习资料。';

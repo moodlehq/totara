@@ -52,12 +52,10 @@ $string['page-notes-x'] = 'Cualquier página de notas';
 $string['personal'] = 'personal';
 $string['personalnotes'] = 'Notas personales';
 $string['publishstate'] = 'Contexto';
-$string['publishstate_help'] = '<p>Hay tres posibles ajustes</p>
-<ul>
-<li><strong>Personal</strong> - Sólo usted puede ver la nota</li>
-<li><strong>Curso</strong> - Todos los profesores del curso pueden ver la nota</li>
-<li><strong>Sitio</strong> - Todos los profesores de todos los cursos pueden ver la nota</li>
-</ul>';
+$string['publishstate_help'] = 'Hay tres posibles ajustes
+\* **|Personal** - Sólo usted puede ver la nota
+\* **|Curso** - Todos los profesores del curso pueden ver la nota
+\* **|Sitio** - Todos los profesores de todos los cursos pueden ver la nota';
 $string['site'] = 'sitio';
 $string['sitenotes'] = 'Notas del sitio';
 $string['unknown'] = 'desconocido';

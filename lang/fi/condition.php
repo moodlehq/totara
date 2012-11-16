@@ -30,7 +30,6 @@ $string['addgrades'] = 'Lisää {no} arvosanaehtoa lomakkeeseen';
 $string['availabilityconditions'] = 'Rajoita pääsy';
 $string['availablefrom'] = 'Salli pääsy alkaen';
 $string['availablefrom_help'] = 'Avoinna alkaen/saakka -päivämäärät määrittävät koska opiskelijat pääsevät aktiviteettiin kurssisivulla olevasta linkistä.
-
 Ero aktiviteetin avoinna alkaen/saakka -päivämäärien ja saatavuusasetusten välillä on se, että aikarajojen ulkopuolella jälkimmäinen asetus antaa opiskelijoiden nähdä aktiviteetin kuvauksen, kun taas aktiviteetin avoinna alkaen/saakka -päivämäärät estävät pääsyn kokonaan.';
 $string['availableuntil'] = 'Salli pääsy saakka';
 $string['badavailabledates'] = 'Virheelliset päivämäärät. Jos asetat molemmat päivämäärät, \'avoinna alkaen\' -päivämäärän täytyy olla ennen \'avoinna saakka\' -päivämäärää.';
@@ -41,7 +40,6 @@ $string['completion_incomplete'] = 'ei saa olla merkitty suoritetuksi';
 $string['completion_pass'] = 'suoritettava hyväksytyllä arvosanalla';
 $string['completioncondition'] = 'Aktiviteetin suoritusehdot';
 $string['completioncondition_help'] = 'Tämä asetus määrittelee aktiviteettien suoritus -ehdot, joiden täytyy täyttyä ennen tähän aktiviteettiin pääsyä. Huomaa että kurssisuoritusten seurannan täytyy olla asetettu ennen kuin aktiviteetin suoritus -ehtoa voidaan asettaa.
-
 Haluttaessa voidaan asettaa useita aktiviteetin suoritus -ehtoja. Tässä tapauksessa KAIKKIEN ehtojen pitää täyttyä ennen kuin aktiviteettin pääsee.';
 $string['configenableavailability'] = 'Jos sallittu, voit määritellä julkaisuehdot (perustuen päivämäärään, arvosanaan tai suoritukseen) jotka määrittelevät onko aktiviteetti saatavilla.';
 $string['enableavailability'] = 'Salli ehdollinen julkaisu';
@@ -49,7 +47,6 @@ $string['grade_atleast'] = 'oltava vähintään';
 $string['grade_upto'] = 'ja vähemmän kuin';
 $string['gradecondition'] = 'Arvosanan ehto';
 $string['gradecondition_help'] = 'Tämä asetus määrittelee arvosanaehdot, joiden pitää täyttyä ennen aktiviteettiin pääsyä.
-
 Haluttaessa voidaan asettaa useita arvosanaehtoja. Tässä tapauksessa KAIKKIEN arvosanaehtojen pitää täyttyä ennen kuin aktiviteettin pääsee.';
 $string['gradeitembutnolimits'] = 'Sinun täytyy antaa ylä- tai alaraja, tai molemmat.';
 $string['gradelimitsbutnoitem'] = 'Sinun täytyy valita arvosanakohde.';

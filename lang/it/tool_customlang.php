@@ -51,9 +51,8 @@ $string['modifiedno'] = 'Non sono presenti stringhe modificate da salvare';
 $string['modifiednum'] = 'Sono presenti {$a} stringhe modificate.Vuoi memorizzare i cambiamenti nel language pack locale?';
 $string['nostringsfound'] = 'Non sono state trovate stringhe, per favore modifica le impostazioni di filtraggio';
 $string['placeholder'] = 'Segna posto';
-$string['placeholder_help'] = 'I segna posto sono elementi speciali presenti in una stringa, come ad esempio `{$a}` o `{$a->something}`. Questi elementi vengono sostituiti dinamicamente al momento della visualizzazione.
-
-E\' fondamentale copiarli esattamente come appaiono nella stringa originale.  Non devono essere tradotti né cambiata la direzione sinistra-destra.';
+$string['placeholder_help'] = 'I segna posto sono elementi speciali presenti in una stringa, come ad esempio \`{$a}\` o \`{$a->something}\`. Questi elementi vengono sostituiti dinamicamente al momento della visualizzazione.
+E\' fondamentale copiarli esattamente come appaiono nella stringa originale. Non devono essere tradotti né cambiata la direzione sinistra-destra.';
 $string['placeholderwarning'] = 'la stringa contiene un segna posto';
 $string['pluginname'] = 'Personalizzazione lingua';
 $string['savecheckin'] = 'Salva le modifiche nel language pack';

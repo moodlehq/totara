@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'När detta är inställt till \'Ja\' så kommer en post för lokal användare att skapas automatiskt när en fjärranvändare loggar in för första gången.';
-$string['auth_mnetdescription'] = 'Användare autenticeras i enlighet med det nät av tillförlitlighet som har definierats i Dina inställningar för nätverk för Moodle.';
 $string['auth_mnet_roamin'] = 'Den här värdens användare kan navigera vidare till Din webbplats.';
 $string['auth_mnet_roamout'] = 'Dina användare kan navigera vidare till de här värdarna.';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'Timeout räknat i sekunder för autenticering via XMLRPC-transporten.';
+$string['auth_mnetdescription'] = 'Användare autenticeras i enlighet med det nät av tillförlitlighet som har definierats i Dina inställningar för nätverk för Moodle.';
 $string['auto_add_remote_users'] = 'Lägg till fjärranvändare automatiskt';
 $string['pluginname'] = 'Autenticering i MNet';
 $string['rpc_negotiation_timeout'] = 'Tiden för RPC-förhandling har gått ut';

@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'תאריך השלמת קורס';
 $string['completion:view'] = 'הצג דוח השלמת הקורס';
+$string['completiondate'] = 'תאריך השלמת קורס';
 $string['page-report-completion-index'] = 'דוח השלמת קורס';
 $string['page-report-completion-user'] = 'דוח השלמת קורס משתמש';
 $string['page-report-completion-x'] = 'כל דוח השלמה';

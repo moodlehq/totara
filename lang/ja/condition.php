@@ -30,7 +30,6 @@ $string['addgrades'] = 'フォームに  {no} 件の評定コンディション�
 $string['availabilityconditions'] = '利用制限';
 $string['availablefrom'] = 'アクセス開始日時';
 $string['availablefrom_help'] = 'アクセス開始日時およびアクセス終了日時では、コースリンク経由で学生が活動にアクセス可能な日時を設定します。
-
 アクセス開始日時およびアクセス終了日時の設定範囲外では、活動へのアクセスが完全に遮断されるのに対して、活動の開始日時および終了日時の設定範囲外でも学生が活動の説明を閲覧できることに違いがあります。';
 $string['availableuntil'] = 'アクセス終了日時';
 $string['badavailabledates'] = '日付が正しくありません。あなたが両方の日付を設定する場合、「利用可能開始日」は「利用可能終了日」より前に設定してください。';
@@ -41,7 +40,6 @@ $string['completion_incomplete'] = '完了マークされない必要あり';
 $string['completion_pass'] = '合格で完了する必要あり';
 $string['completioncondition'] = '活動完了コンディション';
 $string['completioncondition_help'] = 'この設定では活動を利用できるようにするために合致する必要のあるすべての活動完了コンディションを設定します。活動完了コンディションを設定できるようになる前、最初に完了トラッキングを設定する必要があることに留意してください。
-
 必要に応じて複数活動の完了コンディションを設定することができます。その場合、すべての活動完了コンディションに合致したときのみ活動は利用可能となります。';
 $string['configenableavailability'] = 'この設定を有効にした場合、あなたは活動またはリソースが利用可能かどうかコントロールする条件 (日付、評点、完了に基づく) を付けることができます。';
 $string['enableavailability'] = '条件付きアクセスを有効にする';
@@ -49,7 +47,6 @@ $string['grade_atleast'] = '次の評点以上:';
 $string['grade_upto'] = '次の評点未満:';
 $string['gradecondition'] = '評定コンディション';
 $string['gradecondition_help'] = 'この設定では活動を利用できるようにするために合致する必要のあるすべての評定コンディションを設定します。
-
 必要に応じて複数活動の評定コンディションを設定することができます。その場合、すべての評定コンディションに合致したときのみ活動は利用可能となります。';
 $string['gradeitembutnolimits'] = 'あなたは上限、下限または両方を入力する必要があります。';
 $string['gradelimitsbutnoitem'] = 'あなたは評定項目を選択する必要があります。';

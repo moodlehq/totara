@@ -39,9 +39,8 @@ $string['choicefull'] = 'Esta opção atingiu o limite de escolhas permitidas e 
 $string['choicename'] = 'Nome da Escolha';
 $string['choiceopen'] = 'Abrir';
 $string['choiceoptions'] = 'Opções de escolha';
-$string['choiceoptions_help'] = '<p>Aqui você define as opções que os participantes podem escolher.</p>
-
-<p>Você pode preencher o número de respostas que você desejar. As caixas de texto em branco não serão visualizadas.</p>';
+$string['choiceoptions_help'] = 'Aqui você define as opções que os participantes podem escolher.
+Você pode preencher o número de respostas que você desejar. As caixas de texto em branco não serão visualizadas.';
 $string['choicesaved'] = 'A opção escolhida foi gravada';
 $string['choicetext'] = 'Texto da Escolha';
 $string['chooseaction'] = 'Escolha uma ação';
@@ -54,11 +53,9 @@ $string['full'] = '(Cheio)';
 $string['havetologin'] = 'Você deve fazer o acesso ao site antes de enviar a sua resposta';
 $string['limit'] = 'Limitar';
 $string['limitanswers'] = 'Limitar o número de respostas permitidas';
-$string['limitanswers_help'] = '<p>Esta configuração permite a restrição do número de participantes que podem selecionar uma determinada opção.</p>
-
-<p>Quando a possibilidade de limitação das opções está ativada, cada opção pode ser configurada em modo distinto. Quando o limite é atingido, ninguém mais pode escolher aquela opção. O limite igual a zero indica que ninguém pode selecionar a opção.</p>
-
-<p>Se a limitação estiver desativada, os participantes podem selecionar qualquer uma das opções disponíveis.</p>';
+$string['limitanswers_help'] = 'Esta configuração permite a restrição do número de participantes que podem selecionar uma determinada opção.
+Quando a possibilidade de limitação das opções está ativada, cada opção pode ser configurada em modo distinto. Quando o limite é atingido, ninguém mais pode escolher aquela opção. O limite igual a zero indica que ninguém pode selecionar a opção.
+Se a limitação estiver desativada, os participantes podem selecionar qualquer uma das opções disponíveis.';
 $string['modulename'] = 'Escolha';
 $string['modulename_help'] = 'O módulo escolha permite ao professor fazer uma pergunta e especificar opções de múltiplas respostas.';
 $string['modulenameplural'] = 'Escolhas';

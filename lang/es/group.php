@@ -76,11 +76,9 @@ $string['groupinfo'] = 'Información sobre el grupo seleccionado';
 $string['groupinfomembers'] = 'Información sobre los miembros seleccionados';
 $string['groupinfopeople'] = 'Información sobre las personas seleccionadas';
 $string['grouping'] = 'Agrupamiento';
-$string['grouping_help'] = '<p>Un agrupamiento es un conjunto de grupos dentro de un curso.</p>
-
-<p>Si se selecciona un agrupamiento, los usuarios asignados a los grupos dentro del agrupamiento podrán trabajar juntos.</p>
-
-<p>El modo de grupo debe estar ajustado a grupos visibles o separados.</p>';
+$string['grouping_help'] = 'Un agrupamiento es un conjunto de grupos dentro de un curso.
+Si se selecciona un agrupamiento, los usuarios asignados a los grupos dentro del agrupamiento podrán trabajar juntos.
+El modo de grupo debe estar ajustado a grupos visibles o separados.';
 $string['groupingdescription'] = 'Descripción del agrupamiento';
 $string['groupingname'] = 'Nombre del agrupamiento';
 $string['groupingnameexists'] = 'El nombre de agrupamiento {$a} ya existe en este curso. Por favor, elija otro.';
@@ -95,28 +93,21 @@ $string['groupmembersonlyerror'] = 'Lo sentimos, debe ser miembro de al menos un
 $string['groupmemberssee'] = 'Ver los integrantes del grupo';
 $string['groupmembersselected'] = 'Miembros del grupo seleccionado';
 $string['groupmode'] = 'Modo de grupo';
-$string['groupmode_help'] = '<p>El modo grupo puede ser de alguno de estos tres niveles:
-<ul>
-<li>Sin grupos - No hay grupos, todos son parte de un gran grupo</li>
-<li>Grupos separados - Cada estudiante sólo puede ver su propio grupo; los demás son invisibles</li>
-<li>Grupos visibles - Cada estudiante trabaja dentro de su grupo, pero también puede ver a los otros grupos</li>
-</ul>
-</p>
+$string['groupmode_help'] = 'El modo grupo puede ser de alguno de estos tres niveles:
+* Sin grupos - No hay grupos, todos son parte de un gran grupo
+* Grupos separados - Cada estudiante sólo puede ver su propio grupo; los demás son invisibles
+* Grupos visibles - Cada estudiante trabaja dentro de su grupo, pero también puede ver a los otros grupos
 
-<P>El modo grupo puede ser definido a dos niveles:</p>
 
-<dl>
-<dt><b>1. Nivel Curso</b></dt>
-<dd>El modo grupal definido a nivel de curso viene por defecto
-para todas las actividades definidas dentro del curso<br /><br /></dd>
-<dt><b>2. Nivel Actividad</b></dt>
-<dd>Toda actividad que soporte grupos puede definir su propio
+El modo grupo puede ser definido a dos niveles:
+
+**1. Nivel Curso**
+: El modo grupal definido a nivel de curso viene por defecto
+para todas las actividades definidas dentro del curso
+**2. Nivel Actividad**
+: Toda actividad que soporte grupos puede definir su propio
 modo de agrupación. Si el curso está configurado como
-"<a href="help.php?module=moodle&amp;file=groupmodeforce.html">forzar modo de grupo</a>" entonces
-no se tendrá en cuenta la configuración de cada actividad.</dd>
-</dl>
-
-<P>';
+forzar modo de grupo entonces no se tendrá en cuenta la configuración de cada actividad.';
 $string['groupmodeforce'] = 'Forzar el modo de grupo';
 $string['groupmodeforce_help'] = 'Si se fuerza el modo grupo, entonces el modo de grupo en el curso se aplica a todas las actividades del curso. En ese caso se pasan por alto los ajustes del modo de grupo.';
 $string['groupmy'] = 'Mi grupo';
@@ -136,7 +127,6 @@ $string['grouptemplate'] = 'Grupo @';
 $string['hidepicture'] = 'Ocultar imagen';
 $string['importgroups'] = 'Importar grupos';
 $string['importgroups_help'] = 'Los grupos pueden ser importados mediante un archivo de texto. El formato del archivo debe como sigue:
-
 * Cada línea del archivo contiene un registro
 * Cada registro es una serie de datos separados por comas
 * El primer registro contiene una lista de nombres de campos que definen el formato del resto del archivo
@@ -147,38 +137,35 @@ $string['members'] = 'Miembros por grupo';
 $string['membersofselectedgroup'] = 'Miembros de:';
 $string['namingscheme'] = 'Esquema de denominación';
 $string['namingscheme_help'] = 'El símbolo arroba (@) puede usarse para crear grupos con nombres que contienen letras. Por ejemplo, Grupo @ puede generar grupos denominados Grupo A, Grupo B, Grupo C, etc.
-
 El símbolo almohadilla (#) puede usarse para crear grupos con nombres que contienen letras. Por ejemplo, Grupo # puede generar grupos denominados Grupo 1, Grupo 2, Grupo 3, etc.';
 $string['newgrouping'] = 'Nueva agrupación';
 $string['newpicture'] = 'Nueva imagen';
-$string['newpicture_help'] = '<P>Usted puede subir una imagen desde su ordenador al servidor, y esta imagen se
+$string['newpicture_help'] = 'Usted puede subir una imagen desde su ordenador al servidor, y esta imagen se
 utilizará en varios lugares para identificarlo.
-<P>Por este motivo, las mejores imágenes son las de estilo identificación, aunque
+Por este motivo, las mejores imágenes son las de estilo identificación, aunque
 puede utilizar la imagen que desee.
-<P>La imagen debe ser formato JPG o PNG (lo que significa que el nombre de la imagen
+La imagen debe ser formato JPG o PNG (lo que significa que el nombre de la imagen
 terminará en .jpg o en .png) y debe tener un tamaño de 100 x 100 píxeles o más.
-<P>Puede colocar una imagen utilizando uno de estos cuatro métodos:
-
-<OL>
-<LI>Utilizando una cámara digital, es muy sencillo, dado que sus fotos seguramente
+Puede colocar una imagen utilizando uno de estos cuatro métodos:
+1. Utilizando una cámara digital, es muy sencillo, dado que sus fotos seguramente
 ya estarán en el formato correcto en su ordenador.
-<LI>Utilizando un "scanner" para digitalizar una fotografía impresa. Asegúrese de
+2. Utilizando un "scanner" para digitalizar una fotografía impresa. Asegúrese de
 guardar la imagen en formato JPG o PNG.
-<LI>Si usted es una artista, puede dibujar una imagen utilizando algún programa de diseño.
-<LI>También puede conseguir una imagen que lo identifique en la red.
-<A TARGET=google HREF="http://images.google.com/">http://images.google.com</A>
+3. Si usted es una artista, puede dibujar una imagen utilizando algún programa de diseño.
+4. También puede conseguir una imagen que lo identifique en la red.
+[http://images.google.com](http://images.google.com)
 es un excelente lugar para buscar imágenes. Una vez encontrada, coloque el cursor
 sobre ella y pulsando el botón derecho del ratón elija la opción "Guardar imagen como".
 (Diferentes ordenadores pueden variar en este procedimiento)
-</OL>
 
-<P>Para subir la imagen, haga clic en el botón "Examinar" en esta página y seleccione
+Para subir la imagen, haga clic en el botón "Examinar" en esta página y seleccione
 la imagen en su disco duro.
-<P>IMPORTANTE: Asegúrese de no subir una imagen que exceda el tamaño
+
+**IMPORTANTE**: Asegúrese de no subir una imagen que exceda el tamaño
 máximo permitido, en bites, pues no se cargará.
-<P>Luego haga clic en "Actualizar información personal" en la parte inferior de la página; si la imagen
+Luego haga clic en "Actualizar información personal" en la parte inferior de la página; si la imagen
 es mayor a 100 x 100 píxeles se cortará.
-<P>Cuando acabe de cambiar su imagen es posible que no vea el cambio; si eso sucede
+Cuando acabe de cambiar su imagen es posible que no vea el cambio; si eso sucede
 actualice la página (oprimiendo F5 o el botón actualizar).';
 $string['noallocation'] = 'No asignación';
 $string['nogroups'] = 'Aún no se han formado grupos en este curso';

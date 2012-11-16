@@ -279,202 +279,122 @@ $string['report:startdate'] = 'Data rozpoczęcia';
 $string['reportbuilder'] = 'Konstruktor raportów';
 $string['reportbuilder:managereports'] = 'Twórz, edytuj i usuwaj raporty konstruktora raportów';
 $string['reportbuilderaccessmode_help'] = '# Tryb dostępu
-
 Elementy sterujące dostępem służą do ograniczania liczby użytkowników mogących zobaczyć raport.
-
 **Ogranicz dostęp** określa ogólne ustawienie dostępu dla raportu.
-
 W przypadku wybrania wartości **Wszyscy użytkownicy mogą zobaczyć ten raport** dla raportu nie są stosowane żadne ograniczenia i wszyscy mogą go zobaczyć.
-
 W przypadku wybrania wartości **Tylko niektórzy użytkownicy mogą zobaczyć ten raport** raport będzie widoczny tylko dla wybranych poniżej grup użytkowników.
-
 **Uwaga:** ograniczenia dostępu kontrolują tylko, kto może zobaczyć raport, a nie jakie rekordy on zawiera. Sterowanie zawartością raportu zostało opisane na karcie \'Zawartość\'.';
 $string['reportbuilderbaseitem_help'] = '# Budowniczy raportów: element podstawowy
-
 Grupując zestaw czynności, można określić, że mają one coś wspólnego, co umożliwia generowanie raportów dla wszystkich czynności w grupie. Element podstawowy określa właściwości uwzględniane podczas przeprowadzania agregacji dla każdego członka grupy.';
 $string['reportbuildercolumns_help'] = '# Kolumny
-
 **Kolumny raportu** umożliwiają dostosowanie kolumn występujących w raporcie. Dostępne kolumny są określane przez **źródło** danych raportu. Każde źródło raportu ma skonfigurowany zbiór kolumn domyślnych.
-
 Kolumny można dodawać, usuwać, zmieniać ich nazwy i sortować.
-
 **Dodawanie kolumn:** Aby dodać nową kolumnę do raportu, wybierz żądaną kolumnę z listy rozwijanej \'Dodaj kolejną kolumnę...\', a następnie kliknij przycisk **Zapisz zmiany**. Nowa kolumna zostanie dodana na końcu listy.
-
 **Uwaga:** W jednym raporcie można utworzyć tylko po jednej kolumnie każdego typu. W przypadku próby włączenia tej samej kolumny więcej niż raz zostanie wyświetlony błąd sprawdzania poprawności.
-
 **Ukrywanie kolumn:** Domyślnie wszystkie kolumny są wyświetlane, gdy użytkownik wyświetla raport. Użyj przycisku \'pokaż/ukryj\' (ikona oka), aby ukryć kolumny, których użytkownicy mają domyślnie nie widzieć.
-
 **Uwaga:** Ukryta kolumna jest nadal dostępna dla użytkownika przeglądającego raport. Usuń kolumn (ikona krzyża), której użytkownicy mają wcale nie oglądać.
-
 **Przenoszenie kolumn:** Kolumny pojawią się w raporcie wg ich kolejności na liście. Użyj strzałek w górę i w dół, aby zmienić kolejność.
-
 **Usuwanie kolumn:** Kliknij przycisk \'Usuń\' (ikonę krzyża) z prawej strony kolumny raportu, aby usunąć tę kolumnę z raportu.
-
 **Zmienianie nazw kolumn:** Można dostosować nazwę kolumny, zmieniając nazwę **nagłówka** i klikając przycisk **Zapisz zmiany**. **Nagłówek** to nazwa pojawiająca się w raporcie.
-
 **Zmienianie wielu typów kolumn:** Można jednocześnie zmodyfikować wiele typów kolumn, wybierając inną kolumnę z menu rozwijanego i klikając przycisk **Zapisz zmiany**.';
 $string['reportbuildercompletedorg_help'] = '# Pokaż wg organizacji w chwili ukończenia
-
 W przypadku wybrania opcji **Pokaż rekordy ukończone w organizacji użytkownika** raport wyświetla różne rekordy ukończenia w zależności od organizacji, do której użytkownik był przypisany. (Użytkownikowi jest przypisywana organizacja w obszarze \'Profil użytkownika\' na karcie \'Stanowiska\'.)
-
 Jeśli opcja **Włącz rekordy z organizacji podrzędnych** jest ustawiona na:
-
-*   **Tak**, użytkownik przeglądający raport będzie mógł zobaczyć ukończone rekordy związane ze swoją organizacją i wszelkimi organizacjami podrzędnymi danej organizacji;
-*   **Nie**, użytkownik może zobaczyć tylko ukończone rekordy związane ze swoją organizacją.';
+\* **|Tak**, użytkownik przeglądający raport będzie mógł zobaczyć ukończone rekordy związane ze swoją organizacją i wszelkimi organizacjami podrzędnymi danej organizacji;
+\* **|Nie**, użytkownik może zobaczyć tylko ukończone rekordy związane ze swoją organizacją.';
 $string['reportbuildercontentmode_help'] = '# Tryb zawartości
-
 Elementy sterujące zawartością umożliwiają ograniczenie rekordów i informacji dostępnych podczas przeglądania raportu.
-
 **Zawartość raportu** umożliwia wybranie ogólnych ustawień kontroli zawartości dla tego raportu:
-
 W przypadku wybrania opcji **Pokaż wszystkie rekordy** zostaną pokazane wszystkie dostępne rekordy dla danego źródła i nie będzie żadnych ograniczeń na dostępną zawartość.
-
 W przypadku wybrania opcji **Pokaż rekordy zgodne z dowolnym z zaznaczonych kryteriów** w raporcie zostaną wyświetlone rekordy zgodne z dowolnym z ustawionych poniżej kryteriów.
-
 **Uwaga:** Jeśli nie zostaną ustawione żadne kryteria, w raporcie nie zostaną wyświetlone żadne rekordy.
-
 W przypadku wybrania opcji **Pokaż rekordy zgodne ze wszystkimi zaznaczonymi kryteriami** w raporcie zostaną wyświetlone rekordy zgodne ze wszystkimi ustawionymi poniżej kryteriami.
 **Uwaga:** Jeśli nie zostaną ustawione żadne kryteria, w raporcie nie zostaną wyświetlone żadne rekordy.';
 $string['reportbuildercontext_help'] = '# Ogranicz dostęp wg roli
-
 Kontekst to lokalizacja lub poziom w systemie, do którego użytkownik ma dostęp. Na przykład Administrator witryny będzie miał dostęp na poziomie systemu (kontekst), zaś uczestnik może mieć dostęp tylko do poziomu kursu (kontekst).
-
 **Kontekst** umożliwia określenie kontekstu, w którym użytkownik ma przypisaną rolę w celu wyświetlenia raportu.
-
 Użytkownikowi można przypisać rolę na poziomie systemu, dając mu dostęp do całej witryny, lub tylko w ramach konkretnego kontekstu. Na przykład wykładowcy można przypisać rolę tylko na poziomie kursu.
-
 W przypadku wybrania opcji **Użytkownicy muszą mieć rolę w kontekście systemu** użytkownik musi mieć przypisaną rolę na poziomie systemu (tj. na poziomie całej witryny), aby mógł wyświetlić raport.
-
 W przypadku wybrania opcji **Użytkownik może mieć rolę w dowolnym kontekście** użytkownik może wyświetlić raport, jeśli ma przypisaną rolę w dowolnym miejscu systemu.';
 $string['reportbuildercoursetag_help'] = '# Budowniczy raportów: pokaż według znacznika kursu
-
 To kryterium jest włączane po zaznaczeniu pola wyboru \'Pokaż rekordy według znacznika kursu\'. W razie wybrania raport będzie zawierał wyniki oparte na tym, czy rekord należy do kursu, który jest oznaczony konkretnymi znacznikami.
-
 W przypadku wybrania jakichkolwiek znaczników w sekcji \'Włącz rekordy oznaczone za pomocą\' zostaną pokazane tylko rekordy należące do kursu oznaczonego wszystkimi wybranymi znacznikami. Rekordy należące do kursów bez znaczników **nie** zostaną pokazane.
-
 W przypadku wybrania jakichkolwiek znaczników w sekcji \'Wyklucz rekordy oznaczone za pomocą\' rekordy należące do kursów oznaczonych wybranymi znacznikami **nie** zostaną pokazane. Zostaną pokazane wszystkie rekordy należące do kursów bez żadnych znaczników.
-
 Można jednocześnie włączyć i wykluczyć znaczniki, ale pojedynczy znacznik nie może zostać zarówno włączony, jak i wykluczony.';
 $string['reportbuildercurrentorg_help'] = '# Pokaż wg bieżącej organizacji
-
 W przypadku wybrania opcji **Pokaż rekordy personelu organizacji użytkownika** raport będzie zawierał różne wyniki w zależności organizacji, do której został przypisany użytkownik. (Użytkownik jest przypisywany do organizacji w obszarze \'Profil użytkownika\' na karcie \'Stanowiska\'.)
-
 WW przypadku ustawienia opcji **Włącz rekordy z organizacji podrzędnych** na:
-
-*   **Tak** użytkownik oglądający raport będzie mógł zobaczyć rekordy związane ze swoją organizacją i wszelkimi organizacjami podrzędnymi danej organizacji;
-*   **Nie** użytkownik będzie widział tylko rekordy związane ze swoją organizacją.';
+\* **|Tak** użytkownik oglądający raport będzie mógł zobaczyć rekordy związane ze swoją organizacją i wszelkimi organizacjami podrzędnymi danej organizacji;
+\* **|Nie** użytkownik będzie widział tylko rekordy związane ze swoją organizacją.';
 $string['reportbuildercurrentpos_help'] = '# Pokaż wg bieżącego stanowiska
-
 W przypadku wybrania opcji **Pokaż rekordy personelu na stanowisku użytkownika** raport będzie zawierał różne rekordy w zależności od przypisanego stanowiska. (Stanowisko jest przypisywane do użytkownika w obszarze \'Profil użytkownika\' na karcie \'Stanowisko\'.)
-
 W przypadku ustawienia opcji **Włącz rekordy ze stanowisk podrzędnych** na:
-
-*   **Tak** użytkownik przeglądający raport będzie widział rekordy związane z włąsnym stanowiskiem i wszelkimi stanowiskami podrzędnymi związanymi z jego stanowiskiem
-*   **Nie** użytkownik przeglądający raport zobaczy tylko rekordy związane z własnym stanowiskiem.';
+\* **|Tak** użytkownik przeglądający raport będzie widział rekordy związane z włąsnym stanowiskiem i wszelkimi stanowiskami podrzędnymi związanymi z jego stanowiskiem
+\* **|Nie** użytkownik przeglądający raport zobaczy tylko rekordy związane z własnym stanowiskiem.';
 $string['reportbuilderdate_help'] = '# Pokaż wg daty
-
 W przypadku wybrania opcji **Pokaż rekordy na podstawie daty rekordu** raport pokazuje tylko rekordy w ramach wybranego przedziału czasu.
-
 Opcje **Włącz rekordy z** umożliwiają ustawienie przedziału czasu dla raportu:
-
-*   W przypadku ustawienia na **Przeszłe** raport pokaże tylko rekordy z datą starszą niż bieżąca data.
-*   W przypadku ustawienia na **Przyszłe** raport pokaże tylko rekordy z ustawioną przyszłą datą w stosunku do daty bieżącej.
-*   W przypadku ustawienia na **Ostatnie 30 dni** raport pokaże tylko rekordy z okresu od daty bieżącej do 30 dni wstecz.
-*   W przypadku ustawienia na **Następne 30 dni** raport pokaże tylko rekordy z okresu od daty bieżącej do 30 dni w przód.';
+* W przypadku ustawienia na **Przeszłe** raport pokaże tylko rekordy z datą starszą niż bieżąca data.
+* W przypadku ustawienia na **Przyszłe** raport pokaże tylko rekordy z ustawioną przyszłą datą w stosunku do daty bieżącej.
+* W przypadku ustawienia na **Ostatnie 30 dni** raport pokaże tylko rekordy z okresu od daty bieżącej do 30 dni wstecz.
+* W przypadku ustawienia na **Następne 30 dni** raport pokaże tylko rekordy z okresu od daty bieżącej do 30 dni w przód.';
 $string['reportbuilderdescription_help'] = '# Opis
-
 Podczas tworzenia opisu raportu informacje są wyświetlane w polu nad filtrami wyszukiwania na stronie raportu.';
 $string['reportbuilderdialogfilter_help'] = '# Budowniczy raportów: filtr okna dialogowego
-
 Ten filtr umożliwia filtrowanie informacji na podstawie hierarchii. Ma on następujące opcje:
-
-*   ma dowolną wartość - ta opcja wyłącza filtr (tj. ten filtr akceptuje wszystkie informacje)
-*   jest równe - ta opcja dopuszcza tylko informacje równe wartości wybranej z listy
-*   jest nierówne - ta opcja dopuszcza tylko informacje różne od wartości wybranej z listy
-
+* ma dowolną wartość - ta opcja wyłącza filtr (tj. ten filtr akceptuje wszystkie informacje)
+* jest równe - ta opcja dopuszcza tylko informacje równe wartości wybranej z listy
+* jest nierówne - ta opcja dopuszcza tylko informacje różne od wartości wybranej z listy
 Po wybraniu elementu platformy można użyć pola wyboru \'Uwzględnić obiekty podrzędne?\', aby wybrać, czy ma nastąpić dopasowanie tylko dla tego elementu, czy też dopasowanie ma obejmować ten element i wszelkie elementy podrzędne należące do tego elementu.';
 $string['reportbuilderexportoptions_help'] = '# Ustawienia eksportu raportu
-
 **Ustawienia eksportu raportu** umożliwiają użytkownikowi z odpowiednimi uprawnieniami określenie opcji eksportu dostępnych dla użytkowników na dole strony raportu. To ustawienie wpływa na wszystkie raporty **Budowniczego raportów**.
-
 W przypadku wybrania wielu opcji użytkownik może wybrać preferowane przez siebie opcje z menu rozwijanego eksportu.
-
 Jeśłi nie zostaną wybrane żadne opcje, funkcja eksportu zostanie wyłączona..';
 $string['reportbuilderfilters_help'] = '# Opcje wyszukiwania (filtry)
-
 **Opcje wyszukiwania** umożliwiają dostosowanie filtrów wyświetlanych w raporcie. dostępne filtry są określane przez **Źródło** raportu. Każde źródło raportu ma zestaw domyślnych filtrów.
-
 Filtry można dodawać, sortować i usuwać.
-
 **Dodawanie filtrów:** Aby dodać nowy filtr do raportu, wybierz żądany filtr z menu rozwijanego \'Dodaj inny filtr...\' i kliknij przycisk **Zapisz zmiany**. W przypadku zaznaczenia opcji **Zaawansowane** filtr nie zostanie domyślnie wyświetlony w polu \'Szukaj wg\', ale użytkownik może kliknąć przycisk **Pokaż zaawansowane**, aby zobaczyć te filtry.
-
 **Przenoszenie filtrów:** filtry są wyświetlane w polu \'Szukaj wg\' w kolejności zgodnej z listą. Do zmiany kolejności służą strzałki w górę i w dół.
-
 **Usuwanie filtrów:** Kliknij przycisk **Usuń** (ikonę krzyża) z prawej strony filtra raportu, aby usunąć ten filtr z raportu.
-
 **Zmienianie wielu typów filtrów:** Można jednocześnie zmodyfikować wiele typów filtrów, wybierając inny filtr z menu rozwijanego i klikając przycisk **Zapisz zmiany**.';
 $string['reportbuilderfullname_help'] = '# Nazwa raportu
-
 Jest to nazwa wyświetlana u góry strony raportu i w bloku \'Menedżer raportów\'.';
 $string['reportbuilderglobalsettings'] = 'Ustawienia globalne konstruktora raportów';
 $string['reportbuildergroupname_help'] = '# Budowniczy raportów: nazwa grupy
-
 Nazwa grupy. Umożliwia ona identyfikację grupy, gdy należy utworzyć na jej podstawie nowy raport. Szukaj nazwy w menu rozwijanym źródła raportu.';
 $string['reportbuildergrouptag_help'] = '# Budowniczy raportów: znacznik grupy
-
 Podczas tworzenia grupy za pomocą znacznika wszelkie czynności oznaczone automatycznie określanym oficjalnym znacznikiem tworzą część grupy. W przypadku dodania lub usunięcia znaczników z czynności grupa zostanie zaktualizowana w celu uwzględnienia/wykluczenia tej czynności.';
 $string['reportbuilderhidden_help'] = '# Ukryj w Moich raportach
-
 W przypadku zaznaczenia opcji **Ukryj w Moich raportach** raport nie pojawi się na stronie \'Moje raporty\' dla dowolnego zalogowanego użytkownika.
-
 **Uwaga:** Opcja **Ukryj w Moich raportach** ukrywa tylko łącze do raportu. Użytkownicy z odpowiednimi uprawnieniami dostępu nadal mogą uzyskać dostęp do raportu za pomocą adresu URL.';
 $string['reportbuilderrecordsperpage_help'] = '# Liczba rekordów na stronie
-
 Opcja **Liczba rekordów na stronie** umożliwia zdefiniowanie liczby rekordów wyświetlanych na stronie raportu.
-
 Maksymalna liczba rekordów, które można wyświetlić na stronie wynosi 5000. Im więcej rekordów zostanie wybranych do wyświetlenia na stronie, tym dłużej będzie trwać wyświetlenie strony raportu.
-
 Zaleca się **ograniczenie liczby rekordów na stronę do 40**.';
 $string['reportbuilderrolesaccess_help'] = '# Role z dostępem
-
 W przypadku ustawienia opcji **Ogranicz dostęp** na **Tylko niektórzy użytkownicy mogą wyświetlić ten raport** można określić role, które mogą zobaczyć raport, korzystając z opcji **Role z uprawnieniem do wyświetlenia raportu**.
-
 Można wybrać jedną lub więcej ról z listy.
-
 W przypadku ustawienia opcji **Ogranicz dostęp** na **Wszyscy użytkownicy mogą wyświetlić ten raport** te opcje będą wyłączone.';
 $string['reportbuildershortname_help'] = '# Budowniczy raportów: nazwa unikalna
-
 Nazwa skrócona jest używana przez system Moodle do śledzenia danego raportu. Żadne dwa raporty nie mogą mieć tej samej nazwy skróconej, nawet jeśli są one oparte na tym samym źródle. Należy unikać stosowania znaków specjalnych w tym polu (dozwolony jest tekst, liczby i podkreślenia).';
 $string['reportbuildersorting_help'] = '# Sortowanie
-
 **Sortowanie** umożliwia ustawienie domyślnej kolumny i kolejności sortowania w raporcie.
-
 Użytkownik nadal może ręcznie posortować raport podczas jego wyświetlania. Preferencje użytkowników zostaną zapisane w trakcie aktywnej sesji. Po ukończeniu sesji raport powróci do zdefiniowanych tutaj domyślnych ustawień sortowania.';
 $string['reportbuildersource_help'] = '# Źródło
-
 **Źródło** raportu definiuje podstawowy używany typ danych. Dalsze opcje filtrowania zostaną udostępnione po rozpoczęciu edytowania raportu.
-
 Po zapisaniu nie można zmienić źródła raportu.
-
 **Uwaga:** Jeśli w polu **Źródło** nie są dostępne żadne opcje lub żądane źródło nie występuje, należy skonfigurować instalację dystrybucji Totara tak, aby uwzględnić żądane dane źródłowe (tego nie można zrobić za pomocą interfejsu dystrybucji Totara).';
 $string['reportbuildertrainer_help'] = '# Budowniczy raportów: pokaż wg wykładowcy
-
 To kryterium można włączyć, zaznaczając pole wyboru \'Pokaż rekordy wg wykładowcy\'. W razie włączenia raport pokaże różne rekordy w zależności od tego, kim był wykładowca bezpośredni dla utworzonej opinii.
-
 W przypadku wybrania opcji \'Pokaż rekordy, gdzie użytkownik jest wykładowcą\' raport pokaże opinie dla sesji, w których użytkownik wyświetlający raport był wykładowcą.
-
 W przypadku wybrania opcji \'Rekordy, gdzie jeden z bezpośrednich podwładnych użytkownika jest wykładowcą\' raport pokaże rekordy dla sesji prowadzonych przez podwładnych osoby przeglądającej raport.
-
 W przypadku wybrania opcji \'Obie\' zostaną wyświetlone rekordy zgodne z obydwoma powyższymi opcjami.';
 $string['reportbuilderuser_help'] = '# Pokaż wg użytkownika
-
 W przypadku wybrania opcji **Pokaż rekordy wg użytkownika** raport pokaże różne rekordy w zależności od użytkownika wyświetlającego raport i jego relacji z innymi użytkownikami.
-
 Opcja **Uwzględnij rekordy od konkretnego użytkownika** kontroluje, które rekordy może zobaczyć użytkownik wyświetlający raport:
-
-*   W przypadku ustawienia wartości **Własne rekordy użytkownika** użytkownik może zobaczyć tylko własne rekordy.
-*   W przypadku ustawienia wartości **Rekordy dla bezpośrednich podwładnych użytkownika** użytkownik może zobaczyć rekordy należące do dowolnego użytkownika, który jest jego podwładnym (użytkownikowi można przypisać kierownika w profilu użytkownika na karcie \'Stanowiska\').
-*   W przypadku ustawienia wartości **Obie** użytkownik może zobaczyć zarówno własne rekordy, jak i rekordy swoich bezpośrednich podwładnych.';
+* W przypadku ustawienia wartości **Własne rekordy użytkownika** użytkownik może zobaczyć tylko własne rekordy.
+* W przypadku ustawienia wartości **Rekordy dla bezpośrednich podwładnych użytkownika** użytkownik może zobaczyć rekordy należące do dowolnego użytkownika, który jest jego podwładnym (użytkownikowi można przypisać kierownika w profilu użytkownika na karcie \'Stanowiska\').
+* W przypadku ustawienia wartości **Obie** użytkownik może zobaczyć zarówno własne rekordy, jak i rekordy swoich bezpośrednich podwładnych.';
 $string['reportcolumns'] = 'Kolumny raportu';
 $string['reportconfirmdelete'] = 'Czy na pewno chcesz usunąć ten raport?';
 $string['reportconfirmreload'] = 'Jest to raport zagnieżdżony, więc nie możesz go usunąć (musi to zrobić programista witryny). Możesz przywrócić wartości wyjściowe ustawień raportu. Czy chcesz kontynuować?';

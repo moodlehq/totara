@@ -153,8 +153,7 @@ $string['autosubscribeno'] = 'Ei: älä tilaa keskustelualuetta automaattisesti'
 $string['autosubscribeyes'] = 'Kyllä: tilaa keskustelualue osallistuessani keskusteluun';
 $string['availability'] = 'Näkyvyys opiskelijoille';
 $string['availability_help'] = 'Jos kurssi on suljettu opiskelijoilta, se ei näy kurssilistoissa eikä kurssille pääse kirjautumaan edes kurssialueen suoralla osoitteella. Kurssin näkevät vain sille lisätyt opettajat sekä ylläpito. Kurssialue näkyy listassa harmaana.
-
-Muista siis käydä vaihtamassa tämä asetus muotoon <b>Tämä kurssi on avoinna opiskelijolle</b> ennen kuin opetus alkaa. Voit lisätä opiskelijoita jo valmiiksi myös suljetulle alueelle, mutta he eivät pääse sille ennen kuin käyt muuttamassa asetuksen.';
+Muista siis käydä vaihtamassa tämä asetus muotoon **Tämä kurssi on avoinna opiskelijolle** ennen kuin opetus alkaa. Voit lisätä opiskelijoita jo valmiiksi myös suljetulle alueelle, mutta he eivät pääse sille ennen kuin käyt muuttamassa asetuksen.';
 $string['availablecourses'] = 'Saatavilla olevat kurssit';
 $string['back'] = 'Takaisin';
 $string['backto'] = 'Takaisin {$a}';
@@ -213,7 +212,6 @@ $string['cancelled'] = 'Peruutettu';
 $string['categories'] = 'Kurssikategoriat';
 $string['category'] = 'Kategoria';
 $string['category_help'] = 'Moodleen on valmiiksi luotu kurssikategorioita, kuten tiedekuntakohtainen tai muu oppiaineperustainen jako. Kurssisi on sijoitettu kategoriaan, johon olet sen pyytänyt, tai esimerkiksi Harjoituskursseihin. Jos sinulla ei ole itselläsi oikeuksia vaihtaa kurssialueesi kategoriaa, voit tarvittaessa pyytää vaihtoa Moodle-ylläpidosta.
-
 Valitse kategoria, johon kurssisi sopii parhaiten. Tämä valinta vaikuttaa siihen, missä kohdassa kurssisi näkyy kurssiluettelossa ja helpottaa opiskelijota kurssisi löytymisessä.';
 $string['categoryadded'] = 'Kategoria \'{$a}\' lisätty';
 $string['categorycontents'] = 'Alakategoriat ja kurssit';
@@ -283,9 +281,8 @@ $string['continue'] = 'Jatka';
 $string['continuetocourse'] = 'Napsauta tästä päästäksesi kurssille';
 $string['convertingwikitomarkdown'] = 'Muunnetaan Wiki Markdown-muotoon';
 $string['cookiesenabled'] = 'Selaimessasi pitää olla evästeet (cookies) päällä.';
-$string['cookiesenabled_help'] = 'Tämä sivusto käyttää kahta evästettä. Oleellisin on istuntoeväste, jota yleensä kutsutaan <strong>MoodleSession</strong>:iksi.  Sinun täytyy sallia tämä eväste selaimessasi saadaksesi istuntosi säilymään ja ylläpitääksesi kirjautumista sivulta sivulle. Kun kirjaudut ulos tai suljet selaimen, tämä eväste tuhoutuu selaimessasi ja palvelimella.
-
-Toinen eväste on vain käytännöllisyyden vuoksi, sitä kutsutaan esimerkiksi <b>MOODLEID</b>:ksi. Se muistaa käyttäjänimesi selaimen sisällä. Tämä tarkoittaa sitä, että kun palaat tälle sivustolle, käyttäjänimi kenttä sisäänkirjautumissivulla on jo valmiiksi täytetty sinua varten. On turvallista kieltäytyä tästä evästeestä - sinun vain täytyy kirjoittaa käyttäjänimesi joka kerta kun kirjaudut sisään.';
+$string['cookiesenabled_help'] = 'Tämä sivusto käyttää kahta evästettä. Oleellisin on istuntoeväste, jota yleensä kutsutaan **MoodleSession**:iksi. Sinun täytyy sallia tämä eväste selaimessasi saadaksesi istuntosi säilymään ja ylläpitääksesi kirjautumista sivulta sivulle. Kun kirjaudut ulos tai suljet selaimen, tämä eväste tuhoutuu selaimessasi ja palvelimella.
+Toinen eväste on vain käytännöllisyyden vuoksi, sitä kutsutaan esimerkiksi **MOODLEID**:ksi. Se muistaa käyttäjänimesi selaimen sisällä. Tämä tarkoittaa sitä, että kun palaat tälle sivustolle, käyttäjänimi kenttä sisäänkirjautumissivulla on jo valmiiksi täytetty sinua varten. On turvallista kieltäytyä tästä evästeestä - sinun vain täytyy kirjoittaa käyttäjänimesi joka kerta kun kirjaudut sisään.';
 $string['cookiesnotenabled'] = 'Selaimessasi ei ole evästeiden (cookies) tuki päällä.';
 $string['copy'] = 'kopioi';
 $string['copyasnoun'] = 'kopio';
@@ -336,9 +333,7 @@ $string['coursehidden'] = 'Tämä kurssi ei ole avoinna opiskelijoille';
 $string['courseinfo'] = 'Kurssin kuvaus';
 $string['courselegacyfiles'] = 'Perinteiset kurssitiedostot';
 $string['courselegacyfiles_help'] = 'Kurssin tiedostoalue mahdollistaa yhteensopivuuden aikaisempien Moodle-versioiden kanssa. Kaikki tiedostoalueen tiedostot ovat aina kaikkien kurssin osallistujien käytettävissä (oli niihin sitten linkki tai ei). Tietoa missä näitä tiedostoja käytetään ei ole mahdollista saada.
-
 Jos käytät tätä aluetta kurssien tiedostojen säilyttämiseen on riskinä tietoturvaongelmat ja yksityisyyden suoja. Samoin ongelmana voi olla puuttuvat tiedostot varmuuskopiossa, kurssien siirtojen yhteydessä tai silloin kun sisältöä on jaettu toisille käyttäjille tai käytetään uudelleen. Siksi on suositeltavaa, että käytä tätä aluetta vain jos tiedät tarkkaan mitä olet tekemässä.
-
 Allaoleva linkki antaa lisätietoa ja kertoo sinulle paremman tavan hallita tiedostojasi Moodlessa.';
 $string['coursemessage'] = 'Lähetä viesti kurssin osallistujille';
 $string['coursenotaccessible'] = 'Tälle kurssille ei ole avointa pääsyä';
@@ -704,40 +699,30 @@ $string['forgottenduplicate'] = 'Tätä sähköpostiosoitetta käyttää useampi
 $string['forgotteninvalidurl'] = 'Virheellinen salasanan vaihdon verkko-osoite';
 $string['format'] = 'Kurssimuoto';
 $string['format_help'] = 'Moodlen kurssimuodot
+Tyypillisimmin käytetyt kurssimuodot ovat Viikot ja Aiheet. Saattaa myös olla, että jokin tämän listan kurssimuodoista ei ole käytettävissä organisaatiossasi.
+**Viikot**
 
-<p>Tyypillisimmin käytetyt kurssimuodot ovat Viikot ja Aiheet. Saattaa myös olla, että jokin tämän listan kurssimuodoista ei ole käytettävissä organisaatiossasi.</p>
-
-<p><b>Viikot</b></p>
-<blockquote>
 Kurssialue muodostuu peräkkäisistä kurssiviikoista, ja työskentelyllä on selkeät aloitus- ja lopetuspäivät. Kullekin kurssiviikolle voit sitten lisätä haluamasi aktiviteetit ja resurssit. Huomaa, että kurssiviikko voi alkaa minä tahansa kalenteriviikon päivänä ja sen kesto on aina 7 päivää.
-</blockquote>
 
-<p><b>Aiheet</b></p>
-<blockquote>
+**Aiheet**
+
 Kurssin jäsentelyn kannalta tämä on usein vastaava kuin viikkomuoto, paitsi että jokaista "viikkoa" kutsutaan "aiheeksi", ja "aiheita" ei ole rajoitettu tiettyyn aikaan. Sinun ei tarvitse määritellä tarkkoja kurssipäivämääriä.
-</blockquote>
 
-<p><b>Keskustelu</b></p>
-<blockquote>
+**Keskustelu**
+
 Tämä muoto keskittyy yhteen Keskustelualueeseen, joka näkyy kurssialueen luettelossa. Keskustelumuoto on käytännöllinen vapaampimuotoisissa tilanteissa, joiden ei välttämättä tarvitse olla kursseja. Tämä muoto soveltuu käytettäväksi esimerkiksi osaston ilmoitustauluna. Huomaa, että muita aktiviteetteja tai resursseja kuin keskusteluja ei voi lisätä.
-</blockquote>
 
-<p><b>LAMS</b></p>
-<blockquote>
-Tämä muoto keskittyy LAMS-muotoiseen (<a href="http://www.lamsinternational.com/">Learning Activity Management System</a>) käyttöliittymään kurssialueena. LAMS vaatii organisaatiosi ylläpidon asennusta toimiakseen.
-</blockquote>
+**LAMS**
 
-<p><b>SCORM-sisällöt</b></p>
+Tämä muoto keskittyy LAMS-muotoiseen [Learning Activity Management System](http://www.lamsinternational.com) käyttöliittymään kurssialueena. LAMS vaatii organisaatiosi ylläpidon asennusta toimiakseen.
 
-<blockquote>
+**SCORM-sisällöt**
+
 Tämä muoto esittää SCORM-standardin mukaisesti toteutettua sisältöä kurssialueen ylimmässä lohkossa. Toinen vaihtoehto lisätä SCORM-muotoista sisältöä kurssialueelle on käyttää SCORM/AICC-aktiviteettia.
-</blockquote>
 
-<p><b>Viikot CSS-muotoiltuna</b></p>
+**Viikot CSS-muotoiltuna**
 
-<blockquote>
-Kurssin rakenne on viikoittainen kuten viikkomuodossa. Ulkoasu eroaa hieman viikkomuodosta siten, että viikkolohkot piirretään ilman taulukkoreunuksia.
-</blockquote>';
+Kurssin rakenne on viikoittainen kuten viikkomuodossa. Ulkoasu eroaa hieman viikkomuodosta siten, että viikkolohkot piirretään ilman taulukkoreunuksia.';
 $string['formathtml'] = 'HTML-muoto';
 $string['formatmarkdown'] = 'Markdown-muoto';
 $string['formatplain'] = 'Pelkkää tekstiä';
@@ -843,10 +828,9 @@ $string['helpwiththis'] = 'Avusta tässä';
 $string['hiddenassign'] = 'Piilotettu tehtävä';
 $string['hiddenfromstudents'] = 'Piilotettu opiskelijoilta';
 $string['hiddensections'] = 'Piilotetut osiot';
-$string['hiddensections_help'] = '<p>T&auml;m&auml; vaihtoehto sallii sinun p&auml;&auml;tt&auml;&auml; miten piilotetut osiot kurssillasi n&auml;kyv&auml;t opiskelijoille. </p>
-
-<p>Oletuksena n&auml;ytett&auml;&auml;n pieni alue (supistetussa muodossa, yleens&auml; harmaana) viittauksena siit&auml; miss&auml; piilotettu osio on. Vaikka he eiv&auml;t silti n&auml;e piilotettuja toimintoja ja tekstej&auml;. T&auml;m&auml; on erityisen k&auml;yt&auml;nn&ouml;llist&auml; viikoittaisessa muodossa, jolloin viikot joilla ei ole luentoja, ovat tyhji&auml;.</p>
-<p>Jos haluat, n&auml;m&auml; voivat olla my&ouml;s kokonaan piilotettuja, jolloin opiskelijat eiv&auml;t edes tied&auml;, ett&auml; osioita kurssista on piilotettuina.</p>';
+$string['hiddensections_help'] = 'Tämä vaihtoehto sallii sinun päättää miten piilotetut osiot kurssillasi näkyvät opiskelijoille.
+Oletuksena näytettään pieni alue (supistetussa muodossa, yleensä harmaana) viittauksena siitä missä piilotettu osio on. Vaikka he eivät silti näe piilotettuja toimintoja ja tekstejä. Tämä on erityisen käytännöllistä viikoittaisessa muodossa, jolloin viikot joilla ei ole luentoja, ovat tyhjiä.
+Jos haluat, nämä voivat olla myös kokonaan piilotettuja, jolloin opiskelijat eivät edes tiedä, että osioita kurssista on piilotettuina.';
 $string['hiddensectionscollapsed'] = 'Piilotetut osiot näytetään tiivistetyssä muodossa';
 $string['hiddensectionsinvisible'] = 'Piilotetut osiot ovat kokonaan näkymättömissä';
 $string['hide'] = 'Piilota';
@@ -880,7 +864,6 @@ $string['idnumbercoursecategory'] = 'Kategorian tunnistenumero';
 $string['idnumbercoursecategory_help'] = 'Kurssikategorian ID-numeroa käytetään vain kun kategoriaa verrataan ulkoisiin järjestelmiin, eikä sitä näytetä missään sivustolla. Jos kategorialla on virallinen koodinimi se voidaan syöttää, muuten kenttä voidaan jättää tyhjäksi.';
 $string['idnumbermod'] = 'Tunnistenumero';
 $string['idnumbermod_help'] = 'ID-numeron asetus antaa mahdollisuuden tunnistaa aktiviteetti arvosanan laskennassa. Jos tietty aktiviteetti ei sisälly mihinkään arvosanaan voidaan ID-numeron kenttä jättää tyhjäksi.
-
 ID-kentän voi määritellä myös Arvioinnit-sivulla, tosin sitä voi muokata ainoastaan aktiviteetin asetuksista.';
 $string['idnumbertaken'] = 'Tämä tunnistenumero on jo käytössä';
 $string['imagealt'] = 'Kuvan kuvaus';
@@ -1000,8 +983,8 @@ $string['maximumgrade'] = 'Arviointimaksimi';
 $string['maximumgradex'] = 'Maksimiarvosana: {$a}';
 $string['maximumshort'] = 'Max';
 $string['maximumupload'] = 'Suurin lähetyskoko';
-$string['maximumupload_help'] = '<p>T&auml;m&auml; asetus m&auml;&auml;ritt&auml;&auml; suurimman koon tiedostolle, jonka opiskelija voi ladata t&auml;lle kurssille, ja se on rajattu sivuston laajuisten asetusten kautta yll&auml;pit&auml;j&auml;n taholta.</p>
-<p>Voit myös rajoittaa lähetysten kokoa lisää jokaisen toimintamoduulin asetusten kautta erikseen.</p>';
+$string['maximumupload_help'] = 'Tämä asetus määrittää suurimman koon tiedostolle, jonka opiskelija voi ladata tälle kurssille, ja se on rajattu sivuston laajuisten asetusten kautta ylläpitäjän taholta.
+Voit myös rajoittaa lähetysten kokoa lisää jokaisen toimintamoduulin asetusten kautta erikseen.';
 $string['maxnumberweeks'] = 'Maksimimäärä viikkoja / aiheita';
 $string['maxnumberweeks_desc'] = 'Kurssin viikkojen tai aiheiden maksimimäärän asettaminen.';
 $string['maxnumcoursesincombo'] = 'Selaa <a href="{$a->link}">{$a->numberofcourses} kurssia</ a>.';
@@ -1119,23 +1102,17 @@ Terveisin \'{$a->sitename}\' pääkäyttäjä,
 {$a->signoff}';
 $string['newpicture'] = 'Uusi kuva';
 $string['newpicture_help'] = 'Lisää kuva tietokoneeltasi palvelimelle. Kuvaa käytetään Moodlessa nimesi vieressä. Lähikuva kasvoistasi on käyttökelpoisin mutta voit toki käyttää mitä tahansa haluamaasi kuvaa. Muista kuitenkin kuvan tekijänoikeudet.
-
 Kuvan on oltava jpg tai png -tallennusmuodossa (eli tiedostonimen pääte on .jpg tai .png). Tee kuva esimeriksi näin:
-
 * Digikameran ottamat kuvat ovat todennäköisesti valmiiksi oikeassa muodossa.
 * Voit skannata paperikuvan
 * Voit piirtää kuvan kuvankäsittelyohjelmalla.
-
 Kun lähetät kuvan, napsauta "Browse" painiketta ja valitse kuvatiedosto. HUOMAA: Varmista että tiedosto ei ole suurempi sivuston maksimikoko, muutoin sitä ei voi lähettää. Kuvan tosin ei kannatakaan olla kovin suuri, sillä se joka tapauksessa pienennetään.
-
 Napsauta sitten "Päivitä profiilini" ("Update my Profile") alhaalla - kuvatiedosto leikkautuu neliöksi ja koko muuttuu 100x100 pikseliksi.
-
 Kun palaat profiilisivullesi, voi olla, näet edelleen vanhan kuvasi. Käytä siinä tapauksessa selaimen "Päivitä" -painiketta.';
 $string['newsitem'] = 'uutisaihe';
 $string['newsitems'] = 'uutisaihetta';
 $string['newsitemsnumber'] = 'Näytä uutisaiheet';
 $string['newsitemsnumber_help'] = 'Viikko- ja aihemuodoissa on erillinen Uutiset -niminen keskustelualue. Sen kautta opettajat voivat lähettää kurssitiedotuksia osallistujille. Vain opettajat saavat kirjoittaa viestejä ja kaikki viestit lähtevät pakotetusti kaikille osallistujille sähköpostiin.
-
 Tällä asetuksella määrittelet, kuinka monta uutista Viimeisimmät uutiset -lohkossa näkyy. Jos laitat arvoksi "0", Viimeisimmät uutiset -lohko ei näy ollenkaan.';
 $string['newuser'] = 'Uusi käyttäjä';
 $string['newusernewpasswordsubj'] = 'Uusi käyttäjätunnus';
@@ -1411,9 +1388,7 @@ $string['role'] = 'Rooli';
 $string['rolemappings'] = 'Roolien jako';
 $string['rolerenaming'] = 'Roolien uudelleennimeäminen';
 $string['rolerenaming_help'] = 'Tällä asetuksella voit vaihtaa kurssialueen rooleista käytetyt nimet. Jos esimerkiksi kurssialueesi on suomenkielinen, voit tässä antaa rooleille suomenkieliset nimet. Myös nimien monikielisyys eli multilang-filtteröinti on mahdollista.
-
 Roolien nimet näkyvät osallistujille kurssialueen osallistujalistan otsikoina, opettajan roolille myös muualla kurssialueella ja ylläpitäjille kurssilistauksissa.
-
 Kurssialueen varmuuskopioon roolien uudelleennimeäminen lisätään vain jos mukaan otetaan myös käyttäjätiedot.';
 $string['roles'] = 'Roolit';
 $string['rss'] = 'RSS';
@@ -1433,14 +1408,10 @@ $string['savepreferences'] = 'Tallenna asetukset';
 $string['saveto'] = 'Tallenna';
 $string['scale'] = 'Asteikko';
 $string['scale_help'] = 'Opettajat voivat luoda omia asteikoitaan käytettäväksi kurssin arvioinnissa. Asteikon nimen tulee kuvata asteikkoa selkeästi, sillä asteikon nimi näkyy asteikon valinta -kentissä, kuten myös tapauskohtaisissa ohjepainikkeissa.
-
 Asteikko määritellään listan avulla siten, että luetellaan skaala negatiivisesta positiiviseen, ja erotellaan pilkuilla. Esimerkiksi:
-
 * Riittämätön, Välttävä, Tyydyttävä, Hyvä, Kiitettävä, Erinomainen
 * Pettymys, Ei tarpeeksi hyvä, Keskiverto, Hyvä, Erittäin hyvä, Loistava!
-
 Asteikon tulee myös sisältää hyvä kuvaus siitä, mitä se tarkoittaa ja miten sitä käytetään. Kuvaus tulee näkyviin ohjesivuilla opettajille ja opiskelijoille.
-
 Sivustollasi saattaa olla yksi tai useampi asteikko valmiina ylläpitäjän määrittelemänä. Nämä ovat käytettävissä kaikilla kursseilla.';
 $string['scales'] = 'Asteikot';
 $string['scalescustom'] = 'Omat asteikot';
@@ -1459,7 +1430,6 @@ $string['screenreaderyes'] = 'Kyllä';
 $string['screenshot'] = 'Ruudunkaappaus';
 $string['search'] = 'Hae';
 $string['search_help'] = 'Tekstin perushaussa (yksi tai useampi sana) kirjoita sanoja erottamalla ne välilyönnillä. Kaikki kahta merkkiä pidemmät sanat ovat haun kohteena.
-
 Halutessasi päästä edistyneeseen hakuun paina haku-painiketta kirjoittamatta hakuikkunaan mitään niin lomake hakuun aukeaa.';
 $string['searchagain'] = 'Hae uudelleen';
 $string['searchbyemail'] = 'Etsi sähköpostin perusteella';
@@ -1525,9 +1495,7 @@ $string['showdescription'] = 'Näytä kuvaus kurssisivulla';
 $string['showdescription_help'] = 'Jos tämä asetus on käytössä, yllä oleva kuvausteksti näytetään kurssisivulla ko. aktiviteetti- tai aineistolinkin alapuolella.';
 $string['showgrades'] = 'Näytä arvioinnit opiskelijalle';
 $string['showgrades_help'] = 'Opiskelijoiden arviointi on mahdollista useimmissa Moodlen aktiviteeteista.
-
 Oletuksena kurssialueen kaikki arvioitavat aktiviteetit ovat nähtävissä Arvioinnit-sivulla eli Arviointikirjassa, jonne pääsee kurssialueelta Ylläpito-lohkon kautta.
-
 Jos et halua käyttää arviointia kurssillasi tai haluat piilottaa arvoioinnin opiskelijoilta, niiden näkymisen voi estää kurssin asetuksissa. Tämä ei estä yksittäisiä aktiviteetteja käyttämästä arviointia, annetut arvioinnit vain eivät näy opiskelijoille.';
 $string['showlistofcourses'] = 'Näytä kurssilista';
 $string['showmodulecourse'] = 'Näytä kurssit, jotka käyttävät aktiviteettia';
@@ -1637,7 +1605,6 @@ $string['submit'] = 'Lähetä';
 $string['success'] = 'Valmis!';
 $string['summary'] = 'Yhteenveto';
 $string['summary_help'] = 'Aiheyhteenvedon idea on, että teksti valmistelee opiskelijoita aiheen tai viikon sisällä oleviin toimintoihin. Yhteenvetojen kannattaa olla lyhyitä, jotta kurssisivu ei veny liikaa.
-
 Jos huomaat haluavasi sanoa enemmän kuin pari lausetta, harkitse sivun kirjoittamista aiheesta.';
 $string['summaryof'] = '{$a} Yhteenveto';
 $string['supplyinfo'] = 'Lisätietoja';

@@ -71,25 +71,22 @@ $string['delete_old_items'] = '删除旧题';
 $string['delete_template'] = '删除模板';
 $string['delete_templates'] = '删除模板...';
 $string['depending'] = '依赖的问题';
-$string['depending_help'] = '依赖性使问题的显示取决于对其它问题的回答。<br />
-<strong>这里有一个使用例子：</strong>
-<br />
-<ul>
-<li>首先创建一条其它问题要依赖的题。</li>
-<li>然后添加一个分页符。</li>
-<li>接着添加一条依赖于上面那道题的题。<br />
-在创建问题表单中的“依赖于问题”列表中选择那道题，并将需要的值填入“依赖值”文本框中。</li>
-</ul>
-<strong>结构应该像下面这样：</strong>
-<ol>
-<li>问题：您有汽车吗？回答：有/没有</li>
-<li>分页符</li>
-<li>问题：您的车是什么颜色的？<br />
-（此题当问题1选择“有”时才显示）</li>
-<li>问题：您为什么没有车？<br />
-（此题当问题1选择“没有”时才显示）</li>
-<li> ……其它问题</li>
-</ol>
+$string['depending_help'] = '依赖性使问题的显示取决于对其它问题的回答。
+**这里有一个使用例子：**
+* 首先创建一条其它问题要依赖的题。
+* 然后添加一个分页符。
+* 接着添加一条依赖于上面那道题的题。
+在创建问题表单中的“依赖于问题”列表中选择那道题，并将需要的值填入“依赖值”文本框中。
+
+**结构应该像下面这样：**
+1. 问题：您有汽车吗？回答：有/没有
+2. 分页符
+3. 问题：您的车是什么颜色的？
+（此题当问题1选择“有”时才显示）
+4. 问题：您为什么没有车？
+（此题当问题1选择“没有”时才显示）
+5. ……其它问题
+
 就是这样。祝您使用愉快！';
 $string['dependitem'] = '依赖的问题';
 $string['dependvalue'] = '依赖值';
@@ -146,7 +143,6 @@ $string['infotype'] = '信息类型';
 $string['insufficient_responses'] = '问卷数不够';
 $string['insufficient_responses_for_this_group'] = '此组给出的答复数量不足';
 $string['insufficient_responses_help'] = '此小组的回答数量不足。
-
 为了保证反馈的匿名性，至少需要两个以上的回答。';
 $string['item_label'] = '标签';
 $string['item_name'] = '问题';

@@ -73,10 +73,10 @@ or \'ldaps://ldap.myorg.com/\'';
 $string['host_url_key'] = 'URL del servidor';
 $string['idnumber_attribute'] = 'Si la pertenencia al grupo contiene nombres distinguidos, especifique el mismo atributo que ha utilizado para el mapeo de "Número ID" del usuario en la configuración de autenticación LDAP';
 $string['idnumber_attribute_key'] = 'Número ID del atributo';
+$string['ldap:manage'] = 'Gestionar ejemplos de matriculación LDAP';
 $string['ldap_encoding'] = 'Especifique la codificación usada por el serviodr LDAP. Probablemente, utf-8.
 MS AD v2 utiliza como codificación de plataforma por defecto, cp1252, cp1250, etc.';
 $string['ldap_encoding_key'] = 'Codificación LDAP';
-$string['ldap:manage'] = 'Gestionar ejemplos de matriculación LDAP';
 $string['memberattribute'] = 'Atributo de miembro LDAP';
 $string['memberattribute_isdn'] = 'Si la pertenencia al grupo contiene nombres distinguidos, es necesario que lo especifique aquí. Si lo hace, también es necesario configurar los parámetros restantes de esta sección';
 $string['memberattribute_isdn_key'] = 'El atributo de miembro usa dn';

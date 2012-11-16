@@ -55,7 +55,6 @@ $string['educationallevel'] = 'Utbildningsnivå';
 $string['educationallevel_help'] = 'Vilken utbildningsnivå letar Du efter? Om det handlar om gemenskaper för utbildare/(distans)lärare så beskriver detta den nivå som de undervisar på.';
 $string['enroldownload'] = 'Hitta';
 $string['enroldownload_help'] = 'En del kurser som är listade i den valda hubben utannonseras så att folk kan delta i dem på den ursprungliga webbplatsen.
-
 Andra är mallar för kurser som Du kan ladda ner och använda på Din egen webbplats för Moodle';
 $string['enrollable'] = 'kurser som jag kan registrera mig på';
 $string['fileinfo'] = 'Språk: {$a->lang} - Licens: {$a->license} -  Tid för uppdatering: {$a->timeupdated}';

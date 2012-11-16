@@ -58,11 +58,9 @@ $string['datefmt'] = 'Format de date';
 $string['datefmt_help'] = 'Choisir un format de date à imprimer sur le certificat.';
 $string['datehelp'] = 'Date';
 $string['delivery_help'] = 'Choisissez ici la manière dont vos étudiants recevront leur certificat.
-
-**Ouvrir dans navigateur :** Ouvre le certificat dans une nouvelle fenêtre du navigateur.   
-**Forcer le téléchargement :** Ouvre la fenêtre de téléchargement de fichier par navigateur. **(Note : **Internet Explorer ne permet pas l\'ouverture depuis la fenêtre de téléchargement du navigateur. L\'option enregistrer doit être sélectionnée d\'abord.)  
+**Ouvrir dans navigateur :** Ouvre le certificat dans une nouvelle fenêtre du navigateur.
+**Forcer le téléchargement :** Ouvre la fenêtre de téléchargement de fichier par navigateur. **(Note : **Internet Explorer ne permet pas l\'ouverture depuis la fenêtre de téléchargement du navigateur. L\'option enregistrer doit être sélectionnée d\'abord.)
 **Certificat par e-mail :** Choisir cet option envoie le certificat par e-mail en tant que pièce jointe.
-
 Après réception d\'un certificat, un apprenti peut cliquez à nouveau sur le lien du certificat et voir la date d\'obtention du certificat, et pourront examiner leur certificat reçu.';
 $string['designoptions'] = 'Options de design';
 $string['download'] = 'Force téléchargement';
@@ -87,7 +85,6 @@ $string['getcertificate'] = 'Recevoir votre certificat';
 $string['grade'] = 'Note';
 $string['gradedate'] = 'Date reception  de la note';
 $string['gradefmt_help'] = '3 formats de note sont disponibles pour l\'impression sur certificat :
-
 **Note en poucents :** Imprimer le pourcentage en tant que note.
 **Note en points : ** Imprimer la valeur en points de la note.
 **Letter Grade :** Imprimer la note en poucentage avec une lettre. Les valeurs pour les lettres peuvent être personnalisées dans type/certificate.php.';
@@ -114,8 +111,7 @@ $string['opendownload'] = 'Cliquer le bouton ci-dessous afin de sauvegarder le c
 $string['openemail'] = 'Cliquer le bouton ci-dessous afin de recevoir le certificat par mél en piece joint.';
 $string['openwindow'] = 'Cliquer le bouton ci-dessous afin d\'ouvrir le certificat dans une nouvelle fenêtre.';
 $string['printdate'] = 'Imprimer la date';
-$string['printdate_help'] = 'Il s\'agit de la date qui sera imprimée, si une date est sélectionnée. Si la date de fin du cours et sélectionnée, vous devez autoriser la période de temps et paramétrer les date de fin du cours dans les paramètres du cours. Si la date de fin de cours n\'est pas configurée, la date de réception sera imprimée. Vous pouvez aussi choisir d\'imprimer la date de graduation d\'une activité. Si un certificat est généré avec graduation de cette activité, la date de réception sera imprimée. 
-
+$string['printdate_help'] = 'Il s\'agit de la date qui sera imprimée, si une date est sélectionnée. Si la date de fin du cours et sélectionnée, vous devez autoriser la période de temps et paramétrer les date de fin du cours dans les paramètres du cours. Si la date de fin de cours n\'est pas configurée, la date de réception sera imprimée. Vous pouvez aussi choisir d\'imprimer la date de graduation d\'une activité. Si un certificat est généré avec graduation de cette activité, la date de réception sera imprimée.
 Veuillez noter qu\'une fois la date imprimée sur un certificat, elle ne peut être modifiée sauf personnalisation du fichier type/certificate.php.';
 $string['printerfriendly'] = 'Page imprimable';
 $string['printgrade'] = 'Imprimer la note';

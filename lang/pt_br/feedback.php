@@ -71,24 +71,21 @@ $string['delete_old_items'] = 'Apagar todos os itens';
 $string['delete_template'] = 'Excluir template';
 $string['delete_templates'] = 'Excluir template...';
 $string['depending'] = 'Itens dependentes';
-$string['depending_help'] = 'Itens dependentes possibilitam mostrar itens que dependendem de valores de outros itens.<br />
-<strong>Aque está um exemplo:</strong><br />
-<ul>
-<li>Inicialmente crie um item do qual outros itens dependem de um valor.</li>
-<li>Na sequência, adicione uma nova página..</li>
-<li>Na sequencia adicione o item dependente do valor apresentado no iem anterior.<br />
-<li>Escolha \'Item dependente\' no formulário de criação de um item e indique o valor na caixa de texto.</li>
-</ul>
-<strong>A estrutura deve ser como a seguir:</strong>
-<ol>
-<li>Item pergunta: Você tem um carro? Resposta: sim/não</li>
-<li>Quebra de páginak</li>
-<li>Item pergunta: Qual é a cor de seu carro?<br />
-(este item depende da resposta \'sim\' ao item 1)</li>
-<li>Item perguna: Por que você não tem um carro?<br />
-(este item depende da resposta \'não ao item 1)</li>
-<li> ...outros itens</li>
-</ol>
+$string['depending_help'] = 'Itens dependentes possibilitam mostrar itens que dependendem de valores de outros itens.
+**Aque está um exemplo:**
+* Inicialmente crie um item do qual outros itens dependem de um valor.
+* Na sequência, adicione uma nova página..
+* Na sequencia adicione o item dependente do valor apresentado no iem anterior.
+* Escolha \'Item dependente\' no formulário de criação de um item e indique o valor na caixa de texto.
+
+**A estrutura deve ser como a seguir:**
+1. Item pergunta: Você tem um carro? Resposta: sim/não
+2. Quebra de páginak
+3. Item pergunta: Qual é a cor de seu carro?
+(este item depende da resposta \'sim\' ao item 1)
+4. Item perguna: Por que você não tem um carro?
+(este item depende da resposta \'não ao item 1)
+5. ...outros itens
 Somente isto. Divirta-se';
 $string['dependitem'] = 'Item dependente';
 $string['dependvalue'] = 'Vapor dependente';
@@ -145,7 +142,6 @@ $string['infotype'] = 'Tipo de informação';
 $string['insufficient_responses'] = 'Respostas insuficientes';
 $string['insufficient_responses_for_this_group'] = 'Há respostas insuficientes para este grupo';
 $string['insufficient_responses_help'] = 'Há respostas insuficientes para este grupo.
-
 Para manter a pesquisa anônima precisam-se, ao menos, duas respostas.';
 $string['item_label'] = 'Rótulo';
 $string['item_name'] = 'Questão';

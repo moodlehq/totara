@@ -45,15 +45,14 @@ $string['uploadpicture_cannotsave'] = 'A(z) {$a} felhasználó képállományát
 $string['uploadpicture_cannotunzip'] = 'A képállományt nem lehet kibontani.';
 $string['uploadpicture_invalidfilename'] = 'A(z) {$a} képállomány nevében érvénytelen karakterek vannak.';
 $string['uploadpicture_overwrite'] = 'Felülírja a meglévő felhasználói képeket?';
-$string['uploadpictures'] = 'Felhasználók képének feltöltése';
-$string['uploadpictures_help'] = 'Felhasználói képeket képállományokból készített tömörített fájlként tölthet fel. A képállományokat kiválasztott-felhasználói-attribútum.kiterjesztés formában kell elnevezni. Ha például a képek megfeleltetéséhez a kiválasztott felhasználói attribútum a felhasználónév, a felhasználó neve pedig user1234, akkor az állomány neve user1234.jpg lesz.';
 $string['uploadpicture_userfield'] = 'A képekhez kapcsolódó felhasználói attribútum:';
 $string['uploadpicture_usernotfound'] = '\'{$a->userfield}\' értékű \'{$a->uservalue}\' felhasználó nem létezik.';
 $string['uploadpicture_userskipped'] = 'A(z) {$a} felhasználó kihagyva (már van képe).';
 $string['uploadpicture_userupdated'] = 'A(z) {$a} felhasználó képe frissítve.';
+$string['uploadpictures'] = 'Felhasználók képének feltöltése';
+$string['uploadpictures_help'] = 'Felhasználói képeket képállományokból készített tömörített fájlként tölthet fel. A képállományokat kiválasztott-felhasználói-attribútum.kiterjesztés formában kell elnevezni. Ha például a képek megfeleltetéséhez a kiválasztott felhasználói attribútum a felhasználónév, a felhasználó neve pedig user1234, akkor az állomány neve user1234.jpg lesz.';
 $string['uploadusers'] = 'Felhasználók feltöltése';
 $string['uploadusers_help'] = 'A felhasználókat feltöltheti (és adott esetben beiratkoztathatja) szöveges állományból is. A szöveget az alábbiak szerint kell megformáznia:
-
 * Az állomány minden sora egy rekordot tartalmazzon.
 * Minden rekord egy-egy vesszőkkel (vagy más határoló karakterekkel) elválasztott adatsort tartalmazzon.
 * Az állomány első a mezőneveket tartalmazza, melyek meghatározzák az állomány fennmaradó részének a szerkezetét.

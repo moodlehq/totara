@@ -66,7 +66,6 @@ $string['educationallevel'] = 'רמת השכלה';
 $string['educationallevel_help'] = 'איזו רמת השכלה הינך מחפש? במקרה קהילות השכלה, שלב זה מתאר את שלב בו הם מלמדים.';
 $string['enroldownload'] = 'מצא';
 $string['enroldownload_help'] = 'כמה קורסים ברשימת ה-HUB הנבחרת יתפרסמו כך שאנשים יוכלו לבוא ולהשתתף בהם באתר המקורי.
-
 אחרים הם תבניות קורס שסופקו עבורך להורדה ולשימוש באתר Moodle שלך.';
 $string['enrollable'] = 'קורסים אליהם אני יכול להירשם';
 $string['enrollablecourses'] = 'קורסים הניתנים לרישום';

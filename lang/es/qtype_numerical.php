@@ -49,17 +49,17 @@ $string['nonvalidcharactersinnumber'] = 'Caracteres no válidos en el número';
 $string['notenoughanswers'] = 'Debe escribir al menos una respuesta.';
 $string['numericalmultiplier'] = 'Multiplicador';
 $string['numericalmultiplier_help'] = 'El multiplicador es el factor por el que la respuesta-numérica correcta se multiplica.
-<br>La primera unidad (\'Unidad 1\') tiene un valor multiplicador predeterminado de 1. Así, por ejemplo, si la respuesta-numérica correcta es de 5500 W y se establece W (vatio) como unidad en \'Unidad 1\' que tiene 1 como multiplicador predeterminado, la respuesta correcta es 5500 W.
-<br>Si se agrega la unidad kW (kilovatio) con un multiplicador de 0,001, entonces 5,5kW será también una respuesta correcta. Esto significa que tanto 5500W como 5.5kW se consideran correctas.
-<br>Tenga en cuenta que el margen de error aceptado también se multiplica, por lo que un error permitido de 100 W se convertiría en un error de 0.1kW.';
+La primera unidad (\'Unidad 1\') tiene un valor multiplicador predeterminado de 1. Así, por ejemplo, si la respuesta-numérica correcta es de 5500 W y se establece W (vatio) como unidad en \'Unidad 1\' que tiene 1 como multiplicador predeterminado, la respuesta correcta es 5500 W.
+Si se agrega la unidad kW (kilovatio) con un multiplicador de 0,001, entonces 5,5kW será también una respuesta correcta. Esto significa que tanto 5500W como 5.5kW se consideran correctas.
+Tenga en cuenta que el margen de error aceptado también se multiplica, por lo que un error permitido de 100 W se convertiría en un error de 0.1kW.';
 $string['oneunitshown'] = 'Sólo la RESPUESTA-NUMÉRICA se calificará, mostrándose como unidad la especificada en \'Unidad 1\'';
 $string['onlynumerical'] = 'Sólo la RESPUESTA-NUMÉRICA se calificará, no permitiéndose unidades';
 $string['pleaseenterananswer'] = 'Por favor, introduzca una respuesta.';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Por favor, introduzca su respuesta sin usar el separador de unidades de mil ({$a})';
 $string['pluginname'] = 'Numérica';
+$string['pluginname_help'] = 'Desde la perspectiva del alumno, una pregunta numérica es muy semejante a una pregunta de respuesta corta. La diferencia es que a las respuestas numéricas se les permite tener un margen de error. Esto permite evaluar la respuesta debtro de un rango fijo. Por ejemplo, si la respuesta es 10, con un margen de error de 2, entonces cualquier número entre 8 y 12 se aceptará como correcto.';
 $string['pluginnameadding'] = 'Agregando una pregunta numérica';
 $string['pluginnameediting'] = 'Editando una pregunta numérica';
-$string['pluginname_help'] = 'Desde la perspectiva del alumno, una pregunta numérica es muy semejante a una pregunta de respuesta corta. La diferencia es que a las respuestas numéricas se les permite tener un margen de error. Esto permite evaluar la respuesta debtro de un rango fijo. Por ejemplo, si la respuesta es 10, con un margen de error de 2, entonces cualquier número entre 8 y 12 se aceptará como correcto.';
 $string['pluginnamesummary'] = 'Permite una respuesta numérica (con posibilidad de especificar las unidades) que es calificada comparándola con distintas respuestas modelo (es posible incluir márgenes de tolerancia).';
 $string['relative'] = 'Relativa';
 $string['rightexample'] = 'DERECHA, como 1.00cm';
@@ -77,7 +77,7 @@ $string['unithdr'] = 'Unidad {$a}';
 $string['unitincorrect'] = 'No proporcionó la unidad correcta';
 $string['unitmandatory'] = 'Obligatorio';
 $string['unitmandatory_help'] = '* La respuesta se calificará usando la unidad escrita.
-<br> * La penalización se aplicará si el campo de la unidad está vacío';
+* La penalización se aplicará si el campo de la unidad está vacío';
 $string['unitnotselected'] = 'Debe seleccionar una unidad';
 $string['unitonerequired'] = 'Debe introducir almenos una unidad';
 $string['unitoptional'] = 'Unidad opcional';

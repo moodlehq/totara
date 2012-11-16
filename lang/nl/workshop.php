@@ -199,7 +199,6 @@ $string['sortdesc'] = 'Omgekeerd sorteren';
 $string['strategy'] = 'Beoordelingsstrategie';
 $string['strategy_help'] = 'De beoordelingsstrategie bepaalt het gebruikte beoordelingsformulier en de methode voor het beoordelen van inzendingen;
 Er zijn 4 opties:
-
 * Cumulatief beoordelen - er worden commentaren en een cijfer gegeven volgens gespecificeerde aspecten van de taak
 * Commentaren - er worden commentaren gegeven volgens bepaalde aspecten van de taak, maar er wordt geen cijfer gegeven.
 * Aantal fouten - er wordt commentaar en een ja/nee beoordeling gegeven over een reeks statements

@@ -46,7 +46,7 @@ $string['coursepublished'] = 'لقد تم نشر هذا المقرر الدرا�
 $string['courseshortname'] = 'الاسم القصير';
 $string['courseshortname_help'] = 'أدخل اسماً قصيراً للمقرر الدراسي. ليس من الضروري أن يكون فريداً.';
 $string['coursesnumber'] = 'عدد المقررات الدراسية ({$a})';
-$string['courseunpublished'] = 'هذا المقرر {$a->courseshortname} لم يعد منشوراً بعد الآن في {$a->courseshortname} ';
+$string['courseunpublished'] = 'هذا المقرر {$a->courseshortname} لم يعد منشوراً بعد الآن في {$a->courseshortname}';
 $string['creatorname'] = 'المؤلف';
 $string['creatorname_help'] = 'المؤلف هو الشخص الذي قام بإنشاء محتوى هذا المقرر الدراسي';
 $string['creatornotes'] = 'ملاحظات المؤلف';

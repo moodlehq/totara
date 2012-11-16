@@ -46,13 +46,11 @@ $string['editfeeds'] = 'Modifica, sottoscrivi o revoca l\'iscrizione al feed new
 $string['editnewsfeeds'] = 'Modifica feed di news';
 $string['editrssblock'] = 'Modifica titolo blocco RSS';
 $string['enableautodiscovery'] = 'Abilita l\'individuazione automatica dei feed';
-$string['enableautodiscovery_help'] = '<p>
-L\'opzione permette a Moodle di individuare automaticamente un feed senza doverne specificare il link completo.
-</p>
-<p>Ad esempio, utilizzando l\'URL di Moodle Docs: <pre>http://docs.moodle.org</pre>
+$string['enableautodiscovery_help'] = 'L\'opzione permette a Moodle di individuare automaticamente un feed senza doverne specificare il link completo.
+Ad esempio, utilizzando l\'URL di Moodle Docs:
+http://docs.moodle.org
 Moodle individuerà automaticamente il feed da usare:
-<pre>http://docs.moodle.org/en/index.php?title=Special:RecentChanges&amp;feed=rss</pre>
-</p>';
+http://docs.moodle.org/en/index.php?title=Special:RecentChanges&feed=rss';
 $string['errorloadingfeed'] = 'Si è verificato un errore durante il caricamento del feed RSS ({$a})';
 $string['feed'] = 'Feed';
 $string['feedadded'] = 'Feed News aggiunto';

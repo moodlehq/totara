@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Imprimer le livre';
+$string['print:print'] = 'Imprimer le livre';
 $string['printbook'] = 'Imprimer tout le livre';
 $string['printchapter'] = 'Imprimer ce chapitre';
 $string['printdate'] = 'Date';
 $string['printedby'] = 'Imprimé par';
-$string['print:print'] = 'Imprimer le livre';

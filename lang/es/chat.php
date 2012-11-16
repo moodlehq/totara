@@ -122,27 +122,20 @@ $string['updatemethod'] = 'Actualizar método';
 $string['updaterate'] = 'Tasa de Actualización:';
 $string['userlist'] = 'Lista de usuarios';
 $string['usingchat'] = 'Usando el chat';
-$string['usingchat_help'] = '<p>Este módulo contiene algunas características para chatear de forma más agradable.</p>
+$string['usingchat_help'] = 'Este módulo contiene algunas características para chatear de forma más agradable.
 
-<dl>
-<dt><b>Emoticonos</b></dt>
-<dd>Todos los emoticonos que se pueden escribir en cualquier lugar de Moodle
-también se pueden colocar aquí. Por ejemplo: :-) = <img alt="" src="pix/s/smiley.gif" />  </dd>
-
-<dt><b>Enlaces</b></dt>
-<dd>Las direcciones de Internet se convertirán automáticamente en enlaces.</dd>
-
-<dt><b>Emociones</b></dt>
-<dd>Puede iniciar un línea con "/me" o ":" para mostrar una emoción. Por ejemplo,
-si su nombre es Ana y escribe ": ríe" todos verán "Ana ríe"</dd>
-
-<dt><b>Beeps</b></dt>
-<dd>Puede enviar un pitido a otra persona haciendo clic en el enlace "beep"
-junto al nombre.</dd>
-
-<dt><b>HTML</b></dt>
-<dd>Si sabe un poco de lenguaje HTML puede utilizarlo en su texto para insertar
-imágenes, ejecutar sonidos o formatear texto, entre otras.
-</dd>
-</dl>';
+**Emoticonos**
+: Todos los emoticonos que se pueden escribir en cualquier lugar de Moodle
+también se pueden colocar aquí. Por ejemplo: :-)
+**Enlaces**
+: Las direcciones de Internet se convertirán automáticamente en enlaces.
+**Emociones**
+: Puede iniciar un línea con "/me" o ":" para mostrar una emoción. Por ejemplo,
+si su nombre es Ana y escribe ": ríe" todos verán "Ana ríe"
+**Beeps**
+: Puede enviar un pitido a otra persona haciendo clic en el enlace "beep"
+junto al nombre.
+**HTML**
+: Si sabe un poco de lenguaje HTML puede utilizarlo en su texto para insertar
+imágenes, ejecutar sonidos o formatear texto, entre otras.';
 $string['viewreport'] = 'Ver las sesiones anteriores';

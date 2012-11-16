@@ -55,12 +55,10 @@ $string['page-notes-x'] = 'Qualquer página de anotações';
 $string['personal'] = 'individual';
 $string['personalnotes'] = 'Anotações individuais';
 $string['publishstate'] = 'Estado';
-$string['publishstate_help'] = '<p>Há 3 configurações possíveis aqui:</p>
-<ul>
-<li><strong>Pessoal</strong> - A anotação será visível apenas para você</li>
-<li><strong>Curso</strong> - A anotação será visível para os professores desse curso</li>
-<li><strong>Site</strong> - A anotação será visível para todos os professores de todos os cursos</li>
-</ul>';
+$string['publishstate_help'] = 'Há 3 configurações possíveis aqui:
+\* **|Pessoal** - A anotação será visível apenas para você
+\* **|Curso** - A anotação será visível para os professores desse curso
+\* **|Site** - A anotação será visível para todos os professores de todos os cursos';
 $string['site'] = 'site';
 $string['sitenotes'] = 'Anotações do site';
 $string['unknown'] = 'desconhecido';

@@ -39,7 +39,7 @@ $string['choosereadme'] = '<div class="clearfix"><div class="theme_screenshot"><
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a
 
 href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['pluginname'] = 'Anomaly';
 $string['region-side-post'] = 'Rechts';

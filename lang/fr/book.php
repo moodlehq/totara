@@ -41,19 +41,16 @@ $string['editingchapter'] = 'Modifier le chapitre';
 $string['errorchapter'] = 'Erreur lors de la lecture du chapitre';
 $string['faq'] = 'FAQ sur les livres';
 $string['faq_help'] = '*Pourquoi seulement deux niveaux de hiérarchie ?*
-
-Deux niveaux de hiérarchie sont, en général, suffisants pour les livres. Des documents qui comporteraient trois niveaux pourraient être mal structurés. L\'activité Livre a été conçue pour créer de courts documents contenant quelques pages. Il est généralement préférable d\'utiliser un fichier PDF dans le cas de longs documents. La façon la plus simple de créer un document PDF est d\'utiliser une imprimante virtuelle (par exemple, voir <a href="http://www.adobe.com/ca_fr/products/acrobatpro.html" target="_blank">Adobe Acrobat</a>).
-
+Deux niveaux de hiérarchie sont, en général, suffisants pour les livres. Des documents qui comporteraient trois niveaux pourraient être mal structurés. L\'activité Livre a été conçue pour créer de courts documents contenant quelques pages. Il est généralement préférable d\'utiliser un fichier PDF dans le cas de longs documents. La façon la plus simple de créer un document PDF est d\'utiliser une imprimante virtuelle (par exemple, voir 
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+).
 *Les étudiants peuvent-ils modifier un livre ?*
-
 Seuls les enseignants peuvent créer et modifier des livres. Nous ne prévoyons pas de donner la permission de modifier des livres aux étudiants ; toutefois, un membre de la communauté pourrait créer un outil semblable pour les étudiants (par exemple, un portfolio). Le principal but est de garder l\'activité Livre aussi simple que possible.
-
 *Comment effectuer une recherche dans les livres ?*
-
 À ce jour, il n\'existe aucun moyen de le faire, sinon d\'utiliser l\'outil de recherche du navigateur internet dans la page d\'impression. La recherche globale est possible uniquement dans les forums pour le moment. Il serait plaisant d\'avoir un outil global effectuant une recherche parmi toutes les ressources, incluant les livres. Y a-t-il des volontaires ?
-
 *Mon titre n\'entre pas sur une seule ligne.*
-
 Modifiez votre titre ou demandez à votre administrateur de site de modifier la largeur de la table des matières. Il s\'agit d\'une valeur par défaut pour tous les livres dans la page de configuration des modules d\'activité.';
 $string['modulename'] = 'Livre';
 $string['modulename_help'] = 'Le livre est un court document contenant quelques pages.';

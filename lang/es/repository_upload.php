@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'Configuración para \'plugin\' de subida';
 $string['pluginname'] = 'Subir un archivo';
 $string['pluginname_help'] = 'Subir un archivo a Moodle';
+$string['upload:view'] = 'Usar subida en selector de archivos';
 $string['upload_error_cant_write'] = 'No se pudo escribir el archivo en el disco';
 $string['upload_error_extension'] = 'Una extensión de PHP detuvo la subida del archivo';
 $string['upload_error_form_size'] = 'El archivo subido excede la directriz MAX_FILE_SIZE especificada en el formulario HTML.';
@@ -35,4 +36,3 @@ $string['upload_error_ini_size'] = 'El archivo subido excede la directriz upload
 $string['upload_error_no_file'] = 'No se ha subido ningún archivo';
 $string['upload_error_no_tmp_dir'] = 'PHP carece de un directorio temporal.';
 $string['upload_error_partial'] = 'Solo se ha subido una parte del archivo.';
-$string['upload:view'] = 'Usar subida en selector de archivos';

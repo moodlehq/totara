@@ -26,7 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['activitylink_help'] = '# Enlace a actividad
-
 El menú emergente contiene todas las actividades del curso. Si se selecciona una de ellas, al final de la lección aparecerá un enlace a dicha actividad.';
 $string['addabranchtable'] = 'Añadir una ramificación';
 $string['addanendofbranch'] = 'Añadir un final de ramificación';
