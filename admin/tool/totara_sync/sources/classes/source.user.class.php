@@ -164,74 +164,74 @@ abstract class totara_sync_source_user extends totara_sync_source {
         $table = new xmldb_table($this->temptable);
 
         /// Add fields
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->add_field('idnumber', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null, null);
-        $table->add_field('username', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE);
+        $table->add_field('idnumber', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        $table->add_field('username', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL);
         if (!empty($this->config->import_deleted)) {
-            $table->add_field('deleted', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null, '0');
+            $table->add_field('deleted', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
         }
         if (!empty($this->config->import_firstname)) {
-            $table->add_field('firstname', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            $table->add_field('firstname', XMLDB_TYPE_CHAR, '255');
         }
         if (!empty($this->config->import_lastname)) {
-            $table->add_field('lastname', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            $table->add_field('lastname', XMLDB_TYPE_CHAR, '255');
         }
         if (!empty($this->config->import_email)) {
-            $table->add_field('email', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            $table->add_field('email', XMLDB_TYPE_CHAR, '255');
         }
         if (!empty($this->config->import_city)) {
-            $table->add_field('city', XMLDB_TYPE_CHAR, '20', null, null, null, null, null, null);
+            $table->add_field('city', XMLDB_TYPE_CHAR, '20');
         }
         if (!empty($this->config->import_country)) {
-            $table->add_field('country', XMLDB_TYPE_CHAR, '2', null, null, null, null, null, null);
+            $table->add_field('country', XMLDB_TYPE_CHAR, '2');
         }
         if (!empty($this->config->import_timezone)) {
-            $table->add_field('timezone', XMLDB_TYPE_CHAR, '100', null, null, null, null, null, null);
+            $table->add_field('timezone', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_lang)) {
-            $table->add_field('lang', XMLDB_TYPE_CHAR, '30', null, null, null, null, null, null);
+            $table->add_field('lang', XMLDB_TYPE_CHAR, '30');
         }
         if (!empty($this->config->import_description)) {
-            $table->add_field('description', XMLDB_TYPE_TEXT, 'medium', null, null, null, null, null, null);
+            $table->add_field('description', XMLDB_TYPE_TEXT, 'medium');
         }
         if (!empty($this->config->import_url)) {
-            $table->add_field('url', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            $table->add_field('url', XMLDB_TYPE_CHAR, '255');
         }
         if (!empty($this->config->import_institution)) {
-            $table->add_field('institution', XMLDB_TYPE_CHAR, '40', null, null, null, null, null, null);
+            $table->add_field('institution', XMLDB_TYPE_CHAR, '40');
         }
         if (!empty($this->config->import_department)) {
-            $table->add_field('department', XMLDB_TYPE_CHAR, '30', null, null, null, null, null, null);
+            $table->add_field('department', XMLDB_TYPE_CHAR, '30');
         }
         if (!empty($this->config->import_phone1)) {
-            $table->add_field('phone1', XMLDB_TYPE_CHAR, '20', null, null, null, null, null, null);
+            $table->add_field('phone1', XMLDB_TYPE_CHAR, '20');
         }
         if (!empty($this->config->import_phone2)) {
-            $table->add_field('phone2', XMLDB_TYPE_CHAR, '20', null, null, null, null, null, null);
+            $table->add_field('phone2', XMLDB_TYPE_CHAR, '20');
         }
         if (!empty($this->config->import_address)) {
-            $table->add_field('address', XMLDB_TYPE_CHAR, '70', null, null, null, null, null, null);
+            $table->add_field('address', XMLDB_TYPE_CHAR, '70');
         }
         if (!empty($this->config->import_orgidnumber)) {
-            $table->add_field('orgidnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null, null, null);
+            $table->add_field('orgidnumber', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_postitle)) {
-            $table->add_field('postitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, null, null);
+            $table->add_field('postitle', XMLDB_TYPE_CHAR, '255');
         }
         if (!empty($this->config->import_posidnumber)) {
-            $table->add_field('posidnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null, null, null);
+            $table->add_field('posidnumber', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_manageridnumber)) {
-            $table->add_field('manageridnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null, null, null);
+            $table->add_field('manageridnumber', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_auth)) {
-            $table->add_field('auth', XMLDB_TYPE_CHAR, '20', null, null, null, null, null, null);
+            $table->add_field('auth', XMLDB_TYPE_CHAR, '20');
         }
         if (!empty($this->config->import_password)) {
-            $table->add_field('password', XMLDB_TYPE_CHAR, '32', null, null, null, null, null, null);
+            $table->add_field('password', XMLDB_TYPE_CHAR, '32');
         }
-        $table->add_field('customfields', XMLDB_TYPE_TEXT, 'big', null, null, null, null, null, null);
+        $table->add_field('customfields', XMLDB_TYPE_TEXT, 'big');
 
         /// Add keys
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
