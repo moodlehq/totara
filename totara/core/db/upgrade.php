@@ -186,8 +186,9 @@ function xmldb_totara_core_upgrade($oldversion) {
                     'pagetypepattern' => 'my-index',
                     'subpagepattern' => "$systempage->id"));
 
-        // get all totara dashboard users
-        $dashusers = $DB->get_records_select('dashb_instance', 'userid != 0', null, '', 'DISTINCT userid');
+        // get all totara dashboard users (except deleted users)
+        $sql = 'SELECT DISTINCT userid from {dashb_instance} dbi JOIN {user} u ON dbi.userid = u.id WHERE u.deleted = 0';
+        $dashusers = $DB->get_records_sql($sql);
 
         // set up per-user mymoodle pages
         foreach ($dashusers as $user) {
