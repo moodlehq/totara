@@ -329,12 +329,26 @@ class user_picture implements renderable {
             // Hash the users email address
             $md5 = md5(strtolower(trim($this->user->email)));
             // Build a gravatar URL with what we know.
+
+            // Find the best default image URL we can (MDL-35669)
+            if (empty($CFG->gravatardefaulturl)) {
+                $absoluteimagepath = $page->theme->resolve_image_location('u/'.$filename, 'core');
+                if (strpos($absoluteimagepath, $CFG->dirroot) === 0) {
+                    $gravatardefault = $CFG->wwwroot . substr($absoluteimagepath, strlen($CFG->dirroot));
+                } else {
+                    $gravatardefault = $CFG->wwwroot . '/pix/u/' . $filename . '.png';
+                }
+            } else {
+                $gravatardefault = $CFG->gravatardefaulturl;
+            }
+
             // If the currently requested page is https then we'll return an
             // https gravatar page.
             if (strpos($CFG->httpswwwroot, 'https:') === 0) {
-                $imageurl = new moodle_url("https://secure.gravatar.com/avatar/{$md5}", array('s' => $size, 'd' => $imageurl->out(false)));
+                $gravatardefault = str_replace($CFG->wwwroot, $CFG->httpswwwroot, $gravatardefault); // Replace by secure url.
+                $imageurl = new moodle_url("https://secure.gravatar.com/avatar/{$md5}", array('s' => $size, 'd' => $gravatardefault));
             } else {
-                $imageurl = new moodle_url("http://www.gravatar.com/avatar/{$md5}", array('s' => $size, 'd' => $imageurl->out(false)));
+                $imageurl = new moodle_url("http://www.gravatar.com/avatar/{$md5}", array('s' => $size, 'd' => $gravatardefault));
             }
         }
 
@@ -470,6 +484,10 @@ class pix_icon implements renderable {
         }
         if (!isset($this->attributes['title'])) {
             $this->attributes['title'] = $this->attributes['alt'];
+        } else if (empty($this->attributes['title'])) {
+            // Remove the title attribute if empty, we probably want to use the parent node's title
+            // and some browsers might overwrite it with an empty title.
+            unset($this->attributes['title']);
         }
     }
 }

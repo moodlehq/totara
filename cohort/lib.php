@@ -191,7 +191,7 @@ function cohort_delete_category($category) {
 }
 
 /**
- * Remove cohort member
+ * Add cohort member
  * @param  int $cohortid
  * @param  int $userid
  * @return void
@@ -208,7 +208,7 @@ function cohort_add_member($cohortid, $userid) {
 }
 
 /**
- * Add cohort member
+ * Remove cohort member
  * @param  int $cohortid
  * @param  int $userid
  * @return void

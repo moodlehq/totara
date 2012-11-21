@@ -164,7 +164,7 @@ M.core_dock.init = function(Y) {
     var dock = Y.one('#dock');
     if (!dock) {
         // Start the construction of the dock
-        dock = Y.Node.create('<div id="dock" class="'+css.dock+' '+css.dock+'_'+this.cfg.position+'_'+this.cfg.orientation+'"></div>')
+        dock = Y.Node.create('<div id="dock" role="menubar" class="'+css.dock+' '+css.dock+'_'+this.cfg.position+'_'+this.cfg.orientation+'"></div>')
                     .append(Y.Node.create('<div class="'+css.buttonscontainer+'"></div>')
                         .append(Y.Node.create('<div class="'+css.dockeditemcontainer+'"></div>')));
         this.nodes.body.append(dock);
@@ -505,7 +505,7 @@ M.core_dock.fixTitleOrientation = function(item, title, text) {
             break;
     }
 
-    if (Y.UA.ie > 7) {
+    if (Y.UA.ie == 8) {
         // IE8 can flip the text via CSS but not handle SVG
         title.setContent(text);
         title.setAttribute('style', 'writing-mode: tb-rl; filter: flipV flipH; display: inline; background-color: white; zoom: 1;');
@@ -863,6 +863,12 @@ M.core_dock.genericblock.prototype = {
             return;
         }
 
+        // Disable the skip anchor when docking
+        var skipanchor = node.previous();
+        if (skipanchor.hasClass('skip-block')) {
+            skipanchor.hide();
+        }
+
         var blockclass = (function(classes){
             var r = /(^|\s)(block_[a-zA-Z0-9_]+)(\s|$)/;
             var m = r.exec(classes);
@@ -937,6 +943,12 @@ M.core_dock.genericblock.prototype = {
     return_to_block : function(dockitem) {
         var placeholder = this.Y.one('#content_placeholder_'+this.id);
 
+        // Enable the skip anchor when going back to block mode
+        var skipanchor = placeholder.previous();
+        if (skipanchor.hasClass('skip-block')) {
+            skipanchor.show();
+        }
+
         if (this.cachedcontentnode.one('.header')) {
             this.cachedcontentnode.one('.header').insert(dockitem.contents, 'after');
         } else {
@@ -946,7 +958,7 @@ M.core_dock.genericblock.prototype = {
         placeholder.replace(this.Y.Node.getDOMNode(this.cachedcontentnode));
         this.cachedcontentnode = this.Y.one('#'+this.cachedcontentnode.get('id'));
 
-        var commands = this.cachedcontentnode.one('.title .commands');
+        var commands = dockitem.commands;
         if (commands) {
             commands.all('.hidepanelicon').remove();
             commands.all('.moveto').remove();
@@ -1024,7 +1036,7 @@ M.core_dock.item.prototype = {
         var Y = this.Y;
         var css = M.core_dock.css;
 
-        this.nodes.docktitle = Y.Node.create('<div id="dock_item_'+this.id+'_title" class="'+css.dockedtitle+'"></div>');
+        this.nodes.docktitle = Y.Node.create('<div id="dock_item_'+this.id+'_title" role="menu" aria-haspopup="true" class="'+css.dockedtitle+'"></div>');
         this.nodes.docktitle.append(this.title);
         this.nodes.dockitem = Y.Node.create('<div id="dock_item_'+this.id+'" class="'+css.dockeditem+'" tabindex="0"></div>');
         this.nodes.dockitem.on('dock:actionkey', this.toggle, this);
@@ -1053,6 +1065,8 @@ M.core_dock.item.prototype = {
         this.active = true;
         // Add active item class first up
         this.nodes.docktitle.addClass(css.activeitem);
+        // Set aria-exapanded property to true.
+        this.nodes.docktitle.set('aria-expanded', "true");
         this.fire('dockeditem:showcomplete');
         M.core_dock.resize();
         return true;
@@ -1069,6 +1083,8 @@ M.core_dock.item.prototype = {
         this.nodes.docktitle.removeClass(css.activeitem);
         // Hide the panel
         M.core_dock.getPanel().hide();
+        // Set aria-exapanded property to false
+        this.nodes.docktitle.set('aria-expanded', "false");
         this.fire('dockeditem:hidecomplete');
     },
     /**
