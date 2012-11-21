@@ -1,5 +1,54 @@
 Totara LMS Changelog
 
+Release 2.2.10 (22 November 2012):
+==================================================
+
+Security fixes:
+                 Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.2.6_release_notes
+    T-10073      Add optional reCaptcha to login and forgot password forms
+
+API Changes:
+    T-10138      mark_complete() in lib/completion/completion_criteria_completion.php now takes an optional timestamp parameter of the actual completion time.
+                 If not passed, defaults to the time the mark_complete function is run
+
+Improvements:
+    T-9804      Improvements to Arabic, Chinese, Dutch, English (US), Finnish, French, German, Hebrew, Hungarian, Italian, Japanese, Polish,
+                Portuguese (Brazilian), Spanish (Castilian), Spanish (International), Swedish and Thai language packs
+    T-10047     Update mymobile theme to 2.3 version
+    T-9961      Add exceptions to totara_sync
+    T-9885      Conversion of Server->Environment page from Moodle to Totara
+
+Bug fixes:
+    T-10033     Fix timezone and language issues in totara_sync
+    T-9953      Handle errors in totara_sync when field count does not match
+    T-10094     Fix incorrect temp table add_field() arguments in totara_sync
+    T-10094     Fix handling of 'deleted' field as integer if not supplied by CSV source in totara_sync
+    T-10132     Always sync hierarchy parent items first in totara_sync
+    T-10066     Fix deleted users logic in totara_sync
+    T-9920      Added totarasync flag setting to Hierarchy and User item settings
+    MDL-35469   Fix Gecko based browser checks
+    T-10111     Fix the displayed Totara version numbers on fresh install
+    T-10071     Fix "From" user in messages where message should come from support address, not managers
+    T-9980      Fix post_max_size repository language string
+    T-9885      Fix language string references to moodle in spamcleaner
+    T-9583      Text changes in element library text
+    T-10113     Fix GPL licence text in standardtotara Theme
+    T-10103     Fix resizing font css in mod/book
+    T-9804      Consolidate non-English Language files in core /lang folder (AMOS)
+    T-10096     Fix hidden option for columns in ReportBuilder embedded reports
+    T-10061     Fix display of dates before 1970 in ReportBuilder
+    T-10109     Fix display function for program icon in Reportbuilder
+    T-10139     Fix the Audience name column/filter language string in ReportBuilder
+    T-8064      Fix export of iCal timezone information in Facetoface
+    T-10060     Fix FacetoFace saving of details field when editing a session
+    T-10060     Fix PHP notice when creating new Facetoface sessions
+    T-10153     Fix version number in Facetoface to match upgrade.php
+    T-9987      Fix duplicated footer in Program messages
+    T-9973      Fix to hide programs with unresolved exceptions in Record of Learning
+    T-10035     Fix check for admin user in Learning Plans
+    T-9888      Fix auto redirect when accessing scorm activity
+
+
 Release 2.2.9 (1 November 2012):
 ==================================================
 
