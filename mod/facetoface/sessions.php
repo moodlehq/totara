@@ -87,11 +87,13 @@ if ($d and $confirm) {
 
 $customfields = facetoface_get_session_customfields();
 
+$sessionid = isset($session->id) ? $session->id : 0;
+
 $details = new stdClass();
 $details->id = isset($session) ? $session->id : 0;
 $details->details = isset($session->details) ? $session->details : '';
 $details->detailsformat = FORMAT_HTML;
-$details = file_prepare_standard_editor($details, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $session->id);
+$details = file_prepare_standard_editor($details, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $sessionid);
 
 $mform = new mod_facetoface_session_form(null, compact('id', 'f', 's', 'c', 'nbdays', 'customfields', 'course', 'editoroptions'));
 if ($mform->is_cancelled()) {
