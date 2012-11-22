@@ -630,6 +630,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         else {
             $out .= $OUTPUT->heading(get_string('activeplans', 'totara_plan'), 3, 'main');
         }
+
+        $list = array();
         foreach ($plans as $p) {
             $attr['class'] = $p->id == $selectedid ? 'dp-menu-selected' : '';
             $list[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $p->id)), $p->name);
@@ -649,6 +651,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         else {
             $out .= $OUTPUT->heading(get_string('unapprovedplans', 'totara_plan'), 3, 'main');
         }
+
+        $list = array();
         foreach ($plans as $p) {
             $attr['class'] = $p->id == $selectedid ? 'dp-menu-selected' : '';
             $list[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $p->id)), $p->name);
@@ -669,6 +673,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         else {
             $out .= $OUTPUT->heading(get_string('completedplans', 'totara_plan'), 3, 'main');
         }
+
+        $list = array();
         foreach ($plans as $p) {
             $attr['class'] = $p->id == $selectedid ? 'dp-menu-selected' : '';
             $list[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $p->id)), $p->name);
