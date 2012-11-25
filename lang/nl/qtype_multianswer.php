@@ -38,17 +38,17 @@ $string['layoutvertical'] = 'Vertikale kolom keuzerondjes';
 $string['nooptionsforsubquestion'] = 'Kan opties voor vraagdeel {$a->sub} (question->id={$a->id}) niet vinden';
 $string['noquestions'] = 'De gatentekst-vraag "<strong>{$a}</strong>" bevat geen vraag';
 $string['pluginname'] = 'Ingebedde antwoorden (cloze)';
+$string['pluginname_help'] = 'Ingebedde antwoord (Cloze) vragen bestaan uit een stuk tekst met daarin ingebed enkele vragen, zoals meerkeuzevragen en kort antwoordvragen.';
 $string['pluginnameadding'] = 'Ingebedde antwoorden (cloze) toevoegen';
 $string['pluginnameediting'] = 'Ingebedde antwoorden (cloze) bewerken';
-$string['pluginname_help'] = 'Ingebedde antwoord (Cloze) vragen bestaan uit een stuk tekst met daarin ingebed enkele vragen, zoals meerkeuzevragen en kort antwoordvragen.';
 $string['pluginnamesummary'] = 'Dit type vragen zijn erg flexibel, maar kunnen enkel opgesteld worden door tekst in te voeren waarin code gezet wordt. Die code zal de ingebedde meerkeuzevragen, kort antwoord en numerieke vragen vormen.';
 $string['qtypenotrecognized'] = 'vraagtype {$a} niet herkend';
 $string['questiondefinition'] = 'Vraagdefinitie';
 $string['questiondeleted'] = 'Vraag verwijderd';
 $string['questioninquiz'] = '<ul>
-  <li>vragen toevoegen of verwijderen, </li>
-  <li>wijzig de vraagvolgorde in de tekst,</li>
-  <li>wijzig het vraagtype (numeriek, kortantwoord, meerkeuze). </li></ul>';
+<li>vragen toevoegen of verwijderen, </li>
+<li>wijzig de vraagvolgorde in de tekst,</li>
+<li>wijzig het vraagtype (numeriek, kortantwoord, meerkeuze). </li></ul>';
 $string['questionnadded'] = 'Vraag toegevoegd';
 $string['questionnotfound'] = 'Kan de vraag niet vinden van vraagdeel #{$a}';
 $string['questionsaveasedited'] = 'De vraag zal bewaard worden zoals ze bewerkt is';

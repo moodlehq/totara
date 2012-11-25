@@ -124,14 +124,11 @@ $string['disterror'] = 'De {$a} distributie veroorzaakte problemen';
 $string['donothing'] = 'Kopieëer of verplaats geen bestanden, wijzig geen links.';
 $string['editcategories'] = 'Bewerk categorieën';
 $string['editcategories_help'] = 'Eerder dan alle vragen in een grote lijst te bewaren, kunnen vragen geordend worden in categorieën en subcategorieën.
-
 Elke categorie heeft een context die bepaalt waar de vragen in de categorie gebruikt kunnen worden:
-
 * Activiteitscontext - vragen zijn enkel beschikbaar in de activiteitsmodule
 * Cursuscontext - vragen zijn beschikbaar in alle activiteitsmodules van de cursus
 * Cursuscategoriecontext - vragen zijn beschikbaar in alle activiteitsmodules en cursussen in de cursuscategorie
 * Systeemcontext - vragen zijn beschikbaar in alle cursussen en alle activiteitsmodules op de site
-
 Categorieën worden ook gebruikt voor willekeurige vragen, zijnde vragen die automatisch gekozen worden uit een bepaalde categorie.';
 $string['editcategory'] = 'Bewerk categorie';
 $string['editingcategory'] = 'Categorie bewerken';
@@ -161,13 +158,12 @@ $string['errorsavingflags'] = 'Fout bij het bewaren van de vlagstatus';
 $string['errorupdatingattempt'] = 'Fout bij het updaten van poging {$a->id} in de databank.';
 $string['exportcategory'] = 'Exporteer categorie';
 $string['exportcategory_help'] = 'Deze instelling bepaalt de categorie van waaruit de geëxporteerde vragen gehaald worden.
-
 Bij sommige importformaten, zoals GIFT en Moodle XML, kun je categorie en contextgegevens opnemen in het exportbestand, waardoor je ze opnieuw kan aanmaken bij import (optioneel). Indien je dat wenst, moet je de nodige selectievakjes aanduiden.';
 $string['exporterror'] = 'Fouten opgetreden tijdens exporteren!';
 $string['exportfilename'] = 'quiz';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
 $string['exportquestions'] = 'Exporteer vragen naar bestand';
-$string['exportquestions_help'] = 'Met deze functie kun je een volledige categorie met vragen (en subcategorieën)  exporteren naar een bestand. Merk op dat, afhankelijk van het gekozen bestandsformaat, sommige gegevens van je vragen en sommige vraagtypes niet geëxporteerd kunnen worden.';
+$string['exportquestions_help'] = 'Met deze functie kun je een volledige categorie met vragen (en subcategorieën) exporteren naar een bestand. Merk op dat, afhankelijk van het gekozen bestandsformaat, sommige gegevens van je vragen en sommige vraagtypes niet geëxporteerd kunnen worden.';
 $string['feedback'] = 'Feedback';
 $string['filecantmovefrom'] = 'De vragenbestanden kunnen niet verplaatst worden omdat je het recht niet hebt om bestanden te verwijderen van de plaats waar je dat probeert te doen.';
 $string['filecantmoveto'] = 'De vragenbestanden kunnen niet verplaatst of gekopieerd worden omdat je het recht niet hebt om bestanden toe te voegen op de plaats waar je de vragen naartoe wil verplaatsten.';
@@ -182,7 +178,6 @@ $string['formquestionnotinids'] = 'Formulier bevat vraag die niet bij de vraag I
 $string['fractionsnomax'] = 'Eén van de vragen moet een score van 100% hebben, zodat het mogelijk is om alle punten voor deze vraag te behalen.';
 $string['generalfeedback'] = 'Algemene feedback vraag';
 $string['generalfeedback_help'] = 'Algemene feedback wordt aan de leerling getoond nadat die geprobeerd heeft een vraag te beantwoorden. Anders dan feedback, die afhangt van het vraagtype en welk antwoord de leerling gegeven heeft, wordt dezelfde algemene feedback tekst getoond aan alle leerlingen.
-
 Je kunt de algemene feedback gebruiken om leerlingen achtergrond te geven bij welke leerstof getest werd of hen een link geven naar meer informatie als ze de vragen niet begrepen hebben.';
 $string['getcategoryfromfile'] = 'Haal categorie uit bestand';
 $string['getcontextfromfile'] = 'Haal context uit bestand';
@@ -190,12 +185,11 @@ $string['hidden'] = 'Verborgen';
 $string['hintn'] = 'Hint {no}';
 $string['hinttext'] = 'Hint tekst';
 $string['howquestionsbehave'] = 'Hoe vragen zich gedragen';
-$string['howquestionsbehave_help'] = 'Leerlingen kunnen op verschillende manieren interageren met de vragen. Bijvoorbeeld kun je wensen dat de leerlingen elke vraag beantwoorden en dan de test insturen voor er ook maar iets beoordeeld wordt of feedback gegeven wordt. Dat is dan de  "Uitgestelde feedback" modus.
+$string['howquestionsbehave_help'] = 'Leerlingen kunnen op verschillende manieren interageren met de vragen. Bijvoorbeeld kun je wensen dat de leerlingen elke vraag beantwoorden en dan de test insturen voor er ook maar iets beoordeeld wordt of feedback gegeven wordt. Dat is dan de "Uitgestelde feedback" modus.
 Je zou ook kunnen willen dat leerlingen bij elke vraag die ze insturen onmiddellijk feedback krijgen, en als ze het niet juist hebben, een tweede kans krijgen voor minder punten. Dat is dan de "Interactief met meerdere pogingen"-modus.';
 $string['ignorebroken'] = 'Negeer gebroken links';
 $string['importcategory'] = 'Importeer categorie';
 $string['importcategory_help'] = 'Deze instelling bepaalt de categorie waarin geïmporteerde vragen terecht komen.
-
 Bij sommige importformaten, zoals GIFT en Moodle XML, kun je categorie en contextgegevens opnemen in het exportbestand. Om gebruik te maken van deze gegevens, eerder dan van een geselecteerde categorie, moet je de nodige selectievakjes aanduiden. Als categorieën in het importbestand niet bestaan, dan zullen die gemaakt worden.';
 $string['importerror'] = 'Er is een fout gebeurd tijdens het verwerken van de import';
 $string['importerrorquestion'] = 'Fout bij het importeren van de vraag';
@@ -233,11 +227,10 @@ $string['markoutofmax'] = '{$a->mark} punten op {$a->max}';
 $string['marks'] = 'Cijfers';
 $string['matcherror'] = 'Cijfers komen niet overeen met beoordelingsopties - vraag overgeslagen';
 $string['matchgrades'] = 'Koppel cijfers';
-$string['matchgradeserror'] = 'Fout als cijfer niet getoond';
 $string['matchgrades_help'] = 'Geïmporteerde cijfers moeten overeen komen met één uit de vaste lijst met geldige cijfers - 100, 90, 80, 75, 70, 66.666, 60, 50, 40, 33.333, 30, 25, 20, 16.666, 14.2857, 12.5, 11.111, 10, 5, 0 (ook negatieve cijfers). Indien dat niet het geval is, zijn er twee opties:
-
 * Fout als het cijfer niet in de lijst voorkomt - als een vraag cijfers bevat die niet in de lijst voorkomen, dan zal wordt er een foutmelding getoond en de vraag wordt niet geïmporteerd;
 * Dichtsbijzijnde cijfer indien niet in de lijst - Als een cijfer wordt gevonden dat niet overeenkomt met een cijfer in de lijst, dan wordt het cijfer gewijzigd naar de dichtsbijzijnde waarde in de lijst';
+$string['matchgradeserror'] = 'Fout als cijfer niet getoond';
 $string['matchgradesnearest'] = 'Dichtsbijliggende cijfer indien niet getoond';
 $string['missingcourseorcmid'] = 'Moet courseid of cmid opgeven voor print_question';
 $string['missingcourseorcmidtolink'] = 'Moet cursusid of cmid geven voor get_question_edit_link';
@@ -295,10 +288,9 @@ $string['parsingquestions'] = 'Vragen verwerken van importbestand';
 $string['partiallycorrect'] = 'Gedeeltelijk juist';
 $string['partiallycorrectfeedback'] = 'Voor elk gedeeltelijk juist antwoord';
 $string['penaltyfactor'] = 'Strafpuntfactor';
-$string['penaltyfactor_help'] = '<p>Je kunt instellen welk deel van de behaalde score moet afgetrokken worden voor elk fout antwoord. Dit is enkel relevant als de test in adaptieve modus loopt, zodat de leerling meerdere keren kan antwoorden op elke vraag. De straffactor moet een getal zijn tussen 0 en 1. Een straffactor van 1 betekent dat de leerling het antwoord van de eerste keer juist moet hebben om een cijfer te krijgen. Een straffactor van 0 betekent dat de leerling zo dikwijls als hij wil mag proberen en toch nog het volledige cijfer krijgt als hij het antwoord juist heeft.</p>';
+$string['penaltyfactor_help'] = 'Je kunt instellen welk deel van de behaalde score moet afgetrokken worden voor elk fout antwoord. Dit is enkel relevant als de test in adaptieve modus loopt, zodat de leerling meerdere keren kan antwoorden op elke vraag. De straffactor moet een getal zijn tussen 0 en 1. Een straffactor van 1 betekent dat de leerling het antwoord van de eerste keer juist moet hebben om een cijfer te krijgen. Een straffactor van 0 betekent dat de leerling zo dikwijls als hij wil mag proberen en toch nog het volledige cijfer krijgt als hij het antwoord juist heeft.';
 $string['penaltyforeachincorrecttry'] = 'Strafpunt voor elke foute poging';
 $string['penaltyforeachincorrecttry_help'] = 'Wanneer je je vragen laat lopen met het vraaggedrag \'Interactief met meerdere pogingen\' of met \'Adaptieve modus\', zodat de leerling meerdere pogingen heeft om het antwoord juist te hebben, dan controleert deze optie hoe veel strafpunten ze krijgen voor elke foute poging.
-
 Het aantal strafpunten is een deel van het totaal aantal punten voor de vraag, dus als de vraag drie punten waard is en het aantal strafpunten is 0,3333333, dan zal de leerling een 3 krijgen als die het antwoord van de eerste keer juist heeft, een 3 als die het bij de tweede poging juist heeft en een 1 bij de derde poging.';
 $string['permissionedit'] = 'Bewerk deze vraag';
 $string['permissionmove'] = 'Verplaats deze vraag';

@@ -72,11 +72,11 @@ $string['calculatesubmissiongrades'] = 'Laske palautettujen tehtävien arvosanat
 $string['calculatesubmissiongradesdetails'] = 'odotettavissa: {$a->expected}<br />laskettu: {$a->calculated}';
 $string['chooseuser'] = 'Valitse käyttäjä...';
 $string['clearaggregatedgrades'] = 'Poista arvosanakoosteet';
-$string['clearaggregatedgradesconfirm'] = 'Haluatko poistaa jo lasketut arvosanat palautetuille tehtäville ja vertaispalautteiden arvosanat?';
 $string['clearaggregatedgrades_help'] = 'Palautettujen tehtävien arvosanakoosteet ja vertaispalautteiden arvosanat nollataan. Voit laskea ne uudestaan Palautteiden arviointivaiheessa.';
+$string['clearaggregatedgradesconfirm'] = 'Haluatko poistaa jo lasketut arvosanat palautetuille tehtäville ja vertaispalautteiden arvosanat?';
 $string['clearassessments'] = 'Poista palautteet';
-$string['clearassessmentsconfirm'] = 'Haluatko poistaa kaikki palautteet ja arvosanat? Et voi palauttaa tietoja itse vaan vertaisarvioijien täytyy antaa uudet palautteet.';
 $string['clearassessments_help'] = 'Palautettujen tehtävien arvosanakoosteet ja vertaispalautteiden arvosanat nollataan. Arviointimatriisin täyttöohjeet säilytetään, mutta arvioijien täytyy avata ja tallentaa arviointilomake uudelleen, jotta annetut arvosanat voidaan laskea.';
+$string['clearassessmentsconfirm'] = 'Haluatko poistaa kaikki palautteet ja arvosanat? Et voi palauttaa tietoja itse vaan vertaisarvioijien täytyy antaa uudet palautteet.';
 $string['configexamplesmode'] = 'Oletusmoodi esimerkkien arvioinneille työpajoissa';
 $string['configgrade'] = 'Arvosanan oletusyläraja palautuksille työpajoissa';
 $string['configgradedecimals'] = 'Desimaalien oletusmäärä näytettäessä arvosanat';
@@ -101,7 +101,6 @@ $string['evaluategradeswait'] = 'Odota kunnes vertaispalautteet on annettu ja ar
 $string['evaluation'] = 'Palautteiden arviointi';
 $string['evaluationmethod'] = 'Palautteiden arviointitapa';
 $string['evaluationmethod_help'] = 'Palautteiden arviointitapa määrittelee, kuinka annettujen vertaispalautteiden arvosana lasketaan. Toistaiseksi on vain yksi vaihtoehto: vertailu vertaisarviointien keskiarvoon.
-
 HUOMAA: jos vertaisarvioijia on kaksi ja he ovat antaneet eri arvosanat, kummankaan antama arvosana ei voi olla keskiarvo. Tämä kompensoidaan antamalla kummallekin arvioijalle joka tapauksessa täydet vertaisarviointipisteet. Tämän korjaamiseksi voit antaa itse kolmannen arvioinnin tai vahvistaa jommankumman vertaisarvioinnin painotusta. Lisätietoja löydät ohjeesta http://docs.moodle.org/22/en/Using_Workshop';
 $string['example'] = 'Esimerkkipalautus';
 $string['exampleadd'] = 'Lisää esimerkkipalautus';
@@ -141,8 +140,8 @@ $string['gradeover'] = 'Korvaa palautuksen arvosana';
 $string['gradereceivedfrom'] = '&lt;';
 $string['gradesreport'] = 'Työpajan arvosanaraportti';
 $string['gradinggrade'] = 'Vertaisarvioinnin arvosana';
-$string['gradinggradecalculated'] = 'Arvioinnin laskettu arvosana';
 $string['gradinggrade_help'] = 'Tämä asetus määrittää vertaisarvioinnin korkeimman arvosanan.';
+$string['gradinggradecalculated'] = 'Arvioinnin laskettu arvosana';
 $string['gradinggradeof'] = 'Vertaisarvioinnin arvosana (max {$a})';
 $string['gradinggradeover'] = 'Sivuuta vertaisarvioinnin arvosana';
 $string['gradingsettings'] = 'Arvioinnin asetukset';
@@ -152,9 +151,9 @@ $string['instructauthors'] = 'Ohjeet tehtävän tekijälle';
 $string['instructreviewers'] = 'Ohjeet vertaisarvioijille';
 $string['introduction'] = 'Esittely';
 $string['latesubmissions'] = 'Myöhästyneet palautukset';
-$string['latesubmissionsallowed'] = 'Myöhästyneet palautukset sallitaan';
 $string['latesubmissions_desc'] = 'Salli palautukset määräajan jälkeen';
 $string['latesubmissions_help'] = 'Jos asetus on päällä, tekijä voi palauttaa työn palautuksen määräajan jälkeen tai vertaisarviointivaiheen aikana. Myöhästyneitä palautuksia ei kuitenkaan voi muokata.';
+$string['latesubmissionsallowed'] = 'Myöhästyneet palautukset sallitaan';
 $string['maxbytes'] = 'Tiedoston maksimikoko';
 $string['modulename'] = 'Työpaja';
 $string['modulenameplural'] = 'Työpajat';
@@ -199,13 +198,12 @@ $string['someuserswosubmission'] = 'Vähintään yhdeltä osallistujalta puuttuu
 $string['sortasc'] = 'Nouseva järjestys';
 $string['sortdesc'] = 'Laskeva järjestys';
 $string['strategy'] = 'Arviointimenetelmä';
-$string['strategyhaschanged'] = 'Työpajan arvostelustrategia on muuttunut sen jälkeen kun lomake avattiin muokattavaksi.';
 $string['strategy_help'] = 'Arviointimenetelmä määrittelee käytetyn vertaisarviointitavan ja töiden pisteytystavan. Tähän on neljä eri vaihtoehtoa:
-
 * Kertyvä arviointi - Määriteltyjen kriteerien perusteella annetaan palaute ja arvosana
 * Kommentit - Määriteltyjen kriteerien perusteella annetaan palaute mutta ei arvosanaa
 * Virheiden määrä - Kommentteja sekä kyllä/ei arvio annetaan määriteltyjen väitteiden suhteen
 * Arviointimatriisi - Annetaan laadullinen arvio määriteltyjen arviointikriteerien perusteella';
+$string['strategyhaschanged'] = 'Työpajan arvostelustrategia on muuttunut sen jälkeen kun lomake avattiin muokattavaksi.';
 $string['submission'] = 'Palautus';
 $string['submissionattachment'] = 'Liite';
 $string['submissionby'] = 'Työn tekijä: {$a}';
@@ -260,10 +258,8 @@ $string['weightinfo'] = 'Painotus: {$a}';
 $string['withoutsubmission'] = 'Vertaisarvioija, joka ei ole palauttanut omaa työtä';
 $string['workshop:allocate'] = 'Jaa vertaisarviointivuorot';
 $string['workshop:editdimensions'] = 'Muokkaa arviointimatriiseja';
-$string['workshopfeatures'] = 'Työpajan ominaisuudet';
 $string['workshop:ignoredeadlines'] = 'Jätä aikarajoitukset huomiotta';
 $string['workshop:manageexamples'] = 'Hallinnoi esimerkkipalautuksia';
-$string['workshopname'] = 'Työpajan nimi';
 $string['workshop:overridegrades'] = 'Sivuuta lasketut arvosanat';
 $string['workshop:peerassess'] = 'Anna vertaisarviointi';
 $string['workshop:publishsubmissions'] = 'Julkaise palautukset';
@@ -276,5 +272,7 @@ $string['workshop:viewauthornames'] = 'Näytä tekijöiden nimet';
 $string['workshop:viewauthorpublished'] = 'Näytä julkaistujen töiden tekijät';
 $string['workshop:viewpublishedsubmissions'] = 'Näytä julkaistut työt';
 $string['workshop:viewreviewernames'] = 'Näytä vertaisarvioijien nimet';
+$string['workshopfeatures'] = 'Työpajan ominaisuudet';
+$string['workshopname'] = 'Työpajan nimi';
 $string['yourassessment'] = 'Arviosi';
 $string['yoursubmission'] = 'Palautuksesi';

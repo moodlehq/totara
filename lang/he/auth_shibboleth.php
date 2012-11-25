@@ -29,14 +29,6 @@ $string['auth_shib_auth_method'] = 'שם שיטת האימות';
 $string['auth_shib_auth_method_description'] = 'ספק שם לשיטת אימות השיבולת אשר מוכרת למשתמשים שלך.
 אפשר לספק את שם פדרציית השיבולת שלך
 לדוגמא: <tt>SWITCHaai Login</tt> או <tt>InCommon Login</tt> או דומה.';
-$string['auth_shibboleth_contact_administrator'] = 'במקרה ואינך שותף עם הארגונים שניתנו והינך זקוק לגישה לקורס בשרות זה, אנא צור קשר עם';
-$string['auth_shibbolethdescription'] = 'באמצעות שיטה זו משתמשים נוצרים ומאומתים על ידי שימוש ב<a ref="http://shibboleth.internet2.edu/" target="_blank">שיבולת</a>.<br>קיראו את קובץ ה<a href="../auth/shibboleth/README.txt" target="_blank">README</a> של שיבולת, שמסביר כיצד עליכם להגדיר את המוודל שלכם עם שיבולת.';
-$string['auth_shibboleth_errormsg'] = 'אנא בחר את הארגון שאתה חבר בו!';
-$string['auth_shibboleth_login'] = 'התחברות דרך שיבולת';
-$string['auth_shibboleth_login_long'] = 'התחברות ל-Moodle דרך שיבולת';
-$string['auth_shibboleth_manual_login'] = 'התחברות ידנית';
-$string['auth_shibboleth_select_member'] = 'אני חבר ב...';
-$string['auth_shibboleth_select_organization'] = 'לאימות דרך שיבולת אנא בחר את הארגון לו אתה שייך מתפריט הנפתח.';
 $string['auth_shib_changepasswordurl'] = 'תובת URL לשינוי סיסמה';
 $string['auth_shib_convert_data'] = 'התאמת נתוני API';
 $string['auth_shib_convert_data_description'] = 'ניתן להשתמש ב-API זה בכדי להתאים את הנתונים שסופקו על ידי שיבולת. קרא את: <a href="../auth/shibboleth/README.txt" target="_blank">README</a> להוראות נוספות.';
@@ -49,7 +41,7 @@ Identity Provider entityIDs
 אשר ישתמש במקרה שהתקנת ה-Moodle שלך היא חלק מהגדרת מספר פדרציות.';
 $string['auth_shib_instructions'] = 'השתמשו <a href="{$a}">התחברות שיבולת</a> כדי להתחבר דרך שיבולת, אם המוסד שלכם תומך בזה. <br />
 אחרת השתמשו בטופס ההתחברות הרגיל שמוצג פה.';
-$string['auth_shib_instructions_help'] = 'כאן עליכם לספק למשתמשים שלכם הוראות הפעלה שהתאמתם אישית כדי להסביר את שיבולת. הוראות אלה יופיעו בעמוד ההתחברות, בקטע ההוראות. על ההוראות להכיל קישור ל"<b>{$a}</b>" עליו ילחצו המשתמשים כשהם ירצו להתחבר.';
+$string['auth_shib_instructions_help'] = 'כאן עליכם לספק למשתמשים שלכם הוראות הפעלה שהתאמתם אישית כדי להסביר את שיבולת. הוראות אלה יופיעו בעמוד ההתחברות, בקטע ההוראות. על ההוראות להכיל קישור ל"**{$a}**" עליו ילחצו המשתמשים כשהם ירצו להתחבר.';
 $string['auth_shib_integrated_wayf'] = 'שירות Moodle WAYF';
 $string['auth_shib_integrated_wayf_description'] = 'אם תסמן כאן , Moodle ישתמש בשירות ה WAYF שלו במקום זה שמוגדר מהשיבולת.
 Moodle יציג בתפריט הנפתח בעמוד התחברות אלטרנטיבית זו  שהמשתמש הצטרך לבחור את זהות הספק שלו.';
@@ -65,6 +57,14 @@ $string['auth_shib_no_organizations_warning'] = 'אם תרצה להשתמש בש
 $string['auth_shib_only'] = 'שיבולת בלבד';
 $string['auth_shib_only_description'] = 'ביחרו באפשרות זו אם אתם מעוניינים לאכוף אימות של שיבולת.';
 $string['auth_shib_username_description'] = 'שם משתנה סביבת שיבולת בשרת רשת בו שישמש כשם משתמש במוודל.';
+$string['auth_shibboleth_contact_administrator'] = 'במקרה ואינך שותף עם הארגונים שניתנו והינך זקוק לגישה לקורס בשרות זה, אנא צור קשר עם';
+$string['auth_shibboleth_errormsg'] = 'אנא בחר את הארגון שאתה חבר בו!';
+$string['auth_shibboleth_login'] = 'התחברות דרך שיבולת';
+$string['auth_shibboleth_login_long'] = 'התחברות ל-Moodle דרך שיבולת';
+$string['auth_shibboleth_manual_login'] = 'התחברות ידנית';
+$string['auth_shibboleth_select_member'] = 'אני חבר ב...';
+$string['auth_shibboleth_select_organization'] = 'לאימות דרך שיבולת אנא בחר את הארגון לו אתה שייך מתפריט הנפתח.';
+$string['auth_shibbolethdescription'] = 'באמצעות שיטה זו משתמשים נוצרים ומאומתים על ידי שימוש ב<a ref="http://shibboleth.internet2.edu/" target="_blank">שיבולת</a>.<br>קיראו את קובץ ה<a href="../auth/shibboleth/README.txt" target="_blank">README</a> של שיבולת, שמסביר כיצד עליכם להגדיר את המוודל שלכם עם שיבולת.';
 $string['pluginname'] = 'שיבולת';
 $string['shib_no_attributes_error'] = 'נראה כי אתה מאומת באמצעות שיבולת, אבל מוודל לא קיבל כל תכונות משתמש שהן. אנא וודא שמספק הזהות שלך משחרר את התכונות הדרושות ({$a}) למספק השרות שמוודל מריץ או שידע את מנהל הרשת של שרת זה.';
 $string['shib_not_all_attributes_error'] = 'למוודל דרושות תכונות מסויימות של שיבולת, שבמקרה שלך, לא נמצאות. התכונות הן: {$a}<br />אנא צור קשר על מנהל הרשת של השרת או עם ספק הזהות שלך.';

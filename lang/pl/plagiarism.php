@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['availableplugins'] = 'Dostępne wtyczki';
-$string['configenableplagiarism'] = 'To pozwoli administratorom konfigurować wtyczki dot. plagiatów (jeśli są zainstalowane) ';
-$string['configplagiarismplugins'] = 'Wybierz wtyczkę dot. plagiatów, którą chcesz skonfigurować ';
+$string['configenableplagiarism'] = 'To pozwoli administratorom konfigurować wtyczki dot. plagiatów (jeśli są zainstalowane)';
+$string['configplagiarismplugins'] = 'Wybierz wtyczkę dot. plagiatów, którą chcesz skonfigurować';
 $string['enableplagiarism'] = 'Włącz wtyczkę plagiat';
 $string['manageplagiarism'] = 'Zarządzaj wtyczkami dot. plagiatu';
 $string['nopluginsinstalled'] = 'Brak zainstalowanych wtyczek dot. plagiatów.';

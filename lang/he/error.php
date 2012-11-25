@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'TODO';
 $string['alreadyloggedin'] = 'אתה כבר מחובר כ {$a}, יש צורך בהתנתקות לפני התחברות כמשתמש אחר.';
 $string['authnotexisting'] = 'תוסף אישור לא קיים';
 $string['backupcontainexternal'] = 'קובץ גיבוי זה מכיל
@@ -75,12 +76,11 @@ $string['cannotdeletebackupids'] = 'לא ניתן למחוק
 backup ids
 קודמים';
 $string['cannotdeletecategorycourse'] = 'נכשל בנסיון למחוק את הקורס
-\'{$a}\'
-';
+\'{$a}\'';
 $string['cannotdeletecategoryquestions'] = 'לא ניתן היה למחוק שאלות מהסיווג
 \'{$a}\'';
 $string['cannotdeletecourse'] = 'אין לך הרשאה למחוק קורס זה';
-$string['cannotdeletecustomfield'] = 'שגיאה במחיקת מידע שדה מותאם ';
+$string['cannotdeletecustomfield'] = 'שגיאה במחיקת מידע שדה מותאם';
 $string['cannotdeletedir'] = 'לא ניתן למחוק ({$a})';
 $string['cannotdeletefile'] = 'לא ניתן למחוק את קובץ זה';
 $string['cannotdeleterole'] = 'לא היה ניתן למחוק את זה,
@@ -107,8 +107,7 @@ grade_item';
 $string['cannotfindgroup'] = 'לא ניתן למצוא קבוצה';
 $string['cannotfindhelp'] = 'לא ניתן למצוא  קבצי עזרה של השפה
 "{$a}"';
-$string['cannotfindinfo'] = 'לא ניתן למצוא מידע עבור : "{$a}"
-';
+$string['cannotfindinfo'] = 'לא ניתן למצוא מידע עבור : "{$a}"';
 $string['cannotfindlang'] = 'לא ניתן למצוא חבילת שפה "{$a}" !';
 $string['cannotfindteacher'] = 'לא ניתן למצוא מורה';
 $string['cannotfinduser'] = 'לא ניתן למצוא משתמש בשם "{$a}"';
@@ -129,7 +128,7 @@ $string['cannotmanualctrack'] = 'הפעילות איננה מספקת מעקב �
 $string['cannotmapfield'] = 'נתגלתה התנגשות במיפוי - שני שדות ממופים לאותו פריט ציון
 {$a}';
 $string['cannotmarktopic'] = 'לא ניתן לסמן את נושא זה עבור קורס זה.';
-$string['cannotmigratedatacomments'] = 'לא ניתן להמיר את הערות רכיב מסד הנתונים ';
+$string['cannotmigratedatacomments'] = 'לא ניתן להמיר את הערות רכיב מסד הנתונים';
 $string['cannotmodulename'] = 'לא ניתן לקבל את שם הרכיב בניווט הבנייה';
 $string['cannotmoduletype'] = 'לא ניתן לקבל את סוג הרכיב בניווט הבנייה';
 $string['cannotmoverolewithid'] = 'לא ניתן להזיז תפקיד עם ID
@@ -139,10 +138,8 @@ $string['cannotnetgeo'] = 'לא ניתן להתחבר ל שרת NetGeo
 MaxMind GeoLite City data file';
 $string['cannotopencsv'] = 'לא ניתן לפתוח קובץ CSV';
 $string['cannotopenfile'] = 'לא ניתן לפתוח קובץ ({$a})';
-$string['cannotopenforwrit'] = 'לא ניתן לפתוח לכתיבה: ({$a})
-';
-$string['cannotopentemplate'] = 'לא ניתן לפתוח קובץ תבנית ({$a})
-';
+$string['cannotopenforwrit'] = 'לא ניתן לפתוח לכתיבה: ({$a})';
+$string['cannotopentemplate'] = 'לא ניתן לפתוח קובץ תבנית ({$a})';
 $string['cannotopenzip'] = 'לא ניתן לפתוח קובץ zip כנראה שגיאת סיומת בקובץ במערכת הפעלה 64 ביט.';
 $string['cannotoverridebaserole'] = 'לא ניתן לעקוף יכולות תפקיד בסיסיות';
 $string['cannotoverriderolehere'] = 'אין לך הרשאה לעקוף תפקיד זה
@@ -209,7 +206,7 @@ $string['courseformatnotfound'] = 'תצורת הקורס \'{$a}\'  איננה ק
 $string['coursegroupunknown'] = 'לא מפורט קורס התואם את קבוצה {$a}.';
 $string['courseidnotfound'] = 'ID הקורס לא קיים';
 $string['coursemisconf'] = 'הקורס מוגדר בצורה שגויה';
-$string['courserequestdisabled'] = 'מצטערים, בקשות קורסים אינן מאופשרות ';
+$string['courserequestdisabled'] = 'מצטערים, בקשות קורסים אינן מאופשרות';
 $string['csvcolumnduplicates'] = 'התגלו עמודות כפולות.';
 $string['csvemptyfile'] = 'קובץ ה-CSVריק.';
 $string['csvfewcolumns'] = 'אין מספיק עמודות, אנא וודא את הגדרת התוחם.';
@@ -363,8 +360,8 @@ $string['invalidlegacy'] = 'הגדרת תפקיד מורש לא תקינה  עב
 $string['invalidmd5'] = 'md5 לא חוקי';
 $string['invalidmode'] = 'מצב ({$a}) אינו תקין';
 $string['invalidmodule'] = 'רכיב אינו תקין';
-$string['invalidmoduleid'] = 'מספר זיהוי הרכיב: {$a}  אינו תקין ';
-$string['invalidmodulename'] = 'שם הרכיב: {$a}  אינו תקין ';
+$string['invalidmoduleid'] = 'מספר זיהוי הרכיב: {$a}  אינו תקין';
+$string['invalidmodulename'] = 'שם הרכיב: {$a}  אינו תקין';
 $string['invalidnum'] = 'ערך מספרי לא תקין';
 $string['invalidnumkey'] = '$conditions array
 עלול שלא להכיל מפתחות מספריים
@@ -417,9 +414,9 @@ $string['mimetexisnotexist'] = 'המערכת שלך אינה מוגדרת כך �
 בצע קומפילציה ושים את קובץ ההרצה בספריית
 moodle/filter/tex/.';
 $string['mimetexnotexecutable'] = 'mimetex מותאם אישית אינו בר ביצוע';
+$string['missing_moodle_backup_xml_file'] = 'חסר לגיבוי קובץ XML : {$a}';
 $string['missingfield'] = 'שדה "{$a}" חסר';
 $string['missingkeyinsql'] = 'שגיאה: חסר משתנה "{$a}" בשאילתה';
-$string['missing_moodle_backup_xml_file'] = 'חסר לגיבוי קובץ XML : {$a}';
 $string['missingparam'] = 'פרמטר שהיה נדרש ({$a}) חסר';
 $string['missingparameter'] = 'פרמטר חסר';
 $string['missingrequiredfield'] = 'חסר שדה נדרש כלשהו';
@@ -509,9 +506,9 @@ $string['remotedownloaderror'] = 'הורדת הרכיב לשרת שלך כשלה
 $string['remotedownloadnotallowed'] = 'לא מורשה הורדה של רכיבים לשרת שלך (פונקצייתallow_url_fopen מנוטרלת).<br /><br />עליך להוריד את קובץ ה<a href="{$a->url}">{$a->url}</a> באופן ידני, להעתיק אותו לתוך "{$a->dest}" בשרת שלך, ולפתוח אותו שם.';
 $string['reportnotavailable'] = 'סוג דוח מידע זה זמין אך ורק לאתר הקורס';
 $string['requireloginerror'] = 'לא ניתן לגשת לקורס או לפעילות';
-$string['restorechecksumfailed'] = 'כמה בעיות התגלו עם המידע ששוחזר באחסון המושב שלך (session). אנא בדוק את זיכרון ה-PHP שלך או הגבלות גודל חבילת  מסד הנתונים שלך. השחזור הופסק.';
 $string['restore_path_element_missingmethod'] = 'שיטת שחזור {$a} חסרה. עליה להיות מוגדרת על-ידי מפתח האתר.';
 $string['restore_path_element_noobject'] = 'אובייקט שחזור {$a} איננו אובייקט';
+$string['restorechecksumfailed'] = 'כמה בעיות התגלו עם המידע ששוחזר באחסון המושב שלך (session). אנא בדוק את זיכרון ה-PHP שלך או הגבלות גודל חבילת  מסד הנתונים שלך. השחזור הופסק.';
 $string['restrictedcontextexception'] = 'מצטערים, ביצוע מתודות חיצוניות גורם להגבלת ההקשר
 ה- context';
 $string['restricteduser'] = 'מצטערים אבל חשבונך הנוכחי "{$a}" מוגבל מלעשות זאת.';
@@ -557,7 +554,6 @@ $string['targetdatabasenotempty'] = 'מסד הנתונים המיועד אינו
 $string['textconditionsnotallowed'] = 'השוואת תנאי עמודות טקסט לא מאופשרת. אנא השתמש ב-
 sql_compare_text() בשאילתה שלך';
 $string['themenotinstall'] = 'ערכת נושא זו איננה מותקנת';
-$string['TODO'] = 'TODO';
 $string['tokengenerationfailed'] = 'לא ניתן ליצור אסימון חדש';
 $string['transactionvoid'] = 'העסקה לא יכולה להיות מבוטלת מפני שהיא כבר בוטלה';
 $string['unenrolerror'] = 'חלה שגיאה בזמן נסיון הסרת רישום של משתמש זה';
@@ -567,8 +563,7 @@ $string['unknowcategory'] = 'קטגוריה לא ידועה!';
 $string['unknowcontext'] = 'זהו הקשר לא ידועה ({$a})
 ב
 get_child_contexts!';
-$string['unknowformat'] = 'תסדיר אינו ידועה ({$a})
-';
+$string['unknowformat'] = 'תסדיר אינו ידועה ({$a})';
 $string['unknownbackupexporterror'] = 'שגיאה לא ידועה, מכין מידע עבור יבוא';
 $string['unknownblockregion'] = 'תחום משבצת \'{$a}\'  לא מוכר בעמוד זה';
 $string['unknowncontext'] = 'זהו הקשר לא ידוע';

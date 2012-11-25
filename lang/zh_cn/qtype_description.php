@@ -27,9 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = '信息文本';
 $string['pluginname'] = '描述';
+$string['pluginname_help'] = '描述不是一种真的题目类型。它只是简单地显示文字，并不要求做任何回答，与课程页面中的标签类似。
+在答题和回顾页面都会显示题干。而通用反馈只会在回顾页面显示。';
 $string['pluginnameadding'] = '添加一段描述';
 $string['pluginnameediting'] = '编辑描述';
-$string['pluginname_help'] = '描述不是一种真的题目类型。它只是简单地显示文字，并不要求做任何回答，与课程页面中的标签类似。
-
-在答题和回顾页面都会显示题干。而通用反馈只会在回顾页面显示。';
 $string['pluginnamesummary'] = '这不是一种真的题目。它只是一种向活动添加指示、说明或其它内容的方法。与课程页面中的标签类似。';

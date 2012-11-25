@@ -33,11 +33,10 @@ $string['flashanimation_help'] = 'Dateien mit der Endung *.swf. Aus Sicherheitsg
 $string['flashvideo'] = 'Flash-Video';
 $string['flashvideo_help'] = 'Dateien mit den Endungen *.flv und *.f4v. Dieser Filter spielt Videos mit dem FlowPlayer ab und benötigt Flash und JavaScript. Ein Fallback auf HTML5-Video ist möglich, falls mehrere Quellen angegeben sind.';
 $string['html5audio'] = 'HTML5-Audio';
-$string['html5audio_help'] = 'Audio-Dateien mit den Endungen *.ogg, *.aac, *.m4a und anderen. Der Filter arbeitet nur mit aktuellen Webbrowsern, wobei es kein von allen Browsern unterstütztes Format gibt. Ein Fallback ist möglich, wenn mehrere Quellen mit # getrennt angeben sind: (z.B.  http://example.org/audio.ogg#http://example.org/audio.aac#http://example.org/audio.mp3#). Der QuickTime-Player wird als Fallback für ältere Browser verwendet.';
+$string['html5audio_help'] = 'Audio-Dateien mit den Endungen *.ogg, *.aac, *.m4a und anderen. Der Filter arbeitet nur mit aktuellen Webbrowsern, wobei es kein von allen Browsern unterstütztes Format gibt. Ein Fallback ist möglich, wenn mehrere Quellen mit # getrennt angeben sind: (z.B. http://example.org/audio.ogg#http://example.org/audio.aac#http://example.org/audio.mp3#). Der QuickTime-Player wird als Fallback für ältere Browser verwendet.';
 $string['html5video'] = 'HTML5-Video';
 $string['html5video_help'] = 'Video-Dateien mit den Endungen *.webm, *.m4v, *.ogv und *.mp4 und anderen. Der Filter arbeitet nur mit aktuellen Webbrowsern, wobei es kein von allen Browsern unterstütztes Format gibt. Ein Fallback ist möglich, wenn mehrere Quellen mit # getrennt angeben sind: (z.B. http://example.org/video.m4v#http://example.org/video.webm#http://example.org/video.ogv#d=640x480). Der QuickTime-Player wird als Fallback für ältere Browser verwendet.';
-$string['legacyheading'] = 'Ältere Media-Player
-';
+$string['legacyheading'] = 'Ältere Media-Player';
 $string['legacyheading_help'] = 'Folgende Formate werden nicht zum Gebrauch empfohlen, sie werden aber in Installationen mit zentral verwalteten Clients aber oft noch verwendet.';
 $string['legacyquicktime'] = 'QuickTime Player';
 $string['legacyquicktime_help'] = 'Dateien mit den Endungen *.mov, *.mp4, *.m4a, *.mp4 und *.mpg. Dieser Filter benötigt QuickTime oder QuickTime Codecs.';

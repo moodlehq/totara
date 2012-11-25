@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['calls'] = 'Chiamate a funzioni';
-$string['cannotfindanyrunforrunid'] = 'Spiacente, non trovo il profiling run \'{$a}\' ';
-$string['cannotfindanyrunforurl'] = 'Spiacente, non trovo nessun profiling run per l\'URL \'{$a}\' ';
+$string['cannotfindanyrunforrunid'] = 'Spiacente, non trovo il profiling run \'{$a}\'';
+$string['cannotfindanyrunforurl'] = 'Spiacente, non trovo nessun profiling run per l\'URL \'{$a}\'';
 $string['comment'] = 'Commento';
 $string['cputime'] = 'Tempo di CPU';
 $string['differencesbetween2runsof'] = 'Differenze tra 2 run di {$a}';

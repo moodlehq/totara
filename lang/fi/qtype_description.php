@@ -27,9 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = 'Lisätietoa';
 $string['pluginname'] = 'Ohjeteksti';
+$string['pluginname_help'] = 'Ohjeteksti ei ole varsinainen kysymystyyppi, vaan sillä voit lisätä tekstiä kysymysten väleihin, vastaavasti kuin kurssialueellekin.
+Ohjetekstit näytetään tentin tekijöille sekä suorituksen aikana että sen jälkeen.';
 $string['pluginnameadding'] = 'Lisätään ohjetekstiä';
 $string['pluginnameediting'] = 'Muokataan ohjetekstiä';
-$string['pluginname_help'] = 'Ohjeteksti ei ole varsinainen kysymystyyppi, vaan sillä voit lisätä tekstiä kysymysten väleihin, vastaavasti kuin kurssialueellekin.
-
-Ohjetekstit näytetään tentin tekijöille sekä suorituksen aikana että sen jälkeen.';
 $string['pluginnamesummary'] = 'Ohjeteksti ei ole varsinainen kysymystyyppi, vaan sillä voit lisätä tekstiä kuten väliotsikoita ja ohjeita kysymysten väleihin, vastaavasti kuin kurssialueellekin.';

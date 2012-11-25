@@ -44,7 +44,7 @@ $string['allowcoursethemes'] = 'Zezwól na kompozycję kursów';
 $string['allowediplist'] = 'Lista dozwolonych adresów IP';
 $string['allowemailaddresses'] = 'Dozwolone domeny poczty elektronicznej';
 $string['allowframembedding'] = 'Zezwalaj na umieszczanie ramek';
-$string['allowframembedding_help'] = 'Zezwalaj na umieszczanie tej strony w ramkach na  zewnętrznych stronach. Włączenie tej funkcji nie jest zalecane ze względów bezpieczeństwa.';
+$string['allowframembedding_help'] = 'Zezwalaj na umieszczanie tej strony w ramkach na zewnętrznych stronach. Włączenie tej funkcji nie jest zalecane ze względów bezpieczeństwa.';
 $string['allowobjectembed'] = 'Zezwalaj na znaczniki EMBED i OBJECT';
 $string['allowthemechangeonurl'] = 'Zezwalaj na zmiany szablonu graficznego w adresie URL';
 $string['allowuserblockhiding'] = 'Zezwalaj użytkownikom na ukrywanie bloków';
@@ -102,7 +102,7 @@ $string['clistatusenabled'] = 'Status: włączony';
 $string['clitypevalue'] = 'typ wartości';
 $string['clitypevaluedefault'] = 'typ wartości, naciśnij Enter, aby użyć wartości domyślnej ({$a})';
 $string['cliunknowoption'] = 'Nieznana opcja:
-  {$a}
+{$a}
 Proszę użyć pomocy.';
 $string['cliyesnoprompt'] = 'wpisz y (czyli tak) lub n (czyli nie)';
 $string['commentsperpage'] = 'Komentarze wyświetlane na stronie';
@@ -232,8 +232,7 @@ $string['configpasswordreuselimit'] = 'Liczba zmian hasła użytkownika pozwalaj
 $string['configpathtoclam'] = 'Ścieżka dla programu antywirusowego calm. Najprawdopodobniej jest to /usr/bin/clamscan lub /usr/bin/clamdscan. Musisz podać ścieżkę aby program antywirusowy clam działał.';
 $string['configpathtodu'] = 'Ścieżka do programu du (najczęściej jest to /usr/bin/du). Jeśli podasz w tym miejscu ścieżkę do tego programu wtedy wyświetlanie zawartości katalogów z dużą liczbą plików będzie wykonywane szybciej.';
 $string['configperfdebug'] = 'Jeśli włączysz tą opcję wtedy w stopce stron standardowej kompozycji wyświetlana będzie informacja o wydajności.';
-$string['configprofileroles'] = 'Lista ról, które są widoczne na stronie profilu użytkownika i uczestników.
-';
+$string['configprofileroles'] = 'Lista ról, które są widoczne na stronie profilu użytkownika i uczestników.';
 $string['configprofilesforenrolledusersonly'] = 'Aby zablokować treści wpisywane przez  spamerów i opisów w automatycznie tworzonych profilach przez spamboty, opis w profilu jest zablokowany (niewidoczny) do czasu aż użytkownik zaloguje do co najmniej jednego kursu.';
 $string['configprotectusernames'] = 'Domyślnie forget_password.php, dotyczące zapomnianego hasła, nie wyświetla żadnych wskazówek które pozwoliłyby na odgadnięcie nazwy użytkownika lub adresu poczty elektronicznej.';
 $string['configproxybypass'] = 'Lista oddzielonych przecinkami (częściowych) nazw hostów lub adresów IP, która powinna omijać proxy (np.: 192.168., .mojadomena.com)';
@@ -422,8 +421,7 @@ $string['editorfontlist'] = 'Lista czcionek';
 $string['editorfontsize'] = 'Rozmiar czcionki';
 $string['editorhidebuttons'] = 'Ukryte przyciski';
 $string['editorkillword'] = 'Filtr formatu słów';
-$string['editorspelling'] = 'Edytor pisowni
-';
+$string['editorspelling'] = 'Edytor pisowni';
 $string['editorspellinghelp'] = 'Włącza lub wyłącza sprawdzanie pisowni. Jeśli włączone, <strong>aspell</strong> musi być zainstalowane na serwerze.';
 $string['editstrings'] = 'Edytuj słowa albo łańcuchy znaków';
 $string['emailchangeconfirmation'] = 'Potwierdzenie zmiany emaila';
@@ -543,7 +541,7 @@ $string['ipblocked'] = 'Ta strona jest obecnie niedostępna.';
 $string['ipblocker'] = 'Blokowanie IP';
 $string['iplookup'] = 'Wyszukaj adres IP';
 $string['iplookupinfo'] = 'Domyślnie produkt Totara korzysta z bezpłatnego serwera online NetGeo (Internetowej bazy danych geograficznych) do wyszukiwania lokalizacji adresów IP, niestety ta baza nie jest już utrzymywana i może zwracać <em>wyjątkowo niedokładne</em> dane.\nZaleca się zainstalowanie lokalnej kopii bezpłatnej bazy danych GeoLite City firmy MaxMind.<br />\nLokalizacja adresu IP jest wyświetlana na prostej mapie lub za pomocą usługi Google Maps. Należy zauważyć, że do włączenia map interaktywnych niezbędne jest posiadanie konta Google, a ponadto należy zwrócić się o uzyskanie bezpłatnego klucza interfejsu API usługi Google Maps.';
-$string['iplookupmaxmindnote'] = 'Ten produkt zawiera dane GeoLite stworzone przez MaxMind, dostępne na <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>. ';
+$string['iplookupmaxmindnote'] = 'Ten produkt zawiera dane GeoLite stworzone przez MaxMind, dostępne na <a href="http://www.maxmind.com/">http://www.maxmind.com/</a>.';
 $string['iplookupnetgeonote'] = 'Serwer NetGeo jest obecnie używany do wyszukiwania informacji geograficznych. W celu uzyskania dokładniejszych wyników zalecamy zainstalowanie lokalnej kopii bazy danych GeoLite firmy MaxMind.';
 $string['keeptagnamecase'] = 'Zachowaj wielkość liter w nazwie znacznika';
 $string['lang'] = 'Domyślny język';
@@ -653,7 +651,7 @@ $string['notloggedinroleid'] = 'Rola dla odwiedzających';
 $string['numberofmissingstrings'] = 'Liczba brakujących łańcuchów: {$a}';
 $string['numberofstrings'] = 'Całkowita liczba łańcuchów:  {$a->strings} <br />Brakuje: {$a->missing} ({$a->missingpercent}&nbsp;%)';
 $string['numcoursesincombo'] = 'Maksymalna liczba kursów na liście rozwijanej';
-$string['numcoursesincombo_help'] = 'Lista rozwijana nie działa poprawnie z duża liczą kursów. Jeżeli całkowita liczba kursów jest większa niż to ustawienie wtedy, na stronie głównej zamiast próby wyświetlenia wszystkich kursów, pojawi się link do dedykowanej listy kursów. ';
+$string['numcoursesincombo_help'] = 'Lista rozwijana nie działa poprawnie z duża liczą kursów. Jeżeli całkowita liczba kursów jest większa niż to ustawienie wtedy, na stronie głównej zamiast próby wyświetlenia wszystkich kursów, pojawi się link do dedykowanej listy kursów.';
 $string['opensslrecommended'] = 'Instalacja opcjonalnej biblioteki OpenSSL jest wysoce zalecane -- aktywuje sieciową funkcjonalność Moodle.';
 $string['opentogoogle'] = 'Otwórz dla Google';
 $string['optionalmaintenancemessage'] = 'Opcjonalna wiadomość dla trybu konserwacji';
@@ -739,9 +737,7 @@ $string['profilesignup'] = 'Wyświetlić na stronie zapisów?';
 $string['profilespecificsettings'] = 'Specyficzne ustawienia';
 $string['profilevisible'] = 'Dla kogo jest widoczne to pole?';
 $string['profilevisible_help'] = '* Nie widoczny - tylko dla prywatnych informacji widzianych przez administratora
-
 * Widoczny dla użytkownika - tylko dla prywatnych informacji widzianych przez użytkownika oraz administratora
-
 * Widoczny dla wszystkich';
 $string['profilevisibleall'] = 'Widoczny dla wszystkich';
 $string['profilevisiblenone'] = 'Nie widoczny';

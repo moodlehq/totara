@@ -48,7 +48,7 @@ $string['choosereadme'] = '<div class="clearfix">
 <p>Dit ontwerp werd oorspronkelijk gemaakt door Digital Nature (hello@digitalnature.ro) voor het overgedragen werd naar Moodle door Patrick Malley (patrick@newschoollearning.com).
 <h2>Licentie</h2>
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['configtitle'] = 'Fusion instellingen';
 $string['customcss'] = 'Aangepaste CSS';

@@ -32,7 +32,7 @@ $string['check_configrw_ok'] = 'config.php  לא ניתן לשינוי על יד
 $string['check_configrw_warning'] = 'קבצי PHP עשויים לשנות את config.php';
 $string['check_cookiesecure_details'] = '<p>אם תקשורת http מופעלת מומלץ גם להפעיל את עוביות הביטחון. יש להוסיף הכוונה תמידית מhttp ל-https.
 </p>';
-$string['check_cookiesecure_error'] = 'יש לאפשר עוגיות מאובטחות ';
+$string['check_cookiesecure_error'] = 'יש לאפשר עוגיות מאובטחות';
 $string['check_cookiesecure_name'] = 'עוגיות מאובטחות';
 $string['check_cookiesecure_ok'] = 'עוגיות מאובטחות מאופשרות';
 $string['check_defaultuserrole_details'] = '<p>לכל המשתמשים המחוברים למערכת ניתנו יכולות של משתמש ברירת המחדל. יש להבטיח שיכולות מסוכנות לא מורשות לתפקיד זה. </p> <p> הירושה היחידה הנתמכת למשתמש ברירת המחדל היא <em> משתמש מאומת (Authenticated)  </em>. אין לאפשר יכולות צפיה בקורס.</p>';
@@ -68,7 +68,7 @@ $string['check_google_details'] = '<p>  פתיחה להגדרות של Google מ
 $string['check_google_error'] = 'שימוש במנועי חיפוש מותרת אך השימוש לאורחים אינו מותר.';
 $string['check_google_info'] = 'ניתן לחפש במנועי חיפוש כאורח';
 $string['check_google_name'] = 'פתח ל-Google';
-$string['check_google_ok'] = 'לא אופשרה הגישה למנוע החיפוש ';
+$string['check_google_ok'] = 'לא אופשרה הגישה למנוע החיפוש';
 $string['check_guestrole_details'] = '<p> תפקיד האורחים משמש אורחים ולא משתמשים שנרשמו למערכת והרשאות שמניות לקורסים לאורחים. יש לוודא כי יכולות מסוכנות לא מאופשרות בתפקיד זה. </p> <p> התפקיד היחידי הנתמך כתפקיד האורח הוא <em>אורח</em>
 </p>';
 $string['check_guestrole_error'] = 'תפקיד המבקר "{$a}" מודגר לא נכון!';
@@ -110,14 +110,13 @@ $string['check_riskadmin_ok'] = 'נמצאו {$a} מנהלי מערכת.';
 $string['check_riskadmin_unassign'] = '<a href="{$a->url}">{$a->fullname} ({$a->email}) בחן את הצבת התפקידים</a>';
 $string['check_riskadmin_warning'] = 'נמצאו {$a->admincount} מנהלי שרתים וכן
 {$a->unsupcount} הקצאות תפקיד לא נתמכות של מנהלי מערכת.';
-$string['check_riskbackup_detailsok'] = 'אים תפקידים אשר מתירים באופן מפורש ביצוע גיבוי של נתוני המשתמש. אולם למנהלי מערכת בעלי היכולת "עשה הכל" מתאפשר כנראה יכולים לבצע זאת.';
 $string['check_riskbackup_details_overriddenroles'] = '<p>עקיפות פעילות אלו מעניקות למשתמשים את היכולת לכלול נתוני משתמש בגיבויים. יש להבטיח כי  הרשאה זאת אמנם דרושה.
 </p>
 {$a}';
-$string['check_riskbackup_details_systemroles'] = '<p>תפקידי המערכת הבאים מאפשרים כעת למשתמשים לכלכול מיד של משתמשים בגיבויים. יש לוודא שהרשאה זאת היא הכרחית. </p> {$a{
-';
+$string['check_riskbackup_details_systemroles'] = '<p>תפקידי המערכת הבאים מאפשרים כעת למשתמשים לכלכול מיד של משתמשים בגיבויים. יש לוודא שהרשאה זאת היא הכרחית. </p> {$a{';
 $string['check_riskbackup_details_users'] = '<p>משום מה שנאמר לעיל או מפאת עקיפות מקומיות יש למשתמשים הבאים את היכולת לבצע גיבוייםהכוללים מידע פרטי מכל המשתמשים הרשומים לקורסים שלהםץ יש לוודא כי הם (1) אמינים ו-(2) מוגנים על ידי סיסמאות חזקות: {$a}
 </p>';
+$string['check_riskbackup_detailsok'] = 'אים תפקידים אשר מתירים באופן מפורש ביצוע גיבוי של נתוני המשתמש. אולם למנהלי מערכת בעלי היכולת "עשה הכל" מתאפשר כנראה יכולים לבצע זאת.';
 $string['check_riskbackup_editoverride'] = '<a href="{$a->url}">{$a->name} ב- {$a->contextname}</a>';
 $string['check_riskbackup_editrole'] = '<a href="{$a->url}">{$a->name}</a>';
 $string['check_riskbackup_name'] = 'גיבוי נתוני המשתמש';
@@ -126,7 +125,7 @@ $string['check_riskbackup_unassign'] = '<a href="{$a->url}">{$a->fullname} ({$a-
 $string['check_riskbackup_warning'] = 'נמצאו {$a->rolecount} תפקידים, {$a->overridecount}  עקיפות ו-{$a->usercount} משתמשיםעם היכולת לגבות נמידע של משתמשים.';
 $string['check_riskxss_details'] = '<p>
 RISK_XSS מציין את כל היכולות המסוכנות שרק למשתמשים מורשים יכולים להשתמש בהן. </p>
-<p>יש לוודא את הרשימה הבאה של משתמשים ויש להבטיח עי ניתן לסמוך עליהם לחלוטין בשרת זה. </p> <p> {$a}   ';
+<p>יש לוודא את הרשימה הבאה של משתמשים ויש להבטיח עי ניתן לסמוך עליהם לחלוטין בשרת זה. </p> <p> {$a}';
 $string['check_riskxss_name'] = 'משמשי XSS שבוטחים בהם';
 $string['check_riskxss_warning'] = 'RISK_XSS מצא {$a} משתמשים שניתן לבטוח בהם';
 $string['check_unsecuredataroot_details'] = '<p>אין לאפשר למדור שורש הנתונים להיות בר גישה מהרשת. הדרך הטובה ביותר להבטיח כי המדור לא יהיה בר גישה הוא להשתמש באחד מהמדורים שמחוץ למדור הציבורי.</p> <p>אם המדור הוזז חובה לעדכן את הגדרות<code>$CFG->dataroot</code> ב-<code>config.php</code> accordingly בהתאמה </p>';

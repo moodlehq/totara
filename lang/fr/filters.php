@@ -49,11 +49,10 @@ $string['doesnotcontain'] = 'ne contient pas';
 $string['endswith'] = 'se termine par';
 $string['filterallwarning'] = 'L\'application des filtres aux titres et au contenu peut augmenter considérablement la charge sur votre serveur. Veuillez utiliser ce réglage « Appliquer à » avec parcimonie. Il est habituellement utilisé en combinaison avec le filtre multilingue.';
 $string['filtersettings'] = 'Réglages des filtres';
-$string['filtersettings_help'] = '<p>Cette page vous permet d\'activer ou de désactiver des filtres dans une section précise du site.
-Vous n\'avez accès depuis cette page qu\'aux filtres que l\'administrateur a activés.</p>
-
-<p>Certains filtres autorisent les réglages locaux, auquel cas vous verrez un lien
-« Réglages » à côté de leurs noms.</p>';
+$string['filtersettings_help'] = 'Cette page vous permet d\'activer ou de désactiver des filtres dans une section précise du site.
+Vous n\'avez accès depuis cette page qu\'aux filtres que l\'administrateur a activés.
+Certains filtres autorisent les réglages locaux, auquel cas vous verrez un lien
+« Réglages » à côté de leurs noms.';
 $string['filtersettingsforin'] = 'Réglages du filtre {$a->filter} dans {$a->context}';
 $string['filtersettingsin'] = 'Réglages de filtre dans {$a}';
 $string['firstaccess'] = 'Premier accès';

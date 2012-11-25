@@ -219,13 +219,19 @@ if (!empty($instanceid) && !empty($roleid)) {
             $actions = array_merge($viewnames, $postnames);
     }
 
+    if (empty($actions)) {
+        echo $OUTPUT->notification(get_string('nothingtodisplay'));
+        echo $OUTPUT->footer();
+        return;
+    }
+
     list($actionsql, $params) = $DB->get_in_or_equal($actions, SQL_PARAMS_NAMED, 'action');
     $actionsql = "action $actionsql";
 
     $relatedcontexts = get_related_contexts_string($context);
 
     $sql = "SELECT ra.userid, u.firstname, u.lastname, u.idnumber, l.actioncount AS count
-            FROM (SELECT * FROM {role_assignments} WHERE contextid $relatedcontexts AND roleid = :roleid ) ra
+            FROM (SELECT DISTINCT userid FROM {role_assignments} WHERE contextid $relatedcontexts AND roleid = :roleid ) ra
             JOIN {user} u ON u.id = ra.userid
             LEFT JOIN (
                 SELECT userid, COUNT(action) AS actioncount FROM {log} WHERE cmid = :instanceid AND time > :timefrom AND $actionsql GROUP BY userid
@@ -311,7 +317,7 @@ if (!empty($instanceid) && !empty($roleid)) {
     }
     echo '</div>';
     echo '<div>';
-    echo '<label for="formaction">'.get_string('withselectedusers').'</label>';
+    echo '<label for="formactionselect">'.get_string('withselectedusers').'</label>';
     $displaylist['messageselect.php'] = get_string('messageselectadd');
     echo html_writer::select($displaylist, 'formaction', '', array(''=>'choosedots'), array('id'=>'formactionselect'));
     echo $OUTPUT->help_icon('withselectedusers');

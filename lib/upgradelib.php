@@ -877,7 +877,7 @@ function external_update_descriptions($component) {
             $dbfunction->classpath = $function['classpath'];
             $update = true;
         }
-        $functioncapabilities = key_exists('capabilities', $function)?$function['capabilities']:'';
+        $functioncapabilities = array_key_exists('capabilities', $function)?$function['capabilities']:'';
         if ($dbfunction->capabilities != $functioncapabilities) {
             $dbfunction->capabilities = $functioncapabilities;
             $update = true;
@@ -893,7 +893,7 @@ function external_update_descriptions($component) {
         $dbfunction->methodname = $function['methodname'];
         $dbfunction->classpath  = empty($function['classpath']) ? null : $function['classpath'];
         $dbfunction->component  = $component;
-        $dbfunction->capabilities = key_exists('capabilities', $function)?$function['capabilities']:'';
+        $dbfunction->capabilities = array_key_exists('capabilities', $function)?$function['capabilities']:'';
         $dbfunction->id = $DB->insert_record('external_functions', $dbfunction);
     }
     unset($functions);
@@ -1119,7 +1119,7 @@ function upgrade_log($type, $plugin, $info, $details=null, $backtrace=null) {
  * @global object
  */
 function upgrade_started($preinstall=false) {
-    global $CFG, $DB, $PAGE, $OUTPUT;
+    global $CFG, $DB, $PAGE, $OUTPUT, $TOTARA;
 
     static $started = false;
 
@@ -1135,7 +1135,7 @@ function upgrade_started($preinstall=false) {
             $strupgrade  = get_string('upgradingversion', 'admin');
             $PAGE->set_pagelayout('maintenance');
             upgrade_init_javascript();
-            $PAGE->set_title($strupgrade.' - Moodle '.$CFG->target_release);
+            $PAGE->set_title($strupgrade.' - Totara '.$TOTARA->release);
             $PAGE->set_heading($strupgrade);
             $PAGE->navbar->add($strupgrade);
             $PAGE->set_cacheable(false);

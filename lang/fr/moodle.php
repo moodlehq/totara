@@ -209,14 +209,9 @@ $string['cancel'] = 'Annuler';
 $string['cancelled'] = 'Annulé';
 $string['categories'] = 'Catégories de cours';
 $string['category'] = 'Catégorie';
-$string['category_help'] = '<!-- $Id$ -->
-
-
-<p>L\'administrateur de votre site Moodle a peut-être créé plusieurs catégories de cours. Une catégorie regroupe un ensemble de cours.</p>
-
-<p>Par exemple, « Mathématiques », « Langues anciennes », « Deuxième année », « Sciences naturelles », « Ateliers », etc.</p>
-
-<p>Choisissez la catégorie qui convient le mieux à votre cours. Ce choix permettra de classer votre cours dans la liste des cours et permettra aux étudiants de le trouver plus facilement.</p>';
+$string['category_help'] = 'L\'administrateur de votre site Moodle a peut-être créé plusieurs catégories de cours. Une catégorie regroupe un ensemble de cours.
+Par exemple, « Mathématiques », « Langues anciennes », « Deuxième année », « Sciences naturelles », « Ateliers », etc.
+Choisissez la catégorie qui convient le mieux à votre cours. Ce choix permettra de classer votre cours dans la liste des cours et permettra aux étudiants de le trouver plus facilement.';
 $string['categoryadded'] = 'La catégorie « {$a} » a été ajoutée';
 $string['categorycontents'] = 'Sous-catégories et cours';
 $string['categorycurrentcontents'] = 'Contenu de {$a}';
@@ -286,10 +281,8 @@ $string['continuetocourse'] = 'Cliquer ici pour accéder à votre cours';
 $string['convertingwikitomarkdown'] = 'Conversion du format Wiki au Markdown';
 $string['cookiesenabled'] = 'Votre navigateur doit supporter les cookies';
 $string['cookiesenabled_help'] = 'Ce site utilise deux cookies.
-
-Un cookie (essentiel) est utilisé pour la session de travail. Il est habituellement appelé <strong>MoodleSession</strong>. Vous devez autoriser son utilisation par le navigateur pour pouvoir ouvrir de nouvelles fenêtres sans avoir à vous reconnecter chaque fois. Le cookie est effacé lorsque vous vous déconnectez ou si vous quittez le navigateur.</p>
-
-L\'autre cookie n\'est pas essentiel, mais rend la connexion à Moodle plus facile en mémorisant votre nom d\'utilisateur dans le navigateur. Vous n\'aurez donc pas à remplir ce champ lors de la prochaine visite. Il porte habituellement le nom <strong>MOODLEID</strong>. Il n\'y a toutefois pas de problème à refuser ce cookie.';
+Un cookie (essentiel) est utilisé pour la session de travail. Il est habituellement appelé **MoodleSession**. Vous devez autoriser son utilisation par le navigateur pour pouvoir ouvrir de nouvelles fenêtres sans avoir à vous reconnecter chaque fois. Le cookie est effacé lorsque vous vous déconnectez ou si vous quittez le navigateur.</p>
+L\'autre cookie n\'est pas essentiel, mais rend la connexion à Moodle plus facile en mémorisant votre nom d\'utilisateur dans le navigateur. Vous n\'aurez donc pas à remplir ce champ lors de la prochaine visite. Il porte habituellement le nom **MOODLEID**. Il n\'y a toutefois pas de problème à refuser ce cookie.';
 $string['cookiesnotenabled'] = 'La gestion des cookies n\'est malheureusement pas activée actuellement dans votre navigateur';
 $string['copy'] = 'copie';
 $string['copyasnoun'] = 'copie';
@@ -340,9 +333,7 @@ $string['coursehidden'] = 'Ce cours n\'est actuellement pas disponible pour les 
 $string['courseinfo'] = 'Informations du cours';
 $string['courselegacyfiles'] = 'Fichiers du cours (obsolète)';
 $string['courselegacyfiles_help'] = 'La zone des fichiers du cours fournit une compatibilité descendante avec Moodle version 1.9 et antérieure. Tous les fichiers de cette zone sont toujours accessibles par tous les participants du cours, qu\'ils soient liés ou non. Il n\'y a aucun moyen de savoir si ces fichiers sont utilisés dans Moodle.
-
 Si vous utilisez cette zone pour stocker des fichiers, vous risquez de vous exposer à des questions de protection des données et de sécurité, ainsi que des fichiers manquants dans les sauvegardes, importations de cours. Il est donc recommandé de ne pas utiliser cette zone, à moins que vous ne sachiez vraiment ce que vous faites.
-
 Le lien ci-dessous fournit plus d\'informations à ce sujet et vous indiquera de meilleures façon de gérer les fichiers dans Moodle 2.';
 $string['coursemessage'] = 'Message aux participants du cours';
 $string['coursenotaccessible'] = 'Ce cours n\'est pas accessible au public';
@@ -538,7 +529,7 @@ $string['emailconfirmation'] = 'Bonjour,
 
 La création d\'un compte pour {$a->sitename} a été demandée en utilisant votre adresse de courriel. Pour confirmer votre enregistrement, veuillez visiter la page web suivante :
 
-    {$a->link}
+{$a->link}
 
 Dans la plupart des logiciels de courriel, cette adresse est un lien actif qu\'il vous suffit de cliquer. Si cela ne fonctionne pas, copiez ce lien (qui peut être coupé sur deux lignes) et collez-le dans la barre d\'adresse de votre navigateur web.
 
@@ -671,9 +662,7 @@ $string['forcedmodeinbrackets'] = '{$a} (mode imposé)';
 $string['forcelanguage'] = 'Imposer la langue';
 $string['forceno'] = 'Ne pas imposer';
 $string['forcepasswordchange'] = 'Imposer le changement du mot de passe';
-$string['forcepasswordchange_help'] = '<!-- $Id$ -->
-
-Demande à l\'utilisateur de changer son mot de passe lors de la connexion suivante.';
+$string['forcepasswordchange_help'] = 'Demande à l\'utilisateur de changer son mot de passe lors de la connexion suivante.';
 $string['forcepasswordchangecheckfull'] = 'Voulez-vous vraiment imposer un changement de mot de passe à {$a} ?';
 $string['forcepasswordchangenot'] = 'Impossible d\'imposer un changement de mot de passe à {$a}';
 $string['forcepasswordchangenotice'] = 'Vous devez changer votre mot de passe pour continuer.';
@@ -683,56 +672,29 @@ $string['forgotten'] = 'Vous avez oublié votre nom d\'utilisateur et/ou votre m
 $string['forgottenduplicate'] = 'Cette adresse de courriel est utilisée dans plusieurs comptes. Veuillez indiquer le nom d\'utilisateur en lieu et place';
 $string['forgotteninvalidurl'] = 'URL de récupération de mot de passe non valable';
 $string['format'] = 'Format';
-$string['format_help'] = '<!-- $Id$ -->
+$string['format_help'] = '## Format LAMS
 
+Ce format utilise l\'interface Learning Activity Management System (LAMS) comme interface principale. LAMS nécessite l\'intervention d\'un administrateur pour pouvoir utiliser ce format.
 
-<h2>Format LAMS</h2>
+## Format SCORM
 
-<div class="indent">
+Ce format affiche un paquetage SCORM dans la première section de la page du cours. Le module d\'activité SCORM/AICC offre une alternative pour afficher un paquetage SCORM dans un cours.
 
-<p>Ce format utilise l\'interface Learning Activity Management System (LAMS) comme interface principale. LAMS nécessite l\'intervention d\'un administrateur pour pouvoir utiliser ce format.</p>
+## Format informel
 
-</div>
+Ce format est organisé autour d\'un forum principal, le « Forum public », qui est affiché sur la page du cours. Il est utile dans les situations informelles qui ne sont pas nécessairement des cours. Par exemple, il peut être utilisé comme tableau d\'affichage pour une classe ou un département.
 
-<h2>Format SCORM</h2>
+## Format thématique
 
-<div class="indent">
+Ce format est organisé en sections thématiques. Chacune de ces sections comprend des activités et des ressources.
 
-<p>Ce format affiche un paquetage SCORM dans la première section de la page du cours. Le module d\'activité SCORM/AICC offre une alternative pour afficher un paquetage SCORM dans un cours.</p>
+## Format hebdomadaire
 
-</div>
+Le cours est organisé par semaine avec des dates de début et de fin clairement identifiées. Chaque semaine contient des activités et des ressources.
 
-<h2>Format informel</h2>
+## Format hebdomadaire - CSS, sans table
 
-<div class="indent">
-
-<p>Ce format est organisé autour d\'un forum principal, le « Forum public », qui est affiché sur la page du cours. Il est utile dans les situations informelles qui ne sont pas nécessairement des cours. Par exemple, il peut être utilisé comme tableau d\'affichage pour une classe ou un département. </p>
-
-</div>
-
-<h2>Format thématique</h2>
-
-<div class="indent">
-
-<p>Ce format est organisé en sections thématiques. Chacune de ces sections comprend des activités et des ressources.</p>
-
-</div>
-
-<h2>Format hebdomadaire</h2>
-
-<div class="indent">
-
-<p>Le cours est organisé par semaine avec des dates de début et de fin clairement identifiées. Chaque semaine contient des activités et des ressources.</p>
-
-</div>
-
-<h2>Format hebdomadaire - CSS, sans table</h2>
-
-<div class="indent">
-
-<p>Le cours est organisé par semaine. L\'affichage n\'utilise pas les tables HTML.</p>
-
-</div>';
+Le cours est organisé par semaine. L\'affichage n\'utilise pas les tables HTML.';
 $string['formathtml'] = 'Format HTML';
 $string['formatmarkdown'] = 'Format Markdown';
 $string['formatplain'] = 'Format texte';
@@ -824,14 +786,9 @@ $string['helpwiththis'] = 'Aide sur ceci';
 $string['hiddenassign'] = 'Attribution cachée';
 $string['hiddenfromstudents'] = 'Caché pour les participants';
 $string['hiddensections'] = 'Sections cachées';
-$string['hiddensections_help'] = '<!-- $Id$ -->
-
-
-<p>Cette option vous permet de décider comment les sections cachées de votre cours sont affichées pour les étudiants.</p>
-
-<p>Par défaut, une petite surface est affichée (sous forme condensée, en général en gris) pour indiquer où se trouve la section cachée, même si les étudiants ne peuvent la voir. Cela est surtout utile dans le format hebdomadaire, pour indiquer clairement les semaines où le cours n\'a pas lieu.</p>
-
-<p>Si vous le spécifiez, les sections cachées seront totalement invisibles, de sorte que les étudiants ne sauront même pas que des sections du cours sont cachées.</p>';
+$string['hiddensections_help'] = 'Cette option vous permet de décider comment les sections cachées de votre cours sont affichées pour les étudiants.
+Par défaut, une petite surface est affichée (sous forme condensée, en général en gris) pour indiquer où se trouve la section cachée, même si les étudiants ne peuvent la voir. Cela est surtout utile dans le format hebdomadaire, pour indiquer clairement les semaines où le cours n\'a pas lieu.
+Si vous le spécifiez, les sections cachées seront totalement invisibles, de sorte que les étudiants ne sauront même pas que des sections du cours sont cachées.';
 $string['hiddensectionscollapsed'] = 'Sections cachées affichées sous forme condensée';
 $string['hiddensectionsinvisible'] = 'Sections cachées invisibles';
 $string['hide'] = 'Cacher';
@@ -860,15 +817,11 @@ $string['icon'] = 'Icône';
 $string['icqnumber'] = 'Identifiant ICQ';
 $string['idnumber'] = 'Numéro d\'identification';
 $string['idnumbercourse'] = 'No d\'identification du cours';
-$string['idnumbercourse_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Le numéro d\'identification (ID) du cours n\'est utilisé que lorsque le cours est mis en relation avec des systèmes externes. Il n\'est jamais affiché dans Moodle. Si vous avez un numéro de code officiel pour ce cours, utilisez-le. Sinon, vous pouvez laisser ce champ vide.</p>';
+$string['idnumbercourse_help'] = 'Le numéro d\'identification (ID) du cours n\'est utilisé que lorsque le cours est mis en relation avec des systèmes externes. Il n\'est jamais affiché dans Moodle. Si vous avez un numéro de code officiel pour ce cours, utilisez-le. Sinon, vous pouvez laisser ce champ vide.';
 $string['idnumbercoursecategory'] = 'Numéro d\'identifiant de catégorie';
 $string['idnumbercoursecategory_help'] = 'L\'identifiant de catégorie de cours n\'est utilisé que lors de la vérification de correspondance avec des systèmes externes et n\'est affiché nulle part sur le site. Si la catégorie est codée de manière officielle, celui-ce devrait être renseigné ici. Sinon, le champ peut être laissé vide.';
 $string['idnumbermod'] = 'Numéro d\'identification';
 $string['idnumbermod_help'] = 'En définissant un numéro d\'identification (ID number), vous fournissez un moyen d\'identifier une activité, si vous voulez effectuer des calculs avec les notes. Si l\'activité n\'est utilisée dans aucun calcul de note, le numéro d\'identification peut être laissé vide.
-
 Ce numéro d\'identification peut aussi être renseigné dans le carnet de notes. Il ne peut cependant être modifié que sur la page de modification de l\'activité.';
 $string['idnumbertaken'] = 'Ce no d\'identification est déjà utilisé';
 $string['imagealt'] = 'Description de l\'image';
@@ -896,9 +849,7 @@ $string['institution'] = 'Institution';
 $string['instudentview'] = 'en affichage « étudiant »';
 $string['interests'] = 'Centres d\'intérêt';
 $string['interestslist'] = 'Liste des centres d\'intérêt';
-$string['interestslist_help'] = '<!-- $Id$ -->
-
-Inscrivez ici la liste de vos centres d\'intérêt, séparés par des virgules';
+$string['interestslist_help'] = 'Inscrivez ici la liste de vos centres d\'intérêt, séparés par des virgules';
 $string['invalidemail'] = 'Adresse de courriel incorrecte';
 $string['invalidlogin'] = 'La connexion a échoué, veuillez réessayer';
 $string['invalidusername'] = 'Le nom d\'utilisateur ne peut comporter que des lettre bas de casse, les caractères souligné (_), tiret (-), point (.) ou arobase (@).';
@@ -948,15 +899,15 @@ $string['loginsite'] = 'Se connecter sur le site';
 $string['loginsteps'] = '<p>Bonjour. Pour un accès complet aux cours, prenez une minute pour vous créer un compte personnel sur ce site.<br />
 Chaque cours peut également nécessiter une clef d\'inscription à usage unique dont vous n\'avez pas besoin pour l\'instant.</p>
 <p>Voici les étapes à suivre :</p>
-   <ol>
-   <li>Remplir le formulaire <a href="{$a}">nouveau compte</a>.</li>
-   <li>Un message vous sera immédiatement adressé par courriel.</li>
-   <li>Récupérer ce message et cliquer sur le lien Web qu\'il contient.</li>
-   <li>Votre inscription sera alors confirmée et vous serez connecté.</li>
-   <li>Vous pourrez ensuite choisir le cours auquel vous souhaitez vous inscrire.</li>
-   <li>Si une clef d\'inscription vous est demandée, utilisez celle que votre enseignant vous aura communiquée.</li>
-   <li>Vous aurez alors un accès au cours complet. À votre prochaine visite il vous suffira d\'entrer votre nom d\'utilisateur et mot de passe (dans le formulaire ci-contre) afin de vous connecter et d\'accéder à tous les cours auxquels vous serez inscrit.</li>
-   </ol>';
+<ol>
+<li>Remplir le formulaire <a href="{$a}">nouveau compte</a>.</li>
+<li>Un message vous sera immédiatement adressé par courriel.</li>
+<li>Récupérer ce message et cliquer sur le lien Web qu\'il contient.</li>
+<li>Votre inscription sera alors confirmée et vous serez connecté.</li>
+<li>Vous pourrez ensuite choisir le cours auquel vous souhaitez vous inscrire.</li>
+<li>Si une clef d\'inscription vous est demandée, utilisez celle que votre enseignant vous aura communiquée.</li>
+<li>Vous aurez alors un accès au cours complet. À votre prochaine visite il vous suffira d\'entrer votre nom d\'utilisateur et mot de passe (dans le formulaire ci-contre) afin de vous connecter et d\'accéder à tous les cours auxquels vous serez inscrit.</li>
+</ol>';
 $string['loginstepsnone'] = '<p>Bonjour !</p><p>Pour un accès complet aux cours vous devez vous créer un compte.</p><p>Pour cela, vous avez seulement besoin de choisir un nom d\'utilisateur et un mot de passe à entrer dans le formulaire de cette page.</p><p>Si ce nom d\'utilisateur est déjà utilisé, il vous sera demandé d\'en choisir un autre.</p>';
 $string['loginto'] = 'S\'inscrire à {$a}';
 $string['loginusing'] = 'Connectez-vous ici en utilisant votre nom d\'utilisateur et mot de passe';
@@ -989,12 +940,8 @@ $string['maximumgrade'] = 'Note maximale';
 $string['maximumgradex'] = 'Note maximale : {$a}';
 $string['maximumshort'] = 'Max';
 $string['maximumupload'] = 'Taille maximale des fichiers déposés';
-$string['maximumupload_help'] = '<!-- $Id$ -->
-
-
-<p>Ce paramètre détermine la taille maximale des fichiers pouvant être déposés dans le cours. La taille maximale dans le cours ne peut dépasser celle prévue par l\'administrateur du site Moodle.</p>
-
-<p>L\'enseignant peut aussi ajuster ce paramètre pour chaque activité. Il peut ainsi établir une valeur par défaut pour le cours et des valeurs particulières pour certaines activités.</p>';
+$string['maximumupload_help'] = 'Ce paramètre détermine la taille maximale des fichiers pouvant être déposés dans le cours. La taille maximale dans le cours ne peut dépasser celle prévue par l\'administrateur du site Moodle.
+L\'enseignant peut aussi ajuster ce paramètre pour chaque activité. Il peut ainsi établir une valeur par défaut pour le cours et des valeurs particulières pour certaines activités.';
 $string['maxnumberweeks'] = 'Nombre maximum de sections';
 $string['maxnumberweeks_desc'] = 'Ce réglage détermine le nombre de choix qui apparaissent dans le réglage des cours « Nombres de sections ».';
 $string['maxnumcoursesincombo'] = 'Consultez <a href="{$a->link}">{$a->numberofcourses} cours</a>.';
@@ -1095,9 +1042,7 @@ $string['new'] = 'Nouveau';
 $string['newaccount'] = 'Nouveau compte';
 $string['newcourse'] = 'Nouveau cours';
 $string['newpassword'] = 'Nouveau mot de passe';
-$string['newpassword_help'] = '<!-- $Id$ -->
-
-Laissez vide pour conserver le mot de passe actuel.';
+$string['newpassword_help'] = 'Laissez vide pour conserver le mot de passe actuel.';
 $string['newpasswordfromlost'] = '<strong>Attention !</strong> Votre <strong>Mot de passe actuel</strong> vous a été envoyé dans le <strong>deuxième</strong> des deux courriels envoyés durant le processus de récupération de mot de passe. Veuillez vous assurer que vous avez bien reçu votre mot de passe de remplacement avant de continuer sur cette page.';
 $string['newpasswordtext'] = 'Bonjour {$a->firstname},
 
@@ -1105,29 +1050,24 @@ Le mot de passe de votre compte sur « {$a->sitename} » a été remplacé par u
 
 Les informations pour vous connecter sont désormais :
 
-    nom d\'utilisateur : {$a->username}
-    mot de passe : {$a->newpassword}
+nom d\'utilisateur : {$a->username}
+mot de passe : {$a->newpassword}
 
 Merci de visiter cette page afin de changer de mot de passe :
-    {$a->link}
+{$a->link}
 
 Dans la plupart des logiciels de messagerie, cette adresse devrait apparaître comme un lien de couleur bleue qu\'il vous suffit de cliquer. Si cela ne fonctionne pas, copiez ce lien et collez-le dans la barre d\'adresse de votre navigateur web.
 
 Si vous avez besoin d\'aide, veuillez contacter l\'administrateur du site {$a->sitename},
 {$a->signoff}';
 $string['newpicture'] = 'Nouvelle image';
-$string['newpicture_help'] = 'Pour ajouter une image, sélectionnez-en une en format JPG ou PNG, puis cliquez sur « Enregistrer mon profil ».  L\'image sera redimensionnée en un carré de 100x100 pixels.';
+$string['newpicture_help'] = 'Pour ajouter une image, sélectionnez-en une en format JPG ou PNG, puis cliquez sur « Enregistrer mon profil ». L\'image sera redimensionnée en un carré de 100x100 pixels.';
 $string['newsitem'] = 'article';
 $string['newsitems'] = 'articles';
 $string['newsitemsnumber'] = 'Articles récents à afficher';
-$string['newsitemsnumber_help'] = '<!-- $Id$ -->
-
-
-<p>Un forum spécial appelé « Nouvelles » apparaît dans les cours hebdomadaires ou thématiques. C\'est le bon endroit pour publier des informations destinées à tous les étudiants (qui sont tous inscrits par défaut à ce forum et recevront donc toutes ces informations par courriel).</p>
-
-<p>Ce paramètre détermine le nombre de nouvelles récentes à afficher sur la page d\'accueil du cours, dans une zone intitulée « Nouvelles », située en bas à droite de la page.</p>
-
-<p>Si vous choisissez la valeur « 0 article », cette zone ne sera pas du tout affichée.</p>';
+$string['newsitemsnumber_help'] = 'Un forum spécial appelé « Nouvelles » apparaît dans les cours hebdomadaires ou thématiques. C\'est le bon endroit pour publier des informations destinées à tous les étudiants (qui sont tous inscrits par défaut à ce forum et recevront donc toutes ces informations par courriel).
+Ce paramètre détermine le nombre de nouvelles récentes à afficher sur la page d\'accueil du cours, dans une zone intitulée « Nouvelles », située en bas à droite de la page.
+Si vous choisissez la valeur « 0 article », cette zone ne sera pas du tout affichée.';
 $string['newuser'] = 'Nouvel utilisateur';
 $string['newusernewpasswordsubj'] = 'Nouveau compte utilisateur';
 $string['newusernewpasswordtext'] = 'Bonjour,
@@ -1135,13 +1075,13 @@ $string['newusernewpasswordtext'] = 'Bonjour,
 Un nouveau compte a été créé pour vous sur le site « {$a->sitename} » et un mot de passe temporaire vous a été délivré.
 
 Les informations nécessaires à votre connexion sont maintenant :
-   nom d\'utilisateur : {$a->username}
-   mot de passe       : {$a->newpassword}
+nom d\'utilisateur : {$a->username}
+mot de passe       : {$a->newpassword}
 
 Vous devrez changer votre mot de passe lors de votre première connexion.
 
 Pour commencer à travailler sur « {$a->sitename} », veuillez vous connecter en cliquant sur le lien ci-dessous.
-   {$a->link}
+{$a->link}
 
 Dans la plupart des logiciels de messagerie, cette adresse devrait apparaître comme un lien de couleur bleue qu\'il vous suffit de cliquer. Si cela ne fonctionne pas, copiez ce lien et collez-le dans la barre d\'adresse de votre navigateur web.
 
@@ -1421,32 +1361,20 @@ $string['savedat'] = 'Enregistré à';
 $string['savepreferences'] = 'Enregistrer les préférences';
 $string['saveto'] = 'Enregistrer sous';
 $string['scale'] = 'Barème';
-$string['scale_help'] = '<!-- $Id$ -->
-
-
-<p>Un barème pour une évaluation représente les différents niveaux que peut avoir atteint l\'élève dans son travail. Par exemple : (Faible, Passable, Moyen, Bon, Excellent).</p>
-
-<p>Les enseignants peuvent créer de nouveaux barèmes qui peuvent être employés dans un cours pour toutes les activités où il y a une évaluation.</p>
-
-<p>Le nom du barème devrait permettre de l\'identifier clairement. Ce nom apparaîtra dans les menus de sélection des barèmes et sur les boutons d\'aide contextuelle.</p>
-
-<p>Un barème est défini par une liste de valeurs, séparées par des virgules, s\'étendant du négatif au positif. Par exemple :</p>
-
-<p class="indent"><em>Décevant, Pas assez bon, Moyen, Bon, Très bon, Excellent</em></p>
-
-<p>Les barèmes devraient également inclure une bonne description du contexte d\'utilisation. Cette description apparaîtra sur les pages d\'aide pour les enseignants et les étudiants.</p>
-
-<p>Finalement, il peut y avoir un ou plusieurs barèmes « standard » définis sur votre site par l\'administrateur du site. Ces barèmes sont alors disponibles dans tous les cours.</p>';
+$string['scale_help'] = 'Un barème pour une évaluation représente les différents niveaux que peut avoir atteint l\'élève dans son travail. Par exemple : (Faible, Passable, Moyen, Bon, Excellent).
+Les enseignants peuvent créer de nouveaux barèmes qui peuvent être employés dans un cours pour toutes les activités où il y a une évaluation.
+Le nom du barème devrait permettre de l\'identifier clairement. Ce nom apparaîtra dans les menus de sélection des barèmes et sur les boutons d\'aide contextuelle.
+Un barème est défini par une liste de valeurs, séparées par des virgules, s\'étendant du négatif au positif. Par exemple :
+*Décevant, Pas assez bon, Moyen, Bon, Très bon, Excellent*
+Les barèmes devraient également inclure une bonne description du contexte d\'utilisation. Cette description apparaîtra sur les pages d\'aide pour les enseignants et les étudiants.
+Finalement, il peut y avoir un ou plusieurs barèmes « standard » définis sur votre site par l\'administrateur du site. Ces barèmes sont alors disponibles dans tous les cours.';
 $string['scales'] = 'Barèmes';
 $string['scalescustom'] = 'Barèmes personnalisés';
 $string['scalescustomcreate'] = 'Ajouter un nouveau barème';
 $string['scalescustomno'] = 'Aucun barème personnalisé n\'a été encore créé';
 $string['scalesstandard'] = 'Barèmes standards';
 $string['scalestandard'] = 'Barème standard';
-$string['scalestandard_help'] = '<!-- $Id$ -->
-
-
-<p>Un barème standard est disponible dans tout le site, pour tous les cours.</p>';
+$string['scalestandard_help'] = 'Un barème standard est disponible dans tout le site, pour tous les cours.';
 $string['scalestip'] = 'Pour créer des barêmes personnalisés, utilisez le liens « Barêmes... » dans le menu d\'administration de votre cours.';
 $string['scalestip2'] = 'Pour créer des barêmes personnalisés, cliquez sur le lien Notes dans le menu d\'administration du cours, puis sélectionnez Modifier > Barêmes dans le menu déroulant.';
 $string['schedule'] = 'Planification';
@@ -1457,7 +1385,6 @@ $string['screenreaderyes'] = 'Oui';
 $string['screenshot'] = 'Copie d\'écran';
 $string['search'] = 'Rechercher';
 $string['search_help'] = 'Pour une recherche simple d\'un ou de plusieurs mots n\'importe où dans le texte, il suffit de les taper, en les séparant par des espaces. Les mots de moins de 3 caractères sont ignorés.
-
 Pour des critères de recherche plus pointus, cliquez sur le bouton sans taper quoi que ce soit dans les différents champs. Un formulaire complet s\'affichera, vous permettant de spécifier plus précisément votre recherche.';
 $string['searchagain'] = 'Rechercher de nouveau';
 $string['searchbyemail'] = 'Récupération par adresse de courriel';
@@ -1511,10 +1438,7 @@ $string['settings'] = 'Paramètres';
 $string['shortname'] = 'Nom abrégé';
 $string['shortnamecollisionwarning'] = '[*] = Un cours avec ce nom abrégé existe déjà et devra être modifié lors de l\'approbation';
 $string['shortnamecourse'] = 'Nom abrégé du cours';
-$string['shortnamecourse_help'] = '<!-- $Id$ -->
-
-
-<p>Beaucoup d\'organismes ont une référence abrégée pour chaque cours ou formation (par exemple un numéro de cours). Même si cela n\'est pas le cas de votre établissement, vous devez indiquer quelque chose ici. Cette référence sera utilisée à plusieurs endroits, là où le nom complet du cours n\'est pas adapté (par exemple, dans l\'objet des courriels).</p>';
+$string['shortnamecourse_help'] = 'Beaucoup d\'organismes ont une référence abrégée pour chaque cours ou formation (par exemple un numéro de cours). Même si cela n\'est pas le cas de votre établissement, vous devez indiquer quelque chose ici. Cette référence sera utilisée à plusieurs endroits, là où le nom complet du cours n\'est pas adapté (par exemple, dans l\'objet des courriels).';
 $string['shortnametaken'] = 'Ce nom abrégé est déjà utilisé pour un autre cours ({$a})';
 $string['shortnameuser'] = 'Nom abrégé';
 $string['shortsitename'] = 'Nom abrégé du site (p. ex. un mot)';
@@ -1532,14 +1456,9 @@ $string['showcommentsnonjs'] = 'Afficher les commentaires';
 $string['showdescription'] = 'Afficher la description sur la page de cours';
 $string['showdescription_help'] = 'Si ce réglage est activé, la description ou l\'introduction ci-dessus sera affichée sur la page du cours, juste au-dessous du lien vers l\'activité ou la ressource.';
 $string['showgrades'] = 'Afficher le carnet de notes aux étudiants';
-$string['showgrades_help'] = '<!-- $Id$ -->
-
-
-<p>Plusieurs parmi les activités d\'un cours peuvent être évaluations.</p>
-
-<p>Par défaut, les notes de toutes les activités du cours peuvent être vues sur la page « Notes », accessible depuis la page d\'accueil du cours.</p>
-
-<p>Si un enseignant ne désire pas utiliser les notes dans un cours, ou s\'il veut juste cacher le carnet de notes pour les étudiants, il peut alors désactiver l\'affichage du carnet de notes en modifiant les réglages du cours. Ceci n\'empêche pas un enseignant d\'évaluer les différentes activités, <strong>ni</strong> l\'affichage des notes depuis les activités elles-mêmes.</p>';
+$string['showgrades_help'] = 'Plusieurs parmi les activités d\'un cours peuvent être évaluations.
+Par défaut, les notes de toutes les activités du cours peuvent être vues sur la page « Notes », accessible depuis la page d\'accueil du cours.
+Si un enseignant ne désire pas utiliser les notes dans un cours, ou s\'il veut juste cacher le carnet de notes pour les étudiants, il peut alors désactiver l\'affichage du carnet de notes en modifiant les réglages du cours. Ceci n\'empêche pas un enseignant d\'évaluer les différentes activités, **ni** l\'affichage des notes depuis les activités elles-mêmes.';
 $string['showlistofcourses'] = 'Afficher la liste des cours';
 $string['showmodulecourse'] = 'Afficher les cours contenant l\'activité';
 $string['showonly'] = 'Afficher uniquement';
@@ -1548,16 +1467,10 @@ $string['showonlyweek'] = 'Afficher uniquement la semaine {$a}';
 $string['showperpage'] = 'Afficher {$a} par page';
 $string['showrecent'] = 'Afficher les événements récents';
 $string['showreports'] = 'Afficher les rapports d\'activités';
-$string['showreports_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez obtenir des rapports d\'activités pour chaque participant à votre cours. Ces rapports contiennent les contributions des participants et la liste des accès aux différentes activités et ressources du cours.</p>
-
-<p>Les enseignants peuvent visualiser ces rapports à l\'aide d\'un bouton dans le profil de l\'utilisateur.</p>
-
-<p>Vous pouvez permettre à vos étudiants de voir leurs propres rapports d\'activités à un des paramètres du cours. Dans certains cours, il peut être pertinent d\'offrir cette possibilité aux étudiants pour les aider dans la participation au cours ; dans d\'autres cas, cela n\'est pas nécessaire.</p>
-
-<p>Remarque : la production de ces rapports peut ralentir le serveur Moodle lorsqu\'il y a beaucoup d\'étudiants et d\'enseignants qui en font la demande.  Pour augmenter les performances du serveur, on peut désactiver ce paramètre.<p>';
+$string['showreports_help'] = 'Vous pouvez obtenir des rapports d\'activités pour chaque participant à votre cours. Ces rapports contiennent les contributions des participants et la liste des accès aux différentes activités et ressources du cours.
+Les enseignants peuvent visualiser ces rapports à l\'aide d\'un bouton dans le profil de l\'utilisateur.
+Vous pouvez permettre à vos étudiants de voir leurs propres rapports d\'activités à un des paramètres du cours. Dans certains cours, il peut être pertinent d\'offrir cette possibilité aux étudiants pour les aider dans la participation au cours ; dans d\'autres cas, cela n\'est pas nécessaire.
+Remarque : la production de ces rapports peut ralentir le serveur Moodle lorsqu\'il y a beaucoup d\'étudiants et d\'enseignants qui en font la demande. Pour augmenter les performances du serveur, on peut désactiver ce paramètre.';
 $string['showsettings'] = 'Afficher les réglages';
 $string['showtheselogs'] = 'Afficher cet historique';
 $string['showthishelpinlanguage'] = 'Afficher cette aide dans la langue : {$a}';
@@ -1656,14 +1569,9 @@ $string['subcategories'] = 'Sous-catégories';
 $string['submit'] = 'Envoyer';
 $string['success'] = 'Succès';
 $string['summary'] = 'Résumé';
-$string['summary_help'] = '<!-- $Id$ -->
-
-
-<p>Le résumé est un texte très court destiné à préparer les étudiants aux activités présentées dans la section (thématique ou hebdomadaire).</p>
-
-<p>Chaque résumé devrait être bref, de sorte que la page de cours ne devienne pas trop longue.</p>
-
-<p>Si le résumé comporte plus d\'une phrase ou deux, on suggère plutôt d\'ajouter une ressource (un texte) à cette section (par exemple, la première activité pourrait être une page appelée « À propos de cette matière »).</p>';
+$string['summary_help'] = 'Le résumé est un texte très court destiné à préparer les étudiants aux activités présentées dans la section (thématique ou hebdomadaire).
+Chaque résumé devrait être bref, de sorte que la page de cours ne devienne pas trop longue.
+Si le résumé comporte plus d\'une phrase ou deux, on suggère plutôt d\'ajouter une ressource (un texte) à cette section (par exemple, la première activité pourrait être une page appelée « À propos de cette matière »).';
 $string['summaryof'] = 'Résumé de {$a}';
 $string['supplyinfo'] = 'Plus de détails';
 $string['switchdevicedefault'] = 'Passer au thème standard';

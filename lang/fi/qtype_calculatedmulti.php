@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Matemaattinen monivalintatehtävä';
+$string['pluginname_help'] = 'Matemaattiset monivalintatehtävät ovat kuin monivalintatehtäviä, joissa sekä kysymykseen että vastausvaihtoehtoihin saa lisätä laskukaavoja. Laskuissa käytetään muuttujia ja ne merkitään aaltosulkeilla. Moodle korvaa muuttujat satunnaisesti valituilla luvuilla kun tehtävä näytetään opiskelijalle. Esimerkiksi, jos kysymys on "Mikä on sen suorakaiteen pinta-ala, jonka leveys on {l} ja korkeus on {k}?", vastaava oikea vastausvaihtoehto on {={l}*{k}}.';
 $string['pluginnameadding'] = 'Lisätään Matemaattista monivalintatehtävää';
 $string['pluginnameediting'] = 'Muokataan Matemaattista monivalintatehtävää';
-$string['pluginname_help'] = 'Matemaattiset monivalintatehtävät ovat kuin monivalintatehtäviä, joissa sekä kysymykseen että vastausvaihtoehtoihin saa lisätä laskukaavoja. Laskuissa käytetään muuttujia ja ne merkitään aaltosulkeilla. Moodle korvaa muuttujat satunnaisesti valituilla luvuilla kun tehtävä näytetään opiskelijalle. Esimerkiksi, jos kysymys on "Mikä on sen suorakaiteen pinta-ala, jonka leveys on {l} ja korkeus on {k}?", vastaava oikea vastausvaihtoehto on {={l}*{k}}.';
 $string['pluginnamesummary'] = 'Matemaattiset monivalinnat ovat kuin monivalintatehtäviä, joissa sekä kysymykseen että vastausvaihtoehtoihin saa lisätä laskukaavoja. Laskuissa käytetyt muuttujat korvataan satunnaisesti valituilla luvuilla kun tehtävä näytetään opiskelijalle.';

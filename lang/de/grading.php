@@ -36,7 +36,6 @@ $string['gradingmanagement'] = 'Erweiterte Bewertung';
 $string['gradingmanagementtitle'] = 'Erweiterte Bewertung: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Bewertungsmethode';
 $string['gradingmethod_help'] = 'Wählen Sie die erweiterten Bewertungsmöglichkeiten, um Noten detaillierter zu berechnen.
-
 \'Einfache direkte Bewertung\' aktiviert die Defaulteinstellung wieder.';
 $string['gradingmethodnone'] = 'Einfache direkte Bewertung';
 $string['gradingmethods'] = 'Bewertungsmethoden';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = 'Keine Vorlage gefunden';
 $string['searchownforms'] = 'einschl. meine eigenen Formulare';
 $string['searchtemplate'] = 'Suche nach Bewertungsformularen';
 $string['searchtemplate_help'] = 'Sie können ein Bewertungsformular suchen und es als Vorlage zur weiteren Bearbeitung verwenden. Geben Sie Begriffe ein, die im Titel, dem Formular oder der Beschreibung vermutlich vorkommen. Sie können auch komplexe Begriffe suchen wenn Sie diese in Anführungszeichen (") setzen.
-
 Die Grundeinstellung erlaubt die Suche in veröffentlichten Formularen. Sie können zusätzlich Ihre eigenen Formulare in die Suche einbeziehen. Somit können Sie ihre eigenen Formulare wiederverwenden, ohne sie veröffentlichen zu müssen. Nur Formulare, die als \'Fertig zum Gebrauch\' gekennzeichnet wurden, können verwandt werden.';
 $string['statusdraft'] = 'Entwurf';
 $string['statusready'] = 'Bereit für Einsatz';

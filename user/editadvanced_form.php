@@ -50,6 +50,11 @@ class user_editadvanced_form extends moodleform {
         $mform->addElement('select', 'auth', get_string('chooseauthmethod','auth'), $auth_options);
         $mform->addHelpButton('auth', 'chooseauthmethod', 'auth');
 
+        if (get_config('totara_sync', 'element_user_enabled')) {
+            $mform->addElement('advcheckbox', 'totarasync', get_string('totarasync', 'tool_totara_sync').'?');
+            $mform->addHelpButton('totarasync', 'totarasync', 'tool_totara_sync');
+        }
+
         $mform->addElement('advcheckbox', 'suspended', get_string('suspended','auth'));
         $mform->addHelpButton('suspended', 'suspended', 'auth');
 
@@ -68,7 +73,13 @@ class user_editadvanced_form extends moodleform {
         /// Next the customisable profile fields
         profile_definition($mform, $userid);
 
-        $this->add_action_buttons(false, get_string('updatemyprofile'));
+        if ($userid == -1) {
+            $btnstring = get_string('createuser');
+        } else {
+            $btnstring = get_string('updatemyprofile');
+        }
+
+        $this->add_action_buttons(false, $btnstring);
     }
 
     function definition_after_data() {

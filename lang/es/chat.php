@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Acceder a la sala';
 $string['chat:deletelog'] = 'Eliminar registros de chat';
 $string['chat:exportparticipatedsession'] = 'Exportar sesión de chat en que usted ha participado';
 $string['chat:exportsession'] = 'Exportar cualquier sesión de chat';
+$string['chat:readlog'] = 'Leer registros de chat';
+$string['chat:talk'] = 'Hablar en un chat';
 $string['chatintro'] = 'Texto introductorio';
 $string['chatname'] = 'Nombre de la sala';
-$string['chat:readlog'] = 'Leer registros de chat';
 $string['chatreport'] = 'Sesiones';
-$string['chat:talk'] = 'Hablar en un chat';
 $string['chattime'] = 'Próxima cita';
 $string['configmethod'] = 'El método normal de chat implica que los usuarios contactan con el servidor de forma regular para llevar a cabo las actualizaciones. No requiere configuración y funciona en cualquier parte, pero puede ocasionar una sobrecarga en el servidor cuando hay muchos usuarios simultáneamente en la sala. Utilizar un \'daemon\' (i.e., proceso de ejecución independiente en segundo plano) en el servidor requiere el acceso shell (de intérprete de comandos) a Unix, pero resulta en un ambiente de chat más rápido y escalable.';
 $string['confignormalupdatemode'] = 'Las actualizaciones de la sala de chat normalmente son servidas eficientemente utilizando la característica de HTTP 1.1 <em>Keep-Alive</em>, pero esto resulta una tarea bastante pesada para el servidor. Un método más avanzado consiste en utilizar la estrategia <em>Stream</em> para enviar actualizaciones a los usuarios. Al utilizar <em>Stream</em> se consigue un escalamiento mucho mejor (es similar al método chatd), pero es posible que su servidor no tenga disponible esta opción.';
@@ -81,8 +81,8 @@ $string['modulename_help'] = 'El módulo chat permite que los participantes teng
 $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Nunca borrar mensajes';
 $string['nextsession'] = 'Próxima sesión programada';
-$string['nochat'] = 'No se encontró chat';
 $string['no_complete_sessions_found'] = 'No se han encontrado sesiones completas.';
+$string['nochat'] = 'No se encontró chat';
 $string['noguests'] = 'El chat no está abierto a invitados';
 $string['nomessages'] = 'Aún no hay mensajes';
 $string['nopermissiontoseethechatlog'] = 'No tiene permiso para ver los registros de chat.';
@@ -122,27 +122,20 @@ $string['updatemethod'] = 'Actualizar método';
 $string['updaterate'] = 'Tasa de Actualización:';
 $string['userlist'] = 'Lista de usuarios';
 $string['usingchat'] = 'Usando el chat';
-$string['usingchat_help'] = '<p>Este módulo contiene algunas características para chatear de forma más agradable.</p>
+$string['usingchat_help'] = 'Este módulo contiene algunas características para chatear de forma más agradable.
 
-<dl>
-<dt><b>Emoticonos</b></dt>
-<dd>Todos los emoticonos que se pueden escribir en cualquier lugar de Moodle
-también se pueden colocar aquí. Por ejemplo: :-) = <img alt="" src="pix/s/smiley.gif" />  </dd>
-
-<dt><b>Enlaces</b></dt>
-<dd>Las direcciones de Internet se convertirán automáticamente en enlaces.</dd>
-
-<dt><b>Emociones</b></dt>
-<dd>Puede iniciar un línea con "/me" o ":" para mostrar una emoción. Por ejemplo,
-si su nombre es Ana y escribe ": ríe" todos verán "Ana ríe"</dd>
-
-<dt><b>Beeps</b></dt>
-<dd>Puede enviar un pitido a otra persona haciendo clic en el enlace "beep"
-junto al nombre.</dd>
-
-<dt><b>HTML</b></dt>
-<dd>Si sabe un poco de lenguaje HTML puede utilizarlo en su texto para insertar
-imágenes, ejecutar sonidos o formatear texto, entre otras.
-</dd>
-</dl>';
+**Emoticonos**
+: Todos los emoticonos que se pueden escribir en cualquier lugar de Moodle
+también se pueden colocar aquí. Por ejemplo: :-)
+**Enlaces**
+: Las direcciones de Internet se convertirán automáticamente en enlaces.
+**Emociones**
+: Puede iniciar un línea con "/me" o ":" para mostrar una emoción. Por ejemplo,
+si su nombre es Ana y escribe ": ríe" todos verán "Ana ríe"
+**Beeps**
+: Puede enviar un pitido a otra persona haciendo clic en el enlace "beep"
+junto al nombre.
+**HTML**
+: Si sabe un poco de lenguaje HTML puede utilizarlo en su texto para insertar
+imágenes, ejecutar sonidos o formatear texto, entre otras.';
 $string['viewreport'] = 'Ver las sesiones anteriores';

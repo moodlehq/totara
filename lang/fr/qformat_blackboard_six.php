@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Blackboard V6+';
-$string['pluginname_help'] = 'Le format Blackboard V6+ permet d\'importer des questions enregistrées dans le format d\'exportation de Blackboard en fichier ZIP. Il offre ainsi un support limité des versions 6 et 7 de  Blackboard.';
+$string['pluginname_help'] = 'Le format Blackboard V6+ permet d\'importer des questions enregistrées dans le format d\'exportation de Blackboard en fichier ZIP. Il offre ainsi un support limité des versions 6 et 7 de Blackboard.';

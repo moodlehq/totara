@@ -48,13 +48,13 @@ $string['cannotunmap'] = 'Problema con la base de datos, imposible desasignar';
 $string['captcha'] = 'Captcha';
 $string['captchanotset'] = 'No se ha ajustado el Captcha.';
 $string['check'] = 'Elección múltiple (varias respuestas)';
-$string['checkbox'] = 'Elección múltiple (se permiten varias respuestas - casillas de verificación)';
 $string['check_values'] = 'Respuestas posibles';
+$string['checkbox'] = 'Elección múltiple (se permiten varias respuestas - casillas de verificación)';
 $string['choosefile'] = 'Seleccione un archivo';
 $string['chosen_feedback_response'] = 'respuesta elegida';
+$string['complete_the_form'] = 'Responda a las preguntas...';
 $string['completed'] = 'completada';
 $string['completed_feedbacks'] = 'Respuestas enviadas';
-$string['complete_the_form'] = 'Responda a las preguntas...';
 $string['completionsubmit'] = 'Ver como completado si se envía retroalimentación';
 $string['configallowfullanonymous'] = 'Si se establece esta opción la encuesta puede responderse sin que el usuario haya iniciado la sesión previamente. Esto sólo afecta a cuestionarios de la página principal.';
 $string['confirmdeleteentry'] = '¿Está seguro que quiere borrar esta entrada?';
@@ -71,20 +71,35 @@ $string['delete_old_items'] = 'Borrar ítems antiguos';
 $string['delete_template'] = 'Borrar plantilla';
 $string['delete_templates'] = 'Borrar plantilla...';
 $string['depending'] = 'ítems dependientes';
-$string['depending_help'] = 'Elementos (preguntas de la encuenta) dependientes le permiten ver los elementos que dependen de los valores de otros elementos/> <br <strong> He aquí un ejemplo de cómo crearlos: </ strong> <br /> <li> En primer lugar cree un elemento de cuyo valor dependerán otros elementos. </ li> <li> A continuación añada un salto de página. </ li> <li> Seguidamente añada los elementos que dependen del valor del elemento anterior <br />En el formulario de creción del elemento seleccione el elemento de la lista "Elemento dependiente" y ponga el valor correspondiente en el campo "valor dependiente"  </ li> </ ul> <strong> La estructura tendrá el siguiente aspecto:. </ strong> <ol> <li> Elemento 1-Pregunta: ¿Tiene usted coche? R: sí / no </ li> <li> Salto de página </ li> <li> Elemento 2-Pregunta: ¿Qué color tiene su coche /> <br (este elemento depende del elemento 1 con valor = sí) </ li> <? li> Artículo Q: ¿por qué no tener un coche /> <br (este elemento  depende del elemento 1 con  valor = no) </ li> <li> ...? otros ....otros elementos </ li> </ ol> Eso es todo. ¡Que se diviertan!';
+$string['depending_help'] = 'Elementos (preguntas de la encuenta) dependientes le permiten ver los elementos que dependen de los valores de otros elementos ** He aquí un ejemplo de cómo crearlos:
+* En primer lugar cree un elemento de cuyo valor dependerán otros elementos.
+* A continuación añada un salto de página.
+* Seguidamente añada los elementos que dependen del valor del elemento anterior
+En el formulario de creción del elemento seleccione el elemento de la lista "Elemento dependiente" y ponga el valor correspondiente en el campo "valor dependiente" 
+
+** La estructura tendrá el siguiente aspecto:**
+1. Elemento 1-Pregunta: ¿Tiene usted coche? R: sí / no
+2. Salto de página
+3. Elemento 2-Pregunta: ¿Qué color tiene su coche 
+ (este elemento depende del elemento 1 con valor = sí)
+4. Artículo Q: ¿por qué no tener un coche 
+ (este elemento depende del elemento 1 con valor = no)
+5. ...? otros ....otros elementos
+
+Eso es todo. ¡Que se diviertan!';
 $string['dependitem'] = 'Depende del item';
 $string['dependvalue'] = 'Depende del valor';
 $string['description'] = 'Descripción';
 $string['do_not_analyse_empty_submits'] = 'No analizar envíos vacíos';
+$string['drop_feedback'] = 'Eliminar de este curso';
 $string['dropdown'] = 'Opción múltiple (sólo una respuesta - lista desplegable)';
+$string['dropdown_values'] = 'Valores de la lista desplegable';
 $string['dropdownlist'] = 'Opción múltiple  - una respuesta (desplegable)';
 $string['dropdownrated'] = 'Lista desplegable (clasificada)';
-$string['dropdown_values'] = 'Valores de la lista desplegable';
-$string['drop_feedback'] = 'Eliminar de este curso';
 $string['edit_item'] = 'Editar pregunta';
 $string['edit_items'] = 'Editar preguntas';
-$string['emailnotification'] = 'notificaciones email';
 $string['email_notification'] = 'Enviar notificaciones por correo electrónico';
+$string['emailnotification'] = 'notificaciones email';
 $string['emailnotification_help'] = 'Si está habilitado, los administradores recibirán notificaciones por correo electrónico de las comunicaciones.';
 $string['emailteachermail'] = '{$a->username} ha terminado y enviado la encuesta: \'{$a->feedback}\'
 
@@ -96,38 +111,37 @@ Puede verla <a href="{$a->url}">aquí/a>.';
 $string['entries_saved'] = 'Sus respuestas han sido guardadas. Gracias.';
 $string['export_questions'] = 'Exportar preguntas';
 $string['export_to_excel'] = 'Exportar a Excel';
-$string['feedbackclose'] = 'Cerrar la encuesta';
-$string['feedbackcloses'] = 'La encuesta se cierra';
 $string['feedback:complete'] = 'Rellene la encuesta';
 $string['feedback:createprivatetemplate'] = 'Crear plantilla privada';
 $string['feedback:createpublictemplate'] = 'Crear plantilla pública';
 $string['feedback:deletesubmissions'] = 'Eliminar envíos completados';
 $string['feedback:deletetemplate'] = 'Borrar plantilla';
 $string['feedback:edititems'] = 'Editar ítems';
-$string['feedback_is_not_for_anonymous'] = 'la encuesta no es anónima';
-$string['feedback_is_not_open'] = 'La encuesta no está disponible';
 $string['feedback:mapcourse'] = 'Asignar cursos a encuestas globales';
-$string['feedbackopen'] = 'Abrir la encuesta';
-$string['feedbackopens'] = 'La encuesta se abre';
-$string['feedback_options'] = 'Opciones de la encuesta';
 $string['feedback:receivemail'] = 'Recibir notificación por correo electrónico';
 $string['feedback:view'] = 'Ver una encuesta';
 $string['feedback:viewanalysepage'] = 'Ver página de análisis después del envío';
 $string['feedback:viewreports'] = 'Ver informes';
+$string['feedback_is_not_for_anonymous'] = 'la encuesta no es anónima';
+$string['feedback_is_not_open'] = 'La encuesta no está disponible';
+$string['feedback_options'] = 'Opciones de la encuesta';
+$string['feedbackclose'] = 'Cerrar la encuesta';
+$string['feedbackcloses'] = 'La encuesta se cierra';
+$string['feedbackopen'] = 'Abrir la encuesta';
+$string['feedbackopens'] = 'La encuesta se abre';
 $string['file'] = 'Archivo';
 $string['filter_by_course'] = 'Filtrar por curso';
 $string['handling_error'] = 'Error en la ejecución del módulo encuesta';
 $string['hide_no_select_option'] = 'Ocultar la opción "No seleccionada"';
 $string['horizontal'] = 'horizontal';
-$string['importfromthisfile'] = 'Importar de este archivo';
 $string['import_questions'] = 'Importar preguntas';
 $string['import_successfully'] = 'Importación exitosa';
+$string['importfromthisfile'] = 'Importar de este archivo';
 $string['info'] = 'Información';
 $string['infotype'] = 'Información Tipo';
 $string['insufficient_responses'] = 'Respuestas insuficientes';
 $string['insufficient_responses_for_this_group'] = 'Este grupo no tiene suficientes respuestas';
 $string['insufficient_responses_help'] = 'El número de respuestas para este grupo es insuficiente.
-
 Para mantener los comentarios anónimos debe haber un mínimo de 2 respuestas realizadas.';
 $string['item_label'] = 'Etiqueta';
 $string['item_name'] = 'Pregunta';
@@ -139,6 +153,8 @@ $string['mapcourse_help'] = 'Por defecto, los formularios de encuesta creados en
 $string['mapcourseinfo'] = 'Esta encuesta está disponible en todos los cursos que usan el bloque encuesta. Usted puede sin embargo limitar los cursos en que aparece. Busque el curso y asígnelo a esta encuesta.';
 $string['mapcoursenone'] = 'No hay cursos asignados. La encuesta está disponible en todos los cursos';
 $string['mapcourses'] = 'Asignar encuesta a cursos';
+$string['mapcourses_help'] = 'Una vez de que ya ha seleccionado el curso o cursos relevantes de su búsqueda, puede asociarlos con esta retroalimentación usando Asignar Cursos. Usted puede seleccionar varios cursos mediante la tecla Ctrl o seleccionar una serie de ellos con la tecla Mayúsculas.
+Puede asimismo desvincular un curso o programa de una retroalimentación en cualquier momento.';
 $string['mappedcourses'] = 'Cursos asignados';
 $string['max_args_exceeded'] = 'Se admite un máximo de 6 argumentos; demasiados argumentos para';
 $string['maximal'] = 'máximo';
@@ -148,16 +164,16 @@ $string['mode'] = 'Modo';
 $string['modulename'] = 'Módulo de encuesta';
 $string['modulename_help'] = 'Los módulos de retroalimentación permiten crear encuestas personalizadas.';
 $string['modulenameplural'] = 'Encuestas';
-$string['movedown_item'] = 'Bajar esta pregunta';
 $string['move_here'] = 'Mover aquí';
 $string['move_item'] = 'Mover esta pregunta';
+$string['movedown_item'] = 'Bajar esta pregunta';
 $string['moveup_item'] = 'Subir esta pregunta';
 $string['multichoice'] = 'Elección múltiple';
+$string['multichoice_values'] = 'Valores elección múltiple';
 $string['multichoicerated'] = 'Elección múltiple (clasificadas)';
 $string['multichoicetype'] = 'Tipo elección múltiple';
-$string['multichoice_values'] = 'Valores elección múltiple';
-$string['multiplesubmit'] = 'Envíos múltiples';
 $string['multiple_submit'] = 'Envíos múltiples';
+$string['multiplesubmit'] = 'Envíos múltiples';
 $string['multiplesubmit_help'] = 'Si está habilitado en encuestas anónimas, los usuarios pueden enviar sus comentarios un número ilimitado de veces.';
 $string['name'] = 'Nombre';
 $string['name_required'] = 'Nombre requerido';
@@ -166,14 +182,14 @@ $string['no_handler'] = 'Ninguna acción planificada para';
 $string['no_itemlabel'] = 'No etiqueta';
 $string['no_itemname'] = 'Falta el nombre del ítem';
 $string['no_items_available_yet'] = 'No se han planificado preguntas';
+$string['no_templates_available_yet'] = 'No hay plantillas disponibles';
 $string['non_anonymous'] = 'Los nombres de los usuarios se mostrarán y registrarán con las respuestas';
 $string['non_anonymous_entries'] = 'entradas no anónimas';
 $string['non_respondents_students'] = 'estudiantes no respondientes';
-$string['notavailable'] = 'esta encuesta no está disponible';
 $string['not_completed_yet'] = 'Aún no se ha finalizado';
-$string['no_templates_available_yet'] = 'No hay plantillas disponibles';
 $string['not_selected'] = 'No seleccionada';
 $string['not_started'] = 'no comenzado';
+$string['notavailable'] = 'esta encuesta no está disponible';
 $string['numeric'] = 'Respuesta numérica';
 $string['numeric_range_from'] = 'Rango desde';
 $string['numeric_range_to'] = 'Rango hasta';
@@ -183,9 +199,9 @@ $string['oldvalueswillbedeleted'] = 'Se eliminarán las preguntas actuales y tod
 $string['only_one_captcha_allowed'] = 'En la retroalimentación sólo se admite un captcha';
 $string['overview'] = 'Vista general';
 $string['page'] = 'Página';
+$string['page-mod-feedback-x'] = 'Cualquier página del módulo Encuesta';
 $string['page_after_submit'] = 'Página a mostrar tras el envío';
 $string['pagebreak'] = 'Salto de página';
-$string['page-mod-feedback-x'] = 'Cualquier página del módulo Encuesta';
 $string['parameters_missing'] = 'Faltan parámetros de';
 $string['picture'] = 'Imagen';
 $string['picture_file_list'] = 'Lista de imágenes';
@@ -200,10 +216,10 @@ $string['public'] = 'Pública';
 $string['question'] = 'Pregunta';
 $string['questions'] = 'Preguntas';
 $string['radio'] = 'Opción múltiple (una respuesta)';
+$string['radio_values'] = 'Valores de los botones de opción';
 $string['radiobutton'] = 'Opción múltiple (una respuesta -botones-)';
 $string['radiobutton_rated'] = 'Botones de opción (clasificadas)';
 $string['radiorated'] = 'Botones de opción (clasificadas)';
-$string['radio_values'] = 'Valores de los botones de opción';
 $string['ready_feedbacks'] = 'Encuestas preparadas';
 $string['relateditemsdeleted'] = 'Se eliminarán también todas las respuestas de los usuarios a esta pregunta';
 $string['required'] = 'Obligatorio';
@@ -241,8 +257,8 @@ $string['switch_group'] = 'Cambiar grupo';
 $string['switch_item_to_not_required'] = 'cambiar a: respuesta no obligatoria';
 $string['switch_item_to_required'] = 'cambiar a: respuesta obligatoria';
 $string['template'] = 'Plantilla';
-$string['templates'] = 'Plantillas';
 $string['template_saved'] = 'Plantilla guardada';
+$string['templates'] = 'Plantillas';
 $string['textarea'] = 'Respuesta de texto larga';
 $string['textarea_height'] = 'Número de líneas';
 $string['textarea_width'] = 'Anchura';

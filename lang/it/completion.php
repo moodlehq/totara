@@ -72,9 +72,7 @@ $string['completionexpected'] = 'Completamento atteso entro il';
 $string['completionexpected_help'] = 'L\'impostazione definisce la data in cui ci si aspetta il completamento dell\'attività. Gli studenti non vedranno la data, che verrà invece visualizzata nel Report delle attività completate.';
 $string['completionicons'] = 'Caselle di completamento';
 $string['completionicons_help'] = 'Accanto alle attività da completare, compiano delle caselle di spunta utili per tracciare il proprio stato di completamento in un corso.
-
-Se viene visualizzata una casella con un segno di spunta tratteggiato, è possibile  cliccarla per indicare l\'attività come completata. (Si può cliccare di nuovo per rimuovere la spunta se si cambia idea.)
-
+Se viene visualizzata una casella con un segno di spunta tratteggiato, è possibile cliccarla per indicare l\'attività come completata. (Si può cliccare di nuovo per rimuovere la spunta se si cambia idea.)
 Alcune attività possono visualizzare caselle vuote - ossia caselle che non mostrano segni di spunta tratteggiati. Queste caselle non possono essere spuntate a mano dallo studente, ma saranno spuntate automaticamente in funzione delle condizioni definite dal docente.';
 $string['completionmenuitem'] = 'Completamento';
 $string['completionnotenabled'] = 'Il completamento non è abilitato';

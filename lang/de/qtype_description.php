@@ -27,9 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = 'Informationstext';
 $string['pluginname'] = 'Beschreibung';
+$string['pluginname_help'] = 'Eine Beschreibung ist ein Textfeld, das eine Überschrift, eine Arbeitsanweisung oder einen erläuternden Text enthalten kann. Beschreibungen können einen Test in sinnvolle Abschnitte gliedern.
+Eine Beschreibung wird beim Beantworten der Fragen und auf der Ergebnisseite sichtbar. Der Text zum Feedback wird nur bei der Ergebnisanzeige sichtbar.';
 $string['pluginnameadding'] = 'Beschreibung hinzufügen';
 $string['pluginnameediting'] = 'Beschreibung ändern';
-$string['pluginname_help'] = 'Eine Beschreibung ist ein Textfeld, das eine Überschrift, eine Arbeitsanweisung oder einen erläuternden Text enthalten kann. Beschreibungen können einen Test in sinnvolle Abschnitte gliedern.
-
-Eine Beschreibung wird beim Beantworten der Fragen und auf der Ergebnisseite sichtbar. Der Text zum Feedback  wird nur bei der Ergebnisanzeige sichtbar.';
 $string['pluginnamesummary'] = 'Eine Beschreibung ist ein Textfeld, das eine Überschrift, eine Arbeitsanweisung oder einen erläuternden Text enthalten kann. Beschreibungen können einen Test in sinnvolle Abschnitte gliedern. Beschreibungen werden nicht beantwortet und nicht bewertet.';

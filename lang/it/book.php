@@ -41,21 +41,17 @@ $string['editingchapter'] = 'Modifica capitolo';
 $string['errorchapter'] = 'Si è verificato un errore durante la lettura del capitolo';
 $string['faq'] = 'FAQ Modulo libro';
 $string['faq_help'] = '"Come mai solo due livelli?"
-
-Di solito due livelli sono sufficienti per la grande maggiorazione dei libri, tre livelli rischiano di portare a documenti mal strutturati. Il modulo Libro è pensato per la creazione di materiali di studio brevi e  multi pagina. Per documenti più complessi è preferibile usare documenti PDF. Per creare documenti PDF sono le stampanti virtuali (vedi <a href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm" target="_blank">PDFCreator</a>, <a href="http://fineprint.com/products/pdffactory/index.html" target="_blank">PDFFactory</a>, <a href="http://www.adobe.com/products/acrobatstd/main.html" target="_blank">Adobe Acrobat</a>, eccetera.).
-
-"Gli studenti possono modificare i libri?"
-
+Di solito due livelli sono sufficienti per la grande maggiorazione dei libri, tre livelli rischiano di portare a documenti mal strutturati. Il modulo Libro è pensato per la creazione di materiali di studio brevi e multi pagina. Per documenti più complessi è preferibile usare documenti PDF. Per creare documenti PDF sono le stampanti virtuali (vedi 
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+, eccetera.).
+*Gli studenti possono modificare i libri?*
 Solo i Docenti possono creare e modificare libri. Non sono previsti piani per consentire la modifica da parte degli studenti. La ragione principale è quello di mantenere il modulo il più semplice possibile.
-
-"Posso cercare nel libro ?"
-
+*Posso cercare nel libro ?*
 Al momento è possibile effettuare ricerche utilizzando la funzione di ricerca del browser nella pagina di stampa. La ricerca è per ora disponibile solo nei forum, se qualcuno si vuole cimentare nello sviluppo della ricerca nei libri è il benvenuto.
-
-"Alcuni titoli non entrano in una sola linea"
-
+*Alcuni titoli non entrano in una sola linea*
 In questo caso è possibile abbreviare il titolo oppure chiedere all\'amministratore del sito di allargare il TOC, impostabile nella configurazione globale del modulo.';
-$string['missingfilemanagement'] = 'Cari utenti del moduli Libro, suppongo che abbiate già notato che non è possibile eliminare o gestire i file utilizzati nei capitoli del modulo. Puoi votare su {$a} se desideri che questa cosa venga risolta, grazie.Petr Škoda';
 $string['modulename'] = 'Libro';
 $string['modulename_help'] = 'Il libro è un oggetto multipagina per materiale di studio';
 $string['modulenameplural'] = 'Libri';

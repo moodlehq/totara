@@ -44,9 +44,7 @@ $string['autolinkurl'] = 'Linkitä verkko-osoitteet';
 $string['availablefromdate'] = 'Saatavilla alkaen';
 $string['availabletags'] = 'Paikkamerkit';
 $string['availabletags_help'] = 'Paikkamerkkejä käytetään näkymäpohjissa osoittamaan kohtia, joissa tietojen katselu- ja muokkausnäkymissä esitetään sisältötieto ja painikkeet.
-
 Kenttien paikat merkitään hakasulkeilla, kuten [[kentännimi]]. Painikkeiden paikat merkitään ristikkomerkeillä, kuten ##Tallenna##.
-
 Vain "Paikkamerkit"-listalla olevia paikkamerkkejä voidaan käyttää muokattavassa näkymäpohjassa.';
 $string['availabletodate'] = 'Saatavissa (saakka)';
 $string['blank'] = 'Tyhjä';
@@ -230,7 +228,6 @@ $string['nameurl'] = 'Verkko-osoite';
 $string['newentry'] = 'Uusi tietue';
 $string['newfield'] = 'Luo uusi kenttä';
 $string['newfield_help'] = 'Kenttään voidaan syöttää tietoa. Jokaisessa tietokanta-aktiviteetin merkinnässä voi olla monia erityyppisiä tietokenttiä kuten päivämäärä, johon käyttäjä voi merkitä päivämäärän alasvetovalikoista, kuva, johon käyttäjä voi ladata kuvan tai valintaruutu-kenttä, johon käyttäjä voi merkitä yhden tai useamman vaihtoehdon.
-
 Joka kentällä on oltava uniikki nimi. Kentän kuvaus on valinnainen.';
 $string['noaccess'] = 'Sinulla ei ole pääsyä tälle sivulle';
 $string['nodefinedfields'] = 'Uudella mallilla ei ole määriteltyjä kenttiä!';
@@ -276,7 +273,6 @@ $string['requiredentries'] = 'Vaadittavat tietueet';
 $string['requiredentries_help'] = 'Määrittele se hakusanojen määrä, joka opiskelijan on lisättävä, jotta tehtävä on valmis.';
 $string['requiredentriestoview'] = 'Katseluun vaadittavien hakusanojen määrä';
 $string['requiredentriestoview_help'] = 'Määrittele se hakusanojen määrä, joka opiskelijan on lisättävä ennen kuin hän saa nähdä muiden opiskelijoiden lisäämiä hakusanoja.
-
 Huom: jos vaadit opiskelijoilta lisättyjä hakusanoja ennen muiden lisäämien hakusanojen näkemistä, ota hakusanojen automaattilinkitys pois päältä. Tämä siksi, että automaattilinkityksen toteutus ei tarkista, onko tietty käyttäjä lisännyt vaaditun määrän hakusanoja.';
 $string['resetsettings'] = 'Tyhjennä hakuehdot';
 $string['resettemplate'] = 'Palauta perusnäkymäksi';
@@ -317,11 +313,9 @@ $string['updatefield'] = 'Päivitä kenttä';
 $string['uploadfile'] = 'Lähetä tiedosto';
 $string['uploadrecords'] = 'Tuo tietueita tiedostosta';
 $string['uploadrecords_help'] = 'Tietueita voidaan lisätä CSV-tekstitiedostosta. Tiedoston sisällön tulee olla seuraava:
-
 * Tiedoston ensimmäinen rivi on lista kentännimistä. Loput tiedostosta noudattavat tätä annettua kenttäjakoa
 * Tiedoston kukin rivi on yksi lisättävä tietue em. kenttäjärjestyksessä
 * Tietueen kentät erotetaan toisistaan pilkuilla tai muilla erottimilla
-
 Tiedoston loppumerkkinä käytetään kenttäerotinta, mutta loppumerkin voi myös jättää pois.';
 $string['url'] = 'Verkko-osoite';
 $string['usestandard'] = 'Käytä mallia';

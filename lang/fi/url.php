@@ -33,7 +33,6 @@ $string['configrolesinparams'] = 'Salli, jos haluat sisällyttää lokalisoidut 
 $string['contentheader'] = 'Sisältö';
 $string['displayoptions'] = 'Käytettävissä olevat näyttöasetukset';
 $string['displayselect'] = 'Näyttö';
-$string['displayselectexplain'] = 'Valitse näyttötapa, valitettavasti kaikki tavat eivät sovi kaikille web-osoitteille.';
 $string['displayselect_help'] = 'Tämä asetus yhdessä verkkosivun tiedostotyypin ja upotuksen sallivan selaimen kanssa määrittelee, miten verkkosivu näytetään. Vaihtoehtoja ovat:
 * Automaattinen: verkko-osoitteelle valitaan automaattisesti paras esitystapa
 * Upotettu: verkkosivu näytetään kurssialueella navigaatiopalkin alla yhdessä kuvauksen ja mahdollisten lohkojen (kuten Kommentit) kanssa
@@ -42,6 +41,7 @@ $string['displayselect_help'] = 'Tämä asetus yhdessä verkkosivun tiedostotyyp
 * Ponnahdusikkunassa: Verkkosivu näytetään uudessa selainikkunassa ilman selainvalikkoja tai osoitekenttää
 * Kehyksessä: Verkkosivu näytetään omassa kehyksessään Moodlen navigaatiopalkin ja sivun kuvauksen alapuolella
 * Uusi ikkuna: verkkosivu näytetään uudessa selainikkunassa, jossa on myös selainvalikko ja osoitekenttä.';
+$string['displayselectexplain'] = 'Valitse näyttötapa, valitettavasti kaikki tavat eivät sovi kaikille web-osoitteille.';
 $string['externalurl'] = 'Ulkoinen verkko-osoite';
 $string['framesize'] = 'Kehyksen korkeus';
 $string['invalidstoredurl'] = 'Aineistoa ei voi näyttää. Virheellinen verkko-osoite.';

@@ -44,8 +44,8 @@ $string['attachments'] = 'Bijlagen';
 $string['blockafter'] = 'Maximum berichten voor blokkeren';
 $string['blockafter_help'] = 'Deze instelling specificeert het maximum aantal berichten dat een gebruiker kan posten in een zekere tijdsspanne. Gebruikers met de mogelijkheid mod/forum:postwithoutthrottling hebben geen limiet.';
 $string['blockperiod'] = 'Blokkeertijd';
-$string['blockperioddisabled'] = 'Niet blokkeren';
 $string['blockperiod_help'] = 'Leerlingen kunnen geblokkeerd worden voor het versturen van berichten als ze meer dan een bepaald aantal berichten sturen in een gegeven tijdslimiet. Gebruikers met de mogelijkheid mod/forum:postwithoutthrottling hebben geen limiet.';
+$string['blockperioddisabled'] = 'Niet blokkeren';
 $string['blogforum'] = 'Standaardforum, getoond in blogstijl';
 $string['bynameondate'] = 'door  {$a->name}  - {$a->date}';
 $string['cannotadd'] = 'Kon de discussie niet toevoegen aan dit forum';
@@ -129,19 +129,15 @@ $string['discussionsstartedbyrecent'] = 'Discussies die recentelijk door {$a} zi
 $string['discussionsstartedbyuserincourse'] = 'Discussies, gestart door {$a->fullname} in {$a->coursename}';
 $string['discussthistopic'] = 'Draag bij aan de discussie';
 $string['displayend'] = 'Toon einde';
-$string['displayend_help'] = '<p>Je kunt kiezen of je forumbericht pas vanaf een bepaalde datum getoond wordt, tot een bepaalde datum getoond wordt of gedurende een bepaalde periode getoond wordt.</p>
-
-<p>Deselecteer de gewenste schakelopties om een start en/of einddatum te kunnen kiezen.</p>
-
-<p>Merk op dat gebruikers met beheerrechten de berichten ook kunnen zien voor en na de zichtbare periode.</p>';
+$string['displayend_help'] = 'Je kunt kiezen of je forumbericht pas vanaf een bepaalde datum getoond wordt, tot een bepaalde datum getoond wordt of gedurende een bepaalde periode getoond wordt.
+Deselecteer de gewenste schakelopties om een start en/of einddatum te kunnen kiezen.
+Merk op dat gebruikers met beheerrechten de berichten ook kunnen zien voor en na de zichtbare periode.';
 $string['displaymode'] = 'Toon modus';
 $string['displayperiod'] = 'Toon periode';
 $string['displaystart'] = 'Toon start';
-$string['displaystart_help'] = '<p>Je kunt kiezen of je forumbericht pas vanaf een bepaalde datum getoond wordt, tot een bepaalde datum getoond wordt of gedurende een bepaalde periode getoond wordt.</p>
-
-<p>Deselecteer de gewenste schakelopties om een start en/of einddatum te kunnen kiezen.</p>
-
-<p>Merk op dat gebruikers met beheerrechten de berichten ook kunnen zien voor en na de zichtbare periode.</p>';
+$string['displaystart_help'] = 'Je kunt kiezen of je forumbericht pas vanaf een bepaalde datum getoond wordt, tot een bepaalde datum getoond wordt of gedurende een bepaalde periode getoond wordt.
+Deselecteer de gewenste schakelopties om een start en/of einddatum te kunnen kiezen.
+Merk op dat gebruikers met beheerrechten de berichten ook kunnen zien voor en na de zichtbare periode.';
 $string['eachuserforum'] = 'Iedereen voegt één discussie toe';
 $string['edit'] = 'Wijzig';
 $string['editedby'] = 'Bewerkt door {$a->name} - oorspronkelijk bericht van {$a->date}';
@@ -161,9 +157,6 @@ $string['forcessubscribe'] = 'Iedereen krijgt verplicht e-mail van dit forum';
 $string['forum'] = 'Forum';
 $string['forum:addnews'] = 'Voeg nieuws toe';
 $string['forum:addquestion'] = 'Voeg vraag toe';
-$string['forumauthorhidden'] = 'Auteur (verborgen)';
-$string['forumblockingalmosttoomanyposts'] = 'Je nadert de berichtenlimiet. Je hebt {$a->numposts} berichten in de afgelopen {$a->blockperiod} gepost en de limiet is {$a->blockafter} berichten.';
-$string['forumbodyhidden'] = 'Je kunt dit bericht niet bekijken, waarschijnlijk omdat je zelf nog niets gepost hebt in deze discussie of de maximum bewerktijd is nog niet verstreken.';
 $string['forum:createattachment'] = 'Bijlage toevoegen';
 $string['forum:deleteanypost'] = 'Gelijk welk bericht verwijderen (altijd)';
 $string['forum:deleteownpost'] = 'Eigen berichten verwijderen (binnen bepaalde tijd)';
@@ -171,30 +164,15 @@ $string['forum:editanypost'] = 'Gelijk welk bericht bewerken';
 $string['forum:exportdiscussion'] = 'Exporteer de hele discussie';
 $string['forum:exportownpost'] = 'Exporteer je eigen bericht';
 $string['forum:exportpost'] = 'Exporteer bericht';
-$string['forumintro'] = 'De inleiding van het forum';
 $string['forum:managesubscriptions'] = 'Beheer het ontvangen van e-mail';
 $string['forum:movediscussions'] = 'Discussies verplaatsen';
-$string['forumname'] = 'Naam van het forum';
-$string['forumposts'] = 'Forumberichten';
 $string['forum:postwithoutthrottling'] = 'Vrijgesteld van beperkingen om te posten';
 $string['forum:rate'] = 'Berichten beoordelen';
 $string['forum:replynews'] = 'Beantwoord nieuws';
 $string['forum:replypost'] = 'Berichten beantwoorden';
-$string['forums'] = 'Forums';
 $string['forum:splitdiscussions'] = 'Discussies splitsen';
 $string['forum:startdiscussion'] = 'Nieuwe discussies starten';
-$string['forumsubjecthidden'] = 'Onderwerp (verborgen)';
 $string['forum:throttlingapplies'] = 'Kan geblokkeerd worden';
-$string['forumtracked'] = 'Volgen ongelezen post ingeschakeld';
-$string['forumtrackednot'] = 'Volgen ongelezen post uitgeschakeld';
-$string['forumtype'] = 'Soort forum';
-$string['forumtype_help'] = 'Er zijn 5 forumtypes
-
-* Eén eenvoudige discussie - Een enkel onderwerp waarop iedereen kan antwoorden
-* Iedereen post één discussie - Elke leerling kan juist één nieuw discussieonderwerp posten, waar iedereen kan op antwoorden
-* Vraag- en antwoordforum - Leerlingen moeten eerst hun bericht posten voor ze de berichten van anderen kunnen zien
-* Standaardforum getoond in blog stijl format - een open forum waar iedereen een nieuwe discussie kan starten en waar de onderwerpen getoond worden op één pagina met \'Discussieer over dit onderwerp\' -links
-* Standaardforum voor algemeen gebruik - Een open fourm waar iedereen op elk moment een nieuwe discussie kan starten';
 $string['forum:viewallratings'] = 'Bekijk de ruwe gegevens van de beoordelingen.';
 $string['forum:viewanyrating'] = 'Bekijk alle totaalbeoordelingen';
 $string['forum:viewdiscussion'] = 'Discussies bekijken';
@@ -202,6 +180,23 @@ $string['forum:viewhiddentimedposts'] = 'Verborgen berichten bekijken';
 $string['forum:viewqandawithoutposting'] = 'Altijd Vraag en Antwoord berichten bekijken';
 $string['forum:viewrating'] = 'Bekijk jouw algemene beoordeling';
 $string['forum:viewsubscribers'] = 'Bekijk wie e-mail ontvangt';
+$string['forumauthorhidden'] = 'Auteur (verborgen)';
+$string['forumblockingalmosttoomanyposts'] = 'Je nadert de berichtenlimiet. Je hebt {$a->numposts} berichten in de afgelopen {$a->blockperiod} gepost en de limiet is {$a->blockafter} berichten.';
+$string['forumbodyhidden'] = 'Je kunt dit bericht niet bekijken, waarschijnlijk omdat je zelf nog niets gepost hebt in deze discussie of de maximum bewerktijd is nog niet verstreken.';
+$string['forumintro'] = 'De inleiding van het forum';
+$string['forumname'] = 'Naam van het forum';
+$string['forumposts'] = 'Forumberichten';
+$string['forums'] = 'Forums';
+$string['forumsubjecthidden'] = 'Onderwerp (verborgen)';
+$string['forumtracked'] = 'Volgen ongelezen post ingeschakeld';
+$string['forumtrackednot'] = 'Volgen ongelezen post uitgeschakeld';
+$string['forumtype'] = 'Soort forum';
+$string['forumtype_help'] = 'Er zijn 5 forumtypes
+* Eén eenvoudige discussie - Een enkel onderwerp waarop iedereen kan antwoorden
+* Iedereen post één discussie - Elke leerling kan juist één nieuw discussieonderwerp posten, waar iedereen kan op antwoorden
+* Vraag- en antwoordforum - Leerlingen moeten eerst hun bericht posten voor ze de berichten van anderen kunnen zien
+* Standaardforum getoond in blog stijl format - een open forum waar iedereen een nieuwe discussie kan starten en waar de onderwerpen getoond worden op één pagina met \'Discussieer over dit onderwerp\' -links
+* Standaardforum voor algemeen gebruik - Een open fourm waar iedereen op elk moment een nieuwe discussie kan starten';
 $string['generalforum'] = 'Standaardforum voor algemeen gebruik';
 $string['generalforums'] = 'Algemene forums';
 $string['inforum'] = 'in {$a}';
@@ -229,10 +224,10 @@ $string['markunreadbutton'] = 'Markeer als<br />ongelezen';
 $string['maxattachments'] = 'Maximum aantal bijlagen';
 $string['maxattachments_help'] = 'Deze instelling bepaalt het maximum aantal bestanden dat als bijlage bij een forumbericht mag gevoegd worden.';
 $string['maxattachmentsize'] = 'Maximum grootte van bijlagen';
-$string['maxattachmentsize_help'] = '<p>De maximumgrootte van een bijlage kan beperkt worden door de persoon die het forum maakt.</p>
-<p>Soms is het mogelijk een bestand groter dan die waarde
+$string['maxattachmentsize_help'] = 'De maximumgrootte van een bijlage kan beperkt worden door de persoon die het forum maakt.
+Soms is het mogelijk een bestand groter dan die waarde
 te uploaden, maar dat bestand zal niet bewaard worden op de
-server en je kunt een foutmelding krijgen.</p>';
+server en je kunt een foutmelding krijgen.';
 $string['maxtimehaspassed'] = 'Helaas is de maximale tijd voor het wijzigen van dit bericht ({$a}) verstreken!';
 $string['message'] = 'Bericht';
 $string['messageprovider:digests'] = 'Ingeschreven op forum voor verzamelemail';
@@ -243,20 +238,18 @@ $string['modeflatoldestfirst'] = 'Laat de antwoorden in één lijst zien, met de
 $string['modenested'] = 'Laat de antwoorden \'genest\' zien';
 $string['modethreaded'] = 'Laat de antwoorden in hun \'draden\' zien';
 $string['modulename'] = 'Forum';
-$string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/forum/icon.gif" />&nbsp;<b>Forums</b></p>
-<div class="indent">Dit kan de belangrijke activiteit van je cursus zijn - hier worden de meeste discussies gevoerd.
+$string['modulename_help'] = 'Dit kan de belangrijke activiteit van je cursus zijn - hier worden de meeste discussies gevoerd.
 Forums kunnen op verschillende manieren gestructureerd worden en leerlingen kunnen eventueel berichten
 van elkaar beoordelen. De berichten kunnen op verschillende manieren bekeken worden en het is
-mogelijk om bijlagen bij de berichten te voegen. Als leerlingen lid zijn van het forum, dan krijgen zij kopieën van nieuwe berichten per e-mail. Als leraren dat willen kunnen zij iedereen verplichten lid te zijn.</div>';
+mogelijk om bijlagen bij de berichten te voegen. Als leerlingen lid zijn van het forum, dan krijgen zij kopieën van nieuwe berichten per e-mail. Als leraren dat willen kunnen zij iedereen verplichten lid te zijn.';
 $string['modulenameplural'] = 'Forums';
 $string['more'] = 'meer';
 $string['movedmarker'] = '(Verplaatst)';
 $string['movethisdiscussionto'] = 'Verplaats deze discussie naar ...';
 $string['mustprovidediscussionorpost'] = 'You moet ofwel een discussie ID of een bericht ID geven om te exporteren';
 $string['namenews'] = 'Nieuwsforum';
-$string['namenews_help'] = '<p>Het nieuwsforum is een speciaal forum dat automatisch aangemaakt wordt in elke cursus en op de startpagina van de site. Het is een plaats voor algemene mededelingen. Je kunt er zo maar één per cursus hebben.</p>
-
-<p>Het "Laatste nieuws"-blok zal de recente discussies van dit speciale forum tonen (zelfs als je het hernoemd). Daarom zal het forum automatisch opnieuw aangemaakt worden als je het "Laatste nieuws"-blok gebruikt.</p>';
+$string['namenews_help'] = 'Het nieuwsforum is een speciaal forum dat automatisch aangemaakt wordt in elke cursus en op de startpagina van de site. Het is een plaats voor algemene mededelingen. Je kunt er zo maar één per cursus hebben.
+Het "Laatste nieuws"-blok zal de recente discussies van dit speciale forum tonen (zelfs als je het hernoemd). Daarom zal het forum automatisch opnieuw aangemaakt worden als je het "Laatste nieuws"-blok gebruikt.';
 $string['namesocial'] = 'Sociaal forum';
 $string['nameteacher'] = 'Forum voor leraren';
 $string['newforumposts'] = 'Nieuwe forumberichten';
@@ -344,18 +337,15 @@ $string['resetforumsall'] = 'Verwijder alle berichten';
 $string['resetsubscriptions'] = 'Laat niemand nog e-mail van dit forum ontvangen';
 $string['resettrackprefs'] = 'Verwijder alle voorkeuren voor berichtenopvolging';
 $string['rssarticles'] = 'Aantal recente RSS artikels';
-$string['rssarticles_help'] = '<p>Met deze instelling kun je kiezen hoeveel artikels je in de RSS-feed wil zetten.</p>
-
-<p>Een getal tussen 5 en 20 zou goed moeten zijn voor de meeste forums. Verhoog het getal als het forum erg veel gebruikt wordt.</p>';
+$string['rssarticles_help'] = 'Met deze instelling kun je kiezen hoeveel artikels je in de RSS-feed wil zetten.
+Een getal tussen 5 en 20 zou goed moeten zijn voor de meeste forums. Verhoog het getal als het forum erg veel gebruikt wordt.';
 $string['rsssubscriberssdiscussions'] = 'RSS-feed van discussies';
 $string['rsssubscriberssposts'] = 'RSS-feed van berichten';
 $string['rsstype'] = 'RSS-feed voor deze activiteit';
-$string['rsstype_help'] = '<p>Met deze optie kun je een RSS-feed maken van dit forum.</p>
-<p>Je kunt kiezen tussen twee forumtypes:</p>
-<ul>
-<li><b>Discussies:</b> Als je deze instelling gebruikt, dan zal de RSS-feed nieuwe discussies met hun eerste bericht bevatten.</li>
-<li><b>Berichten:</b> Als je deze instelling gebruikt, dan zal de RSS-feed elk nieuw bericht van dit forum bevatten.</li>
-</ul>';
+$string['rsstype_help'] = 'Met deze optie kun je een RSS-feed maken van dit forum.
+Je kunt kiezen tussen twee forumtypes:
+\* **|Discussies:** Als je deze instelling gebruikt, dan zal de RSS-feed nieuwe discussies met hun eerste bericht bevatten.
+\* **|Berichten:** Als je deze instelling gebruikt, dan zal de RSS-feed elk nieuw bericht van dit forum bevatten.';
 $string['search'] = 'Zoek';
 $string['searchdatefrom'] = 'Berichten nieuwer dan dit';
 $string['searchdateto'] = 'Berichten ouder dan dit';
@@ -391,22 +381,9 @@ $string['subscription'] = 'E-mail krijgen';
 $string['subscriptionauto'] = 'Automatisch inschrijven';
 $string['subscriptiondisabled'] = 'Inschrijven uitgeschakeld';
 $string['subscriptionforced'] = 'Verplicht inschrijven';
-$string['subscription_help'] = '<p> Een persoon die ingeschreven is op een forum krijgt een kopie per e-mail van elk bericht in dat forum.
-De mails worden na ongeveer <?PHP echo $CFG->maxeditingtime/60 ?> minutem verzonden (nadat het bericht voor het eerst
-bewaard werd).</p>
-
-<p>Meestal kun je kiezen of je e-mails van een forum wil ontvangen of niet.</p>
-
-<p>Als leraar kun je het krijgen van e-mails van een bepaald forum verplichten. De keuze is dan niet zichtbaar en alle leden
-van de cursus zullen kopieën per e-mail krijgen.</p>
-
-<p>Dit is vooral nuttig in het Nieuwsforum en aan het begin van een cursus (voor iedereen ontdekt heeft
-dat hij zich zelf kan inschrijven op deze e-mails).</p>';
 $string['subscriptionmode'] = 'Inschrijvingsmodus';
 $string['subscriptionmode_help'] = 'Wanneer een persoon ingeschreven wordt op een forum, dan betekent dit dat hij e-mailkopieën zal krijgen van elk bericht in dat forum.
-
 Er zijn vier mogelijke manieren om in te schrijven op een forum:
-
 * Optioneeel - Deelnemers kunnen kiezen of ze ingeschreven willen zijn
 * Verplicht - Iedereen is ingeschreven en kan niet uitschrijven
 * Initieel - Iedereen is initieel ingeschreven, maar kan zich elk moment terug uitschrijven
@@ -423,9 +400,7 @@ $string['trackingon'] = 'Aan';
 $string['trackingoptional'] = 'Optioneel';
 $string['trackingtype'] = 'Lezen van dit forum volgen?';
 $string['trackingtype_help'] = 'Als \'Volgen forum\' is ingeschakeld, dan zien gebruikers welke berichten ze gelezen hebben en welke berichten niet.
-
 Er zijn drie keuzemogelijkheden voor deze instelling:
-
 * Optioneel [standaardinstelling]: leerlingen kunnen volgen inschakelen of uitschakelen voor dit forum zoals ze zelf willen
 * Aan: volgen is altijd ingeschakeld
 * Uit: volgen is altijd uitgeschakeld';

@@ -30,17 +30,14 @@ $string['add'] = 'Adicionar';
 $string['addcommunitycourse'] = 'Adicionar comunidade de curso';
 $string['addcourse'] = 'Busca';
 $string['addedtoblock'] = 'Um link para este curso foi adicionado em seu bloco de localização de comunidade';
-$string['additionalcoursedesc'] = '	
-{$a->lang} Criador: {$a->creatorname} - Editor: {$a->publishername} - Assunto: {$a->subject} - Público: {$a->audience} - Escolaridade: {$a->educationallevel} - Licença: {$a->license}';
+$string['additionalcoursedesc'] = '{$a->lang} Criador: {$a->creatorname} - Editor: {$a->publishername} - Assunto: {$a->subject} - Público: {$a->audience} - Escolaridade: {$a->educationallevel} - Licença: {$a->license}';
 $string['addtocommunityblock'] = 'Salvar um link para o curso';
 $string['audience'] = 'Projetado para';
 $string['audience_help'] = 'Que tipo de curso que você está procurando? Você poderá encontrar tanto cursos tradicionais destinados a estudantes, como também poderá procurar por comunidades de educadores e administradores do Moodle.';
 $string['blocks'] = 'Blocos';
 $string['cannotselecttopsubject'] = 'Você não pode selecionar um tópico deste nível.';
 $string['comments'] = 'Comentários ({$a})';
-$string['contentinfo'] = '	
-Assunto: {$a->subject} - Público-alvo: {$a->audience} - Nível Educacional: {$a->educationallevel}
-';
+$string['contentinfo'] = 'Assunto: {$a->subject} - Público-alvo: {$a->audience} - Nível Educacional: {$a->educationallevel}';
 $string['continue'] = 'Continue';
 $string['contributors'] = '- Contribuintes: {$a}';
 $string['coursedesc'] = 'Descrição';
@@ -56,13 +53,12 @@ $string['downloadablecourses'] = 'Cursos disponíveis para baixar';
 $string['downloadconfirmed'] = 'O backup foi armazenado nos seus arquivos privados {$a}';
 $string['downloaded'] = '...terminado.';
 $string['downloadingcourse'] = 'Fazendo download do curso';
-$string['downloadingsize'] = 'Por favor espere enquanto o arquivo do curso está sendo baixado ({$a->total}Mb) ';
+$string['downloadingsize'] = 'Por favor espere enquanto o arquivo do curso está sendo baixado ({$a->total}Mb)';
 $string['downloadtemplate'] = 'Criar curso de um modelo';
 $string['educationallevel'] = 'Nível de escolaridade';
 $string['educationallevel_help'] = 'Qual nível de escolaridade que você está procurando? No caso das comunidades de educadores, esse nível descreve o nível que os educadores lecionam.';
 $string['enroldownload'] = 'Pesquisar';
 $string['enroldownload_help'] = 'Alguns cursos listados no hub selecionado informam que as pessoas podem acessar e participar dos mesmos no site original.
-
 Outros são modelos de cursos fornecidos para você baixar e usar em seu próprio site Moodle.';
 $string['enrollable'] = 'cursos que posso me inscrever';
 $string['enrollablecourses'] = 'Cursos que aceitam inscrição';
@@ -87,8 +83,8 @@ $string['nocourse'] = 'Nenhum curso encontrado';
 $string['noratings'] = 'Nenhuma avaliação';
 $string['operation'] = 'Operação';
 $string['orderby'] = 'Ordenar por';
-$string['orderbyeldest'] = 'Mais antigo';
 $string['orderby_help'] = 'Ordem em que os resultados da pesquisa são mostrados.';
+$string['orderbyeldest'] = 'Mais antigo';
 $string['orderbyname'] = 'Nome';
 $string['orderbynewest'] = 'Mais novo';
 $string['orderbypublisher'] = 'Editor';

@@ -127,23 +127,22 @@ $string['permalink'] = 'パーマリンク';
 $string['personalblogs'] = 'ユーザは自分のブログのみ閲覧できる';
 $string['preferences'] = 'プリファレンス';
 $string['publishto'] = '公開先:';
+$string['publishto_help'] = 'ここには以下3種類オプションがあります:
+* あなたのみ閲覧可 (下書き) - あなたおよび管理者のみ、このエントリを閲覧することができます。
+* このサイトの誰でも閲覧可- このサイトに登録している人は誰でも、このエントリを閲覧することができます。
+* 世界中の誰でも閲覧可 - ゲストを含む誰でも、このエントリを閲覧することができます。';
 $string['publishtocourse'] = 'あなたとコースを共有しているユーザ';
 $string['publishtocourseassoc'] = '関連コースのメンバー';
 $string['publishtocourseassocparam'] = '{$a} のメンバー';
 $string['publishtogroup'] = 'あなたとグループを共有しているユーザ';
 $string['publishtogroupassoc'] = '関連コース内のあなたのグループメンバー';
 $string['publishtogroupassocparam'] = '{$a} のあなたのグループメンバー';
-$string['publishto_help'] = 'ここには以下3種類オプションがあります:
-
-* あなたのみ閲覧可 (下書き) - あなたおよび管理者のみ、このエントリを閲覧することができます。
-* このサイトの誰でも閲覧可- このサイトに登録している人は誰でも、このエントリを閲覧することができます。
-* 世界中の誰でも閲覧可 - ゲストを含む誰でも、このエントリを閲覧することができます。';
 $string['publishtonoone'] = 'あなたのみ閲覧可 (下書き)';
 $string['publishtosite'] = 'このサイトの誰でも閲覧可';
 $string['publishtoworld'] = '世界中の誰でも閲覧可';
 $string['readfirst'] = '最初にお読みください。';
 $string['relatedblogentries'] = '関連するブログエントリ';
-$string['retrievedfrom'] = '取得先: ';
+$string['retrievedfrom'] = '取得先:';
 $string['rssfeed'] = 'ブログRSSフィード';
 $string['searchterm'] = '検索: {$a}';
 $string['settingsupdatederror'] = 'エラーが発生したため、ブログ設定は更新されませんでした。';

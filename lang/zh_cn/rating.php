@@ -33,13 +33,11 @@ $string['aggregatenone'] = '无评分';
 $string['aggregatesum'] = '评分总和';
 $string['aggregatetype'] = '汇总类型';
 $string['aggregatetype_help'] = '汇总类型定义了各个评分如何在成绩单中汇总为最终成绩。
-
 * 平均分 - 所有评分的平均值
 * 评分总数 - 被评分的项目数成为最终成绩。注意，该成绩不会超过活动设定的最高分。
 * 最大值 - 最高的评分成为最终成绩
 * 最小值 - 最低的评分成为最终成绩
 * 总和 - 所有评分被加到一起。注意，该成绩不会超过活动设定的最高分。
-
 如果选择“无评分”，那么此活动不会出现在成绩单中。';
 $string['allowratings'] = '可以给项目评分吗？';
 $string['allratingsforitem'] = '所以已提交的评分';

@@ -70,11 +70,8 @@ $string['completionexpected'] = 'Teljesítés előírt időpontja';
 $string['completionexpected_help'] = 'Ezzel állítja be azt az időpontot, amikorra a tevékenységet be kell fejezni. A dátum nem jelenik meg a tanulók számára, és csak az előrehaladási jelentésben látható.';
 $string['completionicons'] = 'Teljesítés jelölőnégyzetei';
 $string['completionicons_help'] = 'Egyes tevékenységek mellett jelölőnégyzetek láthatók. Ezekkel követheti a kurzusban az előrehaladását.
-
-
 Ha pontozott pipát tartalmazó négyzetet lát, rákattintva bejelölheti a négyzetet. (Újból rákattintva eltávolíthatja a pipát.) Ezekkel a választhatóan használható ikonokkal egyszerűen követheti nyomon előrehaladását.
-
-Ha üres jelölőnégyzet jelenik meg, annak bejelölése a tevékenység teljesítésekor  a tanár által beállított feltételek alapján automatikusan történik.';
+Ha üres jelölőnégyzet jelenik meg, annak bejelölése a tevékenység teljesítésekor a tanár által beállított feltételek alapján automatikusan történik.';
 $string['completionmenuitem'] = 'Teljesítés';
 $string['completionnotenabled'] = 'A teljesítés nincs bekapcsolva';
 $string['completionnotenabledforcourse'] = 'A teljesítés ebben a kurzusban nincs bekapcsolva';
@@ -82,10 +79,10 @@ $string['completionnotenabledforsite'] = 'A teljesítés ezen a portálon nincs 
 $string['completiononunenrolment'] = 'Teljesítés kiiratkozáskor';
 $string['completionsettingslocked'] = 'A teljesítés beállításai zárolva';
 $string['completionstartonenrol'] = 'A teljesítés nyomon követése a beiratkozással veszi kezdetét';
-$string['completionstartonenrolhelp'] = 'A tanuló kurzusbeli teljesítésének nyomon követését kezdje a kurzus felvétele után ';
+$string['completionstartonenrolhelp'] = 'A tanuló kurzusbeli teljesítésének nyomon követését kezdje a kurzus felvétele után';
 $string['completionusegrade'] = 'Pontszám előírása';
 $string['completionusegrade_desc'] = 'A tanulónak a tevékenység teljesítéséhez osztályzatot kell kapnia';
-$string['completionusegrade_help'] = 'Bekapcsolása esetén a tanulónak a tevékenység teljesítéséhez osztályzatot kell kapnia. Ha teljesítési osztályzat van megadva, sikeres vagy sikertelen ikon jelenhet  meg. ';
+$string['completionusegrade_help'] = 'Bekapcsolása esetén a tanulónak a tevékenység teljesítéséhez osztályzatot kell kapnia. Ha teljesítési osztályzat van megadva, sikeres vagy sikertelen ikon jelenhet meg.';
 $string['completionview'] = 'Megtekintés előírása';
 $string['completionview_desc'] = 'A tanulónak a tevékenység teljesítéséhez a tevékenységet meg kell tekintenie';
 $string['configenablecompletion'] = 'Bekapcsolása esetén kurzusszinten követheti nyomon a teljesítést';

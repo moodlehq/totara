@@ -434,6 +434,18 @@ function scorm_insert_track($userid, $scormid, $scoid, $attempt, $element, $valu
     return $id;
 }
 
+/**
+ * * simple quick function to return true/false if this user has tracks in this scorm
+ * *
+ * * @param integer $scormid The scorm ID
+ * * @param integer $userid the users id
+ * * @return boolean (false if there are no tracks)
+ * */
+function scorm_has_tracks($scormid, $userid) {
+    global $DB;
+    return $DB->record_exists('scorm_scoes_track', array('userid' => $userid, 'scormid' => $scormid));
+}
+
 function scorm_get_tracks($scoid, $userid, $attempt='') {
     /// Gets all tracks of specified sco and user
     global $CFG, $DB;
@@ -537,7 +549,7 @@ function scorm_get_user_data($userid) {
 
 function scorm_grade_user_attempt($scorm, $userid, $attempt=1) {
     global $DB;
-    $attemptscore = null;
+    $attemptscore = new stdClass();
     $attemptscore->scoes = 0;
     $attemptscore->values = 0;
     $attemptscore->max = 0;
@@ -644,33 +656,51 @@ function scorm_count_launchable($scormid, $organization='') {
     return $DB->count_records_select('scorm_scoes', "scorm = ? $sqlorganization AND ".$DB->sql_isnotempty('scorm_scoes', 'launch', false, true), $params);
 }
 
+/**
+ * Returns the last attempt used - if no attempts yet, returns 1 for first attempt
+ *
+ * @param int $scormid the id of the scorm.
+ * @param int $userid the id of the user.
+ *
+ * @return int The attempt number to use.
+ */
 function scorm_get_last_attempt($scormid, $userid) {
     global $DB;
 
     /// Find the last attempt number for the given user id and scorm id
-    if ($lastattempt = $DB->get_record('scorm_scoes_track', array('userid'=>$userid, 'scormid'=>$scormid), 'max(attempt) as a')) {
-        if (empty($lastattempt->a)) {
-            return '1';
-        } else {
-            return $lastattempt->a;
-        }
+    $sql = "SELECT MAX(attempt)
+              FROM {scorm_scoes_track}
+             WHERE userid = ? AND scormid = ?";
+    $lastattempt = $DB->get_field_sql($sql, array($userid, $scormid));
+    if (empty($lastattempt)) {
+        return '1';
     } else {
-        return false;
+        return $lastattempt;
     }
 }
 
+/**
+ * Returns the last completed attempt used - if no completed attempts yet, returns 1 for first attempt
+ *
+ * @param int $scormid the id of the scorm.
+ * @param int $userid the id of the user.
+ *
+ * @return int The attempt number to use.
+ */
 function scorm_get_last_completed_attempt($scormid, $userid) {
     global $DB;
 
-    /// Find the last attempt number for the given user id and scorm id
-    if ($lastattempt = $DB->get_record_select('scorm_scoes_track', "userid = ? AND scormid = ? AND (".$DB->sql_compare_text('value')."='completed' OR ".$DB->sql_compare_text('value')."='passed')", array($userid, $scormid), 'max(attempt) as a')) {
-        if (empty($lastattempt->a)) {
-            return '1';
-        } else {
-            return $lastattempt->a;
-        }
+    /// Find the last completed attempt number for the given user id and scorm id
+    $value_sql = $DB->sql_compare_text('value');
+    $sql = "SELECT MAX(attempt)
+              FROM {scorm_scoes_track}
+             WHERE userid = ? AND scormid = ?
+               AND ({$value_sql}='completed' OR {$value_sql}='passed')";
+    $lastattempt = $DB->get_field_sql($sql, array($userid, $scormid));
+    if (empty($lastattempt)) {
+        return '1';
     } else {
-        return false;
+        return $lastattempt;
     }
 }
 

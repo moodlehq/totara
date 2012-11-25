@@ -65,23 +65,19 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
 
         $elname = $this->get_name();
 
-        $this->addlog(get_string('syncstarted', 'tool_totara_sync'), 'info', $elname.'sync');
+        $this->addlog(get_string('syncstarted', 'tool_totara_sync'), 'info', "{$elname}sync");
         if (!$synctable = $this->get_source_sync_table()) {
-            $this->addlog(get_string('couldnotgetsourcetable', 'tool_totara_sync'), 'error', $elname.'sync');
-            return false;
+            throw new totara_sync_exception($elname, "{$elname}sync", 'couldnotgetsourcetable');
         }
 
         // Create a clone of the temporary table
-        if (!$synctable_clone = $this->get_source()->get_sync_table_clone($synctable)) {
-            $this->addlog(get_string('couldnotcreateclonetable', 'tool_totara_sync'), 'error', $elname.'sync');
-            return false;
+        if (!$synctable_clone = $this->get_source_sync_table_clone($synctable)) {
+            throw new totara_sync_exception($elname, "{$elname}sync", 'couldnotcreateclonetable');
         }
 
         if (!$this->check_sanity($synctable, $synctable_clone)) {
-            $this->addlog(get_string('sanitycheckfailed', 'tool_totara_sync'), 'error', $elname.'sync');
-            $this->get_source()->drop_temp_table($synctable);
             $this->get_source()->drop_temp_table($synctable_clone);
-            return false;
+            throw new totara_sync_exception($elname, "{$elname}sync", 'sanitycheckfailed');
         }
 
         // Create/update items - exclude obsolete/unmodified items
@@ -97,14 +93,8 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
 
         $rs = $DB->get_recordset_sql($sql);
 
-        // Don't need the clone anymore so drop it
-        $this->get_source()->drop_temp_table($synctable_clone);
-
         foreach ($rs as $item) {
-            if (!$this->sync_item($item, $synctable)) {
-                $this->get_source()->drop_temp_table($synctable);
-                return false;
-            }
+            $this->sync_item($item, $synctable);
         }
         $rs->close();
 
@@ -118,18 +108,18 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
 
             foreach ($rs as $r) {
                 if (!$this->hierarchy->delete_hierarchy_item($r->id)) {
-                    $this->addlog(get_string('cannotdeletex', 'tool_totara_sync', "{$elname} {$r->idnumber}"), 'error', "{$elname}sync");
+                    $this->addlog(get_string('cannotdeletex', 'tool_totara_sync',
+                        "{$elname} {$r->idnumber}"), 'warn', "{$elname}sync");
                 } else {
-                    $this->addlog(get_string('deletedx', 'tool_totara_sync', "{$elname} {$r->idnumber}"), 'info', "{$elname}sync");
+                    $this->addlog(get_string('deletedx', 'tool_totara_sync',
+                        "{$elname} {$r->idnumber}"), 'info', "{$elname}sync");
                 }
             }
             $rs->close();
         }
 
-        // drop temp tables
-        $this->get_source()->drop_temp_table($synctable);
-
-        $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', $elname.'sync');
+        $this->get_source()->drop_temp_table();
+        $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', "{$elname}sync");
 
         return true;
     }
@@ -139,29 +129,34 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
      *
      * @param stdClass $newitem object with escaped values
      * @param string $synctable sync table name
+     * @throws totara_sync_exception
      */
     function sync_item($newitem, $synctable) {
         global $DB;
 
         $elname = $this->get_name();
 
-        if (!$newitem->frameworkid = $DB->get_field($elname.'_framework', 'id', array('idnumber' => $newitem->frameworkidnumber))) {
-            $this->addlog(get_string('frameworkxnotfound', 'tool_totara_sync', $newitem->frameworkidnumber), 'error', 'syncitem');
-            return false;
+        if (!$newitem->frameworkid = $DB->get_field("{$elname}_framework", 'id', array('idnumber' => $newitem->frameworkidnumber))) {
+            throw new totara_sync_exception($elname, 'syncitem', 'frameworkxnotfound',
+                $newitem->frameworkidnumber);
         }
-        // Ensure newitem's parent is synced first
-        if (!empty($newitem->parentidnumber) && !$parentid = $DB->get_field($elname, 'id', array('idnumber' => $newitem->parentidnumber))) {
-            // Sync/create parent first (recursive)
+        // Ensure newitem's parent is synced first - only non-existent or not already synced parent items
+        if (!empty($newitem->parentidnumber)
+            && !$parentid = $DB->get_field_select($elname, 'id', "idnumber = ? AND timemodified = ?", array($newitem->parentidnumber, $newitem->timemodified))) {
+
+            // Sync parent first (recursive)
             $sql = "SELECT *
                       FROM {{$synctable}}
                      WHERE idnumber = ? ";
             if (!$newparent = $DB->get_record_sql($sql, array($newitem->parentidnumber), IGNORE_MULTIPLE)) {
-                $this->addlog(get_string('parentxnotfound', 'tool_totara_sync', $newitem->parentidnumber), 'error', 'syncitem');
-                return false;
+                throw new totara_sync_exception($elname, 'syncitem', 'parentxnotfound',
+                    $newitem->parentidnumber);
             }
-            if (!$this->sync_item($newparent, $synctable)) {
-                $this->addlog(get_string('cannotsyncitemparent', 'tool_totara_sync', $newitem->parentidnumber), 'error', 'syncitem');
-                return false;
+            try {
+                $this->sync_item($newparent, $synctable);
+            } catch (totara_sync_exception $e) {
+                throw new totara_sync_exception($elname, 'syncitem', 'cannotsyncitemparent',
+                    $newitem->parentidnumber, $e->getMessage());
             }
             // Update parentid with the newly-created one
             $parentid = $DB->get_field($elname, 'id', array('idnumber' => $newitem->parentidnumber));
@@ -182,8 +177,8 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             $newitem->usermodified = get_admin()->id;
 
             if (!$hitem = $this->hierarchy->add_hierarchy_item($newitem, $newitem->parentid, $newitem->frameworkid, true, true, false)) {
-                $this->addlog(get_string('cannotcreatex', 'tool_totara_sync', "{$elname} {$newitem->idnumber}"), 'error', 'syncitem');
-                return false;
+                throw new totara_sync_exception($elname, 'syncitem', 'cannotcreatex',
+                    "{$elname} {$newitem->idnumber}");
             }
 
             // Save custom field data
@@ -212,8 +207,8 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         ///
         $newitem->usermodified = get_admin()->id;
         if (!$this->hierarchy->update_hierarchy_item($dbitem->id, $newitem, false, true, false)) {
-            $this->addlog(get_string('cannotupdatex', 'tool_totara_sync', "{$elname} {$newitem->idnumber}"), 'error', 'syncitem');
-            return false;
+            throw new totara_sync_exception($elname, 'syncitem', 'cannotupdatex',
+                "{$elname} {$newitem->idnumber}");
         }
 
         // Sync custom fields
@@ -244,7 +239,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
      * @param string $synctable_clone name of the clone table
      * @return boolean
      */
-    function check_sanity($synctable,$synctable_clone) {
+    function check_sanity($synctable, $synctable_clone) {
         global $DB;
 
         $elname = $this->get_name();

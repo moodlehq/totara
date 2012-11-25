@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Protocolo XML-RPC';
-$string['xmlrpc:use'] = 'Use o protocolo XML-RPC ';
+$string['xmlrpc:use'] = 'Use o protocolo XML-RPC';

@@ -48,6 +48,8 @@ abstract class totara_sync_element {
      * Function that handles sync between external sources and Totara
      *
      * To be implemented in child classes
+     *
+     * @throws totara_sync_exception
      */
     abstract function sync();
 
@@ -91,7 +93,9 @@ abstract class totara_sync_element {
     /**
      * Get the enabled source for the element
      *
-     * @return stdClass source object
+     * @param string sourceclass name
+     * @return stdClass source object or false if no source could be detemined
+     * @throws totara_sync_exception
      */
     function get_source($sourceclass=null) {
         global $CFG;
@@ -100,21 +104,21 @@ abstract class totara_sync_element {
 
         if (empty($sourceclass)) {
             // Get enabled source
-            if (!$sourceclass = get_config('totara_sync', 'source_'.$elname)) {
-                return false;
+            if (!$sourceclass = get_config('totara_sync', 'source_' . $elname)) {
+                throw new totara_sync_exception($elname, 'getsource', 'nosourceenabled');
             }
         }
         $sourcefilename = str_replace('totara_sync_' ,'', $sourceclass);
 
         $sourcefile = $CFG->dirroot.'/admin/tool/totara_sync/sources/'.$sourcefilename.'.php';
         if (!file_exists($sourcefile)) {
-            return false;
+            throw new totara_sync_exception($elname, 'getsource', 'sourcefilexnotfound', $sourcefile);
         }
 
         require_once($sourcefile);
 
         if (!class_exists($sourceclass)) {
-            return false;
+            throw new totara_sync_exception($elname, 'getsource', 'sourceclassxnotfound', $sourceclass);
         }
 
        return new $sourceclass;
@@ -124,24 +128,33 @@ abstract class totara_sync_element {
      * Gets the element's source's sync table
      *
      * @return string sync table name, e.g mdl_totara_sync_org
+     * @throws totara_sync_exception
      */
     function get_source_sync_table() {
-        if (!$source = $this->get_source()) {
-            $this->addlog(get_string('nosourceforelement', 'tool_totara_sync'), 'error', 'getsource');
-            return false;
-        }
+        $source = $this->get_source();
         if (!method_exists($source, 'get_sync_table')) {
-            // Don't continue if no recordset can be retrieved
-            return false;
+            // Method to retrieve recordset does not exist, die!
+            throw new totara_sync_exception($this->get_name(), 'getsource', 'nosynctablemethodforsourcex', $source->get_name());
         }
 
-        $result = $source->get_sync_table();
-        if (!$result) {
-            $source->drop_temp_table($source->temptable);
-        }
-        return $result;
+        return $source->get_sync_table();
     }
 
+    /**
+     * Gets the element's source's sync table clone
+     *
+     * @return string name of sync table clone, e.g mdl_totara_sync_org
+     * @throws totara_sync_exception
+     */
+    function get_source_sync_table_clone($temptable) {
+        $source = $this->get_source();
+        if (!method_exists($source, 'get_sync_table_clone')) {
+            // Don't continue if no recordset can be retrieved
+            throw new totara_sync_exception($this->get_name(), 'getsource', 'nosynctablemethodforsourcex', $source->get_name());
+        }
+
+        return $source->get_sync_table_clone();
+    }
 
     /**
      * Is element syncing enabled?

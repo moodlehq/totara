@@ -35,12 +35,11 @@ $string['addtocommunityblock'] = 'Enregistrer un lien vers ce cours';
 $string['audience'] = 'Conçu pour';
 $string['audience_help'] = 'Quel type de cours cherchez-vous ? En plus de cours traditionnels conçu pour des étudiants, vous pouvez rechercher également des communautés d\'enseignants ou d\'administrateurs Moodle';
 $string['blocks'] = 'Blocs';
-$string['cannotselecttopsubject'] = 'Impossible de sélectionner un sujet de niveau racine ';
+$string['cannotselecttopsubject'] = 'Impossible de sélectionner un sujet de niveau racine';
 $string['comments'] = 'Commentaires ({$a})';
 $string['contentinfo'] = 'Sujet : {$a->subject} ; public cible : {$a->audience} ; degré d\'enseignement : {$a->educationallevel}';
 $string['continue'] = 'Continuer';
-$string['contributors'] = '	
-- Contributeurs : {$a}';
+$string['contributors'] = '- Contributeurs : {$a}';
 $string['coursedesc'] = 'Description';
 $string['courselang'] = 'Langue';
 $string['coursename'] = 'Nom';
@@ -60,7 +59,6 @@ $string['educationallevel'] = 'Degré d\'enseignement';
 $string['educationallevel_help'] = 'Pour quel degré d\'enseignement ? Dans le cas de communautés d\'enseignants, ce degré décrit le niveau d\'enseignement.';
 $string['enroldownload'] = 'Trouver';
 $string['enroldownload_help'] = 'Certains cours du serveur d\'échanges sélectionné sont fournis par leurs auteurs dans le but d\'être utilisés sur leur site d\'origine.
-
 D\'autres sont des modèles de cours que vous pouvez télécharger et installer dans votre propre Moodle.';
 $string['enrollable'] = 'Cours où s\'inscrire';
 $string['enrollablecourses'] = 'Cours disponibles pour inscription';
@@ -85,8 +83,8 @@ $string['nocourse'] = 'Aucun cours trouvé';
 $string['noratings'] = 'Pas d\'évaluation';
 $string['operation'] = 'Opération';
 $string['orderby'] = 'Trier par';
-$string['orderbyeldest'] = 'Plus ancien';
 $string['orderby_help'] = 'L\'ordre d\'affichage des résultats de recherche.';
+$string['orderbyeldest'] = 'Plus ancien';
 $string['orderbyname'] = 'Nom';
 $string['orderbynewest'] = 'Plus récent';
 $string['orderbypublisher'] = 'Éditeur';

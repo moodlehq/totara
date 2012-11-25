@@ -52,7 +52,6 @@ $string['modifiednum'] = '{$a} módosított szöveg fordul elő. Menti a változ
 $string['nostringsfound'] = 'Nincs szöveg, módosítsa a szűrő beállításait.';
 $string['placeholder'] = 'Helyettesítő';
 $string['placeholder_help'] = 'A helyettesítők a szövegen belül található speciális utasítások, pl. \'{$a}\' vagy \'{$a->something}\'. A szöveg nyomtatása során ezek helyén értékek jelennek meg.
-
 Fontos, hogy másolásuk az eredeti szövegével azonos formában történjék. Ne fordítsa le őket és ne módosítsa balról jobbra írásukat.';
 $string['placeholderwarning'] = 'a szöveg helyettesítőt tartalmaz';
 $string['pluginname'] = 'Nyelvi átalakítás';

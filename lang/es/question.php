@@ -123,26 +123,19 @@ $string['disabled'] = 'Desactivado';
 $string['disterror'] = 'La distribución {$a} ha causado problemas';
 $string['donothing'] = 'No copie o mueva archivos ni cambie enlaces.';
 $string['editcategories'] = 'Editar categorías';
-$string['editcategories_help'] = '<p>En lugar de guardar todas sus preguntas en una lista, puede crear categorías para distribuirlas mejor.</p>
+$string['editcategories_help'] = 'En lugar de guardar todas sus preguntas en una lista, puede crear categorías para distribuirlas mejor.
+Las categorías pueden crearse o eliminarse a voluntad. Pero:
+* Debe haber al menos una categoría en cada contexto. De este modo, usted no puede eliminar la última categoría de un contexto.
+* Cuando intente eliminar una categoría que contiene preguntas, se le pedirá que especifique otra categoría a la que trasladarlas.
+Usted puede ordenar sus categorías en una jerarquía de modo que resulten de fácil manejo. La edición de categorías se hace en la pestaña \'Categorías\' en el banco de preguntas.
+* En la página principal bajo la pestaña \'Categorías\' en el banco de preguntas:
+* las flechas arriba y abajo cambian el orden en que se listan las categorías que pertenecen al mismo nivel.
+* En la pestaña \'Categorías\' del banco de preguntas, podrá asimismo trasladar una categoría a un nuevo contexto mediante las flechas arriba y abajo.
+* Las flechas izquierda y derecha se usan para cambiar la categoría padre de una categoría determinada.
+* Tal vez una forma más rápida de mover las categorías sea pulsar en el icono de edición de la pestaña \'Categorías\' del banco de preguntas y usar seguidamente la casilla de selección para seleccionar una nueva categoría padre.
+Vea también:
 
-<p>Las categorías pueden crearse o eliminarse a voluntad. Pero:
-<ul><li> Debe haber al menos una categoría en cada contexto. De este modo, usted no puede eliminar la última categoría de un contexto.</li>
-<li>Cuando intente eliminar una categoría que contiene preguntas, se le pedirá que especifique otra categoría a la que trasladarlas.</li></ul></p>
-
-<p>Usted puede ordenar sus categorías en una jerarquía de modo que resulten de fácil manejo. La edición de categorías se hace en la pestaña \'Categorías\' en el banco de preguntas.</p>
-
-   <ul><li>En la página principal bajo la pestaña \'Categorías\' en el banco de preguntas:
-   <ul><li>las flechas arriba y abajo cambian el orden en que se listan las categorías que pertenecen al mismo nivel.</li>
-   <li>En la pestaña \'Categorías\' del banco de preguntas, podrá asimismo trasladar una categoría a un nuevo contexto mediante las flechas arriba y abajo.</li>
-   <li>Las flechas izquierda y derecha se usan para cambiar la categoría padre de una categoría determinada.</li></ul></li>
-   <li>Tal vez una forma más rápida de mover las categorías sea pulsar en el icono de edición de la pestaña \'Categorías\' del banco de preguntas y usar seguidamente la casilla de selección para seleccionar una nueva categoría padre.</li></ul></p>
-
-<p>Vea también:</p>
-<ul>
-  <li><a href="help.php?module=question&file=categorycontexts.html">Contextos de categorías</a></li>
-  <li><a href="help.php?module=question&file=permissions.html">Permisos (preguntas)</a></li>
-  <li><a href="http://docs.moodle.org/en/Question_categories">Ayuda sobre categorías de preguntas en Moodle Docs</a></li>
-</ul>';
+* [Ayuda sobre categorías de preguntas en Moodle Docs](http://docs.moodle.org/en/Question_categories)';
 $string['editcategory'] = 'Ediar categoría';
 $string['editingcategory'] = 'Edición de una categoría';
 $string['editingquestion'] = 'Edición de una pregunta';
@@ -170,79 +163,60 @@ $string['errorsavingcomment'] = 'Error al guardar el comentario para la pregunta
 $string['errorsavingflags'] = 'Error al guardar el estado';
 $string['errorupdatingattempt'] = 'Error al actualizar el intento {$a->id} en la base de datos.';
 $string['exportcategory'] = 'Exportar categoría';
-$string['exportcategory_help'] = '<p align="center"><b>Categoría de exportación</b></p>
-
-<p>Se utiliza el menú emergente <b>Categoría:</b> para seleccionar la categoría de la que se tomarán las preguntas exportadas.</p>
-
-<p>Algunos formatos de importación (GIFT y XML) permiten incluir la categoría en el archivo escrito, posibilitando así que las categorías puedan opcionalmente ser recreadas al importarlas. Para que esto suceda, es preciso marcar la casilla <b>Escribir categoría a un archivo</b>.</p>';
+$string['exportcategory_help'] = '**Categoría de exportación**
+Se utiliza el menú emergente **Categoría:** para seleccionar la categoría de la que se tomarán las preguntas exportadas.
+Algunos formatos de importación (GIFT y XML) permiten incluir la categoría en el archivo escrito, posibilitando así que las categorías puedan opcionalmente ser recreadas al importarlas. Para que esto suceda, es preciso marcar la casilla **Escribir categoría a un archivo**.';
 $string['exporterror'] = 'Ha ocurrido un error durante la exportación';
 $string['exportfilename'] = 'preguntas';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
 $string['exportquestions'] = 'Exportar preguntas a un archivo';
-$string['exportquestions_help'] = '<P>Esta función permite exportar una categoría completa de preguntas a un
-   archivo de texto.</p>
-
-<p>Por favor, advierta que en muchos formatos de archivo se pierde alguna
-   información cuando se exportan las preguntas. Esto se debe a que muchos
-   formatos no poseen todas las características existentes en las preguntas
-   de Moodle. No puede esperarse exportar preguntas y luego importarlas de
-   modo que ambas sean idénticas. Asimismo, algunos tipos de preguntas no
-   pueden exportarse en absoluto. Compruebe los datos exportados antes de
-   usarlos en un contexto de producción.</p>
-
-<P>Los formatos posibles actualmente son:</p>
-
-<P><B>Formato GIFT</B></P>
-<ul>
-<p>GIFT es el formato de importación/exportación más comprensivo de que se
-   dispone para exportar preguntas Moodle a un archivo de texto. Fue diseñado
-   para que los profesores escribieran fácilmente preguntas en un archivo de
-   texto. Soporta los formatos de elección múltiple, verdadero-falso, respuesta
-   corta, emparejamiento, preguntas numéricas, así como la inserción de _______
-   en el formato de "palabra perdida". Advierta que las preguntas incrustadas
-   ("cloze") no se incluyen por el momento. En un archivo de texto pueden
-   mezclarse preguntas de distinto tipo, y el formato soporta asimismo comentarios,
-   nombres de las preguntas, retroalimentación y calificaciones ponderadas (en
-   porcentajes). He aquí algunos ejemplos:</p>
-<pre>
+$string['exportquestions_help'] = 'Esta función permite exportar una categoría completa de preguntas a un
+archivo de texto.
+Por favor, advierta que en muchos formatos de archivo se pierde alguna
+información cuando se exportan las preguntas. Esto se debe a que muchos
+formatos no poseen todas las características existentes en las preguntas
+de Moodle. No puede esperarse exportar preguntas y luego importarlas de
+modo que ambas sean idénticas. Asimismo, algunos tipos de preguntas no
+pueden exportarse en absoluto. Compruebe los datos exportados antes de
+usarlos en un contexto de producción.
+Los formatos posibles actualmente son:
+**Formato GIFT**
+GIFT es el formato de importación/exportación más comprensivo de que se
+dispone para exportar preguntas Moodle a un archivo de texto. Fue diseñado
+para que los profesores escribieran fácilmente preguntas en un archivo de
+texto. Soporta los formatos de elección múltiple, verdadero-falso, respuesta
+corta, emparejamiento, preguntas numéricas, así como la inserción de \_\_\_|\_\_\_|\_
+en el formato de "palabra perdida". Advierta que las preguntas incrustadas
+("cloze") no se incluyen por el momento. En un archivo de texto pueden
+mezclarse preguntas de distinto tipo, y el formato soporta asimismo comentarios,
+nombres de las preguntas, retroalimentación y calificaciones ponderadas (en
+porcentajes). He aquí algunos ejemplos:
 ¿En qué mes de 1492 Colón descubrió América?{~Noviembre ~Septiembre =Octubre}
-
 Colón descubrió América el 12 de {~noviembre =octubre ~septiembre} de 1492.
-
 Colón descubrió América el 12 de noviembre de 1492.{FALSE}
-
 ¿Quién descubrió América el 12 de octubre de 1492?{=Colón =Cristóbal Colón}
-
 ¿En qué año llegó Colón a América?{#1492}
-</pre>
 
-<p class="moreinfo"><a href="help.php?file=formatgift.html&amp;module=quiz">Más sobre el formato "GIFT"</a></p>
-</ul>
+[Más sobre el formato "GIFT"](help.php?file=formatgift.html&module=quiz)
 
-<p><b>Formato XML Moodle XML</b></p>
-<ul>
-<p>Este formato específico de Moodle exporta preguntas en formato simple XML. Esas preguntas pueden
+**Formato XML Moodle XML**
+Este formato específico de Moodle exporta preguntas en formato simple XML. Esas preguntas pueden
 luego importarse a cualquier categoría del cuestionario, o usarse en cualquier otro proceso, tal como
-una transformación XSLT.</p>
-</ul>
+una transformación XSLT.
 
-<p><b>IMS QTI 2.0</b></p>
-<ul>
-<p>Las preguntas se exportan en el formato IMS QTI estándar (version 2.0) format. Note que este modo de
-exportación genera un grupo de archivos dentro de un único archivo \'zip\'.</p>
-<p class="moreinfo"><a href="http://www.imsglobal.org/question/" target="_qti">Más información sobre el sitio IMS QTI</a>
- (sitio externo en una ventana nueva)</p>
-</ul>
+**IMS QTI 2.0**
+Las preguntas se exportan en el formato IMS QTI estándar (version 2.0) format. Note que este modo de
+exportación genera un grupo de archivos dentro de un único archivo \'zip\'.
+[Más información sobre el sitio IMS QTI](http://www.imsglobal.org/question/)
+(sitio externo en una ventana nueva)
 
-<p><b>XHTML</b></p>
-<ul>
-<p>Exporta la categoría en una única página de XHTML \'estricto\'. Cada una de las preguntas es ubicada en su propia marca
-&lt;div&gt;. Si desea usar esta página tal cual, necesitará al menos editar la marca &lt;form&gt; al comienzo de la
-sección &lt;body&gt; para posibilitar acciones tales como \'mailto\'.</p>
-</ul>
+**XHTML**
+Exporta la categoría en una única página de XHTML \'estricto\'. Cada una de las preguntas es ubicada en su propia marca
+. Si desea usar esta página tal cual, necesitará al menos editar la marca al comienzo de la
+secciónpara posibilitar acciones tales como \'mailto\'.
 
-<P>¡Pronto se dispondrá de más formatos, incluyendo WebCT y cualesquiera otros
-   que los usuarios de Moodle quieran incorporar! </p>';
+¡Pronto se dispondrá de más formatos, incluyendo WebCT y cualesquiera otros
+que los usuarios de Moodle quieran incorporar!';
 $string['feedback'] = 'Retroalimentación';
 $string['filecantmovefrom'] = 'Los archivos de preguntas no se pueden mover porque usted no tiene permiso para trasladar archivos del lugar desde el que está intentando hacerlo.';
 $string['filecantmoveto'] = 'Los archivos de preguntas no se pueden mover o copiar porque usted no tiene permiso para añadir archivos del lugar al que está intentando hacerlo.';
@@ -256,8 +230,8 @@ $string['flagthisquestion'] = 'Marcar esta pregunta';
 $string['formquestionnotinids'] = 'Pregunta contenida en formulario que no está en questionids.';
 $string['fractionsnomax'] = 'Una de las respuestas debería tener una puntuación del 100% de modo que sea posible conseguir la calificación máxima en esta pregunta.';
 $string['generalfeedback'] = 'Retroalimentación general';
-$string['generalfeedback_help'] = '<p>La retroalimentación general se muestra al estudiante después de haber respondido a la pregunta. A diferencia de la retroalimentación, que depende del tipo de pregunta y de la respuesta dada por el estudiante, aquí se muestra siempre el mismo texto en todos los casos.</p>
-<p>Se puede utilizar la retroalimentación general para proporcionar a los estudiantes información complementaria sobre el tema sobre el que trata la pregunta, o  información que puedan utilizar en el caso de no hubieran entendido bien la pregunta.</p>';
+$string['generalfeedback_help'] = 'La retroalimentación general se muestra al estudiante después de haber respondido a la pregunta. A diferencia de la retroalimentación, que depende del tipo de pregunta y de la respuesta dada por el estudiante, aquí se muestra siempre el mismo texto en todos los casos.
+Se puede utilizar la retroalimentación general para proporcionar a los estudiantes información complementaria sobre el tema sobre el que trata la pregunta, o información que puedan utilizar en el caso de no hubieran entendido bien la pregunta.';
 $string['getcategoryfromfile'] = 'Obtener categoría de archivo';
 $string['getcontextfromfile'] = 'Obtener contexto de archivo';
 $string['hidden'] = 'Oculto';
@@ -267,11 +241,9 @@ $string['howquestionsbehave'] = 'Comportamiento de las preguntas';
 $string['howquestionsbehave_help'] = 'Los estudiantes pueden interactuar con las preguntas en el cuestionario de varias maneras diferentes. Por ejemplo, usted puede desear que los estudiantes introduzcan una respuesta a cada pregunta y posteriormente envien el cuestionario completo, antes de que se realice ninguna calificación o de que se envíe ninguna retroalimentación. Ese sería el modo de \'retroalimentación diferida\'. En otra situación, usted puede desear que los estudiantes respondan una pregunta y sobre la marcha obtengan retroalimentación inmediata, y si la respuesta no es correcta, tengan otra otra oportunidad con menor puntuación. Este modo sería \'interactivo con varios intentos\' .';
 $string['ignorebroken'] = 'Pasar por alto enlaces rotos';
 $string['importcategory'] = 'Importar categoría';
-$string['importcategory_help'] = '<p>Se utiliza el menú emergente <b>Categoría:</b> para seleccionar la categoría en la que irán las preguntas importadas.</p>
-
-<p>Algunos formatos de importación (GIFT y XML) permiten especificar la categoría dentro del archivo de importación. Para que esto suceda, debe estar marcada la casilla <b>desde archivo</b>. En caso contrario, la pregunta irá a la categoría seleccionada independientemente de las instrucciones del archivo.</p>
-
-<p>Cuando se especifican las categorías dentro de un archivo de importación, se crearán en el caso de que no existan.</p>';
+$string['importcategory_help'] = 'Se utiliza el menú emergente **Categoría:** para seleccionar la categoría en la que irán las preguntas importadas.
+Algunos formatos de importación (GIFT y XML) permiten especificar la categoría dentro del archivo de importación. Para que esto suceda, debe estar marcada la casilla **desde archivo**. En caso contrario, la pregunta irá a la categoría seleccionada independientemente de las instrucciones del archivo.
+Cuando se especifican las categorías dentro de un archivo de importación, se crearán en el caso de que no existan.';
 $string['importerror'] = 'HA habido un error durante el proceso de importación';
 $string['importerrorquestion'] = 'Error al importar pregunta';
 $string['importfromcoursefiles'] = '...o elija un formato de archivo para importar.';
@@ -308,44 +280,39 @@ $string['markoutofmax'] = 'Puntúa {$a->mark} sobre {$a->max}';
 $string['marks'] = 'Puntos';
 $string['matcherror'] = 'Las calificaciones no corresponden con las opciones de calificación - preguntas saltadas';
 $string['matchgrades'] = 'Emparejar calificaciones';
+$string['matchgrades_help'] = 'Las calificaciones importadas **deben** corresponderse con alguna de las que figuran en la lista fija de calificaciones válidas, de este modo:
+
+* 100%
+* 90%
+* 80%
+* 75%
+* 70%
+* 66.666%
+* 60%
+* 50%
+* 40%
+* 33.333
+* 30%
+* 25%
+* 20%
+* 16.666%
+* 14.2857
+* 12.5%
+* 11.111%
+* 10%
+* 5%
+* 0%
+
+se admiten asimismo los valores negativos de la lista anterior.
+Esta opción tiene dos posibilidades, que afectan a la forma en que la rutina de importación trata los valores que no se corresponden **exactamente** con cualquiera de los valores de la lista
+
+\* **|Error si la calificación no está en la lista**
+Si una pregunta contiene cualesquiera calificaciones que no se correspondan con los valores de la lista, se mostrará un mensaje de error y esa pregunta no se importará.
+\* **|Calificación más próxima si no está en la lista**
+Si se encuentra una calificación que no se corresponde con uno de los valores de la lista, se toma el valor más próximo de la lista
+
+*Nota: algunos formatos de importación personalizados pueden escribir directamente en la base de datos y no quedar afectados por esta comprobación*';
 $string['matchgradeserror'] = 'Error si la calificación no está en la lista';
-$string['matchgrades_help'] = '<p>Las calificaciones importadas <b>deben</b> corresponderse con alguna de las que figuran en la lista fija de calificaciones válidas, de este modo:</p>
-
-<ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
-</ul>
-
-<p>se admiten asimismo los valores negativos de la lista anterior.</p>
-
-<p>Esta opción tiene dos posibilidades, que afectan a la forma en que la rutina de importación trata los valores que no se corresponden <strong>exactamente</strong> con cualquiera de los valores de la lista</p>
-
-<ul>
-  <li><strong>Error si la calificación no está en la lista</strong><br />
-  Si una pregunta contiene cualesquiera calificaciones que no se correspondan con los valores de la lista, se mostrará un mensaje de error y esa pregunta no se importará.</li>
-  <li><strong>Calificación más próxima si no está en la lista</strong><br />
-  Si se encuentra una calificación que no se corresponde con uno de los valores de la lista, se toma el valor más próximo de la lista</li>
-</ul>
-
-<p><i>Nota: algunos formatos de importación personalizados pueden escribir directamente en la base de datos y no quedar afectados por esta comprobación</i></p>';
 $string['matchgradesnearest'] = 'Calificación más próxima si no está en lista';
 $string['missingcourseorcmid'] = 'Es necesario proporcionar courseid o cmid a print_question';
 $string['missingcourseorcmidtolink'] = 'Es necesario proporcionar courseid o cmid a get_question_edit_link';
@@ -394,30 +361,24 @@ $string['page-question-import'] = 'Página de importación de preguntas';
 $string['page-question-x'] = 'Cualquier página de pregun tas';
 $string['parent'] = 'Padre';
 $string['parentcategory'] = 'Categoría padre';
-$string['parentcategory_help'] = '<h2>Padre</h2>
-
-<p>Categoría en la que se colocará. \'Superior\' significa que esta categoría no está contenida en ninguna otra categoría.</p>
-
-<p>Normalmente verá algunos \'contextos\' de categoría en negrita; advierta que cada contexto contiene la jerarquía de su propia categoría. Más abajo hay más información sobre los contextos. Si usted no ve varios contextos, puede deberse a que no tiene permiso para acceder a otros contextos.</p>
-
-<p>Si en un contexto hay una sola categoría, no podrá mover dicha categoría, toda vez que debe haber al menos una categoría en cada contexto.</p>
-
-<p>Vea también:</p>
-<ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">Categorías de pregunta</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">Contextos de categorías</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">Permisos (preguntas)</a></li>
-</ul>';
+$string['parentcategory_help'] = '## Padre
+Categoría en la que se colocará. \'Superior\' significa que esta categoría no está contenida en ninguna otra categoría.
+Normalmente verá algunos \'contextos\' de categoría en negrita; advierta que cada contexto contiene la jerarquía de su propia categoría. Más abajo hay más información sobre los contextos. Si usted no ve varios contextos, puede deberse a que no tiene permiso para acceder a otros contextos.
+Si en un contexto hay una sola categoría, no podrá mover dicha categoría, toda vez que debe haber al menos una categoría en cada contexto.
+Vea también:
+* [Categorías de pregunta](help.php?module=question&file=categories.html)
+* [Contextos de categorías](help.php?module=question&file=categorycontexts.html)
+* [Permisos (preguntas)](help.php?module=question&file=permissions.html)';
 $string['parenthesisinproperclose'] = 'El paréntesis antes de ** no se ha cerrado correctamente en {$a}**';
 $string['parenthesisinproperstart'] = 'El paréntesis antes de ** no se ha abierto correctamente en {$a}**';
 $string['parsingquestions'] = 'Análizando las preguntas del archivo de importación.';
 $string['partiallycorrect'] = 'Parcialmente correcta';
 $string['partiallycorrectfeedback'] = 'Para cualquier respuesta parcialmente correcta';
 $string['penaltyfactor'] = 'Factor de penalización';
-$string['penaltyfactor_help'] = '<p>Puede especificar qué fracción de la puntuación obtenida debería substraerse por cada respuesta errónea. Esto sólo resulta relevante si el cuestionario de ejecuta en modo adaptativo, de forma que se permite al estudiante repetir las respuestas a la pregunta. El factor de penalización debería ser un número entre 0 y 1. Un factor de penalización de 1 significa que el estudiante ha de dar la respuesta correcta al primer intento para conseguir la calificación máxima. Un factor de penalización de 0 significa que el estudiante puede intentar responder cuantas veces quiera y aun así puede conseguir la calificación máxima.</p>';
+$string['penaltyfactor_help'] = 'Puede especificar qué fracción de la puntuación obtenida debería substraerse por cada respuesta errónea. Esto sólo resulta relevante si el cuestionario de ejecuta en modo adaptativo, de forma que se permite al estudiante repetir las respuestas a la pregunta. El factor de penalización debería ser un número entre 0 y 1. Un factor de penalización de 1 significa que el estudiante ha de dar la respuesta correcta al primer intento para conseguir la calificación máxima. Un factor de penalización de 0 significa que el estudiante puede intentar responder cuantas veces quiera y aun así puede conseguir la calificación máxima.';
 $string['penaltyforeachincorrecttry'] = 'Penalización por cada intento incorrecto';
-$string['penaltyforeachincorrecttry_help'] = '<p>Cuando se responden preguntas configuradas con "Intentos múltiples" o en "Modo adpatativo", de manera que el alumno puede realizar varios intentos para responder a la pregunta de forma correcta, esta opción define el valor de la penalización que se aplica por cada intento incorrecto. </p>
-<p>La penalización es proporcional a la calificación total de la pregunta, así, si la pregunta vale tres puntos, y la penaliación es de 0.3333333 (33,33%), el estudiante obtiene los 3 puntos si responde correctamente al primer intento, 2 si lo hacen en un segundo intento, y 1 si lo hace en el tercero.';
+$string['penaltyforeachincorrecttry_help'] = 'Cuando se responden preguntas configuradas con "Intentos múltiples" o en "Modo adpatativo", de manera que el alumno puede realizar varios intentos para responder a la pregunta de forma correcta, esta opción define el valor de la penalización que se aplica por cada intento incorrecto.
+La penalización es proporcional a la calificación total de la pregunta, así, si la pregunta vale tres puntos, y la penaliación es de 0.3333333 (33,33%), el estudiante obtiene los 3 puntos si responde correctamente al primer intento, 2 si lo hacen en un segundo intento, y 1 si lo hace en el tercero.';
 $string['permissionedit'] = 'Editar esta pregunta';
 $string['permissionmove'] = 'Mover esta pregunta';
 $string['permissionsaveasnew'] = 'Guardarla como pregunta nueva';

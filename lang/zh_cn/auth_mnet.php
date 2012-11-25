@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = '当设置为“是”时，当远程用户第一次登录时，本地用户记录将会自动创建。';
-$string['auth_mnetdescription'] = '通过在您的 Moodle 网络设置中允许用户通过信赖的主机认证。';
 $string['auth_mnet_roamin'] = '这些主机的用户不能进入您的站点。';
 $string['auth_mnet_roamout'] = '您的用户可以进入到这些主机的站点中。';
 $string['auth_mnet_rpc_negotiation_timeout'] = '通过 XMLRPC 进行认证时的超时时间（秒）。';
+$string['auth_mnetdescription'] = '通过在您的 Moodle 网络设置中允许用户通过信赖的主机认证。';
 $string['auto_add_remote_users'] = '自动添加远程用户';
 $string['pluginname'] = 'MNet认证';
 $string['rpc_negotiation_timeout'] = 'RPC 超时';

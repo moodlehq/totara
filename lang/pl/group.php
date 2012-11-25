@@ -88,27 +88,23 @@ $string['groupmembersonlyerror'] = 'Niestety, musisz być członkiem przynajmnie
 $string['groupmemberssee'] = 'Zobacz członków grupy';
 $string['groupmembersselected'] = 'Członkowie wybranych grup';
 $string['groupmode'] = 'Tryb grup';
-$string['groupmodeforce'] = 'Wymuś istnienie grup';
-$string['groupmode_help'] = '<p>Są trzy ustawienia dla grup:
-   <ul>
-      <li>brak grup</li>
-      <li>osobne grupy - każda grupa widzi tylko siebie, reszta jest niewidzialna</li>
-      <li>widoczne grupy - każda grupa pracuje w swoich ramach, ale widzi także inne grupy</li>
-   </ul>
-</p>
+$string['groupmode_help'] = 'Są trzy ustawienia dla grup:
+* brak grup
+* osobne grupy - każda grupa widzi tylko siebie, reszta jest niewidzialna
+* widoczne grupy - każda grupa pracuje w swoich ramach, ale widzi także inne grupy
 
-<P>Grupy można stworzyć na dwóch poziomach:</p>
 
-<dl>
-   <dt><b>1. Poziom kursu</b></dt>
-   <dd>Jest to domyślne ustawienie dla wszystkich aktywności w ramach danego kursu<br /><br /></dd>
-   <dt><b>2. Poziom aktywności</b></dt>
-   <dd>Każda aktywność, która umożliwia grupową pracę pozwala określić tryb pracy w grupach.
-   Jeśli kurs wymusza pracę w grupach <a href="help.php?module=moodle&file=groupmodeforce.html">
-   wówczas ten parametr nie jest brany pod uwagę.</dd>
+Grupy można stworzyć na dwóch poziomach:
+
+**1. Poziom kursu**
+: Jest to domyślne ustawienie dla wszystkich aktywności w ramach danego kursu
+**2. Poziom aktywności**
+: Każda aktywność, która umożliwia grupową pracę pozwala określić tryb pracy w grupach.
+Jeśli kurs wymusza pracę w grupach
+wówczas ten parametr nie jest brany pod uwagę.</dd>
 </dl>
-
-<P>';
+[]: help.php?module=moodle&file=groupmodeforce.html';
+$string['groupmodeforce'] = 'Wymuś istnienie grup';
 $string['groupmy'] = 'Moja grupa';
 $string['groupname'] = 'Nazwa grupy';
 $string['groupnameexists'] = 'Nazwa grupy \'{$a}\' już istnieje w tym kursie, proszę wybrać inną.';
@@ -131,24 +127,19 @@ $string['membersofselectedgroup'] = 'Członkowie:';
 $string['namingscheme'] = 'Schemat nazw';
 $string['newgrouping'] = 'Nowa grupa nadrzędna';
 $string['newpicture'] = 'Nowy obraz';
-$string['newpicture_help'] = '<P ALIGN=CENTER><B>Przesyłanie grafiki</B></P>
+$string['newpicture_help'] = 'Możesz przesłać na ten serwer plik graficzny ze swojego komputera. Plik ten będzie Cię reprezentował w różnych miejscach.
+Z podanego powyżej powodu najlepszym wizerunkiem będzie Twój portret z bliska, ale możesz wykorzystać dowolną inną grafikę.
+Plik graficzny musi mieć format JPG lub PNG (tzn. jego nazwa powinna mieć rozszerzenie .jpg lub .png).
+Są cztery sposoby uzyskania pliku graficznego:
+1. Zdjęcia wykonane cyfrowym aparatem fotograficznym zapisane w Twoim komputerze najprawdopodobniej będą już we właściwym formacie.
+2. Możesz zeskanować odbitkę fotograficzną - pamiętaj o zapisaniu pliku w formacie JPG lub PNG.
+3. Jeżeli masz zdolności artystyczne, możesz sam zrobić rysunek używając programu do malowania.
+4. Możesz "podkraść" plik graficzny z sieci WWW. [http://images.google.com](http://images.google.com) to znakomite miejsce do szukania grafiki. Po znalezieniu odpowiedniego pliku, kliknij prawym przyciskiem myszy i wybierz polecenie "Zapisz rysunek" z menu (procedura ta może się trochę różnić w zależności od komputera).
 
-<P>Możesz przesłać na ten serwer plik graficzny ze swojego komputera.  Plik ten będzie Cię reprezentował w różnych miejscach.
-<P>Z podanego powyżej powodu najlepszym wizerunkiem będzie Twój portret z bliska, ale możesz wykorzystać dowolną inną grafikę.
-<P>Plik graficzny musi mieć format JPG lub PNG (tzn. jego nazwa powinna mieć rozszerzenie .jpg lub .png).
-<P>Są cztery sposoby uzyskania pliku graficznego:
-
-<OL>
-<LI>Zdjęcia wykonane cyfrowym aparatem fotograficznym zapisane w Twoim komputerze najprawdopodobniej będą już we właściwym formacie.
-<LI>Możesz zeskanować odbitkę fotograficzną - pamiętaj o zapisaniu pliku w formacie JPG lub PNG.
-<LI>Jeżeli masz zdolności artystyczne, możesz sam zrobić rysunek używając programu do malowania.
-<LI>Możesz &quot;podkraść&quot; plik graficzny z sieci WWW.  <A TARGET=google HREF="http://images.google.com/">http://images.google.com</A> to znakomite miejsce do szukania grafiki. Po znalezieniu odpowiedniego pliku, kliknij prawym przyciskiem myszy i wybierz polecenie &quot;Zapisz rysunek&quot; z menu (procedura ta może się trochę różnić w zależności od komputera).
-</OL>
-
-<P>W celu przesłania pliku graficznego, kliknij przycisk &quot;Przeglądaj&quot; na niniejszej stronie edycji i wybierz odpowiedni plik z twardego dysku.</p>
-<P>UWAGA: Upewnij się że plik ten nie przekracza podanego maksymalnego rozmiaru, w przeciwnym razie nie zostanie on przesłany.</p>
-<P>Następnie kliknij &quot;Aktualizuj mój profil&quot; na dole ekranu  - obraz zostanie przycięty i zmniejszony do rozmiaru 100 na 100 pikseli.</p>
-<P>Gdy powrócisz na stronę profilu, być może nie zmieni się wygląd reprezentującej Cię grafiki. W takim przypadku kliknij w swojej przeglądarce przycisk &quot;Odśwież&quot;.</p>';
+W celu przesłania pliku graficznego, kliknij przycisk "Przeglądaj" na niniejszej stronie edycji i wybierz odpowiedni plik z twardego dysku.
+UWAGA: Upewnij się że plik ten nie przekracza podanego maksymalnego rozmiaru, w przeciwnym razie nie zostanie on przesłany.
+Następnie kliknij "Aktualizuj mój profil" na dole ekranu - obraz zostanie przycięty i zmniejszony do rozmiaru 100 na 100 pikseli.
+Gdy powrócisz na stronę profilu, być może nie zmieni się wygląd reprezentującej Cię grafiki. W takim przypadku kliknij w swojej przeglądarce przycisk "Odśwież".';
 $string['noallocation'] = 'Nie przypisuj członków';
 $string['nogroups'] = 'W tym kursie nie ma jeszcze grup';
 $string['nogroupsassigned'] = 'Nie określono grup';

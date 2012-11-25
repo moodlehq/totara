@@ -61,7 +61,6 @@ $string['educationallevel'] = 'Studieniveau';
 $string['educationallevel_help'] = 'Naar welk studieniveau ben je op zoek? In het geval van groepen leraars beschrijft dit het studieniveau waarin ze lesgeven';
 $string['enroldownload'] = 'Zoek';
 $string['enroldownload_help'] = 'Sommige cursussen die in de lijst van de geselecteerde hub voorkomen, worden daar voorgesteld, zodat mensen kunnen gaan deelnemen aan de cursus op de originele site.
-
 Andere cursussen zijn sjablonen die je kunt downloaden en gebruiken op je eigen Moodlesite.';
 $string['enrollable'] = 'cursussen waarin ik kan aanmelden';
 $string['enrollablecourses'] = 'Cursussen waar aanmelding mogelijk is';
@@ -86,8 +85,8 @@ $string['nocourse'] = 'Geen cursussen gevonden';
 $string['noratings'] = 'Geen beoordelingen';
 $string['operation'] = 'Operatie';
 $string['orderby'] = 'Gesorteerd op';
-$string['orderbyeldest'] = 'Oudste';
 $string['orderby_help'] = 'De volgorde waarin zoekresultaten worden getoond';
+$string['orderbyeldest'] = 'Oudste';
 $string['orderbyname'] = 'Naam';
 $string['orderbynewest'] = 'Nieuwste';
 $string['orderbypublisher'] = 'Uitgever';

@@ -26,4 +26,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Blackboard';
-$string['pluginname_help'] = '  תסדיר Blackboard מאשפר לייבא שאלות שנשמרו בתסדיר הייצוא "POOL" של מהדורה 5 של Blackboard.';
+$string['pluginname_help'] = 'תסדיר Blackboard מאשפר לייבא שאלות שנשמרו בתסדיר הייצוא "POOL" של מהדורה 5 של Blackboard.';

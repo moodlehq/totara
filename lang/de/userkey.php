@@ -30,12 +30,12 @@ $string['createuserkey'] = 'Nutzerschlüssel erzeugen';
 $string['deletekeyconfirm'] = 'Möchten Sie wirklich den Nutzerschlüssel löschen?';
 $string['edituserkey'] = 'Nutzerschlüssel bearbeiten';
 $string['keyiprestriction'] = 'IP-Adressbeschränkung';
-$string['keyiprestriction_help'] = '<h2>Einschränkung des Zugriffs für bestimmte IP-Adressen</h2>
-<p>Tragen Sie eine IP-Adresse ein oder einen IP-Adressbereich der alleine zum Zugriff auf diese Daten berechtigt ist. Wenn Sie keinen Eintrag vornehmen (was nicht empfohlen ist) deaktivieren Sie die IP-Begrenzung.</p>';
+$string['keyiprestriction_help'] = '## Einschränkung des Zugriffs für bestimmte IP-Adressen
+Tragen Sie eine IP-Adresse ein oder einen IP-Adressbereich der alleine zum Zugriff auf diese Daten berechtigt ist. Wenn Sie keinen Eintrag vornehmen (was nicht empfohlen ist) deaktivieren Sie die IP-Begrenzung.';
 $string['keymanager'] = 'Schlüsselverwaltung';
 $string['keyvaliduntil'] = 'Schlüssel gültig bis';
-$string['keyvaliduntil_help'] = '<h2>Schlüssel gültig bis</h2>
-<p>Tragen Sie ein Datum ein nach dem der gewählte Schlüssel nicht mehr gültig sein soll. Damit kann die Sicherheit erhöht werden.</p>';
+$string['keyvaliduntil_help'] = '## Schlüssel gültig bis
+Tragen Sie ein Datum ein nach dem der gewählte Schlüssel nicht mehr gültig sein soll. Damit kann die Sicherheit erhöht werden.';
 $string['keyvalue'] = 'Schlüsselwert';
 $string['newuserkey'] = 'Neuer Nutzerschlüssel';
 $string['userkey'] = 'Nutzerschlüssel';

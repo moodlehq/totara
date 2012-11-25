@@ -32,8 +32,9 @@ $string['codecoveragecompletereport'] = '(teljes kódkövetési jelentés megtek
 $string['codecoveragedisabled'] = 'A szerveren nem kapcsolható be a kódkövetés (hiányzik az xdebug kiegészítés).';
 $string['codecoveragelatestdetails'] = '({$a->date} időpontban {$a->files} állomány {$a->percentage} százalékban történt kódkövetés)';
 $string['codecoveragelatestreport'] = 'legutóbbi teljes kódkövetési jelentés megtekintése';
-$string['confignonwritable'] = 'A webszerver nem tud a config.php fájlba írni. Módosítsa az engedélyt vagy szerkessze megfelelő felhasználói fiókból, és a lezáró php-címke elé írja be ezt a sort: <br />
-$CFG->unittestprefix = \'tst_\' // A tst_ helyére írjon be egy tetszése szerinti, a $CFG->prefix-től eltérő előtagot.';
+$string['confignonwritable'] = 'A webszerver nem tud a config.php fájlba írni. Módosítsa az engedélyt vagy szerkessze megfelelő felhasználói fiókból, és a lezáró php-címke elé írja be ezt a sort:
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Kódkövetési sor';
 $string['coveredpercentage'] = 'Globális kódkövetés';
 $string['dbtest'] = 'Funkcionális adatbázistesztek';

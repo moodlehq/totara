@@ -30,8 +30,7 @@ $string['add'] = 'Agregar';
 $string['addcommunitycourse'] = 'Agregar curso comunitario';
 $string['addcourse'] = 'Buscar';
 $string['addedtoblock'] = 'Un enlace a este curso se ha añadido en su bloque de búsqueda de comunidad';
-$string['additionalcoursedesc'] = '	
-{$a->lang} Creador: {$a->creatorname} - Editor: {$a->publishername} - Materia: {$a->subject} - Audiencia: {$a->audience} - Nivel educativo: {$a->educationallevel} - Licencia: {$a->license}';
+$string['additionalcoursedesc'] = '{$a->lang} Creador: {$a->creatorname} - Editor: {$a->publishername} - Materia: {$a->subject} - Audiencia: {$a->audience} - Nivel educativo: {$a->educationallevel} - Licencia: {$a->license}';
 $string['addtocommunityblock'] = 'Guardar un enlace a este curso';
 $string['audience'] = 'Diseñado para';
 $string['audience_help'] = '¿Qué tipo de curso está buscando? Al igual que sucede con los cursos tradicionales diseñados para estudiantes, usted debería buscar por comunidades de educadores o administradores de Moodle.';
@@ -60,7 +59,6 @@ $string['educationallevel'] = 'Nivel educativo';
 $string['educationallevel_help'] = '¿Qué nivel educativo está buscando? En el caso de las comunidades de educadores, este nivel describe el nivel en el que enseñan.';
 $string['enroldownload'] = 'Encontrar';
 $string['enroldownload_help'] = 'A algunos cursos listados en el centro seleccionado se les ha notificado que se puede participar en ellos en el sitio original.
-
 Otros son plantillas de curso que se facilitan para que usted pueda descargarlas y usarlas en su propio sitio Moodle';
 $string['enrollable'] = 'cursos en los que me puedo matricular';
 $string['enrollablecourses'] = 'Cursos para matricularse';
@@ -85,8 +83,8 @@ $string['nocourse'] = 'No se han encontrado cursos';
 $string['noratings'] = 'Sin calificaciones';
 $string['operation'] = 'Operación';
 $string['orderby'] = 'Ordenar por';
-$string['orderbyeldest'] = 'El más antiguo';
 $string['orderby_help'] = 'Orden en el que se mostrarán los resultados de la búsqueda';
+$string['orderbyeldest'] = 'El más antiguo';
 $string['orderbyname'] = 'Nombre';
 $string['orderbynewest'] = 'El más reciente';
 $string['orderbypublisher'] = 'Autor';

@@ -28,12 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 $string['dbencoding'] = 'קידוד מסד הנתונים';
 $string['dbhost'] = 'מספר או שם ה-IP של השרת';
 $string['dbhost_desc'] = 'סוג כתובת IP של שרת מסד הנתונים
-או שם המארח
-';
+או שם המארח';
 $string['dbname'] = 'שם בסיס הנתונים';
 $string['dbpass'] = 'הסיסמא של השרת';
 $string['dbsetupsql'] = 'פקודת הגדרת מסד הנתונים';
-$string['dbsybasequoting'] = 'השתמש בציטוטי sybase ';
+$string['dbsybasequoting'] = 'השתמש בציטוטי sybase';
 $string['dbtype'] = 'סוג בסיס הנתונים';
 $string['dbtype_desc'] = 'שם התקן ADOdb של מסד הנתונים,
 סוג מנוע מסד הנתונים החיצוני.';

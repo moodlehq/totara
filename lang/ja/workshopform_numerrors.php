@@ -38,7 +38,7 @@ $string['grade0default'] = 'No';
 $string['grade1'] = '成功をあらわす言葉';
 $string['grade1default'] = 'Yes';
 $string['grademapping'] = '評定マッピングテーブル';
-$string['maperror'] = 'エラーの加重数 <= ';
+$string['maperror'] = 'エラーの加重数 <=';
 $string['mapgrade'] = '提出の評価';
 $string['percents'] = '{$a} %';
 $string['pluginname'] = 'エラー数';

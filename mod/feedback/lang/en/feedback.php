@@ -288,3 +288,4 @@ $string['vertical'] = 'vertical';
 $string['viewcompleted'] = 'completed feedbacks';
 $string['viewcompleted_help'] = 'You may view completed feedback forms, searchable by course and/or by question.
 Feedback responses may be exported to Excel.';
+$string['blank_responses'] = '{$a} blank responses';

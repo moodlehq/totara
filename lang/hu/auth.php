@@ -35,12 +35,10 @@ $string['auth_changepasswordurl_expl'] = 'Adja meg a {$a} jelszavukat elfelejtő
 $string['auth_changingemailaddress'] = 'E-mail címét {$a->oldemail} címről {$a->newemail} címre kívánja módosítani. Biztonsági okokból e-mail üzenetet küldünk az új címre. E-mail címét az abban az üzenetben elküldött URL megnyitását követően frissítjük.';
 $string['auth_common_settings'] = 'Általános beállítások';
 $string['auth_data_mapping'] = 'Adatok illesztése';
-$string['authenticationoptions'] = 'Hitelesítési lehetőségek';
 $string['auth_fieldlock'] = 'Zárolás';
 $string['auth_fieldlock_expl'] = 'Zárolás: Bekapcsolásakor a felhasználók és a rendszergazdák a mezőt nem szerkeszthetik közvetlenül. Akkor jelölje be, ha az adatokat a külső hitelesítési rendszerben kezeli.';
 $string['auth_fieldlocks'] = 'Felhasználómezők zárolása';
 $string['auth_fieldlocks_help'] = 'A felhasználómezőket zárolhatja. Ez akkor hasznos, ha a rendszergazdák a felhasználói adatokat kézzel tartják karban a felhasználói rekordok szerkesztése vagy a \'Felhasználók feltöltése\' segítségével. A Moodle által használt mezők zárolásakor ne feledje el megadni az adatokat a felhasználók létrehozásakor - ellenkező esetben a felhasználók nem kerülnek bele a rendszerbe. A probléma elkerülésére a zárolást beállíthatja \'Üres állapotban zárolatlan\'-ra.';
-$string['authinstructions'] = 'Itt tájékoztathatja a felhasználókat arról, hogy milyen felhasználóneveket és jelszavakat használhatnak. Az itt megadott szöveg megjelenik a bejelentkező oldalon. Ha üresen hagyja, nem jelenik meg semmilyen tájékoztatás.';
 $string['auth_invalidnewemailkey'] = 'Hiba: ha e-mail cím módosítását próbálta megerősíteni, hibásan másolhatta ki az Önnek e-mailben megküldött URL-t. Próbálja meg újból kimásolni és megismételni a megerősítést.';
 $string['auth_multiplehosts'] = 'Több gazdagép VAGY cím adható meg (pl. host1.com;host2.com;host3.com vagy xxx.xxx.xxx.xxx;xxx.xxx.xxx.xxx)';
 $string['auth_outofnewemailupdateattempts'] = 'E-mail címének frissítéséhez nincs több próbálkozási lehetősége. Frissítési kérelmét töröltük.';
@@ -60,14 +58,14 @@ $string['auth_updateremote_ldap'] = 'Megjegyzés: külső LDAP-adatok frissíté
 $string['auth_user_create'] = 'Felhasználó létrehozásának engedélyezése';
 $string['auth_user_creation'] = 'Új (névtelen) felhasználók is létrehozhatnak új felhasználói azonosítót a külső hitelesítési forráson, e-mailes megerősítéssel. Ha ezt engedélyezi, ne feledje megadni a felhasználó létrehozásához a modul-specifikus lehetőségeket.';
 $string['auth_usernameexists'] = 'A választott felhasználónév már létezik. Válasszon másikat.';
+$string['authenticationoptions'] = 'Hitelesítési lehetőségek';
+$string['authinstructions'] = 'Itt tájékoztathatja a felhasználókat arról, hogy milyen felhasználóneveket és jelszavakat használhatnak. Az itt megadott szöveg megjelenik a bejelentkező oldalon. Ha üresen hagyja, nem jelenik meg semmilyen tájékoztatás.';
 $string['auto_add_remote_users'] = 'Távoli felhasználók automatikus hozzáadása';
 $string['changepassword'] = 'Jelszó-módosítási URL';
 $string['changepasswordhelp'] = 'Itt megadhat egy helyet, ahol a felhasználók visszakereshetik vagy módosíthatják felhasználónevüket/jelszavukat, ha elfelejtették. Ez egy gombon érhető el a bejelentkező oldalon és az adott felhasználó oldalán. Ha üresen hagyja, nem jelenik meg ilyen gomb.';
 $string['chooseauthmethod'] = 'Válasszon egy hitelesítési eljárást';
 $string['chooseauthmethod_help'] = 'Ezzel a menüvel módosíthatja az adott felhasználó hitelesítési módszerét.
-
 Ne feledje, hogy ez nagy mértékben függ a portálhoz beállított hitelesítési módtól és a használt beállításoktól.
-
 Hibás módosítás esetén a felhasználót kizárhatja a portálról, sőt, teljesen törölheti is. Ezért csak akkor használja, ha a következményekkel tisztában van.';
 $string['createpasswordifneeded'] = 'Szükség esetén hozzon létre egy jelszót';
 $string['emailchangecancel'] = 'E-mail cím módosításának törlése';
@@ -91,8 +89,8 @@ $string['errorminpasswordnonalphanum'] = 'A jelszó legalább {$a} nem-alfanumer
 $string['errorminpasswordupper'] = 'A jelszó legalább {$a} nagybetűt tartalmazzon.';
 $string['errorpasswordupdate'] = 'Hiba a jelszó frissítése közben, a jelszó nem módosult';
 $string['forcechangepassword'] = 'Jelszómódosítás előírása';
-$string['forcechangepasswordfirst_help'] = 'Felhasználói jelszó módosításának előírása a Moodle-ba való első belépéskor.';
 $string['forcechangepassword_help'] = 'Felhasználói jelszó módosításának előírása a Moodle-ba való következő belépéskor.';
+$string['forcechangepasswordfirst_help'] = 'Felhasználói jelszó módosításának előírása a Moodle-ba való első belépéskor.';
 $string['forgottenpassword'] = 'Ha itt URL-t ad meg, az lesz a portálhoz tartozó elveszett jelszavak visszaállításának az oldala. Olyan portálokon használandó, ahol a jelszavakat a Moodle-on kívül kezelik. Az alapbeállítás szerinti jelszó-visszaállítás használatához hagyja üresen.';
 $string['forgottenpasswordurl'] = 'Elfelejtett jelszó-URL';
 $string['getanaudiocaptcha'] = 'CAPTCHA-audió beszerzése';
@@ -126,7 +124,7 @@ $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = 'A CAPTCHA az automatizált programokkal való visszaélés megakadályozására használatos. Írja be a négyzetben látható szavakat a megfelelő sorrendben, szóközzel elválasztva.
 Ha nem biztos abban, hogy felismerte a szavakat, kérjen egy másik szöveget vagy egy hangos CAPTCHA-t.';
 $string['selfregistration'] = 'Önregisztráció';
-$string['selfregistration_help'] = 'Ha hitelesítő segédprogramot, például e-mail alapú önregisztrációt választ, akkor a potenciális felhasználók regisztrálhatják magukat és fiókokat hozhatnak létre. Ezzel a levélszemetet gyártók fiókokat hozhatnak létre fórumüzenetek és blogüzenetek levélszeméttel való megtöltéséhez. Ennek elkerülésére az önregisztrációt ki kell kapcsolni vagy az <em>Engedélyezett e-mail doménekre </em> kell korlátozni.';
+$string['selfregistration_help'] = 'Ha hitelesítő segédprogramot, például e-mail alapú önregisztrációt választ, akkor a potenciális felhasználók regisztrálhatják magukat és fiókokat hozhatnak létre. Ezzel a levélszemetet gyártók fiókokat hozhatnak létre fórumüzenetek és blogüzenetek levélszeméttel való megtöltéséhez. Ennek elkerülésére az önregisztrációt ki kell kapcsolni vagy az *Engedélyezett e-mail doménekre * kell korlátozni.';
 $string['sha1'] = 'SHA-1 titkosítás';
 $string['showguestlogin'] = 'Megjelenítheti vagy elrejtheti a bejelentkező oldalon a vendég belépésére való gombot.';
 $string['stdchangepassword'] = 'Szokásos jelszó-módosítási oldal használata';

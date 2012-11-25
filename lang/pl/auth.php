@@ -38,7 +38,8 @@ $string['auth_data_mapping'] = 'Mapuj dane';
 $string['auth_fieldlock'] = 'Zablokowane wartość';
 $string['auth_fieldlock_expl'] = '<p><b>Zablokowana wartość:</b>Jeżeli włączona, to będzie zapobiegać użytkownikom Moodla i administratorom edycje bespośrednio tego pola. Używaj tej opcji jeżeli zachowujecsz te dane w zewnętrznym systemie autoryzacji.';
 $string['auth_fieldlocks'] = 'Zablokuj dane użytkownika';
-$string['auth_fieldlocks_help'] = '<p>Możesz zablokować pola z danymi użytkownika. Jest to użyteczne, gdy dane są utrzymywane ręcznie przez administratora przez edycje profilu użytkownika lub uaktualniane/przesyłane przez użycie funkcjonalności "prześlij użytkowników". Jeżeli zablokujesz pola wymagane przez Moodle, upewnij się że dostarczasz tych danych podczas tworzenia konta użytkownika ; albo konta będą nie zdatne do użytku.</p><p>Uważaj ustawiając blokady, \'zablokowanie pustych\' może powodować problemy.';
+$string['auth_fieldlocks_help'] = 'Możesz zablokować pola z danymi użytkownika. Jest to użyteczne, gdy dane są utrzymywane ręcznie przez administratora przez edycje profilu użytkownika lub uaktualniane/przesyłane przez użycie funkcjonalności "prześlij użytkowników". Jeżeli zablokujesz pola wymagane przez Moodle, upewnij się że dostarczasz tych danych podczas tworzenia konta użytkownika ; albo konta będą nie zdatne do użytku.
+Uważaj ustawiając blokady, \'zablokowanie pustych\' może powodować problemy.';
 $string['auth_invalidnewemailkey'] = 'Błąd: jeśli próbujesz potwierdzić zmianę adresu e-mail, mogłeś popełnić błąd podczas kopiowania adresu URL, który wysłaliśmy mailem. Proszę skopiować adres i spróbować ponownie.';
 $string['auth_multiplehosts'] = 'Można wskazać więcej komputerów-hostów np. host1.com; host2.com; host3.com';
 $string['auth_outofnewemailupdateattempts'] = 'Wykorzystałeś dozwoloną liczbę prób aktualizacji twojego adresu e-mail. Twoje żądanie aktualizacji zostało anulowane.';
@@ -64,11 +65,9 @@ $string['auto_add_remote_users'] = 'Automatycznie dodawaj zdalnych użytkownikó
 $string['changepassword'] = 'Adres URL gdzie można zmiany hasła';
 $string['changepasswordhelp'] = 'Możesz tutaj określić miejsce, w którym Twoi użytkownicy mogą odzyskać lub zmienić swoja nazwę użytkownika/hasło, jeżeli ich zapomną. Wybranie tej opcji spowoduje wyświetlenie przycisku na stronie logowania i stronach użytkownika. Jeżeli nic nie wpiszesz, przycisk nie zostanie wyświetlony.';
 $string['chooseauthmethod'] = 'Wybierz sposób uwierzytelniania';
-$string['chooseauthmethod_help'] = '<p>Menu pozwala zmienić metodę uwierzytelniania dla danego użytkownika </p>
-
-<p> Bądź świadomy że te ustawienia wpływają na metodę uwierzytelniania.</p>
-
-<p>Nieprawidłowa zmiana mogłaby uniemożliwić rejestracje w systemi. Używaj to jeżeli wiesz dobrze  co robisz </p>';
+$string['chooseauthmethod_help'] = 'Menu pozwala zmienić metodę uwierzytelniania dla danego użytkownika
+Bądź świadomy że te ustawienia wpływają na metodę uwierzytelniania.
+Nieprawidłowa zmiana mogłaby uniemożliwić rejestracje w systemi. Używaj to jeżeli wiesz dobrze co robisz';
 $string['createpasswordifneeded'] = 'Utwórz hasło jeśli potrzebne';
 $string['emailchangecancel'] = 'Porzuć zmianę adresu e-mail';
 $string['emailchangepending'] = 'Zmiany w toku. Otwórz link wysłany do Ciebie {$a->preference_newemail}.';
@@ -100,10 +99,10 @@ $string['getanothercaptcha'] = 'Wygeneruj inne CAPTCHA';
 $string['guestloginbutton'] = 'Przycisk logowania jako gość';
 $string['incorrectpleasetryagain'] = 'Niewłaściwe. Spróbuj jeszcze raz.';
 $string['infilefield'] = 'Pole wymagane w pliku';
-$string['informminpassworddigits'] = 'liczb co najmniej: {$a} ';
+$string['informminpassworddigits'] = 'liczb co najmniej: {$a}';
 $string['informminpasswordlength'] = 'znaków co najmniej: {$a}';
-$string['informminpasswordlower'] = 'małych liter co najmniej: {$a} ';
-$string['informminpasswordnonalphanum'] = 'niestandardowych znaków co najmniej: {$a} ';
+$string['informminpasswordlower'] = 'małych liter co najmniej: {$a}';
+$string['informminpasswordnonalphanum'] = 'niestandardowych znaków co najmniej: {$a}';
 $string['informminpasswordupper'] = 'dużych liter co najmniej: {$a}';
 $string['informpasswordpolicy'] = 'Hasło musi mieć {$a}';
 $string['instructions'] = 'Instrukcje';
@@ -123,10 +122,9 @@ $string['pluginnotinstalled'] = 'Moduł uwierzytelniania {$a}\' nie jest zainsta
 $string['potentialidps'] = 'Zaloguj się używając swojego konta na:';
 $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = 'CAPTCHA jest zabezpieczeniem zapobiegającym nadużyciom ze strony automatycznych programów. Wystarczy wpisać słowa w polu, w podanej kolejności i oddzielone spacją.
-
 Jeśli słowo jest nieczytelne, można spróbować pobrać kolejne słowo CAPTCHA lub wygenerować dźwiękowe CAPTCHA.';
 $string['selfregistration'] = 'Samodzielna rejestracja';
-$string['selfregistration_help'] = 'W przypadku wybrania wtyczki uwierzytelniania, takiej jak samodzielna rejestracja oparta na wiadomości e-mail, umożliwia ona potencjalnym użytkownikom zarejestrowanie się i utworzenie kont. Daje to spamerom możliwość utworzenia kont w celu wykorzystania do spamowania wątków na forum, wpisów blogów itd. W celu uniknięcia tego zagrożenia należy wyłączyć lub ograniczyć samodzielną rejestrację za pomocą ustawienia <em>Dozwolone domeny e-mail</em>.';
+$string['selfregistration_help'] = 'W przypadku wybrania wtyczki uwierzytelniania, takiej jak samodzielna rejestracja oparta na wiadomości e-mail, umożliwia ona potencjalnym użytkownikom zarejestrowanie się i utworzenie kont. Daje to spamerom możliwość utworzenia kont w celu wykorzystania do spamowania wątków na forum, wpisów blogów itd. W celu uniknięcia tego zagrożenia należy wyłączyć lub ograniczyć samodzielną rejestrację za pomocą ustawienia *Dozwolone domeny e-mail*.';
 $string['sha1'] = 'Algorytm SHA-1';
 $string['showguestlogin'] = 'Możesz ukryć bądź pokazać przycisk logowania jako gość';
 $string['stdchangepassword'] = 'Użyj standardowej strony zmiany hasła';

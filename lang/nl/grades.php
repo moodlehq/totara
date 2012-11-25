@@ -43,113 +43,99 @@ $string['aggregatemedian'] = 'Mediaan';
 $string['aggregatemin'] = 'Laagste cijfer';
 $string['aggregatemode'] = 'Modus';
 $string['aggregateonlygraded'] = 'Enkel niet-lege beoordelingen in aggregatie opnemen';
-$string['aggregateonlygraded_help'] = '<p>Nietbestaande cijfers kunnen beschouwd worden als minimum cijfers of als niet begrepen in de aggregatie.</p>';
+$string['aggregateonlygraded_help'] = 'Nietbestaande cijfers kunnen beschouwd worden als minimum cijfers of als niet begrepen in de aggregatie.';
 $string['aggregateoutcomes'] = 'Competenites in aggregatie opnemen';
-$string['aggregateoutcomes_help'] = '<p>Het opnemen van competenties in aggregatie kan een vreemd totaalcijfer geven. Daarom heb je hier de optie om de competenties op te nemen of niet op te nemen.</p>';
+$string['aggregateoutcomes_help'] = 'Het opnemen van competenties in aggregatie kan een vreemd totaalcijfer geven. Daarom heb je hier de optie om de competenties op te nemen of niet op te nemen.';
 $string['aggregatesonly'] = 'Enkel geaggregeerden';
 $string['aggregatesubcats'] = 'Subcategorieën mee opnemen in aggregatie';
-$string['aggregatesubcats_help'] = '<p>De aggregatie wordt gewoonlijk gedaan met onmiddellijk onderliggende cijfers. Het is ook mogelijk om individuele cijfers te aggregeren in alle subcategorieën, waarbij cijfers die al geaggregeerd worden uitgesloten worden.</p>';
+$string['aggregatesubcats_help'] = 'De aggregatie wordt gewoonlijk gedaan met onmiddellijk onderliggende cijfers. Het is ook mogelijk om individuele cijfers te aggregeren in alle subcategorieën, waarbij cijfers die al geaggregeerd worden uitgesloten worden.';
 $string['aggregatesum'] = 'Som van cijfers';
 $string['aggregateweightedmean'] = 'Gewogen gemiddelde';
 $string['aggregateweightedmean2'] = 'Eenvoudig gewogen cijfergemiddelde';
 $string['aggregation'] = 'Aggregatie';
+$string['aggregation_help'] = 'Met dit menu kun je kiezen voor een aggregatiestrategie die gebruikt zal worden om het totaalcijfer van elke deelnemer te berekenen. De verschillende mogelijkheden zijn hieronder uitgelegd.
+De cijfers worden eerst omgezet naar procentuele waarden (interval van 0 tot 1, dit heet normalisatie), dan geaggregeerd via één van onderstaande functies en uiteindelijk geconverteerd naar de gevraagde schaal of het geassocieerde categorie-itembereik (tussen *Minimum cijfer* en *Maximum cijfer*).
+**Belangrijk**: Een lege beoordeling is gewoon een ontbrekende beoordeling in de cijferlijst en dat kan allerlei oorzaken hebben. Bijvoorbeeld een leerling die nog geen opdracht ingestuurd heeft, een opdracht die nog niet beoordeeld is door de leraar of een beoordeling die manueel verwijderd is door de beheerder van de cijferlijst. Het is dus belangrijk voorzichtig te zijn bij de interpretatie van deze "lege beoordelingen".
+
+Gemiddelde van alle beoordelingen
+: Alle cijfers worden opgeteld en dan gedeeld door het aantal cijfers. Lege cijfers worden meegerekend (zij worden geïnterpreteerd als de minimumwaarde voor het beoordelingsitem).
+: A1 70/100, A2 20/80, A3 10/10, category max 100:
+\`(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100\`
+Gewogen gemiddelde
+: Elk beoordelingsitem kan een weging gegeven worden, die dan gebruikt wordt in het berekening van het aggregatiegemiddelde om het balang van elk item voor het algemeen gemiddelde te beïnvloeden.
+: A1 70/100 weging 10, A2 20/80 weging 5, A3 10/10 weging 3, categorie max 100:
+\`(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100\`
+Eenvoudig gewogen gemiddelde
+: Het verschil met *Gewogen gemiddelde* is dat de weging berekend is als *Maximum cijfer* - *Minimum cijfer* voor elk item. Een opdracht voor 100 punten krijgt een weging 100, een opdracht voor 10 punten krijgt een weging 10/
+: A1 70/100, A2 20/80, A3 10/10, categorie max 100:
+\`(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100\`
+Gemiddelde van cijfers (met bonuspunten)
+: Rekenkundig gemiddelde met een truukje. Een oude, nu niet meer ondersteunde manier van aggregeren, enkel hier voorzien voor terugwaartse compatibiliteit met oudere activiteitenmodules.
+Mediaan van alle beoordelingen
+: De mediaan wordt berekend door alle beoordelingen in volgorde te zetten en de middelste beoordelingen te nemen (of het gemiddelde van de twee middelste beoordelingen als het om een even aantal beoordelingen gaat). Het voordeel van de mediaan is dat die niet beïnvloed wordt door cijfers die ongewoon ver van het gemiddelde liggen. Lege beoordelingen worden meegerekend.
+: A1 70/100, A2 20/80, A3 10/10, categorie max 100:
+\`median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100\`
+Laagste cijfer
+: Het resultaat is het laagste cijfer na normalisatie. Dit is gewoonlijk gebruikt in combinatie met *Aggregeer alleen niet-lege cijfers*.
+: A1 70/100, A2 20/80, A3 10/10, categorie max 100:
+\`min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100\`
+Hoogste cijfer
+: Het resultaat is het hoogste cijfer na normalisatie.
+: A1 70/100, A2 20/80, A3 10/10, categorie max 100:
+\`max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100\`
+Modus van cijfers
+: De modus is de beoordeling die het meest voorkomt. Dit wordt meer gebruikt voor niet-numerieke beoordelingen. Het voordeel boven het gemiddelde is dat het niet beïnvloed wordt door cijfers die uitzonderlijk ver van het gemiddelde liggen. De modus verliest wel zijn betekenis als er meer dan één cijfer het meest voorkomt (er wordt slechts één weerhouden) of wanneer alle cijfers verschillend zijn. Lege beoordelingen worden meegerekend.
+: A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 categorie max 100:
+\`mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100\`
+Som van cijfers
+: De som van alle cijferwaarden. Schaalwaarden worden genegeerd. Dit is het enige type dat intern de cijfers niet naar percentages converteert (normalisatie). Het *Maximum cijfer* van een geassocieerde categorie-item wordt automatisch berekend als de som van de maxima van alle geaggregeerde items.
+: A1 70/100, A2 20/80, A3 10/10:
+\`70 + 20 + 10 = 100/190\`';
 $string['aggregationcoef'] = 'Aggregatiecoëfficiënt';
 $string['aggregationcoefextra'] = 'Bonus';
-$string['aggregationcoefextra_help'] = '<h2>Voor som van cijfers aggregatie</h2>
-<p>Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem als bonus dienen voor de categorie. Dit betekent dat het maximumcijfer van dat beoordelingsitem niet meegerekend wordt in het totaal, maar het behaalde cijfer wel. Bijvoorbeeld:</p>
+$string['aggregationcoefextra_help'] = '## Voor som van cijfers aggregatie
+Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem als bonus dienen voor de categorie. Dit betekent dat het maximumcijfer van dat beoordelingsitem niet meegerekend wordt in het totaal, maar het behaalde cijfer wel. Bijvoorbeeld:
 
-<ul>
-    <li>Item 1 wordt beoordeeld als 0-100</li>
-    <li>Item 2 wordt beoordeeld als 0-75</li>
-    <li>Item 1 heeft het bonuspunt vinkje, item 2 niet.</li>
-    <li>Beide items horen bij categorie 1, die de "som van cijfers" als aggregatiestrategie</li>
-    <li>Het totaal van van categorie 1 zal worden beoordeeld als 0-75</li>
-    <li>Een leerling wordt beoordeeld met 20 op item 1 en 70 op item 2</li>
-    <li>Zijn totaal voor category 1 zal  75/75 (20+70 = 90 maar item 1 geldt enkel als bonuspunten)</li>
-</ul>
-<h2>Voor gewogen gemiddeldes van cijfers (bonuspunten)</h2>
-<p>Een waarde groter dan nul behandelt de cijfers van dit beoordelingsitem als bonuspunt tijdens de aggregatie. Het getal is een factor waarmee de cijferwaarde zal vermenigvuldigd worden voor het toegevoegd wordt aan de som van alle cijfers, maar het item zelf zal niet betrokken worden in de deling. Bijvoorbeeld:</p>
+* Item 1 wordt beoordeeld als 0-100
+* Item 2 wordt beoordeeld als 0-75
+* Item 1 heeft het bonuspunt vinkje, item 2 niet.
+* Beide items horen bij categorie 1, die de "som van cijfers" als aggregatiestrategie
+* Het totaal van van categorie 1 zal worden beoordeeld als 0-75
+* Een leerling wordt beoordeeld met 20 op item 1 en 70 op item 2
+* Zijn totaal voor category 1 zal 75/75 (20+70 = 90 maar item 1 geldt enkel als bonuspunten)
 
-<ul>
-    <li>Item 1 wordt beoordeeld als 0-100 en de waarde voor bonuspunten is op 2 gezet</li>
-    <li>Item 2 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000</li>
-    <li>Item 3 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000</li>
-    <li>De 3 items horen bij categorie 1, die gemiddelde van cijfers met bonuspunten als aggregatiestrategie heeft</li>
-    <li>Een leerling krijgt 20 op item 1, 40 op item 2 en 70 op item 3</li>
-    <li>Het totaal van de leerling voor categorie 1 zal 95/100 zijn want 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
+## Voor gewogen gemiddeldes van cijfers (bonuspunten)
+Een waarde groter dan nul behandelt de cijfers van dit beoordelingsitem als bonuspunt tijdens de aggregatie. Het getal is een factor waarmee de cijferwaarde zal vermenigvuldigd worden voor het toegevoegd wordt aan de som van alle cijfers, maar het item zelf zal niet betrokken worden in de deling. Bijvoorbeeld:
+
+* Item 1 wordt beoordeeld als 0-100 en de waarde voor bonuspunten is op 2 gezet
+* Item 2 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000
+* Item 3 wordt beoordeeld als 0-100 en de waarde voor bonuspunten staat nog op 0.0000
+* De 3 items horen bij categorie 1, die gemiddelde van cijfers met bonuspunten als aggregatiestrategie heeft
+* Een leerling krijgt 20 op item 1, 40 op item 2 en 70 op item 3
+* Het totaal van de leerling voor categorie 1 zal 95/100 zijn want 20*2 + (40 + 70)/2 = 95';
 $string['aggregationcoefextrasum'] = 'Bonus';
-$string['aggregationcoefextrasum_help'] = '<p>Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem ingesteld worden als bonusitem voor de categorie. Dit betekent dat het maximumcijfer voor dit item niet toegevoegd zal worden aan het maximumcijfer van de categorie, maar het cijfer van het beoordelingsitem zal wel meegerekend worden. Voorbeeld:</p>
+$string['aggregationcoefextrasum_help'] = 'Wanneer de "som van cijfers" aggregatiestrategie wordt gebruikt, dan kan een beoordelingsitem ingesteld worden als bonusitem voor de categorie. Dit betekent dat het maximumcijfer voor dit item niet toegevoegd zal worden aan het maximumcijfer van de categorie, maar het cijfer van het beoordelingsitem zal wel meegerekend worden. Voorbeeld:
 
-<ul>
-    <li>Item 1 wordt beoordeeld tussen 0-100</li>
-    <li>Item 2 wordt beoordeeld tussen 0-75</li>
-    <li>Item 1 heeft een vinkje bij "bonus", item 2 niet.</li>
-    <li>Beide items horen bij categorie 1, die "Som van cijfers" als aggregatiestrategie heeft</li>
-    <li>Het totaal van categorie 1 zal tussen 0-75 liggen</li>
-    <li>Een leerling krijgt als beoordelingen 20 voor item 1 en 70 voor item 2</li>
-    <li>Het totaal van de leerling voor categorie 1 zal 75/75 zijn (20+70 = 90, maar item 1 geldt als bonus en brengt zo het totaal tot het maximumcijfer voor de categorie)</li>
-</ul>';
+* Item 1 wordt beoordeeld tussen 0-100
+* Item 2 wordt beoordeeld tussen 0-75
+* Item 1 heeft een vinkje bij "bonus", item 2 niet.
+* Beide items horen bij categorie 1, die "Som van cijfers" als aggregatiestrategie heeft
+* Het totaal van categorie 1 zal tussen 0-75 liggen
+* Een leerling krijgt als beoordelingen 20 voor item 1 en 70 voor item 2
+* Het totaal van de leerling voor categorie 1 zal 75/75 zijn (20+70 = 90, maar item 1 geldt als bonus en brengt zo het totaal tot het maximumcijfer voor de categorie)';
 $string['aggregationcoefextraweight'] = 'Bonus weging';
-$string['aggregationcoefextraweight_help'] = '<p>Een waarde hoger dan 0 zorgt ervoor dat dit beoordelingsitem als bonus behandeld wordt tijdens aggregatie. Het getal is een factor waarmee dit cijfer wordt vermenigvuldigd voor het opgeteld wordt bij alle andere cijfers, maar het item zelf zal niet inbegrepen worden in de deling. Bijvoorbeeld:</p>
+$string['aggregationcoefextraweight_help'] = 'Een waarde hoger dan 0 zorgt ervoor dat dit beoordelingsitem als bonus behandeld wordt tijdens aggregatie. Het getal is een factor waarmee dit cijfer wordt vermenigvuldigd voor het opgeteld wordt bij alle andere cijfers, maar het item zelf zal niet inbegrepen worden in de deling. Bijvoorbeeld:
 
-<ul>
-    <li>Item 1 wordt beoordeeld tussen 0-100 en de  "Bonus"-waarde staat op 2</li>
-    <li>Item 2 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000</li>
-    <li>Item 3 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000</li>
-    <li>De 3 items staan in categorie 1, die als aggregatiestrategie "Gemiddelde van cijfers (met bonus) heeft</li>
-    <li>Een leerling krijgt als beoordelingen 20 op Item 1, 40 op Item 2 en 70 op Item 3</li>
-    <li>Het totaal voor categorie 1 voor deze leerling zal zijn: 75/100 (20*2 + 40 + 70) / 2</li>
-</ul>';
+* Item 1 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat op 2
+* Item 2 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000
+* Item 3 wordt beoordeeld tussen 0-100 en de "Bonus"-waarde staat nog op 0.0000
+* De 3 items staan in categorie 1, die als aggregatiestrategie "Gemiddelde van cijfers (met bonus) heeft
+* Een leerling krijgt als beoordelingen 20 op Item 1, 40 op Item 2 en 70 op Item 3
+* Het totaal voor categorie 1 voor deze leerling zal zijn: 75/100 (20*2 + 40 + 70) / 2';
 $string['aggregationcoefweight'] = 'Weging beoordelingsitem';
-$string['aggregationcoefweight_help'] = '<p>Weging toegepast op alle cijfers in dit beoordelingsitem wanneer dit geaggregeerd wordt met andere beoordelingsitems.</p>';
-$string['aggregation_help'] = '<p>Met dit menu kun je kiezen voor een aggregatiestrategie die gebruikt zal worden om het totaalcijfer van elke deelnemer te berekenen. De verschillende mogelijkheden zijn hieronder uitgelegd.</p>
-
-<p>De cijfers worden eerst omgezet naar procentuele waarden (interval van 0 tot 1, dit heet normalisatie), dan geaggregeerd via één van onderstaande functies en uiteindelijk geconverteerd naar de gevraagde schaal of het geassocieerde categorie-itembereik (tussen <em>Minimum cijfer</em> en <em>Maximum cijfer</em>).</p>
-
-<p><strong>Belangrijk</strong>: Een lege beoordeling is gewoon een ontbrekende beoordeling in de cijferlijst en dat kan allerlei oorzaken hebben. Bijvoorbeeld een leerling die nog geen opdracht ingestuurd heeft, een opdracht die nog niet beoordeeld is door de leraar of een beoordeling die manueel verwijderd is door de beheerder van de cijferlijst. Het is dus belangrijk voorzichtig te zijn bij de interpretatie van deze "lege beoordelingen".</p>
-
-<dl id="grade-aggregation-help">
-    <dt>Gemiddelde van alle beoordelingen</dt>
-        <dd>Alle cijfers worden opgeteld en dan gedeeld door het aantal cijfers. Lege cijfers worden meegerekend (zij worden geïnterpreteerd als de minimumwaarde voor het beoordelingsitem).</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, category max 100:<br /><code>(0.7 + 0.25 + 1.0)/3 = 0.65 --> 65/100</code></dd>
-
-    <dt>Gewogen gemiddelde</dt>
-        <dd>Elk beoordelingsitem kan een weging gegeven worden, die dan gebruikt wordt in het berekening van het aggregatiegemiddelde om het balang van elk item voor het algemeen gemiddelde te beïnvloeden.</dd>
-        <dd class="example">A1 70/100 weging 10, A2 20/80 weging 5, A3 10/10 weging 3, categorie max 100:<br /><code>(0.7*10 + 0.25*5 + 1.0*3)/18 = 0.625 --> 62.5/100</code></dd>
-
-
-    <dt>Eenvoudig gewogen gemiddelde</dt>
-        <dd>Het verschil met <em>Gewogen gemiddelde</em> is dat de weging berekend is als <em>Maximum cijfer</em> - <em>Minimum cijfer</em> voor elk item. Een opdracht voor 100 punten krijgt een weging 100, een opdracht voor 10 punten krijgt een weging 10/</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>(0.7*100 + 0.25*80 + 1.0*10)/190 = 0.526 --> 52.6/100</code></dd>
-
-    <dt>Gemiddelde van cijfers (met bonuspunten)</dt>
-        <dd>Rekenkundig gemiddelde met een truukje. Een oude, nu niet meer ondersteunde manier van aggregeren, enkel hier voorzien voor terugwaartse compatibiliteit met oudere activiteitenmodules.</dd>
-
-    <dt>Mediaan van alle beoordelingen</dt>
-        <dd>De mediaan wordt berekend door alle beoordelingen in volgorde te zetten en de middelste beoordelingen te nemen (of het gemiddelde van de twee middelste beoordelingen als het om een even aantal beoordelingen gaat). Het voordeel van de mediaan is dat die niet beïnvloed wordt door cijfers die ongewoon ver van het gemiddelde liggen. Lege beoordelingen worden meegerekend.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br />
-                         <code>median(0.7 ; 0.25 ; 1.0) = 0.7 --> 70/100</code></dd>
-
-     <dt>Laagste cijfer</dt>
-        <dd>Het resultaat is het laagste cijfer na normalisatie. Dit is gewoonlijk gebruikt in combinatie met <em>Aggregeer alleen niet-lege cijfers</em>.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>min(0.7 + 0.25 + 1.0) = 0.25 --> 25/100</code></dd>
-
-    <dt>Hoogste cijfer</dt>
-        <dd>Het resultaat is het hoogste cijfer na normalisatie.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10, categorie max 100:<br /><code>max(0.7 + 0.25 + 1.0) = 1.0 --> 100/100</code></dd>
-
-    <dt>Modus van cijfers</dt>
-        <dd>De modus is de beoordeling die het meest voorkomt. Dit wordt meer gebruikt voor niet-numerieke beoordelingen. Het voordeel boven het gemiddelde is dat het niet beïnvloed wordt door cijfers die uitzonderlijk ver van het gemiddelde liggen. De modus verliest wel zijn betekenis als er meer dan één cijfer het meest voorkomt (er wordt slechts één weerhouden) of wanneer alle cijfers verschillend zijn. Lege beoordelingen worden meegerekend.</dd>
-        <dd class="example">A1 70/100, A2 35/50, A3 20/80, A4 10/10, A5 7/10 categorie max 100:<br /><code>mode(0.7; 0.7; 0.25; 1.0; 0.7) = 0.7 --> 70/100</code></dd>
-
-    <dt>Som van cijfers</dt>
-        <dd>De som van alle cijferwaarden. Schaalwaarden worden genegeerd. Dit is het enige type dat intern de cijfers niet naar percentages converteert (normalisatie). Het <em>Maximum cijfer</em> van een geassocieerde categorie-item wordt automatisch berekend als de som van de maxima van alle geaggregeerde items.</dd>
-        <dd class="example">A1 70/100, A2 20/80, A3 10/10:<br />
-                         <code>70 + 20 + 10 = 100/190</code></dd>
-</dl>';
+$string['aggregationcoefweight_help'] = 'Weging toegepast op alle cijfers in dit beoordelingsitem wanneer dit geaggregeerd wordt met andere beoordelingsitems.';
 $string['aggregationposition'] = 'Aggregatiepositie';
-$string['aggregationposition_help'] = '<p>Definieert de positie van de totalenkolom van de aggregatie in het rapport tenopzichte van de cijfers die geaggregeerd worden.</p>';
+$string['aggregationposition_help'] = 'Definieert de positie van de totalenkolom van de aggregatie in het rapport tenopzichte van de cijfers die geaggregeerd worden.';
 $string['aggregationsvisible'] = 'Beschikbare aggregatietypes';
 $string['aggregationsvisiblehelp'] = 'Selecteer alle aggregatietypes die beschikbaar moeten zijn. Houd de Ctrl-toets ingedrukt om meerdere items te selecteren';
 $string['allgrades'] = 'Alle cijfers per categorie';
@@ -159,9 +145,9 @@ $string['autosort'] = 'Auto-sorteer';
 $string['availableidnumbers'] = 'Beschikbare id-nummers';
 $string['average'] = 'Gemiddelde';
 $string['averagesdecimalpoints'] = 'Decimalen in kolom gemiddelden';
-$string['averagesdecimalpoints_help'] = '<p>Specifieert het aantal te tonen decimalen voor elk kolomgemiddelde. Als overerven is geselecteerd, dan wordt deze opmaak voor elke kolom gebruikt.</p>';
+$string['averagesdecimalpoints_help'] = 'Specifieert het aantal te tonen decimalen voor elk kolomgemiddelde. Als overerven is geselecteerd, dan wordt deze opmaak voor elke kolom gebruikt.';
 $string['averagesdisplaytype'] = 'Opmaak kolom gemiddelden';
-$string['averagesdisplaytype_help'] = '<p>Specifieert hoe het gemiddelde voor elke kolom getoond wordt. Als overerven is ingeschakeld dan wordt deze opmaak voor elke kolom gebruikt.</p>';
+$string['averagesdisplaytype_help'] = 'Specifieert hoe het gemiddelde voor elke kolom getoond wordt. Als overerven is ingeschakeld dan wordt deze opmaak voor elke kolom gebruikt.';
 $string['backupwithoutgradebook'] = 'De configuratie van de cijferlijst is niet opgenomen in de backup.';
 $string['badgrade'] = 'Beoordeling ongeldig';
 $string['badlyformattedscale'] = 'Geef een komma-gescheiden lijst met waarden (minstens twee waarden vereist)';
@@ -170,9 +156,9 @@ $string['bonuspoints'] = 'Bonuspunten';
 $string['bulkcheckboxes'] = 'Selectievakjes voor bulkoperaties';
 $string['calculatedgrade'] = 'Berekend cijfer';
 $string['calculation'] = 'Berekening';
+$string['calculation_help'] = 'Een cijferberekening is een formule die gebruikt wordt om cijfers te bepalen. De formule moet beginnen met een gelijkheidsteken (=) en mag algemene wiskundige operators bevatten, zoals min, max, sum. Indien gewenst kunnen andere cijferelementen in de berekening betrokken worden door hun ID-nummer tussen dubbele vierkante haken op te nemen.';
 $string['calculationadd'] = 'Berekening toevoegen';
 $string['calculationedit'] = 'Berekening bewerken';
-$string['calculation_help'] = 'Een cijferberekening is een formule die gebruikt wordt om cijfers te bepalen. De formule moet beginnen met een gelijkheidsteken (=) en mag algemene wiskundige operators bevatten, zoals min, max, sum. Indien gewenst kunnen andere cijferelementen in de berekening betrokken worden door hun ID-nummer tussen dubbele vierkante haken op te nemen.';
 $string['calculationsaved'] = 'Berekening bewaard';
 $string['calculationview'] = 'Bekijk berekening';
 $string['cannotaccessgroup'] = 'Geen toegang tot de cijfers van de geselecteerde groep.';
@@ -211,7 +197,7 @@ $string['csv'] = 'CSV';
 $string['currentparentaggregation'] = 'Huidige bovenliggende aggregatie';
 $string['curveto'] = 'Afbuigen naar';
 $string['decimalpoints'] = 'Aantal decimalen';
-$string['decimalpoints_help'] = '<p>Stelt het aantal te tonen decimalen in voor elk cijfer. Deze instelling heeft geen effect op de berekeningen met cijfers. Die worden gemaakt met een nauwkeurigheid van 5 decimalen.</p>';
+$string['decimalpoints_help'] = 'Stelt het aantal te tonen decimalen in voor elk cijfer. Deze instelling heeft geen effect op de berekeningen met cijfers. Die worden gemaakt met een nauwkeurigheid van 5 decimalen.';
 $string['default'] = 'Standaard';
 $string['defaultprev'] = 'Standaard ({$a})';
 $string['deletecategory'] = 'Verwijder categorie';
@@ -223,7 +209,7 @@ $string['displaypoints'] = 'Toon punten';
 $string['displayweighted'] = 'Toon een gewogen cijfer';
 $string['dropdown'] = 'Rolmenu';
 $string['droplow'] = 'Laagste weglaten';
-$string['droplow_help'] = '<p>Indien ingesteld zal deze optie de X laagste cijfers negeren, waarbij X de ingestelde waarde voor deze optie is.</p>';
+$string['droplow_help'] = 'Indien ingesteld zal deze optie de X laagste cijfers negeren, waarbij X de ingestelde waarde voor deze optie is.';
 $string['dropped'] = 'Weggelaten';
 $string['dropxlowest'] = 'Laat de X laagste weg';
 $string['dropxlowestwarning'] = 'Opmerking: als je \'Laat de X laagste weg\' gebruikt, dan gaat het cijferlijst er van uit dat alle items in de categorie dezelfde puntenwaarde hebben. Als de puntenwaarden verschillen, dan zullen de resultaten onvoorspelbaar zijn.';
@@ -258,7 +244,7 @@ $string['errorupdatinggradecategoryaggregatesubcats'] = 'Fout bij het updaten va
 $string['errorupdatinggradecategoryaggregation'] = 'Fout bij het aanpassen van het aggregatietype van cijfercategorie ID {$a->id}';
 $string['errorupdatinggradeitemaggregationcoef'] = 'Fout bij het updaten van de aggregatiecoëfficiënt (weging of bonus) van beoordelingsitem ID {$a->id}';
 $string['excluded'] = 'Uitgesloten';
-$string['excluded_help'] = '<p>Als -uitgesloten- is ingesloten, dan zal dit cijfer niet gebruikt worden in aggregaties door bovenliggende beoordelingsitems of categorieën.</p>';
+$string['excluded_help'] = 'Als -uitgesloten- is ingesloten, dan zal dit cijfer niet gebruikt worden in aggregaties door bovenliggende beoordelingsitems of categorieën.';
 $string['expand'] = 'Categorie uitbreiden';
 $string['export'] = 'Exporteer';
 $string['exportalloutcomes'] = 'Exporteer alle competenties';
@@ -268,13 +254,13 @@ $string['exportsettings'] = 'Exporteer instellingen';
 $string['exportto'] = 'Exporteer naar';
 $string['extracreditwarning'] = 'Opmerking: als je alle items van een categorie als \'Extra krediet\' instelt, haal je ze uit de berekening van de cijfers omdat er geen puntentotaal meer is';
 $string['feedback'] = 'Feedback';
+$string['feedback_help'] = 'Notities die de leraar kan maken om bij de beoordelingen te voegen. Dit kan uitgebreide, gepersonaliseerde feedback zijn of een eenvoudige code die verwijst naar een intern systeem of feedback.';
 $string['feedbackadd'] = 'Voeg feedback toe';
 $string['feedbackedit'] = 'Bewerk feedback';
-$string['feedback_help'] = '<p>Notities die de leraar kan maken om bij de beoordelingen te voegen. Dit kan uitgebreide, gepersonaliseerde feedback zijn of een eenvoudige code die verwijst naar een intern systeem of feedback.</p>';
 $string['feedbacksaved'] = 'Feedback bewaard';
 $string['feedbackview'] = 'Bekijk feedback';
 $string['finalgrade'] = 'Totaal beoordeling';
-$string['finalgrade_help'] = '<p>Het uiteindelijke cijfer (gecached) nadat alle berekeningen uitgevoerd zijn.</p>';
+$string['finalgrade_help'] = 'Het uiteindelijke cijfer (gecached) nadat alle berekeningen uitgevoerd zijn.';
 $string['fixedstudents'] = 'Geblokkeerde namenkolom';
 $string['fixedstudents_help'] = 'Blokkeert de kolom met namen, zodat de cijfers horizontaal kunnen scrollen.';
 $string['forceoff'] = 'Verplicht: uit';
@@ -292,7 +278,7 @@ $string['gradebook'] = 'Cijferlijst';
 $string['gradebookhiddenerror'] = 'Het cijferlijst is nu ingesteld om alles voor de leerlingen te verbergen.';
 $string['gradebookhistories'] = 'Cijfergeschiedenis';
 $string['gradeboundary'] = 'Marge cijferbeoordeling';
-$string['gradeboundary_help'] = '<p>De procentuele marges waarbinnen cijfers een bepaalde letter toegewezen zullen krijgen (als gekozen is voor letterbeoordeling). </p>';
+$string['gradeboundary_help'] = 'De procentuele marges waarbinnen cijfers een bepaalde letter toegewezen zullen krijgen (als gekozen is voor letterbeoordeling).';
 $string['gradecategories'] = 'Beoordelingscategorieën';
 $string['gradecategory'] = 'Beoordelingscategorie';
 $string['gradecategoryonmodform'] = 'Beoordelingscategorie';
@@ -300,7 +286,7 @@ $string['gradecategoryonmodform_help'] = 'Deze instelling controleert de categor
 $string['gradecategorysettings'] = 'Beoordelingscategorieën';
 $string['gradedisplay'] = 'Beoordelingen tonen';
 $string['gradedisplaytype'] = 'Hoe beoordelingen tonen';
-$string['gradedisplaytype_help'] = '<p>Specifieert hoe beoordelingen getoond worden in het rapportage en gebruikersrapport. Beoordelingen kunnen getoond worden als cijfers, percentages (afhankelijk van minimum en maximumcijfers) of als letters.</p>';
+$string['gradedisplaytype_help'] = 'Specifieert hoe beoordelingen getoond worden in het rapportage en gebruikersrapport. Beoordelingen kunnen getoond worden als cijfers, percentages (afhankelijk van minimum en maximumcijfers) of als letters.';
 $string['gradedon'] = 'Beoordeeld op {$a}';
 $string['gradeexport'] = 'Export beoordeling';
 $string['gradeexportdecimalpoints'] = 'Cijfers exporteren: decimalen';
@@ -325,20 +311,20 @@ $string['gradeitems'] = 'Beoordelingsitems';
 $string['gradeitemsettings'] = 'Instellingen beoordelingsitems';
 $string['gradeitemsinc'] = 'Te gebruiken beoordelingsitems';
 $string['gradeletter'] = 'Letterbeoordeling';
-$string['gradeletter_help'] = '<p>Een letter of ander symbool dat gebruikt wordt om een cijfermarge voor te stellen.</p>';
+$string['gradeletter_help'] = 'Een letter of ander symbool dat gebruikt wordt om een cijfermarge voor te stellen.';
 $string['gradeletternote'] = 'Om een letterbeoordeling te verwijderen, maak je<br /> gewoon één van de drie tekstzones voor die letter leeg en klik je op bewaren.';
 $string['gradeletters'] = 'Letterbeoordelingen';
 $string['gradelocked'] = 'Cijfer is geblokkeerd';
 $string['gradelong'] = '{$a->grade} / {$a->max}';
 $string['grademax'] = 'Maximum beoordeling';
-$string['grademax_help'] = '<p>Wanneer je cijfers eerder dan letters gebruikt, dan kun je een maximumcijfer instellen. Het maximumcijfer voor een beoordelingsitem afkomstig uit een Moodleactiviteit kan ingesteld worden op de instellingenpagina van die activiteit.</p>';
+$string['grademax_help'] = 'Wanneer je cijfers eerder dan letters gebruikt, dan kun je een maximumcijfer instellen. Het maximumcijfer voor een beoordelingsitem afkomstig uit een Moodleactiviteit kan ingesteld worden op de instellingenpagina van die activiteit.';
 $string['grademin'] = 'Minimum beoordeling';
-$string['grademin_help'] = '<p>Wanneer je cijferbeoordelingen gebruikt, kun je een minimumcijfer instellen.</p>';
+$string['grademin_help'] = 'Wanneer je cijferbeoordelingen gebruikt, kun je een minimumcijfer instellen.';
 $string['gradeoutcomeitem'] = 'Item voor beoordeling competentie';
 $string['gradeoutcomes'] = 'Competenties';
 $string['gradeoutcomescourses'] = 'Cursuscompetenties';
 $string['gradepass'] = 'Door te geven beoordeling';
-$string['gradepass_help'] = '<p>Als een beoordelingsitem een minimumcijfer heeft dat een leerling moet halen om te slagen, kun je dat cijfer hier instellen.</p>';
+$string['gradepass_help'] = 'Als een beoordelingsitem een minimumcijfer heeft dat een leerling moet halen om te slagen, kun je dat cijfer hier instellen.';
 $string['gradepreferences'] = 'Beoordelingsvoorkeuren';
 $string['gradepreferenceshelp'] = 'Help bij voorkeursinstellingen';
 $string['gradepublishing'] = 'Publiceren inschakelen';
@@ -350,14 +336,14 @@ $string['gradesforuser'] = 'Cijfers voor {$a->user}';
 $string['gradesonly'] = 'Enkel beoordelingen';
 $string['gradessettings'] = 'Beoordelingsinstellingen';
 $string['gradetype'] = 'Beoordelingstype';
-$string['gradetype_help'] = '<p>Stelt het gebruikte beoordelingstype in: geen (geen beoordeling mogelijk), cijfer (schakelt maximum- en minimumcijferinstellingen in), schaal (schakelt de schaalinstellingen in) of tekst (enkel feedback). Enkel cijfer en schaal-beoordelingen kunnne geaggregeerd worden. Het beoordelingstype voor een beoordeling, gebaseerd op een Moodleactiviteit wordt ingesteld op de instellingenpagina van de betreffende activiteit.</';
+$string['gradetype_help'] = 'Stelt het gebruikte beoordelingstype in: geen (geen beoordeling mogelijk), cijfer (schakelt maximum- en minimumcijferinstellingen in), schaal (schakelt de schaalinstellingen in) of tekst (enkel feedback). Enkel cijfer en schaal-beoordelingen kunnne geaggregeerd worden. Het beoordelingstype voor een beoordeling, gebaseerd op een Moodleactiviteit wordt ingesteld op de instellingenpagina van de betreffende activiteit.</';
 $string['gradeview'] = 'Bekijk beoordeling';
 $string['gradeweighthelp'] = 'Help bij gewogen beoordelingen';
 $string['groupavg'] = 'Groepsgemiddelde';
 $string['hidden'] = 'Verborgen';
+$string['hidden_help'] = 'Beoordelingen worden verborgen voor leerlingen indien geselecteerd. Een verborgen tot-datum kan ingesteld worden indien gewenst. De cijfers worden pas getoond nadat het beoordelen klaar is.';
 $string['hiddenasdate'] = 'Toon de datum voor verborgen beoordelingen';
 $string['hiddenasdate_help'] = 'Als een gebruiker verborgen cijfers niet kan zien, toon dan de datum in de plaats van een \'-\'.';
-$string['hidden_help'] = 'Beoordelingen worden verborgen voor leerlingen indien geselecteerd. Een verborgen tot-datum kan ingesteld worden indien gewenst. De cijfers worden pas getoond nadat het beoordelen klaar is.';
 $string['hiddenuntil'] = 'Verborgen tot';
 $string['hiddenuntildate'] = 'Verborgen tot: {$a}';
 $string['hideadvanced'] = 'Verberg geavanceerde mogelijkheden';
@@ -375,7 +361,6 @@ $string['hidequickfeedback'] = 'Verberg snelle feedback';
 $string['hideranges'] = 'Verberg marges';
 $string['hidetotalifhiddenitems'] = 'Totalen verbergen als ze verborgen items bevatten?';
 $string['hidetotalifhiddenitems_help'] = 'Deze instelling bepaalt of totalen die verborgen beoordelingen bevatten aan leerllingen getoond worden of vervangen worden door een liggend streepje (-). Indien ze getoond worden, dan kan in het totaal de verborgen items meegerekend worden of niet.
-
 Indien de verborgen items niet meegerekend worden, dan kan het totaal dat leerling en leraar ziet verschillend zijn, omdat de leraar altijd het totaal ziet van alle items, verborgen of niet. Indien de verborgen items wel meegerekend worden, dan zou het kunnen dat leerlingen het resultaat van die items zelf berekenen.';
 $string['hidetotalshowexhiddenitems'] = 'Toon totalen zonder verborgen items';
 $string['hidetotalshowinchiddenitems'] = 'Toon totalen met verborgen items';
@@ -416,7 +401,7 @@ $string['inherit'] = 'overerf';
 $string['intersectioninfo'] = 'Leerling/cijferinformatie';
 $string['item'] = 'Item';
 $string['iteminfo'] = 'Iteminformatie';
-$string['iteminfo_help'] = '<p>Een plaats om informatie te zetten over dit item. De tekst die je hier ingeeft wordt nergens anders getoond.</p>';
+$string['iteminfo_help'] = 'Een plaats om informatie te zetten over dit item. De tekst die je hier ingeeft wordt nergens anders getoond.';
 $string['itemname'] = 'Itemnaam';
 $string['itemnamehelp'] = 'De naam van dit item, doorgegeven vanuit de module.';
 $string['items'] = 'Items';
@@ -432,7 +417,7 @@ $string['letterpercentage'] = 'Letter (percentage)';
 $string['letterreal'] = 'Letter (reëel)';
 $string['letters'] = 'Letters';
 $string['linkedactivity'] = 'Gelinkte activiteit';
-$string['linkedactivity_help'] = '<p>Specifiëert een optionele activiteit waaraan deze competentie is gelinkt. Dit wordt gebruikt om de performantie van de leerling te testen voor criteria die niet beoordeeld worden door het cijfer van de activiteit.</p>';
+$string['linkedactivity_help'] = 'Specifiëert een optionele activiteit waaraan deze competentie is gelinkt. Dit wordt gebruikt om de performantie van de leerling te testen voor criteria die niet beoordeeld worden door het cijfer van de activiteit.';
 $string['linktoactivity'] = 'Link naar {$a->name} activiteit';
 $string['lock'] = 'Blokkeer';
 $string['locked'] = 'Geblokkeerd';
@@ -460,7 +445,7 @@ $string['morethanmax'] = 'Het cijfer, ingegeven voor {$a->itemname} voor {$a->us
 $string['moveselectedto'] = 'Verplaats geselecteerde items naar:';
 $string['movingelement'] = '{$a} aan het verplaatsen';
 $string['multfactor'] = 'Multiplicator';
-$string['multfactor_help'] = '<p>Factor waarmee alle cijfers voor dit beoordelingsitem moeten vermenigvuldigd worden.</p>';
+$string['multfactor_help'] = 'Factor waarmee alle cijfers voor dit beoordelingsitem moeten vermenigvuldigd worden.';
 $string['mypreferences'] = 'Mijn voorkeuren';
 $string['myreportpreferences'] = 'Mijn rapport voorkeuren';
 $string['navmethod'] = 'Navigatiemethode';
@@ -496,6 +481,7 @@ $string['onascaleof'] = 'op een schaal van {$a->grademin} tot {$a->grademax}';
 $string['operations'] = 'Operatie';
 $string['options'] = 'Opties';
 $string['outcome'] = 'Competentie';
+$string['outcome_help'] = 'De competentie waarvoor dit beoordelingsitem staat.';
 $string['outcomeassigntocourse'] = 'Wijs nog een competentie toe aan deze cursus';
 $string['outcomecategory'] = 'Maak competenties in categorie';
 $string['outcomecategorynew'] = 'Nieuwe categorie';
@@ -503,7 +489,6 @@ $string['outcomeconfirmdelete'] = 'Ben je zeker dat je competentie "{$a}" wil ve
 $string['outcomecreate'] = 'Voeg een nieuwe competentie toe';
 $string['outcomedelete'] = 'Verwijder competentie';
 $string['outcomefullname'] = 'Volledige naam';
-$string['outcome_help'] = 'De competentie waarvoor dit beoordelingsitem staat.';
 $string['outcomeitem'] = 'Competentie-item';
 $string['outcomeitemsedit'] = 'Bewerk competentie-item';
 $string['outcomereport'] = 'Rapport competentie';
@@ -517,13 +502,13 @@ $string['outcomeshortname'] = 'Korte naam';
 $string['outcomesstandard'] = 'Standaardcompetenties';
 $string['outcomesstandardavailable'] = 'Beschikbare standaardcompetenties';
 $string['outcomestandard'] = 'Standaardcompetentie';
-$string['outcomestandard_help'] = '<p>Een standaardcompetentie is voor de hele site beschikbaar, voor alle cursussen.</p>';
+$string['outcomestandard_help'] = 'Een standaardcompetentie is voor de hele site beschikbaar, voor alle cursussen.';
 $string['overallaverage'] = 'Algemeen gemiddelde';
 $string['overridden'] = 'Gewijzigd';
-$string['overridden_help'] = '<p>Wanneer ingeschakeld zal deze vlag verhinderen dat deze beoordeling automatisch overschreven kan worden. Deze vlag wordt dikwijls intern ingeschakeld door het cijferboek, maar kan hier manueel in- en uitgeschakeld worden.</p>';
+$string['overridden_help'] = 'Wanneer ingeschakeld zal deze vlag verhinderen dat deze beoordeling automatisch overschreven kan worden. Deze vlag wordt dikwijls intern ingeschakeld door het cijferboek, maar kan hier manueel in- en uitgeschakeld worden.';
 $string['overriddennotice'] = 'Je totaalcijfer voor deze activiteit is manueel aangepast.';
 $string['overridesitedefaultgradedisplaytype'] = 'Standaardinstellingen voor de site negeren';
-$string['overridesitedefaultgradedisplaytype_help'] = '<p>Vink dit af om de site-standaarden voor het tonen van cijfers in het cijferboek uit te schakelen. Hierdoor worden formulierelementen geactiveerd waarmee je de marges voor letterbeoordeling kunt aanpassen volgens jouw keuze.</p>';
+$string['overridesitedefaultgradedisplaytype_help'] = 'Vink dit af om de site-standaarden voor het tonen van cijfers in het cijferboek uit te schakelen. Hierdoor worden formulierelementen geactiveerd waarmee je de marges voor letterbeoordeling kunt aanpassen volgens jouw keuze.';
 $string['parentcategory'] = 'Bovenliggende categorie';
 $string['pctoftotalgrade'] = '% van totaalcijfer';
 $string['percent'] = 'Procent';
@@ -534,7 +519,7 @@ $string['percentascending'] = 'Sorteer procent oplopend';
 $string['percentdescending'] = 'Sorteer procent aflopend';
 $string['percentshort'] = '%';
 $string['plusfactor'] = 'Compensatie';
-$string['plusfactor_help'] = '<p>Getal dat zal opgeteld worden bij elk cijfer voor dit beoordelingsitem, nadat de Multiplicator is toegepast.</p>';
+$string['plusfactor_help'] = 'Getal dat zal opgeteld worden bij elk cijfer voor dit beoordelingsitem, nadat de Multiplicator is toegepast.';
 $string['points'] = 'punten';
 $string['pointsascending'] = 'Sorteer punten oplopend';
 $string['pointsdescending'] = 'Sorteer punten aflopend';
@@ -551,14 +536,14 @@ $string['profilereport_help'] = 'Cijferrapport, gebruikt op gebruikersprofielpag
 $string['publishing'] = 'Publiceren';
 $string['quickfeedback'] = 'Snelle feedback';
 $string['quickgrading'] = 'Snel beoordelen';
-$string['quickgrading_help'] = '<p>Snel beoordelen voegt een tekstveld toe aan elke beoordelingscel op het rapportagescherm, waarmee je tegelijk de feedback kunt geven voor een heel aantal beoordelingen tegelijk. Je kunt dan op de Aanpassen-knop klikken om al deze wijzigingen in één keer door te voeren i.p.v. één voor één.</p>';
+$string['quickgrading_help'] = 'Snel beoordelen voegt een tekstveld toe aan elke beoordelingscel op het rapportagescherm, waarmee je tegelijk de feedback kunt geven voor een heel aantal beoordelingen tegelijk. Je kunt dan op de Aanpassen-knop klikken om al deze wijzigingen in één keer door te voeren i.p.v. één voor één.';
 $string['range'] = 'Marge';
 $string['rangedecimals'] = 'Bereik decimale cijfers';
 $string['rangedecimals_help'] = 'Het aantal te tonen decimale cijfers voor bereik';
 $string['rangesdecimalpoints'] = 'Aantal decimalen in marges';
-$string['rangesdecimalpoints_help'] = '<p>Specifieerd het aantal decimalen die voor elke marge getoond worden. Deze instelling kan overschreven worden per beoordelingsitem.</p>';
+$string['rangesdecimalpoints_help'] = 'Specifieerd het aantal decimalen die voor elke marge getoond worden. Deze instelling kan overschreven worden per beoordelingsitem.';
 $string['rangesdisplaytype'] = 'Hoe marges tonen';
-$string['rangesdisplaytype_help'] = '<p>Specifieerd hoe marges getoond moeten worden. Als je voor overerven kiest, dan wordt dit type voor elke kolom gebruikt.</p>';
+$string['rangesdisplaytype_help'] = 'Specifieerd hoe marges getoond moeten worden. Als je voor overerven kiest, dan wordt dit type voor elke kolom gebruikt.';
 $string['rank'] = 'Ranglijst';
 $string['rawpct'] = 'Ruw %';
 $string['real'] = 'Echt';
@@ -593,7 +578,7 @@ $string['setting'] = 'Instelling';
 $string['settings'] = 'Instellingen';
 $string['setweights'] = 'Wegingen instellen';
 $string['showactivityicons'] = 'Toon icoontjes voor activiteiten';
-$string['showactivityicons_help'] = '<p>Moeten de activiteiten-icoontjes naast de activiteitennamen getoond worden?</p>';
+$string['showactivityicons_help'] = 'Moeten de activiteiten-icoontjes naast de activiteitennamen getoond worden?';
 $string['showallhidden'] = 'Toon verborgen';
 $string['showallstudents'] = 'Toon alle leerlingen';
 $string['showanalysisicon'] = 'Toon cijferanalyse icoontje';
@@ -614,7 +599,6 @@ $string['showgrade_help'] = 'Toon de cijferkolom?';
 $string['showgroups'] = 'Toon groepen';
 $string['showhiddenitems'] = 'Toon verborgen items';
 $string['showhiddenitems_help'] = 'Of verborgen items in een rapport volledig verborgen zijn of enkel de cijfers verborgen zijn en de naam niet.
-
 * Toon verborgen - Namen van verborgen beoordelingsitems worden getoond, maar de cijfers zijn verborgen
 * Enkel verborgen tot - Beoordelingsitems met een "verborgen tot"-datum ingesteld, zijn volledig verborgen tot de ingestelde datum. Daarna wordt het hele item getoond.
 * Niet tonen - Verborgen items zijn volledig verborgen';
@@ -669,7 +653,7 @@ $string['turnfeedbackoff'] = 'Feedback uitschakelen';
 $string['turnfeedbackon'] = 'Feedback inschakelen';
 $string['typenone'] = 'Geen';
 $string['typescale'] = 'Schaal';
-$string['typescale_help'] = '<p>Wanneer het schaal beoordelingstype kiest, kun je een schaal kiezen. De schaal voor een Moodle-activiteit gebaseerde beoording kun je kiezen op de instellingspagina van de activiteit.</p>';
+$string['typescale_help'] = 'Wanneer het schaal beoordelingstype kiest, kun je een schaal kiezen. De schaal voor een Moodle-activiteit gebaseerde beoording kun je kiezen op de instellingspagina van de activiteit.';
 $string['typetext'] = 'Text';
 $string['typevalue'] = 'Waarde';
 $string['uncategorised'] = 'Zonder categorie';

@@ -48,13 +48,13 @@ $string['cannotunmap'] = 'Datenbank-Problem - Aufhebung der Zuordnung ist nicht 
 $string['captcha'] = 'Captcha';
 $string['captchanotset'] = 'Captcha wurde nicht gewählt';
 $string['check'] = 'Mehrere Antworten';
-$string['checkbox'] = 'Mehrere Antworten erlaubt (Checkboxen)';
 $string['check_values'] = 'Antworten';
+$string['checkbox'] = 'Mehrere Antworten erlaubt (Checkboxen)';
 $string['choosefile'] = 'Datei auswählen';
 $string['chosen_feedback_response'] = 'Gewählte Feedback-Antwort';
+$string['complete_the_form'] = 'Formular ausfüllen...';
 $string['completed'] = 'Ausgefüllt';
 $string['completed_feedbacks'] = 'Ausgefüllte Feedbacks';
-$string['complete_the_form'] = 'Formular ausfüllen...';
 $string['completionsubmit'] = 'Als abgeschlossen ansehen, wenn das Feedback abgegeben wurde';
 $string['configallowfullanonymous'] = 'Wenn diese Option aktiviert ist, kann das Feedback ohne eine vorhergehende Anmeldung abgegeben werden. Dies betrifft ausschließlich Feedbacks auf der Startseite.';
 $string['confirmdeleteentry'] = 'Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?';
@@ -71,38 +71,36 @@ $string['delete_old_items'] = 'Alte Elemente löschen';
 $string['delete_template'] = 'Vorlage löschen';
 $string['delete_templates'] = 'Vorlagen löschen...';
 $string['depending'] = 'Abhängige Elemente';
-$string['depending_help'] = 'Abhängige Elemente erlauben es Ihnen zu zeigen, wie Elemente mit den Werten anderer Elemente zusammenhängen<br /><br />
-<strong>Beispiel für abhängige Elemente:</strong>
-<ul>
-<li>Zuerst legen Sie das Element an, von dem andere Elemente abhängen sollen.</li>
-<li>Jetzt fügen Sie einen Seitenumbruch hinzu.</li>
-<li>Danach fügen Sie die Elemente hinzu, die von dem vorherigen Elementewert abhängen sollen.<br />
-Wählen Sie bei der Erstellung das Format "Abhängiges Element" und setzen Sie den notwendigen Wert auf "Abhängiger Wert"</li>
-</ul>
-<strong>Die Struktur sollte folgendermaßen aussehen:</strong>
-<ol>
-<li>Element - Frage: Haben Sie ein Auto? Antwort: ja/nein</li>
-<li>Seitenumbruch</li>
-<li>Element - Frage: Welche Farbe hat Ihr Auto?<br />
-(Dieses Element bezieht sich auf den Wert \'ja\' des Elements 1)</li>
-<li>Element - Frage: Warum haben Sie kein Auto?<br />
-(Dieses Element bezieht sich auf den Wert \'nein\' des Elements 1)</li>
-<li> ... weitere Elemente</li>
-</ol>
+$string['depending_help'] = 'Abhängige Elemente erlauben es Ihnen zu zeigen, wie Elemente mit den Werten anderer Elemente zusammenhängen
+**Beispiel für abhängige Elemente:**
+* Zuerst legen Sie das Element an, von dem andere Elemente abhängen sollen.
+* Jetzt fügen Sie einen Seitenumbruch hinzu.
+* Danach fügen Sie die Elemente hinzu, die von dem vorherigen Elementewert abhängen sollen.
+Wählen Sie bei der Erstellung das Format "Abhängiges Element" und setzen Sie den notwendigen Wert auf "Abhängiger Wert"
+
+**Die Struktur sollte folgendermaßen aussehen:**
+1. Element - Frage: Haben Sie ein Auto? Antwort: ja/nein
+2. Seitenumbruch
+3. Element - Frage: Welche Farbe hat Ihr Auto?
+(Dieses Element bezieht sich auf den Wert \'ja\' des Elements 1)
+4. Element - Frage: Warum haben Sie kein Auto?
+(Dieses Element bezieht sich auf den Wert \'nein\' des Elements 1)
+5. ... weitere Elemente
+
 Das war schon alles. Viel Erfolg!';
 $string['dependitem'] = 'Abhängiges Element';
 $string['dependvalue'] = 'Abhängiger Wert';
 $string['description'] = 'Beschreibung';
 $string['do_not_analyse_empty_submits'] = 'Leere Abgaben nicht berücksichtigen';
+$string['drop_feedback'] = 'Aus diesem Kurs entfernen';
 $string['dropdown'] = 'Einzelne Antwort - Dropdown';
+$string['dropdown_values'] = 'Antworten';
 $string['dropdownlist'] = 'Einzelne Antwort - Dropdown';
 $string['dropdownrated'] = 'Dropdown (skaliert)';
-$string['dropdown_values'] = 'Antworten';
-$string['drop_feedback'] = 'Aus diesem Kurs entfernen';
 $string['edit_item'] = 'Element bearbeiten';
 $string['edit_items'] = 'Elemente bearbeiten...';
-$string['emailnotification'] = 'E-Mail-Mitteilungen';
 $string['email_notification'] = 'E-Mail-Mitteilungen senden';
+$string['emailnotification'] = 'E-Mail-Mitteilungen';
 $string['emailnotification_help'] = 'Wenn diese Option aktiviert ist, bekommen die Admins eine E-Mail-Mitteilung der Feedback-Abgaben.';
 $string['emailteachermail'] = '{$a->username} hat das Feedback \'{$a->feedback}\' abgeschlossen.
 
@@ -114,38 +112,37 @@ Sie können es <a href="{$a->url}">auf der Webseite</a> anschauen.';
 $string['entries_saved'] = 'Einträge wurden gespeichert';
 $string['export_questions'] = 'Fragen exportieren';
 $string['export_to_excel'] = 'Nach Excel exportieren';
-$string['feedbackclose'] = 'Feedback beenden ab';
-$string['feedbackcloses'] = 'Feedback beenden ab';
 $string['feedback:complete'] = 'Ausfüllen eines Feedbacks';
 $string['feedback:createprivatetemplate'] = 'Erstellen eines kursinternen Templates';
 $string['feedback:createpublictemplate'] = 'Erstellen eines öffentlichten Templates';
 $string['feedback:deletesubmissions'] = 'Vollständige Einträge löschen';
 $string['feedback:deletetemplate'] = 'Templates löschen';
 $string['feedback:edititems'] = 'Fragen bearbeiten';
-$string['feedback_is_not_for_anonymous'] = 'Feedback ist für anonyme Teilnehmer nicht möglich';
-$string['feedback_is_not_open'] = 'Feedback ist zu diesem Zeitpunkt nicht möglich';
 $string['feedback:mapcourse'] = 'Kurse globalen Feedbacks zuordnen';
-$string['feedbackopen'] = 'Feedback erlauben ab';
-$string['feedbackopens'] = 'Feedback erlauben ab';
-$string['feedback_options'] = 'Feedback-Einstellungen';
 $string['feedback:receivemail'] = 'E-Mail-Mitteilung empfangen';
 $string['feedback:view'] = 'Feedback anzeigen';
 $string['feedback:viewanalysepage'] = 'Analyseseite nach der Abgabe anzeigen';
 $string['feedback:viewreports'] = 'Auswertungen anzeigen';
+$string['feedback_is_not_for_anonymous'] = 'Feedback ist für anonyme Teilnehmer nicht möglich';
+$string['feedback_is_not_open'] = 'Feedback ist zu diesem Zeitpunkt nicht möglich';
+$string['feedback_options'] = 'Feedback-Einstellungen';
+$string['feedbackclose'] = 'Feedback beenden ab';
+$string['feedbackcloses'] = 'Feedback beenden ab';
+$string['feedbackopen'] = 'Feedback erlauben ab';
+$string['feedbackopens'] = 'Feedback erlauben ab';
 $string['file'] = 'Datei';
 $string['filter_by_course'] = 'Kursfilter';
 $string['handling_error'] = 'Fehler beim Module-Action-Handling';
 $string['hide_no_select_option'] = 'Option \'Nicht ausgewählt\' verbergen';
 $string['horizontal'] = 'nebeneinander';
-$string['importfromthisfile'] = 'Von ausgewählter Datei importieren';
 $string['import_questions'] = 'Fragen importieren';
 $string['import_successfully'] = 'Erfolgreich importiert';
+$string['importfromthisfile'] = 'Von ausgewählter Datei importieren';
 $string['info'] = 'Information';
 $string['infotype'] = 'Informationstyp';
 $string['insufficient_responses'] = 'Unzulängliche Antworten';
 $string['insufficient_responses_for_this_group'] = 'Es gibt unzulängliche Antworten für diese Gruppe';
 $string['insufficient_responses_help'] = 'Es gibt unzulängliche Antworten für diese Gruppe.
-
 Um das Feedback anonym zu halten, müssen mindestens zwei Antworten abgegeben werden.';
 $string['item_label'] = 'Beschriftung';
 $string['item_name'] = 'Name des Elementes';
@@ -154,7 +151,6 @@ $string['label'] = 'Textfeld';
 $string['line_values'] = 'Werte';
 $string['mapcourse'] = 'Kurs zuordnen';
 $string['mapcourse_help'] = 'Standardmäßig sind Feedbacks, die Sie auf Ihrer Startseite erstellt haben, auf der gesamten Website verfügbar und werden über den Block Feedback in allen Kursen auftauchen.
-
 Sie können das Erscheinen in jedem Kurs erzwingen, indem Sie einen festen Block erzeugen. Andererseits können Sie das Feedback auf ausgewählte Kurse einschränken, indem Sie das Feedback mit bestimmten Kursen verknüpfen.';
 $string['mapcourseinfo'] = 'Dies ist ein globales Feedback. Es ist in allen Kursen verfügbar, die den Feedback-Block nutzen. Die Kurse in denen das Feedback erscheinen sollen, können begrenzt werden durch explizites Zuordnen. Dazu muss der Kurs gesucht und diesem Feedback zugeordnet werden.';
 $string['mapcoursenone'] = 'Keinem Kurs zugeordnet. Dieses Feedback ist in allen Kursen verfügbar';
@@ -169,16 +165,16 @@ $string['mode'] = 'Modus';
 $string['modulename'] = 'Feedback';
 $string['modulename_help'] = 'Das Modul Feedback ermöglicht die Erstellung nutzerspezifischer Auswertungen';
 $string['modulenameplural'] = 'Feedbacks';
-$string['movedown_item'] = 'Element nach unten verschieben';
 $string['move_here'] = 'Hierhin verschieben';
 $string['move_item'] = 'Element verschieben';
+$string['movedown_item'] = 'Element nach unten verschieben';
 $string['moveup_item'] = 'Element nach oben verschieben';
 $string['multichoice'] = 'Multiple-Choice';
+$string['multichoice_values'] = 'Antworten';
 $string['multichoicerated'] = 'Multiple-Choice (skaliert)';
 $string['multichoicetype'] = 'Typ';
-$string['multichoice_values'] = 'Antworten';
-$string['multiplesubmit'] = 'Mehrfache Abgabe';
 $string['multiple_submit'] = 'Mehrfache Abgabe';
+$string['multiplesubmit'] = 'Mehrfache Abgabe';
 $string['multiplesubmit_help'] = 'Wenn diese Option für anonyme Auswertungen aktiviert ist, dürfen Teilnehmer/innen das Feedback beliebig oft abgeben.';
 $string['name'] = 'Name';
 $string['name_required'] = 'Name benötigt';
@@ -187,14 +183,14 @@ $string['no_handler'] = 'Keine Aktion gefunden!';
 $string['no_itemlabel'] = 'Keine Beschriftung';
 $string['no_itemname'] = 'Keine Bezeichnung des Eintrags';
 $string['no_items_available_yet'] = 'Noch keine Elemente definiert';
+$string['no_templates_available_yet'] = 'Noch keine Vorlagen definiert';
 $string['non_anonymous'] = 'Nicht anonym';
 $string['non_anonymous_entries'] = 'Nicht-anonyme Einträge';
 $string['non_respondents_students'] = 'Nicht-antwortende Teilnehmer/innen';
-$string['notavailable'] = 'dieses Feedback ist nicht verfügbar.';
 $string['not_completed_yet'] = 'Noch nicht ausgefüllt';
-$string['no_templates_available_yet'] = 'Noch keine Vorlagen definiert';
 $string['not_selected'] = 'Nicht ausgewählt';
 $string['not_started'] = 'Nicht begonnen';
+$string['notavailable'] = 'dieses Feedback ist nicht verfügbar.';
 $string['numeric'] = 'Numerische Antwort';
 $string['numeric_range_from'] = 'Bereich von';
 $string['numeric_range_to'] = 'Bereich bis';
@@ -204,9 +200,9 @@ $string['oldvalueswillbedeleted'] = 'Die aktuelle Frage und alle Nutzerantworten
 $string['only_one_captcha_allowed'] = 'Im Feedback ist nur ein Captcha erlaubt';
 $string['overview'] = 'Überblick';
 $string['page'] = 'Seite';
+$string['page-mod-feedback-x'] = 'Jede Feedback-Seite';
 $string['page_after_submit'] = 'Seite nach dem Absenden';
 $string['pagebreak'] = 'Seitenumbruch';
-$string['page-mod-feedback-x'] = 'Jede Feedback-Seite';
 $string['parameters_missing'] = 'Fehlende Parameter';
 $string['picture'] = 'Bildauswahl';
 $string['picture_file_list'] = 'Liste der Bilder';
@@ -221,10 +217,10 @@ $string['public'] = 'öffentlich';
 $string['question'] = 'Frage';
 $string['questions'] = 'Fragen';
 $string['radio'] = 'Einzelne Antwort - Radiobutton';
+$string['radio_values'] = 'Antworten';
 $string['radiobutton'] = 'Einzelne Antwort - Radiobutton';
 $string['radiobutton_rated'] = 'Radiobutton (skaliert)';
 $string['radiorated'] = 'Radiobutton (skaliert)';
-$string['radio_values'] = 'Antworten';
 $string['ready_feedbacks'] = 'Fertige Feedbacks';
 $string['relateditemsdeleted'] = 'Alle Nutzerantworten für diese Frage werden gelöscht';
 $string['required'] = 'Erforderlich';
@@ -262,8 +258,8 @@ $string['switch_group'] = 'Gruppe wechseln';
 $string['switch_item_to_not_required'] = 'Wechseln zu: Eintrag nicht erforderlich';
 $string['switch_item_to_required'] = 'Wechseln zu: Eintrag erforderlich';
 $string['template'] = 'Vorlage';
-$string['templates'] = 'Vorlagen';
 $string['template_saved'] = 'Vorlage gespeichert';
+$string['templates'] = 'Vorlagen';
 $string['textarea'] = 'Eingabebereich';
 $string['textarea_height'] = 'Anzahl der Zeilen';
 $string['textarea_width'] = 'Breite des Textbereiches';

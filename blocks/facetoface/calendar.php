@@ -589,6 +589,8 @@ function print_sessions($sessions, $tab) {
 
     $currentday = 0;
     $currenttable = new_session_table();
+
+
     foreach ($sessions as $session) {
         $sessionlink = html_writer::link(new moodle_url('/mod/facetoface/view.php', array('f' => $session->facetofaceid)), format_string($session->name));
         $sessionrow = array($sessionlink);
@@ -651,6 +653,23 @@ function print_sessions($sessions, $tab) {
         }
         $sessionrow[] = $signuplink;
         $currenttable->data[] = $sessionrow;
+
+        // Set headings
+        $headings = array();
+        $headings['name'] = get_string('name');
+        foreach ($customfields as $field) {
+            if (!empty($field->showinsummary)) {
+                $headings[$field->shortname] = $field->name;
+            }
+        }
+        if ($tab == 'c') {
+            $headings['date'] = get_string('date');
+        }
+        $headings['starttime'] = get_string('starttime', 'block_facetoface');
+        $headings['finishtime'] = get_string('finishtime', 'block_facetoface');
+        $headings['details'] = get_string('details', 'facetoface');
+
+        $currenttable->head = $headings;
 
         // First couple of columns should take most of the space
         $nbcolumns = count($sessionrow);

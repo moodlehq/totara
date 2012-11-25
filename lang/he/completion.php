@@ -63,8 +63,7 @@ $string['completion-title-manual-y'] = 'סמן כ-"לא הושלם" :{$a}';
 $string['completion-y'] = 'הושלם';
 $string['completion_automatic'] = 'הצג פעילות כ"הושלם" כאשר התנאים מתמלאים';
 $string['completion_help'] = 'אם מאופשר, השלמת הפעילות תיהיה במעקב, ידנית או אוטומטית בהתחשב במספר תנאים. תנאים מסויימים יוגדרו אם תרצה בכך. אם כן, הפעילות תחשב שהושלמה כאשר כל התנאים מתמלאים.
-
-בבחירה ב-הבא, לשם הפעילות בדף הקורס  מציינת מתי הפעילות הושלמה.';
+בבחירה ב-הבא, לשם הפעילות בדף הקורס מציינת מתי הפעילות הושלמה.';
 $string['completion_manual'] = 'סטודנטים יכולים לסמן ידנית השלמת פעילות';
 $string['completion_none'] = 'אל תציין השלמת פעילות';
 $string['completiondisabled'] = 'לא פעיל';
@@ -82,7 +81,7 @@ $string['completionstartonenrol'] = 'מעקב למידה (השלמה) מתחיל
 $string['completionstartonenrolhelp'] = 'מתחיל לעקוב אחר תהליך הסטודנט בהשלמת הקורס לאחר רישום לקורס';
 $string['completionusegrade'] = 'ציון נדרש';
 $string['completionusegrade_desc'] = 'סטודנטים חייבים לקבל ציון בכדי להשלים את הפעילות';
-$string['completionusegrade_help'] = 'אם מאופשר, הפעילות נחשבת כהושלמה כאשר הסטודנט מקבל ציון. צלמיות "עבר" ו"נכשל"  יוצגו אם ציון עובר עבור הפעילות הוגדר.';
+$string['completionusegrade_help'] = 'אם מאופשר, הפעילות נחשבת כהושלמה כאשר הסטודנט מקבל ציון. צלמיות "עבר" ו"נכשל" יוצגו אם ציון עובר עבור הפעילות הוגדר.';
 $string['completionview'] = 'צפיה נדרשת';
 $string['completionview_desc'] = 'סטודנטים חייבים לצפות בפעילות זו בכדי להשלים אותה';
 $string['configenablecompletion'] = 'כאשר פעיל, הדבר מאפשר לך להפעיל את תכונת מעקב (תהליך) ההשלמה בשלב הקורס.';
@@ -140,7 +139,7 @@ $string['markingyourselfcomplete'] = 'סימון עצמך כ"הושלם"';
 $string['moredetails'] = 'פרטים נוספים';
 $string['nocriteriaset'] = 'לא הוגדר מערך קטגוריות עבור קורס זה';
 $string['notcompleted'] = 'לא הושלם';
-$string['notenroled'] = ' אינך רשום כסטודנט בקורס זה';
+$string['notenroled'] = 'אינך רשום כסטודנט בקורס זה';
 $string['notyetstarted'] = 'עדיין לא התחיל';
 $string['overallcriteriaaggregation'] = 'סך-כל סוג קריטריון צבירה';
 $string['pending'] = 'תלוי';

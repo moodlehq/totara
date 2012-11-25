@@ -29,31 +29,28 @@ $string['addcompletions'] = 'Aggiungi {no} condizioni sulle attività';
 $string['addgrades'] = 'Aggiungi {no} condizioni sulle valutazioni';
 $string['availabilityconditions'] = 'Condizioni per l\'accesso';
 $string['availablefrom'] = 'Disponibile dal';
-$string['availablefrom_help'] = 'Le date di disponibilità  stabiliscono quando uno studente può accedere all\'attività tramite il link nella home page del corso
-
+$string['availablefrom_help'] = 'Le date di disponibilità stabiliscono quando uno studente può accedere all\'attività tramite il link nella home page del corso
 La differenza tra le date di disponibilità e la visibilità consistono nel fatto che al di fuori delle date di disponibilità, tramite l\'impostazione di visibilità lo studente può vedere la descrizione dell\'attività mentre le date di disponibilità impediscono del tutto l\'accesso all\'attività';
 $string['availableuntil'] = 'Disponibile fino al';
 $string['badavailabledates'] = 'Date non valide. Se imposti entrambe le date, la data "Disponibile dal" deve essere anteriore alla data "Disponibile fino al".';
 $string['badgradelimits'] = 'Se imposti sia il valore  massimo sia il valore minimo della valutazione, il valore massimo deve essere superiore al minimo.';
 $string['completion_complete'] = 'deve risultare completata';
-$string['completioncondition'] = 'Stato dell\'attività';
-$string['completioncondition_help'] = 'E\' possibile definire condizioni per l\'accesso all\'attività basate sullo stato di completamento di altre attività. Per usare questa impostazione il tracciamento del completamento delle attività deve essere attivo.
-
-E\' possibile aggiungere altre condizioni oltre la prima. L\'attività diverrà disponibile quando tutte le condizioni saranno state soddisfatte.';
 $string['completion_fail'] = 'deve risultare completata senza la sufficienza';
 $string['completion_incomplete'] = 'deve risultare non completata';
 $string['completion_pass'] = 'deve risultare completata con la sufficienza';
+$string['completioncondition'] = 'Stato dell\'attività';
+$string['completioncondition_help'] = 'E\' possibile definire condizioni per l\'accesso all\'attività basate sullo stato di completamento di altre attività. Per usare questa impostazione il tracciamento del completamento delle attività deve essere attivo.
+E\' possibile aggiungere altre condizioni oltre la prima. L\'attività diverrà disponibile quando tutte le condizioni saranno state soddisfatte.';
 $string['configenableavailability'] = 'La disponibilità condizionata consente di definire i criteri (basati su valutazione, date, completamento) per l\'accesso alle attività e alle risorse.';
 $string['enableavailability'] = 'Abilita disponibilità condizionata';
 $string['grade_atleast'] = 'deve essere almeno';
+$string['grade_upto'] = 'e minore di';
 $string['gradecondition'] = 'Valutazione da ottenere';
 $string['gradecondition_help'] = 'L\'impostazione permette di definire il punteggio da ottenere prima di rendere disponibile l\'attività.
-
 E\' possibile aggiungere altre condizioni oltre la prima. L\'attività diverrà disponibile quando tutte le condizioni saranno state soddisfatte.';
 $string['gradeitembutnolimits'] = 'Devi inserire un valore massimo, minimo o entrambi.';
 $string['gradelimitsbutnoitem'] = 'Devi scegliere un elemento di valutazione.';
 $string['gradesmustbenumeric'] = 'I valori massimo e minimo della valutazione devono essere numerici (o lasciati vuoti).';
-$string['grade_upto'] = 'e minore di ';
 $string['none'] = '(nessuno)';
 $string['notavailableyet'] = 'Non ancora disponibile';
 $string['requires_completion_0'] = 'Disponibile se l\'attività <strong>{$a}</strong> risulta non completata.';

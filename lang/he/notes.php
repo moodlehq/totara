@@ -32,7 +32,7 @@ $string['cannotdeletepost'] = 'שגיאה התרחשה כאשר נמחק הפר�
 $string['configenablenotes'] = 'לאפשר צבירת הערות אישיות על משתמשים.';
 $string['content'] = 'תוכן ההערה';
 $string['course'] = 'קורס';
-$string['coursenotes'] = 'הערות על הסטודנט הזמינות לכל המורים בקורס ';
+$string['coursenotes'] = 'הערות על הסטודנט הזמינות לכל המורים בקורס';
 $string['created'] = 'נוצר';
 $string['deleteconfirm'] = 'למחוק הערה זו?';
 $string['deletenotes'] = 'מחק את כל הערות המורה';
@@ -55,17 +55,11 @@ $string['page-notes-x'] = 'כל הערות העמודים';
 $string['personal'] = 'אישי';
 $string['personalnotes'] = 'הערות על הסטודנט הזמינות לך בלבד';
 $string['publishstate'] = 'הקשר';
-$string['publishstate_help'] = '
+$string['publishstate_help'] = 'קיימות שלוש אפשרויות הגדרה כאן:
 
-<p>קיימות שלוש אפשרויות הגדרה כאן:</p>
-
-<ul>
-
-<li><strong>אישי</strong> - ההודעה תיהיה גלויה לעין רק לך.</li>
-
-<li><strong>קורס</strong> - ההודעה תיהיה גלויה לעין למורים של קורס זה.</li>
-
-<li><strong>אתר</strong> - ההודעה תיהיה גלויה לעין למורים בכל הקורסים.</li>';
+\* **|אישי** - ההודעה תיהיה גלויה לעין רק לך.
+\* **|קורס** - ההודעה תיהיה גלויה לעין למורים של קורס זה.
+\* **|אתר** - ההודעה תיהיה גלויה לעין למורים בכל הקורסים.';
 $string['site'] = 'אתר';
 $string['sitenotes'] = 'הערות על הסטודנט הזמינות לכל המורים במערכת';
 $string['unknown'] = 'לא ידוע';

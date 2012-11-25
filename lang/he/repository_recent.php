@@ -30,5 +30,5 @@ $string['emptyfilelist'] = 'אין קבצים לצפיה';
 $string['notitle'] = 'אין כותרת';
 $string['pluginname'] = 'קבצים שנוספו לאחרונה';
 $string['pluginname_help'] = 'קבצים שהשתמשו בהם לאחרונה על ידי המשתמש הנוכחי';
-$string['recentfilesnumber'] = 'מספר הקבצים האחרונים';
 $string['recent:view'] = 'תוסף צפיה בקבצים אחרונים';
+$string['recentfilesnumber'] = 'מספר הקבצים האחרונים';

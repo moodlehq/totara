@@ -66,9 +66,7 @@ $string['median'] = 'Nota mediana (para {$a})';
 $string['modelresponse'] = 'Resposta do modelo';
 $string['negcovar'] = 'Covariância negativa da nota com a nota total da tentativa';
 $string['negcovar_help'] = 'A nota desta pergunta para esse conjunto de tentativas no questionário varia de maneira oposta ao da nota de todas as tentativas. Isso significa qua a nota de todas as tentativas tende a estar abaixo da média quando a nota para esta pergunta está acima da média e vice-versa.
-
 Nossa equação de peso efetivo da pergunta não pode ser calculado neste caso. Os cálculos de peso efetivo da pergunta para as outras questões neste questionário são o peso efetivo de pergunta para estas questões se as questões em destaque com uma covariância negativa é dada para uma avaliação máxima de zero.
-
 Se você editar um questionário e atribuir a esta(s) pergunta(s) com covariância negativa um máximo grau de zero, então o peso efetivo para estas questões será zero e o peso efetivo da pergunta das outras perguntas serão calculados agora.';
 $string['nostudentsingroup'] = 'Ainda não há estudantes no grupo';
 $string['optiongrade'] = 'Crédito parcial';
@@ -90,11 +88,11 @@ $string['recalculatenow'] = 'Recalcular agora';
 $string['response'] = 'Resposta';
 $string['skewness'] = 'Assimetría da distribuição de puntuação (para {$a})';
 $string['standarddeviation'] = 'Desvio padrão (para {$a})';
-$string['standarddeviationq'] = 'Desvio padrão ';
+$string['standarddeviationq'] = 'Desvio padrão';
 $string['standarderror'] = 'Erro padrão (para {$a})';
 $string['statistics'] = 'Estatísticas';
 $string['statistics:componentname'] = 'Relatório de esteatíticas do questionário';
-$string['statisticsreport'] = 'Relatório de estatísticas';
-$string['statisticsreportgraph'] = 'Estatística das posições da pergunta ';
 $string['statistics:view'] = 'Ver relatório de estatísticas';
+$string['statisticsreport'] = 'Relatório de estatísticas';
+$string['statisticsreportgraph'] = 'Estatística das posições da pergunta';
 $string['statsfor'] = 'Quiz de estatísticas (por {$a})';

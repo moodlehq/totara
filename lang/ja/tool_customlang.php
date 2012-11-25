@@ -52,7 +52,6 @@ $string['modifiednum'] = '{$a} 件の修正済みストリングがあります�
 $string['nostringsfound'] = 'ストリングが見つかりませんでした。フィルタ設定を修正してください。';
 $string['placeholder'] = 'プレースホルダ';
 $string['placeholder_help'] = 'プレースホルダはストリングの中で使用される {$a} または {$a->something} のような特別な記述です。これらの記述はストリングが実際に表示される時点で値と置換されます。
-
 プレースホルダはオリジナルのストリングと同じようにコピーすることが重要です。また、翻訳したり、左右の向きを変えないでください。';
 $string['placeholderwarning'] = 'プレースホルダを含むストリング';
 $string['pluginname'] = '言語カスタマイゼーション';

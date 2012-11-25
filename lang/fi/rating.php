@@ -32,22 +32,15 @@ $string['aggregatemin'] = 'Arviointiminimi';
 $string['aggregatenone'] = 'Arviointi ei käytössä';
 $string['aggregatesum'] = 'Arviointien summa';
 $string['aggregatetype'] = 'Arviointien käyttöperiaate';
-$string['aggregatetype_help'] = '<h2>Opiskelijan työskentelyn vaikutus arvosanaan</h2>
+$string['aggregatetype_help'] = '## Opiskelijan työskentelyn vaikutus arvosanaan
+Tämä ominaisuus määrittelee, millä tavalla aktiviteettien arvioinneista muodostetaan lopullinen arvosana. Vaihtoehtoja ovat:
+\* **|Arviointien keskiarvo**: Osallistujan kaikkien arviointien keskiarvo.
+\* **|Arviointien lukumäärä**: Osallistujan tuottamien, arviointikohteiden lukumäärästä tulee lopullinen arvosana. Huomaa, että kertynyt pistemäärä ei voi ylittää aktiviteetille määriteltyä maksimipistemäärää, ja yksittäiselle arviointikohteelle annetuilla pisteillä ei ole merkitystä.
+\* **|Korkein arviointi**: Korkein osallistujan saama pistemäärä tai arvosana kaikista aktiviteeteista tulee lopulliseksi arvosanaksi. Tämä vaihtoehto on käyttökelpoinen, jos haluaa korostaa osallistujien parasta työskentelyä ja mahdollistaa korkealaatuisen työskentelyn ohella kevyemmänkin osallistumisen.
+\* **|Heikoin arviointi**: Osallistujan kaikista aktiviteeteista saama heikoin pistemäärä tai arvosana tulee lopulliseksi arvosanaksi. Tämä vaihtoehto suosii kulttuuria, joka vaatii korkeaa laatua kaikilta tuotoksilta.
+\* **|Pisteiden summa**: Osallistujan kaikista aktiviteeteista saamat pisteet lasketaan yhteen lopulliseksi pistemääräksi. Huomaa, että summa ei voi ylittää aktiviteetin maksimipistemäärää.
 
-<p>Tämä ominaisuus määrittelee, millä tavalla aktiviteettien arvioinneista muodostetaan lopullinen arvosana. Vaihtoehtoja ovat:</p>
-<ul>
-<li><strong>Arviointien keskiarvo</strong>: Osallistujan kaikkien arviointien keskiarvo. </li>
-
- <li><strong>Arviointien lukumäärä</strong>: Osallistujan tuottamien, arviointikohteiden lukumäärästä tulee lopullinen arvosana. Huomaa, että kertynyt pistemäärä ei voi ylittää aktiviteetille määriteltyä maksimipistemäärää, ja yksittäiselle arviointikohteelle annetuilla pisteillä ei ole merkitystä.</li>
-
-<li><strong>Korkein arviointi</strong>: Korkein osallistujan saama pistemäärä tai arvosana kaikista aktiviteeteista tulee lopulliseksi arvosanaksi. Tämä vaihtoehto on käyttökelpoinen, jos haluaa korostaa osallistujien parasta työskentelyä ja mahdollistaa korkealaatuisen työskentelyn ohella kevyemmänkin osallistumisen.</li>
-
-<li><strong>Heikoin arviointi</strong>: Osallistujan kaikista aktiviteeteista saama heikoin pistemäärä tai arvosana tulee lopulliseksi arvosanaksi. Tämä vaihtoehto suosii kulttuuria, joka vaatii korkeaa laatua kaikilta tuotoksilta.</li>
-
-<li><strong>Pisteiden summa</strong>: Osallistujan kaikista aktiviteeteista saamat pisteet lasketaan yhteen lopulliseksi pistemääräksi. Huomaa, että summa ei voi ylittää aktiviteetin maksimipistemäärää.</li>
-</ul>
-
-<p>Huomaa, että jos arviointi ei ole aktiviteetissa ollenkaan käytössä, ko. aktiviteetista ei tule saraketta arviointikirjaan.</p>';
+Huomaa, että jos arviointi ei ole aktiviteetissa ollenkaan käytössä, ko. aktiviteetista ei tule saraketta arviointikirjaan.';
 $string['allowratings'] = 'Salli kohteiden arviointi?';
 $string['allratingsforitem'] = 'Kaikki palautetut arvioinnit';
 $string['capabilitychecknotavailable'] = 'Kykyjen tarkistus ei saatavilla kunnes aktiviteetti on tallennettu';

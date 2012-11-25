@@ -31,17 +31,16 @@ $string['answered'] = 'Répondu';
 $string['atleastoneoption'] = 'Vous devez fournir au moins une proposition de réponse.';
 $string['choice'] = 'Proposition';
 $string['choice:choose'] = 'Répondre aux sondages';
-$string['choiceclose'] = 'Jusqu\'au';
 $string['choice:deleteresponses'] = 'Supprimer les réponses';
 $string['choice:downloadresponses'] = 'Télécharger les réponses';
+$string['choice:readresponses'] = 'Lire les réponses';
+$string['choiceclose'] = 'Jusqu\'au';
 $string['choicefull'] = 'Ce sondage est complet et n\'a plus de place disponible.';
 $string['choicename'] = 'Nom du sondage';
 $string['choiceopen'] = 'Ouvert le';
 $string['choiceoptions'] = 'Options du sondage';
 $string['choiceoptions_help'] = 'Vous indiquez ici les réponses possibles parmi lesquelles les participants auront à choisir.
-
 Les champs non remplis ne seront pas affichés. Si vous désirez plus d\'options, cliquez sur le bouton « Ajouter 3 champs au formulaire ».';
-$string['choice:readresponses'] = 'Lire les réponses';
 $string['choicesaved'] = 'Votre sondage a été enregistré';
 $string['choicetext'] = 'Texte de la question';
 $string['chooseaction'] = 'Choisir une action...';
@@ -55,7 +54,6 @@ $string['havetologin'] = 'Vous devez vous connecter pour pouvoir répondre à ce
 $string['limit'] = 'Limite';
 $string['limitanswers'] = 'Limiter le nombre de réponses permises';
 $string['limitanswers_help'] = 'Ce réglage vous permet de limiter le nombre de personnes pouvant sélectionner une option d\'un sondage. Lorsque cette limite est atteinte, personne d\'autre ne pourra plus choisir cette option.
-
 Si les limites ne sont pas activées, un nombre quelconque de participants pourra choisir chacune des options.';
 $string['modulename'] = 'Sondage';
 $string['modulename_help'] = 'L\'activité Sondage permet à l\'enseignant de poser une question et d\'indiquer un choix de réponses possibles.';

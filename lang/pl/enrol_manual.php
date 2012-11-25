@@ -31,6 +31,6 @@ $string['manual:enrol'] = 'Zapisz użytkowników';
 $string['manual:unenrol'] = 'Wypisz użytkowników z kursu';
 $string['pluginname'] = 'Manualne zapisy';
 $string['status'] = 'Włącz manualne zapisy';
-$string['statusenabled'] = 'Włączone';
 $string['status_help'] = 'To ustawienie określa, czy użytkownicy mogą być przypisani ręcznie, za pośrednictwem linku w ustawieniach administracji kursu, przez użytkownika z odpowiednimi uprawnieniami, takimi jak nauczyciel.';
+$string['statusenabled'] = 'Włączone';
 $string['unenrolselfconfirm'] = 'Czy na pewno chcesz wypisać się z kursu "{$a}"?';

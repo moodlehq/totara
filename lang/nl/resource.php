@@ -43,9 +43,7 @@ $string['configpopupwidth'] = 'Hoe breed zou een popup-venster standaard moeten 
 $string['contentheader'] = 'Inhoud';
 $string['displayoptions'] = 'Beschikbare opties om te tonen';
 $string['displayselect'] = 'Toon';
-$string['displayselectexplain'] = 'Kiest de manier om te tonen. Jammer genoeg zijn niet alle types geschikt voor alle bestanden.';
 $string['displayselect_help'] = 'Deze instelling, samen met het bestandstype en of de browser ingebed tonen toestaat, bepaalt hoe een bestand getoond wordt. Mogelijke opties zijn:
-
 * Automatisch - De beste optie om het bestand te tonen wordt automatisch geselecteerd
 * Ingebed - Het bestand wordt getoond op de pagina onder de navigatiebalk, samen met de bestandsbeschrijving en de blokken op de pagina
 * Download verplicht - De gebruiker krijgt de vraag om het bestand te downloaden
@@ -53,6 +51,7 @@ $string['displayselect_help'] = 'Deze instelling, samen met het bestandstype en 
 * In pop-up - Het bestand wordt getoond in een nieuw browservenster zonder menu\'s en zonder adresbalk
 * In frame - Het bestand wordt getoond in een frame onder de navigatiebalk en bestandsbeschrijving
 * Nieuw venster - Het bestand wordt getoond in een nieuw browservenster met menu\'s en een adresbalk';
+$string['displayselectexplain'] = 'Kiest de manier om te tonen. Jammer genoeg zijn niet alle types geschikt voor alle bestanden.';
 $string['encryptedcode'] = 'Geëncrypteerde code';
 $string['filenotfound'] = 'Bestand niet gevonden.';
 $string['filterfiles'] = 'Gebruik filters op de inhoud';
@@ -81,7 +80,7 @@ $string['printheading'] = 'Toon naam bron';
 $string['printheadingexplain'] = 'Bronnaam tonen boven de inhoud? Sommige manieren van tonen zullen de bronnaam niet laten zien, zelfs niet als het zo ingesteld is.';
 $string['printintro'] = 'Toon bronbeschrijving';
 $string['printintroexplain'] = 'Toon bronbeschrijving onder de inhoud? Sommige manieren van toenen zullen de beschrijving niet laten zien, zelfs niet als het zo ingesteld is.';
-$string['resourcecontent'] = 'Bestanden en submappen';
 $string['resource:exportresource'] = 'Bron exporteren';
 $string['resource:view'] = 'Bron bekijken';
+$string['resourcecontent'] = 'Bestanden en submappen';
 $string['selectmainfile'] = 'Kies het hoofdbestand door op het icoontje naast de bestandsnaam te klikken.';

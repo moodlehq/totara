@@ -25,5 +25,5 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['plugidnname_help'] = 'נוסחה זו מקנה את היבוא של שאלות  בחירה מרובות הנשמרות ב תסדיר  - Learnwise\'s XML.';
+$string['plugidnname_help'] = 'נוסחה זו מקנה את היבוא של שאלות בחירה מרובות הנשמרות ב תסדיר - Learnwise\'s XML.';
 $string['pluginname'] = 'Learnwise';

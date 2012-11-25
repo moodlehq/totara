@@ -236,8 +236,8 @@ Questo permetterà  a Moodle di impostare il limite di memoria da solo.</li>
 <blockquote>php_value memory_limit 40M</blockquote>
 <p>Tuttavia, su alcuni server la direttiva potrebbe impedire  a <b>tutte</b> le pagine PHP di funzionare (apapriranno degli erorri durante la visualizzazione delle pagine), in tal caso dovrai rimuovere il file .htaccess.</li></ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'Il PHP non è stato configurato correttamente con l\'estensione MSSQL e non può comunicare con SQL*Server. Controllate il vostro php.ini o ricompilate il PHP.';
 $string['mssql_n'] = 'SQL*Server con supporto UTF-8 (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'Il PHP non è stato configurato correttamente con l\'estensione MSSQL e non può comunicare con SQL*Server. Controllate il vostro php.ini o ricompilate il PHP.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'Il PHP non è stato configurato correttamente con l\'estensione MySQL e non può comunicare con MySQL. Controllate il vostro php.ini o ricompilate il PHP.';
 $string['mysqli'] = 'MySQL Improved (mysqli)';
@@ -256,8 +256,8 @@ $string['nativesqlsrvnodriver'] = 'I driver PHP Microsoft per SQL Server non son
 $string['nativesqlsrvnonwindows'] = 'I driver PHP Microsoft per SQL Server sono disponibili solamente nei sistemi operativi Windows.';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'Il PHP non è stato configurato correttamente con l\'estensione OCI8 e non può comunicare con Oracle. Controllate il vostro php.ini o ricompilate il PHP.';
-$string['odbcextensionisnotpresentinphp'] = 'Il PHP non è stato configurato correttamente con l\'estensione ODBC e non può comunicare con SQL*Server. Controllate il vostro php.ini o ricompilate il PHP.';
 $string['odbc_mssql'] = 'SQL*Server via ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'Il PHP non è stato configurato correttamente con l\'estensione ODBC e non può comunicare con SQL*Server. Controllate il vostro php.ini o ricompilate il PHP.';
 $string['pass'] = 'Test superato';
 $string['paths'] = 'Percorsi';
 $string['pathserrcreatedataroot'] = 'Lo script di installazione non ha potuto creare la Cartella dei dati ({$a->dataroot}).';

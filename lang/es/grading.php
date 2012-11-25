@@ -36,8 +36,7 @@ $string['gradingmanagement'] = 'Calificación avanzada';
 $string['gradingmanagementtitle'] = 'Calificación avanzada: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Método de calificación';
 $string['gradingmethod_help'] = 'Elija el método de calificación avanzada que se debe utilizar para calcular las calificaciones en este contexto.
-
-Para deshabilitar la calificación avanzada y volver al método  de calificación por defecto, elija \'Calificación simple directa\'.';
+Para deshabilitar la calificación avanzada y volver al método de calificación por defecto, elija \'Calificación simple directa\'.';
 $string['gradingmethodnone'] = 'Calificación simple directa';
 $string['gradingmethods'] = 'Métodos de calificación';
 $string['manageactionclone'] = 'Cree un nuevo formulario de calificación a partir de una plantilla';
@@ -60,8 +59,7 @@ $string['nosharedformfound'] = 'No se ha encontrado plantilla';
 $string['searchownforms'] = 'Incluir mis propios formularios';
 $string['searchtemplate'] = 'Búsqueda de formularios de calificación';
 $string['searchtemplate_help'] = 'Usted puede buscar aquí un formulario de calificación y utilizarlo como una plantilla para crear un nuevo formulario de calificación. Simplemente escriba palabras que formen parte del nombre del formulario, la descripción o el cuerpo del mismo. Para buscar una frase, ponga toda la consulta entre comillas dobles.
-
-Por defecto, sólo los formularios de calificación que se han guardado como plantillas compartidas se incluyen en los resultados de búsqueda. También puede incluir todos sus propios formularios de calificación en los resultados de la búsqueda. De esta manera, puede reutilizar sus los formularios de calificación, sin necesidad de  compartirlos. Sólo los formularios marcados como "listo para su uso" pueden ser reutilizados de esta manera.';
+Por defecto, sólo los formularios de calificación que se han guardado como plantillas compartidas se incluyen en los resultados de búsqueda. También puede incluir todos sus propios formularios de calificación en los resultados de la búsqueda. De esta manera, puede reutilizar sus los formularios de calificación, sin necesidad de compartirlos. Sólo los formularios marcados como "listo para su uso" pueden ser reutilizados de esta manera.';
 $string['statusdraft'] = 'Borrador';
 $string['statusready'] = 'Listo para usar';
 $string['templatedelete'] = 'Eliminar';

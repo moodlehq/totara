@@ -3467,21 +3467,28 @@ function data_user_can_delete_preset($context, $preset) {
 /**
  * Get all of the record ids from a database activity.
  *
- * @param int $dataid      The dataid of the database module.
- * @return array $idarray  An array of record ids
+ * @param int    $dataid      The dataid of the database module.
+ * @param object $selectdata  Contains an additional sql statement for the
+ *                            where clause for group and approval fields.
+ * @param array  $params      Parameters that coincide with the sql statement.
+ * @return array $idarray     An array of record ids
  */
-function data_get_all_recordids($dataid) {
+function data_get_all_recordids($dataid, $selectdata = '', $params = null) {
     global $DB;
-    $initsql = 'SELECT c.recordid
-                  FROM {data_fields} f,
-                       {data_content} c
-                 WHERE f.dataid = :dataid
-                   AND f.id = c.fieldid
-              GROUP BY c.recordid';
-    $initrecord = $DB->get_recordset_sql($initsql, array('dataid' => $dataid));
+    $initsql = 'SELECT r.id
+                  FROM {data_records} r
+                 WHERE r.dataid = :dataid';
+    if ($selectdata != '') {
+        $initsql .= $selectdata;
+        $params = array_merge(array('dataid' => $dataid), $params);
+    } else {
+        $params = array('dataid' => $dataid);
+    }
+    $initsql .= ' GROUP BY r.id';
+    $initrecord = $DB->get_recordset_sql($initsql, $params);
     $idarray = array();
     foreach ($initrecord as $data) {
-        $idarray[] = $data->recordid;
+        $idarray[] = $data->id;
     }
     // Close the record set and free up resources.
     $initrecord->close();
@@ -3566,7 +3573,7 @@ function data_get_recordids($alias, $searcharray, $dataid, $recordids) {
  * @param int $sort            DATA_*
  * @param stdClass $data       Data module object
  * @param array $recordids     An array of record IDs.
- * @param string $selectdata   Information for the select part of the sql statement.
+ * @param string $selectdata   Information for the where and select part of the sql statement.
  * @param string $sortorder    Additional sort parameters
  * @return array sqlselect     sqlselect['sql] has the sql string, sqlselect['params'] contains an array of parameters.
  */
@@ -3611,13 +3618,17 @@ function data_get_advanced_search_sql($sort, $data, $recordids, $selectdata, $so
                                  {user} u ';
         $groupsql = ' GROUP BY r.id, r.approved, r.timecreated, r.timemodified, r.userid, u.firstname, u.lastname, ' .$sortcontentfull;
     }
-    $nestfromsql = 'WHERE c.recordid = r.id
-                      AND r.dataid = :dataid
-                      AND r.userid = u.id';
+
+    // Default to a standard Where statement if $selectdata is empty.
+    if ($selectdata == '') {
+        $selectdata = 'WHERE c.recordid = r.id
+                         AND r.dataid = :dataid
+                         AND r.userid = u.id ';
+    }
 
     // Find the field we are sorting on
     if ($sort > 0 or data_get_field_from_id($sort, $data)) {
-        $nestfromsql .= ' AND c.fieldid = :sort';
+        $selectdata .= ' AND c.fieldid = :sort';
     }
 
     // If there are no record IDs then return an sql statment that will return no rows.
@@ -3626,8 +3637,7 @@ function data_get_advanced_search_sql($sort, $data, $recordids, $selectdata, $so
     } else {
         list($insql, $inparam) = $DB->get_in_or_equal(array('-1'), SQL_PARAMS_NAMED);
     }
-    $nestfromsql .= ' AND c.recordid ' . $insql . $groupsql;
-    $nestfromsql = "$nestfromsql $selectdata";
+    $nestfromsql = $selectdata . ' AND c.recordid ' . $insql . $groupsql;
     $sqlselect['sql'] = "$nestselectsql $nestfromsql $sortorder";
     $sqlselect['params'] = $inparam;
     return $sqlselect;

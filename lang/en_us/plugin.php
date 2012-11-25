@@ -25,8 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['type_enrol'] = 'Enrollment method
-';
+$string['type_enrol'] = 'Enrollment method';
 $string['type_enrol_plural'] = 'Enrollment methods';
 $string['type_qbehaviour'] = 'Question behavior';
 $string['type_qbehaviour_plural'] = 'Question behaviors';

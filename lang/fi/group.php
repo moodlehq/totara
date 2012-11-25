@@ -76,22 +76,17 @@ $string['groupinfo'] = 'Tietoa valitusta ryhmästä';
 $string['groupinfomembers'] = 'Tietoa valituista jäsenistä';
 $string['groupinfopeople'] = 'Tietoa valituista käyttäjistä';
 $string['grouping'] = 'Ryhmittely';
+$string['grouping_help'] = '## Ryhmittelyt
+Ryhmittely on "ryhmien ryhmä", eli voit muodostaa yksittäisistä ryhmistä erilaisia kokonaisuuksia ryhmittelyjä käyttämällä. Ryhmittelemällä kurssin osallistujia erilaisiin kokonaisuuksiin voit tarjota heille monipuolisemmat työskentelymahdollisuudet eri ihmisten kanssa.
+Esimerkki:
+* Ryhmittely 1: Lähiryhmät. Tämän ryhmittelyn alle tulevat ryhmät Tampere, Helsinki, joihin lisäät osallistujia heidän osallistumispaikkansa mukaan.
+* Ryhmittely 2: Vertaisryhmät. Tämän ryhmittelyn alle tulevat ryhmät Luonnontieteet, Kielet, Reaaliaineet, joihin lisäät osallistujia heidän pääaineensa mukaan osallistumispaikkakunnasta riippumatta.
+* Käytät ryhmittelyä Lähiryhmät keskustelualueella ja wikissä, joissa työstetään kurssin paikkakuntakohtaisten lähitapaamisten sisältöjä.
+* Käytät ryhmittelyä Vertaisryhmät keskustelualueella ja wikissä, joilla osallistujat työstävät ainekohtaisia projektejaan.
+
+Verrattuna siihen, ettet käyttäisi ryhmittelyjä, mutta hyödyntäisit ryhmäkohtaisia työskentelyalueita, kaikkien ryhmien (jotka olet muodostanut esim. em. esimerkin lähi- ja vertaisryhmistä) näkyvät osallistujille jokaisen ryhmäkohtaisen aktiviteetin ryhmälistassa (pudotusvalikossa). On siis osallistujien kannalta selkeämpää käyttää ryhmittelyjä, jolloin he tietävät, kenen kanssa pitikään tehdä mitäkin.
+*Jotta ryhmittely toimii, Ryhmien näkyvyys -asetukseen on valittava joko Erilliset tai Näkyvät ryhmät.*';
 $string['groupingdescription'] = 'Ryhmittelyn kuvaus';
-$string['grouping_help'] = '<h2>Ryhmittelyt</h2>
-
-<p>Ryhmittely on "ryhmien ryhmä", eli voit muodostaa yksittäisistä ryhmistä erilaisia kokonaisuuksia ryhmittelyjä käyttämällä. Ryhmittelemällä kurssin osallistujia erilaisiin kokonaisuuksiin voit tarjota heille monipuolisemmat työskentelymahdollisuudet eri ihmisten kanssa.</p>
-
-<p>Esimerkki:</p>
-<ul>
- <li>Ryhmittely 1: Lähiryhmät. Tämän ryhmittelyn alle tulevat ryhmät Tampere, Helsinki, joihin lisäät osallistujia heidän osallistumispaikkansa mukaan.</li>
- <li>Ryhmittely 2: Vertaisryhmät. Tämän ryhmittelyn alle tulevat ryhmät Luonnontieteet, Kielet, Reaaliaineet, joihin lisäät osallistujia heidän pääaineensa mukaan osallistumispaikkakunnasta riippumatta. </li>
-<li>Käytät ryhmittelyä Lähiryhmät keskustelualueella ja wikissä, joissa työstetään kurssin paikkakuntakohtaisten lähitapaamisten sisältöjä.</li>
-<li>Käytät ryhmittelyä Vertaisryhmät keskustelualueella ja wikissä, joilla osallistujat työstävät ainekohtaisia projektejaan.</li>
-</ul>
-
-<p>Verrattuna siihen, ettet käyttäisi ryhmittelyjä, mutta hyödyntäisit ryhmäkohtaisia työskentelyalueita, kaikkien ryhmien (jotka olet muodostanut esim. em. esimerkin lähi- ja vertaisryhmistä) näkyvät osallistujille jokaisen ryhmäkohtaisen aktiviteetin ryhmälistassa (pudotusvalikossa). On siis osallistujien kannalta selkeämpää käyttää ryhmittelyjä, jolloin he tietävät, kenen kanssa pitikään tehdä mitäkin.</p>
-
-<p><em>Jotta ryhmittely toimii, Ryhmien näkyvyys -asetukseen on valittava joko Erilliset tai Näkyvät ryhmät.</em></p>';
 $string['groupingname'] = 'Ryhmittelyn nimi';
 $string['groupingnameexists'] = 'Ryhmittely \'{$a}\' on jo olemassa tällä kurssilla, käytä jotain toista nimeä.';
 $string['groupings'] = 'Ryhmittelyt';
@@ -100,36 +95,27 @@ $string['groupmember'] = 'Ryhmän jäsen';
 $string['groupmemberdesc'] = 'Vakiorooli ryhmän jäsenelle';
 $string['groupmembers'] = 'Ryhmän jäsenet';
 $string['groupmembersonly'] = 'Näkyy vain ryhmien jäsenille';
+$string['groupmembersonly_help'] = '## Näkyvyys vain ryhmien jäsenille
+Jos rastit ruudun Näkyy vain ryhmien jäsenille, lisäämääsi aktiviteettiin tai resurssiin pääsevät vain ne opiskelijat, jotka kuuluvat valitsemasi ryhmittelyn sisältämiin ryhmiin, tai, jos et ole valinnut ryhmittelyä, vähintään yhteen mutta mihin tahansa ryhmään.';
 $string['groupmembersonlyerror'] = 'Sinun pitää olla vähintään yhden ryhmän jäsen voidaksesi käyttää tätä aktiviteettia.';
-$string['groupmembersonly_help'] = '<h2>Näkyvyys vain ryhmien jäsenille</h2>
-
-<p>Jos rastit ruudun Näkyy vain ryhmien jäsenille, lisäämääsi aktiviteettiin tai resurssiin pääsevät vain ne opiskelijat, jotka kuuluvat valitsemasi ryhmittelyn sisältämiin ryhmiin, tai, jos et ole valinnut ryhmittelyä, vähintään yhteen mutta mihin tahansa ryhmään.</p>';
 $string['groupmemberssee'] = 'Näytä ryhmän jäsenet';
 $string['groupmembersselected'] = 'Valitun ryhmän jäsenet';
 $string['groupmode'] = 'Ryhmämoodi';
+$string['groupmode_help'] = '## Osallistujien ryhmittely
+Ryhmätoiminnossa on kolme vaihtoehtoa:
+
+\* **|Ei ryhmiä** - kaikki kurssialueen osallistujat ovat yhtä samaa yhteisöä.
+\* **|Erilliset ryhmät** - jokainen ryhmä voi nähdä ainoastaan oman ryhmänsä tuottamat sisällöt, muiden ryhmien työt ja osallistujat ovat näkymättömiä
+\* **|Näkyvät ryhmät** - jokainen osallistuja työskentelee omassa ryhmässään, mutta voi nähdä myös muut ryhmät
+
+Ryhmät voidaan määritellä kahdella tasolla:
+
+\* **|Kurssitaso**: ryhmäytys, joka on määritelty kurssitasolla, ryhmäyttää oletusarvoisesti kaikki toiminnot kurssialueella.
+\* **|Aktiviteettitaso**: jokaiselle aktiviteetille, joka tukee ryhmiä, on mahdollista määritellä oma ryhmäytyminen.';
 $string['groupmodeforce'] = 'Pakota ryhmämoodi';
-$string['groupmodeforce_help'] = '<h2>Pakotetut ryhmät</h2>
-
-<p>Jos ryhmäytyminen on kurssitasolla lukittu, samaa ryhmittelyä (ei ryhmiä / näkyvät ryhmät / erilliset ryhmät) sovelletaan kaikissa sen kurssin toiminnoissa ja aktiviteettikohtaiset ryhmäyttämiset jätetään huomiotta.</p>
-
-<p>Ryhmien pakottaminen on hyödyllistä lähinnä silloin, kun haluaa perustaa kurssin muutamille täysin erillisille joukoille. </p>';
-$string['groupmode_help'] = '<h2>Osallistujien ryhmittely</h2>
-
-<p>Ryhmätoiminnossa on kolme vaihtoehtoa: </p>
-
-<ul>
-      <li><strong>Ei ryhmiä</strong> - kaikki kurssialueen osallistujat ovat yhtä samaa yhteisöä.</li>
-      <li><strong>Erilliset ryhmät</strong> - jokainen ryhmä voi nähdä ainoastaan oman ryhmänsä tuottamat sisällöt, muiden ryhmien työt ja osallistujat ovat näkymättömiä </li>
-      <li><strong>Näkyvät ryhmät</strong> - jokainen osallistuja työskentelee omassa ryhmässään, mutta voi nähdä myös muut ryhmät </li>
-</ul>
-
-<p>Ryhmät voidaan määritellä kahdella tasolla:</p>
-
-<ul>
-  <li><strong>Kurssitaso</strong>: ryhmäytys, joka on määritelty kurssitasolla, ryhmäyttää oletusarvoisesti kaikki toiminnot kurssialueella. </li>
-
-  <li><strong>Aktiviteettitaso</strong>: jokaiselle aktiviteetille, joka tukee ryhmiä, on mahdollista määritellä oma ryhmäytyminen. </li>
-</ul>';
+$string['groupmodeforce_help'] = '## Pakotetut ryhmät
+Jos ryhmäytyminen on kurssitasolla lukittu, samaa ryhmittelyä (ei ryhmiä / näkyvät ryhmät / erilliset ryhmät) sovelletaan kaikissa sen kurssin toiminnoissa ja aktiviteettikohtaiset ryhmäyttämiset jätetään huomiotta.
+Ryhmien pakottaminen on hyödyllistä lähinnä silloin, kun haluaa perustaa kurssin muutamille täysin erillisille joukoille.';
 $string['groupmy'] = 'Oma ryhmäni';
 $string['groupname'] = 'Ryhmän nimi';
 $string['groupnameexists'] = 'Ryhmä nimeltään \'{$a}\' on jo olemassa tällä kurssilla, valitse toinen nimi.';
@@ -147,7 +133,6 @@ $string['grouptemplate'] = 'Ryhmä @';
 $string['hidepicture'] = 'Piilota kuva';
 $string['importgroups'] = 'Tuo ryhmät';
 $string['importgroups_help'] = 'Ryhmät voidaan tuoda tekstitiedostolla. Tiedoston pitäisi olla seuraavassa muodossa:
-
 * Tiedoston jokainen rivi sisältää yhden merkinnän
 * Jokainen merkintä on pilkuilla erotettu sarja tietoa
 * Ensimmäinen merkintä sisältää listan kentän nimistä, jotka määrittelevät lopputiedoston muodon
@@ -157,30 +142,25 @@ $string['javascriptrequired'] = 'Tämä sivu vaatii JavaScriptin käyttöä.';
 $string['members'] = 'Ryhmäkoko';
 $string['membersofselectedgroup'] = 'Ryhmän jäsenet:';
 $string['namingscheme'] = 'Nimeämiskäytäntö';
-$string['namingscheme_help'] = '<h2>Automaattisesti luotavien ryhmien nimeäminen</h2>
+$string['namingscheme_help'] = '## Automaattisesti luotavien ryhmien nimeäminen
+Luodessasi ryhmät automaattisesti Moodle myös nimeää tai numeroi ne automaattisesti. Tähän on kaksi vaihtoehtoa:
 
-<p>Luodessasi ryhmät automaattisesti Moodle myös nimeää tai numeroi ne automaattisesti. Tähän on kaksi vaihtoehtoa:</p>
-
-<ul>
-<li>@-merkki aakkostaa ryhmät suuraakkosin eli A, B, C,... Jos esimerkiksi olet muodostamassa työskentelypareja, voit antaa nimeämiskäytännöksi "Pari @", jolloin saat ryhmät Pari A, Pari B jne.</li>
-<li># -merkki numeroi ryhmät. Esimerkiksi nimeämiskäytännöllä "Vertaisryhmä #" saat ryhmät Vertaisryhmä 1, Vertaisryhmä 2 jne.</li>
-</ul>';
+* @-merkki aakkostaa ryhmät suuraakkosin eli A, B, C,... Jos esimerkiksi olet muodostamassa työskentelypareja, voit antaa nimeämiskäytännöksi "Pari @", jolloin saat ryhmät Pari A, Pari B jne.
+* # -merkki numeroi ryhmät. Esimerkiksi nimeämiskäytännöllä "Vertaisryhmä #" saat ryhmät Vertaisryhmä 1, Vertaisryhmä 2 jne.';
 $string['newgrouping'] = 'Uusi ryhmittely';
 $string['newpicture'] = 'Uusi kuva';
-$string['newpicture_help'] = '<P align=center><B>Kuvan lähettäminen</B></P>
-<P>Voit lähettää kuvan tietokoneeltasi palvelimelle. Tätä kuvaa käytetään&nbsp;eri paikoissa edustamassa sinua.</P>
-<P>Tästä syystä lähikuva kasvoistasi on käyttökelpoisin mutta voit toki käyttää mitä tahansa haluamaasi kuvaa.</P>
-<P>Kuvan on oltava JPG tai PNG -tallennusmuodossa (eli tiedostonimi päättyy kirjaimiin .jpg tai .png).</P>
-<P>Kuvatiedoston voit saada aikaan käyttäen jotain seuraavista tavoista:</P>
-<OL>
-<LI>Digitaalikameraa käyttämällä valokuvasi on tietokoneellasi todennäköisesti valmiiksi oikeassa muodossa.</LI>
-<LI>Voit skannata paperikuvan tietokoneellesi.</LI>
-<LI>Jos olet taiteellinen, voit piirtää kuvan kuvankäsittelyohjelmalla.</LI>
-<P>Varmista, että kuva on JPG- tai PNG-muodossa.</P>
-<P>Kun lähetät kuvan, napsauta "Browse" nappulaa tällä editointisivulla ja valitse kuva kovalevyltäsi.</P>
-<P>HUOMAA: Varmista että tiedosto ei ole suurempi kuin annettu maksimikoko, muutoin sitä ei voi lähettää.</P>
-<P>Napsauta sitten "Päivitä profiilini" ("Update my Profile") alhaalla - kuvatiedosto leikkautuu neliöksi ja koko muuttuu 100x100 pikseliksi.</P>
-<P>Kun joudut takaisin profiilisivullesi, voi olla että kuva näyttää samalta kuin ennenkin. Siinä tapauksessa paina selaimesi "Päivitä" -nappulaa.</P></OL>';
+$string['newpicture_help'] = 'Voit lähettää kuvan tietokoneeltasi palvelimelle. Tätä kuvaa käytetään eri paikoissa edustamassa sinua.
+Tästä syystä lähikuva kasvoistasi on käyttökelpoisin mutta voit toki käyttää mitä tahansa haluamaasi kuvaa.
+Kuvan on oltava JPG tai PNG -tallennusmuodossa (eli tiedostonimi päättyy kirjaimiin .jpg tai .png).
+Kuvatiedoston voit saada aikaan käyttäen jotain seuraavista tavoista:
+1. Digitaalikameraa käyttämällä valokuvasi on tietokoneellasi todennäköisesti valmiiksi oikeassa muodossa.
+2. Voit skannata paperikuvan tietokoneellesi.
+3. Jos olet taiteellinen, voit piirtää kuvan kuvankäsittelyohjelmalla.
+Varmista, että kuva on JPG- tai PNG-muodossa.
+Kun lähetät kuvan, napsauta "Browse" nappulaa tällä editointisivulla ja valitse kuva kovalevyltäsi.
+HUOMAA: Varmista että tiedosto ei ole suurempi kuin annettu maksimikoko, muutoin sitä ei voi lähettää.
+Napsauta sitten "Päivitä profiilini" ("Update my Profile") alhaalla - kuvatiedosto leikkautuu neliöksi ja koko muuttuu 100x100 pikseliksi.
+Kun joudut takaisin profiilisivullesi, voi olla että kuva näyttää samalta kuin ennenkin. Siinä tapauksessa paina selaimesi "Päivitä" -nappulaa.';
 $string['noallocation'] = 'Ei ryhmiinjakoa';
 $string['nogroups'] = 'Tällä kurssilla ei ole ryhmiä';
 $string['nogroupsassigned'] = 'Ei ryhmiä määriteltynä';

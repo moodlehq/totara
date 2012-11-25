@@ -44,9 +44,7 @@ $string['autolinkurl'] = 'Lien automatique de l\'URL';
 $string['availablefromdate'] = 'Disponible du';
 $string['availabletags'] = 'Balises disponibles';
 $string['availabletags_help'] = 'Les balises sont des paramètres du modèle, qui seront remplacés par des champs ou d\'autres éléments, par exemple une icône d\'édition, lorsque les fiches sont modifiées ou affichées.
-
-Les champs ont le format [[nom_de_champ]]. Toutes les autres balises sont formatées ainsi  ##une_balise##.
-
+Les champs ont le format [[nom\_de\_champ]]. Toutes les autres balises sont formatées ainsi ##une_balise##.
 Seules les balises dans la liste des « Balises disponibles » peuvent être utilisées dans le modèle actuel.';
 $string['availabletodate'] = 'Disponible jusqu\'au';
 $string['blank'] = 'Vide';
@@ -230,12 +228,8 @@ $string['nametextarea'] = 'Champ texte long';
 $string['nameurl'] = 'Champ URL';
 $string['newentry'] = 'Nouvelle fiche';
 $string['newfield'] = 'Créer un nouveau champ';
-$string['newfield_help'] = '<!-- $Id$ -->
-
-
-<p>Sur cette page, vous pouvez définir les champs créant la structure de votre base de données.</p>
-
-<p>Chaque champ permet différents types de données, proposées par différentes interfaces.</p>';
+$string['newfield_help'] = 'Sur cette page, vous pouvez définir les champs créant la structure de votre base de données.
+Chaque champ permet différents types de données, proposées par différentes interfaces.';
 $string['noaccess'] = 'Vous n\'avez pas accès à cette page';
 $string['nodefinedfields'] = 'Le nouveau préréglage ne comporte pas de champ !';
 $string['nofieldcontent'] = 'Contenu du champ non trouvé';
@@ -279,12 +273,8 @@ $string['requireapproval_help'] = 'Si vous désirez que les fiches soient approu
 $string['requiredentries'] = 'Fiches requises';
 $string['requiredentries_help'] = 'Le nombre de fiches qu\'un participant a l\'obligation de créer dans cette activité pour qu\'elle soit considérée comme terminée.';
 $string['requiredentriestoview'] = 'Fiches requises avant consultation';
-$string['requiredentriestoview_help'] = '<!-- $Id$ -->
-
-
-<p>Ce réglage indique le nombre de fiches qu\'un participant doit créer avant de pouvoir consulter les autres fiches de cette activité de base de données.</p>
-
-<p>Remarque ! Cette fonctionnalité ne peut pas être utilisée en même temps que le filtre des liens automatiques des articles de base de données, car ce filtre est incapable de déterminer si un utilisateur a proposé le nombre requis d\'articles.</p>';
+$string['requiredentriestoview_help'] = 'Ce réglage indique le nombre de fiches qu\'un participant doit créer avant de pouvoir consulter les autres fiches de cette activité de base de données.
+Remarque ! Cette fonctionnalité ne peut pas être utilisée en même temps que le filtre des liens automatiques des articles de base de données, car ce filtre est incapable de déterminer si un utilisateur a proposé le nombre requis d\'articles.';
 $string['resetsettings'] = 'Réinitialiser les filtres';
 $string['resettemplate'] = 'Réinitialiser le modèle';
 $string['resizingimages'] = 'Génération des vignettes...';
@@ -296,10 +286,7 @@ $string['save'] = 'Enregistrer';
 $string['saveandadd'] = 'Enregistrer et ajouter une fiche';
 $string['saveandview'] = 'Enregistrer et afficher';
 $string['saveaspreset'] = 'Enregistrer en tant que préréglage';
-$string['saveaspreset_help'] = '<!-- $Id$ -->
-
-
-<p>Ceci publie le modèle actuel en tant que préréglage, de sorte que tout le monde sur ce site pourra le voir et l\'utiliser. Ce modèle apparaîtra dans la liste des préréglages. Il vous sera possible de le retirer de cette liste en tout temps.</p>';
+$string['saveaspreset_help'] = 'Ceci publie le modèle actuel en tant que préréglage, de sorte que tout le monde sur ce site pourra le voir et l\'utiliser. Ce modèle apparaîtra dans la liste des préréglages. Il vous sera possible de le retirer de cette liste en tout temps.';
 $string['savesettings'] = 'Enregistrer les réglages';
 $string['savesuccess'] = 'Enregistrement réussi. Votre préréglage est maintenant disponible sur tout le site.';
 $string['savetemplate'] = 'Enregistrer modèle';
@@ -327,18 +314,13 @@ $string['updatefield'] = 'Modifier un champ existant';
 $string['uploadfile'] = 'Déposer un fichier';
 $string['uploadrecords'] = 'Importer des fiches à partir d\'un fichier';
 $string['uploadrecords_help'] = 'Des fiches peuvent être déposées à partir d\'un fichier texte. Le format du fichier doit être comme suit :
-
 * chaque ligne du fichier contient une fiche
 * chaque fiche est constituée d\'une série de données, séparées par des virgules (ou d\'autres séparateurs)
-* la première ligne du fichier comprend les noms des champs définissant le format du reste du fichier.  Le délimiteur de champ est un caractère qui entoure chaque champ d\'une fiche, par exemple les guillemets droits. Il peut être laissé vide.';
+* la première ligne du fichier comprend les noms des champs définissant le format du reste du fichier. Le délimiteur de champ est un caractère qui entoure chaque champ d\'une fiche, par exemple les guillemets droits. Il peut être laissé vide.';
 $string['url'] = 'URL';
 $string['usestandard'] = 'Utiliser un préréglage';
-$string['usestandard_help'] = '<!-- $Id$ -->
-
-
-<p>Ceci vous permet d\'utiliser pour votre base de données un modèle disponible dans tout le site en tant que préréglage.</p>
-
-<p>Si vous avez ajouté un préréglage en utilisant la fonctionnalité « Enregistrer en tant que préréglage », vous pouvez le supprimer.</p>';
+$string['usestandard_help'] = 'Ceci vous permet d\'utiliser pour votre base de données un modèle disponible dans tout le site en tant que préréglage.
+Si vous avez ajouté un préréglage en utilisant la fonctionnalité « Enregistrer en tant que préréglage », vous pouvez le supprimer.';
 $string['viewfromdate'] = 'En lecture seule dès le';
 $string['viewtodate'] = 'En lecture seule jusqu\'au';
 $string['wrongdataid'] = 'L\'identifiant de données fourni est incorrect';

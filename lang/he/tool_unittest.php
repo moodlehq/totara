@@ -33,7 +33,8 @@ $string['codecoveragedisabled'] = 'לא ניתן לאפשר כיסוי קוד ב
 $string['codecoveragelatestdetails'] = 'בתאריך {$a->date}, עם קובצ(ים)  {$a->files} אשר כוסו {$a->percentage}';
 $string['codecoveragelatestreport'] = 'הצגת דוח השלמת כיסוי הקוד האחרונה';
 $string['confignonwritable'] = 'קובץ ה config.php. לא ניתן לכתיבה על-ידי השרת שלך. נא שנה את ההרשאות של הקובץ או ערוך אותו עם הרשאות  חשבון משתמש מתאימות והוסף את השורה הבאה לפני תג ה-PHP הסוגר:
-<br /> $CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'קווים מכוסים';
 $string['coveredpercentage'] = 'סך-כל כיסוי הקוד';
 $string['dbtest'] = 'ניסיונות פונקציונליות במסד הנתונים';

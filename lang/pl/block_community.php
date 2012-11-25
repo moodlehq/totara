@@ -31,7 +31,7 @@ $string['addcommunitycourse'] = 'Dodaj kurs społecznościowy';
 $string['addcourse'] = 'Szukaj';
 $string['addedtoblock'] = 'Link do tego kursu został dodany w bloku wyszukiwania społeczności';
 $string['additionalcoursedesc'] = '{$a->lang} Twórca: {$a->creatorname} - Wydawca: {$a->publishername} - Temat: {$a->subject}
-    - Audytorium: {$a->audience} - Poziom kształcenia: {$a->educationallevel} - Licencja: {$a->license}';
+- Audytorium: {$a->audience} - Poziom kształcenia: {$a->educationallevel} - Licencja: {$a->license}';
 $string['addtocommunityblock'] = 'Zapisz link do tego kursu';
 $string['audience'] = 'Zaprojektowane dla';
 $string['audience_help'] = 'Jakiego kursu szukasz? Znajdziesz tu tradycyjne kursy przeznaczone dla studentów, jak i możesz wyszukać kursy społeczności Nauczycieli i Administratorów Moodle';
@@ -67,7 +67,7 @@ $string['hubnottrusted'] = 'Niezaufany';
 $string['hubtrusted'] = 'To centrum jest zatwierdzone przez Moodle.org';
 $string['keywords'] = 'Słowa kluczowe';
 $string['keywords_help'] = 'Możesz szukać kursu zawierającego określony tekst w nazwie, jego opisie i innych pól w bazie danych.';
-$string['langdesc'] = 'Język: {$a} - ';
+$string['langdesc'] = 'Język: {$a} -';
 $string['language'] = 'Język';
 $string['language_help'] = 'Możesz wyszukać kursy przygotowane w konkretnym języku.';
 $string['licence'] = 'License';

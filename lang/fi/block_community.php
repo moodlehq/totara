@@ -59,7 +59,6 @@ $string['educationallevel'] = 'Koulutustaso';
 $string['educationallevel_help'] = 'Mitä koulutustasoa etsit? Kouluttajien yhteisöissä tämä taso kuvaa tasoa, jossa opetus tapahtuu.';
 $string['enroldownload'] = 'Etsi';
 $string['enroldownload_help'] = 'Joitakin valitulla hubilla listattuja kursseja mainostetaan, että ihmiset voivat osallistua niille kurssien alkuperäisellä sivustolla.
-
 Toiset ovat kurssipohjia, joita voit ladata ja käyttää omalla Moodle sivustollasi.';
 $string['enrollable'] = 'kurssit, joille voin ilmoittautua';
 $string['enrollablecourses'] = 'Kurssit joille voin ilmoittautua';
@@ -84,8 +83,8 @@ $string['nocourse'] = 'Ei löytynyt kursseja';
 $string['noratings'] = 'Ei arvioita';
 $string['operation'] = 'Toiminto';
 $string['orderby'] = 'Lajittelukriteeri';
-$string['orderbyeldest'] = 'Vanhin';
 $string['orderby_help'] = 'Järjestys, jossa hakutulokset esitetään.';
+$string['orderbyeldest'] = 'Vanhin';
 $string['orderbyname'] = 'Nimi';
 $string['orderbynewest'] = 'Uusin';
 $string['orderbypublisher'] = 'Julkaisija';

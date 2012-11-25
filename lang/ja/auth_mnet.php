@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = '「Yes」にした場合、リモートユーザの初回ログイン時、ローカルユーザのレコードが自動作成されます。';
-$string['auth_mnetdescription'] = 'あなたのMoodleネットワーク設定で定義されたウェブ認証方法に従って、ユーザが認証されます。';
 $string['auth_mnet_roamin'] = '次のホストのユーザは、あなたのサイトを散策できます';
 $string['auth_mnet_roamout'] = 'あなたのユーザは、次のホストを散策できます';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'XMLRPCトランスポートによる認証のタイムアウト (秒)';
+$string['auth_mnetdescription'] = 'あなたのMoodleネットワーク設定で定義されたウェブ認証方法に従って、ユーザが認証されます。';
 $string['auto_add_remote_users'] = 'リモートユーザを自動的に追加する';
 $string['pluginname'] = 'MNetネットワーク認証';
 $string['rpc_negotiation_timeout'] = 'RPCネゴシエーションタイムアウト';

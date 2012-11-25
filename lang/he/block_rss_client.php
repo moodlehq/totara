@@ -29,7 +29,7 @@ $string['addfeed'] = 'הוסף כתובת URL להזנת חדשות:';
 $string['addheadlineblock'] = 'הוסף משבצת  כותרות RSS';
 $string['addnew'] = 'הוסף חדש';
 $string['addnewfeed'] = 'הוספת הזנה חדשה';
-$string['cannotmakemodification'] = 'כרגע אין לך הרשאות לביצוע שינויים עבור הזנת RSS זו ';
+$string['cannotmakemodification'] = 'כרגע אין לך הרשאות לביצוע שינויים עבור הזנת RSS זו';
 $string['choosefeedlabel'] = 'בחר את ההזנות שברצונך להפוך לזמינות במשבצת־ניהול זו:';
 $string['clientchannellink'] = 'אתר המקור...';
 $string['clientnumentries'] = 'מספר הרשומות שיוצגו כברירת מחדל עבור כל הזנה.';
@@ -46,7 +46,7 @@ $string['editfeeds'] = 'ערוך, הרשם כמנוי או בטל רישום ל�
 $string['editnewsfeeds'] = 'ערוך הזנת חדשות';
 $string['editrssblock'] = 'ערוך את משבצת כותרות ה-RSS';
 $string['enableautodiscovery'] = 'אפשר גילוי-אוטומטי של הזנות';
-$string['enableautodiscovery_help'] = 'אם מאופשר, ההזנות על עמודי האתר ימצאו באופן אוטומטי. למשל, אם הכתובת  http://docs.moodle.org
+$string['enableautodiscovery_help'] = 'אם מאופשר, ההזנות על עמודי האתר ימצאו באופן אוטומטי. למשל, אם הכתובת http://docs.moodle.org
 מוכנסת, הכתובת הזו: http://docs.moodle.org/en/index.php?title=Special:RecentChanges&feed=rss
 תמצא.';
 $string['errorloadingfeed'] = 'שגיאה בעת טעינת הזנת RSS זו ({$a})';

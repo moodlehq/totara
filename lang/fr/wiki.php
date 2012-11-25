@@ -55,7 +55,6 @@ $string['creating'] = 'Création d\'une page wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Format par défaut';
 $string['defaultformat_help'] = 'Ce réglage détermine le format par défaut utilisé pour l\'édition des pages wiki.
-
 * HTML : l\'éditeur WYSIWYG est disponible
 * Creole : un format utilisé fréquemment pour les wikis, avec une barre d\'édition
 * Nwiki : le format utilisé dans le module Nwiki';
@@ -84,20 +83,17 @@ $string['firstpagetitle_help'] = 'Titre de la première page du wiki';
 $string['forceformat'] = 'Imposer le format';
 $string['forceformat_help'] = 'Si la case est cochée (format imposé), il n\'est pas possible de choisir le format pour modifier une page du wiki.';
 $string['format'] = 'Format';
-$string['formatcreole'] = 'Format Creole';
-$string['formatcreole_help'] = 'Le format Creole est un langage de formatage wiki répandu, avec une barre d\'édition pour insérer les balises adéquates.
-
-Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['format_help'] = '* WYSIWYG : l\'éditeur WYSIWYG est disponible
 * Creole : un langage de formatage wiki répandu pour lequel une petite barre d\'édition est disponible
 * Nwiki : une syntaxe du type Mediawiki, utilisée dans le module tiers Nwiki';
+$string['formatcreole'] = 'Format Creole';
+$string['formatcreole_help'] = 'Le format Creole est un langage de formatage wiki répandu, avec une barre d\'édition pour insérer les balises adéquates.
+Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['formathtml'] = 'Format WYSIWYG';
 $string['formathtml_help'] = 'L\'éditeur WYSIWYG peut être utilisé pour formater le contenu.
-
 Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['formatnwiki'] = 'Format NWiki';
 $string['formatnwiki_help'] = 'Nwiki est une syntaxe du type Mediawiki, utilisée dans le module tiers Nwiki.
-
 Pour créer une nouvelle page, tapez le nom de la future nouvelle page entre des doubles crochets, par exemple [[Nouvelle page]].';
 $string['history'] = 'Historique';
 $string['history_help'] = 'L\'historique liste les liens vers les anciennes versions de la page.';
@@ -161,19 +157,19 @@ $string['orphaned'] = 'Pages orphelines';
 $string['orphaned_help'] = 'Liste des pages vers lesquelles ne pointe aucun lien.';
 $string['overridelocks'] = 'Court-circuiter les verrous';
 $string['overridinglocks'] = 'Court-circuit des verrous...';
+$string['page-mod-wiki-comments'] = 'Page de commentaires du module wiki';
+$string['page-mod-wiki-history'] = 'Page d\'historique de wiki';
+$string['page-mod-wiki-map'] = 'Page carte de wiki';
+$string['page-mod-wiki-view'] = 'Page principale du module wiki';
+$string['page-mod-wiki-x'] = 'Toute page du module wiki';
 $string['pageexists'] = 'Cette page existe déjà. Vous êtes redirigé vers elle.';
 $string['pageindex'] = 'Index des pages';
 $string['pageindex_help'] = 'L\'arborescence des pages de ce wiki';
 $string['pageislocked'] = 'Quelqu\'un modifie actuellement cette page. Veuillez réessayer dans quelques minutes.';
 $string['pagelist'] = 'Liste des pages';
 $string['pagelist_help'] = 'La liste des pages par ordre alphabétique';
-$string['page-mod-wiki-comments'] = 'Page de commentaires du module wiki';
-$string['page-mod-wiki-history'] = 'Page d\'historique de wiki';
-$string['page-mod-wiki-map'] = 'Page carte de wiki';
-$string['page-mod-wiki-view'] = 'Page principale du module wiki';
-$string['page-mod-wiki-x'] = 'Toute page du module wiki';
 $string['pagename'] = 'Nom de page';
-$string['peerreview'] = 'Évaluation par les pairs   ';
+$string['peerreview'] = 'Évaluation par les pairs';
 $string['pluginadministration'] = 'Administration wiki';
 $string['pluginname'] = 'Wiki';
 $string['prettyprint'] = 'Version imprimable';
@@ -221,11 +217,17 @@ $string['viewcurrent'] = 'Version actuelle';
 $string['viewperpage'] = 'Afficher {$a} versions par page';
 $string['viewversion'] = 'Affichage de la version {$a} de la page';
 $string['wiki'] = 'Wiki';
-$string['wikiattachments'] = 'Annexes wiki';
-$string['wikiboldtext'] = 'Texte gras';
 $string['wiki:createpage'] = 'Créer des pages wiki';
 $string['wiki:editcomment'] = 'Ajouter des commentaires aux pages wiki';
 $string['wiki:editpage'] = 'Modifier des pages wiki';
+$string['wiki:managecomment'] = 'Gérer les commentaires wiki';
+$string['wiki:managefiles'] = 'Gérer les fichiers wiki';
+$string['wiki:managewiki'] = 'Gérer les réglages wiki';
+$string['wiki:overridelock'] = 'Passer outre les verrouillages du wiki';
+$string['wiki:viewcomment'] = 'Voir les commentaires de page';
+$string['wiki:viewpage'] = 'Voir les pages wiki';
+$string['wikiattachments'] = 'Annexes wiki';
+$string['wikiboldtext'] = 'Texte gras';
 $string['wikiexternalurl'] = 'URL externe';
 $string['wikifiles'] = 'Fichiers wiki';
 $string['wikifiletable'] = 'Liste des fichiers déposés';
@@ -236,21 +238,15 @@ $string['wikiinternalurl'] = 'Lien interne';
 $string['wikiintro'] = 'Description du wiki';
 $string['wikiitalictext'] = 'Texte italique';
 $string['wikilockingsettings'] = 'Délais de verrouillage et analyse';
-$string['wiki:managecomment'] = 'Gérer les commentaires wiki';
-$string['wiki:managefiles'] = 'Gérer les fichiers wiki';
-$string['wiki:managewiki'] = 'Gérer les réglages wiki';
 $string['wikimode'] = 'Mode wiki';
-$string['wikimodecollaborative'] = 'Wiki collaboratif';
 $string['wikimode_help'] = 'Le mode wiki détermine si chacun peut modifier le wiki (un wiki collaboratif) ou si chacun a son propre wiki qu\'il peut seul modifier (un wiki individuel).';
+$string['wikimodecollaborative'] = 'Wiki collaboratif';
 $string['wikimodeindividual'] = 'Wiki individuel';
 $string['wikiname'] = 'Nom du wiki';
 $string['wikinowikitext'] = 'Pas de texte wiki';
 $string['wikiorderedlist'] = 'Liste ordonnée';
-$string['wiki:overridelock'] = 'Passer outre les verrouillages du wiki';
 $string['wikipages'] = 'Pages wiki';
 $string['wikisettings'] = 'Réglages wiki';
 $string['wikiunorderedlist'] = 'Liste non ordonnée';
-$string['wiki:viewcomment'] = 'Voir les commentaires de page';
-$string['wiki:viewpage'] = 'Voir les pages wiki';
 $string['wrongversionlock'] = 'Un autre utilisateur a modifié cette page pendant que vous la modifiiez. Vos modifications sont obsolètes.';
 $string['wrongversionsave'] = 'Un autre utilisateur a créé une version pendant que vous modifiiez la page. Vous avez écrasé ses modifications. Veuillez contrôler l\'historique de la page.';

@@ -43,7 +43,6 @@ $string['configpopupwidth'] = 'Az előbukkanó ablakok alapbeállításban milye
 $string['contentheader'] = 'Tartalom';
 $string['displayoptions'] = 'Elérhető megjelenítési lehetőségek';
 $string['displayselect'] = 'Megjelenítés';
-$string['displayselectexplain'] = 'Válassza ki a megjelenítés típusát. Nem minden típus használható minden állománnyal.';
 $string['displayselect_help'] = 'Ez a beállítás, továbbá az állomány típusa és a böngészőben a beágyazás engedélyezése szabja meg az állomány megjelenését. Az alábbi lehetőségek közül választhat:
 * Automatikus - Az adott állomány típusához automatikusan kiválasztja a legjobb megjelenítést
 * Beágyazás - Az állomány az oldalon a navigációs sáv alatt leírásával és az esetleges blokkokkal együtt jelenik meg
@@ -52,6 +51,7 @@ $string['displayselect_help'] = 'Ez a beállítás, továbbá az állomány típ
 * Előugró ablakban - Az állomány új böngészőablakban, menük vagy címsor nélkül jelenik meg
 * Keretben - Az állomány a navigációs sáv alatt egy keretben jelenik meg
 * Új ablakban - Az állomány új böngészőablakban, menükkel és címsorral jelenik meg';
+$string['displayselectexplain'] = 'Válassza ki a megjelenítés típusát. Nem minden típus használható minden állománnyal.';
 $string['encryptedcode'] = 'Titkosított kód';
 $string['filenotfound'] = 'Nincs meg az állomány.';
 $string['filterfiles'] = 'Az állomány tartalmához használjon szűrőt.';
@@ -80,7 +80,7 @@ $string['printheading'] = 'Forrás nevének megjelenítése';
 $string['printheadingexplain'] = 'A forrás neve a tartalom fölött jelenjen meg? Egyes megjelenítési típusok esetén a forrás neve akkor sem jelenik meg, ha be van kapcsolva.';
 $string['printintro'] = 'Forrásleírás megjelenítése';
 $string['printintroexplain'] = 'A forrás leírása a tartalom alatt jelenjen meg? Egyes megjelenítési típusok esetén a forrás neve akkor sem jelenik meg, ha be van kapcsolva.';
-$string['resourcecontent'] = 'Állományok és almappák';
 $string['resource:exportresource'] = 'Tananyag exportálása';
 $string['resource:view'] = 'Tananyag megtekintése';
+$string['resourcecontent'] = 'Állományok és almappák';
 $string['selectmainfile'] = 'Az állomány neve melletti ikonra kattintva válassza ki a fő állományt.';

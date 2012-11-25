@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['availability'] = 'Elérhetőség';
 $string['displayname'] = 'Segédprogram neve';
-$string['moodleversion'] = 'Moodle  {$a} ';
+$string['moodleversion'] = 'Moodle  {$a}';
 $string['nonehighlighted'] = 'A frissítés során a segédprogramok nem kívánnak beavatkozást.';
 $string['nonehighlightedinfo'] = 'Ettől függetlenül az összes telepített segédprogram megjelenítése';
 $string['noneinstalled'] = 'Nincs ilyen típusú segédprogram telepítve';

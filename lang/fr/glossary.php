@@ -30,26 +30,15 @@ $string['addentry'] = 'Ajouter un nouvel article';
 $string['addingcomment'] = 'Ajout d\'un commentaire';
 $string['alias'] = 'Terme associé';
 $string['aliases'] = 'Termes associés';
-$string['aliases_help'] = '<!-- Version: $Id$ -->
-
-
-<p>À chaque article d\'un glossaire peut être associée une liste de termes associés ou de mots clefs.</p>
-
-<p><b>Saisissez chacun des termes sur une nouvelle ligne</b> (et non séparés par des virgules).</p>
-
-<p>Ces termes associés peuvent être utilisés comme autant de façons de retrouver l\'article. Par exemple, si vous utilisez le filtre de liens automatiques, ces termes seront utilisés tout comme le nom principal du concept lors de la création de liens automatiques.</p>';
+$string['aliases_help'] = 'À chaque article d\'un glossaire peut être associée une liste de termes associés ou de mots clefs.
+**Saisissez chacun des termes sur une nouvelle ligne** (et non séparés par des virgules).
+Ces termes associés peuvent être utilisés comme autant de façons de retrouver l\'article. Par exemple, si vous utilisez le filtre de liens automatiques, ces termes seront utilisés tout comme le nom principal du concept lors de la création de liens automatiques.';
 $string['allcategories'] = 'Toutes les catégories';
 $string['allentries'] = 'Tout';
 $string['allowcomments'] = 'Autoriser les commentaires';
-$string['allowcomments_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Lorsque ce réglage est activé, tous les utilisateurs ayant l\'autorisation de créer des commentaires pourront en ajouter aux articles des glossaires.</p>';
+$string['allowcomments_help'] = 'Lorsque ce réglage est activé, tous les utilisateurs ayant l\'autorisation de créer des commentaires pourront en ajouter aux articles des glossaires.';
 $string['allowduplicatedentries'] = 'Autoriser les doublons';
-$string['allowduplicatedentries_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Si vous activez cette option, il sera possible d\'avoir plusieurs articles pour le même concept.</p>';
+$string['allowduplicatedentries_help'] = 'Si vous activez cette option, il sera possible d\'avoir plusieurs articles pour le même concept.';
 $string['allowprintview'] = 'Autoriser l\'affichage pour impression';
 $string['allowprintview_help'] = 'Cette option permet d\'autoriser l\'affichage pour les participants d\'un lien vers une version du glossaire prête pour l\'impression. Ce lien est toujours disponible pour les enseignants.';
 $string['andmorenewentries'] = 'et {$a} nouveaux articles.';
@@ -60,18 +49,11 @@ $string['areyousuredeletecomment'] = 'Voulez-vous vraiment supprimer ce commenta
 $string['areyousureexport'] = 'Voulez-vous vraiment exporter cet article vers';
 $string['ascending'] = 'ascendant';
 $string['attachment'] = 'Annexe';
-$string['attachment_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Il vous est possible de joindre <strong>un</strong> fichier présent sur votre ordinateur à n\'importe quel article d\'un glossaire. Ce fichier est déposé sur le serveur et stocké avec votre article.</p>
-
-<p>Ceci s\'avère particulièrement utile lorsque vous souhaitez partager une image ou un document avec les autres participants du cours.</p>
-
-<p>Ce fichier peut être de n\'importe quel type. Il est cependant fortement recommandé que son nom utilise la convention des 3 lettres d\'extension utilisée sur Internet, par exemple « <strong>.doc</strong> » pour un document Word, « <strong>.jpg</strong> » ou « <strong>.png</strong> » pour une image, « <strong>.zip</strong> » pour un fichier compressé, etc. Cela facilitera le téléchargement et l\'ouverture de ce document dans le navigateur des utilisateurs.</p>
-
-<p>Si vous modifiez une entrée et y joignez un nouveau fichier, ce dernier remplacera tout autre fichier précédemment déposé.</p>
-
-<p>Si vous modifiez un message posté avec un fichier joint et laissez cette zone vide, le fichier joint précédemment déposé sera conservé.</p>';
+$string['attachment_help'] = 'Il vous est possible de joindre **un** fichier présent sur votre ordinateur à n\'importe quel article d\'un glossaire. Ce fichier est déposé sur le serveur et stocké avec votre article.
+Ceci s\'avère particulièrement utile lorsque vous souhaitez partager une image ou un document avec les autres participants du cours.
+Ce fichier peut être de n\'importe quel type. Il est cependant fortement recommandé que son nom utilise la convention des 3 lettres d\'extension utilisée sur Internet, par exemple « **.doc** » pour un document Word, « **.jpg** » ou « **.png** » pour une image, « **.zip** » pour un fichier compressé, etc. Cela facilitera le téléchargement et l\'ouverture de ce document dans le navigateur des utilisateurs.
+Si vous modifiez une entrée et y joignez un nouveau fichier, ce dernier remplacera tout autre fichier précédemment déposé.
+Si vous modifiez un message posté avec un fichier joint et laissez cette zone vide, le fichier joint précédemment déposé sera conservé.';
 $string['author'] = 'auteur';
 $string['authorview'] = 'Consulter par auteur';
 $string['back'] = 'Précédent';
@@ -79,12 +61,8 @@ $string['cantinsertcat'] = 'Impossible d\'insérer la catégorie';
 $string['cantinsertrec'] = 'Impossible d\'insérer l\'enregistrement';
 $string['cantinsertrel'] = 'Impossible d\'insérer le lien catégorie-article';
 $string['casesensitive'] = 'Article sensible à la casse';
-$string['casesensitive_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Ce réglage détermine si une correspondance exacte de la casse (lettres capitales et minuscules) est nécessaire lors de la liaison automatique de ces entrées.</p>
-
-<p>Si par exemple ce réglage est désactivé, le mot « html » dans un forum ne sera pas automatiquement lié à une entrée de glossaire nommée « HTML ».</p>';
+$string['casesensitive_help'] = 'Ce réglage détermine si une correspondance exacte de la casse (lettres capitales et minuscules) est nécessaire lors de la liaison automatique de ces entrées.
+Si par exemple ce réglage est désactivé, le mot « html » dans un forum ne sera pas automatiquement lié à une entrée de glossaire nommée « HTML ».';
 $string['cat'] = 'catégorie';
 $string['categories'] = 'Catégories';
 $string['category'] = 'Catégorie';
@@ -120,10 +98,7 @@ $string['currentglossary'] = 'Glossaire actuel';
 $string['date'] = 'date';
 $string['dateview'] = 'Consulter par date';
 $string['defaultapproval'] = 'Approbation par défaut';
-$string['defaultapproval_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Ce réglage permet à l\'enseignant de définir ce qui se passe lorsque de nouveaux articles sont proposés par les étudiants. Les nouveaux articles peuvent être automatiquement ajoutées au glossaire, ou alors seulement après approbation par l\'enseignant.</p>';
+$string['defaultapproval_help'] = 'Ce réglage permet à l\'enseignant de définir ce qui se passe lorsque de nouveaux articles sont proposés par les étudiants. Les nouveaux articles peuvent être automatiquement ajoutées au glossaire, ou alors seulement après approbation par l\'enseignant.';
 $string['defaulthook'] = 'Sélection affichée par défaut';
 $string['defaultmode'] = 'Mode d\'affichage par défaut';
 $string['defaultsortkey'] = 'Clef de tri par défaut';
@@ -136,28 +111,12 @@ $string['deletingcomment'] = 'Suppression du commentaire';
 $string['deletingnoneemptycategory'] = 'La suppression de cette catégorie ne supprimera pas les articles qu\'elle contient. Ceux-ci seront marquées comme sans catégorie.';
 $string['descending'] = 'descendant';
 $string['destination'] = 'Destination des articles importés';
-$string['destination_help'] = '<!-- Version: $Id$ -->
+$string['destination_help'] = 'Vous pouvez indiquez à quel endroit doivent être placés les articles importés :
 
-
-<p>Vous pouvez indiquez à quel endroit doivent être placés les articles importés :</p>
-
-<ul>
-
-<li><strong>Glossaire actuel :</strong> ajoutera les articles importés au glossaire ouvert actuellement ;</li>
-
-<li><strong>Nouveau glossaire :</strong> créera un nouveau glossaire à partir des informations trouvées dans le fichier sélectionné et y insérera les nouveaux articles.</li>
-
-</ul>';
+* **|Glossaire actuel :** ajoutera les articles importés au glossaire ouvert actuellement ;
+* **|Nouveau glossaire :** créera un nouveau glossaire à partir des informations trouvées dans le fichier sélectionné et y insérera les nouveaux articles.';
 $string['displayformat'] = 'Format d\'affichage';
-$string['displayformatcontinuous'] = 'Continu sans auteur';
-$string['displayformatdictionary'] = 'Simple, style dictionnaire';
-$string['displayformatencyclopedia'] = 'Encyclopédie';
-$string['displayformatentrylist'] = 'Liste d\'articles';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Complet avec auteur';
-$string['displayformatfullwithoutauthor'] = 'Complet sans auteur';
 $string['displayformat_help'] = 'Il existe 7 formats d\'affichages :
-
 * Simple, style dictionnaire : ressemble à un dictionnaire avec des articles séparés. Les auteurs ne sont pas affichés. Les annexes sont proposées sous forme de liens.
 * Continu sans auteur : les articles sont affichés les unes après les autres, sans autre séparateur que l\'icône d\'édition.
 * Complet avec auteur : un affichage ressemblant à celui des forums, avec les informations sur l\'auteur. Les annexes sont proposées sous forme de liens.
@@ -165,25 +124,23 @@ $string['displayformat_help'] = 'Il existe 7 formats d\'affichages :
 * Encyclopédie : identique au format « Complet avec auteur », mais les images en annexe sont affichées en ligne.
 * Liste d\'articles : une liste des concepts, sous forme de liens.
 * FAQ : utile pour l\'affichage de Foires Aux Questions. Les mots « Question » et « Réponse » sont affichés automatiquement en regard du concept, respectivement de la définition.';
+$string['displayformatcontinuous'] = 'Continu sans auteur';
+$string['displayformatdictionary'] = 'Simple, style dictionnaire';
+$string['displayformatencyclopedia'] = 'Encyclopédie';
+$string['displayformatentrylist'] = 'Liste d\'articles';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Complet avec auteur';
+$string['displayformatfullwithoutauthor'] = 'Complet sans auteur';
 $string['displayformats'] = 'Formats d\'affichage';
 $string['displayformatssetup'] = 'Réglages des formats d\'affichage';
 $string['duplicatecategory'] = 'Doublon de catégorie';
 $string['duplicateentry'] = 'Doublon';
 $string['editalways'] = 'Toujours modifiable';
-$string['editalways_help'] = '<!-- $Id$ -->
+$string['editalways_help'] = 'Cette option vous permet de décider si les étudiants peuvent modifier leurs articles n\'importe quand.
+Vous pouvez choisir :
 
-
-<p>Cette option vous permet de décider si les étudiants peuvent modifier leurs articles n\'importe quand.</p>
-
-<p>Vous pouvez choisir :</p>
-
-<ul>
-
-<li><b>Oui :</b> les articles sont toujours modifiables ;</li>
-
-<li><b>Non :</b> les articles sont modifiables lors de périodes définies.</li>
-
-</ul>';
+* **|Oui :** les articles sont toujours modifiables ;
+* **|Non :** les articles sont modifiables lors de périodes définies.';
 $string['editcategories'] = 'Modifier les catégories';
 $string['editentry'] = 'Modifier l\'article';
 $string['editingcomment'] = 'Modification commentaire';
@@ -200,14 +157,9 @@ $string['entryleveldefaultsettings'] = 'Réglages par défaut des articles';
 $string['entrysaved'] = 'Cet article a été enregistré';
 $string['entryupdated'] = 'Cet article a été mis à jour';
 $string['entryusedynalink'] = 'Article lié automatiquement';
-$string['entryusedynalink_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Lorsque cette case est cochée, l\'expression définie dans cet article est liée automatiquement lorsque le terme apparaît dans les textes du même cours, y compris dans les messages des forums, les ressources internes, les résumés hebdomadaires ou thématiques, etc.</p>
-
-<p>Si lors de l\'écriture d\'un texte (par exemple dans un forum) vous ne voulez pas qu\'un terme défini dans le glossaire soit lié, vous devrez entourer le texte en question des codes &lt;nolink&gt; et &lt;/nolink&gt;.</p>
-
-<p>Pour que cette fonction soit opérationnelle il est nécessaire de l\'activer également au niveau du glossaire.</p>';
+$string['entryusedynalink_help'] = 'Lorsque cette case est cochée, l\'expression définie dans cet article est liée automatiquement lorsque le terme apparaît dans les textes du même cours, y compris dans les messages des forums, les ressources internes, les résumés hebdomadaires ou thématiques, etc.
+Si lors de l\'écriture d\'un texte (par exemple dans un forum) vous ne voulez pas qu\'un terme défini dans le glossaire soit lié, vous devrez entourer le texte en question des codes et.
+Pour que cette fonction soit opérationnelle il est nécessaire de l\'activer également au niveau du glossaire.';
 $string['errcannoteditothers'] = 'Il n\'est pas permis de modifier les articles d\'autres utilisateurs.';
 $string['errconceptalreadyexists'] = 'Ce concept existe déjà dans le glossaire. Les doublons ne sont pas permis dans ce glossaire.';
 $string['errdeltimeexpired'] = 'Vous ne pouvez pas supprimer ceci. Le délai est échu !';
@@ -226,44 +178,32 @@ $string['exportfile'] = 'Exporter les articles vers un fichier';
 $string['exportglossary'] = 'Exporter le glossaire';
 $string['exporttomainglossary'] = 'Exporter vers le glossaire principal';
 $string['filetoimport'] = 'Fichier à importer';
-$string['filetoimport_help'] = '<!-- $Id$ -->
-
-
-<p>Choisissez sur votre ordinateur le fichier XML contenant les articles de glossaire à importer.</p>';
+$string['filetoimport_help'] = 'Choisissez sur votre ordinateur le fichier XML contenant les articles de glossaire à importer.';
 $string['fillfields'] = 'Les champs concept et définition sont obligatoires.';
 $string['filtername'] = 'Liens automatiques des glossaires';
 $string['fullmatch'] = 'Correspondance mot pour mot';
-$string['fullmatch_help'] = '<!-- $Id$ -->
-
-
-<p>Si la liaison automatique des articles est activée, l\'activation de cette option aura pour résultat que seuls seront liés les articles correspondant mot pour mot au texte de la page.</p>
-
-<p>Par exemple, un article dénommé « terre » ne créera pas de lien dans le mot « terrestre ».</p>';
+$string['fullmatch_help'] = 'Si la liaison automatique des articles est activée, l\'activation de cette option aura pour résultat que seuls seront liés les articles correspondant mot pour mot au texte de la page.
+Par exemple, un article dénommé « terre » ne créera pas de lien dans le mot « terrestre ».';
 $string['glossary:approve'] = 'Approuver des articles';
 $string['glossary:comment'] = 'Ajouter des commentaires';
 $string['glossary:export'] = 'Exporter des articles';
 $string['glossary:exportentry'] = 'Exporter un unique article';
 $string['glossary:exportownentry'] = 'Exporter un de ses propres articles';
 $string['glossary:import'] = 'Importer des articles';
-$string['glossaryleveldefaultsettings'] = 'Réglages par défaut des glossaires';
 $string['glossary:managecategories'] = 'Gérer les catégories';
 $string['glossary:managecomments'] = 'Gérer les commentaires';
 $string['glossary:manageentries'] = 'Gérer les articles';
 $string['glossary:rate'] = 'Évaluer les articles';
-$string['glossarytype'] = 'Type de glossaire';
-$string['glossarytype_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Le module Glossaire permet d\'exporter des articles de n\'importe quel glossaire secondaire vers le glossaire principal d\'un cours. Si vous désirez profiter de cette fonctionnalité, vous devez indiquer quel est le glossaire principal.</p>
-
-<p>Attention ! Il ne peut y avoir qu\'un seul glossaire principal par cours.</p>
-
-<p>Avant Moodle 1.7, seuls les enseignants peuvaient modifier un glossaire principal. À partir de la version 1.7 de Moodle, si vous voulez contrôler qui a le droit de modifier un glossaire (y compris le glossaire principal), vous devez utiliser le mécanisme de dérogation aux rôles.</p>';
 $string['glossary:view'] = 'Voir les glossaires';
 $string['glossary:viewallratings'] = 'Afficher toutes les évaluations brutes';
 $string['glossary:viewanyrating'] = 'Afficher les évaluations totales reçues';
 $string['glossary:viewrating'] = 'Voir les évaluations que vous avez reçues';
 $string['glossary:write'] = 'Créer des articles';
+$string['glossaryleveldefaultsettings'] = 'Réglages par défaut des glossaires';
+$string['glossarytype'] = 'Type de glossaire';
+$string['glossarytype_help'] = 'Le module Glossaire permet d\'exporter des articles de n\'importe quel glossaire secondaire vers le glossaire principal d\'un cours. Si vous désirez profiter de cette fonctionnalité, vous devez indiquer quel est le glossaire principal.
+Attention ! Il ne peut y avoir qu\'un seul glossaire principal par cours.
+Avant Moodle 1.7, seuls les enseignants peuvaient modifier un glossaire principal. À partir de la version 1.7 de Moodle, si vous voulez contrôler qui a le droit de modifier un glossaire (y compris le glossaire principal), vous devez utiliser le mécanisme de dérogation aux rôles.';
 $string['guestnoedit'] = 'Les visiteurs anonymes ne sont pas autorisés à modifier les glossaires';
 $string['importcategories'] = 'Importer les catégories';
 $string['importedcategories'] = 'Catégories importées';
@@ -272,22 +212,13 @@ $string['importentries'] = 'Importer des articles';
 $string['importentriesfromxml'] = 'Importer des articles d\'un fichier XML';
 $string['includegroupbreaks'] = 'Inclure les séparations entre groupes';
 $string['isglobal'] = 'Glossaire global';
-$string['isglobal_help'] = '<!-- $Id$ -->
-
-
-<p>Seuls les administrateurs et d\'autres utilisateurs ayant la capacité « site:doanything » peuvent définir un glossaire comme étant global.</p>
-
-<p>Tous les cours peuvent comporter un tel glosssaire global, en particulier la page d\'accueil.</p>
-
-<p>La différence avec un glossaire normal (local) est que les articles d\'un tel glossaire sont utilisées dans tout le site Moodle pour la création automatique des liens (et pas seulement dans le cours auquel il appartient).</p>';
+$string['isglobal_help'] = 'Seuls les administrateurs et d\'autres utilisateurs ayant la capacité « site:doanything » peuvent définir un glossaire comme étant global.
+Tous les cours peuvent comporter un tel glosssaire global, en particulier la page d\'accueil.
+La différence avec un glossaire normal (local) est que les articles d\'un tel glossaire sont utilisées dans tout le site Moodle pour la création automatique des liens (et pas seulement dans le cours auquel il appartient).';
 $string['letter'] = 'lettre';
 $string['linkcategory'] = 'Lier automatiquement cette catégorie';
-$string['linkcategory_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Vous pouvez indiquer si vous voulez lier automatiquement ou non les catégories.</p>
-
-<p>Attention ! Les catégories ne sont liées que lorsque le texte correspond exactement (casse des caractères et mot pour mot).</p>';
+$string['linkcategory_help'] = 'Vous pouvez indiquer si vous voulez lier automatiquement ou non les catégories.
+Attention ! Les catégories ne sont liées que lorsque le texte correspond exactement (casse des caractères et mot pour mot).';
 $string['linking'] = 'Liaison automatique';
 $string['mainglossary'] = 'Glossaire principal';
 $string['maxtimehaspassed'] = 'Désolé ! la durée maximale allouée pour la modification de ce commentaire ({$a}) est échue.';
@@ -324,57 +255,31 @@ $string['rejectionrpt'] = 'Rapport de rejet';
 $string['resetglossaries'] = 'Supprimer les articles depuis le';
 $string['resetglossariesall'] = 'Supprimer les articles de tous les glossaires';
 $string['rssarticles'] = 'Nombres d\'articles RSS récents';
-$string['rssarticles_help'] = '<p>Cette option vous permet de fixer le nombre d\'articles récents à inclure dans le flux RSS.</p>
-
-<p>Un nombre entre 5 et 20 est adéquat pour la plupart des glossaires. Si le glossaire est très actif, il est souhaitable d\'augmenter ce nombre.</p>';
+$string['rssarticles_help'] = 'Cette option vous permet de fixer le nombre d\'articles récents à inclure dans le flux RSS.
+Un nombre entre 5 et 20 est adéquat pour la plupart des glossaires. Si le glossaire est très actif, il est souhaitable d\'augmenter ce nombre.';
 $string['rsssubscriberss'] = 'Affichage du flux RSS des concepts du glossaire « {$a} »';
 $string['rsstype'] = 'Flux RSS de cette activité';
-$string['rsstype_help'] = '<p>Cette option vous permet d\'activer le flux RSS de ce glossaire.</p>
-
-<p>Vous pouvez choisir entre deux types de flux RSS :
-
-<ul>
-
-<li><strong>Avec auteur :</strong> le flux généré comprendra le nom de l\'auteur de chaque article du glossaire.</li>
-
-<li><strong>Sans auteur :</strong> le flux généré ne comprendra pas le nom de l\'auteur des articles.</li>
-
-</ul>';
+$string['rsstype_help'] = 'Cette option vous permet d\'activer le flux RSS de ce glossaire.
+Vous pouvez choisir entre deux types de flux RSS :
+* **Avec auteur :** le flux généré comprendra le nom de l\'auteur de chaque article du glossaire.
+* **Sans auteur :** le flux généré ne comprendra pas le nom de l\'auteur des articles.';
 $string['searchindefinition'] = 'Rechercher dans les définitions aussi';
 $string['secondaryglossary'] = 'Glossaire secondaire';
 $string['showall'] = 'Afficher le lien « Tout »';
-$string['showall_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez personnaliser la façon de consulter un glossaire. La consultation et la recherche sont toujours disponibles, mais vous pouvez définir trois options supplémentaires :</p>
-
-<p><strong>Afficher le lien « Spécial »</strong> permet ou non la consultation directe des articles commençant par un caractère spécial comme @, #, etc.</p>
-
-<p><strong>Afficher l\'alphabet</strong> permet ou non la consultation directe des articles par ordre alphabétique.</p>
-
-<p><strong>Afficher le lien « Tout »</strong> permet ou non la consultation des tous les articles.</p>';
+$string['showall_help'] = 'Vous pouvez personnaliser la façon de consulter un glossaire. La consultation et la recherche sont toujours disponibles, mais vous pouvez définir trois options supplémentaires :
+**Afficher le lien « Spécial »** permet ou non la consultation directe des articles commençant par un caractère spécial comme @, #, etc.
+**Afficher l\'alphabet** permet ou non la consultation directe des articles par ordre alphabétique.
+**Afficher le lien « Tout »** permet ou non la consultation des tous les articles.';
 $string['showalphabet'] = 'Afficher l\'alphabet';
-$string['showalphabet_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez personnaliser la façon de consulter un glossaire. La consultation et la recherche sont toujours disponibles, mais vous pouvez définir trois options supplémentaires :</p>
-
-<p><strong>Afficher le lien « Spécial »</strong> permet ou non la consultation directe des articles commençant par un caractère spécial comme @, #, etc.</p>
-
-<p><strong>Afficher l\'alphabet</strong> permet ou non la consultation directe des articles par ordre alphabétique.</p>
-
-<p><strong>Afficher le lien « Tout »</strong> permet ou non la consultation des tous les articles.</p>';
+$string['showalphabet_help'] = 'Vous pouvez personnaliser la façon de consulter un glossaire. La consultation et la recherche sont toujours disponibles, mais vous pouvez définir trois options supplémentaires :
+**Afficher le lien « Spécial »** permet ou non la consultation directe des articles commençant par un caractère spécial comme @, #, etc.
+**Afficher l\'alphabet** permet ou non la consultation directe des articles par ordre alphabétique.
+**Afficher le lien « Tout »** permet ou non la consultation des tous les articles.';
 $string['showspecial'] = 'Afficher le lien « Spécial »';
-$string['showspecial_help'] = '<!-- $Id$ -->
-
-
-<p>Vous pouvez personnaliser la façon de consulter un glossaire. La consultation et la recherche sont toujours disponibles, mais vous pouvez définir trois options supplémentaires :</p>
-
-<p><strong>Afficher le lien « Spécial »</strong> permet ou non la consultation directe des articles commençant par un caractère spécial comme @, #, etc.</p>
-
-<p><strong>Afficher l\'alphabet</strong> permet ou non la consultation directe des articles par ordre alphabétique.</p>
-
-<p><strong>Afficher le lien « Tout »</strong> permet ou non la consultation des tous les articles.</p>';
+$string['showspecial_help'] = 'Vous pouvez personnaliser la façon de consulter un glossaire. La consultation et la recherche sont toujours disponibles, mais vous pouvez définir trois options supplémentaires :
+**Afficher le lien « Spécial »** permet ou non la consultation directe des articles commençant par un caractère spécial comme @, #, etc.
+**Afficher l\'alphabet** permet ou non la consultation directe des articles par ordre alphabétique.
+**Afficher le lien « Tout »** permet ou non la consultation des tous les articles.';
 $string['sortby'] = 'Trier par';
 $string['sortbycreation'] = 'Par date de création';
 $string['sortbylastupdate'] = 'Par date de modification';
@@ -384,16 +289,10 @@ $string['standardview'] = 'Consulter alphabétiquement';
 $string['studentcanpost'] = 'Les étudiants peuvent ajouter des articles';
 $string['totalentries'] = 'Nombre total d\'articles';
 $string['usedynalink'] = 'Activer les liens automatiques';
-$string['usedynalink_help'] = '<!-- Version: $Id$ -->
-
-
-<p>Quand cette option est activée, les concepts ou expressions définis dans ce glossaire sont liés automatiquement quand ils apparaissent dans les textes du même cours, y compris dans les messages des forums, les ressources internes, les résumés hebdomadaires ou thématiques, etc.</p>
-
-<p>L\'activation de cette option ne suffit pas. Il faut encore explicitement activer la liaison pour chacun des articles du glossaire pour lesquels cela est désiré.</p>
-
-<p>Si lors de l\'écriture d\'un texte (par exemple dans un forum) vous ne voulez pas qu\'un terme défini dans le glossaire soit lié, vous devrez entourer le texte en question des codes &lt;nolink&gt; et &lt;/nolink&gt;.</p>
-
-<p>Il est à remarquer que les noms des catégories sont aussi liés.</p>';
+$string['usedynalink_help'] = 'Quand cette option est activée, les concepts ou expressions définis dans ce glossaire sont liés automatiquement quand ils apparaissent dans les textes du même cours, y compris dans les messages des forums, les ressources internes, les résumés hebdomadaires ou thématiques, etc.
+L\'activation de cette option ne suffit pas. Il faut encore explicitement activer la liaison pour chacun des articles du glossaire pour lesquels cela est désiré.
+Si lors de l\'écriture d\'un texte (par exemple dans un forum) vous ne voulez pas qu\'un terme défini dans le glossaire soit lié, vous devrez entourer le texte en question des codes et.
+Il est à remarquer que les noms des catégories sont aussi liés.';
 $string['waitingapproval'] = 'En attente d\'approbation';
 $string['warningstudentcapost'] = '(n\'est valable que si le glossaire n\'est pas principal)';
 $string['withauthor'] = 'Concepts avec auteur';

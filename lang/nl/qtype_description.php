@@ -27,9 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = 'Informatietekst';
 $string['pluginname'] = 'Beschrijving';
+$string['pluginname_help'] = 'Een beschrijving is geen echt vraagtype. Het maakt het mogelijk om tekst te tonen zonder een antwoord te verwachten, zoals een label op de cursuspagina.
+De vraagtekst wordt getoond, zowel tijdens de testpoging als tijdens het nalezen. Algemene feedback wordt enkel tijdens het nalezen getoond.';
 $string['pluginnameadding'] = 'Beschrijving toevoegen';
 $string['pluginnameediting'] = 'Bewerk een beschrijving';
-$string['pluginname_help'] = 'Een beschrijving is geen echt vraagtype. Het maakt het mogelijk om tekst te tonen zonder een antwoord te verwachten, zoals een label op de cursuspagina.
-
-De vraagtekst wordt getoond, zowel tijdens de testpoging als tijdens het nalezen. Algemene feedback wordt enkel tijdens het nalezen getoond.';
 $string['pluginnamesummary'] = 'Dit is geen echt vraagtype. Het is een manier om instructies, tekst of andere inhoud aan de test toe te voegen. Je kunt een beschrijving op dezelfde manier gebruiken zoals je labels gebruikt om inhoud aan de cursuspagina toe te voegen.';

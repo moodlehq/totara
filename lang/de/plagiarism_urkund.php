@@ -37,9 +37,7 @@ $string['unsupportedfiletype'] = 'Der Dateityp wird von URKUND nicht unterstütz
 $string['urkund'] = 'URKUND Plagiatsprüfung';
 $string['urkund_api'] = 'URKUND Integrationsadresse';
 $string['urkund_api_help'] = 'Adresse der URKUND API';
-$string['urkunddefaults'] = 'URKUND Standardeinstellungen';
 $string['urkund_draft_submit'] = 'Wann soll die Datei URKUND zur Prüfung übergeben werden?';
-$string['urkundexplain'] = 'Weitere Informationen zum Plugin unter <a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['urkund_lang'] = 'Sprache';
 $string['urkund_lang_help'] = 'Sprachcode bei URKUND';
 $string['urkund_password'] = 'Kennwort';
@@ -51,7 +49,9 @@ $string['urkund_show_student_report_help'] = 'Der Ähnlichkeitsbericht zeigt wel
 $string['urkund_show_student_score'] = 'Ähnlichkeitswert Teilnehmern anzeigen';
 $string['urkund_show_student_score_help'] = 'Der Ähnlichkeitswert ist der Prozentwert zu dem die Einreichung mit anderem Inhalt/Quellen übereinstimmt.';
 $string['urkund_studentemail'] = 'E-Mail an Teilnehmer versenden';
-$string['urkund_studentemail_help'] = 'Versendet einen E-Mail an Teilnehmer wenn eine Datei verarbeitet wurde und informiert darüber, dass ein Bericht zur Verfügung steht. Die E-Mail  enthält auch einen Link zum Abbestellen der Benachrichtigungen';
+$string['urkund_studentemail_help'] = 'Versendet einen E-Mail an Teilnehmer wenn eine Datei verarbeitet wurde und informiert darüber, dass ein Bericht zur Verfügung steht. Die E-Mail enthält auch einen Link zum Abbestellen der Benachrichtigungen';
 $string['urkund_username'] = 'Nutzername';
 $string['urkund_username_help'] = 'Von URKUND übermittelter Nutzername für API-Zugriff';
+$string['urkunddefaults'] = 'URKUND Standardeinstellungen';
+$string['urkundexplain'] = 'Weitere Informationen zum Plugin unter <a href="http://www.urkund.com/int/en/" target="_blank">http://www.urkund.com/int/en/</a>';
 $string['useurkund'] = 'URKUND aktivieren';

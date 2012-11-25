@@ -25,5 +25,5 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = ' +Blackboard V6 ';
+$string['pluginname'] = '+Blackboard V6';
 $string['pluginname_help'] = 'תסדיר +Blackboard V6 מאפשר לייבא שאלות שנשמרו בתסדיר הייצוא של Blackboard באמצעות קובץ ZIP. זאת היא תמיכה חלקית למהדורות 6 ו-7 של Blackboard.';

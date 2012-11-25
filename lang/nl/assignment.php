@@ -27,25 +27,24 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addsubmission'] = 'Inzending toevoegen';
 $string['allowdeleting'] = 'Verwijderen toestaan';
-$string['allowdeleting_help'] = '<p>Indien ingeschakeld kunnen deelnemers geüploade bestanden verwijderen voor de opdracht ingestuurd wordt om beoordeeld te worden.</p>';
+$string['allowdeleting_help'] = 'Indien ingeschakeld kunnen deelnemers geüploade bestanden verwijderen voor de opdracht ingestuurd wordt om beoordeeld te worden.';
 $string['allowmaxfiles'] = 'Maximum aantal geüploade bestanden';
-$string['allowmaxfiles_help'] = '<p>Maximum aantal bestanden die elke deelnemers mag uploaden. Dit aantal wordt niet aan de deelnemers getoond. Noteer het aantal gevraagde bestanden ergens in de beschrijving van de opdracht.</p>';
+$string['allowmaxfiles_help'] = 'Maximum aantal bestanden die elke deelnemers mag uploaden. Dit aantal wordt niet aan de deelnemers getoond. Noteer het aantal gevraagde bestanden ergens in de beschrijving van de opdracht.';
 $string['allownotes'] = 'Notities toestaan';
-$string['allownotes_help'] = '<p>Indien ingeschakeld kunnen deelnemers notities plaatsen in de tekstzone.
-Het werkt zoals een online opdracht.</p>
-
-<p>Deze tekstzone kan gebruikt worden voor communicatie met de leraar, beschrijving van de vorderingen van de opdracht of gelijk welke andere geschreven activiteit.</p>';
+$string['allownotes_help'] = 'Indien ingeschakeld kunnen deelnemers notities plaatsen in de tekstzone.
+Het werkt zoals een online opdracht.
+Deze tekstzone kan gebruikt worden voor communicatie met de leraar, beschrijving van de vorderingen van de opdracht of gelijk welke andere geschreven activiteit.';
 $string['allowresubmit'] = 'Sta herhaald insturen toe';
-$string['allowresubmit_help'] = '<p>Standaard kunnen leerlingen hun opdracht niet meer opnieuw insturen als de leraar ze al beoordeeld heeft</p>
-
-<p>Als je deze optie inschakelt, kunnen leerlingen hun opdracht opnieuw insturen nadat deze al beoordeeld is (zodat je ze kunt herbeoordelen). Dit kan nuttig zijn wanneer leraren hun leerlingen willen aanmoedigen om beter werk te leveren in een iteratief proces.</p>
-
-<p>Deze optie is natuurlijk niet relevant voor offline opdrachten.</p>';
+$string['allowresubmit_help'] = 'Standaard kunnen leerlingen hun opdracht niet meer opnieuw insturen als de leraar ze al beoordeeld heeft
+Als je deze optie inschakelt, kunnen leerlingen hun opdracht opnieuw insturen nadat deze al beoordeeld is (zodat je ze kunt herbeoordelen). Dit kan nuttig zijn wanneer leraren hun leerlingen willen aanmoedigen om beter werk te leveren in een iteratief proces.
+Deze optie is natuurlijk niet relevant voor offline opdrachten.';
 $string['alreadygraded'] = 'Jouw opdracht is al beoordeeld en opnieuw insturen is niet toegelaten.';
-$string['assignmentdetails'] = 'De details van de opdracht';
 $string['assignment:exportownsubmission'] = 'Exporteer je opdracht';
 $string['assignment:exportsubmission'] = 'Exporteer inzending';
 $string['assignment:grade'] = 'Beoordeel opdracht';
+$string['assignment:submit'] = 'Stuur opdracht in';
+$string['assignment:view'] = 'Bekijk opdracht';
+$string['assignmentdetails'] = 'De details van de opdracht';
 $string['assignmentmail'] = '{$a->teacher} heeft feedback gepost voor je bijdrage aan de opdracht \'{$a->assignment}\'
 Hij is toegevoegd aan je ingestuurde opdracht:
 {$a->url}';
@@ -54,15 +53,13 @@ Hij is toegevoegd aan je ingestuurde <a href="{$a->url}">opdracht</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} heeft feedback voor jou geschreven over je ingestuurde opdracht voor  \'{$a->assignment}\' Je kunt de feedback lezen bij je ingestuurde opdracht.';
 $string['assignmentname'] = 'Naam van de opdracht';
 $string['assignmentsubmission'] = 'Ingestuurde opdrachten';
-$string['assignment:submit'] = 'Stuur opdracht in';
 $string['assignmenttype'] = 'Soort opdracht';
-$string['assignment:view'] = 'Bekijk opdracht';
 $string['availabledate'] = 'Inleveren kan vanaf';
 $string['cannotdeletefiles'] = 'Er is een fout opgetreden en de bestanden konden niet verwijderd worden';
 $string['cannotviewassignment'] = 'Je kunt deze opdracht niet bekijken';
 $string['comment'] = 'Commentaar';
 $string['commentinline'] = 'Commentaar invoegen';
-$string['commentinline_help'] = '<p>Als deze optie gekozen is, dan zal de originele inzending naar het feedbackveld gekopieerd worden, zodat het gemakkelijker is om commentaar in de tekst te geven (bijvoorbeeld door een andere kleur te gebruiken) of om de originele tekst te bewerken.</p>';
+$string['commentinline_help'] = 'Als deze optie gekozen is, dan zal de originele inzending naar het feedbackveld gekopieerd worden, zodat het gemakkelijker is om commentaar in de tekst te geven (bijvoorbeeld door een andere kleur te gebruiken) of om de originele tekst te bewerken.';
 $string['configitemstocount'] = 'Wat er moet geteld worden wanneer leerlingen hun online opdracht ingestuurd hebben.';
 $string['configmaxbytes'] = 'Standaard maximumgrootte voor alle opdrachten op de site (afhankelijk van de limiet van de cursus en van andere lokale instellingen)';
 $string['configshowrecentsubmissions'] = 'Iedereen kan in rapporteringen over "Recente activiteit" zien dat er opdrachten zijn ingestuurd.';
@@ -90,16 +87,13 @@ Je kunt ze hier vinden:
 $string['emailteachermailhtml'] = '{$a->username} heeft de inzending voor opdracht <i>{$a->assignment}</i> aangepast om {$a->timeupdated}.<br /><br />
 Je kunt ze <a href="{$a->url}"> nakijken op de website</a>.';
 $string['emailteachers'] = 'Stuur een e-mail als waarschuwing naar de leraren';
-$string['emailteachers_help'] = '<p>Als deze optie ingeschakeld is, dan krijgen leraren een korte e-mail als waarschuwing dat een leerling een opdracht heeft ingestuurd of geüpdatet.</p>
-
-<p>Enkel leraren die cijfers kunnen geven van die inzendingen worden verwittigd. Als de cursus bijvoorbeeld in verschillende groepen is ingedeeld, dan zullen leraren die bij een bepaalde groep horen geen meldingen krijgen over opdrachten van leerlingen van andere groepen.</p>
-
-<p>Voor offline activiteiten wordt er natuurlijk nooit mail verstuurd omdat leerlingen dan niets inzenden.</p>';
+$string['emailteachers_help'] = 'Als deze optie ingeschakeld is, dan krijgen leraren een korte e-mail als waarschuwing dat een leerling een opdracht heeft ingestuurd of geüpdatet.
+Enkel leraren die cijfers kunnen geven van die inzendingen worden verwittigd. Als de cursus bijvoorbeeld in verschillende groepen is ingedeeld, dan zullen leraren die bij een bepaalde groep horen geen meldingen krijgen over opdrachten van leerlingen van andere groepen.
+Voor offline activiteiten wordt er natuurlijk nooit mail verstuurd omdat leerlingen dan niets inzenden.';
 $string['emptysubmission'] = 'Je hebt nog niets ingestuurd';
 $string['enablenotification'] = 'Stuur notificatie e-mails';
-$string['enablenotification_help'] = '<p>Als je dit inschakeld, dan zullen leerlingen via e-mail bericht krijgen over hun cijfers en feedback.</p>
-
-<p>Je persoonlijke voorkeur wordt bewaard en zal toegepast worden op alle opdrachtinzendingen die je beoordeelt.</p>';
+$string['enablenotification_help'] = 'Als je dit inschakeld, dan zullen leerlingen via e-mail bericht krijgen over hun cijfers en feedback.
+Je persoonlijke voorkeur wordt bewaard en zal toegepast worden op alle opdrachtinzendingen die je beoordeelt.';
 $string['errornosubmissions'] = 'Er zijn geen inzendingen om te downloaden';
 $string['existingfiledeleted'] = 'Het vorige bestand is verwijderd: {$a}';
 $string['failedupdatefeedback'] = 'Het updaten van de feedback op de ingestuurde opdracht van gebruiker {$a} is niet gelukt';
@@ -121,7 +115,7 @@ $string['helpupload'] = '<p>Dit type opdracht laat elke leerling toe om één of
 <p>Het insturen van dit type opdraht moet door de deelnemer manueel gebeuren. Je kunt de huidige status altijd nakijken, opdrachten die niet klaar zijn, staan als kladwerk gemarkeerd. Je kunt een onbeoordeelde opdracht altijd terug naar de kladwerkstatus zetten.</p>';
 $string['helpuploadsingle'] = '<p>Dit type opdracht laat elke deelnemer toe om één bestand te uploaden, van gelijk welk bestandstype.</p><p>Dit kan een bestand zijn van een tekstverwerker, een afbeelding, een website in een zip-bestand of gelijk welk type dat je je leerlingen vraagt te maken</p>';
 $string['hideintro'] = 'Verberg beschrijving voor de startdatum';
-$string['hideintro_help'] = '<p>Indien ingeschakeld is de beschrijving verborgen voor de openingsdatum.</p>';
+$string['hideintro_help'] = 'Indien ingeschakeld is de beschrijving verborgen voor de openingsdatum.';
 $string['invalidassignment'] = 'Ongeldige opdracht';
 $string['invalidfileandsubmissionid'] = 'Ontbrekend bestand of instuurID';
 $string['invalidid'] = 'Opdracht ID was fout';
@@ -166,9 +160,9 @@ $string['pluginname'] = 'Opdracht';
 $string['popupinnewwindow'] = 'Open in een popup-venster';
 $string['preventlate'] = 'Blokkeer te laat insturen';
 $string['quickgrade'] = 'Snel verbeteren';
-$string['quickgrade_help'] = '<p>Met snel verbeteren ingeschakeld, kun je de opdrachten van meerdere leerlingen verbeteren op één pagina.</p>
-<p>Geef cijfers en commentaar en gebruik de bewaar-knop onderaan om alle wijzigingen voor die pagina tegelijk te bewaren.</p>
-<p>De gewone knoppen aan de rechterkant zullen ook werken voor het geval je meer ruimte nodig hebt. Je keuze voor snel verbeteren wordt bewaard en zal meegenomen worden in alle opdrachten van al je cursussen.</p>';
+$string['quickgrade_help'] = 'Met snel verbeteren ingeschakeld, kun je de opdrachten van meerdere leerlingen verbeteren op één pagina.
+Geef cijfers en commentaar en gebruik de bewaar-knop onderaan om alle wijzigingen voor die pagina tegelijk te bewaren.
+De gewone knoppen aan de rechterkant zullen ook werken voor het geval je meer ruimte nodig hebt. Je keuze voor snel verbeteren wordt bewaard en zal meegenomen worden in alle opdrachten van al je cursussen.';
 $string['requiregrading'] = 'Moet beoordeeld worden';
 $string['responsefiles'] = 'Ingestuurde bestanden';
 $string['reviewed'] = 'Nagekeken';
@@ -190,15 +184,15 @@ $string['submittedfiles'] = 'Ingestuurde bestanden';
 $string['subplugintype_assignment'] = 'Soort opdracht';
 $string['subplugintype_assignment_plural'] = 'Opdrachttypes';
 $string['trackdrafts'] = 'Knop "Insturen om de beoordelen" inschakelen';
-$string['trackdrafts_help'] = '<p>De "Stuur in voor beoordeling"-knop laat gebruikers toe om aan de leraar aan te geven dat een opdracht klaar is en beoordeeld kan worden. De leraar kan er voor kiezen de taak terug als kladwerk te markeren als er bijvoorbeeld nog meer werk aan is.</p>';
+$string['trackdrafts_help'] = 'De "Stuur in voor beoordeling"-knop laat gebruikers toe om aan de leraar aan te geven dat een opdracht klaar is en beoordeeld kan worden. De leraar kan er voor kiezen de taak terug als kladwerk te markeren als er bijvoorbeeld nog meer werk aan is.';
 $string['typeblog'] = 'Blogbericht';
 $string['typeoffline'] = 'Offline activiteit';
 $string['typeonline'] = 'Online activiteit';
 $string['typeupload'] = 'Geavanceerd uploaden van bestanden';
 $string['typeuploadsingle'] = 'Upload een bestand';
 $string['unfinalize'] = 'Terugzetten naar kladwerk';
-$string['unfinalizeerror'] = 'Er is een fout opgetreden. Deze inzending kon niet terug omgezet worden naar kladwerk.';
 $string['unfinalize_help'] = 'Het terugzetten naar kladwerk geeft een leerling de kans om terug aanpassingen te doen aan zijn opdracht';
+$string['unfinalizeerror'] = 'Er is een fout opgetreden. Deze inzending kon niet terug omgezet worden naar kladwerk.';
 $string['uploadafile'] = 'Upload een bestand';
 $string['uploadbadname'] = 'In deze bestandsnaam staan rare tekens, het bestand kon daardoor niet worden geüpload';
 $string['uploadedfiles'] = 'Ingestuurde bestanden';

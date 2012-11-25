@@ -53,14 +53,13 @@ $string['attempts'] = 'Intentos';
 $string['attemptsx'] = '{$a} intentos';
 $string['attr_error'] = 'Valor incorrecto para el atributo ({$a->attr}) en la marca {$a->tag}.';
 $string['autocontinue'] = 'Continuación automática';
+$string['autocontinue_help'] = '**Autocontinuar**
+Si Autocontinuar está configurado en Sí, cuando un SCO llama
+al método "cerrar comunicación", el siguiente SCO disponible
+se abrirá automáticamente.
+Si está configurado en No, los usuarios deben hacer clic en el botón "Continuar"
+para seguir.';
 $string['autocontinuedesc'] = 'Esta preferencia fija la continuación automática por defecto de la actividad';
-$string['autocontinue_help'] = '<p><strong>Autocontinuar</strong></p>
-
-<p>Si Autocontinuar está configurado en Sí, cuando un SCO llama
-  al método &quot;cerrar comunicación&quot;, el siguiente SCO disponible
-  se abrirá automáticamente.</p>
-<p>Si está configurado en No, los usuarios deben hacer clic en el botón &quot;Continuar&quot;
-  para seguir.</p>';
 $string['averageattempt'] = 'Intentos promedio';
 $string['badmanifest'] = 'Errores de manifiesto: ver registro de errores';
 $string['badpackage'] = 'Hay problemas con el paquete/manifiesto. Compruébelo e inténtelo de nuevo.';
@@ -71,6 +70,13 @@ $string['browserepository'] = 'Navegar por el repositorio';
 $string['cannotfindsco'] = 'No se ha encontrado SCO';
 $string['chooseapacket'] = 'Elegir o actualizar un paquete SCORM';
 $string['completed'] = 'Completado';
+$string['completionscorerequired'] = 'Se requiere la calificación mínima';
+$string['completionstatus_completed'] = 'Completado';
+$string['completionstatus_failed'] = 'Error';
+$string['completionstatus_help'] = '# Actividad realizada: requerir estado
+Marcar uno o más estados requerirá que un usuario haya alcanzado al menos uno de los estados para poder marcar la actividad SCORM como realizada, así como cualquier otro requisito necesario para completar la actividad.';
+$string['completionstatus_passed'] = 'Aprobado';
+$string['completionstatusrequired'] = 'Se requiere estado';
 $string['confirmloosetracks'] = 'ATENCIÓN: El paquete parece haber sido modificado.nSi la estructura del paquete se ha cambiado,nlas pistas de algunos usuarios pueden haberse perdido durante el proceso de actualización.';
 $string['contents'] = 'Contenido';
 $string['coursepacket'] = 'Paquete de curso';
@@ -88,11 +94,11 @@ $string['directories'] = 'Mostrar enlaces de directorio';
 $string['disabled'] = 'Dehabilitado';
 $string['display'] = 'Mostrar';
 $string['displayattemptstatus'] = 'Mostrar estado de intentos';
-$string['displayattemptstatusdesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de estado de intentos';
 $string['displayattemptstatus_help'] = 'Si está activado, las puntuaciones y las calificaciones de los intentos se muestran en la página de resumen SCORM.';
+$string['displayattemptstatusdesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de estado de intentos';
 $string['displaycoursestructure'] = 'Mostrar estructura del curso en la página de entrada';
-$string['displaycoursestructuredesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de estructura del curso en la página de entrada';
 $string['displaycoursestructure_help'] = 'Si está activado, la tabla de contenidos se mostrará en la página de resumen SCORM.';
+$string['displaycoursestructuredesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de estructura del curso en la página de entrada';
 $string['displaydesc'] = 'Esta preferencia fija el valor por defecto para mostrar o no el paquete de una actividad';
 $string['displaysettings'] = 'Configuración de pantalla';
 $string['domxml'] = 'Librería externa DOMXML';
@@ -115,14 +121,14 @@ $string['finishscormlinkname'] = 'haga clic aquí para volver a la página del c
 $string['firstaccess'] = 'Primer acceso';
 $string['firstattempt'] = 'Primer intento';
 $string['forcecompleted'] = 'Forzar completados';
-$string['forcecompleteddesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de forzar completados';
 $string['forcecompleted_help'] = 'Si se activa, el estado del intento actual se cambia a "Completado". Este ajuste sólo se aplica a los paquetes SCORM 1.2. Es útil si el paquete SCORM no se ocupa de revisar el intento correctamente, ya sea en la revisión o en el modo de exploración, o se produce cualquier otro funcionamiento incorrecto en el estado "Completado"';
+$string['forcecompleteddesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de forzar completados';
 $string['forcejavascript'] = 'Obligar a los usuarios a tener JavaScript habilitado';
 $string['forcejavascript_desc'] = 'Si está activado (recomendado) impide el acceso a los objetos SCORM cuando JavaScript no está soportado/activado en el navegador del usuario. Si está desactivado, el usuario puede ver el SCORM, pero la comunicación API fallará y no se almacenará la información de la calificación.';
 $string['forcejavascriptmessage'] = 'Se requiere JavaScript para visualizar este objeto, por favor, active JavaScript en su navegador y vuelva a intentarlo.';
 $string['forcenewattempt'] = 'Forzar nuevo intento';
-$string['forcenewattemptdesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de forzar nuevo intento';
 $string['forcenewattempt_help'] = 'Si se activa, cada vez que un paquete SCORM se visite se contará como un nuevo intento.';
+$string['forcenewattemptdesc'] = 'Esta preferencia fija el valor por defecto para mostrar el ajuste de forzar nuevo intento';
 $string['found'] = 'Encontrado manifiesto';
 $string['frameheight'] = 'Esta preferencia determina la altura por defecto del marco o ventana SCO';
 $string['framewidth'] = 'Esta preferencia ajusta la anchura por defecto del marco o ventana SCO';
@@ -132,22 +138,20 @@ $string['gradeaverage'] = 'Calificación promedio';
 $string['gradeforattempt'] = 'Calificación del intento';
 $string['gradehighest'] = 'Calificación más alta';
 $string['grademethod'] = 'Método de calificación';
+$string['grademethod_help'] = '**Métodos de calificación**
+Los resultados de una actividad SCORM/AICC se muestran en páginas que
+pueden calificarse de diversas formas:
+* **Situación SCO**
+Este modo muestra el número de SCOes aprobados/completados para la
+actividad. El valor más alto es el número total de SCO.
+* **Más alto**
+Se mostará la puntuación más alta obtenida por los usuarios
+en todos los SCOes aprobados.
+* **Promedio**
+Si elige este modo, Moodle calculará el promedio de todas las puntuaciones.
+* **Suma**
+Con este modo se sumarán todas las puntuaciones.';
 $string['grademethoddesc'] = 'Esta preferencia fija el valor por defecto del método de calificación de una actividad';
-$string['grademethod_help'] = '<p><b>Métodos de calificación</b></p>
-<p>Los resultados de una actividad SCORM/AICC se muestran en páginas que
-  pueden calificarse de diversas formas:</p>
-<ul>
-  <li><strong>Situación SCO</strong><br>
-    Este modo muestra el número de SCOes aprobados/completados para la
-    actividad. El valor más alto es el número total de SCO.</li>
-  <li><strong>Más alto</strong><br>
-    Se mostará la puntuación más alta obtenida por los usuarios
-    en todos los SCOes aprobados.</li>
-  <li><strong>Promedio</strong><br>
-    Si elige este modo, Moodle calculará el promedio de todas las puntuaciones.</li>
-  <li><strong>Suma</strong><br>
-    Con este modo se sumarán todas las puntuaciones.</li>
-</ul>';
 $string['gradereported'] = 'Calificación informada';
 $string['gradescoes'] = 'Objetos de aprendizaje';
 $string['gradesettings'] = 'Configuración de calificación';
@@ -155,19 +159,17 @@ $string['gradesum'] = 'Calificaciones sumadas';
 $string['height'] = 'Altura';
 $string['hidden'] = 'Oculto';
 $string['hidebrowse'] = 'Ocultar botón de previsualización';
+$string['hidebrowse_help'] = 'Si esta opción está ajustada a "Sí", el botón de previsualización en la página principal de la actividad SCORM/AICC no mostrará.
+En caso contrario, el estudiante puede elegir entre previsualizar la actividad o realizar un intento de forma normal.
+Cuando un objeto de aprendizaje es completado en modo previsualizar, es marcado con el icono de previsualizado';
 $string['hidebrowsedesc'] = 'Esta preferencia fija el valor por defecto sobre activar o desactivar el modo de previsualización';
-$string['hidebrowse_help'] = '<p>Si esta opción está ajustada a "Sí", el botón de previsualización en la página principal de la actividad SCORM/AICC no mostrará.</p>
-
-<p>En caso contrario, el estudiante puede elegir entre previsualizar la actividad o realizar un intento de forma normal.</p>
-
-<p>Cuando un objeto de aprendizaje es completado en modo previsualizar, es marcado con el icono de previsualizado (<img src="<?php echo $CFG->wwwroot.\'/mod/scorm/pix/browsed.gif\' ?>" alt="<?php print_string(\'browsed\',\'scorm\') ?>" title="<?php print_string(\'browsed\',\'scorm\') ?>" />).</p>';
 $string['hideexit'] = 'Ocultar enlace de salida';
 $string['hidenav'] = 'Ocultar botones de navegación';
 $string['hidenavdesc'] = 'Esta preferencia fija el valor por defecto sobre mostrar o no los botones de navegación';
 $string['hidereview'] = 'Ocultar botón de revisión';
 $string['hidetoc'] = 'Mostrar la estructura del curso en el reproductor';
-$string['hidetocdesc'] = 'Esta preferencia fija el valor por defecto sobre mostrar o no la estructura del curso (TOC) en el reproductor SCORM';
 $string['hidetoc_help'] = 'Esta configuración especifica cómo se muestra la tabla de contenidos en el reproductor de SCORM.';
+$string['hidetocdesc'] = 'Esta preferencia fija el valor por defecto sobre mostrar o no la estructura del curso (TOC) en el reproductor SCORM';
 $string['highestattempt'] = 'Intento más alto';
 $string['identifier'] = 'Identificador de preguntas';
 $string['incomplete'] = 'Incompleto';
@@ -195,19 +197,20 @@ $string['last'] = 'Último acceso en';
 $string['lastaccess'] = 'Último acceso';
 $string['lastattempt'] = 'Último intento';
 $string['lastattemptlock'] = 'Bloquear después último intento';
-$string['lastattemptlockdesc'] = 'Esta preferencia fija el valor por defecto para el bloqueo después de ajustar el intento final';
 $string['lastattemptlock_help'] = 'Si se activa, al estudiante se le impide el lanzamiento del reproductor SCORM después de haber utilizado todos los intentos que tenía asignados.';
+$string['lastattemptlockdesc'] = 'Esta preferencia fija el valor por defecto para el bloqueo después de ajustar el intento final';
 $string['location'] = 'Mostrar la barra de ubicación';
 $string['max'] = 'Calificación máxima';
 $string['maximumattempts'] = 'Número de intentos';
+$string['maximumattempts_help'] = 'Este parámetro define el número de intentos permitidos a los usuarios.
+Solo funciona con paquetes SCORM1.2 y AICC. Los paquetes SCORM2004 tienen su propia definición de máximo de intentos.';
 $string['maximumattemptsdesc'] = 'Esta preferencia fija el valor por defecto sobre el número máximo de intentos en una actividad';
-$string['maximumattempts_help'] = '<p>Este parámetro define el número de intentos permitidos a los usuarios.<br />Solo funciona con paquetes SCORM1.2 y AICC. Los paquetes SCORM2004 tienen su propia definición de máximo de intentos.</p>';
 $string['maximumgradedesc'] = 'Esta preferencia fija el valor por defecto sobre la calificación máxima de una actividad';
 $string['menubar'] = 'Mostrar la barra de menú';
 $string['min'] = 'Calificación mínima';
 $string['missing_attribute'] = 'Falta atributo ({$a->attr}) en marca {$a->tag}';
-$string['missingparam'] = 'Un elemento requerido falta o es erróneo';
 $string['missing_tag'] = 'Falta marca {$a->tag}';
+$string['missingparam'] = 'Un elemento requerido falta o es erróneo';
 $string['mode'] = 'Moda';
 $string['modulename'] = 'Paquete SCORM';
 $string['modulename_help'] = 'SCORM y AICC son un conjunto de especificaciones que permiten la interoperabilidad, la accesibilidad y la reutilización de los contenidos de aprendizaje basados en la web. El módulo SCORM/AICC permite que se incluyan en el curso paquetes SCORM/AICC.';
@@ -215,22 +218,21 @@ $string['modulenameplural'] = 'Paquetes SCORM';
 $string['navigation'] = 'Navegación';
 $string['newattempt'] = 'Comenzar un nuevo intento';
 $string['next'] = 'Continuar';
+$string['no_attributes'] = 'La marca {$a->tag} debe tener atributos';
+$string['no_children'] = 'La marca {$a->tag} debe tener hijos';
 $string['noactivity'] = 'Nada que informar';
 $string['noattemptsallowed'] = 'Número de intentos permitidos';
 $string['noattemptsmade'] = 'Número de intentos realizados';
-$string['no_attributes'] = 'La marca {$a->tag} debe tener atributos';
-$string['no_children'] = 'La marca {$a->tag} debe tener hijos';
 $string['nolimit'] = 'Intentos ilimitados';
 $string['nomanifest'] = 'Manifiesto no encontrado';
 $string['noprerequisites'] = 'Lo sentimos, pero no ha satisfecho los pre-requisitos suficientes para acceder a este objeto de aprendizaje';
 $string['noreports'] = 'No hay informes que mostrar';
 $string['normal'] = 'Normal';
 $string['noscriptnoscorm'] = 'Su navegador no admite javascript, o tiene la opción javascript deshabilitada. Este paquete SCORM no puede reproducirse o guardar los datos correctamente.';
-$string['notattempted'] = 'No se ha intentado';
 $string['not_corr_type'] = 'No concuerda el tipo para la marca {$a->tag}';
+$string['notattempted'] = 'No se ha intentado';
 $string['notopenyet'] = 'Esta actividad no estará disponible hasta {$a}';
 $string['objectives'] = 'Objetivos';
-$string['onchanges'] = 'Siempre que haya cambios';
 $string['optallstudents'] = 'todos los usuarios';
 $string['optattemptsonly'] = 'Sólo usuarios con intentos';
 $string['options'] = 'Opciones (no admitidas por algunos navegadores)';
@@ -242,26 +244,24 @@ $string['organizations'] = 'Organizaciones';
 $string['othersettings'] = 'Ajustes adicionales';
 $string['othertracks'] = 'Otras pistas';
 $string['package'] = 'Paquete';
+$string['package_help'] = '**Archivos empaquetados**
+El paquete es un archivo particular con extensión **zip**
+(o pif) que contiene archivos válidos de definición de curso SCORM o AICC
+Un paquete SCORM contiene en la raíz del zip un archivo llamado**
+imsmanifest.xml **el cual define la estructura de un curso SCORM,la localización
+de los recursos y muchas otras cosas.
+Un paquete **AICC** está definido por varios archivos (de
+4 a 7) con extensiones definidas. He aquí una descripción de lo
+que estas extensiones quieren decir:
+* CRS - Archivo de descripción del curso (obligatorio)
+* AU - Archivo de asignación de unidad (obligatorio)
+* DES - Archivo de descripción (obligatorio)
+* CST - Archivo de estructura del curso (obligatorio)
+* ORE - Archivo de relación de objetivos (optativo)
+* PRE - Archivo de prerrequisitos (optativo)
+* CMP - Archivo de requisitos de trabajo (optativo)';
 $string['packagedir'] = 'Error de sistema: No se puede crear el directorio de paquetes';
 $string['packagefile'] = 'No se ha especificado paquete';
-$string['package_help'] = '<p><strong>Archivos empaquetados</strong></p>
-<p>El paquete es un archivo particular con extensión <strong>zip</strong>
-  (o pif) que contiene archivos válidos de definición de curso SCORM o AICC</p>
-<p>Un paquete SCORM contiene en la raíz del zip un archivo llamado<strong>
-  imsmanifest.xml </strong>el cual define la estructura de un curso SCORM,la localización
-  de los recursos y muchas otras cosas.</p>
-<p>Un paquete <strong>AICC</strong> está definido por varios archivos (de
-  4 a 7) con extensiones definidas. He aquí una descripción de lo
-  que estas extensiones quieren decir:</p>
-<ul>
-  <li>CRS - Archivo de descripción del curso (obligatorio)</li>
-  <li>AU - Archivo de asignación de unidad (obligatorio)</li>
-  <li>DES - Archivo de descripción (obligatorio)</li>
-  <li>CST - Archivo de estructura del curso (obligatorio)</li>
-  <li>ORE - Archivo de relación de objetivos (optativo)</li>
-  <li>PRE - Archivo de prerrequisitos (optativo)</li>
-  <li>CMP - Archivo de requisitos de trabajo (optativo)</li>
-</ul>';
 $string['packageurl'] = 'URL';
 $string['packageurl_help'] = 'Este parámetro habilita una URL para especificar el paquete SCORM en vez de seleccionar un archivo a través del selector de archivos.';
 $string['page-mod-scorm-x'] = 'Cualquier página del módulo SCORM';
@@ -291,45 +291,40 @@ $string['review'] = 'Revisión';
 $string['reviewmode'] = 'Modo Revisión';
 $string['scoes'] = 'Objetos de aprendizaje';
 $string['score'] = 'Puntuación';
-$string['scormclose'] = 'Hasta';
-$string['scormcourse'] = 'Curso de Aprendizaje';
 $string['scorm:deleteownresponses'] = 'Eliminar los intentos propios';
 $string['scorm:deleteresponses'] = 'Eliminar intentos SCORM';
+$string['scorm:savetrack'] = 'Guardar pistas';
+$string['scorm:skipview'] = 'Pasar por alto revisión';
+$string['scorm:viewreport'] = 'Ver informes';
+$string['scorm:viewscores'] = 'Ver puntuaciones';
+$string['scormclose'] = 'Hasta';
+$string['scormcourse'] = 'Curso de Aprendizaje';
 $string['scormloggingoff'] = 'Entrada API desconectada';
 $string['scormloggingon'] = 'Entrada API conectada';
 $string['scormopen'] = 'Abrir';
 $string['scormresponsedeleted'] = 'Eliminar los intentos del usuario';
-$string['scorm:savetrack'] = 'Guardar pistas';
-$string['scorm:skipview'] = 'Pasar por alto revisión';
 $string['scormtype'] = 'Tipo';
 $string['scormtype_help'] = 'Este ajuste determina cómo se incluye el paquete en el curso. Hay 4 opciones:
-
 * Paquete subido - Posibilita escoger un paquete SCORM por medio del selector de archivos
 * Manifiesto SCORM externo - Posibilita especificar una URL imsmanifest.xml. NOTA: Si la URL tiene un nombre de dominio distinto del de su sitio, entonces la mejor opción es "Paquete bajado", puesto que en otro caso las calificaciones no son guardadas.
 * Paquete bajado - Posibilita especificar una URL del paquete. El paquete será descomprimido y guardado localmente, y actualizado cuando se actualice el paquete SCORM externo.
 * Repositorio de contenido IMS local - Posibilita seleccionar un paquete de un repositorio IMS.
 * URL AICC externa - esta URL es la url de lanzamiento de una actividad AICC. Un pseudopaquete se construirá alrededor de esta.';
-$string['scorm:viewreport'] = 'Ver informes';
-$string['scorm:viewscores'] = 'Ver puntuaciones';
 $string['scrollbars'] = 'Permitir desplazamiento de la ventana';
 $string['selectall'] = 'Seleccionar todo';
 $string['selectnone'] = 'Deseleccionar todo';
 $string['show'] = 'Mostrar';
 $string['sided'] = 'Lateral';
 $string['skipview'] = 'Pasar por alto al estudiante la página de estructura de contenidos';
+$string['skipview_help'] = 'Si añade un paquete con únicamente un objeto de apredizaje, puede elegir omitir automáticamente la página de estructura de contenidos cuando los usuario seleccionan una actividad SCORM en la página del curso.
+Puede elegir:
+* Omitir la página de estructura de contenidos **nunca**.
+* Omitir la página de estructura de contenidos en el **primer acceso**.
+* Omitir la página de estructura de contenidos **siempre**.';
 $string['skipviewdesc'] = 'Esta preferencia fija el valor por defecto sobre cuándo pasar por alto la estructura de contenido de una página';
-$string['skipview_help'] = '<p>Si añade un paquete con únicamente un objeto de apredizaje, puede elegir omitir automáticamente la página de estructura de contenidos cuando los usuario seleccionan una actividad SCORM en la página del curso.</p>
-
-<p>Puede elegir:
-   <ul>
-       <li>Omitir la página de estructura de contenidos <strong>nunca</strong>.</li>
-       <li>Omitir la página de estructura de contenidos en el <strong>primer acceso</strong>.</li>
-       <li>Omitir la página de estructura de contenidos <strong>siempre</strong>.</li>
-   </ul>
-</p>';
 $string['slashargs'] = 'ATENCIÓN: los argumentos \'slash\' están deshabilitados en este sitio y los objetos pueden no funcionar como se espera.';
 $string['stagesize'] = 'Tamaño de marco/ventana';
-$string['stagesize_help'] = '<p>Estos dos parámetros definen la altura y la anchura del marco o ventana en el que se visualizará el objeto de aprendizaje.</p>';
+$string['stagesize_help'] = 'Estos dos parámetros definen la altura y la anchura del marco o ventana en el que se visualizará el objeto de aprendizaje.';
 $string['started'] = 'Comenzado en';
 $string['status'] = 'Estatus';
 $string['statusbar'] = 'Mostrar la barra de estado';
@@ -343,9 +338,9 @@ $string['time'] = 'Hora';
 $string['timerestrict'] = 'Restringir la respuesta a este periodo de tiempo';
 $string['title'] = 'Título';
 $string['toc'] = 'TOC (Tabla de Contenidos)';
-$string['toolbar'] = 'Mostrar la barra de herramientas';
 $string['too_many_attributes'] = 'La marca {$a->tag} tiene demasiados atributos';
 $string['too_many_children'] = 'La marca {$a->tag} tiene demasiados hijos';
+$string['toolbar'] = 'Mostrar la barra de herramientas';
 $string['totaltime'] = 'Hora';
 $string['trackingloose'] = 'ATENCIÓN: ¡Los datos de rastreo de este paquete se perderán!';
 $string['type'] = 'Tipo';
@@ -365,13 +360,11 @@ $string['versionwarning'] = 'La versión del manifiesto es anterior a la 1.3, at
 $string['viewallreports'] = 'Ver los informes de {$a} intentos';
 $string['viewalluserreports'] = 'Ver los informes de {$a} usuarios';
 $string['whatgrade'] = 'Calificación de intentos';
-$string['whatgradedesc'] = 'Esta preferencia fija el valor por defecto sobre la calificación de intentos';
 $string['whatgrade_help'] = 'Si se permiten múltiples intentos, este parámetro especifica si se almacenará en el libro de calificaciones el valor más alto, el promedio (la media), el primer intento o el último.
-
 Gestión de Múltiples intentos
-
 * La posibilidad de iniciar un nuevo intento se marca en una casilla situada encima del botón Enter en la página de estructura del contenido, así que asegúrese que permite el acceso a esa página si desea permitir que más de un intento.
-* Algunos paquetes SCORM son inteligentes sobre los nuevos intentos, pero muchos no lo son. Lo que significa que si el estudiante vuelve a ha hacer un intento y contenido SCORM no tiene lógica interna para evitar sobrescribir los intentos anteriores, estos se pueden sobrescribir, incluso si el  intento estaba en estado "completado" o "pasado".
+* Algunos paquetes SCORM son inteligentes sobre los nuevos intentos, pero muchos no lo son. Lo que significa que si el estudiante vuelve a ha hacer un intento y contenido SCORM no tiene lógica interna para evitar sobrescribir los intentos anteriores, estos se pueden sobrescribir, incluso si el intento estaba en estado "completado" o "pasado".
 * La configuración de "Forzar completar", "Forzar nuevo intento" y "Bloqueo después del intento final" también mejoran la gestión de múltiples intentos.';
+$string['whatgradedesc'] = 'Esta preferencia fija el valor por defecto sobre la calificación de intentos';
 $string['width'] = 'Anchura';
 $string['window'] = 'Ventana';

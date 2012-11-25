@@ -33,10 +33,9 @@ $string['imscp:view'] = 'Näytä IMS sisältö';
 $string['keepold'] = 'Arkistoi paketit';
 $string['keepoldexplain'] = 'Kuinka monta pakettia pitäisi arkistoida?';
 $string['modulename'] = 'IMS-sisältöpaketti';
-$string['modulename_help'] = '<h2>IMS-sisältöpaketti</h2>
-
-<blockquote>
-IMS-sisältöpaketteja voi luoda ja muokata erilaisilla sisällöntuotantotyökaluilla. Sisältö esitetään tyypillisesti usealla sivulla navigaation kanssa. Sisällöntuotantotyökalu tuottaa .zip-tiedoston, joka voidaan sitten ladata kurssialueelle Moodleen. Pakattu tiedosto puretaan Moodlessa automaattisesti. Sisällön esittämiseen on vaihtoehtoja, kuten ponnahdusikkuna, navigaatiolista tai painikkeet.</blockquote>';
+$string['modulename_help'] = '## IMS-sisältöpaketti
+>
+> IMS-sisältöpaketteja voi luoda ja muokata erilaisilla sisällöntuotantotyökaluilla. Sisältö esitetään tyypillisesti usealla sivulla navigaation kanssa. Sisällöntuotantotyökalu tuottaa .zip-tiedoston, joka voidaan sitten ladata kurssialueelle Moodleen. Pakattu tiedosto puretaan Moodlessa automaattisesti. Sisällön esittämiseen on vaihtoehtoja, kuten ponnahdusikkuna, navigaatiolista tai painikkeet.';
 $string['modulenameplural'] = 'IMS-sisältöpaketit';
 $string['navigation'] = 'Navigointi';
 $string['packagefile'] = 'Pakettitiedosto';

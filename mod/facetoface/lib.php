@@ -2107,7 +2107,7 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
     $manageremail = facetoface_get_manageremail($userid);
     if (!empty($posttextmgrheading) and !empty($manageremail) and $session->datetimeknown) {
         if ($notificationtype & MDL_F2F_CANCEL) {
-            $copybelowstr = 'setting:defaultcancellationinstrmngrcopybelow';
+            $copybelowstring = 'setting:defaultcancellationinstrmngrcopybelow';
         }
        if ($notificationtype & MDL_F2F_INVITE) {
             $copybelowstring = 'setting:defaultconfirmationinstrmngrcopybelow';
@@ -2115,7 +2115,7 @@ function facetoface_send_notice($postsubject, $posttext, $posttextmgrheading,
         $copybelow = facetoface_email_substitutions(get_string($copybelowstring, 'facetoface'), $facetoface->name,
             $facetoface->reminderperiod, $user, $session, $session->id) . "\n";
 
-        $managertext = $posttextmgrheadingi . $copybelow . $posttext;
+        $managertext = $posttextmgrheading . $copybelow . $posttext;
         $manager = $user;
         $manager->email = $manageremail;
 
@@ -2781,7 +2781,7 @@ function facetoface_get_ical_text($method, $facetoface, $session, $user) {
 
         // The extra newline at the bottom is so multiple events start on their
         // own lines. The very last one is trimmed outside the loop
-        $VEVENTS .= <<<EOF
+        $VEVENTS .= "
 BEGIN:VEVENT
 ORGANIZER;CN={$ORGANISEREMAIL}:MAILTO:{$ORGANISEREMAIL}
 DTSTART:{$DTSTART}
@@ -2799,38 +2799,19 @@ ATTENDEE;CUTYPE=INDIVIDUAL;ROLE={$ROLE};PARTSTAT=NEEDS-ACTION;
  RSVP=FALSE;CN={$USERNAME};LANGUAGE=en:MAILTO:{$MAILTO}
 END:VEVENT
 
-EOF;
+";
     }
 
     $VEVENTS = trim($VEVENTS);
 
-    // TODO: remove the hard-coded timezone!
-    $template = <<<EOF
+    $template = "
 BEGIN:VCALENDAR
 PRODID:-//Moodle//NONSGML Facetoface//EN
 VERSION:2.0
 METHOD:{$icalmethod}
-BEGIN:VTIMEZONE
-TZID:/softwarestudio.org/Tzfile/Pacific/Auckland
-X-LIC-LOCATION:Pacific/Auckland
-BEGIN:STANDARD
-TZNAME:NZST
-DTSTART:19700405T020000
-RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=4
-TZOFFSETFROM:+1300
-TZOFFSETTO:+1200
-END:STANDARD
-BEGIN:DAYLIGHT
-TZNAME:NZDT
-DTSTART:19700928T030000
-RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=9
-TZOFFSETFROM:+1200
-TZOFFSETTO:+1300
-END:DAYLIGHT
-END:VTIMEZONE
 {$VEVENTS}
 END:VCALENDAR
-EOF;
+";
 
     return $template;
 }
@@ -3487,7 +3468,7 @@ function facetoface_save_customfield_value($fieldid, $data, $otherid, $table) {
     if ($record = $DB->get_record("facetoface_{$table}_data", array('fieldid' => $fieldid, $fieldname => $otherid))) {
         if (empty($dbdata)) {
             // Clear out the existing value
-            return $DB->delete_records("facetoface_{$table}_data", 'id', $record->id);
+            return $DB->delete_records("facetoface_{$table}_data", array('id' => $record->id));
         }
 
         $newrecord->id = $record->id;
@@ -4161,7 +4142,8 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
     $fromname = fullname($user);
     $usermsg = html_writer::link($userfrom_link, $fromname, array('title' => $fromname));
     $newevent->userto           = $user;
-    $newevent->userfrom         = $USER;
+    //stop user from emailing themselves, use support instead
+    $newevent->userfrom         = ($USER->id == $user->id) ? generate_email_supportuser() : $USER;
     $url = new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id));
     switch ($nottype) {
         case MDL_F2F_STATUS_BOOKED:
@@ -4228,7 +4210,8 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
             if ($managerid !== false) {
                 $manager = $DB->get_record('user', array('id' => $managerid));
                 $newevent->userto           = $manager;
-                $newevent->userfrom         = $user;
+                //ensure the message is actually coming from $user, default to support
+                $newevent->userfrom         = ($USER->id == $user->id) ? $user : generate_email_supportuser();
                 $newevent->fullmessage      = facetoface_email_substitutions(
                                                         $facetoface->requestinstrmngr,
                                                         $facetoface->name,
@@ -4266,7 +4249,8 @@ function facetoface_send_totaramessage($facetoface, $session, $userid, $nottype)
                 tm_task_send($newevent);
                 $newevent = new stdClass();
                 $newevent->userto           = $user;
-                $newevent->userfrom         = $user;
+                //stop user from emailing themselves, use support instead
+                $newevent->userfrom         = generate_email_supportuser();
                 $newevent->subject          = $string_manager->get_string('requestattendsessionsent', 'facetoface', html_writer::link(new moodle_url('/mod/facetoface/view.php', array('f' => $facetoface->id)), $facetoface->name), $user->lang);
                 $newevent->fullmessage      = $newevent->subject;
                 $newevent->icon             = 'facetoface-request';

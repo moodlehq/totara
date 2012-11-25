@@ -132,6 +132,11 @@ class item_edit_form extends moodleform {
             }
         }
 
+        if (get_config('totara_sync', "element_{$shortprefix}_enabled")) {
+            $mform->addElement('advcheckbox', 'totarasync', get_string('totarasync', 'tool_totara_sync').'?');
+            $mform->addHelpButton('totarasync', 'totarasync', 'tool_totara_sync');
+        }
+
         /// Next show the custom fields if we're editing an existing items (otherwise we don't know the typeid)
         if ($item->id && $item->typeid != 0) {
             customfield_definition($mform, $item, $prefix, $item->typeid, $shortprefix.'_type');

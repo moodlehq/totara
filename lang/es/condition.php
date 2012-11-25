@@ -29,30 +29,28 @@ $string['addcompletions'] = 'Agregar {no} condiciones de actividad al formulario
 $string['addgrades'] = 'Agregar {no} condiciones de calificación al formulario';
 $string['availabilityconditions'] = 'Restringir disponibilidad';
 $string['availablefrom'] = 'Disponible a partir de';
-$string['availablefrom_help'] = 'El acceso desde/hasta las fechas determinan cuándo los estudiantes pueden acceder a la actividad a través de un enlace en la página del curso.<br>
+$string['availablefrom_help'] = 'El acceso desde/hasta las fechas determinan cuándo los estudiantes pueden acceder a la actividad a través de un enlace en la página del curso.
 La diferencia entre las fechas desde/hasta y los ajustes de disponibilidad de la actividad es que, al margen de las fechas de ajuste, los ajustes de disponibilidad permiten a los estudiantes ver la descripción de la actividad, en tanto que \'disponible desde/hasta\' impide el acceso completo.';
 $string['availableuntil'] = 'Accesible hasta';
 $string['badavailabledates'] = 'Fechas no válidas. Si se ajustan ambas fechas, la fecha \'disponible desde\' debería ser anterior a la fecha \'hasta\'.';
 $string['badgradelimits'] = 'Si fija un límite de calificación superior e inferior, el límite superior ha de ser mayor que el límite inferior.';
 $string['completion_complete'] = 'debe marcarse como completada';
-$string['completioncondition'] = 'Condición de finalización de actividad';
-$string['completioncondition_help'] = 'Este ajuste determina cualesquiera condiciones de finalización de la actividad, que deben cumplirse para acceder a la actividad. Note que el rastreo de finalización debe ajustarse antes de que se pueda determinar la condición de finalización de la actividad.
-
-Si se desea, se pueden ajustar múltiples condiciones de finalización de la actividad. Si se hace así, la actividad sólo estará disponible cuando se cumplan TODAS las condiciones de finalización.';
 $string['completion_fail'] = 'debe estar completa con calificación de suspenso';
 $string['completion_incomplete'] = 'no debe estar marcada como completa';
 $string['completion_pass'] = 'debe estar completa con calificación de aprobado';
+$string['completioncondition'] = 'Condición de finalización de actividad';
+$string['completioncondition_help'] = 'Este ajuste determina cualesquiera condiciones de finalización de la actividad, que deben cumplirse para acceder a la actividad. Note que el rastreo de finalización debe ajustarse antes de que se pueda determinar la condición de finalización de la actividad.
+Si se desea, se pueden ajustar múltiples condiciones de finalización de la actividad. Si se hace así, la actividad sólo estará disponible cuando se cumplan TODAS las condiciones de finalización.';
 $string['configenableavailability'] = 'Si se activa, esta opción le permite fijar las condiciones (basadas en la fecha, la calificación o el grado de finalización) que controlan si una actividad está disponible.';
 $string['enableavailability'] = 'Habilitar acceso condicional';
 $string['grade_atleast'] = 'debe ser al menos';
+$string['grade_upto'] = 'y menos que';
 $string['gradecondition'] = 'Condición de calificación';
 $string['gradecondition_help'] = 'Este ajuste determina cualesquiera condiciones de calificación que deben cumplirse para acceder a la actividad.
-
 Si se desea, se pueden ajustar múltiples condiciones de calificación de la actividad. Si se hace así, la actividad sólo estará disponible cuando se cumplan TODAS las condiciones de calificación.';
 $string['gradeitembutnolimits'] = 'Debe introducir un límite superior o inferior o ambos.';
 $string['gradelimitsbutnoitem'] = 'Debe escoger un elemento de calificación.';
 $string['gradesmustbenumeric'] = 'Las calificaciones mínimas y máximas deben ser numéricas (o en blanco)';
-$string['grade_upto'] = 'y menos que';
 $string['none'] = '(ninguna)';
 $string['notavailableyet'] = 'Aún no disponible';
 $string['requires_completion_0'] = 'No disponible a menos que la actividad <strong>{$a}</strong> esté incompleta.';

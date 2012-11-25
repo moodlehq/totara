@@ -43,11 +43,11 @@ $string['autogenallforms'] = '生成所有缺省模板';
 $string['autolinkurl'] = '自动链接 URL';
 $string['availablefromdate'] = '开放时间';
 $string['availabletags'] = '可用的标签';
-$string['availabletags_help'] = '<p align="center"><strong>可用的标签</strong></p>
-<p>标签是模板里的占位符。当条目被编辑或显示时，它们会被替换为字段或按钮。</p>
-<p>字段使用这种格式：[[fieldname]]</p>
-<p>按钮使用这种格式：##somebutton##</p>
-<p>只有在“可用的标签”列表里出现的标签才能被当前模板使用。</p>';
+$string['availabletags_help'] = '**可用的标签**
+标签是模板里的占位符。当条目被编辑或显示时，它们会被替换为字段或按钮。
+字段使用这种格式：[[fieldname]]
+按钮使用这种格式：##somebutton##
+只有在“可用的标签”列表里出现的标签才能被当前模板使用。';
 $string['availabletodate'] = '截止时间';
 $string['blank'] = '空白';
 $string['buttons'] = '动作';
@@ -130,9 +130,8 @@ $string['excel'] = 'Excel';
 $string['expired'] = '对不起，这项活动截止于{$a}，不再有效';
 $string['export'] = '输出';
 $string['exportaszip'] = '以压缩格式输出';
-$string['exportaszip_help'] = '<p align="center"><strong>以zip格式导出</strong></p>
-<p>允许将模板下载到您自己电脑上，而后模板可以上传到一个不同的数据库中使用。
-</p>';
+$string['exportaszip_help'] = '**以zip格式导出**
+允许将模板下载到您自己电脑上，而后模板可以上传到一个不同的数据库中使用。';
 $string['exportedtozip'] = '输出到临时的压缩文件...';
 $string['exportentries'] = '导出条目';
 $string['exportownentries'] = '仅导出您自己的条目？（{$a->mine}/{$a->all}）';
@@ -166,9 +165,10 @@ $string['forcelinkname'] = '链接名强制为';
 $string['foundnorecords'] = '没找到记录(<a href="{$a->reseturl}">重设过滤器</a>)';
 $string['foundrecords'] = '找到记录：{$a->num}/{$a->max} (<a href="{$a->reseturl}">重设过滤器</a>)';
 $string['fromfile'] = '从压缩文件导入';
-$string['fromfile_help'] = '<p align=\'center\'><strong>从Zip文件导入</strong></p>
-<p>使用该类型文件可以上传和导出时一样格式。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月1日</span><br />';
+$string['fromfile_help'] = '使用该类型文件可以上传和导出时一样格式。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月1日';
 $string['generateerror'] = '有部分文件未被生成！';
 $string['header'] = '头';
 $string['headeraddtemplate'] = '定义修改条目的界面';
@@ -233,11 +233,9 @@ $string['nametextarea'] = '文本域字段';
 $string['nameurl'] = 'URL 字段';
 $string['newentry'] = '新条目';
 $string['newfield'] = '创建一个新字段';
-$string['newfield_help'] = '<p align="center"><strong>字段</strong></p>
-
-<p>在此页您可以建立字段，做为您的数据库的一部分。</p>
-
-<p>每个字段可以使用不同类型的数据，并有不同的界面。</p>';
+$string['newfield_help'] = '**字段**
+在此页您可以建立字段，做为您的数据库的一部分。
+每个字段可以使用不同类型的数据，并有不同的界面。';
 $string['noaccess'] = '您无权访问此页';
 $string['nodefinedfields'] = '新的预设值没有定义';
 $string['nofieldcontent'] = '未找到域内容';
@@ -279,17 +277,18 @@ $string['recordssaved'] = '记录已保存';
 $string['requireapproval'] = '是否需要批准';
 $string['requireapproval_help'] = '如果激活，条目必须在教师核准后才能被其他人看到。';
 $string['requiredentries'] = '必须完成的条目数';
-$string['requiredentries_help'] = '<p align="center"><strong>必须完成的条目数</strong></p>
-
-<p>这个数目是参与者必须提交的数目。如果用户没有提交指定数据的条目信息，将看到一个提示消息。</p>
-
-<p>除非用户提交了指定数目的条目，否则该活动将不会允许用户参与。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月1日</span><br />';
+$string['requiredentries_help'] = '**必须完成的条目数**
+这个数目是参与者必须提交的数目。如果用户没有提交指定数据的条目信息，将看到一个提示消息。
+除非用户提交了指定数目的条目，否则该活动将不会允许用户参与。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月1日';
 $string['requiredentriestoview'] = '查看前需要完成条目数';
-$string['requiredentriestoview_help'] = '<p align="center"><strong>浏览之前需要提交的条目数</strong></p>
-
-<p>该数目是指在参与者浏览其他参与者条目信息前必须要提交的信息数目（条目数目）。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月1日</span><br />';
+$string['requiredentriestoview_help'] = '**浏览之前需要提交的条目数**
+该数目是指在参与者浏览其他参与者条目信息前必须要提交的信息数目（条目数目）。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月1日';
 $string['resetsettings'] = '重置字段';
 $string['resettemplate'] = '重置模板';
 $string['resizingimages'] = '调整图片到拇指大小';
@@ -329,11 +328,9 @@ $string['updatefield'] = '更新已有字段';
 $string['uploadfile'] = '上传文件';
 $string['uploadrecords'] = '从一个文件中上传条目';
 $string['uploadrecords_help'] = '可以通过上传文本文件来更新条目。文件的格式如下：
-
 * 文件每行包含一条记录
 * 每个记录是一系列由逗号(或其他分隔符)分隔的数据
 * 第一条记录包含一串用来定义文件其他部分格式的字段名
-
 字段包围符是一个包围每个记录中的每个字段的字符。通常可以不对它进行设定。';
 $string['url'] = 'URL';
 $string['usestandard'] = '使用一个预设';

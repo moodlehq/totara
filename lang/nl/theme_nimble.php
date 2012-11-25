@@ -38,7 +38,7 @@ $string['choosereadme'] = '<div class="clearfix">
 <h3>Thema documentatie</h3>
 <p><a href="http://docs.moodle.org/en/Themes">http://docs.moodle.org/en/Themes</a></p>
 <h3>Meld een bug</h3><p><a href="http://tracker.moodle.org">http://tracker.moodle.org</a></p>
-	</div>
+</div>
 <div class="theme_description">
 <h2>Beschrijving</h2>
 <p>Nimble is een thema in twee kolommen, met wisselende breedte, gecodeerd voor Moodle 2.0. Het maakt gebruik van aangepaste menu\'s die op elke pagina boven de titel van de site staan. Het bevat ook een basispagina met instellingen die toelaat om het kleur van de links te veranderen, een tagline toe te voegen boven de naam van de site op de voorpagina, en om tekst toe te voegen aan de footer.</p>
@@ -48,7 +48,7 @@ $string['choosereadme'] = '<div class="clearfix">
 <p>Dit ontwerp werd gemaakt voor Moodle door Patrick Malley (patrick@newschoollearning.com) met de hulp van John Stabinger (john@newschoollearning.com).</p>
 <h2>Licentie</h2>
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['footerline'] = 'Voetnoot';
 $string['footerlinedesc'] = 'Voeg tekst toe (copyright informatie enz) aan de voetnoot';

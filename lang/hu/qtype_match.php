@@ -35,12 +35,10 @@ $string['notenoughqsandas'] = 'Legalább {$a->q} kérdést és {$a->a} választ 
 $string['notenoughquestions'] = 'Legalább {$a} kérdés-válasz párt meg kell adnia.';
 $string['pleaseananswerallparts'] = 'Válaszoljon a kérdés minden elemére.';
 $string['pluginname'] = 'Párosító';
+$string['pluginname_help'] = 'Párosító kérdések esetén a válaszadónak helyesen kell párosítania egy sor nevet vagy állítást (a kérdéseket)
+egy másik sor névvel vagy állítással (a válaszokkal).';
 $string['pluginnameadding'] = 'Párosító kérdés hozzáadása';
 $string['pluginnameediting'] = 'Párosító kérdés szerkesztése';
-$string['pluginname_help'] = '
-Párosító kérdések esetén a válaszadónak helyesen kell párosítania egy sor nevet vagy állítást (a kérdéseket)
-egy másik sor névvel vagy állítással (a válaszokkal).
-';
 $string['pluginnamesummary'] = 'Az egyes alkérdésekre adandó válaszokat lehetőségek felsorolásából kell kiválasztani.';
 $string['shuffle'] = 'Összekeverés';
 $string['shuffle_help'] = 'Bekapcsolása esetén a kijelentések (válaszok) sorrendje minden egyes alkalommal véletlenszerűen összekeveredik, feltéve, hogy a "Kérdéseken belüli összekeverés" a teszt beállításai szintén be van kapcsolva.';

@@ -1,4 +1,27 @@
 <?php
+/*
+* This file is part of Totara LMS
+*
+* Copyright (C) 2010 - 2012 Totara Learning Solutions LTD
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* @author       Simon Coggins <simon.coggins@totaralms.com>
+* @package      theme
+* @subpackage   standardtotara
+* @license      http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+*/
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -7,6 +30,7 @@ $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
 $hassidepre = (empty($PAGE->layout_options['noblocks']) && $PAGE->blocks->region_has_content('side-pre', $OUTPUT));
 $haslogininfo = (empty($PAGE->layout_options['nologininfo']));
+$haslangmenu = (!isset($PAGE->layout_options['langmenu']) || $PAGE->layout_options['langmenu'] );
 
 $showsidepre = $hassidepre && !$PAGE->blocks->region_completely_docked('side-pre', $OUTPUT);
 
@@ -87,13 +111,16 @@ echo $OUTPUT->doctype() ?>
           <div id="logo" class="custom"><a href="<?php echo $CFG->wwwroot; ?>"><img class="logo" src="<?php echo $logourl;?>" alt="Logo" /></a></div>
           <?php } ?>
           <div class="headermenu">
-            <?php
-            if (!empty($PAGE->layout_options['langmenu'])) {
-                echo $OUTPUT->lang_menu();
-            } ?>
-            <?php if ($haslogininfo) { ?>
+            <?php if ($haslogininfo || $haslangmenu) { ?>
               <div class="profileblock">
-                <?php echo $OUTPUT->login_info(); ?>
+                <?php
+                if ($haslogininfo) {
+                    echo $OUTPUT->login_info();
+                }
+                if ($haslangmenu) {
+                    echo $OUTPUT->lang_menu();
+                }
+                ?>
               </div>
             <?php } ?>
           </div>

@@ -30,7 +30,7 @@ $string['defaultrole'] = 'Asignación de rol por defecto';
 $string['defaultrole_desc'] = 'Seleccione el rol que debe asignarse a los usuarios con auto-matriculación';
 $string['editenrolment'] = 'Editar matricula';
 $string['enrolenddate'] = 'Fecha límite';
-$string['enrolenddate_help'] = 'Si está habilitado, los usuarios pueden matricularse a si mismos solo hasta esta fecha ';
+$string['enrolenddate_help'] = 'Si está habilitado, los usuarios pueden matricularse a si mismos solo hasta esta fecha';
 $string['enrolenddaterror'] = 'La fecha final de matriculación no puede ser anterior a la fecha inicial';
 $string['enrolme'] = 'Matricularme';
 $string['enrolperiod'] = 'Período de matriculación';
@@ -40,8 +40,8 @@ $string['enrolstartdate'] = 'Fecha de inicio';
 $string['enrolstartdate_help'] = 'Si está habilitado, los usuarios solo pueden matricularse a partir de este día.';
 $string['groupkey'] = 'Clave de matriculación del grupo de usuarios';
 $string['groupkey_desc'] = 'Por defecto, utilice claves de matriculación de grupo.';
-$string['groupkey_help'] = '<p>Además de restringir el acceso al curso a sólo aquellos que conocen la clave, el uso de una clave de acceso de grupo significa que los usuarios se agregan automáticamente al grupo cuando se inscriben en el curso. </p>
-<p>Para utilizar una clave de acceso de grupo, se debe especificar que se precisa clave en la configuración de los cursos, y también en la configuración del grupo.</p>';
+$string['groupkey_help'] = 'Además de restringir el acceso al curso a sólo aquellos que conocen la clave, el uso de una clave de acceso de grupo significa que los usuarios se agregan automáticamente al grupo cuando se inscriben en el curso.
+Para utilizar una clave de acceso de grupo, se debe especificar que se precisa clave en la configuración de los cursos, y también en la configuración del grupo.';
 $string['longtimenosee'] = 'Dar de baja los inactivos después de';
 $string['longtimenosee_help'] = 'Si los usuarios no acceden a un curso durante mucho tiempo, entonces se les da de baja automáticamente. Este parámetro especifica este plazo de tiempo.';
 $string['maxenrolled'] = 'Número máximo de usuarios matriculados';
@@ -49,9 +49,9 @@ $string['maxenrolled_help'] = 'Especifique el número máximo de usuarios que pu
 $string['maxenrolledreached'] = 'Se alcanzó el número máximo de usuarios permitidos para auto-matriculación.';
 $string['nopassword'] = 'No se necesita clave de matriculación';
 $string['password'] = 'Clave de matriculación';
-$string['password_help'] = '<p>Una clave de acceso permite que el acceso al curso esté limitado sólo a aquellos que conocen dichala clave. </p>
-<p>Si el campo se deja en blanco, cualquier usuario puede matricularse en el curso.</p>
-<p>Si se especifica una clave de acceso, cualquier usuario que intenta matricularse en el curso deberá proporcionar la clave. Tenga en cuenta que un usuario sólo tiene que proporcionar la clave de acceso una vez, cuando se matricule en el curso.</p>';
+$string['password_help'] = 'Una clave de acceso permite que el acceso al curso esté limitado sólo a aquellos que conocen dichala clave.
+Si el campo se deja en blanco, cualquier usuario puede matricularse en el curso.
+Si se especifica una clave de acceso, cualquier usuario que intenta matricularse en el curso deberá proporcionar la clave. Tenga en cuenta que un usuario sólo tiene que proporcionar la clave de acceso una vez, cuando se matricule en el curso.';
 $string['passwordinvalid'] = 'Contraseña de acceso incorrecta, pruebe de nuevo';
 $string['passwordinvalidhint'] = 'La contraseña de matriculación es incorrecta. Por favor, inténtelo de nuevo<br />
 (Una pista: comienza con \'{$a}\')';
@@ -84,4 +84,4 @@ $string['welcometocoursetext'] = 'Bienvenido a {$a->coursename}
 Lo primero que debe hacer es actualizar su información personal: así podremos saber algo más sobre usted.
 No olvide colocar su foto u otra imagen que lo identifique.
 
-  {$a->profileurl}';
+{$a->profileurl}';

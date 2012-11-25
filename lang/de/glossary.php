@@ -31,9 +31,7 @@ $string['addingcomment'] = 'Kommentar hinzufügen';
 $string['alias'] = 'Alternativbegriff';
 $string['aliases'] = 'Alternativbegriffe';
 $string['aliases_help'] = 'Zu jedem Eintrag im Glossar kann eine Reihe von Alternativbegriffen (Synonyme, Keywords, Aliases) angegeben werden. Tragen Sie jeden Alternativbegriff in einer neuen Zeile ein (und nicht als kommagetrennte Liste!).
-
-Wenn ein Glossareintrag automatisch verlinkt wird, dann ist jeder Alternativbegriff ebenfalls so markiert. 
-';
+Wenn ein Glossareintrag automatisch verlinkt wird, dann ist jeder Alternativbegriff ebenfalls so markiert.';
 $string['allcategories'] = 'Alle Kategorien';
 $string['allentries'] = 'Alle';
 $string['allowcomments'] = 'Kommentare';
@@ -95,7 +93,6 @@ $string['date'] = 'Datum';
 $string['dateview'] = 'Nach Datum';
 $string['defaultapproval'] = 'Ohne Prüfung';
 $string['defaultapproval_help'] = 'Diese Option legt fest, ob Glossareinträge sofort ohne Prüfung sichtbar werden:
-
 * Ja - Einträge werden sofort nach dem Speichern für alle angezeigt
 * Nein - Einträge werden von Trainer/innen geprüft und freigegeben';
 $string['defaulthook'] = 'Standardverbindung';
@@ -111,11 +108,17 @@ $string['deletingnoneemptycategory'] = 'Wenn diese Kategorie gelöscht wird, wer
 $string['descending'] = '(absteigend)';
 $string['destination'] = 'Ziel für importierte Einträge';
 $string['destination_help'] = 'Beim Import können Sie wählen, wo importierte Glossareinträge abgelegt werden sollen:
-
 * Aktuelles Glossar - die Einträge werden zum aktuellen Glossar hinzugefügt
-* Neues Glossar - mit den Informationen der XML-Datei wird ein neues Glossar erstellt und die Einträge dahin übernommen
-';
+* Neues Glossar - mit den Informationen der XML-Datei wird ein neues Glossar erstellt und die Einträge dahin übernommen';
 $string['displayformat'] = 'Anzeigeformat';
+$string['displayformat_help'] = 'Für ein Glossar können 7 Anzeigeformate gewählt werden:
+* Wörterbuch (mit Synonymen) - Ähnlich wie ein konventionelles Wörterbuch. Begriff und Erläuterung werden in einem Absatz angezeigt. Angabe von synonymen Begriffen. Ohne Autor/in. Anhänge werden als Links angezeigt.
+* Wörterbuch (ohne Synonyme) - Zeigt die Einträge fortlaufend mit Begriff und Erläuterung, ohne Angabe synonymer Begriffe.
+* Vollständig (mit Autor/in) - Einträge werden wie Forenbeiträge mit Datum und Autor/in dargestellt. Anhänge werden als Links angezeigt.
+* Vollständig (ohne Autor/in) - Einträge werden wie Forenbeiträge mit Datum dargestellt. Ohne Autor/in. Anhänge werden als Links angezeigt.
+* Enzyklopädie - die Einträge werden vollständig mit der Angabe von Autor/innen und Datum dargestellt. Angefügte Bilder werden zusammen mit dem Text angezeigt.
+* Liste - Alphabetische Auflistung der Einträge ohne Erläuterung. Die Einträge werden als Links angezeigt, die zur zugehörigen Erläuterung des jeweiligen Begriffs führen.
+* FAQ - Hilfreich um eine Liste häufig gestellter Fragen (Frequently Asked Questions) anzuzeigen. Die Worte FRAGE und ANTWORT werden im Eintrag automatisch hinzugefügt.';
 $string['displayformatcontinuous'] = 'Wörterbuch (ohne Synonyme)';
 $string['displayformatdictionary'] = 'Wörterbuch (mit Synonymen)';
 $string['displayformatencyclopedia'] = 'Enzyklopädie';
@@ -123,23 +126,12 @@ $string['displayformatentrylist'] = 'Liste';
 $string['displayformatfaq'] = 'Häufig gestellte Fragen';
 $string['displayformatfullwithauthor'] = 'Vollständig mit Autor/in';
 $string['displayformatfullwithoutauthor'] = 'Vollständig ohne Autor/in';
-$string['displayformat_help'] = 'Für ein Glossar können 7 Anzeigeformate gewählt werden:
-
-* Wörterbuch (mit Synonymen) - Ähnlich wie ein konventionelles Wörterbuch. Begriff und Erläuterung werden in einem Absatz angezeigt. Angabe von synonymen Begriffen. Ohne Autor/in. Anhänge werden als Links angezeigt.
-* Wörterbuch (ohne Synonyme) - Zeigt die Einträge fortlaufend mit Begriff und Erläuterung, ohne Angabe synonymer Begriffe.
-* Vollständig (mit Autor/in) - Einträge werden wie Forenbeiträge mit Datum und Autor/in dargestellt. Anhänge werden als Links angezeigt.
-* Vollständig (ohne Autor/in) - Einträge werden wie Forenbeiträge mit Datum dargestellt. Ohne Autor/in. Anhänge werden als Links angezeigt.
-* Enzyklopädie - die Einträge werden vollständig mit der Angabe von Autor/innen und Datum dargestellt. Angefügte Bilder werden zusammen mit dem Text angezeigt.
-* Liste - Alphabetische Auflistung der Einträge ohne Erläuterung. Die Einträge werden als Links angezeigt, die zur zugehörigen Erläuterung des jeweiligen Begriffs führen.
-* FAQ - Hilfreich um eine Liste häufig gestellter Fragen (Frequently Asked Questions) anzuzeigen. Die Worte FRAGE und ANTWORT werden im Eintrag automatisch hinzugefügt. 
-';
 $string['displayformats'] = 'Anzeigeformat';
 $string['displayformatssetup'] = 'Einstellungen zum Anzeigeformat';
 $string['duplicatecategory'] = 'Kategorie duplizieren';
 $string['duplicateentry'] = 'Eintrag duplizieren';
 $string['editalways'] = 'Immer bearbeitbar';
 $string['editalways_help'] = 'Diese Option legt fest, wie Teilnehmer/innen ihre Einträge bearbeiten dürfen:
-
 * Ja - Einträge sind jederzeit bearbeitbar
 * Nein - Einträge sind nur im festgelegten Zeitraum bearbeitbar (standardmäßig 30 min)';
 $string['editcategories'] = 'Kategorien bearbeiten';
@@ -159,7 +151,6 @@ $string['entrysaved'] = 'Der Eintrag wurde gespeichert';
 $string['entryupdated'] = 'Der Eintrag wurde geändert';
 $string['entryusedynalink'] = 'Eintrag automatisch verlinken';
 $string['entryusedynalink_help'] = 'Wenn diese Option aktiviert ist, werden Einträge automatisch verlinkt. Wenn der Begriff in einem innerhalb des Kurses erstellten Text vorkommt, wird dieser Begriff automatisch mit diesem Eintrag verlinkt. In hochgeladen Dateien (doc, odt, pdf) werden keine Links erzeugt.
-
 Voraussetzung ist die globale Freischaltung der Glossarverlinkung durch die Administrator/innen.';
 $string['errcannoteditothers'] = 'Sie dürfen keine fremden Einträge bearbeiten.';
 $string['errconceptalreadyexists'] = 'Diesen Begriff gibt es bereits. In diesem Glossar sind keine Doppeleinträge möglich.';
@@ -190,18 +181,18 @@ $string['glossary:export'] = 'Einträge exportieren';
 $string['glossary:exportentry'] = 'Einzeleintrag exportieren';
 $string['glossary:exportownentry'] = 'Ihren Einzeleintrag exportieren';
 $string['glossary:import'] = 'Einträge importieren';
-$string['glossaryleveldefaultsettings'] = 'Grundeinstellungen für Glossare';
 $string['glossary:managecategories'] = 'Kategorien verwalten';
 $string['glossary:managecomments'] = 'Kommentare verwalten';
 $string['glossary:manageentries'] = 'Einträge verwalten';
 $string['glossary:rate'] = 'Einträge bewerten';
-$string['glossarytype'] = 'Glossartyp';
-$string['glossarytype_help'] = 'Das Glossarsystem ermöglicht innerhalb eines Kurses das Importieren von Einträgen aus jedem beliebigen (Standard-)Glossar in das Hauptglossar. Es darf im Kurs nur ein Hauptglossar vorhanden sein. Wenn der Import nicht genutzt wird, sollten alle Glossare als Standardglossare angelegt sein.';
 $string['glossary:view'] = 'Glossar ansehen';
 $string['glossary:viewallratings'] = 'Alle Teilwertungen sehen';
 $string['glossary:viewanyrating'] = 'Alle Gesamtwertungen sehen';
 $string['glossary:viewrating'] = 'Eigene Gesamtwertung sehen';
 $string['glossary:write'] = 'Neue Einträge erstellen';
+$string['glossaryleveldefaultsettings'] = 'Grundeinstellungen für Glossare';
+$string['glossarytype'] = 'Glossartyp';
+$string['glossarytype_help'] = 'Das Glossarsystem ermöglicht innerhalb eines Kurses das Importieren von Einträgen aus jedem beliebigen (Standard-)Glossar in das Hauptglossar. Es darf im Kurs nur ein Hauptglossar vorhanden sein. Wenn der Import nicht genutzt wird, sollten alle Glossare als Standardglossare angelegt sein.';
 $string['guestnoedit'] = 'Gäste dürfen kein Glossar bearbeiten';
 $string['importcategories'] = 'Kategorien importieren';
 $string['importedcategories'] = 'Importierte Kategorien';
@@ -209,8 +200,7 @@ $string['importedentries'] = 'Importierte Einträge';
 $string['importentries'] = 'Einträge importieren';
 $string['importentriesfromxml'] = 'Einträge aus XML-Datei importieren';
 $string['includegroupbreaks'] = 'Gruppentrennung einbeziehen';
-$string['isglobal'] = 'Kursübergreifendes Glossar 
-';
+$string['isglobal'] = 'Kursübergreifendes Glossar';
 $string['isglobal_help'] = 'Ein kursübergreifendes Glossar enthält Einträge, die im gesamten Moodle verlinkt werden. Ist ein Glossar nicht global, werden die Einträge nur lokal im Kurs verlinkt. Ausschließlich Administrator/innen können Glossare als kursübergreifend definieren.';
 $string['letter'] = 'Buchstabe';
 $string['linkcategory'] = 'Kategorie automatisch verlinken';
@@ -237,10 +227,8 @@ $string['notapproved'] = 'Der Glossareintrag wurde bisher nicht freigegeben';
 $string['notcategorised'] = 'Nicht kategorisiert';
 $string['numberofentries'] = 'Zahl der Einträge';
 $string['onebyline'] = '(ein Eintrag pro Zeile)';
-$string['page-mod-glossary-edit'] = 'Glossareintragbearbeitungsseite
-';
-$string['page-mod-glossary-view'] = 'Glossaransichtsseite
-';
+$string['page-mod-glossary-edit'] = 'Glossareintragbearbeitungsseite';
+$string['page-mod-glossary-view'] = 'Glossaransichtsseite';
 $string['page-mod-glossary-x'] = 'Alle Glossarseiten';
 $string['pluginadministration'] = 'Glossar-Administration';
 $string['pluginname'] = 'Glossar';
@@ -252,14 +240,12 @@ $string['rejectedentries'] = 'Abgelehnte Einträge';
 $string['rejectionrpt'] = 'Übersicht über abgelehnte Einträge';
 $string['resetglossaries'] = 'Einträge löschen von';
 $string['resetglossariesall'] = 'Einträge aus allen Glossaren löschen';
-$string['rssarticles'] = 'Anzahl neuer RSS-Artikel ';
+$string['rssarticles'] = 'Anzahl neuer RSS-Artikel';
 $string['rssarticles_help'] = 'Diese Option legt fest, wie viele neue Glossarbegriffe in den RSS-Feed übernommen werden. Eine Zahl zwischen 5 und 20 sollte angemessen sein. Die Zahl sollte höher sein, wenn das Glossar häufig bearbeitet wird.';
 $string['rsssubscriberss'] = 'RSS-Feed-Anzeige für \'{$a}\' Begriffe';
 $string['rsstype'] = 'RSS-Feed für dieses Glossar';
 $string['rsstype_help'] = 'Diese Option ermöglicht es, RSS-Feeds für dieses Glossar zu aktivieren, wobei im Feed die Begriffe mit Autor/in oder ohne Autor/in einbezogen werden können.
-
-Vorausgesetzt wird, dass RSS-Feeds für die Website aktiviert sind. 
-';
+Vorausgesetzt wird, dass RSS-Feeds für die Website aktiviert sind.';
 $string['searchindefinition'] = 'Volltext-Suche';
 $string['secondaryglossary'] = 'Glossar';
 $string['showall'] = 'Link \'Alle\' anzeigen';
@@ -278,7 +264,6 @@ $string['studentcanpost'] = 'Teilnehmer/innen können eigene Einträge anlegen, 
 $string['totalentries'] = 'Gesamtzahl der Einträge';
 $string['usedynalink'] = 'Automatisch verlinken';
 $string['usedynalink_help'] = 'Wenn diese Option aktiviert ist, wird beim Hinzufügen eines neuen Eintrages die Option "Eintrag automatisch verlinken" angezeigt.
-
 Voraussetzung ist die globale Freischaltung der Glossarverlinkung durch die Administrator/innen.';
 $string['waitingapproval'] = 'Einträge zur Prüfung';
 $string['warningstudentcapost'] = '(gilt nur, wenn dieses Glossar kein Hauptglossar ist)';

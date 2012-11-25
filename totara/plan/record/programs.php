@@ -77,6 +77,7 @@
     $shortname = 'plan_programs';
     $data = array(
         'userid' => $userid,
+        'exceptionstatus' => 0,
     );
     if ($rolstatus !== 'all') {
         $data['rolstatus'] = $rolstatus;

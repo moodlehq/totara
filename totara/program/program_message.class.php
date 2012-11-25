@@ -507,7 +507,7 @@ abstract class prog_noneventbased_message extends prog_message {
      * @return bool Success
      */
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $result = true;
 
@@ -520,29 +520,35 @@ abstract class prog_noneventbased_message extends prog_message {
 
         $manager = totara_get_manager($recipient->id);
 
-        if ($sender == null) {
-            if (!$manager) {
-                $sender = $recipient;
-            } else {
-                $sender = $manager;
-            }
+        //verify the $sender of the email
+        if ($sender == null) { //null check on $sender, default to manager or no-reply accordingly
+            $sender = ($manager->id == $USER->id) ? $manager : generate_email_supportuser();
+        } else if ($sender->id == $USER->id) { //make sure $sender is currently logged in
+            $sender = $USER;
+        } else if ($USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
+            $sender = $manager;
+        } else { //last option, the no-reply address
+            $sender = generate_email_supportuser();
         }
 
         // send the message to the learner
-        $this->studentmessagedata->userto = $recipient;
-        $this->studentmessagedata->userfrom = $sender;
-        $this->studentmessagedata->subject = $this->replacevars($this->studentmessagedata->subject);
-        $this->studentmessagedata->fullmessage = $this->replacevars($this->studentmessagedata->fullmessage);
-        $result = $result && tm_alert_send($this->studentmessagedata);
+        $studentdata = new stdClass();
+        $studentdata->userto = $recipient;
+        $studentdata->userfrom = $sender;
+        $studentdata->subject = $this->replacevars($this->studentmessagedata->subject);
+        $studentdata->fullmessage = $this->replacevars($this->studentmessagedata->fullmessage);
+        $result = $result && tm_alert_send($studentdata);
 
         // send the message to the manager
         if ($result && $this->notifymanager && $manager) {
-            $this->managermessagedata->userto = $manager;
-            $this->managermessagedata->userfrom = $recipient;
-            $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
-            $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
-            $this->managermessagedata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
-            $result = $result && tm_alert_send($this->managermessagedata);
+            $managerdata = new stdClass();
+            $managerdata->userto = $manager;
+            //ensure the message is actually coming from $user, default to support
+            $managerdata->userfrom = ($USER->id == $recipient->id) ? $recipient : generate_email_supportuser();
+            $managerdata->subject = $this->replacevars($this->managermessagedata->subject);
+            $managerdata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
+            $managerdata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
+            $result = $result && tm_alert_send($managerdata);
         }
 
         return $result;
@@ -617,7 +623,7 @@ abstract class prog_eventbased_message extends prog_message {
      * @return bool Success
      */
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $coursesetid = isset($options['coursesetid']) ? $options['coursesetid'] : 0;
 
@@ -636,20 +642,24 @@ abstract class prog_eventbased_message extends prog_message {
 
         $manager = totara_get_manager($recipient->id);
 
-        if ($sender == null) {
-            if (!$manager) {
-                $sender = $recipient;
-            } else {
-                $sender = $manager;
-            }
+        //verify the $sender of the email
+        if ($sender == null) { //null check on $sender, default to manager or no-reply accordingly
+            $sender = ($manager->id == $USER->id) ? $manager : generate_email_supportuser();
+        } else if ($sender->id == $USER->id) { //make sure $sender is currently logged in
+            $sender = $USER;
+        } else if ($USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
+            $sender = $manager;
+        } else { //last option, the no-reply address
+            $sender = generate_email_supportuser();
         }
 
         // send the message to the learner
-        $this->studentmessagedata->userto = $recipient;
-        $this->studentmessagedata->userfrom = $sender;
-        $this->studentmessagedata->subject = $this->replacevars($this->studentmessagedata->subject);
-        $this->studentmessagedata->fullmessage = $this->replacevars($this->studentmessagedata->fullmessage);
-        $result = $result && tm_alert_send($this->studentmessagedata);
+        $studentdata = new stdClass();
+        $studentdata->userto = $recipient;
+        $studentdata->userfrom = $sender;
+        $studentdata->subject = $this->replacevars($this->studentmessagedata->subject);
+        $studentdata->fullmessage = $this->replacevars($this->studentmessagedata->fullmessage);
+        $result = $result && tm_alert_send($studentdata);
 
         // if the message was sent, add a record to the message log to
         // prevent it from being sent again
@@ -664,12 +674,14 @@ abstract class prog_eventbased_message extends prog_message {
 
         // send the message to the manager
         if ($result && $this->notifymanager && $manager) {
-            $this->managermessagedata->userto = $manager;
-            $this->managermessagedata->userfrom = $recipient;
-            $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
-            $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
-            $this->managermessagedata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
-            $result = $result && tm_alert_send($this->managermessagedata);
+            $managerdata = new stdClass();
+            $managerdata->userto = $manager;
+            //ensure the message is actually coming from $user, default to support
+            $managerdata->userfrom = ($USER->id == $recipient->id) ? $recipient : generate_email_supportuser();
+            $managerdata->subject = $this->replacevars($this->managermessagedata->subject);
+            $managerdata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
+            $managerdata->contexturl = $CFG->wwwroot.'/totara/program/view.php?id='.$this->programid.'&amp;userid='.$recipient->id;
+            $result = $result && tm_alert_send($managerdata);
         }
 
         return $result;
@@ -1032,17 +1044,19 @@ class prog_extension_request_message extends prog_noneventbased_message {
     }
 
     public function send_message($recipient, $sender=null, $options=array()) {
-        global $CFG;
+        global $CFG, $USER;
 
-        if ($sender == null) {
-            return false;
+        //ensure that $sender is defined and logged in, default to support
+        if ($sender == null || ($USER->id != $sender->id)) {
+           $sender == generate_email_supportuser();
         }
 
         // send the message to the Manager
-        $this->managermessagedata->userto = $recipient;
-        $this->managermessagedata->userfrom = $sender;
-        $this->managermessagedata->subject = $this->replacevars($this->managermessagedata->subject);
-        $this->managermessagedata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
+        $managerdata = new stdClass();
+        $managerdata->userto = $recipient;
+        $managerdata->userfrom = $sender;
+        $managerdata->subject = $this->replacevars($this->managermessagedata->subject);
+        $managerdata->fullmessage = $this->replacevars($this->managermessagedata->fullmessage);
 
         if (!empty($this->managermessagedata->acceptbutton)) {
             $onaccept = new stdClass();
@@ -1050,7 +1064,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
             $onaccept->text = $this->managermessagedata->accepttext;
             $onaccept->data = array('userid' => $this->userid, 'extensionid' => $this->extensiondata['extensionid']);
             $onaccept->acceptbutton = $this->managermessagedata->acceptbutton;
-            $this->managermessagedata->onaccept = $onaccept;
+            $managerdata->onaccept = $onaccept;
         }
         if (!empty($this->managermessagedata->rejectbutton)) {
             $onreject = new stdClass();
@@ -1058,7 +1072,7 @@ class prog_extension_request_message extends prog_noneventbased_message {
             $onreject->text = $this->managermessagedata->rejecttext;
             $onreject->data = array('userid' => $this->userid, 'extensionid' => $this->extensiondata['extensionid']);
             $onreject->rejectbutton = $this->managermessagedata->rejectbutton;
-            $this->managermessagedata->onreject = $onreject;
+            $managerdata->onreject = $onreject;
         }
 
         if (!empty($this->managermessagedata->infobutton)) {
@@ -1068,10 +1082,10 @@ class prog_extension_request_message extends prog_noneventbased_message {
             $oninfo->data = array('userid' => $this->userid);
             $oninfo->data['redirect'] = $this->managermessagedata->contexturl;
             $oninfo->infobutton = $this->managermessagedata->infobutton;
-            $this->managermessagedata->oninfo = $oninfo;
+            $managerdata->oninfo = $oninfo;
         }
 
-        $result = tm_task_send($this->managermessagedata);
+        $result = tm_task_send($managerdata);
 
         return $result;
     }

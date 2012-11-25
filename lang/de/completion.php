@@ -65,7 +65,6 @@ $string['completion-title-manual-y'] = 'Als nicht abgeschlossen markieren: {$a}'
 $string['completion-y'] = 'Abgeschlossen';
 $string['completion_automatic'] = 'Abschluss, wenn alle Bedingungen erfüllt sind';
 $string['completion_help'] = 'Wenn diese Option aktiviert ist, dann werden die Aktivitätsfortschritte manuell oder automatisch entsprechend den gesetzten Bedingungen protokolliert. Mehrfachbedingungen können gesetzt sein, falls dies gewünscht ist. Ist dies der Fall, so wird eine Aktivität erst dann abgeschlossen, wenn ALLE Bedingungen zutreffen.
-
 Ein Häkchen direkt neben den Aktivitätsnamen signalisiert auf der Kursseite, dass diese Aktivität abgeschlossen ist.';
 $string['completion_manual'] = 'Abschluss wird manuell markiert';
 $string['completion_none'] = 'Abschluss wird nicht angezeigt';
@@ -75,11 +74,8 @@ $string['completionexpected'] = 'Abschlusstermin';
 $string['completionexpected_help'] = 'Diese Einstellung legt den Zeitpunkt fest, wann für die Aktivität der Bearbeitungsabschluss erwartet wird. Der Zeitpunkt ist für die Teilnehmer/innen nicht sichtbar, sondern er wird nur im Fortschrittsbericht angezeigt.';
 $string['completionicons'] = 'Fortschrittsanzeige';
 $string['completionicons_help'] = 'Mit einem Häkchen neben einem Aktivitätsnamen können Sie signalisieren, dass Sie diese Aktivität abgeschlossen haben.
-
-Falls ein gepunktetes Häkchen zu sehen, so können Sie darauf klicken und das Häkchen zu setzen,  wenn diese Aktivität Ihrer Meinung nach abgeschlossen ist. Ein erneuter Klick entfernt das Häkchen wieder, falls Sie Ihre Meinung nachträglich ändern sollten. Das Häkchen ist optional und bietet eine einfache Möglichkeit, Ihre Fortschritte im Kurs festzuhalten.
-
-Wenn statt des Häkchens ein leeres Feld gezeigt wird, wird das Häkchen automatisch erscheinen, sobald Sie die Aktivität entsprechend den Trainervorgaben abgeschlossen haben.
-';
+Falls ein gepunktetes Häkchen zu sehen, so können Sie darauf klicken und das Häkchen zu setzen, wenn diese Aktivität Ihrer Meinung nach abgeschlossen ist. Ein erneuter Klick entfernt das Häkchen wieder, falls Sie Ihre Meinung nachträglich ändern sollten. Das Häkchen ist optional und bietet eine einfache Möglichkeit, Ihre Fortschritte im Kurs festzuhalten.
+Wenn statt des Häkchens ein leeres Feld gezeigt wird, wird das Häkchen automatisch erscheinen, sobald Sie die Aktivität entsprechend den Trainervorgaben abgeschlossen haben.';
 $string['completionmenuitem'] = 'Abschluss';
 $string['completionnotenabled'] = 'Abschluss ist nicht aktiviert';
 $string['completionnotenabledforcourse'] = 'Abschluss ist für diesen Kurs nicht aktiviert';
@@ -129,7 +125,7 @@ $string['enrolmentduration'] = 'Tage noch verfügbar';
 $string['err_noactivities'] = 'Die Abschlussinformation ist nicht für jede Aktivität eingeschaltet, daher kann keine angezeigt werden. Sie können die Abschlussinformation einschalten, indem Sie die Einstellungen einer Aktivität bearbeiten.';
 $string['err_nocourses'] = 'Die Abschlussverfolgung ist für keinen Kurs aktiviert, so dass kein Kurs angezeigt werden kann. Sie können die Abschlussverfolgung in den Kurseinstellungen aktivieren.';
 $string['err_nocriteria'] = 'Für diesen Kurs wurden keine Abschlussbedingungen definiert.';
-$string['err_nograde'] = 'Eine Bewertung für \'erfolgreich\' wurde für diesen Kurs nicht angegeben. Um diesen Kriteriumstyp zu aktivieren, müssen Sie angeben, mit welcher Bewertung der Kurs \'erfolgreich\' gewertet werden soll. ';
+$string['err_nograde'] = 'Eine Bewertung für \'erfolgreich\' wurde für diesen Kurs nicht angegeben. Um diesen Kriteriumstyp zu aktivieren, müssen Sie angeben, mit welcher Bewertung der Kurs \'erfolgreich\' gewertet werden soll.';
 $string['err_noroles'] = 'Keine der Rollen in diesem Kurs besitzt die Fähigkeit \'moodle/course:markcomplete\'. Sie können diesen Kriteriumstyp aktivieren, indem Sie diese Fähigkeit zu Rollen hinzufügen.';
 $string['err_nousers'] = 'In diesem Kurs oder in dieser Gruppe gibt es keine Teilnehmer/innen, für die Abschlussinformationen angezeigt werden. (Standardmäßig werden Abschlussinformationen ausschließlich für Teilnehmer/innen angezeigt ... wenn es also keine gibt, so sehen Sie diese Fehlermeldung. Administratoren können diese Einstellung im Administrationsmenü ändern.)';
 $string['err_settingslocked'] = 'Die Einstellung wurde gesperrt, weil bereits Teilnehmer/innen ein Abschlusskriterium erfüllt hat. Wenn Sie die Abschlussbedingungen entsperren, werden die vorhandenen Nutzerdaten gelöscht und es könnte zu Verwirrungen kommen.';
@@ -158,7 +154,7 @@ $string['prerequisitescompleted'] = 'Bedingungen abgeschlossen';
 $string['progress'] = 'Bearbeitungsfortschritt';
 $string['progress-title'] = '{$a->user}, {$a->activity}: {$a->state} {$a->date}';
 $string['recognitionofpriorlearning'] = 'Anerkennung von Vorkenntnissen';
-$string['remainingenroledfortime'] = ' Für die angegebene Zeitdauer eingeschrieben bleiben';
+$string['remainingenroledfortime'] = 'Für die angegebene Zeitdauer eingeschrieben bleiben';
 $string['remainingenroleduntildate'] = 'Bis zum angegebenen Zeitpunkt eingeschrieben bleiben';
 $string['reportpage'] = 'Teilnehmer/innen {$a->from} bis {$a->to} von {$a->total} anzeigen';
 $string['requiredcriteria'] = 'Notwendiges Kriterium';

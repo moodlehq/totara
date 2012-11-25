@@ -45,23 +45,20 @@ $string['uploadpicture_cannotsave'] = 'Non è stato possibile salvare l\'immagin
 $string['uploadpicture_cannotunzip'] = 'Non è possibile decomprimere il file zip contenente le immagini.';
 $string['uploadpicture_invalidfilename'] = 'Il file immagine {$a} ha caratteri non validi nel nome. Saltato.';
 $string['uploadpicture_overwrite'] = 'Sovrascrivere le immagini utente già esistenti?';
-$string['uploadpictures'] = 'Importa immagini utenti';
-$string['uploadpictures_help'] = '<p>Le foto degli tenti possono essere caricate come file zip di immagini. I file immagini devono essere chiamati <i>attributo-utente-scelto.estensione</i>. Per esempio, se l\'attributo utente scelto per la corrispondenza delle foto è lo username e lo username è user1234, allora il file si chiamerà user1234.jpg.</p>
-
-<p>I tipi immagini supportati sono gif, jpg, e png.</p>
-
-<p>Nei nomi dei file immagine è indifferente l\'uso di maiuscole o minuscole.</p>';
 $string['uploadpicture_userfield'] = 'Identificativo utente da utilizzare per far corrispondere le immagini';
 $string['uploadpicture_usernotfound'] = 'Utente con un valore di \'{$a->uservalue}\' per \'{$a->userfield}\' non esiste. Saltato.';
 $string['uploadpicture_userskipped'] = 'Saltato utente {$a} (ha già un\'immagine).';
 $string['uploadpicture_userupdated'] = 'Immagine per l\'utente {$a} caricata.';
+$string['uploadpictures'] = 'Importa immagini utenti';
+$string['uploadpictures_help'] = 'Le foto degli tenti possono essere caricate come file zip di immagini. I file immagini devono essere chiamati *attributo-utente-scelto.estensione*. Per esempio, se l\'attributo utente scelto per la corrispondenza delle foto è lo username e lo username è user1234, allora il file si chiamerà user1234.jpg.
+I tipi immagini supportati sono gif, jpg, e png.
+Nei nomi dei file immagine è indifferente l\'uso di maiuscole o minuscole.';
 $string['uploadusers'] = 'Importa utenti';
 $string['uploadusers_help'] = 'E\' possibile caricare utenti (ed iscriverli ai corsi) tramite file di testo. Il formato del file deve avere le seguenti caratteristiche:
-
 * Ogni riga del file contiene un record
 * Il record è una serie di dati separati da virgole o altri delimitatori
 La prima riga del file è speciale e contiene le intestazioni con i nomi dei campi e definisce il formato del resto del file
-* I campi obbligatori sono username, password, firstname,  lastname, email';
+* I campi obbligatori sono username, password, firstname, lastname, email';
 $string['uploaduserspreview'] = 'Anteprima importazione utenti';
 $string['uploadusersresult'] = 'Risultati importazione utenti';
 $string['useraccountupdated'] = 'Utente aggiornato';

@@ -123,13 +123,10 @@ $string['disterror'] = 'A distribuição {$a} causou problemas';
 $string['donothing'] = 'Não copie, mova arquivos ou mude os links.';
 $string['editcategories'] = 'Editar categorias';
 $string['editcategories_help'] = 'Em vez de manter todas as questões em uma lista grande, você pode criar categorias e sub-categorias.
-
 Cada categoria possui um contexto que determina onde a questão pode ser usada:
-
 *Contexto da atividade - Questões somente disponíveis no módulo da atividade
 *Contexto do curso - Questões disponíveis em todos os módulos de atividade daquele curso
 *Contexto da categoria de curso - Questões disponíveis em todos os módulos de atividade de todos os cursos daquela categoria
-
 Categorias também são utilizadas em questionários com questões randômicas que são selecionadas de uma categoria particular.';
 $string['editcategory'] = 'Editar categoria';
 $string['editingcategory'] = 'Editando a categoria';
@@ -158,11 +155,9 @@ $string['errorsavingcomment'] = 'Erro salvando o comentário da questão {$a->na
 $string['errorsavingflags'] = 'Erro ao salvar o estado da marcação.';
 $string['errorupdatingattempt'] = 'Erro atualizando a tentativa {$a->id}.';
 $string['exportcategory'] = 'Exportar categoria';
-$string['exportcategory_help'] = '<h2>Categoria de Exportação</h2>
-
-<p>A lista <b>Categoria:</b> que se abre é usada para selocionar a categoria da qual as questões para exportação serão tiradas.</p>
-
-<p>Alguns formatos de importação (GIFT e Formato XML) permitem a categoria ser incluída no arquivo gravado, possibilitando que as categorias (opcionalmente) sejam recriadas na importação. Para que esta informação seja incluída a caixa <b>para o arquivo</b> deve ser marcada.</p>';
+$string['exportcategory_help'] = '## Categoria de Exportação
+A lista **Categoria:** que se abre é usada para selocionar a categoria da qual as questões para exportação serão tiradas.
+Alguns formatos de importação (GIFT e Formato XML) permitem a categoria ser incluída no arquivo gravado, possibilitando que as categorias (opcionalmente) sejam recriadas na importação. Para que esta informação seja incluída a caixa **para o arquivo** deve ser marcada.';
 $string['exporterror'] = 'Erros ocorreram durante a exportação!';
 $string['exportfilename'] = 'questionario';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
@@ -182,7 +177,6 @@ $string['formquestionnotinids'] = 'O formulário continha questões que não est
 $string['fractionsnomax'] = 'Uma das respostas deve ter valor de 100% para que seja possível obter a nota total.';
 $string['generalfeedback'] = 'Feedback geral';
 $string['generalfeedback_help'] = 'Feedback geral é mostrado ao aluno após ele completar a tentativa da. Diferentemente do feedback, que depende do tipo de questão e da resposta que o aluno deu, o mesmo feedback geral aparece para todos os alunos.
-
 Você pode usar o feedback geral para dar aos alunos algumas informações sobre o tipo de conhecimento que a questão está testando, ou dá-los um link com mais informações que eles possam usar caso não tenham entendido a questão.';
 $string['getcategoryfromfile'] = 'Tirar categoria do arquivo';
 $string['getcontextfromfile'] = 'Tirar contexto do arquivo';
@@ -193,11 +187,9 @@ $string['howquestionsbehave'] = 'Como se comportam as questões';
 $string['howquestionsbehave_help'] = 'Alunos podem interagir com as questões no questionário de várias formas. Por exemplo, você pode querer que os alunos dêem uma resposta para todas as questões e depois submetam o questionário inteiro, antes de ser avaliado ou receber qualquer feedback. Esse é o modo \'Feedbak adiado\'. Alternativamente, você pode querer que seus alunos submetam cada questão à medida que eles avançam para receber feedback imediato, e se eles não acertarem de primeira, tenham outra chance por uma pontuação menor. Esse é o modo \'Interativo com múltiplas tentativas\'.';
 $string['ignorebroken'] = 'Ignorar links quebrados';
 $string['importcategory'] = 'Importar categoria';
-$string['importcategory_help'] = '<p>A lista <b>Categoria:</b> que se abre é usada para selecionar a categoria na qual as questões da Importação serão colocadas.</p>
-
-<p>Alguns formatos de importação (GIFT e Formato XML) permitem que a categoria seja específicada no arquivo de importação. Para que isto aconteça a caixa <b>vindo do arquivo</b> deve ser marcada. Se não for, as questões irão para as categorias selecionadas independente de qualquer instrução dentro do arquivo.</p>
-
-<p>Quando categorias são especificadas dentro do arquivo de importação e não existem, elas são criadas automáticamente.</p>';
+$string['importcategory_help'] = 'A lista **Categoria:** que se abre é usada para selecionar a categoria na qual as questões da Importação serão colocadas.
+Alguns formatos de importação (GIFT e Formato XML) permitem que a categoria seja específicada no arquivo de importação. Para que isto aconteça a caixa **vindo do arquivo** deve ser marcada. Se não for, as questões irão para as categorias selecionadas independente de qualquer instrução dentro do arquivo.
+Quando categorias são especificadas dentro do arquivo de importação e não existem, elas são criadas automáticamente.';
 $string['importerror'] = 'Ocorreu um erro durante o processo de importação';
 $string['importerrorquestion'] = 'Erro importando questão';
 $string['importfromcoursefiles'] = '...ou escolha um arquivo de curso para importar.';
@@ -234,51 +226,45 @@ $string['markoutofmax'] = 'Atingiu {$a->mark} de {$a->max}';
 $string['marks'] = 'Pontos';
 $string['matcherror'] = 'Avaliações não correspondem às opções de avaliação -';
 $string['matchgrades'] = 'Avaliações associadas';
+$string['matchgrades_help'] = 'As notas importadas **devem** coincidir com uma das notas
+válidas da lista predeterminada, como abaixo...
+
+* 100%
+* 90%
+* 80%
+* 75%
+* 70%
+* 66.666%
+* 60%
+* 50%
+* 40%
+* 33.333
+* 30%
+* 25%
+* 20%
+* 16.666%
+* 14.2857
+* 12.5%
+* 11.111%
+* 10%
+* 5%
+* 0%
+
+Valores negativos da lista também são
+permitidos.
+Há duas configurações para esta chave. Elas afetam como
+a rotina de importação trata os valores que não coincidem **exatamente**
+com um dos valores da lista acima.
+
+\* **|Erro se a nota não está na lista**
+Se a pergunta contem qualquer nota não encontrada na lista um erro é mostrado
+e a pergunta não será importada.
+\* **|Nota mais próxima se não está na lista**
+Se a nota não coincide com um valor da lista, a nota é alterada
+para o valor mais próximo da lista.
+
+*Nota: alguns formatos personalizados de importação escrevem diretamente no banco de dados e podem ignorar esta checagem.*';
 $string['matchgradeserror'] = 'Erro caso notas não estejam listadas';
-$string['matchgrades_help'] = '<p>As notas importadas <b>devem</b> coincidir com uma das notas
-válidas da lista predeterminada, como abaixo...</p>
-
-<ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
-</ul>
-
-<p>Valores negativos da lista também são
-permitidos.</p>
-
-<p>Há duas configurações para esta chave. Elas afetam como
-a rotina de importação trata os valores que não coincidem <strong>exatamente</strong>
-com um dos valores da lista acima.</p>
-
-<ul>
-  <li><strong>Erro se a nota não está na lista</strong><br />
-  Se a pergunta contem qualquer nota não encontrada na lista um erro é mostrado
-  e a pergunta não será importada.</li>
-  <li><strong>Nota mais próxima se não está na lista</strong><br />
-
-  Se a nota não coincide com um valor da lista, a nota é alterada
-  para o valor mais próximo da lista.</li>
-</ul>
-
-<p><i>Nota: alguns formatos personalizados de importação escrevem diretamente no banco de dados e podem ignorar esta checagem.</i></p>';
 $string['matchgradesnearest'] = 'Nota mais próxima, se não listada';
 $string['missingcourseorcmid'] = 'É necessário fornecer o courseid ou cmid para print_question.';
 $string['missingcourseorcmidtolink'] = 'É necessário fornecer o courseid ou cmid para get_question_edit_link.';
@@ -329,32 +315,22 @@ $string['page-question-import'] = 'Página de importação de questões';
 $string['page-question-x'] = 'Página de qualquer questão';
 $string['parent'] = 'Nível superior';
 $string['parentcategory'] = 'Categoria pai';
-$string['parentcategory_help'] = '<h2>Categoria Pai</h2>
-
-<p>A categoria na qual um item deve ser incluído. \'Topo\' significa que essa categoria não estará contida em nenhuma outra.</p>
-
-<p>Normalmente você verá vários \'contextos\' de categoria, que estão em negrito. Perceba que cada contexto tem sua própria hierarquia de categorias. Vá até o final da página para mais informações sobre contextos. Se você não vir esses contextos pode ser que você não tenha permissão para acessar outros contextos.</p>
-
-<p>Se há somente uma categoria no contexto, você não poderá movê-la, já que é necessário que haja ao menos uma em cada um deles.</p>
-
-<p>Veja também :</p>
-<ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">Categorias de questões</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">Contextos de categoria</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">Permissões de Questões</a></li>
-</ul>';
+$string['parentcategory_help'] = '## Categoria Pai
+A categoria na qual um item deve ser incluído. \'Topo\' significa que essa categoria não estará contida em nenhuma outra.
+Normalmente você verá vários \'contextos\' de categoria, que estão em negrito. Perceba que cada contexto tem sua própria hierarquia de categorias. Vá até o final da página para mais informações sobre contextos. Se você não vir esses contextos pode ser que você não tenha permissão para acessar outros contextos.
+Se há somente uma categoria no contexto, você não poderá movê-la, já que é necessário que haja ao menos uma em cada um deles.';
 $string['parenthesisinproperclose'] = 'Os parênteses antes de ** não foram fechados corretamente em {$a}**';
 $string['parenthesisinproperstart'] = 'Os parênteses antes de ** não foram abertos corretamente em {$a}**';
 $string['parsingquestions'] = 'Processando questões do arquivo de importação.';
 $string['partiallycorrect'] = 'Parcialmente correto';
 $string['partiallycorrectfeedback'] = 'Para qualquer resposta parcialmente correta';
 $string['penaltyfactor'] = 'Fator de penalidade';
-$string['penaltyfactor_help'] = '<P>Pode-se especificar qual a fração da nota obtida deverá ser subtraída para
+$string['penaltyfactor_help'] = 'Pode-se especificar qual a fração da nota obtida deverá ser subtraída para
 cada resposta errada. Isto somente é relevante se o questionário estiver rodando no modo adaptativo
 onde o estudante pode fazer repetidas respostas à pergunta. O fator de
 penalidade deverá ser um número entre 0 e 1. Um fator de penalidade de 1 significa
 que o estudante tem que conseguir a resposta correta na primeira resposta para obter qualquer
-crédito por isso no total. Um fator de penalidade de 0 significa que o estudante pode tentar tantas vezes quantas desejar e ainda obter as marcas totais.</P>';
+crédito por isso no total. Um fator de penalidade de 0 significa que o estudante pode tentar tantas vezes quantas desejar e ainda obter as marcas totais.';
 $string['penaltyforeachincorrecttry'] = 'Penalidade para cada tentativa incorreta';
 $string['penaltyforeachincorrecttry_help'] = 'Quando empregar suas questões utilizando os comportamentos \'Interativa com múltiplas tentativas\' ou \'Modo adaptativo\', possibilitando que o estudante tenha várias tentativas para acertar a questão, então esta opção controlará o quanto eles serão penalizados para cada tentativa incorreta. O pênalti é uma proporção do total da grade de questões, causando para uma questão que vale três marcas, e o pênalti é 0.3333333, então o estudante irá receber uma nota 3 caso ele responda corretamente pela primeira vez, 2 caso ele rersponda corretamente na segunda tentativa, e um caso responda certo na terceira tentativa.';
 $string['permissionedit'] = 'Editar essa questão';

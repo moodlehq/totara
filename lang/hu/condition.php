@@ -30,31 +30,28 @@ $string['addgrades'] = '{no} pontozási feltétel hozzáadása az űrlaphoz';
 $string['availabilityconditions'] = 'Elérhetőség korlátozása';
 $string['availablefrom'] = 'Ekkortól érhető el';
 $string['availablefrom_help'] = 'Az \'Ekkortól érhető el\' és az \'Eddig érhető el\' dátumokkal a kurzusoldalon lévő ugróponton keresztül eltüntethet vagy megjeleníthet egy tevékenységet.
-
 Az elérési dátumok és a tevékenység elérhetősége közötti különbség az, hogy a beállított időpontokon túl ez utóbbi esetén a tanulók látják a tevékenység leírását, míg az elérési dátumok teljesen megakadályozzák a hozzáférést.';
 $string['availableuntil'] = 'Eddig érhető el';
 $string['badavailabledates'] = 'Érvénytelen dátumok. Ha mind a kettőt beállítja, akkor az elérhetőség kezdetének meg kell előznie az elérhetőség végét.';
 $string['badgradelimits'] = 'Ha alsó és felső határértéket állít be, a felsőnek az alsónál magasabbnak kell lenni.';
 $string['completion_complete'] = 'teljesítettként kell megjelölni';
-$string['completioncondition'] = 'Tevékenység teljesítési feltétele';
-$string['completioncondition_help'] = 'Ezzel határozza meg azokat a tevékenységteljesítési feltételeket, amelyeknek eleget téve a tevékenység elérhetővé válik. Először a teljesítés nyomon követését kell beállítani, ezután következhet a tevékenység teljesítésének feltétele.
-
-Egyszerre több teljesítési feltételt is megadhat. A tevékenység eléréséhez minden feltételnek teljesülnie kell.';
 $string['completion_fail'] = 'elégtelennel teljesítettként kell megjelölni';
 $string['completion_incomplete'] = 'teljesítettként nem lehet megjelölni';
 $string['completion_pass'] = 'megfelelően teljesítettként kell megjelölni';
+$string['completioncondition'] = 'Tevékenység teljesítési feltétele';
+$string['completioncondition_help'] = 'Ezzel határozza meg azokat a tevékenységteljesítési feltételeket, amelyeknek eleget téve a tevékenység elérhetővé válik. Először a teljesítés nyomon követését kell beállítani, ezután következhet a tevékenység teljesítésének feltétele.
+Egyszerre több teljesítési feltételt is megadhat. A tevékenység eléréséhez minden feltételnek teljesülnie kell.';
 $string['configenableavailability'] = 'Bekapcsolása esetén olyan (dátumon, osztályzaton vagy teljesítésen alapuló) feltételeket állíthat be, amelyek befolyásolják a tevékenység vagy
 tananyag elérhetőségét.';
 $string['enableavailability'] = 'Feltételes elérhetőség bekapcsolása';
 $string['grade_atleast'] = 'minimálisan';
+$string['grade_upto'] = 'vagy kevesebb';
 $string['gradecondition'] = 'Osztályzathoz kapcsolódó feltétel';
 $string['gradecondition_help'] = 'Ezzel határozza meg azokat az osztályozási feltételeket, amelyeknek eleget téve a tevékenység elérhetővé válik.
-
 Egyszerre több osztályozási feltételt is megadhat. A tevékenység eléréséhez MINDEN osztályozási feltételnek teljesülnie kell.';
 $string['gradeitembutnolimits'] = 'Adjon  meg egy alsó vagy egy felső határértéket, vagy mindkettőt.';
 $string['gradelimitsbutnoitem'] = 'Válasszon pontozási tételt.';
 $string['gradesmustbenumeric'] = 'A minimális és a maximális pontszám számjegyes (vagy hagyja üresen).';
-$string['grade_upto'] = 'vagy kevesebb';
 $string['none'] = '(egy sem)';
 $string['notavailableyet'] = 'Még nem érhető el';
 $string['requires_completion_0'] = 'Amíg <strong>{$a}</strong> tevékenység nincs teljesítve, addig nem elérhető.';

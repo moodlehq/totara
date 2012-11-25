@@ -35,10 +35,9 @@ $string['notenoughqsandas'] = 'Devi fornire almeno {$a->q} domande e {$a->a} ris
 $string['notenoughquestions'] = 'Devi fornire almeno {$a} coppie di domande e risposte.';
 $string['pleaseananswerallparts'] = 'Per favore rispondi a tutte le parti della domanda';
 $string['pluginname'] = 'Corrispondenza';
+$string['pluginname_help'] = 'Lo studente dovrà far corrispondere i termini presenti nell\'elenco delle domande con i termini presenti nell\'elenco delle risposte.';
 $string['pluginnameadding'] = 'Creazione domanda Corrispondenza';
 $string['pluginnameediting'] = 'Modifica domanda Corrispondenza';
-$string['pluginname_help'] = 'Lo studente dovrà far corrispondere i termini presenti nell\'elenco delle domande con i termini presenti nell\'elenco delle risposte.
-';
 $string['pluginnamesummary'] = 'La risposta a ciascuna sotto domanda deve essere selezionata da un elenco di risposte possibili.';
 $string['shuffle'] = 'Mescola';
 $string['shuffle_help'] = 'Ogni volta che lo studente tenterà un quiz contenente questa domanda, l\'ordine delle possibili alternative verrà mescolato casualmente - sempre che l\'impostazione del Quiz "Alternative in ordine casuale" sia abilitata.';

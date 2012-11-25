@@ -34,25 +34,20 @@ $string['available'] = 'Tillgänglig';
 $string['confirmmessage'] = 'Vill du verkligen skicka det ovanstående meddelandet till alla dessa användare?<br />{$a}';
 $string['nofilteredusers'] = 'Det gick inte att hitta några användare(0/{$a})';
 $string['noselectedusers'] = 'Inga användare är valda';
-$string['removeall'] = 'Ta bort alla ';
+$string['removeall'] = 'Ta bort alla';
 $string['removesel'] = 'Ta bort urvalet av tillgängliga användare';
 $string['selected'] = 'Urvald/a';
 $string['selectedlist'] = 'Lista över urval av användare...';
-$string['selectedlist_help'] = '<h2>Lista över valda användare...</h2>
+$string['selectedlist_help'] = '## Lista över valda användare...
 
-<ul>
-<li>Lägg till till urvalet - lägger till valda användare från listan över Tillgängliga till listan över Utvalda. Du kan välja ett flertal användare genom att hålla nere Apple- eller Ctrl-tangenten medan du klickar på användarnas namn. 
-</li>
-<li>Lägg till alla - lägger till alla användare från listan över Tillgängliga till listan över Utvalda. </li>
-<li>Ta bort från urval  - tar bort valda användare från listan över Utvalda. </li>
-<li>Ta bort alla - tar bort alla användare från listan över Utvalda.</li>
-</ul>';
+* Lägg till till urvalet - lägger till valda användare från listan över Tillgängliga till listan över Utvalda. Du kan välja ett flertal användare genom att hålla nere Apple- eller Ctrl-tangenten medan du klickar på användarnas namn.
+* Lägg till alla - lägger till alla användare från listan över Tillgängliga till listan över Utvalda.
+* Ta bort från urval - tar bort valda användare från listan över Utvalda.
+* Ta bort alla - tar bort alla användare från listan över Utvalda.';
 $string['users'] = 'Användare';
+$string['users_help'] = '## Listor över användare
+Listan över **tillgängliga** innehåller användare som har passerat de aktiva filtren. Om t.ex. sektionerna för aktiva filter innehåller bara ett filter för användare vars land är Rumänien, då kommer listan över tillgängliga endast att innehålla användare som har angivit Rumänien som sitt land i sidan för profiler.
+Listan över **Utvalda** innehåller användare som du har lagt till till listan genom att använda knapparna från *Listan över utvalda användare...*. När du håller ned knappen \*Gå\* från * med valda användare...* så kommer den åtgärd du har valt att utföras på användarna från denna lista.';
 $string['usersfound'] = '{$a} användare har hittats';
-$string['users_help'] = '<h2>Listor över användare</h2>
-
-<p>Listan över <strong>tillgängliga</strong> innehåller användare som har passerat de aktiva filtren. Om t.ex. sektionerna för aktiva filter innehåller bara ett filter för användare vars land är Rumänien, då kommer listan över tillgängliga endast att innehålla användare som har angivit Rumänien som sitt land i sidan för profiler.</p>
-
-<p>Listan över <strong>Utvalda</strong> innehåller användare som du har lagt till till listan genom att använda knapparna från <em>Listan över utvalda användare...</em>. När du håller ned knappen <em>Gå</em> från  <em> med valda användare...</em> så kommer den åtgärd du har valt att utföras på användarna från denna lista.</p>';
 $string['usersinlist'] = 'Användare i lista';
 $string['usersselected'] = '{$a} användare har förts till urvalet';

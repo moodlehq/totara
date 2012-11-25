@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['additem'] = 'הוסף פריט ';
+$string['additem'] = 'הוסף פריט';
 $string['addmoreanswerblanks'] = 'הוסף מרוח נוסף לתשובה.';
 $string['addmoreunitblanks'] = 'הוספת {$a} יחידות משתנים נוספות';
 $string['addsets'] = 'הוסף מערך הגדרות';
@@ -35,7 +35,7 @@ $string['answerwithtolerance'] = '{$a->answer} (±{$a->tolerance} {$a->tolerance
 $string['anyvalue'] = 'כל ערך';
 $string['atleastoneanswer'] = 'עליך לספק לפחות תשובה אחת';
 $string['atleastonerealdataset'] = 'חייב להיות לפחות מערך נתונים אחד בטקסט השאלה';
-$string['atleastonewildcard'] = 'חייב להיות לפחות מערך תו-כללי (wild card) אחד בנוסחת התשובה או בטקסט השאלה ';
+$string['atleastonewildcard'] = 'חייב להיות לפחות מערך תו-כללי (wild card) אחד בנוסחת התשובה או בטקסט השאלה';
 $string['calcdistribution'] = 'התפלגות';
 $string['calclength'] = 'מקומות עשרוניים';
 $string['calcmax'] = 'מירבי';
@@ -46,18 +46,18 @@ $string['correctanswerformula'] = 'נוסחת התשובה הנכונה';
 $string['correctanswershows'] = 'התשובה הנכונה מראה';
 $string['correctanswershowsformat'] = 'תסדיר';
 $string['correctfeedback'] = 'לכל תגובה נכונה';
-$string['dataitemdefined'] = 'זמין עם {$a} ערכים מספריים שכבר הוגדרו ';
+$string['dataitemdefined'] = 'זמין עם {$a} ערכים מספריים שכבר הוגדרו';
 $string['datasetrole'] = 'תווים-כלליים<strong>{x..}</strong> יוחלפו בערכים מספריים ממערכי הנתונים שלהם';
 $string['decimals'] = 'עם {$a}';
 $string['deleteitem'] = 'מחק פריט';
 $string['deletelastitem'] = 'מחק פריט אחרון';
 $string['editdatasets'] = 'ערך את מערכי תווים-הכלליים (wildcards)';
-$string['editdatasets_help'] = 'ניתן לייצור ערכי תו-כללי על ידי הכנסת מספר בכל שדה תו-רב והקשה על לחצן ההוספה. בכדי ליצור בדרך אוטומטית 10 או יותר ערכים, בחר את מספר הערכים הדרושים לפני ההקשה על לחצן ההוספה. פרושה של התפלגות אחידה היא שכל מספר בין הגבולות במוגדרים יכול להופיע  במידה שווה; התפלגות אחידה לוגריתמית פרושה שלערכים שליד הגבול התחתון יש יכולת להופיע יותר ';
+$string['editdatasets_help'] = 'ניתן לייצור ערכי תו-כללי על ידי הכנסת מספר בכל שדה תו-רב והקשה על לחצן ההוספה. בכדי ליצור בדרך אוטומטית 10 או יותר ערכים, בחר את מספר הערכים הדרושים לפני ההקשה על לחצן ההוספה. פרושה של התפלגות אחידה היא שכל מספר בין הגבולות במוגדרים יכול להופיע במידה שווה; התפלגות אחידה לוגריתמית פרושה שלערכים שליד הגבול התחתון יש יכולת להופיע יותר';
 $string['existingcategory1'] = 'ישתמש במערך נתונים משותף שכבר קיים';
 $string['existingcategory2'] = 'קובץ מחבורה קיימת של קבצים שמשתמשים בהם בשאלות אחרות מקטגוריה זאת';
 $string['existingcategory3'] = 'קישור מחבורה קיימת של קישורים שמשתמשים בהם בשאלות אחרות מקטגוריה זאת';
 $string['forceregeneration'] = 'אלץ התחדשות';
-$string['forceregenerationall'] = 'אלץ התחדשות על כל תו-כללי (wild cards) ';
+$string['forceregenerationall'] = 'אלץ התחדשות על כל תו-כללי (wild cards)';
 $string['forceregenerationshared'] = 'אלץ התחדשות רק על תו-כללי (wild cards) לא משותפים';
 $string['functiontakesatleasttwo'] = 'הפונקציה {$a} חייבת להכיל לפחות 2 ארגומנטים';
 $string['functiontakesnoargs'] = 'הפונקציה {$a} אינה מקבלת אף ארגומנט';
@@ -77,7 +77,7 @@ $string['keptcategory2'] = 'קובץ מאותה קטגוריה של חבורת �
 $string['keptcategory3'] = 'קישור מאותה קטגוריה של חבורת הקבצים הפרטיים כמו קודם לכן';
 $string['keptlocal1'] = 'ישתמש באותו מערך נתונים פרטי כמקודם';
 $string['keptlocal2'] = 'קובץ מאותה חבורה פרטית של קבצי השאלה כמו קודם לכן';
-$string['keptlocal3'] = 'קישור מאותה חבורה פרטית של קישורי השאלה כמו קודם לכן ';
+$string['keptlocal3'] = 'קישור מאותה חבורה פרטית של קישורי השאלה כמו קודם לכן';
 $string['loguniform'] = 'התפלגות לוגריתמית אחידה';
 $string['loguniformbit'] = 'digits, from a loguniform distribution';
 $string['makecopynextpage'] = 'עמוד הבא (שאלה חדשה)';
@@ -93,13 +93,10 @@ $string['mustenteraformulaorstar'] = 'יש להכניס נוסחה או \'*\'.';
 $string['mustnotbenumeric'] = 'זה אינו יכול להיות מספר';
 $string['newcategory1'] = 'ישתמש במערך נתונים משותף חדש';
 $string['newcategory2'] = 'קובץ מקבוצה חדשה של קבצים שניתן להשתמש בהם בשאלות אחרות בקטגוריה זאת';
-$string['newcategory3'] = 'קישור מקבוצה חדשה של קישורים שניתן להשתמש בהם בשאלות אחרות בקטגוריה זאת
-';
+$string['newcategory3'] = 'קישור מקבוצה חדשה של קישורים שניתן להשתמש בהם בשאלות אחרות בקטגוריה זאת';
 $string['newlocal1'] = 'ישתמש במערך נתונים פרטי חדש';
-$string['newlocal2'] = 'קובץ מקבוצה חדשה של קבצים שניתן להשתמש בהם רק בשאלה זאת
-';
-$string['newlocal3'] = 'קישור מקבוצה חדשה של קישורים שניתן להשתמש בהם רק בשאלה זאת
-';
+$string['newlocal2'] = 'קובץ מקבוצה חדשה של קבצים שניתן להשתמש בהם רק בשאלה זאת';
+$string['newlocal3'] = 'קישור מקבוצה חדשה של קישורים שניתן להשתמש בהם רק בשאלה זאת';
 $string['newsetwildcardvalues'] = 'ערכים חדשים של תווים-כלליים (wild cards)';
 $string['nextitemtoadd'] = '\'הפריט להוספה\' הבא';
 $string['nextpage'] = 'העמוד הבא';
@@ -114,9 +111,9 @@ $string['oneanswertrueansweroutsidelimits'] = 'לפחות תשובה אחת נכ
 $string['param'] = 'פרמטר <strong>{$a}</strong>';
 $string['partiallycorrectfeedback'] = 'בעבור כל תשובה חלקית נכונה';
 $string['pluginname'] = 'חישוב';
+$string['pluginname_help'] = 'שאלות חיושביות מאפשרות לייצור שאלות מספריות פרטניות תוך כדי שימוש בתווים-כלליים (wildcard) בסוגרים מסולסלים המוחלפים בערכים פרטניים בכת ביצוע הבוחן. למשל,לשאלה "מהו שטח של מלבן שאורכו {l} ורוחבו {w} ?" תהיה תשובה נכונה הנוסחה:"{l}*{w}" (מקום ש * מסמל כפל).';
 $string['pluginnameadding'] = 'הוספת שאלה חישובית';
 $string['pluginnameediting'] = 'ערוך שאלה חישובית';
-$string['pluginname_help'] = 'שאלות חיושביות מאפשרות לייצור שאלות מספריות פרטניות תוך כדי שימוש בתווים-כלליים (wildcard) בסוגרים מסולסלים המוחלפים בערכים פרטניים בכת ביצוע הבוחן. למשל,לשאלה "מהו שטח של מלבן שאורכו {l} ורוחבו {w} ?" תהיה תשובה נכונה הנוסחה:"{l}*{w}" (מקום ש * מסמל כפל).';
 $string['pluginnamesummary'] = 'שאלות חישוביות דומות לשאלות מספריות מקום שהערכים המספריים נבחרים אקראית מקבוצה כאשר הבוחן מתבצע.';
 $string['possiblehdr'] = 'תווים-כללים אפשריים נמצאים רק בטקסט של השאלה';
 $string['questiondatasets'] = 'מערכי הנתונים של השאלות';

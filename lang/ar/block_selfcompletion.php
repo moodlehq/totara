@@ -25,6 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alreadyselfcompleted'] = 'لقد قمت بوسم نفسك كمكمل لهذا المقرر';
 $string['completecourse'] = 'قم بإتمام المقرر الدراسي';
 $string['pluginname'] = 'الإتمام الذاتي';
 $string['selfcompletion'] = 'الإتمام الذاتي';
+$string['selfcompletionnotenabled'] = 'لم يتم تمكين معايير الاكمال الذاتي لهذا المقرر';

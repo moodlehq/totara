@@ -44,7 +44,6 @@ $string['aggregatemin'] = '最低分';
 $string['aggregatemode'] = '众数';
 $string['aggregateonlygraded'] = '仅汇总非空的成绩';
 $string['aggregateonlygraded_help'] = '空成绩是指在成绩单中没有的成绩。一份还未评分的作业，或一个还未参加的测验等都会导致空成绩的出现。
-
 此设置决定空成绩是不包含在汇总中，还是以最低分（例如评分范围为0-100的作业的最低分是0）计算。';
 $string['aggregateoutcomes'] = '在成绩汇总中包括能力';
 $string['aggregateoutcomes_help'] = '如果打开此项，能力将被包含在成绩汇总中。这可能导致非期望的类别总分。';
@@ -55,26 +54,23 @@ $string['aggregatesum'] = '总分';
 $string['aggregateweightedmean'] = '加权平均分';
 $string['aggregateweightedmean2'] = '简单加权平均分';
 $string['aggregation'] = '成绩汇总算法';
-$string['aggregationcoef'] = '汇总系数';
-$string['aggregationcoefextra'] = '额外加分';
-$string['aggregationcoefextra_help'] = '当使用“总分”或“简单加权平均分”为汇总算法且“额外加分”被勾选时，成绩项的最高分不会被计入类别的最高分，这可能导致虽然不是所有成绩项都得到了满分，但类别分数是满分（如果网站管理员允许，得分也可能超过最高分）。
-
-当使用“平均分（含额外加分）”汇总算法且额外加分值设为大于0时，在计算完平均分后，额外加分会被乘以额外加分值，然后再与平均分相加得到总分。
-';
-$string['aggregationcoefextrasum'] = '额外加分';
-$string['aggregationcoefextrasum_help'] = '如果额外加分框被勾选，此成绩项的最高分不会被加入类别最高分，这可能会导致拿到类别的最高分（如果网站管理员允许，也可能超过最高分），但并不是所有成绩项都是最高分。';
-$string['aggregationcoefextraweight'] = '额外加分权重';
-$string['aggregationcoefextraweight_help'] = '如果额外加分的权重被设为一个大于0的值，那么该成绩项在汇总时会被当作加分。此值会被当作一个因数与成绩相乘，然后再被加入总分，以计算平均分。';
-$string['aggregationcoefweight'] = '成绩项权重';
-$string['aggregationcoefweight_help'] = '权重在成绩汇总时被使用，它能影响同一分类下不同成绩项的重要性。';
 $string['aggregation_help'] = '汇总算法决定了一个类别中的成绩如何合并计算。例如：
-
 * 平均分 - 所有分数的总和除以分数个数
 * 中位数 - 把所有分数按大小排序后，处于中间位置的数值
 * 最低分
 * 最高分
 * 众数 - 出现频率最高的分数
 * 总分 - 所有分数值的总和，但忽略用等级评定的分数';
+$string['aggregationcoef'] = '汇总系数';
+$string['aggregationcoefextra'] = '额外加分';
+$string['aggregationcoefextra_help'] = '当使用“总分”或“简单加权平均分”为汇总算法且“额外加分”被勾选时，成绩项的最高分不会被计入类别的最高分，这可能导致虽然不是所有成绩项都得到了满分，但类别分数是满分（如果网站管理员允许，得分也可能超过最高分）。
+当使用“平均分（含额外加分）”汇总算法且额外加分值设为大于0时，在计算完平均分后，额外加分会被乘以额外加分值，然后再与平均分相加得到总分。';
+$string['aggregationcoefextrasum'] = '额外加分';
+$string['aggregationcoefextrasum_help'] = '如果额外加分框被勾选，此成绩项的最高分不会被加入类别最高分，这可能会导致拿到类别的最高分（如果网站管理员允许，也可能超过最高分），但并不是所有成绩项都是最高分。';
+$string['aggregationcoefextraweight'] = '额外加分权重';
+$string['aggregationcoefextraweight_help'] = '如果额外加分的权重被设为一个大于0的值，那么该成绩项在汇总时会被当作加分。此值会被当作一个因数与成绩相乘，然后再被加入总分，以计算平均分。';
+$string['aggregationcoefweight'] = '成绩项权重';
+$string['aggregationcoefweight_help'] = '权重在成绩汇总时被使用，它能影响同一分类下不同成绩项的重要性。';
 $string['aggregationposition'] = '汇总位置';
 $string['aggregationposition_help'] = '此设置决定类别和成绩的总分是显示在成绩单的第一列还是最后一列。';
 $string['aggregationsvisible'] = '可用的汇总类型';
@@ -97,9 +93,9 @@ $string['bonuspoints'] = '奖励分数';
 $string['bulkcheckboxes'] = '大量的checkbox';
 $string['calculatedgrade'] = '计算成绩';
 $string['calculation'] = '计算方法';
+$string['calculation_help'] = '成绩计算器是一个用来确定成绩的公式。该公式应该以等号（=）开始，可以使用常见的数学运算，比如max、min和sum。如果需要，也可以包含其它成绩项。只需在公式中输入它们的ID号，并用两个方括号括起来。';
 $string['calculationadd'] = '添加计算方法';
 $string['calculationedit'] = '编辑计算方法';
-$string['calculation_help'] = '成绩计算器是一个用来确定成绩的公式。该公式应该以等号（=）开始，可以使用常见的数学运算，比如max、min和sum。如果需要，也可以包含其它成绩项。只需在公式中输入它们的ID号，并用两个方括号括起来。';
 $string['calculationsaved'] = '计算方法已保存';
 $string['calculationview'] = '查看计算方法';
 $string['cannotaccessgroup'] = '无法访问所选组的成绩，抱歉。';
@@ -195,9 +191,9 @@ $string['exportsettings'] = '导出设置';
 $string['exportto'] = '导出至';
 $string['extracreditwarning'] = '注意：把一个分类中的所有成绩项都设为额外加分，是一个高效的将它们排除在分数计算之外的办法。因为这样就不会有总分了';
 $string['feedback'] = '反馈';
+$string['feedback_help'] = '在此框输入关于成绩的任何补充说明、评论等。';
 $string['feedbackadd'] = '添加反馈';
 $string['feedbackedit'] = '编辑反馈';
-$string['feedback_help'] = '在此框输入关于成绩的任何补充说明、评论等。';
 $string['feedbacksaved'] = '反馈已保存';
 $string['feedbackview'] = '预览反馈';
 $string['finalgrade'] = '最终成绩';
@@ -228,7 +224,6 @@ $string['gradecategorysettings'] = '成绩类别设置';
 $string['gradedisplay'] = '成绩显示';
 $string['gradedisplaytype'] = '成绩显示方式';
 $string['gradedisplaytype_help'] = '此设置决定在评分人和用户报表中如何显示成绩。
-
 * 分数 - 确切的分值
 * 百分比
 * 分数段 - 用来表示分数所处范围的文字';
@@ -282,20 +277,18 @@ $string['gradesonly'] = '仅显示单项成绩';
 $string['gradessettings'] = '成绩设置';
 $string['gradetype'] = '成绩类型';
 $string['gradetype_help'] = '有4种成绩类型：
-
 * 无 - 无给成绩的可能
 * 数值 - 一个有最大和最小值的数值
 * 等级 - 某个列表中的一项
 * 文本 - 只有反馈
-
 只有数值和等级成绩类型可以做总成绩计算。基于活动的成绩项的类型在活动设置页面设置。';
 $string['gradeview'] = '查看成绩';
 $string['gradeweighthelp'] = '成绩权重帮助';
 $string['groupavg'] = '组平均分';
 $string['hidden'] = '隐藏';
+$string['hidden_help'] = '如勾选，成绩会对学生隐藏。如需要，可以设置隐藏期限，这样评分结束后就可以向学生公布成绩。';
 $string['hiddenasdate'] = '显示隐藏成绩的提交日期';
 $string['hiddenasdate_help'] = '如果用户不能看到隐藏的成绩，那么显示提交时间，而不是“-”。';
-$string['hidden_help'] = '如勾选，成绩会对学生隐藏。如需要，可以设置隐藏期限，这样评分结束后就可以向学生公布成绩。';
 $string['hiddenuntil'] = '隐藏到';
 $string['hiddenuntildate'] = '在{$a}时间之内隐藏';
 $string['hideadvanced'] = '隐藏高级功能';
@@ -313,7 +306,6 @@ $string['hidequickfeedback'] = '隐藏快速反馈';
 $string['hideranges'] = '隐藏分数范围';
 $string['hidetotalifhiddenitems'] = '如果含有隐藏的成绩项，就隐藏总分';
 $string['hidetotalifhiddenitems_help'] = '此设置决定包含隐藏成绩项的总分是显示给学生，还是被替换为连字符（-）。如果显示，总分的计算可以包含或不包含隐藏的成绩。
-
 如果隐藏的成绩没被包含，总分可能会和教师在成绩报表中看到的不同，因为教师总是能看到包含所有成绩的总分，无论隐藏的还是不隐藏的。如果隐藏的成绩被包含，学生可能能计算出隐藏的成绩是多少。';
 $string['hidetotalshowexhiddenitems'] = '显示除了隐藏成绩项以外的总分';
 $string['hidetotalshowinchiddenitems'] = '显示包含隐藏成绩项的总分';
@@ -433,6 +425,7 @@ $string['onascaleof'] = '在范围{$a->grademin}至{$a->grademax}中。';
 $string['operations'] = '操作';
 $string['options'] = '选项';
 $string['outcome'] = '能力';
+$string['outcome_help'] = '此设置决定此成绩项在成绩单中将用哪个能力代表。';
 $string['outcomeassigntocourse'] = '向此课程分配另一个能力';
 $string['outcomecategory'] = '在类别中创建能力';
 $string['outcomecategorynew'] = '新类别';
@@ -440,7 +433,6 @@ $string['outcomeconfirmdelete'] = '确定删除能力"{$a}"吗?';
 $string['outcomecreate'] = '添加新能力';
 $string['outcomedelete'] = '删除能力';
 $string['outcomefullname'] = '全名';
-$string['outcome_help'] = '此设置决定此成绩项在成绩单中将用哪个能力代表。';
 $string['outcomeitem'] = '能力项';
 $string['outcomeitemsedit'] = '编辑能力项';
 $string['outcomereport'] = '能力报表';
@@ -458,7 +450,6 @@ $string['outcomestandard_help'] = '每个基本能力都可被全站所有课程
 $string['overallaverage'] = '总平均分';
 $string['overridden'] = '覆盖';
 $string['overridden_help'] = '勾选后，此成绩项将不能被相关的活动更改。
-
 在成绩单中编辑了一个成绩后，覆盖框会被自动勾选。但是，可以取消它使得相关的活动能更改成绩。';
 $string['overriddennotice'] = '您在该活动中的最终成绩将自动调整。';
 $string['overridesitedefaultgradedisplaytype'] = '覆盖网站默认值';
@@ -491,7 +482,6 @@ $string['publishing'] = '发布';
 $string['quickfeedback'] = '快速反馈';
 $string['quickgrading'] = '快速评分';
 $string['quickgrading_help'] = '如果激活，当编辑模式被打开时，每个成绩都显示为一个文本输入框，可以同时编辑多个成绩。点击更新按钮后，修改会被保存且高亮显示。
-
 注意，当在成绩单中修改一个成绩之后，一个覆盖标记就会被勾选，这意味着相关的活动不能再改变这个成绩。';
 $string['range'] = '范围';
 $string['rangedecimals'] = '分数段小数位数';
@@ -555,7 +545,6 @@ $string['showgrade_help'] = '显示成绩列？';
 $string['showgroups'] = '显示组';
 $string['showhiddenitems'] = '显示隐藏项';
 $string['showhiddenitems_help'] = '隐藏的成绩项是完全隐藏，还是名字对学生可见。
-
 * 显示隐藏 - 显示隐藏成绩项的名字，但学生成绩被隐藏
 * 只隐藏到 - 有“隐藏到”日期的成绩项在到期前会被完全隐藏。到期后会完全显示
 * 不显示 - 隐藏的成绩项被完全隐藏';
@@ -572,7 +561,6 @@ $string['showpercentage'] = '显示百分比';
 $string['showpercentage_help'] = '是否显示每个成绩的百分比。';
 $string['showquickfeedback'] = '显示快速反馈';
 $string['showquickfeedback_help'] = '如果激活，当编辑模式被打开时，每个成绩都会显示一个虚线边框的输入框，使您可以立刻编辑多个成绩的反馈信息。点击更新按钮后，更改会被保存且高亮显示。
-
 注意，当在成绩单中修改一个反馈之后，一个覆盖标记就会被勾选，这意味着相关的活动不能再改变这个反馈。';
 $string['showrange'] = '显示分数段';
 $string['showrange_help'] = '显示分数段列？';

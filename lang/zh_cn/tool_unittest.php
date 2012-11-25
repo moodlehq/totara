@@ -32,7 +32,8 @@ $string['codecoveragecompletereport'] = '（查看代码覆盖完整报告）';
 $string['codecoveragedisabled'] = '不能在此服务器做代码覆盖测试（缺少xdebug扩展）。';
 $string['codecoveragelatestdetails'] = '（{$a->date}，{$a->files}个文件，覆盖了{$a->percentage}）';
 $string['codecoveragelatestreport'] = '查看最新代码覆盖完整报告';
-$string['confignonwritable'] = '网页服务器不能改写 config.php 文件。要么改变权限，要么用合适的用户帐户编辑它并在 PHP 结束标记前加入以下行：<br />
+$string['confignonwritable'] = '网页服务器不能改写 config.php 文件。要么改变权限，要么用合适的用户帐户编辑它并在 PHP 结束标记前加入以下行：
+
 $CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = '已覆盖的行';
 $string['dbtest'] = '数据库功能性测试';

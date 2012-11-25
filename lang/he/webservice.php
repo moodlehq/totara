@@ -128,7 +128,7 @@ $string['invalidtoken'] = 'אסימון לא חוקי  - האסימון לא נ�
 $string['invalidtokensession'] = 'אסימון מבוסס מושב לא חוקי - המושב לא נמצא או שפג תוקפו';
 $string['iprestriction'] = 'הגבלת IP';
 $string['iprestriction_help'] = 'המשתמש צריך לקרוא ל-
-web service מרשימת ה-IP שמופיעה ';
+web service מרשימת ה-IP שמופיעה';
 $string['key'] = 'מפתח';
 $string['keyshelp'] = 'המפתחות משמשות לגשת לחשבון ה-Moodle שלך מאפליקציות חיצוניות';
 $string['manageprotocols'] = 'ניהול פרוטוקולים';
@@ -170,8 +170,7 @@ $string['response'] = 'תגובה';
 $string['restcode'] = 'REST';
 $string['restexception'] = 'REST';
 $string['restoredaccountresetpassword'] = 'שחזור החשבון מצריך איפוס סיסמה לפני קבלת ה- token';
-$string['restparam'] = 'REST (POST parameters)
-';
+$string['restparam'] = 'REST (POST parameters)';
 $string['restrictedusers'] = 'רק משתמשים מורשים';
 $string['securitykey'] = 'מפתח אבטחה (אסימון)';
 $string['securitykeys'] = 'מפתחות קוד אבטחה';
@@ -194,7 +193,7 @@ $string['serviceusersmatching'] = 'תוצאות משתמשים מורשים';
 $string['serviceuserssettings'] = 'שנה הגדרות עבור משתמשים מורשים';
 $string['simpleauthlog'] = 'התחברות מאומתת פשוטה';
 $string['step'] = 'צעד';
-$string['testclient'] = 'לקוח Web service test ';
+$string['testclient'] = 'לקוח Web service test';
 $string['testwithtestclient'] = 'בדוק את השרות';
 $string['token'] = 'אסימון';
 $string['tokenauthlog'] = 'אימות אסימון';
@@ -212,7 +211,7 @@ $string['usernameoridoccurenceerror'] = 'נמצאו יותר ממשתמש אחד
 $string['usernotallowed'] = 'למשתמש זה אין הרשאה עבור שרות זה. יש לאפשר לו הרשאה זו קודם לכם בעמוד הניהול המשתמשים של המערכת';
 $string['usersettingssaved'] = 'הגדרות המשתמש נשמרו';
 $string['validuntil'] = 'תקף עד';
-$string['validuntil_help'] = 'אם מוגדר, השירות יפסיק לפעול עבור המשתמש  לאחר תאריך זה.';
+$string['validuntil_help'] = 'אם מוגדר, השירות יפסיק לפעול עבור המשתמש לאחר תאריך זה.';
 $string['webservice'] = 'Web service';
 $string['webservices'] = 'Web services';
 $string['webservicesoverview'] = 'סקירה';

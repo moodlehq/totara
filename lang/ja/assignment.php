@@ -35,10 +35,12 @@ $string['allownotes_help'] = '有効にした場合、学生はオンライン�
 $string['allowresubmit'] = '課題の再提出を許可する';
 $string['allowresubmit_help'] = '有効にした場合、課題評定後、再評定のために学生が課題を再提出できるようになります。';
 $string['alreadygraded'] = 'あなたの提出課題は、すでに評定されています。課題を再提出することはできません。';
-$string['assignmentdetails'] = '課題の詳細';
 $string['assignment:exportownsubmission'] = '自分の提出課題をエクスポートする';
 $string['assignment:exportsubmission'] = '提出課題をエクスポートする';
 $string['assignment:grade'] = '課題を評定する';
+$string['assignment:submit'] = '課題を提出する';
+$string['assignment:view'] = '課題を表示する';
+$string['assignmentdetails'] = '課題の詳細';
 $string['assignmentmail'] = '{$a->teacher} があなたの提出課題「 {$a->assignment} 」に関するフィードバックを投稿しました。
 
 あなたの提出課題に追加されたフィードバックを閲覧することができます:
@@ -48,9 +50,7 @@ $string['assignmentmailhtml'] = '{$a->teacher} があなたの提出課題「 {$
 $string['assignmentmailsmall'] = 'あなたが「 {$a->assignment} 」に提出した課題に {$a->teacher} がフィードバックを投稿しました。あなたの提出課題に付加されたコメントを閲覧することができます。';
 $string['assignmentname'] = '課題名';
 $string['assignmentsubmission'] = '提出課題';
-$string['assignment:submit'] = '課題を提出する';
 $string['assignmenttype'] = '課題タイプ';
-$string['assignment:view'] = '課題を表示する';
 $string['availabledate'] = '開始日時';
 $string['cannotdeletefiles'] = 'エラーが発生したため、ファイルを削除できませんでした。';
 $string['cannotviewassignment'] = 'あなたは、この課題を閲覧できません。';
@@ -85,13 +85,11 @@ $string['emailteachermailhtml'] = '{$a->username} が「 {$a->assignment} 」の
 <a href="{$a->url}">ウェブサイトにて閲覧可能です</a>。';
 $string['emailteachers'] = '教師にメール通知する';
 $string['emailteachers_help'] = '有効にした場合、学生が課題を提出または更新するといつでも短い通知メールが教師に送信されます。
-
 通知メールは、提出課題を評定できる教師のみに送信されます。例えば、コースが分離グループを使用する場合、特定のグループに制限されている教師は、他のグループの学生に関する通知メールを受け取りません。';
 $string['emptysubmission'] = 'あなたはまだ何も提出していません。';
 $string['enablenotification'] = '通知メールを送信する';
-$string['enablenotification_help'] = '<p>あなたがこの設定を有効にした場合、評定およびフィードバックの更新が学生にメール通知されます。</p>
-
-<p>あなたの個人設定は保存され、あなたが評定するすべての提出課題に適用されます。</p>';
+$string['enablenotification_help'] = 'あなたがこの設定を有効にした場合、評定およびフィードバックの更新が学生にメール通知されます。
+あなたの個人設定は保存され、あなたが評定するすべての提出課題に適用されます。';
 $string['errornosubmissions'] = 'ダウンロード可能な提出はありません。';
 $string['existingfiledeleted'] = '登録済みファイルが削除されました: {$a}';
 $string['failedupdatefeedback'] = 'ユーザ {$a} のフィードバック更新に失敗しました';
@@ -187,8 +185,8 @@ $string['typeonline'] = 'オンラインテキスト';
 $string['typeupload'] = 'ファイルの高度なアップロード';
 $string['typeuploadsingle'] = '単一ファイルのアップロード';
 $string['unfinalize'] = '下書きに戻す';
-$string['unfinalizeerror'] = 'エラーが発生したため、提出課題を下書きに戻すことができませんでした。';
 $string['unfinalize_help'] = '下書きに戻すことにより、学生は自分の提出課題をさらに更新することができます。';
+$string['unfinalizeerror'] = 'エラーが発生したため、提出課題を下書きに戻すことができませんでした。';
 $string['uploadafile'] = 'ファイルをアップロードする';
 $string['uploadbadname'] = 'ファイル名に不正な文字が含まれているため、このファイルをアップロードできませんでした。';
 $string['uploadedfiles'] = 'ファイルをアップロードしました。';

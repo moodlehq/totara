@@ -307,7 +307,7 @@ class completion_completion extends data_object {
 
         $data = array();
         $data['userid'] = $this->userid;
-        $data['eventtype'] = STATS_EVENT_COURSE_STARTED;
+        $data['eventtype'] = STATS_EVENT_COURSE_COMPLETE;
         $data['data2'] = $this->course;
         if (!$DB->record_exists('block_totara_stats', $data)) {
             totara_stats_add_event(time(), $this->userid, STATS_EVENT_COURSE_COMPLETE, '', $this->course);

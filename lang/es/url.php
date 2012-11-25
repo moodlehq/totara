@@ -34,14 +34,13 @@ $string['configsecretphrase'] = 'Esta frase secreta se utiliza para producir có
 $string['contentheader'] = 'Contenido';
 $string['displayoptions'] = 'Opciones de visusliazación disponibles';
 $string['displayselect'] = 'Mostrar';
-$string['displayselectexplain'] = 'Elija el modo de visualización; por desgracia no todos los modos son adecuados para todas las direcciones URL.';
 $string['displayselect_help'] = 'Este parámetro, junto con el tipo de URL, y siempre que el navegador permita incorporar código, determina cómo se muestra la dirección URL.
 Las opciones pueden incluir:
-
 * Automático - Se selecciona de forma automática la mejor opción para visualizar la dirección URL
 * Incrustar - La URL se muestra dentro de la página debajo de la barra de navegación junto con la descripción y cualquier otro bloque
-* Abrir  - Sólo se muestra la dirección en la ventana del navegador
+* Abrir - Sólo se muestra la dirección en la ventana del navegador
 * En ventana emergente - La URL se muestra en una ventana nueva del navegador sin menús y sin barra de direcciones';
+$string['displayselectexplain'] = 'Elija el modo de visualización; por desgracia no todos los modos son adecuados para todas las direcciones URL.';
 $string['externalurl'] = 'URL externa';
 $string['framesize'] = 'Altura del marco';
 $string['modulename'] = 'URL';

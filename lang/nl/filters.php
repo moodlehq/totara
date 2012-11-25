@@ -50,7 +50,6 @@ $string['endswith'] = 'eindigt op';
 $string['filterallwarning'] = 'Filters toepassen op inhoud en titels kan de belasting op je server gevoelig verhogen. Wees zuining met deze instelling. Ze is het nuttigst voor de multilang-filter.';
 $string['filtersettings'] = 'Filter instellingen';
 $string['filtersettings_help'] = 'Met deze pagina kun je filters inschakelen of uitschakelen in een bepaald deel van de site.
-
 Voor sommige filters kun je ook lokale instellingen wijzigen. In dat geval zal er een link voor instellingen naast hun naam verschijnen.';
 $string['filtersettingsforin'] = 'Filter instellingen voor {$a->filter} in {$a->context}';
 $string['filtersettingsin'] = 'Filter instellingen in {$a}';

@@ -3802,6 +3802,7 @@ function reportbuilder_create_embedded_record($shortname, $embed, &$error) {
             $todb->heading = $column['heading'];
             $todb->sortorder = $so;
             $todb->customheading = 0; // initially no columns are customised
+            $todb->hidden = isset($column['hidden']) ? $column['hidden'] : 0;
             $DB->insert_record('report_builder_columns', $todb);
             $so++;
         }

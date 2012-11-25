@@ -51,8 +51,17 @@ function xmldb_totara_reportbuilder_install() {
     // mysql supports by default. The code below adds postgres support
     // see sql_group_concat() function for usage
     if ($DB->get_dbfamily() == 'postgres') {
-        $sql = '
-            CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);
+        $type_check_sql = "select exists (select 1 from pg_type where typname = 'tp_concat') as exst;";
+        $type_exists = $DB->get_record_sql($type_check_sql);
+
+        if ($type_exists->exst == 'f') {
+            $sql = 'CREATE TYPE tp_concat AS (data TEXT[], delimiter TEXT);';
+        }
+        else {
+            $sql = '';
+        }
+
+        $sql = $sql . '
             CREATE OR REPLACE FUNCTION group_concat_iterate(_state
                 tp_concat, _value TEXT, delimiter TEXT, is_distinct boolean)
                 RETURNS tp_concat AS

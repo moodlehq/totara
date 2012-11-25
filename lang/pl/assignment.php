@@ -33,18 +33,17 @@ $string['allowmaxfiles_help'] = 'Maksymalna liczba plików, które mogą być pr
 $string['allownotes'] = 'Zezwalaj na zamieszczanie przypisów do oddawanego zadania';
 $string['allownotes_help'] = 'Jeśli opcja jest włączona, studenci mogą wprowadzić uwagi w polu tekstowym, tak jak zadaniu typu online.';
 $string['allowresubmit'] = 'Zezwalaj na ponowne przesłanie';
-$string['allowresubmit_help'] = '<P ALIGN=CENTER><B>Powtórne przesyłanie rozwiązań</B></P>
-
-<P>Ustawienie domyślne nie pozwala studentom na powtórne przesyłanie rozwiązania po wystawieniu oceny przez prowadzącego</P>
-
-<P>Jeżeli włączysz tę opcje, studenci będą mogli ponownie przesyłać rozwiązania, do Twojej oceny, po tym jak już wystawisz ocenę za dane zadanie. Może to być przydatne jeżeli zamierzasz zachęcić studentów do lepszej pracy poprzez powtarzanie  zadania aż do skutku.</P>
-
-<P>Opcja ta oczywiście nie dotyczy zadań wykonywanych w trybie off-line.</P>';
+$string['allowresubmit_help'] = '<P ALIGN=CENTER>**Powtórne przesyłanie rozwiązań**</P>
+Ustawienie domyślne nie pozwala studentom na powtórne przesyłanie rozwiązania po wystawieniu oceny przez prowadzącego
+Jeżeli włączysz tę opcje, studenci będą mogli ponownie przesyłać rozwiązania, do Twojej oceny, po tym jak już wystawisz ocenę za dane zadanie. Może to być przydatne jeżeli zamierzasz zachęcić studentów do lepszej pracy poprzez powtarzanie zadania aż do skutku.
+Opcja ta oczywiście nie dotyczy zadań wykonywanych w trybie off-line.';
 $string['alreadygraded'] = 'Twoje zadanie zostało już ocenione więc ponowne przesłanie go nie jest możliwe.';
-$string['assignmentdetails'] = 'Szczegóły zadania';
 $string['assignment:exportownsubmission'] = 'Eksportuj własne zadania';
 $string['assignment:exportsubmission'] = 'Eksportuj zadania';
 $string['assignment:grade'] = 'Oceń zadanie';
+$string['assignment:submit'] = 'Zgłoś zadanie';
+$string['assignment:view'] = 'Zobacz zadanie';
+$string['assignmentdetails'] = 'Szczegóły zadania';
 $string['assignmentmail'] = '{$a->teacher} przesłał informację zwrotną do Twojego zadania \'{$a->assignment}\'
 
 Informację zwrotną znajdziesz jako załącznik do zadania:
@@ -55,14 +54,14 @@ Znajdziesz ją jako załącznik do <a href="{$a->url}">oddanego zadania</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} zamieścił informację zwrotną do oddanego zadania \'<i>{$a->assignment}</i>\'<br /><br />
 Znajdziesz ją jako załącznik do <a href="{$a->url}">oddanego zadania</a>.';
 $string['assignmentname'] = 'Nazwa zadania';
-$string['assignment:submit'] = 'Zgłoś zadanie';
 $string['assignmenttype'] = 'Typ zadania';
-$string['assignment:view'] = 'Zobacz zadanie';
 $string['availabledate'] = 'Dostępne od';
 $string['cannotdeletefiles'] = 'Wystąpił błąd. Pliki nie mogą zostać usunięte.';
 $string['cannotviewassignment'] = 'Nie możesz zobaczyć tego zadania';
 $string['comment'] = 'Komentarz';
 $string['commentinline'] = 'Komentarz wewnątrzliniowy';
+$string['commentinline_help'] = '# Wbudowany komentarz
+W przypadku wybrania tej opcji oryginalne przesłanie zostanie skopiowane do pola komentarza opinii podczas oceny, co ułatwi wprowadzanie komentarzy wbudowanych (być może za pomocą innego koloru) lub edycję oryginalnego tekstu.';
 $string['configitemstocount'] = 'Co ma być traktowane jako oddane zadanie w zadaniu online.';
 $string['configmaxbytes'] = 'Standardowy dopuszczalny rozmiar zadania dla wszystkich zadań (zależy od limitów w kursach i innych lokalnych ustawień)';
 $string['configshowrecentsubmissions'] = 'Każdy może zobaczyć powiadomienia o przesłanych zadaniach w ostatnich raportach aktywności.';
@@ -90,11 +89,10 @@ $string['emailteachermailhtml'] = '{$a->username} uaktualnił oddane zadanie \'{
 
 Zadanie <a href="{$a->url}">jest dostępne na stronie</a>.';
 $string['emailteachers'] = 'Wyślij powiadomienie do nauczycieli';
-$string['emailteachers_help'] = '<p> Jeżeli włączony, wtedy nauczyciele są alarmowani krótkim mailem kiedykolwiek studenci dodadzą lub uaktualnią zadanie.</p>
-<p> Tylko nauczyciele którzy mają możliwość oceniania poszczególnych argumentacji są powiadamiani.
-
-   Więc dla przykładu, jeżeli na kursie jest kilka oddzielnych grup, wtedy nauczyciele wymagają od poszczególnych grup aby nie otrzymywać żadnych powiadomień o studentach z innych grup.</p>
-<p>Dla ćwiczeń nie w sieci, oczywiście, email nie jest wysyłany i studenci nie potwierdzają niczego. </p>';
+$string['emailteachers_help'] = 'Jeżeli włączony, wtedy nauczyciele są alarmowani krótkim mailem kiedykolwiek studenci dodadzą lub uaktualnią zadanie.
+Tylko nauczyciele którzy mają możliwość oceniania poszczególnych argumentacji są powiadamiani.
+Więc dla przykładu, jeżeli na kursie jest kilka oddzielnych grup, wtedy nauczyciele wymagają od poszczególnych grup aby nie otrzymywać żadnych powiadomień o studentach z innych grup.
+Dla ćwiczeń nie w sieci, oczywiście, email nie jest wysyłany i studenci nie potwierdzają niczego.';
 $string['emptysubmission'] = 'Jeszcze nie oddałeś zadania';
 $string['enablenotification'] = 'Przesłać e-maile z powiadomieniami';
 $string['enablenotification_help'] = 'Jeśli opcja jest włączona studenci będą otrzymywać informację pocztą elektroniczną, jeśli ich zadania zostały ocenione.';
@@ -119,7 +117,8 @@ Mogą to być pliki tekstowe, obrazki, spakowana strona internetowa lub pliki in
 <p>Oddanie tego typu zadania musi zostać ręcznie sfinalizowane przez uczestnika. Pliki są dostępne do wglądu przed ostatecznym oddaniem zadania - nieskończone wersje zadania są oznaczone jako Szkic. Można też zastąpić każde nieocenione zadanie zamieszczonym wcześniej szkicem.</p>';
 $string['helpuploadsingle'] = '<p>Ten typ zadania pozwala każdemu uczestnikowi kursu przesłać jeden plik dowolnego typu.</p> <p>Może to być dokument tekstowy, zdjęcie lub plik zarchiwizowany.</p>';
 $string['hideintro'] = 'Ukryj opis przed udostępnieniem zadania';
-$string['hideintro_help'] = 'Jeśli opcja jest włączona, opis zadania jest ukryty przed datą rozpoczęcia "dostępny od". <br/>Wyświetlana jest tylko nazwa zadania.';
+$string['hideintro_help'] = 'Jeśli opcja jest włączona, opis zadania jest ukryty przed datą rozpoczęcia "dostępny od".
+Wyświetlana jest tylko nazwa zadania.';
 $string['invalidassignment'] = 'niepoprawne zadanie';
 $string['invalidid'] = 'identyfikator zadania był niepoprawny';
 $string['invalidtype'] = 'Niepoprawny typ zadania';
@@ -130,11 +129,8 @@ $string['late'] = '{$a} po terminie';
 $string['maximumgrade'] = 'Maksymalna ocena';
 $string['maximumsize'] = 'Maksymalny rozmiar';
 $string['modulename'] = 'Zadanie';
-$string['modulename_help'] = '<P><IMG VALIGN=absmiddle SRC="<?php echo $CFG->wwwroot?>/mod/assignment/icon.gif">&nbsp;<B>Zadania</B></P>
-<UL>
-<P>Zadania umożliwiają prowadzącemu określenie pracy, które studenci mają wykonać w formie elektronicznej (w dowolnym formacie) i przesłać na serwer. Typowe zadania to wypracowania, projekty, raporty itp. Moduł ten posiada funkcje umożliwiające wystawianie ocen.</P>
-
-</UL>';
+$string['modulename_help'] = '<IMG VALIGN=absmiddle SRC="wwwroot?>/mod/assignment/icon.gif"> **Zadania**
+Zadania umożliwiają prowadzącemu określenie pracy, które studenci mają wykonać w formie elektronicznej (w dowolnym formacie) i przesłać na serwer. Typowe zadania to wypracowania, projekty, raporty itp. Moduł ten posiada funkcje umożliwiające wystawianie ocen.';
 $string['modulenameplural'] = 'Zadania';
 $string['newsubmissions'] = 'Oddane zadania';
 $string['noassignments'] = 'Nie zamieszczono jeszcze żadnych zadań';
@@ -158,12 +154,10 @@ $string['pluginname'] = 'Zadanie';
 $string['popupinnewwindow'] = 'Otwórz w wyskakującym oknie';
 $string['preventlate'] = 'Zapobiegaj przesyłaniu zadań po terminie';
 $string['quickgrade'] = 'Zezwól na szybkie ocenianie';
-$string['quickgrade_help'] = '<p> Z włączoną opcją szybkiego oceniania możesz szybko oceniać wielokrotne zadania na jednej stronie.</p>
-
-<p> Po prostu zmień oceny i komentarze oraz użyj przycisku Save na dole w celu jednoczesnego zastosowania wszystkich swoich zmian na stronie. </p>
-
-<p> Przyciski zwykłego oceniania (na prawo) działają ciągle na wypadek jeśli będziesz potrzebował więcej miejsca.
-Twoje preferencje szybkiego oceniania są zachowane i będą zastosowane do wszystkich zadań we wszystkich kursach.</p>';
+$string['quickgrade_help'] = 'Z włączoną opcją szybkiego oceniania możesz szybko oceniać wielokrotne zadania na jednej stronie.
+Po prostu zmień oceny i komentarze oraz użyj przycisku Save na dole w celu jednoczesnego zastosowania wszystkich swoich zmian na stronie.
+Przyciski zwykłego oceniania (na prawo) działają ciągle na wypadek jeśli będziesz potrzebował więcej miejsca.
+Twoje preferencje szybkiego oceniania są zachowane i będą zastosowane do wszystkich zadań we wszystkich kursach.';
 $string['requiregrading'] = 'Wymagające oceny';
 $string['responsefiles'] = 'Pliki odpowiedzi';
 $string['reviewed'] = 'Przejrzane';
@@ -184,6 +178,8 @@ $string['submittedfiles'] = 'Przesłane pliki';
 $string['subplugintype_assignment'] = 'Typ zadania';
 $string['subplugintype_assignment_plural'] = 'Typy zadań';
 $string['trackdrafts'] = 'Włącz funkcję \'Wyślij do oceny\'';
+$string['trackdrafts_help'] = '# Wyślij do oceny
+Przycisk Wyślij do oceny umożliwia użytkownikom poinformowanie oceniających o tym, że ukończyli oni pracę nad przypisanym zadaniem. Oceniający mogą przywrócić przypisane zadanie do stanu wersji roboczej (na przykład, jeśli wymaga ono dalszej pracy).';
 $string['typeoffline'] = 'Zadanie offline';
 $string['typeonline'] = 'Tekst online';
 $string['typeupload'] = 'Zaawansowane ładowanie plików';

@@ -34,9 +34,7 @@ $string['configsecretphrase'] = 'Dieser Sicherheitstext wird benutzt, um einen v
 $string['contentheader'] = 'Inhalt';
 $string['displayoptions'] = 'Mögliche Anzeigeoptionen';
 $string['displayselect'] = 'Anzeigen';
-$string['displayselectexplain'] = 'Anzeigetyp auswählen, aber leider nicht sind nicht alle Typen für alle URLs geeignet';
 $string['displayselect_help'] = 'Diese Einstellung bestimmt zusammen mit dem URL-Dateityp (und den Fähigkeiten des Browsers), wie die URL angezeigt wird. Folgende Optionen sind möglich:
-
 * Automatisch - Die beste Anzeigeoption für die URL wird automatisch ausgewählt
 * Eingebettet - Die URL wird innerhalb der Seite unterhalb der Navigationsleiste angezeigt, zusammen mit der URL-Beschreibung und allen Blöcken
 * Download erzwingen - Die URL-Datei wird zum Download angeboten
@@ -44,6 +42,7 @@ $string['displayselect_help'] = 'Diese Einstellung bestimmt zusammen mit dem URL
 * Als Popup - Die URL wird in einem Popup-Fenster ohne Menüs und ohne Adressleiste angezeigt
 * Im Frame - Die URL wird in einem Frame unterhalb der Navigationsleiste angezeigt, zusammen mit der URL-Beschreibung
 * Neues Fenster - Die URL wird in einem neuen Browserfenster mit Menüs und mit Adressleiste angezeigt';
+$string['displayselectexplain'] = 'Anzeigetyp auswählen, aber leider nicht sind nicht alle Typen für alle URLs geeignet';
 $string['externalurl'] = 'Externe URL';
 $string['framesize'] = 'Frame-Höhe';
 $string['invalidstoredurl'] = 'Das Material kann nicht angezeigt werden, weil die URL ungültig ist';

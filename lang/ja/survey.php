@@ -209,7 +209,7 @@ $string['invalidsurveyid'] = '調査IDが正しくありません。';
 $string['invalidtmptid'] = '無効なテンプレートIDです。';
 $string['ipreferthat'] = '私は次のことが好きです:';
 $string['modulename'] = '調査';
-$string['modulename_help'] = '調査モジュールはオンライン学習環境における評価および刺激に関して有益であると検証された3タイプの調査手段を提供します。自身の授業に関して学ぶことや、指導に反映させる手助けとするため、教師は学生からデータを収集する目的で使用できます。 ';
+$string['modulename_help'] = '調査モジュールはオンライン学習環境における評価および刺激に関して有益であると検証された3タイプの調査手段を提供します。自身の授業に関して学ぶことや、指導に反映させる手助けとするため、教師は学生からデータを収集する目的で使用できます。';
 $string['modulenameplural'] = '調査';
 $string['name'] = '名称';
 $string['newsurveyresponses'] = '新しい調査回答';
@@ -238,16 +238,15 @@ $string['scaletimes5'] = 'ほとんど無い,まれに,時々,頻繁に,ほと�
 $string['seemoredetail'] = '詳細を見るためにはここをクリックしてください。';
 $string['selectedquestions'] = '評価尺度から選ばれた質問、すべての学生';
 $string['summary'] = '要約';
-$string['surveycompleted'] = '調査が終了しました。下のグラフはクラスの平均とあなたの結果を比較したものです。';
 $string['survey:download'] = '回答をダウンロードする';
-$string['surveygraph'] = '調査グラフ';
-$string['surveyname'] = '調査名';
 $string['survey:participate'] = '調査に回答する';
 $string['survey:readresponses'] = '回答を表示する';
+$string['surveycompleted'] = '調査が終了しました。下のグラフはクラスの平均とあなたの結果を比較したものです。';
+$string['surveygraph'] = '調査グラフ';
+$string['surveyname'] = '調査名';
 $string['surveysaved'] = '調査が保存されました。';
 $string['surveytype'] = '調査タイプ';
 $string['surveytype_help'] = '調査には下記3つのタイプがあります:
-
 * 考え方と学び方に対する姿勢の調査 (ATTLS - Attitudes to Thinking and Learning Survey ) - どの人が「関連認識者」 (学ぶことに楽しみを感じ、多くの場合、協力的であり愛想がよく、他の人とアイディアを構築することを望む傾向があります) または「分離認識者」 (学習に対して批判的および論争的なスタンスをとる傾向があります) であるか程度を測定します。
 * クリティカル・インシデント調査
 * 構成主義オンライン学習環境調査　(COLLES - On-line Learning Environment Survey) - ワールドワードウェブの相互作用的な性質が学生の動的学習の実践に興味を持たせる効果の程度を測定します。';

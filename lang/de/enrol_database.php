@@ -69,4 +69,4 @@ $string['settingsheaderlocal'] = 'Lokale Feldzuordnung';
 $string['settingsheadernewcourses'] = 'Erstellen eines neuen Kurses';
 $string['settingsheaderremote'] = 'Einschreibesynchronisation (Remote)';
 $string['templatecourse'] = 'Vorlage für neue Kurse';
-$string['templatecourse_desc'] = 'Optional: Automatisch angelegte Kurse können ihre Einstellungen aus einem Vorlagenkurs beziehen. Tragen Sie hier den Kursnamen des Vorlagenkurses ein. ';
+$string['templatecourse_desc'] = 'Optional: Automatisch angelegte Kurse können ihre Einstellungen aus einem Vorlagenkurs beziehen. Tragen Sie hier den Kursnamen des Vorlagenkurses ein.';

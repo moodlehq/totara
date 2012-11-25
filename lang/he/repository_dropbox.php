@@ -25,12 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['apikey'] = 'מפתח API של Dropbox ';
-$string['configplugin'] = 'תצורת Dropbox ';
-$string['dropbox'] = 'Dropbox ';
-$string['dropbox:view'] = 'צפה בתיקיית Dropbox ';
+$string['apikey'] = 'מפתח API של Dropbox';
+$string['configplugin'] = 'תצורת Dropbox';
+$string['dropbox'] = 'Dropbox';
+$string['dropbox:view'] = 'צפה בתיקיית Dropbox';
 $string['instruction'] = 'באפשרותך לקבל את מפתח ה-API ואת ערך הסוד מ <a href="http://www.dropbox.com/developers/apps">מפתחי Dropbox </a>';
 $string['notitle'] = 'אין כותרת';
-$string['pluginname'] = 'Dropbox ';
+$string['pluginname'] = 'Dropbox';
 $string['remember'] = 'זכור אותי';
-$string['secret'] = 'ערך הסוד של Dropbox ';
+$string['secret'] = 'ערך הסוד של Dropbox';

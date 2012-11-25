@@ -106,7 +106,6 @@ $string['bestgrade'] = 'Meilleure note';
 $string['bothattempts'] = 'Afficher aussi les étudiants n\'ayant pas fait le test';
 $string['browsersecurity'] = 'Sécurité du navigateur';
 $string['browsersecurity_help'] = 'Si vous sélectionnez l\'option « Nouvelle fenêtre plein écran avec un peu de sécurité JavaScript »,
-
 * le test démarre uniquement si l\'étudiant possède un navigateur qui accepte le JavaScript ;
 * le test démarre dans une nouvelle fenêtre qui couvre entièrement les autres fenêtres et qui ne possède pas de boutons de navigation ;
 * les fonctions telles que copier-coller sont, autant que possible, bloquées pour l\'étudiant.';
@@ -219,16 +218,10 @@ $string['defaultgrade'] = 'Note par défaut';
 $string['defaultinfo'] = 'Catégorie par défaut pour les questions.';
 $string['delay1'] = 'Délai entre la première et la deuxième tentative';
 $string['delay1st2nd'] = 'Délai imposé entre la première et la deuxième tentative';
-$string['delay1st2nd_help'] = '<!-- $Id$ -->
-
-
-<p>Ce délai détermine la durée que devra attendre un étudiant avant sa deuxième tentative au test.</p>';
+$string['delay1st2nd_help'] = 'Ce délai détermine la durée que devra attendre un étudiant avant sa deuxième tentative au test.';
 $string['delay2'] = 'Délai entre les tentatives suivantes';
 $string['delaylater'] = 'Délai imposé entre les tentatives suivantes';
-$string['delaylater_help'] = '<!-- $Id$ -->
-
-
-<p>Ce délai détermine la durée que devra attendre l\'étudiant avant sa troisième tentative, ou les suivantes.</p>';
+$string['delaylater_help'] = 'Ce délai détermine la durée que devra attendre l\'étudiant avant sa troisième tentative, ou les suivantes.';
 $string['deleteattemptcheck'] = 'Voulez-vous vraiment supprimer complètement ces tentatives ?';
 $string['deleteselected'] = 'Supprimer la sélection';
 $string['deletingquestionattempts'] = 'Suppression des tentatives de tests';
@@ -239,19 +232,14 @@ $string['download'] = 'Cliquer pour télécharger le fichier exporté';
 $string['downloadextra'] = '(le fichier est aussi déposé dans les fichiers du cours, dans le dossier /backupdata/quiz)';
 $string['duplicateresponse'] = 'Cet envoi a été ignoré, car vous avez déjà donné auparavant une réponse équivalente.';
 $string['eachattemptbuildsonthelast'] = 'Chaque tentative complète la précédente';
-$string['eachattemptbuildsonthelast_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsqu\'on autorise l\'étudiant à refaire plusieurs fois un test et que cette option est activée, l\'étudiant pourra commencer une nouvelle tentative à partir des résultats de l\'essai précédent. L\'étudiant pourra ainsi compléter un test en plusieurs séances ou corriger les erreurs qu\'il aurait faites.</p>
-
-<p>Si vous désirez que l\'étudiant recommence à zéro à chaque tentative, choisissez de désactiver cette option.</p>';
+$string['eachattemptbuildsonthelast_help'] = 'Lorsqu\'on autorise l\'étudiant à refaire plusieurs fois un test et que cette option est activée, l\'étudiant pourra commencer une nouvelle tentative à partir des résultats de l\'essai précédent. L\'étudiant pourra ainsi compléter un test en plusieurs séances ou corriger les erreurs qu\'il aurait faites.
+Si vous désirez que l\'étudiant recommence à zéro à chaque tentative, choisissez de désactiver cette option.';
 $string['editcategories'] = 'Modifier les catégories';
 $string['editcategory'] = 'Modifier la catégorie';
 $string['editcatquestions'] = 'Modifier les questions de la catégorie';
 $string['editingquestion'] = 'Modifier une question';
 $string['editingquiz'] = 'Modification du test';
 $string['editingquiz_help'] = 'Lors de la création d\'un test, les concepts principaux suivants sont à considérer :
-
 * le test, qui contient des questions sur une ou plusieurs pages ;
 * la banque de questions, qui contient des copies de toutes les questions, organisées en catégories ;
 * les questions aléatoires. Les étudiants obtiennent des questions différentes lors de leur tentative du test, et un étudiant obtient des questions différentes lors de chaque tentative.';
@@ -331,26 +319,15 @@ $string['gradeboundary'] = 'Limite de note';
 $string['gradeessays'] = 'Évaluer les compositions';
 $string['gradehighest'] = 'Note la plus haute';
 $string['grademethod'] = 'Méthode d\'évaluation';
-$string['grademethod_help'] = '<!-- $Id$ -->
-
-
-<p>Lorsqu\'on permet à l\'étudiant d\'effectuer plusieurs tentatives pour faire un test, vous devez choisir comment sera calculée la note de l\'étudiant. Voici les choix possibles :</p>
-
-<h2>Note la plus élevée</h2>
-
-<p>La note finale est la meilleure des notes de toutes les tentatives.</p>
-
-<h2>Note moyenne</h2>
-
-<p>La note finale est la note moyenne de toutes les tentatives.</p>
-
-<h2>Première note</h2>
-
-<p>La note finale est la note obtenue à la première tentative.</p>
-
-<h2>Dernière note</h2>
-
-<p>La note finale est la note obtenue à la dernière tentative.</p>';
+$string['grademethod_help'] = 'Lorsqu\'on permet à l\'étudiant d\'effectuer plusieurs tentatives pour faire un test, vous devez choisir comment sera calculée la note de l\'étudiant. Voici les choix possibles :
+## Note la plus élevée
+La note finale est la meilleure des notes de toutes les tentatives.
+## Note moyenne
+La note finale est la note moyenne de toutes les tentatives.
+## Première note
+La note finale est la note obtenue à la première tentative.
+## Dernière note
+La note finale est la note obtenue à la dernière tentative.';
 $string['gradesdeleted'] = 'Notes de tests supprimées';
 $string['gradesofar'] = '{$a->method} : {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Points pour cet envoi : {$a->raw}/{$a->max}.';
@@ -367,16 +344,13 @@ $string['history'] = 'Historique des réponses :';
 $string['howquestionsbehave_desc'] = 'Réglage par défaut pour le comportement des questions dans un test.';
 $string['imagedisplay'] = 'Image à afficher';
 $string['import'] = 'Importer';
+$string['import_help'] = 'Cette fonction vous permet d\'importer des questions à partir de fichiers texte externes.
+Si votre fichier comprend des caractères étendus, il doit être encodé en UTF-8. Soyez particulièrement prudent avec les fichiers générés par les applications Microsoft Office, qui utilisent habituellement des encodages exotiques qui ne seront pas traités correctement.';
 $string['importcategory'] = 'Importer une catégorie';
 $string['importerror'] = 'Une erreur est survenue lors de l\'importation';
 $string['importfilearea'] = 'Importer à partir d\'un fichier du cours...';
 $string['importfileupload'] = 'Importer à partir d\'un fichier à déposer...';
 $string['importfromthisfile'] = 'Importer à partir de ce fichier';
-$string['import_help'] = 'Cette fonction vous permet d\'importer des questions à partir de fichiers texte externes.
-
-Si votre fichier comprend des caractères étendus, il doit être encodé en UTF-8. Soyez particulièrement prudent avec les fichiers générés par les applications Microsoft Office, qui utilisent habituellement des encodages exotiques qui ne seront pas traités correctement.
-
-';
 $string['importingquestions'] = 'Importation de {$a} questions à partir du fichier';
 $string['importmax10error'] = 'Cette question comporte une erreur. Il est impossible d\'avoir plus de 10 réponses';
 $string['importmaxerror'] = 'Cette question comporte une erreur. Elle propose trop de réponses.';
@@ -437,11 +411,8 @@ $string['navnojswarning'] = 'Attention ! Ces liens n\'enregistrent pas vos rép
 $string['neverallononepage'] = 'Jamais, toutes les questions sur une page';
 $string['newattemptfail'] = 'Erreur ! Impossible de commencer une tentative de ce test';
 $string['newpage'] = 'Nouvelle page';
+$string['newpage_help'] = 'Pour les tests longs, il peut être utile de répartir le test au travers de plusieurs pages, en définissant un nombre de questions par page. Lorsque vous ajouterez des questions au test, les boutons de changement de page seront automatiquement introduits, selon le paramètre indiqué ici. Par ailleurs, vous pourrez également déplacer manuellement ce changement de page, en éditant la page.';
 $string['newpageevery'] = 'Commencer automatiquement une nouvelle page';
-$string['newpage_help'] = '<!-- $Id$ -->
-
-
-<p>Pour les tests longs, il peut être utile de répartir le test au travers de plusieurs pages, en définissant un nombre de questions par page. Lorsque vous ajouterez des questions au test, les boutons de changement de page seront automatiquement introduits, selon le paramètre indiqué ici. Par ailleurs, vous pourrez également déplacer manuellement ce changement de page, en éditant la page.</p>';
 $string['noanswers'] = 'Aucune réponse n\'a été sélectionnée !';
 $string['noattempts'] = 'Aucune tentative n\'a été réalisée sur ce test';
 $string['noattemptsfound'] = 'Aucune tentative trouvée.';
@@ -493,32 +464,23 @@ $string['openclosedatesupdated'] = 'Dates d\'ouverture et de fermeture du test m
 $string['optional'] = 'Facultatif';
 $string['orderandpaging'] = 'Ordre et pagination';
 $string['orderandpaging_help'] = 'Les nombres 10, 20, 30, ... en face de chaque question indiquent l\'ordre des questions. Les nombres augmentent par pas de 10 pour laisser de la place à l\'insertion éventuelle de questions supplémentaires. Pour réarranger les questions, modifiez les nombres, puis cliquez sur le bouton « Arranger les questions ».
-
 Pour ajouter des sauts de page après certaines questions, cochez la case en face de ces questions, puis cliquez sur le bouton « Ajouter de nouvelles pages après les questions sélectionnées ».
-
 Pour organiser les questions sur plusieurs pages, cliquez sur le bouton « Repagination » et indiquez le nombre de questions désirées par page.';
 $string['orderingquiz'] = 'Ordre et pagination';
 $string['outof'] = '{$a->grade} sur un maximum de {$a->maxgrade}';
 $string['outofpercent'] = '{$a->grade} sur un maximum de {$a->maxgrade} ({$a->percent}%)';
 $string['outofshort'] = '{$a->grade}/{$a->maxgrade}';
 $string['overallfeedback'] = 'Feedback global';
-$string['overallfeedback_help'] = '<!-- $Id$ -->
-
-
-<p>Le feedback général est un texte qui montré à l\'étudiant lorsqu\'il a terminé une tentative d\'un test. Le texte affiché peut différer suivant la note obtenue par l\'étudiant.</p>
-
-<p>Par exemple, admettons que vous tapiez :</p>
-
-<p>Limite de note 100%<br />
-Feedback Bien joué<br />
-Limite de note 40%<br />
-Feedback Merci d\'étudier encore cette matière<br />
-etc.<br />
-Limite de note 0%</p>
-
-<p>Dans ce cas, le message « Bien joué » sera affiché pour les étudiants obtenant un résultat entre 100% et 40%, et les étudiants obtenant entre 39.99% et 0% verront l\'autre message. Les limites de note définissent les plages de notes pour lesquelles afficher le feedback correspondant.</p>
-
-<p>Les limites de note doivent être indiquées soit sous la forme d\'un pourcentage, par exemple « 31.41% », soit sous la forme d\'un nombre, par exemple « 7 ». Si la note maximale de votre test est de 10, une limite de 7 signifie 7 sur 10 ou plus.</p>';
+$string['overallfeedback_help'] = 'Le feedback général est un texte qui montré à l\'étudiant lorsqu\'il a terminé une tentative d\'un test. Le texte affiché peut différer suivant la note obtenue par l\'étudiant.
+Par exemple, admettons que vous tapiez :
+Limite de note 100%
+Feedback Bien joué
+Limite de note 40%
+Feedback Merci d\'étudier encore cette matière
+etc.
+Limite de note 0%
+Dans ce cas, le message « Bien joué » sera affiché pour les étudiants obtenant un résultat entre 100% et 40%, et les étudiants obtenant entre 39.99% et 0% verront l\'autre message. Les limites de note définissent les plages de notes pour lesquelles afficher le feedback correspondant.
+Les limites de note doivent être indiquées soit sous la forme d\'un pourcentage, par exemple « 31.41% », soit sous la forme d\'un nombre, par exemple « 7 ». Si la note maximale de votre test est de 10, une limite de 7 signifie 7 sur 10 ou plus.';
 $string['overdue'] = 'En retard';
 $string['override'] = 'Dérogation';
 $string['overridedeletegroupsure'] = 'Voulez-vous vraiment supprimer la dérogation pour le groupe {$a} ?';
@@ -537,12 +499,8 @@ $string['parsingquestions'] = 'Analyse des questions du fichier à importer.';
 $string['partiallycorrect'] = 'Partiellement correct';
 $string['penalty'] = 'Pénalité';
 $string['penaltyscheme'] = 'Appliquer les pénalités';
-$string['penaltyscheme_help'] = '<!-- $Id$ -->
-
-
-<p>Si un test est effectué en mode adaptatif, alors un étudiant peut effectuer un nouvel essai après une mauvaise réponse. Dans ce cas, vous pouvez décider d\'imposer une pénalité pour chaque mauvaise réponse, à déduire de la note finale de la question. L\'ampleur de la pénalité est choisie pour chaque question, lors du paramétrage ou de l\'édition de la question.</p>
-
-<p>Ce paramètre n\'a d\'effet que si le test est réalisé en mode adaptatif.</p>';
+$string['penaltyscheme_help'] = 'Si un test est effectué en mode adaptatif, alors un étudiant peut effectuer un nouvel essai après une mauvaise réponse. Dans ce cas, vous pouvez décider d\'imposer une pénalité pour chaque mauvaise réponse, à déduire de la note finale de la question. L\'ampleur de la pénalité est choisie pour chaque question, lors du paramétrage ou de l\'édition de la question.
+Ce paramètre n\'a d\'effet que si le test est réalisé en mode adaptatif.';
 $string['percentcorrect'] = 'Pourcentage de réponses correctes';
 $string['pleaseclose'] = 'Votre requête a été traitée. Vous pouvez maintenant fermer cette fenêtre';
 $string['pluginadministration'] = 'Administration du test';
@@ -586,22 +544,27 @@ $string['questiontextisempty'] = '[Texte de question vide]';
 $string['questiontype'] = 'Question de type {$a}';
 $string['questiontypesetupoptions'] = 'Options pour les types de questions :';
 $string['quiz:attempt'] = 'Effectuer des tests';
-$string['quizavailable'] = 'Le test est disponible jusqu\'au {$a}';
-$string['quizclose'] = 'Fermer le test';
-$string['quizclosed'] = 'Ce test a été fermé le {$a}';
-$string['quizcloses'] = 'Test est fermé';
-$string['quizcloseson'] = 'Ce test sera fermé le {$a}';
 $string['quiz:deleteattempts'] = 'Supprimer les tentatives de tests';
 $string['quiz:emailconfirmsubmission'] = 'Recevoir un courriel de confirmation lors de l\'envoi d\'un test';
 $string['quiz:emailnotifysubmission'] = 'Recevoir par courriel notification des tentatives envoyées par les participants';
 $string['quiz:grade'] = 'Évaluer manuellement les tests';
 $string['quiz:ignoretimelimits'] = 'Ignorer les limites de temps des tests';
+$string['quiz:manage'] = 'Gérer les tests';
+$string['quiz:manageoverrides'] = 'Gérer les modifications de test';
+$string['quiz:preview'] = 'Prévisualiser les tests';
+$string['quiz:regrade'] = 'Renoter les tentatives des tests';
+$string['quiz:reviewmyattempts'] = 'Relire ses propres tentatives';
+$string['quiz:view'] = 'Voir les informations des tests';
+$string['quiz:viewreports'] = 'Voir les rapports des tests';
+$string['quizavailable'] = 'Le test est disponible jusqu\'au {$a}';
+$string['quizclose'] = 'Fermer le test';
+$string['quizclosed'] = 'Ce test a été fermé le {$a}';
+$string['quizcloses'] = 'Test est fermé';
+$string['quizcloseson'] = 'Ce test sera fermé le {$a}';
 $string['quizisclosed'] = 'Ce test est fermé';
 $string['quizisclosedwillopen'] = 'Test fermé (ouverture {$a})';
 $string['quizisopen'] = 'Ce test est ouvert';
 $string['quizisopenwillclose'] = 'Test ouvert (fermera le {$a})';
-$string['quiz:manage'] = 'Gérer les tests';
-$string['quiz:manageoverrides'] = 'Gérer les modifications de test';
 $string['quiznavigation'] = 'Navigation du test';
 $string['quizopen'] = 'Ouvrir ce test';
 $string['quizopenclose'] = 'Dates d\'ouverture et de fermeture';
@@ -612,13 +575,8 @@ $string['quizopens'] = 'Le test est disponible';
 $string['quizopenwillclose'] = 'Ce test est ouvert et sera fermée le {$a} à';
 $string['quizordernotrandom'] = 'L\'ordre du test n\'est pas mélangé';
 $string['quizorderrandom'] = '* L\'ordre du test est mélangé';
-$string['quiz:preview'] = 'Prévisualiser les tests';
-$string['quiz:regrade'] = 'Renoter les tentatives des tests';
-$string['quiz:reviewmyattempts'] = 'Relire ses propres tentatives';
 $string['quizsettings'] = 'Réglages du test';
 $string['quiztimer'] = 'Minuterie';
-$string['quiz:view'] = 'Voir les informations des tests';
-$string['quiz:viewreports'] = 'Voir les rapports des tests';
 $string['quizwillopen'] = 'Ce test sera ouvert le {$a}';
 $string['random'] = 'Question aléatoire';
 $string['randomcreate'] = 'Créer des questions aléatoires';
@@ -664,39 +622,21 @@ $string['reportresponses'] = 'Réponses détaillées';
 $string['reports'] = 'Rapports';
 $string['reportsimplestat'] = 'Statistique simple';
 $string['requirepassword'] = 'Nécessite une clef';
-$string['requirepassword_help'] = '<!-- $Id$ -->
-
-
-<p>Ce champ est optionnel.</p>
-
-<p>Si vous spécifiez ici une clef, les participants devront taper cette même clef avant de pouvoir faire le test.</p>';
+$string['requirepassword_help'] = 'Ce champ est optionnel.
+Si vous spécifiez ici une clef, les participants devront taper cette même clef avant de pouvoir faire le test.';
 $string['requiresubnet'] = 'Restriction par adresse IP';
-$string['requiresubnet_help'] = '<!-- $Id$ -->
+$string['requiresubnet_help'] = 'Ce champ est optionnel.
+Vous pouvez restreindre l\'accès à un test à des sous-réseaux particuliers d\'un réseau local (LAN) ou de l\'internet en spécifiant ici une liste d\'adresses IP (complètes ou partielles), séparées par des virgules.
+Cela peut être spécialement utile lorsque vous désirez que seules les personnes dans une salle spécifique puissent accéder au test.
+Exemple : **192.168. , 231.54.211.0/20, 231.3.56.211, 231.3.56.10-20**
+Vous pouvez indiquer ici quatre types d\'adresses IP (il n\'est pas possible d\'utiliser des adresses sous la forme de nom de domaine, par exemple « mon-ecole.ch ») :
 
+1. des adresses IP complètes, comme **192.168.10.1**, qui correspondent à un seul ordinateur (ou un serveur proxy) ;
+2. des adresses IP partielles, comme **192.168**, qui correspondent à tous les ordinateurs dont l\'adresse commence ainsi ;
+3. des adresses en notation CIDR, comme **231.54.211.0/20**, qui permettent de spécifier des sous-réseaux de manière plus détaillée.
+4. une plage d\'adresses IP **231.3.56.10-20**. La plage spécifie un intervalle sur la dernière partie de l\'adresse. L\'exemple indique ici les adresses comprises dans l\'intervalle de 231.3.56.10 à 231.3.56.20.
 
-<p>Ce champ est optionnel.</p>
-
-<p>Vous pouvez restreindre l\'accès à un test à des sous-réseaux particuliers d\'un réseau local (LAN) ou de l\'internet en spécifiant ici une liste d\'adresses IP (complètes ou partielles), séparées par des virgules.</p>
-
-<p>Cela peut être spécialement utile lorsque vous désirez que seules les personnes dans une salle spécifique puissent accéder au test.</p>
-
-<p>Exemple : <strong>192.168. , 231.54.211.0/20, 231.3.56.211, 231.3.56.10-20</strong></p>
-
-<p>Vous pouvez indiquer ici quatre types d\'adresses IP (il n\'est pas possible d\'utiliser des adresses sous la forme de nom de domaine, par exemple « mon-ecole.ch ») :</p>
-
-<ol>
-
-<li>des adresses IP complètes, comme <strong>192.168.10.1</strong>, qui correspondent à un seul ordinateur (ou un serveur proxy) ;</li>
-
-<li>des adresses IP partielles, comme <strong>192.168</strong>, qui correspondent à tous les ordinateurs dont l\'adresse commence ainsi ;</li>
-
-<li>des adresses en notation CIDR, comme <strong>231.54.211.0/20</strong>, qui permettent de spécifier des sous-réseaux de manière plus détaillée.</li>
-
-<li>une plage d\'adresses IP <strong>231.3.56.10-20</strong>. La plage spécifie un intervalle sur la dernière partie de l\'adresse. L\'exemple indique ici les adresses comprises dans l\'intervalle de 231.3.56.10 à 231.3.56.20.</li>
-
-</ol>
-
-<p>Les espaces sont ignorés.</p>';
+Les espaces sont ignorés.';
 $string['response'] = 'Réponse du participant';
 $string['responses'] = 'Réponses du participant';
 $string['results'] = 'Résultats';
@@ -716,18 +656,11 @@ $string['reviewofpreview'] = 'Relecture de la prévisualisation';
 $string['reviewopen'] = 'Plus tard, alors que le test est encore ouvert';
 $string['reviewoptions'] = 'Les étudiants peuvent relire';
 $string['reviewoptionsheading'] = 'Options de relecture';
-$string['reviewoptionsheading_help'] = '<!-- $Id$ -->
-
-
-<p>Ces options permettent de décider les informations que les participants au test peuvent voir lorsqu\'ils relisent une tentative ou consultent les rapports des tests effectués.</p>
-
-<p>« Immédiatement après la tentative » signifie dans les deux minutes après que le participant a terminé sa tentative en cliquant sur le bouton « Tout envoyer et terminer ».</p>
-
-<p>« Plus tard, alors que le test est encore ouvert » veut dire après ces deux minutes, mais avant que le test soit fermé.</p>
-
-<p>« Après la fermeture du test » veut dire après la date de fermeture du test. Si le test n\'a pas de date de fermeture, cet état n\'a jamais lieu.</p>
-
-<p>Les utilisateurs ayant la capacité « Voir ses propres notes cachées » (moodle/grade:viewhidden) (habituellement les enseignants et les administrateurs) ne sont pas touchés par ces réglages et peuvent toujours relire toutes les informations de chacune des tentatives des participants à n\'importe quel moment.</p>';
+$string['reviewoptionsheading_help'] = 'Ces options permettent de décider les informations que les participants au test peuvent voir lorsqu\'ils relisent une tentative ou consultent les rapports des tests effectués.
+« Immédiatement après la tentative » signifie dans les deux minutes après que le participant a terminé sa tentative en cliquant sur le bouton « Tout envoyer et terminer ».
+« Plus tard, alors que le test est encore ouvert » veut dire après ces deux minutes, mais avant que le test soit fermé.
+« Après la fermeture du test » veut dire après la date de fermeture du test. Si le test n\'a pas de date de fermeture, cet état n\'a jamais lieu.
+Les utilisateurs ayant la capacité « Voir ses propres notes cachées » (moodle/grade:viewhidden) (habituellement les enseignants et les administrateurs) ne sont pas touchés par ces réglages et peuvent toujours relire toutes les informations de chacune des tentatives des participants à n\'importe quel moment.';
 $string['reviewresponse'] = 'Relire la réponse';
 $string['reviewresponsetoq'] = 'Relire la réponse (question {$a})';
 $string['reviewthisattempt'] = 'Relire vos réponses à cette tentative';
@@ -803,9 +736,9 @@ $string['submitallandfinish'] = 'Tout envoyer et terminer';
 $string['subneterror'] = 'Désolé, ce test a été configuré de façon à ne pouvoir être effectué que depuis certains ordinateurs. Votre ordinateur n\'est actuellement pas autorisé.';
 $string['subnetnotice'] = 'Ce test a été configuré de façon à ne pouvoir être effectué que depuis certains ordinateurs. Votre ordinateur n\'est pas situé dans une sous-réseau autorisé. En tant qu\'enseignant, vous pouvez toutefois le prévisualiser.';
 $string['subplugintype_quiz'] = 'Rapport';
+$string['subplugintype_quiz_plural'] = 'Rapports';
 $string['subplugintype_quizaccess'] = 'Règle d\'accès';
 $string['subplugintype_quizaccess_plural'] = 'Règles d\'accès';
-$string['subplugintype_quiz_plural'] = 'Rapports';
 $string['substitutedby'] = 'sera remplacé par';
 $string['summaryofattempt'] = 'Résumé de la tentative';
 $string['summaryofattempts'] = 'Résumé de vos tentatives précédentes';
@@ -816,25 +749,14 @@ $string['timecompleted'] = 'Terminé';
 $string['timedelay'] = 'Vous ne pouvez effectuer le test maintenant, car le délai entre deux tentatives n\'est pas encore échu';
 $string['timeleft'] = 'Temps restant';
 $string['timelimit'] = 'Temps disponible';
+$string['timelimit_help'] = 'Par défaut, le temps disponible pour effectuer un test est illimité, ce qui laisse tout le temps à l\'étudiant pour terminer le test.
+Si vous spécifiez un temps disponible pour un test, différentes actions sont effectuées pour s\'assurer que les tests sont terminés avant l\'échéance de cette durée.
+
+* Le support de Javascript du navigateur devient obligatoire, ce qui permet au chronomètre de fonctionner correctement
+* Une fenêtre s\'affiche avec un compte à rebours
+* Lorsque le temps disponible est échu, le test est automatiquement envoyé avec les réponses données jusqu\'à cet instant
+* Si un étudiant tente de tricher et prend plus que 60 secondes de plus que la durée allouée, une note de 0 lui est automatiquement attribué';
 $string['timelimitexeeded'] = 'Désolé ! La limite de temps est échue !';
-$string['timelimit_help'] = '<!-- $Id$ -->
-
-
-<p>Par défaut, le temps disponible pour effectuer un test est illimité, ce qui laisse tout le temps à l\'étudiant pour terminer le test.</p>
-
-<p>Si vous spécifiez un temps disponible pour un test, différentes actions sont effectuées pour s\'assurer que les tests sont terminés avant l\'échéance de cette durée.</p>
-
-<ul>
-
-<li>Le support de Javascript du navigateur devient obligatoire, ce qui permet au chronomètre de fonctionner correctement</li>
-
-<li>Une fenêtre s\'affiche avec un compte à rebours</li>
-
-<li>Lorsque le temps disponible est échu, le test est automatiquement envoyé avec les réponses données jusqu\'à cet instant</li>
-
-<li>Si un étudiant tente de tricher et prend plus que 60 secondes de plus que la durée allouée, une note de 0 lui est automatiquement attribué</li>
-
-</ul>';
 $string['timelimitmin'] = 'Temps disponible (minutes)';
 $string['timelimitsec'] = 'Temps disponible (secondes)';
 $string['timestr'] = '%H:%M:%S, le %d.%m.%y';

@@ -31,17 +31,16 @@ $string['answered'] = 'Beantwoord';
 $string['atleastoneoption'] = 'Je moet minstens één mogelijk antwoord geven';
 $string['choice'] = 'Keuze {$a}';
 $string['choice:choose'] = 'Bewaar een keuze';
-$string['choiceclose'] = 'Tot';
 $string['choice:deleteresponses'] = 'Verwijder antwoorden';
 $string['choice:downloadresponses'] = 'Download antwoorden';
+$string['choice:readresponses'] = 'Lees antwoorden';
+$string['choiceclose'] = 'Tot';
 $string['choicefull'] = 'Deze keuze is vol - er zijn geen beschikbare plaatsen meer.';
 $string['choicename'] = 'Naam keuze';
 $string['choiceopen'] = 'Open';
 $string['choiceoptions'] = 'Keuze-opties';
-$string['choiceoptions_help'] = '<p>Hier kun je ingeven welke keuzemogelijkheden de leerlingen aangeboden krijgen.</p>
-
-<p>Je hoeft ze niet allemaal in te vullen: je mag er een aantal blanco laten. Alleen de ingevulde velden zullen getoond worden.</p>';
-$string['choice:readresponses'] = 'Lees antwoorden';
+$string['choiceoptions_help'] = 'Hier kun je ingeven welke keuzemogelijkheden de leerlingen aangeboden krijgen.
+Je hoeft ze niet allemaal in te vullen: je mag er een aantal blanco laten. Alleen de ingevulde velden zullen getoond worden.';
 $string['choicesaved'] = 'Je keuze is bewaard';
 $string['choicetext'] = 'Keuzetekst';
 $string['chooseaction'] = 'Kies een actie...';
@@ -54,11 +53,9 @@ $string['full'] = '(volledig)';
 $string['havetologin'] = 'Je moet aangemeld zijn voor je je keuze kunt insturen';
 $string['limit'] = 'Beperk';
 $string['limitanswers'] = 'Beperk het aantal toegelaten antwoorden';
-$string['limitanswers_help'] = '<p>Met deze optie is het mogelijk om het aantal deelnemers dat elke optie kan kiezen te beperken.</p>
-
-<p>Eens limieten ingeschakeld zijn, kan op elke optie een limiet gezet worden. Als de limiet bereikt is, kan niemand nog die optie kiezen. Als een limiet van nul gekozen wordt, dan kan niemand die optie kiezen.</p>
-
-<p>Als limieten niet ingeschakeld zijn, dan kan gelijk welk aantal deelnemers een bepaalde keuze selecteren.</p>';
+$string['limitanswers_help'] = 'Met deze optie is het mogelijk om het aantal deelnemers dat elke optie kan kiezen te beperken.
+Eens limieten ingeschakeld zijn, kan op elke optie een limiet gezet worden. Als de limiet bereikt is, kan niemand nog die optie kiezen. Als een limiet van nul gekozen wordt, dan kan niemand die optie kiezen.
+Als limieten niet ingeschakeld zijn, dan kan gelijk welk aantal deelnemers een bepaalde keuze selecteren.';
 $string['modulename'] = 'Keuze';
 $string['modulename_help'] = 'Met de keuzemodule kan de leraar een vraag stellen en een keuze van mogelijke antwoorden opgeven.';
 $string['modulenameplural'] = 'Keuzes';

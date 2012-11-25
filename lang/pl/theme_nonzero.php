@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['regionpostwidth'] = 'Szerokość prawej kolumny';
-$string['regionprewidth'] = 'Szerokość lewej kolumny';
 $string['region-side-post'] = 'Prawo';
 $string['region-side-pre'] = 'Lewo';
+$string['regionpostwidth'] = 'Szerokość prawej kolumny';
+$string['regionprewidth'] = 'Szerokość lewej kolumny';

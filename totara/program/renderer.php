@@ -178,7 +178,12 @@ class totara_program_renderer extends plugin_renderer_base {
             }
         }
         if ($js != '') {
-            $PAGE->requires->js_init_code($js, true);
+            $jsmodule = array(
+                'name' => 'totara_programassignment',
+                'fullpath' => '/totara/program/assignment/program_assignment.js',
+                'requires' => array('json', 'totara_core'));
+
+            $PAGE->requires->js_init_code($js, true, $jsmodule);
         }
         $out .= html_writer::end_tag('div');
         $out .= html_writer::end_tag('fieldset');

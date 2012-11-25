@@ -61,7 +61,7 @@ $string['aspellpath'] = 'Caminho do aspell';
 $string['assessorroleid'] = 'Função para o assessor';
 $string['authentication'] = 'Autenticação';
 $string['authpreventaccountcreation'] = 'Evitar criar contas quando autenticando';
-$string['authpreventaccountcreation_help'] = 'Quando um usuário se autentica, uma conta no site é automaticamente criada caso ainda não exista. Se um banco de dados externo, como o LDAP, é usado para autenticação, mas você deseja restringir o acesso ao site somente para os usuários que já possuam conta,  então esta opção deverá ser ativada. Neste caso, novas contas terão de ser criadas manualmente ou por meio do recurso “upload de usuários”. Note que esta definição não se aplica a autenticação MNet.';
+$string['authpreventaccountcreation_help'] = 'Quando um usuário se autentica, uma conta no site é automaticamente criada caso ainda não exista. Se um banco de dados externo, como o LDAP, é usado para autenticação, mas você deseja restringir o acesso ao site somente para os usuários que já possuam conta, então esta opção deverá ser ativada. Neste caso, novas contas terão de ser criadas manualmente ou por meio do recurso “upload de usuários”. Note que esta definição não se aplica a autenticação MNet.';
 $string['authsettings'] = 'Gerenciar autenticação';
 $string['autolang'] = 'Detecção automática de idioma';
 $string['autologinguests'] = 'Fazer login automático de visitantes';
@@ -87,8 +87,7 @@ $string['bookmarkalreadyexists'] = 'Você já marcou esta página';
 $string['bookmarkdeleted'] = 'Marcador de página excluído';
 $string['bookmarkthispage'] = 'Marcar esta página';
 $string['cachejs'] = 'Fazer cache do Javascript';
-$string['cachejs_help'] = 'As operações de "caching" e compressão do Javascript melhoram muito a performance da carga de páginas. Isso é altamente recomendável para sites de produção. Desenvolvedores, no entanto, provavelmente preferirão desabilitar esta opção.
-';
+$string['cachejs_help'] = 'As operações de "caching" e compressão do Javascript melhoram muito a performance da carga de páginas. Isso é altamente recomendável para sites de produção. Desenvolvedores, no entanto, provavelmente preferirão desabilitar esta opção.';
 $string['cachetext'] = 'Duração da memorização temporária de textos';
 $string['cachetype'] = 'Tipo de cache';
 $string['calendar_weekend'] = 'Dias de fim de semana';
@@ -113,7 +112,7 @@ $string['clistatusenabled'] = 'Estado: habilitado';
 $string['clitypevalue'] = 'Digite o valor';
 $string['clitypevaluedefault'] = 'digite o valor, pressione Enter para utilizar o valor padrão ({$a})';
 $string['cliunknowoption'] = 'Opções não reconhecidas:
-  {$a}
+{$a}
 Por favor use a opção --help.';
 $string['cliupgradefinished'] = 'Atualização via linha de comando terminada com sucesso.';
 $string['cliupgradenoneed'] = 'Não há necessidade de realização de atualização de versão para a versão instalada {$a}. Obrigado por nos visitar d equalquer maneira!';
@@ -256,8 +255,7 @@ $string['configmemcachedhosts'] = 'Para memcahed. Lista de servidores separados 
 $string['configmemcachedpconn'] = 'Para memcached. Use conexões persistentes. Usar com cuidado - isto pode travar o Apache/PHP após reiniciar o programa memchached.';
 $string['configmessaging'] = 'O sistema de mensagens pessoais deve ser habilitado?';
 $string['configmessagingdeletereadnotificationsdelay'] = 'Notificações já lidas podem ser excluídas para economizar espaço. Quanto tempo após a sua leitura uma notificação pode ser excluída?';
-$string['configmessaginghidereadnotifications'] = 'Ocultar notificações já lidas de eventos tais como mensagens em foruns quando visualizando o histórico de mensagens.
-';
+$string['configmessaginghidereadnotifications'] = 'Ocultar notificações já lidas de eventos tais como mensagens em foruns quando visualizando o histórico de mensagens.';
 $string['configminpassworddigits'] = 'Senhas devem ter no mínimo esta quantidade de dígitos.';
 $string['configminpasswordlength'] = 'Senhas devem ter no mínimo esta quantidade de caracteres.';
 $string['configminpasswordlower'] = 'Senhas devem ter no mínimo esta quantidade de caracteres minúsculos.';
@@ -587,7 +585,7 @@ $string['gradeexport'] = 'Métodos de exportação da avaliação primária';
 $string['groupenrolmentkeypolicy'] = 'Política de chave para inscrição em grupo';
 $string['groupenrolmentkeypolicy_desc'] = 'Habilitar esta opção fará com que o Moodle valide as chaves de inscrição em grupo contra uma política de senhas válida.';
 $string['guestroleid'] = 'Papel para convidados';
-$string['guestroleid_help'] = 'Este papel é atribuído automaticamente para o usuário convidado (guest). É também atribuído temporariamente a usuários não inscritos, que entram no curso através do plugin de inscrição de convidados. ';
+$string['guestroleid_help'] = 'Este papel é atribuído automaticamente para o usuário convidado (guest). É também atribuído temporariamente a usuários não inscritos, que entram no curso através do plugin de inscrição de convidados.';
 $string['helpadminseesall'] = 'Os administradores devem ver todos os eventos do calendário ou apenas os seus próprios eventos?';
 $string['helpcalendarsettings'] = 'Configura vários aspectos do calendário e de outras funções associadas a datas e horários';
 $string['helpforcetimezone'] = 'Você pode permitir que os usuários selecionem seus fusos horários ou deseja forçar um único fuso horário para todos.';
@@ -632,7 +630,7 @@ $string['langcache_desc'] = 'Cache o menu de idiomas. Se ativado, a lista de tra
 $string['langlist'] = 'Idiomas presentes na lista';
 $string['langmenu'] = 'Mostrar lista de idiomas';
 $string['langpackwillbeupdated'] = 'NOTA: O Moodle tentará fazer download de atualizações de seus pacotes de idioma durante esta atualização.';
-$string['langstringcache'] = 'Colocar todas as strings de idioma em cache ';
+$string['langstringcache'] = 'Colocar todas as strings de idioma em cache';
 $string['languagesettings'] = 'Configurações de idiomas';
 $string['latexpreamble'] = 'Preâmbulo LaTeX';
 $string['latexsettings'] = 'Configurações do renderizador LaTeX';
@@ -649,10 +647,10 @@ $string['locationsettings'] = 'Parametrização de local';
 $string['locked'] = 'travado';
 $string['log'] = 'Logs';
 $string['logguests'] = 'Registrar log de acesso de visitantes (guest)';
-$string['logguests_help'] = 'Esta configuração permite o registro (log) de ações da conta de visitante (guest)  e usuários não autenticados. Sites muito utilizados  podem querer desativar este log por razões de desempenho. Recomenda-se manter esta opção habilitada nos sites de produção.';
+$string['logguests_help'] = 'Esta configuração permite o registro (log) de ações da conta de visitante (guest) e usuários não autenticados. Sites muito utilizados podem querer desativar este log por razões de desempenho. Recomenda-se manter esta opção habilitada nos sites de produção.';
 $string['loginhttps'] = 'Use HTTPS para logins';
 $string['loginpageautofocus'] = 'Focar automaticamente o formulário da página de login';
-$string['loginpageautofocus_help'] = 'Ativar esta opção melhora a usabilidade da página de login, mas os campos com foco automatico podem causar problemas de  acessibilidade.';
+$string['loginpageautofocus_help'] = 'Ativar esta opção melhora a usabilidade da página de login, mas os campos com foco automatico podem causar problemas de acessibilidade.';
 $string['loginpasswordautocomplete'] = 'Evitar auto completação de senha no formulário de login';
 $string['loginpasswordautocomplete_help'] = 'Ao ativar esta opção você permitirá que os usuários salvem a senha da conta no seu browser. No entanto, essa configuração fará com que seu site deixe de atender as rigorosas regras de validação do XHTML .';
 $string['loglifetime'] = 'Manter logs por';
@@ -724,7 +722,7 @@ $string['myprofile'] = 'Página padrão de perfil';
 $string['mysql416bypassed'] = 'Entretanto, se o seu site usa apenas idiomas iso-8859-1 (latin), você pode continuar a usar a sua base de dados atual MySQL 4.1.12 (ou superior).';
 $string['mysql416required'] = 'MySQL 4.1.16 é a versão mínima necessária para a instalação do Moodle 1.6 de modo que os dados possam ser convertidos para UTF-8.';
 $string['navadduserpostslinks'] = 'Adicionar links para visualizar mensagens dos usuários';
-$string['navadduserpostslinks_help'] = 'Se habilitado, dois links serão adicionados para cada usuário na navegação, um para ver as discussões que o usuário tenha iniciado e outro para as mensagens o usuário postou em fóruns  do site ou em cursos específicos.';
+$string['navadduserpostslinks_help'] = 'Se habilitado, dois links serão adicionados para cada usuário na navegação, um para ver as discussões que o usuário tenha iniciado e outro para as mensagens o usuário postou em fóruns do site ou em cursos específicos.';
 $string['navcourselimit'] = 'Limite de curso';
 $string['navigationupgrade'] = 'Essa atualização introduz dois novos blocos de navegação que irão substituir os seguintes blocos: Administração, Cursos, Atividades e Participantes. Se você definiu alguma permissão especial nestes blocos, você deve se certificar de que tudo está se comportando como você gostaria.';
 $string['navlinkcoursesections'] = 'Link para seções do curso';
@@ -847,7 +845,7 @@ $string['profilevisiblenone'] = 'Não visível';
 $string['profilevisibleprivate'] = 'Visível para o usuário';
 $string['profiling'] = 'Agregação ao perfil.';
 $string['profilingallowall'] = 'Agregação contínua ao perfil.';
-$string['profilingallowall_help'] = 'Se você habilitar essa opção, então, a qualquer momento, você poderá usar o parâmetro PROFILEALL em qualquer lugar (PGC) para permitir a agregação de todos os scripts executados  durante a sessão Moodle aos perfis. Analogamente, você pode usar o parâmetro PROFILEALLSTOP para pará-lo.';
+$string['profilingallowall_help'] = 'Se você habilitar essa opção, então, a qualquer momento, você poderá usar o parâmetro PROFILEALL em qualquer lugar (PGC) para permitir a agregação de todos os scripts executados durante a sessão Moodle aos perfis. Analogamente, você pode usar o parâmetro PROFILEALLSTOP para pará-lo.';
 $string['profilingallowme'] = 'Agregação seletiva ao perfil';
 $string['profilingallowme_help'] = 'Se você habilitar essa opção, então poderá, seletivamente, usar o parâmetro PROFILEME em qualquer lugar (PGC) e o script será agregado ao perfil. Analogamente, você pode usar o parâmetro DONTPROFILEME para evitar que isso aconteça.';
 $string['profilingautofrec'] = 'Agregação automática ao perfil.';
@@ -856,17 +854,14 @@ $string['profilingenabled'] = 'Habilitar agregação aos perfis';
 $string['profilingenabled_help'] = 'Se você habilitar essa opção, então a agregação aos perfis estará disponível neste site e você será capaz de definir seu comportamento através da configuração das opções a seguir.';
 $string['profilingexcluded'] = 'Excluir agregação ao perfil';
 $string['profilingexcluded_help'] = 'Lista de URLs a serem excluídas das que serão agregadas ao perfil, de acordo com a definição “Profile These” (separadas por vírgula, saltando wwwroot absoluto, que possam ser chamadas).';
-$string['profilingincluded'] = 'Agregar estas ao perfil
-';
-$string['profilingincluded_help'] = 'Lista de URLs  que serão automaticamente agregadas ao perfil, de acordo com a definição (separadas por vírgula, saltando wwwroot absoluto, que possam ser chamadas).
+$string['profilingincluded'] = 'Agregar estas ao perfil';
+$string['profilingincluded_help'] = 'Lista de URLs que serão automaticamente agregadas ao perfil, de acordo com a definição (separadas por vírgula, saltando wwwroot absoluto, que possam ser chamadas).
 Exemplos: /index.php, /course/view.php.
-Também aceita a substituição de caracteres pelo * em qualquer posição. Exemplos: /mod/forum/ * , /mod/*/ view.php.
-';
+Também aceita a substituição de caracteres pelo * em qualquer posição. Exemplos: /mod/forum/ * , /mod/*/ view.php.';
 $string['profilinglifetime'] = 'Manter a agregação a perfis em execução';
 $string['profilinglifetime_help'] = 'Especifica o tempo que se deseja manter informações sobre a execução de perfis antigos. As mais velhas serão excluidas periodicamente. Observe que isso exclui qualquer execução de perfis marcados como “execução de referência”.';
 $string['protectusernames'] = 'Proteger "usernames"';
-$string['proxybypass'] = 'Ignorar hosts proxy
-';
+$string['proxybypass'] = 'Ignorar hosts proxy';
 $string['proxyhost'] = 'Servidor de Proxy';
 $string['proxypassword'] = 'Senha de Proxy';
 $string['proxyport'] = 'Porta de Proxy';
@@ -938,8 +933,7 @@ $string['server'] = 'Servidor';
 $string['serverchecks'] = 'Verificações do servidor';
 $string['serverlimit'] = 'Limite do servidor';
 $string['sessionautostartwarning'] = '<p>Foi detectado um erro grave de configuração, por favor informe ao administrador do servidor.</p> <p>Para funcionar adequadamente, o Moodle necessita que o administrador modifique as configurações do PHP.</p><p>
-<code>session.auto_start</code> deve ser configurado para <code>off</code>.</p><p>Esta configuração é feita editando o <code>php.ini</code>, a configuração do Apache/IIS <br />ou o arquivo <code>.htaccess</code>no servidor.</p>
-';
+<code>session.auto_start</code> deve ser configurado para <code>off</code>.</p><p>Esta configuração é feita editando o <code>php.ini</code>, a configuração do Apache/IIS <br />ou o arquivo <code>.htaccess</code>no servidor.</p>';
 $string['sessioncookie'] = 'Prefixo do Cookie';
 $string['sessioncookiedomain'] = 'Domínio do Cookie';
 $string['sessioncookiepath'] = 'Caminho do Cookie';
@@ -967,7 +961,7 @@ $string['sitepolicies'] = 'Políticas do site';
 $string['sitepolicy'] = 'URL do site de política';
 $string['sitepolicy_help'] = 'Se você tiver um documento que define regras para o uso do site que todos os usuários tem que ler e aceitar antes de poder navegar, especifique a URL deste documento. Em caso contrário deixe em branco. A URL pode apontar para qualquer arquivo. O local ideal para pôr este arquivo é o diretório \'Arquivos do Site\'.';
 $string['sitepolicyguest'] = 'URL de políticas do site para visitantes';
-$string['sitepolicyguest_help'] = 'Se você tiver uma política de site que todos os visitantes devem visualizar e aceitar antes de utilizar este site, então especifique a URL para isso aqui, caso contrário, deixe este campo em branco. Essa configuração pode conter qualquer URL pública. Nota: o acesso de usuários não autenticados  pode ser impedido com a configuração “forcelogin”.';
+$string['sitepolicyguest_help'] = 'Se você tiver uma política de site que todos os visitantes devem visualizar e aceitar antes de utilizar este site, então especifique a URL para isso aqui, caso contrário, deixe este campo em branco. Essa configuração pode conter qualquer URL pública. Nota: o acesso de usuários não autenticados pode ser impedido com a configuração “forcelogin”.';
 $string['sitesectionhelp'] = 'Se selecionado, uma sessão tipo tópico será mostrada na primeira página do site.';
 $string['siteshortname'] = 'Nome curto do site';
 $string['slasharguments'] = 'Use argumentos com barra';
@@ -1004,8 +998,7 @@ $string['techsupportemail'] = 'E-mail do suporte técnico';
 $string['techsupportemailhelp'] = 'Endereço de e-mail das pessoas que cuidam da maioria dos problemas técnicos relacionados à hospedagem no site';
 $string['techsupportphone'] = 'Número de telefone do suporte técnico';
 $string['techsupportphonehelp'] = 'Número de telefone das pessoas que cuidam da maioria dos problemas técnicos relacionados à hospedagem no site. (Incluir o código do país)';
-$string['themedesignermode'] = 'Modo de designer de tema
-';
+$string['themedesignermode'] = 'Modo de designer de tema';
 $string['themelist'] = 'Lista de temas';
 $string['themenoselected'] = 'Nenhum tema selecionado';
 $string['themeresetcaches'] = 'Limpar o cache de temas';
@@ -1057,8 +1050,7 @@ $string['upgradinglogs'] = 'Atualizando logs';
 $string['upgradingversion'] = 'Atualizando para nova versão';
 $string['upwards'] = 'para cima';
 $string['useblogassociations'] = 'Habilitar associações';
-$string['useexternalyui'] = 'Use bibliotecas YUI online
-';
+$string['useexternalyui'] = 'Use bibliotecas YUI online';
 $string['usehtmleditor'] = 'Usar editor HTML';
 $string['user'] = 'Usuário';
 $string['userbulk'] = 'Ações em lote sobre usuários';

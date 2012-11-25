@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'عندما تختار نعم , سيتم إنشاء سجل مستخدم محلي بشكل تلقائي وذلك عندما يدخل المستخدم البعيد لأول مرة.';
-$string['auth_mnetdescription'] = 'يخول المستخدمين وفقاً لشبكة الثقة المعرفة في إعدادات الشبكة لمودل.';
 $string['auth_mnet_roamin'] = 'يمكن لمستخدمي هؤلاء المضيفين التجوال في موقعك';
 $string['auth_mnet_roamout'] = 'بإمكان المستخدمين التجوال عند هؤلاء المضيفين';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'المهلة بالثواني للتخويل وفق بروتوكول النقل (XMLRPC)';
+$string['auth_mnetdescription'] = 'يخول المستخدمين وفقاً لشبكة الثقة المعرفة في إعدادات الشبكة لمودل.';
 $string['auto_add_remote_users'] = 'إضافة تلقائية للمستخدمين البعيدين';
 $string['pluginname'] = 'توثيق شبكة مودل';
 $string['rpc_negotiation_timeout'] = 'مهلة التفاوض لـ (RPC)';

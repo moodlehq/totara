@@ -44,9 +44,7 @@ $string['autolinkurl'] = 'Collega automaticamente la URL';
 $string['availablefromdate'] = 'Disponibile dal';
 $string['availabletags'] = 'Tag disponibili';
 $string['availabletags_help'] = 'I Tag sono segna posto da utilizzare nei Modelli di visualizzazione: all\'atto della visualizzazione o dell\'inserimento di un record, i Tag saranno sostituiti dal contenuto del campo o da un pulsante di comando.
-
 I campi hanno il formato [[fieldname]], tutti gli atri tag hanno il formato ##sometag##.
-
 E\' possibile usare solo i tag presenti nell\'elenco "Tag disponibili".';
 $string['availabletodate'] = 'Fino al';
 $string['blank'] = 'Vuoto';
@@ -127,7 +125,7 @@ $string['errormustbeteacher'] = 'Devi avere il ruolo di docente per utilizzare q
 $string['errorpresetexists'] = 'Una preimpostazione con il nome scelto esiste già';
 $string['example'] = 'Esempio di modulo Database';
 $string['excel'] = 'Excel';
-$string['expired'] = 'Spiacente, l\'attività non è più disponibile poiché è stata chiusa il {$a} ';
+$string['expired'] = 'Spiacente, l\'attività non è più disponibile poiché è stata chiusa il {$a}';
 $string['export'] = 'Esporta';
 $string['exportaszip'] = 'Esporta come .zip';
 $string['exportaszip_help'] = 'L\'esportazione come .zip consente di scaricare le preimpostazioni. Le preimpostazioni possono essere caricate ed utilizzate in altri corsi.';
@@ -147,7 +145,6 @@ $string['fieldheightsingleview'] = 'Altezza nella visualizzazione "Dettagli"';
 $string['fieldids'] = 'Id del campo';
 $string['fieldmappings'] = 'Mappatura dei campi';
 $string['fieldmappings_help'] = 'Questo menu ti consente di mantenere i dati del database mappandoli nei campi della preimpostazione scelta. Per mantenere i dati contenuti in un campo, devi mapparlo in un campo della preimpostzione. I campi della preimpostazione possono anche essere lasciati vuoti. I campi non mappati in un nuovo campo non saranno conservati ed i dati saranno perduti.
-
 E\' possibile mappare campi tra loro solo se appartengono allo stesso tipo, pertanto ogni menu a discesa potrà mostrare campi con nomi diversi. Devi anche evitare di mappare un campo su più di un campo della preimpostazione.';
 $string['fieldname'] = 'Nome del campo';
 $string['fieldnotmatched'] = 'I seguenti campi presenti nel tuo file non sono noti in questo database: {$a}';
@@ -232,7 +229,6 @@ $string['nameurl'] = 'Campo Indirizzo Web (URL)';
 $string['newentry'] = 'Nuovo record';
 $string['newfield'] = 'Aggiungi un campo';
 $string['newfield_help'] = 'Questa schermata permette di aggiungere i campi che formeranno la struttura del Database.
-
 Ciascun campo può contenere diversi tipi di dati e include una interfaccia per la compilazione.';
 $string['noaccess'] = 'Non sei autorizzato ad accedere a questa pagina';
 $string['nodefinedfields'] = 'La nuova preimpostazione non ha campi definiti!';
@@ -278,7 +274,6 @@ $string['requiredentries'] = 'Numero minimo di record da inserire';
 $string['requiredentries_help'] = 'Il numero minimo di record che un utente deve obbligatoriamente inserire nel Database per ritenere completata l\'attività.';
 $string['requiredentriestoview'] = 'Numero minimo di record da inserire per visualizzare';
 $string['requiredentriestoview_help'] = 'Il numero minimo di record che l\'utente deve inserire obbligatoriamente prima di poter visualizzare i record presenti nel Database.
-
 Nota: se è previsto un numero minimo di record prima della visualizzazione, allora il filtro Auto collegamento al database deve essere disabilitato poiché il filtro non può sapere se un utente ha inserito il numero di record minimo.';
 $string['resetsettings'] = 'Reimposta filtri';
 $string['resettemplate'] = 'Reimposta il modello';
@@ -319,15 +314,13 @@ $string['updatefield'] = 'Aggiorna un campo già esistente';
 $string['uploadfile'] = 'Carica file';
 $string['uploadrecords'] = 'Carica i record da un file';
 $string['uploadrecords_help'] = 'E\' possibile importare record attraverso un file di testo. Il formato del file è descritto di seguito:
-
 * ciascuna linea deve contenere un record
 * ciascun record è una serie di campi separati da virgole (o altri delimitatori)
 * il primo record deve contenere i nomi dei campi che specificano il contenuto di ciascun campo
-
 Il delimitatore di campo è un carattere che racchiude i campi del record. Spesso non è presente e si può evitare di impostarlo.';
 $string['url'] = 'URL';
 $string['usestandard'] = 'Utilizza preimpostazione';
-$string['usestandard_help'] = 'Permette di scegliere un Modello di visualizzazione preimpostato tra quelli disponibili nel sito. (Se è stato già salvato un Modello di visualizzazione, è possibile anche eliminarlo.) ';
+$string['usestandard_help'] = 'Permette di scegliere un Modello di visualizzazione preimpostato tra quelli disponibili nel sito. (Se è stato già salvato un Modello di visualizzazione, è possibile anche eliminarlo.)';
 $string['viewfromdate'] = 'Solo visualizzazione dal';
 $string['viewtodate'] = 'fino al';
 $string['wrongdataid'] = 'E\' stato fornito un id errato';

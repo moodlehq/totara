@@ -26,13 +26,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_shib_auth_method'] = 'اسم طريقة التوثيق';
+$string['auth_shib_changepasswordurl'] = 'عنوان تغير كلمة المرور';
+$string['auth_shib_convert_data'] = 'تعديل البيانات API';
+$string['auth_shib_only'] = 'شيبولث فقط';
+$string['auth_shib_only_description'] = 'في حالة تعزيز توثيق شيبولث أختر هذا الخيار.';
 $string['auth_shibboleth_errormsg'] = 'الرجاء اختيار المنظمة التي أنت عضو فيها';
 $string['auth_shibboleth_login'] = 'دخول شيبولث';
 $string['auth_shibboleth_login_long'] = 'الدخول إلى مودل عن طريق شيبولث';
 $string['auth_shibboleth_manual_login'] = 'الدخول اليدوي';
 $string['auth_shibboleth_select_organization'] = 'أنا عضو في';
-$string['auth_shib_changepasswordurl'] = 'عنوان تغير كلمة المرور';
-$string['auth_shib_convert_data'] = 'تعديل البيانات API';
-$string['auth_shib_only'] = 'شيبولث فقط';
-$string['auth_shib_only_description'] = 'في حالة تعزيز توثيق شيبولث أختر هذا الخيار.';
 $string['pluginname'] = 'شيبولث';

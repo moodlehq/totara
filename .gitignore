@@ -10,6 +10,7 @@
 # See gitignore(5) man page for more details
 #
 /config.php
+/phpunit.xml
 /lib/editor/tinymce/extra/tools/temp/
 *~
 *.swp

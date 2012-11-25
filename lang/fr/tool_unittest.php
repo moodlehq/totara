@@ -32,7 +32,9 @@ $string['codecoveragecompletereport'] = '(afficher le rapport complet de couvert
 $string['codecoveragedisabled'] = 'Impossible d\'activer la couverture de code sur ce serveur (l\'extension xdebug est manquante).';
 $string['codecoveragelatestdetails'] = '(le {$a->date}, pour {$a->files} files, {$a->percentage} couvert)';
 $string['codecoveragelatestreport'] = 'Afficher le dernier rapport complet de couverture de code';
-$string['confignonwritable'] = 'Le fichier <i>config.php</i> n\'est pas accessible en écriture par le serveur web. Veuillez modifier ses permissions ou le modifier à partir d\'un compte adéquat, en ajoutant la ligne suivante avant la balise php terminale : <br />$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
+$string['confignonwritable'] = 'Le fichier <i>config.php</i> n\'est pas accessible en écriture par le serveur web. Veuillez modifier ses permissions ou le modifier à partir d\'un compte adéquat, en ajoutant la ligne suivante avant la balise php terminale :
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Lignes couvertes';
 $string['coveredpercentage'] = 'Couverture totale de code';
 $string['dbtest'] = 'Test fonctionnels de la base de données';

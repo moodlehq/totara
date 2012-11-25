@@ -36,4 +36,4 @@ $string['welcometocoursetext'] = 'Varmt välkommen till {$a->coursename}!
 En av de första sakerna Du bör göra är att ändra Din profilsida
 inuti kursen så att vi kan lära oss mer om Dig:
 
-  {$a->profileurl}';
+{$a->profileurl}';

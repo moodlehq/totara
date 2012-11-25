@@ -30,8 +30,7 @@ $string['addnewexternalblog'] = 'Registrar um blog externo';
 $string['assocdescription'] = 'Se estiver escrevendo sobre um curso e/ou sobre módulos de atividades, selecione-os aqui.';
 $string['associated'] = 'Associado {$a}';
 $string['associatewithcourse'] = 'Blog sobre o curso {$a->coursename}';
-$string['associatewithmodule'] = '	
-Blog sobre {$a->modtype}: {$a->modname}';
+$string['associatewithmodule'] = 'Blog sobre {$a->modtype}: {$a->modname}';
 $string['association'] = 'Associação';
 $string['associations'] = 'Associações';
 $string['associationunviewable'] = 'Esta entrada não pode ser vista por outras pessoas até que um curso seja associado a ela ou o campo \'Publicar\' for modificado.';
@@ -41,11 +40,9 @@ $string['backupblogshelp'] = 'Se habilitada, os blogs serão incluídos no backu
 $string['blockexternalstitle'] = 'Blogs externos';
 $string['blocktitle'] = 'Título do bloco de tags do Blog';
 $string['blog'] = 'Blog';
-$string['blogaboutthis'] = '	
-Blog sobre este {$a->type}';
+$string['blogaboutthis'] = 'Blog sobre este {$a->type}';
 $string['blogaboutthiscourse'] = 'Adicionar uma entrada sobre este curso.';
-$string['blogaboutthismodule'] = '	
-Adicionar uma entrada sobre este {$a}';
+$string['blogaboutthismodule'] = 'Adicionar uma entrada sobre este {$a}';
 $string['blogadministration'] = 'Administração do blog';
 $string['blogdeleteconfirm'] = 'Cancelar este Blog?';
 $string['blogdisable'] = 'Utilização de blogs desabilitada.';
@@ -130,19 +127,16 @@ $string['permalink'] = 'Permalink';
 $string['personalblogs'] = 'Os usuários podem acessar apenas o próprio blog';
 $string['preferences'] = 'Preferências';
 $string['publishto'] = 'Publicar em';
+$string['publishto_help'] = 'Existem 3 opções:
+**Para si mesmo (rascunho)** - Apenas você e os administradores do site podem acessar este texto.
+**Todos os usuários do site** - Todos os usuários deste site podem acessar este texto.
+**Todo mundo** - Qualquer pessoa, inclusive os visitantes, podem acessar este texto.';
 $string['publishtocourse'] = 'Usuários que compartilham o curso com você';
 $string['publishtocourseassoc'] = 'Membros do curso associado';
 $string['publishtocourseassocparam'] = 'Membros de {$a}';
 $string['publishtogroup'] = 'Usuários que compartilham seu grupo';
 $string['publishtogroupassoc'] = 'Membros de seu grupo no curso associado';
 $string['publishtogroupassocparam'] = 'Os membros de seu grupo são {$a}';
-$string['publishto_help'] = '<p>Existem 3 opções:</p>
-
-<p><b>Para si mesmo (rascunho)</b> - Apenas você e os administradores do site podem acessar este texto.</p>
-
-<p><b>Todos os usuários do site</b> - Todos os usuários deste site podem acessar este texto.</p>
-
-<p><b>Todo mundo</b> - Qualquer pessoa, inclusive os visitantes, podem acessar este texto.</p>';
 $string['publishtonoone'] = 'Rascunho (você mesmo)';
 $string['publishtosite'] = 'Todos os usuários deste site';
 $string['publishtoworld'] = 'Todo o mundo';

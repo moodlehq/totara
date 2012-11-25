@@ -36,8 +36,7 @@ $string['gradingmanagement'] = 'Évaluation avancée';
 $string['gradingmanagementtitle'] = 'Évaluation avancée : {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Méthode d\'évaluation';
 $string['gradingmethod_help'] = 'Choisissez la méthode d\'évaluation avancée qui doit être utilisée pour calculer les notes dans le contexte donné.
-
-Pour désactiver l\'évaluation avancée et revenir à  la méthode d\'évaluation par défaut, choisissez « Évaluation simple directe ».';
+Pour désactiver l\'évaluation avancée et revenir à la méthode d\'évaluation par défaut, choisissez « Évaluation simple directe ».';
 $string['gradingmethodnone'] = 'Évaluation simple directe';
 $string['gradingmethods'] = 'Méthodes d\'évaluation';
 $string['manageactionclone'] = 'Créer un formulaire d\'évaluation à partir d\'un modèle';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = 'Aucun modèle trouvé';
 $string['searchownforms'] = 'Inclure mes propres formulaires';
 $string['searchtemplate'] = 'Recherche de formulaires d\'évaluation';
 $string['searchtemplate_help'] = 'Vous pouvez rechercher un formulaire d\'évaluation et l\'utiliser comme modèle pour créer un nouveau formulaire. Tapez de simples mots sensés apparaître dans le formulaire cherché ou dans sa description. Pour rechercher une phrase, tapez le texte entre des guillemets droits.
-
 Par défaut, seuls les formulaires enregistrés comme modèles sont inclus dans les résultats de recherche. Vous pouvez y inclure vos propres formulaires, ce qui vous permettra de les réutiliser sans les partager. Seuls les formulaires marqués comme « prêts à l\'usage » sont réutilisables ainsi.';
 $string['statusdraft'] = 'Brouillon';
 $string['statusready'] = 'Prêt à l\'usage';

@@ -40,17 +40,16 @@ $string['changerate'] = 'هل ترغب في تغيرها؟';
 $string['comments'] = 'التعليقات';
 $string['commentscount'] = 'التعليقات ({$a})';
 $string['comparesel'] = 'قارن المختار';
-$string['comparewith'] = 'قارن الإصدار {$a->old} بالإصدار {$a->new} ';
+$string['comparewith'] = 'قارن الإصدار {$a->old} بالإصدار {$a->new}';
 $string['contributions'] = 'مساهمات';
 $string['contributions_help'] = 'قائمة الصفحات التي قمت بتحريرها';
 $string['createcomment'] = 'إنشاء التعليقات';
-$string['createddate'] = 'في {$a->date} بواسطة {$a->username} ';
+$string['createddate'] = 'في {$a->date} بواسطة {$a->username}';
 $string['createpage'] = 'إنشاء صفحة';
 $string['creating'] = 'إنشاء صفحة ويكي';
 $string['creole'] = 'كريول';
 $string['defaultformat'] = 'التنسيق الافتراضي';
 $string['defaultformat_help'] = 'هذا الخيار يحدد التنسيق الافتراضي المستخدم في تحرير صفحات ويكي.
-
 * HTML - محرر HTML متوافر
 * كريول - لغة تأشير عامة خاصة بويكي والتي يوجد لها شريط أدوات صغير
 * Nwiki - لغة تأشير شبيهة بويكيميديا تستخدم مع وحدة Nwiki';
@@ -72,17 +71,19 @@ $string['firstpagetitle'] = 'اسم الصفحة الأولى';
 $string['firstpagetitle_help'] = 'عنوان الصفحة الرئيسية للويكي';
 $string['forceformat'] = 'إجبار التنسيق';
 $string['format'] = 'تنسيق';
-$string['formatcreole'] = 'تنسيق كريول';
-$string['formatcreole_help'] = '<a href="http://docs.moodle.org/en/Creole_format">تنسيق كريول</a>';
 $string['format_help'] = 'التنسيق المستخدم في تحرير صفحات ويكي.
-
 * HTML - محرر HTML متوافر
 * كريول - لغة تأشير عامة خاصة بويكي والتي يوجد لها شريط أدوات صغير
 * Nwiki - لغة تأشير شبيهة بويكيميديا تستخدم مع وحدة Nwiki';
+$string['formatcreole'] = 'تنسيق كريول';
+$string['formatcreole_help'] = 'تنسيق كريول
+http://docs.moodle.org/en/Creole_format';
 $string['formathtml'] = 'تنسيق HTML';
-$string['formathtml_help'] = '<a href="http://docs.moodle.org/en/HTML_format">تنسيق HTML</a>';
+$string['formathtml_help'] = 'تنسيق HTML
+http://docs.moodle.org/en/HTML_format';
 $string['formatnwiki'] = 'تنسيق Nwiki';
-$string['formatnwiki_help'] = '<a href="http://docs.moodle.org/en/NWiki_format">تنسيق NWiki</a>';
+$string['formatnwiki_help'] = 'تنسيق NWiki
+http://docs.moodle.org/en/NWiki_format';
 $string['history'] = 'تاريخ';
 $string['html'] = 'صياغة HTML';
 $string['insertcomment'] = 'إدراج تعليق';
@@ -118,9 +119,10 @@ $string['noupdatedpages'] = 'لا يوجد صفحات محدثه';
 $string['noviewcommentpermission'] = 'معاينة التعليقات يتطلب صلاحية';
 $string['noviewpagepermission'] = 'معاينة الصفحة يتطلب صلاحية';
 $string['pageindex'] = 'دليل الصفحة';
+$string['pagename'] = 'اسم الصفحة';
 $string['pluginname'] = 'ويكي';
 $string['removepages'] = 'أزل الصفحات';
-$string['restoreerror'] = 'لم يتم استعادة الإصدار #{$a} ';
+$string['restoreerror'] = 'لم يتم استعادة الإصدار #{$a}';
 $string['restorethis'] = 'استعادة هذا الإصدار';
 $string['restoreversion'] = 'استعادة الإصدار القديم';
 $string['restoring'] = 'استعادة الإصدار #{$a}';
@@ -138,8 +140,9 @@ $string['version'] = 'إصدار';
 $string['versionnum'] = 'الإصدار #{$a}';
 $string['viewcurrent'] = 'الإصدار الحالي';
 $string['wiki'] = 'ويكي';
-$string['wikiattachments'] = 'مرفقات ويكي';
 $string['wiki:createpage'] = 'أنشئ صفحات ويكي جديدة';
 $string['wiki:editcomment'] = 'إضافة تعليقات للصفحات';
 $string['wiki:editpage'] = 'حفظ صفحات ويكي';
+$string['wiki:overridelock'] = 'تجاهل الصفحات المغلقة';
+$string['wikiattachments'] = 'مرفقات ويكي';
 $string['wikiname'] = 'اسم الصفحة';

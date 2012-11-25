@@ -30,5 +30,5 @@ $string['emptyfilelist'] = 'Es gibt keine Dateien anzuzeigen';
 $string['notitle'] = 'unbenannt';
 $string['pluginname'] = 'Letzte Dateien';
 $string['pluginname_help'] = 'Zuletzt vom Nutzer verwendete Dateien';
-$string['recentfilesnumber'] = 'Anzahl zuletzt genutzter Dateien';
 $string['recent:view'] = 'Zuletzt genutzte Dateien anzeigen';
+$string['recentfilesnumber'] = 'Anzahl zuletzt genutzter Dateien';

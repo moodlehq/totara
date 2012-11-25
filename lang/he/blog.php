@@ -46,7 +46,7 @@ $string['blogaboutthiscourse'] = 'הוספת ידיעה המשוייכת לקו�
 $string['blogaboutthismodule'] = 'הוספת פרסום {$a} המשויך לקורס זה';
 $string['blogadministration'] = 'ניהול הבלוג';
 $string['blogdeleteconfirm'] = 'למחוק בלוג זה?';
-$string['blogdisable'] = 'בלוג לא מאופשר ';
+$string['blogdisable'] = 'בלוג לא מאופשר';
 $string['blogentries'] = 'מונחי (ידיעות) הבלוג';
 $string['blogentriesabout'] = 'ידיעות הבלוג השייכות ל {$a}';
 $string['blogentriesbygroupaboutcourse'] = 'ידיעות הבלוג השייכות ל {$a->course} על-ידי
@@ -80,7 +80,7 @@ $string['deleteotagswarn'] = 'האם אתה בטוח שברצונך להסיר �
 $string['description'] = 'תיאור';
 $string['description_help'] = 'הכנס משפט או שניים המסכם את תכני הבלוג החיצוני שלך. (אם לא יסופק תיאור, התיאור שנשמר בבלוג החיצוני שלך יועתק כאן)';
 $string['disableblogs'] = 'מנע את מערכת הבלוגים לחלוטין';
-$string['donothaveblog'] = ' בלוג אישי איננו קיים';
+$string['donothaveblog'] = 'בלוג אישי איננו קיים';
 $string['editentry'] = 'ערוך את ידיעת הבלוג';
 $string['editexternalblog'] = 'ערוך בלוג חיצוני';
 $string['emptybody'] = 'אסור שגוף רשומת הבלוג יהיה ריק';
@@ -133,25 +133,16 @@ $string['permalink'] = 'קישור קבע';
 $string['personalblogs'] = 'משתמשים יכולים לראות את הבלוג האישי שלהם בלבד';
 $string['preferences'] = 'העדפות';
 $string['publishto'] = 'הרשאות צפיה';
+$string['publishto_help'] = 'יש כאן שלוש הגדרות אפשריות
+**עצמכם (טיוטא)** - רק אתם וההנהלה יכולים לראות את הידיעה הזו.
+**כל אחד שרשום לאתר הזה** - כל מי שרשום לאתר הזה יכול לקרוא את הידיעה הזו.
+**כל אחד בעולם** - כולם, כולל אורחים, יכולים לקרוא את הידיעה הזו.';
 $string['publishtocourse'] = 'משתמשים משתפים קורס איתך';
 $string['publishtocourseassoc'] = 'חברים בקורס המיוחס';
 $string['publishtocourseassocparam'] = 'משתמשים של {$a}';
 $string['publishtogroup'] = 'משתמשים משתפים קבוצה איתך';
 $string['publishtogroupassoc'] = 'חברי הקבוצה שלך עם הקורס המיוחס';
 $string['publishtogroupassocparam'] = 'חברי הקבוצה שלך ב {$a}';
-$string['publishto_help'] = '<p align="center"><b>פרסם ל</b></p>
-
-<p>יש כאן שלוש הגדרות אפשריות
-</p>
-
-<p><b>עצמכם (טיוטא)</b> - רק אתם וההנהלה יכולים לראות את הידיעה הזו.
-</p>
-
-<p><b>כל אחד שרשום לאתר הזה</b> - כל מי שרשום לאתר הזה יכול לקרוא את הידיעה הזו.
-</p>
-
-<p><b>כל אחד בעולם</b> - כולם, כולל אורחים, יכולים לקרוא את הידיעה הזו.
-</p>';
 $string['publishtonoone'] = 'לעצמך בלבד';
 $string['publishtosite'] = 'כל אחד באתר זה';
 $string['publishtoworld'] = 'כל אחד בעולם (ציבורי)';
@@ -174,7 +165,7 @@ $string['timewithin'] = 'הצג את התגים שנעשה בהם שימוש ב�
 $string['updateentrywithid'] = 'מעדכן את הידיעה';
 $string['url'] = 'URL';
 $string['url_help'] = 'הכנס כתובת הזנת RSS עבור הבלוג החיצוני שלך';
-$string['useblogassociations'] = 'אפשר ייחוסי בלוג ';
+$string['useblogassociations'] = 'אפשר ייחוסי בלוג';
 $string['useexternalblogs'] = 'אפשר בלוגים חיצוניים';
 $string['userblog'] = 'בלוג משתמש: {$a}';
 $string['userblogentries'] = 'ידיעות בלוג על-ידי {$a}';

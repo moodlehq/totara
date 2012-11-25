@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['alfresco_url'] = 'ה-URL של Alfresco ';
-$string['alfrescourltext'] = 'ה-URL של Alfresco חייב להיות: http://yoursite.com/alfresco/api';
 $string['alfresco:view'] = 'צפה במאגר Alfresco';
+$string['alfresco_url'] = 'ה-URL של Alfresco';
+$string['alfrescourltext'] = 'ה-URL של Alfresco חייב להיות: http://yoursite.com/alfresco/api';
 $string['configplugin'] = 'תצורת Alfresco';
 $string['notitle'] = 'אין כותרת';
 $string['password'] = 'סיסמה';

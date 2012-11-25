@@ -279,16 +279,14 @@ $string['continue'] = 'Ga door';
 $string['continuetocourse'] = 'Klik hier om je cursus binnen te gaan';
 $string['convertingwikitomarkdown'] = 'Wiki naar Markdown aan het converteren';
 $string['cookiesenabled'] = 'Cookies moeten aanstaan in je browser';
-$string['cookiesenabled_help'] = '<p>Deze site gebruikt twee cookies.</p>
-
-<p>De essentiële cookie is de \'session cookie\', meestal heet deze <b>MoodleSession</b>. Je moet deze cookie in je
+$string['cookiesenabled_help'] = 'Deze site gebruikt twee cookies.
+De essentiële cookie is de \'session cookie\', meestal heet deze **MoodleSession**. Je moet deze cookie in je
 browser toestaan om continuïteit en het behouden van je login van pagina naar pagina te garanderen. Als je uitlogt of de
-browser afsluit dan wordt deze cookie verwijderd (binnen de browser en op de server).</p>
-
-<p>De andere cookie is er alleen maar voor het gemak. Meestal heet deze iets als <b>MOODLEID</b>. Deze onthoudt slechts
+browser afsluit dan wordt deze cookie verwijderd (binnen de browser en op de server).
+De andere cookie is er alleen maar voor het gemak. Meestal heet deze iets als **MOODLEID**. Deze onthoudt slechts
 je gebruikersnaam binnen de browser. Deze cookie zorgt ervoor dat wanneer je terugkomt op deze site het veld met de gebruikersnaam ingevuld op
 de inlogpagina staat. Het is veilig om deze cookie te weigeren - je zult dan elke keer je gebruikersnaam opnieuw moeten
- intypen.</p>';
+intypen.';
 $string['cookiesnotenabled'] = 'Het gebruik van cookies is door je browser niet toegelaten. Met deze instelling kun je deze site niet gebruiken.';
 $string['copy'] = 'Kopie';
 $string['copyasnoun'] = 'Kopie';
@@ -339,9 +337,7 @@ $string['coursehidden'] = 'Deze cursus is nu niet beschikbaar voor leerlingen';
 $string['courseinfo'] = 'Cursusinformatie';
 $string['courselegacyfiles'] = 'Verouderde cursusbestanden';
 $string['courselegacyfiles_help'] = 'De cursusbestandenzone geeft wat terugwaartse compatibiliteit met Moodle 1.9 en vroeger. Alle bestanden in deze zone zijn altijd toegankelijk voor alle deelnemers van der cursus, of je ze nu linkt of niet, en er is geen manier om te weten te komen of deze bestanden gebruikt worden binnen Moodle of niet.
-
-Als je ze gebruikt binnen Moodle, dan stel je jezelf bloot aan een reeks beveiligings- en privacy-problemen en bijkomend problemen met ontbrekende bestanden in backups of bij het uitwisselen en hergebruiken van cursussen. Daarom kun je deze zone  beter niet gebruiken, tenzij je goed weet wat je doet.
-
+Als je ze gebruikt binnen Moodle, dan stel je jezelf bloot aan een reeks beveiligings- en privacy-problemen en bijkomend problemen met ontbrekende bestanden in backups of bij het uitwisselen en hergebruiken van cursussen. Daarom kun je deze zone beter niet gebruiken, tenzij je goed weet wat je doet.
 Onderstaande link geeft meer informatie over dit probleem en toont je betere manieren om bestanden te behandelen in Moodle 2';
 $string['coursemessage'] = 'Bericht voor de gebruikers van de cursus';
 $string['coursenotaccessible'] = 'Deze cursus is niet publiek toegankelijk';
@@ -689,31 +685,22 @@ $string['forgotten'] = 'Ben je je gebruikersnaam of wachtwoord vergeten?';
 $string['forgottenduplicate'] = 'Dit e-mailadres wordt ook door verschillende andere gebruikers gebruikt. Geef je gebruikersnaam in plaats van je e-mailadres.';
 $string['forgotteninvalidurl'] = 'Ongeldig wachtwoord reset URL';
 $string['format'] = 'Format';
-$string['format_help'] = '<h2>LAMS format</h2>
-<p class="indent">
-Deze format maakt de Learning Activity Management System (LAMS) interface het centrale deel van de cursus. LAMS moet geïnstalleerd zijn door de beheerder om dit te kunnen gebruiken.</p>
-
-<h2>SCORM format</h2>
-<p class="indent">
-Deze format toont een SCORM package in de eerste sectie van je cursus. (De SCORM/AICC module voorziet een alternatieve manier om een scormpakket in een cursus te tonen.)</p>
-
-<h2>Weekformaat</h2>
-<p class="indent">
+$string['format_help'] = '## LAMS format
+Deze format maakt de Learning Activity Management System (LAMS) interface het centrale deel van de cursus. LAMS moet geïnstalleerd zijn door de beheerder om dit te kunnen gebruiken.
+## SCORM format
+Deze format toont een SCORM package in de eerste sectie van je cursus. (De SCORM/AICC module voorziet een alternatieve manier om een scormpakket in een cursus te tonen.)
+## Weekformaat
 De cursus wordt week per peek georganiseerd, met een duidelijke start- en einddatum.
 Elke week wordt opgebouwd uit activiteiten. Sommige van die activiteiten kunnen over verschillende weken lopen, zoals opdrachten. Een online opdracht kan bijvoorbeeld gedurende twee weken vanaf de startdatum lopen.
-</p>
 
-<h2>Onderwerpformat</h2>
-<p class="indent">
+## Onderwerpformat
 Dit formaat lijkt erg op de weekformat, behalve dat elke week een onderwerp genoemd wordt. Een onderwerp is
 niet beperkt door een tijdslimiet. Je hoeft geen datums in te stellen.
-</p>
 
-<h2>Forumformat</h2>
-<p class="indent">Deze format is gebouwd rond één hoofdforum, het Sociale Forum. Dat verschijnt op de startpagina van de cursus. Het is
+## Forumformat
+Deze format is gebouwd rond één hoofdforum, het Sociale Forum. Dat verschijnt op de startpagina van de cursus. Het is
 nuttig voor situaties die minder vormgebonden zijn. Het moet zelfs niet over cursussen gaan. Zo zou het bijvoorbeeld
-kunnen dienen als aankondigingenbord voor een departement.
-</p>';
+kunnen dienen als aankondigingenbord voor een departement.';
 $string['formathtml'] = 'HTML-opmaak';
 $string['formatmarkdown'] = 'Markdown-opmaak';
 $string['formatplain'] = 'Plattetekstopmaak';
@@ -806,11 +793,9 @@ $string['helpwiththis'] = 'Hulp hierbij';
 $string['hiddenassign'] = 'Verborgen rol';
 $string['hiddenfromstudents'] = 'Verborgen voor leerlingen';
 $string['hiddensections'] = 'Verborgen onderwerpen';
-$string['hiddensections_help'] = '<p>Met deze optie kun je kiezen hoe je de verborgen secties in je cursus toont aan je leerlingen.</p>
-
-<p>Standaard wordt er een kleine zone getoond (in samengeklapte vorm, meestal grijs) om aan te geven waar de verborgen sectie zich bevindt, hoewel de verborgen activiteiten en teksten zelf niet zichtbaar zijn. Dit is vooral nuttig in cursussen met weken, zodat het duidelijk is welke weken er geen les is.</p>
-
-<p>Als je ervoor kiest kun je die secties helemaal verbergen, zodat de leerlingen zelfs niet weten dat er delen van de cursus verborgen zijn.</p>';
+$string['hiddensections_help'] = 'Met deze optie kun je kiezen hoe je de verborgen secties in je cursus toont aan je leerlingen.
+Standaard wordt er een kleine zone getoond (in samengeklapte vorm, meestal grijs) om aan te geven waar de verborgen sectie zich bevindt, hoewel de verborgen activiteiten en teksten zelf niet zichtbaar zijn. Dit is vooral nuttig in cursussen met weken, zodat het duidelijk is welke weken er geen les is.
+Als je ervoor kiest kun je die secties helemaal verbergen, zodat de leerlingen zelfs niet weten dat er delen van de cursus verborgen zijn.';
 $string['hiddensectionscollapsed'] = 'Verborgen secties worden samengeklapt getoond';
 $string['hiddensectionsinvisible'] = 'Verborgen secties worden helemaal niet getoond';
 $string['hide'] = 'Verberg';
@@ -839,12 +824,11 @@ $string['icon'] = 'Icoon';
 $string['icqnumber'] = 'ICQ-nummer';
 $string['idnumber'] = 'Nummer (ID)';
 $string['idnumbercourse'] = 'Nummer (ID) van de cursus';
-$string['idnumbercourse_help'] = '<p>Het ID-nummer van een cursus wordt alleen gebruikt wanneer deze cursus moet gekoppeld worden aan externe systemen - het wordt nooit getoond binnen Moodle. Als je een officiële codenaam hebt voor deze cursus, gebruik die dan hier ... anders kun je dit veld gewoon leeg laten.</p>';
+$string['idnumbercourse_help'] = 'Het ID-nummer van een cursus wordt alleen gebruikt wanneer deze cursus moet gekoppeld worden aan externe systemen - het wordt nooit getoond binnen Moodle. Als je een officiële codenaam hebt voor deze cursus, gebruik die dan hier ... anders kun je dit veld gewoon leeg laten.';
 $string['idnumbercoursecategory'] = 'Categorie ID nummer';
 $string['idnumbercoursecategory_help'] = 'Het ID-nummer van een cursuscategorie wordt alleen gebruikt als de categorie moet gekoppeld worden met externe systemen en wordt nergens anders op de site getoond. Als de categorie een officiële code heeft, kan die hier ingegeven worden, anders mag je dit veld leeglaten.';
 $string['idnumbermod'] = 'ID-nummer';
 $string['idnumbermod_help'] = 'Een ID-nummer instellen geeft een manier om de activiteit te identificeren voor de berekening van cijfers. Als de activiteit niet in een cijferberekening opgenomen wordt, dan mag dit veld leeg gelaten worden.
-
 Het ID-nummer kan ook ingesteld worden op de "Bewerk cijferberekening" -pagina in het cijferboek - het kan echter alleen bewerkt worden op de instellingspagina van de activiteit.';
 $string['idnumbertaken'] = 'Dit ID-nummer is al in gebruik';
 $string['imagealt'] = 'Afbeeldingsbeschrijvingen';
@@ -965,11 +949,11 @@ $string['maximumgrade'] = 'Hoogst haalbare cijfer';
 $string['maximumgradex'] = 'Maximum cijfer: {$a}';
 $string['maximumshort'] = 'Max';
 $string['maximumupload'] = 'Maximale uploadgrootte';
-$string['maximumupload_help'] = '<p>Deze instelling bepaalt de maximumgrootte die bestanden mogen hebben om geüpload te
+$string['maximumupload_help'] = 'Deze instelling bepaalt de maximumgrootte die bestanden mogen hebben om geüpload te
 kunnen worden door een leerling, begrensd door de site-instelling,
-ingesteld door de beheerder.</p>
-<p>Het is mogelijk om deze grootte verder in te krimpen
-via de instellingen in elke activiteitsmodule.</p>';
+ingesteld door de beheerder.
+Het is mogelijk om deze grootte verder in te krimpen
+via de instellingen in elke activiteitsmodule.';
 $string['maxnumberweeks'] = 'Maximum aantal weken/onderwerpen';
 $string['maxnumberweeks_desc'] = 'Dit controleert de maximum opties die verschijnen in de cursusinstelling voor  "Aantal weken/onderwerpen".';
 $string['maxnumcoursesincombo'] = 'Blader in <a href="{$a->link}">{$a->numberofcourses} cursussen</a>.';
@@ -1092,30 +1076,28 @@ Veel succes en met vriendelijke groet,
 
 {$a->signoff}';
 $string['newpicture'] = 'Nieuwe foto';
-$string['newpicture_help'] = '<p>Je kunt je foto van jouw computer naar deze server uploaden. Deze foto zal op verschillende plaatsen worden gebruikt om je herkenbaar te maken.</p>
-<p>Daarom kun je best een close-up van je gezicht gebruiken, maar je kunt ook gelijk welke andere afbeelding nemen.</p>
-<p>De foto moet in het JPG- of PNG-formaat zijn (de bestandsnamen eindigen gewoonlijk op .jpg of .png)</p>
-<p>Een digitale foto krijg je op volgende manieren:
-<ol>
-<li>door een digitale camera te gebruiken, de foto\'s op je computer zijn dan meestal al in het juiste formaat.</li>
-<li>je kan je scanner gebruiken om een afgedrukte foto in te scannen. Bewaar de foto in de JPG- of PNG-bestandsindeling.</li>
-<li>als je artistiek bent aangelegd, dan kun je een afbeelding tekenen met een tekenprogramma.</li>
-</ol></p>
+$string['newpicture_help'] = 'Je kunt je foto van jouw computer naar deze server uploaden. Deze foto zal op verschillende plaatsen worden gebruikt om je herkenbaar te maken.
+Daarom kun je best een close-up van je gezicht gebruiken, maar je kunt ook gelijk welke andere afbeelding nemen.
+De foto moet in het JPG- of PNG-formaat zijn (de bestandsnamen eindigen gewoonlijk op .jpg of .png)
+Een digitale foto krijg je op volgende manieren:
+1. door een digitale camera te gebruiken, de foto\'s op je computer zijn dan meestal al in het juiste formaat.
+2. je kan je scanner gebruiken om een afgedrukte foto in te scannen. Bewaar de foto in de JPG- of PNG-bestandsindeling.
+3. als je artistiek bent aangelegd, dan kun je een afbeelding tekenen met een tekenprogramma.
 
-<p>Om het bestand te uploaden, kies je voor de knop "Bladeren" in dit formulier en selecteer je het bestand op je
-harde schijf.</p>
-<p>LET OP: vergewis je ervan dat het bestand niet groter is dan de maximumgrootte of het bestand zal niet
-geüpload worden.</p>
-<p>Klik dan op de knop "Wijzig het profiel" onderaan de pagina - het afbeeldingsbestand zal bijgesneden worden tot een
-vierkant en verkleind worden tot 100 X 100 pixels.</p>
-<p>Wanneer je terug naar je profielpagina gebracht wordt, dan zou het kunnen dat het lijkt alsof de afbeelding niet
-gewijzigd is. In dat geval moet je even de knop "Vernieuwen" van je browser gebruiken.</p>';
+Om het bestand te uploaden, kies je voor de knop "Bladeren" in dit formulier en selecteer je het bestand op je
+harde schijf.
+LET OP: vergewis je ervan dat het bestand niet groter is dan de maximumgrootte of het bestand zal niet
+geüpload worden.
+Klik dan op de knop "Wijzig het profiel" onderaan de pagina - het afbeeldingsbestand zal bijgesneden worden tot een
+vierkant en verkleind worden tot 100 X 100 pixels.
+Wanneer je terug naar je profielpagina gebracht wordt, dan zou het kunnen dat het lijkt alsof de afbeelding niet
+gewijzigd is. In dat geval moet je even de knop "Vernieuwen" van je browser gebruiken.';
 $string['newsitem'] = 'Nieuwsitem';
 $string['newsitems'] = 'Nieuwsitems';
 $string['newsitemsnumber'] = 'Weer te geven nieuwsitems';
-$string['newsitemsnumber_help'] = '<p>In het "week-" en het "onderwerp"-format verschijnt er een speciaal forum dat "Nieuws" heet. Het is de ideale plek om nota\'s te posten die alle leerlingen moeten zien. (Standaard zijn alle leerlingen ingeschreven (lid) in dit forum en zullen ze je notitie krijgen via e-mail).</p>
-<p>Deze instelling bepaalt hoeveel recente nieuwsitems verschijnen op de startpagina van je cursus.</p>
-<p>Als je dit instelt op 0, dan verschijnt het "Laatste nieuws" niet.</p>';
+$string['newsitemsnumber_help'] = 'In het "week-" en het "onderwerp"-format verschijnt er een speciaal forum dat "Nieuws" heet. Het is de ideale plek om nota\'s te posten die alle leerlingen moeten zien. (Standaard zijn alle leerlingen ingeschreven (lid) in dit forum en zullen ze je notitie krijgen via e-mail).
+Deze instelling bepaalt hoeveel recente nieuwsitems verschijnen op de startpagina van je cursus.
+Als je dit instelt op 0, dan verschijnt het "Laatste nieuws" niet.';
 $string['newuser'] = 'Nieuwe gebruiker';
 $string['newusernewpasswordsubj'] = 'Hallo,';
 $string['newusernewpasswordtext'] = 'Hallo {$a->username},
@@ -1367,7 +1349,7 @@ $string['resourcedisplaydownload'] = 'Download verplicht';
 $string['resourcedisplayembed'] = 'In browser';
 $string['resourcedisplayframe'] = 'In frame';
 $string['resourcedisplaynew'] = 'Nieuw venster';
-$string['resourcedisplayopen'] = 'Open ';
+$string['resourcedisplayopen'] = 'Open';
 $string['resourcedisplaypopup'] = 'In pop-up';
 $string['resources'] = 'Bronnen';
 $string['resources_help'] = 'Met bronnen kun je bijna alle soorten webinhoud aan je cursus toevoegen';
@@ -1397,7 +1379,7 @@ $string['role'] = 'Rol';
 $string['rolemappings'] = 'Rollen koppelen';
 $string['rolerenaming'] = 'Hernoemen van rollen';
 $string['rolerenaming_help'] = 'Met deze opties kun je de getoonde namen van rollen die je in je cursus gebruikt wijzigen. Enkel de getoonde naam wordt gewijzigd - de onderliggende rechten van de rol worden niet gewijzigd.
-Deze nieuwe rolnamen zullen verschijnen op de deelnemerspagina van de cursus en op andere plaatsen in de cursus waar rollen getoond worden. Als de hernoemde rol er één is die de beheerder als "leraar" in de cursus aangeduid heeft, dan zal de nieuwe rolnaam ook verschijnen in de  cursusbeschrijving.';
+Deze nieuwe rolnamen zullen verschijnen op de deelnemerspagina van de cursus en op andere plaatsen in de cursus waar rollen getoond worden. Als de hernoemde rol er één is die de beheerder als "leraar" in de cursus aangeduid heeft, dan zal de nieuwe rolnaam ook verschijnen in de cursusbeschrijving.';
 $string['roles'] = 'Rollen';
 $string['rss'] = 'RSS';
 $string['rssarticles'] = 'Aantal recente RSS-artikels';
@@ -1415,31 +1397,26 @@ $string['savedat'] = 'Bewaard op:';
 $string['savepreferences'] = 'Instellingen bewaren';
 $string['saveto'] = 'Bewaar op';
 $string['scale'] = 'Schaal';
-$string['scale_help'] = '<p>Leraren kunnen nieuwe, aangepaste schalen maken om in hun cursus te gebruiken voor allerlei beoordelingen.
-</p>
+$string['scale_help'] = 'Leraren kunnen nieuwe, aangepaste schalen maken om in hun cursus te gebruiken voor allerlei beoordelingen.
 
-<p>De naam van de schaal zou de schaal duidelijk moeten identificeren: deze naam zal verschijnen in een schaal-selectielijst
-en onder contextgevoelige helpknoppen</p>
-
-<p>De schaal zelf wordt gedefinieerd door een geordende lijst van waarden, gerangschikt van negatief naar positief en gescheiden door komma\'s. Bijvoorbeeld:</p>
-
-<blockquote><em>
-   Teleurstellend, Niet goed genoeg, Matig, Goed, Zeer goed, Uitstekend!
-</em></blockquote>
-
-<p>Een schaal moet ook voorzien worden van een goede beschrijving over wat ze bedoelt en hoe ze zou moeten gebruikt worden.
-Deze beschrijving zal verschijnen in helppagina\'s voor leerlingen en leraren.</p>
-<p>Met behulp van het edit-icoon kan de schaal achteraf nog gewijzigd worden, met het kruisje kun je de schaal verwijderen</p>
-
-<p>De beheerder van de site kan van een aangepaste schaal van een cursus in de groep van de standaardschalen zetten. Op die manier kan  die schaal in alle cursussen gebruikt worden. De beheerder kan dit doen door in gelijk welke cursus een schaal met het pijltje te verplaatsen van de groep van de aangepaste schalen naar de groep met de standaardschalen.Tenslotte kunnen er één of meer "Standaard" schalen gedefiniëerd worden door je systeembeheerder.</p>
-<p>Let op: wanneer een schaal in gebruik is, kan er niets meer aan gewijzigd worden. Ze kan ook niet meer van groep (standaardschalen , aangepaste schalen) verwisselen.</p>';
+De naam van de schaal zou de schaal duidelijk moeten identificeren: deze naam zal verschijnen in een schaal-selectielijst
+en onder contextgevoelige helpknoppen
+De schaal zelf wordt gedefinieerd door een geordende lijst van waarden, gerangschikt van negatief naar positief en gescheiden door komma\'s. Bijvoorbeeld:
+> *
+> Teleurstellend, Niet goed genoeg, Matig, Goed, Zeer goed, Uitstekend!
+> *
+Een schaal moet ook voorzien worden van een goede beschrijving over wat ze bedoelt en hoe ze zou moeten gebruikt worden.
+Deze beschrijving zal verschijnen in helppagina\'s voor leerlingen en leraren.
+Met behulp van het edit-icoon kan de schaal achteraf nog gewijzigd worden, met het kruisje kun je de schaal verwijderen
+De beheerder van de site kan van een aangepaste schaal van een cursus in de groep van de standaardschalen zetten. Op die manier kan die schaal in alle cursussen gebruikt worden. De beheerder kan dit doen door in gelijk welke cursus een schaal met het pijltje te verplaatsen van de groep van de aangepaste schalen naar de groep met de standaardschalen.Tenslotte kunnen er één of meer "Standaard" schalen gedefiniëerd worden door je systeembeheerder.
+Let op: wanneer een schaal in gebruik is, kan er niets meer aan gewijzigd worden. Ze kan ook niet meer van groep (standaardschalen , aangepaste schalen) verwisselen.';
 $string['scales'] = 'Schalen';
 $string['scalescustom'] = 'Aangepaste schalen';
 $string['scalescustomcreate'] = 'Voeg een nieuwe schaal toe';
 $string['scalescustomno'] = 'Er zijn nog geen aangepaste schalen gemaakt';
 $string['scalesstandard'] = 'Standaardschalen';
 $string['scalestandard'] = 'Standaardschaal';
-$string['scalestandard_help'] = '<p>Een standaardschaal is een schaal die voor de hele site beschikbaar is, voor alle cursussen.</p>';
+$string['scalestandard_help'] = 'Een standaardschaal is een schaal die voor de hele site beschikbaar is, voor alle cursussen.';
 $string['scalestip'] = 'Om aangepaste schalen te maken, gebruik je de link
 \'Schalen...\'in het beheermenu van je cursus';
 $string['scalestip2'] = 'Om aangepaste beoordelingsschalen te maken klik je op Cijfers in het beheermenu van de cursus, kies dan Bewerk, Schalen.';
@@ -1451,7 +1428,6 @@ $string['screenreaderyes'] = 'Ja';
 $string['screenshot'] = 'Schermafdruk';
 $string['search'] = 'Zoek';
 $string['search_help'] = 'Voor het standaard zoeken met één of meer worden in de tekst, geef je je zoektermen in gescheiden door spaties. Alle woorden, langer dan twee tekens worden gebruikt.
-
 Voor geavanceerd zoeken, klik je op op de zoekknop zonder iets in het zoekvenster te typen om zo in het formulier voor geavanceerd zoeken terecht te komen.';
 $string['searchagain'] = 'Zoek nog een keer';
 $string['searchbyemail'] = 'Zoek op e-mailadres';
@@ -1505,9 +1481,9 @@ $string['settings'] = 'Instellingen';
 $string['shortname'] = 'Korte naam';
 $string['shortnamecollisionwarning'] = '[*]=Deze korte naam is al in gebruik door een andere cursus en zal gewijzigd moeten worden tijdens het goedkeuren';
 $string['shortnamecourse'] = 'Korte naam van de cursus';
-$string['shortnamecourse_help'] = '<p>Veel instituten hebben afkortingen die verwijzen naar cursussen, zoals BP102 of COMMS.
+$string['shortnamecourse_help'] = 'Veel instituten hebben afkortingen die verwijzen naar cursussen, zoals BP102 of COMMS.
 Zelfs al heb je zo\'n afkortingen niet, dan is het nog interessant er hier één te maken. De afkorting wordt gebruikt
-waar de lange naam niet nodig is (zoals bij het onderwerp in een e-mail)</p>';
+waar de lange naam niet nodig is (zoals bij het onderwerp in een e-mail)';
 $string['shortnametaken'] = 'Korte naam is al in gebruik voor een andere cursus ({$a})';
 $string['shortnameuser'] = 'Korte naam van de gebruiker';
 $string['shortsitename'] = 'Korte naam van de site (bijv. één woord)';
@@ -1523,19 +1499,17 @@ $string['showblockcourse'] = 'Toon een lijst met cursussen met dit blok';
 $string['showcomments'] = 'Toon/verberg notities';
 $string['showcommentsnonjs'] = 'Toon commentaren';
 $string['showdescription'] = 'Toon beschrijving op cursuspagina';
-$string['showdescription_help'] = 'Indien ingeschakeld zal de introductie/beschrijving  hierboven getoond worden op de cursuspagina just onder de link naar de activiteit/bron.';
+$string['showdescription_help'] = 'Indien ingeschakeld zal de introductie/beschrijving hierboven getoond worden op de cursuspagina just onder de link naar de activiteit/bron.';
 $string['showgrades'] = 'Laat cijfers aan leerlingen zien';
-$string['showgrades_help'] = '<p>Voor de meeste activiteiten is het mogelijk cijfers te geven.</p>
-
-<p>De standaardinstelling is dat de resultaten van alle activiteiten binnen een
- cursus bekeken kunnen worden op de cijferpagina. Die is beschikbaar vanuit de hoofdpagina
- van de cursus.</p>
-
-<p>Als een leraar niet geïnteresseerd is in het gebruiken van cijfers binnen
- een cursus, of als hij de cijfers wil verbergen voor de leerlingen, dan
-  kan het tonen van cijfers uitgezet worden bij de vakinstellingen. Het is
-   dan nog wel mogelijk om cijfers te geven voor individuele activiteiten, de
-   cijfers zullen alleen niet worden getoond.</p>';
+$string['showgrades_help'] = 'Voor de meeste activiteiten is het mogelijk cijfers te geven.
+De standaardinstelling is dat de resultaten van alle activiteiten binnen een
+cursus bekeken kunnen worden op de cijferpagina. Die is beschikbaar vanuit de hoofdpagina
+van de cursus.
+Als een leraar niet geïnteresseerd is in het gebruiken van cijfers binnen
+een cursus, of als hij de cijfers wil verbergen voor de leerlingen, dan
+kan het tonen van cijfers uitgezet worden bij de vakinstellingen. Het is
+dan nog wel mogelijk om cijfers te geven voor individuele activiteiten, de
+cijfers zullen alleen niet worden getoond.';
 $string['showlistofcourses'] = 'Laat de lijst met cursussen zien';
 $string['showmodulecourse'] = 'Toon een lijst met cursussen met deze activiteit';
 $string['showonly'] = 'Toon enkel';
@@ -1544,18 +1518,15 @@ $string['showonlyweek'] = 'Laat alleen week {$a} zien';
 $string['showperpage'] = 'Toon {$a} per pagina';
 $string['showrecent'] = 'Laat recente wijzigingen zien';
 $string['showreports'] = 'Toon activiteitenrapporten';
-$string['showreports_help'] = '<p>Elke deelnemer van een cursus kan zijn activiteitenrapporten raadplegen. Zij tonen zijn activiteiten binnen
-de huidige cursus, net als lijsten van al zijn bijdragen. In deze rapporten zie je gedetailleerde logs.</p>
-
-<p>Leraren hebben altijd toegang tot die rapporten met de knop die te vinden is op de pagina met het gebruikersprofiel
-van elke deelnemer.</p>
-
-<p>De toegang van leerlingen tot hun eigen rapporten wordt gecontroleerd door de leraar via de cursusinstellingen. Voor
+$string['showreports_help'] = 'Elke deelnemer van een cursus kan zijn activiteitenrapporten raadplegen. Zij tonen zijn activiteiten binnen
+de huidige cursus, net als lijsten van al zijn bijdragen. In deze rapporten zie je gedetailleerde logs.
+Leraren hebben altijd toegang tot die rapporten met de knop die te vinden is op de pagina met het gebruikersprofiel
+van elke deelnemer.
+De toegang van leerlingen tot hun eigen rapporten wordt gecontroleerd door de leraar via de cursusinstellingen. Voor
 sommige cursussen kunnen deze rapporten nuttig zijn om de leerlingen te laten terugblikken op hun eigen inzet en
-aanwezigheid binnen de elektronische leeromgeving, voor andere cursussen kan dit overbodig zijn.</p>
-
-<p>Een andere reden waarom je activiteitenrapporten zou af zetten, is dat het genereren van het rapport een grote serverbelasting kan
-veroorzaken. Voor grote klassen en langlopende cursussen kan het beter zijn om de optie te laten afstaan.<p>';
+aanwezigheid binnen de elektronische leeromgeving, voor andere cursussen kan dit overbodig zijn.
+Een andere reden waarom je activiteitenrapporten zou af zetten, is dat het genereren van het rapport een grote serverbelasting kan
+veroorzaken. Voor grote klassen en langlopende cursussen kan het beter zijn om de optie te laten afstaan.';
 $string['showsettings'] = 'Toon instellingen';
 $string['showtheselogs'] = 'Toon deze logs';
 $string['showthishelpinlanguage'] = 'Toon dit helpbestand in het {$a}';
@@ -1654,16 +1625,14 @@ $string['subcategories'] = 'Subcategorieën';
 $string['submit'] = 'Insturen';
 $string['success'] = 'Succes';
 $string['summary'] = 'Beschrijving';
-$string['summary_help'] = '<p>Een onderwerpbeschrijving is een korte tekst die de leerlingen voorbereidt op de activiteiten
-binnen dit onderwerp (of week).</p>
+$string['summary_help'] = 'Een onderwerpbeschrijving is een korte tekst die de leerlingen voorbereidt op de activiteiten
+binnen dit onderwerp (of week).
 
+De beschrijving zou erg kort moeten zijn, zodat de pagina met de cursussenlijst niet te lang wordt.
 
-<p>De beschrijving zou erg kort moeten zijn, zodat de pagina met de cursussenlijst niet te lang wordt.</p>
-
-
-<p>Als je vindt dat je meer wil schrijven dan een tweetal zinnen, overweeg dan om een bron
+Als je vindt dat je meer wil schrijven dan een tweetal zinnen, overweeg dan om een bron
 aan dit onderwerp toe te voegen. (de eerste activiteit zou bijvoorbeeld een pagina kunnen
-zijn die heet <b>Over dit onderwerp</b>).</p>';
+zijn die heet **Over dit onderwerp**).';
 $string['summaryof'] = 'Beschrijving van {$a}';
 $string['supplyinfo'] = 'Meer details';
 $string['switchdevicedefault'] = 'Schakel over naar standaard thema';

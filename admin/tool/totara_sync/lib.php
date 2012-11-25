@@ -41,13 +41,27 @@ function tool_totara_sync_cron() {
     $elements = totara_sync_get_elements($onlyenabled=true);
 
     foreach ($elements as $element) {
-        if (!method_exists($element, 'sync')) {
-            // Skip if no sync() method exists
+        try {
+            if (!method_exists($element, 'sync')) {
+                // Skip if no sync() method exists
+                continue;
+            }
+
+            // Finally, start element syncing
+            $element->sync();
+        } catch (totara_sync_exception $e) {
+            $msg = $e->getMessage();
+            $msg .= !empty($e->debuginfo) ? " - {$e->debuginfo}" : '';
+            totara_sync_log($e->tsync_element, $msg, $e->tsync_logtype, $e->tsync_action);
+            $element->get_source()->drop_temp_table();
+            continue;
+        } catch (Exception $e) {
+            totara_sync_log($element->get_name(), $e->getMessage(), 'error', 'unknown');
+            $element->get_source()->drop_temp_table();
             continue;
         }
 
-        // Finally, start element syncing
-        $element->sync();
+        $element->get_source()->drop_temp_table();
     }
 
     return true;
@@ -210,4 +224,25 @@ function totara_sync_bulk_insert($table, $datarows) {
     unset($chunked_datarows);
 
     return true;
+}
+
+class totara_sync_exception extends moodle_exception {
+    public $tsync_element;
+    public $tsync_action;
+    public $tsync_logtype;
+
+    /**
+     * Constructor
+     * @param string $errorcode The name of the string from error.php to print
+     * @param object $a Extra words and phrases that might be required in the error string
+     * @param string $debuginfo optional debugging information
+     * @param string $logtype optional totara sync log type
+     */
+    public function __construct($element, $action, $errorcode, $a = null, $debuginfo = null, $logtype = 'error') {
+        $this->tsync_element = $element;
+        $this->tsync_action = $action;
+        $this->tsync_logtype = $logtype;
+
+        parent::__construct($errorcode, 'tool_totara_sync', $link='', $a, $debuginfo);
+    }
 }

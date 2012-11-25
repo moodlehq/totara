@@ -153,8 +153,7 @@ $string['autosubscribe'] = 'Automatisk prenumeration på forum';
 $string['autosubscribeno'] = 'Nej, jag vill inte bli automatiskt registrerad som prenumerant på forum.';
 $string['autosubscribeyes'] = 'Ja, registrera mig som prenumerant när jag gör ett inlägg i ett visst forum.';
 $string['availability'] = 'Tillgänglighet';
-$string['availability_help'] = 'Det här alternativet avgör om kursen visas på listan över kurser.Förutom (distans)-lärare och administratörer så får inga användare logga in på kursen.
-';
+$string['availability_help'] = 'Det här alternativet avgör om kursen visas på listan över kurser.Förutom (distans)-lärare och administratörer så får inga användare logga in på kursen.';
 $string['availablecourses'] = 'Tillgängliga kurser';
 $string['back'] = 'Tillbaka';
 $string['backto'] = 'Tillbaka till {$a}';
@@ -211,13 +210,12 @@ $string['cancel'] = 'Återställ';
 $string['cancelled'] = 'Avbruten';
 $string['categories'] = 'Kurskategorier';
 $string['category'] = 'Kategori';
-$string['category_help'] = '<p>Din administrat&ouml;r av Moodle kan ha satt upp
-ett flertal kategorier av kurser.</p>
-<p>Till exempel, \'Naturvetenskap\', \'Humaniora\', \'Folkh&auml;lsa\' etc.</p>
-<p>V&auml;lj det som passar in b&auml;st p&aring; Din kurs.
-Detta val kommer att p&aring;verka var i kurslistan Din kurs visas.
-Detta g&ouml;r det l&auml;ttare f&ouml;r de l&auml;rande att hitta Din kurs.
-</p>';
+$string['category_help'] = 'Din administratör av Moodle kan ha satt upp
+ett flertal kategorier av kurser.
+Till exempel, \'Naturvetenskap\', \'Humaniora\', \'Folkhälsa\' etc.
+Välj det som passar in bäst på Din kurs.
+Detta val kommer att påverka var i kurslistan Din kurs visas.
+Detta gör det lättare för de lärande att hitta Din kurs.';
 $string['categoryadded'] = 'Kategorin \'{$a}\' lades till';
 $string['categorycontents'] = 'Underkategorier och kurser';
 $string['categorycurrentcontents'] = 'Innehåll i {$a}';
@@ -284,24 +282,24 @@ $string['continue'] = 'Nästa';
 $string['continuetocourse'] = 'Klicka här för få tillträde till Din kurs.';
 $string['convertingwikitomarkdown'] = 'Konverterar Wiki till Markdown';
 $string['cookiesenabled'] = 'Du måste aktivera \'Cookies\' i inställningarna till din webbläsare.';
-$string['cookiesenabled_help'] = '<p>Den h&auml;r webbplatsen anv&auml;nder tv&aring; \'cookies\'.\'Cookies\' &auml;r sm&aring; filer som kan
-inneh&aring;lla en kort text. Servern kan lagra s&aring;dana filer p&aring; Din h&aring;rddisk.
-N&auml;r Du &aring;terv&auml;nder till samma server s&aring; kan den komma ih&aring;g Dig.
-</p><p>Endast den server som har lagt in \'cookien\' kan l&auml;sa den. \'Cookies\' &auml;r inte en
-ink&ouml;rsport f&ouml;r datavirus. Du kan sj&auml;lv, via Din webbl&auml;sares inst&auml;llningar,
- best&auml;mma om Du vill till&aring;ta \'cookies\' eller ej.</p>
- <p>Den viktigaste &auml;r \'cookien\' f&ouml;r sessioner, vanligtvis kallad <b>MoodleSession</b>.
-Du m&aring;ste till&aring;ta denna \'cookie\' i Din webbl&auml;sare
-f&ouml;r att bibeh&aring;lla Din login-information fr&aring;n sida till sida i v&aring;r l&auml;romilj&ouml;.</p>
-<p>N&auml;r Du loggar ut eller st&auml;nger av webbl&auml;saren tas \'cookien\' automatiskt bort,
-b&aring;de fr&aring;n Din webbl&auml;sare och fr&aring;n servern.</p>
-<p>Den andra \'cookien\'  &auml;r bara till f&ouml;r ren bekv&auml;mlighet.
-Den kallas oftast f&ouml;r n&aring;got i stil med <b>MOODLEID</b>.
-Den kommer bara ih&aring;g Ditt anv&auml;ndarnamn i webbl&auml;saren.
-Detta inneb&auml;r att n&auml;r Du bes&ouml;ker l&auml;romilj&ouml;n n&auml;sta g&aring;ngs&aring; kommer anv&auml;ndarnamnet redan att vara ifyllt.</p>
-<p>Du kan om Du vill avaktivera denna funktion. Det inneb&auml;r is&aring;fall bara
-att Du m&aring;ste skriva in Ditt anv&auml;ndarnamn
-varje g&aring;ng Du loggar in.</p>';
+$string['cookiesenabled_help'] = 'Den här webbplatsen använder två \'cookies\'.\'Cookies\' är små filer som kan
+innehålla en kort text. Servern kan lagra sådana filer på Din hårddisk.
+När Du återvänder till samma server så kan den komma ihåg Dig.
+Endast den server som har lagt in \'cookien\' kan läsa den. \'Cookies\' är inte en
+inkörsport för datavirus. Du kan själv, via Din webbläsares inställningar,
+bestämma om Du vill tillåta \'cookies\' eller ej.
+Den viktigaste är \'cookien\' för sessioner, vanligtvis kallad **MoodleSession**.
+Du måste tillåta denna \'cookie\' i Din webbläsare
+för att bibehålla Din login-information från sida till sida i vår läromiljö.
+När Du loggar ut eller stänger av webbläsaren tas \'cookien\' automatiskt bort,
+både från Din webbläsare och från servern.
+Den andra \'cookien\' är bara till för ren bekvämlighet.
+Den kallas oftast för något i stil med **MOODLEID**.
+Den kommer bara ihåg Ditt användarnamn i webbläsaren.
+Detta innebär att när Du besöker läromiljön nästa gångså kommer användarnamnet redan att vara ifyllt.
+Du kan om Du vill avaktivera denna funktion. Det innebär isåfall bara
+att Du måste skriva in Ditt användarnamn
+varje gång Du loggar in.';
 $string['cookiesnotenabled'] = 'Cookies är f.n. tyvärr inte aktiverade i inställningarna till Din webbläsare.';
 $string['copy'] = 'Kopiera';
 $string['copyasnoun'] = 'kopiera';
@@ -691,7 +689,7 @@ $string['existingstudents'] = 'Registrerade studenter/<br />elever/<br />deltaga
 $string['existingteachers'] = 'Befintliga distanslärare/<br />handledare/<br />coacher';
 $string['expandall'] = 'Expandera allt';
 $string['expirynotify'] = 'Meddelande om att registrering har upphört';
-$string['expirynotify_help'] = '<p>Meddelande om att registering har upph&ouml;rt.</p>';
+$string['expirynotify_help'] = 'Meddelande om att registering har upphört.';
 $string['expirynotifyemail'] = 'Registreringen av följande studenter/elever/deltagare/lärande på den här kursen upphör efter exakt {$a->threshold} dagar:
 {$a->current}
 Registreringen av följande studenter/elever/deltagare/lärande på den här kursen upphör inom mindre {$a->threshold} dagar:
@@ -705,7 +703,7 @@ $string['expirynotifystudentsemail'] = 'Käre/a {$a->studentstr}::
 Det här är ett meddelande om att Din registrering på kursen {$a->course} kommer att upphöra inom {$a->threshold} dagar.
 Om Du har frågor om detta - kontakta Din  {$a->teacherstr}.';
 $string['expirythreshold'] = 'Tröskel';
-$string['expirythreshold_help'] = 'Om en period för registrering har angetts då kan Du avgöra hur lång tid i förväg som  studenter/elever/deltagare/lärande ska meddelas via e-post om att tiden håller på att gå ut.';
+$string['expirythreshold_help'] = 'Om en period för registrering har angetts då kan Du avgöra hur lång tid i förväg som studenter/elever/deltagare/lärande ska meddelas via e-post om att tiden håller på att gå ut.';
 $string['explanation'] = 'Förklaring';
 $string['extendenrol'] = 'Förläng registrering (individuellt)';
 $string['extendperiod'] = 'Förlängd period';
@@ -741,33 +739,25 @@ $string['forgotten'] = 'Har Du glömt Ditt användarnamn och lösenord?';
 $string['forgottenduplicate'] = 'Den här e-postadressen används i ett flertal konton, var snäll och ange ett användarnamn istället.';
 $string['forgotteninvalidurl'] = 'URL till återställning av ogiltigt lösenord.';
 $string['format'] = 'Format';
-$string['format_help'] = '<h2>LAMS kursformat</h2>
-<p class="indent">
-Det här formatet innebär att gränssnittet för "the Learning Activity Management System (LAMS)" blir centralt för kursen. LAMS-formatet måste ställas in av en administratör.</p>
+$string['format_help'] = '## LAMS kursformat
+Det här formatet innebär att gränssnittet för "the Learning Activity Management System (LAMS)" blir centralt för kursen. LAMS-formatet måste ställas in av en administratör.
+## SCORM-format
+Det här formatet visar ett SCORM-paket i den första sektionen på kursens hemsida. (SCORM/AICC-modulen tillhandahåller en alternativ metod för att visa ett SCORM-paket i en kurs.)
+**Veckoformat**
+* Den här kursen är organiserad enligt en bunden veckoplanering
+med ett tydligt startdatum och ett slutdatum. Varje vecka innehåller
+aktiviteter. En del av dessa, dagboken t ex kan ha fönster som är öppna,
+i säg, två veckor - därefter är de inte längre tillgängliga.
 
-<h2>SCORM-format</h2>
-<p class="indent">
-Det här formatet visar ett SCORM-paket i den första sektionen på kursens hemsida. (SCORM/AICC-modulen tillhandahåller en alternativ metod för att visa ett SCORM-paket i en kurs.)</p>
+**Ämnesformat**
+* Detta liknar veckoformatet, bortsett från att \'veckan\' kallas \'ämne\'.
+Ett ämne är inte bundet av ett tidschema, studietakten är fri.
 
-<p><b>Veckoformat</b></p>
-<ul>
-<li>Den h&auml;r kursen &auml;r organiserad enligt en bunden veckoplanering
-med ett tydligt startdatum och ett slutdatum. Varje vecka inneh&aring;ller
-aktiviteter. En del av dessa, dagboken t ex kan ha f&ouml;nster som &auml;r &ouml;ppna,
-i s&auml;g, tv&aring; veckor - d&auml;refter &auml;r de inte l&auml;ngre tillg&auml;ngliga.</li>
-</ul>
-<p><b>Ämnesformat</b></p>
-<ul>
-<li>Detta liknar veckoformatet, bortsett fr&aring;n att \'veckan\' kallas \'&auml;mne\'.
-Ett &auml;mne &auml;r inte bundet av ett tidschema, studietakten &auml;r fri.</li>
-</ul>
-<p><b>Gemenskapsformat</b></p>
-<ul>
-<li>Det h&auml;r formatet &auml;r organiserat kring ett huvudforum, det sociala
-forumet som visas p&aring; kursens hemsida. Det &auml;r bra f&ouml;r situationer
-som kr&auml;ver en friare form. Det beh&ouml;ver inte ens vara en kurs. Det kan t ex vara
-en anslagstavla f&ouml;r en avdelning.</li>
-</ul>';
+**Gemenskapsformat**
+* Det här formatet är organiserat kring ett huvudforum, det sociala
+forumet som visas på kursens hemsida. Det är bra för situationer
+som kräver en friare form. Det behöver inte ens vara en kurs. Det kan t ex vara
+en anslagstavla för en avdelning.';
 $string['formathtml'] = 'HTML-format';
 $string['formatmarkdown'] = 'Markdown format';
 $string['formatplain'] = 'Ren text';
@@ -829,27 +819,24 @@ $string['groupmembers'] = 'Gruppmedlemmar';
 $string['groupmemberssee'] = 'Visa gruppmedlemmar';
 $string['groupmembersselected'] = 'Medlemmar i vald grupp';
 $string['groupmode'] = 'Gruppläge';
-$string['groupmode_help'] = 'Du kan g&ouml;ra indelningar i grupper p&aring; f&ouml;ljande tre s&auml;tt:
-   <ul>
-      <li><b>Inga grupper</b> - det finns inga subgrupper utan alla tillh&ouml;r samma stora gemenskap (ung. klass).</li>
-      <li><b>Separata grupper</b> - deltagarna i varje grupp kan bara se sin egen grupp, &ouml;vriga grupper &auml;r dolda.</li>
-      <li><b>Synliga grupper</b>  - deltagarna i varje grupp arbetar i sin egen grupp men de kan ocks&aring; se de andra grupperna.</li>
-   </ul>
-<p>Gruppindelningen kan definieras p&aring; tv&aring; niv&aring;er:</p>
-<dl>
-   <dt><b>1. Kursniv&aring;</b></dt>
-   <dd>Gruppindelningen definieras p&aring; kursniv&aring; vilket &auml;r standardinst&auml;llningen f&ouml;r alla aktiviteter p&aring; den kursen.
-    <br /><br /></dd>
-   <dt><b>2. Aktivitetsniv&aring;</b></dt>
-   <dd>Varje enskild aktivitet som st&ouml;djer grupper kan ocks&aring; delas upp s&aring; att flera olika grupper arbetar med samma aktivitet.
-   Om kursen &auml;r inst&auml;lld f&ouml;r "<a href="help.php?module=moodle&file=groupmodeforce.html">Obligatorisk indelning i grupper</a>" d&aring; kommer
-   inst&auml;llningen f&ouml;r varje enskild aktivitet att bli ogiltig.</dd>
-</dl>';
+$string['groupmode_help'] = 'Du kan göra indelningar i grupper på följande tre sätt:
+\* **|Inga grupper** - det finns inga subgrupper utan alla tillhör samma stora gemenskap (ung. klass).
+\* **|Separata grupper** - deltagarna i varje grupp kan bara se sin egen grupp, övriga grupper är dolda.
+\* **|Synliga grupper** - deltagarna i varje grupp arbetar i sin egen grupp men de kan också se de andra grupperna.
+
+Gruppindelningen kan definieras på två nivåer:
+**1. Kursnivå**
+: Gruppindelningen definieras på kursnivå vilket är standardinställningen för alla aktiviteter på den kursen.
+
+**2. Aktivitetsnivå**
+: Varje enskild aktivitet som stödjer grupper kan också delas upp så att flera olika grupper arbetar med samma aktivitet.
+Om kursen är inställd för Obligatorisk indelning i grupper då kommer
+inställningen för varje enskild aktivitet att bli ogiltig.';
 $string['groupmodeforce'] = 'Framtvinga gruppläge';
-$string['groupmodeforce_help'] = '<p>Om Du st&auml;ller in obligatorisk indelning i grupper p&aring; kursniv&aring;
-s&aring; till&auml;mpas den gruppindelningen p&aring; alla aktiviteter i kursen.
-Detta g&auml;ller &auml;ven om Du g&ouml;r n&aring;gon annan inst&auml;llning i olika enskilda aktiviteter. </p>
-<p>Det h&auml;r &auml;r anv&auml;ndbart n&auml;r Du vill arrangera samma kurs f&ouml;r ett antal helt &aring;tskilda grupper.</p>';
+$string['groupmodeforce_help'] = 'Om Du ställer in obligatorisk indelning i grupper på kursnivå
+så tillämpas den gruppindelningen på alla aktiviteter i kursen.
+Detta gäller även om Du gör någon annan inställning i olika enskilda aktiviteter.
+Det här är användbart när Du vill arrangera samma kurs för ett antal helt åtskilda grupper.';
 $string['groupmy'] = 'Min grupp';
 $string['groupnonmembers'] = 'Personer som inte är med i någon grupp';
 $string['groupnotamember'] = 'Du är tyvärr inte medlem i den gruppen.';
@@ -874,13 +861,13 @@ $string['helpwiththis'] = 'Hjälp med detta';
 $string['hiddenassign'] = 'Dold uppgift';
 $string['hiddenfromstudents'] = 'Dolt för studenter/deltagare/elever/lärande';
 $string['hiddensections'] = 'Dolda sektioner';
-$string['hiddensections_help'] = '<p>Det h&auml;r alternativet g&ouml;r det m&ouml;jligt f&ouml;r Dig att avg&ouml;ra hur
-de dolda  sektionerna i Din kurs ska visas f&ouml;r studenterna/eleverna/deltagarna/de l&auml;rande.</p>
-<p>Som f&ouml;rinst&auml;lld standard s&aring; visas ett litet omr&aring;de(i f&ouml;rminskad form, vanligvis i gr&aring;tt) f&ouml;r att indikera
-var den dolda sektionen finns. De kan dock inte se sj&auml;lva de dolda aktiviteterna och texterna.
-Detta &auml;r s&auml;rskilt anv&auml;ndbart i veckoformatet. D&aring; kan Du v&auml;lja att visa bara den innevarande veckan aktiviteter.</p>
-<p>Du kan &auml;ven v&auml;lja att d&ouml;lja sektionerna helt s&aring; att studenterna/eleverna/deltagarna/de l&auml;rande inte ens ser
-att s&aring;dana finns.</p>';
+$string['hiddensections_help'] = 'Det här alternativet gör det möjligt för Dig att avgöra hur
+de dolda sektionerna i Din kurs ska visas för studenterna/eleverna/deltagarna/de lärande.
+Som förinställd standard så visas ett litet område(i förminskad form, vanligvis i grått) för att indikera
+var den dolda sektionen finns. De kan dock inte se själva de dolda aktiviteterna och texterna.
+Detta är särskilt användbart i veckoformatet. Då kan Du välja att visa bara den innevarande veckan aktiviteter.
+Du kan även välja att dölja sektionerna helt så att studenterna/eleverna/deltagarna/de lärande inte ens ser
+att sådana finns.';
 $string['hiddensectionscollapsed'] = 'Dolda sektioner visas i  ihoppackat format.';
 $string['hiddensectionsinvisible'] = 'Dolda sektioner är helt och hållet osynliga.';
 $string['hide'] = 'Dölj';
@@ -905,11 +892,11 @@ $string['htmlformat'] = 'Snyggt HTML- format';
 $string['icqnumber'] = 'ICQ nummer';
 $string['idnumber'] = 'ID nummer';
 $string['idnumbercourse'] = 'ID-nummer för kurs';
-$string['idnumbercourse_help'] = '<p>ID-numret f&ouml;r en kurs anv&auml;nds bara n&auml;r Du beh&ouml;ver matcha den h&auml;r kursen mot externa system - det visas aldrig inom Moodle. Om Du har ett officiellt kodnamn f&ouml;r den h&auml;r kursen s&aring; ska Du anv&auml;nda det h&auml;r, annars kan Du l&auml;mna detta tomt</p>';
+$string['idnumbercourse_help'] = 'ID-numret för en kurs används bara när Du behöver matcha den här kursen mot externa system - det visas aldrig inom Moodle. Om Du har ett officiellt kodnamn för den här kursen så ska Du använda det här, annars kan Du lämna detta tomt';
 $string['idnumbermod'] = 'ID-nummer';
-$string['idnumbermod_help'] = '<p>Genom att ställa in ett ID-nummer så kan du identifiera en aktivitet med tanke på hur betygen ska beräknas.
+$string['idnumbermod_help'] = 'Genom att ställa in ett ID-nummer så kan du identifiera en aktivitet med tanke på hur betygen ska beräknas.
 Om aktiviteten inte ingår i betygsunderlaget då behöver du inte skriva in något i fältet för ID-nummer.
-<p> ID-numret kan även ställas in på sidan för att beräkna betyg i betygskatalogen. Du kan dock bara redigera det på sidan för att updatera aktiviteten.</p>';
+ID-numret kan även ställas in på sidan för att beräkna betyg i betygskatalogen. Du kan dock bara redigera det på sidan för att updatera aktiviteten.';
 $string['idnumbertaken'] = 'Det här ID-numret används redan';
 $string['imagealt'] = 'Beskrivning av bild';
 $string['import'] = 'Importera';
@@ -977,30 +964,30 @@ $string['loginsite'] = 'Logga in till denna webbplats';
 $string['loginsteps'] = 'Hej!
 <br />
 Du måste bl.a. skapa ett nytt användarkonto på denna webbplats för att få tillgång till de kurser som Du vill delta i. Varje individuell kurs kan också ha en engångsnyckel "kursnyckel". Den behöver Du dock inte  förrän senare.
-   Så här skapar Du Ditt konto:
-   <ol size="2">
-   <li>Fyll i formuläret på sidan <a href={$a}>
+Så här skapar Du Ditt konto:
+<ol size="2">
+<li>Fyll i formuläret på sidan <a href={$a}>
 Nytt konto</a> med de efterfrågade
 uppgifterna om Dig själv.</li>
-   <li>Ett e-postmeddelande kommer därefter
+<li>Ett e-postmeddelande kommer därefter
 omedelbart att sändas till
 Din e-postadress.</li>
-   <li>Läs din e-post, och klicka på webblänken som den innehåller.</li>
-   <li>Ditt konto kommer därmed att bekräftas
+<li>Läs din e-post, och klicka på webblänken som den innehåller.</li>
+<li>Ditt konto kommer därmed att bekräftas
 och Du kommer att loggas in.</li>
-   <li>Nu kan Du välja vilken kurs Du
+<li>Nu kan Du välja vilken kurs Du
 vill delta i.</li>
-   <li>Om Du måste ange en "kursnyckel" - så
+<li>Om Du måste ange en "kursnyckel" - så
 får Du använda den som Din lärare  har
 givit Dig. Med den kan Du registrera
 Dig på en sådan kurs som kräver det.</li>
-   <li>Nu kan Du använda hela kursen.
+<li>Nu kan Du använda hela kursen.
 Från och med nu behöver Du bara skriva
 in Ditt användarnamn och lösenord
 (i formuläret till vänster på denna sida)
 för att logga in och för att nå de kurser
 som Du är registrerad på.</li>
-   </ol>
+</ol>
 OBS! Genom att Du bekräftar kontot så samtycker
 Du till databehandling enligt Personuppgiftslagen.
 Om Du är osäker på vad det innebär så kan Du hitta
@@ -1037,12 +1024,12 @@ $string['maximumchars'] = 'Maximum av {$a} tecken';
 $string['maximumgrade'] = 'Maximum betyg';
 $string['maximumshort'] = 'Max';
 $string['maximumupload'] = 'Maximal storlek på uppladdade filer.';
-$string['maximumupload_help'] = '<p>Den h&auml;r inst&auml;llningen best&auml;mmer maximal storlek
-p&aring; de filer som de l&auml;rande f&aring;r ladda upp till kursen.
-Det finns dock ocks&aring; en &ouml;vergripande inst&auml;llning f&ouml;r
-hela webbsajten som administrat&ouml;ren har angivit.</p>
-<p>Du kan ytterligare begr&auml;nsa denna storlek genom
-inst&auml;llningarna f&ouml;r varje aktivitetsmodul.</p>';
+$string['maximumupload_help'] = 'Den här inställningen bestämmer maximal storlek
+på de filer som de lärande får ladda upp till kursen.
+Det finns dock också en övergripande inställning för
+hela webbsajten som administratören har angivit.
+Du kan ytterligare begränsa denna storlek genom
+inställningarna för varje aktivitetsmodul.';
 $string['maxsize'] = 'Max storlek: {$a}';
 $string['memberincourse'] = 'Personer i kursen.';
 $string['messagebody'] = 'Brödtext i meddelande';
@@ -1125,11 +1112,11 @@ Ditt lösenord på \'{$a->sitename}\' har blivit återställt
 och Du har fått en nytt tillfälligt lösenord.
 
 Din nuvarande inloggningsinformation är nu:
-   användarnamn: {$a->username}
-   lösenord: {$a->newpassword}
+användarnamn: {$a->username}
+lösenord: {$a->newpassword}
 
 Var vänlig besök denna sida för att ändra Ditt lösenord:
-   {$a->link}</p>
+{$a->link}</p>
 
 I de flesta e-postprogram kommer det att visas som
 en blå länk som Du bara behöver klicka på.
@@ -1141,56 +1128,52 @@ klicka sedan på Gå eller tryck på radmatningen (Enter).
 Med vänlig hälsning från: \'{$a->sitename}\' administratören,
 {$a->signoff}';
 $string['newpicture'] = 'Ny bild';
-$string['newpicture_help'] = '<p>Du kan ladda upp en bild fr&aring;n Din dator till den h&auml;r servern.
-Denna bild kommer att anv&auml;ndas i olika sammanhang f&ouml;r att
-representera Dig.</p>
-<p>Av den h&auml;r anledningen &auml;r det b&auml;st med en
-n&auml;rbild p&aring; Ditt ansikte, men Du kan anv&auml;nda vilken bild Du vill.</p>
-<p>Bilden m&aring;ste vara i JPG- eller PNG-format (dvs filnamnen slutar vanligtvis p&aring; .jpg eller .png).</p>
-<p>Du kan skapa en bildfil med en av de fyra nedanst&aring;ende metoderna:</p>
-<ol>
-<li>Du kan anv&auml;nda en digital kamera, vilket inneb&auml;r att Dina bilder
-sannolikt redan finns i Din dator och i r&auml;tt format.</li>
-<li>Du kan anv&auml;nda en scanner f&ouml;r att scanna en pappersbild.
-Se till att Du sparar den i JPG- eller PNG-format.</li>
-<li>Om Du &auml;r konstn&auml;rligt lagd s&aring; kan Du kanske teckna en bild
-med hj&auml;lp av ett grafiskt program.</li>
-<li>Slutligen kan Du hitta bilder p&aring; webben som n&aring;gon har st&auml;llt till fritt f&ouml;rfogande.
-<br />Du b&ouml;r dock kontrollera att bilden verkligen &auml;r fri att anv&auml;nda.
-<br />
-Normalt sett s&aring; &auml;r bilder upphovsr&auml;ttsskyddade
-och d&aring; m&aring;ste Du fr&aring;ga den som &auml;ger r&auml;ttigheterna om lov f&ouml;rst.
-<br />
-<a target="google" href="http://images.google.com/">http://images.google.com</a>
-&auml;r en superb plats att leta efter bilder p&aring;. N&auml;r Du v&auml;l har funnit
-en kan Du \'h&ouml;gerklicka\' p&aring; den med musen och v&auml;lja \'Spara bild\' fr&aring;n
-menyn. Det kan skilja sig lite fr&aring;n dator till dator hur man g&ouml;r.</li>
-</ol>
-<p>F&ouml;r att ladda upp bilden ska Du klicka p&aring; \'Bl&auml;ddra\'-knappen
-p&aring; den h&auml;r sidan och v&auml;lja bilden fr&aring;n Din h&aring;rddisk.
-</p>
-<p>OBS! F&ouml;rvissa Dig om att filen inte &auml;r st&ouml;rre &auml;n
-den angivna maxstorleken, annars laddas den inte upp.</p>
-<p>Klicka sedan p&aring; \'Uppdatera profil\' l&auml;ngst ner -
+$string['newpicture_help'] = 'Du kan ladda upp en bild från Din dator till den här servern.
+Denna bild kommer att användas i olika sammanhang för att
+representera Dig.
+Av den här anledningen är det bäst med en
+närbild på Ditt ansikte, men Du kan använda vilken bild Du vill.
+Bilden måste vara i JPG- eller PNG-format (dvs filnamnen slutar vanligtvis på .jpg eller .png).
+Du kan skapa en bildfil med en av de fyra nedanstående metoderna:
+1. Du kan använda en digital kamera, vilket innebär att Dina bilder
+sannolikt redan finns i Din dator och i rätt format.
+2. Du kan använda en scanner för att scanna en pappersbild.
+Se till att Du sparar den i JPG- eller PNG-format.
+3. Om Du är konstnärligt lagd så kan Du kanske teckna en bild
+med hjälp av ett grafiskt program.
+4. Slutligen kan Du hitta bilder på webben som någon har ställt till fritt förfogande.
+Du bör dock kontrollera att bilden verkligen är fri att använda.
+Normalt sett så är bilder upphovsrättsskyddade
+och då måste Du fråga den som äger rättigheterna om lov först.
+http://images.google.com
+är en superb plats att leta efter bilder på. När Du väl har funnit
+en kan Du \'högerklicka\' på den med musen och välja \'Spara bild\' från
+menyn. Det kan skilja sig lite från dator till dator hur man gör.
+
+För att ladda upp bilden ska Du klicka på \'Bläddra\'-knappen
+på den här sidan och välja bilden från Din hårddisk.
+OBS! Förvissa Dig om att filen inte är större än
+den angivna maxstorleken, annars laddas den inte upp.
+Klicka sedan på \'Uppdatera profil\' längst ner -
 bilden kommer att formas om till en kvadrat och skalas ner till en storlek av
-100x100 pixlar.</p>
-<p>N&auml;r Du kommer till Din personliga presentationssida kanske det visar sig att bilden inte
-har &auml;ndrats. Om det skulle vara s&aring; beh&ouml;ver Du bara anv&auml;nda funktionen
-\'Ladda om sidan\' i Din webbl&auml;sare.</p>';
+100x100 pixlar.
+När Du kommer till Din personliga presentationssida kanske det visar sig att bilden inte
+har ändrats. Om det skulle vara så behöver Du bara använda funktionen
+\'Ladda om sidan\' i Din webbläsare.';
 $string['newsitem'] = 'Notis';
 $string['newsitems'] = 'nyhetsnotiser';
 $string['newsitemsnumber'] = 'Nyhetsnotiser att visa';
-$string['newsitemsnumber_help'] = '<p>I de b&aring;da formaten \'Veckoformat\' och \'Ämnesformat\'
+$string['newsitemsnumber_help'] = 'I de båda formaten \'Veckoformat\' och \'Ämnesformat\'
 finns ett speciellt forum som kallas \'Nyheter\'.
-Det &auml;r ett bra st&auml;lle att publicera nyhetsnotiser
-som alla l&auml;rande kan se. Standardvalet &auml;r att alla
-l&auml;rande prenumererar p&aring; detta forum och att de kommer
-att f&aring; Dina nyhetsnotiser med e-post.</p>
-<p>Den h&auml;r inst&auml;llningen avg&ouml;r hur m&aring;nga
-aktuella notiser som ska visas p&aring; hemsidan f&ouml;r Din
-kurs. Detta i en nyhetsbox nere p&aring; h&ouml;ger sida.</p>
-<p>Om Du st&auml;ller in detta till \'0 nyhetsnotiser\'
-s&aring; kommer inte ens nyhetsboxen att synas.</p>';
+Det är ett bra ställe att publicera nyhetsnotiser
+som alla lärande kan se. Standardvalet är att alla
+lärande prenumererar på detta forum och att de kommer
+att få Dina nyhetsnotiser med e-post.
+Den här inställningen avgör hur många
+aktuella notiser som ska visas på hemsidan för Din
+kurs. Detta i en nyhetsbox nere på höger sida.
+Om Du ställer in detta till \'0 nyhetsnotiser\'
+så kommer inte ens nyhetsboxen att synas.';
 $string['newuser'] = 'Ny användare';
 $string['newusernewpasswordsubj'] = 'Nytt användarkonto';
 $string['newusernewpasswordtext'] = 'Hej {$a->firstname},
@@ -1321,9 +1304,9 @@ $string['passwordrecovery'] = 'Ja, hjälp mig att logga in.';
 $string['passwordsdiffer'] = 'Dessa lösenord matchar inte.';
 $string['passwordsent'] = 'Lösenord har skickats.';
 $string['passwordsenttext'] = '<p>Vi har skickat ett e-postbrev till Din adress:<br /> {$a->email}.</p>
-   <p><b>Läs e-postmeddelandet för att se Ditt nya lösenord</b></p>
-   <p>Detta lösenord har skapats automatiskt och om Du vill kan Du<br />
-   <a href="{$a->link}">ändra lösenordet</a>  till något som är lättare att komma ihåg.</p>';
+<p><b>Läs e-postmeddelandet för att se Ditt nya lösenord</b></p>
+<p>Detta lösenord har skapats automatiskt och om Du vill kan Du<br />
+<a href="{$a->link}">ändra lösenordet</a>  till något som är lättare att komma ihåg.</p>';
 $string['pathnotexists'] = 'Sökvägen finns inte på Din server!';
 $string['pathslasherror'] = 'Sökvägar kan inte avslutas med snedstreck (slash)!!';
 $string['paymentinstant'] = 'Använd knappen nedan för att betala och bli registrerad inom några minuter!';
@@ -1476,34 +1459,34 @@ $string['savedat'] = 'Sparad:';
 $string['savepreferences'] = 'Spara inställningar.';
 $string['saveto'] = 'Spara till';
 $string['scale'] = 'Skala';
-$string['scale_help'] = '<p>Distansl&auml;rare kan skapa nya standardskalor
-som de kan anv&auml;nda i en kurs f&ouml;r alla
-typer av bed&ouml;mning/v&auml;rdering/betygss&auml;ttning.</p>
-<p>Namnet p&aring; skalan b&ouml;r vara en fras
-som g&ouml;r att man k&auml;nner igen den. Den
-visas p&aring; listorna &ouml;ver skalor som man
-kan v&auml;lja och p&aring; hj&auml;lpknappar
-som dyker upp i det givna sammanhanget.</p>
-<p>Sj&auml;lva skalan best&aring;r av en kommaseparerad lista i en
-viss ordning som str&auml;cker sig fr&aring;n det
-negativa till det positiva. Som till exempel: </p>
-<blockquote><i>
-   Otillfredsst&auml;llande, Inte tillr&auml;ckligt bra, Mittemellan, Bra, Mycket bra, Utm&auml;rkt
-</i></blockquote>
-<p>Skalan b&ouml;r ocks&aring; inneh&aring;lla en bra beskrivning av vad den
-betyder och hur man f&ouml;rv&auml;ntas anv&auml;nda den. Denna beskrivning
-visas p&aring; hj&auml;lpsidor som b&aring;de distansl&auml;rare och l&auml;rande
-kan se.</p>
-<p>Slutligen s&aring; kan det finnas en eller flera \'standard\'-skalor p&aring; Din sajt som
-systemadministrat&ouml;ren har definierat. Dessa kommer att vara tillg&auml;ngliga f&ouml;r alla
-kurser.</p>';
+$string['scale_help'] = 'Distanslärare kan skapa nya standardskalor
+som de kan använda i en kurs för alla
+typer av bedömning/värdering/betygssättning.
+Namnet på skalan bör vara en fras
+som gör att man känner igen den. Den
+visas på listorna över skalor som man
+kan välja och på hjälpknappar
+som dyker upp i det givna sammanhanget.
+Själva skalan består av en kommaseparerad lista i en
+viss ordning som sträcker sig från det
+negativa till det positiva. Som till exempel:
+> *
+> Otillfredsställande, Inte tillräckligt bra, Mittemellan, Bra, Mycket bra, Utmärkt
+> *
+Skalan bör också innehålla en bra beskrivning av vad den
+betyder och hur man förväntas använda den. Denna beskrivning
+visas på hjälpsidor som både distanslärare och lärande
+kan se.
+Slutligen så kan det finnas en eller flera \'standard\'-skalor på Din sajt som
+systemadministratören har definierat. Dessa kommer att vara tillgängliga för alla
+kurser.';
 $string['scales'] = 'Skalor';
 $string['scalescustom'] = 'Egendefinierade skalor';
 $string['scalescustomcreate'] = 'Lägg till en ny skala';
 $string['scalescustomno'] = 'Inga egendefinierade skalor har ännu lagts till.';
 $string['scalesstandard'] = 'Standardskalor';
 $string['scalestandard'] = 'Standardskala';
-$string['scalestandard_help'] = '<p>En standardskala är tillgänglig på hela webbplatsen för alla kurser.</p>';
+$string['scalestandard_help'] = 'En standardskala är tillgänglig på hela webbplatsen för alla kurser.';
 $string['scalestip'] = 'För att skapa egendefinierade skalor så får Du använda länken \'Skalor\' på menyn för administration av Din kurs.';
 $string['scalestip2'] = 'För att skapa anpassade skalor, klicka på Betygslänken i kursadministrationsmenyn coh välj sedan Redigera, Skalor.';
 $string['schedule'] = 'Schema';
@@ -1557,26 +1540,26 @@ att f&ouml;rest&auml;lla oss tv&aring; personer som exempel, en som framf&ouml;r
 <strong>enskilt (rationellt) inriktad vetare</strong> (Jonas)<br /> och den andra (Anna) som huvudsakligen &auml;r
 en <strong>socialt (empatiskt) inriktad vetare</strong>.</p>
 <ul>
-  <li>Jonas tycker om att f&ouml;rbli s&aring; \'objektiv\'
-  som m&ouml;jligt utan att inbegripa sina k&auml;nslor. N&auml;r han diskuterar med andra
-  m&auml;nniskor som kanske har andra &aring;sikter &auml;n honom, s&aring; tycker han om att
-  f&ouml;rsvara sina egna id&eacute;er genom att utnyttja logik f&ouml;r att hitta
-  luckor i den andres argumentation.
-  Jonas &auml;r en mycket starkt <strong>enskilt (rationellt) inriktad vetare</strong>.
-  <br /><br />
-  </li>
-  <li>
-  Anna &auml;r mer k&auml;nslig gentemot andra m&auml;nniskor.
-  Hon har utvecklad empatisk f&ouml;rm&aring;ga och hon tenderar att lyssna
-  och st&auml;lla fr&aring;gor tills hon k&auml;nner att hon f&aring;r kontakt
-  och kan f&ouml;rst&aring; den andres utg&aring;ngspunkter.
-  Hon l&auml;r sig genom att dela de erfarenheter som ledde till den kunskap hon finner
-  hos andra m&auml;nniskor.	N&auml;r hon talar med andra s&aring; undviker hon konfrontation
-  och f&ouml;rs&ouml;ker ofta att hj&auml;lpa den andre om hon ser en m&ouml;jlighet att g&ouml;r det,
-  genom att anv&auml;nda logiska f&ouml;rslag.
-  Anna &auml;r en mycket starkt <strong>socialt (empatiskt) inriktad vetare</strong>.
-   <br /><br />
-   </li>
+<li>Jonas tycker om att f&ouml;rbli s&aring; \'objektiv\'
+som m&ouml;jligt utan att inbegripa sina k&auml;nslor. N&auml;r han diskuterar med andra
+m&auml;nniskor som kanske har andra &aring;sikter &auml;n honom, s&aring; tycker han om att
+f&ouml;rsvara sina egna id&eacute;er genom att utnyttja logik f&ouml;r att hitta
+luckor i den andres argumentation.
+Jonas &auml;r en mycket starkt <strong>enskilt (rationellt) inriktad vetare</strong>.
+<br /><br />
+</li>
+<li>
+Anna &auml;r mer k&auml;nslig gentemot andra m&auml;nniskor.
+Hon har utvecklad empatisk f&ouml;rm&aring;ga och hon tenderar att lyssna
+och st&auml;lla fr&aring;gor tills hon k&auml;nner att hon f&aring;r kontakt
+och kan f&ouml;rst&aring; den andres utg&aring;ngspunkter.
+Hon l&auml;r sig genom att dela de erfarenheter som ledde till den kunskap hon finner
+hos andra m&auml;nniskor.	N&auml;r hon talar med andra s&aring; undviker hon konfrontation
+och f&ouml;rs&ouml;ker ofta att hj&auml;lpa den andre om hon ser en m&ouml;jlighet att g&ouml;r det,
+genom att anv&auml;nda logiska f&ouml;rslag.
+Anna &auml;r en mycket starkt <strong>socialt (empatiskt) inriktad vetare</strong>.
+<br /><br />
+</li>
 </ul>
 Lade Du m&auml;rke till den k&ouml;nsm&auml;ssiga skillnaden h&auml;r? En del studier tyder
 p&aring; att det statistiskt tycks finnas en tendens till en s&aring;dan skillnad. Enskilda m&auml;nniskor kan
@@ -1601,25 +1584,25 @@ hj&auml;lpa till att f&ouml;rb&auml;ttra kommunikationen och l&auml;randet.
 Om Du &auml;r intresserad s&aring; f&aring;r Du h&auml;r n&aring;gra referenser till
 de f&ouml;rfattare som ursprungligen utvecklade dessa id&eacute;er:
 <ul>
-  <li>Belenky, M.F., Clinchy, B.M., Goldberger, N.R., &amp; Tarule, J.M. (1986).
-    Women\'s ways of knowing: the development of self, voice, and mind. New York,
-    NY: Basic Books.</li>
-  <li>Clinchy, B.M. (1989a). The development of thoughtfulness in college women:
-    Integrating reason and care. American Behavioural Scientist, 32(6), 647-657.</li>
-  <li>Clinchy, B.M. (1989b). On critical thinking &amp; connected knowing. Liberal
-    education, 75(5), 14-19.</li>
-  <li>Clinchy, B.M. (1996). Connected and separate knowing; Toward a marriage
-    of two minds. In N.R. Goldberger, Tarule, J.M., Clinchy, B.M. &amp;</li>
-  <li>Belenky, M.F. (Eds.), Knowledge, Difference, and Power; Essays inspired
-    by &#8220;Women&#8217;s Ways of Knowing&#8221; (pp. 205-247). New York, NY:
-    Basic Books.</li>
-  <li>Galotti, K. M., Clinchy, B. M., Ainsworth, K., Lavin, B., &amp; Mansfield,
-    A. F. (1999). A New Way of Assessing Ways of Knowing: The Attitudes Towards
-    Thinking and Learning Survey (ATTLS). Sex Roles, 40(9/10), 745-766.</li>
-  <li>Galotti, K. M., Reimer, R. L., &amp; Drebus, D. W. (2001). Ways of knowing
-    as learning styles: Learning MAGIC with a partner. Sex Roles, 44(7/8), 419-436.
-    <br />
-  </li>
+<li>Belenky, M.F., Clinchy, B.M., Goldberger, N.R., &amp; Tarule, J.M. (1986).
+Women\'s ways of knowing: the development of self, voice, and mind. New York,
+NY: Basic Books.</li>
+<li>Clinchy, B.M. (1989a). The development of thoughtfulness in college women:
+Integrating reason and care. American Behavioural Scientist, 32(6), 647-657.</li>
+<li>Clinchy, B.M. (1989b). On critical thinking &amp; connected knowing. Liberal
+education, 75(5), 14-19.</li>
+<li>Clinchy, B.M. (1996). Connected and separate knowing; Toward a marriage
+of two minds. In N.R. Goldberger, Tarule, J.M., Clinchy, B.M. &amp;</li>
+<li>Belenky, M.F. (Eds.), Knowledge, Difference, and Power; Essays inspired
+by &#8220;Women&#8217;s Ways of Knowing&#8221; (pp. 205-247). New York, NY:
+Basic Books.</li>
+<li>Galotti, K. M., Clinchy, B. M., Ainsworth, K., Lavin, B., &amp; Mansfield,
+A. F. (1999). A New Way of Assessing Ways of Knowing: The Attitudes Towards
+Thinking and Learning Survey (ATTLS). Sex Roles, 40(9/10), 745-766.</li>
+<li>Galotti, K. M., Reimer, R. L., &amp; Drebus, D. W. (2001). Ways of knowing
+as learning styles: Learning MAGIC with a partner. Sex Roles, 44(7/8), 419-436.
+<br />
+</li>
 </ul></ul>';
 $string['serverlocaltime'] = 'Serverns lokala tid';
 $string['setcategorytheme'] = 'Ställ tema för kategori';
@@ -1627,12 +1610,11 @@ $string['settings'] = 'Inställningar';
 $string['shortname'] = 'Kortnamn';
 $string['shortnamecollisionwarning'] = '[*] = det här kortnamnet används redan för en annan kurs så Du måste byta det om kursen blir godkänd.';
 $string['shortnamecourse'] = 'Kortnamn för kurs';
-$string['shortnamecourse_help'] = '<p>M&aring;nga institutioner har kortnamn p&aring; sina kurser som t ex
-BP102 eller COMMS. &Auml;ven om Du inte redan har ett s&aring;dant namn
-s&aring; kan Du hitta p&aring; ett h&auml;r. Det kommer att anv&auml;ndas
-p&aring; ett flertal st&auml;llen d&auml;r det l&aring;nga namnet inte
-passar, som t ex p&aring; &auml;mnesraden i ett e-postmeddelande.
-</p>';
+$string['shortnamecourse_help'] = 'Många institutioner har kortnamn på sina kurser som t ex
+BP102 eller COMMS. Även om Du inte redan har ett sådant namn
+så kan Du hitta på ett här. Det kommer att användas
+på ett flertal ställen där det långa namnet inte
+passar, som t ex på ämnesraden i ett e-postmeddelande.';
 $string['shortnametaken'] = 'Kortnamnet används redan av för en annan kurs {$a}.';
 $string['shortsitename'] = 'Kortnamn för webbplats (t.ex. ett ord).';
 $string['show'] = 'Visa';
@@ -1647,18 +1629,18 @@ $string['showblockcourse'] = 'Visa en lista över kurser som innehåller block.'
 $string['showcomments'] = 'Visa/dölj kommentarer';
 $string['showcommentsnonjs'] = 'Visa kommentarer';
 $string['showgrades'] = 'Visa betygskatalogen för studenter/deltagare/elever/lärande';
-$string['showgrades_help'] = '<p>M&aring;nga av aktiviteterna g&aring;r att betygss&auml;tta eller
-avge omd&ouml;men om.</p>
-<p>Standardvalet &auml;r att en &ouml;versikt av
-alla betygs-/omd&ouml;mesresultat visas p&aring;
-Betygs/Omd&ouml;messidan. Den kan n&aring;s fr&aring;n kursens
-hemsida.</p>
-<p>Om distansl&auml;raren inte vill anv&auml;nda betyg/omd&ouml;men
-p&aring; en kurs, eller bara vill d&ouml;lja s&aring;dan information
-f&ouml;r de l&auml;rande s&aring; kan han/hon avaktivera denna visning
-i \'Inst&auml;llningar f&ouml;r kursen\'. Detta hindrar inte att man
-kan s&auml;tta betyg/avge omd&ouml;men p&aring; individuella aktiviteter.
-Det inneb&auml;r bara att de l&auml;rande inte f&aring;r se denna information.</p>';
+$string['showgrades_help'] = 'Många av aktiviteterna går att betygssätta eller
+avge omdömen om.
+Standardvalet är att en översikt av
+alla betygs-/omdömesresultat visas på
+Betygs/Omdömessidan. Den kan nås från kursens
+hemsida.
+Om distansläraren inte vill använda betyg/omdömen
+på en kurs, eller bara vill dölja sådan information
+för de lärande så kan han/hon avaktivera denna visning
+i \'Inställningar för kursen\'. Detta hindrar inte att man
+kan sätta betyg/avge omdömen på individuella aktiviteter.
+Det innebär bara att de lärande inte får se denna information.';
 $string['showlistofcourses'] = 'Visa lista på kurser';
 $string['showmodulecourse'] = 'Visa en lista över kurser som innehåller aktiviteter.';
 $string['showonly'] = 'Visa bara';
@@ -1667,24 +1649,24 @@ $string['showonlyweek'] = 'Visa endast vecka {$a}';
 $string['showperpage'] = 'Via {$a} per sida';
 $string['showrecent'] = 'Visa senaste aktivitet';
 $string['showreports'] = 'Visa aktivitetsrapporter';
-$string['showreports_help'] = '<p>Varje aktiv deltagare f&aring;r se rapporter &ouml;ver de egna aktiviteterna
-i den aktuella kursen. Det finns b&aring;de listor &ouml;ver deltagarens
-bidrag och detaljerade loggar &ouml;ver n&auml;r deltagaren har kopplat
-upp sig.</p>
-<p>(Distans)l&auml;rare kan alltid f&aring; tillg&aring;ng till dessa
-rapporter genom att anv&auml;nda knappen \'&ouml;gat\' (visa) p&aring; varje
-deltagares profilsida.</p>
-<p>Studenternas/elevernas/deltagarnas/de l&auml;randes tillg&aring;ng
-till sina egna rapporter kontrolleras av (distans)l&auml;raren via
-en inst&auml;llning f&ouml;r kursen.
-F&ouml;r en del kurser kan detta vara ett anv&auml;ndbart verktyg
-f&ouml;r att f&aring; studenterna/eleverna/deltagarna/de l&auml;rande
-att reflektera &ouml;ver sina insatser och hur de framst&aring;r
-i denna (p&aring; sitt s&auml;tt) offentliga milj&ouml;.
-Det &auml;r dock kanske inte alltid n&ouml;dv&auml;ndigt.</p>
-<p>En annan anledning till att avaktivera detta &auml;r att rapporten
-kan komma att belasta servern i on&ouml;dan. F&ouml;r kurser med m&aring;nga deltagare
-eller kurser som varar l&auml;nge kan det vara effektivare att avaktivera denna funktion.</p>';
+$string['showreports_help'] = 'Varje aktiv deltagare får se rapporter över de egna aktiviteterna
+i den aktuella kursen. Det finns både listor över deltagarens
+bidrag och detaljerade loggar över när deltagaren har kopplat
+upp sig.
+(Distans)lärare kan alltid få tillgång till dessa
+rapporter genom att använda knappen \'ögat\' (visa) på varje
+deltagares profilsida.
+Studenternas/elevernas/deltagarnas/de lärandes tillgång
+till sina egna rapporter kontrolleras av (distans)läraren via
+en inställning för kursen.
+För en del kurser kan detta vara ett användbart verktyg
+för att få studenterna/eleverna/deltagarna/de lärande
+att reflektera över sina insatser och hur de framstår
+i denna (på sitt sätt) offentliga miljö.
+Det är dock kanske inte alltid nödvändigt.
+En annan anledning till att avaktivera detta är att rapporten
+kan komma att belasta servern i onödan. För kurser med många deltagare
+eller kurser som varar länge kan det vara effektivare att avaktivera denna funktion.';
 $string['showsettings'] = 'Visa inställningar';
 $string['showtheselogs'] = 'Visa dessa loggar';
 $string['showthishelpinlanguage'] = 'Visa denna hjälp på språk: {$a}';
@@ -1727,19 +1709,19 @@ $string['specifyname'] = 'Du måste ange ett  namn.';
 $string['standard'] = 'Standard';
 $string['starpending'] = '([*]  = kurs i kö för att bli godkänd';
 $string['startdate'] = 'Kursens startdatum';
-$string['startdate_help'] = '<p>Det &auml;r h&auml;r Du anger startdatum f&ouml;r Din kurs,
-i Din egen tidszon.</p>
-<p>Om Du anv&auml;nder \'Vecko\'-format p&aring; kursen s&aring;
-kommer detta att p&aring;verka hur veckorna visas.
-Den f&ouml;rsta veckan kommer att b&ouml;rja p&aring; det datum
-som Du st&auml;ller in h&auml;r. </p>
-<p>Den h&auml;r inst&auml;llningen kommer inte att p&aring;verka
-de kurser som anv&auml;nder \'Gemenskaps-\' eller \'Ämnes\'-format.</p>
-<p>Inst&auml;llningen kommer dock att p&aring;verka
-hur loggarna visas. De anv&auml;nder detta datum som det f&ouml;rsta
-m&ouml;jliga datumet som Du kan visa.</p>
-<p>Rent allm&auml;nt s&aring; kan det, oavsett kursformat, vara bra
-att st&auml;lla in startdatum om Din kurs har ett faktiskt s&aring;dant.</p>';
+$string['startdate_help'] = 'Det är här Du anger startdatum för Din kurs,
+i Din egen tidszon.
+Om Du använder \'Vecko\'-format på kursen så
+kommer detta att påverka hur veckorna visas.
+Den första veckan kommer att börja på det datum
+som Du ställer in här.
+Den här inställningen kommer inte att påverka
+de kurser som använder \'Gemenskaps-\' eller \'Ämnes\'-format.
+Inställningen kommer dock att påverka
+hur loggarna visas. De använder detta datum som det första
+möjliga datumet som Du kan visa.
+Rent allmänt så kan det, oavsett kursformat, vara bra
+att ställa in startdatum om Din kurs har ett faktiskt sådant.';
 $string['startingfrom'] = 'Med start från';
 $string['startsignup'] = 'Starta nu genom att skapa ett nytt konto!';
 $string['state'] = 'Stat/region';
@@ -1795,15 +1777,15 @@ $string['subcategories'] = 'Underkategorier';
 $string['submit'] = 'Skicka';
 $string['success'] = 'Framgång';
 $string['summary'] = 'Summering';
-$string['summary_help'] = '<p>Tanken med en sammanfattning av ett &auml;mne &auml;r att f&ouml;rbereda
-de l&auml;rande p&aring; aktiviteterna i detta &auml;mne (eller under denna vecka).</p>
-<p>Varje sammanfattning b&ouml;r vara mycket kort s&aring; att kurssidan
-inte blir f&ouml;r l&aring;ng.</p>
-<p>Om Du uppt&auml;cker att Du vill informera med mer &auml;n en eller
-tv&aring; meningar s&aring; b&ouml;r Du &ouml;verv&auml;ga att l&auml;gga till
-en \'Resurs\' till det h&auml;r &auml;mnet ist&auml;llet.
-Den f&ouml;rsta aktiviteten skulle t.ex. kunna vara en sida som kallas:
-<b>\'Om detta &auml;mne\'</b>.</p>';
+$string['summary_help'] = 'Tanken med en sammanfattning av ett ämne är att förbereda
+de lärande på aktiviteterna i detta ämne (eller under denna vecka).
+Varje sammanfattning bör vara mycket kort så att kurssidan
+inte blir för lång.
+Om Du upptäcker att Du vill informera med mer än en eller
+två meningar så bör Du överväga att lägga till
+en \'Resurs\' till det här ämnet istället.
+Den första aktiviteten skulle t.ex. kunna vara en sida som kallas:
+**\'Om detta ämne\'**.';
 $string['summaryof'] = 'Summering av {$a}';
 $string['supplyinfo'] = 'Mer detaljer';
 $string['switchrolereturn'] = 'Återgå till min normala roll';
@@ -1828,7 +1810,7 @@ $string['thiscategorycontains'] = 'Den här kategorin innehåller';
 $string['time'] = 'Tid';
 $string['timezone'] = 'Tidszon';
 $string['to'] = 'Till';
-$string['tocreatenewaccount'] = 'Hoppa vidare för att skapa ett nytt konto. ';
+$string['tocreatenewaccount'] = 'Hoppa vidare för att skapa ett nytt konto.';
 $string['today'] = 'Idag';
 $string['todaylogs'] = 'Dagens loggar';
 $string['toeveryone'] = 'till alla';
@@ -1926,13 +1908,13 @@ $string['views'] = 'Vyer';
 $string['viewsolution'] = 'visa lösning';
 $string['virusfound'] = 'Påkallar systemadministratörens uppmärksamhet! Clam AV har hittat ett virus i den fil som laddades upp av {$a->user} till kursen {$a->course}. Här är resultatet av clamscan>';
 $string['virusfoundlater'] = 'En fil som Du laddade upp den {$a->date} med filnamnet {$a->filename} till kursen {$a->course} har visat sig innehålla ett virus. Här är ett sammandrag av vad som hände med Din fil:
- {$a->action}
+{$a->action}
 Om det var ett inskickat arbete så kanske Du vill skicka om det så att Din distanslärare kan se det.';
 $string['virusfoundlateradmin'] = 'Påkallar systemadministratörens uppmärksamhet! En fil som laddades upp den {$a->date} med filnamnet {$a->filename} till kursen {$a->course} av användaren {$a->user} har visat sig innehålla ett virus. Här är ett sammandrag av vad som hände med filen:
- {$a->action}
+{$a->action}
 Användaren har också meddelats.';
 $string['virusfoundlateradminnolog'] = 'Påkallar systemadministratörens uppmärksamhet! En fil som laddades upp med filnamnet {$a->filename}  har visat sig innehålla ett virus. Moodle kunde inte analysera problemet och returnera den informationen till användaren. Här är ett sammandrag av vad som hände med filen:
- {$a->action}';
+{$a->action}';
 $string['virusfoundsubject'] = '{$a}: Virus har hittats!';
 $string['virusfounduser'] = 'Den fil som Du laddade upp med namnet, {$a->filename}, har skannats med ett antivirusprogram och det visade sig att den innehöll ett virus! Din fil laddades INTE upp på rätt sätt.';
 $string['virusplaceholder'] = 'Den här filen som laddades upp visade sig innehålla ett virus. Den har flyttats eller tagits bort och användaren har meddelats.';
@@ -1950,7 +1932,7 @@ $string['welcometocoursetext'] = 'Varmt välkommen till {$a->coursename}!
 En av de första sakerna Du bör göra är att ändra Din profilsida
 inuti kursen så att vi kan lära oss mer om Dig:
 
-  {$a->profileurl}';
+{$a->profileurl}';
 $string['whattocallzip'] = 'Vad vill Du kalla  .zip-filen?';
 $string['whattodo'] = 'Saker att göra';
 $string['withchosenfiles'] = 'Med valda filer';

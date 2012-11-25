@@ -80,7 +80,7 @@ $string['attlsm2'] = 'Socialt (empatiskt) lärande';
 $string['attlsm3'] = 'Enskilt (rationellt) lärande';
 $string['attlsmintro'] = 'I diskussioner fungerar jag så att...';
 $string['attlsname'] = 'Attityder kring tänkande och lärande (20 punkters version)';
-$string['cannotfindanswer'] = 'Det finns inga avgivna svar på den här enkäten ännu. ';
+$string['cannotfindanswer'] = 'Det finns inga avgivna svar på den här enkäten ännu.';
 $string['cannotfindquestion'] = 'Det finns ingen sådan fråga';
 $string['cannotfindsurveytmpt'] = 'Det gick inte att hitta några mallar för enkäter!';
 $string['ciq1'] = 'Vid vilka tillfällen under en lektion är Du mest engagerad som lärande?';
@@ -150,8 +150,8 @@ Det finns inga \'rätta\' eller \'felaktiga\' svar; vi är endast intresserade a
 Dina väl genomtänkta svar kommer däremot att hjälpa oss förbättra hur denna del av läromiljön (kursen) presenteras online i framtiden.
 Tack så mycket för Din medverkan.';
 $string['collesaname'] = 'Konstruktivistiskt inriktad enkät ang en nätbaserad läromiljö (faktisk)';
-$string['collesapintro'] = 'Syftet med detta frågeformulär är att hjälpa oss förstå hur mycket den här delen av distansutbildningen har underlättat (eller försvårat) Ditt lärande. 
-Vi ber Dig att jämföra Dina behov och förväntningar med det som den här delen av läromiljön (kursen) faktiskt har bidragit med när det gäller Ditt lärande. Det gör Du genom att ta ställning till vart och ett av de 24 nedanstående påståendena. 
+$string['collesapintro'] = 'Syftet med detta frågeformulär är att hjälpa oss förstå hur mycket den här delen av distansutbildningen har underlättat (eller försvårat) Ditt lärande.
+Vi ber Dig att jämföra Dina behov och förväntningar med det som den här delen av läromiljön (kursen) faktiskt har bidragit med när det gäller Ditt lärande. Det gör Du genom att ta ställning till vart och ett av de 24 nedanstående påståendena.
 Det finns inga \'rätta\' eller \'felaktiga\' svar; vi är endast intresserade av din åsikt. Dina svar kommer att behandlas med högsta sekretess och kommer inte att påverka Dina betyg eller andra värderingar.
 Dina väl genomtänkta svar kommer att hjälpa oss förbättra hur denna del av läromiljön (kursen) presenteras online i framtiden.
 Tack så mycket för Din medverkan.';
@@ -169,7 +169,7 @@ $string['collesm5short'] = 'Kamratstöd';
 $string['collesm6'] = 'Tolkning';
 $string['collesm6short'] = 'Tolkning';
 $string['collesmintro'] = 'I den här lärandemiljön fungerar det så att';
-$string['collespintro'] = 'Syftet med denna enkät är att hjälpa oss förstå vad Du uppskattar hos en webbaserad distansutbildning. 
+$string['collespintro'] = 'Syftet med denna enkät är att hjälpa oss förstå vad Du uppskattar hos en webbaserad distansutbildning.
 Vart och ett av de 24 påståendena nedan efterfrågar vilka sidor av den här modulen Du tycker bäst om.
 Det finns inga \'rätta\' eller \'felaktiga\' svar; vi är endast intresserade av Din åsikt. Dina svar kommer att behandlas med högsta sekretess och kommer inte att påverka Dina betyg eller andra värderingar.
 Dina väl genomtänkta svar kommer att hjälpa oss förbättra funktionerna i denna enhet i framtiden.
@@ -195,7 +195,7 @@ $string['invalidsurveyid'] = 'ID för enkäten var inte korrekt';
 $string['invalidtmptid'] = 'Ogiltigt ID för mall';
 $string['ipreferthat'] = 'Jag föredrar att';
 $string['modulename'] = 'Färdig enkät';
-$string['modulename_help'] = 'Aktivitetsmodulen Färdig enkät erbjuder tre typer av verktyg för att genomföra utvärdering och stimulera lärande i uppkopplade miljöer. (Distans)lärare kan använda dem för att samla data som hjälper dem att lära känna sina klasser (grupper) och reflektera över sin pedagogiska ledning av läroprocesserna.   ';
+$string['modulename_help'] = 'Aktivitetsmodulen Färdig enkät erbjuder tre typer av verktyg för att genomföra utvärdering och stimulera lärande i uppkopplade miljöer. (Distans)lärare kan använda dem för att samla data som hjälper dem att lära känna sina klasser (grupper) och reflektera över sin pedagogiska ledning av läroprocesserna.';
 $string['modulenameplural'] = 'Färdiga enkäter';
 $string['name'] = 'Namn';
 $string['newsurveyresponses'] = 'Nya enkätsvar';
@@ -223,12 +223,12 @@ $string['scaletimes5'] = 'Nästan aldrig, Sällan, Ibland, Ofta, Nästan alltid'
 $string['seemoredetail'] = 'Klicka här för att se fler detaljer';
 $string['selectedquestions'] = 'Utvalda frågor från en skala, alla studenter/elever/deltagare/lärande';
 $string['summary'] = 'Summering';
-$string['surveycompleted'] = 'Du har genomfört denna enkät.  Grafen nedan visar en summering av Dina resultat jämfört med ett klassgenomsnitt.';
 $string['survey:download'] = 'Ladda ner svar';
-$string['surveygraph'] = 'Graf över enkät';
-$string['surveyname'] = 'Enkätnamn';
 $string['survey:participate'] = 'Besvara enkät';
 $string['survey:readresponses'] = 'Visa svar';
+$string['surveycompleted'] = 'Du har genomfört denna enkät.  Grafen nedan visar en summering av Dina resultat jämfört med ett klassgenomsnitt.';
+$string['surveygraph'] = 'Graf över enkät';
+$string['surveyname'] = 'Enkätnamn';
 $string['surveysaved'] = 'Enkät sparad';
 $string['surveytype'] = 'Enkättyp';
 $string['thanksforanswers'] = 'Stort tack för att Du besvarade denna enkät, {$a}';

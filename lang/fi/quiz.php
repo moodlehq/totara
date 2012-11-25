@@ -28,20 +28,15 @@ defined('MOODLE_INTERNAL') || die();
 $string['accessnoticesheader'] = 'Voit esikatsella tätä tenttiä, mutta jos tämä olis oikea suoritus, sinut olisi estetty, koska:';
 $string['action'] = 'Toiminto';
 $string['adaptive'] = 'Mukautuva tentti ja kysymykset';
-$string['adaptive_help'] = '<h2>Mukautuva tentti ja kysymykset</h2>
-
-<p>Tällä asetuksella mahdollistetaan sekä koko tentin mukautuvuus opiskelijan vastauksiin että yksittäiset kysymykset, jotka ohjaavat opiskelijan jatkotyöskentelyä hänen vastaustensa perusteella. Jos et halua, että opiskelijat näkevät tuloksiaan jo kesken tentin, valitse tähän asetukseen <strong>Ei</strong> ja säädä haluamasi tentin tallentamisen jälkeinen tulosten näkyvyys asetussivun rasti ruutuun -matriisista.</p>
-
-<h4>A Mukautuva tentti</h4>
-<p>Asetuksen ollessa <strong>Kyllä</strong> opiskelijalle sallitaan uusintavastaukset kysymyksiin jo tenttisuorituksen aikana. Tällöin kunkin kysymyksen alle tulee oma  <strong><?php print_string(\'mark\', \'quiz\') ?></strong>-painikkeensa, jota painamalla opiskelija palauttaa ko. kysymyksen vastauksen ja saa arvioinnin samantien. Eli jos opiskelijan vastaus on osittainkin väärä, hän voi palautteen perusteella vastata uudestaan samantien. Vääristä vastauksista on mahdollista vähentää pisteitä, ja tämä asetus määritellään seuraavassa Arvioinnit-kohdassa.</p>
-
-<h4>B Mukautuvat kysymykset</h4>
-<p>Tämä asetus mahdollistaa myös sellaiset mukautuvat kysymykset, jotka päivittävät osion jatkoa reaktiona opiskelijan vastauksiin. IMS:n QTI-spesifikaatio määrittelee mukautuvat kysymykset / osiot näin: </p>
-
-<blockquote>
-Mukautuvassa osiossa mukautetaan joko osion ulkoasua, vastauksen aiheuttamia jatkotoimenpiteitä tai molempia reaktiona opiskelijan suoritukseen. Mukautuva osio voi esimerkiksi alkaa vapaalla tekstivastauksella, ja jos vastaus ei ole riittävä, osio voi jatkua helpottuen monivalinnaksi, josta ehkä vastaavasti on saatavissa vähemmän pisteitä kuin vapaasta tekstivastauksesta. Mukautuvat osiot mahdollistavat formatiivisen suorituksen sekä ohjaamalla opiskelijan tehtävän läpi että mahdollistamalla tuloksen, jossa huomioidaan opiskelijan oppimispolku.</blockquote>
-
-<p>Kun kysymys on mukautuva, se huomioi opiskelijan vastauksen ja saattaa pyytää täydennystä. Yksinkertaisimmissa mukautuvissa kysymyksissä vastaukseen reagointi tarkoittaa vain eroja palauteteksteissä ja mahdollista pyyntöä yrittää uudelleen; monimutkaisemmissa kysymyksissä myös kysymystekstit ja vuorovaikutteiset elementit voivat olla erilaiset.</p>';
+$string['adaptive_help'] = '## Mukautuva tentti ja kysymykset
+Tällä asetuksella mahdollistetaan sekä koko tentin mukautuvuus opiskelijan vastauksiin että yksittäiset kysymykset, jotka ohjaavat opiskelijan jatkotyöskentelyä hänen vastaustensa perusteella. Jos et halua, että opiskelijat näkevät tuloksiaan jo kesken tentin, valitse tähän asetukseen **Ei** ja säädä haluamasi tentin tallentamisen jälkeinen tulosten näkyvyys asetussivun rasti ruutuun -matriisista.
+#### A Mukautuva tentti
+Asetuksen ollessa **Kyllä** opiskelijalle sallitaan uusintavastaukset kysymyksiin jo tenttisuorituksen aikana. Tällöin kunkin kysymyksen alle tulee oma **\*|\*-painikkeensa, jota painamalla opiskelija palauttaa ko. kysymyksen vastauksen ja saa arvioinnin samantien. Eli jos opiskelijan vastaus on osittainkin väärä, hän voi palautteen perusteella vastata uudestaan samantien. Vääristä vastauksista on mahdollista vähentää pisteitä, ja tämä asetus määritellään seuraavassa Arvioinnit-kohdassa.
+#### B Mukautuvat kysymykset
+Tämä asetus mahdollistaa myös sellaiset mukautuvat kysymykset, jotka päivittävät osion jatkoa reaktiona opiskelijan vastauksiin. IMS:n QTI-spesifikaatio määrittelee mukautuvat kysymykset / osiot näin:
+>
+> Mukautuvassa osiossa mukautetaan joko osion ulkoasua, vastauksen aiheuttamia jatkotoimenpiteitä tai molempia reaktiona opiskelijan suoritukseen. Mukautuva osio voi esimerkiksi alkaa vapaalla tekstivastauksella, ja jos vastaus ei ole riittävä, osio voi jatkua helpottuen monivalinnaksi, josta ehkä vastaavasti on saatavissa vähemmän pisteitä kuin vapaasta tekstivastauksesta. Mukautuvat osiot mahdollistavat formatiivisen suorituksen sekä ohjaamalla opiskelijan tehtävän läpi että mahdollistamalla tuloksen, jossa huomioidaan opiskelijan oppimispolku.
+Kun kysymys on mukautuva, se huomioi opiskelijan vastauksen ja saattaa pyytää täydennystä. Yksinkertaisimmissa mukautuvissa kysymyksissä vastaukseen reagointi tarkoittaa vain eroja palauteteksteissä ja mahdollista pyyntöä yrittää uudelleen; monimutkaisemmissa kysymyksissä myös kysymystekstit ja vuorovaikutteiset elementit voivat olla erilaiset.';
 $string['addaquestion'] = 'Lisää kysymys ...';
 $string['addarandomquestion'] = 'Lisää satunnainen kysymys ...';
 $string['addarandomquestion_help'] = 'Kun lisätään satunnainen kysymys, tuloksena on satunnaisesti valittu kysymys tenttiin lisätystä kategoriasta. Tämä tarkoittaa, että eri opiskelijoilla on luultavasti eri valikoima kysymyksiä. Jos tentti sallii useita suorituskertoja, joka suorituskerralla on luultavasti eri kysymykset.';
@@ -118,18 +113,14 @@ $string['basicideasofquiz'] = 'Tentin rakentamisen perusajatukset';
 $string['bestgrade'] = 'Paras arvosana';
 $string['bothattempts'] = 'Näytä vastanneet ja vastaamatta olevat opiskelijat';
 $string['browsersecurity'] = 'Selaimen tietoturva';
-$string['browsersecurity_help'] = '<h2>Näytä "suojatussa" ikkunassa</h2>
+$string['browsersecurity_help'] = '## Näytä "suojatussa" ikkunassa
+"Suojatulla" ikkunalla rajoitetaan hieman opiskelijan selaimen käyttöä siten, että tentissä huijaaminen ja tekstin suora kopiointi hankaloituu. Javascriptin on oltava päällä selaimessa.
+Suojauksella:
+* Tentti näytetään omassa, koko ruudun selainikkunassaan.
+* Osa hiiren toiminnoista on estetty.
+* Osa näppäimistökomennoista on estetty.
 
-<p>"Suojatulla" ikkunalla rajoitetaan hieman opiskelijan selaimen käyttöä siten, että tentissä huijaaminen ja tekstin suora kopiointi hankaloituu. Javascriptin on oltava päällä selaimessa.</p>
-
-<p>Suojauksella:</p>
- <ul>
-     <li>Tentti näytetään omassa, koko ruudun selainikkunassaan.</li>
-     <li>Osa hiiren toiminnoista on estetty.</li>
-     <li>Osa näppäimistökomennoista on estetty.</li>
- </ul>
-
-<p>HUOM: <b>Tämä suojaus ei ole vedenpitävä</b>. Älä luota tähän suojaukseen ainoana suojauskeinona, jos epäilet opiskelijoidesi huijaavan. Verkkoympäristössä on mahdotonta tehdä aukotonta suojausta. Lisävarmistuksena voit esimerkiksi luoda kysymyksistä ison tietokannan, josta arvotaan satunnaisia kysymyksiä. Tai mieti arviointikriteereitäsi uudestaan siten, että opiskelijoiden konstruktiivisella toiminnalla, kuten keskusteluaktiivisuudella, sanastotyöskentelyllä, wiki-aktiivisuudella, tuntiaktiivisuudella tai tehtävillä on merkitystä arvioinnissa.</p>';
+HUOM: **Tämä suojaus ei ole vedenpitävä**. Älä luota tähän suojaukseen ainoana suojauskeinona, jos epäilet opiskelijoidesi huijaavan. Verkkoympäristössä on mahdotonta tehdä aukotonta suojausta. Lisävarmistuksena voit esimerkiksi luoda kysymyksistä ison tietokannan, josta arvotaan satunnaisia kysymyksiä. Tai mieti arviointikriteereitäsi uudestaan siten, että opiskelijoiden konstruktiivisella toiminnalla, kuten keskusteluaktiivisuudella, sanastotyöskentelyllä, wiki-aktiivisuudella, tuntiaktiivisuudella tai tehtävillä on merkitystä arvioinnissa.';
 $string['calculated'] = 'Lasku';
 $string['calculatedquestion'] = 'Laskutehtävää ei ole tuettu rivillä {$a}. Kysymystä ei huomioida.';
 $string['cannotcreatepath'] = 'Polkua ei voi luoda ({$a})';
@@ -230,17 +221,13 @@ $string['datasetnumber'] = 'Numero';
 $string['daysavailable'] = 'Päivää esillä';
 $string['decimaldigits'] = 'Desimaalien määrä arvosanoissa';
 $string['decimalplaces'] = 'Desimaalien määrä arvosanoissa';
-$string['decimalplaces_help'] = '<h2>Desimaalien määrä</h2>
-
-<p>Tämä asetus määrittää desimaalien määrän pisteiden ja arvosanojen näkyessä näytöllä. Esim. \'0\' esittää pisteet kokonaislukuina.</p>
-
-<p>Asetus vaikuttaa vain arvosanojen näyttämiseen näytöllä. Sillä ei ole vaikutusta laskutoimituksiin tai arvosanojen pyöristämiseen.</p>';
+$string['decimalplaces_help'] = '## Desimaalien määrä
+Tämä asetus määrittää desimaalien määrän pisteiden ja arvosanojen näkyessä näytöllä. Esim. \'0\' esittää pisteet kokonaislukuina.
+Asetus vaikuttaa vain arvosanojen näyttämiseen näytöllä. Sillä ei ole vaikutusta laskutoimituksiin tai arvosanojen pyöristämiseen.';
 $string['decimalplacesquestion'] = 'Desimaalien määrä kysymysten arvosanoissa';
-$string['decimalplacesquestion_help'] = '<h2>Desimaalien määrä</h2>
-
-<p>Tämä asetus määrittää desimaalien määrän pisteiden ja arvosanojen näkyessä näytöllä <em>kullekin kysymykselle</em>. Esim. \'0\' esittää pisteet kokonaislukuina.</p>
-
-<p>Asetus vaikuttaa vain arvosanojen näyttämiseen näytöllä. Sillä ei ole vaikutusta laskutoimituksiin tai arvosanojen pyöristämiseen.</p>';
+$string['decimalplacesquestion_help'] = '## Desimaalien määrä
+Tämä asetus määrittää desimaalien määrän pisteiden ja arvosanojen näkyessä näytöllä *kullekin kysymykselle*. Esim. \'0\' esittää pisteet kokonaislukuina.
+Asetus vaikuttaa vain arvosanojen näyttämiseen näytöllä. Sillä ei ole vaikutusta laskutoimituksiin tai arvosanojen pyöristämiseen.';
 $string['decimalpoints'] = 'Desimaalien määrä';
 $string['default'] = 'Oletus';
 $string['defaultgrade'] = 'Oletusarviointi kysymyksille';
@@ -261,22 +248,18 @@ $string['download'] = 'Napsauta tallentaaksesi viety kategoriatiedosto koneelles
 $string['downloadextra'] = '(tiedosto tallennetaan myös kurssin tiedostoihin /quiz-hakemistossa)';
 $string['duplicateresponse'] = 'Tätä vastausta ei huomioida, koska annoit vastaavan vastauksen jo aiemmin.';
 $string['eachattemptbuildsonthelast'] = 'Perustuuko uusi suoritus edelliselle?';
-$string['eachattemptbuildsonthelast_help'] = '<P>Opiskelijat voivat saada suorittaa saman tentin useammin kuin kerran. Tämä voi tehdä tentin tekemisestä enemmänkin oppimiseen liittyvän toiminnon kuin vain arvioinnin. </P>
-
-<p>Jos tentin saa suorittaa useammin kuin yhden kerran ja tämä asetus on käytössä, jokainen uusi suorituskerta säilyttää edellisen suorituksen vastaukset. Tämä mahdollistaa tentin suorituksen useassa osassa eri kerroilla.</p>
-
-<p>Jos haluat joka suorituskerralle uuden, tyhjän tentin, valitse asetukseksi <B>Ei</B>.';
+$string['eachattemptbuildsonthelast_help'] = 'Opiskelijat voivat saada suorittaa saman tentin useammin kuin kerran. Tämä voi tehdä tentin tekemisestä enemmänkin oppimiseen liittyvän toiminnon kuin vain arvioinnin.
+Jos tentin saa suorittaa useammin kuin yhden kerran ja tämä asetus on käytössä, jokainen uusi suorituskerta säilyttää edellisen suorituksen vastaukset. Tämä mahdollistaa tentin suorituksen useassa osassa eri kerroilla.
+Jos haluat joka suorituskerralle uuden, tyhjän tentin, valitse asetukseksi **Ei**.';
 $string['editcategories'] = 'Muokkaa kategorioita';
 $string['editcategory'] = 'Muokkaa kategoriaa';
 $string['editcatquestions'] = 'Muokkaa kategorian kysymyksiä';
 $string['editingquestion'] = 'Muokataan kysymystä';
 $string['editingquiz'] = 'Muokataan tenttiä';
 $string['editingquiz_help'] = 'Tentin tekemisessä peruskäsitteitä ovat:
-<ul>
-<li>Tentti, joka sisältää kysymyksiä yhdellä tai useammalla sivulla</li>
-<li>Kysymyspankki, joka säilyttää kysymykset jaoteltuna kategorioittain</li>
-<li>Satunnaiset kysymykset, eli kysymykset, jotka arvotaan kullekin opiskelijalle ja kullekin suorituskerralle uudestaan.</li>
-</ul>';
+* Tentti, joka sisältää kysymyksiä yhdellä tai useammalla sivulla
+* Kysymyspankki, joka säilyttää kysymykset jaoteltuna kategorioittain
+* Satunnaiset kysymykset, eli kysymykset, jotka arvotaan kullekin opiskelijalle ja kullekin suorituskerralle uudestaan.';
 $string['editoverride'] = 'Muokkaa poikkeusta';
 $string['editqcats'] = 'Muokkaa kysymyskategorioita';
 $string['editquestions'] = 'Muokkaa kysymyksiä';
@@ -353,29 +336,23 @@ $string['gradeboundary'] = 'Arvosanan raja';
 $string['gradeessays'] = 'Arvioi esseet';
 $string['gradehighest'] = 'Korkein arvosana';
 $string['grademethod'] = 'Arviointitapa';
-$string['grademethod_help'] = '<h2>Arviointitavat</h2>
+$string['grademethod_help'] = '## Arviointitavat
+Kun opiskelija voi vastata tenttiin usean kerran, voidaan lopullinen arviointi laskea eri tavoin:
+**Korkein arviointi**
 
-<P>Kun opiskelija voi vastata tenttiin usean kerran, voidaan lopullinen arviointi laskea eri tavoin:</p>
+Lopullinen arviointi on paras kaikista suorituskerroista.
+**Keskiarvo**
 
-<P><B>Korkein arviointi</B></p>
-<blockquote>
-Lopullinen arviointi on paras kaikista suorituskerroista. </blockquote>
-
-<P><B>Keskiarvo</B></P>
-<blockquote>
 Lopullinen arviointi on keskiarvo kaikista suorituskerroista.
-</blockquote>
 
-<P><B>Ensimmäinen suorituskerta</B></P>
-<blockquote>
+**Ensimmäinen suorituskerta**
+
 Lopullinen arviointi on ensimmäinen kaikista suorituskerroista, muita suorituskertoja ei huomioida.
-</blockquote>
 
-<P><B>Viimeisin suorituskerta</B></P>
+**Viimeisin suorituskerta**
 
-<blockquote>
 Lopullinen arviointi on viimeisin kaikista suorituskerroista, muita suorituskertoja ei huomioida.
-</blockquote>';
+';
 $string['gradesdeleted'] = 'Tentin arvosanat poistettu';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Pisteet tästä palautuksesta: {$a->raw}/{$a->max}.';
@@ -392,16 +369,14 @@ $string['history'] = 'Vastaushistoria:';
 $string['howquestionsbehave_desc'] = 'Oletusasetus tentin kysymysten toimintatavalle.';
 $string['imagedisplay'] = 'Näytettävä kuva';
 $string['import'] = 'Tuo';
+$string['import_help'] = 'Tämä toiminnon avulla voit tuoda kysymyksiä ulkoisista tekstitiedostoista.
+Jos tiedostosi sisältää muita kuin ascii merkkejä, täytyy tiedoston olla UTF-8 muodossa. Ole erityisen varovainen Microsoft Office ohjelmilla luotujen tiedostojen kanssa, koska nämä käyttävät yleisesti erityistä koodausta, jota ei käsitellä oikein.
+Tuonti- ja vientiformaatit ovat plugineilla toteutettavia resursseja. Muita vaihtoehtoisia formaatteja saattaa olla saatavissa Moduulit ja Pluginit -tietokannassa.';
 $string['importcategory'] = 'tuonti kategoria';
 $string['importerror'] = 'Virhe tuonnissa';
 $string['importfilearea'] = 'Tuo kurssilla olevasta tiedostosta';
 $string['importfileupload'] = 'Tuo palvelimelle ladattavasta tiedostosta...';
 $string['importfromthisfile'] = 'Tuo tästä tiedostosta';
-$string['import_help'] = 'Tämä toiminnon avulla voit tuoda kysymyksiä ulkoisista tekstitiedostoista.
-
-Jos tiedostosi sisältää muita kuin ascii merkkejä, täytyy tiedoston olla UTF-8 muodossa. Ole erityisen varovainen Microsoft Office ohjelmilla luotujen tiedostojen kanssa, koska nämä käyttävät yleisesti erityistä koodausta, jota ei käsitellä oikein.
-
-Tuonti- ja vientiformaatit ovat plugineilla toteutettavia resursseja. Muita vaihtoehtoisia formaatteja saattaa olla saatavissa Moduulit ja Pluginit -tietokannassa.';
 $string['importingquestions'] = 'Tuodaan {$a} kysymystä tiedostosta';
 $string['importmax10error'] = 'Kysymyksessä on virhe. Ei voi olla yli kymmentä vastausta';
 $string['importmaxerror'] = 'Tässä kysymyksessä on virhe: liian monta vastausta.';
@@ -462,8 +437,8 @@ $string['navnojswarning'] = 'Varoitus: nämä linkit eivät tallenna vastauksias
 $string['neverallononepage'] = 'Ei koskaan, kaikki kysymykset yhdellä sivulla';
 $string['newattemptfail'] = 'Virhe: Tentin uutta suorituskertaa ei voitu aloittaa';
 $string['newpage'] = 'Uusi sivu';
-$string['newpageevery'] = 'Aloita uusi sivu automaattisesti';
 $string['newpage_help'] = 'Pitkissä tenteissä kysymykset kannattaa jakaa usealle sivulle rajoittamalla sivukohtaista kysymysmäärää. Kysymyksiä lisättäessä sivunvaihdot lisätään automaattisesti tällä asetuksella määrittelemäsi sivujaon mukaan. Myöhemmin tenttiä muokatessasi sivunvaihtojen paikkoja on toki mahdollista vielä siirtää.';
+$string['newpageevery'] = 'Aloita uusi sivu automaattisesti';
 $string['noanswers'] = 'Vastausta ei ole valittu!';
 $string['noattempts'] = 'Kukaan ei ole yrittänyt tätä tenttiä.';
 $string['noattemptsfound'] = 'Suorituskertoja ei löytynyt';
@@ -515,9 +490,7 @@ $string['openclosedatesupdated'] = 'Tentin aloitus- ja lopetuspäivämäärät p
 $string['optional'] = 'valinnainen';
 $string['orderandpaging'] = 'Järjestys ja taitto';
 $string['orderandpaging_help'] = 'Numerot 10, 20, 30, ... kysymysten vieressä osoittavat kysymysten järjestyksen. Numerot kasvavat kymmenen välein, jotta väleihin jää tilaa lisäkysymyksille. Järjestääksesi kysymykset uudelleen, muuta numeroita ja klikkaa "Järjestä uudelleen" -painiketta.
-
 Lisätäksesi sivunvaihtoja tiettyjen kysymysten jälkeen, laita merkki valintalaatikkoihin kysymysten vieressä ja klikkaa "Lisää uusi sivu valittujen kysymysten jälkeen" -painiketta.
-
 Järjestääksesi kysymykset useille sivuille, klikkaa "Taita uudelleen" -painiketta ja valitse kysymysten haluttu määrä per sivu.';
 $string['orderingquiz'] = 'Järjestys ja taitto';
 $string['outof'] = '{$a->grade} pistettä, täydet pisteet {$a->maxgrade}';
@@ -543,7 +516,7 @@ $string['parsingquestions'] = 'Luetaan kysymyksiä tuontitiedostosta.';
 $string['partiallycorrect'] = 'Osittain oikein';
 $string['penalty'] = 'Vähennys';
 $string['penaltyscheme'] = 'Vähennetäänkö pisteitä vääristä vastauksista?';
-$string['penaltyscheme_help'] = 'Jos tentissä käytetään mukautuvia kysymyksiä, opiskelijan on mahdollista yrittää vastata uudestaan vastattuaan väärin. Jos haluat vähentää opiskelijan pisteitä jokaisesta väärästä vastauksesta, käytä tätä asetusta. Pistevähennyksen suuruus määritellään erikseen jokaiseen kysymykseen ko. kysymystä lisättäessä tai muokattaessa.<em>Tällä asetuksella ei ole vaikutusta, jos tentissä ei käytetä mukautuvia kysymyksiä.</em>';
+$string['penaltyscheme_help'] = 'Jos tentissä käytetään mukautuvia kysymyksiä, opiskelijan on mahdollista yrittää vastata uudestaan vastattuaan väärin. Jos haluat vähentää opiskelijan pisteitä jokaisesta väärästä vastauksesta, käytä tätä asetusta. Pistevähennyksen suuruus määritellään erikseen jokaiseen kysymykseen ko. kysymystä lisättäessä tai muokattaessa.*Tällä asetuksella ei ole vaikutusta, jos tentissä ei käytetä mukautuvia kysymyksiä.*';
 $string['percentcorrect'] = 'Prosenttia oikein';
 $string['pleaseclose'] = 'Pyyntösi on käsitelty. Voit nyt sulkea tämän ikkunan.';
 $string['pluginadministration'] = 'Tentin hallinnointi';
@@ -587,41 +560,40 @@ $string['questiontextisempty'] = '[Tyhjä kysymysteksti]';
 $string['questiontype'] = 'Kysymystyyppi {$a}';
 $string['questiontypesetupoptions'] = 'Asetukset kysymystyypeille:';
 $string['quiz:attempt'] = 'Yritä tenttejä';
-$string['quizavailable'] = 'Tentti on vastattavissa {$a} saakka.';
-$string['quizclose'] = 'Tenttiaika päättyy';
-$string['quizclosed'] = 'Tentti on suljettu {$a}';
-$string['quizcloses'] = 'Tentti sulkeutuu';
-$string['quizcloseson'] = 'Tentti sulkeutuu {$a}';
 $string['quiz:deleteattempts'] = 'Poista tentin suoritukset';
 $string['quiz:emailconfirmsubmission'] = 'Sähköpostivarmistus kun tenttivastaukset palautetaan';
 $string['quiz:emailnotifysubmission'] = 'Tilaa sähköpostihuomautus kun tenttivastaukset palautetaan';
 $string['quiz:grade'] = 'Arvioi tentit itse';
 $string['quiz:ignoretimelimits'] = 'Jätä aikarajat huomioimatta';
+$string['quiz:manage'] = 'Tenttien asetukset';
+$string['quiz:manageoverrides'] = 'Hallinnoi poikkeuspääsyjä tenttiin';
+$string['quiz:preview'] = 'Tenttien esikatselu';
+$string['quiz:regrade'] = 'Uudelleenarvioi suoritukset';
+$string['quiz:reviewmyattempts'] = 'Tarkastele omia tenttisuorituksiasi';
+$string['quiz:view'] = 'Katso tentin tietoja';
+$string['quiz:viewreports'] = 'Katso tentin raportteja';
+$string['quizavailable'] = 'Tentti on vastattavissa {$a} saakka.';
+$string['quizclose'] = 'Tenttiaika päättyy';
+$string['quizclosed'] = 'Tentti on suljettu {$a}';
+$string['quizcloses'] = 'Tentti sulkeutuu';
+$string['quizcloseson'] = 'Tentti sulkeutuu {$a}';
 $string['quizisclosed'] = 'Tämä tentti on suljettu';
 $string['quizisclosedwillopen'] = 'Tentti suljettu (avautuu {$a})';
 $string['quizisopen'] = 'Tämä tentti on auki';
 $string['quizisopenwillclose'] = 'Tentti auki (sulkeutuu {$a})';
-$string['quiz:manage'] = 'Tenttien asetukset';
-$string['quiz:manageoverrides'] = 'Hallinnoi poikkeuspääsyjä tenttiin';
 $string['quiznavigation'] = 'Tentin navigaatio';
 $string['quizopen'] = 'Tenttiaika alkaa';
 $string['quizopenclose'] = 'Avautumis- ja sulkeutumispäivämäärät';
-$string['quizopenclose_help'] = '<h2>Tenttiaika</h2>
-
-<P>Voit määritellä aikavälin, jona tentti on näkyvissä opiskelijoille. Ennen aloitusaikaa ja lopetusajan jälkeen tenttiin ei pääse. </P>';
+$string['quizopenclose_help'] = '## Tenttiaika
+Voit määritellä aikavälin, jona tentti on näkyvissä opiskelijoille. Ennen aloitusaikaa ja lopetusajan jälkeen tenttiin ei pääse.';
 $string['quizopened'] = 'Tämä tentti on auki.';
 $string['quizopenedon'] = 'Tämä tentti avautui {$a}';
 $string['quizopens'] = 'Tentti aukeaa';
 $string['quizopenwillclose'] = 'Tämä tentti on auki, sulkeutuu {$a} kello';
 $string['quizordernotrandom'] = 'Tentin kysymyksiä ei ole sekoitettu';
 $string['quizorderrandom'] = '* Tentin kysymykset on sekoitettu';
-$string['quiz:preview'] = 'Tenttien esikatselu';
-$string['quiz:regrade'] = 'Uudelleenarvioi suoritukset';
-$string['quiz:reviewmyattempts'] = 'Tarkastele omia tenttisuorituksiasi';
 $string['quizsettings'] = 'Tentin asetukset';
 $string['quiztimer'] = 'Tentin Aika';
-$string['quiz:view'] = 'Katso tentin tietoja';
-$string['quiz:viewreports'] = 'Katso tentin raportteja';
 $string['quizwillopen'] = 'Tämä tentti avautuu {$a}';
 $string['random'] = 'Satunnaistetut kysymykset';
 $string['randomcreate'] = 'Luo satunnaistetut kysymykset';
@@ -667,34 +639,25 @@ $string['reportresponses'] = 'Yksityiskohtaiset vastaukset';
 $string['reports'] = 'Raportit';
 $string['reportsimplestat'] = 'Perustilasto';
 $string['requirepassword'] = 'Suojaa salasanalla';
-$string['requirepassword_help'] = '<h2>Suojaa salasanalla</h2>
-
-<p>Tämä kenttä on vapaaehtoinen.</p>
-
-<p>Jos määrittelet salasanan tähän kenttään, tenttiin osallistujien on annettava sama salasana ennen kuin he voivat vastata tenttiin.</p>
-';
+$string['requirepassword_help'] = '## Suojaa salasanalla
+Tämä kenttä on vapaaehtoinen.
+Jos määrittelet salasanan tähän kenttään, tenttiin osallistujien on annettava sama salasana ennen kuin he voivat vastata tenttiin.';
 $string['requiresubnet'] = 'Rajaa pääsy verkko-osoitteisiin';
-$string['requiresubnet_help'] = '<h2>Rajaa pääsy verkko-osoitteisiin</h2>
+$string['requiresubnet_help'] = '
+Tämä kenttä on vapaaehtoinen.
+Voit rajata tenttiin pääsyn koskemaan vain tiettyjä LAN:in tai Internetin aliverkkoja listaamalla (pilkulla erotettuna) osittaisia tai kokonaisia IP-osoitteita. Tämä on erityisen hyödyllistä valvottua tenttiä järjestettäessä, kun halutaan varmistaa, että vain tietyssä huoneessa olevat ihmiset pääsevät käsiksi tenttiin.
+Esimerkkiosoitteita: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Määrittelyssä voi käyttää kolmentyyppisiä osoitteita. Tekstipohjaisia verkkotunnuksia, kuten esimerkki.com, ei voi käyttää.
 
-<p>Tämä kenttä on vapaaehtoinen.</p>
+1. Täydellinen IP-osoite, kuten **192.168.10.1** joka vastaa yksittäistä tietokonetta (tai välipalvelinta).
+2. Osittainen IP-osoite, kuten **192.168**, joka vastaa kaikkia annetuilla numeroilla alkavia osoitteita.
+3. CIDR (Classless Inter-Domain Routing), kuten **231.54.211.0/20**, joka sallii vieläkin tarkemman aliverkon määrittelyn.
+4. A range of IP addresses **231.3.56.10-20** The range applies to the last
+part of the address, so this means all the IP addresses from 231.3.56.10
+to 231.3.56.20.
 
-<p>Voit rajata tenttiin pääsyn koskemaan vain tiettyjä LAN:in tai Internetin aliverkkoja listaamalla (pilkulla erotettuna) osittaisia tai kokonaisia IP-osoitteita. Tämä on erityisen hyödyllistä valvottua tenttiä järjestettäessä, kun halutaan varmistaa, että vain tietyssä huoneessa olevat ihmiset pääsevät käsiksi tenttiin.</p>
 
-<p>Esimerkkiosoitteita:  <b>192.168. , 231.54.211.0/20, 231.3.56.211</b></p>
-
-<p>Määrittelyssä voi käyttää kolmentyyppisiä osoitteita. Tekstipohjaisia verkkotunnuksia, kuten esimerkki.com, ei voi käyttää.</p>
-
-<ol>
-<li>Täydellinen IP-osoite, kuten <b>192.168.10.1</b> joka vastaa yksittäistä tietokonetta (tai välipalvelinta).</li>
-<li>Osittainen IP-osoite, kuten <b>192.168</b>, joka vastaa kaikkia annetuilla numeroilla alkavia osoitteita.</li>
-<li>CIDR (Classless Inter-Domain Routing), kuten <b>231.54.211.0/20</b>, joka sallii vieläkin tarkemman aliverkon määrittelyn.</li>
-<li>A range of IP addresses <b>231.3.56.10-20</b> The range applies to the last
-    part of the address, so this means all the IP addresses from 231.3.56.10
-    to 231.3.56.20.</li>
-</ol>
-<p></p>
-
-<p>Välilyönneillä ei ole merkitystä.</p>';
+Välilyönneillä ei ole merkitystä.';
 $string['response'] = 'Vastaus';
 $string['responses'] = 'Vastaukset';
 $string['results'] = 'Tulokset';
@@ -714,17 +677,13 @@ $string['reviewofpreview'] = 'Esikatselun tarkastelu';
 $string['reviewopen'] = 'Myöhemmin, kun tentti on yhä auki';
 $string['reviewoptions'] = 'Opiskelijat saavat katsoa tentin';
 $string['reviewoptionsheading'] = 'Tuloksista näytetään opiskelijoille';
-$string['reviewoptionsheading_help'] = '<p>Näillä asetuksilla määrittelet, mitä tietoja opiskelijat saavat nähdä tenttiä tai tentin tuloksia katsoessaan.</p>
+$string['reviewoptionsheading_help'] = 'Näillä asetuksilla määrittelet, mitä tietoja opiskelijat saavat nähdä tenttiä tai tentin tuloksia katsoessaan.
 
-<ul>
-<li><strong>Heti suorituksen jälkeen</strong> tarkoittaa kahden minuutin sisällä Tallenna kaikki ja lopeta -painikkeen painamisen jälkeen.</li>
+\* **|Heti suorituksen jälkeen** tarkoittaa kahden minuutin sisällä Tallenna kaikki ja lopeta -painikkeen painamisen jälkeen.
+\* **|Myöhemmin, kun tentti on yhä auki** tarkoittaa tuon em. kahden minuutin jälkeistä aikaa, mikä ajastetuilla tenteillä päättyy tentin päättymisaikaan.
+\* **|Kun tentti on suljettu** koskee vain *ajastettujen tenttien* päättymisajan jälkeistä aikaa. Jos tentillä ei ole päättymisaikaa, näillä asetuksilla ei ole merkitystä.
 
-<li><strong>Myöhemmin, kun tentti on yhä auki</strong> tarkoittaa tuon em. kahden minuutin jälkeistä aikaa, mikä ajastetuilla tenteillä päättyy tentin päättymisaikaan.</li>
-
-<li><strong>Kun tentti on suljettu</strong> koskee vain <em>ajastettujen tenttien</em> päättymisajan jälkeistä aikaa. Jos tentillä ei ole päättymisaikaa, näillä asetuksilla ei ole merkitystä.</li>
-</ul>
-
-<p>Opettajat ja ylläpitäjät näkevät koko ajan kaikki opiskelijoiden tenttitiedot.</p>';
+Opettajat ja ylläpitäjät näkevät koko ajan kaikki opiskelijoiden tenttitiedot.';
 $string['reviewresponse'] = 'Tarkastelun vastaukset';
 $string['reviewresponsetoq'] = 'Näytä vastaus (kysymys {$a})';
 $string['reviewthisattempt'] = 'Tarkastele tämän suorituskerran vastauksiasi';
@@ -780,11 +739,9 @@ $string['shuffledrandomly'] = 'Sekoitettu satunnaisesti';
 $string['shufflequestions'] = 'Sekoita kysymykset';
 $string['shufflequestionsselected'] = 'Kysymysten sekoitus on käytössä, joten jotkut sivuihin liittyvät toiminnot eivät ole käytössä. Muuttaaksesi sekoitusasetusta, {$a}.';
 $string['shufflewithin'] = 'Sekoita kysymyksen osien järjestys';
-$string['shufflewithin_help'] = '<h2>Sekoita kysymyksen osien järjestys</h2>
-
-<p>Tämä asetus sekoittaa kysymyksen osat satunnaiseen järjestykseen joka kerta kun vastaaja aloittaa tentin, edellyttäen, että asetus on päällä myös kysymyksen asetuksissa. Ajatuksena on vain hankaloittaa vieruskaverilta vastausten kopiointia.</p>
-
-<p>Asetus soveltuu tietysti vain kysymystyyppeihin, joissa on alikohtia sekoitettavaksi, eli monivalinta- ja yhdistä parit -kysymykset. Monivalintakysymyksessä vastaukset sekoitetaan vain kun tämä asetus on &quot;Kyllä&quot;. Yhdistä parit -kysymystyypissä vastaukset sekoitetaan aina, ja tällä asetuksella määritellään, sekoitetaanko lisäksi kysymys-vastaus -parit.</p>';
+$string['shufflewithin_help'] = '## Sekoita kysymyksen osien järjestys
+Tämä asetus sekoittaa kysymyksen osat satunnaiseen järjestykseen joka kerta kun vastaaja aloittaa tentin, edellyttäen, että asetus on päällä myös kysymyksen asetuksissa. Ajatuksena on vain hankaloittaa vieruskaverilta vastausten kopiointia.
+Asetus soveltuu tietysti vain kysymystyyppeihin, joissa on alikohtia sekoitettavaksi, eli monivalinta- ja yhdistä parit -kysymykset. Monivalintakysymyksessä vastaukset sekoitetaan vain kun tämä asetus on "Kyllä". Yhdistä parit -kysymystyypissä vastaukset sekoitetaan aina, ja tällä asetuksella määritellään, sekoitetaanko lisäksi kysymys-vastaus -parit.';
 $string['singleanswer'] = 'Valitse vastaus';
 $string['sortage'] = 'Järjestä iän mukaan';
 $string['sortalpha'] = 'Järjestä nimen mukaan';
@@ -804,9 +761,9 @@ $string['submitallandfinish'] = 'Palauta kaikki ja lopeta';
 $string['subneterror'] = 'Tämä tentti on saatavilla vain tietyistä osoitteista. Tietokoneesi osoite ei ole sallittujen osoitteiden joukossa.';
 $string['subnetnotice'] = 'Tentti on lukittu, niin että se on saatavilla vain tietyiltä verkkoalueilta. Tietokoneesi ei ole osa hyväksyttyä aliverkkoa. Opettajana voit kuitenkin silti katsella tenttiä.';
 $string['subplugintype_quiz'] = 'Raportti';
+$string['subplugintype_quiz_plural'] = 'Raportit';
 $string['subplugintype_quizaccess'] = 'Saatavuussääntö';
 $string['subplugintype_quizaccess_plural'] = 'Saatavuussäännöt';
-$string['subplugintype_quiz_plural'] = 'Raportit';
 $string['substitutedby'] = 'korvataan';
 $string['summaryofattempt'] = 'Tenttisuorituksen yhteenveto';
 $string['summaryofattempts'] = 'Yhteenveto aiemmista suorituksistasi';
@@ -817,17 +774,14 @@ $string['timecompleted'] = 'Suoritettu';
 $string['timedelay'] = 'Et voi vastata tenttiin, koska edellisestä suorituskerrasta ei ole kulunut tarpeeksi kauan aikaa';
 $string['timeleft'] = 'Aikaa jäljellä';
 $string['timelimit'] = 'Suoritusaika';
+$string['timelimit_help'] = 'Yleensä tentin suoritusaikaa ei ole rajoitettu, eli tentin tekijä voi käyttää tentin tekemiseen niin paljon aikaa kuin haluaa.
+Jos määrittelet tentille suoritusajan eli maksimikeston minuutteina, huomioithan seuraavaa:
+
+* Käytetyn selaimen on tuettava Javascriptiä - sen ansiosta ajastin toimii tarkoitetulla tavalla.
+* Tentin aikana näytetään ajastin ponnahdusikkunassa.
+* Suoritusajan täytyttyä tentti palautuu automaattisesti ja siihen mennessä vastatut kysymykset tallentuvat.
+* Jos vastaaja onnistuu huijaamaan ja ylittää suoritusajan 60 sekunnilla, tentti arvioidaan automaattisesti nollan pisteen arvoiseksi.';
 $string['timelimitexeeded'] = 'Tenttiaika päättyi!';
-$string['timelimit_help'] = '<p>Yleensä tentin suoritusaikaa ei ole rajoitettu, eli tentin tekijä voi käyttää tentin tekemiseen niin paljon aikaa kuin haluaa.</p>
-
-<p>Jos määrittelet tentille suoritusajan eli maksimikeston minuutteina, huomioithan seuraavaa:</p>
-
-<ul>
-  <li>Käytetyn selaimen on tuettava Javascriptiä - sen ansiosta ajastin toimii tarkoitetulla tavalla.</li>
-  <li>Tentin aikana näytetään ajastin ponnahdusikkunassa.</li>
-  <li>Suoritusajan täytyttyä tentti palautuu automaattisesti ja siihen mennessä vastatut kysymykset tallentuvat.</li>
-  <li>Jos vastaaja onnistuu huijaamaan ja ylittää suoritusajan 60 sekunnilla, tentti arvioidaan automaattisesti nollan pisteen arvoiseksi.</li>
-</ul>';
 $string['timelimitmin'] = 'Suoritusaika (minuuttia)';
 $string['timelimitsec'] = 'Suoritusaika (sekuntia)';
 $string['timestr'] = '%d.%m.%y kello %H:%M:%S';

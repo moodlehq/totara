@@ -43,17 +43,15 @@ $string['configpopupwidth'] = '新窗口缺省宽度？';
 $string['contentheader'] = '内容';
 $string['displayoptions'] = '可用的显示选项';
 $string['displayselect'] = '显示';
-$string['displayselectexplain'] = '选择显示类型，但并不是所有类型都适合所有文件。';
 $string['displayselect_help'] = '此设置，文件的类型，及浏览器是否允许嵌入，一起决定如何显示文件。选项可能包括：
-
 * 自动 - 对类型可以自动选择的文件，这是最好的选项
 * 嵌入 - 在导航栏下的页面中显示文件、文件描述和各种版块
 * 强制下载 - 用户会被提示下载此文件
 * 打开 - 只在浏览器窗口中显示此文件
 * 在弹出窗口中 - 在一个无菜单和地址栏的新窗口中显示文件
 * 在框架中 - 在导航栏和文件描述下方的框架里显示文件
-* 新窗口 - 在有菜单和地址栏的新窗口中显示文件
-';
+* 新窗口 - 在有菜单和地址栏的新窗口中显示文件';
+$string['displayselectexplain'] = '选择显示类型，但并不是所有类型都适合所有文件。';
 $string['encryptedcode'] = '加密代码';
 $string['filenotfound'] = '抱歉，找不到文件。';
 $string['filterfiles'] = '对文件内容使用过滤器';
@@ -82,7 +80,7 @@ $string['printheading'] = '显示资源名';
 $string['printheadingexplain'] = '在内容上方显示资源名？某些显示类型就算开启此选项也不会显示资源名。';
 $string['printintro'] = '显示资源描述';
 $string['printintroexplain'] = '在内容下方显示资源描述？某些显示类型就算开启此选项也不会显示描述。';
-$string['resourcecontent'] = '文件和子目录';
 $string['resource:exportresource'] = '导出资源';
 $string['resource:view'] = '查看资源';
+$string['resourcecontent'] = '文件和子目录';
 $string['selectmainfile'] = '请点击文件名旁的图标选择主文件。';

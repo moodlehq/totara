@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['actenrolshhdr'] = 'Tillgängliga plugin-program för  registrering ';
+$string['actenrolshhdr'] = 'Tillgängliga plugin-program för  registrering';
 $string['addinstance'] = 'Lägg till metod';
 $string['ajaxnext25'] = 'Nästa 25...';
 $string['ajaxoneuserfound'] = 'Det finns 1 användare';
@@ -42,7 +42,7 @@ $string['enrolcandidates'] = 'Inga registrerade användare';
 $string['enrolcandidatesmatching'] = 'Matchar inte-registrerade användare';
 $string['enrolcohort'] = 'Registrera kohort';
 $string['enrolcohortusers'] = 'Registrera användare';
-$string['enrollednewusers'] = ' {$a}  nya användare registrerades framgångsrikt';
+$string['enrollednewusers'] = '{$a}  nya användare registrerades framgångsrikt';
 $string['enrolledusers'] = 'Registrerade användare';
 $string['enrolledusersmatching'] = 'Matchar registrerade användare';
 $string['enrolme'] = 'Registrera mig på den här kursen';

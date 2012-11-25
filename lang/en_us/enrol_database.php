@@ -25,8 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['ignorehiddencourses_desc'] = 'If enabled users will not be enrolled on courses that are set to be unavailable to students.
-';
+$string['ignorehiddencourses_desc'] = 'If enabled users will not be enrolled on courses that are set to be unavailable to students.';
 $string['pluginname_desc'] = 'You can use an external database (of nearly any kind) to control your enrollments. It is assumed your external database contains at least a field containing a course ID, and a field containing a user ID. These are compared against fields that you choose in the local course and user tables.';
 $string['remoteenroltable'] = 'Remote user enrollment table';
 $string['remoteenroltable_desc'] = 'Specify the name of the table that contains list of user enrollments. Empty means no user enrollment sync.';

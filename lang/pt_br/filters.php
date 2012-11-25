@@ -50,7 +50,6 @@ $string['endswith'] = 'termina com';
 $string['filterallwarning'] = 'Aplicar filtros nos cabeçalhos assim como nos conteúdos pode aumentar significativamente a carga no seu servidor. Portanto, use com moderação a configuração \'Aplique a\'. O uso principal e com o filtro \'multilang\'.';
 $string['filtersettings'] = 'Configurações de filtro';
 $string['filtersettings_help'] = 'Esta página lhe permite habilitar ou desabilitar filtros em partes específicas do ambiente.
-
 Alguns filtros podem também lhe permitir definir configurações locais. Neste caso, haverá um espaço para configuração próximo a seu nome.';
 $string['filtersettingsforin'] = 'Configurações do filtro {$a->filter} em {$a->context}';
 $string['filtersettingsin'] = 'Configurações de filtro em {$a}';

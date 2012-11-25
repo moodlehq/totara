@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'コンテンツ';
-$string['foldercontent'] = 'ファイルおよびサブフォルダ';
 $string['folder:managefiles'] = 'フォルダモジュールのファイルを管理する';
 $string['folder:view'] = 'フォルダコンテンツを表示する';
+$string['foldercontent'] = 'ファイルおよびサブフォルダ';
 $string['modulename'] = 'フォルダ';
 $string['modulenameplural'] = 'フォルダ';
 $string['neverseen'] = '未閲覧';

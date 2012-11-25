@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['completionprogressdetails'] = 'Szczegóły postępów kończenia';
 $string['completionstatus'] = 'Status ukończenia kursu';
 $string['criteriagroup'] = 'Kryteria grup';
 $string['firstofsecond'] = '{$a->first} z {$a->second}';

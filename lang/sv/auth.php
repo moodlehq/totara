@@ -38,7 +38,8 @@ $string['auth_data_mapping'] = 'Kartor över data';
 $string['auth_fieldlock'] = 'Värde för låsningen';
 $string['auth_fieldlock_expl'] = '<p><b>Värde för låsningen:</b>Om detta är aktiverat så kommer det att hindra användare och administratörer av Moodle från att redigera detta fält direkt. Använd detta fält om Du underhåller dessa data i det externa systemet för autenticering.';
 $string['auth_fieldlocks'] = 'Låsning av användarfält';
-$string['auth_fieldlocks_help'] = '<p>Du kan låsa användarnas datafält. Detta är användbart för webbplatser där administratörerna underhåller användardata manuellt genom att redigera användarposter eller genom att använda komponenten "Ladda upp användare".  Om Du låser de fält som Moodle kräver så ska Du säkerställa att Du fyller i dessa data när Du skapar användarkonton för annars kommer kontona att bli oanvändbara.</p><p>Överväg om Du ska ställa in låsningsläget till "Olåst om fältet är tomt" för att undvika detta problem.</p>';
+$string['auth_fieldlocks_help'] = 'Du kan låsa användarnas datafält. Detta är användbart för webbplatser där administratörerna underhåller användardata manuellt genom att redigera användarposter eller genom att använda komponenten "Ladda upp användare". Om Du låser de fält som Moodle kräver så ska Du säkerställa att Du fyller i dessa data när Du skapar användarkonton för annars kommer kontona att bli oanvändbara.
+Överväg om Du ska ställa in låsningsläget till "Olåst om fältet är tomt" för att undvika detta problem.';
 $string['auth_invalidnewemailkey'] = 'FEL: Om du försöker bekräfta en ändring av e-postadress kan du ha gjort ett misstag i kopiera webbadressen vi skickade till dig via e-post. Kopiera adressen och försök igen.';
 $string['auth_multiplehosts'] = 'Du kan ange flera värdar(t ex host1.com;host2.com;host3.com)';
 $string['auth_outofnewemailupdateattempts'] = 'Du har slut på tillåtna antal försök att uppdatera din e-postadress. Din begäran om uppdatering har avbrutits.';
@@ -64,12 +65,12 @@ $string['auto_add_remote_users'] = 'Lägg till fjärranvändare automatiskt';
 $string['changepassword'] = 'URL   till sida för att ändra lösenord';
 $string['changepasswordhelp'] = 'Här kan Du specificera en plats där Dina användare kan återställa eller ändra sina användarnamn/lösenord om de har glömt det. Detta kommer att visas för användarna som en knapp på sidan för inloggning och på deras användarsidor. Om Du lämnar detta tomt kommer inte knappen att visas.';
 $string['chooseauthmethod'] = 'Välj en metod för autenticering:';
-$string['chooseauthmethod_help'] = '<p>Den h&auml;r menyn l&aring;ter Dig &auml;ndra metoden f&ouml;r autenticering
-   f&ouml;r den h&auml;r specifike/a anv&auml;ndaren.</p>
-<p>Var sn&auml;ll och l&auml;gg m&auml;rke till att detta i h&ouml;g grad beror  p&aring; vilken metod f&ouml;r autenticering    
-som Du har valt f&ouml;r den h&auml;r webbplatsen och vilka inst&auml;llningar den anv&auml;nder.</p>
-<p>En felaktig &auml;ndring h&auml;r kan g&ouml;ra det om&ouml;jligt f&ouml;r anv&auml;ndare att logga in eller
- t.o.m. ta bort deras konton helt och h&aring;llet s&aring; Du b&ouml;r bara genomf&ouml;ra detta om Du vet vad Du g&ouml;r.</p>';
+$string['chooseauthmethod_help'] = 'Den här menyn låter Dig ändra metoden för autenticering
+för den här specifike/a användaren.
+Var snäll och lägg märke till att detta i hög grad beror på vilken metod för autenticering
+som Du har valt för den här webbplatsen och vilka inställningar den använder.
+En felaktig ändring här kan göra det omöjligt för användare att logga in eller
+t.o.m. ta bort deras konton helt och hållet så Du bör bara genomföra detta om Du vet vad Du gör.';
 $string['createpasswordifneeded'] = 'Skapa  ett lösenord om så behövs';
 $string['emailchangecancel'] = 'Avbryt ändring av e-postadress';
 $string['emailchangepending'] = 'Aktivera ändringen av Din e-postadress. Öppna länken som Du har fått i {$a->preference_newemail}.';
@@ -78,7 +79,7 @@ $string['emailupdate'] = 'Uppdatering av e-postadress';
 $string['emailupdatemessage'] = 'Käre/a  {$a->fullname},
 Du har begärt en ändring av Din e-postadress för Ditt användarkonto på  {$a->site}. Var snäll och öppna länken nedan i Din webbläsare för att bekräfta den här ändringen.
 
- {$a->url},';
+{$a->url},';
 $string['emailupdatesuccess'] = 'Användaren <em>{$a->fullname}</em>s e-postadress har framgångsrikt uppdaterats till <em>{$a->email}</em>.';
 $string['emailupdatetitle'] = 'Bekräftelse av uppdatering av e-postadress vid {$a->site}';
 $string['enterthenumbersyouhear'] = 'Mat a in de tal du hör';
@@ -105,7 +106,7 @@ $string['informminpasswordlength'] = 'minst {$a} tecken';
 $string['informminpasswordlower'] = 'minst {$a} tecken';
 $string['informminpasswordnonalphanum'] = 'minst {$a} icke-alfanumeriska tecken';
 $string['informminpasswordupper'] = 'minst {$a} stor/a bokstav/stäver';
-$string['informpasswordpolicy'] = 'Lösenordet måste innehåll {$a} ';
+$string['informpasswordpolicy'] = 'Lösenordet måste innehåll {$a}';
 $string['instructions'] = 'Instruktioner';
 $string['internal'] = 'Intern';
 $string['locked'] = 'Låst';

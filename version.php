@@ -30,11 +30,11 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$version  = 2011120505.00;              // 20111205      = branching date YYYYMMDD - do not modify!
+$version  = 2011120506.00;              // 20111205      = branching date YYYYMMDD - do not modify!
                                         //         RR    = release increments - 00 in DEV branches
                                         //           .XX = incremental changes
 
-$release  = '2.2.5 (Build: 20120910)';  // Human-friendly version name
+$release  = '2.2.6 (Build: 20121112)';  // Human-friendly version name
 
 $maturity = MATURITY_STABLE;            // this version's maturity level
 
@@ -45,6 +45,6 @@ $maturity = MATURITY_STABLE;            // this version's maturity level
 // This can be used for modules to set a minimum functionality requirement.
 
 $TOTARA = new stdClass();
-$TOTARA->version    = '2.2.7';              # Please keep as string
-$TOTARA->build      = '20121011.00';        # Please keep as string
+$TOTARA->version    = '2.2.10+';            # Please keep as string
+$TOTARA->build      = '20121122.00';        # Please keep as string
 $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";

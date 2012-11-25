@@ -41,8 +41,7 @@ $string['completestatsfilename'] = 'Vollständige Statistiken';
 $string['count'] = 'Zählen';
 $string['coursename'] = 'Kursname';
 $string['detailedanalysis'] = 'Mehr Details zu den Antworten dieser Frage';
-$string['discrimination_index'] = 'Discrimination Index
-';
+$string['discrimination_index'] = 'Discrimination Index';
 $string['discriminative_efficiency'] = 'Unterschiedliche Effizienz';
 $string['downloadeverything'] = 'Bericht herunterladen als';
 $string['duration'] = 'Geöffnet für';
@@ -66,9 +65,9 @@ $string['lastcalculated'] = 'Seit der letzten Berechnung ({$a->lastcalculated}) 
 $string['median'] = 'Median (für {$a})';
 $string['modelresponse'] = 'Musterantwort';
 $string['negcovar'] = 'Negative Kovarianz der Bewertung mit der Bewertung aller Versuche';
-$string['negcovar_help'] = '<p>Die Bewertung dieser Frage in diesem Satz von Versuchen im Test ändert sich in der entgegengesetzten Weise zur Bewertung des gesamten Versuches. Das bedeutet, dass die Bewertung des gesamten Versuch dazu neigt unter dem Durchschnitt zu liegen, wenn die Bewertung für diesen Rang über dem Durchschnitt liegt und umgekehrt. </p>
-<p>Unsere Gleichung für eine effektive Fragen-Gewichtung kann in diesem Fall nicht berechnet werden. Die Berechnungen der effektiven Fragen-Gewichtung für andere Fragen in diesem Test sind gleich der effektiven Fragen-Gewichtung für diese Fragen, wenn den hervorgehobenen Fragen mit einer negativen Kovarianz die maximale Bewertung von Null gegeben wird.</p>
-<p>Wenn Sie einen Test bearbeiten und dieser/n Frage(n) mit einer negativen Kovarianz eine maximale Bewertung von Null zuweisen, wird die effektive Fragen-Gewichtung dieser Fragen Null sein und die echte effektive Fragen-Gewichtung anderer Fragen ist gleich der eben berechneten.</p>';
+$string['negcovar_help'] = 'Die Bewertung dieser Frage in diesem Satz von Versuchen im Test ändert sich in der entgegengesetzten Weise zur Bewertung des gesamten Versuches. Das bedeutet, dass die Bewertung des gesamten Versuch dazu neigt unter dem Durchschnitt zu liegen, wenn die Bewertung für diesen Rang über dem Durchschnitt liegt und umgekehrt.
+Unsere Gleichung für eine effektive Fragen-Gewichtung kann in diesem Fall nicht berechnet werden. Die Berechnungen der effektiven Fragen-Gewichtung für andere Fragen in diesem Test sind gleich der effektiven Fragen-Gewichtung für diese Fragen, wenn den hervorgehobenen Fragen mit einer negativen Kovarianz die maximale Bewertung von Null gegeben wird.
+Wenn Sie einen Test bearbeiten und dieser/n Frage(n) mit einer negativen Kovarianz eine maximale Bewertung von Null zuweisen, wird die effektive Fragen-Gewichtung dieser Fragen Null sein und die echte effektive Fragen-Gewichtung anderer Fragen ist gleich der eben berechneten.';
 $string['nostudentsingroup'] = 'In dieser Gruppe sind bisher keine Teilnehmer/innen';
 $string['optiongrade'] = 'Teilweise Bewertung';
 $string['pluginname'] = 'Statistiken';
@@ -93,7 +92,7 @@ $string['standarddeviationq'] = 'Standardabweichung';
 $string['standarderror'] = 'Standardfehler (für {$a})';
 $string['statistics'] = 'Statistik';
 $string['statistics:componentname'] = 'Teststatistik-Report';
+$string['statistics:view'] = 'Ansehen des Statistik-Reports';
 $string['statisticsreport'] = 'Statistik-Report';
 $string['statisticsreportgraph'] = 'Statistik für Fragepositionen';
-$string['statistics:view'] = 'Ansehen des Statistik-Reports';
 $string['statsfor'] = 'Statistik (für {$a})';

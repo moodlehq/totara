@@ -57,8 +57,7 @@ $string['officialtag'] = 'Offizielles Schlagwort';
 $string['otags'] = 'Offizielle Schlagworte';
 $string['othertags'] = 'Weitere Schlagworte (kommagetrennt)';
 $string['owner'] = 'Eigentümer';
-$string['page-tag-index'] = 'Einzelne Schlagwortseite
-';
+$string['page-tag-index'] = 'Einzelne Schlagwortseite';
 $string['page-tag-manage'] = 'Schlagwortverwaltungsseite';
 $string['page-tag-search'] = 'Schlagwortsuchseite';
 $string['page-tag-x'] = 'Alle Schlagwortseiten';

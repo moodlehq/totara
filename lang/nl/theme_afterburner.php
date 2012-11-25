@@ -35,11 +35,11 @@ $string['choosereadme'] = '<div class="clearfix"> <div class="theme_screenshot">
 <p>Dit thema bouwt voort op Base, een parent thema dat behoort tot de Moodle core. Indien je bepaalde aspecten van dit thema wil aanpassen die verder gaan dan de aangeboden instellingen, dan raden we aan om een nieuw thema aan te maken die dit en het Base thema als parent thema\'s gebruikt. Op die manier zullen alle updates van de parent thema\'s in de core ook hun weg vinden naar jouw nieuwe thema.</p>
 <h2>Credits</h2>
 <p>Dit ontwerp werd oorspronkelijk gemaakt voor Moodle 1.9 door Patrick Malley van NewSchool Learning (www.newschoollearning.com) op basis van een origineel ontwerp door Rocket Themes (www.rockettheme.com). Het werd overgezet naar Moodle 2.0 door Mary Evans van NewSchool Learning (contact@newschoollearning.com).</p>
-  <h2>Licentie</h2>
+<h2>Licentie</h2>
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a
 
 href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['configtitle'] = 'Afterburner aangepaste instellingen';
 $string['customcss'] = 'Aangepaste CSS';

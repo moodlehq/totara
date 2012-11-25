@@ -35,5 +35,5 @@ $string['layoutgrid'] = 'סריג';
 $string['layoutlist'] = 'רשימה';
 $string['levelgroup'] = 'רמת הציון והגדרתו';
 $string['levels'] = 'רמות';
-$string['mustchooseone'] = 'עליך לבחור באחד מהפריטים האלו ';
+$string['mustchooseone'] = 'עליך לבחור באחד מהפריטים האלו';
 $string['pluginname'] = 'הנחייה';

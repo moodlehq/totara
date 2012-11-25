@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Contenuto';
-$string['foldercontent'] = 'File e sotto cartelle';
 $string['folder:managefiles'] = 'Gestire file nel modulo cartella';
 $string['folder:view'] = 'Visualizzare contenuto cartella';
+$string['foldercontent'] = 'File e sotto cartelle';
 $string['modulename'] = 'Cartella';
 $string['modulenameplural'] = 'Cartelle';
 $string['neverseen'] = 'Mai acceduto';

@@ -35,9 +35,7 @@ if (!$element = totara_sync_get_element($elementname)) {
     print_error('elementnotfound', 'tool_totara_sync');
 }
 
-if (!$source = $element->get_source($sourcename)) {
-    print_error('sourcenotfound', 'tool_totara_sync');
-}
+$source = $element->get_source($sourcename);
 
 if (!$source->has_config()) {
     print_error('nosourceconfig', 'tool_totara_sync');

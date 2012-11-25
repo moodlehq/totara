@@ -123,14 +123,11 @@ $string['disterror'] = '{$a} 分布引发了故障';
 $string['donothing'] = '不要复制或移动文件或更改链接。';
 $string['editcategories'] = '编辑类别';
 $string['editcategories_help'] = '为了不将所有题目都放在一个大列表中，可以创建类别和子类别来管理它们。
-
 每个类别都有一个场景，决定类别中的题目可以在哪里使用：
-
 * 活动场景 - 题目只在活动模块中可用
 * 课程场景 - 题目在课程中所有活动模块中可用
 * 课程分类场景 - 题目在指定课程类别中的所有课程和活动模块中可用
 * 系统场景 - 题目在网站中所有的课程和活动中可用
-
 随机题目也使用类别。它从指定的类别中随机选择题目。';
 $string['editcategory'] = '修改分类';
 $string['editingcategory'] = '编辑类别';
@@ -160,7 +157,6 @@ $string['errorsavingflags'] = '保存标记状态出错。';
 $string['errorupdatingattempt'] = '更新数据库中的试卷 {$a->id} 时出错。';
 $string['exportcategory'] = '导出类别';
 $string['exportcategory_help'] = '此设置决定导出的题目来自哪个类别。
-
 一些导入格式，例如 GIFT 和 Moodle XML 格式，允许将类别和场景数据包含在导出文件中，这样在导入时可以重新创建类别（可选）。如果需要此功能，请勾选对应的选择框。';
 $string['exporterror'] = '导出过程发生错误！';
 $string['exportfilename'] = '测验';
@@ -181,7 +177,6 @@ $string['formquestionnotinids'] = '表单包含不在questionids中的题目';
 $string['fractionsnomax'] = '答案中应该有一个的分数是100%，这样这道题才可能得满分。';
 $string['generalfeedback'] = '通用反馈';
 $string['generalfeedback_help'] = '通用反馈会在答题后显示给学生。与反馈不同，后者随题目类型和学生答案的不同而变化，而前者对所有学生都是一样的。
-
 您可以通过通用反馈提供一些背景给学生，比如此题是考查什么知识点的；或者通过链接告诉他们更多信息，供他们不理解题目时参考。';
 $string['getcategoryfromfile'] = '从文件中获得类别';
 $string['getcontextfromfile'] = '从文件中获得场景';
@@ -193,7 +188,6 @@ $string['howquestionsbehave_help'] = '学生可以和此测验中的题目有多
 $string['ignorebroken'] = '忽略坏链接';
 $string['importcategory'] = '导入类别';
 $string['importcategory_help'] = '此设置决定导入的题目将被归入哪个类别。
-
 一些导入格式（例如 GIFT 和 Moodle XML 格式）可能会在文件中包含分类和场景数据。如果要利用这些数据，而不是所选的类别，应该勾选相应的选择框。如果文件指定的类别不存在，将会被自动创建。';
 $string['importerror'] = '导入过程中发生错误';
 $string['importerrorquestion'] = '导入题目出错';
@@ -231,11 +225,10 @@ $string['markoutofmax'] = '获得{$a->max}分中的{$a->mark}分';
 $string['marks'] = '得分';
 $string['matcherror'] = '成绩与成绩选项不匹配——此题跳过';
 $string['matchgrades'] = '匹配成绩';
-$string['matchgradeserror'] = '如果不在列表中，出错';
 $string['matchgrades_help'] = '导入的成绩必须是此列表的成绩之一才有效——100、90、80、75、70、66.666、60、50、40、33.333、30、25、20、16.666、14.2857、12.5、11.111、10、5、0（也包括负值）。如果不是，那么有两个选择：
-
 * 显示错误 - 如果一个题目使用了列表中没有的分数，那么将显示错误信息，并且该题目不会被导入
 * 使用最接近的成绩 - 如果某个分数不在列表中，那么这个分数就会被改成列表中最接近的值。';
+$string['matchgradeserror'] = '如果不在列表中，出错';
 $string['matchgradesnearest'] = '如果不在列表中，使用最接近的成绩';
 $string['missingcourseorcmid'] = 'print_question 需要 courseid 或 cmid';
 $string['missingcourseorcmidtolink'] = 'get_question_edit_link 需要 courseid 或 cmid';
@@ -292,11 +285,9 @@ $string['partiallycorrect'] = '部分正确';
 $string['partiallycorrectfeedback'] = '给任意部分正确答案';
 $string['penaltyfactor'] = '惩罚因子';
 $string['penaltyfactor_help'] = '此设置决定每次错误的解答将从最终分数里扣除多少分。这只对允许学生多次做答的适应模式下的测验有效。
-
 罚分因子应该是0到1之间的数字。罚分因子设为1意味着学生必须一次解答正确才能得到分数。罚分因子设为0表示学生可以尝试任意次，仍有机会得到满分。';
 $string['penaltyforeachincorrecttry'] = '每次回答错误的罚分';
 $string['penaltyforeachincorrecttry_help'] = '当您想让学生可以通过多次答题而获知正确答案，于是使用“交互式多次尝试”或“自适应模式”做为题目的行为时，那么此选项控制错误答题罚分多少。
-
 罚分只占题目总分的一定比例。因此，如果题目是3分，罚分是0.3333333，那么当学生第一次就答对时能获得3分，第二次才答对能获得2分，第三次才答对就只能得到1分。';
 $string['permissionedit'] = '编辑题目';
 $string['permissionmove'] = '移动题目';

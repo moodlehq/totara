@@ -25,17 +25,17 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['configplugin'] = 'תצורת WebDav  ';
+$string['configplugin'] = 'תצורת WebDav';
 $string['http'] = 'HTTP';
 $string['https'] = 'HTTPS';
-$string['pluginname'] = 'מאגר WebDav ';
+$string['pluginname'] = 'מאגר WebDav';
 $string['webdav'] = 'WebDAV';
+$string['webdav:view'] = 'צפה במאגר WebDav';
+$string['webdav_password'] = 'סיסת שרת WebDav';
+$string['webdav_path'] = 'נתיב WebDAV';
+$string['webdav_port'] = 'יתיאת שרת WebDav';
+$string['webdav_server'] = 'שרת WebDav';
+$string['webdav_type'] = 'סוג WebDav';
+$string['webdav_user'] = 'משתמש שרת WebDav';
 $string['webdavbasicauth'] = 'אימות WebDAV basic';
 $string['webdavdigestauth'] = 'אימות WebDAV לקט';
-$string['webdav_password'] = 'סיסת שרת WebDav ';
-$string['webdav_path'] = 'נתיב WebDAV';
-$string['webdav_port'] = 'יתיאת שרת WebDav ';
-$string['webdav_server'] = 'שרת WebDav ';
-$string['webdav_type'] = 'סוג WebDav ';
-$string['webdav_user'] = 'משתמש שרת WebDav ';
-$string['webdav:view'] = 'צפה במאגר WebDav ';

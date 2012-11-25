@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['defaultrole_desc'] = 'Select role which should be assigned to users during self enrollment';
-$string['editenrolment'] = 'Edit enrollment
-';
+$string['editenrolment'] = 'Edit enrollment';
 $string['enrolenddaterror'] = 'Enrollment end date cannot be earlier than start date';
 $string['enrolme'] = 'Enroll me';
 $string['enrolperiod'] = 'Enrollment period';
@@ -37,10 +36,8 @@ $string['groupkey'] = 'Use group enrollment keys';
 $string['groupkey_desc'] = 'Use group enrollment keys by default.';
 $string['groupkey_help'] = 'In addition to restricting access to the course to only those who know the key, use of a group enrollment key means users are automatically added to the group when they enroll in the course. To use a group enrollment key, an enrollment key must be specified in the course settings as well as the group enrollment key in the group settings.';
 $string['longtimenosee'] = 'Unenroll inactive after';
-$string['longtimenosee_help'] = 'If users haven\'t accessed a course for a long time, then they are automatically unenrolled. This parameter specifies that time limit.
-';
-$string['maxenrolled'] = 'Max enrolled users
-';
+$string['longtimenosee_help'] = 'If users haven\'t accessed a course for a long time, then they are automatically unenrolled. This parameter specifies that time limit.';
+$string['maxenrolled'] = 'Max enrolled users';
 $string['maxenrolled_help'] = 'Specifies the maximum number of users that can self enroll. 0 means no limit.';
 $string['maxenrolledreached'] = 'Maximum number of users allowed to self-enroll was already reached.';
 $string['nopassword'] = 'No enrollment key required.';
@@ -54,17 +51,14 @@ $string['pluginname_desc'] = 'The self enrollment plugin allows users to choose 
 $string['requirepassword'] = 'Require enrollment key';
 $string['requirepassword_desc'] = 'Require enrollment key in new courses and prevent removing of enrollment key from existing courses.';
 $string['self:config'] = 'Configure self enroll instances';
-$string['self:manage'] = 'Manage enrolled users
-';
+$string['self:manage'] = 'Manage enrolled users';
 $string['self:unenrol'] = 'Unenroll users from course';
 $string['self:unenrolself'] = 'Unenroll self from the course';
 $string['sendcoursewelcomemessage_help'] = 'If enabled, users receive a welcome message via email when they self-enroll in a course.';
 $string['status'] = 'Allow self enrollments';
 $string['status_desc'] = 'Allow users to self enroll into course by default.';
 $string['status_help'] = 'This setting determines whether a user can enroll (and also unenroll if they have the appropriate permission) themselves from the course.';
-$string['unenrol'] = 'Unenroll user
-';
+$string['unenrol'] = 'Unenroll user';
 $string['unenrolselfconfirm'] = 'Do you really want to unenroll yourself from course "{$a}"?';
-$string['unenroluser'] = 'Do you really want to unenroll "{$a->user}" from course "{$a->course}"?
-';
+$string['unenroluser'] = 'Do you really want to unenroll "{$a->user}" from course "{$a->course}"?';
 $string['usepasswordpolicy_desc'] = 'Use standard password policy for enrollment keys.';

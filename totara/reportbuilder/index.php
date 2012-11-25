@@ -132,8 +132,9 @@ if ($fromform = $mform->get_data()) {
             foreach ($defaultcolumns as $option) {
                 $heading = isset($option['heading']) ? $option['heading'] :
                     null;
+                $hidden = isset($option['hidden']) ? $option['hidden'] : 0;
                 $column = $src->new_column_from_option($option['type'],
-                    $option['value'], $heading, false);
+                    $option['value'], $heading, $hidden);
                 $todb = new stdClass();
                 $todb->reportid = $newid;
                 $todb->type = $column->type;

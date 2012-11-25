@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'محتوى';
-$string['foldercontent'] = 'ملفات ومجلدات فرعية';
 $string['folder:managefiles'] = 'أدر الملفات في وحدت المجلد';
 $string['folder:view'] = 'عايين محتوى المجلد';
+$string['foldercontent'] = 'ملفات ومجلدات فرعية';
 $string['modulename'] = 'مجلد';
 $string['modulenameplural'] = 'مجلدات';
 $string['neverseen'] = 'لم يتم رؤيتها';

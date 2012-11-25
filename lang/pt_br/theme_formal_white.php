@@ -30,32 +30,32 @@ $string['blockcolumnwidthdesc'] = 'Isto determina a largura da coluna de blocos 
 $string['blockcontentbgc'] = 'Cor de fundo do conteúdo dos blocos';
 $string['blockcontentbgcdesc'] = 'Isto determina a cor de fundo do conteúdo dos blocos para o tema.';
 $string['choosereadme'] = '<div class="clearfix">
-    <div class="theme_screenshot">
-        <h2>Formal White</h2>
-        <img src="formal_white/pix/screenshot.gif" />
+<div class="theme_screenshot">
+<h2>Formal White</h2>
+<img src="formal_white/pix/screenshot.gif" />
 
-        <h3>Fórum de discussão do Tema:</h3>
-        <p><a href="http://moodle.org/mod/forum/view.php?id=46">http://moodle.org/mod/forum/view.php?id=46</a></p>
+<h3>Fórum de discussão do Tema:</h3>
+<p><a href="http://moodle.org/mod/forum/view.php?id=46">http://moodle.org/mod/forum/view.php?id=46</a></p>
 
-        <h3>Créditos do tema</h3>
-        <p><a href="http://docs.moodle.org/en/Theme_credits">http://docs.moodle.org/en/Theme_credits</a></p>
+<h3>Créditos do tema</h3>
+<p><a href="http://docs.moodle.org/en/Theme_credits">http://docs.moodle.org/en/Theme_credits</a></p>
 
-        <h3>Documentação do Tema:</h3>
-        <p><a href="http://docs.moodle.org/en/Themes">http://docs.moodle.org/en/Themes</a></p>
+<h3>Documentação do Tema:</h3>
+<p><a href="http://docs.moodle.org/en/Themes">http://docs.moodle.org/en/Themes</a></p>
 
-        <h3>Relate um bug:</h3>
-        <p><a href="http://tracker.moodle.org">http://tracker.moodle.org</a></p>
-    </div>
-    <div class="theme_description">
-        <h2>About</h2>
-        <p>Formal White é um tema de largura variável, com três colunas trazido para o 2.0 a partir do Moodle 1.X.</p>
-        <h2>Dicas</h2>
-        <p>Este tema foi construído sobre outros dois Base e Canvas, dois temas de pais incluídos no core do Moodle. Se você quiser modificar esse tema, recomendamos que você primeiro duplique-o e renomeie-o antes de fazer as alterações. Isso irá impedir o seu tema personalizado de serem substituídos por futuros upgrades de Moodle, e você ainda tem os arquivos originais, se você fizer uma bagunça. Mais informação sobre temas modificadores podem ser encontrados na <a href="http://docs.moodle.org/en/Theme">MoodleDocs</a>.</p>
-    <h2>Créditos</h2>
-    <p>Este tema foi feito e mantido por MediaTouch 2000. </p>
-        <h2>Licença</h2>
-        <p>Este e outros temas incluídos no core do Moodle, são licenciados sobre  <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.
-    </div>
+<h3>Relate um bug:</h3>
+<p><a href="http://tracker.moodle.org">http://tracker.moodle.org</a></p>
+</div>
+<div class="theme_description">
+<h2>About</h2>
+<p>Formal White é um tema de largura variável, com três colunas trazido para o 2.0 a partir do Moodle 1.X.</p>
+<h2>Dicas</h2>
+<p>Este tema foi construído sobre outros dois Base e Canvas, dois temas de pais incluídos no core do Moodle. Se você quiser modificar esse tema, recomendamos que você primeiro duplique-o e renomeie-o antes de fazer as alterações. Isso irá impedir o seu tema personalizado de serem substituídos por futuros upgrades de Moodle, e você ainda tem os arquivos originais, se você fizer uma bagunça. Mais informação sobre temas modificadores podem ser encontrados na <a href="http://docs.moodle.org/en/Theme">MoodleDocs</a>.</p>
+<h2>Créditos</h2>
+<p>Este tema foi feito e mantido por MediaTouch 2000. </p>
+<h2>Licença</h2>
+<p>Este e outros temas incluídos no core do Moodle, são licenciados sobre  <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.
+</div>
 </div>';
 $string['configtitle'] = 'Tema Formal White';
 $string['creditstomoodleorg'] = 'Exibir créditos para moodle.org';

@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Entrare in una chat';
 $string['chat:deletelog'] = 'Rimuovere i log delle chat';
 $string['chat:exportparticipatedsession'] = 'Esportare sessioni chat alle quali si è partecipato';
 $string['chat:exportsession'] = 'Esportare qualsiasi sessione chat';
+$string['chat:readlog'] = 'Leggere i log delle chat';
+$string['chat:talk'] = 'Parlare in chat';
 $string['chatintro'] = 'Testo introduttivo';
 $string['chatname'] = 'Nome della chat';
-$string['chat:readlog'] = 'Leggere i log delle chat';
 $string['chatreport'] = 'Sessioni di chat';
-$string['chat:talk'] = 'Parlare in chat';
 $string['chattime'] = 'Orario della chat';
 $string['configmethod'] = 'Il metodo chat ajax fornisce una chat basata su ajax che contatta il server con regolarità per ricevere gli aggiornamenti. Il metodo normale prevede che i client contattino il server per ottenere gli aggiornamenti. Il metodo normale non richiede configurazione e funziona sempre, tuttavia con molti client collegati contemporaneamente alla chat si potrebbe generare un sovraccarico sul server. Il metodo server chat per essere configurato necessita di accesso ad una shell Unix, ma è molto più veloce e scalabile.';
 $string['confignormalupdatemode'] = 'Gli aggiornamenti delle chat sono forniti in modo efficiente utilizzando la funzionalità <em>Keep-Alive</em> dell\'HTTP 1.1, tuttavia questo metodo è gravoso per il server. Un metodo di aggiornamento più avanzato è lo <em>Stream</em>. Il metodo <em>Stream</em> permette di scalare meglio (similmente al Server chat) ma il tuo server potrebbe non supportarlo.';
@@ -76,12 +76,12 @@ $string['methodajax'] = 'Metodo Ajax';
 $string['methoddaemon'] = 'Server chat';
 $string['methodnormal'] = 'Metodo standard';
 $string['modulename'] = 'Chat';
-$string['modulename_help'] = 'Il modulo chat permette di collaborare in modo sincrono via web. E\' molto utile per avere una punto di vista diverso sugli altri  mentre si discute su un argomento in quanto l\'interazione è molto diversa da quella riscontrabile nei forum asincroni.';
+$string['modulename_help'] = 'Il modulo chat permette di collaborare in modo sincrono via web. E\' molto utile per avere una punto di vista diverso sugli altri mentre si discute su un argomento in quanto l\'interazione è molto diversa da quella riscontrabile nei forum asincroni.';
 $string['modulenameplural'] = 'Chat';
 $string['neverdeletemessages'] = 'Sempre';
 $string['nextsession'] = 'Prossima sessione programmata';
-$string['nochat'] = 'Non sono state trovate chat';
 $string['no_complete_sessions_found'] = 'Non ci sono sessioni terminate.';
+$string['nochat'] = 'Non sono state trovate chat';
 $string['noguests'] = 'La chat non è disponibile agli ospiti';
 $string['nomessages'] = 'Non ci sono ancora messaggi';
 $string['nopermissiontoseethechatlog'] = 'Non sei autorizzato a visualizzare i log della chat';
@@ -122,7 +122,6 @@ $string['updaterate'] = 'Velocità di aggiornamento:';
 $string['userlist'] = 'Elenco utenti';
 $string['usingchat'] = 'Usano la chat';
 $string['usingchat_help'] = 'Il modulo Chat contiene alcune caratteristiche che rendono l\'attività più gradevole.
-
 * Faccine - Come in molte altre parti di Moodle, le faccine (emoticon) possono essere usate anche nella chat. Ad esempio, :-)
 * Link - Gli indirizzi Internet verranno trasformati automaticamente in hyperlink.
 * Emozioni - E\' possibile inserire testo preceduto da "/me" or ":" per manifestare emozioni. Per esempio, se il tuo nome è Mario e scrivi ":ride!" o "/me ride!" nella chat apparirà "Mario ride!"

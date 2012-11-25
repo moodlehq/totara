@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['basiclti'] = 'רכיב חיצוני (LTI)';
-$string['basicltiactivities'] = 'פעילויות רכיב חיצוני (LTI)';
 $string['basiclti_base_string'] = 'LTI OAuth Base String';
 $string['basiclti_endpoint'] = 'LTI Launch Endpoint';
 $string['basiclti_parameters'] = 'LTI Launch Parameters';
+$string['basicltiactivities'] = 'פעילויות רכיב חיצוני (LTI)';
 $string['configtypes'] = 'הפעלת LTI Applications';
 $string['curllibrarymissing'] = 'יש להתקין ספריית PHP Curl בכדי להשתמש ב LTI';
 $string['extensions'] = 'LTI Extension Services';
@@ -40,14 +40,14 @@ $string['icon_url_help'] = 'הכתובת של הצלמית מאפשרת לעדכ
 $string['invalidid'] = 'זיהוי רכיב חיצוני (LTI) שגוי';
 $string['lti'] = 'רכיב חיצוני (LTI)';
 $string['lti:addcoursetool'] = 'פעילויות Grade LTI';
-$string['lti_administration'] = 'ניהול רכיב חיצוני (LTI)';
 $string['lti:grade'] = 'פעילויות Grade LTI';
 $string['lti:manage'] = 'עריכת פעילויות רכיב חיצוני (LTI)';
 $string['lti:view'] = 'צפיה בפעילויות רכיב חיצוני (LTI)';
+$string['lti_administration'] = 'ניהול רכיב חיצוני (LTI)';
 $string['modulenameplural'] = 'basicltis';
 $string['modulenamepluralformatted'] = 'מופעי רכיב חיצוני (LTI)';
 $string['noltis'] = 'לא נמצאו מופעי רכיב חיצוני (LTI)';
 $string['notypes'] = 'לא קיימים כרגע כלים של רכיב חיצוני (LTI) ב-Moodle. יש ללחוץ על הקישור למעלה בכדי להוסיף כלי כזה.';
 $string['pluginadministration'] = 'ניהול רכיב חיצוני (LTI)';
 $string['pluginname'] = 'רכיב חיצוני (LTI)';
-$string['quickgrade_help'] = 'אם מאופשר, ניתן לתת ציון לכלים מרובים בעמוד אחד. ניתן להוסיף ציונים והערות וללחוץ על כפתור  "שמירת כל המשובים שלי" לשמור את כל השינויים בעמוד זה.';
+$string['quickgrade_help'] = 'אם מאופשר, ניתן לתת ציון לכלים מרובים בעמוד אחד. ניתן להוסיף ציונים והערות וללחוץ על כפתור "שמירת כל המשובים שלי" לשמור את כל השינויים בעמוד זה.';

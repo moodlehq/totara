@@ -50,7 +50,7 @@ $string['requires_completion_3'] = 'Inte tillgänglig om inte aktiviteten <stron
 $string['requires_date'] = 'Tillgänglig fr o m {$a}';
 $string['requires_date_before'] = 'Tillgänglig t o m {$a}';
 $string['requires_date_both'] = 'Tillgänglig fr o m {$a->from} t o m
-{$a->until}. ';
+{$a->until}.';
 $string['requires_grade_any'] = 'Inte tillgänglig tills du har ett betyg i <strong>{$a}</strong>.';
 $string['requires_grade_max'] = 'Inte tillgängligt om du inte får ett tillräckligt poäng på <strong>{$a}</strong>.';
 $string['requires_grade_min'] = 'Inte tillgänglig förrän du har fått det poäng som krävs på <strong>{$a}</strong>.';

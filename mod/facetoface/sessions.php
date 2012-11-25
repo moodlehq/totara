@@ -15,7 +15,7 @@ $confirm = optional_param('confirm', false, PARAM_BOOL); // delete confirmation
 $nbdays = 1; // default number to show
 
 $session = null;
-if ($id) {
+if ($id && !$s) {
     if (!$cm = $DB->get_record('course_modules', array('id' => $id))) {
         print_error('error:incorrectcoursemoduleid', 'facetoface');
     }
@@ -57,9 +57,17 @@ else {
 require_course_login($course);
 $errorstr = '';
 $context = context_course::instance($course->id);
+$module_context = context_module::instance($cm->id);
 require_capability('mod/facetoface:editsessions', $context);
 
 $returnurl = "view.php?f=$facetoface->id";
+
+$editoroptions = array(
+    'noclean'  => false,
+    'maxfiles' => EDITOR_UNLIMITED_FILES,
+    'maxbytes' => $course->maxbytes,
+    'context'  => $module_context,
+);
 
 // Handle deletions
 if ($d and $confirm) {
@@ -79,7 +87,15 @@ if ($d and $confirm) {
 
 $customfields = facetoface_get_session_customfields();
 
-$mform = new mod_facetoface_session_form(null, compact('id', 'f', 's', 'c', 'nbdays', 'customfields', 'course'));
+$sessionid = isset($session->id) ? $session->id : 0;
+
+$details = new stdClass();
+$details->id = isset($session) ? $session->id : 0;
+$details->details = isset($session->details) ? $session->details : '';
+$details->detailsformat = FORMAT_HTML;
+$details = file_prepare_standard_editor($details, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $sessionid);
+
+$mform = new mod_facetoface_session_form(null, compact('id', 'f', 's', 'c', 'nbdays', 'customfields', 'course', 'editoroptions'));
 if ($mform->is_cancelled()) {
     redirect($returnurl);
 }
@@ -128,7 +144,6 @@ if ($fromform = $mform->get_data()) { // Form submitted
     $todb->duration = $fromform->duration;
     $todb->normalcost = $fromform->normalcost;
     $todb->discountcost = $fromform->discountcost;
-    $todb->details = trim($fromform->details['text']);
 
     $sessionid = null;
 
@@ -198,18 +213,23 @@ if ($fromform = $mform->get_data()) { // Form submitted
     }
 
     //$transaction->allow_commit();
+
+    $data = file_postupdate_standard_editor($fromform, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $session->id);
+    $DB->set_field('facetoface_sessions', 'details', $data->details, array('id' => $session->id));
+
     redirect($returnurl);
 }
 elseif ($session != null) { // Edit mode
     // Set values for the form
     $toform = new stdClass();
+    $toform = file_prepare_standard_editor($details, 'details', $editoroptions, $module_context, 'mod_facetoface', 'session', $session->id);
+
     $toform->datetimeknown = (1 == $session->datetimeknown);
     $toform->capacity = $session->capacity;
     $toform->allowoverbook = $session->allowoverbook;
     $toform->duration = $session->duration;
     $toform->normalcost = $session->normalcost;
     $toform->discountcost = $session->discountcost;
-    $toform->details = $session->details;
 
     if ($session->sessiondates) {
         $i = 0;

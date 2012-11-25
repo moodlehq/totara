@@ -26,11 +26,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/environmentlib.php');
 require_once($CFG->libdir.'/componentlib.class.php');
+require_once($CFG->dirroot.'/version.php');
 
 // Parameters
 $action  = optional_param('action', '', PARAM_ACTION);
@@ -74,8 +74,8 @@ if ($action == 'updatecomponent' && confirm_sesskey()) {
     }
 }
 
-// Get current Moodle version
-$current_version = $CFG->release;
+// Get current Totara version
+$current_version = $TOTARA->release;
 
 // Calculate list of versions
 $versions = array();

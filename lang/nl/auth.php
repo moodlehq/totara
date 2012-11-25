@@ -35,12 +35,11 @@ $string['auth_changepasswordurl_expl'] = 'Specifieer de url waarnaar gebruikers 
 $string['auth_changingemailaddress'] = 'Je hebt gevraagd om je e-mailadres wijzigen van {$a->oldemail} naar {$a->newemail}. Als veiligheidsmaatregel sturen we je een e-mailbericht naar het nieuwe adres om te bevestigen dat dit adres van jouw is. Je e-mailadres zal gewijzigd worden zodra je de URL opent die in dat bericht staat.';
 $string['auth_common_settings'] = 'Algemene instellingen';
 $string['auth_data_mapping'] = 'Data mapping';
-$string['authenticationoptions'] = 'Opties voor authenticatie';
 $string['auth_fieldlock'] = 'Blokkeer waarde';
 $string['auth_fieldlock_expl'] = '<p><b>Blokkeerwaarde:</b>Indien ingeschakeld zal Moodle verhinderen dat gebruikers en beheerders dit veld rechtstreeks kunnen bewerken. Gebruik deze optie als je deze gegevens in het externe authentificatiesysteem wil bewaren.</p>';
 $string['auth_fieldlocks'] = 'Blokkeer gebruikersvelden';
-$string['auth_fieldlocks_help'] = '<p>Je kunt gegevensvelden van de gebruikers blokkeren. Dit is nuttig voor sites waar het beheer van de gegevens van de gebruikers manueel of door de \'Upload gebruikers\'-functie gebeurt. Als je door Moodle vereiste velden blokkeert, zorg er dan voor dat je die gegevens voorziet wanneer je gebruikers aanmaakt of de accounts zullen onbruikbaar zijn.</p><p>Overweeg om de blokkeermodus in te stellen op \'Niet geblokkeerd als leeg\' om dit probleem te voorkomen.</p>';
-$string['authinstructions'] = 'Laat dit leeg om de standaard login instructies op de loginpagina te tonen. Als je aangepaste login-instructies wil weergeven, zet ze dan hier.';
+$string['auth_fieldlocks_help'] = 'Je kunt gegevensvelden van de gebruikers blokkeren. Dit is nuttig voor sites waar het beheer van de gegevens van de gebruikers manueel of door de \'Upload gebruikers\'-functie gebeurt. Als je door Moodle vereiste velden blokkeert, zorg er dan voor dat je die gegevens voorziet wanneer je gebruikers aanmaakt of de accounts zullen onbruikbaar zijn.
+Overweeg om de blokkeermodus in te stellen op \'Niet geblokkeerd als leeg\' om dit probleem te voorkomen.';
 $string['auth_invalidnewemailkey'] = 'Fout. Als je probeert een wijziging van e-mailadres te bevestigen, dan heb je misschien een fout gemaakt bij het kopieëren van de URL van de e-mail die we je toezonden. Probeer opnieuw.';
 $string['auth_multiplehosts'] = 'Je kunt verschillende hosts ingeven (bijv. host1.com;host2.com;host3.com)';
 $string['auth_outofnewemailupdateattempts'] = 'Je hebt het maximum aantal pogingen om je wijziging van e-mailadres te bevestigen bereikt. Je wijzigingsaanvraag is geannuleerd.';
@@ -61,15 +60,15 @@ $string['auth_updateremote_ldap'] = '<p><b>Merk op:</b>Voor het updaten van exte
 $string['auth_user_create'] = 'Zet het aanmaken van gebruikers aan';
 $string['auth_user_creation'] = 'Nieuwe (anonieme) gebruikers kunnen gebruikersaccounts aanmaken op de externe authenticatiebron en bevestigen via e-mail. Als je dit aanzet, vergeet dan niet ook de module specifieke opties voor het aanmaken van gebruikers te configureren.';
 $string['auth_usernameexists'] = 'De gekozen gebruikersnaam bestaat al. Kies alsjeblieft een andere gebruikersnaam.';
+$string['authenticationoptions'] = 'Opties voor authenticatie';
+$string['authinstructions'] = 'Laat dit leeg om de standaard login instructies op de loginpagina te tonen. Als je aangepaste login-instructies wil weergeven, zet ze dan hier.';
 $string['auto_add_remote_users'] = 'Voeg externe gebruikers automatisch toe';
 $string['changepassword'] = 'URL voor het veranderen van het wachtwoord';
 $string['changepasswordhelp'] = 'Hier kun je een locatie aangeven waar gebruikers hun gebruikersnaam/wachtwoord kunnen terugkrijgen als ze deze vergeten zijn. De gebruikers zullen op hun inlogpagina en op hun gebruikerspagina een knop krijgen. Als je dit leeg laat zal de knop niet verschijnen.';
 $string['chooseauthmethod'] = 'Kies een methode van authenticatie:';
-$string['chooseauthmethod_help'] = '<p>Met dit menu kun je de authenticatiemethode voor deze gebruiker wijzigen.</p>
-
-<p>Let op dat dit sterk afhankelijk is van de authenticatiemethodes die je ingesteld hebt voor de site en welke instellingen je gebruikt.</p>
-
-<p>Hier een fout maken kan ervoor zorgen dat de gebruiker niet meer aangemeld geraakt of kan zelfs de account helemaal verwijderen. Gebruik dit alleen als je echt weet wat je doet.</p>';
+$string['chooseauthmethod_help'] = 'Met dit menu kun je de authenticatiemethode voor deze gebruiker wijzigen.
+Let op dat dit sterk afhankelijk is van de authenticatiemethodes die je ingesteld hebt voor de site en welke instellingen je gebruikt.
+Hier een fout maken kan ervoor zorgen dat de gebruiker niet meer aangemeld geraakt of kan zelfs de account helemaal verwijderen. Gebruik dit alleen als je echt weet wat je doet.';
 $string['createpasswordifneeded'] = 'Maak een wachtwoord indien nodig';
 $string['emailchangecancel'] = 'Annuleer e-mailwijziging';
 $string['emailchangepending'] = 'De wijziging is in behandeling. Open de link in het bericht dat gestuurd is naar {$a->preference_newemail}.';
@@ -92,8 +91,8 @@ $string['errorminpasswordnonalphanum'] = 'Wachtwoorden moeten minstens {$a} niet
 $string['errorminpasswordupper'] = 'Wachtwoorden moeten minstens {$a} hoofdletters hebben.';
 $string['errorpasswordupdate'] = 'Fout tijdens het updaten van het wachtwoord, wachtwoord niet gewijzigd.';
 $string['forcechangepassword'] = 'Verplicht het wijzigen van het wachtwoord';
-$string['forcechangepasswordfirst_help'] = 'Verplicht gebruikers om hun wachtwoord te wijzigen bij hun eerste aanmelding bij Moodle.';
 $string['forcechangepassword_help'] = 'Verplicht gebruikers om hun wachtwoord te wijzigen bij hun volgende aanmelding bij Moodle';
+$string['forcechangepasswordfirst_help'] = 'Verplicht gebruikers om hun wachtwoord te wijzigen bij hun eerste aanmelding bij Moodle.';
 $string['forgottenpassword'] = 'Als je hier een URL ingeeft, dan zal die gebruikt worden als pagina voor verloren wachtwoorden voor deze site. Dit is bedoeld voor sites waar de wachtwoorden volledig buiten Moodle afgehandeld worden. Laat leeg om de standaardprocedure voor vergeten wachtwoorden te gebruiken.';
 $string['forgottenpasswordurl'] = 'URL voor vergeten wachtwoorden';
 $string['getanaudiocaptcha'] = 'Vraag een audio CAPTCHA';
@@ -124,17 +123,14 @@ $string['pluginnotenabled'] = 'Authenticatieplugin \'{$a}\' is niet ingeschakeld
 $string['pluginnotinstalled'] = 'Authenticatieplugin \'{$a}\' is niet geïnstalleerd';
 $string['potentialidps'] = 'Log in met je account op:';
 $string['recaptcha'] = 'reCAPTCHA';
-$string['recaptcha_help'] = '<h2>Beschrijving</h2>
-<p>Een CAPTCHA is een computer dat het onderscheid kan maken tussen een computer en een mens. CAPTCHAs worden door veel websites gebruikt om misbruik van  "bots," of geautomatiseerde programma\'s voor het genereren van spam te voorkomen. Een computerprogramma kan vervormde tekst niet zo goed lezen als een mens dat kan. Daarom kunnen die bots niet navigeren over sites die beschermd zijn door  CAPTCHAs.</p>
-
-<h2>Instructies</h2>
-<p>Vul de woorden in die je ziet in de box, in de juiste volgorde en gescheiden door een spatie. Deze procedure helpt het voorkomen van misbruik van deze site door geautomatiseerde programma\'s.</p>
-
-<p>Als je niet zeker bent wat de woorden zijn, maak dan een gokje of volg de link "Geef nog een CAPTCHA". </p>
-
-<p>Visueel beperkte gebruikers kunnen de link "Geef een audio-CAPTCHA" volgen om een reeks tekens te horen die ingevuld kunnen worden in de plaats van de visuele test.</p>';
+$string['recaptcha_help'] = '## Beschrijving
+Een CAPTCHA is een computer dat het onderscheid kan maken tussen een computer en een mens. CAPTCHAs worden door veel websites gebruikt om misbruik van "bots," of geautomatiseerde programma\'s voor het genereren van spam te voorkomen. Een computerprogramma kan vervormde tekst niet zo goed lezen als een mens dat kan. Daarom kunnen die bots niet navigeren over sites die beschermd zijn door CAPTCHAs.
+## Instructies
+Vul de woorden in die je ziet in de box, in de juiste volgorde en gescheiden door een spatie. Deze procedure helpt het voorkomen van misbruik van deze site door geautomatiseerde programma\'s.
+Als je niet zeker bent wat de woorden zijn, maak dan een gokje of volg de link "Geef nog een CAPTCHA".
+Visueel beperkte gebruikers kunnen de link "Geef een audio-CAPTCHA" volgen om een reeks tekens te horen die ingevuld kunnen worden in de plaats van de visuele test.';
 $string['selfregistration'] = 'Zelfregistratie';
-$string['selfregistration_help'] = 'Als een authenticatieplugin, zoals e-mailgebaseerde zelfregistratie, is geselecteerd, dan kunnen potentiele gebruikers zichzelf registreren en accounts maken. Dit zorgt ervoor dat spammers accounts kunnen maken om forums en blogs te gaan gebruiken voor spam. Om dit risico te beperken zou zelfregistratie moeten uitgeschakeld worden of beperkt worden door de <em>Toegestane e-maildomeinen</em>-instelling.';
+$string['selfregistration_help'] = 'Als een authenticatieplugin, zoals e-mailgebaseerde zelfregistratie, is geselecteerd, dan kunnen potentiele gebruikers zichzelf registreren en accounts maken. Dit zorgt ervoor dat spammers accounts kunnen maken om forums en blogs te gaan gebruiken voor spam. Om dit risico te beperken zou zelfregistratie moeten uitgeschakeld worden of beperkt worden door de *Toegestane e-maildomeinen*-instelling.';
 $string['sha1'] = 'SHA1 hash';
 $string['showguestlogin'] = 'Je kunt de knop om in te loggen als gast verbergen of laten zien op de inlogpagina.';
 $string['stdchangepassword'] = 'Gebruik de standaardpagina om het wachtwoord te wijzigen';

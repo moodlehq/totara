@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['assignrole'] = 'Szerep hozzárendelése';
-$string['businessemail'] = 'PayPal munkahelyi e-mail
-';
+$string['businessemail'] = 'PayPal munkahelyi e-mail';
 $string['businessemail_desc'] = 'Munkahelyi PayPal-fiókjának  e-mail címe';
 $string['cost'] = 'Beiratkozási költség';
 $string['costerror'] = 'A beiratkozási költség nem számjegy';
@@ -48,11 +47,11 @@ $string['mailstudents'] = 'Tanulók értesítése';
 $string['mailteachers'] = 'Tanárok értesítése';
 $string['messageprovider:paypal_enrolment'] = 'A PayPal beiratkozási üzenetei';
 $string['nocost'] = 'A kurzus felvételéhez nincs hozzákapcsolva költség!';
-$string['paypalaccepted'] = 'PayPal-lel való fizetést elfogadunk';
 $string['paypal:config'] = 'PayPal beiratkoztatási példányok beállítása';
 $string['paypal:manage'] = 'Beiratkozott felhasználók kezelése';
 $string['paypal:unenrol'] = 'Felhasználók kiiratkoztatása a kurzusból';
 $string['paypal:unenrolself'] = 'Kurzus leadása';
+$string['paypalaccepted'] = 'PayPal-lel való fizetést elfogadunk';
 $string['pluginname'] = 'PayPal';
 $string['pluginname_desc'] = 'A PayPal modullal fizetős kurzusokat hozhat létre. ha egy kurzus költsége nulla, a tanulóknak nem kell fizetni a belépésért. Alapbeállításként itt kell megadni az egész portálra érvényes költséget, majd ezt követően egyenként kell beállítani a kurzusokat. A kurzusköltség felülírja a portálköltséget.';
 $string['sendpaymentbutton'] = 'Fizetés küldése Paypal-lel';

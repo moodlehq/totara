@@ -55,8 +55,8 @@ $string['confirmdelallresp'] = '您确定要删除该问卷中的所有回答么
 $string['confirmdelgroupresp'] = '您确定要删除{$a}中的所有回答么？';
 $string['confirmdelresp'] = '您确定要删除&nbsp;{$a}&nbsp;的回答吗？';
 $string['confpage'] = '标题文本';
-$string['confpagedesc'] = '用户完成问卷后显示的“确认”页面中的标题（粗体）和正文。（如果存在URL，则其显示URL的内容。）';
 $string['confpage_help'] = '用户完成问卷后显示的“确认”页面中的标题（粗体）和正文。（如果存在URL，则其优先于确认文本。）如果您保持此项为空，则在完成问卷时，将会显示默认信息（谢谢您完成该问卷）。';
+$string['confpagedesc'] = '用户完成问卷后显示的“确认”页面中的标题（粗体）和正文。（如果存在URL，则其显示URL的内容。）';
 $string['contentoptions'] = '问卷创建方式';
 $string['couldnotcreatenewsurvey'] = '不能创建新的调查';
 $string['couldnotdelresp'] = '不能删除回答';
@@ -67,8 +67,8 @@ $string['crossanalyze'] = '交叉分析';
 $string['crosstabulate'] = '交叉制表';
 $string['crosstabulation'] = '交叉制表';
 $string['date'] = '日期';
-$string['dateformatting'] = '使用天/月/年格式，比如1945年3月14日；<strong>14/3/1945</strong>';
 $string['date_help'] = '如果您想要回答是正确格式的日期，请使用这种问题类型';
+$string['dateformatting'] = '使用天/月/年格式，比如1945年3月14日；<strong>14/3/1945</strong>';
 $string['deleteallresponses'] = '删除所有回答';
 $string['deletecurrentquestion'] = '删除问题{$a}';
 $string['deletedallgroupresp'] = '删除在组{a}中的回答';
@@ -94,12 +94,10 @@ $string['erroropening'] = '打开问卷时发生错误。';
 $string['errortable'] = '系统表错误';
 $string['essaybox'] = '多行文本框';
 $string['essaybox_help'] = '这种问题类型将显示一个x列 y行的纯文本框。
-
 如果x,y的值为0（默认值），Moodle的HTML编辑器会按标准的高度和宽度来显示。（标准的高度和宽度在 课程/用户的内容和用户设置中）';
 $string['field'] = '问题{$a}';
 $string['fieldlength'] = '输入框的长度';
 $string['fieldlength_help'] = '对于**文本框**问题类型，应设置**输入框长度**和**最大文本长度**。
-
 默认的输入框长度为20个字符，最大输入长度为25个字符。';
 $string['grade'] = '提交问卷后的评分';
 $string['headingtext'] = '提交确认页面标题';
@@ -171,12 +169,10 @@ $string['order_default'] = '按默认顺序查看';
 $string['order_descending'] = '递减顺序';
 $string['orderresponses'] = '对回答排序';
 $string['orderresponses_help'] = '对于以下四种问题类型，您可以在显示所有回答时，按回答的数量(平均值)对选项进行排序。
-
 *单选按钮
 *单选下拉列表
 *多项选项（复选框）
 *量表问题（包括李克特量表）。
-
 在“所有回答”页面，默认的排序是问卷设计者问题选项的顺序。您也可以选择按递增或者递减的顺序显示。';
 $string['osgood'] = '奥斯古德语义差异法';
 $string['other'] = '其他：';
@@ -194,9 +190,9 @@ $string['pluginname'] = '调查问卷';
 $string['possibleanswers'] = '问题的选项';
 $string['posteddata'] = '向往有提交数据的页';
 $string['preview'] = '这是本问卷的预览。当您完成预览后，请点击本页面底部的<strong>关闭</strong>按钮。';
-$string['previewing'] = '正在预览问卷';
 $string['preview_label'] = '预览';
 $string['preview_questionnaire'] = '- 问卷预览';
+$string['previewing'] = '正在预览问卷';
 $string['previous'] = '向前';
 $string['previouspage'] = '前一页';
 $string['print'] = '打印';
@@ -206,14 +202,12 @@ $string['printtooltip'] = '在适于打印的窗口打开当前问卷';
 $string['private'] = '私有';
 $string['public'] = '公用';
 $string['qtype'] = '填写次数限制';
-$string['qtypedaily'] = '只能每天填一次';
 $string['qtype_help'] = '设置用户可填写问卷的次数：一次，每天一次，每周一次，每月一分或者无次数限制（多次）。';
+$string['qtypedaily'] = '只能每天填一次';
 $string['qtypemonthly'] = '只能每月填一次';
 $string['qtypeonce'] = '只能填写一次';
 $string['qtypeunlimited'] = '可多次填写';
 $string['qtypeweekly'] = '只能每周填一次';
-$string['questionnaireadministration'] = '调查问卷管理';
-$string['questionnairecloses'] = '关闭调查问卷';
 $string['questionnaire:copysurveys'] = '复制模版和私有类问卷';
 $string['questionnaire:createpublic'] = '创建公用问卷';
 $string['questionnaire:createtemplates'] = '创建模版类问卷';
@@ -221,15 +215,17 @@ $string['questionnaire:deleteresponses'] = '删除所有回答';
 $string['questionnaire:downloadresponses'] = '导出回答为CSV文件';
 $string['questionnaire:editquestions'] = '创建并编辑问题';
 $string['questionnaire:manage'] = '创建并编辑问卷';
-$string['questionnaireopens'] = '开放调查问卷';
 $string['questionnaire:printblank'] = '打印空白问卷';
 $string['questionnaire:readallresponseanytime'] = '随时查看所有的回答';
 $string['questionnaire:readallresponses'] = '查看回答小结，包括打开次数';
 $string['questionnaire:readownresponses'] = '查看自己的回答';
-$string['questionnairereport'] = '调查问卷报告';
 $string['questionnaire:submit'] = '完成并提交问卷';
 $string['questionnaire:view'] = '查看一个调查问卷';
 $string['questionnaire:viewsingleresponse'] = '查看单个完成的问卷';
+$string['questionnaireadministration'] = '调查问卷管理';
+$string['questionnairecloses'] = '关闭调查问卷';
+$string['questionnaireopens'] = '开放调查问卷';
+$string['questionnairereport'] = '调查问卷报告';
 $string['questionnum'] = '问题编号';
 $string['questions'] = '问题';
 $string['questiontypes'] = '问题的类型';
@@ -240,28 +236,29 @@ $string['rank'] = '等级';
 $string['ratescale'] = '评分量表(1..5)';
 $string['ratescale_help'] = '请查看Moodle在线文档帮助';
 $string['realm'] = '调查问卷类型';
-$string['realm_help'] = '* **调查问卷一共有三种类：**
- * 私有 - 只属于问卷所在的课程。
- * 模版 - 可被复制和编辑。
- * 公共 - 可在课程间共享。';
+$string['realm_help'] = '
+* **|调查问卷一共有三种类：**
+* 私有 - 只属于问卷所在的课程。
+* 模版 - 可被复制和编辑。
+* 公共 - 可在课程间共享。';
 $string['redirecturl'] = '提交问卷之后重定向页面的URL地址。';
 $string['remove'] = '删除';
 $string['required'] = '是否必须回答';
-$string['required_help'] = '如果您选择***是***，填写人必须回答这个问题才能提交问卷。';
+$string['required_help'] = '如果您选择**|是**|，填写人必须回答这个问题才能提交问卷。';
 $string['requiredparameter'] = '缺少一个必要的参数。';
 $string['reset'] = '重置';
 $string['respeligiblerepl'] = '已通过角色重载代替';
 $string['respondent'] = '填写人';
 $string['respondenteligible'] = '填写人资格';
-$string['respondenteligibleall'] = '所有的';
 $string['respondenteligible_help'] = '设置是否每个人都可以填写问卷，还是您希望仅由教师或者仅由学生填写。对于问卷填写资格选项，可在课程或者活动的级别上进行设置。比如，如果您把调查问卷放在首页，只想让教师填写，那么您需要让Moodle知道哪些用户是教师。';
+$string['respondenteligibleall'] = '所有的';
 $string['respondenteligiblestudents'] = '仅由学生';
 $string['respondenteligibleteachers'] = '仅由教师';
 $string['respondents'] = '填写人';
 $string['respondenttype'] = '调查问卷类型';
+$string['respondenttype_help'] = '设置为“全名”将显示填写调查的用户全名。设置为“匿名”可隐藏用户的标识。';
 $string['respondenttypeanonymous'] = '匿名';
 $string['respondenttypefullname'] = '全名';
-$string['respondenttype_help'] = '设置为“全名”将显示填写调查的用户全名。设置为“匿名”可隐藏用户的标识。';
 $string['response'] = '回答';
 $string['responseoptions'] = '填写问卷选项';
 $string['responses'] = '回答';
@@ -283,7 +280,7 @@ $string['saveeditedquestion'] = '保存问题{$a}';
 $string['savesettings'] = '保存设置';
 $string['section'] = '说明';
 $string['sectionbreak'] = '----- 分页符-----';
-$string['sectionbreak_help'] = '----- 分页符-----';
+$string['sectionbreak_help'] = '\---|-- 分页符\---|--';
 $string['sectiontext'] = '标签';
 $string['sectiontext_help'] = '这一段介绍系列问题的文字';
 $string['selecttheme'] = '为此调查问卷选择一种主题(css)。';
@@ -306,7 +303,7 @@ $string['template'] = '模版';
 $string['templatenotviewable'] = '问卷的模版不可查看';
 $string['text'] = '问题的内容';
 $string['textareacolumns'] = '文本区的宽度';
-$string['textareacolumns_help'] = '这种问题类型将显示一个**x列** **y行**的纯文本框。如果x,y的值为0(默认值)，Moodle的HTML编辑器会按标准的高度和宽度来显示。（标准的高度和宽度在 课程/用户的内容和用户设置中）';
+$string['textareacolumns_help'] = '这种问题类型将显示一个**x列** \*|\*y行**的纯文本框。如果x,y的值为0(默认值)，Moodle的HTML编辑器会按标准的高度和宽度来显示。（标准的高度和宽度在 课程/用户的内容和用户设置中）';
 $string['textarearows'] = '文本框的高度';
 $string['textbox'] = '文本框';
 $string['textbox_help'] = '对于文本框问题类型，应设置输入框长度和最大文本长度。默认的输入框长度为20个字符，最大输入长度为25个字符。';

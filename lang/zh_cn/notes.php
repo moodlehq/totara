@@ -56,7 +56,6 @@ $string['personal'] = '私人';
 $string['personalnotes'] = '私人备注';
 $string['publishstate'] = '上下文';
 $string['publishstate_help'] = '备注的上下文决定了谁能看到这个备注。
-
 * 个人 - 只有您自己可以看见
 * 课程 - 该课程中的所有教师都可以看见
 * 网站 - 所有课程的教师都可以看见';

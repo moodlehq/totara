@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Számításos feleletválasztós';
+$string['pluginname_help'] = 'A számításos feleletválasztós kérdések olyan feleletválasztós kérdések, amelyekben a válaszokba kapcsos zárójelek között helyettesítő karakterekkel számítási képlet illeszthető, melyek helyére a teszt megoldása során konkrét értékek kerülnek. Ha például a kérdés a "Mekkora egy {l} hosszú és {w} széles téglalap területe?", az egyik válasz lehet a {={l}*{w}} (ahol a * a szorzást jelöli).';
 $string['pluginnameadding'] = 'Számításos feleletválasztós kérdés hozzáadása';
 $string['pluginnameediting'] = 'Számításos feleletválasztós kérdés szerkesztése';
-$string['pluginname_help'] = 'A számításos feleletválasztós kérdések olyan feleletválasztós kérdések, amelyekben a válaszokba kapcsos zárójelek között helyettesítő karakterekkel számítási képlet illeszthető, melyek helyére a teszt megoldása során konkrét értékek kerülnek. Ha például a kérdés a "Mekkora egy {l} hosszú és {w} széles téglalap területe?", az egyik válasz lehet a {={l}*{w}} (ahol a * a szorzást jelöli).';
 $string['pluginnamesummary'] = 'A számításos feleletválasztós kérdések olyan feleletválasztós kérdések, amelyekben a válaszokba számértékek képletének eredményei illeszthetők, amelyek a teszt megoldása során egy halmazból véletlenszerűen kiválasztva konkrét értékekként kerülnek a megoldásba.';

@@ -278,15 +278,12 @@ $string['continue'] = 'Weiter';
 $string['continuetocourse'] = 'Klicken Sie hier, um in den Kurs zu gelangen';
 $string['convertingwikitomarkdown'] = 'Wiki wird als Markdown konvertiert';
 $string['cookiesenabled'] = 'Cookies müssen aktiviert sein!';
-$string['cookiesenabled_help'] = '<h2>Cookies</h2>
-
-<p>Diese Moodle-Website benutzt zwei Cookies:</p>
-
-<h3>MoodleSession</h3>
-<p>Das wichtigste Cookie heißt <b>MoodleSession</b>. Sie müssen dieses Cookie erlauben, damit Ihr Login bei Ihren Moodle-Zugriffen von Seite zu Seite erhalten bleibt. Nach dem Ausloggen oder dem Schließen Ihres Webbrowsers wird das Cookie gelöscht.</p>
-
-<h3>MoodleID</h3>
-<p>Das andere Cookie dient Ihrer Bequemlichkeit. Es speichert den Anmeldenamen im Webbrowser und heißt standardmäßig <b>MoodleID</b>. Dieses Cookie bleibt auch nach dem Ausloggen aus Moodle erhalten. Beim nächsten Login ist dann Ihr Anmeldename bereits eingetragen. Dieses Cookie brauchen Sie nicht zu erlauben, Sie müssen dann allerdings bei jedem Login Ihren Anmeldenamen wieder neu eingeben.</p>';
+$string['cookiesenabled_help'] = '## Cookies
+Diese Moodle-Website benutzt zwei Cookies:
+### MoodleSession
+Das wichtigste Cookie heißt **MoodleSession**. Sie müssen dieses Cookie erlauben, damit Ihr Login bei Ihren Moodle-Zugriffen von Seite zu Seite erhalten bleibt. Nach dem Ausloggen oder dem Schließen Ihres Webbrowsers wird das Cookie gelöscht.
+### MoodleID
+Das andere Cookie dient Ihrer Bequemlichkeit. Es speichert den Anmeldenamen im Webbrowser und heißt standardmäßig **MoodleID**. Dieses Cookie bleibt auch nach dem Ausloggen aus Moodle erhalten. Beim nächsten Login ist dann Ihr Anmeldename bereits eingetragen. Dieses Cookie brauchen Sie nicht zu erlauben, Sie müssen dann allerdings bei jedem Login Ihren Anmeldenamen wieder neu eingeben.';
 $string['cookiesnotenabled'] = 'Leider sind Cookies im Browser deaktiviert';
 $string['copy'] = 'Kopieren';
 $string['copyasnoun'] = 'Kopie';
@@ -320,7 +317,7 @@ $string['coursedeleted'] = 'Gelöschter Kurs {$a}';
 $string['coursefiles'] = 'Alte Kursdateien';
 $string['coursefilesedit'] = 'Kursdateien bearbeiten';
 $string['coursefileswarning'] = 'Kursdateien werden nicht mehr genutzt.';
-$string['coursefileswarning_help'] = 'Kursdateien werden ab Moodle 2.0 nicht mehr genutzt. Stattdessen könnten externe  Dateiverwaltungsfunktionen verwendet werden.';
+$string['coursefileswarning_help'] = 'Kursdateien werden ab Moodle 2.0 nicht mehr genutzt. Stattdessen könnten externe Dateiverwaltungsfunktionen verwendet werden.';
 $string['courseformatdata'] = 'Kursformatdaten';
 $string['courseformats'] = 'Kursformate';
 $string['coursegrades'] = 'Kursbewertung';
@@ -336,9 +333,7 @@ $string['coursehidden'] = 'Der Kurs steht aktuell für Teilnehmer/innen nicht zu
 $string['courseinfo'] = 'Kursinformation';
 $string['courselegacyfiles'] = 'Alte Kursdateien';
 $string['courselegacyfiles_help'] = 'Der Bereich Kursdateien liefert eine gewisse Abwärtskompatibilität zu Moodle 1.9 (und älter). Alle Dateien in diesem Bereich sind für alle Teilnehmer/innen im Kurs verfügbar, egal ob sie verlinkt sind oder nicht. Es gibt keinen Weg um herauszufinden, ob die Dateien in diesem Verzeichnis überhaupt in Moodle benutzt werden.
-
 Wenn Sie in diesen Bereich eine Datei speichern, könnten Sie ungewollt Datenschutz- oder Sicherheitsprobleme aufwerfen. Außerdem könnten Dateien bei Sicherungen, Kursimporten oder bei der Freigabe bzw. Wiederbenutzung fehlen. Sie sollten diesen Bereich nur nutzen, wenn Sie wirklich wissen, was Sie tun.
-
 Der folgende Link liefert Ihnen weitere Informationen und Möglichkeiten, um Dateien in Moodle 2.x zu verwalten.';
 $string['coursemessage'] = 'Mitteilung an Kursteilnehmer/innen';
 $string['coursenotaccessible'] = 'Dieser Kurs ist nicht öffentlich zugänglich';
@@ -527,8 +522,7 @@ $string['editthisactivity'] = 'Aktivität bearbeiten';
 $string['editthiscategory'] = 'Kursbereich bearbeiten';
 $string['edituser'] = 'Nutzerkonten bearbeiten';
 $string['email'] = 'E-Mail-Adresse';
-$string['emailactive'] = 'E-Mail-Adresse aktiv
-';
+$string['emailactive'] = 'E-Mail-Adresse aktiv';
 $string['emailagain'] = 'E-Mail (wiederholen)';
 $string['emailcharset'] = 'E-Mail-Zeichensatz';
 $string['emailconfirm'] = 'Bestätigen Sie Ihren Zugang.';
@@ -538,7 +532,7 @@ wir freuen uns, dass Sie sich im Lernmanagementsystem Moodle \'{$a->sitename}\' 
 
 Wir haben bei uns eine neue Nutzerregistrierung erhalten, bei der Ihre E-Mailadresse eingetragen wurde. Wenn dies richtig ist, bestätigen Sie bitte die Anmeldung über den folgenden Link:
 
-  {$a->link}
+{$a->link}
 
 Kontrollieren Sie bitte zunächst, ob alle Zeichen der obigen Zeile in dem Link enthalten sind. Falls im Anmeldenamen ein Leerzeichen enthalten ist, kann der Link unterbrochen sein. Klicken Sie dann auf den Link und ergänzen Sie im Browser in der URL-Adresse die restlichen Zeichen des Links.
 
@@ -668,8 +662,7 @@ wir erinnern Sie daran, dass Ihre Teilnahmedauer für den Kurs {$a->course} in {
 
 Nehmen Sie bitte mit Ihren Trainer/innen Kontakt auf, falls Sie weiterhin im Kurs eingeschrieben bleiben wollen.';
 $string['expirythreshold'] = 'Wie lange vorher';
-$string['expirythreshold_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, dann gibt diese Einstellung an, wie viele Tage vorher die Teilnehmer/innen über das Einschreibungsende informiert werden.
-';
+$string['expirythreshold_help'] = 'Wenn eine Einschreibedauer festgelegt wurde, dann gibt diese Einstellung an, wie viele Tage vorher die Teilnehmer/innen über das Einschreibungsende informiert werden.';
 $string['explanation'] = 'Erläuterung';
 $string['extendenrol'] = 'Anmeldung verlängern (individuell)';
 $string['extendperiod'] = 'Verlängerter Zeitraum';
@@ -709,12 +702,10 @@ $string['forgottenduplicate'] = 'Diese E-Mail-Adresse wird von mehreren Nutzern 
 $string['forgotteninvalidurl'] = 'Ungültige URL zum Kennwort-Rücksetzen';
 $string['format'] = 'Format';
 $string['format_help'] = 'Die Kursformate legen das Layout der Kursseite fest.
-
 * SCORM-Format - Ein Lernpaket (SCORM) wird im ersten Kursabschnitt angezeigt, alternativ zur Verwendung des Moduls \'Lernpaket\' (SCORM/AICC)
 * Soziales Format - Ein Forum wird auf der Kursseite angezeigt
 * Themenformat - Die Kursseite wird in Themenabschnitte eingeteilt
-* Wochenformat - Die Kursseite wird in Wochenabschnitte eingeteilt, beginnend mit der ersten Woche nach dem Kursbeginn
-';
+* Wochenformat - Die Kursseite wird in Wochenabschnitte eingeteilt, beginnend mit der ersten Woche nach dem Kursbeginn';
 $string['formathtml'] = 'HTML-Format';
 $string['formatmarkdown'] = 'Markdown-Format';
 $string['formatplain'] = 'Reines Textformat';
@@ -755,16 +746,14 @@ Dieses Programm ist freie Software. Sie dürfen die Software weiterverbreiten un
 
 Dieses Programm wurde in der Hoffnung erstellt, dass es nützlich sein könnte, allerdings OHNE IRGENDEINE GARANTIE, sogar ohne die implizierte Garantie der Marktfähigkeit oder der Eignung für einen bestimmten Zweck.
 
-Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License
-';
+Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License';
 $string['gpl3'] = 'Copyright (C)1999 onwards Martin Dougiamas http://moodle.com
 
 Dieses Programm ist freie Software. Sie dürfen die Software weiterverbreiten und/oder verändern, und zwar im Rahmen der GNU General Public License, wie sie von der Free Software Foundation veröffentlicht wurde. Es gilt die Version 3 der Lizenz oder (falls Sie dies wünschen) auch jede spätere Version.
 
 Dieses Programm wurde in der Hoffnung erstellt, dass es nützlich sein könnte, allerdings OHNE IRGENDEINE GARANTIE, sogar ohne die implizierte Garantie der Marktfähigkeit oder der Eignung für einen bestimmten Zweck.
 
-Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License
-';
+Weitere Informationen finden Sie auf der Informationsseite zur Moodle-Lizenz : http://docs.moodle.org/dev/License';
 $string['gpllicense'] = 'GPL-Lizenz';
 $string['grade'] = 'Bewertung';
 $string['grades'] = 'Bewertungen';
@@ -807,13 +796,10 @@ $string['helpwiththis'] = 'Hilfe für dies';
 $string['hiddenassign'] = 'Verborgene Zuweisung';
 $string['hiddenfromstudents'] = 'Für Teilnehmer/innen verborgen';
 $string['hiddensections'] = 'Verborgene Abschnitte';
-$string['hiddensections_help'] = '<h2>Verborgene Abschnitte</h2>
-
-<p>Diese Einstellung legt fest, ob und wie verborgene Abschnitte für die Teilnehmer/innen angezeigt werden.</p>
-
-<p>In der Standardeinstellung werden sie mit dem Hinweis: "Nicht verfügbar" angezeigt, um den verborgenen Abschnitt zu kennzeichnen. Die Texte und Aktivitäten des verborgenen Abschnitts werden nicht angezeigt. Diese Einstellung ist sinnvoll, um z.B. im Wochen-Format Wochen zu kennzeichnen, in denen kein Unterricht stattfindet.</p>
-
-<p>Sie können Abschnitte auch vollständig verbergen, d.h. die Teilnehmer/innen können dann nicht sehen, dass diese Abschnitte überhaupt existieren. Im Themen-Format kann dies aber zu einer Irritation der Teilnehmer/innen führen, da verborgene Abschnitte in der Zählung der Abschnitte berücksichtigt werden und somit als fehlend interpretiert werden.</p>';
+$string['hiddensections_help'] = '## Verborgene Abschnitte
+Diese Einstellung legt fest, ob und wie verborgene Abschnitte für die Teilnehmer/innen angezeigt werden.
+In der Standardeinstellung werden sie mit dem Hinweis: "Nicht verfügbar" angezeigt, um den verborgenen Abschnitt zu kennzeichnen. Die Texte und Aktivitäten des verborgenen Abschnitts werden nicht angezeigt. Diese Einstellung ist sinnvoll, um z.B. im Wochen-Format Wochen zu kennzeichnen, in denen kein Unterricht stattfindet.
+Sie können Abschnitte auch vollständig verbergen, d.h. die Teilnehmer/innen können dann nicht sehen, dass diese Abschnitte überhaupt existieren. Im Themen-Format kann dies aber zu einer Irritation der Teilnehmer/innen führen, da verborgene Abschnitte in der Zählung der Abschnitte berücksichtigt werden und somit als fehlend interpretiert werden.';
 $string['hiddensectionscollapsed'] = 'Mit Hinweis "Nicht verfügbar" anzeigen';
 $string['hiddensectionsinvisible'] = 'Vollständig unsichtbar';
 $string['hide'] = 'Verbergen';
@@ -838,19 +824,16 @@ $string['htmleditordisabledadmin'] = 'Die Administrator/innen haben den HTML-Edi
 $string['htmleditordisabledbrowser'] = 'Der HTML-Editor ist nicht verfügbar, weil Ihr Browser nicht kompatibel ist. Bitte nutzen Sie eine neuere Browserversion oder einen anderen Browser.';
 $string['htmlfilesonly'] = 'Nur HTML-Dateien';
 $string['htmlformat'] = 'HTML-Format';
-$string['icon'] = 'Icon
-';
+$string['icon'] = 'Icon';
 $string['icqnumber'] = 'ICQ';
 $string['idnumber'] = 'ID-Nummer';
 $string['idnumbercourse'] = 'Kurs-ID';
-$string['idnumbercourse_help'] = '<h2>Kurs-ID-Nummer</h2>
-
-<p>Die Kurs-ID-Nummer wird lediglich zum Abgleich von Kursdaten durch externe Datenbanken benötigt. In Moodle selbst wird die Nummer nicht weiter benötigt bzw. angezeigt. Wenn Sie eine offizielle Kursnummer haben, können Sie diese hier eintragen, andernfalls lassen Sie das Feld leer.</p>';
+$string['idnumbercourse_help'] = '## Kurs-ID-Nummer
+Die Kurs-ID-Nummer wird lediglich zum Abgleich von Kursdaten durch externe Datenbanken benötigt. In Moodle selbst wird die Nummer nicht weiter benötigt bzw. angezeigt. Wenn Sie eine offizielle Kursnummer haben, können Sie diese hier eintragen, andernfalls lassen Sie das Feld leer.';
 $string['idnumbercoursecategory'] = 'Kursbereichs-ID';
 $string['idnumbercoursecategory_help'] = 'Die ID des Kursbereichs wird nur verwendet, wenn der Kursbereich mit externen Systemen verbunden ist und nicht auf der Webseite gezeigt wird. Falls der Kursbereich eine offizielle Namenscodierung hat, kann diese hier eingetragen werden, andernfalls kann das Feld leer bleiben.';
 $string['idnumbermod'] = 'ID-Nummer';
 $string['idnumbermod_help'] = 'Wenn eine ID-Nummer vergeben wird, kann die Aktivität in Bewertungsberechnungen identifiziert werden. Falls die Aktivität in keine Berechnung einbezogen wird, kann das Feld für die ID-Nummer leer bleiben.
-
 Die ID-Nummer kann auch bei der Bewertung gesetzt werden, allerdings kann sie nur in der Aktivitätseinstellungen verändert werden.';
 $string['idnumbertaken'] = 'Diese ID-Nummer wird bereits benutzt!';
 $string['imagealt'] = 'Bildbeschreibung';
@@ -976,11 +959,9 @@ $string['maximumgrade'] = 'Beste Bewertung';
 $string['maximumgradex'] = 'Beste Bewertung: {$a}';
 $string['maximumshort'] = 'Max.';
 $string['maximumupload'] = 'Maximale Dateigröße';
-$string['maximumupload_help'] = '<h2>Maximale Dateigröße zum Hochladen</h2>
-
-<p>Diese Einstellungen legt die maximale Größe einer Datei fest, die Teilnehmer/innen im Kurs hochladen können. Diese wird nach oben begrenzt durch die Voraussetzungen des Servers und die Einstellung der Administrator/innen für die gesamte Moodle-Installation.</p>
-
-<p>Es ist möglich, diese Einstellung für einzelne Aktivitäten im Kurs weiter einzuschränken, indem Sie die gleichnamige Einstellung für die einzelne Aktivität entsprechend anpassen.</p>';
+$string['maximumupload_help'] = '## Maximale Dateigröße zum Hochladen
+Diese Einstellungen legt die maximale Größe einer Datei fest, die Teilnehmer/innen im Kurs hochladen können. Diese wird nach oben begrenzt durch die Voraussetzungen des Servers und die Einstellung der Administrator/innen für die gesamte Moodle-Installation.
+Es ist möglich, diese Einstellung für einzelne Aktivitäten im Kurs weiter einzuschränken, indem Sie die gleichnamige Einstellung für die einzelne Aktivität entsprechend anpassen.';
 $string['maxnumberweeks'] = 'Maximale Anzahl von Wochen/Themen';
 $string['maxnumberweeks_desc'] = 'Diese Option legt die maximale Anzahl fest, die in den Kurseinstellungen für \'Anzahl von Wochen/Themen\' gewählt werden kann.';
 $string['maxnumcoursesincombo'] = '<a href="{$a->link}">Übersicht mit {$a->numberofcourses} Kurse</a>.';
@@ -1089,8 +1070,8 @@ $string['newpasswordtext'] = 'Guten Tag {$a->firstname},
 Ihr Kennwort auf \'{$a->sitename}\' wurde zurückgesetzt. Ihnen ist ein neues, temporäres Kennwort zugewiesen worden.
 
 Ihre Zugangsdaten lauten jetzt:
-   Anmeldename: {$a->username}
-   Kennwort: {$a->newpassword}
+Anmeldename: {$a->username}
+Kennwort: {$a->newpassword}
 
 Bitte folgen Sie diesem Link und ändern Sie Ihr Kennwort:
 {$a->link}
@@ -1106,13 +1087,10 @@ $string['newpicture_help'] = 'Um ein neues Bild hinzuzufügen, wählen Sie ein B
 $string['newsitem'] = 'Nachricht';
 $string['newsitems'] = 'Nachrichten';
 $string['newsitemsnumber'] = 'Anzahl neuer Nachrichten';
-$string['newsitemsnumber_help'] = '<h2>Anzuzeigende neue Nachrichten</h2>
-
-<p>Ein spezielles Forum im Kurs ist das Nachrichtenforum. Es wird standardmäßig bei Kursen im Wochen- oder Themen-Format angelegt. Dieses Forum ist der richtige Platz, um Mitteilungen für alle Kursteilnehmer/innen zu veröffentlichen. Ein Nachrichtenforum ist standardmäßig so konfiguriert, dass alle Kursteilnehmer/innen die Mitteilungen aus diesem Forum per E-Mail zugesendet bekommen.</p>
-
-<p>Diese Einstellung legt fest, wieviele Nachrichten im Block "Neueste Nachrichten" auf der Kursseite angezeigt werden.</p>
-
-<p>Wenn Sie hier die Einstellung "0 Nachrichten" auswählen, dann wird der Block "Neueste Nachrichten" nicht angezeigt.</p>';
+$string['newsitemsnumber_help'] = '## Anzuzeigende neue Nachrichten
+Ein spezielles Forum im Kurs ist das Nachrichtenforum. Es wird standardmäßig bei Kursen im Wochen- oder Themen-Format angelegt. Dieses Forum ist der richtige Platz, um Mitteilungen für alle Kursteilnehmer/innen zu veröffentlichen. Ein Nachrichtenforum ist standardmäßig so konfiguriert, dass alle Kursteilnehmer/innen die Mitteilungen aus diesem Forum per E-Mail zugesendet bekommen.
+Diese Einstellung legt fest, wieviele Nachrichten im Block "Neueste Nachrichten" auf der Kursseite angezeigt werden.
+Wenn Sie hier die Einstellung "0 Nachrichten" auswählen, dann wird der Block "Neueste Nachrichten" nicht angezeigt.';
 $string['newuser'] = 'Neues Nutzerprofil';
 $string['newusernewpasswordsubj'] = 'Neuer Nutzerzugang';
 $string['newusernewpasswordtext'] = 'Guten Tag {$a->firstname},
@@ -1416,31 +1394,31 @@ $string['savedat'] = 'Gesichert unter:';
 $string['savepreferences'] = 'Einstellungen speichern';
 $string['saveto'] = 'Speichern in';
 $string['scale'] = 'Bewertungsskala';
-$string['scale_help'] = '<h2>Bewertungsskalen</h2>
-<p>Dozent/innen können neue Bewertungskalen erstellen, die
-in allen Bewertungsaktivitäten eingesetzt werden können.</p>
-<p>Der Name der Skala sollte ein einfacher Satz oder Begriff
+$string['scale_help'] = '## Bewertungsskalen
+Dozent/innen können neue Bewertungskalen erstellen, die
+in allen Bewertungsaktivitäten eingesetzt werden können.
+Der Name der Skala sollte ein einfacher Satz oder Begriff
 sein, der den Charakter eindeutig beschreibt: Er wird in
-Auswahllisten und in der Kontexthilfe verwandt.</p>
-<p>Die Skala wird durch eine geordnete Liste von Werten
+Auswahllisten und in der Kontexthilfe verwandt.
+Die Skala wird durch eine geordnete Liste von Werten
 definiert, die vom negativen zum positiven Wert geordnet ist. Die
-einzelnen Werte werden durch Kommas getrennt. Zum Beispiel:</p>
-<blockquote><i>enttäuschend, nicht gut genug,
-durschnittlich, gut, sehr gut, ausgezeichnet!</i></blockquote>
-<p>Skalen sollten eine gute Beschreibung ihrer Bedeutung und
+einzelnen Werte werden durch Kommas getrennt. Zum Beispiel:
+> *enttäuschend, nicht gut genug,
+> durschnittlich, gut, sehr gut, ausgezeichnet!*
+Skalen sollten eine gute Beschreibung ihrer Bedeutung und
 ihrer Verwendung beinhalten, denn sie (die Beschreibung) wird auch in
-Hilfeseiten für Trainer/innen und Teilnehmer/innen verwendet.</p>
-<p>Am Schluss haben Sie eine oder mehrere
+Hilfeseiten für Trainer/innen und Teilnehmer/innen verwendet.
+Am Schluss haben Sie eine oder mehrere
 Standard-Bewertungsskalen auf der Systemverwaltungsseite
-festgelegt, die in allen Kursen genutzt werden können.</p>';
+festgelegt, die in allen Kursen genutzt werden können.';
 $string['scales'] = 'Bewertungsskalen';
 $string['scalescustom'] = 'Nutzerdefinierte Bewertungsskalen';
 $string['scalescustomcreate'] = 'Neue Bewertungsskala anlegen';
 $string['scalescustomno'] = 'Es wurden noch keine nutzerdefinierten Bewertungsskalen angelegt.';
 $string['scalesstandard'] = 'Standard-Bewertungsskalen';
 $string['scalestandard'] = 'Standard-Bewertungsskala';
-$string['scalestandard_help'] = '<h2>Standardbewertungsskala</h2>
-<p>Eine Standardbewertungsskala steht in jedem Kurs zur Verfügung. Im Unterschied dazu kursspezifische Bewertungsskala.</p>';
+$string['scalestandard_help'] = '## Standardbewertungsskala
+Eine Standardbewertungsskala steht in jedem Kurs zur Verfügung. Im Unterschied dazu kursspezifische Bewertungsskala.';
 $string['scalestip'] = 'Um nutzerdefinierte Bewertungsskalen anzulegen, benutzen Sie bitte den Link \'Bewertungsskalen\' im Administrationsblock des Kurses.';
 $string['scalestip2'] = 'Zur Erstellung eigener Bewertungsskalen wählen Sie im Administrationsblock des Kurses \'Bewertungen\' und dann \'Aktion auswählen \'Bewertungsskalen\'.';
 $string['schedule'] = 'Planung';
@@ -1450,7 +1428,7 @@ $string['screenreaderuse_help'] = 'Mit der Einstellung \'Ja\' wird ein barrieref
 $string['screenreaderyes'] = 'Ja';
 $string['screenshot'] = 'Bildschirmfoto';
 $string['search'] = 'Suchen';
-$string['search_help'] = 'Einfache Suche von einem oder mehreren Wörtern, die im Text vorkommen. Zwischen den Suchwörtern bitte Leerzeichen eingeben. Gesuchte Begriffe müssen mindestens drei Zeichen lang sein. ';
+$string['search_help'] = 'Einfache Suche von einem oder mehreren Wörtern, die im Text vorkommen. Zwischen den Suchwörtern bitte Leerzeichen eingeben. Gesuchte Begriffe müssen mindestens drei Zeichen lang sein.';
 $string['searchagain'] = 'Erneut suchen';
 $string['searchbyemail'] = 'Über die E-Mail-Adresse suchen';
 $string['searchbyusername'] = 'Über den Anmeldenamen suchen';
@@ -1507,11 +1485,9 @@ $string['settings'] = 'Einstellungen';
 $string['shortname'] = 'Kurzbezeichnung';
 $string['shortnamecollisionwarning'] = '[*] = Diese Kurzbezeichnung wird bereits für einen anderen Kurs genutzt. Bitte ändern Sie den Eintrag.';
 $string['shortnamecourse'] = 'Kursname (kurz)';
-$string['shortnamecourse_help'] = '<h2>Kurzbezeichnung des Kurses</h2>
-
-<p>Viele Institutionen haben bereits Kurzbezeichnungen für Ihre Kurse, z.B. BP102 oder COMMS. Selbst wenn es eine solche Kurzbezeichnung für Ihren Kurs noch nicht gibt, überlegen Sie sich eine sinnvolle Bezeichnung und tragen Sie diese hier ein.</p>
-
-<p>Die Kurzbezeichnung wird an verschiedenen Stellen genutzt, an der der vollständige Kursname nicht angebracht ist (z.B. in der Betreff-Zeile bei E-Mails).</p>';
+$string['shortnamecourse_help'] = '## Kurzbezeichnung des Kurses
+Viele Institutionen haben bereits Kurzbezeichnungen für Ihre Kurse, z.B. BP102 oder COMMS. Selbst wenn es eine solche Kurzbezeichnung für Ihren Kurs noch nicht gibt, überlegen Sie sich eine sinnvolle Bezeichnung und tragen Sie diese hier ein.
+Die Kurzbezeichnung wird an verschiedenen Stellen genutzt, an der der vollständige Kursname nicht angebracht ist (z.B. in der Betreff-Zeile bei E-Mails).';
 $string['shortnametaken'] = 'Diese Kurzbezeichnung wird bereits für einen anderen Kurs ({$a}) verwendet.';
 $string['shortnameuser'] = 'Nutzername (kurz)';
 $string['shortsitename'] = 'Kurzbezeichnung';
@@ -1529,13 +1505,10 @@ $string['showcommentsnonjs'] = 'Kommentare anzeigen';
 $string['showdescription'] = 'Beschreibung im Kurs zeigen';
 $string['showdescription_help'] = 'Wenn diese Option aktiviert ist, wird die obige Beschreibung direkt nach dem Link auf der Kursseite angezeigt.';
 $string['showgrades'] = 'Bewertungen anzeigen';
-$string['showgrades_help'] = '<h2>Bewertungen anzeigen</h2>
-
-<p>Viele Aktivitäten ermöglichen es, Bewertungen zu verteilen.</p>
-
-<p>In der Standardeinstellung können alle Bewertungen, die im Kurs erteilt werden, über die Bewertungsübersicht eingesehen werden (Link "Bewertungen" im Administrationsblock auf der Kursseite).</p>
-
-<p>Wenn Sie innerhalb des Kurses keine Bewertungen verwenden möchten oder die Bewertungen für die Teilnehmer/innen unsichtbar sein sollen, dann stellen Sie "Bewertungen anzeigen" auf "Nein". Bei dieser Einstellung können Sie als Trainer/in individuelle Aktivitäten nach wie vor bewerten, die Bewertungen sind aber für die Teilnehmer/innen nicht mehr in der Übersicht sichtbar, sondern nur noch innerhalb der individuellen Aktivitäten.</p>';
+$string['showgrades_help'] = '## Bewertungen anzeigen
+Viele Aktivitäten ermöglichen es, Bewertungen zu verteilen.
+In der Standardeinstellung können alle Bewertungen, die im Kurs erteilt werden, über die Bewertungsübersicht eingesehen werden (Link "Bewertungen" im Administrationsblock auf der Kursseite).
+Wenn Sie innerhalb des Kurses keine Bewertungen verwenden möchten oder die Bewertungen für die Teilnehmer/innen unsichtbar sein sollen, dann stellen Sie "Bewertungen anzeigen" auf "Nein". Bei dieser Einstellung können Sie als Trainer/in individuelle Aktivitäten nach wie vor bewerten, die Bewertungen sind aber für die Teilnehmer/innen nicht mehr in der Übersicht sichtbar, sondern nur noch innerhalb der individuellen Aktivitäten.';
 $string['showlistofcourses'] = 'Kursliste anzeigen';
 $string['showmodulecourse'] = 'Liste der Kurse anzeigen, in der diese Aktivität genutzt wird';
 $string['showonly'] = 'Nur anzeigen';
@@ -1644,15 +1617,15 @@ $string['subcategories'] = 'Kursunterbereiche';
 $string['submit'] = 'Speichern';
 $string['success'] = 'erfolgreich';
 $string['summary'] = 'Beschreibung';
-$string['summary_help'] = '<h2>Themen-/Wochenzusammenfassungen</h2>
-<p>Die Themenzusammenfassung sollte aus einem sehr
+$string['summary_help'] = '## Themen-/Wochenzusammenfassungen
+Die Themenzusammenfassung sollte aus einem sehr
 kurzen Text bestehen, der die Kursteilnehmer/innen auf die Tätigkeiten
-innerhalb dieses Themas (oder der Woche) vorbereitet.</p>
-<p>Die Zusammenfassung sollte sehr kurz sein, damit die
-Kursseite nicht zu lang wird.</p>
-<p>Wenn Sie meinen, mehr sagen zu müssen als ein, zwei
+innerhalb dieses Themas (oder der Woche) vorbereitet.
+Die Zusammenfassung sollte sehr kurz sein, damit die
+Kursseite nicht zu lang wird.
+Wenn Sie meinen, mehr sagen zu müssen als ein, zwei
 Sätze, dann fügen Sie stattdessen eine Arbeitsunterlage zu diesem
-Thema bei.</p>';
+Thema bei.';
 $string['summaryof'] = 'Beschreibung von {$a}';
 $string['supplyinfo'] = 'Weitere Angaben';
 $string['switchdevicedefault'] = 'Zum Standarddesign wechseln';

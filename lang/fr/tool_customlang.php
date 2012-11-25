@@ -52,7 +52,6 @@ $string['modifiednum'] = '{$a} chaînes ont été modifiées. Voulez-vous enregi
 $string['nostringsfound'] = 'Aucune chaîne trouvée. Veuillez modifier les réglages du filtre';
 $string['placeholder'] = 'Paramètres';
 $string['placeholder_help'] = 'Les paramètres sont des expressions spéciales comme « {$a} » ou « {$a->blabla} » à l\'intérieur d\'une chaîne. Ils sont remplacés par une valeur lors de l\'affichage effectif de la chaîne.
-
 Il est important de les copier de manière exactement identique à l\'original. Ne les traduisez pas, et ne modifiez pas non plus leur orientation de gauche à droite (pour les langues écrites de droite à gauche).';
 $string['placeholderwarning'] = 'La chaîne contient un paramètre';
 $string['pluginname'] = 'Modification paquetage de langue';

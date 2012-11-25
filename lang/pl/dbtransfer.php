@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['checkingsourcetables'] = 'Sprawdzenie struktury tabeli źródłowej';
 $string['copyingtable'] = 'Kopiowanie tabeli {$a}';
-$string['copyingtables'] = 'Kopiowanie zawartości tabeli ';
+$string['copyingtables'] = 'Kopiowanie zawartości tabeli';
 $string['creatingtargettables'] = 'Tworzenie tabel w docelowej bazie danych';
 $string['dbexport'] = 'Eksport bazy danych';
 $string['dbtransfer'] = 'Transfer bazy danych';

@@ -89,13 +89,13 @@ $string['approvedreview'] = '已核查的回顾';
 $string['authcaptured'] = '经授权的/夺取的';
 $string['authcode'] = '验证码';
 $string['authorize:config'] = '配置Authorize.Net选课实例';
-$string['authorizedpendingcapture'] = '已授权/未决的获取';
-$string['authorizeerror'] = 'Authorize.Net 错误: {$a}';
 $string['authorize:manage'] = '管理已选课用户';
 $string['authorize:managepayments'] = '管理支付';
 $string['authorize:unenrol'] = '从课程取消用户选课';
 $string['authorize:unenrolself'] = '撤销自己的选课';
 $string['authorize:uploadcsv'] = '上传 CSV 文件';
+$string['authorizedpendingcapture'] = '已授权/未决的获取';
+$string['authorizeerror'] = 'Authorize.Net 错误: {$a}';
 $string['avsa'] = '地址匹配，邮政编码不匹配';
 $string['avsb'] = '没有提供地址信息';
 $string['avse'] = '地址确认系统出现错误';
@@ -195,13 +195,13 @@ $string['paymentmethod'] = '支付方式';
 $string['paymentpending'] = '您对这个课程的支付的订购号码为{$a->orderid}，看See <a href=\'{$a->url}\'>订购细节</a>.';
 $string['pendingecheckemail'] = '亲爱的经理，
 
-     现在这里有{$a->count}未确定的电子核查，您需要上传CSV文件来获得用户们的登记。';
+现在这里有{$a->count}未确定的电子核查，您需要上传CSV文件来获得用户们的登记。';
 $string['pendingechecksubject'] = '点击链接，并且阅读页面的帮助文件看到：
 {$a->url}
 {$a->course}: 未确定的电子核查({$a->count})';
 $string['pendingordersemail'] = '亲爱的管理员，
 
- 您需要在{$a->days}天内接受支付否则{$a->pending}交易将过期
+您需要在{$a->days}天内接受支付否则{$a->pending}交易将过期
 
 这是一个警告信息，因为您没能预定获取。这意味着您需要手动的接受或者拒绝。
 

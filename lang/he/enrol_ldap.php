@@ -61,19 +61,19 @@ $string['host_url'] = 'ציין את המחשב המארח של LDAP בצורת 
 או \'ldaps://ldap.myorg.com/\'';
 $string['host_url_key'] = 'כתובת URL של המארח';
 $string['idnumber_attribute_key'] = 'ID number attribute';
-$string['ldap_encoding_key'] = 'קידוד LDAP';
 $string['ldap:manage'] = 'ניהול LDAP enrol instances';
+$string['ldap_encoding_key'] = 'קידוד LDAP';
 $string['memberattribute'] = 'תכונת החבר של LDAP';
 $string['objectclass'] = 'objectClass בו משתמשים כדי לחפש בקורסים. לרוב:
 \'posixGroup\'';
-$string['pluginname'] = 'רישומי  LDAP ';
+$string['pluginname'] = 'רישומי  LDAP';
 $string['pluginname_desc'] = '<p>כדי לשלוט בהירשמויות שלכם אתם יכולים להשתמש בשרת LDAP.
 אנו מניחים כי עץ ה-LDAP שלכם מכיל קבוצות שממפות אל עבר הקורסים, ושכל אחתד מהקבוצותקורסים הללו יהיו בעלי רשומות חברות שימפו לסטודנטים.</p>
 <p>אנו יוצאים מנקודת הנחה שהקורסים ב- LDAP מוגדרים כקבוצות כשלכל קבוצה יש שדות חברות מרובים (<em>member</em> או<em>memberUid</em>) שמכילים זיהוי הייחודי למשתמש.</p>
 <p>בכדי להשתמש בהרשמת LDAP, <strong>חובה</strong> על המשתמשים שלכם  להיות בעלי שדה מספר זיהוי תקף.
 על מנת שהמשתמש יהיה רשום לקורס חובה שלקבוצות ה-LDAP יהיה את מספר הזיהוי שמופיע בשדות החבר. על פי רוב הדבר יעבוד ללא כל בעיה במידה ואתם כבר משתמשים באימות LDAP .</p>
 <p>ההרשמות יעודכנו כאשר המשתמש יתחבר למערכת. בנוסף אתם יכולים להריץ קובץ אצווה כדי לשמור על ההרשמות מסונכרנות.
- הסתכלו ב-
+הסתכלו ב-
 <em>enrol/ldap/enrol_ldap_sync.php</em>.</p>
 <p>בנוסף ניתן להגדיר את התקן תקע זה  ליצור קורסים אוטומטית כאשר קבוצות חדשות מופיעות ב- LDAP.</p>';
 $string['pluginnotenabled'] = 'תוסף לא זמין!';

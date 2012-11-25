@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Contenu';
-$string['foldercontent'] = 'fichiers et sous-dossiers';
 $string['folder:managefiles'] = 'Gérer les fichiers dans le module dossier';
 $string['folder:view'] = 'Voir le contenu des dossiers';
+$string['foldercontent'] = 'fichiers et sous-dossiers';
 $string['modulename'] = 'Dossier';
 $string['modulenameplural'] = 'Dossiers';
 $string['neverseen'] = 'Jamais consulté';

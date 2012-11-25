@@ -35,10 +35,12 @@ $string['allownotes_help'] = 'Lorsque ce réglage est activé, les participants 
 $string['allowresubmit'] = 'Permettre plusieurs remises d\'un devoir';
 $string['allowresubmit_help'] = 'Si vous activez cette option, les étudiants pourront proposer un nouveau devoir même s\'il a déjà été noté (afin que vous le notiez de nouveau).';
 $string['alreadygraded'] = 'Votre devoir a déjà été évalué. Il n\'est pas permis de remettre à nouveau le devoir.';
-$string['assignmentdetails'] = 'Détails du devoir';
 $string['assignment:exportownsubmission'] = 'Exporter ses propres devoirs remis';
 $string['assignment:exportsubmission'] = 'Exporter des devoirs remis';
 $string['assignment:grade'] = 'Évaluer un devoir';
+$string['assignment:submit'] = 'Remettre un devoir';
+$string['assignment:view'] = 'Afficher un devoir';
+$string['assignmentdetails'] = 'Détails du devoir';
 $string['assignmentmail'] = '{$a->teacher} a écrit un feedback concernant votre devoir « {$a->assignment} »
 
 Vous pouvez le consulter en annexe à votre devoir :
@@ -50,9 +52,7 @@ Vous pouvez le consulter en annexe à <a href=\'{$a->url}\'>votre devoir</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} a donné un feedback pour votre devoir remis « {$a->assignment} ». Vous pouvez le voir au-dessous de votre devoir remis';
 $string['assignmentname'] = 'Nom du devoir';
 $string['assignmentsubmission'] = 'Remises de devoirs';
-$string['assignment:submit'] = 'Remettre un devoir';
 $string['assignmenttype'] = 'Type du devoir';
-$string['assignment:view'] = 'Afficher un devoir';
 $string['availabledate'] = 'Disponible dès le';
 $string['cannotdeletefiles'] = 'Une erreur est survenue, qui a empêché la suppression des fichiers';
 $string['cannotviewassignment'] = 'Vous ne pouvez pas voir ce devoir';
@@ -86,7 +86,6 @@ Ce travail est disponible ici :
 $string['emailteachermailhtml'] = '{$a->username} a modifié son travail remis pour le devoir « <em>{$a->assignment}</em> » le {$a->timeupdated}.<br /><br />Le travail remis est <a href="{$a->url}">disponible sur le site web</a>.';
 $string['emailteachers'] = 'Envoyer aux enseignants les alertes par courriel';
 $string['emailteachers_help'] = 'Si cette option est activée, les enseignants reçoivent un bref message lorsque les étudiants ajoutent ou mettent à jour leur devoir en ligne.
-
 Seuls les enseignants ayant l\'autorisation d\'évaluer le travail reçoivent le message. Ainsi, par exemple, si le cours utilise des groupes séparés, les enseignants restreints à un groupe particulier ne reçoivent pas les alertes concernant les étudiants des autres groupes.';
 $string['emptysubmission'] = 'Vous n\'avez encore rien remis';
 $string['enablenotification'] = 'Envoyer les courriels de notification';
@@ -181,8 +180,8 @@ $string['typeonline'] = 'Texte en ligne';
 $string['typeupload'] = 'Dépôt avancé de fichiers';
 $string['typeuploadsingle'] = 'Déposer un fichier';
 $string['unfinalize'] = 'Retour à l\'état de brouillon';
-$string['unfinalizeerror'] = 'Une erreur est survenue, qui a empêché le retour à l\'état de brouillon';
 $string['unfinalize_help'] = 'Repasser en mode brouillon permet au participant de continuer à modifier le devoir remis';
+$string['unfinalizeerror'] = 'Une erreur est survenue, qui a empêché le retour à l\'état de brouillon';
 $string['uploadafile'] = 'Déposer un fichier';
 $string['uploadbadname'] = 'Ce nom de fichier contient d\'étranges caractères. Il ne peut être déposé';
 $string['uploadedfiles'] = 'fichiers déposés';

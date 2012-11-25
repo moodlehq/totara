@@ -495,7 +495,7 @@ class plugin_manager {
                 'nonzero', 'overlay', 'serenity', 'sky_high', 'splash',
                 'standard', 'standardold'
                 // Totara:
-                , 'standardtotara', 'customtotara'
+                , 'standardtotara', 'customtotara', 'mymobiletotara'
             ),
 
             'tool' => array(

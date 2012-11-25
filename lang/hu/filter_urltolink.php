@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['embedimages'] = 'Képek beágyazása';
-$string['embedimages_desc'] = 'Kép-ugrópontok átalakítása képpé megadott formájú szöveggel ';
+$string['embedimages_desc'] = 'Kép-ugrópontok átalakítása képpé megadott formájú szöveggel';
 $string['filtername'] = 'URL-ek átalakítása ugrópontokká és képekké';
 $string['settingformats'] = 'Alkalmazás a formátumokra';
 $string['settingformats_desc'] = 'A szűrő alkalmazására csak akkor kerül sor, ha az eredeti szöveg beillesztése a kiválasztott formátumok valamelyikében történt.';

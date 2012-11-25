@@ -52,7 +52,6 @@ $string['modifiednum'] = '有 {$a} 条字符串修改过。您要把它们保存
 $string['nostringsfound'] = '未找到字符串，请修改过滤器设置';
 $string['placeholder'] = '占位符';
 $string['placeholder_help'] = '占位符是字符串中的一些特定符号，比如“{$a}”或“{$a->something}”。当字符串最终被输出时，它们会被替换为其它值。
-
 一定要保持它们本来的样子。不要翻译它们。';
 $string['placeholderwarning'] = '有占位符的字符串';
 $string['pluginname'] = '定制语言';

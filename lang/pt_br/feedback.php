@@ -48,13 +48,13 @@ $string['cannotunmap'] = 'Problema da base de dados. Não é possível desmapear
 $string['captcha'] = 'Captcha';
 $string['captchanotset'] = 'Captcha não está configurado';
 $string['check'] = 'Múltipla escolha - múltiplas respostas';
-$string['checkbox'] = 'Múltipla escolha - permite múltiplas respostas (check boxes)';
 $string['check_values'] = 'Possíveis respostas';
+$string['checkbox'] = 'Múltipla escolha - permite múltiplas respostas (check boxes)';
 $string['choosefile'] = 'Escolha um arquivo';
 $string['chosen_feedback_response'] = 'Escolha a resposta';
+$string['complete_the_form'] = 'Responda as questões';
 $string['completed'] = 'terminado';
 $string['completed_feedbacks'] = 'Respostas submetidas';
-$string['complete_the_form'] = 'Responda as questões';
 $string['completionsubmit'] = 'Ver como completada se as respostas foram submetidas';
 $string['configallowfullanonymous'] = 'Se esta opção for \'sim\' então a pesquisa poderá ser completada sem precisar de autenticação. Isso afeta apenas as pesquisas na página inicial.';
 $string['confirmdeleteentry'] = 'Você tem a certeza que deseja apagar esta entrada?';
@@ -71,38 +71,35 @@ $string['delete_old_items'] = 'Apagar todos os itens';
 $string['delete_template'] = 'Excluir template';
 $string['delete_templates'] = 'Excluir template...';
 $string['depending'] = 'Itens dependentes';
-$string['depending_help'] = 'Itens dependentes possibilitam mostrar itens que dependendem de valores de outros itens.<br />
-<strong>Aque está um exemplo:</strong><br />
-<ul>
-<li>Inicialmente crie um item do qual outros itens dependem de um valor.</li>
-<li>Na sequência, adicione uma nova página..</li>
-<li>Na sequencia adicione o item dependente do valor apresentado no iem anterior.<br />
-<li>Escolha \'Item dependente\' no formulário de criação de um item e indique o valor na caixa de texto.</li>
-</ul>
-<strong>A estrutura deve ser como a seguir:</strong>
-<ol>
-<li>Item pergunta: Você tem um carro? Resposta: sim/não</li>
-<li>Quebra de páginak</li>
-<li>Item pergunta: Qual é a cor de seu carro?<br />
-(este item depende da resposta \'sim\' ao item 1)</li>
-<li>Item perguna: Por que você não tem um carro?<br />
-(este item depende da resposta \'não ao item 1)</li>
-<li> ...outros itens</li>
-</ol>
+$string['depending_help'] = 'Itens dependentes possibilitam mostrar itens que dependendem de valores de outros itens.
+**Aque está um exemplo:**
+* Inicialmente crie um item do qual outros itens dependem de um valor.
+* Na sequência, adicione uma nova página..
+* Na sequencia adicione o item dependente do valor apresentado no iem anterior.
+* Escolha \'Item dependente\' no formulário de criação de um item e indique o valor na caixa de texto.
+
+**A estrutura deve ser como a seguir:**
+1. Item pergunta: Você tem um carro? Resposta: sim/não
+2. Quebra de páginak
+3. Item pergunta: Qual é a cor de seu carro?
+(este item depende da resposta \'sim\' ao item 1)
+4. Item perguna: Por que você não tem um carro?
+(este item depende da resposta \'não ao item 1)
+5. ...outros itens
 Somente isto. Divirta-se';
 $string['dependitem'] = 'Item dependente';
 $string['dependvalue'] = 'Vapor dependente';
 $string['description'] = 'Descrição';
 $string['do_not_analyse_empty_submits'] = 'Não analisar submissões vazias';
-$string['dropdown'] = 'Múltipla escolha - resposta única (\'dropdown list\') ';
-$string['dropdownlist'] = 'Múltipla escolha - resposta única (\'dropdown\') ';
-$string['dropdownrated'] = 'Lista dropdown (rateada)';
-$string['dropdown_values'] = 'Respostas';
 $string['drop_feedback'] = 'Remover deste curso';
+$string['dropdown'] = 'Múltipla escolha - resposta única (\'dropdown list\')';
+$string['dropdown_values'] = 'Respostas';
+$string['dropdownlist'] = 'Múltipla escolha - resposta única (\'dropdown\')';
+$string['dropdownrated'] = 'Lista dropdown (rateada)';
 $string['edit_item'] = 'Editar questão';
 $string['edit_items'] = 'Editar questões';
-$string['emailnotification'] = 'Notificação por e-mail';
 $string['email_notification'] = 'Enviar notificação por e-mail';
+$string['emailnotification'] = 'Notificação por e-mail';
 $string['emailnotification_help'] = 'Se ativado, os administradores receberão notificações de submissões';
 $string['emailteachermail'] = '{$a->username} respondeu a atividade: \'{$a->feedback}\'
 
@@ -114,38 +111,37 @@ Você pode vê-la aqui: <a href="{$a->url}">here</a>.';
 $string['entries_saved'] = 'Suas respostas foram gravadas. Obrigado';
 $string['export_questions'] = 'Exportar perguntas';
 $string['export_to_excel'] = 'Exportar para o Excel';
-$string['feedbackclose'] = 'Fechar a pesquisa em';
-$string['feedbackcloses'] = 'Feedback fecha';
 $string['feedback:complete'] = 'Completar a pesquisa';
 $string['feedback:createprivatetemplate'] = 'Criar um modelo privado';
 $string['feedback:createpublictemplate'] = 'Criar um modelo público';
 $string['feedback:deletesubmissions'] = 'Apagar submissões completadas';
 $string['feedback:deletetemplate'] = 'Excluir template';
 $string['feedback:edititems'] = 'Editar itens';
-$string['feedback_is_not_for_anonymous'] = 'A pesquisa não é para anônimos';
-$string['feedback_is_not_open'] = 'A pesquisa não está aberta';
 $string['feedback:mapcourse'] = 'Mapear cursos para pesquisas globais';
-$string['feedbackopen'] = 'Abrir a pesquisa em';
-$string['feedbackopens'] = 'Feedback abre';
-$string['feedback_options'] = 'Opções de pesquisa';
 $string['feedback:receivemail'] = 'Receber um email de notificação';
 $string['feedback:view'] = 'Ver uma pesquisa';
 $string['feedback:viewanalysepage'] = 'Ver a página de análise após a submissão';
 $string['feedback:viewreports'] = 'Ver ralatórios';
+$string['feedback_is_not_for_anonymous'] = 'A pesquisa não é para anônimos';
+$string['feedback_is_not_open'] = 'A pesquisa não está aberta';
+$string['feedback_options'] = 'Opções de pesquisa';
+$string['feedbackclose'] = 'Fechar a pesquisa em';
+$string['feedbackcloses'] = 'Feedback fecha';
+$string['feedbackopen'] = 'Abrir a pesquisa em';
+$string['feedbackopens'] = 'Feedback abre';
 $string['file'] = 'Arquivo';
 $string['filter_by_course'] = 'Filtrar por curso';
 $string['handling_error'] = 'Ocorreu erro na ação de processar o módulo de pesquisa';
 $string['hide_no_select_option'] = 'Esconder a opção \'Não selecionado\'';
 $string['horizontal'] = 'horizontal';
-$string['importfromthisfile'] = 'Importar a partir do arquivo';
 $string['import_questions'] = 'Importar questões';
 $string['import_successfully'] = 'Importação bem sucedida';
+$string['importfromthisfile'] = 'Importar a partir do arquivo';
 $string['info'] = 'Informação';
 $string['infotype'] = 'Tipo de informação';
 $string['insufficient_responses'] = 'Respostas insuficientes';
 $string['insufficient_responses_for_this_group'] = 'Há respostas insuficientes para este grupo';
 $string['insufficient_responses_help'] = 'Há respostas insuficientes para este grupo.
-
 Para manter a pesquisa anônima precisam-se, ao menos, duas respostas.';
 $string['item_label'] = 'Rótulo';
 $string['item_name'] = 'Questão';
@@ -167,16 +163,16 @@ $string['mode'] = 'Modo';
 $string['modulename'] = 'Pesquisa';
 $string['modulename_help'] = 'Os módulos de pesquisa possibilitam a criação de inquéritos (\'survey\') personalizados';
 $string['modulenameplural'] = 'Pesquisa';
-$string['movedown_item'] = 'Mover a questão para baixo';
 $string['move_here'] = 'Mover aqui';
 $string['move_item'] = 'Mover esta questão';
+$string['movedown_item'] = 'Mover a questão para baixo';
 $string['moveup_item'] = 'Mover esta questão para cima';
 $string['multichoice'] = 'Múltipla escolha';
+$string['multichoice_values'] = 'Valores de múltipla escolha';
 $string['multichoicerated'] = 'Múltiplas escolhas (rateadas)';
 $string['multichoicetype'] = 'Tipos de múltipla escolha';
-$string['multichoice_values'] = 'Valores de múltipla escolha';
-$string['multiplesubmit'] = 'Múltiplas submissões';
 $string['multiple_submit'] = 'Múltiplas submissões';
+$string['multiplesubmit'] = 'Múltiplas submissões';
 $string['multiplesubmit_help'] = 'Se for possível a pesquisa para anônimos, os usuários poderão submetê-las ilimitadas vezes.';
 $string['name'] = 'Nome';
 $string['name_required'] = 'O nome é exigido';
@@ -185,27 +181,26 @@ $string['no_handler'] = 'Nenhuma ação de manipulação para';
 $string['no_itemlabel'] = 'Sem rótulo';
 $string['no_itemname'] = 'Sem nome do item';
 $string['no_items_available_yet'] = 'Nenhuma pergunta foi ainda configurada';
+$string['no_templates_available_yet'] = 'Nenhum modelo já está disponível';
 $string['non_anonymous'] = 'O nome do usuário será registrado e mostrado com as respostas';
 $string['non_anonymous_entries'] = 'entradas não anônimas';
 $string['non_respondents_students'] = 'estudantes não respondentes';
-$string['notavailable'] = 'esta pesquisa não está disponível';
 $string['not_completed_yet'] = 'Ainda não foi completada';
-$string['no_templates_available_yet'] = 'Nenhum modelo já está disponível';
 $string['not_selected'] = 'Não selecionado';
 $string['not_started'] = 'não iniciado';
+$string['notavailable'] = 'esta pesquisa não está disponível';
 $string['numeric'] = 'Resposta numérica';
 $string['numeric_range_from'] = 'Valor de';
 $string['numeric_range_to'] = 'Valor até';
 $string['of'] = 'de';
-$string['oldvaluespreserved'] = 'Todas as perguntas antigas e valores atribuídos serão preservados ';
-$string['oldvalueswillbedeleted'] = 'As questões atuais e todas as respectivas respostas do usuário serão excluídas
-';
+$string['oldvaluespreserved'] = 'Todas as perguntas antigas e valores atribuídos serão preservados';
+$string['oldvalueswillbedeleted'] = 'As questões atuais e todas as respectivas respostas do usuário serão excluídas';
 $string['only_one_captcha_allowed'] = 'Apenas um \'captcha\' é permitido em uma pesquisa';
 $string['overview'] = 'Visão geral';
 $string['page'] = 'Página';
+$string['page-mod-feedback-x'] = 'Qualquer página de modulo de feedback';
 $string['page_after_submit'] = 'Página após submissão';
 $string['pagebreak'] = 'Quebra de página';
-$string['page-mod-feedback-x'] = 'Qualquer página de modulo de feedback';
 $string['parameters_missing'] = 'Parâmetros em falta';
 $string['picture'] = 'Figura';
 $string['picture_file_list'] = 'Lista de figuras';
@@ -220,10 +215,10 @@ $string['public'] = 'Público';
 $string['question'] = 'Questão';
 $string['questions'] = 'Questões';
 $string['radio'] = 'Múltipla escolha - resposta única';
+$string['radio_values'] = 'Respostas';
 $string['radiobutton'] = 'Múltipla escolha - resposta única (botões rádio)';
 $string['radiobutton_rated'] = 'Radiobutton (nominal)';
 $string['radiorated'] = 'Botão rádio (rateado)';
-$string['radio_values'] = 'Respostas';
 $string['ready_feedbacks'] = 'Feedbacks prontos';
 $string['relateditemsdeleted'] = 'Todos as respostas de seus usuários para esta pergunta também serão apagadas.';
 $string['required'] = 'Exigido';
@@ -240,8 +235,7 @@ $string['saving_failed'] = 'Falha ao salvar';
 $string['saving_failed_because_missing_or_false_values'] = 'Falha ao tentar salvar devido a valores não informados ou incorretos';
 $string['search_course'] = 'Buscar curso';
 $string['searchcourses'] = 'Buscar cursos';
-$string['searchcourses_help'] = 'Procure pelo(s) código(s) ou nome(s) do(s) curso(s) que você deseja associar a esta pesquisa.
-';
+$string['searchcourses_help'] = 'Procure pelo(s) código(s) ou nome(s) do(s) curso(s) que você deseja associar a esta pesquisa.';
 $string['selected_dump'] = 'Os índices selecionados da variável $SESSION estão mostrados abaixo:';
 $string['send'] = 'enviar';
 $string['send_message'] = 'enviar mansagem';
@@ -262,8 +256,8 @@ $string['switch_group'] = 'Comutar grupo';
 $string['switch_item_to_not_required'] = 'Comutar para: resposta não exigida';
 $string['switch_item_to_required'] = 'Comutar para: resposta exigida';
 $string['template'] = 'Modelo';
-$string['templates'] = 'Modelos';
 $string['template_saved'] = 'Modelo gravado';
+$string['templates'] = 'Modelos';
 $string['textarea'] = 'Resposta de texto longo';
 $string['textarea_height'] = 'Número de linhas';
 $string['textarea_width'] = 'Largura';
@@ -287,4 +281,4 @@ $string['using_templates'] = 'Utilizar um template';
 $string['vertical'] = 'vertical';
 $string['viewcompleted'] = 'pesquisas completas';
 $string['viewcompleted_help'] = 'Você pode ver formulários de completo de pesquisa, pesquisáveis por curso e / ou por pergunta.
- As respostas podem ser exportadas para o Excel.';
+As respostas podem ser exportadas para o Excel.';

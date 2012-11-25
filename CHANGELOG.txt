@@ -1,5 +1,102 @@
 Totara LMS Changelog
 
+Release 2.2.10 (22 November 2012):
+==================================================
+
+Security fixes:
+                 Fixes from MoodleHQ http://docs.moodle.org/dev/Moodle_2.2.6_release_notes
+    T-10073      Add optional reCaptcha to login and forgot password forms
+
+API Changes:
+    T-10138      mark_complete() in lib/completion/completion_criteria_completion.php now takes an optional timestamp parameter of the actual completion time.
+                 If not passed, defaults to the time the mark_complete function is run
+
+Improvements:
+    T-9804      Improvements to Arabic, Chinese, Dutch, English (US), Finnish, French, German, Hebrew, Hungarian, Italian, Japanese, Polish,
+                Portuguese (Brazilian), Spanish (Castilian), Spanish (International), Swedish and Thai language packs
+    T-10047     Update mymobile theme to 2.3 version
+    T-9961      Add exceptions to totara_sync
+    T-9885      Conversion of Server->Environment page from Moodle to Totara
+
+Bug fixes:
+    T-10033     Fix timezone and language issues in totara_sync
+    T-9953      Handle errors in totara_sync when field count does not match
+    T-10094     Fix incorrect temp table add_field() arguments in totara_sync
+    T-10094     Fix handling of 'deleted' field as integer if not supplied by CSV source in totara_sync
+    T-10132     Always sync hierarchy parent items first in totara_sync
+    T-10066     Fix deleted users logic in totara_sync
+    T-9920      Added totarasync flag setting to Hierarchy and User item settings
+    MDL-35469   Fix Gecko based browser checks
+    T-10111     Fix the displayed Totara version numbers on fresh install
+    T-10071     Fix "From" user in messages where message should come from support address, not managers
+    T-9980      Fix post_max_size repository language string
+    T-9885      Fix language string references to moodle in spamcleaner
+    T-9583      Text changes in element library text
+    T-10113     Fix GPL licence text in standardtotara Theme
+    T-10103     Fix resizing font css in mod/book
+    T-9804      Consolidate non-English Language files in core /lang folder (AMOS)
+    T-10096     Fix hidden option for columns in ReportBuilder embedded reports
+    T-10061     Fix display of dates before 1970 in ReportBuilder
+    T-10109     Fix display function for program icon in Reportbuilder
+    T-10139     Fix the Audience name column/filter language string in ReportBuilder
+    T-8064      Fix export of iCal timezone information in Facetoface
+    T-10060     Fix FacetoFace saving of details field when editing a session
+    T-10060     Fix PHP notice when creating new Facetoface sessions
+    T-10153     Fix version number in Facetoface to match upgrade.php
+    T-9987      Fix duplicated footer in Program messages
+    T-9973      Fix to hide programs with unresolved exceptions in Record of Learning
+    T-10035     Fix check for admin user in Learning Plans
+    T-9888      Fix auto redirect when accessing scorm activity
+
+
+Release 2.2.9 (1 November 2012):
+==================================================
+
+Database upgrades:
+   T-10051      Fix course completion totals on the managers My Team report
+
+Improvements:
+    T-10063     Add missing elearning messaging icons
+    T-10031     Fix display of the language menu in the standardtotara theme
+    T-9851      Add Totara menu to "my mobile" theme
+    T-10014     Re-implement hiding of empty columns for flexible_table component
+
+Bug fixes:
+    T-10034     Fix message creation error when message metadata already exists
+    T-10045     Fix saving of Program summary and endnote fields
+    T-9804      Fix to Spanish Castilian language pack to aid AMOS translation work
+    T-5734      Fix PHP5.4 empty object warning in SCORM package
+    T-10029     Hide empty feedback submissions and display count of blank entries in Feedback
+    T-10027     Fix duplicate user ids and "nothing to do" message in course participation report
+    T-10061     Fix display of dates prior to 1970 in Reportbuilder
+    T-10044     Fix missing column headings in Facetoface block
+    T-6710      Fix hardcoded language string in Facetoface
+    T-10053     Fix fatal error when removing Facetoface session custom fields
+    T-10036     Fix Browse Users form behaviour in IE7/8 when pressing Enter
+    T-10067     Fix display when viewing learning plans in IE7
+    T-9947      Use authentication plugin when processing password changes in totara_sync
+    T-10065     Fix MSSQL and temptable errors in totara_sync
+    T-10062     Fix file rename issue when running totara_sync on Windows/IIS
+
+Release 2.2.8 (18 October 2012):
+==================================================
+
+Database upgrades:
+    T-10028     Fix totara_sync MSSQL error on upgrade from 2.2.6
+    T-10026     Fix Facetoface MSSQL error on upgrade from 2.2.6
+    T-10002     Fix Site Policy URLs on upgrade from 1.1
+    T-9886      Fix memory leak on upgrade from 1.1 where there are large numbers of messages
+
+Bug fixes:
+    T-10008     Fix issues with MySQL temptable in totara_sync
+    T-10023     Fix HTML table padding
+    T-9855      Fix dynamic ruleset required field message in Audiences
+    T-9834      Fix for calendar breadcrumbs
+    T-9674      Fix for Facetoface manager approval message strings
+    T-10022     Fix Javascript error on Programs Assignments tab
+    T-9885      Fix references to moodle in language packs
+
+
 Release 2.2.7 (11 October 2012):
 ==================================================
 
@@ -36,7 +133,6 @@ Improvements:
 
 Bug fixes:
     T-9982      Fix dialog and datepicker Javascript errors in IE7
-    T-9987      Fix duplicated footer in program messages
     T-9823      Fix incorrect help text in help popups in plan templates and competency framework
     T-9957      Fix report builder "Not in" filter issue when comparing composite fields
     T-9910      Fix bug on upgrade from Totara 1.1 that turns off site-wide completion

@@ -33,28 +33,28 @@ $string['flashanimation_help'] = 'קבצים עם סיומת *.swf.
 מסיבות אבטחה שימוש במסנן זה יעשה רק על טקסטים בטוחים.';
 $string['flashvideo'] = 'וידיאו פלאש';
 $string['flashvideo_help'] = 'קבצים עם סיומת *.flv and *.f4v.
-מנגנים סרטוני וידאו על-ידי Flowplayer, נדרש תוסף Flash ו- JavaScript. ישנו שימוש בשחזור וידאו ב HTML5  כאשר מצויינים מקורות מרובים.';
+מנגנים סרטוני וידאו על-ידי Flowplayer, נדרש תוסף Flash ו- JavaScript. ישנו שימוש בשחזור וידאו ב HTML5 כאשר מצויינים מקורות מרובים.';
 $string['html5audio'] = 'HTML 5 audio';
 $string['html5audio_help'] = 'קבצי אודיו עם סיומת *.ogg, *.acc ואחרים כאלו מותאמים רק לגרסאות עדכניות של דפדפנים ברשת. למעשה עדיין אין תסדיר אשר תומך בכל הדפדפנים הקיימים ברשת. לעקיפת הבעיה ניתן לציין את אלו המופרדים בסימן #
 (ex: http://example.org/audio.acc#http://example.org/audio.acc#http://example.org/audio.mp3#)
 נגן QuickTime ניתן לשימוש במקרים אלו בגרסאות דפדפנים ישנות, זה יכול להיות כל קובץ אודיו שהוא.';
 $string['html5video'] = 'HTML 5 video';
 $string['html5video_help'] = 'קבצי וידאו עם סיומת: *.webm, *.m4v, *.ogv, *.mp4 ואחרים,
- מותאמים רק לגרסאות עדכניות של דפדפנים ברשת. למעשה עדיין אין תסדיר אשר תומך בכל הדפדפנים הקיימים ברשת. לעקיפת הבעיה ניתן לציין את אלו המופרדים בסימן #
+מותאמים רק לגרסאות עדכניות של דפדפנים ברשת. למעשה עדיין אין תסדיר אשר תומך בכל הדפדפנים הקיימים ברשת. לעקיפת הבעיה ניתן לציין את אלו המופרדים בסימן #
 (ex: http://example.org/video.m4v#http://example.org/video.acc#http://example.org/video.ogv#d=640x480)
 נגן QuickTime ניתן לשימוש במקרים אלו בגרסאות דפדפנים ישנות.';
 $string['legacyheading'] = 'נגני מדיה ישנים';
-$string['legacyheading_help'] = 'התסדירים הבאים לא מומלצים לשימוש כללי, ניתן להשתמש בהם בדרך-כלל בהתקנת intranet  עם לקוחות מנוהלים  בצורה מרוכזת.';
+$string['legacyheading_help'] = 'התסדירים הבאים לא מומלצים לשימוש כללי, ניתן להשתמש בהם בדרך-כלל בהתקנת intranet עם לקוחות מנוהלים בצורה מרוכזת.';
 $string['legacyquicktime'] = 'נגן QuickTime';
-$string['legacyquicktime_help'] = 'קבצים עם סיומת *.mov, *.mp4, *.m4a, *.mp4 ו- *.mpg. דורשים נגן QuickTime  או מפענחים מתאימים (codecs).';
+$string['legacyquicktime_help'] = 'קבצים עם סיומת *.mov, *.mp4, *.m4a, *.mp4 ו- *.mpg. דורשים נגן QuickTime או מפענחים מתאימים (codecs).';
 $string['legacyreal'] = 'נגן Real media';
-$string['legacyreal_help'] = 'קבצים עם סיומת *.rm, *.ra, *.ram, *.rp, *.rv. דורשים  RealPlayer';
+$string['legacyreal_help'] = 'קבצים עם סיומת *.rm, *.ra, *.ram, *.rp, *.rv. דורשים RealPlayer';
 $string['legacywmp'] = 'נגן Windows media';
 $string['legacywmp_help'] = 'קבצים עם סיומת *.avi and *.wmv.
-מותאמים באופן מלא עם דפדפן Explorer במערכת הפעלה Windows,  יתכן ותהיינה בעיות עם קבצים אלו בדפדפנים אחרים ומערכות הפעלה אחרות.';
+מותאמים באופן מלא עם דפדפן Explorer במערכת הפעלה Windows, יתכן ותהיינה בעיות עם קבצים אלו בדפדפנים אחרים ומערכות הפעלה אחרות.';
 $string['mp3audio'] = 'אודיו MP3';
 $string['mp3audio_help'] = 'קבצים עם סיומת
-*.mp3.  משמיעים';
+*.mp3. משמיעים';
 $string['sitevimeo'] = 'Vimeo';
 $string['sitevimeo_help'] = 'אתר שיתוף וידאו - Vimeo';
 $string['siteyoutube'] = 'YouTube';

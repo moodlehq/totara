@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['backgroundcolor'] = 'Hintergrund im Kopfbereich ';
+$string['backgroundcolor'] = 'Hintergrund im Kopfbereich';
 $string['backgroundcolordesc'] = 'Hintergrundfarbe im Kopfbereich ändern';
 $string['choosereadme'] = '<div class="clearfix">
 <div class="theme_screenshot">

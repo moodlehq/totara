@@ -109,9 +109,9 @@ $string['oneanswertrueansweroutsidelimits'] = '少なくとも1つの答えが�
 $string['param'] = '変数 {<strong>{$a}</strong>}';
 $string['partiallycorrectfeedback'] = '部分的に正しい解答すべて';
 $string['pluginname'] = '計算問題';
+$string['pluginname_help'] = '計算問題では小テスト受験時に個々の値に置換される波括弧「{}」内のワイルドカードを使用する数値問題を作成することができます。例えば、「高さ {l} 、幅 {w} の長方形の面積は?」という問題があったとして、正解は {={l}*{w}} ( * は乗算を意味します) のようになります。';
 $string['pluginnameadding'] = '計算問題の追加';
 $string['pluginnameediting'] = '計算問題の編集';
-$string['pluginname_help'] = '計算問題では小テスト受験時に個々の値に置換される波括弧「{}」内のワイルドカードを使用する数値問題を作成することができます。例えば、「高さ {l} 、幅 {w} の長方形の面積は?」という問題があったとして、正解は {={l}*{w}} ( * は乗算を意味します) のようになります。';
 $string['pluginnamesummary'] = '計算問題は、数値問題に似ていますが、小テスト受験時、設定された数値がランダムに使用されます。';
 $string['possiblehdr'] = '問題テキスト内のみのワイルドカード';
 $string['questiondatasets'] = '問題データセット';
@@ -148,8 +148,7 @@ $string['wildcardparam'] = '値の生成に使用されるワイルドカード�
 $string['wildcardrole'] = 'ワイルドカード「<strong>{x..}</strong>」は生成された数値と置換されます。';
 $string['wildcards'] = 'ワイルドカード {a}...{z}';
 $string['wildcardvalues'] = 'ワイルドカード値';
-$string['wildcardvaluesgenerated'] = 'ワイルドカード値が生成されました。
-';
+$string['wildcardvaluesgenerated'] = 'ワイルドカード値が生成されました。';
 $string['youmustaddatleastoneitem'] = 'この問題を保存する前に、あなたは少なくとも1つのデータセットアイテムを追加する必要があります。';
 $string['youmustaddatleastonevalue'] = 'この問題を保存する前に、あなたは少なくとも1つのワイルドカード値を追加する必要があります。';
 $string['youmustenteramultiplierhere'] = 'あなたは、ここに乗数を入力する必要があります。';

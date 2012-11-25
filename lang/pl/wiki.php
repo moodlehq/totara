@@ -46,14 +46,14 @@ $string['creating'] = 'Tworzenie strony wiki';
 $string['creole'] = 'Creole';
 $string['defaultformat'] = 'Domyślny format';
 $string['defaultformat_help'] = 'To ustawienie określa domyślny format używany podczas edycji stron wiki.
-
 * HTML - edytor HTML
 * Creole - język znaczników wiki z małym paskiem edycji
- * Nwiki jest jak język znaczników Mediawiki, używany w module Nwikii';
+* Nwiki jest jak język znaczników Mediawiki, używany w module Nwikii';
 $string['deletecomment'] = 'Usuwanie komentarza';
 $string['deletecommentcheck'] = 'Usuń komentarz';
 $string['deletecommentcheckfull'] = 'Czy na pewno chcesz usunąć komentarz?';
 $string['deleteupload'] = 'Usuń';
+$string['deleteversions'] = 'Ile usunąć ostatnich wersji?';
 $string['diff'] = 'Różnice';
 $string['diff_help'] = 'Wybrane wersje stron mogą być porównywane w celu znalezienia różnic.';
 $string['edit'] = 'Edytuj';
@@ -71,21 +71,17 @@ $string['firstpagetitle_help'] = 'Tytuł pierwszej strony wiki.';
 $string['forceformat'] = 'Wymuś format';
 $string['forceformat_help'] = 'Jeśli format jest wymuszony, nie ma możliwości wyboru formatu podczas edycji stron wiki.';
 $string['format'] = 'Format';
-$string['formatcreole'] = 'Format Creole';
-$string['formatcreole_help'] = 'Creole jest język znaczników wiki z małym paskiem edycji do wstawiania odpowiedniego kodu.
-
-Aby utworzyć nową stronę, wpisz nową nazwę strony zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].
-';
 $string['format_help'] = '* HTML - edytor HTML
 * Creole - język znaczników wiki z małym paskiem edycji
- * Nwiki - język znaczników Mediawiki, używany w module Nwiki';
+* Nwiki - język znaczników Mediawiki, używany w module Nwiki';
+$string['formatcreole'] = 'Format Creole';
+$string['formatcreole_help'] = 'Creole jest język znaczników wiki z małym paskiem edycji do wstawiania odpowiedniego kodu.
+Aby utworzyć nową stronę, wpisz nową nazwę strony zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].';
 $string['formathtml'] = 'Format HTML';
 $string['formathtml_help'] = 'Edytor HTML może być używany do formatowania treści.
-
 Aby utworzyć nową stronę, wpisz nową nazwę strony w zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].';
 $string['formatnwiki'] = 'Format NWiki';
 $string['formatnwiki_help'] = 'Nwiki jest jak język znaczników Mediawiki, używany w module Nwiki
-
 Aby utworzyć nową stronę, wpisz nową nazwę strony zamkniętych w podwójnych nawiasach kwadratowych, na przykład [[Strona 2]].';
 $string['history'] = 'Historia';
 $string['history_help'] = 'Lista wcześniejszych wersji tej strony.';
@@ -129,13 +125,14 @@ $string['nwiki'] = 'NWiki';
 $string['oldversion'] = 'Stara wersja';
 $string['orphaned'] = 'Niepowiązane strony';
 $string['orphaned_help'] = 'Lista stron, które nie są połączone hiperłączami z innymi stronami.';
+$string['page-mod-wiki-history'] = 'Strona historii Wiki';
+$string['page-mod-wiki-map'] = 'Mapa strony Wiki';
 $string['pageindex'] = 'Indeks stron';
 $string['pageindex_help'] = 'To jest drzewo stron wiki';
 $string['pageislocked'] = 'Ktoś teraz właśnie edytuje tą stronę. Spróbuj edytować za kilka minut.';
 $string['pagelist'] = 'Spis stron';
 $string['pagelist_help'] = 'Spis stron ułożony alfabetycznie';
-$string['page-mod-wiki-history'] = 'Strona historii Wiki';
-$string['page-mod-wiki-map'] = 'Mapa strony Wiki';
+$string['pagename'] = 'Nazwa strony';
 $string['pluginadministration'] = 'Administracja Wiki';
 $string['pluginname'] = 'Wiki';
 $string['prettyprint'] = 'Wersja do druku';
@@ -174,13 +171,19 @@ $string['versionnum'] = 'Wersja #{$a}';
 $string['view'] = 'Przegląd';
 $string['viewallhistory'] = 'Zobacz całą historię';
 $string['viewperpage'] = 'Pokaż {$a} wersji na stronie';
-$string['viewversion'] = 'Oglądasz #{$a} wersję strony ';
+$string['viewversion'] = 'Oglądasz #{$a} wersję strony';
 $string['wiki'] = 'Wiki';
-$string['wikiattachments'] = 'Załączniki Wiki';
-$string['wikiboldtext'] = 'Tekst pogrubiony';
 $string['wiki:createpage'] = 'Utwórz nowe strony wiki';
 $string['wiki:editcomment'] = 'Dodaj komentarz do strony';
 $string['wiki:editpage'] = 'Zapisz strony wiki';
+$string['wiki:managecomment'] = 'Zarządzaj komentarzami wiki';
+$string['wiki:managefiles'] = 'Zarządzaj plikami wiki';
+$string['wiki:managewiki'] = 'Zarządzanie ustawieniami wiki';
+$string['wiki:overridelock'] = 'Zmień zablokowane strony';
+$string['wiki:viewcomment'] = 'Zobacz komentarze strony';
+$string['wiki:viewpage'] = 'Zobacz strony wiki';
+$string['wikiattachments'] = 'Załączniki Wiki';
+$string['wikiboldtext'] = 'Tekst pogrubiony';
 $string['wikiexternalurl'] = 'Zewnętrzny adres URL';
 $string['wikifiles'] = 'Pliki Wiki';
 $string['wikifiletable'] = 'Lista przesłanych plików';
@@ -190,21 +193,15 @@ $string['wikiimage'] = 'Obraz';
 $string['wikiinternalurl'] = 'Wewnętrzny link';
 $string['wikiintro'] = 'Opis Wiki';
 $string['wikiitalictext'] = 'Kursywa';
-$string['wiki:managecomment'] = 'Zarządzaj komentarzami wiki';
-$string['wiki:managefiles'] = 'Zarządzaj plikami wiki';
-$string['wiki:managewiki'] = 'Zarządzanie ustawieniami wiki';
 $string['wikimode'] = 'Tryb Wiki';
-$string['wikimodecollaborative'] = 'Grupowe wiki';
 $string['wikimode_help'] = 'Tryb wiki określa, czy każdy może edytować wiki - oparte na współpracy wiki, lub czy każdy ma swoje własne wiki, które może sam modyfikować - indywidualne wiki.';
+$string['wikimodecollaborative'] = 'Grupowe wiki';
 $string['wikimodeindividual'] = 'Indywidualne wiki';
 $string['wikiname'] = 'Nazwa Wiki';
 $string['wikinowikitext'] = 'Brak tekstu wiki';
 $string['wikiorderedlist'] = 'Lista numerowana';
-$string['wiki:overridelock'] = 'Zmień zablokowane strony';
 $string['wikipages'] = 'Strony Wiki';
 $string['wikisettings'] = 'Ustawienia Wiki';
 $string['wikiunorderedlist'] = 'Lista nienumerowana';
-$string['wiki:viewcomment'] = 'Zobacz komentarze strony';
-$string['wiki:viewpage'] = 'Zobacz strony wiki';
 $string['wrongversionlock'] = 'Inny użytkownik edytował tę stronę w czasie, kiedy ty ją edytowałeś i twoja zawartość jest przestarzała.';
 $string['wrongversionsave'] = 'Inny użytkownik stworzył wersję, podczas twojej edycji i nadpisałeś(aś) jego zmiany, sprawdzić historię stron.';

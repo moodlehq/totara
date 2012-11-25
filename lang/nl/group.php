@@ -76,9 +76,9 @@ $string['groupinfo'] = 'Informatie over geselecteerde groep';
 $string['groupinfomembers'] = 'Informatie over geselecteerde groepsleden';
 $string['groupinfopeople'] = 'Informatie over geselecteerde gebruikers';
 $string['grouping'] = 'Groepering';
-$string['groupingdescription'] = 'Groeperingsbeschrijving';
 $string['grouping_help'] = 'Een groepering is een verzameling groepen in een cursus.
 Als een groepering geselecteerd wordt, dan zullen de gebruikers in de groepen die deel uit maken van de groepering kunnen samenwerken.';
+$string['groupingdescription'] = 'Groeperingsbeschrijving';
 $string['groupingname'] = 'Groeperingsnaam';
 $string['groupingnameexists'] = 'De groeperingsnaam \'{$a}\' bestaat al in deze cursus. Kies een andere naam.';
 $string['groupings'] = 'Groeperingen';
@@ -87,20 +87,18 @@ $string['groupmember'] = 'Groepslid';
 $string['groupmemberdesc'] = 'Standaardrol voor groepsleden';
 $string['groupmembers'] = 'Groepsleden';
 $string['groupmembersonly'] = 'Enkel beschikbaar voor groepsleden';
-$string['groupmembersonlyerror'] = 'Sorry, je moet van minstens één groep die deze activiteit gebruikt lid zijn.';
 $string['groupmembersonly_help'] = 'Als dit is aangevinkt, dan zal de activiteit (of bron) enkel beschikbaar zijn voor gebruikers in de geselecteerde groepering.';
+$string['groupmembersonlyerror'] = 'Sorry, je moet van minstens één groep die deze activiteit gebruikt lid zijn.';
 $string['groupmemberssee'] = 'Bekijk groepsleden';
 $string['groupmembersselected'] = 'Leden van de geselecteerde groep';
 $string['groupmode'] = 'Groepsmodus';
-$string['groupmodeforce'] = 'Forceer groepsmodus';
-$string['groupmodeforce_help'] = 'Als de groepsmodus geforceerd wordt, dan zal de groepsmodus van de cursus op elke activiteit toegepast worden. De instellingen van de groepsmodus in de activieteitenmodules wordt dan genegeerd.';
 $string['groupmode_help'] = 'Er zijn drie types van groepsmodus:
-
 *Geen groepen - er zijn geen subgroepen, iedereen is onderdeel van één grote groep<
 * Gescheiden groepen - elke groep kan alleen zijn eigen groepsleden zien, alle anderen zijn onzichtbaar
 * Zichtbare groepen - elke leerling werkt binnen zijn eigen groep, maar kan de andere groepen ook zien
-
 De groepsmodus, ingesteld op cursusniveau is de standaard modus voor alle activiteiten in de cursus. Elke activiteit die groepen ondersteunt kan ook zijn eigen groepsmodus ingesteld hebben. Hoewel, als de groepsmodus op cursusniveau geforceerd wordt, dan wordt de instelling op niveau van de activieteit genegeerd.';
+$string['groupmodeforce'] = 'Forceer groepsmodus';
+$string['groupmodeforce_help'] = 'Als de groepsmodus geforceerd wordt, dan zal de groepsmodus van de cursus op elke activiteit toegepast worden. De instellingen van de groepsmodus in de activieteitenmodules wordt dan genegeerd.';
 $string['groupmy'] = 'Mijn groep';
 $string['groupname'] = 'Groepsnaam';
 $string['groupnameexists'] = 'De groepnaam \'{$a}\' bestaat al in deze cursus. Kies een andere.';
@@ -118,9 +116,8 @@ $string['grouptemplate'] = 'Groep @';
 $string['hidepicture'] = 'Verberg foto';
 $string['importgroups'] = 'Importeer groepen';
 $string['importgroups_help'] = 'Groepen kunnen geïimporteerd worden via een tekstbestand. De opmaak van het bestand moet als volgt zijn:
-
 * Elke lijn van het bestand bevat één record
-* Elke  record is een rij kommagescheiden gegevens
+* Elke record is een rij kommagescheiden gegevens
 * De eerste record bevat een lijst met veldnamen die de opmaak bepalen van de rest van het bestand
 * De vereiste veldnaam is groupname
 * Optionele velnamen zijn description, enrolmentkey, picture, hidepictuer';
@@ -129,28 +126,25 @@ $string['members'] = 'Leden per groep';
 $string['membersofselectedgroup'] = 'Leden van de geselecteerde groep';
 $string['namingscheme'] = 'Naamschema';
 $string['namingscheme_help'] = 'Het at-symbool (@) kan gebruikt worden om groepen te maken met namen die letters bevatten. Bijvoorbeeld Groep @ zal groepen genereren met de namen Groep A, Groep B, Groep C, ...
-
 Het hekje (#) kan ook gebruikt worden om groepen te maken. De namen zullen dan nummers bevatten. Bijvoorbeeld Groep # zal groepen genereren met de namen Groep 1, Groep 2, Groep 3...';
 $string['newgrouping'] = 'Nieuwe groepering';
 $string['newpicture'] = 'Nieuwe foto';
-$string['newpicture_help'] = '<p>Je kunt je foto van jouw computer naar deze server uploaden. Deze foto zal op verschillende plaatsen worden gebruikt om je herkenbaar te maken.</p>
-<p>Daarom kun je best een close-up van je gezicht gebruiken, maar je kunt ook gelijk welke andere afbeelding nemen.</p>
-<p>De foto moet in het JPG- of PNG-formaat zijn (de bestandsnamen eindigen gewoonlijk op .jpg of .png)</p>
-<p>Een digitale foto krijg je op volgende manieren:
-<ol>
-<li>door een digitale camera te gebruiken, de foto\'s op je computer zijn dan meestal al in het juiste formaat.</li>
-<li>je kan je scanner gebruiken om een afgedrukte foto in te scannen. Bewaar de foto in de JPG- of PNG-bestandsindeling.</li>
-<li>als je artistiek bent aangelegd, dan kun je een afbeelding tekenen met een tekenprogramma.</li>
-</ol></p>
+$string['newpicture_help'] = 'Je kunt je foto van jouw computer naar deze server uploaden. Deze foto zal op verschillende plaatsen worden gebruikt om je herkenbaar te maken.
+Daarom kun je best een close-up van je gezicht gebruiken, maar je kunt ook gelijk welke andere afbeelding nemen.
+De foto moet in het JPG- of PNG-formaat zijn (de bestandsnamen eindigen gewoonlijk op .jpg of .png)
+Een digitale foto krijg je op volgende manieren:
+1. door een digitale camera te gebruiken, de foto\'s op je computer zijn dan meestal al in het juiste formaat.
+2. je kan je scanner gebruiken om een afgedrukte foto in te scannen. Bewaar de foto in de JPG- of PNG-bestandsindeling.
+3. als je artistiek bent aangelegd, dan kun je een afbeelding tekenen met een tekenprogramma.
 
-<p>Om het bestand te uploaden, kies je voor de knop "Bladeren" in dit formulier en selecteer je het bestand op je
-harde schijf.</p>
-<p>LET OP: vergewis je ervan dat het bestand niet groter is dan de maximumgrootte of het bestand zal niet
-geüpload worden.</p>
-<p>Klik dan op de knop "Wijzig het profiel" onderaan de pagina - het afbeeldingsbestand zal bijgesneden worden tot een
-vierkant en verkleind worden tot 100 X 100 pixels.</p>
-<p>Wanneer je terug naar je profielpagina gebracht wordt, dan zou het kunnen dat het lijkt alsof de afbeelding niet
-gewijzigd is. In dat geval moet je even de knop "Vernieuwen" van je browser gebruiken.</p>';
+Om het bestand te uploaden, kies je voor de knop "Bladeren" in dit formulier en selecteer je het bestand op je
+harde schijf.
+LET OP: vergewis je ervan dat het bestand niet groter is dan de maximumgrootte of het bestand zal niet
+geüpload worden.
+Klik dan op de knop "Wijzig het profiel" onderaan de pagina - het afbeeldingsbestand zal bijgesneden worden tot een
+vierkant en verkleind worden tot 100 X 100 pixels.
+Wanneer je terug naar je profielpagina gebracht wordt, dan zou het kunnen dat het lijkt alsof de afbeelding niet
+gewijzigd is. In dat geval moet je even de knop "Vernieuwen" van je browser gebruiken.';
 $string['noallocation'] = 'Geen toewijzing';
 $string['nogroups'] = 'In deze cursus zijn nog geen groepen aangemaakt';
 $string['nogroupsassigned'] = 'Geen groepen toegewezen';

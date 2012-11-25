@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['ajaxchoosescale'] = 'Választás';
-$string['ajaxclicktoclose'] = 'Törléshez kattintson a négyzetre
-';
+$string['ajaxclicktoclose'] = 'Törléshez kattintson a négyzetre';
 $string['ajaxerror'] = 'Hiba';
 $string['ajaxfailedupdate'] = '[1] nem frissíthető ezzel: [2]';
 $string['ajaxfieldchanged'] = 'A szerkesztés alatti mező módosult. A frissített értéket kívánja használni?';

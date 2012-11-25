@@ -296,7 +296,7 @@ function install_print_help_page($help) {
  * @return void
  */
 function install_print_header($config, $stagename, $heading, $stagetext) {
-    global $CFG;
+    global $CFG, $TOTARA;
 
     @header('Content-Type: text/html; charset=UTF-8');
     @header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -311,7 +311,7 @@ function install_print_header($config, $stagename, $heading, $stagetext) {
           <link rel="shortcut icon" href="theme/standardtotara/pix/favicon.ico" />';
 
     echo '<link rel="stylesheet" type="text/css" href="'.$CFG->wwwroot.'/install/css.php" />
-          <title>'.get_string('installation','install').' - Totara '.$CFG->target_release.'</title>
+          <title>'.get_string('installation','install').' - Totara '.$TOTARA->release.'</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           <meta http-equiv="pragma" content="no-cache" />
           <meta http-equiv="expires" content="0" />';
@@ -356,7 +356,7 @@ function install_print_header($config, $stagename, $heading, $stagetext) {
  * @return void
  */
 function install_print_footer($config, $reload=false) {
-    global $CFG;
+    global $CFG, $TOTARA;
 
     if ($config->stage > INSTALL_WELCOME) {
         $first = '<input type="submit" id="previousbutton" name="previous" value="&laquo; '.s(get_string('previous')).'" />';
@@ -380,7 +380,7 @@ function install_print_footer($config, $reload=false) {
     echo '</fieldset><fieldset id="nav_buttons">'.$first.$next.'</fieldset>';
 
     $homelink  = '<div class="sitelink">'.
-       '<a title="Totara '. $CFG->target_release .'" href="http://help.totaralms.com/Getting_Started_for_Administrators.htm" onclick="this.target=\'_blank\'">'.
+       '<a title="Totara '. $TOTARA->release .'" href="http://help.totaralms.com/Getting_Started_for_Administrators.htm" onclick="this.target=\'_blank\'">'.
        '<img src="theme/standardtotara/pix/logo.png" alt="totaralogo" /></a></div>';
 
     echo '</form></div>';

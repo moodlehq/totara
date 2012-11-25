@@ -101,21 +101,19 @@ $string['monththis'] = 'Dieser Monat';
 $string['newevent'] = 'Neuer Termin';
 $string['noupcomingevents'] = 'Es gibt keine weiteren Termine';
 $string['oneevent'] = '1 Termin';
-$string['preferences'] = 'Einstellungen';
-$string['preferences_available'] = 'Persönliche Einstellungen';
 $string['pref_lookahead'] = 'Terminvorschau';
 $string['pref_lookahead_help'] = 'Diese Einstellung setzt die (maximale) Anzahl von Tagen, die ein bevorstehender Termin in der Zukunft liegen darf, um in der Terminvorschau angezeigt zu werden. Noch spätere Termine werden nicht angezeigt.
-
 Bitte bedenken Sie, dass eventuell nicht alle Termine in diesem Zeitfenster angezeigt werden können, wenn es zu viele, nämlich mehr Termine als die "Höchstzahl bevorstehender Termine" sind.';
 $string['pref_maxevents'] = 'Höchstzahl bevorstehender Termine';
-$string['pref_maxevents_help'] = 'Diese Einstellung setzt die  Höchstzahl bevorstehender Termine, die angezeigt werden. Wenn Sie hier eine große Zahl wählen, ist es möglich, dass die Anzeige der bevorstehenden Termine viel Platz auf der Webseite verbraucht.
-';
+$string['pref_maxevents_help'] = 'Diese Einstellung setzt die Höchstzahl bevorstehender Termine, die angezeigt werden. Wenn Sie hier eine große Zahl wählen, ist es möglich, dass die Anzeige der bevorstehenden Termine viel Platz auf der Webseite verbraucht.';
 $string['pref_persistflt'] = 'Filtereinstellungen merken';
 $string['pref_persistflt_help'] = 'Wenn diese Option aktiviert ist, wird Moodle sich Ihre letzten Terminfiltereinstellungen merken und immer automatisch wiederherstellen, wenn Sie sich einloggen.';
 $string['pref_startwday'] = 'Wochenbeginn';
 $string['pref_startwday_help'] = 'Kalenderwochen werden mit dem von Ihnen hier ausgewählten Wochenbeginn angezeigt';
 $string['pref_timeformat'] = 'Zeitanzeigeformat';
 $string['pref_timeformat_help'] = 'Sie können auswählen, ob die Zeiten im Format mit 12 oder 24 Stunden angezeigt werden. Wenn Sie das Standardformat wählen, wird das Format automatisch aus den gewählten Spracheinstellungen verwendet.';
+$string['preferences'] = 'Einstellungen';
+$string['preferences_available'] = 'Persönliche Einstellungen';
 $string['quickdownloadcalendar'] = 'Schneller Download / Kalender-Abo';
 $string['recentupcoming'] = 'Vergangene und nachfolgende 60 Tage';
 $string['repeatedevents'] = 'Sich wiederholende Termine';

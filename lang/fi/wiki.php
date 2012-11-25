@@ -55,7 +55,6 @@ $string['creating'] = 'Luodaan wiki-sivu';
 $string['creole'] = 'Kreoli';
 $string['defaultformat'] = 'Oletusformaatti';
 $string['defaultformat_help'] = 'Tämä asetus määrittelee oletusformaatin wiki-sivuja muokattaessa.
-
 * HTML - HTML-editori on käytössä
 * Kreoli - Yleinen wiki-merkintäkieli, jossa on käytössä pieni työkaluvalikko
 * Nwiki - Mediawikin kaltainen merkintäkieli, joka käytetään Nwiki-moduulissa';
@@ -83,20 +82,17 @@ $string['firstpagetitle_help'] = 'Wikin ensimmäisen sivun otsikko';
 $string['forceformat'] = 'Pakota formaatti';
 $string['forceformat_help'] = 'Jos formaatti on pakotettu (valintalaatikko valittuna), ei wikiä muokattaessa voi valita formaattia.';
 $string['format'] = 'Formaatti';
-$string['formatcreole'] = 'Kreoli-formaatti';
-$string['formatcreole_help'] = 'Kreoli on yleinen wikin merkintäkieli muokkaustyökaluvalikolla oikeanlaisten merkintöjen syöttämiseen.
-
-Luodaksesi uuden sivun, kirjoita uuden sivun nimi kaksiin hakasulkeisiin, esim. [[Sivu 2]].';
 $string['format_help'] = '* HTML - HTML-editori on käytössä
 * Kreoli - Yleinen wiki-merkintäkieli, jossa on käytössä pieni työkaluvalikko
 * Nwiki - Mediawikin kaltainen merkintäkieli, joka käytetään Nwiki-moduulissa';
+$string['formatcreole'] = 'Kreoli-formaatti';
+$string['formatcreole_help'] = 'Kreoli on yleinen wikin merkintäkieli muokkaustyökaluvalikolla oikeanlaisten merkintöjen syöttämiseen.
+Luodaksesi uuden sivun, kirjoita uuden sivun nimi kaksiin hakasulkeisiin, esim. [[Sivu 2]].';
 $string['formathtml'] = 'HTML formaatti';
 $string['formathtml_help'] = 'HTML-editoria käytetään sisällön muokkaamiseen.
-
 Luodaksesi uuden sivun, kirjoita uuden sivun nimi kaksiin hakasulkeisiin, esim. [[Sivu 2]].';
 $string['formatnwiki'] = 'NWiki-formaatti';
 $string['formatnwiki_help'] = 'Nwiki on Mediawikin kaltainen merkintäkieli, joka käytetään Nwiki-moduulissa.
-
 Luodaksesi uuden sivun, kirjoita uuden sivun nimi kaksiin hakasulkeisiin, esim. [[Sivu 2]].';
 $string['history'] = 'Historia';
 $string['history_help'] = 'Historia listaa linkkejä sivun aiempiin verioihin.';
@@ -160,17 +156,18 @@ $string['orphaned'] = 'Orvoksi jääneet sivut';
 $string['orphaned_help'] = 'Lista sivuista, joille ei ole linkkiä muilta sivuilta.';
 $string['overridelocks'] = 'Ohita lukitukset';
 $string['overridinglocks'] = 'Ohitetaan lukitukset...';
+$string['page-mod-wiki-comments'] = 'Wiki-moduulin kommenttisivu';
+$string['page-mod-wiki-history'] = 'Wikin historiasivu';
+$string['page-mod-wiki-map'] = 'Wikin karttasivu';
+$string['page-mod-wiki-view'] = 'Wiki-moduulin aloitussivu';
+$string['page-mod-wiki-x'] = 'Kaikki wiki-moduulin sivut';
 $string['pageexists'] = 'Tämä sivu on jo olemassa. Ohjataan olemassa olevalle sivulle.';
 $string['pageindex'] = 'Sivun indeksi';
 $string['pageindex_help'] = 'Tämän wikin sivurakenne';
 $string['pageislocked'] = 'Joku toinen on parhaillaan muokkaamassa tätä sivua. Yritä uudestaan muutaman minuutin kuluttua.';
 $string['pagelist'] = 'Sivulista';
 $string['pagelist_help'] = 'Sivulista aakkosjärjestyksessä';
-$string['page-mod-wiki-comments'] = 'Wiki-moduulin kommenttisivu';
-$string['page-mod-wiki-history'] = 'Wikin historiasivu';
-$string['page-mod-wiki-map'] = 'Wikin karttasivu';
-$string['page-mod-wiki-view'] = 'Wiki-moduulin aloitussivu';
-$string['page-mod-wiki-x'] = 'Kaikki wiki-moduulin sivut';
+$string['pagename'] = 'Sivun nimi';
 $string['peerreview'] = 'Vertaisarviointi';
 $string['pluginadministration'] = 'Wikin hallinnointi';
 $string['pluginname'] = 'Wiki';
@@ -218,11 +215,17 @@ $string['viewcurrent'] = 'Nykyinen versio';
 $string['viewperpage'] = 'Näytä {$a} versiota per sivu';
 $string['viewversion'] = 'Tarkastellaan sivuversiota #{$a}';
 $string['wiki'] = 'Wiki';
-$string['wikiattachments'] = 'Wikin liitteet';
-$string['wikiboldtext'] = 'Lihavoitu teksti';
 $string['wiki:createpage'] = 'Luo uusia wiki-sivuja';
 $string['wiki:editcomment'] = 'Lisää kommentteja sivuihin';
 $string['wiki:editpage'] = 'Tallenna wiki-sivut';
+$string['wiki:managecomment'] = 'Hallitse wikin kommentteja';
+$string['wiki:managefiles'] = 'Hallitse wikin tiedostoja';
+$string['wiki:managewiki'] = 'Hallitse wikin asetuksia';
+$string['wiki:overridelock'] = 'Wikin lukkojen ohitus';
+$string['wiki:viewcomment'] = 'Näytä sivun kommentit';
+$string['wiki:viewpage'] = 'Näytä wikin sivut';
+$string['wikiattachments'] = 'Wikin liitteet';
+$string['wikiboldtext'] = 'Lihavoitu teksti';
 $string['wikiexternalurl'] = 'Ulkoinen web-osoite';
 $string['wikifiles'] = 'Wiki-tiedostot';
 $string['wikifiletable'] = 'Ladattujen tiedostojen lista';
@@ -233,21 +236,15 @@ $string['wikiinternalurl'] = 'Sisäinen linkki';
 $string['wikiintro'] = 'Wikin kuvaus';
 $string['wikiitalictext'] = 'Kursivoitu teksti';
 $string['wikilockingsettings'] = 'Lukitsemisen ja uudelleenjäsentelyn aikakatkaisut';
-$string['wiki:managecomment'] = 'Hallitse wikin kommentteja';
-$string['wiki:managefiles'] = 'Hallitse wikin tiedostoja';
-$string['wiki:managewiki'] = 'Hallitse wikin asetuksia';
 $string['wikimode'] = 'Wikin moodi';
-$string['wikimodecollaborative'] = 'Yhteiskäyttöinen wiki';
 $string['wikimode_help'] = 'Wikin moodi määrittää voivatko kaikki muokata wikiä - yhteiskäyttöinen wiki - vai onko kaikilla oma wiki, jota vain he voivat muokata - yksityinen wiki.';
+$string['wikimodecollaborative'] = 'Yhteiskäyttöinen wiki';
 $string['wikimodeindividual'] = 'Yksityinen wiki';
 $string['wikiname'] = 'Wikin nimi';
 $string['wikinowikitext'] = 'Ei wiki tekstiä';
 $string['wikiorderedlist'] = 'Järjestetty lista';
-$string['wiki:overridelock'] = 'Wikin lukkojen ohitus';
 $string['wikipages'] = 'Wikin sivut';
 $string['wikisettings'] = 'Wikin asetukset';
 $string['wikiunorderedlist'] = 'Järjestämätön lista';
-$string['wiki:viewcomment'] = 'Näytä sivun kommentit';
-$string['wiki:viewpage'] = 'Näytä wikin sivut';
 $string['wrongversionlock'] = 'Sisältösi on vanhentunut, koska toinen käyttäjä on muokannut sivua samaan aikaan.';
 $string['wrongversionsave'] = 'Toinen käyttäjä on luonut version sillä aikaa kun muokkasit sivua ja olet ylikirjoittanut toisen käyttäjän muutokset. Tarkista sivuhistoria.';

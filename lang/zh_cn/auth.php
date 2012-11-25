@@ -35,13 +35,11 @@ $string['auth_changepasswordurl_expl'] = '设定一个当用户丢失了他们�
 $string['auth_changingemailaddress'] = '您已请求将Email地址由 {$a->oldemail} 变更为 {$a->newemail}。出于安全的考虑，服务器将自动向 {$a->newemail} 发送一封邮件，以确认它属于您。您只要访问邮件中的URL，Email地址会立刻更新。';
 $string['auth_common_settings'] = '公用设置';
 $string['auth_data_mapping'] = '数据映射';
-$string['authenticationoptions'] = '身份认证选项';
 $string['auth_fieldlock'] = '锁定值';
 $string['auth_fieldlock_expl'] = '<p><b>锁定值：</b> 如果开启，Moodle 用户和管理员将不能直接修改字段的值。如果您正在维护外部数据库的数据，请选择此项。';
 $string['auth_fieldlocks'] = '锁定用户字段';
-$string['auth_fieldlocks_help'] = '<p>您可以锁定指定的用户数据字段。对于用户数据由管理员人工维护，或者是通过“上传用户”上传的站点而言，这个功能是很有用的。如果您锁定了 Moodle 必需的字段，那么请您确信在创建用户帐户时已经提供了其内容，否则这个账号将无法使用。</p>
-<p>如果想要避免这个问题，可以考虑将锁定模式设定为“如果空则不锁定”。</p>';
-$string['authinstructions'] = '此处留空，登录页面会显示缺省的登录说明。如果想自定义登录说明，就在此输入。';
+$string['auth_fieldlocks_help'] = '您可以锁定指定的用户数据字段。对于用户数据由管理员人工维护，或者是通过“上传用户”上传的站点而言，这个功能是很有用的。如果您锁定了 Moodle 必需的字段，那么请您确信在创建用户帐户时已经提供了其内容，否则这个账号将无法使用。
+如果想要避免这个问题，可以考虑将锁定模式设定为“如果空则不锁定”。';
 $string['auth_invalidnewemailkey'] = '错误：URL 不正确，请完整拷贝后重试。';
 $string['auth_multiplehosts'] = '可以指定多个主机名或地址（如 host1.com;host2.com;host3.com 或 xxx.xxx.xxx.xxx;xxx.xxx.xxx.xxx）';
 $string['auth_outofnewemailupdateattempts'] = '更改Email地址的许可次数已到，您的请求被取消。';
@@ -61,17 +59,16 @@ $string['auth_updateremote_ldap'] = '<p><b>注意:</b> 更新外部LDAP数据需
 $string['auth_user_create'] = '激活用户创建功能';
 $string['auth_user_creation'] = '新的(匿名的)用户可以在外部身份认证源中创建帐号，并通过 Email 确认。如果您启用了这个功能，请记住也要配置与用户创建有关的模块特定选项。';
 $string['auth_usernameexists'] = '选中的用户名已经存在。请选择一个新的。';
+$string['authenticationoptions'] = '身份认证选项';
+$string['authinstructions'] = '此处留空，登录页面会显示缺省的登录说明。如果想自定义登录说明，就在此输入。';
 $string['auto_add_remote_users'] = '自动添加远程用户';
 $string['changepassword'] = '更改密码 URL';
 $string['changepasswordhelp'] = '在这里指定一个位置，用户在忘记了用户名或密码后，可以在那里重新获得或更改。它将以一个按钮的形式显示在登录页面和用户页面。如果留空不填，就不会有按钮出现。';
 $string['chooseauthmethod'] = '选择一个身份认证方法：';
-$string['chooseauthmethod_help'] = '<p align="center"><b>改变认证方法</b></p>
-
-<p>这个菜单允许您改变特定用户的认证方法。</p>
-
-<p>请注意这依赖于这个网站已经安装能够使用的认证方法以及您对它们所进行的设置。</p>
-
-<p>此处的错误设置，可能会导致用户无法登录甚至删除其帐号，所以使用时请小心。</p>';
+$string['chooseauthmethod_help'] = '**改变认证方法**
+这个菜单允许您改变特定用户的认证方法。
+请注意这依赖于这个网站已经安装能够使用的认证方法以及您对它们所进行的设置。
+此处的错误设置，可能会导致用户无法登录甚至删除其帐号，所以使用时请小心。';
 $string['createpasswordifneeded'] = '如果需要则创建密码';
 $string['emailchangecancel'] = '取消 email 变更';
 $string['emailchangepending'] = '变更进行中。访问向 {$a->preference_newemail} 发送的链接。';
@@ -94,8 +91,8 @@ $string['errorminpasswordnonalphanum'] = '密码中至少要有 {$a} 个非字�
 $string['errorminpasswordupper'] = '密码中至少要有 {$a} 个大写字母。';
 $string['errorpasswordupdate'] = '更新密码错误，密码没有更新。';
 $string['forcechangepassword'] = '强制修改密码';
-$string['forcechangepasswordfirst_help'] = '强制用户在第一次登录时修改密码。';
 $string['forcechangepassword_help'] = '强制用户在下次登录时修改密码。';
+$string['forcechangepasswordfirst_help'] = '强制用户在第一次登录时修改密码。';
 $string['forgottenpassword'] = '如果您在这里键入一个URL地址，该地址将会用来丢失密码的查找页面。';
 $string['forgottenpasswordurl'] = '忘记的密码 URL';
 $string['getanaudiocaptcha'] = '获取音频 CAPTCHA 验证';
@@ -127,11 +124,9 @@ $string['pluginnotinstalled'] = '认证插件“{$a}”没有安装';
 $string['potentialidps'] = '使用您在别处的账号登录：';
 $string['recaptcha'] = 'reCAPTCHA';
 $string['recaptcha_help'] = '图片验证码用来防止网站被自动程序滥用。只需在输入框中按顺序输入这些词，用一个空格分隔。
-
 如果您不确定这些词是什么，可以尝试再获得一个图片验证码或播放声音验证码。';
 $string['selfregistration'] = '自助注册';
-$string['selfregistration_help'] = '如果选中一个身份认证插件，比如基于email的自助注册，那么用户就可以自己注册并创建帐户。这可能导致一些人为了在讨论区、博客等发送垃圾信息而自己建立帐号。为了避免这种风险，自助注册应禁用或仅限<em>允许的email域名</em>。
-';
+$string['selfregistration_help'] = '如果选中一个身份认证插件，比如基于email的自助注册，那么用户就可以自己注册并创建帐户。这可能导致一些人为了在讨论区、博客等发送垃圾信息而自己建立帐号。为了避免这种风险，自助注册应禁用或仅限\*允许的email域名\*。';
 $string['sha1'] = 'SHA-1 加密';
 $string['showguestlogin'] = '您可以在登录页面显示或隐藏访客登录按钮。';
 $string['stdchangepassword'] = '使用标准的修改密码页面';

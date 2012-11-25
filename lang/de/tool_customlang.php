@@ -51,10 +51,8 @@ $string['modifiedno'] = 'Keine geänderten Texte für das lokale Sprachpaket vor
 $string['modifiednum'] = '{$a} Texte wurden verändert. Möchten Sie die Texte dauerhaft im lokalen Sprachpaket sichern?';
 $string['nostringsfound'] = 'Keine Texte gefunden - bitte ändern Sie die Filtereinstellungen';
 $string['placeholder'] = 'Platzhalter';
-$string['placeholder_help'] = 'Platzhalter sind spezielle Statements wie `{$a}` oder `{$a->something}` innerhalb eines Textes. Sie werden während der Ausgabe durch einen aktuellen Wert ersetzt.
-
-Es ist wichtig, die Platzhalter ganz genauso wie im Originaltext zu schreiben. Platzhalter werden weder übersetzt noch in ihrer links-rechts Orientierung geändert.
-';
+$string['placeholder_help'] = 'Platzhalter sind spezielle Statements wie \`{$a}\` oder \`{$a->something}\` innerhalb eines Textes. Sie werden während der Ausgabe durch einen aktuellen Wert ersetzt.
+Es ist wichtig, die Platzhalter ganz genauso wie im Originaltext zu schreiben. Platzhalter werden weder übersetzt noch in ihrer links-rechts Orientierung geändert.';
 $string['placeholderwarning'] = 'Text enthält einen Platzhalter';
 $string['pluginname'] = 'Sprachanpassung';
 $string['savecheckin'] = 'Texte im lokalen Sprachpaket sichern';

@@ -209,7 +209,7 @@ $string['invalidsurveyid'] = 'ID Sondaggio errata';
 $string['invalidtmptid'] = 'ID template errata';
 $string['ipreferthat'] = 'Idealmente';
 $string['modulename'] = 'Sondaggio';
-$string['modulename_help'] = 'Il modulo sondaggio fornisce tre tipi di strumenti per analizzare e stimolare. Il docente può utilizzare questi sondaggi per ricavare informazioni utili a capire gli stili di apprendimento  degli studenti.';
+$string['modulename_help'] = 'Il modulo sondaggio fornisce tre tipi di strumenti per analizzare e stimolare. Il docente può utilizzare questi sondaggi per ricavare informazioni utili a capire gli stili di apprendimento degli studenti.';
 $string['modulenameplural'] = 'Sondaggi';
 $string['name'] = 'Nome';
 $string['newsurveyresponses'] = 'Nuove risposte al sondaggio';
@@ -238,16 +238,15 @@ $string['scaletimes5'] = 'Quasi Mai, Raramente, A volte, Spesso, Quasi Sempre';
 $string['seemoredetail'] = 'Clicca qui per vedere ulteriori dettagli';
 $string['selectedquestions'] = 'Domande selezionate da una scala, tutti gli studenti';
 $string['summary'] = 'Riepilogo';
-$string['surveycompleted'] = 'Hai completato questo sondaggio. Il grafico sotto riportato mostra una sintesi comparata dei tuoi risultati con le medie della classe.';
 $string['survey:download'] = 'Scaricare risposte';
-$string['surveygraph'] = 'Grafico del sondaggio';
-$string['surveyname'] = 'Nome del sondaggio';
 $string['survey:participate'] = 'Rispondere al sondaggio';
 $string['survey:readresponses'] = 'Visualizzare risposte';
+$string['surveycompleted'] = 'Hai completato questo sondaggio. Il grafico sotto riportato mostra una sintesi comparata dei tuoi risultati con le medie della classe.';
+$string['surveygraph'] = 'Grafico del sondaggio';
+$string['surveyname'] = 'Nome del sondaggio';
 $string['surveysaved'] = 'Sondaggio salvato';
 $string['surveytype'] = 'Tipo di sondaggio';
 $string['surveytype_help'] = 'Sono disponibili 3 tipi di sondaggio:
-
 * ATTLS - Attitudes Towards Thinking and Learning Survey (sondaggio sugli atteggiamenti nei confronti del pensare e dell\'imparare) - E\' uno strumento per misurare se una persona è un \'conoscitore collegato\' (persone che trovano l\'apprendimento più divertente e sono spesso più collaborative, socievoli e desiderose di costruire sulle idee degli altri) o un \'conoscitore isolato\' (persone che tendono a prendere una posizione più critica e argomentativa nell\'apprendimento)
 * Incidenti critici
 * COLLES - Constructivist On-Line Learning Environment Survey (sondaggio per un ambiente di apprendimento on-line costruttivista) - Il sondaggio COLLES è stato predisposto per valutare fino a che punto si è stati capaci di sfruttare le possibilità interattive del World Wide Web per stimolare gli studenti a utilizzare le modalità di apprendimento dinamico e collaborativo.';

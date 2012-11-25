@@ -25,5 +25,4 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['notenrolledchoose'] = 'Sorry, only enrolled users are allowed to make choices.
-';
+$string['notenrolledchoose'] = 'Sorry, only enrolled users are allowed to make choices.';

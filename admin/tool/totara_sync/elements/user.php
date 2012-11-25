@@ -53,19 +53,18 @@ class totara_sync_element_user extends totara_sync_element {
     function sync() {
         global $DB;
 
-        $elname = $this->get_name();
-
-        $this->addlog(get_string('syncstarted', 'tool_totara_sync'), 'info', $elname.'sync');
+        $this->addlog(get_string('syncstarted', 'tool_totara_sync'), 'info', 'usersync');
 
         if (!$synctable = $this->get_source_sync_table()) {
-            $this->addlog(get_string('couldnotgetsourcetable', 'tool_totara_sync'), 'error', $elname.'sync');
-            return false;
+            throw new totara_sync_exception('user', 'usersync', 'couldnotgetsourcetable');
         }
 
-        if (!$this->check_sanity($synctable)) {
-            $this->addlog(get_string('sanitycheckfailed', 'tool_totara_sync'), 'error', $elname.'sync');
-            $this->get_source()->drop_temp_table($synctable);
-            return false;
+        if (!$synctable_clone = $this->get_source_sync_table_clone($synctable)) {
+            throw new totara_sync_exception('user', 'usersync', 'couldnotcreateclonetable');
+        }
+
+        if (!$this->check_sanity($synctable, $synctable_clone)) {
+            throw new totara_sync_exception('user', 'usersync', 'sanitycheckfailed');
         }
 
         ///
@@ -89,18 +88,20 @@ class totara_sync_element_user extends totara_sync_element {
             if ($rs = $DB->get_recordset_sql($sql)) {
                 foreach ($rs as $user) {
                     // remove user
-                    if (!delete_user($DB->get_record('user', array('id' => $user->id)))) {
-                        $this->addlog(get_string('cannotdeleteuserx', 'tool_totara_sync', $user->idnumber), 'error', 'deleteuser');
-                        $this->get_source()->drop_temp_table($synctable);
-                        return false;
-                    } else {
-                        $this->addlog(get_string('deleteduserx', 'tool_totara_sync', $user->idnumber), 'info', 'deleteuser');
+                    try {
+                        delete_user($DB->get_record('user', array('id' => $user->id)));
+                        $this->addlog(get_string('deleteduserx', 'tool_totara_sync', $user->idnumber),
+                            'info', 'deleteuser');
+                    } catch (Exception $e) {
+                        throw new totara_sync_exception('user', 'deleteuser',
+                            'cannotdeleteuserx', $user->idnumber, $e->getMessage());
                     }
                 }
                 $rs->close();
             }
         }
-        if (empty($this->config->sourceallrecords)) {
+
+        if (isset($this->config->sourceallrecords) && $this->config->sourceallrecords == 0) {
             // Remove the deleted records from the sync table
             // This ensures that our create/update queries runs smoothly
             $DB->execute("DELETE FROM {{$synctable}} WHERE deleted = 1");
@@ -116,20 +117,17 @@ class totara_sync_element_user extends totara_sync_element {
                  WHERE (u.idnumber IS NULL)";
         if ($rs = $DB->get_recordset_sql($sql)) {
             foreach ($rs as $suser) {
-                $transaction = $DB->start_delegated_transaction();
-
-                if (!$this->create_user($suser, $synctable, $intrans=true)) {
-                    $this->addlog(get_string('syncaborted', 'tool_totara_sync'), 'error', 'createusers');
-                    $this->get_source()->drop_temp_table($synctable);
-                    return false;
-                }
-
-                $DB->commit_delegated_transaction($transaction);
+                 try {
+                     $this->create_user($suser, $synctable);
+                     $this->addlog(get_string('createduserx', 'tool_totara_sync', $suser->idnumber),
+                         'info', 'createuser');
+                 } catch (Exception $e) {
+                     throw new totara_sync_exception('user', 'createuser',
+                         'cannotcreateuserx', $suser->idnumber, $e->getMessage());
+                 }
             }
             $rs->close(); // free mem
-
-        }  // if
-
+        }
 
         ///
         /// update existing accounts
@@ -147,12 +145,17 @@ class totara_sync_element_user extends totara_sync_element {
                     if (undelete_user($user)) {
                         $user->deleted = 0;
 
-                        // tag the revived user for new password generation
-                        set_user_preference('auth_forcepasswordchange', 1, $user->id);
-                        set_user_preference('create_password',          1, $user->id);
+                        // tag the revived user for new password generation (if applicable)
+                        $userauth = get_auth_plugin($user->auth);
+                        if ($userauth->can_change_password()) {
+                            set_user_preference('auth_forcepasswordchange', 1, $user->id);
+                            set_user_preference('create_password',          1, $user->id);
+                        }
+                        unset($userauth);
+
                         $this->addlog(get_string('reviveduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
                     } else {
-                        $this->addlog(get_string('cannotreviveuserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
+                        $this->addlog(get_string('cannotreviveuserx', 'tool_totara_sync', $suser->idnumber), 'warn', 'updateusers');
                     }
                 }
 
@@ -161,19 +164,25 @@ class totara_sync_element_user extends totara_sync_element {
                 // update user
                 $this->set_sync_user_fields($user, $suser);
 
-                if (!$DB->update_record('user', $user)) {
-                    $DB->force_transaction_rollback();
-                    $this->addlog(get_string('cannotupdateuserx', 'tool_totara_sync', $user->idnumber), 'error', 'updateusers');
-                    $this->get_source()->drop_temp_table($synctable);
-                    return false;
+                try {
+                    $DB->update_record('user', $user);
+                } catch (dml_exception $e) {
+                    $transaction->rollback($e);
+                    throw new totara_sync_exception('user', 'updateusers', 'cannotupdateuserx',
+                        $user->idnumber, $e->getMessage());
                 }
 
                 // update user password
                 if (isset($suser->password)) {
-                    $auth = get_auth_plugin($user->auth);
-                    if (!$auth->user_update_password($user, $suser->password)) {
-                        $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'error', 'updateusers');
+                    $userauth = get_auth_plugin($user->auth);
+                    if ($userauth->can_change_password()) {
+                        if (!$userauth->user_update_password($user, $suser->password)) {
+                            $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'warn', 'updateusers');
+                        }
+                    } else {
+                        $this->addlog(get_string('cannotsetuserpasswordnoauthsupport', 'tool_totara_sync', $user->idnumber), 'warn', 'updateusers');
                     }
+                    unset($userauth);
                 }
 
                 // update user assignment data
@@ -189,16 +198,15 @@ class totara_sync_element_user extends totara_sync_element {
 
                 $this->addlog(get_string('updateduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
 
-                $DB->commit_delegated_transaction($transaction);
+                $transaction->allow_commit();
             }
             $rs->close();
             unset($user, $pos_assignment, $posdata); // free memory
 
         }
 
-        $this->get_source()->drop_temp_table($synctable);
-
-        $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', $elname.'sync');
+        $this->get_source()->drop_temp_table();
+        $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', 'usersync');
     }
 
     /**
@@ -206,10 +214,14 @@ class totara_sync_element_user extends totara_sync_element {
      *
      * @param stdClass $suser escaped sync user object
      * @param string $synctable sync table name
-     * @param boolean $intrans is db transaction present
+     *
+     * @return boolean true if successful
+     * @throws totara_sync_exception
      */
-    function create_user($suser, $synctable, $intrans=false) {
+    function create_user($suser, $synctable) {
         global $CFG, $DB;
+
+        $transaction = $DB->start_delegated_transaction();
 
         if ($DB->record_exists('user', array('idnumber' => $suser->idnumber))) {
             // Record might have been created recursively
@@ -226,73 +238,82 @@ class totara_sync_element_user extends totara_sync_element {
         $user->lang = $CFG->lang;
         $this->set_sync_user_fields($user, $suser);
 
-        if ($user->id = $DB->insert_record('user', $user)) { // insert user
+        try {
+            $user->id = $DB->insert_record('user', $user);  // insert user
+        } catch (Exception $e) {
+            $transaction->rollback($e);
+            throw new totara_sync_exception('user', 'createusers', 'cannotcreateuserx', $user->idnumber);
+        }
+
+        $userauth = get_auth_plugin($user->auth);
+        if ($userauth->can_change_password()) {
             if (!isset($suser->password)) {
                 // tag for password generation
                 set_user_preference('auth_forcepasswordchange', 1, $user->id);
                 set_user_preference('create_password',          1, $user->id);
             } else {
                 // set user password
-                $auth = get_auth_plugin($user->auth);
-                if (!$auth->user_update_password($user, $suser->password)) {
-                    $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'error', 'createusers');
+                if (!$userauth->user_update_password($user, $suser->password)) {
+                    $this->addlog(get_string('cannotsetuserpassword', 'tool_totara_sync', $user->idnumber), 'warn', 'createusers');
                 }
             }
-
-            // ensure user's manager exists
-            if (!empty($suser->manageridnumber) && !$DB->record_exists('user', array('idnumber' => $suser->manageridnumber))) {
-                // Create user's manager first (recursive)
-                $sql = "SELECT *
-                          FROM {{$synctable}}
-                         WHERE idnumber = ? ";
-                if (!$smanager = $DB->get_record_sql($sql, array($suser->manageridnumber))) {
-                    if ($intrans) {
-                        $DB->force_transaction_rollback();
-                    }
-                    $this->addlog(get_string('cannotfindmanagerxforusery', 'tool_totara_sync',
-                        (object)array('manageridnumber' => $suser->manageridnumber, 'idnumber' => $suser->idnumber)), 'error', 'createusers');
-                    return false;
-                }
-                if (!$this->create_user($smanager, $synctable, $intrans)) {
-                    if ($intrans) {
-                        $DB->force_transaction_rollback();
-                    }
-                    $this->addlog(get_string('cannotcreatemanagerxforusery', 'tool_totara_sync',
-                        (object)array('manageridnumber' => $suser->manageridnumber, 'idnumber' => $suser->idnumber)), 'error', 'createusers');
-                    return false;
-                }
-            }
-
-            // create user assignments
-            if (!$this->sync_user_assignments($user, $suser)) {
-                if ($intrans) {
-                    $DB->force_transaction_rollback();
-                }
-                $this->addlog(get_string('cannotcreateuserassignments', 'tool_totara_sync', $user->idnumber), 'error', 'syncuserassignments');
-                return false;
-            }
-
-            // add custom field data
-            if ($customfields = json_decode($suser->customfields)) {
-                foreach ($customfields as $name=>$value) {
-                    $user->{$name} = $value;
-                }
-                customfield_save_data($user, 'user', 'user');
-            }
-
-            $this->addlog(get_string('createduserx', 'tool_totara_sync', $user->idnumber), 'info', 'createusers');
-
-        } else {
-            if ($intrans) {
-                $DB->force_transaction_rollback();
-            }
-            $this->addlog(get_string('cannotcreateuserx', 'tool_totara_sync', $user->idnumber), 'error', 'createusers');
-            return false;
         }
+        unset($userauth);
+
+        // ensure user's manager exists
+        if (!empty($suser->manageridnumber) && !$DB->record_exists('user', array('idnumber' => $suser->manageridnumber))) {
+            // Create user's manager first (recursive)
+            $sql = "SELECT *
+                      FROM {{$synctable}}
+                     WHERE idnumber = ? ";
+
+            if (!$smanager = $DB->get_record_sql($sql, array($suser->manageridnumber))) {
+                $exception = new totara_sync_exception('user', 'createusers', 'cannotfindmanagerxforusery',
+                    (object)array('manageridnumber' => $suser->manageridnumber,
+                    'idnumber' => $suser->idnumber));
+                $transaction->rollback($exception);
+                throw $exception;
+            }
+
+            try {
+                $this->create_user($smanager, $synctable);
+            } catch (totara_sync_exception $e) {
+                $transaction->rollback($e);
+                throw new totara_sync_exception('user', 'createusers', 'cannotcreatemanagerxforusery',
+                    (object)array('manageridnumber' => $suser->manageridnumber,
+                    'idnumber' => $suser->idnumber), $e->getMessage());
+            }
+        }
+
+        // create user assignments
+        try {
+            $this->sync_user_assignments($user, $suser);
+        } catch (Exception $e) {
+            $transaction->rollback($e);
+            throw new totara_sync_exception('user', 'syncuserassignments',
+                'cannotcreateuserassignments', $user->idnumber, $e->getMessage());
+        }
+
+        // add custom field data
+        if ($customfields = json_decode($suser->customfields)) {
+            foreach ($customfields as $name=>$value) {
+                $user->{$name} = $value;
+            }
+            customfield_save_data($user, 'user', 'user');
+        }
+
+        $this->addlog(get_string('createduserx', 'tool_totara_sync', $user->idnumber), 'info', 'createusers');
+
+        $transaction->allow_commit();
 
         return true;
     }
 
+    /**
+     * Sync a user's position assignments
+     *
+     * @return boolean true on success
+     */
     function sync_user_assignments($user, $suser) {
         global $DB;
 
@@ -356,8 +377,11 @@ class totara_sync_element_user extends totara_sync_element {
         if (isset($suser->country)) {
             $user->country = $suser->country;
         }
-        if (isset($suser->language)) {
-            $user->language = $suser->language;
+        if (isset($suser->timezone)) {
+            $user->timezone = $suser->timezone;
+        }
+        if (isset($suser->lang)) {
+            $user->lang = $suser->lang;
         }
         if (isset($suser->description)) {
             $user->description = $suser->description;
@@ -386,7 +410,7 @@ class totara_sync_element_user extends totara_sync_element {
         $user->auth = isset($suser->auth) ? $suser->auth : 'manual';
     }
 
-    function check_sanity($synctable) {
+    function check_sanity($synctable, $synctable_clone) {
         global $DB;
 
         $elname = $this->get_name();
@@ -469,8 +493,9 @@ class totara_sync_element_user extends totara_sync_element {
                        AND s.manageridnumber != ''
                        AND u.idnumber IS NULL
                        AND s.manageridnumber NOT IN
-                           (SELECT idnumber FROM {{$synctable}})";
+                           (SELECT idnumber FROM {{$synctable_clone}})";
             $rs = $DB->get_recordset_sql($sql);
+
             if ($rs->valid()) {
                 foreach ($rs as $r) {
                     $this->addlog(get_string('managerxnotexist', 'tool_totara_sync', $r->manageridnumber), 'error', 'checksanity');

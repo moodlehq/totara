@@ -31,7 +31,6 @@ $string['addingcomment'] = '添加一条评论';
 $string['alias'] = '关键词';
 $string['aliases'] = '关键词';
 $string['aliases_help'] = '词汇表中的每个词条都可以与一些关键词（或别名）相关联。如果词条被自动链接，那么关键词也会被自动链接。
-
 每个关键词独占一行（不是以逗号分割）。';
 $string['allcategories'] = '所有类别';
 $string['allentries'] = '全部';
@@ -108,15 +107,7 @@ $string['descending'] = '降序';
 $string['destination'] = '词条导入目标';
 $string['destination_help'] = '词条可以导入到当前词汇表，也可以导入到新词汇表。新词汇表会按 XML 文件中的信息创建。';
 $string['displayformat'] = '显示格式';
-$string['displayformatcontinuous'] = '连续（不含作者）';
-$string['displayformatdictionary'] = '简单字典风格';
-$string['displayformatencyclopedia'] = '百科全书';
-$string['displayformatentrylist'] = '词条列表';
-$string['displayformatfaq'] = '常见问题';
-$string['displayformatfullwithauthor'] = '详细（含作者）';
-$string['displayformatfullwithoutauthor'] = '详细（不含作者）';
 $string['displayformat_help'] = '有 7 种显示格式：
-
 * 简单字典风格 - 不显示作者，附件显示为链接
 * 连续（不含作者）- 词条后面跟着词条，除了编辑图标，没有任何分隔
 * 详细（含作者）- 论坛一样的显示格式，显示作者信息，附件显示为链接
@@ -124,6 +115,13 @@ $string['displayformat_help'] = '有 7 种显示格式：
 * 百科全书 - 同“详细（含作者）”类似，但附件中的图片会直接内嵌显示
 * 词条列表 - 以链接的形式列出所有词名
 * 常见问题 - 在词名和定义后自动附加“问题”和“解答”字样';
+$string['displayformatcontinuous'] = '连续（不含作者）';
+$string['displayformatdictionary'] = '简单字典风格';
+$string['displayformatencyclopedia'] = '百科全书';
+$string['displayformatentrylist'] = '词条列表';
+$string['displayformatfaq'] = '常见问题';
+$string['displayformatfullwithauthor'] = '详细（含作者）';
+$string['displayformatfullwithoutauthor'] = '详细（不含作者）';
 $string['displayformats'] = '显示格式';
 $string['displayformatssetup'] = '显示格式设置';
 $string['duplicatecategory'] = '类别重名';
@@ -176,18 +174,18 @@ $string['glossary:export'] = '导出词条';
 $string['glossary:exportentry'] = '导出单个词条';
 $string['glossary:exportownentry'] = '导出您的单个词条';
 $string['glossary:import'] = '导入词条';
-$string['glossaryleveldefaultsettings'] = '词汇表级别缺省设置';
 $string['glossary:managecategories'] = '管理类别';
 $string['glossary:managecomments'] = '管理评论';
 $string['glossary:manageentries'] = '管理词条';
 $string['glossary:rate'] = '评价词条';
-$string['glossarytype'] = '词汇表类型';
-$string['glossarytype_help'] = '副词汇表的词条可以导入到主词汇表中。一个课程只能有一个主词汇表。如果不需要词条导入功能，可以把所有词汇表都设成副词汇表。';
 $string['glossary:view'] = '查看词汇表';
 $string['glossary:viewallratings'] = '查看所有人给的原始评分';
 $string['glossary:viewanyrating'] = '查看每个人收到的总评分';
 $string['glossary:viewrating'] = '查看您收到的总评分';
 $string['glossary:write'] = '创建新词条';
+$string['glossaryleveldefaultsettings'] = '词汇表级别缺省设置';
+$string['glossarytype'] = '词汇表类型';
+$string['glossarytype_help'] = '副词汇表的词条可以导入到主词汇表中。一个课程只能有一个主词汇表。如果不需要词条导入功能，可以把所有词汇表都设成副词汇表。';
 $string['guestnoedit'] = '访客不能编辑词汇表';
 $string['importcategories'] = '导入类别';
 $string['importedcategories'] = '导入的类别';

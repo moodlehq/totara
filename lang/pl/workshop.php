@@ -31,6 +31,7 @@ $string['aggregation'] = 'Zestawienie ocen';
 $string['allsubmissions'] = 'Wszystkie rozwiązania';
 $string['alreadygraded'] = 'Już oceniono';
 $string['assess'] = 'Oceń';
+$string['assessment'] = 'Ocena';
 $string['assessmentby'] = 'przez <a href="{$a->url}">{$a->name}</a>';
 $string['assessmentbyfullname'] = 'Ocenione przez {$a}';
 $string['assessmentbyyourself'] = 'Twoja ocena';
@@ -39,6 +40,7 @@ $string['assessmentenddatetime'] = 'Końcowy termin przesyłania prac: {$a->dayd
 $string['assessmentendevent'] = '{$a} (ostateczny termin oceniania)';
 $string['assessmentofsubmission'] = '<a href="{$a->assessmenturl}">Ocena</a> of <a href="{$a->submissionurl}">{$a->submissiontitle}</a>';
 $string['assessmentstart'] = 'Początek fazy oceniania prac';
+$string['assessmentstartevent'] = 'Początek fazy oceniania prac dla {$a}';
 $string['byfullname'] = 'przez <a href="{$a->url}">{$a->name}</a>';
 $string['chooseuser'] = 'Wybierz użytkownika ...';
 $string['clearaggregatedgrades'] = 'Wyczyść wszystkie zagregowane oceny';
@@ -68,6 +70,11 @@ $string['gradegivento'] = '&gt;';
 $string['gradeinfo'] = 'Ocena: {$a->received} / {$a->max}';
 $string['gradereceivedfrom'] = '&lt;';
 $string['gradinggrade'] = 'Stopniuj stopnie';
+$string['gradinggrade_help'] = '# Stopień za oceny Studenta
+Jest to maksymalny stopień jaki można dać studentom za otrzymane oceny podczas pracy. Jest to stopień wystawiony za ich oceny. Stopnie są obliczane w module warsztaty porównanie oceny z "najlepszą" oceną za te samo zadanie. "Najlepszą" oceną jest ta która jest najbliższa średniej wszystkich ocen.(Może być średnia ważona, jeżeli prowadzący ustawi wagi większe niż jeden). Jeżeli jest tylko jedna ocena za zadanie to jest ona wzięta jako najlepsza. Jeżeli są dwie oceny za zadanie, obie są uważane za "najlepsze". Tylko gdy jest trzy lub więcej ocen moduł liczy między nimi różnice.
+Ten stopień czasem jest nazywany "stopniowaniem stopni" i \***|nie jest \***|maksymalnym stopieniem dawanym za pracę, ten jest nazwany "stopień za zadanie".
+Stopień studenta z warsztatu jest sumą tego stopnia i stopnia za zadanie/zadania. Jeżeli maksymalny stopień dla Studenckich ocen jest 20 i maksymalny stopień za zadanie jest do 80, to maksymalny stopień dla warsztatu jest 100
+Ta wartość może być zmieniana w każdej chwili i stopnie zostaną przeliczone.';
 $string['gradingsettings'] = 'Ustawienia oceniania';
 $string['iamsure'] = 'Tak, jestem pewien(a)';
 $string['info'] = 'Informacja';
@@ -104,6 +111,7 @@ $string['submissionend'] = 'Koniec fazy nadsyłania prac';
 $string['submissionenddatetime'] = 'Ostateczny termin nadsyłania prac: {$a->daydatetime} ({$a->distanceday})';
 $string['submissionendevent'] = '{$a} (ostateczny termin przesyłania prac)';
 $string['submissionstart'] = 'Start zadania';
+$string['submissionstartevent'] = 'Start zadania dla {$a}';
 $string['submissiontitle'] = 'Tytuł';
 $string['subplugintype_workshopform'] = 'Strategia oceniania';
 $string['subplugintype_workshopform_plural'] = 'Strategie oceniania';
@@ -119,7 +127,6 @@ $string['userdatecreated'] = 'wysłano <span>{$a}</span>';
 $string['userdatemodified'] = 'zmodyfikowano <span>{$a}</span>';
 $string['useselfassessment'] = 'Użyj samooceny';
 $string['weightinfo'] = 'Waga: {$a}';
-$string['workshopname'] = 'Nazwa warsztatów';
 $string['workshop:submit'] = 'Zatwierdź / wyślij';
 $string['workshop:switchphase'] = 'Zmień fazę';
 $string['workshop:view'] = 'Zobacz warsztaty';
@@ -129,5 +136,6 @@ $string['workshop:viewauthornames'] = 'Zobacz nazwiska autorów';
 $string['workshop:viewauthorpublished'] = 'Zobacz autorów opublikowanych prac';
 $string['workshop:viewpublishedsubmissions'] = 'Zobacz opublikowane prace';
 $string['workshop:viewreviewernames'] = 'Zobacz nazwiska recenzentów';
+$string['workshopname'] = 'Nazwa warsztatów';
 $string['yourassessment'] = 'Twoje prace';
 $string['yoursubmission'] = 'Twoje prace';

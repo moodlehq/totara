@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Visualizar repositório Alfresco';
 $string['alfresco_url'] = 'URl do Alfresco';
 $string['alfrescourltext'] = 'Endereço eletrônico (url) da API do Alfresco deve ser: http://seusite.com/alfresco/api';
-$string['alfresco:view'] = 'Visualizar repositório Alfresco';
 $string['configplugin'] = 'Configuração do Alfresco';
 $string['notitle'] = 'sem título';
 $string['password'] = 'Senha';

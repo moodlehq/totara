@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['CASform'] = 'Hitelesítés kiválasztása';
 $string['accesCAS'] = 'CAS-felhasználók';
 $string['accesNOCAS'] = 'egyéb felhasználók';
 $string['auth_cas_auth_user_create'] = 'Felhasználók létrehozása kívülről';
@@ -35,13 +36,12 @@ $string['auth_cas_cantconnect'] = 'A CAS-modul LDAP-része nem tud a(z) {$a} sze
 $string['auth_cas_casversion'] = 'CAS-protokoll verziója';
 $string['auth_cas_certificate_check'] = 'A szervertanúsítvány érvényesítéséhez állítsa \'igen\'-re';
 $string['auth_cas_certificate_check_key'] = 'Szerverérvényesítés';
-$string['auth_cas_certificate_path'] = 'A CA (PEM-formájú) láncfájl útvonala A szervertanúsítvány érvényesítéséhez ';
+$string['auth_cas_certificate_path'] = 'A CA (PEM-formájú) láncfájl útvonala A szervertanúsítvány érvényesítéséhez';
 $string['auth_cas_certificate_path_empty'] = 'Bekapcsolt szerverérvényesítés esetén meg kell adnia a tanúsítvány útvonalát.';
 $string['auth_cas_certificate_path_key'] = 'A tanúsítvány útvonala';
 $string['auth_cas_changepasswordurl'] = 'Jelszó-módosítási URL';
 $string['auth_cas_create_user'] = 'Kapcsolja be, ha CAS által hitelesített felhasználókat kíván a Moodle adatbázisába fölvenni.';
 $string['auth_cas_create_user_key'] = 'Felhasználó létrehozása';
-$string['auth_casdescription'] = 'Ez a módszer CAS-szervert (központi hitelesítési szolgáltatást) használ felhasználók egyszeri belépési környezetben (SSO) való hitelesítésére. Használhat egyszerű LDAP-hitelesítést is. Ha a megadott felhasználónév és jelszó a CAS szerint érvényes, akkor a Moodle új felhasználót hoz létre adatbázisában, melyhez szükség esetén az LDAP-ból veszi a felhasználói tulajdonságokat. A további belépések alkalmával már csak a felhasználónév és a jelszó ellenőrzésére kerül sor.';
 $string['auth_cas_enabled'] = 'Kapcsolja be, ha CAS-hitelesítést kíván használni.';
 $string['auth_cas_hostname'] = 'A CAS-szerver gazdagépneve, <br />pl. host.domain.fr';
 $string['auth_cas_hostname_key'] = 'Gazdagépnév';
@@ -53,7 +53,6 @@ $string['auth_cas_logoutcas'] = 'Állítsa \'igen\'-re, ha a Moodle lekapcsolás
 $string['auth_cas_logoutcas_key'] = 'Kilépés a CAS-ból';
 $string['auth_cas_multiauth'] = 'Állítsa \'igen\'-re, ha többszörös (CAS + egyéb) hitelesítést szeretne.';
 $string['auth_cas_multiauth_key'] = 'Többszörös hitelesítés';
-$string['auth_casnotinstalled'] = 'A CAS-hitelesítés nem használható. A PHP LDAP-modulja nincs telepítve.';
 $string['auth_cas_port'] = 'A CAS-szerver portja';
 $string['auth_cas_port_key'] = 'Port';
 $string['auth_cas_proxycas'] = 'Állítsa \'igen\'-re, ha a CAS-t proxy üzemmódban használja.';
@@ -62,6 +61,7 @@ $string['auth_cas_server_settings'] = 'A CAS-szerver beállítása';
 $string['auth_cas_text'] = 'Biztonságos kapcsolat';
 $string['auth_cas_use_cas'] = 'A CAS használata';
 $string['auth_cas_version'] = 'A CAS-protokoll használandó verziója';
-$string['CASform'] = 'Hitelesítés kiválasztása';
+$string['auth_casdescription'] = 'Ez a módszer CAS-szervert (központi hitelesítési szolgáltatást) használ felhasználók egyszeri belépési környezetben (SSO) való hitelesítésére. Használhat egyszerű LDAP-hitelesítést is. Ha a megadott felhasználónév és jelszó a CAS szerint érvényes, akkor a Moodle új felhasználót hoz létre adatbázisában, melyhez szükség esetén az LDAP-ból veszi a felhasználói tulajdonságokat. A további belépések alkalmával már csak a felhasználónév és a jelszó ellenőrzésére kerül sor.';
+$string['auth_casnotinstalled'] = 'A CAS-hitelesítés nem használható. A PHP LDAP-modulja nincs telepítve.';
 $string['noldapserver'] = 'A CAS-hoz nincs beállítva LDAP-szerver! Szinkronizálás kikapcsolva.';
 $string['pluginname'] = 'CAS-szerver (SSO)';

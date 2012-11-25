@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Boek afdrukken';
+$string['print:print'] = 'Boek afdrukken';
 $string['printbook'] = 'Druk het hele boek af';
 $string['printchapter'] = 'Druk dit hoofdstuk af';
 $string['printdate'] = 'Datum';
 $string['printedby'] = 'Afgedrukt door';
-$string['print:print'] = 'Boek afdrukken';

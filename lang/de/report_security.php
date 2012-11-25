@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['check_configrw_details'] = '<p>Nach der Installation sollten die Zugriffsrechte für die Datei config.php so gesetzt werden, dass der Webserver diese Datei nicht mehr verändern kann. Bitte beachten Sie, dass dieser Schritt die Server-Sicherheit nicht entscheidend verbessert, aber dass  generelle Angriffe behindert und in ihrer Wirkung begrenzt werden könnten.</p>';
-$string['check_configrw_name'] = ' config.php';
+$string['check_configrw_name'] = 'config.php';
 $string['check_configrw_ok'] = 'PHP-Skripte können die config.php nicht verändern';
 $string['check_configrw_warning'] = 'PHP-Skripte könnten die Datei config.php verändern';
 $string['check_cookiesecure_details'] = '<p>Zusätzlich zur Aktivierung der Datenübertragung über https sollte auch die Funktion sichere Cookies aktiviert werden. Die permanenete Umleitung von http nach https sollte ebenfalls eingerichtet werden.</p>';
@@ -106,10 +106,10 @@ $string['check_riskadmin_name'] = 'Administratoren';
 $string['check_riskadmin_ok'] = '{$a} Serveradministrator(en) gefunden';
 $string['check_riskadmin_unassign'] = 'Rollenzuweisung überprüfen bei <a href="{$a->url}">{$a->fullname} ({$a->email})</a>';
 $string['check_riskadmin_warning'] = '{$a->admincount} Serveradministrator(en) und {$a->unsupcount} nicht unterstützte Zuweisung(en) zur Administratorrolle gefunden.';
-$string['check_riskbackup_detailsok'] = 'Keine Rolle erlaubt das Sichern von Nutzerdaten. Beachten Sie aber, dass Admins mit der Berechtigung "doanything" (alles tun) auch weiterhin dazu befähigt sind.';
 $string['check_riskbackup_details_overriddenroles'] = '<p>Diese aktivierten Änderungen geben Nutzern/innen die Möglichkeit, auch Nutzerdaten in eine Kurssicherung einzubeziehen. Bitte prüfen Sie, ob diese Berechtigung nötig ist.</p> {$a}';
 $string['check_riskbackup_details_systemroles'] = '<p>Die folgenden Systemrollen erlauben es aktuell, Nutzerdaten in eine Kurssicherung einzubeziehen. Bitte prüfen Sie, ob diese Berechtigung nötig ist.</p> {$a}';
 $string['check_riskbackup_details_users'] = '<p>Wegen der obigen Rollen oder lokalen Rollenänderungen besitzen die nachfolgenden Nutzerkonten die Berechtigung, persönliche Daten von allen in ihren Kursen eingetragenen Nutzern/innen in Kurssicherungen einzubeziehen. Stellen Sie unbedingt sicher, dass diese Konten (a) vertrauenswürdig und (b) mit sicheren Kennworten gesichert sind:</p> {$a}';
+$string['check_riskbackup_detailsok'] = 'Keine Rolle erlaubt das Sichern von Nutzerdaten. Beachten Sie aber, dass Admins mit der Berechtigung "doanything" (alles tun) auch weiterhin dazu befähigt sind.';
 $string['check_riskbackup_editoverride'] = '<a href="{$a->url}">{$a->name} in {$a->contextname}</a>';
 $string['check_riskbackup_editrole'] = '<a href="{$a->url}">{$a->name}</a>';
 $string['check_riskbackup_name'] = 'Sicherung von Nutzerdaten';

@@ -43,11 +43,11 @@ $string['autogenallforms'] = 'Generar todas las plantillas por defecto';
 $string['autolinkurl'] = 'Autoenlazar la URL';
 $string['availablefromdate'] = 'Disponible desde';
 $string['availabletags'] = 'Marcas disponibles';
-$string['availabletags_help'] = '<p align="center"><strong>Marcas disponibles</strong></p>
-<p>Las marcas (\'tags\') son mantenedores de posición (\'place holders\') en la plantilla que se reemplazan con campos o botones cuando se editan o se consultan las entradas.</p>
-<p>Los campos tienen el siguiente formato: [[fieldname]]</p>
-<p>Los botones tienen el siguiente formato: ##somebutton##</p>
-<p>En la plantilla actual sólo pueden usarse las marcas que están en la lista de "Marcas disponibles".</p>';
+$string['availabletags_help'] = '**Marcas disponibles**
+Las marcas (\'tags\') son mantenedores de posición (\'place holders\') en la plantilla que se reemplazan con campos o botones cuando se editan o se consultan las entradas.
+Los campos tienen el siguiente formato: [[fieldname]]
+Los botones tienen el siguiente formato: ##somebutton##
+En la plantilla actual sólo pueden usarse las marcas que están en la lista de "Marcas disponibles".';
 $string['availabletodate'] = 'Disponible a';
 $string['blank'] = 'En blanco';
 $string['buttons'] = 'Acciones';
@@ -76,26 +76,19 @@ $string['csstemplate'] = 'Plantilla CSS';
 $string['csvfailed'] = 'No se pueden leer los datos del archivo CVS';
 $string['csvfile'] = 'Archivo CSV';
 $string['csvimport'] = 'Importar archivo CSV';
-$string['csvimport_help'] = '<p align="center"><strong>Importar de un archivo CVS</strong></p>
+$string['csvimport_help'] = '**Importar de un archivo CVS**
+CSV significa \'Valores Separados por Comas\' (\'Comma-Separated-Values\') y es un formato común para intercambiar texto.
+El formato esperado de archivo es texto plano con una lista de nombres de campo como primer registro. A continuación vienen los datos, a razón de un registro en cada línea.
+El delimitador por defecto de cada campo es la COMA, y el cierre del campo no se establece por defecto (los cierres de campo son caracteres que rodean a cada campo en cada registro).
+Los registros deberían estar delimitados por nuevas líneas (normalmente generadas al pulsar RETORNO o ENTER en el editor de texto). Los tabuladores pueden especificarse usando t y las nuevas líneas, mediante n.
+Archivo de muestra:
 
-<p>CSV significa \'Valores Separados por Comas\' (\'Comma-Separated-Values\') y es un formato común para intercambiar texto.</p>
+nombre,estatura,peso
+Manolo,180cm,80kg
+Juan,170cm,60kg
+Luis,190cm,20kg
 
-<p>El formato esperado de archivo es texto plano con una lista de nombres de campo como primer registro. A continuación vienen los datos, a razón de un registro en cada línea.</p>
-
-<p>El delimitador por defecto de cada campo es la COMA, y el cierre del campo no se establece por defecto (los cierres de campo son caracteres que rodean a cada campo en cada registro).</p>
-
-<p>Los registros deberían estar delimitados por nuevas líneas (normalmente generadas al pulsar RETORNO o ENTER en el editor de texto). Los tabuladores pueden especificarse usando t y las nuevas líneas, mediante n. </p>
-
-<p>Archivo de muestra:</p>
-
-<pre>
-  nombre,estatura,peso
-  Manolo,180cm,80kg
-  Juan,170cm,60kg
-  Luis,190cm,20kg
-</pre>
-
-<p>ADVERTENCIA: es posible que no se admitan todos los tipos de campo.</p>';
+ADVERTENCIA: es posible que no se admitan todos los tipos de campo.';
 $string['csvwithselecteddelimiter'] = '<acronym title="Comma Separated Values">texto</acronym> CVS con el delimitador seleccionado:';
 $string['data:approve'] = 'Aprobar entradas pendientes';
 $string['data:comment'] = 'Escribir comentarios';
@@ -110,8 +103,7 @@ $string['data:rate'] = 'Calificar entradas';
 $string['data:readentry'] = 'Leer entradas';
 $string['data:viewallratings'] = 'Ver todas las calificaciones emitidas por los usuarios';
 $string['data:viewalluserpresets'] = 'Ver ajustes previos de todos los usuarios';
-$string['data:viewanyrating'] = 'Ver el total de calificaciones que alguien recibió
-	';
+$string['data:viewanyrating'] = 'Ver el total de calificaciones que alguien recibió';
 $string['data:viewentry'] = 'Ver entradas';
 $string['data:viewrating'] = 'Ver calificación total recibida';
 $string['data:writeentry'] = 'Escribir entradas';
@@ -165,17 +157,15 @@ $string['fieldheightlistview'] = 'Altura en vista de lista';
 $string['fieldheightsingleview'] = 'Altura en vista simple';
 $string['fieldids'] = 'Ids. de campo';
 $string['fieldmappings'] = 'Mapeos de campo';
-$string['fieldmappings_help'] = '<p align="center"><strong>Mapeos de campo</strong></p>
-<p>Este menú le permite guardar los datos de la base de datos existente.
+$string['fieldmappings_help'] = '**Mapeos de campo**
+Este menú le permite guardar los datos de la base de datos existente.
 Para conservar los datos en un campo, debe mapearlo a un nuevo campo,
 en el que aparecerán los datos. Puede asmimismo dejar en blanco cualquier
 campo, sin que en él se copie información alguna. Cualquier campo antiguo
-no mapeado a uno nuevo se perderá, y todos sus datos quedarán eliminados.</p>
-<p>
+no mapeado a uno nuevo se perderá, y todos sus datos quedarán eliminados.
 Usted sólo puede mapear campos del mismo tipo, de modo que cada desplegable
 contendrá distintos campos. Del mismo modo, debe ser cuidadoso en no tratar y
-mapear un campo viejo a más de un campo nuevo.
-</p>';
+mapear un campo viejo a más de un campo nuevo.';
 $string['fieldname'] = 'Nombre de campo';
 $string['fieldnotmatched'] = 'Los campos siguientes de su archivo no figuran en esta base de datos: {$a}';
 $string['fieldoptions'] = 'Opciones (una por línea)';
@@ -259,9 +249,7 @@ $string['nameurl'] = 'Campo de URL';
 $string['newentry'] = 'Nueva entrada';
 $string['newfield'] = 'Crear un nuevo campo';
 $string['newfield_help'] = 'Un campo permite la entrada de datos.
-
 Cada entrada en una actividad de base de datos puede tener varios campos de varios tipos, tales como un campo de fecha, que permite a los participantes para seleccionar un día, mes y año a partir de una lista desplegable, un campo de imagen, que permite a los participantes para cargar un archivo de imagen, o una casilla de verificación de campo, que permite a los participantes para seleccionar una o más opciones.
-
 Cada campo debe tener un nombre de campo único. La descripción del campo es opcional.';
 $string['noaccess'] = 'No tiene acceso a esta página';
 $string['nodefinedfields'] = '¡El nuevo ajuste previo no tiene campos definidos!';
@@ -302,20 +290,16 @@ $string['recorddeleted'] = 'Entrada eliminada';
 $string['recordsnotsaved'] = 'No se ha guardado ninguna entrada. Por favor, compruebe el formato del archivo subido.';
 $string['recordssaved'] = 'entradas guardadas';
 $string['requireapproval'] = '¿Se requiere aprobación?';
-$string['requireapproval_help'] = '<p align="center"><strong>Se necesita aprobación</strong></p>
-
-<p>¿Debería un profesor aprobar las entradas antes de que los estudiantes puedan verlas? Esta opción es útil para moderar el contenido que potencialmente pudiera resultar ofensivo o inadecuado.</p>';
+$string['requireapproval_help'] = '**Se necesita aprobación**
+¿Debería un profesor aprobar las entradas antes de que los estudiantes puedan verlas? Esta opción es útil para moderar el contenido que potencialmente pudiera resultar ofensivo o inadecuado.';
 $string['requiredentries'] = 'Entradas requeridas';
-$string['requiredentries_help'] = '<p align="center"><strong>Número de entradas exigido</strong></p>
-
-<p>Número de entradas que se exige enviar a cada participante.
-   Los usuarios verán un mensaje recordatorio que les informa si no han enviado el número de entradas exigido.</p>
-
-<p>La actividad no se considerará completada en tanto el usuario no haya enviado el número de entradas exigido.</p>';
+$string['requiredentries_help'] = '**Número de entradas exigido**
+Número de entradas que se exige enviar a cada participante.
+Los usuarios verán un mensaje recordatorio que les informa si no han enviado el número de entradas exigido.
+La actividad no se considerará completada en tanto el usuario no haya enviado el número de entradas exigido.';
 $string['requiredentriestoview'] = 'Entradas requeridas antes de verse';
-$string['requiredentriestoview_help'] = '<p align="center"><strong>Entradas exigidas antes de ver</strong></p>
-
-<p>Número de entradas que un participante debe enviar antes de que se le permita ver cualquier entrada en esta actividad de la base de datos.</p>';
+$string['requiredentriestoview_help'] = '**Entradas exigidas antes de ver**
+Número de entradas que un participante debe enviar antes de que se le permita ver cualquier entrada en esta actividad de la base de datos.';
 $string['resetsettings'] = 'Restablecer filtros';
 $string['resettemplate'] = 'Resetear plantilla';
 $string['resizingimages'] = 'Cambiando el tamaño de las miniaturas de imagen...';
@@ -337,10 +321,8 @@ $string['showall'] = 'Mostrar todas las entradas';
 $string['single'] = 'Ver uno por uno';
 $string['singletemplate'] = 'Plantilla simple';
 $string['subplugintype_datafield'] = 'Tipo de campo de la base de datos';
-$string['subplugintype_datafield_plural'] = '	
-Tipos de campo de la base de datos';
-$string['subplugintype_datapreset'] = '	
-Tipos de campo de la base de datos';
+$string['subplugintype_datafield_plural'] = 'Tipos de campo de la base de datos';
+$string['subplugintype_datapreset'] = 'Tipos de campo de la base de datos';
 $string['subplugintype_datapreset_plural'] = 'Ajustes previos';
 $string['teachersandstudents'] = '{$a->teachers} y {$a->students}';
 $string['templates'] = 'Plantillas';
@@ -360,8 +342,7 @@ $string['uploadrecords_help'] = 'Las entradas pueden ser cargadas a través de u
 * Cada línea del archivo contiene un registro
 * Cada registro contiene una serie de datos separados por comas (u otros delimitadores)
 * El primer registro contiene una lista de nombres de campos que definen el formato del resto del fichero
-
-El campo enmarcado es una caracter que separa cada campo dentro de  cada registro. Normalmente se puede dejar sin definir.';
+El campo enmarcado es una caracter que separa cada campo dentro de cada registro. Normalmente se puede dejar sin definir.';
 $string['url'] = 'Url';
 $string['usestandard'] = 'Use un ajuste previo';
 $string['usestandard_help'] = 'Para utilizar un ajuste previo disponible en todo el sitio, selecciónelo de la lista. (Si ha agregado un ajuste previo de la lista mediante la función guardar como predeterminado entonces usted tiene la opción de eliminarlo.)';

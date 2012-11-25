@@ -34,9 +34,7 @@ $string['configsecretphrase'] = 'Esta frase secreta é utilizada para produzir u
 $string['contentheader'] = 'Conteúdo';
 $string['displayoptions'] = 'Opções de exibição disponíveis';
 $string['displayselect'] = 'Exibir';
-$string['displayselectexplain'] = 'Escolha o tipo de exibição, infelizmente nem todos os tipos são adequados para todas as URLs.';
-$string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arquivo URL,  determina como a URL será exibida, caso o navegador permita incorporação. As opções podem incluir:
-
+$string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arquivo URL, determina como a URL será exibida, caso o navegador permita incorporação. As opções podem incluir:
 * Automática - A melhor opção de exibição para a URL é automaticamente seleccionada
 * Incorporar - A URL é exibido dentro da página, abaixo da barra de navegação em conjunto com a descrição da URL e todos os blocos
 * Forçar download - O usuário é solicitado a baixar o arquivo da URL
@@ -44,6 +42,7 @@ $string['displayselect_help'] = 'Esta definição, juntamente com o tipo de arqu
 * Em pop-up - A URL é exibida em uma nova janela do navegador sem menus nem barra de endereços
 * No frame - A URL é exibida em um quadro abaixo da barra de navegação e descrição da URL
 * Nova janela - A URL é exibida em uma nova janela do navegador com menus e uma barra de endereços';
+$string['displayselectexplain'] = 'Escolha o tipo de exibição, infelizmente nem todos os tipos são adequados para todas as URLs.';
 $string['externalurl'] = 'URL externa';
 $string['framesize'] = 'Altura do frame';
 $string['invalidstoredurl'] = 'Impossível mostrar este recurso pois a URL é inválida.';

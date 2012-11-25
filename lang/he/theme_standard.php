@@ -27,5 +27,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['choosereadme'] = 'ערכת נושא מאוד בסיסית, לבנה ,עם מספר מיזערי של CSS שהוספו לערכה  בכדי להופכה לשמישה.';
 $string['pluginname'] = 'Standard';
-$string['region-side-post'] = 'ימין ';
+$string['region-side-post'] = 'ימין';
 $string['region-side-pre'] = 'שמאל';

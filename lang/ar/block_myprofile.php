@@ -45,4 +45,4 @@ $string['display_skype'] = 'عرض Skype';
 $string['display_un'] = 'عرض  الاسم';
 $string['display_yahoo'] = 'عرض  Yahoo';
 $string['myprofile_settings'] = 'إعدادات السيرة الذاتية';
-$string['pluginname'] = ' السيرة الذاتية';
+$string['pluginname'] = 'السيرة الذاتية';

@@ -59,9 +59,9 @@ $string['restoredfromdraft'] = 'NOTA: A última tentativa de avaliar esta pessoa
 $string['rubric'] = 'Rubrica';
 $string['rubricmapping'] = 'Regras de mapeamento de pontuação para nota';
 $string['rubricmappingexplained'] = 'A pontuação mínima possível para esta rubrica é <b>{$a->minscore} pontos</b> e será convertida para a nota mínima disponível neste módulo (que é zero a menos que a escala seja usada).
-    A nota máxima <b>{$a->maxscore} pontos</b> será convertida para a nota máxima.<br />
-    Pontuações intermediárias serão convertidas respectivamente e arredondadas para a nota mais próxima disponível.<br />
-    Se uma escala for usada ao invés de uma nota, a pontuação será convertida em elementos da escala como se fossem inteiros consecutivos.';
+A nota máxima <b>{$a->maxscore} pontos</b> será convertida para a nota máxima.<br />
+Pontuações intermediárias serão convertidas respectivamente e arredondadas para a nota mais próxima disponível.<br />
+Se uma escala for usada ao invés de uma nota, a pontuação será convertida em elementos da escala como se fossem inteiros consecutivos.';
 $string['rubricnotcompleted'] = 'Por favor escolha algo para cada critério';
 $string['rubricoptions'] = 'Opções da rubrica';
 $string['rubricstatus'] = 'Estado da rubrica atual';

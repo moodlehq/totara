@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Belépés egy csevegőszobába';
 $string['chat:deletelog'] = 'Csevegésnaplók törlése';
 $string['chat:exportparticipatedsession'] = 'Csevegéseinek exportálása';
 $string['chat:exportsession'] = 'Bármely csevegés exportálása';
+$string['chat:readlog'] = 'Csevegésnaplók elolvasása';
+$string['chat:talk'] = 'Beszélgetés csevegéssel';
 $string['chatintro'] = 'Bevezető szöveg';
 $string['chatname'] = 'A csevegőszoba neve';
-$string['chat:readlog'] = 'Csevegésnaplók elolvasása';
 $string['chatreport'] = 'Csevegések';
-$string['chat:talk'] = 'Beszélgetés csevegéssel';
 $string['chattime'] = 'A következő csevegés időpontja';
 $string['configmethod'] = 'Ajax alapú szokásos csevegés során a kliensprogramok rendszeresen a szerverhez fordulnak frissítésért. Semmilyen beállítást nem igényel és mindenhol működik, de sok csevegő esetén jelentősen megterheli a szervert. Szerverdémon használata során a unix héjszintű elérésére van szükség, az eredmény viszont egy gyors és skálázható csevegési környezet.';
 $string['confignormalupdatemode'] = 'A csevegőszoba frissítéseit megfelelően támogatja a HTTP 1.1 Keep-Alive funkciója, ennek ellenére meglehetősen leterheli a szervert. A frissítések felhasználókhoz való eljuttatására alkalmasabb módszer a Stream használata. A Stream sokkal hatékonyabb (hasonló a chatd módszerhez), de előfordulhat, hogy használatát szervere nem támogatja.';
@@ -80,8 +80,8 @@ $string['modulename_help'] = 'A csevegési modul segítségével a résztvevők 
 $string['modulenameplural'] = 'Csevegések';
 $string['neverdeletemessages'] = 'Az üzenetek soha ne törlődjenek';
 $string['nextsession'] = 'A következő előjegyzett csevegés';
-$string['nochat'] = 'Nincs csevegés';
 $string['no_complete_sessions_found'] = 'Nincsenek befejezett kurzusrészek.';
+$string['nochat'] = 'Nincs csevegés';
 $string['noguests'] = 'A csevegésbe vendégek nem kapcsolódhatnak be';
 $string['nomessages'] = 'Még nincs üzenet';
 $string['nopermissiontoseethechatlog'] = 'A csevegési naplók megtekintéséhez nincs engedélye.';
@@ -121,30 +121,24 @@ $string['updatemethod'] = 'Frissítés módszere';
 $string['updaterate'] = 'Értékelés frissítése:';
 $string['userlist'] = 'Felhasználók felsorolása';
 $string['usingchat'] = 'A csevegés használata';
-$string['usingchat_help'] = '<p>A csevegésre használt modul tartalmaz néhány olyan vonást, amely révén a csevegés valamelyest kellemesebbé tehető.</p>
+$string['usingchat_help'] = 'A csevegésre használt modul tartalmaz néhány olyan vonást, amely révén a csevegés valamelyest kellemesebbé tehető.
 
-<dl>
-<dt><strong>Emotikonok</strong></dt>
-<dd>Bármely érzelmet kifejező kép (emotikon), amelyet a Moodle-ban máshol használhat, itt is begépelhető és megfelelő módon megjeleníthető.
-Például, :-) = <img alt="smiley" src="pix/s/smiley.gif" /> </dd>
-
-<dt><strong>Hivatkozások</strong></dt>
-<dd>Az internetes címek automatikusan hivatkozásokká alakulnak át.</dd>
-
-<dt><strong>Érzelem kifejezése</strong></dt>
-<dd>Érzelem kifejezéséhez használható az "/én" vagy ":" sorkezdet.
+**Emotikonok**
+: Bármely érzelmet kifejező kép (emotikon), amelyet a Moodle-ban máshol használhat, itt is begépelhető és megfelelő módon megjeleníthető.
+Például, :-) 
+**Hivatkozások**
+: Az internetes címek automatikusan hivatkozásokká alakulnak át.
+**Érzelem kifejezése**
+: Érzelem kifejezéséhez használható az "/én" vagy ":" sorkezdet.
 Például ha a felhasználó neve Kati és azt gépeli be, hogy
-":nevet!" vagy "/én nevetek!", akkor a kijelzés mindenki előtt "Kati nevet!" alakban lesz látható.</dd>
-
-<dt><strong>Hangjelzések</strong></dt>
-<dd>Ha valakinek a neve mellett lévő "hangjelző" hivatkozásra kattint,
+":nevet!" vagy "/én nevetek!", akkor a kijelzés mindenki előtt "Kati nevet!" alakban lesz látható.
+**Hangjelzések**
+: Ha valakinek a neve mellett lévő "hangjelző" hivatkozásra kattint,
 az illetőhöz hangjelzést tud küldeni. Ha egyszerre minden embernek szeretne hangjelzést küldeni egy
-csevegés során, gépelje be a "beep all" [hangjelzés mindenkinek] utasítást.</dd>
-
-<dt><strong>HTML</strong></dt>
-<dd>Ha valamelyest járatos a HTML-ben, kódot illeszthet a szövegbe, mellyel képet szúrhat be,
+csevegés során, gépelje be a "beep all" [hangjelzés mindenkinek] utasítást.
+**HTML**
+: Ha valamelyest járatos a HTML-ben, kódot illeszthet a szövegbe, mellyel képet szúrhat be,
 hangot játszhat le és különféle színű és méretű szövegeket
-jeleníthet meg.</dd>
-
-</dl>';
+jeleníthet meg.
+';
 $string['viewreport'] = 'Korábbi csevegések megtekintése';

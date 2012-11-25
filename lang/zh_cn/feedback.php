@@ -48,13 +48,13 @@ $string['cannotunmap'] = '数据库问题，无法取消镜像';
 $string['captcha'] = '验证码';
 $string['captchanotset'] = '验证码未设置。';
 $string['check'] = '多选项 - 多选择';
-$string['checkbox'] = '多选项 - 允许多选（复选框）';
 $string['check_values'] = '可能的回答';
+$string['checkbox'] = '多选项 - 允许多选（复选框）';
 $string['choosefile'] = '选择一个文件';
 $string['chosen_feedback_response'] = '选择反馈答复';
+$string['complete_the_form'] = '回答问题...';
 $string['completed'] = '已完成';
 $string['completed_feedbacks'] = '已提交的答复';
-$string['complete_the_form'] = '回答问题...';
 $string['completionsubmit'] = '提交反馈后显示为已完成';
 $string['configallowfullanonymous'] = '如果设为“是”，那么不需要登录就可以参与反馈活动。这个选项只影响首页的反馈。';
 $string['confirmdeleteentry'] = '您确定要删除此项吗？';
@@ -71,39 +71,36 @@ $string['delete_old_items'] = '删除旧题';
 $string['delete_template'] = '删除模板';
 $string['delete_templates'] = '删除模板...';
 $string['depending'] = '依赖的问题';
-$string['depending_help'] = '依赖性使问题的显示取决于对其它问题的回答。<br />
-<strong>这里有一个使用例子：</strong>
-<br />
-<ul>
-<li>首先创建一条其它问题要依赖的题。</li>
-<li>然后添加一个分页符。</li>
-<li>接着添加一条依赖于上面那道题的题。<br />
-在创建问题表单中的“依赖于问题”列表中选择那道题，并将需要的值填入“依赖值”文本框中。</li>
-</ul>
-<strong>结构应该像下面这样：</strong>
-<ol>
-<li>问题：您有汽车吗？回答：有/没有</li>
-<li>分页符</li>
-<li>问题：您的车是什么颜色的？<br />
-（此题当问题1选择“有”时才显示）</li>
-<li>问题：您为什么没有车？<br />
-（此题当问题1选择“没有”时才显示）</li>
-<li> ……其它问题</li>
-</ol>
+$string['depending_help'] = '依赖性使问题的显示取决于对其它问题的回答。
+**这里有一个使用例子：**
+* 首先创建一条其它问题要依赖的题。
+* 然后添加一个分页符。
+* 接着添加一条依赖于上面那道题的题。
+在创建问题表单中的“依赖于问题”列表中选择那道题，并将需要的值填入“依赖值”文本框中。
+
+**结构应该像下面这样：**
+1. 问题：您有汽车吗？回答：有/没有
+2. 分页符
+3. 问题：您的车是什么颜色的？
+（此题当问题1选择“有”时才显示）
+4. 问题：您为什么没有车？
+（此题当问题1选择“没有”时才显示）
+5. ……其它问题
+
 就是这样。祝您使用愉快！';
 $string['dependitem'] = '依赖的问题';
 $string['dependvalue'] = '依赖值';
 $string['description'] = '描述';
 $string['do_not_analyse_empty_submits'] = '不分析空提交';
+$string['drop_feedback'] = '从此课程移除';
 $string['dropdown'] = '多选项 - 单选（下拉列表）';
+$string['dropdown_values'] = '答卷';
 $string['dropdownlist'] = '多选项 - 单选（下拉列表）';
 $string['dropdownrated'] = '下拉列表（可评分）';
-$string['dropdown_values'] = '答卷';
-$string['drop_feedback'] = '从此课程移除';
 $string['edit_item'] = '编辑问题';
 $string['edit_items'] = '编辑问题';
-$string['emailnotification'] = 'email通知';
 $string['email_notification'] = '发送email通知';
+$string['emailnotification'] = 'email通知';
 $string['emailnotification_help'] = '如果激活，有反馈被提交后，管理员会收到email通知';
 $string['emailteachermail'] = '{$a->username}已经填写反馈：“{$a->feedback}”
 
@@ -115,38 +112,37 @@ $string['emailteachermailhtml'] = '{$a->username}已经填写反馈：<i>“{$a-
 $string['entries_saved'] = '您的回答已被保存。谢谢。';
 $string['export_questions'] = '导出问题';
 $string['export_to_excel'] = '导出到Excel';
-$string['feedbackclose'] = '关闭此反馈时间';
-$string['feedbackcloses'] = '反馈关闭';
 $string['feedback:complete'] = '填写反馈';
 $string['feedback:createprivatetemplate'] = '建立私有模板';
 $string['feedback:createpublictemplate'] = '建立公共模板';
 $string['feedback:deletesubmissions'] = '删除已填完的问卷';
 $string['feedback:deletetemplate'] = '删除模板';
 $string['feedback:edititems'] = '编辑项目';
-$string['feedback_is_not_for_anonymous'] = '此反馈不能匿名参加';
-$string['feedback_is_not_open'] = '此反馈未开放';
 $string['feedback:mapcourse'] = '向全局反馈映射课程';
-$string['feedbackopen'] = '开放此反馈时间';
-$string['feedbackopens'] = '反馈开启';
-$string['feedback_options'] = '反馈选项';
 $string['feedback:receivemail'] = '接收email通知';
 $string['feedback:view'] = '查看反馈活动';
 $string['feedback:viewanalysepage'] = '提交后查看分析页面';
 $string['feedback:viewreports'] = '查看报告';
+$string['feedback_is_not_for_anonymous'] = '此反馈不能匿名参加';
+$string['feedback_is_not_open'] = '此反馈未开放';
+$string['feedback_options'] = '反馈选项';
+$string['feedbackclose'] = '关闭此反馈时间';
+$string['feedbackcloses'] = '反馈关闭';
+$string['feedbackopen'] = '开放此反馈时间';
+$string['feedbackopens'] = '反馈开启';
 $string['file'] = '文件';
 $string['filter_by_course'] = '按课程过滤';
 $string['handling_error'] = '反馈模块动作处理出错';
 $string['hide_no_select_option'] = '不显示“未选择”选项';
 $string['horizontal'] = '水平';
-$string['importfromthisfile'] = '从此文件导入';
 $string['import_questions'] = '导入问题';
 $string['import_successfully'] = '导入成功';
+$string['importfromthisfile'] = '从此文件导入';
 $string['info'] = '信息';
 $string['infotype'] = '信息类型';
 $string['insufficient_responses'] = '问卷数不够';
 $string['insufficient_responses_for_this_group'] = '此组给出的答复数量不足';
 $string['insufficient_responses_help'] = '此小组的回答数量不足。
-
 为了保证反馈的匿名性，至少需要两个以上的回答。';
 $string['item_label'] = '标签';
 $string['item_name'] = '问题';
@@ -168,16 +164,16 @@ $string['mode'] = '模式';
 $string['modulename'] = '反馈';
 $string['modulename_help'] = '反馈模块可以建立自定义的问卷调查';
 $string['modulenameplural'] = '反馈';
-$string['movedown_item'] = '向下移动此题';
 $string['move_here'] = '移动到此';
 $string['move_item'] = '移动此题';
+$string['movedown_item'] = '向下移动此题';
 $string['moveup_item'] = '向上移动此题';
 $string['multichoice'] = '选择题';
+$string['multichoice_values'] = '选项';
 $string['multichoicerated'] = '选择题（可评分）';
 $string['multichoicetype'] = '选择题';
-$string['multichoice_values'] = '选项';
-$string['multiplesubmit'] = '多次提交';
 $string['multiple_submit'] = '多次提交';
+$string['multiplesubmit'] = '多次提交';
 $string['multiplesubmit_help'] = '如果对匿名调查也启用，那么用户就可以无限次提交反馈。';
 $string['name'] = '名称';
 $string['name_required'] = '必须输入名称';
@@ -186,14 +182,14 @@ $string['no_handler'] = '没有动作处理器给';
 $string['no_itemlabel'] = '无标签';
 $string['no_itemname'] = '无项目名';
 $string['no_items_available_yet'] = '还没有已设置的问题';
+$string['no_templates_available_yet'] = '还没有模板';
 $string['non_anonymous'] = '用户姓名会被记录，并和他们的反馈一起显示';
 $string['non_anonymous_entries'] = '非匿名条目';
 $string['non_respondents_students'] = '未答复的学生';
-$string['notavailable'] = '本反馈不可用';
 $string['not_completed_yet'] = '还未完成';
-$string['no_templates_available_yet'] = '还没有模板';
 $string['not_selected'] = '未选择';
 $string['not_started'] = '还未答题';
+$string['notavailable'] = '本反馈不可用';
 $string['numeric'] = '数字题';
 $string['numeric_range_from'] = '范围从';
 $string['numeric_range_to'] = '到';
@@ -203,9 +199,9 @@ $string['oldvalueswillbedeleted'] = '已有的问题和所有用户的答复都�
 $string['only_one_captcha_allowed'] = '反馈中只可以有一个验证码';
 $string['overview'] = '概述';
 $string['page'] = '页面';
+$string['page-mod-feedback-x'] = '任意反馈模块页';
 $string['page_after_submit'] = '提交后页面';
 $string['pagebreak'] = '分页符';
-$string['page-mod-feedback-x'] = '任意反馈模块页';
 $string['parameters_missing'] = '缺少参数';
 $string['picture'] = '图片';
 $string['picture_file_list'] = '图片列表';
@@ -220,10 +216,10 @@ $string['public'] = '公共的';
 $string['question'] = '问题';
 $string['questions'] = '问题';
 $string['radio'] = '多选项 - 单选';
+$string['radio_values'] = '回答';
 $string['radiobutton'] = '多选项 - 单选（单选按钮）';
 $string['radiobutton_rated'] = '单选按钮（评分）';
 $string['radiorated'] = '单选框（可评分）';
-$string['radio_values'] = '回答';
 $string['ready_feedbacks'] = '就绪反馈';
 $string['relateditemsdeleted'] = '所有用户对此问题的答复也都会被删除';
 $string['required'] = '必须回答';
@@ -261,8 +257,8 @@ $string['switch_group'] = '切换组';
 $string['switch_item_to_not_required'] = '切换到：不必须回答';
 $string['switch_item_to_required'] = '切换到：必须回答';
 $string['template'] = '模板';
-$string['templates'] = '模板';
 $string['template_saved'] = '模板已保存';
+$string['templates'] = '模板';
 $string['textarea'] = '问答题';
 $string['textarea_height'] = '行数';
 $string['textarea_width'] = '宽度';

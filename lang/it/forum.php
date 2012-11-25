@@ -38,14 +38,14 @@ $string['allunsubscribe'] = 'Rimuoviti da tutti i forum';
 $string['alreadyfirstpost'] = 'Questo è già il primo intervento della discussione';
 $string['anyfile'] = 'Qualsiasi file';
 $string['attachment'] = 'Allegato';
-$string['attachment_help'] = 'Ad ogni intervento nel forum possono essere allegati uno o più file. Se l\'allegato è una immagine, verrà visualizzata di seguito al testo dell\'intervento. ';
+$string['attachment_help'] = 'Ad ogni intervento nel forum possono essere allegati uno o più file. Se l\'allegato è una immagine, verrà visualizzata di seguito al testo dell\'intervento.';
 $string['attachmentnopost'] = 'Non puoi esportare allegati senza specificare l\'id dell\'intervento';
 $string['attachments'] = 'Allegati';
 $string['blockafter'] = 'Soglia massima interventi';
 $string['blockafter_help'] = 'Il numero massimo di interventi che uno studente può effettuare in un dato intervallo di tempo. Gli utenti con il privilegio mod/forum:postwithoutthrottling non sono influenzati da questa impostazione.';
 $string['blockperiod'] = 'Intervallo di controllo';
-$string['blockperioddisabled'] = 'Nessun intervallo di controllo';
 $string['blockperiod_help'] = 'Nell\'intervallo di tempo stabilito gli utenti non potranno oltrepassare un dato numero di interventi. Gli utenti con il privilegio mod/forum:postwithoutthrottling non sono influenzati da questa impostazione.';
+$string['blockperioddisabled'] = 'Nessun intervallo di controllo';
 $string['blogforum'] = 'Forum standard visualizzato in stile blog';
 $string['bynameondate'] = 'di {$a->name} - {$a->date}';
 $string['cannotadd'] = 'La discussione non può essere aggiunta in questo forum';
@@ -153,9 +153,6 @@ $string['forcessubscribe'] = 'Questo forum è a sottoscrizione obbligatoria';
 $string['forum'] = 'Forum';
 $string['forum:addnews'] = 'Aggiungere news';
 $string['forum:addquestion'] = 'Aggiungi domanda';
-$string['forumauthorhidden'] = 'Autore (nascosto)';
-$string['forumblockingalmosttoomanyposts'] = 'Stai per raggiungere il limite degli interventi permessi. Hai inviato {$a->numposts} interventi negli ultimi {$a->blockperiod} giorni. Il limite è di {$a->blockafter} interventi.';
-$string['forumbodyhidden'] = 'Questo intervento non può essere visualizzato, probabilmente perché non hai ancora effettuato interventi nella discussione oppure non è ancora trascorso il tempo massimo per l\'editing dei messaggi.';
 $string['forum:createattachment'] = 'Creare allegati';
 $string['forum:deleteanypost'] = 'Eliminare tutti gli interventi (sempre)';
 $string['forum:deleteownpost'] = 'Eliminare i propri interventi (entro il limite temporale)';
@@ -163,30 +160,15 @@ $string['forum:editanypost'] = 'Modificare gli interventi';
 $string['forum:exportdiscussion'] = 'Esportare intera discussione';
 $string['forum:exportownpost'] = 'Esportare propri interventi';
 $string['forum:exportpost'] = 'Esportare intervento';
-$string['forumintro'] = 'Introduzione al forum';
 $string['forum:managesubscriptions'] = 'Gestire le sottoscrizioni';
 $string['forum:movediscussions'] = 'Spostare le discussioni';
-$string['forumname'] = 'Nome del forum';
-$string['forumposts'] = 'Interventi nei Forum';
 $string['forum:postwithoutthrottling'] = 'Intervenire nei forum senza soglia interventi';
 $string['forum:rate'] = 'Valutare gli interventi';
 $string['forum:replynews'] = 'Rispondere alle news';
 $string['forum:replypost'] = 'Rispondere agli interventi';
-$string['forums'] = 'Forum';
 $string['forum:splitdiscussions'] = 'Dividere discussioni';
 $string['forum:startdiscussion'] = 'Iniziare una nuova discussione';
-$string['forumsubjecthidden'] = 'Oggetto (nascosto)';
 $string['forum:throttlingapplies'] = 'Applicare controllo soglia';
-$string['forumtracked'] = 'Gli interventi non letti sono tracciati';
-$string['forumtrackednot'] = 'Gli interventi non letti non sono tracciati';
-$string['forumtype'] = 'Tipo di forum';
-$string['forumtype_help'] = 'Sono disponibili 5 tipi di forum:
-
-* Forum monotematico - Forum costituito da un solo argomento di discussione, tutti i partecipanti possono intervenire
-* Ciascuno avvia una sola discussione - Ogni partecipante può avviere un\'unica discussione su un argomento e gli altri partecipanti possono intervenire.
-* Domande e Risposte* - Il forum Domande e Risposte obbliga i partecipanti ad intervenire prima di poter visualizzare gli interventi degli altri.
-* Forum standard visualizzato in stile blog - Un forum aperto dove chiunque può avviare discussioni e visualizzato con link "Discuti questo argomento"
-* Forum standard per uso generale - Forum aperto dove tutti i partecipanti in qualsiasi momento possono avviare discussioni';
 $string['forum:viewallratings'] = 'Visualizzare voti grezzi dati da ciascuno';
 $string['forum:viewanyrating'] = 'Visualizzare voti totali ricevuti da ciascuno';
 $string['forum:viewdiscussion'] = 'Visualizzare discussioni';
@@ -194,6 +176,23 @@ $string['forum:viewhiddentimedposts'] = 'Visualizzare gli interventi con orario 
 $string['forum:viewqandawithoutposting'] = 'Visualizzare sempre gli interventi di tipo "Domande e Risposte"';
 $string['forum:viewrating'] = 'Visualizzare voti totali ricevuti';
 $string['forum:viewsubscribers'] = 'Visualizzare i sottoscrittori';
+$string['forumauthorhidden'] = 'Autore (nascosto)';
+$string['forumblockingalmosttoomanyposts'] = 'Stai per raggiungere il limite degli interventi permessi. Hai inviato {$a->numposts} interventi negli ultimi {$a->blockperiod} giorni. Il limite è di {$a->blockafter} interventi.';
+$string['forumbodyhidden'] = 'Questo intervento non può essere visualizzato, probabilmente perché non hai ancora effettuato interventi nella discussione oppure non è ancora trascorso il tempo massimo per l\'editing dei messaggi.';
+$string['forumintro'] = 'Introduzione al forum';
+$string['forumname'] = 'Nome del forum';
+$string['forumposts'] = 'Interventi nei Forum';
+$string['forums'] = 'Forum';
+$string['forumsubjecthidden'] = 'Oggetto (nascosto)';
+$string['forumtracked'] = 'Gli interventi non letti sono tracciati';
+$string['forumtrackednot'] = 'Gli interventi non letti non sono tracciati';
+$string['forumtype'] = 'Tipo di forum';
+$string['forumtype_help'] = 'Sono disponibili 5 tipi di forum:
+* Forum monotematico - Forum costituito da un solo argomento di discussione, tutti i partecipanti possono intervenire
+* Ciascuno avvia una sola discussione - Ogni partecipante può avviere un\'unica discussione su un argomento e gli altri partecipanti possono intervenire.
+* Domande e Risposte* - Il forum Domande e Risposte obbliga i partecipanti ad intervenire prima di poter visualizzare gli interventi degli altri.
+* Forum standard visualizzato in stile blog - Un forum aperto dove chiunque può avviare discussioni e visualizzato con link "Discuti questo argomento"
+* Forum standard per uso generale - Forum aperto dove tutti i partecipanti in qualsiasi momento possono avviare discussioni';
 $string['generalforum'] = 'Forum standard per uso generale';
 $string['generalforums'] = 'Forum per uso generale';
 $string['inforum'] = 'in {$a}';
@@ -221,7 +220,7 @@ $string['markunreadbutton'] = 'Segna come <br/> non letto';
 $string['maxattachments'] = 'Numero massimo allegati';
 $string['maxattachments_help'] = 'L\'impostazione permette di definire il numero massimo di file allegabili in ciascun intervento nel forum.';
 $string['maxattachmentsize'] = 'Dimensione massima allegati';
-$string['maxattachmentsize_help'] = 'L\'impostazione  limita la dimensione massima dei file  allegabili ai messaggi del forum.';
+$string['maxattachmentsize_help'] = 'L\'impostazione limita la dimensione massima dei file allegabili ai messaggi del forum.';
 $string['maxtimehaspassed'] = 'Spiacente, il tempo massimo concesso per modificare questo intervento ({$a}) è trascorso!';
 $string['message'] = 'Messaggio';
 $string['messageprovider:digests'] = 'Raccolte forum sottoscritte';
@@ -256,7 +255,7 @@ $string['nopermissiontosubscribe'] = 'Non hai il privilegio per visualizzare i s
 $string['nopermissiontoview'] = 'Non hai il privilegio per visualizzare questo intervento';
 $string['nopostforum'] = 'Spiacente, non puoi visualizzare questo forum';
 $string['noposts'] = 'Nessun intervento';
-$string['nopostscontaining'] = 'Non è stato trovato nessun intervento contenente \'{$a}\' ';
+$string['nopostscontaining'] = 'Non è stato trovato nessun intervento contenente \'{$a}\'';
 $string['nopostsmadebyuser'] = '{$a} non ha effettuato nessun intervento';
 $string['nopostsmadebyyou'] = 'Non ha effettuato nessun intervento';
 $string['noquestions'] = 'Al momento il forum non ha sottoscrittori';
@@ -364,15 +363,13 @@ $string['subscribersto'] = 'Sottoscrittori del forum \'{$a}\'';
 $string['subscribestart'] = 'Sottoscrivo il forum per ricevere copia degli interventi via email';
 $string['subscribestop'] = 'Non sottoscrivo il forum, non ricevero copie degli interventi via email';
 $string['subscription'] = 'Sottoscrizione';
+$string['subscription_help'] = 'Sottoscrivendo un forum riceverai copie degli interventi nell\'email. In genere è possibile scegliere se sottoscrivere un forum, in alcuni casi tuttavia la sottoscrizione è obbligatoria.';
 $string['subscriptionauto'] = 'Automatica';
 $string['subscriptiondisabled'] = 'Disabilitata';
 $string['subscriptionforced'] = 'Obbligatoria';
-$string['subscription_help'] = 'Sottoscrivendo un forum riceverai copie degli interventi nell\'email. In genere è possibile scegliere se sottoscrivere un forum, in alcuni casi tuttavia la sottoscrizione è obbligatoria.';
 $string['subscriptionmode'] = 'Modalità sottoscrizione';
 $string['subscriptionmode_help'] = 'La sottoscrizione di un forum consente di ricevere copie degli interventi via email
-
 Sono disponibili 4 modalità di sottoscrizione:
-
 * Facoltativa - I partecipanti possono scegliere se sottoscrivere il forum o meno
 * Obbligatoria - Tutti i partecipanti sottoscrivono il forum e non possono rimuovere la propria sottoscrizione
 * Automatica - Tutti i partecipanti sottoscrivono il forum ma possono rimuovere la propria sottoscrizione se lo desiderano
@@ -389,9 +386,7 @@ $string['trackingon'] = 'Abilitato';
 $string['trackingoptional'] = 'A scelta';
 $string['trackingtype'] = 'Evidenzia messaggi non letti';
 $string['trackingtype_help'] = 'L\'impostazione permette di scegliere se abilitare l\'evidenziamento dei messaggi letti e non letti.
-
 Le impostazioni possibili sono:
-
 * A scelta: i partecipanti possono attivare l\'evidenziamento
 * Abilitato: l\'evidenziamento è sempre attivo
 * Disabilitato: l\'evidenziamento non è mai attivo';

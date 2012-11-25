@@ -42,24 +42,20 @@ $string['attachment_help'] = 'Opcionalmente, pode anexar um ou mais arquivos par
 $string['attachmentnopost'] = 'Você não pode exportar anexos sem o ID do post';
 $string['attachments'] = 'Anexos';
 $string['blockafter'] = 'Limite de mensagens para bloqueio';
-$string['blockafter_help'] = '<p>O conceito de limite do envio de mensagens é muito simples.
-Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.</p>
-
-<p>Configurando o limite para enviar avisos como 0 (zero) estes avisos são desabilitados.
+$string['blockafter_help'] = 'O conceito de limite do envio de mensagens é muito simples.
+Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.
+Configurando o limite para enviar avisos como 0 (zero) estes avisos são desabilitados.
 Configurando o limite de mensagens enviadas como 0 (zero) o bloqueio é desabilitado.
-Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.</p>
-
-<p> Nenhuma destas configuraços afetará o envio de mensagens pelos professores</p>';
+Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.
+Nenhuma destas configuraços afetará o envio de mensagens pelos professores';
 $string['blockperiod'] = 'Duração do bloqueio';
-$string['blockperioddisabled'] = 'Não bloquear';
-$string['blockperiod_help'] = '<p>O conceito de limite do envio de mensagens é muito simples.
-Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.</p>
-
-<p>Configurando o limite para enviar avisos como 0 (zero) estes avisos são desabilitados.
+$string['blockperiod_help'] = 'O conceito de limite do envio de mensagens é muito simples.
+Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.
+Configurando o limite para enviar avisos como 0 (zero) estes avisos são desabilitados.
 Configurando o limite de mensagens enviadas como 0 (zero) o bloqueio é desabilitado.
-Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.</p>
-
-<p> Nenhuma destas configuraços afetará o envio de mensagens pelos professores</p>';
+Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.
+Nenhuma destas configuraços afetará o envio de mensagens pelos professores';
+$string['blockperioddisabled'] = 'Não bloquear';
 $string['blogforum'] = 'Fórum padrão exibido em um formato de blog';
 $string['bynameondate'] = 'por {$a->name} - {$a->date}';
 $string['cannotadd'] = 'Não é possível adicionar a discussão a este fórum.';
@@ -85,7 +81,7 @@ $string['cannotpurgecachedrss'] = 'Não foi possível limpar feeds RSS em cache 
 $string['cannotremovesubscriber'] = 'Não foi possível remover assinante com id {$a} deste fórum!';
 $string['cannotreply'] = 'Não se pode responder a esta menssagem';
 $string['cannotsplit'] = 'Os debates a este fórum não podem ser divididos';
-$string['cannotsubscribe'] = 'Lamento, mas você deve ser membro do grupo para subscrevê-lo. ';
+$string['cannotsubscribe'] = 'Lamento, mas você deve ser membro do grupo para subscrevê-lo.';
 $string['cannottrack'] = 'Não é possível parar de rastrear este fórum.';
 $string['cannotunsubscribe'] = 'Não foi possível desligar sua assinatura deste fórum';
 $string['cannotupdatepost'] = 'Você não pode atualizar esta mensagem.';
@@ -143,21 +139,17 @@ $string['discussionsstartedbyrecent'] = 'Discussões iniciadas recentemente por 
 $string['discussionsstartedbyuserincourse'] = 'Os debates começaram por {$a->fullname} em {$a->coursename}';
 $string['discussthistopic'] = 'Discutir este tópico';
 $string['displayend'] = 'Fim da visualização';
-$string['displayend_help'] = '<p>Você pode escolher se seu fórum é acessível a partir de uma determinada data, expira depois
-de um determinado período ou é visualizado em um determinado período.</p>
-
-<p>Desmarque a opção "Desabilitar" para ativar a exibição da data inicial e/ou final.</p>
-
-<p>Note que os usuários com poderes de Administrador verão as mensagens antes da data de publicação e depois da data de expiração.</p>';
+$string['displayend_help'] = 'Você pode escolher se seu fórum é acessível a partir de uma determinada data, expira depois
+de um determinado período ou é visualizado em um determinado período.
+Desmarque a opção "Desabilitar" para ativar a exibição da data inicial e/ou final.
+Note que os usuários com poderes de Administrador verão as mensagens antes da data de publicação e depois da data de expiração.';
 $string['displaymode'] = 'Modo de visualização';
 $string['displayperiod'] = 'Período de exibição';
 $string['displaystart'] = 'Início da visualização';
-$string['displaystart_help'] = '<p>Você pode escolher se seu fórum é acessível a partir de uma determinada data, expira depois
-de um determinado período ou é visualizado em um determinado período.</p>
-
-<p>Desmarque a opção "Desabilitar" para ativar a exibição da data inicial e/ou final.</p>
-
-<p>Note que os usuários com poderes de Administrador verão as mensagens antes da data de publicação e depois da data de expiração.</p>';
+$string['displaystart_help'] = 'Você pode escolher se seu fórum é acessível a partir de uma determinada data, expira depois
+de um determinado período ou é visualizado em um determinado período.
+Desmarque a opção "Desabilitar" para ativar a exibição da data inicial e/ou final.
+Note que os usuários com poderes de Administrador verão as mensagens antes da data de publicação e depois da data de expiração.';
 $string['eachuserforum'] = 'Cada usuário inicia apenas UM NOVO tópico';
 $string['edit'] = 'Editar';
 $string['editedby'] = 'Editado por {$a->name} - {$a->date}';
@@ -177,9 +169,6 @@ $string['forcessubscribe'] = 'Todos os usuários deste fórum são assinantes';
 $string['forum'] = 'Fórum';
 $string['forum:addnews'] = 'Acrescentar notícia';
 $string['forum:addquestion'] = 'Adicionar questão';
-$string['forumauthorhidden'] = 'Autor (oculto)';
-$string['forumblockingalmosttoomanyposts'] = 'Você está atingindo o limite máximo de mensagens. Você publicou {$a->numposts} vezes nos últimos {$a->blockperiod} e o limite é de {$a->blockafter} mensagens.';
-$string['forumbodyhidden'] = 'Você não pode ver esta mensagem provavelmente porque ainda não publicou nada nesta discussão.';
 $string['forum:createattachment'] = 'Criar anexos';
 $string['forum:deleteanypost'] = 'Cancelar todas as mensagens (sempre)';
 $string['forum:deleteownpost'] = 'Cancelar as próprias mensagens (com limite de tempo)';
@@ -187,32 +176,15 @@ $string['forum:editanypost'] = 'Editar qualquer mensagem';
 $string['forum:exportdiscussion'] = 'Exportar todo o debate';
 $string['forum:exportownpost'] = 'Exportar a própria mensagem';
 $string['forum:exportpost'] = 'Exportar mensagem';
-$string['forumintro'] = 'Introdução ao Fórum';
 $string['forum:managesubscriptions'] = 'Gerenciar assinaturas';
 $string['forum:movediscussions'] = 'Mover discussões';
-$string['forumname'] = 'Nome do Fórum';
-$string['forumposts'] = 'Mensagens do fórum';
 $string['forum:postwithoutthrottling'] = 'Isento de limite de mensagem';
 $string['forum:rate'] = 'Avaliar mensagens';
 $string['forum:replynews'] = 'Responder às notícias';
 $string['forum:replypost'] = 'Responder às mensagens';
-$string['forums'] = 'Fóruns';
 $string['forum:splitdiscussions'] = 'Separar discussões';
 $string['forum:startdiscussion'] = 'Iniciar novas discussões';
-$string['forumsubjecthidden'] = 'Assunto (oculto)';
 $string['forum:throttlingapplies'] = 'Controle de fluxo de banda é aplicável';
-$string['forumtracked'] = 'As mensagens não lidas são evidenciadas';
-$string['forumtrackednot'] = 'As mensagens não lidas não são evidenciadas';
-$string['forumtype'] = 'Tipo de Fórum';
-$string['forumtype_help'] = '<P>Os fóruns podem ter as seguintes características:</p>
-
-<P><B>Discussão simples</B> - é um único tópico em uma única página. Normalmente é usado para organizar discussões breves com foco em um tema preciso.</p>
-
-<P><B>Fórum geral</B> - é um  fórum aberto, onde todos os participantes podem iniciar um novo tópico de discussão quando quiserem.</p>
-
-<P><B>Cada usuário inicia apenas UM NOVO tópico</B> - cada participante pode abrir apenas um novo tópico de discussão, mas todos podem responder livremente as mensagens, sem limites de quantidades. Este formato é usado, por exemplo, nas atividades em que cada participante apresenta um tema a ser discutido e atua como moderador da discussão deste tema.</P>
-
-<p><b>Fórum Perguntas e Respostas</b> - neste fórum um estudante pode ler as mensagens de outros sómente após a publicação de sua mensagem. Depois disto pode também responder às mensagens do grupo. isto permite que a primeira mensagem de cada estudante seja original e independente.</p>';
 $string['forum:viewallratings'] = 'Ver todas as qualificações emitidas pelos usuários';
 $string['forum:viewanyrating'] = 'Ver todas as avaliações de todos os alunos';
 $string['forum:viewdiscussion'] = 'Ver discussões';
@@ -220,6 +192,22 @@ $string['forum:viewhiddentimedposts'] = 'Ver mensagens escondidas';
 $string['forum:viewqandawithoutposting'] = 'Ver sempre mensagens Q e A';
 $string['forum:viewrating'] = 'Ver as suas avaliações';
 $string['forum:viewsubscribers'] = 'Ver assinantes';
+$string['forumauthorhidden'] = 'Autor (oculto)';
+$string['forumblockingalmosttoomanyposts'] = 'Você está atingindo o limite máximo de mensagens. Você publicou {$a->numposts} vezes nos últimos {$a->blockperiod} e o limite é de {$a->blockafter} mensagens.';
+$string['forumbodyhidden'] = 'Você não pode ver esta mensagem provavelmente porque ainda não publicou nada nesta discussão.';
+$string['forumintro'] = 'Introdução ao Fórum';
+$string['forumname'] = 'Nome do Fórum';
+$string['forumposts'] = 'Mensagens do fórum';
+$string['forums'] = 'Fóruns';
+$string['forumsubjecthidden'] = 'Assunto (oculto)';
+$string['forumtracked'] = 'As mensagens não lidas são evidenciadas';
+$string['forumtrackednot'] = 'As mensagens não lidas não são evidenciadas';
+$string['forumtype'] = 'Tipo de Fórum';
+$string['forumtype_help'] = 'Os fóruns podem ter as seguintes características:
+**Discussão simples** - é um único tópico em uma única página. Normalmente é usado para organizar discussões breves com foco em um tema preciso.
+**Fórum geral** - é um fórum aberto, onde todos os participantes podem iniciar um novo tópico de discussão quando quiserem.
+**Cada usuário inicia apenas UM NOVO tópico** - cada participante pode abrir apenas um novo tópico de discussão, mas todos podem responder livremente as mensagens, sem limites de quantidades. Este formato é usado, por exemplo, nas atividades em que cada participante apresenta um tema a ser discutido e atua como moderador da discussão deste tema.
+**Fórum Perguntas e Respostas** - neste fórum um estudante pode ler as mensagens de outros sómente após a publicação de sua mensagem. Depois disto pode também responder às mensagens do grupo. isto permite que a primeira mensagem de cada estudante seja original e independente.';
 $string['generalforum'] = 'Fórum geral';
 $string['generalforums'] = 'Fóruns gerais';
 $string['inforum'] = 'em {$a}';
@@ -247,9 +235,8 @@ $string['markunreadbutton'] = 'Marcar como<br />não lida';
 $string['maxattachments'] = 'Número máximo de arquivos anexados';
 $string['maxattachments_help'] = 'Este ajuste determina p número máximo de arquivos que se podem anexar a uma mensagem do fórum';
 $string['maxattachmentsize'] = 'Tamanho máximo do anexo';
-$string['maxattachmentsize_help'] = '<P>É possível definir a dimensão máxima dos anexos das mensagens do fórum.</p>
-
-<P>Os arquivos com dimensão superior àquela definida não serão transferidos ao servidor. Uma mensagem de erro será visualizada.</p>';
+$string['maxattachmentsize_help'] = 'É possível definir a dimensão máxima dos anexos das mensagens do fórum.
+Os arquivos com dimensão superior àquela definida não serão transferidos ao servidor. Uma mensagem de erro será visualizada.';
 $string['maxtimehaspassed'] = 'Sinto muito, mas o prazo para editar esta mensagem ({$a})terminou!';
 $string['message'] = 'Mensagem';
 $string['messageprovider:digests'] = 'Compilação de fóruns assinados';
@@ -260,19 +247,15 @@ $string['modeflatoldestfirst'] = 'Mostrar respostas começando pela mais antiga'
 $string['modenested'] = 'Mostrar respostas aninhadas';
 $string['modethreaded'] = 'Listar respostas';
 $string['modulename'] = 'Fórum';
-$string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/forum/icon.gif" />&nbsp;<b>Fóruns</b></p>
-<div class="indent">
-Esta atividade de discussão é importantíssima. Os Fóruns tem diversos tipos de estrutura e podem incluir a avaliação recíproca de cada mensagem. As mensagens são visualizadas em diversos formatos e podem incluir anexos. Os participantes do fórum tem a opção de receber cópias das novas mensagens via email (assinatura) e os professores, de enviar mensagens ao fórum com cópias via email a todos os participantes.
-</div>';
+$string['modulename_help'] = 'Esta atividade de discussão é importantíssima. Os Fóruns tem diversos tipos de estrutura e podem incluir a avaliação recíproca de cada mensagem. As mensagens são visualizadas em diversos formatos e podem incluir anexos. Os participantes do fórum tem a opção de receber cópias das novas mensagens via email (assinatura) e os professores, de enviar mensagens ao fórum com cópias via email a todos os participantes.';
 $string['modulenameplural'] = 'Fóruns';
 $string['more'] = 'mais';
 $string['movedmarker'] = '(Movida)';
 $string['movethisdiscussionto'] = 'Transfira esta discussão para ...';
 $string['mustprovidediscussionorpost'] = 'Você deve propiciar uma identificação de discussão ou de mensagem para exportar.';
 $string['namenews'] = 'Fórum de notícias';
-$string['namenews_help'] = '<p>O fórum de notícias é um fórum especial que é automaticamente criado para cada curso e para a página principal do site e é um espaço para anúncios gerais. Só é possível ter um único fórum de notícias por curso.</p>
-
-<p>O bloco "Últimas Notícias" mostra as discussões mais recentes deste fórum especial (mesmo que se mude o nome dele). Por esta razão o fórum será recriado automaticamente pelo Moodle se o bloco Últimas Notícias está sendo usado.</p>';
+$string['namenews_help'] = 'O fórum de notícias é um fórum especial que é automaticamente criado para cada curso e para a página principal do site e é um espaço para anúncios gerais. Só é possível ter um único fórum de notícias por curso.
+O bloco "Últimas Notícias" mostra as discussões mais recentes deste fórum especial (mesmo que se mude o nome dele). Por esta razão o fórum será recriado automaticamente pelo Moodle se o bloco Últimas Notícias está sendo usado.';
 $string['namesocial'] = 'Fórum social';
 $string['nameteacher'] = 'Fórum dos professores';
 $string['newforumposts'] = 'Novas mensagens no fórum';
@@ -359,21 +342,16 @@ $string['resetforumsall'] = 'Excluir todas as mensagens';
 $string['resetsubscriptions'] = 'Excluir todas as assinaturas';
 $string['resettrackprefs'] = 'Excluir todas as preferências de rastreamento dos fóruns';
 $string['rssarticles'] = 'Número de artígos recientes RSS';
-$string['rssarticles_help'] = '<P>Esta configuração permite a escolha do número de artigos a serem incluídos no alimentador RSS.</p>
-
-<P>Um número entre 5 e 20 é adequado à maior parte dos fóruns.  Aumente este valor nos fóruns em que a atividade é frequente.</p>';
+$string['rssarticles_help'] = 'Esta configuração permite a escolha do número de artigos a serem incluídos no alimentador RSS.
+Um número entre 5 e 20 é adequado à maior parte dos fóruns. Aumente este valor nos fóruns em que a atividade é frequente.';
 $string['rsssubscriberssdiscussions'] = 'RSS feed das discussões';
 $string['rsssubscriberssposts'] = 'RSS feed dos posts';
 $string['rsstype'] = 'RSS feed desta atividade';
-$string['rsstype_help'] = '<P>Esta opção configura a ativação de alimentadores RSS no fórum.</p>
+$string['rsstype_help'] = 'Esta opção configura a ativação de alimentadores RSS no fórum.
+É possível escolher entre dois tipos de alimentadores RSS:
 
-<P>É possível escolher entre dois tipos de alimentadores RSS:</p>
-
-<UL>
-<LI><B>Tópicos:</B> Os alimentadores RSS incluirão apenas a mensagem inicial dos novos tópicos de discussão do fórum.</li>
-
-<LI><B>Mensagens:</B> Os alimentadores RSS incluirão todas as mensagens do fórum.</li>
-</UL>';
+\* **|Tópicos:** Os alimentadores RSS incluirão apenas a mensagem inicial dos novos tópicos de discussão do fórum.
+\* **|Mensagens:** Os alimentadores RSS incluirão todas as mensagens do fórum.';
 $string['search'] = 'Buscar';
 $string['searchdatefrom'] = 'As mensagens devem ser mais recentes que esta';
 $string['searchdateto'] = 'As mensagens devem ser mais antigas que esta';
@@ -409,32 +387,16 @@ $string['subscription'] = 'Assinatura';
 $string['subscriptionauto'] = 'Assinatura automática';
 $string['subscriptiondisabled'] = 'Assinatura desabilitada';
 $string['subscriptionforced'] = 'Assinatura forçada';
-$string['subscription_help'] = '<P>Um assinante é um usuário que recebe cópias de todas as mensagens de um fórum via email.
-Estas mensagens são enviadas via email minutos após a redação no fórum.</p>
-
-<P> Um fórum pode ser configurado para enviar cópias das mensagens via email a todos os participantes do curso. Este é o caso do fórum Ultimas Novidades. O envio de mensagens a todos os participantes é aconselhável nos fóruns de avisos organizativos e no início dos cursos, para que todos se familiarizem com esta possibilidade.</p>
-
-<P>Quando o envio de mensagens não é obrigatório os participantes podem escolher se querem ou não receber cópias via email.</p>
-
-<P>Para que um participante seja assinante de um fórum específico, deve clicar a frase "Receber as mensagens deste fórum via email", no início daquele fórum. Para cancelar o recebimento, uma vez que alguém é assinante, deve clicar a frase Suspender o recebimento de mensagens deste fórum via email.</p>
-
-<p>Os participantes podem, ainda, escolher em suas páginas de edição de perfil, se querem que a assinatura seja automático nos fóruns aos quais este participante envia mensagens.</p>';
 $string['subscriptionmode'] = 'Modo de assinatura';
-$string['subscriptionmode_help'] = '<P>Um assinante é um usuário que recebe cópias de todas as mensagens de um fórum via email.
-Estas mensagens são enviadas via email minutos após a redação no fórum.</p>
+$string['subscriptionmode_help'] = 'Um assinante é um usuário que recebe cópias de todas as mensagens de um fórum via email.
+Estas mensagens são enviadas via email minutos após a redação no fórum.
+Um fórum pode ser configurado para enviar cópias das mensagens via email a todos os participantes do curso. Este é o caso do fórum Ultimas Novidades. O envio de mensagens a todos os participantes é aconselhável nos fóruns de avisos organizativos e no início dos cursos, para que todos se familiarizem com esta possibilidade.
+Quando o envio de mensagens não é obrigatório os participantes podem escolher se querem ou não receber cópias via email.
+Para que um participante seja assinante de um fórum específico, deve clicar a frase Receber as mensagens deste fórum via email, no início daquele fórum. Para cancelar o recebimento, uma vez que alguém é assinante, deve clicar a frase Suspender o recebimento de mensagens deste fórum via email.
+Os participantes podem, ainda, escolher em suas páginas de edição de perfil, se querem que a assinatura seja automática, nos fóruns aos quais este participante envia mensagens.
+Se você escolher a opção Sim, inicialmente, os usuários serão inscritos inicialmente mas podem cancelar a assinatura. Se você escolher "Sim, sempre" a assinatura não poderá ser cancelada.
 
-<P> Um fórum pode ser configurado para enviar cópias das mensagens via email a todos os participantes do curso. Este é o caso do fórum Ultimas Novidades. O envio de mensagens a todos os participantes é aconselhável nos fóruns de avisos organizativos e no início dos cursos, para que todos se familiarizem com esta possibilidade.</p>
-
-<P>Quando o envio de mensagens não é obrigatório os participantes podem escolher se querem ou não receber cópias via email.</p>
-
-<P>Para que um participante seja assinante de um fórum específico, deve clicar a frase Receber as mensagens deste fórum via email, no início daquele fórum. Para cancelar o recebimento, uma vez que alguém é assinante, deve clicar a frase Suspender o recebimento de mensagens deste fórum via email.</p>
-
-<p>Os participantes podem, ainda, escolher em suas páginas de edição de perfil, se querem que a assinatura seja automática, nos fóruns aos quais este participante envia mensagens.</p>
-
-<p>Se você escolher a opção Sim, inicialmente, os usuários serão inscritos inicialmente mas podem cancelar a assinatura. Se você escolher "Sim, sempre" a assinatura não poderá ser cancelada.
-</p>
-
-<p>Atenção: se você modificar a opção de Sim, inicialmente, para Não em um fórum ativo, isto não cancela a assinatura de quem já está inscrito. Afeta apenas os novos usuários. A mesma regra se aplica à operação inversa.</p>';
+Atenção: se você modificar a opção de Sim, inicialmente, para Não em um fórum ativo, isto não cancela a assinatura de quem já está inscrito. Afeta apenas os novos usuários. A mesma regra se aplica à operação inversa.';
 $string['subscriptionoptional'] = 'Assinatura opcional';
 $string['subscriptions'] = 'Assinaturas';
 $string['thisforumisthrottled'] = 'Neste fórum o número de mensagens que você pode publicar é limitado a {$a->blockafter} mensagens no período de {$a->blockperiod}';
@@ -446,19 +408,13 @@ $string['trackingoff'] = 'Desativar';
 $string['trackingon'] = 'Ativar';
 $string['trackingoptional'] = 'Opcional';
 $string['trackingtype'] = 'Monitorar a leitura deste fórum?';
-$string['trackingtype_help'] = '<p>Se a opção \'monitorar leitura\' dos fóruns estiver ativada, os usuários podem monitorar as mensagens lidas e não-lidas em fóruns e discussões. O moderador pode escolher se forçar um tipo de monitoramento no fórum.
-</p>
+$string['trackingtype_help'] = 'Se a opção \'monitorar leitura\' dos fóruns estiver ativada, os usuários podem monitorar as mensagens lidas e não-lidas em fóruns e discussões. O moderador pode escolher se forçar um tipo de monitoramento no fórum.
 
-<p>Existem três escolhas para essa configuração:</p>
-<ul>
-<li> Opcional [padrão]: O estudante pode escolher se monitorar ou não
-o fórum a seu critério.</li>
-
-<li>Ativar: Monitoramento sempre ativo.</li>
-
-<li>Desativar: Monitoramento sempre desativado.</li>
-
-</ul>';
+Existem três escolhas para essa configuração:
+* Opcional [padrão]: O estudante pode escolher se monitorar ou não
+o fórum a seu critério.
+* Ativar: Monitoramento sempre ativo.
+* Desativar: Monitoramento sempre desativado.';
 $string['unread'] = 'Não lida';
 $string['unreadposts'] = 'Mensagens não lidas';
 $string['unreadpostsnumber'] = '{$a} mensagens não lidas';
@@ -473,14 +429,12 @@ $string['unsubscribeshort'] = 'Cancelar assinatura';
 $string['usermarksread'] = 'Marcar como lido manualmente';
 $string['viewalldiscussions'] = 'Ver todas as discussões';
 $string['warnafter'] = 'Limite de mensagem para aviso';
-$string['warnafter_help'] = '<p>O conceito de limite do envio de mensagens é muito simples.
-Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.</p>
-
-<p>Configurando o limite para enviar avisos como 0 (zero) estes avisos são desabilitados.
+$string['warnafter_help'] = 'O conceito de limite do envio de mensagens é muito simples.
+Os usuários serão impedidos de enviar mensagens depois de atingir um número de mensagens enviadas num dado período. Eles receberão avisos quando se aproximarem deste limite.
+Configurando o limite para enviar avisos como 0 (zero) estes avisos são desabilitados.
 Configurando o limite de mensagens enviadas como 0 (zero) o bloqueio é desabilitado.
-Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.</p>
-
-<p> Nenhuma destas configuraços afetará o envio de mensagens pelos professores</p>';
+Se o bloqueio estiver desabilitado, os avisos serão automaticamente desativados.
+Nenhuma destas configuraços afetará o envio de mensagens pelos professores';
 $string['warnformorepost'] = 'Atenção! Existe mais do que uma discussão neste fórum - usando a mais recente';
 $string['yournewquestion'] = 'A sua nova pergunta';
 $string['yournewtopic'] = 'Novo tópico de discussão';

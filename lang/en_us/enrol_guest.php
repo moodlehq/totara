@@ -25,6 +25,5 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname_desc'] = 'Guest access plugin is only granting temporary access to courses, it is not actually enrolling users.
-';
+$string['pluginname_desc'] = 'Guest access plugin is only granting temporary access to courses, it is not actually enrolling users.';
 $string['status_help'] = 'This setting determines whether a user can access the course as a guest, without being required to enroll.';

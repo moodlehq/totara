@@ -27,18 +27,16 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['admindirerror'] = 'Das angegebene Admin-Verzeichnis ist falsch.';
 $string['admindirname'] = 'Admin-Verzeichnis';
-$string['admindirsetting'] = 'Viele Webhosts benutzen das Verzeichnis /admin als Zugang zu Einstellungen oder Werkzeugen. Leider kommt es in solchen Fällen zu Konflikten mit dem standardmäßigen Moodle-Verzeichnis "admin". <br /><br />Sie können das Moodle-Verzeichnis "admin" in Ihrer Installation umbenennen und den geänderten Namen (z.B. "moodleadmin") hier angeben, um damit alle Links zur Moodle-Administration automatisch anzupassen.
-';
+$string['admindirsetting'] = 'Viele Webhosts benutzen das Verzeichnis /admin als Zugang zu Einstellungen oder Werkzeugen. Leider kommt es in solchen Fällen zu Konflikten mit dem standardmäßigen Moodle-Verzeichnis "admin". <br /><br />Sie können das Moodle-Verzeichnis "admin" in Ihrer Installation umbenennen und den geänderten Namen (z.B. "moodleadmin") hier angeben, um damit alle Links zur Moodle-Administration automatisch anzupassen.';
 $string['admindirsettinghead'] = 'Admin-Verzeichnis wird konfiguriert ...';
-$string['admindirsettingsub'] = 'Viele Webhosts benutzen das Verzeichnis /admin als Zugang zu Einstellungen oder Werkzeugen. Leider kommt es in solchen Fällen zu Konflikten mit dem standardmäßigen Moodle-Verzeichnis "admin". <br /><br />Sie können das Moodle-Verzeichnis "admin" in Ihrer Installation umbenennen und den geänderten Namen (z.B. "moodleadmin") hier angeben, um damit alle Links zur Moodle-Administration automatisch anzupassen.
-';
+$string['admindirsettingsub'] = 'Viele Webhosts benutzen das Verzeichnis /admin als Zugang zu Einstellungen oder Werkzeugen. Leider kommt es in solchen Fällen zu Konflikten mit dem standardmäßigen Moodle-Verzeichnis "admin". <br /><br />Sie können das Moodle-Verzeichnis "admin" in Ihrer Installation umbenennen und den geänderten Namen (z.B. "moodleadmin") hier angeben, um damit alle Links zur Moodle-Administration automatisch anzupassen.';
 $string['availablelangs'] = 'Verfügbare Sprachpakete';
 $string['caution'] = 'Warnung';
 $string['chooselanguage'] = 'Sprache wählen';
 $string['chooselanguagehead'] = 'Sprache wählen';
 $string['chooselanguagesub'] = 'Wählen Sie eine Sprache, die Sie während der Installation verwenden wollen. Die ausgewählte Sprache wird nach der Installation als Standardsprache der Instanz benutzt, aber können Sie die Sprache jederzeit ändern.';
 $string['cliadminpassword'] = 'Neues Admin-Kennwort';
-$string['cliadminusername'] = 'Admin-Nutzername ';
+$string['cliadminusername'] = 'Admin-Nutzername';
 $string['clialreadyconfigured'] = 'Die Datei config.php existiert bereits. Bitte benutzen Sie admin/cli/install_database.php, wenn sie diese Website installieren möchten.';
 $string['clialreadyinstalled'] = 'Die Datei config.php existiert bereits. Bitte benutzen Sie admin/cli/upgrade.php, wenn Sie diese Website aktualisieren möchten.';
 $string['cliinstallfinished'] = 'Die Installation wurde erfolgreich abgeschlossen';
@@ -209,9 +207,9 @@ $string['globalsquoteshelp'] = '<p>Die gleichzeitige Deaktivierung von magic_quo
 <blockquote><div>php_value magic_quotes_gpc On</div></blockquote>
 <blockquote><div>php_value register_globals Off</div></blockquote>
 </p>';
-$string['inputdatadirectory'] = 'Daten-Verzeichnis: ';
+$string['inputdatadirectory'] = 'Daten-Verzeichnis:';
 $string['inputwebadress'] = 'Web-Adresse';
-$string['inputwebdirectory'] = 'Moodle-Verzeichnis: ';
+$string['inputwebdirectory'] = 'Moodle-Verzeichnis:';
 $string['installation'] = 'Installation';
 $string['langdownloaderror'] = 'Leider konnte das Sprachpaket \'{$a}\' nicht heruntergeladen werden. Die Installation wird in englischer Sprache fortgesetzt.';
 $string['langdownloadok'] = 'Die Installation des Sprachpakets \'{$a}\' war erfolgreich. Der weitere Installationsprozess erfolgt nun in dieser Sprache.';
@@ -233,8 +231,8 @@ $string['memorylimithelp'] = '<p>Die PHP-Einstellung memory_limit Ihres Servers 
 <p>Achtung: auf einigen Servern hindert diese Einstellung <b>alle</b> PHP-Seiten und Sie erhalten Fehlermeldungen. Entfernen Sie dann den Eintrag in der .htaccess-Datei wieder.</p></li>
 </ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PHP-Erweiterung MSSQL-Erweiterung mit SQL*Server zu kommunizieren. Bitte prüfen Sie die Datei php.ini oder kompilieren Sie PHP neu.';
 $string['mssql_n'] = 'SQL*Server mit UTF-8-Unterstützung (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PHP-Erweiterung MSSQL-Erweiterung mit SQL*Server zu kommunizieren. Bitte prüfen Sie die Datei php.ini oder kompilieren Sie PHP neu.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PHP-Erweiterung MySQL mit MySQL zu kommunizieren. Bitte prüfen Sie die Datei php.ini oder kompilieren Sie PHP neu.';
 $string['mysqli'] = 'Improved MySQL (mysqli)';
@@ -253,8 +251,8 @@ $string['nativesqlsrvnodriver'] = 'Die Microsoft-Treiber zum SQL Server für PHP
 $string['nativesqlsrvnonwindows'] = 'Die Microsoft-Treiber zum SQL Server für PHP sind ausschließlich für Windows verfügbar.';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PHP-Erweiterung OCI8 mit Oracle zu kommunizieren. Bitte prüfen Sie die Datei php.ini oder kompilieren Sie PHP neu.';
-$string['odbcextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PHP-Erweiterung ODBC mit dem SQL*Server zu kommunizieren. Bitte prüfen Sie die Datei php.ini oder kompilieren Sie PHP neu.';
 $string['odbc_mssql'] = 'SQL*Server über ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'PHP wurde nicht richtig konfiguriert, um über die PHP-Erweiterung ODBC mit dem SQL*Server zu kommunizieren. Bitte prüfen Sie die Datei php.ini oder kompilieren Sie PHP neu.';
 $string['pass'] = 'Durchgang';
 $string['paths'] = 'Pfade';
 $string['pathserrcreatedataroot'] = 'Das Datenverzeichnis ({$a->dataroot}) kann vom Installer nicht angelegt werden.';

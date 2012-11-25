@@ -234,20 +234,17 @@ $string['scaletimes5'] = 'Ei koskaan, Harvoin, Joskus, Usein, Miltei aina';
 $string['seemoredetail'] = 'Napsauta tästä nähdäksesi lisätietoja';
 $string['selectedquestions'] = 'Valitut kysymykset, kaikki opiskelijat';
 $string['summary'] = 'Yhteenveto';
-$string['surveycompleted'] = 'Olet vastannut tähän kyselyyn. Alla olevasta kuvasta näet yhteenvedon vastauksistasi verrattuna kurssin keskiarvoon.';
 $string['survey:download'] = 'Palautteiden lataaminen';
-$string['surveygraph'] = 'Kyselyn kaavio';
-$string['surveyname'] = 'Kyselyn nimi';
 $string['survey:participate'] = 'Palautteen antaminen';
 $string['survey:readresponses'] = 'Palautteiden lukeminen';
+$string['surveycompleted'] = 'Olet vastannut tähän kyselyyn. Alla olevasta kuvasta näet yhteenvedon vastauksistasi verrattuna kurssin keskiarvoon.';
+$string['surveygraph'] = 'Kyselyn kaavio';
+$string['surveyname'] = 'Kyselyn nimi';
 $string['surveysaved'] = 'Kysely tallennettu';
 $string['surveytype'] = 'Kyselyn tyyppi';
 $string['surveytype_help'] = 'Kyselyssä on kolme vaihtoehtoa:
-
 * Attitudes to Thinking and Learning Survey (ATTLS) - sen mittaamiseen, missä määrin osallistuja on sosiaalinen oppija (kokee yleensä oppimisen mukavaksi, tekee usein yhteistyötä ja halukas rakentamaan myös muiden ideoille) ja missä määrin eristynyt oppija (suhtautuu oppimiseen helposti kriittisesti)
-
 * Critical incidents survey
-
 * Constructivist On-line Learning Environment Survey (COLLES) sen mallintamiseen, missä määrin www:n interaktiviista kapasiteettia on mahdollista hyödyntää opiskelijoiden dynaamisten oppimiskäytäntöjen aktivoimiseen.';
 $string['thanksforanswers'] = 'Kiitos vastauksestasi tähän kyselyyn, {$a}';
 $string['time'] = 'Aika';

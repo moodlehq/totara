@@ -43,70 +43,64 @@ $string['aggregatemedian'] = 'Pontok középértéke';
 $string['aggregatemin'] = 'Legalacsonyabb pont';
 $string['aggregatemode'] = 'Leggyakoribb pont';
 $string['aggregateonlygraded'] = 'Csak a nem üres pontok összegzése';
-$string['aggregateonlygraded_help'] = '<p>A nem létező pontokat vagy minimális pontokként kezeli, vagy kihagyja az összesítésből.</p>';
+$string['aggregateonlygraded_help'] = 'A nem létező pontokat vagy minimális pontokként kezeli, vagy kihagyja az összesítésből.';
 $string['aggregateoutcomes'] = 'Eredmények szerepeltetése az összegzésben';
-$string['aggregateoutcomes_help'] = '<p>Ha az eredményeket beleveszi az összesítésbe, ezzel nem állhat elő a kívánt globális pont, ezért választhat: beleveszi vagy kihagyja őket.</p>';
+$string['aggregateoutcomes_help'] = 'Ha az eredményeket beleveszi az összesítésbe, ezzel nem állhat elő a kívánt globális pont, ezért választhat: beleveszi vagy kihagyja őket.';
 $string['aggregatesonly'] = 'Csak az összegzések';
 $string['aggregatesubcats'] = 'Összegzés alkategóriákkal együtt';
-$string['aggregatesubcats_help'] = '<p>Az összesítés általában csak a közvetlen alkategóriákkal történik, de lehetőség van az összes alkategóriában lévő pontok összesítésére, a többi összesített pont kirekesztésével.</p>';
+$string['aggregatesubcats_help'] = 'Az összesítés általában csak a közvetlen alkategóriákkal történik, de lehetőség van az összes alkategóriában lévő pontok összesítésére, a többi összesített pont kirekesztésével.';
 $string['aggregatesum'] = 'Összes pont';
 $string['aggregateweightedmean'] = 'Pontok súlyozott átlaga';
 $string['aggregateweightedmean2'] = 'Pontok egyszerű súlyozott átlaga';
 $string['aggregation'] = 'Összegzés';
-$string['aggregationcoef'] = 'Összegzési együttható';
-$string['aggregationcoefextra'] = 'Külön kreditpont';
-$string['aggregationcoefextra_help'] = '<h2>A pontösszeg szerinti összesítéshez</h2>
-<p>A pontösszeg szerinti összesítés alkalmazása esetén a pontozási tétel lehet az adott kategóriához tartozó plusz kreditpont.
-Vagyis a kategória összes maximális pontjához nem a pontozási tételre adott maximális pont adódik hozzá, hanem a tételre adott pont. Íme egy példa:</p>
-
-<ul>
-    <li>Az 1. tétel 0-100 pontozású.</li>
-    <li>A 2. tétel 0-75 pontozású.</li>
-    <li>Az 1. tételnél a "Plusz kreditpontként működik" jelölőnégyzet be van jelölve, szemben a 2. tétellel.</li>
-    <li>Mindkét tétel az 1. kategóriához tartozik, amely a pontösszeg szerinti összesítést alkalmazza.</li>
-    <li>Az 1. kategóriához tartozó összesen 0-75 pontozású lesz.</li>
-    <li>Egy tanuló 20 pontot kap az 1. és 70-et a 2. tételre.</li>
-    <li>A tanuló esetén az 1. kategóriához tartozó összesen 75/75 lesz (20+70 = 90, de az 1. tétel csak plusz kreditpontként működik,
-    így annak összesenje eléri a maximumot).</li>
-</ul>
-<h2>Pontok súlyozott átlaga esetén (plusz kreditpont)</h2>
-<p>Összesítés során egy 0-nál nagyobb érték esetén a pontozási tételre adott pontokat a rendszer plusz kreditpontként kezeli.
-A szám az a tényező, amellyel a pontértéket meg kell szorozni, mielőtt hozzáadódik az összes pont összegéhez,
-de maga a tétel kimarad az osztásból. Pl.:</p>
-
-<ul>
-    <li>Az 1. tétel 0-100 pontozású, plusz kreditpontjának értéke 2.</li>
-    <li>A 2. tétel  0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.</li>
-    <li>A 3. tétel  0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.</li>
-    <li>Mindhárom tétel az 1. kategóriához tartozik, amely a pontok súlyozott átlagát alkalmazza (plusz kreditpontokkal).</li>
-    <li>Egy tanuló 20 pontot kap az 1., 40-et a 2. és 70-et a 3. tételre.</li>
-    <li>A tanuló esetén az 1. kategóriához tartozó összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95.</li>
-</ul>';
-$string['aggregationcoefextrasum'] = 'Külön kreditpont';
-$string['aggregationcoefextrasum_help'] = 'Ha a Pluszpont négyzet be van jelölve, a pontozási tétel maximális pontja nem adódik hozzá a kategória maximális pontjához. Így a kategórián belül a maximális pont (vagy, ha a rendszergazda engedélyezi, a maximális fölötti pont) anélkül érhető el, hogy minden pontozási tétel esetén meglenne a maximális pont.';
-$string['aggregationcoefextraweight'] = 'Külön kreditpont súlya';
-$string['aggregationcoefextraweight_help'] = '<p>A 0-nál nagyobb érték ezen pontozási tétel pontjait összegzés során külön kreditpontként kezeli. A szám az a tényező, amellyel a pontérték megszorzódik, mielőtt az összes pont összegéhez hozzáadódik, de maga a tétel az osztásba nem számít bele. Például:</p>
-
-<ul>
-    <li>Az 1. tétel pontja 0-100, "külön kreditpont" értéke pedig 2</li>
-    <li>A 2. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad</li>
-    <li>A 3. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad</li>
-    <li>Mindhárom tétel az 1. kategóriába tartozik, melynek "Pontátlaga (külön kreditpontokkal együtt)" jelenti összegzési stratégiáját</li>
-    <li>Egy tanuló az 1. tételre 20 pontot, a 2.-ra 40-et, a 3.-ra 70-et kap</li>
-    <li>A tanuló 1. kategóriára kapott pontja összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95</li>
-</ul>';
-$string['aggregationcoefweight'] = 'Tétel súlya';
-$string['aggregationcoefweight_help'] = '<p>Az egyéb pontozási tételekkel való összegzés során a jelen pontozási tétel összes pontjára alkalmazott súly.</p>';
 $string['aggregation_help'] = 'Az összesítés szabja meg, hogy egy kategória esetén az osztályzatok miként kombinálódnak.
-
 * Osztályzatok átlaga - Az összes pont összege a pontok számával elosztva.
 * Osztályzatok felezőértéke - Méret szerint rendezett osztályzatok esetén a középső osztályzat
 * Legalacsonyabb osztályzat
 * Legmagasabb osztályzat
 * Osztályzatok módusza - A módusz a leggyakrabban előforduló osztályzat
 * Osztályzatok összege - Az összes osztályzatérték összege. A skálaosztályzatokat a rendszer figyelmen kívül hagyja.';
+$string['aggregationcoef'] = 'Összegzési együttható';
+$string['aggregationcoefextra'] = 'Külön kreditpont';
+$string['aggregationcoefextra_help'] = '## A pontösszeg szerinti összesítéshez
+A pontösszeg szerinti összesítés alkalmazása esetén a pontozási tétel lehet az adott kategóriához tartozó plusz kreditpont.
+Vagyis a kategória összes maximális pontjához nem a pontozási tételre adott maximális pont adódik hozzá, hanem a tételre adott pont. Íme egy példa:
+
+* Az 1. tétel 0-100 pontozású.
+* A 2. tétel 0-75 pontozású.
+* Az 1. tételnél a "Plusz kreditpontként működik" jelölőnégyzet be van jelölve, szemben a 2. tétellel.
+* Mindkét tétel az 1. kategóriához tartozik, amely a pontösszeg szerinti összesítést alkalmazza.
+* Az 1. kategóriához tartozó összesen 0-75 pontozású lesz.
+* Egy tanuló 20 pontot kap az 1. és 70-et a 2. tételre.
+* A tanuló esetén az 1. kategóriához tartozó összesen 75/75 lesz (20+70 = 90, de az 1. tétel csak plusz kreditpontként működik,
+így annak összesenje eléri a maximumot).
+
+## Pontok súlyozott átlaga esetén (plusz kreditpont)
+Összesítés során egy 0-nál nagyobb érték esetén a pontozási tételre adott pontokat a rendszer plusz kreditpontként kezeli.
+A szám az a tényező, amellyel a pontértéket meg kell szorozni, mielőtt hozzáadódik az összes pont összegéhez,
+de maga a tétel kimarad az osztásból. Pl.:
+
+* Az 1. tétel 0-100 pontozású, plusz kreditpontjának értéke 2.
+* A 2. tétel 0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.
+* A 3. tétel 0-100 pontozású, plusz kreditpontjának értéke megmarad 0.0000.
+* Mindhárom tétel az 1. kategóriához tartozik, amely a pontok súlyozott átlagát alkalmazza (plusz kreditpontokkal).
+* Egy tanuló 20 pontot kap az 1., 40-et a 2. és 70-et a 3. tételre.
+* A tanuló esetén az 1. kategóriához tartozó összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95.';
+$string['aggregationcoefextrasum'] = 'Külön kreditpont';
+$string['aggregationcoefextrasum_help'] = 'Ha a Pluszpont négyzet be van jelölve, a pontozási tétel maximális pontja nem adódik hozzá a kategória maximális pontjához. Így a kategórián belül a maximális pont (vagy, ha a rendszergazda engedélyezi, a maximális fölötti pont) anélkül érhető el, hogy minden pontozási tétel esetén meglenne a maximális pont.';
+$string['aggregationcoefextraweight'] = 'Külön kreditpont súlya';
+$string['aggregationcoefextraweight_help'] = 'A 0-nál nagyobb érték ezen pontozási tétel pontjait összegzés során külön kreditpontként kezeli. A szám az a tényező, amellyel a pontérték megszorzódik, mielőtt az összes pont összegéhez hozzáadódik, de maga a tétel az osztásba nem számít bele. Például:
+
+* Az 1. tétel pontja 0-100, "külön kreditpont" értéke pedig 2
+* A 2. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad
+* A 3. tétel pontja 0-100, "külön kreditpont" értéke pedig 0,0000 marad
+* Mindhárom tétel az 1. kategóriába tartozik, melynek "Pontátlaga (külön kreditpontokkal együtt)" jelenti összegzési stratégiáját
+* Egy tanuló az 1. tételre 20 pontot, a 2.-ra 40-et, a 3.-ra 70-et kap
+* A tanuló 1. kategóriára kapott pontja összesen 95/100 lesz, mivel 20*2 + (40 + 70)/2 = 95';
+$string['aggregationcoefweight'] = 'Tétel súlya';
+$string['aggregationcoefweight_help'] = 'Az egyéb pontozási tételekkel való összegzés során a jelen pontozási tétel összes pontjára alkalmazott súly.';
 $string['aggregationposition'] = 'Összegzési pozíció';
-$string['aggregationposition_help'] = '<p>Meghatározza az összegzés összege oszlopának a helyzetét a jelentésben az összegezendő pontokhoz viszonyítva.</p>';
+$string['aggregationposition_help'] = 'Meghatározza az összegzés összege oszlopának a helyzetét a jelentésben az összegezendő pontokhoz viszonyítva.';
 $string['aggregationsvisible'] = 'Használható összegzési típusok';
 $string['aggregationsvisiblehelp'] = 'Válassza ki az összes használandó összegzési típust. Több elem kiválasztásához nyomja le a Ctrl-billentyűt.';
 $string['allgrades'] = 'Kategóriánként az összes pont';
@@ -116,9 +110,9 @@ $string['autosort'] = 'Automatikus rendezés';
 $string['availableidnumbers'] = 'Használható azonosítószámok';
 $string['average'] = 'Átlag';
 $string['averagesdecimalpoints'] = 'Oszlopátlagok tizedesjegyei';
-$string['averagesdecimalpoints_help'] = '<p>Meghatározza, hány tizedesjegy jelenjen meg az egyes oszlopátlagok esetén. Az Öröklés kiválasztása esetén az egyes oszlopok megjelenítési típusa lesz használatos.</p>';
+$string['averagesdecimalpoints_help'] = 'Meghatározza, hány tizedesjegy jelenjen meg az egyes oszlopátlagok esetén. Az Öröklés kiválasztása esetén az egyes oszlopok megjelenítési típusa lesz használatos.';
 $string['averagesdisplaytype'] = 'Oszlopátlagok megjelenítésének típusa';
-$string['averagesdisplaytype_help'] = '<p>Meghatározza, hogyan jelenjen meg átlag az egyes oszlopok esetén. Az Öröklés kiválasztása esetén az egyes oszlopok megjelenítési típusa lesz használatos.</p>';
+$string['averagesdisplaytype_help'] = 'Meghatározza, hogyan jelenjen meg átlag az egyes oszlopok esetén. Az Öröklés kiválasztása esetén az egyes oszlopok megjelenítési típusa lesz használatos.';
 $string['backupwithoutgradebook'] = 'A biztonsági mentés nem tartalmazza az osztályozónapló beállítását';
 $string['badgrade'] = 'A megadott pont érvénytelen';
 $string['badlyformattedscale'] = 'Adjon meg egy vesszőkkel elválasztott értéklistát (legalább két értékkel).';
@@ -127,9 +121,9 @@ $string['bonuspoints'] = 'Jutalompontok';
 $string['bulkcheckboxes'] = 'Vegyes jelölőnégyzetek';
 $string['calculatedgrade'] = 'Számított pont';
 $string['calculation'] = 'Számítás';
+$string['calculation_help'] = 'A pontszámítás az osztályzat meghatározására használt képlet. A képlet egyenlőségjellel (=) kezdődik, és szokásos matematikai műveletjeleket -- pl. max, min és sum -- tartalmazhat. Szükség esetén egyéb pontozási tételek illeszthetők a számításba: ehhez kettős szögletes zárójelben adja meg az azonosítószámokat.';
 $string['calculationadd'] = 'Számítás hozzáadása';
 $string['calculationedit'] = 'Számítás szerkesztése';
-$string['calculation_help'] = 'A pontszámítás az osztályzat meghatározására használt képlet. A képlet egyenlőségjellel (=) kezdődik, és szokásos matematikai műveletjeleket -- pl. max, min és sum -- tartalmazhat. Szükség esetén egyéb pontozási tételek illeszthetők a számításba: ehhez kettős szögletes zárójelben adja meg az azonosítószámokat.';
 $string['calculationsaved'] = 'Számítás elmentve';
 $string['calculationview'] = 'Számítás megtekintése';
 $string['cannotaccessgroup'] = 'A kiválasztott csoport pontjai nem érhetők el.';
@@ -141,7 +135,7 @@ $string['categoryedit'] = 'Kategória szerkesztése';
 $string['categoryname'] = 'Kategória neve';
 $string['categorytotal'] = 'Kategória összes pontszáma';
 $string['categorytotalfull'] = '{$a->category} összesen';
-$string['categorytotalname'] = 'Kategória összegzésének neve ';
+$string['categorytotalname'] = 'Kategória összegzésének neve';
 $string['changedefaults'] = 'Alapbeállítások módosítása';
 $string['changereportdefaults'] = 'Jelentés alapbeállításainak módosítása';
 $string['chooseaction'] = 'Válasszon egy lépést ...';
@@ -167,7 +161,7 @@ $string['csv'] = 'CSV';
 $string['currentparentaggregation'] = 'Jelenlegi szülők egyesítése';
 $string['curveto'] = 'Görbe';
 $string['decimalpoints'] = 'Összes tizedesjegy';
-$string['decimalpoints_help'] = '<p>Megadja, hány tizedeshely jelenjen meg az egyes pontoknál. A beállításnak a számításokra nincs hatása, azok 5 tizedesnyi pontossággal állnak elő.</p>';
+$string['decimalpoints_help'] = 'Megadja, hány tizedeshely jelenjen meg az egyes pontoknál. A beállításnak a számításokra nincs hatása, azok 5 tizedesnyi pontossággal állnak elő.';
 $string['default'] = 'Alapbeállítás';
 $string['defaultprev'] = 'Alapbeállítás ({$a})';
 $string['deletecategory'] = 'Kategória törlése';
@@ -179,7 +173,7 @@ $string['displaypoints'] = 'Kijelzés pontokkal';
 $string['displayweighted'] = 'Kijelzés súlyozott pontokkal';
 $string['dropdown'] = 'Lenyíló menü';
 $string['droplow'] = 'A legalacsonyabb kihagyása';
-$string['droplow_help'] = '<p>Beállítása esetén kihagyja a legalacsonyabb X pontot, ahol is az X az adott opcióhoz kiválasztott értéket jelenti.</p>';
+$string['droplow_help'] = 'Beállítása esetén kihagyja a legalacsonyabb X pontot, ahol is az X az adott opcióhoz kiválasztott értéket jelenti.';
 $string['dropped'] = 'Kihagyva';
 $string['dropxlowest'] = 'Legalacsonyabb X kihagyása';
 $string['dropxlowestwarning'] = 'Megjegyzés: a legalacsonyabb X kihagyása esetén a pontozás abból indul ki, hogy minden kategóriában a tételek azonos pontértékkel rendelkeznek. Ha eltérnek, az eredmény megjósolhatatlanná válik.';
@@ -214,7 +208,7 @@ $string['errorupdatinggradecategoryaggregatesubcats'] = 'Hiba a(z) {$a->id} pont
 $string['errorupdatinggradecategoryaggregation'] = 'Hiba a(z) {$a->id} pontozási kategóriaazonosító összegzési típusának frissítése közben';
 $string['errorupdatinggradeitemaggregationcoef'] = 'Hiba a(z) {$a->id} pontozási kategóriaazonosító összegzési együtthatójának (súly vagy külön kreditpont) frissítése közben';
 $string['excluded'] = 'Kizárva';
-$string['excluded_help'] = '<p>Ha a -kimarad- be van kapcsolva, a pont kimarad minden összegzésből, amelyet bármely felette lévő pontozási tétel vagy kategória végrehajt.</p>';
+$string['excluded_help'] = 'Ha a -kimarad- be van kapcsolva, a pont kimarad minden összegzésből, amelyet bármely felette lévő pontozási tétel vagy kategória végrehajt.';
 $string['expand'] = 'Kategória kiterjesztése';
 $string['export'] = 'Exportálás';
 $string['exportalloutcomes'] = 'Minden eredmény exportálása';
@@ -224,13 +218,13 @@ $string['exportsettings'] = 'Beállítások exportálása';
 $string['exportto'] = 'Exportálás helye';
 $string['extracreditwarning'] = 'Megjegyzés: ha egy kategória minden tétele külön kreditponttal szerepel, akkor kimaradnak a pontszámításból, mert nem születik összegzett pontszám';
 $string['feedback'] = 'Visszajelzés';
+$string['feedback_help'] = 'A tanár által a pontokhoz fűzött megjegyzések. Lehet részletes, személyre szóló visszajelzés vagy egy egyszerű kód, amely a visszajelzés belső rendszerére utal.';
 $string['feedbackadd'] = 'Visszajelzés hozzáadása';
 $string['feedbackedit'] = 'Visszajelzés szerkesztése';
-$string['feedback_help'] = '<p>A tanár által a pontokhoz fűzött megjegyzések. Lehet részletes, személyre szóló visszajelzés vagy egy egyszerű kód, amely a visszajelzés belső rendszerére utal.</p>';
 $string['feedbacksaved'] = 'Visszajelzés elmentve';
 $string['feedbackview'] = 'Visszajelzés megtekintése';
 $string['finalgrade'] = 'Végső pontszám';
-$string['finalgrade_help'] = '<p>Az a (gyorsítótárban előálló) végső pont, amely az összes számítás elvégzése után jön létre.</p>';
+$string['finalgrade_help'] = 'Az a (gyorsítótárban előálló) végső pont, amely az összes számítás elvégzése után jön létre.';
 $string['fixedstudents'] = 'Statikus tanulói oszlop';
 $string['fixedstudents_help'] = 'A pontok vízszintesen görgethetők, a statikus tanulói oszlop folyamatosan látható marad.';
 $string['forceoff'] = 'Előírás: Ki';
@@ -248,7 +242,7 @@ $string['gradebook'] = 'Osztályozónapló';
 $string['gradebookhiddenerror'] = 'Az osztályozónapló a mostani beállításban mindent elrejt a tanulók elől.';
 $string['gradebookhistories'] = 'Pont előzményei';
 $string['gradeboundary'] = 'Betűpontozás határértéke';
-$string['gradeboundary_help'] = '<p>Százalékos határ, mely fölött a pontok pontozási betűt kapnak (ha a pontozási betű megjelenítése be van kapcsolva). </p>';
+$string['gradeboundary_help'] = 'Százalékos határ, mely fölött a pontok pontozási betűt kapnak (ha a pontozási betű megjelenítése be van kapcsolva).';
 $string['gradecategories'] = 'Pontozási kategóriák';
 $string['gradecategory'] = 'Pontozási kategória';
 $string['gradecategoryonmodform'] = 'Pontozási kategória';
@@ -257,7 +251,6 @@ $string['gradecategorysettings'] = 'Pontozási kategória beállításai';
 $string['gradedisplay'] = 'Pont megjelenítése';
 $string['gradedisplaytype'] = 'Pont megjelenítésének típusa';
 $string['gradedisplaytype_help'] = 'Megadja, miként jelenjenek meg az osztályzatok az osztályozónaplóban és a felhasználói jelentésben. A osztályzatok megjelenhetnek
-
 * Valós - tényleges osztályzatok,
 * Százalékok,
 * Betű formájában. - A betűk vagy szavak osztályzatok tartományát jelölik.';
@@ -285,20 +278,20 @@ $string['gradeitems'] = 'Pontozási tételek';
 $string['gradeitemsettings'] = 'Pontozási tétel beállításai';
 $string['gradeitemsinc'] = 'Szerepeltetendő pontozási tételek';
 $string['gradeletter'] = 'Pontozó betű';
-$string['gradeletter_help'] = '<p>Olyan betű vagy szimbólum, amely egy ponttartományt reprezentál.</p>';
+$string['gradeletter_help'] = 'Olyan betű vagy szimbólum, amely egy ponttartományt reprezentál.';
 $string['gradeletternote'] = 'Betűvel megadott pont törléséhez a betűhöz tartozó három szövegterület valamelyikét törölje, és kattintson a Beküldés gombra.';
 $string['gradeletters'] = 'Pontozó betűk';
 $string['gradelocked'] = 'Pont zárolva';
 $string['gradelong'] = '{$a->grade} / {$a->max}';
 $string['grademax'] = 'Maximális pont';
-$string['grademax_help'] = '<p>Érték szerinti ponttípus használata esetén beállítható egy maximális pont. Tevékenység-alapú pontozási tétel legmagasabb pontját a tevékenységet frissítő oldalon lehet beállítani.</p>';
+$string['grademax_help'] = 'Érték szerinti ponttípus használata esetén beállítható egy maximális pont. Tevékenység-alapú pontozási tétel legmagasabb pontját a tevékenységet frissítő oldalon lehet beállítani.';
 $string['grademin'] = 'Minimális pont';
-$string['grademin_help'] = '<p>Érték szerinti ponttípus használata esetén beállítható egy minimális pont.</p>';
+$string['grademin_help'] = 'Érték szerinti ponttípus használata esetén beállítható egy minimális pont.';
 $string['gradeoutcomeitem'] = 'Pontozási eredménytétel';
 $string['gradeoutcomes'] = 'Eredmények';
 $string['gradeoutcomescourses'] = 'Kurzus eredményei';
 $string['gradepass'] = 'Pont a teljesítéshez';
-$string['gradepass_help'] = '<p>Ha egy tételhez olyan pont kapcsolódik, amelyet a felhasználóknak el kell érni vagy meg kell haladni a tétel teljesítéséhez, akkor azt itt állíthatja be.</p>';
+$string['gradepass_help'] = 'Ha egy tételhez olyan pont kapcsolódik, amelyet a felhasználóknak el kell érni vagy meg kell haladni a tétel teljesítéséhez, akkor azt itt állíthatja be.';
 $string['gradepreferences'] = 'Pontozási beállítások';
 $string['gradepreferenceshelp'] = 'Súgó a pontozási beállításokhoz';
 $string['gradepublishing'] = 'Közzététel bekapcsolása';
@@ -310,14 +303,14 @@ $string['gradesforuser'] = '{$a->user} pontjai';
 $string['gradesonly'] = 'Csak pontok';
 $string['gradessettings'] = 'Pontbeállítások';
 $string['gradetype'] = 'Pont típusa';
-$string['gradetype_help'] = '<p>Megadja a használandó pont típusát: nincs (nem lehet pontozni), érték (bekapcsolja a maximális és minimális pont beállítását), skála (bekapcsolja a skála beállítását) vagy szöveg (csak visszajelzés). Csak értéken és skálán alapuló pontokat lehet összegezni. Tevékenység-alapú pontozási tétel ponttípusa a tevékenységet frissítő oldalon állítható be.</p>';
+$string['gradetype_help'] = 'Megadja a használandó pont típusát: nincs (nem lehet pontozni), érték (bekapcsolja a maximális és minimális pont beállítását), skála (bekapcsolja a skála beállítását) vagy szöveg (csak visszajelzés). Csak értéken és skálán alapuló pontokat lehet összegezni. Tevékenység-alapú pontozási tétel ponttípusa a tevékenységet frissítő oldalon állítható be.';
 $string['gradeview'] = 'Pont megtekintése';
 $string['gradeweighthelp'] = 'Súgó a pontozás súlyozásához';
 $string['groupavg'] = 'Csoportátlag';
 $string['hidden'] = 'Rejtve';
+$string['hidden_help'] = 'Bejelölése esetén a tanulók a pontokat nem látják. Szükség esetén beállítható egy elrejtési időtartam, így a pontok a pontozás befejezése után jelenhetnek meg.';
 $string['hiddenasdate'] = 'Rejtett pontoknál leadás dátumának megjelenítése';
 $string['hiddenasdate_help'] = 'Ha a felhasználó nem láthatja a rejtett pontokat, a \'-\' helyett jelenjen meg a leadás dátuma.';
-$string['hidden_help'] = 'Bejelölése esetén a tanulók a pontokat nem látják. Szükség esetén beállítható egy elrejtési időtartam, így a pontok a pontozás befejezése után jelenhetnek meg.';
 $string['hiddenuntil'] = 'Rejtve eddig';
 $string['hiddenuntildate'] = 'Rejtve eddig: {$a}';
 $string['hideadvanced'] = 'Részletes funkciók elrejtése';
@@ -373,7 +366,7 @@ $string['inherit'] = 'Örököl';
 $string['intersectioninfo'] = 'Információ a tanuló/pontszám tekintetében';
 $string['item'] = 'Tétel';
 $string['iteminfo'] = 'Tétel adatai';
-$string['iteminfo_help'] = '<p>A tétellel kapcsolatos adatok rögzítésére szolgáló hely. A megadott szöveg sehol máshol nem jelenik meg.</p>';
+$string['iteminfo_help'] = 'A tétellel kapcsolatos adatok rögzítésére szolgáló hely. A megadott szöveg sehol máshol nem jelenik meg.';
 $string['itemname'] = 'Tétel neve';
 $string['itemnamehelp'] = 'A tétel modulból származó neve.';
 $string['items'] = 'Tételek';
@@ -389,7 +382,7 @@ $string['letterpercentage'] = 'Betű (százalék)';
 $string['letterreal'] = 'Betű (valós)';
 $string['letters'] = 'Betűk';
 $string['linkedactivity'] = 'Kapcsolt tevékenység';
-$string['linkedactivity_help'] = '<p>Meghatároz egy opcionális tevékenységet, amelyhez ez az eredménytétel kapcsolódik. Ezzel mérhető a tanulói teljesítmény olyan kritériumok alapján, amelyeket a tevékenységhez tartozó pont nem értékel.</p>';
+$string['linkedactivity_help'] = 'Meghatároz egy opcionális tevékenységet, amelyhez ez az eredménytétel kapcsolódik. Ezzel mérhető a tanulói teljesítmény olyan kritériumok alapján, amelyeket a tevékenységhez tartozó pont nem értékel.';
 $string['linktoactivity'] = 'Kapcsolás a(z) {$a->name} tevékenységhez';
 $string['lock'] = 'Zárolás';
 $string['locked'] = 'Zárolt';
@@ -417,7 +410,7 @@ $string['morethanmax'] = 'A(z) {$a->itemname} esetén {$a->username} részére b
 $string['moveselectedto'] = 'A kiválasztott elemek áthelyezése ide:';
 $string['movingelement'] = '{$a} áthelyezése';
 $string['multfactor'] = 'Szorzó';
-$string['multfactor_help'] = '<p>Az a tényező, amellyel a pontozási tétel összes pontját meg kell szorozni.</p>';
+$string['multfactor_help'] = 'Az a tényező, amellyel a pontozási tétel összes pontját meg kell szorozni.';
 $string['mypreferences'] = 'Beállításaim';
 $string['myreportpreferences'] = 'Jelentéseim beállításai';
 $string['navmethod'] = 'Böngészési mód';
@@ -453,6 +446,7 @@ $string['onascaleof'] = '{$a->grademin} és {$a->grademax} közötti skálán';
 $string['operations'] = 'Műveletek';
 $string['options'] = 'Lehetőségek';
 $string['outcome'] = 'Eredmény';
+$string['outcome_help'] = 'Ezen pontozási tétel eredménye.';
 $string['outcomeassigntocourse'] = 'Másik eredmény hozzárendelése a kurzushoz';
 $string['outcomecategory'] = 'Kategória eredményeinek létrehozása';
 $string['outcomecategorynew'] = 'Új kategória';
@@ -460,7 +454,6 @@ $string['outcomeconfirmdelete'] = 'Biztosan törli a(z) "{$a}" eredményt?';
 $string['outcomecreate'] = 'Új eredmény hozzáadása';
 $string['outcomedelete'] = 'Eredmény törlése';
 $string['outcomefullname'] = 'Teljes név';
-$string['outcome_help'] = 'Ezen pontozási tétel eredménye.';
 $string['outcomeitem'] = 'Eredménytétel';
 $string['outcomeitemsedit'] = 'Eredménytétel szerkesztése';
 $string['outcomereport'] = 'Eredményről szóló jelentés';
@@ -474,13 +467,13 @@ $string['outcomeshortname'] = 'Rövid név';
 $string['outcomesstandard'] = 'Standard eredmények';
 $string['outcomesstandardavailable'] = 'Elérhető standard eredmények';
 $string['outcomestandard'] = 'Standard eredmény';
-$string['outcomestandard_help'] = '<p>A standard eredmény az egész portálon minden kurzus számára elérhető.</p>';
+$string['outcomestandard_help'] = 'A standard eredmény az egész portálon minden kurzus számára elérhető.';
 $string['overallaverage'] = 'Globális átlag';
 $string['overridden'] = 'Felülírva';
-$string['overridden_help'] = '<p>Bekapcsolása esetén a felülírt címkével megakadályozható minden későbbi próbálkozás a pontérték automatikus módosítására. A címkét gyakran az osztályozónapló belülről állítja, de ezen űrlapelem segítségével kézi úton ki-be kapcsolható.</p>';
+$string['overridden_help'] = 'Bekapcsolása esetén a felülírt címkével megakadályozható minden későbbi próbálkozás a pontérték automatikus módosítására. A címkét gyakran az osztályozónapló belülről állítja, de ezen űrlapelem segítségével kézi úton ki-be kapcsolható.';
 $string['overriddennotice'] = 'A tevékenységgel kapcsolatos végső pontja kézzel módosítva lett.';
 $string['overridesitedefaultgradedisplaytype'] = 'Portál alapbeállításainak felülírása';
-$string['overridesitedefaultgradedisplaytype_help'] = '<p>Ezen jelölőnégyzet bejelölésével kapcsolhatja be a portálon az osztályozónaplóban megjelenő pontok kijelzésének alapbeállításait. Ezzel űrlapelemeket kapcsol be, melyekkel tetszése szerint határozhat meg pontozó betűket és ponthatárokat.</p>';
+$string['overridesitedefaultgradedisplaytype_help'] = 'Ezen jelölőnégyzet bejelölésével kapcsolhatja be a portálon az osztályozónaplóban megjelenő pontok kijelzésének alapbeállításait. Ezzel űrlapelemeket kapcsol be, melyekkel tetszése szerint határozhat meg pontozó betűket és ponthatárokat.';
 $string['parentcategory'] = 'Szülőkategória';
 $string['pctoftotalgrade'] = '%-a az összpontszámnak';
 $string['percent'] = 'Százalék';
@@ -491,7 +484,7 @@ $string['percentascending'] = 'Rendezés növekvő százalék szerint';
 $string['percentdescending'] = 'Rendezés csökkenő százalék szerint';
 $string['percentshort'] = '%';
 $string['plusfactor'] = 'Eltolás';
-$string['plusfactor_help'] = '<p>Az a szám, amely a szorzó alkalmazása után a jelen pontozási tétel minden pontjához hozzáadódik.</p>';
+$string['plusfactor_help'] = 'Az a szám, amely a szorzó alkalmazása után a jelen pontozási tétel minden pontjához hozzáadódik.';
 $string['points'] = 'pont';
 $string['pointsascending'] = 'Rendezés növekvő pontok szerint';
 $string['pointsdescending'] = 'Rendezés csökkenő pontok szerint';
@@ -508,14 +501,14 @@ $string['profilereport_help'] = 'A felhasználó profiloldalán használatos pon
 $string['publishing'] = 'Közzététel';
 $string['quickfeedback'] = 'Gyors visszajelzés';
 $string['quickgrading'] = 'Gyors pontozás';
-$string['quickgrading_help'] = '<p>Gyors pontozás során az osztályozó jelentés minden pontcellájába bekerül egy szövegmező, ahol egyszerre szerkeszthet több pontot is. Ezután a Frissítés gombra kattintva egyszerre hajthatja végre az összes módosítást, így nem kell egyenként sort keríteni erre.</p>';
+$string['quickgrading_help'] = 'Gyors pontozás során az osztályozó jelentés minden pontcellájába bekerül egy szövegmező, ahol egyszerre szerkeszthet több pontot is. Ezután a Frissítés gombra kattintva egyszerre hajthatja végre az összes módosítást, így nem kell egyenként sort keríteni erre.';
 $string['range'] = 'Tartomány';
 $string['rangedecimals'] = 'Tartomány tizedesjegyei';
 $string['rangedecimals_help'] = 'Tartományhoz kijelzendő tizedesjegyek száma';
 $string['rangesdecimalpoints'] = 'Tartományon belül látható tizedesjegyek';
-$string['rangesdecimalpoints_help'] = '<p>Megadja az egyes tartományokhoz a megjelenítendő tizedesjegyek számát. A beállítás pontozási tételenként felülírható.</p>';
+$string['rangesdecimalpoints_help'] = 'Megadja az egyes tartományokhoz a megjelenítendő tizedesjegyek számát. A beállítás pontozási tételenként felülírható.';
 $string['rangesdisplaytype'] = 'Tartomány megjelenítésének típusa';
-$string['rangesdisplaytype_help'] = '<p>Megadja az egyes tartományok megjelenítésének módját. Az Öröklés kiválasztása esetén az egyes oszlopok megjelenítési típusa lesz használatos.</p>';
+$string['rangesdisplaytype_help'] = 'Megadja az egyes tartományok megjelenítésének módját. Az Öröklés kiválasztása esetén az egyes oszlopok megjelenítési típusa lesz használatos.';
 $string['rank'] = 'Sorrend';
 $string['rawpct'] = 'Nyers %';
 $string['real'] = 'Valós';
@@ -550,7 +543,7 @@ $string['setting'] = 'Beállítás';
 $string['settings'] = 'Beállítások';
 $string['setweights'] = 'Súlyok beállítása';
 $string['showactivityicons'] = 'Tevékenységikonok megjelenítése';
-$string['showactivityicons_help'] = '<p>Megjelenjenek-e a tevékenységikonok a tevékenységek neve mellett?</p>';
+$string['showactivityicons_help'] = 'Megjelenjenek-e a tevékenységikonok a tevékenységek neve mellett?';
 $string['showallhidden'] = 'Az összes rejtett megjelenítése';
 $string['showallstudents'] = 'Minden tanuló megjelenítése';
 $string['showanalysisicon'] = 'A Pontszámok elemzése ikon megjelenítése';
@@ -571,7 +564,6 @@ $string['showgrade_help'] = 'Megjelenjen-e a pontok oszlopa?';
 $string['showgroups'] = 'Csoportok megjelenítése';
 $string['showhiddenitems'] = 'Rejtett tételek megjelenítése';
 $string['showhiddenitems_help'] = 'Teljesen rejtve legyenek-e a rejtett pontozási tételek, vagy nevük megjelenjen-e a tanulók számára.
-
 * Rejtettek megjelenítése - A rejtett pontozási tételek neve látható, de a tanulói pontok nem
 * Rejtve csak eddig - A pontozási tételek a "rejtve eddig" alatt beállított időpontig nem láthatók, utána a teljes tétel látszik
 * Nem látszik - A rejtett pontozási tételek egyáltalán nem láthatók';
@@ -626,7 +618,7 @@ $string['turnfeedbackoff'] = 'Visszajelzés kikapcsolása';
 $string['turnfeedbackon'] = 'Visszajelzés bekapcsolása';
 $string['typenone'] = 'Nincs';
 $string['typescale'] = 'Skála';
-$string['typescale_help'] = '<p>Skálázó pontozás használata esetén kiválaszthat egy skálát. Tevékenységalapú pontozási tételhez a skála a tevékenységet frissítő oldalról választható ki.</p>';
+$string['typescale_help'] = 'Skálázó pontozás használata esetén kiválaszthat egy skálát. Tevékenységalapú pontozási tételhez a skála a tevékenységet frissítő oldalról választható ki.';
 $string['typetext'] = 'Szöveg';
 $string['typevalue'] = 'Érték';
 $string['uncategorised'] = 'Nincs kategorizálva';

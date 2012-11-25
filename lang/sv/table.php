@@ -27,4 +27,4 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['downloadas'] = 'Ladda ner tabelldata som';
 $string['downloadexcel'] = 'ett kalkylblad av typ MS Excel';
-$string['downloadods'] = 'ett kalkylblad av typen ';
+$string['downloadods'] = 'ett kalkylblad av typen';

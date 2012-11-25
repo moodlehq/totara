@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'TE DOEN';
 $string['alreadyloggedin'] = 'Je bent al aangemeld als {$a}, je moet afmelden voor je kunt aanmelden als een andere gebruiker.';
 $string['authnotexisting'] = 'De authorisatieplugin bestaat niet';
 $string['backupcontainexternal'] = 'Het backupbestand bevat externe Moodle Hosts die lokaal niet geconfigureerd zijn.';
@@ -344,9 +345,9 @@ $string['maxbytes'] = 'Het bestand is groter dan de maximum grootte';
 $string['messagingdisable'] = 'Berichten zijn uitgeschakeld op deze site';
 $string['mimetexisnotexist'] = 'Je systeem is niet geconfigureerd om mimeTeX te gebruiken. Je moet het noodzakelijke uitvoerbaar bestand downloaden voor jouw PHP_OS platform van <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, of de C bronbestanden bekomen van  <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>, ze compileren en het uitvoerbaar bestand in je moodle/filter/tex/ map zetten.';
 $string['mimetexnotexecutable'] = 'Aangepast mimetex bestand is niet uitvoerbaar!';
+$string['missing_moodle_backup_xml_file'] = 'Het XML-bestand {$a} ontbreekt in de backup';
 $string['missingfield'] = 'Veld "{$a}" ontbreekt';
 $string['missingkeyinsql'] = 'FOUT: ontbrekende param "{$a}" in query';
-$string['missing_moodle_backup_xml_file'] = 'Het XML-bestand {$a} ontbreekt in de backup';
 $string['missingparam'] = 'Een vereiste parameter ({$a}) ontbreekt';
 $string['missingparameter'] = 'Ontbrekende parameter';
 $string['missingrequiredfield'] = 'Vereist veld ontbreekt';
@@ -429,9 +430,9 @@ $string['remotedownloaderror'] = 'De download van de component naar jouw server 
 $string['remotedownloadnotallowed'] = 'Het downloaden van componenten naar je server is niet toegelaten (allow_url_fopen is uitgeschakeld)<br /><br />Je moet het <a href="{$a->url}">{$a->url}</a>bestand manueel downloaden en het kopiëren naar "{$a->dest}" op je server en het daar unzippen.';
 $string['reportnotavailable'] = 'Dit type rapport is alleen maar beschikbaar voor de site-cursus';
 $string['requireloginerror'] = 'Geen toegang tot de cursus of activiteit';
-$string['restorechecksumfailed'] = 'Er zijn problemen met de informatie over het terugzetten, bewaard in jouw sessie. Controleer je PHP geheugenlimiet en je DB pakketgroottelimiet. Terugzetten gestopt.';
 $string['restore_path_element_missingmethod'] = 'De methode voor terugzetten {$a} ontbreekt. Die moet gedefinieerd worden door een ontwikkelaar.';
 $string['restore_path_element_noobject'] = 'Het terug te zetten object {$a} is geen object';
+$string['restorechecksumfailed'] = 'Er zijn problemen met de informatie over het terugzetten, bewaard in jouw sessie. Controleer je PHP geheugenlimiet en je DB pakketgroottelimiet. Terugzetten gestopt.';
 $string['restrictedcontextexception'] = 'Het uitvoeren van externe functies schendt de beperkingen van de context';
 $string['restricteduser'] = 'Sorry, maar je huidige account "{$a}" heeft onvoldoende rechten om dat te doen.';
 $string['reverseproxyabused'] = 'Reverse proxy ingeschakeld. Er is geen rechtstreekse toegang tot de server mogelijlk. Contacteer de systeembeheerder.';
@@ -464,7 +465,6 @@ $string['tagnotfound'] = 'Die tag kon niet in de databank gevonden worden';
 $string['targetdatabasenotempty'] = 'De doeldatabank is niet leeg. Transfer afgebroken om veiligheidsredenen.';
 $string['textconditionsnotallowed'] = 'Vergelijking van tekst kolom condities niet toegestaan. Gebruik sql_compare_text() in je query.';
 $string['themenotinstall'] = 'Dit thema is niet geïnstalleerd';
-$string['TODO'] = 'TE DOEN';
 $string['tokengenerationfailed'] = 'Kan geen nieuw token genereren.';
 $string['transactionvoid'] = 'Transactie kan niet geannuleerd worden omdat ze al geannuleerd is.';
 $string['unenrolerror'] = 'Er is een fout opgetreden bij het afmelden van die gebruiker.';

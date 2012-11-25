@@ -58,13 +58,18 @@ if (!empty($forcejs)) {
 
 require_login($course->id, false, $cm);
 
+$context = context_course::instance($course->id);
+$contextmodule = context_module::instance($cm->id);
+
+$launch = 0; // Does this automatically trigger a launch based on skipview.
 if (!empty($scorm->popup)) {
-    $launch = 0;
     $orgidentifier = '';
     $scoid = 0;
-    if ($scorm->skipview >= 1) {
+    if ($scorm->skipview >= SCORM_SKIPVIEW_FIRST &&
+        has_capability('mod/scorm:skipview', $contextmodule) &&
+        !has_capability('mod/scorm:viewreport', $contextmodule)) {
         // do we launch immediately and redirect the parent back ?
-        if ($scorm->skipview == 2 || (scorm_get_tracks($scoes[0]->id, $USER->id) === false)) {
+        if ($scorm->skipview == SCORM_SKIPVIEW_ALWAYS || !scorm_has_tracks($scorm->id, $USER->id)) {
             $orgidentifier = '';
             if ($sco = scorm_get_sco($scorm->launch, SCO_ONLY)) {
                 if (($sco->organization == '') && ($sco->launch == '')) {

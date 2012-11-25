@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Calculada opción múltiple';
-$string['pluginnameadding'] = 'Añafir una pregunta calculada de opción múltiple';
-$string['pluginnameediting'] = 'Editar una pregunta calculada de opción múltiple ';
 $string['pluginname_help'] = 'Las preguntas calculadas de opción múltiple son similares a las preguntas de opción múltiple, en cuyos elementos a elegir pueden incluirse resultados de aplicar una fórmula a variables (comodines) entre llaves que son sustituídas con valores cuando se formula la pregunta. Por ejemplo, en la pregunta "¿Cual es el área de un rectangulo de longitud {l} y ancho {w}?, una de las opciones es {={l}*{w}} (donde * indica multiplicación)';
-$string['pluginnamesummary'] = 'Las preguntas calculadas de opción múltiple son similares a las preguntas de opción múltiple, en cuyos  elementos a elegir pueden incluirse resultados obtenidos al aplicar una fórmula a valores numéricos seleccionados aleatoriamente de un grupo de valores cuando se formula la pregunta. ';
+$string['pluginnameadding'] = 'Añafir una pregunta calculada de opción múltiple';
+$string['pluginnameediting'] = 'Editar una pregunta calculada de opción múltiple';
+$string['pluginnamesummary'] = 'Las preguntas calculadas de opción múltiple son similares a las preguntas de opción múltiple, en cuyos  elementos a elegir pueden incluirse resultados obtenidos al aplicar una fórmula a valores numéricos seleccionados aleatoriamente de un grupo de valores cuando se formula la pregunta.';

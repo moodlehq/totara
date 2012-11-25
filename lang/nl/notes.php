@@ -56,7 +56,6 @@ $string['personal'] = 'persoonlijk';
 $string['personalnotes'] = 'Persoonlijke notities';
 $string['publishstate'] = 'Context';
 $string['publishstate_help'] = 'De context van een notitie bepaalt wie de notitie kan zien.
-
 * Persoonlijk - De notitie is enkel zichtbaar voor jou
 * Cursus - De notitie is zichtbaar voor leraren in de cursus
 * Site - De notitie is zichtbaar voor alle leraren in alle cursussen';

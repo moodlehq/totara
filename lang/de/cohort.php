@@ -35,10 +35,9 @@ $string['bulknocohort'] = 'Keine verfügbaren globalen Gruppen gefunden';
 $string['cohort'] = 'Globale Gruppe';
 $string['cohort:assign'] = 'Globale Gruppenmitglieder zuweisen';
 $string['cohort:manage'] = 'Globale Gruppen verwalten';
+$string['cohort:view'] = 'Globale Gruppen nutzen und Mitglieder sehen';
 $string['cohorts'] = 'Globale Gruppen';
 $string['cohortsin'] = '{$a}: verfügbare globale Gruppen';
-$string['cohort:view'] = 'Globale Gruppen nutzen und Mitglieder sehen
-';
 $string['component'] = 'Quelle';
 $string['currentusers'] = 'Aktuelle Nutzer/innen';
 $string['currentusersmatching'] = 'Aktuell passende Nutzer/innen';
@@ -53,8 +52,7 @@ $string['memberscount'] = 'Größe der globalen Gruppe';
 $string['name'] = 'Name';
 $string['nocomponent'] = 'Manuell erzeugt';
 $string['potusers'] = 'Mögliche Nutzer/innen';
-$string['potusersmatching'] = 'Mögliche passende Nutzer/innen
-';
+$string['potusersmatching'] = 'Mögliche passende Nutzer/innen';
 $string['removeuserwarning'] = 'Wenn Nutzer/innen aus einer globalen Gruppe entfernt werden, könnten diese Nutzer/innen aus diversen Kursen abgemeldet werden, wobei alle Nutzereinstellungen, Bewertungen, Gruppenzugehörigkeiten und weitere Nutzerinformationen in den betroffenen Kursen gelöscht werden.';
 $string['search'] = 'Suchen';
 $string['searchcohort'] = 'Globale Gruppen suchen';

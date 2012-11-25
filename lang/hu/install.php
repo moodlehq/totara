@@ -36,8 +36,7 @@ $string['chooselanguage'] = 'Válasszon nyelvet';
 $string['chooselanguagehead'] = 'Nyelv kiválasztása';
 $string['chooselanguagesub'] = 'Válasszon nyelvet a telepítéshez! Ez lesz a portál alapbeállítás szerinti nyelve, de később módosíthatja.';
 $string['cliadminpassword'] = 'Új rendszergazda jelszava';
-$string['cliadminusername'] = 'Rendszergazda fiókjának felhasználóneve
-';
+$string['cliadminusername'] = 'Rendszergazda fiókjának felhasználóneve';
 $string['clialreadyconfigured'] = 'A config.php már létezik, a portál telepítéséhez használja az admin/cli/install_database.php állományt.';
 $string['clialreadyinstalled'] = 'A config.php már létezik, a portál frissítéséhez használja az admin/cli/upgrade.php állományt.';
 $string['cliinstallfinished'] = 'A telepítés sikeresen lezajlott.';
@@ -125,8 +124,7 @@ $string['inputdatadirectory'] = 'Adatkönyvtár:';
 $string['inputwebadress'] = 'Webcím:';
 $string['inputwebdirectory'] = 'Moodle-könyvtár:';
 $string['installation'] = 'Telepítés';
-$string['langdownloaderror'] = 'A(z) "{$a}" nyelvet nem lehet letölteni. A telepítés angolul folytatódik.
-';
+$string['langdownloaderror'] = 'A(z) "{$a}" nyelvet nem lehet letölteni. A telepítés angolul folytatódik.';
 $string['langdownloadok'] = 'A "{$a}" nyelv telepítése sikerült. A telepítés ezen a nyelven folytatódik.';
 $string['magicquotesruntime'] = 'Futásidejű Magic Quotes';
 $string['magicquotesruntimeerror'] = 'Ki kell kapcsolni';
@@ -135,34 +133,31 @@ $string['memorylimit'] = 'Memóriakorlát';
 $string['memorylimiterror'] = 'A PHP-memóriakorlát túl alacsonyra van állítva... ez a későbbiekben gondot okozhat.';
 $string['memorylimithelp'] = '<p>Szerverén a PHP memóriakorlátja jelenleg {$a}. </p><p>Ez a Moodle számára a későbbiekben gondot okozhat, különösen akkor, ha sok modulja és/vagy sok felhasználója van bekapcsolva.</p><p> Ha lehet, állítsa be a PHP-t magasabb korláttal, pl. 40M-tal. Többféleképpen próbálkozhat:</p><ol><li> Ha lehet, fordítsa újra a PHP-t <i>--enable-memory-limit</i>-tel. Így a Moodle maga állíthatja be a memóriakorlátot.</li><li>Ha elérhető a php.ini állomány, módosítsa a <b>memory_limit</b> beállítását pl. 40M-ra. Ha nem éri el az állományt, kérje meg a rendszergazdát a módosítás elvégzésére.</li><li>Egyes PHP-szervereken létrehozhat egy .htaccess állományt a Moodle-könyvtárban az alábbi sorral: <blockquote><div>php_value memory_limit 40M.</div></blockquote>    <p> Vannak szerverek, ahol ez az összes PHP-oldal működését megakadályozza (az oldalak hibát jeleznek), ezért el kell távolítania a .htaccess állományt.</p></li></ol>';
 $string['mssql'] = 'SQL*Server (mssql)';
-$string['mssqlextensionisnotpresentinphp'] = 'A PHP nincs megfelelően beállítva az MSSQL-bővítményhez, így nem tud kommunikálni az SQL*Serverrel.  Ellenőrizze a php.ini állományt, vagy fordítsa le újra a PHP-t.';
 $string['mssql_n'] = 'SQL*Server UTF-8 támogatással (mssql_n)';
+$string['mssqlextensionisnotpresentinphp'] = 'A PHP nincs megfelelően beállítva az MSSQL-bővítményhez, így nem tud kommunikálni az SQL*Serverrel.  Ellenőrizze a php.ini állományt, vagy fordítsa le újra a PHP-t.';
 $string['mysql'] = 'MySQL (mysql)';
 $string['mysqlextensionisnotpresentinphp'] = 'A PHP nincs jól beállítva a MySQL-bővítményhez, így nem tud vele kommunikálni. Ellenőrizze a php.ini fájlt, vagy fordítsa újra a PHP-t.';
 $string['mysqli'] = 'Javított MySQL (mysqli)';
 $string['mysqliextensionisnotpresentinphp'] = 'A PHP nincs jól beállítva a MySQL-bővítményhez, így nem tud vele kommunikálni. Ellenőrizze a php.ini fájlt, vagy fordítsa újra a PHP-t. A MySQLi-bővítmény PHP 4 esetén nem használható.';
 $string['nativemssql'] = 'QL*Server FreeTDS (native/mssql)';
 $string['nativemssqlhelp'] = 'Most be kell állítania azt az adatbázist, ahová a Moodle legtöbb adata kerül majd.
-Az adatbázisnak a hozzáféréshez szükséges felhasználónévvel és jelszóval már léteznie kell. Táblaelőtag használata kötelező.
-';
+Az adatbázisnak a hozzáféréshez szükséges felhasználónévvel és jelszóval már léteznie kell. Táblaelőtag használata kötelező.';
 $string['nativemysqli'] = 'Tökéletesített MySQL (native/mysqli)';
 $string['nativemysqlihelp'] = 'Most be kell állítania azt az adatbázist, ahol a Moodle adatainak többségét tárolni fogja. Az adatbázis akkor hozható létre, ha a felhasználó rendelkezik a szükséges engedélyekkel, a felhasználónévnek és a jelszónak már léteznie kell. A tábla előtagjának megadása választható.';
 $string['nativeoci'] = 'Oracle (natív/oci)';
 $string['nativeocihelp'] = 'Most be kell állítania azt az adatbázist, ahová a Moodle legtöbb adata kerül majd.
-Az adatbázisnak a hozzáféréshez szükséges felhasználónévvel és jelszóval már léteznie kell. Táblaelőtag használata kötelező.
-';
+Az adatbázisnak a hozzáféréshez szükséges felhasználónévvel és jelszóval már léteznie kell. Táblaelőtag használata kötelező.';
 $string['nativepgsql'] = 'PostgreSQL (natív/pgsql)';
 $string['nativepgsqlhelp'] = 'Most be kell állítania azt az adatbázist, ahol a Moodle adatainak többségét tárolni fogja. Az adatbázisnak már léteznie kell, mint ahogyan a hozzáférésre használt felhasználónévnek és jelszónak is léteznie kell. A tábla előtagja kötelező.';
 $string['nativesqlsrv'] = 'SQL*Server Microsoft (native/sqlsrv)';
 $string['nativesqlsrvhelp'] = 'Most be kell állítania azt az adatbázist, ahová a Moodle legtöbb adata kerül majd.
-Az adatbázisnak a hozzáféréshez szükséges felhasználónévvel és jelszóval már léteznie kell. Táblaelőtag használata kötelező.
-';
+Az adatbázisnak a hozzáféréshez szükséges felhasználónévvel és jelszóval már léteznie kell. Táblaelőtag használata kötelező.';
 $string['nativesqlsrvnodriver'] = 'A Microsoft SQL Server meghajtói nincsenek telepítve vagy megfelelően beállítva a PHP használatához.';
 $string['nativesqlsrvnonwindows'] = 'A Microsoft SQL Server meghajtói PHP használatához csak a Windows operációs rendszerhez állnak rendelkezésre.';
 $string['oci8po'] = 'Oracle (oci8po)';
 $string['ociextensionisnotpresentinphp'] = 'A PHP nincs megfelelően beállítva az OCI8 bővítményhez, így nem tud kommunikálni az Oracle-lal. Ellenőrizze a php.ini állományt, vagy fordítsa le újra a PHP-t.';
-$string['odbcextensionisnotpresentinphp'] = 'A PHP nincs megfelelően beállítva az ODBC-bővítményhez, így nem tud kommunikálni az SQL*Serverrel.  Ellenőrizze a php.ini állományt, vagy fordítsa le újra a PHP-t.';
 $string['odbc_mssql'] = 'SQL*Server over ODBC (odbc_mssql)';
+$string['odbcextensionisnotpresentinphp'] = 'A PHP nincs megfelelően beállítva az ODBC-bővítményhez, így nem tud kommunikálni az SQL*Serverrel.  Ellenőrizze a php.ini állományt, vagy fordítsa le újra a PHP-t.';
 $string['pass'] = 'Sikerült';
 $string['paths'] = 'Útvonalak';
 $string['pathserrcreatedataroot'] = 'A telepítő nem tudja létrehozni az adatkönyvtárat ({$a->dataroot}).';
@@ -171,7 +166,7 @@ $string['pathsrodataroot'] = 'Az adatok gyökérkönyvtára nem írható.';
 $string['pathsroparentdataroot'] = 'A felettes könyvtás ({$a->parent}) nem írható. A telepítő nem tudja létrehozni az adatkönyvtárat ({$a->dataroot}).';
 $string['pathssubadmindir'] = 'Egy pár webes gazdagép esetén az /admin speciális URL pl. a vezérlőpanel eléréséhez. Ez ütközik a Moodle admin oldalainak standard helyével. Javítás: a telepítésben nevezze át a rendszergazda könyvtárát, az új nevet pedig írja be ide. Például: <em>moodleadmin</em>. Ezzel helyrehozhatók a Moodle rendszergazdai ugrópontjai.';
 $string['pathssubdataroot'] = 'Szüksége van egy helyre, ahol a Moodle mentheti a feltöltött állományokat. Ez a könyvtár a webszerver felhasználója (általában \'nobody\' vagy \'apache\') számára legyen mind olvasható, MIND ÍRHATÓ. Ha nem létezik, a telepítő megpróbálja létrehozni.';
-$string['pathssubdirroot'] = 'Teljes útvonal a Moodle telepítéséhez. ';
+$string['pathssubdirroot'] = 'Teljes útvonal a Moodle telepítéséhez.';
 $string['pathssubwwwroot'] = 'A Moodle elérésére használandó teljes webcím. A Moodle egyszerre több
 címről nem érhető el. Ha portálja több címet használ, a jelen cím kivételével az összeshez állandó
 átirányítást kell beállítania. Ha portálja mind intranetről, mind az internetről elérhető, a nyilvános
@@ -183,7 +178,7 @@ $string['pgsqlextensionisnotpresentinphp'] = 'A PHP nincs megfelelően beállít
 $string['phpextension'] = '{$a} PHP-bővítmény';
 $string['phpversion'] = 'PHP-verzió';
 $string['phpversionhelp'] = 'A Moodle használatához legalább a PHP 4.3.0 vagy 5.1.0 verziója szükséges
- (az 5.0.x több ismert gond miatt nem ajánlott). Az Ön által használt
+(az 5.0.x több ismert gond miatt nem ajánlott). Az Ön által használt
 verzió {$a}. Frissítse a PHP-verziót, vagy térjen át újabb PHP-verziót
 működtető gazdagépre! (5.0.x esetén visszatérhet a 4.4.x verzióhoz is)';
 $string['postgres7'] = 'PostgreSQL (postgres7)';

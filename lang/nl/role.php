@@ -39,11 +39,11 @@ $string['allowroletoswitch'] = 'Laat gebruikers met rol {$a->fromrole} van rol t
 $string['allowswitch'] = 'Toestaan van rol te wisselen';
 $string['allsiteusers'] = 'Alle sitegebruikers';
 $string['archetype'] = 'Rol archetype';
+$string['archetype_help'] = 'De archetype rol bepaalt welke rechten een rol krijgt wanneer die terug op standaardinstellingen gezet wordt. Dit bepaalt ook de nieuwe rechten die een rol krijgt wanneer de site geüpgraded wordt';
 $string['archetypecoursecreator'] = 'ARCHETYPE: cursusaanmaker';
 $string['archetypeeditingteacher'] = 'ARCHETYPE: Leraar (bewerken)';
 $string['archetypefrontpage'] = 'ARCHETYPE: Geauthenticeerde gebruikers op de startpagina';
 $string['archetypeguest'] = 'ARCHETYPE: Gast';
-$string['archetype_help'] = 'De archetype rol bepaalt welke rechten een rol krijgt wanneer die terug op standaardinstellingen gezet wordt. Dit bepaalt ook de nieuwe rechten die een rol krijgt wanneer de site geüpgraded wordt';
 $string['archetypemanager'] = 'ARCHETYPE: Beheerder';
 $string['archetypestudent'] = 'ARCHETYPE: Leerling';
 $string['archetypeteacher'] = 'ARCHETYPE: Leraar (niet bewerken)';
@@ -58,7 +58,7 @@ $string['assignrole'] = 'Wijs rol toe';
 $string['assignrolenameincontext'] = 'Wijs rol \'{$a->role}\' toe in {$a->context}';
 $string['assignroles'] = 'Rollen toewijzen';
 $string['assignroles_help'] = 'Door een gebruiker een rol toe te wijzen binnen een bepaalde context, geef je hem de rechten die bij die rol horen voor deze context en in alle "lagere" contexten.
-Bijvoorbeeld: als je een gebruiker de rol "Leerling" geeft binnen een cursus, dan zal die gebruiker die rol hebben voor die cursus, maar ook voor alle blokken en activiteiten binnen die cursus. ';
+Bijvoorbeeld: als je een gebruiker de rol "Leerling" geeft binnen een cursus, dan zal die gebruiker die rol hebben voor die cursus, maar ook voor alle blokken en activiteiten binnen die cursus.';
 $string['assignrolesin'] = 'Rollen toewijzen in {$a}';
 $string['assignrolesrelativetothisuser'] = 'Rollen, relatief tot deze gebruiker toewijzen';
 $string['backtoallroles'] = 'Terug naar de lijst met alle rollen';
@@ -210,8 +210,8 @@ $string['legacy:editingteacher'] = 'PRE 1.7 ROL: Leraar (bewerken)';
 $string['legacy:guest'] = 'PRE 1.7 ROL: Gast';
 $string['legacy:student'] = 'PRE 1.7 ROL: Leerling';
 $string['legacy:teacher'] = 'PRE 1.7 ROL: Leraar (niet bewerken)';
-$string['legacytype'] = 'Standaard roltype';
 $string['legacy:user'] = 'PRE 1.7 ROL: Ingelogde gebruiker';
+$string['legacytype'] = 'Standaard roltype';
 $string['listallroles'] = 'Toon alle rollen';
 $string['localroles'] = 'Lokaal toegewezen rollen';
 $string['mainadmin'] = 'Hoofdbeheerder';
@@ -239,30 +239,14 @@ $string['notset'] = 'Niet ingesteld';
 $string['overrideanotherrole'] = 'Nog een rol overschrijven';
 $string['overridecontext'] = 'Context overschrijven';
 $string['overridepermissions'] = 'Rechten overschrijven';
-$string['overridepermissionsforrole'] = 'Rechten overschrijven voor de rol \'{$a->role}\' in {$a->context}';
-$string['overridepermissions_help'] = '<p>
-Overschrijvingen zijn specifieke rechten, bedoeld om alleen in een bepaalde context een rol te overschrijven. Hiermee kun je de rechten van een gebruiker bijregelen waar nodig.
-</p>
+$string['overridepermissions_help'] = 'Overschrijvingen zijn specifieke rechten, bedoeld om alleen in een bepaalde context een rol te overschrijven. Hiermee kun je de rechten van een gebruiker bijregelen waar nodig.
 
-<p>
 Bijvoorbeeld: als gebruikers met de leerling rol in jouw cursus gewoonlijk nieuwe discussies kunnen starten in een forum, maar er is één bepaald forum waar je dat recht wil beperken, dan kun je een overschrijving zetten die het recht van leerlingen om nieuwe discussies te starten VOORKOMT.
-</p>
 
-<p>
 Overschrijvingen kunnen ook gebruikt worden om delen van je site en cursussen meer open te stellen en gebruikers daar extra rechten te geven waar nodig. Zo zou je bijvoorbeeld kunnen je leerlingen het recht geven om bepaalde opdrachten te beoordelen
-</p>
 
-<p>
-De interface is gelijkaardig aan die van het definiëren van rollen, behalve dat soms enkel de relevante mogelijkheden getoond worden. Je zult ook sommige mogelijkheden opgelicht zien: die tonen je welke rechten voor die rol actief zouden zijn ZONDER overschrijven actief. (dit is als je overschrijving in ingesteld als OVERERVEN).
-</p>
-
-<p>
-See also
-<a href="help.php?file=roles.html">Rollen</a>,
-<a href="help.php?file=contexts.html">Contexten</a>,
-<a href="help.php?file=assignroles.html">Rollen toewijzen</a> en
-<a href="help.php?file=permissions.html">Rechten</a>.
-</p>';
+De interface is gelijkaardig aan die van het definiëren van rollen, behalve dat soms enkel de relevante mogelijkheden getoond worden. Je zult ook sommige mogelijkheden opgelicht zien: die tonen je welke rechten voor die rol actief zouden zijn ZONDER overschrijven actief. (dit is als je overschrijving in ingesteld als OVERERVEN).';
+$string['overridepermissionsforrole'] = 'Rechten overschrijven voor de rol \'{$a->role}\' in {$a->context}';
 $string['overridepermissionsin'] = 'Rechten overschrijven in {$a}';
 $string['overrideroles'] = 'Rollen overschrijven';
 $string['overriderolesin'] = 'Rollen overschrijven in {$a}';
@@ -270,7 +254,6 @@ $string['overrides'] = 'Rollen overschrijven';
 $string['overridesbycontext'] = 'Overschrijvingen (per context)';
 $string['permission'] = 'Recht';
 $string['permission_help'] = 'Rechten zijn instellingen van mogelijkheden. Er zijn 4 opties:
-
 * Niet ingesteld
 * Toestaan - Het recht wordt gegeven voor de mogelijkheid
 * Verhinder - Het recht wordt verwijderd voor de mogelijkheid, zelfs als dat toegestaan wordt in eenn hogere context
@@ -317,25 +300,25 @@ $string['restore:uploadfile'] = 'Bestanden uploaden naar backupzone\'s';
 $string['restore:userinfo'] = 'Gebruikersgegevens terugzetten';
 $string['restore:viewautomatedfilearea'] = 'Zet cursussen terug van automatische backups';
 $string['risks'] = 'Risico\'s';
+$string['role:assign'] = 'Toewijzen van rollen aan gebruikers';
+$string['role:manage'] = 'Aanmaken en beheren van rollen';
+$string['role:override'] = 'Rechten voor anderen overschrijven';
+$string['role:review'] = 'Rechten voor anderen nakijken';
+$string['role:safeoverride'] = 'Overschrijf veilige rechten voor anderen';
+$string['role:switchroles'] = 'Schakel over naar andere rollen';
 $string['roleallowheader'] = 'Rol toestaan:';
 $string['roleallowinfo'] = 'Kies een rol om toe te voegen aan de lijst met rollen met toelating in context {$a->context}, mogelijkheid {$a->cap}:';
-$string['role:assign'] = 'Toewijzen van rollen aan gebruikers';
 $string['roleassignments'] = 'Roltoewijzingen';
 $string['roledefinitions'] = 'Roldefinities';
 $string['rolefullname'] = 'Naam';
 $string['roleincontext'] = '{$a->role} in {$a->context}';
-$string['role:manage'] = 'Aanmaken en beheren van rollen';
-$string['role:override'] = 'Rechten voor anderen overschrijven';
 $string['roleprohibitheader'] = 'Rol verbieden:';
 $string['roleprohibitinfo'] = 'Kies een rol om toe te voegen aan de lijst met verboden rollen in context {$a->context}, mogelijkheid {$a->cap}:';
-$string['role:review'] = 'Rechten voor anderen nakijken';
 $string['roles'] = 'Rollen';
-$string['role:safeoverride'] = 'Overschrijf veilige rechten voor anderen';
+$string['roles_help'] = 'Een rol is een verzameling rechten vastgelegd voor het ganse systeem, die je in een specifieke context aan specifieke gebruikers kunt toekennen.';
 $string['roleselect'] = 'Selecteer rol';
 $string['rolesforuser'] = 'Rollen voor gebruiker {$a}';
-$string['roles_help'] = 'Een rol is een verzameling rechten vastgelegd voor het ganse systeem, die je in een specifieke context aan specifieke gebruikers kunt toekennen.';
 $string['roleshortname'] = 'Korte naam';
-$string['role:switchroles'] = 'Schakel over naar andere rollen';
 $string['roletoassign'] = 'Toe te wijzen rol';
 $string['roletooverride'] = 'Te overschrijven rol';
 $string['safeoverridenotice'] = 'Opmerking: mogelijkheden met hogere risico\'s zijn geblokkeerd omdat je alleen het recht hebt om veilige mogelijkheden te overschrijven';
@@ -345,7 +328,6 @@ $string['selectrole'] = 'Kies een rol';
 $string['showallroles'] = 'Toon alle rollen';
 $string['showthisuserspermissions'] = 'Toon de rechten van deze gebruiker';
 $string['site:accessallgroups'] = 'Toegang voor alle groepen';
-$string['siteadministrators'] = 'Sitebeheerders';
 $string['site:approvecourse'] = 'Cursus aanmaken goedkeuren';
 $string['site:backup'] = 'Cursussen backuppen';
 $string['site:config'] = 'Site configuratie wijzigen';
@@ -364,6 +346,7 @@ $string['site:viewfullnames'] = 'Altijd volledige namen van gebruikers zien';
 $string['site:viewparticipants'] = 'Deelnemers bekijken';
 $string['site:viewreports'] = 'Rapporten bekijken';
 $string['site:viewuseridentity'] = 'Bekijk de volledige gebruikersidentiteit in lijsten';
+$string['siteadministrators'] = 'Sitebeheerders';
 $string['tag:create'] = 'Nieuwe tags maken';
 $string['tag:edit'] = 'Bestaande tags bewerken';
 $string['tag:editblocks'] = 'Bewerk blokken op tag-pagina';
@@ -386,18 +369,18 @@ $string['user:manageownfiles'] = 'Beheer bestanden op eigen private bestandszone
 $string['user:managesyspages'] = 'Configureer standaard pagina layout voor publieke gebruikersprofielen';
 $string['user:readuserblogs'] = 'Blogs van alle gebruikers bekijken';
 $string['user:readuserposts'] = 'Berichten van alle gebruikers bekijken';
-$string['usersfrom'] = 'Gebruikers van {$a}';
-$string['usersfrommatching'] = 'Gebruikers van  {$a->contextname} die overeenkomen met \'{$a->search}\'';
-$string['usersinthisx'] = 'Gebruikers in deze {$a}';
-$string['usersinthisxmatching'] = 'Gebruikers in dit {$a->contexttype} die overeenkomen met \'{$a->search}\'';
-$string['userswithrole'] = 'Alle gebruikers met een rol';
-$string['userswiththisrole'] = 'Gebruikers met rol';
 $string['user:update'] = 'Gebruikersprofielen updaten';
 $string['user:viewalldetails'] = 'Bekijk alle informatie van de gebruiker';
 $string['user:viewdetails'] = 'Gebruikersprofielen bekijken';
 $string['user:viewhiddendetails'] = 'Verborgen details van gebruikers bekijken';
 $string['user:viewuseractivitiesreport'] = 'Activiteitenrapporten van gebruikers bekijken';
 $string['user:viewusergrades'] = 'Cijfers van gebruikers bekijken';
+$string['usersfrom'] = 'Gebruikers van {$a}';
+$string['usersfrommatching'] = 'Gebruikers van  {$a->contextname} die overeenkomen met \'{$a->search}\'';
+$string['usersinthisx'] = 'Gebruikers in deze {$a}';
+$string['usersinthisxmatching'] = 'Gebruikers in dit {$a->contexttype} die overeenkomen met \'{$a->search}\'';
+$string['userswithrole'] = 'Alle gebruikers met een rol';
+$string['userswiththisrole'] = 'Gebruikers met rol';
 $string['useshowadvancedtochange'] = 'GEbruik \'Toon geavanceerd\' om te wijzigen';
 $string['viewingdefinitionofrolex'] = 'Bekijk de definities van rol \'{$a}\'';
 $string['viewrole'] = 'Roldetails bekijken';

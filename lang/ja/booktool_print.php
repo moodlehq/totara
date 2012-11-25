@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'ブック印刷';
+$string['print:print'] = 'ブックを印刷する';
 $string['printbook'] = 'ブックを丸ごと印刷する';
 $string['printchapter'] = 'この章だけを印刷する';
 $string['printdate'] = '日付';
 $string['printedby'] = '印刷者';
-$string['print:print'] = 'ブックを印刷する';

@@ -28,8 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['blockcolumnwidth'] = 'Spaltenbreite für Blöcke';
 $string['blockcolumnwidthdesc'] = 'Diese Einstellung bestimmt die Spaltenbreite für Blöcke. <strong>Mit Werten unter 200px kann der Kalenderblock nicht richtig angezeigt werden.</strong>';
 $string['blockcontentbgc'] = 'Hintergrundfarbe für Blockinhalte';
-$string['blockcontentbgcdesc'] = 'Diese Einstellung legt die Hintergrundfarbe für die Blockinhalte fest.
-';
+$string['blockcontentbgcdesc'] = 'Diese Einstellung legt die Hintergrundfarbe für die Blockinhalte fest.';
 $string['choosereadme'] = '<div class="clearfix">
 <div class="theme_screenshot">
 <h2>Formal White</h2>

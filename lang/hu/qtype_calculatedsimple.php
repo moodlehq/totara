@@ -33,11 +33,11 @@ $string['mustbenumeric'] = 'Itt egy számot kell megadnia.';
 $string['mustnotbenumeric'] = 'Ez nem lehet szám.';
 $string['newsetwildcardvalues'] = 'helyettesítő karakter(ek) értékeinek új halmaza(i)';
 $string['pluginname'] = 'Egyszerű számításos';
-$string['pluginnameadding'] = 'Egyszerű számításos kérdés hozzáadása';
-$string['pluginnameediting'] = 'Egyszerű számításos kérdés szerkesztése';
 $string['pluginname_help'] = 'Egyszerű számításos kérdésekkel egyedi számjegyes kérdéseket hozhat létre helyettesítő
 karakterekkel, melyek helyére a teszt megoldása során egyedi értékek kerülnek. Az egyszerű számításos kérdések
 a számításos kérdések jellemzőinek túlnyomó részét kínálják - egyszerűbb létrehozási felülettel.';
+$string['pluginnameadding'] = 'Egyszerű számításos kérdés hozzáadása';
+$string['pluginnameediting'] = 'Egyszerű számításos kérdés szerkesztése';
 $string['pluginnamesummary'] = 'A számításos kérdések egyszerűbb változata, mely hasonló a számjegyes kérdésekhez, de a számok halmazból való kiválasztása a teszt megoldása során véletlenszerűen történik.';
 $string['setno'] = '{$a} halmaz';
 $string['setwildcardvalues'] = 'helyettesítő karakter(ek) értékeinek halmaza(i)';

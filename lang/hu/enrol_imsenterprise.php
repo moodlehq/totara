@@ -84,7 +84,7 @@ $string['restricttarget_desc'] = 'Egy IMS Enterprise adatfájlt számos "célra"
 eltérő rendszerekbe szánhatunk. Az Enterprise fájlban megadhatjuk, hogy az adatokat egy vagy több névvel azonosított célrendszer számára szánjuk-e,
 éspedig úgy, hogy <target> címkével ruházzuk fel őket a <properties> címkén belül.
 Sok esetben ezzel nem kell törődnünk. Elég a beállítást üresen hagyni, a Moodle az adatállományt mindig feldolgozza, akár van megadva cél, akár nincs.
- Egyéb esetben adja meg a <target> címkén belül előállítandó nevet.';
+Egyéb esetben adja meg a <target> címkén belül előállítandó nevet.';
 $string['roles'] = 'Szerepek';
 $string['sourcedidfallback'] = 'Az adott személy azonosítójaként használja a &quot;sourceid&quot;-t, ha a &quot;userid&quot; mező nem található';
 $string['sourcedidfallback_desc'] = 'Az IMS adatai között a <sourcedid> mező a forrásrendszerben használatos, személyhez kapcsolódó azonosítókódot képviseli. A <userid> egy ettől különböző mező, amelyben a felhasználó által belépéskor használandó azonosítókód szerepel. Sokszor, de nem mindenkor, a két kód lehet azonos.

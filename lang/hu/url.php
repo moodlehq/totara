@@ -34,7 +34,6 @@ $string['configsecretphrase'] = 'Ezzel a titkos kifejezéssel paraméterként k�
 $string['contentheader'] = 'Tartalom';
 $string['displayoptions'] = 'Elérhető megjelenítési lehetőségek';
 $string['displayselect'] = 'Megjelenítés';
-$string['displayselectexplain'] = 'Válassza ki a megjelenítés típusát. Nem minden típus használható minden URL-lel.';
 $string['displayselect_help'] = 'Ez a beállítás, továbbá az állomány típusa és a böngészőben a beágyazás engedélyezése szabja meg az állomány megjelenését. Az alábbi lehetőségek közül választhat:
 * Automatikus - Az adott állomány típusához automatikusan kiválasztja a legjobb megjelenítést
 * Beágyazás - Az állomány az oldalon a navigációs sáv alatt leírásával és az esetleges blokkokkal együtt jelenik meg
@@ -43,6 +42,7 @@ $string['displayselect_help'] = 'Ez a beállítás, továbbá az állomány típ
 * Előugró ablakban - Az állomány új böngészőablakban, menük vagy címsor nélkül jelenik meg
 * Keretben - Az állomány a navigációs sáv alatt egy keretben jelenik meg
 * Új ablakban - Az állomány új böngészőablakban, menükkel és címsorral jelenik meg\';';
+$string['displayselectexplain'] = 'Válassza ki a megjelenítés típusát. Nem minden típus használható minden URL-lel.';
 $string['externalurl'] = 'Külső URL';
 $string['framesize'] = 'Keret magassága';
 $string['invalidstoredurl'] = 'A forrás nem jeleníthető meg. Érvénytelen URL';

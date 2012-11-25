@@ -45,15 +45,15 @@ $string['choosereadme'] = '<div class="clearfix">
 Dit thema werd gecodeerd en wordt onderhouden door Patrick Malley van NewSchool Learning. Hij kan worden gecontacteerd via email op contact@newschoollearning.com. </p>
 <h2>Licentie</h2>
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['configtitle'] = 'Nonzero instellignen';
 $string['customcss'] = 'Aangepaste CSS';
 $string['customcssdesc'] = 'CSS-regels die je in deze tekstzone toevoegt, zullen op elke pagina effect hebben. Dit maakt het makkelijker om dit thema aan je wensen aan te passen.';
 $string['pluginname'] = 'Nonzero';
+$string['region-side-post'] = 'Rechts';
+$string['region-side-pre'] = 'Links';
 $string['regionpostwidth'] = 'Rechter kolombreedte';
 $string['regionpostwidthdesc'] = 'Hiermee kies je de breedte van de blokken die de rechterkolom van de pagina vormen';
 $string['regionprewidth'] = 'Linkerkolom breedte';
 $string['regionprewidthdesc'] = 'Hiermee kies je de breedte van de blokken die de linkerkolom van de pagina vormen. Deze kolom wordt in het midden van de pagina getoond als je de blog-layout gebruikt';
-$string['region-side-post'] = 'Rechts';
-$string['region-side-pre'] = 'Links';

@@ -238,16 +238,15 @@ $string['scaletimes5'] = '几乎从不,不常,偶尔,经常,几乎总是';
 $string['seemoredetail'] = '点击这里看更多细节';
 $string['selectedquestions'] = '从一个量表中选出的问题，所有学生';
 $string['summary'] = '概要';
-$string['surveycompleted'] = '您已经完成了该问卷。以下图表概要显示了您的结果与班级平均结果的比较。';
 $string['survey:download'] = '下载响应';
-$string['surveygraph'] = '问卷调查图表';
-$string['surveyname'] = '问卷名称';
 $string['survey:participate'] = '响应问卷';
 $string['survey:readresponses'] = '查看响应';
+$string['surveycompleted'] = '您已经完成了该问卷。以下图表概要显示了您的结果与班级平均结果的比较。';
+$string['surveygraph'] = '问卷调查图表';
+$string['surveyname'] = '问卷名称';
 $string['surveysaved'] = '问卷已保存';
 $string['surveytype'] = '问卷类型';
 $string['surveytype_help'] = '有 3 种调查类型：
-
 * 思考与学习态度调查（ATTLS）- 用来度量个体是“连接型学习者”（愿意寻找学习的乐趣，乐于合作和接受他人意见）还是“分隔型学习者”（对学习采用更批评和思辨的立场）
 * 关键事件调查
 * 建构式在线学习环境调查（COLLES）- 了解互联网的哪种交互能力更能促进学生实践动态学习';

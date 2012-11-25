@@ -76,8 +76,8 @@ $string['groupinfo'] = '关于已选组的信息';
 $string['groupinfomembers'] = '关于已选成员的信息';
 $string['groupinfopeople'] = '关于已选用户信息';
 $string['grouping'] = '大组';
-$string['groupingdescription'] = '大组描述';
 $string['grouping_help'] = '大组是课程中几个小组的集合。如果选择了一个大组，属于同一个大组的不同小组的学生可以一起工作。';
+$string['groupingdescription'] = '大组描述';
 $string['groupingname'] = '大组名';
 $string['groupingnameexists'] = '该组名“{$a}”在该课程中已存在，请另选组名';
 $string['groupings'] = '大组';
@@ -86,20 +86,18 @@ $string['groupmember'] = '组成员';
 $string['groupmemberdesc'] = '组中成员的标准角色';
 $string['groupmembers'] = '组成员';
 $string['groupmembersonly'] = '仅对组成员可用';
-$string['groupmembersonlyerror'] = '对不起，您必须是该活动中至少一个组的成员';
 $string['groupmembersonly_help'] = '如果勾选此框，这项活动（或资源）将只对属于所选的大组的学生开放。';
+$string['groupmembersonlyerror'] = '对不起，您必须是该活动中至少一个组的成员';
 $string['groupmemberssee'] = '查看组成员';
 $string['groupmembersselected'] = '已选组的成员';
 $string['groupmode'] = '小组模式';
-$string['groupmodeforce'] = '强制小组模式';
-$string['groupmodeforce_help'] = '如果小组模式被强制，那么课程中所有的活动都会被设为课程的小组模式。每个活动自己的小组模式设置将被忽略。';
 $string['groupmode_help'] = '此设置有三个选项：
-
 * 无小组 - 没有小组，每个人都是一个大社区中的一员
 * 分割小组 - 每个组的成员都只能看到自己的组，不能看到其它的
 * 可视小组 - 每个组成员都在自己的组内完成工作，但也可以看到其它小组的情况
-
 在课程层次定义的小组模式会缺省成为该课程内所有活动的缺省模式。每个支持小组的活动也都可以定义自己的小组模式。如果课程设定了强制小组模式，则每个活动的设定会被忽略。';
+$string['groupmodeforce'] = '强制小组模式';
+$string['groupmodeforce_help'] = '如果小组模式被强制，那么课程中所有的活动都会被设为课程的小组模式。每个活动自己的小组模式设置将被忽略。';
 $string['groupmy'] = '我的组';
 $string['groupname'] = '组名';
 $string['groupnameexists'] = '组名{$a}在课程中存在，请改为其他名称。';
@@ -117,7 +115,6 @@ $string['grouptemplate'] = '@组';
 $string['hidepicture'] = '隐藏图片';
 $string['importgroups'] = '上传组';
 $string['importgroups_help'] = '可以从文本文件导入组。文件格式如下：
-
 * 文件每行只有一条记录
 * 每条记录是一系列用逗号分隔的数据
 * 第一条记录是字段名列表，决定了文件剩下部分的格式
@@ -128,9 +125,7 @@ $string['members'] = '每组成员数';
 $string['membersofselectedgroup'] = '组成员';
 $string['namingscheme'] = '命名规则';
 $string['namingscheme_help'] = '符号@可以用来创建名中包含英文字母的组。例如“组@”会生成组名“组A”、“组B”、“组C”、...
-
-井号（#）可以用来创建包含数字的组。例如“组#”会生成组名“组1”、“组2”、“组3”、...
-';
+井号（#）可以用来创建包含数字的组。例如“组#”会生成组名“组1”、“组2”、“组3”、...';
 $string['newgrouping'] = '新大组';
 $string['newpicture'] = '新图片';
 $string['newpicture_help'] = '选择一个JPG或PNG格式的图片。此图片会被剪裁为正方形，并改变尺寸为100x100像素。';

@@ -55,12 +55,10 @@ $string['page-notes-x'] = 'すべてのノートページ';
 $string['personal'] = 'パーソナル';
 $string['personalnotes'] = 'パーソナルノート';
 $string['publishstate'] = 'コンテクスト';
-$string['publishstate_help'] = '<p>ここでは3つの設定を選択することができます。</p>
-<ul>
-<li><strong>パーソナル</strong> - ノートはあなただけに表示されます。</li>
-<li><strong>コース</strong> - ノートはこのコースの教師に表示されます。</li>
-<li><strong>サイト</strong> - ノートはすべてのコースの教師に表示されます。</li>
-</ul>';
+$string['publishstate_help'] = 'ここでは3つの設定を選択することができます。
+\* **|パーソナル** - ノートはあなただけに表示されます。
+\* **|コース** - ノートはこのコースの教師に表示されます。
+\* **|サイト** - ノートはすべてのコースの教師に表示されます。';
 $string['selectnotestate'] = 'ノートの状態を選択する';
 $string['site'] = 'サイト';
 $string['sitenotes'] = 'サイトノート';

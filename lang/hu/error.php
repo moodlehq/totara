@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'TEENDŐ';
 $string['alreadyloggedin'] = 'Már {$a} felhasználóként belépett, mielőtt másik felhasználóként belép, előbb ki kell lépnie.';
 $string['authnotexisting'] = 'A hitelesítési segédprogram nem létezik.';
 $string['backupcontainexternal'] = 'A biztonsági mentést tartalmazó állományban külső Moodle hálózati gazdagépek szerepelnek, melyek helyileg nincsenek konfigurálva.';
@@ -342,9 +343,9 @@ $string['maxbytes'] = 'Az állomány mérete nagyobb a maximálisnál';
 $string['messagingdisable'] = 'Ezen a portálon az üzenetküldés ki van kapcsolva';
 $string['mimetexisnotexist'] = 'Rendszere nincs beállítva a mimeTeX futtatásához. Le kell töltenie a PHP_OS platformnak megfelelő futtatható fájlt a <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a> címről vagy be kell szereznie a C nyelvű forráskódot a <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a> címről, le kell fordítania, a futtatható kódot pedig el kell helyeznie moodle/filter/tex/ könyvtárába.';
 $string['mimetexnotexecutable'] = 'A testre szabott mimetex nem futtatható!';
+$string['missing_moodle_backup_xml_file'] = 'A biztonsági mentésből hiányzik a(z) {$a} XML-állomány.';
 $string['missingfield'] = 'A(z) "{$a}" mező hiányzik.';
 $string['missingkeyinsql'] = 'HIBA: a lekérdezésben nincs "{$a}" paraméter.';
-$string['missing_moodle_backup_xml_file'] = 'A biztonsági mentésből hiányzik a(z) {$a} XML-állomány.';
 $string['missingparam'] = 'Egy paraméter ({$a}) hiányzott';
 $string['missingparameter'] = 'Hiányzik egy paraméter';
 $string['missingrequiredfield'] = 'Egy szükséges mező hiányzik.';
@@ -425,9 +426,9 @@ $string['remotedownloaderror'] = 'Az összetevőt nem lehet szerverére letölte
 $string['remotedownloadnotallowed'] = 'Az összetevőket nem lehet szerverére letölteni(az allow_url_fopen ki van kapcsolva). A(z) <a href="{$a->url}">{$a->url}</a> állományt töltse le kézzel, másolja át szerverén a(z) "{$a->dest}" célkönyvtárba, és csomagolja ki ott.';
 $string['reportnotavailable'] = 'Ez a jelentéstípus csak a portálkurzus számára érhető el';
 $string['requireloginerror'] = 'A kurzus vagy a tevékenység nem érhető el.';
-$string['restorechecksumfailed'] = 'A folyamatban tárolt helyreállítási információval gondok vannak. Ellenőrizze a PHP memóriájának / az adatbázis  csomagjának a méreteit. A helyreállítás leállítva.';
 $string['restore_path_element_missingmethod'] = 'Hiányzik a(z) {$a} helyreállítási metódus. Ezt egy fejlesztő határozza meg.';
 $string['restore_path_element_noobject'] = 'A(z) {$a} helyreállítási objektum nem objektum.';
+$string['restorechecksumfailed'] = 'A folyamatban tárolt helyreállítási információval gondok vannak. Ellenőrizze a PHP memóriájának / az adatbázis  csomagjának a méreteit. A helyreállítás leállítva.';
 $string['restrictedcontextexception'] = 'A külső függvény végrehajtása ellentétes a környezeti korlátozással.';
 $string['restricteduser'] = 'Jelenlegi "{$a}" fiókjával ezt nem teheti meg.';
 $string['reverseproxyabused'] = 'Fordított proxy be van kapcsolva, a szerver közvetlenül nem érhető el. <br />Értesítse a rendszergazdát.';
@@ -461,7 +462,6 @@ $string['tagnotfound'] = 'A megadott címke nem található az adatbázisban';
 $string['targetdatabasenotempty'] = 'A céladatbázis nem üres. Biztonsági okokból az átvitel megszakítva.';
 $string['textconditionsnotallowed'] = 'Szövegoszlopok feltételeinek összehasonlítása nem megengedett. Lekérdezésében használja az sql_compare_text() utasítást.';
 $string['themenotinstall'] = 'A téma nincs telepítve';
-$string['TODO'] = 'TEENDŐ';
 $string['tokengenerationfailed'] = 'Nem hozható létre új szimbólum';
 $string['transactionvoid'] = 'Az ügylet nem érvényteleníthető, mert már érvénytelenítve van';
 $string['unenrolerror'] = 'Hiba történt a személy kiiratkoztatása közben';

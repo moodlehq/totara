@@ -127,17 +127,16 @@ $string['permalink'] = '永久链接';
 $string['personalblogs'] = '用户只能浏览自己的博客';
 $string['preferences'] = '偏好设置';
 $string['publishto'] = '发布给';
+$string['publishto_help'] = '有三个选择：
+* 自己（草稿）——只有您和管理员能查看此博客
+* 网站里的所有人——所有在此网站注册的人都能阅读此博客
+* 世界上的任何人——任何人，包括访客，都能阅读此博客';
 $string['publishtocourse'] = '用户和你分享一个课程';
 $string['publishtocourseassoc'] = '相关课程成员';
 $string['publishtocourseassocparam'] = '{$a}的成员';
 $string['publishtogroup'] = '用户与你分享一个小组';
 $string['publishtogroupassoc'] = '你在相关课程里的小组成员';
 $string['publishtogroupassocparam'] = '在{$a}的组员';
-$string['publishto_help'] = '有三个选择：
-
-* 自己（草稿）——只有您和管理员能查看此博客
-* 网站里的所有人——所有在此网站注册的人都能阅读此博客
-* 世界上的任何人——任何人，包括访客，都能阅读此博客';
 $string['publishtonoone'] = '您自己(草稿)';
 $string['publishtosite'] = '任意注册用户';
 $string['publishtoworld'] = '任何人';

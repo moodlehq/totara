@@ -39,11 +39,11 @@ $string['allowroletoswitch'] = 'Consenti agli utenti con il ruolo {$a->fromrole}
 $string['allowswitch'] = 'Autorizzati a cambiare ruolo';
 $string['allsiteusers'] = 'Tutti gli utenti del sito';
 $string['archetype'] = 'Ruolo archetipo';
+$string['archetype_help'] = 'Il ruolo archetipo determina i privilegi quando si effettua il reset di un ruolo e quando vengono aggiunti privilegi ad un ruolo durante gli aggiornamenti del sito.';
 $string['archetypecoursecreator'] = 'ARCHETIPO: Creatore di corsi';
 $string['archetypeeditingteacher'] = 'ARCHETIPO: Docente (editor)';
 $string['archetypefrontpage'] = 'ARCHETIPO: Utente autenticato nella home page';
 $string['archetypeguest'] = 'ARCHETIPO: Ospite';
-$string['archetype_help'] = 'Il ruolo archetipo determina i privilegi quando si effettua il reset di un ruolo e quando vengono aggiunti privilegi ad un ruolo durante gli aggiornamenti del sito.';
 $string['archetypemanager'] = 'ARCHETIPO: Manager';
 $string['archetypestudent'] = 'ARCHETIPO: Studente';
 $string['archetypeteacher'] = 'ARCHETIPO: Docente (non editor)';
@@ -58,7 +58,7 @@ $string['assignrole'] = 'Assegna ruolo';
 $string['assignrolenameincontext'] = 'Assegna ruolo \'{$a->role}\' in {$a->context}';
 $string['assignroles'] = 'Ruoli';
 $string['assignroles_help'] = 'Assegnando un ruolo ad un utente in uno dato contesto, l\'utente riceverà tutti i privilegi previsti dal ruolo nel contesto di assegnazione ed in tutti i contesti sottostanti.
-Ad esempio, assegnando ad un utente il ruolo studente in un corso, l\'utente avrà tale ruolo nel corso, in tutti  blocchi ed in tutte le attività appartenenti al medesimo corso.';
+Ad esempio, assegnando ad un utente il ruolo studente in un corso, l\'utente avrà tale ruolo nel corso, in tutti blocchi ed in tutte le attività appartenenti al medesimo corso.';
 $string['assignrolesin'] = 'Assegna ruoli nel contesto \'{$a}\'';
 $string['assignrolesrelativetothisuser'] = 'Assegna ruoli relativi a questo utente';
 $string['backtoallroles'] = 'Torna all\'elenco di tutti i ruoli';
@@ -210,8 +210,8 @@ $string['legacy:editingteacher'] = 'RUOLO ORIGINE: Docente (editor)';
 $string['legacy:guest'] = 'RUOLO ORIGINE: Ospite';
 $string['legacy:student'] = 'RUOLO ORIGINE: Studente';
 $string['legacy:teacher'] = 'RUOLO ORIGINE: Docente (non editor)';
-$string['legacytype'] = 'Tipo di ruolo origine';
 $string['legacy:user'] = 'RUOLO ORIGINE: Utente registrato';
+$string['legacytype'] = 'Tipo di ruolo origine';
 $string['listallroles'] = 'Elenco di tutti i ruoli';
 $string['localroles'] = 'Ruoli assegnati localmente';
 $string['mainadmin'] = 'Amministratore primario';
@@ -239,29 +239,14 @@ $string['notset'] = 'Non impostato';
 $string['overrideanotherrole'] = 'Modifica un altro ruolo';
 $string['overridecontext'] = 'Modifica un contesto';
 $string['overridepermissions'] = 'Modifica autorizzazioni';
-$string['overridepermissionsforrole'] = 'Modifica autorizzazioni per il ruolo \'{$a->role}\' nel contesto {$a->context}';
-$string['overridepermissions_help'] = '<p>
-Le modifiche dei ruoli permettono di alterare i privilegi in un determinato contesto in base ad esigenze specifiche.</p>
+$string['overridepermissions_help'] = 'Le modifiche dei ruoli permettono di alterare i privilegi in un determinato contesto in base ad esigenze specifiche.
 
-<p>
 Ad esempio, se si desidera che in un dato forum gli studenti non abbiano il privilegio di "iniziare nuove discussioni", è possibile modificare il ruolo nel contesto dell\'attività forum negando tale privilegio al ruolo Studente.
-</p>
 
-<p>
 Le modifiche dei ruoli possono anche essere usate per concedere alcuni privilegi extra in aree del proprio sito o dei propri corsi: ad esempio si potrebbe desiderare che gli Studenti possano valutare i compiti di altri studenti.
-</p>
 
-<p>
-L\'interfaccia per la modifica dei ruoli è simile a quella per la definizione dei ruoli ma vengono visualizzati solo i privilegi rilevanti per il contesto di riferimento. L\'interfaccia visualizza anche l\'impostazione che avrebbe il privilegio in assenza di modifiche (ossia con la impostazione  ad "Eredita").
-</p>
-
-<p>
-Vedi anche
-<a href="help.php?file=roles.html">Ruoli</a>,
-<a href="help.php?file=contexts.html">Contesti</a>,
-<a href="help.php?file=assignroles.html">Assegnazione di ruoli</a> e
-<a href="help.php?file=permissions.html">Privilegi</a>.
-</p>';
+L\'interfaccia per la modifica dei ruoli è simile a quella per la definizione dei ruoli ma vengono visualizzati solo i privilegi rilevanti per il contesto di riferimento. L\'interfaccia visualizza anche l\'impostazione che avrebbe il privilegio in assenza di modifiche (ossia con la impostazione ad "Eredita").';
+$string['overridepermissionsforrole'] = 'Modifica autorizzazioni per il ruolo \'{$a->role}\' nel contesto {$a->context}';
 $string['overridepermissionsin'] = 'Modifica autorizzazioni nel contesto \'{$a}\'';
 $string['overrideroles'] = 'Modifica ruoli';
 $string['overriderolesin'] = 'Modifica ruoli in {$a}';
@@ -269,7 +254,6 @@ $string['overrides'] = 'Modifiche';
 $string['overridesbycontext'] = 'Modifiche (per contesto)';
 $string['permission'] = 'Autorizzazione';
 $string['permission_help'] = 'I privilegi hanno 4 opzioni disponibili:
-
 * Non impostato
 * Consenti - Il privilegio è concesso
 * Previeni - Il privilegio viene revocato, anche se già concesso in un contesto più alto
@@ -316,25 +300,25 @@ $string['restore:uploadfile'] = 'Caricare file dalle aree di backup';
 $string['restore:userinfo'] = 'Ripristinare dati utente';
 $string['restore:viewautomatedfilearea'] = 'Ripristinare corsi da backup automatici';
 $string['risks'] = 'Rischi';
+$string['role:assign'] = 'Assegnare ruoli agli utenti';
+$string['role:manage'] = 'Creare e gestire ruoli';
+$string['role:override'] = 'Modificare autorizzazioni di altri utenti';
+$string['role:review'] = 'Rivedere privilegi di altri utenti';
+$string['role:safeoverride'] = 'Modificare autorizzazioni sicure di altri utenti';
+$string['role:switchroles'] = 'Utilizzare altri ruoli';
 $string['roleallowheader'] = 'Autorizza ruolo:';
 $string['roleallowinfo'] = 'Scegli un ruolo da aggiungere all\'elenco dei ruoli autorizzati nel contesto {$a->context}, privilegio {$a->cap}:';
-$string['role:assign'] = 'Assegnare ruoli agli utenti';
 $string['roleassignments'] = 'Assegnazioni di ruolo';
 $string['roledefinitions'] = 'Definizioni dei ruoli';
 $string['rolefullname'] = 'Nome';
 $string['roleincontext'] = '{$a->role} in {$a->context}';
-$string['role:manage'] = 'Creare e gestire ruoli';
-$string['role:override'] = 'Modificare autorizzazioni di altri utenti';
 $string['roleprohibitheader'] = 'Ruolo da non autorizzare';
 $string['roleprohibitinfo'] = 'Scegli un ruolo da aggiungere all\'elenco dei ruoli non autorizzati nel contesto {$a->context}, privilegio {$a->cap}:';
-$string['role:review'] = 'Rivedere privilegi di altri utenti';
 $string['roles'] = 'Ruoli';
-$string['role:safeoverride'] = 'Modificare autorizzazioni sicure di altri utenti';
+$string['roles_help'] = 'Un Ruolo è un insieme di privilegi definito a livello di sito. Il ruolo può essere assegnato agli utenti in specifici contesti.';
 $string['roleselect'] = 'Seleziona ruolo';
 $string['rolesforuser'] = 'Ruoli dell\'utente {$a}';
-$string['roles_help'] = 'Un Ruolo è un insieme di privilegi definito a livello di sito. Il ruolo può essere assegnato agli utenti in specifici contesti.';
 $string['roleshortname'] = 'Nome abbreviato';
-$string['role:switchroles'] = 'Utilizzare altri ruoli';
 $string['roletoassign'] = 'Ruolo da assegnare';
 $string['roletooverride'] = 'Ruolo da modificare';
 $string['safeoverridenotice'] = 'Nota: I privilegi con rischi più alti sono bloccati perché si ha solo il permesso di modificare i privilegi sicuri.';
@@ -344,7 +328,6 @@ $string['selectrole'] = 'Scegli un ruolo';
 $string['showallroles'] = 'Mostrare tutti i ruoli';
 $string['showthisuserspermissions'] = 'Visualizza le autorizzazioni di questo utente';
 $string['site:accessallgroups'] = 'Accedere a qualsiasi gruppo';
-$string['siteadministrators'] = 'Amministratori del sito';
 $string['site:approvecourse'] = 'Approvare creazione di corsi';
 $string['site:backup'] = 'Effettuare backup corsi';
 $string['site:config'] = 'Cambiare configurazione del sito';
@@ -363,6 +346,7 @@ $string['site:viewfullnames'] = 'Visualizzare sempre nome e cognome degli utenti
 $string['site:viewparticipants'] = 'Visualizzare i partecipanti';
 $string['site:viewreports'] = 'Visualizzare i report';
 $string['site:viewuseridentity'] = 'Visulizzare negli elenchi di utenti l\'identità completa delle persone';
+$string['siteadministrators'] = 'Amministratori del sito';
 $string['tag:create'] = 'Creare nuovi tag';
 $string['tag:edit'] = 'Modificare tag esistenti';
 $string['tag:editblocks'] = 'Modificare blocchi nelle pagine dei tag';
@@ -385,18 +369,18 @@ $string['user:manageownfiles'] = 'Gestire file personali';
 $string['user:managesyspages'] = 'Configurare il layout di default per la parte pubblica del profilo utente';
 $string['user:readuserblogs'] = 'Vedere blog di qualsiasi utente';
 $string['user:readuserposts'] = 'Vedere i messaggi di tutti gli utenti';
-$string['usersfrom'] = 'Utenti da {$a}';
-$string['usersfrommatching'] = 'Utenti da {$a->contextname} corrispondenti alla ricerca \'{$a->search}\'';
-$string['usersinthisx'] = 'Utenti in questo {$a}';
-$string['usersinthisxmatching'] = 'Utenti in questo {$a->contexttype} che corrispondono alla ricerca di \'{$a->search}\'';
-$string['userswithrole'] = 'Tutti gli utenti con un ruolo';
-$string['userswiththisrole'] = 'Utenti col ruolo';
 $string['user:update'] = 'Aggiornare i profili utente';
 $string['user:viewalldetails'] = 'Visualizzare il profilo completo degli utenti';
 $string['user:viewdetails'] = 'Visualizzare i profili utente';
 $string['user:viewhiddendetails'] = 'Visualizzare campi nascosti nei profili utenti';
 $string['user:viewuseractivitiesreport'] = 'Visualizzare i report delle attività degli utenti';
 $string['user:viewusergrades'] = 'Visualizzare le valutazioni degli utenti';
+$string['usersfrom'] = 'Utenti da {$a}';
+$string['usersfrommatching'] = 'Utenti da {$a->contextname} corrispondenti alla ricerca \'{$a->search}\'';
+$string['usersinthisx'] = 'Utenti in questo {$a}';
+$string['usersinthisxmatching'] = 'Utenti in questo {$a->contexttype} che corrispondono alla ricerca di \'{$a->search}\'';
+$string['userswithrole'] = 'Tutti gli utenti con un ruolo';
+$string['userswiththisrole'] = 'Utenti col ruolo';
 $string['useshowadvancedtochange'] = 'Utilizza \'Mostra impostazioni avanzate\' per modificare';
 $string['viewingdefinitionofrolex'] = 'Visualizzazione della definizione del ruolo \'{$a}\'';
 $string['viewrole'] = 'Visualizzazione dettagliata del ruolo';

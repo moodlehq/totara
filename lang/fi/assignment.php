@@ -27,33 +27,27 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addsubmission'] = 'Lisää palautus';
 $string['allowdeleting'] = 'Salli tiedostojen poistaminen';
-$string['allowdeleting_help'] = '<h2>Salli tiedostojen poistaminen</h2>
-
-<p>Jos tämä asetus sallitaan, opiskelijat saavat poistaa tehtävään jo lataamiaan tiedostoja siihen asti, kunnes palauttavat tiedostot arvioitaviksi.</p>';
+$string['allowdeleting_help'] = '## Salli tiedostojen poistaminen
+Jos tämä asetus sallitaan, opiskelijat saavat poistaa tehtävään jo lataamiaan tiedostoja siihen asti, kunnes palauttavat tiedostot arvioitaviksi.';
 $string['allowmaxfiles'] = 'Palautettujen tiedostojen enimmäismäärä';
-$string['allowmaxfiles_help'] = '<h2>Palautukseen lisättävien tiedostojen maksimimäärä</h2>
-
-<p>Opiskelijan palautukseensa liittämien tiedostojen maksimimäärä. Tätä lukua ei näytetä opiskelijoille; muista siis lisätä tiedostomäärä osaksi tehtävänantoasi.</p>';
+$string['allowmaxfiles_help'] = '## Palautukseen lisättävien tiedostojen maksimimäärä
+Opiskelijan palautukseensa liittämien tiedostojen maksimimäärä. Tätä lukua ei näytetä opiskelijoille; muista siis lisätä tiedostomäärä osaksi tehtävänantoasi.';
 $string['allownotes'] = 'Salli muistiinpanot';
-$string['allownotes_help'] = '<h2>Salli muistiinpanot</h2>
-
-<p>Jos asetus on päällä, opiskelijat voivat kirjoittaa muistiinpanoja tekstialueelle, joka vastaa Verkkoteksti-tehtävätyyppiä.</p>
-
-<p>Muistiinpanoja voidaan hyödyntää viestinnässä opiskelijan ja arvioijan välillä, kuten arvioinnissa tarvittavan taustatiedon kertomiseen, tehtävän edistymisestä tiedottamiseen tai muuhun tarpeelliseen.</p>';
+$string['allownotes_help'] = '## Salli muistiinpanot
+Jos asetus on päällä, opiskelijat voivat kirjoittaa muistiinpanoja tekstialueelle, joka vastaa Verkkoteksti-tehtävätyyppiä.
+Muistiinpanoja voidaan hyödyntää viestinnässä opiskelijan ja arvioijan välillä, kuten arvioinnissa tarvittavan taustatiedon kertomiseen, tehtävän edistymisestä tiedottamiseen tai muuhun tarpeelliseen.';
 $string['allowresubmit'] = 'Salli palautus arvioinnin jälkeen';
-$string['allowresubmit_help'] = '<h2>Palautus arvioinnin jälkeen</h2>
-
-<P>Opiskelija voi muokata verkkotekstiään tai palauttaa uuden version tiedostosta (vanhan päälle) siihen asti, kunnes opettaja arvioi työn. Oletuksena on, että opiskelijat eivät voi palauttaa tehtäviä enää, kun opettaja on tallentanut arvioinnin tai palautteen.</P>
-
-<P>Jos sallit palautuksen myös arvioinnin jälkeen, opiskelijat voivat palauttaa tehtäviään arvioitavaksi uudestaan, esimerkiksi jos alkuperäinen työ on hylätty, tai jos halutaan työstää tekstiä prosessikirjoituksen avulla. Tästä valinnasta on siis hyötyä, kun halutaan ohjata opiskelijoita tekemään parempaa työtä tekstin iteroinnin avulla.</P>
-
-<P>Tätä valintaa ei tietenkään voi käyttää Tehtävänanto-tyyppisessä tehtävässä, jossa opiskelija ei palauta mitään.</P>
-';
+$string['allowresubmit_help'] = '## Palautus arvioinnin jälkeen
+Opiskelija voi muokata verkkotekstiään tai palauttaa uuden version tiedostosta (vanhan päälle) siihen asti, kunnes opettaja arvioi työn. Oletuksena on, että opiskelijat eivät voi palauttaa tehtäviä enää, kun opettaja on tallentanut arvioinnin tai palautteen.
+Jos sallit palautuksen myös arvioinnin jälkeen, opiskelijat voivat palauttaa tehtäviään arvioitavaksi uudestaan, esimerkiksi jos alkuperäinen työ on hylätty, tai jos halutaan työstää tekstiä prosessikirjoituksen avulla. Tästä valinnasta on siis hyötyä, kun halutaan ohjata opiskelijoita tekemään parempaa työtä tekstin iteroinnin avulla.
+Tätä valintaa ei tietenkään voi käyttää Tehtävänanto-tyyppisessä tehtävässä, jossa opiskelija ei palauta mitään.';
 $string['alreadygraded'] = 'Vastauksesi on jo arvioitu. Et voi palauttaa tehtävää uudestaan.';
-$string['assignmentdetails'] = 'Tehtävän tiedot';
 $string['assignment:exportownsubmission'] = 'Vie oma palautus';
 $string['assignment:exportsubmission'] = 'Vie palautus';
 $string['assignment:grade'] = 'Tehtävän arviointi';
+$string['assignment:submit'] = 'Tehtävän palautus';
+$string['assignment:view'] = 'Tehtävän tarkastelu';
+$string['assignmentdetails'] = 'Tehtävän tiedot';
 $string['assignmentmail'] = '{$a->teacher} on antanut sinulle palautetta tehtävästä \'{$a->assignment}\'
 
 Voit nähdä sen osoitteessa:
@@ -67,19 +61,15 @@ Voit nähdä sen osoitteessa:
 $string['assignmentmailsmall'] = 'Opettajan {$a->teacher} antama palaute on lisätty tehtävän palautukseesi \'{$a->assignment}\'';
 $string['assignmentname'] = 'Tehtävän nimi';
 $string['assignmentsubmission'] = 'Tehtävän palautukset';
-$string['assignment:submit'] = 'Tehtävän palautus';
 $string['assignmenttype'] = 'Tehtävän tyyppi';
-$string['assignment:view'] = 'Tehtävän tarkastelu';
 $string['availabledate'] = 'Palautettavissa alkaen';
 $string['cannotdeletefiles'] = 'Tapahtuneen virheen takia tiedostoja ei voitu poistaa';
 $string['cannotviewassignment'] = 'Et voi katsella tätä tehtävää';
 $string['comment'] = 'Kommentoi';
 $string['commentinline'] = 'Kopioi palautus palautteen pohjaksi';
-$string['commentinline_help'] = '<h2>Palautuksen kopiointi palautteen pohjaksi</h2>
-
-<p>Jos käytät tätä mahdollisuutta, opiskelijan palauttama teksti kopioidaan palautteesi pohjaksi palautekenttään, samalla idealla kuin sähköpostiviestin vastaukseen kopioidaan alkuperäinen viesti. Tämä mahdollistaa kontekstisidonnaisen kommentoinnin, jolloin alkuperäiseen vastaukseen ei erikseen tarvitse viitata. </p>
-
-<p>Huomaa kuitenkin, että opiskelijan vastausta ja sinun palautettasi ei erotella mitenkään, joten korosta palautettasi vaikkapa toisella tekstivärillä, tekstin taustavärillä, erilaisella kirjasimella tai erottelemalla palautteesi selkeästi omiin kappaleisiinsa, omalla nimelläsi varustettuna. Vastaavasti, jos et halua erotella omaa osuuttasi opiskelijan vastauksesta, voit suoraan muokata alkuperäistä tekstiä. </p>';
+$string['commentinline_help'] = '## Palautuksen kopiointi palautteen pohjaksi
+Jos käytät tätä mahdollisuutta, opiskelijan palauttama teksti kopioidaan palautteesi pohjaksi palautekenttään, samalla idealla kuin sähköpostiviestin vastaukseen kopioidaan alkuperäinen viesti. Tämä mahdollistaa kontekstisidonnaisen kommentoinnin, jolloin alkuperäiseen vastaukseen ei erikseen tarvitse viitata.
+Huomaa kuitenkin, että opiskelijan vastausta ja sinun palautettasi ei erotella mitenkään, joten korosta palautettasi vaikkapa toisella tekstivärillä, tekstin taustavärillä, erilaisella kirjasimella tai erottelemalla palautteesi selkeästi omiin kappaleisiinsa, omalla nimelläsi varustettuna. Vastaavasti, jos et halua erotella omaa osuuttasi opiskelijan vastauksesta, voit suoraan muokata alkuperäistä tekstiä.';
 $string['configitemstocount'] = 'Osat, jotka sisällytetään opiskelijan palautukseen Tehtävissä.';
 $string['configmaxbytes'] = 'Oletusasetus sivuston tehtävien enimmäiskoolle (alisteinen kurssien omille rajoituksille ja muille paikallisille asetuksille)';
 $string['configshowrecentsubmissions'] = 'Kaikki näkevät palautustapahtumat viimeisimpien tapahtumien listalla';
@@ -107,21 +97,15 @@ Se on saatavilla täällä:
 $string['emailteachermailhtml'] = '{$a->username} on päivittänyt palautustaan tehtävään <i>\'{$a->assignment}\', {$a->timeupdated}.</i><br /><br />
 Se on <a href="{$a->url}">saatavilla verkkosivulla</a>.';
 $string['emailteachers'] = 'Ilmoita palautuksesta opettajille';
-$string['emailteachers_help'] = '<h2>Ilmoita palautuksesta opettajille</h2>
-
-<p>Jos tämä toiminto on aktivoitu, saavat kaikki opettajat sähköposti-ilmoituksen, kun opiskelija palauttaa tehtävän tai muuttaa vastaustaan.</p>
-
-<p>Vain opettajat, jotka voivat arvioida ko. tehtävän, saavat nämä ilmoitukset. Esimerkiksi, jos kurssialueella käytetään erillisiä ryhmiä, osaan ryhmistä rajoitetut opettajat eivät saa toisiin ryhmiin palautettuja töitä.</p>
-
-<p>Tehtävänannoissa (offline-tehtävä) sähköpostia ei tietenkään lähetetä, sillä opiskelijat eivät palauta mitään.</p>
-';
+$string['emailteachers_help'] = '## Ilmoita palautuksesta opettajille
+Jos tämä toiminto on aktivoitu, saavat kaikki opettajat sähköposti-ilmoituksen, kun opiskelija palauttaa tehtävän tai muuttaa vastaustaan.
+Vain opettajat, jotka voivat arvioida ko. tehtävän, saavat nämä ilmoitukset. Esimerkiksi, jos kurssialueella käytetään erillisiä ryhmiä, osaan ryhmistä rajoitetut opettajat eivät saa toisiin ryhmiin palautettuja töitä.
+Tehtävänannoissa (offline-tehtävä) sähköpostia ei tietenkään lähetetä, sillä opiskelijat eivät palauta mitään.';
 $string['emptysubmission'] = 'Et ole palauttanut vielä mitään.';
 $string['enablenotification'] = 'Lähetä ilmoitukset sähköpostitse';
-$string['enablenotification_help'] = '<h3>Annetusta arvioinnista viesti opiskelijoille</h3>
-
-<p>Asetuksen ollessa valittuna Moodle lähettää opiskelijalle sähköpostitse tiedon antamastasi arvioinnista. Viesti on tämän tyylinen: "Oiva Opettaja on antanut sinulle palautetta tehtävästä \'Palauta seminaariesitelmäsi tänne\'. Voit nähdä sen osoitteessa: [linkki tehtävän palautukseen]".</p>
-
-<p><strong>Huomaa</strong>, että asetuksesi tallentuu käytettäväksi kaikissa tehtävissä kaikilla kursseillasi.</p>';
+$string['enablenotification_help'] = '### Annetusta arvioinnista viesti opiskelijoille
+Asetuksen ollessa valittuna Moodle lähettää opiskelijalle sähköpostitse tiedon antamastasi arvioinnista. Viesti on tämän tyylinen: "Oiva Opettaja on antanut sinulle palautetta tehtävästä \'Palauta seminaariesitelmäsi tänne\'. Voit nähdä sen osoitteessa: [linkki tehtävän palautukseen]".
+**Huomaa**, että asetuksesi tallentuu käytettäväksi kaikissa tehtävissä kaikilla kursseillasi.';
 $string['errornosubmissions'] = 'Ladattavia palautuksia ei ole';
 $string['existingfiledeleted'] = 'Tiedosto on poistettu: {$a}';
 $string['failedupdatefeedback'] = 'Palautteen tallentaminen käyttäjälle {$a} epäonnistui';
@@ -144,9 +128,8 @@ $string['helpupload'] = '<p>Tämä tehtävätyyppi antaa jokaisen osallistujan l
 $string['helpuploadsingle'] = '<p>Tämäntyyppisessä tehtävässä kaikki osanottajat voivat palauttaa yhden tiedoston, joka voi olla mitä tahansa tyyppiä.</p>
 <p>Se voi olla esim. tekstidokumentti, kuva tai zip-pakattu verkkosivu.</p>';
 $string['hideintro'] = 'Piilota kuvaus kunnes tehtävä on avoinna';
-$string['hideintro_help'] = '<h2>Piilota tehtävän kuvaus ennen aloituspäivää</h2>
-
-<p>Jos tämä asetus on valittuna, tehtävän kuvaus ei näy opiskelijoille ennen tehtävän aloituspäivää.</p>';
+$string['hideintro_help'] = '## Piilota tehtävän kuvaus ennen aloituspäivää
+Jos tämä asetus on valittuna, tehtävän kuvaus ei näy opiskelijoille ennen tehtävän aloituspäivää.';
 $string['invalidassignment'] = 'Virheellinen tehtävä';
 $string['invalidfileandsubmissionid'] = 'Tiedosto tai palautuksen ID puuttuu';
 $string['invalidid'] = 'Virheellinen tehtävän ID';
@@ -191,15 +174,11 @@ $string['pluginname'] = 'Tehtävä';
 $string['popupinnewwindow'] = 'Avaa ponnahdusikkuna';
 $string['preventlate'] = 'Estä myöhästyneet palautukset';
 $string['quickgrade'] = 'Salli nopea arviointi';
-$string['quickgrade_help'] = '<h2>Nopea arviointi</h2>
-
-<p>Nopean arvioinnin avulla voit helposti arvioida useita opiskelijapalautuksia samalla sivulla.</p>
-
-<p>Valitse haluamasi arvioinnit asteikosta ja kirjoita sanalliset kommentit kullekin arvioitavalle opiskelijalle. Tallenna kaikki kirjaamasi arvioinnit yhdellä kerralla sivun alareunan <strong>Tallenna palaute</strong> -painikkeella.</p>
-
-<p>Normaalit arviointipainikkeet näkymän oikean reunan Tilanne-sarakkeessa toimivat tavalliseen tapaan, jos tarvitset enemmän tilaa sanallisen palautteen kirjoittamiselle tai haluat liittää palautteeseesi tiedoston.</p>
-
-<p><strong>Huomaa</strong>, että valitsemasi Nopea arviointi -asetus tallennetaan oletuksasetukseksi kaikkiin tehtäviin kaikilla kurssialueillasi.</p>';
+$string['quickgrade_help'] = '## Nopea arviointi
+Nopean arvioinnin avulla voit helposti arvioida useita opiskelijapalautuksia samalla sivulla.
+Valitse haluamasi arvioinnit asteikosta ja kirjoita sanalliset kommentit kullekin arvioitavalle opiskelijalle. Tallenna kaikki kirjaamasi arvioinnit yhdellä kerralla sivun alareunan **Tallenna palaute** -painikkeella.
+Normaalit arviointipainikkeet näkymän oikean reunan Tilanne-sarakkeessa toimivat tavalliseen tapaan, jos tarvitset enemmän tilaa sanallisen palautteen kirjoittamiselle tai haluat liittää palautteeseesi tiedoston.
+**Huomaa**, että valitsemasi Nopea arviointi -asetus tallennetaan oletuksasetukseksi kaikkiin tehtäviin kaikilla kurssialueillasi.';
 $string['requiregrading'] = 'Vaadi arviointi';
 $string['responsefiles'] = 'Palautetiedosto';
 $string['reviewed'] = 'Arvioinut';
@@ -221,17 +200,16 @@ $string['submittedfiles'] = 'Palautetut tiedostot';
 $string['subplugintype_assignment'] = 'Tehtävän tyyppi';
 $string['subplugintype_assignment_plural'] = 'Tehtävätyypit';
 $string['trackdrafts'] = 'Ota Lähetä arvioitavaksi -toiminto käyttöön';
-$string['trackdrafts_help'] = '<h2>Lähetä arvioitavaksi</h2>
-
-<p>Lähetä arvioitavaksi -painikkeella opiskelija voi ilmoittaa arvioijalle, milloin hänen palautuksensa on valmis ja arvioitavissa. Arvioija voi tarvittaessa palauttaa tehtävän muokattavaksi, jos palautusta on esimerkiksi korjattava ennen lopullista arviointia.</p>';
+$string['trackdrafts_help'] = '## Lähetä arvioitavaksi
+Lähetä arvioitavaksi -painikkeella opiskelija voi ilmoittaa arvioijalle, milloin hänen palautuksensa on valmis ja arvioitavissa. Arvioija voi tarvittaessa palauttaa tehtävän muokattavaksi, jos palautusta on esimerkiksi korjattava ennen lopullista arviointia.';
 $string['typeblog'] = 'Blogikirjoitus';
 $string['typeoffline'] = 'Tehtävänanto';
 $string['typeonline'] = 'Verkkoteksti';
 $string['typeupload'] = 'Tiedostojen palautus';
 $string['typeuploadsingle'] = 'Yhden tiedoston palautus';
 $string['unfinalize'] = 'Palauta muokattavaksi';
-$string['unfinalizeerror'] = 'Tapahtuneen virheen takia tätä palautusta ei voitu palauttaa muokattavaksi.';
 $string['unfinalize_help'] = 'Kun palautat tehtävän muokattavaksi, opiskelija voi korjata palautustaan esim. palautteesi perusteella ja palauttaa sen uudestaan.';
+$string['unfinalizeerror'] = 'Tapahtuneen virheen takia tätä palautusta ei voitu palauttaa muokattavaksi.';
 $string['uploadafile'] = 'Lähetä tiedosto';
 $string['uploadbadname'] = 'Tiedostonimessä on tuntemattomia merkkejä. Tiedostoa ei voida tallentaa.';
 $string['uploadedfiles'] = 'lähetetyt tiedostot';

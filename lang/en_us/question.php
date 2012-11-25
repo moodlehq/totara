@@ -35,7 +35,6 @@ $string['deletebehaviourareyousure'] = 'Delete behavior {$a}: are you sure?';
 $string['deletebehaviourareyousuremessage'] = 'You are about to completely delete the question behavior {$a}. This will completely delete everything in the database associated with this question behavior. Are you SURE you want to continue?';
 $string['deletingbehaviour'] = 'Deleting question behavior \'{$a}\'';
 $string['penaltyforeachincorrecttry_help'] = 'When you run your questions using the \'Interactive with multiple tries\' or \'Adaptive mode\' behavior, so that the the student will have several tries to get the question right, then this option controls how much they are penalized for each incorrect try.
-
 The penalty is a proportion of the total question grade, so if the question is worth three marks, and the penalty is 0.3333333, then the student will score 3 if they get the question right first time, 2 if they get it right second try, and 1 of they get it right on the third try.';
 $string['qbehaviourdeletefiles'] = 'All data associated with the question behavior \'{$a->behaviour}\' has been deleted from the database. To complete the deletion (and to prevent the behavior from re-installing itself), you should now delete this directory from your server: {$a->directory}';
 $string['questionbehaviouradminsetting'] = 'Question behavior settings';

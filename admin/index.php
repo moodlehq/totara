@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 // Check that config.php exists, if not then call the install script
 if (!file_exists('../config.php')) {
     header('Location: ../install.php');
@@ -53,8 +54,10 @@ if (iconv('UTF-8', 'UTF-8//IGNORE', 'abc') !== 'abc') {
 define('NO_OUTPUT_BUFFERING', true);
 
 require('../config.php');
-require_once($CFG->libdir.'/adminlib.php');    // various admin-only functions
-require_once($CFG->libdir.'/upgradelib.php');  // general upgrade/install related functions
+require_once($CFG->libdir . '/adminlib.php');    // various admin-only functions
+require_once($CFG->libdir . '/upgradelib.php');  // general upgrade/install related functions
+require_once($CFG->dirroot . '/version.php');
+
 
 $id             = optional_param('id', '', PARAM_TEXT);
 $confirmupgrade = optional_param('confirmupgrade', 0, PARAM_BOOL);
@@ -158,7 +161,7 @@ if (!core_tables_exist()) {
         $strlicense = get_string('license');
 
         $PAGE->navbar->add($strlicense);
-        $PAGE->set_title($strinstallation.' - Totara '.$CFG->target_release);
+        $PAGE->set_title($strinstallation.' - Totara '.$TOTARA->release);
         $PAGE->set_heading($strinstallation);
         $PAGE->set_cacheable(false);
 
@@ -187,7 +190,7 @@ if (!core_tables_exist()) {
     upgrade_init_javascript();
 
     $PAGE->navbar->add($strdatabasesetup);
-    $PAGE->set_title($strinstallation.' - Totara '.$CFG->target_release);
+    $PAGE->set_title($strinstallation.' - Totara '.$TOTARA->release);
     $PAGE->set_heading($strinstallation);
     $PAGE->set_cacheable(false);
 

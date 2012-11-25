@@ -30,15 +30,11 @@ $string['activitygrade'] = 'Note de l\'activité';
 $string['added'] = 'Ajouté';
 $string['addquizchain'] = 'Ajouter un enchaînement d\'activités';
 $string['addquizchain_help'] = 'Est-ce que tous les tests de la suite de tests doivent être ajoutés ?
-
 **Non**
 : Seul un test sera ajouté au cours.
-
 **Oui**
 : Si le fichier source est un **fichier de test**, il sera considéré comme le départ de la suite de test et tous les autres tests seront ajoutés au cours avec les mêmes paramètres. Chaque test de la suite doit avoir un lien vers le test suivant.
-
 Si le fichier source est un **dossier**, tous les tests reconnus dans le dossier seront ajoutés au cours pour former une suite et avec les mêmes paramètres.
-
 Enfin, si le fichier source est un **fichier unitaire**, comme un fichier masher de Hot Potatoes ou un fichier index.html, tous les tests listés dans ce fichier seront ajoutés au cours pour former une suite et avec les mêmes paramètres.';
 $string['allowreview'] = 'Permettre la relecture';
 $string['allowreview_help'] = 'Si activé, les étudiants pourront relire leurs tentatives après la fermeture du test.';
@@ -82,6 +78,7 @@ $string['confirmdeleteattempts'] = 'Voulez-vous vraiment supprimer ces tentative
 $string['confirmstop'] = 'Voulez-vous vraiment quitter cette page ?';
 $string['correct'] = 'Correct';
 $string['couldnotinsertsubmissionform'] = 'Impossible d\'insérer le formulaire d\'envoi';
+$string['d_index'] = 'Index de discrimination';
 $string['delay1'] = 'Délai 1';
 $string['delay1_help'] = 'Le délai minimm entre la première et la seconde tentative.';
 $string['delay1summary'] = 'Délai entre la première et la seconde tentative.';
@@ -89,29 +86,23 @@ $string['delay2'] = 'Délai 2';
 $string['delay2_help'] = 'Le délai minimum entre les tentatives après la seconde tentative.';
 $string['delay2summary'] = 'Délai entre les tentatives après la seconde tentative.';
 $string['delay3'] = 'Délai 3';
-$string['delay3afterok'] = 'Attendre que les participants cliquent sur OK';
-$string['delay3disable'] = 'Ne pas continuer automatiquement';
 $string['delay3_help'] = 'Ce paramètre définit le délai entre la fin du test et le retour à Moodle.
-
 ** Utiliser un temps défini (en secondes) **
 : Le retour à Moodle aura lieu après le temps spécifié en secondes.
-
 ** Utiliser les paramètres du fichier source/modèle **
 : Le retour à Moodle aura lieu après le temps spécifié en secondes au sein du fichier source.
-
 ** Attendre que l\'étudiant clique sur OK **
 : Le retour à Moodle aura lieu après que participant a cliqué sur le bouton OK du message de fin du test.
-
 ** Ne pas continuer automatiquement **
 : Le retour à Moodle ne sera pas automatique. Le participant pourra aller où bon lui semble.
-
 Dans tous les cas, le résultat du test est envoyé immédiatement après la fin du test ou à l\'abandon du test, indépendamment de ce paramètre.';
+$string['delay3afterok'] = 'Attendre que les participants cliquent sur OK';
+$string['delay3disable'] = 'Ne pas continuer automatiquement';
 $string['delay3specific'] = 'Utiliser une durée spécifique (en secondes)';
 $string['delay3summary'] = 'Délai à la fin du test';
 $string['delay3template'] = 'Utiliser les réglages du fichier source/modèle';
 $string['deleteattempts'] = 'Suppression des tentatives';
 $string['detailsrecords'] = 'Enregistrements des détails de HotPotatoes';
-$string['d_index'] = 'Index de discrimination';
 $string['duration'] = 'Durée';
 $string['enablecache'] = 'Activer le cache HotPotatoes';
 $string['enablecron'] = 'Activer le cron HotPotatoes';
@@ -119,135 +110,113 @@ $string['enablemymoodle'] = 'Afficher HopPotatoes dans Mon Moodle';
 $string['enableobfuscate'] = 'Activer la dissimulation du code du lecteur multimédia';
 $string['enableswf'] = 'Autoriser l\'intégration de fichiers SWF dans les activités HotPotatoes';
 $string['entry_attempts'] = 'Tentatives';
+$string['entry_dates'] = 'Dates';
+$string['entry_grading'] = 'Évaluation';
+$string['entry_title'] = 'Nom de l\'unité en tant que titre';
 $string['entrycm'] = 'Activité précédente';
-$string['entrycmcourse'] = 'Activité précédente dans ce cours';
 $string['entrycm_help'] = 'Ce paramètre définit une activité Moodle et une note minimale à atteindre pour une activité nécessaire avant la tentative de ce test.
-
 L\'enseignant peut spécifier une activité bien précise ou l\'un de ces choix :
-
 * activité précédente de ce cours
 * activité précédente de cette section de cours
 * activité HotPotatoes précédente de ce cours
 * activité HotPotatoes précédente de cette section de cours';
+$string['entrycmcourse'] = 'Activité précédente dans ce cours';
 $string['entrycmsection'] = 'Activité précédente dans cette section de cours';
 $string['entrycompletionwarning'] = 'Avant de commencer cette activité, vous devez consulter {$a}';
-$string['entry_dates'] = 'Dates';
 $string['entrygrade'] = 'Note de l\'activité récédente';
 $string['entrygradewarning'] = 'Vous ne pouvez pas commencer cette activité tant que votre score ne dépasse pas {$a->entrygrade}% sur {$a->entryactivity}. Pour l\'instant, votre note pour cette activité est {$a->usergrade} % ';
-$string['entry_grading'] = 'Évaluation';
 $string['entryhotpotcourse'] = 'Activité HotPotatoes précédente dans ce cours';
 $string['entryhotpotsection'] = 'Activité HotPotatoes précédente dans cette section de cours';
 $string['entryoptions'] = 'Options de la page initiale';
 $string['entryoptions_help'] = 'Ces cases à cocher activent ou désactivent l\'affichage d\'éléments sur la page initiale de l\'activité HotPotatoes.
-
 ** Nom de l\'unité en tant que titre **
 : Si coché, le nom de l\'unité sera utilisé comme titre de la page initiale.
-
 ** Notation **
-: Si coché, les informations d\'évaluation de l\'activité  HotPotatoes seront affichées sur la page initiale.
-
+: Si coché, les informations d\'évaluation de l\'activité HotPotatoes seront affichées sur la page initiale.
 ** Dates **
 : Si coché, les dates d\'ouverture et de fermeture de l\'activité HotPotatoes seront affichées sur la page initiale.
-
 ** Tentatives **
 : Si coché, un tableau détaillant les tentatives précédentes du participants sera affiché sur la page initiale. Les tentatives qui peuvent être continuées auront un bouton correspondant affiché dans la colonne de droite.';
 $string['entrypage'] = 'Afficher la page initiale';
-$string['entrypagehdr'] = 'Page initiale';
 $string['entrypage_help'] = 'Est-ce que les participants doivent voir la page initiale avant de commencer l\'activité HotPotatoes ?
-
 ** Oui **
 : La page initiale sera affichée aux participants avant de commencer le test. Le contenu de cette page est déterminé dans les options de la page initiale HotPotatoes.
-
 **Non**
 : La page initiale ne s\'affichera pas et les participants commenceront le test immédiatement.';
+$string['entrypagehdr'] = 'Page initiale';
 $string['entrytext'] = 'Texte de la page initiale';
-$string['entry_title'] = 'Nom de l\'unité en tant que titre';
 $string['exit_areyouok'] = 'Coucou, vous êtes encore là ?';
 $string['exit_attemptscore'] = 'Votre score pour cette tentative est {$a}';
-$string['exitcm'] = 'Activité suivante';
-$string['exitcmcourse'] = 'Activité suivante de ce cours';
-$string['exitcm_help'] = 'Ce paramètre définit une activité Moodle qui doit être effectuée après que le test est terminé.
-
-L\'enseignant peut spécifier une activité bien précise ou l\'un de ces choix :
-
-* activité suivante de ce cours
-* activité suivante de cette section de cours
-* activité HotPotatoes suivante de ce cours
-* activité HotPotatoes suivante de cette section de cours
-
-Si d\'autres options de page de sortie sont désactivées, le participant ira à la prochaine activité. Sinon, il verra un lien pour l\'emmener vers la prochaine activité.';
-$string['exitcmsection'] = 'Activité suivante de cette section de cours';
 $string['exit_course'] = 'Cours';
 $string['exit_course_text'] = 'Retour à la page principale du cours';
 $string['exit_encouragement'] = 'Encouragement';
 $string['exit_excellent'] = 'Excellent !';
 $string['exit_feedback'] = 'Quitter la page de feedback';
 $string['exit_feedback_help'] = 'Cette option active ou désactive l\'affichage de feedbacks sur la page de sortie.
-
 ** Nom de l\'unité en tant que titre **
 : Si activé, le nom de l\'unité est affiché en tant que titre de la page de sortie.
-
 **Encouragements**
 : Si activé, des encouragements seront affichés dans la page de sortie. Les encouragements dépendent de la note HotPotatoes :
 : **> 90%** : Excellent !
 : **> 60%** : Bien joué
 : **> 0%** : Bien essayé
 : **= 0%** : Est-ce que tout va bien ?
-
 ** Note de la tentative**
 : Si activé, la note de la tentative qui vient de se terminer sera affichée sur la page.
-
 **Note de l\'unité**
 : Si activé, la note HotPotatoes sera affichée sur la page.
-
 De plus, si la note de la tentative est plus grande que lors des tentatives précédentes, un message s\'affichera pour le signaler.';
 $string['exit_goodtry'] = 'Bien essayé !';
 $string['exit_grades'] = 'Notes';
 $string['exit_grades_text'] = 'Voir vos notes actuelles pour ce cours';
-$string['exithotpotcourse'] = 'Activité HotPotatoes suivante de ce cours';
 $string['exit_hotpotgrade'] = 'Votre note pour cette activité est {$a}';
 $string['exit_hotpotgrade_average'] = 'Votre moyenne jusqu\'à maintenant pour cette activité est {$a}';
 $string['exit_hotpotgrade_highest'] = 'Votre plus haute note jusqu\'à maintenant pour cette activité est {$a}';
 $string['exit_hotpotgrade_highest_equal'] = 'Vous avez égalisé votre meilleur résultat pour cette activité !';
 $string['exit_hotpotgrade_highest_previous'] = 'Votre plus haute note précédente pour cette activité était {$a}';
 $string['exit_hotpotgrade_highest_zero'] = 'Vous n\'avez pas dépassé {$a} pour cette activité';
-$string['exithotpotsection'] = 'Activité HopPotatoes suivante dans cette section de cours';
 $string['exit_index'] = 'Index';
 $string['exit_index_text'] = 'Aller à l\'index des activités';
 $string['exit_links'] = 'Quitter la page de lien';
 $string['exit_links_help'] = 'Ces options activent ou désactivent l\'affichage de certains liens de navigation sur la page de sortie HotPotatoes.
-
 **Ré-essayer**
 : Si les tentatives multiples sont autorisées et que le participant a encore des tentatives non effectuées, le lien permettant de refaire le test sera activé.
-
 **Accueil**
 : Si activé, un lien vers la page d\'accueil sera affiché.
-
 **Cours**
 : Si activé, un lien pour retourner au cours Moodle sera activé.
-
 **Notes**
 : Si activé, un lien pour accéder au carnet de notes de Moodle sera affiché.';
 $string['exit_next'] = 'Suivant';
 $string['exit_next_text'] = 'Essayer l\'activité suivante';
 $string['exit_noscore'] = 'Vous avez terminé cette activité avec succès !';
-$string['exitoptions'] = 'Quitter la page d\'options';
-$string['exitpage'] = 'Afficher la page de sortie';
-$string['exitpagehdr'] = 'Page de sortie';
-$string['exitpage_help'] = 'Détermine si une page de sortie doit être affichée après avoir effectué le test.
-
-**Oui**
-: Une page de sortie s\'affichera pour les participants quand le test sera terminé. Le contenu de la page de sortie est déterminé par les paramètres correspondant aux feedbacks et liens de la page de sortie HotPotatoes.
-
-**Non**
-: Le participant ne verra pas de page de sortie. À la place, il sera dirigé tout de suite vers la prochaine activité ou vers la page principale du cours Moodle.';
 $string['exit_retry'] = 'Ré-essayer';
 $string['exit_retry_text'] = 'Ré-essayer cette activité';
-$string['exittext'] = 'Quitter la page de texte';
 $string['exit_welldone'] = 'Bien joué !';
 $string['exit_whatnext_0'] = 'Que voulez vous faire ensuite ?';
 $string['exit_whatnext_1'] = 'Choisissez votre destinée...';
 $string['exit_whatnext_default'] = 'Veuillez choisir l\'une des options suivantes :';
+$string['exitcm'] = 'Activité suivante';
+$string['exitcm_help'] = 'Ce paramètre définit une activité Moodle qui doit être effectuée après que le test est terminé.
+L\'enseignant peut spécifier une activité bien précise ou l\'un de ces choix :
+* activité suivante de ce cours
+* activité suivante de cette section de cours
+* activité HotPotatoes suivante de ce cours
+* activité HotPotatoes suivante de cette section de cours
+Si d\'autres options de page de sortie sont désactivées, le participant ira à la prochaine activité. Sinon, il verra un lien pour l\'emmener vers la prochaine activité.';
+$string['exitcmcourse'] = 'Activité suivante de ce cours';
+$string['exitcmsection'] = 'Activité suivante de cette section de cours';
+$string['exithotpotcourse'] = 'Activité HotPotatoes suivante de ce cours';
+$string['exithotpotsection'] = 'Activité HopPotatoes suivante dans cette section de cours';
+$string['exitoptions'] = 'Quitter la page d\'options';
+$string['exitpage'] = 'Afficher la page de sortie';
+$string['exitpage_help'] = 'Détermine si une page de sortie doit être affichée après avoir effectué le test.
+**Oui**
+: Une page de sortie s\'affichera pour les participants quand le test sera terminé. Le contenu de la page de sortie est déterminé par les paramètres correspondant aux feedbacks et liens de la page de sortie HotPotatoes.
+**Non**
+: Le participant ne verra pas de page de sortie. À la place, il sera dirigé tout de suite vers la prochaine activité ou vers la page principale du cours Moodle.';
+$string['exitpagehdr'] = 'Page de sortie';
+$string['exittext'] = 'Quitter la page de texte';
 $string['feedbackdiscuss'] = 'Discuter de ce test dans un forum';
 $string['feedbackformmail'] = 'Formulaire de feedback';
 $string['feedbackmoodleforum'] = 'Forum Moodle';
@@ -262,18 +231,14 @@ $string['frameheight'] = 'Hauteur du cadre';
 $string['giveup'] = 'Abandonner';
 $string['grademethod'] = 'Méthode d\'évaluation';
 $string['grademethod_help'] = 'Ce paramètre définit comment la note HotPotatoes est calculée en fonction des scores des tentatives.
-
 **Meilleure note**
-: La note sera la plus haute note obtenue pour toutes les tentatives de ce test.
-
+La note sera la plus haute note obtenue pour toutes les tentatives de ce test.
 **Moyenne**
-: La note sera une moyenne des notes de chacune des tentatives de ce test.
-
+La note sera une moyenne des notes de chacune des tentatives de ce test.
 **Première tentative**
-: La note sera la note de la première tentative de ce test.
-
+La note sera la note de la première tentative de ce test.
 **Dernière tentative**
-: La note sera la note de la dernière tentative de ce test.';
+La note sera la note de la dernière tentative de ce test.';
 $string['gradeweighting'] = 'Pondération de la note';
 $string['gradeweighting_help'] = 'Les notes de cette activité HotPotatoes seront rapportées à ce nombre dans le carnet de notes de Moodle.';
 $string['highestscore'] = 'Plus haut score';
@@ -283,11 +248,11 @@ $string['hotpot:deleteallattempts'] = 'Supprimer toutes les tentatives d\'une ac
 $string['hotpot:deletemyattempts'] = 'Supprimer ses propres tentatives d\'une activité HotPotatoes';
 $string['hotpot:ignoretimelimits'] = 'Ignorer les limites de temps sur une activité HotPotatoes';
 $string['hotpot:manage'] = 'Modifier les paramètres d\'une activité HotPotatoes';
-$string['hotpotname'] = 'Nom de l\'activité HotPotatoes';
 $string['hotpot:preview'] = 'Prévisualiser une activité HotPotatoes';
 $string['hotpot:reviewallattempts'] = 'Voir toutes les tentatives d\'une activité HotPotatoes';
 $string['hotpot:reviewmyattempts'] = 'Voir ses propres tentatives d\'une activité HotPotatoes';
 $string['hotpot:view'] = 'Afficher la première page d\'un Hot Potatoes';
+$string['hotpotname'] = 'Nom de l\'activité HotPotatoes';
 $string['ignored'] = 'Ignoré';
 $string['inprogress'] = 'En cours';
 $string['isgreaterthan'] = 'est plus grand que';
@@ -304,16 +269,12 @@ $string['modulename'] = 'Hot Potatoes';
 $string['modulenameplural'] = 'Hot Potatoes';
 $string['nameadd'] = 'Nom';
 $string['nameadd_help'] = 'Le nom peut être un texte saisi par l\'enseignant ou généré automatiquement.
-
 **Obtenir à partir du fichier source**
 : Le nom sera extrait du fichier source.
-
 **Utiliser le nom du fichier source**
 : Le nom du fichier source sera utilisé comme nom.
-
 **Utiliser le chemin du fichier source**
 : Le chemin du fichier source sera utilisé comme nom. Tous les « / » du chemin seront remplacés par des espaces.
-
 **Texte spécifique**
 : Un texte saisi par l\'enseignant sera utilisé comme nom.';
 $string['nameedit'] = 'Nom';
@@ -323,22 +284,16 @@ $string['navigation_embed'] = 'Intégrer une page web';
 $string['navigation_frame'] = 'Cadre de navigation Moodle';
 $string['navigation_give_up'] = 'Bouton « Abandonner » uniquement';
 $string['navigation_help'] = 'Ce paramètre définit la barre de navigation du test.
-
 **Barre de navigation de Moodle**
 : La barre de navigation de Moodle sera affichée dans la même fenêtre que le test, en haut de page.
-
 **Cadre de navigation de Moodle**
 : La barre de navigation de Moodle sera affichée dans un cadre séparé en haut du test.
-
 **Page web intégrée**
 : La barre de navigation de Moodle sera affichée intégrée dans le test HotPotatoes.
-
 **Aides de navigation originales**
 : Le test sera affiché avec les boutons de navigation définis dans le test, s\'il y en a.
-
 ** Un simple bouton « Abandonner »**
 : Le test sera affiché avec un simple bouton « Abandonner » au sommet de la page.
-
 **Aucun**
 : Le test sera affiché sans aucune navigation, de sorte que lorsque des réponses correctes auront été données à toutes les questions, selon le réglage « Afficher le test suivant ?», Moodle retournera à la page du cours ou lancera le test suivant.';
 $string['navigation_moodle'] = 'Barres de navigation standard de Moodle (haut de page et coté)';
@@ -357,9 +312,7 @@ $string['notavailable'] = 'Désolé, cette activité n\'est pas disponible pour 
 $string['outputformat'] = 'Format d\'affichage';
 $string['outputformat_best'] = 'Meilleur';
 $string['outputformat_help'] = 'Le format de sortie précise de quelle manière le contenu sera affiché au participant.
-
 Les formats de sortie disponibles dépendent du type de fichier source. Certains fichiers source n\'ont qu\'un format de sortie, alors que d\'autres en proposent plusieurs.
-
 Le paramètre « meilleur » affichera le contenu en optimisant le format de sortie en fonction du navigateur du participant.';
 $string['outputformat_hp_6_jcloze_html'] = 'JCloze HP6 html: Standard';
 $string['outputformat_hp_6_jcloze_xml_anctscan'] = 'JCloze à partir d\'une source HP6 xml: ANCT-Scan';
@@ -400,10 +353,8 @@ $string['quizname_help'] = 'texte d\'aide pour le nom du test';
 $string['quizzes'] = 'Tests';
 $string['removegradeitem'] = 'Retirer l\'élément d\'évaluation';
 $string['removegradeitem_help'] = 'Détermine si la note de cette activité doit être supprimée.
-
 **Non**
 : La note de cette activité ne sera pas supprimée du carnet de note de Moodle.
-
 **Oui**
 : Si la note maximale ou la pondération de cette note est à définie à zéro, alors la note de cette activité sera supprimée du carnet de note de Moodle.';
 $string['responsesreport'] = 'Réponses';
@@ -413,22 +364,16 @@ $string['selectattempts'] = 'Sélectionnez les tentatives';
 $string['showerrormessage'] = 'Erreur HotPotatoes : {$a}';
 $string['sourcefile'] = 'Nom du fichier source';
 $string['sourcefile_help'] = 'Ce paramètre définit le fichier de contenu qui sera affiché aux participants.
-
 Habituellement, ce fichier a été créé en dehors de Moodle, puis déposé dans la zone de fichiers du cours Moodle.
 Cela peut être un fichier html ou un fichier d\'un autre type généré à partir d\'un logiciel ce création de type HotPotatoes ou Qedoc.
-
 L\'emplacement du fichier source doit être indiqué comme un dossier ou un chemin de fichiers dans la zone de fichiers du cours Moodle, ou il peut être indiqué comme une URL commençant par http:// ou https://
-
 Pour les documents Qedoc, le fichier source doit être indiqué comme une URL d\'un module Qedoc déposé sur le serveur Qedoc. Par exemple : http://www.qedoc.net/library/ABCDE_123.zip
-
-Pour plus d\'informations sur le dépôt de source Qedoc, visitez le site [Qedoc documentation: Uploading_modules](http://www.qedoc.org/en/index.php?title=Uploading_modules)';
+Pour plus d\'informations sur le dépôt de source Qedoc, visitez le site \[Qedoc documentation: Uploading\_modules\](http://www.qedoc.org/en/index.php?title=Uploading\_modules)';
 $string['sourcefilenotfound'] = 'Fichier source non trouvé (ou vide) : {$a}';
 $string['status'] = 'Statut';
 $string['stopbutton'] = 'Afficher le bouton stop';
 $string['stopbutton_help'] = 'Si ce paramètre est activé, un bouton stop est ajouté au test.
-
 Si l\'étudiant clique sur le bouton stop, le résultat obtenu jusqu\'ici sera envoyé à Moodle et la tentative de test sera considérée comme abandonnée.
-
 Le texte affiché sur le bouton stop peut être issu du paquetage de langue Moodle ou définie par l\'enseignant pour créer son propre bouton stop.';
 $string['stopbutton_langpack'] = 'À partir du paquetage de langue';
 $string['stopbutton_specific'] = 'Utiliser un texte spécifique';
@@ -436,16 +381,12 @@ $string['stoptext'] = 'Texte du bouton stop';
 $string['storedetails'] = 'Enregistrer les détails bruts XML des tentatives HotPotatoes.';
 $string['studentfeedback'] = 'Feedback de l\'édudiant';
 $string['studentfeedback_help'] = 'Si l\'option est activée, une fenêtre de feedback s\'ouvrira quand le participant cliquera sur le bouton « Vérifier ». Cette fenêtre permettra de discuter du test avec l\'enseignant et avec les autres participants d\'une de ces manières :
-
 **Page web**
 : Nécessite l\'URL d\'une page web existante, par exemple http://myserver.com/feedbackform.html
-
 **Formulaire de feedback**
 : Nécessite l\'URL d\'un formulaire existant, par exemple http://myserver.com/cgi-bin/formmail.pl
-
 **Forum Moodle**
 : Le forum de base du cours Moodle sera affiché.
-
 **Messagerie instantanée Moodle**
 : La messagerie instantanée de Moodle s\'affichera. Si le cours est géré par plusieurs enseignants, le participant devra sélectionner l\'enseignant de son choix avant que la messagerie n\'apparaisse.';
 $string['submits'] = 'Envois';
@@ -457,19 +398,15 @@ $string['textsourcespecific'] = 'Texte spécifique';
 $string['timeclose'] = 'Disponible jusqu\'au';
 $string['timedout'] = 'En pause';
 $string['timelimit'] = 'Limite de temps';
-$string['timelimitexpired'] = 'La limite de temps pour cette tentative est échue';
 $string['timelimit_help'] = 'Ce paramètre spécifie la durée maximale d\'une tentative.
-
 ** Utilisez les paramètres du fichier source / modèle**
 : La durée sera tirée du fichier source ou modèle pour ce format de sortie.
-
 ** Utilisez de temps spécifique **
 : La durée limite spécifiée sur la page des paramètres du test HotPotatoes sera utilisée comme la durée pour une tentative de ce test. Ce paramètre remplace les durées indiquées dans le fichier source, le fichier de configuration ou les fichiers de modèle de ce format de sortie.
-
 **Désactiver**
 : Aucune limite de temps ne sera définie pour les tentatives de ce test.
-
 Si une tentative est reprise, le compteur continue à partir du moment où la tentative a été mise en pause.';
+$string['timelimitexpired'] = 'La limite de temps pour cette tentative est échue';
 $string['timelimitspecific'] = 'Utiliser un temps spécifique';
 $string['timelimitsummary'] = 'Limite de temps pour une tentative';
 $string['timelimittemplate'] = 'Utiliser les paramètres du fichier source/modèle';
@@ -478,16 +415,12 @@ $string['timeopenclose'] = 'Dates d\'ouverture et de fermeture';
 $string['timeopenclose_help'] = 'Vous pouvez spécifier quand les participant peuvent faire des tentatives pour ce test. Le test ne sera pas accessible avant l\'heure d\'ouverture et après l\'heure de fermeture.';
 $string['title'] = 'Titre';
 $string['title_help'] = 'Ce paramètre spécifie le titre à afficher sur la page Web.
-
 ** Nom de l\'activité HotPotatoes**
 : Le nom de cette activité HotPotatoes sera affiché comme du titre de la page Web.
-
 ** Tirer du fichier source **
 : Le titre défini dans le fichier source, s\'il existe, sera utilisé comme titre de la page Web.
-
 ** Utiliser le nom du fichier source **
 : Le nom du fichier source, à l\'exclusion des noms de dossier, sera utilisé comme titre de la page Web.
-
 ** Utiliser le chemin du fichier source **
 : Le chemin du fichier source, y compris tous les noms de dossiers, sera utilisé comme titre de la page Web.';
 $string['unitname_help'] = 'texte d\'aide pour le nom de l\'unité';
@@ -496,24 +429,18 @@ $string['usefilters'] = 'Utiliser des filtres';
 $string['usefilters_help'] = 'Si ce paramètre est activé, le contenu passera par les filtres Moodle avant d\'être affiché par le navigateur.';
 $string['useglossary'] = 'Utiliser un glossaire';
 $string['useglossary_help'] = 'Si ce paramètre est activé, le contenu passera par le filtre de glossaire automatique de Moodle avant d\'être affiché par le navigateur.
-
 Notez que ce paramètre passe avant le paramètre du site concernant le filtre de glossaire automatique.';
 $string['usemediafilter'] = 'Utiliser le filtre multimédia';
 $string['usemediafilter_help'] = 'Ce paramètre définit le filtre multimédia qui sera utilisé.
-
 **Aucun**
 : Le contenu ne passera à travers aucun filtre.
-
 **Filtre standard de Moodle**
 : Le contenu sera soumis au filtre standard de Moodle. Ce filtre recherche les liens vers des sources multimédias et les convertit en lecteurs appropriés.
-
 **Filtre standard de HotPotatoes**
 : Le contenu sera soumis à un filtre qui détecte les liens vers les images, les sons et vidéos encadrés par des crochets.
-: La syntaxe est la suivante : <code>[url player width height options]</code>
-
+: La syntaxe est la suivante : \`[url player width height options]\`
 **URL**
 : L\'URL absolue ou relative du fichier source.
-
 **Lecteur** (facultatif)
 : Le nom du lecteur à insérer. La valeur par défaut est Moodle. Mais la version standard de HotPotatoes propose aussi :
 :**drew** : un lecteur MP3
@@ -521,13 +448,10 @@ $string['usemediafilter_help'] = 'Ce paramètre définit le filtre multimédia q
 :**hbs** : un lecteur MP3 de Half-Backed Software
 :**image** : insère une image à partir d\'internet
 :**link** : insère un lien vers une autre page web
-
 **Largeur** (facultatif)
 La largeur désirée pour le lecteur.
-
 **Hauteur** (facultatif)
 La hauteur désirée pour le lecteur. Si non indiquée, la valeur sera la même que la largeur.
-
 **Options** (facultatif)
 : Une liste d\'options passées au lecteur, séparées par des virgules. Chaque option peut être un simple interrupteur on/off ou un nom d\'option avec sa valeur correspondante.
 : **nom=valeur**

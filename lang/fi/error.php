@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'Tehtävälista';
 $string['alreadyloggedin'] = 'Olet kirjautunut nimellä {$a}, sinun täytyy kirjautua ulos ennen kuin voit kirjautua toisena käyttäjänä.';
 $string['authnotexisting'] = 'Auktorisointimoduulia ei ole';
 $string['backupcontainexternal'] = 'Tämä varmuuskopiotiedosto sisältää ulkoisia Moodle-verkoston Isäntiä, joita ei ole konfiguroitu paikallisesti';
@@ -344,9 +345,9 @@ $string['maxbytes'] = 'Tiedosto on suurempi kuin suurin sallittu tiedostokoko';
 $string['messagingdisable'] = 'Viestit on estetty tällä sivustolla';
 $string['mimetexisnotexist'] = 'Järjestelmääsi ei ole kofiguroitu ajamaan mimeTeX:iä. Sinun täytyy ladata oikea versio PHP_OS alustallesi osoitteesta <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, tai hankkia C-lähde osoitteesta <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>, käännä se ja laita suoritettava tiedosto hakemistoon moodle/filter/tex/.';
 $string['mimetexnotexecutable'] = 'Räätälöity mimetex ei ole suoritettavissa!';
+$string['missing_moodle_backup_xml_file'] = 'Varmuuskopiosta puuttuu XML-tiedosto: {$a}';
 $string['missingfield'] = 'Kenttä "{$a}" puuttuu';
 $string['missingkeyinsql'] = 'VIRHE: kyselystä puuttuu parametri "{$a}"';
-$string['missing_moodle_backup_xml_file'] = 'Varmuuskopiosta puuttuu XML-tiedosto: {$a}';
 $string['missingparam'] = 'Vaadittu parametri ({$a}) puuttui';
 $string['missingparameter'] = 'Parametri puuttuu';
 $string['missingrequiredfield'] = 'Joitakin vaadituista kentistä puuttuu';
@@ -427,9 +428,9 @@ $string['remotedownloaderror'] = 'Komponentin lataaminen palvelimelle epäonnist
 $string['remotedownloadnotallowed'] = 'Komponenttien lataaminen palvelimellesi ei ole sallittu (allow_url_fopen on estetty).<br /><br />Sinun täytyy ladata <a href="{$a->url}">{$a->url}</a> -tiedosto manuaalisesti, kopioida se kohteeseen "{$a->dest}" palvelimellasi ja purkaa se sinne.';
 $string['reportnotavailable'] = 'Tämän tyyppinen raportti on saatavilla vain sivustokurssilla';
 $string['requireloginerror'] = 'Kurssille tai aktiviteettiin ei päästä.';
-$string['restorechecksumfailed'] = 'Sessioosi tallennetussa palautustiedossa tapahtui jokin virhe. Ole hyvä ja tarkista PHP muisti/tietokannan paketin kokorajat. Palautus lopetettiin.';
 $string['restore_path_element_missingmethod'] = 'Palautusmetodi {$a} puuttuu. Kehittäjän pitää määritellä se.';
 $string['restore_path_element_noobject'] = 'Palautusobjekti {$a} ei ole objekti.';
+$string['restorechecksumfailed'] = 'Sessioosi tallennetussa palautustiedossa tapahtui jokin virhe. Ole hyvä ja tarkista PHP muisti/tietokannan paketin kokorajat. Palautus lopetettiin.';
 $string['restrictedcontextexception'] = 'Valitettavasti ulkoisen funktion suorittaminen rikkoo kontekstirajoitusta.';
 $string['restricteduser'] = 'Valitettavasti käyttäjätiliäsi "{$a}" on rajoitettu toiminnon osalta.';
 $string['reverseproxyabused'] = 'Käänteinen välityspalvelin käytössä, palvelimelle ei valitettavasti päästä suoraan.<br />Ota yhteyttä palvelimen ylläpitäjään.';
@@ -462,7 +463,6 @@ $string['tagnotfound'] = 'Määriteltyä tunnistetta ei löytynyt tietokannasta'
 $string['targetdatabasenotempty'] = 'Kohdetietokanta ei ole tyhjä. Siirto katkaistu turvallisuussyistä.';
 $string['textconditionsnotallowed'] = 'Tekstisarakeolosuhteiden vertailua ei ole sallittu. Ole hyvä ja käytä sql_compare_text() -funktiota haussasi.';
 $string['themenotinstall'] = 'Teemaa ei ole asennettu!';
-$string['TODO'] = 'Tehtävälista';
 $string['tokengenerationfailed'] = 'Ei voida generoida uutta avainta.';
 $string['transactionvoid'] = 'Siirtoa ei voida mitätöidä koska se on jo mitätöity';
 $string['unenrolerror'] = 'Tapahtui virhe yritettäessä kirjata henkilöä pois';

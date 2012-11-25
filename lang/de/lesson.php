@@ -28,14 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 $string['accesscontrol'] = 'Zugriffssteuerung';
 $string['actionaftercorrectanswer'] = 'Aktion nach richtiger Antwort';
 $string['actionaftercorrectanswer_help'] = 'Nachdem eine Frage richtig beantwortet wurde, gibt es 3 Optionen für eine Fortsetzung:
-
 * Normal - dem Pfad der Lektion folgen
 * Ungesehene Seite zeigen - die Seiten werden in zufälliger Reihenfolge gezeigt, ohne eine Seite doppelt aufzurufen
-* Unbeantwortete Seite zeigen - die Seiten werden in zufälliger Reihenfolge gezeigt, wobei Seiten mit unbeantworteten Fragen auch nochmal aufgerufen werden
-';
+* Unbeantwortete Seite zeigen - die Seiten werden in zufälliger Reihenfolge gezeigt, wobei Seiten mit unbeantworteten Fragen auch nochmal aufgerufen werden';
 $string['actions'] = 'Aktionen';
 $string['activitylink'] = 'Folgeaktivität';
-$string['activitylink_help'] = 'Um einen Link am Ende der Lektion zu einer weiteren Aktivität im Kurs einzufügen, wählen Sie die Aktivität aus dem  Auswahlmenü.';
+$string['activitylink_help'] = 'Um einen Link am Ende der Lektion zu einer weiteren Aktivität im Kurs einzufügen, wählen Sie die Aktivität aus dem Auswahlmenü.';
 $string['activitylinkname'] = 'Zu \'{$a}\' gehen';
 $string['addabranchtable'] = 'Inhaltsseite einfügen';
 $string['addanendofbranch'] = 'Verzweigungsende einfügen';
@@ -136,10 +134,9 @@ $string['detailedstats'] = 'Ergebnisanalyse';
 $string['didnotanswerquestion'] = 'Hat diese Frage nicht beantwortet.';
 $string['didnotreceivecredit'] = 'Hat keine Bewertung erhalten';
 $string['displaydefaultfeedback'] = 'Standardfeedback anzeigen';
-$string['displaydefaultfeedback_help'] = '<h2>Standardrückmeldung anzeigen</h2>
-
-<p>Bei der Einstellung <strong>Ja</strong> wird die Standardrückmeldung (Richtig/Falsch) angezeigt, sofern keine individuelle Rückmeldung vorhanden ist.</p>
-<p>Bei der Einstellung <strong>Nein</strong> wird keine Rückmeldung angezeigt, sofern keine individuelle Rückmeldung vorhanden ist. Die Teilnehmer/innen werden dann automatisch zur nächsten Seite der Lektion geführt. </p>';
+$string['displaydefaultfeedback_help'] = '## Standardrückmeldung anzeigen
+Bei der Einstellung **Ja** wird die Standardrückmeldung (Richtig/Falsch) angezeigt, sofern keine individuelle Rückmeldung vorhanden ist.
+Bei der Einstellung **Nein** wird keine Rückmeldung angezeigt, sofern keine individuelle Rückmeldung vorhanden ist. Die Teilnehmer/innen werden dann automatisch zur nächsten Seite der Lektion geführt.';
 $string['displayhighscores'] = 'High Scores anzeigen';
 $string['displayinleftmenu'] = 'Im linken Seitenmenü anzeigen?';
 $string['displayleftif'] = 'Linkes Seitenmenü nur anzeigen, wenn die Bewertung höher ist als';
@@ -195,11 +192,11 @@ $string['gradeessay'] = 'Freitext-Bewertung ({$a->notgradedcount} - nicht bewert
 $string['gradeis'] = 'Ihre Bewertung: {$a}';
 $string['gradeoptions'] = 'Bewertung';
 $string['handlingofretakes'] = 'Bewertung bei Wiederholungen';
-$string['handlingofretakes_help'] = '<h2>Bewertung bei Wiederholungen</h2>
-<p>Wenn die Teilnehmer/innen eine Lektion wiederholen dürfen, kann die
+$string['handlingofretakes_help'] = '## Bewertung bei Wiederholungen
+Wenn die Teilnehmer/innen eine Lektion wiederholen dürfen, kann die
 Bewertung entweder als Durchnittsnote
-oder als Bestnote aller Versuche eines Teilnehmenden erfolgen.</p>
-<p>Diese Option kann jederzeit geändert werden.</p>';
+oder als Bestnote aller Versuche eines Teilnehmenden erfolgen.
+Diese Option kann jederzeit geändert werden.';
 $string['havenotgradedyet'] = 'Noch nicht bewertet';
 $string['here'] = 'hier';
 $string['highscore'] = 'Beste Bewertung';
@@ -221,13 +218,13 @@ $string['jumps_help'] = 'Jede Antwort (bei Fragen) oder jede Beschreibung (bei I
 $string['jumpsto'] = 'Sprung zu <em>{$a}</em>';
 $string['leftduringtimed'] = 'Sie haben die Lektion abgebrochen. Die Bearbeitung der Lektion ist zeitlich begrenzt. <br />Klicken Sie auf Fortsetzen, um die Lektion erneut zu beginnen.';
 $string['leftduringtimednoretake'] = 'Sie haben die Lektion abgebrochen. Die Bearbeitung der Lektion ist zeitlich begrenzt. <br />Sie können diese Lektion nicht mehr bearbeiten.';
+$string['lesson:edit'] = 'Lektion bearbeiten';
+$string['lesson:manage'] = 'Lektion verwalten';
 $string['lessonattempted'] = 'Lektion wurde versucht';
 $string['lessonclosed'] = 'Die Lektion war verfügbar bis {$a}';
 $string['lessoncloses'] = 'Verfügbarkeit der Lektion endet';
 $string['lessoncloseson'] = 'Verfügbarkeit der Lektion endet: {$a}';
-$string['lesson:edit'] = 'Lektion bearbeiten';
 $string['lessonformating'] = 'Lektion wird formatiert';
-$string['lesson:manage'] = 'Lektion verwalten';
 $string['lessonmenu'] = 'Seitenmenü';
 $string['lessonnotready'] = 'Diese Lektion ist noch nicht verfügbar. Nehmen Sie bitte mit {$a} Kontakt auf.';
 $string['lessonnotready2'] = 'Diese Lektion kann noch nicht bearbeitet werden.';
@@ -246,8 +243,7 @@ $string['matchingpair'] = 'Passendes Paar {$a}';
 $string['maxgrade'] = 'Maximale Bewertung';
 $string['maxgrade_help'] = 'Dieser Wert bestimmt die maximale Bewertung für die Lektion. Wenn Sie diesen Wert auf 0 setzen, erscheint die Lektion in der Bewertungsübersicht.';
 $string['maxhighscores'] = 'Länge der Bestenliste';
-$string['maximumnumberofanswersbranches'] = 'Höchstzahl der Antworten
-';
+$string['maximumnumberofanswersbranches'] = 'Höchstzahl der Antworten';
 $string['maximumnumberofanswersbranches_help'] = 'Dieser Wert legt fest, wie viele Antworten bzw. Verzweigungen in der Lektion pro Frage benutzt werden dürfen. Wenn ausschließlich Wahr/Falsch-Fragen vorkommen, kann der Wert auf 2 gesetzt werden. Die Einstellung kann jederzeit geändert werden. Eingegebene Daten werden bei der Änderung nicht berührt.';
 $string['maximumnumberofattempts'] = 'Höchstzahl der Versuche';
 $string['maximumnumberofattempts_help'] = 'Dieser Wert legt die Zahl der maximal zulässigen Versuche für jede einzelne Frage fest. Wenn die Höchstzahl der zulässigen Versuche erreicht ist, wird automatisch die nächste Seite der Lektion angezeigt.';
@@ -263,7 +259,6 @@ $string['mediawidth'] = 'Breite des Popup-Fensters:';
 $string['messageprovider:graded_essay'] = 'Mitteilung zur Freitextbewertung';
 $string['minimumnumberofquestions'] = 'Mindestzahl der Fragen';
 $string['minimumnumberofquestions_help'] = 'Dieser Wert legt eine untere Grenze für die Anzahl an Fragen fest, die in die Bewertung der Aktivität eingehen. Falls die Lektion mindestens eine Verzweigungsseite enthält, sollte der Wert auf 0 gesetzt werden.
-
 Wenn Sie den Wert auf 20 setzen, so wird empfohlen, dass Sie dies in einem Text auf der Startseite der Lektion ankündigen, beispielsweise so: "In dieser Lektion wird von Ihnen erwartet, dass Sie mindestens 20 Fragen bearbeiten. Sie dürfen auch mehr Fragen versuchen, wenn Sie möchten. Falls Sie allerdings nur weniger als 20 Fragen bearbeiten, so wird Ihre Bewertung trotzdem so berechnet, als ob Sie 20 Fragen versucht hätten."';
 $string['missingname'] = 'Bitte geben Sie einen Nicknamen ein';
 $string['modattempts'] = 'Wiederholung erlauben';
@@ -309,14 +304,13 @@ $string['numberofcorrectanswers'] = 'Richtige Antworten: {$a}';
 $string['numberofcorrectmatches'] = 'Anzahl der richtigen Zuordnungen: {$a}';
 $string['numberofpagestoshow'] = 'Zahl der zu zeigenden Seiten';
 $string['numberofpagestoshow_help'] = 'Diese Einstellung legt die Zahl der Seiten fest, die in der Lektion gezeigt werden sollen. Eine Begrenzung ist sinnvoll für Lektionen, bei denen die Seiten in einer zufälligen Reihenfolge gezeigt werden, wenn also die Option "Aktion nach einer richtigen Antwort" auf "Ungesehene Seite anzeigen" oder "Unbeantwortete Seite anzeigen" gesetzt wurde.
-
 Wenn die "Zahl der zu zeigenden Seiten" auf 0 gesetzt wird, dann werden alle Seiten in der Lektion angezeigt.';
 $string['numberofpagesviewed'] = 'Beantwortete Fragen: {$a}';
 $string['numberofpagesviewednotice'] = 'Beantwortete Fragen: {$a->nquestions} (mindestens zu beantworten: {$a->minquestions})';
 $string['numerical'] = 'Numerisch';
 $string['ongoing'] = 'Aktuelle Bewertung anzeigen';
-$string['ongoingcustom'] = 'Gesamtpunktzahl: {$a->score} / {$a->currenthigh}';
 $string['ongoing_help'] = 'Wenn diese Option aktiviert ist, wird den Teilnehmer/innen auf jeder Seite ihre aktuelle Bewertung zusammen mit der maximal erreichbaren Bewertung angezeigt.';
+$string['ongoingcustom'] = 'Gesamtpunktzahl: {$a->score} / {$a->currenthigh}';
 $string['ongoingnormal'] = 'Richtige Antworten: {$a->correct} / {$a->viewed}';
 $string['onpostperpage'] = 'Nur eine Mitteilung pro Bewertung';
 $string['options'] = 'Optionen';
@@ -326,15 +320,13 @@ $string['other'] = 'Weitere Einstellungen';
 $string['outof'] = 'von {$a}';
 $string['overview'] = 'Übersicht';
 $string['overview_help'] = 'Eine Lektion besteht mehreren Seiten und optionalen Inhaltsseiten.
-
 Eine Seite stellt den Lerninhalt bereit und endet normalerweise mit einer Frage. Zugeordnet zu jeder Antwortmöglichkeit ist ein Sprung. Der Sprung kann relativ sein, also diese oder die nächste Seite adressieren. Ein Sprung kann aber auch absolut sein und dann jede beliebige Seite in der Lektion erreichen.
-
 Eine Inhaltsseite enthält eine ganze Reihe von Links zu anderen Seiten der Lektion, wie beispielsweise ein Inhaltsverzeichnis.';
 $string['page'] = 'Seite: {$a}';
-$string['pagecontents'] = 'Seiteninhalt';
 $string['page-mod-lesson-edit'] = 'Lektionsbearbeitungsseite';
 $string['page-mod-lesson-view'] = 'Lektionsansichtsseite';
 $string['page-mod-lesson-x'] = 'Alle Lektionsseiten';
+$string['pagecontents'] = 'Seiteninhalt';
 $string['pages'] = 'Seiten';
 $string['pagetitle'] = 'Seitentitel';
 $string['password'] = 'Kennwort';
@@ -396,9 +388,9 @@ $string['showanunseenpage'] = 'Noch nicht angezeigte Seite anzeigen';
 $string['singleanswer'] = 'Einzelne Antwort';
 $string['skip'] = 'Keine Navigation';
 $string['slideshow'] = 'Slideshow';
+$string['slideshow_help'] = 'Wenn diese Option aktiviert ist, wird die Lektion als Diashow mit einer festgelegten Breite und Höhe gezeigt.';
 $string['slideshowbgcolor'] = 'Hintergrundfarbe für Slideshow';
 $string['slideshowheight'] = 'Höhe für Slideshow';
-$string['slideshow_help'] = 'Wenn diese Option aktiviert ist, wird die Lektion als Diashow mit einer festgelegten Breite und Höhe gezeigt.';
 $string['slideshowwidth'] = 'Breite für Slideshow';
 $string['startlesson'] = 'Lektion bearbeiten';
 $string['studentattemptlesson'] = '{$a->lastname}, {$a->firstname}: Versuch Nr. {$a->attempt}';

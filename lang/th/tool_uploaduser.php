@@ -43,42 +43,50 @@ $string['uploadpicture_cannotsave'] = 'ไม่สามารถบันท�
 $string['uploadpicture_cannotunzip'] = 'ไม่สามารถ unzip ไฟล์รูปภาพ';
 $string['uploadpicture_invalidfilename'] = 'ไฟล์ภาพ {$a} มีตัวอักษรที่ระบบไม่สามารถอ่านค่าได้ กำลังข้ามไปภาพต่อไป';
 $string['uploadpicture_overwrite'] = 'เขียนทับรูปประจำตัวที่มีอยู่หรือไม่ ?';
-$string['uploadpictures'] = 'อัพโหลดรูปภาพส่วนตัว';
 $string['uploadpicture_userfield'] = 'ใช้ลักษณะประจำตัวสมาชิกในการจับคู่รูปภาพ';
 $string['uploadpicture_usernotfound'] = 'ไม่พบสมาชิกทีมีฟิลด์ \'{$a->userfield}\' มีค่าเป็น \'{$a->uservalue}\' ข้ามไป';
 $string['uploadpicture_userskipped'] = 'ข้าม {$a} เพราะมีภาพส่วนตัวแล้ว';
 $string['uploadpicture_userupdated'] = 'อัพเดทรูปภาพส่วนตัวของ {$a} แล้ว';
+$string['uploadpictures'] = 'อัพโหลดรูปภาพส่วนตัว';
 $string['uploadusers'] = 'อัพโหลดสมาชิก';
-$string['uploadusers_help'] = '<p>Firstly, note that <strong>it is  usually not necessary to import users in bulk</strong> - to keep your own maintenance work down you should first explore forms of authentication that do not require manual maintenance, such as connecting to existing external databases or letting the users create their own accounts. See the Authentication section in the admin menus.</p>
-<p>If you are sure you want to import multiple user accounts from a text file, then you need to format your text file as follows:</p>
+$string['uploadusers_help'] = 'Firstly, note that **it is usually not necessary to import users in bulk** - to keep your own maintenance work down you should first explore forms of authentication that do not require manual maintenance, such as connecting to existing external databases or letting the users create their own accounts. See the Authentication section in the admin menus.
+If you are sure you want to import multiple user accounts from a text file, then you need to format your text file as follows:
 
-<ul>
-  <li>Each line of the file contains one record</li>
-  <li>Each record is a series of data separated by commas</li>
-  <li>The first record of the file is special, and contains a list of fieldnames. This defines the format of the rest of the file.
-    <blockquote>
-      <p><strong>Required fieldnames:</strong> these fields must be included in the first record, and defined for each user</p>
-      <p></p>
-      <font color="#990000" face="Courier New, Courier, mono">username, password, firstname, lastname, email</font></p>
-</p>
-      <p><strong>Default fieldnames:</strong> these are optional - if they are not included then the values are taken from the primary admin</p>
-      <p><font color="#990000" face="Courier New, Courier, mono">institution, department, city, country, lang, timezone</font> </p>
-      <p><strong>Optional fieldnames: </strong>all of these are completely optional. The  course names are the &quot;shortnames&quot; of the courses - if present then the user  will be enrolled as students in those courses. Group names must be associated to the corresponding courses, i.e. group1 to course1, etc.</p>
-      <p> <font color="#990000" face="Courier New, Courier, mono">idnumber, icq, phone1, phone2, address, url, description, mailformat, maildisplay, htmleditor, autosubscribe, course1, course2, course3, course4, course5, group1, group2, group3, group4, group5</font></p>
-    </blockquote>
-    </li>
-  <li>Commas within the data should be encoded as &amp;#44 - the script will automatically decode these back to commas. </li>
-  <li>For Boolean fields, use 0 for false and 1 for true. </li>
-  <li>Note: If a user is already registered in the Moodle user database, this script will return the 
-      userid number (database index) for that user, and will enrol the user as a student in any of the
-      specified courses WITHOUT updating the other specified data.</li>
-</ul>
-  
-  
-<p>Here is an example of a valid import file:</p>
-<p><font size="-1" face="Courier New, Courier, mono">username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1<br />
-jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1<br />
-reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3</font></p>';
+* Each line of the file contains one record
+* Each record is a series of data separated by commas
+* The first record of the file is special, and contains a list of fieldnames. This defines the format of the rest of the file.
+>
+> **Required fieldnames:** these fields must be included in the first record, and defined for each user
+>
+>
+>
+>
+>
+> username, password, firstname, lastname, email
+>
+> **Default fieldnames:** these are optional - if they are not included then the values are taken from the primary admin
+>
+>
+> institution, department, city, country, lang, timezone
+>
+>
+> **Optional fieldnames: **all of these are completely optional. The course names are the "shortnames" of the courses - if present then the user will be enrolled as students in those courses. Group names must be associated to the corresponding courses, i.e. group1 to course1, etc.
+>
+>
+> idnumber, icq, phone1, phone2, address, url, description, mailformat, maildisplay, htmleditor, autosubscribe, course1, course2, course3, course4, course5, group1, group2, group3, group4, group5
+>
+>
+>
+* Commas within the data should be encoded as &#44 - the script will automatically decode these back to commas.
+* For Boolean fields, use 0 for false and 1 for true.
+* Note: If a user is already registered in the Moodle user database, this script will return the
+userid number (database index) for that user, and will enrol the user as a student in any of the
+specified courses WITHOUT updating the other specified data.
+
+Here is an example of a valid import file:
+username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1
+jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1
+reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3';
 $string['uploaduserspreview'] = 'แสดงสมาชิกที่อัพโหลด';
 $string['uploadusersresult'] = 'ผลการอัพโหลดสมาชิก';
 $string['useraccountupdated'] = 'อัพเดทสมาชิกแล้ว';

@@ -59,7 +59,6 @@ $string['educationallevel'] = 'Livello formativo';
 $string['educationallevel_help'] = 'Il livello formativo che stai cercando. Nel caso di comunità di formatori indica il livello insegnato.';
 $string['enroldownload'] = 'Trova';
 $string['enroldownload_help'] = 'Alcuni corsi reclamizzati nell\'hub scelto permettono alle persone di frequentarli nel loro sito originario.
-
 Altri corsi sono dei template scaricabili da usare nel tuo sito.';
 $string['enrollable'] = 'Corsi ai quali iscriversi';
 $string['enrollablecourses'] = 'Corsi ai quali iscriversi';
@@ -84,8 +83,8 @@ $string['nocourse'] = 'Nessun corso trovato';
 $string['noratings'] = 'Nessuna valutazione';
 $string['operation'] = 'Operazione';
 $string['orderby'] = 'Ordina per';
-$string['orderbyeldest'] = 'Più vecchio';
 $string['orderby_help'] = 'L\'ordine di visualizzazione dei risultati.';
+$string['orderbyeldest'] = 'Più vecchio';
 $string['orderbyname'] = 'Nome';
 $string['orderbynewest'] = 'Più recente';
 $string['orderbypublisher'] = 'Editore';
@@ -102,7 +101,7 @@ $string['search'] = 'Cerca';
 $string['searchcommunitycourse'] = 'Cerca corso community';
 $string['searchcourse'] = 'Cerca corso community';
 $string['selecthub'] = 'Scegli hub';
-$string['selecthub_help'] = 'Seleziona ';
+$string['selecthub_help'] = 'Seleziona';
 $string['sites'] = 'Siti';
 $string['subject'] = 'Argomento';
 $string['subject_help'] = 'Scegli un argomento dall\'elenco per restringere la ricerca di corsi.';

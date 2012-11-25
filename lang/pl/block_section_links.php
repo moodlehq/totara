@@ -27,10 +27,14 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['incby1'] = 'Wzrost o';
 $string['incby2'] = 'Alternatywny wzrost o';
+$string['incbydesc1'] = 'Jest to wartość zwiększania sekcji po każdym wyświetleniu łącza sekcji, poczynając od 1.';
+$string['incbydesc2'] = 'Jest to wartość zwiększania sekcji po każdym wyświetleniu łącza sekcji, poczynając od 1.';
 $string['jumptocurrenttopic'] = 'Przejdź do aktualnego tematu';
 $string['jumptocurrentweek'] = 'Przejdź do aktualnego tygodnia';
 $string['numsections1'] = 'Numer sekcji';
 $string['numsections2'] = 'Alternatywny numer sekcji';
+$string['numsectionsdesc1'] = 'Gdy liczba sekcji kursu osiągnie tę liczbę, zostanie użyte zwiększenie o wartość.';
+$string['numsectionsdesc2'] = 'Gdy liczba sekcji kursu osiągnie tę liczbę, zostanie użyte alternatywne zwiększenie o wartość.';
 $string['pluginname'] = 'Linki do sekcji';
 $string['topics'] = 'Tematy';
 $string['weeks'] = 'Tygodnie';

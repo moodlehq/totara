@@ -36,7 +36,7 @@ $string['cannotdeletecate'] = 'Du kan inte ta bort den här kategorin eftersom d
 $string['cannotdeletemissingqtype'] = 'Du kan inte ta bort den saknade frågetypen. Den är nödvändig för systemet.';
 $string['cannotdeleteqtypeinuse'] = 'Du kan inte ta bort frågetypen \'{$a}\'. Det finns frågor av den här typen i frågebanken.';
 $string['cannotdeleteqtypeneeded'] = 'Du kan inte ta bort frågetypen \'{$a}\'. Det finns andra frågetyper installerade som är beroende av denna.';
-$string['cannotenable'] = ' Det går inte att skapa frågetypen {$a} direkt.';
+$string['cannotenable'] = 'Det går inte att skapa frågetypen {$a} direkt.';
 $string['cannotfindcate'] = 'Det gick inte att hitta posten för kategori';
 $string['cannotfindquestionfile'] = 'Det gick inte att hitta datafilen för frågor i zip-filen';
 $string['cannotgetdsfordependent'] = 'Det gick inte att hitta det angivna datasetet för en fråga som är beroende av dataset! (question: {$a->id}, datasetitem: {$a->item})';
@@ -44,7 +44,7 @@ $string['cannotgetdsforquestion'] = 'Det gick inte att hitta det angivna dataset
 $string['cannotimportformat'] = 'Import av det här formatet är tyvärr ännu inte implementerat!';
 $string['cannotinsertquestioncatecontext'] = 'Det gick inte att foga in den nya kategorin {$a->cat} för frågor p g a ett ogiltigt \'contextid\' {$a->ctx}';
 $string['cannotloadquestion'] = 'Det gick inte att ladda fråga';
-$string['cannotmovequestion'] = 'Du kan inte använda det här skriptet för att flytta frågor som är associerade till filer från olika andra områden. ';
+$string['cannotmovequestion'] = 'Du kan inte använda det här skriptet för att flytta frågor som är associerade till filer från olika andra områden.';
 $string['cannotopenforwriting'] = 'Det går inte att öppna för att skriva: {$a}';
 $string['cannotpreview'] = 'Du kan inte förhandsgranska de här frågorna!';
 $string['cannotread'] = 'Det går inte att läsa den importerade filen ({$a}) eller också är den tom';
@@ -72,7 +72,7 @@ $string['cwrqpfsnoprob'] = 'Inga frågekategorier på Din webbplats påverkas av
 $string['defaultfor'] = 'Förinställt standardvärde för {$a}';
 $string['defaultinfofor'] = 'Det förinställda standardvärdet för frågor som är gemensamma i sammanhanget \'{$a}\'.';
 $string['deletecoursecategorywithquestions'] = 'Det finns frågor i frågebanken associerad med denna kurs kategori. Om du fortsätter kommer de att raderas. Du kanske vill flytta dem först, med hjälp av gränssnittet för frågebanken.';
-$string['deleteqtypeareyousure'] = 'Är Du säker på att Du vill ta bort frågetypen \'{$a}\' ';
+$string['deleteqtypeareyousure'] = 'Är Du säker på att Du vill ta bort frågetypen \'{$a}\'';
 $string['deleteqtypeareyousuremessage'] = 'Du håller på att ta bort frågetypen \'{$a}\' helt och hållet. Är Du säker på att Du vill avinstallera den?';
 $string['deletingqtype'] = 'Tar bort frågetypen\'{$a}\'';
 $string['disabled'] = 'Avaktiverad';
@@ -96,71 +96,51 @@ $string['errorprocessingresponses'] = 'Ett fel uppstod vid behandling av dina sv
 $string['errorsavingcomment'] = 'Fel vid sparande av kommentar för fråga {$a->name} i databasen.';
 $string['errorupdatingattempt'] = 'Fel vid uppdatering av försök {$a->id} i databasen.';
 $string['exportcategory'] = 'Kategori för export';
-$string['exportcategory_help'] = '<p align="center"><b>Exportera kategori</b></p>
-
-<p><b>Kategori:</b> nedrullningsmenyn kan Du använda för att 
-välja den kategori som innehåller de frågor som Du vill exportera.</p>
-
-<p>Vissa format för import (GIFT and XML Format) tillåter att 
+$string['exportcategory_help'] = '**Exportera kategori**
+**Kategori:** nedrullningsmenyn kan Du använda för att
+välja den kategori som innehåller de frågor som Du vill exportera.
+Vissa format för import (GIFT and XML Format) tillåter att
 kategorin tas med i den skrivna filen vilket (som alternativ)
-gör det möjligt att återskapa kategorierna vid import. 
+gör det möjligt att återskapa kategorierna vid import.
 För att dessa data ska tas med så måste Du markera kryssrutan
-<b>Till fil</b>.</p>';
+**Till fil**.';
 $string['exportfilename'] = 'quiz';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
-$string['exportquestions_help'] = '<p>Den h&auml;r funktionen g&ouml;r det m&ouml;jligt f&ouml;r Dig att exportera en komplett kategori av fr&aring;gor till en textfil.  </p>
-<p>L&auml;gg dock m&auml;rke till att i m&aring;nga filformat &auml;r det s&aring; att viss information
-f&ouml;rsvinner n&auml;r man exporterar fr&aring;gorna. Det beror p&aring; att det finns m&aring;nga format som inte
-st&ouml;djer alla de finesser som man kan anv&auml;nda i Moodle-fr&aring;gor.
-Du b&ouml;r inte f&ouml;rv&auml;nta Dig att kunna exportera och importera fr&aring;gor 
+$string['exportquestions_help'] = 'Den här funktionen gör det möjligt för Dig att exportera en komplett kategori av frågor till en textfil.
+Lägg dock märke till att i många filformat är det så att viss information
+försvinner när man exporterar frågorna. Det beror på att det finns många format som inte
+stödjer alla de finesser som man kan använda i Moodle-frågor.
+Du bör inte förvänta Dig att kunna exportera och importera frågor
 samtidigt som Du bevarar dem i exakt samma format.
-Vissa typer av fr&aring;gor kanske inte g&aring;r att exportera alls.
-Du b&ouml;r allts&aring; testa exporterade fr&aring;gor innan Du anv&auml;nder dem 
-i en skarp produktionsmilj&ouml;. </p>
+Vissa typer av frågor kanske inte går att exportera alls.
+Du bör alltså testa exporterade frågor innan Du använder dem
+i en skarp produktionsmiljö.
+De format som f n stödjs är:
+**GIFT-formatet**
+* GIFT är det mest heltäckande import- och exportformatet som finns när det gäller att
+exportera testfrågor av Moodle-typ till en textfil.
+Man har utformat det så att det ska vara en enkel metod för lärare att skriva frågor som en textfil.
+Det stödjer flervalsfrågor, frågor av typen Sant-Falskt, kortsvar, para-ihop och numeriska frågor.
+Det stödjer även test av typen: Vilket är det ord som saknas? Lägg dock märke till att test med inbäddade svar f n
+inte stödjs. Olika frågetyper kan blandas i en enda textfil. Formatet stödjer även kommentarer till rader,
+namn på frågor och procentviktade betyg/omdömen.
+Nedan kommer några exempel:
+Vem är begravd i "Grant\'s tomb"?{~Grant ~Jefferson =ingen}
+Grant är{~begravd =gravsatt ~lever} i "Grant\'s tomb".
+Grant är begravd i "Grant\'s tomb".{FALSE}
+Vem är begravd i "Grant\'s tomb"?{=ingen =ingen alls}
+När föddes Ulysses S. Grant?{#1822}
 
-<p>De format som f n st&ouml;djs &auml;r:</p>
-
-<p><b>GIFT-formatet</b></p>
-<ul>
-<li>GIFT &auml;r det mest helt&auml;ckande import- och exportformatet som finns n&auml;r det g&auml;ller att
-exportera testfr&aring;gor av Moodle-typ till en textfil.
-Man har utformat det s&aring; att det ska vara en enkel metod f&ouml;r l&auml;rare att skriva fr&aring;gor som en textfil.
-Det st&ouml;djer flervalsfr&aring;gor, fr&aring;gor av typen Sant-Falskt, kortsvar, para-ihop och numeriska fr&aring;gor.
-Det st&ouml;djer &auml;ven test av typen: Vilket &auml;r det ord som saknas? L&auml;gg dock m&auml;rke till att test med inb&auml;ddade svar f n 
-inte st&ouml;djs. Olika fr&aring;getyper kan blandas i en enda textfil. Formatet st&ouml;djer &auml;ven kommentarer till rader,
-namn p&aring; fr&aring;gor och procentviktade betyg/omd&ouml;men.
-<br /><br />
-Nedan kommer n&aring;gra exempel:
-<pre>
-Vem &auml;r begravd i "Grant\'s tomb"?{~Grant ~Jefferson =ingen}
-
-Grant &auml;r{~begravd =gravsatt ~lever} i "Grant\'s tomb".
-Grant &auml;r begravd i "Grant\'s tomb".{FALSE}
-
-Vem &auml;r begravd i "Grant\'s tomb"?{=ingen =ingen alls}
-
-N&auml;r f&ouml;ddes Ulysses S. Grant?{#1822}
-</pre></li>
-</ul>
-<p align="right"><a href="help.php?file=formatgift.html&amp;module=quiz">Mer info om "GIFT"-formatet</a></p>
-
-<p><b>XML-format för Moodle</b></p>
-
-<p>Detta för Moodle specifika formatet exporterar testfrågor i ett enkelt XML-format. De kan sedan  importeras till en annan kategori av frågor eller användas i någon annan process så som XSLT transformation. XML-formatet kommer att exportera bilder som är kopplade till frågor.</p>
-
-<p><b>IMS QTI 2.0</b></p>
-
-<p>Exporterar i standardformatet IMS QTI (version 2.0). Lägg märke till att detta skapar en grupp filer inne i en enskild \'zip\'-fil.</p>
-<p class="moreinfo"><a href="http://www.imsglobal.org/question/" target="_qti">Mer information om IMS QTI </a>
- (extern webbplats i nytt fönster)</p>
-
-<p><b>XHTML</b></p>
-
-<p>Exporterar kategorin som en enskild sida med \'strict\' XHTML. Varje fråga får en klar position inom sina egna &lt;div&gt; taggar. Om du vill använda den här sidan som-den-är så behöver du åtminstone redigera &lt;form&gt;-taggen vid början av &lt;body&gt;-sektionen för att tillhandahålla en lämplig åtgärd (t.ex. ett \'mailto\').</p>
-
-<p>Import och export format är pluggbara resurser. Det kan finnas andra alternativa format i databasen för moduler och plugin-program.</p>
-
-<p>Fler format kommer att tillkomma, vad helst annat som Moodle-anv&auml;ndare kan komma att bidra med! </p>';
+**XML-format för Moodle**
+Detta för Moodle specifika formatet exporterar testfrågor i ett enkelt XML-format. De kan sedan importeras till en annan kategori av frågor eller användas i någon annan process så som XSLT transformation. XML-formatet kommer att exportera bilder som är kopplade till frågor.
+**IMS QTI 2.0**
+Exporterar i standardformatet IMS QTI (version 2.0). Lägg märke till att detta skapar en grupp filer inne i en enskild \'zip\'-fil.
+[Mer information om IMS QTI](http://www.imsglobal.org/question)
+(extern webbplats i nytt fönster)
+**XHTML**
+Exporterar kategorin som en enskild sida med \'strict\' XHTML. Varje fråga får en klar position inom sina egna taggar. Om du vill använda den här sidan som-den-är så behöver du åtminstone redigera -taggen vid början av -sektionen för att tillhandahålla en lämplig åtgärd (t.ex. ett \'mailto\').
+Import och export format är pluggbara resurser. Det kan finnas andra alternativa format i databasen för moduler och plugin-program.
+Fler format kommer att tillkomma, vad helst annat som Moodle-användare kan komma att bidra med!';
 $string['filecantmovefrom'] = 'Frågefilerna kan inte flyttas eftersom du inte har rättigheter att flytta filer från platsen du försöker att flytta från.';
 $string['filecantmoveto'] = 'Frågefilerna kan inte flyttas eller kopieras eftersom du inte har rättigheter att lägga till filer till platsen du försöker att flytta till.';
 $string['filesareacourse'] = 'arkiv för kursfiler';
@@ -198,7 +178,7 @@ $string['notenoughdatatomovequestions'] = 'Du måste ange fråge-id för de frå
 $string['numquestions'] = 'Inga frågor';
 $string['numquestionsandhidden'] = '{$a->numquestions} (+{$a->numhidden} hidden)';
 $string['penaltyfactor'] = 'Avdragsfaktor';
-$string['penaltyfactor_help'] = '<p>Du kan ange vilken del (fraktion) av det uppn&aring;dda resultatet som b&ouml;r dras av f&ouml;r varje felaktigt svar. Det h&auml;r &auml;r bara relevant om testet k&ouml;rs i adaptiv form s&aring; att studenten/eleven/deltagaren/den l&auml;rande har r&auml;tt att svara upprepade g&aring;nger p&aring; fr&aring;gan. Faktorn f&ouml;r avdrag b&ouml;r vara ett tal mellan 0 och 1. En faktor f&ouml;r avdrag p&aring; 1 betyder att studenten/eleven/deltagaren/den l&auml;rande m&aring;ste svara r&auml;tt p&aring; fr&aring;gan i sitt f&ouml;rsta svar f&ouml;r att &ouml;verhuvudtaget f&aring; tilgodor&auml;kna sig n&aring;gra po&auml;ng f&ouml;r fr&aring;gan. En faktor f&ouml;r avdrag p&aring; 0 betyder att studenten/eleven/deltagaren/den l&auml;rande kan f&ouml;rs&ouml;ka hur m&aring;nga g&aring;nger som helst och &auml;nd&aring; f&aring; h&ouml;gsta po&auml;ng.</p>';
+$string['penaltyfactor_help'] = 'Du kan ange vilken del (fraktion) av det uppnådda resultatet som bör dras av för varje felaktigt svar. Det här är bara relevant om testet körs i adaptiv form så att studenten/eleven/deltagaren/den lärande har rätt att svara upprepade gånger på frågan. Faktorn för avdrag bör vara ett tal mellan 0 och 1. En faktor för avdrag på 1 betyder att studenten/eleven/deltagaren/den lärande måste svara rätt på frågan i sitt första svar för att överhuvudtaget få tilgodoräkna sig några poäng för frågan. En faktor för avdrag på 0 betyder att studenten/eleven/deltagaren/den lärande kan försöka hur många gånger som helst och ändå få högsta poäng.';
 $string['permissionedit'] = 'Redigera den här frågan';
 $string['permissionmove'] = 'Flytta den här frågan';
 $string['permissionsaveasnew'] = 'Spara det här som en ny fråga';

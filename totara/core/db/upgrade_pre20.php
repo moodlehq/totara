@@ -190,6 +190,19 @@ echo $OUTPUT->heading('Totara database schema updates');
 echo $OUTPUT->notification($success, 'notifysuccess');
 print_upgrade_separator();
 
+//Fix urls for legacy Site Policy files
+if ($sitepolicy = get_config(null, 'sitepolicy')) {
+    if (strpos($sitepolicy, '/file.php/1/') !== false) {
+        //using a site file, syntax has changed slightly
+        $sitepolicy = str_replace('/file.php/1/', '/file.php?file=/1/', $sitepolicy);
+        set_config('sitepolicy', $sitepolicy);
+        upgrade_log(UPGRADE_LOG_NORMAL, 'totara/core', 'Site Policy URL updated');
+        echo $OUTPUT->heading('Site Policy URL updated');
+        echo $OUTPUT->notification($success, 'notifysuccess');
+        print_upgrade_separator();
+    }
+}
+
 // Comments
 // update commentareas of plan comments to comply with PARAM_AREA
 $areas = array('plan-overview' => 'plan_overview',

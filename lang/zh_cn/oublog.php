@@ -31,9 +31,7 @@ $string['addlink'] = '添加链接';
 $string['addpost'] = '添加博客文章';
 $string['allowcomments'] = '允许评论';
 $string['allowcomments_help'] = '‘是，来自注册用户’ 允许来自能登录到此博客的用户的评论。
-
 ‘是，来自任何人’ 允许来自用户和广大公众的评论。您将接收到电子邮件来批准或拒绝来自没有登录的用户的评论。
-
 ‘无’ 禁止任何人对此文章进行评论。';
 $string['atom'] = 'Atom';
 $string['atomfeed'] = 'Atom 订阅';
@@ -87,8 +85,7 @@ $string['extranavolderposts'] = '更旧的文章：从 {$a->from} 到 {$a->to}';
 $string['extranavtag'] = '标签：{$a}';
 $string['feedhelp'] = '源';
 $string['feedhelp_help'] = '如果您使用订阅您可以添加 Atom 或 RSS 链接来跟上最新的博客。大部分的源阅读器支持 Atom 和 RSS。
-
-如果此博客允许评论，有&lsquo;仅评论&rsquo;的源。';
+如果此博客允许评论，有‘仅评论’的源。';
 $string['feeds'] = '源';
 $string['feedsnotenabled'] = '源没有开启';
 $string['foruser'] = '给 {$a} 的';
@@ -203,8 +200,8 @@ $string['siteentries'] = '查看网站条目';
 $string['subscribefeed'] = '订阅源（需要适当的软件）来接收博客更新的通知。';
 $string['summary'] = '摘要';
 $string['tags'] = '标签';
-$string['tagsfield'] = '标签（用逗号分隔）';
 $string['tags_help'] = '标签是以帮助您查找和分类博客文章的标记。';
+$string['tagsfield'] = '标签（用逗号分隔）';
 $string['tagupdatefailed'] = '升级标签失败';
 $string['title'] = '标题';
 $string['unsupportedbrowser'] = '<p>您的浏览器不能直接显示 Atom 或 RSS 源。</p>

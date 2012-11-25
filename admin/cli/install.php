@@ -234,7 +234,7 @@ if ($options['help']) {
 }
 
 //Print header
-echo get_string('cliinstallheader', 'install', $CFG->target_release)."\n";
+echo get_string('cliinstallheader', 'install', $TOTARA->release)."\n";
 
 //Fist select language
 if ($interactive) {

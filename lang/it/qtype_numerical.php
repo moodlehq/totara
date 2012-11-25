@@ -51,20 +51,17 @@ $string['notenoughanswers'] = 'Devi inserire almeno una risposta.';
 $string['nounitdisplay'] = 'Senza valutazione unità';
 $string['numericalmultiplier'] = 'Moltiplicatore';
 $string['numericalmultiplier_help'] = 'Il moltiplicatore è il fattore per il quale la risposta numerica corretta verrà moltiplicata.
-
 La prima unità (Unità 1) ha un moltiplicatore default pari a 1. Per cui se la risposta numerica corretta è 5500 e si è impostato W come unità nella Unità 1, che ha 1 come moltiplicatore default, la risposta corretta è 5500 W.
-
 Se si aggiunge l\'unità kW con un moltiplicatore di 0,001, questo aggiungerà una risposta corretta di 5,5 kW. Questo significa che le risposte 5500W e 5,5kW saranno entrambi corrette.
-
 Da notare che sarà anche moltiplicato l\'errore accettabile, così che un errore accettabile di 100W diventerà un errore di 0,1kW.';
 $string['oneunitshown'] = 'L\'unità 1 è visualizzata automaticamente accanto alla casella della risposta.';
 $string['onlynumerical'] = 'Le unità non vengono usate. Sarà valutato solo il valore numerico.';
 $string['pleaseenterananswer'] = 'Per favore inserisci una risposta';
 $string['pleaseenteranswerwithoutthousandssep'] = 'Per favore inserisci la tua risposta senza il separatore delle migliaia ({$a}).';
 $string['pluginname'] = 'Numerica';
+$string['pluginname_help'] = 'Dal punto di vista dello studente, una domanda numerica appare come una domanda a risposta breve. La differenza è che le risposte numeriche possono avere un errore accettabile. Questo permette che un intero range di risposte possono essere valutate come una sola risposta. Per esempio, se la risposta è 10 con un errore accettabile di 2, ogni numero tra 8 e 12 sarà accettato come corretto.';
 $string['pluginnameadding'] = 'Creazione domanda Numerica';
 $string['pluginnameediting'] = 'Modifica domanda Numerica';
-$string['pluginname_help'] = 'Dal punto di vista dello studente, una domanda numerica appare come una domanda a risposta breve. La differenza è che le risposte numeriche possono avere un errore accettabile. Questo permette che un  intero range di risposte possono essere valutate come una sola risposta. Per esempio, se la risposta è 10 con un errore accettabile di 2, ogni numero tra 8 e 12 sarà accettato come corretto. ';
 $string['pluginnamesummary'] = 'Permette di usare risposte numeriche, possibilmente con unità, valutate rispetto a modelli di risposta, possibilmente con tolleranza.';
 $string['relative'] = 'Relativo';
 $string['rightexample'] = 'a destra, ad esempio  come 1.00cm or 1.00km';
@@ -82,25 +79,20 @@ $string['unithdr'] = 'Unità {$a}';
 $string['unitincorrect'] = 'Non hai fornito l\'unità corretta.';
 $string['unitmandatory'] = 'Obbligatorio';
 $string['unitmandatory_help'] = '* La risposta sarà valutata in base all\'unità scritta
-
 * La penalità sarà applicata se il campo per le unità rimane vuoto';
 $string['unitnotselected'] = 'Devi selezionare una unità';
 $string['unitonerequired'] = 'Devi selezionare almeno una unità';
 $string['unitoptional'] = 'Unità opzionale';
 $string['unitoptional_help'] = '* verrà utilizzata l\'unità specificata nel campo corrispondente
-
 * se l\'unità non sarà riportata correttamente, o risulterà comunque sconosciuta, la risposta non sarà considerata valida';
 $string['unitpenalty'] = 'Penalità per unità';
 $string['unitpenalty_help'] = 'La penalità sarà applicata se
-
 * un nome unità errato viene inserito nello spazio previsto per l\'unità oppure
- * un\'unità viene inserita nello spazio previsto per il valore';
+* un\'unità viene inserita nello spazio previsto per il valore';
 $string['unitposition'] = 'Posizione unità';
 $string['unitselect'] = 'menu a discesa';
 $string['validnumberformats'] = 'Formati numerici validi';
 $string['validnumberformats_help'] = '* numeri corretti: 13500.67 : 13 500.67 : 13500,67: 13 500,67
-
-* se usi la virgola (,) come separatore di migliaia usa *sempre* il punto (.) come separatore decimale come in: 13,500.67 : 13,500.
-
+* se usi la virgola (,) come separatore di migliaia usa \*sempre\* il punto (.) come separatore decimale come in: 13,500.67 : 13,500.
 * per le forme esponenziali del tipo: 1.350067 * 10<sup>4</sup>, usa la formattazione scientifica: 1.350067 E4 : 1.350067 E04';
 $string['validnumbers'] = '13500.67, 13 500.67, 13,500.67, 13500,67, 13 500,67, 1.350067 E4 or 1.350067 E04';

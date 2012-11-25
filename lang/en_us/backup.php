@@ -27,5 +27,4 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['configgeneralanonymize'] = 'If enabled all information pertaining to users will be anonymized by default.';
 $string['generalanonymize'] = 'Anonymize information';
-$string['rootsettingusers'] = 'Include enrolled users
-';
+$string['rootsettingusers'] = 'Include enrolled users';

@@ -35,10 +35,12 @@ $string['allownotes_help'] = 'Wenn diese Option aktiviert ist, können Anmerkung
 $string['allowresubmit'] = 'Erneute Abgabe erlauben';
 $string['allowresubmit_help'] = 'Wenn diese Option aktiviert ist, können Aufgaben erneut abgegeben werden, auch wenn sie bereits bewertet wurden (natürlich um dafür eine erneute Bewertung zu erhalten).';
 $string['alreadygraded'] = 'Ihre Aufgabenabgabe wurde bereits bewertet. Eine erneute Abgabe ist deswegen nicht möglich.';
-$string['assignmentdetails'] = 'Aufgabendetails';
 $string['assignment:exportownsubmission'] = 'Eigene Abgabe exportieren';
 $string['assignment:exportsubmission'] = 'Abgabe exportieren';
 $string['assignment:grade'] = 'Aufgabe bewerten';
+$string['assignment:submit'] = 'Aufgabe abgeben';
+$string['assignment:view'] = 'Aufgabe ansehen';
+$string['assignmentdetails'] = 'Aufgabendetails';
 $string['assignmentmail'] = '{$a->teacher} hat ein Feedback zu Ihrer Abgabe zur Aufgabe \'{$a->assignment}\' verfasst.
 
 Sie sehen dieses Feedback im Anhang zu Ihrer Abgabe:
@@ -48,9 +50,7 @@ Sie sehen dieses Feedback im Anhang zu <a href="{$a->url}">Ihrer Abgabe</a>.';
 $string['assignmentmailsmall'] = '{$a->teacher} hat ein Feedback zu Ihrem Beitrag für die Aufgabe \'{$a->assignment}\' geschrieben. Sie finden das Feedback an Ihren Beitrag angehängt.';
 $string['assignmentname'] = 'Name der Aufgabe';
 $string['assignmentsubmission'] = 'Aufgabenabgabe';
-$string['assignment:submit'] = 'Aufgabe abgeben';
 $string['assignmenttype'] = 'Aufgabentyp';
-$string['assignment:view'] = 'Aufgabe ansehen';
 $string['availabledate'] = 'Verfügbar von';
 $string['cannotdeletefiles'] = 'Es ist ein Fehler aufgetreten. Die Dateien konnten nicht gelöscht werden.';
 $string['cannotviewassignment'] = 'Sie können diese Aufgabe nicht anzeigen';
@@ -84,7 +84,6 @@ $string['emailteachermailhtml'] = '{$a->username} hat die Aufgabe <i>\'{$a->assi
 Die Abgabe ist <br /><a href="{$a->url}">auf der Website verfügbar</a>.';
 $string['emailteachers'] = 'E-Mail-Benachrichtung an Trainer/innen';
 $string['emailteachers_help'] = 'Wenn diese Option aktiviert ist, werden Trainer/innen per E-Mail benachrichtigt, wenn Teilnehmer/innen eine Aufgaben abgeben oder aktualisieren.
-
 Benachrichtigt werden nur diejenigen Trainer/innen, die zur Bewertung der Aufgaben berechtigt sind. Wenn z.B. der Kurs getrennte Gruppen nutzt, dann werden nur jene Trainer/innen mit der betreffenden Gruppenzugehörigkeit benachrichtigt.';
 $string['emptysubmission'] = 'Sie haben noch nichts eingereicht';
 $string['enablenotification'] = 'Mitteilungen senden';
@@ -108,7 +107,7 @@ $string['helpupload'] = '<p>Dieser Aufgabentyp ermöglicht es den Teilnehmer/inn
 <p>Die Abgabe dieses Aufgabentyps muss von den Teilnehmer/innen manuell beendet werden. Sie können sich jederzeit den Bearbeitungsstand ansehen. Aufgabenbearbeitungen, die noch nicht fertig sind, werden als "Entwurf" gekennzeichnet. Sie können jede Lösung, die Sie noch nicht bewertet haben, wieder in des Entwurfstatus versetzen.';
 $string['helpuploadsingle'] = '<p>Dieser Aufgabentyp ermöglicht es den Teilnehmer/innen, eine Datei als Lösung hochzuladen (z.B. Text-, Bild-, Zip- oder andere Datei). Bitte geben Sie in der Aufgabenbeschreibung an, welche Art von Lösungsdatei Sie erwarten.</p>';
 $string['hideintro'] = 'Beschreibung vor dem Veröffentlichungszeitpunkt verbergen';
-$string['hideintro_help'] = 'Wenn diese Option aktiviert ist, wird die Aufgabenbeschreibung bis zum Bearbeitungsstart verborgen. Lediglich der Name der Aufgabe wird angezeigt.</p>';
+$string['hideintro_help'] = 'Wenn diese Option aktiviert ist, wird die Aufgabenbeschreibung bis zum Bearbeitungsstart verborgen. Lediglich der Name der Aufgabe wird angezeigt.';
 $string['invalidassignment'] = 'Ungültige Aufgabe';
 $string['invalidfileandsubmissionid'] = 'Fehlende Datei oder Abgabe-ID';
 $string['invalidid'] = 'Ungültige Aufgaben-ID';
@@ -182,8 +181,8 @@ $string['typeonline'] = 'Online - Texteingabe';
 $string['typeupload'] = 'Online - Dateien hochladen';
 $string['typeuploadsingle'] = 'Online - eine Datei hochladen';
 $string['unfinalize'] = 'Status in \'Entwurf\' ändern';
-$string['unfinalizeerror'] = 'Es ist ein Fehler aufgetreten. Die Lösung konnte nicht auf \'Entwurf\' zurückgesetzt werden.';
 $string['unfinalize_help'] = 'Ein Zurücksetzen in den Status \'Entwurf\' ermöglicht es, die Lösungen erneut zu bearbeiten.';
+$string['unfinalizeerror'] = 'Es ist ein Fehler aufgetreten. Die Lösung konnte nicht auf \'Entwurf\' zurückgesetzt werden.';
 $string['uploadafile'] = 'Datei hochladen';
 $string['uploadbadname'] = 'Dieser Dateiname enthält unzulässige Zeichen und kann nicht hochgeladen werden';
 $string['uploadedfiles'] = 'Hochgeladene Dateien';

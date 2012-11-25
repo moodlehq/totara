@@ -27,9 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['informationtext'] = 'Testo informativo';
 $string['pluginname'] = 'Descrizione';
+$string['pluginname_help'] = 'La Descrizione non è una domanda vera e propria.: permette di presentare del testo senza obbligare ad una risposta.
+Il testo compare sia durante lo svolgimento del quiz sia nella pagina di revisione. Il feedback generale è visualizzato solo nella pagina di revisione.';
 $string['pluginnameadding'] = 'Inserimento descrizione';
 $string['pluginnameediting'] = 'Modifica Descrizione';
-$string['pluginname_help'] = 'La Descrizione non è una domanda vera e propria.: permette di presentare del testo senza obbligare ad una risposta.
-
-Il testo compare sia durante lo svolgimento del quiz sia nella pagina di revisione. Il feedback generale è visualizzato solo nella pagina di revisione.';
 $string['pluginnamesummary'] = 'La Descrizione non è una vera e propria domanda. E\' un modo per aggiungere al quiz informazioni, istruzioni o altri tipi di contenuti. Una funzione analoga è svolta dalle Etichette nella home page dei corsi.';

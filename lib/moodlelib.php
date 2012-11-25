@@ -3201,6 +3201,11 @@ function get_user_key($script, $userid, $instance=null, $iprestriction=null, $va
 function update_user_login_times() {
     global $USER, $DB;
 
+    if (isguestuser()) {
+        // Do not update guest access times/ips for performance.
+        return true;
+    }
+
     $now = time();
 
     $user = new stdClass();
@@ -3926,9 +3931,6 @@ function delete_user(stdClass $user) {
     $updateuser = new stdClass();
     $updateuser->id           = $user->id;
     $updateuser->deleted      = 1;
-    $updateuser->username     = $delname;            // Remember it just in case
-    $updateuser->email        = md5($user->username);// Store hash of username, useful importing/restoring users
-    $updateuser->idnumber     = '';                  // Clear this field to free it up
     $updateuser->timemodified = time();
 
     $DB->update_record('user', $updateuser);
@@ -3948,6 +3950,30 @@ function delete_user(stdClass $user) {
     events_trigger('user_deleted', $user);
 
     return true;
+}
+
+/**
+ * Removes user deleted flag in internal user database and notifies the auth plugin.
+ * @param object $user       Userobject before undelete    (without system magic quotes)
+ * @return boolean success
+ */
+function undelete_user($user) {
+    global $DB;
+
+    $updateuser = new object();
+    $updateuser->id           = $user->id;
+    $updateuser->deleted      = 0;
+    $updateuser->timemodified = time();
+
+    // Call get_context_insance to create context if it doesn't exist.
+    get_context_instance(CONTEXT_USER, $user->id);
+
+    if ($DB->update_record('user', $updateuser)) {
+        events_trigger('user_undeleted', $user);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -5406,6 +5432,7 @@ function generate_email_supportuser() {
     }
 
     $supportuser = new stdClass();
+    $supportuser->id = 0;
     $supportuser->email = $CFG->supportemail ? $CFG->supportemail : $CFG->noreplyaddress;
     $supportuser->firstname = $CFG->supportname ? $CFG->supportname : get_string('noreplyname');
     $supportuser->lastname = '';
@@ -5831,19 +5858,32 @@ function get_max_upload_file_size($sitebytes=0, $coursebytes=0, $modulebytes=0) 
  * @param int $sizebytes Set maximum size
  * @param int $coursebytes Current course $course->maxbytes (in bytes)
  * @param int $modulebytes Current module ->maxbytes (in bytes)
+ * @param int|array $custombytes custom upload size/s which will be added to list,
+ *        Only value/s smaller then maxsize will be added to list.
  * @return array
  */
-function get_max_upload_sizes($sitebytes=0, $coursebytes=0, $modulebytes=0) {
+function get_max_upload_sizes($sitebytes = 0, $coursebytes = 0, $modulebytes = 0, $custombytes = null) {
     global $CFG;
 
     if (!$maxsize = get_max_upload_file_size($sitebytes, $coursebytes, $modulebytes)) {
         return array();
     }
 
+    $filesize = array();
     $filesize[intval($maxsize)] = display_size($maxsize);
 
     $sizelist = array(10240, 51200, 102400, 512000, 1048576, 2097152,
                       5242880, 10485760, 20971520, 52428800, 104857600);
+
+    // If custombytes is given and is valid then add it to the list.
+    if (is_number($custombytes) and $custombytes > 0) {
+        $custombytes = (int)$custombytes;
+        if (!in_array($custombytes, $sizelist)) {
+            $sizelist[] = $custombytes;
+        }
+    } else if (is_array($custombytes)) {
+        $sizelist = array_unique(array_merge($sizelist, $custombytes));
+    }
 
     // Allow maxbytes to be selected if it falls outside the above boundaries
     if (isset($CFG->maxbytes) && !in_array(get_real_size($CFG->maxbytes), $sizelist)) {
@@ -6400,6 +6440,10 @@ class core_string_manager implements string_manager {
                 // legacy location - used by contrib only
                 if (file_exists("$location/lang/$dep/$file.php")) {
                     include("$location/lang/$dep/$file.php");
+                }
+                // the root lang folder
+                if (file_exists("{$CFG->dirroot}/lang/$dep/$file.php")) {
+                    include("{$CFG->dirroot}/lang/$dep/$file.php");
                 }
                 // the main lang string location
                 if (file_exists("$this->otherroot/$dep/$file.php")) {
@@ -8215,18 +8259,45 @@ function check_php_version($version='5.2.4') {
 
 
       case 'Gecko':   /// Gecko based browsers
-          if (empty($version) and substr_count($agent, 'Camino')) {
-              // MacOS X Camino support
-              $version = 20041110;
+          // Do not look for dates any more, we expect real Firefox version here.
+          if (empty($version)) {
+              $version = 1;
+          } else if ($version > 20000000) {
+              // This is just a guess, it is not supposed to be 100% accurate!
+              if (preg_match('/^201/', $version)) {
+                  $version = 3.6;
+              } else if (preg_match('/^200[7-9]/', $version)) {
+                  $version = 3;
+              } else if (preg_match('/^2006/', $version)) {
+                  $version = 2;
+              } else {
+                  $version = 1.5;
+              }
           }
-
-          // the proper string - Gecko/CCYYMMDD Vendor/Version
-          // Faster version and work-a-round No IDN problem.
-          if (preg_match("/Gecko\/([0-9]+)/i", $agent, $match)) {
-              if ($match[1] > $version) {
-                      return true;
+          if (preg_match("/(Iceweasel|Firefox)\/([0-9\.]+)/i", $agent, $match)) {
+              // Use real Firefox version if specified in user agent string.
+              if (version_compare($match[2], $version) >= 0) {
+                  return true;
+              }
+          } else if (preg_match("/Gecko\/([0-9\.]+)/i", $agent, $match)) {
+              // Gecko might contain date or Firefox revision, let's just guess the Firefox version from the date.
+              $browserver = $match[1];
+              if ($browserver > 20000000) {
+                  // This is just a guess, it is not supposed to be 100% accurate!
+                  if (preg_match('/^201/', $browserver)) {
+                      $browserver = 3.6;
+                  } else if (preg_match('/^200[7-9]/', $browserver)) {
+                      $browserver = 3;
+                  } else if (preg_match('/^2006/', $version)) {
+                      $browserver = 2;
+                  } else {
+                      $browserver = 1.5;
                   }
               }
+              if (version_compare($browserver, $version) >= 0) {
+                  return true;
+              }
+          }
           break;
 
 
@@ -10259,17 +10330,12 @@ function object_property_exists( $obj, $property ) {
  */
 function convert_to_array($var) {
     $result = array();
-    $references = array();
 
     // loop over elements/properties
     foreach ($var as $key => $value) {
         // recursively convert objects
         if (is_object($value) || is_array($value)) {
-            // but prevent cycles
-            if (!in_array($value, $references)) {
-                $result[$key] = convert_to_array($value);
-                $references[] = $value;
-            }
+            $result[$key] = convert_to_array($value);
         } else {
             // simple values are untouched
             $result[$key] = $value;

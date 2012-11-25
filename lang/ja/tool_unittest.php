@@ -32,8 +32,9 @@ $string['codecoveragecompletereport'] = '(Code Coverage完全レポートを閲�
 $string['codecoveragedisabled'] = 'このサーバでは、code coverageを有効にできません (xdebug拡張モジュールがありません)。';
 $string['codecoveragelatestdetails'] = '(日時: {$a->date}  ファイル: {$a->files}  カバー: {$a->percentage})';
 $string['codecoveragelatestreport'] = '最新のCode Coverage完全レポートを閲覧する';
-$string['confignonwritable'] = 'ウェブサーバからconfig.phpを書き込めません。パーミッションを変更するか、適切なユーザアカウントで編集した後、PHPタグを閉じる前に次の行を追加してください: <br />
-$CFG->unittestprefix = \'tst_\' // 必要に応じて、tst_を$CFG->prefixと異なる接頭辞に変更してください。';
+$string['confignonwritable'] = 'ウェブサーバからconfig.phpを書き込めません。パーミッションを変更するか、適切なユーザアカウントで編集した後、PHPタグを閉じる前に次の行を追加してください: 
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'カバーされた行';
 $string['coveredpercentage'] = '全体のCode Coverage';
 $string['dbtest'] = 'DB機能テスト';

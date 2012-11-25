@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = '上传插件配置';
 $string['pluginname'] = '上传一个文件';
 $string['pluginname_help'] = '上传一个文件到Moodle';
+$string['upload:view'] = '在文件选择器中上传文件';
 $string['upload_error_cant_write'] = '向磁盘写入文件失败。';
 $string['upload_error_extension'] = '一个PHP扩展中断了文件上传。';
 $string['upload_error_form_size'] = '上传文件的大小超过了HTML表单中设定的MAX_FILE_SIZE的限制。';
@@ -35,4 +36,3 @@ $string['upload_error_ini_size'] = '上传文件的大小超过了php.ini中设�
 $string['upload_error_no_file'] = '没有上传任何文件';
 $string['upload_error_no_tmp_dir'] = 'PHP缺少一个临时文件夹。';
 $string['upload_error_partial'] = '文件只上传了一部分。';
-$string['upload:view'] = '在文件选择器中上传文件';

@@ -31,18 +31,16 @@ $string['answered'] = 'Vastattu';
 $string['atleastoneoption'] = 'Valitse ainakin yksi vaihtoehto.';
 $string['choice'] = 'Vaihtoehto {$a}';
 $string['choice:choose'] = 'Vaihtoehdon valitseminen';
-$string['choiceclose'] = 'Saakka';
 $string['choice:deleteresponses'] = 'Vastausten poisto';
 $string['choice:downloadresponses'] = 'Vastausten lataus';
+$string['choice:readresponses'] = 'Vastusten tarkastelu';
+$string['choiceclose'] = 'Saakka';
 $string['choicefull'] = 'Tämä valinta on jo täynnä.';
 $string['choicename'] = 'Valinnan nimi';
 $string['choiceopen'] = 'Avoinna';
 $string['choiceoptions'] = 'Vastausvaihtoehdot';
-$string['choiceoptions_help'] = '<P ALIGN=CENTER><B>Valinnan vaihtoehdot</B></P>
-<p>Täällä määrittelet vaihtoehdot, joista kurssilaiset voivat valita vastauksensa.</p>
-
-<p>Voit täyttää näistä niin monta kuin haluat: voit myös jättää joitain kohtia tyhjäksi, jos et tarvitse kaikkia kuutta vaihtoehtoa.</p>';
-$string['choice:readresponses'] = 'Vastusten tarkastelu';
+$string['choiceoptions_help'] = 'Täällä määrittelet vaihtoehdot, joista kurssilaiset voivat valita vastauksensa.
+Voit täyttää näistä niin monta kuin haluat: voit myös jättää joitain kohtia tyhjäksi, jos et tarvitse kaikkia kuutta vaihtoehtoa.';
 $string['choicesaved'] = 'Valintasi on tallennettu';
 $string['choicetext'] = 'Valinnan teksti';
 $string['chooseaction'] = 'Valitse toiminto';
@@ -55,14 +53,11 @@ $string['full'] = '(Täysi)';
 $string['havetologin'] = 'Kirjaudu ensin, sitten voit tallentaa vastauksesi';
 $string['limit'] = 'Raja';
 $string['limitanswers'] = 'Rajoita vastausten määrää';
-$string['limitanswers_help'] = '<h2>Määrien rajoittaminen valintavaihtoehdoissa</h2>
+$string['limitanswers_help'] = '## Määrien rajoittaminen valintavaihtoehdoissa
+Tällä asetuksella aktivoit valintavaihtoehtojen valitsemisen määrällisen rajoittamisen.
+Rajoittamisen aktivoinnin jälkeen voit lisätä kullekin vaihtoehdolle erillisen raja-arvonsa, jota enempää kyseistä vaihtoehtoa ei voi valita. Määrän tultua täyteen kyseistä vaihtoehtoa ei voi enää valita. **Huomaa, että raja-arvot ovat ryhmäkohtaisia: jos käytät Valinnassa ryhmiä (näkyvät tai erilliset ryhmät), vaihtoehdon voi valita *kustakin ryhmästä raja-arvon verran* osallistujia!** Jos laitat raja-arvoksi nollan (0), kukaan ei voi valita kyseistä vaihtoehtoa.
 
-<p>Tällä asetuksella aktivoit valintavaihtoehtojen valitsemisen määrällisen rajoittamisen.</p>
-
-<p>Rajoittamisen aktivoinnin jälkeen voit lisätä kullekin vaihtoehdolle erillisen raja-arvonsa, jota enempää kyseistä vaihtoehtoa ei voi valita. Määrän tultua täyteen kyseistä vaihtoehtoa ei voi enää valita. <strong>Huomaa, että raja-arvot ovat ryhmäkohtaisia: jos käytät Valinnassa ryhmiä (näkyvät tai erilliset ryhmät), vaihtoehdon voi valita <em>kustakin ryhmästä raja-arvon verran</em> osallistujia!</strong> Jos laitat raja-arvoksi nollan (0), kukaan ei voi valita kyseistä vaihtoehtoa.
-</p>
-
-<p>Jos et käytä määrän rajoitusta, minkä tahansa vaihtoehdon voi valita kuinka moni osallistuja tahansa.</p>';
+Jos et käytä määrän rajoitusta, minkä tahansa vaihtoehdon voi valita kuinka moni osallistuja tahansa.';
 $string['modulename'] = 'Valinta';
 $string['modulename_help'] = 'Valinnan toiminta on yksinkertainen: opettaja tekee kysymyksen ja antaa siihen useita vastausvaihtoehtoja. Valinta voi toimia kyselynä, jolla selvitetään oppijoiden esitietoja tai ajatuksia käsiteltävästä aiheesta, antaa ryhmän äänestää kurssin suuntauksesta tai kerätä tutkimustietoa.';
 $string['modulenameplural'] = 'Valinnat';

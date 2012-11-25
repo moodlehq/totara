@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Tiedostot';
-$string['foldercontent'] = 'Tiedostot ja alikansiot';
 $string['folder:managefiles'] = 'Hallitse tiedostoja kansiomoduulissa';
 $string['folder:view'] = 'Näytä kansion sisältö';
+$string['foldercontent'] = 'Tiedostot ja alikansiot';
 $string['modulename'] = 'Kansio';
 $string['modulenameplural'] = 'Kansiot';
 $string['neverseen'] = 'Ei koskaan nähty';

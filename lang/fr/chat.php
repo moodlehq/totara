@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Accéder à un salon de chat';
 $string['chat:deletelog'] = 'Supprimer les historiques des chats';
 $string['chat:exportparticipatedsession'] = 'Exporter les sessions de chat auxquelles vous avez participé';
 $string['chat:exportsession'] = 'Exporter toutes les sessions de chat';
+$string['chat:readlog'] = 'Lire les historiques des chats';
+$string['chat:talk'] = 'Participer à un chat';
 $string['chatintro'] = 'Texte d\'introduction';
 $string['chatname'] = 'Nom de ce salon';
-$string['chat:readlog'] = 'Lire les historiques des chats';
 $string['chatreport'] = 'Sessions de chat';
-$string['chat:talk'] = 'Participer à un chat';
 $string['chattime'] = 'Prochaine session';
 $string['configmethod'] = 'La méthode de chat AJAX fournit une interface AJAX pour le chat, qui contacte régulièrement le serveur pour actualiser l\'affichage. La méthode normale de chat contacte également régulièrement le serveur pour actualiser l\'affichage. Aucune configuration n\'est nécessaire et cela fonctionne partout. En revanche, cela induit une charge importante du serveur, notamment s\'il y a de nombreux participants au chat. L\'utilisation d\'un « démon » sur le serveur nécessite l\'accès à l\'environnement de commande Unix, mais offre en contrepartie un chat rapide et extensible.';
 $string['confignormalupdatemode'] = 'L\'actualisation de l\'affichage des salons de chat est normalement fait de manière plus efficace grâce à l\'utilisation de la fonction <em>Keep-Alive</em> du protocole HTTP 1.1, mais cette option charge passablement le serveur. Une méthode plus sophistiquée utilise la stratégie des <em>Flux</em> pour actualiser l\'affichage. L\'utilisation des <em>Flux</em> fonctionne mieux lorsqu\'il y a de nombreuses connexions (tout comme l\'utilisation du démon <em>chatd</em>), mais n\'est peut-être pas supportée par votre serveur.';
@@ -81,8 +81,8 @@ $string['modulename_help'] = 'Le module Chat permet aux participants d\'avoir un
 $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Ne pas effacer les messages';
 $string['nextsession'] = 'Prochaine session prévue';
-$string['nochat'] = 'Aucun chat trouvé';
 $string['no_complete_sessions_found'] = 'Aucune session complète trouvée.';
+$string['nochat'] = 'Aucun chat trouvé';
 $string['noguests'] = 'Ce salon n\'est pas ouvert aux visiteurs anonymes';
 $string['nomessages'] = 'Pas encore de messages';
 $string['nopermissiontoseethechatlog'] = 'Vous n\'avez pas l\'autorisation de consulter les historiques de chat.';
@@ -123,7 +123,6 @@ $string['updaterate'] = 'Modifier la vitesse :';
 $string['userlist'] = 'Liste d\'utilisateurs';
 $string['usingchat'] = 'Utilisation du chat';
 $string['usingchat_help'] = 'Le module de chat contient quelques fonctions rendant le chat un peu plus sympathique.
-
 *Binettes : toutes les binettes (emoticons) que vous pouvez utiliser dans Moodle peuvent aussi être tapées ici, par exemple, :-)
 * Liens : les adresses Internet (URLs) sont automatiquement transformées en liens actifs.
 * Personnalisation : vous pouvez commencer une ligne avec « /me » ou « : » pour personnaliser vos interventions. Si votre nom est Héloïse, et que vous tapez « :rigole ! » ou « /me rigole ! », tout le monde lira « Héloïse rigole ! ».

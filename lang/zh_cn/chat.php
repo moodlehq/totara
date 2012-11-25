@@ -33,11 +33,11 @@ $string['chat:chat'] = '进入聊天室';
 $string['chat:deletelog'] = '删除聊天日志';
 $string['chat:exportparticipatedsession'] = '导出您参加过的聊天会话';
 $string['chat:exportsession'] = '导出所有聊天会话';
+$string['chat:readlog'] = '阅读聊天日志';
+$string['chat:talk'] = '发言';
 $string['chatintro'] = '简要描述';
 $string['chatname'] = '聊天室名称';
-$string['chat:readlog'] = '阅读聊天日志';
 $string['chatreport'] = '聊天话题';
-$string['chat:talk'] = '发言';
 $string['chattime'] = '聊天开始时间';
 $string['configmethod'] = 'Ajax聊天方式提供一个基于ajax的聊天界面，它与服务器持续通讯，保持更新。普通聊天室方式让客户端周期地连接服务器以获取更新。这种方式无需任何配置便可在所有环境下工作，但当很多人一起聊天时会给服务器带来极大负荷。使用聊天服务器程序需要访问 Unix 的 Shell，但却可以得到一个快速而稳定的聊天环境。';
 $string['confignormalupdatemode'] = '聊天室更新可以使用 HTTP 1.1 的 <em>Keep-Alive</em> 特性而高效地服务，但事实上这样仍然给服务器带来很大的负荷。更好的方法是使用 <em>Stream</em> 来满足更新需求。使用 <em>Stream</em> 的方式会带来很大的改善（类似chatd方式），但是您的服务器可能并不支持。';
@@ -80,8 +80,8 @@ $string['modulename_help'] = '在聊天室模块中，参与者可以通过web�
 $string['modulenameplural'] = '聊天';
 $string['neverdeletemessages'] = '不删除聊天记录';
 $string['nextsession'] = '下一个议定主题';
-$string['nochat'] = '无聊天记录';
 $string['no_complete_sessions_found'] = '未找到已结束的会话。';
+$string['nochat'] = '无聊天记录';
 $string['noguests'] = '此聊天室不对访客开放';
 $string['nomessages'] = '无消息';
 $string['nopermissiontoseethechatlog'] = '没有查看聊天历史的权限。';
@@ -122,7 +122,6 @@ $string['updaterate'] = '更新速率：';
 $string['userlist'] = '用户列表';
 $string['usingchat'] = '使用聊天室';
 $string['usingchat_help'] = '聊天室模块提供了一些功能以让聊天更加有趣。
-
 * 笑脸 - 所有可以在Moodle中其它地方使用的笑脸(表情)都可以在此使用，例如，:-)
 * 链接 - 网站地址会自动被转换为链接
 * 表演 - 在行首添加“/me”或者“:”可以将这行变成动作描述。例如，假设您叫柱子，那么您输入了“:手舞足蹈！”或者“/me 手舞足蹈！”，则所有人都会看到“柱子手舞足蹈！”</dd>

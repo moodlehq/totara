@@ -39,11 +39,11 @@ $string['allowroletoswitch'] = 'ロール {$a->fromrole} のユーザに対し�
 $string['allowswitch'] = 'ロールのスイッチ許可';
 $string['allsiteusers'] = 'すべてのサイトユーザ';
 $string['archetype'] = 'ロールアーキタイプ';
+$string['archetype_help'] = 'ロールアーキタイプではロールがデフォルトにリセットされる場合のパーミッションを決定します。同時に、サイトがアップグレードされる場合のロールに対する新しいパーミッションすべてを決定します。';
 $string['archetypecoursecreator'] = 'アーキタイプ: コース作成者';
 $string['archetypeeditingteacher'] = 'アーキタイプ: 教師 (編集権限あり)';
 $string['archetypefrontpage'] = 'アーキタイプ: フロントページの認証ユーザ';
 $string['archetypeguest'] = 'アーキタイプ: ゲスト';
-$string['archetype_help'] = 'ロールアーキタイプではロールがデフォルトにリセットされる場合のパーミッションを決定します。同時に、サイトがアップグレードされる場合のロールに対する新しいパーミッションすべてを決定します。';
 $string['archetypemanager'] = 'アーキタイプ: マネージャ';
 $string['archetypestudent'] = 'アーキタイプ: 学生';
 $string['archetypeteacher'] = 'アーキタイプ: 教師 (編集権限なし)';
@@ -209,8 +209,8 @@ $string['legacy:editingteacher'] = 'レガシーロール: 教師 (編集権限�
 $string['legacy:guest'] = 'レガシーロール: ゲスト';
 $string['legacy:student'] = 'レガシーロール: 学生';
 $string['legacy:teacher'] = 'レガシーロール: 教師 (編集権限なし)';
-$string['legacytype'] = 'レガシーロールタイプ';
 $string['legacy:user'] = 'レガシーロール: 認証済みユーザ';
+$string['legacytype'] = 'レガシーロールタイプ';
 $string['listallroles'] = 'すべてのロールを一覧表示する';
 $string['localroles'] = 'ローカルに割り当てるロール';
 $string['mainadmin'] = '主管理者';
@@ -238,30 +238,15 @@ $string['notset'] = '設定なし';
 $string['overrideanotherrole'] = '別のロールをオーバーライドする';
 $string['overridecontext'] = 'コンテクストのオーバーライド';
 $string['overridepermissions'] = 'パーミッションのオーバーライド';
-$string['overridepermissionsforrole'] = '{$a->context} のロール「 {$a->role} 」におけるパーミッションをオーバーライドする';
-$string['overridepermissions_help'] = '<p>
-オーバーライドは、コンテクストのロールをオーバーライドするためデザインされたパーミッションです。オーバーライドでは、必要に応じてあなたのパーミッションを「調整」することができます。
-</p>
+$string['overridepermissions_help'] = 'オーバーライドは、コンテクストのロールをオーバーライドするためデザインされたパーミッションです。オーバーライドでは、必要に応じてあなたのパーミッションを「調整」することができます。
 
-<p>
 例えば、あなたのコース内で学生ロールが割り当てられたユーザは、通常フォーラムで新しいディスカッションを開始することができます。しかし、1つのフォーラムでそのケイパビリティを制限したい場合、学生に対して「新しいディスカッションを開始する」ケイパビリティを抑制する設定をオーバーライドすることができます。
-</p>
 
-<p>
 オーバーライドは、あなたのサイトおよびコースの「公開された」エリアで、ユーザに意味をなす特別なパーミッションを与えるため使用することができます。例えば、いくつかの課題で学生に評定権限を与える実験を行うことができます。
-</p>
 
-<p>
 時々関連性のあるケイパビリティのみ表示され、オーバーライドできないケイパビリティがハイライトされた状態で表示される以外、オーバーライドのインターフェースはロール定義に似ています ( 例 あなたのオーバーライドが継承に設定された場合 )。
-</p>
-
-<p>
-関連情報
-<a href="help.php?file=roles.html">ロール</a>,
-<a href="help.php?file=contexts.html">コンテクスト</a>,
-<a href="help.php?file=assignroles.html">ロールの割り当て</a>,
-<a href="help.php?file=permissions.html">パーミッション</a>
-</p>';
+';
+$string['overridepermissionsforrole'] = '{$a->context} のロール「 {$a->role} 」におけるパーミッションをオーバーライドする';
 $string['overridepermissionsin'] = '{$a} のパーミッションをオーバーライドする';
 $string['overrideroles'] = 'ロールのオーバーライド';
 $string['overriderolesin'] = '{$a} ロールのオーバーライド';
@@ -269,10 +254,9 @@ $string['overrides'] = 'オーバーライド';
 $string['overridesbycontext'] = 'オーバーライド (コンテクストによる)';
 $string['permission'] = 'パーミッション';
 $string['permission_help'] = 'パーミッションはケイパビリティ (能力) を付与するための設定です。設定には4つのオプションがあります:
-
 * 設定なし
 * 許可 - ケイパビリティにパーミッションが割り当てられます。
-* 抑制 -  高いコンテクストで許可されていたとしてもケイパビリティからパーミッションが解除されます。
+* 抑制 - 高いコンテクストで許可されていたとしてもケイパビリティからパーミッションが解除されます。
 * 禁止 - パーミッションは完全に拒否され、どのような低いコンテクストにあったとしてもオーバーライドすることはできません。';
 $string['permissions'] = 'パーミッション';
 $string['permissionsforuser'] = 'ユーザ {$a} のパーミッション';
@@ -316,54 +300,37 @@ $string['restore:uploadfile'] = 'バックアップエリアにファイルを�
 $string['restore:userinfo'] = 'ユーザデータをリストアする';
 $string['restore:viewautomatedfilearea'] = '自動バックアップよりコースをリストアする';
 $string['risks'] = 'リスク';
+$string['role:assign'] = 'ユーザにロールを割り当てる';
+$string['role:manage'] = 'ロールを作成および管理する';
+$string['role:override'] = '他のパーミッションをオーバーライドする';
+$string['role:review'] = '他のユーザのパーミッションをレビューする';
+$string['role:safeoverride'] = '他のセーフパーミッションをオーバーライドする';
+$string['role:switchroles'] = '他のロールに切り替える';
 $string['roleallowheader'] = 'ロールを許可する:';
 $string['roleallowinfo'] = 'コンテクスト {$a->context} およびケイパビリティ {$a->cap} において、許可されるロールのリストに追加されるロールを選択してください:';
-$string['role:assign'] = 'ユーザにロールを割り当てる';
 $string['roleassignments'] = 'ロールの割り当て';
 $string['roledefinitions'] = 'ロール定義';
 $string['rolefullname'] = 'ロール名';
 $string['roleincontext'] = '{$a->role} - {$a->context}';
-$string['role:manage'] = 'ロールを作成および管理する';
-$string['role:override'] = '他のパーミッションをオーバーライドする';
 $string['roleprohibitheader'] = 'ロールを禁止する';
 $string['roleprohibitinfo'] = 'コンテクスト {$a->context} およびケイパビリティ {$a->cap} において、拒否されるロールのリストに追加されるロールを選択してください:';
-$string['role:review'] = '他のユーザのパーミッションをレビューする';
 $string['roles'] = 'ロール';
-$string['role:safeoverride'] = '他のセーフパーミッションをオーバーライドする';
+$string['roles_help'] = 'ロールはコンテクストでユーザに割り当てることのできる、システム全体に定義されたパーミッション群です。
+
+例えば、教師が特定の活動を行うことができる「教師」と呼ばれるロールを定義することができます。このロールが定義された時点で、コース内の誰かを「教師」にするために、「教師ロール」を割り当てることができます。カテゴリ配下にあるすべてのコースでユーザを「教師」にするために、コースカテゴリ内のユーザにこのロールを割り当てることもできます。また、1つのフォーラムに対してのみケイパビリティを持ったロールをユーザに割り当てることもできます。
+
+ロールには、**名称**を定義してください。多言語のロールを設定したい場合、下記のような多言語シンタックスを使用することができます。
+Teacher
+Profesor
+多言語シンタックスを使用する場合、あなたのMoodleの「フィルタ設定」が有効にされていることを確認してください。
+
+**省略名**は、あなたのロールを他のMoodleプラグインが参照するために必要です (例 ファイルからユーザをアップロードまたはユーザ登録プラグイン経由でユーザ登録を設定する場合等)。
+
+**説明**では、ロールに対して誰でも共通の理解ができるよう、あなたの言葉で端的にロールを説明してください。
+';
 $string['roleselect'] = 'ロールを選択する';
 $string['rolesforuser'] = 'ユーザ {$a} のロール';
-$string['roles_help'] = '<p>
-ロールはコンテクストでユーザに割り当てることのできる、システム全体に定義されたパーミッション群です。
-</p>
-
-<p>
-例えば、教師が特定の活動を行うことができる「教師」と呼ばれるロールを定義することができます。このロールが定義された時点で、コース内の誰かを「教師」にするために、「教師ロール」を割り当てることができます。カテゴリ配下にあるすべてのコースでユーザを「教師」にするために、コースカテゴリ内のユーザにこのロールを割り当てることもできます。また、1つのフォーラムに対してのみケイパビリティを持ったロールをユーザに割り当てることもできます。
-</p>
-
-<p>
-ロールには、<strong>名称</strong>を定義してください。多言語のロールを設定したい場合、下記のような多言語シンタックスを使用することができます。</p><pre>
-  &lt;span lang="en"&gt;Teacher&lt;/span&gt;
-  &lt;span lang="es_es"&gt;Profesor&lt;/span&gt;
-  </pre>
-<p>多言語シンタックスを使用する場合、あなたのMoodleの「フィルタ設定」が有効にされていることを確認してください。</p>
-
-<p>
-<strong>省略名</strong>は、あなたのロールを他のMoodleプラグインが参照するために必要です (例 ファイルからユーザをアップロードまたはユーザ登録プラグイン経由でユーザ登録を設定する場合等)。
-</p>
-
-<p>
-<strong>説明</strong>では、ロールに対して誰でも共通の理解ができるよう、あなたの言葉で端的にロールを説明してください。
-</p>
-
-<p>
-関連情報
-<a href="help.php?file=contexts.html">コンテクスト</a>,
-<a href="help.php?file=permissions.html">パーミッション</a>,
-<a href="help.php?file=assignroles.html">ロールの割り当て</a>,
-<a href="help.php?file=overrides.html">オーバーライド</a>
-</p>';
 $string['roleshortname'] = '省略名';
-$string['role:switchroles'] = '他のロールに切り替える';
 $string['roletoassign'] = '割り当てるロール';
 $string['roletooverride'] = 'オーバーライドするロール';
 $string['safeoverridenotice'] = '注意: あなたはセーフケイパビリティのオーバーライドのみ許可されているため、高いリスクのケイパビリティはロックされています。';
@@ -373,7 +340,6 @@ $string['selectrole'] = 'ロールの選択';
 $string['showallroles'] = 'すべてのロールを表示する';
 $string['showthisuserspermissions'] = 'このユーザのパーミッションを表示する';
 $string['site:accessallgroups'] = 'すべてのグループにアクセスする';
-$string['siteadministrators'] = 'サイト管理者';
 $string['site:approvecourse'] = 'コース作成を承認する';
 $string['site:backup'] = 'コースをバックアップする';
 $string['site:config'] = 'サイト設定を変更する';
@@ -392,6 +358,7 @@ $string['site:viewfullnames'] = 'ユーザのフルネームを常に表示す�
 $string['site:viewparticipants'] = '参加者を表示する';
 $string['site:viewreports'] = 'レポートを表示する';
 $string['site:viewuseridentity'] = '一覧にユーザ固有情報すべてを表示する';
+$string['siteadministrators'] = 'サイト管理者';
 $string['tag:create'] = '新しいタグを作成する';
 $string['tag:edit'] = '既存のタグを編集する';
 $string['tag:editblocks'] = 'タグページのブロックを編集する';
@@ -414,18 +381,18 @@ $string['user:manageownfiles'] = 'プライベートファイルエリアのフ�
 $string['user:managesyspages'] = 'パブリックユーザプロファイルのデフォルトページレイアウトを設定する';
 $string['user:readuserblogs'] = 'すべてのユーザブログを表示する';
 $string['user:readuserposts'] = 'すべてのユーザ投稿を表示する';
-$string['usersfrom'] = '{$a} からのユーザ';
-$string['usersfrommatching'] = '「 {$a->search} 」に合致する {$a->contextname} からのユーザ';
-$string['usersinthisx'] = 'この {$a} 内のユーザ';
-$string['usersinthisxmatching'] = '「 {$a->search} 」に合致する {$a->contexttype} 内のユーザ';
-$string['userswithrole'] = 'ロールのすべてのユーザ';
-$string['userswiththisrole'] = 'ロールのユーザ';
 $string['user:update'] = 'ユーザプロファイルを更新する';
 $string['user:viewalldetails'] = 'ユーザ情報すべてを表示する';
 $string['user:viewdetails'] = 'ユーザプロファイルを表示する';
 $string['user:viewhiddendetails'] = '非表示のユーザ詳細を表示する';
 $string['user:viewuseractivitiesreport'] = 'ユーザの活動レポートを表示する';
 $string['user:viewusergrades'] = 'ユーザの評定を表示する';
+$string['usersfrom'] = '{$a} からのユーザ';
+$string['usersfrommatching'] = '「 {$a->search} 」に合致する {$a->contextname} からのユーザ';
+$string['usersinthisx'] = 'この {$a} 内のユーザ';
+$string['usersinthisxmatching'] = '「 {$a->search} 」に合致する {$a->contexttype} 内のユーザ';
+$string['userswithrole'] = 'ロールのすべてのユーザ';
+$string['userswiththisrole'] = 'ロールのユーザ';
 $string['useshowadvancedtochange'] = '変更するには「拡張要素を表示する」を使用してください。';
 $string['viewingdefinitionofrolex'] = 'ロール「 {$a} 」の定義を表示する';
 $string['viewrole'] = 'ロール詳細の表示';

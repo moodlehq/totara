@@ -30,5 +30,5 @@ $string['emptyfilelist'] = 'No hay archivos que mostrar';
 $string['notitle'] = 'sin título';
 $string['pluginname'] = 'Archivos recientes';
 $string['pluginname_help'] = 'Archivos usados recientemente por el usuario actual';
-$string['recentfilesnumber'] = 'Número de archivos recientes';
 $string['recent:view'] = 'Ver plugin de repositorio de archivos recientes';
+$string['recentfilesnumber'] = 'Número de archivos recientes';

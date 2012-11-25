@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['linkcolor'] = 'kolor linku';
 $string['logo'] = 'Logo';
-$string['logodesc'] = 'Wprowadź adres URL zdjęcia wykorzystywanego jako logo dla tej strony. Przykładowo: http://www.twojastrona.pl/sciezka/do/logo.png ';
+$string['logodesc'] = 'Wprowadź adres URL zdjęcia wykorzystywanego jako logo dla tej strony. Przykładowo: http://www.twojastrona.pl/sciezka/do/logo.png';
 $string['region-side-post'] = 'Prawo';
 $string['region-side-pre'] = 'Lewo';
 $string['regionwidth'] = 'Szerokość kolumny';

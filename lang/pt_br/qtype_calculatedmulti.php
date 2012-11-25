@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Múltipla escolha calculada';
+$string['pluginname_help'] = 'As perguntas de múltipla escolha calculada são como perguntas de múltipla escolha, que em seus elementos de escolha podem ser incluídos os resultados das fórmulas numéricas usando curingas entre chaves que são substituídos por valores individuais quando o questionário é preenchido. Por exemplo, se a pergunta: "Qual é a área de um retângulo de comprimento {l} e largura {w}?" tem escolha {= {l} * {w}}, onde * denota multiplicação.';
 $string['pluginnameadding'] = 'Adicionando uma pergunta calculada de múltipla escolha.';
 $string['pluginnameediting'] = 'Editando uma questão de múltipla escolha calculada';
-$string['pluginname_help'] = 'As perguntas de múltipla escolha calculada são como perguntas de múltipla escolha, que em seus elementos de escolha podem ser incluídos os resultados das fórmulas numéricas usando curingas entre chaves que são substituídos por valores individuais quando o questionário é preenchido. Por exemplo, se a pergunta: "Qual é a área de um retângulo de comprimento {l} e largura {w}?" tem escolha {= {l} * {w}}, onde * denota multiplicação.';
 $string['pluginnamesummary'] = 'As perguntas de múltipla escolha calculada são como questões de múltipla escolha, cujos elementos de escolha podem incluir resultados da fórmula com valores numéricos que são selecionados aleatoriamente a partir de um conjunto quando o questionário é preenchido.';

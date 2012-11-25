@@ -48,7 +48,7 @@ $string['addquestionstoquiz'] = 'Lägg till frågor till det aktuella testet';
 $string['addrandom'] = 'Lägg till {$a} slumpmässiga frågor';
 $string['addrandom1'] = 'Lägg till';
 $string['addrandom2'] = 'slumpmässiga frågor';
-$string['addrandomfromcategory'] = 'Lägg till slumpmässiga frågor från kategorin: ';
+$string['addrandomfromcategory'] = 'Lägg till slumpmässiga frågor från kategorin:';
 $string['addrandomquestion'] = 'Lägg till en slumpmässig fråga';
 $string['addrandomquestiontoquiz'] = 'Lägg till en slumpmässig fråga till testet {$a}';
 $string['addselectedtoquiz'] = 'Lägg det markerade till testet';
@@ -141,19 +141,19 @@ $string['comment'] = 'Kommentar';
 $string['commentorgrade'] = 'Gör en kommentar eller ändra  omdöme/betyg';
 $string['comments'] = 'Kommenarer';
 $string['completedon'] = 'Fullgjord den';
-$string['configadaptive'] = 'Om Du väljer "Ja" för det här alternativet då kommer studenten/eleven/deltagaren/den lärande att kunna avge flera olika svar på en fråga under samma försök på testet. ';
+$string['configadaptive'] = 'Om Du väljer "Ja" för det här alternativet då kommer studenten/eleven/deltagaren/den lärande att kunna avge flera olika svar på en fråga under samma försök på testet.';
 $string['configattemptsallowed'] = 'Begränsning av det antal försök som studenter/elever/deltagare/lärande tillåts göra på testet.';
 $string['configdecimalplaces'] = 'Det antal siffror som ska användas efter decimaltecknet när poäng för testet visas.';
 $string['configdecimalplacesquestion'] = 'Det antal siffror som ska användas efter decimaltecknet när poäng för enskilda frågor visas.';
 $string['configpenaltyscheme'] = 'Avdrag gjorda för varje felaktigt svar i anpassande läge';
-$string['configrequirepassword'] = 'Studenter/elever/deltagare/lärande måste ange det här lösenordet innan de kan göra försök på det här testet. ';
-$string['configrequiresubnet'] = 'Studenter/elever/deltagare/lärande kan bara göra försök på det här testet via dessa datorer. ';
-$string['configshowblocks'] = 'Visa block under försök. ';
-$string['configshowuserpicture'] = 'Visa användare bild på skärmen under försök. ';
+$string['configrequirepassword'] = 'Studenter/elever/deltagare/lärande måste ange det här lösenordet innan de kan göra försök på det här testet.';
+$string['configrequiresubnet'] = 'Studenter/elever/deltagare/lärande kan bara göra försök på det här testet via dessa datorer.';
+$string['configshowblocks'] = 'Visa block under försök.';
+$string['configshowuserpicture'] = 'Visa användare bild på skärmen under försök.';
 $string['configshufflequestions'] = 'Om Du aktiverar detta alternativ, då kommer ordningen på frågorna i testet att ändras slumpmässigt varje gång någon gör ett försök på testet.';
 $string['configshufflewithin'] = 'Om Du aktiverar detta alternativ, då kommer de delar som bygger upp de enskilda frågorna att ändras slumpmässigt varje gång en student påbörjar ett försök på det här testet, detta under förutsättning att alternativet också är aktiverat i den frågans inställningar.';
-$string['configtimelimit'] = 'Förvald standardmässig tidsbegränsning i minuter för test. 0 betyder att det inte finns någon begränsning. ';
-$string['configtimelimitsec'] = 'Förvald standardmässig tidsbegränsning i sekunder för test. 0 betyder att det inte finns någon begränsning. ';
+$string['configtimelimit'] = 'Förvald standardmässig tidsbegränsning i minuter för test. 0 betyder att det inte finns någon begränsning.';
+$string['configtimelimitsec'] = 'Förvald standardmässig tidsbegränsning i sekunder för test. 0 betyder att det inte finns någon begränsning.';
 $string['configurerandomquestion'] = 'Konfigurera fråga';
 $string['confirmclose'] = 'Du håller på att avsluta det här försöket. När Du väl har avslutat försöket kommer Du inte längre att kunna ändra Dina svar.';
 $string['confirmserverdelete'] = 'Är Du säker på att Du vill ta bort servern <b>{$a}</b> från listan?';
@@ -189,21 +189,19 @@ $string['datasetnumber'] = 'Tal/Nummer';
 $string['daysavailable'] = 'Dagar tillgängligt';
 $string['decimaldigits'] = 'Decimalsiffror i betyg';
 $string['decimalplaces'] = 'Antal decimaler i betyg';
-$string['decimalplaces_help'] = '<p>Genom att anv&auml;nda den h&auml;r inst&auml;llningen kan Du ange antalet decimaler som 
-ska visas i betyget/omd&ouml;met f&ouml;r varje f&ouml;rs&ouml;k. Om du t.ex. väljer \'0\' så betyder det att de visade betygen kommer att avrundas till heltal.
-</p><p>
+$string['decimalplaces_help'] = 'Genom att använda den här inställningen kan Du ange antalet decimaler som
+ska visas i betyget/omdömet för varje försök. Om du t.ex. väljer \'0\' så betyder det att de visade betygen kommer att avrundas till heltal.
 Den här inställningen påverkar bara visningen av betyg. Detta har ingen inverkan på
-de interna beräkningarna och avrundning av betyg.
-</p>';
+de interna beräkningarna och avrundning av betyg.';
 $string['decimalplacesquestion'] = 'Antal decimaler i betyget för frågan';
 $string['decimalpoints'] = 'Decimalpoäng';
 $string['default'] = 'Standard';
 $string['defaultgrade'] = 'Normalpoäng';
 $string['defaultinfo'] = 'Standardkategori för frågor.';
 $string['delay1'] = 'Tidsfördröjning mellan det första och andra försöket';
-$string['delay1st2nd_help'] = '<p>Om du ställer in en tidsfördröjning då kommer studenterna/eleverna/deltagarna/de lärande att vara tvungna att vänta så länge innan de kan göra ett andra försök att genomföra testet.</p>';
+$string['delay1st2nd_help'] = 'Om du ställer in en tidsfördröjning då kommer studenterna/eleverna/deltagarna/de lärande att vara tvungna att vänta så länge innan de kan göra ett andra försök att genomföra testet.';
 $string['delay2'] = 'Tidsfördröjning mellan senare försök';
-$string['delaylater_help'] = '<p>Om du anger en tidsfördröjning här då kommer studenterna/eleverna/deltagarna/de lärande att bli tvungna att vänta så länge innan de kan göra förnyade försök att genomföra testet.</p>';
+$string['delaylater_help'] = 'Om du anger en tidsfördröjning här då kommer studenterna/eleverna/deltagarna/de lärande att bli tvungna att vänta så länge innan de kan göra förnyade försök att genomföra testet.';
 $string['deleteattemptcheck'] = 'Är Du helt säker på att Du vill ta bort de här försöken för gott?';
 $string['deleteselected'] = 'Ta bort de/t markerade';
 $string['deletingquestionattempts'] = 'Tar bort försök på frågor';
@@ -214,19 +212,18 @@ $string['download'] = 'Klicka för att ladda ner den exporterade filen för kate
 $string['downloadextra'] = '(filen är också lagrad in \'kursens filer\' i katalogen /test)';
 $string['duplicateresponse'] = 'Den inskickade uppgiftslösningen räknas inte eftersom Du har lämnat ett liknande svar tidigare.';
 $string['eachattemptbuildsonthelast'] = 'Varje försök bygger på det senaste';
-$string['eachattemptbuildsonthelast_help'] = '<p>Om det &auml;r till&aring;tet att g&ouml;ra flera f&ouml;rs&ouml;k och den h&auml;r 
-inst&auml;llningen &auml;r satt till \'Ja\' s&aring; kommer varje f&ouml;rs&ouml;k att
-inneh&aring;lla resultaten fr&aring;n det tidigare f&ouml;rs&ouml;ket.
-Detta g&ouml;r det m&ouml;jligt att fullf&ouml;lja testet via ett antal f&ouml;rs&ouml;k.</p>
-<p>F&ouml;r att visa ett nytt test f&ouml;r varje f&ouml;rs&ouml;k s&aring; v&auml;ljer Du 
-\'Nej\' f&ouml;r den h&auml;r inst&auml;llningen.</p>';
+$string['eachattemptbuildsonthelast_help'] = 'Om det är tillåtet att göra flera försök och den här
+inställningen är satt till \'Ja\' så kommer varje försök att
+innehålla resultaten från det tidigare försöket.
+Detta gör det möjligt att fullfölja testet via ett antal försök.
+För att visa ett nytt test för varje försök så väljer Du
+\'Nej\' för den här inställningen.';
 $string['editcategories'] = 'Redigera kategorier';
 $string['editcategory'] = 'Redigera kategori';
 $string['editcatquestions'] = 'Redigera frågor i kategorin';
 $string['editingquestion'] = 'Redigera en fråga';
 $string['editingquiz'] = 'Redigera övning';
 $string['editingquiz_help'] = 'När du skapar ett test, så är de viktigaste begreppen följande:
-
 * Testet, med frågor över en eller flera sidor
 * Frågebanken, som lagrar kopior av alla frågor indelade i kategorier
 * Slumpade frågor - En student får olika frågor varje gång han/hon gör försök på testet och olika studenter kan alltså få olika frågor.';
@@ -237,7 +234,7 @@ $string['editquiz'] = 'Redigera test';
 $string['editquizquestions'] = 'Redigera testfrågor';
 $string['emailconfirmbody'] = 'Käre/a {$a->username},
 
-Tack för att Du har skickat in Dina svar till 
+Tack för att Du har skickat in Dina svar till
 \'{$a->quizname}\'
 i kursen \'{$a->coursename}\'
 i samband med {$a->submissiontime}.
@@ -246,7 +243,7 @@ $string['emailconfirmsmall'] = 'Tack för att Du har fullföljt testet och bekr�
 $string['emailconfirmsubject'] = 'Bekräftelse av inskickning av test: {$a->quizname}';
 $string['emailnotifybody'] = 'Käre/a {$a->username},
 
-{$a->studentname} har fullföljt testet 
+{$a->studentname} har fullföljt testet
 \'{$a->quizname}\' ({$a->quizurl})
 i kursen \'{$a->coursename}\'
 Du kan visa detta försök vid {$a->quizreviewurl}.';
@@ -307,30 +304,21 @@ $string['gradeboundary'] = 'Betygsgräns';
 $string['gradeessays'] = 'Bedöm/betygssätt essäfrågor';
 $string['gradehighest'] = 'Högsta betyg';
 $string['grademethod'] = 'Betygsättningsmetod';
-$string['grademethod_help'] = '<p>N&auml;r det &auml;r till&aring;tet med upprepade f&ouml;rs&ouml;k s&aring; finns
-det olika s&auml;tt som Du kan anv&auml;nda f&ouml;r att ber&auml;kna studentens/elevens/deltagarens/den l&auml;randes
-slutbetyg/omd&ouml;me p&aring; testet.</p>
-<p><b>H&ouml;gsta betyget/omd&ouml;met</b></p>
-<ul>
-<li>
-Slutbetyget/omd&ouml;met &auml;r det h&ouml;gsta (b&auml;sta) av samtliga f&ouml;rs&ouml;k.
-</li>
-</ul>
-<p><b>Genomsnittsligt (medel)betyg/omd&ouml;me</b></p>
-<ul>
-<li>
-Slutbetyget/omd&ouml;met &auml;r medelbetyget ber&auml;knat p&aring; alla f&ouml;rs&ouml;k.
-</li>
-</ul>
-<p><b>Det f&ouml;rsta betyget/omd&ouml;met</b></p>
-<ul>
-<li>Slutbetyget/omd&ouml;met &auml;r det som har uppn&aring;tts p&aring; det f&ouml;rsta
-f&ouml;rs&ouml;ket (de &ouml;vriga r&auml;knas inte).</li>
-</ul>
-<p><b>Det sista betyget/omd&ouml;met</b></p>
-<ul>
-<li>Slutbetyget/omd&ouml;met &auml;r enbart det som har uppn&aring;tts p&aring; det senaste f&ouml;rs&ouml;ket.</li>
-</ul>';
+$string['grademethod_help'] = 'När det är tillåtet med upprepade försök så finns
+det olika sätt som Du kan använda för att beräkna studentens/elevens/deltagarens/den lärandes slutbetyg/omdöme på testet.
+**Högsta betyget/omdömet**
+
+Slutbetyget/omdömet är det högsta (bästa) av samtliga försök.
+
+**Genomsnittsligt (medel)betyg/omdöme**
+
+Slutbetyget/omdömet är medelbetyget beräknat på alla försök.
+
+**Det första betyget/omdömet**
+Slutbetyget/omdömet är det som har uppnåtts på det första försöket (de övriga räknas inte).
+
+**Det sista betyget/omdömet**
+Slutbetyget/omdömet är enbart det som har uppnåtts på det senaste försöket.';
 $string['gradesdeleted'] = 'Betyg på test har tagits bort';
 $string['gradesofar'] = '{$a->method}: {$a->mygrade} / {$a->quizgrade}.';
 $string['gradingdetails'] = 'Betyg/omdömen för det här inskickade testet: {$a->raw}/{$a->max}.';
@@ -346,6 +334,62 @@ $string['hidereordertool'] = 'Dölj verktyget för revidering av ordningsföljde
 $string['history'] = 'Historik över responser:';
 $string['imagedisplay'] = 'Bild att visa';
 $string['import'] = 'Importera';
+$string['import_help'] = '# Att importera nya frågor
+Den här funktionen låter Dig importera frågor från externa textfiler som har laddats upp via ett formulär.
+Det finns ett antal olika filformat som Du kan använda:
+## En anteckning om koderna för teckenuppsättningar
+Om din fil innehåller icke-ascii-tecken då måste du använda teckenuppsättningen för UTF-8. Det är möjligt att du kan välja eller konvertera till UTF-8 med hjälp av ditt vanliga ordbehandlingsprogram eller också kanske programvaran för export kan klara detta. Men var särskilt uppmärksam med filer som har skapats med Microsoft Office eftersom de använder speciellt kodade teckenuppsättningar. XML-baserade importformat kommer att hanteras automatiskt under förutsättning att din Moodle-server kör PHP 5.
+Det finns ett antal filformat som stödjs:
+## GIFT-formatet
+GIFT är det mest heltäckande importformatet som det går att använda för att importera testfrågor till Moodle från en textfil. Det utformades för att vara ett enkelt sätt för lärare att skriva frågor i textfilsformat. Det stödjer flervalsfrågor, Sant/Falskt, Kortsvar, Para-ihop och numeriska frågor likväl som lucktester. Det går att blanda olika frågetyper i en enskild textfil och formatet stödjer även kommentarer, namn på frågor, återkoppling och procentviktade betyg. Här nedan ser du några exempel:
+Who\'s buried in Grant\'s tomb?{~Grant ~Jefferson =no one}
+Grant is {~buried =entombed ~living} in Grant\'s tomb.
+Grant is buried in Grant\'s tomb.{FALSE}
+Who\'s buried in Grant\'s tomb?{=no one =nobody}
+When was Ulysses S. Grant born?{#1822}
+
+
+## Aiken-formatet
+Det här är ett enkelt format för att importera flervalsfrågor från en textfil.
+
+## Moodle XML-format
+Detta Moodle-specifika format importerar testfrågor som tidigare har exporterats i samma format. Formatet är tydligt och du testar det lämpligast genom att exportera en kategori i Moodles XML-format. I XML-formatet går det att importera bildfiler.
+
+**Utelämnade ord**
+* Det här formatet stöder bara flervalsfrågor. Varje svar är åtskiljt med tecknet tilde (~), och det korrekta svaret har ett prefix i form av ett likhetstecken (=). Här är ett exempel:
+> Så snart vi som barn börjar att utforska våra kroppsdelar så blir studenter/elever/lärande i ämnena {=anatomi och fysiologi ~reflexologi ~vetenskap ~experiment}, och på ett sätt förblir vi det livet ut.
+
+**AON**
+* Det här är detsamma som formatet "Utelämnade ord" förutom det att efter det att frågorna har importerats så omvandlas alla kortsvarsfrågor , fyra åt gången, till para-ihop-frågor.
+* Dessutom blandas svaren på flervalsfrågor slumpmässigt i samband med att de importeras.
+* Formatet har döpts efter en organisation som sponsrade utvecklingen av många egenskaper i testfunktioner av det här slaget.
+**Blackboard**
+* Den här modulen kan importera frågor som har sparats i Blackboards exportformat. Modulen är beroende av XML-funktioner för att kunna kompileras in i Din PHP-applikation.
+
+## Blackboard V6+
+Den här modulen kan importera frågor som är sparade i Blackboards exportformat. Den tillhandahåller ett begränsat stöd för Blackboard Version 6 och 7. Den är beroende av XML-funktioner som kompileras till PHP. Du måste ladda upp zipfilen som har exporterats från Blackboard.
+## WebCT
+Den här modulen kan importera frågor som är sparade i WebCT\'s textbaserade format.
+
+## Course Test Manager
+Den här modulen kan importera frågor som är sparade i en test av typen Course Test Manager. Den är beroende av olika sätt att få tillgång till testbanken som ligger i en Microsoft Access databas, beroende på om Moodle körs på en Windows eller Linux webserver.
+I Windows låter modulen dig ladda upp access databasen precis som vilken annan importfil som helst för data.
+I Linux, måste du sätta upp en windowsmaskin på samma nätverk med databasen för Course Test Manager och ett program som kallas ODBC Socket Server, som i sin tur använder XML för att föra över data till Moodle på Linuxservern.
+Var snäll och läs hela hjälpfilen här nedan innan du använder den här klassen av import.
+
+## Inbäddade svar (Lucktest)
+Det här specifika formatet importerar bara en sorts fråga, nämligen formatet för Inbäddade svar (Lucktest).
+
+## Learnwise-formatet
+Detta format kan importera flervalsfrågor som har sparats i Learnwises XML-format.
+## Examview-formatet
+Detta format kan importera från Examview 4 XML-filer. Lägg märke till att äldre versioner av Examview inte stödjs.
+Import och exportformat är inpluggbara resurser. Det kan finnas ytterligare format i databasen för moduler och plugin-program.
+**Egentillverkat**
+* Om Du har ett eget format som Du behöver kunna importera så kan Du implementera det själv genom att redigera mod/quiz/format/custom.php
+Det är inte så mycket ny kod som Du behöver, bara så mycket som krävs för att tolka (parse) en enskild fråga ur en given text.
+
+Fler format kommer att finnas så småningom, WebCT, IMS QTI och vad som helst annat som Moodle-användare kan komma att bidra med!';
 $string['importcategory'] = 'importera kategori';
 $string['importerror'] = 'Ett fel inträffade i samband med genomförande av importen';
 $string['importfilearea'] = 'Importen från filen finns redan i kursfilerna...';
@@ -397,6 +441,7 @@ $string['min'] = 'Min';
 $string['minutes'] = 'Minuter';
 $string['missingcorrectanswer'] = 'Du måste ange rätt svar';
 $string['missingitemtypename'] = 'Det saknas ett namn';
+$string['missingquestion'] = 'Det saknas en frågeetikett efter rad {$a}';
 $string['modulename'] = 'Test';
 $string['modulenameplural'] = 'Test';
 $string['moveselectedonpage'] = 'Flytta de valda frågorna till sidan: {$a}';
@@ -404,13 +449,13 @@ $string['multichoice'] = 'Flerval';
 $string['multipleanswers'] = 'Välj minst ett svar';
 $string['multiplier'] = 'Multiplikator';
 $string['name'] = 'Namn';
-$string['navnojswarning'] = 'OBS! de här länkarna kommer inte att spara Dina svar. Använd knappen "Fortsätt" längst ner på sidan. ';
+$string['navnojswarning'] = 'OBS! de här länkarna kommer inte att spara Dina svar. Använd knappen "Fortsätt" längst ner på sidan.';
 $string['neverallononepage'] = 'Aldrig, alla frågor på en sida';
 $string['newattemptfail'] = 'Fel: Det gick inte att påbörja ett nytt försök av testet';
 $string['newpage'] = 'Ny sida';
+$string['newpage_help'] = 'När det gäller längre test så är det klokt om Du fördelar frågorna över ett större antal sidor. Det gör Du genom att begränsa det antal frågor som ska visas på varje sida.
+När Du lägger till frågor kommer det automatiskt att läggas in sidbrytningar i enlighet med den inställning som Du väljer här. Du kommer dock även att kunna införa manuella sidbrytningar längre fram när Du redigerar sidorna.';
 $string['newpageevery'] = 'Starta en ny sida automatiskt';
-$string['newpage_help'] = '<p>N&auml;r det g&auml;ller l&auml;ngre test s&aring; &auml;r det klokt om Du f&ouml;rdelar fr&aring;gorna &ouml;ver ett st&ouml;rre antal sidor. Det g&ouml;r Du genom att begr&auml;nsa det antal fr&aring;gor som ska visas p&aring; varje sida.</p><p>  N&auml;r Du l&auml;gger till fr&aring;gor kommer det automatiskt att l&auml;ggas in sidbrytningar i enlighet med den inst&auml;llning som Du v&auml;ljer h&auml;r. Du kommer dock &auml;ven att kunna inf&ouml;ra manuella sidbrytningar l&auml;ngre fram n&auml;r Du redigerar sidorna.
-</p>';
 $string['noanswers'] = 'Du valde inga svar!';
 $string['noattempts'] = 'Inga försök har gjorts med detta test';
 $string['noattemptstoshow'] = 'Det finns inga försök att visa';
@@ -421,6 +466,7 @@ $string['noconnection'] = 'Det finns f.n. ingen uppkoppling till en webbtjänst 
 $string['nodataset'] = 'ingenting - detta är inte ett wild card';
 $string['nodatasubmitted'] = 'Det skrevs inte in några data.';
 $string['noessayquestionsfound'] = 'Det gick inte att hitta några manuellt bedömda/betygssatta frågor';
+$string['nogradewarning'] = 'Testet är inte betygssatt så du kan inte ge feedback som beror av betyg.';
 $string['nomoreattempts'] = 'Inga fler försök tillåtna';
 $string['none'] = 'Ingen';
 $string['noopen'] = 'Inget datum för öppnande av test';
@@ -429,11 +475,11 @@ $string['nopossibledatasets'] = 'Inga möjliga uppsättningar av data';
 $string['noquestionintext'] = 'Frågetexten innehåller inte några inbäddade frågor';
 $string['noquestions'] = 'Inga frågor har ännu lagts till';
 $string['noquestionsfound'] = 'Det gick inte att hitta några frågor';
-$string['noquestionsinquiz'] = 'Det finns inga frågor i det här testet. ';
+$string['noquestionsinquiz'] = 'Det finns inga frågor i det här testet.';
 $string['noquestionsonpage'] = 'Tom sida';
 $string['noresponse'] = 'Ingen svarsreaktion';
 $string['noreview'] = 'Du får inte granska detta test';
-$string['noreviewattempt'] = 'Du har inte rätt att granska det här försöket. ';
+$string['noreviewattempt'] = 'Du har inte rätt att granska det här försöket.';
 $string['noreviewshort'] = 'Inte tillåten';
 $string['noreviewuntil'] = 'Du får inte granska detta test förrän {$a}';
 $string['noreviewuntilshort'] = 'Tillgänglig {$a}';
@@ -476,9 +522,8 @@ $string['parsingquestions'] = '\'Parsar\' frågor från en importerad fil.';
 $string['partiallycorrect'] = 'Delvis korrekt';
 $string['penalty'] = 'Avdrag';
 $string['penaltyscheme'] = 'Tillämpa avdrag';
-$string['penaltyscheme_help'] = '<p>Om ett test k&ouml;rs i anpassningsbart l&auml;ge s&aring; kommer studenten/eleven/deltagaren/den l&auml;rande att kunna l&auml;mna ett nytt svar p&aring; fr&aring;gan om det f&ouml;rsta svaret &auml;r felaktigt. I det h&auml;r fallet kan det vara s&aring; att Du, f&ouml;r varje felaktigt svar, vill inf&ouml;ra ett avdrag som ska dras fr&aring;n slutbetyget p&aring; fr&aring;gan. Hur stort avdraget ska vara v&auml;ljer Du individuellt f&ouml;r varje fr&aring;ga n&auml;r Du skapar eller redigerar fr&aring;gan.</p>
-
-<p>Den h&auml;r inst&auml;llningen har bara effekt om testet k&ouml;rs i anpassningsbart l&auml;ge.</p>';
+$string['penaltyscheme_help'] = 'Om ett test körs i anpassningsbart läge så kommer studenten/eleven/deltagaren/den lärande att kunna lämna ett nytt svar på frågan om det första svaret är felaktigt. I det här fallet kan det vara så att Du, för varje felaktigt svar, vill införa ett avdrag som ska dras från slutbetyget på frågan. Hur stort avdraget ska vara väljer Du individuellt för varje fråga när Du skapar eller redigerar frågan.
+Den här inställningen har bara effekt om testet körs i anpassningsbart läge.';
 $string['percentcorrect'] = 'Rätt procent';
 $string['pleaseclose'] = 'Din förfrågan har bearbetats. Du kan stänga det här fönstret nu.';
 $string['pluginadministration'] = 'Administration av test';
@@ -516,35 +561,36 @@ $string['questiontextisempty'] = '[tom frågetext]';
 $string['questiontype'] = 'Frågetyp {$a}';
 $string['questiontypesetupoptions'] = 'Aternativa inställningar för frågetyper:';
 $string['quiz:attempt'] = 'Försök att genomföra test';
-$string['quizavailable'] = 'Detta test är tillgängligt till: {$a}';
-$string['quizclose'] = 'Stäng testet';
-$string['quizclosed'] = 'Detta test stängdes {$a}';
-$string['quizcloses'] = 'Testet stängs';
-$string['quizcloseson'] = 'Testet kommer att avslutas {$a}';
 $string['quiz:deleteattempts'] = 'Ta bort försök att genomföra test';
 $string['quiz:emailconfirmsubmission'] = 'Hämta bekräftelse via e-post i samband med inskickning';
 $string['quiz:emailnotifysubmission'] = 'Använd e-post för att hämta meddelande om  inskickningar';
 $string['quiz:grade'] = 'Betygssätt test manuellt';
 $string['quiz:ignoretimelimits'] = 'Ta inte hänsyn till tidsbegränsningar på test';
+$string['quiz:manage'] = 'Administrera test';
+$string['quiz:manageoverrides'] = 'Administrera överskridanden av test';
+$string['quiz:preview'] = 'Förhandsgranska test';
+$string['quiz:regrade'] = 'Gör om betygssättningen för försök på test';
+$string['quiz:reviewmyattempts'] = 'Granska Dina försök';
+$string['quiz:view'] = 'Visa information om test';
+$string['quiz:viewreports'] = 'Visa rapporter om test';
+$string['quizavailable'] = 'Detta test är tillgängligt till: {$a}';
+$string['quizclose'] = 'Stäng testet';
+$string['quizclosed'] = 'Detta test stängdes {$a}';
+$string['quizcloses'] = 'Testet stängs';
+$string['quizcloseson'] = 'Testet kommer att avslutas {$a}';
 $string['quizisclosed'] = 'Det här testet är stängt';
 $string['quizisopen'] = 'Det här testet är öppet';
 $string['quizisopenwillclose'] = 'Testet är öppet (stängs {$a})';
-$string['quiz:manage'] = 'Administrera test';
-$string['quiz:manageoverrides'] = 'Administrera överskridanden av test';
 $string['quiznavigation'] = 'Navigation i test';
 $string['quizopen'] = 'Öppna testet';
 $string['quizopened'] = 'Det här testet är öppet';
 $string['quizopenedon'] = 'Det här testet är öppnades {$a}';
 $string['quizopens'] = 'Testet öppnas';
 $string['quizopenwillclose'] = 'Det här testet är öppet, kommer att stängas {$a}';
-$string['quizordernotrandom'] = 'Ordningsföljden i testet har inte kastats om ';
-$string['quizorderrandom'] = 'Ordningsföljden i testet har kastats om ';
-$string['quiz:preview'] = 'Förhandsgranska test';
-$string['quiz:regrade'] = 'Gör om betygssättningen för försök på test';
-$string['quiz:reviewmyattempts'] = 'Granska Dina försök';
+$string['quizordernotrandom'] = 'Ordningsföljden i testet har inte kastats om';
+$string['quizorderrandom'] = 'Ordningsföljden i testet har kastats om';
 $string['quizsettings'] = 'Inställningar för test';
-$string['quiz:view'] = 'Visa information om test';
-$string['quiz:viewreports'] = 'Visa rapporter om test';
+$string['quiztimer'] = 'Tidtagare för test';
 $string['quizwillopen'] = 'Det här testet kommer att öppnas {$a}';
 $string['random'] = 'Slumpfråga';
 $string['randomcreate'] = 'Skapa slumpade frågor';
@@ -590,25 +636,24 @@ $string['reportresponses'] = 'Detaljerad responser';
 $string['reports'] = 'Rapporter';
 $string['reportsimplestat'] = 'Enkel statistik';
 $string['requirepassword'] = 'Kräv ett lösenord';
-$string['requirepassword_help'] = '<p>Det h&auml;r f&auml;ltet &auml;r valfritt.</p>
-<p>Om Du anger ett l&ouml;senord h&auml;r d&aring; m&aring;ste deltagare skriva in samma l&ouml;senord innan de f&aring;r lov att g&ouml;ra ett f&ouml;rs&ouml;k med testet.</p>';
+$string['requirepassword_help'] = 'Det här fältet är valfritt.
+Om Du anger ett lösenord här då måste deltagare skriva in samma lösenord innan de får lov att göra ett försök med testet.';
 $string['requiresubnet'] = 'Kräv en nätverksadress';
-$string['requiresubnet_help'] = '<p>Det h&auml;r f&auml;ltet &auml;r valfritt.</p>
-<p>Du kan begr&auml;nsa tillg&aring;ngen till ett test till specifika undern&auml;t
-p&aring; ett LAN eller p&aring; Internet genom att ange en kommaseparerad lista med
-delar av, eller hela numren f&ouml;r IP-adresser.</p>
-<p>Det h&auml;r &auml;r speciellt anv&auml;ndbart n&auml;r det g&auml;ller test d&auml;r Du vill vara s&auml;ker p&aring; att 
-bara m&auml;nniskor i ett specifikt rum ska ha tillg&aring;ng till testet.</p>
-<p>Till exempel:  <b>192.168. , 231.54.211.0/20, 231.3.56.211</b></p>
-<p>Det finns tre typer av nummer som Du kan anv&auml;nda (Du kan inte anv&auml;nda 
-textbaserade dom&auml;nnamnm som exempel.se):</p>
-<ol>
-<li>Kompletta IP-adresser, s&aring;som <b>192.168.10.1</b> som kommer att kopplas till en enskild dator
-(eller proxy).</li>
-<li>Delar av adresser, s&aring;som <b>192.168</b> som kommer att kopplas till allt som inleds med dessa siffror.</li>
-<li>CIDR notation,  s&aring;som <b>231.54.211.0/20</b> som g&ouml;r det m&ouml;jligt att ange mer detaljerade undern&auml;t.</li>
-</ol>
-<p>Mellanslag g&ouml;r ingen skillnad.</p>';
+$string['requiresubnet_help'] = 'Det här fältet är valfritt.
+Du kan begränsa tillgången till ett test till specifika undernät
+på ett LAN eller på Internet genom att ange en kommaseparerad lista med
+delar av, eller hela numren för IP-adresser.
+Det här är speciellt användbart när det gäller test där Du vill vara säker på att
+bara människor i ett specifikt rum ska ha tillgång till testet.
+Till exempel: **192.168. , 231.54.211.0/20, 231.3.56.211**
+Det finns tre typer av nummer som Du kan använda (Du kan inte använda
+textbaserade domännamnm som exempel.se):
+1. Kompletta IP-adresser, såsom **192.168.10.1** som kommer att kopplas till en enskild dator
+(eller proxy).
+2. Delar av adresser, såsom **192.168** som kommer att kopplas till allt som inleds med dessa siffror.
+3. CIDR notation, såsom **231.54.211.0/20** som gör det möjligt att ange mer detaljerade undernät.
+
+Mellanslag gör ingen skillnad.';
 $string['response'] = 'Respons';
 $string['responses'] = 'Responser';
 $string['results'] = 'Resultat';
@@ -675,16 +720,13 @@ $string['shuffleanswers'] = 'Frågorna skall ges i slumpmässig ordning';
 $string['shuffledrandomly'] = 'Slumpmässigt ändrad ordningsföljd';
 $string['shufflequestions'] = 'Svarsalternativen skall ges i slumpmässig ordning';
 $string['shufflewithin'] = 'Blanda om inom frågorna';
-$string['shufflewithin_help'] = '<p>Om du aktiverar det här alternativet då kommer de delar som bygger upp 
+$string['shufflewithin_help'] = 'Om du aktiverar det här alternativet då kommer de delar som bygger upp
 de enskilda frågorna att slumpmässigt blandas varje gång en student/elev/deltagare/lärande
-påbörjar ett försök med det här testet, detta under förutsättning att alternativet även är aktiverat i inställningarna för frågan.  </p>
-
-<p>Avsikten är bara att göra det lite svårare för folk att kopiera av varandra.</p>
-
-<p>Det här gäller bara frågor som består av flera delar som t.ex. flervalsfrågor och para-ihop-frågor. Ordningen för flervalsfrågor blandas bara när det här alternativet är aktiverat.
-Svaren till para-ihop-frågor blandas alltid, i det fallet styr den här inställningen bara huruvida även ordningsföljden på paren av frågor-svar ska blandas.</p>
-
-<p>Det här alternativet har ingenting med användningen av slumpmässiga frågor att göra. </p>';
+påbörjar ett försök med det här testet, detta under förutsättning att alternativet även är aktiverat i inställningarna för frågan.
+Avsikten är bara att göra det lite svårare för folk att kopiera av varandra.
+Det här gäller bara frågor som består av flera delar som t.ex. flervalsfrågor och para-ihop-frågor. Ordningen för flervalsfrågor blandas bara när det här alternativet är aktiverat.
+Svaren till para-ihop-frågor blandas alltid, i det fallet styr den här inställningen bara huruvida även ordningsföljden på paren av frågor-svar ska blandas.
+Det här alternativet har ingenting med användningen av slumpmässiga frågor att göra.';
 $string['singleanswer'] = 'Välj ett svar';
 $string['sortage'] = 'Sortera enligt ålder';
 $string['sortalpha'] = 'Sortera enligt alfabetet';
@@ -710,21 +752,19 @@ $string['timecompleted'] = 'Genomförd';
 $string['timedelay'] = 'Du får inte göra testet eftersom det återstår tid i den tidsfördröjning som gäller innan Du får fortsätta med ett annat test.';
 $string['timeleft'] = 'Återstående tid';
 $string['timelimit'] = 'Tidsbegränsning';
+$string['timelimit_help'] = '**Tidsbegränsning**
+Som förinställd standard så har test inte någon tidsbegränsning.
+Studenter/elever/deltagare/lärande kan alltså använda hur mycket tid de vill för
+att göra färdigt ett test.
+Om Du anger en specifik tidsbegränsning så händer ett antal saker som syftar till att
+testet ska fullföljas inom den tiden:
+* Stöd för Javascript i webbläsaren blir obligatoriskt - detta gör det möjligt för tidtagaren att fungera på ett korrekt sätt
+* Ett flytande fönster med tidtagaren och med nedräkning visas
+* När tidtagaren visar att tiden är ute så skickas de så långt genomförda testet in
+i befintligt skick
+* Om en student/elev/deltagare/lärande lyckas fuska och använder mer än 60 sekunder utöver den tillåtna tiden
+så ges testet automatiskt betyget/omdömet 0.';
 $string['timelimitexeeded'] = 'Tyvärr! Du har överskridit tiden för testet!';
-$string['timelimit_help'] = '<p align="center"><strong>Tidsbegr&auml;nsning</strong></p>
-<p>Som f&ouml;rinst&auml;lld standard s&aring; har test inte n&aring;gon tidsbegr&auml;nsning.
-Studenter/elever/deltagare/l&auml;rande kan allts&aring; anv&auml;nda hur mycket tid de vill f&ouml;r
-att g&ouml;ra f&auml;rdigt ett test. </p>
-<p>Om Du anger en specifik tidsbegr&auml;nsning s&aring; h&auml;nder ett antal saker som syftar till att 
-testet ska fullf&ouml;ljas inom den tiden:</p>
-<ul>
-  <li>St&ouml;d f&ouml;r Javascript i webbl&auml;saren blir obligatoriskt - detta g&ouml;r det m&ouml;jligt f&ouml;r tidtagaren att fungera p&aring; ett korrekt s&auml;tt</li>
-  <li>Ett flytande f&ouml;nster med tidtagaren och med nedr&auml;kning visas</li>
-  <li>N&auml;r tidtagaren visar att tiden &auml;r ute s&aring; skickas de s&aring; l&aring;ngt genomf&ouml;rda testet in
-  i befintligt skick</li>
-  <li>Om en student/elev/deltagare/l&auml;rande lyckas fuska och anv&auml;nder mer &auml;n 60 sekunder ut&ouml;ver den till&aring;tna tiden
-  s&aring; ges testet automatiskt betyget/omd&ouml;met 0.</li>
-</ul>';
 $string['timelimitmin'] = 'Tidsbegränsning (minuter)';
 $string['timelimitsec'] = 'Tidsbegränsning (sekunder)';
 $string['timestr'] = '%H:%M:%S on %d/%m/%y';
@@ -748,7 +788,7 @@ $string['upgradesure'] = '<div style="color: red;">Modulen Test kommer att genom
 $string['url'] = 'URL';
 $string['usedcategorymoved'] = 'Den här kategorin har flyttats till webbplatsnivån efterom dess frågor användes av andra test på servern efter det att kursen tagits bort.';
 $string['useroverrides'] = 'Överskridanden för användare';
-$string['usersnone'] = 'Inga studenter/elever/deltagare/lärande har tillgång till detta test. ';
+$string['usersnone'] = 'Inga studenter/elever/deltagare/lärande har tillgång till detta test.';
 $string['validate'] = 'Validera';
 $string['viewallanswers'] = 'Visa {$a} genomförda test';
 $string['viewallreports'] = 'Visa rapporter för {$a} försök';

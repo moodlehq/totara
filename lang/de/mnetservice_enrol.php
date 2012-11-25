@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['availablecourseson'] = 'Verfügbare Kurse in {$a}';
 $string['availablecoursesonnone'] = 'Externer Host <a href="{$a->hosturl}">{$a->hostname}</a> bietet unseren Nutzern keine Kurse an';
-$string['clientname'] = 'Client für externe Einschreibungen ';
+$string['clientname'] = 'Client für externe Einschreibungen';
 $string['clientname_help'] = 'An- und Abmelden von Nutzern Ihrer Moodle-Instanz bei anderen Moodle-Servern, die dies über das Anmelde-Plugin für das Moodle-Netzwerk zulassen.';
 $string['editenrolments'] = 'Rollen bearbeiten';
 $string['hostappname'] = 'Anwendung';
@@ -36,5 +36,5 @@ $string['hosturl'] = 'Externe Host URL';
 $string['nopublishers'] = 'Keine externen Peers verfügbar';
 $string['noroamingusers'] = 'Die Nutzerfähigkeit \'{$a}\' ist im Systemkontext nötig, um in Remote-Kursen eingeschrieben sein, aber zur Zeit gibt niemanden mit dieser Fähigkeit. Klicken Sie auf die Taste "Weiter", um die erforderliche Fähigkeit an eine oder mehrere Rollen auf der Website zuzuweisen.';
 $string['otherenrolledusers'] = 'Weitere eingetragene Nutzer/innen';
-$string['pluginname'] = 'Service für externe Einschreibungen ';
+$string['pluginname'] = 'Service für externe Einschreibungen';
 $string['refetch'] = 'Status für externe Hosts zurücksetzen';

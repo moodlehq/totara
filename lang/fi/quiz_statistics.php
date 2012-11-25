@@ -66,9 +66,7 @@ $string['median'] = 'Arvosanan mediaani (kohteelle {$a})';
 $string['modelresponse'] = 'Mallivastaus';
 $string['negcovar'] = 'Negatiivinen arvosanan kovarianssi sekä suorituskerran kokonaisarvosana';
 $string['negcovar_help'] = 'Tämän kysymyksen arvosana näille suorituskerroille on painottunut päinvastaiseen suuntaan kuin koko suorituskerran yleisarvosana. Tämä tarkoittaa, että suorituskerran yleisarvosana on tyypillisesti keskiarvon alapuolla, kun tämän kysymyksen arvosana on keskiarvon yläpuolella, ja päin vastoin.
-
 Kysymyksen painotuksen laskemiseen ei voi käyttää perusyhtälöä. Muiden kysymysten tehollinen paino on on myös näiden kysymysten tehollinen paino, jos korostetuille kysymyksille, joilla siis on käänteinen painotus, annetaan maksimiarvosanaksi 0.
-
 Jos muokkaat tenttiä ja annat näille kysymyksille maksimiarvosanaksi 0, näiden kysymysten tehollinen paino on 0 ja todellisten tehokkaiden kysymysten painoksi tulee kuten laskettu nyt.';
 $string['nostudentsingroup'] = 'Tässä ryhmässä ei ole vielä opiskelijoita';
 $string['optiongrade'] = 'Osakrediitti';
@@ -94,7 +92,7 @@ $string['standarddeviationq'] = 'Keskihajonta';
 $string['standarderror'] = 'Keskivirhe (kohteelle {$a})';
 $string['statistics'] = 'Tilastot';
 $string['statistics:componentname'] = 'Tentin tilastoraportti';
+$string['statistics:view'] = 'Näytä tilastoraportti';
 $string['statisticsreport'] = 'Tilastoraportti';
 $string['statisticsreportgraph'] = 'Tilastot kysymysten sijainneille';
-$string['statistics:view'] = 'Näytä tilastoraportti';
 $string['statsfor'] = 'Tentin tilastot (kohteelle {$a})';

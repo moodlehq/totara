@@ -31,13 +31,11 @@ $string['allstudents'] = 'הצג את כל ה-{$a}';
 $string['attemptsonly'] = 'הצג {$a} בעלי ניסיונות לענות על הבחנים בלבד.';
 $string['attemptsprepage'] = 'נסיונות מענה נראים עבור כל עמוד';
 $string['deleteselected'] = 'מחיקת נסיונות המענה שנבחרו';
-$string['done'] = 'בוצע
-';
+$string['done'] = 'בוצע';
 $string['err_failedtodeleteregrades'] = 'כשלון במחיקת ציוניי חישוב ניסיון';
 $string['err_failedtorecalculateattemptgrades'] = 'כשלון בחישוב מחודש של ציוניי ניסיון';
 $string['highlightinggraded'] = 'נסיון מענה של המשתמש שתרם לציון הסופי מודגש';
-$string['needed'] = 'דרוש
-';
+$string['needed'] = 'דרוש';
 $string['noattemptsonly'] = 'הצג / הורד {$a} ללא ניסיונות לענות על הבחנים בלבד.';
 $string['noattemptstoregrade'] = 'אין צורך בדירוג מחדש של הנסיונות';
 $string['nogradepermission'] = 'אין לך רשות לתת ציונים לבוחן זה.';

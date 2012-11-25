@@ -36,7 +36,6 @@ $string['gradingmanagement'] = '高级评分';
 $string['gradingmanagementtitle'] = '高级评分：{$a->component} ({$a->area})';
 $string['gradingmethod'] = '评分方式';
 $string['gradingmethod_help'] = '选择此场景中用来计算成绩的高级评分方式。
-
 要关闭高级评分并恢复到默认的评分方法，请选择“直接打分”。';
 $string['gradingmethodnone'] = '直接打分';
 $string['gradingmethods'] = '评分方式';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = '没有找到模板';
 $string['searchownforms'] = '包含我自己的表格';
 $string['searchtemplate'] = '搜索评分表';
 $string['searchtemplate_help'] = '您可以搜索评分表，并把它当做新评分表的模板来使用。可以输入表单名、描述或表单中的任何关键字。如果要搜索词组，请用引号扩上。
-
 默认的，只可以搜索到已分享的模板。您也可以搜索自己的评分表。这样您就可以在不共享的情况下方便的重用您的评分表。只有标为“可以使用”的评分表可以被重用。';
 $string['statusdraft'] = '草稿';
 $string['statusready'] = '可以使用';

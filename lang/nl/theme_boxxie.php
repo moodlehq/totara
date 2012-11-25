@@ -42,7 +42,7 @@ $string['choosereadme'] = '<div class="clearfix"><div class="theme_screenshot">
 <p>Dit thema is gecodeerd en wordt onderhouden door Patrick Malley. Hij kan worden gecontacteerd via email op contact@newschoollearning.com.</p>
 <h2>Licentie</h2>
 <p>De licentie van dit thema, en alle andere thema\'s die zijn opgenomen in de Moodle core, vallen onder de <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>.</p>
- </div>
+</div>
 </div>';
 $string['pluginname'] = 'Boxxie';
 $string['region-side-post'] = 'Rechts';

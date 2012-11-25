@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = '内容';
-$string['foldercontent'] = '文件和子文件夹';
 $string['folder:managefiles'] = '在文件夹模块中管理文件';
 $string['folder:view'] = '查看文件夹内容';
+$string['foldercontent'] = '文件和子文件夹';
 $string['modulename'] = '文件夹';
 $string['modulenameplural'] = '文件夹';
 $string['neverseen'] = '从未查看';

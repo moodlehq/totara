@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['TODO'] = 'TODO';
 $string['alreadyloggedin'] = 'Vous êtes déjà authentifié sous le nom {$a}. Veuillez vous déconnecter avant de vous connecter sous un autre nom.';
 $string['authnotexisting'] = 'Le plugin d\'autorisation n\'existe pas';
 $string['backupcontainexternal'] = 'Ce fichier de sauvegarde comporte des hôtes externes Réseau Moodle qui ne sont pas configurés localement';
@@ -341,9 +342,9 @@ $string['maxbytes'] = 'Le fichier est plus gros que la taille maximale';
 $string['messagingdisable'] = 'La messagerie est désactivée sur ce site';
 $string['mimetexisnotexist'] = 'Votre serveur n\'est pas configurer que faire tourner mimeTeX. Veuillez télécharger le programme approprié à votre plateforme sur <a href="http://moodle.org/download/mimetex/">http://moodle.org/download/mimetex/</a>, ou les sources en C du programme ici <a href="http://www.forkosh.com/mimetex.zip"> http://www.forkosh.com/mimetex.zip</a>, les compiler et placer le programme dans le dossier moodle/filter/tex/';
 $string['mimetexnotexecutable'] = 'Votre programme mimetex n\'est pas exécutable !';
+$string['missing_moodle_backup_xml_file'] = 'Fichier de sauvegarde XML manquant : {$a}';
 $string['missingfield'] = 'Le champ « {$a} » est manquant';
 $string['missingkeyinsql'] = 'Erreur : paramètre « {$a} » manquant dans la requête';
-$string['missing_moodle_backup_xml_file'] = 'Fichier de sauvegarde XML manquant : {$a}';
 $string['missingparam'] = 'Un paramètre requis ({$a}) est manquant';
 $string['missingparameter'] = 'Paramètre manquant';
 $string['missingrequiredfield'] = 'Un champ obligatoire n\'est pas renseigné';
@@ -424,9 +425,9 @@ $string['remotedownloaderror'] = 'Le téléchargement de composants sur votre se
 $string['remotedownloadnotallowed'] = 'Le téléchargement de composants sur votre serveur n\'est pas autorisé (l\'option allow_url_fopen est désactivée).<br /><br />Vous devez télécharger manuellement le fichier <a href="{$a->url}">{$a->url}</a>, le copier vers « {$a->dest} » dans votre serveur et le décompresser';
 $string['reportnotavailable'] = 'Ce type de rapport n\'est disponible que pour le cours de site';
 $string['requireloginerror'] = 'Cours ou activité pas accessible.';
-$string['restorechecksumfailed'] = 'Un problème est survenu avec les informations de restauration stockées dans votre session. Veuillez vérifier la mémoire PHP et/ou les limites de taille de la base de données. La restauration a été interrompue.';
 $string['restore_path_element_missingmethod'] = 'La méthode de restauration {$a} est manquante. Elle doit être définie par un développeur.';
 $string['restore_path_element_noobject'] = 'L\'objet de restauration {$a} n\'est pas un objet.';
+$string['restorechecksumfailed'] = 'Un problème est survenu avec les informations de restauration stockées dans votre session. Veuillez vérifier la mémoire PHP et/ou les limites de taille de la base de données. La restauration a été interrompue.';
 $string['restrictedcontextexception'] = 'L\'exécution de fonctions externes viole la restriction de contexte.';
 $string['restricteduser'] = 'Votre compte utilisateur « {$a} » ne vous permet pas d\'effectuer cette opération';
 $string['reverseproxyabused'] = 'Le proxy inverse est activé. Il n\'est pas possible d\'accéder au serveur de manière directe.<br />Veuillez contacter l\'administrateur du serveur.';
@@ -459,7 +460,6 @@ $string['tagnotfound'] = 'Le tag indiqué n\'a pas été trouvé dans la base de
 $string['targetdatabasenotempty'] = 'La base de données choisie n\'est pas vide. Le transfert a été interrompu par sécurité.';
 $string['textconditionsnotallowed'] = 'La comparaison des conditions de texte par colonne n\'est pas permise. Veuillez utiliser sql_compare_text() dans votre requête.';
 $string['themenotinstall'] = 'Ce thème n\'est pas installé !';
-$string['TODO'] = 'TODO';
 $string['tokengenerationfailed'] = 'Impossible de générer un nouveau jeton';
 $string['transactionvoid'] = 'La transaction ne peut pas être annulée, car cela a déjà été fait';
 $string['unenrolerror'] = 'Une erreur est survenue lors de la tentative de désinscription de cet utilisateur';

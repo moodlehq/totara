@@ -32,11 +32,9 @@ $string['defaultrole_desc'] = 'Select role which should be assigned to users dur
 $string['enrolenddaterror'] = 'Enrollment end date cannot be earlier than start date';
 $string['enrolperiod'] = 'Enrollment period';
 $string['enrolperiod_desc'] = 'Default length of the enrollment period (in seconds).';
-$string['nocost'] = 'There is no cost associated with enrolling in this course!
-';
+$string['nocost'] = 'There is no cost associated with enrolling in this course!';
 $string['paypal:config'] = 'Configure PayPal enroll instances';
-$string['paypal:manage'] = 'Manage enrolled users
-';
+$string['paypal:manage'] = 'Manage enrolled users';
 $string['paypal:unenrol'] = 'Unenroll users from course';
 $string['paypal:unenrolself'] = 'Unenroll self from the course';
 $string['status'] = 'Allow PayPal enrollments';

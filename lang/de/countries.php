@@ -250,8 +250,7 @@ $string['TR'] = 'Türkei';
 $string['TT'] = 'Trinidad und Tobago';
 $string['TV'] = 'Tuvalu';
 $string['TW'] = 'Taiwan';
-$string['TZ'] = 'Vereinigte Republik Tansania
-';
+$string['TZ'] = 'Vereinigte Republik Tansania';
 $string['UA'] = 'Ukraine';
 $string['UG'] = 'Uganda';
 $string['UM'] = 'Amerikanisch-Ozeanien';

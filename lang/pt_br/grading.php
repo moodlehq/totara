@@ -36,7 +36,6 @@ $string['gradingmanagement'] = 'Avaliação avançada';
 $string['gradingmanagementtitle'] = 'Avaliação avançada: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Método de avaliação';
 $string['gradingmethod_help'] = 'Escolha o método avançado de classificação que deve ser utilizado no contexto atual.
-
 Para desabilitar classificação avançada e retornar ao método de classificação padrão, escolha \'Classificação simples direta\'';
 $string['gradingmethodnone'] = 'Método simples de avaliação';
 $string['gradingmethods'] = 'Métodos de avaliação';
@@ -61,7 +60,6 @@ $string['searchownforms'] = 'Incluir meus próprios formulários';
 $string['searchtemplate'] = 'Busca de formulários de avaliação';
 $string['searchtemplate_help'] = 'Você pode procurar pelo formulário de classificação e utilizar como modelo para um novo formulário de classificação aqui.
 Simplesmente digite palavras que devem aparecer em algum lugar no nome do formulário, sua descrição ou no próprio corpo do formulário. Para pesquisar por uma frase, escreva a consulta completa digitando aspas duplas ao seu redor.
-
 Por padrão, apenas formulários de classificação que foram salvos como formulários compartilhados serão incluídos nos resultados da pesquisa. Você pode também incluir seu próprio formulário de classificação nos resultados da pesquisa. Deste modo você pode simplesmente reutilizar seu formulário de classificação sem a necessidade de compartilhar o mesmo. Apenas formulários marcados como \'Prontos pra reutilização\' podem ser reutilizados desta maneira.';
 $string['statusdraft'] = 'Rascunho';
 $string['statusready'] = 'Pronto para uso';

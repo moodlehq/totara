@@ -43,11 +43,11 @@ $string['autogenallforms'] = 'Genereer alle standaardsjablonen';
 $string['autolinkurl'] = 'Maak automatisch links van URL\'s';
 $string['availablefromdate'] = 'Beschikbaar van';
 $string['availabletags'] = 'Beschikbare tags';
-$string['availabletags_help'] = '<p align="center"><strong>Beschikbare tags</strong></p>
-<p>Tags houden een plaats vrij in een sjabloon, die later vervangen zal worden door velden of knoppen wanneer de items bewerkt of bekeken worden.</p>
-<p>Velden maak je met volgende opmaak: [[veldnaam]]</p>
-<p>Knoppen maak je met volgende opmaak: ##eenknop##</p>
-<p>Enkel de tags die je terugvindt in de "Beschikbare tags" lijst kunnen voor het huidige sjabloon gebruikt worden.</p>';
+$string['availabletags_help'] = '**Beschikbare tags**
+Tags houden een plaats vrij in een sjabloon, die later vervangen zal worden door velden of knoppen wanneer de items bewerkt of bekeken worden.
+Velden maak je met volgende opmaak: [[veldnaam]]
+Knoppen maak je met volgende opmaak: ##eenknop##
+Enkel de tags die je terugvindt in de "Beschikbare tags" lijst kunnen voor het huidige sjabloon gebruikt worden.';
 $string['availabletodate'] = 'Beschikbaar tot';
 $string['blank'] = 'Leeg';
 $string['buttons'] = 'Acties';
@@ -77,27 +77,18 @@ $string['csstemplate'] = 'CSS';
 $string['csvfailed'] = 'Kon de gegevens niet ut het CSV-bestand halen';
 $string['csvfile'] = 'CSV-bestand';
 $string['csvimport'] = 'Imorteer CSV-bestand';
-$string['csvimport_help'] = '<p align="center"><strong>Importeren met een CSV bestand</strong></p>
+$string['csvimport_help'] = '**Importeren met een CSV bestand**
+CSV betekent Comma-Separated-Values en is een algemeen gebruikte bestandsopmaak voor het uitwisselen van informatie.
+De verwachte bestandsopmaak is een tekstbestand met een lijst met veldnamen op de eerste regel. Daarna volgen dan de gegevens, één record per lijn.
+Het scheidingsteken tussen de velden is standaard een komma en het insluiten van velden is standaard niet ingesteld (met insluiten van velden wordt bedoeld dat er tekens voor en na elk veld staan).
+Record worden gescheiden door ze op een nieuwe regel te zetten (door op de enter-toets te drukken in een tekst editor). Tabs kunnen gespecifieeerd worde door t te gebruiken en nieuwe regels kun je specifieren met n.
+Voorbeeld:
+naam,grootte,gewicht
+Kai,180cm,80kg
+Kim,170cm,60kg
+Koo,190cm,20kg
 
-<p>CSV betekent Comma-Separated-Values en is een algemeen gebruikte bestandsopmaak voor het uitwisselen van informatie.</p>
-
-<p>De verwachte bestandsopmaak is een tekstbestand met een lijst met veldnamen op de eerste regel. Daarna volgen dan de gegevens, één record per lijn.</p>
-
-<p>Het scheidingsteken tussen de velden is standaard een komma en het insluiten van velden is standaard niet ingesteld (met insluiten van velden wordt bedoeld dat er tekens voor en na elk veld staan). </p>
-
-<p>Record worden gescheiden door ze op een nieuwe regel te zetten (door op de enter-toets te drukken in een tekst editor). Tabs kunnen gespecifieeerd worde door t te gebruiken en nieuwe regels kun je specifieren met n.</p>
-
-<p>Voorbeeld:
-
-<pre>
-  naam,grootte,gewicht
-  Kai,180cm,80kg
-  Kim,170cm,60kg
-  Koo,190cm,20kg
-</pre>
-</p>
-
-<p>Waarschuwing: sommige veldtypes worden niet ondersteund.</p>';
+Waarschuwing: sommige veldtypes worden niet ondersteund.';
 $string['csvwithselecteddelimiter'] = '<acronym title="Comma Separated Values">CSV</acronym> tekst met het gekozen scheidingsteken:';
 $string['data:approve'] = 'Keur nieuwe items goed';
 $string['data:comment'] = 'Schrijf commentaar';
@@ -112,7 +103,7 @@ $string['data:rate'] = 'Items beoordelen';
 $string['data:readentry'] = 'Lees items';
 $string['data:viewallratings'] = 'Bekijk alle gegeven beoordelingen';
 $string['data:viewalluserpresets'] = 'Bekijk sjabloonsets';
-$string['data:viewanyrating'] = 'Bekijk de gekregen totalen van beoordelingen ';
+$string['data:viewanyrating'] = 'Bekijk de gekregen totalen van beoordelingen';
 $string['data:viewentry'] = 'Bekijk items';
 $string['data:viewrating'] = 'Bekijk de totaalbeoordeling die je gekregen hebt';
 $string['data:writeentry'] = 'Voeg nieuw item toe';
@@ -151,8 +142,8 @@ $string['excel'] = 'Excel';
 $string['expired'] = 'Deze activiteit is gesloten op {$a} en is niet langer beschikbaar';
 $string['export'] = 'Exporteer';
 $string['exportaszip'] = 'Exporteer als zip';
-$string['exportaszip_help'] = '<p align="center"><strong>Exporteren als Zip</strong></p>
-<p>Hiermee kun je de sjabloonsets downloaden naar je computer, van waar je ze later terug kunt uploaden naar een andere database met de Importeren van Zip mogelijkheid.</p>';
+$string['exportaszip_help'] = '**Exporteren als Zip**
+Hiermee kun je de sjabloonsets downloaden naar je computer, van waar je ze later terug kunt uploaden naar een andere database met de Importeren van Zip mogelijkheid.';
 $string['exportedtozip'] = 'Geëxporteerd naar tijdelijke zip ...';
 $string['exportentries'] = 'Exporteer items';
 $string['exportownentries'] = 'Exporteer alleen je eigen items?
@@ -169,10 +160,9 @@ $string['fieldheightlistview'] = 'Hoogte in lijstscherm';
 $string['fieldheightsingleview'] = 'Hoogte in scherm per lijn';
 $string['fieldids'] = 'Veld identiteit';
 $string['fieldmappings'] = 'Veldverwijzingen';
-$string['fieldmappings_help'] = '<p align="center"><strong>Veldverwijzingen</strong></p>
-<p>Met dit menu kun je data behouden van een bestaande databank. Om de data van een veld te bewaren, moet je deze verwijzen naar een nieuw veld, waar de data dan zal terecht komen. Elk veld kan ook leeg gelaten worden als je er geen gegevens wil naar toe kopiëren. De gegevens uit een oud veld dat niet naar een nieuw veld verwezen wordt, zullen verloren gaan.</p>
-<p>Je kunt alleen velden van hetzelfde type naar elkaar laten verwijzen, dus elk dropdownmenu zal andere velden bevatten. Je moet er ook voor opletten om een oud veld niet naar meer dan één nieuwe velden te laten verwijzen.
-</p>';
+$string['fieldmappings_help'] = '**Veldverwijzingen**
+Met dit menu kun je data behouden van een bestaande databank. Om de data van een veld te bewaren, moet je deze verwijzen naar een nieuw veld, waar de data dan zal terecht komen. Elk veld kan ook leeg gelaten worden als je er geen gegevens wil naar toe kopiëren. De gegevens uit een oud veld dat niet naar een nieuw veld verwezen wordt, zullen verloren gaan.
+Je kunt alleen velden van hetzelfde type naar elkaar laten verwijzen, dus elk dropdownmenu zal andere velden bevatten. Je moet er ook voor opletten om een oud veld niet naar meer dan één nieuwe velden te laten verwijzen.';
 $string['fieldname'] = 'Veldnaam';
 $string['fieldnotmatched'] = 'Volgende velden in je bestand zijn niet bekend in de databank: {$a}';
 $string['fieldoptions'] = 'Opties (Eén per lijn)';
@@ -190,8 +180,7 @@ $string['forcelinkname'] = 'Geforceerde naam voor de link';
 $string['foundnorecords'] = 'Geen records gevonden (<a href="{$a->reseturl}">Reset filters</a>)';
 $string['foundrecords'] = 'Gevonden records: {$a->num}/{$a->max} (<a href="{$a->reseturl}">Reset filters</a>)';
 $string['fromfile'] = 'Importeer met zip-bestand';
-$string['fromfile_help'] = '<p align=\'center\'><strong>Sjabloonsets importeren vanuit Zip</strong></p>
-<p>Gebruik dit om sjabloonsets die je op je computer bewaard hebt met de exportfunctie te uploaden .</p>';
+$string['fromfile_help'] = 'Gebruik dit om sjabloonsets die je op je computer bewaard hebt met de exportfunctie te uploaden .';
 $string['generateerror'] = 'Niet alle bestanden gegenereerd!';
 $string['header'] = 'Koptekst';
 $string['headeraddtemplate'] = 'Definieer de interface voor het bewerken van items';
@@ -227,9 +216,8 @@ $string['mapexistingfield'] = 'Koppel aan {$a}';
 $string['mapnewfield'] = 'Maak een nieuw veld';
 $string['mappingwarning'] = 'All oude velden die niet naar een nieuw veld verplaatst worden, zullen verloren gaan en alle gegevens in die velden zullen verwijderd worden';
 $string['maxentries'] = 'Maximum items';
-$string['maxentries_help'] = '<p align="center"><strong>Maximum aantal items</strong></p>
-
-<p>Het maximum aantal items dat een leerling hier mag invoeren.</p>';
+$string['maxentries_help'] = '**Maximum aantal items**
+Het maximum aantal items dat een leerling hier mag invoeren.';
 $string['maxsize'] = 'Maximum grootte';
 $string['menu'] = 'Menu';
 $string['menuchoose'] = 'Kies...';
@@ -258,10 +246,9 @@ $string['nametextarea'] = 'Veld voor tekstgebied';
 $string['nameurl'] = 'Veld voor URL';
 $string['newentry'] = 'Nieuw item';
 $string['newfield'] = 'Maak een nieuw veld';
-$string['newfield_help'] = '<p align="center"><strong>Velden</strong></p>
-
-<p>Op dit scherm kun je de velden die je gaat gebruiken in je databank, selecteren.</p>.
-<p>In elk veld kun je verschillende types data zetten, met verschillende invoer interfaces.</p>';
+$string['newfield_help'] = '**Velden**
+Op dit scherm kun je de velden die je gaat gebruiken in je databank, selecteren..
+In elk veld kun je verschillende types data zetten, met verschillende invoer interfaces.';
 $string['noaccess'] = 'Je hebt geen toegang tot deze pagina';
 $string['nodefinedfields'] = 'Nieuw sjabloon heeft geen gedefiniëerde velden';
 $string['nofieldcontent'] = 'Veldinhoud niet gevonden';
@@ -301,16 +288,14 @@ $string['recorddeleted'] = 'Record verwijderd';
 $string['recordsnotsaved'] = 'Er werd geen record bewaard. Controleer de opmaak van het geüploade bestand.';
 $string['recordssaved'] = 'record(s) bewaard';
 $string['requireapproval'] = 'Goedkeuring nodig?';
-$string['requireapproval_help'] = '<p align="center"><strong>Goedkeuring vereist</strong></p>
-
-<p>Moeten toegevoegde items eerst door een leraar goedgekeurd worden voor ze gezien kunnen worden door leerlingen? Dit kan nuttig zijn om inhoud te modereren die misschien beledigend of ongeschikt is.</p>';
+$string['requireapproval_help'] = '**Goedkeuring vereist**
+Moeten toegevoegde items eerst door een leraar goedgekeurd worden voor ze gezien kunnen worden door leerlingen? Dit kan nuttig zijn om inhoud te modereren die misschien beledigend of ongeschikt is.';
 $string['requiredentries'] = 'Vereiste items';
 $string['requiredentries_help'] = 'Het aantal items die een student verplicht moet invoeren vóór de activiteit als voltooid wordt beschouwd.';
 $string['requiredentriestoview'] = 'Items vereist voor bekijken';
-$string['requiredentriestoview_help'] = '<p align="center"><strong>Vereist aantal items voor bekijken</strong></p>
-
-<p>THet aantal items een leerling moet invoeren voor hij de andere items in deze databank mag zien.</p>
-<p>Opmerking: deze functie kan niet gebruikt worden samen met de autolink filter voor de databank, omdat het niet mogelijk is voor de databank autolink filter om te bepalen of een gebruiker het vereiste aantal items al ingestuurd heeft.</p>';
+$string['requiredentriestoview_help'] = '**Vereist aantal items voor bekijken**
+THet aantal items een leerling moet invoeren voor hij de andere items in deze databank mag zien.
+Opmerking: deze functie kan niet gebruikt worden samen met de autolink filter voor de databank, omdat het niet mogelijk is voor de databank autolink filter om te bepalen of een gebruiker het vereiste aantal items al ingestuurd heeft.';
 $string['resetsettings'] = 'Reset filters';
 $string['resettemplate'] = 'Reset sjabloon';
 $string['resizingimages'] = 'Tumbnails van afbeeldingen herschalen';
@@ -322,8 +307,8 @@ $string['save'] = 'Bewaar';
 $string['saveandadd'] = 'Bewaar en voeg nog één toe';
 $string['saveandview'] = 'Bewaar en bekijk';
 $string['saveaspreset'] = 'Bewaar als sjabloonset';
-$string['saveaspreset_help'] = '<p align="center"><strong>Bewaar als sjabloonset</strong></p>
-<p>Dit publiceert de nu gebruikte sjablonen als een sjabloonset, die iedereen op de site kan zien en gebruiken. Deze zal verschijnen in de lijst met sjabloonsets. Wanneer je wil, kun je deze zet natuurlijk verwijderen.</p>';
+$string['saveaspreset_help'] = '**Bewaar als sjabloonset**
+Dit publiceert de nu gebruikte sjablonen als een sjabloonset, die iedereen op de site kan zien en gebruiken. Deze zal verschijnen in de lijst met sjabloonsets. Wanneer je wil, kun je deze zet natuurlijk verwijderen.';
 $string['savesettings'] = 'Bewaar instellingen';
 $string['savesuccess'] = 'Bewaren gelukt. Je sjabloonset zal nu voor de hele site beschikbaar zijn.';
 $string['savetemplate'] = 'Bewaar sjabloon';
@@ -351,17 +336,15 @@ $string['updatefield'] = 'Update een bestaand veld';
 $string['uploadfile'] = 'Upload bestand';
 $string['uploadrecords'] = 'Upload records uit een bestand';
 $string['uploadrecords_help'] = 'Items kunnen geüploaded worden via een tekstbestand. De opmaak van dat bestand moet als volgt zijn:
-
 * Elke lijn van het bestand bevat één record
 * Elke record is een reeks gegevens, gescheiden door komma\'s (of andere scheidingstekens)
 * De eerste record bevat een lijst met veldnamen die de opmaak van de rest van het bestand bepalen.
-
 De velden kunnen ingesloten worden door een teken in elk veld van elke record, maar dit kan ook weggelaten worden.';
 $string['url'] = 'URL';
 $string['usestandard'] = 'gebruik een sjabloonset';
-$string['usestandard_help'] = '<p align="center"><strong>Gebruik sjabloonsets</strong></p>
-<p> Gebruik een sjabloon dat beschikbaar gemaakt is voor de hele site.</p>
-<p> Als de sjabloonset aan de bibliotheek is toegevoegd met de funcitie \'Bewaar als sjabloonset\', dan kun je die hier verwijderen.</p>';
+$string['usestandard_help'] = '**Gebruik sjabloonsets**
+Gebruik een sjabloon dat beschikbaar gemaakt is voor de hele site.
+Als de sjabloonset aan de bibliotheek is toegevoegd met de funcitie \'Bewaar als sjabloonset\', dan kun je die hier verwijderen.';
 $string['viewfromdate'] = 'Alleen lezen vanaf';
 $string['viewtodate'] = 'Alleen lezen tot';
 $string['wrongdataid'] = 'Verkeerd data-ID opgegeven';

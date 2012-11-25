@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Könyv nyomtatása';
+$string['print:print'] = 'Könyv nyomtgatása';
 $string['printbook'] = 'Könyv nyomtatása';
 $string['printchapter'] = 'Fejezet nyomtatása';
 $string['printdate'] = 'Dátum';
 $string['printedby'] = 'Nyomtatta';
-$string['print:print'] = 'Könyv nyomtgatása';

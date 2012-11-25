@@ -926,7 +926,7 @@ abstract class sql_generator {
     /// to known which ones have been used
         static $used_names = array();
 
-    /// Use standard naming. See http://docs.moodle.org/19/en/XMLDB_key_and_index_naming
+    /// Use standard naming. See http://docs.moodle.org/en/XMLDB_key_and_index_naming
         $tablearr = explode ('_', $tablename);
         foreach ($tablearr as $table) {
             $name .= substr(trim($table),0,4);

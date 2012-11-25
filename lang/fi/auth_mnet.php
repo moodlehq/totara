@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'Kun valintana on Kyllä, luodaan automaattisesti paikallinen käyttäjämerkintä kun etäkäyttäjä kirjautuu ensimmäisen kerran sisään.';
-$string['auth_mnetdescription'] = 'Käyttäjät todennetaan Moodle Network -asetuksissa määritellyn luotetun verkon mukaan.';
 $string['auth_mnet_roamin'] = 'Näiden isäntien käyttäjät voivat tulla sivustollesi';
 $string['auth_mnet_roamout'] = 'Käyttäjäsi voivat siirtyä näiden isäntien sivustoille';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'XMLRPC-siirron yli tapahtuvan todentamisen aikakatkaisu sekunteina.';
+$string['auth_mnetdescription'] = 'Käyttäjät todennetaan Moodle Network -asetuksissa määritellyn luotetun verkon mukaan.';
 $string['auto_add_remote_users'] = 'Lisää automaattisesti etäkäyttäjät';
 $string['pluginname'] = 'MNet-todentaminen';
 $string['rpc_negotiation_timeout'] = 'RPC-neuvottelun aikakatkaisu';

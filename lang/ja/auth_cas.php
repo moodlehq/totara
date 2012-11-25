@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['CASform'] = '認証選択';
 $string['accesCAS'] = 'CASユーザ';
 $string['accesNOCAS'] = '他のユーザ';
 $string['auth_cas_auth_user_create'] = '外部にユーザを作成する';
@@ -41,7 +42,6 @@ $string['auth_cas_certificate_path_key'] = '証明書パス';
 $string['auth_cas_changepasswordurl'] = 'パスワード変更URI';
 $string['auth_cas_create_user'] = 'MoodleデータベースにCAS認証済みユーザを追加したい場合、「Yes」を選択してください。「No」を選択した場合、Moodleデータベースに登録されているユーザのみログインできます。';
 $string['auth_cas_create_user_key'] = 'ユーザを作成する';
-$string['auth_casdescription'] = 'この認証方法では、単一ログイン環境 (Single Sign On environment: SSO) にて、CASサーバ (Central Authentication Service) をユーザ認証に使用します。シンプルLDAP認証を使用することもできます。ユーザ名とパスワードがCASで認証された場合、Moodleは新しいユーザエントリをデータベースに作成します。また、必要であれば、LDAPよりユーザ属性を取得します。次回からは、ユーザ名およびパスワードのみ確認されます。';
 $string['auth_cas_enabled'] = 'CAS認証を使用したい場合、「Yes」を選択してください。';
 $string['auth_cas_hostname'] = 'CASサーバのホスト名<br />例: host.domaine.fr';
 $string['auth_cas_hostname_key'] = 'ホスト名';
@@ -53,7 +53,6 @@ $string['auth_cas_logoutcas'] = 'Moodleからのログアウト時、CASから�
 $string['auth_cas_logoutcas_key'] = 'CASログアウトオプション';
 $string['auth_cas_multiauth'] = 'マルチ認証 (CAS + 他の認証) を使用したい場合、「Yes」を選択してください。';
 $string['auth_cas_multiauth_key'] = 'マルチ認証';
-$string['auth_casnotinstalled'] = 'CAS認証を使用できません。PHP LDAPモジュールがインストールされていません。';
 $string['auth_cas_port'] = 'CASサーバのポート';
 $string['auth_cas_port_key'] = 'ポート';
 $string['auth_cas_proxycas'] = 'CASをプロクシモードで使用したい場合、「Yes」を選択してください。';
@@ -62,6 +61,7 @@ $string['auth_cas_server_settings'] = 'CASサーバ設定';
 $string['auth_cas_text'] = 'セキュアコネクション';
 $string['auth_cas_use_cas'] = 'CASを使用する';
 $string['auth_cas_version'] = '使用するCASプロトコルバージョン';
-$string['CASform'] = '認証選択';
+$string['auth_casdescription'] = 'この認証方法では、単一ログイン環境 (Single Sign On environment: SSO) にて、CASサーバ (Central Authentication Service) をユーザ認証に使用します。シンプルLDAP認証を使用することもできます。ユーザ名とパスワードがCASで認証された場合、Moodleは新しいユーザエントリをデータベースに作成します。また、必要であれば、LDAPよりユーザ属性を取得します。次回からは、ユーザ名およびパスワードのみ確認されます。';
+$string['auth_casnotinstalled'] = 'CAS認証を使用できません。PHP LDAPモジュールがインストールされていません。';
 $string['noldapserver'] = 'CAS用にLDAPサーバが設定されていません! 同期は無効にされました。';
 $string['pluginname'] = 'CASサーバ (SSO)';

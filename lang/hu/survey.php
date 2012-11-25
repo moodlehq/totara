@@ -212,16 +212,15 @@ $string['scaletimes5'] = 'Szinte soha, Ritkán, Néha, Gyakran, Majdnem mindig';
 $string['seemoredetail'] = 'A részletekért kattintson ide';
 $string['selectedquestions'] = 'Egy skáláról választott kérdések, minden tanuló';
 $string['summary'] = 'Összegzés';
-$string['surveycompleted'] = 'Kitöltötte ezt a kérdőívet. Az alábbi ábra mutatja válaszainak összegzését az osztályátlaggal összevetve.';
 $string['survey:download'] = 'Válaszok letöltése';
-$string['surveygraph'] = 'Felmérés grafikonja';
-$string['surveyname'] = 'Felmérés neve';
 $string['survey:participate'] = 'Válasz a felmérésre';
 $string['survey:readresponses'] = 'Válaszok megtekintése';
+$string['surveycompleted'] = 'Kitöltötte ezt a kérdőívet. Az alábbi ábra mutatja válaszainak összegzését az osztályátlaggal összevetve.';
+$string['surveygraph'] = 'Felmérés grafikonja';
+$string['surveyname'] = 'Felmérés neve';
 $string['surveysaved'] = 'Felmérés elmentve';
 $string['surveytype'] = 'Felmérés típusa';
 $string['surveytype_help'] = 'Háromféle felmérés közül választhat:
-
 * Gondolkodási és tanulási hozzáállás felmérése (ATTLS) - Annak mérésére, hogy valaki mennyire rendelkezik \'kapcsolt ismeretekkel\' (jobban élvezi a tanulást, együttműködőbb, hajlamos mások ötleteit kiaknázni), vagy \'elkülönült ismeretekkel\' (kritikusabb és vitatkozóbb a tanulás iránti viszonyulása)
 * Kritikus események felmérése
 * Konstruktivista online tanulási környezet felmérése (COLLES) - Annak mérésére, hogy az internet interaktivitása mennyire fogható hadra a tanulók dinamikus tanulásba való bevonásában';

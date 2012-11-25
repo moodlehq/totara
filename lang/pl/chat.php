@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Rozmawiaj na czacie';
 $string['chat:deletelog'] = 'Usuń logi czatu';
 $string['chat:exportparticipatedsession'] = 'Eksportuj sesję czatu, w której brałeś udział';
 $string['chat:exportsession'] = 'Eksportuj dowolne sesje czatu';
+$string['chat:readlog'] = 'Czytaj logi czatu';
+$string['chat:talk'] = 'Rozmowa na czacie';
 $string['chatintro'] = 'Wstęp';
 $string['chatname'] = 'Nazwa chatroomu';
-$string['chat:readlog'] = 'Czytaj logi czatu';
 $string['chatreport'] = 'Sesje czatu';
-$string['chat:talk'] = 'Rozmowa na czacie';
 $string['chattime'] = 'Czas następnego czatu';
 $string['configmethod'] = 'Normalna metoda tworzenia czatu wymaga, aby użytkownicy regularnie łączyli się z serwerem, aby zaktualizować dyskusję. Nie wymaga to dodatkowej konfiguracji i działa wszędzie. Niestety duża liczba czatujących osób generuje duże obciążenie serwera. Używanie tzw. demona wymaga dostępu do powłoki Unixa, ale daje szybkie i skalowalne środowisko czatu.';
 $string['confignormalupdatemode'] = 'Uaktualnianie chat-roomów zazwyczaj obsługuje sie wydajnie używając funkcji <em>keep-alive</em> w Http 1.1, ale to mimo wszystko obciąża serwer. Bardziej zaawansowaną metodą jest używanie <em>Stream</em> aby przesyłać uaktualnienie użytkownikom. Używanie <em>Stream</em> jest znacznie lepsze, ale może nie być zainstalowane na Twoim serwerze.';
@@ -79,8 +79,8 @@ $string['modulename'] = 'Czat';
 $string['modulenameplural'] = 'Czaty';
 $string['neverdeletemessages'] = 'Nigdy nie usuwaj wiadomości';
 $string['nextsession'] = 'Następna zaplanowana sesja';
-$string['nochat'] = 'Nie znaleziono czatu.';
 $string['no_complete_sessions_found'] = 'Nie znaleziono kompletnych sesji.';
+$string['nochat'] = 'Nie znaleziono czatu.';
 $string['noguests'] = 'Czat jest zamknięty dla gości';
 $string['nomessages'] = 'Brak wiadomości';
 $string['nopermissiontoseethechatlog'] = 'Nie masz uprawnień do oglądania logów czatu.';
@@ -117,27 +117,20 @@ $string['talk'] = 'Dyskusja';
 $string['updatemethod'] = 'Metoda aktualizacji';
 $string['userlist'] = 'Lista użytkowników';
 $string['usingchat'] = 'Korzystanie z czatu';
-$string['usingchat_help'] = '<p>Moduł Czat posiada pewne cechy, aby nieco umilić rozmowy.</p>
+$string['usingchat_help'] = 'Moduł Czat posiada pewne cechy, aby nieco umilić rozmowy.
 
-<dl>
-<dt><b>Emotikony</b></dt>
-<dd>Dowolne emotikony, które mogą zostać wprowadzone gdziekolwiek indziej w Moodle, mogą zostać
-    wprowadzone także tu i zostaną wyświetlone poprawnie. Na przykład,  :-) = <img src="pix/s/smiley.gif">  </dd>
-
-<dt><b>Linki</b></dt>
-<dd>Adresy internetowe zostaną zamienione na linki automatycznie.</dd>
-
-<dt><b>Stan ducha</b></dt>
-<dd>Możesz rozpocząć linię z "/me" lub ":", aby okazać swój stan ducha. Na przykład, jeżeli Twoje imię to Jan i
-    wpiszesz ":śmieje się!" lub "/me śmieje się!", wszyscy zobaczą "Jan śmieje się!"</dd>
-
-<dt><b>Bzyczenie</b></dt>
-<dd>Możesz wysłać dĽwięk do innych ludzi naciskając na link "bzzz" obok ich imienia. Użytecznym
-    skrótem, aby wysłać bzyczenie do wszystkich ludzi na czacie jednocześnie jest "beep all".</dd>
-
-<dt><b>HTML</b></dt>
-<dd>Jeśli znasz nieco kod HTML, możesz używać go w swym tekście, aby wprowadzać obrazy, odgrywać dĽwięki
-    lub odpowiednio formatować tekst.</dd>
-
-</dl>';
+**Emotikony**
+: Dowolne emotikony, które mogą zostać wprowadzone gdziekolwiek indziej w Moodle, mogą zostać
+wprowadzone także tu i zostaną wyświetlone poprawnie. Na przykład, :-) 
+**Linki**
+: Adresy internetowe zostaną zamienione na linki automatycznie.
+**Stan ducha**
+: Możesz rozpocząć linię z "/me" lub ":", aby okazać swój stan ducha. Na przykład, jeżeli Twoje imię to Jan i
+wpiszesz ":śmieje się!" lub "/me śmieje się!", wszyscy zobaczą "Jan śmieje się!"
+**Bzyczenie**
+: Możesz wysłać dĽwięk do innych ludzi naciskając na link "bzzz" obok ich imienia. Użytecznym
+skrótem, aby wysłać bzyczenie do wszystkich ludzi na czacie jednocześnie jest "beep all".
+**HTML**
+: Jeśli znasz nieco kod HTML, możesz używać go w swym tekście, aby wprowadzać obrazy, odgrywać dĽwięki
+lub odpowiednio formatować tekst.';
 $string['viewreport'] = 'Zobacz minione sesje czat';

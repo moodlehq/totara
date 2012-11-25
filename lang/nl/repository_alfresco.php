@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Bekijk Alfresco upslagruimte';
 $string['alfresco_url'] = 'Alfresco URL';
 $string['alfrescourltext'] = 'De Alfresco API URL zou moeten zijn: http://jouwsite.com/alfresco/api';
-$string['alfresco:view'] = 'Bekijk Alfresco upslagruimte';
 $string['configplugin'] = 'Alfresco instellingen';
 $string['notitle'] = 'geen titel';
 $string['password'] = 'Wachtwoord';

@@ -33,7 +33,7 @@ require_once("{$CFG->dirroot}/mod/facetoface/lib.php");
 class mod_facetoface_session_form extends moodleform {
 
     function definition() {
-        global $CFG,$DB;
+        global $CFG, $DB;
 
         $mform =& $this->_form;
 
@@ -43,6 +43,8 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addElement('hidden', 'c', $this->_customdata['c']);
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
+
+        $editoroptions = $this->_customdata['editoroptions'];
 
         // Show all custom fields
         $customfields = $this->_customdata['customfields'];
@@ -119,9 +121,9 @@ class mod_facetoface_session_form extends moodleform {
             }
         }
 
-        $mform->addElement('editor', 'details', get_string('details', 'facetoface'), '');
-        $mform->setType('details', PARAM_RAW);
-        $mform->addHelpButton('details', 'details', 'facetoface');
+        $mform->addElement('editor', 'details_editor', get_string('details', 'facetoface'), null, $editoroptions);
+        $mform->setType('details_editor', PARAM_RAW);
+        $mform->addHelpButton('details_editor', 'details', 'facetoface');
 
         // Choose users for trainer roles
         $rolenames = facetoface_get_trainer_roles();

@@ -35,12 +35,11 @@ $string['legacyfiles'] = 'Vanhojen kurssitiedostojen migraatio';
 $string['legacyfilesactive'] = 'Aktiivinen';
 $string['legacyfilesdone'] = 'Valmis';
 $string['modulename'] = 'Sivu';
-$string['modulename_help'] = '<P><b>Sivu</b></p>
-
-<BLOCKQUOTE>
-Sivua käyttäen voit luoda kurssialueelle alasivuja, joihin kannattaakin laittaa kaikki vähänkin pidemmät ohjeet ja käytännön asiat linkin taakse varsinaista kurssialuetta pidentämästä.
-Moodlen Richtext- ja tekstieditorit mahdollistaa käyttöösi kaikki HTML:n mahdollisuudet, mukaan lukien Javascriptin. Sivut tallennetaan Moodlen tietokantaan eikä tiedostoiksi.
-</BLOCKQUOTE>';
+$string['modulename_help'] = '**Sivu**
+>
+> Sivua käyttäen voit luoda kurssialueelle alasivuja, joihin kannattaakin laittaa kaikki vähänkin pidemmät ohjeet ja käytännön asiat linkin taakse varsinaista kurssialuetta pidentämästä.
+> Moodlen Richtext- ja tekstieditorit mahdollistaa käyttöösi kaikki HTML:n mahdollisuudet, mukaan lukien Javascriptin. Sivut tallennetaan Moodlen tietokantaan eikä tiedostoiksi.
+>';
 $string['modulenameplural'] = 'Sivut';
 $string['neverseen'] = 'Lukematta';
 $string['optionsheader'] = 'Asetukset';

@@ -43,16 +43,15 @@ $string['uploadpicture_cannotsave'] = 'No se puede guardar la imagen del usuario
 $string['uploadpicture_cannotunzip'] = 'No se puede descomprimir el archivo de imágenes.';
 $string['uploadpicture_invalidfilename'] = 'El nombre del archivo de imagen {$a} tiene caracteres no válidos. Se ha omitido.';
 $string['uploadpicture_overwrite'] = '¿Sobreescribir las imágenes del usuario?';
-$string['uploadpictures'] = 'Subir imágenes de los usuarios';
-$string['uploadpictures_help'] = 'Las imágenes de los usuarios se pueden cargar masivamente mediante un archivo zip. Estos archivos debe ser nombrados en atención al "atributo del usuario" elegido (username, idnumber, id) por ejemplo user1234.jpg para un usuario con nombre de usuario (username) user1234.
-Tenga en cuenta que el tamaño del archivo zip no puede superar el límite establecido en la configuración "políticas de sitio" de su sitio Moodle. En cualquier caso, siempre podrá preparar varios paquetes de imágenes comprimidas y subirlas por partes.';
 $string['uploadpicture_userfield'] = 'Atributo del usuario a utilizar para emparejar imágenes:';
 $string['uploadpicture_usernotfound'] = 'El usuario con \'{$a->userfield}\' valor de \'{$a->uservalue}\' no existe. Ha sido omitido.';
 $string['uploadpicture_userskipped'] = 'Se ha omitido el usuario {$a} (ya tiene imagen).';
 $string['uploadpicture_userupdated'] = 'Imagen actualizada para el usuario {$a}.';
+$string['uploadpictures'] = 'Subir imágenes de los usuarios';
+$string['uploadpictures_help'] = 'Las imágenes de los usuarios se pueden cargar masivamente mediante un archivo zip. Estos archivos debe ser nombrados en atención al "atributo del usuario" elegido (username, idnumber, id) por ejemplo user1234.jpg para un usuario con nombre de usuario (username) user1234.
+Tenga en cuenta que el tamaño del archivo zip no puede superar el límite establecido en la configuración "políticas de sitio" de su sitio Moodle. En cualquier caso, siempre podrá preparar varios paquetes de imágenes comprimidas y subirlas por partes.';
 $string['uploadusers'] = 'Subir usuarios';
 $string['uploadusers_help'] = 'Los usuarios pueden subirse (y, opcionalmente, matricularse en cursos) por medio de un archivo de texto. El formato debe ser el siguiente:
-
 * Cada línea contiene solo un registro.
 * Cada registro es una serie de datos separados por comas (o por cualquier otro delimitador)
 * El primer registro contiene una lista de nombres de campo que definen el formato del resto del archivo

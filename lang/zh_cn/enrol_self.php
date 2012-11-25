@@ -41,7 +41,6 @@ $string['enrolstartdate_help'] = '如果启用，用户只能在此日期后自�
 $string['groupkey'] = '使用分组选课密码';
 $string['groupkey_desc'] = '缺省使用分组选课密码。';
 $string['groupkey_help'] = '除了只限知道密码的用户访问课程以外，还可以让用户在选课时输入分组密码，这样他就能被自动加入到小组中。
-
 要使用分组选课密码，必须在组设置中设定组密码的同时，在课程设置中设定选课密码。';
 $string['longtimenosee'] = '多久不活动就撤销选课';
 $string['longtimenosee_help'] = '如果用户很长时间没有访问课程，那么可以自动撤销他们的选课。此参数决定这个时限。';
@@ -51,9 +50,7 @@ $string['maxenrolledreached'] = '已经达到自助选课用户数上限。';
 $string['nopassword'] = '无需选课密钥。';
 $string['password'] = '选课密码';
 $string['password_help'] = '只有知道选课密码的人才能访问课程。
-
 如果此处留空，那么任何人都可以随意选课。
-
 指定选课密码后，任何想选课的用户都必须输入这个密码。不过，他们只需要输入一次。';
 $string['passwordinvalid'] = '选课密码错误，请重试';
 $string['passwordinvalidhint'] = '这个选课密码不正确，请再试一次<br />

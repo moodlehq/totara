@@ -35,27 +35,23 @@ $string['chaptertitle'] = 'Fejezet címe';
 $string['confchapterdelete'] = 'Biztosan törli ezt a fejezetet?';
 $string['confchapterdeleteall'] = 'Biztosan törli a fejezetet annak összes alfejezetével együtt?';
 $string['content'] = 'Tartalom';
-$string['customtitles'] = ' Egyedi címek';
+$string['customtitles'] = 'Egyedi címek';
 $string['customtitles_help'] = 'A fejezetcímek csak a tartalomjegyzékben jelennek meg automatikusan.';
 $string['editingchapter'] = 'Fejezet szerkesztése';
 $string['errorchapter'] = 'Hiba a fejezet olvasása közben.';
 $string['faq'] = 'Könyvvel kapcsolatos GYIK';
 $string['faq_help'] = '*Miért csak két szint?*
-
-Két szint könyvek esetén általában elegendő, három szint már rosszan strukturált dokumentumot eredményez. A Könyv modullal rövid, többoldalas tananyagok készíthetők. Hosszabb dokumentumokhoz célszerűbb PDF-formát használni. PDF előállítására a legegyszerűbb virtuális nyomtatót használni (lásd: <a href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm" target="_blank">PDFCreator</a>, <a href="http://fineprint.com/products/pdffactory/index.html" target="_blank">PDFFactory</a>, <a href="http://www.adobe.com/products/acrobatstd/main.html" target="_blank">Adobe Acrobat</a> stb.).
-
+Két szint könyvek esetén általában elegendő, három szint már rosszan strukturált dokumentumot eredményez. A Könyv modullal rövid, többoldalas tananyagok készíthetők. Hosszabb dokumentumokhoz célszerűbb PDF-formát használni. PDF előállítására a legegyszerűbb virtuális nyomtatót használni (lásd:
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
+ stb.).
 *A tanulók szerkeszthetnek könyvet?*
-
 Könyvet csak tanárok hozhatnak létre és szerkeszthetnek. Tanulók számára később sem tervezzük ennek biztosítását, de hasonló megoldás kivitelezhető tanulók számára (portfolió?). Ennek fő oka a Könyv modul minél egyszerűbb kialakítása.
-
 *Hogyan kereshetek a könyvekben?*
-
 Jelenleg egyetlen módja létezik: a böngésző keresési funkciója a nyomtatandó oldalon. Globális keresésre csak a Moodle fórumaiban van lehetőség. Az összes tananyagban való globális keresés hasznos volna, vannak ennek kidolgozására jelentkezők?
-
 *A címem nem fér ki egy soron.*
-
 Fogalmazza át a címet vagy kérje meg a rendszergazdát, hogy módosítsa a tartalomjegyzék szélességét. Ez a modul konfigurációs oldalán adható meg globálisan,. minden könyvhöz.';
-$string['missingfilemanagement'] = 'A Könyv modul felhasználóinak: bizonyára észrevették, hogy a Könyv fejezeteiben használt állományok nem törölhetők/kezelhetők. Ennek megváltoztatásához szavazzanak itt: {$a}. Köszönettel: Petr Škoda';
 $string['modulename'] = 'Könyv';
 $string['modulename_help'] = 'A könyv egyszerű, többoldalas tananyag.';
 $string['modulenameplural'] = 'Könyvek';
@@ -70,7 +66,7 @@ $string['numbering3'] = 'Behúzott';
 $string['numbering_help'] = '* Nincs - a fejezetek és alfejezetek címe nem tartalmaz semmilyen formázást, pl. sajátos számozási megoldás esetén: "A Első fejezet", "A.1 Első alfejezet",...
 * Számok - számozza a fejezeteket és alfejezeteket (1, 1.1, 1.2, 2, ...)
 * Felsorolásjelek - az alfejezetek behúzással és felsorolásjelekkel különülnek el
-* Behúzott -  az alfejezetek behúzással jelennek meg';
+* Behúzott - az alfejezetek behúzással jelennek meg';
 $string['numberingoptions'] = 'Számozási lehetőségek';
 $string['numberingoptions_help'] = 'Válassza ki az új könyvek esetén alkalmazandó számozási lehetőséget';
 $string['page-mod-book-x'] = 'Bármely könyvmodulhoz tartozó oldal';

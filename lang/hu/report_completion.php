@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['completiondate'] = 'Teljesítés időpontja';
 $string['completion:view'] = 'A kurzusteljesítésről szóló jelentés megtekintése';
+$string['completiondate'] = 'Teljesítés időpontja';
 $string['page-report-completion-index'] = 'Jelentés a kurzusteljesítésről';
 $string['page-report-completion-user'] = 'Jelentés a felhasználói kurzusteljesítésről';
 $string['page-report-completion-x'] = 'Jelentés bármely teljesítésről';

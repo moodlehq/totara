@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['adminlogin'] = 'Als Admin bei Turnitin anmelden';
-$string['compareinstitution'] = 'Eingereichte Dateien mit anderen Dokumenten dieser Institution vergleichen
-';
+$string['compareinstitution'] = 'Eingereichte Dateien mit anderen Dokumenten dieser Institution vergleichen';
 $string['compareinstitution_help'] = 'Diese Option ist nur nutzbar, wenn Sie ein eigenes Nutzerabonnement erworben haben. Stellen sie die Option auf "Nein", wenn Sie nicht sicher sind.';
 $string['compareinternet'] = 'Eingereichte Dateien mit Internetdokumenten vergleichen';
 $string['compareinternet_help'] = 'Diese Option ermöglicht es, eingereichte Dateien mit Internetdokumenten zu vergleichen, die Turnitin aktuell indiziert hat.';
@@ -54,8 +53,8 @@ $string['name'] = 'Name';
 $string['percentage'] = 'Prozent';
 $string['pluginname'] = 'Turnitin Plagiatsuche';
 $string['reportgen'] = 'Zeitpunkt für die Erstellung der Ähnlichkeitsberichte';
-$string['reportgenduedate'] = 'Zum Abgabezeitpunkt';
 $string['reportgen_help'] = 'Diese Option ermöglicht es, den Zeitpunkt für die Erstellung des Ähnlichkeitsberichts auszuwählen';
+$string['reportgenduedate'] = 'Zum Abgabezeitpunkt';
 $string['reportgenimmediate'] = 'Sofort (erster Bericht ist endgültig)';
 $string['reportgenimmediateoverwrite'] = 'Sofort (Berichte sind nicht endgültig)';
 $string['resubmit'] = 'Wiedervorlage';
@@ -69,8 +68,8 @@ $string['showwhenclosed'] = 'Wenn die Aktivität beendet ist';
 $string['similarity'] = 'Ähnlichkeit';
 $string['status'] = 'Status';
 $string['studentdisclosure'] = 'Teilnehmerhinweis';
-$string['studentdisclosuredefault'] = 'Alle hochgeladenen Dateien werden zur Plagiatsuche an Turnitin.com übertragen.';
 $string['studentdisclosure_help'] = 'Dieser Text wird allen Teilnehmer/innen bei der Dateiabgabe angezeigt.';
+$string['studentdisclosuredefault'] = 'Alle hochgeladenen Dateien werden zur Plagiatsuche an Turnitin.com übertragen.';
 $string['submitondraft'] = 'Datei übertragen, sobald sie hochgeladen wurde';
 $string['submitonfinal'] = 'Datei übertragen, sobald sie zur Prüfung hochgeladen wurde';
 $string['teacherlogin'] = 'Als Trainer/in bei Turnitin anmelden';
@@ -94,8 +93,7 @@ $string['tiierror1012'] = 'Turnitin konnte die Datei nicht verarbeiten, weil  ih
 $string['tiierror1013'] = 'Turnitin konnte die Datei nicht verarbeiten, weil  sie mehr als 20 Worte enthalten muss.';
 $string['tiierror1020'] = 'Turnitin konnte die Datei nicht verarbeiten, weil  sie Buchstaben aus einem nicht unterstützen Zeichensatz enthält.';
 $string['tiierror1023'] = 'Turnitin konnte diese PDF-Datei nicht verarbeiten. Stellen Sie sicher, dass die Datei nicht Kennwort-geschützt ist. Die Datei muss auswählbaren Text enthalten, gescannte Bilder können nicht ausgewertet werden.';
-$string['tiierror1024'] = 'Turnitin konnte die Datei nicht verarbeiten. Die Datei entspricht nicht den Kriterien für ein Turnitin-gerechtes Dokument.
-';
+$string['tiierror1024'] = 'Turnitin konnte die Datei nicht verarbeiten. Die Datei entspricht nicht den Kriterien für ein Turnitin-gerechtes Dokument.';
 $string['tiierrorpaperfail'] = 'Turnitin konnte die Datei nicht verarbeiten';
 $string['tiierrorpending'] = 'Datei zur Vorlage bei Turnitin';
 $string['tiiexplain'] = 'Turnitin ist ein kommerzielles Produkt, und Sie müssen zur Nutzung ein kostenpflichtiges Abonnement bestellen. Weitere Informationen finden Sie unter <a href="http://docs.moodle.org/en/Turnitin_administration">http://docs.moodle.org/en/Turnitin_administration</a>';
@@ -105,15 +103,15 @@ $string['tiisecretkey_help'] = 'Melden Sie sich bei Turnitin.com als Administrat
 $string['tiisenduseremail'] = 'Nutzer-E-Mail senden';
 $string['tiisenduseremail_help'] = 'E-Mail an jeden Teilnehmer senden, der im Turnitin System angelegt wird mit einem Link zum Login und einem temporären Kennwort.';
 $string['turnitin'] = 'Turnitin';
+$string['turnitin:enable'] = 'Trainer/innen erlauben, Turnitin innerhalb eines Moduls zu aktivieren/deaktivieren';
+$string['turnitin:viewfullreport'] = 'Trainer/innen erlauben, den vollständigen Ähnlichkeitsbericht von Turnitin zu sehen';
+$string['turnitin:viewsimilarityscore'] = 'Trainer/innen erlauben, den ermittelten Ähnlichkeitswert von Turnitin zu sehen';
 $string['turnitin_attemptcodes'] = 'Fehlercodes für die automatische Wiedervorlage';
 $string['turnitin_attemptcodes_help'] = 'Fehlercodes, die Turnitin in der Regel akzeptiert für einen 2. Versuch (Änderungen dieses Feldes können eine erhebliche Serverlast verursachen)';
 $string['turnitin_attempts'] = 'Anzahl der Wiederholungen';
 $string['turnitin_attempts_help'] = 'Anzahl der Wiederholungen der Neueinreichung bei Turnitin. Der Wert \'1\' bedeutet es wird ein weiteres/zweites Mal versucht, die Daten einzureichen.';
-$string['turnitindefaults'] = 'Turnitin-Voreinstellungen';
-$string['turnitin:enable'] = 'Trainer/innen erlauben, Turnitin innerhalb eines Moduls zu aktivieren/deaktivieren';
-$string['turnitinerrors'] = 'Turnitin-Fehler';
 $string['turnitin_institutionnode'] = 'Institutionskonto aktivieren';
-$string['turnitin:viewfullreport'] = 'Trainer/innen erlauben, den vollständigen Ähnlichkeitsbericht von Turnitin zu sehen';
-$string['turnitin:viewsimilarityscore'] = 'Trainer/innen erlauben, den ermittelten Ähnlichkeitswert von Turnitin zu sehen';
+$string['turnitindefaults'] = 'Turnitin-Voreinstellungen';
+$string['turnitinerrors'] = 'Turnitin-Fehler';
 $string['useturnitin'] = 'Turnitin aktivieren';
 $string['wordcount'] = 'Wortanzahl';

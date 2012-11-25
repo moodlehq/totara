@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['apikey'] = 'API-Schlüssel';
 $string['err_noapikey'] = 'Kein API-Schlüssel';
-$string['err_noapikey_help'] = 'Für dieses Plugin wurde kein API-Schlüssel konfiguriert, den Sie über <a href="http://www.box.net/developer/services">box.net</a> erhalten können.';
+$string['err_noapikey_help'] = 'Für dieses Plugin wurde kein API-Schlüssel konfiguriert, den Sie über [box.net] (http://www.box.net/developer/services) erhalten können.';
 $string['existingfolder'] = 'Vorhandenes Dateiverzeichnis';
 $string['folderclash'] = 'Das anzulegende Verzeichnis existiert bereits!';
 $string['foldercreatefailed'] = 'Fehler beim Anlegen Ihres Zielverzeichnisses bei box.net';
@@ -37,8 +37,7 @@ $string['noauthtoken'] = 'Für diese Session wurde kein Authentifizierungstoken 
 $string['notarget'] = 'Sie müssen zum Hochladen ein vorhandenes Verzeichnis wählen oder ein neues Verzeichnis anlegen';
 $string['noticket'] = 'Kein Ticket von box.net empfangen, um die Authentifizierung zu beginnen';
 $string['password'] = 'Ihr Kennwort für box.net (wird nicht gespeichert)';
-$string['pluginname'] = 'Box.net
-';
+$string['pluginname'] = 'Box.net';
 $string['sendfailed'] = 'Fehler beim Senden von Daten an box.net: {$a}';
 $string['setupinfo'] = 'Einstellungsanleitung';
 $string['setupinfodetails'] = 'Sie erhalten Ihren API-Key für Box.net über die Seite <a href="{$a->servicesurl} "> OpenBox Development </ a>. Bei den \'Developer Tools\' gehen Sie zu \'Create new application\' und legen eine neue Anwendung für Ihre Moodle-Instanz an. Der API-Key wird im Abschnitt \'Backend Parameter\' angezeigt. Kopieren Sie in das Feld \'Redirect URL\' den folgenden Text: <br /> <code> {$a->callbackurl} </ code> <br />

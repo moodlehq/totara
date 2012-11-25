@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['invalidxml'] = 'Érvénytelen xml-állomány - szövegnek kell szerepelnie (CDATA használata?)';
 $string['pluginname'] = 'Moodle XM forma';
-$string['pluginname_help'] = 'Ez a Moodle-specifikus tesztkérdések exportálására és importálására használatos. ';
+$string['pluginname_help'] = 'Ez a Moodle-specifikus tesztkérdések exportálására és importálására használatos.';
 $string['truefalseimporterror'] = '<b>Vigyázat!</b>: Nem sikerült a(z) \'{$a->questiontext}\' igaz/hamis kérdést megfelelően importálni. Nem egyértelmű, a helyes válasz az igaz vagy a hamis. A kérdés importálása során a(z) \'{$a->answer}\' választ vettük alapul. Ha ez helytelen, szerkessze át a kérdést.';
 $string['unsupportedexport'] = 'Az xml-ben való exportálás nem támogatja a(z) {$a} kérdéstípust.';
 $string['xmlimportnoname'] = 'Nincs kérdésnév az XML-állományban.';

@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['allrightsreserved'] = 'Alla rättigheter är reserverade';
-$string['cc'] = 'Creative Commons
-';
+$string['cc'] = 'Creative Commons';
 $string['cc-nc'] = 'Creative Commons - No Commercial';
 $string['cc-nc-nd'] = 'Creative Commons - No Commercial NoDerivs';
 $string['cc-nc-sa'] = 'Creative Commons - No Commercial ShareAlike';

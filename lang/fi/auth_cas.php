@@ -25,6 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['CASform'] = 'Autentikointivalinta';
 $string['accesCAS'] = 'CAS-käyttäjät';
 $string['accesNOCAS'] = 'muut käyttäjät';
 $string['auth_cas_auth_user_create'] = 'Luo käyttäjät ulkoisesti';
@@ -42,7 +43,6 @@ $string['auth_cas_certificate_path_key'] = 'Sertifikaatin polku';
 $string['auth_cas_changepasswordurl'] = 'Web-osoite salasanan vaihtamiseen';
 $string['auth_cas_create_user'] = 'Laita tämä asetus päälle, jos haluat lisätä CAsvarmistetut käyttäjät Moodlen tietokantaan. Jos näin ei tehdä, vain jo ennestään Moodlen tietokannassa olevat käyttäjät voivat kirjautua sisään.';
 $string['auth_cas_create_user_key'] = 'Luo käyttäjä';
-$string['auth_casdescription'] = 'Tässä menetelmässä käytetään CAS-palvelinta (Central Authentication Service) käyttäjien varmennukseen käyttämällä yhden kirjautumisen ympäristöä, Single Sign On environment (SSO). Voit myös käyttää yksinkertaista LDAP-varmistusta. Jos annettu käyttäjänimi ja salasana ovat kelvollisia CAS:n mukaan Moodle luo uuden käyttäjätiedon tietokantaan ottaen käyttäjätiedot LDAP:stä, jos se  on tarpeen. Seuraavilla kirjautumiskerroilla vain käyttäjänimi ja salasana tarkistetaan.';
 $string['auth_cas_enabled'] = 'Laita tämä asetus päälle, jos haluat käyttää CAS-varmennusta';
 $string['auth_cas_hostname'] = 'CAS-palvelimen palvelinnimi
 <br />Esim. host.domain.fr';
@@ -55,7 +55,6 @@ $string['auth_cas_logoutcas'] = 'Valitse vaihtoehto \'Kyllä\' jos haluat kirjau
 $string['auth_cas_logoutcas_key'] = 'Kirjaudu ulos CAS:ista';
 $string['auth_cas_multiauth'] = 'Valitse vaihtoehto \'kyllä\' jos haluat käyttää useampaa kirjautumislähdettä (CAS + muu todentaminen)';
 $string['auth_cas_multiauth_key'] = 'Multi-autentikointi';
-$string['auth_casnotinstalled'] = 'Ei voida käyttää CAS-autentikointia. PHP:n LDAP-moduulia ei ole asennettu.';
 $string['auth_cas_port'] = 'CAS-palvelimen käyttämä portti';
 $string['auth_cas_port_key'] = 'Portti';
 $string['auth_cas_proxycas'] = 'Valitse vaihtoehto \'kyllä\' jos käytät CAS:ia välityspalvelin-tilassa';
@@ -64,6 +63,7 @@ $string['auth_cas_server_settings'] = 'CAS-palvelimen asetukset';
 $string['auth_cas_text'] = 'Suojattu yhteys';
 $string['auth_cas_use_cas'] = 'Käytä CAS:ia';
 $string['auth_cas_version'] = 'Käytettävä CAS-protokollan versio';
-$string['CASform'] = 'Autentikointivalinta';
+$string['auth_casdescription'] = 'Tässä menetelmässä käytetään CAS-palvelinta (Central Authentication Service) käyttäjien varmennukseen käyttämällä yhden kirjautumisen ympäristöä, Single Sign On environment (SSO). Voit myös käyttää yksinkertaista LDAP-varmistusta. Jos annettu käyttäjänimi ja salasana ovat kelvollisia CAS:n mukaan Moodle luo uuden käyttäjätiedon tietokantaan ottaen käyttäjätiedot LDAP:stä, jos se  on tarpeen. Seuraavilla kirjautumiskerroilla vain käyttäjänimi ja salasana tarkistetaan.';
+$string['auth_casnotinstalled'] = 'Ei voida käyttää CAS-autentikointia. PHP:n LDAP-moduulia ei ole asennettu.';
 $string['noldapserver'] = 'CAS:ille ei ole konfiguroitu LDAP palvelinta! Synkronointi estetty.';
 $string['pluginname'] = 'Käytä CAS-palvelinta (SSO)';

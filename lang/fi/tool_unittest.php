@@ -32,7 +32,9 @@ $string['codecoveragecompletereport'] = '(näytä täysi raportti koodin kattavu
 $string['codecoveragedisabled'] = 'Ei voida ottaa käyttöön koodin kattavuutta tällä palvelimella (puuttuva xdebug-laajennus).';
 $string['codecoveragelatestdetails'] = '(pvm: {$a->date}, tiedostoja: {$a->files}, kattavuusprosentti: {$a->percentage})';
 $string['codecoveragelatestreport'] = 'näytä viimeisin täysi raportti koodin kattavuudesta';
-$string['confignonwritable'] = 'Tiedosto config.php ei ole palvelimen kirjoitettavissa. Muuta sen oikeuksia tai muokkaa sitä soveltuvalla käyttäjätilillä ja lisää seuraava rivi ennen php:n sulkutageja: <br /> $CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
+$string['confignonwritable'] = 'Tiedosto config.php ei ole palvelimen kirjoitettavissa. Muuta sen oikeuksia tai muokkaa sitä soveltuvalla käyttäjätilillä ja lisää seuraava rivi ennen php:n sulkutageja:
+
+$CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Katetut rivit';
 $string['coveredpercentage'] = 'Koodin kokonaiskattavuus';
 $string['dbtest'] = 'Funktionaaliset tietokantatestit';

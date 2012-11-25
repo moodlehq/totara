@@ -6,7 +6,7 @@
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -176,13 +176,10 @@ if (!empty($dataid)) {
             $callbackargs[substr($key, 3)] = $value;
         }
     }
-    // righto, now we have the callback args set up
-    // load up the caller file and class and tell it to set up all the data
-    // it needs
-    require_once($CFG->dirroot . $callbackfile);
-    if (!class_exists($callbackclass) || !is_subclass_of($callbackclass, 'portfolio_caller_base')) {
-        throw new portfolio_caller_exception('callbackclassinvalid', 'portfolio');
-    }
+
+    // Ensure that we found a file we can use, if not throw an exception.
+    portfolio_include_callback_file($callbackfile, $callbackclass);
+
     $caller = new $callbackclass($callbackargs);
     $caller->set('user', $USER);
     if ($formats = explode(',', $callerformats)) {

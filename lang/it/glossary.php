@@ -31,7 +31,6 @@ $string['addingcomment'] = 'Aggiungi un commento';
 $string['alias'] = 'Alias';
 $string['aliases'] = 'Alias (parole alternative)';
 $string['aliases_help'] = 'Ciascun termine del glossario può essere associato ad un elenco di alias (parole alternative per lo stesso concetto). Gli alias saranno anche collegati automaticamente al termine associato.
-
 Inserisci gli alias uno per riga (senza separali da virgole).';
 $string['allcategories'] = 'Tutte le categorie';
 $string['allentries'] = 'TUTTI';
@@ -108,15 +107,7 @@ $string['descending'] = 'decrescente';
 $string['destination'] = 'Destinazione dei termini importati';
 $string['destination_help'] = 'E\' possibile importare voci nel glossario in uso o in un glossario nuovo. Nel secondo caso verrà creato un nuovo glossario con le impostazioni contenute nel file XML.';
 $string['displayformat'] = 'Formato di visualizzazione';
-$string['displayformatcontinuous'] = 'Continuo senza autore';
-$string['displayformatdictionary'] = 'Semplice, stile dizionario';
-$string['displayformatencyclopedia'] = 'Enciclopedia';
-$string['displayformatentrylist'] = 'Elenco di termini';
-$string['displayformatfaq'] = 'FAQ';
-$string['displayformatfullwithauthor'] = 'Completo con autore';
-$string['displayformatfullwithoutauthor'] = 'Completo senza autore';
 $string['displayformat_help'] = 'Sono disponibili 7 formati di visualizzazione:
-
 * Semplice, stile dizionario - Non sono visualizzati gli autori e gli eventuali allegati sono disponibili tramite link.
 * Continuo senza autore - I termini vengono visualizzati di seguito senza separazioni eccetto le icone di modifica.
 * Completo con autore - Visualizzazione tipo forum completa dei dati dell\'autore. Gli allegati sono disponibili tramite link.
@@ -124,6 +115,13 @@ $string['displayformat_help'] = 'Sono disponibili 7 formati di visualizzazione:
 * Enciclopedia - Analogo a \'Completo con Autore\' ma le eventuali immagini allegate vengono visualizzate direttamente.
 * Elenco di termini - Elenco di termini visualizzati come link.
 * FAQ - Aggiunge automaticamente le parole DOMANDA e RISPOSTA, rispettivamente nei campi \'concetto\' e \'definizione\'';
+$string['displayformatcontinuous'] = 'Continuo senza autore';
+$string['displayformatdictionary'] = 'Semplice, stile dizionario';
+$string['displayformatencyclopedia'] = 'Enciclopedia';
+$string['displayformatentrylist'] = 'Elenco di termini';
+$string['displayformatfaq'] = 'FAQ';
+$string['displayformatfullwithauthor'] = 'Completo con autore';
+$string['displayformatfullwithoutauthor'] = 'Completo senza autore';
 $string['displayformats'] = 'Formati di visualizzazione';
 $string['displayformatssetup'] = 'Impostazione dei formati di visualizzazione';
 $string['duplicatecategory'] = 'Categoria duplicata';
@@ -176,18 +174,18 @@ $string['glossary:export'] = 'Esportare termini';
 $string['glossary:exportentry'] = 'Esportare singoli termini';
 $string['glossary:exportownentry'] = 'Esportare singoli termini propri';
 $string['glossary:import'] = 'Importare termini';
-$string['glossaryleveldefaultsettings'] = 'Impostazioni standard per i glossari';
 $string['glossary:managecategories'] = 'Gestire categorie';
 $string['glossary:managecomments'] = 'Gestire commenti';
 $string['glossary:manageentries'] = 'Gestire termini';
 $string['glossary:rate'] = 'Valutare termini';
-$string['glossarytype'] = 'Tipo di glossario';
-$string['glossarytype_help'] = 'Un glossario primario è un glossario dove è possibile importare i termini da glossari secondari. Un corso può avere un solo glossario primario. Se l\'importazioen tr aglossari non è necessaria, tutti i glossari del corso possono essere secondari.';
 $string['glossary:view'] = 'Visualizzare glossario';
 $string['glossary:viewallratings'] = 'Visualizzare voti grezzi dati da ciascuno';
 $string['glossary:viewanyrating'] = 'Visualizzare voti totali ricevuti da ciascuno';
 $string['glossary:viewrating'] = 'Visualizzare le proprie valutazioni';
 $string['glossary:write'] = 'Creare nuovi termini';
+$string['glossaryleveldefaultsettings'] = 'Impostazioni standard per i glossari';
+$string['glossarytype'] = 'Tipo di glossario';
+$string['glossarytype_help'] = 'Un glossario primario è un glossario dove è possibile importare i termini da glossari secondari. Un corso può avere un solo glossario primario. Se l\'importazioen tr aglossari non è necessaria, tutti i glossari del corso possono essere secondari.';
 $string['guestnoedit'] = 'Agli ospiti non è consentito modificare i glossari';
 $string['importcategories'] = 'Importa categorie';
 $string['importedcategories'] = 'Categorie importate';
@@ -204,7 +202,7 @@ $string['linking'] = 'Link automatico';
 $string['mainglossary'] = 'Glossario primario';
 $string['maxtimehaspassed'] = 'Spiacente, il tempo massimo per modificare questo commento ({$a}) è trascorso!';
 $string['modulename'] = 'Glossario';
-$string['modulename_help'] = 'Il modulo Glossario permette di creare e gestire elenchi di termini, come ad esempio un dizionario. I termini presenti nei Glossari possono essere collegati automaticamente se il termine compare nei testi del corso. ';
+$string['modulename_help'] = 'Il modulo Glossario permette di creare e gestire elenchi di termini, come ad esempio un dizionario. I termini presenti nei Glossari possono essere collegati automaticamente se il termine compare nei testi del corso.';
 $string['modulenameplural'] = 'Glossari';
 $string['newentries'] = 'Nuovi termini del glossario';
 $string['newglossary'] = 'Nuovo glossario';
@@ -236,10 +234,10 @@ $string['rejectionrpt'] = 'Report termini non approvati';
 $string['resetglossaries'] = 'Elimina i termini da';
 $string['resetglossariesall'] = 'Elimina i termini da tutti i glossari';
 $string['rssarticles'] = 'Numero di articoli RSS';
-$string['rssarticles_help'] = 'L\'imposatzione stabilisce  il numero di termini da includere nel feed RSS. In genere un valore tra 5 e 20 è adeguato.';
+$string['rssarticles_help'] = 'L\'imposatzione stabilisce il numero di termini da includere nel feed RSS. In genere un valore tra 5 e 20 è adeguato.';
 $string['rsssubscriberss'] = 'Mostra gli RSS per \'{$a}\' concetti';
 $string['rsstype'] = 'Feed RSS per questa attività';
-$string['rsstype_help'] = 'L\'opzione abilita i feed RSS per l\'attività.  E\' possibile scegliere se far comparire o meno l\'autore nel feed.';
+$string['rsstype_help'] = 'L\'opzione abilita i feed RSS per l\'attività. E\' possibile scegliere se far comparire o meno l\'autore nel feed.';
 $string['searchindefinition'] = 'Cerca anche nelle definizioni';
 $string['secondaryglossary'] = 'Glossario secondario';
 $string['showall'] = 'Visualizza link \'TUTTI\'';
@@ -247,7 +245,7 @@ $string['showall_help'] = 'L\'impostazione permette di visualizzare tutti i term
 $string['showalphabet'] = 'Visualizza alfabeto';
 $string['showalphabet_help'] = 'L\'impostazione permette ai partecipanti di filtrare i termini usando le lettere dell\'alfabeto';
 $string['showspecial'] = 'Visualizza link \'Caratteri speciali\'';
-$string['showspecial_help'] = 'L\'impostazione permette ai partecipanti di filtrare i termini  usando caratteri speciali (ad esempio @ e #).';
+$string['showspecial_help'] = 'L\'impostazione permette ai partecipanti di filtrare i termini usando caratteri speciali (ad esempio @ e #).';
 $string['sortby'] = 'Ordina per';
 $string['sortbycreation'] = 'Data di creazione';
 $string['sortbylastupdate'] = 'Ultimo aggiornamento';

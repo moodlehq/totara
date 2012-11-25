@@ -33,7 +33,7 @@ $string['codecoveragedisabled'] = 'Auf diesem Server kann Code-Coverage nicht ak
 $string['codecoveragelatestdetails'] = '(am {$a->date} mit {$a->files} Dateien - {$a->percentage} covered)';
 $string['codecoveragelatestreport'] = 'Letzten vollständigen Code-Coverage-Bericht ansehen';
 $string['confignonwritable'] = 'Die Datei config.php kann nicht geändert werden. Ändern Sie entweder die Schreibberechtigung für die Datei oder ändern Sie den Dateiinhalt durch manuelles Einfügen des folgenden Inhalts vor dem abschließenden  php Tag.
-<br />
+
 $CFG->unittestprefix = \'tst_\' // Change tst_ to a prefix of your choice, different from $CFG->prefix';
 $string['coveredlines'] = 'Gecoverte Zeilen';
 $string['coveredpercentage'] = 'Code-Coverage insgesamt';

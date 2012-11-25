@@ -35,13 +35,12 @@ $string['enrolenddaterror'] = 'La data di fine delle iscrizioni non può essere 
 $string['enrolme'] = 'Iscrivimi';
 $string['enrolperiod'] = 'Durata dell\'iscrizione';
 $string['enrolperiod_desc'] = 'La durata di default dell\'iscrizione, espressa in secondi. Impostarla a zero per una durata di default dell\'iscrizione senza limite.';
-$string['enrolperiod_help'] = 'La durata di default  dell\'iscrizione, a partire dalla data di iscrizione dell\'utente. Disabilitare l\'impostazione per una durata di default dell\'iscrizione senza limite.';
+$string['enrolperiod_help'] = 'La durata di default dell\'iscrizione, a partire dalla data di iscrizione dell\'utente. Disabilitare l\'impostazione per una durata di default dell\'iscrizione senza limite.';
 $string['enrolstartdate'] = 'Data di inizio';
 $string['enrolstartdate_help'] = 'Permette l\'iscrizione degli utenti solo a partire dalla data impostata.';
 $string['groupkey'] = 'Utilizza chiavi di iscrizione ai gruppi';
 $string['groupkey_desc'] = 'Utilizza per default le chiavi di iscrizione ai gruppi';
 $string['groupkey_help'] = 'Oltre alla chiave di accesso al corso, è possibile usare chiavi di iscrizione ai gruppi per regolare sia l\'accesso al corso sia l\'inserimento dell\'utente in un gruppo.
-
 Per usare una chiave di iscrizione al gruppo è necessario specificare sia la chiave di accesso al corso (nelle impostazioni del corso) sia la chiave di iscrizione al gruppo (nelle impostazioni dei gruppi).';
 $string['longtimenosee'] = 'Disiscrivi utenti non attivi dopo';
 $string['longtimenosee_help'] = 'Permette di disiscvievre automaticamente quegli utenti che non abbiamo svolto attività per il numero di giorni impostato.';
@@ -51,14 +50,12 @@ $string['maxenrolledreached'] = 'E\' stato già raggiunto il numero massimo di i
 $string['nopassword'] = 'Non è necessaria una chiave di iscrizione';
 $string['password'] = 'Chiave di iscrizione';
 $string['password_help'] = 'Una chiave di accesso permette di regolare l\'accesso al corso ai soli utenti che ne sono in possesso.
-
 Lasciando il campo vuoto, qualsiasi utente autenticato potrà iscriversi spontaneamente al corso.
-
 Se viene specificata una chiave, agli utenti verrà chiesto di inserirla per perfezionare l\'iscrizione. La chiave verrà chiesta solo al primo accesso al corso.';
 $string['passwordinvalid'] = 'Chiave errata, per favore riprova';
 $string['passwordinvalidhint'] = 'La chiave di accesso è errata, per favore riprova.<br /> (Suggerimento: la chiave comincia con \'{$a}\')';
 $string['pluginname'] = 'Iscrizione spontanea';
-$string['pluginname_desc'] = 'L\'iscrizione spontanea consente agli utenti di decidere a quali corsi iscriversi. E\' possibile regolare le iscrizioni spontanee tramite chiavi di accesso. L\'iscrizione spontanea per funzionare ha bisogno del plugin Iscrizioni manuali, che deve essere abilitato nel medesimo corso. ';
+$string['pluginname_desc'] = 'L\'iscrizione spontanea consente agli utenti di decidere a quali corsi iscriversi. E\' possibile regolare le iscrizioni spontanee tramite chiavi di accesso. L\'iscrizione spontanea per funzionare ha bisogno del plugin Iscrizioni manuali, che deve essere abilitato nel medesimo corso.';
 $string['requirepassword'] = 'Chiave di accesso obbligatoria';
 $string['requirepassword_desc'] = 'Rende obbligatoria la chiave di accesso nei nuovi corsi ed evita l\'eliminazione di chiavi d\'accesso già esistenti.';
 $string['role'] = 'Ruolo assegnato per default';
@@ -72,7 +69,7 @@ $string['showhint'] = 'Visualizza suggerimento';
 $string['showhint_desc'] = 'Visualizza la prima lettera della chiave d\'accesso.';
 $string['status'] = 'Consenti iscrizioni spontanee';
 $string['status_desc'] = 'Consente per default l\'iscrizione spontanea ai corsi.';
-$string['status_help'] = 'L\'impostazione stabilisce se un utente ha la possibilità di iscriversi spontaneamente  (e anche di disiscriversi se ne hanno i privilegi).';
+$string['status_help'] = 'L\'impostazione stabilisce se un utente ha la possibilità di iscriversi spontaneamente (e anche di disiscriversi se ne hanno i privilegi).';
 $string['unenrol'] = 'Cancella iscrizione utente';
 $string['unenrolselfconfirm'] = 'Sei certo di volerti disiscrivere dal corso "{$a}"?';
 $string['unenroluser'] = 'Sei certo di rimuovere l\'iscrizione di "{$a->user}" dal corso "{$a->course}"?';

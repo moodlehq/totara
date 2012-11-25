@@ -53,38 +53,23 @@ $string['assignglobalroles'] = 'Tilldela globala roller';
 $string['assignrole'] = 'Tilldela roll';
 $string['assignrolenameincontext'] = 'Tilldela rollen  \'{$a->role}\' i {$a->context}';
 $string['assignroles'] = 'Tilldela roller';
-$string['assignroles_help'] = '<p>
-Genom att tilldela en roll till användare i ett sammanhang
-så ger du dem de tillstånd som den rollen innefattar. Detta 
-gäller både för det aktuella sammanhanget och alla lägre sammanhang. 
-</p>
+$string['assignroles_help'] = 'Genom att tilldela en roll till användare i ett sammanhang
+så ger du dem de tillstånd som den rollen innefattar. Detta
+gäller både för det aktuella sammanhanget och alla lägre sammanhang.
 
-<p>
 Sammanhang:
-</p>
-<ol>
-<li>System (hela installationen)</li>
-<li>Ingångssidan ("kursen på webbplatsnivå")</li>
-<li>Kategorier för kurser</li>
-<li>Underkategorier för kurser</li>
-<li>Kurser</li>
-<li>Block och aktiviteter</li>
-</ol>
 
-<p>
-Så om du t.ex. tilldelar en roll som student/elev/deltagare/lärande 
+1.System (hela installationen)
+2.Ingångssidan ("kursen på webbplatsnivå")
+3.Kategorier för kurser
+4.Underkategorier för kurser
+5.Kurser
+6.Block och aktiviteter
+
+Så om du t.ex. tilldelar en roll som student/elev/deltagare/lärande
 till en användare i en kurs så kommer de att ha den rollen i den kursen
-men även i alla block och aktiviteter inne i den kursen. De tillstånd som de 
-sedan rent faktiskt kommer att inneha kan vara beroende av andra roller och av överskridanden som har definierats. 
-</p>
-
-<p>
-Sen även 
-<a href="help.php?file=roles.html">Roller</a>,
-<a href="help.php?file=contexts.html">Sammanhang</a>,
-<a href="help.php?file=permissions.html">Tillstånd</a> och 
-<a href="help.php?file=overrides.html">Överskridanden</a>.
-</p>';
+men även i alla block och aktiviteter inne i den kursen. De tillstånd som de
+sedan rent faktiskt kommer att inneha kan vara beroende av andra roller och av överskridanden som har definierats.';
 $string['assignrolesin'] = 'Tilldela roller i {$a}';
 $string['assignrolesrelativetothisuser'] = 'Tilldela roller som är relativa i förh till den här användaren';
 $string['backtoallroles'] = 'Tillbaka till listan över alla roller';
@@ -187,11 +172,11 @@ $string['deletelocalroles'] = 'Ta bort alla lokala tilldelningar av roller';
 $string['deleterolesure'] = 'Är Du säker på att Du vill ta bort rollen "{$a->name} ({$a->shortname})"?<br /> F.n. är den rollen tilldelad till {$a->count} användare.';
 $string['deletexrole'] = 'Ta bort rollen {$a}';
 $string['duplicaterole'] = 'Dubblerad roll';
-$string['duplicaterolesure'] = 'Är Du säker på att Du vill dubblera rollen  
+$string['duplicaterolesure'] = 'Är Du säker på att Du vill dubblera rollen
 "{$a->name} ({$a->shortname})"?';
 $string['editingrolex'] = 'Redigerar rollen {$a}';
 $string['editrole'] = 'Redigera roll';
-$string['editxrole'] = ' Redigera rollen {$a}';
+$string['editxrole'] = 'Redigera rollen {$a}';
 $string['errorbadrolename'] = 'Felaktigt namn på roll';
 $string['errorbadroleshortname'] = 'Felaktigt kortnamn på roll';
 $string['errorexistsrolename'] = 'Namnet på rollen finns redan';
@@ -254,156 +239,88 @@ $string['notset'] = 'Inte inställd';
 $string['overrideanotherrole'] = 'Överskrid en annan roll';
 $string['overridecontext'] = 'Överskrid sammanhanget';
 $string['overridepermissions'] = 'Överskrid tillstånd';
-$string['overridepermissions_help'] = '<p>
-Överskridanden är de specifika tillstånd som är utformade 
+$string['overridepermissions_help'] = 'Överskridanden är de specifika tillstånd som är utformade
 för att överskrida en roll i ett specifikt sammanhang;
-vilket innebär att du kan modifiera dina tillstånd så 
+vilket innebär att du kan modifiera dina tillstånd så
 som du önskar.
-</p>
 
-<p>
 i normalfallet är det så att användare som har tilldelats rollen som student/elev/deltagare/lärande
 i din kurs kan inleda nya diskussionsämnen. Om du då har ett speciellt forum där du vill förhindra den kapaciteten då kan du ange ett överskridande som FÖRHINDRAR att studenter/elever/deltagare/lärande kan använda den kapaciteten att "Inleda nya diskussionsämnen".
-</p>
 
-<p>
 Överskridanden kan också användas för att "öppna upp" delar av din webbplats
-och dina kurser så att användare får utökade tillstånd där du finner det 
+och dina kurser så att användare får utökade tillstånd där du finner det
 motiverat. Du kan t.ex. tänkas vilja experimentera genom att ge studenter/elever/deltagare/lärande
-kapacitetet att sätta betyg på en del uppgifter. </p>
+kapacitetet att sätta betyg på en del uppgifter.
 
-<p>
 Gränssnittet liknar det som du använder för att definiera roller,
-förutom det att ibland så visas bara relevanta kapaciteter, 
+förutom det att ibland så visas bara relevanta kapaciteter,
 och du kommer också att upptäcka att en del kapaciteter
-framhävs särskilt för att visa dig vilket tillståndet för 
-den rollen skulle vara om  det INTE fanns något aktivt 
-överskridande (dvs när ditt överskridande är inställt till 
-ÄRV).
-</p>
-
-<p>
-See also 
-<a href="help.php?file=roles.html">Roller</a>,
-<a href="help.php?file=contexts.html">Sammanhang</a>,
-<a href="help.php?file=assignroles.html">Tilldela roller</a> and
-<a href="help.php?file=permissions.html">Tillstånd</a>.
-</p>';
+framhävs särskilt för att visa dig vilket tillståndet för
+den rollen skulle vara om det INTE fanns något aktivt
+överskridande (dvs när ditt överskridande är inställt till
+ÄRV).';
 $string['overridepermissionsforrole'] = 'Överskrid tillstånden för rollen {$a->role}\' i {$a->context}';
 $string['overridepermissionsin'] = 'Överskrid tillstånd i {$a}';
 $string['overrideroles'] = 'Överskrida roller';
 $string['overriderolesin'] = 'Överskrid roller i {$a}';
 $string['overrides'] = 'Överskridningar';
 $string['permission'] = 'Tillstånd';
-$string['permission_help'] = '<p>
-Tillstånd är de inställningar som Du medger för vissa specifika kapaciteter. 
-</p>
+$string['permission_help'] = 'Tillstånd är de inställningar som Du medger för vissa specifika kapaciteter.
 
-<p>
 Det kan t.ex. vara kapaciteten att \'Starta ett nytt diskussionsämne\' (i forum).
-</p>
 
-<p>
 I varje roll kan Du välja att ställa in tillståndet för en sådan kapacitet
-till ett av fyra värden: 
-<dl>
-<dt>INTE INSTÄLLT</dt>
-<dd>Detta är, normalt sett, det förinställda standardvärdet.
-Det är en neutral inställning som betyder \'använd de inställningar som redan gäller för användaren\'.   
+till ett av fyra värden:
+INTE INSTÄLLT
+: Detta är, normalt sett, det förinställda standardvärdet.
+Det är en neutral inställning som betyder \'använd de inställningar som redan gäller för användaren\'.
 Om någon blir tilldelad en roll (t.ex. i en kurs) som har detta tillstånd för en kapacitet
-då kommer det faktiska tillstånd som de kommer att ha bara att vara samma tillstånd som de har 
-i det högre sammanhanget (t.ex. på kategori- eller webbplatsnivå).   
-Och i slutänden blir det så att, om rollen inte medger ett tillstånd på någon nivå så kommer användaren inte att ha något tillstånd för den kapaciteten. 
-    </dd>
-
-<dt>TILLÅT</dt>
-<dd>Om Du väljer detta så innebär det att Du medger tillstånd för den här kapaciteten till de som har tilldelats den här rollen. Detta tillstånd är tillämpbart på det sammanhang där denna roll tilldelas - och för alla \'lägre\' sammanhang.  Om det här t.ex. är en roll som \'Lärande\' som är tilldelad en kurs då kommer de som har rollen att kunna \'Starta nytt diskussionsämne\' i alla forum i den kursen. Detta FÖRUTOM i de fall då något forum innehåller ett överskridande eller en ny uppgift med ett Förhindra eller Förbjud-attribut för den här kapaciteten.</dd>
-
-<dt>FÖRHINDRA</dt>
-<dd>Om Du väljer detta så innebär det att Du tar bort tillståndet för den här kapaciteten även om användarna med denna roll skulle ha kvar tillståndet på en högre nivå. </dd>
-
-<dt>FÖRBJUD</dt>
-<dd>Det här behöver Du sällan använda men någon gång kan Du tänkas vilja neka tillstånd för en roll 
-helt och hållet och det så att det INTE går att överskrida det på något sätt i ett \'lägre\' sammanhang. Ett bra exempel är när en sysadmin vill förhindra en person från att starta några nya diskussionsämnen på webbplatsen överhuvudtaget. I det fallet kan de skapa en roll där denna kapacitet är inställd till \'Förbjud\' och sedan tilldela den personen rollen på webbplatsnivå.  
-  </dd>
-
-</dl>
-</p>
+då kommer det faktiska tillstånd som de kommer att ha bara att vara samma tillstånd som de har
+i det högre sammanhanget (t.ex. på kategori- eller webbplatsnivå).
+Och i slutänden blir det så att, om rollen inte medger ett tillstånd på någon nivå så kommer användaren inte att ha något tillstånd för den kapaciteten.
+TILLÅT
+: Om Du väljer detta så innebär det att Du medger tillstånd för den här kapaciteten till de som har tilldelats den här rollen. Detta tillstånd är tillämpbart på det sammanhang där denna roll tilldelas - och för alla \'lägre\' sammanhang. Om det här t.ex. är en roll som \'Lärande\' som är tilldelad en kurs då kommer de som har rollen att kunna \'Starta nytt diskussionsämne\' i alla forum i den kursen. Detta FÖRUTOM i de fall då något forum innehåller ett överskridande eller en ny uppgift med ett Förhindra eller Förbjud-attribut för den här kapaciteten.
+FÖRHINDRA
+: Om Du väljer detta så innebär det att Du tar bort tillståndet för den här kapaciteten även om användarna med denna roll skulle ha kvar tillståndet på en högre nivå.
+FÖRBJUD
+: Det här behöver Du sällan använda men någon gång kan Du tänkas vilja neka tillstånd för en roll
+helt och hållet och det så att det INTE går att överskrida det på något sätt i ett \'lägre\' sammanhang. Ett bra exempel är när en sysadmin vill förhindra en person från att starta några nya diskussionsämnen på webbplatsen överhuvudtaget. I det fallet kan de skapa en roll där denna kapacitet är inställd till \'Förbjud\' och sedan tilldela den personen rollen på webbplatsnivå.
 
 
-<p> Tillstånd i ett \'lägre\' sammanhang kommer generellt sett att överskrida allting i ett \'högre\' sammanhang (detta är tillämpbart på överskridanden och tilldelade roller). Undantaget är   FÖRBJUD som inte kan överskridas i lägre sammanhang. 
-</p>
+Tillstånd i ett \'lägre\' sammanhang kommer generellt sett att överskrida allting i ett \'högre\' sammanhang (detta är tillämpbart på överskridanden och tilldelade roller). Undantaget är FÖRBJUD som inte kan överskridas i lägre sammanhang.
 
-<p> Om två roller skulle tilldelas samma person i ett visst givet sammanhang, den ena med TILLÅT och den andra med FÖRHINDRA - vilken är det då som kommer att gälla? I det här fallet kommer Moodle att inspektera trädet för sammanhang och leta efter \'något som kan avgöra det hela\'.   </p>
-    
-<p> Om t.ex. en student/elev/deltagare/lärande har två roller i en kurs; en som tillåter honom/henne att starta nya diskussionsämnen och en som förhindrar detta. I det här fallet kontrollerar vi sammanhangen på kategori- och webbplatsnivå för att hitta något annat definierat tillstånd som kan hjälpa oss att avgöra saken. Om vi inte kan hitta någonting så är det tillståndet FÖRHINDRA som gäller som förinställt standardvärde. Detta därför att de två tillstånden tar ut varandra och därmed har Du inget tillstånd.
-</p>
+Om två roller skulle tilldelas samma person i ett visst givet sammanhang, den ena med TILLÅT och den andra med FÖRHINDRA - vilken är det då som kommer att gälla? I det här fallet kommer Moodle att inspektera trädet för sammanhang och leta efter \'något som kan avgöra det hela\'.
+Om t.ex. en student/elev/deltagare/lärande har två roller i en kurs; en som tillåter honom/henne att starta nya diskussionsämnen och en som förhindrar detta. I det här fallet kontrollerar vi sammanhangen på kategori- och webbplatsnivå för att hitta något annat definierat tillstånd som kan hjälpa oss att avgöra saken. Om vi inte kan hitta någonting så är det tillståndet FÖRHINDRA som gäller som förinställt standardvärde. Detta därför att de två tillstånden tar ut varandra och därmed har Du inget tillstånd.
 
+Lägg märke till att kontot för gästanvändare normalt sett förhindrar gäster från att bidra med innehåll, (t.ex. i forum, kalendrar, bloggar osv) även om det har tilldelats tillståndet att göra det.';
+$string['permissions_help'] = 'Tillstånd är de inställningar som Du medger för vissa specifika kapaciteter.
 
-<p> Lägg märke till att kontot för gästanvändare normalt sett förhindrar gäster från att bidra med innehåll, (t.ex. i forum, kalendrar, bloggar osv) även om det har tilldelats tillståndet att göra det. 
-
-<p>
-Se även
-<a href="help.php?file=roles.html">Roller</a>,
-<a href="help.php?file=contexts.html">Sammanhang</a>,
-<a href="help.php?file=assignroles.html">Tilldela roller</a> and
-<a href="help.php?file=overrides.html">Överskridanden</a>.
-</p>';
-$string['permissions'] = 'Tillstånd';
-$string['permissions_help'] = '<p>
-Tillstånd är de inställningar som Du medger för vissa specifika kapaciteter. 
-</p>
-
-<p>
 Det kan t.ex. vara kapaciteten att \'Starta ett nytt diskussionsämne\' (i forum).
-</p>
 
-<p>
 I varje roll kan Du välja att ställa in tillståndet för en sådan kapacitet
-till ett av fyra värden: 
-<dl>
-<dt>INTE INSTÄLLT</dt>
-<dd>Detta är, normalt sett, det förinställda standardvärdet.
-Det är en neutral inställning som betyder \'använd de inställningar som redan gäller för användaren\'.   
+till ett av fyra värden:
+INTE INSTÄLLT
+: Detta är, normalt sett, det förinställda standardvärdet.
+Det är en neutral inställning som betyder \'använd de inställningar som redan gäller för användaren\'.
 Om någon blir tilldelad en roll (t.ex. i en kurs) som har detta tillstånd för en kapacitet
-då kommer det faktiska tillstånd som de kommer att ha bara att vara samma tillstånd som de har 
-i det högre sammanhanget (t.ex. på kategori- eller webbplatsnivå).   
-Och i slutänden blir det så att, om rollen inte medger ett tillstånd på någon nivå så kommer användaren inte att ha något tillstånd för den kapaciteten. 
-    </dd>
-
-<dt>TILLÅT</dt>
-<dd>Om Du väljer detta så innebär det att Du medger tillstånd för den här kapaciteten till dem som har tilldelats den här rollen. Detta tillstånd är tillämpbart på det sammanhang där denna roll tilldelas - och för alla \'lägre\' sammanhang.  Om det här t.ex. är en roll som \'Lärande\' som är tilldelad en kurs då kommer de som har rollen att kunna \'Starta nytt diskussionsämne\' i alla forum i den kursen. Detta FÖRUTOM i de fall då något forum innehåller ett överskridande eller en ny uppgift med ett Förhindra eller Förbjud-attribut för den här kapaciteten.</dd>
-
-<dt>FÖRHINDRA</dt>
-<dd>Om Du väljer detta så innebär det att Du tar bort tillståndet för den här kapaciteten även om användarna med denna roll skulle ha kvar tillståndet på en högre nivå. </dd>
-
-<dt>FÖRBJUD</dt>
-<dd>Det här behöver Du sällan använda men någon gång kan Du tänkas vilja neka tillstånd för en roll 
-helt och hållet och det så att det INTE går att överskrida det på något sätt i ett \'lägre\' sammanhang. Ett bra exempel är när en sysadmin vill förhindra en person från att starta några nya diskussionsämnen på webbplatsen överhuvudtaget. I det fallet kan de skapa en roll där denna kapacitet är inställd till \'Förbjud\' och sedan tilldela den personen rollen på webbplatsnivå.  
-  </dd>
-
-</dl>
-</p>
+då kommer det faktiska tillstånd som de kommer att ha bara att vara samma tillstånd som de har
+i det högre sammanhanget (t.ex. på kategori- eller webbplatsnivå).
+Och i slutänden blir det så att, om rollen inte medger ett tillstånd på någon nivå så kommer användaren inte att ha något tillstånd för den kapaciteten.
+TILLÅT
+: Om Du väljer detta så innebär det att Du medger tillstånd för den här kapaciteten till dem som har tilldelats den här rollen. Detta tillstånd är tillämpbart på det sammanhang där denna roll tilldelas - och för alla \'lägre\' sammanhang. Om det här t.ex. är en roll som \'Lärande\' som är tilldelad en kurs då kommer de som har rollen att kunna \'Starta nytt diskussionsämne\' i alla forum i den kursen. Detta FÖRUTOM i de fall då något forum innehåller ett överskridande eller en ny uppgift med ett Förhindra eller Förbjud-attribut för den här kapaciteten.
+FÖRHINDRA
+: Om Du väljer detta så innebär det att Du tar bort tillståndet för den här kapaciteten även om användarna med denna roll skulle ha kvar tillståndet på en högre nivå.
+FÖRBJUD
+: Det här behöver Du sällan använda men någon gång kan Du tänkas vilja neka tillstånd för en roll
+helt och hållet och det så att det INTE går att överskrida det på något sätt i ett \'lägre\' sammanhang. Ett bra exempel är när en sysadmin vill förhindra en person från att starta några nya diskussionsämnen på webbplatsen överhuvudtaget. I det fallet kan de skapa en roll där denna kapacitet är inställd till \'Förbjud\' och sedan tilldela den personen rollen på webbplatsnivå.
 
 
-<p> Tillstånd i ett \'lägre\' sammanhang kommer generellt sett att överskrida allting i ett \'högre\' sammanhang (detta är tillämpbart på överskridanden och tilldelade roller). Undantaget är   FÖRBJUD som inte kan överskridas i lägre sammanhang. 
-</p>
+Tillstånd i ett \'lägre\' sammanhang kommer generellt sett att överskrida allting i ett \'högre\' sammanhang (detta är tillämpbart på överskridanden och tilldelade roller). Undantaget är FÖRBJUD som inte kan överskridas i lägre sammanhang.
 
-<p> Om två roller skulle tilldelas samma person i ett visst givet sammanhang, den ena med TILLÅT och den andra med FÖRHINDRA - vilken är det då som kommer att gälla? I det här fallet kommer Moodle att inspektera trädet för sammanhang och leta efter \'något som kan avgöra det hela\'.   </p>
-    
-<p> Om t.ex. en student/elev/deltagare/lärande har två roller i en kurs; en som tillåter honom/henne att starta nya diskussionsämnen och en som förhindrar detta. I det här fallet kontrollerar vi sammanhangen på kategori- och webbplatsnivå för att hitta något annat definierat tillstånd som kan hjälpa oss att avgöra saken. Om vi inte kan hitta någonting så är det tillståndet FÖRHINDRA som gäller som förinställt standardvärde. Detta därför att de två tillstånden tar ut varandra och därmed har Du inget tillstånd.
-</p>
+Om två roller skulle tilldelas samma person i ett visst givet sammanhang, den ena med TILLÅT och den andra med FÖRHINDRA - vilken är det då som kommer att gälla? I det här fallet kommer Moodle att inspektera trädet för sammanhang och leta efter \'något som kan avgöra det hela\'.
+Om t.ex. en student/elev/deltagare/lärande har två roller i en kurs; en som tillåter honom/henne att starta nya diskussionsämnen och en som förhindrar detta. I det här fallet kontrollerar vi sammanhangen på kategori- och webbplatsnivå för att hitta något annat definierat tillstånd som kan hjälpa oss att avgöra saken. Om vi inte kan hitta någonting så är det tillståndet FÖRHINDRA som gäller som förinställt standardvärde. Detta därför att de två tillstånden tar ut varandra och därmed har Du inget tillstånd.
 
-
-<p> Lägg märke till att kontot för gästanvändare normalt sett förhindrar gäster från att bidra med innehåll, (t.ex. i forum, kalendrar, bloggar osv) även om det har tilldelats tillståndet att göra det. 
-
-<p>
-Se även
-<a href="help.php?file=roles.html">Roller</a>,
-<a href="help.php?file=contexts.html">Sammanhang</a>,
-<a href="help.php?file=assignroles.html">Tilldela roller</a> and
-<a href="help.php?file=overrides.html">Överskridanden</a>.
-</p>';
+Lägg märke till att kontot för gästanvändare normalt sett förhindrar gäster från att bidra med innehåll, (t.ex. i forum, kalendrar, bloggar osv) även om det har tilldelats tillståndet att göra det.';
 $string['permissionsforuser'] = 'Tillstånd för användaren {$a}';
 $string['permissionsincontext'] = 'Tillstånd i {$a}';
 $string['portfolio:export'] = 'Exportera till portfolios';
@@ -452,39 +369,21 @@ $string['role:switchroles'] = 'Skifta till andra roller';
 $string['roleassignments'] = 'Tilldelning av roller';
 $string['rolefullname'] = 'Namn';
 $string['roles'] = 'Roller';
-$string['roles_help'] = '<p> 
-En roll är en samling tillstånd som har definierats för hela systemet.
-Du kan tilldela en viss roll till specifika användare i specifika sammanhang.  
+$string['roles_help'] = 'En roll är en samling tillstånd som har definierats för hela systemet.
+Du kan tilldela en viss roll till specifika användare i specifika sammanhang.
 
-</p>
-
-<p>
 Du kan t.ex. ha en roll som kallas för "(Distans)lärare" som är inställd så att den ger (distans)lärare tillstånd att göra vissa saker och andra inte. När en sådan roll väl finns
-så kan du tilldela den till någon i en kurs för att göra dem till "(distans)lärare.  Du skulle även kunna tilldela rollen till användare som kan utöva den i en kurskategori så att de kan undervisa på alla kurser i den kategorin. Du kan också tilldela någon rollen i ett mycket avgränsat och specifikt sammanhang som t.ex. bara i ett visst forum. 
-</p>
-  
-<p>
-En roll måste ha ett <strong>namn</strong>.  Om du behöver ett namn för rollen på ett flertal språk så kan du använda multilang syntax som t.ex. <pre>
-  &lt;span lang="en"&gt;Teacher&lt;/span&gt; 
-  &lt;span lang="es_es"&gt;Profesor&lt;/span&gt; 
-  </pre>Om du gör detta så måste du se till att inställningen "filtrera strängar" är aktiverad i din  installation.
-</p>
+så kan du tilldela den till någon i en kurs för att göra dem till "(distans)lärare. Du skulle även kunna tilldela rollen till användare som kan utöva den i en kurskategori så att de kan undervisa på alla kurser i den kategorin. Du kan också tilldela någon rollen i ett mycket avgränsat och specifikt sammanhang som t.ex. bara i ett visst forum.
 
-<p><strong>Kortnamnet</strong> är nödvändigt för andra plugin-program i Moodle som kan behöva referera till dina roller (t.ex. när du laddar upp användare från en fil eller när du gör inställningar för registrering via ett plugin-program för det).
-</p>
+En roll måste ha ett **namn**. Om du behöver ett namn för rollen på ett flertal språk så kan du använda multilang syntax som t.ex.
+Teacher
+Profesor
+Om du gör detta så måste du se till att inställningen "filtrera strängar" är aktiverad i din installation.
 
-<p>
-<strong>Beskrivningen</strong> är helt enkelt till för att du ska kunna beskriva din roll med
-egna ord så att var och en kan förstå syftet med den rollen.
-</p>
+**Kortnamnet** är nödvändigt för andra plugin-program i Moodle som kan behöva referera till dina roller (t.ex. när du laddar upp användare från en fil eller när du gör inställningar för registrering via ett plugin-program för det).
 
-<p>
-Se även  
-<a href="help.php?file=contexts.html">Sammanhang</a>,
-<a href="help.php?file=permissions.html">Tillstånd</a>,
-<a href="help.php?file=assignroles.html">Tilldela roller</a> and
-<a href="help.php?file=overrides.html">Överskridanden</a>.
-</p>';
+**Beskrivningen** är helt enkelt till för att du ska kunna beskriva din roll med
+egna ord så att var och en kan förstå syftet med den rollen.';
 $string['roleshortname'] = 'Kortnamn';
 $string['roletoassign'] = 'Roll att tilldela';
 $string['roletooverride'] = 'Roll att överskrida';

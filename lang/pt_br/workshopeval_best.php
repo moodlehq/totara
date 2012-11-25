@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['comparison'] = 'Comparação das avaliações';
-$string['comparison_help'] = 'Esta configuração especifica quão rigorosa deve ser a comparação das avaliações. Quanto mais rigorosa  for a comparação, mais similares as avaliações tem que ser para que se possa obter uma nota alta.';
+$string['comparison_help'] = 'Esta configuração especifica quão rigorosa deve ser a comparação das avaliações. Quanto mais rigorosa for a comparação, mais similares as avaliações tem que ser para que se possa obter uma nota alta.';
 $string['comparisonlevel1'] = 'muito rigoroso';
 $string['comparisonlevel3'] = 'rigoroso';
 $string['comparisonlevel5'] = 'razoável';

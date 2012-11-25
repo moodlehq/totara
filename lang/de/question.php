@@ -124,14 +124,11 @@ $string['disterror'] = 'Distribution {$a} verursacht Fehler.';
 $string['donothing'] = 'Keine Dateien kopieren oder verschieben. Keine Links ändern.';
 $string['editcategories'] = 'Kategorien bearbeiten';
 $string['editcategories_help'] = 'Anstatt Fragen in einer einzigen langen Liste zu sammeln, können Sie Ihre Fragen strukturieren und in Fragenkategorien ablegen.
-
 Jede Kategorie verfügt über einen Kontext, der festlegt wo die Fragen dieser Kategorie eingesetzt werden können.
-
 * Aktivitätenkontext - Frage nur in der konkreten Aktivität einsetzbar
 * Kurskontext _ Frage kann im gesamten kurs genutzt weden
 * Kursbereichskontext - Frage kann in allen Kursen des Kursbereichs genutzt werden
 * Systemkontext - Frage kann in allen Kursen genutzt werden.
-
 Kategorien können auch als Container für Zufallsfragen genutzt werden.';
 $string['editcategory'] = 'Kategorie bearbeiten';
 $string['editingcategory'] = 'Kategorie bearbeiten';
@@ -149,7 +146,7 @@ $string['errorduringproc'] = 'Fehler bei Prozessausführung';
 $string['errorduringregrade'] = 'Frage {$a->qid} konnte nicht neu bewertet werden - Status: {$a->stateid}';
 $string['errorfilecannotbecopied'] = 'Fehler: Datei {$a} kann nicht kopiert werden.';
 $string['errorfilecannotbemoved'] = 'Fehler: Datei {$a} kann nicht verschoben werden.';
-$string['errorfileschanged'] = 'Fehler: Dateien, die in Fragen verwendet werden, haben sich seit der letzten Anzeige geändert. ';
+$string['errorfileschanged'] = 'Fehler: Dateien, die in Fragen verwendet werden, haben sich seit der letzten Anzeige geändert.';
 $string['errormanualgradeoutofrange'] = 'Die Bewertung {$a->grade} für die Frage {$a->name} liegt nicht zwischen \'0\' und {$a->maxgrade}. Punkte und Kommentare wurde nicht gespeichert.';
 $string['errormovingquestions'] = 'Fehler beim Verschieben von Fragen mit Ids {$a}.';
 $string['errorpostprocess'] = 'Fehler beim Post-Processing';
@@ -160,24 +157,22 @@ $string['errorsavingcomment'] = 'Fehler beim Speichern des Kommentars für Frage
 $string['errorsavingflags'] = 'Fehler beim Speichern der Markierung';
 $string['errorupdatingattempt'] = 'Fehler beim Speichern des Kommentars zu Frage {$a->id} in der Datenbank.';
 $string['exportcategory'] = 'Kategorie exportieren';
-$string['exportcategory_help'] = '<h2>Export von Test-Kategorien</h2>
-
-<p>Das <b>Kategorie:</b> Drop-Down-Auswahlfeld wird genutzt, um die Kategorie auszuwählen in der die Fragen stehen, die exportiert werden sollen.</p>
-
-<p>Einige Importformate (GIFT und XML Format) lassen es zu, dass die Kategorie in die Dateibezeichnung mit aufgenommen wird. Damit kann die Kategorie beim Import mit wiederhergestellt werden. In diesem Fall muss das Feld \'in Datei\' mit markiert werden.</p>';
+$string['exportcategory_help'] = '## Export von Test-Kategorien
+Das **Kategorie:** Drop-Down-Auswahlfeld wird genutzt, um die Kategorie auszuwählen in der die Fragen stehen, die exportiert werden sollen.
+Einige Importformate (GIFT und XML Format) lassen es zu, dass die Kategorie in die Dateibezeichnung mit aufgenommen wird. Damit kann die Kategorie beim Import mit wiederhergestellt werden. In diesem Fall muss das Feld \'in Datei\' mit markiert werden.';
 $string['exporterror'] = 'Fehler beim Export aufgetreten!';
 $string['exportfilename'] = 'quiz';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
 $string['exportquestions'] = 'Fragen in Datei exportieren';
-$string['exportquestions_help'] = '<h2>Export von Fragen aus einer
-Kategorie</h2>
-<p>Diese Funktion ermöglicht es, alle Fragen einer Kategorie
-in eine Textdatei zu exportieren.</p>
-<p>Beim Export und Import von Testfragen können nicht alle Fragetypen bei allen Formaten verarbeitet werden. Das liegt daran, dass nicht alle Formate alle Fragetypen unterstützen. Der Fragenumfang, der aus
+$string['exportquestions_help'] = '## Export von Fragen aus einer
+Kategorie
+Diese Funktion ermöglicht es, alle Fragen einer Kategorie
+in eine Textdatei zu exportieren.
+Beim Export und Import von Testfragen können nicht alle Fragetypen bei allen Formaten verarbeitet werden. Das liegt daran, dass nicht alle Formate alle Fragetypen unterstützen. Der Fragenumfang, der aus
 einem Programm exportiert und in ein anderes
 Programm importiert wird, muss also nicht identisch
 sein. Prüfen Sie daher alle Fragen, bevor Sie sie in einem
-Kurs verwenden.</p>';
+Kurs verwenden.';
 $string['feedback'] = 'Feedback';
 $string['filecantmovefrom'] = 'Die Fragedateien können von Ihnen nicht verschoben werden. Sie verfügen nicht über ausreichende Rechte Sie von diesem Ort zu verschieben.';
 $string['filecantmoveto'] = 'Die Fragedateien können von Ihnen nicht verschoben oder kopiert werden. Sie verfügen nicht über ausreichende Rechte Sie an diesen Ort zu verschieben.';
@@ -192,7 +187,6 @@ $string['formquestionnotinids'] = 'Die angefragte Frage ist nicht in questionids
 $string['fractionsnomax'] = 'Eine der Antworten sollte mit 100% bewertet werden, um für die Beantwortung der Frage die volle Punktzahl bekommen zu können.';
 $string['generalfeedback'] = 'Allgemeines Feedback';
 $string['generalfeedback_help'] = 'Generelles Feedback wird Teilnehmer/innen nach der Beantwortung der Frage angezeigt. Es ist unabhängig von der Antwort, die jemand gegeben hat. Andere Feedbacks sind abhängig von der \'Richtigkeit\' der Antwort.
-
 Das generelle Feedback kann verwandt werden, um Hinweise zum Wissensbereich zu geben, der mit Frage abgefragt wird. Links könnten zu weiteren Informationen führen, falls die Frage nicht verstanden wurde.';
 $string['getcategoryfromfile'] = 'Kategorie aus Datei holen';
 $string['getcontextfromfile'] = 'Kontext aus Datei holen';
@@ -203,13 +197,10 @@ $string['howquestionsbehave'] = 'Frageverhalten';
 $string['howquestionsbehave_help'] = 'Fragen im Test können auf unterschiedliche Art und Weise angelegt sein. Sollen beispielsweise zuerst alle Fragen beantwortet und dann der gesamte Test abgegeben werden, bevor es eine Bewertung oder eine Rückmeldung gibt, wäre dies der Modus \'Spätere Auswertung\'. Alternativ könnte nach der Beantwortung jeder Frage eine \'Direkte Auswertung\' gegeben werden und -sofern die Frage nicht richtig beantwortet wurde - ein erneuter Versuch starten. Dieses Frageverhalten wäre der Modus \'Mehrfachbeantwortung (mit Hinweisen)\'.';
 $string['ignorebroken'] = 'Ungültige Links ignorieren';
 $string['importcategory'] = 'Importkategorien';
-$string['importcategory_help'] = '<h2>Import von Kategorien</h2>
-
-<p>Das <b>Kategorie:</b> Dropdown-Auswahlfeld ermöglicht Ihnen, die Kategorie auszuwählen in die die Fragen importiert werden sollen.</p>
-
-<p>Bei einigen Importformaten (GIFT und XML-Format) kann die Importkategorie bereits in der Importdatei festgelegt werden. Um diese Option zu nutzen muss das Häkchen \'aus Datei\' gesetzt werden. Wenn hier keine Markierung erfolgt wird die ausgewählte Kategorie genutzt. Die Anweisung in der Importdatei wird dann ignoriert. </p>
-
-<p>Falls in der Importdatei Kategorien definiert sind, die in Ihrem Kurs nicht existieren ,werden diese beim Import angelegt.</p>';
+$string['importcategory_help'] = '## Import von Kategorien
+Das **Kategorie:** Dropdown-Auswahlfeld ermöglicht Ihnen, die Kategorie auszuwählen in die die Fragen importiert werden sollen.
+Bei einigen Importformaten (GIFT und XML-Format) kann die Importkategorie bereits in der Importdatei festgelegt werden. Um diese Option zu nutzen muss das Häkchen \'aus Datei\' gesetzt werden. Wenn hier keine Markierung erfolgt wird die ausgewählte Kategorie genutzt. Die Anweisung in der Importdatei wird dann ignoriert.
+Falls in der Importdatei Kategorien definiert sind, die in Ihrem Kurs nicht existieren ,werden diese beim Import angelegt.';
 $string['importerror'] = 'Fehler beim Import';
 $string['importerrorquestion'] = 'Fehler beim Import der Frage';
 $string['importfromcoursefiles'] = '... oder eine Datei zum Import auswählen.';
@@ -217,7 +208,7 @@ $string['importfromupload'] = 'Wählen Sie eine Datei zum Hochladen...';
 $string['importingquestions'] = '{$a} Frage(n) werden aus der Datei importiert';
 $string['importparseerror'] = 'Fehler beim Einlesen der Importdatei gefunden. Es wurden daher keine Fragen importiert. Zum Einlesen fehlerfreier Fragen setzen Sie die Einstellung \'Bei Fehler stoppen\' auf \'Nein\'.';
 $string['importquestions'] = 'Fragen aus Datei importieren';
-$string['importquestions_help'] = 'Die Funktion ermöglicht es Ihnen Fragen mit verschiedene Fragetypen aus eienr Textdatei zu importieren. Achtung: die Datei muss im UTF-8 Format codiert sein. ';
+$string['importquestions_help'] = 'Die Funktion ermöglicht es Ihnen Fragen mit verschiedene Fragetypen aus eienr Textdatei zu importieren. Achtung: die Datei muss im UTF-8 Format codiert sein.';
 $string['importwrongfiletype'] = 'Die Inhalte der Datei ({$a->actualtype}) passen nicht zum Format der gewählten Importdatei ({$a->expectedtype}).';
 $string['impossiblechar'] = 'Unzulässiges Zeichen {$a} innerhalb der Klammern entdeckt';
 $string['includesubcategories'] = 'Fragen aus Unterkategorien anzeigen';
@@ -246,46 +237,40 @@ $string['markoutofmax'] = 'Erreichte Punkte {$a->mark} von {$a->max}';
 $string['marks'] = 'Punkte';
 $string['matcherror'] = 'Bewertungen passen nicht zu den Bewertungsoptionen - Fragen wurden übersprungen';
 $string['matchgrades'] = 'Bewertungen abgleichen';
+$string['matchgrades_help'] = '## Bewertungen zuordnen
+Importierte Bewertungen **müssen** zu einer der gültigen Bewertungen passen, die in der folgenden Liste aufgeführt sind.
+
+* 100%
+* 90%
+* 80%
+* 75%
+* 70%
+* 66.666%
+* 60%
+* 50%
+* 40%
+* 33.333
+* 30%
+* 25%
+* 20%
+* 16.666%
+* 14.2857
+* 12.5%
+* 11.111%
+* 10%
+* 5%
+* 0%
+
+Negative Werte zu der obigen Liste sind auch zulässig.
+Es gibt hierfür zwei Einstellungen. Sie legen fest, wie mit Werten umgegangen werden soll, die nicht **exakt** mit den obigen Werten übereinstimmen.
+
+\* **|Fehlermeldung, wenn Bewertung nicht in der Liste enthalten ist**
+Wenn die Frage eine Bewertung enthält, die nicht in der Liste steht, wird die Frage beim Import zurückgewiesen und ein Fehler angezeigt.
+\* **|Nächstliegenden Wert aus der Liste eintragen**
+Wenn ein Wert beim Import nicht gefunden wird, wird er ersetzt durch den nächstliegenden Wert aus der Liste.
+
+*Anmerkung: Einige Importfunktionen schreiben ihre Daten direkt in die Datenbank und können diese Prüfung umgehen.*';
 $string['matchgradeserror'] = 'Fehler wenn Bewertung nicht gelistet';
-$string['matchgrades_help'] = '<h2>Bewertungen zuordnen</h2>
-
-<p>Importierte Bewertungen <b>müssen</b> zu einer der gültigen Bewertungen passen, die in der folgenden Liste aufgeführt sind.</p>
-
-<ul>
-  <li>100%</li>
-  <li>90%</li>
-  <li>80%</li>
-  <li>75%</li>
-  <li>70%</li>
-  <li>66.666%</li>
-  <li>60%</li>
-  <li>50%</li>
-  <li>40%</li>
-  <li>33.333</li>
-  <li>30%</li>
-  <li>25%</li>
-  <li>20%</li>
-  <li>16.666%</li>
-  <li>14.2857</li>
-  <li>12.5%</li>
-  <li>11.111%</li>
-  <li>10%</li>
-  <li>5%</li>
-  <li>0%</li>
-</ul>
-
-<p>Negative Werte zu der obigen Liste sind auch zulässig.</p>
-
-<p>Es gibt hierfür zwei Einstellungen. Sie legen fest, wie mit Werten umgegangen werden soll, die nicht <strong>exakt</strong> mit den obigen Werten übereinstimmen.</p>
-
-<ul>
-  <li><strong>Fehlermeldung, wenn Bewertung nicht in der Liste enthalten ist</strong><br />
-  Wenn die Frage eine Bewertung enthält, die nicht in der Liste steht, wird die Frage beim Import zurückgewiesen und ein Fehler angezeigt.</li>
-  <li><strong>Nächstliegenden Wert aus der Liste eintragen</strong><br />
-  Wenn ein Wert beim Import nicht gefunden wird, wird er ersetzt durch den nächstliegenden Wert aus der Liste.</li>
-</ul>
-
-<p><i>Anmerkung: Einige Importfunktionen schreiben ihre Daten direkt in die Datenbank und können diese Prüfung umgehen.</i></p>';
 $string['matchgradesnearest'] = 'Nächstliegende Bewertung verwenden';
 $string['missingcourseorcmid'] = 'courseid oder cmid muss für print_question  angegeben werden';
 $string['missingcourseorcmidtolink'] = 'courseid oder cmid erforderlich, um get_question_edit_link anzuzeigen.';
@@ -335,32 +320,25 @@ $string['page-question-import'] = 'Jede Fragen-Importseite';
 $string['page-question-x'] = 'Jede Fragenseite';
 $string['parent'] = 'Übergeordnet';
 $string['parentcategory'] = 'Übergeordnete Kategorie';
-$string['parentcategory_help'] = '<h2>Hierarchieebenen für Fragenkategorien</h2>
-
-<p>Fragenkategorien können hierarchisch strukturiert werden. Eine Kategorie kann eine oder mehrere Unterkategorien enthalten. Sie ist dann für jede dieser Unterkategorien die übergeordnete Kategorie. Es gibt eine spezielle Hierarchiebene "Oben": Das ist die oberste Hierarchieebene, alle Kategorien in dieser Ebene haben keine übergeordneten Kategorien.</p>
-
-<p>Normalerweise sehen Sie verschiedene Kontexte von Fragenkategorien. Beachten Sie, dass jeder Kontext seine eigene Hierarchie von Fragenkategorien enthält. Weiterführende Informationen zu Kontexten von Fragenkategorien finden Sie unten. Wenn Sie nicht mehrere Kontexte von Fragenkategorien sehen, kann das daran liegen, dass Sie keine Berechtigung haben, auf andere Kontexte zuzugreifen.</p>
-
-<p>Wenn es in einem Kontext nur eine Fragenkategorie gibt, können Sie diese nicht verschieben, da jeder Kontext mindestens eine Fragenkategorie enthalten muss.</p>
-
-<p>Siehe auch:</p>
-<ul>
-  <li><a href="help.php?module=question&amp;file=categories.html">Fragenkategorien</a></li>
-  <li><a href="help.php?module=question&amp;file=categorycontexts.html">Kontexte von Fragenkategorien</a></li>
-  <li><a href="help.php?module=question&amp;file=permissions.html">Berechtigungen für Fragen</a></li>
-</ul>';
+$string['parentcategory_help'] = '## Hierarchieebenen für Fragenkategorien
+Fragenkategorien können hierarchisch strukturiert werden. Eine Kategorie kann eine oder mehrere Unterkategorien enthalten. Sie ist dann für jede dieser Unterkategorien die übergeordnete Kategorie. Es gibt eine spezielle Hierarchiebene "Oben": Das ist die oberste Hierarchieebene, alle Kategorien in dieser Ebene haben keine übergeordneten Kategorien.
+Normalerweise sehen Sie verschiedene Kontexte von Fragenkategorien. Beachten Sie, dass jeder Kontext seine eigene Hierarchie von Fragenkategorien enthält. Weiterführende Informationen zu Kontexten von Fragenkategorien finden Sie unten. Wenn Sie nicht mehrere Kontexte von Fragenkategorien sehen, kann das daran liegen, dass Sie keine Berechtigung haben, auf andere Kontexte zuzugreifen.
+Wenn es in einem Kontext nur eine Fragenkategorie gibt, können Sie diese nicht verschieben, da jeder Kontext mindestens eine Fragenkategorie enthalten muss.
+Siehe auch:
+* [Fragenkategorien] (help.php?module=question&file=categories.html)
+* [Kontexte von Fragenkategorien] (help.php?module=question&file=categorycontexts.html)
+* [Berechtigungen für Fragen] (help.php?module=question&file=permissions.html)
+';
 $string['parenthesisinproperclose'] = 'Die Klammer vor ** ist nicht richtig geschlossen bei {$a}**';
 $string['parenthesisinproperstart'] = 'Die Klammer vor ** ist nicht richtig geöffnet bei {$a}**';
 $string['parsingquestions'] = 'Fragen aus Importdatei einlesen';
 $string['partiallycorrect'] = 'Teilweise richtig';
 $string['partiallycorrectfeedback'] = 'Für jede teilrichtige Antwort';
 $string['penaltyfactor'] = 'Abzugsfaktor';
-$string['penaltyfactor_help'] = '<h2>Höhe des Punktabzugs</h2>
-
-<p>Legen Sie fest, welcher Anteil an der erreichbaren Punktzahl für jede falsche Antwort abgezogen wird. Diese Funktion ist nur dann bedeutsam, wenn der adaptive Modus eingeschaltet ist. Der Wert sollte zwischen 0 und 1 liegen. Der Wert "1" bedeutet: Nur bei einer richtigen Antwort im ersten Versuch gibt es Punkte. Der Wert "=" bedeutet: Bei jedem Versuch - auch dem wiederholten - kann die volle Punktzahl erreicht werden. Der Wert "0,1" bedeutet: Beim zweiten Versuch werden für die richtige Antwort nur 90 % der maximal erreichbaren Punktzahl des ersten Versuchs gewertet.</p>';
+$string['penaltyfactor_help'] = '## Höhe des Punktabzugs
+Legen Sie fest, welcher Anteil an der erreichbaren Punktzahl für jede falsche Antwort abgezogen wird. Diese Funktion ist nur dann bedeutsam, wenn der adaptive Modus eingeschaltet ist. Der Wert sollte zwischen 0 und 1 liegen. Der Wert "1" bedeutet: Nur bei einer richtigen Antwort im ersten Versuch gibt es Punkte. Der Wert "=" bedeutet: Bei jedem Versuch - auch dem wiederholten - kann die volle Punktzahl erreicht werden. Der Wert "0,1" bedeutet: Beim zweiten Versuch werden für die richtige Antwort nur 90 % der maximal erreichbaren Punktzahl des ersten Versuchs gewertet.';
 $string['penaltyforeachincorrecttry'] = 'Abzug für jeden falschen Versuch';
 $string['penaltyforeachincorrecttry_help'] = 'Sofern der Test im Modus \'Mehrfachbeantwortung (mit Hinweisen)\' oder im Modus \'Mehrfachbeantwortung (mit Abzügen)\' durchgeführt wird, bei dem die Teilnehmer/innen mehrere Versuche zur richtigen Beantwortung haben, kontrolliert diese Option die Höhe des Abzugs für jeden falschen Versuch.
-
 Der Abzug wird dabei als Prozentzahl zur erreichbaren Punktzahl angegeben: Gäbe es beispielsweise 3 Punkte und der Abzug wäre 0.3333333, würde eine richtige Antwort im ersten Versuch mit 3 Punkten gewertet, im zweiten Versuch mit 2 Punkten und im dritten Versuch nur noch mit 1 Punkt.';
 $string['permissionedit'] = 'Diese Frage bearbeiten';
 $string['permissionmove'] = 'Diese Frage verschieben';
@@ -421,7 +399,7 @@ $string['started'] = 'Begonnen';
 $string['state'] = 'Status';
 $string['step'] = 'Schritt';
 $string['stoponerror'] = 'Bei Fehler anhalten';
-$string['stoponerror_help'] = 'Die Einstellung legt fest, ob der Importprozess gestoppt werden soll, wenn ein Fehler entdeckt wird. In dem Fall wird keine Frage importiert. Andernfalls werden korrekte Fragen importiert, fehlerhafte ignoriert. ';
+$string['stoponerror_help'] = 'Die Einstellung legt fest, ob der Importprozess gestoppt werden soll, wenn ein Fehler entdeckt wird. In dem Fall wird keine Frage importiert. Andernfalls werden korrekte Fragen importiert, fehlerhafte ignoriert.';
 $string['submissionoutofsequence'] = 'Benutzen Sie nicht den Zurück-Button, wenn Sie Fragen bearbeiten.';
 $string['submissionoutofsequencefriendlymessage'] = 'Sie haben Daten außerhalb der vorgesehenen Reihenfolge eingegeben. Dies kann passieren wenn Sie die Browserfunktion \'Vor\' und \'Zurück\' benutzen. Bitte verwenden Sie nicht die Browserfunktionen, um im Test zwischen Seiten zu wechseln. Dies ist auch möglich, wenn Sie etwas anklicken während die Seite noch geladen wird. Verwenden Sie nur die Taste <strong>Weiter</strong>.';
 $string['submit'] = 'Abgabe';

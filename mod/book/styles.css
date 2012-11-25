@@ -34,9 +34,6 @@
 }
 
 /* toc style NONE */
-.mod_book .book_toc_none {
-  font-size: 0.8em;
-}
 .mod_book .book_toc_none ul {
     margin-left: 5px;
     padding-left: 0px;
@@ -56,9 +53,6 @@
 
 
 /* toc style NUMBERED */
-.mod_book .book_toc_numbered {
-  font-size: 0.8em;
-}
 .mod_book .book_toc_numbered ul {
     margin-left: 5px;
     padding-left: 0px;
@@ -78,9 +72,6 @@
 
 
 /*toc style BULLETS */
-.mod_book .book_toc_bullets {
-  font-size: 0.8em;
-}
 .mod_book .book_toc_bullets ul {
     margin-left: 5px;
     padding-left: 0px;
@@ -100,9 +91,6 @@
 
 
 /* toc style INDENTED*/
-.mod_book .book_toc_indented {
-  font-size: 0.8em;
-}
 .mod_book .book_toc_indented ul {
     margin-left: 5px;
     padding-left: 0px;

@@ -26,9 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['uploadusers_help'] = 'Users may be uploaded (and optionally enrolled in courses) via text file. The format of the file should be as follows:
-
 * Each line of the file contains one record
 * Each record is a series of data separated by commas (or other delimiters)
 * The first record contains a list of fieldnames defining the format of the rest of the file
-* Required fieldnames are username, password, firstname, lastname, email
-';
+* Required fieldnames are username, password, firstname, lastname, email';

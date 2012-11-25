@@ -36,7 +36,6 @@ $string['gradingmanagement'] = 'Valutazione avanzata';
 $string['gradingmanagementtitle'] = 'Valutazione avanzata: {$a->component} ({$a->area})';
 $string['gradingmethod'] = 'Metodo di valutazione';
 $string['gradingmethod_help'] = 'E\' possibile scegliere il metodo di valutazione avanzata da usare per il calcolo dei voti in un determinato contesto.
-
 Per disabilitare la valutazione avanzata ed usare la valutazione default, scegli "Valutazione semplice diretta".';
 $string['gradingmethodnone'] = 'Valutazione semplice diretta';
 $string['gradingmethods'] = 'Metodi di valutazione';
@@ -60,7 +59,6 @@ $string['nosharedformfound'] = 'Non sono sttai trovati modello';
 $string['searchownforms'] = 'includi i miei schemi';
 $string['searchtemplate'] = 'Ricerca schemi di valutazione';
 $string['searchtemplate_help'] = 'E\' possibile cercare uno schema di valutazione da usare come modello. Inserisci le parole da cercare nel nome degli schemi, nella descrizione o nel testo dello schema. Per cercare una frase, racchiudi le parole tra doppi apici.
-
 Per default i risultati della ricerca includeranno solo gli schemi salvati come modello. Se lo desideri, puoi includere nei risultati i tuoi schemi, in questo modo puoi riutilizzare facilmente i tuoi schemi senza doverli pubblicare. Possono essere riutilizzati solo gli schemi contrassegnati come "Pronti all\'uso" .';
 $string['statusdraft'] = 'Bozza';
 $string['statusready'] = 'Pronta all\'uso';

@@ -38,15 +38,14 @@ $string['layoutvertical'] = 'Colonna verticale di pulsanti radio';
 $string['nooptionsforsubquestion'] = 'Non è possibile ricavare le opzioni per la porzione di domanda # {$a->sub}';
 $string['noquestions'] = 'La domanda Cloze <strong>{$a}</strong>" non contiene nessuna domanda';
 $string['pluginname'] = 'Risposte inglobate (Cloze)';
+$string['pluginname_help'] = 'Le domande inglobate (Cloze) consistono in un passaggio di testo con uno o più box contenenti domande di tipo a risposta multipla, a risposta breve o altro.';
 $string['pluginnameadding'] = 'Creazione domanda a Risposte inglobate (Cloze)';
 $string['pluginnameediting'] = 'Modifica domanda a Risposte inglobate (Cloze)';
-$string['pluginname_help'] = 'Le domande inglobate (Cloze) consistono in un passaggio di testo con uno o più box contenenti domande di tipo a risposta multipla, a risposta breve o altro.';
 $string['pluginnamesummary'] = 'Le domande di questo tipo sono molto flessibili ma possono essere create solamente inserendo testo con caratteri di controllo speciali per usare domande inglobate di tipo riposta multipla, risposta breve e numerica.';
 $string['qtypenotrecognized'] = 'Il tipo di domanda {$a} non è stato riconosciuto';
 $string['questiondefinition'] = 'Definizione della domanda';
 $string['questiondeleted'] = 'Domanda eliminata';
-$string['questioninquiz'] = '	
-<ul> <li>aggiungi o elimina domande, </li> <li>cambia l\'ordine delle domande nel testo,</li> <li>cambiail tipo di domanda (numerica, risposta breve, scelta multipla). </li></ul>';
+$string['questioninquiz'] = '<ul> <li>aggiungi o elimina domande, </li> <li>cambia l\'ordine delle domande nel testo,</li> <li>cambiail tipo di domanda (numerica, risposta breve, scelta multipla). </li></ul>';
 $string['questionnadded'] = 'Domanda inserita';
 $string['questionnotfound'] = 'Non è possibile trovare la domanda relativa alla porzione di domanda #{$a}';
 $string['questionsaveasedited'] = 'La domanda sarà salvata con le modifiche apportate';

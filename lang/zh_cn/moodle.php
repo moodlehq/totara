@@ -210,18 +210,15 @@ $string['cancel'] = '取消';
 $string['cancelled'] = '取消';
 $string['categories'] = '课程分类';
 $string['category'] = '课程分类';
+$string['category_help'] = '**课程类别**
+您的 Moodle 管理员可能已经设立了几个课程分类。
+例如，“自然科学”，“人文科学”，“公共卫生”等。
+选择一个最适合用于您的课程的。这个选择将影响到您的课程在课程列表上的显示，也会更容易的让学生们找到您的课程。';
 $string['categoryadded'] = '已经添加类别‘{$a}’';
 $string['categorycontents'] = '课程子目录和课程';
 $string['categorycurrentcontents'] = '{$a}的内容';
 $string['categorydeleted'] = '已经删除类别‘{$a}’';
 $string['categoryduplicate'] = '“{$a}”类别已经存在!';
-$string['category_help'] = '<p align="center"><b>课程类别</b></p>
-
-<p>您的 Moodle 管理员可能已经设立了几个课程分类。</p>
-
-<p>例如，“自然科学”，“人文科学”，“公共卫生”等。</p>
-
-<p>选择一个最适合用于您的课程的。这个选择将影响到您的课程在课程列表上的显示，也会更容易的让学生们找到您的课程。</p>';
 $string['categorymodifiedcancel'] = '课程目录被编辑，请取消后重试。';
 $string['categoryname'] = '类别名称';
 $string['categoryupdated'] = '‘{$a}’已经更新';
@@ -286,9 +283,7 @@ $string['continuetocourse'] = '点击这里进入您的课程';
 $string['convertingwikitomarkdown'] = '把Wiki转为Markdown';
 $string['cookiesenabled'] = '您浏览器的 cookies 设置必须打开';
 $string['cookiesenabled_help'] = '本站使用两个cookie：
-
 最重要的是会话cookie，通常叫做 MoodleSession。您必须在浏览器里接受这个 cookie，才能使您的登录在页与页之间连续有效。当您登出或关闭浏览器，这个 cookie 在浏览器和服务器里都会被删除。
-
 另一个 cookie 纯粹是为了方便，通常被叫做类似 MOODLEID 之类的名字。它只用来在浏览器里记住您的用户名。这意味着当您再次回到本站，登录页面里的用户名已经替您填好了。拒绝此 cookie 是安全的，只不过每次登录都要重新输入用户名而已。';
 $string['cookiesnotenabled'] = '很不幸，您的浏览器目前并未开启对 cookie 的支持';
 $string['copy'] = '复制';
@@ -339,9 +334,7 @@ $string['coursehidden'] = '此课程目前并不对学生开放';
 $string['courseinfo'] = '课程信息';
 $string['courselegacyfiles'] = '课程文件';
 $string['courselegacyfiles_help'] = '“课程文件”用来与Moodle 1.9及更早的版本兼容。存放于此的文件可被课程所有成员访问，无论您是否加了指向它们的链接。并且您不会知道这些文件都被用在Moodle的哪里。
-
 如果您在这里保存课程文件，将会遇到一些关于隐私和安全的问题。在备份、课程导入、内容共享或复用时，有可能遇到文件丢失的情况。因此，建议您不用使用此存储区，除非您很清楚您正在做什么。
-
 下面的链接会提供进一步的信息，并展示给您一些在Moodle 2中管理文件的更好方法。';
 $string['coursemessage'] = '课程用户消息';
 $string['coursenotaccessible'] = '这个课程未对公众开放';
@@ -643,12 +636,12 @@ $string['expirynotifyemail'] = '{$a->threshold}天之后，本课程里下列学
 您可以到下述页面延长他们的选课时间：
 {$a->extendurl}';
 $string['expirynotifystudents'] = '是否提醒学生';
+$string['expirynotifystudents_help'] = '如果指定了选课周期，那么这项设置会决定学生在即将被课程注销时是否会收到email通知。';
 $string['expirynotifystudentsemail'] = '亲爱的{$a->studentstr}：
 
 本信提醒您在课程“{$a->course}”的选课将在{$a->threshold}天之后到期。
 
 如有疑问，请联系{$a->teacherstr}。';
-$string['expirynotifystudents_help'] = '如果指定了选课周期，那么这项设置会决定学生在即将被课程注销时是否会收到email通知。';
 $string['expirythreshold'] = '课程到期后期限';
 $string['expirythreshold_help'] = '如果指定了选课周期，那么这项设置会决定在学生被课程注销之前多少天发出通知。';
 $string['explanation'] = '解释';
@@ -678,8 +671,8 @@ $string['forcedmodeinbrackets'] = '{$a}(强制模式)';
 $string['forcelanguage'] = '指定课程语言类型';
 $string['forceno'] = '不强制';
 $string['forcepasswordchange'] = '强制修改密码';
-$string['forcepasswordchangecheckfull'] = '您十分确定要将密码强行改为 {$a} 吗？';
 $string['forcepasswordchange_help'] = '如果此复选框被勾选，那么用户在下次登录时会被要求修改密码';
+$string['forcepasswordchangecheckfull'] = '您十分确定要将密码强行改为 {$a} 吗？';
 $string['forcepasswordchangenot'] = '不能强制将密码改为 {$a}';
 $string['forcepasswordchangenotice'] = '继续下去之前，您必须修改您的密码。';
 $string['forcetheme'] = '强制使用主题';
@@ -689,7 +682,6 @@ $string['forgottenduplicate'] = '该邮件地址已被几个账户使用了，�
 $string['forgotteninvalidurl'] = '无效的重置密码链接';
 $string['format'] = '格式';
 $string['format_help'] = '课程格式决定了课程页面的布局。
-
 * SCORM格式 - 在课程页面的第一节显示一个SCORM包（也可以使用SCORM/AICC模块）
 * 社区格式 - 在课程页面显示一个讨论区
 * 主题格式 - 课程页面分为若干个小节，每个小节一个主题
@@ -786,8 +778,8 @@ $string['helpwiththis'] = '帮助';
 $string['hiddenassign'] = '隐藏分配';
 $string['hiddenfromstudents'] = '对学生隐藏';
 $string['hiddensections'] = '隐藏小节';
-$string['hiddensectionscollapsed'] = '以折叠方式显示隐藏的小节';
 $string['hiddensections_help'] = '此设置决定隐藏的小节是向学生折叠显示（比如在星期格式的课程中表示假期）还是完全隐藏。';
+$string['hiddensectionscollapsed'] = '以折叠方式显示隐藏的小节';
 $string['hiddensectionsinvisible'] = '完全不显示隐藏的小节';
 $string['hide'] = '隐藏';
 $string['hideadvancedsettings'] = '隐藏高级设置';
@@ -815,13 +807,12 @@ $string['icon'] = '图标';
 $string['icqnumber'] = 'ICQ号码';
 $string['idnumber'] = '学号';
 $string['idnumbercourse'] = '课程编号';
+$string['idnumbercourse_help'] = '课程的编号用于和外部系统匹配——它从不显示于Moodle的内部。如果您的课程有一个正式的编号，可以在这里使用它，否则您可以空着它。';
 $string['idnumbercoursecategory'] = '分类ID';
 $string['idnumbercoursecategory_help'] = '课程分类的ID号只用来和外部系统匹配，不会在网站的任何地方显示。如果此分类有官方编号，可以在此输入，否则可以留空。';
-$string['idnumbercourse_help'] = '课程的编号用于和外部系统匹配——它从不显示于Moodle的内部。如果您的课程有一个正式的编号，可以在这里使用它，否则您可以空着它。';
 $string['idnumbermod'] = 'ID号';
 $string['idnumbermod_help'] = 'ID号可以在成绩计算公式中唯一标识一个活动。
 如果这个活动与任何成绩计算公式无关，那么它的ID号可以为空。
-
 ID号也可以在成绩薄中设定，不过只能在活动设置页面里编辑。';
 $string['idnumbertaken'] = '该ID已使用';
 $string['imagealt'] = '图片描述';
@@ -889,22 +880,22 @@ $string['loggedinas'] = '您以{$a}登录';
 $string['loggedinasguest'] = '您正在用访客帐号访问';
 $string['loggedinnot'] = '您尚未登录。';
 $string['login'] = '登录';
+$string['login_failure_logs'] = '登录失败日志';
 $string['loginalready'] = '您已经登录';
 $string['loginas'] = '登录为';
 $string['loginaspasswordexplain'] = '<p>要使用此功能，您需要特别的“登录为密码”。<br />如果您没有，请和服务器管理员联系。</p>';
-$string['login_failure_logs'] = '登录失败日志';
 $string['loginguest'] = '以访客身份浏览';
 $string['loginsite'] = '登录本网站';
 $string['loginsteps'] = '嗨！为了能完全访问本站，您需要花费一分钟在本站建立一个新帐号。某些课程可能还设有只需输入一次的“选课密钥”，但目前还不需要。下面是步骤：
-   <ol>
-   <li>将您个人的详细信息填入<a href="{$a}">注册表单</a>中。</li>
-   <li>一封Email将被立刻发往您的Email地址。</li>
-   <li>阅读您收到的Email，点击信中包含的网络链接。</li>
-   <li>您的帐号会得到确认，并且可以登录了。</li>
-   <li>现在，选择您想要参与的课程。</li>
-   <li>如果您被提示要求输入“选课密码”，请输入教师给您的密码。这样，您就选课成功了。</li>
-   <li>您现在可以完全访问此课程了。从现在开始，您只需要输入用户名和密码（在本页的表单中），就可以登录并访问任何您已经加入的课程。</li>
-   </ol>';
+<ol>
+<li>将您个人的详细信息填入<a href="{$a}">注册表单</a>中。</li>
+<li>一封Email将被立刻发往您的Email地址。</li>
+<li>阅读您收到的Email，点击信中包含的网络链接。</li>
+<li>您的帐号会得到确认，并且可以登录了。</li>
+<li>现在，选择您想要参与的课程。</li>
+<li>如果您被提示要求输入“选课密码”，请输入教师给您的密码。这样，您就选课成功了。</li>
+<li>您现在可以完全访问此课程了。从现在开始，您只需要输入用户名和密码（在本页的表单中），就可以登录并访问任何您已经加入的课程。</li>
+</ol>';
 $string['loginstepsnone'] = '<p>嗨! </p>
 <p>为了完全访问课程您必须申请一个新帐号。</p>
 <p>您所需要做的是创建一个用户名和密码，并在本页面中使用。</p>
@@ -939,11 +930,9 @@ $string['maximumgrade'] = '最高分值';
 $string['maximumgradex'] = '最高分：{$a}';
 $string['maximumshort'] = '最大';
 $string['maximumupload'] = '最大上传文件';
-$string['maximumupload_help'] = '<p align="center"><b>课程上传大小</b></p>
-
-<p>此设置定义在课程中学生可以上传的最大的文件尺寸。它受到管理员设置的全站设置的限制。</p>
-
-<p>每个活动模块里的设置也可以进一步地限制它。</p>';
+$string['maximumupload_help'] = '**课程上传大小**
+此设置定义在课程中学生可以上传的最大的文件尺寸。它受到管理员设置的全站设置的限制。
+每个活动模块里的设置也可以进一步地限制它。';
 $string['maxnumberweeks'] = '星期/主题的最大数目';
 $string['maxnumberweeks_desc'] = '此设置控制在课程设置中“星期/主题最大数目”里出现的最大选项。';
 $string['maxnumcoursesincombo'] = '浏览<a href="{$a->link}">{$a->numberofcourses}门课程</a>。';
@@ -1042,18 +1031,18 @@ $string['new'] = '新';
 $string['newaccount'] = '新帐号';
 $string['newcourse'] = '新课程';
 $string['newpassword'] = '新密码';
-$string['newpasswordfromlost'] = '<strong>注意：</strong>您的<strong>当前密码</strong> 将在两封email的<strong>第二</strong>封里发送给您。这是恢复丢失密码流程的一部分。在从此屏幕继续之前，请确认您收到了新的密码。';
 $string['newpassword_help'] = '输入一个新密码或留空以保留当前密码。';
+$string['newpasswordfromlost'] = '<strong>注意：</strong>您的<strong>当前密码</strong> 将在两封email的<strong>第二</strong>封里发送给您。这是恢复丢失密码流程的一部分。在从此屏幕继续之前，请确认您收到了新的密码。';
 $string['newpasswordtext'] = '{$a->firstname}，您好：
 
 您在“{$a->sitename}”上的帐号密码已被重设为一个新生成的临时密码。
 
 现在您的登录信息是：
- 用户名：{$a->username}
- 密码：{$a->newpassword}
+用户名：{$a->username}
+密码：{$a->newpassword}
 
 请到这里更改您的密码：
- {$a->link}
+{$a->link}
 
 在多数的邮件程序中，这个地址应该显示为蓝色的链接，可以直接点击。如果不是这样，请将以上地址复制粘贴到网页浏览器窗口上部的地址栏中，打开这个网页。
 
@@ -1065,13 +1054,10 @@ $string['newpicture_help'] = '要添加新头像，先浏览和选择一个JPG�
 $string['newsitem'] = '新闻条目';
 $string['newsitems'] = '新闻条目';
 $string['newsitemsnumber'] = '显示的新闻条目数';
-$string['newsitemsnumber_help'] = '<p align="center"><b>课程新闻项</b></p>
-
-<p>一个叫做“新闻”的特殊讨论区会出现在“星期”和“主题”式的课程中。这是一个很适合用来向所有学生发布通知的地方。（缺省情况，所有学生都订阅此论坛，并会通过email收到您的通知。）</p>
-
-<p>此设置决定在课程主页右边的新闻框里显示几个最新的新闻条目。</p>
-
-<p>如果您设置其为“0新闻条目”，那么新闻框根本不会被显示。</p>';
+$string['newsitemsnumber_help'] = '**课程新闻项**
+一个叫做“新闻”的特殊讨论区会出现在“星期”和“主题”式的课程中。这是一个很适合用来向所有学生发布通知的地方。（缺省情况，所有学生都订阅此论坛，并会通过email收到您的通知。）
+此设置决定在课程主页右边的新闻框里显示几个最新的新闻条目。
+如果您设置其为“0新闻条目”，那么新闻框根本不会被显示。';
 $string['newuser'] = '新用户';
 $string['newusernewpasswordsubj'] = '新用户账号';
 $string['newusernewpasswordtext'] = '在“{$a->sitename}”上已经为您创建一个新帐户，新的临时密码已经发给您。';
@@ -1213,8 +1199,7 @@ $string['pleasesearchmore'] = '请多搜一些关键词';
 $string['pleaseusesearch'] = '请使用搜索功能';
 $string['plugin'] = '插件';
 $string['plugincheck'] = '检查插件';
-$string['plugindeletefiles'] = '与插件“{$a->name}”相关的所有数据都已经从数据库删除。为了阻止插件被重新安装，您现在就应该从服务器删除此目录：{$a->directory}
-';
+$string['plugindeletefiles'] = '与插件“{$a->name}”相关的所有数据都已经从数据库删除。为了阻止插件被重新安装，您现在就应该从服务器删除此目录：{$a->directory}';
 $string['pluginsetup'] = '创建插件表格';
 $string['policyaccept'] = '我了解和同意了';
 $string['policyagree'] = '如要继续使用此站，您必须同意此协议。您同意么?';
@@ -1354,21 +1339,15 @@ $string['savedat'] = '保存在：';
 $string['savepreferences'] = '保存使用偏好';
 $string['saveto'] = '保存到';
 $string['scale'] = '等级';
-$string['scale_help'] = '<p align="center"><b>等级</b></p>
-
-<p>教师可以在课程中为任意可评分的活动新建自定义的等级。</p>
-
-<p>等级的名字应是一个可以清晰地分辨它的短语：它将出现在等级选择列表，也会出现在即时帮助按钮上。</p>
-
-<p>等级由一列按由负到正的次序排好的值定义，用逗号分隔。例如：</p>
-
-<blockquote><i>
-   令人失望,不够好,平均水平,好,很好,优秀！
-</i></blockquote>
-
-<p>等级应该也包含一个良好的描述来说明它是什么和应该如何被使用。此描述会出现在教师与学生的帮助页内。</p>
-
-<p>最后，这里有一个或多个“标准”等级由系统管理员在网站上定义。它们可以在所有的课程里使用。</p>';
+$string['scale_help'] = '**等级**
+教师可以在课程中为任意可评分的活动新建自定义的等级。
+等级的名字应是一个可以清晰地分辨它的短语：它将出现在等级选择列表，也会出现在即时帮助按钮上。
+等级由一列按由负到正的次序排好的值定义，用逗号分隔。例如：
+> *
+> 令人失望,不够好,平均水平,好,很好,优秀！
+> *
+等级应该也包含一个良好的描述来说明它是什么和应该如何被使用。此描述会出现在教师与学生的帮助页内。
+最后，这里有一个或多个“标准”等级由系统管理员在网站上定义。它们可以在所有的课程里使用。';
 $string['scales'] = '等级';
 $string['scalescustom'] = '自定义等级';
 $string['scalescustomcreate'] = '添加等级';
@@ -1385,14 +1364,13 @@ $string['screenreaderuse_help'] = '如果设为是，很多地方（比如聊天
 $string['screenreaderyes'] = '是';
 $string['screenshot'] = '抓屏';
 $string['search'] = '搜索';
+$string['search_help'] = '基本搜索可以在文本中查找一个或多个词。词之间用空格分隔。只有一个字母的单词会被忽略。
+如要进行高级搜索，直接点击搜索按钮，搜索框中什么都不要输入，便可访问高级搜索表单。';
 $string['searchagain'] = '再次搜索';
 $string['searchbyemail'] = '用email地址搜索';
 $string['searchbyusername'] = '用用户名搜索';
 $string['searchcourses'] = '搜索课程';
 $string['searchhelp'] = '您可以使用多关键字搜索。<br />word: 搜索任何包含该关键字的内容。<br />+word: 严格匹配。<br />-word: 结果中不含该关键词。';
-$string['search_help'] = '基本搜索可以在文本中查找一个或多个词。词之间用空格分隔。只有一个字母的单词会被忽略。
-
-如要进行高级搜索，直接点击搜索按钮，搜索框中什么都不要输入，便可访问高级搜索表单。';
 $string['searchoptions'] = '搜索选项';
 $string['searchresults'] = '搜索结果';
 $string['sec'] = '秒';
@@ -1450,13 +1428,10 @@ $string['showcommentsnonjs'] = '显示评论';
 $string['showdescription'] = '在课程页面显示简介';
 $string['showdescription_help'] = '如果启用，上面的简介信息会显示在课程页面中，紧挨着到活动/资源的链接。';
 $string['showgrades'] = '向学生显示成绩单';
-$string['showgrades_help'] = '<p align="center"><b>成绩</b></p>
-
-<p>很多活动都允许打分。</p>
-
-<p>缺省情况，课程中的所有有成绩的活动的结果都可以在“成绩”页看到。该页可从课程主页访问。</p>
-
-<p>如果教师并不想在课程中使用成绩，或者想向学生隐藏成绩，他可以在课程设置里禁止显示成绩。这只会使结果不向学生显示，但不影响再活动中使用或设置成绩。</p>';
+$string['showgrades_help'] = '**成绩**
+很多活动都允许打分。
+缺省情况，课程中的所有有成绩的活动的结果都可以在“成绩”页看到。该页可从课程主页访问。
+如果教师并不想在课程中使用成绩，或者想向学生隐藏成绩，他可以在课程设置里禁止显示成绩。这只会使结果不向学生显示，但不影响再活动中使用或设置成绩。';
 $string['showlistofcourses'] = '显示课程列表';
 $string['showmodulecourse'] = '显示包含活动的课程列表';
 $string['showonly'] = '只显示';
@@ -1465,15 +1440,11 @@ $string['showonlyweek'] = '只显示第{$a}周安排';
 $string['showperpage'] = '每页显示{$a}';
 $string['showrecent'] = '显示最近动态';
 $string['showreports'] = '是否显示活动报表';
-$string['showreports_help'] = '<p align="center"><b>活动报表</b></p>
-
-<p>每个参与者都有一个活动报表，可以显示他们再次课程中的活动。除了列出他们的贡献之外，这些报表还包括细致的访问日志。</p>
-
-<p>教师总可以访问这些报表。在每个用户的个人资料页面可以看到访问的按钮。</p>
-
-<p>学生对自己的报表的访问权限由教师在课程设置里控制。对一些课程来说，这些报表是体现学生在在线环境里的表现的好工具，但对另外一些课程来说，这可能并不必要。</p>
-
-<p>关闭它的另一个原因是报表在生成时会给服务器带来一点负荷。对于较大或时间较长的课程，可能关闭它效率能更高一些。<p>';
+$string['showreports_help'] = '**活动报表**
+每个参与者都有一个活动报表，可以显示他们再次课程中的活动。除了列出他们的贡献之外，这些报表还包括细致的访问日志。
+教师总可以访问这些报表。在每个用户的个人资料页面可以看到访问的按钮。
+学生对自己的报表的访问权限由教师在课程设置里控制。对一些课程来说，这些报表是体现学生在在线环境里的表现的好工具，但对另外一些课程来说，这可能并不必要。
+关闭它的另一个原因是报表在生成时会给服务器带来一点负荷。对于较大或时间较长的课程，可能关闭它效率能更高一些。';
 $string['showsettings'] = '显示设置';
 $string['showtheselogs'] = '显示这些日志';
 $string['showthishelpinlanguage'] = '显示本帮助的{$a}版本';
@@ -1635,8 +1606,7 @@ $string['update'] = '更改';
 $string['updated'] = '已更改的{$a}';
 $string['updatemymoodleoff'] = '停止自定义此页';
 $string['updatemymoodleon'] = '自定义此页';
-$string['updatemyprofile'] = '更新个人资料
-';
+$string['updatemyprofile'] = '更新个人资料';
 $string['updatesevery'] = '每隔{$a}秒刷新一次';
 $string['updatethis'] = '更改这个{$a}';
 $string['updatethiscourse'] = '更改该课程';

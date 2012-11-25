@@ -166,8 +166,8 @@ $string['globalsquoteshelp'] = '<p> Nie jest zalecane ustawienie równocześnie 
 <p> Zalecane ustawienie: <b>magic_quotes_gpc = On</b> i <b>register_globals = Off</b> w twoim pliku php.ini</p>
 
 <p> Jeśli nie posiadasz dostępu do swojego php.ini, możesz zamieścić następującą linię w pliku called.htacces w swoim katalogu Moodle.
-	<blockquote>php_value magic_quotes_gpc On</blockquote>
-   	<blockquote>php_value register_globals Off</blockquote>
+<blockquote>php_value magic_quotes_gpc On</blockquote>
+<blockquote>php_value register_globals Off</blockquote>
 </p>';
 $string['inputdatadirectory'] = 'Katalog danych:';
 $string['inputwebadress'] = 'Adres internetowy:';
@@ -182,7 +182,7 @@ $string['magicquotesruntimehelp'] = 'Aby Moodle funkcjonowało poprawnie tryb pr
 <p> Domyślne ustawienie jest wyłączone ... zobacz ustawienie <b>magic_quotes_runtime</b> w swoim pliku php.ini.</p>
 
 <p>Jeśli nie posiadasz dostępu do swojego php.ini, możesz zamieścić następującą linię w pliku called.htacces w swoim katalogu Moodle:
-	 <blockquote>php_value magic_quotes_runtime Off</blockquote> </p>';
+<blockquote>php_value magic_quotes_runtime Off</blockquote> </p>';
 $string['memorylimit'] = 'Ograniczenie pamięci';
 $string['memorylimiterror'] = '= Limit pamięci PHP jest ustawiony zbyt nisko ... może to powodować problemy w przyszłości';
 $string['memorylimithelp'] = '<p>Limit pamięci PHP dla Twojego serwera jest ustawiony obecnie na {$a}.</p>
@@ -225,8 +225,8 @@ $string['pass'] = 'Udane';
 $string['paths'] = 'Ścieżki';
 $string['pathserrcreatedataroot'] = 'Katalog danych ({$a->dataroot}) nie może zostać utworzony przez instalator.';
 $string['pathshead'] = 'Potwierdź ścieżki';
-$string['pathsrodataroot'] = 'Główny katalog danych nie ma uprawnień do zapisu. ';
-$string['pathsroparentdataroot'] = 'Nadrzędny katalog ({$a->parent}) jest tylko do odczytu. Katalog danych ({$a->dataroot}) nie może zostać utworzony przez instalator. ';
+$string['pathsrodataroot'] = 'Główny katalog danych nie ma uprawnień do zapisu.';
+$string['pathsroparentdataroot'] = 'Nadrzędny katalog ({$a->parent}) jest tylko do odczytu. Katalog danych ({$a->dataroot}) nie może zostać utworzony przez instalator.';
 $string['pathssubdirroot'] = 'Pełna ścieżka do katalogu z instalacją Moodle.';
 $string['pathsunsecuredataroot'] = 'Lokalizacja głównego katalogu danych nie jest bezpieczna';
 $string['pathswrongadmindir'] = 'Katalog admin nie istnieje';

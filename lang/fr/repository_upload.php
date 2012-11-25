@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'Configuration déposer des fichiers';
 $string['pluginname'] = 'Déposer un fichier';
 $string['pluginname_help'] = 'Déposer un fichier dans Moodle';
+$string['upload:view'] = 'Déposer des fichiers à l\'aide du sélecteur de fichiers';
 $string['upload_error_cant_write'] = 'Échec de l\'écriture du fichier sur le disque.';
 $string['upload_error_extension'] = 'Une extension PHP a stoppé le dépôt du fichier.';
 $string['upload_error_form_size'] = 'Le fichier déposé dépasse la taille spécifiée par la directive max_file_size spécifiée dans le formulaire HTML.';
@@ -35,4 +36,3 @@ $string['upload_error_ini_size'] = 'Le fichier déposé dépasse la taille spéc
 $string['upload_error_no_file'] = 'Aucun fichier n\'a été déposé.';
 $string['upload_error_no_tmp_dir'] = 'PHP ne dispose pas d\'un dossier temporaire.';
 $string['upload_error_partial'] = 'Le fichier n\'a été que partiellement déposé.';
-$string['upload:view'] = 'Déposer des fichiers à l\'aide du sélecteur de fichiers';

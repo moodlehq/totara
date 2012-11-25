@@ -90,41 +90,25 @@ $string['exportcategory'] = 'Eksportuj kategorię';
 $string['exportfilename'] = 'quiz';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
 $string['exportquestions'] = 'Eksportuj pytania do pliku';
-$string['exportquestions_help'] = '<P ALIGN=CENTER><B>Eksportowanie pytań danej kategorii</B></P>
-
-<P>Ta funkcja eksportuje całą kategorię do pliku tekstowego.
-
-<p>Zwracamy uwagę na to, że wiele formatów nie obsługuje wszystkich
+$string['exportquestions_help'] = '<P ALIGN=CENTER>**Eksportowanie pytań danej kategorii**</P>
+Ta funkcja eksportuje całą kategorię do pliku tekstowego.
+Zwracamy uwagę na to, że wiele formatów nie obsługuje wszystkich
 informacji o pytaniach i te informacje zostaną utracone. Nie należy
 się spodziewać, że wyeksportowanie kategorii i późniejsze zaimportowanie
-da zestaw takich samych pytań. Ponadto niektóre typy pytań mogą się zupełnie nie wyeksportować, jeśli nie są obsługiwane w danym formacie.</p>
+da zestaw takich samych pytań. Ponadto niektóre typy pytań mogą się zupełnie nie wyeksportować, jeśli nie są obsługiwane w danym formacie.
+Obecnie wspierane formaty to:
+**Format GIFT**
+Format GIFT jest najbardziej wszechstronnym formatem. Został zaprojektowany jako prosta metoda dla nauczycieli tworzacych pytania jako plik tekstowy. GIFT obsługuje pytania Wielokrotnego wyboru, Prawda-Fałsz, Krótkie odpowiedzi, Dopasuj odpowiedź, Numeryczne jak i zadania typu "wstaw brakujące słowo".
+Kilka typów pytań może być użyytych w jednym pliku tekstowym. Ponadto format ten zezwala na umieszczanie komentarzy, nazw pytań, informacji zwrotnych i ważenie ocen.
+Oto kilka przykładów:
 
-<P>Obecnie wspierane formaty to:</p>
-
-<P><B>Format GIFT</B></P>
-<ul>
-<p>Format GIFT jest najbardziej wszechstronnym formatem. Został zaprojektowany jako prosta metoda dla nauczycieli tworzacych pytania jako plik tekstowy. GIFT obsługuje pytania Wielokrotnego wyboru, Prawda-Fałsz, Krótkie odpowiedzi, Dopasuj odpowiedź, Numeryczne jak i zadania typu "wstaw brakujące słowo".</p>
-
-<p>Kilka typów pytań może być użyytych w jednym pliku tekstowym. Ponadto format ten zezwala na umieszczanie komentarzy, nazw pytań, informacji zwrotnych i ważenie ocen. </p>
-
-<p>Oto kilka przykładów:</p>
-
-<pre>
 CzasNaE-Biznes to?{~codzienna gazeta ~książka =serwis www i e-zin}
-
 CzasNaE-Biznes to {~codzienna gazeta ~książka =serwis www} o marketingu i biznesie.
-
 CzasNaE-Biznes to codzienna gazeta.{FALSE}
-
 CzasNaE-Biznes to?{=serwis www =e-zin}
-
 Kiedy powstał CzasNaE-Biznes?{#2000}
-</pre>
 
-<p align=right><a href="help.php?file=formatgift.html&module=quiz">Więcej o formacie GIFT</a></p>
-</ul>
-
-<P>Tworzymy już nowe formaty: WebCT, IMS QTI i cokolwiek jeszcze zapragną członkowie społeczności Moodle! </p>';
+Tworzymy już nowe formaty: WebCT, IMS QTI i cokolwiek jeszcze zapragną członkowie społeczności Moodle!';
 $string['filecantmovefrom'] = 'Plików pytań nie można przenieść, ponieważ nie masz uprawnień do usuwania plików z miejsca, z którego próbujesz przenieść pytania.';
 $string['filecantmoveto'] = 'Plików pytań nie można przenieść ani skopiować, ponieważ nie masz uprawnień do dodawania plików do miejsca, do którego próbujesz przenieść pytania.';
 $string['fileformat'] = 'Format pliku';
@@ -174,7 +158,7 @@ $string['numquestionsandhidden'] = '{$a->numquestions} (+  {$a->numhidden} ukryt
 $string['options'] = 'Opcje';
 $string['parentcategory'] = 'Kategoria nadrzędna';
 $string['penaltyfactor'] = 'Mnożnik kary';
-$string['penaltyfactor_help'] = '<p>Możesz określić ile ma zostać odjęte za każdym razem od nieprawidłowej odpowiedzi. To działa tylko gdy quiz jest w trybie adaptacyjnym w którym student może wielekrotnie odpowiadać na pytanie. Współczynnik kary może być liczbą od 0 do 1. Współczynnik kary równy 1 oznacza że student musi udzielić poprawnej odpowiedzi za 1 razem. Współczynnik kary równy 0 oznacza ze student może próbować odpowiadać dowolną liczbę razy i wciąż dostanie maksymalną ilość punktów za pytanie. </p>';
+$string['penaltyfactor_help'] = 'Możesz określić ile ma zostać odjęte za każdym razem od nieprawidłowej odpowiedzi. To działa tylko gdy quiz jest w trybie adaptacyjnym w którym student może wielekrotnie odpowiadać na pytanie. Współczynnik kary może być liczbą od 0 do 1. Współczynnik kary równy 1 oznacza że student musi udzielić poprawnej odpowiedzi za 1 razem. Współczynnik kary równy 0 oznacza ze student może próbować odpowiadać dowolną liczbę razy i wciąż dostanie maksymalną ilość punktów za pytanie.';
 $string['permissionedit'] = 'Edytuj to pytanie.';
 $string['permissionmove'] = 'Przesuń to pytanie.';
 $string['permissionsaveasnew'] = 'Zapisz to pytanie jako nowe.';

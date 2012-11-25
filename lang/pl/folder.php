@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Zawartość';
-$string['foldercontent'] = 'Foldery i podfoldery';
 $string['folder:managefiles'] = 'Zarządzaj plikami w folderze modułu';
 $string['folder:view'] = 'Zobacz zawartość folderu';
+$string['foldercontent'] = 'Foldery i podfoldery';
 $string['modulename'] = 'Folder';
 $string['modulenameplural'] = 'Foldery';
 $string['neverseen'] = 'Nigdy nie widziany';

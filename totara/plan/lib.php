@@ -630,6 +630,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         else {
             $out .= $OUTPUT->heading(get_string('activeplans', 'totara_plan'), 3, 'main');
         }
+
+        $list = array();
         foreach ($plans as $p) {
             $attr['class'] = $p->id == $selectedid ? 'dp-menu-selected' : '';
             $list[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $p->id)), $p->name);
@@ -649,6 +651,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         else {
             $out .= $OUTPUT->heading(get_string('unapprovedplans', 'totara_plan'), 3, 'main');
         }
+
+        $list = array();
         foreach ($plans as $p) {
             $attr['class'] = $p->id == $selectedid ? 'dp-menu-selected' : '';
             $list[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $p->id)), $p->name);
@@ -669,6 +673,8 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
         else {
             $out .= $OUTPUT->heading(get_string('completedplans', 'totara_plan'), 3, 'main');
         }
+
+        $list = array();
         foreach ($plans as $p) {
             $attr['class'] = $p->id == $selectedid ? 'dp-menu-selected' : '';
             $list[] = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $p->id)), $p->name);
@@ -1137,7 +1143,7 @@ function totara_plan_comment_validate($comment_param) {
 
 
 function totara_plan_comment_add($comment) {
-    global $CFG, $DB;
+    global $CFG, $DB, $USER;
 
     /// Get the right message data
     $commentuser = $DB->get_record('user', array('id' => $comment->userid));
@@ -1287,7 +1293,8 @@ function totara_plan_comment_add($comment) {
     foreach ($subscribers as $sid) {
         $userto = $DB->get_record('user', array('id' => $sid));
         $event = new stdClass();
-        $event->userfrom = $commentuser;
+        //ensure the message is actually coming from $commentuser, default to support
+        $event->userfrom = ($USER->id == $commentuser->id) ? $commentuser : generate_email_supportuser();
         $event->userto = $userto;
         $event->contexturl = $contexturl;
         $event->contexturlname = $contexturlname;

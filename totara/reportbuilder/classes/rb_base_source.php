@@ -229,7 +229,7 @@ abstract class rb_base_source {
      * @return string Date in a nice format
      */
     function rb_display_nice_date($date, $row) {
-        if ($date && $date > 0) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strfdateshortmonth', 'langconfig'));
         } else {
             return '';
@@ -245,7 +245,7 @@ abstract class rb_base_source {
      * @return string Time in a nice format
      */
     function rb_display_nice_time($date, $row) {
-        if ($date && $date > 0) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strftimeshort', 'langconfig'));
         } else {
             return '';
@@ -262,7 +262,7 @@ abstract class rb_base_source {
      * @return string Date and time in a nice format
      */
     function rb_display_nice_datetime($date, $row) {
-        if ($date && $date > 0) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strfdateattime', 'langconfig'));
         } else {
             return '';
@@ -278,7 +278,7 @@ abstract class rb_base_source {
      * @return string Date and time (including seconds) in a nice format
      */
     function rb_display_nice_datetime_seconds($date, $row) {
-        if ($date && $date > 0) {
+        if ($date && is_numeric($date)) {
             return userdate($date, get_string('strftimedateseconds', 'langconfig'));
         } else {
             return '';
@@ -705,7 +705,7 @@ abstract class rb_base_source {
     function rb_display_link_program_icon($program, $row) {
         global $OUTPUT;
         $programid = $row->program_id;
-        $programicon = $row->program_icon;
+        $programicon = !empty($row->program_icon) ? $row->program_icon : 'default';
         $icon = $OUTPUT->pix_icon('/programicons/' . $programicon, $program, 'totara_core', array('class' => 'course_icon'));
         $link = $OUTPUT->action_link(
             new moodle_url('/totara/program/view.php', array('id' => $programid)),

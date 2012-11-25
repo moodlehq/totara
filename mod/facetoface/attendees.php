@@ -390,7 +390,7 @@ if ($can_approve_requests) {
 
         echo html_writer::table($table);
 
-        echo html_writer::tag('p', html_writer::empty_tag('input', array('type' => 'submit', 'value' => 'Update requests')));
+        echo html_writer::tag('p', html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('updaterequests', 'facetoface'))));
         echo html_writer::end_tag('form');
     }
 }

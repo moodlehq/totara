@@ -41,7 +41,6 @@ $string['enrolstartdate_help'] = 'Bekapcsolása esetén a felhasználók csak ez
 $string['groupkey'] = 'Csoportos beiratkozási kulcs használata';
 $string['groupkey_desc'] = 'Csoportos beiratkozási kulcs használata alapesetben.';
 $string['groupkey_help'] = 'A kurzus elérésének kulcs ismeretéhez kötésén túl a csoportos beiratkozási kulcs használata esetén a felhasználók automatikusan egy csoportba kerülnek, amikor felvesznek egy kurzust.
-
 A csoportos beiratkozási kulcs használatához a kurzusbeállítások között meg kell adni egy beiratkozási kulcsot, a csoportbeállítások között pedig egy csoportos beiratkozási kulcsot.';
 $string['longtimenosee'] = 'Tétlenségi kiiratkoztatás időtartama';
 $string['longtimenosee_help'] = 'Ha egy felhasználó hosszú ideig nem lép be a kurzusba, automatikusan kiiratkoztatja a rendszer. Ez a paraméter határozza meg ennek időtartamát.';
@@ -75,6 +74,6 @@ $string['unenrol'] = 'Felhasználó kiiratkoztatása';
 $string['unenrolselfconfirm'] = 'Biztosan leadja a(z) "{$a}" kurzust?';
 $string['unenroluser'] = 'Biztosan kiiratkoztatja "{$a->user}" felhasználót ebből a kurzusból: "{$a->course}"?';
 $string['usepasswordpolicy'] = 'Jelszóeljárás használata';
-$string['usepasswordpolicy_desc'] = 'Standard jelszóeljárás használata beiratkozási kulcsok esetén ';
+$string['usepasswordpolicy_desc'] = 'Standard jelszóeljárás használata beiratkozási kulcsok esetén';
 $string['welcometocourse'] = 'Üdvözöljük itt: {$a}';
 $string['welcometocoursetext'] = 'Üdvözöljük {$a->coursename} kurzusunkban! Ha még nem tette meg, állítsa be felhasználói profilját, hogy többet megtudjunk Önről: {$a->profileurl}';

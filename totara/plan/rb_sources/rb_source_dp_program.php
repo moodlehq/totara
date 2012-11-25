@@ -338,6 +338,14 @@ class rb_source_dp_program extends rb_base_source {
                 'program_completion'
         );
 
+        $paramoptions[] = new rb_param_option(
+            'exceptionstatus',
+            'CASE WHEN prog_user_assignment.exceptionstatus IN (' . PROGRAM_EXCEPTION_NONE . ',' . PROGRAM_EXCEPTION_RESOLVED .')
+                THEN 0 ELSE 1 END',
+            'prog_user_assignment',
+            'int'
+        );
+
         return $paramoptions;
     }
 

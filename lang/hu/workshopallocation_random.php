@@ -38,7 +38,7 @@ $string['noallocationtoadd'] = 'Nincs hozzáadandó hozzárendelés';
 $string['nogroupusers'] = 'Figyelem: ha a műhelymunka \'látható csoportok\' vagy \'külön csoportok\' üzemmódban van, akkor a felhasználóknak legalább az egyik csoportba KELL tartozni ahhoz, hogy ez az eszköz csoporttársi értékelést rendelhessen hozzájuk. A csoportba nem tartozók új önértékelést hajthatnak végre, illetve törölhetik meglévő értékeléseiket.
 A következő felhasználóknak jelenleg nincs csoportja:  {$a}';
 $string['numofdeallocatedassessment'] = '{$a} értékelés hozzárendelésének megszüntetése';
-$string['numofrandomlyallocatedsubmissions'] = '{$a} leadott munka véletlenszerűen hozzárendelve ';
+$string['numofrandomlyallocatedsubmissions'] = '{$a} leadott munka véletlenszerűen hozzárendelve';
 $string['numofreviews'] = 'Értékelések száma';
 $string['numofselfallocatedsubmissions'] = '{$a} leadott munka saját hozzárendelése';
 $string['numperauthor'] = 'leadott munkánként';

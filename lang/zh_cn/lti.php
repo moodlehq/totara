@@ -32,9 +32,9 @@ $string['basicltiname'] = '活动名称';
 $string['cannot_delete'] = '您不能删除这个工具的配置。';
 $string['cannot_edit'] = '您不能编辑这个工具的配置。';
 $string['comment'] = '评论';
+$string['course_tool_types'] = '课程工具的类型';
 $string['courseid'] = '课程编号';
 $string['coursemisconf'] = '课程配置错误';
-$string['course_tool_types'] = '课程工具的类型';
 $string['curllibrarymissing'] = '要使用 LTI 必须安装 PHP Curl 库';
 $string['custom'] = '定制参数';
 $string['custom_config'] = '使用定制的工具配置。';
@@ -43,15 +43,11 @@ $string['delete_confirmation'] = '您确定要删掉这个外部工具的配置�
 $string['deletetype'] = '删除外部工具配置';
 $string['display_description'] = '启动后显示活动描述';
 $string['display_description_help'] = '如果启用，上面设定的活动描述会显示在工具的内容上面。
-
 此描述可以用来提供工具未提供的各种说明，不过这不是必须的。
-
 如果工具是在新窗口中启动，则永远不会显示描述。';
 $string['display_name'] = '启动后显示活动名';
 $string['display_name_help'] = '如果启用，上面设定的活动名会显示在工具的内容上面。
-
 工具提供商也有可能会显示活动名。此选项可以避免活动名被显示两次。
-
 如果工具是在新窗口中启动，则永远不会显示活动名。';
 $string['donot'] = '不发送';
 $string['donotaccept'] = '不接受';
@@ -77,48 +73,17 @@ $string['tool_settings'] = '工具设置';
 $string['toolsetup'] = '外部工具配置';
 $string['toolurl'] = '工具基地址';
 $string['toolurl_help'] = '工具基地址用来和启动 URL 匹配，以确定使用正确的工具配置。http(s) 前缀可有可无。
-
 此外，如果外部工具实例中未指定启动 URL，会使用此基地址。
 
-<table>
-    <thead>
-        <tr>
-            <td>
-                <b>基地址</b>
-            </td>
-            <td>
-                <b>匹配</b>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                tool.com
-            </td>
-            <td>
-                tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes
-            </td>
-        </tr>
-        <tr>
-            <td>
-                www.tool.com/quizzes
-            </td>
-            <td>
-                tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes
-            </td>
-        </tr>
-        <tr>
-            <td>
-                quiz.tool.com
-            </td>
-            <td>
-                quiz.tool.com, quiz.tool.com/take.php?id=10
-            </td>
-        </tr>
-    </tbody>
-</table>
 
+
+
+
+| **基地址** | **匹配** |
+||
+| tool.com | tool.com, tool.com/quizzes, tool.com/quizzes/quiz.php?id=10, www.tool.com/quizzes |
+| www.tool.com/quizzes | tool.com/quizzes, tool.com/quizzes/take.php?id=10, www.tool.com/quizzes |
+| quiz.tool.com | quiz.tool.com, quiz.tool.com/take.php?id=10 |
 如果同一个域名有两条不同的工具配置，那么会使用匹配度最高的。';
 $string['typename'] = '工具名';
 $string['typename_help'] = '工具名用来在 Moodle 中区分不同的工具。教师在向课程添加外部工具时会看到工具名。';

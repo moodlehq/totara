@@ -33,8 +33,7 @@ $string['imscp:view'] = 'IMS-tartalom megtekintése';
 $string['keepold'] = 'Archívumcsomagok';
 $string['keepoldexplain'] = 'Hány csomagot kell archiválni?';
 $string['modulename'] = 'IMS tartalomcsomag';
-$string['modulename_help'] = 'Az IMS tartalomcsomaggal a kurzusban az IMS Content Packaging specifikáció szerinti tartalmak jeleníthetők meg.
-';
+$string['modulename_help'] = 'Az IMS tartalomcsomaggal a kurzusban az IMS Content Packaging specifikáció szerinti tartalmak jeleníthetők meg.';
 $string['modulenameplural'] = 'IMS tartalomcsomagok';
 $string['navigation'] = 'Navigáció';
 $string['packagefile'] = 'Csomagállomány';

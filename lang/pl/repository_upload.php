@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Prześlij plik';
 $string['pluginname_help'] = 'Prześlij plik do Moodla';
+$string['upload:view'] = 'Użyj opcję przesyłania w menu wyboru plików';
 $string['upload_error_cant_write'] = 'Nie udało się zapisać pliku na dysku.';
 $string['upload_error_no_file'] = 'Nie wysłano żadnego pliku.';
 $string['upload_error_partial'] = 'Przesyłany plik został wczytany tylko częściowo.';
-$string['upload:view'] = 'Użyj opcję przesyłania w menu wyboru plików';

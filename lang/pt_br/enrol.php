@@ -91,8 +91,7 @@ $string['periodstartend'] = 'de {$a->start} até {$a->end}';
 $string['recovergrades'] = 'Restaurar as notas antigas do usuário se possível';
 $string['rolefromcategory'] = '{$a->role} (Herdado da categoria do curso)';
 $string['rolefrommetacourse'] = '{$a->role} (Herdado de curso pai)';
-$string['rolefromsystem'] = '	
-{$a->role} (Atribuído no nível do site)';
+$string['rolefromsystem'] = '{$a->role} (Atribuído no nível do site)';
 $string['rolefromthiscourse'] = '{$a->role} (Atribuído neste curso)';
 $string['startdatetoday'] = 'Hoje';
 $string['synced'] = 'Sincronizadas';

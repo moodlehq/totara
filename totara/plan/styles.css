@@ -129,3 +129,5 @@ span.dp-summary-widget-component-name {
 }
 
 .mform table .fitem .felement { margin-left:0; }
+
+.ie7 #dp-plans-description {padding-bottom: 60px;}

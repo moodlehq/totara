@@ -209,14 +209,12 @@ $string['cancel'] = 'Cancelar';
 $string['cancelled'] = 'Cancelado';
 $string['categories'] = 'Categorias de Cursos';
 $string['category'] = 'Categoria';
-$string['category_help'] = '<p>Algumas categorias de curso devem ter sido definidas previamente pelo administrador do sistema.</p>
-
-<p>Por exemplo: "Ciências", "Economia", "Saúde Pública", etc.</p>
-
-<p>Escolha a categoria mais adequada ao seu curso.
-   A categoria escolhida determina a posição do seu curso
-   na lista de cursos para que os alunos o encontrem
-   com facilidade.</p>';
+$string['category_help'] = 'Algumas categorias de curso devem ter sido definidas previamente pelo administrador do sistema.
+Por exemplo: "Ciências", "Economia", "Saúde Pública", etc.
+Escolha a categoria mais adequada ao seu curso.
+A categoria escolhida determina a posição do seu curso
+na lista de cursos para que os alunos o encontrem
+com facilidade.';
 $string['categoryadded'] = 'A categoria \'{$a}\' foi adicionada';
 $string['categorycontents'] = 'Subcategorias e cursos';
 $string['categorycurrentcontents'] = 'Conteúdos de {$a}';
@@ -286,9 +284,7 @@ $string['continuetocourse'] = 'Clique aqui para entrar no curso';
 $string['convertingwikitomarkdown'] = 'Convertendo wiki para Markdown';
 $string['cookiesenabled'] = 'O uso de Cookies deve ser permitido no seu navegador';
 $string['cookiesenabled_help'] = 'Dois cookies são utilizados por este site:
-
 O essencial é o cookie da sessão, geralmente chamado MoodleSession. Você deve permitir este cookie no seu navegador para prover continuidade e manter seu login de página para página. Quando você fizer o "logout" ou fechar o navegador este cookie é destruído (no seu navegador e no servidor).
-
 O outro cookie é puramente por conveniência, geralmente chamado de algo como MOODLEID. Ele apenas lembra seu "username" no navegador. Isso significa que quando você retornar a este site, o campo "usuário" na página de autenticação será automaticamente preenchido para você. É seguro recusar este cookie - você apenas terá que redigitar o seu usuário toda vez que você autenticar.';
 $string['cookiesnotenabled'] = 'Infelizmente os Cookies não estão habilitados no seu navegador';
 $string['copy'] = 'copiar';
@@ -339,9 +335,7 @@ $string['coursehidden'] = 'Este curso está indisponível para estudantes';
 $string['courseinfo'] = 'Informações do curso';
 $string['courselegacyfiles'] = 'Arquivos de curso legados';
 $string['courselegacyfiles_help'] = 'A área de arquivos do curso oferece alguma compatibilidade com o Moodle 1.9 e versões anteriores. Todos os arquivos nesta área são acessíveis a todos os participantes do curso (se você fizer links para eles ou não) e não há maneira de saber onde qualquer um desses arquivos estão sendo usados no Moodle.
-
 Se você usar esse espaço para armazenar arquivos do curso, você pode se expor a uma série de riscos de privacidade e segurança, bem como tendo arquivos perdidos em backups e importações de curso e quaisquer conteúdos podem ser compartilhados ou reutilizados a qualquer momento. Por isso, é recomendável que você não use esta área a menos que você realmente saiba o que está fazendo.
-
 O link abaixo fornece mais informações sobre tudo isso e apresenta algumas maneiras melhores para gerenciar arquivos no Moodle 2.';
 $string['coursemessage'] = 'Mensagem para usuários do curso';
 $string['coursenotaccessible'] = 'Este curso não permite acesso público (usuários não inscritos)';
@@ -700,31 +694,20 @@ $string['forgotten'] = 'Esqueceu o seu usuário ou senha?';
 $string['forgottenduplicate'] = 'Este endereço email é compartilhado por diversas contas, por favor insira o "usuário"';
 $string['forgotteninvalidurl'] = 'URL para reconfiguração de senha inválida';
 $string['format'] = 'Formato';
-$string['format_help'] = '<h2>Formato de curso LAMS </h2>
-<p class="indent">
-Este formato faz com que o Learning Activity Management System (LAMS) seja a interface central do curso. para usar este formato é necessário que o LAMS seja configurado pelo administrador.</p>
-
-<h2>Formato SCORM</h2>
-<p class="indent">
-Este formato mostra um pacote SCORM na primeira seção da página inicial do curso . (O módulo SCORM/AICC fornece um método alternativo de exibição de um pacote SCORM em um curso.)</p>
-
-<h2>Formato Social</h2>
-<p class="indent">
+$string['format_help'] = '## Formato de curso LAMS
+Este formato faz com que o Learning Activity Management System (LAMS) seja a interface central do curso. para usar este formato é necessário que o LAMS seja configurado pelo administrador.
+## Formato SCORM
+Este formato mostra um pacote SCORM na primeira seção da página inicial do curso . (O módulo SCORM/AICC fornece um método alternativo de exibição de um pacote SCORM em um curso.)
+## Formato Social
 Este formato é articulado em torno de um fórum principal que corresponde à página principal do curso. É um formato mais livre que pode ser usado, também, em contextos que não são cursos como, por exemplo, o quadro de avisos do departamento.
-</p>
 
-<h2>Formato Tópicos</h2>
-<p>
+## Formato Tópicos
 Este formato é muito parecido com o formato semanal mas as unidades lógicas são assuntos ou temas. Os tópicos não têm limite de tempo.
-</p>
 
-<h2>Formato Semanal</h2>
-<p class="indent">
-O curso é organizado em unidades correspondentes a semanas, com datas de início e fim bem definidas. Cada semana pode incluir recursos e atividades.</p>
-
-<h2>Formato semanal - CSS/Sem tabelas</h2>
-<p class="indent">
-O curso é organizado em unidades correspondentes a semanas sem a utilização de tabelas no layout.</p>';
+## Formato Semanal
+O curso é organizado em unidades correspondentes a semanas, com datas de início e fim bem definidas. Cada semana pode incluir recursos e atividades.
+## Formato semanal - CSS/Sem tabelas
+O curso é organizado em unidades correspondentes a semanas sem a utilização de tabelas no layout.';
 $string['formathtml'] = 'Formato HTML';
 $string['formatmarkdown'] = 'Formato MARKDOWN';
 $string['formatplain'] = 'Formato TEXT';
@@ -819,13 +802,10 @@ $string['helpwiththis'] = 'Ajudar';
 $string['hiddenassign'] = 'Atribuição oculta';
 $string['hiddenfromstudents'] = 'Esconder dos estudantes';
 $string['hiddensections'] = 'Seções escondidas';
-$string['hiddensections_help'] = '<P>Estas opções permitem que você decida como seções ocultas no seu curso serão exibidas para os estudantes.</p>
+$string['hiddensections_help'] = 'Estas opções permitem que você decida como seções ocultas no seu curso serão exibidas para os estudantes.
+A opção padrão define que as seções aparecerão aos estudantes com a área das atividades contraída e com a cor da seção alterada. A seção é visualizada mas os conteúdos da seção ficam ocultos. Isto pode ser útil em cursos com o formato semanal, para indicar semanas de férias, por exemplo.
 
-<p>A opção padrão define que as seções aparecerão aos estudantes com a área das atividades contraída e com a cor da seção alterada. A seção é visualizada mas os conteúdos da seção ficam ocultos. Isto pode ser útil em cursos com o formato semanal, para indicar semanas de férias, por exemplo.
-</p>
-
-<p>Se você escolher a outra opção, "seções ocultas são completamente invisíveis", as seções não serão visualizadas enquanto forem marcadas como ocultas.
-</p>';
+Se você escolher a outra opção, "seções ocultas são completamente invisíveis", as seções não serão visualizadas enquanto forem marcadas como ocultas.';
 $string['hiddensectionscollapsed'] = 'Seções escondidas são mostratas contraídas';
 $string['hiddensectionsinvisible'] = 'Seções escondidas são completamente invisíveis';
 $string['hide'] = 'Ocultar';
@@ -854,14 +834,12 @@ $string['icon'] = 'Ícone';
 $string['icqnumber'] = 'Número de ICQ';
 $string['idnumber'] = 'Número de identificação';
 $string['idnumbercourse'] = 'Número de identificação do curso';
-$string['idnumbercourse_help'] = '<P>O ID de um curso é usado apenas nos processos de comunicação com sistemas externos - não é visualizado na interface do curso.  Se você tem um código oficial de identificação do curso, utilize-o para preencher este campo. Em caso contrário, deixe o campo vazio.
-</p>';
+$string['idnumbercourse_help'] = 'O ID de um curso é usado apenas nos processos de comunicação com sistemas externos - não é visualizado na interface do curso. Se você tem um código oficial de identificação do curso, utilize-o para preencher este campo. Em caso contrário, deixe o campo vazio.';
 $string['idnumbercoursecategory'] = 'Número ID da categoria';
 $string['idnumbercoursecategory_help'] = 'O número ID de uma categoria de curso é utilizado apenas quando comparando a categoria com sistemas externos e não é exibido em nenhum local no site. Caso a categoria possua um código oficial isto pode ser inserido, caso contrário o campo pode ser deixado em branco.';
 $string['idnumbermod'] = 'Número de identificação do módulo';
 $string['idnumbermod_help'] = 'O Número ID identifica a atividade para fins de cálculo de avaliação.
 Se a atividade não estiver inclusa em nenhum cálculo de avaliação então o campo do Número ID pode ser deixado em branco.
-
 O Número ID também pode ser definido na página de edição do cálculo das notas no Relatório de Avaliação, embora ele só possa ser editado na página de atualização da atividade.';
 $string['idnumbertaken'] = 'Este número de identificação já está sendo usado';
 $string['imagealt'] = 'Descrição da imagem';
@@ -980,9 +958,8 @@ $string['maximumgrade'] = 'Nota máxima';
 $string['maximumgradex'] = 'Nota máxima: {$a}';
 $string['maximumshort'] = 'Máximo';
 $string['maximumupload'] = 'Tamanho máximo de upload';
-$string['maximumupload_help'] = '<P>Estas opções definem o tamanho máximo dos documentos que os estudantes deste curso podem enviar ao servidor, dentro dos limites globais estabelecidos pelo administrador do site.</p>
-
-<P>É possível definir outros critérios de restrição do tamanho dos documentos na configuração de cada atividade.</p>';
+$string['maximumupload_help'] = 'Estas opções definem o tamanho máximo dos documentos que os estudantes deste curso podem enviar ao servidor, dentro dos limites globais estabelecidos pelo administrador do site.
+É possível definir outros critérios de restrição do tamanho dos documentos na configuração de cada atividade.';
 $string['maxnumberweeks'] = 'Máximo para o número de Semanas/Tópicos';
 $string['maxnumberweeks_desc'] = 'Controla as opções máximas que aparecem em "Número de Semanas/Tópicos" nas configurações dos cursos.';
 $string['maxnumcoursesincombo'] = 'Navegar em <a href="{$a->link}">{$a->numberofcourses} cursos</a>.';
@@ -1103,35 +1080,31 @@ Na maior parte dos programas de email a frase anterior aparece como um link azul
 Saudações do administrador do \'{$a->sitename}\',
 {$a->signoff}';
 $string['newpicture'] = 'Nova imagem';
-$string['newpicture_help'] = '<P>Você pode transferir uma foto do seu computador para este servidor. Esta imagem será usada em algumas páginas para identificá-lo.</p>
-<P>A imagem ideal é um retrato que mostre seu rosto de perto mas você pode usar outras imagens, se preferir.</p>
-<P>A imagem deve ser em formato JPG ou PNG (o nome do arquivo termina em .jpg ou .png).</p>
-<P>Você pode obter uma imagem usando um destes 4 métodos:</p>
+$string['newpicture_help'] = 'Você pode transferir uma foto do seu computador para este servidor. Esta imagem será usada em algumas páginas para identificá-lo.
+A imagem ideal é um retrato que mostre seu rosto de perto mas você pode usar outras imagens, se preferir.
+A imagem deve ser em formato JPG ou PNG (o nome do arquivo termina em .jpg ou .png).
+Você pode obter uma imagem usando um destes 4 métodos:
 
-<OL>
-<LI>Usando uma máquina fotográfica digital. As fotos terão, provavelmente, o formato adequado.</li>
-<LI>Usando um scanner para digitalizar uma fotografia impressa. Selecione, como formato de arquivo, JPG ou PNG.</li>
-<LI>Para obter uma imagem "artística", crie um desenho com o seu software preferido.</li>
-<LI>Como última opção, você pode obter imagens prontas em diversos endereços Web como <A TARGET=google HREF="http://images.google.com/">http://images.google.com</A>. Para transferir a imagem para o seu computador, selecione-a e utilize o botão direito do mouse para ativar, no menu, o item "salvar imagem" (o texto varia em função do navegador).</li>
-</OL>
+1.Usando uma máquina fotográfica digital. As fotos terão, provavelmente, o formato adequado.
+2.Usando um scanner para digitalizar uma fotografia impressa. Selecione, como formato de arquivo, JPG ou PNG.
+3.Para obter uma imagem "artística", crie um desenho com o seu software preferido.
+4.Como última opção, você pode obter imagens prontas em diversos endereços Web como [http://images.google.com](http://images.google.com). Para transferir a imagem para o seu computador, selecione-a e utilize o botão direito do mouse para ativar, no menu, o item "salvar imagem" (o texto varia em função do navegador).
 
-<P>Para transferir a imagem para o servidor do curso, clique o botão "Procurar" nesta página de edição e selecione a imagem no diretório do seu computador.</p>
-<P>ATENÇÃO: Arquivos com tamanho maior que o indicado não serão aceitos.</p>
-<P>Enfim, clique o botão "Atualizar Perfil" no fim do formulário. A imagem será redimensionada a um quadrado de 100X100 pixels.</p>
-<P>Quando você retornar à página do seu perfil, se a nova imagem não for visualizada, use o botão do navegador para atualizar a página.</p>';
+Para transferir a imagem para o servidor do curso, clique o botão "Procurar" nesta página de edição e selecione a imagem no diretório do seu computador.
+ATENÇÃO: Arquivos com tamanho maior que o indicado não serão aceitos.
+Enfim, clique o botão "Atualizar Perfil" no fim do formulário. A imagem será redimensionada a um quadrado de 100X100 pixels.
+Quando você retornar à página do seu perfil, se a nova imagem não for visualizada, use o botão do navegador para atualizar a página.';
 $string['newsitem'] = 'Notícia';
 $string['newsitems'] = 'Notícias';
 $string['newsitemsnumber'] = 'Quantas notícias mostrar';
-$string['newsitemsnumber_help'] = '<P>"Últimas Notícias" é um fórum especial dos cursos que adotam os formatos "semanal" e "tópicos". É
-   um bom lugar para publicar avisos que devam ser vistos por todos os alunos.
-   Como regra predefinida, todos os alunos são assinantes deste fórum
-   e receberão uma cópia dos avisos via email.</p>
-
-<P>Esta configuração define o número de notícias recentes que serão visualizadas na
-   página principal do curso, no bloco "Últimas Notícias".</p>
-
-<P>Se você definir o valor como "0 itens" o bloco "Últimas Notícias"
-   não será visualizado.</p>';
+$string['newsitemsnumber_help'] = '"Últimas Notícias" é um fórum especial dos cursos que adotam os formatos "semanal" e "tópicos". É
+um bom lugar para publicar avisos que devam ser vistos por todos os alunos.
+Como regra predefinida, todos os alunos são assinantes deste fórum
+e receberão uma cópia dos avisos via email.
+Esta configuração define o número de notícias recentes que serão visualizadas na
+página principal do curso, no bloco "Últimas Notícias".
+Se você definir o valor como "0 itens" o bloco "Últimas Notícias"
+não será visualizado.';
 $string['newuser'] = 'Novo usuário';
 $string['newusernewpasswordsubj'] = 'Nova conta de usuário';
 $string['newusernewpasswordtext'] = 'Oi {$a->firstname},
@@ -1411,7 +1384,7 @@ $string['revert'] = 'Reverter alterações';
 $string['role'] = 'Papel';
 $string['rolemappings'] = 'Mapeamento de funções';
 $string['rolerenaming'] = 'Renomear papel';
-$string['rolerenaming_help'] = 'Esta configuração permite alterar os nomes  dos papéis exobodos no curso. Apenas o nome exibido é alterado - permissões do papel não são afetadas. Novos nomes de papéis aparecão na página de participantes do curso e em outros lugares dentro do curso. Se o papel renomeado é um que o administrador tenha selecionado como um papel de gerente de curso, o nome do novo papel também será exibido na listagem de cursos.';
+$string['rolerenaming_help'] = 'Esta configuração permite alterar os nomes dos papéis exobodos no curso. Apenas o nome exibido é alterado - permissões do papel não são afetadas. Novos nomes de papéis aparecão na página de participantes do curso e em outros lugares dentro do curso. Se o papel renomeado é um que o administrador tenha selecionado como um papel de gerente de curso, o nome do novo papel também será exibido na listagem de cursos.';
 $string['roles'] = 'Funções';
 $string['rss'] = 'RSS';
 $string['rssarticles'] = 'Número de artigos recentes no RSS';
@@ -1430,26 +1403,21 @@ $string['savedat'] = 'Salvado em:';
 $string['savepreferences'] = 'Salvar preferências';
 $string['saveto'] = 'Salvar em';
 $string['scale'] = 'Escala';
-$string['scale_help'] = '<p>Os professores podem criar novas escalas e critérios de avaliação a serem utilizados nas atividades do curso.</p>
-
-<p>O título de uma escala deve ser uma frase que a identifique com precisão porquê o título aparece como ítem do menú de seleção  do tipo de escala de avaliação. Este título também é usado como link à página de ajuda correspondente.</p>
-
-<p>Uma escala é definida por uma lista de valores ordenada, do mais negativo ao mais positivo, separados por vírgulas. Por exemplo:</p>
-
-<p class="indent"><i>
-   Insuficiente, Sofrível,Bom,Ótimo,Excelente
-</i></p>
-
-<p>As escalas devem incluir uma boa descrição dos critérios e de como deve ser utilizada. Esta descrição é visualizada nas páginas de ajuda correspondentes.</p>
-
-<p>O administrador do site pode definir algumas escalas como "Standard" para que elas sejam disponíveis em todos os cursos.</p>';
+$string['scale_help'] = 'Os professores podem criar novas escalas e critérios de avaliação a serem utilizados nas atividades do curso.
+O título de uma escala deve ser uma frase que a identifique com precisão porquê o título aparece como ítem do menú de seleção do tipo de escala de avaliação. Este título também é usado como link à página de ajuda correspondente.
+Uma escala é definida por uma lista de valores ordenada, do mais negativo ao mais positivo, separados por vírgulas. Por exemplo:
+*
+Insuficiente, Sofrível,Bom,Ótimo,Excelente
+*
+As escalas devem incluir uma boa descrição dos critérios e de como deve ser utilizada. Esta descrição é visualizada nas páginas de ajuda correspondentes.
+O administrador do site pode definir algumas escalas como "Standard" para que elas sejam disponíveis em todos os cursos.';
 $string['scales'] = 'Escalas';
 $string['scalescustom'] = 'Escalas personalizadas';
 $string['scalescustomcreate'] = 'Adicionar nova escala';
 $string['scalescustomno'] = 'Nenhuma escala personalizada';
 $string['scalesstandard'] = 'Escalas predefinidas';
 $string['scalestandard'] = 'Escala padrão';
-$string['scalestandard_help'] = '<p>Uma escala padrão fica disponível a nível do site, para todos os cursos.</p>';
+$string['scalestandard_help'] = 'Uma escala padrão fica disponível a nível do site, para todos os cursos.';
 $string['scalestip'] = 'Para criar escalas personalizadas, use o botão "escalas" no painel de administração do curso';
 $string['scalestip2'] = 'Para criar escalas personalizadas, clique no link Notas no menu de administração do curso, depois escolha Editar, Escalas.';
 $string['schedule'] = 'Programação';
@@ -1460,7 +1428,6 @@ $string['screenreaderyes'] = 'Sim';
 $string['screenshot'] = 'Captura de tela';
 $string['search'] = 'Buscar';
 $string['search_help'] = 'Para a busca básica por uma ou mais palavras em qualquer parte do texto, simplesmente digite-as separadas por espaços. Todas as palavras com mais de dois caracteres serão usadas.
-
 Para busca avançada, pressione o botão de busca sem digitar nada na caixa de busca para acessar o formulário de busca avançada.';
 $string['searchagain'] = 'Buscar novamente';
 $string['searchbyemail'] = 'Buscar pelo endereço de email';
@@ -1511,10 +1478,10 @@ $string['settings'] = 'Configurações';
 $string['shortname'] = 'Nome breve';
 $string['shortnamecollisionwarning'] = '[*] = Este nome breve já é utilizado por outro curso e deverá ser mudado depois da aprovação';
 $string['shortnamecourse'] = 'Nome breve do curso';
-$string['shortnamecourse_help'] = '<P>Muitas instituições adotam um nome breve ou código para identificar um curso, algo como
-   BP102 ou COMMS.  Se o seu curso não corresponde a um nome breve real, crie um. Este
-   nome breve será usado em alguns lugares onde a utilização do nome completo não é apropriada
-   (por exemplo: na descrição do assunto das mensagens de email).</P>';
+$string['shortnamecourse_help'] = 'Muitas instituições adotam um nome breve ou código para identificar um curso, algo como
+BP102 ou COMMS. Se o seu curso não corresponde a um nome breve real, crie um. Este
+nome breve será usado em alguns lugares onde a utilização do nome completo não é apropriada
+(por exemplo: na descrição do assunto das mensagens de email).';
 $string['shortnametaken'] = 'Este nome breve já é usado por um outro curso';
 $string['shortnameuser'] = 'Nome breve do usuário';
 $string['shortsitename'] = 'Nome breve do site';
@@ -1532,11 +1499,9 @@ $string['showcommentsnonjs'] = 'Mostrar comentários';
 $string['showdescription'] = 'Exibir descrição na página do curso';
 $string['showdescription_help'] = 'Caso habilitada, a introdução / descrição acima será exibida na página do curso logo abaixo do link para a atividade / recurso';
 $string['showgrades'] = 'Mostrar livro de notas aos estudantes';
-$string['showgrades_help'] = '<P>Muitas atividades podem ser avaliadas mediante atribuição de notas.</p>
-
-<p>Os resultados das avaliações são consultados pelos alunos na página de Relatório de Notas, cujo acesso se faz por um link predefinido na página principal do curso.</p>
-
-<p>Para restringir o acesso ao Relatório de Notas apenas aos professores, é necessário desabilitar a visualização no painel de configuração do curso. Este procedimento é útil também nos casos em que o curso não prevê o uso de atividades com avaliação correspondente. Isto não impede que atividades individuais utilizem ou atribuam notas, apenas desativa a exibição da página de relatório para os estudantes.</p>';
+$string['showgrades_help'] = 'Muitas atividades podem ser avaliadas mediante atribuição de notas.
+Os resultados das avaliações são consultados pelos alunos na página de Relatório de Notas, cujo acesso se faz por um link predefinido na página principal do curso.
+Para restringir o acesso ao Relatório de Notas apenas aos professores, é necessário desabilitar a visualização no painel de configuração do curso. Este procedimento é útil também nos casos em que o curso não prevê o uso de atividades com avaliação correspondente. Isto não impede que atividades individuais utilizem ou atribuam notas, apenas desativa a exibição da página de relatório para os estudantes.';
 $string['showlistofcourses'] = 'Mostrar  a lista dos cursos';
 $string['showmodulecourse'] = 'Mostrar lista de cursos que contém a atividade';
 $string['showonly'] = 'Mostrar só';
@@ -1545,13 +1510,10 @@ $string['showonlyweek'] = 'Mostrar só a semana {$a}';
 $string['showperpage'] = 'Mostrar {$a} por página';
 $string['showrecent'] = 'Mostrar a atividade recente';
 $string['showreports'] = 'Mostrar relatório das atividades';
-$string['showreports_help'] = '<P>O relatório das atividades de cada usuário mostra todas as atividades daquele usuário no curso atual. Este relatório contém uma lista de todas as atividades realizadas e das mensagens individuais. Além disto, contém um arquivo detalhado de todos os acessos do usuário ao curso.</p>
-
-<p>Os professores têm acesso constante a este relatório, que é disponível na página do perfil de cada usuário.</p>
-
-<p>Embora seja aconselhável permitir o acesso de cada estudante ao relátório das suas atividades, considerado como instrumento de monitoragem do percurso individual e de reflexão metacognitiva,  é possível escolher a opção de não mostrar estes dados aos alunos.</p>
-
-<p>Em classes com muitos alunos ou em cursos muito longos pode ser necessário desabilitar a visualização do relatório aos alunos quando o servidor tem capacidade de processamento de dados limitada ou lenta.<p>';
+$string['showreports_help'] = 'O relatório das atividades de cada usuário mostra todas as atividades daquele usuário no curso atual. Este relatório contém uma lista de todas as atividades realizadas e das mensagens individuais. Além disto, contém um arquivo detalhado de todos os acessos do usuário ao curso.
+Os professores têm acesso constante a este relatório, que é disponível na página do perfil de cada usuário.
+Embora seja aconselhável permitir o acesso de cada estudante ao relátório das suas atividades, considerado como instrumento de monitoragem do percurso individual e de reflexão metacognitiva, é possível escolher a opção de não mostrar estes dados aos alunos.
+Em classes com muitos alunos ou em cursos muito longos pode ser necessário desabilitar a visualização do relatório aos alunos quando o servidor tem capacidade de processamento de dados limitada ou lenta.';
 $string['showsettings'] = 'Mostrar configurações';
 $string['showtheselogs'] = 'Mostrar estes logs';
 $string['showthishelpinlanguage'] = 'Mostrar esta ajuda no idioma: {$a}';
@@ -1650,9 +1612,9 @@ $string['subcategories'] = 'Categorias subordinadas';
 $string['submit'] = 'Enviar';
 $string['success'] = 'Sucesso';
 $string['summary'] = 'Sumário';
-$string['summary_help'] = '<p>Um suário é um texto breve que apresenta aos alunos as atividades da tópico/semana.</p>
-<p>Cada sumário deve ser curto para que a página do curso não fique muito longa.</p>
-<p>Se você achar necessário escrever um texto mais longo, adicione este texto ao Tópico como material (por exemplo: a primeira atividade poderia ser uma página web com o seguinte título: <b>Introdução ao Tópico</b>).</p>';
+$string['summary_help'] = 'Um suário é um texto breve que apresenta aos alunos as atividades da tópico/semana.
+Cada sumário deve ser curto para que a página do curso não fique muito longa.
+Se você achar necessário escrever um texto mais longo, adicione este texto ao Tópico como material (por exemplo: a primeira atividade poderia ser uma página web com o seguinte título: **Introdução ao Tópico**).';
 $string['summaryof'] = 'Sumário de {$a}';
 $string['supplyinfo'] = 'Mais detalhes';
 $string['switchdevicedefault'] = 'Mudar para o tema padrão';

@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'アップロードプラグインの設定';
 $string['pluginname'] = 'ファイルをアップロードする';
 $string['pluginname_help'] = 'ファイルをMoodleにアップロードする';
+$string['upload:view'] = 'ファイルピッカのアップロードを使用する';
 $string['upload_error_cant_write'] = 'ディスクへのファイル書き込みに失敗しました。';
 $string['upload_error_extension'] = 'ファイルアップロードに関して、PHP実行が停止しました。';
 $string['upload_error_form_size'] = 'アップロードファイルがHTMLフォームで指定されているMAX_FILE_SIZEディレクティブを超えました。';
@@ -35,4 +36,3 @@ $string['upload_error_ini_size'] = 'アップロードファイルがphp.iniのu
 $string['upload_error_no_file'] = 'ファイルはアップロードされませんでした。';
 $string['upload_error_no_tmp_dir'] = 'PHPの一時フォルダがありません。';
 $string['upload_error_partial'] = 'ファイルは部分的にアップロードされました。';
-$string['upload:view'] = 'ファイルピッカのアップロードを使用する';

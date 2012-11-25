@@ -33,11 +33,11 @@ $string['chat:chat'] = 'Acessar o chat';
 $string['chat:deletelog'] = 'Excluir logs do chat';
 $string['chat:exportparticipatedsession'] = 'Exportar sessão de chat em que você tenha participado';
 $string['chat:exportsession'] = 'Exportar qualquer sessão de chat';
+$string['chat:readlog'] = 'Ler logs do chat';
+$string['chat:talk'] = 'Bater papo no chat';
 $string['chatintro'] = 'Introdução';
 $string['chatname'] = 'Nome desta sala';
-$string['chat:readlog'] = 'Ler logs do chat';
 $string['chatreport'] = 'Sessões de chat';
-$string['chat:talk'] = 'Bater papo no chat';
 $string['chattime'] = 'Data do próximo chat';
 $string['configmethod'] = 'O método de chat ajax fornece uma interface de chat baseada em Ajax, que contata o servidor regularmente para atualização. O método de chat normal envolve os clientes em contato constante com o servidor para atualizações. Este não requer configuração e funciona em todos os lugares, mas pode criar uma grande carga sobre o servidor com muitos usuários. Utilizar um servidor daemon requer um acesso shell no Unix, mas resulta em um ambiente de chat rápido e escalável.';
 $string['confignormalupdatemode'] = 'Normalmente a atualização das salas de chat são eficientes quando se utiliza <em>Keep-Alive</em> em HTTP 1.1 mas isto não reduz a sobrecarga do servidor. O melhor método consiste no uso da estratégia <em>Stream</em> para comunicar as atualizações aos usuários. Este método oferece maior escalabilidade, como o método chatd, mas não é compatível com alguns tipos de servidor.';
@@ -81,8 +81,8 @@ $string['modulename_help'] = 'O módulo “chat” permite que os participantes 
 $string['modulenameplural'] = 'Chats';
 $string['neverdeletemessages'] = 'Nunca excluir as mensagens';
 $string['nextsession'] = 'Próxima sessão programada';
-$string['nochat'] = 'Nenhum chat encontrado';
 $string['no_complete_sessions_found'] = 'Nenhuma sessão completa encontrada.';
+$string['nochat'] = 'Nenhum chat encontrado';
 $string['noguests'] = 'O chat não pode ser acessado por visitantes';
 $string['nomessages'] = 'Nenhuma mensagem ainda';
 $string['nopermissiontoseethechatlog'] = 'Você não tem permissão para ver os logs do chat.';
@@ -116,30 +116,22 @@ $string['sessions'] = 'Sessões de chat';
 $string['sessionstart'] = 'A sessão de chat irá começar em {$a}';
 $string['strftimemessage'] = '%H:%M';
 $string['studentseereports'] = 'Todos podem ver as sessões encerradas';
-$string['studentseereports_help'] = 'Se for definido como não, somente os usuários que possuirem a permissão mod/chat:readlog serão capazes de ver as logs de chats
-';
+$string['studentseereports_help'] = 'Se for definido como não, somente os usuários que possuirem a permissão mod/chat:readlog serão capazes de ver as logs de chats';
 $string['talk'] = 'Falar';
 $string['updatemethod'] = 'Método de atualização';
 $string['updaterate'] = 'porcentagem de atualização:';
 $string['userlist'] = 'Lista de usuários';
 $string['usingchat'] = 'Usando chat';
-$string['usingchat_help'] = '<p>O módulo Chat tem alguns alguns instrumentos que facilitam o bate-papo.</p>
+$string['usingchat_help'] = 'O módulo Chat tem alguns alguns instrumentos que facilitam o bate-papo.
 
-<dl>
-<dt><b>Carinhas</b></dt>
-<dd>Todas as carinhas (emoticons) que você usa nos editores de texto podem ser utilizadas no chat. Por exemplo  :-) = <img src="pix/s/smiley.gif">  </dd>
-
-<dt><b>Links</b></dt>
-<dd>Endereços web são automaticamente transformados em links</dd>
-
-<dt><b>Emoções</b></dt>
-<dd>Você pode iniciar uma frase com  "/me" or ":" para representar emoções.  Por exemplo, se o seu nome é Kim e você digita  ":laughs!" or "/me laughs!" todos vão ler "Kim laughs!"</dd>
-
-<dt><b>Bips</b></dt>
-<dd>Você pode tocar um som para outras pessoas clicando o link  "beep" ao lado do nome delas.  Escrevendo "beep all", todas as pessoas vão ouvir o bip.</dd>
-
-<dt><b>HTML</b></dt>
-<dd>Você pode usar código html para inserir imagens no texto do chat e mudar a cor e o tamanho das letras.</dd>
-
-</dl>';
+**Carinhas**
+: Todas as carinhas (emoticons) que você usa nos editores de texto podem ser utilizadas no chat.
+**Links**
+: Endereços web são automaticamente transformados em links
+**Emoções**
+: Você pode iniciar uma frase com "/me" or ":" para representar emoções. Por exemplo, se o seu nome é Kim e você digita ":laughs!" or "/me laughs!" todos vão ler "Kim laughs!"
+**Bips**
+: Você pode tocar um som para outras pessoas clicando o link "beep" ao lado do nome delas. Escrevendo "beep all", todas as pessoas vão ouvir o bip.
+**HTML**
+: Você pode usar código html para inserir imagens no texto do chat e mudar a cor e o tamanho das letras.';
 $string['viewreport'] = 'Ver sessões encerradas';

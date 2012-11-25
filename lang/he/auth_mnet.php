@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['auth_mnet_auto_add_remote_users'] = 'כשמוגדרת כ-\'כן\', רשומת משתמש מקומית מוצרת באופן אוטומטי כאשר משתמש חיצוני מתחבר בפעם הראשונה.';
-$string['auth_mnetdescription'] = 'משתמשים מאומתים לפי רשת האמון אותה הגדרת בהגדרות רשת המוודל שלך.';
 $string['auth_mnet_roamin'] = 'משתמשי המחשב המארח יכולים לשוטט לתוך האתר שלך.';
 $string['auth_mnet_roamout'] = 'המשתמשים שלך יכולים לשוטט החוצה לתוך המחשבים המארחים הללו.';
 $string['auth_mnet_rpc_negotiation_timeout'] = 'פסק הזמן לאימות על גבי משלוח ה-XMLRPC';
+$string['auth_mnetdescription'] = 'משתמשים מאומתים לפי רשת האמון אותה הגדרת בהגדרות רשת המוודל שלך.';
 $string['auto_add_remote_users'] = 'הוספה אוטומטית של משתמשים חיצוניים';
 $string['pluginname'] = 'אימות רשת ה-Moodle';
 $string['rpc_negotiation_timeout'] = 'פסק זמן דו השיח של ה-RPC';

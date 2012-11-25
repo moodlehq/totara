@@ -39,9 +39,9 @@ $string['faq_help'] = '
 Two levels are generally enough for all books, three levels would lead to poorly structured documents. Book module is designed for
 creation of short multipage study materials. It is usually better to use PDF format for longer documents. The easiest way to create PDFs are
 virtual printers (see
-<a  href="http://sector7g.wurzel6.de/pdfcreator/index_en.htm"  target="_blank">PDFCreator</a>,
-<a  href="http://fineprint.com/products/pdffactory/index.html"  target="_blank">PDFFactory</a>,
-<a  href="http://www.adobe.com/products/acrobatstd/main.html"  target="_blank">Adobe Acrobat</a>,
+[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
+[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
+[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
 etc.).
 
 *Can students edit books?*

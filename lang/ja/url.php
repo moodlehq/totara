@@ -34,9 +34,7 @@ $string['configsecretphrase'] = 'このシークレットワードは、サー�
 $string['contentheader'] = 'コンテンツ';
 $string['displayoptions'] = '利用可能な表示オプション';
 $string['displayselect'] = '表示';
-$string['displayselectexplain'] = '表示タイプを選択してください。残念ですが、すべてのタイプが、すべてのURIに適しているということではありません。';
 $string['displayselect_help'] = 'URIファイルタイプおよびブラウザが埋め込みを許可するかどうかも含めて、この設定ではURIがどのように表示されるか決定します。以下のオプションを含みます:
-
 * 自動- 選択されたURIタイプを自動的に検出する最良の表示オプションです。
 * 埋め込み - URIはナビゲーションバーの下にURI説明およびブロックとともに表示されます。
 * ダウンロードを強制する - ユーザはURIファイルのダウンロードを促されます。
@@ -44,6 +42,7 @@ $string['displayselect_help'] = 'URIファイルタイプおよびブラウザ�
 * ポップアップ - URIはメニューまたはアドレスバーなしの新しいブラウザウィンドウに表示されます。
 * フレーム - URIはフレーム内のナビゲーションバーの下にURI説明およびブロックとともに表示されます。
 * 新しいウィンドウ - URIは新しいウィンドウ内にメニューおよびアドレスバーとともに表示されます。';
+$string['displayselectexplain'] = '表示タイプを選択してください。残念ですが、すべてのタイプが、すべてのURIに適しているということではありません。';
 $string['externalurl'] = '外部URI';
 $string['framesize'] = 'フレーム高';
 $string['invalidstoredurl'] = 'URIが無効のため、このリソースを表示できません。';

@@ -57,5 +57,21 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW
         ),
+    ),
+    'totara/core:undeleteuser' => array(
+        'riskbitmask'   => RISK_CONFIG,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'archetypes'    => array(
+            'manager'   => CAP_ALLOW
+        )
+    ),
+    'totara/core:seedeletedusers' => array(
+        'riskbitmask'   => RISK_PERSONAL | RISK_CONFIG,
+        'captype'       => 'read',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'archetypes'    => array(
+            'manager' => CAP_ALLOW
+        )
     )
 );

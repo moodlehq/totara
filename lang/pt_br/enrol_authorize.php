@@ -84,13 +84,13 @@ $string['approvedreview'] = 'Revisão aprovada';
 $string['authcaptured'] = 'Autorizado/ Capturado';
 $string['authcode'] = 'Código de autorização';
 $string['authorize:config'] = 'configurar instâncias de inscrição em Authorize.Net';
-$string['authorizedpendingcapture'] = 'Autorizado/ Captura pendente';
-$string['authorizeerror'] = 'Erro Authorize.Net: {$a}';
 $string['authorize:manage'] = 'Gerenciar usuários inscritos';
 $string['authorize:managepayments'] = 'Gerenciar pagamentos';
 $string['authorize:unenrol'] = 'Desinscrever usuários deste curso';
 $string['authorize:unenrolself'] = 'Cancelar inscrição em curso';
 $string['authorize:uploadcsv'] = 'Enviar arquivo CSV';
+$string['authorizedpendingcapture'] = 'Autorizado/ Captura pendente';
+$string['authorizeerror'] = 'Erro Authorize.Net: {$a}';
 $string['avsa'] = 'Endereço (rua) corresponde, mas código postal não';
 $string['avsb'] = 'Endereço não foi fornecido';
 $string['avse'] = 'Erro de controle do endereço';
@@ -126,12 +126,11 @@ $string['chooseone'] = 'Complete um ou dois dos campos abaixo. A senha é secret
 $string['cost'] = 'Custo';
 $string['costdefaultdesc'] = '<strong>Na configuração do curso, inserir -1</strong> no campo de preço para usar este preço padrão.';
 $string['currency'] = 'Moeda';
-$string['cutofftime'] = 'Tempo de Cut-Off ';
+$string['cutofftime'] = 'Tempo de Cut-Off';
 $string['cutofftimedesc'] = 'Hora limite de transação bancária. Quando será recolhida para liquidação a última transação?';
 $string['dataentered'] = 'Dados inseridos';
 $string['delete'] = 'Destruir';
-$string['description'] = 'O módulo Authorize.Net permite criar cursos pagos através de provedores de pagamento. Existem duas formas de definir o custo do curso (1) um custo padrão para todo o site ou (2) uma configuração do curso onde você define um custo para cada curso individualmente. O valor do curso substitui o valor do site.
-';
+$string['description'] = 'O módulo Authorize.Net permite criar cursos pagos através de provedores de pagamento. Existem duas formas de definir o custo do curso (1) um custo padrão para todo o site ou (2) uma configuração do curso onde você define um custo para cada curso individualmente. O valor do curso substitui o valor do site.';
 $string['echeckabacode'] = 'Número do banco ABA';
 $string['echeckaccnum'] = 'Número de conta bancária';
 $string['echeckacctype'] = 'Tipo de conta bancária';
@@ -255,7 +254,7 @@ $string['unenrolstudent'] = 'Desinscrever aluno?';
 $string['uploadcsv'] = 'Carregar arquivo CSV';
 $string['usingccmethod'] = 'Fazer inscrição usando <a href="{$a->url}"><strong>Cartão de crédito</strong></a>';
 $string['usingecheckmethod'] = 'Fazer inscrição usando <a href="{$a->url}"><strong>eCheck</strong></a>';
-$string['verifyaccount'] = 'Verifique sua conta Authorize.net ';
+$string['verifyaccount'] = 'Verifique sua conta Authorize.net';
 $string['verifyaccountresult'] = '<b>Resultado da verificação:</b> {$a}';
 $string['void'] = 'Nulo';
 $string['voidyes'] = 'A transação vai ser cancelada. Proceder?';
@@ -267,9 +266,6 @@ Agradecemos pelo seu pagamento. Você foi inscrito no(s) seguinte(s) curso(s):
 
 Você pode consultar os dados do pagamento ou editar os dados do seu perfil:
 {$a->paymenturl}
-{$a->profileurl}
-
-
-';
+{$a->profileurl}';
 $string['youcantdo'] = 'Você não pode fazer isto: {$a->action}';
 $string['zipcode'] = 'Código postal';

@@ -44,8 +44,8 @@ $string['attachments'] = 'Anhänge';
 $string['blockafter'] = 'Sperre';
 $string['blockafter_help'] = 'Diese Zahl legt fest, wie viele Beiträge pro Nutzer/in im angegebenen Zeitfenster maximal ins Forum eingetragen werden dürfen. Nutzer/innen mit der Berechtigung mod/forum:postwithoutthrottling sind von einer Sperre ausgenommen.';
 $string['blockperiod'] = 'Zeitfenster';
-$string['blockperioddisabled'] = 'Nicht sperren';
 $string['blockperiod_help'] = 'In diesem Zeitfenster dürfen maximal so viele Beiträge pro Nutzer/in ins Forum eingetragen werden, wie mit der Zahl \'Sperre\' festgelegt sind. Nutzer/innen mit der Berechtigung mod/forum:postwithoutthrottling sind von einer Sperre ausgenommen.';
+$string['blockperioddisabled'] = 'Nicht sperren';
 $string['blogforum'] = 'Standardforum, angezeigt in blog-ähnlichem Format';
 $string['bynameondate'] = 'von {$a->name} - {$a->date}';
 $string['cannotadd'] = 'Der Beitrag konnte nicht zum Forum hingefügt werden';
@@ -153,9 +153,6 @@ $string['forcessubscribe'] = 'Dieses Forum muss von allen abonniert werden';
 $string['forum'] = 'Forum';
 $string['forum:addnews'] = 'Nachrichten hinzufügen';
 $string['forum:addquestion'] = 'Frage hinzufügen';
-$string['forumauthorhidden'] = 'Autor/in (verborgen)';
-$string['forumblockingalmosttoomanyposts'] = 'Sie erreichen bald die Höchstzahl der zulässigen Beiträge. Sie haben {$a->numposts} Beiträge im Zeitraum {$a->blockperiod} veröffentlicht. Die Grenze ist bei {$a->blockafter} Beiträgen erreicht.';
-$string['forumbodyhidden'] = 'Sie können diesen Beitrag nicht ansehen. Entweder haben Sie selbst in dieser Diskussion noch nichts geschrieben oder die Bearbeitungszeit für den Beitrag läuft noch.';
 $string['forum:createattachment'] = 'Anhänge hinzufügen';
 $string['forum:deleteanypost'] = 'Alle Beiträge löschen (jederzeit)';
 $string['forum:deleteownpost'] = 'Eigene Beiträge löschen (mit Zeitbegrenzung)';
@@ -163,31 +160,15 @@ $string['forum:editanypost'] = 'Alle Beiträge bearbeiten';
 $string['forum:exportdiscussion'] = 'Gesamtes Thema exportieren';
 $string['forum:exportownpost'] = 'Eigenen Beitrag exportieren';
 $string['forum:exportpost'] = 'Beitrag exportieren';
-$string['forumintro'] = 'Beschreibung';
 $string['forum:managesubscriptions'] = 'Abonnent/innen verwalten';
 $string['forum:movediscussions'] = 'Themen verschieben';
-$string['forumname'] = 'Forumsname';
-$string['forumposts'] = 'Forumsbeiträge';
 $string['forum:postwithoutthrottling'] = 'Keine Sperre bei zu vielen Beiträgen';
 $string['forum:rate'] = 'Beiträge bewerten';
 $string['forum:replynews'] = 'Auf Nachrichten antworten';
 $string['forum:replypost'] = 'Auf Beiträge antworten';
-$string['forums'] = 'Foren';
 $string['forum:splitdiscussions'] = 'Themen aufteilen';
 $string['forum:startdiscussion'] = 'Neue Themen beginnen';
-$string['forumsubjecthidden'] = 'Betreff (verborgen)';
 $string['forum:throttlingapplies'] = 'Beiträge beschränken';
-$string['forumtracked'] = 'Ungelesene Beiträge werden verfolgt';
-$string['forumtrackednot'] = 'Ungelesene Beiträge werden nicht verfolgt';
-$string['forumtype'] = 'Forumstyp';
-$string['forumtype_help'] = 'Es gibt fünf verschiedene Forentypen:
-
-* Diskussion zu einem Thema - Forum zu nur einem einzigen Thema, zu dem alle etwas schreiben dürfen. Dies ermöglicht kurze und sehr spezielle Diskussionen.
-* Jede Person postet genau ein Thema - Forum in dem jede Person genau ein einziges Diskussionsthema eröffnen darf. Zu jedem Thema dürfen alle anderen etwas antworten.
-* Frage- und Antwort-Forum - Forum, bei dem die Teilnehmer/innen zuerst ihre eigene Position posten müssen, bevor sie die anderen Beiträge sehen und darauf antworten können.
-* Standardforum in einem blog-ähnlichen Anzeigeformat - offenes Forum, in dem jeder zu jeder Zeit ein neues Diskussionsthema eröffnen und auf alle Beiträge antworten kann. Bei diesem Forum werden alle Themen auf einer Seite zusammen mit Links "Dieses Thema diskutieren" gezeigt.
-* Standardforum - ein offenes Forum, in dem jeder zu jeder Zeit ein neues Diskussionsthema eröffnen und auf alle Beiträge antworten kann.
-';
 $string['forum:viewallratings'] = 'Alle Teilwertungen sehen';
 $string['forum:viewanyrating'] = 'Alle Gesamtwertungen sehen';
 $string['forum:viewdiscussion'] = 'Themen sehen';
@@ -195,6 +176,23 @@ $string['forum:viewhiddentimedposts'] = 'Verborgene zeitliche Beiträge sehen';
 $string['forum:viewqandawithoutposting'] = 'Frage- und Antwortbeiträge immer sehen';
 $string['forum:viewrating'] = 'Eigene Gesamtwertung sehen';
 $string['forum:viewsubscribers'] = 'Abonnentenliste sehen';
+$string['forumauthorhidden'] = 'Autor/in (verborgen)';
+$string['forumblockingalmosttoomanyposts'] = 'Sie erreichen bald die Höchstzahl der zulässigen Beiträge. Sie haben {$a->numposts} Beiträge im Zeitraum {$a->blockperiod} veröffentlicht. Die Grenze ist bei {$a->blockafter} Beiträgen erreicht.';
+$string['forumbodyhidden'] = 'Sie können diesen Beitrag nicht ansehen. Entweder haben Sie selbst in dieser Diskussion noch nichts geschrieben oder die Bearbeitungszeit für den Beitrag läuft noch.';
+$string['forumintro'] = 'Beschreibung';
+$string['forumname'] = 'Forumsname';
+$string['forumposts'] = 'Forumsbeiträge';
+$string['forums'] = 'Foren';
+$string['forumsubjecthidden'] = 'Betreff (verborgen)';
+$string['forumtracked'] = 'Ungelesene Beiträge werden verfolgt';
+$string['forumtrackednot'] = 'Ungelesene Beiträge werden nicht verfolgt';
+$string['forumtype'] = 'Forumstyp';
+$string['forumtype_help'] = 'Es gibt fünf verschiedene Forentypen:
+* Diskussion zu einem Thema - Forum zu nur einem einzigen Thema, zu dem alle etwas schreiben dürfen. Dies ermöglicht kurze und sehr spezielle Diskussionen.
+* Jede Person postet genau ein Thema - Forum in dem jede Person genau ein einziges Diskussionsthema eröffnen darf. Zu jedem Thema dürfen alle anderen etwas antworten.
+* Frage- und Antwort-Forum - Forum, bei dem die Teilnehmer/innen zuerst ihre eigene Position posten müssen, bevor sie die anderen Beiträge sehen und darauf antworten können.
+* Standardforum in einem blog-ähnlichen Anzeigeformat - offenes Forum, in dem jeder zu jeder Zeit ein neues Diskussionsthema eröffnen und auf alle Beiträge antworten kann. Bei diesem Forum werden alle Themen auf einer Seite zusammen mit Links "Dieses Thema diskutieren" gezeigt.
+* Standardforum - ein offenes Forum, in dem jeder zu jeder Zeit ein neues Diskussionsthema eröffnen und auf alle Beiträge antworten kann.';
 $string['generalforum'] = 'Standardforum zur allgemeinen Nutzung';
 $string['generalforums'] = 'Allgemeines Forum';
 $string['inforum'] = 'in {$a}';
@@ -204,7 +202,7 @@ $string['introsocial'] = 'Offenes Forum ohne Themeneinschränkung';
 $string['introteacher'] = 'Forum für Traineranmerkungen und -diskussionen';
 $string['invalidaccess'] = 'Seitenzugriff war nicht korrekt';
 $string['invaliddiscussionid'] = 'Falsche Themen-ID';
-$string['invalidforcesubscribe'] = 'Falscher Modus beim Abonnement ';
+$string['invalidforcesubscribe'] = 'Falscher Modus beim Abonnement';
 $string['invalidforumid'] = 'Falsche Foren-ID';
 $string['invalidparentpostid'] = 'Vorgänger Beitrags-ID war ungültig.';
 $string['invalidpostid'] = 'Ungültige Beitrags-ID {$a}';
@@ -240,7 +238,7 @@ $string['movedmarker'] = '(Verschoben)';
 $string['movethisdiscussionto'] = 'Das Thema verschieben nach ...';
 $string['mustprovidediscussionorpost'] = 'Für den Export müssen Sie entweder eine Themen-ID oder eine Nachrichten-ID angeben';
 $string['namenews'] = 'Nachrichtenforum';
-$string['namenews_help'] = 'Das Nachrichtenforum ist ein spezielles Forum für Ankündigungen, welches automatisch von Moodle in jedem Kurs und auch der Startseite generiert wird. Ausschließlich Trainer/innen und Administrator/innen dürfen im Nachrichtenforum schreiben. Pro Kurs kann es nur ein Nachrichtenforum geben. Im Block "Neue Nachrichten" werden die aktuelle Beiträge angezeigt. ';
+$string['namenews_help'] = 'Das Nachrichtenforum ist ein spezielles Forum für Ankündigungen, welches automatisch von Moodle in jedem Kurs und auch der Startseite generiert wird. Ausschließlich Trainer/innen und Administrator/innen dürfen im Nachrichtenforum schreiben. Pro Kurs kann es nur ein Nachrichtenforum geben. Im Block "Neue Nachrichten" werden die aktuelle Beiträge angezeigt.';
 $string['namesocial'] = 'Soziales Forum';
 $string['nameteacher'] = 'Trainerforum';
 $string['newforumposts'] = 'Neue Forumsbeiträge';
@@ -284,8 +282,7 @@ $string['openmode1'] = 'Keine neuen Themen, aber Antworten erlaubt';
 $string['openmode2'] = 'Neue Themen und Antworten erlaubt';
 $string['overviewnumpostssince'] = 'Beiträge seit dem letzten Login: {$a}';
 $string['overviewnumunread'] = 'Ungelesene Beiträge: {$a}';
-$string['page-mod-forum-discuss'] = 'Forumsdiskussionsseite
-';
+$string['page-mod-forum-discuss'] = 'Forumsdiskussionsseite';
 $string['page-mod-forum-view'] = 'Forumshauptseite';
 $string['page-mod-forum-x'] = 'Jede Forumsseite';
 $string['parent'] = 'Ursprungsbeitrag';
@@ -334,8 +331,7 @@ den RSS-Feed übernommen werden. Eine Zahl zwischen 5 und 20 sollte bei den meis
 $string['rsssubscriberssdiscussions'] = 'RSS-Feed für Diskussionen';
 $string['rsssubscriberssposts'] = 'RSS-Feed für Beiträge';
 $string['rsstype'] = 'RSS-Feed für diese Aktivität';
-$string['rsstype_help'] = 'Um RSS-Feeds für diese Aktivität zu aktivieren, wählen SIe entweder Themen oder Beiträge für diesen Feed aus.
-';
+$string['rsstype_help'] = 'Um RSS-Feeds für diese Aktivität zu aktivieren, wählen SIe entweder Themen oder Beiträge für diesen Feed aus.';
 $string['search'] = 'Suche';
 $string['searchdatefrom'] = 'Beiträge müssen neuer sein als';
 $string['searchdateto'] = 'Beiträge müssen älter sein als';
@@ -368,17 +364,14 @@ $string['subscribersto'] = 'Abonnent/innen für \'{$a}\'';
 $string['subscribestart'] = 'Beiträge per E-Mail an mich senden';
 $string['subscribestop'] = 'Keine Beiträge als E-Mail an mich senden';
 $string['subscription'] = 'Abonnement';
+$string['subscription_help'] = 'Wenn Sie ein Forum abonnieren, werden alle Beiträge dieses Forums per E-Mail an Sie gesandt.
+Normalerweise dürfen Sie auswählen, ob Sie dieses Abonnement wünschen. Manche Foren sind allerdings so eingestellt, dass ein Abonnement verpflichtend ist und jeder alle Beiträge per E-Mail bekommt.';
 $string['subscriptionauto'] = 'Automatisch';
 $string['subscriptiondisabled'] = 'Deaktiviert';
 $string['subscriptionforced'] = 'Verpflichtend';
-$string['subscription_help'] = 'Wenn Sie ein Forum abonnieren, werden alle Beiträge dieses Forums per E-Mail an Sie gesandt.
-
-Normalerweise dürfen Sie auswählen, ob Sie dieses Abonnement wünschen. Manche Foren sind allerdings so eingestellt, dass ein Abonnement verpflichtend ist und jeder alle Beiträge per E-Mail bekommt.';
 $string['subscriptionmode'] = 'Abonnement';
 $string['subscriptionmode_help'] = 'Alle, die ein Forum abonnieren, bekommen die Beiträge dieses Forums per E-Mail zugesandt.
-
 Es gibt 4 Modi für ein Abonnement:
-
 * Optional - alle dürfen auswählen, ob sie das Forum abonnieren möchten oder nicht
 * Verpflichtend - alle haben das Forum abonniert und niemand kann es abbestellen
 * Automatisch - alle haben das Forum abonniert, dürfen es aber jederzeit abbestellen
@@ -395,11 +388,9 @@ $string['trackingon'] = 'An';
 $string['trackingoptional'] = 'Optional';
 $string['trackingtype'] = 'Lesemarkierung';
 $string['trackingtype_help'] = 'Wenn diese Option aktiviert ist, sehen Teilnehmer/innen gelesene und ungelesene Beiträge unterschiedlich markiert im Forum.
-
 Es stehen drei Optionen zur Verfügung:
-
 * Optional - Die Markierung ist ein- und ausschaltbar
-* An  - Die Markierung ist immer an
+* An - Die Markierung ist immer an
 * Aus - Die Markierung ist immer aus';
 $string['unread'] = 'Ungelesen';
 $string['unreadposts'] = 'Ungelesene Beiträge';

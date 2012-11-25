@@ -40,8 +40,7 @@ $string['selected'] = 'Ausgewählt';
 $string['selectedlist'] = 'Auswahl bearbeiten';
 $string['selectedlist_help'] = 'In der Auswahlliste können Nutzerkonten hinzugefügt oder entfernt werden, indem Sie einen Namen markieren und die entsprechende Taste drücken. Um mehrere Namen gleichzeitig zu markieren, drücken Sie beim Markieren die Taste \'strg\' bzw. \'cmd\'.';
 $string['users'] = 'Filterergebnis';
-$string['usersfound'] = 'Gefunden {$a}';
 $string['users_help'] = 'Das Filterergebnis zeigt alle gefundenen Nutzerkonten, die zu den aktiven Filtern passen. Ist kein Filter aktiv, werden alle vorhanden Nutzerkonten gelistet.';
+$string['usersfound'] = 'Gefunden {$a}';
 $string['usersinlist'] = 'Nutzerliste (Bulk)';
-$string['usersselected'] = 'Ausgewählt {$a}
-';
+$string['usersselected'] = 'Ausgewählt {$a}';

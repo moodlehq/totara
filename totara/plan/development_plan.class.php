@@ -1344,7 +1344,8 @@ class development_plan {
             $data['planid'] = $this->id;
 
             $event = new tm_task_eventdata($manager, 'plan', $data, $data);
-            $event->userfrom = $learner;
+            //ensure the message is actually coming from $learner, default to support
+            $event->userfrom = ($USER->id == $learner->id) ? $learner : generate_email_supportuser();
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
             $event->icon = 'learningplan-request';
@@ -1415,7 +1416,8 @@ class development_plan {
         }
 
         $event = new tm_task_eventdata($manager, 'plan', $data, $data);
-        $event->userfrom = $learner;
+        //ensure the message is actually coming from $learner, default to support
+        $event->userfrom = ($USER->id == $learner->id) ? $learner : generate_email_supportuser();
         $event->contexturl = "{$CFG->wwwroot}/totara/plan/approve.php?id={$this->id}";
         $event->contexturlname = $this->name;
         $event->icon = 'learningplan-request';
@@ -1448,7 +1450,7 @@ class development_plan {
      * @return boolean
      */
     public function send_alert($tolearner, $icon, $subjectstring, $fullmessagestring) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
         $manager = totara_get_manager($this->userid);
         $learner = $DB->get_record('user', array('id' => $this->userid));
         if ($learner && $manager) {
@@ -1464,7 +1466,8 @@ class development_plan {
                 $roleid = $CFG->managerroleid;
             }
             $event = new tm_alert_eventdata($userto);
-            $event->userfrom = $userfrom;
+            //ensure the message is actually coming from $userfrom, default to support
+            $event->userfrom = ($USER->id == $userfrom->id) ? $userfrom : generate_email_supportuser();
             $event->contexturl = $this->get_display_url();
             $event->contexturlname = $this->name;
             $event->icon = $icon;
@@ -1555,7 +1558,8 @@ class development_plan {
         if ($manager && $manager->id != $USER->id) {
             $event = new stdClass();
             $event->userto = $manager;
-            $event->userfrom = $learner;
+            //ensure the message is actually coming from $learner, default to support
+            $event->userfrom = ($USER->id == $learner->id) ? $learner : generate_email_supportuser();
             $event->icon = 'learningplan-complete';
             $event->contexturl = $CFG->wwwroot.'/totara/plan/view.php?id='.$this->id;
             $a = new stdClass();

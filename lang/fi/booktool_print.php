@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Kirjan tulostus';
+$string['print:print'] = 'Tulosta kirja';
 $string['printbook'] = 'Tulosta koko kirja';
 $string['printchapter'] = 'Tulosta tämä luku';
 $string['printdate'] = 'Tulostettu';
 $string['printedby'] = 'Tulostanut';
-$string['print:print'] = 'Tulosta kirja';

@@ -36,12 +36,12 @@ $string['auth_changepasswordurl_expl'] = 'Indicare l\'URL in cui indirizzare gli
 $string['auth_changingemailaddress'] = 'Hai richiesto il cambio di indirizzo email da {$a->oldemail} a {$a->newemail}. Per motivi di sicurezza ti stiamo inviando un messaggio al nuovo indirizzo per avere conferma che ti appartenga realmente. Il tuo indirizzo email sarà aggiornato appena cliccherai sul link presente nel messaggio.';
 $string['auth_common_settings'] = 'Impostazioni tipiche';
 $string['auth_data_mapping'] = 'Mappatura dei dati';
-$string['authenticationoptions'] = 'Opzioni di autenticazione';
 $string['auth_fieldlock'] = 'Campi bloccati nel profilo utente';
 $string['auth_fieldlock_expl'] = '<p><b>Blocca valore:</b>Se abilitato, impedirà  agli utenti e agli amministratori di Moodle di modificare il campo direttamente. Utilizzare questa opzione se si sta gestendo questi dati in un sistema di autenticazione esterno.</p>';
 $string['auth_fieldlocks'] = 'Campi bloccati nel profilo utente';
-$string['auth_fieldlocks_help'] = '<p>È possibile bloccare uno o più campi del profilo utente. La funzione può risultare particolarmente utile in quei siti dove i dati dei profili utente sono gestiti a mano dagli amministratori, i quali possono modificare i record degli utenti oppure caricarli utilizzando la funzione \'Importa utenti\'.</p><p>Se si bloccano campi che Moodle considera indispensabili, accertatevi di fornire tali dati quando create gli account, altrimenti gli account incompleti non saranno utilizzabili.</p><p>Per evitare questo problema, puoi utilizzare l\'opzione \'Libero se vuoto\'.</p>';
-$string['authinstructions'] = 'In questo campo è possibile inserire istruzioni per il login specifiche per i vostri utenti. Lasciando vuoto il campo verranno visualizzate le istruzioni di default.';
+$string['auth_fieldlocks_help'] = 'È possibile bloccare uno o più campi del profilo utente. La funzione può risultare particolarmente utile in quei siti dove i dati dei profili utente sono gestiti a mano dagli amministratori, i quali possono modificare i record degli utenti oppure caricarli utilizzando la funzione \'Importa utenti\'.
+Se si bloccano campi che Moodle considera indispensabili, accertatevi di fornire tali dati quando create gli account, altrimenti gli account incompleti non saranno utilizzabili.
+Per evitare questo problema, puoi utilizzare l\'opzione \'Libero se vuoto\'.';
 $string['auth_invalidnewemailkey'] = 'Errore: se stai cercando di confermare un cambio di indirizzo email, puoi aver fatto un errore nel copiare il link che ti abbiamo inviato per email. Prova ancora, copiando correttamente l\'indirizzo.';
 $string['auth_multiplehosts'] = 'Possono essere elencati più macchine remote (es. host1.com;host2.com;host3.com)';
 $string['auth_outofnewemailupdateattempts'] = 'Hai superato i tentativi permessi per modificare il tuo indirizzo email. La richiesta di modifica è stata annullata.';
@@ -61,15 +61,15 @@ $string['auth_updateremote_ldap'] = '<p><b>Nota:</b> Aggiornando i dati esterni 
 $string['auth_user_create'] = 'Abilita creazione utente';
 $string['auth_user_creation'] = 'I nuovi utenti (anonimi) possono iscriversi alla sorgente di autenticazione esterna e confermare tramite email. Se abiliti questo, ricorda anche di configurare le opzioni specifiche del modulo per la creazione degli utenti';
 $string['auth_usernameexists'] = 'Il nome utente scelto è già  utilizzato. Sceglierne uno nuovo.';
+$string['authenticationoptions'] = 'Opzioni di autenticazione';
+$string['authinstructions'] = 'In questo campo è possibile inserire istruzioni per il login specifiche per i vostri utenti. Lasciando vuoto il campo verranno visualizzate le istruzioni di default.';
 $string['auto_add_remote_users'] = 'Aggiungi automaticamente gli utenti remoti';
 $string['changepassword'] = 'Cambia URL delle password';
 $string['changepasswordhelp'] = 'L\'indirizzo della pagina dove gli utenti possono recarsi per cambiare o recuperare la propria password. L\'indirizzo sarà raggiungibile tramite un pulsante presente nella pagina di login e nel profilo utente. Se l\'indirizzo viene lasciato vuoto, il pulsante non verrà  visualizzato.';
 $string['chooseauthmethod'] = 'Metodo di autenticazione';
-$string['chooseauthmethod_help'] = '<p>L\'impostazione permette di scegliere il metodo di autenticazione per l\' utente.</p>
-
-<p>Attenzione: la scelta dipende fortemente dal metodo di autenticazione scelto per il sito e dalle relative impostazioni.</p>
-
-<p>Modifiche non corrette potrebbero impedire all\'utente di autenticarsi ed in alcuni casi potrebbero comportare l\'eliminazione dell\'account. Modificate l\'impostazione solo se siete certi sul da farsi.</p>';
+$string['chooseauthmethod_help'] = 'L\'impostazione permette di scegliere il metodo di autenticazione per l\' utente.
+Attenzione: la scelta dipende fortemente dal metodo di autenticazione scelto per il sito e dalle relative impostazioni.
+Modifiche non corrette potrebbero impedire all\'utente di autenticarsi ed in alcuni casi potrebbero comportare l\'eliminazione dell\'account. Modificate l\'impostazione solo se siete certi sul da farsi.';
 $string['createpasswordifneeded'] = 'Genera le password se necessario';
 $string['emailchangecancel'] = 'Annulla cambio email';
 $string['emailchangepending'] = 'Cambio email in corso. Clicca sul link presente nel messaggio che ti è stato inviato a {$a->preference_newemail}.';
@@ -92,8 +92,8 @@ $string['errorminpasswordnonalphanum'] = 'La password deve contenere almeno {$a}
 $string['errorminpasswordupper'] = 'La password deve contenere almeno {$a} lettere maiuscole.';
 $string['errorpasswordupdate'] = 'Si è verificato un errore durante l\'aggiornamento della password, la password non è stata modificata';
 $string['forcechangepassword'] = 'Obbliga il cambiamento della password';
-$string['forcechangepasswordfirst_help'] = 'Obbliga gli utenti a cambiare la password al primo accesso a Moodle.';
 $string['forcechangepassword_help'] = 'Obbliga gli utenti a cambiare la password al prossimo accesso a Moodle.';
+$string['forcechangepasswordfirst_help'] = 'Obbliga gli utenti a cambiare la password al primo accesso a Moodle.';
 $string['forgottenpassword'] = 'E\' possibile inserire un URL che sarà usato come pagina di recupero delle password. L\'impostazione è particolarmente utile per quei siti dove le password sono gestite esternamente a Moodle. Non inserendo un URL sarà usata la pagina di default per il recupero delle password.';
 $string['forgottenpasswordurl'] = 'URL pagina recupero password';
 $string['getanaudiocaptcha'] = 'Chiedi un audio CAPTCHA';
@@ -124,17 +124,14 @@ $string['pluginnotenabled'] = 'Il plugin \'{$a}\' per l\'autenticazione non è a
 $string['pluginnotinstalled'] = 'Il plugin \'{$a}\' per l\'autenticazione non è installato.';
 $string['potentialidps'] = 'Autenticati su:';
 $string['recaptcha'] = 'reCAPTCHA';
-$string['recaptcha_help'] = '<h2>Descrizione</h2>
-<p>Un CAPTCHA è un programma che capisce se l\'utente è una persona o un computer. I CAPTCHA sono usati da molti siti web per impedire abusi da parte dei "bots", programmi automatici scritti di solito per generare spam. Nessun programma software è in grado, infatti, di leggere come un essere umano un testo distorto, per cui i bots non possono navigare nei siti protetti dai CAPTCHA.</p>
-
-<h2>Instruzioni</h2>
-<p>Inserire nell\'apposito box le parole che appaiono, nello stesso ordine e separate da uno spazio. Questo aiuta a impedire che programmi automatici abusino di questo servizio.</p>
-
-<p>Se non si è sicuri dell\'interpretazione delle parole, si può provare con le più probabili oppure cliccare sul link "Chiedi un altro CAPTCHA". </p>
-
-<p>Chi ha problemi di vista può cliccare sul link "Chiedi un audio CAPTCHA" per sentire un insieme di cifre che possono essere inserite invece del testo distorto.</p>';
+$string['recaptcha_help'] = '## Descrizione
+Un CAPTCHA è un programma che capisce se l\'utente è una persona o un computer. I CAPTCHA sono usati da molti siti web per impedire abusi da parte dei "bots", programmi automatici scritti di solito per generare spam. Nessun programma software è in grado, infatti, di leggere come un essere umano un testo distorto, per cui i bots non possono navigare nei siti protetti dai CAPTCHA.
+## Instruzioni
+Inserire nell\'apposito box le parole che appaiono, nello stesso ordine e separate da uno spazio. Questo aiuta a impedire che programmi automatici abusino di questo servizio.
+Se non si è sicuri dell\'interpretazione delle parole, si può provare con le più probabili oppure cliccare sul link "Chiedi un altro CAPTCHA".
+Chi ha problemi di vista può cliccare sul link "Chiedi un audio CAPTCHA" per sentire un insieme di cifre che possono essere inserite invece del testo distorto.';
 $string['selfregistration'] = 'Auto creazione account';
-$string['selfregistration_help'] = 'Impostando un plugin per l\'auto creazione di account, come ad esempio il plugin per la creazione di account via email, qualsiasi visitatore del sito potrà crearsi un account. Tale funzione espone il sito al rischio che spammer possano creare account per inviare post indesiderati attraverso forum, blog od altre funzioni. Per evitare questo rischio è bene disabilitare l\' Auto creazione di account  oppure limitarla attraverso l\'impostazione <em>Domini di posta autorizzati</em> oppure ancora attivando il reCAPTCHA.';
+$string['selfregistration_help'] = 'Impostando un plugin per l\'auto creazione di account, come ad esempio il plugin per la creazione di account via email, qualsiasi visitatore del sito potrà crearsi un account. Tale funzione espone il sito al rischio che spammer possano creare account per inviare post indesiderati attraverso forum, blog od altre funzioni. Per evitare questo rischio è bene disabilitare l\' Auto creazione di account oppure limitarla attraverso l\'impostazione *Domini di posta autorizzati* oppure ancora attivando il reCAPTCHA.';
 $string['sha1'] = 'Hash SHA-1';
 $string['showguestlogin'] = 'E\' possibile visualizzare o nascondere  il pulsante \'login come ospite\' nella pagina di login standard';
 $string['stdchangepassword'] = 'Utilizzare la pagina standard per il cambiamento della password?';

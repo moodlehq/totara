@@ -27,28 +27,28 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addsubmission'] = 'Agregar envío';
 $string['allowdeleting'] = 'Permitir eliminar';
-$string['allowdeleting_help'] = '<p>Si se activa esta opción, los participantes podrán eliminar archivos subidos en cualquier momento antes de ser calificados.</p>';
+$string['allowdeleting_help'] = 'Si se activa esta opción, los participantes podrán eliminar archivos subidos en cualquier momento antes de ser calificados.';
 $string['allowmaxfiles'] = 'Número máximo de archivos subidos';
-$string['allowmaxfiles_help'] = '<p>Número máximo de archivos que puede subir cada participante. Este
+$string['allowmaxfiles_help'] = 'Número máximo de archivos que puede subir cada participante. Este
 número no se muestra a los estudiantes. Por favor, escriba el número
-real de archivos solicitados en la descripción de la tarea.</p>';
+real de archivos solicitados en la descripción de la tarea.';
 $string['allownotes'] = 'Permitir notas';
 $string['allownotes_help'] = 'Si esta opción está activada, los alumnos pueden escribir notas en el área de texto, de la misma forma que en una tarea de texto en línea.
-
 La caja de texto puede usarse como comunicación con el alumno al que se califica, con la descripción del progreso de la tarea o con cualquier otra observación escrita.';
 $string['allowresubmit'] = 'Permitir reenvío';
-$string['allowresubmit_help'] = '<P>Por defecto, los estudiantes no pueden reenviar las tareas después de que han sido calificadas.</P>
-<P>Si usted activa esta opción, se permitirá a los estudiantes reenviar las tareas
+$string['allowresubmit_help'] = 'Por defecto, los estudiantes no pueden reenviar las tareas después de que han sido calificadas.
+Si usted activa esta opción, se permitirá a los estudiantes reenviar las tareas
 después de que hayan sido calificadas (con el objeto de volver a calificarlas).
 Esto puede ser útil si el profesor quiere animar a los estudiantes a hacer un
-mejor trabajo en un proceso iterativo.</P>
-
-<P>Obviamente, esta opción no es aplicable para las tareas "Fuera de línea".</P>';
+mejor trabajo en un proceso iterativo.
+Obviamente, esta opción no es aplicable para las tareas "Fuera de línea".';
 $string['alreadygraded'] = 'Su tarea ya ha sido calificada. No se permite enviarla de nuevo.';
-$string['assignmentdetails'] = 'Detalles de la tarea';
 $string['assignment:exportownsubmission'] = 'Exportar envío propio';
 $string['assignment:exportsubmission'] = 'Exportar envío';
 $string['assignment:grade'] = 'Calificar tarea';
+$string['assignment:submit'] = 'Enviar tarea';
+$string['assignment:view'] = 'Ver tarea';
+$string['assignmentdetails'] = 'Detalles de la tarea';
 $string['assignmentmail'] = 'El profesor {$a->teacher} ha hecho algunos comentarios en su envío de tarea \'{$a->assignment}\'
 
 Puede verlos añadidos en su evío de tarea:
@@ -62,18 +62,16 @@ $string['assignmentmailsmall'] = 'El profesor {$a->teacher} ha hecho comentarios
 Puede verlos añadidos en su evío de tarea.';
 $string['assignmentname'] = 'Nombre de la tarea';
 $string['assignmentsubmission'] = 'Envíos de tareas';
-$string['assignment:submit'] = 'Enviar tarea';
 $string['assignmenttype'] = 'Tipo de tarea';
-$string['assignment:view'] = 'Ver tarea';
 $string['availabledate'] = 'Disponible desde';
 $string['cannotdeletefiles'] = 'Ha ocurrido un error y los archivos no han podido eliminarse';
 $string['cannotviewassignment'] = 'No puede ver esta tarea';
 $string['comment'] = 'Comentario';
 $string['commentinline'] = 'Comentario en línea';
-$string['commentinline_help'] = '<p>Cuando la opción está seleccionada, el envío original se copiará en
-   el comentario de retroalimentación durante la calificación, facilitando
-   los comentarios en línea (quizás por medio de un color diferente)
-   o bien la edición del texto original.</p>';
+$string['commentinline_help'] = 'Cuando la opción está seleccionada, el envío original se copiará en
+el comentario de retroalimentación durante la calificación, facilitando
+los comentarios en línea (quizás por medio de un color diferente)
+o bien la edición del texto original.';
 $string['configitemstocount'] = 'Naturaleza de los ítems a contar en los envíos de los estudiantes en tareas fuera de línea.';
 $string['configmaxbytes'] = 'Tamaño máximo permitido por defecto para todas las tareas del sitio (sujeto a los límites del curso y otras variables del servidor)';
 $string['configshowrecentsubmissions'] = 'Todos pueden ver las notificaciones de los envíos en los informes de actividad reciente.';
@@ -103,15 +101,12 @@ $string['emailteachermailhtml'] = '{$a->username} ha actualizado el envío de su
 para <i>\'{$a->assignment}\'</i><br /><br />
 Está <a href="{$a->url}">disponible en el sitio web</a>.';
 $string['emailteachers'] = 'Alertas de email a los profesores';
-$string['emailteachers_help'] = '<p>Si se activa, los profesores recibirán un correo siempre que los estudiantes añadan o actualicen el envío de una tarea.</p>
-
-<p>Sólo se avisará a los profesores con permiso para calificar ese envío en particular. De este modo, si, por ejemplo, el curso usa grupos separados, los profesores asignados a un determinado grupo no recibirán información sobre los estudiantes pertenecientes a otros grupos.</p>
-';
+$string['emailteachers_help'] = 'Si se activa, los profesores recibirán un correo siempre que los estudiantes añadan o actualicen el envío de una tarea.
+Sólo se avisará a los profesores con permiso para calificar ese envío en particular. De este modo, si, por ejemplo, el curso usa grupos separados, los profesores asignados a un determinado grupo no recibirán información sobre los estudiantes pertenecientes a otros grupos.';
 $string['emptysubmission'] = 'Usted aún no ha enviado nada';
 $string['enablenotification'] = 'Enviar emails de notificación';
-$string['enablenotification_help'] = '<p>Si selecciona esta opción, los estudiantes recibirán las calificaciones y comentarios por email.</p>
-
-<p>Su preferencia personal queda guardada y se aplicará a todos los envíos de tareas que califique.</p>';
+$string['enablenotification_help'] = 'Si selecciona esta opción, los estudiantes recibirán las calificaciones y comentarios por email.
+Su preferencia personal queda guardada y se aplicará a todos los envíos de tareas que califique.';
 $string['errornosubmissions'] = 'No hay envíos que descargar';
 $string['existingfiledeleted'] = 'Se ha borrado el archivo: {$a}';
 $string['failedupdatefeedback'] = 'Fallo al actualizar el comentario dirigido a {$a}';
@@ -145,15 +140,13 @@ $string['maximumsize'] = 'Tamaño máximo';
 $string['maxpublishstate'] = 'Visibilidad máxima para la entrada del blog antes de la fecha de caducidad';
 $string['messageprovider:assignment_updates'] = 'Notificación de tareas';
 $string['modulename'] = 'Tarea';
-$string['modulename_help'] = '<p><img alt="" src="<?php echo $CFG->wwwroot?>/mod/assignment/icon.gif" />&nbsp;<b>Tarea</b></p>
-<div class="indent">
-<p>El módulo de tareas permite que el profesor asigne un
+$string['modulename_help'] = '**Tarea**
+El módulo de tareas permite que el profesor asigne un
 trabajo a los alumnos que deberán preparar en
 algún medio digital (en cualquier formato) y remitirlo,
 subiéndolo al servidor. Las tareas típicas incluyen ensayos,
 proyectos, informes, etc. Este módulo incluye herramientas para
-la calificación.</p>
-</div>';
+la calificación.';
 $string['modulenameplural'] = 'Tareas';
 $string['newsubmissions'] = 'Tareas enviadas';
 $string['noassignments'] = 'Aún no hay tareas';
@@ -205,15 +198,15 @@ $string['submittedfiles'] = 'Archivos enviados';
 $string['subplugintype_assignment'] = 'Tipo de tarea';
 $string['subplugintype_assignment_plural'] = 'Tipos de asignación';
 $string['trackdrafts'] = 'Habilitar botón "Enviar para marcar"';
-$string['trackdrafts_help'] = '<p>El botón "Enviar para marcar" permite a los usuarios indicar a los calificadores que han terminado de trabajar en una tarea. Los calificadores pueden elegir si devuelven la tarea al estado de borrador (por ejemplo, si necesita mejorar).</p>';
+$string['trackdrafts_help'] = 'El botón "Enviar para marcar" permite a los usuarios indicar a los calificadores que han terminado de trabajar en una tarea. Los calificadores pueden elegir si devuelven la tarea al estado de borrador (por ejemplo, si necesita mejorar).';
 $string['typeblog'] = 'Mensaje de blog';
 $string['typeoffline'] = 'Actividad no en línea';
 $string['typeonline'] = 'Texto en línea';
 $string['typeupload'] = 'Subida avanzada de archivos';
 $string['typeuploadsingle'] = 'Subir un solo archivo';
 $string['unfinalize'] = 'Volver a borrador';
-$string['unfinalizeerror'] = 'Ha ocurrido un error y la tarea no ha podido devolverse al estado de borrador';
 $string['unfinalize_help'] = 'Volver a \'Borrador\' permite que el estudiante pueda realizar actualizaciones de su tarea';
+$string['unfinalizeerror'] = 'Ha ocurrido un error y la tarea no ha podido devolverse al estado de borrador';
 $string['uploadafile'] = 'Subir un archivo';
 $string['uploadbadname'] = 'El nombre contiene caracteres incompatibles y no se pudo subir';
 $string['uploadedfiles'] = 'archivos subidos';

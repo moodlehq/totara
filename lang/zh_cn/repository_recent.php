@@ -30,5 +30,5 @@ $string['emptyfilelist'] = '没有可显示的文件';
 $string['notitle'] = '无标题';
 $string['pluginname'] = '最近的文件';
 $string['pluginname_help'] = '当前用户最近使用过的文件';
-$string['recentfilesnumber'] = '最近文件数';
 $string['recent:view'] = '查看最近文件容器插件';
+$string['recentfilesnumber'] = '最近文件数';

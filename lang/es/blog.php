@@ -127,19 +127,16 @@ $string['permalink'] = 'Enlace  permanente';
 $string['personalblogs'] = 'Los usuarios sólo pueden ver su propio blog';
 $string['preferences'] = 'Preferencias';
 $string['publishto'] = 'Publicar a';
+$string['publishto_help'] = 'Hay tres posibilidades
+**Usted (borrador)** - Solo usted y los administradores pueden ver esta entrada.
+**Todos en este sitio** - Cualquiera registrado en el sitio puede leer esta entrada.
+**Todo el mundo** - Cualquiera (incluídos los invitados) puede leer esta entrada.';
 $string['publishtocourse'] = 'Usuarios que comparten curso con usted';
 $string['publishtocourseassoc'] = 'Miembros del curso asociado';
 $string['publishtocourseassocparam'] = 'Miembros de {$a}';
 $string['publishtogroup'] = 'Usuarios que comparten grupo con usted';
 $string['publishtogroupassoc'] = 'Sus miembros de grupo en el curso asociado';
 $string['publishtogroupassocparam'] = 'Miembros de su grupo en {$a}';
-$string['publishto_help'] = '<p>Hay tres posibilidades</p>
-
-<p><b>Usted (borrador)</b> - Solo usted y los administradores pueden ver esta entrada.</p>
-
-<p><b>Todos en este sitio</b> - Cualquiera registrado en el sitio puede leer esta entrada.</p>
-
-<p><b>Todo el mundo</b> - Cualquiera (incluídos los invitados) puede leer esta entrada.</p>';
 $string['publishtonoone'] = 'Usted (borrador)';
 $string['publishtosite'] = 'Todos en este sitio';
 $string['publishtoworld'] = 'Todo el mundo';

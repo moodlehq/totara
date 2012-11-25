@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 $string['configplugin'] = 'Beállítás a feltöltő segédprogram számára';
 $string['pluginname'] = 'Állomány feltöltése';
 $string['pluginname_help'] = 'Állomány feltöltése a Moodle-ba';
+$string['upload:view'] = 'Állomány feltöltése az állományválasztóban';
 $string['upload_error_cant_write'] = 'Az állományt nem sikerült lemezre menteni.';
 $string['upload_error_extension'] = 'A PHP-bővítmény leállította az állomány feltöltését.';
 $string['upload_error_form_size'] = 'A feltöltött állomány meghaladja a HTML-űrlapon megadott max_file_size értékét.';
@@ -35,4 +36,3 @@ $string['upload_error_ini_size'] = 'A feltöltött állomány meghaladja a php.i
 $string['upload_error_no_file'] = 'Nem történt állományfeltöltés.';
 $string['upload_error_no_tmp_dir'] = 'A PHP számára szükséges ideiglenes mappa hiányzik.';
 $string['upload_error_partial'] = 'Az állomány csak részben töltődött föl.';
-$string['upload:view'] = 'Állomány feltöltése az állományválasztóban';

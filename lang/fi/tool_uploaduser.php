@@ -44,42 +44,40 @@ $string['uploadpicture_cannotsave'] = 'Ei voida tallentaa kuvaa käyttäjälle {
 $string['uploadpicture_cannotunzip'] = 'Ei voida purkaa kuvat-tiedostoa.';
 $string['uploadpicture_invalidfilename'] = 'Kuvatiedostolla {$a} on virheellisiä merkkejä nimessä. Ohitetaan.';
 $string['uploadpicture_overwrite'] = 'Ylikirjoita olemassa olevat käyttäjäkuvat?';
-$string['uploadpictures'] = 'Lähetä käyttäjien kuvat';
-$string['uploadpictures_help'] = 'Käyttäjien kuvat voidaan ladata zip-tiedostona. Kuvatiedostot tulisi nimetä valittu-käyttäjän-attribuutti.tiedostonimen-pääte, esimerkiksi user1234.jpg käyttäjälle, jonka käyttätunnus on user1234.';
 $string['uploadpicture_userfield'] = 'Käytettävä käyttäjäattribuutti kuvien täsmäämiseen:';
 $string['uploadpicture_usernotfound'] = 'Käyttäjää, jonka profiilin tietokentässä \'{$a->userfield}\' on arvo \'{$a->uservalue}\', ei ole olemassa. Ohitetaan.';
 $string['uploadpicture_userskipped'] = 'Ohitetaan käyttäjä {$a} (käyttäjällä on jo kuva).';
 $string['uploadpicture_userupdated'] = 'Kuva päivitetty käyttäjälle {$a}.';
+$string['uploadpictures'] = 'Lähetä käyttäjien kuvat';
+$string['uploadpictures_help'] = 'Käyttäjien kuvat voidaan ladata zip-tiedostona. Kuvatiedostot tulisi nimetä valittu-käyttäjän-attribuutti.tiedostonimen-pääte, esimerkiksi user1234.jpg käyttäjälle, jonka käyttätunnus on user1234.';
 $string['uploadusers'] = 'Lähetä käyttäjät';
-$string['uploadusers_help'] = '<p><strong>Yleensä ei ole tarpeellista tuoda käyttäjiä massoina</strong> - pitääksesi oman ylläpitotyösi alhaisena, sinun pitäisi ensin miettiä sellaisten keinojen käyttämistä, jotka eivät vaadi manuaalista ylläpitoa. Esimerkiksi yhteydenottoa olemassa oleviin ulkoisiin tietokantoihin, tai  antaa käyttäjien luoda omat käyttäjätilinsä. <strong>Katso "Käyttäjäntunnistus" ylläpito valikosta. </strong></p>
-<p>Jos olet varma, että haluat tuoda useita käyttäjätunnuksia tekstitiedostosta, silloin sinun täytyy muotoilla tekstitiedostosi seuraavasti:</p>
-<ul>
-  <li><strong>Kaikki kenttien nimet pitää tuontitiedostossa kirjoittaa englanniksi!</strong></li>
-  <li>Tiedoston jokainen rivi sisältää yhden tallenteen</li>
-  <li>Jokainen tallenne on sarja tietoja pilkuilla eroteltuna</li>
-  <li>Tiedoston ensimmäinen tallenne on erityinen, ja sisältää listan kenttänimiä. Tämä määrittää lopputiedoston muodon.
-    <blockquote>
-      <p><strong>Vaaditut kenttänimet:</strong> nämä kentät täytyy olla mukana ensimmäisessä tallenteessa, ja määritelty jokaiselle käyttäjälle.</p>
-      <p></p>
-      <font color="#990000" face="Courier New, Courier, mono">käyttäjänimi, salasana, etunimi, sukunimi, sähköposti </font></p>
-</p>
-      <p><strong>Oletus kenttänimet:</strong> nämä ovat valinnaisia - jos niitä ei liitetä, arvot otetaan aiemmalta ylläpitäjältä</p>
-      <p><font color="#990000" face="Courier New, Courier, mono">yhteisö, osasto, kaupunki, maa, kieli, aikavyöhyke </font> </p>
-      <p><strong>Valinnaiset  kenttänimet: </strong>kaikki nämä ovat täysin valinnaisia. Kurssinimet ovat kurssien "lyhytnimiä" - jos ne säilytetään nykyisellään, käyttäjä merkitään kursseille opiskelijana. Ryhmänimien täytyy yhdistyä vastaaviin kursseihin, esim. ryhmä 1 kurssi 1:een, ryhmän 2 kurssi 2:een, jne. </p>
-      <p> <font color="#990000" face="Courier New, Courier, mono">tunnistenumero, ICQ, puhelin1, puhelin2, osoite, url, kuvaus, postimuotoilu, postinäyttö, html-editori, autoalaindeksi, kurssi1, kurssi2, kurssi3, kurssi4, kurssi5, ryhmä1, ryhmä2, ryhmä3, ryhmä4, ryhmä5</font></p>
-    </blockquote>
-  </li>
-  <li>Pilkut aineiston sisässä pitäisi olla koodattu &#44:nä - scripti !!!!!!! tulkitsee automaattisesti nämä takaisin pilkuiksi.</li>
-  <li>Boolean kentille (tosi/epätosi), käytä 0 epätodelle ja 1 todelle.</li>
-  <li>Huomaa: jos käyttäjätunnus on jo Moodlen käyttäjätietokannassa, scripti  palauttaa automaattisesti userid numeron  ko. käyttäjälle, ja rekisteröi käyttäjän opiskelijana määritellyille kursseille ILMAN, että päivittäisi kannassa olevia käyttäjätietoja. </li>
-</ul>
+$string['uploadusers_help'] = '**Yleensä ei ole tarpeellista tuoda käyttäjiä massoina** - pitääksesi oman ylläpitotyösi alhaisena, sinun pitäisi ensin miettiä sellaisten keinojen käyttämistä, jotka eivät vaadi manuaalista ylläpitoa. Esimerkiksi yhteydenottoa olemassa oleviin ulkoisiin tietokantoihin, tai antaa käyttäjien luoda omat käyttäjätilinsä. **Katso "Käyttäjäntunnistus" ylläpito valikosta. **
+Jos olet varma, että haluat tuoda useita käyttäjätunnuksia tekstitiedostosta, silloin sinun täytyy muotoilla tekstitiedostosi seuraavasti:
+* **Kaikki kenttien nimet pitää tuontitiedostossa kirjoittaa englanniksi!**
+* Tiedoston jokainen rivi sisältää yhden tallenteen
+* Jokainen tallenne on sarja tietoja pilkuilla eroteltuna
+* Tiedoston ensimmäinen tallenne on erityinen, ja sisältää listan kenttänimiä. Tämä määrittää lopputiedoston muodon.
 
+**Vaaditut kenttänimet:** nämä kentät täytyy olla mukana ensimmäisessä tallenteessa, ja määritelty jokaiselle käyttäjälle.
 
-<p>Tässä esimerkki kelpaavasta tuontitiedostosta:</p>
-<p><font size="-1" face="Courier New, Courier, mono">username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1<br />
-jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1<br />
-reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3</font></p>
-<p> </p>';
+käyttäjänimi, salasana, etunimi, sukunimi, sähköposti
+
+**Oletus kenttänimet:** nämä ovat valinnaisia - jos niitä ei liitetä, arvot otetaan aiemmalta ylläpitäjältä
+
+yhteisö, osasto, kaupunki, maa, kieli, aikavyöhyke
+
+**Valinnaiset kenttänimet: **kaikki nämä ovat täysin valinnaisia. Kurssinimet ovat kurssien "lyhytnimiä" - jos ne säilytetään nykyisellään, käyttäjä merkitään kursseille opiskelijana. Ryhmänimien täytyy yhdistyä vastaaviin kursseihin, esim. ryhmä 1 kurssi 1:een, ryhmän 2 kurssi 2:een, jne.
+
+tunnistenumero, ICQ, puhelin1, puhelin2, osoite, url, kuvaus, postimuotoilu, postinäyttö, html-editori, autoalaindeksi, kurssi1, kurssi2, kurssi3, kurssi4, kurssi5, ryhmä1, ryhmä2, ryhmä3, ryhmä4, ryhmä5
+
+* Pilkut aineiston sisässä pitäisi olla koodattu &#44:nä - scripti !!!!!!! tulkitsee automaattisesti nämä takaisin pilkuiksi.
+* Boolean kentille (tosi/epätosi), käytä 0 epätodelle ja 1 todelle.
+* Huomaa: jos käyttäjätunnus on jo Moodlen käyttäjätietokannassa, scripti palauttaa automaattisesti userid numeron ko. käyttäjälle, ja rekisteröi käyttäjän opiskelijana määritellyille kursseille ILMAN, että päivittäisi kannassa olevia käyttäjätietoja.
+
+Tässä esimerkki kelpaavasta tuontitiedostosta:
+username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1
+jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1
+reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3';
 $string['uploaduserspreview'] = 'Lähetä käyttäjät -esikatselu';
 $string['uploadusersresult'] = 'Lähetä käyttäjät -tulokset';
 $string['useraccountupdated'] = 'Käyttäjä päivitetty';

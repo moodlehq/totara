@@ -45,6 +45,13 @@ if (empty($CFG->xmlstrictheaders) and !empty($CFG->loginpasswordautocomplete)) {
             <div class="form-label"><label for="password"><?php print_string("password") ?></label></div>
             <div class="form-input">
               <input type="password" name="password" id="password" size="15" value="" <?php echo $autocomplete; ?> />
+              <?php
+              if (!empty($CFG->recaptchapublickey) && !empty($CFG->recaptchaprivatekey) && !empty($CFG->recaptchaloginform)) {
+                    require_once($CFG->libdir . '/form/recaptcha.php');
+                    $captchaform = new MoodleQuickForm_recaptcha;
+                    echo $captchaform->toHtml();
+              }
+              ?>
               <input type="submit" id="loginbtn" value="<?php print_string("login") ?>" />
             </div>
           </div>

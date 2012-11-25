@@ -106,7 +106,6 @@ $string['bestgrade'] = 'Voto migliore';
 $string['bothattempts'] = 'Visualizza gli studenti con e senza tentativi';
 $string['browsersecurity'] = 'Livello sicurezza browser';
 $string['browsersecurity_help'] = 'Impostando "Pop-up a schermo intero con sicurezza Javascript":
-
 * il quiz si avvierà solo se il browser ha JavaScript abilitato
 * il quiz sarà visualizzato a schermo intero in una finestra pop-up senza interfaccia di navigazione che coprirà tutte le finestre sottostanti
 * gli studenti per quanto possibile non potranno usare funzioni come il copia e incolla.';
@@ -210,9 +209,9 @@ $string['datasetnumber'] = 'Numero';
 $string['daysavailable'] = 'Giorni disponibili';
 $string['decimaldigits'] = 'Cifre decimali nei punteggi';
 $string['decimalplaces'] = 'Cifre decimali nei punteggi';
-$string['decimalplaces_help'] = 'L\'impostazione stabilisce  il numero di cifre decimali da visualizzare nelle valutazioni. L\'impostazione influenza  solamente la visualizzazione dei voti, non influenza la precisione dei calcoli.';
+$string['decimalplaces_help'] = 'L\'impostazione stabilisce il numero di cifre decimali da visualizzare nelle valutazioni. L\'impostazione influenza solamente la visualizzazione dei voti, non influenza la precisione dei calcoli.';
 $string['decimalplacesquestion'] = 'Cifre decimali nei punteggi delle domande';
-$string['decimalplacesquestion_help'] = 'Le cifre decimali  da usare per visualizzare i punteggi delle singole domande.';
+$string['decimalplacesquestion_help'] = 'Le cifre decimali da usare per visualizzare i punteggi delle singole domande.';
 $string['decimalpoints'] = 'Cifre decimali';
 $string['default'] = 'Default';
 $string['defaultgrade'] = 'Punteggio di default della domanda';
@@ -222,7 +221,7 @@ $string['delay1st2nd'] = 'Obbligo attesa tra 1mo e 2ndo tentativo';
 $string['delay1st2nd_help'] = 'Dopo il primo tentativo, lo studente dovrà aspettare per il tempo impostato prima di ritentare il quiz';
 $string['delay2'] = 'Ritardo tra i successivi tentativi';
 $string['delaylater'] = 'Obbligo attesa tra i successivi tentativi';
-$string['delaylater_help'] = 'Lo studente dovrà aspettare per  tempo impostato prima di ritentare il quiz per la terza volta o per le volte successive.';
+$string['delaylater_help'] = 'Lo studente dovrà aspettare per tempo impostato prima di ritentare il quiz per la terza volta o per le volte successive.';
 $string['deleteattemptcheck'] = 'Sei sicuro di voler cancellare questi tentativi?';
 $string['deleteselected'] = 'Elimina selezionati';
 $string['deletingquestionattempts'] = 'Cancellazione tentativi di risposta';
@@ -233,14 +232,13 @@ $string['download'] = 'Click per il download del file della categoria esportata'
 $string['downloadextra'] = '(il file è anche salvato nei files del corso nella cartella /backupdata/quiz)';
 $string['duplicateresponse'] = 'Questo invio è stato ignorato perché hai già dato una risposta equivalente.';
 $string['eachattemptbuildsonthelast'] = 'Ogni tentativo parte dall\'ultimo';
-$string['eachattemptbuildsonthelast_help'] = 'Se sono permessi tentativi multipli e questa impostazione è abilitata,  ogni nuovo tentativo conterrà i risultati del tentativo precedente. In questo modo sarà possibile completare un quiz tentandolo più volte.';
+$string['eachattemptbuildsonthelast_help'] = 'Se sono permessi tentativi multipli e questa impostazione è abilitata, ogni nuovo tentativo conterrà i risultati del tentativo precedente. In questo modo sarà possibile completare un quiz tentandolo più volte.';
 $string['editcategories'] = 'Modifica categorie';
 $string['editcategory'] = 'Modifica categoria';
 $string['editcatquestions'] = 'Modifica le domande della categoria';
 $string['editingquestion'] = 'Modifica domanda';
 $string['editingquiz'] = 'Modifica quiz';
 $string['editingquiz_help'] = 'I concetti da tenere in considerazione per creare un quiz sono:
-
 * Il quiz, che può presentare domande su una o più pagine
 * Il deposito delle domande, dove sono memorizzate le domande suddivise in categorie
 * Le domande casuali, per presentare domande diverse per ciascuno studente e per ciascun tentativo';
@@ -320,7 +318,6 @@ $string['gradeessays'] = 'Valuta i testi';
 $string['gradehighest'] = 'Voto più alto';
 $string['grademethod'] = 'Metodo di valutazione';
 $string['grademethod_help'] = 'Quando sono consentiti più tentativi di risposta, è possibile aggregare in vari modi i voti ottenuti nei diversi tentativi:
-
 * Voto più alto tra tutti i tentativi
 * Voto medio dei tentativi
 * Primo tentativo (i voti ottenuti negli altri tentativi non sono presi in considerazione)
@@ -341,16 +338,14 @@ $string['history'] = 'Storico delle risposte date:';
 $string['howquestionsbehave_desc'] = 'Impostazioni di default per il comportamento delle domande nei quiz';
 $string['imagedisplay'] = 'Immagine da mostrare';
 $string['import'] = 'Importa';
+$string['import_help'] = 'L\' opzione consente di importare domande da file.
+Se il file di importazione contiene anche caratteri non-ASCII, sarà necessario utilizzare la codifica UTF-8. Quando generi i file di importazione delle domande, devi fare attenzione se usi applicativi MS Office in quanto tali applicativi usano delle codifiche particolari che non possono essere gestite correttamente.
+I formati di importazione ed esportazione delle domande sono acquisiti da Moodle attraverso plugin, pertanto nel database di Moduli e Plugin potrebbero essere disponibili ulteriori formati.';
 $string['importcategory'] = 'importa categoria';
 $string['importerror'] = 'Errore durante il processo di importazione';
 $string['importfilearea'] = 'Importazione da file già nei files del corso...';
 $string['importfileupload'] = 'Caricamento del file da importare';
 $string['importfromthisfile'] = 'Importazione da questo file';
-$string['import_help'] = 'L\' opzione consente di importare domande da file.
-
-Se il file di importazione contiene anche caratteri non-ASCII, sarà necessario utilizzare la codifica UTF-8. Quando generi i file di importazione delle domande, devi fare attenzione se usi applicativi MS Office in quanto tali applicativi usano delle codifiche particolari che non possono essere gestite correttamente.
-
-I formati di importazione ed esportazione delle domande sono acquisiti da Moodle attraverso plugin, pertanto nel database di Moduli e Plugin potrebbero essere disponibili ulteriori formati.';
 $string['importingquestions'] = 'Importazione di {$a} domande da file';
 $string['importmax10error'] = 'C\'è un errore nella domanda. Non puoi avere più di dieci risposte';
 $string['importmaxerror'] = 'C\'è un errore nella domanda. Ci sono troppe risposte.';
@@ -411,8 +406,8 @@ $string['navnojswarning'] = 'Attenzione: le risposte non verranno salvate usando
 $string['neverallononepage'] = 'Tutte le domande su una sola pagina';
 $string['newattemptfail'] = 'Errore: Non è stato possibile avviare un nuovo tentativo del quiz';
 $string['newpage'] = 'Salto pagina';
-$string['newpageevery'] = 'Inizia automaticamente una nuova pagina';
 $string['newpage_help'] = 'Per i quiz molto lunghi è utile distribuire le domande su più pagine, limitando il numero delle stesse per ogni pagina. Aggiungendo domande a un quiz, verranno automaticamente aggiunti dei salti-pagina secondo l\'impostazione scelta. In ogni caso i salti-pagina potranno essere liberamente spostati a mano in seguito nella pagina di modifica del quiz.';
+$string['newpageevery'] = 'Inizia automaticamente una nuova pagina';
 $string['noanswers'] = 'Non è stata selezionata nessuna risposta!';
 $string['noattempts'] = 'Non è presente nessun tentativo di questo quiz';
 $string['noattemptsfound'] = 'Non sono stati trovati tentativi';
@@ -464,9 +459,7 @@ $string['openclosedatesupdated'] = 'Date apertura e chiusura quiz aggiornate';
 $string['optional'] = 'opzionale';
 $string['orderandpaging'] = 'Ordinamento e impaginazione';
 $string['orderandpaging_help'] = 'I numeri 10, 20, 30, ... a fianco di ciascuna domanda indicano l\'ordinamento delle domande. Gli incrementi di 10 consentono di lasciare spazi per inserire ulteriori domande.
-
 Per inserire una interruzione di pagina dopo una determinata domanda, seleziona la casella accanto alla domanda e fai click sul pulsante "Aggiungi pagina dopo la domanda selezionata" .
-
 Per riordinare le domande presenti su più pagine, dai click sul pulsante "Rimpagina" e scegli il numero di domande da far apparire su ciascuna pagina.';
 $string['orderingquiz'] = 'Ordinamento e impaginazione';
 $string['outof'] = '{$a->grade} su un massimo di {$a->maxgrade}';
@@ -536,22 +529,27 @@ $string['questiontextisempty'] = '[Testo della domanda mancante]';
 $string['questiontype'] = 'Tipo domanda {$a}';
 $string['questiontypesetupoptions'] = 'Opzioni di impostazione per i tipi domanda:';
 $string['quiz:attempt'] = 'Svolgere quiz';
-$string['quizavailable'] = 'Il quiz è disponibile fino a: {$a}';
-$string['quizclose'] = 'Chiusura';
-$string['quizclosed'] = 'Il quiz è stato chiuso il {$a}';
-$string['quizcloses'] = 'Chiusura';
-$string['quizcloseson'] = 'Questo quiz chiuderà alle {$a}';
 $string['quiz:deleteattempts'] = 'Eliminare tentativi dei quiz';
 $string['quiz:emailconfirmsubmission'] = 'Ricevere conferma via email all\'invio';
 $string['quiz:emailnotifysubmission'] = 'Ricevere notifica via email all\'invio di tentativi';
 $string['quiz:grade'] = 'Valutare i quiz manualmente';
 $string['quiz:ignoretimelimits'] = 'Ignorare tempo massimo sui quiz';
+$string['quiz:manage'] = 'Gestire quiz';
+$string['quiz:manageoverrides'] = 'Gestire personalizzazioni quiz';
+$string['quiz:preview'] = 'Vedere anteprima quiz';
+$string['quiz:regrade'] = 'Rivalutare i tentativi dei quiz';
+$string['quiz:reviewmyattempts'] = 'Rivedere i propri tentativi';
+$string['quiz:view'] = 'Visualizzare informazioni sui quiz';
+$string['quiz:viewreports'] = 'Visualizzare report sui quiz';
+$string['quizavailable'] = 'Il quiz è disponibile fino a: {$a}';
+$string['quizclose'] = 'Chiusura';
+$string['quizclosed'] = 'Il quiz è stato chiuso il {$a}';
+$string['quizcloses'] = 'Chiusura';
+$string['quizcloseson'] = 'Questo quiz chiuderà alle {$a}';
 $string['quizisclosed'] = 'Questo quiz è chiuso';
 $string['quizisclosedwillopen'] = 'Il quiz è chiuso (apre il {$a})';
 $string['quizisopen'] = 'Questo quiz è aperto';
 $string['quizisopenwillclose'] = 'Quiz aperto (chiude il {$a})';
-$string['quiz:manage'] = 'Gestire quiz';
-$string['quiz:manageoverrides'] = 'Gestire personalizzazioni quiz';
 $string['quiznavigation'] = 'Navigazione quiz';
 $string['quizopen'] = 'Apertura';
 $string['quizopenclose'] = 'Date di apertura e chiusura';
@@ -562,13 +560,8 @@ $string['quizopens'] = 'Quiz disponibile';
 $string['quizopenwillclose'] = 'Questo quiz è aperto, sarà chiuso il {$a} alle';
 $string['quizordernotrandom'] = 'Ordinamento del quiz non casuale';
 $string['quizorderrandom'] = '* Ordinamento del quiz casuale';
-$string['quiz:preview'] = 'Vedere anteprima quiz';
-$string['quiz:regrade'] = 'Rivalutare i tentativi dei quiz';
-$string['quiz:reviewmyattempts'] = 'Rivedere i propri tentativi';
 $string['quizsettings'] = 'Impostazioni quiz';
 $string['quiztimer'] = 'Quiz Timer';
-$string['quiz:view'] = 'Visualizzare informazioni sui quiz';
-$string['quiz:viewreports'] = 'Visualizzare report sui quiz';
 $string['quizwillopen'] = 'Questo quiz sarà aperto il {$a}';
 $string['random'] = 'Domanda casuale';
 $string['randomcreate'] = 'Crea Domande casuali';
@@ -637,8 +630,7 @@ $string['reviewopen'] = 'Dopo, mentre il quiz è ancora aperto';
 $string['reviewoptions'] = 'Gli studenti possono rivedere';
 $string['reviewoptionsheading'] = 'Opzioni di revisione';
 $string['reviewoptionsheading_help'] = 'Queste opzioni controllano le informazioni che gli utenti potranno visualizzare dopo avere tentato il quiz.
-
-"Subito dopo il tentativo"  significa entro i due minuti successivi al completamento del tentativo. "Dopo, mentre il quiz è ancora aperto" significa come il caso precedente ma entro la data di chiusura del quiz. "Dopo la chiusura del quiz" significa dopo la data di chiusura del quiz. Se il quiz non ha una data di chiusura, questa condizione non sarà mai soddisfatta.';
+"Subito dopo il tentativo" significa entro i due minuti successivi al completamento del tentativo. "Dopo, mentre il quiz è ancora aperto" significa come il caso precedente ma entro la data di chiusura del quiz. "Dopo la chiusura del quiz" significa dopo la data di chiusura del quiz. Se il quiz non ha una data di chiusura, questa condizione non sarà mai soddisfatta.';
 $string['reviewresponse'] = 'Revisione risposte date';
 $string['reviewresponsetoq'] = 'Rivedi la risposta data (domanda {$a})';
 $string['reviewthisattempt'] = 'Rivedi le risposte date in questo tentativo';
@@ -687,14 +679,14 @@ $string['shownoattempts'] = 'Mostra studenti senza tentativi';
 $string['shownoattemptsonly'] = 'Mostra solo gli studenti senza tentativi';
 $string['showteacherattempts'] = 'Mostra i tentativi degli insegnanti';
 $string['showuserpicture'] = 'Visualizza immagini degli utenti';
-$string['showuserpicture_help'] = 'Abilitando l\'impostazione, il nome dello studente e la sua immagine saranno visualizzati durante l\'esecuzione del tentativo e sulla schermata di revisione, allo scopo di rendere più facile controllare  che un utente non sia entrato con il nome di un altro.';
+$string['showuserpicture_help'] = 'Abilitando l\'impostazione, il nome dello studente e la sua immagine saranno visualizzati durante l\'esecuzione del tentativo e sulla schermata di revisione, allo scopo di rendere più facile controllare che un utente non sia entrato con il nome di un altro.';
 $string['shuffle'] = 'Ordine casuale';
 $string['shuffleanswers'] = 'Risposte in ordine casuale';
 $string['shuffledrandomly'] = 'In ordine casuale';
 $string['shufflequestions'] = 'Domande in ordine casuale';
 $string['shufflequestionsselected'] = 'Le domande sono impostate in ordine casuale, per questo motivo il pulsante Riordina domande è disabilitato. Per modificare l\'impostazione, {$a}.';
 $string['shufflewithin'] = 'Alternative in ordine casuale';
-$string['shufflewithin_help'] = 'Abilitando l\'impostazione, la sequenza della possibili risposte alternative sarà cambiata in modo casuale  ad ogni tentativo da parte dello studente. L\'impostazione funzionerà solo se l\'analoga impostazione sarà abilitata anche nelle impostazioni delle domande.';
+$string['shufflewithin_help'] = 'Abilitando l\'impostazione, la sequenza della possibili risposte alternative sarà cambiata in modo casuale ad ogni tentativo da parte dello studente. L\'impostazione funzionerà solo se l\'analoga impostazione sarà abilitata anche nelle impostazioni delle domande.';
 $string['singleanswer'] = 'Scegli una risposta.';
 $string['sortage'] = 'Ordine temporale';
 $string['sortalpha'] = 'Ordine alfabetico';
@@ -714,12 +706,12 @@ $string['submitallandfinish'] = 'Invia tutto e termina';
 $string['subneterror'] = 'Spiacente, questo quiz è impostato in modo da essere accessibile solo da certi indirizzi di rete. Attualmente i tuo computer non è abilitato all\'utilizzo di questo quiz.';
 $string['subnetnotice'] = 'Questo quiz è impostato in modo da essere accessibile solo da certi indirizzi di rete. Il tuo computer non è su una sotto-rete abilitata. Comunque come insegnante puoi vedere l\'anteprima.';
 $string['subplugintype_quiz'] = 'Report';
+$string['subplugintype_quiz_plural'] = 'Report';
 $string['subplugintype_quizaccess'] = 'Regola di accesso';
 $string['subplugintype_quizaccess_plural'] = 'Regole di accesso';
-$string['subplugintype_quiz_plural'] = 'Report';
 $string['substitutedby'] = 'sarà  sostituito da';
 $string['summaryofattempt'] = 'Riepilogo del tentativo';
-$string['summaryofattempts'] = 'Riepilogo dei tuoi tentativi precedenti ';
+$string['summaryofattempts'] = 'Riepilogo dei tuoi tentativi precedenti';
 $string['temporaryblocked'] = 'Temporaneamente non è permesso ritentare il quiz.<br />Potrai tentare nuovamente il:';
 $string['theattempt'] = 'Il tentativo';
 $string['time'] = 'Ora';
@@ -727,8 +719,8 @@ $string['timecompleted'] = 'Completato';
 $string['timedelay'] = 'Non è permesso accedere al quiz finché non sarà passato il tempo per poter accedere a un altro quiz';
 $string['timeleft'] = 'Tempo rimasto';
 $string['timelimit'] = 'Tempo massimo';
-$string['timelimitexeeded'] = 'Spiacente! Il tempo per il quiz è scaduto!';
 $string['timelimit_help'] = 'L\'impostazione permette di avere una finestrella con un timer (richiede Javascript). Il timer riporta il conto alla rovescia del tempo disponibile per svolgere il tentativo. Allo scadere del tempo il quiz verrà inviato automaticamente con le risposte date fino a quel momento.';
+$string['timelimitexeeded'] = 'Spiacente! Il tempo per il quiz è scaduto!';
 $string['timelimitmin'] = 'Tempo massimo (minuti)';
 $string['timelimitsec'] = 'Tempo massimo (secondi)';
 $string['timestr'] = '%H:%M:%S del %d/%m/%y';

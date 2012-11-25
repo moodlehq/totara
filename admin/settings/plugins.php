@@ -93,6 +93,8 @@ if ($hassiteconfig) {
 
     $temp->add(new admin_setting_configtext('recaptchapublickey', get_string('recaptchapublickey', 'admin'), get_string('configrecaptchapublickey', 'admin'), '', PARAM_NOTAGS));
     $temp->add(new admin_setting_configtext('recaptchaprivatekey', get_string('recaptchaprivatekey', 'admin'), get_string('configrecaptchaprivatekey', 'admin'), '', PARAM_NOTAGS));
+    $temp->add(new admin_setting_configcheckbox('recaptchaloginform', get_string('recaptchaloginform', 'admin'), get_string('configrecaptchaloginform', 'admin'), 0));
+    $temp->add(new admin_setting_configcheckbox('recaptchaforgotform', get_string('recaptchaforgotform', 'admin'), get_string('configrecaptchaforgotform', 'admin'), 0));
     $ADMIN->add('authsettings', $temp);
 
 

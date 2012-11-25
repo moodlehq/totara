@@ -44,8 +44,8 @@ $string['attachments'] = '附件';
 $string['blockafter'] = '被阻塞前帖数极限';
 $string['blockafter_help'] = '此项设置决定用户在指定的时长内最多允许发几个帖子。有mod/forum:postwithoutthrottling权限的用户不受此限。';
 $string['blockperiod'] = '阻塞统计周期';
-$string['blockperioddisabled'] = '不阻塞';
 $string['blockperiod_help'] = '学生如果在指定的时长内发了达到指定数量的帖子，会被阻止继续发帖。有mod/forum:postwithoutthrottling权限的用户不受此限。';
+$string['blockperioddisabled'] = '不阻塞';
 $string['blogforum'] = '博客形式的标准讨论区';
 $string['bynameondate'] = '由 {$a->name} 发表于 {$a->date}';
 $string['cannotadd'] = '不能向此讨论区添加此话题';
@@ -129,25 +129,23 @@ $string['discussionsstartedbyrecent'] = '最近由 {$a} 发起的话题';
 $string['discussionsstartedbyuserincourse'] = '{$a->fullname}在{$a->coursename}中发起的话题';
 $string['discussthistopic'] = '讨论这个话题';
 $string['displayend'] = '结束时间';
-$string['displayend_help'] = '<p align="center"><b>讨论区显示时期</b></p>
-
-<p>可以选择是否将讨论区帖子在一定的时间显示。</p>
-
-<p>激活选项后可以选择开始和结束的日期。</p>
-
-<p>注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月4日</span><br />';
+$string['displayend_help'] = '**讨论区显示时期**
+可以选择是否将讨论区帖子在一定的时间显示。
+激活选项后可以选择开始和结束的日期。
+注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月4日';
 $string['displaymode'] = '显示模式';
 $string['displayperiod'] = '可视时段';
 $string['displaystart'] = '开始时间';
-$string['displaystart_help'] = '<p align="center"><b>讨论区显示时期</b></p>
-
-<p>可以选择是否将讨论区帖子在一定的时间显示。</p>
-
-<p>激活选项后可以选择开始和结束的日期。</p>
-
-<p>注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。</p>
-<span style="font-weight: bold;">翻译者：况亮</span><br style="font-weight: bold;" /><span style="font-weight: bold;">Email：kuangliang12345@163.com</span><br style="font-weight: bold;" /><span style="font-weight: bold;">翻译日期：2007年3月4日</span><br />';
+$string['displaystart_help'] = '**讨论区显示时期**
+可以选择是否将讨论区帖子在一定的时间显示。
+激活选项后可以选择开始和结束的日期。
+注意：管理员用户可以看到所有帖子，无论是在开始前还是过期后。
+翻译者：况亮
+Email：kuangliang12345@163.com
+翻译日期：2007年3月4日';
 $string['eachuserforum'] = '每个人发表一个话题';
 $string['edit'] = '编辑';
 $string['editedby'] = '由 {$a->name} 修改 - 原提交时间 {$a->date}';
@@ -167,9 +165,6 @@ $string['forcessubscribe'] = '该讨论区强制每个人都订阅';
 $string['forum'] = '讨论区';
 $string['forum:addnews'] = '发布新闻';
 $string['forum:addquestion'] = '提问';
-$string['forumauthorhidden'] = '作者(隐藏)';
-$string['forumblockingalmosttoomanyposts'] = '您已经达到发帖的极限。在过去的 {$a->blockperiod} 里，您已经发表了 {$a->numposts} 个帖子。这个极限是 {$a->blockafter} 个帖子。';
-$string['forumbodyhidden'] = '您不能看这个帖子，可能因为您还没有参与到这个话题中，或者还未达到帖子的最长编辑时限。';
 $string['forum:createattachment'] = '上传附件';
 $string['forum:deleteanypost'] = '删除任何帖子（任何时间）';
 $string['forum:deleteownpost'] = '删除自己的帖子（在截止时间之内）';
@@ -177,30 +172,15 @@ $string['forum:editanypost'] = '编辑任何帖子';
 $string['forum:exportdiscussion'] = '导出整个话题';
 $string['forum:exportownpost'] = '导出自己的帖子';
 $string['forum:exportpost'] = '导出帖子';
-$string['forumintro'] = '讨论区简介';
 $string['forum:managesubscriptions'] = '管理订阅';
 $string['forum:movediscussions'] = '移动话题';
-$string['forumname'] = '讨论区名称';
-$string['forumposts'] = '讨论区帖子';
 $string['forum:postwithoutthrottling'] = '不受发帖阈值限制';
 $string['forum:rate'] = '评价帖子';
 $string['forum:replynews'] = '回复新闻';
 $string['forum:replypost'] = '回复帖子';
-$string['forums'] = '讨论区';
 $string['forum:splitdiscussions'] = '分割话题';
 $string['forum:startdiscussion'] = '开启新的话题';
-$string['forumsubjecthidden'] = '主题(隐藏)';
 $string['forum:throttlingapplies'] = '调节申请';
-$string['forumtracked'] = '跟踪未读帖子';
-$string['forumtrackednot'] = '不跟踪未读帖子';
-$string['forumtype'] = '讨论区类型';
-$string['forumtype_help'] = '有5种讨论区类型：
-
-* 单个简单话题 - 一个简单的话题，每个人都可以回复
-* 每人发布一个话题 - 每名学生都可以发布一个（也只能一个）新话题，所有人都可以回复。
-* 提问与回答讨论区 - 学生必须先发表他的见解，才能看到别人的帖子。
-* 博客形式的标准讨论区 - 一个开放的讨论区，任何人在任何时间都可以发起一个新话题。所有话题都显示在一个页面中。每个话题都有一个“讨论此话题”的链接
-* 一般用途的标准讨论区 - 一个开放的讨论区，任何人在任何时间都可以发起一个新话题。';
 $string['forum:viewallratings'] = '查看所有由个人给出的原始评分';
 $string['forum:viewanyrating'] = '查看任何人的总分';
 $string['forum:viewdiscussion'] = '阅读话题';
@@ -208,6 +188,23 @@ $string['forum:viewhiddentimedposts'] = '阅读隐藏的定时帖子';
 $string['forum:viewqandawithoutposting'] = '始终可看提问帖和回答帖';
 $string['forum:viewrating'] = '查看自己的总分';
 $string['forum:viewsubscribers'] = '查看订阅者';
+$string['forumauthorhidden'] = '作者(隐藏)';
+$string['forumblockingalmosttoomanyposts'] = '您已经达到发帖的极限。在过去的 {$a->blockperiod} 里，您已经发表了 {$a->numposts} 个帖子。这个极限是 {$a->blockafter} 个帖子。';
+$string['forumbodyhidden'] = '您不能看这个帖子，可能因为您还没有参与到这个话题中，或者还未达到帖子的最长编辑时限。';
+$string['forumintro'] = '讨论区简介';
+$string['forumname'] = '讨论区名称';
+$string['forumposts'] = '讨论区帖子';
+$string['forums'] = '讨论区';
+$string['forumsubjecthidden'] = '主题(隐藏)';
+$string['forumtracked'] = '跟踪未读帖子';
+$string['forumtrackednot'] = '不跟踪未读帖子';
+$string['forumtype'] = '讨论区类型';
+$string['forumtype_help'] = '有5种讨论区类型：
+* 单个简单话题 - 一个简单的话题，每个人都可以回复
+* 每人发布一个话题 - 每名学生都可以发布一个（也只能一个）新话题，所有人都可以回复。
+* 提问与回答讨论区 - 学生必须先发表他的见解，才能看到别人的帖子。
+* 博客形式的标准讨论区 - 一个开放的讨论区，任何人在任何时间都可以发起一个新话题。所有话题都显示在一个页面中。每个话题都有一个“讨论此话题”的链接
+* 一般用途的标准讨论区 - 一个开放的讨论区，任何人在任何时间都可以发起一个新话题。';
 $string['generalforum'] = '一般用途的标准讨论区';
 $string['generalforums'] = '普通讨论区';
 $string['inforum'] = '在 {$a} 里';
@@ -235,11 +232,9 @@ $string['markunreadbutton'] = '标记<br />未读';
 $string['maxattachments'] = '附件个数上限';
 $string['maxattachments_help'] = '此项设置决定了一个帖子可以拥有的最大附件数。';
 $string['maxattachmentsize'] = '允许上传的附件大小';
-$string['maxattachmentsize_help'] = '<p align="center"><b>最大附件尺寸</b></p>
-
-<p>附件的文件尺寸是可以限制的，创建讨论区的人可以设置它。</p>
-
-<p>有时，您可以提交一个比这个尺寸大的文件，但这个文件不会被保存下来，且您会看到一个错误信息。</p>';
+$string['maxattachmentsize_help'] = '**最大附件尺寸**
+附件的文件尺寸是可以限制的，创建讨论区的人可以设置它。
+有时，您可以提交一个比这个尺寸大的文件，但这个文件不会被保存下来，且您会看到一个错误信息。';
 $string['maxtimehaspassed'] = '很抱歉，编辑该帖的时间限制({$a})已过！';
 $string['message'] = '正文';
 $string['messageprovider:digests'] = '订阅讨论区摘要';
@@ -346,25 +341,18 @@ $string['resetforumsall'] = '删除所有的帖子';
 $string['resetsubscriptions'] = '删除所有讨论区订阅';
 $string['resettrackprefs'] = '删除讨论区中的所有跟踪参数';
 $string['rssarticles'] = 'RSS最近文章数';
-$string['rssarticles_help'] = '<p align="center"><b>在RSS中包含的文章数目</b></p>
-
-<p>这个选项允许您设置在RSS种子中包含的文章数目。</p>
-
-<p>对于大多数讨论区来说，5至20之间就可以了，如果您的讨论区用户真的很多，可以设大一些。</p>';
+$string['rssarticles_help'] = '**在RSS中包含的文章数目**
+这个选项允许您设置在RSS种子中包含的文章数目。
+对于大多数讨论区来说，5至20之间就可以了，如果您的讨论区用户真的很多，可以设大一些。';
 $string['rsssubscriberssdiscussions'] = '话题的RSS种子';
 $string['rsssubscriberssposts'] = '帖子的RSS种子';
 $string['rsstype'] = '本活动的RSS种子';
-$string['rsstype_help'] = '<p align="center"><b>讨论区的RSS种子</b></p>
+$string['rsstype_help'] = '**讨论区的RSS种子**
+这个选项允许您开启这个讨论区的RSS种子。
+您可以选择两种类型：
 
-<p>这个选项允许您开启这个讨论区的RSS种子。</p>
-
-<p>您可以选择两种类型：</p>
-
-<ul>
-<li><b>话题：</b>在这种情况下，RSS种子中会包括新的话题。</li>
-
-<li><b>帖子：</b>在这种情况下，RSS种子中会包含每一篇新的帖子。</li>
-</ul>';
+\* **|话题：**在这种情况下，RSS种子中会包括新的话题。
+\* **|帖子：**在这种情况下，RSS种子中会包含每一篇新的帖子。';
 $string['search'] = '搜索';
 $string['searchdatefrom'] = '帖子必须在此时间之后发布';
 $string['searchdateto'] = '帖子必须在此时间之前发布';
@@ -397,15 +385,13 @@ $string['subscribersto'] = '订阅“{$a}”的用户';
 $string['subscribestart'] = '通过email发讨论区帖子给我';
 $string['subscribestop'] = '我不想通过email接收讨论区帖子';
 $string['subscription'] = '订阅';
+$string['subscription_help'] = '如果您订阅了一个讨论区，那意味着您将通过email收到讨论区里每个帖子的拷贝。通常您可以自己选择是否订阅。但是，有时订阅是强制性的，使每个人都必须收到帖子的email拷贝。';
 $string['subscriptionauto'] = '自动订阅';
 $string['subscriptiondisabled'] = '禁止订阅';
 $string['subscriptionforced'] = '强制订阅';
-$string['subscription_help'] = '如果您订阅了一个讨论区，那意味着您将通过email收到讨论区里每个帖子的拷贝。通常您可以自己选择是否订阅。但是，有时订阅是强制性的，使每个人都必须收到帖子的email拷贝。';
 $string['subscriptionmode'] = '订阅模式';
 $string['subscriptionmode_help'] = '当用户订阅了讨论区时，他们会通过email收到帖子的拷贝。
-
 有四种订阅模式选项：
-
 * 可选订阅 - 用户可以选择设法订阅
 * 强制订阅 - 每个人都被订阅，而且不能取消订阅
 * 自动订阅 - 每个人最初都被订阅，但是随时可以选择是否退订
@@ -422,9 +408,7 @@ $string['trackingon'] = '开启';
 $string['trackingoptional'] = '可选';
 $string['trackingtype'] = '是否跟踪此讨论区的阅读情况';
 $string['trackingtype_help'] = '如果激活，用户可以跟踪讨论区和话题里已阅读和没阅读的消息。
-
 有三个选项：
-
 * 可选 - 用户可以自行决定跟踪或不跟踪
 * 开启 - 跟踪永远打开
 * 关闭 - 跟踪永远关闭';

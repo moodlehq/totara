@@ -29,16 +29,14 @@ $string['activities'] = 'Aktivitäten';
 $string['add'] = 'Hinzufügen';
 $string['addcommunitycourse'] = 'Community-Kurs hinzufügen';
 $string['addcourse'] = 'Suchen';
-$string['addedtoblock'] = 'In Ihrer Community-Suche wurde ein Link zu diesem Kurs hinzugefügt
-';
+$string['addedtoblock'] = 'In Ihrer Community-Suche wurde ein Link zu diesem Kurs hinzugefügt';
 $string['additionalcoursedesc'] = '{$a->lang} Autor: {$a->creatorname} - Herausgeber: {$a->publishername} - Thema: {$a->subject}
-    - Zielgruppe: {$a->audience} - Bildungsstufe: {$a->educationallevel} - Lizenz: {$a->license}';
+- Zielgruppe: {$a->audience} - Bildungsstufe: {$a->educationallevel} - Lizenz: {$a->license}';
 $string['addtocommunityblock'] = 'Link zu diesem Kurs sichern';
 $string['audience'] = 'Erstellt für';
 $string['audience_help'] = 'Nach welcher Art von Kurs suchen Sie? Neben den üblichen Kursen, die sich an Lernende richten (z.B. Schüler/innen, Student/innen), könnten Sie auch nach Communities für Lehrende oder zur Moodle-Administration suchen';
 $string['blocks'] = 'Blöcke';
-$string['cannotselecttopsubject'] = 'Es kann kein Top-Thema gewählt werden
-';
+$string['cannotselecttopsubject'] = 'Es kann kein Top-Thema gewählt werden';
 $string['comments'] = 'Kommentare ({$a})';
 $string['contentinfo'] = 'Betreff: {$a->subject} - Zielgruppe: {$a->audience} - Schulstufe: {$a->educationallevel}';
 $string['continue'] = 'Weiter';
@@ -59,7 +57,7 @@ $string['downloadingcourse'] = 'Kurs wird heruntergeladen';
 $string['downloadingsize'] = 'Bitte warten Sie während des Dateidownloads ({$a->total}Mb)...';
 $string['downloadtemplate'] = 'Kurs mit einer Vorlage erstellen';
 $string['educationallevel'] = 'Bildungsstufe';
-$string['educationallevel_help'] = 'Nach welcher Bildungsstufe suchen Sie? Bei Communities für Lehrende beschreibt die Bildungsstufe das Niveau, auf dem der Unterricht stattfinden soll. ';
+$string['educationallevel_help'] = 'Nach welcher Bildungsstufe suchen Sie? Bei Communities für Lehrende beschreibt die Bildungsstufe das Niveau, auf dem der Unterricht stattfinden soll.';
 $string['enroldownload'] = 'Finden';
 $string['enroldownload_help'] = 'Einige Kurse, die bei dem ausgewählten Knoten gelistet sind, werden so beworben, dass sie von allen auf der ursprünglichen Website bearbeitet werden können. Andere Kurse sind Vorlagen, die Sie herunterladen und in Ihrem eigenen Moodle benutzen sollen.';
 $string['enrollable'] = 'Kurse zum Einschreiben';
@@ -85,8 +83,8 @@ $string['nocourse'] = 'Keine Kurse gefunden';
 $string['noratings'] = 'Keine Bewertungen';
 $string['operation'] = 'Operation';
 $string['orderby'] = 'Sortieren nach';
-$string['orderbyeldest'] = 'Älteste';
 $string['orderby_help'] = 'In welcher Reihenfolge sollen die Suchergebnisse angezeigt werden?';
+$string['orderbyeldest'] = 'Älteste';
 $string['orderbyname'] = 'Name';
 $string['orderbynewest'] = 'Neueste';
 $string['orderbypublisher'] = 'Veröffentlicht';

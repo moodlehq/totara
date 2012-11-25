@@ -26,38 +26,38 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['choosereadme'] = '<div class="clearfix">
-	<div class="theme_screenshot">
+<div class="theme_screenshot">
 
-		<h2>咏叹</h2>
-		<img src="arialist/pix/screenshot.png" />
+<h2>咏叹</h2>
+<img src="arialist/pix/screenshot.png" />
 
-		<h3>主题讨论区：</h3>
-		<p><a href="http://moodle.org/mod/forum/view.php?id=46">http://moodle.org/mod/forum/view.php?id=46</a></p>
+<h3>主题讨论区：</h3>
+<p><a href="http://moodle.org/mod/forum/view.php?id=46">http://moodle.org/mod/forum/view.php?id=46</a></p>
 
-		<h3>主题致谢</h3>
-		<p><a href="http://docs.moodle.org/en/Theme_credits">http://docs.moodle.org/en/Theme_credits</a></p>
+<h3>主题致谢</h3>
+<p><a href="http://docs.moodle.org/en/Theme_credits">http://docs.moodle.org/en/Theme_credits</a></p>
 
-		<h3>主题文档：</h3>
-		<p><a href="http://docs.moodle.org/en/Themes">http://docs.moodle.org/en/Themes</a></p>
+<h3>主题文档：</h3>
+<p><a href="http://docs.moodle.org/en/Themes">http://docs.moodle.org/en/Themes</a></p>
 
-		<h3>报告 bug：</h3>
-		<p><a href="http://tracker.moodle.org">http://tracker.moodle.org</a></p>
-	</div>
+<h3>报告 bug：</h3>
+<p><a href="http://tracker.moodle.org">http://tracker.moodle.org</a></p>
+</div>
 
-	<div class="theme_description">
+<div class="theme_description">
 
-		<h2>关于</h2>
-		<p>咏叹是一个非常简洁、双列、可变宽的 Moodle 2.0 主题</p>
+<h2>关于</h2>
+<p>咏叹是一个非常简洁、双列、可变宽的 Moodle 2.0 主题</p>
 
-		<h2>调整</h2>
-		<p>本主题基于 Moodle 核心的基本主题和画布主题构建。如果您想修改它，我们建议您在修改之前先复制一份并换名。这样将来 Moodle升 级时才不会覆盖您定制的主题。而且一旦您搞乱了它，还有原始文件的备份。关于修改主题的更多信息请浏览<a href="http://docs.moodle.org/en/Theme">Moodle文档</a>。</p>
+<h2>调整</h2>
+<p>本主题基于 Moodle 核心的基本主题和画布主题构建。如果您想修改它，我们建议您在修改之前先复制一份并换名。这样将来 Moodle升 级时才不会覆盖您定制的主题。而且一旦您搞乱了它，还有原始文件的备份。关于修改主题的更多信息请浏览<a href="http://docs.moodle.org/en/Theme">Moodle文档</a>。</p>
 
-	<h2>致谢</h2>
-	<p>本主题由 NewSchool Learning 的 Patrick Malley 编写和维护。可以通过 contact@newschoollearning.com 联系他。</p>
+<h2>致谢</h2>
+<p>本主题由 NewSchool Learning 的 Patrick Malley 编写和维护。可以通过 contact@newschoollearning.com 联系他。</p>
 
-		<h2>授权</h2>
-		<p>Moodle 核心提供的所有主题，包括此主题的授权协议都是 <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>。
-	</div>
+<h2>授权</h2>
+<p>Moodle 核心提供的所有主题，包括此主题的授权协议都是 <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License</a>。
+</div>
 </div>';
 $string['configtitle'] = '咏叹设置';
 $string['customcss'] = '自定义CSS';

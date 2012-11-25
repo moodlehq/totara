@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['alfresco:view'] = 'Afrescoリポジトリを表示する';
 $string['alfresco_url'] = 'Alfresco URI';
 $string['alfrescourltext'] = 'Afresco APIのURIは、次のように入力してください: http://yoursite.com/alfresco/api';
-$string['alfresco:view'] = 'Afrescoリポジトリを表示する';
 $string['configplugin'] = 'Alfresco設定';
 $string['notitle'] = 'タイトルなし';
 $string['password'] = 'パスワード';

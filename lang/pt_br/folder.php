@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['contentheader'] = 'Conteúdo';
-$string['foldercontent'] = 'Arquivos e subpastas';
 $string['folder:managefiles'] = 'Gerenciar arquivos na pasta do módulo';
 $string['folder:view'] = 'Exibir o conteúdo da pasta';
+$string['foldercontent'] = 'Arquivos e subpastas';
 $string['modulename'] = 'Pasta';
 $string['modulenameplural'] = 'Pastas';
 $string['neverseen'] = 'Nunca visualizados';

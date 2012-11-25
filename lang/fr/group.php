@@ -58,7 +58,7 @@ $string['deleteselectedgroup'] = 'Supprimer le groupe sélectionné';
 $string['editgroupingsettings'] = 'Modifier les réglages du groupement';
 $string['editgroupsettings'] = 'Modifier les réglages du groupe';
 $string['enrolmentkey'] = 'Clef d\'inscription';
-$string['enrolmentkey_help'] = 'Une clef d\'inscription permet de donner accès à un cours aux seuls utilisateurs la détenant. Si  une clef d\'inscription de groupe est spécifiée, non seulement cette clef permettra l\'accès au cours, mais elle définira simultanément l\'utilisateur utilisant cette clef comme membre de ce groupe.';
+$string['enrolmentkey_help'] = 'Une clef d\'inscription permet de donner accès à un cours aux seuls utilisateurs la détenant. Si une clef d\'inscription de groupe est spécifiée, non seulement cette clef permettra l\'accès au cours, mais elle définira simultanément l\'utilisateur utilisant cette clef comme membre de ce groupe.';
 $string['erroraddremoveuser'] = 'Erreur lors de l\'ajout ou du retrait de l\'utilisateur {$a} du groupe';
 $string['erroreditgroup'] = 'Erreur lors de la création ou de la modification du groupe {$a}';
 $string['erroreditgrouping'] = 'Erreur lors de la création ou de la modification du groupement {$a}';
@@ -76,8 +76,8 @@ $string['groupinfo'] = 'Information sur le groupe sélectionné';
 $string['groupinfomembers'] = 'Information sur les membres sélectionnés';
 $string['groupinfopeople'] = 'Information sur les personnes sélectionnées';
 $string['grouping'] = 'Groupement';
-$string['groupingdescription'] = 'Description du groupement';
 $string['grouping_help'] = 'Un groupement est un ensemble de groupes dans un cours. Si un groupement est sélectionné, les utilisateurs dans les groupes du groupement pourront travailler ensemble.';
+$string['groupingdescription'] = 'Description du groupement';
 $string['groupingname'] = 'Nom du groupement';
 $string['groupingnameexists'] = 'Le nom de groupement « {$a} » existe déjà dans ce cours. Veuillez en choisir un autre.';
 $string['groupings'] = 'Groupements';
@@ -86,20 +86,18 @@ $string['groupmember'] = 'Membre du groupe';
 $string['groupmemberdesc'] = 'Rôle par défaut pour un membre d\'un groupe.';
 $string['groupmembers'] = 'Membres du groupe';
 $string['groupmembersonly'] = 'Disponible uniquement pour les membres du groupe';
-$string['groupmembersonlyerror'] = 'Désolé, vous devez être membre d\'au moins un groupe utilisé dans cette activité.';
 $string['groupmembersonly_help'] = 'Si cette case est cochée, l\'activité (ou la ressource) ne sera disponible que pour les participants membres de groupes faisant partie du groupement sélectionné.';
+$string['groupmembersonlyerror'] = 'Désolé, vous devez être membre d\'au moins un groupe utilisé dans cette activité.';
 $string['groupmemberssee'] = 'Voir les membres du groupe';
 $string['groupmembersselected'] = 'Membres du groupe sélectionné';
 $string['groupmode'] = 'Mode de groupe';
-$string['groupmodeforce'] = 'Imposer le mode de groupe';
-$string['groupmodeforce_help'] = 'Lorsque le type des groupes est imposé, le type des groupes défini dans le cours est appliqué à chaque activité du cours. Le type des groupes défini dans les activités est ignoré.';
 $string['groupmode_help'] = 'Ce réglage a trois options :
-
 * Pas de groupe - il n\'y a pas de groupes, tout le monde fait partie d\'une seule communauté ;
 * Groupes séparés - chaque groupe ne peut voir que son propre groupe, les autres groupes étant invisibles ;
 * Groupes visibles - chaque groupe travaille uniquement dans son propre groupe, mais les autres groupes sont visibles.
-
 Le type de groupe défini au niveau du cours est le type par défaut pour toutes les activités du cours. Chaque activité qui supporte les groupes peut définir son propre type de groupe. Toutefois, si dans le cours le paramètre « Imposer le type des groupes » a été choisi, le type des groupes défini dans les activités sera ignoré.';
+$string['groupmodeforce'] = 'Imposer le mode de groupe';
+$string['groupmodeforce_help'] = 'Lorsque le type des groupes est imposé, le type des groupes défini dans le cours est appliqué à chaque activité du cours. Le type des groupes défini dans les activités est ignoré.';
 $string['groupmy'] = 'Mon groupe';
 $string['groupname'] = 'Nom du groupe';
 $string['groupnameexists'] = 'Le nom de groupe « {$a} » existe déjà dans ce cours. Veuillez en choisir un autre.';
@@ -117,7 +115,6 @@ $string['grouptemplate'] = 'Groupe @';
 $string['hidepicture'] = 'Cacher l\'image';
 $string['importgroups'] = 'Importer des groupes';
 $string['importgroups_help'] = 'Les groupes peuvent être importés depuis un fichier texte. Le format de ce fichier doit être le suivant :
-
 * chaque ligne du fichier contient un enregistrement ;
 * chaque enregistrement est une série de données séparées par des virgules ;
 * le premier enregistrement contient la liste des noms des champs définissant le format du reste du fichier ;
@@ -129,11 +126,10 @@ $string['members'] = 'Membres par groupe';
 $string['membersofselectedgroup'] = 'Membres de :';
 $string['namingscheme'] = 'Schéma de dénomination';
 $string['namingscheme_help'] = 'Le caractère arobase (@) peut être utilisé pour créer des groupes contenants des lettres. Par exemple, « Groupe @ » générera des groupes nommés « Groupe A », « Groupe B », « Groupe C », etc.
-
 Le caractère dièze (#) peut être utilisé pour créer des groupes contenants des nombres. Par exemple, « Groupe # » générera des groupes nommés « Groupe 1 », « Groupe 2 », « Groupe 3 », etc.';
 $string['newgrouping'] = 'Nouveau groupement';
 $string['newpicture'] = 'Nouvelle image';
-$string['newpicture_help'] = 'Sélectionnez une image en format JPG ou PNG.  L\'image sera redimensionnée en un carré de 100x100 pixels.';
+$string['newpicture_help'] = 'Sélectionnez une image en format JPG ou PNG. L\'image sera redimensionnée en un carré de 100x100 pixels.';
 $string['noallocation'] = 'Pas d\'attribution';
 $string['nogroups'] = 'Il n\'y a pas encore de groupes dans ce cours';
 $string['nogroupsassigned'] = 'Aucun groupe n\'a été attribué';

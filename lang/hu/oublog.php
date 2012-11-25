@@ -31,9 +31,7 @@ $string['addlink'] = 'Ugrópont hozzáadása';
 $string['addpost'] = 'Blogbejegyzés  hozzáadása';
 $string['allowcomments'] = 'Megjegyzések engedélyezése';
 $string['allowcomments_help'] = '"Belépett felhasználóktól" - a bloghoz hozzáférő felhasználóktól fogad el megjegyzéseket.
-
 "Mindenkitől" - a bloghoz hozzáférő felhasználóktól és másoktól egyaránt fogad el megjegyzéseket.. Kap majd egy e-mailt, mely alapján jóváhagyhatja vagy elutasíthatja a nem belépett felhasználóktól érkező megjegyzéseket.
-
 "Nem" - megakadályozza, hogy bárki megjegyzést fűzzön ehhez a bejegyzéshez.';
 $string['allowcommentsmax'] = 'Megjegyzések engedélyezése (ha a bejegyzéshez kapcsolódik)';
 $string['atom'] = 'Atom';
@@ -88,7 +86,7 @@ $string['externaldashboardremove'] = 'Blog eltávolítása a műszerfalról';
 $string['extranavolderposts'] = 'Korábbi bejegyzések: {$a->from}-{$a->to}';
 $string['extranavtag'] = 'Címke: {$a}';
 $string['feedhelp'] = 'Hírek';
-$string['feedhelp_help'] = 'Ha híreket használ felvehet ugrópontokat az Atomhoz vagy az RSS-hez annak érdekében, hogy naprakész legyen a blogot illetően. A legtöbb hírolvasó támogatja az RSS és az Atom használatát. Ha a blog megengedi a megjegyzések használatát, akkor használhat &quot;Csak megjegyzések&quot; számára szóló híreket..';
+$string['feedhelp_help'] = 'Ha híreket használ felvehet ugrópontokat az Atomhoz vagy az RSS-hez annak érdekében, hogy naprakész legyen a blogot illetően. A legtöbb hírolvasó támogatja az RSS és az Atom használatát. Ha a blog megengedi a megjegyzések használatát, akkor használhat "Csak megjegyzések" számára szóló híreket..';
 $string['feeds'] = 'Hírek';
 $string['feedsnotenabled'] = 'A Hírek nincs bekapcsolva';
 $string['foruser'] = '{$a} részére';
@@ -96,7 +94,9 @@ $string['globalblogmissing'] = 'Nincs globális blog';
 $string['gradesupdated'] = 'Osztályozás frissítve';
 $string['guestblog'] = 'Ha van fiókja, <a href=\'{$a}\'>jelentkezzen be a blog használatához</a>.';
 $string['individualblogs'] = 'Egyedi blogok';
-$string['individualblogs_help'] = '<p> <strong>Nem (blog együtt vagy csoportosan):</strong> <em>Egyedi blogok nem használatosak</em> - nincs beállítva egyedi blog, mindenki része egy nagyobb közösségnek (a "Csoportos üzemmód" beállításától függően). </p><p> <strong>Külön egyedi blogok:</strong> <em>Az egyedi blogok magánhasználatban vannak</em> - Az egyes felhasználók csak küldhetnek bejegyzéseket és saját blogjaikat tekinthetik meg, kivéve, ha rendelkeznek ("viewindividual") engedéllyel más egyedi blogok megtekintéséhez. </p><p> <strong>Látható egyedi blogok:</strong> <em>Az egyedi blogok nyilvánosak</em> - az egyes felhasználók csak saját blogjaikba küldhetnek bejegyzést, de megtekinthetnek egyéb egyedi blogbejegyzéseket. </p>';
+$string['individualblogs_help'] = '**Nem (blog együtt vagy csoportosan):** *Egyedi blogok nem használatosak* - nincs beállítva egyedi blog, mindenki része egy nagyobb közösségnek (a "Csoportos üzemmód" beállításától függően).
+** Külön egyedi blogok:** *Az egyedi blogok magánhasználatban vannak* - Az egyes felhasználók csak küldhetnek bejegyzéseket és saját blogjaikat tekinthetik meg, kivéve, ha rendelkeznek ("viewindividual") engedéllyel más egyedi blogok megtekintéséhez.
+** Látható egyedi blogok:** *Az egyedi blogok nyilvánosak* - az egyes felhasználók csak saját blogjaikba küldhetnek bejegyzést, de megtekinthetnek egyéb egyedi blogbejegyzéseket.';
 $string['invalidblog'] = 'Egyedi blog azonosítója';
 $string['invalidblogdetails'] = 'A(z)  {$a} blogbejegyzés részletei nem találhatók.';
 $string['invalidcomment'] = 'Érvénytelen azonosító a megjegyzéshez';
@@ -111,8 +111,11 @@ $string['lastcomment'] = '(legfrissebb beküldője {$a->fullname}, {$a->timepost
 $string['links'] = 'Kapcsolódó ugrópontok';
 $string['logincomments'] = 'Igen, bejelentkezett felhasználóktól';
 $string['maxvisibility'] = 'Maximális láthatóság';
-$string['maxvisibility_help'] = '<p> <em>Személyes blog esetén:</em> <strong>Csak a blog tulajdonosa számára látható (magán)</strong> - senki más nem tekintheti meg a bejegyzést. </p><p> <em>Kurzusblog esetén:</em> <strong>A kurzus résztvevői számára látható</strong> -, a bejegyzés megtekintéséhez hozzáféréssel kell rendelkezni a bloghoz, ami általában úgy érhető el, hogy felveszi a hozzá kapcsolódó kurzust. </p><p> <strong>Bejelentkezettek számára látható</strong> - mindenki, aki bejelentkezett, megtekintheti a bejegyzést, még akkor is, ha nem vette föl a kurzust. </p><p> <strong>Mindenki számára látható</strong> - bármely internet-felhasználó megtekintheti a bejegyzést, ha ismeri a blog címét. </p>
-<p> Ez választható a teljes blogra vagy az egyedi bejegyzésekre. Ha a teljes blogra van beállítva, akkor az lesz a maximum. Például ha a teljes blog az első szintre van beállítva, akor az egyedi bejegyzés szintjét egyáltalán nem tudja megváltoztatni. </p>';
+$string['maxvisibility_help'] = '*Személyes blog esetén:* **Csak a blog tulajdonosa számára látható (magán)** - senki más nem tekintheti meg a bejegyzést.
+*Kurzusblog esetén:* **A kurzus résztvevői számára látható** -, a bejegyzés megtekintéséhez hozzáféréssel kell rendelkezni a bloghoz, ami általában úgy érhető el, hogy felveszi a hozzá kapcsolódó kurzust.
+**Bejelentkezettek számára látható** - mindenki, aki bejelentkezett, megtekintheti a bejegyzést, még akkor is, ha nem vette föl a kurzust.
+**Mindenki számára látható** - bármely internet-felhasználó megtekintheti a bejegyzést, ha ismeri a blog címét.
+Ez választható a teljes blogra vagy az egyedi bejegyzésekre. Ha a teljes blogra van beállítva, akkor az lesz a maximum. Például ha a teljes blog az első szintre van beállítva, akor az egyedi bejegyzés szintjét egyáltalán nem tudja megváltoztatni.';
 $string['maybehiddenposts'] = 'A blog tartalmazhat csak bejelentkezett felhasználók számára látható, vagy általuk kommentálható bejegyzéseket. Ha van fiókja, <a href=\'{$a}\'>jelentkezzen be a blog teljes eléréséhez</a>.';
 $string['message'] = 'Üzenet';
 $string['moderated_addedcomment'] = 'Köszönjük a megjegyzést, amely csak akkor jelenik meg, ha a bejegyzés szerzője jóváhagyta.';
@@ -122,7 +125,8 @@ $string['moderated_awaiting'] = 'Jóváhagyásra váró megjegyzések';
 $string['moderated_confirm'] = 'Megerősítés';
 $string['moderated_confirmvalue'] = 'igen';
 $string['searchthisblog_help'] = 'Írja be a keresendő kifejezést és nyomja meg az Entert vagy kattintson a gombra. Pontos kifejezésre idézőjelekkel kereshet. A keresésből egy szót kötőjel szó elé írásával zárhat ki.
-Példa: a <tt>Picasso -szobor &quot;korai munkái&quot;</tt> kereső kifejezés &quot;Picasso&quot; vagy a &quot;korai munkái&quot; találatait adja vissza, de kizárja a &quot;szobor&quot; szót tartalmazó kifejezéseket.';
+Példa: a Picasso -szobor "korai munkái" kereső kifejezés "Picasso" vagy a "korai munkái" találatait adja vissza, de kizárja a "szobor" szót tartalmazó kifejezéseket.';
 $string['unsupportedbrowser'] = '<p> Az Ön böngészője nem tudja megjeleníteni az Atom vagy az RSS híreit. </p><p> A hírek külön számítógépes programok vagy weboldalak esetén hasznosak. Ha a hírt ilyen programban szeretné használni, másolja be a címet a böngésző címsorába. </p>';
-$string['visibility_help'] = '<p> <strong>Kurzusrésztvevők számára látható</strong> - az üzenet megtekintéséhez a bloghoz hozzáféréssel kell rendelkeznie, ami általában biztosítható azzal, hogy felvette a bloghoz kapcsolódó kruzust. </p>
-<p> <strong>Bejelentkezettek számára látható</strong> - Mindenki, aki bejelentkezett, megtekintheti az üzenetet, akkor is, ha nem vette fel a kurzust. </p><p> <strong>MIndenki számára látható</strong> - Bármely internet-felhasználó láthatja az üzenetet, ha tudja a blog címét. </p>';
+$string['visibility_help'] = '**Kurzusrésztvevők számára látható** - az üzenet megtekintéséhez a bloghoz hozzáféréssel kell rendelkeznie, ami általában biztosítható azzal, hogy felvette a bloghoz kapcsolódó kruzust.
+**Bejelentkezettek számára látható** - Mindenki, aki bejelentkezett, megtekintheti az üzenetet, akkor is, ha nem vette fel a kurzust.
+**MIndenki számára látható** - Bármely internet-felhasználó láthatja az üzenetet, ha tudja a blog címét.';

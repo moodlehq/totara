@@ -126,14 +126,11 @@ $string['disterror'] = 'Jakelu {$a} aiheutti ongelmia';
 $string['donothing'] = 'Älä kopioi, siirrä tai vaihda linkkejä.';
 $string['editcategories'] = 'Editoi kategorioita';
 $string['editcategories_help'] = 'Kaiken yhdessä isossa listassa pitämisen sijaan, kysymykset voidaan järjestää kategorioihin ja alakategorioihin.
-
 Jokaisessa kategoriassa on konteksti, joka määrittelee missä kategorian kysymyksiä voidaan käyttää:
-
 * Aktiviteettikonteksti - Kysymykset, jotka ovat käytettävissä ainoastaan aktiviteettimoduulissa
 * Kurssikonteksti - Kysymykset, jotka ovat käytettävissä kaikissa aktiviteettimoduuleissa kurssilla
 * Kurssikategoriakonteksti - Kysymykset, jotka ovat käytettävissä kaikissa aktiviteettimoduuleissa ja kaikilla kursseilla tietyssä kurssikategoriassa
 * Järjestelmäkonteksti - Kysymykset, jotka ovat käytettävissä sivuston kaikilla kursseilla ja kaikissa aktiviteeteissa
-
 Kategorioita käytetään myös satunnaiskysymyksissä kun kysymykset valitaan tietystä kategoriasta.';
 $string['editcategory'] = 'Muokkaa kategoriaa';
 $string['editingcategory'] = 'Editoi kategoriaa';
@@ -163,37 +160,23 @@ $string['errorsavingflags'] = 'Virhe tallennettaessa merkinnän tilaa.';
 $string['errorupdatingattempt'] = 'Virhe {$a->id} yrittäessä päivittää tietokantaan.';
 $string['exportcategory'] = 'Siirrä ulos kategoria.';
 $string['exportcategory_help'] = 'Tämä asetus määrittelee kategorian, josta viedyt kysymykset otetaan.
-
 Jotkin tuontiformaatit, kuten GIFT ja Moodle XML, sallivat kategoria- ja kontekstitiedon sisällyttämisen vientitiedostoon, jolloin ne voidaan (niin haluttaessa) palauttaa tuotaessa tiedosto. Jos vaadittu, tarvittavat valintaruudut pitäisi valita.';
 $string['exporterror'] = 'Virheitä tapahtui viennin aikana!';
 $string['exportfilename'] = 'tentti';
 $string['exportnameformat'] = '%Y%m%d-%H%M';
 $string['exportquestions'] = 'Vie kysymykset tiedostoon';
-$string['exportquestions_help'] = '<P>Tällä toiminnolla voi siirtää Moodlesta kokonaisen kysymyskategorian tekstitiedostoon.
+$string['exportquestions_help'] = 'Tällä toiminnolla voi siirtää Moodlesta kokonaisen kysymyskategorian tekstitiedostoon.
+Huomaa, että monet tiedostotyypit kadottavat jonkin verran informaatiota kysymyksiä siirrettäessä. Tämä johtuu siitä, että kaikki tiedostotyypit eivät tue kaikkia Moodlen eri tehtävätyypeissä käytettyjä ominaisuuksia. Ei siis kannata odottaa, että Moodleen ja Moodlesta siirretyt kysymystiedostot olisivat identtiset. Tietyt tehtävätyypit eivät välttämättä siirry lainkaan. Kannattaa siis aina tarkistaa Moodlesta siirretyt tiedostot ennen kuin käyttää niitä toisessa tuotantoympäristössä.
 
-<p>Huomaa, että monet tiedostotyypit kadottavat jonkin verran informaatiota kysymyksiä siirrettäessä. Tämä johtuu siitä, että kaikki tiedostotyypit eivät tue kaikkia Moodlen eri tehtävätyypeissä käytettyjä ominaisuuksia. Ei siis kannata odottaa, että Moodleen ja Moodlesta siirretyt kysymystiedostot olisivat identtiset. Tietyt tehtävätyypit eivät välttämättä siirry lainkaan. Kannattaa siis aina tarkistaa Moodlesta siirretyt tiedostot ennen kuin käyttää niitä toisessa tuotantoympäristössä.
-</p>
+Tällä hetkellä Moodle tukee seuraavia tiedostotyyppejä:
+**GIFT tiedostotyyppi**
+GIFT on kattavin tiedoston vienti- tai tuontimuoto, jolla voi siirtää Moodle tenttikysymyksiä tekstitiedostoon. GIFT on alunperin suunniteltu helpoksi työkaluksi, jolla opettaja voi kirjoittaa kysymyksiä tekstitiedostoon. GIFT tukee monivalintaa, oikein/väärin -kysymyksiä, lyhytvastauksia, yhdistelyä ja numeerisia kysymyksiä, sekä "puuttuva sana" -aukkotehtäviä. Huomaa, että Cloze-aukkotehtäviä ei tällä hetkellä tueta. Erilaisia kysymystyyppejä voi tallentaa samaan tiedostoon ja tietostotyyppi tukee myös rivien kommentointia, kysymysten nimiä, palautetta ja prosentuaalisesti painotettua arvostelua. Esimerkiksi:
 
-<P>Tällä hetkellä Moodle tukee seuraavia tiedostotyyppejä:</p>
-
-<P><B>GIFT tiedostotyyppi</B></P>
-<ul>
-<p>GIFT on kattavin tiedoston vienti- tai tuontimuoto, jolla voi siirtää Moodle tenttikysymyksiä tekstitiedostoon. GIFT on alunperin suunniteltu helpoksi työkaluksi, jolla opettaja voi kirjoittaa kysymyksiä tekstitiedostoon. GIFT tukee monivalintaa, oikein/väärin -kysymyksiä, lyhytvastauksia, yhdistelyä ja numeerisia kysymyksiä, sekä "puuttuva sana" -aukkotehtäviä. Huomaa, että Cloze-aukkotehtäviä ei tällä hetkellä tueta. Erilaisia kysymystyyppejä voi tallentaa samaan tiedostoon ja tietostotyyppi tukee myös rivien kommentointia, kysymysten nimiä, palautetta ja prosentuaalisesti painotettua arvostelua. Esimerkiksi:
- </p>
-<pre>
 Kuka oli Sepeteuksen poikien isä? {=Sepeteus ~Virtanen ~ei kukaan}
-
 Sepeteus oli poikiensa {~veli =isä ~eno}.
-
 Sepeteus oli poikiensa äiti. {FALSE}
-
 Kenen isä Sepeteus oli? {=poikiensa =lastensa}
-
-Koska Suomi itsenäistyi? {#1917}
-</pre>
-
-<p align=right><a href="help.php?file=formatgift.html&module=quiz">Lisätietoja GIFT tiedostotyypistä</a></p>
-</ul>';
+Koska Suomi itsenäistyi? {#1917}';
 $string['feedback'] = 'Palaute';
 $string['filecantmovefrom'] = 'Kysymystiedostoja ei voida siirtää, koska sinulla ei ole oikeuksia poistaa tiedostoja niiden alkuperäisestä sijainnista.';
 $string['filecantmoveto'] = 'Kysymystiedostoja ei voida siirtää tai kopioida, koska sinulla ei ole oikeuksia lisätä tiedostoja valitsemaasi kohteeseen.';
@@ -208,7 +191,6 @@ $string['formquestionnotinids'] = 'Lomake sisäsi kysymyksen, jota ei ole kysymy
 $string['fractionsnomax'] = 'Yhden vastauksen pitää olla 100%, jotta voidaan antaa täydet pisteet tälle kysymykselle.';
 $string['generalfeedback'] = 'Yleinen palaute';
 $string['generalfeedback_help'] = 'Yleinen palaute näytetään opiskelijalle kun he ovat vastanneet kysymykseen. Toisin kuin palaute, joka riippuu kysymystyypistä ja opiskelijan vastauksesta, sama yleinen palaute -teksti näytetään kaikille oppilaille.
-
 Voit käyttää yleistä palautetta kertoaksesi oppilaille mitä tietoja kysymys testasi, tai antaaksesi heille linkin lisäinnformaatioon, jota he voivat käyttää jos he eivät ymmärtäneet kysymyksiä.';
 $string['getcategoryfromfile'] = 'Hae kategoria tiedostosta';
 $string['getcontextfromfile'] = 'Hae asiayhteys tiedostosta';
@@ -220,7 +202,6 @@ $string['howquestionsbehave_help'] = 'Opiskelijat voivat olla tenttikysymysten k
 $string['ignorebroken'] = 'Jätä vialliset linkit huomiotta';
 $string['importcategory'] = 'Tuo kategoria';
 $string['importcategory_help'] = 'Tämä asetus määrittelee kategorian, johon tuodut kysymykset sijoitetaan.
-
 Jotkin tuontiformaatit, kuten GIFT ja Moodle XML, saattavat sisällyttää kategoria- ja kontekstitiedon tuontitiedostoon. Käyttääksesi tätä tietoa, valitun kategorian sijaan, tarvittavien valintalaatikoiden pitäisi olla valittuna. Jos tuontitiedostossa määriteltyjä kategorioita ei ole, ne luodaan.';
 $string['importerror'] = 'Tapahtui virhe tuonnin aikana';
 $string['importerrorquestion'] = 'Virhe tuotaessa tiedostoa';
@@ -258,11 +239,10 @@ $string['markoutofmax'] = 'Pisteet {$a->mark} kokonaispisteistä {$a->max}';
 $string['marks'] = 'Pisteet';
 $string['matcherror'] = 'Arvosanat eivät täsmää arviointiasetuksiin - kysymys ohitettu';
 $string['matchgrades'] = 'Yhdistä arvosanat';
-$string['matchgradeserror'] = 'Virhe jos arvosanaa ei ole listattu';
 $string['matchgrades_help'] = 'Tuotujen arvosanojen täytyy täsmätä yhden validin arvosanalistan kanssa - 100, 90, 80, 75, 70, 66.666, 60, 50, 40, 33.333, 30, 25, 20, 16.666, 14.2857, 12.5, 11.111, 10, 5, 0 (myös negatiiviset arvot). Jos ei, on kaksi vaihtoehtoa:
-
 * Virhe jos arvosanaa ei ole listalla - Jos kysymys sisältää arvosanoja, joita ei löydy listalta, näytetään virhe, eikä kysymystä tuoda
 * Lähin arvosana jos ei listalla - Jos löydetään arvosana, joka ei täsmää listalla olevien arvojen kanssa, arvosana muutetaan lähinnä sitä olevaan listan arvoon';
+$string['matchgradeserror'] = 'Virhe jos arvosanaa ei ole listattu';
 $string['matchgradesnearest'] = 'Lähin arvosana jos ei listalla';
 $string['missingcourseorcmid'] = 'Täytyy antaa kurssi-id tai cm-id kohteelle print_question';
 $string['missingcourseorcmidtolink'] = 'Täytyy antaa kurssi-id tai cm-id kohteelle get_question_edit_link.';
@@ -319,11 +299,9 @@ $string['partiallycorrect'] = 'Osittain oikein';
 $string['partiallycorrectfeedback'] = 'Kaikille osittain oikeille vastauksille';
 $string['penaltyfactor'] = 'Vähennyskerroin';
 $string['penaltyfactor_help'] = 'Tällä asetuksella määrittelet, paljonko vääristä vastauksista vähennetään osapisteitä. Asetusta voi käyttää ainoastaan kun käytät tentissä mukautuvia kysymyksiä.
-
 Vähennyskerroin on luku suljetulta väliltä 0-1. Vähennyskerroin 1 tarkoittaa, että opiskelijan on osattava vastata oikein ensimmäisellä vastauskerralla saadakseen tehtävästä pisteitä. Vähennyskerroin 0 tarkoittaa, että opiskelija voi yrittää tehtävää niin monta kertaa kuin haluaa ja oikein vastatessaan saa silti täydet pisteet.';
 $string['penaltyforeachincorrecttry'] = 'Pistevähennys jokaisesta virheellisestä vastauksesta';
 $string['penaltyforeachincorrecttry_help'] = 'Jos käytät mukautuvia kysymyksiä, joissa opiskelija saa yrittää samaa tehtävää useita kertoja, tällä asetuksella säätelet miten vääristä vastauksista rangaistaan.
-
 Vähennys on suhteessa tehtävän alkuperäiseen pistemäärään. Jos tehtävästä saa 3p ja vähennys on 0,3333333, opiskelija saa oikeasta vastauksesta ensimmäisellä yrittämällä 3p, toisella yrittämällä 2p ja kolmannella yrittämällä 1p.';
 $string['permissionedit'] = 'Muokata tätä kysymystä';
 $string['permissionmove'] = 'Siirtää tämä kysymys';
