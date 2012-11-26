@@ -318,7 +318,12 @@ function get_users($get=true, $search='', $confirmed=false, array $exceptions=nu
     if ($excludedeleted) {
         // Moodle core default behaviour - if deleted not specified, or 0, exclude deleted users
         $select .= ' AND deleted = 0';
+    } else {
+        // Get deleted users as well, excluding legacy-deleted ones with md5 hash as email
+        $select .= ' AND ' . $DB->sql_like('email', ':nolegacyemail', false);
+        $params['nolegacyemail'] = '%@%';
     }
+
 
     if (!empty($search)){
         $search = trim($search);
@@ -384,8 +389,14 @@ function get_users_listing($sort='lastaccess', $dir='ASC', $page=0, $recordsperp
 
     $fullname  = $DB->sql_fullname();
 
-    $select = $excludedeleted ? "deleted <> 1" : '1=1';  // override core moodle habits for !$excludedeleted
     $params = array();
+    if ($excludedeleted) {
+        $select = "deleted <> 1";
+    } else {
+        // Get deleted users as well, excluding legacy-deleted ones with md5 hash as email
+        $select = $DB->sql_like('email', ':nolegacyemail', false, false);
+        $params['nolegacyemail'] = '%@%';
+    }
 
     if (!empty($search)) {
         $search = trim($search);
