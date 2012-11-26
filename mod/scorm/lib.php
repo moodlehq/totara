@@ -14,34 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
-/**
- * Return an array of status options
- *
- * Optionally with translated strings
- *
- * @access  public
- * @param   bool    $with_strings   (optional)
- * @return  array
- */
-function scorm_status_options($with_strings = false) {
-    // Id's are important as they are bits
-    $options = array(
-        1 => 'failed',
-        2 => 'passed',
-        4 => 'completed'
-    );
-
-    if ($with_strings) {
-        foreach ($options as $key => $value) {
-            $options[$key] = get_string('completionstatus_'.$value, 'scorm');
-        }
-    }
-
-    return $options;
-}
-
-
 /**
  * @package   mod-scorm
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
@@ -719,35 +691,6 @@ function scorm_grade_item_update($scorm, $grades=null) {
     return grade_update('mod/scorm', $scorm->course, 'mod', 'scorm', $scorm->id, 0, $grades, $params);
 }
 
-/**
- * Sets the completion state for the activity
- *
- * @param object $scorm - The scorm object
- * @param int $userid - The User ID
- * @param int $completionstate - The completion state
- * @param array $grades - grades array of users with grades, used when userid = 0
- */
-function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COMPLETE, $grades = array()) {
-
-    $course = new stdClass();
-    $course->id = $scorm->course;
-    $completion = new completion_info($course);
-    $cm = get_coursemodule_from_instance('scorm', $scorm->id, $scorm->course);
-    if (!$completion->is_enabled($cm)) {
-        return;
-    }
-    if (!empty($cm)) {
-        if (empty($userid)) { //use all the relevant users in the grades array
-            foreach ($grades as $grade) {
-                $completion->update_state($cm, $completionstate, $grade->userid);
-            }
-        } else {
-            $completion->update_state($cm, $completionstate, $userid);
-        }
-    }
-}
-
-
 
 /**
  * Delete grade item for given scorm
@@ -1057,104 +1000,6 @@ function scorm_supports($feature) {
     }
 }
 
-/**
- * Obtains the automatic completion state for this scorm based on any conditions
- * in scorm settings.
- *
- * @param object $course Course
- * @param object $cm Course-module
- * @param int $userid User ID
- * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
- * @return bool True if completed, false if not. (If no conditions, then return
- *          value depends on comparison type)
- */
-function scorm_get_completion_state($course, $cm, $userid, $type) {
-    global $CFG, $DB;
-
-    $result = $type;
-
-    // Get scorm
-    if (!$scorm = $DB->get_record('scorm', array('id' => $cm->instance))) {
-        print_error('cannotfindscorm', 'scorm');
-    }
-
-    if ($scorm->completionstatusrequired !== null ||
-        $scorm->completionscorerequired !== null) {
-        // Get user's tracks data
-        $tracks = $DB->get_records_sql(
-            "
-            SELECT
-                id,
-                element,
-                value
-            FROM
-                {scorm_scoes_track}
-            WHERE
-                scormid = ?
-            AND userid = ?
-            AND element IN
-            (
-                'cmi.core.lesson_status',
-                'cmi.completion_status',
-                'cmi.core.score.raw',
-                'cmi.score.raw'
-            )
-            ", array($scorm->id, $userid)
-        );
-
-        if (!$tracks) {
-            return completion_info::aggregate_completion_states($type, $result, false);
-        }
-    }
-
-    // Check for status
-    if ($scorm->completionstatusrequired !== null) {
-
-        // Get status
-        $statuses = array_flip(scorm_status_options());
-        $nstatus = 0;
-
-        foreach ($tracks as $track) {
-            if (!in_array($track->element, array('cmi.core.lesson_status', 'cmi.completion_status'))) {
-                continue;
-            }
-            if (array_key_exists($track->value, $statuses)) {
-                $nstatus |= $statuses[$track->value];
-            }
-        }
-
-        if ($scorm->completionstatusrequired & $nstatus) {
-            return completion_info::aggregate_completion_states($type, $result, true);
-        }
-        else {
-            return completion_info::aggregate_completion_states($type, $result, false);
-        }
-
-    }
-
-    // Check for score
-    if ($scorm->completionscorerequired !== null) {
-        $maxscore = -1;
-
-        foreach ($tracks as $track) {
-            if (!in_array($track->element, array('cmi.core.score.raw', 'cmi.score.raw'))) {
-                continue;
-            }
-
-            if (strlen($track->value) && floatval($track->value) >= $maxscore) {
-                $maxscore = floatval($track->value);
-            }
-        }
-
-        if ($scorm->completionscorerequired <= $maxscore) {
-            return completion_info::aggregate_completion_states($type, $result, true);
-        }
-        else {
-            return completion_info::aggregate_completion_states($type, $result, false);
-        }
-    }
-    return $result;
-}
 
 /**
  * This function extends the global navigation for the site.
@@ -1526,3 +1371,4 @@ function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COM
         $completion->update_state($cm, $completionstate, $userid);
     }
 }
+
