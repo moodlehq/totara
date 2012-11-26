@@ -65,15 +65,15 @@ function xmldb_scorm_upgrade($oldversion) {
 
 
     // Adding completion fields to scorm table
-    if ($result && $oldversion < 2011041402) {
+    if ($oldversion < 2011041402) {
         $table = new xmldb_table('scorm');
         $field = new xmldb_field('completionstatusrequired', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, null, null, null, null, null, 'timemodified');
         if (!$dbman->field_exists($table, $field)) {
-            $result = $result && $dbman->add_field($table, $field);
+            $dbman->add_field($table, $field);
         }
         $field = new xmldb_field('completionscorerequired', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, null, null, null, null, null, 'completionstatusrequired');
         if (!$dbman->field_exists($table, $field)) {
-            $result = $result && $dbman->add_field($table, $field);
+            $dbman->add_field($table, $field);
         }
         upgrade_mod_savepoint(true, 2011041402, 'scorm');
     }
