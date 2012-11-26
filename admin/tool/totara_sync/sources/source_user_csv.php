@@ -83,7 +83,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
     }
 
     function import_data($temptable) {
-
+        global $CFG, $DB;
         if (!$this->filesdir) {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofilesdir');
         }
@@ -186,6 +186,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $fieldcount = new object();
         $fieldcount->headercount = count($fields);
         $fieldcount->rownum = 0;
+        $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
 
         while ($csvrow = fgetcsv($file)) {
             $fieldcount->rownum++;
@@ -216,19 +217,46 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                     $dbrow[$f] = $csvrow[$f];
                 }
             }
-            $dbrow['timemodified'] = empty($dbrow['timemodified']) ? $now : $dbrow['timemodified'];
+
+            if (empty($csvrow['timemodified'])) {
+                $dbrow['timemodified'] = $now;
+            } else {
+                //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                $parsed_date = totara_date_parse_from_format($csvdateformat, trim($csvrow['timemodified']));
+                if ($parsed_date) {
+                    $dbrow['timemodified'] = $parsed_date;
+                }
+            }
+
             if (isset($dbrow['deleted'])) {
                 // ensure int value, as this can come empty from source
                 $dbrow['deleted'] = empty($dbrow['deleted']) ? 0 : 1;
             }
-
 
             // Custom fields are special - needs to be json-encoded
             if (!empty($this->customfields)) {
                 $cfield_data = array();
                 foreach (array_keys($this->customfields) as $cf) {
                     if (!empty($this->config->{'import_'.$cf})) {
-                        $cfield_data[$cf] = $csvrow[$cf];
+                        //get shortname and check if we need to do field type processing
+                        $value = trim($csvrow[$cf]);
+                        if (!empty($value)) {
+                            $shortname = str_replace("customfield_", "", $cf);
+                            $datatype = $DB->get_field('user_info_field', 'datatype', array('shortname' => $shortname));
+                            switch ($datatype) {
+                                case 'datetime':
+                                    //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                                    $parsed_date = totara_date_parse_from_format($csvdateformat, $value);
+                                    if ($parsed_date) {
+                                        $value = $parsed_date;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        $cfield_data[$cf] = $value;
+                        unset($dbrow[$cf]);
                     }
                 }
                 $dbrow['customfields'] = json_encode($cfield_data);

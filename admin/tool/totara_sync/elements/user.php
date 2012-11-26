@@ -51,7 +51,7 @@ class totara_sync_element_user extends totara_sync_element {
     }
 
     function sync() {
-        global $DB;
+        global $DB, $CFG;
 
         $this->addlog(get_string('syncstarted', 'tool_totara_sync'), 'info', 'usersync');
 
@@ -190,10 +190,12 @@ class totara_sync_element_user extends totara_sync_element {
 
                 // update custom field data
                 if ($customfields = json_decode($suser->customfields)) {
-                    foreach ($customfields as $name=>$value) {
-                        $user->{$name} = $value;
+                    require_once($CFG->dirroot.'/user/profile/lib.php');
+                    foreach ($customfields as $name => $value) {
+                        $profile = str_replace('customfield_', 'profile_field_', $name);
+                        $user->{$profile} = $value;
                     }
-                    customfield_save_data($user, 'user', 'user');
+                    profile_save_data($user);
                 }
 
                 $this->addlog(get_string('updateduserx', 'tool_totara_sync', $suser->idnumber), 'info', 'updateusers');
@@ -296,10 +298,12 @@ class totara_sync_element_user extends totara_sync_element {
 
         // add custom field data
         if ($customfields = json_decode($suser->customfields)) {
-            foreach ($customfields as $name=>$value) {
-                $user->{$name} = $value;
+            require_once($CFG->dirroot.'/user/profile/lib.php');
+            foreach ($customfields as $name => $value) {
+                $profile = str_replace('customfield_', 'profile_field_', $name);
+                $user->{$profile} = $value;
             }
-            customfield_save_data($user, 'user', 'user');
+            profile_save_data($user);
         }
 
         $this->addlog(get_string('createduserx', 'tool_totara_sync', $user->idnumber), 'info', 'createusers');

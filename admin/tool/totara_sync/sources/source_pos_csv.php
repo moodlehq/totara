@@ -59,7 +59,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
     }
 
     function import_data($temptable) {
-
+        global $CFG, $DB;
         if (!$this->filesdir) {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofilesdir');
         }
@@ -155,6 +155,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
         $fieldcount = new object();
         $fieldcount->headercount = count($fields);
         $fieldcount->rownum = 0;
+        $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
 
         while ($row = fgetcsv($file)) {
             $fieldcount->rownum++;
@@ -177,14 +178,39 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
 
             $row['parentidnumber'] = $row['parentidnumber'] == $row['idnumber'] ? '' : $row['parentidnumber'];
             $row['typeidnumber'] = !empty($row['typeidnumber']) ? $row['typeidnumber'] : '';
-            $row['timemodified'] = empty($row['timemodified']) ? $now : $row['timemodified'];
+            if (empty($row['timemodified'])) {
+                $row['timemodified'] = $now;
+            } else {
+                //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                $parsed_date = totara_date_parse_from_format($csvdateformat, trim($row['timemodified']));
+                if ($parsed_date) {
+                    $row['timemodified'] = $parsed_date;
+                }
+            }
 
-            // Custom fields
+            // Custom fields - need to handle custom field formats like dates here
             $customfieldkeys = preg_grep('/^customfield_.*/', $fields);
             if (!empty($customfieldkeys)) {
                 $customfields = array();
                 foreach ($customfieldkeys as $key) {
-                    $customfields[$key] = $row[$key];
+                    //get shortname and check if we need to do field type processing
+                    $value = trim($row[$key]);
+                    if (!empty($value)) {
+                        $shortname = str_replace('customfield_', '', $key);
+                        $datatype = $DB->get_field('pos_type_info_field', 'datatype', array('shortname' => $shortname));
+                        switch ($datatype) {
+                            case 'datetime':
+                                //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                                $parsed_date = totara_date_parse_from_format($csvdateformat, $value);
+                                if ($parsed_date) {
+                                    $value = $parsed_date;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    $customfields[$key] = $value;
                     unset($row[$key]);
                 }
 
