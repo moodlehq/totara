@@ -87,7 +87,7 @@ class enrol_totara_program_plugin extends enrol_plugin {
      *
      * @return bool
      */
-    public function allow_unenrol($instance) {
+    public function allow_unenrol(stdClass $instance) {
         return true;
     }
 
@@ -110,7 +110,7 @@ class enrol_totara_program_plugin extends enrol_plugin {
      * @param stdClass $instance course enrol instance
      * @return bool|int false means not enrolled, integer means timeend
      */
-    public function try_autoenrol($instance) {
+    public function try_autoenrol(stdClass $instance) {
         global $CFG, $OUTPUT, $USER, $DB;
 
         if ($course = $DB->get_record('course', array('id' => $instance->courseid))) {
