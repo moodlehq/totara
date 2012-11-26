@@ -461,7 +461,6 @@ class enrol_manual_plugin extends enrol_plugin {
         $coursecontext = context_course::instance($instance->courseid);
         return (has_capability('moodle/course:update', $coursecontext)) ? 0 : false;
     }
-}
 
     /**
      * Restore instance and map settings.
