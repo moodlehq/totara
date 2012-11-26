@@ -206,6 +206,7 @@ $string['error:problemapproving'] = 'There was a problem approving those items';
 $string['error:nopermissiondeletemandatorycourse'] = 'You do not have permission to delete a mandatory course';
 $string['error:nopermissiondeletemandatorycomp'] = 'You do not have permission to delete a mandatory competency';
 $string['error:couldnotassignnewitem'] = 'Could not assign new item to plan';
+$string['error:itemnotinplan'] = 'This item is not part of specified plan';
 // Strings with placeholder for custom-editable component names
 $string['updatelinkedx'] = 'Update linked {$a}';
 $string['nox'] = 'No {$a}.';

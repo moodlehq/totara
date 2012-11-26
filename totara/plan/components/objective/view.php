@@ -42,6 +42,11 @@ if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_
         print_error('error:nopermissions', 'totara_plan');
 }
 
+// Check the item is in this plan
+if (!$DB->record_exists('dp_plan_objective', array('planid' => $plan->id, 'id' => $caid))) {
+    print_error('error:itemnotinplan', 'totara_plan');
+}
+
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);

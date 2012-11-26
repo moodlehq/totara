@@ -48,6 +48,11 @@ if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_
         print_error('error:nopermissions', 'totara_plan');
 }
 
+// Check the item is in this plan
+if (!$DB->record_exists('dp_plan_course_assign', array('planid' => $plan->id, 'id' => $caid))) {
+    print_error('error:itemnotinplan', 'totara_plan');
+}
+
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
