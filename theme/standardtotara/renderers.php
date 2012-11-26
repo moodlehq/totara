@@ -36,13 +36,21 @@ class theme_standardtotara_core_renderer extends core_renderer {
      * the brackets from the Login/Logout string and adding the 'link-as-button'
      * class so it appears like a button
      *
+     * @param bool $withlinks if false, then don't include any links in the HTML produced.
+     * If not set, the default is the nologinlinks option from the theme config.php file,
+     * and if that is not set, then links are included.
+     *
      * @return string HTML fragment.
      */
-    public function login_info() {
+    public function login_info($withlinks = null) {
         global $USER, $CFG, $DB, $SESSION;
 
         if (during_initial_install()) {
             return '';
+        }
+
+        if (is_null($withlinks)) {
+            $withlinks = empty($this->page->layout_options['nologinlinks']);
         }
 
         $loginapge = ((string)$this->page->url === get_login_url());
@@ -51,7 +59,11 @@ class theme_standardtotara_core_renderer extends core_renderer {
         if (session_is_loggedinas()) {
             $realuser = session_get_realuser();
             $fullname = fullname($realuser, true);
-            $realuserinfo = " [<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".sesskey()."\">$fullname</a>] ";
+            if ($withlinks) {
+                $realuserinfo = " [<a href=\"$CFG->wwwroot/course/loginas.php?id=$course->id&amp;sesskey=".sesskey()."\">$fullname</a>] ";
+            } else {
+                $realuserinfo = " [$fullname] ";
+            }
         } else {
             $realuserinfo = '';
         }
@@ -66,13 +78,21 @@ class theme_standardtotara_core_renderer extends core_renderer {
 
             $fullname = fullname($USER, true);
             // Since Moodle 2.0 this link always goes to the public profile page (not the course profile page)
-            $username = "<a href=\"$CFG->wwwroot/user/profile.php?id=$USER->id\">$fullname</a>";
+            if ($withlinks) {
+                $username = "<a href=\"$CFG->wwwroot/user/profile.php?id=$USER->id\">$fullname</a>";
+            } else {
+                $username = $fullname;
+            }
             if (is_mnet_remote_user($USER) and $idprovider = $DB->get_record('mnet_host', array('id'=>$USER->mnethostid))) {
-                $username .= " from <a href=\"{$idprovider->wwwroot}\">{$idprovider->name}</a>";
+                if ($withlinks) {
+                    $username .= " from <a href=\"{$idprovider->wwwroot}\">{$idprovider->name}</a>";
+                } else {
+                    $username .= " from {$idprovider->name}";
+                }
             }
             if (isguestuser()) {
                 $loggedinas = $realuserinfo.get_string('loggedinasguest');
-                if (!$loginapge) {
+                if (!$loginpage && $withlinks) {
                     $loggedinas .= " <a href=\"$loginurl\" class=\"link-as-button\">".get_string('login').'</a>';
                 }
             } else if (is_role_switched($course->id)) { // Has switched roles
@@ -80,15 +100,19 @@ class theme_standardtotara_core_renderer extends core_renderer {
                 if ($role = $DB->get_record('role', array('id'=>$USER->access['rsw'][$context->path]))) {
                     $rolename = ': '.format_string($role->name);
                 }
-                $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename.
+                if ($withlinks) {
+                    $loggedinas = get_string('loggedinas', 'moodle', $username).$rolename.
                           " (<a href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey=".sesskey()."\">".get_string('switchrolereturn').'</a>)';
+                }
             } else {
-                $loggedinas = $realuserinfo.get_string('loggedinas', 'moodle', $username).' '.
+                if ($withlinks) {
+                    $loggedinas = $realuserinfo.get_string('loggedinas', 'moodle', $username).' '.
                           " <small><a class=\"link-as-button\" href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\">".get_string('logout').'</a></small>';
+                }
             }
         } else {
             $loggedinas = get_string('loggedinnot', 'moodle');
-            if (!$loginapge) {
+            if (!$loginpage && $withlinks) {
                 $loggedinas .= " <a href=\"$loginurl\" class=\"login link-as-button\">".get_string('login').'</a>';
             }
         }
