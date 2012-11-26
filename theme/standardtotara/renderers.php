@@ -53,7 +53,7 @@ class theme_standardtotara_core_renderer extends core_renderer {
             $withlinks = empty($this->page->layout_options['nologinlinks']);
         }
 
-        $loginapge = ((string)$this->page->url === get_login_url());
+        $loginpage = ((string)$this->page->url === get_login_url());
         $course = $this->page->course;
 
         if (session_is_loggedinas()) {
