@@ -199,7 +199,8 @@ function dp_priority_display_table($priorities, $editingon=0) {
 function dp_priority_default_scale() {
     global $DB;
 
-    return reset($DB->get_records('dp_priority_scale', null, 'sortorder', '*', '', 1));
+    $result = $DB->get_records('dp_priority_scale', null, 'sortorder', '*', '', 1);
+    return reset($result);
 }
 
 /**
