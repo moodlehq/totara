@@ -29,7 +29,7 @@ define('CLI_SCRIPT', true);
 
 require(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once($CFG->libdir.'/clilib.php');      // cli only functions
-require_once($CFG->libdir.'/completion/cron.php');
+require_once($CFG->dirroot.'/completion/cron.php');
 require_once($CFG->dirroot . '/admin/cron_lockfile.php');
 
 /// Check cli options
@@ -49,7 +49,7 @@ Options:
 -h, --help            Print out this help
 
 Example:
-\$sudo -u www-data /usr/bin/php lib/completion/run_cron.php
+\$sudo -u www-data /usr/bin/php completion/run_cron.php
 ";
 
     echo $help;
@@ -70,7 +70,7 @@ if (moodle_needs_upgrading()) {
 
 
 /// Completion cron lock
-$ccronlock = new cron_lockfile($CFG->libdir . '/completion/cron.php');
+$ccronlock = new cron_lockfile($CFG->dirroot . '/completion/cron.php');
 if (!$ccronlock->locked()) {
     echo 'Completion cron already being executed. Quitting.' . PHP_EOL;
     exit(1);

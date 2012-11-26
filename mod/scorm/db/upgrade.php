@@ -88,7 +88,7 @@ function xmldb_scorm_upgrade($oldversion) {
 
 
     if ($oldversion < 2011112902) {
-        require_once($CFG->dirroot . '/lib/completionlib.php');
+        require_once($CFG->libdir . '/completionlib.php');
         // a bug in scorm activity completion means that there may be users who have
         // met the criteria but are not marked as complete. This upgrade finds any
         // incomplete scorm activities and reruns the activity completion check to

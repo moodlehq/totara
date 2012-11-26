@@ -24,7 +24,7 @@
  * @author    Aaron Barnes <aaronb@catalyst.net.nz>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once($CFG->libdir.'/completion/data_object.php');
+require_once($CFG->dirroot.'/completion/data_object.php');
 
 
 /**

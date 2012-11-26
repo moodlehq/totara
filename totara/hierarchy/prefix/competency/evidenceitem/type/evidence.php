@@ -23,7 +23,7 @@
  * @subpackage totara_hierarchy
  */
 
-require_once("{$CFG->libdir}/completion/data_object.php");
+require_once("{$CFG->dirroot}/completion/data_object.php");
 require_once("{$CFG->dirroot}/totara/hierarchy/prefix/competency/evidence/evidence.php");
 
 /**

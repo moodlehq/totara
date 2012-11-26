@@ -69,7 +69,7 @@ class rb_source_course_completion_by_org extends rb_base_source {
         global $CFG;
 
         // to get access to constants
-        require_once($CFG->libdir . '/completion/completion_criteria.php');
+        require_once($CFG->dirroot . '/completion/criteria/completion_criteria.php');
 
         // joinlist for this source
         $joinlist = array(

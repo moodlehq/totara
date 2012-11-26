@@ -30,7 +30,7 @@
  */
 require_once("{$CFG->dirroot}/totara/hierarchy/lib.php");
 require_once("{$CFG->dirroot}/totara/core/utils.php");
-require_once("{$CFG->libdir}/completion/data_object.php");
+require_once("{$CFG->dirroot}/completion/data_object.php");
 
 
 // DO NOT COMMENT OUT IF UNUSED

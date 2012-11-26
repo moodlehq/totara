@@ -338,7 +338,7 @@ function totara_readd_course_completion_changes() {
         $dbman->add_index($table, $index);
     }
 
-    require_once("{$CFG->libdir}/completion/completion_completion.php");
+    require_once("{$CFG->dirroot}/completion/completion_completion.php");
 
     /// Define field status to be added to course_completions
     $table = new xmldb_table('course_completions');

@@ -321,7 +321,7 @@ function xmldb_totara_core_upgrade($oldversion) {
 
     if ($oldversion < 2012102400) {
         //fix broken stats for course completions
-        require_once($CFG->dirroot.'/lib/completion/completion_completion.php');
+        require_once($CFG->dirroot.'/completion/completion_completion.php');
         $completions = $DB->get_recordset('course_completions', array('status' => COMPLETION_STATUS_COMPLETE));
         foreach ($completions as $completion) {
             $data = array();

@@ -29,7 +29,7 @@ global $CFG;
 // needed for approval constants etc
 require_once($CFG->dirroot . '/totara/plan/lib.php');
 // needed to access completion status codes
-require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
+require_once($CFG->dirroot . '/completion/completion_completion.php');
 
 /**
  * A report builder source for DP courses

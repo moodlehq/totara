@@ -55,7 +55,7 @@ class block_totara_addtoplan extends block_base {
 
         // If they're already completed in this course, then we don't need
         // to show this block.
-        require_once($CFG->dirroot . '/lib/completion/completion_completion.php');
+        require_once($CFG->dirroot . '/completion/completion_completion.php');
         $params = array('userid' => $USER->id, 'course' => $COURSE->id);
         $completion = new completion_completion($params);
         if ($completion->is_complete()) {
