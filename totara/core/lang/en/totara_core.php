@@ -34,6 +34,19 @@ $string['datepickerparseformat'] = 'd/m/y'; //how php parses the datepicker date
 $string['datepickerregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{2}';
 $string['datepickerregexphp'] = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
 $string['strftimedateshortmonth'] = '%d %b %Y';
+$string['csvdateformat'] = 'CSV Import date format';
+$string['csvdateformatdefault'] = 'd/m/Y';
+$string['csvdateformatconfig'] = 'Date format to be used in CSV imports like user uploads with date custom profile fields, or Totara Sync.
+
+The date format should be compatible with the formats defined in the <a target="_blank" href="http://www.php.net/manual/en/datetime.createfromformat.php">PHP DateTime class</a>
+
+Examples:
+<ul>
+<li>d/m/Y if the dates in the CSV are of the form 21/03/2012</li>
+<li>d/m/y if the dates in the CSV have 2-digit years 21/03/12</li>
+<li>m/d/Y if the dates in the CSV are in US form 03/21/2012</li>
+<li>Y-m-d if the dates in the CSV are in ISO form 2012-03-21</li>
+</ul>';
 
 $string['core:createcoursecustomfield'] = 'Create a course custom field';
 $string['core:updatecoursecustomfield'] = 'Update a course custom field';

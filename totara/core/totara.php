@@ -432,7 +432,8 @@ function totara_date_parse_from_format ($format, $date) {
     $timezone = get_user_timezone_offset($tz);
     $dateArray = array();
     $dateArray = date_parse_from_format($format, $date);
-    if (is_array($dateArray)) {
+    if (is_array($dateArray) && isset($dateArray['error_count']) &&
+        $dateArray['error_count'] == 0) {
         if (abs($timezone) > 13) {
             $time = mktime($dateArray['hour'],
                     $dateArray['minute'],

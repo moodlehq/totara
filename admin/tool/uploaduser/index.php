@@ -220,6 +220,23 @@ if ($formdata = $mform2->is_cancelled()) {
             }
             $key = $filecolumns[$keynum];
             if (strpos($key, 'profile_field_') === 0) {
+                //we may need additional data manipulation depending on the custom field datatype
+                $field_shortname = substr($key, strlen('profile_field_'));
+                if ($datatype = $DB->get_field('user_info_field', 'datatype', array('shortname' => $field_shortname))) {
+                    switch ($datatype) {
+                        case 'datetime':
+                            // try and parse using $CFG->csvdateformat if set, or default if not set
+                            $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
+                            // if date can't be parsed, assume it is a unix timestamp and leave unchanged
+                            $parsed_date = totara_date_parse_from_format($csvdateformat, trim($value));
+                            if ($parsed_date) {
+                                $value = $parsed_date;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 //NOTE: bloody mega hack alert!!
                 if (isset($USER->$key) and is_array($USER->$key)) {
                     // this must be some hacky field that is abusing arrays to store content and format
