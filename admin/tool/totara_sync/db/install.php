@@ -40,7 +40,7 @@ function xmldb_tool_totara_sync_install() {
         // Launch add field totarasync
         $dbman->add_field($table, $field);
     }
-    $index = new XMLDBIndex('totarasync');
+    $index = new xmldb_index('totarasync');
     $index->set_attributes(XMLDB_INDEX_NOTUNIQUE, array('totarasync'));
     if (!$dbman->index_exists($table, $index)) {
         $dbman->add_index($table, $index);
@@ -54,7 +54,7 @@ function xmldb_tool_totara_sync_install() {
         // Launch add field totarasync
         $dbman->add_field($table, $field);
     }
-    $index = new XMLDBIndex('totarasync');
+    $index = new xmldb_index('totarasync');
     $index->set_attributes(XMLDB_INDEX_NOTUNIQUE, array('totarasync'));
     if (!$dbman->index_exists($table, $index)) {
         $dbman->add_index($table, $index);
@@ -68,7 +68,7 @@ function xmldb_tool_totara_sync_install() {
         // Launch add field totarasync
         $dbman->add_field($table, $field);
     }
-    $index = new XMLDBIndex('totarasync');
+    $index = new xmldb_index('totarasync');
     $index->set_attributes(XMLDB_INDEX_NOTUNIQUE, array('totarasync'));
     if (!$dbman->index_exists($table, $index)) {
         $dbman->add_index($table, $index);
