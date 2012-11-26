@@ -20,7 +20,7 @@
  * Block for displaying user-defined links
  *
  * @package   totara
- * @subpackage totara_quicklinks
+ * @subpackage totara_tasks
  * @copyright 2010-2012 Totara Learning Solutions Ltd
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -56,16 +56,7 @@
 
 $capabilities = array(
 
-    'block/totara_quicklinks:manageownlinks' => array(
-        'riskbitmask' => RISK_PERSONAL,
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_BLOCK,
-        'legacy' => array(
-            'user' => CAP_ALLOW,
-        )
-    ),
-
-    'block/totara_quicklinks:addinstance' => array(
+    'block/totara_tasks:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
 
         'captype' => 'write',
@@ -77,6 +68,7 @@ $capabilities = array(
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
+
 );
 
 ?>
