@@ -1838,10 +1838,6 @@ class global_navigation extends navigation_node {
         global $CFG, $DB, $USER, $SITE;
         require_once($CFG->dirroot.'/course/lib.php');
 
-        if ($courseformat == 'unknown' && isset($course->format)) {
-            $courseformat = $course->format;
-        }
-
         list($sections, $activities) = $this->generate_sections_and_activities($course);
 
         $navigationsections = array();
