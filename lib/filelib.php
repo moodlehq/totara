@@ -4203,6 +4203,19 @@ function file_pluginfile($relativepath, $forcedownload, $preview = null) {
         }
 
         // ========================================================================================================================
+    } else if ($component === 'theme') {
+        $filename = array_pop($args);
+        $filepath = $args ? '/'.implode('/', $args).'/' : '/';
+
+        $file = $fs->get_file($context->id, 'theme', $filearea, $args[0], '/', $filename);
+
+        if (empty($file)) {
+            send_file_not_found();
+        }
+
+        send_stored_file($file, 60*60*24, 0, false); //enable long cache and disable forcedownload
+
+        // ========================================================================================================================
     } else if (strpos($component, 'mod_') === 0) {
         $modname = substr($component, 4);
         if (!file_exists("$CFG->dirroot/mod/$modname/lib.php")) {

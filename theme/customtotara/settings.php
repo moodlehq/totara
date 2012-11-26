@@ -12,14 +12,16 @@ if ($ADMIN->fulltree) {
 $name = 'theme_customtotara/logo';
 $title = get_string('logo','theme_customtotara');
 $description = get_string('logodesc', 'theme_customtotara');
-$setting = new admin_setting_configtext($name, $title, $description, '', PARAM_URL);
+$default = "";
+$setting = new admin_setting_configfilepicker($name, $title, $description, $default, array('web_image'));
 $settings->add($setting);
 
 // favicon file setting
 $name = 'theme_customtotara/favicon';
 $title = get_string('favicon','theme_customtotara');
 $description = get_string('favicondesc', 'theme_customtotara');
-$setting = new admin_setting_configtext($name, $title, $description, '', PARAM_URL);
+$default = "";
+$setting = new admin_setting_configfilepicker($name, $title, $description, $default, array('*.ico'));
 $settings->add($setting);
 
 //Link colour setting

@@ -10,9 +10,9 @@
 $string['pluginname'] = 'Custom Totara';
 $string['choosereadme'] = 'This is a highly customisable totara theme, suitable for creating a branded look via the theme settings page.';
 $string['logo'] = 'Logo';
-$string['logodesc'] = 'Enter the URL to an image to use as the logo for this site. Should be http://www.yoursite.com/path/to/logo.png';
+$string['logodesc'] = 'Select or upload the image file to be used as the site\'s logo';
 $string['favicon'] = 'Favicon';
-$string['favicondesc'] = 'Enter the URL to a favicon image to use as the icon for your site (in the url bar). It must be a .ico file - provide a url such as  http://www.yoursite.com/path/to/favicon.ico';
+$string['favicondesc'] = 'Select or upload the image file to be used as the site\'s favicon, the icon must be *.ico format';
 $string['linkcolor'] = 'Link color';
 $string['linkcolordesc'] = 'This sets the link color for the theme.';
 $string['linkvisitedcolor'] = 'Visited link color';
