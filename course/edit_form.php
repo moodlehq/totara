@@ -365,7 +365,6 @@ class course_edit_form extends moodleform {
         if ($course = $DB->get_record('course', array('id' => $courseid))) {
             customfield_definition_after_data($mform, $course, 'course', 0, 'course');
         }
-    }
 
         // add course format options
         $formatvalue = $mform->getElementValue('format');
