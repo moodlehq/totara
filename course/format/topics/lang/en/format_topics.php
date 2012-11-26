@@ -23,8 +23,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['currentsection'] = 'This topic';
 $string['sectionname'] = 'Topic';
 $string['pluginname'] = 'Topics format';
 $string['section0name'] = 'General';
 $string['page-course-view-topics'] = 'Any course main page in topics format';
 $string['page-course-view-topics-x'] = 'Any course page in topics format';
+$string['hidefromothers'] = 'Hide topic';
+$string['showfromothers'] = 'Show topic';

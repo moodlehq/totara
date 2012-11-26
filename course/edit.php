@@ -53,7 +53,7 @@ if ($id) { // editing course
         print_error('cannoteditsiteform');
     }
 
-    $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
+    $course = course_get_format($id)->get_course();
     if ($usetags) {
         $course->otags = array_keys(tag_get_tags_array('course', $course->id, 'official'));
     }
@@ -69,7 +69,7 @@ if ($id) { // editing course
     $course = null;
     require_login();
     $category = $DB->get_record('course_categories', array('id'=>$categoryid), '*', MUST_EXIST);
-    $catcontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
+    $catcontext = context_coursecat::instance($category->id);
     require_capability('moodle/course:create', $catcontext);
     $PAGE->url->param('category',$categoryid);
     $PAGE->set_context($catcontext);
@@ -120,33 +120,20 @@ unset($enrolledselected);
 // Prepare course and the editor
 $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'maxbytes'=>$CFG->maxbytes, 'trusttext'=>false, 'noclean'=>true);
 if (!empty($course)) {
-    $allowedmods = array();
-    if ($am = $DB->get_records('course_allowed_modules', array('course'=>$course->id))) {
-        foreach ($am as $m) {
-            $allowedmods[] = $m->module;
-        }
-    } else {
-        // this happens in case we edit course created before enabling module restrictions or somebody disabled everything :-(
-        if (empty($course->restrictmodules) and !empty($CFG->defaultallowedmodules)) {
-            $allowedmods = explode(',', $CFG->defaultallowedmodules);
-        }
-    }
-    $course->allowedmods = $allowedmods;
     //add context for editor
     $editoroptions['context'] = $coursecontext;
     $course = file_prepare_standard_editor($course, 'summary', $editoroptions, $coursecontext, 'course', 'summary', 0);
+
+    // Inject current aliases
+    $aliases = $DB->get_records('role_names', array('contextid'=>$coursecontext->id));
+    foreach($aliases as $alias) {
+        $course->{'role_'.$alias->roleid} = $alias->name;
+    }
 
 } else {
     //editor should respect category context if course context is not set.
     $editoroptions['context'] = $catcontext;
     $course = file_prepare_standard_editor($course, 'summary', $editoroptions, null, 'course', 'summary', null);
-
-    // Set up the default restricted module list
-    if (!empty($CFG->restrictbydefault)) {
-        if (!empty($CFG->defaultallowedmodules)) {
-            $course->allowedmods = explode(',', $CFG->defaultallowedmodules);
-        }
-    }
 }
 
 // first create the form
@@ -183,7 +170,7 @@ if ($editform->is_cancelled()) {
         customfield_save_data($data, 'course', 'course');
 
         // Get the context of the newly created course
-        $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+        $context = context_course::instance($course->id, MUST_EXIST);
 
         if (!empty($CFG->creatornewroleid) and !is_viewing($context, NULL, 'moodle/role:assign') and !is_enrolled($context, NULL, 'moodle/role:assign')) {
             // deal with course creators - enrol them internally with default role

@@ -38,7 +38,7 @@ if ($cancel) {
 //HTTPS is required in this page when $CFG->loginhttps enabled
 $PAGE->https_required();
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 $PAGE->set_url("$CFG->httpswwwroot/login/index.php");
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('login');
@@ -136,7 +136,7 @@ if ($frm && !empty($CFG->recaptchapublickey) && !empty($CFG->recaptchaprivatekey
 
 if ($frm and isset($frm->username)) {                             // Login WITH cookies
 
-    $frm->username = trim(moodle_strtolower($frm->username));
+    $frm->username = trim(textlib::strtolower($frm->username));
 
     if (is_enabled_auth('none') ) {
         if ($frm->username !== clean_param($frm->username, PARAM_USERNAME)) {

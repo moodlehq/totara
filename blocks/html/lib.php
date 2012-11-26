@@ -18,12 +18,21 @@
 /**
  * Form for editing HTML block instances.
  *
- * @package   block_html
  * @copyright 2010 Petr Skoda (http://skodak.org)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   block_html
+ * @category  files
+ * @param stdClass $course course object
+ * @param stdClass $birecord_or_cm block instance record
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
+ * @return bool
+ * @todo MDL-36050 improve capability check on stick blocks, so we can check user capability before sending images.
  */
-
-function block_html_pluginfile($course, $birecord_or_cm, $context, $filearea, $args, $forcedownload) {
+function block_html_pluginfile($course, $birecord_or_cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_BLOCK) {
@@ -61,7 +70,7 @@ function block_html_pluginfile($course, $birecord_or_cm, $context, $filearea, $a
         send_file_not_found();
     }
 
-    if ($parentcontext = get_context_instance_by_id($birecord_or_cm->parentcontextid)) {
+    if ($parentcontext = context::instance_by_id($birecord_or_cm->parentcontextid, IGNORE_MISSING)) {
         if ($parentcontext->contextlevel == CONTEXT_USER) {
             // force download on all personal pages including /my/
             //because we do not have reliable way to find out from where this is used
@@ -73,7 +82,7 @@ function block_html_pluginfile($course, $birecord_or_cm, $context, $filearea, $a
     }
 
     session_get_instance()->write_close();
-    send_stored_file($file, 60*60, 0, $forcedownload);
+    send_stored_file($file, 60*60, 0, $forcedownload, $options);
 }
 
 /**

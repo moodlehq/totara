@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,17 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access alfresco repository
+ *
+ * @since 2.0
+ * @package    repository_alfresco
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+
+/**
  * repository_alfresco class
  * This is a class used to browse files from alfresco
  *
  * @since      2.0
- * @package    repository
- * @subpackage alfresco
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_alfresco
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class repository_alfresco extends repository {
     private $ticket = null;
     private $user_session = null;
@@ -159,9 +165,9 @@ class repository_alfresco extends repository {
             $file_filter = "{http://www.alfresco.org/model/content/1.0}content";
 
             // top level sites folder
-            $sites_filter = "{http://www.alfresco.org/model/content/1.0}sites";
+            $sites_filter = "{http://www.alfresco.org/model/site/1.0}sites";
             // individual site
-            $site_filter = "{http://www.alfresco.org/model/content/1.0}site";
+            $site_filter = "{http://www.alfresco.org/model/site/1.0}site";
 
             foreach ($this->current_node->children as $child)
             {
@@ -171,11 +177,11 @@ class repository_alfresco extends repository {
                 {
                     $ret['list'][] = array('title'=>$child->child->cm_name,
                         'path'=>$child->child->id,
-                        'thumbnail'=>$OUTPUT->pix_url('f/folder-32') . '',
+                        'thumbnail'=>$OUTPUT->pix_url(file_folder_icon(90))->out(false),
                         'children'=>array());
                 } elseif ($child->child->type == $file_filter) {
                     $ret['list'][] = array('title'=>$child->child->cm_name,
-                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($child->child->cm_name, 32))->out(false),
+                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($child->child->cm_name, 90))->out(false),
                         'source'=>$child->child->id);
                 }
             }
@@ -196,12 +202,7 @@ class repository_alfresco extends repository {
     public function get_file($uuid, $file = '') {
         $node = $this->user_session->getNode($this->store, $uuid);
         $url = $this->get_url($node);
-        $path = $this->prepare_file($file);
-        $fp = fopen($path, 'w');
-        $c = new curl;
-        $c->download(array(array('url'=>$url, 'file'=>$fp)));
-        fclose($fp);
-        return array('path'=>$path, 'url'=>$url);
+        return parent::get_file($url, $file);
     }
 
     /**
@@ -218,7 +219,9 @@ class repository_alfresco extends repository {
 
     public function print_search() {
         $str = parent::print_search();
-        $str .= '<label>Space: </label><br /><select name="space">';
+        $str .= html_writer::label(get_string('space', 'repository_alfresco'), 'space', false, array('class' => 'accesshide'));
+        $str .= html_writer::empty_tag('br');
+        $str .= '<select id="space" name="space">';
         foreach ($this->user_session->stores as $v) {
             $str .= '<option ';
             if ($v->__toString() === 'workspace://SpacesStore') {
@@ -239,7 +242,7 @@ class repository_alfresco extends repository {
      * @param string $search_text
      * @return array
      */
-    public function search($search_text) {
+    public function search($search_text, $page = 0) {
         $space = optional_param('space', 'workspace://SpacesStore', PARAM_RAW);
         $currentStore = $this->user_session->getStoreFromString($space);
         $nodes = $this->user_session->query($currentStore, $search_text);
@@ -265,7 +268,7 @@ class repository_alfresco extends repository {
      *
      * @return bool
      */
-    public function instance_config_form($mform) {
+    public static function instance_config_form($mform) {
         if (!class_exists('SoapClient')) {
             $mform->addElement('static', null, get_string('notice'), get_string('soapmustbeenabled', 'repository_alfresco'));
             return false;
@@ -293,4 +296,3 @@ class repository_alfresco extends repository {
         return (FILE_INTERNAL | FILE_EXTERNAL);
     }
 }
-

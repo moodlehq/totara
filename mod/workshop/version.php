@@ -17,15 +17,14 @@
 /**
  * Defines the version of workshop
  *
- * @package    mod
- * @subpackage workshop
+ * @package    mod_workshop
  * @copyright  2009 David Mudrak <david.mudrak@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->version   = 2011112902;       // The current module version (Date: YYYYMMDDXX)
-$module->requires  = 2011112900;       // Requires this Moodle version
-$module->component = 'mod_workshop';   // Full name of the plugin (used for diagnostics)
-$module->cron      = 0;
+$module->version   = 2012102400;        // the current module version (YYYYMMDDXX)
+$module->requires  = 2012101800;        // requires this Moodle version
+$module->component = 'mod_workshop';    // full name of the plugin (used for diagnostics)
+$module->cron      = 60;                // give as a chance every minute

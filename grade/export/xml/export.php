@@ -26,13 +26,14 @@ $export_feedback   = optional_param('export_feedback', 0, PARAM_BOOL);
 $updatedgradesonly = optional_param('updatedgradesonly', false, PARAM_BOOL);
 $displaytype       = optional_param('displaytype', $CFG->grade_export_displaytype, PARAM_INT);
 $decimalpoints     = optional_param('decimalpoints', $CFG->grade_export_decimalpoints, PARAM_INT);
+$onlyactive        = optional_param('export_onlyactive', 0, PARAM_BOOL);
 
 if (!$course = $DB->get_record('course', array('id'=>$id))) {
     print_error('nocourseid');
 }
 
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $id);
+$context = context_course::instance($id);
 
 require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/xml:view', $context);
@@ -44,7 +45,7 @@ if (groups_get_course_groupmode($COURSE) == SEPARATEGROUPS and !has_capability('
 }
 
 // print all the exported data here
-$export = new grade_export_xml($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints);
+$export = new grade_export_xml($course, $groupid, $itemids, $export_feedback, $updatedgradesonly, $displaytype, $decimalpoints, $onlyactive);
 $export->print_grades();
 
 

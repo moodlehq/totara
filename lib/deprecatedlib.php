@@ -75,7 +75,7 @@ function filter_text($text, $courseid = NULL) {
         $courseid = $COURSE->id;
     }
 
-    if (!$context = get_context_instance(CONTEXT_COURSE, $courseid)) {
+    if (!$context = context_course::instance($courseid, IGNORE_MISSING)) {
         return $text;
     }
 
@@ -312,7 +312,7 @@ function get_teacher() {
  * @return array of user
  */
 function get_course_participants($courseid) {
-    return get_enrolled_users(get_context_instance(CONTEXT_COURSE, $courseid));
+    return get_enrolled_users(context_course::instance($courseid));
 }
 
 /**
@@ -324,7 +324,7 @@ function get_course_participants($courseid) {
  * @return boolean
  */
 function is_course_participant($userid, $courseid) {
-    return is_enrolled(get_context_instance(CONTEXT_COURSE, $courseid), $userid);
+    return is_enrolled(context_course::instance($courseid), $userid);
 }
 
 /**
@@ -341,7 +341,7 @@ function is_course_participant($userid, $courseid) {
 function get_recent_enrolments($courseid, $timestart) {
     global $DB;
 
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
 
     $sql = "SELECT u.id, u.firstname, u.lastname, MAX(l.time)
               FROM {user} u, {role_assignments} ra, {log} l
@@ -832,1106 +832,10 @@ function error($message, $link='') {
 }
 
 
-/// Deprecated DDL functions, to be removed soon ///
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @return bool
- */
-function table_exists($table) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->table_exists($table);
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function field_exists($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->field_exists($table, $field);
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $index
- * @return bool
- */
-function find_index_name($table, $index) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->find_index_name($table, $index);
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $index
- * @return bool
- */
-function index_exists($table, $index) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->index_exists($table, $index);
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function find_check_constraint_name($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->find_check_constraint_name($table, $field);
-}
-
-/**
- * @deprecated
- * @global object
- */
-function check_constraint_exists($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->check_constraint_exists($table, $field);
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $xmldb_key
- * @return bool
- */
-function find_key_name($table, $xmldb_key) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    return $DB->get_manager()->find_key_name($table, $xmldb_key);
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @return bool
- */
-function drop_table($table) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->drop_table($table);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $file
- * @return bool
- */
-function install_from_xmldb_file($file) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->install_from_xmldb_file($file);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @return bool
- */
-function create_table($table) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->create_table($table);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @return bool
- */
-function create_temp_table($table) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->create_temp_table($table);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $newname
- * @return bool
- */
-function rename_table($table, $newname) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->rename_table($table, $newname);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function add_field($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->add_field($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function drop_field($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->drop_field($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function change_field_type($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->change_field_type($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function change_field_precision($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->change_field_precision($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function change_field_unsigned($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->change_field_unsigned($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function change_field_notnull($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->change_field_notnull($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function change_field_enum($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used! Only dropping of enums is allowed.');
-    $DB->get_manager()->drop_enum_from_field($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @return bool
- */
-function change_field_default($table, $field) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->change_field_default($table, $field);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $field
- * @param string $newname
- * @return bool
- */
-function rename_field($table, $field, $newname) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->rename_field($table, $field, $newname);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $key
- * @return bool
- */
-function add_key($table, $key) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->add_key($table, $key);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $key
- * @return bool
- */
-function drop_key($table, $key) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->drop_key($table, $key);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $key
- * @param string $newname
- * @return bool
- */
-function rename_key($table, $key, $newname) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->rename_key($table, $key, $newname);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $index
- * @return bool
- */
-function add_index($table, $index) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->add_index($table, $index);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $index
- * @return bool
- */
-function drop_index($table, $index) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->drop_index($table, $index);
-    return true;
-}
-
-/**
- * @deprecated
- * @global object
- * @param string $table
- * @param string $index
- * @param string $newname
- * @return bool
- */
-function rename_index($table, $index, $newname) {
-    global $DB;
-    debugging('Deprecated ddllib function used!');
-    $DB->get_manager()->rename_index($table, $index, $newname);
-    return true;
-}
-
-
 //////////////////////////
 /// removed functions ////
 //////////////////////////
 
-/**
- * @deprecated
- * @param mixed $mixed
- * @return void Throws an error and does nothing
- */
-function stripslashes_safe($mixed) {
-    error('stripslashes_safe() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $var
- * @return void Throws an error and does nothing
- */
-function stripslashes_recursive($var) {
-    error('stripslashes_recursive() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $dataobject
- * @return void Throws an error and does nothing
- */
-function addslashes_object($dataobject) {
-    error('addslashes_object() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $var
- * @return void Throws an error and does nothing
- */
-function addslashes_recursive($var) {
-    error('addslashes_recursive() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $command
- * @param bool $feedback
- * @return void Throws an error and does nothing
- */
-function execute_sql($command, $feedback=true) {
-    error('execute_sql() not available anymore');
-}
-/**
- * @deprecated use $DB->record_exists_select() instead
- * @see moodle_database::record_exists_select()
- * @param mixed $table
- * @param mixed $select
- * @return void Throws an error and does nothing
- */
-function record_exists_select($table, $select='') {
-    error('record_exists_select() not available anymore');
-}
-/**
- * @deprecated use $DB->record_exists_sql() instead
- * @see moodle_database::record_exists_sql()
- * @param mixed $sql
- * @return void Throws an error and does nothing
- */
-function record_exists_sql($sql) {
-    error('record_exists_sql() not available anymore');
-}
-/**
- * @deprecated use $DB->count_records_select() instead
- * @see moodle_database::count_records_select()
- * @param mixed $table
- * @param mixed $select
- * @param mixed $countitem
- * @return void Throws an error and does nothing
- */
-function count_records_select($table, $select='', $countitem='COUNT(*)') {
-    error('count_records_select() not available anymore');
-}
-/**
- * @deprecated use $DB->count_records_sql() instead
- * @see moodle_database::count_records_sql()
- * @param mixed $sql
- * @return void Throws an error and does nothing
- */
-function count_records_sql($sql) {
-    error('count_records_sql() not available anymore');
-}
-/**
- * @deprecated use $DB->get_record_sql() instead
- * @see moodle_database::get_record_sql()
- * @param mixed $sql
- * @param bool $expectmultiple
- * @param bool $nolimit
- * @return void Throws an error and does nothing
- */
-function get_record_sql($sql, $expectmultiple=false, $nolimit=false) {
-    error('get_record_sql() not available anymore');
-}
-/**
- * @deprecated use $DB->get_record_select() instead
- * @see moodle_database::get_record_select()
- * @param mixed $table
- * @param mixed $select
- * @param mixed $fields
- * @return void Throws an error and does nothing
- */
-function get_record_select($table, $select='', $fields='*') {
-    error('get_record_select() not available anymore');
-}
-/**
- * @deprecated use $DB->get_recordset() instead
- * @see moodle_database::get_recordset()
- * @param mixed $table
- * @param mixed $field
- * @param mixed $value
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_recordset($table, $field='', $value='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_recordset() not available anymore');
-}
-/**
- * @deprecated use $DB->get_recordset_sql() instead
- * @see moodle_database::get_recordset_sql()
- * @param mixed $sql
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_recordset_sql($sql, $limitfrom=null, $limitnum=null) {
-    error('get_recordset_sql() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $rs
- * @return void Throws an error and does nothing
- */
-function rs_fetch_record(&$rs) {
-    error('rs_fetch_record() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $rs
- * @return void Throws an error and does nothing
- */
-function rs_next_record(&$rs) {
-    error('rs_next_record() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $rs
- * @return void Throws an error and does nothing
- */
-function rs_fetch_next_record(&$rs) {
-    error('rs_fetch_next_record() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $rs
- * @return void Throws an error and does nothing
- */
-function rs_EOF($rs) {
-    error('rs_EOF() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $rs
- * @return void Throws an error and does nothing
- */
-function rs_close(&$rs) {
-    error('rs_close() not available anymore');
-}
-/**
- * @deprecated use $DB->get_records_select() instead
- * @see moodle_database::get_records_select()
- * @param mixed $table
- * @param mixed $select
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_records_select($table, $select='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_records_select() not available anymore');
-}
-/**
- * @deprecated use $DB->get_field_select() instead
- * @see moodle_database::get_field_select()
- * @param mixed $table
- * @param mixed $return
- * @param mixed $select
- * @return void Throws an error and does nothing
- */
-function get_field_select($table, $return, $select) {
-    error('get_field_select() not available anymore');
-}
-/**
- * @deprecated use $DB->get_field_sql() instead
- * @see moodle_database::get_field_sql()
- * @param mixed $sql
- * @return void Throws an error and does nothing
- */
-function get_field_sql($sql) {
-    error('get_field_sql() not available anymore');
-}
-/**
- * @deprecated use $DB->delete_records_select() instead
- * @see moodle_database::delete_records_select()
- * @param mixed $sql
- * @param mixed $select
- * @return void Throws an error and does nothing
- */
-function delete_records_select($table, $select='') {
-    error('get_field_sql() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function configure_dbconnection() {
-    error('configure_dbconnection() removed');
-}
-/**
- * @deprecated
- * @param mixed $field
- * @return void Throws an error and does nothing
- */
-function sql_max($field) {
-    error('sql_max() removed - use normal sql MAX() instead');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function sql_as() {
-    error('sql_as() removed - do not use AS for tables at all');
-}
-/**
- * @deprecated
- * @param mixed $page
- * @param mixed $recordsperpage
- * @return void Throws an error and does nothing
- */
-function sql_paging_limit($page, $recordsperpage) {
-    error('Function sql_paging_limit() is deprecated. Replace it with the correct use of limitfrom, limitnum parameters');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function db_uppercase() {
-    error('upper() removed - use normal sql UPPER()');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function db_lowercase() {
-    error('upper() removed - use normal sql LOWER()');
-}
-/**
- * @deprecated
- * @param mixed $sqlfile
- * @param mixed $sqlstring
- * @return void Throws an error and does nothing
- */
-function modify_database($sqlfile='', $sqlstring='') {
-    error('modify_database() removed - use new XMLDB functions');
-}
-/**
- * @deprecated
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @return void Throws an error and does nothing
- */
-function where_clause($field1='', $value1='', $field2='', $value2='', $field3='', $value3='') {
-    error('where_clause() removed - use new functions with $conditions parameter');
-}
-/**
- * @deprecated
- * @param mixed $sqlarr
- * @param mixed $continue
- * @param mixed $feedback
- * @return void Throws an error and does nothing
- */
-function execute_sql_arr($sqlarr, $continue=true, $feedback=true) {
-    error('execute_sql_arr() removed');
-}
-/**
- * @deprecated use $DB->get_records_list() instead
- * @see moodle_database::get_records_list()
- * @param mixed $table
- * @param mixed $field
- * @param mixed $values
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_records_list($table, $field='', $values='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_records_list() removed');
-}
-/**
- * @deprecated use $DB->get_recordset_list() instead
- * @see moodle_database::get_recordset_list()
- * @param mixed $table
- * @param mixed $field
- * @param mixed $values
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_recordset_list($table, $field='', $values='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_recordset_list() removed');
-}
-/**
- * @deprecated use $DB->get_records_menu() instead
- * @see moodle_database::get_records_menu()
- * @param mixed $table
- * @param mixed $field
- * @param mixed $value
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_records_menu($table, $field='', $value='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_records_menu() removed');
-}
-/**
- * @deprecated use $DB->get_records_select_menu() instead
- * @see moodle_database::get_records_select_menu()
- * @param mixed $table
- * @param mixed $select
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_records_select_menu($table, $select='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_records_select_menu() removed');
-}
-/**
- * @deprecated use $DB->get_records_sql_menu() instead
- * @see moodle_database::get_records_sql_menu()
- * @param mixed $sql
- * @param mixed $limitfrom
- * @param mixed $limitnum
- * @return void Throws an error and does nothing
- */
-function get_records_sql_menu($sql, $limitfrom='', $limitnum='') {
-    error('get_records_sql_menu() removed');
-}
-/**
- * @deprecated
- * @param mixed $table
- * @param mixed $column
- * @return void Throws an error and does nothing
- */
-function column_type($table, $column) {
-    error('column_type() removed');
-}
-/**
- * @deprecated
- * @param mixed $rs
- * @return void Throws an error and does nothing
- */
-function recordset_to_menu($rs) {
-    error('recordset_to_menu() removed');
-}
-/**
- * @deprecated
- * @param mixed $records
- * @param mixed $field1
- * @param mixed $field2
- * @return void Throws an error and does nothing
- */
-function records_to_menu($records, $field1, $field2) {
-    error('records_to_menu() removed');
-}
-/**
- * @deprecated use $DB->set_field_select() instead
- * @see moodle_database::set_field_select()
- * @param mixed $table
- * @param mixed $newfield
- * @param mixed $newvalue
- * @param mixed $select
- * @param mixed $localcall
- * @return void Throws an error and does nothing
- */
-function set_field_select($table, $newfield, $newvalue, $select, $localcall = false) {
-    error('set_field_select() removed');
-}
-/**
- * @deprecated use $DB->get_fieldset_select() instead
- * @see moodle_database::get_fieldset_select()
- * @param mixed $table
- * @param mixed $return
- * @param mixed $select
- * @return void Throws an error and does nothing
- */
-function get_fieldset_select($table, $return, $select) {
-    error('get_fieldset_select() removed');
-}
-/**
- * @deprecated use $DB->get_fieldset_sql() instead
- * @see moodle_database::get_fieldset_sql()
- * @param mixed $sql
- * @return void Throws an error and does nothing
- */
-function get_fieldset_sql($sql) {
-    error('get_fieldset_sql() removed');
-}
-/**
- * @deprecated use $DB->sql_like() instead
- * @see moodle_database::sql_like()
- * @return void Throws an error and does nothing
- */
-function sql_ilike() {
-    error('sql_ilike() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $first
- * @param mixed $last
- * @return void Throws an error and does nothing
- */
-function sql_fullname($first='firstname', $last='lastname') {
-    error('sql_fullname() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function sql_concat() {
-    error('sql_concat() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function sql_empty() {
-    error('sql_empty() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function sql_substr() {
-    error('sql_substr() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $int1
- * @param mixed $int2
- * @return void Throws an error and does nothing
- */
-function sql_bitand($int1, $int2) {
-    error('sql_bitand() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $int1
- * @return void Throws an error and does nothing
- */
-function sql_bitnot($int1) {
-    error('sql_bitnot() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $int1
- * @param mixed $int2
- * @return void Throws an error and does nothing
- */
-function sql_bitor($int1, $int2) {
-    error('sql_bitor() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $int1
- * @param mixed $int2
- * @return void Throws an error and does nothing
- */
-function sql_bitxor($int1, $int2) {
-    error('sql_bitxor() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $fieldname
- * @param mixed $text
- * @return void Throws an error and does nothing
- */
-function sql_cast_char2int($fieldname, $text=false) {
-    error('sql_cast_char2int() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $fieldname
- * @param mixed $numchars
- * @return void Throws an error and does nothing
- */
-function sql_compare_text($fieldname, $numchars=32) {
-    error('sql_compare_text() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $fieldname
- * @param mixed $numchars
- * @return void Throws an error and does nothing
- */
-function sql_order_by_text($fieldname, $numchars=32) {
-    error('sql_order_by_text() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $fieldname
- * @return void Throws an error and does nothing
- */
-function sql_length($fieldname) {
-    error('sql_length() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $separator
- * @param mixed $elements
- * @return void Throws an error and does nothing
- */
-function sql_concat_join($separator="' '", $elements=array()) {
-    error('sql_concat_join() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $tablename
- * @param mixed $fieldname
- * @param mixed $nullablefield
- * @param mixed $textfield
- * @return void Throws an error and does nothing
- */
-function sql_isempty($tablename, $fieldname, $nullablefield, $textfield) {
-    error('sql_isempty() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $tablename
- * @param mixed $fieldname
- * @param mixed $nullablefield
- * @param mixed $textfield
- * @return void Throws an error and does nothing
- */
-function sql_isnotempty($tablename, $fieldname, $nullablefield, $textfield) {
-    error('sql_isnotempty() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function begin_sql() {
-    error('begin_sql() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function commit_sql() {
-    error('commit_sql() not available anymore');
-}
-/**
- * @deprecated
- * @return void Throws an error and does nothing
- */
-function rollback_sql() {
-    error('rollback_sql() not available anymore');
-}
-/**
- * @deprecated use $DB->insert_record() instead
- * @see moodle_database::insert_record()
- * @param mixed $table
- * @param mixed $dataobject
- * @param mixed $returnid
- * @param mixed $primarykey
- * @return void Throws an error and does nothing
- */
-function insert_record($table, $dataobject, $returnid=true, $primarykey='id') {
-    error('insert_record() not available anymore');
-}
-/**
- * @deprecated use $DB->update_record() instead
- * @see moodle_database::update_record()
- * @param mixed $table
- * @param mixed $dataobject
- * @return void Throws an error and does nothing
- */
-function update_record($table, $dataobject) {
-    error('update_record() not available anymore');
-}
-/**
- * @deprecated use $DB->get_records() instead
- * @see moodle_database::get_records()
- * @param mixed $table
- * @param mixed $field
- * @param mixed $value
- * @param mixed $sort
- * @param mixed $fields
- * @param mixed $limitfrom
- * @param mixed $limitnum
- *
- * @return void Throws an error and does nothing
- */
-function get_records($table, $field='', $value='', $sort='', $fields='*', $limitfrom='', $limitnum='') {
-    error('get_records() not available anymore');
-}
-/**
- * @deprecated use $DB->get_record() instead
- * @see moodle_database::get_record()
- * @param mixed $table
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @param mixed $fields
- * @return void Throws an error and does nothing
- */
-function get_record($table, $field1, $value1, $field2='', $value2='', $field3='', $value3='', $fields='*') {
-    error('get_record() not available anymore');
-}
-/**
- * @deprecated use $DB->set_field() instead
- * @see moodle_database::set_field()
- * @param mixed $table
- * @param mixed $newfield
- * @param mixed $newvalue
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @return void Throws an error and does nothing
- */
-function set_field($table, $newfield, $newvalue, $field1, $value1, $field2='', $value2='', $field3='', $value3='') {
-    error('set_field() not available anymore');
-}
-/**
- * @deprecated use $DB->count_records() instead
- * @see moodle_database::count_records()
- * @param mixed $table
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @return void Throws an error and does nothing
- */
-function count_records($table, $field1='', $value1='', $field2='', $value2='', $field3='', $value3='') {
-    error('count_records() not available anymore');
-}
-/**
- * @deprecated use $DB->record_exists() instead
- * @see moodle_database::record_exists()
- * @param mixed $table
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @return void Throws an error and does nothing
- */
-function record_exists($table, $field1='', $value1='', $field2='', $value2='', $field3='', $value3='') {
-    error('record_exists() not available anymore');
-}
-/**
- * @deprecated use $DB->delete_records() instead
- * @see moodle_database::delete_records()
- * @param mixed $table
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @return void Throws an error and does nothing
- */
-function delete_records($table, $field1='', $value1='', $field2='', $value2='', $field3='', $value3='') {
-    error('delete_records() not available anymore');
-}
-/**
- * @deprecated use $DB->get_field() instead
- * @see moodle_database::get_field()
- * @param mixed $table
- * @param mixed $return
- * @param mixed $field1
- * @param mixed $value1
- * @param mixed $field2
- * @param mixed $value2
- * @param mixed $field3
- * @param mixed $value3
- * @return void Throws an error and does nothing
- */
-function get_field($table, $return, $field1, $value1, $field2='', $value2='', $field3='', $value3='') {
-    error('get_field() not available anymore');
-}
-/**
- * @deprecated
- * @param mixed $table
- * @param mixed $oldfield
- * @param mixed $field
- * @param mixed $type
- * @param mixed $size
- * @param mixed $signed
- * @param mixed $default
- * @param mixed $null
- * @param mixed $after
- * @return void Throws an error and does nothing
- */
-function table_column($table, $oldfield, $field, $type='integer', $size='10',
-                      $signed='unsigned', $default='0', $null='not null', $after='') {
-    error('table_column() was removed, please use new ddl functions');
-}
 /**
  * @deprecated
  * @param mixed $name
@@ -1955,27 +859,7 @@ function use_html_editor($name='', $editorhidebuttons='', $id='') {
  *      2. and 3. lead to a call $PAGE->requires->js('/lib/javascript-static.js').
  */
 function require_js($lib) {
-    global $CFG, $PAGE;
-    // Add the lib to the list of libs to be loaded, if it isn't already
-    // in the list.
-    if (is_array($lib)) {
-        foreach($lib as $singlelib) {
-            require_js($singlelib);
-        }
-        return;
-    }
-
-    debugging('Call to deprecated function require_js. Please use $PAGE->requires->js_module() instead.', DEBUG_DEVELOPER);
-
-    if (strpos($lib, 'yui_') === 0) {
-        $PAGE->requires->yui2_lib(substr($lib, 4));
-    } else {
-        if ($PAGE->requires->is_head_done()) {
-            echo html_writer::script('', $lib);
-        } else {
-            $PAGE->requires->js(new moodle_url($lib));
-        }
-    }
+    throw new coding_exception('require_js() was removed, use new JS api');
 }
 
 /**
@@ -2019,20 +903,6 @@ function current_theme() {
     // TODO, uncomment this once we have eliminated all references to current_theme in core code.
     // debugging('current_theme is deprecated, use $PAGE->theme->name instead', DEBUG_DEVELOPER);
     return $PAGE->theme->name;
-}
-
-/**
- * @todo Remove this deprecated function when no longer used
- * @deprecated since Moodle 2.0 - use $PAGE->pagetype instead of the .
- *
- * @param string $getid used to return $PAGE->pagetype.
- * @param string $getclass used to return $PAGE->legacyclass.
- */
-function page_id_and_class(&$getid, &$getclass) {
-    global $PAGE;
-    debugging('Call to deprecated function page_id_and_class. Please use $PAGE->pagetype instead.', DEBUG_DEVELOPER);
-    $getid = $PAGE->pagetype;
-    $getclass = $PAGE->legacyclass;
 }
 
 /**
@@ -3711,7 +2581,7 @@ function update_module_button($cmid, $ignored, $string) {
 
     //NOTE: DO NOT call new output method because it needs the module name we do not have here!
 
-    if (has_capability('moodle/course:manageactivities', get_context_instance(CONTEXT_MODULE, $cmid))) {
+    if (has_capability('moodle/course:manageactivities', context_module::instance($cmid))) {
         $string = get_string('updatethis', '', $string);
 
         $url = new moodle_url("$CFG->wwwroot/course/mod.php", array('update' => $cmid, 'return' => true, 'sesskey' => sesskey()));
@@ -3999,4 +2869,178 @@ function show_event($event) {
     require_once($CFG->dirroot.'/calendar/lib.php');
     $event = new calendar_event($event);
     return $event->toggle_visibility(true);
+}
+
+/**
+ * Converts string to lowercase using most compatible function available.
+ *
+ * @deprecated Use textlib::strtolower($text) instead.
+ *
+ * @param string $string The string to convert to all lowercase characters.
+ * @param string $encoding The encoding on the string.
+ * @return string
+ */
+function moodle_strtolower($string, $encoding='') {
+
+    debugging('moodle_strtolower() is deprecated. Please use textlib::strtolower() instead.', DEBUG_DEVELOPER);
+
+    //If not specified use utf8
+    if (empty($encoding)) {
+        $encoding = 'UTF-8';
+    }
+    //Use text services
+    return textlib::strtolower($string, $encoding);
+}
+
+/**
+ * Original singleton helper function, please use static methods instead,
+ * ex: textlib::convert()
+ *
+ * @deprecated since Moodle 2.2 use textlib::xxxx() instead
+ * @see textlib
+ * @return textlib instance
+ */
+function textlib_get_instance() {
+
+    debugging('textlib_get_instance() is deprecated. Please use static calling textlib::functioname() instead.', DEBUG_DEVELOPER);
+
+    return new textlib();
+}
+
+/**
+ * Gets the generic section name for a courses section
+ *
+ * The global function is deprecated. Each course format can define their own generic section name
+ *
+ * @deprecated since 2.4
+ * @see get_section_name()
+ * @see format_base::get_section_name()
+ *
+ * @param string $format Course format ID e.g. 'weeks' $course->format
+ * @param stdClass $section Section object from database
+ * @return Display name that the course format prefers, e.g. "Week 2"
+ */
+function get_generic_section_name($format, stdClass $section) {
+    debugging('get_generic_section_name() is deprecated. Please use appropriate functionality from class format_base', DEBUG_DEVELOPER);
+    return get_string('sectionname', "format_$format") . ' ' . $section->section;
+}
+
+/**
+ * Returns an array of sections for the requested course id
+ *
+ * It is usually not recommended to display the list of sections used
+ * in course because the course format may have it's own way to do it.
+ *
+ * If you need to just display the name of the section please call:
+ * get_section_name($course, $section)
+ * {@link get_section_name()}
+ * from 2.4 $section may also be just the field course_sections.section
+ *
+ * If you need the list of all sections it is more efficient to get this data by calling
+ * $modinfo = get_fast_modinfo($courseorid);
+ * $sections = $modinfo->get_section_info_all()
+ * {@link get_fast_modinfo()}
+ * {@link course_modinfo::get_section_info_all()}
+ *
+ * Information about one section (instance of section_info):
+ * get_fast_modinfo($courseorid)->get_sections_info($section)
+ * {@link course_modinfo::get_section_info()}
+ *
+ * @deprecated since 2.4
+ *
+ * @param int $courseid
+ * @return array Array of section_info objects
+ */
+function get_all_sections($courseid) {
+    global $DB;
+    debugging('get_all_sections() is deprecated. See phpdocs for this function', DEBUG_DEVELOPER);
+    return get_fast_modinfo($courseid)->get_section_info_all();
+}
+
+/**
+ * Given a full mod object with section and course already defined, adds this module to that section.
+ *
+ * This function is deprecated, please use {@link course_add_cm_to_section()}
+ * Note that course_add_cm_to_section() also updates field course_modules.section and
+ * calls rebuild_course_cache()
+ *
+ * @deprecated since 2.4
+ *
+ * @param object $mod
+ * @param int $beforemod An existing ID which we will insert the new module before
+ * @return int The course_sections ID where the mod is inserted
+ */
+function add_mod_to_section($mod, $beforemod = null) {
+    debugging('Function add_mod_to_section() is deprecated, please use course_add_cm_to_section()', DEBUG_DEVELOPER);
+    global $DB;
+    return course_add_cm_to_section($mod->course, $mod->coursemodule, $mod->section, $beforemod);
+}
+
+/**
+ * Returns a number of useful structures for course displays
+ *
+ * Function get_all_mods() is deprecated in 2.4
+ * Instead of:
+ * <code>
+ * get_all_mods($courseid, $mods, $modnames, $modnamesplural, $modnamesused);
+ * </code>
+ * please use:
+ * <code>
+ * $mods = get_fast_modinfo($courseorid)->get_cms();
+ * $modnames = get_module_types_names();
+ * $modnamesplural = get_module_types_names(true);
+ * $modnamesused = get_fast_modinfo($courseorid)->get_used_module_names();
+ * </code>
+ *
+ * @deprecated since 2.4
+ *
+ * @param int $courseid id of the course to get info about
+ * @param array $mods (return) list of course modules
+ * @param array $modnames (return) list of names of all module types installed and available
+ * @param array $modnamesplural (return) list of names of all module types installed and available in the plural form
+ * @param array $modnamesused (return) list of names of all module types used in the course
+ */
+function get_all_mods($courseid, &$mods, &$modnames, &$modnamesplural, &$modnamesused) {
+    debugging('Function get_all_mods() is deprecated. Use get_fast_modinfo() and get_module_types_names() instead. See phpdocs for details', DEBUG_DEVELOPER);
+
+    global $COURSE;
+    $modnames      = get_module_types_names();
+    $modnamesplural= get_module_types_names(true);
+    $modinfo = get_fast_modinfo($courseid);
+    $mods = $modinfo->get_cms();
+    $modnamesused = $modinfo->get_used_module_names();
+}
+
+/**
+ * Returns course section - creates new if does not exist yet
+ *
+ * This function is deprecated. To create a course section call:
+ * course_create_sections_if_missing($courseorid, $sections);
+ * to get the section call:
+ * get_fast_modinfo($courseorid)->get_section_info($sectionnum);
+ *
+ * @see course_create_sections_if_missing()
+ * @see get_fast_modinfo()
+ * @deprecated since 2.4
+ *
+ * @param int $section relative section number (field course_sections.section)
+ * @param int $courseid
+ * @return stdClass record from table {course_sections}
+ */
+function get_course_section($section, $courseid) {
+    global $DB;
+    debugging('Function get_course_section() is deprecated. Please use course_create_sections_if_missing() and get_fast_modinfo() instead.', DEBUG_DEVELOPER);
+
+    if ($cw = $DB->get_record("course_sections", array("section"=>$section, "course"=>$courseid))) {
+        return $cw;
+    }
+    $cw = new stdClass();
+    $cw->course   = $courseid;
+    $cw->section  = $section;
+    $cw->summary  = "";
+    $cw->summaryformat = FORMAT_HTML;
+    $cw->sequence = "";
+    $id = $DB->insert_record("course_sections", $cw);
+    rebuild_course_cache($courseid, true);
+    return $DB->get_record("course_sections", array("id"=>$id));
 }

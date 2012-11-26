@@ -605,7 +605,11 @@ class database_session extends session_stub {
             $ignoretimeout = false;
             if (!empty($record->userid)) { // skips not logged in
                 if ($user = $this->database->get_record('user', array('id'=>$record->userid))) {
-                    if (!isguestuser($user)) {
+
+                    // Refresh session if logged as a guest
+                    if (isguestuser($user)) {
+                        $ignoretimeout = true;
+                    } else {
                         $authsequence = get_enabled_auth_plugins(); // auths, in sequence
                         foreach($authsequence as $authname) {
                             $authplugin = get_auth_plugin($authname);
@@ -684,9 +688,6 @@ class database_session extends session_stub {
         }
 
         if (isset($this->record->id)) {
-            $record = new stdClass();
-            $record->state              = 0;
-            $record->sid                = $sid;                         // might be regenerating sid
             $this->record->sessdata     = base64_encode($session_data); // there might be some binary mess :-(
             $this->record->userid       = $userid;
             $this->record->timemodified = time();
@@ -928,9 +929,12 @@ function session_gc() {
         }
         $rs->close();
 
+        // Extending the timeout period for guest sessions as they are renewed.
         $purgebefore = time() - $maxlifetime;
+        $purgebeforeguests = time() - ($maxlifetime * 5);
+
         // delete expired sessions for guest user account
-        $DB->delete_records_select('sessions', 'userid = ? AND timemodified < ?', array($CFG->siteguest, $purgebefore));
+        $DB->delete_records_select('sessions', 'userid = ? AND timemodified < ?', array($CFG->siteguest, $purgebeforeguests));
         // delete expired sessions for userid = 0 (not logged in)
         $DB->delete_records_select('sessions', 'userid = 0 AND timemodified < ?', array($purgebefore));
     } catch (dml_exception $ex) {
@@ -949,6 +953,9 @@ function session_gc() {
 function sesskey() {
     // note: do not use $USER because it may not be initialised yet
     if (empty($_SESSION['USER']->sesskey)) {
+        if (!isset($_SESSION['USER'])) {
+            $_SESSION['USER'] = new stdClass;
+        }
         $_SESSION['USER']->sesskey = random_string(10);
     }
 
@@ -1023,7 +1030,7 @@ function set_moodle_cookie($username) {
 
     if ($username !== '') {
         // set username cookie for 60 days
-        setcookie($cookiename, rc4encrypt($username, true), time()+(DAYSECS*60), $CFG->sessioncookiepath, $CFG->sessioncookiedomain, $CFG->cookiesecure, $CFG->cookiehttponly);
+        setcookie($cookiename, rc4encrypt($username), time()+(DAYSECS*60), $CFG->sessioncookiepath, $CFG->sessioncookiedomain, $CFG->cookiesecure, $CFG->cookiehttponly);
     }
 }
 
@@ -1048,7 +1055,7 @@ function get_moodle_cookie() {
     if (empty($_COOKIE[$cookiename])) {
         return '';
     } else {
-        $username = rc4decrypt($_COOKIE[$cookiename], true);
+        $username = rc4decrypt($_COOKIE[$cookiename]);
         if ($username === 'guest' or $username === 'nobody') {
             // backwards compatibility - we do not set these cookies any more
             $username = '';
@@ -1072,8 +1079,8 @@ function session_set_user($user) {
     sesskey(); // init session key
 
     if (PHPUNIT_TEST) {
-        global $USER;
         // phpunit tests use reversed reference
+        global $USER;
         $USER = $_SESSION['USER'];
         $_SESSION['USER'] =& $USER;
     }

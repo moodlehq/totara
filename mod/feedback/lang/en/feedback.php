@@ -104,6 +104,7 @@ You can view it <a href="{$a->url}">here</a>.';
 $string['entries_saved'] = 'Your answers have been saved. Thank you.';
 $string['export_questions'] = 'Export questions';
 $string['export_to_excel'] = 'Export to Excel';
+$string['feedback:addinstance'] = 'Add a new feedback';
 $string['feedbackclose'] = 'Close the feedback at';
 $string['feedbackcloses'] = 'Feedback closes';
 $string['feedback:complete'] = 'Complete a feedback';
@@ -167,7 +168,17 @@ $string['messageprovider:message'] = 'Feedback reminder';
 $string['messageprovider:submission'] = 'Feedback notifications';
 $string['mode'] = 'Mode';
 $string['modulename'] = 'Feedback';
-$string['modulename_help'] = 'The feedback modules enables custom surveys to be created.';
+$string['modulename_help'] = 'The feedback activity module enables a teacher to create a custom survey for collecting feedback from participants using a variety of question types including multiple choice, yes/no or text input.
+
+Feedback responses may be anonymous if desired, and results may be shown to all participants or restricted to teachers only. Any feedback activities on the site front page may also be completed by non-logged-in users.
+
+Feedback activities may be used
+
+* For course evaluations, helping improve the content for later participants
+* To enable participants to sign up for course modules, events etc.
+* For guest surveys of course choices, school policies etc.
+* For anti-bullying surveys in which students can report incidents anonymously';
+$string['modulename_link'] = 'mod/feedback/view';
 $string['modulenameplural'] = 'Feedback';
 $string['movedown_item'] = 'Move this question down';
 $string['move_here'] = 'Move here';

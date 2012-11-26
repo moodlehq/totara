@@ -402,15 +402,18 @@ function install_cli_database(array $options, $interactive) {
     require_once($CFG->libdir.'/upgradelib.php');
 
     // show as much debug as possible
-    @error_reporting(1023);
+    @error_reporting(E_ALL | E_STRICT);
     @ini_set('display_errors', '1');
-    $CFG->debug = 38911;
+    $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = true;
 
     $CFG->version = '';
     $CFG->release = '';
+    $CFG->branch = '';
+
     $version = null;
     $release = null;
+    $branch = null;
 
     // read $version and $release
     require($CFG->dirroot.'/version.php');
@@ -450,6 +453,7 @@ function install_cli_database(array $options, $interactive) {
     // install core
     install_core($version, true);
     set_config('release', $release);
+    set_config('branch', $branch);
     //set up totara config variables
     if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
         || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
@@ -459,6 +463,12 @@ function install_cli_database(array $options, $interactive) {
         set_config("totara_build", $TOTARA->build);
         set_config("totara_version", $TOTARA->version);
     }
+
+    if (PHPUNIT_TEST) {
+        // mark as test database as soon as possible
+        set_config('phpunittest', 'na');
+    }
+
     // install all plugins types, local, etc.
     upgrade_noncore(true);
 
@@ -475,9 +485,7 @@ function install_cli_database(array $options, $interactive) {
     upgrade_finished();
 
     // log in as admin - we need do anything when applying defaults
-    $admins = get_admins();
-    $admin = reset($admins);
-    session_set_user($admin);
+    session_set_user(get_admin());
 
     // apply all default settings, do it twice to fill all defaults - some settings depend on other setting
     admin_apply_default_settings(NULL, true);

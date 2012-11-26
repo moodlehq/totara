@@ -348,7 +348,7 @@ class generator {
         $base_course->summary = 'Blah Blah';
         $base_course->format = 'weeks';
         $base_course->numsections = '10';
-        $base_course->startdate = mktime();
+        $base_course->startdate = time();
         $base_course->id = '0';
 
         $courses_count = 0;
@@ -461,7 +461,7 @@ class generator {
                             case 'assignment':
                                 $module->intro = $description;
                                 $module->assignmenttype = $this->get_module_type('assignment');
-                                $module->timedue = mktime() + 89487321;
+                                $module->timedue = time() + 89487321;
                                 $module->grade = rand(50,100);
                                 break;
                             case 'chat':
@@ -505,8 +505,8 @@ class generator {
                                 break;
                             case 'lesson':
                                 $module->lessondefault = 1;
-                                $module->available = mktime();
-                                $module->deadline = mktime() + 719891987;
+                                $module->available = time();
+                                $module->deadline = time() + 719891987;
                                 $module->grade = 100;
                                 break;
                             case 'quiz':
@@ -556,7 +556,7 @@ class generator {
                         $module->name = ucfirst($moduledata->name) . ' ' . $moduledata->count++;
 
                         $module->course = $courseid;
-                        $module->section = $i;
+                        $module->section = 0;
                         $module->module = $moduledata->id;
                         $module->modulename = $moduledata->name;
                         $module->add = $moduledata->name;
@@ -564,10 +564,7 @@ class generator {
                         $module->coursemodule = '';
                         $add_instance_function = $moduledata->name . '_add_instance';
 
-                        $section = get_course_section($i, $courseid);
-                        $module->section = $section->id;
                         $module->coursemodule = add_course_module($module);
-                        $module->section = $i;
 
                         if (function_exists($add_instance_function)) {
                             $this->verbose("Calling module function $add_instance_function");
@@ -580,13 +577,12 @@ class generator {
                             }
                         }
 
-                        add_mod_to_section($module);
+                        $module->section = course_add_cm_to_section($courseid, $module->coursemodule, $i);
 
                         $module->cmidnumber = set_coursemodule_idnumber($module->coursemodule, '');
 
                         $this->verbose("A $moduledata->name module was added to section $i (id $module->section) "
                             ."of course $courseid.");
-                        rebuild_course_cache($courseid);
 
                         $module_instance = $DB->get_field('course_modules', 'instance', array('id' => $module->coursemodule));
                         $module_record = $DB->get_record($moduledata->name, array('id' => $module_instance));
@@ -706,7 +702,7 @@ class generator {
                 shuffle($users);
                 $users_to_assign = array_slice($users, 0, $this->get('students_per_course'));
 
-                $context = get_context_instance(CONTEXT_COURSE, $courseid);
+                $context = context_course::instance($courseid);
                 foreach ($users_to_assign as $random_user) {
                     role_assign(5, $random_user, $context->id);
 

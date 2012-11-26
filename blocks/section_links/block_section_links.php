@@ -72,7 +72,8 @@ class block_section_links extends block_base {
         }
 
         $course = $this->page->course;
-        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $courseformatoptions = course_get_format($course)->get_format_options();
+        $context = context_course::instance($course->id);
 
         if ($course->format == 'weeks' or $course->format == 'weekscss') {
             $highlight = ceil((time()-$course->startdate)/604800);
@@ -86,40 +87,31 @@ class block_section_links extends block_base {
         }
         $inc = 1;
 
-        if(!empty($config->numsections1) and ($course->numsections > $config->numsections1)) {
+        if(!empty($config->numsections1) and ($courseformatoptions['numsections'] > $config->numsections1)) {
             $inc = $config->incby1;
         } else {
-            if ($course->numsections > 22) {
+            if ($courseformatoptions['numsections'] > 22) {
                 $inc = 2;
             }
         }
 
-        if(!empty($config->numsections2) and ($course->numsections > $config->numsections2)) {
+        if(!empty($config->numsections2) and ($courseformatoptions['numsections'] > $config->numsections2)) {
             $inc = $config->incby2;
         } else {
-            if ($course->numsections > 40) {
+            if ($courseformatoptions['numsections'] > 40) {
                 $inc = 5;
             }
-        }
-
-        if (isloggedin()) {
-            $display = $DB->get_field('course_display', 'display', array('course'=>$this->page->course->id, 'userid'=>$USER->id));
-        }
-        if (!empty($display)) {
-            $link = $CFG->wwwroot.'/course/view.php?id='.$this->page->course->id.'&amp;'.$sectionname.'=';
-        } else {
-            $link = '#section-';
         }
 
         $sql = "SELECT section, visible
                   FROM {course_sections}
                  WHERE course = ? AND
-                       section < ".($course->numsections+1)."
+                       section < ".($courseformatoptions['numsections']+1)."
               ORDER BY section";
 
         if ($sections = $DB->get_records_sql($sql, array($course->id))) {
             $text = '<ol class="inline-list">';
-            for ($i = $inc; $i <= $course->numsections; $i += $inc) {
+            for ($i = $inc; $i <= $courseformatoptions['numsections']; $i += $inc) {
                 if (!isset($sections[$i])) {
                     continue;
                 }
@@ -129,9 +121,9 @@ class block_section_links extends block_base {
                 }
                 $style = ($isvisible) ? '' : ' class="dimmed"';
                 if ($i == $highlight) {
-                    $text .= "<li><a href=\"$link$i\"$style><strong>$i</strong></a></li>\n";
+                    $text .= '<li><a href="'.course_get_url($course, $i)."\"$style><strong>$i</strong></a></li>\n";
                 } else {
-                    $text .= "<li><a href=\"$link$i\"$style>$i</a></li>\n";
+                    $text .= '<li><a href="'.course_get_url($course, $i)."\"$style>$i</a></li>\n";
                 }
             }
             $text .= '</ol>';
@@ -139,7 +131,7 @@ class block_section_links extends block_base {
                 $isvisible = $sections[$highlight]->visible;
                 if ($isvisible or has_capability('moodle/course:update', $context)) {
                     $style = ($isvisible) ? '' : ' class="dimmed"';
-                    $text .= "\n<a href=\"$link$highlight\"$style>$linktext</a>";
+                    $text .= "\n<a href=\"".course_get_url($course, $highlight)."\"$style>$linktext</a>";
                 }
             }
         }

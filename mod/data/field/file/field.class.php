@@ -43,14 +43,14 @@ class data_field_file extends data_field_base {
 
                 if (!empty($content->content)) {
                     if ($file = $fs->get_file($this->context->id, 'mod_data', 'content', $content->id, '/', $content->content)) {
-                        $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+                        $usercontext = context_user::instance($USER->id);
                         if (!$files = $fs->get_area_files($usercontext->id, 'user', 'draft', $itemid, 'id DESC', false)) {
                             return false;
                         }
                         if (empty($content->content1)) {
                             // Print icon if file already exists
                             $src = moodle_url::make_draftfile_url($itemid, '/', $file->get_filename());
-                            $displayname = '<img src="'.$OUTPUT->pix_url(file_mimetype_icon($file->get_mimetype())).'" class="icon" alt="'.$file->get_mimetype().'" />'. '<a href="'.$src.'" >'.s($file->get_filename()).'</a>';
+                            $displayname = $OUTPUT->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon')). '<a href="'.$src.'" >'.s($file->get_filename()).'</a>';
 
                         } else {
                             $displayname = 'no file added';
@@ -143,14 +143,14 @@ class data_field_file extends data_field_base {
         $width  = $this->field->param1 ? ' width  = "'.s($this->field->param1).'" ':' ';
         $height = $this->field->param2 ? ' height = "'.s($this->field->param2).'" ':' ';
 
-        $str = '<img src="'.$OUTPUT->pix_url(file_mimetype_icon($file->get_mimetype())).'" height="16" width="16" alt="'.$file->get_mimetype().'" />&nbsp;'.
+        $str = $OUTPUT->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('width' => 16, 'height' => 16)). '&nbsp;'.
                '<a href="'.$src.'" >'.s($name).'</a>';
         return $str;
     }
 
 
     // content: "a##b" where a is the file name, b is the display name
-    function update_content($recordid, $value, $name) {
+    function update_content($recordid, $value, $name='') {
         global $CFG, $DB, $USER;
         $fs = get_file_storage();
 
@@ -167,7 +167,7 @@ class data_field_file extends data_field_base {
         // delete existing files
         $fs->delete_area_files($this->context->id, 'mod_data', 'content', $content->id);
 
-        $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+        $usercontext = context_user::instance($USER->id);
         $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $value, 'timecreated DESC');
 
         if (count($files)<2) {

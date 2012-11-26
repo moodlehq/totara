@@ -17,8 +17,7 @@
 /**
  * Strings for component 'tool_xmldb', language 'en', branch 'MOODLE_22_STABLE'
  *
- * @package    tool
- * @subpackage xmldb
+ * @package    tool_xmldb
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +26,6 @@ $string['actual'] = 'Actual';
 $string['aftertable'] = 'After table:';
 $string['back'] = 'Back';
 $string['backtomainview'] = 'Back to main';
-$string['binaryincorrectlength'] = 'Incorrect length for binary field';
 $string['cannotuseidfield'] = 'Cannot insert the "id" field. It is an autonumeric column';
 $string['completelogbelow'] = '(see the complete log of the search below)';
 $string['confirmdeletefield'] = 'Are you absolutely sure that you want to delete the field:';
@@ -92,6 +90,7 @@ $string['fields'] = 'Fields';
 $string['fieldsnotintable'] = 'Field doesn\'t exist in table';
 $string['fieldsusedinindex'] = 'This field is used as index';
 $string['fieldsusedinkey'] = 'This field is used as key.';
+$string['filemodifiedoutfromeditor'] = 'Warning: File locally modified while using the XMLDB Editor. Saving will overwrite local changes.';
 $string['filenotwriteable'] = 'File not writeable';
 $string['fkviolationdetails'] = 'Foreign key {$a->keyname} on table {$a->tablename} is violated by {$a->numviolations} out of {$a->numrows} rows.';
 $string['floatincorrectdecimals'] = 'Incorrect number of decimals for float field';
@@ -102,7 +101,7 @@ $string['generate_documentation'] = 'Documentation';
 $string['gotolastused'] = 'Go to last used file';
 $string['change'] = 'Change';
 $string['charincorrectlength'] = 'Incorrect length for char field';
-$string['checkbigints'] = 'Check bigints';
+$string['checkbigints'] = 'Check integers';
 $string['check_bigints'] = 'Look for incorrect DB integers';
 $string['checkdefaults'] = 'Check defaults';
 $string['check_defaults'] = 'Look for inconsistent default values';
@@ -133,7 +132,6 @@ $string['missingindexes'] = 'Missing indexes found';
 $string['mustselectonefield'] = 'You must select one field to see field related actions!';
 $string['mustselectoneindex'] = 'You must select one index to see index related actions!';
 $string['mustselectonekey'] = 'You must select one key to see key related actions!';
-$string['mysqlextracheckbigints'] = 'Under MySQL it also looks for incorrectly signed bigints, generating the required SQL to be executed in order to fix all them.';
 $string['newfield'] = 'New field';
 $string['newindex'] = 'New index';
 $string['newkey'] = 'New key';
@@ -171,7 +169,6 @@ $string['selecttable'] = 'Select table:';
 $string['table'] = 'Table';
 $string['tablenameempty'] = 'The table name cannot be empty';
 $string['tables'] = 'Tables';
-$string['textincorrectlength'] = 'Incorrect length for text field';
 $string['unload'] = 'Unload';
 $string['up'] = 'Up';
 $string['view'] = 'View';

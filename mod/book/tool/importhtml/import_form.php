@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Book import form
  *
- * @package    booktool
- * @subpackage importhtml
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    booktool_importhtml
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,7 +35,7 @@ class booktool_importhtml_form extends moodleform {
         $mform->addElement('header', 'general', get_string('import'));
 
         $options = array(
-                //'0'=>get_string('typeonefile', 'booktool_importhtml'),
+                // '0'=>get_string('typeonefile', 'booktool_importhtml'),
                 '1'=>get_string('typezipdirs', 'booktool_importhtml'),
                 '2'=>get_string('typezipfiles', 'booktool_importhtml'),
         );
@@ -65,7 +64,7 @@ class booktool_importhtml_form extends moodleform {
             return $errors;
         }
 
-        $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+        $usercontext = context_user::instance($USER->id);
         $fs = get_file_storage();
 
         if (!$files = $fs->get_area_files($usercontext->id, 'user', 'draft', $data['importfile'], 'id', false)) {

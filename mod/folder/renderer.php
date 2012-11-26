@@ -41,8 +41,8 @@ class mod_folder_renderer extends plugin_renderer_base {
     public function render_folder_tree(folder_tree $tree) {
         global $PAGE;
 
-        echo '<div id="folder_tree">';
-        echo $this->htmllize_tree($tree, $tree->dir);
+        echo '<div id="folder_tree" class="filemanager">';
+        echo $this->htmllize_tree($tree, array('files' => array(), 'subdirs' => array($tree->dir)));
         echo '</div>';
         $this->page->requires->js_init_call('M.mod_folder.init_tree', array(true));
     }
@@ -58,12 +58,28 @@ class mod_folder_renderer extends plugin_renderer_base {
         }
         $result = '<ul>';
         foreach ($dir['subdirs'] as $subdir) {
-            $result .= '<li>'.s($subdir['dirname']).' '.$this->htmllize_tree($tree, $subdir).'</li>';
+            $image = $this->output->pix_icon(file_folder_icon(24), $subdir['dirname'], 'moodle');
+            $filename = html_writer::tag('span', $image, array('class' => 'fp-icon')).
+                    html_writer::tag('span', s($subdir['dirname']), array('class' => 'fp-filename'));
+            $filename = html_writer::tag('div', $filename, array('class' => 'fp-filename-icon'));
+            $result .= html_writer::tag('li', $filename. $this->htmllize_tree($tree, $subdir));
         }
         foreach ($dir['files'] as $file) {
-            $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/mod_folder/content/'.$tree->folder->revision.$file->get_filepath().$file->get_filename(), true);
             $filename = $file->get_filename();
-            $result .= '<li><span>'.html_writer::link($url, $filename).'</span></li>';
+            $url = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(),
+                    $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $filename, false);
+            if (file_extension_in_typegroup($filename, 'web_image')) {
+                $image = $url->out(false, array('preview' => 'tinyicon', 'oid' => $file->get_timemodified()));
+                $image = html_writer::empty_tag('img', array('src' => $image));
+            } else {
+                $image = $this->output->pix_icon(file_file_icon($file, 24), $filename, 'moodle');
+            }
+            $filename = html_writer::tag('span', $image, array('class' => 'fp-icon')).
+                    html_writer::tag('span', $filename, array('class' => 'fp-filename'));
+            $filename = html_writer::tag('span',
+                    html_writer::link($url->out(false, array('forcedownload' => 1)), $filename),
+                    array('class' => 'fp-filename-icon'));
+            $result .= html_writer::tag('li', $filename);
         }
         $result .= '</ul>';
 
@@ -83,7 +99,7 @@ class folder_tree implements renderable {
         $this->cm     = $cm;
         $this->course = $course;
 
-        $this->context = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $this->context = context_module::instance($cm->id);
         $fs = get_file_storage();
         $this->dir = $fs->get_area_tree($this->context->id, 'mod_folder', 'content', 0);
     }

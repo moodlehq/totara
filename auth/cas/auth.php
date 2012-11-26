@@ -3,7 +3,7 @@
 /**
  * @author Martin Dougiamas
  * @author Jerome GUTIERREZ
- * @author I�aki Arenaza
+ * @author Iñaki Arenaza
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package moodle multiauth
  *
@@ -51,7 +51,7 @@ class auth_plugin_cas extends auth_plugin_ldap {
      */
     function user_login ($username, $password) {
         $this->connectCAS();
-        return phpCAS::isAuthenticated() && (trim(moodle_strtolower(phpCAS::getUser())) == $username);
+        return phpCAS::isAuthenticated() && (trim(textlib::strtolower(phpCAS::getUser())) == $username);
     }
 
     /**
@@ -150,7 +150,7 @@ class auth_plugin_cas extends auth_plugin_ldap {
     function prelogout_hook() {
         global $CFG;
 
-        if ($this->config->logoutcas) {
+        if (!empty($this->config->logoutcas)) {
             $backurl = $CFG->wwwroot;
             $this->connectCAS();
             phpCAS::logoutWithURL($backurl);
@@ -206,6 +206,10 @@ class auth_plugin_cas extends auth_plugin_ldap {
             }
         }
 
+        if (!ldap_paged_results_supported($this->config->ldap_version)) {
+            echo $OUTPUT->notification(get_string('pagedresultsnotsupp', 'auth_ldap'));
+        }
+
         include($CFG->dirroot.'/auth/cas/config.html');
     }
 
@@ -215,7 +219,7 @@ class auth_plugin_cas extends auth_plugin_ldap {
      * @param object object with submitted configuration settings (without system magic quotes)
      * @param array $err array of error messages
      */
-    function validate_form(&$form, &$err) {
+    function validate_form($form, &$err) {
         $certificate_path = trim($form->certificate_path);
         if ($form->certificate_check && empty($certificate_path)) {
             $err['certificate_path'] = get_string('auth_cas_certificate_path_empty', 'auth_cas');
@@ -268,6 +272,9 @@ class auth_plugin_cas extends auth_plugin_ldap {
         if (!isset($config->certificate_path)) {
             $config->certificate_path = '';
         }
+        if (!isset($config->logout_return_url)) {
+            $config->logout_return_url = '';
+        }
 
         // LDAP settings
         if (!isset($config->host_url)) {
@@ -275,6 +282,9 @@ class auth_plugin_cas extends auth_plugin_ldap {
         }
         if (empty($config->ldapencoding)) {
             $config->ldapencoding = 'utf-8';
+        }
+        if (!isset($config->pagesize)) {
+            $config->pagesize = LDAP_DEFAULT_PAGESIZE;
         }
         if (!isset($config->contexts)) {
             $config->contexts = '';
@@ -331,20 +341,22 @@ class auth_plugin_cas extends auth_plugin_ldap {
         set_config('multiauth', $config->multiauth, $this->pluginconfig);
         set_config('certificate_check', $config->certificate_check, $this->pluginconfig);
         set_config('certificate_path', $config->certificate_path, $this->pluginconfig);
+        set_config('logout_return_url', $config->logout_return_url, $this->pluginconfig);
 
         // save LDAP settings
         set_config('host_url', trim($config->host_url), $this->pluginconfig);
         set_config('ldapencoding', trim($config->ldapencoding), $this->pluginconfig);
+        set_config('pagesize', (int)trim($config->pagesize), $this->pluginconfig);
         set_config('contexts', trim($config->contexts), $this->pluginconfig);
-        set_config('user_type', moodle_strtolower(trim($config->user_type)), $this->pluginconfig);
-        set_config('user_attribute', moodle_strtolower(trim($config->user_attribute)), $this->pluginconfig);
+        set_config('user_type', textlib::strtolower(trim($config->user_type)), $this->pluginconfig);
+        set_config('user_attribute', textlib::strtolower(trim($config->user_attribute)), $this->pluginconfig);
         set_config('search_sub', $config->search_sub, $this->pluginconfig);
         set_config('opt_deref', $config->opt_deref, $this->pluginconfig);
         set_config('bind_dn', trim($config->bind_dn), $this->pluginconfig);
         set_config('bind_pw', $config->bind_pw, $this->pluginconfig);
         set_config('ldap_version', $config->ldap_version, $this->pluginconfig);
         set_config('objectclass', trim($config->objectclass), $this->pluginconfig);
-        set_config('memberattribute', moodle_strtolower(trim($config->memberattribute)), $this->pluginconfig);
+        set_config('memberattribute', textlib::strtolower(trim($config->memberattribute)), $this->pluginconfig);
         set_config('memberattribute_isdn', $config->memberattribute_isdn, $this->pluginconfig);
         set_config('attrcreators', trim($config->attrcreators), $this->pluginconfig);
         set_config('groupecreators', trim($config->groupecreators), $this->pluginconfig);
@@ -364,8 +376,7 @@ class auth_plugin_cas extends auth_plugin_ldap {
             return false;
         }
 
-        $textlib = textlib_get_instance();
-        $extusername = $textlib->convert($username, 'utf-8', $this->config->ldapencoding);
+        $extusername = textlib::convert($username, 'utf-8', $this->config->ldapencoding);
 
         // Test for group creator
         if (!empty($this->config->groupecreators)) {
@@ -439,5 +450,20 @@ class auth_plugin_cas extends auth_plugin_ldap {
             return;
         }
         parent::sync_users($do_updates);
+    }
+
+    /**
+    * Hook for logout page
+    */
+    function logoutpage_hook() {
+        global $USER, $redirect;
+        // Only do this if the user is actually logged in via CAS
+        if ($USER->auth === $this->authtype) {
+            // Check if there is an alternative logout return url defined
+            if (isset($this->config->logout_return_url) && !empty($this->config->logout_return_url)) {
+                // Set redirect to alternative return url
+                $redirect = $this->config->logout_return_url;
+            }
+        }
     }
 }

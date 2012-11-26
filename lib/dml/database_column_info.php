@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Database column information.
  *
- * @package    core
- * @subpackage dml
+ * @package    core_dml
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,18 +25,26 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Detail database field information.
- * Based on ADOFieldObject.
+ * Detailed database field information.
+ *
+ * It is based on the adodb library's ADOFieldObject object.
+ * 'column' does mean 'the field' here.
+ *
+ * @package    core_dml
+ * @copyright  2008 Petr Skoda (http://skodak.org)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class database_column_info {
     /**
-     * Name of column - lowercase
+     * Name of column - lowercase.
+     * @var string
      */
     public $name;
 
     /**
-     * Driver dependent native data type
-     * Not standardised - used to find meta_type
+     * Driver dependent native data type.
+     * Not standardised, its used to find meta_type.
+     * @var string
      */
     public $type;
 
@@ -50,7 +55,7 @@ class database_column_info {
      *  integer - number of digits
      *  float - digits left from floating point
      *  boolean - 1
-     *  enums - null
+     * @var int
      */
     public $max_length;
 
@@ -58,63 +63,64 @@ class database_column_info {
      * Scale
      * float - decimal points
      * other - null
+     * @var int
      */
     public $scale;
 
     /**
-     * Enumerated field options,
-     * null if not enum type
-     *
-     * For performance reasons this field is optional!
-     * You can use DDL sql_generator::getCheckConstraintsFromDB() if needed.
-     */
-    public $enums;
-
-    /**
      * True if not null, false otherwise
+     * @var bool
      */
     public $not_null;
 
     /**
      * True if column is primary key.
      * (usually 'id').
+     * @var bool
      */
     public $primary_key;
 
     /**
      * True if filed autoincrementing
      * (usually 'id' only)
+     * @var bool
      */
     public $auto_increment;
 
     /**
      * True if binary
+     * @var bool
      */
     public $binary;
 
     /**
      * True if integer unsigned, false if signed.
      * Null for other types
+     * @var integer
+     * @deprecated since 2.3
      */
     public $unsigned;
 
     /**
-     * True if default value defined
+     * True if the default value is defined.
+     * @var bool
      */
     public $has_default;
 
     /**
-     * Default value if defined
+     * The default value (if defined).
+     * @var string
      */
     public $default_value;
 
     /**
-     * True if field values unique, false if not
+     * True if field values are unique, false if not.
+     * @var bool
      */
     public $unique;
 
     /**
-     * Standardised one character column type, uppercase
+     * Standardised one character column type, uppercased and enumerated as follows:
      * R - counter (integer primary key)
      * I - integers
      * N - numbers (floats)
@@ -124,12 +130,13 @@ class database_column_info {
      * L - boolean (1 bit)
      * T - timestamp - unsupported
      * D - date - unsupported
+     * @var string
      */
     public $meta_type;
 
     /**
      * Constructor
-     * @param $data mixed object or array with properties
+     * @param mixed $data object or array with properties
      */
     public function __construct($data) {
         foreach ($data as $key=>$value) {
@@ -140,7 +147,6 @@ class database_column_info {
 
         switch ($this->meta_type) {
             case 'R': // normalise counters (usually 'id')
-                $this->auto_increment = true;
                 $this->binary         = false;
                 $this->has_default    = false;
                 $this->default_value  = null;

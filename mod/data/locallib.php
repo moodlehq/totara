@@ -23,6 +23,7 @@
 
 require_once($CFG->dirroot . '/mod/data/lib.php');
 require_once($CFG->libdir . '/portfolio/caller.php');
+require_once($CFG->libdir . '/filelib.php');
 
 /**
  * The class to handle entry exports of a database module
@@ -100,7 +101,7 @@ class data_portfolio_caller extends portfolio_module_caller_base {
             $this->records[] = $tmp;
         } else {
             $where = array('dataid' => $this->data->id);
-            if (!has_capability('mod/data:exportallentries', get_context_instance(CONTEXT_MODULE, $this->cm->id))) {
+            if (!has_capability('mod/data:exportallentries', context_module::instance($this->cm->id))) {
                 $where['userid'] = $USER->id; // get them all in case, we'll unset ones that aren't ours later if necessary
             }
             $tmp = $DB->get_records('data_records', $where);
@@ -149,7 +150,8 @@ class data_portfolio_caller extends portfolio_module_caller_base {
         foreach ($this->records as $record) {
             foreach ($record as $data) {
                 if (is_array($data) || is_object($data)) {
-                    $testkey = array_pop(array_keys($data));
+                    $keys = array_keys($data);
+                    $testkey = array_pop($keys);
                     if (is_array($data[$testkey]) || is_object($data[$testkey])) {
                         foreach ($data as $d) {
                             $str .= implode(',', (array)$d);
@@ -239,14 +241,14 @@ class data_portfolio_caller extends portfolio_module_caller_base {
     public function check_permissions() {
         if ($this->recordid) {
             if (data_isowner($this->recordid)) {
-                return has_capability('mod/data:exportownentry', get_context_instance(CONTEXT_MODULE, $this->cm->id));
+                return has_capability('mod/data:exportownentry', context_module::instance($this->cm->id));
             }
-            return has_capability('mod/data:exportentry', get_context_instance(CONTEXT_MODULE, $this->cm->id));
+            return has_capability('mod/data:exportentry', context_module::instance($this->cm->id));
         }
         if ($this->has_export_config() && !$this->get_export_config('mineonly')) {
-            return has_capability('mod/data:exportallentries', get_context_instance(CONTEXT_MODULE, $this->cm->id));
+            return has_capability('mod/data:exportallentries', context_module::instance($this->cm->id));
         }
-        return has_capability('mod/data:exportownentry', get_context_instance(CONTEXT_MODULE, $this->cm->id));
+        return has_capability('mod/data:exportownentry', context_module::instance($this->cm->id));
     }
 
     /**
@@ -282,7 +284,6 @@ class data_portfolio_caller extends portfolio_module_caller_base {
     // Replacing tags
         $patterns = array();
         $replacement = array();
-        $context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
 
         $files = array();
     // Then we generate strings to replace for normal tags
@@ -383,7 +384,7 @@ class data_portfolio_caller extends portfolio_module_caller_base {
         return (empty($this->recordid) // multi-entry export
             && $this->minecount > 0    // some of them are mine
             && $this->minecount != count($this->records) // not all of them are mine
-            && has_capability('mod/data:exportallentries', get_context_instance(CONTEXT_MODULE, $this->cm->id))); // they actually have a choice in the matter
+            && has_capability('mod/data:exportallentries', context_module::instance($this->cm->id))); // they actually have a choice in the matter
     }
 
     public function export_config_form(&$mform, $instance) {
@@ -396,5 +397,180 @@ class data_portfolio_caller extends portfolio_module_caller_base {
 
     public function get_allowed_export_config() {
         return array('mineonly');
+    }
+}
+
+
+/**
+ * Class representing the virtual node with all itemids in the file browser
+ *
+ * @category  files
+ * @copyright 2012 David Mudrak <david@moodle.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class data_file_info_container extends file_info {
+    /** @var file_browser */
+    protected $browser;
+    /** @var stdClass */
+    protected $course;
+    /** @var stdClass */
+    protected $cm;
+    /** @var string */
+    protected $component;
+    /** @var stdClass */
+    protected $context;
+    /** @var array */
+    protected $areas;
+    /** @var string */
+    protected $filearea;
+
+    /**
+     * Constructor (in case you did not realize it ;-)
+     *
+     * @param file_browser $browser
+     * @param stdClass $course
+     * @param stdClass $cm
+     * @param stdClass $context
+     * @param array $areas
+     * @param string $filearea
+     */
+    public function __construct($browser, $course, $cm, $context, $areas, $filearea) {
+        parent::__construct($browser, $context);
+        $this->browser = $browser;
+        $this->course = $course;
+        $this->cm = $cm;
+        $this->component = 'mod_data';
+        $this->context = $context;
+        $this->areas = $areas;
+        $this->filearea = $filearea;
+    }
+
+    /**
+     * @return array with keys contextid, filearea, itemid, filepath and filename
+     */
+    public function get_params() {
+        return array(
+            'contextid' => $this->context->id,
+            'component' => $this->component,
+            'filearea' => $this->filearea,
+            'itemid' => null,
+            'filepath' => null,
+            'filename' => null,
+        );
+    }
+
+    /**
+     * Can new files or directories be added via the file browser
+     *
+     * @return bool
+     */
+    public function is_writable() {
+        return false;
+    }
+
+    /**
+     * Should this node be considered as a folder in the file browser
+     *
+     * @return bool
+     */
+    public function is_directory() {
+        return true;
+    }
+
+    /**
+     * Returns localised visible name of this node
+     *
+     * @return string
+     */
+    public function get_visible_name() {
+        return $this->areas[$this->filearea];
+    }
+
+    /**
+     * Returns list of children nodes
+     *
+     * @return array of file_info instances
+     */
+    public function get_children() {
+        return $this->get_filtered_children('*', false, true);
+    }
+
+    /**
+     * Help function to return files matching extensions or their count
+     *
+     * @param string|array $extensions, either '*' or array of lowercase extensions, i.e. array('.gif','.jpg')
+     * @param bool|int $countonly if false returns the children, if an int returns just the
+     *    count of children but stops counting when $countonly number of children is reached
+     * @param bool $returnemptyfolders if true returns items that don't have matching files inside
+     * @return array|int array of file_info instances or the count
+     */
+    private function get_filtered_children($extensions = '*', $countonly = false, $returnemptyfolders = false) {
+        global $DB;
+        $params = array('contextid' => $this->context->id,
+            'component' => $this->component,
+            'filearea' => $this->filearea);
+        $sql = 'SELECT DISTINCT itemid
+                    FROM {files}
+                    WHERE contextid = :contextid
+                    AND component = :component
+                    AND filearea = :filearea';
+        if (!$returnemptyfolders) {
+            $sql .= ' AND filename <> :emptyfilename';
+            $params['emptyfilename'] = '.';
+        }
+        list($sql2, $params2) = $this->build_search_files_sql($extensions);
+        $sql .= ' '.$sql2;
+        $params = array_merge($params, $params2);
+        if ($countonly === false) {
+            $sql .= ' ORDER BY itemid DESC';
+        }
+
+        $rs = $DB->get_recordset_sql($sql, $params);
+        $children = array();
+        foreach ($rs as $record) {
+            if ($child = $this->browser->get_file_info($this->context, 'mod_data', $this->filearea, $record->itemid)) {
+                $children[] = $child;
+            }
+            if ($countonly !== false && count($children) >= $countonly) {
+                break;
+            }
+        }
+        $rs->close();
+        if ($countonly !== false) {
+            return count($children);
+        }
+        return $children;
+    }
+
+    /**
+     * Returns list of children which are either files matching the specified extensions
+     * or folders that contain at least one such file.
+     *
+     * @param string|array $extensions, either '*' or array of lowercase extensions, i.e. array('.gif','.jpg')
+     * @return array of file_info instances
+     */
+    public function get_non_empty_children($extensions = '*') {
+        return $this->get_filtered_children($extensions, false);
+    }
+
+    /**
+     * Returns the number of children which are either files matching the specified extensions
+     * or folders containing at least one such file.
+     *
+     * @param string|array $extensions, for example '*' or array('.gif','.jpg')
+     * @param int $limit stop counting after at least $limit non-empty children are found
+     * @return int
+     */
+    public function count_non_empty_children($extensions = '*', $limit = 1) {
+        return $this->get_filtered_children($extensions, $limit);
+    }
+
+    /**
+     * Returns parent file_info instance
+     *
+     * @return file_info or null for root
+     */
+    public function get_parent() {
+        return $this->browser->get_file_info($this->context);
     }
 }

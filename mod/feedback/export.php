@@ -47,11 +47,9 @@ if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
-if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
-        print_error('badcontext');
-}
+$context = context_module::instance($cm->id);
 
-require_login($course->id, true, $cm);
+require_login($course, true, $cm);
 
 require_capability('mod/feedback:edititems', $context);
 
@@ -168,6 +166,6 @@ function feedback_get_xml_data($feedbackid) {
 
 function feedback_send_xml_data($data, $filename) {
     @header('Content-Type: application/xml; charset=UTF-8');
-    @header('Content-Disposition: attachment; filename='.$filename);
+    @header('Content-Disposition: attachment; filename="'.$filename.'"');
     print($data);
 }

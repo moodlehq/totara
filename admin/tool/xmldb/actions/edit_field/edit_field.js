@@ -14,8 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    tool
- * @subpackage xmldb
+ * @package    tool_xmldb
  * @copyright  2003 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -50,7 +49,6 @@ function transformForm(event) {
     var typeField         = document.getElementById('menutype');
     var lengthField       = document.getElementById('length');
     var decimalsField     = document.getElementById('decimals');
-    var unsignedField     = document.getElementById('menuunsigned');
     var notnullField      = document.getElementById('menunotnull');
     var sequenceField     = document.getElementById('menusequence');
     var defaultField      = document.getElementById('default');
@@ -60,15 +58,12 @@ function transformForm(event) {
 
     // Initially, enable everything
     decimalsField.disabled = false;
-    unsignedField.disabled = false;
     notnullField.disabled = false;
     sequenceField.disabled = false;
     defaultField.disabled = false;
 
     // Based on sequence, disable some items
     if (sequenceField.value == '1') {
-        unsignedField.disabled = true;
-        unsignedField.value = '1';
         notnullField.disabled = true;
         notnullField.value = '1';
         defaultField.disabled = true;
@@ -78,52 +73,48 @@ function transformForm(event) {
     // Based on type, disable some items
     switch (typeField.value) {
         case '1':  // XMLDB_TYPE_INTEGER
-            lengthTip.innerHTML = ' 1...20';
+            lengthTip.innerHTML = ' 1...20'; // Hardcoded xmldb_field::INTEGER_MAX_LENGTH, yes!
+            lengthField.disabled = false;
             decimalsTip.innerHTML = '';
             decimalsField.disabled = true;
             decimalsField.value = '';
             break;
         case '2':  // XMLDB_TYPE_NUMBER
-            lengthTip.innerHTML = ' 1...20';
+            lengthTip.innerHTML = ' 1...20'; // Hardcoded xmldb_field::NUMBER_MAX_LENGTH, yes!
+            lengthField.disabled = false;
             decimalsTip.innerHTML = ' 0...length or empty';
-            unsignedField.disabled = true;
-            unsignedField.value = '0';
             break;
         case '3':  // XMLDB_TYPE_FLOAT
-            lengthTip.innerHTML = ' 1...20 or empty';
+            lengthTip.innerHTML = ' 1...20 or empty'; // Hardcoded xmldb_field::FLOAT_MAX_LENGTH, yes!
+            lengthField.disabled = false;
             decimalsTip.innerHTML = ' 0...length or empty';
-            unsignedField.disabled = true;
-            unsignedField.value = '0';
             break;
         case '4':  // XMLDB_TYPE_CHAR
-            lengthTip.innerHTML = ' 1...1333'; // Hardcoded, yes!
+            lengthTip.innerHTML = ' 1...1333'; // Hardcoded xmldb_field::CHAR_MAX_LENGTH, yes!
+            lengthField.disabled = false;
             decimalsTip.innerHTML = '';
             decimalsField.disabled = true;
             decimalsField.value = '';
-            unsignedField.disabled = true;
-            unsignedField.value = '0';
             sequenceField.disabled = true;
             sequenceField.value = '0';
             break;
         case '5':  // XMLDB_TYPE_TEXT
-            lengthTip.innerHTML = ' small, medium, big';
+            lengthTip.innerHTML = '';
+            lengthField.disabled = true;
             decimalsTip.innerHTML = '';
             decimalsField.disabled = true;
             decimalsField.value = '';
-            unsignedField.disabled = true;
-            unsignedField.value = '0';
             sequenceField.disabled = true;
             sequenceField.value = '0';
             defaultField.disabled = true;
             defaultField.value = '';
             break;
         case '6':  // XMLDB_TYPE_BINARY
-            lengthTip.innerHTML = ' small, medium, big';
+            lengthTip.innerHTML = '';
+            lengthField.disabled = true;
             decimalsTip.innerHTML = '';
             decimalsField.disabled = true;
             decimalsField.value = '';
-            unsignedField.disabled = true;
-            unsignedField.value = '0';
             sequenceField.disabled = true;
             sequenceField.value = '0';
             defaultField.disabled = true;
@@ -136,8 +127,6 @@ function transformForm(event) {
             decimalsTip.innerHTML = '';
             decimalsField.disabled = true;
             decimalsField.value = '';
-            unsignedField.disabled = true;
-            unsignedField.value = '0';
             sequenceField.disabled = true;
             sequenceField.value = '0';
             defaultField.disabled = true;

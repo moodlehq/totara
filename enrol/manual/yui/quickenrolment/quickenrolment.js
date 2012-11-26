@@ -21,7 +21,8 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
         DEFAULTSTARTDATE : 'defaultStartDate',
         DEFAULTDURATION : 'defaultDuration',
         ASSIGNABLEROLES : 'assignableRoles',
-        DISABLEGRADEHISTORY : 'disableGradeHistory'
+        DISABLEGRADEHISTORY : 'disableGradeHistory',
+        RECOVERGRADESDEFAULT : 'recoverGradesDefault'
     };
     /** CSS classes for nodes in structure **/
     var CSS = {
@@ -78,7 +79,7 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             if (this.get(UEP.DISABLEGRADEHISTORY) != true) {
                 recovergrades = create('<div class="'+CSS.ENROLMENTOPTION+' '+CSS.RECOVERGRADES+'"></div>')
                     .append(create('<label class="'+CSS.RECOVERGRADESTITLE+'" for="'+CSS.RECOVERGRADES+'">'+M.str.enrol.recovergrades+'</label>'))
-                    .append(create('<input type="checkbox" id="'+CSS.RECOVERGRADES+'" name="'+CSS.RECOVERGRADES+'" />'))
+                    .append(create('<input type="checkbox" id="'+CSS.RECOVERGRADES+'" name="'+CSS.RECOVERGRADES+'"'+ this.get(UEP.RECOVERGRADESDEFAULT) +' />'))
             }
 
             this.set(UEP.BASE, create('<div class="'+CSS.PANEL+' '+CSS.HIDDEN+'"></div>')
@@ -140,12 +141,19 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             base.dd.addHandle('.'+CSS.HEADER+' h2');
             base.one('.'+CSS.HEADER+' h2').setStyle('cursor', 'move');
 
-            this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url('t/collapsed', 'moodle'));
+            var collapsedimage = 't/collapsed'; // ltr mode
+            if ( Y.one(document.body).hasClass('dir-rtl') ) {
+                collapsedimage = 't/collapsed_rtl';
+            } else {
+                collapsedimage = 't/collapsed';
+            }
+
+            this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url(collapsedimage, 'moodle'));
             this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).on('click', function(){
                 this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).toggleClass(CSS.ACTIVE);
                 this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEAREA).toggleClass(CSS.HIDDEN);
                 if (this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEAREA).hasClass(CSS.HIDDEN)) {
-                    this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url('t/collapsed', 'moodle'));
+                    this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url(collapsedimage, 'moodle'));
                 } else {
                     this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url('t/expanded', 'moodle'));
                 }
@@ -508,6 +516,9 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             },
             disableGradeHistory : {
                 value : 0
+            },
+            recoverGradesDefault : {
+                value : ''
             }
         }
     });
@@ -520,4 +531,4 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
         }
     }
 
-}, '@VERSION@', {requires:['base','node', 'overlay', 'io-base', 'test', 'json-parse', 'event-delegate', 'dd-plugin', 'event-key', 'moodle-enrol-notification']});
+}, '@VERSION@', {requires:['base','node', 'overlay', 'io-base', 'test', 'json-parse', 'event-delegate', 'dd-plugin', 'event-key', 'moodle-core-notification']});

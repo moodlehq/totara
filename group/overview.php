@@ -1,11 +1,26 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
 /**
  * Print an overview of groupings & group membership
  *
- * @author  Matt Clarkson mattc@catalyst.net.nz
- * @version 0.0.1
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package groups
+ * @copyright  Matt Clarkson mattc@catalyst.net.nz
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    core_group
  */
 
 require_once('../config.php');
@@ -34,7 +49,7 @@ $PAGE->set_url($url);
 // Make sure that the user has permissions to manage groups.
 require_login($course);
 
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
 require_capability('moodle/course:managegroups', $context);
 
 $strgroups           = get_string('groups');
@@ -72,15 +87,18 @@ if ($groupingid) {
 } else {
     $groupingwhere = "";
 }
+
+list($sort, $sortparams) = users_order_by_sql('u');
+
 $sql = "SELECT g.id AS groupid, gg.groupingid, u.id AS userid, u.firstname, u.lastname, u.idnumber, u.username
           FROM {groups} g
                LEFT JOIN {groupings_groups} gg ON g.id = gg.groupid
                LEFT JOIN {groups_members} gm ON g.id = gm.groupid
                LEFT JOIN {user} u ON gm.userid = u.id
          WHERE g.courseid = :courseid $groupwhere $groupingwhere
-      ORDER BY g.name, u.lastname, u.firstname";
+      ORDER BY g.name, $sort";
 
-$rs = $DB->get_recordset_sql($sql, $params);
+$rs = $DB->get_recordset_sql($sql, array_merge($params, $sortparams));
 foreach ($rs as $row) {
     $user = new stdClass();
     $user->id        = $row->userid;

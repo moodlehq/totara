@@ -38,7 +38,7 @@ admin_externalpage_setup('tooluploaduserpictures');
 
 require_login();
 
-require_capability('moodle/site:uploadusers', get_context_instance(CONTEXT_SYSTEM));
+require_capability('moodle/site:uploadusers', context_system::instance());
 
 $site = get_site();
 
@@ -226,8 +226,8 @@ function process_file ($file, $userfield, $overwrite) {
         return PIX_FILE_SKIPPED;
     }
 
-    if (my_save_profile_image($user->id, $file)) {
-        $DB->set_field('user', 'picture', 1, array('id'=>$user->id));
+    if ($newrev = my_save_profile_image($user->id, $file)) {
+        $DB->set_field('user', 'picture', $newrev, array('id'=>$user->id));
         echo $OUTPUT->notification(get_string('uploadpicture_userupdated', 'tool_uploaduser', $user->username), 'notifysuccess');
         return PIX_FILE_UPDATED;
     } else {
@@ -244,10 +244,10 @@ function process_file ($file, $userfield, $overwrite) {
  *                picture file to.
  * @param string $originalfile the full path of the picture file.
  *
- * @return bool
+ * @return mixed new unique revision number or false if not saved
  */
 function my_save_profile_image($id, $originalfile) {
-    $context = get_context_instance(CONTEXT_USER, $id);
+    $context = context_user::instance($id);
     return process_new_icon($context, 'user', 'icon', 0, $originalfile);
 }
 

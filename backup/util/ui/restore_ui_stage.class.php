@@ -95,7 +95,7 @@ abstract class restore_ui_stage extends base_ui_stage {
 abstract class restore_ui_independent_stage {
     abstract public function __construct($contextid);
     abstract public function process();
-    abstract public function display($renderer);
+    abstract public function display(core_backup_renderer $renderer);
     abstract public function get_stage();
     /**
      * Gets an array of progress bar items that can be displayed through the restore renderer.
@@ -177,7 +177,7 @@ class restore_ui_stage_confirm extends restore_ui_independent_stage {
      * @param core_backup_renderer $renderer renderer instance to use
      * @return string HTML code
      */
-    public function display($renderer) {
+    public function display(core_backup_renderer $renderer) {
 
         $prevstageurl = new moodle_url('/backup/restorefile.php', array('contextid' => $this->contextid));
         $nextstageurl = new moodle_url('/backup/restore.php', array(
@@ -231,7 +231,7 @@ class restore_ui_stage_destination extends restore_ui_independent_stage {
             'filepath'=>$this->filepath,
             'contextid'=>$this->contextid,
             'stage'=>restore_ui::STAGE_DESTINATION));
-        $this->coursesearch = new restore_course_search(array('url'=>$url), get_context_instance_by_id($contextid)->instanceid);
+        $this->coursesearch = new restore_course_search(array('url'=>$url), context::instance_by_id($contextid)->instanceid);
         $this->categorysearch = new restore_category_search(array('url'=>$url));
     }
     public function process() {
@@ -262,7 +262,7 @@ class restore_ui_stage_destination extends restore_ui_independent_stage {
      * @param core_backup_renderer $renderer renderer instance to use
      * @return string HTML code
      */
-    public function display($renderer) {
+    public function display(core_backup_renderer $renderer) {
 
         $format = backup_general_helper::detect_backup_format($this->filepath);
 
@@ -286,7 +286,7 @@ class restore_ui_stage_destination extends restore_ui_independent_stage {
             'contextid' => $this->contextid,
             'filepath'  => $this->filepath,
             'stage'     => restore_ui::STAGE_SETTINGS));
-        $context = get_context_instance_by_id($this->contextid);
+        $context = context::instance_by_id($this->contextid);
 
         if ($context->contextlevel == CONTEXT_COURSE and has_capability('moodle/restore:restorecourse', $context)) {
             $currentcourse = $context->instanceid;
@@ -676,7 +676,7 @@ class restore_ui_stage_process extends restore_ui_stage {
      * @param core_backup_renderer $renderer renderer instance to use
      * @return string HTML code
      */
-    public function display($renderer) {
+    public function display(core_backup_renderer $renderer) {
         global $PAGE;
 
         $html = '';
@@ -703,7 +703,7 @@ class restore_ui_stage_process extends restore_ui_stage {
                 $haserrors = (!empty($results['errors']));
                 $html .= $renderer->precheck_notices($results);
                 if (!empty($info->role_mappings->mappings)) {
-                    $context = get_context_instance(CONTEXT_COURSE, $this->ui->get_controller()->get_courseid());
+                    $context = context_course::instance($this->ui->get_controller()->get_courseid());
                     $assignableroles = get_assignable_roles($context, ROLENAME_ALIAS, false);
                     $html .= $renderer->role_mappings($info->role_mappings->mappings, $assignableroles);
                 }
@@ -752,10 +752,25 @@ class restore_ui_stage_complete extends restore_ui_stage_process {
      * appropriate message.
      *
      * @param core_backup_renderer $renderer
+     * @return string HTML code to echo
      */
     public function display(core_backup_renderer $renderer) {
 
         $html  = '';
+        if (!empty($this->results['file_aliases_restore_failures'])) {
+            $html .= $renderer->box_start('generalbox filealiasesfailures');
+            $html .= $renderer->heading_with_help(get_string('filealiasesrestorefailures', 'core_backup'),
+                'filealiasesrestorefailures', 'core_backup');
+            $html .= $renderer->container(get_string('filealiasesrestorefailuresinfo', 'core_backup'));
+            $html .= $renderer->container_start('aliaseslist');
+            $html .= html_writer::start_tag('ul');
+            foreach ($this->results['file_aliases_restore_failures'] as $alias) {
+                $html .= html_writer::tag('li', s($alias));
+            }
+            $html .= html_writer::end_tag('ul');
+            $html .= $renderer->container_end();
+            $html .= $renderer->box_end();
+        }
         $html .= $renderer->box_start();
         if (array_key_exists('file_missing_in_backup', $this->results)) {
             $html .= $renderer->notification(get_string('restorefileweremissing', 'backup'), 'notifyproblem');

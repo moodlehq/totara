@@ -39,7 +39,7 @@ abstract class backup_plan_dbops extends backup_dbops {
         global $DB;
 
         // Get the context of the module
-        $contextid = get_context_instance(CONTEXT_MODULE, $moduleid)->id;
+        $contextid = context_module::instance($moduleid)->id;
 
         // Get all the block instances which parentcontextid is the module contextid
         $blockids = array();
@@ -57,7 +57,7 @@ abstract class backup_plan_dbops extends backup_dbops {
         global $DB;
 
         // Get the context of the course
-        $contextid = get_context_instance(CONTEXT_COURSE, $courseid)->id;
+        $contextid = context_course::instance($courseid)->id;
 
         // Get all the block instances which parentcontextid is the course contextid
         $blockids = array();
@@ -204,7 +204,7 @@ abstract class backup_plan_dbops extends backup_dbops {
         global $DB;
 
         // Calculate backup word
-        $backupword = str_replace(' ', '_', moodle_strtolower(get_string('backupfilename')));
+        $backupword = str_replace(' ', '_', textlib::strtolower(get_string('backupfilename')));
         $backupword = trim(clean_filename($backupword), '_');
 
         // Not $useidonly, lets fetch the name
@@ -214,7 +214,7 @@ abstract class backup_plan_dbops extends backup_dbops {
             switch ($type) {
                 case backup::TYPE_1COURSE:
                     $shortname = $DB->get_field('course', 'shortname', array('id' => $id));
-                    $context = get_context_instance(CONTEXT_COURSE, $id);
+                    $context = context_course::instance($id);
                     $shortname = format_string($shortname, true, array('context' => $context));
                     break;
                 case backup::TYPE_1SECTION:
@@ -228,7 +228,7 @@ abstract class backup_plan_dbops extends backup_dbops {
                     break;
             }
             $shortname = str_replace(' ', '_', $shortname);
-            $shortname = moodle_strtolower(trim(clean_filename($shortname), '_'));
+            $shortname = textlib::strtolower(trim(clean_filename($shortname), '_'));
         }
 
         // The name will always contain the ID, but we append the course short name if requested.
@@ -240,7 +240,7 @@ abstract class backup_plan_dbops extends backup_dbops {
         // Calculate date
         $backupdateformat = str_replace(' ', '_', get_string('backupnameformat', 'langconfig'));
         $date = userdate(time(), $backupdateformat, 99, false);
-        $date = moodle_strtolower(trim(clean_filename($date), '_'));
+        $date = textlib::strtolower(trim(clean_filename($date), '_'));
 
         // Calculate info
         $info = '';

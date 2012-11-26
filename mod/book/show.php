@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Show/hide book chapter
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2010 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,25 +35,24 @@ $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 require_login($course, false, $cm);
 require_sesskey();
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/book:edit', $context);
 
 $PAGE->set_url('/mod/book/show.php', array('id'=>$id, 'chapterid'=>$chapterid));
 
 $chapter = $DB->get_record('book_chapters', array('id'=>$chapterid, 'bookid'=>$book->id), '*', MUST_EXIST);
 
-
-///switch hidden state
+// Switch hidden state.
 $chapter->hidden = $chapter->hidden ? 0 : 1;
 
-// update record
+// Update record.
 $DB->update_record('book_chapters', $chapter);
 
-///change visibility of subchapters too
+// Change visibility of subchapters too.
 if (!$chapter->subchapter) {
     $chapters = $DB->get_records('book_chapters', array('bookid'=>$book->id), 'pagenum', 'id, subchapter, hidden');
     $found = 0;
-    foreach($chapters as $ch) {
+    foreach ($chapters as $ch) {
         if ($ch->id == $chapter->id) {
             $found = 1;
         } else if ($found and $ch->subchapter) {

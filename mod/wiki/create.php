@@ -64,7 +64,7 @@ if (!$cm = get_coursemodule_from_instance('wiki', $wiki->id)) {
 
 $groups = new stdClass();
 if (groups_get_activity_groupmode($cm)) {
-    $modulecontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $modulecontext = context_module::instance($cm->id);
     $canaccessgroups = has_capability('moodle/site:accessallgroups', $modulecontext);
     if ($canaccessgroups) {
         $groups->availablegroups = groups_get_all_groups($cm->course);
@@ -84,7 +84,7 @@ if (groups_get_activity_groupmode($cm)) {
 
 $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
-require_login($course->id, true, $cm);
+require_login($course, true, $cm);
 
 $wikipage = new page_wiki_create($wiki, $subwiki, $cm);
 

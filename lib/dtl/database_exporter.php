@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * General database export class
  *
- * @package    core
- * @subpackage dtl
+ * @package    core_dtl
  * @copyright  2008 Andrei Bautu
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,16 +38,17 @@ defined('MOODLE_INTERNAL') || die();
  * @see export_table_data for the same table.
  */
 abstract class database_exporter {
-    /** Connection to the source database (a @see moodle_database object). */
+    /** @var moodle_database Connection to the source database (a @see moodle_database object). */
     protected $mdb;
-    /** Database manager of the source database (a @see database_manager object). */
+    /** @var database_manager Database manager of the source database (a @see database_manager object). */
     protected $manager;
-    /** Source database schema in XMLDB format (a @see xmldb_structure object). */
+    /** @var xmldb_structure Source database schema in XMLDB format (a @see xmldb_structure object). */
     protected $schema;
     /**
      * Boolean flag - whether or not to check that XML database schema matches
      * the RDBMS database schema before exporting (used by
      * @see export_database).
+     * @var bool
      */
     protected $check_schema;
 
@@ -146,7 +144,7 @@ abstract class database_exporter {
         $tables = $this->schema->getTables();
         $this->begin_database_export($CFG->version, $CFG->release, date('c'), $description);
         foreach ($tables as $table) {
-            $rs = $this->mdb->get_recordset_sql('SELECT * FROM {'.$table->getName().'}');
+            $rs = $this->mdb->export_table_recordset($table->getName());
             if (!$rs) {
                 throw new ddl_table_missing_exception($table->getName());
             }
@@ -155,8 +153,8 @@ abstract class database_exporter {
                 $this->export_table_data($table, $row);
             }
             $this->finish_table_export($table);
+            $rs->close();
         }
         $this->finish_database_export();
     }
-
 }

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Edit book chapter
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -38,11 +37,11 @@ $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
 require_login($course, false, $cm);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/book:edit', $context);
 
 $PAGE->set_url('/mod/book/edit.php', array('cmid'=>$cmid, 'id'=>$chapterid, 'pagenum'=>$pagenum, 'subchapter'=>$subchapter));
-$PAGE->set_pagelayout('admin'); //this is a bloody hack!
+$PAGE->set_pagelayout('admin'); // TODO: Something. This is a bloody hack!
 
 if ($chapterid) {
     $chapter = $DB->get_record('book_chapters', array('id'=>$chapterid, 'bookid'=>$book->id), '*', MUST_EXIST);
@@ -59,7 +58,7 @@ $chapter = file_prepare_standard_editor($chapter, 'content', $options, $context,
 
 $mform = new book_chapter_edit_form(null, array('chapter'=>$chapter, 'options'=>$options));
 
-/// If data submitted, then process and store.
+// If data submitted, then process and store.
 if ($mform->is_cancelled()) {
     if (empty($chapter->id)) {
         redirect("view.php?id=$cm->id");
@@ -75,10 +74,10 @@ if ($mform->is_cancelled()) {
         $DB->update_record('book_chapters', $data);
 
         add_to_log($course->id, 'course', 'update mod', '../mod/book/view.php?id='.$cm->id, 'book '.$book->id);
-        add_to_log($course->id, 'book', 'update', 'view.php?id='.$cm->id.'&chapterid='.$data->id, $book->id, $cm->id);
+        add_to_log($course->id, 'book', 'update chapter', 'view.php?id='.$cm->id.'&chapterid='.$data->id, $data->id, $cm->id);
 
     } else {
-        /// adding new chapter
+        // adding new chapter
         $data->bookid        = $book->id;
         $data->hidden        = 0;
         $data->timecreated   = time();
@@ -101,17 +100,16 @@ if ($mform->is_cancelled()) {
         $DB->set_field('book', 'revision', $book->revision+1, array('id'=>$book->id));
 
         add_to_log($course->id, 'course', 'update mod', '../mod/book/view.php?id='.$cm->id, 'book '.$book->id);
-        add_to_log($course->id, 'book', 'update', 'view.php?id='.$cm->id.'&chapterid='.$data->id, $book->id, $cm->id);
+        add_to_log($course->id, 'book', 'add chapter', 'view.php?id='.$cm->id.'&chapterid='.$data->id, $data->id, $cm->id);
     }
 
     book_preload_chapters($book); // fix structure
     redirect("view.php?id=$cm->id&chapterid=$data->id");
 }
 
-/// Otherwise fill and print the form.
-$PAGE->set_title(format_string($book->name));
-$PAGE->add_body_class('mod_book');
-$PAGE->set_heading(format_string($course->fullname));
+// Otherwise fill and print the form.
+$PAGE->set_title($book->name);
+$PAGE->set_heading($course->fullname);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('editingchapter', 'mod_book'));
@@ -119,4 +117,3 @@ echo $OUTPUT->heading(get_string('editingchapter', 'mod_book'));
 $mform->display();
 
 echo $OUTPUT->footer();
-

@@ -154,7 +154,7 @@ abstract class base_task implements checksumable, executable, loggable {
             // If step returns array, it will be forwarded to plan
             // (TODO: shouldn't be array but proper result object)
             if (is_array($result) and !empty($result)) {
-                $this->plan->add_result($result);
+                $this->add_result($result);
             }
         }
         // Mark as executed if any step has been executed
@@ -192,11 +192,11 @@ abstract class base_task implements checksumable, executable, loggable {
     }
 
     /**
-    * Add the given info to the current plan's results.
-    *
-    * @see base_plan::add_result()
-    * @param array $result associative array describing a result of a task/step
-    */
+     * Add the given info to the current plan's results.
+     *
+     * @see base_plan::add_result()
+     * @param array $result associative array describing a result of a task/step
+     */
     public function add_result($result) {
         if (!is_null($this->plan)) {
             $this->plan->add_result($result);
@@ -206,10 +206,10 @@ abstract class base_task implements checksumable, executable, loggable {
     }
 
     /**
-    * Return the current plan's results
-    *
-    * @return array|null
-    */
+     * Return the current plan's results
+     *
+     * @return array|null
+     */
     public function get_results() {
         if (!is_null($this->plan)) {
             return $this->plan->get_results();

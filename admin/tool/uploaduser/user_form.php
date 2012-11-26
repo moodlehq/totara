@@ -53,8 +53,7 @@ class admin_uploaduser_form1 extends moodleform {
             $mform->setDefault('delimiter_name', 'comma');
         }
 
-        $textlib = textlib_get_instance();
-        $choices = $textlib->get_encodings();
+        $choices = textlib::get_encodings();
         $mform->addElement('select', 'encoding', get_string('encoding', 'tool_uploaduser'), $choices);
         $mform->setDefault('encoding', 'UTF-8');
 
@@ -249,17 +248,8 @@ class admin_uploaduser_form2 extends moodleform {
             $mform->setType('htmleditor', PARAM_INT);
         }
 
-        if (empty($CFG->enableajax)) {
-            $mform->addElement('static', 'ajax', get_string('ajaxuse'), get_string('ajaxno'));
-        } else {
-            $choices = array( 0 => get_string('ajaxno'), 1 => get_string('ajaxyes'));
-            $mform->addElement('select', 'ajax', get_string('ajaxuse'), $choices);
-            $mform->setDefault('ajax', 1);
-        }
-        $mform->setAdvanced('ajax');
-
         $mform->addElement('text', 'city', get_string('city'), 'maxlength="100" size="25"');
-        $mform->setType('city', PARAM_MULTILANG);
+        $mform->setType('city', PARAM_TEXT);
         if (empty($CFG->defaultcity)) {
             $mform->setDefault('city', $templateuser->city);
         } else {
@@ -298,11 +288,11 @@ class admin_uploaduser_form2 extends moodleform {
         $mform->setType('idnumber', PARAM_NOTAGS);
 
         $mform->addElement('text', 'institution', get_string('institution'), 'maxlength="40" size="25"');
-        $mform->setType('institution', PARAM_MULTILANG);
+        $mform->setType('institution', PARAM_TEXT);
         $mform->setDefault('institution', $templateuser->institution);
 
         $mform->addElement('text', 'department', get_string('department'), 'maxlength="30" size="25"');
-        $mform->setType('department', PARAM_MULTILANG);
+        $mform->setType('department', PARAM_TEXT);
         $mform->setDefault('department', $templateuser->department);
 
         $mform->addElement('text', 'phone1', get_string('phone'), 'maxlength="20" size="25"');
@@ -314,7 +304,7 @@ class admin_uploaduser_form2 extends moodleform {
         $mform->setAdvanced('phone2');
 
         $mform->addElement('text', 'address', get_string('address'), 'maxlength="70" size="25"');
-        $mform->setType('address', PARAM_MULTILANG);
+        $mform->setType('address', PARAM_TEXT);
         $mform->setAdvanced('address');
 
         // Next the profile defaults

@@ -47,7 +47,7 @@ $hubname = optional_param('hubname', '', PARAM_TEXT);
 //some permissions and parameters checking
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 require_login($course);
-if (!has_capability('moodle/course:publish', get_context_instance(CONTEXT_COURSE, $id))
+if (!has_capability('moodle/course:publish', context_course::instance($id))
         or !confirm_sesskey()) {
     throw new moodle_exception('nopermission');
 }
@@ -81,7 +81,7 @@ if ($backup->get_stage() !== backup_ui::STAGE_COMPLETE) {
         echo $renderer->dependency_notification(get_string('dependenciesenforced', 'backup'));
     }
     echo $renderer->progress_bar($backup->get_progress_bar());
-    echo $backup->display();
+    echo $backup->display($renderer);
     echo $OUTPUT->footer();
     die();
 }

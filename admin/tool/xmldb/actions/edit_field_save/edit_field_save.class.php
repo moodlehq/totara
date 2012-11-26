@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    tool
- * @subpackage xmldb
+ * @package    tool_xmldb
  * @copyright  2003 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,8 +24,7 @@
  * This class verifies all the data introduced when editing a field for correctness,
  * performing changes / displaying errors depending of the results.
  *
- * @package    tool
- * @subpackage xmldb
+ * @package    tool_xmldb
  * @copyright  2003 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -49,8 +47,6 @@ class edit_field_save extends XMLDBAction {
             'numberincorrectlength' => 'tool_xmldb',
             'floatincorrectlength' => 'tool_xmldb',
             'charincorrectlength' => 'tool_xmldb',
-            'textincorrectlength' => 'tool_xmldb',
-            'binaryincorrectlength' => 'tool_xmldb',
             'numberincorrectdecimals' => 'tool_xmldb',
             'floatincorrectdecimals' => 'tool_xmldb',
             'defaultincorrect' => 'tool_xmldb',
@@ -88,7 +84,7 @@ class edit_field_save extends XMLDBAction {
 
         $tableparam = strtolower(required_param('table', PARAM_PATH));
         $fieldparam = strtolower(required_param('field', PARAM_PATH));
-        $name = substr(trim(strtolower(optional_param('name', $fieldparam, PARAM_PATH))),0,30);
+        $name = substr(trim(strtolower(optional_param('name', $fieldparam, PARAM_PATH))),0,xmldb_field::NAME_MAX_LENGTH);
 
         $comment = required_param('comment', PARAM_CLEAN);
         $comment = trim($comment);
@@ -96,23 +92,21 @@ class edit_field_save extends XMLDBAction {
         $type       = required_param('type', PARAM_INT);
         $length     = strtolower(optional_param('length', NULL, PARAM_ALPHANUM));
         $decimals   = optional_param('decimals', NULL, PARAM_INT);
-        $unsigned   = optional_param('unsigned', false, PARAM_BOOL);
         $notnull    = optional_param('notnull', false, PARAM_BOOL);
         $sequence   = optional_param('sequence', false, PARAM_BOOL);
         $default    = optional_param('default', NULL, PARAM_PATH);
         $default    = trim($default);
 
-        $editeddir =& $XMLDB->editeddirs[$dirpath];
-        $structure =& $editeddir->xml_file->getStructure();
-        $table =& $structure->getTable($tableparam);
-        $field =& $table->getField($fieldparam);
+        $editeddir = $XMLDB->editeddirs[$dirpath];
+        $structure = $editeddir->xml_file->getStructure();
+        $table = $structure->getTable($tableparam);
+        $field = $table->getField($fieldparam);
         $oldhash = $field->getHash();
 
         $errors = array(); // To store all the errors found
 
         // Perform some automatic assumptions
         if ($sequence) {
-            $unsigned = true;
             $notnull  = true;
             $default  = NULL;
         }
@@ -142,7 +136,7 @@ class edit_field_save extends XMLDBAction {
         // Integer checks
         if ($type == XMLDB_TYPE_INTEGER) {
             if (!(is_numeric($length) && !empty($length) && intval($length)==floatval($length) &&
-                  $length > 0 && $length <= 20)) {
+                  $length > 0 && $length <= xmldb_field::INTEGER_MAX_LENGTH)) {
                 $errors[] = $this->str['integerincorrectlength'];
             }
             if (!(empty($default) || (is_numeric($default) &&
@@ -154,7 +148,7 @@ class edit_field_save extends XMLDBAction {
         // Number checks
         if ($type == XMLDB_TYPE_NUMBER) {
             if (!(is_numeric($length) && !empty($length) && intval($length)==floatval($length) &&
-                  $length > 0 && $length <= 20)) {
+                  $length > 0 && $length <= xmldb_field::NUMBER_MAX_LENGTH)) {
                 $errors[] = $this->str['numberincorrectlength'];
             }
             if (!(empty($decimals) || (is_numeric($decimals) &&
@@ -175,7 +169,7 @@ class edit_field_save extends XMLDBAction {
                                      !empty($length) &&
                                      intval($length)==floatval($length) &&
                                      $length > 0 &&
-                                     $length <= 20))) {
+                                     $length <= xmldb_field::FLOAT_MAX_LENGTH))) {
                 $errors[] = $this->str['floatincorrectlength'];
             }
             if (!(empty($decimals) || (is_numeric($decimals) &&
@@ -203,35 +197,14 @@ class edit_field_save extends XMLDBAction {
                 }
             }
         }
-        // Text checks
-        if ($type == XMLDB_TYPE_TEXT) {
-            if ($length != 'small' &&
-                $length != 'medium' &&
-                $length != 'big') {
-                $errors[] = $this->str['textincorrectlength'];
-            }
-            if ($default !== NULL && $default !== '') {
-                if (substr($default, 0, 1) == "'" ||
-                    substr($default, -1, 1) == "'") {
-                    $errors[] = $this->str['defaultincorrect'];
-                }
-            }
-        }
-        // Binary checks
-        if ($type == XMLDB_TYPE_BINARY) {
-            if ($length != 'small' &&
-                $length != 'medium' &&
-                $length != 'big') {
-                $errors[] = $this->str['binaryincorrectlength'];
-            }
-        }
+        // No text checks
+        // No binary checks
 
         if (!empty($errors)) {
             $tempfield = new xmldb_field($name);
             $tempfield->setType($type);
             $tempfield->setLength($length);
             $tempfield->setDecimals($decimals);
-            $tempfield->setUnsigned($unsigned);
             $tempfield->setNotNull($notnull);
             $tempfield->setSequence($sequence);
             $tempfield->setDefault($default);
@@ -250,12 +223,12 @@ class edit_field_save extends XMLDBAction {
             if ($fieldparam != $name) {
                 $field->setName($name);
                 if ($field->getPrevious()) {
-                    $prev =& $table->getField($field->getPrevious());
+                    $prev = $table->getField($field->getPrevious());
                     $prev->setNext($name);
                     $prev->setChanged(true);
                 }
                 if ($field->getNext()) {
-                    $next =& $table->getField($field->getNext());
+                    $next = $table->getField($field->getNext());
                     $next->setPrevious($name);
                     $next->setChanged(true);
                 }
@@ -268,7 +241,6 @@ class edit_field_save extends XMLDBAction {
             $field->setType($type);
             $field->setLength($length);
             $field->setDecimals($decimals);
-            $field->setUnsigned($unsigned);
             $field->setNotNull($notnull);
             $field->setSequence($sequence);
             $field->setDefault($default);

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +17,7 @@
 /**
  * Capability definitions for the folder module.
  *
- * @package    mod
- * @subpackage folder
+ * @package    mod_folder
  * @copyright  2009 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,6 +25,19 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
+
+    'mod/folder:addinstance' => array(
+        'riskbitmask' => RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/course:manageactivities'
+    ),
+
     'mod/folder:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,

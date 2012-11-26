@@ -123,7 +123,9 @@ abstract class restore_controller_dbops extends restore_dbops {
         $targettablenames = array('backup_ids_temp', 'backup_files_temp');
         foreach ($targettablenames as $targettablename) {
             $table = new xmldb_table($targettablename);
-            $dbman->drop_temp_table($table); // And drop it
+            $dbman->drop_table($table); // And drop it
         }
+        // Invalidate the backup_ids caches.
+        restore_dbops::reset_backup_ids_cached();
     }
 }

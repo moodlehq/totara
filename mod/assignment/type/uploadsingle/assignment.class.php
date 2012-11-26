@@ -42,7 +42,7 @@ class assignment_uploadsingle extends assignment_base {
                     $found = true;
                     $mimetype = $file->get_mimetype();
                     $path = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$this->context->id.'/mod_assignment/submission/'.$submission->id.'/'.$filename);
-                    $output .= '<a href="'.$path.'" ><img class="icon" src="'.$OUTPUT->pix_url(file_mimetype_icon($mimetype)).'" alt="'.$mimetype.'" />'.s($filename).'</a><br />';
+                    $output .= '<a href="'.$path.'" >'.$OUTPUT->pix_icon(file_file_icon($file), get_mimetype_description($file), 'moodle', array('class' => 'icon')).s($filename).'</a><br />';
                     $output .= plagiarism_get_links(array('userid'=>$userid, 'file'=>$file, 'cmid'=>$this->cm->id, 'course'=>$this->course, 'assignment'=>$this->assignment));
                     $output .='<br/>';
                 }
@@ -62,7 +62,7 @@ class assignment_uploadsingle extends assignment_base {
 
         global $USER, $OUTPUT;
 
-        $context = get_context_instance(CONTEXT_MODULE,$this->cm->id);
+        $context = context_module::instance($this->cm->id);
         require_capability('mod/assignment:view', $context);
 
         add_to_log($this->course->id, "assignment", "view", "view.php?id={$this->cm->id}", $this->assignment->id, $this->cm->id);
@@ -78,7 +78,7 @@ class assignment_uploadsingle extends assignment_base {
         if ($submission = $this->get_submission($USER->id)) {
             $filecount = $this->count_user_files($submission->id);
             if ($submission->timemarked) {
-                $this->view_feedback();
+                $this->view_feedback($submission);
             }
             if ($filecount) {
                 echo $OUTPUT->box($this->print_user_files($USER->id, true), 'generalbox boxaligncenter');
@@ -92,7 +92,26 @@ class assignment_uploadsingle extends assignment_base {
         $this->view_footer();
     }
 
-    function process_feedback() {
+    /**
+     * Display the response file to the student
+     *
+     * This default method prints the response file
+     *
+     * @param object $submission The submission object
+     */
+    function view_responsefile($submission) {
+        $fs = get_file_storage();
+        $noresponsefiles = $fs->is_area_empty($this->context->id, 'mod_assignment', 'response', $submission->id);
+        if (!$noresponsefiles) {
+            echo '<tr>';
+            echo '<td class="left side">&nbsp;</td>';
+            echo '<td class="content">';
+            echo $this->print_responsefiles($submission->userid);
+            echo '</td></tr>';
+        }
+    }
+
+    function process_feedback($formdata=null) {
         if (!$feedback = data_submitted() or !confirm_sesskey()) {      // No incoming data?
             return false;
         }
@@ -114,7 +133,7 @@ class assignment_uploadsingle extends assignment_base {
         global $DB;
 
         // Grab the context assocated with our course module
-        $context = get_context_instance(CONTEXT_MODULE, $this->cm->id);
+        $context = context_module::instance($this->cm->id);
 
         // Get ids of users enrolled in the given course.
         list($enroledsql, $params) = get_enrolled_sql($context, 'mod/assignment:view', $groupid);
@@ -130,24 +149,15 @@ class assignment_uploadsingle extends assignment_base {
     }
 
     function print_responsefiles($userid, $return=false) {
-        global $CFG, $USER, $OUTPUT, $PAGE;
-
-        $mode    = optional_param('mode', '', PARAM_ALPHA);
-        $offset  = optional_param('offset', 0, PARAM_INT);
+        global $OUTPUT, $PAGE;
 
         $output = $OUTPUT->box_start('responsefiles');
-
-        $candelete = $this->can_manage_responsefiles();
-        $strdelete   = get_string('delete');
-
-        $fs = get_file_storage();
-        $browser = get_file_browser();
 
         if ($submission = $this->get_submission($userid)) {
             $renderer = $PAGE->get_renderer('mod_assignment');
             $output .= $renderer->assignment_files($this->context, $submission->id, 'response');
-            $output .= $OUTPUT->box_end();
         }
+        $output .= $OUTPUT->box_end();
 
         if ($return) {
             return $output;
@@ -237,7 +247,8 @@ class assignment_uploadsingle extends assignment_base {
                     $eventdata->itemid       = $submission->id;
                     $eventdata->courseid     = $this->course->id;
                     $eventdata->userid       = $USER->id;
-                    $eventdata->file         = $file;
+                    $eventdata->file         = $file; // This is depreceated - please use pathnamehashes instead!
+                    $eventdata->pathnamehashes = array($file->get_pathnamehash());
                     events_trigger('assessable_file_uploaded', $eventdata);
                 }
 
@@ -292,15 +303,15 @@ class assignment_uploadsingle extends assignment_base {
         $mform->addElement('select', 'maxbytes', get_string('maximumsize', 'assignment'), $choices);
         $mform->setDefault('maxbytes', $CFG->assignment_maxbytes);
 
-        $course_context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
-        plagiarism_get_form_elements_module($mform, $course_context);
+        $course_context = context_course::instance($COURSE->id);
+        plagiarism_get_form_elements_module($mform, $course_context, 'mod_assignment');
     }
 
     function portfolio_exportable() {
         return true;
     }
 
-    function send_file($filearea, $args) {
+    function send_file($filearea, $args, $forcedownload, array $options=array()) {
         global $CFG, $DB, $USER;
         require_once($CFG->libdir.'/filelib.php');
 
@@ -329,7 +340,7 @@ class assignment_uploadsingle extends assignment_base {
             return false;
         }
 
-        send_stored_file($file, 0, 0, true); // download MUST be forced - security!
+        send_stored_file($file, 0, 0, true, $options); // download MUST be forced - security!
     }
 
     function extend_settings_navigation($node) {
@@ -369,7 +380,7 @@ class assignment_uploadsingle extends assignment_base {
                     $filename = $file->get_filename();
                     $mimetype = $file->get_mimetype();
                     $link = file_encode_url($CFG->wwwroot.'/pluginfile.php', '/'.$this->context->id.'/mod_assignment', 'submission/'.$submission->id.'/'.$filename);
-                    $filenode->add($filename, $link, navigation_node::TYPE_SETTING, null, null, new pix_icon(file_mimetype_icon($mimetype), ''));
+                    $filenode->add($filename, $link, navigation_node::TYPE_SETTING, null, null, new pix_icon(file_file_icon($file), ''));
                 }
             }
         }

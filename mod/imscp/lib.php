@@ -101,7 +101,7 @@ function imscp_add_instance($data, $mform) {
 
     // we need to use context now, so we need to make sure all needed info is already in db
     $DB->set_field('course_modules', 'instance', $data->id, array('id'=>$cmid));
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
     $imscp = $DB->get_record('imscp', array('id'=>$data->id), '*', MUST_EXIST);
 
     if ($filename = $mform->get_new_filename('package')) {
@@ -136,7 +136,7 @@ function imscp_update_instance($data, $mform) {
 
     $DB->update_record('imscp', $data);
 
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
     $imscp = $DB->get_record('imscp', array('id'=>$data->id), '*', MUST_EXIST);
 
     if ($filename = $mform->get_new_filename('package')) {
@@ -248,22 +248,13 @@ function imscp_user_complete($course, $user, $mod, $imscp) {
 }
 
 /**
- * Returns the users with data in one imscp
- *
- * @todo: deprecated - to be deleted in 2.2
- *
- * @param int $imscpid
- * @return bool false
- */
-function imscp_get_participants($imscpid) {
-    return false;
-}
-
-/**
  * Lists all browsable file areas
- * @param object $course
- * @param object $cm
- * @param object $context
+ *
+ * @package  mod_imscp
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
  * @return array
  */
 function imscp_get_file_areas($course, $cm, $context) {
@@ -277,16 +268,19 @@ function imscp_get_file_areas($course, $cm, $context) {
 
 /**
  * File browsing support for imscp module ontent area.
- * @param object $browser
- * @param object $areas
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param int $itemid
- * @param string $filepath
- * @param string $filename
- * @return object file_info instance or null if not found
+ *
+ * @package  mod_imscp
+ * @category files
+ * @param stdClass $browser file browser
+ * @param stdClass $areas file areas
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param int $itemid item ID
+ * @param string $filepath file path
+ * @param string $filename file name
+ * @return file_info instance or null if not found
  */
 function imscp_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     global $CFG, $DB;
@@ -323,15 +317,18 @@ function imscp_get_file_info($browser, $areas, $course, $cm, $context, $filearea
 /**
  * Serves the imscp files.
  *
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @package  mod_imscp
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - justsend the file
  */
-function imscp_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+function imscp_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $CFG, $DB;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -359,7 +356,7 @@ function imscp_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
         }
 
         // finally send the file
-        send_stored_file($file, 86400, 0, $forcedownload);
+        send_stored_file($file, 86400, 0, $forcedownload, $options);
 
     } else if ($filearea === 'backup') {
         if (!has_capability('moodle/course:managefiles', $context)) {
@@ -375,7 +372,7 @@ function imscp_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
         }
 
         // finally send the file
-        send_stored_file($file, 86400, 0, $forcedownload);
+        send_stored_file($file, 86400, 0, $forcedownload, $options);
 
     } else {
         return false;

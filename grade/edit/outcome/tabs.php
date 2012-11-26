@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,9 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Prints navigation tabs for viewing and editing grade outcomes
+ *
+ * @package   core_grades
+ * @copyright 2009 Petr Skoda
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
     $row = $tabs = array();
 
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
 
     $row[] = new tabobject('courseoutcomes',
                            $CFG->wwwroot.'/grade/edit/outcome/course.php?id='.$courseid,

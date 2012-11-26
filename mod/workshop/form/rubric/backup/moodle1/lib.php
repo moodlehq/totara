@@ -18,15 +18,12 @@
 /**
  * Provides support for the conversion of moodle1 backup to the moodle2 format
  *
- * @package    workshopform
- * @subpackage rubric
+ * @package    workshopform_rubric
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot.'/mod/workshop/form/rubric/db/upgradelib.php');
 
 /**
  * Conversion handler for the rubric grading strategy data
@@ -49,8 +46,11 @@ class moodle1_workshopform_rubric_handler extends moodle1_workshopform_handler {
 
     /**
      * Processes one <ELEMENT>
+     *
+     * @param array $data legacy element data
+     * @param array $raw raw element data
      */
-    public function process_legacy_element($data, $raw) {
+    public function process_legacy_element(array $data, array $raw) {
         $this->elements[] = $data;
         $this->rubrics[$data['id']] = array();
     }
@@ -140,4 +140,48 @@ class moodle1_workshopform_rubric_handler extends moodle1_workshopform_handler {
             $this->xmlwriter->end_tag('workshopform_rubric_dimension');
         }
     }
+}
+
+/**
+ * Transforms given record into an object to be saved into workshopform_rubric_levels
+ *
+ * This is used during Rubric 1.9 -> Rubric 2.0 conversion
+ *
+ * @param stdClass $old legacy record from joined workshop_elements_old + workshop_rubrics_old
+ * @param int $newdimensionid id of the new workshopform_rubric dimension record to be linked to
+ * @return stdclass to be saved in workshopform_rubric_levels
+ */
+function workshopform_rubric_upgrade_rubric_level(stdclass $old, $newdimensionid) {
+    $new = new stdclass();
+    $new->dimensionid = $newdimensionid;
+    $new->grade = $old->rgrade * workshopform_rubric_upgrade_weight($old->eweight);
+    $new->definition = $old->rdesc;
+    $new->definitionformat = FORMAT_HTML;
+    return $new;
+}
+
+/**
+ * Given old workshop element weight, returns the weight multiplier
+ *
+ * Negative weights are not supported any more and are replaced with weight = 0.
+ * Legacy workshop did not store the raw weight but the index in the array
+ * of weights (see $WORKSHOP_EWEIGHTS in workshop 1.x). workshop 2.0 uses
+ * integer weights only (0-16) so all previous weights are multiplied by 4.
+ *
+ * @param $oldweight index in legacy $WORKSHOP_EWEIGHTS
+ * @return int new weight
+ */
+function workshopform_rubric_upgrade_weight($oldweight) {
+
+    switch ($oldweight) {
+        case 8: $weight = 1; break;
+        case 9: $weight = 2; break;
+        case 10: $weight = 3; break;
+        case 11: $weight = 4; break;
+        case 12: $weight = 6; break;
+        case 13: $weight = 8; break;
+        case 14: $weight = 16; break;
+        default: $weight = 0;
+    }
+    return $weight;
 }

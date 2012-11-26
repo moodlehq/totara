@@ -17,6 +17,10 @@
 
 /*
  * Comments management interface
+ *
+ * @package   core
+ * @copyright 2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once('../config.php');
 require_once($CFG->libdir.'/adminlib.php');
@@ -25,7 +29,7 @@ require_once($CFG->dirroot.'/comment/locallib.php');
 require_login();
 admin_externalpage_setup('comments', '', null, '', array('pagelayout'=>'report'));
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 require_capability('moodle/comment:delete', $context);
 
 $PAGE->requires->js_init_call('M.core_comment.init_admin', null, true);

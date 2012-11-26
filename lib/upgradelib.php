@@ -98,6 +98,55 @@ class plugin_defective_exception extends moodle_exception {
 }
 
 /**
+ * Sets maximum expected time needed for upgrade task.
+ * Please always make sure that upgrade will not run longer!
+ *
+ * The script may be automatically aborted if upgrade times out.
+ *
+ * @category upgrade
+ * @param int $max_execution_time in seconds (can not be less than 60 s)
+ */
+function upgrade_set_timeout($max_execution_time=300) {
+    global $CFG;
+
+    if (!isset($CFG->upgraderunning) or $CFG->upgraderunning < time()) {
+        $upgraderunning = get_config(null, 'upgraderunning');
+    } else {
+        $upgraderunning = $CFG->upgraderunning;
+    }
+
+    if (!$upgraderunning) {
+        if (CLI_SCRIPT) {
+            // never stop CLI upgrades
+            $upgraderunning = 0;
+        } else {
+            // web upgrade not running or aborted
+            print_error('upgradetimedout', 'admin', "$CFG->wwwroot/$CFG->admin/");
+        }
+    }
+
+    if ($max_execution_time < 60) {
+        // protection against 0 here
+        $max_execution_time = 60;
+    }
+
+    $expected_end = time() + $max_execution_time;
+
+    if ($expected_end < $upgraderunning + 10 and $expected_end > $upgraderunning - 10) {
+        // no need to store new end, it is nearly the same ;-)
+        return;
+    }
+
+    if (CLI_SCRIPT) {
+        // there is no point in timing out of CLI scripts, admins can stop them if necessary
+        set_time_limit(0);
+    } else {
+        set_time_limit($max_execution_time);
+    }
+    set_config('upgraderunning', $expected_end); // keep upgrade locked until this time
+}
+
+/**
  * Upgrade savepoint, marks end of each upgrade block.
  * It stores new main version, resets upgrade timeout
  * and abort upgrade if user cancels page loading.
@@ -105,7 +154,7 @@ class plugin_defective_exception extends moodle_exception {
  * Please do not make large upgrade blocks with lots of operations,
  * for example when adding tables keep only one table operation per block.
  *
- * @global object
+ * @category upgrade
  * @param bool $result false if upgrade step failed, true if completed
  * @param string or float $version main version
  * @param bool $allowabort allow user to abort script execution here
@@ -146,7 +195,7 @@ function upgrade_main_savepoint($result, $version, $allowabort=true) {
  * It stores module version, resets upgrade timeout
  * and abort upgrade if user cancels page loading.
  *
- * @global object
+ * @category upgrade
  * @param bool $result false if upgrade step failed, true if completed
  * @param string or float $version main version
  * @param string $modname name of module
@@ -186,7 +235,7 @@ function upgrade_mod_savepoint($result, $version, $modname, $allowabort=true) {
  * It stores block version, resets upgrade timeout
  * and abort upgrade if user cancels page loading.
  *
- * @global object
+ * @category upgrade
  * @param bool $result false if upgrade step failed, true if completed
  * @param string or float $version main version
  * @param string $blockname name of block
@@ -226,6 +275,7 @@ function upgrade_block_savepoint($result, $version, $blockname, $allowabort=true
  * It stores plugin version, resets upgrade timeout
  * and abort upgrade if user cancels page loading.
  *
+ * @category upgrade
  * @param bool $result false if upgrade step failed, true if completed
  * @param string or float $version main version
  * @param string $type name of plugin
@@ -257,6 +307,45 @@ function upgrade_plugin_savepoint($result, $version, $type, $plugin, $allowabort
     }
 }
 
+/**
+ * Detect if there are leftovers in PHP source files.
+ *
+ * During main version upgrades administrators MUST move away
+ * old PHP source files and start from scratch (or better
+ * use git).
+ *
+ * @return bool true means borked upgrade, false means previous PHP files were properly removed
+ */
+function upgrade_stale_php_files_present() {
+    global $CFG;
+
+    $someexamplesofremovedfiles = array(
+        // removed in 2.4dev
+        '/admin/tool/unittest/simpletestlib.php',
+        // removed in 2.3dev
+        '/lib/minify/builder/',
+        // removed in 2.2dev
+        '/lib/yui/3.4.1pr1/',
+        // removed in 2.2
+        '/search/cron_php5.php',
+        '/course/report/log/indexlive.php',
+        '/admin/report/backups/index.php',
+        '/admin/generator.php',
+        // removed in 2.1
+        '/lib/yui/2.8.0r4/',
+        // removed in 2.0
+        '/blocks/admin/block_admin.php',
+        '/blocks/admin_tree/block_admin_tree.php',
+    );
+
+    foreach ($someexamplesofremovedfiles as $file) {
+        if (file_exists($CFG->dirroot.$file)) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 /**
  * Upgrade plugins
@@ -1424,6 +1513,8 @@ function upgrade_core($version, $verbose) {
         external_update_descriptions('moodle');
         events_update_definition('moodle');
         message_update_providers('moodle');
+        // Update core definitions.
+        cache_helper::update_definitions(true);
 
         // Reset caches again, just to be sure
         purge_all_caches();
@@ -1457,6 +1548,7 @@ function upgrade_noncore($verbose) {
         foreach ($plugintypes as $type=>$location) {
             upgrade_plugins($type, 'print_upgrade_part_start', 'print_upgrade_part_end', $verbose);
         }
+        cache_helper::update_definitions();
     } catch (Exception $ex) {
         upgrade_handle_exception($ex);
     }
@@ -1679,7 +1771,8 @@ function upgrade_plugin_mnet_functions($component) {
  * @return array
  */
 function admin_mnet_method_profile(Zend_Server_Reflection_Function_Abstract $function) {
-    $proto = array_pop($function->getPrototypes());
+    $protos = $function->getPrototypes();
+    $proto = array_pop($protos);
     $ret = $proto->getReturnValue();
     $profile = array(
         'parameters' =>  array(),
@@ -1708,7 +1801,7 @@ function admin_mnet_method_profile(Zend_Server_Reflection_Function_Abstract $fun
  *
  * @param   string  $table      Table name
  * @param   array   $uniques    Array of field names that should be unique
- * @param   array   $feildstocheck  Array of fields to generate "correct" data from (optional)
+ * @param   array   $fieldstocheck  Array of fields to generate "correct" data from (optional)
  * @return  void
  */
 function upgrade_course_completion_remove_duplicates($table, $uniques, $fieldstocheck = array()) {
@@ -1725,7 +1818,7 @@ function upgrade_course_completion_remove_duplicates($table, $uniques, $fieldsto
         $pointer = 0;
 
         // Generate SQL for finding records with these duplicate uniques
-        $sql_select = implode(' = ? AND ', $uniques).' = ?'; /// builds "fieldname = ? AND fieldname = ?"
+        $sql_select = implode(' = ? AND ', $uniques).' = ?'; // builds "fieldname = ? AND fieldname = ?"
         $uniq_values = array();
         foreach ($uniques as $u) {
             $uniq_values[] = $duplicate->$u;
@@ -1764,11 +1857,153 @@ function upgrade_course_completion_remove_duplicates($table, $uniques, $fieldsto
             }
         }
         if ($needsupdate || isset($origrecord->reaggregate)) {
-            // If this table has a reaggregate field, update to force recheck on next cron cron
+            // If this table has a reaggregate field, update to force recheck on next cron run
             if (isset($origrecord->reaggregate)) {
                 $origrecord->reaggregate = time();
             }
             $DB->update_record($table, $origrecord);
         }
+    }
+}
+
+/**
+ * Find questions missing an existing category and associate them with
+ * a category which purpose is to gather them.
+ *
+ * @return void
+ */
+function upgrade_save_orphaned_questions() {
+    global $DB;
+
+    // Looking for orphaned questions
+    $orphans = $DB->record_exists_select('question',
+            'NOT EXISTS (SELECT 1 FROM {question_categories} WHERE {question_categories}.id = {question}.category)');
+    if (!$orphans) {
+        return;
+    }
+
+    // Generate a unique stamp for the orphaned questions category, easier to identify it later on
+    $uniquestamp = "unknownhost+120719170400+orphan";
+    $systemcontext = context_system::instance();
+
+    // Create the orphaned category at system level
+    $cat = $DB->get_record('question_categories', array('stamp' => $uniquestamp,
+            'contextid' => $systemcontext->id));
+    if (!$cat) {
+        $cat = new stdClass();
+        $cat->parent = 0;
+        $cat->contextid = $systemcontext->id;
+        $cat->name = get_string('orphanedquestionscategory', 'question');
+        $cat->info = get_string('orphanedquestionscategoryinfo', 'question');
+        $cat->sortorder = 999;
+        $cat->stamp = $uniquestamp;
+        $cat->id = $DB->insert_record("question_categories", $cat);
+    }
+
+    // Set a category to those orphans
+    $params = array('catid' => $cat->id);
+    $DB->execute('UPDATE {question} SET category = :catid WHERE NOT EXISTS
+            (SELECT 1 FROM {question_categories} WHERE {question_categories}.id = {question}.category)', $params);
+}
+
+/**
+ * Rename old backup files to current backup files.
+ *
+ * When added the setting 'backup_shortname' (MDL-28657) the backup file names did not contain the id of the course.
+ * Further we fixed that behaviour by forcing the id to be always present in the file name (MDL-33812).
+ * This function will explore the backup directory and attempt to rename the previously created files to include
+ * the id in the name. Doing this will put them back in the process of deleting the excess backups for each course.
+ *
+ * This function manually recreates the file name, instead of using
+ * {@link backup_plan_dbops::get_default_backup_filename()}, use it carefully if you're using it outside of the
+ * usual upgrade process.
+ *
+ * @see backup_cron_automated_helper::remove_excess_backups()
+ * @link http://tracker.moodle.org/browse/MDL-35116
+ * @return void
+ * @since 2.4
+ */
+function upgrade_rename_old_backup_files_using_shortname() {
+    global $CFG;
+    $dir = get_config('backup', 'backup_auto_destination');
+    $useshortname = get_config('backup', 'backup_shortname');
+    if (empty($dir) || !is_dir($dir) || !is_writable($dir)) {
+        return;
+    }
+
+    require_once($CFG->libdir.'/textlib.class.php');
+    require_once($CFG->dirroot.'/backup/util/includes/backup_includes.php');
+    $backupword = str_replace(' ', '_', textlib::strtolower(get_string('backupfilename')));
+    $backupword = trim(clean_filename($backupword), '_');
+    $filename = $backupword . '-' . backup::FORMAT_MOODLE . '-' . backup::TYPE_1COURSE . '-';
+    $regex = '#^'.preg_quote($filename, '#').'.*\.mbz$#';
+    $thirtyapril = strtotime('30 April 2012 00:00');
+
+    // Reading the directory.
+    if (!$files = scandir($dir)) {
+        return;
+    }
+    foreach ($files as $file) {
+        // Skip directories and files which do not start with the common prefix.
+        // This avoids working on files which are not related to this issue.
+        if (!is_file($dir . '/' . $file) || !preg_match($regex, $file)) {
+            continue;
+        }
+
+        // Extract the information from the XML file.
+        try {
+            $bcinfo = backup_general_helper::get_backup_information_from_mbz($dir . '/' . $file);
+        } catch (backup_helper_exception $e) {
+            // Some error while retrieving the backup informations, skipping...
+            continue;
+        }
+
+        // Make sure this a course backup.
+        if ($bcinfo->format !== backup::FORMAT_MOODLE || $bcinfo->type !== backup::TYPE_1COURSE) {
+            continue;
+        }
+
+        // Skip the backups created before the short name option was initially introduced (MDL-28657).
+        // This was integrated on the 2nd of May 2012. Let's play safe with timezone and use the 30th of April.
+        if ($bcinfo->backup_date < $thirtyapril) {
+            continue;
+        }
+
+        // Let's check if the file name contains the ID where it is supposed to be, if it is the case then
+        // we will skip the file. Of course it could happen that the course ID is identical to the course short name
+        // even though really unlikely, but then renaming this file is not necessary. If the ID is not found in the
+        // file name then it was probably the short name which was used.
+        $idfilename = $filename . $bcinfo->original_course_id . '-';
+        $idregex = '#^'.preg_quote($idfilename, '#').'.*\.mbz$#';
+        if (preg_match($idregex, $file)) {
+            continue;
+        }
+
+        // Generating the file name manually. We do not use backup_plan_dbops::get_default_backup_filename() because
+        // it will query the database to get some course information, and the course could not exist any more.
+        $newname = $filename . $bcinfo->original_course_id . '-';
+        if ($useshortname) {
+            $shortname = str_replace(' ', '_', $bcinfo->original_course_shortname);
+            $shortname = textlib::strtolower(trim(clean_filename($shortname), '_'));
+            $newname .= $shortname . '-';
+        }
+
+        $backupdateformat = str_replace(' ', '_', get_string('backupnameformat', 'langconfig'));
+        $date = userdate($bcinfo->backup_date, $backupdateformat, 99, false);
+        $date = textlib::strtolower(trim(clean_filename($date), '_'));
+        $newname .= $date;
+
+        if (isset($bcinfo->root_settings['users']) && !$bcinfo->root_settings['users']) {
+            $newname .= '-nu';
+        } else if (isset($bcinfo->root_settings['anonymize']) && $bcinfo->root_settings['anonymize']) {
+            $newname .= '-an';
+        }
+        $newname .= '.mbz';
+
+        // Final check before attempting the renaming.
+        if ($newname == $file || file_exists($dir . '/' . $newname)) {
+            continue;
+        }
+        @rename($dir . '/' . $file, $dir . '/' . $newname);
     }
 }

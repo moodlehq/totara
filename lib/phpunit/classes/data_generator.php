@@ -36,6 +36,7 @@
 class phpunit_data_generator {
     protected $usercounter = 0;
     protected $categorycount = 0;
+    protected $cohortcount = 0;
     protected $coursecount = 0;
     protected $scalecount = 0;
     protected $groupcount = 0;
@@ -156,9 +157,11 @@ EOD;
         }
 
         if (!isset($record['username'])) {
-            $record['username'] = textlib::strtolower($record['firstname']).textlib::strtolower($record['lastname']);
+            $record['username'] = 'username'.$i;
+            $j = 2;
             while ($DB->record_exists('user', array('username'=>$record['username'], 'mnethostid'=>$record['mnethostid']))) {
-                $record['username'] = $record['username'].'_'.$i;
+                $record['username'] = 'username'.$i.'_'.$j;
+                $j++;
             }
         }
 
@@ -218,7 +221,7 @@ EOD;
      * @param array $options
      * @return stdClass course category record
      */
-    function create_category($record=null, array $options=null) {
+    public function create_category($record=null, array $options=null) {
         global $DB, $CFG;
         require_once("$CFG->dirroot/course/lib.php");
 
@@ -240,11 +243,11 @@ EOD;
         }
 
         if (!isset($record['descriptionformat'])) {
-            $record['description'] = FORMAT_MOODLE;
+            $record['descriptionformat'] = FORMAT_MOODLE;
         }
 
         if (!isset($record['parent'])) {
-            $record['descriptionformat'] = 0;
+            $record['parent'] = 0;
         }
 
         if (empty($record['parent'])) {
@@ -271,13 +274,57 @@ EOD;
     }
 
     /**
+     * Create test cohort.
+     * @param array|stdClass $record
+     * @param array $options
+     * @return stdClass cohort record
+     */
+    public function create_cohort($record=null, array $options=null) {
+        global $DB, $CFG;
+        require_once("$CFG->dirroot/cohort/lib.php");
+
+        $this->cohortcount++;
+        $i = $this->cohortcount;
+
+        $record = (array)$record;
+
+        if (!isset($record['contextid'])) {
+            $record['contextid'] = context_system::instance()->id;
+        }
+
+        if (!isset($record['name'])) {
+            $record['name'] = 'Cohort '.$i;
+        }
+
+        if (!isset($record['idnumber'])) {
+            $record['idnumber'] = '';
+        }
+
+        if (!isset($record['description'])) {
+            $record['description'] = "Test cohort $i\n$this->loremipsum";
+        }
+
+        if (!isset($record['descriptionformat'])) {
+            $record['descriptionformat'] = FORMAT_MOODLE;
+        }
+
+        if (!isset($record['component'])) {
+            $record['component'] = '';
+        }
+
+        $id = cohort_add_cohort((object)$record);
+
+        return $DB->get_record('cohort', array('id'=>$id), '*', MUST_EXIST);
+    }
+
+    /**
      * Create a test course
      * @param array|stdClass $record
      * @param array $options with keys:
      *      'createsections'=>bool precreate all sections
      * @return stdClass course record
      */
-    function create_course($record=null, array $options=null) {
+    public function create_course($record=null, array $options=null) {
         global $DB, $CFG;
         require_once("$CFG->dirroot/course/lib.php");
 
@@ -310,12 +357,12 @@ EOD;
             $record['numsections'] = 5;
         }
 
-        if (!isset($record['description'])) {
-            $record['description'] = "Test course $i\n$this->loremipsum";
+        if (!isset($record['summary'])) {
+            $record['summary'] = "Test course $i\n$this->loremipsum";
         }
 
-        if (!isset($record['descriptionformat'])) {
-            $record['description'] = FORMAT_MOODLE;
+        if (!isset($record['summaryformat'])) {
+            $record['summaryformat'] = FORMAT_MOODLE;
         }
 
         if (!isset($record['category'])) {
@@ -324,10 +371,11 @@ EOD;
 
         $course = create_course((object)$record);
         context_course::instance($course->id);
-
         if (!empty($options['createsections'])) {
-            for($i=1; $i<$record['numsections']; $i++) {
-                self::create_course_section(array('course'=>$course->id, 'section'=>$i));
+            if (isset($course->numsections)) {
+                course_create_sections_if_missing($course, range(0, $course->numsections));
+            } else {
+                course_create_sections_if_missing($course, 0);
             }
         }
 
@@ -336,7 +384,7 @@ EOD;
 
     /**
      * Create course section if does not exist yet
-     * @param mixed $record
+     * @param array|stdClass $record must contain 'course' and 'section' attributes
      * @param array|null $options
      * @return stdClass
      * @throws coding_exception
@@ -354,31 +402,8 @@ EOD;
             throw new coding_exception('section must be present in phpunit_util::create_course_section() $record');
         }
 
-        if (!isset($record['name'])) {
-            $record['name'] = '';
-        }
-
-        if (!isset($record['summary'])) {
-            $record['summary'] = '';
-        }
-
-        if (!isset($record['summaryformat'])) {
-            $record['summaryformat'] = FORMAT_MOODLE;
-        }
-
-        if ($section = $DB->get_record('course_sections', array('course'=>$record['course'], 'section'=>$record['section']))) {
-            return $section;
-        }
-
-        $section = new stdClass();
-        $section->course        = $record['course'];
-        $section->section       = $record['section'];
-        $section->name          = $record['name'];
-        $section->summary       = $record['summary'];
-        $section->summaryformat = $record['summaryformat'];
-        $id = $DB->insert_record('course_sections', $section);
-
-        return $DB->get_record('course_sections', array('id'=>$id));
+        course_create_sections_if_missing($record['course'], $record['section']);
+        return get_fast_modinfo($record['course'])->get_section_info($record['section']);
     }
 
     /**

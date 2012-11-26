@@ -29,9 +29,9 @@
         print_error("coursemisconf");
     }
 
-    require_login($course->id, false, $cm);
+    require_login($course, false, $cm);
 
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $context = context_module::instance($cm->id);
 
     require_capability('mod/choice:readresponses', $context);
 

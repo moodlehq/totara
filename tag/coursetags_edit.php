@@ -1,9 +1,27 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 
 /**
- * coursetags_edit.php
- * displays personal tags for a course with some editing facilites
- * @author j.beedell@open.ac.uk June07
+ * Displays personal tags for a course with some editing facilites
+ *
+ * @package    core_tag
+ * @category   tag
+ * @copyright  2007 j.beedell@open.ac.uk
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once('../config.php');
@@ -41,8 +59,8 @@ if ($courseid != SITEID) {
 }
 
 // Permissions
-$sitecontext = get_context_instance(CONTEXT_SYSTEM);
-require_login($course->id);
+$sitecontext = context_system::instance();
+require_login($course);
 $canedit = has_capability('moodle/tag:create', $sitecontext);
 
 // Language strings
@@ -67,7 +85,7 @@ if ($data = data_submitted()) {
 // The title and breadcrumb
 $title = get_string('edittitle', $tagslang);
 $coursefullname = format_string($course->fullname);
-$courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+$courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($course->id)));
 $PAGE->navbar->add($title);
 $PAGE->set_title($title);
 $PAGE->set_heading($course->fullname);
@@ -78,7 +96,7 @@ echo $OUTPUT->header();
     $title = get_string('edittitle', $tagslang);
     echo $OUTPUT->heading($title, 2, 'mdl-align');
 
-    $mytags = coursetag_print_cloud(coursetag_get_tags(0, $USER->id, 'default'), true);
+    $mytags = tag_print_cloud(coursetag_get_tags(0, $USER->id, 'default'), 150, true);
     $outstr = '
         <div class="coursetag_edit_centered">
             <div>
@@ -142,7 +160,7 @@ echo $OUTPUT->header();
                 <div class="coursetag_edit_centered">
                     <div class="coursetag_edit_row">
                         <div class="coursetag_edit_left">
-                            <label for="coursetag_sug_tag">$suggestedtagthisunit</label>
+                            <label class="accesshide" for="coursetag_sug_keyword">$suggestedtagthisunit</label>
                         </div>
                         <div class="coursetag_edit_right">
                             <div class="coursetag_form_input1">

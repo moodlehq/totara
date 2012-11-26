@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +13,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Edit form for grade scales
+ *
+ * @package   core_grades
+ * @copyright 2007 Petr Skoda
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
@@ -81,7 +88,7 @@ class edit_scale_form extends moodleform {
             if (empty($courseid)) {
                 $mform->hardFreeze('standard');
 
-            } else if (!has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
+            } else if (!has_capability('moodle/course:managescales', context_system::instance())) {
                 //if they dont have managescales at system level the shouldnt be allowed to make scales standard (or not standard)
                 $mform->hardFreeze('standard');
 
@@ -95,7 +102,7 @@ class edit_scale_form extends moodleform {
 
         } else {
             $mform->removeElement('used');
-            if (empty($courseid) or !has_capability('moodle/course:managescales', get_context_instance(CONTEXT_SYSTEM))) {
+            if (empty($courseid) or !has_capability('moodle/course:managescales', context_system::instance())) {
                 $mform->hardFreeze('standard');
             }
         }
@@ -133,9 +140,8 @@ class edit_scale_form extends moodleform {
             } else {
                 $thescale = implode(',',$scalearray);
 
-                $textlib = textlib_get_instance();
                 //this check strips out whitespace from the scale we're validating but not from those already in the DB
-                $count = $DB->count_records_select('scale', "courseid=:courseid AND ".$DB->sql_compare_text('scale', $textlib->strlen($thescale)).'=:scale',
+                $count = $DB->count_records_select('scale', "courseid=:courseid AND ".$DB->sql_compare_text('scale', textlib::strlen($thescale)).'=:scale',
                     array('courseid'=>$courseid, 'scale'=>$thescale));
 
                 if ($count) {

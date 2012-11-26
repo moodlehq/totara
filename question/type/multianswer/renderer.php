@@ -284,7 +284,8 @@ class qtype_multianswer_multichoice_inline_renderer
                 $response, array('' => ''), $inputattributes);
 
         $order = $subq->get_order($qa);
-        $rightanswer = $subq->answers[$order[reset($subq->get_correct_response())]];
+        $correctresponses = $subq->get_correct_response();
+        $rightanswer = $subq->answers[$order[reset($correctresponses)]];
         if (!$matchinganswer) {
             $matchinganswer = new question_answer(0, '', null, '', FORMAT_HTML);
         }

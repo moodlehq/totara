@@ -97,12 +97,12 @@ if ($editurl = $userauth->edit_profile_url()) {
 }
 
 if ($course->id == SITEID) {
-    $coursecontext = get_context_instance(CONTEXT_SYSTEM);   // SYSTEM context
+    $coursecontext = context_system::instance();   // SYSTEM context
 } else {
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);   // Course context
+    $coursecontext = context_course::instance($course->id);   // Course context
 }
-$systemcontext   = get_context_instance(CONTEXT_SYSTEM);
-$personalcontext = get_context_instance(CONTEXT_USER, $user->id);
+$systemcontext   = context_system::instance();
+$personalcontext = context_user::instance($user->id);
 
 // check access control
 if ($user->id == $USER->id) {
@@ -153,7 +153,20 @@ $editoroptions = array(
 );
 
 $user = file_prepare_standard_editor($user, 'description', $editoroptions, $personalcontext, 'user', 'profile', 0);
-$userform = new user_edit_form(null, array('editoroptions'=>$editoroptions, 'userid' => $user->id));
+// Prepare filemanager draft area.
+$draftitemid = 0;
+$filemanagercontext = $editoroptions['context'];
+$filemanageroptions = array('maxbytes'       => $CFG->maxbytes,
+                             'subdirs'        => 0,
+                             'maxfiles'       => 1,
+                             'accepted_types' => 'web_image');
+file_prepare_draft_area($draftitemid, $filemanagercontext->id, 'user', 'newicon', 0, $filemanageroptions);
+$user->imagefile = $draftitemid;
+//create form
+$userform = new user_edit_form(null, array(
+    'editoroptions' => $editoroptions,
+    'filemanageroptions' => $filemanageroptions,
+    'userid' => $user->id));
 if (empty($user->country)) {
     // MDL-16308 - we must unset the value here so $CFG->country can be used as default one
     unset($user->country);
@@ -212,7 +225,7 @@ if ($usernew = $userform->get_data()) {
 
     //update user picture
     if (!empty($CFG->gdversion) and empty($CFG->disableuserimages)) {
-        useredit_update_picture($usernew, $userform);
+        useredit_update_picture($usernew, $userform, $filemanageroptions);
     }
 
     // update mail bounces
@@ -231,7 +244,7 @@ if ($usernew = $userform->get_data()) {
 
         $a = new stdClass();
         $a->url = $CFG->wwwroot . '/user/emailupdate.php?key=' . $usernew->preference_newemailkey . '&id=' . $user->id;
-        $a->site = format_string($SITE->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, SITEID)));
+        $a->site = format_string($SITE->fullname, true, array('context' => context_course::instance(SITEID)));
         $a->fullname = fullname($user, true);
 
         $emailupdatemessage = get_string('emailupdatemessage', 'auth', $a);

@@ -30,7 +30,7 @@ class mod_glossary_mod_form extends moodleform_mod {
         $mform->addRule('entbypage', null, 'required', null, 'client');
         $mform->addRule('entbypage', null, 'numeric', null, 'client');
 
-        if (has_capability('mod/glossary:manageentries', get_context_instance(CONTEXT_SYSTEM))) {
+        if (has_capability('mod/glossary:manageentries', context_system::instance())) {
             $mform->addElement('checkbox', 'globalglossary', get_string('isglobal', 'glossary'));
             $mform->addHelpButton('globalglossary', 'isglobal', 'glossary');
 
@@ -78,6 +78,12 @@ class mod_glossary_mod_form extends moodleform_mod {
         $mform->addElement('select', 'displayformat', get_string('displayformat', 'glossary'), $formats);
         $mform->setDefault('displayformat', 'dictionary');
         $mform->addHelpButton('displayformat', 'displayformat', 'glossary');
+
+        $displayformats['default'] = get_string('displayformatdefault', 'glossary');
+        $displayformats = array_merge($displayformats, $formats);
+        $mform->addElement('select', 'approvaldisplayformat', get_string('approvaldisplayformat', 'glossary'), $displayformats);
+        $mform->setDefault('approvaldisplayformat', 'default');
+        $mform->addHelpButton('approvaldisplayformat', 'approvaldisplayformat', 'glossary');
 
         $mform->addElement('selectyesno', 'showspecial', get_string('showspecial', 'glossary'));
         $mform->setDefault('showspecial', 1);

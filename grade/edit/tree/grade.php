@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +13,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Edit a user's grade for a particular activity
+ *
+ * @package   core_grades
+ * @copyright 2007 Petr Skoda
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once '../../../config.php';
 require_once $CFG->dirroot.'/grade/lib.php';
@@ -43,7 +50,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
 
 $PAGE->set_pagelayout('incourse');
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $course->id);
+$context = context_course::instance($course->id);
 if (!has_capability('moodle/grade:manage', $context)) {
     require_capability('moodle/grade:edit', $context);
 }
@@ -153,6 +160,7 @@ if ($grade = $DB->get_record('grade_grades', array('itemid' => $grade_item->id, 
 
     $mform->set_data($grade);
 } else {
+    $grade = new stdClass();
     $grade->feedback = array('text'=>'', 'format'=>FORMAT_HTML);
     $mform->set_data(array('itemid'=>$itemid, 'userid'=>$userid, 'locked'=>$grade_item->locked, 'locktime'=>$grade_item->locktime));
 }

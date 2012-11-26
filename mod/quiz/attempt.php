@@ -17,19 +17,18 @@
 /**
  * This script displays a particular page of a quiz attempt that is in progress.
  *
- * @package    mod
- * @subpackage quiz
- * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   mod_quiz
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once(dirname(__FILE__) . '/../../config.php');
 require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 
-// Look for old-style URLs, such as may be in the logs, and redirect them to startattemtp.php
-if ($id = optional_param('id', 0, PARAM_INTEGER)) {
+// Look for old-style URLs, such as may be in the logs, and redirect them to startattemtp.php.
+if ($id = optional_param('id', 0, PARAM_INT)) {
     redirect($CFG->wwwroot . '/mod/quiz/startattempt.php?cmid=' . $id . '&sesskey=' . sesskey());
-} else if ($qid = optional_param('q', 0, PARAM_INTEGER)) {
+} else if ($qid = optional_param('q', 0, PARAM_INT)) {
     if (!$cm = get_coursemodule_from_instance('quiz', $qid)) {
         print_error('invalidquizid', 'quiz');
     }
@@ -57,7 +56,7 @@ if ($attemptobj->get_userid() != $USER->id) {
     }
 }
 
-// Check capabilities and block settings
+// Check capabilities and block settings.
 if (!$attemptobj->is_preview_user()) {
     $attemptobj->require_capability('mod/quiz:attempt');
     if (empty($attemptobj->get_quiz()->showblocks)) {
@@ -71,12 +70,15 @@ if (!$attemptobj->is_preview_user()) {
 // If the attempt is already closed, send them to the review page.
 if ($attemptobj->is_finished()) {
     redirect($attemptobj->review_url(null, $page));
+} else if ($attemptobj->get_state() == quiz_attempt::OVERDUE) {
+    redirect($attemptobj->summary_url());
 }
 
 // Check the access rules.
 $accessmanager = $attemptobj->get_access_manager(time());
-$messages = $accessmanager->prevent_access();
+$accessmanager->setup_attempt_page($PAGE);
 $output = $PAGE->get_renderer('mod_quiz');
+$messages = $accessmanager->prevent_access();
 if (!$attemptobj->is_preview_user() && $messages) {
     print_error('attempterror', 'quiz', $attemptobj->view_url(),
             $output->access_messages($messages));
@@ -97,20 +99,28 @@ if (empty($slots)) {
     throw new moodle_quiz_exception($attemptobj->get_quizobj(), 'noquestionsfound');
 }
 
+// Update attempt page.
+if ($attemptobj->get_currentpage() != $page) {
+    if ($attemptobj->get_navigation_method() == QUIZ_NAVMETHOD_SEQ && $attemptobj->get_currentpage() > $page) {
+        // Prevent out of sequence access.
+        redirect($attemptobj->start_attempt_url(null, $attemptobj->get_currentpage()));
+    }
+    $DB->set_field('quiz_attempts', 'currentpage', $page, array('id' => $attemptid));
+}
+
 // Initialise the JavaScript.
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->requires->js_init_call('M.mod_quiz.init_attempt_form', null, false, quiz_get_js_module());
 
-// Arrange for the navigation to be displayed.
+// Arrange for the navigation to be displayed in the first region on the page.
 $navbc = $attemptobj->get_navigation_panel($output, 'quiz_attempt_nav_panel', $page);
-$firstregion = reset($PAGE->blocks->get_regions());
-$PAGE->blocks->add_fake_block($navbc, $firstregion);
+$regions = $PAGE->blocks->get_regions();
+$PAGE->blocks->add_fake_block($navbc, reset($regions));
 
 $title = get_string('attempt', 'quiz', $attemptobj->get_attempt_number());
 $headtags = $attemptobj->get_html_head_contributions($page);
 $PAGE->set_title(format_string($attemptobj->get_quiz_name()));
 $PAGE->set_heading($attemptobj->get_course()->fullname);
-$accessmanager->setup_attempt_page($PAGE);
 
 if ($attemptobj->is_last_page($page)) {
     $nextpage = -1;
@@ -118,5 +128,4 @@ if ($attemptobj->is_last_page($page)) {
     $nextpage = $page + 1;
 }
 
-$accessmanager->show_attempt_timer_if_needed($attemptobj->get_attempt(), time(), $output);
 echo $output->attempt_page($attemptobj, $page, $accessmanager, $messages, $slots, $id, $nextpage);

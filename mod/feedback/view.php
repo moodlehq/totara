@@ -41,9 +41,7 @@ if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
-if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
-        print_error('badcontext');
-}
+$context = context_module::instance($cm->id);
 
 $feedback_complete_cap = false;
 
@@ -76,9 +74,9 @@ if ($course->id == SITEID AND !has_capability('mod/feedback:edititems', $context
 
 if ($feedback->anonymous != FEEDBACK_ANONYMOUS_YES) {
     if ($course->id == SITEID) {
-        require_login($course->id, true);
+        require_login($course, true);
     } else {
-        require_login($course->id, true, $cm);
+        require_login($course, true, $cm);
     }
 } else {
     if ($course->id == SITEID) {

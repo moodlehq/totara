@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,12 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Cohort related management functions, this file needs to be included manually.
  *
- * @package    core
- * @subpackage cohort
+ * @package    core_cohort
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -49,9 +46,9 @@ if ($id) {
     if ($usetags) {
         $cohort->otags = array_keys(tag_get_tags_array('cohort', $cohort->id, 'official'));
     }
-    $context = get_context_instance_by_id($cohort->contextid, MUST_EXIST);
+    $context = context::instance_by_id($cohort->contextid, MUST_EXIST);
 } else {
-    $context = get_context_instance_by_id($contextid, MUST_EXIST);
+    $context = context::instance_by_id($contextid, MUST_EXIST);
     if ($context->contextlevel != CONTEXT_COURSECAT and $context->contextlevel != CONTEXT_SYSTEM) {
         print_error('invalidcontext');
     }
@@ -68,7 +65,7 @@ require_capability('moodle/cohort:manage', $context);
 $returnurl = new moodle_url('/cohort/index.php', array('contextid'=>$context->id));
 
 if (!empty($cohort->component)) {
-    // we can not manually edit cohorts that were created by external systems, sorry
+    // We can not manually edit cohorts that were created by external systems, sorry.
     redirect($returnurl);
 }
 
@@ -106,10 +103,11 @@ if ($delete and $cohort->id) {
 
 $editoroptions = array('maxfiles'=>0, 'context'=>$context);
 if ($cohort->id) {
-    // edit existing
+    // Edit existing.
+    $cohort = file_prepare_standard_editor($cohort, 'description', $editoroptions, $context);
     $strheading = get_string('editcohort', 'cohort');
 } else {
-    // add new
+    $cohort = file_prepare_standard_editor($cohort, 'description', $editoroptions, $context);
     $strheading = get_string('addcohort', 'cohort');
 }
 
@@ -164,7 +162,8 @@ if ($editform->is_cancelled()) {
         }
         redirect($url);
     }
-    // use new context id, it could have been changed
+
+    // Use new context id, it could have been changed.
     redirect(new moodle_url('/cohort/index.php', array('contextid'=>$data->contextid)));
 }
 

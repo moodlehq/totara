@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,11 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Book module language strings
+ * exportimscp booktool language strings
  *
- * @package    booktool
- * @subpackage exportimscp
- * @copyright  2011 Petr Skoda  {@link http://skodak.org}
+ * @package    booktool_exportimscp
+ * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,5 +26,5 @@ defined('MOODLE_INTERNAL') || die;
 
 $string['exportimscp:export'] = 'Export book as IMS content package';
 $string['generateimscp'] = 'Generate IMS CP';
-$string['nochapters'] = 'No book chapters found, can not export to IMS CP.';
+$string['nochapters'] = 'No book chapters found, so unable to export to IMS CP.';
 $string['pluginname'] = 'Book IMS CP export';

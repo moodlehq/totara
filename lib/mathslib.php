@@ -29,7 +29,7 @@ require_once $CFG->dirroot.'/lib/evalmath/evalmath.class.php';
 
 /**
  * This class abstracts evaluation of spreadsheet formulas.
- * See unit tests in lib/simpletest/testmathslib.php for sample usage.
+ * See unit tests in lib/tests/mathslib_test.php for sample usage.
  *
  * @package moodlecore
  * @copyright Petr Skoda (skodak)
@@ -50,7 +50,7 @@ class calc_formula {
      */
     function calc_formula($formula, $params=false) {
         $this->_em = new EvalMath();
-        $this->_em->suppress_errors = !debugging('', DEBUG_DEVELOPER);
+        $this->_em->suppress_errors = true; // no PHP errors!
         if (strpos($formula, '=') !== 0) {
             $this->_error = "missing leading '='";
             return;
@@ -115,7 +115,7 @@ class calc_formula {
      * @param string $formula
      * @return string localised formula
      */
-    function localize($formula) {
+    public static function localize($formula) {
         $formula = str_replace('.', '$', $formula); // temp placeholder
         $formula = str_replace(',', get_string('listsep', 'langconfig'), $formula);
         $formula = str_replace('$', get_string('decsep', 'langconfig'), $formula);
@@ -127,7 +127,7 @@ class calc_formula {
      * @param string $formula localised formula
      * @return string
      */
-    function unlocalize($formula) {
+    public static function unlocalize($formula) {
         $formula = str_replace(get_string('decsep', 'langconfig'), '$', $formula);
         $formula = str_replace(get_string('listsep', 'langconfig'), ',', $formula);
         $formula = str_replace('$', '.', $formula); // temp placeholder

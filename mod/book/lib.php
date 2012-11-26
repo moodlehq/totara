@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Book module core interaction API
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -31,12 +30,15 @@ defined('MOODLE_INTERNAL') || die;
  */
 function book_get_numbering_types() {
     global $CFG; // required for the include
+
     require_once(dirname(__FILE__).'/locallib.php');
 
-    return array (BOOK_NUM_NONE       => get_string('numbering0', 'mod_book'),
-                  BOOK_NUM_NUMBERS    => get_string('numbering1', 'mod_book'),
-                  BOOK_NUM_BULLETS    => get_string('numbering2', 'mod_book'),
-                  BOOK_NUM_INDENTED   => get_string('numbering3', 'mod_book') );
+    return array (
+        BOOK_NUM_NONE       => get_string('numbering0', 'mod_book'),
+        BOOK_NUM_NUMBERS    => get_string('numbering1', 'mod_book'),
+        BOOK_NUM_BULLETS    => get_string('numbering2', 'mod_book'),
+        BOOK_NUM_INDENTED   => get_string('numbering3', 'mod_book')
+    );
 }
 
 /**
@@ -92,10 +94,7 @@ function book_update_instance($data, $mform) {
 }
 
 /**
- *
- * Given an ID of an instance of this module,
- * this function will permanently delete the instance
- * and any data that depends on it.
+ * Delete book instance by activity id
  *
  * @param int $id
  * @return bool success
@@ -137,17 +136,17 @@ function book_user_outline($course, $user, $mod, $book) {
 
         return $result;
     }
-    return NULL;
+    return null;
 }
 
 /**
  * Print a detailed representation of what a  user has done with
  * a given particular instance of this module, for user activity reports.
  *
- * @param $course
- * @param $user
- * @param $mod
- * @param $book
+ * @param stdClass $course
+ * @param stdClass $user
+ * @param stdClass $mod
+ * @param stdClass $book
  * @return bool
  */
 function book_user_complete($course, $user, $mod, $book) {
@@ -157,14 +156,23 @@ function book_user_complete($course, $user, $mod, $book) {
 /**
  * Given a course and a time, this module should find recent activity
  * that has occurred in book activities and print it out.
- * Return true if there was output, or false is there was none.
- * @param $course
- * @param $isteacher
- * @param $timestart
- * @return bool
+ *
+ * @param stdClass $course
+ * @param bool $viewfullnames
+ * @param int $timestart
+ * @return bool true if there was output, or false is there was none
  */
-function book_print_recent_activity($course, $isteacher, $timestart) {
+function book_print_recent_activity($course, $viewfullnames, $timestart) {
     return false;  //  True if anything was printed, otherwise false
+}
+
+/**
+ * This function is used by the reset_course_userdata function in moodlelib.
+ * @param $data the data submitted from the reset course.
+ * @return array status array
+ */
+function book_reset_userdata($data) {
+    return array();
 }
 
 /**
@@ -179,20 +187,11 @@ function book_cron () {
 /**
  * No grading in book.
  *
- * @param $bookid
+ * @param int $bookid
  * @return null
  */
 function book_grades($bookid) {
     return null;
-}
-
-function book_get_participants($bookid) {
-    //Must return an array of user records (all data) who are participants
-    //for a given instance of book. Must include every user involved
-    //in the instance, independent of his role (student, teacher, admin...)
-    //See other modules as example.
-
-    return false;
 }
 
 /**
@@ -201,11 +200,11 @@ function book_get_participants($bookid) {
  * modified if necessary. See book, glossary or journal modules
  * as reference.
  *
- * @param $bookid int
- * @param $scaleid int
+ * @param int $bookid
+ * @param int $scaleid
  * @return boolean True if the scale is used by any journal
  */
-function book_scale_used($bookid,$scaleid) {
+function book_scale_used($bookid, $scaleid) {
     return false;
 }
 
@@ -214,8 +213,8 @@ function book_scale_used($bookid,$scaleid) {
  *
  * This is used to find out if scale used anywhere
  *
- * @param $scaleid int
- * @return boolean True if the scale is used by any journal
+ * @param int $scaleid
+ * @return bool true if the scale is used by any book
  */
 function book_scale_used_anywhere($scaleid) {
     return false;
@@ -231,7 +230,7 @@ function book_get_view_actions() {
     $return = array('view', 'view all');
 
     $plugins = get_plugin_list('booktool');
-    foreach($plugins as $plugin=>$dir) {
+    foreach ($plugins as $plugin => $dir) {
         if (file_exists("$dir/lib.php")) {
             require_once("$dir/lib.php");
         }
@@ -256,7 +255,7 @@ function book_get_post_actions() {
     $return = array('update');
 
     $plugins = get_plugin_list('booktool');
-    foreach($plugins as $plugin=>$dir) {
+    foreach ($plugins as $plugin => $dir) {
         if (file_exists("$dir/lib.php")) {
             require_once("$dir/lib.php");
         }
@@ -288,6 +287,7 @@ function book_supports($feature) {
         case FEATURE_GRADE_HAS_GRADE:         return false;
         case FEATURE_GRADE_OUTCOMES:          return false;
         case FEATURE_BACKUP_MOODLE2:          return true;
+        case FEATURE_SHOW_DESCRIPTION:        return true;
 
         default: return null;
     }
@@ -301,18 +301,10 @@ function book_supports($feature) {
  * @return void
  */
 function book_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $booknode) {
-    global $USER, $PAGE, $CFG, $DB, $OUTPUT;
-
-    if ($PAGE->cm->modname !== 'book') {
-        return;
-    }
-
-    if (empty($PAGE->cm->context)) {
-        $PAGE->cm->context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->instance);
-    }
+    global $USER, $PAGE;
 
     $plugins = get_plugin_list('booktool');
-    foreach($plugins as $plugin=>$dir) {
+    foreach ($plugins as $plugin => $dir) {
         if (file_exists("$dir/lib.php")) {
             require_once("$dir/lib.php");
         }
@@ -352,7 +344,7 @@ function book_get_file_areas($course, $cm, $context) {
 }
 
 /**
- * File browsing support for book module ontent area.
+ * File browsing support for book module chapter area.
  * @param object $browser
  * @param object $areas
  * @param object $course
@@ -377,10 +369,10 @@ function book_get_file_info($browser, $areas, $course, $cm, $context, $filearea,
         return null;
     }
 
-    require_once("$CFG->dirroot/mod/book/locallib.php");
+    require_once(dirname(__FILE__).'/locallib.php');
 
     if (is_null($itemid)) {
-        return new book_file_info($browser, $course, $cm, $context, $areas, $filearea, $itemid);
+        return new book_file_info($browser, $course, $cm, $context, $areas, $filearea);
     }
 
     $fs = get_file_storage();
@@ -403,15 +395,16 @@ function book_get_file_info($browser, $areas, $course, $cm, $context, $filearea,
 /**
  * Serves the book attachments. Implements needed access control ;-)
  *
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @param stdClass $course course object
+ * @param cm_info $cm course module object
+ * @param context $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - just send the file
  */
-function book_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+function book_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $DB;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -450,7 +443,7 @@ function book_pluginfile($course, $cm, $context, $filearea, $args, $forcedownloa
     }
 
     // finally send the file
-    send_stored_file($file, 360, 0, false);
+    send_stored_file($file, 360, 0, $forcedownload, $options);
 }
 
 /**

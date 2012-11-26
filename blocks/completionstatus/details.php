@@ -46,6 +46,8 @@ if ($userid) {
 
 
 // Check permissions
+require_login($course);
+
 if (!completion_can_view_data($user->id, $course->id)) {
     print_error('cannotviewreport');
 }

@@ -40,9 +40,9 @@ if ($mode !== 'all') {
     $url->param('mode', $mode);
 }
 $PAGE->set_url($url);
-require_login($course->id, false, $cm);
+require_login($course, false, $cm);
 
-require_capability('mod/assignment:grade', get_context_instance(CONTEXT_MODULE, $cm->id));
+require_capability('mod/assignment:grade', context_module::instance($cm->id));
 
 $PAGE->requires->js('/mod/assignment/assignment.js');
 

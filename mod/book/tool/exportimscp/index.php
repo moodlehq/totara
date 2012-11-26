@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,10 +17,9 @@
 /**
  * Book IMSCP export plugin
  *
- * @package    booktool
- * @subpackage exportimscp
+ * @package    booktool_exportimscp
  * @copyright  2001-3001 Antonio Vicent          {@link http://ludens.es}
- * @copyright  2001-3001 Eloy Lafuente (stronk7) {@link http://contiento.com}
+ * @copyright  2001-3001 Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @copyright  2011 Petr Skoda                   {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,16 +40,12 @@ $PAGE->set_url('/mod/book/tool/exportimscp/index.php', array('id'=>$id));
 
 require_login($course, false, $cm);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/book:read', $context);
 require_capability('booktool/exportimscp:export', $context);
 
-$strbooks = get_string('modulenameplural', 'book');
-$strbook  = get_string('modulename', 'book');
-$strtop  = get_string('top', 'book');
-
-add_to_log($course->id, 'book', 'generateimscp', 'tool/generateimscp/index.php?id='.$cm->id, $book->id, $cm->id);
+add_to_log($course->id, 'book', 'exportimscp', 'tool/exportimscp/index.php?id='.$cm->id, $book->id, $cm->id);
 
 $file = booktool_exportimscp_build_package($book, $context);
 
-send_stored_file($file, 10, 0, true, clean_filename($book->name).'.zip');
+send_stored_file($file, 10, 0, true, array('filename' => clean_filename($book->name).'.zip'));

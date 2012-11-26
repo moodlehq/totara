@@ -55,7 +55,7 @@ class mod_wiki_renderer extends plugin_renderer_base {
     public function search_result($records, $subwiki) {
         global $CFG, $PAGE;
         $table = new html_table();
-        $context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+        $context = context_module::instance($PAGE->cm->id);
         $strsearchresults = get_string('searchresult', 'wiki');
         $totalcount = count($records);
         $html = $this->output->heading("$strsearchresults $totalcount");
@@ -243,7 +243,7 @@ class mod_wiki_renderer extends plugin_renderer_base {
         global $CFG;
         $tabs = array();
         $baseurl = $CFG->wwwroot . '/mod/wiki/';
-        $context = get_context_instance(CONTEXT_MODULE, $this->page->cm->id);
+        $context = context_module::instance($this->page->cm->id);
 
         $pageid = null;
         if (!empty($page)) {
@@ -315,7 +315,7 @@ class mod_wiki_renderer extends plugin_renderer_base {
         }
 
         $cm = get_coursemodule_from_instance('wiki', $wiki->id);
-        $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $context = context_module::instance($cm->id);
         // @TODO: A plenty of duplicated code below this lines.
         // Create private functions.
         switch (groups_get_activity_groupmode($cm)) {
@@ -529,14 +529,13 @@ class mod_wiki_renderer extends plugin_renderer_base {
         }
         $result = '<ul>';
         foreach ($dir['subdirs'] as $subdir) {
-            $image = $this->output->pix_icon("f/folder", $subdir['dirname'], 'moodle', array('class'=>'icon'));
+            $image = $this->output->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class'=>'icon'));
             $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.s($subdir['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir).'</li>';
         }
         foreach ($dir['files'] as $file) {
             $url = file_encode_url("$CFG->wwwroot/pluginfile.php", '/'.$tree->context->id.'/mod_wiki/attachments/' . $tree->subwiki->id . '/'. $file->get_filepath() . $file->get_filename(), true);
             $filename = $file->get_filename();
-            $icon = mimeinfo("icon", $filename);
-            $image = $this->output->pix_icon("f/$icon", $filename, 'moodle', array('class'=>'icon'));
+            $image = $this->output->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
             $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.html_writer::link($url, $filename).'</div></li>';
         }
         $result .= '</ul>';

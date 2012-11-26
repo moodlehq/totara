@@ -27,6 +27,7 @@ M.mod_quiz = M.mod_quiz || {};
 M.mod_quiz.init_attempt_form = function(Y) {
     M.core_question_engine.init_form(Y, '#responseform');
     Y.on('submit', M.mod_quiz.timer.stop, '#responseform');
+    M.core_formchangechecker.init({formid: 'responseform'});
 };
 
 M.mod_quiz.init_review_form = function(Y) {
@@ -96,7 +97,12 @@ M.mod_quiz.timer = {
             Y.one('#quiz-time-left').setContent(M.str.quiz.timesup);
             var input = Y.one('input[name=timeup]');
             input.set('value', 1);
-            input.ancestor('form').submit();
+            var form = input.ancestor('form');
+            if (form.one('input[name=finishattempt]')) {
+                form.one('input[name=finishattempt]').set('value', 0);
+            }
+            M.core_formchangechecker.set_form_submitted();
+            form.submit();
             return;
         }
 

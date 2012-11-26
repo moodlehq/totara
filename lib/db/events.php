@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,13 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of core event handler
- * and description of all events throws from core.
+ * Definition of core event handler and description of all events throws from core.
  *
- * @package    core
- * @subpackage event
- * @copyright  2007 onwards Martin Dougiamas  http://dougiamas.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * The handlers defined on this file are processed and registered into
+ * the Moodle DB after any install or upgrade operation. All plugins
+ * support this.
+ *
+ * For more information, take a look to the documentation available:
+ *     - Events API: {@link http://docs.moodle.org/dev/Events_API}
+ *     - Upgrade API: {@link http://docs.moodle.org/dev/Upgrade_API}
+ *
+ * @package   core
+ * @category  event
+ * @copyright 2007 onwards Martin Dougiamas  http://dougiamas.com
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

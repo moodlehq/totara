@@ -165,7 +165,7 @@ abstract class backup_controller_dbops extends backup_dbops {
 
         $targettablename = 'backup_ids_temp';
         $table = new xmldb_table($targettablename);
-        $dbman->drop_temp_table($table); // And drop it
+        $dbman->drop_table($table); // And drop it
     }
 
     /**
@@ -406,6 +406,27 @@ abstract class backup_controller_dbops extends backup_dbops {
                    AND b.itemname = 'userfinal'
                    AND u.mnethostid != ?";
         $count = $DB->count_records_sql($sql, array($backupid, $CFG->mnet_localhost_id));
+        return (int)(bool)$count;
+    }
+
+    /**
+     * Given the backupid, detect if the backup contains references to external contents
+     *
+     * @copyright 2012 Dongsheng Cai {@link http://dongsheng.org}
+     * @return int
+     */
+    public static function backup_includes_file_references($backupid) {
+        global $CFG, $DB;
+
+        $sql = "SELECT count(r.repositoryid)
+                  FROM {files} f
+                  LEFT JOIN {files_reference} r
+                       ON r.id = f.referencefileid
+                  JOIN {backup_ids_temp} bi
+                       ON f.id = bi.itemid
+                 WHERE bi.backupid = ?
+                       AND bi.itemname = 'filefinal'";
+        $count = $DB->count_records_sql($sql, array($backupid));
         return (int)(bool)$count;
     }
 

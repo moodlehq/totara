@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,6 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * This file receives ajax callbacks for the grader report
+ *
+ * @package   gradereport_grader
+ * @copyright 2008 Nicolas Connault
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
@@ -27,13 +33,13 @@ $userid = optional_param('userid', false, PARAM_INT);
 $itemid = optional_param('itemid', false, PARAM_INT);
 $type = optional_param('type', false, PARAM_ALPHA);
 $action = optional_param('action', false, PARAM_ALPHA);
-$newvalue = optional_param('newvalue', false, PARAM_MULTILANG);
+$newvalue = optional_param('newvalue', false, PARAM_TEXT);
 
 /// basic access checks
 if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
-$context = get_context_instance(CONTEXT_COURSE, $course->id);
+$context = context_course::instance($course->id);
 require_login($course);
 
 switch ($action) {

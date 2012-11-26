@@ -32,7 +32,7 @@ require_once($CFG->libdir . '/simplepie/moodle_simplepie.php');
 require_once($CFG->dirroot.'/tag/lib.php');
 
 require_login();
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 require_capability('moodle/blog:manageexternal', $context);
 
 // TODO redirect if $CFG->useexternalblogs is off, $CFG->maxexternalblogsperuser == 0, or if user doesn't have caps to manage external blogs
@@ -80,7 +80,7 @@ if ($externalblogform->is_cancelled()){
             $newexternal->userid = $USER->id;
             $newexternal->url = $data->url;
             $newexternal->filtertags = $data->filtertags;
-            $newexternal->timemodified = mktime();
+            $newexternal->timemodified = time();
 
             $newexternal->id = $DB->insert_record('blog_external', $newexternal);
             blog_sync_external_entries($newexternal);
@@ -99,7 +99,7 @@ if ($externalblogform->is_cancelled()){
                 $external->userid = $USER->id;
                 $external->url = $data->url;
                 $external->filtertags = $data->filtertags;
-                $external->timemodified = mktime();
+                $external->timemodified = time();
 
                 $DB->update_record('blog_external', $external);
                 tag_set('blog_external', $external->id, explode(',', $data->autotags));

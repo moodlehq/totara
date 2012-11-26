@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,27 +17,24 @@
 /**
  * HTML import lib
  *
- * @package    booktool
- * @subpackage importhtml
- * @copyright  2011 Petr Skoda  {@link http://skodak.org}
+ * @package    booktool_importhtml
+ * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-function booktool_importhtml_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $booknode) {
-     global $USER, $PAGE, $CFG, $DB, $OUTPUT;
+/**
+ * Adds module specific settings to the settings block
+ *
+ * @param settings_navigation $settings The settings navigation object
+ * @param navigation_node $node The node to add module settings to
+ */
+function booktool_importhtml_extend_settings_navigation(settings_navigation $settings, navigation_node $node) {
+    global $PAGE;
 
-     if ($PAGE->cm->modname !== 'book') {
-         return;
-     }
-
-     if (empty($PAGE->cm->context)) {
-         $PAGE->cm->context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->instance);
-     }
-
-     if (has_capability('booktool/importhtml:import', $PAGE->cm->context)) {
-         $url = new moodle_url('/mod/book/tool/importhtml/index.php', array('id'=>$PAGE->cm->id));
-         $booknode->add(get_string('import', 'booktool_importhtml'), $url, navigation_node::TYPE_SETTING, null, null, null);
-     }
+    if (has_capability('booktool/importhtml:import', $PAGE->cm->context)) {
+        $url = new moodle_url('/mod/book/tool/importhtml/index.php', array('id'=>$PAGE->cm->id));
+        $node->add(get_string('import', 'booktool_importhtml'), $url, navigation_node::TYPE_SETTING, null, null, null);
+    }
 }

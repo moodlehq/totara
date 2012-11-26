@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
 /**
  * Provides support for the conversion of moodle1 backup to the moodle2 format
  *
- * @package    mod
- * @subpackage book
+ * @package    mod_book
  * @copyright  2011 Tõnis Tartes <t6nis20@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -131,14 +130,14 @@ class moodle1_mod_book_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed when the parser reaches the <OPTIONS> opening element
+     * This is executed when the parser reaches the <CHAPTERS> opening element
      */
     public function on_book_chapters_start() {
         $this->xmlwriter->begin_tag('chapters');
     }
 
     /**
-     * This is executed when the parser reaches the closing </OPTIONS> element
+     * This is executed when the parser reaches the closing </CHAPTERS> element
      */
     public function on_book_chapters_end() {
         $this->xmlwriter->end_tag('chapters');

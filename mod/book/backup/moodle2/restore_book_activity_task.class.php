@@ -15,11 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Define all the restore tasks
+ * Description of book restore task
  *
- * @package    mod
- * @subpackage book
- * @copyright  2010 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,10 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/book/backup/moodle2/restore_book_stepslib.php'); // Because it exists (must)
 
-/**
- * book restore task that provides all the settings and steps to perform one
- * complete restore of the activity
- */
 class restore_book_activity_task extends restore_activity_task {
 
     /**
@@ -87,6 +82,10 @@ class restore_book_activity_task extends restore_activity_task {
         $rules[] = new restore_decode_rule('BOOKVIEWBYB', '/mod/book/view.php?b=$1', 'book');
         $rules[] = new restore_decode_rule('BOOKVIEWBYBCH', '/mod/book/view.php?b=$1&amp;chapterid=$2', array('book', 'book_chapter'));
 
+        // Convert old book links MDL-33362 & MDL-35007
+        $rules[] = new restore_decode_rule('BOOKSTART', '/mod/book/view.php?id=$1', 'course_module');
+        $rules[] = new restore_decode_rule('BOOKCHAPTER', '/mod/book/view.php?id=$1&amp;chapterid=$2', array('course_module', 'book_chapter'));
+
         return $rules;
     }
 
@@ -101,10 +100,21 @@ class restore_book_activity_task extends restore_activity_task {
     static public function define_restore_log_rules() {
         $rules = array();
 
+        $rules[] = new restore_log_rule('book', 'add', 'view.php?id={course_module}', '{book}');
+        $rules[] = new restore_log_rule('book', 'update', 'view.php?id={course_module}&chapterid={book_chapter}', '{book}');
         $rules[] = new restore_log_rule('book', 'update', 'view.php?id={course_module}', '{book}');
+        $rules[] = new restore_log_rule('book', 'view', 'view.php?id={course_module}&chapterid={book_chapter}', '{book}');
         $rules[] = new restore_log_rule('book', 'view', 'view.php?id={course_module}', '{book}');
-        $rules[] = new restore_log_rule('book', 'view all', 'view.php?id={course_module}', '{book}');
-        $rules[] = new restore_log_rule('book', 'print', 'view.php?id={course_module}', '{book}');
+        $rules[] = new restore_log_rule('book', 'print', 'tool/print/index.php?id={course_module}&chapterid={book_chapter}', '{book}');
+        $rules[] = new restore_log_rule('book', 'print', 'tool/print/index.php?id={course_module}', '{book}');
+        $rules[] = new restore_log_rule('book', 'exportimscp', 'tool/exportimscp/index.php?id={course_module}', '{book}');
+        // To convert old 'generateimscp' log entries
+        $rules[] = new restore_log_rule('book', 'generateimscp', 'tool/generateimscp/index.php?id={course_module}', '{book}',
+                'book', 'exportimscp', 'tool/exportimscp/index.php?id={course_module}', '{book}');
+        $rules[] = new restore_log_rule('book', 'print chapter', 'tool/print/index.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+        $rules[] = new restore_log_rule('book', 'update chapter', 'view.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+        $rules[] = new restore_log_rule('book', 'add chapter', 'view.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
+        $rules[] = new restore_log_rule('book', 'view chapter', 'view.php?id={course_module}&chapterid={book_chapter}', '{book_chapter}');
 
         return $rules;
     }
@@ -123,6 +133,8 @@ class restore_book_activity_task extends restore_activity_task {
      */
     static public function define_restore_log_rules_for_course() {
         $rules = array();
+
+        $rules[] = new restore_log_rule('book', 'view all', 'index.php?id={course}', null);
 
         return $rules;
     }

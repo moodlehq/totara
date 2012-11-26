@@ -1,5 +1,27 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
+/**
+ * Auto group form
+ *
+ * @package    core_group
+ * @copyright  2007 mattc-catalyst (http://moodle.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
@@ -7,10 +29,18 @@ if (!defined('MOODLE_INTERNAL')) {
 require_once($CFG->dirroot.'/lib/formslib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 
-/// get url variables
+/**
+ * Auto group form class
+ *
+ * @package    core_group
+ * @copyright  2007 mattc-catalyst (http://moodle.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class autogroup_form extends moodleform {
 
-    // Define the form
+    /**
+     * Form Definition
+     */
     function definition() {
         global $CFG, $COURSE;
 
@@ -29,7 +59,7 @@ class autogroup_form extends moodleform {
             $mform->setDefault('roleid', $student->id);
         }
 
-        $context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
+        $context = context_course::instance($COURSE->id);
         if (has_capability('moodle/cohort:view', $context)) {
             $options = cohort_get_visible_list($COURSE);
             if ($options) {
@@ -72,7 +102,7 @@ class autogroup_form extends moodleform {
         $mform->addElement('text', 'namingscheme', get_string('namingscheme', 'group'));
         $mform->addHelpButton('namingscheme', 'namingscheme', 'group');
         $mform->addRule('namingscheme', get_string('required'), 'required', null, 'client');
-        $mform->setType('namingscheme', PARAM_MULTILANG);
+        $mform->setType('namingscheme', PARAM_TEXT);
         // there must not be duplicate group names in course
         $template = get_string('grouptemplate', 'group');
         $gname = groups_parse_name($template, 0);
@@ -93,7 +123,7 @@ class autogroup_form extends moodleform {
         }
 
         $mform->addElement('text', 'groupingname', get_string('groupingname', 'group'), $options);
-        $mform->setType('groupingname', PARAM_MULTILANG);
+        $mform->setType('groupingname', PARAM_TEXT);
         $mform->disabledIf('groupingname', 'grouping', 'noteq', '-1');
 
         $mform->addElement('hidden','courseid');
@@ -110,7 +140,13 @@ class autogroup_form extends moodleform {
         $mform->closeHeaderBefore('buttonar');
     }
 
-
+    /**
+     * Performs validation of the form information
+     *
+     * @param array $data
+     * @param array $files
+     * @return array $errors An array of $errors
+     */
     function validation($data, $files) {
         global $CFG, $COURSE;
         $errors = parent::validation($data, $files);

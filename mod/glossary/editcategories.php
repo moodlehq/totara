@@ -61,9 +61,9 @@ if ($hook > 0) {
     }
 }
 
-require_login($course->id, false, $cm);
+require_login($course, false, $cm);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/glossary:managecategories', $context);
 
 $strglossaries   = get_string("modulenameplural", "glossary");
@@ -72,7 +72,7 @@ $strglossary     = get_string("modulename", "glossary");
 $PAGE->navbar->add($strglossaries, new moodle_url('/mod/glossary/index.php', array('id'=>$course->id)));
 $PAGE->navbar->add(get_string("categories","glossary"));
 if (!empty($action)) {
-    $navaction = get_string($action). " " . moodle_strtolower(get_string("category","glossary"));
+    $navaction = get_string($action). " " . textlib::strtolower(get_string("category","glossary"));
     $PAGE->navbar->add($navaction);
 }
 $PAGE->set_title(format_string($glossary->name));

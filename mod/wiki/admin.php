@@ -53,10 +53,10 @@ if (!$wiki = wiki_get_wiki($subwiki->wikiid)) {
     print_error('incorrectwikiid', 'wiki');
 }
 
-require_login($course->id, true, $cm);
+require_login($course, true, $cm);
 
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/wiki:managewiki', $context);
 
 add_to_log($course->id, "wiki", "admin", "admin.php?pageid=".$page->id, $page->id, $cm->id);

@@ -52,11 +52,9 @@ if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
-if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
-    print_error('badcontext');
-}
+$context = context_module::instance($cm->id);
 
-require_login($course->id, true, $cm);
+require_login($course, true, $cm);
 
 require_capability('mod/feedback:edititems', $context);
 
@@ -286,7 +284,6 @@ function feedback_check_xml_utf8($text) {
     //encoding is given in $match[2]
     if (isset($match[0]) AND isset($match[1]) AND isset($match[2])) {
         $enc = $match[2];
-        $textlib = textlib_get_instance();
-        return $textlib->convert($text, $enc);
+        return textlib::convert($text, $enc);
     }
 }

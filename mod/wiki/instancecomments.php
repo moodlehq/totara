@@ -38,7 +38,7 @@ require_once($CFG->dirroot . "/mod/wiki/locallib.php");
 require_once($CFG->dirroot . '/mod/wiki/comments_form.php');
 
 $pageid = required_param('pageid', PARAM_TEXT);
-$action = optional_param('action', '', PARAM_ACTION);
+$action = optional_param('action', '', PARAM_ALPHANUMEXT);
 $id = optional_param('id', 0, PARAM_INT);
 $commentid = optional_param('commentid', 0, PARAM_INT);
 $newcontent = optional_param('newcontent', '', PARAM_CLEANHTML);
@@ -58,7 +58,7 @@ $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST)
 if (!$wiki = wiki_get_wiki($subwiki->wikiid)) {
     print_error('incorrectwikiid', 'wiki');
 }
-require_login($course->id, true, $cm);
+require_login($course, true, $cm);
 
 if ($action == 'add' || $action == 'edit') {
     //just check sesskey

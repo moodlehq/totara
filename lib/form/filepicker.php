@@ -1,4 +1,29 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
+/**
+ * Filepicker form element
+ *
+ * Contains HTML class for a single filepicker form element
+ *
+ * @package   core_form
+ * @copyright 2009 Dongsheng Cai <dongsheng@moodle.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 global $CFG;
 
@@ -6,19 +31,36 @@ require_once("HTML/QuickForm/button.php");
 require_once($CFG->dirroot.'/repository/lib.php');
 
 /**
+ * Filepicker form element
+ *
  * HTML class for a single filepicker element (based on button)
  *
- * @author       Moodle.com
- * @version      1.0
- * @since        Moodle 2.0
- * @access       public
+ * @package   core_form
+ * @category  form
+ * @copyright 2009 Dongsheng Cai <dongsheng@moodle.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
+    /** @var string html for help button, if empty then no help will icon will be dispalyed. */
     public $_helpbutton = '';
-    protected $_options    = array('maxbytes'=>0, 'accepted_types'=>'*', 'return_types'=>FILE_INTERNAL);
 
+    /** @var array options provided to initalize filemanager */
+    // PHP doesn't support 'key' => $value1 | $value2 in class definition
+    // We cannot do $_options = array('return_types'=> FILE_INTERNAL | FILE_REFERENCE);
+    // So I have to set null here, and do it in constructor
+    protected $_options    = array('maxbytes'=>0, 'accepted_types'=>'*', 'return_types'=>null);
+
+    /**
+     * Constructor
+     *
+     * @param string $elementName (optional) name of the filepicker
+     * @param string $elementLabel (optional) filepicker label
+     * @param array $attributes (optional) Either a typical HTML attribute string
+     *              or an associative array
+     * @param array $options set of options to initalize filepicker
+     */
     function MoodleQuickForm_filepicker($elementName=null, $elementLabel=null, $attributes=null, $options=null) {
-        global $CFG;
+        global $CFG, $PAGE;
 
         $options = (array)$options;
         foreach ($options as $name=>$value) {
@@ -26,21 +68,36 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
                 $this->_options[$name] = $value;
             }
         }
-        if (!empty($options['maxbytes'])) {
-            $this->_options['maxbytes'] = get_max_upload_file_size($CFG->maxbytes, $options['maxbytes']);
+        if (empty($options['return_types'])) {
+            $this->_options['return_types'] = FILE_INTERNAL;
         }
+        $fpmaxbytes = 0;
+        if (!empty($options['maxbytes'])) {
+            $fpmaxbytes = $options['maxbytes'];
+        }
+        $coursemaxbytes = 0;
+        if (!empty($PAGE->course->maxbytes)) {
+            $coursemaxbytes = $PAGE->course->maxbytes;
+        }
+        $this->_options['maxbytes'] = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $coursemaxbytes, $fpmaxbytes);
         $this->_type = 'filepicker';
         parent::HTML_QuickForm_input($elementName, $elementLabel, $attributes);
     }
 
-    function setHelpButton($helpbuttonargs, $function='helpbutton') {
-        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
-    }
-
+    /**
+     * Returns html for help button.
+     *
+     * @return string html for help button
+     */
     function getHelpButton() {
         return $this->_helpbutton;
     }
 
+    /**
+     * Returns type of filepicker element
+     *
+     * @return string
+     */
     function getElementTemplateType() {
         if ($this->_flagFrozen){
             return 'nodisplay';
@@ -49,6 +106,11 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
         }
     }
 
+    /**
+     * Returns HTML for filepicker form element.
+     *
+     * @return string
+     */
     function toHtml() {
         global $CFG, $COURSE, $USER, $PAGE, $OUTPUT;
         $id     = $this->_attributes['id'];
@@ -64,9 +126,9 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
         }
 
         if ($COURSE->id == SITEID) {
-            $context = get_context_instance(CONTEXT_SYSTEM);
+            $context = context_system::instance();
         } else {
-            $context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
+            $context = context_course::instance($COURSE->id);
         }
 
         $client_id = uniqid();
@@ -74,7 +136,7 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
         $args = new stdClass();
         // need these three to filter repositories list
         $args->accepted_types = $this->_options['accepted_types']?$this->_options['accepted_types']:'*';
-        $args->return_types = FILE_INTERNAL;
+        $args->return_types = $this->_options['return_types'];
         $args->itemid = $draftitemid;
         $args->maxbytes = $this->_options['maxbytes'];
         $args->context = $PAGE->context;
@@ -88,7 +150,7 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
         $html .= $OUTPUT->render($fp);
         $html .= '<input type="hidden" name="'.$elname.'" id="'.$id.'" value="'.$draftitemid.'" class="filepickerhidden"/>';
 
-        $module = array('name'=>'form_filepicker', 'fullpath'=>'/lib/form/filepicker.js', 'requires'=>array('core_filepicker', 'node', 'node-event-simulate'));
+        $module = array('name'=>'form_filepicker', 'fullpath'=>'/lib/form/filepicker.js', 'requires'=>array('core_filepicker', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.form_filepicker.init', array($fp->options), true, $module);
 
         $nonjsfilepicker = new moodle_url('/repository/draftfiles_manager.php', array(
@@ -111,6 +173,13 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
         return $html;
     }
 
+    /**
+     * export uploaded file
+     *
+     * @param array $submitValues values submitted.
+     * @param bool $assoc specifies if returned array is associative
+     * @return array
+     */
     function exportValue(&$submitValues, $assoc = false) {
         global $USER;
 
@@ -122,10 +191,13 @@ class MoodleQuickForm_filepicker extends HTML_QuickForm_input {
         // make sure max one file is present and it is not too big
         if (!is_null($draftitemid)) {
             $fs = get_file_storage();
-            $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+            $usercontext = context_user::instance($USER->id);
             if ($files = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftitemid, 'id DESC', false)) {
                 $file = array_shift($files);
-                if ($this->_options['maxbytes'] and $file->get_filesize() > $this->_options['maxbytes']) {
+                if ($this->_options['maxbytes']
+                    and $this->_options['maxbytes'] !== USER_CAN_IGNORE_FILE_SIZE_LIMITS
+                    and $file->get_filesize() > $this->_options['maxbytes']) {
+
                     // bad luck, somebody tries to sneak in oversized file
                     $file->delete();
                 }

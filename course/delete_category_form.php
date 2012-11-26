@@ -16,7 +16,7 @@ class delete_category_form extends moodleform {
 
         $mform    =& $this->_form;
         $category = $this->_customdata;
-        $categorycontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
+        $categorycontext = context_coursecat::instance($category->id);
         $this->_category = $category;
 
     /// Check permissions, to see if it OK to give the option to delete
@@ -30,7 +30,7 @@ class delete_category_form extends moodleform {
             $checkcat = array_pop($tocheck);
             $childcategoryids[] = $checkcat->id;
             $tocheck = $tocheck + get_child_categories($checkcat->id);
-            $chcontext = get_context_instance(CONTEXT_COURSECAT, $checkcat->id);
+            $chcontext = context_coursecat::instance($checkcat->id);
             if ($candeletecontent && !has_capability('moodle/category:manage', $chcontext)) {
                 $candeletecontent = false;
             }
@@ -117,8 +117,10 @@ class delete_category_form extends moodleform {
         /// Give the options for what to do.
             $mform->addElement('select', 'fulldelete', get_string('whattodo'), $options);
             if (count($options) == 1) {
+                $optionkeys = array_keys($options);
+                $option = reset($optionkeys);
                 $mform->hardFreeze('fulldelete');
-                $mform->setConstant('fulldelete', reset(array_keys($options)));
+                $mform->setConstant('fulldelete', $option);
             }
 
             if ($displaylist) {

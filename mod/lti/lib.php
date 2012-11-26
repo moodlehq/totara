@@ -271,21 +271,6 @@ function lti_grades($basicltiid) {
 }
 
 /**
- * Must return an array of user records (all data) who are participants
- * for a given instance of basiclti. Must include every user involved
- * in the instance, independient of his role (student, teacher, admin...)
- * See other modules as example.
- *
- * @param int $basicltiid ID of an instance of this module
- * @return mixed boolean/array of students
- *
- * @TODO: implement this moodle function
- **/
-function lti_get_participants($basicltiid) {
-    return false;
-}
-
-/**
  * This function returns if a scale is being used by one basiclti
  * it it has support for grading and scales. Commented code should be
  * modified if necessary. See forum, glossary or journal modules
@@ -361,6 +346,7 @@ function lti_get_lti_types() {
 /**
  * Create grade item for given basiclti
  *
+ * @category grade
  * @param object $basiclti object with extra cmidnumber
  * @param mixed optional array/object of grade(s); 'reset' means reset grades in gradebook
  * @return int 0 if ok, error code otherwise
@@ -395,6 +381,7 @@ function lti_grade_item_update($basiclti, $grades=null) {
 /**
  * Delete grade item for given basiclti
  *
+ * @category grade
  * @param object $basiclti object
  * @return object basiclti
  */
@@ -408,7 +395,7 @@ function lti_grade_item_delete($basiclti) {
 function lti_extend_settings_navigation($settings, $parentnode) {
     global $PAGE;
 
-    if (has_capability('mod/lti:grade', get_context_instance(CONTEXT_MODULE, $PAGE->cm->id))) {
+    if (has_capability('mod/lti:grade', context_module::instance($PAGE->cm->id))) {
         $keys = $parentnode->get_children_key_list();
 
         $node = navigation_node::create('Submissions',

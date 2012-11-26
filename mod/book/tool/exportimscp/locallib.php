@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,10 +17,9 @@
 /**
  * Book imscp export lib
  *
- * @package    booktool
- * @subpackage exportimscp
+ * @package    booktool_exportimscp
  * @copyright  2001-3001 Antonio Vicent          {@link http://ludens.es}
- * @copyright  2001-3001 Eloy Lafuente (stronk7) {@link http://contiento.com}
+ * @copyright  2001-3001 Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @copyright  2011 Petr Skoda                   {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +29,13 @@ defined('MOODLE_INTERNAL') || die;
 require_once(dirname(__FILE__).'/lib.php');
 require_once($CFG->dirroot.'/mod/book/locallib.php');
 
-
+/**
+ * Export one book as IMSCP package
+ *
+ * @param stdClass $book book instance
+ * @param context_module $context
+ * @return bool|stored_file
+ */
 function booktool_exportimscp_build_package($book, $context) {
     global $DB;
 
@@ -68,7 +73,7 @@ function booktool_exportimscp_build_package($book, $context) {
              WHERE contextid = :contextid AND component = 'booktool_exportimscp' AND itemid < :revision";
     $params = array('contextid'=>$context->id, 'revision'=>$book->revision);
     $revisions = $DB->get_records_sql($sql, $params);
-    foreach ($revisions as $rev=>$unused) {
+    foreach ($revisions as $rev => $unused) {
         $fs->delete_area_files($context->id, 'booktool_exportimscp', 'temp', $rev);
         $fs->delete_area_files($context->id, 'booktool_exportimscp', 'package', $rev);
     }
@@ -76,7 +81,12 @@ function booktool_exportimscp_build_package($book, $context) {
     return $packagefile;
 }
 
-
+/**
+ * Prepare temp area with the files used by book html contents
+ *
+ * @param stdClass $book book instance
+ * @param context_module $context
+ */
 function booktool_exportimscp_prepare_files($book, $context) {
     global $CFG, $DB;
 
@@ -98,11 +108,13 @@ function booktool_exportimscp_prepare_files($book, $context) {
             $file->delete();
         }
         $content = booktool_exportimscp_chapter_content($chapter, $context);
-        $index_file_record = array('contextid'=>$context->id, 'component'=>'booktool_exportimscp', 'filearea'=>'temp', 'itemid'=>$book->revision, 'filepath'=>"/$chapter->pagenum/", 'filename'=>'index.html');
+        $index_file_record = array('contextid'=>$context->id, 'component'=>'booktool_exportimscp', 'filearea'=>'temp',
+                'itemid'=>$book->revision, 'filepath'=>"/$chapter->pagenum/", 'filename'=>'index.html');
         $fs->create_file_from_string($index_file_record, $content);
     }
 
-    $css_file_record = array('contextid'=>$context->id, 'component'=>'booktool_exportimscp', 'filearea'=>'temp', 'itemid'=>$book->revision, 'filepath'=>"/css/", 'filename'=>'styles.css');
+    $css_file_record = array('contextid'=>$context->id, 'component'=>'booktool_exportimscp', 'filearea'=>'temp',
+            'itemid'=>$book->revision, 'filepath'=>"/css/", 'filename'=>'styles.css');
     $fs->create_file_from_pathname($css_file_record, dirname(__FILE__).'/imscp.css');
 
     // Init imsmanifest and others
@@ -127,6 +139,7 @@ function booktool_exportimscp_prepare_files($book, $context) {
 
     // To store the prev level (book only have 0 and 1)
     $prevlevel = null;
+    $currlevel = 0;
     foreach ($chapters as $chapter) {
         // Calculate current level ((book only have 0 and 1)
         $currlevel = empty($chapter->subchapter) ? 0 : 1;
@@ -149,14 +162,15 @@ function booktool_exportimscp_prepare_files($book, $context) {
         // Update prevlevel
         $prevlevel = $currlevel;
 
-        // Calculate the number of spaces (for visual xml-text formating)
+        // Calculate the number of spaces (for visual xml-text formatting)
         $currspaces = substr('                ', 0, $currlevel * 2);
 
         $chaptertitle = format_string($chapter->title, true, array('context'=>$context));
 
-       // Add the imsitems
-        $imsitems .= $currspaces .'        <item identifier="ITEM-' . $book->course . '-' . $book->id . '-' . $chapter->pagenum .'" isvisible="true" identifierref="RES-' . $book->course . '-' . $book->id . '-' . $chapter->pagenum . '">
- ' . $currspaces . '         <title>' . htmlspecialchars($chaptertitle) . '</title>' . "\n";
+        // Add the imsitems
+        $imsitems .= $currspaces .'        <item identifier="ITEM-' . $book->course . '-' . $book->id . '-' . $chapter->pagenum .'" isvisible="true" identifierref="RES-' .
+                $book->course . '-' . $book->id . '-' . $chapter->pagenum . "\">\n" .
+                $currspaces . '         <title>' . htmlspecialchars($chaptertitle) . '</title>' . "\n";
 
         // Add the imsresources
         // First, check if we have localfiles
@@ -167,9 +181,10 @@ function booktool_exportimscp_prepare_files($book, $context) {
         // Now add the dependency to css
         $cssdependency = "\n" . '      <dependency identifierref="RES-' . $book->course . '-'  . $book->id . '-css" />';
         // Now build the resources section
-        $imsresources .= '    <resource identifier="RES-' . $book->course . '-'  . $book->id . '-' . $chapter->pagenum . '" type="webcontent" xml:base="' . $chapter->pagenum . '/" href="index.html">
-      <file href="' . $chapter->pagenum . '/index.html" />' . implode($localfiles) . $cssdependency . '
-    </resource>' . "\n";
+        $imsresources .= '    <resource identifier="RES-' . $book->course . '-'  . $book->id . '-' . $chapter->pagenum . '" type="webcontent" xml:base="' .
+                $chapter->pagenum . '/" href="index.html">' . "\n" .
+                '      <file href="' . $chapter->pagenum . '/index.html" />' . implode($localfiles) . $cssdependency . "\n".
+                '    </resource>' . "\n";
     }
 
     // Close items (the latest chapter)
@@ -198,10 +213,18 @@ function booktool_exportimscp_prepare_files($book, $context) {
     // Close manifest
     $imsmanifest .= "\n</manifest>\n";
 
-    $manifest_file_record = array('contextid'=>$context->id, 'component'=>'booktool_exportimscp', 'filearea'=>'temp', 'itemid'=>$book->revision, 'filepath'=>"/", 'filename'=>'imsmanifest.xml');
+    $manifest_file_record = array('contextid'=>$context->id, 'component'=>'booktool_exportimscp', 'filearea'=>'temp',
+            'itemid'=>$book->revision, 'filepath'=>"/", 'filename'=>'imsmanifest.xml');
     $fs->create_file_from_string($manifest_file_record, $imsmanifest);
 }
 
+/**
+ * Returns the html contents of one book's chapter to be exported as IMSCP
+ *
+ * @param stdClass $chapter the chapter to be exported
+ * @param context_module $context context the chapter belongs to
+ * @return string the contents of the chapter
+ */
 function booktool_exportimscp_chapter_content($chapter, $context) {
 
     $options = new stdClass();

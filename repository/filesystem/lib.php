@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,19 +15,36 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access files on server file system
+ *
+ * @since 2.0
+ * @package    repository_filesystem
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+require_once($CFG->libdir . '/filelib.php');
+
+/**
  * repository_filesystem class
+ *
  * Create a repository from your local filesystem
  * *NOTE* for security issue, we use a fixed repository path
  * which is %moodledata%/repository
  *
- * @since 2.0
  * @package    repository
- * @subpackage filesystem
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class repository_filesystem extends repository {
+
+    /**
+     * Constructor
+     *
+     * @param int $repositoryid repository ID
+     * @param int $context context ID
+     * @param array $options
+     */
     public function __construct($repositoryid, $context = SYSCONTEXTID, $options = array()) {
         global $CFG;
         parent::__construct($repositoryid, $context, $options);
@@ -54,7 +70,7 @@ class repository_filesystem extends repository {
         $list['list'] = array();
         // process breacrumb trail
         $list['path'] = array(
-            array('name'=>'Root', 'path'=>'')
+            array('name'=>get_string('root', 'repository_filesystem'), 'path'=>'')
         );
         $trail = '';
         if (!empty($path)) {
@@ -89,8 +105,8 @@ class repository_filesystem extends repository {
                 }
             }
         }
-        collatorlib::asort($fileslist);
-        collatorlib::asort($dirslist);
+        collatorlib::asort($fileslist, collatorlib::SORT_STRING);
+        collatorlib::asort($dirslist, collatorlib::SORT_STRING);
         // fill the $list['list']
         foreach ($dirslist as $file) {
             if (!empty($path)) {
@@ -101,7 +117,9 @@ class repository_filesystem extends repository {
             $list['list'][] = array(
                 'title' => $file,
                 'children' => array(),
-                'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false),
+                'datecreated' => filectime($this->root_path.$file),
+                'datemodified' => filemtime($this->root_path.$file),
+                'thumbnail' => $OUTPUT->pix_url(file_folder_icon(90))->out(false),
                 'path' => $current_path
                 );
         }
@@ -110,8 +128,10 @@ class repository_filesystem extends repository {
                 'title' => $file,
                 'source' => $path.'/'.$file,
                 'size' => filesize($this->root_path.$file),
-                'date' => time(),
-                'thumbnail' => $OUTPUT->pix_url(file_extension_icon($this->root_path.$file, 32))->out(false)
+                'datecreated' => filectime($this->root_path.$file),
+                'datemodified' => filemtime($this->root_path.$file),
+                'thumbnail' => $OUTPUT->pix_url(file_extension_icon($file, 90))->out(false),
+                'icon' => $OUTPUT->pix_url(file_extension_icon($file, 24))->out(false)
             );
         }
         $list['list'] = array_filter($list['list'], array($this, 'filter'));
@@ -126,6 +146,7 @@ class repository_filesystem extends repository {
     public function global_search() {
         return false;
     }
+
     /**
      * Return file path
      * @return array
@@ -143,6 +164,16 @@ class repository_filesystem extends repository {
         return array('path'=>$file, 'url'=>'');
     }
 
+    /**
+     * Return the source information
+     *
+     * @param stdClass $filepath
+     * @return string|null
+     */
+    public function get_file_source_info($filepath) {
+        return $filepath;
+    }
+
     public function logout() {
         return true;
     }
@@ -157,7 +188,7 @@ class repository_filesystem extends repository {
         return $ret;
     }
 
-    public function instance_config_form($mform) {
+    public static function instance_config_form($mform) {
         global $CFG, $PAGE;
         if (has_capability('moodle/site:config', get_system_context())) {
             $path = $CFG->dataroot . '/repository/';
@@ -188,10 +219,6 @@ class repository_filesystem extends repository {
         }
     }
 
-    public function supported_returntypes() {
-        return FILE_INTERNAL;
-    }
-
     public static function create($type, $userid, $context, $params, $readonly=0) {
         global $PAGE;
         if (has_capability('moodle/site:config', get_system_context())) {
@@ -206,5 +233,104 @@ class repository_filesystem extends repository {
             $errors['fs_path'] = get_string('invalidadminsettingname', 'error', 'fs_path');
         }
         return $errors;
+    }
+
+    /**
+     * User cannot use the external link to dropbox
+     *
+     * @return int
+     */
+    public function supported_returntypes() {
+        return FILE_INTERNAL | FILE_REFERENCE;
+    }
+
+    /**
+     * Return reference file life time
+     *
+     * @param string $ref
+     * @return int
+     */
+    public function get_reference_file_lifetime($ref) {
+        // Does not cost us much to synchronise within our own filesystem, set to 1 minute
+        return 60;
+    }
+
+    /**
+     * Return human readable reference information
+     *
+     * @param string $reference value of DB field files_reference.reference
+     * @param int $filestatus status of the file, 0 - ok, 666 - source missing
+     * @return string
+     */
+    public function get_reference_details($reference, $filestatus = 0) {
+        $details = $this->get_name().': '.$reference;
+        if ($filestatus) {
+            return get_string('lostsource', 'repository', $details);
+        } else {
+            return $details;
+        }
+    }
+
+    /**
+     * Returns information about file in this repository by reference
+     *
+     * Returns null if file not found or is not readable
+     *
+     * @param stdClass $reference file reference db record
+     * @return stdClass|null contains one of the following:
+     *   - 'filesize' if file should not be copied to moodle filepool
+     *   - 'filepath' if file should be copied to moodle filepool
+     */
+    public function get_file_by_reference($reference) {
+        $ref = $reference->reference;
+        if ($ref{0} == '/') {
+            $filepath = $this->root_path.substr($ref, 1, strlen($ref)-1);
+        } else {
+            $filepath = $this->root_path.$ref;
+        }
+        if (file_exists($filepath) && is_readable($filepath)) {
+            if (file_extension_in_typegroup($filepath, 'web_image')) {
+                // return path to image files so it will be copied into moodle filepool
+                // we need the file in filepool to generate an image thumbnail
+                return (object)array('filepath' => $filepath);
+            } else {
+                // return just the file size so file will NOT be copied into moodle filepool
+                return (object)array(
+                    'filesize' => filesize($filepath)
+                );
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Repository method to serve the referenced file
+     *
+     * @see send_stored_file
+     *
+     * @param stored_file $storedfile the file that contains the reference
+     * @param int $lifetime Number of seconds before the file should expire from caches (default 24 hours)
+     * @param int $filter 0 (default)=no filtering, 1=all files, 2=html files only
+     * @param bool $forcedownload If true (default false), forces download of file rather than view in browser/plugin
+     * @param array $options additional options affecting the file serving
+     */
+    public function send_file($storedfile, $lifetime=86400 , $filter=0, $forcedownload=false, array $options = null) {
+        $reference = $storedfile->get_reference();
+        if ($reference{0} == '/') {
+            $file = $this->root_path.substr($reference, 1, strlen($reference)-1);
+        } else {
+            $file = $this->root_path.$reference;
+        }
+        if (is_readable($file)) {
+            $filename = $storedfile->get_filename();
+            if ($options && isset($options['filename'])) {
+                $filename = $options['filename'];
+            }
+            $dontdie = ($options && isset($options['dontdie']));
+            send_file($file, $filename, $lifetime , $filter, false, $forcedownload, '', $dontdie);
+        } else {
+            send_file_not_found();
+        }
     }
 }

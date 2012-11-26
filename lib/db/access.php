@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -43,10 +42,14 @@
  *
  * The variable name for the capability definitions array is $capabilities
  *
- * @package    core
- * @subpackage role
- * @copyright  2006 onwards Martin Dougiamas  http://dougiamas.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * For more information, take a look to the documentation available:
+ *     - Access API: {@link http://docs.moodle.org/dev/Access_API}
+ *     - Upgrade API: {@link http://docs.moodle.org/dev/Upgrade_API}
+ *
+ * @package   core_access
+ * @category  access
+ * @copyright 2006 onwards Martin Dougiamas  http://dougiamas.com
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -571,6 +574,15 @@ $capabilities = array(
         )
     ),
 
+    // Can the user ignore the setting userquota?
+    // The permissions are cloned from ignorefilesizelimits as it was partly used for that purpose.
+    'moodle/user:ignoreuserquota' => array(
+        'riskbitmap' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'clonepermissionsfrom' => 'moodle/course:ignorefilesizelimits'
+    ),
+
     // can the user manage the system default dashboard page?
     'moodle/my:configsyspages' => array(
 
@@ -851,6 +863,14 @@ $capabilities = array(
         )
     ),
 
+    'moodle/course:ignorefilesizelimits' => array(
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+        )
+    ),
+
     'moodle/course:manageactivities' => array(
 
         'riskbitmask' => RISK_XSS,
@@ -966,6 +986,14 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW
         )
+    ),
+
+    'moodle/course:isincompletionreports' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'student' => CAP_ALLOW,
+        ),
     ),
 
     'moodle/course:viewscales' => array(
@@ -1416,6 +1444,17 @@ $capabilities = array(
         )
     ),
 
+    'moodle/course:movesections' => array(
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/course:update'
+    ),
+
     'moodle/site:mnetlogintoremote' => array(
 
         'captype' => 'read',
@@ -1637,6 +1676,17 @@ $capabilities = array(
     ),
 
     'moodle/tag:edit' => array(
+        'riskbitmask' => RISK_SPAM,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+            'user' => CAP_ALLOW
+        )
+    ),
+
+    'moodle/tag:flag' => array(
         'riskbitmask' => RISK_SPAM,
 
         'captype' => 'write',

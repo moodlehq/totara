@@ -413,8 +413,6 @@ function lti_get_tool_table($tools, $id) {
  * @return Array of custom parameters
  */
 function lti_split_custom_parameters($customstr) {
-    $textlib = textlib_get_instance();
-
     $lines = preg_split("/[\n;]/", $customstr);
     $retval = array();
     foreach ($lines as $line) {
@@ -422,8 +420,8 @@ function lti_split_custom_parameters($customstr) {
         if ( $pos === false || $pos < 1 ) {
             continue;
         }
-        $key = trim($textlib->substr($line, 0, $pos));
-        $val = trim($textlib->substr($line, $pos+1, strlen($line)));
+        $key = trim(textlib::substr($line, 0, $pos));
+        $val = trim(textlib::substr($line, $pos+1, strlen($line)));
         $key = lti_map_keyname($key);
         $retval['custom_'.$key] = $val;
     }
@@ -438,10 +436,8 @@ function lti_split_custom_parameters($customstr) {
  * @return string       Processed name
  */
 function lti_map_keyname($key) {
-    $textlib = textlib_get_instance();
-
     $newkey = "";
-    $key = $textlib->strtolower(trim($key));
+    $key = textlib::strtolower(trim($key));
     foreach (str_split($key) as $ch) {
         if ( ($ch >= 'a' && $ch <= 'z') || ($ch >= '0' && $ch <= '9') ) {
             $newkey .= $ch;
@@ -466,7 +462,7 @@ function lti_get_ims_role($user, $cmid, $courseid) {
         //If no cmid is passed, check if the user is a teacher in the course
         //This allows other modules to programmatically "fake" a launch without
         //a real LTI instance
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $courseid);
+        $coursecontext = context_course::instance($courseid);
 
         if (has_capability('moodle/course:manageactivities', $coursecontext)) {
             array_push($roles, 'Instructor');
@@ -474,7 +470,7 @@ function lti_get_ims_role($user, $cmid, $courseid) {
             array_push($roles, 'Learner');
         }
     } else {
-        $context = get_context_instance(CONTEXT_MODULE, $cmid);
+        $context = context_module::instance($cmid);
 
         if (has_capability('mod/lti:manage', $context)) {
             array_push($roles, 'Instructor');

@@ -5,7 +5,6 @@ YUI.add('moodle-filter_glossary-autolinker', function(Y) {
         POPUPNAME = 'name',
         POPUPOPTIONS = 'options',
         TITLE = 'title',
-        COURSEID = 'courseid',
         WIDTH = 'width',
         HEIGHT = 'height',
         MENUBAR = 'menubar',
@@ -122,8 +121,7 @@ YUI.add('moodle-filter_glossary-autolinker', function(Y) {
             status : {value : true},
             directories : {value : false},
             fullscreen : {value : false},
-            dependent : {value : true},
-            courseid : {value : 1}
+            dependent : {value : true}
         }
     });
 
@@ -132,4 +130,4 @@ YUI.add('moodle-filter_glossary-autolinker', function(Y) {
         return new AUTOLINKER(config);
     }
 
-}, '@VERSION@', {requires:['base','node','io-base','json-parse','event-delegate','overlay','moodle-enrol-notification']});
+}, '@VERSION@', {requires:['base','node','io-base','json-parse','event-delegate','overlay','moodle-core-notification']});

@@ -15,11 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Resource module upgrade related helper functions
+ * Book module upgrade related helper functions
  *
- * @package    mod
- * @subpackage book
- * @copyright  2010 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -47,7 +46,6 @@ function mod_book_migrate_moddata_dir_to_legacy($book, $context, $path) {
     }
 
     $fs      = get_file_storage();
-    $textlib = textlib_get_instance();
     $items   = new DirectoryIterator($fulldir);
 
     foreach ($items as $item) {
@@ -73,12 +71,12 @@ function mod_book_migrate_moddata_dir_to_legacy($book, $context, $path) {
             $filename = clean_param($item->getFilename(), PARAM_FILE);
 
             if ($filename === '') {
-                //unsupported chars, sorry
+                // unsupported chars, sorry
                 unset($item); // release file handle
                 continue;
             }
 
-            if ($textlib->strlen($filepath) > 255) {
+            if (textlib::strlen($filepath) > 255) {
                 echo $OUTPUT->notification(" File path longer than 255 chars, skipping: ".$fulldir.$item->getFilename());
                 unset($item); // release file handle
                 continue;
@@ -94,7 +92,7 @@ function mod_book_migrate_moddata_dir_to_legacy($book, $context, $path) {
             @unlink($oldpathname);
 
         } else {
-            //migrate recursively all subdirectories
+            // migrate recursively all subdirectories
             $oldpathname = $base.$item->getFilename().'/';
             $subpath     = $path.$item->getFilename().'/';
             unset($item);  // release file handle
@@ -102,7 +100,7 @@ function mod_book_migrate_moddata_dir_to_legacy($book, $context, $path) {
             @rmdir($oldpathname); // deletes dir if empty
         }
     }
-    unset($items); //release file handles
+    unset($items); // release file handles
 }
 
 /**
@@ -116,7 +114,7 @@ function mod_book_migrate_all_areas() {
     foreach($rsbooks as $book) {
         upgrade_set_timeout(360); // set up timeout, may also abort execution
         $cm = get_coursemodule_from_instance('book', $book->id);
-        $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $context = context_module::instance($cm->id);
         mod_book_migrate_area($book, 'intro', 'book', $book->course, $context, 'mod_book', 'intro', 0);
 
         $rschapters = $DB->get_recordset('book_chapters', array('bookid'=>$book->id));
@@ -130,14 +128,15 @@ function mod_book_migrate_all_areas() {
 
 /**
  * Migrate one area, this should be probably part of moodle core...
- * @param $record
- * @param $field
- * @param $table
- * @param $courseid
- * @param $context
- * @param $component
- * @param $filearea
- * @param $itemid
+ *
+ * @param stdClass $record object to migrate files (book, chapter)
+ * @param string $field field in the record we are going to migrate
+ * @param string $table DB table containing the information to migrate
+ * @param int $courseid id of the course the book module belongs to
+ * @param context_module $context context of the book module
+ * @param string $component component to be used for the migrated files
+ * @param string $filearea filearea to be used for the migrated files
+ * @param int $itemid id to be used for the migrated files
  * @return void
  */
 function mod_book_migrate_area($record, $field, $table, $courseid, $context, $component, $filearea, $itemid) {
@@ -147,7 +146,7 @@ function mod_book_migrate_area($record, $field, $table, $courseid, $context, $co
 
     foreach(array(get_site()->id, $courseid) as $cid) {
         $matches = null;
-        $ooldcontext = get_context_instance(CONTEXT_COURSE, $cid);
+        $ooldcontext = context_course::instance($cid);
         if (preg_match_all("|$CFG->wwwroot/file.php(\?file=)?/$cid(/[^\s'\"&\?#]+)|", $record->$field, $matches)) {
             $file_record = array('contextid'=>$context->id, 'component'=>$component, 'filearea'=>$filearea, 'itemid'=>$itemid);
             foreach ($matches[2] as $i=>$filepath) {

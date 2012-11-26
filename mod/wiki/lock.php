@@ -66,9 +66,9 @@ if (!empty($section) && !$sectioncontent = wiki_get_section_page($page, $section
     print_error('invalidsection', 'wiki');
 }
 
-require_login($course->id, false, $cm);
+require_login($course, false, $cm);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/wiki:editpage', $context);
 
 $wikipage = new page_wiki_lock($wiki, $subwiki, $cm);

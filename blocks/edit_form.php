@@ -87,7 +87,7 @@ class block_edit_form extends moodleform {
 
         $regionoptions = $this->page->theme->get_all_block_regions();
 
-        $parentcontext = get_context_instance_by_id($this->block->instance->parentcontextid);
+        $parentcontext = context::instance_by_id($this->block->instance->parentcontextid);
         $mform->addElement('hidden', 'bui_parentcontextid', $parentcontext->id);
 
         $mform->addElement('static', 'bui_homecontext', get_string('createdat', 'block'), print_context_name($parentcontext));
@@ -172,7 +172,8 @@ class block_edit_form extends moodleform {
 
             $mform->addElement('select', 'bui_pagetypepattern', get_string('restrictpagetypes', 'block'), $pagetypelist);
         } else {
-            $value = array_pop(array_keys($pagetypelist));
+            $values = array_keys($pagetypelist);
+            $value = array_pop($values);
             $mform->addElement('hidden', 'bui_pagetypepattern', $value);
             // Now we are really hiding a lot (both page-contexts and page-type-patterns),
             // specially in some systemcontext pages having only one option (my/user...)
@@ -264,7 +265,7 @@ class block_edit_form extends moodleform {
             $defaults->bui_subpagepattern = '%@NULL@%';
         }
 
-        $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+        $systemcontext = context_system::instance();
         if ($defaults->parentcontextid == $systemcontext->id) {
             $defaults->bui_contexts = BUI_CONTEXTS_ENTIRE_SITE; // System-wide and sticky
         } else {

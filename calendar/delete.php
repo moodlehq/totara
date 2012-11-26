@@ -28,6 +28,7 @@ require_once('../config.php');
 require_once($CFG->dirroot.'/calendar/event_form.php');
 require_once($CFG->dirroot.'/calendar/lib.php');
 require_once($CFG->dirroot.'/course/lib.php');
+require_once($CFG->dirroot.'/calendar/renderer.php');
 
 $eventid = required_param('id', PARAM_INT);
 $confirm = optional_param('confirm', false, PARAM_BOOL);
@@ -55,7 +56,7 @@ if ($event->eventtype !== 'user' && $event->eventtype !== 'site') {
 $course = $DB->get_record('course', array('id'=>$courseid));
 require_login($course);
 if (!$course) {
-    $PAGE->set_context(get_context_instance(CONTEXT_SYSTEM)); //TODO: wrong
+    $PAGE->set_context(context_system::instance()); //TODO: wrong
 }
 
 // Check the user has the required capabilities to edit an event

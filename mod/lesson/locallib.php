@@ -484,7 +484,7 @@ function lesson_mediafile_block_contents($cmid, $lesson) {
  **/
 function lesson_clock_block_contents($cmid, $lesson, $timer, $page) {
     // Display for timed lessons and for students only
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
     if(!$lesson->timed || has_capability('mod/lesson:manage', $context)) {
         return null;
     }
@@ -609,37 +609,19 @@ function lesson_get_media_html($lesson, $context) {
 
     $extension = resourcelib_get_extension($url->out(false));
 
+    $mediarenderer = $PAGE->get_renderer('core', 'media');
+    $embedoptions = array(
+        core_media::OPTION_TRUSTED => true,
+        core_media::OPTION_BLOCK => true
+    );
+
     // find the correct type and print it out
     if (in_array($mimetype, array('image/gif','image/jpeg','image/png'))) {  // It's an image
         $code = resourcelib_embed_image($url, $title);
 
-    } else if ($mimetype == 'audio/mp3') {
-        // MP3 audio file
-        $code = resourcelib_embed_mp3($url, $title, $clicktoopen);
-
-    } else if ($mimetype == 'video/x-flv' or $extension === 'f4v') {
-        // Flash video file
-        $code = resourcelib_embed_flashvideo($url, $title, $clicktoopen);
-
-    } else if ($mimetype == 'application/x-shockwave-flash') {
-        // Flash file
-        $code = resourcelib_embed_flash($url, $title, $clicktoopen);
-
-    } else if (substr($mimetype, 0, 10) == 'video/x-ms') {
-        // Windows Media Player file
-        $code = resourcelib_embed_mediaplayer($url, $title, $clicktoopen);
-
-    } else if ($mimetype == 'video/quicktime') {
-        // Quicktime file
-        $code = resourcelib_embed_quicktime($url, $title, $clicktoopen);
-
-    } else if ($mimetype == 'video/mpeg') {
-        // Mpeg file
-        $code = resourcelib_embed_mpeg($url, $title, $clicktoopen);
-
-    } else if ($mimetype == 'audio/x-pn-realaudio-plugin') {
-        // RealMedia file
-        $code = resourcelib_embed_real($url, $title, $clicktoopen);
+    } else if ($mediarenderer->can_embed_url($url, $embedoptions)) {
+        // Media (audio/video) file.
+        $code = $mediarenderer->embed_url($url, $title, 0, 0, $embedoptions);
 
     } else {
         // anything else - just try object tag enlarged as much as possible
@@ -833,7 +815,7 @@ abstract class lesson_add_page_form_base extends moodleform {
      *
      * @return bool
      */
-    public function construction_override() {
+    public function construction_override($pageid, lesson $lesson) {
         return true;
     }
 }
@@ -1623,14 +1605,16 @@ abstract class lesson_base {
         return !empty($this->properties->{$key});
     }
 
+    //NOTE: E_STRICT does not allow to change function signature!
+
     /**
-     * If overridden should create a new instance, save it in the DB and return it
+     * If implemented should create a new instance, save it in the DB and return it
      */
-    public static function create() {}
+    //public static function create() {}
     /**
-     * If overridden should load an instance from the DB and return it
+     * If implemented should load an instance from the DB and return it
      */
-    public static function load() {}
+    //public static function load() {}
     /**
      * Fetches all of the properties of the object
      * @return stdClass
@@ -2130,7 +2114,7 @@ abstract class lesson_page extends lesson_base {
             $context = $PAGE->context;
         }
         if ($maxbytes === null) {
-            $maxbytes =get_max_upload_file_size();
+            $maxbytes = get_user_max_upload_file_size($context);
         }
         $properties = file_postupdate_standard_editor($properties, 'contents', array('noclean'=>true, 'maxfiles'=>EDITOR_UNLIMITED_FILES, 'maxbytes'=>$maxbytes), $context, 'mod_lesson', 'page_contents', $properties->id);
         $DB->update_record("lesson_pages", $properties);
@@ -2389,7 +2373,7 @@ abstract class lesson_page extends lesson_base {
             if (!isset($this->properties->contentsformat)) {
                 $this->properties->contentsformat = FORMAT_HTML;
             }
-            $context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+            $context = context_module::instance($PAGE->cm->id);
             $contents = file_rewrite_pluginfile_urls($this->properties->contents, 'pluginfile.php', $context->id, 'mod_lesson', 'page_contents', $this->properties->id); // must do this BEFORE format_text()!!!!!!
             return format_text($contents, $this->properties->contentsformat, array('context'=>$context, 'noclean'=>true)); // page edit is marked with XSS, we want all content here
         } else {

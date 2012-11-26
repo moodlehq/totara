@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,11 +17,12 @@
 /**
  * Cohort related management functions, this file needs to be included manually.
  *
- * @package    core
- * @subpackage cohort
+ * @package    core_cohort
  * @copyright  2010 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/user/selector/lib.php');
 require_once($CFG->dirroot.'/totara/cohort/lib.php');
@@ -31,9 +31,9 @@ require_once($CFG->dirroot.'/totara/cohort/rules/lib.php');
 /**
  * Add new cohort.
  *
- * @param  object $cohort
- * @param bolean $addcollections indicate whether to add initial ruleset collections
- * @return int
+ * @param  stdClass $cohort
+ * @param  boolean $addcollections indicate whether to add initial ruleset collections
+ * @return int new cohort id
  */
 function cohort_add_cohort($cohort, $addcollections=true) {
     global $DB, $USER;
@@ -45,7 +45,8 @@ function cohort_add_cohort($cohort, $addcollections=true) {
         $cohort->idnumber = NULL;
     }
     if (!isset($cohort->description)) {
-        $cohort->description = $DB->sql_empty();
+        // sql_empty() does not belong here, this crazy Oracle hack is implemented in insert_record()!
+        $cohort->description = '';
     }
     if (!isset($cohort->descriptionformat)) {
         $cohort->descriptionformat = FORMAT_HTML;
@@ -92,7 +93,7 @@ function cohort_add_cohort($cohort, $addcollections=true) {
 
 /**
  * Update existing cohort.
- * @param  object $cohort
+ * @param  stdClass $cohort
  * @return void
  */
 function cohort_update_cohort($cohort) {
@@ -120,7 +121,7 @@ function cohort_update_cohort($cohort) {
 
 /**
  * Delete cohort.
- * @param  object $cohort
+ * @param  stdClass $cohort
  * @return void
  */
 function cohort_delete_cohort($cohort) {
@@ -168,21 +169,21 @@ function cohort_delete_cohort($cohort) {
  * Somehow deal with cohorts when deleting course category,
  * we can not just delete them because they might be used in enrol
  * plugins or referenced in external systems.
- * @param  object $category
+ * @param  stdClass $category
  * @return void
  */
 function cohort_delete_category($category) {
     global $DB;
     // TODO: make sure that cohorts are really, really not used anywhere and delete, for now just move to parent or system context
 
-    $oldcontext = get_context_instance(CONTEXT_COURSECAT, $category->id, MUST_EXIST);
+    $oldcontext = context_coursecat::instance($category->id);
 
     if ($category->parent and $parent = $DB->get_record('course_categories', array('id'=>$category->parent))) {
-        $parentcontext = get_context_instance(CONTEXT_COURSECAT, $parent->id, MUST_EXIST);
+        $parentcontext = context_coursecat::instance($parent->id);
         $sql = "UPDATE {cohort} SET contextid = :newcontext WHERE contextid = :oldcontext";
         $params = array('oldcontext'=>$oldcontext->id, 'newcontext'=>$parentcontext->id);
     } else {
-        $syscontext = get_context_instance(CONTEXT_SYSTEM);
+        $syscontext = context_system::instance();
         $sql = "UPDATE {cohort} SET contextid = :newcontext WHERE contextid = :oldcontext";
         $params = array('oldcontext'=>$oldcontext->id, 'newcontext'=>$syscontext->id);
     }
@@ -194,10 +195,14 @@ function cohort_delete_category($category) {
  * Add cohort member
  * @param  int $cohortid
  * @param  int $userid
- * @return void
+ * @return bool
  */
 function cohort_add_member($cohortid, $userid) {
     global $DB;
+    if ($DB->record_exists('cohort_members', array('cohortid'=>$cohortid, 'userid'=>$userid))) {
+        // No duplicates!
+        return false;
+    }
     $record = new stdClass();
     $record->cohortid  = $cohortid;
     $record->userid    = $userid;
@@ -205,6 +210,7 @@ function cohort_add_member($cohortid, $userid) {
     $DB->insert_record('cohort_members', $record);
 
     events_trigger('cohort_member_added', (object)array('cohortid'=>$cohortid, 'userid'=>$userid));
+    return true;
 }
 
 /**
@@ -221,34 +227,58 @@ function cohort_remove_member($cohortid, $userid) {
 }
 
 /**
- * Returns list of visible cohorts in course.
- *
- * @param  object $course
- * @param  bool $enrolled true means include only cohorts with enrolled users
- * @return array
+ * Is this user a cohort member?
+ * @param int $cohortid
+ * @param int $userid
+ * @return bool
  */
-function cohort_get_visible_list($course) {
-    global $DB, $USER;
+function cohort_is_member($cohortid, $userid) {
+    global $DB;
 
-    $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+    return $DB->record_exists('cohort_members', array('cohortid'=>$cohortid, 'userid'=>$userid));
+}
+
+/**
+ * Returns list of cohorts from course parent contexts.
+ *
+ * Note: this function does not implement any capability checks,
+ *       it means it may disclose existence of cohorts,
+ *       make sure it is displayed to users with appropriate rights only.
+ *
+ * @param  stdClass $course
+ * @param  bool $onlyenrolled true means include only cohorts with enrolled users
+ * @return array of cohort names with number of enrolled users
+ */
+function cohort_get_visible_list($course, $onlyenrolled=true) {
+    global $DB;
+
+    $context = context_course::instance($course->id);
     list($esql, $params) = get_enrolled_sql($context);
-    $parentsql = get_related_contexts_string($context);
+    list($parentsql, $params2) = $DB->get_in_or_equal($context->get_parent_context_ids(), SQL_PARAMS_NAMED);
+    $params = array_merge($params, $params2);
 
-    $sql = "SELECT c.id, c.name, c.idnumber, COUNT(u.id) AS cnt
+    if ($onlyenrolled) {
+        $left = "";
+        $having = "HAVING COUNT(u.id) > 0";
+    } else {
+        $left = "LEFT";
+        $having = "";
+    }
+
+    $sql = "SELECT c.id, c.name, c.contextid, c.idnumber, COUNT(u.id) AS cnt
               FROM {cohort} c
-              JOIN {cohort_members} cm ON cm.cohortid = c.id
-              JOIN ($esql) u ON u.id = cm.userid
+        $left JOIN ({cohort_members} cm
+                   JOIN ($esql) u ON u.id = cm.userid) ON cm.cohortid = c.id
              WHERE c.contextid $parentsql
-          GROUP BY c.id, c.name, c.idnumber
-            HAVING COUNT(u.id) > 0
+          GROUP BY c.id, c.name, c.contextid, c.idnumber
+           $having
           ORDER BY c.name, c.idnumber";
-    $params['ctx'] = $context->id;
 
     $cohorts = $DB->get_records_sql($sql, $params);
 
     foreach ($cohorts as $cid=>$cohort) {
-        $cohorts[$cid] = format_string($cohort->name);
-        if ($cohort->idnumber) {
+        $cohorts[$cid] = format_string($cohort->name, true, array('context'=>$cohort->contextid));
+        if ($cohort->cnt) {
             $cohorts[$cid] .= ' (' . $cohort->cnt . ')';
         }
     }
@@ -257,19 +287,16 @@ function cohort_get_visible_list($course) {
 }
 
 /**
- * Get all the cohorts.
+ * Get all the cohorts defined in given context.
  *
- * @global moodle_database $DB
  * @param int $contextid
  * @param int $page number of the current page
  * @param int $perpage items per page
  * @param string $search search string
- * @return array    Array(totalcohorts => int, cohorts => array)
+ * @return array    Array(totalcohorts => int, cohorts => array, allcohorts => int)
  */
 function cohort_get_cohorts($contextid, $page = 0, $perpage = 25, $search = '') {
     global $DB;
-
-    $cohorts = array();
 
     // Add some additional sensible conditions
     $tests = array();
@@ -280,30 +307,28 @@ function cohort_get_cohorts($contextid, $page = 0, $perpage = 25, $search = '') 
     }
 
     if (!empty($search)) {
-        $conditions = array(
-            'name',
-            'idnumber',
-            'description',
-        );
+        $conditions = array('name', 'idnumber', 'description');
         $searchparam = '%' . $DB->sql_like_escape($search) . '%';
-        foreach ($conditions as $key => $condition) {
+        foreach ($conditions as $key=>$condition) {
             $conditions[$key] = $DB->sql_like($condition, "?", false);
             $params[] = $searchparam;
         }
         $tests[] = '(' . implode(' OR ', $conditions) . ')';
     }
-    $wherecondition = (empty($tests) ? '' : " WHERE " . implode(' AND ', $tests));
+    $wherecondition = implode(' AND ', $tests);
 
-    $fields = 'SELECT *';
-    $countfields = 'SELECT COUNT(1)';
+    $fields = "SELECT *";
+    $countfields = "SELECT COUNT(1)";
     $sql = " FROM {cohort}
-             $wherecondition";
-    $order = ' ORDER BY name ASC';
+             WHERE $wherecondition";
+    $order = " ORDER BY name ASC, idnumber ASC";
     $totalcohorts = $DB->count_records_sql($countfields . $sql, $params);
+    $allcohorts = $DB->count_records('cohort', array('contextid'=>$contextid));
     $cohorts = $DB->get_records_sql($fields . $sql . $order, $params, $page*$perpage, $perpage);
 
-    return array('totalcohorts' => $totalcohorts, 'cohorts' => $cohorts);
+    return array('totalcohorts' => $totalcohorts, 'cohorts' => $cohorts, 'allcohorts'=>$allcohorts);
 }
+
 
 /**
  * Print the tabs for an individual cohort

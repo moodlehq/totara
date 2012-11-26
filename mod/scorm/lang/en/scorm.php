@@ -47,6 +47,9 @@ $string['asset'] = 'Asset';
 $string['assetlaunched'] = 'Asset - Viewed';
 $string['attempt'] = 'Attempt';
 $string['attempts'] = 'Attempts';
+$string['attemptstatusall'] = 'My home and entry page';
+$string['attemptstatusmy'] = 'My home only';
+$string['attemptstatusentry'] = 'Entry page only';
 $string['attemptsx'] = '{$a} attempts';
 $string['attempt1'] = '1 attempt';
 $string['attr_error'] = 'Bad value for attribute ({$a->attr}) in tag {$a->tag}.';
@@ -90,13 +93,14 @@ $string['directories'] = 'Show the directory links';
 $string['disabled'] = 'Disabled';
 $string['display'] = 'Display package';
 $string['displayattemptstatus'] = 'Display attempt status';
-$string['displayattemptstatus_help'] = 'If enabled, scores and grades for attempts are displayed on the SCORM outline page.';
+$string['displayattemptstatus_help'] = 'This preference allows a summary of the users attempts to show in the course overview block in My home and/or the SCORM entry page.';
 $string['displayattemptstatusdesc'] = 'This preference sets the default value for the display attempt status setting';
 $string['displaycoursestructure'] = 'Display course structure on entry page';
 $string['displaycoursestructure_help'] = 'If enabled, the table of contents is displayed on the SCORM outline page.';
 $string['displaycoursestructuredesc'] = 'This preference sets the default value for the display course structure on entry page setting';
 $string['displaydesc'] = 'This preference sets the default of whether to display the package or not for an activity';
 $string['displaysettings'] = 'Display Settings';
+$string['dnduploadscorm'] = 'Add a SCORM package';
 $string['domxml'] = 'DOMXML external library';
 $string['duedate'] = 'Due date';
 $string['element'] = 'Element';
@@ -202,7 +206,15 @@ $string['missingparam'] = 'A required is missing or wrong';
 $string['missing_tag'] = 'Missing tag {$a->tag}';
 $string['mode'] = 'Mode';
 $string['modulename'] = 'SCORM package';
-$string['modulename_help'] = 'SCORM and AICC are a collection of specifications that enable interoperability, accessibility and reusability of web-based learning content. The SCORM/AICC module allows for SCORM/AICC packages to be included in the course.';
+$string['modulename_help'] = 'A SCORM package is a collection of files which are packaged according to an agreed standard for learning objects. The SCORM activity module enables SCORM or AICC packages to be uploaded as a zip file and added to a course.
+
+Content is usually displayed over several pages, with navigation between the pages. There are various options for displaying content in a pop-up window, with a table of contents, with navigation buttons etc. SCORM activities generally include questions, with grades being recorded in the gradebook.
+
+SCORM activities may be used
+
+* For presenting multimedia content and animations
+* As an assessment tool';
+$string['modulename_link'] = 'mod/scorm/view';
 $string['modulenameplural'] = 'SCORM packages';
 $string['newattempt'] = 'Start a new attempt';
 $string['next'] = 'Continue';
@@ -264,6 +276,7 @@ $string['review'] = 'Review';
 $string['reviewmode'] = 'Review mode';
 $string['scoes'] = 'Learning objects';
 $string['score'] = 'Score';
+$string['scorm:addinstance'] = 'Add a new SCORM package';
 $string['scormclose'] = 'Until';
 $string['scormcourse'] = 'Learning course';
 $string['scorm:deleteresponses'] = 'Delete SCORM attempts';

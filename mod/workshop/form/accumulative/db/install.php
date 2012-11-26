@@ -19,8 +19,7 @@
  * This file replaces the legacy STATEMENTS section in db/install.xml,
  * lib.php/modulename_install() post installation hook and partially defaults.php
  *
- * @package    workshopform
- * @subpackage accumulative
+ * @package    workshopform_accumulative
  * @copyright  2009 David Mudrak <david.mudrak@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,19 +29,5 @@
  */
 function xmldb_workshopform_accumulative_install() {
     global $CFG, $DB;
-    require_once(dirname(__FILE__) . '/upgradelib.php');
 
-    // upgrade from old workshop 1.x if needed
-    workshopform_accumulative_upgrade_legacy();
-}
-
-/**
- * Post installation procedure recovery
- */
-function xmldb_workshopform_accumulative_install_recovery() {
-    global $CFG, $DB;
-    require_once(dirname(__FILE__) . '/upgradelib.php');
-
-    // continue upgrading from old workshop 1.x if needed
-    workshopform_accumulative_upgrade_legacy();
 }

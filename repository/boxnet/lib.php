@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,17 +14,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once($CFG->libdir.'/boxlib.php');
-
 /**
- * repository_boxnet class
- * This is a subclass of repository class
+ * This plugin is used to access box.net repository
  *
  * @since 2.0
- * @package    repository
- * @subpackage boxnet
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_boxnet
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+require_once($CFG->libdir . '/boxlib.php');
+
+/**
+ * repository_boxnet class implements box.net client
+ *
+ * @since 2.0
+ * @package    repository_boxnet
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class repository_boxnet extends repository {
@@ -33,8 +38,9 @@ class repository_boxnet extends repository {
 
     /**
      * Constructor
+     *
      * @param int $repositoryid
-     * @param object $context
+     * @param stdClass $context
      * @param array $options
      */
     public function __construct($repositoryid, $context = SYSCONTEXTID, $options = array()) {
@@ -59,6 +65,7 @@ class repository_boxnet extends repository {
 
     /**
      * check if user logged
+     *
      * @return boolean
      */
     public function check_login() {
@@ -110,11 +117,10 @@ class repository_boxnet extends repository {
     /**
      * Search files from box.net
      *
-     * @global object $OUTPUT
      * @param string $search_text
      * @return mixed
      */
-    public function search($search_text) {
+    public function search($search_text, $page = 0) {
         global $OUTPUT;
         $list = array();
         $ret  = array();
@@ -132,7 +138,7 @@ class repository_boxnet extends repository {
                             'date'=>$filedates[$n],
                             'source'=>'https://www.box.com/api/1.0/download/'
                                 .$this->auth_token.'/'.$fileids[$n],
-                            'thumbnail' => $OUTPUT->pix_url(file_extension_icon($v, 32))->out(false));
+                            'thumbnail' => $OUTPUT->pix_url(file_extension_icon($v, 90))->out(false));
                 }
             }
         }
@@ -144,6 +150,7 @@ class repository_boxnet extends repository {
      * Get file listing
      *
      * @param string $path
+     * @param string $page
      * @return mixed
      */
     public function get_listing($path = '/', $page = ''){
@@ -188,6 +195,7 @@ class repository_boxnet extends repository {
 
     /**
      * Names of the plugin settings
+     *
      * @return array
      */
     public static function get_type_option_names() {
@@ -204,9 +212,11 @@ class repository_boxnet extends repository {
 
     /**
      * Add Plugin settings input to Moodle form
-     * @param object $mform
+     *
+     * @param moodleform $mform
+     * @param string $classname
      */
-    public function type_config_form($mform) {
+    public static function type_config_form($mform, $classname = 'repository') {
         global $CFG;
         parent::type_config_form($mform);
         $public_account = get_config('boxnet', 'public_account');
@@ -235,12 +245,112 @@ class repository_boxnet extends repository {
             $mform->addElement('static', 'callbackurl', '', get_string('callbackurltext', 'repository_boxnet', $callbackurl));
         }
     }
+
     /**
      * Box.net supports file linking and copying
-     * @return string
+     *
+     * @return int
      */
     public function supported_returntypes() {
-        return FILE_INTERNAL | FILE_EXTERNAL;
+        return FILE_INTERNAL | FILE_EXTERNAL | FILE_REFERENCE;
+    }
+
+    /**
+     * Prepare file reference information
+     *
+     * @param string $source
+     * @return string file referece
+     */
+    public function get_file_reference($source) {
+        // Box.net returns a url.
+        return $source;
+    }
+
+    /**
+     * Returns information about file in this repository by reference
+     * {@link repository::get_file_reference()}
+     * {@link repository::get_file()}
+     *
+     * Returns null if file not found or is not readable
+     *
+     * @param stdClass $reference file reference db record
+     * @return null|stdClass with attribute 'filepath'
+     */
+    public function get_file_by_reference($reference) {
+        $array = explode('/', $reference->reference);
+        $fileid = array_pop($array);
+        $fileinfo = $this->boxclient->get_file_info($fileid, self::SYNCFILE_TIMEOUT);
+        if ($fileinfo) {
+            $size = (int)$fileinfo->size;
+            if (file_extension_in_typegroup($fileinfo->file_name, 'web_image')) {
+                // this is an image - download it to moodle
+                $path = $this->prepare_file('');
+                $c = new curl;
+                $result = $c->download_one($reference->reference, null, array('filepath' => $path, 'timeout' => self::SYNCIMAGE_TIMEOUT));
+                if ($result === true) {
+                    return (object)array('filepath' => $path);
+                }
+            }
+            return (object)array('filesize' => $size);
+        }
+        return null;
+    }
+
+    /**
+     * Return human readable reference information
+     * {@link stored_file::get_reference()}
+     *
+     * @param string $reference
+     * @param int $filestatus status of the file, 0 - ok, 666 - source missing
+     * @return string
+     */
+    public function get_reference_details($reference, $filestatus = 0) {
+        // Indicate it's from box.net repository + secure URL
+        $array = explode('/', $reference);
+        $fileid = array_pop($array);
+        $fileinfo = $this->boxclient->get_file_info($fileid, self::SYNCFILE_TIMEOUT);
+        if (!empty($fileinfo)) {
+            $reference = (string)$fileinfo->file_name;
+        }
+        $details = $this->get_name() . ': ' . $reference;
+        if (!empty($fileinfo)) {
+            return $details;
+        } else {
+            return get_string('lostsource', 'repository', $details);
+        }
+    }
+
+    /**
+     * Return the source information
+     *
+     * @param stdClass $url
+     * @return string|null
+     */
+    public function get_file_source_info($url) {
+        global $USER;
+        $array = explode('/', $url);
+        $fileid = array_pop($array);
+        $fileinfo = $this->boxclient->get_file_info($fileid, self::SYNCFILE_TIMEOUT);
+        if (!empty($fileinfo)) {
+            return 'Box ('. fullname($USER). '): '. (string)$fileinfo->file_name. ': '. $url;
+        } else {
+            return 'Box: '. $url;
+        }
+    }
+
+    /**
+     * Repository method to serve the referenced file
+     *
+     * @param stored_file $storedfile the file that contains the reference
+     * @param int $lifetime Number of seconds before the file should expire from caches (default 24 hours)
+     * @param int $filter 0 (default)=no filtering, 1=all files, 2=html files only
+     * @param bool $forcedownload If true (default false), forces download of file rather than view in browser/plugin
+     * @param array $options additional options affecting the file serving
+     */
+    public function send_file($storedfile, $lifetime=86400 , $filter=0, $forcedownload=false, array $options = null) {
+        $ref = $storedfile->get_reference();
+        // Let box.net serve the file. It will return 'no such file' content if file not found
+        // also if file has the different name than alias, it will be returned with the box.net filename
+        header('Location: ' . $ref);
     }
 }
-

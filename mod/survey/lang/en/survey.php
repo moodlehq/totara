@@ -206,7 +206,10 @@ $string['invalidsurveyid'] = 'Survey ID was incorrect';
 $string['invalidtmptid'] = 'Invalid template id';
 $string['ipreferthat'] = 'I prefer that';
 $string['modulename'] = 'Survey';
-$string['modulename_help'] = 'The survey module provides three types of survey instrument for assessing and stimulating learning in online environments. The teacher can use them to gather data that will help them learn about their class and reflect on their own teaching.';
+$string['modulename_help'] = 'The survey activity module provides a number of verified survey instruments that have been found useful in assessing and stimulating learning in online environments. A teacher can use these to gather data from their students that will help them learn about their class and reflect on their own teaching.
+
+Note that these survey tools are pre-populated with questions. Teachers who wish to create their own survey should use the feedback activity module.';
+$string['modulename_link'] = 'mod/survey/view';
 $string['modulenameplural'] = 'Surveys';
 $string['name'] = 'Name';
 $string['newsurveyresponses'] = 'New survey responses';
@@ -234,6 +237,7 @@ $string['scaletimes5'] = 'Almost never,Seldom,Sometimes,Often,Almost always';
 $string['seemoredetail'] = 'Click here to see more detail';
 $string['selectedquestions'] = 'Selected questions from a scale, all students';
 $string['summary'] = 'Summary';
+$string['survey:addinstance'] = 'Add a new survey';
 $string['surveycompleted'] = 'You\'ve completed this survey.  The graph below shows a summary of your results compared to the class averages.';
 $string['survey:download'] = 'Download responses';
 $string['surveygraph'] = 'Survey graph';

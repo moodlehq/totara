@@ -9,12 +9,14 @@ require_once($CFG->libdir . '/csvlib.class.php');
 class mod_data_export_form extends moodleform {
     var $_datafields = array();
     var $_cm;
+    var $_data;
 
      // @param string $url: the url to post to
      // @param array $datafields: objects in this database
-    function mod_data_export_form($url, $datafields, $cm) {
+    function mod_data_export_form($url, $datafields, $cm, $data) {
         $this->_datafields = $datafields;
         $this->_cm = $cm;
+        $this->_data = $data;
         parent::moodleform($url);
     }
 
@@ -29,11 +31,11 @@ class mod_data_export_form extends moodleform {
             unset($choices[$key]);
         }
         $typesarray = array();
-        $typesarray[] = &MoodleQuickForm::createElement('radio', 'exporttype', null, get_string('csvwithselecteddelimiter', 'data') . '&nbsp;', 'csv');
-        $typesarray[] = &MoodleQuickForm::createElement('select', 'delimiter_name', null, $choices);
+        $typesarray[] = $mform->createElement('radio', 'exporttype', null, get_string('csvwithselecteddelimiter', 'data') . '&nbsp;', 'csv');
+        $typesarray[] = $mform->createElement('select', 'delimiter_name', null, $choices);
         //temporarily commenting out Excel export option. See MDL-19864
-        //$typesarray[] = &MoodleQuickForm::createElement('radio', 'exporttype', null, get_string('excel', 'data'), 'xls');
-        $typesarray[] = &MoodleQuickForm::createElement('radio', 'exporttype', null, get_string('ods', 'data'), 'ods');
+        //$typesarray[] = $mform->createElement('radio', 'exporttype', null, get_string('excel', 'data'), 'xls');
+        $typesarray[] = $mform->createElement('radio', 'exporttype', null, get_string('ods', 'data'), 'ods');
         $mform->addGroup($typesarray, 'exportar', '', array(''), false);
         $mform->addRule('exportar', null, 'required');
         $mform->setDefault('exporttype', 'csv');
@@ -56,6 +58,14 @@ class mod_data_export_form extends moodleform {
             }
         }
         $this->add_checkbox_controller(1, null, null, 1);
+        $context = context_module::instance($this->_cm->id);
+        if (has_capability('mod/data:exportuserinfo', $context)) {
+            $mform->addElement('checkbox', 'exportuser', get_string('includeuserdetails', 'data'));
+        }
+        $mform->addElement('checkbox', 'exporttime', get_string('includetime', 'data'));
+        if ($this->_data->approval) {
+            $mform->addElement('checkbox', 'exportapproval', get_string('includeapproval', 'data'));
+        }
         $this->add_action_buttons(true, get_string('exportentries', 'data'));
     }
 

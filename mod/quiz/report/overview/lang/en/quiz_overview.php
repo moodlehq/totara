@@ -17,10 +17,9 @@
 /**
  * Strings for component 'quiz_overview', language 'en', branch 'MOODLE_20_STABLE'
  *
- * @package    quiz
- * @subpackage overview
- * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   quiz_overview
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['allattempts'] = 'Show all attempts';
@@ -66,7 +65,7 @@ $string['regradeheader'] = 'Regrading';
 $string['regradeselected'] = 'Regrade selected attempts';
 $string['show'] = 'Show / download';
 $string['showattempts'] = 'Only show / download attempts';
-$string['showdetailedmarks'] = 'Show / download marks for each question';
+$string['showdetailedmarks'] = 'Marks for each question';
 $string['showinggraded'] = 'Showing only the attempt graded for each user.';
 $string['showinggradedandungraded'] = 'Showing graded and ungraded attempts for each user. The one attempt for each user that is graded is highlighted. The grading method for this quiz is {$a}.';
 $string['studentingroup'] = '\'{$a->coursestudent}\' in group \'{$a->groupname}\'';

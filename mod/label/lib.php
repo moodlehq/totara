@@ -35,11 +35,9 @@ define("LABEL_MAX_NAME_LENGTH", 50);
  * @return string
  */
 function get_label_name($label) {
-    $textlib = textlib_get_instance();
-
     $name = strip_tags(format_string($label->intro,true));
-    if ($textlib->strlen($name) > LABEL_MAX_NAME_LENGTH) {
-        $name = $textlib->substr($name, 0, LABEL_MAX_NAME_LENGTH)."...";
+    if (textlib::strlen($name) > LABEL_MAX_NAME_LENGTH) {
+        $name = textlib::substr($name, 0, LABEL_MAX_NAME_LENGTH)."...";
     }
 
     if (empty($name)) {
@@ -110,19 +108,6 @@ function label_delete_instance($id) {
     }
 
     return $result;
-}
-
-/**
- * Returns the users with data in one resource
- * (NONE, but must exist on EVERY mod !!)
- *
- * @todo: deprecated - to be deleted in 2.2
- *
- * @param int $labelid
- */
-function label_get_participants($labelid) {
-
-    return false;
 }
 
 /**

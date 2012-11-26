@@ -48,12 +48,12 @@ if (!empty($id)) {
 
 $PAGE->set_url('/mod/scorm/datamodel.php', array('scoid'=>$scoid, 'attempt'=>$attempt, 'id'=>$cm->id));
 
-require_login($course->id, false, $cm);
+require_login($course, false, $cm);
 
 if (confirm_sesskey() && (!empty($scoid))) {
     $result = true;
     $request = null;
-    if (has_capability('mod/scorm:savetrack', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+    if (has_capability('mod/scorm:savetrack', context_module::instance($cm->id))) {
         foreach (data_submitted() as $element => $value) {
             $element = str_replace('__', '.', $element);
             if (substr($element, 0, 3) == 'cmi') {
@@ -62,7 +62,7 @@ if (confirm_sesskey() && (!empty($scoid))) {
             }
             if (substr($element, 0, 15) == 'adl.nav.request') {
                 // SCORM 2004 Sequencing Request
-                require_once($CFG->dirroot.'/mod/scorm/datamodels/sequencinglib.php');
+                require_once($CFG->dirroot.'/mod/scorm/datamodels/scorm_13lib.php');
 
                 $search = array('@continue@', '@previous@', '@\{target=(\S+)\}choice@', '@exit@', '@exitAll@', '@abandon@', '@abandonAll@');
                 $replace = array('continue_', 'previous_', '\1', 'exit_', 'exitall_', 'abandon_', 'abandonall');

@@ -53,6 +53,7 @@ $string['displayselect_help'] = 'This setting, together with the file type and w
 * New window - The file is displayed in a new browser window with menus and an address bar';
 $string['displayselect_link'] = 'mod/file/mod';
 $string['displayselectexplain'] = 'Choose display type, unfortunately not all types are suitable for all files.';
+$string['dnduploadresource'] = 'Create file resource';
 $string['encryptedcode'] = 'Encrypted code';
 $string['filenotfound'] = 'File not found, sorry.';
 $string['filterfiles'] = 'Use filters on file content';
@@ -64,6 +65,16 @@ $string['legacyfiles'] = 'Migration of old course file';
 $string['legacyfilesactive'] = 'Active';
 $string['legacyfilesdone'] = 'Finished';
 $string['modulename'] = 'File';
+$string['modulename_help'] = 'The file module enables a teacher to provide a file as a course resource. Where possible, the file will be displayed within the course interface; otherwise students will be prompted to download it. The file may include supporting files, for example an HTML page may have embedded images or Flash objects.
+
+Note that students need to have the appropriate software on their computers in order to open the file.
+
+A file may be used
+
+* To share presentations given in class
+* To include a mini website as a course resource
+* To provide draft files of certain software programs (eg Photoshop .psd) so students can edit and submit them for assessment';
+$string['modulename_link'] = 'mod/resource/view';
 $string['modulenameplural'] = 'Files';
 $string['neverseen'] = 'Never seen';
 $string['notmigrated'] = 'This legacy resource type ({$a}) was not yet migrated, sorry.';
@@ -81,7 +92,21 @@ $string['printheading'] = 'Display resource name';
 $string['printheadingexplain'] = 'Display resource name above content? Some display types may not display resource name even if enabled.';
 $string['printintro'] = 'Display resource description';
 $string['printintroexplain'] = 'Display resource description below content? Some display types may not display description even if enabled.';
+$string['resource:addinstance'] = 'Add a new resource';
 $string['resourcecontent'] = 'Files and subfolders';
+$string['resourcedetails_sizetype'] = '{$a->size} {$a->type}';
 $string['resource:exportresource'] = 'Export resource';
 $string['resource:view'] = 'View resource';
 $string['selectmainfile'] = 'Please select the main file by clicking the icon next to file name.';
+$string['showsize'] = 'Show size';
+$string['showsize_help'] = 'Displays the file size, such as \'3.1 MB\', beside links to the file.
+
+If there are multiple files in this resource, the total size of all files is displayed.';
+$string['showsize_desc'] = 'Display file size on course page?';
+$string['showtype'] = 'Show type';
+$string['showtype_desc'] = 'Display file type (e.g. \'Word document\') on course page?';
+$string['showtype_help'] = 'Displays the type of the file, such as \'Word document\', beside links to the file.
+
+If there are multiple files in this resource, the start file type is displayed.
+
+If the file type is not known to the system, it will not display.';

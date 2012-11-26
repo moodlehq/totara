@@ -172,6 +172,14 @@ class mod_workshop_mod_form extends moodleform_mod {
         $mform->disabledIf('examplesmode', 'useexamples');
         $mform->setAdvanced('examplesmode');
 
+        // Miscellaneous settings
+        $mform->addElement('header', 'miscellaneoussettings', get_string('miscellaneoussettings', 'workshop'));
+
+        $label = get_string('conclusion', 'workshop');
+        $mform->addElement('editor', 'conclusioneditor', $label, null,
+                            workshop::instruction_editors_options($this->context));
+        $mform->addHelpButton('conclusioneditor', 'conclusion', 'workshop');
+
         // Access control -------------------------------------------------------------
         $mform->addElement('header', 'accesscontrol', get_string('accesscontrol', 'workshop'));
 
@@ -183,6 +191,12 @@ class mod_workshop_mod_form extends moodleform_mod {
         $mform->addElement('date_time_selector', 'submissionend', $label, array('optional' => true));
         $mform->setAdvanced('submissionend');
 
+        $label = get_string('submissionendswitch', 'mod_workshop');
+        $mform->addElement('checkbox', 'phaseswitchassessment', $label);
+        $mform->setAdvanced('phaseswitchassessment');
+        $mform->disabledIf('phaseswitchassessment', 'submissionend[enabled]');
+        $mform->addHelpButton('phaseswitchassessment', 'submissionendswitch', 'mod_workshop');
+
         $label = get_string('assessmentstart', 'workshop');
         $mform->addElement('date_time_selector', 'assessmentstart', $label, array('optional' => true));
         $mform->setAdvanced('assessmentstart');
@@ -190,6 +204,9 @@ class mod_workshop_mod_form extends moodleform_mod {
         $label = get_string('assessmentend', 'workshop');
         $mform->addElement('date_time_selector', 'assessmentend', $label, array('optional' => true));
         $mform->setAdvanced('assessmentend');
+
+        $coursecontext = context_course::instance($this->course->id);
+        plagiarism_get_form_elements_module($mform, $coursecontext, 'mod_workshop');
 
         // Common module settings, Restrict availability, Activity completion etc. ----
         $features = array('groups'=>true, 'groupings'=>true, 'groupmembersonly'=>true,
@@ -228,6 +245,14 @@ class mod_workshop_mod_form extends moodleform_mod {
                                 $data['instructreviewers']);
             $data['instructreviewerseditor']['format'] = $data['instructreviewersformat'];
             $data['instructreviewerseditor']['itemid'] = $draftitemid;
+
+            $draftitemid = file_get_submitted_draft_itemid('conclusion');
+            $data['conclusioneditor']['text'] = file_prepare_draft_area($draftitemid, $this->context->id,
+                                'mod_workshop', 'conclusion', 0,
+                                workshop::instruction_editors_options($this->context),
+                                $data['conclusion']);
+            $data['conclusioneditor']['format'] = $data['conclusionformat'];
+            $data['conclusioneditor']['itemid'] = $draftitemid;
         } else {
             // adding a new workshop instance
             $draftitemid = file_get_submitted_draft_itemid('instructauthors');
@@ -237,6 +262,10 @@ class mod_workshop_mod_form extends moodleform_mod {
             $draftitemid = file_get_submitted_draft_itemid('instructreviewers');
             file_prepare_draft_area($draftitemid, null, 'mod_workshop', 'instructreviewers', 0);    // no context yet, itemid not used
             $data['instructreviewerseditor'] = array('text' => '', 'format' => editors_get_preferred_format(), 'itemid' => $draftitemid);
+
+            $draftitemid = file_get_submitted_draft_itemid('conclusion');
+            file_prepare_draft_area($draftitemid, null, 'mod_workshop', 'conclusion', 0);    // no context yet, itemid not used
+            $data['conclusioneditor'] = array('text' => '', 'format' => editors_get_preferred_format(), 'itemid' => $draftitemid);
         }
     }
 
@@ -282,5 +311,43 @@ class mod_workshop_mod_form extends moodleform_mod {
         }
 
         parent::definition_after_data();
+    }
+
+    /**
+     * Validates the form input
+     *
+     * @param array $data submitted data
+     * @param array $files submitted files
+     * @return array eventual errors indexed by the field name
+     */
+    public function validation($data, $files) {
+        $errors = array();
+
+        // check the phases borders are valid
+        if ($data['submissionstart'] > 0 and $data['submissionend'] > 0 and $data['submissionstart'] >= $data['submissionend']) {
+            $errors['submissionend'] = get_string('submissionendbeforestart', 'mod_workshop');
+        }
+        if ($data['assessmentstart'] > 0 and $data['assessmentend'] > 0 and $data['assessmentstart'] >= $data['assessmentend']) {
+            $errors['assessmentend'] = get_string('assessmentendbeforestart', 'mod_workshop');
+        }
+
+        // check the phases do not overlap
+        if (max($data['submissionstart'], $data['submissionend']) > 0 and max($data['assessmentstart'], $data['assessmentend']) > 0) {
+            $phasesubmissionend = max($data['submissionstart'], $data['submissionend']);
+            $phaseassessmentstart = min($data['assessmentstart'], $data['assessmentend']);
+            if ($phaseassessmentstart == 0) {
+                $phaseassessmentstart = max($data['assessmentstart'], $data['assessmentend']);
+            }
+            if ($phasesubmissionend > 0 and $phaseassessmentstart > 0 and $phaseassessmentstart < $phasesubmissionend) {
+                foreach (array('submissionend', 'submissionstart', 'assessmentstart', 'assessmentend') as $f) {
+                    if ($data[$f] > 0) {
+                        $errors[$f] = get_string('phasesoverlap', 'mod_workshop');
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $errors;
     }
 }

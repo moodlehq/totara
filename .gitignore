@@ -33,3 +33,4 @@ webrat.log
 Thumbs.db
 _notes
 diff.log
+phpunit.xml

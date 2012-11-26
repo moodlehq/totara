@@ -19,8 +19,8 @@
  * Add/remove group from grouping.
  *
  * @copyright 1999 Martin Dougiamas  http://dougiamas.com
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package groups
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   core_group
  */
 
 require_once('../config.php');
@@ -40,7 +40,7 @@ if (!$course = $DB->get_record('course', array('id'=>$grouping->courseid))) {
 $courseid = $course->id;
 
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
 require_capability('moodle/course:managegroups', $context);
 
 $returnurl = $CFG->wwwroot.'/group/groupings.php?id='.$courseid;

@@ -96,7 +96,7 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                                     color: { to: '#06e' },
                                     backgroundColor: { to: '#FFE390' }
                                 };
-                                var anim = new YAHOO.util.ColorAnim(ids[i], attributes);
+                                var anim = new Y.YUI2.util.ColorAnim(ids[i], attributes);
                                 anim.animate();
                             }
                             */
@@ -108,7 +108,7 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                     var attributes = {
                         backgroundColor: { from: '#FFE390', to:'#FFFFFF' }
                     };
-                    var anim = new YAHOO.util.ColorAnim('dlg-content-'+cid, attributes);
+                    var anim = new Y.YUI2.util.ColorAnim('dlg-content-'+cid, attributes);
                     anim.animate();
                 }
             },
@@ -257,7 +257,7 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                         };
                         var cmt = Y.one('#'+htmlid);
                         cmt.setStyle('overflow', 'hidden');
-                        var anim = new YAHOO.util.Anim(htmlid, attributes, 1, YAHOO.util.Easing.easeOut);
+                        var anim = new Y.YUI2.util.Anim(htmlid, attributes, 1, Y.YUI2.util.Easing.easeOut);
                         anim.onComplete.subscribe(remove_dom, cmt, this);
                         anim.animate();
                     }
@@ -311,16 +311,16 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                             CommentHelper.confirmoverlay.set('xy', [e.pageX-width-5, e.pageY]);
                             CommentHelper.confirmoverlay.set('visible', true);
                             Y.one('#canceldelete-'+scope.client_id).on('click', function(e) {
-								e.preventDefault();
+                                e.preventDefault();
                                 scope.cancel_delete();
                                 });
                             Y.Event.purgeElement('#confirmdelete-'+scope.client_id, false, 'click');
                             Y.one('#confirmdelete-'+scope.client_id).on('click', function(e) {
-									e.preventDefault();
-                                    if (commentid[1]) {
-                                        scope.dodelete(commentid[1]);
-                                    }
-                                });
+                                e.preventDefault();
+                                if (commentid[1]) {
+                                    scope.dodelete(commentid[1]);
+                                }
+                            });
                         }, scope, node);
                     }
                 );
@@ -363,7 +363,13 @@ bodyContent: '<div class="comment-delete-confirm"><a href="#" id="confirmdelete-
                 } else {
                     // hide
                     container.setStyle('display', 'none');
-                    img.set('src', M.util.image_url('t/collapsed', 'core'));
+                    var collapsedimage = 't/collapsed'; // ltr mode
+                    if ( Y.one(document.body).hasClass('dir-rtl') ) {
+                        collapsedimage = 't/collapsed_rtl';
+                    } else {
+                        collapsedimage = 't/collapsed';
+                    }
+                    img.set('src', M.util.image_url(collapsedimage, 'core'));
                     if (ta) {
                         ta.set('value','');
                     }

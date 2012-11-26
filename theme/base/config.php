@@ -51,7 +51,8 @@ $THEME->sheets = array(
     'totara_jquery_treeview',
     'totara_jquery_ui_dialog',  /** Generated file: see comments **/
     'totara',   /** Totara-specific layout **/
-    'user'
+    'user',
+    'filemanager'
 );
 
 $THEME->editor_sheets = array('editor');
@@ -66,7 +67,7 @@ $THEME->layouts = array(
     'standard' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
     ),
     // pages that need the full width of the page - no blocks shown at all
     // this is only used by totara pages
@@ -79,25 +80,25 @@ $THEME->layouts = array(
     'course' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
         'options' => array('langmenu'=>true),
     ),
     'coursecategory' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
     ),
     // part of course, typical for modules - default page layout if $cm specified in require_login()
     'incourse' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
     ),
     // The site home page.
     'frontpage' => array(
         'file' => 'frontpage.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
     ),
     // Server administration scripts.
     'admin' => array(
@@ -109,14 +110,14 @@ $THEME->layouts = array(
     'mydashboard' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
         'options' => array('langmenu'=>true),
     ),
     // My public page
     'mypublic' => array(
         'file' => 'general.php',
         'regions' => array('side-pre', 'side-post'),
-        'defaultregion' => 'side-post',
+        'defaultregion' => 'side-pre',
     ),
     'login' => array(
         'file' => 'general.php',
@@ -162,11 +163,18 @@ $THEME->layouts = array(
         'regions' => array(),
         'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true),
     ),
-    // The pagelayout used for reports
+    // The pagelayout used for reports.
     'report' => array(
         'file' => 'report.php',
         'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
+    ),
+    // The pagelayout used for safebrowser and securewindow.
+    'secure' => array(
+        'file' => 'general.php',
+        'regions' => array('side-pre', 'side-post'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nofooter'=>true, 'nonavbar'=>true, 'nocustommenu'=>true, 'nologinlinks'=>true),
     ),
 );
 

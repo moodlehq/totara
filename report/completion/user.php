@@ -153,7 +153,8 @@ foreach ($courses as $type => $infos) {
 
             // Get course info
             $c_course = $DB->get_record('course', array('id' => $c_info->course_id));
-            $course_name = $c_course->fullname;
+            $course_context = context_course::instance($c_course->id, MUST_EXIST);
+            $course_name = format_string($c_course->fullname, true, array('context' => $course_context));
 
             // Get completions
             $completions = $c_info->get_completions($user->id);

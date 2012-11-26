@@ -18,7 +18,7 @@ class mod_glossary_entry_form extends moodleform {
         $definitionoptions = $this->_customdata['definitionoptions'];
         $attachmentoptions = $this->_customdata['attachmentoptions'];
 
-        $context  = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $context  = context_module::instance($cm->id);
         // Prepare format_string/text options
         $fmtoptions = array(
             'context' => $context);
@@ -96,7 +96,7 @@ class mod_glossary_entry_form extends moodleform {
 
         $glossary = $this->_customdata['glossary'];
         $cm       = $this->_customdata['cm'];
-        $context  = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $context  = context_module::instance($cm->id);
 
         $id = (int)$data['id'];
         $data['concept'] = trim($data['concept']);
@@ -118,7 +118,7 @@ class mod_glossary_entry_form extends moodleform {
                 if ($DB->record_exists_select('glossary_entries',
                         'glossaryid = :glossaryid AND LOWER(concept) = :concept AND id != :id', array(
                             'glossaryid' => $glossary->id,
-                            'concept'    => moodle_strtolower($data['concept']),
+                            'concept'    => textlib::strtolower($data['concept']),
                             'id'         => $id))) {
                     $errors['concept'] = get_string('errconceptalreadyexists', 'glossary');
                 }
@@ -129,7 +129,7 @@ class mod_glossary_entry_form extends moodleform {
                 if ($DB->record_exists_select('glossary_entries',
                         'glossaryid = :glossaryid AND LOWER(concept) = :concept', array(
                             'glossaryid' => $glossary->id,
-                            'concept'    => moodle_strtolower($data['concept'])))) {
+                            'concept'    => textlib::strtolower($data['concept'])))) {
                     $errors['concept'] = get_string('errconceptalreadyexists', 'glossary');
                 }
             }

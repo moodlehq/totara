@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * HTML import lib
  *
- * @package    booktool
- * @subpackage importhtml
- * @copyright  2011 Petr Skoda  {@link http://skodak.org}
+ * @package    booktool_importhtml
+ * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,6 +27,15 @@ defined('MOODLE_INTERNAL') || die;
 require_once(dirname(__FILE__).'/lib.php');
 require_once($CFG->dirroot.'/mod/book/locallib.php');
 
+/**
+ * Import HTML pages packaged into one zip archive
+ *
+ * @param stored_file $package
+ * @param string $type type of the package ('typezipdirs' or 'typezipfiles')
+ * @param stdClass $book
+ * @param context_module $context
+ * @param bool $verbose
+ */
 function toolbook_importhtml_import_chapters($package, $type, $book, $context, $verbose = true) {
     global $DB, $OUTPUT;
 
@@ -36,8 +44,8 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
     $packer = get_file_packer('application/zip');
     $fs->delete_area_files($context->id, 'mod_book', 'importhtmltemp', 0);
     $package->extract_to_storage($packer, $context->id, 'mod_book', 'importhtmltemp', 0, '/');
-    //$datafiles = $fs->get_area_files($context->id, 'mod_book', 'importhtmltemp', 0, 'id', false);
-    //echo "<pre>";p(var_export($datafiles, true));
+    // $datafiles = $fs->get_area_files($context->id, 'mod_book', 'importhtmltemp', 0, 'id', false);
+    // echo "<pre>";p(var_export($datafiles, true));
 
     $chapters = array();
 
@@ -49,7 +57,7 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
         if ($file = $fs->get_file_by_hash("$context->id/mod_book/importhtmltemp/0/$chapterfile->pathname")) {
             $htmlcontent = toolbook_importhtml_fix_encoding($file->get_content());
             $htmlchapters = toolbook_importhtml_parse_headings(toolbook_importhtml_parse_body($htmlcontent));
-            //TODO: process h1 as main chapter and h2 as subchapters
+            // TODO: process h1 as main chapter and h2 as subchapters
         }
     } else {
         foreach ($chapterfiles as $chapterfile) {
@@ -67,7 +75,7 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
                 $chapter->hidden        = 0;
                 $chapter->timecreated   = time();
                 $chapter->timemodified  = time();
-                if (preg_match('/_sub(\/|\.htm)/i', $chapter->importsrc)) { //if filename or directory ends with *_sub treat as subchapters
+                if (preg_match('/_sub(\/|\.htm)/i', $chapter->importsrc)) { // If filename or directory ends with *_sub treat as subchapters
                     $chapter->subchapter = 1;
                 } else {
                     $chapter->subchapter = 0;
@@ -76,7 +84,7 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
                 $chapter->id = $DB->insert_record('book_chapters', $chapter);
                 $chapters[$chapter->id] = $chapter;
 
-                add_to_log($book->course, 'book', 'update', 'view.php?id='.$context->instanceid.'&chapterid='.$chapter->id, $book->id, $context->instanceid);
+                add_to_log($book->course, 'book', 'add chapter', 'view.php?id='.$context->instanceid.'&chapterid='.$chapter->id, $chapter->id, $context->instanceid);
             }
         }
     }
@@ -90,7 +98,7 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
         $matches = null;
         if (preg_match_all('/(src|codebase|name|href)\s*=\s*"([^"]+)"/i', $chapter->content, $matches)) {
             $file_record = array('contextid'=>$context->id, 'component'=>'mod_book', 'filearea'=>'chapter', 'itemid'=>$chapter->id);
-            foreach ($matches[0] as $i=>$match) {
+            foreach ($matches[0] as $i => $match) {
                 $filepath = dirname($chapter->importsrc).'/'.$matches[2][$i];
                 $filepath = toolbook_importhtml_fix_path($filepath);
 
@@ -120,7 +128,7 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
         $newcontent = $chapter->content;
         $matches = null;
         if (preg_match_all('/(href)\s*=\s*"([^"]+)"/i', $chapter->content, $matches)) {
-            foreach ($matches[0] as $i=>$match) {
+            foreach ($matches[0] as $i => $match) {
                 if (strpos($matches[2][$i], ':') !== false or strpos($matches[2][$i], '@') !== false) {
                     // it is either absolute or pluginfile link
                     continue;
@@ -129,7 +137,8 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
                 $chapterpath = toolbook_importhtml_fix_path($chapterpath);
                 foreach ($allchapters as $target) {
                     if ($target->importsrc === $chapterpath) {
-                        $newcontent = str_replace($match, 'href="'.new moodle_url('/mod/book/view.php', array('id'=>$context->instanceid, 'chapter'=>$target->id)).'"', $newcontent);
+                        $newcontent = str_replace($match, 'href="'.new moodle_url('/mod/book/view.php',
+                                array('id'=>$context->instanceid, 'chapter'=>$target->id)).'"', $newcontent);
                     }
                 }
             }
@@ -147,16 +156,28 @@ function toolbook_importhtml_import_chapters($package, $type, $book, $context, $
     $DB->set_field('book', 'revision', $book->revision+1, array('id'=>$book->id));
 }
 
+/**
+ * Parse the headings of the imported package of type 'typeonefile'
+ * (currently unsupported)
+ *
+ * @param string $html html content to parse
+ * @todo implement this once the type 'typeonefile' is enabled
+ */
 function toolbook_importhtml_parse_headings($html) {
-    //TODO
 }
 
+/**
+ * Parse the links to external css sheets of the imported html content
+ *
+ * @param string $html html content to parse
+ * @return string all the links to external css sheets
+ */
 function toolbook_importhtml_parse_styles($html) {
     $styles = '';
     if (preg_match('/<head[^>]*>(.+)<\/head>/is', $html, $matches)) {
         $head = $matches[1];
-        if (preg_match_all('/<link[^>]+rel="stylesheet"[^>]*>/i', $head, $matches)) { //dlnsk extract links to css
-            for($i=0; $i<count($matches[0]); $i++) {
+        if (preg_match_all('/<link[^>]+rel="stylesheet"[^>]*>/i', $head, $matches)) { // Extract links to css.
+            for ($i=0; $i<count($matches[0]); $i++) {
                 $styles .= $matches[0][$i]."\n";
             }
         }
@@ -164,12 +185,18 @@ function toolbook_importhtml_parse_styles($html) {
     return $styles;
 }
 
+/**
+ * Normalize paths to be absolute
+ *
+ * @param string $path original path with MS/relative separators
+ * @return string the normalized and cleaned absolute path
+ */
 function toolbook_importhtml_fix_path($path) {
-    $path = str_replace('\\', '/', $path); //anti MS hack
+    $path = str_replace('\\', '/', $path); // anti MS hack
     $path = '/'.ltrim($path, './'); // dirname() produces . for top level files + our paths start with /
 
     $cnt = substr_count($path, '..');
-    for($i=0; $i<$cnt; $i++) {
+    for ($i=0; $i<$cnt; $i++) {
         $path = preg_replace('|[^/]+/\.\./|', '', $path, 1);
     }
 
@@ -177,17 +204,29 @@ function toolbook_importhtml_fix_path($path) {
     return $path;
 }
 
+/**
+ * Convert some html content to utf8, getting original encoding from html headers
+ *
+ * @param string $html html content to convert
+ * @return string html content converted to utf8
+ */
 function toolbook_importhtml_fix_encoding($html) {
     if (preg_match('/<head[^>]*>(.+)<\/head>/is', $html, $matches)) {
         $head = $matches[1];
         if (preg_match('/charset=([^"]+)/is', $head, $matches)) {
             $enc = $matches[1];
-            return textlib_get_instance()->convert($html, $enc, 'utf-8');
+            return textlib::convert($html, $enc, 'utf-8');
         }
     }
     return iconv('UTF-8', 'UTF-8//IGNORE', $html);
 }
 
+/**
+ * Extract the body from any html contents
+ *
+ * @param string $html the html to parse
+ * @return string the contents of the body
+ */
 function toolbook_importhtml_parse_body($html) {
     $matches = null;
     if (preg_match('/<body[^>]*>(.+)<\/body>/is', $html, $matches)) {
@@ -197,7 +236,14 @@ function toolbook_importhtml_parse_body($html) {
     }
 }
 
-function  toolbook_importhtml_parse_title($html, $default) {
+/**
+ * Extract the title of any html content, getting it from the title tag
+ *
+ * @param string $html the html to parse
+ * @param string $default default title to apply if no title is found
+ * @return string the resulting title
+ */
+function toolbook_importhtml_parse_title($html, $default) {
     $matches = null;
     if (preg_match('/<title>([^<]+)<\/title>/i', $html, $matches)) {
         return $matches[1];
@@ -206,6 +252,14 @@ function  toolbook_importhtml_parse_title($html, $default) {
     }
 }
 
+/**
+ * Returns all the html files (chapters) from a file package
+ *
+ * @param stored_file $package file to be processed
+ * @param string $type type of the package ('typezipdirs' or 'typezipfiles')
+ *
+ * @return array the html files found in the package
+ */
 function toolbook_importhtml_get_chapter_files($package, $type) {
     $packer = get_file_packer('application/zip');
     $files = $package->list_files($packer);
@@ -244,10 +298,10 @@ function toolbook_importhtml_get_chapter_files($package, $type) {
             }
         }
     }
-    // TODO: natural dir sorting would be nice here...
-    textlib_get_instance()->asort($tophtmlfiles);
-    textlib_get_instance()->asort($subhtmlfiles);
-    textlib_get_instance()->asort($topdirs);
+
+    collatorlib::ksort($tophtmlfiles, collatorlib::SORT_NATURAL);
+    collatorlib::ksort($subhtmlfiles, collatorlib::SORT_NATURAL);
+    collatorlib::ksort($topdirs, collatorlib::SORT_NATURAL);
 
     $chapterfiles = array();
 
@@ -255,11 +309,11 @@ function toolbook_importhtml_get_chapter_files($package, $type) {
         $chapterfiles = $tophtmlfiles;
 
     } else if ($type == 1) {
-        foreach ($topdirs as $dir=>$htmlfiles) {
+        foreach ($topdirs as $dir => $htmlfiles) {
             if (empty($htmlfiles)) {
                 continue;
             }
-            textlib_get_instance()->asort($htmlfiles);
+            collatorlib::ksort($htmlfiles, collatorlib::SORT_NATURAL);
             if (isset($htmlfiles[$dir.'/index.html'])) {
                 $htmlfile = $htmlfiles[$dir.'/index.html'];
             } else if (isset($htmlfiles[$dir.'/index.htm'])) {

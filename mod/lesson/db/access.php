@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -20,8 +19,7 @@
  *
  * For naming conventions, see lib/db/access.php.
  *
- * @package    mod
- * @subpackage lesson
+ * @package    mod_lesson
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or late
  */
@@ -29,6 +27,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
+
+    'mod/lesson:addinstance' => array(
+        'riskbitmask' => RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/course:manageactivities'
+    ),
 
     'mod/lesson:edit' => array(
 

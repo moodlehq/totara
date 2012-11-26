@@ -1,12 +1,26 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
 /**
  * Create group OR edit group settings.
  *
- * @copyright &copy; 2006 The Open University
- * @author N.D.Freear AT open.ac.uk
- * @author J.White AT open.ac.uk
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package groups
+ * @copyright 2006 The Open University, N.D.Freear AT open.ac.uk, J.White AT open.ac.uk
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   core_group
  */
 
 require_once('../config.php');
@@ -21,9 +35,11 @@ $confirm  = optional_param('confirm', 0, PARAM_BOOL);
 
 // This script used to support group delete, but that has been moved. In case
 // anyone still links to it, let's redirect to the new script.
-if($delete) {
-    redirect('delete.php?courseid='.$courseid.'&groups='.$id);
+if ($delete) {
+    debugging('Deleting a group through group/group.php is deprecated and will be removed soon. Please use group/delete.php instead');
+    redirect(new moodle_url('delete.php', array('courseid' => $courseid, 'groups' => $id)));
 }
+
 
 if ($id) {
     if (!$group = $DB->get_record('groups', array('id'=>$id))) {
@@ -55,32 +71,10 @@ if ($id !== 0) {
 }
 
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $course->id);
+$context = context_course::instance($course->id);
 require_capability('moodle/course:managegroups', $context);
 
 $returnurl = $CFG->wwwroot.'/group/index.php?id='.$course->id.'&group='.$id;
-
-if ($id and $delete) {
-    if (!$confirm) {
-        $PAGE->set_title(get_string('deleteselectedgroup', 'group'));
-        $PAGE->set_heading($course->fullname . ': '. get_string('deleteselectedgroup', 'group'));
-        echo $OUTPUT->header();
-        $optionsyes = array('id'=>$id, 'delete'=>1, 'courseid'=>$courseid, 'sesskey'=>sesskey(), 'confirm'=>1);
-        $optionsno  = array('id'=>$courseid);
-        $formcontinue = new single_button(new moodle_url('group.php', $optionsyes), get_string('yes'), 'get');
-        $formcancel = new single_button(new moodle_url($baseurl, $optionsno), get_string('no'), 'get');
-        echo $OUTPUT->confirm(get_string('deletegroupconfirm', 'group', $group->name), $formcontinue, $formcancel);
-        echo $OUTPUT->footer();
-        die;
-
-    } else if (confirm_sesskey()){
-        if (groups_delete_group($id)) {
-            redirect('index.php?id='.$course->id);
-        } else {
-            print_error('erroreditgroup', 'group', $returnurl);
-        }
-    }
-}
 
 // Prepare the description editor: We do support files for group descriptions
 $editoroptions = array('maxfiles'=>EDITOR_UNLIMITED_FILES, 'maxbytes'=>$course->maxbytes, 'trust'=>false, 'context'=>$context, 'noclean'=>true);
@@ -98,6 +92,10 @@ if ($editform->is_cancelled()) {
     redirect($returnurl);
 
 } elseif ($data = $editform->get_data()) {
+    if (!has_capability('moodle/course:changeidnumber', $context)) {
+        // Remove the idnumber if the user doesn't have permission to modify it
+        unset($data->idnumber);
+    }
 
     if ($data->id) {
         groups_update_group($data, $editform, $editoroptions);

@@ -28,21 +28,14 @@
  * @return bool result
  */
 function xmldb_filter_tex_upgrade($oldversion) {
-    global $CFG, $DB, $OUTPUT;
+    global $CFG, $DB;
 
-    if ($oldversion < 2011031301) {
-        // clear caches
-        require_once("$CFG->dirroot/filter/tex/lib.php");
-        filter_tex_updatedcallback(null);
+    $dbman = $DB->get_manager();
 
-        upgrade_plugin_savepoint(true, 2011031301, 'filter', 'tex');
-    }
 
-    // Moodle v2.1.0 release upgrade line
+    // Moodle v2.3.0 release upgrade line
     // Put any upgrade step following this
 
-    // Moodle v2.2.0 release upgrade line
-    // Put any upgrade step following this
 
     return true;
 }

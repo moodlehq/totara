@@ -55,9 +55,9 @@ abstract class moodleform_mod extends moodleform {
         $this->_section  = $section;
         $this->_cm       = $cm;
         if ($this->_cm) {
-            $this->context = get_context_instance(CONTEXT_MODULE, $this->_cm->id);
+            $this->context = context_module::instance($this->_cm->id);
         } else {
-            $this->context = get_context_instance(CONTEXT_COURSE, $course->id);
+            $this->context = context_course::instance($course->id);
         }
 
         // Guess module name
@@ -252,10 +252,19 @@ abstract class moodleform_mod extends moodleform {
             foreach($fullcm->conditionsgrade as $gradeitemid=>$minmax) {
                 $groupelements=$mform->getElement('conditiongradegroup['.$num.']')->getElements();
                 $groupelements[0]->setValue($gradeitemid);
-                // These numbers are always in the format 0.00000 - the rtrims remove any final zeros and,
-                // if it is a whole number, the decimal place.
-                $groupelements[2]->setValue(is_null($minmax->min)?'':rtrim(rtrim($minmax->min,'0'),'.'));
-                $groupelements[4]->setValue(is_null($minmax->max)?'':rtrim(rtrim($minmax->max,'0'),'.'));
+                $groupelements[2]->setValue(is_null($minmax->min) ? '' :
+                        format_float($minmax->min, 5, true, true));
+                $groupelements[4]->setValue(is_null($minmax->max) ? '' :
+                        format_float($minmax->max, 5, true, true));
+                $num++;
+            }
+
+            $num = 0;
+            foreach($fullcm->conditionsfield as $field => $details) {
+                $groupelements = $mform->getElement('conditionfieldgroup['.$num.']')->getElements();
+                $groupelements[0]->setValue($field);
+                $groupelements[1]->setValue(is_null($details->operator) ? '' : $details->operator);
+                $groupelements[2]->setValue(is_null($details->value) ? '' : $details->value);
                 $num++;
             }
 
@@ -321,16 +330,18 @@ abstract class moodleform_mod extends moodleform {
         // Conditions: Verify that the grade conditions are numbers, and make sense.
         if (array_key_exists('conditiongradegroup', $data)) {
             foreach ($data['conditiongradegroup'] as $i => $gradedata) {
-                if ($gradedata['conditiongrademin'] !== '' && !is_numeric($gradedata['conditiongrademin'])) {
+                if ($gradedata['conditiongrademin'] !== '' &&
+                        !is_numeric(unformat_float($gradedata['conditiongrademin']))) {
                     $errors["conditiongradegroup[{$i}]"] = get_string('gradesmustbenumeric', 'condition');
                     continue;
                 }
-                if ($gradedata['conditiongrademax'] !== '' && !is_numeric($gradedata['conditiongrademax'])) {
+                if ($gradedata['conditiongrademax'] !== '' &&
+                        !is_numeric(unformat_float($gradedata['conditiongrademax']))) {
                     $errors["conditiongradegroup[{$i}]"] = get_string('gradesmustbenumeric', 'condition');
                     continue;
                 }
                 if ($gradedata['conditiongrademin'] !== '' && $gradedata['conditiongrademax'] !== '' &&
-                        $gradedata['conditiongrademax'] < $gradedata['conditiongrademin']) {
+                        unformat_float($gradedata['conditiongrademax']) < unformat_float($gradedata['conditiongrademin'])) {
                     $errors["conditiongradegroup[{$i}]"] = get_string('badgradelimits', 'condition');
                     continue;
                 }
@@ -344,6 +355,25 @@ abstract class moodleform_mod extends moodleform {
                     $errors["conditiongradegroup[{$i}]"] = get_string('gradelimitsbutnoitem', 'condition');
                     continue;
                 }
+            }
+        }
+
+        // Conditions: Verify that the user profile field has not been declared more than once
+        if (array_key_exists('conditionfieldgroup', $data)) {
+            // Array to store the existing fields
+            $arrcurrentfields = array();
+            // Error message displayed if any condition is declared more than once. We use lang string because
+            // this way we don't actually generate the string unless there is an error.
+            $stralreadydeclaredwarning = new lang_string('fielddeclaredmultipletimes', 'condition');
+            foreach ($data['conditionfieldgroup'] as $i => $fielddata) {
+                if ($fielddata['conditionfield'] == 0) { // Don't need to bother if none is selected
+                    continue;
+                }
+                if (in_array($fielddata['conditionfield'], $arrcurrentfields)) {
+                    $errors["conditionfieldgroup[{$i}]"] = $stralreadydeclaredwarning->out();
+                }
+                // Add the field to the array
+                $arrcurrentfields[] = $fielddata['conditionfield'];
             }
         }
 
@@ -394,7 +424,7 @@ abstract class moodleform_mod extends moodleform {
             $permission=CAP_ALLOW;
             $rolenamestring = null;
             if (!empty($this->_cm)) {
-                $context = get_context_instance(CONTEXT_MODULE, $this->_cm->id);
+                $context = context_module::instance($this->_cm->id);
 
                 $rolenames = get_role_names_with_caps_in_context($context, array('moodle/rating:rate', 'mod/'.$this->_cm->modname.':rate'));
                 $rolenamestring = implode(', ', $rolenames);
@@ -457,7 +487,7 @@ abstract class moodleform_mod extends moodleform {
 
         $mform->addElement('modvisible', 'visible', get_string('visible'));
         if (!empty($this->_cm)) {
-            $context = get_context_instance(CONTEXT_MODULE, $this->_cm->id);
+            $context = context_module::instance($this->_cm->id);
             if (!has_capability('moodle/course:activityvisibility', $context)) {
                 $mform->hardFreeze('visible');
             }
@@ -469,6 +499,8 @@ abstract class moodleform_mod extends moodleform {
         }
 
         if (!empty($CFG->enableavailability)) {
+            // String used by conditions
+            $strnone = get_string('none','condition');
             // Conditional availability
 
             // Available from/to defaults to midnight because then the display
@@ -502,7 +534,7 @@ abstract class moodleform_mod extends moodleform {
                 $gradeoptions[$id] = $item->get_name();
             }
             asort($gradeoptions);
-            $gradeoptions = array(0=>get_string('none','condition'))+$gradeoptions;
+            $gradeoptions = array(0 => $strnone) + $gradeoptions;
 
             $grouparray = array();
             $grouparray[] =& $mform->createElement('select','conditiongradeitemid','',$gradeoptions);
@@ -520,13 +552,32 @@ abstract class moodleform_mod extends moodleform {
                 $ci = new condition_info($this->_cm, CONDITION_MISSING_EXTRATABLE);
                 $this->_cm = $ci->get_full_course_module();
                 $count = count($this->_cm->conditionsgrade)+1;
+                $fieldcount = count($this->_cm->conditionsfield) + 1;
             } else {
                 $count = 1;
+                $fieldcount = 1;
             }
 
             $this->repeat_elements(array($group), $count, array(), 'conditiongraderepeats', 'conditiongradeadds', 2,
                                    get_string('addgrades', 'condition'), true);
             $mform->addHelpButton('conditiongradegroup[0]', 'gradecondition', 'condition');
+
+            // Conditions based on user fields
+            $operators = condition_info::get_condition_user_field_operators();
+            $useroptions = condition_info::get_condition_user_fields();
+            asort($useroptions);
+
+            $useroptions = array(0 => $strnone) + $useroptions;
+            $grouparray = array();
+            $grouparray[] =& $mform->createElement('select', 'conditionfield', '', $useroptions);
+            $grouparray[] =& $mform->createElement('select', 'conditionfieldoperator', '', $operators);
+            $grouparray[] =& $mform->createElement('text', 'conditionfieldvalue');
+            $mform->setType('conditionfieldvalue', PARAM_RAW);
+            $group = $mform->createElement('group', 'conditionfieldgroup', get_string('userfield', 'condition'), $grouparray);
+
+            $this->repeat_elements(array($group), $fieldcount, array(), 'conditionfieldrepeats', 'conditionfieldadds', 2,
+                                   get_string('adduserfields', 'condition'), true);
+            $mform->addHelpButton('conditionfieldgroup[0]', 'userfield', 'condition');
 
             // Conditions based on completion
             $completion = new completion_info($COURSE);
@@ -542,7 +593,7 @@ abstract class moodleform_mod extends moodleform {
                     }
                 }
                 asort($completionoptions);
-                $completionoptions = array(0=>get_string('none','condition'))+$completionoptions;
+                $completionoptions = array(0 => $strnone) + $completionoptions;
 
                 $completionvalues=array(
                     COMPLETION_COMPLETE=>get_string('completion_complete','condition'),
@@ -670,7 +721,7 @@ abstract class moodleform_mod extends moodleform {
      * @return bool True if one or more rules is enabled, false if none are;
      *   default returns false
      */
-    function completion_rule_enabled(&$data) {
+    function completion_rule_enabled($data) {
         return false;
     }
 
@@ -702,6 +753,9 @@ abstract class moodleform_mod extends moodleform {
 
         $mform->addElement('hidden', 'return', 0);
         $mform->setType('return', PARAM_BOOL);
+
+        $mform->addElement('hidden', 'sr', 0);
+        $mform->setType('sr', PARAM_INT);
     }
 
     public function standard_grading_coursemodule_elements() {

@@ -17,10 +17,9 @@
 /**
  * Standard plugin entry points of the quiz statistics report.
  *
- * @package    quiz
- * @subpackage statistics
- * @copyright  2011 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   quiz_statistics
+ * @copyright 2011 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 
@@ -29,12 +28,16 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Serve questiontext files in the question text when they are displayed in this report.
- * @param context $context the context
+ *
+ * @package  mod_quiz
+ * @category files
+ * @param stdClass $context the context
  * @param int $questionid the question id
  * @param array $args remaining file args
  * @param bool $forcedownload
+ * @param array $options additional options affecting the file serving
  */
-function quiz_statistics_questiontext_preview_pluginfile($context, $questionid, $args, $forcedownload) {
+function quiz_statistics_questiontext_preview_pluginfile($context, $questionid, $args, $forcedownload, array $options=array()) {
     global $CFG;
     require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 
@@ -45,7 +48,7 @@ function quiz_statistics_questiontext_preview_pluginfile($context, $questionid, 
     // validate questionid, becuase of the complexity of random quetsions.
     require_capability('quiz/statistics:view', $context);
 
-    question_send_questiontext_file($questionid, $args, $forcedownload);
+    question_send_questiontext_file($questionid, $args, $forcedownload, $options);
 }
 
 /**

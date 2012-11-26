@@ -16,15 +16,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access recent used files
+ *
+ * @since 2.0
+ * @package    repository_recent
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+
+/**
  * repository_recent class is used to browse recent used files
  *
  * @since 2.0
- * @package    repository
- * @subpackage recent
- * @copyright  2010 Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_recent
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 define('DEFAULT_RECENT_FILES_NUM', 50);
 class repository_recent extends repository {
 
@@ -56,8 +64,12 @@ class repository_recent extends repository {
     private function get_recent_files($limitfrom = 0, $limit = DEFAULT_RECENT_FILES_NUM) {
         // XXX: get current itemid
         global $USER, $DB, $itemid;
+        // This SQL will ignore draft files if not owned by current user.
+        // Ignore all file references.
         $sql = 'SELECT files1.*
                   FROM {files} files1
+             LEFT JOIN {files_reference} r
+                       ON files1.referencefileid = r.id
                   JOIN (
                       SELECT contenthash, filename, MAX(id) AS id
                         FROM {files}
@@ -66,7 +78,8 @@ class repository_recent extends repository {
                          AND ((filearea = :filearea1 AND itemid = :itemid) OR filearea != :filearea2)
                     GROUP BY contenthash, filename
                   ) files2 ON files1.id = files2.id
-                ORDER BY files1.timemodified DESC';
+                 WHERE r.repositoryid is NULL
+              ORDER BY files1.timemodified DESC';
         $params = array(
             'userid' => $USER->id,
             'filename' => '.',
@@ -107,17 +120,31 @@ class repository_recent extends repository {
 
         try {
             foreach ($files as $file) {
-                $params = base64_encode(serialize($file));
-                // Check that file exists and accessible
-                $filesize = $this->get_file_size($params);
-                if (!empty($filesize)) {
+                // Check that file exists and accessible, retrieve size/date info
+                $browser = get_file_browser();
+                $context = context::instance_by_id($file['contextid']);
+                $fileinfo = $browser->get_file_info($context, $file['component'],
+                        $file['filearea'], $file['itemid'], $file['filepath'], $file['filename']);
+                if ($fileinfo) {
+                    $params = base64_encode(serialize($file));
                     $node = array(
-                        'title' => $file['filename'],
-                        'size' => $filesize,
-                        'date' => '',
+                        'title' => $fileinfo->get_visible_name(),
+                        'size' => $fileinfo->get_filesize(),
+                        'datemodified' => $fileinfo->get_timemodified(),
+                        'datecreated' => $fileinfo->get_timecreated(),
+                        'author' => $fileinfo->get_author(),
+                        'license' => $fileinfo->get_license(),
                         'source'=> $params,
-                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($file['filename'], 32))->out(false),
+                        'icon' => $OUTPUT->pix_url(file_file_icon($fileinfo, 24))->out(false),
+                        'thumbnail' => $OUTPUT->pix_url(file_file_icon($fileinfo, 90))->out(false),
                     );
+                    if ($imageinfo = $fileinfo->get_imageinfo()) {
+                        $fileurl = new moodle_url($fileinfo->get_url());
+                        $node['realthumbnail'] = $fileurl->out(false, array('preview' => 'thumb', 'oid' => $fileinfo->get_timemodified()));
+                        $node['realicon'] = $fileurl->out(false, array('preview' => 'tinyicon', 'oid' => $fileinfo->get_timemodified()));
+                        $node['image_width'] = $imageinfo['width'];
+                        $node['image_height'] = $imageinfo['height'];
+                    }
                     $list[] = $node;
                 }
             }
@@ -132,8 +159,8 @@ class repository_recent extends repository {
         return array('recentfilesnumber', 'pluginname');
     }
 
-    public function type_config_form($mform) {
-        parent::type_config_form($mform);
+    public static function type_config_form($mform, $classname = 'repository') {
+        parent::type_config_form($mform, $classname);
         $number = get_config('repository_recent', 'recentfilesnumber');
         if (empty($number)) {
             $number = DEFAULT_RECENT_FILES_NUM;
@@ -150,79 +177,22 @@ class repository_recent extends repository {
     public function supported_returntypes() {
         return FILE_INTERNAL;
     }
+
     /**
-     * This function overwrite the default implement to copying file using file_storage
+     * Repository method to make sure that user can access particular file.
      *
-     * @global object $USER
-     * @global object $DB
-     * @param string $encoded The information of file, it is base64 encoded php serialized data
-     * @param string $draftitemid itemid
-     * @param string $new_filename The intended name of file
-     * @param string $new_filepath the new path in draft area
-     * @return array The information of file
+     * This is checked when user tries to pick the file from repository to deal with
+     * potential parameter substitutions is request
+     *
+     * @todo MDL-33805 remove this function when recent files are managed correctly
+     *
+     * @param string $source
+     * @return bool whether the file is accessible by current user
      */
-    public function copy_to_area($encoded, $draftitemid, $new_filepath, $new_filename) {
-        global $USER, $DB;
-
-        $user_context = get_context_instance(CONTEXT_USER, $USER->id);
-
-        $fs = get_file_storage();
-
-        $params = unserialize(base64_decode($encoded));
-
-        $contextid  = clean_param($params['contextid'], PARAM_INT);
-        $fileitemid = clean_param($params['itemid'],    PARAM_INT);
-        $filename   = clean_param($params['filename'],  PARAM_FILE);
-        $filepath   = clean_param($params['filepath'],  PARAM_PATH);;
-        $filearea   = clean_param($params['filearea'],  PARAM_AREA);
-        $component  = clean_param($params['component'], PARAM_COMPONENT);
-
-        // XXX:
-        // When user try to pick a file from other filearea, normally file api will use file browse to
-        // operate the files with capability check, but in some areas, users don't have permission to
-        // browse the files (for example, forum_attachment area).
-        //
-        // To get 'recent' plugin working, we need to use lower level file_stoarge class to bypass the
-        // capability check, we will use a better workaround to improve it.
-        if ($stored_file = $fs->get_file($contextid, $component, $filearea, $fileitemid, $filepath, $filename)) {
-            // verify user id
-            if ($USER->id != $stored_file->get_userid()) {
-                throw new moodle_exception('errornotyourfile', 'repository');
-            }
-            $file_record = array('contextid'=>$user_context->id, 'component'=>'user', 'filearea'=>'draft',
-                'itemid'=>$draftitemid, 'filepath'=>$new_filepath, 'filename'=>$new_filename, 'sortorder'=>0);
-
-            // test if file already exists
-            if (repository::draftfile_exists($draftitemid, $new_filepath, $new_filename)) {
-                // create new file
-                $unused_filename = repository::get_unused_filename($draftitemid, $new_filepath, $new_filename);
-                $file_record['filename'] = $unused_filename;
-                // create a tmp file
-                $fs->create_file_from_storedfile($file_record, $stored_file);
-                $event = array();
-                $event['event'] = 'fileexists';
-                $event['newfile'] = new stdClass;
-                $event['newfile']->filepath = $new_filepath;
-                $event['newfile']->filename = $unused_filename;
-                $event['newfile']->url = moodle_url::make_draftfile_url($draftitemid, $new_filepath, $unused_filename)->out();
-                $event['existingfile'] = new stdClass;
-                $event['existingfile']->filepath = $new_filepath;
-                $event['existingfile']->filename = $new_filename;
-                $event['existingfile']->url      = moodle_url::make_draftfile_url($draftitemid, $new_filepath, $new_filename)->out();;
-                return $event;
-            } else {
-                $fs->create_file_from_storedfile($file_record, $stored_file);
-                $info = array();
-                $info['title']  = $new_filename;
-                $info['itemid'] = $draftitemid;
-                $info['filesize']  = $stored_file->get_filesize();
-                $info['url'] = moodle_url::make_draftfile_url($draftitemid, $new_filepath, $new_filename)->out();;
-                $info['contextid'] = $user_context->id;
-                return $info;
-            }
-        }
-        return false;
-
+    public function file_is_accessible($source) {
+        global $USER;
+        $file = self::get_moodle_file($source);
+        return (!empty($file) && $file->get_userid() == $USER->id);
     }
 
     /**

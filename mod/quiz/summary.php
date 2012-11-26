@@ -46,19 +46,15 @@ if (!$attemptobj->is_preview_user()) {
     $attemptobj->require_capability('mod/quiz:attempt');
 }
 
-// If the attempt is already closed, redirect them to the review page.
-if ($attemptobj->is_finished()) {
-    redirect($attemptobj->review_url());
-}
-
 if ($attemptobj->is_preview_user()) {
     navigation_node::override_active_url($attemptobj->start_attempt_url());
 }
 
 // Check access.
 $accessmanager = $attemptobj->get_access_manager(time());
-$messages = $accessmanager->prevent_access();
+$accessmanager->setup_attempt_page($PAGE);
 $output = $PAGE->get_renderer('mod_quiz');
+$messages = $accessmanager->prevent_access();
 if (!$attemptobj->is_preview_user() && $messages) {
     print_error('attempterror', 'quiz', $attemptobj->view_url(),
             $output->access_messages($messages));
@@ -68,6 +64,14 @@ if ($accessmanager->is_preflight_check_required($attemptobj->get_attemptid())) {
 }
 
 $displayoptions = $attemptobj->get_display_options(false);
+
+// If the attempt is now overdue, or abandoned, deal with that.
+$attemptobj->handle_if_time_expired(time(), true);
+
+// If the attempt is already closed, redirect them to the review page.
+if ($attemptobj->is_finished()) {
+    redirect($attemptobj->review_url());
+}
 
 // Log this page view.
 add_to_log($attemptobj->get_courseid(), 'quiz', 'view summary',
@@ -80,15 +84,12 @@ if (empty($attemptobj->get_quiz()->showblocks)) {
 }
 
 $navbc = $attemptobj->get_navigation_panel($output, 'quiz_attempt_nav_panel', -1);
-$firstregion = reset($PAGE->blocks->get_regions());
-$PAGE->blocks->add_fake_block($navbc, $firstregion);
+$regions = $PAGE->blocks->get_regions();
+$PAGE->blocks->add_fake_block($navbc, reset($regions));
 
 $PAGE->navbar->add(get_string('summaryofattempt', 'quiz'));
 $PAGE->set_title(format_string($attemptobj->get_quiz_name()));
 $PAGE->set_heading($attemptobj->get_course()->fullname);
-$accessmanager->setup_attempt_page($PAGE);
 
 // Display the page.
-
-$accessmanager->show_attempt_timer_if_needed($attemptobj->get_attempt(), time(), $output);
 echo $output->summary_page($attemptobj, $displayoptions);

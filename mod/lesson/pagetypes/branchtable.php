@@ -72,7 +72,7 @@ class lesson_page_type_branchtable extends lesson_page {
         return $jumps;
     }
 
-    public static function get_jumptooptions($firstpage, $lesson) {
+    public static function get_jumptooptions($firstpage, lesson $lesson) {
         global $DB, $PAGE;
         $jump = array();
         $jump[0] = get_string("thispage", "lesson");
@@ -176,7 +176,7 @@ class lesson_page_type_branchtable extends lesson_page {
         $DB->insert_record("lesson_branch", $branch);
 
         //  this is called when jumping to random from a branch table
-        $context = get_context_instance(CONTEXT_MODULE, $PAGE->cm->id);
+        $context = context_module::instance($PAGE->cm->id);
         if($newpageid == LESSON_UNSEENBRANCHPAGE) {
             if (has_capability('mod/lesson:manage', $context)) {
                  $newpageid = LESSON_NEXTPAGE;
@@ -203,7 +203,7 @@ class lesson_page_type_branchtable extends lesson_page {
         redirect(new moodle_url('/mod/lesson/view.php', array('id'=>$PAGE->cm->id,'pageid'=>$newpageid)));
     }
 
-    public function display_answers($table) {
+    public function display_answers(html_table $table) {
         $answers = $this->get_answers();
         $options = new stdClass;
         $options->noclean = true;
@@ -247,7 +247,7 @@ class lesson_page_type_branchtable extends lesson_page {
         return $answerpage;
     }
 
-    public function update($properties) {
+    public function update($properties, $context = null, $maxbytes = null) {
         if (empty($properties->display)) {
             $properties->display = '0';
         }

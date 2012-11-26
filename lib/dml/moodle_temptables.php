@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -35,8 +34,7 @@
  * Only drivers needing it will use this store. Neither moodle_database (abstract) or
  * databases like postgres need this, because they don't lack any temp functionality.
  *
- * @package    core
- * @subpackage dml
+ * @package    core_dml
  * @copyright  2009 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -45,13 +43,16 @@ defined('MOODLE_INTERNAL') || die();
 
 class moodle_temptables {
 
-    protected $mdb;        // circular reference, to be able to use DB facilities here if needed
-    protected $prefix;     // prefix to be used for all the DB objects
-    protected $temptables; // simple array of moodle, not prefixed 'tablename' => DB, final (prefixed) 'tablename'
+    /** @var circular reference, to be able to use DB facilities here if needed */
+    protected $mdb;
+    /** @var prefix to be used for all the DB objects */
+    protected $prefix;
+    /** @var simple array of moodle, not prefixed 'tablename' => DB, final (prefixed) 'tablename' */
+    protected $temptables;
 
     /**
      * Creates new moodle_temptables instance
-     * @param object moodle_database instance
+     * @param moodle_database $mdb An instance of moodle_database.
      */
     public function __construct($mdb) {
         $this->mdb        = $mdb;
@@ -127,7 +128,7 @@ class moodle_temptables {
         if ($temptables = $this->get_temptables()) {
             error_log('Potential coding error - existing temptables found when disposing database. Must be dropped!');
             foreach ($temptables as $temptable) {
-                 $this->mdb->get_manager()->drop_temp_table(new xmldb_table($temptable));
+                 $this->mdb->get_manager()->drop_table(new xmldb_table($temptable));
             }
         }
         $this->mdb = null;

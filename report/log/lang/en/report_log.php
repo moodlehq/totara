@@ -17,14 +17,16 @@
 /**
  * Lang strings.
  *
- * @package    report
- * @subpackage log
+ * Language strings to be used by report/logs
+ *
+ * @package    report_log
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['log:view'] = 'View course logs';
 $string['log:viewtoday'] = 'View today\'s logs';
+$string['page'] = 'Page {$a}';
 $string['logsformat'] = 'Logs format';
 $string['page-report-log-x'] = 'Any log report';
 $string['page-report-log-index'] = 'Course log report';

@@ -148,7 +148,7 @@ class question_preview_options extends question_display_options {
     protected function get_field_types() {
         return array(
             'behaviour' => PARAM_ALPHA,
-            'maxmark' => PARAM_NUMBER,
+            'maxmark' => PARAM_FLOAT,
             'variant' => PARAM_INT,
             'correctness' => PARAM_BOOL,
             'marks' => PARAM_INT,
@@ -214,18 +214,21 @@ class question_preview_options extends question_display_options {
  * Called via pluginfile.php -> question_pluginfile to serve files belonging to
  * a question in a question_attempt when that attempt is a preview.
  *
- * @param object $course course settings object
- * @param object $context context object
+ * @package  core_question
+ * @category files
+ * @param stdClass $course course settings object
+ * @param stdClass $context context object
  * @param string $component the name of the component we are serving files for.
  * @param string $filearea the name of the file area.
  * @param int $qubaid the question_usage this image belongs to.
  * @param int $slot the relevant slot within the usage.
  * @param array $args the remaining bits of the file path.
  * @param bool $forcedownload whether the user must be forced to download the file.
+ * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - justsend the file
  */
 function question_preview_question_pluginfile($course, $context, $component,
-        $filearea, $qubaid, $slot, $args, $forcedownload) {
+        $filearea, $qubaid, $slot, $args, $forcedownload, $fileoptions) {
     global $USER, $DB, $CFG;
 
     $quba = question_engine::load_questions_usage_by_activity($qubaid);
@@ -253,7 +256,7 @@ function question_preview_question_pluginfile($course, $context, $component,
         send_file_not_found();
     }
 
-    send_stored_file($file, 0, 0, $forcedownload);
+    send_stored_file($file, 0, 0, $forcedownload, $fileoptions);
 }
 
 /**

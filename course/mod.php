@@ -26,7 +26,7 @@
 require("../config.php");
 require_once("lib.php");
 
-$sectionreturn = optional_param('sr', '', PARAM_INT);
+$sectionreturn = optional_param('sr', null, PARAM_INT);
 $add           = optional_param('add', '', PARAM_ALPHA);
 $type          = optional_param('type', '', PARAM_ALPHA);
 $indent        = optional_param('indent', 0, PARAM_INT);
@@ -50,9 +50,7 @@ foreach (compact('indent','update','hide','show','copy','moveto','movetosection'
         $url->param($key, $value);
     }
 }
-if ($sectionreturn !== '') {
-    $url->param('sr', $sectionreturn);
-}
+$url->param('sr', $sectionreturn);
 if ($add !== '') {
     $url->param('add', $add);
 }
@@ -73,20 +71,20 @@ if (!empty($add)) {
     $type        = optional_param('type', '', PARAM_ALPHA);
     $returntomod = optional_param('return', 0, PARAM_BOOL);
 
-    redirect("$CFG->wwwroot/course/modedit.php?add=$add&type=$type&course=$id&section=$section&return=$returntomod");
+    redirect("$CFG->wwwroot/course/modedit.php?add=$add&type=$type&course=$id&section=$section&return=$returntomod&sr=$sectionreturn");
 
 } else if (!empty($update)) {
     $cm = get_coursemodule_from_id('', $update, 0, true, MUST_EXIST);
     $returntomod = optional_param('return', 0, PARAM_BOOL);
-    redirect("$CFG->wwwroot/course/modedit.php?update=$update&return=$returntomod");
+    redirect("$CFG->wwwroot/course/modedit.php?update=$update&return=$returntomod&sr=$sectionreturn");
 
 } else if (!empty($duplicate)) {
     $cm     = get_coursemodule_from_id('', $duplicate, 0, true, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:manageactivities', $coursecontext);
 
     if (!$confirm or !confirm_sesskey()) {
@@ -104,11 +102,12 @@ if (!empty($add)) {
         echo $OUTPUT->confirm(
             get_string('duplicateconfirm', 'core', $a),
             new single_button(
-                new moodle_url('/course/modduplicate.php', array('cmid' => $cm->id, 'course' => $course->id)),
+                new moodle_url('/course/modduplicate.php', array(
+                    'cmid' => $cm->id, 'course' => $course->id, 'sr' => $sectionreturn)),
                 get_string('continue'),
                 'post'),
             new single_button(
-                new moodle_url('/course/view.php#section-' . $cm->sectionnum, array('id' => $cm->course)),
+                course_get_url($course, $cm->sectionnum, array('sr' => $sectionreturn)),
                 get_string('cancel'),
                 'get')
         );
@@ -121,17 +120,16 @@ if (!empty($add)) {
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:manageactivities', $modcontext);
 
-    $return = "$CFG->wwwroot/course/view.php?id=$cm->course#section-$cm->sectionnum";
+    $return = course_get_url($course, $cm->sectionnum, array('sr' => $sectionreturn));
 
     if (!$confirm or !confirm_sesskey()) {
         $fullmodulename = get_string('modulename', $cm->modname);
 
-        $optionsyes = array('confirm'=>1, 'delete'=>$cm->id, 'sesskey'=>sesskey());
-        $optionsno  = array('id'=>$cm->course);
+        $optionsyes = array('confirm'=>1, 'delete'=>$cm->id, 'sesskey'=>sesskey(), 'sr' => $sectionreturn);
 
         $strdeletecheck = get_string('deletecheck', '', $fullmodulename);
         $strdeletecheckfull = get_string('deletecheckfull', '', "$fullmodulename '$cm->name'");
@@ -145,7 +143,7 @@ if (!empty($add)) {
         // print_simple_box_start('center', '60%', '#FFAAAA', 20, 'noticebox');
         echo $OUTPUT->box_start('noticebox');
         $formcontinue = new single_button(new moodle_url("$CFG->wwwroot/course/mod.php", $optionsyes), get_string('yes'));
-        $formcancel = new single_button(new moodle_url($return, $optionsno), get_string('no'), 'get');
+        $formcancel = new single_button($return, get_string('no'), 'get');
         echo $OUTPUT->confirm($strdeletecheckfull, $formcontinue, $formcancel);
         echo $OUTPUT->box_end();
         echo $OUTPUT->footer();
@@ -190,8 +188,6 @@ if (!empty($add)) {
                "view.php?id=$cm->course",
                "$cm->modname $cm->instance", $cm->id);
 
-    rebuild_course_cache($course->id);
-
     redirect($return);
 }
 
@@ -201,8 +197,8 @@ if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:manageactivities', $modcontext);
 
     if (!empty($movetosection)) {
@@ -226,17 +222,13 @@ if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
 
     moveto_module($cm, $section, $beforecm);
 
+    $sectionreturn = $USER->activitycopysectionreturn;
     unset($USER->activitycopy);
     unset($USER->activitycopycourse);
     unset($USER->activitycopyname);
+    unset($USER->activitycopysectionreturn);
 
-    rebuild_course_cache($section->course);
-
-    if (SITEID == $section->course) {
-        redirect($CFG->wwwroot);
-    } else {
-        redirect("view.php?id=$section->course#section-$sectionreturn");
-    }
+    redirect(course_get_url($course, $section->section, array('sr' => $sectionreturn)));
 
 } else if (!empty($indent) and confirm_sesskey()) {
     $id = required_param('id', PARAM_INT);
@@ -245,8 +237,8 @@ if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:manageactivities', $modcontext);
 
     $cm->indent += $indent;
@@ -259,38 +251,28 @@ if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
 
     rebuild_course_cache($cm->course);
 
-    if (SITEID == $cm->course) {
-        redirect($CFG->wwwroot);
-    } else {
-        redirect("view.php?id=$cm->course#section-$cm->sectionnum");
-    }
+    redirect(course_get_url($course, $cm->sectionnum, array('sr' => $sectionreturn)));
 
 } else if (!empty($hide) and confirm_sesskey()) {
     $cm     = get_coursemodule_from_id('', $hide, 0, true, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:activityvisibility', $modcontext);
 
     set_coursemodule_visible($cm->id, 0);
 
-    rebuild_course_cache($cm->course);
-
-    if (SITEID == $cm->course) {
-        redirect($CFG->wwwroot);
-    } else {
-        redirect("view.php?id=$cm->course#section-$cm->sectionnum");
-    }
+    redirect(course_get_url($course, $cm->sectionnum, array('sr' => $sectionreturn)));
 
 } else if (!empty($show) and confirm_sesskey()) {
     $cm     = get_coursemodule_from_id('', $show, 0, true, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:activityvisibility', $modcontext);
 
     $section = $DB->get_record('course_sections', array('id'=>$cm->section), '*', MUST_EXIST);
@@ -299,14 +281,9 @@ if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
 
     if ($module->visible and ($section->visible or (SITEID == $cm->course))) {
         set_coursemodule_visible($cm->id, 1);
-        rebuild_course_cache($cm->course);
     }
 
-    if (SITEID == $cm->course) {
-        redirect($CFG->wwwroot);
-    } else {
-        redirect("view.php?id=$cm->course#section-$cm->sectionnum");
-    }
+    redirect(course_get_url($course, $section->section, array('sr' => $sectionreturn)));
 
 } else if ($groupmode > -1 and confirm_sesskey()) {
     $id = required_param('id', PARAM_INT);
@@ -315,47 +292,44 @@ if ((!empty($movetosection) or !empty($moveto)) and confirm_sesskey()) {
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:manageactivities', $modcontext);
 
     set_coursemodule_groupmode($cm->id, $groupmode);
 
-    rebuild_course_cache($cm->course);
-
-    if (SITEID == $cm->course) {
-        redirect($CFG->wwwroot);
-    } else {
-        redirect("view.php?id=$cm->course#section-$cm->sectionnum");
-    }
+    redirect(course_get_url($course, $cm->sectionnum, array('sr' => $sectionreturn)));
 
 } else if (!empty($copy) and confirm_sesskey()) { // value = course module
     $cm     = get_coursemodule_from_id('', $copy, 0, true, MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
 
     require_login($course, false, $cm);
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $coursecontext = context_course::instance($course->id);
+    $modcontext = context_module::instance($cm->id);
     require_capability('moodle/course:manageactivities', $modcontext);
 
     $section = $DB->get_record('course_sections', array('id'=>$cm->section), '*', MUST_EXIST);
 
-    $USER->activitycopy       = $copy;
-    $USER->activitycopycourse = $cm->course;
-    $USER->activitycopyname   = $cm->name;
+    $USER->activitycopy              = $copy;
+    $USER->activitycopycourse        = $cm->course;
+    $USER->activitycopyname          = $cm->name;
+    $USER->activitycopysectionreturn = $sectionreturn;
 
-    redirect("view.php?id=$cm->course#section-$sectionreturn");
+    redirect(course_get_url($course, $section->section, array('sr' => $sectionreturn)));
 
 } else if (!empty($cancelcopy) and confirm_sesskey()) { // value = course module
 
     $courseid = $USER->activitycopycourse;
+    $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
+    $cm     = get_coursemodule_from_id('', $USER->activitycopy, 0, true, IGNORE_MISSING);
+    $sectionreturn = $USER->activitycopysectionreturn;
     unset($USER->activitycopy);
     unset($USER->activitycopycourse);
     unset($USER->activitycopyname);
-
-    redirect("view.php?id=$courseid");
-
+    unset($USER->activitycopysectionreturn);
+    redirect(course_get_url($course, $cm->sectionnum, array('sr' => $sectionreturn)));
 } else {
     print_error('unknowaction');
 }

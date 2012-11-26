@@ -93,6 +93,10 @@ class block_blog_tags extends block_base {
         // require the libs and do the work
         require_once($CFG->dirroot .'/blog/lib.php');
 
+        if (empty($this->config)) {
+            $this->config = new stdClass();
+        }
+
         if (empty($this->config->timewithin)) {
             $this->config->timewithin = BLOCK_BLOG_TAGS_DEFAULTTIMEWITHIN;
         }
@@ -114,7 +118,7 @@ class block_blog_tags extends block_base {
 
         // admins should be able to read all tags
         $type = '';
-        if (!has_capability('moodle/user:readuserblogs', get_context_instance(CONTEXT_SYSTEM))) {
+        if (!has_capability('moodle/user:readuserblogs', context_system::instance())) {
             $type = " AND (p.publishstate = 'site' or p.publishstate='public')";
         }
 

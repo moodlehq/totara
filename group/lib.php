@@ -1,11 +1,26 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
 /**
  * Extra library for groups and groupings.
  *
- * @copyright &copy; 2006 The Open University
- * @author J.White AT open.ac.uk, Petr Skoda (skodak)
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package groups
+ * @copyright 2006 The Open University, J.White AT open.ac.uk, Petr Skoda (skodak)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   core_group
  */
 
 /*
@@ -15,20 +30,30 @@
 
 /**
  * Adds a specified user to a group
- * @param mixed $groupid  The group id or group object
- * @param mixed $userid   The user id or user object
- * @return boolean True if user added successfully or the user is already a
+ *
+ * @param mixed $grouporid  The group id or group object
+ * @param mixed $userorid   The user id or user object
+ * @param string $component Optional component name e.g. 'enrol_imsenterprise'
+ * @param int $itemid Optional itemid associated with component
+ * @return bool True if user added successfully or the user is already a
  * member of the group, false otherwise.
  */
-function groups_add_member($grouporid, $userorid) {
+function groups_add_member($grouporid, $userorid, $component=null, $itemid=0) {
     global $DB;
 
     if (is_object($userorid)) {
         $userid = $userorid->id;
         $user   = $userorid;
+        if (!isset($user->deleted)) {
+            $user = $DB->get_record('user', array('id'=>$userid), '*', MUST_EXIST);
+        }
     } else {
         $userid = $userorid;
         $user = $DB->get_record('user', array('id'=>$userid), '*', MUST_EXIST);
+    }
+
+    if ($user->deleted) {
+        return false;
     }
 
     if (is_object($grouporid)) {
@@ -40,7 +65,7 @@ function groups_add_member($grouporid, $userorid) {
     }
 
     //check if the user a participant of the group course
-    if (!is_enrolled(get_context_instance(CONTEXT_COURSE, $group->courseid), $userid)) {
+    if (!is_enrolled(context_course::instance($group->courseid), $userid)) {
         return false;
     }
 
@@ -52,6 +77,25 @@ function groups_add_member($grouporid, $userorid) {
     $member->groupid   = $groupid;
     $member->userid    = $userid;
     $member->timeadded = time();
+    $member->component = '';
+    $member->itemid = 0;
+
+    // Check the component exists if specified
+    if (!empty($component)) {
+        $dir = get_component_directory($component);
+        if ($dir && is_dir($dir)) {
+            // Component exists and can be used
+            $member->component = $component;
+            $member->itemid = $itemid;
+        } else {
+            throw new coding_exception('Invalid call to groups_add_member(). An invalid component was specified');
+        }
+    }
+
+    if ($itemid !== 0 && empty($member->component)) {
+        // An itemid can only be specified if a valid component was found
+        throw new coding_exception('Invalid call to groups_add_member(). A component must be specified if an itemid is given');
+    }
 
     $DB->insert_record('groups_members', $member);
 
@@ -62,16 +106,68 @@ function groups_add_member($grouporid, $userorid) {
     $eventdata = new stdClass();
     $eventdata->groupid = $groupid;
     $eventdata->userid  = $userid;
+    $eventdata->component = $member->component;
+    $eventdata->itemid = $member->itemid;
     events_trigger('groups_member_added', $eventdata);
 
     return true;
 }
 
 /**
+ * Checks whether the current user is permitted (using the normal UI) to
+ * remove a specific group member, assuming that they have access to remove
+ * group members in general.
+ *
+ * For automatically-created group member entries, this checks with the
+ * relevant plugin to see whether it is permitted. The default, if the plugin
+ * doesn't provide a function, is true.
+ *
+ * For other entries (and any which have already been deleted/don't exist) it
+ * just returns true.
+ *
+ * @param mixed $grouporid The group id or group object
+ * @param mixed $userorid The user id or user object
+ * @return bool True if permitted, false otherwise
+ */
+function groups_remove_member_allowed($grouporid, $userorid) {
+    global $DB;
+
+    if (is_object($userorid)) {
+        $userid = $userorid->id;
+    } else {
+        $userid = $userorid;
+    }
+    if (is_object($grouporid)) {
+        $groupid = $grouporid->id;
+    } else {
+        $groupid = $grouporid;
+    }
+
+    // Get entry
+    if (!($entry = $DB->get_record('groups_members',
+            array('groupid' => $groupid, 'userid' => $userid), '*', IGNORE_MISSING))) {
+        // If the entry does not exist, they are allowed to remove it (this
+        // is consistent with groups_remove_member below).
+        return true;
+    }
+
+    // If the entry does not have a component value, they can remove it
+    if (empty($entry->component)) {
+        return true;
+    }
+
+    // It has a component value, so we need to call a plugin function (if it
+    // exists); the default is to allow removal
+    return component_callback($entry->component, 'allow_group_member_remove',
+            array($entry->itemid, $entry->groupid, $entry->userid), true);
+}
+
+/**
  * Deletes the link between the specified user and group.
- * @param mixed $groupid  The group id or group object
- * @param mixed $userid   The user id or user object
- * @return boolean True if deletion was successful, false otherwise
+ *
+ * @param mixed $grouporid  The group id or group object
+ * @param mixed $userorid   The user id or user object
+ * @return bool True if deletion was successful, false otherwise
  */
 function groups_remove_member($grouporid, $userorid) {
     global $DB;
@@ -112,8 +208,10 @@ function groups_remove_member($grouporid, $userorid) {
 
 /**
  * Add a new group
- * @param object $data group properties
- * @param object $um upload manager with group picture
+ *
+ * @param stdClass $data group properties
+ * @param stdClass $editform
+ * @param array $editoroptions
  * @return id of group or false if error
  */
 function groups_create_group($data, $editform = false, $editoroptions = false) {
@@ -121,11 +219,17 @@ function groups_create_group($data, $editform = false, $editoroptions = false) {
 
     //check that courseid exists
     $course = $DB->get_record('course', array('id' => $data->courseid), '*', MUST_EXIST);
-    $context = get_context_instance(CONTEXT_COURSE, $course->id);
+    $context = context_course::instance($course->id);
 
     $data->timecreated  = time();
     $data->timemodified = $data->timecreated;
     $data->name         = trim($data->name);
+    if (isset($data->idnumber)) {
+        $data->idnumber = trim($data->idnumber);
+        if (groups_get_group_by_idnumber($course->id, $data->idnumber)) {
+            throw new moodle_exception('idnumbertaken');
+        }
+    }
 
     if ($editform and $editoroptions) {
         $data->description = $data->description_editor['text'];
@@ -158,7 +262,9 @@ function groups_create_group($data, $editform = false, $editoroptions = false) {
 
 /**
  * Add a new grouping
- * @param object $data grouping properties
+ *
+ * @param stdClass $data grouping properties
+ * @param array $editoroptions
  * @return id of grouping or false if error
  */
 function groups_create_grouping($data, $editoroptions=null) {
@@ -167,6 +273,12 @@ function groups_create_grouping($data, $editoroptions=null) {
     $data->timecreated  = time();
     $data->timemodified = $data->timecreated;
     $data->name         = trim($data->name);
+    if (isset($data->idnumber)) {
+        $data->idnumber = trim($data->idnumber);
+        if (groups_get_grouping_by_idnumber($data->courseid, $data->idnumber)) {
+            throw new moodle_exception('idnumbertaken');
+        }
+    }
 
     if ($editoroptions !== null) {
         $data->description = $data->description_editor['text'];
@@ -193,16 +305,17 @@ function groups_create_grouping($data, $editoroptions=null) {
 
 /**
  * Update the group icon from form data
- * @param $group
- * @param $data
- * @param $editform
+ *
+ * @param stdClass $group group information
+ * @param stdClass $data
+ * @param stdClass $editform
  */
 function groups_update_group_icon($group, $data, $editform) {
     global $CFG, $DB;
     require_once("$CFG->libdir/gdlib.php");
 
     $fs = get_file_storage();
-    $context = get_context_instance(CONTEXT_COURSE, $group->courseid, MUST_EXIST);
+    $context = context_course::instance($group->courseid, MUST_EXIST);
 
     //TODO: it would make sense to allow picture deleting too (skodak)
     if (!empty($CFG->gdversion)) {
@@ -222,18 +335,25 @@ function groups_update_group_icon($group, $data, $editform) {
 
 /**
  * Update group
- * @param object $data group properties (with magic quotes)
- * @param object $editform
+ *
+ * @param stdClass $data group properties (with magic quotes)
+ * @param stdClass $editform
  * @param array $editoroptions
- * @return boolean true or exception
+ * @return bool true or exception
  */
 function groups_update_group($data, $editform = false, $editoroptions = false) {
     global $CFG, $DB;
 
-    $context = get_context_instance(CONTEXT_COURSE, $data->courseid);
+    $context = context_course::instance($data->courseid);
 
     $data->timemodified = time();
     $data->name         = trim($data->name);
+    if (isset($data->idnumber)) {
+        $data->idnumber = trim($data->idnumber);
+        if (($existing = groups_get_group_by_idnumber($data->courseid, $data->idnumber)) && $existing->id != $data->id) {
+            throw new moodle_exception('idnumbertaken');
+        }
+    }
 
     if ($editform and $editoroptions) {
         $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $context, 'group', 'description', $data->id);
@@ -256,13 +376,21 @@ function groups_update_group($data, $editform = false, $editoroptions = false) {
 
 /**
  * Update grouping
- * @param object $data grouping properties (with magic quotes)
- * @return boolean true or exception
+ *
+ * @param stdClass $data grouping properties (with magic quotes)
+ * @param array $editoroptions
+ * @return bool true or exception
  */
 function groups_update_grouping($data, $editoroptions=null) {
     global $DB;
     $data->timemodified = time();
     $data->name         = trim($data->name);
+    if (isset($data->idnumber)) {
+        $data->idnumber = trim($data->idnumber);
+        if (($existing = groups_get_grouping_by_idnumber($data->courseid, $data->idnumber)) && $existing->id != $data->id) {
+            throw new moodle_exception('idnumbertaken');
+        }
+    }
     if ($editoroptions !== null) {
         $data = file_postupdate_standard_editor($data, 'description', $editoroptions, $editoroptions['context'], 'grouping', 'description', $data->id);
     }
@@ -276,8 +404,9 @@ function groups_update_grouping($data, $editoroptions=null) {
 /**
  * Delete a group best effort, first removing members and links with courses and groupings.
  * Removes group avatar too.
+ *
  * @param mixed $grouporid The id of group to delete or full group object
- * @return boolean True if deletion was successful, false otherwise
+ * @return bool True if deletion was successful, false otherwise
  */
 function groups_delete_group($grouporid) {
     global $CFG, $DB;
@@ -304,7 +433,7 @@ function groups_delete_group($grouporid) {
     $DB->delete_records('groups', array('id'=>$groupid));
 
     // Delete all files associated with this group
-    $context = get_context_instance(CONTEXT_COURSE, $group->courseid);
+    $context = context_course::instance($group->courseid);
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'group', 'description', $groupid);
     $fs->delete_area_files($context->id, 'group', 'icon', $groupid);
@@ -317,6 +446,7 @@ function groups_delete_group($grouporid) {
 
 /**
  * Delete grouping
+ *
  * @param int $groupingorid
  * @return bool success
  */
@@ -343,7 +473,7 @@ function groups_delete_grouping($groupingorid) {
     //group itself last
     $DB->delete_records('groupings', array('id'=>$groupingid));
 
-    $context = get_context_instance(CONTEXT_COURSE, $grouping->courseid);
+    $context = context_course::instance($grouping->courseid);
     $fs = get_file_storage();
     $files = $fs->get_area_files($context->id, 'grouping', 'description', $groupingid);
     foreach ($files as $file) {
@@ -358,6 +488,7 @@ function groups_delete_grouping($groupingorid) {
 
 /**
  * Remove all users (or one user) from all groups in course
+ *
  * @param int $courseid
  * @param int $userid 0 means all users
  * @param bool $showfeedback
@@ -440,6 +571,7 @@ function groups_delete_group_members_bulk($courseid, $userids, $showfeedback=fal
 
 /**
  * Remove all groups from all groupings in course
+ *
  * @param int $courseid
  * @param bool $showfeedback
  * @return bool success
@@ -460,6 +592,7 @@ function groups_delete_groupings_groups($courseid, $showfeedback=false) {
 
 /**
  * Delete all groups from course
+ *
  * @param int $courseid
  * @param bool $showfeedback
  * @return bool success
@@ -473,7 +606,7 @@ function groups_delete_groups($courseid, $showfeedback=false) {
     groups_delete_group_members($courseid, 0, $showfeedback);
 
     // delete group pictures and descriptions
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'group');
 
@@ -481,7 +614,7 @@ function groups_delete_groups($courseid, $showfeedback=false) {
     $groupssql = "SELECT id FROM {groups} g WHERE g.courseid = ?";
     $DB->delete_records_select('event', "groupid IN ($groupssql)", array($courseid));
 
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'group');
 
@@ -499,6 +632,7 @@ function groups_delete_groups($courseid, $showfeedback=false) {
 
 /**
  * Delete all groupings from course
+ *
  * @param int $courseid
  * @param bool $showfeedback
  * @return bool success
@@ -517,7 +651,7 @@ function groups_delete_groupings($courseid, $showfeedback=false) {
     $DB->set_field('course_modules', 'groupingid', 0, array('course'=>$courseid));
 
     // Delete all files associated with groupings for this course
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
     $fs = get_file_storage();
     $fs->delete_area_files($context->id, 'grouping');
 
@@ -540,7 +674,8 @@ function groups_delete_groupings($courseid, $showfeedback=false) {
 /**
  * Obtains a list of the possible roles that group members might come from,
  * on a course. Generally this includes only profile roles.
- * @param object $context Context of course
+ *
+ * @param context $context Context of course
  * @return Array of role ID integers, or false if error/none.
  */
 function groups_get_possible_roles($context) {
@@ -551,6 +686,7 @@ function groups_get_possible_roles($context) {
 
 /**
  * Gets potential group members for grouping
+ *
  * @param int $courseid The id of the course
  * @param int $roleid The role to select users from
  * @param int $cohortid restrict to cohort id
@@ -560,7 +696,7 @@ function groups_get_possible_roles($context) {
 function groups_get_potential_members($courseid, $roleid = null, $cohortid = null, $orderby = 'lastname ASC, firstname ASC') {
     global $DB;
 
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
 
     // we are looking for all users with this role assigned in this context or higher
     $listofcontexts = get_related_contexts_string($context);
@@ -596,6 +732,7 @@ function groups_get_potential_members($courseid, $roleid = null, $cohortid = nul
 
 /**
  * Parse a group name for characters to replace
+ *
  * @param string $format The format a group name will follow
  * @param int $groupnumber The number of the group to be used in the parsed format string
  * @return string the parsed format string
@@ -615,6 +752,7 @@ function groups_parse_name($format, $groupnumber) {
 
 /**
  * Assigns group into grouping
+ *
  * @param int groupingid
  * @param int groupid
  * @return bool true or exception
@@ -636,6 +774,7 @@ function groups_assign_grouping($groupingid, $groupid) {
 
 /**
  * Unassigns group grom grouping
+ *
  * @param int groupingid
  * @param int groupid
  * @return bool success
@@ -657,28 +796,33 @@ function groups_unassign_grouping($groupingid, $groupid) {
  * and pseudo-role details (including a name, 'No role'). Users with multiple
  * roles, same deal with key '*' and name 'Multiple roles'. You can find out
  * which roles each has by looking in the $roles array of the user object.
+ *
  * @param int $groupid
  * @param int $courseid Course ID (should match the group's course)
  * @param string $fields List of fields from user table prefixed with u, default 'u.*'
- * @param string $sort SQL ORDER BY clause, default 'u.lastname ASC'
+ * @param string $sort SQL ORDER BY clause, default (when null passed) is what comes from users_order_by_sql.
  * @param string $extrawheretest extra SQL conditions ANDed with the existing where clause.
- * @param array $whereparams any parameters required by $extrawheretest (named parameters).
+ * @param array $whereorsortparams any parameters required by $extrawheretest (named parameters).
  * @return array Complex array as described above
  */
 function groups_get_members_by_role($groupid, $courseid, $fields='u.*',
-        $sort='u.lastname ASC', $extrawheretest='', $whereparams=array()) {
+        $sort=null, $extrawheretest='', $whereorsortparams=array()) {
     global $CFG, $DB;
 
     // Retrieve information about all users and their roles on the course or
     // parent ('related') contexts
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
+    $context = context_course::instance($courseid);
 
     if ($extrawheretest) {
         $extrawheretest = ' AND ' . $extrawheretest;
     }
 
-    $sql = "SELECT r.id AS roleid, r.shortname AS roleshortname, r.name AS rolename,
-                   u.id AS userid, $fields
+    if (is_null($sort)) {
+        list($sort, $sortparams) = users_order_by_sql('u');
+        $whereorsortparams = array_merge($whereorsortparams, $sortparams);
+    }
+
+    $sql = "SELECT r.id AS roleid, u.id AS userid, $fields
               FROM {groups_members} gm
               JOIN {user} u ON u.id = gm.userid
          LEFT JOIN {role_assignments} ra ON (ra.userid = u.id AND ra.contextid ".get_related_contexts_string($context).")
@@ -686,8 +830,8 @@ function groups_get_members_by_role($groupid, $courseid, $fields='u.*',
              WHERE gm.groupid=:mgroupid
                    ".$extrawheretest."
           ORDER BY r.sortorder, $sort";
-    $whereparams['mgroupid'] = $groupid;
-    $rs = $DB->get_recordset_sql($sql, $whereparams);
+    $whereorsortparams['mgroupid'] = $groupid;
+    $rs = $DB->get_recordset_sql($sql, $whereorsortparams);
 
     return groups_calculate_role_people($rs, $context);
 }
@@ -697,8 +841,8 @@ function groups_get_members_by_role($groupid, $courseid, $fields='u.*',
  * results of a database query that includes a list of users and possible
  * roles on a course.
  *
- * @param object $rs The record set (may be false)
- * @param int $contextid ID of course context
+ * @param moodle_recordset $rs The record set (may be false)
+ * @param int $context ID of course context
  * @return array As described in groups_get_members_by_role
  */
 function groups_calculate_role_people($rs, $context) {
@@ -708,8 +852,7 @@ function groups_calculate_role_people($rs, $context) {
         return array();
     }
 
-    $roles = $DB->get_records_menu('role', null, 'name', 'id, name');
-    $aliasnames = role_fix_names($roles, $context);
+    $allroles = role_fix_names(get_all_roles($context), $context);
 
     // Array of all involved roles
     $roles = array();
@@ -735,15 +878,12 @@ function groups_calculate_role_people($rs, $context) {
         // If user has a role...
         if (!is_null($rec->roleid)) {
             // Create information about role if this is a new one
-            if (!array_key_exists($rec->roleid,$roles)) {
+            if (!array_key_exists($rec->roleid, $roles)) {
+                $role = $allroles[$rec->roleid];
                 $roledata = new stdClass();
-                $roledata->id        = $rec->roleid;
-                $roledata->shortname = $rec->roleshortname;
-                if (array_key_exists($rec->roleid, $aliasnames)) {
-                    $roledata->name = $aliasnames[$rec->roleid];
-                } else {
-                    $roledata->name = $rec->rolename;
-                }
+                $roledata->id        = $role->id;
+                $roledata->shortname = $role->shortname;
+                $roledata->name      = $role->localname;
                 $roledata->users = array();
                 $roles[$roledata->id] = $roledata;
             }

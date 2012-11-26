@@ -82,7 +82,7 @@ if (empty($CFG->version)) {
     cli_error(get_string('missingconfigversion', 'debug'));
 }
 
-require("$CFG->dirroot/version.php");       // defines $version, $release and $maturity
+require("$CFG->dirroot/version.php");       // defines $version, $release, $branch and $maturity
 $CFG->target_release = $release;            // used during installation and upgrades
 
 if ($version < $CFG->version) {
@@ -132,7 +132,9 @@ if (!$envstatus) {
 }
 
 // Test plugin dependencies.
-if (!plugin_manager::instance()->all_plugins_ok($version)) {
+$failed = array();
+if (!plugin_manager::instance()->all_plugins_ok($version, $failed)) {
+    cli_problem(get_string('pluginscheckfailed', 'admin', array('pluginslist' => implode(', ', array_unique($failed)))));
     cli_error(get_string('pluginschecktodo', 'admin'));
 }
 
@@ -152,7 +154,8 @@ if (isset($maturity)) {
             echo get_string('morehelp') . ': ' . get_docs_url('admin/versions') . PHP_EOL;
             cli_separator();
         } else {
-            cli_error(get_string('maturitycorewarning', 'admin', $maturitylevel));
+            cli_problem(get_string('maturitycorewarning', 'admin', $maturitylevel));
+            cli_error(get_string('maturityallowunstable', 'admin'));
         }
     }
 }
@@ -170,6 +173,7 @@ if ($version > $CFG->version) {
     upgrade_core($version, true);
 }
 set_config('release', $release);
+set_config('branch', $branch);
 
 if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
     || !isset($CFG->totara_build) || $CFG->totara_build <> $TOTARA->build
@@ -183,9 +187,7 @@ if (!isset($CFG->totara_release) || $CFG->totara_release <> $TOTARA->release
 upgrade_noncore(true);
 
 // log in as admin - we need doanything permission when applying defaults
-$admins = get_admins();
-$admin = reset($admins);
-session_set_user($admin);
+session_set_user(get_admin());
 
 // apply all default settings, just in case do it twice to fill all defaults
 admin_apply_default_settings(NULL, false);

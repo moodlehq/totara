@@ -16,11 +16,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package moodlecore
- * @subpackage backup-moodle2
- * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Defines restore_final_task class
+ *
+ * @package     core_backup
+ * @subpackage  moodle2
+ * @category    backup
+ * @copyright   2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Final task that provides all the final steps necessary in order to finish one
@@ -74,14 +79,21 @@ class restore_final_task extends restore_task {
             $this->add_step(new restore_course_logs_structure_step('course_logs', 'course/logs.xml'));
         }
 
-        // Rebuild course cache to see results, whoah!
-        $this->add_step(new restore_rebuild_course_cache('rebuild_course_cache'));
-
         // Review all the executed tasks having one after_restore method
         // executing it to perform some final adjustments of information
         // not available when the task was executed.
-        // This step is always the last one before the one cleaning the temp stuff!
+        // This step is always the last one performing modifications on restored information
+        // Don't add any new step after it. Only aliases queue, cache rebuild and clean are allowed.
         $this->add_step(new restore_execute_after_restore('executing_after_restore'));
+
+        // All files were sent to the filepool by now. We need to process
+        // the aliases yet as they were not actually created but stashed for us instead.
+        // We execute this step after executing_after_restore so that there can't be no
+        // more files sent to the filepool after this.
+        $this->add_step(new restore_process_file_aliases_queue('process_file_aliases_queue'));
+
+        // Rebuild course cache to see results, whoah!
+        $this->add_step(new restore_rebuild_course_cache('rebuild_course_cache'));
 
         // Clean the temp dir (conditionally) and drop temp table
         $this->add_step(new restore_drop_and_clean_temp_stuff('drop_and_clean_temp_stuff'));
@@ -129,6 +141,7 @@ class restore_final_task extends restore_task {
         $rules[] = new restore_log_rule('course', 'report outline', 'report/outline/index.php?id={course}', '{course}');
         $rules[] = new restore_log_rule('course', 'report participation', 'report/participation/index.php?id={course}', '{course}');
         $rules[] = new restore_log_rule('course', 'report stats', 'report/stats/index.php?id={course}', '{course}');
+        $rules[] = new restore_log_rule('course', 'view section', 'view.php?id={course}&sectionid={course_section}', '{course_section}');
 
         // module 'user' rules
         $rules[] = new restore_log_rule('user', 'view', 'view.php?id={user}&course={course}', '{user}');

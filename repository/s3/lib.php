@@ -16,18 +16,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access s3 files
+ *
+ * @since 2.0
+ * @package    repository_s3
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+require_once($CFG->dirroot . '/repository/s3/S3.php');
+
+/**
  * This is a repository class used to browse Amazon S3 content.
  *
  * @since 2.0
- * @package    repository
- * @subpackage s3
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_s3
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once('S3.php');
-
 class repository_s3 extends repository {
 
     /**
@@ -66,7 +72,7 @@ class repository_s3 extends repository {
      * @param string $path
      * @return array The file list and options
      */
-    public function get_listing($path = '') {
+    public function get_listing($path = '', $page = '') {
         global $CFG, $OUTPUT;
         if (empty($this->access_key)) {
             die(json_encode(array('e'=>get_string('needaccesskey', 'repository_s3'))));
@@ -96,13 +102,12 @@ class repository_s3 extends repository {
                 $folder = array(
                     'title' => $bucket,
                     'children' => array(),
-                    'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false),
+                    'thumbnail' => $OUTPUT->pix_url(file_folder_icon(90))->out(false),
                     'path' => $bucket
-                );
+                    );
                 $tree[] = $folder;
             }
         } else {
-
             $files = array();
             $folders = array();
             list($bucket, $uri) = $this->explode_path($path);
@@ -132,7 +137,7 @@ class repository_s3 extends repository {
                     $folders[] = array(
                         'title' => $title,
                         'children' => array(),
-                        'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false),
+                        'thumbnail'=> $OUTPUT->pix_url(file_folder_icon(90))->out(false),
                         'path' => $bucket . '/' . $object['prefix']
                     );
                 } else {
@@ -141,7 +146,7 @@ class repository_s3 extends repository {
                         'size' => $object['size'],
                         'datemodified' => $object['time'],
                         'source' => $bucket . '/' . $object['name'],
-                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($title, 32))->out(false)
+                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($title, 90))->out(false)
                     );
                 }
             }
@@ -183,6 +188,16 @@ class repository_s3 extends repository {
     }
 
     /**
+     * Return the source information
+     *
+     * @param stdClass $filepath
+     * @return string
+     */
+    public function get_file_source_info($filepath) {
+        return 'Amazon S3: ' . $filepath;
+    }
+
+    /**
      * S3 doesn't require login
      *
      * @return bool
@@ -204,7 +219,7 @@ class repository_s3 extends repository {
         return array('access_key', 'secret_key', 'pluginname');
     }
 
-    public function type_config_form($mform) {
+    public static function type_config_form($mform, $classname = 'repository') {
         parent::type_config_form($mform);
         $strrequired = get_string('required');
         $mform->addElement('text', 'access_key', get_string('access_key', 'repository_s3'));

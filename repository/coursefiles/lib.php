@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,19 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access coursefiles repository
+ *
+ * @since 2.0
+ * @package    repository_coursefiles
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+
+/**
  * repository_coursefiles class is used to browse course files
  *
  * @since 2.0
- * @package    repository
- * @subpackage coursefiles
- * @copyright  2010 Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_coursefiles
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class repository_coursefiles extends repository {
 
     /**
      * coursefiles plugin doesn't require login, so list all files
+     *
      * @return mixed
      */
     public function print_login() {
@@ -41,7 +49,7 @@ class repository_coursefiles extends repository {
      * @param string $encodedpath
      * @return mixed
      */
-    public function get_listing($encodedpath = '') {
+    public function get_listing($encodedpath = '', $page = '') {
         global $CFG, $USER, $OUTPUT;
         $ret = array();
         $ret['dynload'] = true;
@@ -59,14 +67,14 @@ class repository_coursefiles extends repository {
             if (is_array($params)) {
                 $filepath  = is_null($params['filepath']) ? NULL : clean_param($params['filepath'], PARAM_PATH);;
                 $filename  = is_null($params['filename']) ? NULL : clean_param($params['filename'], PARAM_FILE);
-                $context = get_context_instance_by_id(clean_param($params['contextid'], PARAM_INT));
+                $context = context::instance_by_id(clean_param($params['contextid'], PARAM_INT));
             }
         } else {
             $filename = null;
             $filepath = null;
             list($context, $course, $cm) = get_context_info_array($this->context->id);
             $courseid = is_object($course) ? $course->id : SITEID;
-            $context = get_context_instance(CONTEXT_COURSE, $courseid);
+            $context = context_course::instance($courseid);
         }
 
         if ($fileinfo = $browser->get_file_info($context, $component, $filearea, $itemid, $filepath, $filename)) {
@@ -97,22 +105,36 @@ class repository_coursefiles extends repository {
                     $encodedpath = base64_encode(serialize($params));
                     $node = array(
                         'title' => $child->get_visible_name(),
-                        'size' => 0,
-                        'date' => '',
+                        'datemodified' => $child->get_timemodified(),
+                        'datecreated' => $child->get_timecreated(),
                         'path' => $encodedpath,
                         'children'=>array(),
-                        'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false)
+                        'thumbnail' => $OUTPUT->pix_url(file_folder_icon(90))->out(false)
                     );
                     $list[] = $node;
                 } else {
                     $encodedpath = base64_encode(serialize($child->get_params()));
                     $node = array(
                         'title' => $child->get_visible_name(),
-                        'size' => 0,
-                        'date' => '',
+                        'size' => $child->get_filesize(),
+                        'author' => $child->get_author(),
+                        'license' => $child->get_license(),
+                        'datemodified' => $child->get_timemodified(),
+                        'datecreated' => $child->get_timecreated(),
                         'source'=> $encodedpath,
-                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($child->get_visible_name(), 32))->out(false)
+                        'isref' => $child->is_external_file(),
+                        'thumbnail' => $OUTPUT->pix_url(file_file_icon($child, 90))->out(false)
                     );
+                    if ($child->get_status() == 666) {
+                        $node['originalmissing'] = true;
+                    }
+                    if ($imageinfo = $child->get_imageinfo()) {
+                        $fileurl = new moodle_url($child->get_url());
+                        $node['realthumbnail'] = $fileurl->out(false, array('preview' => 'thumb', 'oid' => $child->get_timemodified()));
+                        $node['realicon'] = $fileurl->out(false, array('preview' => 'tinyicon', 'oid' => $child->get_timemodified()));
+                        $node['image_width'] = $imageinfo['width'];
+                        $node['image_height'] = $imageinfo['height'];
+                    }
                     $list[] = $node;
                 }
             }
@@ -136,7 +158,7 @@ class repository_coursefiles extends repository {
         $filepath = clean_param($params['filepath'], PARAM_PATH);;
         $filearea = clean_param($params['filearea'], PARAM_AREA);
         $component = clean_param($params['component'], PARAM_COMPONENT);
-        $context = get_context_instance_by_id($contextid);
+        $context = context::instance_by_id($contextid);
 
         $file_info = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
         return $file_info->get_url();
@@ -145,6 +167,7 @@ class repository_coursefiles extends repository {
     /**
      * Return is the instance is visible
      * (is the type visible ? is the context enable ?)
+     *
      * @return boolean
      */
     public function is_visible() {
@@ -167,8 +190,9 @@ class repository_coursefiles extends repository {
     }
 
     public function supported_returntypes() {
-        return (FILE_INTERNAL | FILE_EXTERNAL);
+        return (FILE_INTERNAL | FILE_REFERENCE);
     }
+
     public static function get_type_option_names() {
         return array();
     }
@@ -180,5 +204,16 @@ class repository_coursefiles extends repository {
      */
     public function has_moodle_files() {
         return true;
+    }
+
+    /**
+     * Return reference file life time
+     *
+     * @param string $ref
+     * @return int
+     */
+    public function get_reference_file_lifetime($ref) {
+        // this should be realtime
+        return 0;
     }
 }

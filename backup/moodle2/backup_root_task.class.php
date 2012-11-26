@@ -16,11 +16,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package moodlecore
- * @subpackage backup-moodle2
- * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Defines backup_root_task class
+ *
+ * @package     core_backup
+ * @subpackage  moodle2
+ * @category    backup
+ * @copyright   2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Start task that provides all the settings common to all backups and some initialization steps
@@ -62,7 +67,7 @@ class backup_root_task extends backup_task {
         require_once($CFG->dirroot . '/backup/util/helper/convert_helper.class.php');
         // Define filename setting
         $filename = new backup_filename_setting('filename', base_setting::IS_FILENAME, 'backup.mbz');
-        $filename->set_ui(get_string('filename', 'backup'), 'backup.mbz', array('size'=>50));
+        $filename->set_ui_filename(get_string('filename', 'backup'), 'backup.mbz', array('size'=>50));
         $this->add_setting($filename);
 
         // Present converter settings only in type course and mode general backup operations.

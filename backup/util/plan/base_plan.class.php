@@ -61,7 +61,12 @@ abstract class base_plan implements checksumable, executable {
         // Append task settings to plan array, if not present, for comodity
         foreach ($task->get_settings() as $key => $setting) {
             if (!in_array($setting, $this->settings)) {
-                $this->settings[] = $setting;
+                $name = $setting->get_name();
+                if (!isset($this->settings[$name])) {
+                    $this->settings[$name] = $setting;
+                } else {
+                    throw new base_plan_exception('multiple_settings_by_name_found', $name);
+                }
             }
         }
     }
@@ -70,10 +75,27 @@ abstract class base_plan implements checksumable, executable {
         return $this->tasks;
     }
 
+    /**
+     * Add the passed info to the plan results
+     *
+     * At the moment we expect an associative array structure to be merged into
+     * the current results. In the future, some sort of base_result class may
+     * be introduced.
+     *
+     * @param array $result associative array describing a result of a task/step
+     */
     public function add_result($result) {
+        if (!is_array($result)) {
+            throw new coding_exception('Associative array is expected as a parameter of add_result()');
+        }
         $this->results = array_merge($this->results, $result);
     }
 
+    /**
+     * Return the results collected via {@link self::add_result()} method
+     *
+     * @return array
+     */
     public function get_results() {
         return $this->results;
     }
@@ -84,23 +106,16 @@ abstract class base_plan implements checksumable, executable {
 
     /**
      * return one setting by name, useful to request root/course settings
-     * that are, by definition, unique by name. Throws exception if multiple
-     * are found
+     * that are, by definition, unique by name.
      *
-     * TODO: Change this to string indexed array for quicker lookup. Not critical
+     * @param string $name name of the setting
+     * @throws base_plan_exception if setting name is not found.
      */
     public function get_setting($name) {
         $result = null;
-        foreach ($this->settings as $key => $setting) {
-            if ($setting->get_name() == $name) {
-                if ($result != null) {
-                    throw new base_plan_exception('multiple_settings_by_name_found', $name);
-                } else {
-                    $result = $setting;
-                }
-            }
-        }
-        if (!$result) {
+        if (isset($this->settings[$name])) {
+            $result = $this->settings[$name];
+        } else {
             throw new base_plan_exception('setting_by_name_not_found', $name);
         }
         return $result;

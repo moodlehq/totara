@@ -42,6 +42,10 @@ $string['allowprintview_help'] = 'If enabled, students are provided with a link 
 $string['andmorenewentries'] = 'and {$a} more new entries.';
 $string['answer'] = 'Answer';
 $string['approve'] = 'Approve';
+$string['approvaldisplayformat'] = 'Approval display format';
+$string['approvaldisplayformat_help'] = 'When approving glossary items you may wish to use a different display format';
+$string['areaattachment'] = 'Attachments';
+$string['areaentry'] = 'Definitions';
 $string['areyousuredelete'] = 'Are you sure you want to delete this entry?';
 $string['areyousuredeletecomment'] = 'Are you sure you want to delete this comment?';
 $string['areyousureexport'] = 'Are you sure you want to export this entry to';
@@ -115,6 +119,7 @@ $string['displayformat_help'] = 'There are 7 display formats:
 * Entry list - Concepts are listed as links
 * FAQ - The words QUESTION and ANSWER are appended to the concept and definition respectively';
 $string['displayformatcontinuous'] = 'Continuous without author';
+$string['displayformatdefault'] = 'Default to same as display format';
 $string['displayformatdictionary'] = 'Simple, dictionary style';
 $string['displayformatencyclopedia'] = 'Encyclopedia';
 $string['displayformatentrylist'] = 'Entry list';
@@ -167,6 +172,7 @@ $string['fillfields'] = 'Concept and definition are mandatory fields.';
 $string['filtername'] = 'Glossary auto-linking';
 $string['fullmatch'] = 'Match whole words only';
 $string['fullmatch_help'] = 'This setting specifies whether only whole words will be linked, for example, a glossary entry named "construct" will not create a link inside the word "constructivism".';
+$string['glossary:addinstance'] = 'Add a new glossary';
 $string['glossary:approve'] = 'Approve unapproved entries';
 $string['glossary:comment'] = 'Create comments';
 $string['glossary:export'] = 'Export entries';
@@ -178,6 +184,7 @@ $string['glossary:managecategories'] = 'Manage categories';
 $string['glossary:managecomments'] = 'Manage comments';
 $string['glossary:manageentries'] = 'Manage entries';
 $string['glossary:rate'] = 'Rate entries';
+$string['glossary:view'] = 'View entries';
 $string['glossarytype'] = 'Glossary type';
 $string['glossarytype_help'] = 'A main glossary is a glossary in which entries from secondary glossaries can be imported. There can only be one main glossary in a course. if glossary entry import is not required, all glossaries in the course can be secondary glossaries.';
 $string['glossary:view'] = 'View glossary';
@@ -202,7 +209,22 @@ $string['linking'] = 'Auto-linking';
 $string['mainglossary'] = 'Main glossary';
 $string['maxtimehaspassed'] = 'Sorry, but the maximum time for editing this comment ({$a}) has passed!';
 $string['modulename'] = 'Glossary';
-$string['modulename_help'] = 'The glossary module enables participants to create and maintain a list of definitions, like a dictionary. Glossary entries may be automatically linked wherever the concept words and phrases appear throughout the course.';
+$string['modulename_help'] = 'The glossary activity module enables participants to create and maintain a list of definitions, like a dictionary, or to collect and organise resources or information.
+
+A teacher can allow files to be attached to glossary entries. Attached images are displayed in the entry. Entries can be searched or browsed alphabetically or by category, date or author. Entries can be approved by default or require approval by a teacher before they are viewable by everyone.
+
+If the glossary auto-linking filter is enabled, entries will be automatically linked where the concept words and/or phrases appear within the course.
+
+A teacher can allow comments on entries. Entries can also be rated by teachers or students (peer evaluation). Ratings can be aggregated to form a final grade which is recorded in the gradebook.
+
+Glossaries have many uses, such as
+
+* A collaborative bank of key terms
+* A ‘getting to know you’ space where new students add their name and personal details
+* A ‘handy tips’ resource of best practice in a practical subject
+* A sharing area of useful videos, images or sound files
+* A revision resource of facts to remember';
+$string['modulename_link'] = 'mod/glossary/view';
 $string['modulenameplural'] = 'Glossaries';
 $string['newentries'] = 'New glossary entries';
 $string['newglossary'] = 'New glossary';

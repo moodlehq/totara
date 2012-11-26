@@ -9,7 +9,7 @@ $adminediting = optional_param('adminedit', -1, PARAM_BOOL);
 
 /// no guest autologin
 require_login(0, false);
-$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_context(context_system::instance());
 $PAGE->set_url('/admin/settings.php', array('section' => $section));
 $PAGE->set_pagetype('admin-setting-' . $section);
 $PAGE->set_pagelayout('admin');
@@ -32,7 +32,6 @@ if (!($settingspage->check_access())) {
 
 $statusmsg = '';
 $errormsg  = '';
-$focus = '';
 
 if ($data = data_submitted() and confirm_sesskey()) {
     if (admin_write_settings($data)) {
@@ -47,7 +46,6 @@ if ($data = data_submitted() and confirm_sesskey()) {
     } else {
         $errormsg = get_string('errorwithsettings', 'admin');
         $firsterror = reset($adminroot->errors);
-        $focus = $firsterror->id;
     }
     $adminroot = admin_get_root(true); //reload tree
     $settingspage = $adminroot->locate($section, true);
@@ -133,6 +131,12 @@ if (empty($SITE->fullname)) {
     echo '</form>';
 }
 
+$PAGE->requires->yui_module('moodle-core-formchangechecker',
+        'M.core_formchangechecker.init',
+        array(array(
+            'formid' => 'adminsettings'
+        ))
+);
+$PAGE->requires->string_for_js('changesmadereallygoaway', 'moodle');
+
 echo $OUTPUT->footer();
-
-

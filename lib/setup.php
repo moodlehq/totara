@@ -45,7 +45,7 @@
 global $CFG; // this should be done much earlier in config.php before creating new $CFG instance
 
 if (!isset($CFG)) {
-    if (defined('PHPUNIT_SCRIPT') and PHPUNIT_SCRIPT) {
+    if (defined('PHPUNIT_TEST') and PHPUNIT_TEST) {
         echo('There is a missing "global $CFG;" at the beginning of the config.php file.'."\n");
         exit(1);
     } else {
@@ -112,6 +112,7 @@ if (!isset($CFG->cachedir)) {
 // directory of the script when run from the command line. The require_once()
 // would fail, so we'll have to chdir()
 if (!isset($_SERVER['REMOTE_ADDR']) && isset($_SERVER['argv'][0])) {
+    // do it only once - skip the second time when continuing after prevous abort
     if (!defined('ABORT_AFTER_CONFIG') and !defined('ABORT_AFTER_CONFIG_CANCEL')) {
         chdir(dirname($_SERVER['argv'][0]));
     }
@@ -137,6 +138,19 @@ if (!defined('NO_OUTPUT_BUFFERING')) {
     define('NO_OUTPUT_BUFFERING', false);
 }
 
+// PHPUnit tests need custom init
+if (!defined('PHPUNIT_TEST')) {
+    define('PHPUNIT_TEST', false);
+}
+
+// When set to true MUC (Moodle caching) will not use any of the defined or default stores.
+// The Cache API will continue to function however this will force the use of the cachestore_dummy so all requests
+// will be interacting with a static property and will never go to the proper cache stores.
+// Useful if you need to avoid the stores for one reason or another.
+if (!defined('NO_CACHE_STORES')) {
+    define('NO_CACHE_STORES', false);
+}
+
 // Servers should define a default timezone in php.ini, but if they don't then make sure something is defined.
 // This is a quick hack.  Ideally we should ask the admin for a value.  See MDL-22625 for more on this.
 if (function_exists('date_default_timezone_set') and function_exists('date_default_timezone_get')) {
@@ -145,15 +159,6 @@ if (function_exists('date_default_timezone_set') and function_exists('date_defau
     error_reporting($olddebug);
     unset($olddebug);
 }
-
-// PHPUnit scripts are a special case, for now we treat them as normal CLI scripts,
-// please note you must install PHPUnit library separately via PEAR
-//if (!defined('PHPUNIT_SCRIPT')) {
-//    define('PHPUNIT_SCRIPT', false);
-//}
-//if (PHPUNIT_SCRIPT) {
-//    define('CLI_SCRIPT', true);
-//}
 
 // Detect CLI scripts - CLI scripts are executed from command line, do not have session and we do not want HTML in output
 // In your new CLI scripts just add "define('CLI_SCRIPT', true);" before requiring config.php.
@@ -230,7 +235,7 @@ umask(0000);
 
 // exact version of currently used yui2 and 3 library
 $CFG->yui2version = '2.9.0';
-$CFG->yui3version = '3.4.1';
+$CFG->yui3version = '3.7.3';
 
 
 // special support for highly optimised scripts that do not need libraries and DB connection
@@ -242,7 +247,11 @@ if (defined('ABORT_AFTER_CONFIG')) {
         } else {
             error_reporting(0);
         }
-        if (empty($CFG->debugdisplay)) {
+        if (NO_DEBUG_DISPLAY) {
+            // Some parts of Moodle cannot display errors and debug at all.
+            ini_set('display_errors', '0');
+            ini_set('log_errors', '1');
+        } else if (empty($CFG->debugdisplay)) {
             ini_set('display_errors', '0');
             ini_set('log_errors', '1');
         } else {
@@ -347,6 +356,14 @@ global $OUTPUT;
 global $MCACHE;
 
 /**
+ * Cache used within grouplib to cache data within current request only.
+ *
+ * @global object $GROUPLLIB_CACHE
+ * @name $GROUPLIB_CACHE
+ */
+global $GROUPLIB_CACHE;
+
+/**
  * Full script path including all params, slash arguments, scheme and host.
  *
  * Note: Do NOT use for getting of current page URL or detection of https,
@@ -412,7 +429,7 @@ if (!PHPUNIT_TEST or PHPUNIT_UTIL) {
 }
 
 // If there are any errors in the standard libraries we want to know!
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 
 // Just say no to link prefetching (Moz prefetching, Google Web Accelerator, others)
 // http://www.google.com/webmasters/faq.html#prefetchblock
@@ -464,6 +481,7 @@ require_once($CFG->libdir .'/sessionlib.php');      // All session and cookie re
 require_once($CFG->libdir .'/editorlib.php');       // All text editor related functions and classes
 require_once($CFG->libdir .'/messagelib.php');      // Messagelib functions
 require_once($CFG->libdir .'/modinfolib.php');      // Cached information on course-module instances
+require_once($CFG->dirroot.'/cache/lib.php');       // Cache API
 
 /* Requires for Totara */
 require_once($CFG->dirroot .'/totara/core/totara.php');// Standard functions used by Totara
@@ -497,12 +515,13 @@ if (isset($CFG->debug)) {
     $originalconfigdebug = $CFG->debug;
     unset($CFG->debug);
 } else {
-    $originalconfigdebug = -1;
+    $originalconfigdebug = null;
 }
 
 // Load up any configuration from the config table
+
 if (PHPUNIT_TEST) {
-    PHPUNIT_UTIL::initialise_cfg();
+    phpunit_util::initialise_cfg();
 } else {
     initialise_cfg();
 }
@@ -526,7 +545,7 @@ if (isset($CFG->debug)) {
     $originaldatabasedebug = $CFG->debug;
     unset($CFG->debug);
 } else {
-    $originaldatabasedebug = -1;
+    $originaldatabasedebug = null;
 }
 
 // enable circular reference collector in PHP 5.3,
@@ -541,12 +560,12 @@ if (function_exists('register_shutdown_function')) {
 }
 
 // Set error reporting back to normal
-if ($originaldatabasedebug == -1) {
+if ($originaldatabasedebug === null) {
     $CFG->debug = DEBUG_MINIMAL;
 } else {
     $CFG->debug = $originaldatabasedebug;
 }
-if ($originalconfigdebug !== -1) {
+if ($originalconfigdebug !== null) {
     $CFG->debug = $originalconfigdebug;
 }
 unset($originalconfigdebug);
@@ -789,6 +808,9 @@ moodle_setlocale();
 
 // Create the $PAGE global - this marks the PAGE and OUTPUT fully initialised, this MUST be done at the end of setup!
 if (!empty($CFG->moodlepageclass)) {
+    if (!empty($CFG->moodlepageclassfile)) {
+        require_once($CFG->moodlepageclassfile);
+    }
     $classname = $CFG->moodlepageclass;
 } else {
     $classname = 'moodle_page';
@@ -855,7 +877,7 @@ if (!empty($CFG->customscripts)) {
 }
 
 if (PHPUNIT_TEST) {
-    //no ip blocking
+    // no ip blocking, these are CLI only
 } else if (CLI_SCRIPT and !defined('WEB_CRON_EMULATED_CLI')) {
     // no ip blocking
 } else if (!empty($CFG->allowbeforeblock)) { // allowed list processed before blocked list?
@@ -907,6 +929,15 @@ if (PHPUNIT_TEST) {
     }
 
 }
+
+// // try to detect IE6 and prevent gzip because it is extremely buggy browser
+if (!empty($_SERVER['HTTP_USER_AGENT']) and strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6') !== false) {
+    @ini_set('zlib.output_compression', 'Off');
+    if (function_exists('apache_setenv')) {
+        @apache_setenv('no-gzip', 1);
+    }
+}
+
 
 // note: we can not block non utf-8 installations here, because empty mysql database
 // might be converted to utf-8 in admin/index.php during installation

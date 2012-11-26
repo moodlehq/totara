@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/backup/converter/convertlib.php');
 
 class imscc11_export_converter extends base_converter {
-    public function get_deps() {
+    static public function get_deps() {
         global $CFG;
         require_once($CFG->dirroot . '/backup/util/settings/setting_dependency.class.php');
         return array(
@@ -76,7 +76,7 @@ class imscc11_store_backup_file extends backup_execution_step {
         $id        = $dinfo[0]->id;                    // Id of activity/section/course (depends of type)
         $courseid  = $dinfo[0]->courseid;              // Id of the course
 
-        $ctxid     = get_context_instance(CONTEXT_USER, $userid)->id;
+        $ctxid     = context_user::instance($userid)->id;
         $component = 'user';
         $filearea  = 'backup';
         $itemid    = 0;

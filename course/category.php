@@ -90,7 +90,7 @@
         /// Resort the category if requested
         if ($resort and confirm_sesskey()) {
             if ($courses = get_courses($category->id, '', 'c.id,c.fullname,c.sortorder')) {
-                collatorlib::asort_objects_by_property($courses, 'fullname');
+                collatorlib::asort_objects_by_property($courses, 'fullname', collatorlib::SORT_NATURAL);
 
                 // move it off the range
                 $sortorderresult = $DB->get_record_sql('SELECT MIN(sortorder) AS min, 1
@@ -443,7 +443,7 @@
     echo $OUTPUT->heading($category->name);
 
     $numcourses = 0;
-    /// Print out all the courses
+    // Print out all the courses.
     if ($SESSION->viewtype=='course') {
         $courses = get_courses_page($category->id, 'c.sortorder ASC',
                 'c.id,c.sortorder,c.shortname,c.fullname,c.summary,c.visible, c.icon',
@@ -451,15 +451,22 @@
         $numcourses = count($courses);
         $abletomovecourses = has_capability('moodle/category:manage', $context);
 
+        // We can consider that we are using pagination when the total count of courses is different than the one returned.
+        $pagingmode = $totalcount != $numcourses;
+
         if (!$courses) {
+            // There is no course to display.
             if (empty($subcategorieswereshown)) {
                 echo $OUTPUT->heading(get_string("nocoursesyet"));
             }
-        } else if ($numcourses <= COURSE_MAX_SUMMARIES_PER_PAGE and !$page and !$isediting) {
+        } else if ($numcourses <= $CFG->courseswithsummarieslimit and !$pagingmode and !$isediting) {
+            // We display courses with their summaries as we have not reached the limit, also we are not
+            // in paging mode and not allowed to edit either.
             echo $OUTPUT->box_start('courseboxes');
             print_courses($category);
             echo $OUTPUT->box_end();
         } else {
+            // The conditions above have failed, we display a basic list of courses with paging/editing options
             echo $OUTPUT->paging_bar($totalcount, $page, $perpage, "/course/category.php?id=$category->id&perpage=$perpage");
 
             $strcourses = get_string('courses');
@@ -643,7 +650,7 @@
         if (!$programs) {
             echo '<p>' . get_string('noprogramsyet', 'totara_program') . '</p>';
 
-        } else if ($numcourses <= COURSE_MAX_SUMMARIES_PER_PAGE and !$page and !$isediting) {
+        } else if ($numcourses <= $CFG->courseswithsummarieslimit and !$page and !$isediting) {
             $OUTPUT->box_start('courseboxes');
             prog_print_programs($category);
             $OUTPUT->box_end();

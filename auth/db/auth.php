@@ -46,12 +46,22 @@ class auth_plugin_db extends auth_plugin_base {
         $extusername = textlib::convert($username, 'utf-8', $this->config->extencoding);
         $extpassword = textlib::convert($password, 'utf-8', $this->config->extencoding);
 
-        $authdb = $this->db_init();
-
         if ($this->is_internal()) {
             // lookup username externally, but resolve
             // password locally -- to support backend that
             // don't track passwords
+
+            if (isset($this->config->removeuser) and $this->config->removeuser == AUTH_REMOVEUSER_KEEP) {
+                // No need to connect to external database in this case because users are never removed and we verify password locally.
+                if ($user = $DB->get_record('user', array('username'=>$username, 'mnethostid'=>$CFG->mnet_localhost_id, 'auth'=>$this->authtype))) {
+                    return validate_internal_user_password($user, $password);
+                } else {
+                    return false;
+                }
+            }
+
+            $authdb = $this->db_init();
+
             $rs = $authdb->Execute("SELECT * FROM {$this->config->table}
                                      WHERE {$this->config->fielduser} = '".$this->ext_addslashes($extusername)."' ");
             if (!$rs) {
@@ -77,6 +87,8 @@ class auth_plugin_db extends auth_plugin_base {
 
         } else {
             // normal case: use external db for both usernames and passwords
+
+            $authdb = $this->db_init();
 
             if ($this->config->passtype === 'md5') {   // Re-format password accordingly
                 $extpassword = md5($extpassword);
@@ -232,25 +244,31 @@ class auth_plugin_db extends auth_plugin_base {
         // delete obsolete internal users
         if (!empty($this->config->removeuser)) {
 
+            $suspendselect = "";
+            if ($this->config->removeuser == AUTH_REMOVEUSER_SUSPEND) {
+                $suspendselect = "AND u.suspended = 0";
+            }
+
             // find obsolete users
             if (count($userlist)) {
                 list($notin_sql, $params) = $DB->get_in_or_equal($userlist, SQL_PARAMS_NAMED, 'u', false);
                 $params['authtype'] = $this->authtype;
                 $sql = "SELECT u.*
                           FROM {user} u
-                         WHERE u.auth=:authtype AND u.deleted=0 AND u.username $notin_sql";
+                         WHERE u.auth=:authtype AND u.deleted=0 AND u.mnethostid=:mnethostid $suspendselect AND u.username $notin_sql";
             } else {
                 $sql = "SELECT u.*
                           FROM {user} u
-                         WHERE u.auth=:authtype AND u.deleted=0";
+                         WHERE u.auth=:authtype AND u.deleted=0 AND u.mnethostid=:mnethostid $suspendselect";
                 $params = array();
                 $params['authtype'] = $this->authtype;
             }
+            $params['mnethostid'] = $CFG->mnet_localhost_id;
             $remove_users = $DB->get_records_sql($sql, $params);
 
             if (!empty($remove_users)) {
                 if ($verbose) {
-                    mtrace(print_string('auth_dbuserstoremove','auth_db', count($remove_users)));
+                    mtrace(get_string('auth_dbuserstoremove','auth_db', count($remove_users)));
                 }
 
                 foreach ($remove_users as $user) {
@@ -262,7 +280,7 @@ class auth_plugin_db extends auth_plugin_base {
                     } else if ($this->config->removeuser == AUTH_REMOVEUSER_SUSPEND) {
                         $updateuser = new stdClass();
                         $updateuser->id   = $user->id;
-                        $updateuser->auth = 'nologin';
+                        $updateuser->suspended = 1;
                         $updateuser->timemodified = time();
                         $DB->update_record('user', $updateuser);
                         if ($verbose) {
@@ -332,11 +350,15 @@ class auth_plugin_db extends auth_plugin_base {
         ///
         // NOTE: this is very memory intensive
         // and generally inefficient
-        $sql = 'SELECT u.id, u.username
-                FROM {user} u
-                WHERE u.auth=\'' . $this->authtype . '\' AND u.deleted=\'0\'';
+        $suspendselect = "";
+        if ($this->config->removeuser == AUTH_REMOVEUSER_SUSPEND) {
+            $suspendselect = "AND u.suspended = 0";
+        }
+        $sql = "SELECT u.id, u.username
+                  FROM {user} u
+                 WHERE u.auth=:authtype AND u.deleted='0' AND mnethostid=:mnethostid $suspendselect";
 
-        $users = $DB->get_records_sql($sql);
+        $users = $DB->get_records_sql($sql, array('authtype'=>$this->authtype, 'mnethostid'=>$CFG->mnet_localhost_id));
 
         // simplify down to usernames
         $usernames = array();
@@ -357,9 +379,20 @@ class auth_plugin_db extends auth_plugin_base {
             // Do not use transactions around this foreach, we want to skip problematic users, not revert everything.
             foreach($add_users as $user) {
                 $username = $user;
-                $user = $this->get_userinfo_asobj($user);
+                if ($this->config->removeuser == AUTH_REMOVEUSER_SUSPEND) {
+                    if ($old_user = $DB->get_record('user', array('username'=>$username, 'deleted'=>0, 'suspended'=>1, 'mnethostid'=>$CFG->mnet_localhost_id, 'auth'=>$this->authtype))) {
+                        $DB->set_field('user', 'suspended', 0, array('id'=>$old_user->id));
+                        if ($verbose) {
+                            mtrace("\t".get_string('auth_dbreviveduser', 'auth_db', array('name'=>$username, 'id'=>$old_user->id)));
+                        }
+                        continue;
+                    }
+                }
+
+                // Do not try to undelete users here, instead select suspending if you ever expect users will reappear.
 
                 // prep a few params
+                $user = $this->get_userinfo_asobj($user);
                 $user->username   = $username;
                 $user->confirmed  = 1;
                 $user->auth       = $this->authtype;
@@ -367,36 +400,32 @@ class auth_plugin_db extends auth_plugin_base {
                 if (empty($user->lang)) {
                     $user->lang = $CFG->lang;
                 }
-
-                // maybe the user has been deleted before
-                if ($old_user = $DB->get_record('user', array('username'=>$user->username, 'deleted'=>1, 'mnethostid'=>$user->mnethostid, 'auth'=>$user->auth))) {
-                    // note: this undeleting is deprecated and will be eliminated soon
-                    $DB->set_field('user', 'deleted', 0, array('id'=>$old_user->id));
-                    $DB->set_field('user', 'timemodified', time(), array('id'=>$old_user->id));
+                $user->timecreated = time();
+                $user->timemodified = $user->timecreated;
+                if ($collision = $DB->get_record_select('user', "username = :username AND mnethostid = :mnethostid AND auth <> :auth", array('username'=>$user->username, 'mnethostid'=>$CFG->mnet_localhost_id, 'auth'=>$this->authtype), 'id,username,auth')) {
                     if ($verbose) {
-                        mtrace("\t".get_string('auth_dbreviveduser', 'auth_db', array('name'=>$old_user->username, 'id'=>$old_user->id)));
+                        mtrace("\t".get_string('auth_dbinsertuserduplicate', 'auth_db', array('username'=>$user->username, 'auth'=>$collision->auth)));
                     }
-
-                } else {
-                    $user->timecreated = time();
-                    $user->timemodified = $user->timecreated;
-                    try {
-                        $id = $DB->insert_record('user', $user); // it is truly a new user
-                        if ($verbose) {
-                            mtrace("\t".get_string('auth_dbinsertuser', 'auth_db', array('name'=>$user->username, 'id'=>$id)));
-                        }
-                    } catch (moodle_exception $e) {
-                        if ($verbose) {
-                            mtrace("\t".get_string('auth_dbinsertusererror', 'auth_db', $user->username));
-                        }
-                        continue;
-                    }
-                    // if relevant, tag for password generation
-                    if ($this->is_internal()) {
-                        set_user_preference('auth_forcepasswordchange', 1, $id);
-                        set_user_preference('create_password',          1, $id);
-                    }
+                    continue;
                 }
+                try {
+                    $id = $DB->insert_record ('user', $user); // it is truly a new user
+                    if ($verbose) {
+                        mtrace("\t".get_string('auth_dbinsertuser', 'auth_db', array('name'=>$user->username, 'id'=>$id)));
+                    }
+                } catch (moodle_exception $e) {
+                    if ($verbose) {
+                        mtrace("\t".get_string('auth_dbinsertusererror', 'auth_db', $user->username));
+                    }
+                    continue;
+                }
+                // if relevant, tag for password generation
+                if ($this->is_internal()) {
+                    set_user_preference('auth_forcepasswordchange', 1, $id);
+                    set_user_preference('create_password',          1, $id);
+                }
+                // Make sure user context is present.
+                context_user::instance($id);
             }
             unset($add_users); // free mem
         }

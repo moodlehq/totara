@@ -112,7 +112,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $page the current page number
      * @return $summarydata containing filtered row data
      */
-    protected function filter_summary_table($summarydata, $page) {
+    protected function filter_review_summary_table($summarydata, $page) {
         if ($page == 0) {
             return $summarydata;
         }
@@ -134,7 +134,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param int $page contains the current page number
      */
     public function review_summary_table($summarydata, $page) {
-        $summarydata = $this->filter_summary_table($summarydata, $page);
+        $summarydata = $this->filter_review_summary_table($summarydata, $page);
         if (empty($summarydata)) {
             return '';
         }
@@ -226,28 +226,18 @@ class mod_quiz_renderer extends plugin_renderer_base {
     /**
      * Returns either a liink or button
      *
-     * @param $url contains a url for the review link
+     * @param quiz_attempt $attemptobj instance of quiz_attempt
      */
-    public function finish_review_link($url) {
+    public function finish_review_link(quiz_attempt $attemptobj) {
+        $url = $attemptobj->view_url();
 
-        // This is an ugly hack to fix MDL-34733 without changing the renderer API.
-        global $attemptobj;
-        if (!empty($attemptobj)) {
-            // I think that every page in standard Moodle that ends up calling
-            // this method will actually end up coming down this branch.
-            $inpopup = $attemptobj->get_access_manager(time())->attempt_must_be_in_popup();
-        } else {
-            // Else fall back to old (not very good) heuristic.
-            $inpopup = $this->page->pagelayout == 'popup';
-        }
-
-        if ($inpopup) {
-            // In a 'secure' popup window.
+        if ($attemptobj->get_access_manager(time())->attempt_must_be_in_popup()) {
             $this->page->requires->js_init_call('M.mod_quiz.secure_window.init_close_button',
                     array($url), quiz_get_js_module());
             return html_writer::empty_tag('input', array('type' => 'button',
                     'value' => get_string('finishreview', 'quiz'),
                     'id' => 'secureclosebutton'));
+
         } else {
             return html_writer::link($url, get_string('finishreview', 'quiz'));
         }
@@ -262,7 +252,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      */
     public function review_next_navigation(quiz_attempt $attemptobj, $page, $lastpage) {
         if ($lastpage) {
-            $nav = $this->finish_review_link($attemptobj->view_url());
+            $nav = $this->finish_review_link($attemptobj);
         } else {
             $nav = link_arrow_right(get_string('next'), $attemptobj->review_url(null, $page + 1));
         }
@@ -273,7 +263,16 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * Return the HTML of the quiz timer.
      * @return string HTML content.
      */
-    public function countdown_timer() {
+    public function countdown_timer(quiz_attempt $attemptobj, $timenow) {
+
+        $timeleft = $attemptobj->get_time_left($timenow);
+        if ($timeleft !== false) {
+            // Make sure the timer starts just above zero. If $timeleft was <= 0, then
+            // this will just have the effect of causing the quiz to be submitted immediately.
+            $timerstartvalue = max($timeleft, 1);
+            $this->initialise_timer($timerstartvalue);
+        }
+
         return html_writer::tag('div', get_string('timeleft', 'quiz') . ' ' .
                 html_writer::tag('span', '', array('id' => 'quiz-time-left')),
                 array('id' => 'quiz-timer'));
@@ -324,7 +323,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param quiz_nav_question_button $button
      */
     protected function render_quiz_nav_question_button(quiz_nav_question_button $button) {
-        $classes = array('qnbutton', $button->stateclass);
+        $classes = array('qnbutton', $button->stateclass, $button->navmethod);
         $attributes = array();
 
         if ($button->currentpage) {
@@ -350,13 +349,17 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $a = new stdClass();
         $a->number = $button->number;
         $a->attributes = implode(' ', $attributes);
+        $tagcontents = html_writer::tag('span', '', array('class' => 'thispageholder')) .
+                        html_writer::tag('span', '', array('class' => 'trafficlight')) .
+                        get_string($qnostring, 'quiz', $a);
+        $tagattributes = array('class' => implode(' ', $classes), 'id' => $button->id,
+                                  'title' => $button->statestring);
 
-        return html_writer::link($button->url,
-                html_writer::tag('span', '', array('class' => 'thispageholder')) .
-                html_writer::tag('span', '', array('class' => 'trafficlight')) .
-                get_string($qnostring, 'quiz', $a),
-                array('class' => implode(' ', $classes), 'id' => $button->id,
-                        'title' => $button->statestring));
+        if ($button->url) {
+            return html_writer::link($button->url, $tagcontents, $tagattributes);
+        } else {
+            return html_writer::tag('span', $tagcontents, $tagattributes);
+        }
     }
 
     /**
@@ -434,14 +437,14 @@ class mod_quiz_renderer extends plugin_renderer_base {
     public function attempt_form($attemptobj, $page, $slots, $id, $nextpage) {
         $output = '';
 
-        //Start Form
+        // Start the form.
         $output .= html_writer::start_tag('form',
                 array('action' => $attemptobj->processattempt_url(), 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'accept-charset' => 'utf-8',
                 'id' => 'responseform'));
         $output .= html_writer::start_tag('div');
 
-        // Print all the questions
+        // Print all the questions.
         foreach ($slots as $slot) {
             $output .= $attemptobj->render_question($slot, false,
                     $attemptobj->attempt_url($slot, $page));
@@ -472,7 +475,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'slots',
                 'value' => implode(',', $slots)));
 
-        //Finish form
+        // Finish the form.
         $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('form');
 
@@ -559,7 +562,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param mod_quiz_display_options $displayoptions
      */
     public function summary_table($attemptobj, $displayoptions) {
-        // Prepare the summary table header
+        // Prepare the summary table header.
         $table = new html_table();
         $table->attributes['class'] = 'generaltable quizsummaryofattempt boxaligncenter';
         $table->head = array(get_string('question', 'quiz'), get_string('status', 'quiz'));
@@ -584,9 +587,14 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 $flag = html_writer::empty_tag('img', array('src' => $this->pix_url('i/flagged'),
                         'alt' => get_string('flagged', 'question'), 'class' => 'questionflag'));
             }
-            $row = array(html_writer::link($attemptobj->attempt_url($slot),
-                    $attemptobj->get_question_number($slot) . $flag),
-                    $attemptobj->get_question_status($slot, $displayoptions->correctness));
+            if ($attemptobj->can_navigate_to($slot)) {
+                $row = array(html_writer::link($attemptobj->attempt_url($slot),
+                        $attemptobj->get_question_number($slot) . $flag),
+                        $attemptobj->get_question_status($slot, $displayoptions->correctness));
+            } else {
+                $row = array($attemptobj->get_question_number($slot) . $flag,
+                                $attemptobj->get_question_status($slot, $displayoptions->correctness));
+            }
             if ($markscolumn) {
                 $row[] = $attemptobj->get_question_mark($slot);
             }
@@ -608,8 +616,15 @@ class mod_quiz_renderer extends plugin_renderer_base {
      */
     public function summary_page_controls($attemptobj) {
         $output = '';
-        // countdown timer
-        $output .= $this->countdown_timer();
+
+        // Return to place button.
+        if ($attemptobj->get_state() == quiz_attempt::IN_PROGRESS) {
+            $button = new single_button(
+                    new moodle_url($attemptobj->attempt_url(null, $attemptobj->get_currentpage())),
+                    get_string('returnattempt', 'quiz'));
+            $output .= $this->container($this->container($this->render($button),
+                    'controls'), 'submitbtns mdl-align');
+        }
 
         // Finish attempt button.
         $options = array(
@@ -624,11 +639,23 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 new moodle_url($attemptobj->processattempt_url(), $options),
                 get_string('submitallandfinish', 'quiz'));
         $button->id = 'responseform';
-        $button->add_action(new confirm_action(get_string('confirmclose', 'quiz'), null,
-                get_string('submitallandfinish', 'quiz')));
+        if ($attemptobj->get_state() == quiz_attempt::IN_PROGRESS) {
+            $button->add_action(new confirm_action(get_string('confirmclose', 'quiz'), null,
+                    get_string('submitallandfinish', 'quiz')));
+        }
 
-        $output .= $this->container($this->container($this->render($button),
-                'controls'), 'submitbtns mdl-align');
+        $duedate = $attemptobj->get_due_date();
+        $message = '';
+        if ($attemptobj->get_state() == quiz_attempt::OVERDUE) {
+            $message = get_string('overduemustbesubmittedby', 'quiz', userdate($duedate));
+
+        } else if ($duedate) {
+            $message = get_string('mustbesubmittedby', 'quiz', userdate($duedate));
+        }
+
+        $output .= $this->countdown_timer($attemptobj, time());
+        $output .= $this->container($message . $this->container(
+                $this->render($button), 'controls'), 'submitbtns mdl-align');
 
         return $output;
     }
@@ -803,7 +830,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
         global $CFG;
 
         $output = '';
-        // Print quiz name and description
+        // Print quiz name and description.
         $output .= $this->heading(format_string($quiz->name));
         if (trim(strip_tags($quiz->intro))) {
             $output .= $this->box(format_module_intro('quiz', $quiz, $cm->id), 'generalbox',
@@ -854,13 +881,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * @param mod_quiz_view_object $viewobj
      */
     public function view_table($quiz, $context, $viewobj) {
-        $output = '';
         if (!$viewobj->attempts) {
-            return $output;
+            return '';
         }
-        $output .= $this->view_table_heading();
 
-        // Prepare table header
+        // Prepare table header.
         $table = new html_table();
         $table->attributes['class'] = 'generaltable quizattemptsummary';
         $table->head = array();
@@ -871,7 +896,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
             $table->align[] = 'center';
             $table->size[] = '';
         }
-        $table->head[] = get_string('timecompleted', 'quiz');
+        $table->head[] = get_string('attemptstate', 'quiz');
         $table->align[] = 'left';
         $table->size[] = '';
         if ($viewobj->markcolumn) {
@@ -896,79 +921,59 @@ class mod_quiz_renderer extends plugin_renderer_base {
             $table->align[] = 'left';
             $table->size[] = '';
         }
-        if (isset($quiz->showtimetaken)) {
-            $table->head[] = get_string('timetaken', 'quiz');
-            $table->align[] = 'left';
-            $table->size[] = '';
-        }
 
-        // One row for each attempt
-        foreach ($viewobj->attempts as $attempt) {
-            $attemptoptions = quiz_get_review_options($quiz, $attempt, $context);
+        // One row for each attempt.
+        foreach ($viewobj->attemptobjs as $attemptobj) {
+            $attemptoptions = $attemptobj->get_display_options(true);
             $row = array();
 
-            // Add the attempt number, making it a link, if appropriate.
+            // Add the attempt number.
             if ($viewobj->attemptcolumn) {
-                if ($attempt->preview) {
+                if ($attemptobj->is_preview()) {
                     $row[] = get_string('preview', 'quiz');
                 } else {
-                    $row[] = $attempt->attempt;
+                    $row[] = $attemptobj->get_attempt_number();
                 }
             }
 
-            // prepare strings for time taken and date completed
-            $timetaken = '';
-            $datecompleted = '';
-            if ($attempt->timefinish > 0) {
-                // attempt has finished
-                $timetaken = format_time($attempt->timefinish - $attempt->timestart);
-                $datecompleted = userdate($attempt->timefinish);
-            } else if (!$quiz->timeclose || $viewobj->timenow < $quiz->timeclose) {
-                // The attempt is still in progress.
-                $timetaken = format_time($viewobj->timenow - $attempt->timestart);
-                $datecompleted = get_string('inprogress', 'quiz');
-            } else {
-                $timetaken = format_time($quiz->timeclose - $attempt->timestart);
-                $datecompleted = userdate($quiz->timeclose);
-            }
-            $row[] = $datecompleted;
+            $row[] = $this->attempt_state($attemptobj);
 
             if ($viewobj->markcolumn) {
                 if ($attemptoptions->marks >= question_display_options::MARK_AND_MAX &&
-                        $attempt->timefinish > 0) {
-                    $row[] = quiz_format_grade($quiz, $attempt->sumgrades);
+                        $attemptobj->is_finished()) {
+                    $row[] = quiz_format_grade($quiz, $attemptobj->get_sum_marks());
                 } else {
                     $row[] = '';
                 }
             }
 
             // Ouside the if because we may be showing feedback but not grades.
-            $attemptgrade = quiz_rescale_grade($attempt->sumgrades, $quiz, false);
+            $attemptgrade = quiz_rescale_grade($attemptobj->get_sum_marks(), $quiz, false);
 
             if ($viewobj->gradecolumn) {
                 if ($attemptoptions->marks >= question_display_options::MARK_AND_MAX &&
-                        $attempt->timefinish > 0) {
-                    $formattedgrade = quiz_format_grade($quiz, $attemptgrade);
-                    // highlight the highest grade if appropriate
-                    if ($viewobj->overallstats && !$attempt->preview
+                        $attemptobj->is_finished()) {
+
+                    // Highlight the highest grade if appropriate.
+                    if ($viewobj->overallstats && !$attemptobj->is_preview()
                             && $viewobj->numattempts > 1 && !is_null($viewobj->mygrade)
                             && $attemptgrade == $viewobj->mygrade
                             && $quiz->grademethod == QUIZ_GRADEHIGHEST) {
-                        $table->rowclasses[$attempt->attempt] = 'bestrow';
+                        $table->rowclasses[$attemptobj->get_attempt_number()] = 'bestrow';
                     }
 
-                    $row[] = $formattedgrade;
+                    $row[] = quiz_format_grade($quiz, $attemptgrade);
                 } else {
                     $row[] = '';
                 }
             }
 
             if ($viewobj->canreviewmine) {
-                $row[] = $viewobj->accessmanager->make_review_link($attempt,
+                $row[] = $viewobj->accessmanager->make_review_link($attemptobj->get_attempt(),
                         $attemptoptions, $this);
             }
 
-            if ($viewobj->feedbackcolumn && $attempt->timefinish > 0) {
+            if ($viewobj->feedbackcolumn && $attemptobj->is_finished()) {
                 if ($attemptoptions->overallfeedback) {
                     $row[] = quiz_feedback_for_grade($attemptgrade, $quiz, $context);
                 } else {
@@ -976,19 +981,45 @@ class mod_quiz_renderer extends plugin_renderer_base {
                 }
             }
 
-            if (isset($quiz->showtimetaken)) {
-                $row[] = $timetaken;
-            }
-
-            if ($attempt->preview) {
+            if ($attemptobj->is_preview()) {
                 $table->data['preview'] = $row;
             } else {
-                $table->data[$attempt->attempt] = $row;
+                $table->data[$attemptobj->get_attempt_number()] = $row;
             }
         } // End of loop over attempts.
-        $output .= html_writer::table($table);
 
+        $output = '';
+        $output .= $this->view_table_heading();
+        $output .= html_writer::table($table);
         return $output;
+    }
+
+    /**
+     * Generate a brief textual desciption of the current state of an attempt.
+     * @param quiz_attempt $attemptobj the attempt
+     * @param int $timenow the time to use as 'now'.
+     * @return string the appropriate lang string to describe the state.
+     */
+    public function attempt_state($attemptobj) {
+        switch ($attemptobj->get_state()) {
+            case quiz_attempt::IN_PROGRESS:
+                return get_string('stateinprogress', 'quiz');
+
+            case quiz_attempt::OVERDUE:
+                return get_string('stateoverdue', 'quiz') . html_writer::tag('span',
+                        get_string('stateoverduedetails', 'quiz',
+                                userdate($attemptobj->get_due_date())),
+                        array('class' => 'statedetails'));
+
+            case quiz_attempt::FINISHED:
+                return get_string('statefinished', 'quiz') . html_writer::tag('span',
+                        get_string('statefinisheddetails', 'quiz',
+                                userdate($attemptobj->get_submitted_date())),
+                        array('class' => 'statedetails'));
+
+            case quiz_attempt::ABANDONED:
+                return get_string('stateabandoned', 'quiz');
+        }
     }
 
     /**
@@ -1150,8 +1181,10 @@ class mod_quiz_links_to_other_attempts implements renderable {
 class mod_quiz_view_object {
     /** @var array $infomessages of messages with information to display about the quiz. */
     public $infomessages;
-    /** @var array $attempt contains all the user's attempts at this quiz. */
+    /** @var array $attempts contains all the user's attempts at this quiz. */
     public $attempts;
+    /** @var array $attemptobjs quiz_attempt objects corresponding to $attempts. */
+    public $attemptobjs;
     /** @var quiz_access_manager $accessmanager contains various access rules. */
     public $accessmanager;
     /** @var bool $canreviewmine whether the current user has the capability to

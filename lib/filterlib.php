@@ -222,6 +222,29 @@ class filter_manager {
         }
         return implode('-', $hashes);
     }
+
+    /**
+     * Setup page with filters requirements and other prepare stuff.
+     *
+     * This method is used by {@see format_text()} and {@see format_string()}
+     * in order to allow filters to setup any page requirement (js, css...)
+     * or perform any action needed to get them prepared before filtering itself
+     * happens by calling to each every active setup() method.
+     *
+     * Note it's executed for each piece of text filtered, so filter implementations
+     * are responsible of controlling the cardinality of the executions that may
+     * be different depending of the stuff to prepare.
+     *
+     * @param moodle_page $page the page we are going to add requirements to.
+     * @param context $context the context which contents are going to be filtered.
+     * @since 2.3
+     */
+    public function setup_page_for_filters($page, $context) {
+        $filters = $this->get_text_filters($context);
+        foreach ($filters as $filter) {
+            $filter->setup($page, $context);
+        }
+    }
 }
 
 /**
@@ -355,6 +378,24 @@ abstract class moodle_text_filter {
      */
     public function hash() {
         return __CLASS__;
+    }
+
+    /**
+     * Setup page with filter requirements and other prepare stuff.
+     *
+     * Override this method if the filter needs to setup page
+     * requirements or needs other stuff to be executed.
+     *
+     * Note this method is invoked from {@see setup_page_for_filters()}
+     * for each piece of text being filtered, so it is responsible
+     * for controlling its own execution cardinality.
+     *
+     * @param moodle_page $page the page we are going to add requirements to.
+     * @param context $context the context which contents are going to be filtered.
+     * @since 2.3
+     */
+    public function setup($page, $context) {
+        // Override me, if needed.
     }
 
     /**
@@ -564,7 +605,7 @@ function filter_set_global_state($filter, $state, $sortorder = false) {
     }
 
     // See if there is an existing record.
-    $syscontext = get_context_instance(CONTEXT_SYSTEM);
+    $syscontext = context_system::instance();
     $rec = $DB->get_record('filter_active', array('filter' => $filter, 'contextid' => $syscontext->id));
     if (empty($rec)) {
         $insert = true;
@@ -706,7 +747,7 @@ function filter_set_local_state($filter, $contextid, $state) {
                 "Must be one of TEXTFILTER_ON, TEXTFILTER_OFF or TEXTFILTER_INHERIT.");
     }
 
-    if ($contextid == get_context_instance(CONTEXT_SYSTEM)->id) {
+    if ($contextid == context_system::instance()->id) {
         throw new coding_exception('You cannot use filter_set_local_state ' .
                 'with $contextid equal to the system context id.');
     }
@@ -806,7 +847,7 @@ function filter_get_local_config($filter, $contextid) {
  */
 function filter_get_all_local_settings($contextid) {
     global $DB;
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    $context = context_system::instance();
     return array(
         $DB->get_records('filter_active', array('contextid' => $contextid), 'filter', 'filter,active'),
         $DB->get_records('filter_config', array('contextid' => $contextid), 'filter,name', 'filter,name,value'),
@@ -855,6 +896,7 @@ function filter_get_active_in_context($context) {
          ) active
          LEFT JOIN {filter_config} fc ON fc.filter = active.filter AND fc.contextid = $context->id
          ORDER BY active.sortorder";
+    //TODO: remove sql_cast_2signed() once we do not support upgrade from Moodle 2.2
     $rs = $DB->get_recordset_sql($sql);
 
     // Masssage the data into the specified format to return.
@@ -898,13 +940,13 @@ function filter_preload_activities(course_modinfo $modinfo) {
     $cmcontexts = array();
     $cmcontextids = array();
     foreach ($modinfo->get_cms() as $cm) {
-        $modulecontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+        $modulecontext = context_module::instance($cm->id);
         $cmcontextids[] = $modulecontext->id;
         $cmcontexts[] = $modulecontext;
     }
 
     // Get course context and all other parents...
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $modinfo->get_course_id());
+    $coursecontext = context_course::instance($modinfo->get_course_id());
     $parentcontextids = explode('/', substr($coursecontext->path, 1));
     $allcontextids = array_merge($cmcontextids, $parentcontextids);
 
@@ -1052,7 +1094,7 @@ function filter_get_available_in_context($context) {
  */
 function filter_get_global_states() {
     global $DB;
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    $context = context_system::instance();
     return $DB->get_records('filter_active', array('contextid' => $context->id), 'sortorder', 'filter,active,sortorder');
 }
 
@@ -1347,13 +1389,13 @@ function filter_remove_duplicates($linkarray) {
         if ($filterobject->casesensitive) {
             $exists = in_array($filterobject->phrase, $concepts);
         } else {
-            $exists = in_array(moodle_strtolower($filterobject->phrase), $lconcepts);
+            $exists = in_array(textlib::strtolower($filterobject->phrase), $lconcepts);
         }
 
         if (!$exists) {
             $cleanlinks[] = $filterobject;
             $concepts[] = $filterobject->phrase;
-            $lconcepts[] = moodle_strtolower($filterobject->phrase);
+            $lconcepts[] = textlib::strtolower($filterobject->phrase);
         }
     }
 

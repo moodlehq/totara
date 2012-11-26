@@ -80,13 +80,13 @@ class qbehaviour_immediatecbm extends qbehaviour_immediatefeedback {
         }
     }
 
-    protected function is_same_response($pendingstep) {
+    protected function is_same_response(question_attempt_step $pendingstep) {
         return parent::is_same_response($pendingstep) &&
                 $this->qa->get_last_behaviour_var('certainty') ==
                         $pendingstep->get_behaviour_var('certainty');
     }
 
-    protected function is_complete_response($pendingstep) {
+    protected function is_complete_response(question_attempt_step $pendingstep) {
         return parent::is_complete_response($pendingstep) &&
                 $pendingstep->has_behaviour_var('certainty');
     }
@@ -96,7 +96,7 @@ class qbehaviour_immediatecbm extends qbehaviour_immediatefeedback {
             return question_attempt::DISCARD;
         }
 
-        if (!$this->qa->get_question()->is_gradable_response($pendingstep->get_qt_data()) ||
+        if (!$this->question->is_gradable_response($pendingstep->get_qt_data()) ||
                 !$pendingstep->has_behaviour_var('certainty')) {
             $pendingstep->set_state(question_state::$invalid);
             return question_attempt::KEEP;

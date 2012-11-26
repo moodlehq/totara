@@ -52,7 +52,7 @@ if (!empty($id)) {
 
 $PAGE->set_url('/mod/scorm/prereqs.php', array('scoid'=>$scoid, 'attempt'=>$attempt, 'id'=>$cm->id));
 
-require_login($course->id, false, $cm);
+require_login($course, false, $cm);
 
 $scorm->version = strtolower(clean_param($scorm->version, PARAM_SAFEDIR));   // Just to be safe
 if (!file_exists($CFG->dirroot.'/mod/scorm/datamodels/'.$scorm->version.'lib.php')) {
@@ -64,7 +64,7 @@ require_once($CFG->dirroot.'/mod/scorm/datamodels/'.$scorm->version.'lib.php');
 if (confirm_sesskey() && (!empty($scoid))) {
     $result = true;
     $request = null;
-    if (has_capability('mod/scorm:savetrack', get_context_instance(CONTEXT_MODULE, $cm->id))) {
+    if (has_capability('mod/scorm:savetrack', context_module::instance($cm->id))) {
         $result = scorm_get_toc($USER, $scorm, $cm->id, TOCJSLINK, $currentorg, $scoid, $mode, $attempt, true, false);
         echo $result->toc;
     }

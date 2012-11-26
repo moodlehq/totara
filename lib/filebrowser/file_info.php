@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -19,8 +18,7 @@
 /**
  * Base for all file browsing classes.
  *
- * @package    core
- * @subpackage filebrowser
+ * @package    core_files
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,19 +26,26 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Base class for things in the tree navigated by @see{file_browser}.
+ * Base class for things in the tree navigated by {@link file_browser}.
  *
- * @package    core
- * @subpackage filebrowser
+ * @package    core_files
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class file_info {
 
+    /** @var stdClass File context */
     protected $context;
 
+    /** @var file_browser File browser instance */
     protected $browser;
 
+    /**
+     * Constructor
+     *
+     * @param file_browser $browser file_browser instance
+     * @param stdClass $context
+     */
     public function __construct($browser, $context) {
         $this->browser = $browser;
         $this->context = $context;
@@ -50,6 +55,7 @@ abstract class file_info {
      * Returns list of standard virtual file/directory identification.
      * The difference from stored_file parameters is that null values
      * are allowed in all fields
+     *
      * @return array with keys contextid, component, filearea, itemid, filepath and filename
      */
     public function get_params() {
@@ -63,49 +69,165 @@ abstract class file_info {
 
     /**
      * Returns localised visible name.
+     *
      * @return string
      */
     public abstract function get_visible_name();
 
     /**
-     * Is directory?
+     * Whether or not this is a directory
+     *
      * @return bool
      */
     public abstract function is_directory();
 
     /**
      * Returns list of children.
+     *
      * @return array of file_info instances
      */
     public abstract function get_children();
 
     /**
+     * Builds SQL sub query (WHERE clause) for selecting files with the specified extensions
+     *
+     * If $extensions == '*' (any file), the result is array('', array())
+     * otherwise the result is something like array('AND filename ...', array(...))
+     *
+     * @param string|array $extensions - either '*' or array of lowercase extensions, i.e. array('.gif','.jpg')
+     * @param string $prefix prefix for DB table files in the query (empty by default)
+     * @return array of two elements: $sql - sql where clause and $params - array of parameters
+     */
+    protected function build_search_files_sql($extensions, $prefix = null) {
+        global $DB;
+        if (strlen($prefix)) {
+            $prefix = $prefix.'.';
+        } else {
+            $prefix = '';
+        }
+        $sql = '';
+        $params = array();
+        if (is_array($extensions) && !in_array('*', $extensions)) {
+            $likes = array();
+            $cnt = 0;
+            foreach ($extensions as $ext) {
+                $cnt++;
+                $likes[] = $DB->sql_like($prefix.'filename', ':filename'.$cnt, false);
+                $params['filename'.$cnt] = '%'.$ext;
+            }
+            $sql .= ' AND (' . join(' OR ', $likes) . ')';
+        }
+        return array($sql, $params);
+     }
+
+    /**
+     * Returns list of children which are either files matching the specified extensions
+     * or folders that contain at least one such file.
+     *
+     * It is recommended to overwrite this function so it uses a proper SQL
+     * query and does not create unnecessary file_info objects (might require a lot of time
+     * and memory usage on big sites).
+     *
+     * @param string|array $extensions, either '*' or array of lowercase extensions, i.e. array('.gif','.jpg')
+     * @return array of file_info instances
+     */
+    public function get_non_empty_children($extensions = '*') {
+        $list = $this->get_children();
+        $nonemptylist = array();
+        foreach ($list as $fileinfo) {
+            if ($fileinfo->is_directory()) {
+                if ($fileinfo->count_non_empty_children($extensions)) {
+                    $nonemptylist[] = $fileinfo;
+                }
+            } else if ($extensions === '*') {
+                $nonemptylist[] = $fileinfo;
+            } else {
+                $filename = $fileinfo->get_visible_name();
+                $extension = textlib::strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                if (!empty($extension) && in_array('.' . $extension, $extensions)) {
+                    $nonemptylist[] = $fileinfo;
+                }
+            }
+        }
+        return $nonemptylist;
+    }
+
+    /**
+     * Returns the number of children which are either files matching the specified extensions
+     * or folders containing at least one such file.
+     *
+     * We usually don't need the exact number of non empty children if it is >=2 (see param $limit)
+     * This function is used by repository_local to evaluate if the folder is empty. But
+     * it also can be used to check if folder has only one subfolder because in some cases
+     * this subfolder can be skipped.
+     *
+     * It is strongly recommended to overwrite this function so it uses a proper SQL
+     * query and does not create file_info objects (later might require a lot of time
+     * and memory usage on big sites).
+     *
+     * @param string|array $extensions, for example '*' or array('.gif','.jpg')
+     * @param int $limit stop counting after at least $limit non-empty children are found
+     * @return int
+     */
+    public function count_non_empty_children($extensions = '*', $limit = 1) {
+        $list = $this->get_children();
+        $cnt = 0;
+        // first loop through files
+        foreach ($list as $fileinfo) {
+            if (!$fileinfo->is_directory()) {
+                if ($extensions !== '*') {
+                    $filename = $fileinfo->get_visible_name();
+                    $extension = textlib::strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+                    if (empty($extension) || !in_array('.' . $extension, $extensions)) {
+                        continue;
+                    }
+                }
+                if ((++$cnt) >= $limit) {
+                    return $cnt;
+                }
+            }
+        }
+        // now loop through directories
+        foreach ($list as $fileinfo) {
+            if ($fileinfo->is_directory() && $fileinfo->count_non_empty_children($extensions)) {
+                if ((++$cnt) >= $limit) {
+                    return $cnt;
+                }
+            }
+        }
+        return $cnt;
+    }
+
+    /**
      * Returns parent file_info instance
+     *
      * @return file_info or null for root
      */
     public abstract function get_parent();
 
     /**
      * Returns array of url encoded params.
+     *
      * @return array with numeric keys
      */
     public function get_params_rawencoded() {
         $params = $this->get_params();
         $encoded = array();
-        $encoded[] = 'contextid='.$params['contextid'];
-        $encoded[] = 'component='.$params['component'];
-        $encoded[] = 'filearea='.$params['filearea'];
-        $encoded[] = 'itemid='.(is_null($params['itemid']) ? -1 : $params['itemid']);
-        $encoded[] = 'filepath='.(is_null($params['filepath']) ? '' : rawurlencode($params['filepath']));
-        $encoded[] = 'filename='.((is_null($params['filename']) or $params['filename'] === '.') ? '' : rawurlencode($params['filename']));
+        $encoded[] = 'contextid=' . $params['contextid'];
+        $encoded[] = 'component=' . $params['component'];
+        $encoded[] = 'filearea=' . $params['filearea'];
+        $encoded[] = 'itemid=' . (is_null($params['itemid']) ? -1 : $params['itemid']);
+        $encoded[] = 'filepath=' . (is_null($params['filepath']) ? '' : rawurlencode($params['filepath']));
+        $encoded[] = 'filename=' . ((is_null($params['filename']) or $params['filename'] === '.') ? '' : rawurlencode($params['filename']));
 
         return $encoded;
     }
 
     /**
      * Returns file download url
-     * @param bool $forcedownload
-     * @param bool $htts force https
+     *
+     * @param bool $forcedownload whether or not force download
+     * @param bool $https whether or not force https
      * @return string url
      */
     public function get_url($forcedownload=false, $https=false) {
@@ -113,7 +235,8 @@ abstract class file_info {
     }
 
     /**
-     * Can I read content of this file or enter directory?
+     * Whether or not I can read content of this file or enter directory
+     *
      * @return bool
      */
     public function is_readable() {
@@ -121,7 +244,8 @@ abstract class file_info {
     }
 
     /**
-     * Can I add new files or directories?
+     * Whether or not new files or directories can be added
+     *
      * @return bool
      */
     public function is_writable() {
@@ -143,6 +267,7 @@ abstract class file_info {
 
     /**
      * Returns file size in bytes, null for directories
+     *
      * @return int bytes or null if not known
      */
     public function get_filesize() {
@@ -151,6 +276,7 @@ abstract class file_info {
 
     /**
      * Returns mimetype
+     *
      * @return string mimetype or null if not known
      */
     public function get_mimetype() {
@@ -159,6 +285,7 @@ abstract class file_info {
 
     /**
      * Returns time created unix timestamp if known
+     *
      * @return int timestamp or null
      */
     public function get_timecreated() {
@@ -167,6 +294,7 @@ abstract class file_info {
 
     /**
      * Returns time modified unix timestamp if known
+     *
      * @return int timestamp or null
      */
     public function get_timemodified() {
@@ -183,6 +311,7 @@ abstract class file_info {
 
     /**
      * Returns the author name of the file
+     *
      * @return string author name or null
      */
     public function get_author() {
@@ -191,6 +320,7 @@ abstract class file_info {
 
     /**
      * Returns the source of the file
+     *
      * @return string a source url or null
      */
     public function get_source() {
@@ -199,6 +329,7 @@ abstract class file_info {
 
     /**
      * Returns the sort order of the file
+     *
      * @return int
      */
     public function get_sortorder() {
@@ -206,10 +337,39 @@ abstract class file_info {
     }
 
     /**
+     * Whether or not this is a external resource
+     *
+     * @return bool
+     */
+    public function is_external_file() {
+        return false;
+    }
+
+    /**
+     * Returns file status flag.
+     *
+     * @return int 0 means file OK, anything else is a problem and file can not be used
+     */
+    public function get_status() {
+        return 0;
+    }
+
+    /**
+     * Returns the localised human-readable name of the file together with virtual path
+     *
+     * @see file_info_stored::get_readable_fullname()
+     * @return string
+     */
+    public function get_readable_fullname() {
+        return null;
+    }
+
+    /**
      * Create new directory, may throw exception - make sure
      * params are valid.
+     *
      * @param string $newdirname name of new directory
-     * @param int id of author, default $USER->id
+     * @param int $userid id of author, default $USER->id
      * @return file_info new directory
      */
     public function create_directory($newdirname, $userid = NULL) {
@@ -219,9 +379,10 @@ abstract class file_info {
     /**
      * Create new file from string - make sure
      * params are valid.
+     *
      * @param string $newfilename name of new file
      * @param string $content of file
-     * @param int id of author, default $USER->id
+     * @param int $userid id of author, default $USER->id
      * @return file_info new file
      */
     public function create_file_from_string($newfilename, $content, $userid = NULL) {
@@ -231,9 +392,10 @@ abstract class file_info {
     /**
      * Create new file from pathname - make sure
      * params are valid.
+     *
      * @param string $newfilename name of new file
      * @param string $pathname location of file
-     * @param int id of author, default $USER->id
+     * @param int $userid id of author, default $USER->id
      * @return file_info new file
      */
     public function create_file_from_pathname($newfilename, $pathname, $userid = NULL) {
@@ -243,9 +405,10 @@ abstract class file_info {
     /**
      * Create new file from stored file - make sure
      * params are valid.
+     *
      * @param string $newfilename name of new file
-     * @param mixed dile id or stored_file of file
-     * @param int id of author, default $USER->id
+     * @param int|stored_file $fid id or stored_file of file
+     * @param int $userid id of author, default $USER->id
      * @return file_info new file
      */
     public function create_file_from_storedfile($newfilename, $fid, $userid = NULL) {
@@ -254,6 +417,7 @@ abstract class file_info {
 
     /**
      * Delete file, make sure file is deletable first.
+     *
      * @return bool success
      */
     public function delete() {
@@ -262,20 +426,19 @@ abstract class file_info {
 
     /**
      * Copy content of this file to local storage, overriding current file if needed.
-     * @param int $contextid
-     * @param string $component
-     * @param string $filearea
-     * @param int $itemid
-     * @param string $filepath
-     * @param string $filename
-     * @return boolean success
+     *
+     * @param array|stdClass $filerecord contains contextid, component, filearea,
+     *    itemid, filepath, filename and optionally other attributes of the new file
+     * @return bool success
      */
-    public function copy_to_storage($contextid, $component, $filearea, $itemid, $filepath, $filename) {
+    public function copy_to_storage($filerecord) {
         return false;
     }
 
     /**
      * Copy content of this file to local storage, overriding current file if needed.
+     *
+     * @todo MDL-31068 implement move() rename() unzip() zip()
      * @param string $pathname real local full file name
      * @return boolean success
      */

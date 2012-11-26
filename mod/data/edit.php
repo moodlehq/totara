@@ -68,13 +68,13 @@ if ($id) {
     }
 }
 
-require_login($course->id, false, $cm);
+require_login($course, false, $cm);
 
 if (isguestuser()) {
     redirect('view.php?d='.$data->id);
 }
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 
 /// If it's hidden then it doesn't show anything.  :)
 if (empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context)) {
@@ -122,7 +122,7 @@ if ($cancel) {
 /// RSS and CSS and JS meta
 if (!empty($CFG->enablerssfeeds) && !empty($CFG->data_enablerssfeeds) && $data->rssarticles > 0) {
     $rsspath = rss_get_url($context->id, $USER->id, 'mod_data', $data->id);
-    $courseshortname = format_string($course->shortname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+    $courseshortname = format_string($course->shortname, true, array('context' => context_course::instance($course->id)));
     $PAGE->add_alternate_version($courseshortname . ': %fullname%', $rsspath, 'application/rss+xml');
 }
 if ($data->csstemplate) {
@@ -216,6 +216,7 @@ if ($datarecord = data_submitted() and confirm_sesskey()) {
             /// Insert a whole lot of empty records to make sure we have them
             $fields = $DB->get_records('data_fields', array('dataid'=>$data->id));
             foreach ($fields as $field) {
+                $content = new stdClass();
                 $content->recordid = $recordid;
                 $content->fieldid = $field->id;
                 $DB->insert_record('data_content',$content);

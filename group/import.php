@@ -20,7 +20,7 @@
  *
  * @copyright 1999 Martin Dougiamas  http://dougiamas.com
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package course
+ * @package core_group
  */
 
 require_once('../config.php');
@@ -35,7 +35,7 @@ $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 $PAGE->set_url('/group/import.php', array('id'=>$id));
 
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $id);
+$context = context_course::instance($id);
 
 require_capability('moodle/course:managegroups', $context);
 
@@ -80,6 +80,7 @@ if ($mform_post->is_cancelled()) {
     $optionalDefaults = array("lang" => 1);
     $optional = array("coursename" => 1,
             "idnumber" => 1,
+            "groupidnumber" => 1,
             "description" => 1,
             "enrolmentkey" => 1);
 
@@ -159,13 +160,31 @@ if ($mform_post->is_cancelled()) {
             if (isset($newgroup->courseid)) {
                 $linenum++;
                 $groupname = $newgroup->name;
-                $newgrpcoursecontext = get_context_instance(CONTEXT_COURSE, $newgroup->courseid);
+                $newgrpcoursecontext = context_course::instance($newgroup->courseid);
 
                 ///Users cannot upload groups in courses they cannot update.
                 if (!has_capability('moodle/course:managegroups', $newgrpcoursecontext) or (!is_enrolled($newgrpcoursecontext) and !has_capability('moodle/course:view', $newgrpcoursecontext))) {
                     echo $OUTPUT->notification(get_string('nopermissionforcreation', 'group', $groupname));
 
                 } else {
+                    if (isset($newgroup->groupidnumber)) {
+                        // The CSV field for the group idnumber is groupidnumber rather than
+                        // idnumber as that field is already in use for the course idnumber.
+                        $newgroup->groupidnumber = trim($newgroup->groupidnumber);
+                        if (has_capability('moodle/course:changeidnumber', $newgrpcoursecontext)) {
+                            $newgroup->idnumber = $newgroup->groupidnumber;
+                            if ($existing = groups_get_group_by_idnumber($newgroup->courseid, $newgroup->idnumber)) {
+                                // idnumbers must be unique to a course but we shouldn't ignore group creation for duplicates
+                                $existing->name = s($existing->name);
+                                $existing->idnumber = s($existing->idnumber);
+                                $existing->problemgroup = $groupname;
+                                echo $OUTPUT->notification(get_string('groupexistforcoursewithidnumber', 'error', $existing));
+                                unset($newgroup->idnumber);
+                            }
+                        }
+                        // Always drop the groupidnumber key. It's not a valid database field
+                        unset($newgroup->groupidnumber);
+                    }
                     if ($groupid = groups_get_group_by_name($newgroup->courseid, $groupname)) {
                         echo $OUTPUT->notification("$groupname :".get_string('groupexistforcourse', 'error', $groupname));
                     } else if (groups_create_group($newgroup)) {

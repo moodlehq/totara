@@ -27,29 +27,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-/**#@+
- * The core question types.
- *
- * These used to be in lib/questionlib.php, but are being deprecated. Copying
- * them here to keep the import/export code working for now (there are 135
- * references to these constants which I don't want to try to fix at the moment.)
- */
-if (!defined('SHORTANSWER')) {
-    define("SHORTANSWER",   "shortanswer");
-    define("TRUEFALSE",     "truefalse");
-    define("MULTICHOICE",   "multichoice");
-    define("RANDOM",        "random");
-    define("MATCH",         "match");
-    define("RANDOMSAMATCH", "randomsamatch");
-    define("DESCRIPTION",   "description");
-    define("NUMERICAL",     "numerical");
-    define("MULTIANSWER",   "multianswer");
-    define("CALCULATED",    "calculated");
-    define("ESSAY",         "essay");
-}
-/**#@-*/
-
-
 /**
  * Base class for question import and export formats.
  *
@@ -128,7 +105,7 @@ class qformat_default {
             debugging('You shouldn\'t call setCategory after setQuestions');
         }
         $this->category = $category;
-        $this->importcontext = get_context_instance_by_id($this->category->contextid);
+        $this->importcontext = context::instance_by_id($this->category->contextid);
     }
 
     /**
@@ -524,10 +501,10 @@ class qformat_default {
         }
 
         if ($this->contextfromfile && $contextid !== false) {
-            $context = get_context_instance_by_id($contextid);
+            $context = context::instance_by_id($contextid);
             require_capability('moodle/question:add', $context);
         } else {
-            $context = get_context_instance_by_id($this->category->contextid);
+            $context = context::instance_by_id($this->category->contextid);
         }
         $this->importcontext = $context;
 
@@ -922,7 +899,7 @@ class qformat_default {
      * Convert a string, as returned by {@link assemble_category_path()},
      * back into an array of category names.
      *
-     * Each category name is cleaned by a call to clean_param(, PARAM_MULTILANG),
+     * Each category name is cleaned by a call to clean_param(, PARAM_TEXT),
      * which matches the cleaning in question/category_form.php.
      *
      * @param string $path
@@ -932,7 +909,7 @@ class qformat_default {
         $rawnames = preg_split('~(?<!/)/(?!/)~', $path);
         $names = array();
         foreach ($rawnames as $rawname) {
-            $names[] = clean_param(trim(str_replace('//', '/', $rawname)), PARAM_MULTILANG);
+            $names[] = clean_param(trim(str_replace('//', '/', $rawname)), PARAM_TEXT);
         }
         return $names;
     }

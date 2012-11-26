@@ -1,8 +1,23 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Client-side JavaScript for group management interface.
- * @author vy-shane AT moodle.com
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package groups
+ * @copyright vy-shane AT moodle.com
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package core_group
  */
 
 
@@ -62,7 +77,9 @@ function UpdatableGroupsCombo(wwwRoot, courseId) {
     */
 
     // Hide the updategroups input since AJAX will take care of this.
-    YAHOO.util.Dom.setStyle("updategroups", "display", "none");
+    YUI().use('yui2-dom', function (Y) {
+        Y.YUI2.util.Dom.setStyle("updategroups", "display", "none");
+    });
 }
 
 
@@ -114,7 +131,9 @@ function UpdatableMembersCombo(wwwRoot, courseId) {
     };
 
     // Hide the updatemembers input since AJAX will take care of this.
-    YAHOO.util.Dom.setStyle("updatemembers", "display", "none");
+    YUI().use('yui2-dom', function (Y) {
+        Y.YUI2.util.Dom.setStyle("updatemembers", "display", "none");
+    });
 }
 
 /**
@@ -166,7 +185,10 @@ UpdatableMembersCombo.prototype.refreshMembers = function () {
 
     if(singleSelection) {
         var sUrl = this.wwwRoot+"/group/index.php?id="+this.courseId+"&group="+groupId+"&act_ajax_getmembersingroup";
-        YAHOO.util.Connect.asyncRequest("GET", sUrl, this.connectCallback, null);
+        var callback = this.connectCallback;
+        YUI().use('yui2-connection', function (Y) {
+            Y.YUI2.util.Connect.asyncRequest("GET", sUrl, callback, null);
+        });
     }
 };
 

@@ -17,9 +17,9 @@
 /**
  * Default message outputs configuration page
  *
- * @package    message
- * @copyright  2011 Lancaster University Network Services Limited
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   core_message
+ * @copyright 2011 Lancaster University Network Services Limited
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(dirname(__FILE__) . '/../config.php');
 require_once($CFG->dirroot . '/message/lib.php');
@@ -29,12 +29,12 @@ require_once($CFG->libdir.'/adminlib.php');
 admin_externalpage_setup('defaultmessageoutputs');
 
 // Require site configuration capability
-require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
+require_capability('moodle/site:config', context_system::instance());
 
 // Fetch processors
 $processors = get_message_processors(true);
 // Fetch message providers
-$providers = $DB->get_records('message_providers', null, 'component desc, name asc');
+$providers = get_message_providers();
 
 if (($form = data_submitted()) && confirm_sesskey()) {
     $preferences = array();
@@ -98,7 +98,7 @@ if (($form = data_submitted()) && confirm_sesskey()) {
 
 
 // Page settings
-$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+$PAGE->set_context(context_system::instance());
 $PAGE->requires->js_init_call('M.core_message.init_defaultoutputs');
 
 // Grab the renderer

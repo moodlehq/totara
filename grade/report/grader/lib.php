@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,8 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * File in which the grader_report class is defined.
- * @package gradebook
+ * Definition of the grader report class
+ *
+ * @package   gradereport_grader
+ * @copyright 2007 Nicolas Connault
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once($CFG->dirroot . '/grade/report/lib.php');
@@ -26,7 +28,7 @@ require_once($CFG->libdir.'/tablelib.php');
 /**
  * Class providing an API for the grader report building and displaying.
  * @uses grade_report
- * @package gradebook
+ * @package gradereport_grader
  */
 class grade_report_grader extends grade_report {
     /**
@@ -105,7 +107,7 @@ class grade_report_grader extends grade_report {
         global $CFG;
         parent::__construct($courseid, $gpr, $context, $page);
 
-        $this->canviewhidden = has_capability('moodle/grade:viewhidden', get_context_instance(CONTEXT_COURSE, $this->course->id));
+        $this->canviewhidden = has_capability('moodle/grade:viewhidden', context_course::instance($this->course->id));
 
         // load collapsed settings for this report
         if ($collapsed = get_user_preferences('grade_report_grader_collapsed_categories')) {
@@ -135,8 +137,9 @@ class grade_report_grader extends grade_report {
 
         $this->baseurl = new moodle_url('index.php', array('id' => $this->courseid));
 
-        if (!empty($this->page)) {
-            $this->baseurl->params(array('page' => $this->page));
+        $studentsperpage = $this->get_students_per_page();
+        if (!empty($this->page) && !empty($studentsperpage)) {
+            $this->baseurl->params(array('perpage' => $studentsperpage, 'page' => $this->page));
         }
 
         $this->pbarurl = new moodle_url('/grade/report/grader/index.php', array('id' => $this->courseid));
@@ -172,6 +175,12 @@ class grade_report_grader extends grade_report {
 
         // always initialize all arrays
         $queue = array();
+        $this->load_users();
+        $this->load_final_grades();
+
+        // Were any changes made?
+        $changedgrades = false;
+
         foreach ($data as $varname => $postedvalue) {
 
             $needsupdate = false;
@@ -189,11 +198,36 @@ class grade_report_grader extends grade_report {
             $userid = clean_param($gradeinfo[1], PARAM_INT);
             $itemid = clean_param($gradeinfo[2], PARAM_INT);
 
-            $oldvalue = $data->{'old'.$varname};
+            // Was change requested?
+            $oldvalue = $this->grades[$userid][$itemid];
+            if ($datatype === 'grade') {
+                // If there was no grade and there still isn't
+                if (is_null($oldvalue->finalgrade) && $postedvalue == -1) {
+                    // -1 means no grade
+                    continue;
+                }
 
-            // was change requested?
-            if ($oldvalue == $postedvalue) { // string comparison
-                continue;
+                // If the grade item uses a custom scale
+                if (!empty($oldvalue->grade_item->scaleid)) {
+
+                    if ((int)$oldvalue->finalgrade === (int)$postedvalue) {
+                        continue;
+                    }
+                } else {
+                    // The grade item uses a numeric scale
+
+                    // Format the finalgrade from the DB so that it matches the grade from the client
+                    if ($postedvalue === format_float($oldvalue->finalgrade, $oldvalue->grade_item->get_decimals())) {
+                        continue;
+                    }
+                }
+
+                $changedgrades = true;
+
+            } else if ($datatype === 'feedback') {
+                if (($oldvalue->feedback === $postedvalue) or ($oldvalue->feedback === NULL and empty($postedvalue))) {
+                    continue;
+                }
             }
 
             if (!$gradeitem = grade_item::fetch(array('id'=>$itemid, 'courseid'=>$this->courseid))) { // we must verify course id here!
@@ -263,6 +297,16 @@ class grade_report_grader extends grade_report {
             }
 
             $gradeitem->update_final_grade($userid, $finalgrade, 'gradebook', $feedback, FORMAT_MOODLE);
+
+            // We can update feedback without reloading the grade item as it doesn't affect grade calculations
+            if ($datatype === 'feedback') {
+                $this->grades[$userid][$itemid]->feedback = $feedback;
+            }
+        }
+
+        if ($changedgrades) {
+            // If a final grade was overriden reload grades so dependent grades like course total will be correct
+            $this->grades = null;
         }
 
         return $warnings;
@@ -277,6 +321,10 @@ class grade_report_grader extends grade_report {
     private function setup_sortitemid() {
 
         global $SESSION;
+
+        if (!isset($SESSION->gradeuserreport)) {
+            $SESSION->gradeuserreport = new stdClass();
+        }
 
         if ($this->sortitemid) {
             if (!isset($SESSION->gradeuserreport->sort)) {
@@ -332,6 +380,10 @@ class grade_report_grader extends grade_report {
     public function load_users() {
         global $CFG, $DB;
 
+        if (!empty($this->users)) {
+            return;
+        }
+
         //limit to users with a gradeable role
         list($gradebookrolessql, $gradebookrolesparams) = $DB->get_in_or_equal(explode(',', $this->gradebookroles), SQL_PARAMS_NAMED, 'grbr0');
 
@@ -386,7 +438,8 @@ class grade_report_grader extends grade_report {
                    $this->groupwheresql
               ORDER BY $sort";
 
-        $this->users = $DB->get_records_sql($sql, $params, $this->get_pref('studentsperpage') * $this->page, $this->get_pref('studentsperpage'));
+        $studentsperpage = $this->get_students_per_page();
+        $this->users = $DB->get_records_sql($sql, $params, $studentsperpage * $this->page, $studentsperpage);
 
         if (empty($this->users)) {
             $this->userselect = '';
@@ -425,6 +478,10 @@ class grade_report_grader extends grade_report {
     public function load_final_grades() {
         global $CFG, $DB;
 
+        if (!empty($this->grades)) {
+            return;
+        }
+
         // please note that we must fetch all grade_grades fields if we want to construct grade_grade object from it!
         $params = array_merge(array('courseid'=>$this->courseid), $this->userselect_params);
         $sql = "SELECT g.*
@@ -439,7 +496,7 @@ class grade_report_grader extends grade_report {
             foreach ($grades as $graderec) {
                 if (in_array($graderec->userid, $userids) and array_key_exists($graderec->itemid, $this->gtree->get_items())) { // some items may not be present!!
                     $this->grades[$graderec->userid][$graderec->itemid] = new grade_grade($graderec, false);
-                    $this->grades[$graderec->userid][$graderec->itemid]->grade_item =& $this->gtree->get_item($graderec->itemid); // db caching
+                    $this->grades[$graderec->userid][$graderec->itemid]->grade_item = $this->gtree->get_item($graderec->itemid); // db caching
                 }
             }
         }
@@ -451,7 +508,7 @@ class grade_report_grader extends grade_report {
                     $this->grades[$userid][$itemid] = new grade_grade();
                     $this->grades[$userid][$itemid]->itemid = $itemid;
                     $this->grades[$userid][$itemid]->userid = $userid;
-                    $this->grades[$userid][$itemid]->grade_item =& $this->gtree->get_item($itemid); // db caching
+                    $this->grades[$userid][$itemid]->grade_item = $this->gtree->get_item($itemid); // db caching
                 }
             }
         }
@@ -558,7 +615,6 @@ class grade_report_grader extends grade_report {
         $rows = array();
 
         $showuserimage = $this->get_pref('showuserimage');
-        $fixedstudents = $this->is_fixed_students();
 
         $strfeedback  = $this->get_lang_string("feedback");
         $strgrade     = $this->get_lang_string('grade');
@@ -860,6 +916,15 @@ class grade_report_grader extends grade_report {
                 } else {
                     $gradeval = $grade->finalgrade;
                 }
+                if (!empty($grade->finalgrade)) {
+                    $gradevalforJS = null;
+                    if ($item->scaleid && !empty($scalesarray[$item->scaleid])) {
+                        $gradevalforJS = (int)$gradeval;
+                    } else {
+                        $gradevalforJS = format_float($gradeval, $decimalpoints);
+                    }
+                    $jsarguments['grades'][] = array('user'=>$userid, 'item'=>$itemid, 'grade'=>$gradevalforJS);
+                }
 
                 // MDL-11274
                 // Hide grades in the grader report if the current grader doesn't have 'moodle/grade:viewhidden'
@@ -949,7 +1014,6 @@ class grade_report_grader extends grade_report {
                             } else {
                                 $nogradestr = $this->get_lang_string('nooutcome', 'grades');
                             }
-                            $itemcell->text .= '<input type="hidden" id="oldgrade_'.$userid.'_'.$item->id.'" name="oldgrade_'.$userid.'_'.$item->id.'" value="'.$oldval.'"/>';
                             $attributes = array('tabindex' => $tabindices[$item->id]['grade'], 'id'=>'grade_'.$userid.'_'.$item->id);
                             $itemcell->text .= html_writer::label(get_string('typescale', 'grades'), $attributes['id'], false, array('class' => 'accesshide'));
                             $itemcell->text .= html_writer::select($scaleopt, 'grade_'.$userid.'_'.$item->id, $gradeval, array(-1=>$nogradestr), $attributes);
@@ -970,7 +1034,9 @@ class grade_report_grader extends grade_report {
                     } else if ($item->gradetype != GRADE_TYPE_TEXT) { // Value type
                         if ($this->get_pref('quickgrading') and $grade->is_editable()) {
                             $value = format_float($gradeval, $decimalpoints);
-                            $itemcell->text .= '<input type="hidden" id="oldgrade_'.$userid.'_'.$item->id.'" name="oldgrade_'.$userid.'_'.$item->id.'" value="'.$value.'" />';
+                            $gradelabel = fullname($user) . ' ' . $item->itemname;
+                            $itemcell->text .= '<label class="accesshide" for="grade_'.$userid.'_'.$item->id.'">'
+                                          .get_string('useractivitygrade', 'gradereport_grader', $gradelabel).'</label>';
                             $itemcell->text .= '<input size="6" tabindex="' . $tabindices[$item->id]['grade']
                                           . '" type="text" class="text" title="'. $strgrade .'" name="grade_'
                                           .$userid.'_' .$item->id.'" id="grade_'.$userid.'_'.$item->id.'" value="'.$value.'" />';
@@ -982,8 +1048,9 @@ class grade_report_grader extends grade_report {
 
                     // If quickfeedback is on, print an input element
                     if ($this->get_pref('showquickfeedback') and $grade->is_editable()) {
-
-                        $itemcell->text .= '<input type="hidden" id="oldfeedback_'.$userid.'_'.$item->id.'" name="oldfeedback_'.$userid.'_'.$item->id.'" value="' . s($grade->feedback) . '" />';
+                        $feedbacklabel = fullname($user) . ' ' . $item->itemname;
+                        $itemcell->text .= '<label class="accesshide" for="feedback_'.$userid.'_'.$item->id.'">'
+                                      .get_string('useractivityfeedback', 'gradereport_grader', $feedbacklabel).'</label>';
                         $itemcell->text .= '<input class="quickfeedback" tabindex="' . $tabindices[$item->id]['feedback'].'" id="feedback_'.$userid.'_'.$item->id
                                       . '" size="6" title="' . $strfeedback . '" type="text" name="feedback_'.$userid.'_'.$item->id.'" value="' . s($grade->feedback) . '" />';
                     }
@@ -1028,12 +1095,11 @@ class grade_report_grader extends grade_report {
             }
             $jsarguments['cfg']['feedbacktrunclength'] =  $this->feedback_trunc_length;
 
-            //feedbacks are now being stored in $jsarguments['feedback'] in get_right_rows()
-            //$jsarguments['cfg']['feedback'] =  $this->feedbacks;
+            // Student grades and feedback are already at $jsarguments['feedback'] and $jsarguments['grades']
         }
         $jsarguments['cfg']['isediting'] = (bool)$USER->gradeediting[$this->courseid];
         $jsarguments['cfg']['courseid'] =  $this->courseid;
-        $jsarguments['cfg']['studentsperpage'] =  $this->get_pref('studentsperpage');
+        $jsarguments['cfg']['studentsperpage'] =  $this->get_students_per_page();
         $jsarguments['cfg']['showquickfeedback'] =  (bool)$this->get_pref('showquickfeedback');
 
         $module = array(
@@ -1207,7 +1273,7 @@ class grade_report_grader extends grade_report {
 
             foreach ($this->gtree->items as $itemid=>$unused) {
                 // emulate grade element
-                $item =& $this->gtree->get_item($itemid);
+                $item = $this->gtree->get_item($itemid);
 
                 $eid = $this->gtree->get_item_eid($item);
                 $element = $this->gtree->locate_element($eid);
@@ -1577,7 +1643,7 @@ class grade_report_grader extends grade_report {
      */
     public function is_fixed_students() {
         global $USER, $CFG;
-        return empty($USER->screenreader) && $CFG->grade_report_fixedstudents &&
+        return $CFG->grade_report_fixedstudents &&
             (check_browser_version('MSIE', '7.0') ||
              check_browser_version('Firefox', '2.0') ||
              check_browser_version('Gecko', '2006010100') ||
@@ -1642,6 +1708,60 @@ class grade_report_grader extends grade_report {
         }
 
         return $arrows;
+    }
+
+    /**
+     * Returns the maximum number of students to be displayed on each page
+     *
+     * Takes into account the 'studentsperpage' user preference and the 'max_input_vars'
+     * PHP setting. Too many fields is only a problem when submitting grades but
+     * we respect 'max_input_vars' even when viewing grades to prevent students disappearing
+     * when toggling editing on and off.
+     *
+     * @return int The maximum number of students to display per page
+     */
+    public function get_students_per_page() {
+        global $USER;
+        static $studentsperpage = null;
+
+        if ($studentsperpage === null) {
+            $originalstudentsperpage = $studentsperpage = $this->get_pref('studentsperpage');
+
+            // Will this number of students result in more fields that we are allowed?
+            $maxinputvars = ini_get('max_input_vars');
+            if ($maxinputvars !== false) {
+                $fieldspergradeitem = 0; // The number of fields output per grade item for each student
+
+                if ($this->get_pref('quickgrading')) {
+                    // One grade field
+                    $fieldspergradeitem ++;
+                }
+                if ($this->get_pref('showquickfeedback')) {
+                    // One feedback field
+                    $fieldspergradeitem ++;
+                }
+
+                $fieldsperstudent = $fieldspergradeitem * count($this->gtree->get_items());
+                $fieldsrequired = $studentsperpage * $fieldsperstudent;
+                if ($fieldsrequired > $maxinputvars) {
+                    $studentsperpage = floor($maxinputvars / $fieldsperstudent);
+                    if ($studentsperpage<1) {
+                        // Make sure students per page doesn't fall below 1
+                        // PHP max_input_vars could potentially be reached with 1 student
+                        // if there are >500 grade items and quickgrading and showquickfeedback are on
+                        $studentsperpage = 1;
+                    }
+
+                    $a = new stdClass();
+                    $a->originalstudentsperpage = $originalstudentsperpage;
+                    $a->studentsperpage = $studentsperpage;
+                    $a->maxinputvars = $maxinputvars;
+                    debugging(get_string('studentsperpagereduced', 'grades', $a));
+                }
+            }
+        }
+
+        return $studentsperpage;
     }
 }
 

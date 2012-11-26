@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Book import
  *
- * @package    booktool
- * @subpackage importhtml
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    booktool_importhtml
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,7 +35,7 @@ $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
 require_login($course, false, $cm);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('booktool/importhtml:import', $context);
 
 $PAGE->set_url('/mod/book/tool/importhtml/index.php', array('id'=>$id, 'chapterid'=>$chapterid));
@@ -49,22 +48,21 @@ if ($chapterid) {
     $chapter = false;
 }
 
-$PAGE->set_title(format_string($book->name));
-$PAGE->add_body_class('mod_book');
-$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_title($book->name);
+$PAGE->set_heading($course->fullname);
 
-///prepare the page header
+// Prepare the page header.
 $strbook = get_string('modulename', 'mod_book');
 $strbooks = get_string('modulenameplural', 'mod_book');
 
 $mform = new booktool_importhtml_form(null, array('id'=>$id, 'chapterid'=>$chapterid));
 
-/// If data submitted, then process and store.
+// If data submitted, then process and store.
 if ($mform->is_cancelled()) {
     if (empty($chapter->id)) {
-        redirect("view.php?id=$cm->id");
+        redirect($CFG->wwwroot."/mod/book/view.php?id=$cm->id");
     } else {
-        redirect("view.php?id=$cm->id&chapterid=$chapter->id");
+        redirect($CFG->wwwroot."/mod/book/view.php?id=$cm->id&chapterid=$chapter->id");
     }
 
 } else if ($data = $mform->get_data()) {
@@ -74,7 +72,7 @@ if ($mform->is_cancelled()) {
     // this is a bloody hack - children do not try this at home!
     $fs = get_file_storage();
     $draftid = file_get_submitted_draft_itemid('importfile');
-    if (!$files = $fs->get_area_files(get_context_instance(CONTEXT_USER, $USER->id)->id, 'user', 'draft', $draftid, 'id DESC', false)) {
+    if (!$files = $fs->get_area_files(context_user::instance($USER->id)->id, 'user', 'draft', $draftid, 'id DESC', false)) {
         redirect($PAGE->url);
     }
     $file = reset($files);

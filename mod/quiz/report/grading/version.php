@@ -17,14 +17,13 @@
 /**
  * Quiz grading report version information.
  *
- * @package    quiz
- * @subpackage grading
- * @copyright  2010 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   quiz_grading
+ * @copyright 2010 The Open University
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version  = 2011051200;
-$plugin->requires = 2011060313;
+$plugin->version  = 2012061700;
+$plugin->requires = 2012061700;
 $plugin->component = 'quiz_grading';

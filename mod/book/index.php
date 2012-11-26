@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,16 +17,15 @@
 /**
  * This page lists all the instances of book in a particular course
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
 
-$id = required_param('id', PARAM_INT);           // Course Module ID
+$id = required_param('id', PARAM_INT); // Course ID.
 
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 
@@ -35,7 +34,7 @@ unset($id);
 require_course_login($course, true);
 $PAGE->set_pagelayout('incourse');
 
-/// Get all required strings
+// Get all required strings
 $strbooks        = get_string('modulenameplural', 'mod_book');
 $strbook         = get_string('modulename', 'mod_book');
 $strsectionname  = get_string('sectionname', 'format_'.$course->format);
@@ -51,16 +50,13 @@ echo $OUTPUT->header();
 
 add_to_log($course->id, 'book', 'view all', 'index.php?id='.$course->id, '');
 
-/// Get all the appropriate data
+// Get all the appropriate data
 if (!$books = get_all_instances_in_course('book', $course)) {
     notice(get_string('thereareno', 'moodle', $strbooks), "$CFG->wwwroot/course/view.php?id=$course->id");
     die;
 }
 
 $usesections = course_format_uses_sections($course->format);
-if ($usesections) {
-    $sections = get_all_sections($course->id);
-}
 
 $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
@@ -76,12 +72,12 @@ if ($usesections) {
 $modinfo = get_fast_modinfo($course);
 $currentsection = '';
 foreach ($books as $book) {
-    $cm = $modinfo->cms[$book->coursemodule];
+    $cm = $modinfo->get_cm($book->coursemodule);
     if ($usesections) {
         $printsection = '';
         if ($book->section !== $currentsection) {
             if ($book->section) {
-                $printsection = get_section_name($course, $sections[$book->section]);
+                $printsection = get_section_name($course, $book->section);
             }
             if ($currentsection !== '') {
                 $table->data[] = 'hr';
@@ -89,14 +85,14 @@ foreach ($books as $book) {
             $currentsection = $book->section;
         }
     } else {
-        $printsection = '<span class="smallinfo">'.userdate($book->timemodified)."</span>";
+        $printsection = html_writer::tag('span', userdate($book->timemodified), array('class' => 'smallinfo'));
     }
 
-    $class = $book->visible ? '' : 'class="dimmed"'; // hidden modules are dimmed
+    $class = $book->visible ? null : array('class' => 'dimmed'); // hidden modules are dimmed
 
     $table->data[] = array (
         $printsection,
-        "<a $class href=\"view.php?id=$cm->id\">".format_string($book->name)."</a>",
+        html_writer::link(new moodle_url('view.php', array('id' => $cm->id)), format_string($book->name), $class),
         format_module_intro('book', $book, $cm->id));
 }
 

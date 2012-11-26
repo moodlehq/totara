@@ -17,12 +17,26 @@
 /**
  * Capability definitions for the quiz module.
  *
- * @package    mod
- * @subpackage scorm
- * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @package    mod_scorm
+ * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 $capabilities = array(
+
+    'mod/scorm:addinstance' => array(
+        'riskbitmask' => RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/course:manageactivities'
+    ),
 
     'mod/scorm:viewreport' => array(
 

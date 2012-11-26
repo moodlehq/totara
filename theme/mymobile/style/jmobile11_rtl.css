@@ -52,3 +52,13 @@
 .path-mod-quiz.dir-rtl .que .control {
     width: 75%;
 }
+
+.dir-rtl .categorybox .ui-btn-inner,
+.dir-rtl .coursebox .ui-btn-inner {
+    text-align: right;
+ }
+
+.dir-rtl .categorybox .ui-btn-text,
+.dir-rtl .coursebox .ui-btn-text {
+    padding-right: 25px;
+}

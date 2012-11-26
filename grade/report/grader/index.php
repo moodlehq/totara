@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,6 +13,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * The gradebook grader report
+ *
+ * @package   gradereport_grader
+ * @copyright 2007 Moodle Pty Ltd (http://moodle.com)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 require_once '../../../config.php';
 require_once $CFG->libdir.'/gradelib.php';
@@ -39,7 +46,7 @@ if (!$course = $DB->get_record('course', array('id' => $courseid))) {
     print_error('nocourseid');
 }
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $course->id);
+$context = context_course::instance($course->id);
 
 require_capability('gradereport/grader:view', $context);
 require_capability('moodle/grade:viewall', $context);
@@ -140,7 +147,7 @@ foreach($warnings as $warning) {
     echo $OUTPUT->notification($warning);
 }
 
-$studentsperpage = $report->get_pref('studentsperpage');
+$studentsperpage = $report->get_students_per_page();
 // Don't use paging if studentsperpage is empty or 0 at course AND site levels
 if (!empty($studentsperpage)) {
     echo $OUTPUT->paging_bar($numusers, $report->page, $studentsperpage, $report->pbarurl);
@@ -157,7 +164,7 @@ if ($USER->gradeediting[$course->id] && ($report->get_pref('showquickfeedback') 
     echo '<input type="hidden" value="grader" name="report"/>';
     echo '<input type="hidden" value="'.$page.'" name="page"/>';
     echo $reporthtml;
-    echo '<div class="submit"><input type="submit" value="'.s(get_string('update')).'" /></div>';
+    echo '<div class="submit"><input type="submit" id="gradersubmit" value="'.s(get_string('update')).'" /></div>';
     echo '</div></form>';
 } else {
     echo $reporthtml;

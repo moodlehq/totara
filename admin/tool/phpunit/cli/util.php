@@ -123,7 +123,7 @@ Options:
 -h, --help     Print out this help
 
 Example:
-\$/usr/bin/php lib/phpunit/tool.php --install
+\$ php ".phpunit_bootstrap_cli_argument_path('/admin/tool/phpunit/cli/util.php')." --install
 ";
     echo $help;
     exit(0);
@@ -150,7 +150,7 @@ if ($diag) {
 } else if ($drop) {
     // make sure tests do not run in parallel
     phpunit_util::acquire_test_lock();
-    phpunit_util::drop_site();
+    phpunit_util::drop_site(true);
     // note: we must stop here because $CFG is messed up and we can not reinstall, sorry
     exit(0);
 

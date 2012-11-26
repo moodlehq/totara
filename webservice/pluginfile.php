@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,17 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
  * A script to serve files from web service client
  *
- * @package    core
- * @subpackage file
+ * @package    core_webservice
  * @copyright  2011 Dongsheng Cai <dongsheng@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * AJAX_SCRIPT - exception will be converted into JSON
+ */
 define('AJAX_SCRIPT', true);
+
+/**
+ * NO_MOODLE_COOKIES - we don't want any cookie
+ */
 define('NO_MOODLE_COOKIES', true);
+
+
 require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir . '/filelib.php');
 require_once($CFG->dirroot . '/webservice/lib.php');
@@ -38,7 +46,7 @@ $authenticationinfo = $webservicelib->authenticate_user($token);
 //check the service allows file download
 $enabledfiledownload = (int) ($authenticationinfo['service']->downloadfiles);
 if (empty($enabledfiledownload)) {
-    throw new webservice_access_exception(get_string('enabledirectdownload', 'webservice'));
+    throw new webservice_access_exception('Web service file downloading must be enabled in external service settings');
 }
 
 //finally we can serve the file :)

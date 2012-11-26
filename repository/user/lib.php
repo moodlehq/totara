@@ -16,19 +16,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * repository_user class is used to browse user private files
+ * This plugin is used to access user's private files
  *
  * @since 2.0
- * @package    repository
- * @subpackage user
- * @copyright  2010 Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_user
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+require_once($CFG->dirroot . '/repository/lib.php');
 
+/**
+ * repository_user class is used to browse user private files
+ *
+ * @since     2.0
+ * @package   repository_user
+ * @copyright 2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class repository_user extends repository {
 
     /**
      * user plugin doesn't require login
+     *
      * @return mixed
      */
     public function print_login() {
@@ -41,12 +50,14 @@ class repository_user extends repository {
      * @param string $encodedpath
      * @return mixed
      */
-    public function get_listing($encodedpath = '') {
+    public function get_listing($encodedpath = '', $page = '') {
         global $CFG, $USER, $OUTPUT;
         $ret = array();
         $ret['dynload'] = true;
         $ret['nosearch'] = true;
         $ret['nologin'] = true;
+        $manageurl = new moodle_url('/user/files.php');
+        $ret['manage'] = $manageurl->out();
         $list = array();
 
         if (!empty($encodedpath)) {
@@ -63,7 +74,7 @@ class repository_user extends repository {
         $filearea = 'private';
         $component = 'user';
         $itemid  = 0;
-        $context = get_context_instance(CONTEXT_USER, $USER->id);
+        $context = context_user::instance($USER->id);
 
         try {
             $browser = get_file_browser();
@@ -87,22 +98,37 @@ class repository_user extends repository {
                         $encodedpath = base64_encode(serialize($child->get_params()));
                         $node = array(
                             'title' => $child->get_visible_name(),
-                            'size' => 0,
-                            'date' => '',
+                            'datemodified' => $child->get_timemodified(),
+                            'datecreated' => $child->get_timecreated(),
                             'path' => $encodedpath,
                             'children'=>array(),
-                            'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false)
+                            'thumbnail' => $OUTPUT->pix_url(file_folder_icon(90))->out(false)
                         );
                         $list[] = $node;
                     } else {
                         $encodedpath = base64_encode(serialize($child->get_params()));
                         $node = array(
                             'title' => $child->get_visible_name(),
-                            'size' => 0,
-                            'date' => '',
+                            'size' => $child->get_filesize(),
+                            'datemodified' => $child->get_timemodified(),
+                            'datecreated' => $child->get_timecreated(),
+                            'author' => $child->get_author(),
+                            'license' => $child->get_license(),
+                            'isref' => $child->is_external_file(),
                             'source'=> $encodedpath,
-                            'thumbnail' => $OUTPUT->pix_url(file_extension_icon($child->get_visible_name(), 32))->out(false)
+                            'icon' => $OUTPUT->pix_url(file_file_icon($child, 24))->out(false),
+                            'thumbnail' => $OUTPUT->pix_url(file_file_icon($child, 90))->out(false)
                         );
+                        if ($child->get_status() == 666) {
+                            $node['originalmissing'] = true;
+                        }
+                        if ($imageinfo = $child->get_imageinfo()) {
+                            $fileurl = new moodle_url($child->get_url());
+                            $node['realthumbnail'] = $fileurl->out(false, array('preview' => 'thumb', 'oid' => $child->get_timemodified()));
+                            $node['realicon'] = $fileurl->out(false, array('preview' => 'tinyicon', 'oid' => $child->get_timemodified()));
+                            $node['image_width'] = $imageinfo['width'];
+                            $node['image_height'] = $imageinfo['height'];
+                        }
                         $list[] = $node;
                     }
                 }
@@ -116,20 +142,31 @@ class repository_user extends repository {
     }
 
     /**
-     * User file don't support to link to external links
-     *
-     * @return int
-     */
-    public function supported_returntypes() {
-        return FILE_INTERNAL;
-    }
-
-    /**
      * Does this repository used to browse moodle files?
      *
      * @return boolean
      */
     public function has_moodle_files() {
         return true;
+    }
+
+    /**
+     * User cannot use the external link to dropbox
+     *
+     * @return int
+     */
+    public function supported_returntypes() {
+        return FILE_INTERNAL | FILE_REFERENCE;
+    }
+
+    /**
+     * Return reference file life time
+     *
+     * @param string $ref
+     * @return int
+     */
+    public function get_reference_file_lifetime($ref) {
+        // this should be realtime
+        return 0;
     }
 }

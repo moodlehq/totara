@@ -528,7 +528,8 @@ class moodle1_converter extends base_converter {
      * CONTEXT_SYSTEM and CONTEXT_COURSE ignore the $instance as they represent a
      * single system or the course being restored.
      *
-     * @see get_context_instance()
+     * @see context_system::instance()
+     * @see context_course::instance()
      * @param int $level the context level, like CONTEXT_COURSE or CONTEXT_MODULE
      * @param int $instance the instance id, for example $course->id for courses or $cm->id for activity modules
      * @return int the context id
@@ -1161,9 +1162,6 @@ class moodle1_file_manager implements loggable {
     /** @var string the root of the converter temp directory */
     protected $basepath;
 
-    /** @var textlib instance used during the migration */
-    protected $textlib;
-
     /** @var array of file ids that were migrated by this instance */
     protected $fileids = array();
 
@@ -1187,7 +1185,6 @@ class moodle1_file_manager implements loggable {
         $this->userid    = $userid;
         // set other useful bits
         $this->basepath  = $converter->get_tempdir_path();
-        $this->textlib   = textlib_get_instance();
     }
 
     /**
@@ -1218,7 +1215,7 @@ class moodle1_file_manager implements loggable {
         }
         $filepath = clean_param($filepath, PARAM_PATH);
 
-        if ($this->textlib->strlen($filepath) > 255) {
+        if (textlib::strlen($filepath) > 255) {
             throw new moodle1_convert_exception('file_path_longer_than_255_chars');
         }
 

@@ -40,7 +40,6 @@ function xmldb_feedback_upgrade($oldversion) {
     $dbman = $DB->get_manager();
 
     if ($oldversion < 2007012310) {
-
         //create a new table feedback_completedtmp and the field-definition
         $table = new xmldb_table('feedback_completedtmp');
 
@@ -389,6 +388,10 @@ function xmldb_feedback_upgrade($oldversion) {
 
     // Moodle v2.2.0 release upgrade line
     // Put any upgrade step following this
+
+    // Moodle v2.3.0 release upgrade line
+    // Put any upgrade step following this
+
 
     return true;
 }

@@ -185,8 +185,8 @@ class mod_scorm_mod_form extends moodleform_mod {
         // Max Attempts
         $mform->addElement('select', 'maxattempt', get_string('maximumattempts', 'scorm'), scorm_get_attempts_array());
         $mform->addHelpButton('maxattempt', 'maximumattempts', 'scorm');
-        $mform->setDefault('maxattempt', $cfg_scorm->maxattempts);
-        $mform->setAdvanced('maxattempt', $cfg_scorm->maxattempts_adv);
+        $mform->setDefault('maxattempt', $cfg_scorm->maxattempt);
+        $mform->setAdvanced('maxattempt', $cfg_scorm->maxattempt_adv);
 
         // What Grade
         $mform->addElement('select', 'whatgrade', get_string('whatgrade', 'scorm'),  scorm_get_what_grade_array());
@@ -196,7 +196,7 @@ class mod_scorm_mod_form extends moodleform_mod {
         $mform->setAdvanced('whatgrade', $cfg_scorm->whatgrade_adv);
 
         // Display attempt status
-        $mform->addElement('selectyesno', 'displayattemptstatus', get_string('displayattemptstatus', 'scorm'));
+        $mform->addElement('select', 'displayattemptstatus', get_string('displayattemptstatus', 'scorm'), scorm_get_attemptstatus_array());
         $mform->addHelpButton('displayattemptstatus', 'displayattemptstatus', 'scorm');
         $mform->setDefault('displayattemptstatus', $cfg_scorm->displayattemptstatus);
         $mform->setAdvanced('displayattemptstatus', $cfg_scorm->displayattemptstatus_adv);
@@ -324,7 +324,7 @@ class mod_scorm_mod_form extends moodleform_mod {
             $default_values['timeclose'] = 0;
         }
 
-            // Set some completion default data
+        // Set some completion default data
         if (!empty($default_values['completionstatusrequired']) && !is_array($default_values['completionstatusrequired'])) {
             // Unpack values
             $cvalues = array();
@@ -340,6 +340,7 @@ class mod_scorm_mod_form extends moodleform_mod {
         if (!isset($default_values['completionscorerequired']) || !strlen($default_values['completionscorerequired'])) {
             $default_values['completionscoredisabled'] = 1;
         }
+
     }
 
     function validation($data, $files) {

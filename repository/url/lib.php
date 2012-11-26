@@ -16,20 +16,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access files by providing an url
+ *
+ * @since 2.0
+ * @package    repository_url
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+require_once(dirname(__FILE__).'/locallib.php');
+
+/**
  * repository_url class
  * A subclass of repository, which is used to download a file from a specific url
  *
  * @since 2.0
- * @package    repository
- * @subpackage url
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_url
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once(dirname(__FILE__).'/locallib.php');
-
 class repository_url extends repository {
+    var $processedfiles = array();
 
     /**
      * @param int $repositoryid
@@ -40,16 +47,6 @@ class repository_url extends repository {
         global $CFG;
         parent::__construct($repositoryid, $context, $options);
         $this->file_url = optional_param('file', '', PARAM_RAW);
-    }
-
-    public function get_file($url, $file = '') {
-        global $CFG;
-        //$CFG->repository_no_delete = true;
-        $path = $this->prepare_file($file);
-        $fp = fopen($path, 'w');
-        $c = new curl;
-        $c->download(array(array('url'=>$url, 'file'=>$fp)));
-        return array('path'=>$path, 'url'=>$url);
     }
 
     public function check_login() {
@@ -75,6 +72,7 @@ class repository_url extends repository {
 
             $ret['login'] = array($url);
             $ret['login_btn_label'] = get_string('download', 'repository_url');
+            $ret['allowcaching'] = true; // indicates that login form can be cached in filepicker.js
             return $ret;
         } else {
             echo <<<EOD
@@ -97,49 +95,114 @@ EOD;
     public function get_listing($path='', $page='') {
         global $CFG, $OUTPUT;
         $ret = array();
-        $curl = new curl;
-        $curl->setopt(array('CURLOPT_FOLLOWLOCATION' => true, 'CURLOPT_MAXREDIRS' => 3));
-        $msg = $curl->head($this->file_url);
-        $info = $curl->get_info();
-        if ($info['http_code'] != 200) {
-            $ret['e'] = $msg;
-        } else {
-            $ret['list'] = array();
-            $ret['nosearch'] = true;
-            $ret['nologin'] = true;
-            $filename = $this->guess_filename($info['url'], $info['content_type']);
-            if (strstr($info['content_type'], 'text/html') || empty($info['content_type'])) {
-                // analysis this web page, general file list
-                $ret['list'] = array();
-                $content = $curl->get($info['url']);
-                $this->analyse_page($info['url'], $content, $ret);
-            } else {
-                // download this file
-                $ret['list'][] = array(
-                    'title'=>$filename,
-                    'source'=>$this->file_url,
-                    'thumbnail' => $OUTPUT->pix_url(file_extension_icon($filename, 32))->out(false)
-                    );
-            }
-        }
+        $ret['list'] = array();
+        $ret['nosearch'] = true;
+        $ret['norefresh'] = true;
+        $ret['nologin'] = true;
+
+        $this->parse_file(null, $this->file_url, $ret, true);
         return $ret;
     }
-    public function analyse_page($baseurl, $content, &$list) {
-        global $CFG, $OUTPUT;
-        $urls = extract_html_urls($content);
-        $images = $urls['img']['src'];
-        $pattern = '#img(.+)src="?\'?([[:alnum:]:?=&@/._+-]+)"?\'?#i';
-        if (!empty($images)) {
-            foreach($images as $url) {
-                $list['list'][] = array(
-                    'title'=>$this->guess_filename($url, ''),
-                    'source'=>url_to_absolute($baseurl, $url),
-                    'thumbnail'=>url_to_absolute($baseurl, $url),
-                    'thumbnail_height'=>84,
-                    'thumbnail_width'=>84
-                );
+
+    /**
+     * Parses one file (either html or css)
+     *
+     * @param string $baseurl (optional) URL of the file where link to this file was found
+     * @param string $relativeurl relative or absolute link to the file
+     * @param array $list
+     * @param bool $mainfile true only for main HTML false and false for all embedded/linked files
+     */
+    protected function parse_file($baseurl, $relativeurl, &$list, $mainfile = false) {
+        if (preg_match('/([\'"])(.*)\1/', $relativeurl, $matches)) {
+            $relativeurl = $matches[2];
+        }
+        if (empty($baseurl)) {
+            $url = $relativeurl;
+        } else {
+            $url = htmlspecialchars_decode(url_to_absolute($baseurl, $relativeurl));
+        }
+        if (in_array($url, $this->processedfiles)) {
+            // avoid endless recursion
+            return;
+        }
+        $this->processedfiles[] = $url;
+        $curl = new curl;
+        $curl->setopt(array('CURLOPT_FOLLOWLOCATION' => true, 'CURLOPT_MAXREDIRS' => 3));
+        $msg = $curl->head($url);
+        $info = $curl->get_info();
+        if ($info['http_code'] != 200) {
+            if ($mainfile) {
+                $list['error'] = $msg;
+            }
+        } else {
+            $csstoanalyze = '';
+            if ($mainfile && (strstr($info['content_type'], 'text/html') || empty($info['content_type']))) {
+                // parse as html
+                $htmlcontent = $curl->get($info['url']);
+                $ddoc = new DOMDocument();
+                @$ddoc->loadHTML($htmlcontent);
+                // extract <img>
+                $tags = $ddoc->getElementsByTagName('img');
+                foreach ($tags as $tag) {
+                    $url = $tag->getAttribute('src');
+                    $this->add_image_to_list($info['url'], $url, $list);
+                }
+                // analyse embedded css (<style>)
+                $tags = $ddoc->getElementsByTagName('style');
+                foreach ($tags as $tag) {
+                    if ($tag->getAttribute('type') == 'text/css') {
+                        $csstoanalyze .= $tag->textContent."\n";
+                    }
+                }
+                // analyse links to css (<link type='text/css' href='...'>)
+                $tags = $ddoc->getElementsByTagName('link');
+                foreach ($tags as $tag) {
+                    if ($tag->getAttribute('type') == 'text/css' && strlen($tag->getAttribute('href'))) {
+                        $this->parse_file($info['url'], $tag->getAttribute('href'), $list);
+                    }
+                }
+            } else if (strstr($info['content_type'], 'css')) {
+                // parse as css
+                $csscontent = $curl->get($info['url']);
+                $csstoanalyze .= $csscontent."\n";
+            } else if (strstr($info['content_type'], 'image/')) {
+                // download this file
+                $this->add_image_to_list($info['url'], $info['url'], $list);
+            }
+
+            // parse all found css styles
+            if (strlen($csstoanalyze)) {
+                $urls = extract_css_urls($csstoanalyze);
+                if (!empty($urls['property'])) {
+                    foreach ($urls['property'] as $url) {
+                        $this->add_image_to_list($info['url'], $url, $list);
+                    }
+                }
+                if (!empty($urls['import'])) {
+                    foreach ($urls['import'] as $cssurl) {
+                        $this->parse_file($info['url'], $cssurl, $list);
+                    }
+                }
             }
         }
+    }
+    protected function add_image_to_list($baseurl, $url, &$list) {
+        if (empty($list['list'])) {
+            $list['list'] = array();
+        }
+        $src = url_to_absolute($baseurl, htmlspecialchars_decode($url));
+        foreach ($list['list'] as $image) {
+            if ($image['source'] == $src) {
+                return;
+            }
+        }
+        $list['list'][] = array(
+            'title'=>$this->guess_filename($url, ''),
+            'source'=>$src,
+            'thumbnail'=>$src,
+            'thumbnail_height'=>84,
+            'thumbnail_width'=>84
+        );
     }
     public function guess_filename($url, $type) {
         $pattern = '#\/([\w_\?\-.]+)$#';
@@ -152,6 +215,20 @@ EOD;
         }
     }
 
+    public function supported_returntypes() {
+        return (FILE_INTERNAL | FILE_EXTERNAL);
+    }
+
+    /**
+     * Return the source information
+     *
+     * @param stdClass $url
+     * @return string|null
+     */
+    public function get_file_source_info($url) {
+        return $url;
+    }
+
     /**
      * file types supported by url downloader plugin
      *
@@ -160,9 +237,4 @@ EOD;
     public function supported_filetypes() {
         return array('web_image');
     }
-
-    public function supported_returntypes() {
-        return (FILE_INTERNAL | FILE_EXTERNAL);
-    }
 }
-

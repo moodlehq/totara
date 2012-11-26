@@ -17,22 +17,23 @@
 /**
  * Post installation and migration code.
  *
- * @package    report
- * @subpackage log
+ * Contains code that are run during the installation of report/logs
+ *
+ * @package    report_log
  * @copyright  2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Contains codes to be run during installation of report/logs
+ *
+ * @global moodle_database $DB
+ * @return void
+ */
 function xmldb_report_log_install() {
     global $DB;
 
-    // this is a hack which is needed for cleanup of original coursereport_log stuff
-    unset_all_config_for_plugin('coursereport_log');
-    capabilities_cleanup('coursereport_log');
-
-    // update existing block page patterns
-    $DB->set_field('block_instances', 'pagetypepattern', 'report-log-index', array('pagetypepattern'=>'course-report-log-index'));
 }
 

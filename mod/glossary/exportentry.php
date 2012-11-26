@@ -42,7 +42,7 @@ if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
 }
 
 require_course_login($course->id, true, $cm);
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/glossary:export', $context);
 
 $returnurl = "view.php?id=$cm->id&amp;mode=$prevmode&amp;hook=".urlencode($hook);
@@ -56,8 +56,8 @@ if (!$maincm = get_coursemodule_from_instance('glossary', $mainglossary->id)) {
     print_error('invalidcoursemodule');
 }
 
-$context     = get_context_instance(CONTEXT_MODULE, $cm->id);
-$maincontext = get_context_instance(CONTEXT_MODULE, $maincm->id);
+$context     = context_module::instance($cm->id);
+$maincontext = context_module::instance($maincm->id);
 
 if (!$course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
@@ -72,7 +72,7 @@ if (!$mainglossary->allowduplicatedentries) {
     if ($DB->record_exists_select('glossary_entries',
             'glossaryid = :glossaryid AND LOWER(concept) = :concept', array(
                 'glossaryid' => $mainglossary->id,
-                'concept'    => moodle_strtolower($entry->concept)))) {
+                'concept'    => textlib::strtolower($entry->concept)))) {
         $PAGE->set_title(format_string($glossary->name));
         $PAGE->set_heading($course->fullname);
         echo $OUTPUT->header();

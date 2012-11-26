@@ -21,6 +21,7 @@
  * @copyright  2012 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 if (isset($_SERVER['REMOTE_ADDR'])) {
     die; // no access from web!
 }
@@ -40,17 +41,15 @@ chdir(__DIR__);
 $output = null;
 exec("php util.php --diag", $output, $code);
 if ($code == 0) {
-    echo'everything is ready';
+    // everything is ready
 
 } else if ($code == PHPUNIT_EXITCODE_INSTALL) {
-    echo'INSTALL';
     passthru("php util.php --install", $code);
     if ($code != 0) {
         exit($code);
     }
 
 } else if ($code == PHPUNIT_EXITCODE_REINSTALL) {
-    echo'REINSTALL';
     passthru("php util.php --drop", $code);
     passthru("php util.php --install", $code);
     if ($code != 0) {
@@ -58,7 +57,6 @@ if ($code == 0) {
     }
 
 } else {
-    echo'IMPLODE';
     echo implode("\n", $output)."\n";
     exit($code);
 }

@@ -35,7 +35,7 @@ require_once("{$CFG->libdir}/completionlib.php");
 class block_completionstatus extends block_base {
 
     public function init() {
-        $this->title   = get_string('completionstatus', 'block_completionstatus');
+        $this->title = get_string('pluginname', 'block_completionstatus');
     }
 
     public function get_content() {
@@ -47,11 +47,10 @@ class block_completionstatus extends block_base {
         }
 
         $course  = $this->page->course;
+        $context = context_course::instance($course->id);
 
         // Create empty content
         $this->content = new stdClass();
-
-        $context = get_context_instance(CONTEXT_COURSE, $course->id);
 
         // Can edit settings?
         $can_edit = has_capability('moodle/course:update', $context);
@@ -158,7 +157,7 @@ class block_completionstatus extends block_base {
             if (!empty($prerequisites)) {
 
                 $phtml  = '<tr><td>';
-                $phtml .= get_string('prerequisitescompleted', 'completion');
+                $phtml .= get_string('dependenciescompleted', 'completion');
                 $phtml .= '</td><td style="text-align: right">';
                 $a = new stdClass();
                 $a->first = $prerequisites_complete;
@@ -230,6 +229,8 @@ class block_completionstatus extends block_base {
             $report = new moodle_url('/report/completion/index.php', array('course' => $course->id));
             $this->content->footer .= '<br /><a href="'.$report->out().'">'.get_string('viewcoursereport', 'completion').'</a>';
         }
+
+
         return $this->content;
     }
 }

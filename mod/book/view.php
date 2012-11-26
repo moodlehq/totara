@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Book view page
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -48,7 +47,7 @@ if ($id) {
 
 require_course_login($course, true, $cm);
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/book:read', $context);
 
 $allowedit  = has_capability('mod/book:edit', $context);
@@ -68,15 +67,16 @@ if ($allowedit) {
     $edit = 0;
 }
 
-/// read chapters
+// read chapters
 $chapters = book_preload_chapters($book);
 
 if ($allowedit and !$chapters) {
-    redirect('edit.php?cmid='.$cm->id); //no chapters - add new one
+    redirect('edit.php?cmid='.$cm->id); // No chapters - add new one.
 }
-/// check chapterid and read chapter data
-if ($chapterid == '0') { // go to first chapter if no given
-    foreach($chapters as $ch) {
+// Check chapterid and read chapter data
+if ($chapterid == '0') { // Go to first chapter if no given.
+    add_to_log($course->id, 'book', 'view', 'view.php?id='.$cm->id, $book->id, $cm->id);
+    foreach ($chapters as $ch) {
         if ($edit) {
             $chapterid = $ch->id;
             break;
@@ -88,44 +88,43 @@ if ($chapterid == '0') { // go to first chapter if no given
     }
 }
 
-if (!$chapterid or !$chapter = $DB->get_record('book_chapters', array('id'=>$chapterid, 'bookid'=>$book->id))) {
-    print_error('errorchapter', 'mod_book', new moodle_url('/course/view.php', array('id'=>$course->id)));
-}
+$courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
 
-/// chapter is hidden for students
-if ($chapter->hidden and !$viewhidden) {
-    print_error('errorchapter', 'mod_book', new moodle_url('/course/view.php', array('id'=>$course->id)));
+// No content in the book.
+if (!$chapterid) {
+    $PAGE->set_url('/mod/book/view.php', array('id' => $id));
+    notice(get_string('nocontent', 'mod_book'), $courseurl->out(false));
+}
+// Chapter doesnt exist or it is hidden for students
+if ((!$chapter = $DB->get_record('book_chapters', array('id' => $chapterid, 'bookid' => $book->id))) or ($chapter->hidden and !$viewhidden)) {
+    print_error('errorchapter', 'mod_book', $courseurl);
 }
 
 $PAGE->set_url('/mod/book/view.php', array('id'=>$id, 'chapterid'=>$chapterid));
 
 
-//unset all page parameters
+// Unset all page parameters.
 unset($id);
 unset($bid);
 unset($chapterid);
 
+// Security checks END.
 
-// =========================================================================
-// security checks  END
-// =========================================================================
+add_to_log($course->id, 'book', 'view chapter', 'view.php?id='.$cm->id.'&amp;chapterid='.$chapter->id, $chapter->id, $cm->id);
 
-add_to_log($course->id, 'book', 'view', 'view.php?id='.$cm->id.'&amp;chapterid='.$chapter->id, $book->id, $cm->id);
-
-
-///read standard strings
+// Read standard strings.
 $strbooks = get_string('modulenameplural', 'mod_book');
 $strbook  = get_string('modulename', 'mod_book');
 $strtoc   = get_string('toc', 'mod_book');
 
-/// prepare header
-$PAGE->set_title(format_string($book->name));
-$PAGE->add_body_class('mod_book');
-$PAGE->set_heading(format_string($course->fullname));
+// prepare header
+$pagetitle = $book->name . ": " . $chapter->title;
+$PAGE->set_title($pagetitle);
+$PAGE->set_heading($course->fullname);
 
 book_add_fake_block($chapters, $chapter, $book, $cm, $edit);
 
-/// prepare chapter navigation icons
+// prepare chapter navigation icons
 $previd = null;
 $nextid = null;
 $last = null;
@@ -145,23 +144,19 @@ foreach ($chapters as $ch) {
 
 $chnavigation = '';
 if ($previd) {
-    $chnavigation .= '<a title="'.get_string('navprev', 'book').'" href="view.php?id='.$cm->id.'&amp;chapterid='.$previd.'"><img src="'.$OUTPUT->pix_url('nav_prev', 'mod_book').'" class="bigicon" alt="'.get_string('navprev', 'book').'"/></a>';
+    $chnavigation .= '<a title="'.get_string('navprev', 'book').'" href="view.php?id='.$cm->id.
+            '&amp;chapterid='.$previd.'"><img src="'.$OUTPUT->pix_url('nav_prev', 'mod_book').'" class="bigicon" alt="'.get_string('navprev', 'book').'"/></a>';
 } else {
     $chnavigation .= '<img src="'.$OUTPUT->pix_url('nav_prev_dis', 'mod_book').'" class="bigicon" alt="" />';
 }
 if ($nextid) {
-    $chnavigation .= '<a title="'.get_string('navnext', 'book').'" href="view.php?id='.$cm->id.'&amp;chapterid='.$nextid.'"><img src="'.$OUTPUT->pix_url('nav_next', 'mod_book').'" class="bigicon" alt="'.get_string('navnext', 'book').'" /></a>';
+    $chnavigation .= '<a title="'.get_string('navnext', 'book').'" href="view.php?id='.$cm->id.
+            '&amp;chapterid='.$nextid.'"><img src="'.$OUTPUT->pix_url('nav_next', 'mod_book').'" class="bigicon" alt="'.get_string('navnext', 'book').'" /></a>';
 } else {
-    $sec = '';
-    if ($section = $DB->get_record('course_sections', array('id'=>$cm->section))) {
-        $sec = $section->section;
-    }
-    if ($course->id == $SITE->id) {
-        $returnurl = "$CFG->wwwroot/";
-    } else {
-        $returnurl = "$CFG->wwwroot/course/view.php?id=$course->id#section-$sec";
-    }
-    $chnavigation .= '<a title="'.get_string('navexit', 'book').'" href="'.$returnurl.'"><img src="'.$OUTPUT->pix_url('nav_exit', 'mod_book').'" class="bigicon" alt="'.get_string('navexit', 'book').'" /></a>';
+    $sec = $DB->get_field('course_sections', 'section', array('id' => $cm->section));
+    $returnurl = course_get_url($course, $sec);
+    $chnavigation .= '<a title="'.get_string('navexit', 'book').'" href="'.$returnurl.'"><img src="'.$OUTPUT->pix_url('nav_exit', 'mod_book').
+            '" class="bigicon" alt="'.get_string('navexit', 'book').'" /></a>';
 
     // we are cheating a bit here, viewing the last page means user has viewed the whole book
     $completion = new completion_info($course);
@@ -183,11 +178,12 @@ if (!$book->customtitles) {
     $hidden = $chapter->hidden ? 'dimmed_text' : '';
     if (!$chapter->subchapter) {
         $currtitle = book_get_chapter_title($chapter->id, $chapters, $book, $context);
-        echo '<p class="book_chapter_title '.$hidden.'">'.$currtitle.'</p>';
+        echo $OUTPUT->heading($currtitle, 2, array('class' => 'book_chapter_title '.$hidden));
     } else {
         $currtitle = book_get_chapter_title($chapters[$chapter->id]->parent, $chapters, $book, $context);
         $currsubtitle = book_get_chapter_title($chapter->id, $chapters, $book, $context);
-        echo '<p class="book_chapter_title '.$hidden.'">'.$currtitle.'<br />'.$currsubtitle.'</p>';
+        echo $OUTPUT->heading($currtitle, 2, array('class' => 'book_chapter_title '.$hidden));
+        echo $OUTPUT->heading($currsubtitle, 3, array('class' => 'book_chapter_title '.$hidden));
     }
 }
 $chaptertext = file_rewrite_pluginfile_urls($chapter->content, 'pluginfile.php', $context->id, 'mod_book', 'chapter', $chapter->id);
@@ -195,8 +191,7 @@ echo format_text($chaptertext, $chapter->contentformat, array('noclean'=>true, '
 
 echo $OUTPUT->box_end();
 
-/// lower navigation
+// lower navigation
 echo '<div class="navbottom">'.$chnavigation.'</div>';
 
 echo $OUTPUT->footer();
-

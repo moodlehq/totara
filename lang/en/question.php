@@ -271,6 +271,7 @@ $string['questiontype'] = 'Question type';
 $string['questionuse'] = 'Use question in this activity';
 $string['questionvariant'] = 'Question variant';
 $string['reviewresponse'] = 'Review response';
+$string['save'] = 'Save';
 $string['saveflags'] = 'Save the state of the flags';
 $string['selectacategory'] = 'Select a category:';
 $string['selectaqtypefordescription'] = 'Select a question type to see its description.';
@@ -300,7 +301,7 @@ $string['answer'] = 'Answer';
 $string['answersaved'] = 'Answer saved';
 $string['attemptfinished'] = 'Attempt finished';
 $string['attemptfinishedsubmitting'] = 'Attempt finished submitting: ';
-$string['behaviourbeingused'] = 'behaviour being used: {$a}';
+$string['behaviourbeingused'] = 'Behaviour being used: {$a}';
 $string['cannotloadquestion'] = 'Could not load question';
 $string['cannotpreview'] = 'You can\'t preview these questions!';
 $string['category'] = 'Category';
@@ -326,14 +327,18 @@ $string['fillincorrect'] = 'Fill in correct responses';
 $string['flagged'] = 'Flagged';
 $string['flagthisquestion'] = 'Flag this question';
 $string['generalfeedback'] = 'General feedback';
-$string['generalfeedback_help'] = 'General feedback is shown to the student after they have attempted the question. Unlike feedback, which depends on the question type and what response the student gave, the same general feedback text is shown to all students.
+$string['generalfeedback_help'] = 'General feedback is shown to the student after they have completed the question. Unlike specific feedback, which depends on the question type and what response the student gave, the same general feedback text is shown to all students.
 
-You can use the general feedback to give students some background to what knowledge the question was testing, or give them a link to more information they can use if they did not understand the questions.';
+You can use the general feedback to give students a fully worked answer and perhaps a link to more information they can use if they did not understand the questions.';
 $string['hidden'] = 'Hidden';
 $string['hintn'] = 'Hint {no}';
 $string['hinttext'] = 'Hint text';
 $string['howquestionsbehave'] = 'How questions behave';
-$string['howquestionsbehave_help'] = 'Students can interact with the questions in the quiz in various different ways. For example, you may wish the students to enter an answer to each question and then submit the entire quiz, before anything is graded or they get any feedback. That would be \'Deferred feedback\' mode. Alternatively, you may wish for students to submit each question as they go along to get immediate feedback, and if they do not get it right immediately, have another try for fewer marks. That would be \'Interactive with multiple tries\' mode.';
+$string['howquestionsbehave_help'] = 'Students can interact with the questions in the quiz in various different ways. For example, you may wish the students to enter an answer to each question and then submit the entire quiz, before anything is graded or they get any feedback. That would be \'Deferred feedback\' mode.
+
+Alternatively, you may wish for students to submit each question as they go along to get immediate feedback, and if they do not get it right immediately, have another try for fewer marks. That would be \'Interactive with multiple tries\' mode.
+
+Those are probably the two most commonly used modes of behaviour. ';
 $string['importfromcoursefiles'] = '... or choose a course file to import.';
 $string['importfromupload'] = 'Select a file to upload ...';
 $string['includesubcategories'] = 'Also show questions from sub-categories';
@@ -380,6 +385,7 @@ $string['responsehistory'] = 'Response history';
 $string['restart'] = 'Start again';
 $string['restartwiththeseoptions'] = 'Start again with these options';
 $string['rightanswer'] = 'Right answer';
+$string['rightanswer_help'] = 'an automatically generated summary of the correct response. This can be limited, so you may wish to consider explaining the correct solution in the general feedback for the question, and turning this option off.';
 $string['saved'] = 'Saved: {$a}';
 $string['saveflags'] = 'Save the state of the flags';
 $string['settingsformultipletries'] = 'Settings for multiple tries';
@@ -391,6 +397,7 @@ $string['shown'] = 'Shown';
 $string['shownumpartscorrect'] = 'Show the number of correct responses';
 $string['shownumpartscorrectwhenfinished'] = 'Show the number of correct responses once the question has finished';
 $string['specificfeedback'] = 'Specific feedback';
+$string['specificfeedback_help'] = 'Feedback that depends on what response the student gave.';
 $string['started'] = 'Started';
 $string['state'] = 'State';
 $string['step'] = 'Step';
@@ -398,11 +405,18 @@ $string['submissionoutofsequencefriendlymessage'] = 'You have entered data outsi
 $string['submit'] = 'Submit';
 $string['submitandfinish'] = 'Submit and finish';
 $string['submitted'] = 'Submit: {$a}';
+$string['technicalinfo'] = 'Technical information';
+$string['technicalinfo_help'] = 'This technical information is probably only useful for developers working on new question types. It may also be helpful when trying to diagnose problems with questions.';
+$string['technicalinfominfraction'] = 'Minimum fraction: {$a}';
+$string['technicalinfoquestionsummary'] = 'Question summary: {$a}';
+$string['technicalinforightsummary'] = 'Right answer summary: {$a}';
+$string['technicalinfostate'] = 'Question state: {$a}';
 $string['unknownbehaviour'] = 'Unknown behaviour: {$a}.';
 $string['unknownquestion'] = 'Unknown question: {$a}.';
 $string['unknownquestioncatregory'] = 'Unknown question category: {$a}.';
 $string['unknownquestiontype'] = 'Unknown question type: {$a}.';
 $string['whethercorrect'] = 'Whether correct';
+$string['whethercorrect_help'] = 'This covers both the textual description \'Correct\', \'Partially correct\' or \'Incorrect\', and any coloured highlighting that conveys the same information.';
 $string['withselected'] = 'With selected';
 $string['xoutofmax'] = '{$a->mark} out of {$a->max}';
 $string['yougotnright'] = 'You have correctly selected {$a->num}.';

@@ -17,8 +17,9 @@
 /**
  * This file contains functions used by the log reports
  *
- * @package    report
- * @subpackage log
+ * This files lists the functions that are used during the log report generation.
+ *
+ * @package    report_log
  * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,6 +32,16 @@ if (!defined('REPORT_LOG_MAX_DISPLAY')) {
 
 require_once(dirname(__FILE__).'/lib.php');
 
+/**
+ * This function is used to generate and display the log activity graph
+ *
+ * @global stdClass $CFG
+ * @param  stdClass $course course instance
+ * @param  int    $userid id of the user whose logs are needed
+ * @param  string $type type of logs graph needed (usercourse.png/userday.png)
+ * @param  int    $date timestamp in GMT (seconds since epoch)
+ * @return void
+ */
 function report_log_print_graph($course, $userid, $type, $date=0) {
     global $CFG;
 
@@ -41,7 +52,32 @@ function report_log_print_graph($course, $userid, $type, $date=0) {
              '&amp;user='.$userid.'&amp;type='.$type.'&amp;date='.$date.'" alt="" />';
     }
 }
-
+/**
+ * This function is used to generate and display Mnet selector form
+ *
+ * @global stdClass $USER
+ * @global stdClass $CFG
+ * @global stdClass $SITE
+ * @global moodle_database $DB
+ * @global core_renderer $OUTPUT
+ * @global stdClass $SESSION
+ * @uses CONTEXT_SYSTEM
+ * @uses COURSE_MAX_COURSES_PER_DROPDOWN
+ * @uses CONTEXT_COURSE
+ * @uses SEPARATEGROUPS
+ * @param  int      $hostid host id
+ * @param  stdClass $course course instance
+ * @param  int      $selecteduser id of the selected user
+ * @param  string   $selecteddate Date selected
+ * @param  string   $modname course_module->id
+ * @param  string   $modid number or 'site_errors'
+ * @param  string   $modaction an action as recorded in the logs
+ * @param  int      $selectedgroup Group to display
+ * @param  int      $showcourses whether to show courses if we're over our limit.
+ * @param  int      $showusers whether to show users if we're over our limit.
+ * @param  string   $logformat Format of the logs (downloadascsv, showashtml, downloadasods, downloadasexcel)
+ * @return void
+ */
 function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, $selecteddate='today',
                                  $modname="", $modid=0, $modaction='', $selectedgroup=-1, $showcourses=0, $showusers=0, $logformat='showashtml') {
 
@@ -61,12 +97,12 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
         $showcourses = 1;
     }
 
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
+    $sitecontext = context_system::instance();
 
     // Context for remote data is always SITE
     // Groups for remote data are always OFF
     if ($hostid == $CFG->mnet_localhost_id) {
-        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $context = context_course::instance($course->id);
 
         /// Setup for group handling.
         if ($course->groupmode == SEPARATEGROUPS and !has_capability('moodle/site:accessallgroups', $context)) {
@@ -107,7 +143,7 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
 
     // If looking at a different host, we're interested in all our site users
     if ($hostid == $CFG->mnet_localhost_id && $course->id != SITEID) {
-        $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname, u.idnumber', 'lastname ASC, firstname ASC', $limitfrom, $limitnum);
+        $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname, u.idnumber', null, $limitfrom, $limitnum);
     } else {
         // this may be a lot of users :-(
         $courseusers = $DB->get_records('user', array('deleted'=>0), 'lastaccess DESC', 'id, firstname, lastname, idnumber', $limitfrom, $limitnum);
@@ -190,13 +226,12 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
 /// Casting $course->modinfo to string prevents one notice when the field is null
     if ($modinfo = unserialize((string)$course->modinfo)) {
         $section = 0;
-        $sections = get_all_sections($course->id);
         foreach ($modinfo as $mod) {
             if ($mod->mod == "label") {
                 continue;
             }
             if ($mod->section > 0 and $section <> $mod->section) {
-                $activities["section/$mod->section"] = '--- '.get_section_name($course, $sections[$mod->section]).' ---';
+                $activities["section/$mod->section"] = '--- '.get_section_name($course, $mod->section).' ---';
             }
             $section = $mod->section;
             $mod->name = strip_tags(format_string($mod->name, true));
@@ -335,7 +370,30 @@ function report_log_print_mnet_selector_form($hostid, $course, $selecteduser=0, 
     echo '</div>';
     echo '</form>';
 }
-
+/**
+ * This function is used to generate and display selector form
+ *
+ * @global stdClass $USER
+ * @global stdClass $CFG
+ * @global moodle_database $DB
+ * @global core_renderer $OUTPUT
+ * @global stdClass $SESSION
+ * @uses CONTEXT_SYSTEM
+ * @uses COURSE_MAX_COURSES_PER_DROPDOWN
+ * @uses CONTEXT_COURSE
+ * @uses SEPARATEGROUPS
+ * @param  stdClass $course course instance
+ * @param  int      $selecteduser id of the selected user
+ * @param  string   $selecteddate Date selected
+ * @param  string   $modname course_module->id
+ * @param  string   $modid number or 'site_errors'
+ * @param  string   $modaction an action as recorded in the logs
+ * @param  int      $selectedgroup Group to display
+ * @param  int      $showcourses whether to show courses if we're over our limit.
+ * @param  int      $showusers whether to show users if we're over our limit.
+ * @param  string   $logformat Format of the logs (downloadascsv, showashtml, downloadasods, downloadasexcel)
+ * @return void
+ */
 function report_log_print_selector_form($course, $selecteduser=0, $selecteddate='today',
                                  $modname="", $modid=0, $modaction='', $selectedgroup=-1, $showcourses=0, $showusers=0, $logformat='showashtml') {
 
@@ -347,8 +405,8 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
         $showcourses = 1;
     }
 
-    $sitecontext = get_context_instance(CONTEXT_SYSTEM);
-    $context = get_context_instance(CONTEXT_COURSE, $course->id);
+    $sitecontext = context_system::instance();
+    $context = context_course::instance($course->id);
 
     /// Setup for group handling.
     if ($course->groupmode == SEPARATEGROUPS and !has_capability('moodle/site:accessallgroups', $context)) {
@@ -383,7 +441,7 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
     $limitfrom = empty($showusers) ? 0 : '';
     $limitnum  = empty($showusers) ? COURSE_MAX_USERS_PER_DROPDOWN + 1 : '';
 
-    $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname', 'lastname ASC, firstname ASC', $limitfrom, $limitnum);
+    $courseusers = get_enrolled_users($context, '', $selectedgroup, 'u.id, u.firstname, u.lastname', null, $limitfrom, $limitnum);
 
     if (count($courseusers) < COURSE_MAX_USERS_PER_DROPDOWN && !$showusers) {
         $showusers = 1;
@@ -417,13 +475,12 @@ function report_log_print_selector_form($course, $selecteduser=0, $selecteddate=
 /// Casting $course->modinfo to string prevents one notice when the field is null
     if ($modinfo = unserialize((string)$course->modinfo)) {
         $section = 0;
-        $sections = get_all_sections($course->id);
         foreach ($modinfo as $mod) {
             if ($mod->mod == "label") {
                 continue;
             }
             if ($mod->section > 0 and $section <> $mod->section) {
-                $activities["section/$mod->section"] = '--- '.get_section_name($course, $sections[$mod->section]).' ---';
+                $activities["section/$mod->section"] = '--- '.get_section_name($course, $mod->section).' ---';
             }
             $section = $mod->section;
             $mod->name = strip_tags(format_string($mod->name, true));

@@ -14,13 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
- * File manager
+ * FileManager form element
  *
- * @package    moodlecore
- * @subpackage file
- * @copyright  1999 onwards Dongsheng Cai <dongsheng@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Contains HTML class for a filemanager form element
+ *
+ * @package   core_form
+ * @copyright 2009 Dongsheng Cai <dongsheng@moodle.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 global $CFG;
@@ -29,10 +31,35 @@ require_once('HTML/QuickForm/element.php');
 require_once($CFG->dirroot.'/lib/filelib.php');
 require_once($CFG->dirroot.'/repository/lib.php');
 
+/**
+ * Filemanager form element
+ *
+ * FilemaneManager lets user to upload/manage multiple files
+ * @package   core_form
+ * @category  form
+ * @copyright 2009 Dongsheng Cai <dongsheng@moodle.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
+    /** @var string html for help button, if empty then no help will icon will be dispalyed. */
     public $_helpbutton = '';
-    protected $_options    = array('mainfile'=>'', 'subdirs'=>1, 'maxbytes'=>-1, 'maxfiles'=>-1, 'accepted_types'=>'*', 'return_types'=>FILE_INTERNAL);
 
+    /** @var array options provided to initalize filemanager */
+    // PHP doesn't support 'key' => $value1 | $value2 in class definition
+    // We cannot do $_options = array('return_types'=> FILE_INTERNAL | FILE_REFERENCE);
+    // So I have to set null here, and do it in constructor
+    protected $_options = array('mainfile' => '', 'subdirs' => 1, 'maxbytes' => -1, 'maxfiles' => -1,
+            'accepted_types' => '*', 'return_types' =>  null, 'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED);
+
+    /**
+     * Constructor
+     *
+     * @param string $elementName (optional) name of the filemanager
+     * @param string $elementLabel (optional) filemanager label
+     * @param array $attributes (optional) Either a typical HTML attribute string
+     *              or an associative array
+     * @param array $options set of options to initalize filemanager
+     */
     function MoodleQuickForm_filemanager($elementName=null, $elementLabel=null, $attributes=null, $options=null) {
         global $CFG, $PAGE;
 
@@ -43,61 +70,138 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
             }
         }
         if (!empty($options['maxbytes'])) {
-            $this->_options['maxbytes'] = get_max_upload_file_size($CFG->maxbytes, $options['maxbytes']);
+            $this->_options['maxbytes'] = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $options['maxbytes']);
+        }
+        if (empty($options['return_types'])) {
+            $this->_options['return_types'] = (FILE_INTERNAL | FILE_REFERENCE);
         }
         $this->_type = 'filemanager';
         parent::HTML_QuickForm_element($elementName, $elementLabel, $attributes);
     }
 
+    /**
+     * Sets name of filemanager
+     *
+     * @param string $name name of the filemanager
+     */
     function setName($name) {
         $this->updateAttributes(array('name'=>$name));
     }
 
+    /**
+     * Returns name of filemanager
+     *
+     * @return string
+     */
     function getName() {
         return $this->getAttribute('name');
     }
 
+    /**
+     * Updates filemanager attribute value
+     *
+     * @param string $value value to set
+     */
     function setValue($value) {
         $this->updateAttributes(array('value'=>$value));
     }
 
+    /**
+     * Returns filemanager attribute value
+     *
+     * @return string
+     */
     function getValue() {
         return $this->getAttribute('value');
     }
 
+    /**
+     * Returns maximum file size which can be uploaded
+     *
+     * @return int
+     */
     function getMaxbytes() {
         return $this->_options['maxbytes'];
     }
 
+    /**
+     * Sets maximum file size which can be uploaded
+     *
+     * @param int $maxbytes file size
+     */
     function setMaxbytes($maxbytes) {
-        global $CFG;
-        $this->_options['maxbytes'] = get_max_upload_file_size($CFG->maxbytes, $maxbytes);
+        global $CFG, $PAGE;
+        $this->_options['maxbytes'] = get_user_max_upload_file_size($PAGE->context, $CFG->maxbytes, $maxbytes);
     }
 
+    /**
+     * Returns the maximum size of the area.
+     *
+     * @return int
+     */
+    function getAreamaxbytes() {
+        return $this->_options['areamaxbytes'];
+    }
+
+    /**
+     * Sets the maximum size of the area.
+     *
+     * @param int $areamaxbytes size limit
+     */
+    function setAreamaxbytes($areamaxbytes) {
+        $this->_options['areamaxbytes'] = $areamaxbytes;
+    }
+
+    /**
+     * Returns true if subdirectoy can be created, else false
+     *
+     * @return bool
+     */
     function getSubdirs() {
         return $this->_options['subdirs'];
     }
 
+    /**
+     * Set option to create sub directory, while uploading  file
+     *
+     * @param bool $allow true if sub directory can be created.
+     */
     function setSubdirs($allow) {
         $this->_options['subdirs'] = $allow;
     }
 
+    /**
+     * Returns maximum number of files which can be uploaded
+     *
+     * @return int
+     */
     function getMaxfiles() {
         return $this->_options['maxfiles'];
     }
 
+    /**
+     * Sets maximum number of files which can be uploaded.
+     *
+     * @param int $num number of files
+     */
     function setMaxfiles($num) {
         $this->_options['maxfiles'] = $num;
     }
 
-    function setHelpButton($helpbuttonargs, $function='helpbutton'){
-        debugging('component setHelpButton() is not used any more, please use $mform->setHelpButton() instead');
-    }
-
+    /**
+     * Returns html for help button.
+     *
+     * @return string html for help button
+     */
     function getHelpButton() {
         return $this->_helpbutton;
     }
 
+    /**
+     * Returns type of filemanager element
+     *
+     * @return string
+     */
     function getElementTemplateType() {
         if ($this->_flagFrozen){
             return 'nodisplay';
@@ -106,6 +210,11 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
         }
     }
 
+    /**
+     * Returns HTML for filemanager form element.
+     *
+     * @return string
+     */
     function toHtml() {
         global $CFG, $USER, $COURSE, $PAGE, $OUTPUT;
         require_once("$CFG->dirroot/repository/lib.php");
@@ -124,7 +233,7 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
         $subdirs     = $this->_options['subdirs'];
         $maxbytes    = $this->_options['maxbytes'];
         $draftitemid = $this->getValue();
-        $accepted_types = (array) $this->_options['accepted_types'];
+        $accepted_types = $this->_options['accepted_types'];
 
         if (empty($draftitemid)) {
             // no existing area info provided - let's use fresh new draft area
@@ -145,11 +254,14 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
         $options->subdirs   = $this->_options['subdirs'];
         $options->target    = $id;
         $options->accepted_types = $accepted_types;
-        $options->return_types = FILE_INTERNAL;
+        $options->return_types = $this->_options['return_types'];
         $options->context = $PAGE->context;
+        $options->areamaxbytes = $this->_options['areamaxbytes'];
 
         $html = $this->_getTabs();
-        $html .= form_filemanager_render($options);
+        $fm = new form_filemanager($options);
+        $output = $PAGE->get_renderer('core', 'files');
+        $html .= $output->render($fm);
 
         $html .= '<input value="'.$draftitemid.'" name="'.$elname.'" type="hidden" />';
         // label element needs 'for' attribute work
@@ -159,32 +271,66 @@ class MoodleQuickForm_filemanager extends HTML_QuickForm_element {
     }
 }
 
-
-
 /**
  * Data structure representing a file manager.
  *
+ * This class defines the data structure for file mnager
+ *
+ * @package   core_form
  * @copyright 2010 Dongsheng Cai
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @since     Moodle 2.0
+ * @todo      do not use this abstraction (skodak)
  */
-class form_filemanaer_x {
-    //TODO: do not use this abstraction (skodak)
-
+class form_filemanager implements renderable {
+    /** @var stdClass $options options for filemanager */
     public $options;
+
+    /**
+     * Constructor
+     *
+     * @param stdClass $options options for filemanager
+     *   default options are:
+     *       maxbytes=>-1,
+     *       areamaxbytes => FILE_AREA_MAX_BYTES_UNLIMITED,
+     *       maxfiles=>-1,
+     *       itemid=>0,
+     *       subdirs=>false,
+     *       client_id=>uniqid(),
+     *       acepted_types=>'*',
+     *       return_types=>FILE_INTERNAL,
+     *       context=>$PAGE->context,
+     *       author=>fullname($USER),
+     *       licenses=>array build from $CFG->licenses,
+     *       defaultlicense=>$CFG->sitedefaultlicense
+     */
     public function __construct(stdClass $options) {
         global $CFG, $USER, $PAGE;
         require_once($CFG->dirroot. '/repository/lib.php');
         $defaults = array(
             'maxbytes'=>-1,
+            'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED,
             'maxfiles'=>-1,
             'itemid'=>0,
             'subdirs'=>0,
             'client_id'=>uniqid(),
             'accepted_types'=>'*',
             'return_types'=>FILE_INTERNAL,
-            'context'=>$PAGE->context
+            'context'=>$PAGE->context,
+            'author'=>fullname($USER),
+            'licenses'=>array()
             );
+        if (!empty($CFG->licenses)) {
+            $array = explode(',', $CFG->licenses);
+            foreach ($array as $license) {
+                $l = new stdClass();
+                $l->shortname = $license;
+                $l->fullname = get_string($license, 'license');
+                $defaults['licenses'][] = $l;
+            }
+        }
+        if (!empty($CFG->sitedefaultlicense)) {
+            $defaults['defaultlicense'] = $CFG->sitedefaultlicense;
+        }
         foreach ($defaults as $key=>$value) {
             if (empty($options->$key)) {
                 $options->$key = $value;
@@ -197,7 +343,7 @@ class form_filemanaer_x {
         $this->options = file_get_drafarea_files($options->itemid, '/');
 
         // calculate file count
-        $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+        $usercontext = context_user::instance($USER->id);
         $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $options->itemid, 'id', false);
         $filecount = count($files);
         $this->options->filecount = $filecount;
@@ -206,6 +352,18 @@ class form_filemanaer_x {
         foreach ($options as $name=>$value) {
             $this->options->$name = $value;
         }
+
+        // calculate the maximum file size as minimum from what is specified in filepicker options,
+        // course options, global configuration and php settings
+        $coursebytes = $maxbytes = 0;
+        list($context, $course, $cm) = get_context_info_array($this->options->context->id);
+        if (is_object($course)) {
+            $coursebytes = $course->maxbytes;
+        }
+        if (!empty($this->options->maxbytes) && $this->options->maxbytes > 0) {
+            $maxbytes = $this->options->maxbytes;
+        }
+        $this->options->maxbytes = get_user_max_upload_file_size($context, $CFG->maxbytes, $coursebytes, $maxbytes);
 
         // building file picker options
         $params = new stdClass();
@@ -217,127 +375,20 @@ class form_filemanaer_x {
         $filepicker_options = initialise_filepicker($params);
         $this->options->filepicker = $filepicker_options;
     }
-}
 
-/**
- * Print the file manager
- *
- * <pre>
- * $OUTPUT->file_manager($options);
- * </pre>
- *
- * @param array $options associative array with file manager options
- *   options are:
- *       maxbytes=>-1,
- *       maxfiles=>-1,
- *       itemid=>0,
- *       subdirs=>false,
- *       client_id=>uniqid(),
- *       acepted_types=>'*',
- *       return_types=>FILE_INTERNAL,
- *       context=>$PAGE->context
- * @return string HTML fragment
- */
-function form_filemanager_render($options) {
-    global $CFG, $OUTPUT, $PAGE;
-
-    $fm = new form_filemanaer_x($options); //TODO: this is unnecessary here, the nested options are getting too complex
-
-    static $filemanagertemplateloaded;
-
-    $html = '';
-    $options = $fm->options;
-    $straddfile  = get_string('addfile', 'repository');
-    $strmakedir  = get_string('makeafolder', 'moodle');
-    $strdownload = get_string('downloadfolder', 'repository');
-    $strloading  = get_string('loading', 'repository');
-
-    $icon_progress = $OUTPUT->pix_icon('i/loading_small', $strloading).'';
-
-    $client_id = $options->client_id;
-    $itemid    = $options->itemid;
-    list($context, $course, $cm) = get_context_info_array($options->context->id);
-    if (is_object($course)) {
-        $course_maxbytes = $course->maxbytes;
-    } else {
-        $course_maxbytes = $CFG->maxbytes;
+    public function get_nonjsurl() {
+        global $PAGE;
+        return new moodle_url('/repository/draftfiles_manager.php', array(
+            'env'=>'filemanager',
+            'action'=>'browse',
+            'itemid'=>$this->options->itemid,
+            'subdirs'=>$this->options->subdirs,
+            'maxbytes'=>$this->options->maxbytes,
+            'areamaxbytes' => $this->options->areamaxbytes,
+            'maxfiles'=>$this->options->maxfiles,
+            'ctx_id'=>$PAGE->context->id, // TODO ?
+            'course'=>$PAGE->course->id, // TODO ?
+            'sesskey'=>sesskey(),
+            ));
     }
-
-    if ($options->maxbytes == -1 || empty($options->maxbytes)) {
-        $options->maxbytes = $CFG->maxbytes;
-    }
-
-    if (empty($options->filecount)) {
-        $extra = ' style="display:none"';
-    } else {
-        $extra = '';
-    }
-
-    $options->maxbytes = get_max_upload_file_size($CFG->maxbytes, $course_maxbytes, $options->maxbytes);
-    $maxsize = get_string('maxfilesize', 'moodle', display_size($options->maxbytes));
-    $loading = get_string('loading', 'repository');
-    $html .= <<<FMHTML
-<div class="filemanager-loading mdl-align" id='filemanager-loading-{$client_id}'>
-$icon_progress
-</div>
-<div id="filemanager-wrapper-{$client_id}" style="display:none">
-    <div class="fm-breadcrumb" id="fm-path-{$client_id}"></div>
-    <div class="filemanager-toolbar">
-        <input type="button" class="fm-btn-add" id="btnadd-{$client_id}" onclick="return false" value="{$straddfile}" />
-        <input type="button" class="fm-btn-mkdir" id="btncrt-{$client_id}" onclick="return false" value="{$strmakedir}" />
-        <input type="button" class="fm-btn-download" id="btndwn-{$client_id}" onclick="return false" {$extra} value="{$strdownload}" />
-        <span> $maxsize </span>
-    </div>
-    <div class="filemanager-container" id="filemanager-{$client_id}">
-        <ul id="draftfiles-{$client_id}" class="fm-filelist">
-            <li>{$loading}</li>
-        </ul>
-    </div>
-</div>
-<div class='clearer'></div>
-FMHTML;
-    if (empty($filemanagertemplateloaded)) {
-        $filemanagertemplateloaded = true;
-        $html .= <<<FMHTML
-<div id="fm-template" style="display:none">___fullname___ ___action___</div>
-FMHTML;
-    }
-
-    $module = array(
-        'name'=>'form_filemanager',
-        'fullpath'=>'/lib/form/filemanager.js',
-        'requires' => array('core_filepicker', 'base', 'io-base', 'node', 'json', 'yui2-button', 'yui2-container', 'yui2-layout', 'yui2-menu', 'yui2-treeview'),
-        'strings' => array(array('loading', 'repository'), array('nomorefiles', 'repository'), array('confirmdeletefile', 'repository'),
-             array('add', 'repository'), array('accessiblefilepicker', 'repository'), array('move', 'moodle'),
-             array('cancel', 'moodle'), array('download', 'moodle'), array('ok', 'moodle'),
-             array('emptylist', 'repository'), array('nofilesattached', 'repository'), array('entername', 'repository'), array('enternewname', 'repository'),
-             array('zip', 'editor'), array('unzip', 'moodle'), array('rename', 'moodle'), array('delete', 'moodle'),
-             array('cannotdeletefile', 'error'), array('confirmdeletefile', 'repository'),
-             array('nopathselected', 'repository'), array('popupblockeddownload', 'repository'),
-             array('draftareanofiles', 'repository'), array('path', 'moodle'), array('setmainfile', 'repository'),
-             array('moving', 'repository'), array('files', 'moodle')
-        )
-    );
-    $PAGE->requires->js_module($module);
-    $PAGE->requires->js_init_call('M.form_filemanager.init', array($options), true, $module);
-
-    // non javascript file manager
-    $filemanagerurl = new moodle_url('/repository/draftfiles_manager.php', array(
-        'env'=>'filemanager',
-        'action'=>'browse',
-        'itemid'=>$itemid,
-        'subdirs'=>$options->subdirs,
-        'maxbytes'=>$options->maxbytes,
-        'maxfiles'=>$options->maxfiles,
-        'ctx_id'=>$PAGE->context->id,
-        'course'=>$PAGE->course->id,
-        'sesskey'=>sesskey(),
-        ));
-
-    $html .= '<noscript>';
-    $html .= "<div><object type='text/html' data='$filemanagerurl' height='160' width='600' style='border:1px solid #000'></object></div>";
-    $html .= '</noscript>';
-
-
-    return $html;
 }

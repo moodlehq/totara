@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -63,11 +64,8 @@ class plugin_manager {
 
     /**
      * Direct initiation not allowed, use the factory method {@link self::instance()}
-     *
-     * @todo we might want to specify just a single plugin type to work with
      */
     protected function __construct() {
-        $this->get_plugins(true);
     }
 
     /**
@@ -82,12 +80,20 @@ class plugin_manager {
      * @return plugin_manager the singleton instance
      */
     public static function instance() {
-        global $CFG;
-
         if (is_null(self::$singletoninstance)) {
             self::$singletoninstance = new self();
         }
         return self::$singletoninstance;
+    }
+
+    /**
+     * Reset any caches
+     * @param bool $phpunitreset
+     */
+    public static function reset_caches($phpunitreset = false) {
+        if ($phpunitreset) {
+            self::$singletoninstance = null;
+        }
     }
 
     /**
@@ -96,27 +102,49 @@ class plugin_manager {
      * @param bool $disablecache force reload, cache can be used otherwise
      * @return array 2D array. The first keys are plugin type names (e.g. qtype);
      *      the second keys are the plugin local name (e.g. multichoice); and
-     *      the values are the corresponding {@link plugin_information} objects.
+     *      the values are the corresponding objects extending {@link plugininfo_base}
      */
     public function get_plugins($disablecache=false) {
+        global $CFG;
 
         if ($disablecache or is_null($this->pluginsinfo)) {
+            // Hack: include mod and editor subplugin management classes first,
+            //       the adminlib.php is supposed to contain extra admin settings too.
+            require_once($CFG->libdir.'/adminlib.php');
+            foreach(array('mod', 'editor') as $type) {
+                foreach (get_plugin_list($type) as $dir) {
+                    if (file_exists("$dir/adminlib.php")) {
+                        include_once("$dir/adminlib.php");
+                    }
+                }
+            }
             $this->pluginsinfo = array();
             $plugintypes = get_plugin_types();
+            $plugintypes = $this->reorder_plugin_types($plugintypes);
             foreach ($plugintypes as $plugintype => $plugintyperootdir) {
                 if (in_array($plugintype, array('base', 'general'))) {
                     throw new coding_exception('Illegal usage of reserved word for plugin type');
                 }
-                if (class_exists('plugintype_' . $plugintype)) {
-                    $plugintypeclass = 'plugintype_' . $plugintype;
+                if (class_exists('plugininfo_' . $plugintype)) {
+                    $plugintypeclass = 'plugininfo_' . $plugintype;
                 } else {
-                    $plugintypeclass = 'plugintype_general';
+                    $plugintypeclass = 'plugininfo_general';
                 }
-                if (!in_array('plugin_information', class_implements($plugintypeclass))) {
-                    throw new coding_exception('Class ' . $plugintypeclass . ' must implement plugin_information');
+                if (!in_array('plugininfo_base', class_parents($plugintypeclass))) {
+                    throw new coding_exception('Class ' . $plugintypeclass . ' must extend plugininfo_base');
                 }
                 $plugins = call_user_func(array($plugintypeclass, 'get_plugins'), $plugintype, $plugintyperootdir, $plugintypeclass);
                 $this->pluginsinfo[$plugintype] = $plugins;
+            }
+
+            if (empty($CFG->disableupdatenotifications) and !during_initial_install()) {
+                // append the information about available updates provided by {@link available_update_checker()}
+                $provider = available_update_checker::instance();
+                foreach ($this->pluginsinfo as $plugintype => $plugins) {
+                    foreach ($plugins as $plugininfoholder) {
+                        $plugininfoholder->check_available_updates($provider);
+                    }
+                }
             }
         }
 
@@ -127,7 +155,7 @@ class plugin_manager {
      * Returns list of plugins that define their subplugins and the information
      * about them from the db/subplugins.php file.
      *
-     * At the moment, only activity modules can define subplugins.
+     * At the moment, only activity modules and editors can define subplugins.
      *
      * @param bool $disablecache force reload, cache can be used otherwise
      * @return array with keys like 'mod_quiz', and values the data from the
@@ -137,18 +165,21 @@ class plugin_manager {
 
         if ($disablecache or is_null($this->subpluginsinfo)) {
             $this->subpluginsinfo = array();
-            $mods = get_plugin_list('mod');
-            foreach ($mods as $mod => $moddir) {
-                $modsubplugins = array();
-                if (file_exists($moddir . '/db/subplugins.php')) {
-                    include($moddir . '/db/subplugins.php');
-                    foreach ($subplugins as $subplugintype => $subplugintyperootdir) {
-                        $subplugin = new stdClass();
-                        $subplugin->type = $subplugintype;
-                        $subplugin->typerootdir = $subplugintyperootdir;
-                        $modsubplugins[$subplugintype] = $subplugin;
+            foreach (array('mod', 'editor') as $type) {
+                $owners = get_plugin_list($type);
+                foreach ($owners as $component => $ownerdir) {
+                    $componentsubplugins = array();
+                    if (file_exists($ownerdir . '/db/subplugins.php')) {
+                        $subplugins = array();
+                        include($ownerdir . '/db/subplugins.php');
+                        foreach ($subplugins as $subplugintype => $subplugintyperootdir) {
+                            $subplugin = new stdClass();
+                            $subplugin->type = $subplugintype;
+                            $subplugin->typerootdir = $subplugintyperootdir;
+                            $componentsubplugins[$subplugintype] = $subplugin;
+                        }
+                        $this->subpluginsinfo[$type . '_' . $component] = $componentsubplugins;
                     }
-                $this->subpluginsinfo['mod_' . $mod] = $modsubplugins;
                 }
             }
         }
@@ -219,7 +250,7 @@ class plugin_manager {
 
     /**
      * @param string $component frankenstyle component name.
-     * @return plugin_information|null the corresponding plugin information.
+     * @return plugininfo_base|null the corresponding plugin information.
      */
     public function get_plugin_info($component) {
         list($type, $name) = normalize_component($component);
@@ -232,7 +263,7 @@ class plugin_manager {
     }
 
     /**
-     * Get a list of any other pluings that require this one.
+     * Get a list of any other plugins that require this one.
      * @param string $component frankenstyle component name.
      * @return array of frankensyle component names that require this one.
      */
@@ -270,25 +301,52 @@ class plugin_manager {
     }
 
     /**
-     * Checks all dependencies for all installed plugins. Used by install and upgrade.
+     * Checks all dependencies for all installed plugins
+     *
+     * This is used by install and upgrade. The array passed by reference as the second
+     * argument is populated with the list of plugins that have failed dependencies (note that
+     * a single plugin can appear multiple times in the $failedplugins).
+     *
      * @param int $moodleversion the version from version.php.
+     * @param array $failedplugins to return the list of plugins with non-satisfied dependencies
      * @return bool true if all the dependencies are satisfied for all plugins.
      */
-    public function all_plugins_ok($moodleversion) {
+    public function all_plugins_ok($moodleversion, &$failedplugins = array()) {
+
+        $return = true;
         foreach ($this->get_plugins() as $type => $plugins) {
             foreach ($plugins as $plugin) {
 
-                if (!empty($plugin->versionrequires) && $plugin->versionrequires > $moodleversion) {
-                    return false;
+                if (!$plugin->is_core_dependency_satisfied($moodleversion)) {
+                    $return = false;
+                    $failedplugins[] = $plugin->component;
                 }
 
                 if (!$this->are_dependencies_satisfied($plugin->get_other_required_plugins())) {
-                    return false;
+                    $return = false;
+                    $failedplugins[] = $plugin->component;
                 }
             }
         }
 
-        return true;
+        return $return;
+    }
+
+    /**
+     * Checks if there are some plugins with a known available update
+     *
+     * @return bool true if there is at least one available update
+     */
+    public function some_plugins_updatable() {
+        foreach ($this->get_plugins() as $type => $plugins) {
+            foreach ($plugins as $plugin) {
+                if ($plugin->available_updates()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -303,8 +361,7 @@ class plugin_manager {
      */
     public static function is_deleted_standard_plugin($type, $name) {
         static $plugins = array(
-            'block' => array('admin', 'admin_tree', 'loancalc', 'search'),
-            'filter' => array('mod_data', 'mod_glossary'),
+            // do not add 1.9-2.2 plugin removals here
         );
 
         if (!isset($plugins[$type])) {
@@ -324,6 +381,14 @@ class plugin_manager {
 
             'assignment' => array(
                 'offline', 'online', 'upload', 'uploadsingle'
+            ),
+
+            'assignsubmission' => array(
+                'comments', 'file', 'onlinetext'
+            ),
+
+            'assignfeedback' => array(
+                'comments', 'file', 'offline'
             ),
 
             'auth' => array(
@@ -354,6 +419,18 @@ class plugin_manager {
             // Totara (as book module is standard)
             'booktool' => array(
                 'exportimscp', 'importhtml', 'print'
+            ),
+
+            'booktool' => array(
+                'exportimscp', 'importhtml', 'print'
+            ),
+
+            'cachelock' => array(
+                'file'
+            ),
+
+            'cachestore' => array(
+                'file', 'memcache', 'memcached', 'mongodb', 'session', 'static'
             ),
 
             'coursereport' => array(
@@ -408,7 +485,7 @@ class plugin_manager {
             ),
 
             'gradingform' => array(
-                'rubric'
+                'rubric', 'guide'
             ),
 
             'local' => array(
@@ -423,7 +500,7 @@ class plugin_manager {
             ),
 
             'mod' => array(
-                'assignment', 'chat', 'choice', 'data', 'feedback', 'folder',
+                'assign', 'assignment', 'book', 'chat', 'choice', 'data', 'feedback', 'folder',
                 'forum', 'glossary', 'imscp', 'label', 'lesson', 'lti', 'page',
                 'quiz', 'resource', 'scorm', 'survey', 'url', 'wiki', 'workshop'
                 // Totara
@@ -476,7 +553,7 @@ class plugin_manager {
             ),
 
             'repository' => array(
-                'alfresco', 'boxnet', 'coursefiles', 'dropbox', 'filesystem',
+                'alfresco', 'boxnet', 'coursefiles', 'dropbox', 'equella', 'filesystem',
                 'flickr', 'flickr_public', 'googledocs', 'local', 'merlot',
                 'picasa', 'recent', 's3', 'upload', 'url', 'user', 'webdav',
                 'wikimedia', 'youtube'
@@ -486,6 +563,10 @@ class plugin_manager {
                 'basic',
                 'interactions',
                 'graphs'
+            ),
+
+            'tinymce' => array(
+                'dragmath', 'moodleemoticon', 'moodleimage', 'moodlemedia', 'moodlenolink', 'spellchecker',
             ),
 
             'theme' => array(
@@ -499,7 +580,7 @@ class plugin_manager {
             ),
 
             'tool' => array(
-                'bloglevelupgrade', 'capability', 'customlang', 'dbtransfer', 'generator',
+                'assignmentupgrade', 'capability', 'customlang', 'dbtransfer', 'generator',
                 'health', 'innodb', 'langimport', 'multilangupgrade', 'phpunit', 'profiling',
                 'qeupgradehelper', 'replace', 'spamcleaner', 'timezoneimport', 'unittest',
                 'uploaduser', 'unsuproles', 'xmldb'
@@ -518,7 +599,7 @@ class plugin_manager {
             ),
 
             'workshopallocation' => array(
-                'manual', 'random'
+                'manual', 'random', 'scheduled'
             ),
 
             'workshopeval' => array(
@@ -532,170 +613,1389 @@ class plugin_manager {
 
         if (isset($standard_plugins[$type])) {
             return $standard_plugins[$type];
+        } else {
+            return false;
+        }
+    }
 
+    /**
+     * Reorders plugin types into a sequence to be displayed
+     *
+     * For technical reasons, plugin types returned by {@link get_plugin_types()} are
+     * in a certain order that does not need to fit the expected order for the display.
+     * Particularly, activity modules should be displayed first as they represent the
+     * real heart of Moodle. They should be followed by other plugin types that are
+     * used to build the courses (as that is what one expects from LMS). After that,
+     * other supportive plugin types follow.
+     *
+     * @param array $types associative array
+     * @return array same array with altered order of items
+     */
+    protected function reorder_plugin_types(array $types) {
+        $fix = array(
+            'mod'        => $types['mod'],
+            'block'      => $types['block'],
+            'qtype'      => $types['qtype'],
+            'qbehaviour' => $types['qbehaviour'],
+            'qformat'    => $types['qformat'],
+            'filter'     => $types['filter'],
+            'enrol'      => $types['enrol'],
+        );
+        foreach ($types as $type => $path) {
+            if (!isset($fix[$type])) {
+                $fix[$type] = $path;
+            }
+        }
+        return $fix;
+    }
+}
+
+
+/**
+ * General exception thrown by the {@link available_update_checker} class
+ */
+class available_update_checker_exception extends moodle_exception {
+
+    /**
+     * @param string $errorcode exception description identifier
+     * @param mixed $debuginfo debugging data to display
+     */
+    public function __construct($errorcode, $debuginfo=null) {
+        parent::__construct($errorcode, 'core_plugin', '', null, print_r($debuginfo, true));
+    }
+}
+
+
+/**
+ * Singleton class that handles checking for available updates
+ */
+class available_update_checker {
+
+    /** @var available_update_checker holds the singleton instance */
+    protected static $singletoninstance;
+    /** @var null|int the timestamp of when the most recent response was fetched */
+    protected $recentfetch = null;
+    /** @var null|array the recent response from the update notification provider */
+    protected $recentresponse = null;
+    /** @var null|string the numerical version of the local Moodle code */
+    protected $currentversion = null;
+    /** @var null|string the release info of the local Moodle code */
+    protected $currentrelease = null;
+    /** @var null|string branch of the local Moodle code */
+    protected $currentbranch = null;
+    /** @var array of (string)frankestyle => (string)version list of additional plugins deployed at this site */
+    protected $currentplugins = array();
+
+    /**
+     * Direct initiation not allowed, use the factory method {@link self::instance()}
+     */
+    protected function __construct() {
+    }
+
+    /**
+     * Sorry, this is singleton
+     */
+    protected function __clone() {
+    }
+
+    /**
+     * Factory method for this class
+     *
+     * @return available_update_checker the singleton instance
+     */
+    public static function instance() {
+        if (is_null(self::$singletoninstance)) {
+            self::$singletoninstance = new self();
+        }
+        return self::$singletoninstance;
+    }
+
+    /**
+     * Reset any caches
+     * @param bool $phpunitreset
+     */
+    public static function reset_caches($phpunitreset = false) {
+        if ($phpunitreset) {
+            self::$singletoninstance = null;
+        }
+    }
+
+    /**
+     * Returns the timestamp of the last execution of {@link fetch()}
+     *
+     * @return int|null null if it has never been executed or we don't known
+     */
+    public function get_last_timefetched() {
+
+        $this->restore_response();
+
+        if (!empty($this->recentfetch)) {
+            return $this->recentfetch;
+
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Fetches the available update status from the remote site
+     *
+     * @throws available_update_checker_exception
+     */
+    public function fetch() {
+        $response = $this->get_response();
+        $this->validate_response($response);
+        $this->store_response($response);
+    }
+
+    /**
+     * Returns the available update information for the given component
+     *
+     * This method returns null if the most recent response does not contain any information
+     * about it. The returned structure is an array of available updates for the given
+     * component. Each update info is an object with at least one property called
+     * 'version'. Other possible properties are 'release', 'maturity', 'url' and 'downloadurl'.
+     *
+     * For the 'core' component, the method returns real updates only (those with higher version).
+     * For all other components, the list of all known remote updates is returned and the caller
+     * (usually the {@link plugin_manager}) is supposed to make the actual comparison of versions.
+     *
+     * @param string $component frankenstyle
+     * @param array $options with supported keys 'minmaturity' and/or 'notifybuilds'
+     * @return null|array null or array of available_update_info objects
+     */
+    public function get_update_info($component, array $options = array()) {
+
+        if (!isset($options['minmaturity'])) {
+            $options['minmaturity'] = 0;
+        }
+
+        if (!isset($options['notifybuilds'])) {
+            $options['notifybuilds'] = false;
+        }
+
+        if ($component == 'core') {
+            $this->load_current_environment();
+        }
+
+        $this->restore_response();
+
+        if (empty($this->recentresponse['updates'][$component])) {
+            return null;
+        }
+
+        $updates = array();
+        foreach ($this->recentresponse['updates'][$component] as $info) {
+            $update = new available_update_info($component, $info);
+            if (isset($update->maturity) and ($update->maturity < $options['minmaturity'])) {
+                continue;
+            }
+            if ($component == 'core') {
+                if ($update->version <= $this->currentversion) {
+                    continue;
+                }
+                if (empty($options['notifybuilds']) and $this->is_same_release($update->release)) {
+                    continue;
+                }
+            }
+            $updates[] = $update;
+        }
+
+        if (empty($updates)) {
+            return null;
+        }
+
+        return $updates;
+    }
+
+    /**
+     * The method being run via cron.php
+     */
+    public function cron() {
+        global $CFG;
+
+        if (!$this->cron_autocheck_enabled()) {
+            $this->cron_mtrace('Automatic check for available updates not enabled, skipping.');
+            return;
+        }
+
+        $now = $this->cron_current_timestamp();
+
+        if ($this->cron_has_fresh_fetch($now)) {
+            $this->cron_mtrace('Recently fetched info about available updates is still fresh enough, skipping.');
+            return;
+        }
+
+        if ($this->cron_has_outdated_fetch($now)) {
+            $this->cron_mtrace('Outdated or missing info about available updates, forced fetching ... ', '');
+            $this->cron_execute();
+            return;
+        }
+
+        $offset = $this->cron_execution_offset();
+        $start = mktime(1, 0, 0, date('n', $now), date('j', $now), date('Y', $now)); // 01:00 AM today local time
+        if ($now > $start + $offset) {
+            $this->cron_mtrace('Regular daily check for available updates ... ', '');
+            $this->cron_execute();
+            return;
+        }
+    }
+
+    /// end of public API //////////////////////////////////////////////////////
+
+    /**
+     * Makes cURL request to get data from the remote site
+     *
+     * @return string raw request result
+     * @throws available_update_checker_exception
+     */
+    protected function get_response() {
+        global $CFG;
+        require_once($CFG->libdir.'/filelib.php');
+
+        $curl = new curl(array('proxy' => true));
+        $response = $curl->post($this->prepare_request_url(), $this->prepare_request_params());
+        $curlinfo = $curl->get_info();
+        if ($curlinfo['http_code'] != 200) {
+            throw new available_update_checker_exception('err_response_http_code', $curlinfo['http_code']);
+        }
+        return $response;
+    }
+
+    /**
+     * Makes sure the response is valid, has correct API format etc.
+     *
+     * @param string $response raw response as returned by the {@link self::get_response()}
+     * @throws available_update_checker_exception
+     */
+    protected function validate_response($response) {
+
+        $response = $this->decode_response($response);
+
+        if (empty($response)) {
+            throw new available_update_checker_exception('err_response_empty');
+        }
+
+        if (empty($response['status']) or $response['status'] !== 'OK') {
+            throw new available_update_checker_exception('err_response_status', $response['status']);
+        }
+
+        if (empty($response['apiver']) or $response['apiver'] !== '1.1') {
+            throw new available_update_checker_exception('err_response_format_version', $response['apiver']);
+        }
+
+        if (empty($response['forbranch']) or $response['forbranch'] !== moodle_major_version(true)) {
+            throw new available_update_checker_exception('err_response_target_version', $response['forbranch']);
+        }
+    }
+
+    /**
+     * Decodes the raw string response from the update notifications provider
+     *
+     * @param string $response as returned by {@link self::get_response()}
+     * @return array decoded response structure
+     */
+    protected function decode_response($response) {
+        return json_decode($response, true);
+    }
+
+    /**
+     * Stores the valid fetched response for later usage
+     *
+     * This implementation uses the config_plugins table as the permanent storage.
+     *
+     * @param string $response raw valid data returned by {@link self::get_response()}
+     */
+    protected function store_response($response) {
+
+        set_config('recentfetch', time(), 'core_plugin');
+        set_config('recentresponse', $response, 'core_plugin');
+
+        $this->restore_response(true);
+    }
+
+    /**
+     * Loads the most recent raw response record we have fetched
+     *
+     * After this method is called, $this->recentresponse is set to an array. If the
+     * array is empty, then either no data have been fetched yet or the fetched data
+     * do not have expected format (and thence they are ignored and a debugging
+     * message is displayed).
+     *
+     * This implementation uses the config_plugins table as the permanent storage.
+     *
+     * @param bool $forcereload reload even if it was already loaded
+     */
+    protected function restore_response($forcereload = false) {
+
+        if (!$forcereload and !is_null($this->recentresponse)) {
+            // we already have it, nothing to do
+            return;
+        }
+
+        $config = get_config('core_plugin');
+
+        if (!empty($config->recentresponse) and !empty($config->recentfetch)) {
+            try {
+                $this->validate_response($config->recentresponse);
+                $this->recentfetch = $config->recentfetch;
+                $this->recentresponse = $this->decode_response($config->recentresponse);
+            } catch (available_update_checker_exception $e) {
+                debugging('Invalid info about available updates detected and will be ignored: '.$e->getMessage(), DEBUG_ALL);
+                $this->recentresponse = array();
+            }
+
+        } else {
+            $this->recentresponse = array();
+        }
+    }
+
+    /**
+     * Compares two raw {@link $recentresponse} records and returns the list of changed updates
+     *
+     * This method is used to populate potential update info to be sent to site admins.
+     *
+     * @param array $old
+     * @param array $new
+     * @throws available_update_checker_exception
+     * @return array parts of $new['updates'] that have changed
+     */
+    protected function compare_responses(array $old, array $new) {
+
+        if (empty($new)) {
+            return array();
+        }
+
+        if (!array_key_exists('updates', $new)) {
+            throw new available_update_checker_exception('err_response_format');
+        }
+
+        if (empty($old)) {
+            return $new['updates'];
+        }
+
+        if (!array_key_exists('updates', $old)) {
+            throw new available_update_checker_exception('err_response_format');
+        }
+
+        $changes = array();
+
+        foreach ($new['updates'] as $newcomponent => $newcomponentupdates) {
+            if (empty($old['updates'][$newcomponent])) {
+                $changes[$newcomponent] = $newcomponentupdates;
+                continue;
+            }
+            foreach ($newcomponentupdates as $newcomponentupdate) {
+                $inold = false;
+                foreach ($old['updates'][$newcomponent] as $oldcomponentupdate) {
+                    if ($newcomponentupdate['version'] == $oldcomponentupdate['version']) {
+                        $inold = true;
+                    }
+                }
+                if (!$inold) {
+                    if (!isset($changes[$newcomponent])) {
+                        $changes[$newcomponent] = array();
+                    }
+                    $changes[$newcomponent][] = $newcomponentupdate;
+                }
+            }
+        }
+
+        return $changes;
+    }
+
+    /**
+     * Returns the URL to send update requests to
+     *
+     * During the development or testing, you can set $CFG->alternativeupdateproviderurl
+     * to a custom URL that will be used. Otherwise the standard URL will be returned.
+     *
+     * @return string URL
+     */
+    protected function prepare_request_url() {
+        global $CFG;
+
+        if (!empty($CFG->config_php_settings['alternativeupdateproviderurl'])) {
+            return $CFG->config_php_settings['alternativeupdateproviderurl'];
+        } else {
+            return 'http://download.moodle.org/api/1.1/updates.php';
+        }
+    }
+
+    /**
+     * Sets the properties currentversion, currentrelease, currentbranch and currentplugins
+     *
+     * @param bool $forcereload
+     */
+    protected function load_current_environment($forcereload=false) {
+        global $CFG;
+
+        if (!is_null($this->currentversion) and !$forcereload) {
+            // nothing to do
+            return;
+        }
+
+        $version = null;
+        $release = null;
+
+        require($CFG->dirroot.'/version.php');
+        $this->currentversion = $version;
+        $this->currentrelease = $release;
+        $this->currentbranch = moodle_major_version(true);
+
+        $pluginman = plugin_manager::instance();
+        foreach ($pluginman->get_plugins() as $type => $plugins) {
+            foreach ($plugins as $plugin) {
+                if (!$plugin->is_standard()) {
+                    $this->currentplugins[$plugin->component] = $plugin->versiondisk;
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the list of HTTP params to be sent to the updates provider URL
+     *
+     * @return array of (string)param => (string)value
+     */
+    protected function prepare_request_params() {
+        global $CFG;
+
+        $this->load_current_environment();
+        $this->restore_response();
+
+        $params = array();
+        $params['format'] = 'json';
+
+        if (isset($this->recentresponse['ticket'])) {
+            $params['ticket'] = $this->recentresponse['ticket'];
+        }
+
+        if (isset($this->currentversion)) {
+            $params['version'] = $this->currentversion;
+        } else {
+            throw new coding_exception('Main Moodle version must be already known here');
+        }
+
+        if (isset($this->currentbranch)) {
+            $params['branch'] = $this->currentbranch;
+        } else {
+            throw new coding_exception('Moodle release must be already known here');
+        }
+
+        $plugins = array();
+        foreach ($this->currentplugins as $plugin => $version) {
+            $plugins[] = $plugin.'@'.$version;
+        }
+        if (!empty($plugins)) {
+            $params['plugins'] = implode(',', $plugins);
+        }
+
+        return $params;
+    }
+
+    /**
+     * Returns the current timestamp
+     *
+     * @return int the timestamp
+     */
+    protected function cron_current_timestamp() {
+        return time();
+    }
+
+    /**
+     * Output cron debugging info
+     *
+     * @see mtrace()
+     * @param string $msg output message
+     * @param string $eol end of line
+     */
+    protected function cron_mtrace($msg, $eol = PHP_EOL) {
+        mtrace($msg, $eol);
+    }
+
+    /**
+     * Decide if the autocheck feature is disabled in the server setting
+     *
+     * @return bool true if autocheck enabled, false if disabled
+     */
+    protected function cron_autocheck_enabled() {
+        global $CFG;
+
+        if (empty($CFG->updateautocheck)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Decide if the recently fetched data are still fresh enough
+     *
+     * @param int $now current timestamp
+     * @return bool true if no need to re-fetch, false otherwise
+     */
+    protected function cron_has_fresh_fetch($now) {
+        $recent = $this->get_last_timefetched();
+
+        if (empty($recent)) {
+            return false;
+        }
+
+        if ($now < $recent) {
+            $this->cron_mtrace('The most recent fetch is reported to be in the future, this is weird!');
+            return true;
+        }
+
+        if ($now - $recent > 24 * HOURSECS) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Decide if the fetch is outadated or even missing
+     *
+     * @param int $now current timestamp
+     * @return bool false if no need to re-fetch, true otherwise
+     */
+    protected function cron_has_outdated_fetch($now) {
+        $recent = $this->get_last_timefetched();
+
+        if (empty($recent)) {
+            return true;
+        }
+
+        if ($now < $recent) {
+            $this->cron_mtrace('The most recent fetch is reported to be in the future, this is weird!');
+            return false;
+        }
+
+        if ($now - $recent > 48 * HOURSECS) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the cron execution offset for this site
+     *
+     * The main {@link self::cron()} is supposed to run every night in some random time
+     * between 01:00 and 06:00 AM (local time). The exact moment is defined by so called
+     * execution offset, that is the amount of time after 01:00 AM. The offset value is
+     * initially generated randomly and then used consistently at the site. This way, the
+     * regular checks against the download.moodle.org server are spread in time.
+     *
+     * @return int the offset number of seconds from range 1 sec to 5 hours
+     */
+    protected function cron_execution_offset() {
+        global $CFG;
+
+        if (empty($CFG->updatecronoffset)) {
+            set_config('updatecronoffset', rand(1, 5 * HOURSECS));
+        }
+
+        return $CFG->updatecronoffset;
+    }
+
+    /**
+     * Fetch available updates info and eventually send notification to site admins
+     */
+    protected function cron_execute() {
+
+        try {
+            $this->restore_response();
+            $previous = $this->recentresponse;
+            $this->fetch();
+            $this->restore_response(true);
+            $current = $this->recentresponse;
+            $changes = $this->compare_responses($previous, $current);
+            $notifications = $this->cron_notifications($changes);
+            $this->cron_notify($notifications);
+            $this->cron_mtrace('done');
+        } catch (available_update_checker_exception $e) {
+            $this->cron_mtrace('FAILED!');
+        }
+    }
+
+    /**
+     * Given the list of changes in available updates, pick those to send to site admins
+     *
+     * @param array $changes as returned by {@link self::compare_responses()}
+     * @return array of available_update_info objects to send to site admins
+     */
+    protected function cron_notifications(array $changes) {
+        global $CFG;
+
+        $notifications = array();
+        $pluginman = plugin_manager::instance();
+        $plugins = $pluginman->get_plugins(true);
+
+        foreach ($changes as $component => $componentchanges) {
+            if (empty($componentchanges)) {
+                continue;
+            }
+            $componentupdates = $this->get_update_info($component,
+                array('minmaturity' => $CFG->updateminmaturity, 'notifybuilds' => $CFG->updatenotifybuilds));
+            if (empty($componentupdates)) {
+                continue;
+            }
+            // notify only about those $componentchanges that are present in $componentupdates
+            // to respect the preferences
+            foreach ($componentchanges as $componentchange) {
+                foreach ($componentupdates as $componentupdate) {
+                    if ($componentupdate->version == $componentchange['version']) {
+                        if ($component == 'core') {
+                            // in case of 'core' this is enough, we already know that the
+                            // $componentupdate is a real update with higher version
+                            $notifications[] = $componentupdate;
+                        } else {
+                            // use the plugin_manager to check if the reported $componentchange
+                            // is a real update with higher version. such a real update must be
+                            // present in the 'availableupdates' property of one of the component's
+                            // available_update_info object
+                            list($plugintype, $pluginname) = normalize_component($component);
+                            if (!empty($plugins[$plugintype][$pluginname]->availableupdates)) {
+                                foreach ($plugins[$plugintype][$pluginname]->availableupdates as $availableupdate) {
+                                    if ($availableupdate->version == $componentchange['version']) {
+                                        $notifications[] = $componentupdate;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $notifications;
+    }
+
+    /**
+     * Sends the given notifications to site admins via messaging API
+     *
+     * @param array $notifications array of available_update_info objects to send
+     */
+    protected function cron_notify(array $notifications) {
+        global $CFG;
+
+        if (empty($notifications)) {
+            return;
+        }
+
+        $admins = get_admins();
+
+        if (empty($admins)) {
+            return;
+        }
+
+        $this->cron_mtrace('sending notifications ... ', '');
+
+        $text = get_string('updatenotifications', 'core_admin') . PHP_EOL;
+        $html = html_writer::tag('h1', get_string('updatenotifications', 'core_admin')) . PHP_EOL;
+
+        $coreupdates = array();
+        $pluginupdates = array();
+
+        foreach ($notifications as $notification) {
+            if ($notification->component == 'core') {
+                $coreupdates[] = $notification;
+            } else {
+                $pluginupdates[] = $notification;
+            }
+        }
+
+        if (!empty($coreupdates)) {
+            $text .= PHP_EOL . get_string('updateavailable', 'core_admin') . PHP_EOL;
+            $html .= html_writer::tag('h2', get_string('updateavailable', 'core_admin')) . PHP_EOL;
+            $html .= html_writer::start_tag('ul') . PHP_EOL;
+            foreach ($coreupdates as $coreupdate) {
+                $html .= html_writer::start_tag('li');
+                if (isset($coreupdate->release)) {
+                    $text .= get_string('updateavailable_release', 'core_admin', $coreupdate->release);
+                    $html .= html_writer::tag('strong', get_string('updateavailable_release', 'core_admin', $coreupdate->release));
+                }
+                if (isset($coreupdate->version)) {
+                    $text .= ' '.get_string('updateavailable_version', 'core_admin', $coreupdate->version);
+                    $html .= ' '.get_string('updateavailable_version', 'core_admin', $coreupdate->version);
+                }
+                if (isset($coreupdate->maturity)) {
+                    $text .= ' ('.get_string('maturity'.$coreupdate->maturity, 'core_admin').')';
+                    $html .= ' ('.get_string('maturity'.$coreupdate->maturity, 'core_admin').')';
+                }
+                $text .= PHP_EOL;
+                $html .= html_writer::end_tag('li') . PHP_EOL;
+            }
+            $text .= PHP_EOL;
+            $html .= html_writer::end_tag('ul') . PHP_EOL;
+
+            $a = array('url' => $CFG->wwwroot.'/'.$CFG->admin.'/index.php');
+            $text .= get_string('updateavailabledetailslink', 'core_admin', $a) . PHP_EOL;
+            $a = array('url' => html_writer::link($CFG->wwwroot.'/'.$CFG->admin.'/index.php', $CFG->wwwroot.'/'.$CFG->admin.'/index.php'));
+            $html .= html_writer::tag('p', get_string('updateavailabledetailslink', 'core_admin', $a)) . PHP_EOL;
+        }
+
+        if (!empty($pluginupdates)) {
+            $text .= PHP_EOL . get_string('updateavailableforplugin', 'core_admin') . PHP_EOL;
+            $html .= html_writer::tag('h2', get_string('updateavailableforplugin', 'core_admin')) . PHP_EOL;
+
+            $html .= html_writer::start_tag('ul') . PHP_EOL;
+            foreach ($pluginupdates as $pluginupdate) {
+                $html .= html_writer::start_tag('li');
+                $text .= get_string('pluginname', $pluginupdate->component);
+                $html .= html_writer::tag('strong', get_string('pluginname', $pluginupdate->component));
+
+                $text .= ' ('.$pluginupdate->component.')';
+                $html .= ' ('.$pluginupdate->component.')';
+
+                $text .= ' '.get_string('updateavailable', 'core_plugin', $pluginupdate->version);
+                $html .= ' '.get_string('updateavailable', 'core_plugin', $pluginupdate->version);
+
+                $text .= PHP_EOL;
+                $html .= html_writer::end_tag('li') . PHP_EOL;
+            }
+            $text .= PHP_EOL;
+            $html .= html_writer::end_tag('ul') . PHP_EOL;
+
+            $a = array('url' => $CFG->wwwroot.'/'.$CFG->admin.'/plugins.php');
+            $text .= get_string('updateavailabledetailslink', 'core_admin', $a) . PHP_EOL;
+            $a = array('url' => html_writer::link($CFG->wwwroot.'/'.$CFG->admin.'/plugins.php', $CFG->wwwroot.'/'.$CFG->admin.'/plugins.php'));
+            $html .= html_writer::tag('p', get_string('updateavailabledetailslink', 'core_admin', $a)) . PHP_EOL;
+        }
+
+        $a = array('siteurl' => $CFG->wwwroot);
+        $text .= get_string('updatenotificationfooter', 'core_admin', $a) . PHP_EOL;
+        $a = array('siteurl' => html_writer::link($CFG->wwwroot, $CFG->wwwroot));
+        $html .= html_writer::tag('footer', html_writer::tag('p', get_string('updatenotificationfooter', 'core_admin', $a),
+            array('style' => 'font-size:smaller; color:#333;')));
+
+        foreach ($admins as $admin) {
+            $message = new stdClass();
+            $message->component         = 'moodle';
+            $message->name              = 'availableupdate';
+            $message->userfrom          = get_admin();
+            $message->userto            = $admin;
+            $message->subject           = get_string('updatenotificationsubject', 'core_admin', array('siteurl' => $CFG->wwwroot));
+            $message->fullmessage       = $text;
+            $message->fullmessageformat = FORMAT_PLAIN;
+            $message->fullmessagehtml   = $html;
+            $message->smallmessage      = get_string('updatenotifications', 'core_admin');
+            $message->notification      = 1;
+            message_send($message);
+        }
+    }
+
+    /**
+     * Compare two release labels and decide if they are the same
+     *
+     * @param string $remote release info of the available update
+     * @param null|string $local release info of the local code, defaults to $release defined in version.php
+     * @return boolean true if the releases declare the same minor+major version
+     */
+    protected function is_same_release($remote, $local=null) {
+
+        if (is_null($local)) {
+            $this->load_current_environment();
+            $local = $this->currentrelease;
+        }
+
+        $pattern = '/^([0-9\.\+]+)([^(]*)/';
+
+        preg_match($pattern, $remote, $remotematches);
+        preg_match($pattern, $local, $localmatches);
+
+        $remotematches[1] = str_replace('+', '', $remotematches[1]);
+        $localmatches[1] = str_replace('+', '', $localmatches[1]);
+
+        if ($remotematches[1] === $localmatches[1] and rtrim($remotematches[2]) === rtrim($localmatches[2])) {
+            return true;
         } else {
             return false;
         }
     }
 }
 
+
 /**
- * Interface for making information about a plugin available.
- *
- * Note that most of the useful information is made available in pubic fields,
- * which cannot be documented in this interface. See the field definitions on
- * {@link plugintype_base} to find out what information is available.
- *
- * @property-read string component the component name, type_name
+ * Defines the structure of objects returned by {@link available_update_checker::get_update_info()}
  */
-interface plugin_information {
+class available_update_info {
+
+    /** @var string frankenstyle component name */
+    public $component;
+    /** @var int the available version of the component */
+    public $version;
+    /** @var string|null optional release name */
+    public $release = null;
+    /** @var int|null optional maturity info, eg {@link MATURITY_STABLE} */
+    public $maturity = null;
+    /** @var string|null optional URL of a page with more info about the update */
+    public $url = null;
+    /** @var string|null optional URL of a ZIP package that can be downloaded and installed */
+    public $download = null;
+    /** @var string|null of self::download is set, then this must be the MD5 hash of the ZIP */
+    public $downloadmd5 = null;
 
     /**
-     * Gathers and returns the information about all plugins of the given type
+     * Creates new instance of the class
      *
-     * Passing the parameter $typeclass allows us to reach the same effect as with the
-     * late binding in PHP 5.3. Once PHP 5.3 is required, we can refactor this to use
-     * {@example $plugin = new static();} instead of {@example $plugin = new $typeclass()}
+     * The $info array must provide at least the 'version' value and optionally all other
+     * values to populate the object's properties.
      *
-     * @param string $type the name of the plugintype, eg. mod, auth or workshopform
-     * @param string $typerootdir full path to the location of the plugin dir
-     * @param string $typeclass the name of the actually called class
-     * @return array of plugintype classes, indexed by the plugin name
+     * @param string $name the frankenstyle component name
+     * @param array $info associative array with other properties
      */
-    public static function get_plugins($type, $typerootdir, $typeclass);
+    public function __construct($name, array $info) {
+        $this->component = $name;
+        foreach ($info as $k => $v) {
+            if (property_exists('available_update_info', $k) and $k != 'component') {
+                $this->$k = $v;
+            }
+        }
+    }
+}
+
+
+/**
+ * Implements a communication bridge to the mdeploy.php utility
+ */
+class available_update_deployer {
+
+    const HTTP_PARAM_PREFIX     = 'updteautodpldata_';  // Hey, even Google has not heard of such a prefix! So it MUST be safe :-p
+    const HTTP_PARAM_CHECKER    = 'datapackagesize';    // Name of the parameter that holds the number of items in the received data items
+
+    /** @var available_update_deployer holds the singleton instance */
+    protected static $singletoninstance;
+    /** @var moodle_url URL of a page that includes the deployer UI */
+    protected $callerurl;
+    /** @var moodle_url URL to return after the deployment */
+    protected $returnurl;
 
     /**
-     * Sets $displayname property to a localized name of the plugin
-     *
-     * @return void
+     * Direct instantiation not allowed, use the factory method {@link self::instance()}
      */
-    public function init_display_name();
+    protected function __construct() {
+    }
 
     /**
-     * Sets $versiondisk property to a numerical value representing the
-     * version of the plugin's source code.
-     *
-     * If the value is null after calling this method, either the plugin
-     * does not use versioning (typically does not have any database
-     * data) or is missing from disk.
-     *
-     * @return void
+     * Sorry, this is singleton
      */
-    public function load_disk_version();
+    protected function __clone() {
+    }
 
     /**
-     * Sets $versiondb property to a numerical value representing the
-     * currently installed version of the plugin.
+     * Factory method for this class
      *
-     * If the value is null after calling this method, either the plugin
-     * does not use versioning (typically does not have any database
-     * data) or has not been installed yet.
-     *
-     * @return void
+     * @return available_update_deployer the singleton instance
      */
-    public function load_db_version();
+    public static function instance() {
+        if (is_null(self::$singletoninstance)) {
+            self::$singletoninstance = new self();
+        }
+        return self::$singletoninstance;
+    }
 
     /**
-     * Sets $versionrequires property to a numerical value representing
-     * the version of Moodle core that this plugin requires.
+     * Reset caches used by this script
      *
-     * @return void
+     * @param bool $phpunitreset is this called as a part of PHPUnit reset?
      */
-    public function load_required_main_version();
+    public static function reset_caches($phpunitreset = false) {
+        if ($phpunitreset) {
+            self::$singletoninstance = null;
+        }
+    }
 
     /**
-     * Sets $source property to one of plugin_manager::PLUGIN_SOURCE_xxx
-     * constants.
-     *
-     * If the property's value is null after calling this method, then
-     * the type of the plugin has not been recognized and you should throw
-     * an exception.
-     *
-     * @return void
-     */
-    public function init_is_standard();
-
-    /**
-     * Returns true if the plugin is shipped with the official distribution
-     * of the current Moodle version, false otherwise.
+     * Is automatic deployment enabled?
      *
      * @return bool
      */
-    public function is_standard();
+    public function enabled() {
+        global $CFG;
+
+        if (!empty($CFG->disableupdateautodeploy)) {
+            // The feature is prohibited via config.php
+            return false;
+        }
+
+        return get_config('updateautodeploy');
+    }
 
     /**
-     * Returns the status of the plugin
+     * Sets some base properties of the class to make it usable.
      *
-     * @return string one of plugin_manager::PLUGIN_STATUS_xxx constants
+     * @param moodle_url $callerurl the base URL of a script that will handle the class'es form data
+     * @param moodle_url $returnurl the final URL to return to when the deployment is finished
      */
-    public function get_status();
+    public function initialize(moodle_url $callerurl, moodle_url $returnurl) {
+
+        if (!$this->enabled()) {
+            throw new coding_exception('Unable to initialize the deployer, the feature is not enabled.');
+        }
+
+        $this->callerurl = $callerurl;
+        $this->returnurl = $returnurl;
+    }
 
     /**
-     * Get the list of other plugins that this plugin requires ot be installed.
-     * @return array with keys the frankenstyle plugin name, and values either
-     *      a version string (like '2011101700') or the constant ANY_VERSION.
+     * Has the deployer been initialized?
+     *
+     * Initialized deployer means that the following properties were set:
+     * callerurl, returnurl
+     *
+     * @return bool
      */
-    public function get_other_required_plugins();
+    public function initialized() {
+
+        if (!$this->enabled()) {
+            return false;
+        }
+
+        if (empty($this->callerurl)) {
+            return false;
+        }
+
+        if (empty($this->returnurl)) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
-     * Returns the information about plugin availability
+     * Returns a list of reasons why the deployment can not happen
      *
-     * True means that the plugin is enabled. False means that the plugin is
-     * disabled. Null means that the information is not available, or the
-     * plugin does not support configurable availability or the availability
-     * can not be changed.
+     * If the returned array is empty, the deployment seems to be possible. The returned
+     * structure is an associative array with keys representing individual impediments.
+     * Possible keys are: missingdownloadurl, missingdownloadmd5, notwritable.
      *
-     * @return null|bool
+     * @param available_update_info $info
+     * @return array
      */
-    public function is_enabled();
+    public function deployment_impediments(available_update_info $info) {
+
+        $impediments = array();
+
+        if (empty($info->download)) {
+            $impediments['missingdownloadurl'] = true;
+        }
+
+        if (empty($info->downloadmd5)) {
+            $impediments['missingdownloadmd5'] = true;
+        }
+
+        if (!$this->component_writable($info->component)) {
+            $impediments['notwritable'] = true;
+        }
+
+        return $impediments;
+    }
 
     /**
-     * Returns the URL of the plugin settings screen
+     * Check to see if the current version of the plugin seems to be a checkout of an external repository.
      *
-     * Null value means that the plugin either does not have the settings screen
-     * or its location is not available via this library.
-     *
-     * @return null|moodle_url
+     * @param available_update_info $info
+     * @return false|string
      */
-    public function get_settings_url();
+    public function plugin_external_source(available_update_info $info) {
+
+        $paths = get_plugin_types(true);
+        list($plugintype, $pluginname) = normalize_component($info->component);
+        $pluginroot = $paths[$plugintype].'/'.$pluginname;
+
+        if (is_dir($pluginroot.'/.git')) {
+            return 'git';
+        }
+
+        if (is_dir($pluginroot.'/CVS')) {
+            return 'cvs';
+        }
+
+        if (is_dir($pluginroot.'/.svn')) {
+            return 'svn';
+        }
+
+        return false;
+    }
 
     /**
-     * Returns the URL of the screen where this plugin can be uninstalled
+     * Prepares a renderable widget to confirm installation of an available update.
      *
-     * Visiting that URL must be safe, that is a manual confirmation is needed
-     * for actual uninstallation of the plugin. Null value means that the
-     * plugin either does not support uninstallation, or does not require any
-     * database cleanup or the location of the screen is not available via this
-     * library.
-     *
-     * @return null|moodle_url
+     * @param available_update_info $info component version to deploy
+     * @return renderable
      */
-    public function get_uninstall_url();
+    public function make_confirm_widget(available_update_info $info) {
+
+        if (!$this->initialized()) {
+            throw new coding_exception('Illegal method call - deployer not initialized.');
+        }
+
+        $params = $this->data_to_params(array(
+            'updateinfo' => (array)$info,   // see http://www.php.net/manual/en/language.types.array.php#language.types.array.casting
+        ));
+
+        $widget = new single_button(
+            new moodle_url($this->callerurl, $params),
+            get_string('updateavailableinstall', 'core_admin'),
+            'post'
+        );
+
+        return $widget;
+    }
 
     /**
-     * Returns relative directory of the plugin with heading '/'
+     * Prepares a renderable widget to execute installation of an available update.
      *
-     * @example /mod/workshop
+     * @param available_update_info $info component version to deploy
+     * @return renderable
+     */
+    public function make_execution_widget(available_update_info $info) {
+        global $CFG;
+
+        if (!$this->initialized()) {
+            throw new coding_exception('Illegal method call - deployer not initialized.');
+        }
+
+        $pluginrootpaths = get_plugin_types(true);
+
+        list($plugintype, $pluginname) = normalize_component($info->component);
+
+        if (empty($pluginrootpaths[$plugintype])) {
+            throw new coding_exception('Unknown plugin type root location', $plugintype);
+        }
+
+        list($passfile, $password) = $this->prepare_authorization();
+
+        $upgradeurl = new moodle_url('/admin');
+
+        $params = array(
+            'upgrade' => true,
+            'type' => $plugintype,
+            'name' => $pluginname,
+            'typeroot' => $pluginrootpaths[$plugintype],
+            'package' => $info->download,
+            'md5' => $info->downloadmd5,
+            'dataroot' => $CFG->dataroot,
+            'dirroot' => $CFG->dirroot,
+            'passfile' => $passfile,
+            'password' => $password,
+            'returnurl' => $upgradeurl->out(true),
+        );
+
+        $widget = new single_button(
+            new moodle_url('/mdeploy.php', $params),
+            get_string('updateavailableinstall', 'core_admin'),
+            'post'
+        );
+
+        return $widget;
+    }
+
+    /**
+     * Returns array of data objects passed to this tool.
+     *
+     * @return array
+     */
+    public function submitted_data() {
+
+        $data = $this->params_to_data($_POST);
+
+        if (empty($data) or empty($data[self::HTTP_PARAM_CHECKER])) {
+            return false;
+        }
+
+        if (!empty($data['updateinfo']) and is_object($data['updateinfo'])) {
+            $updateinfo = $data['updateinfo'];
+            if (!empty($updateinfo->component) and !empty($updateinfo->version)) {
+                $data['updateinfo'] = new available_update_info($updateinfo->component, (array)$updateinfo);
+            }
+        }
+
+        if (!empty($data['callerurl'])) {
+            $data['callerurl'] = new moodle_url($data['callerurl']);
+        }
+
+        if (!empty($data['returnurl'])) {
+            $data['returnurl'] = new moodle_url($data['returnurl']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Handles magic getters and setters for protected properties.
+     *
+     * @param string $name method name, e.g. set_returnurl()
+     * @param array $arguments arguments to be passed to the array
+     */
+    public function __call($name, array $arguments = array()) {
+
+        if (substr($name, 0, 4) === 'set_') {
+            $property = substr($name, 4);
+            if (empty($property)) {
+                throw new coding_exception('Invalid property name (empty)');
+            }
+            if (empty($arguments)) {
+                $arguments = array(true); // Default value for flag-like properties.
+            }
+            // Make sure it is a protected property.
+            $isprotected = false;
+            $reflection = new ReflectionObject($this);
+            foreach ($reflection->getProperties(ReflectionProperty::IS_PROTECTED) as $reflectionproperty) {
+                if ($reflectionproperty->getName() === $property) {
+                    $isprotected = true;
+                    break;
+                }
+            }
+            if (!$isprotected) {
+                throw new coding_exception('Unable to set property - it does not exist or it is not protected');
+            }
+            $value = reset($arguments);
+            $this->$property = $value;
+            return;
+        }
+
+        if (substr($name, 0, 4) === 'get_') {
+            $property = substr($name, 4);
+            if (empty($property)) {
+                throw new coding_exception('Invalid property name (empty)');
+            }
+            if (!empty($arguments)) {
+                throw new coding_exception('No parameter expected');
+            }
+            // Make sure it is a protected property.
+            $isprotected = false;
+            $reflection = new ReflectionObject($this);
+            foreach ($reflection->getProperties(ReflectionProperty::IS_PROTECTED) as $reflectionproperty) {
+                if ($reflectionproperty->getName() === $property) {
+                    $isprotected = true;
+                    break;
+                }
+            }
+            if (!$isprotected) {
+                throw new coding_exception('Unable to get property - it does not exist or it is not protected');
+            }
+            return $this->$property;
+        }
+    }
+
+    /**
+     * Generates a random token and stores it in a file in moodledata directory.
+     *
+     * @return array of the (string)filename and (string)password in this order
+     */
+    public function prepare_authorization() {
+        global $CFG;
+
+        make_upload_directory('mdeploy/auth/');
+
+        $attempts = 0;
+        $success = false;
+
+        while (!$success and $attempts < 5) {
+            $attempts++;
+
+            $passfile = $this->generate_passfile();
+            $password = $this->generate_password();
+            $now = time();
+
+            $filepath = $CFG->dataroot.'/mdeploy/auth/'.$passfile;
+
+            if (!file_exists($filepath)) {
+                $success = file_put_contents($filepath, $password . PHP_EOL . $now . PHP_EOL, LOCK_EX);
+            }
+        }
+
+        if ($success) {
+            return array($passfile, $password);
+
+        } else {
+            throw new moodle_exception('unable_prepare_authorization', 'core_plugin');
+        }
+    }
+
+    // End of external API
+
+    /**
+     * Prepares an array of HTTP parameters that can be passed to another page.
+     *
+     * @param array|object $data associative array or an object holding the data, data JSON-able
+     * @return array suitable as a param for moodle_url
+     */
+    protected function data_to_params($data) {
+
+        // Append some our own data
+        if (!empty($this->callerurl)) {
+            $data['callerurl'] = $this->callerurl->out(false);
+        }
+        if (!empty($this->callerurl)) {
+            $data['returnurl'] = $this->returnurl->out(false);
+        }
+
+        // Finally append the count of items in the package.
+        $data[self::HTTP_PARAM_CHECKER] = count($data);
+
+        // Generate params
+        $params = array();
+        foreach ($data as $name => $value) {
+            $transname = self::HTTP_PARAM_PREFIX.$name;
+            $transvalue = json_encode($value);
+            $params[$transname] = $transvalue;
+        }
+
+        return $params;
+    }
+
+    /**
+     * Converts HTTP parameters passed to the script into native PHP data
+     *
+     * @param array $params such as $_REQUEST or $_POST
+     * @return array data passed for this class
+     */
+    protected function params_to_data(array $params) {
+
+        if (empty($params)) {
+            return array();
+        }
+
+        $data = array();
+        foreach ($params as $name => $value) {
+            if (strpos($name, self::HTTP_PARAM_PREFIX) === 0) {
+                $realname = substr($name, strlen(self::HTTP_PARAM_PREFIX));
+                $realvalue = json_decode($value);
+                $data[$realname] = $realvalue;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Returns a random string to be used as a filename of the password storage.
+     *
      * @return string
      */
-    public function get_dir();
+    protected function generate_passfile() {
+        return clean_param(uniqid('mdeploy_', true), PARAM_FILE);
+    }
 
     /**
-     * Return the full path name of a file within the plugin.
-     * No check is made to see if the file exists.
-     * @param string $relativepath e.g. 'version.php'.
-     * @return string e.g. $CFG->dirroot . '/mod/quiz/version.php'.
+     * Returns a random string to be used as the authorization token
+     *
+     * @return string
      */
-    public function full_path($relativepath);
+    protected function generate_password() {
+        return complex_random_string();
+    }
+
+    /**
+     * Checks if the given component's directory is writable
+     *
+     * For the purpose of the deployment, the web server process has to have
+     * write access to all files in the component's directory (recursively) and for the
+     * directory itself.
+     *
+     * @see worker::move_directory_source_precheck()
+     * @param string $component normalized component name
+     * @return boolean
+     */
+    protected function component_writable($component) {
+
+        list($plugintype, $pluginname) = normalize_component($component);
+
+        $directory = get_plugin_directory($plugintype, $pluginname);
+
+        if (is_null($directory)) {
+            throw new coding_exception('Unknown component location', $component);
+        }
+
+        return $this->directory_writable($directory);
+    }
+
+    /**
+     * Checks if the directory and all its contents (recursively) is writable
+     *
+     * @param string $path full path to a directory
+     * @return boolean
+     */
+    private function directory_writable($path) {
+
+        if (!is_writable($path)) {
+            return false;
+        }
+
+        if (is_dir($path)) {
+            $handle = opendir($path);
+        } else {
+            return false;
+        }
+
+        $result = true;
+
+        while ($filename = readdir($handle)) {
+            $filepath = $path.'/'.$filename;
+
+            if ($filename === '.' or $filename === '..') {
+                continue;
+            }
+
+            if (is_dir($filepath)) {
+                $result = $result && $this->directory_writable($filepath);
+
+            } else {
+                $result = $result && is_writable($filepath);
+            }
+        }
+
+        closedir($handle);
+
+        return $result;
+    }
 }
 
+
 /**
- * Defines public properties that all plugintype classes must have
- * and provides default implementation of required methods.
+ * Factory class producing required subclasses of {@link plugininfo_base}
+ */
+class plugininfo_default_factory {
+
+    /**
+     * Makes a new instance of the plugininfo class
+     *
+     * @param string $type the plugin type, eg. 'mod'
+     * @param string $typerootdir full path to the location of all the plugins of this type
+     * @param string $name the plugin name, eg. 'workshop'
+     * @param string $namerootdir full path to the location of the plugin
+     * @param string $typeclass the name of class that holds the info about the plugin
+     * @return plugininfo_base the instance of $typeclass
+     */
+    public static function make($type, $typerootdir, $name, $namerootdir, $typeclass) {
+        $plugin              = new $typeclass();
+        $plugin->type        = $type;
+        $plugin->typerootdir = $typerootdir;
+        $plugin->name        = $name;
+        $plugin->rootdir     = $namerootdir;
+
+        $plugin->init_display_name();
+        $plugin->load_disk_version();
+        $plugin->load_db_version();
+        $plugin->load_required_main_version();
+        $plugin->init_is_standard();
+
+        return $plugin;
+    }
+}
+
+
+/**
+ * Base class providing access to the information about a plugin
  *
  * @property-read string component the component name, type_name
  */
-abstract class plugintype_base {
+abstract class plugininfo_base {
 
     /** @var string the plugintype name, eg. mod, auth or workshopform */
     public $type;
@@ -715,16 +2015,22 @@ abstract class plugintype_base {
     public $versiondb;
     /** @var int|float|string required version of Moodle core  */
     public $versionrequires;
-    /** @var array other plugins that this one depends on.
-     *  Lazy-loaded by {@link get_other_required_plugins()} */
-    public $dependencies = null;
+    /** @var array other plugins that this one depends on, lazy-loaded by {@link get_other_required_plugins()} */
+    public $dependencies;
     /** @var int number of instances of the plugin - not supported yet */
     public $instances;
     /** @var int order of the plugin among other plugins of the same type - not supported yet */
     public $sortorder;
+    /** @var array|null array of {@link available_update_info} for this plugin */
+    public $availableupdates;
 
     /**
-     * @see plugin_information::get_plugins()
+     * Gathers and returns the information about all plugins of the given type
+     *
+     * @param string $type the name of the plugintype, eg. mod, auth or workshopform
+     * @param string $typerootdir full path to the location of the plugin dir
+     * @param string $typeclass the name of the actually called class
+     * @return array of plugintype classes, indexed by the plugin name
      */
     public static function get_plugins($type, $typerootdir, $typeclass) {
 
@@ -732,25 +2038,14 @@ abstract class plugintype_base {
         $plugins = get_plugin_list($type);
         $ondisk = array();
         foreach ($plugins as $pluginname => $pluginrootdir) {
-            $plugin                 = new $typeclass();
-            $plugin->type           = $type;
-            $plugin->typerootdir    = $typerootdir;
-            $plugin->name           = $pluginname;
-            $plugin->rootdir        = $pluginrootdir;
-
-            $plugin->init_display_name();
-            $plugin->load_disk_version();
-            $plugin->load_db_version();
-            $plugin->load_required_main_version();
-            $plugin->init_is_standard();
-
-            $ondisk[$pluginname] = $plugin;
+            $ondisk[$pluginname] = plugininfo_default_factory::make($type, $typerootdir,
+                $pluginname, $pluginrootdir, $typeclass);
         }
         return $ondisk;
     }
 
     /**
-     * @see plugin_information::init_display_name()
+     * Sets {@link $displayname} property to a localized name of the plugin
      */
     public function init_display_name() {
         if (!get_string_manager()->string_exists('pluginname', $this->component)) {
@@ -762,6 +2057,7 @@ abstract class plugintype_base {
 
     /**
      * Magic method getter, redirects to read only values.
+     *
      * @param string $name
      * @return mixed
      */
@@ -776,7 +2072,12 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::full_path()
+     * Return the full path name of a file within the plugin.
+     *
+     * No check is made to see if the file exists.
+     *
+     * @param string $relativepath e.g. 'version.php'.
+     * @return string e.g. $CFG->dirroot . '/mod/quiz/version.php'.
      */
     public function full_path($relativepath) {
         if (empty($this->rootdir)) {
@@ -787,7 +2088,8 @@ abstract class plugintype_base {
 
     /**
      * Load the data from version.php.
-     * @return object the data object defined in version.php.
+     *
+     * @return stdClass the object called $plugin defined in version.php
      */
     protected function load_version_php() {
         $versionfile = $this->full_path('version.php');
@@ -800,7 +2102,12 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::load_disk_version()
+     * Sets {@link $versiondisk} property to a numerical value representing the
+     * version of the plugin's source code.
+     *
+     * If the value is null after calling this method, either the plugin
+     * does not use versioning (typically does not have any database
+     * data) or is missing from disk.
      */
     public function load_disk_version() {
         $plugin = $this->load_version_php();
@@ -810,7 +2117,8 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::load_required_main_version()
+     * Sets {@link $versionrequires} property to a numerical value representing
+     * the version of Moodle core that this plugin requires.
      */
     public function load_required_main_version() {
         $plugin = $this->load_version_php();
@@ -833,7 +2141,10 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::get_other_required_plugins()
+     * Get the list of other plugins that this plugin requires to be installed.
+     *
+     * @return array with keys the frankenstyle plugin name, and values either
+     *      a version string (like '2011101700') or the constant ANY_VERSION.
      */
     public function get_other_required_plugins() {
         if (is_null($this->dependencies)) {
@@ -843,17 +2154,26 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::load_db_version()
+     * Sets {@link $versiondb} property to a numerical value representing the
+     * currently installed version of the plugin.
+     *
+     * If the value is null after calling this method, either the plugin
+     * does not use versioning (typically does not have any database
+     * data) or has not been installed yet.
      */
     public function load_db_version() {
-
         if ($ver = self::get_version_from_config_plugins($this->component)) {
             $this->versiondb = $ver;
         }
     }
 
     /**
-     * @see plugin_information::init_is_standard()
+     * Sets {@link $source} property to one of plugin_manager::PLUGIN_SOURCE_xxx
+     * constants.
+     *
+     * If the property's value is null after calling this method, then
+     * the type of the plugin has not been recognized and you should throw
+     * an exception.
      */
     public function init_is_standard() {
 
@@ -873,14 +2193,35 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::is_standard()
+     * Returns true if the plugin is shipped with the official distribution
+     * of the current Moodle version, false otherwise.
+     *
+     * @return bool
      */
     public function is_standard() {
         return $this->source === plugin_manager::PLUGIN_SOURCE_STANDARD;
     }
 
     /**
-     * @see plugin_information::get_status()
+     * Returns true if the the given Moodle version is enough to run this plugin
+     *
+     * @param string|int|double $moodleversion
+     * @return bool
+     */
+    public function is_core_dependency_satisfied($moodleversion) {
+
+        if (empty($this->versionrequires)) {
+            return true;
+
+        } else {
+            return (double)$this->versionrequires <= (double)$moodleversion;
+        }
+    }
+
+    /**
+     * Returns the status of the plugin
+     *
+     * @return string one of plugin_manager::PLUGIN_STATUS_xxx constants
      */
     public function get_status() {
 
@@ -913,28 +2254,133 @@ abstract class plugintype_base {
     }
 
     /**
-     * @see plugin_information::is_enabled()
+     * Returns the information about plugin availability
+     *
+     * True means that the plugin is enabled. False means that the plugin is
+     * disabled. Null means that the information is not available, or the
+     * plugin does not support configurable availability or the availability
+     * can not be changed.
+     *
+     * @return null|bool
      */
     public function is_enabled() {
         return null;
     }
 
     /**
-     * @see plugin_information::get_settings_url()
+     * Populates the property {@link $availableupdates} with the information provided by
+     * available update checker
+     *
+     * @param available_update_checker $provider the class providing the available update info
      */
-    public function get_settings_url() {
+    public function check_available_updates(available_update_checker $provider) {
+        global $CFG;
+
+        if (isset($CFG->updateminmaturity)) {
+            $minmaturity = $CFG->updateminmaturity;
+        } else {
+            // this can happen during the very first upgrade to 2.3
+            $minmaturity = MATURITY_STABLE;
+        }
+
+        $this->availableupdates = $provider->get_update_info($this->component,
+            array('minmaturity' => $minmaturity));
+    }
+
+    /**
+     * If there are updates for this plugin available, returns them.
+     *
+     * Returns array of {@link available_update_info} objects, if some update
+     * is available. Returns null if there is no update available or if the update
+     * availability is unknown.
+     *
+     * @return array|null
+     */
+    public function available_updates() {
+
+        if (empty($this->availableupdates) or !is_array($this->availableupdates)) {
+            return null;
+        }
+
+        $updates = array();
+
+        foreach ($this->availableupdates as $availableupdate) {
+            if ($availableupdate->version > $this->versiondisk) {
+                $updates[] = $availableupdate;
+            }
+        }
+
+        if (empty($updates)) {
+            return null;
+        }
+
+        return $updates;
+    }
+
+    /**
+     * Returns the node name used in admin settings menu for this plugin settings (if applicable)
+     *
+     * @return null|string node name or null if plugin does not create settings node (default)
+     */
+    public function get_settings_section_name() {
         return null;
     }
 
     /**
-     * @see plugin_information::get_uninstall_url()
+     * Returns the URL of the plugin settings screen
+     *
+     * Null value means that the plugin either does not have the settings screen
+     * or its location is not available via this library.
+     *
+     * @return null|moodle_url
+     */
+    public function get_settings_url() {
+        $section = $this->get_settings_section_name();
+        if ($section === null) {
+            return null;
+        }
+        $settings = admin_get_root()->locate($section);
+        if ($settings && $settings instanceof admin_settingpage) {
+            return new moodle_url('/admin/settings.php', array('section' => $section));
+        } else if ($settings && $settings instanceof admin_externalpage) {
+            return new moodle_url($settings->url);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Loads plugin settings to the settings tree
+     *
+     * This function usually includes settings.php file in plugins folder.
+     * Alternatively it can create a link to some settings page (instance of admin_externalpage)
+     *
+     * @param part_of_admin_tree $adminroot
+     * @param string $parentnodename
+     * @param bool $hassiteconfig whether the current user has moodle/site:config capability
+     */
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+    }
+
+    /**
+     * Returns the URL of the screen where this plugin can be uninstalled
+     *
+     * Visiting that URL must be safe, that is a manual confirmation is needed
+     * for actual uninstallation of the plugin. Null value means that the
+     * plugin either does not support uninstallation, or does not require any
+     * database cleanup or the location of the screen is not available via this
+     * library.
+     *
+     * @return null|moodle_url
      */
     public function get_uninstall_url() {
         return null;
     }
 
     /**
-     * @see plugin_information::get_dir()
+     * Returns relative directory of the plugin with heading '/'
+     *
+     * @return string
      */
     public function get_dir() {
         global $CFG;
@@ -970,21 +2416,19 @@ abstract class plugintype_base {
     }
 }
 
+
 /**
  * General class for all plugin types that do not have their own class
  */
-class plugintype_general extends plugintype_base implements plugin_information {
-
+class plugininfo_general extends plugininfo_base {
 }
+
 
 /**
  * Class for page side blocks
  */
-class plugintype_block extends plugintype_base implements plugin_information {
+class plugininfo_block extends plugininfo_base {
 
-    /**
-     * @see plugin_information::get_plugins()
-     */
     public static function get_plugins($type, $typerootdir, $typeclass) {
 
         // get the information about blocks at the disk
@@ -1012,8 +2456,22 @@ class plugintype_block extends plugintype_base implements plugin_information {
     }
 
     /**
-     * @see plugin_information::init_display_name()
+     * Magic method getter, redirects to read only values.
+     *
+     * For block plugins pretends the object has 'visible' property for compatibility
+     * with plugins developed for Moodle version below 2.4
+     *
+     * @param string $name
+     * @return mixed
      */
+    public function __get($name) {
+        if ($name === 'visible') {
+            debugging('This is now an instance of plugininfo_block, please use $block->is_enabled() instead of $block->visible', DEBUG_DEVELOPER);
+            return ($this->is_enabled() !== false);
+        }
+        return parent::__get($name);
+    }
+
     public function init_display_name() {
 
         if (get_string_manager()->string_exists('pluginname', 'block_' . $this->name)) {
@@ -1027,9 +2485,6 @@ class plugintype_block extends plugintype_base implements plugin_information {
         }
     }
 
-    /**
-     * @see plugin_information::load_db_version()
-     */
     public function load_db_version() {
         global $DB;
 
@@ -1039,9 +2494,6 @@ class plugintype_block extends plugintype_base implements plugin_information {
         }
     }
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
 
         $blocksinfo = self::get_blocks_info();
@@ -1056,30 +2508,38 @@ class plugintype_block extends plugintype_base implements plugin_information {
         }
     }
 
-    /**
-     * @see plugin_information::get_settings_url()
-     */
-    public function get_settings_url() {
+    public function get_settings_section_name() {
+        return 'blocksetting' . $this->name;
+    }
 
-        if (($block = block_instance($this->name)) === false) {
-            return parent::get_settings_url();
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $block = $this; // also can be used inside settings.php
+        $section = $this->get_settings_section_name();
 
-        } else if ($block->has_config()) {
+        if (!$hassiteconfig || (($blockinstance = block_instance($this->name)) === false)) {
+            return;
+        }
+
+        $settings = null;
+        if ($blockinstance->has_config()) {
             if (file_exists($this->full_path('settings.php'))) {
-                return new moodle_url('/admin/settings.php', array('section' => 'blocksetting' . $this->name));
+                $settings = new admin_settingpage($section, $this->displayname,
+                        'moodle/site:config', $this->is_enabled() === false);
+                include($this->full_path('settings.php')); // this may also set $settings to null
             } else {
                 $blocksinfo = self::get_blocks_info();
-                return new moodle_url('/admin/block.php', array('block' => $blocksinfo[$this->name]->id));
+                $settingsurl = new moodle_url('/admin/block.php', array('block' => $blocksinfo[$this->name]->id));
+                $settings = new admin_externalpage($section, $this->displayname,
+                        $settingsurl, 'moodle/site:config', $this->is_enabled() === false);
             }
-
-        } else {
-            return parent::get_settings_url();
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
         }
     }
 
-    /**
-     * @see plugin_information::get_uninstall_url()
-     */
     public function get_uninstall_url() {
 
         $blocksinfo = self::get_blocks_info();
@@ -1109,14 +2569,12 @@ class plugintype_block extends plugintype_base implements plugin_information {
     }
 }
 
+
 /**
  * Class for text filters
  */
-class plugintype_filter extends plugintype_base implements plugin_information {
+class plugininfo_filter extends plugininfo_base {
 
-    /**
-     * @see plugin_information::get_plugins()
-     */
     public static function get_plugins($type, $typerootdir, $typeclass) {
         global $CFG, $DB;
 
@@ -1184,15 +2642,12 @@ class plugintype_filter extends plugintype_base implements plugin_information {
         return $filters;
     }
 
-    /**
-     * @see plugin_information::init_display_name()
-     */
     public function init_display_name() {
         // do nothing, the name is set in self::get_plugins()
     }
 
     /**
-     * @see plugintype_base::load_version_php().
+     * @see load_version_php()
      */
     protected function load_version_php() {
         if (strpos($this->name, 'mod_') === 0) {
@@ -1203,9 +2658,6 @@ class plugintype_filter extends plugintype_base implements plugin_information {
         return parent::load_version_php();
     }
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
 
         $globalstates = self::get_global_states();
@@ -1225,23 +2677,33 @@ class plugintype_filter extends plugintype_base implements plugin_information {
         return null;
     }
 
-    /**
-     * @see plugin_information::get_settings_url()
-     */
-    public function get_settings_url() {
+    public function get_settings_section_name() {
+        $globalstates = self::get_global_states();
+        if (!isset($globalstates[$this->name])) {
+            return parent::get_settings_section_name();
+        }
+        $legacyname = $globalstates[$this->name]->legacyname;
+        return 'filtersetting' . str_replace('/', '', $legacyname);
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $filter = $this; // also can be used inside settings.php
 
         $globalstates = self::get_global_states();
-        $legacyname = $globalstates[$this->name]->legacyname;
-        if (filter_has_global_settings($legacyname)) {
-            return new moodle_url('/admin/settings.php', array('section' => 'filtersetting' . str_replace('/', '', $legacyname)));
-        } else {
-            return null;
+        $settings = null;
+        if ($hassiteconfig && isset($globalstates[$this->name]) && file_exists($this->full_path('filtersettings.php'))) {
+            $section = $this->get_settings_section_name();
+            $settings = new admin_settingpage($section, $this->displayname,
+                    'moodle/site:config', $this->is_enabled() === false);
+            include($this->full_path('filtersettings.php')); // this may also set $settings to null
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
         }
     }
 
-    /**
-     * @see plugin_information::get_uninstall_url()
-     */
     public function get_uninstall_url() {
 
         if (strpos($this->name, 'mod_') === 0) {
@@ -1308,14 +2770,12 @@ class plugintype_filter extends plugintype_base implements plugin_information {
     }
 }
 
+
 /**
  * Class for activity modules
  */
-class plugintype_mod extends plugintype_base implements plugin_information {
+class plugininfo_mod extends plugininfo_base {
 
-    /**
-     * @see plugin_information::get_plugins()
-     */
     public static function get_plugins($type, $typerootdir, $typeclass) {
 
         // get the information about plugins at the disk
@@ -1343,8 +2803,22 @@ class plugintype_mod extends plugintype_base implements plugin_information {
     }
 
     /**
-     * @see plugin_information::init_display_name()
+     * Magic method getter, redirects to read only values.
+     *
+     * For module plugins we pretend the object has 'visible' property for compatibility
+     * with plugins developed for Moodle version below 2.4
+     *
+     * @param string $name
+     * @return mixed
      */
+    public function __get($name) {
+        if ($name === 'visible') {
+            debugging('This is now an instance of plugininfo_mod, please use $module->is_enabled() instead of $module->visible', DEBUG_DEVELOPER);
+            return ($this->is_enabled() !== false);
+        }
+        return parent::__get($name);
+    }
+
     public function init_display_name() {
         if (get_string_manager()->string_exists('pluginname', $this->component)) {
             $this->displayname = get_string('pluginname', $this->component);
@@ -1367,9 +2841,6 @@ class plugintype_mod extends plugintype_base implements plugin_information {
         return $module;
     }
 
-    /**
-     * @see plugin_information::load_db_version()
-     */
     public function load_db_version() {
         global $DB;
 
@@ -1379,9 +2850,6 @@ class plugintype_mod extends plugintype_base implements plugin_information {
         }
     }
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
 
         $modulesinfo = self::get_modules_info();
@@ -1396,21 +2864,28 @@ class plugintype_mod extends plugintype_base implements plugin_information {
         }
     }
 
-    /**
-     * @see plugin_information::get_settings_url()
-     */
-    public function get_settings_url() {
+    public function get_settings_section_name() {
+        return 'modsetting' . $this->name;
+    }
 
-        if (file_exists($this->full_path('settings.php')) or file_exists($this->full_path('settingstree.php'))) {
-            return new moodle_url('/admin/settings.php', array('section' => 'modsetting' . $this->name));
-        } else {
-            return parent::get_settings_url();
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $module = $this; // also can be used inside settings.php
+        $section = $this->get_settings_section_name();
+
+        $modulesinfo = self::get_modules_info();
+        $settings = null;
+        if ($hassiteconfig && isset($modulesinfo[$this->name]) && file_exists($this->full_path('settings.php'))) {
+            $settings = new admin_settingpage($section, $this->displayname,
+                    'moodle/site:config', $this->is_enabled() === false);
+            include($this->full_path('settings.php')); // this may also set $settings to null
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
         }
     }
 
-    /**
-     * @see plugin_information::get_uninstall_url()
-     */
     public function get_uninstall_url() {
 
         if ($this->name !== 'forum') {
@@ -1447,10 +2922,8 @@ class plugintype_mod extends plugintype_base implements plugin_information {
 /**
  * Class for question behaviours.
  */
-class plugintype_qbehaviour extends plugintype_base implements plugin_information {
-    /**
-     * @see plugin_information::get_uninstall_url()
-     */
+class plugininfo_qbehaviour extends plugininfo_base {
+
     public function get_uninstall_url() {
         return new moodle_url('/admin/qbehaviours.php',
                 array('delete' => $this->name, 'sesskey' => sesskey()));
@@ -1461,13 +2934,32 @@ class plugintype_qbehaviour extends plugintype_base implements plugin_informatio
 /**
  * Class for question types
  */
-class plugintype_qtype extends plugintype_base implements plugin_information {
-    /**
-    * @see plugin_information::get_uninstall_url()
-    */
+class plugininfo_qtype extends plugininfo_base {
+
     public function get_uninstall_url() {
         return new moodle_url('/admin/qtypes.php',
                 array('delete' => $this->name, 'sesskey' => sesskey()));
+    }
+
+    public function get_settings_section_name() {
+        return 'qtypesetting' . $this->name;
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $qtype = $this; // also can be used inside settings.php
+        $section = $this->get_settings_section_name();
+
+        $settings = null;
+        if ($hassiteconfig && file_exists($this->full_path('settings.php'))) {
+            $settings = new admin_settingpage($section, $this->displayname,
+                    'moodle/site:config', $this->is_enabled() === false);
+            include($this->full_path('settings.php')); // this may also set $settings to null
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
+        }
     }
 }
 
@@ -1475,11 +2967,8 @@ class plugintype_qtype extends plugintype_base implements plugin_information {
 /**
  * Class for authentication plugins
  */
-class plugintype_auth extends plugintype_base implements plugin_information {
+class plugininfo_auth extends plugininfo_base {
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
         global $CFG;
         /** @var null|array list of enabled authentication plugins */
@@ -1497,35 +2986,50 @@ class plugintype_auth extends plugintype_base implements plugin_information {
         return isset($enabled[$this->name]);
     }
 
-    /**
-     * @see plugin_information::get_settings_url()
-     */
-    public function get_settings_url() {
-        if (file_exists($this->full_path('settings.php'))) {
-            return new moodle_url('/admin/settings.php', array('section' => 'authsetting' . $this->name));
-        } else {
-            return new moodle_url('/admin/auth_config.php', array('auth' => $this->name));
+    public function get_settings_section_name() {
+        return 'authsetting' . $this->name;
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $auth = $this; // also to be used inside settings.php
+        $section = $this->get_settings_section_name();
+
+        $settings = null;
+        if ($hassiteconfig) {
+            if (file_exists($this->full_path('settings.php'))) {
+                // TODO: finish implementation of common settings - locking, etc.
+                $settings = new admin_settingpage($section, $this->displayname,
+                        'moodle/site:config', $this->is_enabled() === false);
+                include($this->full_path('settings.php')); // this may also set $settings to null
+            } else {
+                $settingsurl = new moodle_url('/admin/auth_config.php', array('auth' => $this->name));
+                $settings = new admin_externalpage($section, $this->displayname,
+                        $settingsurl, 'moodle/site:config', $this->is_enabled() === false);
+            }
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
         }
     }
 }
 
+
 /**
  * Class for enrolment plugins
  */
-class plugintype_enrol extends plugintype_base implements plugin_information {
+class plugininfo_enrol extends plugininfo_base {
 
-    /**
-     * We do not actually need whole enrolment classes here so we do not call
-     * {@link enrol_get_plugins()}. Note that this may produce slightly different
-     * results, for example if the enrolment plugin does not contain lib.php
-     * but it is listed in $CFG->enrol_plugins_enabled
-     *
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
         global $CFG;
         /** @var null|array list of enabled enrolment plugins */
         static $enabled = null;
+
+        // We do not actually need whole enrolment classes here so we do not call
+        // {@link enrol_get_plugins()}. Note that this may produce slightly different
+        // results, for example if the enrolment plugin does not contain lib.php
+        // but it is listed in $CFG->enrol_plugins_enabled
 
         if (is_null($enabled)) {
             $enabled = array_flip(explode(',', $CFG->enrol_plugins_enabled));
@@ -1534,52 +3038,96 @@ class plugintype_enrol extends plugintype_base implements plugin_information {
         return isset($enabled[$this->name]);
     }
 
-    /**
-     * @see plugin_information::get_settings_url()
-     */
-    public function get_settings_url() {
+    public function get_settings_section_name() {
+        return 'enrolsettings' . $this->name;
+    }
 
-        if ($this->is_enabled() or file_exists($this->full_path('settings.php'))) {
-            return new moodle_url('/admin/settings.php', array('section' => 'enrolsettings' . $this->name));
-        } else {
-            return parent::get_settings_url();
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $enrol = $this; // also can be used inside settings.php
+        $section = $this->get_settings_section_name();
+
+        $settings = null;
+        if ($hassiteconfig && file_exists($this->full_path('settings.php'))) {
+            $settings = new admin_settingpage($section, $this->displayname,
+                    'moodle/site:config', $this->is_enabled() === false);
+            include($this->full_path('settings.php')); // this may also set $settings to null
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
         }
     }
 
-    /**
-     * @see plugin_information::get_uninstall_url()
-     */
     public function get_uninstall_url() {
         return new moodle_url('/admin/enrol.php', array('action' => 'uninstall', 'enrol' => $this->name, 'sesskey' => sesskey()));
     }
 }
 
+
 /**
  * Class for messaging processors
  */
-class plugintype_message extends plugintype_base implements plugin_information {
+class plugininfo_message extends plugininfo_base {
+
+    public function get_settings_section_name() {
+        return 'messagesetting' . $this->name;
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        if (!$hassiteconfig) {
+            return;
+        }
+        $section = $this->get_settings_section_name();
+
+        $settings = null;
+        $processors = get_message_processors();
+        if (isset($processors[$this->name])) {
+            $processor = $processors[$this->name];
+            if ($processor->available && $processor->hassettings) {
+                $settings = new admin_settingpage($section, $this->displayname,
+                        'moodle/site:config', $this->is_enabled() === false);
+                include($this->full_path('settings.php')); // this may also set $settings to null
+            }
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
+        }
+    }
 
     /**
-     * @see plugin_information::get_settings_url()
+     * @see plugintype_interface::is_enabled()
      */
-    public function get_settings_url() {
-
-        if (file_exists($this->full_path('settings.php')) or file_exists($this->full_path('settingstree.php'))) {
-            return new moodle_url('/admin/settings.php', array('section' => 'messagesetting' . $this->name));
+    public function is_enabled() {
+        $processors = get_message_processors();
+        if (isset($processors[$this->name])) {
+            return $processors[$this->name]->configured && $processors[$this->name]->enabled;
         } else {
-            return parent::get_settings_url();
+            return parent::is_enabled();
+        }
+    }
+
+    /**
+     * @see plugintype_interface::get_uninstall_url()
+     */
+    public function get_uninstall_url() {
+        $processors = get_message_processors();
+        if (isset($processors[$this->name])) {
+            return new moodle_url('/admin/message.php', array('uninstall' => $processors[$this->name]->id, 'sesskey' => sesskey()));
+        } else {
+            return parent::get_uninstall_url();
         }
     }
 }
 
+
 /**
  * Class for repositories
  */
-class plugintype_repository extends plugintype_base implements plugin_information {
+class plugininfo_repository extends plugininfo_base {
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
 
         $enabled = self::get_enabled_repositories();
@@ -1587,15 +3135,19 @@ class plugintype_repository extends plugintype_base implements plugin_informatio
         return isset($enabled[$this->name]);
     }
 
-    /**
-     * @see plugin_information::get_settings_url()
-     */
-    public function get_settings_url() {
+    public function get_settings_section_name() {
+        return 'repositorysettings'.$this->name;
+    }
 
-        if ($this->is_enabled()) {
-            return new moodle_url('/admin/repository.php', array('sesskey' => sesskey(), 'action' => 'edit', 'repos' => $this->name));
-        } else {
-            return parent::get_settings_url();
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        if ($hassiteconfig && $this->is_enabled()) {
+            // completely no access to repository setting when it is not enabled
+            $sectionname = $this->get_settings_section_name();
+            $settingsurl = new moodle_url('/admin/repository.php',
+                    array('sesskey' => sesskey(), 'action' => 'edit', 'repos' => $this->name));
+            $settings = new admin_externalpage($sectionname, $this->displayname,
+                    $settingsurl, 'moodle/site:config', false);
+            $adminroot->add($parentnodename, $settings);
         }
     }
 
@@ -1617,14 +3169,12 @@ class plugintype_repository extends plugintype_base implements plugin_informatio
     }
 }
 
+
 /**
  * Class for portfolios
  */
-class plugintype_portfolio extends plugintype_base implements plugin_information {
+class plugininfo_portfolio extends plugininfo_base {
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
 
         $enabled = self::get_enabled_portfolios();
@@ -1660,14 +3210,12 @@ class plugintype_portfolio extends plugintype_base implements plugin_information
     }
 }
 
+
 /**
  * Class for themes
  */
-class plugintype_theme extends plugintype_base implements plugin_information {
+class plugininfo_theme extends plugininfo_base {
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
         global $CFG;
 
@@ -1680,14 +3228,12 @@ class plugintype_theme extends plugintype_base implements plugin_information {
     }
 }
 
+
 /**
  * Class representing an MNet service
  */
-class plugintype_mnetservice extends plugintype_base implements plugin_information {
+class plugininfo_mnetservice extends plugininfo_base {
 
-    /**
-     * @see plugin_information::is_enabled()
-     */
     public function is_enabled() {
         global $CFG;
 
@@ -1699,22 +3245,148 @@ class plugintype_mnetservice extends plugintype_base implements plugin_informati
     }
 }
 
+
 /**
  * Class for admin tool plugins
  */
-class plugintype_tool extends plugintype_base implements plugin_information {
+class plugininfo_tool extends plugininfo_base {
 
     public function get_uninstall_url() {
         return new moodle_url('/admin/tools.php', array('delete' => $this->name, 'sesskey' => sesskey()));
     }
 }
 
+
 /**
  * Class for admin tool plugins
  */
-class plugintype_report extends plugintype_base implements plugin_information {
+class plugininfo_report extends plugininfo_base {
 
     public function get_uninstall_url() {
         return new moodle_url('/admin/reports.php', array('delete' => $this->name, 'sesskey' => sesskey()));
+    }
+}
+
+
+/**
+ * Class for local plugins
+ */
+class plugininfo_local extends plugininfo_base {
+
+    public function get_uninstall_url() {
+        return new moodle_url('/admin/localplugins.php', array('delete' => $this->name, 'sesskey' => sesskey()));
+    }
+}
+
+/**
+ * Class for HTML editors
+ */
+class plugininfo_editor extends plugininfo_base {
+
+    public function get_settings_section_name() {
+        return 'editorsettings' . $this->name;
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $editor = $this; // also can be used inside settings.php
+        $section = $this->get_settings_section_name();
+
+        $settings = null;
+        if ($hassiteconfig && file_exists($this->full_path('settings.php'))) {
+            $settings = new admin_settingpage($section, $this->displayname,
+                    'moodle/site:config', $this->is_enabled() === false);
+            include($this->full_path('settings.php')); // this may also set $settings to null
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
+        }
+    }
+
+    /**
+     * Returns the information about plugin availability
+     *
+     * True means that the plugin is enabled. False means that the plugin is
+     * disabled. Null means that the information is not available, or the
+     * plugin does not support configurable availability or the availability
+     * can not be changed.
+     *
+     * @return null|bool
+     */
+    public function is_enabled() {
+        global $CFG;
+        if (empty($CFG->texteditors)) {
+            $CFG->texteditors = 'tinymce,textarea';
+        }
+        if (in_array($this->name, explode(',', $CFG->texteditors))) {
+            return true;
+        }
+        return false;
+    }
+}
+
+/**
+ * Class for plagiarism plugins
+ */
+class plugininfo_plagiarism extends plugininfo_base {
+
+    public function get_settings_section_name() {
+        return 'plagiarism'. $this->name;
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        // plagiarism plugin just redirect to settings.php in the plugins directory
+        if ($hassiteconfig && file_exists($this->full_path('settings.php'))) {
+            $section = $this->get_settings_section_name();
+            $settingsurl = new moodle_url($this->get_dir().'/settings.php');
+            $settings = new admin_externalpage($section, $this->displayname,
+                    $settingsurl, 'moodle/site:config', $this->is_enabled() === false);
+            $adminroot->add($parentnodename, $settings);
+        }
+    }
+}
+
+/**
+ * Class for webservice protocols
+ */
+class plugininfo_webservice extends plugininfo_base {
+
+    public function get_settings_section_name() {
+        return 'webservicesetting' . $this->name;
+    }
+
+    public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
+        global $CFG, $USER, $DB, $OUTPUT, $PAGE; // in case settings.php wants to refer to them
+        $ADMIN = $adminroot; // may be used in settings.php
+        $webservice = $this; // also can be used inside settings.php
+        $section = $this->get_settings_section_name();
+
+        $settings = null;
+        if ($hassiteconfig && file_exists($this->full_path('settings.php'))) {
+            $settings = new admin_settingpage($section, $this->displayname,
+                    'moodle/site:config', $this->is_enabled() === false);
+            include($this->full_path('settings.php')); // this may also set $settings to null
+        }
+        if ($settings) {
+            $ADMIN->add($parentnodename, $settings);
+        }
+    }
+
+    public function is_enabled() {
+        global $CFG;
+        if (empty($CFG->enablewebservices)) {
+            return false;
+        }
+        $active_webservices = empty($CFG->webserviceprotocols) ? array() : explode(',', $CFG->webserviceprotocols);
+        if (in_array($this->name, $active_webservices)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function get_uninstall_url() {
+        return new moodle_url('/admin/webservice/protocols.php',
+                array('sesskey' => sesskey(), 'action' => 'uninstall', 'webservice' => $this->name));
     }
 }

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 /**
  * Delete book chapter
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,7 +36,7 @@ $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 require_login($course, false, $cm);
 require_sesskey();
 
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 require_capability('mod/book:edit', $context);
 
 $PAGE->set_url('/mod/book/delete.php', array('id'=>$id, 'chapterid'=>$chapterid));
@@ -45,18 +44,17 @@ $PAGE->set_url('/mod/book/delete.php', array('id'=>$id, 'chapterid'=>$chapterid)
 $chapter = $DB->get_record('book_chapters', array('id'=>$chapterid, 'bookid'=>$book->id), '*', MUST_EXIST);
 
 
-///header and strings
-$PAGE->set_title(format_string($book->name));
-$PAGE->add_body_class('mod_book');
-$PAGE->set_heading(format_string($course->fullname));
+// Header and strings.
+$PAGE->set_title($book->name);
+$PAGE->set_heading($course->fullname);
 
-///form processing
+// Form processing.
 if ($confirm) {  // the operation was confirmed.
     $fs = get_file_storage();
-    if (!$chapter->subchapter) { //delete all its subchapters if any
+    if (!$chapter->subchapter) { // Delete all its sub-chapters if any
         $chapters = $DB->get_records('book_chapters', array('bookid'=>$book->id), 'pagenum', 'id, subchapter');
         $found = false;
-        foreach($chapters as $ch) {
+        foreach ($chapters as $ch) {
             if ($ch->id == $chapter->id) {
                 $found = true;
             } else if ($found and $ch->subchapter) {
@@ -73,7 +71,7 @@ if ($confirm) {  // the operation was confirmed.
     add_to_log($course->id, 'course', 'update mod', '../mod/book/view.php?id='.$cm->id, 'book '.$book->id);
     add_to_log($course->id, 'book', 'update', 'view.php?id='.$cm->id, $book->id, $cm->id);
 
-    book_preload_chapters($book); //fix structure
+    book_preload_chapters($book); // Fix structure.
     $DB->set_field('book', 'revision', $book->revision+1, array('id'=>$book->id));
 
     redirect('view.php?id='.$cm->id);
@@ -81,11 +79,11 @@ if ($confirm) {  // the operation was confirmed.
 
 echo $OUTPUT->header();
 
-// the operation has not been confirmed yet so ask the user to do so
+// The operation has not been confirmed yet so ask the user to do so.
 if ($chapter->subchapter) {
-    $strconfirm = get_string('confchapterdelete','mod_book');
+    $strconfirm = get_string('confchapterdelete', 'mod_book');
 } else {
-    $strconfirm = get_string('confchapterdeleteall','mod_book');
+    $strconfirm = get_string('confchapterdeleteall', 'mod_book');
 }
 echo '<br />';
 $continue = new moodle_url('/mod/book/delete.php', array('id'=>$cm->id, 'chapterid'=>$chapter->id, 'confirm'=>1));

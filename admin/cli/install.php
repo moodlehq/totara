@@ -164,6 +164,7 @@ require_once($CFG->libdir.'/moodlelib.php');
 require_once($CFG->libdir.'/deprecatedlib.php');
 require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->libdir.'/componentlib.class.php');
+require_once($CFG->dirroot.'/cache/lib.php');
 
 require($CFG->dirroot.'/version.php');
 $CFG->target_release = $release;
@@ -240,18 +241,8 @@ echo get_string('cliinstallheader', 'install', $TOTARA->release)."\n";
 if ($interactive) {
     cli_separator();
     $languages = get_string_manager()->get_list_of_translations();
-    // format the langs nicely - 3 per line
-    $c = 0;
-    $langlist = '';
-    foreach ($languages as $key=>$lang) {
-        $c++;
-        $length = iconv_strlen($lang, 'UTF-8');
-        $padded = $lang.str_repeat(' ', 38-$length);
-        $langlist .= $padded;
-        if ($c % 3 == 0) {
-            $langlist .= "\n";
-        }
-    }
+    // Do not put the langs into columns because it is not compatible with RTL.
+    $langlist = implode("\n", $languages);
     $default = $CFG->lang;
     cli_heading(get_string('availablelangs', 'install'));
     echo $langlist."\n";
@@ -425,7 +416,8 @@ if (isset($maturity)) {
                 exit(1);
             }
         } else {
-            cli_error(get_string('maturitycorewarning', 'admin'));
+            cli_problem(get_string('maturitycorewarning', 'admin', $maturitylevel));
+            cli_error(get_string('maturityallowunstable', 'admin'));
         }
     }
 }
@@ -677,7 +669,9 @@ if (!$envstatus) {
 
 // Test plugin dependencies.
 require_once($CFG->libdir . '/pluginlib.php');
-if (!plugin_manager::instance()->all_plugins_ok($version)) {
+$failed = array();
+if (!plugin_manager::instance()->all_plugins_ok($version, $failed)) {
+    cli_problem(get_string('pluginscheckfailed', 'admin', array('pluginslist' => implode(', ', array_unique($failed)))));
     cli_error(get_string('pluginschecktodo', 'admin'));
 }
 

@@ -61,11 +61,9 @@ if (! $feedback = $DB->get_record("feedback", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
-if (!$context = get_context_instance(CONTEXT_MODULE, $cm->id)) {
-        print_error('badcontext');
-}
+$context = context_module::instance($cm->id);
 
-require_login($course->id, true, $cm);
+require_login($course, true, $cm);
 
 require_capability('mod/feedback:mapcourse', $context);
 
@@ -132,9 +130,9 @@ if ($coursemap = feedback_get_courses_from_sitecourse_map($feedback->id)) {
 
     $unmapurl = new moodle_url('/mod/feedback/unmapcourse.php');
     foreach ($coursemap as $cmap) {
-        $cmapcontext = get_context_instance(CONTEXT_COURSE, $cmap->id);
+        $cmapcontext = context_course::instance($cmap->id);
         $cmapshortname = format_string($cmap->shortname, true, array('context' => $cmapcontext));
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $cmap->courseid);
+        $coursecontext = context_course::instance($cmap->courseid);
         $cmapfullname = format_string($cmap->fullname, true, array('context' => $coursecontext));
         $unmapurl->params(array('id'=>$id, 'cmapid'=>$cmap->id));
         $anker = '<a href="'.$unmapurl->out().'">';

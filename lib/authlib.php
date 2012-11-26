@@ -280,6 +280,18 @@ class auth_plugin_base {
     }
 
     /**
+     * Return a form to capture user details for account creation.
+     * This is used in /login/signup.php.
+     * @return moodle_form A form which edits a record from the user table.
+     */
+    function signup_form() {
+        global $CFG;
+
+        require_once($CFG->dirroot.'/login/signup_form.php');
+        return new login_signup_form(null, null, 'post', '', array('autocomplete'=>'on'));
+    }
+
+    /**
      * Returns true if plugin allows confirming of new users.
      *
      * @return bool
@@ -366,7 +378,7 @@ class auth_plugin_base {
      * @param object object with submitted configuration settings (without system magic quotes)
      * @param array $err array of error messages
      */
-     function validate_form(&$form, &$err) {
+     function validate_form($form, &$err) {
         //override if needed
     }
 

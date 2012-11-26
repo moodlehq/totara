@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book module for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,18 +17,17 @@
 /**
  * Book plugin settings
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2011 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2011 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-    require_once("$CFG->dirroot/mod/book/lib.php");
+    require_once(dirname(__FILE__).'/lib.php');
 
-    //--- general settings -----------------------------------------------------------------------------------
+    // General settings
 
     $settings->add(new admin_setting_configcheckbox('book/requiremodintro',
         get_string('requiremodintro', 'admin'), get_string('configrequiremodintro', 'admin'), 1));
@@ -36,11 +35,12 @@ if ($ADMIN->fulltree) {
     $options = book_get_numbering_types();
 
     $settings->add(new admin_setting_configmultiselect('book/numberingoptions',
-        get_string('numberingoptions', 'mod_book'), get_string('numberingoptions_help', 'mod_book'),
+        get_string('numberingoptions', 'mod_book'), get_string('numberingoptions_desc', 'mod_book'),
         array_keys($options), $options));
 
 
-    //--- modedit defaults -----------------------------------------------------------------------------------
+    // Modedit defaults.
+
     $settings->add(new admin_setting_heading('bookmodeditdefaults', get_string('modeditdefaults', 'admin'), get_string('condifmodeditdefaults', 'admin')));
 
     $settings->add(new admin_setting_configselect('book/numbering',

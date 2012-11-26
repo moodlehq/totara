@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +17,7 @@
 /**
  * Resource module capability definition
  *
- * @package    mod
- * @subpackage resource
+ * @package    mod_resource
  * @copyright  2009 Petr Skoda  {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,6 +32,18 @@ $capabilities = array(
             'guest' => CAP_ALLOW,
             'user' => CAP_ALLOW,
         )
+    ),
+
+    'mod/resource:addinstance' => array(
+        'riskbitmask' => RISK_XSS,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
 
 /* TODO: review public portfolio API first!

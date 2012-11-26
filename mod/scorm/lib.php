@@ -69,6 +69,37 @@ define('SCORM_12', 1);
 define('SCORM_13', 2);
 define('SCORM_AICC', 3);
 
+// List of possible attemptstatusdisplay options.
+define('SCORM_DISPLAY_ATTEMPTSTATUS_NO', 0);
+define('SCORM_DISPLAY_ATTEMPTSTATUS_ALL', 1);
+define('SCORM_DISPLAY_ATTEMPTSTATUS_MY', 2);
+define('SCORM_DISPLAY_ATTEMPTSTATUS_ENTRY', 3);
+
+/**
+ * Return an array of status options
+ *
+ * Optionally with translated strings
+ *
+ * @param   bool    $with_strings   (optional)
+ * @return  array
+ */
+function scorm_status_options($with_strings = false) {
+    // Id's are important as they are bits
+    $options = array(
+        2 => 'passed',
+        4 => 'completed'
+    );
+
+    if ($with_strings) {
+        foreach ($options as $key => $value) {
+            $options[$key] = get_string('completionstatus_'.$value, 'scorm');
+        }
+    }
+
+    return $options;
+}
+
+
 /**
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
@@ -101,7 +132,7 @@ function scorm_add_instance($scorm, $mform=null) {
     $cmidnumber = $scorm->cmidnumber;
     $courseid   = $scorm->course;
 
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
 
     $scorm = scorm_option2text($scorm);
     $scorm->width  = (int)str_replace('%', '', $scorm->width);
@@ -192,7 +223,7 @@ function scorm_update_instance($scorm, $mform=null) {
 
     $scorm->id = $scorm->instance;
 
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
 
     if ($scorm->scormtype === SCORM_TYPE_LOCAL) {
         if ($mform) {
@@ -588,8 +619,7 @@ function scorm_get_user_grades($scorm, $userid=0) {
 /**
  * Update grades in central gradebook
  *
- * @global stdClass
- * @global object
+ * @category grade
  * @param object $scorm
  * @param int $userid specific user only, 0 mean all
  * @param bool $nullifnone
@@ -601,15 +631,15 @@ function scorm_update_grades($scorm, $userid=0, $nullifnone=true) {
 
     if ($grades = scorm_get_user_grades($scorm, $userid)) {
         scorm_grade_item_update($scorm, $grades);
+        //set complete
         scorm_set_completion($scorm, $userid, COMPLETION_COMPLETE, $grades);
-
     } else if ($userid and $nullifnone) {
         $grade = new stdClass();
         $grade->userid   = $userid;
         $grade->rawgrade = null;
         scorm_grade_item_update($scorm, $grade);
+        //set incomplete.
         scorm_set_completion($scorm, $userid, COMPLETION_INCOMPLETE);
-
     } else {
         scorm_grade_item_update($scorm);
     }
@@ -648,8 +678,7 @@ function scorm_upgrade_grades() {
 /**
  * Update/create grade item for given scorm
  *
- * @global stdClass
- * @global object
+ * @category grade
  * @uses GRADE_TYPE_VALUE
  * @uses GRADE_TYPE_NONE
  * @param object $scorm object with extra cmidnumber
@@ -723,7 +752,7 @@ function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COM
 /**
  * Delete grade item for given scorm
  *
- * @global stdClass
+ * @category grade
  * @param object $scorm object
  * @return object grade_item
  */
@@ -880,16 +909,18 @@ function scorm_get_file_areas($course, $cm, $context) {
 /**
  * File browsing support for SCORM file areas
  *
- * @param stdclass $browser
- * @param stdclass $areas
- * @param stdclass $course
- * @param stdclass $cm
- * @param stdclass $context
- * @param string $filearea
- * @param int $itemid
- * @param string $filepath
- * @param string $filename
- * @return stdclass file_info instance or null if not found
+ * @package  mod_scorm
+ * @category files
+ * @param file_browser $browser file browser instance
+ * @param array $areas file areas
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param int $itemid item ID
+ * @param string $filepath file path
+ * @param string $filename file name
+ * @return file_info instance or null if not found
  */
 function scorm_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     global $CFG;
@@ -943,15 +974,18 @@ function scorm_get_file_info($browser, $areas, $course, $cm, $context, $filearea
 /**
  * Serves scorm content, introduction images and packages. Implements needed access control ;-)
  *
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ * @package  mod_scorm
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - just send the file
  */
-function scorm_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+function scorm_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -990,7 +1024,7 @@ function scorm_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
     }
 
     // finally send the file
-    send_stored_file($file, $lifetime, 0, false);
+    send_stored_file($file, $lifetime, 0, false, $options);
 }
 
 /**
@@ -999,6 +1033,7 @@ function scorm_pluginfile($course, $cm, $context, $filearea, $args, $forcedownlo
  * @uses FEATURE_GROUPMEMBERSONLY
  * @uses FEATURE_MOD_INTRO
  * @uses FEATURE_COMPLETION_TRACKS_VIEWS
+ * @uses FEATURE_COMPLETION_HAS_RULES
  * @uses FEATURE_GRADE_HAS_GRADE
  * @uses FEATURE_GRADE_OUTCOMES
  * @param string $feature FEATURE_xx constant for requested feature
@@ -1011,6 +1046,7 @@ function scorm_supports($feature) {
         case FEATURE_GROUPMEMBERSONLY:        return true;
         case FEATURE_MOD_INTRO:               return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+        case FEATURE_COMPLETION_HAS_RULES:    return true;
         case FEATURE_GRADE_HAS_GRADE:         return true;
         case FEATURE_GRADE_OUTCOMES:          return true;
         case FEATURE_BACKUP_MOODLE2:          return true;
@@ -1200,7 +1236,7 @@ function scorm_debug_log_remove($type, $scoid) {
  * @return mixed
  */
 function scorm_print_overview($courses, &$htmlarray) {
-    global $USER, $CFG, $DB;
+    global $USER, $CFG;
 
     if (empty($courses) || !is_array($courses) || count($courses) == 0) {
         return array();
@@ -1210,46 +1246,38 @@ function scorm_print_overview($courses, &$htmlarray) {
         return;
     }
 
-    $scormids = array();
-
-    // Do scorm::isopen() here without loading the whole thing for speed
-    foreach ($scorms as $key => $scorm) {
-        $time = time();
-        if (isset($scorm->timeopen) && $scorm->timeopen) {
-            $isopen = ($scorm->timeopen <= $time && $time <= $scorm->timeclose);
-        }
-        if (empty($scorm->displayattemptstatus) && (empty($isopen) || empty($scorm->timeclose))) {
-            unset($scorms[$key]);
-        } else {
-            $scormids[] = $scorm->id;
-        }
-    }
-
-    if (empty($scormids)) {
-        // no scorms to look at - we're done
-        return true;
-    }
     $strscorm   = get_string('modulename', 'scorm');
     $strduedate = get_string('duedate', 'scorm');
 
     foreach ($scorms as $scorm) {
-        $str = '<div class="scorm overview"><div class="name">'.$strscorm. ': '.
-               '<a '.($scorm->visible ? '':' class="dimmed"').
-               'title="'.$strscorm.'" href="'.$CFG->wwwroot.
-               '/mod/scorm/view.php?id='.$scorm->coursemodule.'">'.
-               $scorm->name.'</a></div>';
-        if ($scorm->timeclose) {
-            $str .= '<div class="info">'.$strduedate.': '.userdate($scorm->timeclose).'</div>';
+        $time = time();
+        $showattemptstatus = false;
+        if ($scorm->timeopen) {
+            $isopen = ($scorm->timeopen <= $time && $time <= $scorm->timeclose);
         }
-        if ($scorm->displayattemptstatus == 1) {
-            require_once($CFG->dirroot.'/mod/scorm/locallib.php');
-            $str .= '<div class="details">'.scorm_get_attempt_status($USER, $scorm).'</div>';
+        if ($scorm->displayattemptstatus == SCORM_DISPLAY_ATTEMPTSTATUS_ALL ||
+                $scorm->displayattemptstatus == SCORM_DISPLAY_ATTEMPTSTATUS_MY) {
+            $showattemptstatus = true;
         }
-        $str .= '</div>';
-        if (empty($htmlarray[$scorm->course]['scorm'])) {
-            $htmlarray[$scorm->course]['scorm'] = $str;
-        } else {
-            $htmlarray[$scorm->course]['scorm'] .= $str;
+        if ($showattemptstatus || !empty($isopen) || !empty($scorm->timeclose)) {
+            $str = '<div class="scorm overview"><div class="name">'.$strscorm. ': '.
+                '<a '.($scorm->visible ? '':' class="dimmed"').
+                'title="'.$strscorm.'" href="'.$CFG->wwwroot.
+                '/mod/scorm/view.php?id='.$scorm->coursemodule.'">'.
+                $scorm->name.'</a></div>';
+            if ($scorm->timeclose) {
+                $str .= '<div class="info">'.$strduedate.': '.userdate($scorm->timeclose).'</div>';
+            }
+            if ($showattemptstatus) {
+                require_once($CFG->dirroot.'/mod/scorm/locallib.php');
+                $str .= '<div class="details">'.scorm_get_attempt_status($USER, $scorm).'</div>';
+            }
+            $str .= '</div>';
+            if (empty($htmlarray[$scorm->course]['scorm'])) {
+                $htmlarray[$scorm->course]['scorm'] = $str;
+            } else {
+                $htmlarray[$scorm->course]['scorm'] .= $str;
+            }
         }
     }
 }
@@ -1298,4 +1326,203 @@ function scorm_version_check($scormversion, $version='') {
         }
     }
     return false;
+}
+
+/**
+ * Obtains the automatic completion state for this scorm based on any conditions
+ * in scorm settings.
+ *
+ * @param object $course Course
+ * @param object $cm Course-module
+ * @param int $userid User ID
+ * @param bool $type Type of comparison (or/and; can be used as return value if no conditions)
+ * @return bool True if completed, false if not. (If no conditions, then return
+ *   value depends on comparison type)
+ */
+function scorm_get_completion_state($course, $cm, $userid, $type) {
+    global $DB;
+
+    $result = $type;
+
+    // Get scorm
+    if (!$scorm = $DB->get_record('scorm', array('id' => $cm->instance))) {
+        print_error('cannotfindscorm');
+    }
+    // Only check for existence of tracks and return false if completionstatusrequired or completionscorerequired
+    // this means that if only view is required we don't end up with a false state.
+    if ($scorm->completionstatusrequired !== null ||
+        $scorm->completionscorerequired !== null) {
+        // Get user's tracks data.
+        $tracks = $DB->get_records_sql(
+            "
+            SELECT
+                id,
+                element,
+                value
+            FROM
+                {scorm_scoes_track}
+            WHERE
+                scormid = ?
+            AND userid = ?
+            AND element IN
+            (
+                'cmi.core.lesson_status',
+                'cmi.completion_status',
+                'cmi.success_status',
+                'cmi.core.score.raw',
+                'cmi.score.raw'
+            )
+            ",
+            array($scorm->id, $userid)
+        );
+
+        if (!$tracks) {
+            return completion_info::aggregate_completion_states($type, $result, false);
+        }
+    }
+
+    // Check for status
+    if ($scorm->completionstatusrequired !== null) {
+
+        // Get status
+        $statuses = array_flip(scorm_status_options());
+        $nstatus = 0;
+
+        foreach ($tracks as $track) {
+            if (!in_array($track->element, array('cmi.core.lesson_status', 'cmi.completion_status', 'cmi.success_status'))) {
+                continue;
+            }
+
+            if (array_key_exists($track->value, $statuses)) {
+                $nstatus |= $statuses[$track->value];
+            }
+        }
+
+        if ($scorm->completionstatusrequired & $nstatus) {
+            return completion_info::aggregate_completion_states($type, $result, true);
+        } else {
+            return completion_info::aggregate_completion_states($type, $result, false);
+        }
+
+    }
+
+    // Check for score
+    if ($scorm->completionscorerequired !== null) {
+        $maxscore = -1;
+
+        foreach ($tracks as $track) {
+            if (!in_array($track->element, array('cmi.core.score.raw', 'cmi.score.raw'))) {
+                continue;
+            }
+
+            if (strlen($track->value) && floatval($track->value) >= $maxscore) {
+                $maxscore = floatval($track->value);
+            }
+        }
+
+        if ($scorm->completionscorerequired <= $maxscore) {
+            return completion_info::aggregate_completion_states($type, $result, true);
+        } else {
+            return completion_info::aggregate_completion_states($type, $result, false);
+        }
+    }
+
+    return $result;
+}
+
+/**
+ * Register the ability to handle drag and drop file uploads
+ * @return array containing details of the files / types the mod can handle
+ */
+function scorm_dndupload_register() {
+    return array('files' => array(
+        array('extension' => 'zip', 'message' => get_string('dnduploadscorm', 'scorm'))
+    ));
+}
+
+/**
+ * Handle a file that has been uploaded
+ * @param object $uploadinfo details of the file / content that has been uploaded
+ * @return int instance id of the newly created mod
+ */
+function scorm_dndupload_handle($uploadinfo) {
+
+    $context = context_module::instance($uploadinfo->coursemodule);
+    file_save_draft_area_files($uploadinfo->draftitemid, $context->id, 'mod_scorm', 'package', 0);
+    $fs = get_file_storage();
+    $files = $fs->get_area_files($context->id, 'mod_scorm', 'package', 0, 'sortorder, itemid, filepath, filename', false);
+    $file = reset($files);
+
+    // Validate the file, make sure it's a valid SCORM package!
+    $packer = get_file_packer('application/zip');
+    $filelist = $file->list_files($packer);
+
+    if (!is_array($filelist)) {
+        return false;
+    } else {
+        $manifestpresent = false;
+        $aiccfound = false;
+
+        foreach ($filelist as $info) {
+            if ($info->pathname == 'imsmanifest.xml') {
+                $manifestpresent = true;
+                break;
+            }
+
+            if (preg_match('/\.cst$/', $info->pathname)) {
+                $aiccfound = true;
+                break;
+            }
+        }
+
+        if (!$manifestpresent && !$aiccfound) {
+            return false;
+        }
+    }
+
+    // Create a default scorm object to pass to scorm_add_instance()!
+    $scorm = get_config('scorm');
+    $scorm->course = $uploadinfo->course->id;
+    $scorm->coursemodule = $uploadinfo->coursemodule;
+    $scorm->cmidnumber = '';
+    $scorm->name = $uploadinfo->displayname;
+    $scorm->scormtype = SCORM_TYPE_LOCAL;
+    $scorm->reference = $file->get_filename();
+    $scorm->intro = '';
+    $scorm->width = $scorm->framewidth;
+    $scorm->height = $scorm->frameheight;
+
+    return scorm_add_instance($scorm, null);
+}
+
+/**
+ * Sets activity completion state
+ *
+ * @param object $scorm object
+ * @param int $userid User ID
+ * @param int $completionstate Completion state
+ * @param array $grades grades array of users with grades - used when $userid = 0
+ */
+function scorm_set_completion($scorm, $userid, $completionstate = COMPLETION_COMPLETE, $grades = array()) {
+    $course = new stdClass();
+    $course->id = $scorm->course;
+    $completion = new completion_info($course);
+
+    // Check if completion is enabled site-wide, or for the course
+    if (!$completion->is_enabled()) {
+        return;
+    }
+
+    $cm = get_coursemodule_from_instance('scorm', $scorm->id, $scorm->course);
+    if (empty($cm) || !$completion->is_enabled($cm)) {
+            return;
+    }
+
+    if (empty($userid)) { //we need to get all the relevant users from $grades param.
+        foreach ($grades as $grade) {
+            $completion->update_state($cm, $completionstate, $grade->userid);
+        }
+    } else {
+        $completion->update_state($cm, $completionstate, $userid);
+    }
 }

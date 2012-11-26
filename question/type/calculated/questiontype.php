@@ -26,6 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/question/type/questionbase.php');
 require_once($CFG->dirroot . '/question/type/numerical/question.php');
 
 
@@ -46,6 +47,7 @@ class qtype_calculated extends question_type {
         global $CFG, $DB, $OUTPUT;
         if (!$question->options = $DB->get_record('question_calculated_options',
                 array('question' => $question->id))) {
+            $question->options = new stdClass();
             $question->options->synchronize = 0;
             $question->options->single = 0;
             $question->options->answernumbering = 'abc';
@@ -710,8 +712,8 @@ class qtype_calculated extends question_type {
                 get_string('calcmax', 'qtype_calculated'));
         $mform->addGroup($minmaxgrp, 'minmaxgrp',
                 get_string('minmax', 'qtype_calculated'), ' - ', false);
-        $mform->setType("calcmin[$idx]", PARAM_NUMBER);
-        $mform->setType("calcmax[$idx]", PARAM_NUMBER);
+        $mform->setType("calcmin[$idx]", PARAM_FLOAT);
+        $mform->setType("calcmax[$idx]", PARAM_FLOAT);
 
         $precisionoptions = range(0, 10);
         $mform->addElement('select', "calclength[$idx]",
@@ -1081,6 +1083,7 @@ class qtype_calculated extends question_type {
                         get_string('anyvalue', 'qtype_calculated') . '<br/><br/><br/>';
             } else {
                 $comment->stranswers[$key] = $formula . ' = ' . $formattedanswer->answer . '<br/>';
+                $correcttrue = new stdClass();
                 $correcttrue->correct = $formattedanswer->answer;
                 $correcttrue->true = $answer->answer;
                 if ($formattedanswer->answer < $answer->min ||
@@ -1526,6 +1529,7 @@ class qtype_calculated extends question_type {
                WHERE a.id = b.datasetdefinition AND a.type = '1' AND b.question = ? AND a.name = ?";
             $currentdatasetdef = $DB->get_record_sql($sql, array($form->id, $name));
             if (!$currentdatasetdef) {
+                $currentdatasetdef = new stdClass();
                 $currentdatasetdef->type = '0';
             }
             $key = "$type-0-$name";
@@ -1862,7 +1866,7 @@ function qtype_calculated_calculate_answer($formula, $individualdata,
     // ->answer    the correct answer
     // ->min       the lower bound for an acceptable response
     // ->max       the upper bound for an accetpable response
-
+    $calculated = new stdClass();
     // Exchange formula variables with the correct values...
     $answer = question_bank::get_qtype('calculated')->substitute_variables_and_eval(
             $formula, $individualdata);

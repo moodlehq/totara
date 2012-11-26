@@ -29,7 +29,7 @@ require_once('../config.php');
 require_once('lib.php');
 
 require_login();
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/blog/external_blogs.php'));
 require_capability('moodle/blog:manageexternal', $context);
@@ -77,7 +77,7 @@ if (!empty($blogs)) {
     $table = new html_table();
     $table->cellpadding = 4;
     $table->attributes['class'] = 'generaltable boxaligncenter';
-    $table->head = array(get_string('name'), get_string('url'), get_string('timefetched', 'blog'), get_string('valid', 'blog'), get_string('actions'));
+    $table->head = array(get_string('name'), get_string('url', 'blog'), get_string('timefetched', 'blog'), get_string('valid', 'blog'), get_string('actions'));
 
     foreach ($blogs as $blog) {
         if ($blog->failedlastsync) {

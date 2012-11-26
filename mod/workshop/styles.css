@@ -18,6 +18,16 @@
     text-align: left;
 }
 
+.path-mod-workshop .groupwidget {
+    text-align:center;
+    margin: 0.75em auto;
+}
+
+.path-mod-workshop .perpagewidget {
+    text-align:center;
+    margin: 0.75em auto;
+}
+
 /**
  * Submission - one line summary display
  */
@@ -236,7 +246,7 @@
     color: black;
     font-size: 140%;
     border: 1px solid #ddd;
-    border-bottom: none;
+    border-bottom: 0;
     background: #e7f1c3;
 }
 
@@ -266,7 +276,7 @@
 }
 
 .path-mod-workshop .userplan td.lastcol {
-    border-right: none;
+    border-right: 0;
 }
 
 .path-mod-workshop .userplan td.active {
@@ -449,6 +459,38 @@
 }
 
 /**
+ * Final grades
+ */
+.path-mod-workshop #workshop-viewlet-yourgrades .finalgrades {
+    text-align: center;
+}
+
+.path-mod-workshop #workshop-viewlet-yourgrades .finalgrades .grade {
+    border: 1px solid #ddd;
+    margin: 1em;
+    padding: 2em;
+    display: inline-block;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.path-mod-workshop #workshop-viewlet-yourgrades .finalgrades .grade.submissiongrade {
+    background-color: #d2ebff;
+}
+
+.path-mod-workshop #workshop-viewlet-yourgrades .finalgrades .grade.assessmentgrade {
+    background-color: #eee;
+    /*background-color: #e7f1c3;*/
+}
+
+.path-mod-workshop #workshop-viewlet-yourgrades .finalgrades .grade .gradevalue {
+    font-weight: bold;
+    font-size: x-large;
+    margin: 10px;
+}
+
+/**
  * Edit assessment form
  */
 #mod-workshop-editform fieldset.fgroup * {
@@ -509,4 +551,9 @@
 
 .path-mod-workshop div.buttonwithhelp div {
     display: inline;
+}
+
+.path-mod-workshop #evaluationmethodchooser {
+    margin: 2em auto;
+    text-align: center;
 }

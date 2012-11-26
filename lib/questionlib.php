@@ -343,6 +343,7 @@ function question_delete_question($questionid) {
 
     // Finally delete the question record itself
     $DB->delete_records('question', array('id' => $questionid));
+    question_bank::notify_question_edited($questionid);
 }
 
 /**
@@ -360,7 +361,7 @@ function question_delete_course($course, $feedback=true) {
 
     //Cache some strings
     $strcatdeleted = get_string('unusedcategorydeleted', 'quiz');
-    $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+    $coursecontext = context_course::instance($course->id);
     $categoriescourse = $DB->get_records('question_categories',
             array('contextid' => $coursecontext->id), 'parent', 'id, parent, name, contextid');
 
@@ -412,7 +413,7 @@ function question_delete_course($course, $feedback=true) {
 function question_delete_course_category($category, $newcategory, $feedback=true) {
     global $DB, $OUTPUT;
 
-    $context = get_context_instance(CONTEXT_COURSECAT, $category->id);
+    $context = context_coursecat::instance($category->id);
     if (empty($newcategory)) {
         $feedbackdata   = array(); // To store feedback to be showed at the end of the process
         $rescueqcategory = null; // See the code around the call to question_save_from_deletion.
@@ -469,7 +470,7 @@ function question_delete_course_category($category, $newcategory, $feedback=true
 
     } else {
         // Move question categories ot the new context.
-        if (!$newcontext = get_context_instance(CONTEXT_COURSECAT, $newcategory->id)) {
+        if (!$newcontext = context_coursecat::instance($newcategory->id)) {
             return false;
         }
         $DB->set_field('question_categories', 'contextid', $newcontext->id,
@@ -534,7 +535,7 @@ function question_delete_activity($cm, $feedback=true) {
 
     //Cache some strings
     $strcatdeleted = get_string('unusedcategorydeleted', 'quiz');
-    $modcontext = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $modcontext = context_module::instance($cm->id);
     if ($categoriesmods = $DB->get_records('question_categories',
             array('contextid' => $modcontext->id), 'parent', 'id, parent, name, contextid')) {
         //Sort categories following their tree (parent-child) relationships
@@ -607,6 +608,11 @@ function question_move_questions_to_category($questionids, $newcategoryid) {
 
     // TODO Deal with datasets.
 
+    // Purge these questions from the cache.
+    foreach ($questions as $question) {
+        question_bank::notify_question_edited($question->id);
+    }
+
     return true;
 }
 
@@ -626,6 +632,8 @@ function question_move_category_to_context($categoryid, $oldcontextid, $newconte
     foreach ($questionids as $questionid => $qtype) {
         question_bank::get_qtype($qtype)->move_files(
                 $questionid, $oldcontextid, $newcontextid);
+        // Purge this question from the cache.
+        question_bank::notify_question_edited($questionid);
     }
 
     $subcatids = $DB->get_records_menu('question_categories',
@@ -860,8 +868,11 @@ function question_hash($question) {
  * Saves question options
  *
  * Simply calls the question type specific save_question_options() method.
+ * @deprecated all code should now call the question type method directly.
  */
 function save_question_options($question) {
+    debugging('Please do not call save_question_options any more. Call the question type method directly.',
+            DEBUG_DEVELOPER);
     question_bank::get_qtype($question->qtype)->save_question_options($question);
 }
 
@@ -1361,7 +1372,7 @@ function question_has_capability_on($question, $cap, $cachecat = -1) {
         }
     }
     $category = $categories[$question->category];
-    $context = get_context_instance_by_id($category->contextid);
+    $context = context::instance_by_id($category->contextid);
 
     if (array_search($cap, $question_questioncaps)!== false) {
         if (!has_capability('moodle/question:' . $cap . 'all', $context)) {
@@ -1393,21 +1404,11 @@ function question_require_capability_on($question, $cap) {
  * Get the real state - the correct question id and answer - for a random
  * question.
  * @param object $state with property answer.
- * @return mixed return integer real question id or false if there was an
- * error..
+ * @deprecated this function has not been relevant since Moodle 2.1!
  */
 function question_get_real_state($state) {
-    global $OUTPUT;
-    $realstate = clone($state);
-    $matches = array();
-    if (!preg_match('|^random([0-9]+)-(.*)|', $state->answer, $matches)) {
-        echo $OUTPUT->notification(get_string('errorrandom', 'quiz_statistics'));
-        return false;
-    } else {
-        $realstate->question = $matches[1];
-        $realstate->answer = $matches[2];
-        return $realstate;
-    }
+    throw new coding_exception('question_get_real_state has not been relevant since Moodle 2.1. ' .
+            'I am not sure what you are trying to do, but stop it at once!');
 }
 
 /**
@@ -1697,14 +1698,16 @@ class question_edit_contexts {
 /**
  * Helps call file_rewrite_pluginfile_urls with the right parameters.
  *
+ * @package  core_question
+ * @category files
  * @param string $text text being processed
  * @param string $file the php script used to serve files
- * @param int $contextid
+ * @param int $contextid context ID
  * @param string $component component
  * @param string $filearea filearea
  * @param array $ids other IDs will be used to check file permission
- * @param int $itemid
- * @param array $options
+ * @param int $itemid item ID
+ * @param array $options options
  * @return string
  */
 function question_rewrite_question_urls($text, $file, $contextid, $component,
@@ -1745,8 +1748,9 @@ function question_rewrite_questiontext_preview_urls($questiontext, $contextid,
  * @param int $questionid the question id
  * @param array $args the remaining file arguments (file path).
  * @param bool $forcedownload whether the user must be forced to download the file.
+ * @param array $options additional options affecting the file serving
  */
-function question_send_questiontext_file($questionid, $args, $forcedownload) {
+function question_send_questiontext_file($questionid, $args, $forcedownload, $options) {
     global $DB;
 
     $question = $DB->get_record_sql('
@@ -1761,7 +1765,7 @@ function question_send_questiontext_file($questionid, $args, $forcedownload) {
         send_file_not_found();
     }
 
-    send_stored_file($file, 0, 0, $forcedownload);
+    send_stored_file($file, 0, 0, $forcedownload, $options);
 }
 
 /**
@@ -1777,14 +1781,17 @@ function question_send_questiontext_file($questionid, $args, $forcedownload) {
  *
  * Does not return, either calls send_file_not_found(); or serves the file.
  *
- * @param object $course course settings object
- * @param object $context context object
+ * @package  core_question
+ * @category files
+ * @param stdClass $course course settings object
+ * @param stdClass $context context object
  * @param string $component the name of the component we are serving files for.
  * @param string $filearea the name of the file area.
  * @param array $args the remaining bits of the file path.
  * @param bool $forcedownload whether the user must be forced to download the file.
+ * @param array $options additional options affecting the file serving
  */
-function question_pluginfile($course, $context, $component, $filearea, $args, $forcedownload) {
+function question_pluginfile($course, $context, $component, $filearea, $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
 
     if ($filearea === 'questiontext_preview') {
@@ -1792,7 +1799,7 @@ function question_pluginfile($course, $context, $component, $filearea, $args, $f
         $questionid = array_shift($args);
 
         component_callback($component, 'questiontext_preview_pluginfile', array(
-                $context, $questionid, $args, $forcedownload));
+                $context, $questionid, $args, $forcedownload, $options));
 
         send_file_not_found();
     }
@@ -1865,7 +1872,7 @@ function question_pluginfile($course, $context, $component, $filearea, $args, $f
     if ($module === 'core_question_preview') {
         require_once($CFG->dirroot . '/question/previewlib.php');
         return question_preview_question_pluginfile($course, $context,
-                $component, $filearea, $qubaid, $slot, $args, $forcedownload);
+                $component, $filearea, $qubaid, $slot, $args, $forcedownload, $options);
 
     } else {
         $dir = get_component_directory($module);
@@ -1875,12 +1882,19 @@ function question_pluginfile($course, $context, $component, $filearea, $args, $f
         include_once("$dir/lib.php");
 
         $filefunction = $module . '_question_pluginfile';
-        if (!function_exists($filefunction)) {
-            send_file_not_found();
+        if (function_exists($filefunction)) {
+            $filefunction($course, $context, $component, $filearea, $qubaid, $slot,
+                $args, $forcedownload, $options);
         }
 
-        $filefunction($course, $context, $component, $filearea, $qubaid, $slot,
-                $args, $forcedownload);
+        // Okay, we're here so lets check for function without 'mod_'.
+        if (strpos($module, 'mod_') === 0) {
+            $filefunctionold  = substr($module, 4) . '_question_pluginfile';
+            if (function_exists($filefunctionold)) {
+                $filefunctionold($course, $context, $component, $filearea, $qubaid, $slot,
+                    $args, $forcedownload, $options);
+            }
+        }
 
         send_file_not_found();
     }
@@ -1888,12 +1902,16 @@ function question_pluginfile($course, $context, $component, $filearea, $args, $f
 
 /**
  * Serve questiontext files in the question text when they are displayed in this report.
- * @param context $context the context
+ *
+ * @package  core_files
+ * @category files
+ * @param stdClass $context the context
  * @param int $questionid the question id
  * @param array $args remaining file args
  * @param bool $forcedownload
+ * @param array $options additional options affecting the file serving
  */
-function core_question_questiontext_preview_pluginfile($context, $questionid, $args, $forcedownload) {
+function core_question_questiontext_preview_pluginfile($context, $questionid, $args, $forcedownload, array $options=array()) {
     global $DB;
 
     // Verify that contextid matches the question.
@@ -1910,7 +1928,7 @@ function core_question_questiontext_preview_pluginfile($context, $questionid, $a
 
     question_require_capability_on($question, 'use');
 
-    question_send_questiontext_file($questionid, $args, $forcedownload);
+    question_send_questiontext_file($questionid, $args, $forcedownload, $options);
 }
 
 /**

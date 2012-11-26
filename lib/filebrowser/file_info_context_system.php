@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -19,8 +18,7 @@
 /**
  * Utility class for browsing of system files.
  *
- * @package    core
- * @subpackage filebrowser
+ * @package    core_files
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,25 +26,32 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Represents the system context in the tree navigated by @see{file_browser}.
+ * Represents the system context in the tree navigated by {@link file_browser}.
  *
- * @package    core
- * @subpackage filebrowser
+ * @package    core_files
  * @copyright  2008 Petr Skoda (http://skodak.org)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class file_info_context_system extends file_info {
+
+    /**
+     * Constructor
+     *
+     * @param file_browser $browser file_browser instance
+     * @param stdClass $context context object
+     */
     public function __construct($browser, $context) {
         parent::__construct($browser, $context);
     }
 
     /**
      * Return information about this specific part of context level
-     * @param $component
-     * @param $filearea
-     * @param $itemid
-     * @param $filepath
-     * @param $filename
+     *
+     * @param string $component component
+     * @param string $filearea file area
+     * @param int $itemid item ID
+     * @param string $filepath file path
+     * @param string $filename file name
      */
     public function get_file_info($component, $filearea, $itemid, $filepath, $filename) {
         if (empty($component)) {
@@ -59,6 +64,7 @@ class file_info_context_system extends file_info {
 
     /**
      * Returns localised visible name.
+     *
      * @return string
      */
     public function get_visible_name() {
@@ -66,7 +72,8 @@ class file_info_context_system extends file_info {
     }
 
     /**
-     * Can I add new files or directories?
+     * Whether or not new files or directories can be added
+     *
      * @return bool
      */
     public function is_writable() {
@@ -74,7 +81,8 @@ class file_info_context_system extends file_info {
     }
 
     /**
-     * Is directory?
+     * Whether or not this is a directory
+     *
      * @return bool
      */
     public function is_directory() {
@@ -83,6 +91,7 @@ class file_info_context_system extends file_info {
 
     /**
      * Returns list of children.
+     *
      * @return array of file_info instances
      */
     public function get_children() {
@@ -90,13 +99,9 @@ class file_info_context_system extends file_info {
 
         $children = array();
 
-        if ($child = $this->browser->get_file_info(get_context_instance(CONTEXT_USER, $USER->id))) {
-            $children[] = $child;
-        }
-
         $course_cats = $DB->get_records('course_categories', array('parent'=>0), 'sortorder', 'id,visible');
         foreach ($course_cats as $category) {
-            $context = get_context_instance(CONTEXT_COURSECAT, $category->id);
+            $context = context_coursecat::instance($category->id);
             if (!$category->visible and !has_capability('moodle/category:viewhiddencategories', $context)) {
                 continue;
             }
@@ -110,7 +115,7 @@ class file_info_context_system extends file_info {
             if (!$course->visible and !has_capability('moodle/course:viewhiddencourses', $context)) {
                 continue;
             }
-            $context = get_context_instance(CONTEXT_COURSE, $course->id);
+            $context = context_course::instance($course->id);
             if ($child = $this->browser->get_file_info($context)) {
                 $children[] = $child;
             }
@@ -121,7 +126,8 @@ class file_info_context_system extends file_info {
 
     /**
      * Returns parent file_info instance
-     * @return file_info or null for root
+     *
+     * @return file_info|null file_info instance or null for root
      */
     public function get_parent() {
         return null;

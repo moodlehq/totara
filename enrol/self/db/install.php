@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,8 +17,7 @@
 /**
  * Self enrol plugin installation script
  *
- * @package    enrol
- * @subpackage self
+ * @package    enrol_self
  * @copyright  2010 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -28,18 +26,4 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_enrol_self_install() {
     global $CFG, $DB;
 
-    // migrate welcome message
-    if (isset($CFG->sendcoursewelcomemessage)) {
-        set_config('sendcoursewelcomemessage', $CFG->sendcoursewelcomemessage, 'enrol_self'); // new course default
-        $DB->set_field('enrol', 'customint4', $CFG->sendcoursewelcomemessage, array('enrol'=>'self')); // each instance has different setting now
-        unset_config('sendcoursewelcomemessage');
-    }
-
-    // migrate long-time-no-see feature settings
-    if (isset($CFG->longtimenosee)) {
-        $nosee = $CFG->longtimenosee * 3600 * 24;
-        set_config('longtimenosee', $nosee, 'enrol_self');
-        $DB->set_field('enrol', 'customint2', $nosee, array('enrol'=>'self'));
-        unset_config('longtimenosee');
-    }
 }

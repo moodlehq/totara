@@ -16,13 +16,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to upload files
+ *
+ * @since 2.0
+ * @package    repository_upload
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+
+/**
  * A repository plugin to allow user uploading files
  *
  * @since 2.0
- * @package    repository
- * @subpackage upload
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_upload
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -42,9 +50,36 @@ class repository_upload extends repository {
      * @return array|bool
      */
     public function upload($saveas_filename, $maxbytes) {
-        global $USER, $CFG;
+        global $CFG;
 
         $types = optional_param_array('accepted_types', '*', PARAM_RAW);
+        $savepath = optional_param('savepath', '/', PARAM_PATH);
+        $itemid   = optional_param('itemid', 0, PARAM_INT);
+        $license  = optional_param('license', $CFG->sitedefaultlicense, PARAM_TEXT);
+        $author   = optional_param('author', '', PARAM_TEXT);
+        $areamaxbytes = optional_param('areamaxbytes', FILE_AREA_MAX_BYTES_UNLIMITED, PARAM_INT);
+        $overwriteexisting = optional_param('overwrite', false, PARAM_BOOL);
+
+        return $this->process_upload($saveas_filename, $maxbytes, $types, $savepath, $itemid, $license, $author, $overwriteexisting, $areamaxbytes);
+    }
+
+    /**
+     * Do the actual processing of the uploaded file
+     * @param string $saveas_filename name to give to the file
+     * @param int $maxbytes maximum file size
+     * @param mixed $types optional array of file extensions that are allowed or '*' for all
+     * @param string $savepath optional path to save the file to
+     * @param int $itemid optional the ID for this item within the file area
+     * @param string $license optional the license to use for this file
+     * @param string $author optional the name of the author of this file
+     * @param bool $overwriteexisting optional user has asked to overwrite the existing file
+     * @param int $areamaxbytes maximum size of the file area.
+     * @return object containing details of the file uploaded
+     */
+    public function process_upload($saveas_filename, $maxbytes, $types = '*', $savepath = '/', $itemid = 0,
+            $license = null, $author = '', $overwriteexisting = false, $areamaxbytes = FILE_AREA_MAX_BYTES_UNLIMITED) {
+        global $USER, $CFG;
+
         if ((is_array($types) and in_array('*', $types)) or $types == '*') {
             $this->mimetypes = '*';
         } else {
@@ -53,15 +88,19 @@ class repository_upload extends repository {
             }
         }
 
+        if ($license == null) {
+            $license = $CFG->sitedefaultlicense;
+        }
+
         $record = new stdClass();
         $record->filearea = 'draft';
         $record->component = 'user';
-        $record->filepath = optional_param('savepath', '/', PARAM_PATH);
-        $record->itemid   = optional_param('itemid', 0, PARAM_INT);
-        $record->license  = optional_param('license', $CFG->sitedefaultlicense, PARAM_TEXT);
-        $record->author   = optional_param('author', '', PARAM_TEXT);
+        $record->filepath = $savepath;
+        $record->itemid   = $itemid;
+        $record->license  = $license;
+        $record->author   = $author;
 
-        $context = get_context_instance(CONTEXT_USER, $USER->id);
+        $context = context_user::instance($USER->id);
         $elname = 'repo_upload_file';
 
         $fs = get_file_storage();
@@ -109,34 +148,46 @@ class repository_upload extends repository {
         self::antivir_scan_file($_FILES[$elname]['tmp_name'], $_FILES[$elname]['name'], true);
         @chmod($_FILES[$elname]['tmp_name'], $permissions);
 
+        // {@link repository::build_source_field()}
+        $sourcefield = $this->get_file_source_info($_FILES[$elname]['name']);
+        $record->source = self::build_source_field($sourcefield);
+
         if (empty($saveas_filename)) {
             $record->filename = clean_param($_FILES[$elname]['name'], PARAM_FILE);
         } else {
             $ext = '';
             $match = array();
             $filename = clean_param($_FILES[$elname]['name'], PARAM_FILE);
-            if (preg_match('/\.([a-z0-9]+)$/i', $filename, $match)) {
-                if (isset($match[1])) {
-                    $ext = $match[1];
-                }
-            }
-            $ext = !empty($ext) ? $ext : '';
-            if (preg_match('#\.(' . $ext . ')$#i', $saveas_filename)) {
-                // saveas filename contains file extension already
+            if (strpos($filename, '.') === false) {
+                // File has no extension at all - do not add a dot.
                 $record->filename = $saveas_filename;
             } else {
-                $record->filename = $saveas_filename . '.' . $ext;
+                if (preg_match('/\.([a-z0-9]+)$/i', $filename, $match)) {
+                    if (isset($match[1])) {
+                        $ext = $match[1];
+                    }
+                }
+                $ext = !empty($ext) ? $ext : '';
+                if (preg_match('#\.(' . $ext . ')$#i', $saveas_filename)) {
+                    // saveas filename contains file extension already
+                    $record->filename = $saveas_filename;
+                } else {
+                    $record->filename = $saveas_filename . '.' . $ext;
+                }
             }
+        }
+
+        // Check the file has some non-null contents - usually an indication that a user has
+        // tried to upload a folder by mistake
+        if (!$this->check_valid_contents($_FILES[$elname]['tmp_name'])) {
+            throw new moodle_exception('upload_error_invalid_file', 'repository_upload', '', $record->filename);
         }
 
         if ($this->mimetypes != '*') {
             // check filetype
-            $filemimetype = mimeinfo('type', $_FILES[$elname]['name']);
+            $filemimetype = file_storage::mimetype($_FILES[$elname]['tmp_name'], $record->filename);
             if (!in_array($filemimetype, $this->mimetypes)) {
-                if ($sm->string_exists($filemimetype, 'mimetypes')) {
-                    $filemimetype = get_string($filemimetype, 'mimetypes');
-                }
-                throw new moodle_exception('invalidfiletype', 'repository', '', $filemimetype);
+                throw new moodle_exception('invalidfiletype', 'repository', '', get_mimetype_description(array('filename' => $_FILES[$elname]['name'])));
             }
         }
 
@@ -144,45 +195,79 @@ class repository_upload extends repository {
             $record->itemid = 0;
         }
 
+        if (file_is_draft_area_limit_reached($record->itemid, $areamaxbytes, filesize($_FILES[$elname]['tmp_name']))) {
+            throw new file_exception('maxareabytes');
+        }
+
         if (($maxbytes!==-1) && (filesize($_FILES[$elname]['tmp_name']) > $maxbytes)) {
             throw new file_exception('maxbytes');
         }
         $record->contextid = $context->id;
         $record->userid    = $USER->id;
-        $record->source    = '';
 
         if (repository::draftfile_exists($record->itemid, $record->filepath, $record->filename)) {
-            $existingfilename = $record->filename;
-            $unused_filename = repository::get_unused_filename($record->itemid, $record->filepath, $record->filename);
-            $record->filename = $unused_filename;
-            $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
-            $event = array();
-            $event['event'] = 'fileexists';
-            $event['newfile'] = new stdClass;
-            $event['newfile']->filepath = $record->filepath;
-            $event['newfile']->filename = $unused_filename;
-            $event['newfile']->url = moodle_url::make_draftfile_url($record->itemid, $record->filepath, $unused_filename)->out();
+            if ($overwriteexisting) {
+                repository::delete_tempfile_from_draft($record->itemid, $record->filepath, $record->filename);
+            } else {
+                $existingfilename = $record->filename;
+                $unused_filename = repository::get_unused_filename($record->itemid, $record->filepath, $record->filename);
+                $record->filename = $unused_filename;
+                $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
+                $event = array();
+                $event['event'] = 'fileexists';
+                $event['newfile'] = new stdClass;
+                $event['newfile']->filepath = $record->filepath;
+                $event['newfile']->filename = $unused_filename;
+                $event['newfile']->url = moodle_url::make_draftfile_url($record->itemid, $record->filepath, $unused_filename)->out(false);
 
-            $event['existingfile'] = new stdClass;
-            $event['existingfile']->filepath = $record->filepath;
-            $event['existingfile']->filename = $existingfilename;
-            $event['existingfile']->url      = moodle_url::make_draftfile_url($record->itemid, $record->filepath, $existingfilename)->out();;
-            return $event;
-        } else {
-            $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
-
-            return array(
-                'url'=>moodle_url::make_draftfile_url($record->itemid, $record->filepath, $record->filename)->out(),
-                'id'=>$record->itemid,
-                'file'=>$record->filename);
+                $event['existingfile'] = new stdClass;
+                $event['existingfile']->filepath = $record->filepath;
+                $event['existingfile']->filename = $existingfilename;
+                $event['existingfile']->url      = moodle_url::make_draftfile_url($record->itemid, $record->filepath, $existingfilename)->out(false);
+                return $event;
+            }
         }
+
+        $stored_file = $fs->create_file_from_pathname($record, $_FILES[$elname]['tmp_name']);
+
+        return array(
+            'url'=>moodle_url::make_draftfile_url($record->itemid, $record->filepath, $record->filename)->out(false),
+            'id'=>$record->itemid,
+            'file'=>$record->filename);
+    }
+
+
+    /**
+     * Checks the contents of the given file is not completely NULL - this can happen if a
+     * user drags & drops a folder onto a filemanager / filepicker element
+     * @param string $filepath full path (including filename) to file to check
+     * @return true if file has at least one non-null byte within it
+     */
+    protected function check_valid_contents($filepath) {
+        $buffersize = 4096;
+
+        $fp = fopen($filepath, 'r');
+        if (!$fp) {
+            return false; // Cannot read the file - something has gone wrong
+        }
+        while (!feof($fp)) {
+            // Read the file 4k at a time
+            $data = fread($fp, $buffersize);
+            if (preg_match('/[^\0]+/', $data)) {
+                fclose($fp);
+                return true; // Return as soon as a non-null byte is found
+            }
+        }
+        // Entire file is NULL
+        fclose($fp);
+        return false;
     }
 
     /**
      * Return a upload form
      * @return array
      */
-    public function get_listing() {
+    public function get_listing($path = '', $page = '') {
         global $CFG;
         $ret = array();
         $ret['nologin']  = true;
@@ -191,6 +276,7 @@ class repository_upload extends repository {
         $ret['list'] = array();
         $ret['dynload'] = false;
         $ret['upload'] = array('label'=>get_string('attachment', 'repository'), 'id'=>'repo-form');
+        $ret['allowcaching'] = true; // indicates that result of get_listing() can be cached in filepicker.js
         return $ret;
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,9 +17,9 @@
 /**
  * A page displaying the user's contacts and messages
  *
- * @package   moodlecore
- * @copyright 2010 Andrew Davis
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    core_message
+ * @copyright  2010 Andrew Davis
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once('../config.php');
@@ -83,14 +82,14 @@ $url->param('viewing', $viewing);
 
 $PAGE->set_url($url);
 
-$PAGE->set_context(get_context_instance(CONTEXT_USER, $USER->id));
+$PAGE->set_context(context_user::instance($USER->id));
 $PAGE->navigation->extend_for_user($USER);
 $PAGE->set_pagelayout('course');
 
 // Disable message notification popups while the user is viewing their messages
 $PAGE->set_popup_notification_allowed(false);
 
-$context = get_context_instance(CONTEXT_SYSTEM);
+$context = context_system::instance();
 
 $user1 = null;
 $currentuser = true;

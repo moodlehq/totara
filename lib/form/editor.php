@@ -1,4 +1,29 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+
+/**
+ * Editor input element
+ *
+ * Contains class to create preffered editor form element
+ *
+ * @package   core_form
+ * @copyright 2009 Petr Skoda {@link http://skodak.org}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 global $CFG;
 
@@ -6,19 +31,43 @@ require_once('HTML/QuickForm/element.php');
 require_once($CFG->dirroot.'/lib/filelib.php');
 require_once($CFG->dirroot.'/repository/lib.php');
 
-//TODO:
-//  * locking
-//  * freezing
-//  * ajax format conversion
-
+/**
+ * Editor element
+ *
+ * It creates preffered editor (textbox/TinyMce) form element for the format (Text/HTML) selected.
+ *
+ * @package   core_form
+ * @category  form
+ * @copyright 2009 Petr Skoda {@link http://skodak.org}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @todo      MDL-29421 element Freezing
+ * @todo      MDL-29426 ajax format conversion
+ */
 class MoodleQuickForm_editor extends HTML_QuickForm_element {
+    /** @var string html for help button, if empty then no help will icon will be dispalyed. */
     public $_helpbutton = '';
 
+    /** @var string defines the type of editor */
     public $_type       = 'editor';
-    protected $_options    = array('subdirs'=>0, 'maxbytes'=>0, 'maxfiles'=>0, 'changeformat'=>0,
-                                   'context'=>null, 'noclean'=>0, 'trusttext'=>0);
+
+    /** @var array options provided to initalize filepicker */
+    protected $_options = array('subdirs' => 0, 'maxbytes' => 0, 'maxfiles' => 0, 'changeformat' => 0,
+            'areamaxbytes' => FILE_AREA_MAX_BYTES_UNLIMITED, 'context' => null, 'noclean' => 0, 'trusttext' => 0,
+            'return_types' => 7);
+    // $_options['return_types'] = FILE_INTERNAL | FILE_EXTERNAL | FILE_REFERENCE
+
+    /** @var array values for editor */
     protected $_values     = array('text'=>null, 'format'=>null, 'itemid'=>null);
 
+    /**
+     * Constructor
+     *
+     * @param string $elementName (optional) name of the editor
+     * @param string $elementLabel (optional) editor label
+     * @param array $attributes (optional) Either a typical HTML attribute string
+     *              or an associative array
+     * @param array $options set of options to initalize filepicker
+     */
     function MoodleQuickForm_editor($elementName=null, $elementLabel=null, $attributes=null, $options=null) {
         global $CFG, $PAGE;
 
@@ -45,14 +94,29 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         editors_head_setup();
     }
 
+    /**
+     * Sets name of editor
+     *
+     * @param string $name name of the editor
+     */
     function setName($name) {
         $this->updateAttributes(array('name'=>$name));
     }
 
+    /**
+     * Returns name of element
+     *
+     * @return string
+     */
     function getName() {
         return $this->getAttribute('name');
     }
 
+    /**
+     * Updates editor values, if part of $_values
+     *
+     * @param array $values associative array of values to set
+     */
     function setValue($values) {
         $values = (array)$values;
         foreach ($values as $name=>$value) {
@@ -62,31 +126,84 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         }
     }
 
+    /**
+     * Returns editor values
+     *
+     * @return array
+     */
     function getValue() {
         return $this->_values;
     }
 
+    /**
+     * Returns maximum file size which can be uploaded
+     *
+     * @return int
+     */
     function getMaxbytes() {
         return $this->_options['maxbytes'];
     }
 
+    /**
+     * Sets maximum file size which can be uploaded
+     *
+     * @param int $maxbytes file size
+     */
     function setMaxbytes($maxbytes) {
         global $CFG;
         $this->_options['maxbytes'] = get_max_upload_file_size($CFG->maxbytes, $maxbytes);
     }
 
+     /**
+     * Returns the maximum size of the area.
+     *
+     * @return int
+     */
+    function getAreamaxbytes() {
+        return $this->_options['areamaxbytes'];
+    }
+
+    /**
+     * Sets the maximum size of the area.
+     *
+     * @param int $areamaxbytes size limit
+     */
+    function setAreamaxbytes($areamaxbytes) {
+        $this->_options['areamaxbytes'] = $areamaxbytes;
+    }
+
+    /**
+     * Returns maximum number of files which can be uploaded
+     *
+     * @return int
+     */
     function getMaxfiles() {
         return $this->_options['maxfiles'];
     }
 
+    /**
+     * Sets maximum number of files which can be uploaded.
+     *
+     * @param int $num number of files
+     */
     function setMaxfiles($num) {
         $this->_options['maxfiles'] = $num;
     }
 
+    /**
+     * Returns true if subdirectoy can be created, else false
+     *
+     * @return bool
+     */
     function getSubdirs() {
         return $this->_options['subdirs'];
     }
 
+    /**
+     * Set option to create sub directory, while uploading  file
+     *
+     * @param bool $allow true if sub directory can be created.
+     */
     function setSubdirs($allow) {
         $this->_options['subdirs'] = $allow;
     }
@@ -101,15 +218,25 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
     }
 
     /**
-     * Checks if editor used is tinymce and is required field
+     * Checks if editor used is a required field
      *
-     * @return true if required field.
+     * @return bool true if required field.
      */
     function isRequired() {
         return (isset($this->_options['required']) && $this->_options['required']);
     }
 
+    /**
+     * Sets help button for editor
+     *
+     * @param mixed $_helpbuttonargs arguments to create help button
+     * @param string $function name of the callback function
+     * @deprecated since Moodle 2.0. Please do not call this function any more.
+     * @todo MDL-34508 this api will be removed.
+     * @see MoodleQuickForm::addHelpButton()
+     */
     function setHelpButton($_helpbuttonargs, $function='_helpbutton') {
+        debugging('setHelpButton() is deprecated, please use $mform->addHelpButton() instead');
         if (!is_array($_helpbuttonargs)) {
             $_helpbuttonargs = array($_helpbuttonargs);
         } else {
@@ -124,10 +251,20 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         $this->_helpbutton=call_user_func_array($function, $_helpbuttonargs);
     }
 
+    /**
+     * Returns html for help button.
+     *
+     * @return string html for help button
+     */
     function getHelpButton() {
         return $this->_helpbutton;
     }
 
+    /**
+     * Returns type of editor element
+     *
+     * @return string
+     */
     function getElementTemplateType() {
         if ($this->_flagFrozen){
             return 'nodisplay';
@@ -136,6 +273,11 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         }
     }
 
+    /**
+     * Returns HTML for editor form element.
+     *
+     * @return string
+     */
     function toHtml() {
         global $CFG, $PAGE;
         require_once($CFG->dirroot.'/repository/lib.php');
@@ -151,6 +293,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
 
         $subdirs      = $this->_options['subdirs'];
         $maxbytes     = $this->_options['maxbytes'];
+        $areamaxbytes = $this->_options['areamaxbytes'];
         $maxfiles     = $this->_options['maxfiles'];
         $changeformat = $this->_options['changeformat']; // TO DO: implement as ajax calls
 
@@ -186,8 +329,8 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
 
             $args = new stdClass();
             // need these three to filter repositories list
-            $args->accepted_types = array('image');
-            $args->return_types = (FILE_INTERNAL | FILE_EXTERNAL);
+            $args->accepted_types = array('web_image');
+            $args->return_types = $this->_options['return_types'];
             $args->context = $ctx;
             $args->env = 'filepicker';
             // advimage plugin
@@ -195,6 +338,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
             $image_options->context = $ctx;
             $image_options->client_id = uniqid();
             $image_options->maxbytes = $this->_options['maxbytes'];
+            $image_options->areamaxbytes = $this->_options['areamaxbytes'];
             $image_options->env = 'editor';
             $image_options->itemid = $draftitemid;
 
@@ -204,6 +348,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
             $media_options->context = $ctx;
             $media_options->client_id = uniqid();
             $media_options->maxbytes  = $this->_options['maxbytes'];
+            $media_options->areamaxbytes  = $this->_options['areamaxbytes'];
             $media_options->env = 'editor';
             $media_options->itemid = $draftitemid;
 
@@ -213,6 +358,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
             $link_options->context = $ctx;
             $link_options->client_id = uniqid();
             $link_options->maxbytes  = $this->_options['maxbytes'];
+            $link_options->areamaxbytes  = $this->_options['areamaxbytes'];
             $link_options->env = 'editor';
             $link_options->itemid = $draftitemid;
 
@@ -226,7 +372,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
             $this->_options['required'] = true;
         }
 
-    /// print text area - TODO: add on-the-fly switching, size configuration, etc.
+        // print text area - TODO: add on-the-fly switching, size configuration, etc.
         $editor->use_editor($id, $this->_options, $fpoptions);
 
         $rows = empty($this->_attributes['rows']) ? 15 : $this->_attributes['rows'];
@@ -246,8 +392,9 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
             $str .= html_writer::label(get_string('format'), 'menu'. $elname. 'format', false, array('class' => 'accesshide'));
             $str .= html_writer::select($formats, $elname.'[format]', $format, false, array('id' => 'menu'. $elname. 'format'));
         } else {
+            $keys = array_keys($formats);
             $str .= html_writer::empty_tag('input',
-                    array('name'=>$elname.'[format]', 'type'=> 'hidden', 'value' => array_pop(array_keys($formats))));
+                    array('name'=>$elname.'[format]', 'type'=> 'hidden', 'value' => array_pop($keys)));
         }
         $str .= '</div>';
 
@@ -265,6 +412,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
                     'itemid'=>$draftitemid,
                     'subdirs'=>$subdirs,
                     'maxbytes'=>$maxbytes,
+                    'areamaxbytes' => $areamaxbytes,
                     'maxfiles'=>$maxfiles,
                     'ctx_id'=>$ctx->id,
                     'course'=>$PAGE->course->id,
@@ -282,7 +430,7 @@ class MoodleQuickForm_editor extends HTML_QuickForm_element {
         return $str;
     }
 
-     /**
+    /**
      * What to display when element is frozen.
      *
      * @return empty string

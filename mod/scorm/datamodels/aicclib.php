@@ -117,11 +117,11 @@ function scorm_parse_aicc($scorm) {
         $cm = get_coursemodule_from_instance('scorm', $scorm->id);
         $scorm->cmid = $cm->id;
     }
-    $context = get_context_instance(CONTEXT_MODULE, $scorm->cmid);
+    $context = context_module::instance($scorm->cmid);
 
     $fs = get_file_storage();
 
-    $files = $fs->get_area_files($context->id, 'mod_scorm', 'content', 0, '', false);
+    $files = $fs->get_area_files($context->id, 'mod_scorm', 'content', 0, 'sortorder, itemid, filepath, filename', false);
 
     $version = 'AICC';
     $ids = array();

@@ -24,6 +24,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['addedby'] = 'Added by {$a}';
 $string['addgroup'] = 'Add user into group';
 $string['addgroupstogrouping'] = 'Add group to grouping';
 $string['addgroupstogroupings'] = 'Add/remove groups';
@@ -62,6 +63,7 @@ $string['erroraddremoveuser'] = 'Error adding/removing user {$a} to group';
 $string['erroreditgroup'] = 'Error creating/updating group {$a}';
 $string['erroreditgrouping'] = 'Error creating/updating grouping {$a}';
 $string['errorinvalidgroup'] = 'Error, invalid group {$a}';
+$string['errorremovenotpermitted'] = 'You do not have permission to remove automatically-added group member {$a}';
 $string['errorselectone'] = 'Please select a single group before choosing this option';
 $string['errorselectsome'] = 'Please select one or more groups before choosing this option';
 $string['evenallocation'] = 'Note: To keep group allocation even, the actual number of members per group differs from the number you specified.';
@@ -76,6 +78,8 @@ $string['groupinfomembers'] = 'Info about selected members';
 $string['groupinfopeople'] = 'Info about selected people';
 $string['grouping'] = 'Grouping';
 $string['grouping_help'] = 'A grouping is a collection of groups within a course. If a grouping is selected, students assigned to groups within the grouping will be able to work together.';
+$string['groupingsection'] = 'Grouping access';
+$string['groupingsection_help'] = 'A grouping is a collection of groups within a course. If a grouping is selected here, only students assigned to groups within this grouping will have access to the section.';
 $string['groupingdescription'] = 'Grouping description';
 $string['groupingname'] = 'Grouping name';
 $string['groupingnameexists'] = 'The grouping name \'{$a}\' already exists in this course, please choose another one.';

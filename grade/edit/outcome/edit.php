@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,7 +17,7 @@
 /**
  * Edit page for grade outcomes.
  *
- * @package   moodlecore
+ * @package   core_grades
  * @copyright 2008 Nicolas Connault
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -41,7 +40,7 @@ if ($id !== 0) {
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('admin');
 
-$systemcontext = get_context_instance(CONTEXT_SYSTEM);
+$systemcontext = context_system::instance();
 $heading = null;
 
 // a bit complex access control :-O
@@ -58,7 +57,7 @@ if ($id) {
             print_error('invalidcourseid');
         }
         require_login($course);
-        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $context = context_course::instance($course->id);
         require_capability('moodle/grade:manage', $context);
         $courseid = $course->id;
     } else {
@@ -78,7 +77,7 @@ if ($id) {
     /// adding new outcome from course
     $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
     require_login($course);
-    $context = get_context_instance(CONTEXT_COURSE, $course->id);
+    $context = context_course::instance($course->id);
     require_capability('moodle/grade:manage', $context);
     navigation_node::override_active_url(new moodle_url('/grade/edit/outcome/course.php', array('id'=>$courseid)));
 

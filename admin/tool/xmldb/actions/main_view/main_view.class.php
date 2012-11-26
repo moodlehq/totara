@@ -15,8 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package    tool
- * @subpackage xmldb
+ * @package    tool_xmldb
  * @copyright  2003 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,8 +26,7 @@
  * From here, files can be created, edited, saved and deleted, plus some
  * extra utilities like displaying docs, xml info and performing various consistency tests
  *
- * @package    tool
- * @subpackage xmldb
+ * @package    tool_xmldb
  * @copyright  2003 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -60,6 +58,7 @@ class main_view extends XMLDBAction {
             'checkbigints' => 'tool_xmldb',
             'checkoraclesemantics' => 'tool_xmldb',
             'doc' => 'tool_xmldb',
+            'filemodifiedoutfromeditor' => 'tool_xmldb',
             'viewxml' => 'tool_xmldb',
             'pendingchangescannotbesavedreload' => 'tool_xmldb'
         ));
@@ -134,9 +133,9 @@ class main_view extends XMLDBAction {
                 if (!isset($dbdir->has_changed) && isset($dbdir->xml_loaded)) {
                     $dbdir->xml_changed = false;
                     if (isset($XMLDB->editeddirs[$key])) {
-                        $editeddir =& $XMLDB->editeddirs[$key];
+                        $editeddir = $XMLDB->editeddirs[$key];
                         if (isset($editeddir->xml_file)) {
-                            $structure =& $editeddir->xml_file->getStructure();
+                            $structure = $editeddir->xml_file->getStructure();
                             if ($structure->hasChanged()) {
                                 $dbdir->xml_changed = true;
                                 $editeddir->xml_changed = true;
@@ -196,10 +195,8 @@ class main_view extends XMLDBAction {
                     $b .= '<a href="index.php?action=save_xml_file&amp;sesskey=' . sesskey() . '&amp;dir=' . urlencode(str_replace($CFG->dirroot, '', $key)) . '&amp;time=' . time() . '&amp;postaction=main_view#lastused">[' . $this->str['save'] . ']</a>';
                     // Check if the file has been manually edited while being modified in the editor
                     if ($dbdir->filemtime != filemtime($key . '/install.xml')) {
-                        // File manually modified. Add to errors.
-                        if ($structure =& $dbdir->xml_file->getStructure()) {
-                            $structure->errormsg = 'Warning: File locally modified while using the XMLDB Editor. Saving will overwrite local changes';
-                        }
+                        // File manually modified. Add to action error, will be displayed inline.
+                        $this->errormsg = $this->str['filemodifiedoutfromeditor'];
                     }
                 } else {
                     $b .= '[' . $this->str['save'] . ']';
@@ -267,46 +264,17 @@ class main_view extends XMLDBAction {
                 $row = ($row + 1) % 2;
                 // show errors if they exist
                 if (isset($dbdir->xml_file)) {
-                    if ($structure =& $dbdir->xml_file->getStructure()) {
-                        if ($errors = $structure->getAllErrors()) {
+                    if ($structure = $dbdir->xml_file->getStructure()) {
+                        $errors = !empty($this->errormsg) ? array($this->errormsg) : array();
+                        $structureerrors = $structure->getAllErrors();
+                        if ($structureerrors) {
+                            $errors = array_merge($errors, $structureerrors);
+                        }
+                        if (!empty($errors)) {
                             if ($hithis) {
                                 $o .= '<tr class="highlight"><td class="error cell" colspan="10">' . implode (', ', $errors) . '</td></tr>';
                             } else {
                                 $o .= '<tr class="r' . $row . '"><td class="error cell" colspan="10">' . implode (', ', $errors) . '</td></tr>';
-                            }
-                        }
-                    }
-                }
-                // TODO: Drop this check in Moodle 2.1
-                // Intercept loaded structure here and look for ENUM fields
-                if (isset($dbdir->xml_file)) {
-                    if ($structure =& $dbdir->xml_file->getStructure()) {
-                        if ($tables = $structure->getTables()) {
-                            foreach ($tables as $table) {
-                                if ($fields = $table->getFields()) {
-                                    foreach ($fields as $field) {
-                                        if (!empty($field->hasenums)) {
-                                            if ($hithis) {
-                                                $o .= '<tr class="highlight"><td class="error cell" colspan="10">';
-                                            } else {
-                                                $o .= '<tr class="r' . $row . '"><td class="error cell" colspan="10">';
-                                            }
-                                            $o .= 'Table ' . $table->getName() . ', field ' . $field->getName() . ' has ENUM info';
-                                            if (!empty($field->hasenumsenabled)) {
-                                                $o .= ' that seems to be active (true). ENUMs support has been dropped in Moodle 2.0, '  .
-                                                      ' the XMLDB Editor will delete any ENUM reference next time you save this file' .
-                                                      ' and you MUST provide  one upgrade block in your code to drop them from DB. See' .
-                                                      ' <a href="http://docs.moodle.org/dev/DB_layer_2.0_migration_docs#The_changes">' .
-                                                      ' Moodle Docs</a> for more info and examples.';
-                                            } else {
-                                                $o .= ' that seem to be inactive (false). ENUMs support has been dropped in Moodle 2.0,' .
-                                                      ' the XMLDB Editor will, simply, delete any ENUM reference next time you save this file.' .
-                                                      ' No further action is necessary.';
-                                            }
-                                            $o .= '</td></tr>';
-                                        }
-                                    }
-                                }
                             }
                         }
                     }

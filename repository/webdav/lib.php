@@ -16,18 +16,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * This plugin is used to access webdav files
+ *
+ * @since 2.0
+ * @package    repository_webdav
+ * @copyright  2010 Dongsheng Cai {@link http://dongsheng.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+require_once($CFG->dirroot . '/repository/lib.php');
+require_once($CFG->libdir.'/webdavlib.php');
+
+/**
  * repository_webdav class
  *
  * @since 2.0
- * @package    repository
- * @subpackage webdav
- * @copyright  2009 Dongsheng Cai
- * @author     Dongsheng Cai <dongsheng@moodle.com>
+ * @package    repository_webdav
+ * @copyright  2009 Dongsheng Cai {@link http://dongsheng.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once($CFG->libdir.'/webdavlib.php');
-
 class repository_webdav extends repository {
     public function __construct($repositoryid, $context = SYSCONTEXTID, $options = array()) {
         parent::__construct($repositoryid, $context, $options);
@@ -64,7 +70,7 @@ class repository_webdav extends repository {
     public function check_login() {
         return true;
     }
-    public function get_file($url, $title) {
+    public function get_file($url, $title = '') {
         global $CFG;
         $url = urldecode($url);
         $path = $this->prepare_file($title);
@@ -72,7 +78,8 @@ class repository_webdav extends repository {
         if (!$this->dav->open()) {
             return false;
         }
-        $this->dav->get($url, $buffer);
+        $webdavpath = rtrim('/'.ltrim($this->options['webdav_path'], '/ '), '/ '); // without slash in the end
+        $this->dav->get($webdavpath. $url, $buffer);
         $fp = fopen($path, 'wb');
         fwrite($fp, $buffer);
         return array('path'=>$path);
@@ -87,91 +94,59 @@ class repository_webdav extends repository {
         $ret['dynload'] = true;
         $ret['nosearch'] = true;
         $ret['nologin'] = true;
-        $ret['path'] = array(array('name'=>get_string('webdav', 'repository_webdav'), 'path'=>0));
+        $ret['path'] = array(array('name'=>get_string('webdav', 'repository_webdav'), 'path'=>''));
         $ret['list'] = array();
         if (!$this->dav->open()) {
             return $ret;
         }
-
-        $webdavroot = '/' . trim($this->options['webdav_path'], './@#$ ');
-        if ($webdavroot != '/') {
-            $webdavroot .= '/';
-        }
-
-        if (empty($path)) {
-            $path = $webdavroot;
-            $dir = $this->dav->ls($path);
+        $webdavpath = rtrim('/'.ltrim($this->options['webdav_path'], '/ '), '/ '); // without slash in the end
+        if (empty($path) || $path =='/') {
+            $path = '/';
         } else {
-            $path = urldecode($path);
-            if (empty($this->webdav_type)) {
-                $partern = '#http://'.$this->webdav_host.'/#';
-            } else {
-                $partern = '#https://'.$this->webdav_host.'/#';
-            }
-            $path = '/'.preg_replace($partern, '', ltrim($path, '/'));
-            $dir = $this->dav->ls($path);
-        }
-
-        // Building breadcrumb
-        $pathrel = preg_replace('|^' . preg_quote($webdavroot) . '|', '', $path);
-        if (!empty($pathrel)) {
-            $chunks = preg_split('|/|', trim($pathrel, '/'));
+            $chunks = preg_split('|/|', trim($path, '/'));
             for ($i = 0; $i < count($chunks); $i++) {
                 $ret['path'][] = array(
                     'name' => urldecode($chunks[$i]),
-                    'path' => $webdavroot . join('/', array_slice($chunks, 0, $i+1)). '/'
+                    'path' => '/'. join('/', array_slice($chunks, 0, $i+1)). '/'
                 );
             }
         }
-
+        $dir = $this->dav->ls($webdavpath. urldecode($path));
         if (!is_array($dir)) {
             return $ret;
         }
-
-        $files = array();
         $folders = array();
+        $files = array();
         foreach ($dir as $v) {
-            if (!empty($v['creationdate'])) {
-                $ts = $this->dav->iso8601totime($v['creationdate']);
-                $filedate = userdate($ts);
+            if (!empty($v['lastmodified'])) {
+                $v['lastmodified'] = strtotime($v['lastmodified']);
             } else {
-                $filedate = '';
+                $v['lastmodified'] = null;
             }
+
+            // Extracting object title from absolute path
+            $v['href'] = substr(urldecode($v['href']), strlen($webdavpath));
+            $title = substr($v['href'], strlen($path));
 
             if (!empty($v['resourcetype']) && $v['resourcetype'] == 'collection') {
                 // a folder
-                if (ltrim($path, '/') != urldecode(ltrim($v['href'], '/'))) {
-                    $matches = array();
-                    preg_match('#(\w+)$#i', $v['href'], $matches);
-                    if (!empty($matches[1])) {
-                        $title = urldecode($matches[1]);
-                    } else {
-                        $title = urldecode($v['href']);
-                    }
+                if ($path != $v['href']) {
                     $folders[strtoupper($title)] = array(
-                        'title'=>urldecode(basename($title)),
-                        'thumbnail'=>$OUTPUT->pix_url('f/folder-32')->out(false),
+                        'title'=>rtrim($title, '/'),
+                        'thumbnail'=>$OUTPUT->pix_url(file_folder_icon(90))->out(false),
                         'children'=>array(),
-                        'date'=>$filedate,
-                        'size'=>0,
+                        'datemodified'=>$v['lastmodified'],
                         'path'=>$v['href']
                     );
                 }
-            } else {
-                // A file.
-                $path = rtrim($path,'/');
-                if (empty($path)) {
-                    $title = urldecode($v['href']);
-                } else {
-                    $title = urldecode(substr($v['href'], strpos($v['href'], $path) + strlen($path)));
-                }
-                $title = basename($title);
+            }else{
+                // a file
                 $size = !empty($v['getcontentlength'])? $v['getcontentlength']:'';
                 $files[strtoupper($title)] = array(
                     'title'=>$title,
-                    'thumbnail' => $OUTPUT->pix_url(file_extension_icon($title, 32))->out(false),
+                    'thumbnail' => $OUTPUT->pix_url(file_extension_icon($title, 90))->out(false),
                     'size'=>$size,
-                    'date'=>$filedate,
+                    'datemodified'=>$v['lastmodified'],
                     'source'=>$v['href']
                 );
             }
@@ -185,7 +160,7 @@ class repository_webdav extends repository {
         return array('webdav_type', 'webdav_server', 'webdav_port', 'webdav_path', 'webdav_user', 'webdav_password', 'webdav_auth');
     }
 
-    public function instance_config_form($mform) {
+    public static function instance_config_form($mform) {
         $choices = array(0 => get_string('http', 'repository_webdav'), 1 => get_string('https', 'repository_webdav'));
         $mform->addElement('select', 'webdav_type', get_string('webdav_type', 'repository_webdav'), $choices);
         $mform->addRule('webdav_type', get_string('required'), 'required', null, 'client');

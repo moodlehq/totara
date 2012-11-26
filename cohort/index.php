@@ -38,9 +38,9 @@ $debug = optional_param('debug', false, PARAM_BOOL); //report debug
 require_login();
 
 if ($contextid) {
-    $context = get_context_instance_by_id($contextid, MUST_EXIST);
+    $context = context::instance_by_id($contextid, MUST_EXIST);
 } else {
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    $context = context_system::instance();
 }
 
 if ($context->contextlevel != CONTEXT_COURSECAT and $context->contextlevel != CONTEXT_SYSTEM) {
@@ -79,7 +79,18 @@ if($debug) {
     $report->debug($debug);
 }
 
-echo $OUTPUT->heading(get_string('cohortsin', 'cohort', print_context_name($context)));
+$cohorts = cohort_get_cohorts($context->id, $page, 25, $searchquery);
+
+$count = '';
+if ($cohorts['allcohorts'] > 0) {
+    if ($searchquery === '') {
+        $count = ' ('.$cohorts['allcohorts'].')';
+    } else {
+        $count = ' ('.$cohorts['totalcohorts'].'/'.$cohorts['allcohorts'].')';
+    }
+}
+
+echo $OUTPUT->heading(get_string('cohortsin', 'cohort', $context->get_context_name()).$count);
 
 $report->display_search();
 

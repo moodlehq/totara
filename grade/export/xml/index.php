@@ -28,7 +28,7 @@ if (!$course = $DB->get_record('course', array('id'=>$id))) {
 }
 
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $id);
+$context = context_course::instance($id);
 
 require_capability('moodle/grade:export', $context);
 require_capability('gradeexport/xml:view', $context);
@@ -52,7 +52,7 @@ if ($groupmode == SEPARATEGROUPS and !$currentgroup and !has_capability('moodle/
 
 // process post information
 if ($data = $mform->get_data()) {
-    $export = new grade_export_xml($course, $currentgroup, '', false, $data->updatedgradesonly, $data->display, $data->decimals);
+    $export = new grade_export_xml($course, $currentgroup, '', false, $data->updatedgradesonly, $data->display, $data->decimals, $data->export_onlyactive);
 
     // print the grades on screen for feedbacks
     $export->process_form($data);

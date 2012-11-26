@@ -59,20 +59,19 @@ class mod_assignment_renderer extends plugin_renderer_base {
 
         $result = '<ul>';
         foreach ($dir['subdirs'] as $subdir) {
-            $image = $this->output->pix_icon("f/folder", $subdir['dirname'], 'moodle', array('class'=>'icon'));
+            $image = $this->output->pix_icon(file_folder_icon(), $subdir['dirname'], 'moodle', array('class'=>'icon'));
             $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.s($subdir['dirname']).'</div> '.$this->htmllize_tree($tree, $subdir).'</li>';
         }
 
         foreach ($dir['files'] as $file) {
             $filename = $file->get_filename();
-            $icon = mimeinfo("icon", $filename);
             if ($CFG->enableplagiarism) {
                 require_once($CFG->libdir.'/plagiarismlib.php');
                 $plagiarsmlinks = plagiarism_get_links(array('userid'=>$file->get_userid(), 'file'=>$file, 'cmid'=>$tree->cm->id, 'course'=>$tree->course));
             } else {
                 $plagiarsmlinks = '';
             }
-            $image = $this->output->pix_icon("f/$icon", $filename, 'moodle', array('class'=>'icon'));
+            $image = $this->output->pix_icon(file_file_icon($file), $filename, 'moodle', array('class'=>'icon'));
             $result .= '<li yuiConfig=\''.json_encode($yuiconfig).'\'><div>'.$image.' '.$file->fileurl.' '.$plagiarsmlinks.$file->portfoliobutton.'</div></li>';
         }
 
@@ -101,7 +100,7 @@ class assignment_files implements renderable {
             $files = $fs->get_area_files($this->context->id, 'mod_assignment', $filearea, $itemid, "timemodified", false);
             if (count($files) >= 1 && has_capability('mod/assignment:exportownsubmission', $this->context)) {
                 $button = new portfolio_add_button();
-                $button->set_callback_options('assignment_portfolio_caller', array('id' => $this->cm->id, 'submissionid' => $itemid), '/mod/assignment/locallib.php');
+                $button->set_callback_options('assignment_portfolio_caller', array('id' => $this->cm->id, 'submissionid' => $itemid), 'mod_assignment');
                 $button->reset_formats();
                 $this->portfolioform = $button->to_html(PORTFOLIO_ADD_TEXT_LINK);
             }
@@ -118,7 +117,7 @@ class assignment_files implements renderable {
             if (!empty($CFG->enableportfolios)) {
                 $button = new portfolio_add_button();
                 if (has_capability('mod/assignment:exportownsubmission', $this->context)) {
-                    $button->set_callback_options('assignment_portfolio_caller', array('id' => $this->cm->id, 'fileid' => $file->get_id()), '/mod/assignment/locallib.php');
+                    $button->set_callback_options('assignment_portfolio_caller', array('id' => $this->cm->id, 'fileid' => $file->get_id()), 'mod_assignment');
                     $button->set_format_by_file($file);
                     $file->portfoliobutton = $button->to_html(PORTFOLIO_ADD_ICON_LINK);
                 }

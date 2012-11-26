@@ -18,15 +18,13 @@
 /**
  * Provides support for the conversion of moodle1 backup to the moodle2 format
  *
- * @package    workshopform
- * @subpackage numerrors
+ * @package    workshopform_numerrors
  * @copyright  2011 David Mudrak <david@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/mod/workshop/form/numerrors/db/upgradelib.php');
 require_once($CFG->libdir.'/gradelib.php'); // grade_floatval() called here
 
 /**
@@ -51,9 +49,12 @@ class moodle1_workshopform_numerrors_handler extends moodle1_workshopform_handle
     /**
      * Converts <ELEMENT> into <workshopform_numerrors_dimension> and stores it for later writing
      *
+     * @param array $data legacy element data
+     * @param array $raw raw element data
+     *
      * @return array to be written to workshop.xml
      */
-    public function process_legacy_element($data, $raw) {
+    public function process_legacy_element(array $data, array $raw) {
 
         $workshop = $this->parenthandler->get_current_workshop();
 
@@ -95,4 +96,36 @@ class moodle1_workshopform_numerrors_handler extends moodle1_workshopform_handle
             $this->write_xml('workshopform_numerrors_dimension', $dimension, array('/workshopform_numerrors_dimension/id'));
         }
     }
+}
+
+/**
+ * Transforms a given record from workshop_elements_old into an object to be saved into workshopform_numerrors
+ *
+ * @param stdClass $old legacy record from workshop_elements_old
+ * @param int $newworkshopid id of the new workshop instance that replaced the previous one
+ * @return stdclass to be saved in workshopform_numerrors
+ */
+function workshopform_numerrors_upgrade_element(stdclass $old, $newworkshopid) {
+    $new = new stdclass();
+    $new->workshopid = $newworkshopid;
+    $new->sort = $old->elementno;
+    $new->description = $old->description;
+    $new->descriptionformat = FORMAT_HTML;
+    $new->grade0 = get_string('grade0default', 'workshopform_numerrors');
+    $new->grade1 = get_string('grade1default', 'workshopform_numerrors');
+    // calculate new weight of the element. Negative weights are not supported any more and
+    // are replaced with weight = 0. Legacy workshop did not store the raw weight but the index
+    // in the array of weights (see $WORKSHOP_EWEIGHTS in workshop 1.x)
+    // workshop 2.0 uses integer weights only (0-16) so all previous weights are multiplied by 4.
+    switch ($old->weight) {
+        case 8: $new->weight = 1; break;
+        case 9: $new->weight = 2; break;
+        case 10: $new->weight = 3; break;
+        case 11: $new->weight = 4; break;
+        case 12: $new->weight = 6; break;
+        case 13: $new->weight = 8; break;
+        case 14: $new->weight = 16; break;
+        default: $new->weight = 0;
+    }
+    return $new;
 }

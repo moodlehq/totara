@@ -22,14 +22,14 @@ class profile_field_checkbox extends profile_field_base {
         }
     }
 
-    function edit_field_add(&$mform) {
+    function edit_field_add($mform) {
         /// Create the form field
-        $checkbox = &$mform->addElement('advcheckbox', $this->inputname, format_string($this->field->name));
+        $checkbox = $mform->addElement('advcheckbox', $this->inputname, format_string($this->field->name));
         if ($this->data == '1') {
             $checkbox->setChecked(true);
         }
         $mform->setType($this->inputname, PARAM_BOOL);
-        if ($this->is_required() and !has_capability('moodle/user:update', get_context_instance(CONTEXT_SYSTEM))) {
+        if ($this->is_required() and !has_capability('moodle/user:update', context_system::instance())) {
             $mform->addRule($this->inputname, get_string('required'), 'nonzero', null, 'client');
         }
     }

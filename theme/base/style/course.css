@@ -6,19 +6,38 @@
 .section_add_menus .horizontal form {display:inline;}
 .section_add_menus optgroup {font-weight:normal;font-style: italic;}
 
-.course-content .section .activity img.activityicon {vertical-align:middle;height:16px;width:16px;}
+.course-content .section .activity img.activityicon {vertical-align:text-bottom;height:24px;width:24px;margin-right: 3px;}
 .course-content .section .activity .commands img.iconsmall {vertical-align: baseline;}
+.course-content .section .activity .commands img {padding: 0 2px;}
+.course-content .section .activity:hover { background-color: #EEE; }
+.course-content .section-summary { border: 1px solid #DDD; margin-top: 5px; list-style: none; }
+.course-content .section-summary .section-title  { margin: 2px 5px 2px 5px; }
+.course-content .section-summary .summarytext { margin: 2px 5px 2px 5px; }
+.course-content .section-summary .section-summary-activities .activity-count {margin-right: 10px;color: #AAA; font-size: 12px; margin-right: 15px;}
+.course-content .section-summary .summary { margin-top: 5px; }
+.course-content .single-section { margin-top: 1em; }
+.course-content .single-section .section-navigation { display: block; padding: 0.5em; margin-bottom: -0.5em; }
+.course-content .single-section .section-navigation .title { font-weight: bold; font-size: 108%; }
+.course-content .single-section .section-navigation .mdl-left { font-weight: normal; float: left; margin-right: 1em; }
+.dir-rtl .course-content .single-section .section-navigation .mdl-left {float:right;}
+.course-content .single-section .section-navigation .mdl-left .larrow { margin-right: 0.1em; }
+.course-content .single-section .section-navigation .mdl-right { font-weight: normal; float: right; margin-left: 1em; }
+.dir-rtl .course-content .single-section .section-navigation .mdl-right {float: left;}
+.course-content .single-section .section-navigation .mdl-right .rarrow { margin-left: 0.1em; }
+.course-content .single-section .section-navigation .mdl-bottom { margin-top: 0; }
 
 #page-site-index .subscribelink {text-align:right;}
 #page-site-index .headingblock {margin-bottom: 9px;}
 #page-site-index .clearfloat {float: none;clear: both; height:0px;}
 
+.path-course-view a.reduce-sections {padding-left: 0.2em;}
 .path-course-view .headingblock {margin-bottom: 9px;}
 .path-course-view .subscribelink {text-align:right;}
 .path-course-view .unread {margin-left: 3em;}
 .path-course-view .block.drag .header {cursor: move;}
 .path-course-view .completionprogress {float:right;}
 .path-course-view .completionprogress img.iconhelp {vertical-align:top;}
+.path-course-view .single-section .completionprogress {margin-right: -3.5em; padding-left: 1.5em; padding-right: 0em;}
 .path-course-view .section .summary {line-height:normal;}
 
 .path-course-view li.activity {margin-right:20px; position:relative;}
@@ -132,4 +151,26 @@
 table.category_subcategories {margin-bottom:1em;}
 table.category_subcategories td {white-space: nowrap;}
 
-.dir-rtl.path-course-view li.activity form.togglecompletion, .dir-rtl.path-course-view li.activity span.autocompletion
+span.editinstructions {
+    position: relative;
+    top: 5px;
+    left: 19px;
+    width: 329px;
+    padding: 3px;
+    background-color: #dddddd;
+    color: #000000;
+    text-decoration: none;
+    z-index: 100;
+    border: 1px solid black;
+}
+
+input.titleeditor {
+    width: 330px;
+}
+
+/* Course drag and drop upload styles */
+#dndupload-status {width:40%;margin:0 30%;padding:6px;border:1px solid #ddd;text-align:center;background:#ffc;position:absolute;z-index:9999;box-shadow:2px 2px 5px 1px #ccc;border-radius:0px 0px 8px 8px;z-index: 0;}
+.dndupload-preview {color:#909090;border:1px dashed #909090;list-style:none;}
+.dndupload-progress-outer {width:70px;border:1px solid black;height:10px;display:inline-block;margin:0;padding:0;overflow:hidden;position:relative;}
+.dndupload-progress-inner {width:0%;height:100%;background-color:green;display:inline-block;margin:0;padding:0;float:left;}
+.dndupload-hidden {display:none;}

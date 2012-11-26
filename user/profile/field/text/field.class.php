@@ -26,7 +26,7 @@ class profile_field_text extends profile_field_base {
         return $data;
     }
 
-    function edit_field_add(&$mform) {
+    function edit_field_add($mform) {
         $size = $this->field->param1;
         $maxlength = $this->field->param2;
         $fieldtype = ($this->field->param3 == 1 ? 'password' : 'text');
@@ -36,7 +36,7 @@ class profile_field_text extends profile_field_base {
         if ($this->is_required()) {
             $mform->addRule($this->inputname, get_string('required'), 'required', null, 'client');
         }
-        $mform->setType($this->inputname, PARAM_MULTILANG);
+        $mform->setType($this->inputname, PARAM_TEXT);
     }
 
 }

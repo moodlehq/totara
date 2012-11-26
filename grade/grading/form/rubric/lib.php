@@ -453,7 +453,7 @@ class gradingform_rubric_controller extends gradingform_controller {
         global $CFG;
         return array(
             'maxfiles' => -1,
-            'maxbytes' => get_max_upload_file_size($CFG->maxbytes),
+            'maxbytes' => get_user_max_upload_file_size($context, $CFG->maxbytes),
             'context'  => $context,
         );
     }
@@ -508,6 +508,14 @@ class gradingform_rubric_controller extends gradingform_controller {
         $criteria = $this->definition->rubric_criteria;
         $options = $this->get_options();
         $rubric = '';
+        if (has_capability('moodle/grade:managegradingforms', $page->context)) {
+            $showdescription = true;
+        } else {
+            $showdescription = $options['showdescriptionstudent'];
+        }
+        if ($showdescription) {
+            $rubric .= $output->box($this->get_formatted_description(), 'gradingform_rubric-description');
+        }
         if (has_capability('moodle/grade:managegradingforms', $page->context)) {
             $rubric .= $output->display_rubric_mapping_explained($this->get_min_max_score());
             $rubric .= $output->display_rubric($criteria, $options, self::DISPLAY_PREVIEW, 'rubric');

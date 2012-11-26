@@ -17,12 +17,10 @@
 /**
  * Strings for component 'quiz_statistics', language 'en', branch 'MOODLE_20_STABLE'
  *
- * @package    quiz
- * @subpackage statistics
- * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   quiz_statistics
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 
 $string['actualresponse'] = 'Actual response';
 $string['allattempts'] = 'all attempts';
@@ -42,7 +40,7 @@ $string['coursename'] = 'Course name';
 $string['detailedanalysis'] = 'More detailed analysis of the responses to this question';
 $string['discrimination_index'] = 'Discrimination index';
 $string['discriminative_efficiency'] = 'Discriminative efficiency';
-$string['downloadeverything'] = 'Download full report as';
+$string['downloadeverything'] = 'Download full report as {$a->formatsmenu} {$a->downloadbutton}';
 $string['duration'] = 'Open for';
 $string['effective_weight'] = 'Effective weight';
 $string['errordeleting'] = 'Error deleting old {$a} records.';

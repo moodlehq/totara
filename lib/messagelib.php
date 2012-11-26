@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,12 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * messagelib.php - Contains generic messaging functions for the message system
+ * Functions for interacting with the message system
  *
- * @package    core
- * @subpackage message
- * @copyright  Luis Rodrigues and Martin Dougiamas
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   core_message
+ * @copyright 2008 Luis Rodrigues and Martin Dougiamas
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -30,24 +28,28 @@ require_once(dirname(dirname(__FILE__)) . '/message/lib.php');
 
 /**
  * Called when a message provider wants to send a message.
- * This functions checks the user's processor configuration to send the given type of message,
- * then tries to send it.
+ * This functions checks the message recipient's message processor configuration then
+ * sends the message to the configured processors
  *
- * Required parameter $eventdata structure:
+ * Required parameters of the $eventdata object:
  *  component string component name. must exist in message_providers
  *  name string message type name. must exist in message_providers
  *  userfrom object|int the user sending the message
  *  userto object|int the message recipient
  *  subject string the message subject
- *  fullmessage - the full message in a given format
- *  fullmessageformat  - the format if the full message (FORMAT_MOODLE, FORMAT_HTML, ..)
- *  fullmessagehtml  - the full version (the message processor will choose with one to use)
- *  smallmessage - the small version of the message
- *  contexturl - if this is a notification then you can specify a url to view the event. For example the forum post the user is being notified of.
- *  contexturlname - the display text for contexturl
+ *  fullmessage string the full message in a given format
+ *  fullmessageformat int the format if the full message (FORMAT_MOODLE, FORMAT_HTML, ..)
+ *  fullmessagehtml string the full version (the message processor will choose with one to use)
+ *  smallmessage string the small version of the message
  *
+ * Optional parameters of the $eventdata object:
+ *  notification bool should the message be considered as a notification rather than a personal message
+ *  contexturl string if this is a notification then you can specify a url to view the event. For example the forum post the user is being notified of.
+ *  contexturlname string the display text for contexturl
+ *
+ * @category message
  * @param object $eventdata information about the message (component, userfrom, userto, ...)
- * @return int|false the ID of the new message or false if there was a problem with a processor
+ * @return mixed the integer ID of the new message or false if there was a problem with a processor
  */
 function message_send($eventdata) {
     global $CFG, $DB;
@@ -114,6 +116,32 @@ function message_send($eventdata) {
         $savemessage->timecreated = time();
     } else {
         $savemessage->timecreated = $eventdata->timecreated;
+    }
+
+    if (PHPUNIT_TEST and class_exists('phpunit_util')) {
+        // Add some more tests to make sure the normal code can actually work.
+        $componentdir = get_component_directory($eventdata->component);
+        if (!$componentdir or !is_dir($componentdir)) {
+            throw new coding_exception('Invalid component specified in message-send(): '.$eventdata->component);
+        }
+        if (!file_exists("$componentdir/db/messages.php")) {
+            throw new coding_exception("$eventdata->component does not contain db/messages.php necessary for message_send()");
+        }
+        $messageproviders = null;
+        include("$componentdir/db/messages.php");
+        if (!isset($messageproviders[$eventdata->name])) {
+            throw new coding_exception("Missing messaging defaults for event '$eventdata->name' in '$eventdata->component' messages.php file");
+        }
+        unset($componentdir);
+        unset($messageproviders);
+        // Now ask phpunit if it wants to catch this message.
+        if (phpunit_util::is_redirecting_messages()) {
+            $savemessage->timeread = time();
+            $messageid = $DB->insert_record('message_read', $savemessage);
+            $message = $DB->get_record('message_read', array('id'=>$messageid));
+            phpunit_util::message_sent($message);
+            return $messageid;
+        }
     }
 
     // Fetch enabled processors
@@ -209,10 +237,10 @@ function message_send($eventdata) {
 
 
 /**
- * This code updates the message_providers table with the current set of providers
+ * Updates the message_providers table with the current set of message providers
  *
- * @param $component - examples: 'moodle', 'mod_forum', 'block_quiz_results'
- * @return boolean
+ * @param string $component For example 'moodle', 'mod_forum' or 'block_quiz_results'
+ * @return boolean True on success
  */
 function message_update_providers($component='moodle') {
     global $DB;
@@ -269,8 +297,7 @@ function message_update_providers($component='moodle') {
  * when the new message processor is added.
  *
  * @param string $processorname The name of message processor plugin (e.g. 'email', 'jabber')
- * @return void
- * @throws invalid_parameter_exception if $processorname does not exist
+ * @throws invalid_parameter_exception if $processorname does not exist in the database
  */
 function message_update_processors($processorname) {
     global $DB;
@@ -295,13 +322,12 @@ function message_update_processors($processorname) {
 }
 
 /**
- * Setting default messaging preference for particular message provider
+ * Setting default messaging preferences for particular message provider
  *
  * @param  string $component   The name of component (e.g. moodle, mod_forum, etc.)
  * @param  string $messagename The name of message provider
  * @param  array  $fileprovider The value of $messagename key in the array defined in plugin messages.php
- * @param  string $processorname The optinal name of message processor
- * @return void
+ * @param  string $processorname The optional name of message processor
  */
 function message_set_default_message_preference($component, $messagename, $fileprovider, $processorname='') {
     global $DB;
@@ -368,16 +394,18 @@ function message_set_default_message_preference($component, $messagename, $filep
 }
 
 /**
+ * This function has been deprecated please use {@link message_get_providers_for_user()} instead.
+ *
  * Returns the active providers for the current user, based on capability
  *
- * This function has been deprecated please use {@see message_get_providers_for_user()} instead.
- *
+ * @see message_get_providers_for_user()
  * @deprecated since 2.1
- * @todo Remove in 2.2
- * @return array of message providers
+ * @todo Remove in 2.5 (MDL-34454)
+ * @return array An array of message providers
  */
 function message_get_my_providers() {
     global $USER;
+    debugging('message_get_my_providers is deprecated please update your code', DEBUG_DEVELOPER);
     return message_get_providers_for_user($USER->id);
 }
 
@@ -385,14 +413,14 @@ function message_get_my_providers() {
  * Returns the active providers for the user specified, based on capability
  *
  * @param int $userid id of user
- * @return array of message providers
+ * @return array An array of message providers
  */
 function message_get_providers_for_user($userid) {
     global $DB, $CFG;
 
-    $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+    $systemcontext = context_system::instance();
 
-    $providers = $DB->get_records('message_providers', null, 'component desc, name asc');
+    $providers = get_message_providers();
 
     // Remove all the providers we aren't allowed to see now
     foreach ($providers as $providerid => $provider) {
@@ -425,10 +453,11 @@ function message_get_providers_for_user($userid) {
 /**
  * Gets the message providers that are in the database for this component.
  *
- * @param $component - examples: 'moodle', 'mod/forum', 'block/quiz_results'
- * @return array of message providers
+ * This is an internal function used within messagelib.php
  *
- * INTERNAL - to be used from messagelib only
+ * @see message_update_providers()
+ * @param string $component A moodle component like 'moodle', 'mod_forum', 'block_quiz_results'
+ * @return array An array of message providers
  */
 function message_get_providers_from_db($component) {
     global $DB;
@@ -437,13 +466,15 @@ function message_get_providers_from_db($component) {
 }
 
 /**
- * Loads the messages definitions for the component (from file). If no
- * messages are defined for the component, we simply return an empty array.
+ * Loads the messages definitions for a component from file
  *
- * @param $component - examples: 'moodle', 'mod_forum', 'block_quiz_results'
- * @return array of message providerss or empty array if not exists
+ * If no messages are defined for the component, return an empty array.
+ * This is an internal function used within messagelib.php
  *
- * INTERNAL - to be used from messagelib only
+ * @see message_update_providers()
+ * @see message_update_processors()
+ * @param string $component A moodle component like 'moodle', 'mod_forum', 'block_quiz_results'
+ * @return array An array of message providers or empty array if not exists
  */
 function message_get_providers_from_file($component) {
     $defpath = get_component_directory($component).'/db/messages.php';
@@ -467,9 +498,9 @@ function message_get_providers_from_file($component) {
 }
 
 /**
- * Remove all message providers for particular plugin and corresponding settings
+ * Remove all message providers for particular component and corresponding settings
  *
- * @param string $component - examples: 'moodle', 'mod_forum', 'block_quiz_results'
+ * @param string $component A moodle component like 'moodle', 'mod_forum', 'block_quiz_results'
  * @return void
  */
 function message_provider_uninstall($component) {
@@ -483,16 +514,16 @@ function message_provider_uninstall($component) {
 }
 
 /**
- * Remove message processor
+ * Uninstall a message processor
  *
- * @param string $name - examples: 'email', 'jabber'
- * @return void
+ * @param string $name A message processor name like 'email', 'jabber'
  */
 function message_processor_uninstall($name) {
     global $DB;
 
     $transaction = $DB->start_delegated_transaction();
     $DB->delete_records('message_processors', array('name' => $name));
+    $DB->delete_records_select('config_plugins', "plugin = ?", array("message_{$name}"));
     // delete permission preferences only, we do not care about loggedin/loggedoff
     // defaults, they will be removed on the next attempt to update the preferences
     $DB->delete_records_select('config_plugins', "plugin = 'message' AND ".$DB->sql_like('name', '?', false), array("{$name}_provider_%"));

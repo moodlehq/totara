@@ -1,5 +1,5 @@
 <?php
-// This file is part of Book plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,88 +17,62 @@
 /**
  * Book module language strings
  *
- * @package    mod
- * @subpackage book
- * @copyright  2004-2012 Petr Skoda  {@link http://skodak.org}
+ * @package    mod_book
+ * @copyright  2004-2012 Petr Skoda {@link http://skodak.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
 $string['modulename'] = 'Book';
+$string['modulename_help'] = 'The book module enables a teacher to create a multi-page resource in a book-like format, with chapters and subchapters. Books can contain media files as well as text and are useful for displaying lengthy passages of information which can be broken down into sections.
+
+A book may be used
+
+* To display reading material for individual modules of study
+* As a staff departmental handbook
+* As a showcase portfolio of student work';
+$string['modulename_link'] = 'mod/book/view';
 $string['modulenameplural'] = 'Books';
-$string['modulename_help'] = 'Book is a simple multipage study material.';
 $string['pluginname'] = 'Book';
 $string['pluginadministration'] = 'Book administration';
 
 $string['toc'] = 'Table of contents';
-$string['faq'] = 'Book FAQ';
-$string['faq_help'] = '
-*Why only two levels?*
-
-Two levels are generally enough for all books, three levels would lead to poorly structured documents. Book module is designed for
-creation of short multipage study materials. It is usually better to use PDF format for longer documents. The easiest way to create PDFs are
-virtual printers (see
-[PDFCreator] (http://sector7g.wurzel6.de/pdfcreator/index_en.htm),
-[PDFFactory] (http://fineprint.com/products/pdffactory/index.html),
-[Adobe Acrobat] (http://www.adobe.com/products/acrobatstd/main.html),
-etc.).
-
-*Can students edit books?*
-
-Only teachers can create and edit books. There are no plans to implement student editing for books, but somebody may create something
-similar for students (Portfolio?). The main reason is to keep Book module as simple as possible.
-
-*How do I search the books?*
-
-At present there is only one way, use browser\'s search capability in print page. Global searching is now possible only in Moodle forums.
-It would be nice to have global searching for all resources including books, any volunteers?
-
-*My titles do not fit on one line.*
-
-Either rephrase your titles or ask your site admin to change TOC
-width. It is defined globally for all books in module configuration
-page.';
-
 $string['customtitles'] = 'Custom titles';
-$string['customtitles_help'] = 'Chapter titles are displayed automatically only in TOC.';
+$string['customtitles_help'] = 'Normally the chapter title is displayed in the table of contents (TOC) AND as a heading above the content.
 
+If the custom titles checkbox is ticked, the chapter title is NOT displayed as a heading above the content. A different title (perhaps longer than the chapter title) may be entered as part of the content.';
 $string['chapters'] = 'Chapters';
 $string['editingchapter'] = 'Editing chapter';
 $string['chaptertitle'] = 'Chapter title';
 $string['content'] = 'Content';
 $string['subchapter'] = 'Subchapter';
-
-$string['numbering'] = 'Chapter numbering';
-$string['numbering_help'] = '* None - chapter and subchapter titles are not formatted at all, use if you want to define special numbering styles. For example letters: in chapter title type "A First Chapter", "A.1 Some Subchapter",...
-* Numbers - chapters and subchapters are numbered (1, 1.1, 1.2, 2, ...)
-* Bullets - subchapters are indented and displayed with bullets
-* Indented - subchapters are indented';
-
+$string['nocontent'] = 'No content has been added to this book yet.';
+$string['numbering'] = 'Chapter formatting';
+$string['numbering_help'] = '* None - Chapter and subchapter titles have no formatting
+* Numbers - Chapters and subchapter titles are numbered 1, 1.1, 1.2, 2, ...
+* Bullets - Subchapters are indented and displayed with bullets in the table of contents
+* Indented - Subchapters are indented in the table of contents';
 $string['numbering0'] = 'None';
 $string['numbering1'] = 'Numbers';
 $string['numbering2'] = 'Bullets';
 $string['numbering3'] = 'Indented';
-$string['numberingoptions'] = 'Available numbering options';
-$string['numberingoptions_help'] = 'Select numbering options that should be available when creating new books.';
-
-$string['chapterscount'] = 'Chapters';
-
+$string['numberingoptions'] = 'Available options for chapter formatting';
+$string['numberingoptions_desc'] = 'Options for displaying chapters and subchapters in the table of contents';
 $string['addafter'] = 'Add new chapter';
 $string['confchapterdelete'] = 'Do you really want to delete this chapter?';
 $string['confchapterdeleteall'] = 'Do you really want to delete this chapter and all its subchapters?';
-
 $string['top'] = 'top';
-
 $string['navprev'] = 'Previous';
 $string['navnext'] = 'Next';
 $string['navexit'] = 'Exit book';
-
 $string['book:addinstance'] = 'Add a new book';
 $string['book:read'] = 'Read book';
 $string['book:edit'] = 'Edit book chapters';
 $string['book:viewhiddenchapters'] = 'View hidden book chapters';
-
-$string['errorchapter'] = 'Error reading book chapter.';
+$string['errorchapter'] = 'Error reading chapter of book.';
 
 $string['page-mod-book-x'] = 'Any book module page';
+$string['subchapternotice'] = '(Only available once the first chapter has been created)';
+$string['subplugintype_booktool'] = 'Book tool';
+$string['subplugintype_booktool_plural'] = 'Book tools';

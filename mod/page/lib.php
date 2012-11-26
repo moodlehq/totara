@@ -81,16 +81,15 @@ function page_get_post_actions() {
 
 /**
  * Add page instance.
- * @param object $data
- * @param object $mform
+ * @param stdClass $data
+ * @param mod_page_mod_form $mform
  * @return int new page instance id
  */
-function page_add_instance($data, $mform) {
+function page_add_instance($data, $mform = null) {
     global $CFG, $DB;
     require_once("$CFG->libdir/resourcelib.php");
 
-    $cmid        = $data->coursemodule;
-    $draftitemid = $data->page['itemid'];
+    $cmid = $data->coursemodule;
 
     $data->timemodified = time();
     $displayoptions = array();
@@ -102,16 +101,19 @@ function page_add_instance($data, $mform) {
     $displayoptions['printintro']   = $data->printintro;
     $data->displayoptions = serialize($displayoptions);
 
-    $data->content       = $data->page['text'];
-    $data->contentformat = $data->page['format'];
+    if ($mform) {
+        $data->content       = $data->page['text'];
+        $data->contentformat = $data->page['format'];
+    }
 
     $data->id = $DB->insert_record('page', $data);
 
     // we need to use context now, so we need to make sure all needed info is already in db
     $DB->set_field('course_modules', 'instance', $data->id, array('id'=>$cmid));
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
 
-    if ($draftitemid) {
+    if ($mform and !empty($data->page['itemid'])) {
+        $draftitemid = $data->page['itemid'];
         $data->content = file_save_draft_area_files($draftitemid, $context->id, 'mod_page', 'content', 0, page_get_editor_options($context), $data->content);
         $DB->update_record('page', $data);
     }
@@ -150,7 +152,7 @@ function page_update_instance($data, $mform) {
 
     $DB->update_record('page', $data);
 
-    $context = get_context_instance(CONTEXT_MODULE, $cmid);
+    $context = context_module::instance($cmid);
     if ($draftitemid) {
         $data->content = file_save_draft_area_files($draftitemid, $context->id, 'mod_page', 'content', 0, page_get_editor_options($context), $data->content);
         $DB->update_record('page', $data);
@@ -230,18 +232,6 @@ function page_user_complete($course, $user, $mod, $page) {
 }
 
 /**
- * Returns the users with data in one page
- *
- * @todo: deprecated - to be deleted in 2.2
- *
- * @param int $pageid
- * @return bool false
- */
-function page_get_participants($pageid) {
-    return false;
-}
-
-/**
  * Given a course_module object, this function returns any
  * "extra" information that may be needed when printing
  * this activity in a course listing.
@@ -285,9 +275,12 @@ function page_get_coursemodule_info($coursemodule) {
 
 /**
  * Lists all browsable file areas
- * @param object $course
- * @param object $cm
- * @param object $context
+ *
+ * @package  mod_page
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
  * @return array
  */
 function page_get_file_areas($course, $cm, $context) {
@@ -298,16 +291,19 @@ function page_get_file_areas($course, $cm, $context) {
 
 /**
  * File browsing support for page module content area.
- * @param object $browser
- * @param object $areas
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param int $itemid
- * @param string $filepath
- * @param string $filename
- * @return object file_info instance or null if not found
+ *
+ * @package  mod_page
+ * @category files
+ * @param stdClass $browser file browser instance
+ * @param stdClass $areas file areas
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param int $itemid item ID
+ * @param string $filepath file path
+ * @param string $filename file name
+ * @return file_info instance or null if not found
  */
 function page_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     global $CFG;
@@ -343,15 +339,19 @@ function page_get_file_info($browser, $areas, $course, $cm, $context, $filearea,
 
 /**
  * Serves the page files.
- * @param object $course
- * @param object $cm
- * @param object $context
- * @param string $filearea
- * @param array $args
- * @param bool $forcedownload
+ *
+ * @package  mod_page
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
  * @return bool false if file not found, does not return if found - just send the file
  */
-function page_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+function page_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $CFG, $DB;
     require_once("$CFG->libdir/resourcelib.php");
 
@@ -407,7 +407,7 @@ function page_pluginfile($course, $cm, $context, $filearea, $args, $forcedownloa
         }
 
         // finally send the file
-        send_stored_file($file, 86400, 0, $forcedownload);
+        send_stored_file($file, 86400, 0, $forcedownload, $options);
     }
 }
 
@@ -430,7 +430,7 @@ function page_page_type_list($pagetype, $parentcontext, $currentcontext) {
 function page_export_contents($cm, $baseurl) {
     global $CFG, $DB;
     $contents = array();
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $context = context_module::instance($cm->id);
 
     $page = $DB->get_record('page', array('id'=>$cm->instance), '*', MUST_EXIST);
 
@@ -471,4 +471,47 @@ function page_export_contents($cm, $baseurl) {
     $contents[] = $pagefile;
 
     return $contents;
+}
+
+/**
+ * Register the ability to handle drag and drop file uploads
+ * @return array containing details of the files / types the mod can handle
+ */
+function page_dndupload_register() {
+    return array('types' => array(
+                     array('identifier' => 'text/html', 'message' => get_string('createpage', 'page')),
+                     array('identifier' => 'text', 'message' => get_string('createpage', 'page'))
+                 ));
+}
+
+/**
+ * Handle a file that has been uploaded
+ * @param object $uploadinfo details of the file / content that has been uploaded
+ * @return int instance id of the newly created mod
+ */
+function page_dndupload_handle($uploadinfo) {
+    // Gather the required info.
+    $data = new stdClass();
+    $data->course = $uploadinfo->course->id;
+    $data->name = $uploadinfo->displayname;
+    $data->intro = '<p>'.$uploadinfo->displayname.'</p>';
+    $data->introformat = FORMAT_HTML;
+    if ($uploadinfo->type == 'text/html') {
+        $data->contentformat = FORMAT_HTML;
+        $data->content = clean_param($uploadinfo->content, PARAM_CLEANHTML);
+    } else {
+        $data->contentformat = FORMAT_PLAIN;
+        $data->content = clean_param($uploadinfo->content, PARAM_TEXT);
+    }
+    $data->coursemodule = $uploadinfo->coursemodule;
+
+    // Set the display options to the site defaults.
+    $config = get_config('page');
+    $data->display = $config->display;
+    $data->popupheight = $config->popupheight;
+    $data->popupwidth = $config->popupwidth;
+    $data->printheading = $config->printheading;
+    $data->printintro = $config->printintro;
+
+    return page_add_instance($data, null);
 }

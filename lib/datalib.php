@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -23,7 +22,6 @@
  * - moodlelib.php - general-purpose Moodle functions
  *
  * @package    core
- * @subpackage lib
  * @copyright  1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -57,14 +55,17 @@ function get_admin() {
     global $CFG, $DB;
 
     static $mainadmin = null;
+    static $prevadmins = null;
 
-    if (isset($mainadmin)) {
+    if (empty($CFG->siteadmins)) {  // Should not happen on an ordinary site.
+        return false;
+    }
+
+    if (isset($mainadmin) and $prevadmins === $CFG->siteadmins) {
         return clone($mainadmin);
     }
 
-    if (empty($CFG->siteadmins)) {  // Should not happen on an ordinary site
-        return false;
-    }
+    $mainadmin = null;
 
     foreach (explode(',', $CFG->siteadmins) as $id) {
         if ($user = $DB->get_record('user', array('id'=>$id, 'deleted'=>0))) {
@@ -74,6 +75,7 @@ function get_admin() {
     }
 
     if ($mainadmin) {
+        $prevadmins = $CFG->siteadmins;
         return clone($mainadmin);
     } else {
         // this should not happen
@@ -97,7 +99,19 @@ function get_admins() {
               FROM {user} u
              WHERE u.deleted = 0 AND u.id IN ($CFG->siteadmins)";
 
-    return $DB->get_records_sql($sql);
+    // We want the same order as in $CFG->siteadmins.
+    $records = $DB->get_records_sql($sql);
+    $admins = array();
+    foreach (explode(',', $CFG->siteadmins) as $id) {
+        $id = (int)$id;
+        if (!isset($records[$id])) {
+            // User does not exist, this should not happen.
+            continue;
+        }
+        $admins[$records[$id]->id] = $records[$id];
+    }
+
+    return $admins;
 }
 
 /**
@@ -160,7 +174,7 @@ function search_users($courseid, $groupid, $searchtext, $sort='', array $excepti
             return $DB->get_records_sql($sql, $params);
 
         } else {
-            $context = get_context_instance(CONTEXT_COURSE, $courseid);
+            $context = context_course::instance($courseid);
             $contextlists = get_related_contexts_string($context);
 
             $sql = "SELECT u.id, u.firstname, u.lastname, u.email
@@ -172,6 +186,97 @@ function search_users($courseid, $groupid, $searchtext, $sort='', array $excepti
             return $DB->get_records_sql($sql, $params);
         }
     }
+}
+
+/**
+ * This function generates the standard ORDER BY clause for use when generating
+ * lists of users. If you don't have a reason to use a different order, then
+ * you should use this method to generate the order when displaying lists of users.
+ *
+ * If the optional $search parameter is passed, then exact matches to the search
+ * will be sorted first. For example, suppose you have two users 'Al Zebra' and
+ * 'Alan Aardvark'. The default sort is Alan, then Al. If, however, you search for
+ * 'Al', then Al will be listed first. (With two users, this is not a big deal,
+ * but with thousands of users, it is essential.)
+ *
+ * The list of fields scanned for exact matches are:
+ *  - firstname
+ *  - lastname
+ *  - $DB->sql_fullname
+ *  - those returned by get_extra_user_fields
+ *
+ * If named parameters are used (which is the default, and highly recommended),
+ * then the parameter names are like :usersortexactN, where N is an int.
+ *
+ * The simplest possible example use is:
+ * list($sort, $params) = users_order_by_sql();
+ * $sql = 'SELECT * FROM {users} ORDER BY ' . $sort;
+ *
+ * A more complex example, showing that this sort can be combined with other sorts:
+ * list($sort, $sortparams) = users_order_by_sql('u');
+ * $sql = "SELECT g.id AS groupid, gg.groupingid, u.id AS userid, u.firstname, u.lastname, u.idnumber, u.username
+ *           FROM {groups} g
+ *      LEFT JOIN {groupings_groups} gg ON g.id = gg.groupid
+ *      LEFT JOIN {groups_members} gm ON g.id = gm.groupid
+ *      LEFT JOIN {user} u ON gm.userid = u.id
+ *          WHERE g.courseid = :courseid $groupwhere $groupingwhere
+ *       ORDER BY g.name, $sort";
+ * $params += $sortparams;
+ *
+ * An example showing the use of $search:
+ * list($sort, $sortparams) = users_order_by_sql('u', $search, $this->get_context());
+ * $order = ' ORDER BY ' . $sort;
+ * $params += $sortparams;
+ * $availableusers = $DB->get_records_sql($fields . $sql . $order, $params, $page*$perpage, $perpage);
+ *
+ * @param string $usertablealias (optional) any table prefix for the {users} table. E.g. 'u'.
+ * @param string $search (optional) a current search string. If given,
+ *      any exact matches to this string will be sorted first.
+ * @param context $context the context we are in. Use by get_extra_user_fields.
+ *      Defaults to $PAGE->context.
+ * @return array with two elements:
+ *      string SQL fragment to use in the ORDER BY clause. For example, "firstname, lastname".
+ *      array of parameters used in the SQL fragment.
+ */
+function users_order_by_sql($usertablealias = '', $search = null, context $context = null) {
+    global $DB, $PAGE;
+
+    if ($usertablealias) {
+        $tableprefix = $usertablealias . '.';
+    } else {
+        $tableprefix = '';
+    }
+
+    $sort = "{$tableprefix}lastname, {$tableprefix}firstname, {$tableprefix}id";
+    $params = array();
+
+    if (!$search) {
+        return array($sort, $params);
+    }
+
+    if (!$context) {
+        $context = $PAGE->context;
+    }
+
+    $exactconditions = array();
+    $paramkey = 'usersortexact1';
+
+    $exactconditions[] = $DB->sql_fullname($tableprefix . 'firstname', $tableprefix  . 'lastname') .
+            ' = :' . $paramkey;
+    $params[$paramkey] = $search;
+    $paramkey++;
+
+    $fieldstocheck = array_merge(array('firstname', 'lastname'), get_extra_user_fields($context));
+    foreach ($fieldstocheck as $key => $field) {
+        $exactconditions[] = 'LOWER(' . $tableprefix . $field . ') = LOWER(:' . $paramkey . ')';
+        $params[$paramkey] = $search;
+        $paramkey++;
+    }
+
+    $sort = 'CASE WHEN ' . implode(' OR ', $exactconditions) .
+            ' THEN 0 ELSE 1 END, ' . $sort;
+
+    return array($sort, $params);
 }
 
 /**
@@ -192,7 +297,7 @@ function search_users($courseid, $groupid, $searchtext, $sort='', array $excepti
  * @param string $fields A comma separated list of fields to be returned from the chosen table.
  * @param boolean $excludedeleted if true, don't get deleted users (default moodle behaviour)
  * @return array|int|bool  {@link $USER} records unless get is false in which case the integer count of the records found is returned.
-  *                        False is returned if an error is encountered.
+ *                        False is returned if an error is encountered.
  */
 function get_users($get=true, $search='', $confirmed=false, array $exceptions=null, $sort='firstname ASC',
                    $firstinitial='', $lastinitial='', $page='', $recordsperpage='', $fields='*', $extraselect='', array $extraparams=null, $excludedeleted=true) {
@@ -420,7 +525,7 @@ function get_courses($categoryid="all", $sort="c.sortorder ASC", $fields="c.*") 
             context_instance_preload($course);
             if (isset($course->visible) && $course->visible <= 0) {
                 // for hidden courses, require visibility check
-                if (has_capability('moodle/course:viewhiddencourses', get_context_instance(CONTEXT_COURSE, $course->id))) {
+                if (has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id))) {
                     $visiblecourses [$course->id] = $course;
                 }
             } else {
@@ -487,7 +592,7 @@ function get_courses_page($categoryid="all", $sort="c.sortorder ASC", $fields="c
         context_instance_preload($course);
         if ($course->visible <= 0) {
             // for hidden courses, require visibility check
-            if (has_capability('moodle/course:viewhiddencourses', get_context_instance(CONTEXT_COURSE, $course->id))) {
+            if (has_capability('moodle/course:viewhiddencourses', context_course::instance($course->id))) {
                 $totalcount++;
                 if ($totalcount > $limitfrom && (!$limitnum or count($visiblecourses) < $limitnum)) {
                     $visiblecourses [$course->id] = $course;
@@ -604,7 +709,7 @@ function get_courses_wmanagers($categoryid=0, $sort="c.sortorder ASC", $fields=a
         // managers efficiently later...
         foreach ($courses as $k => $course) {
             context_instance_preload($course);
-            $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+            $coursecontext = context_course::instance($course->id);
             $courses[$k] = $course;
             $courses[$k]->managers = array();
             if ($allcats === false) {
@@ -660,12 +765,13 @@ function get_courses_wmanagers($categoryid=0, $sort="c.sortorder ASC", $fields=a
          *
          */
         $sql = "SELECT ctx.path, ctx.instanceid, ctx.contextlevel,
-                       r.id AS roleid, r.name as rolename,
-                       u.id AS userid, u.firstname, u.lastname
+                       r.id AS roleid, r.name AS rolename, r.shortname AS roleshortname,
+                       rn.name AS rolecoursealias, u.id AS userid, u.firstname, u.lastname
                   FROM {role_assignments} ra
                   JOIN {context} ctx ON ra.contextid = ctx.id
                   JOIN {user} u ON ra.userid = u.id
                   JOIN {role} r ON ra.roleid = r.id
+             LEFT JOIN {role_names} rn ON (rn.contextid = ctx.id AND rn.roleid = r.id)
                   LEFT OUTER JOIN {course} c
                        ON (ctx.instanceid=c.id AND ctx.contextlevel=".CONTEXT_COURSE.")
                 WHERE ( c.id IS NOT NULL";
@@ -701,7 +807,7 @@ function get_courses_wmanagers($categoryid=0, $sort="c.sortorder ASC", $fields=a
                     }
                 } else {
                     foreach ($courses as $k => $course) {
-                        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+                        $coursecontext = context_course::instance($course->id);
                         // Note that strpos() returns 0 as "matched at pos 0"
                         if (strpos($coursecontext->path, $ra->path.'/') === 0) {
                             // Only add it to subpaths
@@ -820,7 +926,7 @@ function get_courses_search($searchterms, $sort='fullname ASC', $page=0, $record
     $rs = $DB->get_recordset_sql($sql, $params);
     foreach($rs as $course) {
         context_instance_preload($course);
-        $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
+        $coursecontext = context_course::instance($course->id);
         if ($course->visible || has_capability('moodle/course:viewhiddencourses', $coursecontext)) {
             // Don't exit this loop till the end
             // we need to count all the visible courses
@@ -899,7 +1005,7 @@ function get_categories($parent='none', $sort=NULL, $shallow=true) {
     $rs = $DB->get_recordset_sql($sql, $params);
     foreach($rs as $cat) {
         context_instance_preload($cat);
-        $catcontext = get_context_instance(CONTEXT_COURSECAT, $cat->id);
+        $catcontext = context_coursecat::instance($cat->id);
         if ($cat->visible || has_capability('moodle/category:viewhiddencategories', $catcontext)) {
             $categories[$cat->id] = $cat;
         }
@@ -963,7 +1069,7 @@ function get_course_category($catid=0) {
             $cat->timemodified = time();
             $catid = $DB->insert_record('course_categories', $cat);
             // make sure category context exists
-            get_context_instance(CONTEXT_COURSECAT, $catid);
+            context_coursecat::instance($catid);
             mark_context_dirty('/'.SYSCONTEXTID);
             fix_course_sortorder(); // Required to build course_categories.depth and .path.
             $category = $DB->get_record('course_categories', array('id'=>$catid));
@@ -1046,7 +1152,7 @@ function fix_course_sortorder() {
         $defaultcat = reset($topcats);
         foreach ($frontcourses as $course) {
             $DB->set_field('course', 'category', $defaultcat->id, array('id'=>$course->id));
-            $context = get_context_instance(CONTEXT_COURSE, $course->id);
+            $context = context_course::instance($course->id);
             $fixcontexts[$context->id] = $context;
         }
         unset($frontcourses);
@@ -1192,7 +1298,7 @@ function _fix_course_cats($children, &$sortorder, $parent, $depth, $path, &$fixc
             $update = true;
 
             // make sure context caches are rebuild and dirty contexts marked
-            $context = get_context_instance(CONTEXT_COURSECAT, $cat->id);
+            $context = context_coursecat::instance($cat->id);
             $fixcontexts[$context->id] = $context;
         }
         if ($cat->sortorder != $sortorder) {
@@ -1634,7 +1740,7 @@ function coursemodule_visible_for_user($cm, $userid=0) {
     if (empty($userid)) {
         $userid = $USER->id;
     }
-    if (!$cm->visible and !has_capability('moodle/course:viewhiddenactivities', get_context_instance(CONTEXT_MODULE, $cm->id), $userid)) {
+    if (!$cm->visible and !has_capability('moodle/course:viewhiddenactivities', context_module::instance($cm->id), $userid)) {
         return false;
     }
     if ($CFG->enableavailability) {
@@ -1642,7 +1748,7 @@ function coursemodule_visible_for_user($cm, $userid=0) {
         $ci=new condition_info($cm,CONDITION_MISSING_EXTRATABLE);
         if(!$ci->is_available($cm->availableinfo,false,$userid) and
             !has_capability('moodle/course:viewhiddenactivities',
-                get_context_instance(CONTEXT_MODULE, $cm->id), $userid)) {
+                context_module::instance($cm->id), $userid)) {
             return false;
         }
     }
@@ -1662,14 +1768,16 @@ function coursemodule_visible_for_user($cm, $userid=0) {
  * than web server hits, and provide a way to easily reconstruct what
  * any particular student has been doing.
  *
- * @global object
- * @global object
- * @global object
+ * @package core
+ * @category log
+ * @global moodle_database $DB
+ * @global stdClass $CFG
+ * @global stdClass $USER
  * @uses SITEID
  * @uses DEBUG_DEVELOPER
  * @uses DEBUG_ALL
  * @param    int     $courseid  The course id
- * @param    string  $module  The module name - e.g. forum, journal, resource, course, user etc
+ * @param    string  $module  The module name  e.g. forum, journal, resource, course, user etc
  * @param    string  $action  'view', 'update', 'add' or 'delete', possibly followed by another word to clarify.
  * @param    string  $url     The file and parameters used to see the results of the action
  * @param    string  $info    Additional description information
@@ -1716,15 +1824,14 @@ function add_to_log($courseid, $module, $action, $url='', $info='', $cm=0, $user
     // database so that it doesn't cause a DB error. Log a warning so that
     // developers can avoid doing things which are likely to cause this on a
     // routine basis.
-    $tl = textlib_get_instance();
-    if(!empty($info) && $tl->strlen($info)>255) {
-        $info = $tl->substr($info,0,252).'...';
+    if(!empty($info) && textlib::strlen($info)>255) {
+        $info = textlib::substr($info,0,252).'...';
         debugging('Warning: logged very long info',DEBUG_DEVELOPER);
     }
 
     // If the 100 field size is changed, also need to alter print_log in course/lib.php
-    if(!empty($url) && $tl->strlen($url)>100) {
-        $url=$tl->substr($url,0,97).'...';
+    if(!empty($url) && textlib::strlen($url)>100) {
+        $url = textlib::substr($url,0,97).'...';
         debugging('Warning: logged very long URL',DEBUG_DEVELOPER);
     }
 
@@ -1736,7 +1843,8 @@ function add_to_log($courseid, $module, $action, $url='', $info='', $cm=0, $user
     try {
         $DB->insert_record_raw('log', $log, false);
     } catch (dml_exception $e) {
-        debugging('Error: Could not insert a new entry to the Moodle log', DEBUG_ALL);
+        debugging('Error: Could not insert a new entry to the Moodle log. '. $e->error, DEBUG_ALL);
+
         // MDL-11893, alert $CFG->supportemail if insert into log failed
         if ($CFG->supportemail and empty($CFG->noemailever)) {
             // email_to_user is not usable because email_to_user tries to write to the logs table,
@@ -1759,12 +1867,14 @@ function add_to_log($courseid, $module, $action, $url='', $info='', $cm=0, $user
 /**
  * Store user last access times - called when use enters a course or site
  *
- * @global object
- * @global object
- * @global object
+ * @package core
+ * @category log
+ * @global stdClass $USER
+ * @global stdClass $CFG
+ * @global moodle_database $DB
  * @uses LASTACCESS_UPDATE_SECS
  * @uses SITEID
- * @param int $courseid, empty means site
+ * @param int $courseid  empty courseid means site
  * @return void
  */
 function user_accesstime_log($courseid=0) {
@@ -1834,16 +1944,16 @@ function user_accesstime_log($courseid=0) {
 /**
  * Select all log records based on SQL criteria
  *
- * @todo Finish documenting this function
- *
- * @global object
+ * @package core
+ * @category log
+ * @global moodle_database $DB
  * @param string $select SQL select criteria
  * @param array $params named sql type params
  * @param string $order SQL order by clause to sort the records returned
- * @param string $limitfrom ?
- * @param int $limitnum ?
+ * @param string $limitfrom return a subset of records, starting at this point (optional, required if $limitnum is set)
+ * @param int $limitnum return a subset comprising this many records (optional, required if $limitfrom is set)
  * @param int $totalcount Passed in by reference.
- * @return object
+ * @return array
  */
 function get_logs($select, array $params=null, $order='l.time DESC', $limitfrom='', $limitnum='', &$totalcount) {
     global $DB;
@@ -1878,13 +1988,14 @@ function get_logs($select, array $params=null, $order='l.time DESC', $limitfrom=
 /**
  * Select all log records for a given course and user
  *
- * @todo Finish documenting this function
- *
- * @global object
+ * @package core
+ * @category log
+ * @global moodle_database $DB
  * @uses DAYSECS
  * @param int $userid The id of the user as found in the 'user' table.
  * @param int $courseid The id of the course as found in the 'course' table.
- * @param string $coursestart ?
+ * @param string $coursestart unix timestamp representing course start date and time.
+ * @return array
  */
 function get_logs_usercourse($userid, $courseid, $coursestart) {
     global $DB;
@@ -1909,12 +2020,14 @@ function get_logs_usercourse($userid, $courseid, $coursestart) {
 /**
  * Select all log records for a given course, user, and day
  *
- * @global object
+ * @package core
+ * @category log
+ * @global moodle_database $DB
  * @uses HOURSECS
  * @param int $userid The id of the user as found in the 'user' table.
  * @param int $courseid The id of the course as found in the 'course' table.
- * @param string $daystart ?
- * @return object
+ * @param string $daystart unix timestamp of the start of the day for which the logs needs to be retrived
+ * @return array
  */
 function get_logs_userday($userid, $courseid, $daystart) {
     global $DB;
@@ -1943,7 +2056,7 @@ function get_logs_userday($userid, $courseid, $daystart) {
  * number of accounts.  For non-admins, only the attempts on the given user
  * are shown.
  *
- * @global object
+ * @global moodle_database $DB
  * @uses CONTEXT_SYSTEM
  * @param string $mode Either 'admin' or 'everybody'
  * @param string $username The username we are searching for
@@ -2022,7 +2135,7 @@ function user_can_create_courses() {
     global $DB;
     $catsrs = $DB->get_recordset('course_categories');
     foreach ($catsrs as $cat) {
-        if (has_capability('moodle/course:create', get_context_instance(CONTEXT_COURSECAT, $cat->id))) {
+        if (has_capability('moodle/course:create', context_coursecat::instance($cat->id))) {
             $catsrs->close();
             return true;
         }

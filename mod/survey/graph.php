@@ -36,10 +36,10 @@
         }
     }
 
-    require_login($course->id, false, $cm);
+    require_login($course, false, $cm);
 
     $groupmode = groups_get_activity_groupmode($cm);   // Groups are being used
-    $context = get_context_instance(CONTEXT_MODULE, $cm->id);
+    $context = context_module::instance($cm->id);
 
     if (!has_capability('mod/survey:readresponses', $context)) {
         if ($type != "student.png" or $sid != $USER->id ) {
