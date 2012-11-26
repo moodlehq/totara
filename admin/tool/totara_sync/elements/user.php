@@ -375,7 +375,7 @@ class totara_sync_element_user extends totara_sync_element {
             $user->city = $suser->city;
         }
         if (isset($suser->country)) {
-            $user->country = $suser->country;
+            $user->country = strtoupper($suser->country);
         }
         if (isset($suser->timezone)) {
             $user->timezone = $suser->timezone;
