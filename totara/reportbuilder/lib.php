@@ -994,7 +994,7 @@ class reportbuilder {
     *
     * @return array Array of access plugin names
     */
-    function get_all_access_plugins() {
+    public static function get_all_access_plugins() {
         $plugins = array();
         // loop round classes, only considering classes that extend rb_base_access
         foreach (get_declared_classes() as $class) {
@@ -1025,7 +1025,7 @@ class reportbuilder {
     * @param array $plugins array of particular plugins to check
     * @return array Array of reports, with enabled plugin names and access status
     */
-    function get_reports_plugins_access($userid, $plugins=NULL) {
+    public static function get_reports_plugins_access($userid, $plugins=NULL) {
         global $DB;
         //create return variable
         $report_plugin_access = array();
