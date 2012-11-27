@@ -83,8 +83,8 @@ class user_filter_courserole extends user_filter_type {
      */
     function get_sql_filter($data) {
         global $CFG, $DB;
-        static $counter = 0;
-        $pref = 'ex_courserole'.($counter++).'_';
+
+        $pref = user_filter_type::filter_unique_param('ex_courserole') . '_';
 
         $value      = $data['value'];
         $roleid     = $data['roleid'];

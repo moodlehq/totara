@@ -60,9 +60,7 @@ class user_filter_simpleselect extends user_filter_type {
      * @return array sql string and $params
      */
     function get_sql_filter($data) {
-        static $counter = 0;
-        $name = 'ex_simpleselect'.$counter++;
-
+        $name = user_filter_type::filter_unique_param('ex_simpleselect');
         $value = $data['value'];
         $params = array();
         $field = $this->_field;

@@ -80,9 +80,8 @@ class user_filter_text extends user_filter_type {
      */
     function get_sql_filter($data) {
         global $DB;
-        static $counter = 0;
-        $name = 'ex_text'.$counter++;
 
+        $name = user_filter_type::filter_unique_param('ex_text');
         $operator = $data['operator'];
         $value    = $data['value'];
         $field    = $this->_field;

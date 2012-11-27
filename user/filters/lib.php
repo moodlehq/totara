@@ -251,6 +251,20 @@ class user_filter_type {
     }
 
     /**
+     * Attempt to ensure an SQL named param is unique by incrementing a counter global across filter classes
+     *
+     * @param string $name the param name to make unique
+     * @return string the unique string
+     */
+    static function filter_unique_param($name) {
+
+        static $counter = 0;
+        $param = $name . $counter++;
+
+        return $param;
+    }
+
+    /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
      * @return string the filtering condition or null if the filter is disabled

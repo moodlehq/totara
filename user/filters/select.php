@@ -82,9 +82,8 @@ class user_filter_select extends user_filter_type {
      * @return array sql string and $params
      */
     function get_sql_filter($data) {
-        static $counter = 0;
-        $name = 'ex_select'.$counter++;
 
+        $name = user_filter_type::filter_unique_param('ex_select');
         $operator = $data['operator'];
         $value    = $data['value'];
         $field    = $this->_field;

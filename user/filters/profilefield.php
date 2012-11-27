@@ -101,9 +101,8 @@ class user_filter_profilefield extends user_filter_type {
      */
     function get_sql_filter($data) {
         global $CFG, $DB;
-        static $counter = 0;
-        $name = 'ex_profilefield'.$counter++;
 
+        $name = user_filter_type::filter_unique_param('ex_profilefield');
         $profile_fields = $this->get_profile_fields();
         if (empty($profile_fields)) {
             return '';

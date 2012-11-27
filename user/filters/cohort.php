@@ -70,9 +70,8 @@ class user_filter_cohort extends user_filter_type {
      */
     function get_sql_filter($data) {
         global $DB;
-        static $counter = 0;
-        $name = 'ex_cohort'.$counter++;
 
+        $name = user_filter_type::filter_unique_param('ex_cohort');
         $operator = $data['operator'];
         $value    = $data['value'];
 
