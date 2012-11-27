@@ -306,7 +306,7 @@ $parentlist = array();
 $displaylist[0] = get_string('top');
 make_categories_list($displaylist, $parentlist);
 
-echo '<table class="generalbox fullwidth editcourse boxaligncenter"><tr class="header">';
+echo '<table class="generaltable fullwidth editcourse boxaligncenter"><tr class="header">';
 echo '<th class="header" scope="col">'.$strcategories.'</th>';
 echo '<th class="header" scope="col">'.$strcourses.'</th>';
 echo '<th class="header" scope="col">'.$strprograms.'</th>';
@@ -388,7 +388,7 @@ function print_category_edit($category, $displaylist, $parentslist, $depth=-1, $
 
             if (has_capability('moodle/cohort:manage', $category->context) or has_capability('moodle/cohort:view', $category->context)) {
                 echo '<a title="'.$str->cohorts.'" href="'.$CFG->wwwroot.'/cohort/index.php?contextid='.$category->context->id.'"><img'.
-                     ' src="'.$OUTPUT->pix_url('i/cohort') . '" class="iconsmall" alt="'.$str->cohorts.'" /></a> ';
+                     ' src="'.$OUTPUT->pix_url('t/cohort') . '" class="iconsmall" alt="'.$str->cohorts.'" /></a> ';
             }
 
             if ($up) {

@@ -290,10 +290,10 @@ class cache_definition {
             throw new coding_exception('You must provide a mode when creating a cache definition');
         }
         if (!array_key_exists('component', $definition)) {
-            throw new coding_exception('You must provide a mode when creating a cache definition');
+            throw new coding_exception('You must provide a component when creating a cache definition');
         }
         if (!array_key_exists('area', $definition)) {
-            throw new coding_exception('You must provide a mode when creating a cache definition');
+            throw new coding_exception('You must provide an area when creating a cache definition');
         }
         $mode = (int)$definition['mode'];
         $component = (string)$definition['component'];
@@ -457,20 +457,31 @@ class cache_definition {
      * @param int $mode One of cache_store::MODE_*
      * @param string $component The component this definition relates to.
      * @param string $area The area this definition relates to.
-     * @param string $overrideclass The class to use as the loader.
-     * @param bool $persistent If this cache should be persistent.
+     * @param array $options An array of options, available options are:
+     *   - simplekeys : Set to true if the keys you will use are a-zA-Z0-9_
+     *   - simpledata : Set to true if the type of the data you are going to store is scalar, or an array of scalar vars
+     *   - overrideclass : The class to use as the loader.
+     *   - persistent : If set to true the cache will persist construction requests.
      * @return cache_application|cache_session|cache_request
      */
-    public static function load_adhoc($mode, $component, $area, $overrideclass = null, $persistent = false) {
+    public static function load_adhoc($mode, $component, $area, array $options = array()) {
         $id = 'adhoc/'.$component.'_'.$area;
         $definition = array(
             'mode' => $mode,
             'component' => $component,
             'area' => $area,
-            'persistent' => $persistent
         );
-        if (!is_null($overrideclass)) {
-            $definition['overrideclass'] = $overrideclass;
+        if (!empty($options['simplekeys'])) {
+            $definition['simplekeys'] = $options['simplekeys'];
+        }
+        if (!empty($options['simpledata'])) {
+            $definition['simpledata'] = $options['simpledata'];
+        }
+        if (!empty($options['persistent'])) {
+            $definition['persistent'] = $options['persistent'];
+        }
+        if (!empty($options['overrideclass'])) {
+            $definition['overrideclass'] = $options['overrideclass'];
         }
         return self::load($id, $definition, null);
     }
@@ -638,7 +649,7 @@ class cache_definition {
      */
     public function get_data_source() {
         if (!$this->has_data_source()) {
-            throw new coding_exception('This cache does not use a datasource.');
+            throw new coding_exception('This cache does not use a data source.');
         }
         return forward_static_call(array($this->datasource, 'get_instance_for_cache'), $this);
     }

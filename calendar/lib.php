@@ -1465,6 +1465,11 @@ function calendar_edit_event_allowed($event) {
         return false;
     }
 
+    // You cannot edit calendar subscription events presently.
+    if (!empty($event->subscriptionid)) {
+        return false;
+    }
+
     $sitecontext = context_system::instance();
     // if user has manageentries at site level, return true
     if (has_capability('moodle/calendar:manageentries', $sitecontext)) {
@@ -2868,8 +2873,10 @@ function calendar_get_icalendar($url) {
     require_once($CFG->libdir.'/filelib.php');
 
     $curl = new curl();
+    $curl->setopt(array('CURLOPT_FOLLOWLOCATION' => 1, 'CURLOPT_MAXREDIRS' => 5));
     $calendar = $curl->get($url);
-    if (!$calendar) {
+    // Http code validation should actually be the job of curl class.
+    if (!$calendar || $curl->info['http_code'] != 200 || !empty($curl->errorno)) {
         throw new moodle_exception('errorinvalidicalurl', 'calendar');
     }
 

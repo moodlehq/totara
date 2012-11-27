@@ -147,7 +147,7 @@ class cachestore_dummy implements cache_store {
      * Returns true if this store supports multiple identifiers.
      * @return bool
      */
-    public function supports_multiple_indentifiers() {
+    public function supports_multiple_identifiers() {
         return false;
     }
 
@@ -264,7 +264,7 @@ class cachestore_dummy implements cache_store {
     public static function initialise_test_instance(cache_definition $definition) {
         $cache = new cachestore_dummy('Dummy store test');
         $cache->initialise($definition);
-        return $cache;;
+        return $cache;
     }
 
     /**

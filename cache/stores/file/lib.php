@@ -209,7 +209,7 @@ class cachestore_file implements cache_store, cache_is_key_aware {
      *
      * @return bool
      */
-    public function supports_multiple_indentifiers() {
+    public function supports_multiple_identifiers() {
         return false;
     }
 
@@ -255,8 +255,11 @@ class cachestore_file implements cache_store, cache_is_key_aware {
      * Pre-scan the cache to see which keys are present.
      */
     protected function prescan_keys() {
-        foreach (glob($this->glob_keys_pattern(), GLOB_MARK | GLOB_NOSORT) as $filename) {
-            $this->keys[basename($filename)] = filemtime($filename);
+        $files = glob($this->glob_keys_pattern(), GLOB_MARK | GLOB_NOSORT);
+        if (is_array($files)) {
+            foreach ($files as $filename) {
+                $this->keys[basename($filename)] = filemtime($filename);
+            }
         }
     }
 
@@ -370,9 +373,13 @@ class cachestore_file implements cache_store, cache_is_key_aware {
     public function delete($key) {
         $filename = $key.'.cache';
         $file = $this->file_path_for_key($key);
-        $result = @unlink($file);
-        unset($this->keys[$filename]);
-        return $result;
+
+        if (@unlink($file)) {
+            unset($this->keys[$filename]);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -510,8 +517,11 @@ class cachestore_file implements cache_store, cache_is_key_aware {
      * @return boolean True on success. False otherwise.
      */
     public function purge() {
-        foreach (glob($this->glob_keys_pattern(), GLOB_MARK | GLOB_NOSORT) as $filename) {
-            @unlink($filename);
+        $files = glob($this->glob_keys_pattern(), GLOB_MARK | GLOB_NOSORT);
+        if (is_array($files)) {
+            foreach ($files as $filename) {
+                @unlink($filename);
+            }
         }
         $this->keys = array();
         return true;

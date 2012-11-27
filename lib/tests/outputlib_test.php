@@ -193,8 +193,8 @@ class theme_config_testcase extends advanced_testcase {
             'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)' => false,
             // IE9 on Windows 7.
             'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)' => true,
-            // IE9 on Windows 7 in compatability mode.
-            'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/5.0)' => false,
+            // IE9 on Windows 7 in intranet mode.
+            'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; Trident/5.0)' => true,
             // Chrome 11 on Windows.
             'Mozilla/5.0 (Windows; U; Windows NT 5.2; en-US) AppleWebKit/534.17 (KHTML, like Gecko) Chrome/11.0.652.0 Safari/534.17' => true,
             // Chrome 22 on Windows.
@@ -208,7 +208,7 @@ class theme_config_testcase extends advanced_testcase {
             // Firefox 15 on Ubuntu.
             'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1' => true,
             // Opera 12.02 on Ubuntu.
-            'Opera/9.80 (X11; Linux x86_64; U; en) Presto/2.10.289 Version/12.02' => true,
+            'Opera/9.80 (X11; Linux x86_64; U; en) Presto/2.10.289 Version/12.02' => false,
             // Android browser pre 1.0
             'Mozilla/5.0 (Linux; U; Android 0.5; en-us) AppleWebKit/522+ (KHTML, like Gecko) Safari/419.3' => false,
             // Android browser 2.3 (HTC)

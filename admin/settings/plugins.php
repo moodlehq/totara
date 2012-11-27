@@ -20,6 +20,15 @@ if ($hassiteconfig) {
     // hidden script for converting journals to online assignments (or something like that) linked from elsewhere
     $ADMIN->add('modsettings', new admin_externalpage('oacleanup', 'Online Assignment Cleanup', $CFG->wwwroot.'/'.$CFG->admin.'/oacleanup.php', 'moodle/site:config', true));
 
+    // course formats
+    $ADMIN->add('modules', new admin_category('formatsettings', new lang_string('courseformats')));
+    $temp = new admin_settingpage('manageformats', new lang_string('manageformats', 'core_admin'));
+    $temp->add(new admin_setting_manageformats());
+    $ADMIN->add('formatsettings', $temp);
+    foreach ($allplugins['format'] as $format) {
+        $format->load_settings($ADMIN, 'formatsettings', $hassiteconfig);
+    }
+
     // blocks
     $ADMIN->add('modules', new admin_category('blocksettings', new lang_string('blocks')));
     $ADMIN->add('blocksettings', new admin_page_manageblocks());
@@ -308,6 +317,10 @@ if ($hassiteconfig) {
 
 // Question type settings
 if ($hassiteconfig || has_capability('moodle/question:config', $systemcontext)) {
+    if (!$hassiteconfig) {
+        require_once("$CFG->libdir/pluginlib.php");
+        $allplugins = plugin_manager::instance()->get_plugins();
+    }
     // Question behaviour settings.
     $ADMIN->add('modules', new admin_category('qbehavioursettings', new lang_string('questionbehaviours', 'admin')));
     $ADMIN->add('qbehavioursettings', new admin_page_manageqbehaviours());

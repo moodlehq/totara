@@ -230,7 +230,7 @@ class cachestore_mongodb implements cache_store {
      * Returns true if this store is making use of multiple identifiers.
      * @return bool
      */
-    public function supports_multiple_indentifiers() {
+    public function supports_multiple_identifiers() {
         return $this->extendedmode;
     }
 
@@ -239,7 +239,7 @@ class cachestore_mongodb implements cache_store {
      * @return bool
      */
     public function supports_native_ttl() {
-        return false;;
+        return false;
     }
 
     /**

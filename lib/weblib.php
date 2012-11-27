@@ -1843,7 +1843,26 @@ function get_html_lang($dir = false) {
 
 /**
  * Send the HTTP headers that Moodle requires.
- * @param $cacheable Can this page be cached on back?
+ *
+ * There is a backwards compatibility hack for legacy code
+ * that needs to add custom IE compatibility directive.
+ *
+ * Example:
+ * <code>
+ * if (!isset($CFG->additionalhtmlhead)) {
+ *     $CFG->additionalhtmlhead = '';
+ * }
+ * $CFG->additionalhtmlhead .= '<meta http-equiv="X-UA-Compatible" content="IE=8" />';
+ * header('X-UA-Compatible: IE=8');
+ * echo $OUTPUT->header();
+ * </code>
+ *
+ * Please note the $CFG->additionalhtmlhead alone might not work,
+ * you should send the IE compatibility header() too.
+ *
+ * @param string $contenttype
+ * @param bool $cacheable Can this page be cached on back?
+ * @return void, sends HTTP headers
  */
 function send_headers($contenttype, $cacheable = true) {
     global $CFG;
@@ -1851,6 +1870,10 @@ function send_headers($contenttype, $cacheable = true) {
     @header('Content-Type: ' . $contenttype);
     @header('Content-Script-Type: text/javascript');
     @header('Content-Style-Type: text/css');
+
+    if (empty($CFG->additionalhtmlhead) or stripos($CFG->additionalhtmlhead, 'X-UA-Compatible') === false) {
+        @header('X-UA-Compatible: IE=edge');
+    }
 
     if ($cacheable) {
         // Allow caching on "back" (but not on normal clicks)

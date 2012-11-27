@@ -97,13 +97,21 @@ abstract class format_base {
         if ($format === 'site') {
             return $format;
         }
-        $plugins = get_plugin_list('format'); // TODO MDL-35260 filter only enabled
-        if (isset($plugins[$format])) {
+        $plugins = get_sorted_course_formats();
+        if (in_array($format, $plugins)) {
             return $format;
         }
         // Else return default format
-        $defaultformat = reset($plugins); // TODO MDL-35260 get default format from config
-        debugging('Format plugin format_'.$format.' is not found or is not enabled. Using default format_'.$defaultformat, DEBUG_DEVELOPER);
+        $defaultformat = get_config('moodlecourse', 'format');
+        if (!in_array($defaultformat, $plugins)) {
+            // when default format is not set correctly, use the first available format
+            $defaultformat = reset($plugins);
+        }
+        static $warningprinted = array();
+        if (empty($warningprinted[$format])) {
+            debugging('Format plugin format_'.$format.' is not found. Using default format_'.$defaultformat, DEBUG_DEVELOPER);
+            $warningprinted[$format] = true;
+        }
         return $defaultformat;
     }
 
@@ -784,6 +792,90 @@ abstract class format_base {
      * @param moodle_page $page instance of page calling set_cm
      */
     public function page_set_cm(moodle_page $page) {
+    }
+
+    /**
+     * Course-specific information to be output on any course page (usually above navigation bar)
+     *
+     * Example of usage:
+     * define
+     * class format_FORMATNAME_XXX implements renderable {}
+     *
+     * create format renderer in course/format/FORMATNAME/renderer.php, define rendering function:
+     * class format_FORMATNAME_renderer extends plugin_renderer_base {
+     *     protected function render_format_FORMATNAME_XXX(format_FORMATNAME_XXX $xxx) {
+     *         return html_writer::tag('div', 'This is my header/footer');
+     *     }
+     * }
+     *
+     * Return instance of format_FORMATNAME_XXX in this function, the appropriate method from
+     * plugin renderer will be called
+     *
+     * @return null|renderable null for no output or object with data for plugin renderer
+     */
+    public function course_header() {
+        return null;
+    }
+
+    /**
+     * Course-specific information to be output on any course page (usually in the beginning of
+     * standard footer)
+     *
+     * See {@link format_base::course_header()} for usage
+     *
+     * @return null|renderable null for no output or object with data for plugin renderer
+     */
+    public function course_footer() {
+        return null;
+    }
+
+    /**
+     * Course-specific information to be output immediately above content on any course page
+     *
+     * See {@link format_base::course_header()} for usage
+     *
+     * @return null|renderable null for no output or object with data for plugin renderer
+     */
+    public function course_content_header() {
+        return null;
+    }
+
+    /**
+     * Course-specific information to be output immediately below content on any course page
+     *
+     * See {@link format_base::course_header()} for usage
+     *
+     * @return null|renderable null for no output or object with data for plugin renderer
+     */
+    public function course_content_footer() {
+        return null;
+    }
+
+    /**
+     * Returns instance of page renderer used by this plugin
+     *
+     * @param moodle_page $page
+     * @return renderer_base
+     */
+    public function get_renderer(moodle_page $page) {
+        return $page->get_renderer('format_'. $this->get_format());
+    }
+
+    /**
+     * Returns true if the specified section is current
+     *
+     * By default we analyze $course->marker
+     *
+     * @param int|stdClass|section_info $section
+     * @return bool
+     */
+    public function is_section_current($section) {
+        if (is_object($section)) {
+            $sectionnum = $section->section;
+        } else {
+            $sectionnum = $section;
+        }
+        return ($sectionnum && ($course = $this->get_course()) && $course->marker == $sectionnum);
     }
 }
 

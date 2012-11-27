@@ -1282,6 +1282,7 @@ function get_module_types_names($plural = false) {
 function course_set_marker($courseid, $marker) {
     global $DB;
     $DB->set_field("course", "marker", $marker, array('id' => $courseid));
+    format_base::reset_course_cache($courseid);
 }
 
 /**
@@ -1302,7 +1303,16 @@ function set_section_visible($courseid, $sectionnumber, $visibility) {
         if (!empty($section->sequence)) {
             $modules = explode(",", $section->sequence);
             foreach ($modules as $moduleid) {
-                set_coursemodule_visible($moduleid, $visibility, true);
+                if ($cm = $DB->get_record('course_modules', array('id' => $moduleid), 'visible, visibleold')) {
+                    if ($visibility) {
+                        // As we unhide the section, we use the previously saved visibility stored in visibleold.
+                        set_coursemodule_visible($moduleid, $cm->visibleold);
+                    } else {
+                        // We hide the section, so we hide the module but we store the original state in visibleold.
+                        set_coursemodule_visible($moduleid, 0);
+                        $DB->set_field('course_modules', 'visibleold', $cm->visible, array('id' => $moduleid));
+                    }
+                }
             }
         }
         rebuild_course_cache($courseid, true);
@@ -1519,9 +1529,9 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                     $accesstext = '';
                 }
                 if ($linkclasses) {
-                    $linkcss = 'class="' . trim($linkclasses) . '" ';
+                    $linkcss = 'class="activityinstance ' . trim($linkclasses) . '" ';
                 } else {
-                    $linkcss = '';
+                    $linkcss = 'class="activityinstance"';
                 }
                 if ($textclasses) {
                     $textcss = 'class="' . trim($textclasses) . '" ';
@@ -1545,7 +1555,7 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                         // Display link itself
                         echo '<a ' . $linkcss . $mod->extra . $onclick .
                             ' href="' . $url . '"><img src="' . $mod->get_icon_url() .
-                            '" class="activityicon" alt="' . $mod->modfullname . '" /> ' .
+                            '" class="iconlarge activityicon" alt="' . $mod->modfullname . '" />' .
                             $accesstext . '<span class="instancename">' .
                             $instancename . $altname . '</span></a>';
 
@@ -1620,7 +1630,6 @@ function print_section($course, $section, $mods, $modnamesused, $absolute=false,
                 } else {
                     $mod->groupmode = false;
                 }
-                echo '&nbsp;&nbsp;';
                 echo make_editing_buttons($mod, $absolute, true, $mod->indent, $sectionreturn);
                 echo $mod->get_after_edit_icons();
             }
@@ -2859,15 +2868,25 @@ function set_coursemodule_idnumber($id, $idnumber) {
 }
 
 /**
-* $prevstateoverrides = true will set the visibility of the course module
-* to what is defined in visibleold. This enables us to remember the current
-* visibility when making a whole section hidden, so that when we toggle
-* that section back to visible, we are able to return the visibility of
-* the course module back to what it was originally.
-*/
-function set_coursemodule_visible($id, $visible, $prevstateoverrides=false) {
+ * Set the visibility of a module and inherent properties.
+ *
+ * From 2.4 the parameter $prevstateoverrides has been removed, the logic it triggered
+ * has been moved to {@link set_section_visible()} which was the only place from which
+ * the parameter was used.
+ *
+ * @param int $id of the module
+ * @param int $visible state of the module
+ * @return bool false when the module was not found, true otherwise
+ */
+function set_coursemodule_visible($id, $visible) {
     global $DB, $CFG;
     require_once($CFG->libdir.'/gradelib.php');
+
+    // Trigger developer's attention when using the previously removed argument.
+    if (func_num_args() > 2) {
+        debugging('Wrong number of arguments passed to set_coursemodule_visible(), $prevstateoverrides
+            has been removed.', DEBUG_DEVELOPER);
+    }
 
     if (!$cm = $DB->get_record('course_modules', array('id'=>$id))) {
         return false;
@@ -2893,17 +2912,14 @@ function set_coursemodule_visible($id, $visible, $prevstateoverrides=false) {
         }
     }
 
-    if ($prevstateoverrides) {
-        if ($visible == '0') {
-            // Remember the current visible state so we can toggle this back.
-            $DB->set_field('course_modules', 'visibleold', $cm->visible, array('id'=>$id));
-        } else {
-            // Get the previous saved visible states.
-            $DB->set_field('course_modules', 'visible', $cm->visibleold, array('id'=>$id));
-        }
-    } else {
-        $DB->set_field("course_modules", "visible", $visible, array("id"=>$id));
-    }
+    // Updating visible and visibleold to keep them in sync. Only changing a section visibility will
+    // affect visibleold to allow for an original visibility restore. See set_section_visible().
+    $cminfo = new stdClass();
+    $cminfo->id = $id;
+    $cminfo->visible = $visible;
+    $cminfo->visibleold = $visible;
+    $DB->update_record('course_modules', $cminfo);
+
     rebuild_course_cache($cm->course, true);
     return true;
 }
@@ -3369,7 +3385,7 @@ function make_editing_buttons(stdClass $mod, $absolute_ignored = true, $movesele
     if (has_capability('moodle/role:assign', $modcontext)){
         $actions[] = new action_link(
             new moodle_url('/'.$CFG->admin.'/roles/assign.php', array('contextid' => $modcontext->id)),
-            new pix_icon('i/roles', $str->assign, 'moodle', array('class' => 'iconsmall', 'title' => '')),
+            new pix_icon('t/assignroles', $str->assign, 'moodle', array('class' => 'iconsmall', 'title' => '')),
             null,
             array('class' => 'editing_assign', 'title' => $str->assign)
         );
@@ -4627,6 +4643,35 @@ function include_course_ajax($course, $usedmodules = array(), $enabledmodules = 
     ), 'moodle');
 
     return true;
+}
+
+/**
+ * Returns the sorted list of available course formats, filtered by enabled if necessary
+ *
+ * @param bool $enabledonly return only formats that are enabled
+ * @return array array of sorted format names
+ */
+function get_sorted_course_formats($enabledonly = false) {
+    global $CFG;
+    $formats = get_plugin_list('format');
+
+    if (!empty($CFG->format_plugins_sortorder)) {
+        $order = explode(',', $CFG->format_plugins_sortorder);
+        $order = array_merge(array_intersect($order, array_keys($formats)),
+                    array_diff(array_keys($formats), $order));
+    } else {
+        $order = array_keys($formats);
+    }
+    if (!$enabledonly) {
+        return $order;
+    }
+    $sortedformats = array();
+    foreach ($order as $formatname) {
+        if (!get_config('format_'.$formatname, 'disabled')) {
+            $sortedformats[] = $formatname;
+        }
+    }
+    return $sortedformats;
 }
 
 /**

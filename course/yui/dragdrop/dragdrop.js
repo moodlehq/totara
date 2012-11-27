@@ -87,8 +87,7 @@ YUI.add('moodle-course-dragdrop', function(Y) {
 
                     if ((movedown || moveup) && cssleft) {
                         cssleft.setStyle('cursor', 'move');
-                        cssleft.appendChild(Y.Node.create('<br />'));
-                        cssleft.appendChild(this.get_drag_handle(title, CSS.SECTIONHANDLE));
+                        cssleft.appendChild(this.get_drag_handle(title, CSS.SECTIONHANDLE, 'icon', true));
 
                         if (moveup) {
                             moveup.remove();
@@ -267,7 +266,8 @@ YUI.add('moodle-course-dragdrop', function(Y) {
                 });
                 del.dd.plug(Y.Plugin.DDProxy, {
                     // Don't move the node at the end of the drag
-                    moveOnEnd: false
+                    moveOnEnd: false,
+                    cloneNode: true
                 });
                 del.dd.plug(Y.Plugin.DDConstrained, {
                     // Keep it inside the .course-content
