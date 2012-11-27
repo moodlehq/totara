@@ -201,10 +201,11 @@ class dp_program_component extends dp_base_component {
         $cansetduedates = ($this->get_setting('setduedate') == DP_PERMISSION_ALLOW);
         $cansetpriorities = ($this->get_setting('setpriority') == DP_PERMISSION_ALLOW);
         $canapproveprograms = ($this->get_setting('updateprogram') == DP_PERMISSION_APPROVE);
-        $duedates = optional_param('duedate_program', array(), PARAM_TEXT);
-        $priorities = optional_param('priorities_program', array(), PARAM_TEXT);
-        $approvals = optional_param('approve_program', array(), PARAM_INT);
+        $duedates = optional_param_array('duedate_program', array(), PARAM_TEXT);
+        $priorities = optional_param_array('priorities_program', array(), PARAM_TEXT);
+        $approved_programs = optional_param_array('approve_program', array(), PARAM_INT);
         $currenturl = qualified_me();
+        $stored_records = array();
 
         if (!empty($duedates) && $cansetduedates) {
             $datepickerplaceholder = get_string('datepickerplaceholder', 'totara_core');
@@ -256,21 +257,21 @@ class dp_program_component extends dp_base_component {
             }
         }
 
-        if (!empty($approvals) && $canapproveprograms) {
+        if (!empty($approved_programs) && $canapproveprograms) {
             // Update approvals
-            foreach ($approvals as $id => $approval) {
-                if (!$approval) {
+            foreach ($approved_programs as $id => $approved) {
+                if (!$approved) {
                     continue;
                 }
-                $approval = (int) $approval;
+                $approved = (int) $approved;
                 if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
-                    $stored_records[$id]->approved = $approval;
+                    $stored_records[$id]->approved = $approved;
                 } else {
                     // create a new update object
                     $todb = new stdClass();
                     $todb->id = $id;
-                    $todb->approved = $approval;
+                    $todb->approved = $approved;
                     $stored_records[$id] = $todb;
                 }
             }
@@ -280,6 +281,7 @@ class dp_program_component extends dp_base_component {
             $oldrecords = $DB->get_records_list('dp_plan_program_assign', 'id', array_keys($stored_records));
 
             $updates = '';
+            $approvals = array();
             $transaction = $DB->start_delegated_transaction();
 
             foreach ($stored_records as $itemid => $record) {
@@ -302,7 +304,7 @@ class dp_program_component extends dp_base_component {
             foreach ($stored_records as $itemid => $record) {
                 // Record the updates for later use
                 $program = $DB->get_record('prog', array('id' => $oldrecords[$itemid]->programid));
-                $programheader = html_writer::start_tag('p', html_writer::tag('strong', format_string($program->fullname).':')) . html_writer::empty_tag('br');
+                $programheader = html_writer::tag('p', html_writer::tag('strong', format_string($program->fullname).':')) . html_writer::empty_tag('br');
                 $programprinted = false;
                 if (!empty($record->priority) && $oldrecords[$itemid]->priority != $record->priority) {
                     $oldpriority = $DB->get_field('dp_priority_scale_value', 'name', array('id' => $oldrecords[$itemid]->priority));
@@ -691,7 +693,8 @@ class dp_program_component extends dp_base_component {
         }
 
         $out = '';
-        $icon = $OUTPUT->pix_icon("/programicons/" . $item->icon, format_string($item->fullname), 'totara_core');
+        $itemicon = (!empty($item->icon)) ? $item->icon : 'default';
+        $icon = $OUTPUT->pix_icon("/programicons/" . $itemicon, format_string($item->fullname), 'totara_core');
         $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
 
         $program = new program($item->id);

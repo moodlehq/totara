@@ -639,7 +639,7 @@ class dp_course_component extends dp_base_component {
         $canapprovecourses = ($this->get_setting('updatecourse') == DP_PERMISSION_APPROVE);
         $duedates = optional_param_array('duedate_course', array(), PARAM_TEXT);
         $priorities = optional_param_array('priorities_course', array(), PARAM_TEXT);
-        $approvals = optional_param_array('approve_course', array(), PARAM_INT);
+        $approved_courses = optional_param_array('approve_course', array(), PARAM_INT);
         $currenturl = qualified_me();
         $stored_records = array();
 
@@ -688,21 +688,21 @@ class dp_course_component extends dp_base_component {
                 }
             }
         }
-        if (!empty($approvals) && $canapprovecourses) {
+        if (!empty($approved_courses) && $canapprovecourses) {
             // Update approvals
-            foreach ($approvals as $id => $approval) {
-                if (!$approval) {
+            foreach ($approved_courses as $id => $approved) {
+                if (!$approved) {
                     continue;
                 }
-                $approval = (int) $approval;
+                $approved = (int) $approved;
                 if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
-                    $stored_records[$id]->approved = $approval;
+                    $stored_records[$id]->approved = $approved;
                 } else {
                     // create a new update object
                     $todb = new stdClass();
                     $todb->id = $id;
-                    $todb->approved = $approval;
+                    $todb->approved = $approved;
                     $stored_records[$id] = $todb;
                 }
             }

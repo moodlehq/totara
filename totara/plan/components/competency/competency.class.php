@@ -733,12 +733,12 @@ class dp_competency_component extends dp_base_component {
         $canapprovecomps = ($this->get_setting('updatecompetency') == DP_PERMISSION_APPROVE);
         $duedates = optional_param_array('duedate_competency', array(), PARAM_TEXT);
         $priorities = optional_param_array('priorities_competency', array(), PARAM_INT);
-        $approvals = optional_param_array('approve_competency', array(), PARAM_INT);
+        $approved_comps = optional_param_array('approve_competency', array(), PARAM_INT);
         $evidences = optional_param_array('compprof_competency', array(), PARAM_INT);
         $linkedcourses = optional_param_array('linkedcourses', array(), PARAM_INT);
         $currenturl = qualified_me();
 
-        $oldrecords = $DB->get_records_list('dp_plan_competency_assign', 'planid', array($this->plan->id), null, 'id, planid, competencyid');
+        $oldrecords = $DB->get_records_list('dp_plan_competency_assign', 'planid', array($this->plan->id), null, 'id, planid, competencyid, approved');
         $status = true;
         $stored_records = array();
         if (!empty($evidences)) {
@@ -817,20 +817,20 @@ class dp_competency_component extends dp_base_component {
             }
         }
 
-        if (!empty($approvals) && $canapprovecomps) {
+        if (!empty($approved_comps) && $canapprovecomps) {
             // Update approvals
-            foreach ($approvals as $id => $approval) {
-                if (!$approval) {
+            foreach ($approved_comps as $id => $approved) {
+                if (!$approved) {
                     continue;
                 }
                 if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
-                    $stored_records[$id]->approved = $approval;
+                    $stored_records[$id]->approved = $approved;
                 } else {
                     // create a new update object
                     $todb = new stdClass();
                     $todb->id = $id;
-                    $todb->approved = $approval;
+                    $todb->approved = $approved;
                     $stored_records[$id] = $todb;
                 }
             }
@@ -839,7 +839,7 @@ class dp_competency_component extends dp_base_component {
         $status = true;
         if (!empty($stored_records)) {
             $updates = '';
-            $approvals = null;
+            $approvals = array();
             $transaction = $DB->start_delegated_transaction();
 
             foreach ($stored_records as $itemid => $record) {

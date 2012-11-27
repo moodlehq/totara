@@ -360,7 +360,7 @@ class dp_objective_component extends dp_base_component {
         $duedates = optional_param_array('duedate_objective', array(), PARAM_TEXT);
         $priorities = optional_param_array('priorities_objective', array(), PARAM_INT);
         $proficiencies = optional_param_array('proficiencies', array(), PARAM_INT);
-        $approvals = optional_param_array('approve_objective', array(), PARAM_INT);
+        $approved_objectives = optional_param_array('approve_objective', array(), PARAM_INT);
         $currenturl = qualified_me();
         $currentuser = $this->plan->userid;
         $stored_records = array();
@@ -434,20 +434,20 @@ class dp_objective_component extends dp_base_component {
             }
         }
 
-        if (!empty($approvals) && $canapprovecomps) {
+        if (!empty($approved_objectives) && $canapprovecomps) {
             // Update approvals
-            foreach ($approvals as $id => $approval) {
-                if (!$approval) {
+            foreach ($approved_objectives as $id => $approved) {
+                if (!$approved) {
                     continue;
                 }
                 if (array_key_exists($id, $stored_records)) {
                     // add to the existing update object
-                    $stored_records[$id]->approved = $approval;
+                    $stored_records[$id]->approved = $approved;
                 } else {
                     // create a new update object
                     $todb = new stdClass();
                     $todb->id = $id;
-                    $todb->approved = $approval;
+                    $todb->approved = $approved;
                     $stored_records[$id] = $todb;
                 }
             }
@@ -472,7 +472,7 @@ class dp_objective_component extends dp_base_component {
 
             // Process update alerts
             $updates = '';
-            $approvals = null;
+            $approvals = array();
             $objheader = html_writer::tag('strong', format_string($orig_objectives[$itemid]->fullname) . ': ');
             $objheader = html_writer::tag('p', $objheader);
             $objprinted = false;
