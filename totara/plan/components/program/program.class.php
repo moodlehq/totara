@@ -653,8 +653,8 @@ class dp_program_component extends dp_base_component {
         $prog = new program($item->programid);
         $accessible = $prog->is_accessible();
 
-
-        $img = $OUTPUT->pix_icon('/programicons/' . $item->icon, format_string($item->fullname), 'totara_core');
+        $itemicon = ($item && !empty($item->icon)) ? $item->icon : 'default';
+        $img = $OUTPUT->pix_icon('/programicons/' . $itemicon, format_string($item->fullname), 'totara_core');
         if ($approved && $accessible) {
             $link = $OUTPUT->action_link(
                     new moodle_url('/totara/plan/components/' . $this->component . '/view.php',array('id' => $this->plan->id, 'itemid' => $item->id, 'userid' => $extraparams)),
