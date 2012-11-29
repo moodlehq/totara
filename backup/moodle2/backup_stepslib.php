@@ -451,8 +451,8 @@ class backup_course_structure_step extends backup_structure_step {
             'visible', 'groupmode', 'groupmodeforce',
             'defaultgroupingid', 'lang', 'theme',
             'timecreated', 'timemodified',
-            'requested',
-            'enablecompletion', 'completionstartonenrol', 'completionnotify'));
+            'requested', 'restrictmodules',
+            'enablecompletion', 'completionstartonenrol', 'completionnotify', 'icon'));
 
         $category = new backup_nested_element('category', array('id'), array(
             'name', 'description'));
