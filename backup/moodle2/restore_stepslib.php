@@ -1411,6 +1411,11 @@ class restore_course_structure_step extends restore_structure_step {
             $data->theme = '';
         }
 
+        // This is for when restoring from a moodle version 1 backup
+        $data->icon = str_replace(' ', '-', $data->icon);
+        $data->icon = str_replace('.png', '', $data->icon);
+        $data->icon = str_replace('.gif', '', $data->icon);
+
         // Course record ready, update it
         $DB->update_record('course', $data);
 
