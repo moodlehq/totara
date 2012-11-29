@@ -88,23 +88,28 @@ class user_filter_date extends user_filter_type {
     function get_sql_filter($data) {
         $after  = (int)$data['after'];
         $before = (int)$data['before'];
-
+        $params = array();
         $field  = $this->_field;
-
+        $name = user_filter_type::filter_unique_param('ex_date');
         if (empty($after) and empty($before)) {
-            return array('', array());
+            return array('', $params);
         }
 
-        $res = " $field >= 0 " ;
+        $res = " $field >= :{$name} " ;
+        $params[$name] = 0;
 
         if ($after) {
-            $res .= " AND $field >= $after";
+            $nameafter = user_filter_type::filter_unique_param('ex_date');
+            $res .= " AND $field >= :{$nameafter}";
+            $params[$nameafter] = $after;
         }
 
         if ($before) {
-            $res .= " AND $field <= $before";
+            $namebefore = user_filter_type::filter_unique_param('ex_date');
+            $res .= " AND $field <= :{$namebefore}";
+            $params[$namebefore] = $before;
         }
-        return array($res, array());
+        return array($res, $params);
     }
 
     /**

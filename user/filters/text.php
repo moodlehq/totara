@@ -89,36 +89,36 @@ class user_filter_text extends user_filter_type {
         $params = array();
 
         if ($operator != 5 and $value === '') {
-            return '';
+            return array('', $params);
         }
 
         switch($operator) {
             case 0: // contains
-                $res = $DB->sql_like($field, ":$name", false, false);
+                $res = $DB->sql_like($field, ":{$name}", false, false);
                 $params[$name] = "%$value%";
                 break;
             case 1: // does not contain
-                $res = $DB->sql_like($field, ":$name", false, false, true);
+                $res = $DB->sql_like($field, ":{$name}", false, false, true);
                 $params[$name] = "%$value%";
                 break;
             case 2: // equal to
-                $res = $DB->sql_like($field, ":$name", false, false);
+                $res = $DB->sql_like($field, ":{$name}", false, false);
                 $params[$name] = "$value";
                 break;
             case 3: // starts with
-                $res = $DB->sql_like($field, ":$name", false, false);
+                $res = $DB->sql_like($field, ":{$name}", false, false);
                 $params[$name] = "$value%";
                 break;
             case 4: // ends with
-                $res = $DB->sql_like($field, ":$name", false, false);
+                $res = $DB->sql_like($field, ":{$name}", false, false);
                 $params[$name] = "%$value";
                 break;
             case 5: // empty
-                $res = "$field = :$name";
+                $res = "{$field} = :{$name}";
                 $params[$name] = $DB->sql_empty();
                 break;
             default:
-                return '';
+                return array('', $params);
         }
         return array($res, $params);
     }

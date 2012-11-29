@@ -65,9 +65,9 @@ class user_filter_simpleselect extends user_filter_type {
         $params = array();
         $field = $this->_field;
         if ($value == '') {
-            return '';
+            return array('', $params);
         }
-        return array("$field=:$name", array($name=>$value));
+        return array("{$field} = :{$name}", array($name => $value));
     }
 
     /**

@@ -78,7 +78,7 @@ class user_filter_cohort extends user_filter_type {
         $params = array();
 
         if ($value === '') {
-            return '';
+            return array('', $params);
         }
 
         switch($operator) {
@@ -103,7 +103,7 @@ class user_filter_cohort extends user_filter_type {
                 $params[$name] = "%$value";
                 break;
             default:
-                return '';
+                return array('', $params);
         }
 
         $sql = "id IN (SELECT userid

@@ -119,12 +119,15 @@ class user_filter_checkbox extends user_filter_type {
      */
     public function get_sql_filter($data) {
         $field  = $this->field;
+        $name = user_filter_type::filter_unique_param('ex_checkbox');
+        $params = array();
         if (is_array($field)) {
-            $res = " {$field[0]} = {$field[1]} ";
+            $res = " {$field[0]} = :{$name} ";
+            $params[$name] = $field[1];
         } else {
             $res = " {$field} = 0 ";
         }
-        return array($res, array());
+        return array($res, $params);
     }
 
     /**

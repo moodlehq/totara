@@ -61,13 +61,16 @@ class user_filter_globalrole extends user_filter_type {
     function get_sql_filter($data) {
         global $CFG;
         $value = (int)$data['value'];
-
         $timenow = round(time(), 100);
-
+        $params = array();
+        $namecontext = user_filter_type::filter_unique_param('ex_globalrole');
+        $namerole = user_filter_type::filter_unique_param('ex_globalrole');
         $sql = "id IN (SELECT userid
                          FROM {role_assignments} a
-                        WHERE a.contextid=".SYSCONTEXTID." AND a.roleid=$value)";
-        return array($sql, array());
+                        WHERE a.contextid = :{$namecontext} AND a.roleid = :{$namerole})";
+        $params[$namecontext] = SYSCONTEXTID;
+        $params[$namerole] = $value;
+        return array($sql, $params);
     }
 
     /**

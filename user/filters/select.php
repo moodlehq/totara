@@ -83,24 +83,23 @@ class user_filter_select extends user_filter_type {
      */
     function get_sql_filter($data) {
 
+        $params = array();
         $name = user_filter_type::filter_unique_param('ex_select');
         $operator = $data['operator'];
         $value    = $data['value'];
         $field    = $this->_field;
 
-        $params = array();
-
         switch($operator) {
             case 1: // equal to
-                $res = "=:$name";
+                $res = "=:{$name}";
                 $params[$name] = $value;
                 break;
             case 2: // not equal to
-                $res = "<>:$name";
+                $res = "<>:{$name}";
                 $params[$name] = $value;
                  break;
             default:
-                return array('', array());
+                return array('', $params);
         }
         return array($field.$res, $params);
     }

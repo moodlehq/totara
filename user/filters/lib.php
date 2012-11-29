@@ -267,7 +267,7 @@ class user_filter_type {
     /**
      * Returns the condition to be used with SQL where
      * @param array $data filter settings
-     * @return string the filtering condition or null if the filter is disabled
+     * @return array(string $sql, array $parameters)
      */
     function get_sql_filter($data) {
         print_error('mustbeoveride', 'debug', '', 'get_sql_filter');

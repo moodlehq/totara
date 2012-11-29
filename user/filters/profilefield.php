@@ -103,9 +103,10 @@ class user_filter_profilefield extends user_filter_type {
         global $CFG, $DB;
 
         $name = user_filter_type::filter_unique_param('ex_profilefield');
+        $params = array();
         $profile_fields = $this->get_profile_fields();
         if (empty($profile_fields)) {
-            return '';
+            return array('', $params);
         }
 
         $profile  = $data['profile'];
@@ -114,39 +115,39 @@ class user_filter_profilefield extends user_filter_type {
 
         $params = array();
         if (!array_key_exists($profile, $profile_fields)) {
-            return array('', array());
+            return array('', $params);
         }
 
         $where = "";
         $op = " IN ";
 
         if ($operator < 5 and $value === '') {
-            return '';
+            return array('', $params);
         }
 
         switch($operator) {
             case 0: // contains
-                $where = $DB->sql_like('data', ":$name", false, false);
+                $where = $DB->sql_like('data', ":{$name}", false, false);
                 $params[$name] = "%$value%";
                 break;
             case 1: // does not contain
-                $where = $DB->sql_like('data', ":$name", false, false, true);
+                $where = $DB->sql_like('data', ":{$name}", false, false, true);
                 $params[$name] = "%$value%";
                 break;
             case 2: // equal to
-                $where = $DB->sql_like('data', ":$name", false, false);
+                $where = $DB->sql_like('data', ":{$name}", false, false);
                 $params[$name] = "$value";
                 break;
             case 3: // starts with
-                $where = $DB->sql_like('data', ":$name", false, false);
+                $where = $DB->sql_like('data', ":{$name}", false, false);
                 $params[$name] = "$value%";
                 break;
             case 4: // ends with
-                $where = $DB->sql_like('data', ":$name", false, false);
+                $where = $DB->sql_like('data', ":{$name}", false, false);
                 $params[$name] = "%$value";
                 break;
             case 5: // empty
-                $where = "data = :$name";
+                $where = "data = :{$name}";
                 $params[$name] = "";
                 break;
             case 6: // is not defined
