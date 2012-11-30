@@ -1199,7 +1199,8 @@ function prog_get_tab_link($userid) {
 
         $requiredlearningcount = prog_get_required_programs($userid, '', '', '', true, true);
         if ($requiredlearningcount == 1) {
-            $program = reset(prog_get_required_programs($userid, '', '', '', false, true));
+            $result = prog_get_required_programs($userid, '', '', '', false, true);
+            $program = reset($result);
             $prog = new program($program->id);
             if (!$prog->is_accessible()) {
                 return false;

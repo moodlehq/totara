@@ -1404,7 +1404,7 @@ class completion_info {
      * @param   $limit      int     Limit number of records returned (optional)
      * @return  array
      */
-    function get_all_courses($userid, $limit=0) {
+    public static function get_all_courses($userid, $limit=0) {
         global $DB;
 
         $sql = "

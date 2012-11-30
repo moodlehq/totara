@@ -517,7 +517,7 @@ class reportbuilder {
      * @return mixed An array of objects or a single object that match all
      *               the conditions
      */
-    function reduce_items($items, $conditions, $multiple=true) {
+    static function reduce_items($items, $conditions, $multiple=true) {
         if (!is_array($items)) {
             throw new ReportBuilderException('Input not an array');
         }

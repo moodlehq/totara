@@ -304,7 +304,7 @@ class report_builder_edit_filters_form extends moodleform {
         }
     }
 
-    function validation($data) {
+    function validation($data, $files) {
         $err = array();
         $err += validate_unique_filters($data);
         return $err;
@@ -525,7 +525,7 @@ class report_builder_edit_columns_form extends moodleform {
     }
 
 
-    function validation($data) {
+    function validation($data, $files) {
         $err = array();
         $err += validate_unique_columns($data);
         $err += validate_none_empty_heading_columns($data);
