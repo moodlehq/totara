@@ -73,7 +73,15 @@ class plan_reactivate_form extends moodleform {
         $this->add_action_buttons(true, get_string('reactivate', 'totara_plan'));
     }
 
-    function validation($data) {
+    /**
+     * Carries out validation of submitted form values
+     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *         or an empty array if everything is OK (true allowed for backwards compatibility too).
+     */
+    function validation($data, $files) {
         $mform =& $this->_form;
 
         $result = array();

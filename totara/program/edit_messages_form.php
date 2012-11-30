@@ -89,7 +89,7 @@ class program_messages_edit_form extends moodleform {
         $mform = $this->_form;
 
         // Define the renderer that the form will use to display itself
-        $this->renderer =& new HTML_QuickForm_Renderer_QuickHtml();
+        $this->renderer = new HTML_QuickForm_Renderer_QuickHtml();
 
         // Do the magic of creating the form.  NOTE: order is important here: this must
         // be called after creating the form elements, but before rendering them.
@@ -139,10 +139,12 @@ class program_messages_edit_form extends moodleform {
     /**
      * Carries out validation of submitted form values
      *
-     * @param object $data
-     * @return array
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *         or an empty array if everything is OK (true allowed for backwards compatibility too).
      */
-    function validation($data) {
+    function validation($data, $files) {
 
         $mform = $this->_form;
         $errors = array();

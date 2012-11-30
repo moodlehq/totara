@@ -75,7 +75,7 @@ class grouped_form_elements extends moodleform {
 
     }
 
-    function validation($formelements) {
+    function validation($formelements, $files) {
         $err = array();
         $err['radiogroup'] = 'Custom validation message';
         $err['more_checkbox'] = 'Custom validation message';

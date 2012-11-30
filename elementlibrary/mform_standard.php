@@ -158,7 +158,7 @@ class standard_form_elements extends moodleform {
         $this->add_action_buttons(true, 'Submit button');
     }
 
-    function validation($formelements) {
+    function validation($formelements, $files) {
         $err = array();
         foreach ($formelements as $name => $value) {
             $err[$name] = 'Custom validation message for ' . $name;

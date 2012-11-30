@@ -120,7 +120,15 @@ class plan_edit_form extends moodleform {
         }
     }
 
-    function validation($data) {
+    /**
+     * Carries out validation of submitted form values
+     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *         or an empty array if everything is OK (true allowed for backwards compatibility too).
+     */
+    function validation($data, $files) {
         $mform =& $this->_form;
         $result = array();
 
