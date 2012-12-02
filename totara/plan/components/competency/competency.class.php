@@ -694,7 +694,7 @@ class dp_competency_component extends dp_base_component {
         $rows = new html_table_row($cells);
         $t->data = array($rows);
         $out .= html_writer::table($t);
-        $out .= html_writer::tag('p', format_string($item->description));
+        $out .= html_writer::tag('p', format_text($item->description, FORMAT_HTML));
 
         return $out;
     }
