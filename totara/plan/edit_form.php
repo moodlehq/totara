@@ -93,7 +93,7 @@ class plan_edit_form extends moodleform {
         if ($action == 'view') {
             $mform->hardFreeze(array('name', 'description_editor', 'enddate'));
             $buttonarray = array();
-            if ($plan->get_setting('update') == DP_PERMISSION_ALLOW && $plan->status != DP_PLAN_STATUS_COMPLETE) {;
+            if ($plan->get_setting('update') == DP_PERMISSION_ALLOW && $plan->status != DP_PLAN_STATUS_COMPLETE) {
                 $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'totara_plan'));
             }
             if ($plan->get_setting('delete') == DP_PERMISSION_ALLOW) {
