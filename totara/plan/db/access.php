@@ -81,6 +81,14 @@ $capabilities = array(
         )
     ),
 
+    // Manage any user's plan
+    'totara/plan:manageanyplan' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array()
+    ),
+
     // Ability to create, edit and delete plan templates
     'totara/plan:configureplans' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,

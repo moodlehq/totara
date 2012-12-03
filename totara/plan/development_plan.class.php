@@ -312,9 +312,21 @@ class development_plan {
         }
 
         // add role-based settings from permissions table
+        $issuperuser = has_capability('totara/plan:manageanyplan', context_system::instance());
         $results = $DB->get_records('dp_permissions', array('templateid' => $this->templateid));
 
         foreach ($results as $result) {
+            if ($issuperuser) {
+                // override permissions to allow super users to do anything :D
+                $componentclass = $result->component == 'plan' ? 'development_plan' : "dp_{$result->component}_component";
+                if (!empty($componentclass::$permissions[$result->action])) {
+                    // action is requestable
+                    $result->value = DP_PERMISSION_APPROVE;
+                } else {
+                    $result->value = DP_PERMISSION_ALLOW;
+                }
+            }
+
             $this->settings[$result->component.'_'.$result->action.'_'.$result->role] = $result->value;
         }
 
