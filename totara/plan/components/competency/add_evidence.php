@@ -79,8 +79,6 @@ if ($u = $DB->get_record('user', array('id' => $userid))) {
 }
 
 // Check permissions
-$componentname = 'competency';
-$component = $plan->get_component($componentname);
 if ($component->get_setting('setproficiency') != DP_PERMISSION_ALLOW) {
     print_error('error:competencystatuspermission', 'totara_plan');
 }
@@ -103,12 +101,10 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     // Setup data
     $details = new stdClass();
-    if ($fromform->positionid != 0) {
-        $details->positionid = $fromform->positionid;
-    }
-    if ($fromform->organisationid != 0) {
-        $details->organisationid = $fromform->organisationid;
-    }
+
+    $details->positionid = $fromform->positionid;
+    $details->organisationid = $fromform->organisationid;
+
     if ($fromform->assessorid != 0) {
         $details->assessorid = $fromform->assessorid;
     }

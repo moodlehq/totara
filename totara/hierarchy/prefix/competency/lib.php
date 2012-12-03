@@ -450,16 +450,18 @@ class competency extends hierarchy {
 
                 break;
             case 'item/add':
-                $args = array('args'=>'{"userid":'.$USER->id.'}');
-                $PAGE->requires->strings_for_js(array('chooseposition', 'chooseorganisation','choosemanager'), 'totara_hierarchy');
-                // Include competency add and position user js modules
+                $selected_position = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'position'));
+                $selected_organisation = json_encode(dialog_display_currently_selected(get_string("currentlyselected", "totara_hierarchy"), "organisation"));
+                $args = array('args'=>'{"userid":'.$USER->id.','.
+                              '"can_edit": true,'.
+                              '"dialog_display_position":'.$selected_position.','.
+                              '"dialog_display_organisation":'.$selected_organisation.'}');
+                $PAGE->requires->strings_for_js(array('chooseposition', 'choosemanager','chooseorganisation'), 'totara_hierarchy');
                 $jsmodule = array(
-                        'name' => 'totara_positionuser',
-                        'fullpath' => '/totara/core/js/position.user.js',
+                        'name' => 'totara_competencyaddevidence',
+                        'fullpath' => '/totara/plan/components/competency/competency.add_evidence.js',
                         'requires' => array('json'));
-                $PAGE->requires->js_init_call('M.totara_positionuser.init',
-                         $args, false, $jsmodule);
-
+                $PAGE->requires->js_init_call('M.totara_competencyaddevidence.init', $args, false, $jsmodule);
                 break;
         }
     }
