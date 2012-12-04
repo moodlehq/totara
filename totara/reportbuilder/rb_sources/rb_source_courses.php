@@ -109,6 +109,7 @@ class rb_source_courses extends rb_base_source {
                 'multicheck',     // filtertype
                 array(            // options
                     'selectfunc' => 'modules_list',
+                    'concat' => true, // Multicheck filter need to know that we work with concatenated values
                 )
             )
         );
