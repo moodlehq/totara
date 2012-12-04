@@ -2499,9 +2499,9 @@ abstract class rb_base_source {
             'multicheck',     // filtertype
             array(            // options
                 'selectchoices' => $this->rb_filter_tags_list(),
+                'concat' => true, // Multicheck filter needs to know that we are working with concatenated values
             )
         );
-
         return true;
     }
 

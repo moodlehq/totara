@@ -51,6 +51,10 @@ class rb_filter_multicheck extends rb_filter_type {
         if (!isset($this->options['attributes'])) {
             $this->options['attributes'] = array();
         }
+
+        if (!isset($this->options['concat'])) {
+            $this->options['concat'] = false;
+        }
     }
 
     /**
@@ -168,8 +172,7 @@ class rb_filter_multicheck extends rb_filter_type {
                     $uniqueparam = rb_unique_param("fmcequal_{$count}_");
                     $filter = "( {$query} = :{$uniqueparam}";
                     $params[$uniqueparam] = $id;
-
-                    if (is_string($id)) {
+                    if ($this->options['concat']) {
                         $uniqueparam = rb_unique_param("fmcendswith_{$count}_");
                         $filter .=  " OR \n " . $DB->sql_like($query, ":{$uniqueparam}");
                         $params[$uniqueparam] = '%|' . $DB->sql_like_escape($id);
