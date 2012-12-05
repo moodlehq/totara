@@ -668,7 +668,7 @@ function dp_display_plans_menu($userid, $selectedid=0, $role='learner', $rolpage
     if ($plans = dp_get_plans($userid, DP_PLAN_STATUS_COMPLETE)) {
         if ($role == 'manager') {
             $out .= $OUTPUT->container_start(null, 'dp-plans-menu-section');
-            $out .= $OUTPUT->heading(get_string('unapprovedplans', 'totara_plan'), 4, 'dp-plans-menu-sub-header');
+            $out .= $OUTPUT->heading(get_string('completedplans', 'totara_plan'), 4, 'dp-plans-menu-sub-header');
         }
         else {
             $out .= $OUTPUT->heading(get_string('completedplans', 'totara_plan'), 3, 'main');
