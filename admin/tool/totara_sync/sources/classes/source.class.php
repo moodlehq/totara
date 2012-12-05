@@ -119,7 +119,8 @@ abstract class totara_sync_source {
     /**
      * drop the temporary source table (if applicable)
      *
-     * @return boolean
+     * @return true
+     * @throws dml_exception if error
      */
     function drop_temp_table() {
         global $DB;
@@ -131,20 +132,18 @@ abstract class totara_sync_source {
 
         $dbman = $DB->get_manager(); // We are going to use database_manager services
 
-        $return = true;
-
         $table = new xmldb_table($this->temptablename);
         if ($dbman->table_exists($table)) {
-            $return = $return && $dbman->drop_temp_table($table); // And drop it
+            $dbman->drop_temp_table($table); // And drop it
         }
 
         // drop any clones
         $table = new xmldb_table($this->temptablename . '_clone');
         if ($dbman->table_exists($table)) {
-            $return = $return && $dbman->drop_temp_table($table); // And drop it
+            $dbman->drop_temp_table($table); // And drop it
         }
 
-        return $return;
+        return true;
     }
 
     /**
