@@ -96,10 +96,17 @@ class totara_sync_config_form extends moodleform {
     function definition() {
         $mform =& $this->_form;
 
-        $mform->addElement('text', 'filesdir', get_string('filesdir', 'tool_totara_sync'));
-        $mform->setType('filesdir', PARAM_TEXT);
-        $mform->addRule('filesdir', null, 'required', null, 'client');
-
+        $dir = get_string('fileaccess_directory', 'tool_totara_sync');
+        $upl = get_string('fileaccess_upload', 'tool_totara_sync');
+        $mform->addElement('select', 'fileaccess', get_string('fileaccess', 'tool_totara_sync'),
+            array(FILE_ACCESS_DIRECTORY => $dir, FILE_ACCESS_UPLOAD => $upl));
+        $mform->setType('fileaccess', PARAM_INT);
+        $mform->setDefault('fileaccess', $dir);
+        $mform->addHelpButton('fileaccess', 'fileaccess', 'tool_totara_sync');
+        if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
+            $mform->addElement('text', 'filesdir', get_string('filesdir', 'tool_totara_sync'));
+            $mform->setType('filesdir', PARAM_SAFEPATH);
+        }
         $this->add_action_buttons(false);
     }
 }
@@ -110,7 +117,7 @@ class totara_sync_config_form extends moodleform {
  */
 class totara_sync_source_files_form extends moodleform {
     function definition() {
-        global $CFG;
+        global $CFG, $USER, $FILEPICKER_OPTIONS;
         $mform =& $this->_form;
         require_once($CFG->dirroot.'/admin/tool/totara_sync/lib.php');
 
@@ -132,8 +139,9 @@ class totara_sync_source_files_form extends moodleform {
             try {
                 $source = $e->get_source();
             } catch (totara_sync_exception $e) {
+                $link = "{$CFG->wwwroot}/admin/tool/totara_sync/admin/elementsettings.php?element={$name}";
                 $mform->addElement('html', html_writer::tag('p',
-                    get_string('nosourceconfigured', 'tool_totara_sync')));
+                    get_string('nosourceconfigured', 'tool_totara_sync', $link)));
                 continue;
             }
 
@@ -142,11 +150,42 @@ class totara_sync_source_files_form extends moodleform {
                     get_string('sourcedoesnotusefiles', 'tool_totara_sync')));
                 continue;
             }
+
+
             $mform->addElement('filepicker', $name,
-                get_string('displayname:'.$source->get_name(), 'tool_totara_sync'), 'size="40"');
-            if (file_exists($source->get_filepath())) {
-                $mform->addElement('static', '', '',
-                    get_string('note:syncfilepending', 'tool_totara_sync'));
+            get_string('displayname:'.$source->get_name(), 'tool_totara_sync'), 'size="40"');
+
+            if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_UPLOAD) {
+                $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+                $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+                $fs = get_file_storage();
+
+                //check for existing draft area to prevent massive duplication
+                $existing_files = $fs->get_area_files($systemcontext->id, 'totara_sync', $name);
+                if (sizeof($existing_files) > 0) {
+                    $file = reset($existing_files);
+                    $draftid = !empty($file) ? $file->get_itemid() : 0;
+                    $existing_draft = $fs->get_area_files($usercontext->id, 'user', 'draft', $draftid);
+
+                    //if no existing draft area, make one
+                    if (sizeof($existing_draft) < 1) {
+                        //create draft area to set as the value for mform->filepicker
+                        file_prepare_draft_area($draftid, $systemcontext->id, 'totara_sync', $name, null, $FILEPICKER_OPTIONS);
+                        $file_record = array('contextid' => $usercontext->id, 'component' => 'user', 'filearea'=> 'draft', 'itemid' => $draftid);
+
+                        //add existing file(s) to the draft area
+                        foreach ($existing_files as $file) {
+                            if ($file->is_directory()) {
+                                continue;
+                            }
+                            $fs->create_file_from_storedfile($file_record, $file);
+                            $mform->addElement('static', '', '',
+                                get_string('note:syncfilepending', 'tool_totara_sync'));
+                        }
+                    }
+                    //set the filepicker value to the draft area
+                    $mform->getElement($name)->setValue($draftid);
+                }
             }
         }
 

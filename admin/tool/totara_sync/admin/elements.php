@@ -50,9 +50,12 @@ if ($enable = optional_param('enable', null, PARAM_TEXT)) {
 }
 
 $form = new totara_sync_config_form();
-if (has_capability('tool/totara_sync:setfilesdirectory', $systemcontext)) {
+if (has_capability('tool/totara_sync:setfileaccess', $systemcontext)) {
     if ($fdata = $form->get_data()) {
-        set_config('filesdir', $fdata->filesdir, 'totara_sync');
+        set_config('fileaccess', $fdata->fileaccess, 'totara_sync');
+        if (isset($fdata->filesdir)) {
+            set_config('filesdir', $fdata->filesdir, 'totara_sync');
+        }
         totara_set_notification(get_string('settingssaved', 'tool_totara_sync'), $url, array('class'=>'notifysuccess'));
     }
 }
@@ -106,10 +109,14 @@ foreach ($elements as $ename => $eobj) {
 
 $table->finish_html();
 
-$form->set_data((object) array(
-    'filesdir' => get_config('totara_sync', 'filesdir')));
+$fileaccess = get_config('totara_sync', 'fileaccess');
+$form->set_data((object) array('fileaccess' => $fileaccess));
 
-if (has_capability('tool/totara_sync:setfilesdirectory', $systemcontext)) {
+if ($fileaccess == FILE_ACCESS_DIRECTORY) {
+    $form->set_data((object) array('filesdir' => get_config('totara_sync', 'filesdir')));
+}
+
+if (has_capability('tool/totara_sync:setfileaccess', $systemcontext)) {
     $form->display();
 }
 

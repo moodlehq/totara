@@ -66,7 +66,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-    'tool/totara_sync:setfilesdirectory' => array(
+    'tool/totara_sync:setfileaccess' => array(
         'riskbitmask'   => RISK_PERSONAL | RISK_DATALOSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

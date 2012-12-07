@@ -28,7 +28,7 @@ $string['totarasync'] = 'Totara sync';
 $string['totarasync_help'] = 'Enabling Totara syncing will cause the element to be updated/deleted (synced) from an external source (if configured).
 See the Sync settings in the Administration menu.';
 $string['totara_sync:manage'] = 'Manage Totara sync';
-$string['totara_sync:setfilesdirectory'] = 'Set Totara sync files directory';
+$string['totara_sync:setfileaccess'] = 'Set Totara sync file access';
 $string['totara_sync:manageuser'] = 'Manage Totara sync users';
 $string['totara_sync:manageorg'] = 'Manage Totara sync organisations';
 $string['totara_sync:managepos'] = 'Manage Totara sync positions';
@@ -39,8 +39,13 @@ $string['settingssaved'] = 'Settings saved';
 $string['elementenabled'] = 'Element enabled';
 $string['elementdisabled'] = 'Element disabled';
 $string['filesdir'] = 'Files directory';
+$string['fileaccess'] = 'File Access';
+$string['fileaccess_directory'] = 'Directory Check';
+$string['fileaccess_upload'] = 'Upload Files';
 $string['uploadsuccess'] = 'Sync files uploaded successfully';
 $string['uploaderror'] = 'The was a problem with uploading the file(s)...';
+$string['uploadaccessdenied'] = 'Your Totara Sync configuration is set to look for files in a server directory not use uploaded files. To change this go {$a}';
+$string['uploadaccessdeniedlink'] = 'here';
 $string['couldnotmakedirsforx'] = 'Could not make necessary directories for {$a}';
 $string['note:syncfilepending'] = 'NOTE: A pending sync file exists. Uploading another file now will overwrite the pending one.';
 $string['placeholderposition'] = 'Placeholder position';
@@ -90,6 +95,7 @@ $string['fieldmappings'] = 'Field mappings';
 $string['uploadsyncfiles'] = 'Upload sync files';
 $string['sourcedoesnotusefiles'] = 'Source does not use files';
 $string['nosourceconfig'] = 'No source configuration';
+$string['uploadfilelink'] = 'Files can be uploaded <a href=\'{$a}\'>here</a>';
 
 // Hierarchy items
 $string['displayname:totara_sync_source_org_csv'] = 'CSV';
@@ -133,6 +139,7 @@ $string['temptablecreatefail'] = 'error creating temp table';
 $string['nocsvfilepath'] = 'no CSV filepath specified';
 $string['nofilesdir'] = 'No sync files directory configured';
 $string['nofiletosync'] = 'No file to sync (file path: {$a})';
+$string['nofileuploaded'] = 'No file was uploaded for {$a} sync';
 $string['nochangesskippingsync'] = 'no changes, skipping sync';
 $string['cannotopenx'] = 'cannot open {$a}';
 $string['cannotreadx'] = 'cannot read {$a}';
@@ -178,7 +185,7 @@ $string['cannotcreateuserx'] = 'cannot create user {$a}';
 $string['orgxnotexist'] = 'org {$a} does not exist';
 $string['posxnotexist'] = 'pos {$a} does not exist';
 $string['managerxnotexist'] = 'manager {$a} does not exist';
-$string['nosourceconfigured'] = 'No source configured';
+$string['nosourceconfigured'] = 'No source configured, please set configuration <a href=\'{$a}\'>here</a>';
 $string['duplicateuserswithidnumberx'] = 'Duplicate users with idnumber {$a->idnumber}';
 $string['duplicateidnumberx'] = 'Duplicate idnumber {$a}';
 $string['fieldcountmismatch'] = 'Skipping row {$a->rownum} in CSV file - {$a->fieldcount} fields found but {$a->headercount} fields expected';
@@ -212,4 +219,7 @@ $string['info'] = 'Info';
 ///
 $string['country_help'] = "This should be formatted within the CSV as the 2 character code of the country.
     For example 'New Zealand' should be 'NZ'";
+$string['fileaccess_help'] = '**Directory**: This option allows you to specify a directory on the server to be checked for sync files automatically
+
+**Upload**: This option requires you to upload files via the \'upload sync files\' page under sources in site administration';
 ?>

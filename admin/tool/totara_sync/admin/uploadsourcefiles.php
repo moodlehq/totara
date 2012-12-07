@@ -45,54 +45,33 @@ foreach ($elements as $e) {
 
 if ($data = $form->get_data()) {
 
-    // Save files to temporary location
-    $tempdir = $CFG->tempdir.'/totarasync';
-    check_dir_exists($tempdir, true, true);
+    $fileaccess = get_config('totara_sync', 'fileaccess');
+    if ($fileaccess == FILE_ACCESS_UPLOAD) {
+        $fs = get_file_storage();
+        $readyfiles = array();
+        foreach ($elements as $e) {
+            $elementname = $e->get_name();
+            if (!has_capability('tool/totara_sync:upload' . $elementname, $systemcontext)) {
+                continue;
+            }
 
+            //delete any existing uploaded files
+            $fs->delete_area_files($systemcontext->id, 'totara_sync', $elementname);
 
-    foreach ($elements as $e) {
-        $elementname = $e->get_name();
-        if (!has_capability('tool/totara_sync:upload' . $elementname, $systemcontext)) {
-            continue;
-        }
-        if (!$form->hasFile($elementname)) {
-            continue;
-        }
-        $source = $e->get_source();
-        $f = basename($source->get_filepath());
-        if (!$form->save_file($e->get_name(), $tempdir.'/'.$f, true)) {
-            totara_set_notification(get_string('uploaderror', 'tool_totara_sync'), $FULLME);
-        }
-    }
-
-    // Move files to source's 'ready' folders
-    $readyfiles = array();
-    foreach ($elements as $e) {
-        $elementname = $e->get_name();
-        if (!has_capability('tool/totara_sync:upload' . $elementname, $systemcontext)) {
-            continue;
-        }
-        $source = $e->get_source();
-        if ($source) {
-            $sfilepath = $source->get_filepath();
-            $tfilepath = $tempdir . '/' . basename($sfilepath);
-            if (file_exists($tfilepath)) {
-                if (!totara_sync_make_dirs(dirname($sfilepath))) {
-                    totara_set_notification(get_string('couldnotmakedirsforx', 'tool_totara_sync', $sfilepath), $FULLME);
-                }
-                rename($tfilepath, $sfilepath . '.copying');  // will remove the .copying when all files are moved
-                $readyfiles[] = $sfilepath . '.copying';
+            //save draftfile to file directory
+            if (isset($data->$elementname)) {
+                $draftid = $data->$elementname;
+                file_save_draft_area_files($draftid, $systemcontext->id, 'totara_sync', $elementname, $draftid, array('subdirs' => true));
+                set_config('sync_'.$elementname.'_itemid', $draftid, 'totara_sync');
             } else {
                 continue;
             }
-        }
-    }
 
-    // Now remove the appended .copying from the filenames
-    // Done this way to ensure that files are not picked up when copying/moving is in progress
-    foreach ($readyfiles as $f) {
-        rename($f, str_replace('.copying', '', $f));
-    }
+            //delete the draftfile - at this point it should be safe to assume $USER is the uploader
+            $draft_context = get_context_instance(CONTEXT_USER, $USER->id);
+            $fs->delete_area_files($draft_context->id, 'user', 'draft', $draftid);
+        }
+   }
 
     totara_set_notification(get_string('uploadsuccess', 'tool_totara_sync'), $FULLME,
         array('class'=>'notifysuccess'));
@@ -103,8 +82,9 @@ if ($data = $form->get_data()) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('uploadsyncfiles', 'tool_totara_sync'));
 
-if (!get_config('totara_sync', 'filesdir')) {
-    print_string('nofilesdir', 'tool_totara_sync');
+if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
+    $link = html_writer::link(new moodle_url('admin/tool/totara_sync/admin/elements.php', null), get_string('uploadaccessdeniedlink', 'tool_totara_sync'));
+    print_string('uploadaccessdenied', 'tool_totara_sync', $link);
 } else if ($can_upload_any) {
     $form->display();
 } else {

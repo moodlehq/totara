@@ -25,6 +25,8 @@
 defined('MOODLE_INTERNAL') || die;
 
 define('TOTARA_SYNC_DBROWS', 10000);
+define('FILE_ACCESS_DIRECTORY', 0);
+define('FILE_ACCESS_UPLOAD', 1);
 
 /**
 * Run the cron for syncing Totara elements with external sources

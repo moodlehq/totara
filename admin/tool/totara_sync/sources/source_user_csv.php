@@ -32,13 +32,15 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
     }
 
     function config_form(&$mform) {
+        global $CFG;
+
         $filepath = $this->get_filepath();
         $this->config->import_idnumber = "1";
         $this->config->import_username = "1";
         $this->config->import_timemodified = "1";
         $this->config->import_deleted = (isset($this->element->config->sourceallrecords) && $this->element->config->sourceallrecords == 0) ? "1" : '0';
 
-        if (empty($filepath)) {
+        if (empty($filepath) && get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
             $mform->addElement('html', html_writer::tag('p', get_string('nofilesdir', 'tool_totara_sync')));
             return false;
         }
@@ -76,48 +78,82 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
 
         /// Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
-        $mform->addElement('static', 'nameandloc', get_string('nameandloc', 'tool_totara_sync'),
-            html_writer::tag('strong', $filepath));
+        if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
+            $mform->addElement('static', 'nameandloc', get_string('nameandloc', 'tool_totara_sync'),
+                html_writer::tag('strong', $filepath));
+        } else {
+            $link = "{$CFG->wwwroot}/admin/tool/totara_sync/admin/uploadsourcefiles.php";
+            $mform->addElement('static', 'uploadfilelink', get_string('uploadfilelink', 'tool_totara_sync', $link));
+        }
 
         parent::config_form($mform);
     }
 
     function import_data($temptable) {
         global $CFG, $DB;
-        if (!$this->filesdir) {
-            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofilesdir');
-        }
-        $filepath = $this->get_filepath();
-        if (!file_exists($filepath)) {
-            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofiletosync', $filepath, null, 'warn');
-        }
-        $filemd5 = md5_file($filepath);
-        while (true) {
-            // Ensure file is not currently being written to
-            sleep(2);
-            $newmd5 = md5_file($filepath);
-            if ($filemd5 != $newmd5) {
-                $filemd5 = $newmd5;
-            } else {
-                break;
+
+        $fileaccess = get_config('totara_sync', 'fileaccess');
+        if ($fileaccess == FILE_ACCESS_DIRECTORY) {
+            if (!$this->filesdir) {
+                throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofilesdir');
             }
+            $filepath = $this->get_filepath();
+            if (!file_exists($filepath)) {
+                throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofiletosync', $filepath, null, 'warn');
+            }
+            $filemd5 = md5_file($filepath);
+            while (true) {
+                // Ensure file is not currently being written to
+                sleep(2);
+                $newmd5 = md5_file($filepath);
+                if ($filemd5 != $newmd5) {
+                    $filemd5 = $newmd5;
+                } else {
+                    break;
+                }
+            }
+
+            // See if file is readable
+            if (!$file = is_readable($filepath)) {
+                throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotreadx', $filepath);
+            }
+
+            /// Move file to store folder
+            $storedir = $this->filesdir.'/csv/store';
+            if (!totara_sync_make_dirs($storedir)) {
+                throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotcreatedirx', $storedir);
+            }
+
+            $storefilepath = $storedir . '/' . time() . '.' . basename($filepath);
+
+            rename($filepath, $storefilepath);
+        } else if ($fileaccess == FILE_ACCESS_UPLOAD) {
+            $fs = get_file_storage();
+            $systemcontext = get_context_instance(CONTEXT_SYSTEM);
+            $fieldid = get_config('totara_sync', 'sync_user_itemid');
+
+            //check the file exist
+            if (!$fs->file_exists($systemcontext->id, 'totara_sync', 'user', $fieldid, '/', '')) {
+                    throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'nofileuploaded', $this->get_element_name(), null, 'warn');
+            }
+
+            // Get the file
+            $fsfiles = $fs->get_area_files($systemcontext->id, 'totara_sync', 'user', $fieldid, 'id DESC', false);
+            $fsfile = reset($fsfiles);
+
+            //set up the temp dir
+            $tempdir = $CFG->tempdir . '/totarasync/csv';
+            check_dir_exists($tempdir, true, true);
+
+            //create temporary file (so we know the filepath)
+            $fsfile->copy_content_to($tempdir.'/user.php');
+            $itemid = $fsfile->get_itemid();
+            $fs->delete_area_files($systemcontext->id, 'totara_sync', 'user', $itemid);
+            $storefilepath = $tempdir.'/user.php';
+
         }
 
-        // See if file is readable
-        if (!$file = is_readable($filepath)) {
-            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotreadx', $filepath);
-        }
-
-        /// Move file to store folder
-        $storedir = $this->filesdir.'/csv/store';
-        if (!totara_sync_make_dirs($storedir)) {
-            throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotcreatedirx', $storedir);
-        }
-
-        $storefilepath = $storedir . '/' . time() . '.' . basename($filepath);
-
-        rename($filepath, $storefilepath);
-
+        // Open file from store for processing
         if (!$file = fopen($storefilepath, 'r')) {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotopenx', $storefilepath);
         }
@@ -291,6 +327,11 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         }
 
         fclose($file);
+
+        //done, clean up the file(s)
+        if ($fileaccess == FILE_ACCESS_UPLOAD) {
+            unlink($storefilepath); //don't store this file in temp
+        }
 
         return true;
     }

@@ -62,6 +62,20 @@ function xmldb_tool_totara_sync_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2012101100, 'tool', 'totara_sync');
     }
 
+    //manual modifying permissions in $DB to retain any existing permissions
+    if ($oldversion < 2012121200) {
+        $oldname = 'tool/totara_sync:setfilesdirectory';
+        $newname = 'tool/totara_sync:setfileaccess';
+
+        $sql_capability = "UPDATE {capabilities} SET name = ? WHERE name = ?";
+        $DB->execute($sql_capability, array($newname, $oldname));
+
+        $sql_role_capability = "UPDATE {role_capabilities} SET capability = ? WHERE capability = ?";
+        $DB->execute($sql_role_capability, array($newname, $oldname));
+
+        upgrade_plugin_savepoint(true, 2012121200, 'tool', 'totara_sync');
+    }
+
     return true;
 
 }

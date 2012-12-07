@@ -33,11 +33,12 @@ if (has_capability('tool/totara_sync:manage', $systemcontext)) {
 
     $can_manage_any = false;
     $can_upload_any = false;
+    $upload_enabled = get_config('totara_sync', 'fileaccess') == FILE_ACCESS_UPLOAD;
     if ($elements = totara_sync_get_elements()) {
         foreach ($elements as $e) {
             $elname = $e->get_name();
             if (!$can_manage_any) {
-                if (has_capability('tool/totara_sync:manage' . $elname, $systemcontext) || has_capability('tool/totara_sync:setfilesdirectory', $systemcontext)) {
+                if (has_capability('tool/totara_sync:manage' . $elname, $systemcontext) || has_capability('tool/totara_sync:setfileaccess', $systemcontext)) {
                     $can_manage_any = true;
                     $ADMIN->add('syncelements', new admin_externalpage('managesyncelements', get_string('manageelements', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/elements.php", 'tool/totara_sync:manage'));
                 }
@@ -68,7 +69,7 @@ if (has_capability('tool/totara_sync:manage', $systemcontext)) {
             }
         }
 
-        if ($can_upload_any) {
+        if ($can_upload_any && $upload_enabled) {
             $ADMIN->add('syncsources', new admin_externalpage('uploadsyncfiles', get_string('uploadsyncfiles', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/uploadsourcefiles.php", 'tool/totara_sync:manage'));
         }
         unset($elname);
