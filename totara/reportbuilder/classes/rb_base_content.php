@@ -579,7 +579,7 @@ class rb_user_content extends rb_base_content {
             return array("{$field} = :{$uniqueparam}", array($uniqueparam => $userid));
         } else if ($who == 'reports') {
             // show staff records
-            if ($staff = totara_get_staff()) {
+            if ($staff = totara_get_staff($userid)) {
                 list($isql, $iparams) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, $uniqueparam.'_');
                 return array("{$field} {$isql}", $iparams);
             } else {
@@ -588,7 +588,7 @@ class rb_user_content extends rb_base_content {
             }
         } else if ($who == 'ownandreports') {
             // show own and staff records
-            if ($staff = totara_get_staff()) {
+            if ($staff = totara_get_staff($userid)) {
                 $staff[] = $userid;
                 list($isql, $iparams) = $DB->get_in_or_equal($staff, SQL_PARAMS_NAMED, $uniqueparam.'_');
                 return array("{$field} {$isql}", $iparams);
