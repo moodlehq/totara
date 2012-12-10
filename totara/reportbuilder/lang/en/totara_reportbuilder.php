@@ -264,6 +264,15 @@ $string['orsuborg'] = '(or a sub organisation)';
 $string['orsubpos'] = '(or a sub position)';
 $string['pluginname'] = 'Report Builder';
 $string['pluginadministration'] = 'Report Builder administration';
+$string['initialdisplay'] = 'Restrict Initial Display';
+$string['initialdisplay_disabled'] = 'This setting is not available when there are no filters enabled';
+$string['initialdisplay_error'] = 'The last filter can not be deleted when initial display is restricted';
+$string['initialdisplay_help'] = 'This setting controls the how the report is initially displayed and is recommended for larger reports where you will be filtering the results (e.g. sitelogs). It increases the speed of the report by allowing you to apply filters and displaying only the results instead of initially trying to display *all* the data.
+
+**Disabled**: the report will display all results immediately *(default)*
+
+**Enabled**: the report will not generate results until a filter is applied or an empty search is run.';
+$string['initialdisplay_pending'] = 'Please apply a filter to view the results of this report, or hit search without adding any filters to view all entries';
 $string['publicallyavailable'] = 'Let other users view';
 $string['records'] = 'Records';
 $string['recordsperpage'] = 'Number of records per page';

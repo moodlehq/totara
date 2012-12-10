@@ -100,6 +100,14 @@ class report_builder_edit_form extends moodleform {
         $mform->setType('hidden', PARAM_INT);
         $mform->addHelpButton('hidden', 'reportbuilderhidden', 'totara_reportbuilder');
 
+        $initial_display_attributes = sizeof($report->filters) < 1 ? array('disabled' => 'disabled', 'group' => null) : null;
+        $initial_display_sidenote = is_null($initial_display_attributes) ? '' : get_string('initialdisplay_disabled', 'totara_reportbuilder');
+        $mform->addElement('advcheckbox', 'initialdisplay', get_string('initialdisplay', 'totara_reportbuilder'),
+            $initial_display_sidenote, $initial_display_attributes, array(RB_INITIAL_DISPLAY_SHOW, RB_INITIAL_DISPLAY_HIDE));
+        $mform->setType('initialdisplay', PARAM_INT);
+        $mform->setDefault('initialdisplay', RB_INITIAL_DISPLAY_SHOW);
+        $mform->addHelpButton('initialdisplay', 'initialdisplay', 'totara_reportbuilder');
+
         $mform->addElement('text', 'recordsperpage', get_string('recordsperpage', 'totara_reportbuilder'), array('size' => '6', 'maxlength' => 4));
         $mform->setType('recordsperpage', PARAM_INT);
         $mform->addRule('recordsperpage', null, 'numeric');

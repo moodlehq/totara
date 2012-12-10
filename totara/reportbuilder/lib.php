@@ -72,6 +72,12 @@ define('REPORT_BUILDER_EXPORT_CSV', 2);
 define('REPORT_BUILDER_EXPORT_ODS', 4);
 define('REPORT_BUILDER_EXPORT_FUSION', 8);
 
+/*
+ * Initial Display Options
+ */
+define('RB_INITIAL_DISPLAY_SHOW', 0);
+define('RB_INITIAL_DISPLAY_HIDE', 1);
+
 global $REPORT_BUILDER_EXPORT_OPTIONS;
 $REPORT_BUILDER_EXPORT_OPTIONS = array(
     'xls' => REPORT_BUILDER_EXPORT_EXCEL,
@@ -155,6 +161,7 @@ class reportbuilder {
             $this->shortname = $report->shortname;
             $this->fullname = $report->fullname;
             $this->hidden = $report->hidden;
+            $this->initialdisplay = $report->initialdisplay;
             $this->description = $report->description;
             $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;

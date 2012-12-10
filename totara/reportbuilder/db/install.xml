@@ -17,7 +17,8 @@
         <FIELD NAME="recordsperpage" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="40" SEQUENCE="false" COMMENT="Number of records to show on a single page of results for this report" PREVIOUS="description" NEXT="defaultsortcolumn"/>
         <FIELD NAME="defaultsortcolumn" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Name of the column (type_value) to use to initially sort the report" PREVIOUS="recordsperpage" NEXT="defaultsortorder"/>
         <FIELD NAME="defaultsortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="4" SEQUENCE="false" COMMENT="Integer representing the direction that default sorting should be done" PREVIOUS="defaultsortcolumn" NEXT="embedded"/>
-        <FIELD NAME="embedded" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Indicates whether the report is an embedded report. Set to 1 for embedded, 0 otherwise." PREVIOUS="defaultsortorder"/>
+        <FIELD NAME="embedded" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Indicates whether the report is an embedded report. Set to 1 for embedded, 0 otherwise." PREVIOUS="defaultsortorder" NEXT="initialdisplay"/>
+        <FIELD NAME="initialdisplay" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Indicated whether to wait for filters to be applied before generating the report" PREVIOUS="embedded"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for report builder"/>

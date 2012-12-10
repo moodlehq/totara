@@ -34,6 +34,7 @@ $format    = optional_param('format', '', PARAM_TEXT);
 $id = required_param('id', PARAM_INT);
 $sid = optional_param('sid', '0', PARAM_INT);
 $debug = optional_param('debug', 0, PARAM_INT);
+$searched = optional_param_array('submitgroup', array(), PARAM_ALPHANUM);
 
 require_login();
 
@@ -68,10 +69,15 @@ $report->include_js();
 $graph = (substr($report->source, 0, strlen('graphical_feedback_questions')) ==
     'graphical_feedback_questions');
 
+$override_initial = isset($searched['addfilter']) && ($searched['addfilter'] == 'Search');
+$hide_initial_display = ($report->initialdisplay == RB_INITIAL_DISPLAY_HIDE && !$override_initial);
+$countfiltered = 0;
+$countall = 0;
 
-$countfiltered = $report->get_filtered_count();
-// save a query if no filters set
-$countall = (!$report->is_report_filtered()) ? $countfiltered : $report->get_full_count();
+if (!$hide_initial_display || $report->is_report_filtered()) {
+    $countfiltered = $report->get_filtered_count();
+    $countall = $report->get_full_count();
+}
 
 $fullname = format_string($report->fullname);
 $pagetitle = format_string(get_string('report', 'totara_reportbuilder').': '.$fullname);
@@ -116,6 +122,10 @@ if ($countfiltered > 0) {
     }
     // export button
     $output->export_select($report->_id, $sid);
+} else if ($hide_initial_display) {
+    echo $output->box_start();
+    print get_string('initialdisplay_pending', 'totara_reportbuilder');
+    echo $output->box_end();
 } else {
     echo $output->box_start();
     print get_string('noresultsfound', 'totara_reportbuilder');

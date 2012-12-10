@@ -43,8 +43,9 @@ $report = new reportbuilder($id);
 
 // include jquery
 local_js();
-$PAGE->requires->strings_for_js(array('saving', 'confirmfilterdelete', 'delete', 'moveup', 'movedown', 'add'), 'totara_reportbuilder');
-$args = array('args' => '{"user_sesskey":"'.$USER->sesskey.'", "rb_reportid":'.$id.'}');
+$PAGE->requires->strings_for_js(array('saving', 'confirmfilterdelete', 'delete', 'moveup', 'movedown', 'add', 'initialdisplay_error'), 'totara_reportbuilder');
+$args = array('args' => '{"user_sesskey":"'.$USER->sesskey.'", "rb_reportid":'.$id.',
+    "rb_filters":'.sizeof($report->filters).', "rb_initial_display":'.$report->initialdisplay.'}');
 $jsmodule = array(
     'name' => 'totara_reportbuilderfilters',
     'fullpath' => '/totara/reportbuilder/filters.js',
@@ -57,14 +58,17 @@ if ($d and $confirm) {
     if (!confirm_sesskey()) {
         totara_set_notification(get_string('error:bad_sesskey', 'totara_reportbuilder'), $returnurl);
     }
-
     if (isset($fid)) {
-        if ($report->delete_filter($fid)) {
-            add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
-                'Delete Filter: Report ID=' . $id . ', Filter ID=' . $fid);
-            totara_set_notification(get_string('filter_deleted', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+        if ($report->initialdisplay && sizeof($report->filters) <= 1) {
+                totara_set_notification(get_string('initialdisplay_error', 'totara_reportbuilder'), $returnurl);
         } else {
-            totara_set_notification(get_string('error:filter_not_deleted', 'totara_reportbuilder'), $returnurl);
+            if ($report->delete_filter($fid)) {
+                add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
+                    'Delete Filter: Report ID=' . $id . ', Filter ID=' . $fid);
+                totara_set_notification(get_string('filter_deleted', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+            } else {
+                totara_set_notification(get_string('error:filter_not_deleted', 'totara_reportbuilder'), $returnurl);
+            }
         }
     }
 }

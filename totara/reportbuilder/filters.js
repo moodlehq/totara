@@ -73,7 +73,6 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
         // Set up delete button events
         module.rb_init_deletebuttons();
-
         // Set up 'move' button events
         module.rb_init_movedown_btns();
         module.rb_init_moveup_btns();
@@ -119,6 +118,7 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
 
                         addbutton.remove();
                         optionsbox.prepend(deletebutton, upbutton);
+                        module.config.rb_filters++;
 
                         // Set row atts
                         $('select[').removeClass('new_filter_selector');
@@ -168,11 +168,17 @@ M.totara_reportbuilderfilters = M.totara_reportbuilderfilters || {
             e.preventDefault();
             var clickedbtn = $(this);
 
+            if (module.config.rb_initial_display == 1 && module.config.rb_filters <= 1) {
+                alert(M.util.get_string('initialdisplay_error', 'totara_reportbuilder'));
+                return;
+            }
+
             confirmed = confirm(M.util.get_string('confirmfilterdelete', 'totara_reportbuilder'));
 
             if (!confirmed) {
                 return;
             }
+            module.config.rb_filters--;
 
             var filterrow = $(this).closest('tr');
             $.ajax({
