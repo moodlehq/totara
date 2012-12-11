@@ -3351,8 +3351,7 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
 
     $table = new html_table();
     $table->summary = get_string('sessionsdetailstablesummary', 'facetoface');
-    $table->class = 'f2fsession';
-    $table->width = '50%';
+    $table->attributes['class'] = 'generaltable f2fsession';
     $table->align = array('right', 'left');
     if ($calendaroutput) {
         $table->tablealign = 'left';
