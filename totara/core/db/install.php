@@ -64,10 +64,10 @@ function xmldb_totara_core_install() {
     // Create totara roles
     $manager             = $DB->get_record('role', array('shortname' => 'manager'));
     $managerrole         = $manager->id;
-    $staffmanagerrole    = create_role(get_string('staffmanager'), 'staffmanager', get_string('staffmanagerdescription'), 'staffmanager');
-    $assessorrole        = create_role(get_string('assessor'), 'assessor', get_string('assessordescription'));
-    $regionalmanagerrole = create_role(get_string('regionalmanager'), 'regionalmanager', get_string('regionalmanagerdescription'));
-    $regionaltrainerrole = create_role(get_string('regionaltrainer'), 'regionaltrainer', get_string('regionaltrainerdescription'));
+    $staffmanagerrole    = create_role('', 'staffmanager', '', 'staffmanager');
+    $assessorrole        = create_role('', 'assessor', '');
+    $regionalmanagerrole = create_role('', 'regionalmanager', '');
+    $regionaltrainerrole = create_role('', 'regionaltrainer', '');
 
     $defaultallowassigns = array(
         array($managerrole, $staffmanagerrole),
@@ -118,8 +118,8 @@ function xmldb_totara_core_install() {
         if ($old_role = $DB->get_record('role', array('shortname' => $old))) {
             $new_role = new stdClass();
             $new_role->id = $old_role->id;
-            $new_role->name = get_string($new);
-            $new_role->description = get_string($new . 'description');
+            $new_role->name = '';
+            $new_role->description = '';
 
             $DB->update_record('role', $new_role);
         }

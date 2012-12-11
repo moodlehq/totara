@@ -4486,12 +4486,21 @@ function role_get_name(stdClass $role, $context = null, $rolenamedisplay = ROLEN
         switch ($role->shortname) {
             case 'manager':         $original = get_string('manager', 'role'); break;
             case 'coursecreator':   $original = get_string('coursecreators'); break;
-            case 'editingteacher':  $original = get_string('defaultcourseteacher'); break;
-            case 'teacher':         $original = get_string('noneditingteacher'); break;
-            case 'student':         $original = get_string('defaultcoursestudent'); break;
+            case 'editingteacher':  $original = get_string('editingtrainer'); break;
+            case 'teacher':         $original = get_string('trainer'); break;
+            case 'student':         $original = get_string('learner'); break;
             case 'guest':           $original = get_string('guest'); break;
             case 'user':            $original = get_string('authenticateduser'); break;
             case 'frontpage':       $original = get_string('frontpageuser', 'role'); break;
+            // totara core roles
+            case 'staffmanager':    $original = get_string('staffmanager'); break;
+            case 'assessor':        $original = get_string('assessor'); break;
+            case 'regionalmanager': $original = get_string('regionalmanager'); break;
+            case 'regionaltrainer': $original = get_string('regionaltrainer'); break;
+            // totara renamed roles
+            case 'editingtrainer':  $original = get_string('editingtrainer'); break;
+            case 'trainer':         $original = get_string('trainer'); break;
+            case 'learner':         $original = get_string('learner'); break;
             // We should not get here, the role UI should require the name for custom roles!
             default:                $original = $role->shortname; break;
         }
@@ -4540,12 +4549,21 @@ function role_get_description(stdClass $role) {
     switch ($role->shortname) {
         case 'manager':         return get_string('managerdescription', 'role');
         case 'coursecreator':   return get_string('coursecreatorsdescription');
-        case 'editingteacher':  return get_string('defaultcourseteacherdescription');
-        case 'teacher':         return get_string('noneditingteacherdescription');
-        case 'student':         return get_string('defaultcoursestudentdescription');
+        case 'editingteacher':  return get_string('editingtrainerdescription');
+        case 'teacher':         return get_string('trainerdescription');
+        case 'student':         return get_string('learnerdescription');
         case 'guest':           return get_string('guestdescription');
         case 'user':            return get_string('authenticateduserdescription');
         case 'frontpage':       return get_string('frontpageuserdescription', 'role');
+        // totara core roles
+        case 'staffmanager':    return get_string('staffmanagerdescription');
+        case 'assessor':        return get_string('assessordescription');
+        case 'regionalmanager': return get_string('regionalmanagerdescription');
+        case 'regionaltrainer': return get_string('regionaltrainerdescription');
+        // totara renamed roles
+        case 'editingtrainer':  return get_string('editingtrainerdescription');
+        case 'trainer':         return get_string('trainerdescription');
+        case 'learner':         return get_string('learnerdescription');
         default:                return '';
     }
 }

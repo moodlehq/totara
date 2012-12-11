@@ -335,5 +335,20 @@ function xmldb_totara_core_upgrade($oldversion) {
         $completions->close();
         totara_upgrade_mod_savepoint(true, 2012102400, 'totara_core');
     }
+
+    if ($oldversion < 2012121200) {
+        // remove hardcoded names and descriptions for totara core roles
+        $roles_to_fix = array('staffmanager', 'assessor', 'regionalmanager', 'regionaltrainer', 'editingtrainer', 'trainer', 'student');
+        foreach ($roles_to_fix as $shortname) {
+            if ($roleid = $DB->get_field('role', 'id', array('shortname' => $shortname))) {
+                $todb = new stdClass();
+                $todb->id = $roleid;
+                $todb->name = '';
+                $todb->description = '';
+                $DB->update_record('role', $todb);
+            }
+        }
+        totara_upgrade_mod_savepoint(true, 2012121200, 'totara_core');
+    }
     return true;
 }
