@@ -630,7 +630,7 @@ class accesslib_testcase extends advanced_testcase {
 
         $allroles = get_all_roles();
         $this->assertEquals('array', gettype($allroles));
-        $this->assertCount(8, $allroles); // there are 8 roles is standard install
+        $this->assertCount(12, $allroles); // there are 12 roles in standard totara install
 
         $role = reset($allroles);
         $role = (array)$role;
@@ -1465,7 +1465,7 @@ class accesslib_testcase extends advanced_testcase {
         $testcourses = array();
         $testpages = array();
         $testblocks = array();
-        $allroles = $DB->get_records_menu('role', array(), 'id', 'archetype, id');
+        $allroles = $DB->get_records_select_menu('role', "archetype <> ''", array(), 'id', 'archetype, id');
 
         $systemcontext = context_system::instance();
         $frontpagecontext = context_course::instance(SITEID);

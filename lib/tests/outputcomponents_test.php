@@ -122,7 +122,7 @@ class user_picture_testcase extends advanced_testcase {
         $CFG->svgicons = true;
 
         // verify new install contains expected defaults
-        $this->assertEquals('standard', $CFG->theme);
+        $this->assertEquals('totara', $CFG->theme);
         $this->assertEquals(1, $CFG->slasharguments);
         $this->assertEquals(1, $CFG->themerev);
         $this->assertEquals(0, $CFG->themedesignermode);
