@@ -56,6 +56,27 @@ If a data source had been specified in the definition, the following would be al
     $cache = cache::make('core', 'string');
     $component = $cache->get('component');
 
+Disabling the cache stores.
+There are times in code when you will want to disable the cache stores.
+While the cache API must still be functional in order for calls to it to work it is possible to disable the use of the cache stores separately so that you can be sure only the cache will function in all circumstances.
+
+    // Disable the cache store at the start of your script with:
+    define('CACHE_DISABLE_STORES', true);
+
+    // Disable the cache within your script when you want with:
+    cache_factory::disable_stores();
+    // If you disabled it using the above means you can re-enable it with:
+    cache_factory::reset();
+
+Disabling the cache entirely.
+Like above there are times when you want the cache to avoid initialising anything it doesn't absolutely need. Things such as installation and upgrade require this functionality.
+When the cache API is disabled it is still functional however special "disabled" classes will be used instead of the regular classes that make the Cache API tick.
+These disabled classes do the least work possible and through this means we avoid all manner of intialisation and configuration.
+Once disabled it cannot be re-enabled.
+
+    // To disable the cache entirely call the following:
+    define('CACHE_DISABLE_ALL', true);
+
 Cache API parts
 ---------------
 
@@ -89,6 +110,7 @@ The following points highlight things you should know about stores.
 ** Data guarantee - Data is guaranteed to exist in the cache once it is set there. It is never cleaned up to free space or because it has not been recently used.
 ** Multiple identifiers - Rather than a single string key, the parts that make up the key are passed as an array.
 ** Native TTL support - When required, the store supports native ttl and doesn't require the cache API to manage ttl of things given to the store.
+* There are two reserved store names, base and dummy. These are both used internally.
 
 ### Definition
 _Definitions were not a part of the previous proposal._

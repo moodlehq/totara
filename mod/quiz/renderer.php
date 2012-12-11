@@ -265,17 +265,22 @@ class mod_quiz_renderer extends plugin_renderer_base {
      */
     public function countdown_timer(quiz_attempt $attemptobj, $timenow) {
 
-        $timeleft = $attemptobj->get_time_left($timenow);
+        $timeleft = $attemptobj->get_time_left_display($timenow);
         if ($timeleft !== false) {
-            // Make sure the timer starts just above zero. If $timeleft was <= 0, then
-            // this will just have the effect of causing the quiz to be submitted immediately.
-            $timerstartvalue = max($timeleft, 1);
-            $this->initialise_timer($timerstartvalue);
+            $ispreview = $attemptobj->is_preview();
+            $timerstartvalue = $timeleft;
+            if (!$ispreview) {
+                // Make sure the timer starts just above zero. If $timeleft was <= 0, then
+                // this will just have the effect of causing the quiz to be submitted immediately.
+                $timerstartvalue = max($timerstartvalue, 1);
+            }
+            $this->initialise_timer($timerstartvalue, $ispreview);
         }
 
         return html_writer::tag('div', get_string('timeleft', 'quiz') . ' ' .
                 html_writer::tag('span', '', array('id' => 'quiz-time-left')),
-                array('id' => 'quiz-timer'));
+                array('id' => 'quiz-timer', 'role' => 'timer',
+                    'aria-atomic' => 'true', 'aria-relevant' => 'text'));
     }
 
     /**
@@ -486,9 +491,9 @@ class mod_quiz_renderer extends plugin_renderer_base {
      * Output the JavaScript required to initialise the countdown timer.
      * @param int $timerstartvalue time remaining, in seconds.
      */
-    public function initialise_timer($timerstartvalue) {
-        $this->page->requires->js_init_call('M.mod_quiz.timer.init',
-                array($timerstartvalue), false, quiz_get_js_module());
+    public function initialise_timer($timerstartvalue, $ispreview) {
+        $options = array($timerstartvalue, (bool)$ispreview);
+        $this->page->requires->js_init_call('M.mod_quiz.timer.init', $options, false, quiz_get_js_module());
     }
 
     /**
@@ -585,7 +590,7 @@ class mod_quiz_renderer extends plugin_renderer_base {
             $flag = '';
             if ($attemptobj->is_question_flagged($slot)) {
                 $flag = html_writer::empty_tag('img', array('src' => $this->pix_url('i/flagged'),
-                        'alt' => get_string('flagged', 'question'), 'class' => 'questionflag'));
+                        'alt' => get_string('flagged', 'question'), 'class' => 'questionflag icon-post'));
             }
             if ($attemptobj->can_navigate_to($slot)) {
                 $row = array(html_writer::link($attemptobj->attempt_url($slot),

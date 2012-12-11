@@ -122,12 +122,15 @@ class cache_config {
     /**
      * Loads the configuration file and parses its contents into the expected structure.
      *
+     * @param array|false $configuration Can be used to force a configuration. Should only be used when truly required.
      * @return boolean
      */
-    public function load() {
+    public function load($configuration = false) {
         global $CFG;
 
-        $configuration = $this->include_configuration();
+        if ($configuration === false) {
+            $configuration = $this->include_configuration();
+        }
 
         $this->configstores = array();
         $this->configdefinitions = array();
@@ -182,7 +185,7 @@ class cache_config {
             if (!class_exists($class)) {
                 continue;
             }
-            if (!array_key_exists('cache_store', class_implements($class))) {
+            if (!array_key_exists('cache_store', class_parents($class))) {
                 continue;
             }
             if (!array_key_exists('configuration', $store) || !is_array($store['configuration'])) {
@@ -345,6 +348,61 @@ class cache_config {
     }
 
     /**
+     * Returns the definitions mapped into the given store name.
+     *
+     * @param string $storename
+     * @return array Associative array of definitions, id=>definition
+     */
+    public static function get_definitions_by_store($storename) {
+        $definitions = array();
+
+        $config = cache_config::instance();
+        $stores = $config->get_all_stores();
+        if (!array_key_exists($storename, $stores)) {
+            // The store does not exist.
+            return false;
+        }
+
+        $defmappings = $config->get_definition_mappings();
+        // Create an associative array for the definition mappings.
+        $thedefmappings = array();
+        foreach ($defmappings as $defmapping) {
+            $thedefmappings[$defmapping['definition']] = $defmapping;
+        }
+
+        // Search for matches in default mappings.
+        $defs = $config->get_definitions();
+        foreach($config->get_mode_mappings() as $modemapping) {
+            if ($modemapping['store'] !== $storename) {
+                continue;
+            }
+            foreach($defs as $id => $definition) {
+                if ($definition['mode'] !== $modemapping['mode']) {
+                    continue;
+                }
+                // Exclude custom definitions mapping: they will be managed few lines below.
+                if (array_key_exists($id, $thedefmappings)) {
+                    continue;
+                }
+                $definitions[$id] = $definition;
+            }
+        }
+
+        // Search for matches in the custom definitions mapping
+        foreach ($defmappings as $defmapping) {
+            if ($defmapping['store'] !== $storename) {
+                continue;
+            }
+            $definition = $config->get_definition_by_id($defmapping['definition']);
+            if ($definition) {
+                $definitions[$defmapping['definition']] = $definition;
+            }
+        }
+
+        return $definitions;
+    }
+
+    /**
      * Returns all of the stores that are suitable for the given mode and requirements.
      *
      * @param int $mode One of cache_store::MODE_*
@@ -370,7 +428,8 @@ class cache_config {
      */
     public function get_stores_for_definition(cache_definition $definition) {
         // Check if MUC has been disabled.
-        if (defined('NO_CACHE_STORES') && NO_CACHE_STORES !== false) {
+        $factory = cache_factory::instance();
+        if ($factory->stores_disabled()) {
             // Yip its been disabled.
             // To facilitate this we are going to always return an empty array of stores to use.
             // This will force all cache instances to use the cachestore_dummy.

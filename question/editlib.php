@@ -251,9 +251,9 @@ abstract class question_bank_column_base {
     protected function get_sort_icon($reverse) {
         global $OUTPUT;
         if ($reverse) {
-            return ' <img src="' . $OUTPUT->pix_url('t/up') . '" alt="' . get_string('desc') . '" />';
+            return $OUTPUT->pix_icon('t/sort_desc', get_string('desc'), '', array('class' => 'iconsort'));
         } else {
-            return ' <img src="' . $OUTPUT->pix_url('t/down') . '" alt="' . get_string('asc') . '" />';
+            return $OUTPUT->pix_icon('t/sort_asc', get_string('asc'), '', array('class' => 'iconsort'));
         }
     }
 
@@ -704,7 +704,7 @@ class question_bank_preview_action_column extends question_bank_action_column_ba
         global $OUTPUT;
         if (question_has_capability_on($question, 'use')) {
             // Build the icon.
-            $image = $OUTPUT->pix_icon('t/preview', $this->strpreview);
+            $image = $OUTPUT->pix_icon('t/preview', $this->strpreview, '', array('class' => 'iconsmall'));
 
             $link = $this->qbank->preview_question_url($question);
             $action = new popup_action('click', $link, 'questionpreview',

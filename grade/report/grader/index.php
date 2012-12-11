@@ -107,7 +107,7 @@ grade_regrade_final_grades($courseid);
 
 // Perform actions
 if (!empty($target) && !empty($action) && confirm_sesskey()) {
-    grade_report_grader::process_action($target, $action);
+    grade_report_grader::do_process_action($target, $action);
 }
 
 $reportname = get_string('pluginname', 'gradereport_grader');
@@ -140,7 +140,6 @@ $report->load_final_grades();
 
 echo $report->group_selector;
 echo '<div class="clearer"></div>';
-// echo $report->get_toggles_html();
 
 //show warnings if any
 foreach($warnings as $warning) {

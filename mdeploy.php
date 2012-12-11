@@ -171,6 +171,9 @@ class input_manager extends singleton_pattern {
         $supportedoptions = array(
             array('', 'passfile', input_manager::TYPE_FILE, 'File name of the passphrase file (HTTP access only)'),
             array('', 'password', input_manager::TYPE_RAW, 'Session passphrase (HTTP access only)'),
+            array('', 'proxy', input_manager::TYPE_RAW, 'HTTP proxy host and port (e.g. \'our.proxy.edu:8888\')'),
+            array('', 'proxytype', input_manager::TYPE_RAW, 'Proxy type (HTTP or SOCKS5)'),
+            array('', 'proxyuserpwd', input_manager::TYPE_RAW, 'Proxy username and password (e.g. \'username:password\')'),
             array('', 'returnurl', input_manager::TYPE_URL, 'Return URL (HTTP access only)'),
             array('d', 'dataroot', input_manager::TYPE_PATH, 'Full path to the dataroot (moodledata) directory'),
             array('h', 'help', input_manager::TYPE_FLAG, 'Prints usage information'),
@@ -618,9 +621,12 @@ class output_http_provider extends output_provider {
      * @param Exception $e uncaught exception
      */
     public function exception(Exception $e) {
+
+        $docslink = 'http://docs.moodle.org/en/admin/mdeploy/'.get_class($e);
         $this->start_output();
         echo('<h1>Oops! It did it again</h1>');
-        echo('<p><strong>Moodle deployment utility had a trouble with your request. See the debugging information for more details.</strong></p>');
+        echo('<p><strong>Moodle deployment utility had a trouble with your request.
+            See <a href="'.$docslink.'">the docs page</a> and the debugging information for more details.</strong></p>');
         echo('<pre>');
         echo exception_handlers::format_exception_info($e);
         echo('</pre>');
@@ -966,6 +972,36 @@ class worker extends singleton_pattern {
         curl_setopt($ch, CURLOPT_TIMEOUT, 3600);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20); // nah, moodle.org is never unavailable! :-p
         curl_setopt($ch, CURLOPT_URL, $source);
+
+        $dataroot = $this->input->get_option('dataroot');
+        $cacertfile = $dataroot.'/moodleorgca.crt';
+        if (is_readable($cacertfile)) {
+            // Do not use CA certs provided by the operating system. Instead,
+            // use this CA cert to verify the ZIP provider.
+            $this->log('Using custom CA certificate '.$cacertfile);
+            curl_setopt($ch, CURLOPT_CAINFO, $cacertfile);
+        }
+
+        $proxy = $this->input->get_option('proxy', false);
+        if (!empty($proxy)) {
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+
+            $proxytype = $this->input->get_option('proxytype', false);
+            if (strtoupper($proxytype) === 'SOCKS5') {
+                $this->log('Using SOCKS5 proxy');
+                curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+            } else if (!empty($proxytype)) {
+                $this->log('Using HTTP proxy');
+                curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+                curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, false);
+            }
+
+            $proxyuserpwd = $this->input->get_option('proxyuserpwd', false);
+            if (!empty($proxyuserpwd)) {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxyuserpwd);
+                curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC | CURLAUTH_NTLM);
+            }
+        }
 
         $targetfile = fopen($target, 'w');
 

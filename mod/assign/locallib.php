@@ -320,11 +320,12 @@ class assign {
 
         $o = '';
         $mform = null;
+        $notices = array();
 
-        // handle form submissions first
+        // Handle form submissions first.
         if ($action == 'savesubmission') {
             $action = 'editsubmission';
-            if ($this->process_save_submission($mform)) {
+            if ($this->process_save_submission($mform, $notices)) {
                 $action = 'view';
             }
         } else if ($action == 'lock') {
@@ -384,7 +385,7 @@ class assign {
         $returnparams = array('rownum'=>optional_param('rownum', 0, PARAM_INT));
         $this->register_return_link($action, $returnparams);
 
-        // now show the right view page
+        // Now show the right view page.
         if ($action == 'previousgrade') {
             $mform = null;
             $o .= $this->view_single_grade_page($mform, -1);
@@ -401,7 +402,7 @@ class assign {
         } else if ($action == 'viewpluginassignsubmission') {
             $o .= $this->view_plugin_content('assignsubmission');
         } else if ($action == 'editsubmission') {
-            $o .= $this->view_edit_submission_page($mform);
+            $o .= $this->view_edit_submission_page($mform, $notices);
         } else if ($action == 'grading') {
             $o .= $this->view_grading_page();
         } else if ($action == 'downloadall') {
@@ -808,13 +809,14 @@ class assign {
      * @param mixed $grade stdClass|null
      * @param MoodleQuickForm $mform
      * @param stdClass $data
+     * @param int $userid - The userid we are grading
      * @return void
      */
-    private function add_plugin_grade_elements($grade, MoodleQuickForm $mform, stdClass $data) {
+    private function add_plugin_grade_elements($grade, MoodleQuickForm $mform, stdClass $data, $userid) {
         foreach ($this->feedbackplugins as $plugin) {
             if ($plugin->is_enabled() && $plugin->is_visible()) {
                 $mform->addElement('header', 'header_' . $plugin->get_type(), $plugin->get_name());
-                if (!$plugin->get_form_elements($grade, $mform, $data)) {
+                if (!$plugin->get_form_elements_for_user($grade, $mform, $data, $userid)) {
                     $mform->removeElement('header_' . $plugin->get_type());
                 }
             }
@@ -2399,9 +2401,10 @@ class assign {
      * View edit submissions page.
      *
      * @param moodleform $mform
+     * @param array $notices A list of notices to display at the top of the edit submission form (e.g. from plugins).
      * @return void
      */
-    private function view_edit_submission_page($mform) {
+    private function view_edit_submission_page($mform, $notices) {
         global $CFG;
 
         $o = '';
@@ -2423,6 +2426,10 @@ class assign {
 
         if (!$mform) {
             $mform = new mod_assign_submission_form(null, array($this, $data));
+        }
+
+        foreach ($notices as $notice) {
+            $o .= $this->get_renderer()->notification($notice);
         }
 
         $o .= $this->get_renderer()->render(new assign_form('editsubmissionform',$mform));
@@ -3175,7 +3182,7 @@ class assign {
         }
         $info->assignment = format_string($assignmentname,true, array('context'=>$context));
         $info->url = $CFG->wwwroot.'/mod/assign/view.php?id='.$coursemodule->id;
-        $info->timeupdated = strftime('%c',$updatetime);
+        $info->timeupdated = userdate($updatetime, get_string('strftimerecentfull'));
 
         $postsubject = get_string($messagetype . 'small', 'assign', $info);
         $posttext = self::format_notification_message_text($messagetype, $info, $course, $context, $modulename, $assignmentname);
@@ -3468,7 +3475,7 @@ class assign {
         $modifiedusers = array();
         foreach ($currentgrades as $current) {
             $modified = $users[(int)$current->userid];
-            $grade = $this->get_user_grade($userid, false);
+            $grade = $this->get_user_grade($modified->userid, false);
 
             // check to see if the outcomes were modified
             if ($CFG->enableoutcomes) {
@@ -3698,15 +3705,16 @@ class assign {
      * save assignment submission
      *
      * @param  moodleform $mform
+     * @param  array $notices Any error messages that should be shown to the user at the top of the edit submission form.
      * @return bool
      */
-    private function process_save_submission(&$mform) {
+    private function process_save_submission(&$mform, &$notices) {
         global $USER, $CFG;
 
-        // Include submission form
+        // Include submission form.
         require_once($CFG->dirroot . '/mod/assign/submission_form.php');
 
-        // Need submit permission to submit an assignment
+        // Need submit permission to submit an assignment.
         require_capability('mod/assign:submit', $this->context);
         require_sesskey();
 
@@ -3734,12 +3742,24 @@ class assign {
             }
 
 
+            $allempty = true;
+            $pluginerror = false;
             foreach ($this->submissionplugins as $plugin) {
                 if ($plugin->is_enabled()) {
                     if (!$plugin->save($submission, $data)) {
-                        print_error($plugin->get_error());
+                        $notices[] = $plugin->get_error();
+                        $pluginerror = true;
+                    }
+                    if (!$allempty || !$plugin->is_empty($submission)) {
+                        $allempty = false;
                     }
                 }
+            }
+            if ($pluginerror || $allempty) {
+                if ($allempty) {
+                    $notices[] = get_string('submissionempty', 'mod_assign');
+                }
+                return false;
             }
 
             $this->update_submission($submission, $USER->id, true, $this->get_instance()->teamsubmission);
@@ -3926,8 +3946,8 @@ class assign {
 
         $mform->addElement('static', 'progress', '', get_string('gradingstudentprogress', 'assign', array('index'=>$rownum+1, 'count'=>count($useridlist))));
 
-        // plugins
-        $this->add_plugin_grade_elements($grade, $mform, $data);
+        // Let feedback plugins add elements to the grading form.
+        $this->add_plugin_grade_elements($grade, $mform, $data, $userid);
 
         // hidden params
         $mform->addElement('hidden', 'id', $this->get_course_module()->id);
@@ -3966,7 +3986,9 @@ class assign {
         if (!$last) {
             $buttonarray[] = $mform->createElement('submit', 'nosaveandnext', get_string('nosavebutnext', 'assign'));
         }
-        $mform->addGroup($buttonarray, 'navar', '', array(' '), false);
+        if (!empty($buttonarray)) {
+            $mform->addGroup($buttonarray, 'navar', '', array(' '), false);
+        }
     }
 
 
@@ -3976,13 +3998,14 @@ class assign {
      * @param mixed $submission stdClass|null
      * @param MoodleQuickForm $mform
      * @param stdClass $data
+     * @param int $userid The current userid (same as $USER->id)
      * @return void
      */
-    private function add_plugin_submission_elements($submission, MoodleQuickForm $mform, stdClass $data) {
+    private function add_plugin_submission_elements($submission, MoodleQuickForm $mform, stdClass $data, $userid) {
         foreach ($this->submissionplugins as $plugin) {
             if ($plugin->is_enabled() && $plugin->is_visible() && $plugin->allow_submissions()) {
                 $mform->addElement('header', 'header_' . $plugin->get_type(), $plugin->get_name());
-                if (!$plugin->get_form_elements($submission, $mform, $data)) {
+                if (!$plugin->get_form_elements_for_user($submission, $mform, $data, $userid)) {
                     $mform->removeElement('header_' . $plugin->get_type());
                 }
             }
@@ -4064,7 +4087,7 @@ class assign {
             $mform->addRule('submissionstatement', get_string('required'), 'required', null, 'client');
         }
 
-        $this->add_plugin_submission_elements($submission, $mform, $data);
+        $this->add_plugin_submission_elements($submission, $mform, $data, $USER->id);
 
         // hidden params
         $mform->addElement('hidden', 'id', $this->get_course_module()->id);
@@ -4095,9 +4118,9 @@ class assign {
         }
 
         if ($this->get_instance()->teamsubmission) {
-            $submission = $this->get_group_submission($USER->id, 0, false);
+            $submission = $this->get_group_submission($userid, 0, false);
         } else {
-            $submission = $this->get_user_submission($USER->id, false);
+            $submission = $this->get_user_submission($userid, false);
         }
 
         if (!$submission) {
@@ -4308,9 +4331,11 @@ class assign {
                 foreach ($members as $member) {
                     // User may exist in multple groups (which should put them in the default group).
                     $this->apply_grade_to_user($formdata, $member->id);
+                    $this->process_outcomes($member->id, $formdata);
                 }
             } else {
                 $this->apply_grade_to_user($formdata, $userid);
+                $this->process_outcomes($userid, $formdata);
             }
         } else {
             return false;

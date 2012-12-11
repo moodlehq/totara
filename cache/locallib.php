@@ -42,6 +42,14 @@ defined('MOODLE_INTERNAL') || die();
 class cache_config_writer extends cache_config {
 
     /**
+     * Switch that gets set to true when ever a cache_config_writer instance is saving the cache configuration file.
+     * If this is set to true when save is next called we must avoid the trying to save and instead return the
+     * generated config so that is may be used instead of the file.
+     * @var bool
+     */
+    protected static $creatingconfig = false;
+
+    /**
      * Returns an instance of the configuration writer.
      *
      * @return cache_config_writer
@@ -53,6 +61,10 @@ class cache_config_writer extends cache_config {
 
     /**
      * Saves the current configuration.
+     *
+     * Exceptions within this function are tolerated but must be of type cache_exception.
+     * They are caught during initialisation and written to the error log. This is required in order to avoid
+     * infinite loop situations caused by the cache throwing exceptions during its initialisation.
      */
     protected function config_save() {
         global $CFG;
@@ -61,20 +73,15 @@ class cache_config_writer extends cache_config {
         if ($directory !== $CFG->dataroot && !file_exists($directory)) {
             $result = make_writable_directory($directory, false);
             if (!$result) {
-                throw new cache_exception('ex_configcannotsave', 'cache', '', null, 'Cannot create config directory.');
+                throw new cache_exception('ex_configcannotsave', 'cache', '', null, 'Cannot create config directory. Check the permissions on your moodledata directory.');
             }
         }
         if (!file_exists($directory) || !is_writable($directory)) {
-            throw new cache_exception('ex_configcannotsave', 'cache', '', null, 'Config directory is not writable.');
+            throw new cache_exception('ex_configcannotsave', 'cache', '', null, 'Config directory is not writable. Check the permissions on the moodledata/muc directory.');
         }
 
         // Prepare a configuration array to store.
-        $configuration = array();
-        $configuration['stores'] = $this->configstores;
-        $configuration['modemappings'] = $this->configmodemappings;
-        $configuration['definitions'] = $this->configdefinitions;
-        $configuration['definitionmappings'] = $this->configdefinitionmappings;
-        $configuration['locks'] = $this->configlocks;
+        $configuration = $this->generate_configuration_array();
 
         // Prepare the file content.
         $content = "<?php defined('MOODLE_INTERNAL') || die();\n \$configuration = ".var_export($configuration, true).";";
@@ -104,6 +111,20 @@ class cache_config_writer extends cache_config {
         } else {
             throw new cache_exception('ex_configcannotsave', 'cache', '', null, 'Unable to open the cache config file.');
         }
+    }
+
+    /**
+     * Generates a configuration array suitable to be written to the config file.
+     * @return array
+     */
+    protected function generate_configuration_array() {
+        $configuration = array();
+        $configuration['stores'] = $this->configstores;
+        $configuration['modemappings'] = $this->configmodemappings;
+        $configuration['definitions'] = $this->configdefinitions;
+        $configuration['definitionmappings'] = $this->configdefinitionmappings;
+        $configuration['locks'] = $this->configlocks;
+        return $configuration;
     }
 
     /**
@@ -137,7 +158,7 @@ class cache_config_writer extends cache_config {
             }
         }
         $reflection = new ReflectionClass($class);
-        if (!$reflection->implementsInterface('cache_store')) {
+        if (!$reflection->isSubclassOf('cache_store')) {
             throw new cache_exception('Invalid cache plugin specified. The plugin does not extend the required class.');
         }
         if (!$class::are_requirements_met()) {
@@ -293,6 +314,9 @@ class cache_config_writer extends cache_config {
      *
      * This function calls config_save, however it is safe to continue using it afterwards as this function should only ever
      * be called when there is no configuration file already.
+     *
+     * @return true|array Returns true if the default configuration was successfully created.
+     *     Returns a configuration array if it could not be saved. This is a bad situation. Check your error logs.
      */
     public static function create_default_configuration() {
         global $CFG;
@@ -357,7 +381,16 @@ class cache_config_writer extends cache_config {
                 'default' => true
             )
         );
+
+        $factory = cache_factory::instance();
+        // We expect the cache to be initialising presently. If its not then something has gone wrong and likely
+        // we are now in a loop.
+        if ($factory->get_state() !== cache_factory::STATE_INITIALISING) {
+            return $writer->generate_configuration_array();
+        }
+        $factory->set_state(cache_factory::STATE_SAVING);
         $writer->config_save();
+        return true;
     }
 
     /**
@@ -790,7 +823,7 @@ abstract class cache_administration_helper extends cache_helper {
         // If it has a customised add instance form then it is going to want to.
         $storeclass = 'cachestore_'.$plugin;
         $storedata = $stores[$store];
-        if (array_key_exists('configuration', $storedata) && method_exists($storeclass, 'config_set_edit_form_data')) {
+        if (array_key_exists('configuration', $storedata) && array_key_exists('cache_is_configurable', class_implements($storeclass))) {
             $storeclass::config_set_edit_form_data($editform, $storedata['configuration']);
         }
         return $editform;
@@ -848,12 +881,11 @@ abstract class cache_administration_helper extends cache_helper {
         }
         require_once($file);
         $class = 'cachestore_'.$data->plugin;
-        $method = 'config_get_configuration_array';
         if (!class_exists($class)) {
             throw new coding_exception('Invalid cache plugin provided.');
         }
-        if (method_exists($class, $method)) {
-            return call_user_func(array($class, $method), $data);
+        if (array_key_exists('cache_is_configurable', class_implements($class))) {
+            return $class::config_get_configuration_array($data);
         }
         return array();
     }

@@ -37,7 +37,7 @@
  * @copyright  2012 Sam Hemelryk
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class cachestore_file implements cache_store, cache_is_key_aware {
+class cachestore_file extends cache_store implements cache_is_key_aware, cache_is_configurable  {
 
     /**
      * The name of the store.
@@ -123,7 +123,7 @@ class cachestore_file implements cache_store, cache_is_key_aware {
             }
             if ($path !== false && !is_writable($path)) {
                 $path = false;
-                debugging('The given file cache store path is not writable. '.$path, DEBUG_DEVELOPER);
+                debugging('The file cache store path is not writable for `'.$name.'`', DEBUG_DEVELOPER);
             }
         } else {
             $path = make_cache_directory('cachestore_file/'.preg_replace('#[^a-zA-Z0-9\.\-_]+#', '', $name));
@@ -151,7 +151,7 @@ class cachestore_file implements cache_store, cache_is_key_aware {
      * @return bool
      */
     public function is_ready() {
-        return ($this->path !== null);
+        return $this->isready;
     }
 
     /**
@@ -202,33 +202,6 @@ class cachestore_file implements cache_store, cache_is_key_aware {
      */
     public static function is_supported_mode($mode) {
         return ($mode === self::MODE_APPLICATION || $mode === self::MODE_SESSION);
-    }
-
-    /**
-     * Returns true if the store instance supports multiple identifiers.
-     *
-     * @return bool
-     */
-    public function supports_multiple_identifiers() {
-        return false;
-    }
-
-    /**
-     * Returns true if the store instance guarantees data.
-     *
-     * @return bool
-     */
-    public function supports_data_guarantee() {
-        return true;
-    }
-
-    /**
-     * Returns true if the store instance supports native ttl.
-     *
-     * @return bool
-     */
-    public function supports_native_ttl() {
-        return true;
     }
 
     /**
@@ -590,15 +563,6 @@ class cachestore_file implements cache_store, cache_is_key_aware {
                 throw new coding_exception('File store path does not exist and can not be created.');
             }
         }
-        return true;
-    }
-
-    /**
-     * Returns true if the user can add an instance of the store plugin.
-     *
-     * @return bool
-     */
-    public static function can_add_instance() {
         return true;
     }
 

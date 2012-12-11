@@ -72,8 +72,8 @@ class core_backup_renderer extends plugin_renderer_base {
      * @return string
      */
     public function backup_details($details, $nextstageurl) {
-        $yestick = $this->output->pix_icon('i/tick_green_big', get_string('yes'));
-        $notick = $this->output->pix_icon('i/cross_red_big', get_string('no'));
+        $yestick = $this->output->pix_icon('i/valid', get_string('yes'));
+        $notick = $this->output->pix_icon('i/valid', get_string('no'));
 
         $html  = html_writer::start_tag('div', array('class'=>'backup-restore'));
 
@@ -147,9 +147,9 @@ class core_backup_renderer extends plugin_renderer_base {
                         $table->data = array();
                     }
                     $name = get_string('pluginname', $activity->modulename);
-                    $icon = new pix_icon('icon', $name, $activity->modulename);
+                    $icon = new pix_icon('icon', $name, $activity->modulename, array('class' => 'iconlarge icon-pre'));
                     $table->data[] = array(
-                        $this->output->render($icon).'&nbsp;'.$name,
+                        $this->output->render($icon).$name,
                         $activity->title,
                         ($activity->settings[$activitykey.'_userinfo'])?$yestick:$notick,
                     );

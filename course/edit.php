@@ -44,7 +44,11 @@ $returnto = optional_param('returnto', 0, PARAM_ALPHANUM); // generic navigation
 $nojs = optional_param('nojs', 0, PARAM_INT);
 
 $PAGE->set_pagelayout('admin');
-$PAGE->set_url('/course/edit.php');
+$pageparams = array('id'=>$id);
+if (empty($id)) {
+    $pageparams = array('category'=>$categoryid);
+}
+$PAGE->set_url('/course/edit.php', $pageparams);
 
 // basic access control checks
 if ($id) { // editing course
@@ -61,7 +65,6 @@ if ($id) { // editing course
     $category = $DB->get_record('course_categories', array('id'=>$course->category), '*', MUST_EXIST);
     $coursecontext = context_course::instance($course->id);
     require_capability('moodle/course:update', $coursecontext);
-    $PAGE->url->param('id',$id);
 
     customfield_load_data($course, 'course', 'course');
 
@@ -71,7 +74,6 @@ if ($id) { // editing course
     $category = $DB->get_record('course_categories', array('id'=>$categoryid), '*', MUST_EXIST);
     $catcontext = context_coursecat::instance($category->id);
     require_capability('moodle/course:create', $catcontext);
-    $PAGE->url->param('category',$categoryid);
     $PAGE->set_context($catcontext);
 
 } else {

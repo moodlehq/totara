@@ -143,12 +143,20 @@ if (!defined('PHPUNIT_TEST')) {
     define('PHPUNIT_TEST', false);
 }
 
+// When set to true MUC (Moodle caching) will be disabled as much as possible.
+// A special cache factory will be used to handle this situation and will use special "disabled" equivalents objects.
+// This ensure we don't attempt to read or create the config file, don't use stores, don't provide persistence or
+// storage of any kind.
+if (!defined('CACHE_DISABLE_ALL')) {
+    define('CACHE_DISABLE_ALL', false);
+}
+
 // When set to true MUC (Moodle caching) will not use any of the defined or default stores.
 // The Cache API will continue to function however this will force the use of the cachestore_dummy so all requests
 // will be interacting with a static property and will never go to the proper cache stores.
 // Useful if you need to avoid the stores for one reason or another.
-if (!defined('NO_CACHE_STORES')) {
-    define('NO_CACHE_STORES', false);
+if (!defined('CACHE_DISABLE_STORES')) {
+    define('CACHE_DISABLE_STORES', false);
 }
 
 // Servers should define a default timezone in php.ini, but if they don't then make sure something is defined.
@@ -348,13 +356,6 @@ global $COURSE;
  * @name $OUTPUT
  */
 global $OUTPUT;
-
-/**
- * Shared memory cache.
- * @global object $MCACHE
- * @name $MCACHE
- */
-global $MCACHE;
 
 /**
  * Cache used within grouplib to cache data within current request only.
@@ -598,42 +599,6 @@ if (!isset($CFG->debugdisplay)) {
 if (!empty($CFG->version) and $CFG->version < 2007101509) {
     print_error('upgraderequires19', 'error');
     die;
-}
-
-// Shared-Memory cache init -- will set $MCACHE
-// $MCACHE is a global object that offers at least add(), set() and delete()
-// with similar semantics to the memcached PHP API http://php.net/memcache
-// Ensure we define rcache - so we can later check for it
-// with a really fast and unambiguous $CFG->rcache === false
-if (!empty($CFG->cachetype)) {
-    if (empty($CFG->rcache)) {
-        $CFG->rcache = false;
-    } else {
-        $CFG->rcache = true;
-    }
-
-    // do not try to initialize if cache disabled
-    if (!$CFG->rcache) {
-        $CFG->cachetype = '';
-    }
-
-    if ($CFG->cachetype === 'memcached' && !empty($CFG->memcachedhosts)) {
-        if (!init_memcached()) {
-            debugging("Error initialising memcached");
-            $CFG->cachetype = '';
-            $CFG->rcache = false;
-        }
-    } else if ($CFG->cachetype === 'eaccelerator') {
-        if (!init_eaccelerator()) {
-            debugging("Error initialising eaccelerator cache");
-            $CFG->cachetype = '';
-            $CFG->rcache = false;
-        }
-    }
-
-} else { // just make sure it is defined
-    $CFG->cachetype = '';
-    $CFG->rcache    = false;
 }
 
 // Calculate and set $CFG->ostype to be used everywhere. Possible values are:

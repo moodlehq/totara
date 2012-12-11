@@ -322,13 +322,13 @@ function calendar_get_mini($courses, $groups, $users, $cal_month = false, $cal_y
                     $popupalt  = $event->modulename;
                     $component = $event->modulename;
                 } else if ($event->courseid == SITEID) {                                // Site event
-                    $popupicon = 'c/site';
+                    $popupicon = 'i/siteevent';
                 } else if ($event->courseid != 0 && $event->courseid != SITEID && $event->groupid == 0) {      // Course event
-                    $popupicon = 'c/course';
+                    $popupicon = 'i/courseevent';
                 } else if ($event->groupid) {                                      // Group event
-                    $popupicon = 'c/group';
+                    $popupicon = 'i/groupevent';
                 } else if ($event->userid) {                                       // User event
-                    $popupicon = 'c/user';
+                    $popupicon = 'i/userevent';
                 }
 
                 $dayhref->set_anchor('event_'.$event->id);
@@ -607,14 +607,14 @@ function calendar_add_event_metadata($event) {
         $context = context_course::instance($module->course);
         $fullname = format_string($coursecache[$module->course]->fullname, true, array('context' => $context));
 
-        $event->icon = '<img height="16" width="16" src="'.$icon.'" alt="'.$eventtype.'" title="'.$modulename.'" style="vertical-align: middle;" />';
+        $event->icon = '<img src="'.$icon.'" alt="'.$eventtype.'" title="'.$modulename.'" class="icon" />';
         $event->referer = '<a href="'.$CFG->wwwroot.'/mod/'.$event->modulename.'/view.php?id='.$module->id.'">'.$event->name.'</a>';
         $event->courselink = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$module->course.'">'.$fullname.'</a>';
         $event->cmid = $module->id;
 
 
     } else if($event->courseid == SITEID) {                              // Site event
-        $event->icon = '<img height="16" width="16" src="'.$OUTPUT->pix_url('c/site') . '" alt="'.get_string('globalevent', 'calendar').'" style="vertical-align: middle;" />';
+        $event->icon = '<img src="'.$OUTPUT->pix_url('i/siteevent') . '" alt="'.get_string('globalevent', 'calendar').'" class="icon" />';
         $event->cssclass = 'calendar_event_global';
     } else if($event->courseid != 0 && $event->courseid != SITEID && $event->groupid == 0) {          // Course event
         calendar_get_course_cached($coursecache, $event->courseid);
@@ -622,14 +622,14 @@ function calendar_add_event_metadata($event) {
         $context = context_course::instance($event->courseid);
         $fullname = format_string($coursecache[$event->courseid]->fullname, true, array('context' => $context));
 
-        $event->icon = '<img height="16" width="16" src="'.$OUTPUT->pix_url('c/course') . '" alt="'.get_string('courseevent', 'calendar').'" style="vertical-align: middle;" />';
+        $event->icon = '<img src="'.$OUTPUT->pix_url('i/courseevent') . '" alt="'.get_string('courseevent', 'calendar').'" class="icon" />';
         $event->courselink = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$event->courseid.'">'.$fullname.'</a>';
         $event->cssclass = 'calendar_event_course';
     } else if ($event->groupid) {                                    // Group event
-        $event->icon = '<img height="16" width="16" src="'.$OUTPUT->pix_url('c/group') . '" alt="'.get_string('groupevent', 'calendar').'" style="vertical-align: middle;" />';
+        $event->icon = '<img src="'.$OUTPUT->pix_url('i/groupevent') . '" alt="'.get_string('groupevent', 'calendar').'" class="icon" />';
         $event->cssclass = 'calendar_event_group';
     } else if($event->userid) {                                      // User event
-        $event->icon = '<img height="16" width="16" src="'.$OUTPUT->pix_url('c/user') . '" alt="'.get_string('userevent', 'calendar').'" style="vertical-align: middle;" />';
+        $event->icon = '<img src="'.$OUTPUT->pix_url('i/userevent') . '" alt="'.get_string('userevent', 'calendar').'" class="icon" />';
         $event->cssclass = 'calendar_event_user';
     }
     return $event;
@@ -1153,7 +1153,7 @@ function calendar_get_block_upcoming($events, $linkhref = NULL) {
             continue;
         }
         $events[$i] = calendar_add_event_metadata($events[$i]);
-        $content .= '<div class="event"><span class="icon c0">'.$events[$i]->icon.'</span> ';
+        $content .= '<div class="event"><span class="icon c0">'.$events[$i]->icon.'</span>';
         if (!empty($events[$i]->referer)) {
             // That's an activity event, so let's provide the hyperlink
             $content .= $events[$i]->referer;
@@ -1753,11 +1753,19 @@ function calendar_get_allowed_types(&$allowed, $course = null) {
                 $allowed->courses = array($course->id => 1);
 
                 if ($course->groupmode != NOGROUPS || !$course->groupmodeforce) {
-                    $allowed->groups = groups_get_all_groups($course->id);
+                    if (has_capability('moodle/site:accessallgroups', $coursecontext)) {
+                        $allowed->groups = groups_get_all_groups($course->id);
+                    } else {
+                        $allowed->groups = groups_get_all_groups($course->id, $USER->id);
+                    }
                 }
             } else if (has_capability('moodle/calendar:managegroupentries', $coursecontext)) {
                 if($course->groupmode != NOGROUPS || !$course->groupmodeforce) {
-                    $allowed->groups = groups_get_all_groups($course->id);
+                    if (has_capability('moodle/site:accessallgroups', $coursecontext)) {
+                        $allowed->groups = groups_get_all_groups($course->id);
+                    } else {
+                        $allowed->groups = groups_get_all_groups($course->id, $USER->id);
+                    }
                 }
             }
         }
@@ -2112,24 +2120,22 @@ class calendar_event {
             if ($usingeditor) {
                 switch ($this->properties->eventtype) {
                     case 'user':
-                        $this->editorcontext = $this->properties->context;
                         $this->properties->courseid = 0;
+                        $this->properties->course = 0;
                         $this->properties->groupid = 0;
                         $this->properties->userid = $USER->id;
                         break;
                     case 'site':
-                        $this->editorcontext = $this->properties->context;
                         $this->properties->courseid = SITEID;
+                        $this->properties->course = SITEID;
                         $this->properties->groupid = 0;
                         $this->properties->userid = $USER->id;
                         break;
                     case 'course':
-                        $this->editorcontext = $this->properties->context;
                         $this->properties->groupid = 0;
                         $this->properties->userid = $USER->id;
                         break;
                     case 'group':
-                        $this->editorcontext = $this->properties->context;
                         $this->properties->userid = $USER->id;
                         break;
                     default:
@@ -2137,6 +2143,13 @@ class calendar_event {
                         // fail gracefully
                         $usingeditor = false;
                         break;
+                }
+
+                // If we are actually using the editor, we recalculate the context because some default values
+                // were set when calculate_context() was called from the constructor.
+                if ($usingeditor) {
+                    $this->properties->context = $this->calculate_context($this->properties);
+                    $this->editorcontext = $this->properties->context;
                 }
 
                 $editor = $this->properties->description;
@@ -2157,7 +2170,6 @@ class calendar_event {
                                                 $this->editoroptions,
                                                 $editor['text'],
                                                 $this->editoroptions['forcehttps']);
-
                 $DB->set_field('event', 'description', $this->properties->description, array('id'=>$this->properties->id));
             }
 
@@ -2692,13 +2704,13 @@ function calendar_get_eventtype_choices($courseid) {
     calendar_get_allowed_types($allowed, $courseid);
 
     if ($allowed->user) {
-        $choices[0] = get_string('userevents', 'calendar');
+        $choices['user'] = get_string('userevents', 'calendar');
     }
     if ($allowed->site) {
-        $choices[SITEID] = get_string('globalevents', 'calendar');
+        $choices['site'] = get_string('siteevents', 'calendar');
     }
     if (!empty($allowed->courses)) {
-        $choices[$courseid] = get_string('courseevents', 'calendar');
+        $choices['course'] = get_string('courseevents', 'calendar');
     }
     if (!empty($allowed->groups) and is_array($allowed->groups)) {
         $choices['group'] = get_string('group');
@@ -2714,11 +2726,15 @@ function calendar_get_eventtype_choices($courseid) {
  * @return int The insert ID, if any.
  */
 function calendar_add_subscription($sub) {
-    global $DB, $USER;
+    global $DB, $USER, $SITE;
 
-    $sub->courseid = $sub->eventtype;
-    if ($sub->eventtype == 'group') {
+    if ($sub->eventtype === 'site') {
+        $sub->courseid = $SITE->id;
+    } else if ($sub->eventtype === 'group' || $sub->eventtype === 'course') {
         $sub->courseid = $sub->course;
+    } else {
+        // User events.
+        $sub->courseid = 0;
     }
     $sub->userid = $USER->id;
 
@@ -2794,10 +2810,10 @@ function calendar_add_icalendar_event($event, $courseid, $subscriptionid = null)
         $eventrecord->userid = $sub->userid;
         $eventrecord->groupid = $sub->groupid;
         $eventrecord->courseid = $sub->courseid;
+        $eventrecord->eventtype = $sub->eventtype;
     } else {
-        $eventrecord->userid = $USER->id;
-        $eventrecord->groupid = 0; // TODO: ???
-        $eventrecord->courseid = $courseid;
+        // We should never do anything with an event without a subscription reference.
+        return 0;
     }
 
     if ($updaterecord = $DB->get_record('event', array('uuid' => $eventrecord->uuid))) {

@@ -30,7 +30,9 @@ $string['availability'] = 'Availability';
 $string['checkforupdates'] = 'Check for available updates';
 $string['checkforupdateslast'] = 'Last check done on {$a}';
 $string['displayname'] = 'Plugin name';
+$string['err_response_curl'] = 'Unable to fetch available updates data - unexpected cURL error.';
 $string['err_response_format_version'] = 'Unexpected version of the response format. Please try to re-check for available updates.';
+$string['err_response_http_code'] = 'Unable to fetch available updates data - unexpected HTTP response code.';
 $string['filterall'] = 'Show all';
 $string['filtercontribonly'] = 'Show contributions only';
 $string['filtercontribonlyactive'] = 'Showing contributions only';
@@ -41,10 +43,14 @@ $string['nonehighlighted'] = 'No plugins require your attention now';
 $string['nonehighlightedinfo'] = 'Display the list of all installed plugins anyway';
 $string['noneinstalled'] = 'No plugins of this type are installed';
 $string['notes'] = 'Notes';
+$string['notdownloadable'] = 'Can not download the package';
+$string['notdownloadable_help'] = 'ZIP package with the update can not be downloaded automatically. Please refer to the documentation page for more help.';
+$string['notdownloadable_link'] = 'admin/mdeploy/notdownloadable';
 $string['notwritable'] = 'Plugin files not writable';
 $string['notwritable_help'] = 'You have enabled automatic updates deployment and there is available update for this plugin. However, the plugin files are not writable by the web server so the update can not be installed at the moment.
 
 Make the plugin folder and all its contents writable to be able to install the available update automatically.';
+$string['notwritable_link'] = 'admin/mdeploy/notwritable';
 $string['numtotal'] = 'Installed: {$a}';
 $string['numdisabled'] = 'Disabled: {$a}';
 $string['numextension'] = 'Contributions: {$a}';

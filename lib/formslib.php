@@ -1660,7 +1660,7 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
                     $value = '';
                     // If we have a default value then export it.
                     if (isset($this->_defaultValues[$varname])) {
-                        $value = array($varname => $this->_defaultValues[$varname]);
+                        $value = $this->prepare_fixed_value($varname, $this->_defaultValues[$varname]);
                     }
                 } else {
                     $value = $this->_elements[$key]->exportValue($this->_submitValues, true);
@@ -1689,6 +1689,29 @@ class MoodleQuickForm extends HTML_QuickForm_DHTMLRulesTableless {
             $unfiltered = HTML_QuickForm::arrayMerge($unfiltered, $this->_constantValues);
         }
         return $unfiltered;
+    }
+
+    /**
+     * This is a bit of a hack, and it duplicates the code in
+     * HTML_QuickForm_element::_prepareValue, but I could not think of a way or
+     * reliably calling that code. (Think about date selectors, for example.)
+     * @param string $name the element name.
+     * @param mixed $value the fixed value to set.
+     * @return mixed the appropriate array to add to the $unfiltered array.
+     */
+    protected function prepare_fixed_value($name, $value) {
+        if (null === $value) {
+            return null;
+        } else {
+            if (!strpos($name, '[')) {
+                return array($name => $value);
+            } else {
+                $valueAry = array();
+                $myIndex  = "['" . str_replace(array(']', '['), array('', "']['"), $name) . "']";
+                eval("\$valueAry$myIndex = \$value;");
+                return $valueAry;
+            }
+        }
     }
 
     /**
@@ -2256,15 +2279,15 @@ class MoodleQuickForm_Renderer extends HTML_QuickForm_Renderer_Tableless{
         // switch next two lines for ol li containers for form items.
         //        $this->_elementTemplates=array('default'=>"\n\t\t".'<li class="fitem"><label>{label}{help}<!-- BEGIN required -->{req}<!-- END required --></label><div class="qfelement<!-- BEGIN error --> error<!-- END error --> {type}"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</div></li>');
         $this->_elementTemplates = array(
-        'default'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg} {help}</label></div><div class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</div></div>',
+        'default'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg}{help} </label></div><div class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</div></div>',
 
         'actionbuttons'=>"\n\t\t".'<div id="{id}" class="fitem fitem_actionbuttons fitem_{type}"><div class="felement {type}">{element}</div></div>',
 
-        'fieldset'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><div class="fgrouplabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg} {help}</label></div></div><fieldset class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</fieldset></div>',
+        'fieldset'=>"\n\t\t".'<div id="{id}" class="fitem {advanced}<!-- BEGIN required --> required<!-- END required --> fitem_{type}"><div class="fitemtitle"><div class="fgrouplabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg}{help} </label></div></div><fieldset class="felement {type}<!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}</fieldset></div>',
 
-        'static'=>"\n\t\t".'<div class="fitem {advanced}"><div class="fitemtitle"><div class="fstaticlabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg} {help}</label></div></div><div class="felement fstatic <!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}&nbsp;</div></div>',
+        'static'=>"\n\t\t".'<div class="fitem {advanced}"><div class="fitemtitle"><div class="fstaticlabel"><label>{label}<!-- BEGIN required -->{req}<!-- END required -->{advancedimg}{help} </label></div></div><div class="felement fstatic <!-- BEGIN error --> error<!-- END error -->"><!-- BEGIN error --><span class="error">{error}</span><br /><!-- END error -->{element}&nbsp;</div></div>',
 
-'warning'=>"\n\t\t".'<div class="fitem {advanced}">{element}</div>',
+        'warning'=>"\n\t\t".'<div class="fitem {advanced}">{element}</div>',
 
         'nodisplay'=>'');
 

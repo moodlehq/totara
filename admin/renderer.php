@@ -701,7 +701,7 @@ class core_admin_renderer extends plugin_renderer_base {
     function upgrade_reload($url) {
         return html_writer::empty_tag('br') .
                 html_writer::tag('div',
-                    html_writer::link($url, $this->pix_icon('i/reload', '') .
+                    html_writer::link($url, $this->pix_icon('i/reload', '', '', array('class' => 'icon icon-pre')) .
                             get_string('reload'), array('title' => get_string('reload'))),
                 array('class' => 'continuebutton')) . html_writer::empty_tag('br');
     }
@@ -1102,9 +1102,9 @@ class core_admin_renderer extends plugin_renderer_base {
                 $row->attributes['class'] = 'type-' . $plugin->type . ' name-' . $plugin->type . '_' . $plugin->name;
 
                 if ($this->page->theme->resolve_image_location('icon', $plugin->type . '_' . $plugin->name)) {
-                    $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name, array('class' => 'smallicon pluginicon'));
+                    $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name, array('class' => 'icon pluginicon'));
                 } else {
-                    $icon = $this->output->pix_icon('spacer', '', 'moodle', array('class' => 'smallicon pluginicon noicon'));
+                    $icon = $this->output->pix_icon('spacer', '', 'moodle', array('class' => 'icon pluginicon noicon'));
                 }
                 if ($plugin->get_status() === plugin_manager::PLUGIN_STATUS_MISSING) {
                     $msg = html_writer::tag('span', get_string('status_missing', 'core_plugin'), array('class' => 'notifyproblem'));
@@ -1112,7 +1112,7 @@ class core_admin_renderer extends plugin_renderer_base {
                 } else {
                     $msg = '';
                 }
-                $pluginname  = html_writer::tag('div', $icon . ' ' . $plugin->displayname . ' ' . $msg, array('class' => 'displayname')).
+                $pluginname  = html_writer::tag('div', $icon . '' . $plugin->displayname . ' ' . $msg, array('class' => 'displayname')).
                                html_writer::tag('div', $plugin->component, array('class' => 'componentname'));
                 $pluginname  = new html_table_cell($pluginname);
 
@@ -1221,8 +1221,13 @@ class core_admin_renderer extends plugin_renderer_base {
             if (empty($impediments)) {
                 $widget = $deployer->make_confirm_widget($updateinfo);
                 $box .= $this->output->render($widget);
-            } else if (isset($impediments['notwritable'])) {
-                $box .= $this->output->help_icon('notwritable', 'core_plugin', get_string('notwritable', 'core_plugin'));
+            } else {
+                if (isset($impediments['notwritable'])) {
+                    $box .= $this->output->help_icon('notwritable', 'core_plugin', get_string('notwritable', 'core_plugin'));
+                }
+                if (isset($impediments['notdownloadable'])) {
+                    $box .= $this->output->help_icon('notdownloadable', 'core_plugin', get_string('notdownloadable', 'core_plugin'));
+                }
             }
         }
 
