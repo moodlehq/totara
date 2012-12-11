@@ -71,11 +71,11 @@ function scan_file($filepath){
         // - the build/ directory
         // - the blocks/search directory (as this block uses mdl_
         //   in the index names and it's too hard to exclude)
-        // - the lib/dml/simpletest directory
+        // - the lib/dml/tests directory
         // - the mod/quiz/report/statistics/simpletest directory
         if (preg_match('|blocks/search|', $filepath) ||
             preg_match('|build/|', $filepath) ||
-            preg_match('|lib/dml/simpletest|', $filepath) ||
+            preg_match('|lib/dml/tests|', $filepath) ||
             preg_match('|mod/quiz/report/statistics/|', $filepath)) {
             continue;
         }

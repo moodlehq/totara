@@ -85,3 +85,13 @@ sudo -u www-data php admin/cli/install.php \
     --non-interactive \
     --agree-license \
     --allow-unstable
+
+echo "Appending test variables to config.php"
+sudo chown jenkins config.php
+echo >> config.php
+echo "\$CFG->phpunit_prefix = 'unt_';" >> config.php;
+echo "\$CFG->phpunit_dataroot = '/var/lib/jenkins/jobs/$JOB_NAME/phpunit_dataroot';" >> config.php;
+
+echo "Initialize phpunit environment"
+php admin/tool/phpunit/cli/init.php
+
