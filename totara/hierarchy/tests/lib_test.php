@@ -503,7 +503,17 @@ class hierarchylib_test extends advanced_testcase {
         $this->assertEquals(count($customfields),1);
 
         //Returned array is identical to expected data
-        $this->assertEquals($customfields, array($this->cf1->id => $this->cf1));
+        $expected_data = array(
+            'id' => $this->cf1->id,
+            'data' => $this->cf1->data,
+            'fieldid' => $this->cf1->fieldid,
+            'competencyid' => $this->cf1->competencyid,
+            'datatype' => $this->cf1->datatype,
+            'hidden' => $this->cf1->hidden,
+            'fullname' => $this->cf1->fullname
+        );
+        $expected = array($this->cf1->id => (object) $expected_data);
+        $this->assertEquals($customfields, $expected);
 
         //Empty array is returned for a non-existent item id
         $this->assertEquals($competency->get_custom_fields(9000), array());

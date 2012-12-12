@@ -70,12 +70,13 @@ class enrol_manual_lib_testcase extends advanced_testcase {
         $user3 = $this->getDataGenerator()->create_user();
         $user4 = $this->getDataGenerator()->create_user();
 
-        // We expect manual, self and guest instances to be created by default.
+        // We expect manual, self, guest and totara_program instances to be created by default.
 
         $this->assertEquals(5, $DB->count_records('enrol', array('enrol'=>'manual')));
         $this->assertEquals(5, $DB->count_records('enrol', array('enrol'=>'self')));
         $this->assertEquals(5, $DB->count_records('enrol', array('enrol'=>'guest')));
-        $this->assertEquals(15, $DB->count_records('enrol', array()));
+        $this->assertEquals(5, $DB->count_records('enrol', array('enrol'=>'totara_program')));
+        $this->assertEquals(20, $DB->count_records('enrol', array()));
 
         $this->assertEquals(0, $DB->count_records('user_enrolments', array()));
 
