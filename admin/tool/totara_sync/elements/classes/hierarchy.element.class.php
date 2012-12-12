@@ -278,7 +278,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
                   FROM {{$synctable}} s
        LEFT OUTER JOIN {{$elname}} i
                     ON s.parentidnumber = i.idnumber
-                 WHERE s.parentidnumber IS NOT NULL AND s.parentidnumber != ''
+                 WHERE s.parentidnumber IS NOT NULL AND s.parentidnumber != '' AND s.parentidnumber != '0'
                    AND s.parentidnumber NOT IN (SELECT idnumber FROM {{$synctable_clone}})";
         $rs = $DB->get_recordset_sql($sql);
         if ($rs->valid()) {
@@ -292,7 +292,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         /// Check types
         $sql = "SELECT DISTINCT typeidnumber
                  FROM {{$synctable}}
-                WHERE typeidnumber IS NOT NULL AND typeidnumber != ''
+                WHERE typeidnumber IS NOT NULL AND typeidnumber != '' AND typeidnumber != '0'
                   AND typeidnumber NOT IN
                      (SELECT idnumber FROM {{$elname}_type})";
         $rs = $DB->get_recordset_sql($sql);
@@ -313,7 +313,11 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
 
         // Start eliminating nodes from the valid trees
         // Start at the top so get all the root nodes (no parentid)
-        $goodnodes = array_keys($nodes, '');
+        $top_nodes_1 = array_keys($nodes, '');
+        $top_nodes_2 = array_keys($nodes, '0');
+
+        // Merge top level nodes into one array
+        $goodnodes = array_merge($top_nodes_1, $top_nodes_2);
 
         while (!empty($goodnodes)) {
             $newgoodnodes = array();
