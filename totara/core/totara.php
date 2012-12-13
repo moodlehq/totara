@@ -636,7 +636,7 @@ function sql_cast2char($fieldname) {
             $sql = ' CAST(' . $fieldname . ' AS VARCHAR) ';
             break;
         case 'mssql':
-            $sql = ' CAST(' . $fieldname . ' AS VARCHAR(20)) ';
+            $sql = ' CAST(' . $fieldname . ' AS NVARCHAR(20)) ';
             break;
         case 'oracle':
             $sql = ' TO_CHAR(' . $fieldname . ') ';

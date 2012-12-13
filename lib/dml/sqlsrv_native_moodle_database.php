@@ -1174,7 +1174,7 @@ class sqlsrv_native_moodle_database extends moodle_database {
         // make some default
         $this->collation = 'Latin1_General_CI_AI';
 
-        $sql = "SELECT CAST(DATABASEPROPERTYEX('$this->dbname', 'Collation') AS varchar(255)) AS SQLCollation";
+        $sql = "SELECT CAST(DATABASEPROPERTYEX('$this->dbname', 'Collation') AS nvarchar(255)) AS SQLCollation";
         $this->query_start($sql, null, SQL_QUERY_AUX);
         $result = sqlsrv_query($this->sqlsrv, $sql);
         $this->query_end($result);
@@ -1226,7 +1226,7 @@ class sqlsrv_native_moodle_database extends moodle_database {
         $arr = func_get_args();
 
         foreach ($arr as $key => $ele) {
-            $arr[$key] = ' CAST('.$ele.' AS VARCHAR(255)) ';
+            $arr[$key] = ' CAST('.$ele.' AS NVARCHAR(255)) ';
         }
         $s = implode(' + ', $arr);
 
@@ -1266,7 +1266,7 @@ class sqlsrv_native_moodle_database extends moodle_database {
     }
 
     public function sql_order_by_text($fieldname, $numchars = 32) {
-        return ' CONVERT(varchar, '.$fieldname.', '.$numchars.')';
+        return ' CONVERT(nvarchar, '.$fieldname.', '.$numchars.')';
     }
 
     /**
