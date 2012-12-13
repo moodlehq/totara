@@ -51,6 +51,7 @@ class edit_objective_form extends moodleform {
                 "fitem") . html_writer::empty_tag('br'));
         }
         $mform->addElement('editor', 'description_editor', get_string('description'), null, $TEXTAREA_OPTIONS);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         // hidden params
         $mform->addElement('hidden', 'id', 0);

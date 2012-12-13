@@ -42,7 +42,7 @@ class framework_edit_form extends moodleform {
 
         $mform->addElement('editor', 'description_editor', get_string($prefix.'frameworkdescription', 'totara_hierarchy'), null, $TEXTAREA_OPTIONS);
         $mform->addHelpButton('description_editor', $prefix.'frameworkdescription', 'totara_hierarchy');
-        $mform->setType('description_editor', PARAM_RAW);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         $this->add_action_buttons();
     }

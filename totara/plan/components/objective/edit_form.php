@@ -100,7 +100,7 @@ class plan_objective_edit_form extends moodleform {
         $mform->setType('fullname', PARAM_TEXT);
         $mform->addRule('fullname', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->addElement('editor', 'description_editor', get_string('objectivedescription', 'totara_plan'), null, $TEXTAREA_OPTIONS);
-        $mform->setType('description_editor', PARAM_RAW);
+        $mform->setType('description_editor', PARAM_CLEANHTML);
 
         // Due dates
         if ($duedateallow && ($duedatemode == DP_DUEDATES_OPTIONAL || $duedatemode == DP_DUEDATES_REQUIRED)) {

@@ -56,6 +56,7 @@ class customfield_define_base {
         $form->addHelpButton('shortname', 'customfieldshortname', 'totara_customfield');
 
         $form->addElement('editor', 'description_editor', get_string('description', 'totara_customfield'), null, $TEXTAREA_OPTIONS);
+        $form->setType('description_editor', PARAM_CLEANHTML);
         $form->addHelpButton('description_editor', 'description', 'totara_customfield');
 
         $form->addElement('selectyesno', 'required', get_string('customfieldrequired', 'totara_customfield'));

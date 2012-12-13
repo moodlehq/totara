@@ -35,7 +35,7 @@ class customfield_textarea extends customfield_base {
             $mform->addElement('static', 'freezedisplay', format_string($this->field->fullname), format_text($data, FORMAT_MOODLE));
         } else {
             $mform->addElement('editor', $this->inputname, format_string($this->field->fullname), array('cols' => $cols, 'rows' => $rows), $TEXTAREA_OPTIONS);
-            $mform->setType($this->inputname, PARAM_RAW);
+            $mform->setType($this->inputname, PARAM_CLEANHTML);
         }
     }
 
