@@ -571,7 +571,11 @@ $string['trigger'] = 'Trigger';
 $string['trigger_help'] = 'The trigger time determines when the message will be sent in relation to the event described (e.g. 4 weeks after the program is completed).';
 $string['unenrolmentmessage'] = 'Un-enrolment message';
 $string['unenrolmentmessage_help'] = 'This message will be sent whenever a user is un-assigned from a program.';
-$string['variablesubstitution_help'] = 'In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
+$string['variablesubstitution_help'] = '
+
+## Variable substitution
+
+In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
 
 %programfullname%
 :   This will be replaced by the the program\'s full name
@@ -660,23 +664,17 @@ $string['coursesetoverduemessage_help'] = 'This message will be sent at the spec
 $string['managermessage'] = 'Notice for manager';
 $string['managermessage_help'] = 'If the \'Send notice to manager\' box is checked, the message recipient\'s manager will also be sent a notification which can be specified in this field.
 
-The notice for manager can contain variables which will be replaced when the message is sent. For details of which variables will be substituted, see [ variable substituition ][1].
-
- [1]: help.php?module=local_program&file=variablesubstitution.html';
+The notice for manager can contain variables which will be replaced when the message is sent. ' . $string['variablesubstitution_help'];
 $string['messagesubject'] = 'Message subject';
 $string['messagesubject_help'] = 'The subject of the message will be displayed to message recipients in their dashboard. Max 255 characters.
 
-The subject can contain variables which will be replaced when the message is sent. For details of which variables will be substituted, see [ variable substituition ][1].
-
- [1]: help.php?module=local_program&file=variablesubstitution.html';
+The subject can contain variables which will be replaced when the message is sent. ' . $string['variablesubstitution_help'];
 $string['enrolmentmessage'] = 'Enrolment message';
 $string['enrolmentmessage_help'] = 'This message will be sent whenever a user is automatically assigned to a program.';
 $string['mainmessage'] = 'Message body';
 $string['mainmessage_help'] = 'The message body will be displayed to message recipients in their dashboard.
 
-The message body can contain variables which will be replaced when the message is sent. For details of which variables will be substituted, see [ variable substituition ][1].
-
- [1]: help.php?module=local_program&file=variablesubstitution.html';
+The message body can contain variables which will be replaced when the message is sent. ' . $string['variablesubstitution_help'];
 $string['learnerfollowupmessage'] = 'Follow-up message';
 $string['learnerfollowupmessage_help'] = 'This message will be sent to the student at the specified time after the program has been completed.';
 $string['exceptionreportmessage'] = 'Exception report message';
