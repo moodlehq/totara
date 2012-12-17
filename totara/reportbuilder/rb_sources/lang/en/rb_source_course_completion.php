@@ -6,6 +6,7 @@ $string['completionstatus'] = 'Completion Status';
 $string['completiondate'] = 'Completion Date';
 $string['datestarted'] = 'Date Started';
 $string['dateenrolled'] = 'Date Enrolled';
+$string['isenrolled'] = 'Is enrolled';
 $string['completionorgid'] = 'Completion Organisation ID';
 $string['completionorgpath'] = 'Completion Organisation Path';
 $string['completionorgname'] = 'Completion Organisation Name';
@@ -17,8 +18,6 @@ $string['passgrade'] = 'Pass Grade';
 $string['requiredgrade'] = 'Grade and required grade';
 // filters
 $string['datecompleted'] = 'Date Completed';
-$string['datestarted'] = 'Date Started';
-$string['dateenrolled'] = 'Date Enrolled';
 $string['completionstatus'] = 'Completion Status';
 $string['officewhencompletedbasic'] = 'Office when completed (basic)';
 $string['orgwhencompleted'] = 'Organisation when completed';

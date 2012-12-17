@@ -715,12 +715,12 @@ class rb_source_facetoface_sessions extends rb_base_source {
             'pilot' => array(
                 'text' => get_string('pilot', 'rb_source_facetoface_sessions'),
                 'type' => 'select',
-                'options' => array('selectfunc' => 'yesno_list')
+                'options' => array('selectchoices' => array('Yes' => get_string('yes'), 'No' => get_string('no')))
             ),
             'audit' => array(
                 'text' => get_string('audit', 'rb_source_facetoface_sessions'),
                 'type' => 'select',
-                'options' => array('selectfunc' => 'yesno_list')
+                'options' => array('selectchoices' => array('Yes' => get_string('yes'), 'No' => get_string('no')))
             ),
             'coursedelivery' => array(
                 'text' => get_string('coursedelivery', 'rb_source_facetoface_sessions'),

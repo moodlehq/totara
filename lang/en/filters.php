@@ -72,6 +72,14 @@ The filter has the following options:
 * starts with - this option allows only information that starts with the text entered (if no text is entered, then the filter is disabled)
 * ends with - this option allows only information that ends with the text entered (if no text is entered, then the filter is disabled)
 * is empty - this option allows only information that is equal to an empty string (the text entered is ignored)';
+$string['filterenrol'] = 'Enrol filter';
+$string['filterenrol_help'] = 'This filter allows you to filter information based on whether a user is or isn\'t enrolled in a particular course.
+
+The filter has the following options:
+
+* Is any value - this option disables the filter (i.e. all information is accepted by this filter)
+* Yes - this option only returns records where the user is enrolled in the specified course
+* No - this option only returns records where the user is not enrolled in the specified course';
 $string['filterselect'] = 'Select filter';
 $string['filterselect_help'] = '
 This filter allows you to filter information based on a drop down list.
@@ -115,6 +123,8 @@ $string['isgreaterthan'] = 'is greater than';
 $string['islessthan'] = 'is less than';
 $string['isgreaterorequalto'] = 'is greater than or equal to';
 $string['islessthanorequalto'] = 'is less than or equal to';
+$string['isenrolled'] = 'The user is enrolled in the course';
+$string['isnotenrolled'] = 'The user is not enrolled in the course';
 $string['isnotdefined'] = 'isn\'t defined';
 $string['isnotequalto'] = 'isn\'t equal to';
 $string['neveraccessed'] = 'Never accessed';

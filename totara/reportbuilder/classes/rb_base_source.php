@@ -740,8 +740,8 @@ abstract class rb_base_source {
 
     function rb_filter_yesno_list() {
         $yn = array();
-        $yn['Yes'] = get_string('yes');
-        $yn['No'] = get_string('no');
+        $yn[1] = get_string('yes');
+        $yn[0] = get_string('no');
         return $yn;
     }
 

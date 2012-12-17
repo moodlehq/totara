@@ -380,6 +380,15 @@ class rb_source_course_completion extends rb_base_source {
                 'Required Grade',
                 'number'
             ),
+            new rb_filter_option(
+                'course_completion',
+                'enrolled',
+                get_string('isenrolled', 'rb_source_course_completion'),
+                'enrol',
+                array(),
+                // special enrol filter requires a composite field
+                array('course' => 'base.course', 'user' => 'base.userid')
+            ),
         );
 
         // include some standard filters
