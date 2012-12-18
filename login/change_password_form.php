@@ -116,20 +116,14 @@ class login_change_password_form extends moodleform {
 
     // Check if a specified password has been previously used by this user;
     function old_password_reused($password) {
-        global $CFG, $USER;
+        global $CFG, $USER, $DB;
         $limit = empty($CFG->passwordreuselimit) ? 0: $CFG->passwordreuselimit;
         if (empty($limit)) {
             //Checking against zero old passwords - non-match by definition
             return false;
         }
-        $oldpasswordssql = 'SELECT * FROM ' . $CFG->prefix . 'oldpassword ' .
-                'WHERE uid = ' . $USER->id . ' ' .
-                'ORDER BY id desc ' .
-                'LIMIT ' . $limit;
-        $oldpasswords = get_records_sql($oldpasswordssql);
-        if (!$oldpasswords) {
-            $oldpasswords = array();
-        }
+        $oldpasswordssql = 'SELECT * FROM {oldpassword} WHERE uid = ? ORDER BY id desc';
+        $oldpasswords = $DB->get_records_sql($oldpasswordssql, array($USER->id), 0, $limit);
         foreach ($oldpasswords as $oldpassword) {
             if (md5($password . $CFG->passwordsaltmain) == $oldpassword->hash) {
                 // User tried to use a password they had previously set with the current salt

@@ -1277,6 +1277,7 @@ $string['passwordforgotteninstructions2'] = 'To reset your password, submit your
 $string['passwordchanged'] = 'Password has been changed';
 $string['passwordnohelp'] = 'No help is available to find your lost password. Please contact your Moodle administrator.';
 $string['passwordrecovery'] = 'Yes, help me log in';
+$string['passwordreused'] = 'This password has been used before, and is not permitted to be reused';
 $string['passwordsdiffer'] = 'These passwords do not match';
 $string['passwordsent'] = 'Password has been sent';
 $string['passwordsenttext'] = '<p>An email has been sent to your address at {$a->email}.</p>
