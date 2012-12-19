@@ -522,10 +522,10 @@ abstract class prog_noneventbased_message extends prog_message {
 
         //verify the $sender of the email
         if ($sender == null) { //null check on $sender, default to manager or no-reply accordingly
-            $sender = ($manager->id == $USER->id) ? $manager : generate_email_supportuser();
+            $sender = ($manager && $manager->id == $USER->id) ? $manager : generate_email_supportuser();
         } else if ($sender->id == $USER->id) { //make sure $sender is currently logged in
             $sender = $USER;
-        } else if ($USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
+        } else if ($manager && $USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
             $sender = $manager;
         } else { //last option, the no-reply address
             $sender = generate_email_supportuser();
@@ -644,10 +644,10 @@ abstract class prog_eventbased_message extends prog_message {
 
         //verify the $sender of the email
         if ($sender == null) { //null check on $sender, default to manager or no-reply accordingly
-            $sender = ($manager->id == $USER->id) ? $manager : generate_email_supportuser();
+            $sender = ($manager && $manager->id == $USER->id) ? $manager : generate_email_supportuser();
         } else if ($sender->id == $USER->id) { //make sure $sender is currently logged in
             $sender = $USER;
-        } else if ($USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
+        } else if ($manager && $USER->id == $manager->id) { //$sender is not logged in, see if it is their manager
             $sender = $manager;
         } else { //last option, the no-reply address
             $sender = generate_email_supportuser();
