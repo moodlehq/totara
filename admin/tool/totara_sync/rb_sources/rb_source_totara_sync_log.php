@@ -276,7 +276,7 @@ class rb_source_totara_sync_log extends rb_base_source {
         return array(
             'error' => get_string('error', 'tool_totara_sync'),
             'info' => get_string('info', 'tool_totara_sync'),
-            'warning' => get_string('warn', 'tool_totara_sync'),
+            'warn' => get_string('warn', 'tool_totara_sync'),
         );
     }
 
