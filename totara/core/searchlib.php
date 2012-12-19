@@ -46,7 +46,7 @@ function totara_search_parse_keywords($query) {
             $out[] = $matches[2];
         } else {
             // split unquoted text on whitespace
-            $keyword = preg_split('/\s/', $item, 0,
+            $keyword = preg_split('/\s/u', $item, 0,
                 PREG_SPLIT_NO_EMPTY);
             $out = array_merge($out, $keyword);
         }

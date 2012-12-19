@@ -95,7 +95,7 @@ foreach ($columns as $column) {
         $fields[clean_column_name(strip_tags($column->heading))] = $type;
     }
 }
-$tablename = preg_replace('/\s/', '_', clean_filename(trim($shortname))).' '.date("Y-m-d H:i:s", strtotime('+0 days'));
+$tablename = preg_replace('/\s/u', '_', clean_filename(trim($shortname))).' '.date("Y-m-d H:i:s", strtotime('+0 days'));
 try {
     $tables = $oauth->show_tables();
 }
@@ -149,9 +149,9 @@ exit;
 
 
 function clean_column_name($name) {
-    $name = preg_replace('/[^a-zA-Z0-9\_ ]/', ' ', $name);
-    $name = preg_replace('/\s+/', ' ', $name);
-    $name = preg_replace('/\s/', '_', $name);
+    $name = preg_replace('/[^a-zA-Z0-9\_ ]/u', ' ', $name);
+    $name = preg_replace('/\s+/u', ' ', $name);
+    $name = preg_replace('/\s/u', '_', $name);
     return $name;
 }
 
