@@ -41,7 +41,7 @@ $output = $PAGE->get_renderer('totara_reportbuilder');
 
 $returnurl = new moodle_url('/totara/reportbuilder/columns.php', array('id' => $id));
 
-$report = new reportbuilder($id);
+$report = new reportbuilder($id, null, false, null, null, true);
 
 // include jquery
 local_js();
@@ -119,8 +119,8 @@ if ($fromform = $mform->get_data()) {
     if (empty($fromform->submitbutton)) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_reportbuilder'), $returnurl);
     }
-
     if (build_columns($id, $fromform, $report)) {
+        reportbuilder_set_status($id);
         add_to_log(SITEID, 'reportbuilder', 'update report', 'columns.php?id='. $id,
             'Column Settings: Report ID=' . $id);
         totara_set_notification(get_string('columns_updated', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
@@ -138,6 +138,10 @@ echo $output->view_report_link($report->report_url());
 echo $output->container_end();
 
 echo $output->heading(get_string('editreport', 'totara_reportbuilder', format_string($report->fullname)));
+
+if (reportbuilder_get_status($id)) {
+    echo $output->cache_pending_notification($id);
+}
 
 $currenttab = 'columns';
 include_once('tabs.php');

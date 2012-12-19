@@ -865,12 +865,12 @@ abstract class rb_base_source {
                 if (class_exists($classname)) {
                     if ($name == 'completed_org' || $name == 'current_org') {
                         if (reportbuilder::get_setting($reportid, $settingname,
-                            'enable')) {
+                            'enable', $report->is_cached())) {
                             $localset = true;
                         }
                     } else {
                         if (reportbuilder::get_setting($reportid, $settingname,
-                            'enable')) {
+                            'enable', $report->is_cached())) {
                         $nonlocal = true;
                         }
                     }

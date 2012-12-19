@@ -1216,7 +1216,8 @@ class phpunit_util {
             $intest = false;
             if (isset($bt['object']) and is_object($bt['object'])) {
                 if ($bt['object'] instanceof PHPUnit_Framework_TestCase) {
-                    if (strpos($bt['function'], 'test') === 0) {
+                    if (strpos($bt['function'], 'test') === 0 ||
+                        $bt['function'] == 'setUp' || $bt['function'] == 'tearDown') {
                         $intest = true;
                         break;
                     }

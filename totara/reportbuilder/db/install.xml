@@ -10,8 +10,9 @@
         <FIELD NAME="fullname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Title of report, displayed on page and used to refer to a report instance" PREVIOUS="id" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Unique shortname used internally as a unique way of identifying a report" PREVIOUS="fullname" NEXT="source"/>
         <FIELD NAME="source" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Data source on which the report is based" PREVIOUS="shortname" NEXT="hidden"/>
-        <FIELD NAME="hidden" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="If set to 1, report not shown on My Reports page but still accessible at URL" PREVIOUS="source" NEXT="accessmode"/>
-        <FIELD NAME="accessmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Controls how access to the report is determined" PREVIOUS="hidden" NEXT="contentmode"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="If set to 1, report not shown on My Reports page but still accessible at URL" PREVIOUS="source" NEXT="cache"/>
+        <FIELD NAME="cache" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="If set to 1, report will be generated once per scheduled period and cached. Users will see only cached results" PREVIOUS="hidden" NEXT="accessmode"/>
+        <FIELD NAME="accessmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Controls how access to the report is determined" PREVIOUS="cache" NEXT="contentmode"/>
         <FIELD NAME="contentmode" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Controls how the content of the report is determined" PREVIOUS="accessmode" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="Description of the report" PREVIOUS="contentmode" NEXT="recordsperpage"/>
         <FIELD NAME="recordsperpage" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="40" SEQUENCE="false" COMMENT="Number of records to show on a single page of results for this report" PREVIOUS="description" NEXT="defaultsortcolumn"/>
@@ -61,7 +62,8 @@
         <FIELD NAME="reportid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="ID of the report the setting belongs to" PREVIOUS="id" NEXT="type"/>
         <FIELD NAME="type" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="Component of report builder that the setting is for" PREVIOUS="reportid" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="Name of the setting" PREVIOUS="type" NEXT="value"/>
-        <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Value of the setting" PREVIOUS="name"/>
+        <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Value of the setting" PREVIOUS="name" NEXT="cachedvalue"/>
+        <FIELD NAME="cachedvalue" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Cached value of the setting" PREVIOUS="value"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="reportid-type-name"/>
@@ -122,7 +124,7 @@
         <KEY NAME="groupid-itemid" TYPE="unique" FIELDS="groupid, itemid" COMMENT="To prevent an item being tracked twice within the same group" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="report_builder_schedule" COMMENT="Storing details of scheduled reports" PREVIOUS="report_builder_preproc_track">
+    <TABLE NAME="report_builder_schedule" COMMENT="Storing details of scheduled reports" PREVIOUS="report_builder_preproc_track" NEXT="report_builder_cache">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="reportid"/>
         <FIELD NAME="reportid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
@@ -136,6 +138,27 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
+    </TABLE>
+    <TABLE NAME="report_builder_cache" COMMENT="Storing details of scheduled reports caching" PREVIOUS="report_builder_schedule">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="reportid"/>
+        <FIELD NAME="reportid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="cachetable"/>
+        <FIELD NAME="cachetable" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Table name with cached data for report" PREVIOUS="reportid" NEXT="frequency"/>
+        <FIELD NAME="frequency" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="cachetable" NEXT="schedule"/>
+        <FIELD NAME="schedule" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="frequency" NEXT="lastreport"/>
+        <FIELD NAME="lastreport" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="schedule" NEXT="nextreport"/>
+        <FIELD NAME="nextreport" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="lastreport" NEXT="config"/>
+        <FIELD NAME="config" TYPE="text" LENGTH="big" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="nextreport" NEXT="changed"/>
+        <FIELD NAME="changed" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="config" NEXT="genstart"/>
+        <FIELD NAME="genstart" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="changed"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="reportid"/>
+        <KEY NAME="reportid" TYPE="foreign" FIELDS="reportid" REFTABLE="report_builder" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="nextreport" UNIQUE="false" FIELDS="nextreport"/>
+      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>

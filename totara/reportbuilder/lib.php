@@ -78,6 +78,13 @@ define('REPORT_BUILDER_EXPORT_FUSION', 8);
 define('RB_INITIAL_DISPLAY_SHOW', 0);
 define('RB_INITIAL_DISPLAY_HIDE', 1);
 
+/**
+ * Report cache status flags
+ */
+define('RB_CACHE_FLAG_OK', 0);
+define('RB_CACHE_FLAG_CHANGED', 1);
+define('RB_CACHE_FLAG_FAIL', 2);
+
 global $REPORT_BUILDER_EXPORT_OPTIONS;
 $REPORT_BUILDER_EXPORT_OPTIONS = array(
     'xls' => REPORT_BUILDER_EXPORT_EXCEL,
@@ -86,32 +93,42 @@ $REPORT_BUILDER_EXPORT_OPTIONS = array(
     'fusion' => REPORT_BUILDER_EXPORT_FUSION,
 );
 
-
-/**
- *  Export schedule constants
- *
- */
-define('REPORT_BUILDER_SCHEDULE_DAILY', 1);
-define('REPORT_BUILDER_SCHEDULE_WEEKLY', 2);
-define('REPORT_BUILDER_SCHEDULE_MONTHLY', 3);
-
-global $REPORT_BUILDER_SCHEDULE_OPTIONS;
-$REPORT_BUILDER_SCHEDULE_OPTIONS = array(
-    'daily' => REPORT_BUILDER_SCHEDULE_DAILY,
-    'weekly' => REPORT_BUILDER_SCHEDULE_WEEKLY,
-    'monthly' => REPORT_BUILDER_SCHEDULE_MONTHLY,
-);
+// Maximum allowed time for report caching
+define('REPORT_CACHING_TIMEOUT', 3600);
 
 /**
  * Main report builder object class definition
  */
 class reportbuilder {
+    /**
+     * Available filter settings
+     */
+    const FILTERNONE = 0;
+    const FILTER = 1;
+    const FILTERALL = 2;
+
     public $fullname, $shortname, $source, $hidden, $filters, $filteroptions, $columns, $requiredcolumns;
     public $columnoptions, $_filtering, $contentoptions, $contentmode, $embeddedurl, $description;
     public $_id, $recordsperpage, $defaultsortcolumn, $defaultsortorder;
     private $_joinlist, $_base, $_params, $_sid;
     private $_paramoptions, $_embeddedparams, $_fullcount, $_filteredcount;
     public $src, $grouped, $reportfor, $badcolumns, $embedded;
+
+    /**
+     * @var bool $cache Cache state for current report
+     */
+    public $cache;
+
+    /**
+     *
+     * @var bool $cacheignore If true cahce will be ignored during report preparation
+     */
+    public $cacheignore = false;
+
+    /**
+     * @var stdClass $cacheschedule Record of cache scheduling and readyness
+     */
+    public $cacheschedule = null;
 
     /**
      * Constructor for reportbuilder object
@@ -126,9 +143,11 @@ class reportbuilder {
      * @param integer $sid Saved search ID if displaying a saved search
      * @param integer $reportfor User ID of user who is viewing the report
      *                           (or null to use the current user)
+     * @param bool $nocache Force no cache usage. Only works if cache for current report is enabled
+     *                       and generated
      *
      */
-    function __construct($id=null, $shortname=null, $embed=false, $sid=null, $reportfor=null) {
+    function __construct($id=null, $shortname=null, $embed=false, $sid=null, $reportfor=null, $nocache = false) {
         global $USER, $DB;
 
         if ($id != null) {
@@ -162,6 +181,8 @@ class reportbuilder {
             $this->fullname = $report->fullname;
             $this->hidden = $report->hidden;
             $this->initialdisplay = $report->initialdisplay;
+            $this->cache = $report->cache;
+            $this->cacheignore = $nocache;
             $this->description = $report->description;
             $this->embedded = $report->embedded;
             $this->contentmode = $report->contentmode;
@@ -187,10 +208,19 @@ class reportbuilder {
             $this->_paramoptions = $this->src->paramoptions;
             $this->contentoptions = $this->src->contentoptions;
             $this->requiredcolumns = $this->src->requiredcolumns;
-            $this->columns = $this->get_columns();
-            $this->filters = $this->get_filters();
-            $this->process_filters();
+            // Load report cache
+            $restored = false;
+            if (!$this->cacheignore && $report->cache) {
+                if ($this->restore_cached_state()) {
+                    $restored = true;
+                }
+            }
+            if (!$restored) {
+                $this->columns = $this->get_columns();
+                $this->filters = $this->get_filters();
+            }
 
+            $this->process_filters();
         } else {
             print_error('reportwithidnotfound', 'totara_reportbuilder', '', $id);
         }
@@ -632,13 +662,16 @@ class reportbuilder {
     /**
      * Gets any filters set for the current report from the database
      *
+     * @param array $filters predefined set of filters
      * @return array Array of filters for current report or empty array if none set
      */
-    function get_filters() {
+    function get_filters(array $filters = array()) {
         global $DB;
 
         $out = array();
-        $filters = $DB->get_records('report_builder_filters', array('reportid' => $this->_id), 'sortorder');
+        if (empty($filters)) {
+            $filters = $DB->get_records('report_builder_filters', array('reportid' => $this->_id), 'sortorder');
+        }
         foreach ($filters as $filter) {
             $type = $filter->type;
             $value = $filter->value;
@@ -676,7 +709,7 @@ class reportbuilder {
             if (strpos($extrasql, '?')) {
                 print_error('extrasqlshouldusenamedparams', 'totara_reportbuilder');
             }
-            $where_sqls[] = $extra;
+            $where_sqls[] = $extrasql;
         }
 
         if (!empty($SESSION->reportbuilder[$this->_id])) {
@@ -728,7 +761,6 @@ class reportbuilder {
         global $CFG, $SESSION;
         require_once($CFG->dirroot . '/totara/reportbuilder/report_forms.php');
         $mform = new report_builder_search_form($this->get_current_url(), array('fields' => $this->filters));
-
         if ($adddata = $mform->get_data(false)) {
             if (isset($adddata->submitgroup['clearfilter'])) {
                 // clear out any existing data
@@ -751,13 +783,64 @@ class reportbuilder {
         }
     }
 
+    /**
+     * Get column names in resulting query
+     *
+     * @return array
+     */
+    function get_column_aliases() {
+        $fields = array();
+        foreach ($this->columns as $column) {
+            $fields[] = $column->value;
+        }
+        return $fields;
+    }
+
+    /**
+     * Get fields and aliases from appropriate source
+     *
+     * @param array $source soruce should object with 'field' and 'fieldalias' properties
+     * @param bool $aliasonly if enabled will return only aliases of field
+     * @return array of SQL snippets
+     */
+    function get_alias_fields(array $source, $aliasonly = false) {
+        $result = array();
+        foreach($source as $fields) {
+            if (is_object($fields) && (method_exists($fields, 'get_field') || isset($fields->field))) {
+                if (method_exists($fields, 'get_field')) {
+                    $fieldname = $fields->get_field();
+                }
+                else {
+                    $fieldname = $fields->field;
+                }
+                // support of several fields in one filter/column/etc
+                if (is_array($fieldname)) {
+                    $field = $fieldname;
+                } else {
+                     if (isset($fields->fieldalias)) {
+                         $field = array($fields->fieldalias => $fieldname);
+                     }
+                }
+
+                foreach ($field as $alias=>$name) {
+                    if ($aliasonly) {
+                        $result[] = $alias;
+                    } else {
+                        $result[] = "{$name} AS {$alias}";
+                    }
+                }
+            }
+        }
+        return $result;
+    }
 
     /**
      * Gets any columns set for the current report from the database
      *
+     * @param array $columns predefined set of columns
      * @return array Array of columns for current report or empty array if none set
      */
-    function get_columns() {
+    function get_columns(array $columns = array()) {
         global $DB;
 
         $out = array();
@@ -765,7 +848,10 @@ class reportbuilder {
         if (empty($id)) {
             return $out;
         }
-        $columns = $DB->get_records('report_builder_columns', array('reportid' => $id), 'sortorder');
+
+        if (empty($columns)) {
+            $columns = $DB->get_records('report_builder_columns', array('reportid' => $id), 'sortorder');
+        }
         foreach ($columns as $column) {
             // to properly support multiple languages - only use value
             // in database if it's different from the default. If it's the
@@ -935,9 +1021,11 @@ class reportbuilder {
      * set URL parameters. Used to determine which joins are required to
      * match against URL parameters
      *
+     * @param bool $all Return all params including unused in current request
+     *
      * @return array Array of set URL parameters and their values
      */
-    function get_current_params() {
+    function get_current_params($all = false) {
         $out = array();
         if (empty($this->_paramoptions)) {
             return $out;
@@ -949,12 +1037,14 @@ class reportbuilder {
             } else {
                 $var = optional_param($name, null, PARAM_INT);
             }
-
             if (isset($this->_embeddedparams[$name])) {
                 // embedded params take priority over url params
                 $res = new rb_param($name, $this->_paramoptions);
                 $res->value = $this->_embeddedparams[$name];
                 $out[] = $res;
+            } else if ($all) {
+                //when all parameters required, they are not restricted to particular value
+                $out[] = new rb_param($name, $this->_paramoptions);
             } else if (isset($var)) {
                 // this url param exists, add to params to use
                 $res = new rb_param($name, $this->_paramoptions);
@@ -1163,17 +1253,18 @@ class reportbuilder {
     /**
      * Returns an SQL snippet that, when applied to the WHERE clause of the query,
      * reduces the results to only include those matched by any specified URL parameters
+     * @param bool $cache if enabled only field alias will be used
      *
      * @return array containing SQL snippet (created from URL parameters) and SQL params
      */
-    function get_param_restrictions() {
+    function get_param_restrictions($cache = false) {
         $out = array();
         $sqlparams = array();
         $params = $this->_params;
         if (is_array($params)) {
             $count = 1;
             foreach ($params as $param) {
-                $field = $param->field;
+                $field = ($cache) ? $param->fieldalias : $param->field;
                 $value = $param->value;
                 $type = $param->type;
                 // don't include if param not set to anything
@@ -1211,10 +1302,11 @@ class reportbuilder {
      * Returns an SQL snippet that, when applied to the WHERE clause of the query,
      * reduces the results to only include those matched by any specified content
      * restrictions
+     * @param bool $cache if enabled, only alias fields will be used
      *
      * @return array containing SQL snippet created from content restrictions, as well as SQL params array
      */
-    function get_content_restrictions() {
+    function get_content_restrictions($cache = false) {
         // if no content restrictions enabled return a TRUE snippet
         // use 1=1 instead of TRUE for MSSQL support
         if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
@@ -1237,11 +1329,12 @@ class reportbuilder {
                 $name = $option->classname;
                 $classname = 'rb_' . $name . '_content';
                 $settingname = $name . '_content';
-                $field = $option->field;
+                $field = ($cache) ? $option->fieldalias : $option->field;
                 if (class_exists($classname)) {
                     $class = new $classname($this->reportfor);
+
                     if (reportbuilder::get_setting($reportid, $settingname,
-                        'enable')) {
+                        'enable', $cache)) {
                         // this content option is enabled
                         // call function to get SQL snippet
                         list($out[], $contentparams) = $class->sql_restriction($field, $reportid);
@@ -1329,14 +1422,15 @@ class reportbuilder {
      * Each element in the array is an SQL snippet with an alias built
      * from the $type and $value of that column
      *
+     * @param int $mode How aliases for grouping columns should be prepared
      * @return array Array of SQL snippets for use by SELECT query
      *
      */
-    function get_column_fields() {
+    function get_column_fields($mode = rb_column::REGULAR) {
         $fields = array();
         $src = $this->src;
         foreach ($this->columns as $column) {
-            $fields = array_merge($fields, $column->get_fields($src));
+            $fields = array_merge($fields, $column->get_fields($src, $mode));
         }
         return $fields;
     }
@@ -1494,6 +1588,7 @@ class reportbuilder {
             $name = $option->classname;
             $classname = 'rb_' . $name . '_content';
             if (class_exists($classname)) {
+                // @TODO take settings form instance, not database, otherwise caching will fail after content settings change
                 if (reportbuilder::get_setting($reportid, $name . '_content', 'enable')) {
                     // this content option is enabled
                     // get required joins
@@ -1503,6 +1598,36 @@ class reportbuilder {
             }
         }
         return $contentjoins;
+    }
+
+    /**
+     * Return an array of strings containing the fields required by
+     * the current enabled content restrictions
+     *
+     * @return array An array for strings conaining SQL snippets for field list
+     */
+    function get_content_fields() {
+        $reportid = $this->_id;
+
+        if ($this->contentmode == REPORT_BUILDER_CONTENT_MODE_NONE) {
+            // no limit on content so no joins necessary
+            return array();
+        }
+
+        $fields = array();
+        if (isset($this->contentoptions) && is_array($this->contentoptions)) {
+            foreach ($this->contentoptions as $option) {
+                $name = $option->classname;
+                $classname = 'rb_' . $name . '_content';
+                $settingname = $name . '_content';
+                if (class_exists($classname)) {
+                    if (reportbuilder::get_setting($reportid, $settingname, 'enable')) {
+                            $fields[] = $option->field . ' AS ' . $option->fieldalias;
+                    }
+                }
+            }
+        }
+        return $fields;
     }
 
 
@@ -1525,14 +1650,16 @@ class reportbuilder {
      * Return an array of {@link rb_join} objects containing the joins required by
      * the current param list
      *
+     * @param bool $all Return all joins even for unused params
+     *
      * @return array An array of {@link rb_join} objects containing join information
      */
-    function get_param_joins() {
+    function get_param_joins($all = false) {
         $paramjoins = array();
         foreach ($this->_params as $param) {
             $value = $param->value;
             // don't include joins if param not set
-            if (!isset($value) || $value == '') {
+            if (!$all && (!isset($value) || $value == '')) {
                 continue;
             }
             $paramjoins = array_merge($paramjoins,
@@ -1568,6 +1695,26 @@ class reportbuilder {
     }
 
     /**
+     * Return an array of {@link rb_join} objects containing the joins of all enabled
+     * filters regardless their usage in current request (useful for caching)
+     *
+     * @return array An array of {@link rb_join} objects containing join information
+     */
+    function get_all_filter_joins() {
+        $filterjoins = array();
+        foreach ($this->filters as $filter) {
+            $value = $filter->value;
+            // don't include joins if param not set
+            if (!isset($value) || $value == '') {
+                continue;
+            }
+            $filterjoins = array_merge($filterjoins,
+                $this->get_joins($filter, 'filter'));
+        }
+        return $filterjoins;
+    }
+
+    /**
      * Check the current session for active filters, and if found
      * collect together join data into a format suitable for {@link get_joins()}
      *
@@ -1575,7 +1722,6 @@ class reportbuilder {
      */
     function get_filter_joins() {
         $shortname = $this->shortname;
-        $columnoptions = $this->columnoptions;
         global $SESSION;
         $filterjoins = array();
         // check session variable for any active filters
@@ -1937,6 +2083,171 @@ class reportbuilder {
         return $order;
     }
 
+    /**
+     * Is report caching enabled and cache is ready and not cache is not ignored
+     *
+     * @return bool
+     */
+    function is_cached() {
+        $enabled = !$this->cacheignore && $this->cache;
+        return $enabled && isset($this->cacheschedule) && $this->cacheschedule->cachetable != '';
+    }
+
+    /**
+     * Load back previously stored configuration
+     *
+     * @param string $sdata Serialized configuration
+     */
+    public function import_config($sdata) {
+        $data = unserialize(base64_decode($sdata));
+        if (!$data) {
+            throw new ReportBuilderException('Cache unserialization failed');
+        }
+        foreach ($data as $property => $value) {
+            switch ($property) {
+                case 'filters':
+                    $this->filters = $this->get_filters($value);
+                break;
+                case 'columns':
+                    $this->columns = $this->get_columns($value);
+                break;
+                default:
+                    $this->{$property} = $value;
+            }
+        }
+        // support of filters
+        foreach($this->filters as $filter) {
+            $filter->set_report($this);
+        }
+    }
+    /**
+     * Support of configuration caching
+     *
+     * Number of fields depends on report configuration (filters, contents, columns, etc).
+     * To ensure that cache will work after changes in configuration, current configuration also
+     * should be cached. This function serialize all necessary report configuration to save it in
+     * cache database
+     *
+     * @return array
+     */
+    public function export_config() {
+        // save filters
+        $filters = array();
+        foreach ($this->filters as $filterinfo) {
+            $filter = new stdClass();
+            $filter->type = $filterinfo->type;
+            $filter->value = $filterinfo->value;
+            $filter->advanced = $filterinfo->advanced;
+            $filter->id = $filterinfo->id;
+            $filters[] = $filter;
+        }
+        // save columns
+        $columns = array();
+        foreach ($this->columns as $columnid => $columninfo) {
+            if (!in_array($columninfo, $this->requiredcolumns)) {
+                $column = new stdClass();
+                $column->id = $columnid;
+                $column->heading = $columninfo->heading;
+                $column->customheading = $columninfo->customheading;
+                $column->type = $columninfo->type;
+                $column->value = $columninfo->value;
+                $column->hidden = $columninfo->hidden;
+                $column->grouping = $columninfo->grouping;
+                $columns[] = $column;
+            }
+        }
+        return base64_encode(serialize(array('filters' => $filters, '_params' => $this->_params,
+                     'contentoptions' => $this->contentoptions, 'contentmode' => $this->contentmode,
+                     'columns' => $columns, 'src' => $this->src, 'source' => $this->source,
+                     'requiredcolumns' => $this->requiredcolumns,
+                     '_paramoptions' => $this->_paramoptions, '_id' => $this->_id,
+                     'filteroptions' => $this->filteroptions, 'columnoptions' => $this->columnoptions,
+                     '_joinlist' => $this->_joinlist, '_base' => $this->_base,
+                     'embeddedurl' => $this->embeddedurl, 'defaultsortorder' => $this->defaultsortorder,
+                     'defaultsortcolumn' => $this->defaultsortcolumn, 'embedded' => $this->embedded,
+                     'description' => $this->description, 'hidden' => $this->hidden,
+                     'fullname' => $this->fullname)));
+    }
+
+    /**
+     * Load cached configuration
+     *
+     * @return bool if object was restored from cache
+     */
+    public function restore_cached_state() {
+        global $DB;
+        $this->cacheschedule = $DB->get_record('report_builder_cache',
+                                                array('reportid' => $this->_id), '*',
+                                                IGNORE_MISSING);
+        if ($this->cacheschedule) {
+            $sdata = $this->cacheschedule->config;
+            if ($sdata == '') {
+                return false;
+            }
+            $this->import_config($sdata);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This function builds the main SQL query used to generate cache for report
+     *
+     * @return array containing the full SQL query and SQL params
+     */
+    function build_create_cache_query() {
+        // Save report instance state
+        $paramssave = $this->_params;
+        $groupedsave = $this->grouped;
+        // Prepare instance to generate cache:
+        // - Disable grouping
+        // - Enable all params (not only used in request)
+        $this->cacheignore = true;
+        $this->_params = $this->get_current_params(true);
+        $this->grouped = false;
+        // get the fields required by display, any filter, param, or content option used in report
+        $fields = array_merge($this->get_column_fields(rb_column::NOGROUP),
+                              $this->get_content_fields(),
+                              $this->get_alias_fields($this->filters),
+                              $this->get_alias_fields($this->_params));
+        $fields = array_unique($fields);
+        $joins = $this->collect_joins(reportbuilder::FILTERALL);
+
+        $where = array();
+        if (!empty($this->src->sourcewhere)) {
+            $where[] = $this->src->sourcewhere;
+        }
+        $sql = $this->collect_sql($fields, $this->src->base, $joins, $where);
+
+        // Revert report instance state
+        $this->_params = $paramssave;
+        $this->cacheignore = false;
+        $this->grouped = $groupedsave;
+        return array($sql, array());
+    }
+
+    /**
+     * This function builds main cached SQL query to get the data for page
+     *
+     * @return array array($sql, $params). If no cache found array('', array()) will be returned
+     */
+    function build_cache_query($countonly = false, $filtered = false) {
+        global $DB;
+
+        if (!$this->is_cached()) {
+            return array('', array());
+        }
+        $cache = $this->cacheschedule;
+        $fields = $this->get_column_fields(rb_column::CACHE);
+
+        list($where, $group, $having, $sqlparams, $allgrouped) = $this->collect_restrictions($filtered, true);
+
+        $sql = $this->collect_sql($fields, $cache->cachetable, array(), $where, $group, $having,
+                                  $countonly, $allgrouped);
+
+        return array($sql, $sqlparams, (array)$cache);
+    }
 
     /**
      * This function builds the main SQL query used to get the data for the page
@@ -1945,18 +2256,42 @@ class reportbuilder {
      *                           query requests the fields needed for columns too.
      * @param boolean $filtered If true, includes any active filters in the query,
      *                           otherwise returns results without filtering
-     * @return array containing the full SQL query and SQL params
+     * @param boolean $allowcache If true tries to use cache for query
+     * @return array containing the full SQL query, SQL params, and cache meta information
      */
-    function build_query($countonly=false, $filtered=false) {
-        $source = $this->source;
-        $columns = $this->columns;
-        $joinlist = $this->_joinlist;
-        $base = $this->_base;
-        $sqlparams = array();
+    function build_query($countonly = false, $filtered = false, $allowcache = true) {
+        global $CFG;
 
-        // get the fields needed to display requested columns
+        if ($allowcache && $CFG->enablereportcaching) {
+            $cached = $this->build_cache_query($countonly, $filtered);
+            if ($cached[0] != '') {
+                return $cached;
+            }
+        }
         $fields = $this->get_column_fields();
 
+        $filter = ($filtered) ? reportbuilder::FILTER : reportbuilder::FILTERNONE;
+        $joins = $this->collect_joins($filter, $countonly);
+
+        list($where, $group, $having, $sqlparams, $allgrouped) = $this->collect_restrictions($filtered);
+
+        // apply any SQL specified by the source
+        if (!empty($this->src->sourcewhere)) {
+            $where[] = $this->src->sourcewhere;
+        }
+        $sql = $this->collect_sql($fields, $this->src->base, $joins, $where, $group, $having, $countonly, $allgrouped);
+         return array($sql, $sqlparams, array());
+    }
+
+    /**
+     * Get joins used for query building
+     *
+     * @param int $filtered reportbuilder::FILTERNONE - for no filter joins,
+     *             reportbuilder::FILTER - for enabled filters, reportbuilder::FILTERALL - for all filters
+     * @param bool $countonly If true prune joins that don't influent on resulting count
+     * @return array of {@link rb_join} objects
+     */
+    protected function collect_joins($filtered, $countonly = false) {
         // get the joins needed to display requested columns and do filtering and restrictions
         $columnjoins = $this->get_column_joins();
 
@@ -1965,100 +2300,129 @@ class reportbuilder {
         if ($countonly && !$this->grouped) {
             $columnjoins = $this->prune_joins($columnjoins);
         }
-
-        $filterjoins = ($filtered === true) ? $this->get_filter_joins() : array();
-        $paramjoins = $this->get_param_joins();
+        if ($filtered == reportbuilder::FILTERALL) {
+            $filterjoins = $this->get_all_filter_joins();
+        } else if ($filtered == reportbuilder::FILTER) {
+            $filterjoins = $this->get_filter_joins();
+        } else {
+            $filterjoins = array();
+        }
+        $paramjoins = $this->get_param_joins(true);
         $contentjoins = $this->get_content_joins();
         $sourcejoins = $this->get_source_joins();
         $joins = array_merge($columnjoins, $filterjoins, $paramjoins, $contentjoins, $sourcejoins);
 
         // sort the joins to remove duplicates and resolve any dependencies
         $joins = $this->sort_joins($joins);
+        return $joins;
+    }
 
-        $joins_sql = $this->get_join_sql($joins);
-
-        // now build the query from the snippets
-
-        // need a unique field for get_records() so include id as first column
-        if ($countonly && !$this->grouped) {
-            $select = "SELECT COUNT(*) ";
-        } else {
-            $baseid = ($this->grouped) ? "min(base.id) AS id" : "base.id";
-            array_unshift($fields, $baseid);
-            $select = "SELECT " . implode($fields, ",\n     ") . " \n";
-        }
-
-        // build query starting from base table then adding required joins
-        $from = "FROM $base\n    " . $joins_sql;
-
-
-        // restrictions
-        $whereclauses = array();
-        $havingclauses = array();
-
-        list($restrictions, $contentparams) = $this->get_content_restrictions();
+    /**
+     * Get all restrictions to filter query
+     *
+     * @param bool $cache
+     * @return array of arrays of strings array(where, group, having, bool allgrouped)
+     */
+    protected function collect_restrictions($filtered, $cache = false) {
+        $where = array();
+        $group = array();
+        $having = array();
+        $sqlparams = array();
+        list($restrictions, $contentparams) = $this->get_content_restrictions($cache);
         if ($restrictions != '') {
-            $whereclauses[] = $restrictions;
+            $where[] = $restrictions;
             $sqlparams = array_merge($sqlparams, $contentparams);
         }
         unset($contentparams);
 
         if ($filtered === true) {
-            list($sqls, $filterparams) = $this->fetch_sql_filters();
+            list($sqls, $filterparams) = $this->fetch_sql_filters('', array(), $cache);
             if (isset($sqls['where']) && $sqls['where'] != '') {
-                $whereclauses[] = $sqls['where'];
+                $where[] = $sqls['where'];
             }
             if (isset($sqls['having']) && $sqls['having'] != '') {
-                $havingclauses[] = $sqls['having'];
+                $having[] = $sqls['having'];
             }
             $sqlparams = array_merge($sqlparams, $filterparams);
             unset($filterparams);
         }
 
-        list($paramrestrictions, $paramparams) = $this->get_param_restrictions();
+        list($paramrestrictions, $paramparams) = $this->get_param_restrictions($cache);
         if ($paramrestrictions != '') {
-            $whereclauses[] = $paramrestrictions;
+            $where[] = $paramrestrictions;
             $sqlparams = array_merge($sqlparams, $paramparams);
         }
         unset($paramparams);
 
-        // apply any SQL specified by the source
-        if (!empty($this->src->sourcewhere)) {
-            $whereclauses[] = $this->src->sourcewhere;
-        }
+        $allgrouped = true;
 
-        $where = (count($whereclauses) > 0) ? "WHERE " . implode("\n    AND ", $whereclauses) . "\n" : '';
-
-        $groupby = '';
         if ($this->grouped) {
-            $groups_array = array();
-            $allgrouped = true;
+            $group = array();
             foreach ($this->columns as $column) {
                 if ($column->grouping == 'none') {
                     $allgrouped = false;
-                    $groups_array[] = $column->field;
+                    $group = array_merge($group, $column->get_fields($this->src, rb_column::CACHE));
                     if ($column->extrafields !== null) {
-                        foreach ($column->extrafields as $field) {
-                            $groups_array[] = $field;
+                        foreach ($column->extrafields as $alias => $field) {
+                            // when referencing a column in the group by, use the alias
+                            // when caching on, otherwise repeat the full field definition
+                            // (required by MSSQL)
+                            $group[] = $cache ? $alias : $field;
                         }
                     }
                 }
             }
-            if (count($groups_array) > 0 && !$allgrouped) {
-                $groupby .= ' GROUP BY ' . implode(', ', $groups_array) . ' ';
-            }
+        }
+        return array($where, $group, $having, $sqlparams, $allgrouped);
+    }
 
-            if (count($havingclauses) > 0) {
-                $groupby .= ' HAVING ' . implode(' AND ', $havingclauses) . "\n";
-            }
+    /**
+     * Compile SQL query from prepared parts
+     *
+     * @param array $fields
+     * @param string $base
+     * @param array $joins
+     * @param array $where
+     * @param array $group
+     * @param array $having
+     * @param bool $countonly
+     * @param bool $allgrouped
+     * @return string
+     */
+    protected function collect_sql(array $fields, $base, array $joins, array $where = null,
+                                    array $group = null, array $having = null, $countonly = false,
+                                    $allgrouped = false) {
+
+        if ($countonly && !$this->grouped) {
+            $selectsql = "SELECT COUNT(*) ";
+        } else {
+            $baseid = ($this->grouped) ? "min(base.id) AS id" : "base.id";
+            array_unshift($fields, $baseid);
+            $selectsql = "SELECT " . implode($fields, ",\n     ") . " \n";
+
+        }
+        $joinssql = (count($joins) > 0) ? $this->get_join_sql($joins) : '';
+
+        $fromsql = "FROM $base base\n    " . $joinssql;
+
+        $wheresql = (count($where) > 0) ? "WHERE " . implode("\n    AND ", $where) . "\n" : '';
+
+        $groupsql = '';
+        if (count($group) > 0 && !$allgrouped) {
+            $groupsql = ' GROUP BY ' . implode(', ', $group) . ' ';
+        }
+
+        $havingsql = '';
+        if (count($having) > 0) {
+            $havingsql = ' HAVING ' . implode(' AND ', $having) . "\n";
         }
 
         if ($countonly && $this->grouped) {
-            $sql = "SELECT COUNT(*) FROM ($select $from $where $groupby) AS query";
+            $sql = "SELECT COUNT(*) FROM ($selectsql $fromsql $wheresql $groupsql $havingsql) AS query";
         } else {
-            $sql = "$select $from $where $groupby";
+            $sql = "$selectsql $fromsql $wheresql $groupsql $havingsql";
         }
-        return array($sql, $sqlparams);
+        return $sql;
     }
 
     /**
@@ -2104,7 +2468,7 @@ class reportbuilder {
     function export_data($format) {
         $columns = $this->columns;
         $count = $this->get_filtered_count();
-        list($sql, $params) = $this->build_query(false, true);
+        list($sql, $params, $cache) = $this->build_query(false, true);
         $order = $this->get_report_sort();
 
         // array of filters that have been applied
@@ -2120,9 +2484,9 @@ class reportbuilder {
         }
         switch($format) {
             case 'ods':
-                $this->download_ods($headings, $sql . $order, $params, $count, $restrictions);
+                $this->download_ods($headings, $sql . $order, $params, $count, $restrictions, null, $cache);
             case 'xls':
-                $this->download_xls($headings, $sql . $order, $params, $count, $restrictions);
+                $this->download_xls($headings, $sql . $order, $params, $count, $restrictions, null, $cache);
             case 'csv':
                 $this->download_csv($headings, $sql . $order, $params, $count);
             case 'fusion':
@@ -2154,7 +2518,7 @@ class reportbuilder {
             return false;
         }
 
-        list($sql, $params) = $this->build_query(false, true);
+        list($sql, $params, $cache) = $this->build_query(false, true);
 
         $tablecolumns = array();
         $tableheaders = array();
@@ -2170,6 +2534,18 @@ class reportbuilder {
         // prevent notifications boxes inside the table
         echo $OUTPUT->container_start('nobox');
 
+        // Output cache information if needed
+        if ($cache) {
+            $lastreport = userdate($cache['lastreport']);
+            $nextreport = userdate($cache['nextreport']);
+
+            $html = html_writer::start_tag('div', array('class' => 'noticebox'));
+            $html .= get_string('report:cachelast', 'totara_reportbuilder', $lastreport);
+            $html .= html_writer::empty_tag('br');
+            $html .= get_string('report:cachenext', 'totara_reportbuilder', $nextreport);
+            $html .= html_writer::end_tag('div');
+            echo $html;
+        }
         $table = new flexible_table($shortname);
         $table->define_columns($tablecolumns);
         $table->define_headers($tableheaders);
@@ -2214,14 +2590,21 @@ class reportbuilder {
 
         // get the ORDER BY SQL fragment from table
         $order = $this->get_report_sort($table);
-
-        if ($records = $DB->get_recordset_sql($sql.$order, $params, $table->get_page_start(), $table->get_page_size())) {
-            foreach ($records as $record) {
-                $record_data = $this->process_data_row($record);
-                $table->add_data($record_data);
+        try {
+            if ($records = $DB->get_recordset_sql($sql.$order, $params, $table->get_page_start(), $table->get_page_size())) {
+                foreach ($records as $record) {
+                    $record_data = $this->process_data_row($record);
+                    $table->add_data($record_data);
+                }
+            } else if ($data === false) {
+                print_error('error:problemobtainingreportdata', 'totara_reportbuilder');
             }
-        } else if ($data === false) {
-            print_error('error:problemobtainingreportdata', 'totara_reportbuilder');
+        } catch (dml_read_exception $e) {
+            if ($this->is_cached()) {
+                print_error('error:problemobtainingcachedreportdata', 'totara_reportbuilder');
+            } else {
+                print_error('error:problemobtainingreportdata', 'totara_reportbuilder');
+            }
         }
 
         // display the table
@@ -2445,9 +2828,10 @@ class reportbuilder {
      * @param integer $count Number of filtered records in query
      * @param array $restrictions Array of strings containing info
      *                            about the content of the report
+     * @param array $cache report cache information
      * @return Returns the ODS file
      */
-    function download_ods($fields, $query, $params, $count, $restrictions=array(), $file=null) {
+    function download_ods($fields, $query, $params, $count, $restrictions = array(), $file = null, $cache = array()) {
         global $CFG, $DB;
 
         require_once("$CFG->libdir/odslib.class.php");
@@ -2482,6 +2866,17 @@ class reportbuilder {
                 $worksheet[0]->write($row, 0, $restriction);
                 $row++;
             }
+        }
+
+        // add report caching data
+        if ($cache) {
+            $a = userdate($cache['lastreport']);
+            $worksheet[0]->write($row, 0, get_string('report:cachelast', 'totara_reportbuilder', $a));
+            $row++;
+        }
+
+        // leave an empty row between any initial info and the header row
+        if ($row != 0) {
             $row++;
         }
 
@@ -2524,9 +2919,10 @@ class reportbuilder {
      * @param integer $count Number of filtered records in query
      * @param array $restrictions Array of strings containing info
      *                            about the content of the report
+     * @param array $cache Report cache information
      * @return Returns the Excel file
      */
-    function download_xls($fields, $query, $params, $count, $restrictions=array(), $file=null) {
+    function download_xls($fields, $query, $params, $count, $restrictions = array(), $file = null, $cache = array()) {
         global $CFG, $DB;
 
         require_once("$CFG->libdir/excellib.class.php");
@@ -2565,6 +2961,17 @@ class reportbuilder {
                 $worksheet[0]->write($row, 0, $restriction);
                 $row++;
             }
+        }
+
+        // add report caching data
+        if ($cache) {
+            $a = userdate($cache['lastreport']);
+            $worksheet[0]->write($row, 0, get_string('report:cachelast', 'totara_reportbuilder', $a));
+            $row++;
+        }
+
+        // leave an empty row between any initial info and the header row
+        if ($row != 0) {
             $row++;
         }
 
@@ -2974,12 +3381,13 @@ class reportbuilder {
      * @param integer $reportid ID for the report to obtain a setting for
      * @param string $type Identifies the class using the setting
      * @param string $name Identifies the particular setting
+     * @param bool $cache Use cached settings
      * @return mixed The value of the setting $name or null if it doesn't exist
      */
-    static function get_setting($reportid, $type, $name) {
+    static function get_setting($reportid, $type, $name, $cache = false) {
         global $DB;
-
-        return $DB->get_field('report_builder_settings', 'value', array('reportid' => $reportid, 'type' => $type, 'name' => $name));
+        $field = ($cache) ? 'cachedvalue' : 'value';
+        return $DB->get_field('report_builder_settings', $field, array('reportid' => $reportid, 'type' => $type, 'name' => $name));
     }
 
     /**
@@ -2987,15 +3395,17 @@ class reportbuilder {
      *
      * @param integer $reportid ID of the report to get settings for
      * @param string $type Identifies the class to get settings from
+     * @param bool $cache Use cached settings
      * @return array Associative array of name|value settings
      */
-    static function get_all_settings($reportid, $type) {
+    static function get_all_settings($reportid, $type, $cache = false) {
         global $DB;
 
         $settings = array();
+        $field = ($cache) ? 'cachedvalue' : 'value';
         $records = $DB->get_records('report_builder_settings', array('reportid' => $reportid, 'type' => $type));
         foreach ($records as $record) {
-            $settings[$record->name] = $record->value;
+            $settings[$record->name] = $record->{$field};
         }
         return $settings;
     }
@@ -3315,6 +3725,338 @@ class reportbuilder {
 class ReportBuilderException extends Exception { }
 
 /**
+ * This class incapsulates operation with scheduling
+ *
+ * It operates on DB row objects by changing it's fields. After applying changes on object, this
+ * object should be saved in DB by $DB->insert_record or $DB->update_record
+ *
+ * To avoid overwriting other fields use scheduler::to_object().
+ * This method will return object with only scheduler specific fields and 'id' field
+ * Scheduler changes original object fields aswell, so no need to use scheduler::to_object() if you
+ * save original object after applying scheduler changes.
+ *
+ * To support scheduling db table represented by operated db row object must have next fields:
+ * frequency (int), schedule(int), nextevent (bigint)
+ * If field(s) have dfferent names it can be configured via set_field method
+ * Also, it has tight integration with Scheduler form element, and as result it's easily to integrate
+ * them.
+ */
+class scheduler {
+    /**
+     *  Schedule constants
+     *
+     */
+    const DAILY = 1;
+    const WEEKLY = 2;
+    const MONTHLY = 3;
+
+    /**
+     * DB row decorated object
+     *
+     * @var stdClass
+     */
+    protected $subject = null;
+
+    /**
+     * status changes
+     *
+     * @var bool
+     */
+    protected $changed = false;
+
+    /**
+     * Mapping of field names used by scheduler
+     *
+     * @var array
+     */
+    protected $map = array('frequency' => 'frequency',
+                           'schedule' => 'schedule',
+                           'nextevent' => 'nextevent');
+
+    protected $time = 0;
+    /**
+     * Constructor
+     *
+     * @param object DB row object
+     * @param array $alias_map Optional field renaming
+     */
+    public function __construct(stdClass $row = null, array $alias_map = array()) {
+        if (is_null($row)) {
+            $row = new stdClass();
+        }
+        $this->subject = $row;
+        // remap and add fields
+        foreach ($this->map as $k => $v) {
+            $v = (isset($alias_map[$k])) ? $alias_map[$k] : $v;
+            $this->set_field($k, $v);
+            $this->subject->{$v} = isset($this->subject->{$v}) ? $this->subject->{$v} : null;
+        }
+        $this->set_time();
+    }
+
+    /**
+     * Set operational time
+     *
+     * @param int $time
+     */
+    public function set_time($time = null) {
+        if (is_null($time)) {
+            $this->time = time();
+        } else {
+            $this->time = $time;
+        }
+    }
+
+    /**
+     * Change field name used by scheduler to filed represented in db row object
+     *
+     * @param string $name Name used in scheduler
+     * @param string $alias Field used in DB
+     */
+    public function set_field($name, $alias) {
+        if (isset($this->map[$name])) {
+            $this->map[$name] = $alias;
+        }
+    }
+
+    public function do_asap() {
+        $this->changed = true;
+        $this->subject->{$this->map['nextevent']} = $this->time - 1;
+    }
+
+    /**
+     * Calculate next time of execution
+     *
+     * @return scheduler $this
+     */
+    public function next() {
+        if (!isset($this->subject->{$this->map['frequency']})) {
+            return $this;
+        }
+        $this->changed = true;
+        $calendardays = calendar_get_days();
+        $init = !isset($this->subject->{$this->map['nextevent']});
+        $frequency = $this->subject->{$this->map['frequency']};
+        $schedule = $this->subject->{$this->map['schedule']};
+
+        $timemonth = date('n', $this->time);
+        $timeday = date('j', $this->time);
+        $timeyear = date('Y', $this->time);
+
+        switch ($frequency) {
+            case self::DAILY:
+                $offset = ($init && date('G', $this->time) <= $schedule) ? 0 : 86400; // If the scheduled hour has passed then set the offset to 86400 (1 day)
+                $nextevent = mktime(0, 0, 0, $timemonth, $timeday, $timeyear) + $offset + ($schedule * 60 * 60); //calculate next report time (startofcurrentday + offset + hourofschedule)
+                break;
+
+            case self::WEEKLY:
+                if ($init && strftime('%A', $this->time) == $calendardays[$schedule]) {
+                    $nextevent = mktime(0, 0, 0, $timemonth, $timeday, $timeyear); //If the today is the day then set the next reportdate to today
+                }
+                else {
+                    $nextevent = strtotime('next '. $calendardays[$schedule], $this->time);
+                }
+                break;
+
+            case self::MONTHLY:
+                if ($init && date('j', $this->time) == $schedule) {
+                    $nextevent = mktime(0, 0, 0, $timemonth, $timeday, $timeyear); // If the schedule is due to run today then nextreport is the start of today
+                } else {
+                    $nextevent = self::get_next_monthly($this->time, $schedule);
+                }
+                break;
+            default:
+                $nextevent = 0;
+        }
+        $this->subject->{$this->map['nextevent']} = $nextevent;
+        return $this;
+    }
+
+    /**
+     * Check if it's time to run event
+     *
+     * @return bool
+     */
+    public function is_time() {
+        return $this->subject->{$this->map['nextevent']} < $this->time;
+    }
+
+    /**
+     * Is there any changes to object made by scheduler
+     *
+     * @return bool
+     */
+    public function is_changed() {
+        return $this->changed;
+    }
+
+    /**
+     * Get available scheduler options
+     *
+     * @return array
+     */
+    public static function get_options() {
+        return array('daily' => scheduler::DAILY,
+                     'weekly' => scheduler::WEEKLY,
+                     'monthly' => scheduler::MONTHLY);
+    }
+
+    /**
+     * Given scheduled report frequency and schedule data, output a human readable string.
+     *
+     * @param integer Code representing the frequency of reports (one of Schedule::get_options)
+     * @param integer The scheduled date/time (either hour of day, day or week or day of month)
+     * @param object User object belonging to the recipient (optional). Defaults to current user
+     * @return string Human readable string describing the schedule
+     */
+    function get_formatted($user = null) {
+        // use current user if not set
+        if ($user === null) {
+            global $USER;
+            $user = $USER;
+        }
+        $CALENDARDAYS = calendar_get_days();
+        $dateformat = ($user->lang == 'en') ? 'jS' : 'j';
+        $out = '';
+        $schedule = $this->subject->{$this->map['schedule']};
+
+        $timemonth = date('n', $this->time);
+        $timeday = date('j', $this->time);
+        $timeyear = date('Y', $this->time);
+
+        switch($this->subject->{$this->map['frequency']}) {
+            case scheduler::DAILY:
+                $out .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder') . ' ';
+                $out .= strftime('%I:%M%p' , mktime($schedule, 0, 0, $timemonth, $timeday, $timeyear));
+                break;
+            case Scheduler::WEEKLY:
+                $out .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder') . ' ';
+                $out .= get_string($CALENDARDAYS[$schedule], 'calendar');
+                break;
+            case Scheduler::MONTHLY:
+                $out .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder') . ' ';
+                $out .= date($dateformat , mktime(0, 0, 0, 0, $schedule, $timeyear));
+                break;
+        }
+
+        return $out;
+    }
+
+    /**
+     * Return timestamp when scheduled event is going to run
+     * @return int timestamp
+     */
+    function get_scheduled_time() {
+        return $this->subject->{$this->map['nextevent']};
+    }
+    /**
+     * Populate data based on initial array
+     *
+     * Compatible with scheduler form element data @see MoodleQuickForm_scheduler::exportValue()
+     *
+     * @param array $data - array with schedule parameters. If not set, default schedule will be applied
+     */
+    public function from_array(array $data = array()) {
+        $this->changed = true;
+
+        $data['frequency'] = isset($data['frequency']) ? $data['frequency'] : self::DAILY;
+        $data['schedule'] = isset($data['schedule']) ? $data['schedule'] : 0;
+        $data['initschedule'] = isset($data['initschedule']) ? $data['initschedule'] : false;
+        $this->subject->{$this->map['frequency']} = $data['frequency'];
+        $this->subject->{$this->map['schedule']} = $data['schedule'];
+        // If no need in reinitialize, don't change nextreport value
+        if ($data['initschedule']) {
+             $this->subject->{$this->map['nextevent']} = $this->time - 1;
+        } else {
+            $this->next();
+        }
+    }
+
+    /**
+     * Export scheduler parameters as an array
+     * @return array
+     */
+    public function to_array() {
+        $result = array(
+            'frequency' => $this->subject->{$this->map['frequency']},
+            'schedule' => $this->subject->{$this->map['schedule']},
+            'nextevent' => $this->subject->{$this->map['nextevent']},
+            'initschedule' => ($this->subject->{$this->map['nextevent']} <= $this->time)
+        );
+        return $result;
+    }
+
+    /**
+     * Export scheduler parameters as an object
+     *
+     * Useful for saving in DB
+     * @param mixed array|string $extrafields primary key name and other fields to export
+     * @return stdClass
+     */
+    public function to_object($extrafields = 'id') {
+        if (!is_array($extrafields)) {
+            $extrafields = array($extrafields);
+        }
+
+        $obj = new stdClass();
+        $obj->{$this->map['nextevent']} = $this->subject->{$this->map['nextevent']};
+        $obj->{$this->map['frequency']} = $this->subject->{$this->map['frequency']};
+        $obj->{$this->map['schedule']} = $this->subject->{$this->map['schedule']};
+        foreach ($extrafields as $field) {
+            if (isset($this->subject->$field)) {
+                $obj->$field = $this->subject->$field;
+            }
+        }
+        return $obj;
+    }
+
+    /**
+     *  Calculates the next specified day of a month
+     *  eg. the 3rd of next month
+     *
+     * @param integer $time The timestamp to do the calcuation from
+     * @param integer $day The date of the month to calculate
+     *
+     * @return integer Calculated date at midnight
+     */
+    protected static function get_next_monthly($time, $day) {
+        $currentday = date('j', $time);
+        $currentmonth = date('n', $time);
+        $currentyear = date('Y', $time);
+
+        // if the day we want hasn't already passed, the next day will
+        // be in the current month. Otherwise it will be in the following
+        // month - offset it accordingly
+        if ($currentday >= $day) {
+            $offset = 1;
+        } else {
+            $offset = 0;
+        }
+        $newmonth = $currentmonth+$offset;
+
+        if ($newmonth == 13) { //The end of the year
+            $newyear = $currentyear+1;
+            $newmonth = 1;
+        } else {
+            $newyear = $currentyear;
+        }
+
+        $daysinmonth = date('t', mktime(0, 0, 0, $newmonth, 3, $newyear));
+        // If the new day is greater than the days in the month
+        // then set it to be the last day of the month
+        if ($day > $daysinmonth) {
+            $newday = $daysinmonth;
+        } else {
+            $newday = $day;
+        }
+
+        $nexttime = mktime(0, 0, 0, $newmonth, $newday, $newyear);
+
+        return $nexttime;
+    }
+}
+
+/**
  * Run the reportbuilder cron
  */
 function totara_reportbuilder_cron() {
@@ -3323,6 +4065,111 @@ function totara_reportbuilder_cron() {
     reportbuilder_cron();
 }
 
+/**
+ * Returns the proper SQL to create table based on a query
+ * @param string $table
+ *
+ * @return string SQL to execute
+ */
+function sql_table_from_select($table, $select, array $params = array()) {
+    global $DB;
+    $md5 = substr(md5($table), 0, 7);
+    switch ($DB->get_dbfamily()) {
+        case 'mysql':
+            $columnssql = "SHOW COLUMNS FROM `{$table}`";
+            $indexsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s)";
+            $indexlongsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s(%2\$d))";
+            $fieldname = 'field';
+
+            $sql = "CREATE TABLE `{$table}` $select";
+            $result = $DB->execute($sql, $params);
+            break;
+        case 'mssql':
+            $viewname = 'tmp_'.$md5;
+            $viewsql = "CREATE VIEW $viewname AS $select";
+            $DB->execute($viewsql, $params);
+
+            $sql = "SELECT * INTO {$table} FROM $viewname";
+            $result = $DB->execute($sql);
+
+            $removeviewsql = "DROP VIEW $viewname";
+            $DB->execute($removeviewsql);
+
+            $columnssql = "SELECT sc.name, sc.system_type_id, sc.max_length, st.name as field_type FROM sys.columns sc
+                    LEFT JOIN sys.types st ON (st.system_type_id = sc.system_type_id
+                        AND st.name <> 'sysname' AND st.name <> 'geometry' AND st.name <> 'hierarchyid')
+                    WHERE sc.object_id = OBJECT_ID('{$table}')";
+            $indexsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s)";
+            $fieldname = 'name';
+            break;
+        case 'postgres':
+        default:
+            $sql = "CREATE TABLE \"{$table}\" AS $select";
+            $columnssql = "SELECT column_name, data_type FROM information_schema.columns WHERE table_name ='{$table}'";
+            $indexsql = "CREATE INDEX rb_cache_{$md5}_%1\$s ON {$table} (%1\$s)";
+            $fieldname = 'column_name';
+            $result = $DB->execute($sql, $params);
+            break;
+    }
+    if (!$result) return false;
+
+    // Create indexes
+    $fields = $DB->get_records_sql($columnssql);
+    foreach ($fields as $field) {
+        $sql = sprintf($indexsql, $field->$fieldname);
+
+        // db engines specifics
+        switch ($DB->get_dbfamily()) {
+            case 'mysql':
+                if (strpos($field->type, 'blob') !== false || strpos($field->type, 'text') !== false) {
+                    // Index only first 255 symbols (mysql maximum = 767)
+                    $sql = sprintf($indexlongsql, $field->$fieldname, 255);
+                }
+            break;
+            case 'mssql':
+                if ($field->field_type == 'image' || $field->field_type == 'binary') { // image
+                    continue;
+                }
+                if ($field->field_type == 'text' || $field->field_type == 'ntext') {
+                    $altersql = "ALTER TABLE {$table} ALTER COLUMN {$field->name} NVARCHAR(450)"; //Maximum index size = 900 bytes or 450 unicode chars
+                    try {
+                        // Attempt to convert field to indexable
+                        $DB->execute($altersql);
+                    } catch (dml_write_exception $e) {
+                        // Recoverable exception
+                        // Field has data longer than maximum index, proceed unindexed
+                        continue;
+                    }
+                }
+            break;
+            case 'postgres':
+                if ($field->data_type == 'unknown') {
+                    $altersql = "ALTER TABLE {$table} ALTER COLUMN {$field->column_name} type varchar(255)";
+                    $DB->execute($altersql);
+                }
+            break;
+        }
+        $DB->execute($sql);
+    }
+    return true;
+}
+
+function sql_drop_table_if_exists($table) {
+    global $DB;
+    switch ($DB->get_dbfamily()) {
+        case 'mssql':
+            $sql = "IF OBJECT_ID('dbo.{$table}','U') IS NOT NULL DROP TABLE dbo.{$table}";
+            break;
+        case 'mysql':
+            $sql = "DROP TABLE IF EXISTS `{$table}`";
+            break;
+        case 'postgres':
+        default:
+            $sql = "DROP TABLE IF EXISTS \"{$table}\"";
+            break;
+    }
+    return $DB->execute($sql);
+}
 /**
  * Returns the proper SQL to aggregate a field by joining with a specified delimiter
  *
@@ -3352,6 +4199,61 @@ function sql_group_concat($field, $delimiter=', ', $unique=false) {
 }
 
 /**
+ * Schedule reporting cache
+ *
+ * @global object $DB
+ * @param int $reportid report id
+ * @param array|stdClass $form data from form element
+ * @return type
+ */
+function reportbuilder_schedule_cache($reportid, $form = array()) {
+    global $DB;
+    if (is_object($form)) {
+        $form = (array)$form;
+    }
+    $cache = $DB->get_record('report_builder_cache', array('reportid' => $reportid), '*', IGNORE_MISSING);
+    if (!$cache) {
+        $cache = new stdClass();
+    }
+    $cache->reportid = $reportid;
+    $schedule = new scheduler($cache, array('nextevent' => 'nextreport'));
+    $schedule->from_array($form);
+
+    if (!isset($cache->id)) {
+        $result = $DB->insert_record('report_builder_cache', $cache);
+    } else {
+        $result = $DB->update_record('report_builder_cache', $cache);
+    }
+    return $result;
+}
+
+/**
+ * Shift next scheduled execution if report was generated after scheduled time
+ *
+ * @param int $reportid Report id
+ * @return boolean is operation success
+ */
+function reportbuilder_fix_schedule($reportid) {
+    global $DB;
+
+    $cache = $DB->get_record('report_builder_cache', array('reportid' => $reportid), '*', IGNORE_MISSING);
+    if (!$cache) {
+        var_dump("cache not found");
+        return false;
+    }
+
+    $schedule = new scheduler($cache, array('nextevent' => 'nextreport'));
+    if ($schedule->get_scheduled_time() < $cache->lastreport) {
+        $schedule->next();
+    }
+
+    if ($schedule->is_changed()) {
+        $result = $DB->update_record('report_builder_cache', $cache);
+    }
+    return true;
+}
+
+/**
  * Returns reports that the current user can view
  *
  * @param boolean showhidden If true include hidden reports
@@ -3364,6 +4266,190 @@ function reportbuilder_get_reports($showhidden=false) {
         $reportbuilder_permittedreports = reportbuilder::get_permitted_reports(null,$showhidden);
     }
     return $reportbuilder_permittedreports;
+}
+
+/**
+ * Purge cache to force report update during next load
+ *
+ * @param int|object $cache either data from rb cache table or report id
+ * @param bool $unschedule If true drops scheduling as well
+ */
+function reportbuilder_purge_cache($cache, $unschedule = false) {
+    global $DB;
+    if (is_number($cache)) {
+        $cache = $DB->get_record('report_builder_cache', array('reportid' => $cache));
+    }
+    if (!is_object($cache) || !isset($cache->reportid)) {
+        error_log(get_string('error:cachenotfound', 'totara_reportbuilder'));
+        return false;
+    }
+    if ($cache->cachetable != '') {
+        sql_drop_table_if_exists($cache->cachetable);
+    }
+    if ($unschedule) {
+        $DB->delete_records_select('report_builder_cache', 'reportid = :reportid', array('reportid' => $cache->reportid));
+        $report = new stdClass();
+        $report->cache = 0;
+        $report->id = $cache->reportid;
+        $DB->update_record('report_builder', $report);
+    } else {
+        $cache->cachetable = '';
+        $cache->config = '';
+        $DB->update_record('report_builder_cache', $cache);
+    }
+}
+
+/**
+ * Purge all caches for report builder
+ *
+ * @param bool $unschedule Turn off caching after purge for all reports
+ */
+function reportbuilder_purge_all_cache($unschedule = false) {
+    global $DB;
+    try {
+        $caches = $DB->get_records('report_builder_cache');
+        foreach ($caches as $cache) {
+            reportbuilder_purge_cache($cache, $unschedule);
+        }
+    } catch (dml_exception $e) {
+        // This error is possible during installation process
+        return;
+    }
+}
+
+
+/**
+ * Set flag to report that it is changed and cache settings are out of date or fail
+ *
+ * @param mixed stdClass|int $report Report id or report_builder_cache record object
+ * @param int $flag Change flag - just changed or fail
+ * @return bool result
+ */
+function reportbuilder_set_status($reportcache, $flag = RB_CACHE_FLAG_CHANGED) {
+    global $DB;
+    $reportid = 0;
+    if (is_object($reportcache)) {
+        $reportid = $reportcache->reportid;
+        $reportcache->changed = 1;
+    } else if (is_numeric($reportcache)) {
+        $reportid = $reportcache;
+    }
+    if (!$reportid) return false;
+
+    $sql = 'UPDATE {report_builder_cache} SET changed = ? WHERE reportid = ?';
+    $result = $DB->execute($sql, array($flag, $reportid));
+    return $result;
+}
+
+/**
+ * Get reportbuilder cache status flags
+ *
+ * @param mixed stdClass|int $report Report id or report_builder_cache record object
+ * @return int result
+ */
+function reportbuilder_get_status($reportcache) {
+    global $DB;
+    if (is_numeric($reportcache)) {
+        $reportcache = reportbuilder_get_cached($reportcache);
+    }
+    if (is_object($reportcache)) {
+        return $reportcache->changed;
+    }
+    return false;
+}
+
+/**
+ * Report cache (re-)generation
+ *
+ * @int $reportid Report id
+ * @return bool Is cache generated
+ */
+function reportbuilder_generate_cache($reportid) {
+    global $DB;
+
+    $success = false;
+
+    // Prepare record for cache
+    $rbcache = $DB->get_record('report_builder_cache', array('reportid' => $reportid));
+    if (!$rbcache) {
+        $cache = new stdClass();
+        $cache->reportid = $reportid;
+        $cache->frequency = 0;
+        $cache->schedule = 0;
+        $cache->changed = 0;
+        $cache->genstart = 0;
+        $DB->insert_record('report_builder_cache', $cache);
+    }
+
+    // set report generation timestamp
+    $sql = 'UPDATE {report_builder_cache} SET genstart = ? WHERE reportid = ?';
+    $params = array(time(), $reportid);
+    $DB->execute($sql, $params);
+
+    $transaction = $DB->start_delegated_transaction();
+    // Moodle rollback rethrow exception, so have to use nested try..catch blocks
+    try {
+        try {
+            $sql = 'SELECT rbc.id, rbc.cachetable, rb.embedded, rb.shortname  FROM {report_builder} rb
+                    LEFT JOIN {report_builder_cache} rbc ON rb.id = rbc.reportid
+                    WHERE rbc.reportid = ?';
+            $reportcacherecord = $DB->get_record_sql($sql, array($reportid), MUST_EXIST);
+
+            // Instantiate
+            if ($reportcacherecord->embedded) {
+                $shortname = $reportcacherecord->shortname;
+                $report = reportbuilder_get_embedded_report($shortname, array(), true);
+            } else {
+                $report = new reportbuilder($reportid, null, false, null, null, true);
+            }
+
+            // Get caching query
+            list($query, $params) = $report->build_create_cache_query();
+
+            $date = date("YmdHis");
+            $oldtable = isset($reportcacherecord->cachetable) ? $reportcacherecord->cachetable : '';
+            $newtable = "{report_builder_cache_{$reportid}_{$date}}";
+
+            $result = sql_table_from_select($newtable, $query, $params);
+
+            // Save new table only if success
+            if ($result) {
+                $cache = new stdClass();
+                $cache->id = $reportcacherecord->id;
+                $cache->lastreport = time();
+                $cache->cachetable = $newtable;
+                $cache->config = $report->export_config();
+                $cache->changed = 0;
+                $cache->genstart = 0;
+
+                // Cache settings
+                $settingsql = "UPDATE {report_builder_settings} SET cachedvalue = value WHERE reportid = ?";
+                $DB->execute($settingsql, array($reportid));
+
+                $DB->update_record('report_builder_cache', $cache);
+
+                if ($oldtable != '') {
+                    sql_drop_table_if_exists($oldtable);
+                }
+                $success = true;
+            }
+        } catch (dml_exception $e) {
+            $transaction->rollback($e);
+        }
+    } catch (dml_exception $e) {
+        // drop report generation timestamp
+        $sql = 'UPDATE {report_builder_cache} SET genstart = ?, changed = ? WHERE reportid = ?';
+        $params = array(0, RB_CACHE_FLAG_FAIL, $reportid);
+        $DB->execute($sql, $params);
+
+        throw $e;
+    }
+
+    if ($success) {
+        $transaction->allow_commit();
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -3423,7 +4509,8 @@ function send_scheduled_report($sched) {
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
-    $messagedetails->schedule = reportbuilder_get_formatted_schedule($sched->frequency, $sched->schedule, $user);
+    $schedule = new scheduler($sched, array('nextevent' => 'nextreport'));
+    $messagedetails->schedule = $schedule->get_formatted($user);
 
     $subject = $report->fullname . ' ' . $strmgr->get_string('report', 'totara_reportbuilder', null, $user->lang);
 
@@ -3450,44 +4537,6 @@ function send_scheduled_report($sched) {
     return $emailed;
 }
 
-
-/**
- * Given scheduled report frequency and schedule data, output a human readable string.
- *
- * @param integer Code representing the frequency of reports (one of REPORT_BUILDER_SCHEDULE_OPTIONS)
- * @param integer The scheduled date/time (either hour of day, day or week or day of month)
- * @param object User object belonging to the recipient (optional). Defaults to current user
- * @return string Human readable string describing the schedule
- */
-function reportbuilder_get_formatted_schedule($frequency, $schedule, $user = null) {
-    // use current user if not set
-    if ($user === null) {
-        global $USER;
-        $user = $USER;
-    }
-    $CALENDARDAYS = calendar_get_days();
-    $dateformat = ($user->lang == 'en') ? 'jS' : 'j';
-    $out = '';
-    $strmgr = get_string_manager();
-    switch($frequency) {
-        case REPORT_BUILDER_SCHEDULE_DAILY:
-            $out .= $strmgr->get_string('daily', 'totara_reportbuilder', null, $user->lang) . ' ' .  $strmgr->get_string('at', 'totara_reportbuilder', null, $user->lang) . ' ';
-            $out .= strftime('%I:%M%p' , mktime($schedule, 0, 0));
-            break;
-        case REPORT_BUILDER_SCHEDULE_WEEKLY:
-            $out .= $strmgr->get_string('weekly', 'totara_reportbuilder', null, $user->lang) . ' ' . $strmgr->get_string('on', 'totara_reportbuilder', null, $user->lang) . ' ';
-            $out .= get_string($CALENDARDAYS[$schedule], 'calendar');
-            break;
-        case REPORT_BUILDER_SCHEDULE_MONTHLY:
-            $out .= $strmgr->get_string('monthly', 'totara_reportbuilder', null, $user->lang) . ' ' . $strmgr->get_string('onthe', 'totara_reportbuilder', null, $user->lang) . ' ';
-            $out .= date($dateformat , mktime(0, 0, 0, 0, $schedule));
-            break;
-    }
-
-    return $out;
-}
-
-
 /**
  *  Creates an export of a report in specified format (xls, csv or ods)
  *  for adding to email as attachment
@@ -3506,7 +4555,7 @@ function create_attachment($reportid, $format, $userid, $sid=null) {
     $columns = $report->columns;
     $shortname = $report->shortname;
     $count = $report->get_filtered_count();
-    list($sql, $params) = $report->build_query(false, true);
+    list($sql, $params, $cache) = $report->build_query(false, true);
 
     // array of filters that have been applied
     // for including in report where possible
@@ -3524,10 +4573,10 @@ function create_attachment($reportid, $format, $userid, $sid=null) {
 
     switch($format) {
         case REPORT_BUILDER_EXPORT_ODS:
-            $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
+            $filename = $report->download_ods($headings, $sql, $params, $count, $restrictions, $tempfilepathname, $cache);
             break;
         case REPORT_BUILDER_EXPORT_EXCEL:
-            $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname);
+            $filename = $report->download_xls($headings, $sql, $params, $count, $restrictions, $tempfilepathname, $cache);
             break;
         case REPORT_BUILDER_EXPORT_CSV:
             $filename = $report->download_csv($headings, $sql, $params, $count, $tempfilepathname);
@@ -3536,53 +4585,6 @@ function create_attachment($reportid, $format, $userid, $sid=null) {
 
     return $tempfilename;
 }
-
-
-/**
- *  Calculates the next specified day of a month
- *  eg. the 3rd of next month
- *
- * @param integer $time The timestamp to do the calcuation from
- * @param integer $day The date of the month to calculate
- *
- * @return integer Calculated date at midnight
- */
-function get_next_monthly($time, $day) {
-    $currentday = date('j', $time);
-    $currentmonth = date('n', $time);
-    $currentyear = date('Y', $time);
-
-    // if the day we want hasn't already passed, the next day will
-    // be in the current month. Otherwise it will be in the following
-    // month - offset it accordingly
-    if ($currentday >= $day) {
-        $offset = 1;
-    } else {
-        $offset = 0;
-    }
-    $newmonth = $currentmonth+$offset;
-
-    if ($newmonth == 13) { //The end of the year
-        $newyear = $currentyear+1;
-        $newmonth = 1;
-    } else {
-        $newyear = $currentyear;
-    }
-
-    $daysinmonth = date('t', mktime(0, 0, 0, $newmonth, 3, $newyear));
-    // If the new day is greater than the days in the month
-    // then set it to be the last day of the month
-    if ($day > $daysinmonth) {
-        $newday = $daysinmonth;
-    } else {
-        $newday = $day;
-    }
-
-    $nexttime = mktime(0, 0, 0, $newmonth, $newday, $newyear);
-
-    return $nexttime;
-}
-
 
 /**
  * Given a report database record, return the URL to the report
@@ -3650,12 +4652,13 @@ function reportbuilder_get_embedded_report_object($embedname, $data=array()) {
  * @param string $embedname Shortname of embedded report
  *                          e.g. X from rb_X_embedded.php
  * @param array $data Associative array of data needed by source (optional)
+ * @param bool $nocache Disable cache
  *
  * @return reportbuilder Embedded report
  */
-function reportbuilder_get_embedded_report($embedname, $data=array()) {
+function reportbuilder_get_embedded_report($embedname, $data = array(), $nocache = false) {
     if ($embed = reportbuilder_get_embedded_report_object($embedname, $data)) {
-        return new reportbuilder(null, $embedname, $embed);
+        return new reportbuilder(null, $embedname, $embed, null, null, $nocache);
     }
     // file or class not found
     return false;
@@ -3694,6 +4697,43 @@ function reportbuilder_get_all_embedded_reports() {
     return $embedded;
 }
 
+/**
+ * Return object with cached record for report or false if not found
+ *
+ * @param int $reportid
+ */
+function reportbuilder_get_cached($reportid) {
+    global $DB;
+    $sql = "SELECT rbc.*, rb.cache, rb.fullname, rb.shortname, rb.embedded
+            FROM {report_builder} rb
+            LEFT JOIN {report_builder_cache} rbc ON rbc.reportid = rb.id
+            WHERE rb.cache = 1
+              AND rb.id = ?";
+    return $DB->get_record_sql($sql, array($reportid));
+}
+
+/**
+ * Get all reports with enabled caching
+ *
+ * @return array of stdClass
+ */
+function reportbuilder_get_all_cached() {
+    global $DB, $CFG;
+    if (!$CFG->enablereportcaching) {
+        return array();
+    }
+    $sql = "SELECT rbc.*, rb.cache, rb.fullname, rb.shortname, rb.embedded
+            FROM {report_builder} rb
+            LEFT JOIN {report_builder_cache} rbc
+                ON rb.id = rbc.reportid
+            WHERE rb.cache = 1";
+    $caches = $DB->get_records_sql($sql);
+    $result = array();
+    foreach ($caches as $c) {
+        $result[$c->reportid] = $c;
+    }
+    return $result;
+}
 /**
  * Function for sorting by report fullname, used in usort as callback
  *
@@ -3947,4 +4987,3 @@ function totara_reportbuilder_pluginfile($course, $cm, $context, $filearea, $arg
     // finally send the file
     send_stored_file($file, 86400, 0, true, $options); // download MUST be forced - security!
 }
-

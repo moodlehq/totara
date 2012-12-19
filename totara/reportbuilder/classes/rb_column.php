@@ -37,6 +37,15 @@
  */
 class rb_column {
     /**
+     * Column field mode. Adjust grouping fields to prepare cache data (NOGROUP),
+     * request to cache (CACHE), and normal work with cache turned off (REGULAR)
+     */
+    const REGULAR = 0;
+    const CACHE = 1;
+    const NOGROUP = 2;
+    const ALIASONLY = 3;
+
+    /**
      * Used with value to define a column. These properties are used
      * to specify a column - for example {@link rb_filter} provides
      * a type and value to define which column the filter is searching
@@ -277,9 +286,10 @@ class rb_column {
      * Obtain an array of SQL snippets describing field information for this column
      *
      * @param object $src Source object containing grouping methods
+     * @param int $aliasmode mode of alias handle (@see rb_column::REGULAR)
      * @return array Array of field names with aliases used to build a query
      */
-    function get_fields($src=null) {
+    function get_fields($src = null, $aliasmode = self::REGULAR) {
         $field = $this->field;
         $type = $this->type;
         $value = $this->value;
@@ -288,11 +298,11 @@ class rb_column {
         $fields = array();
         if ($this->grouping == 'none') {
             if ($field !== null) {
-                $fields[] = $field . " AS {$type}_{$value}";
+                $fields[] = ($aliasmode == self::CACHE) ? "{$type}_{$value}" : "{$field} AS {$type}_{$value}";
             }
             if ($extrafields !== null) {
                 foreach ($extrafields as $alias => $extrafield) {
-                    $fields[] = "$extrafield AS $alias";
+                    $fields[] = ($aliasmode == self::CACHE) ? $alias : "$extrafield AS $alias";
                 }
             }
         } else {
@@ -306,7 +316,24 @@ class rb_column {
             }
             // apply grouping function and ignore extrafields
             if ($field !== null) {
-                $fields[] = $src->$groupfunc($field)  . " AS {$type}_{$value}";
+                switch ($aliasmode) {
+                    case self::ALIASONLY:
+                        // Alias only used in grouping, when no "AS" allowed
+                        $fields[] = "{$type}_{$value}";
+                        break;
+                    case self::NOGROUP:
+                        // grouping disabled in cache preparation when grouping cannot be performed as sensitive data will be removed
+                         $fields[] = $field . " AS {$type}_{$value}";
+                        break;
+                    case self::CACHE:
+                        // Request will be pointed to cache instead of normal database table
+                         $fields[] = $src->$groupfunc("{$type}_{$value}") . " AS {$type}_{$value}";
+                        break;
+                    default:
+                        // cache disabled
+                        $fields[] = $src->$groupfunc($field) . " AS {$type}_{$value}";
+                        break;
+                }
             }
         }
         return $fields;

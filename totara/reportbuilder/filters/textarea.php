@@ -115,7 +115,7 @@ class rb_filter_textarea extends rb_filter_type {
 
         $operator = $data['operator'];
         $value    = $data['value'];
-        $query = $this->field;
+        $query    = $this->get_field();
 
         if ($value === '') {
             return array('', array());

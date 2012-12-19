@@ -43,9 +43,14 @@ $report = new reportbuilder($id);
 $report->descriptionformat = FORMAT_HTML;
 $report = file_prepare_standard_editor($report, 'description', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
     'totara_reportbuilder', 'report_builder', $id);
-
+$schedule = array();
+if ($report->cache) {
+    $cache = reportbuilder_get_cached($id);
+    $scheduler = new scheduler($cache, array('nextevent' => 'nextreport'));
+    $schedule = $scheduler->to_array();
+}
 // form definition
-$mform = new report_builder_edit_form(null, compact('id', 'report'));
+$mform = new report_builder_edit_form(null, array('id' => $id, 'report' => $report));
 
 // form results check
 if ($mform->is_cancelled()) {
@@ -70,6 +75,7 @@ if ($fromform = $mform->get_data()) {
         'totara_reportbuilder', 'report_builder', $todb->id);
 
     $DB->update_record('report_builder', $todb);
+
     add_to_log(SITEID, 'reportbuilder', 'update report', 'general.php?id='. $id,
         'General Settings: Report ID=' . $id);
     totara_set_notification(get_string('reportupdated', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
@@ -84,6 +90,10 @@ echo $output->container_end();
 
 echo $output->heading(get_string('editreport', 'totara_reportbuilder', format_string($report->fullname)));
 
+if (reportbuilder_get_status($id)) {
+    echo $output->cache_pending_notification($id);
+}
+
 $currenttab = 'general';
 include_once('tabs.php');
 
@@ -91,6 +101,3 @@ include_once('tabs.php');
 $mform->display();
 
 echo $output->footer();
-
-
-?>

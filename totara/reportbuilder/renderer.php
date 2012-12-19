@@ -53,6 +53,7 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
             $row = array();
             $strsettings = get_string('settings', 'totara_reportbuilder');
             $strdelete = get_string('delete', 'totara_reportbuilder');
+            $strcache = get_string('reportbuilderinitcache', 'totara_reportbuilder');
             $viewurl = new moodle_url(reportbuilder_get_report_url($report));
             $editurl = new moodle_url('/totara/reportbuilder/general.php', array('id' => $report->id));
             $deleteurl = new moodle_url('/totara/reportbuilder/index.php', array('id' => $report->id, 'd' => 1));
@@ -66,7 +67,11 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
 
             $settings = $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
             $delete = $this->output->action_icon($deleteurl, new pix_icon('/t/delete', $strdelete, 'moodle'));
-            $row[] = "{$settings}{$delete}";
+            $cache = '';
+            if (isset($report->cache) && $report->cache) {
+                 $cache = $this->cachenow_button($report->id, true);
+            }
+            $row[] = "{$settings}{$cache}{$delete}";
 
             $data[] = $row;
         }
@@ -98,6 +103,7 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
                              get_string('options', 'totara_reportbuilder'));
         $strsettings = get_string('settings', 'totara_reportbuilder');
         $strreload = get_string('restoredefaults', 'totara_reportbuilder');
+
         $embeddedreportstable = new html_table();
         $embeddedreportstable->summary = '';
         $embeddedreportstable->head = $tableheader;
@@ -120,7 +126,11 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
 
             $settings = $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
             $reload = $this->output->action_icon($reloadurl, new pix_icon('/t/reload', $strreload, 'moodle'));
-            $row[] = "{$settings}{$reload}";
+            $cache = '';
+            if (isset($report->cache) && $report->cache) {
+                 $cache = $this->cachenow_button($report->id, true);
+            }
+            $row[] = "{$settings}{$reload}{$cache}";
 
             $data[] = $row;
         }
@@ -365,6 +375,94 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
     }
 
     /**
+     * Returns message that there are changes pending cache regeneration or cache is being
+     * regenerated since some time
+     *
+     * @param int|reportbuilder $reportid Report id or reportbuilder instance
+     * @return string Rendered HTML
+     */
+    public function cache_pending_notification($report = 0) {
+        global $CFG;
+        if (!$CFG->enablereportcaching) {
+            return '';
+        }
+        if (is_numeric($report)) {
+            $report = new reportbuilder($report);
+        }
+        $notice = '';
+        if ($report instanceof reportbuilder) {
+            //Check that regeneration is started
+            if ($report->cacheschedule->changed == RB_CACHE_FLAG_FAIL) {
+                $notice = $this->container(get_string('cachegenfail','totara_reportbuilder'), 'notifyproblem clearfix');
+            } else if ($report->cacheschedule->genstart > 0) {
+                $time = userdate($report->cacheschedule->genstart);
+                $notice = $this->container(get_string('cachegenstarted','totara_reportbuilder', $time), 'notifynotice clearfix');
+            } else if ($report->cacheschedule->changed) {
+                $context = context_system::instance();
+                if ($report->_id > 0 && has_capability('totara/reportbuilder:managereports', $context)) {
+                    $button = html_writer::start_tag('div', array('class' => 'boxalignright rb-genbutton'));
+                    $button .= $this->cachenow_button($report->_id);
+                    $button .= html_writer::end_tag('div');
+                } else {
+                    $button = '';
+                }
+                $notice = $this->container(get_string('cachepending','totara_reportbuilder', $button),
+                        'notifynotice clearfix', 'cachenotice_'.$report->_id);
+            }
+        }
+        return $notice;
+    }
+
+    /**
+     * Display cache now button
+     *
+     * @param int $reportid Report id
+     * @param bool $icon Show icon instead of button
+     */
+    public function cachenow_button($reportid, $icon = false) {
+        global $PAGE, $CFG;
+        static $cachenowinit = false;
+        static $strcache = '';
+
+        if (!$cachenowinit) {
+            $cachenowinit = true;
+            require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+            $PAGE->requires->strings_for_js(array('cachenow_title'), 'totara_reportbuilder');
+            $PAGE->requires->string_for_js('ok', 'moodle');
+            $strcache = get_string('cachenow', 'totara_reportbuilder');
+            local_js(array(TOTARA_JS_DIALOG));
+            $jsmodule = array(
+                'name' => 'totara_reportbuilder_cachenow',
+                'fullpath' => '/totara/reportbuilder/js/cachenow.js',
+                'requires' => array('json'));
+            $args = array('args'=>json_encode(array('reportid' => $reportid)));
+            $PAGE->requires->js_init_call('M.totara_reportbuilder_cachenow.init', $args, false, $jsmodule);
+        }
+
+        if ($icon) {
+            $html = html_writer::start_tag('div', array('class' => 'action-icon rb-inline'));
+            $html .= html_writer::empty_tag('img', array(
+                'src' => $this->pix_url('/t/cache', 'moodle'),
+                'class' => 'show-cachenow-dialog smallicon rb-hidden rb-genicon',
+                'data-id' => $reportid,
+                'name' => 'show-cachenow-dialog-' . $reportid,
+                'id' => 'show-cachenow-dialog-' . $reportid,
+                'title' => $strcache
+                ));
+            $html .= html_writer::end_tag('div');
+        } else {
+            $html = html_writer::empty_tag('input', array('type' => 'button',
+                'name' => 'rb_cachenow',
+                'data-id' => $reportid,
+                'class' => 'show-cachenow-dialog rb-hidden',
+                'id' => 'show-cachenow-dialog-' . $reportid,
+                'value' => $strcache
+                ));
+        }
+        return $html;
+    }
+
+    /**
      * Returns a link back to the manage reports page called 'View all reports'
      *
      * Used when editing a single report
@@ -415,10 +513,11 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
         $html .= html_writer::start_tag('div', array('class' => 'rb-showhide boxalignright'));
         $html .= html_writer::start_tag('form');
         $html .= html_writer::empty_tag('input', array('type' => 'button',
+            'class' => 'rb-hidden',
             'name' => 'rb_showhide_columns',
             'id' => 'show-showhide-dialog',
-            'value' => get_string('showhidecolumns', 'totara_reportbuilder'),
-            'style' => 'display:none;'));
+            'value' => get_string('showhidecolumns', 'totara_reportbuilder')
+        ));
         $html .= html_writer::end_tag('form');
         $html .= html_writer::end_tag('div');
 

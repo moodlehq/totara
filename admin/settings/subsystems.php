@@ -72,4 +72,7 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
     $optionalsubsystems->add(new admin_setting_configcheckbox('enableplagiarism', new lang_string('enableplagiarism','plagiarism'), new lang_string('configenableplagiarism','plagiarism'), 0));
 
     $optionalsubsystems->add(new admin_setting_configcheckbox('enablebadges', new lang_string('enablebadges', 'badges'), new lang_string('configenablebadges', 'badges'), 1));
+
+    // Report caching
+    $optionalsubsystems->add(new admin_setting_configcheckbox('enablereportcaching', new lang_string('enablereportcaching','totara_reportbuilder'), new lang_string('configenablereportcaching','totara_reportbuilder'), 0));
 }

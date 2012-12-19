@@ -252,8 +252,7 @@ function totara_print_report_manager() {
 
 */
 function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $sqlclause=array()) {
-    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
-    $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
+    global $CFG, $DB, $USER, $PAGE, $REPORT_BUILDER_EXPORT_OPTIONS;
 
     require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
     require_once($CFG->dirroot.'/calendar/lib.php');
@@ -289,11 +288,12 @@ function totara_print_scheduled_reports($showoptions=true, $showaddform=true, $s
         $sched->format = get_string($key . 'format','totara_reportbuilder');
         //schedule column
         if (isset($sched->frequency) && isset($sched->schedule)){
-            $schedule = reportbuilder_get_formatted_schedule($sched->frequency, $sched->schedule);
+            $schedule = new scheduler($sched);
+            $formatted = $schedule->get_formatted();
         } else {
-            $schedule = get_string('schedulenotset', 'totara_reportbuilder');
+            $formatted = get_string('schedulenotset', 'totara_reportbuilder');
         }
-        $sched->schedule = $schedule;
+        $sched->schedule = $formatted;
     }
 
     if (count($scheduledreports) > 0) {

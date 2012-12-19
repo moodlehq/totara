@@ -31,7 +31,6 @@ require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 $contextid = optional_param('contextid', 0, PARAM_INT);
 $page = optional_param('page', 0, PARAM_INT);
-$searchquery  = optional_param('search', '', PARAM_RAW);
 $format = optional_param('format', '', PARAM_TEXT); //export format
 $debug = optional_param('debug', false, PARAM_BOOL); //report debug
 
@@ -79,25 +78,23 @@ if($debug) {
     $report->debug($debug);
 }
 
-$cohorts = cohort_get_cohorts($context->id, $page, 25, $searchquery);
-
-$count = '';
-if ($cohorts['allcohorts'] > 0) {
-    if ($searchquery === '') {
-        $count = ' ('.$cohorts['allcohorts'].')';
-    } else {
-        $count = ' ('.$cohorts['totalcohorts'].'/'.$cohorts['allcohorts'].')';
-    }
-}
-
-echo $OUTPUT->heading(get_string('cohortsin', 'cohort', $context->get_context_name()).$count);
-
-$report->display_search();
-
-
-$report->display_table();
+$fullcount = $report->get_full_count();
+$filteredcount = $report->get_filtered_count();
+$count = ($fullcount != $filteredcount) ? " ($filteredcount/$fullcount)" : " ($filteredcount)";
 
 $output = $PAGE->get_renderer('totara_reportbuilder');
+
+echo $OUTPUT->heading(get_string('cohortsin', 'cohort', $context->get_context_name()).$count);
+// check if report is cached and warn user
+if ($report->is_cached()) {
+    $cohorts = cohort_get_cohorts($context->id);
+    if ($cohorts['allcohorts'] != $fullcount) {
+        echo $output->cache_pending_notification($report->_id);
+    }
+}
+$report->display_search();
+
+$report->display_table();
 $output->export_select($report->_id);
 if ($manager) {
     echo $OUTPUT->single_button(new moodle_url('/cohort/edit.php', array('contextid'=>$context->id)), get_string('add'));

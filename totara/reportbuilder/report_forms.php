@@ -79,7 +79,6 @@ class report_builder_edit_form extends moodleform {
 
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
-
         $id = $this->_customdata['id'];
 
         $mform->addElement('header', 'general', get_string('reportsettings', 'totara_reportbuilder'));
@@ -127,7 +126,6 @@ class report_builder_edit_form extends moodleform {
         // set the defaults
         $this->set_data($report);
     }
-
 }
 
 /**
@@ -653,6 +651,55 @@ class report_builder_edit_access_form extends moodleform {
 
 }
 
+/**
+ * Formslib tempalte for the edit report form
+ */
+class report_builder_edit_performance_form extends moodleform {
+    function definition() {
+        global $output;
+        $mform =& $this->_form;
+        $report = $this->_customdata['report'];
+        $id = $this->_customdata['id'];
+        $schedule = $this->_customdata['schedule'];
+
+        $mform->addElement('header', 'general', get_string('reportperformance', 'totara_reportbuilder'));
+
+        $mform->addElement('advcheckbox', 'cache', get_string('cache', 'totara_reportbuilder'), '', null, array(0, 1));
+        $mform->setType('cache', PARAM_INT);
+        $mform->addHelpButton('cache', 'reportbuildercache', 'totara_reportbuilder');
+
+        $mform->addElement('scheduler', 'schedulegroup', get_string('reportbuildercachescheduler', 'totara_reportbuilder'));
+        $mform->disabledIf('schedulegroup', 'cache');
+        $mform->addHelpButton('schedulegroup', 'reportbuildercachescheduler', 'totara_reportbuilder');
+
+        $cachetime = isset($report->cacheschedule->lastreport) ? $report->cacheschedule->lastreport : 0;
+        $cachedstr = get_string('lastcached','totara_reportbuilder', userdate($cachetime));
+        $notcachedstr = get_string('notcached','totara_reportbuilder');
+        $lastcached = ($cachetime > 0) ? $cachedstr : $notcachedstr;
+
+        if ($report->cache) {
+            $mform->addElement('static', 'cachenowselector', get_string('reportbuilderinitcache', 'totara_reportbuilder'),
+                html_writer::tag('span', $lastcached. ' ') .
+                $output->cachenow_button($id)
+            );
+        } else {
+            $mform->addElement('advcheckbox', 'generatenow', get_string('cachenow', 'totara_reportbuilder'), '', null, array(0, 1));
+            $mform->setType('generatenow', PARAM_INT);
+            $mform->addHelpButton('generatenow', 'cachenow', 'totara_reportbuilder');
+            $mform->disabledIf('generatenow', 'cache');
+        }
+
+        $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden', 'source', $report->source);
+        $mform->setType('source', PARAM_TEXT);
+        $this->add_action_buttons();
+
+        // set the defaults
+        $this->set_data($report);
+        $this->set_data($schedule);
+    }
+}
 
 /**
  * Method to check a shortname is unique in database

@@ -59,6 +59,16 @@ class rb_param {
     public $field;
 
     /**
+     * The alias for database field used in cache and query
+     *
+     * It must not contain separators (like .) and be unique for different fields or
+     * same fields in different tables
+     *
+     * @var string
+     */
+    public $fieldalias;
+
+    /**
      * One or more join names required to access $field
      *
      * Either a string or an array of strings containing
@@ -103,6 +113,12 @@ class rb_param {
                 $this->field = $paramoption->field;
                 $this->joins = $paramoption->joins;
                 $this->type  = $paramoption->type;
+                $tohash = preg_match('/[\ \,\(\)\{\}\"\\\']/', $paramoption->field);
+                if (!$tohash) {
+                    $this->fieldalias = get_class($this).'_'.str_replace('.', '_', $paramoption->field);
+                } else {
+                    $this->fieldalias = get_class($this).'_'.substr(md5($paramoption->field), 0, 10);
+                }
                 break;
             }
         }

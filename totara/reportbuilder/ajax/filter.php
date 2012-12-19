@@ -23,6 +23,7 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 /// Check access
 require_sesskey();
@@ -61,6 +62,7 @@ switch ($action) {
         }
         $todb->sortorder = $sortorder;
         $id = $DB->insert_record('report_builder_filters', $todb);
+        reportbuilder_set_status($reportid);
 
         echo $id;
         break;
@@ -69,6 +71,7 @@ switch ($action) {
 
         if ($filter = $DB->get_record('report_builder_filters', array('id' => $fid))) {
             $DB->delete_records('report_builder_filters', array('id' => $fid));
+            reportbuilder_set_status($reportid);
             echo json_encode((array)$filter);
         } else {
             echo false;
@@ -101,6 +104,7 @@ switch ($action) {
         $todb->id = $sibling->id;
         $todb->sortorder = $filter->sortorder;
         $DB->update_record('report_builder_filters', $todb);
+        reportbuilder_set_status($reportid);
 
         $transaction->allow_commit();
 

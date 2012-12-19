@@ -33,7 +33,17 @@ class rb_filter_type {
     public $advanced;
     public $filtertype;
     protected $label;
-    public $field;
+    /**
+     * @var mixed $field string|array Direct access to this field is @deprecated and prohibited.
+     *
+     * Must be set to private to enforce children classes use get_field
+     * User should use $obj->get_field() instead
+     * To handle more than one field property should be passed as an array:
+     *
+     * @example field = array('course' => 'base.course', 'user' => 'base.userid')
+     */
+    private $field;
+    public $fieldalias;
     public $joins;
     protected $options;
     protected $report;
@@ -76,7 +86,9 @@ class rb_filter_type {
             $columnoption = null;
         }
 
-        $this->field = $this->get_field($filteroption, $columnoption);
+        $this->field = $this->define_field($filteroption, $columnoption);
+        $this->fieldalias = $type . '_' . $value;
+
         $this->joins = $this->get_joins($filteroption, $columnoption);
         if ($this->joins === false) {
             return false;
@@ -89,9 +101,39 @@ class rb_filter_type {
         if (isset($this->options['selectfunc'])) {
             $this->options['selectchoices'] = $this->get_select_choices($this->options['selectfunc']);
         }
+    }
+
+    /**
+     * Restore state of filters
+     *
+     * @param reportbuilder $report Report builder instance
+     */
+    public function set_report(reportbuilder $report) {
+        $this->report = $report;
+    }
+
+    /**
+     * This method allows to get 'field' property
+     * It's made for backward compatibility
+     * Direct access to field ($this->field) is @deprecated since version 2.2.12
+     * User $this->get_field() instead
+     */
+    public function __get($name) {
+        if ($name == 'field') {
+            return $this->get_field();
+        }
 
     }
 
+    /**
+     * Return SQL snippet for field name depending of report cache settings
+     */
+    public function get_field() {
+        if ($this->report->is_cached()) {
+            return $this->fieldalias;
+        }
+        return $this->field;
+    }
     /**
      * Given a type and value, return the matching filteroption from the report source
      *
@@ -151,7 +193,7 @@ class rb_filter_type {
      *                             null if not required
      * @return string The SQL snippet to use in WHERE or HAVING clause
      */
-    private function get_field($filteroption, $columnoption) {
+    private function define_field($filteroption, $columnoption) {
         // determine whether to get field data from a column or the filter itself
         $option = empty($filteroption->field) ? $columnoption : $filteroption;
 
@@ -253,7 +295,6 @@ class rb_filter_type {
         if (!$filtertype = self::get_filter_type($type, $value, $report)) {
             return false;
         }
-
         $filename = "{$CFG->dirroot}/totara/reportbuilder/filters/{$filtertype}.php";
         if (!is_readable($filename)) {
             return false;
@@ -292,6 +333,7 @@ class rb_filter_type {
 
     /**
      * Returns the condition to be used with SQL where
+     *
      * @param array $data filter settings
      * @return array containing the filtering condition SQL clause and params
      */

@@ -68,6 +68,16 @@ class rb_content_option {
     public $field;
 
     /**
+     * The alias for database field used in cache and query
+     *
+     * It must not contain separators (like .) and be unique for different fields or
+     * same fields in different tables
+     *
+     * @var string
+     */
+    public $fieldalias;
+
+    /**
      * The names of any {@link rb_join::$name} required to get access
      * to the {@link rb_content_option::$field}. This can be a string
      * or an array of strings if multiple joins are required.
@@ -95,7 +105,7 @@ class rb_content_option {
         $this->title = $title;
         $this->field = $field;
         $this->joins = $joins;
-
+        $this->fieldalias = get_class($this).'_'.str_replace('.', '_', $field);
     }
 
 } // end of rb_content_option class

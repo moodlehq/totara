@@ -23,6 +23,7 @@
  */
 
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/config.php');
+require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
 /// Check access
 require_sesskey();
@@ -61,6 +62,7 @@ switch ($action) {
         }
         $todb->sortorder = $sortorder;
         $id = $DB->insert_record('report_builder_columns', $todb);
+        reportbuilder_set_status($reportid);
 
         echo $id;
         break;
@@ -69,6 +71,7 @@ switch ($action) {
 
         if ($column = $DB->get_record('report_builder_columns', array('id' => $colid))) {
             $DB->delete_records('report_builder_columns', array('id' => $colid));
+            reportbuilder_set_status($reportid);
             echo json_encode((array) $column);
         } else {
             echo false;
@@ -81,6 +84,7 @@ switch ($action) {
         $todb->id = $colid;
         $todb->hidden = 1;
         $DB->update_record('report_builder_columns', $todb);
+        reportbuilder_set_status($reportid);
 
         echo $colid;
         break;
@@ -91,6 +95,7 @@ switch ($action) {
         $todb->id = $colid;
         $todb->hidden = 0;
         $DB->update_record('report_builder_columns', $todb);
+        reportbuilder_set_status($reportid);
 
         echo $colid;
         break;
@@ -121,6 +126,7 @@ switch ($action) {
         $todb->id = $sibling->id;
         $todb->sortorder = $col->sortorder;
         $DB->update_record('report_builder_columns', $todb);
+        reportbuilder_set_status($reportid);
 
         $transaction->allow_commit();
 

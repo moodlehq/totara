@@ -114,7 +114,7 @@ class rb_filter_number extends rb_filter_type {
     function get_sql_filter($data) {
         $operator = $data['operator'];
         $value    = (float) $data['value'];
-        $query    = $this->field;
+        $query    = $this->get_field();
 
         if ($value === '') {
             return array('', array());

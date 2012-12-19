@@ -114,9 +114,7 @@ $mform->display();
 echo $output->footer();
 
 function add_scheduled_report($fromform) {
-    global $DB, $USER, $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS;
-
-    $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
+    global $DB, $USER;
 
     if (isset($fromform->reportid) && isset($fromform->format) && isset($fromform->frequency)) {
         $transaction = $DB->start_delegated_transaction();
@@ -129,17 +127,7 @@ function add_scheduled_report($fromform) {
         $todb->userid = $USER->id;
         $todb->format = $fromform->format;
         $todb->frequency = $fromform->frequency;
-        switch($REPORT_BUILDER_SCHEDULE_CODES[$fromform->frequency]) {
-            case 'daily':
-                $todb->schedule = $fromform->daily;
-                break;
-            case 'weekly':
-                $todb->schedule = $fromform->weekly;
-                break;
-            case 'monthly':
-                $todb->schedule = $fromform->monthly;
-                break;
-        }
+        $todb->schedule = $fromform->schedule;
         if (!$id) {
             $newid = $DB->insert_record('report_builder_schedule', $todb);
         } else {

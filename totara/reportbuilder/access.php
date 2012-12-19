@@ -48,7 +48,7 @@ if ($fromform = $mform->get_data()) {
     if (empty($fromform->submitbutton)) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_reportbuilder'), $returnurl);
     }
-
+    reportbuilder_set_status($id);
     update_access($id, $fromform);
     add_to_log(SITEID, 'reportbuilder', 'update report', 'access.php?id='. $id,
         'Access Settings: Report ID=' . $id);
@@ -63,6 +63,10 @@ echo $output->view_report_link($report->report_url());
 echo $output->container_end();
 
 echo $output->heading(get_string('editreport', 'totara_reportbuilder', format_string($report->fullname)));
+
+if (reportbuilder_get_status($id)) {
+    echo $output->cache_pending_notification($id);
+}
 
 $currenttab = 'access';
 include_once('tabs.php');

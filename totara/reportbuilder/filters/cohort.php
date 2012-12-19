@@ -104,9 +104,9 @@ class rb_filter_cohort extends rb_filter_type {
      */
     function get_sql_filter($data) {
         global $DB;
-        $items    = $data['value'];
-        $items    = explode(',', $items);
-        $query    = $this->field;
+
+        $items    = explode(',', $data['value']);
+        $query    = $this->get_field();
 
         // don't filter if none selected
         if (empty($items)) {

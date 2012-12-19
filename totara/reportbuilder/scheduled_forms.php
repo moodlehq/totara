@@ -38,9 +38,8 @@ require_once($CFG->dirroot . '/calendar/lib.php');
  */
 class scheduled_reports_new_form extends moodleform {
     function definition() {
-        global $REPORT_BUILDER_EXPORT_OPTIONS, $REPORT_BUILDER_SCHEDULE_OPTIONS, $USER, $DB;
+        global $REPORT_BUILDER_EXPORT_OPTIONS, $USER, $DB;
         $CALENDARDAYS = calendar_get_days();
-        $REPORT_BUILDER_SCHEDULE_CODES = array_flip($REPORT_BUILDER_SCHEDULE_OPTIONS);
 
         $mform =& $this->_form;
         $id = $this->_customdata['id'];
@@ -78,62 +77,13 @@ class scheduled_reports_new_form extends moodleform {
             $reportselect[$report->id] = $report->fullname;
         }
 
-        //Schedule type options
-        $frequencyselect = array();
-        foreach ($REPORT_BUILDER_SCHEDULE_OPTIONS as $option => $code) {
-            $frequencyselect[$code] = get_string('schedule' . $option, 'totara_reportbuilder');
-        }
-
-        //Daily selector
-        $dailyselect = array();
-        for($i = 0; $i < 24; $i++) {
-            $dailyselect[$i] = date('H:i', mktime($i, 0, 0));
-        }
-
-        //Weekly selector
-        $weeklyselect = array();
-        for($i = 0; $i < 7; $i++) {
-            $weeklyselect[$i] = get_string($CALENDARDAYS[$i], 'calendar');
-        }
-
-        $monthlyselect = array();
-        $dateformat = ($USER->lang == 'en_utf8') ? 'jS' : 'j';
-        for($i = 1; $i <= 31; $i++) {
-            $monthlyselect[$i] = date($dateformat, mktime(0, 0, 0, 0, $i));
-        }
-
-
         $mform->addElement('header', 'general', get_string('scheduledreportsettings', 'totara_reportbuilder'));
 
         $mform->addElement('static', 'report', get_string('report', 'totara_reportbuilder'), $reportname);
         $mform->addElement('select', 'savedsearchid', 'Data', $savedsearchselect);
         $mform->addElement('select', 'format', get_string('export', 'totara_reportbuilder'), $exportformatselect);
-
-        $schedulegroup = array();
-        $schedulegroup[] =& $mform->createElement('select', 'frequency', get_string('schedule', 'totara_reportbuilder'), $frequencyselect);
-        $schedulegroup[] =& $mform->createElement('select', 'daily', null, $dailyselect);
-        $schedulegroup[] =& $mform->createElement('select', 'weekly', null, $weeklyselect);
-        $schedulegroup[] =& $mform->createElement('select', 'monthly', null, $monthlyselect);
-
-        $mform->addGroup($schedulegroup, 'schedulegroup', get_string('schedule', 'totara_reportbuilder'), '', false);
-        $mform->disabledIf('daily', 'frequency', 'neq', $REPORT_BUILDER_SCHEDULE_OPTIONS['daily']);
-        $mform->disabledIf('weekly', 'frequency', 'neq', $REPORT_BUILDER_SCHEDULE_OPTIONS['weekly']);
-        $mform->disabledIf('monthly', 'frequency', 'neq', $REPORT_BUILDER_SCHEDULE_OPTIONS['monthly']);
-
-        if ($frequency) {
-            switch($REPORT_BUILDER_SCHEDULE_CODES[$frequency]) {
-            case 'daily':
-                $mform->setDefault('daily', $schedule);
-                break;
-            case 'weekly':
-                $mform->setDefault('weekly', $schedule);
-                break;
-            case'monthly':
-                $mform->setDefault('monthly', $schedule);
-                break;
-            }
-        }
-
+        $mform->addElement('scheduler', 'schedulegroup', get_string('schedule', 'totara_reportbuilder'),
+                           array('frequency' => $frequency, 'schedule' => $schedule));
         $this->add_action_buttons();
     }
 }

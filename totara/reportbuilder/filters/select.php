@@ -149,7 +149,7 @@ class rb_filter_select extends rb_filter_type {
         global $DB;
 
         $value = explode(',', $data['value']);
-        $query    = $this->field;
+        $query = $this->get_field();
         $simplemode = $this->options['simplemode'];
 
         if ($simplemode) {

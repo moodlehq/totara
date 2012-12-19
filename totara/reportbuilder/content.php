@@ -49,8 +49,8 @@ if ($fromform = $mform->get_data()) {
         totara_set_notification(get_string('error:unknownbuttonclicked', 'totara_reportbuilder'), $returnurl);
         exit;
     }
-
     update_content($id, $report, $fromform);
+    reportbuilder_set_status($id);
     add_to_log(SITEID, 'reportbuilder', 'update report', 'content.php?id='. $id,
         'Content Settings: Report ID=' . $id);
     totara_set_notification(get_string('reportupdated', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
@@ -65,6 +65,10 @@ echo $output->view_report_link($report->report_url());
 echo $output->container_end();
 
 echo $output->heading(get_string('editreport', 'totara_reportbuilder', format_string($report->fullname)));
+
+if (reportbuilder_get_status($id)) {
+    echo $output->cache_pending_notification($id);
+}
 
 $currenttab = 'content';
 include_once('tabs.php');

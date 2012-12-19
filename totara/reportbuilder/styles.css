@@ -14,3 +14,19 @@ div.multicheck-items fieldset.felement span {
 .dir-rtl .rb-showhide.boxalignright {
     text-align: left;
 }
+
+.rb-genbutton {
+    float: right;
+}
+
+.rb-genicon {
+    cursor: hand; cursor: pointer;
+}
+
+.rb-hidden {
+    display: none;
+}
+
+.rb-inline {
+    display: inline-block;
+}

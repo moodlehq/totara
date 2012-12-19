@@ -83,6 +83,7 @@ EOD;
         $this->categorycount = 0;
         $this->coursecount = 0;
         $this->scalecount = 0;
+        $this->cohortcount = 0;
 
         foreach($this->generators as $generator) {
             $generator->reset();

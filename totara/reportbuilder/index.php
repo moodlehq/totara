@@ -35,6 +35,7 @@ $id = optional_param('id', null, PARAM_INT); // id for delete report
 $d = optional_param('d', false, PARAM_BOOL); // delete record?
 $em = optional_param('em', false, PARAM_BOOL); // embedded report?
 $confirm = optional_param('confirm', false, PARAM_BOOL); // confirm delete
+$initcache = optional_param('initcache', false, PARAM_BOOL); // force cache to update with next cron run
 
 admin_externalpage_setup('rbmanagereports');
 
@@ -71,6 +72,18 @@ if ($d && $confirm) {
     }
     echo $output->footer();
     exit;
+} else if ($initcache) {
+    $cache = reportbuilder_get_cached($id);
+    if ($cache) {
+        $schedule = new scheduler($cache, array('nextevent' => 'nextreport'));
+        if (!$schedule->is_time()) {
+            $schedule->do_asap();
+            $DB->update_record('report_builder_cache', $cache);
+        }
+        totara_set_notification(get_string('reportcacheinitialize', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
+    } else {
+        totara_set_notification(get_string('error:reportcacheinitialize', 'totara_reportbuilder'), $returnurl);
+    }
 }
 
 // form definition
@@ -176,9 +189,17 @@ if ($fromform = $mform->get_data()) {
 
 echo $output->header();
 
+// Cache info
+$cache = reportbuilder_get_all_cached();
 //  User-generated (non-embedded) reports
 echo $output->heading(get_string('usergeneratedreports', 'totara_reportbuilder'));
 $reports = $DB->get_records('report_builder', array('embedded' => 0), 'fullname');
+foreach ($reports as $report) {
+    if (isset($cache[$report->id])) {
+        $report->cache = true;
+        $report->nextreport = $cache[$report->id]->nextreport;
+    }
+}
 echo $output->user_generated_reports_table($reports);
 
 // Embedded reports
@@ -188,6 +209,10 @@ $embedded_ids = $DB->get_records_menu('report_builder', array('embedded' => 1), 
 foreach ($embeds as $embed) {
     // ensure db record exists and add id to object
     $embed->id = reportbuilder_get_embedded_id_from_shortname($embed->shortname, $embedded_ids);
+    if (isset($cache[$embed->id])) {
+        $embed->cache = true;
+        $embed->nextreport = $cache[$embed->id]->nextreport;
+    }
 }
 echo $output->embedded_reports_table($embeds);
 
@@ -225,6 +250,8 @@ function delete_report($id) {
     $DB->delete_records('report_builder_settings', array('reportid' => $id));
     // delete any saved searches
     $DB->delete_records('report_builder_saved', array('reportid' => $id));
+
+    reportbuilder_purge_cache($id, true);
 
     // all okay commit changes
     $transaction->allow_commit();

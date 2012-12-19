@@ -140,7 +140,7 @@ class rb_filter_hierarchy_multi extends rb_filter_type {
         global $DB;
 
         $items    = explode(',', $data['value']);
-        $query    = $this->field;
+        $query    = $this->get_field();
 
         // don't filter if none selected
         if (empty($items)) {

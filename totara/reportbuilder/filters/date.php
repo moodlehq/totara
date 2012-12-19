@@ -146,7 +146,7 @@ class rb_filter_date extends rb_filter_type {
     function get_sql_filter($data) {
         $after  = $data['after'];
         $before = $data['before'];
-        $query  = $this->field;
+        $query  = $this->get_field();
 
         if (empty($after) and empty($before)) {
             return array('', array());

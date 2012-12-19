@@ -126,9 +126,9 @@ class rb_source_cohort_associations extends rb_base_source {
             array(
                 'displayfunc'=>'associationnameiconlink',
                 'extrafields'=>array(
-                    'id'=>'base.instanceid',
-                    'icon'=>'base.icon',
-                    'type'=>'base.instancetype'
+                    'insid'=> 'base.instanceid',
+                    'icon' => 'base.icon',
+                    'type' => 'base.instancetype'
                 )
             )
         );

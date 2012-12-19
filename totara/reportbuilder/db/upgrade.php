@@ -152,7 +152,45 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012112300, 'totara_reportbuilder');
     }
 
-    if ($oldversion < 2013022200) {
+    if ($oldversion < 2013021100) {
+        $table = new xmldb_table('report_builder');
+        $field1 = new xmldb_field('cache', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, 'hidden');
+        if (!$dbman->field_exists($table, $field1)) {
+            $dbman->add_field($table, $field1);
+        }
+
+        $settingstable = new xmldb_table('report_builder_settings');
+        $fieldcache = new xmldb_field('cachedvalue', XMLDB_TYPE_CHAR, '255', null, null, null, 0, 'value');
+        if (!$dbman->field_exists($settingstable, $fieldcache)) {
+            $dbman->add_field($settingstable, $fieldcache);
+        }
+
+        $tablecache = new xmldb_table('report_builder_cache');
+
+        $tablecache->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $tablecache->add_field('reportid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $tablecache->add_field('cachetable', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $tablecache->add_field('frequency', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $tablecache->add_field('schedule', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $tablecache->add_field('lastreport', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $tablecache->add_field('nextreport', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $tablecache->add_field('config', XMLDB_TYPE_TEXT, '', null, null, null, null);
+        $tablecache->add_field('changed', XMLDB_TYPE_INTEGER, '1', null, null, null, null);
+        $tablecache->add_field('genstart', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        $tablecache->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $tablecache->add_key('reportid', XMLDB_KEY_FOREIGN, array('reportid'), 'report_builder', array('id'));
+
+        $tablecache->add_index('nextreport', XMLDB_INDEX_NOTUNIQUE, array('nextreport'));
+
+        if (!$dbman->table_exists('report_builder_cache')) {
+            $dbman->create_table($tablecache);
+        }
+
+        totara_upgrade_mod_savepoint(true, 2013021100, 'totara_reportbuilder');
+    }
+
+    if ($oldversion < 2013032700) {
         //add new column to check for pre-filtering
         $table = new xmldb_table('report_builder');
         $field = new xmldb_field('initialdisplay');
@@ -161,7 +199,7 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        totara_upgrade_mod_savepoint(true, 2013022200, 'totara_reportbuilder');
+        totara_upgrade_mod_savepoint(true, 2013032700, 'totara_reportbuilder');
     }
 
     return true;

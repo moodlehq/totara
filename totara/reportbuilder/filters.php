@@ -39,7 +39,7 @@ $output = $PAGE->get_renderer('totara_reportbuilder');
 
 $returnurl = new moodle_url('/totara/reportbuilder/filters.php', array('id' => $id));
 
-$report = new reportbuilder($id);
+$report = new reportbuilder($id, null, false, null, null, true);
 
 // include jquery
 local_js();
@@ -111,8 +111,8 @@ if ($fromform = $mform->get_data()) {
     if (empty($fromform->submitbutton)) {
         print_error('error:unknownbuttonclicked', 'totara_reportbuilder', $returnurl);
     }
-
     if (build_filters($id, $fromform)) {
+        reportbuilder_set_status($id);
         add_to_log(SITEID, 'reportbuilder', 'update report', 'filters.php?id='. $id,
             'Filter Settings: Report ID=' . $id);
         totara_set_notification(get_string('filters_updated', 'totara_reportbuilder'), $returnurl, array('class' => 'notifysuccess'));
@@ -130,6 +130,10 @@ echo $output->view_report_link($report->report_url());
 echo $output->container_end();
 
 echo $output->heading(get_string('editreport', 'totara_reportbuilder', format_string($report->fullname)));
+
+if (reportbuilder_get_status($id)) {
+    echo $output->cache_pending_notification($id);
+}
 
 $currenttab = 'filters';
 include_once('tabs.php');

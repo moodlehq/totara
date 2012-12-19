@@ -110,6 +110,7 @@ class rb_filter_text extends rb_filter_type {
 
     /**
      * Returns the condition to be used with SQL where
+     *
      * @param array $data filter settings
      * @return array containing filtering condition SQL clause and params
      */
@@ -119,7 +120,7 @@ class rb_filter_text extends rb_filter_type {
 
         $operator = $data['operator'];
         $value    = $data['value'];
-        $query    = $this->field;
+        $query    = $this->get_field();
 
         if ($operator != 5 and $value === '') {
             return array('', array());

@@ -98,11 +98,11 @@ function reportbuilder_cron($grp=null) {
 
     }
 
+    process_reports_cache();
     process_scheduled_reports();
 
     return true;
 }
-
 
 /**
  * Get an array of all the sources used by reports on this site
@@ -115,6 +115,53 @@ function rb_get_active_sources() {
     return $DB->get_fieldset_sql($sql, null);
 }
 
+/**
+ * Generate cached reports
+ *
+ */
+function process_reports_cache() {
+    global $CFG, $DB;
+
+    if (isset($CFG->enablereportcaching) && $CFG->enablereportcaching == 0) {
+        reportbuilder_purge_all_cache(true);
+    }
+    $caches = reportbuilder_get_all_cached();
+    foreach ($caches as $cache) {
+        // for disabled cache just ensure to remove cache table
+        if (!$cache->cache) {
+            if ($cache->reportid) {
+                mtrace('Disable caching for report: ' . $cache->fullname);
+                reportbuilder_purge_cache($cache, true);
+            }
+            continue;
+        }
+
+        $schedule = new scheduler($cache, array('nextevent' => 'nextreport'));
+        if ($schedule->is_time()) {
+            $schedule->next();
+
+            mtrace("Caching report '$cache->fullname'...");
+            $track_start = microtime(true);
+
+            $result = reportbuilder_generate_cache($cache->reportid);
+
+            if ($result) {
+                $t = sprintf ("%.2f", (microtime(true) - $track_start));
+                mtrace("report '$cache->fullname' done in $t seconds");
+            } else {
+                mtrace("report '$cache->fullname' failed");
+            }
+        }
+
+        if ($schedule->is_changed()) {
+            if (!$cache->id) {
+                $DB->insert_record('report_builder_cache', $schedule->to_object());
+            } else {
+                $DB->update_record('report_builder_cache', $schedule->to_object());
+            }
+        }
+    }
+}
 
 /**
  * Process Scheduled reports
@@ -122,7 +169,6 @@ function rb_get_active_sources() {
  */
 function process_scheduled_reports() {
     global $CFG, $DB;
-    $CALENDARDAYS = calendar_get_days();
 
     require_once($CFG->dirroot . '/calendar/lib.php');
 
@@ -137,68 +183,12 @@ function process_scheduled_reports() {
 
     foreach ($scheduledreports as $report) {
         $reportname = $report->fullname;
-        $currenthour = date('G');
-        $currentminute = date('i');
 
         // set the next report time if its not yet set
-        if (!isset($report->nextreport)) {
-            $todb = new stdClass();
-            $todb->id = $report->id;
+        $schedule = new scheduler($report, array('nextevent' => 'nextreport'));
 
-            switch ($report->frequency) {
-                case REPORT_BUILDER_SCHEDULE_DAILY:
-                    $offset = ($currenthour <= $report->schedule) ? 0 : 86400; // If the scheduled hour has passed then set the offset to 86400 (1 day)
-                    $nextreport = mktime(0, 0, 0) + $offset + ($report->schedule*60*60); //calculate next report time (startofcurrentday + offset + hourofschedule)
-                    break;
-
-                case REPORT_BUILDER_SCHEDULE_WEEKLY:
-                    if (strftime('%A', $report->nextreport) == $CALENDARDAYS[$report->schedule]) {
-                        $nextreport = mktime(0, 0, 0); //If the today is the day then set the next reportdate to today
-                    }
-                    else {
-                        $nextreport = strtotime('next '. $CALENDARDAYS[$report->schedule] , time());
-                    }
-                    break;
-
-                case REPORT_BUILDER_SCHEDULE_MONTHLY:
-                    if (date('j', time()) == $report->schedule) {
-                        $nextreport = mktime(0, 0, 0); // If the schedule is due to run today then nextreport is the start of today
-                    } else {
-                        $nextreport = get_next_monthly(time(), $report->schedule);
-                    }
-
-                    break;
-            }
-
-            $todb->nextreport = $nextreport;
-
-            if (!$DB->update_record('report_builder_schedule', $todb)) {
-                mtrace('Failed to update next report field for scheduled report id:' . $report->id);
-            }
-        } else {
-            $nextreport = $report->nextreport;
-        }
-
-        // run the report if nextreport time is in the past
-        if ($nextreport <= time()) {
-            // calculate the new nextreport time
-            switch ($report->frequency) {
-                case REPORT_BUILDER_SCHEDULE_DAILY:
-                    $nexttime = mktime(0, 0, 0) + 86400 + ($report->schedule*60*60); // calcuate the next report time if the report is to be sent
-                    break;
-
-                case REPORT_BUILDER_SCHEDULE_WEEKLY:
-                    $nexttime = strtotime('next '. $CALENDARDAYS[$report->schedule] , time());
-                    break;
-
-                case REPORT_BUILDER_SCHEDULE_MONTHLY:
-                    $nexttime = get_next_monthly(time(), $report->schedule);
-                    break;
-
-                default:
-                    add_to_log(SITEID, 'reportbuilder', 'failedcron', null, "Invalid frequency in Cron - $reportname (ID $report->id)");
-                    break;
-            }
+        if ($schedule->is_time()) {
+            $schedule->next();
 
             //Send email
             if (send_scheduled_report($report)) {
@@ -209,13 +199,11 @@ function process_scheduled_reports() {
 
             add_to_log(SITEID, 'reportbuilder', 'dailyreport', null, "$reportname (ID $report->id)");
 
-            $todb = new stdClass();
-            $todb->id = $report->id;
-            $todb->nextreport = $nexttime;
-
-            if (!$DB->update_record('report_builder_schedule', $todb)) {
+            if (!$DB->update_record('report_builder_schedule', $report)) {
                 mtrace('Failed to update next report field for scheduled report id:' . $report->id);
             }
+        } else if ($schedule->is_changed()) {
+            $DB->update_record('report_builder_schedule', $schedule->to_object());
         }
     }
 }

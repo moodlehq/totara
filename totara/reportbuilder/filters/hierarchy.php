@@ -171,7 +171,7 @@ class rb_filter_hierarchy extends rb_filter_type {
         $recursive = (isset($data['recursive'])
             && $data['recursive']) ? '/%' : '';
         $value    = $data['value'];
-        $query    = $this->field;
+        $query    = $this->get_field();
         $type = $this->options['hierarchytype'];
 
         switch($operator) {
