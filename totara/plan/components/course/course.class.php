@@ -591,6 +591,8 @@ class dp_course_component extends dp_base_component {
         $table->attributes = array('class' => 'planiteminfobox');
         $out .= html_writer::table($table);
 
+        $item->summary = file_rewrite_pluginfile_urls($item->summary, 'pluginfile.php',
+            context_course::instance($item->id)->id, 'course', 'summary', NULL);
         $out .= html_writer::tag('p', format_text($item->summary, FORMAT_HTML));
 
         return $out;
