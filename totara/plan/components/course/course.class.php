@@ -571,7 +571,7 @@ class dp_course_component extends dp_base_component {
         }
 
         $icon = $OUTPUT->pix_icon('/courseicons/' . $item->icon, format_string($item->fullname), 'totara_core');
-        $OUTPUT->heading($icon . format_string($item->fullname), 3);
+        $out .= $OUTPUT->heading($icon . format_string($item->fullname), 3);
         $cell = array();
 
         if ($priorityenabled && !empty($item->priority)) {
@@ -589,8 +589,11 @@ class dp_course_component extends dp_base_component {
         $table = new html_table();
         $table->data = array($row);
         $table->attributes = array('class' => 'planiteminfobox');
+        $out .= html_writer::table($table);
 
-        return html_writer::table($table) . html_writer::tag('p', format_string($item->summary));
+        $out .= html_writer::tag('p', format_text($item->summary, FORMAT_HTML));
+
+        return $out;
     }
 
 
