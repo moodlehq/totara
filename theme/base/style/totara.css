@@ -617,3 +617,8 @@ ul.comment-list li .comment-delete {
     padding:.5em;
 }
 /* End of fix for T-9945 */
+
+
+#page-admin-tool-totara_sync-admin-sourcesettings .db_connect_message {
+    display: inline;
+}

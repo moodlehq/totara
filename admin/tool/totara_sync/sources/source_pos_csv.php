@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage totara_sync
  */
@@ -37,6 +38,12 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
         global $CFG;
 
         $filepath = $this->get_filepath();
+
+        $this->config->import_idnumber = "1";
+        $this->config->import_fullname = "1";
+        $this->config->import_frameworkidnumber = "1";
+        $this->config->import_timemodified = "1";
+
         if (empty($filepath) && get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
             $mform->addElement('html', html_writer::tag('p', get_string('nofilesdir', 'tool_totara_sync')));
             return false;
@@ -44,15 +51,20 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
 
         // Display file example
         $fieldmappings = array();
-        foreach ($this->fields as $f) {
-            if (!empty($this->config->{'fieldmapping_'.$f})) {
-                $fieldmappings[] = '"'.$this->config->{'fieldmapping_'.$f}.'"';
-            } else {
-                $fieldmappings[] = '"'.$f.'"';
+        foreach ($this->fields as $field) {
+            if (!empty($this->config->{'fieldmapping_'.$field})) {
+                $fieldmappings[$field] = $this->config->{'fieldmapping_'.$field};
             }
         }
-        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', get_string('csvimportfilestructinfo', 'tool_totara_sync', implode(',', $fieldmappings)), array('class' => "informationbox"))));
 
+        $filestruct = array();
+        foreach ($this->fields as $field) {
+            if (!empty($this->config->{'import_'.$field})) {
+                $filestruct[] = !empty($fieldmappings[$field]) ? '"'.$fieldmappings[$field].'"' : '"'.$field.'"';
+            }
+        }
+
+        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', get_string('csvimportfilestructinfo', 'tool_totara_sync', implode(',', $filestruct)), array('class' => "informationbox"))));
 
         // Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
@@ -134,20 +146,21 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotopenx', $storefilepath);
         }
 
-        /// Map CSV fields with db fields
+        // Map CSV fields with db fields
         $fields = fgetcsv($file);
         $fieldmappings = array();
-        foreach ($this->fields as $f) {
-            if (empty($this->config->{'fieldmapping_'.$f})) {
-                $fieldmappings[$f] = $f;
-            } else {
-                $fieldmappings[$this->config->{'fieldmapping_'.$f}] = $f;
+        foreach ($this->fields as $field) {
+            if (empty($this->config->{'import_'.$field})) {
+                continue;
+            }
+            if (!empty($this->config->{'fieldmapping_'.$field})) {
+                $fieldmappings[$this->config->{'fieldmapping_'.$field}] = $field;
             }
         }
         // Ensure necessary fields are present
-        foreach ($fieldmappings as $f => $m) {
-            if (!in_array($f, $fields)) {
-                if ($m == 'typeidnumber') {
+        foreach ($fieldmappings as $field => $map) {
+            if (!in_array($field, $fields)) {
+                if ($map == 'typeidnumber') {
                     // typeidnumber field can be optional if no custom fields specified
                     $customfieldspresent = false;
                     foreach ($fields as $ff) {
@@ -161,28 +174,28 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
                         continue;
                     }
                 }
-                if ($f == $m) {
+                if ($field == $map) {
                     throw new totara_sync_exception($this->get_element_name(), 'mapfields',
-                        'csvnotvalidmissingfieldx', $f);
+                        'csvnotvalidmissingfieldx', $field);
                 } else {
                     throw new totara_sync_exception($this->get_element_name(), 'mapfields',
                         'csvnotvalidmissingfieldxmappingx',
-                        (object)array('field' => $f, 'mapping' => $m));
+                        (object)array('field' => $field, 'mapping' => $map));
                 }
             }
         }
         // Finally, perform CSV to db field mapping
-        foreach ($fields as $i => $f) {
-            if (!preg_match('/^customfield_/', $f)) {
-                if (in_array($f, array_keys($fieldmappings))) {
-                    $fields[$i] = $fieldmappings[$f];
+        foreach ($fields as $index => $field) {
+            if (!preg_match('/^customfield_/', $field)) {
+                if (in_array($field, array_keys($fieldmappings))) {
+                    $fields[$index] = $fieldmappings[$field];
                 }
             }
         }
         unset($fieldmappings);
 
 
-        /// Populate temp sync table from CSV
+        // Populate temp sync table from CSV
         $now = time();
         $datarows = array();    // holds csv row data
         $dbpersist = TOTARA_SYNC_DBROWS;  // # of rows to insert into db at a time
@@ -205,18 +218,19 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
                 $this->addlog(get_string('fieldcountmismatch', 'tool_totara_sync', $fieldcount), 'error', 'populatesynctablecsv');
                 continue;
             }
-            $row = array_combine($fields, $row);  // nice associative array ;)
+            $row = array_combine($fields, $row);  // nice associative array
 
-            // clean the data a bit
+            // Clean the data a bit
             $row = array_map('trim', $row);
             $row = array_map(create_function('$s', 'return clean_param($s, PARAM_TEXT);'), $row);
 
+            $row['parentidnumber'] = !empty($row['parentidnumber']) ? $row['parentidnumber'] : '';
             $row['parentidnumber'] = $row['parentidnumber'] == $row['idnumber'] ? '' : $row['parentidnumber'];
             $row['typeidnumber'] = !empty($row['typeidnumber']) ? $row['typeidnumber'] : '';
             if (empty($row['timemodified'])) {
                 $row['timemodified'] = $now;
             } else {
-                //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                // Try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
                 $parsed_date = totara_date_parse_from_format($csvdateformat, trim($row['timemodified']));
                 if ($parsed_date) {
                     $row['timemodified'] = $parsed_date;
@@ -228,14 +242,14 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             if (!empty($customfieldkeys)) {
                 $customfields = array();
                 foreach ($customfieldkeys as $key) {
-                    //get shortname and check if we need to do field type processing
+                    // Get shortname and check if we need to do field type processing
                     $value = trim($row[$key]);
                     if (!empty($value)) {
                         $shortname = str_replace('customfield_', '', $key);
                         $datatype = $DB->get_field('pos_type_info_field', 'datatype', array('shortname' => $shortname));
                         switch ($datatype) {
                             case 'datetime':
-                                //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                                // Try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
                                 $parsed_date = totara_date_parse_from_format($csvdateformat, $value);
                                 if ($parsed_date) {
                                     $value = $parsed_date;
@@ -256,7 +270,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             $rowcount++;
 
             if ($rowcount >= $dbpersist) {
-                // bulk insert
+                // Bulk insert
                 try {
                     totara_sync_bulk_insert($temptable, $datarows);
                 } catch (dml_exception $e) {
@@ -269,7 +283,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
 
                 gc_collect_cycles();
             }
-        }  // while
+        }
 
         // Insert remaining rows
         try {

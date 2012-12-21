@@ -73,6 +73,18 @@ abstract class totara_sync_source_org extends totara_sync_source {
 
 
     function config_form(&$mform) {
+        // Fields to import
+        $mform->addElement('header', 'importheader', get_string('importfields', 'tool_totara_sync'));
+
+        foreach ($this->fields as $f) {
+            if (in_array($f, array('idnumber', 'fullname', 'frameworkidnumber', 'timemodified'))) {
+                $mform->addElement('hidden', 'import_'.$f, '1');
+            } else {
+                $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
+            }
+        }
+
+        // Field mappings
         $mform->addElement('header', 'dbfieldmappings', get_string('fieldmappings', 'tool_totara_sync'));
 
         foreach ($this->fields as $f) {
@@ -82,6 +94,10 @@ abstract class totara_sync_source_org extends totara_sync_source {
     }
 
     function config_save($data) {
+        foreach ($this->fields as $f) {
+            $this->set_config('import_'.$f, !empty($data->{'import_'.$f}));
+        }
+
         foreach ($this->fields as $f) {
             $this->set_config("fieldmapping_{$f}", trim($data->{'fieldmapping_'.$f}));
         }

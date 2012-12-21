@@ -104,13 +104,19 @@ $string['uploadfilelink'] = 'Files can be uploaded <a href=\'{$a}\'>here</a>';
 
 // Hierarchy items
 $string['displayname:totara_sync_source_org_csv'] = 'CSV';
+$string['displayname:totara_sync_source_org_database'] = 'External Database';
 $string['displayname:totara_sync_source_pos_csv'] = 'CSV';
+$string['displayname:totara_sync_source_pos_database'] = 'External Database';
 $string['settings:totara_sync_source_org_csv'] = 'Organisation - CSV source settings';
+$string['settings:totara_sync_source_org_database'] = 'Organisation - external database source settings';
 $string['settings:totara_sync_source_pos_csv'] = 'Position - CSV source settings';
+$string['settings:totara_sync_source_pos_database'] = 'Position - external database source settings';
 
 // User
 $string['displayname:totara_sync_source_user_csv'] = 'CSV';
+$string['displayname:totara_sync_source_user_database'] = 'External Database';
 $string['settings:totara_sync_source_user_csv'] = 'User - CSV source settings';
+$string['settings:totara_sync_source_user_database'] = 'User - external database source settings';
 $string['importfields'] = 'Fields to import';
 $string['firstname'] = 'Firstname';
 $string['lastname'] = 'Lastname';
@@ -137,6 +143,29 @@ $string['password'] = 'Password';
 $string['customfields'] = 'Custom fields';
 $string['csvimportfilestructinfo'] = 'The current config requires a CSV file with the following structure:<br><pre>{$a}<br>...<br>...<br>...</pre>';
 
+// Organisation
+$string['shortname'] = 'Shortname';
+$string['parentidnumber'] = 'Parent';
+$string['typeidnumber'] = 'Type';
+
+// Database sources
+$string['dbtype'] = 'Database type';
+$string['dbname'] = 'Database name';
+$string['dbuser'] = 'Database user';
+$string['dbpass'] = 'Database password';
+$string['dbhost'] = 'Database hostname';
+$string['dbtable'] = 'Database table';
+
+$string['databaseconnectfail'] = 'Failed to connect to database';
+$string['cannotconnectdbsettings'] = 'Cannot connect to database, please check settings';
+$string['dbmissingcolumnx'] = 'Remote database table does not contain field "{$a}"';
+$string['dbtestconnection'] = 'Test database connection';
+$string['dbtestconnectsuccess'] = 'Successfully connected to database';
+$string['dbtestconnectfail'] = 'Failed to connect to database';
+
+$string['dbconnectiondetails'] = 'Please enter database connection details.';
+$string['selectfieldsdb'] = 'Please select some fields to sync by checking the boxes below.';
+$string['tablemustincludexdb'] = 'The table "{$a}" must contain the following fields:';
 
 ///
 /// Log messages
