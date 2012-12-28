@@ -317,6 +317,10 @@ class backup_controller extends backup implements loggable {
         backup_helper::log($message, $level, $a, $depth, $display, $this->logger);
     }
 
+    public function update_plan_setting($name, $value) {
+        $this->plan->set_setting($name, $value);
+    }
+
     /**
      * Save controller information
      *

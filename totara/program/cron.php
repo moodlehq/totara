@@ -369,6 +369,7 @@ function program_cron_copy_recurring_courses() {
         //Backup course
         $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
             backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc->update_plan_setting('userscompletion', 0);
         $bc->execute_plan();
 
         if ($backupfile = $bc->get_results()) {

@@ -122,6 +122,15 @@ abstract class base_plan implements checksumable, executable {
     }
 
     /**
+     * Set the value of a setting by name. Throws exception if multiple
+     * are found
+     */
+    public function set_setting($name, $value) {
+        $setting = $this->get_setting($name);
+        $setting->set_value($value);
+    }
+
+    /**
      * Wrapper over @get_setting() that returns if the requested setting exists or no
      */
     public function setting_exists($name) {
