@@ -1,7 +1,8 @@
 body.path-mod-facetoface table.f2fsession td.c0 {
     font-weight: bold;
+    width: 12%;
 }
-body.path-mod-facetoface table.f2fsession td.c1 {
+body.path-mod-facetoface table.f2fsession {
     width: 100%;
 }
 table.table90 {
