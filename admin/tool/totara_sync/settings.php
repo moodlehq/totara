@@ -74,7 +74,8 @@ if (has_capability('tool/totara_sync:manage', $systemcontext)) {
         }
         unset($elname);
     }
-
-
+    if (has_capability('tool/totara_sync:runsync', $systemcontext)) {
+        $ADMIN->add('tool_totara_sync', new admin_externalpage('totarasyncexecute', get_string('syncexecute', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/syncexecute.php", 'tool/totara_sync:runsync'));
+    }
     $ADMIN->add('tool_totara_sync', new admin_externalpage('totarasynclog', get_string('synclog', 'tool_totara_sync'), "$CFG->wwwroot/admin/tool/totara_sync/admin/synclog.php", 'tool/totara_sync:manage'));
 }

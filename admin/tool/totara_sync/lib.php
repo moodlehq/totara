@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2013 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,10 +37,45 @@ define('FILE_ACCESS_UPLOAD', 1);
 * @return void
 */
 function tool_totara_sync_cron() {
-    global $CFG;
+    global $CFG, $OUTPUT;
 
-    // Get enabled sync element objects
-    $elements = totara_sync_get_elements($onlyenabled=true);
+    //first run through the sanity checks
+    $configured = true;
+
+    $fileaccess = get_config('totara_sync', 'fileaccess');
+    if ($fileaccess == FILE_ACCESS_DIRECTORY && !$filesdir = get_config('totara_sync', 'filesdir')) {
+        $configured = false;
+        echo $OUTPUT->notification(get_string('nofilesdir', 'tool_totara_sync'), 'notifyproblem');
+    }
+    // Check enabled sync element objects
+    $elements = totara_sync_get_elements(true);
+    if (empty($elements)) {
+        $configured = false;
+        echo $OUTPUT->notification(get_string('noenabledelements', 'tool_totara_sync'), 'notifyproblem');
+    } else {
+        foreach ($elements as $element) {
+            $elname = $element->get_name();
+            //check a source is enabled
+            if (!$sourceclass = get_config('totara_sync', 'source_' . $elname)) {
+                $configured = false;
+                echo $OUTPUT->notification($elname . " " . get_string('sourcenotfound', 'tool_totara_sync'));
+            }
+            //check source has configs - note get_config returns an object
+            if ($sourceclass) {
+                $configs = get_config($sourceclass);
+                $props = get_object_vars($configs);
+                if(empty($props)) {
+                    $configured = false;
+                    echo $OUTPUT->notification($elname . " " . get_string('nosourceconfig', 'tool_totara_sync'), 'notifyproblem');
+                }
+            }
+        }
+    }
+
+    if (!$configured) {
+        echo $OUTPUT->notification(get_string('syncnotconfigured', 'tool_totara_sync'), 'notifyproblem');
+        return false;
+    }
 
     foreach ($elements as $element) {
         try {

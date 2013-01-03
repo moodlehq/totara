@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2013 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ $string['totarasync'] = 'Totara sync';
 $string['totarasync_help'] = 'Enabling Totara syncing will cause the element to be updated/deleted (synced) from an external source (if configured).
 See the Sync settings in the Administration menu.';
 $string['totara_sync:manage'] = 'Manage Totara sync';
+$string['totara_sync:runsync'] = 'Run Totara sync via the web interface';
 $string['totara_sync:setfileaccess'] = 'Set Totara sync file access';
 $string['totara_sync:manageuser'] = 'Manage Totara sync users';
 $string['totara_sync:manageorg'] = 'Manage Totara sync organisations';
@@ -95,6 +96,7 @@ $string['fieldmappings'] = 'Field mappings';
 $string['uploadsyncfiles'] = 'Upload sync files';
 $string['sourcedoesnotusefiles'] = 'Source does not use files';
 $string['nosourceconfig'] = 'No source configuration';
+$string['sourceconfigured'] = 'Source has configuration';
 $string['uploadfilelink'] = 'Files can be uploaded <a href=\'{$a}\'>here</a>';
 
 // Hierarchy items
@@ -134,6 +136,7 @@ $string['csvimportfilestructinfo'] = 'The current config requires a CSV file wit
 ///
 /// Log messages
 ///
+$string['syncnotconfigured'] = 'There are problems with your sync configuration. Please fix the issues before running sync.';
 $string['temptableprepfail'] = 'temp table preparation failed';
 $string['temptablecreatefail'] = 'error creating temp table';
 $string['nocsvfilepath'] = 'no CSV filepath specified';
@@ -194,11 +197,14 @@ $string['sourcefilexnotfound'] = 'Source file {$a} not found.';
 $string['sourceclassxnotfound'] = 'Source class {$a} not found. This must be fixed by a programmer.';
 $string['nosourceenabled'] = 'No source enabled for this element.';
 
-
+$string['syncexecute'] = 'Run Sync';
+$string['runsynccronstart'] = 'Running totara_sync cron...';
+$string['runsynccronend'] = 'Done!';
 ///
 /// Totara sync log reports
 ///
 $string['synclog'] = 'Sync log';
+$string['viewsynclog'] = 'View the results in the Sync Log <a href=\'{$a}\'>here</a>';
 $string['sourcetitle'] = 'Totara Sync Log';
 $string['datetime'] = 'Date/Time';
 $string['logtype'] = 'Log type';

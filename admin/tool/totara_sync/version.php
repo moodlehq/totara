@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2013 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
  * @subpackage totara_sync
  */
 
-$plugin->version   = 2012121200; // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2013020100; // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2011092100; // Requires this Moodle version
 $plugin->component = 'tool_totara_sync'; // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 28800;      // Period for cron to check this module (secs) - every 8 hours
