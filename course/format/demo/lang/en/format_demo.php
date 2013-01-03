@@ -22,5 +22,11 @@
  * @subpackage totara_course_format
  */
 
+$string['currentsection'] = 'This section';
+$string['demo'] = 'Demo';
+$string['sectionname'] = 'Demo';
 $string['pluginname'] = 'Demo format';
-$string['sectionname'] = 'section';
+$string['demooutline'] = 'Demo Outline';
+$string['demosection'] = 'Demo Section';
+$string['hidefromothers'] = 'Hide Demo Section';
+$string['showfromothers'] = 'Show Demo Section';
