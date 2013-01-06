@@ -728,6 +728,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         $field = new xmldb_field('usercalentry');
         $field->set_attributes(XMLDB_TYPE_INTEGER, 1, XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 1);
 
+        //just double check the field doesn't somehow exist
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -737,11 +738,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                 SET showoncalendar = ?
                 WHERE showoncalendar = ?';
         $DB->execute($sql, array(F2F_CAL_SITE, F2F_CAL_COURSE));
-
-        $f2f = $DB->get_records('facetoface');
-        foreach ($f2f as $facetoface) {
-            facetoface_update_instance($facetoface, false);
-        }
 
         upgrade_mod_savepoint(true, 2012140609, 'facetoface');
     }
