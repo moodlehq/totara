@@ -1618,7 +1618,11 @@ class reportbuilder {
             }
             // store in associative array so we can tell which
             // joins we've already added
-            $out[$name] = "$type JOIN $table $name\n        ON $conditions";
+            $sql = "$type JOIN $table $name";
+            if (!empty($conditions)) {
+                $sql .= "\n        ON $conditions";
+            }
+            $out[$name] = $sql;
         }
         return implode("\n    ", $out) . " \n";
     }
