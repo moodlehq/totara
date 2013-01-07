@@ -17,13 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Strings for component 'block_totara_recent_learning', language 'en', branch 'totara-2.2'
+ * Strings for component 'block_totara_recent_learning', language 'pt_br', branch 'totara-2.2'
  * @package totara
  * @subpackage block_totara_recent_learning
  */
+$string['norecentlearning'] = 'Você não está matriculado em nenhum curso';
+$string['recentlearning'] = 'aprendizagem recente';
 
-$string['pluginname'] = 'Recent Learning';
-$string['recentlearning'] = 'Recent Learning';
-$string['norecentlearning'] = 'You are not enrolled in any courses';
-$string['totara_recent_learning:addinstance'] = 'Add a new recent learning block';
-$string['totara_recent_learning:myaddinstance'] = 'Add a new recent learning block to the My Moodle page';
+?>
