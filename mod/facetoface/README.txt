@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------
 Face-to-face module for Moodle
 Copyright (C) 2007-2011 Catalyst IT (http://www.catalyst.net.nz)
-Copyright (C) 2011-2012 Totara LMS (http://www.totaralms.com)
+Copyright (C) 2011-2013 Totara LMS (http://www.totaralms.com)
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2012 Totara Learning Solutions LTD
+ * Copyright (C) 2012 - 2013 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
