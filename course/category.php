@@ -30,6 +30,9 @@
     }
     $perpage = optional_param('perpage', $defaultperpage, PARAM_INT); // how many per page
 
+    if ($CFG->forcelogin) {
+        require_login();
+    }
     $site = get_site();
 
     if (empty($id)) {
