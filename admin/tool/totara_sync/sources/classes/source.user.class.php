@@ -180,16 +180,16 @@ abstract class totara_sync_source_user extends totara_sync_source {
             $table->add_field('deleted', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
         }
         if (!empty($this->config->import_firstname)) {
-            $table->add_field('firstname', XMLDB_TYPE_CHAR, '255');
+            $table->add_field('firstname', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_lastname)) {
-            $table->add_field('lastname', XMLDB_TYPE_CHAR, '255');
+            $table->add_field('lastname', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_email)) {
-            $table->add_field('email', XMLDB_TYPE_CHAR, '255');
+            $table->add_field('email', XMLDB_TYPE_CHAR, '100');
         }
         if (!empty($this->config->import_city)) {
-            $table->add_field('city', XMLDB_TYPE_CHAR, '20');
+            $table->add_field('city', XMLDB_TYPE_CHAR, '120');
         }
         if (!empty($this->config->import_country)) {
             $table->add_field('country', XMLDB_TYPE_CHAR, '2');
