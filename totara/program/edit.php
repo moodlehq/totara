@@ -106,11 +106,14 @@ $editmessagesurl = "{$CFG->wwwroot}/totara/program/edit_messages.php?id={$progra
 //set up textareas
 $program->endnoteformat = FORMAT_HTML;
 $program->summaryformat = FORMAT_HTML;
-$program = file_prepare_standard_editor($program, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                          'totara_program', 'progsummary', $id);
 
-$program = file_prepare_standard_editor($program, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                          'totara_program', 'progendnote', $id);
+$editoroptions = $TEXTAREA_OPTIONS;
+$editoroptions['context'] = context_program::instance($program->id);
+$program = file_prepare_standard_editor($program, 'summary', $editoroptions, $editoroptions['context'],
+                                          'totara_program', 'summary', 0);
+
+$program = file_prepare_standard_editor($program, 'endnote', $editoroptions, $editoroptions['context'],
+                                          'totara_program', 'endnote', 0);
 $detailsform = new program_edit_form($currenturl, array('program' => $program, 'action' => $action, 'category' => $progcategory, 'editoroptions' => $TEXTAREA_OPTIONS, 'nojs' => $nojs), 'post', '', array('name'=>'form_prog_details'));
 
 if ($detailsform->is_cancelled()) {
@@ -147,10 +150,10 @@ if ($data = $detailsform->get_data()) {
             $nexturl = $viewurl;
         }
 
-        file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'program', 'prog', $data->id);
+        file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, context_program::instance($program->id), 'totara_program', 'summary', 0);
         $DB->set_field('prog', 'summary', $data->summary, array('id' => $data->id));
 
-        file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'program', 'prog', $data->id);
+        file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, context_program::instance($program->id), 'totara_program', 'endnote', 0);
         $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $data->id));
 
         totara_set_notification(get_string('programdetailssaved', 'totara_program'), $nexturl, array('class' => 'notifysuccess'));

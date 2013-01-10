@@ -91,10 +91,10 @@ $currenturl = qualified_me();
 $progindexurl = "{$CFG->wwwroot}/course/index.php?viewtype=program";
 
 $item = file_prepare_standard_editor($item, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                          'totara_program', 'progsummary', 0);
+                                          'totara_program', 'summary', 0);
 
 $item = file_prepare_standard_editor($item, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'],
-                                          'totara_program', 'progendnote', 0);
+                                          'totara_program', 'endnote', 0);
 $form = new program_edit_form($currenturl, array('action' => 'add', 'category' => $category, 'editoroptions' => $TEXTAREA_OPTIONS));
 
 if ($form->is_cancelled()) {
@@ -136,8 +136,8 @@ if ($data = $form->get_data()) {
         $program = new program($newid);
         $transaction->allow_commit();
 
-        $data = file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'progsummary', $newid);
-        $data = file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'progendnote', $newid);
+        $data = file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'summary', 0);
+        $data = file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'endnote', 0);
         $DB->set_field('prog', 'summary', $data->summary, array('id' => $newid));
         $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $newid));
 

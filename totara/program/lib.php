@@ -648,7 +648,8 @@ function prog_print_program($program, $highlightterms = '') {
     $data->icon = (empty($prog->icon)) ? 'default' : $prog->icon;
     $data->progid = $program->id;
     $data->fullname = $program->fullname;
-    $data->summary = $program->summary;
+    $data->summary = file_rewrite_pluginfile_urls($program->summary, 'pluginfile.php',
+        context_program::instance($program->id)->id, 'totara_program', 'summary', 0);
     $data->highlightterms = $highlightterms;
 
     $renderer = $PAGE->get_renderer('totara_program');
@@ -1450,4 +1451,19 @@ function prog_get_courses_associated_with_programs($courses = null) {
     $params = array_merge($params, $inparams);
 
     return $DB->get_records_sql($sql, $params);
+}
+
+function totara_program_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+    $component = 'totara_program';
+    $itemid = $args[0];
+    $filename = $args[1];
+    $fs = get_file_storage();
+
+    $file = $fs->get_file($context->id, $component, $filearea, $itemid, '/', $filename);
+
+    if (empty($file)) {
+        send_file_not_found();
+    }
+
+    send_stored_file($file, 60*60*24, 0, false); //enable long cache and disable forcedownload
 }

@@ -794,8 +794,9 @@
                     echo '<td align="right">';
 
                     if (!empty($aprogram->summary)) {
-                        echo $OUTPUT->action_icon(new moodle_url('/totara/program/info.php', array('id' => $aprogram->id)),
-                                                $OUTPUT->pix_icon('i/info', get_string('info')));
+                        $link = new moodle_url('/totara/program/info.php', array('id' => $aprogram->id));
+                        echo $OUTPUT->action_link($link, '<img alt="'.get_string('info').'" class="icon" src="'.$OUTPUT->pix_url('i/info') . '" />',
+                            new popup_action('click', $link, 'programinfo'), array('title'=>$strsummary));
                     }
                     echo "</td>";
                 }

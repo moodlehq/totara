@@ -933,7 +933,7 @@ class program {
      * @return string
      */
     public function display($userid=null) {
-        global $CFG, $DB, $USER, $OUTPUT;
+        global $CFG, $DB, $USER, $OUTPUT, $TEXTAREA_OPTIONS;
 
         $out = '';
 
@@ -1001,8 +1001,9 @@ class program {
                 $out .= html_writer::end_tag('div');
             }
         }
-
-        $out .= html_writer::tag('div', $this->summary, array('class' => 'summary'));
+        $summary = file_rewrite_pluginfile_urls($this->summary, 'pluginfile.php',
+            context_program::instance($this->id)->id, 'totara_program', 'summary', 0);
+        $out .= html_writer::tag('div', $summary, array('class' => 'summary'));
 
         $courseset_groups = $this->content->get_courseset_groups();
 

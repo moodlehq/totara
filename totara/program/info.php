@@ -49,7 +49,7 @@ if ($name) {
 $site = get_site();
 
 if ($CFG->forcelogin) {
-    require_login();
+   require_login();
 }
 
 $context = context_program::instance($program->id);
@@ -57,14 +57,22 @@ if ((!$program->visible) && !has_capability('totara/program:viewhiddenprograms',
     print_error('programhidden', '', $CFG->wwwroot .'/');
 }
 
+$PAGE->set_url(new moodle_url('/totara/program/info.php', array('id' => $program->id)));
+$PAGE->set_context(context_program::instance($program->id));
+$PAGE->set_pagelayout('popup');
 $PAGE->set_title(get_string("summaryof", "", $program->fullname));
+
 echo $OUTPUT->header();
 
 echo $OUTPUT->heading(format_string($program->fullname) . html_writer::empty_tag('br') . '(' . format_string($program->shortname) . ')');
 
 echo $OUTPUT->box_start('generalbox info');
 
-echo filter_text(text_to_html($program->summary),$program->id);
+$summary = file_rewrite_pluginfile_urls($program->summary, 'pluginfile.php',
+    context_program::instance($program->id)->id, 'totara_program', 'summary', 0);
+
+
+echo filter_text(text_to_html($summary),$program->id);
 
 echo $OUTPUT->box_end();
 
