@@ -1176,6 +1176,16 @@ abstract class rb_base_source {
             )
         );
 
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'lastlogin',
+            get_string('userlastlogin', 'totara_reportbuilder'),
+            'date',
+            array(
+                'includetime' => true
+            )
+        );
+
         return true;
     }
 
