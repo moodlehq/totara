@@ -203,9 +203,6 @@ class enrol_database_testcase extends advanced_testcase {
     public function test_sync_user_enrolments() {
         global $DB;
 
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
-
         $this->init_enrol_database();
 
         $this->resetAfterTest(false);

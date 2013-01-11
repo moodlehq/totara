@@ -1589,27 +1589,19 @@ abstract class enrol_plugin {
                   WHERE e.courseid = ?
                   AND ue.userid {$sqlin}";
         $uenotlast = $DB->get_records_sql($sql, array_merge(array($courseid), $sqlinparams));
-        foreach ($uenotlast as $e) {
-            unset($ue[$e->id]);
-        }
         if (!empty($uenotlast)) {
             // user still has some enrolments in the course, no big cleanup needed
             $eventdata = new stdClass;
-            $eventdata->ue = $uenotlast;
+            $eventdata->ue = $ue;
             $eventdata->courseid = $courseid;
             $eventdata->enrol = $name;
             $eventdata->lastenrol = false;
             events_trigger('user_unenrolled_bulk', $eventdata);
-        }
-        unset($uenotlast);
-
-        if (!empty($ue)) {
+        } else {
             // users' last enrolment intance in course - do big cleanup
 
             require_once("$CFG->dirroot/group/lib.php");
             require_once("$CFG->libdir/gradelib.php");
-
-            $userids = array_keys($ue);
 
             // remove all remaining roles
             role_unassign_all_bulk(array('userids' => $userids, 'contextid' => $context->id), true, false);
