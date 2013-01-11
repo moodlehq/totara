@@ -225,6 +225,7 @@ $string['nocontentrestriction'] = 'Show all records';
 $string['nodeletereport'] = 'Report could not be deleted';
 $string['noembeddedreports'] = 'There are no embedded reports. Embedded reports are reports that are hard-coded directly into a page. Typically they will be set up by your site developer.';
 $string['nofilteraskdeveloper'] = 'No filters found. Ask your developer to add filter options to the \'{$a}\' source.';
+$string['nofilteroptions'] = 'This filter has no options to select';
 $string['nofiltersetfortypewithvalue'] = 'get_field(): no filter set in filteroptions for type\'{$a->type}\' with value \'{$a->value}\'';
 $string['nofiltersyet'] = 'No search fields have been created yet - add them by selecting a search term in the pulldown below.';
 $string['nogroups'] = 'There are currently no activity groups';

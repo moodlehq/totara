@@ -74,6 +74,15 @@ class rb_filter_multicheck extends rb_filter_type {
         $options = $this->options['selectchoices'];
         $attr = $this->options['attributes'];
 
+        // don't display the filter if there are no options
+        if (count($options) == 0) {
+            $mform->addElement('static', $this->name, $label, get_string('nofilteroptions', 'totara_reportbuilder'));
+            if ($advanced) {
+                $mform->setAdvanced($this->name);
+            }
+            return;
+        }
+
         $mform->addElement('select', $this->name . '_op', $label, $this->get_operators());
         $mform->addHelpButton($this->name . '_op', 'filtercheckbox', 'filters');
 
