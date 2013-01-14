@@ -226,7 +226,12 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         $showviewlink = true;
 
         if ($onlinetextsubmission) {
-            $text = format_text($onlinetextsubmission->onlinetext, $onlinetextsubmission->onlineformat, array('context'=>$this->assignment->get_context()));
+            $text = $this->assignment->render_editor_content(ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
+                                                             $onlinetextsubmission->submission,
+                                                             $this->get_type(),
+                                                             'onlinetext',
+                                                             'assignsubmission_onlinetext');
+
             $shorttext = shorten_text($text, 140);
             $plagiarismlinks = '';
             if (!empty($CFG->enableplagiarism)) {
@@ -422,7 +427,9 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      * @return bool
      */
     public function is_empty(stdClass $submission) {
-        return $this->view($submission) == '';
+        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
+
+        return empty($onlinetextsubmission->onlinetext);
     }
 
     /**

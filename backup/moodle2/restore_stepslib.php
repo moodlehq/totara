@@ -190,6 +190,15 @@ class restore_gradebook_structure_step extends restore_structure_step {
                 $data->id = $newitemid = $existinggradeitem->id;
                 $DB->update_record('grade_items', $data);
             }
+        } else if ($data->itemtype == 'manual') {
+            // Manual items aren't assigned to a cm, so don't go duplicating them in the target if one exists.
+            $gi = array(
+                'itemtype' => $data->itemtype,
+                'courseid' => $data->courseid,
+                'itemname' => $data->itemname,
+                'categoryid' => $data->categoryid,
+            );
+            $newitemid = $DB->get_field('grade_items', 'id', $gi);
         }
 
         if (empty($newitemid)) {
@@ -288,8 +297,13 @@ class restore_gradebook_structure_step extends restore_structure_step {
 
         $data->courseid = $this->get_courseid();
 
-        $newitemid = $DB->insert_record('grade_settings', $data);
-        //$this->set_mapping('grade_setting', $oldid, $newitemid);
+        if (!$DB->record_exists('grade_settings', array('courseid' => $data->courseid, 'name' => $data->name))) {
+            $newitemid = $DB->insert_record('grade_settings', $data);
+        } else {
+            $newitemid = $data->id;
+        }
+
+        $this->set_mapping('grade_setting', $oldid, $newitemid);
     }
 
     /**
@@ -1259,11 +1273,11 @@ class restore_section_structure_step extends restore_structure_step {
         $sectionid = $this->get_task()->get_sectionid();
 
         // Get data object for current section availability (if any).
-        $data = $DB->get_record('course_sections_availability',
-                array('coursesectionid' => $sectionid), 'id, sourcecmid, gradeitemid', IGNORE_MISSING);
+        $records = $DB->get_records('course_sections_availability',
+                array('coursesectionid' => $sectionid), 'id, sourcecmid, gradeitemid');
 
         // If it exists, update mappings.
-        if ($data) {
+        foreach ($records as $data) {
             // Only update mappings for entries which are created by this restore.
             // Otherwise, when you restore to an existing course, it will mess up
             // existing section availability entries.
@@ -3071,9 +3085,6 @@ class restore_create_categories_and_questions extends restore_structure_step {
         if ($data->penalty >= 1) {
             $data->penalty = 1;
         }
-
-        $data->timecreated  = $this->apply_date_offset($data->timecreated);
-        $data->timemodified = $this->apply_date_offset($data->timemodified);
 
         $userid = $this->get_mappingid('user', $data->createdby);
         $data->createdby = $userid ? $userid : $this->task->get_userid();

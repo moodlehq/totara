@@ -322,6 +322,7 @@
         // otherwise the admin block does not appear to this user, and you get an error.
         if (has_capability('moodle/category:manage', $context)) {
             require_once($CFG->libdir . '/adminlib.php');
+            navigation_node::override_active_url(new moodle_url('/course/category.php', array('id' => $id)));
             admin_externalpage_setup('managecategories', $editbutton, $urlparams, $CFG->wwwroot . '/course/category.php');
             $PAGE->set_context($context);   // Ensure that we are actually showing blocks etc for the cat context
             $settingsnode = $PAGE->settingsnav->find_active_node();

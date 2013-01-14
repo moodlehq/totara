@@ -91,8 +91,8 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
                         .append(create('<h2>'+M.str.enrol.enrolusers+'</h2>')))
                     .append(create('<div class="'+CSS.CONTENT+'"></div>')
                         .append(create('<div class="'+CSS.SEARCHCONTROLS+'"></div>')
-                            .append(create('<div class="'+CSS.ENROLMENTOPTION+' '+CSS.ROLE+'">'+M.str.role.assignroles+'</div>')
-                                    .append(create('<select><option value="">'+M.str.enrol.none+'</option></select>'))
+                            .append(create('<div class="'+CSS.ENROLMENTOPTION+' '+CSS.ROLE+'"><label for="id_enrol_manual_assignable_roles">'+M.str.role.assignroles+'</label></div>')
+                                    .append(create('<select id="id_enrol_manual_assignable_roles"><option value="">'+M.str.enrol.none+'</option></select>'))
                             )
                             .append(create('<div class="'+CSS.SEARCHOPTIONS+'"></div>')
                                 .append(create('<div class="'+CSS.COLLAPSIBLEHEADING+'"><img alt="" />'+M.str.enrol.enrolmentoptions+'</div>'))
@@ -154,6 +154,11 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             }
 
             this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url(collapsedimage, 'moodle'));
+            this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).once('click', function() {
+                // We want to do this just once, the first time the controls are shown.
+                this.populateStartDates();
+                this.populateDuration();
+            }, this);
             this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).on('click', function(){
                 this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).toggleClass(CSS.ACTIVE);
                 this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEAREA).toggleClass(CSS.HIDDEN);
@@ -163,10 +168,7 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
                     this.get(UEP.BASE).one('.'+CSS.SEARCHOPTIONS+' .'+CSS.COLLAPSIBLEHEADING).one('img').setAttribute('src', M.util.image_url('t/expanded', 'moodle'));
                 }
             }, this);
-
             this.populateAssignableRoles();
-            this.populateStartDates();
-            this.populateDuration();
         },
         populateAssignableRoles : function() {
             this.on('assignablerolesloaded', function(){
@@ -183,6 +185,7 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
                     s.append(option);
                 }
                 s.set('selectedIndex', index);
+                Y.one('#id_enrol_manual_assignable_roles').focus();
             }, this);
             this.getAssignableRoles();
         },
@@ -205,9 +208,10 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             var select = this.get(UEP.BASE).one('.'+CSS.ENROLMENTOPTION+'.'+CSS.DURATION+' select');
             var defaultvalue = this.get(UEP.DEFAULTDURATION);
             var index = 0, count = 0;
+            var durationdays = M.util.get_string('durationdays', 'enrol', '{a}');
             for (var i = 1; i <= 365; i++) {
                 count++;
-                var option = create('<option value="'+i+'">'+M.util.get_string('durationdays', 'enrol', i)+'</option>');
+                var option = create('<option value="'+i+'">'+durationdays.replace('{a}', i)+'</option>');
                 if (i == defaultvalue) {
                     index = count;
                 }
@@ -273,6 +277,10 @@ YUI.add('moodle-enrol_manual-quickenrolment', function(Y) {
             }
 
             this._escCloseEvent = Y.on('key', this.hide, document.body, 'down:27', this);
+            var rolesselect = Y.one('#id_enrol_manual_assignable_roles');
+            if (rolesselect) {
+                rolesselect.focus();
+            }
         },
         hide : function(e) {
             if (this._escCloseEvent) {

@@ -254,8 +254,10 @@ class mod_assign_renderer extends plugin_renderer_base {
         if ($summary->submissionsenabled) {
             $this->add_table_row_tuple($t, get_string('numberofsubmittedassignments', 'assign'),
                                        $summary->submissionssubmittedcount);
-            $this->add_table_row_tuple($t, get_string('numberofsubmissionsneedgrading', 'assign'),
-                                       $summary->submissionsneedgradingcount);
+            if (!$summary->teamsubmission) {
+                $this->add_table_row_tuple($t, get_string('numberofsubmissionsneedgrading', 'assign'),
+                                           $summary->submissionsneedgradingcount);
+            }
         }
 
         $time = time();
@@ -572,10 +574,11 @@ class mod_assign_renderer extends plugin_renderer_base {
             $t->data[] = $row;
 
             foreach ($status->submissionplugins as $plugin) {
+                $pluginshowsummary = !$plugin->is_empty($submission) || !$plugin->allow_submissions();
                 if ($plugin->is_enabled() &&
                     $plugin->is_visible() &&
                     $plugin->has_user_summary() &&
-                    !$plugin->is_empty($submission)) {
+                    $pluginshowsummary) {
 
                     $row = new html_table_row();
                     $cell1 = new html_table_cell($plugin->get_name());
@@ -781,6 +784,64 @@ class mod_assign_renderer extends plugin_renderer_base {
             $o .= $feedbackplugin->plugin->view($feedbackplugin->grade);
             $o .= $this->output->box_end();
         }
+
+        return $o;
+    }
+
+    /**
+     * Render a course index summary
+     *
+     * @param assign_course_index_summary $indexsummary
+     * @return string
+     */
+    public function render_assign_course_index_summary(assign_course_index_summary $indexsummary) {
+        $o = '';
+
+        $strplural = get_string('modulenameplural', 'assign');
+        $strsectionname  = $indexsummary->courseformatname;
+        $strduedate = get_string('duedate', 'assign');
+        $strsubmission = get_string('submission', 'assign');
+        $strgrade = get_string('grade');
+
+        $table = new html_table();
+        if ($indexsummary->usesections) {
+            $table->head  = array ($strsectionname, $strplural, $strduedate, $strsubmission, $strgrade);
+            $table->align = array ('left', 'left', 'center', 'right', 'right');
+        } else {
+            $table->head  = array ($strplural, $strduedate, $strsubmission, $strgrade);
+            $table->align = array ('left', 'left', 'center', 'right');
+        }
+        $table->data = array();
+
+        $currentsection = '';
+        foreach ($indexsummary->assignments as $info) {
+            $params = array('id' => $info['cmid']);
+            $link = html_writer::link(new moodle_url('/mod/assign/view.php', $params),
+                                      $info['cmname']);
+            $due = $info['timedue'] ? userdate($info['timedue']) : '-';
+
+            $printsection = '';
+            if ($indexsummary->usesections) {
+                if ($info['sectionname'] !== $currentsection) {
+                    if ($info['sectionname']) {
+                        $printsection = $info['sectionname'];
+                    }
+                    if ($currentsection !== '') {
+                        $table->data[] = 'hr';
+                    }
+                    $currentsection = $info['sectionname'];
+                }
+            }
+
+            if ($indexsummary->usesections) {
+                $row = array($printsection, $link, $due, $info['submissioninfo'], $info['gradeinfo']);
+            } else {
+                $row = array($link, $due, $info['submissioninfo'], $info['gradeinfo']);
+            }
+            $table->data[] = $row;
+        }
+
+        $o .= html_writer::table($table);
 
         return $o;
     }

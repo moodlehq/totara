@@ -737,6 +737,7 @@ class core_calendar_renderer extends plugin_renderer_base {
         $table->head  = array(
             get_string('colcalendar', 'calendar'),
             get_string('collastupdated', 'calendar'),
+            get_string('eventkind', 'calendar'),
             get_string('colpoll', 'calendar'),
             get_string('colactions', 'calendar')
         );
@@ -763,10 +764,12 @@ class core_calendar_renderer extends plugin_renderer_base {
 
             $cell = new html_table_cell($this->subscription_action_form($sub, $courseid));
             $cell->colspan = 2;
+            $type = $sub->eventtype . 'events';
 
             $table->data[] = new html_table_row(array(
                 new html_table_cell($label),
                 new html_table_cell($lastupdated),
+                new html_table_cell(get_string($type, 'calendar')),
                 $cell
             ));
         }

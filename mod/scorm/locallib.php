@@ -263,9 +263,6 @@ function scorm_parse($scorm, $full) {
         }
 
     } else if ($scorm->scormtype === SCORM_TYPE_EXTERNAL and $cfg_scorm->allowtypeexternal) {
-        if (!$full and $scorm->sha1hash === sha1($scorm->reference)) {
-            return;
-        }
         require_once("$CFG->dirroot/mod/scorm/datamodels/scormlib.php");
         // SCORM only, AICC can not be external
         if (!scorm_parse_scorm($scorm, $scorm->reference)) {
@@ -937,13 +934,13 @@ function scorm_simple_play($scorm, $user, $context, $cmid) {
 
     $result = false;
 
-    if ($scorm->scormtype != SCORM_TYPE_LOCAL && $scorm->updatefreq == SCORM_UPDATE_EVERYTIME) {
-        scorm_parse($scorm, false);
-    }
     if (has_capability('mod/scorm:viewreport', $context)) { //if this user can view reports, don't skipview so they can see links to reports.
         return $result;
     }
 
+    if ($scorm->scormtype != SCORM_TYPE_LOCAL && $scorm->updatefreq == SCORM_UPDATE_EVERYTIME) {
+        scorm_parse($scorm, false);
+    }
     $scoes = $DB->get_records_select('scorm_scoes', 'scorm = ? AND '.$DB->sql_isnotempty('scorm_scoes', 'launch', false, true), array($scorm->id), 'id', 'id');
 
     if ($scoes) {
@@ -1864,4 +1861,28 @@ function scorm_get_adlnav_json ($scoes, &$adlnav = array(), $parentscoid = null)
         unset($adlnav['prevparent']);
     }
     return json_encode($adlnav);
+}
+
+/**
+ * Check for the availability of a resource by URL.
+ *
+ * Check is performed using an HTTP HEAD call.
+ *
+ * @param $url string A valid URL
+ * @return bool|string True if no issue is found. The error string message, otherwise
+ */
+function scorm_check_url($url) {
+    $curl = new curl;
+
+    if (!ini_get('open_basedir') and !ini_get('safe_mode')) {
+        // Same options as in {@link download_file_content()}, used in {@link scorm_parse_scorm()}.
+        $curl->setopt(array('CURLOPT_FOLLOWLOCATION' => true, 'CURLOPT_MAXREDIRS' => 5));
+    }
+    $cmsg = $curl->head($url);
+    $info = $curl->get_info();
+    if (empty($info['http_code']) || $info['http_code'] != 200) {
+        return get_string('invalidurlhttpcheck', 'scorm', array('cmsg' => $cmsg));
+    }
+
+    return true;
 }

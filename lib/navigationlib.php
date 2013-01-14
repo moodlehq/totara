@@ -1663,19 +1663,21 @@ class global_navigation extends navigation_node {
                     $categoryids[] = $category->key;
                 }
             }
-            list($categoriessql, $params) = $DB->get_in_or_equal($categoryids, SQL_PARAMS_NAMED);
-            $params['limit'] = (!empty($CFG->navcourselimit))?$CFG->navcourselimit:20;
-            $sql = "SELECT cc.id, COUNT(c.id) AS coursecount
-                      FROM {course_categories} cc
-                      JOIN {course} c ON c.category = cc.id
-                     WHERE cc.id {$categoriessql}
-                  GROUP BY cc.id
-                    HAVING COUNT(c.id) > :limit";
-            $excessivecategories = $DB->get_records_sql($sql, $params);
-            foreach ($categories as &$category) {
-                if (array_key_exists($category->key, $excessivecategories) && !$this->can_add_more_courses_to_category($category)) {
-                    $url = new moodle_url('/course/category.php', array('id'=>$category->key));
-                    $category->add(get_string('viewallcourses'), $url, self::TYPE_SETTING);
+            if ($categoryids) {
+                list($categoriessql, $params) = $DB->get_in_or_equal($categoryids, SQL_PARAMS_NAMED);
+                $params['limit'] = (!empty($CFG->navcourselimit))?$CFG->navcourselimit:20;
+                $sql = "SELECT cc.id, COUNT(c.id) AS coursecount
+                          FROM {course_categories} cc
+                          JOIN {course} c ON c.category = cc.id
+                         WHERE cc.id {$categoriessql}
+                      GROUP BY cc.id
+                        HAVING COUNT(c.id) > :limit";
+                $excessivecategories = $DB->get_records_sql($sql, $params);
+                foreach ($categories as &$category) {
+                    if (array_key_exists($category->key, $excessivecategories) && !$this->can_add_more_courses_to_category($category)) {
+                        $url = new moodle_url('/course/category.php', array('id'=>$category->key));
+                        $category->add(get_string('viewallcourses'), $url, self::TYPE_SETTING);
+                    }
                 }
             }
         }
@@ -1922,7 +1924,7 @@ class global_navigation extends navigation_node {
                     $propogrationhandler = 'e.halt();';
                 }
                 // Decode the onclick - it has already been encoded for display (puke)
-                $onclick = htmlspecialchars_decode($activity->onclick);
+                $onclick = htmlspecialchars_decode($activity->onclick, ENT_QUOTES);
                 // Build the JS function the click event will call
                 $jscode = "function {$functionname}(e) { $propogrationhandler $onclick }";
                 $this->page->requires->js_init_code($jscode);
@@ -3393,9 +3395,9 @@ class settings_navigation extends navigation_node {
                         continue;
                     }
                     if ($type->modclass == MOD_CLASS_RESOURCE) {
-                        $resources[html_entity_decode($type->type)] = $type->typestr;
+                        $resources[html_entity_decode($type->type, ENT_QUOTES, 'UTF-8')] = $type->typestr;
                     } else {
-                        $activities[html_entity_decode($type->type)] = $type->typestr;
+                        $activities[html_entity_decode($type->type, ENT_QUOTES, 'UTF-8')] = $type->typestr;
                     }
                 }
             } else {
@@ -4078,8 +4080,8 @@ class settings_navigation extends navigation_node {
 
         // Messaging
         if (($currentuser && has_capability('moodle/user:editownmessageprofile', $systemcontext)) || (!isguestuser($user) && has_capability('moodle/user:editmessageprofile', $usercontext) && !is_primary_admin($user->id))) {
-            $url = new moodle_url('/message/edit.php', array('id'=>$user->id, 'course'=>$course->id));
-            $usersetting->add(get_string('editmymessage', 'message'), $url, self::TYPE_SETTING);
+            $url = new moodle_url('/message/edit.php', array('id'=>$user->id));
+            $usersetting->add(get_string('messaging', 'message'), $url, self::TYPE_SETTING);
         }
 
         // Blogs
@@ -4138,7 +4140,7 @@ class settings_navigation extends navigation_node {
     protected function load_category_settings() {
         global $CFG;
 
-        $categorynode = $this->add(print_context_name($this->context));
+        $categorynode = $this->add(print_context_name($this->context), null, null, null, 'categorysettings');
         $categorynode->force_open();
 
         if (has_any_capability(array('moodle/category:manage', 'moodle/course:create'), $this->context)) {
@@ -4375,7 +4377,7 @@ class navigation_json {
         }
 
         if ($child->forcetitle || $child->title !== $child->text) {
-            $attributes['title'] = htmlentities($child->title);
+            $attributes['title'] = htmlentities($child->title, ENT_QUOTES, 'UTF-8');
         }
         if (array_key_exists($child->key.':'.$child->type, $this->expandable)) {
             $attributes['expandable'] = $child->key;
