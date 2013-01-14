@@ -57,6 +57,12 @@ $currenturl = new moodle_url('/totara/plan/components/competency/view.php', arra
 $coursesenabled = $plan->get_component('course')->get_setting('enabled');
 $coursename = get_string('courseplural', 'totara_plan');
 $canupdate = $component->can_update_items();
+$mandatory_list = $component->get_mandatory_linked_components($caid, 'competency');
+
+$role = $plan->get_user_role($USER->id);
+$permission = dp_get_template_permission($plan->templateid, 'competency', 'deletemandatory', $role);
+$delete_mandatory = $permission >= DP_PERMISSION_ALLOW;
+
 
 /// Javascript stuff
 // If we are showing dialog
@@ -91,7 +97,9 @@ if ($data = data_submitted() && $canupdate) {
         $course_assigns = optional_param_array('delete_linked_course_assign', array(), PARAM_BOOL);
         if ($course_assigns) {
             foreach ($course_assigns as $linkedid => $delete) {
-                if (!$delete) {
+                if (!$delete || (!$delete_mandatory && in_array($linkedid, $mandatory_list))) {
+                    //ignore if it isn't being deleted,
+                    //or if it is mandatory and you do not have the correct permission
                     continue;
                 }
 
@@ -135,7 +143,11 @@ if ($coursesenabled) {
     if ($linkedcourses = $component->get_linked_components($caid, 'course')) {
         $currenturl->param('action', 'removelinkedcourses');
         echo html_writer::start_tag('form', array('id' => "dp-component-update",  'action' => $currenturl->out(false), "method" => "POST"));
-        echo $plan->get_component('course')->display_linked_courses($linkedcourses);
+        if ($delete_mandatory) {
+            echo $plan->get_component('course')->display_linked_courses($linkedcourses);
+        } else {
+            echo $plan->get_component('course')->display_linked_courses($linkedcourses, $mandatory_list);
+        }
         if ($canupdate) {
             echo html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('removeselected', 'totara_plan'), 'class' => 'plan-remove-selected'));
         }

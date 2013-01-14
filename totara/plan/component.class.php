@@ -611,6 +611,35 @@ abstract class dp_base_component {
         }
     }
 
+    /**
+     * Retrieve the id of all mandatory links for a specified component
+     *
+     * @param integer $id           identifies the specific component to retrieve links for
+     * @param string  $component    identifies the type of component (course/competency)
+     *
+     * @return        array         an array of the id's of all mandatory linked components
+     */
+    function get_mandatory_linked_components($id, $component) {
+        global $DB;
+
+        if ($id < 1) {
+            return null;
+        }
+
+        $params = array('competency', $id, 'course', 'course');
+
+        if ($component == "competency") {
+            $sql = "SELECT DISTINCT itemid2 AS id FROM {dp_plan_component_relation} WHERE component1 = ? AND itemid1 = ? AND component2 = ? AND mandatory = ?";
+        } else if ($component == "course") {
+            $sql = "SELECT DISTINCT itemid1 AS id FROM {dp_plan_component_relation} WHERE component1 = ? AND itemid2 = ? AND component2 = ? AND mandatory = ?";
+        } else {
+            return null;
+        }
+
+
+        return $DB->get_fieldset_sql($sql, $params);
+    }
+
 
     /**
      * Update instances of $componentupdatetype linked to the specified compoent,

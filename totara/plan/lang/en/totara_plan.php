@@ -254,6 +254,8 @@ $string['confirmlinkedcoursesdesc'] = 'Some of those competencies have linked co
 $string['alreadyassignedtoplan'] = 'Already assigned to this plan';
 $string['advancedsettingscompetencysettings'] = 'Competency settings';
 $string['advancedsettingscompetencypermissions'] = 'Competency permissions';
+$string['mandatory'] = 'Mandatory';
+
 // Program strings
 $string['error:cannotupdateprograms'] = 'Cannot update programs';
 $string['launchprogram'] = 'Launch program';

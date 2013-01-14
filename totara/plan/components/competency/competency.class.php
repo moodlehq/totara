@@ -432,9 +432,11 @@ class dp_competency_component extends dp_base_component {
      * Displays a list of linked competencies
      *
      * @param  array  $list  the list of linked competencies
+     * @param  array  $mandatory_list the list of mandatory linked competencies (optional)
+     *
      * @return false|string  $out  the table to display
      */
-    function display_linked_competencies($list) {
+    function display_linked_competencies($list, $mandatory_list = null) {
         global $DB, $OUTPUT;
 
         if (!is_array($list) || count($list) == 0) {
@@ -532,7 +534,13 @@ class dp_competency_component extends dp_base_component {
                 }
 
                 if (!$this->plan->is_complete() && $this->can_update_items()) {
-                    $row[] = html_writer::checkbox('delete_linked_comp_assign['.$ca->id.']', '1', false);
+                    if (!empty($mandatory_list) && in_array($ca->id, $mandatory_list)) {
+                        // If this course has a mandatory link to the compentency disable checkbox
+                        $row[] = html_writer::checkbox('delete_linked_comp_assign['.$ca->id.']', '1', false,
+                            get_string('mandatory', 'totara_plan'), array('disabled' => 'true'));
+                    } else {
+                        $row[] = html_writer::checkbox('delete_linked_comp_assign['.$ca->id.']', '1', false);
+                    }
                 }
 
                 $table->add_data($row);

@@ -63,10 +63,14 @@ $competencyname = get_string('competencyplural', 'totara_plan');
 $objectivesenabled = $plan->get_component('objective')->get_setting('enabled');
 $objectivename = get_string('objectiveplural', 'totara_plan');
 $canupdate = $component->can_update_items();
+$mandatory_list = $component->get_mandatory_linked_components($caid, 'course');
 
 $fullname = $plan->name;
 $pagetitle = format_string(get_string('learningplan', 'totara_plan').': '.$fullname);
 
+$role = $plan->get_user_role($USER->id);
+$permission = dp_get_template_permission($plan->templateid, 'course', 'deletemandatory', $role);
+$delete_mandatory = $permission >= DP_PERMISSION_ALLOW;
 
 // Check if we are performing an action
 if ($data = data_submitted() && $canupdate) {
@@ -80,7 +84,9 @@ if ($data = data_submitted() && $canupdate) {
         $comp_assigns = optional_param_array('delete_linked_comp_assign', array(), PARAM_BOOL);
         if ($comp_assigns) {
             foreach ($comp_assigns as $linkedid => $delete) {
-                if (!$delete) {
+                if (!$delete || (!$delete_mandatory && in_array($linkedid, $mandatory_list))) {
+                    //ignore if it isn't being deleted,
+                    //or if it is mandatory and you do not have the correct permission
                     continue;
                 }
 
@@ -141,7 +147,11 @@ if ($competenciesenabled) {
     if ($linkedcomps = $component->get_linked_components($caid, 'competency')) {
         $currenturl->param('action', 'removelinkedcomps');
         echo html_writer::start_tag('form', array('id' => "dp-component-update",  'action' => $currenturl->out(false), "method" => "POST"));
-        echo $plan->get_component('competency')->display_linked_competencies($linkedcomps);
+        if ($delete_mandatory) {
+            echo $plan->get_component('competency')->display_linked_competencies($linkedcomps);
+        } else {
+            echo $plan->get_component('competency')->display_linked_competencies($linkedcomps, $mandatory_list);
+        }
         if ($canupdate) {
             echo $OUTPUT->single_button($currenturl, get_string('removeselected', 'totara_plan'), 'post', array('class' => 'plan-remove-selected'));
         }

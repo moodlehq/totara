@@ -355,9 +355,11 @@ class dp_course_component extends dp_base_component {
      * Displays a list of linked courses
      *
      * @param   array   $list           The list of linked courses
+     * @param   array   $mandatory_list The list of mandatory courses (optional)
+     *
      * @return  false|string  $out  the table to display
      */
-    function display_linked_courses($list) {
+    function display_linked_courses($list, $mandatory_list = null) {
         global $DB;
 
         if (!is_array($list) || count($list) == 0) {
@@ -469,7 +471,14 @@ class dp_course_component extends dp_base_component {
                 $row[] = $this->display_status_as_progress_bar($ca);
 
                 if (!$this->plan->is_complete() && $this->can_update_items()) {
-                    $row[] = html_writer::checkbox('delete_linked_course_assign['.$ca->id.']', '1', false);
+                    //if the course is mandatory disable the delete checkbox
+                    if (!empty($mandatory_list) && in_array($ca->id, $mandatory_list)) {
+                        $row[] = html_writer::checkbox('delete_linked_course_assign['.$ca->id.']', '1', false,
+                            get_string('mandatory', 'totara_plan'), array('disabled' => 'true'));
+                    }
+                    else{
+                        $row[] = html_writer::checkbox('delete_linked_course_assign['.$ca->id.']', '1', false);
+                    }
                 }
 
                 $table->add_data($row);
