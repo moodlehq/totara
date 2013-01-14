@@ -518,6 +518,10 @@ abstract class prog_noneventbased_message extends prog_message {
             $this->replacementvars['setlabel'] = $setlabel;
         }
 
+        if (!empty($recipient)) {
+            $this->replacementvars['userfullname'] = fullname($recipient);
+        }
+
         $manager = totara_get_manager($recipient->id);
 
         //verify the $sender of the email

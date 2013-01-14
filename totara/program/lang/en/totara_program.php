@@ -577,6 +577,9 @@ $string['variablesubstitution_help'] = '
 
 In program messages, certain variables can be inserted into the subject and/or body of a message so that they will be replaced with real values when the message is sent. The variables should be inserted into the the text exactly as they are shown below. The following variables can be used:
 
+%userfullname%
+:   This will be replaced by the recipient\'s full name
+
 %programfullname%
 :   This will be replaced by the the program\'s full name
 
