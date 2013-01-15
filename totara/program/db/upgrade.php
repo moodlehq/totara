@@ -126,5 +126,13 @@ function xmldb_totara_program_upgrade($oldversion) {
 
         totara_upgrade_mod_savepoint(true, 2012081500, 'totara_program');
     }
+
+    if ($oldversion < 2012081501) {
+        // Allow positionid to be null in prog_pos_assignment
+        $table = new xmldb_table('prog_pos_assignment');
+        $field = new xmldb_field('positionid', XMLDB_TYPE_INTEGER, 10, false, null, null, null, 'userid');
+        $dbman->change_field_notnull($table, $field);
+    }
+
     return true;
 }
