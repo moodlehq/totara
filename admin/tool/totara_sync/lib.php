@@ -228,7 +228,7 @@ function totara_sync_bulk_insert($table, $datarows) {
         return true;
     }
 
-    $length = 5000;
+    $length = 1000;
     $chunked_datarows = array_chunk($datarows, $length);
 
     unset($datarows);
