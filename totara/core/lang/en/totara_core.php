@@ -229,6 +229,9 @@ $string['error:categoryidincorrect'] = 'Category ID was incorrect';
 $string['error:dashboardnotfound'] = 'Cannot fully initialize page - could not retrieve dashboard details';
 $string['error:duplicaterecordsfound'] = '{$a->count} duplicate record(s) found in the {$a->tablename} table...fixing (see error log for details)';
 $string['error:duplicaterecordsdeleted'] = 'Duplicate {$a} record deleted: ';
+$string['error:positionnotselected'] = 'Please select a position';
+$string['error:organisationnotselected'] = 'Please select an organisation';
+$string['error:managernotselected'] = 'Please select a manager';
 //My Team strings
 $string['teammembers_text'] = 'All members of your teams are show below.';
 $string['nostaffassigned'] = 'You currently do not have a team.';

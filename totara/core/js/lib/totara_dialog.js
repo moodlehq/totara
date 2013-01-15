@@ -1110,7 +1110,7 @@ totaraDialog_handler_treeview_singleselect.prototype.setup_delete = function() {
         handler.setup_delete();
     });
 
-    if (textel.text().length) {
+    if (textel.hasClass('nonempty') && textel.text().length > 0) {
         textel.append(deletebutton);
     }
 
@@ -1181,6 +1181,12 @@ totaraDialog_handler_treeview_singleselect.prototype._save = function() {
 
     // Get selected id
     var selected_val = $('#treeview_selected_val_'+this._title).val();
+
+    if (selected_val === "0") {
+        alert(M.util.get_string('error:'+this._title+'notselected', 'totara_core'));
+        return false;
+    }
+
     // Get selected text
     var selected_text = $('.treeview span.unclickable#item_'+selected_val+' a', dialog._container).html();
 

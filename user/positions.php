@@ -120,15 +120,15 @@ local_js(array(
     TOTARA_JS_DATEPICKER,
     TOTARA_JS_PLACEHOLDER
 ));
-$PAGE->requires->strings_for_js(array('chooseposition', 'choosemanager','chooseorganisation'), 'totara_hierarchy');
-$PAGE->requires->string_for_js('currentlyselected', 'totara_hierarchy');
+$PAGE->requires->strings_for_js(array('chooseposition', 'choosemanager','chooseorganisation','currentlyselected'), 'totara_hierarchy');
+$PAGE->requires->strings_for_js(array('error:positionnotselected','error:organisationnotselected','error:managernotselected'), 'totara_core');
 $jsmodule = array(
         'name' => 'totara_positionuser',
         'fullpath' => '/totara/core/js/position.user.js',
         'requires' => array('json'));
-$selected_position = json_encode( dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'position') );
-$selected_organisation = json_encode( dialog_display_currently_selected(get_string("currentlyselected", "totara_hierarchy"), "organisation") );
-$selected_manager = json_encode( dialog_display_currently_selected(get_string("selected", "totara_hierarchy"), "manager") );
+$selected_position = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'position'));
+$selected_organisation = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'organisation'));
+$selected_manager = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'manager'));
 $js_can_edit = (pos_can_edit_position_assignment($user->id)) ? 'true' : 'false';
 $args = array('args'=>'{"userid":'.$user->id.','.
         '"can_edit":'.$js_can_edit.','.
@@ -180,6 +180,10 @@ else {
             $data->timevalidto = totara_date_parse_from_format(get_string('datepickerparseformat', 'totara_core'),$data->timevalidto);
         }
 
+        if (isset($data->positionid) && $data->positionid == 0) {
+            $data->positionid = null;
+        }
+
         // Setup data
         position_assignment::set_properties($position_assignment, $data);
 
@@ -187,7 +191,7 @@ else {
         $data->userid = $user->id;
 
         // Get new manager id
-        if (isset($data->managerid)) {
+        if (isset($data->managerid) && $data->managerid > 0) {
             if ($data->managerid == $data->userid) {
                 print_error('error:userownmanager', 'totara_hierarchy');
             } else {

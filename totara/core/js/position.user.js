@@ -65,7 +65,9 @@ M.totara_positionuser = M.totara_positionuser || {
                 M.util.get_string('chooseposition', 'totara_hierarchy') + M.totara_positionuser.config.dialog_display_position,
                 url+'position.php?',
                 'positionid',
-                'positiontitle'
+                'positiontitle',
+                undefined,
+                M.totara_positionuser.config.can_edit           //Make selection deletable
             );
         })();
 

@@ -305,36 +305,33 @@ class position extends hierarchy {
 
         list($items_sql, $items_params) = $DB->get_in_or_equal($items);
 
-        // nullify all references to these positions in comp_record table
-        $sql = 'UPDATE {' . hierarchy::get_short_prefix('competency') .
-            "_record}
-            SET positionid = NULL
-            WHERE positionid {$items_sql}";
-        if (!$DB->execute($sql, $items_params)) {
+        // delete all of the positions links to completencies
+        $wheresql = "positionid {$items_sql}";
+        if (!$DB->delete_records_select($this->shortprefix . "_competencies", $wheresql, $items_params)) {
             return false;
         }
 
-        // nullify all references to these positions in course_completions table
-        $sql = "UPDATE {course_completions}
-            SET positionid = NULL
-            WHERE positionid {$items_sql}";
-        if (!$DB->execute($sql, $items_params)) {
+        // delete any relevant position relations
+        $wheresql = "id1 {$items_sql} OR id2 {$items_sql}";
+        if (!$DB->delete_records_select($this->shortprefix . "_relations", $wheresql, array_merge($items_params, $items_params))) {
             return false;
         }
 
-        // delete rows from all these other tables:
+        // set position id to null in all these tables
         $db_data = array(
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment_history' => 'positionid',
-            $this->shortprefix.'_competencies' => 'positionid',
-            $this->shortprefix.'_relations' => 'id1',
-            $this->shortprefix.'_relations' => 'id2',
+            hierarchy::get_short_prefix('competency').'_evidence' => 'positionid',
+            'course_completions' => 'positionid',
         );
 
         foreach ($db_data as $table => $field) {
-            $select = "$field {$items_sql}";
-            if (!$DB->delete_records_select($table, $select, $items_params)) {
+            $update_sql = "UPDATE {{$table}}
+                           SET {$field} = NULL
+                           WHERE {$field} {$items_sql}";
+
+            if (!$DB->execute($update_sql, $items_params)) {
                 return false;
             }
         }
@@ -539,7 +536,7 @@ class position_assignment extends data_object {
         }
 
         if (!$this->positionid) {
-            return false;
+            $this->positionid = null;
         }
 
         // If no manager set, reset reportstoid and managerpath

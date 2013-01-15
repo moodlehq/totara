@@ -112,7 +112,6 @@ class user_position_assignment_form extends moodleform {
         } else {
             $pos_class = strlen($position_title) ? 'nonempty' : '';
             $mform->addElement('static', 'positionselector', get_string('position', 'totara_hierarchy'),
-                html_writer::empty_tag('img', array('class' => 'req', 'title' => 'Required field', 'alt' => 'Required field', 'src' => $OUTPUT->pix_url('/req'))) .
                 html_writer::tag('span', format_string($position_title), array('class' => $pos_class, 'id' => 'positiontitle')).
                     ($can_edit ? html_writer::empty_tag('input', array('type' => 'button', 'value' => get_string('chooseposition', 'totara_hierarchy'), 'id' => 'show-position-dialog')) : '')
             );
@@ -325,11 +324,6 @@ class user_position_assignment_form extends moodleform {
             $result['timevalidfrom_group'] = $errstr;
             $result['timevalidto_group'] = $errstr;
             unset($errstr);
-        }
-
-        // Check that a position was set
-        if (!$mform->getElement('positionid')->getValue()) {
-            $result['positionselector'] = get_string('error:positionnotset', 'totara_hierarchy');
         }
 
         return $result;
