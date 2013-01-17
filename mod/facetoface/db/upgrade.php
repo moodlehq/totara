@@ -746,5 +746,5 @@ function xmldb_facetoface_upgrade($oldversion=0) {
         upgrade_mod_savepoint(true, 2012140609, 'facetoface');
     }
 
-        return $result;
+    return $result;
 }
