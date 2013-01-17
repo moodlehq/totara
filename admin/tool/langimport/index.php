@@ -130,7 +130,7 @@ if ($mode == UPDATE_ALL_LANG) {
     $installer = new lang_installer();
 
     if (!$availablelangs = $installer->get_remote_list_of_languages()) {
-        print_error('cannotdownloadlanguageupdatelist', 'error');
+       print_error('cannotdownloadtotaralanguageupdatelist', 'tool_langimport');
     }
     $md5array = array();    // (string)langcode => (string)md5
     foreach ($availablelangs as $alang) {
@@ -247,7 +247,10 @@ if ($availablelangs = $installer->get_remote_list_of_languages()) {
     $remote = false;
     $availablelangs = array();
     echo $OUTPUT->box_start();
-    print_string('remotelangnotavailable', 'tool_langimport', $CFG->dataroot.'/lang/');
+    $a = new stdClass();
+    $a->totaraversion = totara_major_version();
+    $a->langdir = $CFG->dataroot.'/lang/';
+    print_string('remotetotaralangnotavailable', 'tool_langimport', $a);
     echo $OUTPUT->box_end();
 }
 

@@ -64,17 +64,18 @@
  *
  * General Usage:
  *
+ * server to download from is a defined constant DOWNLOAD_BASE
  * To install one component:
  * <code>
  *     require_once($CFG->libdir.'/componentlib.class.php');
- *     if ($cd = new component_installer('http://download.moodle.org', 'langpack/2.0',
+ *     if ($cd = new component_installer(DOWNLOAD_BASE, 'langpack/2.0',
  *                                       'es.zip', 'languages.md5', 'lang')) {
  *         $status = $cd->install(); //returns COMPONENT_(ERROR | UPTODATE | INSTALLED)
  *         switch ($status) {
  *             case COMPONENT_ERROR:
  *                 if ($cd->get_error() == 'remotedownloaderror') {
  *                     $a = new stdClass();
- *                     $a->url = 'http://download.moodle.org/langpack/2.0/es.zip';
+ *                     $a->url = DOWNLOAD_BASE . '/langpack/2.0/es.zip';
  *                     $a->dest= $CFG->dataroot.'/lang';
  *                     print_error($cd->get_error(), 'error', '', $a);
  *                 } else {
@@ -140,9 +141,10 @@ define('COMPONENT_UPTODATE',        1);
 define('COMPONENT_NEEDUPDATE',      2);
 define('COMPONENT_INSTALLED',       3);
 
+define('DOWNLOAD_BASE', 'http://download.totaralms.com/lang');
 /**
  * This class is used to check, download and install items from
- * download.moodle.org to the moodledata directory.
+ * server specified in DOWNLOAD_BASE to the moodledata directory.
  *
  * It always return true/false in all their public methods to say if
  * execution has ended succesfuly or not. If there is any problem
@@ -224,11 +226,7 @@ class component_installer {
             $this->errorstring='missingrequiredfield';
             return false;
         }
-    /// Check for correct sourcebase (this will be out in the future)
-        if ($this->sourcebase != 'http://download.moodle.org') {
-            $this->errorstring='wrongsourcebase';
-            return false;
-        }
+
     /// Check the zip file is a correct one (by extension)
         if (stripos($this->zipfilename, '.zip') === false) {
             $this->errorstring='wrongzipfilename';
@@ -591,7 +589,12 @@ class lang_installer {
         global $CFG;
 
         $this->set_queue($langcode);
-        $this->version = moodle_major_version(true);
+        $totaraversion = totara_major_version(); //may return false if something is badly wrong
+        if ($totaraversion) {
+            $this->version = 'T' . $totaraversion;
+        } else {
+            debugging('Totara version number could not be determined from version.php!');
+        }
 
         if (!empty($CFG->langotherroot) and $CFG->langotherroot !== $CFG->dataroot . '/lang') {
             debugging('The in-built language pack installer does not support alternative location ' .
@@ -663,21 +666,20 @@ class lang_installer {
      * @return string URL
      */
     public function lang_pack_url($langcode = '') {
-
         if (empty($langcode)) {
-            return 'http://download.moodle.org/langpack/'.$this->version.'/';
+            return DOWNLOAD_BASE . '/'.$this->version.'/';
         } else {
-            return 'http://download.moodle.org/download.php/langpack/'.$this->version.'/'.$langcode.'.zip';
+            return DOWNLOAD_BASE . '/'.$this->version.'/'.$langcode.'.zip';
         }
     }
 
     /**
-     * Returns the list of available language packs from download.moodle.org
+     * Returns the list of available language packs from DOWNLOAD_BASE server
      *
      * @return array|bool false if can not download
      */
     public function get_remote_list_of_languages() {
-        $source = 'http://download.moodle.org/langpack/' . $this->version . '/languages.md5';
+        $source = DOWNLOAD_BASE . '/' . $this->version . '/languages.md5';
         $availablelangs = array();
 
         if ($content = download_file_content($source)) {
@@ -769,9 +771,8 @@ class lang_installer {
     protected function install_language_pack($langcode) {
 
         // initialise new component installer to process this language
-        $installer = new component_installer('http://download.moodle.org', 'download.php/direct/langpack/' . $this->version,
+        $installer = new component_installer(DOWNLOAD_BASE, '/' . $this->version,
             $langcode . '.zip', 'languages.md5', 'lang');
-
         if (!$installer->requisitesok) {
             throw new lang_installer_exception('installer_requisites_check_failed');
         }

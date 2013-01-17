@@ -1477,6 +1477,9 @@ function upgrade_core($version, $verbose) {
         // Upgrade current language pack if we can
         upgrade_language_pack();
 
+        //upgrade all language packs if we can
+        totara_upgrade_installed_languages();
+
         print_upgrade_part_start('moodle', false, $verbose);
 
         // one time special local migration pre 2.0 upgrade script

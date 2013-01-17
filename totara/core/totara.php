@@ -28,6 +28,32 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 /**
+ * Returns the major Totara version of this site (which may be different from Moodle in older versions)
+ *
+ * Totara version numbers consist of three numbers (four for emergency releases)separated by a dot,
+ * for example 1.9.11 or 2.0.2. The first two numbers, like 1.9 or 2.0, represent so
+ * called major version. This function extracts the major version from
+ * the $TOTARA->version variable defined in the main version.php.
+ *
+ * @return string|false the major version like '2.3', false if could not be determined
+ */
+function totara_major_version() {
+    global $CFG;
+
+    $release = null;
+    require($CFG->dirroot.'/version.php');
+    if (empty($TOTARA)) {
+        return false;
+    }
+
+    if (preg_match('/^[0-9]+\.[0-9]+/', $release, $matches)) {
+        return $matches[0];
+    } else {
+        return false;
+    }
+}
+
+/**
  * gets a clean timezone array compatible with PHP DateTime, DateTimeZone etc functions
  * @param bool $assoc return a simple numerical index array or an associative array
  * @return array a clean timezone list that can be used safely
@@ -173,6 +199,117 @@ function totara_get_clean_timezone($tz=null) {
     }
     //everything has failed, set to London
     return $default;
+}
+
+/**
+ * checks the md5 of the zip file, grabbed from download.moodle.org,
+ * against the md5 of the local language file from last update
+ * @param string $lang
+ * @param string $md5check
+ * @return bool
+ */
+function local_is_installed_lang($lang, $md5check) {
+    global $CFG;
+    $md5file = $CFG->dataroot.'/lang/'.$lang.'/'.$lang.'.md5';
+    if (file_exists($md5file)){
+        return (file_get_contents($md5file) == $md5check);
+    }
+    return false;
+}
+
+/**
+ * Runs on every upgrade to get the latest language packs from Totara language server
+ *
+ * Code mostly refactored from admin/tool/langimport/index.php
+ *
+ * @return  void
+ */
+function totara_upgrade_installed_languages() {
+    global $CFG, $OUTPUT;
+    require_once($CFG->libdir.'/adminlib.php');
+    require_once($CFG->libdir.'/filelib.php');
+    require_once($CFG->libdir.'/componentlib.class.php');
+    set_time_limit(0);
+    $notice_ok = array();
+    $notice_error = array();
+    $installer = new lang_installer();
+
+    if (!$availablelangs = $installer->get_remote_list_of_languages()) {
+        echo $OUTPUT->notification(get_string('cannotdownloadlanguageupdatelist', 'error'), 'notifyproblem');
+        return;
+    }
+    $md5array = array();    // (string)langcode => (string)md5
+    foreach ($availablelangs as $alang) {
+        $md5array[$alang[0]] = $alang[1];
+    }
+
+    // filter out unofficial packs
+    $currentlangs = array_keys(get_string_manager()->get_list_of_translations(true));
+    $updateablelangs = array();
+    foreach ($currentlangs as $clang) {
+        if (!array_key_exists($clang, $md5array)) {
+            $notice_ok[] = get_string('langpackupdateskipped', 'tool_langimport', $clang);
+            continue;
+        }
+        $dest1 = $CFG->dataroot.'/lang/'.$clang;
+        $dest2 = $CFG->dirroot.'/lang/'.$clang;
+
+        if (file_exists($dest1.'/langconfig.php') || file_exists($dest2.'/langconfig.php')){
+            $updateablelangs[] = $clang;
+        }
+    }
+
+    // then filter out packs that have the same md5 key
+    $neededlangs = array();   // all the packs that needs updating
+    foreach ($updateablelangs as $ulang) {
+        if (!local_is_installed_lang($ulang, $md5array[$ulang])) {
+            $neededlangs[] = $ulang;
+        }
+    }
+
+    make_temp_directory('');
+    make_upload_directory('lang');
+
+    // install all needed language packs
+    $installer->set_queue($neededlangs);
+    $results = $installer->run();
+    $updated = false;    // any packs updated?
+    foreach ($results as $langcode => $langstatus) {
+        switch ($langstatus) {
+        case lang_installer::RESULT_DOWNLOADERROR:
+            $a       = new stdClass();
+            $a->url  = $installer->lang_pack_url($langcode);
+            $a->dest = $CFG->dataroot.'/lang';
+            echo $OUTPUT->notification(get_string('remotedownloaderror', 'error', $a), 'notifyproblem');
+            break;
+        case lang_installer::RESULT_INSTALLED:
+            $updated = true;
+            $notice_ok[] = get_string('langpackinstalled', 'tool_langimport', $langcode);
+            break;
+        case lang_installer::RESULT_UPTODATE:
+            $notice_ok[] = get_string('langpackuptodate', 'tool_langimport', $langcode);
+            break;
+        }
+    }
+
+    if ($updated) {
+        $notice_ok[] = get_string('langupdatecomplete', 'tool_langimport');
+    } else {
+        $notice_ok[] = get_string('nolangupdateneeded', 'tool_langimport');
+    }
+
+    unset($installer);
+    get_string_manager()->reset_caches();
+    //display notifications
+    if (!empty($notice_ok)) {
+        $info = implode(html_writer::empty_tag('br'), $notice_ok);
+        echo $OUTPUT->notification($info, 'notifysuccess');
+    }
+
+    if (!empty($notice_error)) {
+        $info = implode(html_writer::empty_tag('br'), $notice_error);
+        echo $OUTPUT->notification($info, 'notifyproblem');
+    }
 }
 
 /**
