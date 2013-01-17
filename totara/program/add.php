@@ -136,8 +136,11 @@ if ($data = $form->get_data()) {
         $program = new program($newid);
         $transaction->allow_commit();
 
-        $data = file_postupdate_standard_editor($data, 'summary', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'summary', 0);
-        $data = file_postupdate_standard_editor($data, 'endnote', $TEXTAREA_OPTIONS, $TEXTAREA_OPTIONS['context'], 'totara_program', 'endnote', 0);
+        $editoroptions = $TEXTAREA_OPTIONS;
+        $editoroptions['context'] = context_program::instance($newid);
+
+        $data = file_postupdate_standard_editor($data, 'summary', $editoroptions, $editoroptions['context'], 'totara_program', 'summary', 0);
+        $data = file_postupdate_standard_editor($data, 'endnote', $editoroptions, $editoroptions['context'], 'totara_program', 'endnote', 0);
         $DB->set_field('prog', 'summary', $data->summary, array('id' => $newid));
         $DB->set_field('prog', 'endnote', $data->endnote, array('id' => $newid));
 
