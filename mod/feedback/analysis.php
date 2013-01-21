@@ -86,7 +86,7 @@ require('tabs.php');
 
 
 //print analysed items
-echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+echo $OUTPUT->box_start('generalbox boxaligncenter');
 
 //get the groupid
 $myurl = $CFG->wwwroot.'/mod/feedback/analysis.php?id='.$cm->id.'&do_show=analysis';
@@ -132,7 +132,7 @@ if ($mygroupid > 0 AND $feedback->anonymous == FEEDBACK_ANONYMOUS_YES) {
     }
 }
 
-echo '<div><table width="80%" cellpadding="10"><tr><td>';
+echo '<div><table width="90%" cellpadding="10"><tr><td>';
 if ($check_anonymously) {
     $itemnr = 0;
     //print the items in an analysed form
