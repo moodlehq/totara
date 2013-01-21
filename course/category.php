@@ -528,10 +528,7 @@
                 $linkcss = $acourse->visible ? '' : ' class="dimmed" ';
                 echo '<tr>';
                 $coursename = get_course_display_name_for_list($acourse);
-                $replace = array('-' => ' ');
-                $iconname = strtr($courseicon, $replace);
-                $iconname = ucwords($iconname);
-                echo '<td>'. $OUTPUT->pix_icon('courseicons/' . $courseicon, $iconname, 'totara_core', array('class' => 'course_icon')) . '<a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($coursename) .'</a></td>';
+                echo '<td>'. $OUTPUT->pix_icon('courseicons/' . $courseicon, $coursename, 'totara_core', array('class' => 'course_icon')) . '<a '.$linkcss.' href="view.php?id='.$acourse->id.'">'. format_string($coursename) .'</a></td>';
                 if ($isediting) {
                     echo '<td>';
                     if (has_capability('moodle/course:update', $coursecontext)) {
@@ -725,11 +722,8 @@
 
                 $linkcss = $aprogram->visible ? '' : ' class="dimmed" ';
                 echo '<tr>';
-                $replace = array('-' => ' ');
                 $aprogram->icon = !empty($aprogram->icon) ? $aprogram->icon : 'default';
-                $iconname = strtr($aprogram->icon, $replace);
-                $iconname = ucwords($iconname);
-                echo '<td>'. $OUTPUT->pix_icon('programicons/' . $aprogram->icon, $iconname, 'totara_core', array('class' => 'program_icon')) . '<a '.$linkcss.' href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$aprogram->id.'">'. format_string($aprogram->fullname) .'</a></td>';
+                echo '<td>'. $OUTPUT->pix_icon('programicons/' . $aprogram->icon, $aprogram->fullname, 'totara_core', array('class' => 'program_icon')) . '<a '.$linkcss.' href="'.$CFG->wwwroot.'/totara/program/view.php?id='.$aprogram->id.'">'. format_string($aprogram->fullname) .'</a></td>';
                 if ($isediting) {
                     echo '<td>';
                     if ($canconfigureprogram) {
