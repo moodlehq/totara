@@ -81,13 +81,6 @@ class block_totara_alerts extends block_base {
                 // status Icon
                 $cnt++;
 
-                // user name + link
-                $userfrom_link = $CFG->wwwroot.'/user/view.php?id='.$msg->useridfrom;
-                $from = $DB->get_record('user', array('id' => $msg->useridfrom));
-                $fromname = fullname($from);
-
-                // message creation time
-                $when = userdate($msg->timecreated, get_string('strftimedate', 'langconfig'));
                 $cssclass = totara_message_cssclass($msg->msgtype);
                 $rowbkgd = ($cnt % 2) ? 'shade' : 'noshade';
                 $msglink = !empty($msg->contexturl) ? $msg->contexturl : '';

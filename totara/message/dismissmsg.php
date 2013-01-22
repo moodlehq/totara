@@ -53,8 +53,14 @@ if ($eventdata && $eventdata->action == 'facetoface') {
     $isfacetoface = true;
     $canbook = facetoface_task_check_capacity($eventdata->data);
 }
-$from = ($msg->useridfrom == 0) ? generate_email_supportuser() : $DB->get_record('user', array('id' => $msg->useridfrom));
-$fromlink = html_writer::link(new moodle_url('/user/view.php', array('id' => $from->id)), fullname($from));
+
+if ($msg->useridfrom == 0) {
+    $from = generate_email_supportuser();
+} else {
+    $from = $DB->get_record('user', array('id' => $msg->useridfrom));
+}
+$fromname = fullname($from) . " ({$from->email})";
+
 $subject = format_string($msg->subject);
 
 if ($isfacetoface && !$DB->record_exists('facetoface_sessions', array('id' => $eventdata->data['session']->id))) {
@@ -94,11 +100,7 @@ $cells = array();
 $cell = new html_table_cell(html_writer::tag('label', get_string('from', 'block_totara_alerts'), array('for' => 'dismiss-from')));
 $cell->attributes['class'] = 'totara-msgs-action-left';
 $cells []= $cell;
-if ($from->id > 0){
-    $cell = new html_table_cell(html_writer::tag('div', $fromlink, array('id' => 'dismiss-from')));
-} else {
-    $cell = new html_table_cell(html_writer::tag('div', $from->firstname));
-}
+$cell = new html_table_cell(html_writer::tag('div', $fromname, array('id' => 'dismiss-from')));
 $cell->attributes['class'] = 'totara-msgs-action-right';
 $cells []= $cell;
 $tab->data[] = new html_table_row($cells);

@@ -111,18 +111,20 @@ foreach ($ids as $msgid => $msg) {
     $display = isset($metadata->msgtype) ? totara_message_msgtype_text($metadata->msgtype) : array('icon' => '', 'text' => '');
     $type = $display['icon'];
     $type_alt = $display['text'];
-    $from = ($msg->useridfrom == 0) ? generate_email_supportuser() : $DB->get_record('user', array('id' => $msg->useridfrom));
-    $fromname = fullname($from);
+
+    if ($msg->useridfrom == 0) {
+        $from = generate_email_supportuser();
+    } else {
+        $from = $DB->get_record('user', array('id' => $msg->useridfrom));
+    }
+    $fromname = fullname($from) . " ({$from->email})";
+
     $icon = $OUTPUT->pix_icon('/msgicons/'.$metadata->icon, format_string($msg->subject), 'totara_core', array('class'=>'msgicon', 'title' => format_string($msg->subject)));
     $cells = array();
     $cell = new html_table_cell(html_writer::tag('div', $icon, array('id' => 'dismiss-type')));
     $cell->attributes['class'] = 'totara-msgs-action-right';
     $cells []= $cell;
-    if ($from->id > 0) {
-        $cell = new html_table_cell(html_writer::tag('div', $fromname, array('id' => 'dismiss-from')));
-    } else {
-        $cell = new html_table_cell(html_writer::tag('div', $from->firstname));
-    }
+    $cell = new html_table_cell(html_writer::tag('div', $fromname, array('id' => 'dismiss-from')));
     $cell->attributes['class'] = 'totara-msgs-action-right';
     $cells []= $cell;
     $cell = new html_table_cell(html_writer::tag('div', $msg->fullmessage, array('id' => 'dismiss-statement')));
