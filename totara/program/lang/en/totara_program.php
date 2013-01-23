@@ -27,6 +27,7 @@ $string['aftersetisdue'] = 'After set is due';
 $string['allowedtimeforprogramaslearner'] = 'You are allowed {$a->num} {$a->periodstr} to complete this program.';
 $string['allowedtimeforprogramasmanager'] = '{$a->fullname} is allowed {$a->num} {$a->periodstr} to complete this program.';
 $string['allowedtimeforprogramviewing'] = 'A learner is allowed {$a->num} {$a->periodstr} to complete this program.';
+$string['allowedtimeforprograminfinity'] = 'There is no time limit to complete this program.';
 $string['anothercourse'] = 'another course';
 $string['assignedasindividual'] = 'Assigned as an individual.';
 $string['assignmentcriteriamanager'] = 'The learner is required to complete this program under the following criteria:';
@@ -194,7 +195,7 @@ $string['error:invaliddate'] = 'Date is not valid';
 $string['error:noprogramid'] = 'Must specify program id or short name';
 $string['error:invalidshortname'] = 'That\'s an invalid program short name';
 $string['error:invalidid'] = 'That\'s an invalid program id';
-$string['error:timeallowednum_nonzero'] = 'Time allowance must be higher than zero';
+$string['error:timeallowednum_nonzero'] = 'Time allowance must be zero or higher';
 $string['error:recurrence_nonzero'] = 'Recurrence must be higher than zero';
 $string['error:coursecreationrepeat_nonzero'] = 'Course creation must be more than zero days before course repeats';
 $string['error:messagesubject_empty'] = 'Message subject is required';
@@ -287,6 +288,8 @@ $string['allcourses'] = 'All courses';
 $string['allcoursesfrom'] = 'all courses from';
 $string['allowtimeforprogram'] = 'Allow {$a->num} {$a->periodstr} to complete this program.';
 $string['allowtimeforset'] = 'Allow {$a->num} {$a->periodstr} to complete this set.';
+$string['allowtimeforprograminfinity'] = 'There is no time limit to complete this program.';
+$string['allowtimeforsetinfinity'] = 'There is no time limit to complete this set.';
 $string['and'] = 'and';
 $string['changecourse'] = 'Change course';
 $string['competency'] = 'Competency';
@@ -398,6 +401,7 @@ $string['days'] = 'Day(s)';
 $string['weeks'] = 'Week(s)';
 $string['months'] = 'Month(s)';
 $string['years'] = 'Year(s)';
+$string['infinity'] = 'No time limit';
 $string['onedayremaining'] = '1 day remaining';
 $string['daysremaining'] = '{$a} days remaining';
 
@@ -598,7 +602,9 @@ When multiple course sets exist in a program the overall minimum time required f
 
 Course set1 [10 days] THEN Course set2 [5 days] OR Course set3 [7 days]
 
-then the overall time allowance would be 17 days.';
+then the overall time allowance would be 17 days.
+
+Enter zero if no time limit is required';
 $string['programavailability_help'] = 'This option allows you to "hide" your program completely.
 
 It will not appear on any program listings, except to administrators.

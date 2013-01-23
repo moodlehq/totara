@@ -151,7 +151,7 @@ class program_content_edit_form extends moodleform {
             // check for negative integer issues
             if (preg_match('/[0-9]timeallowednum/', $elementname)) {
                 $timeallowednum = $elementvalue;
-                if ($timeallowednum <= 0) {
+                if ($timeallowednum < 0) {
                     $errors[$elementname] = get_string('error:timeallowednum_nonzero', 'totara_program');
                 }
             }

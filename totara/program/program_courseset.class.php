@@ -301,7 +301,11 @@ abstract class course_set {
         $timeallowedperiodstr = $timeallowedob->periodstr;
 
         $out = '';
-        $out .= $this->label.' ('.$this->timeallowednum.' '.$timeallowedperiodstr.')';
+        $out .= $this->label.' (';
+        if ($this->timeallowedperiod !== TIME_SELECTOR_INFINITY) {
+            $out .= $this->timeallowednum.' ';
+        }
+        $out .= $timeallowedperiodstr.')';
 
         return $out;
     }
@@ -737,7 +741,11 @@ class multi_course_set extends course_set {
 
         $timeallowance = program_utilities::duration_explode($this->timeallowed);
 
-        $out .= html_writer::tag('p', get_string('allowtimeforset', 'totara_program', $timeallowance));
+        if ($this->timeallowed > 0) {
+            $out .= html_writer::tag('p', get_string('allowtimeforset', 'totara_program', $timeallowance));
+        } else {
+            $out .= html_writer::tag('p', get_string('allowtimeforsetinfinity', 'totara_program'));
+        }
 
         if (count($this->courses) > 0) {
             $table = new html_table();
@@ -1083,7 +1091,7 @@ class multi_course_set extends course_set {
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
             $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
-            $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
+            $timeallowanceoptions = program_utilities::get_standard_time_allowance_options(true);
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
             $mform->setType($prefix.'timeallowedperiod', PARAM_INT);
 
@@ -1432,7 +1440,11 @@ class competency_course_set extends course_set {
 
         $timeallowance = program_utilities::duration_explode($this->timeallowed);
 
-        $out .= html_writer::tag('p', get_string('allowtimeforset', 'totara_program', $timeallowance));
+        if ($this->timeallowed > 0) {
+            $out .= html_writer::tag('p', get_string('allowtimeforset', 'totara_program', $timeallowance));
+        } else {
+            $out .= html_writer::tag('p', get_string('allowtimeforsetinfinity', 'totara_program'));
+        }
 
         $courses = $this->get_competency_courses();
 
@@ -1686,7 +1698,7 @@ class competency_course_set extends course_set {
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
             $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
-            $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
+            $timeallowanceoptions = program_utilities::get_standard_time_allowance_options(true);
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
             $mform->setType($prefix.'timeallowedperiod', PARAM_INT);
 
@@ -1965,7 +1977,11 @@ class recurring_course_set extends course_set {
 
         $timeallowance = program_utilities::duration_explode($this->timeallowed);
 
-        $out .= html_writer::tag('p', get_string('allowtimeforset', 'totara_program', $timeallowance));
+        if ($this->timeallowed > 0) {
+            $out .= html_writer::tag('p', get_string('allowtimeforset', 'totara_program', $timeallowance));
+        } else {
+            $out .= html_writer::tag('p', get_string('allowtimeforsetinfinity', 'totara_program'));
+        }
 
         if (is_object($this->course)) {
             $table = new html_table();
@@ -2132,7 +2148,7 @@ class recurring_course_set extends course_set {
             $mform->setType($prefix.'timeallowednum', PARAM_INT);
             $mform->addRule($prefix.'timeallowednum', get_string('required'), 'required', null, 'server');
 
-            $timeallowanceoptions = program_utilities::get_standard_time_allowance_options();
+            $timeallowanceoptions = program_utilities::get_standard_time_allowance_options(true);
             $mform->addElement('select', $prefix.'timeallowedperiod', '', $timeallowanceoptions);
             $mform->setType($prefix.'timeallowedperiod', PARAM_INT);
 
