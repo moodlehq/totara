@@ -2,3 +2,6 @@
 #cohortruleformdialog .required {
     display: none;
 }
+select#id_listofvalues {
+    height: 300px;
+}
