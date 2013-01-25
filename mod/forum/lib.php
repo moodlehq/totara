@@ -436,6 +436,7 @@ function forum_cron() {
     $courses         = array();
     $coursemodules   = array();
     $subscribedusers = array();
+    $lastemail       = array('userid' => 0, 'subject' => '');
 
 
     // Posts older than 2 days will not be mailed.  This is to avoid the problem where
@@ -714,6 +715,12 @@ function forum_cron() {
 
                 $eventdata->contexturl = "{$CFG->wwwroot}/mod/forum/discuss.php?d={$discussion->id}#p{$post->id}";
                 $eventdata->contexturlname = $discussion->name;
+
+                if ($lastemail['userid'] === $userto->id && $lastemail['subject'] === $eventdata->subject) {
+                    mtrace('- delaying 0.5 seconds -', '');
+                    usleep(500000); // T-10270 gmail or google apps doesn't receive all email if its the same user and subject within 0.5 seconds
+                }
+                $lastemail = array('userid' => $userto->id, 'subject' => $eventdata->subject);
 
                 $mailresult = message_send($eventdata);
                 if (!$mailresult){
