@@ -129,6 +129,9 @@ class totara_core_renderer extends plugin_renderer_base {
     */
     public function print_my_learning_nav() {
         global $USER;
+        if (!isloggedin() || isguestuser()) {
+            return '';
+        }
 
         $usercontext = context_user::instance($USER->id);
         $table = new html_table();

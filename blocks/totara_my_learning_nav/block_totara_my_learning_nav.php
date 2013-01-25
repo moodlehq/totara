@@ -16,6 +16,10 @@ class block_totara_my_learning_nav extends block_base {
     }
 
     function get_content() {
+        if (!isloggedin() || isguestuser()) {
+            return '';
+        }
+
         if ($this->content !== NULL) {
             return $this->content;
         }
