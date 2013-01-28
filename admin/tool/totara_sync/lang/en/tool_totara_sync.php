@@ -60,6 +60,9 @@ $string['manageelements'] = 'Manage elements';
 $string['managesyncelements'] = 'Manage sync elements';
 $string['noenabledelements'] = 'No enabled elements';
 $string['elementxnotfound'] = 'Element {$a} not found';
+$string['notadirerror'] = 'Directory \'{$a}\' does not exist or not accessible';
+$string['readonlyerror'] = 'Directory \'{$a}\' is read-only';
+$string['pathformerror'] = 'Path not found';
 
 // Hierarchy items
 $string['displayname:org'] = 'Organisation';

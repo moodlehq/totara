@@ -105,9 +105,27 @@ class totara_sync_config_form extends moodleform {
         $mform->addHelpButton('fileaccess', 'fileaccess', 'tool_totara_sync');
         if (get_config('totara_sync', 'fileaccess') == FILE_ACCESS_DIRECTORY) {
             $mform->addElement('text', 'filesdir', get_string('filesdir', 'tool_totara_sync'));
-            $mform->setType('filesdir', PARAM_SAFEPATH);
         }
         $this->add_action_buttons(false);
+    }
+
+    /**
+     * Check if path is well-formed (no validation for existance)
+     * @param array $data
+     * @param array $files
+     * @return boolean
+     */
+    function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $pattern = '/[^a-zA-Z0-9\/_\\\\\\:-]/i';
+        } else {
+            $pattern = '/[^a-zA-Z0-9\/_-]/i';
+        }
+        if (preg_match($pattern, $data['filesdir'])) {
+            $errors['filesdir'] = get_string('pathformerror', 'tool_totara_sync');
+        }
+        return $errors;
     }
 }
 

@@ -113,7 +113,17 @@ $fileaccess = get_config('totara_sync', 'fileaccess');
 $form->set_data((object) array('fileaccess' => $fileaccess));
 
 if ($fileaccess == FILE_ACCESS_DIRECTORY) {
-    $form->set_data((object) array('filesdir' => get_config('totara_sync', 'filesdir')));
+    $filesdir = get_config('totara_sync', 'filesdir');
+    // Always check accessibility of target folder, not only on save.
+    // Also, allow save data even when folder not accessible.
+    // Not sure why... May be for some removable media that is not always mounted.
+    if (!is_dir($filesdir)) {
+        $form->_form->setElementError('filesdir', get_string('notadirerror', 'tool_totara_sync', $filesdir));
+    } else if (!is_writable($filesdir)) {
+        $form->_form->setElementError('filesdir', get_string('readonlyerror', 'tool_totara_sync', $filesdir));
+    }
+
+    $form->set_data((object) array('filesdir' => $filesdir));
 }
 
 if (has_capability('tool/totara_sync:setfileaccess', $systemcontext)) {

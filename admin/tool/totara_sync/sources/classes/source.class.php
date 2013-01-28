@@ -33,6 +33,12 @@ abstract class totara_sync_source {
      */
     public $temptablename;
 
+    /**
+     * Directory root for all elements
+     * @var string
+     */
+    public $filesdir;
+
     abstract function has_config();
 
     /**
@@ -178,5 +184,23 @@ abstract class totara_sync_source {
 
         return $temptable_clone->getName();
     }
-}
 
+    /**
+     * Return OS formatted path to sync files
+     *
+     * @param string $path path to file in filesdir (optional)
+     * @return string
+     */
+    function get_canonical_filesdir($path = '') {
+        // Make canonical name if possible.
+        $realdir = realpath($this->filesdir);
+        if ($realdir != false) {
+            // Canonize rest of name when we sure that path is recognized by OS.
+            $realdir .= str_replace('/', DIRECTORY_SEPARATOR, $path);
+        } else {
+            // Leave as is.
+            $realdir = $this->filesdir . $path;
+        }
+        return $realdir;
+    }
+}

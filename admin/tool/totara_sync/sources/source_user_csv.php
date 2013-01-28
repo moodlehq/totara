@@ -28,7 +28,9 @@ require_once($CFG->dirroot.'/admin/tool/totara_sync/lib.php');
 class totara_sync_source_user_csv extends totara_sync_source_user {
 
     function get_filepath() {
-        return empty($this->filesdir) ? '' : $this->filesdir.'/csv/ready/user.csv';
+        $path = '/csv/ready/user.csv';
+        $pathos = $this->get_canonical_filesdir($path);
+        return $pathos;
     }
 
     function config_form(&$mform) {
