@@ -90,9 +90,11 @@ abstract class cohort_rule_sqlhandler_in extends cohort_rule_sqlhandler {
 class cohort_rule_sqlhandler_in_userfield extends cohort_rule_sqlhandler_in {
     protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
-        $sqlhandler = new stdClass();
+
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'iu'.$this->ruleid, ($not != 'not'));
-        $sqlhandler->sql = "u.{$field} {$sqlin}";
+
+        $sqlhandler = new stdClass();
+        $sqlhandler->sql = "lower(u.{$field}) {$sqlin}";
         $sqlhandler->params = $params;
         return $sqlhandler;
     }
@@ -123,14 +125,16 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
 
     protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
-        $sqlhandler = new stdClass();
+
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'icu' . $this->ruleid, ($not != 'not'));
+
+        $sqlhandler = new stdClass();
         $sqlhandler->sql = "EXISTS (
                                    SELECT 1
                                      FROM {user_info_data} usinda
                                     WHERE usinda.userid = u.id
                                       AND usinda.fieldid = {$field}
-                                      AND usinda.data {$sqlin}
+                                      AND lower(usinda.data) {$sqlin}
                                    )";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -144,8 +148,10 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
 class cohort_rule_sqlhandler_in_posfield extends cohort_rule_sqlhandler_in {
     protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
-        $sqlhandler = new stdClass();
+
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'ipf'.$this->ruleid, ($not != 'not'));
+
+        $sqlhandler = new stdClass();
         $sqlhandler->sql = "EXISTS (
                                    SELECT 1
                                      FROM {pos_assignment} pa
@@ -153,7 +159,7 @@ class cohort_rule_sqlhandler_in_posfield extends cohort_rule_sqlhandler_in {
                                        ON pa.positionid = p.id
                                     WHERE pa.userid = u.id
                                       AND pa.type = ".POSITION_TYPE_PRIMARY . "
-                                      AND p.{$field} {$sqlin}
+                                      AND lower(p.{$field}) {$sqlin}
                                    )";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -173,8 +179,10 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
 
     protected function construct_sql_snippet($field, $not, $lov) {
         global $DB;
-        $sqlhandler = new stdClass();
+
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'ipc'.$this->ruleid, ($not != 'not'));
+
+        $sqlhandler = new stdClass();
         $sqlhandler->sql = "exists("
                 ."select 1 "
                 ."from {pos_assignment} pa "
@@ -183,7 +191,7 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and ptid.fieldid={$field} "
-                ."and ptid.data {$sqlin}"
+                ."and lower(ptid.data) {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -197,8 +205,10 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
 class cohort_rule_sqlhandler_in_posorgfield extends cohort_rule_sqlhandler_in {
     protected function construct_sql_snippet($field, $not, $lov){
         global $DB;
-        $sqlhandler = new stdClass();
+
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'ipo'.$this->ruleid, ($not != 'not'));
+
+        $sqlhandler = new stdClass();
         $sqlhandler->sql = "exists("
                 ."select 1 "
                 ."from {pos_assignment} pa "
@@ -206,7 +216,7 @@ class cohort_rule_sqlhandler_in_posorgfield extends cohort_rule_sqlhandler_in {
                 ."on pa.organisationid=o.id "
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
-                ."and o.{$field} {$sqlin}"
+                ."and lower(o.{$field}) {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -227,8 +237,10 @@ class cohort_rule_sqlhandler_in_posorgcustomfield extends cohort_rule_sqlhandler
 
     protected function construct_sql_snippet($field, $not, $lov){
         global $DB;
-        $sqlhandler = new stdClass();
+
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'ipoc'.$this->ruleid, ($not != 'not'));
+
+        $sqlhandler = new stdClass();
         $sqlhandler->sql = "exists ("
                 ."select 1 "
                 ."from {pos_assignment} pa "
@@ -237,7 +249,7 @@ class cohort_rule_sqlhandler_in_posorgcustomfield extends cohort_rule_sqlhandler
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and otid.fieldid={$field} "
-                ."and otid.data {$sqlin}"
+                ."and lower(otid.data) {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;

@@ -309,7 +309,8 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
         array_walk(
             $listofvalues,
             function(&$value, $key){
-                $value = trim($value);
+                //strtolower() to maintain case insensitivity for all sql languages
+                $value = strtolower(trim($value));
             }
         );
         $this->equal = $sqlhandler->equal = $equal;
