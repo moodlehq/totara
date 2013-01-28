@@ -60,7 +60,6 @@ $attendees = facetoface_get_attendees($session->id);
 // Load cancellations
 $cancellations = facetoface_get_cancellations($session->id);
 
-
 /**
  * Capability checks to see if the current user can view this page
  *
@@ -75,11 +74,17 @@ $cancellations = facetoface_get_cancellations($session->id);
  * 3) Taking attendance
  *   - Requires mod/facetoface:takeattendance capabilities in the course
  *
+ * 4) A manager approving his staff's booking requests
+ *   - Manager does not neccesarily have any capabilities in this course
+ *   - Show only attendees who are also the manager's staff
+ *   - Show only staff awaiting approval
+ *   - Show any staff who have cancelled
+ *   - Shouldn't throw an error if there are previously declined attendees
  */
+require_login();
 
 $context = context_course::instance($course->id);
 $contextmodule = context_module::instance($cm->id);
-require_course_login($course);
 
 // Actions the user can perform
 $can_view_attendees = has_capability('mod/facetoface:viewattendees', $context);
@@ -155,6 +160,7 @@ if ($takeattendance && !$can_take_attendance) {
     print_error('nopermissions', '', '', get_capability_string('mod/facetoface:takeattendance'));
 }
 
+$PAGE->set_context($context);
 
 /**
  * Handle submitted data
@@ -196,9 +202,7 @@ add_to_log($course->id, 'facetoface', 'view attendees', "view.php?id=$cm->id", $
 $pagetitle = format_string($facetoface->name);
 
 $PAGE->set_url('/mod/facetoface/attendees.php', array('s' => $s));
-$PAGE->set_context($context);
 $PAGE->set_cm($cm);
-
 $PAGE->set_title($pagetitle);
 $PAGE->set_heading($course->fullname);
 
