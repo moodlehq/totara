@@ -37,7 +37,7 @@ function totara_block_addtoplan_get_content($courseid, $userid) {
     }
 
     // Get plans that contain course to exclude them from the list
-    $plans_with_course = call_user_func("dp_course_component::get_plans_containing_item", $courseid, $userid);
+    $plans_with_course = dp_course_component::get_plans_containing_item($courseid, $userid);
 
     if ($plans_with_course) {
         if ($exclude_plans = array_values($plans_with_course)) {
