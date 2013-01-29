@@ -23,7 +23,7 @@
  * @subpackage totara_hierarchy
  */
 
-require_once $CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/evidence.php';
+require_once $CFG->dirroot.'/totara/hierarchy/prefix/competency/evidenceitem/type/record.php';
 
 /**
  * Course completion competency evidence type
@@ -95,22 +95,22 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
         // the sortorder
         $sql = "
             SELECT DISTINCT
-                ceie.id AS id,
-                cei.id AS itemid,
-                cei.competencyid,
+                ccr.id AS id,
+                ccrit.id AS itemid,
+                ccrit.competencyid,
                 cc.userid,
-                ceie.timecreated,
+                ccr.timecreated,
                 cc.timecompleted,
                 proficient.proficient,
                 cs.defaultid
             FROM
-                {comp_evidence_items} cei
+                {comp_criteria} ccrit
             INNER JOIN
                 {comp} co
-             ON cei.competencyid = co.id
+             ON ccrit.competencyid = co.id
             INNER JOIN
                 {course} c
-             ON cei.iteminstance = c.id
+             ON ccrit.iteminstance = c.id
             INNER JOIN
                 {course_completions} cc
             ON cc.course = c.id
@@ -135,25 +135,25 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
             ) proficient
             ON cs.id = proficient.scaleid
             LEFT JOIN
-                {comp_evidence_items_evidence} ceie
-             ON ceie.itemid = cei.id
-            AND ceie.userid = cc.userid
+                {comp_criteria_record} ccr
+             ON ccr.itemid = ccrit.id
+            AND ccr.userid = cc.userid
             WHERE
-                cei.itemtype = 'coursecompletion'
+                ccrit.itemtype = 'coursecompletion'
             AND cc.id IS NOT NULL
             AND proficient.proficient IS NOT NULL
             AND
             (
                 (
-                ceie.proficiencymeasured <> proficient.proficient
+                ccr.proficiencymeasured <> proficient.proficient
                 AND
                     (
-                        ceie.timemodified < cc.timecompleted
-                     OR ceie.timemodified < cc.timeenrolled
-                     OR ceie.timemodified < cc.timestarted
+                        ccr.timemodified < cc.timecompleted
+                     OR ccr.timemodified < cc.timeenrolled
+                     OR ccr.timemodified < cc.timestarted
                     )
                 )
-             OR ceie.proficiencymeasured IS NULL
+             OR ccr.proficiencymeasured IS NULL
             )
         ";
 
@@ -165,7 +165,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
                     mtrace('.', '');
                 }
 
-                $evidence = new competency_evidence_item_evidence((array)$record, false);
+                $evidence = new comp_criteria_record((array)$record, false);
 
                 if ($record->timecompleted) {
                     $evidence->proficiencymeasured = $record->proficient;

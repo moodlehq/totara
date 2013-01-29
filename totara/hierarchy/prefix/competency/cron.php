@@ -75,7 +75,7 @@ function competency_cron() {
 
     $sql = "
         UPDATE
-            {comp_evidence}
+            {comp_record}
         SET
             reaggregate = 0
         WHERE
@@ -176,19 +176,19 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
     //
     $sql = "
         SELECT DISTINCT
-            ce.id AS evidenceid,
-            ce.userid,
+            cr.id AS evidenceid,
+            cr.userid,
             c.id AS competencyid,
             c.path,
             c.aggregationmethod,
             proficient.proficient AS proficiencyexpected,
-            cei.evidenceid AS itemid,
-            ceie.status AS itemstatus,
-            ceie.proficiencymeasured AS itemproficiency,
-            ceie.timemodified AS itemmodified,
-            cei.childid AS childid,
-            cce.timemodified AS childmodified,
-            cce.proficiency AS childproficiency
+            cc.evidenceid AS itemid,
+            ccr.status AS itemstatus,
+            ccr.proficiencymeasured AS itemproficiency,
+            ccr.timemodified AS itemmodified,
+            cc.childid AS childid,
+            chldcr.timemodified AS childmodified,
+            chldcr.proficiency AS childproficiency
         FROM
             (
                 SELECT
@@ -196,7 +196,7 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                     competencyid,
                     NULL AS childid
                 FROM
-                    {comp_evidence_items}
+                    {comp_criteria}
                 UNION
                 SELECT
                     NULL AS evidenceid,
@@ -208,13 +208,13 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
                     parentid <> 0
                 AND frameworkid = ?
                 AND depthlevel <> ?
-            ) cei
+            ) cc
         INNER JOIN
             {comp} c
-         ON cei.competencyid = c.id
+         ON cc.competencyid = c.id
         INNER JOIN
-            {comp_evidence} ce
-         ON ce.competencyid = c.id
+            {comp_record} cr
+         ON cr.competencyid = c.id
         INNER JOIN
             {comp_scale_assignments} csa
          ON c.frameworkid = csa.frameworkid
@@ -233,17 +233,17 @@ function competency_cron_aggregate_evidence($timestarted, $depth) {
         ) proficient
         ON csa.scaleid = proficient.scaleid
         LEFT JOIN
-            {comp_evidence_items_evidence} ceie
-         ON cei.evidenceid = ceie.itemid
-        AND ce.userid = ceie.userid
+            {comp_criteria_record} ccr
+         ON cc.evidenceid = ccr.itemid
+        AND cr.userid = ccr.userid
         LEFT JOIN
-            {comp_evidence} cce
-         ON cce.competencyid = cei.childid
-        AND ce.userid = cce.userid
+            {comp_record} chldcr
+         ON chldcr.competencyid = cc.childid
+        AND cr.userid = chldcr.userid
         WHERE
-            ce.reaggregate > 0
-        AND ce.reaggregate <= ?
-        AND ce.manual = 0
+            cr.reaggregate > 0
+        AND cr.reaggregate <= ?
+        AND cr.manual = 0
         AND c.depthlevel = ?
         AND c.aggregationmethod <> ?
         ORDER BY

@@ -116,12 +116,12 @@ class dp_competency_component extends dp_base_component {
             // Use the 'live' status value
             $status = "
                 LEFT JOIN
-                    {comp_evidence} ce
-                 ON a.competencyid = ce.competencyid
-                AND ce.userid = :planuserid
+                    {comp_record} cr
+                 ON a.competencyid = cr.competencyid
+                AND cr.userid = :planuserid
                 LEFT JOIN
                     {comp_scale_values} csv
-                 ON ce.proficiency = csv.id";
+                 ON cr.proficiency = csv.id";
             $params['planuserid'] = $this->plan->userid;
         }
 
@@ -400,19 +400,19 @@ class dp_competency_component extends dp_base_component {
         list($insql, $inparams) = $DB->get_in_or_equal($competencies);
         $sql = "
             SELECT
-                cei.id,
-                cei.competencyid,
-                cei.iteminstance AS courseid,
+                cc.id,
+                cc.competencyid,
+                cc.iteminstance AS courseid,
                 c.fullname,
-                cei.linktype
+                cc.linktype
             FROM
-                {comp_evidence_items} cei
+                {comp_criteria} cc
             LEFT JOIN
                 {course} c
-             ON cei.iteminstance = c.id
+             ON cc.iteminstance = c.id
             WHERE
-                cei.itemtype = ?
-            AND cei.competencyid $insql
+                cc.itemtype = ?
+            AND cc.competencyid $insql
         ";
         $params = array(COMPETENCY_EVIDENCE_TYPE_COURSE_COMPLETION);
         $params = array_merge($params, $inparams);
@@ -508,10 +508,10 @@ class dp_competency_component extends dp_base_component {
             $from .= "LEFT JOIN {comp_scale_values} csv ON ca.scalevalueid = csv.id ";
         } else {
             // Use the 'live' status value
-            $from .= "LEFT JOIN {comp_evidence} ce
-                             ON ca.competencyid = ce.competencyid AND ce.userid = ?
+            $from .= "LEFT JOIN {comp_record} cr
+                             ON ca.competencyid = cr.competencyid AND cr.userid = ?
                       LEFT JOIN {comp_scale_values} csv
-                             ON ce.proficiency = csv.id ";
+                             ON cr.proficiency = csv.id ";
             $params[] = $this->plan->userid;
         }
         $from .= "LEFT JOIN {dp_priority_scale_value} psv
@@ -1505,12 +1505,12 @@ class dp_competency_component extends dp_base_component {
             // Use the 'live' status value
             $sql .= "
                 LEFT JOIN
-                    {comp_evidence} ce
-                 ON ca.competencyid = ce.competencyid
-                AND ce.userid = ?
+                    {comp_record} cr
+                 ON ca.competencyid = cr.competencyid
+                AND cr.userid = ?
                 LEFT JOIN
                     {comp_scale_values} csv
-                 ON ce.proficiency = csv.id ";
+                 ON cr.proficiency = csv.id ";
         }
 
         $sql .= "WHERE ca.competencyid = ? AND ca.planid = ?";

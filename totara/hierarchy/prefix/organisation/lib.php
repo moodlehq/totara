@@ -101,12 +101,12 @@ class organisation extends hierarchy {
         }
 
 
-        // nullify all references to these organisations in comp_evidence table
+        // nullify all references to these organisations in comp_record table
         $prefix = hierarchy::get_short_prefix('competency');
 
         list($in_sql, $params) = $DB->get_in_or_equal($items);
 
-        $sql = "UPDATE {{$prefix}_evidence}
+        $sql = "UPDATE {{$prefix}_record}
             SET organisationid = NULL
             WHERE organisationid $in_sql";
         $DB->execute($sql, $params);

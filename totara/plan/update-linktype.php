@@ -41,7 +41,7 @@ if ($component == 'course') {
     $todb = new stdClass();
     $todb->id = $compevid;
     $todb->linktype = $linkval;
-    $result = $DB->update_record('comp_evidence_items', $todb);
+    $result = $DB->update_record('comp_criteria', $todb);
 
 } else if ($component == 'pos') {
     $todb = new stdClass();

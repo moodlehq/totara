@@ -1339,9 +1339,9 @@ class competency_course_set extends course_set {
 
         $sql = "SELECT c.*
             FROM {course} AS c
-            JOIN {comp_evidence_items} AS cei ON c.id = cei.iteminstance
-           WHERE cei.competencyid = ?
-             AND cei.itemtype = ?";
+            JOIN {comp_criteria} AS cc ON c.id = cc.iteminstance
+           WHERE cc.competencyid = ?
+             AND cc.itemtype = ?";
 
         return $DB->get_records_sql($sql, array($this->competencyid, 'coursecompletion'));
     }

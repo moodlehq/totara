@@ -60,9 +60,9 @@ if (empty($CFG->competencyuseresourcelevelevidence)) {
     ///
     $selected = array();
     $sql = "SELECT c.* FROM
-        {comp_evidence_items} ei
-        INNER JOIN {course} c ON ei.iteminstance = c.id
-        WHERE ei.competencyid = ?";
+        {comp_criteria} cc
+        INNER JOIN {course} c ON cc.iteminstance = c.id
+        WHERE cc.competencyid = ?";
     $assigned = $DB->get_records_sql($sql, array($id));
     $assigned = !empty($assigned) ? $assigned : array();
     foreach ($assigned as $item) {

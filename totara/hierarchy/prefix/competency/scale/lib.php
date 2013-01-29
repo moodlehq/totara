@@ -65,11 +65,11 @@ function competency_scale_is_used($scaleid) {
     global $DB;
 
     $sql = "SELECT
-                ce.competencyid
+                cr.competencyid
             FROM
-                {comp_evidence} ce
+                {comp_record} cr
             LEFT JOIN {comp_scale_values} csv
-              ON csv.id = ce.proficiency
+              ON csv.id = cr.proficiency
             WHERE csv.scaleid = ?";
 
 

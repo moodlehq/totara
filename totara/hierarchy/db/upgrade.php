@@ -125,5 +125,62 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2012110500, 'totara_hierarchy');
     }
 
+    // Alter table names
+    // comp_evidence => comp_record,
+    // comp_evidence_items => comp_criteria
+    // comp_evidence_items_evidence => comp_criteria_record
+    if ($oldversion < 2013031400) {
+        $compevidence = new xmldb_table('comp_evidence');
+        $compevidenceitems = new xmldb_table('comp_evidence_items');
+        $compevidenceitemsevidence = new xmldb_table('comp_evidence_items_evidence');
+
+
+        $dbman->rename_table($compevidence, 'comp_record');
+        $dbman->rename_table($compevidenceitems, 'comp_criteria');
+        $dbman->rename_table($compevidenceitemsevidence, 'comp_criteria_record');
+
+        // Indexes
+        $indexes = array(
+          'comp_record' => array(
+              //'old name', 'new name, TYPE, array('fields')
+              array('compevid_usecom_uix', 'compreco_usecom_uix', XMLDB_INDEX_UNIQUE, array('userid', 'competencyid')),
+              array('compevid_com_ix', 'compreco_com_ix', XMLDB_INDEX_NOTUNIQUE, array('competencyid')),
+              array('compevid_man_ix', 'compreco_man_ix', XMLDB_INDEX_NOTUNIQUE, array('manual')),
+              array('compevid_rea_ix', 'compreco_rea_ix', XMLDB_INDEX_NOTUNIQUE, array('reaggregate')),
+              array('compevid_use_ix', 'compreco_use_ix', XMLDB_INDEX_NOTUNIQUE, array('userid'))
+          ),
+          'comp_criteria' => array(
+              //'old name', 'new name, TYPE, array('fields')
+              array('compeviditem_com_ix', 'compcrit_com_ix', XMLDB_INDEX_NOTUNIQUE, array('competencyid')),
+              array('compeviditem_ite2_ix', 'compcrit_ite2_ix', XMLDB_INDEX_NOTUNIQUE, array('iteminstance')),
+              array('compeviditem_ite_ix', 'compcrit_ite_ix', XMLDB_INDEX_NOTUNIQUE, array('itemtype'))
+          ),
+          'comp_criteria_record' => array(
+              //'old name', 'new name, TYPE, array('fields')
+              array('compeviditemevid_useco_uix', 'compcritreco_useco_uix', XMLDB_INDEX_UNIQUE, array('userid', 'competencyid', 'itemid')),
+              array('compeviditemevid_ite_ix', 'compcritreco_ite_ix', XMLDB_INDEX_NOTUNIQUE, array('itemid')),
+              array('compeviditemevid_pro_ix', 'compcritreco_pro_ix', XMLDB_INDEX_NOTUNIQUE, array('proficiencymeasured')),
+              array('compeviditemevid_tim_ix', 'compcritreco_tim_ix', XMLDB_INDEX_NOTUNIQUE, array('timemodified')),
+              array('compeviditemevid_use_ix', 'compcritreco_use_ix', XMLDB_INDEX_NOTUNIQUE, array('userid')),
+              array('compeviditemevid_useite_ix', 'compcritreco_useite_ix', XMLDB_INDEX_NOTUNIQUE, array('userid', 'itemid'))
+          )
+        );
+
+        foreach ($indexes as $tablename => $tableindexes) {
+            $table = new xmldb_table($tablename);
+            foreach ($tableindexes as $index) {
+                $oldindex = new xmldb_index($index[0], $index[2], $index[3]);
+                $newindex = new xmldb_index($index[1], $index[2], $index[3]);
+                if ($dbman->index_exists($table, $oldindex)) {
+                    $dbman->drop_index($table, $oldindex);
+                }
+                if (!$dbman->index_exists($table, $newindex)) {
+                    $dbman->add_index($table, $newindex);
+                }
+            }
+        }
+        totara_upgrade_mod_savepoint(true, 2013031400, 'totara_hierarchy');
+    }
+
     return true;
 }

@@ -34,7 +34,7 @@ class competency_evidence extends data_object {
      * Database table
      * @var string
      */
-    public $table = 'comp_evidence';
+    public $table = 'comp_record';
 
     /**
      * Database required fields
@@ -65,7 +65,7 @@ class competency_evidence extends data_object {
      * @return object data_object instance or false if none found.
      */
     public static function fetch($params) {
-        return self::fetch_helper('comp_evidence', __CLASS__, $params);
+        return self::fetch_helper('comp_record', __CLASS__, $params);
     }
 
     /**

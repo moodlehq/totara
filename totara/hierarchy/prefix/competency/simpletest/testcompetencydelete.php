@@ -120,9 +120,9 @@ class competencydelete_test extends UnitTestCaseUsingDatabase {
         $this->load_test_table('comp_template', 'totara/hierarchy', $this->template_data);
         $this->load_test_table('comp_template_assignment', 'totara/hierarchy', $this->template_assignment_data);
         $this->load_test_table('comp_type_info_data', 'totara/hierarchy', $this->type_data_data);
-        $this->load_test_table('comp_evidence', 'totara/hierarchy', $this->evidence_data);
-        $this->load_test_table('comp_evidence_items', 'totara/hierarchy', $this->evidence_data);
-        $this->load_test_table('comp_evidence_items_evidence', 'totara/hierarchy', $this->evidence_data);
+        $this->load_test_table('comp_record', 'totara/hierarchy', $this->evidence_data);
+        $this->load_test_table('comp_criteria', 'totara/hierarchy', $this->evidence_data);
+        $this->load_test_table('comp_criteria_record', 'totara/hierarchy', $this->evidence_data);
         $this->load_test_table('comp_relations', 'totara/hierarchy', $this->dummy_data);
         $this->load_test_table('pos_competencies', 'totara/hierarchy', $this->org_pos_data);
         $this->load_test_table('org_competencies', 'totara/hierarchy', $this->org_pos_data);
@@ -136,9 +136,9 @@ class competencydelete_test extends UnitTestCaseUsingDatabase {
         $this->drop_test_table('org_competencies');
         $this->drop_test_table('pos_competencies');
         $this->drop_test_table('comp_relations');
-        $this->drop_test_table('comp_evidence_items_evidence');
-        $this->drop_test_table('comp_evidence_items');
-        $this->drop_test_table('comp_evidence');
+        $this->drop_test_table('comp_criteria_record');
+        $this->drop_test_table('comp_criteria');
+        $this->drop_test_table('comp_record');
         $this->drop_test_table('comp_type_info_data');
         $this->drop_test_table('comp_template_assignment');
         $this->drop_test_table('comp_template');

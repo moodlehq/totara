@@ -172,10 +172,10 @@ function hierarchy_delete_competency_evidence($courseid) {
     // Remove all competency evidence items evidence
     $like_sql = $DB->sql_like('itemtype', '?');
     $like_param = 'course%';
-    $DB->delete_records_select("comp_evidence_items_evidence",
-        "itemid IN (SELECT id FROM {comp_evidence_items} WHERE $like_sql AND iteminstance = ?)", array($like_param, $courseid));
+    $DB->delete_records_select("comp_criteria_record",
+        "itemid IN (SELECT id FROM {comp_criteria} WHERE $like_sql AND iteminstance = ?)", array($like_param, $courseid));
 
-    $DB->delete_records_select("comp_evidence_items",
+    $DB->delete_records_select("comp_criteria",
         "(itemtype = 'coursecompletion' OR itemtype='coursegrade') AND iteminstance = ?", array($courseid));
 
     return true;

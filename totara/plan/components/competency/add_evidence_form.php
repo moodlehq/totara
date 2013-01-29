@@ -47,20 +47,20 @@ class totara_competency_evidence_form extends moodleform {
 
         if ($editing) {
             // Get the evidence record
-            $ce = $DB->get_record('comp_evidence', array('id' => $evidenceid));
+            $cr = $DB->get_record('comp_record', array('id' => $evidenceid));
 
             // get id and userid from competency evidence object
-            $userid = $ce->userid;
+            $userid = $cr->userid;
 
             // Get position title
             $position_title = '';
-            if ($ce && $ce->positionid) {
-                $position_title = $DB->get_field('pos', 'fullname', array('id' => $ce->positionid));
+            if ($cr && $cr->positionid) {
+                $position_title = $DB->get_field('pos', 'fullname', array('id' => $cr->positionid));
             }
             // Get organisation title
             $organisation_title = '';
-            if ($ce && $ce->organisationid) {
-                $organisation_title = $DB->get_field('org', 'fullname', array('id' => $ce->organisationid));
+            if ($cr && $cr->organisationid) {
+                $organisation_title = $DB->get_field('org', 'fullname', array('id' => $cr->organisationid));
             }
 
             $competency_title = ($competencyid != 0) ?
@@ -120,7 +120,7 @@ class totara_competency_evidence_form extends moodleform {
 
 
         if ($editing) {
-            $mform->addElement('hidden', 'competencyid', $ce->competencyid);
+            $mform->addElement('hidden', 'competencyid', $cr->competencyid);
             $mform->setType('competencyid', PARAM_INT);
             $mform->addElement('static', 'compname', get_string('competency', 'totara_hierarchy'), html_writer::tag('span', format_string($competency_title), array('id' => "competencytitle1")));
             $mform->addHelpButton('compname', 'competencyevidencecompetency', 'totara_hierarchy');
@@ -179,10 +179,10 @@ class totara_competency_evidence_form extends moodleform {
         $mform->setType('assessmenttype', PARAM_TEXT);
         $mform->addHelpButton('assessmenttype', 'competencyevidenceassessmenttype', 'totara_hierarchy');
 
-        if (!empty($ce) && $ce->proficiency) {
+        if (!empty($cr) && $cr->proficiency) {
             // editing existing competency evidence item
             // get id of the scale referred to by the evidence's proficiency
-            $scaleid = $DB->get_field('comp_scale_values', 'scaleid', array('id' => $ce->proficiency));
+            $scaleid = $DB->get_field('comp_scale_values', 'scaleid', array('id' => $cr->proficiency));
             $selectoptions = $DB->get_records_menu('comp_scale_values', array('scaleid' => $scaleid), 'sortorder');
             $mform->addElement('select', 'proficiency', get_string('status', 'totara_plan'), $selectoptions);
         } else if ($competencyid != 0) {

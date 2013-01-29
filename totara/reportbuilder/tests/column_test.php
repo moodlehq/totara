@@ -1030,9 +1030,9 @@ class columns_test extends advanced_testcase {
         $DB->insert_records_via_batch('comp', $this->comp_data);
         $DB->insert_record('comp_type_info_field', $this->type_field_data);
         $DB->insert_record('comp_type_info_data', $this->type_data_data);
-        $DB->insert_record('comp_evidence', $this->dummy_data);
-        $DB->insert_record('comp_evidence_items', $this->dummy_data);
-        $DB->insert_record('comp_evidence_items_evidence', $this->dummy_data);
+        $DB->insert_record('comp_record', $this->dummy_data);
+        $DB->insert_record('comp_criteria', $this->dummy_data);
+        $DB->insert_record('comp_criteria_record', $this->dummy_data);
         $DB->insert_record('comp_template', $this->dummy_data);
         $DB->insert_record('comp_template_assignment', $this->dummy_data);
         $DB->insert_record('pos_competencies', $this->dummy_data);

@@ -31,7 +31,7 @@ class rb_source_competency_evidence extends rb_base_source {
     public $defaultfilters, $requiredcolumns, $sourcetitle;
 
     function __construct() {
-        $this->base = '{comp_evidence}';
+        $this->base = '{comp_record}';
         $this->joinlist = $this->define_joinlist();
         $this->columnoptions = $this->define_columnoptions();
         $this->filteroptions = $this->define_filteroptions();

@@ -99,7 +99,7 @@ if ($nojs) {
     ///
     if ($deleteexisting && !empty($idlist)) {
 
-        $assigned = $DB->get_records('comp_evidence_items', array('competencyid' => $id));
+        $assigned = $DB->get_records('comp_criteria', array('competencyid' => $id));
         $assigned = !empty($assigned) ? $assigned : array();
 
         foreach ($assigned as $ritem) {
@@ -126,7 +126,7 @@ if ($nojs) {
         }
 
         $editingon = 1;
-        $evidence = $DB->get_records('comp_evidence_items', array('competencyid' => $id));
+        $evidence = $DB->get_records('comp_criteria', array('competencyid' => $id));
         $str_edit = get_string('edit');
         $str_remove = get_string('remove');
         $item = $competency;

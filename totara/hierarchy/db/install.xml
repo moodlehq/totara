@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="comp" COMMENT="Totara competencies" NEXT="comp_evidence">
+    <TABLE NAME="comp" COMMENT="Totara competencies" NEXT="comp_record">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
@@ -33,7 +33,7 @@
         <INDEX NAME="comp_par_ix" UNIQUE="false" FIELDS="parentid" PREVIOUS="comp_fra_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_evidence" COMMENT="Track current proficiency of a user in each competency" PREVIOUS="comp" NEXT="comp_evidence_items">
+    <TABLE NAME="comp_record" COMMENT="Track current proficiency of a user in each competency" PREVIOUS="comp" NEXT="comp_criteria">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
@@ -53,14 +53,14 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="compevid_usecom_uix" UNIQUE="true" FIELDS="userid, competencyid" NEXT="compevid_com_ix"/>
-        <INDEX NAME="compevid_com_ix" UNIQUE="false" FIELDS="competencyid" PREVIOUS="compevid_usecom_uix" NEXT="compevid_man_ix"/>
-        <INDEX NAME="compevid_man_ix" UNIQUE="false" FIELDS="manual" PREVIOUS="compevid_com_ix" NEXT="compevid_rea_ix"/>
-        <INDEX NAME="compevid_rea_ix" UNIQUE="false" FIELDS="reaggregate" PREVIOUS="compevid_man_ix" NEXT="compevid_use_ix"/>
-        <INDEX NAME="compevid_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compevid_rea_ix"/>
+        <INDEX NAME="compreco_usecom_uix" UNIQUE="true" FIELDS="userid, competencyid" NEXT="compreco_com_ix"/>
+        <INDEX NAME="compreco_com_ix" UNIQUE="false" FIELDS="competencyid" PREVIOUS="compreco_usecom_uix" NEXT="compreco_man_ix"/>
+        <INDEX NAME="compreco_man_ix" UNIQUE="false" FIELDS="manual" PREVIOUS="compreco_com_ix" NEXT="compreco_rea_ix"/>
+        <INDEX NAME="compreco_rea_ix" UNIQUE="false" FIELDS="reaggregate" PREVIOUS="compreco_man_ix" NEXT="compreco_use_ix"/>
+        <INDEX NAME="compreco_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compreco_rea_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_evidence_items" COMMENT="A competency can be achieved by one or more forms of evidence" PREVIOUS="comp_evidence" NEXT="comp_evidence_items_evidence">
+    <TABLE NAME="comp_criteria" COMMENT="A competency can be achieved by one or more forms of evidence" PREVIOUS="comp_record" NEXT="comp_criteria_record">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="competencyid"/>
         <FIELD NAME="competencyid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="itemtype"/>
@@ -76,12 +76,12 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="compeviditem_com_ix" UNIQUE="false" FIELDS="competencyid" NEXT="compeviditem_ite2_ix"/>
-        <INDEX NAME="compeviditem_ite2_ix" UNIQUE="false" FIELDS="iteminstance" PREVIOUS="compeviditem_com_ix" NEXT="compeviditem_ite_ix"/>
-        <INDEX NAME="compeviditem_ite_ix" UNIQUE="false" FIELDS="itemtype" PREVIOUS="compeviditem_ite2_ix"/>
+        <INDEX NAME="compcrit_com_ix" UNIQUE="false" FIELDS="competencyid" NEXT="compcrit_ite2_ix"/>
+        <INDEX NAME="compcrit_ite2_ix" UNIQUE="false" FIELDS="iteminstance" PREVIOUS="compcrit_com_ix" NEXT="compcrit_ite_ix"/>
+        <INDEX NAME="compcrit_ite_ix" UNIQUE="false" FIELDS="itemtype" PREVIOUS="compcrit_ite2_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_evidence_items_evidence" COMMENT="Tracks historical progress towards a competency for each user" PREVIOUS="comp_evidence_items" NEXT="comp_framework">
+    <TABLE NAME="comp_criteria_record" COMMENT="Tracks historical progress towards a competency for each user" PREVIOUS="comp_criteria" NEXT="comp_framework">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="competencyid"/>
@@ -96,15 +96,15 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="compeviditemevid_useco_uix" UNIQUE="true" FIELDS="userid, competencyid, itemid" NEXT="compeviditemevid_ite_ix"/>
-        <INDEX NAME="compeviditemevid_ite_ix" UNIQUE="false" FIELDS="itemid" PREVIOUS="compeviditemevid_useco_uix" NEXT="compeviditemevid_pro_ix"/>
-        <INDEX NAME="compeviditemevid_pro_ix" UNIQUE="false" FIELDS="proficiencymeasured" PREVIOUS="compeviditemevid_ite_ix" NEXT="compeviditemevid_tim_ix"/>
-        <INDEX NAME="compeviditemevid_tim_ix" UNIQUE="false" FIELDS="timemodified" PREVIOUS="compeviditemevid_pro_ix" NEXT="compeviditemevid_use_ix"/>
-        <INDEX NAME="compeviditemevid_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compeviditemevid_tim_ix" NEXT="compeviditemevid_useite_ix"/>
-        <INDEX NAME="compeviditemevid_useite_ix" UNIQUE="false" FIELDS="userid, itemid" PREVIOUS="compeviditemevid_use_ix"/>
+        <INDEX NAME="compcritreco_usecomite_uix" UNIQUE="true" FIELDS="userid, competencyid, itemid" NEXT="compcritreco_ite_ix"/>
+        <INDEX NAME="compcritreco_ite_ix" UNIQUE="false" FIELDS="itemid" PREVIOUS="compcritreco_usecomite_uix" NEXT="compcritreco_pro_ix"/>
+        <INDEX NAME="compcritreco_pro_ix" UNIQUE="false" FIELDS="proficiencymeasured" PREVIOUS="compcritreco_ite_ix" NEXT="compcritreco_tim_ix"/>
+        <INDEX NAME="compcritreco_tim_ix" UNIQUE="false" FIELDS="timemodified" PREVIOUS="compcritreco_pro_ix" NEXT="compcritreco_use_ix"/>
+        <INDEX NAME="compcritreco_use_ix" UNIQUE="false" FIELDS="userid" PREVIOUS="compcritreco_tim_ix" NEXT="compcritreco_useite_ix"/>
+        <INDEX NAME="compcritreco_useite_ix" UNIQUE="false" FIELDS="userid, itemid" PREVIOUS="compcritreco_use_ix"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="comp_framework" COMMENT="A collection of competencies that use a common competency scale" PREVIOUS="comp_evidence_items_evidence" NEXT="comp_relations">
+    <TABLE NAME="comp_framework" COMMENT="A collection of competencies that use a common competency scale" PREVIOUS="comp_criteria_record" NEXT="comp_relations">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="idnumber"/>

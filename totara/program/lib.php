@@ -1437,9 +1437,9 @@ function prog_get_courses_associated_with_programs($courses = null) {
                 WHERE c.id <> ? $insql
             UNION
                 SELECT c.id FROM {course} c
-                JOIN {comp_evidence_items} cei ON c.id = cei.iteminstance
-                AND cei.itemtype = ?
-                WHERE cei.competencyid IN
+                JOIN {comp_criteria} cc ON c.id = cc.iteminstance
+                AND cc.itemtype = ?
+                WHERE cc.competencyid IN
                     (SELECT DISTINCT competencyid FROM {prog_courseset} WHERE competencyid <> 0)
                 AND c.id <> ? $insql";
     $sql = "SELECT * FROM {course} WHERE id IN ($subquery)";

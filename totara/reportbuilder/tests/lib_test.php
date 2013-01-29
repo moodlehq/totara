@@ -560,7 +560,7 @@ class reportbuilderlib_test extends advanced_testcase {
         $DB->insert_record('org', $this->org_data);
         $DB->insert_record('pos', $this->pos_data);
         $DB->insert_records_via_batch('comp_scale_values', $this->comp_scale_values_data);
-        $DB->insert_record('comp_evidence', $this->comp_evidence_data);
+        $DB->insert_record('comp_record', $this->comp_evidence_data);
         $DB->insert_record('role_assignments', $this->role_assignments_data);
         $DB->insert_record('pos_assignment', $this->pos_assignment_data);
         $DB->insert_record('tag', $this->tag_data);

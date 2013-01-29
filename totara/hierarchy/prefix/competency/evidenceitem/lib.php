@@ -51,7 +51,7 @@ function comp_evitem_get_lookup($competency_id) {
     // Get a list of all the existing evidence items, to grey out the duplicates
     // below. For ease of checking, we'll just pull the itemtype and iteminstance
     // concatenated together with hyphens.
-    $existingevidencerecs = $DB->get_records('comp_evidence_items', array('competencyid' => $competency_id));
+    $existingevidencerecs = $DB->get_records('comp_criteria', array('competencyid' => $competency_id));
     if (!$existingevidencerecs) {
         return array();
     }

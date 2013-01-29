@@ -1422,7 +1422,7 @@ function totara_plan_comment_add($comment) {
 function plan_mark_competency_default($competencyid, $userid, $component) {
     global $DB, $CFG;
 
-    if (($DB->count_records('comp_evidence', array('userid' => $userid, 'competencyid' => $competencyid))) > 0) {
+    if (($DB->count_records('comp_record', array('userid' => $userid, 'competencyid' => $competencyid))) > 0) {
         return;
     }
 

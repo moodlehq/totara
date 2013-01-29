@@ -45,7 +45,7 @@ $COMPETENCY_EVIDENCE_TYPES = array(
 
 /**
  * An abstract object that holds methods and attributes common to all
- * competency evidence type objects
+ * competency evidence criteria type objects
  * @abstract
  */
 abstract class competency_evidence_type extends data_object {
@@ -54,7 +54,7 @@ abstract class competency_evidence_type extends data_object {
      * Database table
      * @var string
      */
-    public $table = 'comp_evidence_items';
+    public $table = 'comp_criteria';
 
     /**
      * Evidence item type, to be defined in child classes
@@ -81,7 +81,7 @@ abstract class competency_evidence_type extends data_object {
 
         // If supplied an ID, load record
         if (is_numeric($data)) {
-            $data = (array)$DB->get_record('comp_evidence_items', array('id' => $data));
+            $data = (array)$DB->get_record('comp_criteria', array('id' => $data));
         }
 
         // Check this competency evidence type is installed
@@ -127,7 +127,7 @@ abstract class competency_evidence_type extends data_object {
             $wherestr .= 'AND itemmodule = :itemmodule';
         }
 
-        if ($DB->count_records_select('comp_evidence_items', $wherestr, $params) ) {
+        if ($DB->count_records_select('comp_criteria', $wherestr, $params) ) {
             return false;
         }
 
@@ -147,7 +147,7 @@ abstract class competency_evidence_type extends data_object {
 
         // Update evidence count
         // Get latest count
-        $count = $DB->get_field('comp_evidence_items', 'COUNT(*)', array('competencyid' => $competency->id));
+        $count = $DB->get_field('comp_criteria', 'COUNT(*)', array('competencyid' => $competency->id));
         $todb = new stdClass();
         $todb->id = $competency->id;
         $todb->evidencecount = (int) $count;
@@ -173,11 +173,11 @@ abstract class competency_evidence_type extends data_object {
         }
 
         // Delete any evidence items evidence
-        $DB->delete_records('comp_evidence_items_evidence', array('itemid' => $this->id));
+        $DB->delete_records('comp_criteria_record', array('itemid' => $this->id));
 
         // Update evidence count
         // Get latest count
-        $count = $DB->get_field('comp_evidence_items', 'COUNT(*)', array('competencyid' => $competency->id));
+        $count = $DB->get_field('comp_criteria', 'COUNT(*)', array('competencyid' => $competency->id));
         $todb = new stdClass();
         $todb->id = $competency->id;
         $todb->evidencecount = (int) $count;

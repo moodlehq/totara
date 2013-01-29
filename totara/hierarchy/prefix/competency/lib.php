@@ -162,9 +162,9 @@ class competency extends hierarchy {
 
         // delete rows from all these other tables:
         $db_data = array(
-            $this->shortprefix.'_evidence' => 'competencyid',
-            $this->shortprefix.'_evidence_items' => 'competencyid',
-            $this->shortprefix.'_evidence_items_evidence' => 'competencyid',
+            $this->shortprefix.'_record' => 'competencyid',
+            $this->shortprefix.'_criteria' => 'competencyid',
+            $this->shortprefix.'_criteria_record' => 'competencyid',
             $this->shortprefix.'_relations' => 'id1',
             $this->shortprefix.'_relations' => 'id2',
             hierarchy::get_short_prefix('position').'_competencies' => 'competencyid',
@@ -299,7 +299,7 @@ class competency extends hierarchy {
      */
     function get_evidence($item) {
         global $DB;
-        return $DB->get_records($this->shortprefix.'_evidence_items', array('competencyid' => $item->id), 'id');
+        return $DB->get_records($this->shortprefix.'_criteria', array('competencyid' => $item->id), 'id');
     }
 
     /**
@@ -350,40 +350,40 @@ class competency extends hierarchy {
         return $DB->get_records_sql(
                 "
                 SELECT DISTINCT
-                    cei.id AS evidenceid,
+                    cc.id AS evidenceid,
                     c.id AS id,
                     c.fullname,
                     f.id AS fid,
                     f.fullname AS framework,
-                    cei.itemtype AS evidencetype,
-                    cei.iteminstance AS evidenceinstance,
-                    cei.itemmodule AS evidencemodule,
-                    cei.linktype as linktype
+                    cc.itemtype AS evidencetype,
+                    cc.iteminstance AS evidenceinstance,
+                    cc.itemmodule AS evidencemodule,
+                    cc.linktype as linktype
                 FROM
-                    {{$this->shortprefix}_evidence_items} cei
+                    {{$this->shortprefix}_criteria} cc
                 INNER JOIN
                     {{$this->shortprefix}} c
-                 ON cei.competencyid = c.id
+                 ON cc.competencyid = c.id
                 INNER JOIN
                     {{$this->shortprefix}_framework} f
                  ON f.id = c.frameworkid
                 LEFT JOIN
                     {modules} m
-                 ON cei.itemtype = 'activitycompletion'
-                AND m.name = cei.itemmodule
+                 ON cc.itemtype = 'activitycompletion'
+                AND m.name = cc.itemmodule
                 LEFT JOIN
                     {course_modules} cm
-                 ON cei.itemtype = 'activitycompletion'
-                AND cm.instance = cei.iteminstance
+                 ON cc.itemtype = 'activitycompletion'
+                AND cm.instance = cc.iteminstance
                 AND cm.module = m.id
                 WHERE
                 (
-                        cei.itemtype <> 'activitycompletion'
-                    AND cei.iteminstance = ?
+                        cc.itemtype <> 'activitycompletion'
+                    AND cc.iteminstance = ?
                 )
                 OR
                 (
-                        cei.itemtype = 'activitycompletion'
+                        cc.itemtype = 'activitycompletion'
                     AND cm.course = ?
                 )
                 ORDER BY
@@ -590,28 +590,28 @@ class competency extends hierarchy {
 
 
     /**
-     * Returns an array of all competencies that a user has a comp_evidence
+     * Returns an array of all competencies that a user has a comp_record
      * record for, keyed on the competencyid. Also returns the required
      * proficiency value and isproficient, which is 1 if the user meets the
      * proficiency and 0 otherwise
      */
     static function get_proficiencies($userid) {
         global $DB;
-        $sql = "SELECT ce.competencyid, prof.proficiency, csv.proficient AS isproficient
-            FROM {comp_evidence} ce
-            LEFT JOIN {comp} c ON c.id=ce.competencyid
+        $sql = "SELECT cr.competencyid, prof.proficiency, csv.proficient AS isproficient
+            FROM {comp_record} cr
+            LEFT JOIN {comp} c ON c.id=cr.competencyid
             LEFT JOIN {comp_scale_assignments} csa
                 ON c.frameworkid = csa.frameworkid
             LEFT JOIN {comp_scale_values} csv
                 ON csv.scaleid=csa.scaleid
-                AND csv.id=ce.proficiency
+                AND csv.id=cr.proficiency
             LEFT JOIN (
                 SELECT scaleid, MAX(id) AS proficiency
                 FROM {comp_scale_values}
                 WHERE proficient=1
                 GROUP BY scaleid
             ) prof on prof.scaleid=csa.scaleid
-            WHERE ce.userid = ?";
+            WHERE cr.userid = ?";
         return $DB->get_records_sql($sql, array($userid));
     }
 
@@ -784,13 +784,13 @@ class competency extends hierarchy {
         global $DB;
 
         $proficient_sql = "SELECT
-            ce.competencyid
+            cr.competencyid
             FROM
-                {comp_evidence} ce
+                {comp_record} cr
             JOIN
-                {comp_scale_values} csv ON csv.id = ce.proficiency
+                {comp_scale_values} csv ON csv.id = cr.proficiency
             WHERE csv.proficient = 1
-              AND ce.userid = ?
+              AND cr.userid = ?
               ";
         $completed = $DB->get_records_sql($proficient_sql, array($userid));
 
@@ -860,11 +860,11 @@ class competency extends hierarchy {
         $ids = array_keys($children);
 
         list($idssql, $idsparams) = sql_sequence('competencyid', $ids);
-        // number of comp_evidence records
-        $data['user_achievement'] = $DB->count_records_select('comp_evidence', $idssql, $idsparams);
+        // number of comp_record records
+        $data['user_achievement'] = $DB->count_records_select('comp_record', $idssql, $idsparams);
 
-        // number of comp_evidence_item records
-        $data['evidence'] = $DB->count_records_select('comp_evidence_items', $idssql, $idsparams);
+        // number of comp_criteria records
+        $data['evidence'] = $DB->count_records_select('comp_criteria', $idssql, $idsparams);
 
         // number of comp_relations records
         list($ids1sql, $ids1params) = sql_sequence('id1', $ids);

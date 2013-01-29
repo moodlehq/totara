@@ -61,10 +61,10 @@ if ($result !== true) {
     print_error($result[0], $result[1]);
 }
 
-if ($evidence_record = $DB->get_record('comp_evidence', array('userid' => $userid, 'competencyid' => $competencyid))) {
-    $evidenceid = $evidence_record->id;
-    $evidence_record->evidenceid = $evidence_record->id;
-    $evidence_record->id = null;
+if ($competency_record = $DB->get_record('comp_record', array('userid' => $userid, 'competencyid' => $competencyid))) {
+    $evidenceid = $competency_record->id;
+    $competency_record->evidenceid = $competency_record->id;
+    $competency_record->id = null;
 } else {
     $evidenceid = null;
 }
@@ -89,7 +89,7 @@ if (!$returnurl) {
 
 $mform = new totara_competency_evidence_form(null, compact('id','evidenceid','competencyid','positionid',
     'organisationid','userid','user','s','nojs','returnurl'));
-$mform->set_data($evidence_record);
+$mform->set_data($competency_record);
 
 if ($mform->is_cancelled()) {
     redirect($returnurl);

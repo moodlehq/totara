@@ -144,22 +144,22 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
         // the sortorder
         $sql = "
             SELECT DISTINCT
-                ceie.id AS id,
-                cei.id AS itemid,
-                cei.competencyid,
+                ccr.id AS id,
+                cc.id AS itemid,
+                cc.competencyid,
                 cmc.userid,
-                ceie.timecreated,
+                ccr.timecreated,
                 cmc.completionstate,
                 proficient.proficient,
                 cs.defaultid
             FROM
-                {comp_evidence_items} cei
+                {comp_criteria} cc
             INNER JOIN
                 {comp} co
-             ON cei.competencyid = co.id
+             ON cc.competencyid = co.id
             INNER JOIN
                 {course_modules_completion} cmc
-             ON cei.iteminstance = cmc.coursemoduleid
+             ON cc.iteminstance = cmc.coursemoduleid
             INNER JOIN
                 {comp_scale_assignments} csa
             ON co.frameworkid = csa.frameworkid
@@ -181,20 +181,20 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
             ) proficient
             ON cs.id = proficient.scaleid
             LEFT JOIN
-                {comp_evidence_items_evidence} ceie
-             ON ceie.itemid = cei.id
-            AND ceie.userid = cmc.userid
+                {comp_criteria_record} ccr
+             ON ccr.itemid = cc.id
+            AND ccr.userid = cmc.userid
             WHERE
-                cei.itemtype = 'activitycompletion'
+                cc.itemtype = 'activitycompletion'
             AND cmc.id IS NOT NULL
             AND proficient.proficient IS NOT NULL
             AND
             (
                 (
-                    ceie.proficiencymeasured <> proficient.proficient
-                AND ceie.timemodified < cmc.timemodified
+                    ccr.proficiencymeasured <> proficient.proficient
+                AND ccr.timemodified < cmc.timemodified
                 )
-             OR ceie.proficiencymeasured IS NULL
+             OR ccr.proficiencymeasured IS NULL
             )
         ";
 
@@ -206,8 +206,8 @@ class competency_evidence_type_activitycompletion extends competency_evidence_ty
                     mtrace('.', '');
                 }
 
-                require_once($CFG->dirroot . '/totara/hierarchy/prefix/competency/evidenceitem/type/evidence.php');
-                $evidence = new competency_evidence_item_evidence((array)$record, false);
+                require_once($CFG->dirroot . '/totara/hierarchy/prefix/competency/evidenceitem/type/record.php');
+                $evidence = new comp_criteria_record((array)$record, false);
 
                 if (in_array($record['completionstate'], array(COMPLETION_COMPLETE, COMPLETION_COMPLETE_PASS))) {
                     $evidence->proficiencymeasured = $record['proficient'];

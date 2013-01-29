@@ -431,4 +431,4 @@ class rb_source_totaramessages extends rb_base_source {
         return $out;
     }
 
-} // end of rb_source_competency_evidence class
+}

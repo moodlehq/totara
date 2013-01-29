@@ -221,17 +221,17 @@ class hierarchylib_test extends advanced_testcase {
 
 
         //set up evidence data
-        $this->evidence_data = new stdClass();
-        $this->evidence_data->id = 1;
-        $this->evidence_data->userid = 1;
-        $this->evidence_data->competencyid = 1;
-        $this->evidence_data->timecreated = 1265963591;
-        $this->evidence_data->timemodified = 1265963591;
-        $this->evidence_data->reaggregate = 1;
-        $this->evidence_data->manual = 1;
-        $this->evidence_data->iteminstance = 1;
-        $this->evidence_data->usermodified = 2;
-        $this->evidence_data->itemid = 1;
+        $this->competency_data = new stdClass();
+        $this->competency_data->id = 1;
+        $this->competency_data->userid = 1;
+        $this->competency_data->competencyid = 1;
+        $this->competency_data->timecreated = 1265963591;
+        $this->competency_data->timemodified = 1265963591;
+        $this->competency_data->reaggregate = 1;
+        $this->competency_data->manual = 1;
+        $this->competency_data->iteminstance = 1;
+        $this->competency_data->usermodified = 2;
+        $this->competency_data->itemid = 1;
 
 
         //set up a competency template
@@ -314,9 +314,9 @@ class hierarchylib_test extends advanced_testcase {
         $DB->insert_records_via_batch('comp', $this->comp_data);
         $DB->insert_record('comp_type_info_field', $this->type_field_data);
         $DB->insert_record('comp_type_info_data', $this->type_data_data);
-        $DB->insert_record('comp_evidence', $this->evidence_data);
-        $DB->insert_record('comp_evidence_items', $this->evidence_data);
-        $DB->insert_record('comp_evidence_items_evidence', $this->evidence_data);
+        $DB->insert_record('comp_record', $this->competency_data);
+        $DB->insert_record('comp_criteria', $this->competency_data);
+        $DB->insert_record('comp_criteria_record', $this->competency_data);
         $DB->insert_record('comp_template', $this->template_data);
         $DB->insert_record('comp_template_assignment', $this->template_assignment_data);
         $DB->insert_record('org_competencies', $this->org_pos_data);

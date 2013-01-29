@@ -27,15 +27,15 @@ require_once("{$CFG->dirroot}/completion/data_object.php");
 require_once("{$CFG->dirroot}/totara/hierarchy/prefix/competency/evidence/evidence.php");
 
 /**
- * Competency evidence item evidence
+ * Competency evidence criteria record
  */
-class competency_evidence_item_evidence extends data_object {
+class comp_criteria_record extends data_object {
 
     /**
      * Database table
      * @var string
      */
-    public $table = 'comp_evidence_items_evidence';
+    public $table = 'comp_criteria_record';
 
     /**
      * Database required fields

@@ -45,7 +45,7 @@ require_capability('totara/hierarchy:updatecompetency', $sitecontext);
 
 if ($confirm) { // confirmation made
     if (confirm_sesskey()) {
-        if ($DB->delete_records('comp_evidence', array('id' => $id))) {
+        if ($DB->delete_records('comp_record', array('id' => $id))) {
             redirect($returnurl);
         } else {
             redirect($returnurl,get_string('couldnotdeletece', 'totara_hierarchy'));
