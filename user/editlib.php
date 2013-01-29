@@ -308,6 +308,9 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
 
     $mform->addElement('text', 'idnumber', get_string('idnumber'), 'maxlength="255" size="25"');
     $mform->setType('idnumber', PARAM_NOTAGS);
+    if (!is_siteadmin() && $user->totarasync) {
+        $mform->freeze('idnumber');
+    }
 
     $mform->addElement('text', 'institution', get_string('institution'), 'maxlength="40" size="25"');
     $mform->setType('institution', PARAM_TEXT);
