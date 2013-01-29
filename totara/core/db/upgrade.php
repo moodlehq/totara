@@ -351,5 +351,35 @@ function xmldb_totara_core_upgrade($oldversion) {
         }
         totara_upgrade_mod_savepoint(true, 2012121200, 'totara_core');
     }
+
+    if ($oldversion < 2013041000) {
+        //fix the sort order for any legacy (1.0.x) custom fields
+        //that are still ordered by now non-existent custom field categories
+
+        $countsql = "SELECT COUNT(*) as count
+                     FROM {course_info_field}
+                     WHERE categoryid IS NOT NULL";
+        $count = $DB->count_records_sql($countsql);
+
+        if ($count != 0) {
+            $sql = "SELECT id, sortorder, categoryid
+                    FROM {course_info_field}
+                    ORDER BY categoryid, sortorder";
+            $neworder = $DB->get_records_sql($sql);
+            $sortorder = 1;
+            $transaction = $DB->start_delegated_transaction();
+
+            foreach ($neworder as $item) {
+                $item->sortorder = $sortorder++;
+                $item->categoryid = null;
+                $DB->update_record('course_info_field', $item);
+            }
+
+            $transaction->allow_commit();
+        }
+
+        totara_upgrade_mod_savepoint(true, 2013041000, 'totara_core');
+    }
+
     return true;
 }
