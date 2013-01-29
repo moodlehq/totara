@@ -182,5 +182,43 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013031400, 'totara_hierarchy');
     }
 
+    if ($oldversion < 2013041000) {
+        //fix the sort order for any legacy (1.0.x) hierarchy custom fields
+        //that are still ordered by now non-existent depth categories
+
+        $hierarchylist = array('pos', 'org' ,'comp');
+        foreach ($hierarchylist as $hierarchy) {
+            $typesql = "SELECT id FROM {{$hierarchy}_type}";
+            $types = $DB->get_records_sql($typesql);
+
+            foreach ($types as $type) {
+                $countsql = "SELECT COUNT(*) as count
+                             FROM {{$hierarchy}_type_info_field}
+                             WHERE typeid = ?
+                             AND categoryid IS NOT NULL";
+                $count = $DB->count_records_sql($countsql, array($type->id));
+
+                if ($count != 0){
+                    $sql = "SELECT id, sortorder, categoryid
+                            FROM {{$hierarchy}_type_info_field}
+                            WHERE typeid = ?
+                            ORDER BY categoryid, sortorder";
+                    $neworder = $DB->get_records_sql($sql, array($type->id));
+                    $sortorder = 1;
+                    $transaction = $DB->start_delegated_transaction();
+
+                    foreach ($neworder as $item) {
+                        $item->sortorder = $sortorder++;
+                        $item->categoryid = null;
+                        $DB->update_record("{$hierarchy}_type_info_field", $item);
+                    }
+
+                    $transaction->allow_commit();
+                }
+            }
+        }
+        totara_upgrade_mod_savepoint(true, 2013041000, 'totara_hierarchy');
+    }
+
     return true;
 }
