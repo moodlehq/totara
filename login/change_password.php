@@ -26,6 +26,7 @@
 
 require('../config.php');
 require_once('change_password_form.php');
+require_once($CFG->libdir.'/authlib.php');
 
 $id     = optional_param('id', SITEID, PARAM_INT); // current course
 $return = optional_param('return', 0, PARAM_BOOL); // redirect after password change
@@ -112,6 +113,9 @@ if ($mform->is_cancelled()) {
     if (!$userauth->user_update_password($USER, $data->newpassword1)) {
         print_error('errorpasswordupdate', 'auth');
     }
+
+    // Reset login lockout - we want to prevent any accidental confusion here.
+    login_unlock_account($USER);
 
     // store old password
     $todb = new stdClass();
