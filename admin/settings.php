@@ -49,6 +49,18 @@ if ($data = data_submitted() and confirm_sesskey()) {
     }
     $adminroot = admin_get_root(true); //reload tree
     $settingspage = $adminroot->locate($section, true);
+
+    $themes = get_plugin_list('theme');
+
+    if (preg_match('/^themesetting(.+)$/', $section, $matches)) {
+        //themename is everything after after 'themesetting'
+        $themename = $matches[1];
+
+        if (isset($themes[$themename])) {
+            //purge theme cache
+            theme_reset_specific_cache($themename);
+        }
+    }
 }
 
 if ($PAGE->user_allowed_editing() && $adminediting != -1) {
