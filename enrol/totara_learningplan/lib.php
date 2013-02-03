@@ -86,8 +86,8 @@ class enrol_totara_learningplan_plugin extends enrol_plugin {
             totara_set_notification($OUTPUT->container(get_string('nowenrolled', 'enrol_totara_learningplan', $course->fullname), 'plan_box'), null, array('class' => 'notifysuccess'));
         } else {
             // this isn't an approved course in their learning plan or learning plan isn't approved
-            $form = get_string('notpermitted', 'enrol_totara_learningplan');
-            $form .= $OUTPUT->action_link(new moodle_url('/totara/plan/index.php', array('userid' => $USER->id)), get_string('learningplan', 'enrol_totara_learningplan'));
+            $link = $OUTPUT->action_link(new moodle_url('/totara/plan/index.php', array('userid' => $USER->id)), get_string('learningplan', 'enrol_totara_learningplan'));
+            $form = get_string('notpermitted', 'enrol_totara_learningplan', $link);
 
             if (!empty($course->guest)) {
                 $destination = new moodle_url('/course/view.php', array('id' => $course->id));

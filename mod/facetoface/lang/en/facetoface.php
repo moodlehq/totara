@@ -53,7 +53,7 @@ $string['conditionsexplanation'] = 'All of these criteria must be met for the no
 $string['confirm'] = 'Confirm';
 $string['confirmanager'] = 'Confirm manager\'s email address';
 $string['confirmmanageremailaddress'] = 'Confirm manager email address';
-$string['confirmmanageremailaddressquestion'] = 'Is <b>{$a}</b> still your manager\'s email address?';
+$string['confirmmanageremailaddressquestion'] = 'Is <strong>{$a}</strong> still your manager\'s email address?';
 $string['confirmmanageremailinstruction1'] = 'You previously entered the following as your manager\'s email address:';
 $string['confirmmanageremailinstruction2'] = 'Is this still your manager\'s email address?';
 $string['confirmation'] = 'Confirmation';
@@ -233,7 +233,7 @@ $string['noticedeleteconfirm'] = 'Delete site notice \'{$a->name}\'?<br/><blockq
 $string['noticetext'] = 'Notice text';
 $string['notsignedup'] = 'You are not signed up for this session.';
 $string['notsubmittedyet'] = 'Not yet evaluated';
-$string['noupcoming'] = '<p><i>No upcoming sessions</i></p>';
+$string['noupcoming'] = '<p><em>No upcoming sessions</em></p>';
 $string['odsformat'] = 'OpenDocument';
 $string['onehour'] = '1 hour';
 $string['oneminute'] = '1 minute';
@@ -633,8 +633,6 @@ The **Request message** section displays the notices sent to the learner and the
 $string['room_help'] = '**Room** is the name/number/identifier of the room being used for the training session.
 
 The **Room** displays on the \'Sign-up\' page, the \'View all sessions\' page and in all email notifications.';
-
-$string['sessiondate'] = 'Session date is the date on which the session occurs.';
 
 $string['sessiondatetimeknown_help'] = '**If a session\'s date/time is known**
 

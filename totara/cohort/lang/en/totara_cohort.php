@@ -49,7 +49,7 @@ $string['cohortalertoptions_help'] = '
 
 When multiple options are selected the user can choose their preferred options from the alert dropdown menu.
 
-When no options are selected, the alert function is disabled..';
+When no options are selected, the alert function is disabled.';
 $string['and'] = 'AND';
 $string['andcohort'] = 'AND...';
 $string['anycohort'] = 'Any';
@@ -103,8 +103,8 @@ $string['cohortdatealreadyended'] = 'Already ended';
 $string['cohortdatenotyetstarted'] = 'Not yet started';
 $string['cohortglobalsettings'] = 'Audience global settings';
 $string['cohortmembers'] = 'Audience members';
-$string['cohortmsgalreadyended'] = 'This audience is inactive, because its <b>end date</b> is in the past: <b>{$a}</b>. No users will be enrolled in any learning items while this audience is inactive, and any existing enrolments due to this audience will be unenrolled.';
-$string['cohortmsgnotyetstarted'] = 'This audience is inactive, because its <b>start date</b> is in the future: <b>{$a}</b>. No users will be enrolled in any learning items while this audience is inactive, and any existing enrolments due to this audience will be unenrolled.';
+$string['cohortmsgalreadyended'] = 'This audience is inactive, because its <strong>end date</strong> is in the past: <strong>{$a}</strong>. No users will be enrolled in any learning items while this audience is inactive, and any existing enrolments due to this audience will be unenrolled.';
+$string['cohortmsgnotyetstarted'] = 'This audience is inactive, because its <strong>start date</strong> is in the future: <strong>{$a}</strong>. No users will be enrolled in any learning items while this audience is inactive, and any existing enrolments due to this audience will be unenrolled.';
 $string['cohortname'] = 'Audience name';
 $string['cohortruleschanged'] = 'Audience rules changed';
 $string['cohorts'] = 'Audiences';
@@ -115,8 +115,8 @@ $string['cohortoperatorandlabel'] = 'AND (members are in every rule set)';
 $string['cohortoperatorlabel'] = 'Membership setting between every rule set';
 $string['cohortoperatorlabel_help'] = 'This setting determines how the audience rules will behave if you define more than one rule set. It is based on the logical "AND" and "OR" operators.
 
-* If set to "AND", then a user will only be added to the audience if they satisfy the conditions of <b>all</b> of the rule sets. (They will be omitted if they fail to satisfy even one ruleset)
-* If set to "OR", then a user will be added to the audience if they satisfy the conditions of <b>any</b> of the rule sets. (They only have to satisfy the conditions of a single rule set to be included)
+* If set to "AND", then a user will only be added to the audience if they satisfy the conditions of <strong>all</strong> of the rule sets. (They will be omitted if they fail to satisfy even one ruleset)
+* If set to "OR", then a user will be added to the audience if they satisfy the conditions of <strong>any</strong> of the rule sets. (They only have to satisfy the conditions of a single rule set to be included)
 
 Note that each ruleset has its own, separate, logical operator to indicate the relationship between the rules within that ruleset.';
 $string['cohortoperatororlabel'] = 'OR (members are in any rule set)';
@@ -140,7 +140,7 @@ $string['criteria'] = 'Criteria';
 $string['criteriaoptional'] = 'All criteria are optional but you have to select at least one option.';
 $string['currentusers'] = 'Current users';
 $string['currentusersmatching'] = 'Current users matching';
-$string['dateformathint'] = '&nbsp;<b>Format:</b> dd/mm/yy';
+$string['dateformathint'] = '&nbsp;<strong>Format:</strong> dd/mm/yy';
 $string['dateisbefore'] = ' is before {$a}';
 $string['dateisafter'] = 'is after {$a}';
 $string['dateisbeforepastduration'] = 'is more than {$a} day(s) ago';

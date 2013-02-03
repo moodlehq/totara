@@ -395,9 +395,9 @@ $string['proficientvaluefrozen'] = 'You cannot change this setting because the s
 $string['proficientvaluefrozenonlyprof'] = 'You cannot change this setting because the scale must have at least one proficient value at all times';
 $string['relatedcompetencies'] = 'Related Competencies';
 $string['relateditemremovecheck'] = 'Are you absolutely sure you want to remove this competency relationship?';
-$string['removedcompetencyevidenceitem'] = 'The <i>{$a}</i> evidence item and its data have been removed';
-$string['removedcompetencyrelateditem'] = 'The competency <i>{$a}</i> is no longer related to this competency';
-$string['removedcompetencytemplatecompetency'] = 'The competency <i>{$a}</i> is no longer assigned to this template';
+$string['removedcompetencyevidenceitem'] = 'The <em>{$a}</em> evidence item and its data have been removed';
+$string['removedcompetencyrelateditem'] = 'The competency <em>{$a}</em> is no longer related to this competency';
+$string['removedcompetencytemplatecompetency'] = 'The competency <em>{$a}</em> is no longer assigned to this template';
 $string['competencyreturntoframework'] = 'Return to competency framework';
 $string['scaleadded'] = 'Competency scale "{$a}" added';
 $string['scalescustomcreate'] = 'Add a new competency scale';
@@ -755,7 +755,7 @@ The lowest scale value that is marked as proficient is automatically given to an
 $string['competencyscalescalevalues_help'] = 'Enter values for the competency scale (one per line), in order from most competent to least competent. For example:
 
 <p class="indent">
-  <i> Competent<br /> Competent with Supervision<br /> Not Competent<br /> </i>
+  <em> Competent<br /> Competent with Supervision<br /> Not Competent<br /> </em>
 </p>';
 $string['competencyscalescalename_help'] = 'The name of the Competency Scale that will be used by Competency frameworks.';
 $string['competencyframeworkgeneral_help'] = '**Competency Frameworks** are set up to hold the skills, knowledge and behavioural competencies you expect staff to achieve.
@@ -775,7 +775,7 @@ $string['competencyframeworks_help'] = '**Competency Frameworks** are set up to 
 Competencies may be grouped under different kinds of framework. For example, one framework could hold all industry national competency standards (taken from an industry body), while another framework could hold specific competencies set up in-house.
 
 Before you set up a competency framework you must have a **Competency Scale** set up.';
-$string['competencyframeworkidnumber_help'] = 'The framework ID number is a unique number that can be used to represent the framework.</h1>';
+$string['competencyframeworkidnumber_help'] = 'The framework ID number is a unique number that can be used to represent the framework.';
 $string['competencyidnumber_help'] = 'Competency ID number is a unique number used to represent the competency.';
 $string['competencyframeworkscale_help'] = 'Competency scales enable you to define the criteria by which a competency can be measured. For example, a scale might have three values ‘competent, competent with supervision, not competent’.
 

@@ -122,15 +122,26 @@ $string['tracking_help'] = 'The Completion to track, this can be any activity wi
 $string['requirement_help'] = 'The Required feedback activity that needs to be completed.
 ';
 $string['invitationperiod'] = 'Period';
-$string['invitationperiod_help'] = 'The period before the reminder is sent in days.
+$string['invitationperiod_help'] = 'The period before the invitation is sent in days.
 ';
 $string['invitationsubject'] = 'Invitiation Reminder Subject';
-$string['invitationsubject_help'] = 'This is the subect of the invitation email reminder that is sent.
+$string['invitationsubject_help'] = 'This is the subject of the invitation email that is sent.
+
+The subject can include a number of placeholders:
+
+* [firstname] - Users firstname
+* [lastname] - Users lastname
+* [coursepageurl] - A clickable link to the course homepage
+* [coursename] - Name of the course
+* [managername] - Name of users manager
+* [days counter up] - Number of days since completion
+* [days count down] - Number of days until deadline
 ';
 $string['invitationmessage'] = 'Message';
-$string['invitationmessage_help'] = 'This is the message for the reminder email.
+$string['invitationmessage_help'] = 'This is the message for the invitation email.
 
-The message can include a number of placeholders
+The message can include a number of placeholders:
+
 * [firstname] - Users firstname
 * [lastname] - Users lastname
 * [coursepageurl] - A clickable link to the course homepage
@@ -145,7 +156,8 @@ $string['reminderperiod_help'] = 'The period before the reminder is sent in days
 $string['remindersubject'] = 'Subject';
 $string['remindersubject_help'] = 'This is the subject for the reminder email.
 
-The subject can include a number of placeholders
+The subject can include a number of placeholders:
+
 * [firstname] - Users firstname
 * [lastname] - Users lastname
 * [coursepageurl] - A clickable link to the course homepage
@@ -157,7 +169,8 @@ The subject can include a number of placeholders
 $string['remindermessage'] = 'Message';
 $string['remindermessage_help'] = 'This is the message for the reminder email.
 
-The message can include a number of placeholders
+The message can include a number of placeholders:
+
 * [firstname] - Users firstname
 * [lastname] - Users lastname
 * [coursepageurl] - A clickable link to the course homepage

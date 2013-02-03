@@ -868,7 +868,7 @@ $string['competencyevidencestatus'] = 'Evidence Status';
 $string['objectivescalevalues_help'] = 'Enter a list of values for the new objective scale (one value per line), in order from highest to lowest. For example:
 
 <p class="indent">
-  <i> High<br /> Medium<br /> Low </i>
+  <em> High<br /> Medium<br /> Low </em>
 </p>';
 $string['priorityscaleassign_help'] = 'A **Priority scale** is the name of the priority scale you are working in.';
 $string['objectivescalevaluenumeric_help'] = '**Objective scale value numerical value** allows you to assign a numerical value alongside a description (name) for the scale value.';
@@ -887,7 +887,7 @@ $string['templateenddate_help'] = 'Click the calendar icon to select the **End d
 $string['priorityscalevalues_help'] = 'Enter a list of values for the new priority scale (one priority per line), in order from highest priority to lowest. For example:
 
 <p class="indent">
-  <i> High<br /> Medium<br /> Low </i>
+  <em> High<br /> Medium<br /> Low </em>
 </p>';
 $string['priorityscalevaluenumeric_help'] = '**Priority scale value numerical value** enables you to assign a numerical value to this scale value as well as the description (name).';
 $string['objectivescalevalueachieved_help'] = 'When **Achieved** is checked this objective scale value will be used to indicate the objective is achieved by the learner.
