@@ -38,3 +38,5 @@ phpunit.xml
 composer.phar
 composer.lock
 /vendor/
+# Private key should never be added to repository
+totara_private.pem

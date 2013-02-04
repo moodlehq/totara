@@ -27,6 +27,8 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+define('PUBLIC_KEY_PATH', $CFG->dirroot . '/totara_public.pem');
+
 /**
  * Returns the major Totara version of this site (which may be different from Moodle in older versions)
  *
@@ -1528,4 +1530,28 @@ function totara_theme_generate_autocolors($css, $theme, $substitutions) {
         }
     }
     return str_replace($find, $replace, $css);
+}
+
+/**
+ * Encrypt any string using totara public key
+ *
+ * @param string $plaintext
+ * @param string $key Public key If not set totara public key will be used
+ * @return string Encrypted data
+ */
+function encrypt_data($plaintext, $key = '') {
+    global $CFG;
+    require_once($CFG->libdir.'/phpseclib/Crypt/RSA.php');
+
+    $rsa = new Crypt_RSA();
+    if ($key == '') {
+        $key = file_get_contents(PUBLIC_KEY_PATH);
+    }
+    if (!$key) {
+        return false;
+    }
+    $rsa->loadKey($key);
+    $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
+    $ciphertext = $rsa->encrypt($plaintext);
+    return $ciphertext;
 }

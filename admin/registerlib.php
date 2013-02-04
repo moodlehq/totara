@@ -1,4 +1,30 @@
 <?php
+/*
+ * This file is part of Totara LMS
+ *
+ * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Valerii Kuznetsov <valerii.kuznetsov@totaralms.com>
+ * @package totara
+ * @subpackage core
+ *
+ * This file contains functions used by the registration pages
+ */
+defined('MOODLE_INTERNAL') || die();
+define('SITE_REGISTRATION_EMAIL', 'registrations@totaralms.com');
 
 /**
  *  Collect information to be sent to register.totaralms.com
@@ -56,9 +82,45 @@ function send_registration_data($data) {
     );
 
     $recdata = $ch->post('https://register.totaralms.com/register/report.php', $data, $options);
+    if ($recdata === false) {
+        $recdata = send_registration_data_email($data);
+    }
     if ($recdata !== false) {
         set_config('registered', time());
     }
+}
+
+/**
+ * Send registration data to totaralms.com using curl
+ *
+ * @param array $data Associative array of data to send
+ * @return bool Result of operation
+ */
+function send_registration_data_email($data) {
+    global $CFG;
+
+    $options = defined('JSON_PRETTY_PRINT') ? JSON_PRETTY_PRINT : 0;
+    $sdata = json_encode($data, $options);
+    $encrypted = encrypt_data($sdata);
+
+    $attachment = md5('register' . microtime(true));
+    $attachmentpath = $CFG->dataroot . '/' . $attachment;
+    file_put_contents($attachmentpath, $encrypted);
+
+    $attachmentfilename = 'site_registration.ttr';
+    $subject = "[SITE REGISTRATION] Site: " . $data['sitefullname'];
+    $message = get_string('siteregistrationemailbody', 'admin', $data['sitefullname']);
+    $fromaddress = $CFG->noreplyaddress;
+
+    $touser = new stdClass();
+    $touser->email = SITE_REGISTRATION_EMAIL;
+    $emailed = email_to_user($touser, $fromaddress, $subject, $message, '', $attachment, $attachmentfilename);
+
+    if (!unlink($attachmentpath)) {
+        mtrace(get_string('error:failedtoremovetempfile', 'totara_reportbuilder'));
+    }
+
+    return $emailed;
 }
 
 /**
@@ -85,4 +147,3 @@ function registration_cron() {
         mtrace("Registration update done");
     }
 }
-?>
