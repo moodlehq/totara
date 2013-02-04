@@ -2498,7 +2498,7 @@ abstract class rb_base_source {
             get_string('tags', 'totara_reportbuilder'), // label
             'multicheck',     // filtertype
             array(            // options
-                'checkoptions' => $this->rb_filter_tags_list(),
+                'selectchoices' => $this->rb_filter_tags_list(),
             )
         );
 

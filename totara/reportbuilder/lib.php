@@ -2456,7 +2456,7 @@ class reportbuilder {
 
         $worksheet = array();
 
-        $worksheet[0] =& $workbook->add_worksheet('');
+        $worksheet[0] = $workbook->add_worksheet('');
         $row = 0;
         $col = 0;
 
@@ -2535,12 +2535,12 @@ class reportbuilder {
 
         $worksheet = array();
 
-        $worksheet[0] =& $workbook->add_worksheet('');
+        $worksheet[0] = $workbook->add_worksheet('');
         $row = 0;
         $col = 0;
-        $dateformat =& $workbook->add_format();
+        $dateformat = $workbook->add_format();
         $dateformat->set_num_format('dd mmm yyyy');
-        $datetimeformat =& $workbook->add_format();
+        $datetimeformat = $workbook->add_format();
         $datetimeformat->set_num_format('dd mmm yyyy h:mm');
 
         if (is_array($restrictions) && count($restrictions) > 0) {
