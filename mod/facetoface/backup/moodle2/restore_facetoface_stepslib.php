@@ -13,8 +13,7 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
         $paths[] = new restore_path_element('facetoface', '/activity/facetoface');
         $paths[] = new restore_path_element('facetoface_session', '/activity/facetoface/sessions/session');
         $paths[] = new restore_path_element('facetoface_sessions_dates', '/activity/facetoface/sessions/session/sessions_dates/sessions_date');
-        $paths[] = new restore_path_element('facetoface_session_data', '/activity/facetoface/sessions/session/session_data/session_data_element');
-        $paths[] = new restore_path_element('facetoface_session_field', '/activity/facetoface/sessions/session/session_field/session_field_element');
+        $paths[] = new restore_path_element('facetoface_session_custom_fields', '/activity/facetoface/sessions/session/custom_fields/custom_field');
         if ($userinfo) {
             $paths[] = new restore_path_element('facetoface_signup', '/activity/facetoface/sessions/session/signups/signup');
             $paths[] = new restore_path_element('facetoface_signups_status', '/activity/facetoface/sessions/session/signups/signup/signups_status/signup_status');
@@ -100,18 +99,34 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
     }
 
 
-    protected function process_facetoface_session_data($data) {
+    protected function process_facetoface_session_custom_fields($data) {
         global $DB;
 
         $data = (object)$data;
-        $oldid = $data->id;
 
-        $data->sessionid = $this->get_new_parentid('facetoface_session');
-        $data->fieldid = $this->get_mappingid('facetoface_session_field');
-
-        // insert the entry record
-        $newitemid = $DB->insert_record('facetoface_session_data', $data);
-        $this->set_mapping('facetoface_session_data', $oldid, $newitemid, true); // childs and files by itemname
+        if ($data->field_data) {
+            if (!$field = $DB->get_record('facetoface_session_field', array('shortname' => $data->field_name))) {
+                debugging("Custom field [{$data->field_name}] in face to face session cannot be restored " .
+                        "because it doesn't exist in the target database");
+            } else if ($field->type != $data->field_type) {
+                debugging("Custom field [{$data->field_name}] in face to face session cannot be restored " .
+                        "because there is a data type mismatch - " .
+                        "target type = [{$field->type}] <> restore type = [{$data->field_type}]");
+            } else {
+                if ($customfield = $DB->get_record('facetoface_session_data',
+                        array('fieldid' => $field->id, 'sessionid' => $this->get_new_parentid('facetoface_session')))) {
+                    $customfield->data = $data->field_data;
+                    $DB->update_record('facetoface_session_data', $customfield);
+                } else {
+                    $customfield = new stdClass();
+                    $customfield->id = 0;
+                    $customfield->sessionid = $this->get_new_parentid('facetoface_session');
+                    $customfield->fieldid = $field->id;
+                    $customfield->data    = $data->field_data;
+                    $DB->insert_record('facetoface_session_data', $customfield);
+                }
+            }
+        }
     }
 
 
