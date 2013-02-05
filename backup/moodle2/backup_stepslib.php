@@ -452,7 +452,7 @@ class backup_course_structure_step extends backup_structure_step {
             'defaultgroupingid', 'lang', 'theme',
             'timecreated', 'timemodified',
             'requested', 'restrictmodules',
-            'enablecompletion', 'completionstartonenrol', 'completionnotify', 'icon'));
+            'enablecompletion', 'completionstartonenrol', 'completionnotify', 'icon', 'coursetype'));
 
         $category = new backup_nested_element('category', array('id'), array(
             'name', 'description'));
@@ -461,6 +461,13 @@ class backup_course_structure_step extends backup_structure_step {
 
         $tag = new backup_nested_element('tag', array('id'), array(
             'name', 'rawname'));
+
+        $customfields = new backup_nested_element('custom_fields');
+
+        $customfield = new backup_nested_element('custom_field', array('id'), array(
+            'field_name', 'field_type', 'field_data'));
+
+        $module = new backup_nested_element('module', array(), array('modulename'));
 
         // attach format plugin structure to $course element, only one allowed
         $this->add_plugin_structure('format', $course, false);
@@ -492,6 +499,9 @@ class backup_course_structure_step extends backup_structure_step {
         $course->add_child($tags);
         $tags->add_child($tag);
 
+        $course->add_child($customfields);
+        $customfields->add_child($customfield);
+
         // Set the sources
 
         $courserec = $DB->get_record('course', array('id' => $this->task->get_courseid()));
@@ -516,6 +526,16 @@ class backup_course_structure_step extends backup_structure_step {
                                  AND ti.itemid = ?', array(
                                      backup_helper::is_sqlparam('course'),
                                      backup::VAR_PARENTID));
+
+        $customfield->set_source_sql('SELECT f.id, f.shortname AS field_name, f.datatype AS field_type, d.data AS field_data
+                                        FROM {course_info_field} f
+                                        JOIN {course_info_data} d ON d.fieldid = f.id
+                                       WHERE d.courseid = ?', array(backup::VAR_PARENTID));
+
+        $module->set_source_sql('SELECT m.name AS modulename
+                                   FROM {modules} m
+                                   JOIN {course_allowed_modules} cam ON m.id = cam.module
+                                  WHERE course = ?', array(backup::VAR_COURSEID));
 
         // Some annotations
 
