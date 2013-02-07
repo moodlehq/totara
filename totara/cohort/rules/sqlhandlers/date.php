@@ -122,7 +122,7 @@ class cohort_rule_sqlhandler_date_usercustomfield extends cohort_rule_sqlhandler
                 ."select 1 from {user_info_data} usinda "
                 ."where usinda.userid=u.id "
                 ."and usinda.fieldid={$field} "
-                ."and " . $DB->sql_cast_char2int('usinda.data') . " {$comparison}"
+                ."and " . $DB->sql_cast_char2int('usinda.data', true) . " {$comparison}"
             .")";
         $sqlhandler->params = array();
         return $sqlhandler;
@@ -174,7 +174,7 @@ class cohort_rule_sqlhandler_date_poscustomfield extends cohort_rule_sqlhandler_
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and ptid.fieldid={$field} "
-                ."and ".$DB->sql_cast_char2int('ptid.data')." {$comparison}"
+                ."and ".$DB->sql_cast_char2int('ptid.data', true)." {$comparison}"
             .")";
         $sqlhandler->params = array();
         return $sqlhandler;
@@ -196,7 +196,7 @@ class cohort_rule_sqlhandler_date_orgcustomfield extends cohort_rule_sqlhandler_
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and otid.fieldid={$field} "
-                ."and ".$DB->sql_cast_char2int('otid.data')." {$comparison}"
+                ."and ".$DB->sql_cast_char2int('otid.data', true)." {$comparison}"
             .")";
         $sqlhandler->params = array();
         return $sqlhandler;
