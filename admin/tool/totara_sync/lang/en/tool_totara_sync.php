@@ -228,8 +228,8 @@ $string['info'] = 'Info';
 ///
 /// Totara sync help strings
 ///
-$string['country_help'] = "This should be formatted within the CSV as the 2 character code of the country.
-    For example 'New Zealand' should be 'NZ'";
+$string['country_help'] = "This should be formatted within the CSV as the 2 character code of the country. For example 'New Zealand' should be 'NZ'<br />
+see <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\">http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</a> for details";
 $string['fileaccess_help'] = '**Directory**: This option allows you to specify a directory on the server to be checked for sync files automatically
 
 **Upload**: This option requires you to upload files via the \'upload sync files\' page under sources in site administration';

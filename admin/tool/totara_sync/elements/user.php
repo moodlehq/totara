@@ -173,7 +173,7 @@ class totara_sync_element_user extends totara_sync_element {
                 }
 
                 // update user password
-                if (isset($suser->password)) {
+                if (isset($suser->password) && trim($suser->password) !== '') {
                     $userauth = get_auth_plugin($user->auth);
                     if ($userauth->can_change_password()) {
                         if (!$userauth->user_update_password($user, $suser->password)) {
@@ -249,7 +249,7 @@ class totara_sync_element_user extends totara_sync_element {
 
         $userauth = get_auth_plugin($user->auth);
         if ($userauth->can_change_password()) {
-            if (!isset($suser->password)) {
+            if (!isset($suser->password) || trim($suser->password) === '') {
                 // tag for password generation
                 set_user_preference('auth_forcepasswordchange', 1, $user->id);
                 set_user_preference('create_password',          1, $user->id);
@@ -377,54 +377,52 @@ class totara_sync_element_user extends totara_sync_element {
     }
 
     function set_sync_user_fields(&$user, $suser) {
-        if (isset($suser->username)) {
-            $user->username = strtolower($suser->username);  // usernames always lowercase in moodle
+        global $CFG;
+
+        $fields = array('address', 'city', 'country', 'department', 'description',
+            'email', 'firstname', 'institution', 'lang', 'lastname', 'phone1', 'phone2',
+            'timemodified', 'timezone', 'url', 'username');
+
+        $requiredfields = array('username', 'firstname', 'lastname', 'email');
+
+        foreach ($fields as $field) {
+            if (isset($suser->$field)) {
+                if (!in_array($field, $requiredfields) || trim($suser->$field) !== '') {
+                    // Not an empty required field - other fields are allowed to be empty
+                    // Handle exceptions first
+                    switch ($field) {
+                        case 'username':
+                            // Must be lower case
+                            $user->$field = strtolower($suser->$field);
+                            break;
+                        case 'country':
+                            if (!empty($suser->$field)) {
+                                // Must be upper case
+                                $user->$field = strtoupper($suser->$field);
+                            } else if (empty($user->$field) && isset($CFG->country) && !empty($CFG->country)) {
+                                // Sync and target are both empty - so use the default country
+                                $user->$field = $CFG->country;
+                            }
+                            break;
+                        case 'city':
+                            if (!empty($suser->$field)) {
+                                $user->$field = $suser->$field;
+                            } else if (empty($user->$field) && isset($CFG->defaultcity) && !empty($CFG->defaultcity)) {
+                                // Sync and target are both empty - So use the default city
+                                $user->$field = $CFG->defaultcity;
+                            }
+                            break;
+                        case 'timemodified':
+                            // Default to now
+                            $user->$field = empty($suser->$field) ? time() : $suser->$field;
+                            break;
+                        default:
+                            $user->$field = $suser->$field;
+                    }
+                }
+            }
         }
-        if (isset($suser->firstname)) {
-            $user->firstname = $suser->firstname;
-        }
-        if (isset($suser->lastname)) {
-            $user->lastname = $suser->lastname;
-        }
-        if (isset($suser->email)) {
-            $user->email = $suser->email;
-        }
-        if (isset($suser->city)) {
-            $user->city = $suser->city;
-        }
-        if (isset($suser->country)) {
-            $user->country = strtoupper($suser->country);
-        }
-        if (isset($suser->timezone)) {
-            $user->timezone = $suser->timezone;
-        }
-        if (isset($suser->lang)) {
-            $user->lang = $suser->lang;
-        }
-        if (isset($suser->description)) {
-            $user->description = $suser->description;
-        }
-        if (isset($suser->url)) {
-            $user->url = $suser->url;
-        }
-        if (isset($suser->institution)) {
-            $user->institution = $suser->institution;
-        }
-        if (isset($suser->department)) {
-            $user->department = $suser->department;
-        }
-        if (isset($suser->phone1)) {
-            $user->phone1 = $suser->phone1;
-        }
-        if (isset($suser->phone2)) {
-            $user->phone2 = $suser->phone2;
-        }
-        if (isset($suser->address)) {
-            $user->address = $suser->address;
-        }
-        if (isset($suser->timemodified)) {
-            $user->timemodified = empty($suser->timemodified) ? time() : $suser->timemodified;
-        }
+
         $user->auth = isset($suser->auth) ? $suser->auth : 'manual';
     }
 

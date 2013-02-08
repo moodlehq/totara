@@ -118,7 +118,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
             } else {
                 $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
                 if (in_array($f, array('country'))) {
-                     $mform->addHelpButton('import_'.$f, $f, 'tool_totara_sync');
+                    $mform->addHelpButton('import_'.$f, $f, 'tool_totara_sync');
                 }
             }
         }
