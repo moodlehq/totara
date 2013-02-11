@@ -68,7 +68,8 @@ function local_js($options = array()) {
         // be accessed with M.util.get_string(IDENTIFIER, COMPONENT), use third
         // arg for a single {$a} replacement. See /lib/outputrequirementslib.php
         // for detail and limitations.
-        $PAGE->requires->strings_for_js(array('save','delete'), 'totara_core');
+        $PAGE->requires->strings_for_js(array('save', 'delete'), 'totara_core');
+        $PAGE->requires->strings_for_js(array('ok', 'cancel'), 'moodle');
 
         // Include the totara_dialog JS module. Args supplied to the module's
         // init method must be a php array (or null if none), the first index
