@@ -211,11 +211,12 @@ class scorm_interactions_report extends scorm_default_report {
                 $table->collapsible(true);
 
                 // This is done to prevent redundant data, when a user has multiple attempts
-                $table->column_suppress('picture');
+                // Make sure data is shown on all rows see T-10294 for details
+                /*$table->column_suppress('picture');
                 $table->column_suppress('fullname');
                 foreach ($extrafields as $field) {
                     $table->column_suppress($field);
-                }
+                }*/
 
                 $table->no_sorting('start');
                 $table->no_sorting('finish');
