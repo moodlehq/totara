@@ -137,6 +137,13 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
         // Set up obj for closure
         var obj = this;
 
+        // Bind hide() event to closing dialog
+        // Need this to make sure hide() is called on ESCAPE and dialog closure with [X] button
+        $('#'+this.title).on( "dialogclose", function(event) {
+            event.preventDefault();
+            obj.hide();
+        });
+
         // Bind open event to button
         $(document).on('click', '#'+this.buttonid, function(event) {
 
@@ -371,7 +378,11 @@ function totaraDialog(title, buttonid, config, default_url, handler) {
 
         this.handler._loaded = false;
         this.dialog.html('');
-        this.dialog.dialog('close');
+
+        // Check if dialog is still open to avoid exceeding call stack size
+        if (this.dialog.dialog("isOpen")) {
+            this.dialog.dialog('close');
+        }
     }
 
 
