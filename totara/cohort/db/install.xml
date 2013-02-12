@@ -66,7 +66,7 @@
                 <INDEX NAME="ruleid" UNIQUE="false" FIELDS="ruleid"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="cohort_msg_queue" COMMENT="A table to store cohort member join/delete notifications, to be sent at the next cron run." PREVIOUS="cohort_rule_params">
+        <TABLE NAME="cohort_msg_queue" COMMENT="A table to store cohort member join/delete notifications, to be sent at the next cron run." PREVIOUS="cohort_rule_params" NEXT="cohort_plan_history">
           <FIELDS>
             <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="cohortid"/>
             <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
@@ -83,6 +83,25 @@
           <INDEXES>
             <INDEX NAME="cohortidaction" UNIQUE="false" FIELDS="cohortid, action"/>
           </INDEXES>
+        </TABLE>
+        <TABLE NAME="cohort_plan_history" COMMENT="A table to store the history of plans created for cohorts." PREVIOUS="cohort_msg_queue">
+          <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="cohortid"/>
+            <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="templateid"/>
+            <FIELD NAME="templateid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="cohortid" NEXT="usercreated"/>
+            <FIELD NAME="usercreated" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="templateid" NEXT="timecreated"/>
+            <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="usercreated" NEXT="planstatus"/>
+            <FIELD NAME="planstatus" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="affectedusers"/>
+            <FIELD NAME="affectedusers" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="planstatus" NEXT="manual"/>
+            <FIELD NAME="manual" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="affectedusers" NEXT="auto"/>
+            <FIELD NAME="auto" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="manual" NEXT="completed"/>
+            <FIELD NAME="completed" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="auto"/>
+          </FIELDS>
+          <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="cohortid"/>
+            <KEY NAME="cohortid" TYPE="foreign" FIELDS="cohortid" REFTABLE="cohort" REFFIELDS="id" PREVIOUS="primary" NEXT="templateid"/>
+            <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id" PREVIOUS="cohortid"/>
+          </KEYS>
         </TABLE>
     </TABLES>
 </XMLDB>

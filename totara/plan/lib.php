@@ -89,6 +89,10 @@ define('DP_PLAN_REASON_MANUAL_REACTIVATE', 80);
 define('PLAN_LINKTYPE_MANDATORY', 1);
 define('PLAN_LINKTYPE_OPTIONAL', 0);
 
+// Way a plan has been created
+define('PLAN_CREATE_METHOD_MANUAL', 0);
+define('PLAN_CREATE_METHOD_COHORT', 1);
+
 // roles available to development plans
 // each must have a class definition in
 // totara/plan/roles/[ROLE]/[ROLE].class.php
@@ -782,11 +786,25 @@ function dp_plan_delete($planid) {
  * @access public
  * @return array
  */
-function dp_get_first_template() {
+function dp_get_default_template() {
     global $DB;
-    $template = $DB->get_records('dp_template', null, 'sortorder', '*', '', 1);
+    $template = $DB->get_record('dp_template', array('isdefault' => 1));
 
-    return reset($template);
+    return $template;
+}
+
+/**
+ * Gets a list of templates
+ *
+ * @access public
+ * @return array
+ */
+function dp_get_templates() {
+    global $DB;
+
+    $templates = $DB->get_records('dp_template', array('visible' => 1), 'sortorder');
+
+    return $templates;
 }
 
 /**
@@ -794,8 +812,8 @@ function dp_get_first_template() {
  *
  * @access public
  * @param  int    $templateid the id of the template
- * @param  string $component  the component type
- * @param  string $action     the action to perform
+ * @param  string $component  the component type to check
+ * @param  string $action     the action to check
  * @param  string $role       the user role
  * @return false|int $permission->value
  */
@@ -807,6 +825,26 @@ function dp_get_template_permission($templateid, $component, $action, $role) {
     $permission = $DB->get_record_select('dp_permissions', $sql, $params, 'value');
 
     return $permission->value;
+}
+
+/**
+ * Gets all templates with the given permission value
+ *
+ * @access public
+ * @param  string $component  the component type
+ * @param  string $action     the action to perform
+ * @param  string $role       the user role
+ * @param  int $permission    the permission value
+ * @return array $templates an array if template ids
+ */
+function dp_template_has_permission($component, $action, $role, $permission) {
+    global $DB;
+
+    $sql = 'role = ? AND component = ? AND action = ? AND value = ?';
+    $params = array($role, $component, $action, $permission);
+    $templates = $DB->get_records_select('dp_permissions', $sql, $params, 'id', 'templateid');
+
+    return array_keys($templates);
 }
 
 /**
@@ -948,6 +986,7 @@ function dp_create_template($templatename, $enddate, &$error) {
     $sortorder = $DB->get_field('dp_template', 'MAX(sortorder)', array()) + 1;
     $todb->sortorder = $sortorder;
     $todb->visible = 1;
+    $todb->isdefault = 0;
     // by default use first listed workflow
     reset($DP_AVAILABLE_WORKFLOWS);
     $workflow = current($DP_AVAILABLE_WORKFLOWS);

@@ -237,11 +237,10 @@ class development_plan {
             AND enabled = 1
             ORDER BY sortorder";
         $params = array_merge($inparams, array($this->templateid));
-
         $active_components = $DB->get_records_sql($sql, $params);
 
         foreach ($active_components as $component) {
-            $componentname = "component_$component->component";
+            $componentname = "component_{$component->component}";
             $components[$component->component] = $this->$componentname;
         }
 

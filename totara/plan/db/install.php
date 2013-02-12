@@ -113,9 +113,15 @@ function xmldb_totara_plan_install() {
     $templatename = get_string('learningplan', 'totara_plan');
     $enddate = strftime(get_string('strftimedatefullshort', 'langconfig'), time() + 60*60*24*365); // one year from now
     $error = '';
-    if(!dp_create_template($templatename, $enddate, $error)) {
+    if (!$templateid = dp_create_template($templatename, $enddate, $error)) {
         error_log($error);
     }
+
+    // Update template to be the default
+    $template_update = new stdClass();
+    $template_update->id = $templateid;
+    $template_update->isdefault = 1;
+    $DB->update_record('dp_template', $template_update);
 
     return true;
 }

@@ -3,12 +3,12 @@
  * This file is part of Totara LMS
  *
  * Copyright (C) 2010 - 2013 Totara Learning Solutions LTD
- * 
- * This program is free software; you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
- * the Free Software Foundation; either version 3 of the License, or     
- * (at your option) any later version.                                   
- *                                                                       
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Eugene Venter <eugene@catalyst.net.nz>
+ * @author Alastair Munro <alastair.munro@totaralms.com>
  * @package totara
  * @subpackage plan
  */
@@ -31,7 +32,7 @@ if (!defined('MOODLE_INTERNAL')) {
 class plan_edit_form extends moodleform {
 
     function definition() {
-        global $CFG, $USER, $TEXTAREA_OPTIONS;
+        global $CFG, $USER, $DB, $TEXTAREA_OPTIONS;
 
         $mform =& $this->_form;
         $action = $this->_customdata['action'];
@@ -39,16 +40,50 @@ class plan_edit_form extends moodleform {
             $plan = $this->_customdata['plan'];
         }
 
-        // Add some hidden fields
         if ($action != 'add') {
+            // Add some hidden fields
             $mform->addElement('hidden', 'id');
             $mform->setType('id', PARAM_INT);
+        } else {
+            // Get userid that we need for template permissions check on add
+            $role = $this->_customdata['role'];
+
+            // Get plan templates
+            $templates = dp_get_templates();
         }
+
+        $canselectplan = has_capability('totara/plan:canselectplantemplate', context_system::instance());
+
+        if ($action == 'add') {
+            if ($canselectplan) {
+                $template_options = array();
+                $template_default = 0;
+                $default_template_id = 0;
+
+                $allowed_templates = dp_template_has_permission('plan', 'create', $role, DP_PERMISSION_ALLOW);
+
+                foreach ($templates as $t) {
+                    if (in_array($t->id, $allowed_templates)) {
+                        $template_options[$t->id] = $t->fullname;
+                        if ($t->isdefault == 1) {
+                            $default_template_id = $t->id;
+                        }
+                    }
+                }
+
+                if (count($allowed_templates) == 1) {
+                    $template_id = array_shift($allowed_templates);
+                    $template = $DB->get_record('dp_template', array('id' => $template_id));
+                } else {
+                    $template = $DB->get_record('dp_template', array('id' => $default_template_id));
+                }
+            } else {
+                $template = $DB->get_record('dp_template', array('isdefault' => 1));
+            }
+        }
+
         $mform->addElement('hidden', 'userid', $USER->id);
         $mform->setType('userid', PARAM_INT);
-        $template = dp_get_first_template();
-        $mform->addElement('hidden', 'templateid', $template->id);  //@todo: HACK! we will always use the first template for now
-        $mform->setType('templateid', PARAM_INT);
         $mform->addElement('hidden', 'status', 0);
         $mform->setType('status', PARAM_INT);
         $mform->addElement('hidden', 'action', $action);
@@ -80,10 +115,23 @@ class plan_edit_form extends moodleform {
         $mform->addElement('date_selector', 'startdate', get_string('datecreated', 'totara_plan'));
         $mform->freeze('startdate');
 
+        if ($action == 'add') {
+            if ($canselectplan) {
+                $mform->addElement('select', 'templateid', get_string('plantemplate', 'totara_plan'), $template_options);
+                $mform->setDefault('templateid', $default_template_id);
+            } else {
+                // Set default template if user doesn't have permissions to choose
+                $mform->addElement('hidden', 'templateid', $template->id);
+            }
+        }
+
         $mform->addElement('text', 'name', get_string('planname', 'totara_plan'), array('size' => 50));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->setDefault('name', $template->fullname);
+        if ($action == 'add' && isset($template->fullname)) {
+            $mform->setDefault('name', $template->fullname);
+        }
+
         if ($action == 'view') {
             $plan->description = file_rewrite_pluginfile_urls($plan->description, 'pluginfile.php', context_system::instance()->id, 'totara_plan', 'dp_plan', $plan->id);
             $mform->addElement('static', 'description', get_string('plandescription', 'totara_plan'), format_text($plan->description, FORMAT_HTML));
@@ -93,7 +141,9 @@ class plan_edit_form extends moodleform {
         }
         $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
-        $mform->setDefault('enddate', userdate($template->enddate, get_string('datepickerphpuserdate', 'totara_core'), $CFG->timezone, false));
+        if ($action == 'add' && isset($template->enddate)) {
+            $mform->setDefault('enddate', userdate($template->enddate, get_string('strftimedatefullshort', 'langconfig'), $CFG->timezone, false));
+        }
 
         if ($action == 'view') {
             $mform->hardFreeze(array('name', 'enddate'));

@@ -13,7 +13,8 @@
         <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp for when plans based on this template end by default." PREVIOUS="startdate" NEXT="sortorder"/>
         <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Field to determine the order of the templates when displayed together" PREVIOUS="enddate" NEXT="visible"/>
         <FIELD NAME="visible" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="To allow templates to be hidden" PREVIOUS="sortorder" NEXT="workflow"/>
-        <FIELD NAME="workflow" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Current workflow for this template" PREVIOUS="visible"/>
+        <FIELD NAME="workflow" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Current workflow for this template" PREVIOUS="visible" NEXT="isdefault"/>
+        <FIELD NAME="isdefault" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="To indicate if this is the default template" PREVIOUS="workflow"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -29,10 +30,13 @@
         <FIELD NAME="startdate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp of the start date of this plan" PREVIOUS="description" NEXT="enddate"/>
         <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp of the end date of this plan" PREVIOUS="startdate" NEXT="timecompleted"/>
         <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Timestamp of the completed date plan" PREVIOUS="enddate" NEXT="status"/>
-        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Integer code indicating the state of the plan" PREVIOUS="timecompleted"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Integer code indicating the state of the plan" PREVIOUS="timecompleted" NEXT="createdby"/>
+        <FIELD NAME="createdby" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Integer to identify if the plan has been create by an automatic process" PREVIOUS="status"/>
       </FIELDS>
       <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="templateid"/>
+        <KEY NAME="templateid" TYPE="foreign" FIELDS="templateid" REFTABLE="dp_template" REFFIELDS="id" PREVIOUS="primary" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="templateid"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="templateid" UNIQUE="false" FIELDS="templateid" NEXT="userid"/>

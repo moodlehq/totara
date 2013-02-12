@@ -296,7 +296,7 @@ function cohort_profilefield_deleted_handler($profilefield) {
  * Event handler for when a position is updated or deleted
  *
  * Cohorts that have this position directly attached to them, and cohorts which
- * are attached to a parent of this position are effected.
+ * are attached to a parent of this position are affected.
  *
  * @global object $CFG
  * @param object $position
@@ -307,7 +307,7 @@ function cohort_position_updated_handler($position) {
     // todo: rewrite for new dynamic cohorts
     return true;
     /*
-    // We will check the path of the position to determine what other positions/cohorts are effected
+    // We will check the path of the position to determine what other positions/cohorts are affected
     // If this position has changed parent then check the old path for affected cohorts too
     $check_old_path_sql = '';
     $params = array();
@@ -349,7 +349,7 @@ function cohort_position_updated_handler($position) {
  * Event handler for when an organisation is updated
  *
  * Cohorts that have this organisation directly attached to them, and cohorts which
- * are attached to a parent of this organisation are effected.
+ * are attached to a parent of this organisation are affected.
  *
  * @global object $CFG
  * @param object $organisation
@@ -360,7 +360,7 @@ function cohort_organisation_updated_handler($organisation) {
     // todo: rewrite for new dynamic cohorts
     return true;
     /*
-    // We will check the path of the organisation to determine what other organisation/cohorts are effected
+    // We will check the path of the organisation to determine what other organisation/cohorts are affected
     // If this organisation has changed parent then check the old path for affected cohorts too
     $check_old_path_sql = '';
     $params = array();

@@ -35,6 +35,12 @@ table.dp-plan-component-items td a {
     margin-top:4px;
 }
 
+img.disabled_action_icon {
+    vertical-align: text-bottom;
+    padding: 2px;
+    padding-left: 5px;
+}
+
 /**
  * My Learning > LP and RoL layouts
  **/

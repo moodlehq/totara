@@ -66,8 +66,16 @@ $string['associationnameiconlink'] = 'Name (with icon and link)';
 $string['assocationprogramsonly'] = 'Show programs only';
 $string['associationprogramcompletionlink'] = 'Completion';
 $string['associationtype'] = 'Type';
+$string['autocreateplan'] = 'Automatically create plans';
+$string['autocreateplan_help'] = 'Automatically create learning plans for members of this Audience using the selected plan template';
 $string['cancel'] = 'Cancel';
 $string['cancelchanges'] = 'Cancel changes';
+$string['createforexistingmanualplan'] = 'have an existing, manually created plan based on this template';
+$string['createforexistingautoplan'] = 'have an existing, automatically created plan based on this template';
+$string['createforexistingcompleteplan'] = 'have a completed plan based on this template';
+$string['createplans'] = 'Create plans';
+$string['createplanstatus'] = 'Create new plans as';
+$string['createplanstatus_help'] = 'This will be the status that the created plans are given';
 $string['backtocohorts'] = 'Back to audiences';
 $string['cannoteditcohort'] = 'This audience can not be edited once created';
 $string['ccdatedescafter'] = 'User completed this list of courses after {$a}: ';
@@ -82,6 +90,7 @@ $string['checkboxno'] = 'Unchecked';
 $string['checkboxyes'] = 'Checked';
 $string['choose'] = 'Choose';
 $string['choosecohorts'] = 'Choose audiences';
+$string['chooseplantemplate'] = 'Choose template';
 $string['childrenincluded'] = 'children included';
 $string['chooseitem'] = 'Choose item';
 $string['clear'] = 'Clear';
@@ -136,6 +145,8 @@ $string['copy'] = 'Copy';
 $string['coursecohortsenrolled'] = 'Course audiences (enrolled)';
 $string['createdynamiccohort'] = 'Create dynamic audience';
 $string['createnewcohort'] = 'Create new audience';
+$string['createlpforaudience'] = 'Create learning plans for users in this audience';
+$string['createlpforaudienceblurb'] = 'This page allows you to automatically create learning plans for all users currently assigned to this audience.';
 $string['criteria'] = 'Criteria';
 $string['criteriaoptional'] = 'All criteria are optional but you have to select at least one option.';
 $string['currentusers'] = 'Current users';
@@ -202,10 +213,22 @@ $string['error:rulemissing'] = 'A required parameter (rule) was missing';
 $string['error:rulemissingparams'] = 'This rule is not defined.';
 $string['error:startafterfinish'] = 'Start date must not be later than finish date';
 $string['error:unknownbuttonclicked'] = 'Unknown button clicked';
+$string['excludeuserswho'] = 'Exclude users who';
+$string['excludeuserswho_help'] = 'This setting lets you choose types of users to exclude from having plans generated for them
+
+**having an existing, manually created plan based on this template** <br />
+If a user has a plan based on this template that was manually created by them or their manager then they will not get a new plan created.
+
+**having an existing, automatically created plan based on this template** <br />
+If a user has an automatically created based on this template then they will not get a new plan created.
+
+**have a completed plan based on this template** <br />
+If this option is selected then users who have a completed plans based on this template will not have a new template created.';
 $string['failedtoclone'] = 'Failed to clone audience';
 $string['failedtodeleted'] = 'Failed to delete audience';
 $string['globalsettings'] = 'Global settings';
 $string['globalsettingsupdated'] = 'Global settings updated';
+$string['history'] = 'History';
 $string['idnumber'] = 'ID';
 $string['includechildren'] = 'Include children';
 $string['includechildrenyes'] = 'Include children';
@@ -216,6 +239,7 @@ $string['isequalto'] = ' is equal to ';
 $string['isnotequalto'] = ' is not equal to ';
 $string['learningitemcourses'] = 'Courses';
 $string['learningitemprograms'] = 'Programs';
+$string['learningplan'] = 'Learning Plan';
 $string['members'] = 'Members';
 $string['memberscount'] = 'Size';
 $string['msg:membersadded_toaffected_emailsubject'] = 'You have been added to the audience "{$a->cohortname}"';
@@ -336,6 +360,7 @@ $string['successfullyaddedcohort'] = 'Successfully added audience';
 $string['successfullycloned'] = 'Successfully cloned audience';
 $string['successfullydeleted'] = 'Successfully deleted audience';
 $string['successfullyupdated'] = 'Successfully updated audience';
+$string['successfullycreatedplans'] = 'Successfully created new learning plans for {$a} audience members';
 $string['text'] = 'Text';
 $string['thiscohortwillhave'] = 'This audience will have {$a} members at this point in time';
 $string['toomanyusersmatchsearch'] = 'Too many users match the search ({$a->count})';

@@ -5,9 +5,11 @@ $string['plan:configureplans'] = 'Configure plan templates';
 $string['plan:add'] = 'Add plans';
 $string['plan:accessplan'] = 'Access plan';
 $string['plan:accessanyplan'] = 'Access any user\'s plan';
+$string['plan:cancreateplancohort'] = 'Create plans for audiences';
 $string['plan:manageanyplan'] = 'Manage any user\'s plan';
 $string['plan:manageobjectivescales'] = 'Manage objective scales';
 $string['plan:managepriorityscales'] = 'Manage priority scales';
+$string['plan:canselectplantemplate'] = 'Select plan template';
 
 // Plan
 $string['pluginname'] = 'Learning Plans';
@@ -134,6 +136,7 @@ $string['templateenddate'] = 'End Date';
 $string['templatecomponentsettings'] = 'Component Settings';
 $string['instances'] = 'Instances';
 $string['addtemplate'] = 'Add new Template';
+$string['cannothidedefault'] = 'The default template cannot be hidden';
 $string['templateinstances'] = 'Template Instances';
 $string['general'] = 'General';
 $string['component'] = 'Component';
@@ -151,6 +154,7 @@ $string['startdate'] = 'Start date';
 $string['enddate'] = 'End date';
 $string['newtemplate'] = 'New Template';
 $string['notemplates'] = 'No plan templates have been created';
+$string['plantemplate'] = 'Plan template';
 
 $string['autoassign'] = 'Automatic assignment';
 $string['autoassignpos'] = 'Automatically assign by position';
@@ -191,6 +195,7 @@ $string['addevidence'] = 'Add Evidence';
 $string['create'] = 'Create';
 $string['update'] = 'Update';
 $string['delete'] = 'Delete';
+$string['deletedefault'] = 'Cannot delete default template';
 $string['confirm'] = 'Confirm';
 $string['signoff'] = 'Sign-off';
 $string['changes'] = 'Changes';
@@ -363,6 +368,15 @@ $string['autobyplandate'] = 'Automatically, when the plan completion date has pa
 
 $string['planmarkedcomplete'] = 'Plan marked as complete';
 
+$string['numaffectedusers'] = 'Number of affected users';
+$string['manuallycreated'] = 'Manually created plans';
+$string['autocreated'] = 'Automatically created plans';
+
+$string['confirmcreateplans'] = 'Confirm creation of plans';
+$string['confirmcreateplansmessage'] = 'This will create new learning plans for {$a} user(s).
+<br /><br />
+Do you want to continue?';
+$string['confirmnousers'] = 'This action will not affect any users';
 
 // Statuses
 $string['draft'] = 'Draft';
@@ -414,6 +428,7 @@ $string['deletecheckdptemplate'] = 'Are you sure you want to delete this learnin
 $string['error:templateid'] = 'Invalid plan template ID';
 
 $string['cannotdeletetemplate_inuse'] = 'Cannot delete template when it is in use';
+$string['cannotdeletetemplate_default'] = 'Cannot delete default template';
 
 $string['couldnotinsertnewrecord'] = 'Could not insert new record';
 $string['unabletoassigncompsfromorg'] = 'Unable to assign competencies from organisation';

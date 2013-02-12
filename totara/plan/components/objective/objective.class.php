@@ -146,6 +146,21 @@ class dp_objective_component extends dp_base_component {
 
 
     /**
+     * Process when plan is created
+     *
+     * Any actions that need to be processed on a component
+     * when a plan is created.
+     *
+     * @access public
+     * @return void
+     */
+    public function plan_create_hook() {
+        // Put any actions that need to be perfomed when
+        // a plan is created in here
+    }
+
+
+    /**
      * Code to load the JS for the picker
      *
      * @access  public

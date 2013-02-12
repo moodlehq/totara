@@ -43,12 +43,27 @@ if ($planuser != $USER->id) {
     $role = 'learner';
 }
 
-if (!$template = dp_get_first_template()) {
-    print_error('notemplatesetup', 'totara_plan');
+$canaddplan = false;
+
+if (has_capability('totara/plan:canselectplantemplate', context_system::instance())) {
+    // Check if a users has add plan permissions on any template
+    $templates = dp_get_templates();
+    $allowed_templates = dp_template_has_permission('plan', 'create', $role, DP_PERMISSION_ALLOW);
+
+    $templatelist = array();
+    foreach ($templates as $template) {
+        if (in_array($template->id, $allowed_templates)) {
+            $canaddplan = true;
+            break;
+        }
+    }
+} else {
+    $default_template = dp_get_default_template();
+
+    if (dp_get_template_permission($default_template->id, 'plan', 'create', $role) == DP_PERMISSION_ALLOW) {
+        $canaddplan = true;
+    }
 }
-
-$canaddplan = (dp_get_template_permission($template->id, 'plan', 'create', $role) == DP_PERMISSION_ALLOW);
-
 
 
 //

@@ -117,8 +117,28 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW
         )
-    )
+    ),
 
+    // Ability to select template when creating plan
+    'totara/plan:canselectplantemplate' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW
+        )
+    ),
+
+    // Ability to bulk create plans for an audience
+    'totara/plan:cancreateplancohort' => array(
+        'riskbitmask' => RISK_SPAM,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW,
+            'staffmanager' => CAP_ALLOW
+        )
+    )
 );
 
 ?>

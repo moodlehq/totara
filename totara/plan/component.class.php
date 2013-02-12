@@ -262,6 +262,18 @@ abstract class dp_base_component {
 
 
     /**
+     * Process when plan is created
+     *
+     * Any actions that need to be processed on a component
+     * when a plan is created.
+     *
+     * @access public
+     * @return void
+     */
+    abstract public function plan_create_hook();
+
+
+    /**
      * Process component's settings update
      *
      * @access  public

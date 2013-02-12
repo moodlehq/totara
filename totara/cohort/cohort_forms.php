@@ -159,3 +159,50 @@ class cohort_global_settings_form extends moodleform {
     }
 
 }
+
+
+/**
+ * Formslib template for cohort learning plan settings from
+ */
+class cohort_learning_plan_settings_form extends moodleform {
+    function definition() {
+        $mform =& $this->_form;
+
+        $cohort = $this->_customdata['data'];
+
+        $mform->addElement('hidden', 'cohortid', $cohort->id);
+
+        $templates = dp_get_templates();
+
+        $default_template = dp_get_default_template();
+
+        $template_options = array();
+        foreach ($templates as $template) {
+            $template_options[$template->id] = $template->fullname;
+        }
+
+        $mform->addElement('select', 'plantemplate', get_string('plantemplate', 'totara_plan'), $template_options);
+        $mform->setDefault('plantemplate', $default_template->id);
+
+        $exludegroup = array();
+        $excludegroup[] =& $mform->createElement('advcheckbox', 'manualplan', '', get_string('createforexistingmanualplan', 'totara_cohort'));
+        $excludegroup[] =& $mform->createElement('advcheckbox', 'autoplan', '', get_string('createforexistingautoplan', 'totara_cohort'));
+        $excludegroup[] =& $mform->createElement('advcheckbox', 'completeplan', '', get_string('createforexistingcompleteplan', 'totara_cohort'));
+
+        // Set all checkboxs to be checked by default
+        $mform->setDefault('manualplan', 1);
+        $mform->setDefault('autoplan', 1);
+        $mform->setDefault('completeplan', 1);
+
+        $mform->addGroup($excludegroup, 'exclude', get_string('excludeuserswho', 'totara_cohort'), html_writer::empty_tag('br'), false);
+        $mform->addHelpButton('exclude', 'excludeuserswho', 'totara_cohort');
+
+        $plan_statuses = array (
+            DP_PLAN_STATUS_UNAPPROVED => get_string('unapproved', 'totara_plan'),
+            DP_PLAN_STATUS_APPROVED => get_string('approved', 'totara_plan')
+        );
+        $mform->addElement('select', 'planstatus', get_string('createplanstatus', 'totara_cohort'), $plan_statuses);
+
+        $this->add_action_buttons(false, get_string('createplans', 'totara_cohort'));
+    }
+}

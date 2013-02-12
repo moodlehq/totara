@@ -206,6 +206,31 @@ class dp_competency_component extends dp_base_component {
 
 
     /**
+     * Process when plan is created
+     *
+     * Any actions that need to be processed on a component
+     * when a plan is created.
+     *
+     * @access public
+     * @return void
+     */
+    public function plan_create_hook() {
+        if ($this->get_setting('autoassignorg')) {
+            // From organisation
+            if (!$this->assign_from_org()) {
+                error(get_string('unabletoassigncompsfromorg', 'totara_plan'));
+            }
+        }
+        if ($this->get_setting('autoassignpos')) {
+            // From position
+            if (!$this->assign_from_pos()) {
+                error(get_string('unabletoassigncompsfrompos', 'totara_plan'));
+            }
+        }
+    }
+
+
+    /**
      * Code to load the JS for the picker
      *
      * @access  public

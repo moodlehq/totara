@@ -57,7 +57,7 @@ define('COHORT_RULES_UI_MENU_LIMIT', 2500);
  * @return cohort_rule_option or false if not found
  */
 function cohort_rules_get_rule_definition($rulegroup, $rulename) {
-    $rulelist =& cohort_rules_list(false);
+    $rulelist = cohort_rules_list(false);
     if (array_key_exists($rulegroup, $rulelist) && array_key_exists($rulename, $rulelist[$rulegroup])) {
         return $rulelist[$rulegroup][$rulename];
     } else {
@@ -73,7 +73,7 @@ function cohort_rules_get_menu_options() {
     static $rulesmenu = false;
 
     if (!$rulesmenu) {
-        $rules =& cohort_rules_list();
+        $rules = cohort_rules_list();
 
         // Set up the list of rules for use in menus
         $rulesmenu = array();
