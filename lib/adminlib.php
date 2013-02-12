@@ -8295,11 +8295,6 @@ class admin_setting_configfilepicker extends admin_setting {
             // create the file from draft and save into the correct area.
             file_save_draft_area_files($data, $contextid, $this->component, $this->filearea, $fileid, array('subdirs' => true));
 
-            // cleanup the draft after we are done with it
-            $draft_files = $fs->get_area_files($draft_context->id, 'user', 'draft', $data, 'id DESC', false);
-            $draft_file = reset($draft_files);
-            $draft_file->delete();
-
             // fetch the actual file and create the url for it
             $files = $fs->get_area_files($contextid, $this->component, $this->filearea, $fileid, 'id DESC', false);
             $file = reset($files);
@@ -8330,24 +8325,31 @@ class admin_setting_configfilepicker extends admin_setting {
         $fs = get_file_storage();
 
         $setting = $this->get_setting();
-        if (isloggedin() && !empty($setting)) {
-            $itemidargs = explode('/', str_replace($CFG->wwwroot, '', $setting));
+        $setting = str_replace($CFG->wwwroot, '', $setting, $replaced);
+        if (isloggedin() && $replaced && !empty($setting)) {
+            $itemidargs = explode('/', $setting);
             $itemid = isset($itemidargs[5]) ? $itemidargs[5] : 0;
             $itemname = isset($itemidargs[6]) ? $itemidargs[6] : 0;
             $draftid = 0;
 
             $user_context = context_user::instance($USER->id);
-            file_prepare_draft_area($draftid, $this->filecontext->id, $this->component, $this->filearea, null, $this->fp_options);
+            $file = $fs->get_area_files($user_context->id, 'user', 'draft', $itemid);
+            if ($file) {
+                // Use existing draft file
+                $draftid = $itemid;
+            } else {
+                // Create new draft file
+                file_prepare_draft_area($draftid, $this->filecontext->id, $this->component, $this->filearea, null, $this->fp_options);
 
-            $file_record = array('contextid' => $user_context->id, 'component' => 'user', 'filearea' => 'draft', 'itemid' => $draftid);
-            $current_file = $fs->get_area_files($this->filecontext->id, $this->component, $this->filearea, $itemid);
-            foreach ($current_file as $file) {
-                if ($file->is_directory() || $file->get_filename() != $itemname) {
-                    continue;
+                $file_record = array('contextid' => $user_context->id, 'component' => 'user', 'filearea' => 'draft', 'itemid' => $draftid);
+                $current_file = $fs->get_area_files($this->filecontext->id, $this->component, $this->filearea, $itemid);
+                foreach ($current_file as $file) {
+                    if ($file->is_directory() || $file->get_filename() != $itemname) {
+                        continue;
+                    }
+                    $fs->create_file_from_storedfile($file_record, $file);
                 }
-                $fs->create_file_from_storedfile($file_record, $file);
             }
-
             $this->filepicker->setValue($draftid);
         }
 
