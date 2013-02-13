@@ -33,6 +33,7 @@ $string['datepickerplaceholder'] = 'dd/mm/yy'; //how the datepicker placeholder 
 $string['datepickerparseformat'] = 'd/m/y'; //how php parses the datepicker dates to a timestamp (in totara_date_parse_from_format)
 $string['datepickerregexjs'] = '[0-3][0-9]/(0|1)[0-9]/[0-9]{2}';
 $string['datepickerregexphp'] = '/^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/(\d{2})$/';
+$string['datepickerphpuserdate'] = '%d/%m/%y';
 $string['strftimedateshortmonth'] = '%d %b %Y';
 $string['csvdateformat'] = 'CSV Import date format';
 $string['csvdateformatdefault'] = 'd/m/Y';
