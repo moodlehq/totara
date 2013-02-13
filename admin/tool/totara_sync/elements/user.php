@@ -346,6 +346,20 @@ class totara_sync_element_user extends totara_sync_element {
                 $posdata->shortname = $pos->shortname;
             }
         }
+        if (isset($suser->posstartdate)) {
+            if (empty($suser->posstartdate)) {
+                $posdata->timevalidfrom = null;
+            } else {
+                $posdata->timevalidfrom = $suser->posstartdate;
+            }
+        }
+        if (isset($suser->posenddate)) {
+            if (empty($suser->posenddate)) {
+                $posdata->timevalidto = null;
+            } else {
+                $posdata->timevalidto = $suser->posenddate;
+            }
+        }
         if (!empty($suser->orgidnumber)) {
             $posdata->organisationid = $DB->get_field('org', 'id', array('idnumber' => $suser->orgidnumber));
         }

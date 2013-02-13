@@ -264,6 +264,21 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 }
             }
 
+            $posdates = array('posstartdate', 'posenddate');
+            foreach ($posdates as $posdate) {
+                if (isset($dbrow[$posdate])) {
+                    if (empty($dbrow[$posdate])) {
+                        $dbrow[$posdate] = 0;
+                    } else {
+                        //try to parse the contents - if parse fails assume a unix timestamp and leave unchanged
+                        $parsed_date = totara_date_parse_from_format($csvdateformat, trim($csvrow[$posdate]));
+                        if ($parsed_date) {
+                            $dbrow[$posdate] = $parsed_date;
+                        }
+                    }
+                }
+            }
+
             if (isset($dbrow['deleted'])) {
                 // ensure int value, as this can come empty from source
                 $dbrow['deleted'] = empty($dbrow['deleted']) ? 0 : 1;

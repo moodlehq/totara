@@ -69,6 +69,8 @@ abstract class totara_sync_source_user extends totara_sync_source {
             'orgidnumber',
             'postitle',
             'posidnumber',
+            'posstartdate',
+            'posenddate',
             'manageridnumber',
             'auth',
             'password',
@@ -229,6 +231,12 @@ abstract class totara_sync_source_user extends totara_sync_source {
         }
         if (!empty($this->config->import_posidnumber)) {
             $table->add_field('posidnumber', XMLDB_TYPE_CHAR, '100');
+        }
+        if (!empty($this->config->import_posstartdate)) {
+            $table->add_field('posstartdate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
+        }
+        if (!empty($this->config->import_posenddate)) {
+            $table->add_field('posenddate', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL);
         }
         if (!empty($this->config->import_manageridnumber)) {
             $table->add_field('manageridnumber', XMLDB_TYPE_CHAR, '100');
