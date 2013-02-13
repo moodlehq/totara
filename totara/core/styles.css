@@ -36,3 +36,7 @@ span.coursecompletionstatus span.completion-inprogress {
 span.coursecompletionstatus span.completion-complete {
     background-position: 0px -24px;
 }
+
+span.coursecompletionstatus span.completion-completeviarpl {
+    background-position: 0px -24px;
+}
