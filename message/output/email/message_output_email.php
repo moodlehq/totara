@@ -76,9 +76,10 @@ class message_output_email extends message_output {
         } else {
             $recipient = $eventdata->userto;
         }
-        // append a footer to the emails explaining how to change email preferences
-        $footerplain = get_string('alertfooter2', 'totara_message', $CFG->wwwroot . '/message/edit.php');
-        $footerhtml = str_repeat(html_writer::empty_tag('br'), 2) . html_writer::empty_tag('hr') . get_string('alertfooter2html', 'totara_message', $CFG->wwwroot . '/message/edit.php');
+        // append a footer to the emails in the recipient language explaining how to change email preferences
+        $strmgr = get_string_manager();
+        $footerplain = $strmgr->get_string('alertfooter2', 'totara_message', $CFG->wwwroot . '/message/edit.php', $eventdata->userto->lang);
+        $footerhtml = str_repeat(html_writer::empty_tag('br'), 2) . html_writer::empty_tag('hr') . $strmgr->get_string('alertfooter2html', 'totara_message', $CFG->wwwroot . '/message/edit.php', $eventdata->userto->lang);
 
         $result = email_to_user($recipient, $eventdata->userfrom, $eventdata->subject, $eventdata->fullmessage . "\n" . $footerplain, $eventdata->fullmessagehtml . $footerhtml);
 

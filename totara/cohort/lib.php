@@ -903,16 +903,17 @@ function totara_cohort_notify_users($cohortid, $userids, $action, $delaymessages
             return false;
     }
 
-    $emailsubject = get_string("msg:{$action}_{$towho}_emailsubject", 'totara_cohort', $a);
-    $emailbody = get_string("msg:{$action}_{$towho}_emailbody", 'totara_cohort', $a);
-    $notice = get_string("msg:{$action}_{$towho}_notice", 'totara_cohort', $a);
-
+    $strmgr = get_string_manager();
     $eventdata = new stdClass();
-    $eventdata->subject = $emailsubject;
-    $eventdata->fullmessage = $notice;
     $eventdata->sendemail = TOTARA_MSG_EMAIL_NO;
 
     foreach ($tousers as $touser) {
+        //send emails in user lang
+        $emailsubject = $strmgr->get_string("msg:{$action}_{$towho}_emailsubject", 'totara_cohort', $a, $touser->lang);
+        $emailbody = $strmgr->get_string("msg:{$action}_{$towho}_emailbody", 'totara_cohort', $a, $touser->lang);
+        $notice = $strmgr->get_string("msg:{$action}_{$towho}_notice", 'totara_cohort', $a, $touser->lang);
+        $eventdata->subject = $emailsubject;
+        $eventdata->fullmessage = $notice;
         email_to_user($touser, $CFG->orgname, $emailsubject, $emailbody);
 
         $eventdata->userto = $touser;

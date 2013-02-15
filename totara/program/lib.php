@@ -1305,16 +1305,17 @@ function prog_process_extensions($extensions) {
             if ($action == PROG_EXTENSION_DENY) {
 
                 $userto = $DB->get_record('user', array('id' => $extension->userid));
+                $stringmanager = get_string_manager();
                 //ensure the message is actually coming from $user's manager, default to support
                 $userfrom = totara_is_manager($extension->userid, $USER->id) ? $USER : generate_email_supportuser();
 
                 $messagedata = new stdClass();
                 $messagedata->userto           = $userto;
                 $messagedata->userfrom         = $userfrom;
-                $messagedata->subject          = get_string('extensiondenied', 'totara_program');;
+                $messagedata->subject          = $stringmanager->get_string('extensiondenied', 'totara_program', null, $userto->lang);
                 $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
-                $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
-                $messagedata->fullmessage      = get_string('extensiondeniedmessage', 'totara_program');
+                $messagedata->contexturlname   = $stringmanager->get_string('launchprogram', 'totara_program', null, $userto->lang);
+                $messagedata->fullmessage      = $stringmanager->get_string('extensiondeniedmessage', 'totara_program', null, $userto->lang);
 
                 $eventdata = new stdClass();
                 $eventdata->message = $messagedata;
@@ -1362,14 +1363,14 @@ function prog_process_extensions($extensions) {
 
                     //ensure the message is actually coming from $user's manager, default to support
                     $userfrom = totara_is_manager($extension->userid, $USER->id) ? $USER : generate_email_supportuser();
-
+                    $stringmanager = get_string_manager();
                     $messagedata = new stdClass();
                     $messagedata->userto           = $userto;
                     $messagedata->userfrom         = $userfrom;
-                    $messagedata->subject          = get_string('extensiongranted', 'totara_program');
+                    $messagedata->subject          = $stringmanager->get_string('extensiongranted', 'totara_program', null, $userto->lang);
                     $messagedata->contexturl       = $CFG->wwwroot.'/totara/program/required.php?id='.$extension->programid;
-                    $messagedata->contexturlname   = get_string('launchprogram', 'totara_program');
-                    $messagedata->fullmessage      = get_string('extensiongrantedmessage', 'totara_program', userdate($extension->extensiondate, get_string('strftimedate', 'langconfig'), $CFG->timezone));
+                    $messagedata->contexturlname   = $stringmanager->get_string('launchprogram', 'totara_program', null, $userto->lang);
+                    $messagedata->fullmessage      = $stringmanager->get_string('extensiongrantedmessage', 'totara_program', userdate($extension->extensiondate, get_string('strftimedate', 'langconfig'), $CFG->timezone), null, $userto->lang);
 
                     if ($result = tm_alert_send($messagedata)) {
 

@@ -58,6 +58,8 @@ $sentext  = 'file';
 $prefix   = 'totara_';
 $dir      = $CFG->dataroot . DIRECTORY_SEPARATOR;
 $sentfile = $dir . $prefix . date('dmY.') . $sentext;
+$strmgr = get_string_manager();
+
 if (isset($CFG->cron_max_time_mail_notify)
     && ((bool)$CFG->cron_max_time_mail_notify)
     && !file_exists($sentfile)) {
@@ -82,8 +84,8 @@ if (isset($CFG->cron_max_time_mail_notify)
     } else {
         $mail_sent = email_to_user($admin,
             $admin,
-            get_string('cron_max_time_mail_notify_title','admin'),
-            get_string('cron_max_time_mail_notify_msg','admin'));
+            $strmgr->get_string('cron_max_time_mail_notify_title','admin', null, $admin->lang),
+            $strmgr->get_string('cron_max_time_mail_notify_msg','admin', null, $admin->lang));
     }
 }
 
@@ -92,13 +94,13 @@ if (isset($CFG->cron_max_time_kill) && ((bool)$CFG->cron_max_time_kill)) {
     $pid = $procfile->pid();
     $result = $procfile->kill();
     if ($result) {
-        $mail_title = get_string('cron_kill_mail_notify_title','admin');
-        $mail_msg = get_string('cron_kill_mail_notify_msg','admin');
+        $mail_title = $strmgr->get_string('cron_kill_mail_notify_title','admin', null, $admin->lang);
+        $mail_msg = $strmgr->get_string('cron_kill_mail_notify_msg','admin', null, $admin->lang);
 
         echo "We killed existing cron process! PID:\t{$pid}".PHP_EOL;
     } else {
-        $mail_title = get_string('cron_kill_mail_fail_notify_title','admin');
-        $mail_msg = get_string('cron_kill_mail_fail_notify_msg','admin');
+        $mail_title = $strmgr->get_string('cron_kill_mail_fail_notify_title','admin', null, $admin->lang);
+        $mail_msg = $strmgr->get_string('cron_kill_mail_fail_notify_msg','admin', null, $admin->lang);
 
         echo "Failed to kill cron process! PID:\t{$pid}".PHP_EOL;
     }

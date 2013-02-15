@@ -3416,28 +3416,28 @@ function send_scheduled_report($sched) {
     if ($sched->savedsearchid != 0) {
         $reporturl .= '&sid=' . $sched->savedsearchid;
     }
-
+    $strmgr = get_string_manager();
     $messagedetails = new stdClass();
     $messagedetails->reportname = $report->fullname;
-    $messagedetails->exporttype = get_string($export_codes[$sched->format] . 'format', 'totara_reportbuilder');
+    $messagedetails->exporttype = $strmgr->get_string($export_codes[$sched->format] . 'format', 'totara_reportbuilder', null, $user->lang);
     $messagedetails->reporturl = $reporturl;
     $messagedetails->scheduledreportsindex = $CFG->wwwroot . '/my/reports.php#scheduled';
 
     $messagedetails->schedule = reportbuilder_get_formatted_schedule($sched->frequency, $sched->schedule, $user);
 
-    $subject = $report->fullname . ' ' . get_string('report', 'totara_reportbuilder');
+    $subject = $report->fullname . ' ' . $strmgr->get_string('report', 'totara_reportbuilder', null, $user->lang);
 
     if ($sched->savedsearchid != 0) {
         if (!$savename = $DB->get_field('report_builder_saved', 'name', array('id' => $sched->savedsearchid))) {
             mtrace(get_string('error:invalidsavedsearchid', 'totara_reportbuilder'));
         } else {
-            $messagedetails->savedtext = get_string('savedsearchmessage', 'totara_reportbuilder', $savename);
+            $messagedetails->savedtext = $strmgr->get_string('savedsearchmessage', 'totara_reportbuilder', $savename, $user->lang);
         }
     } else {
         $messagedetails->savedtext = '';
     }
 
-    $message = get_string('scheduledreportmessage', 'totara_reportbuilder', $messagedetails);
+    $message = $strmgr->get_string('scheduledreportmessage', 'totara_reportbuilder', $messagedetails, $user->lang);
 
     $fromaddress = $CFG->noreplyaddress;
 
@@ -3468,17 +3468,18 @@ function reportbuilder_get_formatted_schedule($frequency, $schedule, $user = nul
     $CALENDARDAYS = calendar_get_days();
     $dateformat = ($user->lang == 'en') ? 'jS' : 'j';
     $out = '';
+    $strmgr = get_string_manager();
     switch($frequency) {
         case REPORT_BUILDER_SCHEDULE_DAILY:
-            $out .= get_string('daily', 'totara_reportbuilder') . ' ' .  get_string('at', 'totara_reportbuilder') . ' ';
+            $out .= $strmgr->get_string('daily', 'totara_reportbuilder', null, $user->lang) . ' ' .  $strmgr->get_string('at', 'totara_reportbuilder', null, $user->lang) . ' ';
             $out .= strftime('%I:%M%p' , mktime($schedule, 0, 0));
             break;
         case REPORT_BUILDER_SCHEDULE_WEEKLY:
-            $out .= get_string('weekly', 'totara_reportbuilder') . ' ' . get_string('on', 'totara_reportbuilder') . ' ';
+            $out .= $strmgr->get_string('weekly', 'totara_reportbuilder', null, $user->lang) . ' ' . $strmgr->get_string('on', 'totara_reportbuilder', null, $user->lang) . ' ';
             $out .= get_string($CALENDARDAYS[$schedule], 'calendar');
             break;
         case REPORT_BUILDER_SCHEDULE_MONTHLY:
-            $out .= get_string('monthly', 'totara_reportbuilder') . ' ' . get_string('onthe', 'totara_reportbuilder') . ' ';
+            $out .= $strmgr->get_string('monthly', 'totara_reportbuilder', null, $user->lang) . ' ' . $strmgr->get_string('onthe', 'totara_reportbuilder', null, $user->lang) . ' ';
             $out .= date($dateformat , mktime(0, 0, 0, 0, $schedule));
             break;
     }

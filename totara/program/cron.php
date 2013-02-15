@@ -286,14 +286,15 @@ function program_cron_switch_recurring_courses() {
 
                         // send a message to the user to let them know that the course
                         // has changed and that they haven't completed it
+                        $stringmanager = get_string_manager();
                         $messagedata = new stdClass();
                         $messagedata->userto = $user;
                         //stop user from emailing themselves, use support instead
                         $messagedata->userfrom = generate_email_supportuser();
-                        $messagedata->subject = get_string('z:incompleterecurringprogramsubject', 'totara_program');
-                        $messagedata->fullmessage = get_string('z:incompleterecurringprogrammessage', 'totara_program');
+                        $messagedata->subject = $stringmanager->get_string('z:incompleterecurringprogramsubject', 'totara_program', null, $user->lang);
+                        $messagedata->fullmessage = $stringmanager->get_string('z:incompleterecurringprogrammessage', 'totara_program', null, $user->lang);
                         $messagedata->contexturl = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
-                        $messagedata->contexturlname = get_string('launchcourse', 'totara_program');;
+                        $messagedata->contexturlname = $stringmanager->get_string('launchcourse', 'totara_program', null, $user->lang);
                         $result = tm_alert_send($messagedata);
                     }
                 }
