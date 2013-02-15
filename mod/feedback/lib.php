@@ -2870,17 +2870,15 @@ function feedback_send_email($cm, $feedback, $course, $userid) {
 
     if ($teachers) {
 
-        $strfeedbacks = get_string('modulenameplural', 'feedback');
-        $strfeedback  = get_string('modulename', 'feedback');
-        $strcompleted  = get_string('completed', 'feedback');
-
-        if ($feedback->anonymous == FEEDBACK_ANONYMOUS_NO) {
-            $printusername = fullname($user);
-        } else {
-            $printusername = get_string('anonymous_user', 'feedback');
-        }
-
+        $strmgr = get_string_manager();
         foreach ($teachers as $teacher) {
+            $strcompleted  = $strmgr->get_string('completed', 'feedback', null, $teacher->lang);
+
+            if ($feedback->anonymous == FEEDBACK_ANONYMOUS_NO) {
+                $printusername = fullname($user);
+            } else {
+                $printusername = $strmgr->get_string('anonymous_user', 'feedback', null, $teacher->lang);
+            }
             $info = new stdClass();
             $info->username = $printusername;
             $info->feedback = format_string($feedback->name, true);
@@ -2890,10 +2888,10 @@ function feedback_send_email($cm, $feedback, $course, $userid) {
                             'do_show=showentries';
 
             $postsubject = $strcompleted.': '.$info->username.' -> '.$feedback->name;
-            $posttext = feedback_send_email_text($info, $course);
+            $posttext = feedback_send_email_text($info, $course, $teacher->lang);
 
             if ($teacher->mailformat == 1) {
-                $posthtml = feedback_send_email_html($info, $course, $cm);
+                $posthtml = feedback_send_email_html($info, $course, $cm, $teacher->lang);
             } else {
                 $posthtml = '';
             }
@@ -2948,22 +2946,20 @@ function feedback_send_email_anonym($cm, $feedback, $course) {
 
     if ($teachers) {
 
-        $strfeedbacks = get_string('modulenameplural', 'feedback');
-        $strfeedback  = get_string('modulename', 'feedback');
-        $strcompleted  = get_string('completed', 'feedback');
-        $printusername = get_string('anonymous_user', 'feedback');
-
+        $strmgr = get_string_manager();
         foreach ($teachers as $teacher) {
+            $printusername = $strmgr->get_string('anonymous_user', 'feedback', null, $teacher->lang);
+            $strcompleted  = $strmgr->get_string('completed', 'feedback', null, $teacher->lang);
             $info = new stdClass();
             $info->username = $printusername;
             $info->feedback = format_string($feedback->name, true);
             $info->url = $CFG->wwwroot.'/mod/feedback/show_entries_anonym.php?id='.$cm->id;
 
             $postsubject = $strcompleted.': '.$info->username.' -> '.$feedback->name;
-            $posttext = feedback_send_email_text($info, $course);
+            $posttext = feedback_send_email_text($info, $course, $teacher->lang);
 
             if ($teacher->mailformat == 1) {
-                $posthtml = feedback_send_email_html($info, $course, $cm);
+                $posthtml = feedback_send_email_html($info, $course, $cm, $teacher->lang);
             } else {
                 $posthtml = '';
             }
@@ -2988,15 +2984,17 @@ function feedback_send_email_anonym($cm, $feedback, $course) {
  *
  * @param object $info includes some infos about the feedback you want to send
  * @param object $course
+ * @param string $lang The recipient's language
  * @return string the text you want to post
  */
-function feedback_send_email_text($info, $course) {
+function feedback_send_email_text($info, $course, $lang) {
+    $strmgr = get_string_manager();
     $coursecontext = context_course::instance($course->id);
     $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
     $posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'feedback').' -> '.
                     $info->feedback."\n";
     $posttext .= '---------------------------------------------------------------------'."\n";
-    $posttext .= get_string("emailteachermail", "feedback", $info)."\n";
+    $posttext .= $strmgr->get_string("emailteachermail", "feedback", $info, $lang)."\n";
     $posttext .= '---------------------------------------------------------------------'."\n";
     return $posttext;
 }
@@ -3008,10 +3006,13 @@ function feedback_send_email_text($info, $course) {
  * @global object
  * @param object $info includes some infos about the feedback you want to send
  * @param object $course
+ * @param object $cm module instance
+ * @param string $lang The recipient's language
  * @return string the text you want to post
  */
-function feedback_send_email_html($info, $course, $cm) {
+function feedback_send_email_html($info, $course, $cm, $lang) {
     global $CFG;
+    $strmgr = get_string_manager();
     $coursecontext = context_course::instance($course->id);
     $courseshortname = format_string($course->shortname, true, array('context' => $coursecontext));
     $course_url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
@@ -3020,10 +3021,10 @@ function feedback_send_email_html($info, $course, $cm) {
 
     $posthtml = '<p><font face="sans-serif">'.
             '<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
-            '<a href="'.$feedback_all_url.'">'.get_string('modulenameplural', 'feedback').'</a> ->'.
+            '<a href="'.$feedback_all_url.'">'.$strmgr->get_string('modulenameplural', 'feedback', null, $lang).'</a> ->'.
             '<a href="'.$feedback_url.'">'.$info->feedback.'</a></font></p>';
     $posthtml .= '<hr /><font face="sans-serif">';
-    $posthtml .= '<p>'.get_string('emailteachermailhtml', 'feedback', $info).'</p>';
+    $posthtml .= '<p>'.$strmgr->get_string('emailteachermailhtml', 'feedback', $info, $lang).'</p>';
     $posthtml .= '</font><hr />';
     return $posthtml;
 }

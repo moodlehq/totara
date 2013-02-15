@@ -319,6 +319,7 @@ class enrol_self_plugin extends enrol_plugin {
         $a = new stdClass();
         $a->coursename = format_string($course->fullname, true, array('context'=>$context));
         $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id&course=$course->id";
+        $strmgr = get_string_manager();
 
         if (trim($instance->customtext1) !== '') {
             $message = $instance->customtext1;
@@ -334,11 +335,11 @@ class enrol_self_plugin extends enrol_plugin {
                 $messagetext = html_to_text($messagehtml);
             }
         } else {
-            $messagetext = get_string('welcometocoursetext', 'enrol_self', $a);
+            $messagetext = $strmgr->get_string('welcometocoursetext', 'enrol_self', $a, $user->lang);
             $messagehtml = text_to_html($messagetext, null, false, true);
         }
 
-        $subject = get_string('welcometocourse', 'enrol_self', format_string($course->fullname, true, array('context'=>$context)));
+        $subject = $strmgr->get_string('welcometocourse', 'enrol_self', format_string($course->fullname, true, array('context'=>$context)), $user->lang);
         $subject =  str_replace('&amp;', '&', $subject);
 
         $rusers = array();

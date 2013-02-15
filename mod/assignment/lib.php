@@ -1973,10 +1973,7 @@ class assignment_base {
 
         if ($teachers = $this->get_graders($user)) {
 
-            $strassignments = get_string('modulenameplural', 'assignment');
-            $strassignment  = get_string('modulename', 'assignment');
-            $strsubmitted  = get_string('submitted', 'assignment');
-
+            $strmgr = get_string_manager();
             foreach ($teachers as $teacher) {
                 $info = new stdClass();
                 $info->username = fullname($user, true);
@@ -1984,9 +1981,10 @@ class assignment_base {
                 $info->url = $CFG->wwwroot.'/mod/assignment/submissions.php?id='.$this->cm->id;
                 $info->timeupdated = userdate($submission->timemodified, '%c', $teacher->timezone);
 
+                $strsubmitted  = $strmgr->get_string('submitted', 'assignment', null, $teacher->lang);
                 $postsubject = $strsubmitted.': '.$info->username.' -> '.$this->assignment->name;
-                $posttext = $this->email_teachers_text($info);
-                $posthtml = ($teacher->mailformat == 1) ? $this->email_teachers_html($info) : '';
+                $posttext = $this->email_teachers_text($info, $teacher->lang);
+                $posthtml = ($teacher->mailformat == 1) ? $this->email_teachers_html($info, $teacher->lang) : '';
 
                 $eventdata = new stdClass();
                 $eventdata->modulename       = 'assignment';
@@ -2078,14 +2076,16 @@ class assignment_base {
      * Creates the text content for emails to teachers
      *
      * @param $info object The info used by the 'emailteachermail' language string
+     * @param $lang string The teacher's language
      * @return string
      */
-    function email_teachers_text($info) {
+    function email_teachers_text($info, $lang) {
+        $strmgr = get_string_manager();
         $posttext  = format_string($this->course->shortname, true, array('context' => $this->coursecontext)).' -> '.
                      $this->strassignments.' -> '.
                      format_string($this->assignment->name, true, array('context' => $this->context))."\n";
         $posttext .= '---------------------------------------------------------------------'."\n";
-        $posttext .= get_string("emailteachermail", "assignment", $info)."\n";
+        $posttext .= $strmgr->get_string("emailteachermail", "assignment", $info, $lang)."\n";
         $posttext .= "\n---------------------------------------------------------------------\n";
         return $posttext;
     }
@@ -2094,16 +2094,18 @@ class assignment_base {
      * Creates the html content for emails to teachers
      *
      * @param $info object The info used by the 'emailteachermailhtml' language string
+     * @param $lang string The teacher's language
      * @return string
      */
-    function email_teachers_html($info) {
+    function email_teachers_html($info, $lang) {
         global $CFG;
+        $strmgr = get_string_manager();
         $posthtml  = '<p><font face="sans-serif">'.
                      '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$this->course->id.'">'.format_string($this->course->shortname, true, array('context' => $this->coursecontext)).'</a> ->'.
                      '<a href="'.$CFG->wwwroot.'/mod/assignment/index.php?id='.$this->course->id.'">'.$this->strassignments.'</a> ->'.
                      '<a href="'.$CFG->wwwroot.'/mod/assignment/view.php?id='.$this->cm->id.'">'.format_string($this->assignment->name, true, array('context' => $this->context)).'</a></font></p>';
         $posthtml .= '<hr /><font face="sans-serif">';
-        $posthtml .= '<p>'.get_string('emailteachermailhtml', 'assignment', $info).'</p>';
+        $posthtml .= '<p>'.$strmgr->get_string('emailteachermailhtml', 'assignment', $info, $lang).'</p>';
         $posthtml .= '</font><hr />';
         return $posthtml;
     }
@@ -2854,7 +2856,7 @@ function assignment_cron () {
         }
 
         $timenow = time();
-
+        $strmgr = get_string_manager();
         foreach ($submissions as $submission) {
 
             echo "Processing assignment submission $submission->id\n";
@@ -2894,8 +2896,8 @@ function assignment_cron () {
                 continue;
             }
 
-            $strassignments = get_string("modulenameplural", "assignment");
-            $strassignment  = get_string("modulename", "assignment");
+            $strassignments = $strmgr->get_string("modulenameplural", "assignment", null, $user->lang);
+            $strassignment  =  $strmgr->get_string("modulename", "assignment", null, $user->lang);
 
             $assignmentinfo = new stdClass();
             $assignmentinfo->teacher = fullname($teacher);
@@ -2905,7 +2907,7 @@ function assignment_cron () {
             $postsubject = "$courseshortname: $strassignments: ".format_string($submission->name,true);
             $posttext  = "$courseshortname -> $strassignments -> ".format_string($submission->name,true)."\n";
             $posttext .= "---------------------------------------------------------------------\n";
-            $posttext .= get_string("assignmentmail", "assignment", $assignmentinfo)."\n";
+            $posttext .=  $strmgr->get_string("assignmentmail", "assignment", $assignmentinfo, $user->lang)."\n";
             $posttext .= "---------------------------------------------------------------------\n";
 
             if ($user->mailformat == 1) {  // HTML
@@ -2914,7 +2916,7 @@ function assignment_cron () {
                 "<a href=\"$CFG->wwwroot/mod/assignment/index.php?id=$course->id\">$strassignments</a> ->".
                 "<a href=\"$CFG->wwwroot/mod/assignment/view.php?id=$mod->id\">".format_string($submission->name,true)."</a></font></p>";
                 $posthtml .= "<hr /><font face=\"sans-serif\">";
-                $posthtml .= "<p>".get_string("assignmentmailhtml", "assignment", $assignmentinfo)."</p>";
+                $posthtml .= "<p>". $strmgr->get_string("assignmentmailhtml", "assignment", $assignmentinfo, $user->lang)."</p>";
                 $posthtml .= "</font><hr />";
             } else {
                 $posthtml = "";
@@ -2928,7 +2930,7 @@ function assignment_cron () {
             $eventdata->fullmessage      = $posttext;
             $eventdata->fullmessageformat = FORMAT_PLAIN;
             $eventdata->fullmessagehtml  = $posthtml;
-            $eventdata->smallmessage     = get_string('assignmentmailsmall', 'assignment', $assignmentinfo);
+            $eventdata->smallmessage     =  $strmgr->get_string('assignmentmailsmall', 'assignment', $assignmentinfo, $user->lang);
 
             $eventdata->name            = 'assignment_updates';
             $eventdata->component       = 'mod_assignment';

@@ -4238,9 +4238,10 @@ class course_request {
             $a = new stdClass;
             $a->link = "$CFG->wwwroot/course/pending.php";
             $a->user = fullname($USER);
-            $subject = get_string('courserequest');
-            $message = get_string('courserequestnotifyemail', 'admin', $a);
+            $strmgr = get_string_manager();
             foreach ($users as $user) {
+                $subject = $strmgr->get_string('courserequest', 'moodle', null, $user->lang);
+                $message = $strmgr->get_string('courserequestnotifyemail', 'admin', $a, $user->lang);
                 $request->notify($user, $USER, 'courserequested', $subject, $message);
             }
         }
@@ -4427,7 +4428,8 @@ class course_request {
         $a = new stdClass();
         $a->name = format_string($course->fullname, true, array('context' => context_course::instance($course->id)));
         $a->url = $CFG->wwwroot.'/course/view.php?id=' . $course->id;
-        $this->notify($user, $USER, 'courserequestapproved', get_string('courseapprovedsubject'), get_string('courseapprovedemail2', 'moodle', $a));
+        $strmgr = get_string_manager();
+        $this->notify($user, $USER, 'courserequestapproved', $strmgr->get_string('courseapprovedsubject', 'moodle', null, $user->lang), $strmgr->get_string('courseapprovedemail2', 'moodle', $a, $user->lang));
 
         return $course->id;
     }
@@ -4443,7 +4445,8 @@ class course_request {
     public function reject($notice) {
         global $USER, $DB;
         $user = $DB->get_record('user', array('id' => $this->properties->requester), '*', MUST_EXIST);
-        $this->notify($user, $USER, 'courserequestrejected', get_string('courserejectsubject'), get_string('courserejectemail', 'moodle', $notice));
+        $strmgr = get_string_manager();
+        $this->notify($user, $USER, 'courserequestrejected', $strmgr->get_string('courserejectsubject', 'moodle', null, $user->lang), $strmgr->get_string('courserejectemail', 'moodle', $notice, $user->lang));
         $this->delete();
     }
 
@@ -4473,7 +4476,7 @@ class course_request {
         $eventdata->subject           = $subject;
         $eventdata->fullmessage       = $message;
         $eventdata->fullmessageformat = FORMAT_PLAIN;
-        $eventdata->fullmessagehtml   = '';
+        $eventdata->fullmessagehtml   = $message;
         $eventdata->smallmessage      = '';
         $eventdata->notification      = 1;
         message_send($eventdata);

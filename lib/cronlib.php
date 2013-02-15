@@ -736,12 +736,14 @@ function notify_login_failures() {
 
     // Init some variables
     $count = 0;
-    $messages = '';
+    $messages = array();
+    $strmgr = get_string_manager();
+
     // Iterate over the logs recordset
     $rs = $DB->get_recordset_sql($sql, $params);
     foreach ($rs as $log) {
         $log->time = userdate($log->time);
-        $messages .= get_string('notifyloginfailuresmessage','',$log)."\n";
+        $messages[] = $log;
         $count++;
     }
     $rs->close();
@@ -749,17 +751,19 @@ function notify_login_failures() {
     // If we have something useful to report.
     if ($count > 0) {
         $site = get_site();
-        $subject = get_string('notifyloginfailuressubject', '', format_string($site->fullname));
-        // Calculate the complete body of notification (start + messages + end)
-        $body = get_string('notifyloginfailuresmessagestart', '', $CFG->wwwroot) .
-                (($CFG->lastnotifyfailure != 0) ? '('.userdate($CFG->lastnotifyfailure).')' : '')."\n\n" .
-                $messages .
-                "\n\n".get_string('notifyloginfailuresmessageend','',$CFG->wwwroot)."\n\n";
 
         // For each destination, send mail
         mtrace('Emailing admins about '. $count .' failed login attempts');
         foreach ($recip as $admin) {
             //emailing the admins directly rather than putting these through the messaging system
+            $subject = $strmgr->get_string('notifyloginfailuressubject', 'moodle', format_string($site->fullname), $admin->lang);
+            // Calculate the complete body of notification (start + messages + end)
+            $body = $strmgr->get_string('notifyloginfailuresmessagestart', 'moodle', $CFG->wwwroot, $admin->lang) .
+                (($CFG->lastnotifyfailure != 0) ? '('.userdate($CFG->lastnotifyfailure).')' : '')."\n\n";
+            foreach ($messages as $log) {
+                 $body .= $strmgr->get_string('notifyloginfailuresmessage', 'moodle', $log, $admin->lang)."\n";
+            }
+            $body .= "\n\n".$strmgr->get_string('notifyloginfailuresmessageend', 'moodle', $CFG->wwwroot, $admin->lang)."\n\n";
             email_to_user($admin, generate_email_supportuser(), $subject, $body);
         }
     }

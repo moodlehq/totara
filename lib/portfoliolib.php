@@ -1100,12 +1100,14 @@ function portfolio_insane_notify_admins($insane, $instances=false) {
         }
     }
 
-    $subject   = get_string('insanesubject', 'portfolio');
-    $plainbody = get_string('insanebody', 'portfolio', $a);
-    $htmlbody  = get_string('insanebodyhtml', 'portfolio', $a);
-    $smallbody = get_string('insanebodysmall', 'portfolio', $a);
-
+    $strmgr = get_string_manager();
     foreach ($admins as $admin) {
+        //get strings in recipient language
+        $subject   = $strmgr->get_string('insanesubject', 'portfolio', null, $admin->lang);
+        $plainbody = $strmgr->get_string('insanebody', 'portfolio', $a, $admin->lang);
+        $htmlbody  = $strmgr->get_string('insanebodyhtml', 'portfolio', $a, $admin->lang);
+        $smallbody = $strmgr->get_string('insanebodysmall', 'portfolio', $a, $admin->lang);
+
         $eventdata = new stdClass();
         $eventdata->modulename = 'portfolio';
         $eventdata->component = 'portfolio';

@@ -44,8 +44,9 @@ while(!feof($fd)) {
     $course = $DB->get_record_sql($sql, array('courseid' => $log->course));
     context_instance_preload($course);
 
+    $strmgr = get_string_manager();
     $user = $DB->get_record("user", array("id"=>$log->userid));
-    $subject = get_string('virusfoundsubject','moodle',format_string($site->fullname));
+    $subject = $strmgr->get_string('virusfoundsubject','moodle',format_string($site->fullname),$user->lang);
     $a->date = userdate($log->time);
 
     $a->action = $action;
@@ -53,7 +54,7 @@ while(!feof($fd)) {
     $a->user = fullname($user);
 
     notify_user($user,$subject,$a);
-    notify_admins($user,$subject,$a);
+    notify_admins($user, $a);
 }
 fclose($fd);
 
@@ -63,7 +64,8 @@ function notify_user($user,$subject,$a) {
     if (!$user) {
         return false;
     }
-    $body = get_string('virusfoundlater','moodle',$a);
+    $strmgr = get_string_manager();
+    $body = $strmgr->get_string('virusfoundlater','moodle',$a,$user->lang);
 
     $eventdata = new stdClass();
     $eventdata->modulename        = 'moodle';
@@ -78,13 +80,14 @@ function notify_user($user,$subject,$a) {
 }
 
 
-function notify_admins($user,$subject,$a) {
+function notify_admins($user, $a) {
 
     $admins = get_admins();
-
-    $body = get_string('virusfoundlateradmin','moodle',$a);
+    $strmgr = get_string_manager();
     foreach ($admins as $admin) {
         $eventdata = new stdClass();
+        $subject = $strmgr->get_string('virusfoundsubject','moodle',format_string($site->fullname),$admin->lang);
+        $body = $strmgr->get_string('virusfoundlateradmin','moodle',$a,$admin->lang);
         $eventdata->modulename        = 'moodle';
         $eventdata->userfrom          = get_admin();
         $eventdata->userto            = $admin;
@@ -102,9 +105,10 @@ function notify_admins_unknown($file,$a) {
     global $site;
 
     $admins = get_admins();
-    $subject = get_string('virusfoundsubject','moodle',format_string($site->fullname));
-    $body = get_string('virusfoundlateradminnolog','moodle',$a);
+    $strmgr = get_string_manager();
     foreach ($admins as $admin) {
+        $subject = $strmgr->get_string('virusfoundsubject','moodle',format_string($site->fullname),$admin->lang);
+        $body = $strmgr->get_string('virusfoundlateradminnolog','moodle',$a,$admin->lang);
         $eventdata = new stdClass();
         $eventdata->modulename        = 'moodle';
         $eventdata->userfrom          = get_admin();
