@@ -2296,10 +2296,11 @@ class reportbuilder {
      * @param array $record A record returnd by a recordset
      * @param boolean $striptags If true, returns the data with any html tags removed
      * @param boolean $isexport If true, data is being exported
+     * @param boolean $excel true if processing data for an export_xls
      * @return array Outer array are table rows, inner array are columns
      *               False is returned if the SQL query failed entirely
      */
-    function process_data_row($record, $striptags=false, $isexport=false) {
+    function process_data_row($record, $striptags=false, $isexport=false, $excel=false) {
         $columns = $this->columns;
         $columnoptions = $this->columnoptions;
 
@@ -2316,6 +2317,8 @@ class reportbuilder {
                     if (method_exists($this->src, $func)) {
                         if ($column->displayfunc == 'customfield_textarea' || $column->displayfunc == 'customfield_file') {
                             $tabledata[] = $this->src->$func($value, $record->$field, $record, $isexport);
+                        } else if (($column->displayfunc == 'nice_date' || $column->displayfunc == 'nice_datetime') && $excel) {
+                            $tabledata[] = $record->$field;
                         } else {
                             $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
                         }
@@ -2576,26 +2579,13 @@ class reportbuilder {
         // user recordset so we can handle large datasets
         if ($records = $DB->get_recordset_sql($query, $params)) {
             foreach ($records as $record) {
-                $record_data = $this->process_data_row($record, true, true);
-
+                $record_data = $this->process_data_row($record, true, true, true);
                 for ($col=0; $col<$numfields; $col++) {
                     if (isset($record_data[$col]) && !empty($record_data[$col])) {
                         if ($fields[$col]->displayfunc == 'nice_date') {
-                            $system_timezone = date_default_timezone_get();
-                            date_default_timezone_set('UTC');
-                            $unix_ts = strtotime($record_data[$col]);
-                            date_default_timezone_set($system_timezone);
-                            $worksheet[0]->write_date($row, $col, $unix_ts, $dateformat);
+                            $worksheet[0]->write_date($row, $col, $record_data[$col], $dateformat);
                         } else if ($fields[$col]->displayfunc == 'nice_datetime') {
-                            $system_timezone = date_default_timezone_get();
-                            date_default_timezone_set('UTC');
-                            //change the incoming data slightly so that strtotime can understand it
-                            $datetime = str_replace(" at", "", $record_data[$col]) . ":00";
-                            $unix_ts = strtotime($datetime);
-                            date_default_timezone_set($system_timezone);
-                            if ($unix_ts != 0) {
-                                $worksheet[0]->write_date($row, $col, $unix_ts, $datetimeformat);
-                            }
+                            $worksheet[0]->write_date($row, $col, $record_data[$col], $datetimeformat);
                         } else {
                             $worksheet[0]->write($row, $col, html_entity_decode($record_data[$col], ENT_COMPAT, 'UTF-8'));
                         }
