@@ -188,7 +188,7 @@ $PAGE->navbar->add(get_string('editprogramcontent', 'totara_program'));
 $PAGE->requires->strings_for_js(array('addcourses','cancel', 'ok','addcompetency',
             'addcourse','addcourses','editcontent','saveallchanges','confirmcontentchanges',
             'youhaveunsavedchanges','youhaveunsavedchanges','or','and','affectedusercount',
-            'tosavecontent'),
+            'tosavecontent', 'error:courses_nocourses', 'error:recur_nocourse', 'error:nocompetency'),
         'totara_program');
 $selected_addrecurringcourse = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'addrecurringcourse'));
 $selected_addcompetency = json_encode(dialog_display_currently_selected(get_string('selected', 'totara_hierarchy'), 'addcompetency'));

@@ -83,6 +83,10 @@ M.totara_programcontent = M.totara_programcontent || {
             // Serialize data
             var elements = $('.selected > div > span', this._container);
             var courseids = this._get_ids(elements);
+            if (courseids.length === 0) {
+                alert(M.util.get_string('error:courses_nocourses', 'totara_program'));
+                return false;
+            }
             var courseids_str = this._get_ids(elements).join(':');
 
             // retrieve the number of set prefixes so that we can determine the sort order for the new set
@@ -147,9 +151,12 @@ M.totara_programcontent = M.totara_programcontent || {
         // Adapt the handler's save function
         totaraDialog_handler_addcompetency.prototype._save = function() {
 
-            // retrieve the competency id and name
+            // retrieve the competency id
             var id = $('#treeview_selected_val_addcompetency').val();
-            var competency = $('#treeview_selected_text_addcompetency').text();
+            if (id === "0") {
+                alert(M.util.get_string('error:nocompetency', 'totara_program'));
+                return false;
+            }
 
             // retrieve the number of set prefixes so that we can determine the sort order for the new set
             var setprefixes = $('input:hidden[name=setprefixes]').val();
@@ -213,9 +220,12 @@ M.totara_programcontent = M.totara_programcontent || {
         // Adapt the handler's save function
         totaraDialog_handler_addrecurringcourse.prototype._save = function() {
 
-            // retrieve the course id and name
+            // retrieve the course id
             var courseid = $('#treeview_selected_val_addrecurringcourse').val();
-            var coursename = $('#treeview_selected_text_addrecurringcourse').text();
+            if (courseid === "0") {
+                alert(M.util.get_string('error:recur_nocourse', 'totara_program'));
+                return false;
+            }
 
             // Recurring programs will only ever contain a single course set so we can set these default values
             var setprefixes = '';
