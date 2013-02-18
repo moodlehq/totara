@@ -1225,6 +1225,31 @@ class mssql_native_moodle_database extends moodle_database {
     }
 
     /**
+     * Returns the SQL for replacing contents of a column that contains one string with another string.
+     * @param string $column the table column to search
+     * @param string $find the string that will be searched for.
+     * @param string $replace the string $find will be replaced with.
+     * @param int $type bound param type SQL_PARAMS_QM or SQL_PARAMS_NAMED
+     * @param string $prefix named parameter placeholder prefix (unique counter value is appended to each parameter name)
+     * @return array the required $sql and the $params
+     */
+    public function sql_text_replace($column, $find, $replace, $type=SQL_PARAMS_QM, $prefix='param') {
+        // Implementation using standard SQL.
+        $params = array($find, $replace);
+        if ($type == SQL_PARAMS_QM) {
+            $sql = "$column = CAST(REPLACE(CAST($column as nvarchar(max)), ?, ?) as ntext)";
+        } else if ($type == SQL_PARAMS_NAMED) {
+            if (empty($prefix)) {
+                $prefix = 'param';
+            }
+            $param1 = $prefix.$this->replacetextuniqueindex++;
+            $param2 = $prefix.$this->replacetextuniqueindex++;
+            $sql = "$column = CAST(REPLACE(CAST($column as nvarchar(max)), :$param1, :$param2) as ntext)";
+        }
+        return array($sql, $params);
+    }
+
+    /**
      * Returns the proper substr() SQL text used to extract substrings from DB
      * NOTE: this was originally returning only function name
      *

@@ -28,6 +28,7 @@ $string['pageheader'] = 'Search and replace text throughout the whole database';
 $string['notifyfinished'] = '...finished';
 $string['notifyrebuilding'] = 'Rebuilding course cache...';
 $string['notimplemented'] = 'Sorry, this feature is implemented only for MySQL and PostgreSQL databases.';
+$string['notimplementedtotara'] = 'Sorry, this feature is only implemented on MySQL, MSSQL and PostgreSQL databases.';
 $string['notsupported'] ='This script is not supported, always make complete backup before proceeding!<br />This operation can not be reverted!';
 $string['pluginname'] = 'DB search and replace';
 $string['replacewith'] = 'Replace with this string:';

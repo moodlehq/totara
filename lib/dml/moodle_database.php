@@ -128,10 +128,15 @@ abstract class moodle_database {
      * @var int internal temporary variable used to fix params. Its used by {@link _fix_sql_params_dollar_callback()}.
      */
     private $fix_sql_params_i;
+
     /**
      * @var int internal temporary variable used to guarantee unique parameters in each request. Its used by {@link get_in_or_equal()}.
      */
     private $inorequaluniqueindex = 1;
+
+    /** @var int internal temporary variable used by {@link sql_replace_text()}. */
+    protected $replacetextuniqueindex = 1; // guarantees unique parameters in each request
+
 
     /**
      * Constructor - Instantiates the database, specifying if it's external (connect to other systems) or not (Moodle DB).
@@ -2100,6 +2105,33 @@ abstract class moodle_database {
         } else {
             return "SUBSTR($expr, $start, $length)";
         }
+    }
+
+    /**
+     * Returns the SQL for replacing contents of a column that contains one string with another string.
+     * @param string $column the table column to search
+     * @param string $find the string that will be searched for.
+     * @param string $replace the string $find will be replaced with.
+     * @param int $type bound param type SQL_PARAMS_QM or SQL_PARAMS_NAMED
+     * @param string $prefix named parameter placeholder prefix (unique counter value is appended to each parameter name)
+     * @return array the required $sql and the $params
+     */
+    public function sql_text_replace($column, $find, $replace, $type=SQL_PARAMS_QM, $prefix='param') {
+        if ($type == SQL_PARAMS_QM) {
+            $sql = "$column = REPLACE($column, ?, ?)";
+            $params = array($find, $replace);
+        } else if ($type == SQL_PARAMS_NAMED) {
+            if (empty($prefix)) {
+                $prefix = 'param';
+            }
+            $param1 = $prefix.$this->replacetextuniqueindex++;
+            $param2 = $prefix.$this->replacetextuniqueindex++;
+            $sql = "$column = REPLACE($column, :$param1, :$param2)";
+            $params = array($param1 => $find, $param2 => $replace);
+        } else {
+            throw new dml_exception('typenotimplement');
+        }
+        return array($sql, $params);
     }
 
     /**

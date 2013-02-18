@@ -6639,8 +6639,8 @@ function db_replace($search, $replace) {
             $DB->set_debug(true);
             foreach ($columns as $column => $data) {
                 if (in_array($data->meta_type, array('C', 'X'))) {  // Text stuff only
-                    //TODO: this should be definitively moved to DML driver to do the actual replace, this is not going to work for MSSQL and Oracle...
-                    $DB->execute("UPDATE {".$table."} SET $column = REPLACE($column, ?, ?)", array($search, $replace));
+                    list ($replacesql, $replaceparams) = $DB->sql_text_replace($column, $search, $replace);
+                    $DB->execute("UPDATE {".$table."} SET $replacesql", $replaceparams);
                 }
             }
             $DB->set_debug(false);

@@ -40,9 +40,9 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->heading(get_string('pageheader', 'tool_replace'));
 
-if ($DB->get_dbfamily() !== 'mysql' and $DB->get_dbfamily() !== 'postgres') {
-    //TODO: add $DB->text_replace() to DML drivers
-    echo $OUTPUT->notification(get_string('notimplemented', 'tool_replace'));
+$dbfamily = $DB->get_dbfamily();
+if (!in_array($dbfamily, array('mysql', 'postgres', 'mssql'))) {
+    echo $OUTPUT->notification(get_string('notimplementedtotara', 'tool_replace'));
     echo $OUTPUT->footer();
     die;
 }
