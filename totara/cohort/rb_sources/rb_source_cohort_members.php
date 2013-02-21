@@ -54,10 +54,6 @@ class rb_source_cohort_members extends rb_base_source {
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('cohortmembers', 'totara_cohort');
 
-        $this->add_custom_user_fields($this->joinlist,
-                                      $this->columnoptions,
-                                      $this->filteroptions);
-
         parent::__construct();
     }
 

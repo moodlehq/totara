@@ -75,6 +75,40 @@ abstract class rb_base_source {
 
         // basic sanity checking of joinlist
         $this->validate_joinlist();
+        //now automatically add the appropriate custom fields
+        $customfields = array('add_custom_user_fields' => false,
+                              'add_custom_position_fields' => false,
+                              'add_custom_organisation_fields' => false,
+                              'add_custom_course_fields' => false,
+                              'add_custom_competency_fields' => false);
+        $base = $this->base;
+        foreach ($this->joinlist as $join) {
+            $table = $join->table;
+            //tables can be joined multiple times so we set flags
+            if ($base == '{user}' || $table == '{user}') {
+                $customfields['add_custom_user_fields'] = true;
+            }
+            if ($base == '{course}' || $table == '{course}') {
+                $customfields['add_custom_course_fields'] = true;
+            }
+            if ($base == '{org}' || $table == '{org}') {
+                $customfields['add_custom_organisation_fields'] = true;
+            }
+            if ($base == '{pos}' || $table == '{pos}') {
+                $customfields['add_custom_position_fields'] = true;
+            }
+            if ($base == '{comp}' || $table == '{comp}') {
+                $customfields['add_custom_competency_fields'] = true;
+            }
+        }
+        //and then use the flags to call the appropriate add functions
+        foreach ($customfields as $function => $add) {
+            if ($add) {
+                $this->$function($this->joinlist,
+                                 $this->columnoptions,
+                                 $this->filteroptions);
+            }
+        }
     }
 
 

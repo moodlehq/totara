@@ -44,9 +44,8 @@ class rb_source_cohort_orphaned_users extends rb_source_user {
     public function __construct() {
         global $CFG;
         require_once($CFG->dirroot.'/cohort/lib.php');
-
         parent::__construct();
-        $this->base = $this->base = "(
+        $this->base = "(
             select *
             from {user} u
             where
@@ -64,5 +63,7 @@ class rb_source_cohort_orphaned_users extends rb_source_user {
                 AND u.confirmed = 1
             )';
         $this->sourcetitle = get_string('orphaneduserssource', 'totara_cohort');
+
     }
+
 }

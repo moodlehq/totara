@@ -57,18 +57,6 @@ class rb_source_user extends rb_base_source {
         $this->staff_f2f = $DB->get_field('report_builder', 'id', array('shortname' => 'staff_facetoface_sessions'));
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_user');
 
-        //Adding custom fields
-        $this->add_custom_user_fields($this->joinlist,
-                                        $this->columnoptions,
-                                        $this->filteroptions,
-                                        'base');
-        $this->add_custom_position_fields($this->joinlist,
-                                          $this->columnoptions,
-                                          $this->filteroptions);
-        $this->add_custom_organisation_fields($this->joinlist,
-                                              $this->columnoptions,
-                                              $this->filteroptions);
-
         parent::__construct();
     }
 
@@ -128,6 +116,7 @@ class rb_source_user extends rb_base_source {
             )
         );
 
+        $this->add_user_table_to_joinlist($joinlist, 'base', 'id');
         $this->add_position_tables_to_joinlist($joinlist, 'base', 'id');
         $this->add_manager_tables_to_joinlist($joinlist, 'position_assignment', 'reportstoid');
         $this->add_cohort_user_tables_to_joinlist($joinlist, 'base', 'id');

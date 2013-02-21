@@ -46,11 +46,6 @@ class rb_source_program_completion extends rb_base_source {
         // only consider whole programs - not courseset completion
         $this->sourcewhere = 'base.coursesetid = 0';
 
-        //Adding custom fields
-        $this->add_custom_user_fields($this->joinlist,
-                                      $this->columnoptions,
-                                      $this->filteroptions);
-
         parent::__construct();
     }
 

@@ -42,20 +42,6 @@ class rb_source_course_completion extends rb_base_source {
         $this->requiredcolumns = $this->define_requiredcolumns();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_course_completion');
 
-        //Adding custom fields
-        $this->add_custom_user_fields($this->joinlist,
-                                      $this->columnoptions,
-                                      $this->filteroptions);
-        $this->add_custom_position_fields($this->joinlist,
-                                          $this->columnoptions,
-                                          $this->filteroptions);
-        $this->add_custom_organisation_fields($this->joinlist,
-                                              $this->columnoptions,
-                                              $this->filteroptions);
-        $this->add_custom_course_fields($this->joinlist,
-                                        $this->columnoptions,
-                                        $this->filteroptions);
-
         parent::__construct();
     }
 

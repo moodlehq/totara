@@ -47,7 +47,6 @@ class rb_source_assignment extends rb_base_source {
         $this->requiredcolumns = $this->_define_requiredcolumns();
         $this->defaultcolumns = $this->_define_defaultcolumns();
         $this->sourcetitle = $this->_get_string('sourcetitle');
-        $this->add_custom_user_fields($this->joinlist, $this->columnoptions, $this->filteroptions);
         parent::__construct();
     }
 

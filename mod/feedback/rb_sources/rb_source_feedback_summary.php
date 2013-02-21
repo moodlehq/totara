@@ -31,17 +31,6 @@ class rb_source_feedback_summary extends rb_base_source {
         $this->defaultfilters = $this->define_defaultfilters();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_feedback_summary');
 
-        //Adding custom fields
-        $this->add_custom_user_fields($this->joinlist,
-                                      $this->columnoptions,
-                                      $this->filteroptions);
-        $this->add_custom_position_fields($this->joinlist,
-                                          $this->columnoptions,
-                                          $this->filteroptions);
-        $this->add_custom_organisation_fields($this->joinlist,
-                                              $this->columnoptions,
-                                              $this->filteroptions);
-
         parent::__construct();
     }
 
