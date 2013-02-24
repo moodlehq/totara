@@ -109,7 +109,7 @@ function xmldb_totara_reportbuilder_upgrade($oldversion) {
 
         $searches = $DB->get_records_sql($sql, $params);
 
-        require_once($CFG->libdir.'/completion/completion_completion.php');
+        require_once($CFG->dirroot . '/completion/completion_completion.php');
 
         foreach ($searches as $search) {
             $todb = new stdClass();
