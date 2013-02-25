@@ -1190,7 +1190,7 @@ function totara_cohort_delete_course($courseid, $showfeedback) {
         $transaction = $DB->start_delegated_transaction();
 
         foreach ($courserules as $rule) {
-            $DB->delete_records('cohort_rule_params', array('ruleid' => $rule->id, 'listofids' => $courseid));
+            $DB->delete_records('cohort_rule_params', array('ruleid' => $rule->id, 'name' => 'listofids', 'value' => $courseid));
 
             // Delete the rule if it has no params left after this
             if (!$DB->count_records('cohort_rule_params', array('ruleid' => $rule->id))) {
