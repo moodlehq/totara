@@ -84,14 +84,19 @@ class plan_edit_form extends moodleform {
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('name', $template->fullname);
-        $mform->addElement('editor', 'description_editor', get_string('plandescription', 'totara_plan'), null, $TEXTAREA_OPTIONS);
-        $mform->setType('description_editor', PARAM_CLEANHTML);
+        if ($action == 'view') {
+            $plan->description = file_rewrite_pluginfile_urls($plan->description, 'pluginfile.php', context_system::instance()->id, 'totara_plan', 'dp_plan', $plan->id);
+            $mform->addElement('static', 'description', get_string('plandescription', 'totara_plan'), format_text($plan->description, FORMAT_HTML));
+        } else {
+            $mform->addElement('editor', 'description_editor', get_string('plandescription', 'totara_plan'), null, $TEXTAREA_OPTIONS);
+            $mform->setType('description_editor', PARAM_CLEANHTML);
+        }
         $mform->addElement('text', 'enddate', get_string('completiondate', 'totara_plan'), array('placeholder' => get_string('datepickerplaceholder', 'totara_core')));
         $mform->addRule('enddate', get_string('err_required', 'form'), 'required', '', 'client', false, false);
         $mform->setDefault('enddate', userdate($template->enddate, get_string('datepickerphpuserdate', 'totara_core'), $CFG->timezone, false));
 
         if ($action == 'view') {
-            $mform->hardFreeze(array('name', 'description_editor', 'enddate'));
+            $mform->hardFreeze(array('name', 'enddate'));
             $buttonarray = array();
             if ($plan->get_setting('update') == DP_PERMISSION_ALLOW && $plan->status != DP_PLAN_STATUS_COMPLETE) {
                 $buttonarray[] = $mform->createElement('submit', 'edit', get_string('editdetails', 'totara_plan'));
