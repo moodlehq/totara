@@ -27,3 +27,6 @@ $string['title'] = 'Report Manager';
 $string['displaytitle'] = 'Report Manager';
 $string['course_completion'] = 'Course Completion Report';
 $string['competency_evidence'] = 'Competency Evidence Report';
+$string['totara_report_manager:addinstance'] = 'Add a new report manager block';
+$string['totara_report_manager:myaddinstance'] = 'Add a new report manager block to the My Moodle page';
+

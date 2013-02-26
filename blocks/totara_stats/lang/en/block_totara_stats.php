@@ -16,3 +16,5 @@ $string['statdesc'] = 'In the last 30 days your team has....';
 $string['minutesbetweensession'] = 'minutes between sessions';
 $string['minutesbetweensessiondesc'] = 'Used by stats generation to define when a new session should be calculated - a change to this will only affect stats generated in future.';
 $string['executeathelp'] = 'Time to run the cron based stats processing';
+$string['totara_stats:addinstance'] = 'Add a new stats block';
+$string['totara_stats:myaddinstance'] = 'Add a new stats block to the My Moodle page';

@@ -20,3 +20,6 @@ $string['viewall'] = 'View all';
 $string['viewallnot'] = 'View all alerts';
 $string['context'] = 'Link';
 $string['clickformoreinfo'] = 'Click for more information';
+$string['totara_alerts:addinstance'] = 'Add a new alerts block';
+$string['totara_alerts:myaddinstance'] = 'Add a new alerts block to the My Moodle page';
+

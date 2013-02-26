@@ -8,3 +8,4 @@ $string['coursealreadyinplan'] = 'This course is already included in the Learnin
 $string['coursealreadyinplans'] = 'This course is already included in the following Learning Plans:';
 $string['courseinplan'] = 'This course is included in the Learning Plan:';
 $string['courseinplans'] = 'This course is included in the following Learning Plans:';
+$string['totara_addtoplan:addinstance'] = 'Add a new "Add to plan" block';
