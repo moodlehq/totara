@@ -1,21 +1,28 @@
 <?php
 
-// This file keeps track of upgrades to
-// the certificate module
+// This file is part of the Certificate module for Moodle - http://moodle.org/
 //
-// Sometimes, changes between versions involve
-// alterations to database structures and other
-// major things that may break installations.
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
-// The upgrade function in this file will attempt
-// to perform all the necessary actions to upgrade
-// your older installation to the current version.
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 //
-// If there's something it cannot do itself, it
-// will tell you what you need to do.
-//
-// The commands in here will all be database-neutral,
-// using the functions defined in lib/ddllib.php
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * This file keeps track of upgrades to the certificate module
+ *
+ * @package    mod
+ * @subpackage certificate
+ * @copyright  Mark Nelson <markn@moodle.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 function xmldb_certificate_upgrade($oldversion=0) {
 
@@ -66,7 +73,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2007061300, 'certificate');
     }
 
@@ -84,7 +91,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->create_table($table);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2007061301, 'certificate');
     }
 
@@ -94,7 +101,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
         $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'certificate_id');
         $dbman->change_field_unsigned($table, $field);
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2007061302, 'certificate');
     }
 
@@ -114,7 +121,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2007102800, 'certificate');
     }
 
@@ -127,7 +134,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2007102806, 'certificate');
     }
 
@@ -140,7 +147,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2008080904, 'certificate');
     }
 
@@ -196,7 +203,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->add_field($table, $field);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2011030105, 'certificate');
     }
 
@@ -287,7 +294,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
                 }
             }
         }
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2011110102, 'certificate');
     }
 
@@ -318,64 +325,8 @@ function xmldb_certificate_upgrade($oldversion=0) {
         $DB->set_field('certificate', 'certificatetype', 'letter_non_embedded', array('certificatetype' => 'letter_landscape'));
         $DB->set_field('certificate', 'certificatetype', 'letter_non_embedded', array('certificatetype' => 'letter_portrait'));
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2011110103, 'certificate');
-    }
-
-    if ($oldversion < 2012010501) {
-        // Unnecessary length of 2 for fields in the certificate table
-        $table = new xmldb_table('certificate');
-        // Email teachers
-        $field = new xmldb_field('emailteachers');
-        $field->type = XMLDB_TYPE_INTEGER;
-        $field->length = 1;
-        $field->unsigned = true;
-        $field->notnull = true;
-        $field->default = 0;
-        $dbman->change_field_precision($table, $field);
-        // Save cert
-        $field = new xmldb_field('savecert');
-        $field->type = XMLDB_TYPE_INTEGER;
-        $field->length = 1;
-        $field->unsigned = true;
-        $field->notnull = true;
-        $field->default = 0;
-        $dbman->change_field_precision($table, $field);
-        // Report cert
-        $field = new xmldb_field('reportcert');
-        $field->type = XMLDB_TYPE_INTEGER;
-        $field->length = 1;
-        $field->unsigned = true;
-        $field->notnull = true;
-        $field->default = 0;
-        $dbman->change_field_precision($table, $field);
-        // Reissue cert
-        $field = new xmldb_field('reissuecert');
-        $field->type = XMLDB_TYPE_INTEGER;
-        $field->length = 1;
-        $field->unsigned = true;
-        $field->notnull = true;
-        $field->default = 0;
-        $dbman->change_field_precision($table, $field);
-
-        // Increase the length of the studentname field in the issue table - CONTRIB-3324
-        $table = new xmldb_table('certificate_issues');
-        $field = new xmldb_field('studentname');
-        $field->type = XMLDB_TYPE_CHAR;
-        $field->length = '255';
-        $field->notnull = true;
-        $field->default = '';
-        $dbman->change_field_precision($table, $field);
-        // While we are here change the length of classname to 255, for some reason it is at 254
-        $field = new xmldb_field('classname');
-        $field->type = XMLDB_TYPE_CHAR;
-        $field->length = '255';
-        $field->notnull = true;
-        $field->default = '';
-        $dbman->change_field_precision($table, $field);
-
-        // certificate savepoint reached
-        upgrade_mod_savepoint(true, 2012010501, 'certificate');
     }
 
     if ($oldversion < 2012022001) {
@@ -385,7 +336,7 @@ function xmldb_certificate_upgrade($oldversion=0) {
                 WHERE certdate = 0";
         $DB->execute($sql);
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2012022001, 'certificate');
     }
 
@@ -405,12 +356,18 @@ function xmldb_certificate_upgrade($oldversion=0) {
 
         // The poor certificate_issues table is going to have a lot of
         // duplicates, we don't need that now, just keep the latest one
-        $sql = "DELETE
-                  FROM {certificate_issues}
-                 WHERE id NOT IN (SELECT MAX(id)
-                                    FROM (SELECT id, certificateid, userid FROM {certificate_issues}) as ci2
-                                GROUP BY ci2.certificateid, ci2.userid)";
-        $DB->execute($sql);
+        $sql = "SELECT cert.id
+                FROM (  SELECT MAX(id) AS id, certificateid, userid
+                        FROM {certificate_issues}
+                        GROUP BY certificateid, userid
+                     ) AS cert";
+        if ($idstokeep = $DB->get_fieldset_sql($sql)) {
+            list($insql, $params) = $DB->get_in_or_equal($idstokeep, SQL_PARAMS_NAMED, 'param', false);
+            $sql = "DELETE
+                    FROM {certificate_issues}
+                    WHERE id {$insql}";
+            $DB->execute($sql, $params);
+        }
 
         // Going to be editing this table
         $table = new xmldb_table('certificate_issues');
@@ -437,8 +394,96 @@ function xmldb_certificate_upgrade($oldversion=0) {
             $dbman->drop_field($table, $field);
         }
 
-        // certificate savepoint reached
+        // Certificate savepoint reached
         upgrade_mod_savepoint(true, 2012060901, 'certificate');
+    }
+
+    if ($oldversion < 2012072501) {
+        // Add a column to store the required grade
+        $table = new xmldb_table('certificate');
+        $requiredtimefield = new xmldb_field('requiredtime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+            XMLDB_NOTNULL, null, '0', 'delivery');
+
+        if (!$dbman->field_exists($table, $requiredtimefield)) {
+            $dbman->add_field($table, $requiredtimefield);
+        }
+
+        // If this table still exists, then the install was from a 1.9 version
+        if ($dbman->table_exists('certificate_linked_modules')) {
+            // Now we need to loop through the restrictions in the certificate_linked_modules
+            // table and check if there were any required time conditions
+            if ($certlinks = $DB->get_records('certificate_linked_modules')) {
+                foreach ($certlinks as $link) {
+                    // If the link id is '-1' then the setting applies to the time spent in the course
+                    if ($link->linkid == '-1') {
+                        // Make sure the certificate exists
+                        if ($certificate = $DB->get_record('certificate', array('id' => $link->certificate_id))) {
+                            $certificate->requiredtime = $link->linkgrade;
+                            $DB->update_record('certificate', $certificate);
+                        }
+                    }
+                }
+            }
+            // We can now get rid of this table
+            $table = new xmldb_table('certificate_linked_modules');
+            $dbman->drop_table($table);
+        }
+
+        // Certificate savepoint reached
+        upgrade_mod_savepoint(true, 2012072501, 'certificate');
+    }
+
+    if ($oldversion < 2012082401) {
+        $table = new xmldb_table('certificate');
+
+        // Change length of the fields that store images, so longer image names can be stored
+        $field = new xmldb_field('borderstyle', XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('printwmark', XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('printsignature', XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('printseal', XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0);
+        $dbman->change_field_precision($table, $field);
+
+        // Change length of fields that are unnecessarily large
+        $field = new xmldb_field('printnumber', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('printhours', XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, false, 0, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('emailteachers', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('savecert', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0, 0);
+        $dbman->change_field_precision($table, $field);
+
+        $field = new xmldb_field('reportcert', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0, 0);
+        $dbman->change_field_precision($table, $field);
+
+        // Certificate savepoint reached
+        upgrade_mod_savepoint(true, 2012082401, 'certificate');
+    }
+
+    if ($oldversion < 2012090901) {
+        $table = new xmldb_table('certificate');
+
+        $field = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, 0, 0, 'printseal');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Set the time created to the time modified
+        $sql = "UPDATE {certificate}
+                SET timecreated = timemodified";
+        $DB->execute($sql);
+
+        // Certificate savepoint reached
+        upgrade_mod_savepoint(true, 2012090901, 'certificate');
     }
 
     return true;

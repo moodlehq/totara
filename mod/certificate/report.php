@@ -1,11 +1,26 @@
 <?php
 
+// This file is part of the Certificate module for Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Handles viewing the report
  *
  * @package    mod
  * @subpackage certificate
- * @copyright  Mark Nelson <mark@moodle.com.au>
+ * @copyright  Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -64,7 +79,6 @@ if (!$download) {
     // Check to see if groups are being used in this choice
     if ($groupmode = groups_get_activity_groupmode($cm)) {
         groups_get_activity_group($cm, true);
-        groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/certificate/report.php?id='.$id);
     }
 } else {
     $groupmode = groups_get_activity_groupmode($cm);
@@ -77,6 +91,7 @@ add_to_log($course->id, 'certificate', 'view', "report.php?id=$cm->id", '$certif
 // Ensure there are issues to display, if not display notice
 if (!$users = certificate_get_issues($certificate->id, $DB->sql_fullname(), $groupmode, $cm, $page, $perpage)) {
     echo $OUTPUT->header();
+    groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/certificate/report.php?id='.$id);
     notify(get_string('nocertificatesissued', 'certificate'));
     echo $OUTPUT->footer($course);
     exit();
@@ -86,9 +101,9 @@ if ($download == "ods") {
     require_once("$CFG->libdir/odslib.class.php");
 
     // Calculate file name
-    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    // Replace Ampersands with and, need both incase allowhtmlinheading is on
     $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))).'.ods';
+    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.ods';
     // Creating a workbook
     $workbook = new MoodleODSWorkbook("-");
     // Send HTTP headers
@@ -137,9 +152,9 @@ if ($download == "xls") {
     require_once("$CFG->libdir/excellib.class.php");
 
     // Calculate file name
-    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    // Replace Ampersands with and, need both incase allowhtmlinheading is on
     $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))).'.xls';
+    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.xls';
     // Creating a workbook
     $workbook = new MoodleExcelWorkbook("-");
     // Send HTTP headers
@@ -185,9 +200,9 @@ if ($download == "xls") {
 }
 
 if ($download == "txt") {
-    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
+    // Replace Ampersands with and, need both incase allowhtmlinheading is on
     $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))).'.txt';
+    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.txt';
 
     header("Content-Type: application/download\n");
     header("Content-Disposition: attachment; filename=\"$filename\"");
@@ -252,6 +267,7 @@ $btndownloadtxt = $OUTPUT->single_button(new moodle_url("report.php", array('id'
 $tablebutton->data[] = array($btndownloadods, $btndownloadxls, $btndownloadtxt);
 
 echo $OUTPUT->header();
+groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/certificate/report.php?id='.$id);
 echo $OUTPUT->heading(get_string('modulenameplural', 'certificate'));
 echo $OUTPUT->paging_bar($usercount, $page, $perpage, $url);
 echo '<br />';

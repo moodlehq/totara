@@ -1,6 +1,6 @@
 <?php
 
-// This file is part of Moodle - http://moodle.org/
+// This file is part of the Certificate module for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ class backup_certificate_activity_structure_step extends backup_activity_structu
             'savecert', 'reportcert', 'delivery', 'certificatetype', 'orientation',
             'borderstyle', 'bordercolor', 'printwmark', 'printdate', 'datefmt', 'printnumber',
             'printgrade', 'gradefmt', 'printoutcome', 'printhours', 'printteacher', 'customtext',
-            'printsignature', 'printseal', 'timemodified'));
+            'printsignature', 'printseal', 'timecreated', 'timemodified', 'requiredtime'));
 
         $issues = new backup_nested_element('issues');
 

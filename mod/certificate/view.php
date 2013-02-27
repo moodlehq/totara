@@ -1,16 +1,32 @@
 <?php
 
+// This file is part of the Certificate module for Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Handles viewing a certificate
  *
  * @package    mod
  * @subpackage certificate
- * @copyright  Chardelle Busch, Mark Nelson <mark@moodle.com.au>
+ * @copyright  Mark Nelson <markn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
-require_once('lib.php');
+require_once("../../config.php");
+require_once("$CFG->dirroot/mod/certificate/deprecatedlib.php");
+require_once("$CFG->dirroot/mod/certificate/lib.php");
 require_once("$CFG->libdir/pdflib.php");
 
 $id = required_param('id', PARAM_INT);    // Course Module ID
@@ -58,17 +74,41 @@ if ($PAGE->user_allowed_editing()) {
     $PAGE->set_button($OUTPUT->single_button($url, $strsubmit));
 }
 
+// Check if the user can view the certificate
+if ($certificate->requiredtime && !has_capability('mod/certificate:manage', $context)) {
+    if (certificate_get_course_time($course->id) < ($certificate->requiredtime * 60)) {
+        $a = new stdClass;
+        $a->requiredtime = $certificate->requiredtime;
+        notice(get_string('requiredtimenotmet', 'certificate', $a), "$CFG->wwwroot/course/view.php?id=$course->id");
+        die;
+    }
+}
+
 // Create new certificate record, or return existing record
 $certrecord = certificate_get_issue($course, $USER, $certificate, $cm);
 
-// Load the specific certificatetype
-require ("$CFG->dirroot/mod/certificate/type/$certificate->certificatetype/certificate.php");
+// Create a directory that is writeable so that TCPDF can create temp images.
+// In 2.2 onwards the function make_cache_directory was introduced, use that,
+// otherwise we will use make_upload_directory.
+if ($CFG->version >= '2011120500') {
+    make_cache_directory('tcpdf');
+} else {
+    make_upload_directory('cache/tcpdf');
+}
+
+// Load the specific certificate type.
+require("$CFG->dirroot/mod/certificate/type/$certificate->certificatetype/certificate.php");
 
 if (empty($action)) { // Not displaying PDF
     echo $OUTPUT->header();
 
+    /// find out current groups mode
+    groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/certificate/view.php?id=' . $cm->id);
+    $currentgroup = groups_get_activity_group($cm);
+    $groupmode = groups_get_activity_groupmode($cm);
+
     if (has_capability('mod/certificate:manage', $context)) {
-        $numusers = count(certificate_get_issues($certificate->id, 'ci.timecreated ASC', '', $cm));
+        $numusers = count(certificate_get_issues($certificate->id, 'ci.timecreated ASC', $groupmode, $cm));
         $url = html_writer::tag('a', get_string('viewcertificateviews', 'certificate', $numusers),
             array('href' => $CFG->wwwroot . '/mod/certificate/report.php?id=' . $cm->id));
         echo html_writer::tag('div', $url, array('class' => 'reportlink'));
@@ -101,10 +141,10 @@ if (empty($action)) { // Not displaying PDF
     echo $OUTPUT->footer($course);
     exit;
 } else { // Output to pdf
-    // The PDF filename
-    //replace Ampersands with and, need both incase allowhtmlinheading is on!!!
-    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certificate->name);
-    $filename = clean_filename(strip_tags(format_string($filename, true))).'.pdf';
+    // Remove full-stop at the end if it exists, to avoid "..pdf" being created and being filtered by clean_filename
+    $certname = rtrim($certificate->name, '.');
+    $filename = str_replace(array('&amp;', '&'), 'and', $course->shortname . '_' . $certname);
+    $filename = clean_filename(strip_tags(format_string($filename, true))) . '.pdf';
     if ($certificate->savecert == 1) {
         // PDF contents are now in $file_contents as a string
        $file_contents = $pdf->Output('', 'S');

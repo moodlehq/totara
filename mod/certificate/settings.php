@@ -16,12 +16,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package moodlecore
- * @subpackage backup-moodle2
- * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Provides some custom settings for the certificate module
+ *
+ * @package    mod
+ * @subpackage certificate
+ * @copyright  Michael Avelar <michaela@moodlerooms.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
- // This activity has no particular settings but the inherited from the generic
- // backup_activity_task so here there isn't any class definition, like the ones
- // existing in /backup/moodle2/backup_settingslib.php (activities section)
+defined('MOODLE_INTERNAL') || die;
+
+require_once($CFG->dirroot.'/mod/certificate/adminsetting.class.php');
+
+$settings->add(new mod_certificate_admin_setting_upload('certificate/uploadimage',
+    get_string('uploadimage', 'certificate'), get_string('uploadimagedesc', 'certificate'), ''));
+
+?>

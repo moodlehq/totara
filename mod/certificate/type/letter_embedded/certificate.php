@@ -1,19 +1,43 @@
 <?php
 
+// This file is part of the Certificate module for Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * letter_embedded certificate type
+ *
+ * @package    mod
+ * @subpackage certificate
+ * @copyright  Mark Nelson <markn@moodle.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.'); // It must be included from view.php
 }
 
-$pdf = new TCPDF($certificate->orientation, 'pt', 'Letter', true, 'UTF-8', false);
+$pdf = new PDF($certificate->orientation, 'pt', 'Letter', true, 'UTF-8', false);
 
 $pdf->SetTitle($certificate->name);
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
-$pdf->AddPage();
 $pdf->SetAutoPageBreak(false, 0);
+$pdf->AddPage();
 
-//Define variables
-//Landscape
+// Define variables
+// Landscape
 if ($certificate->orientation == 'L') {
     $x = 28;
     $y = 125;
@@ -33,7 +57,7 @@ if ($certificate->orientation == 'L') {
     $brdrh = 612;
     $codey = 505;
 } else {
-//Portrait
+    // Portrait
     $x = 28;
     $y = 170;
     $sealx = 440;
@@ -74,7 +98,9 @@ certificate_print_text($pdf, $x, $y + 205, 'C', 'freeserif', '', 20, $course->fu
 certificate_print_text($pdf, $x, $y + 255, 'C', 'freeserif', '', 14, certificate_get_date($certificate, $certrecord, $course));
 certificate_print_text($pdf, $x, $y + 283, 'C', 'freeserif', '', 10, certificate_get_grade($certificate, $course));
 certificate_print_text($pdf, $x, $y + 311, 'C', 'freeserif', '', 10, certificate_get_outcome($certificate, $course));
-certificate_print_text($pdf, $x, $y + 339, 'C', 'freeserif', '', 10, certificate_get_credit_hours($certificate));
+if ($certificate->printhours) {
+    certificate_print_text($pdf, $x, $y + 339, 'C', 'freeserif', '', 10, get_string('credithours', 'certificate') . ': ' . $certificate->printhours);
+}
 certificate_print_text($pdf, $x, $codey, 'C', 'freeserif', '', 10, certificate_get_code($certificate, $certrecord));
 $i = 0;
 if ($certificate->printteacher) {
@@ -87,5 +113,5 @@ if ($certificate->printteacher) {
     }
 }
 
-certificate_print_text($pdf, $custx, $custy, 'L', '', '', '', $certificate->customtext);
+certificate_print_text($pdf, $custx, $custy, 'L', null, null, null, $certificate->customtext);
 ?>
