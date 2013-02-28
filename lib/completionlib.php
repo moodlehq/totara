@@ -623,6 +623,10 @@ class completion_info {
                 case COMPLETION_INCOMPLETE:
                     $newstate = $possibleresult;
                     break;
+                case COMPLETION_UNKNOWN:
+                    // We cannot determine the state, so just use the current one :P
+                    $newstate = $current->completionstate;
+                    break;
                 default:
                     $this->internal_systemerror("Unexpected manual completion state for {$cm->id}: $possibleresult");
             }
