@@ -42,11 +42,8 @@ require_once($CFG->dirroot . '/' . $CFG->admin . '/registration/lib.php');
 $huburl = required_param('huburl', PARAM_URL);
 $huburl = rtrim($huburl, "/");
 
-if ($huburl == HUB_MOODLEORGHUBURL) { // register to Moodle.org
-    admin_externalpage_setup('registrationmoodleorg');
-} else { //register to a hub
-    admin_externalpage_setup('registrationhub');
-}
+//register to a hub
+admin_externalpage_setup('registrationhubs');
 
 $password = optional_param('password', '', PARAM_TEXT);
 $hubname = optional_param('hubname', '', PARAM_TEXT);
@@ -147,13 +144,6 @@ if (!empty($registeredhub->confirmed)) {
 
 if (!empty($error)) {
     echo $error;
-}
-
-//some Moodle.org resitration explanation
-if ($huburl == HUB_MOODLEORGHUBURL) {
-    echo $OUTPUT->heading(get_string('registerwithmoodleorg', 'admin'));
-    $renderer = $PAGE->get_renderer('core', 'register');
-    echo $renderer->moodleorg_registration_message();
 }
 
 $siteregistrationform->display();

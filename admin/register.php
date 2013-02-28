@@ -2,7 +2,13 @@
     require_once('../config.php');
     require_once($CFG->libdir . '/adminlib.php');
     require_once('registerlib.php');
+    require_once('register_form.php');
+
+    admin_externalpage_setup('totararegistration');
+
     require_login();
+
+    $renderer = $PAGE->get_renderer('core', 'register');
 
     require_capability('moodle/site:config', get_context_instance(CONTEXT_SYSTEM));
 
@@ -18,23 +24,7 @@
         $admin->country = $CFG->country;
     }
 
-/// Print headings
-    $stradministration = get_string("administration");
-    $strregistration = get_string("totararegistration", 'admin');
-    $strregistrationinfo = get_string("totararegistrationinfo", 'admin');
-    $navlinks = array();
-    $navlinks[] = array('name' => $stradministration, 'link' => "../$CFG->admin/index.php", 'type' => 'misc');
-    $navlinks[] = array('name' => $strregistration, 'link' => null, 'type' => 'misc');
-    $navigation = build_navigation($navlinks);
-    print_header("$site->shortname: $strregistration", $site->fullname, $navigation);
-
-    print_heading($strregistration);
-
-    print_simple_box($strregistrationinfo, "center", "70%");
-
-
 /// Print the form
-    require_once($CFG->dirroot . '/admin/register_form.php');
     $mform = new register_form();
     $staticdata = get_registration_data();
     $data = $staticdata;
@@ -45,19 +35,28 @@
                 $statusmsg = get_string('changessaved');
             }
         }
+        if (!empty($CFG->registrationenabled)) {
+            send_registration_data($staticdata);
+        }
     } else {
-        $registrationstatus = isset($CFG->registrationenabled) ? $CFG->registrationenabled : 0;
+        $registrationstatus = isset($CFG->registrationenabled) ? $CFG->registrationenabled : 1;
         $data['registrationenabled'] = $registrationstatus;
     }
     $mform->set_data($data);
     if (!empty($statusmsg)) {
-        print $statusmsg;
-    }
-    $mform->display();
-    if ($CFG->registrationenabled) {
-        send_registration_data($staticdata);
+        $url = "$CFG->wwwroot/$CFG->admin/register.php";
+        totara_set_notification($statusmsg, $url, array('class'=>'notifysuccess'));
     }
 
-    print_footer();
+/// Print headings
+    echo $OUTPUT->header();
+
+    echo $OUTPUT->heading(get_string("totararegistration", 'admin'), 3, 'main');
+
+    echo $OUTPUT->box(get_string("totararegistrationinfo", 'admin'));
+
+    $mform->display();
+
+    echo $OUTPUT->footer();
 
 ?>

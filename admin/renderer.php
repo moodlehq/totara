@@ -310,6 +310,7 @@ class core_admin_renderer extends plugin_renderer_base {
             $buggyiconvnomb, $registered, $latesterror, $activeusers, $totara_release) {
         global $CFG, $PAGE;
         $output = '';
+        $totara_renderer = $PAGE->get_renderer('totara_core');
 
         $output .= $this->header();
         $output .= $this->maturity_info($maturity);
@@ -320,9 +321,8 @@ class core_admin_renderer extends plugin_renderer_base {
         $output .= $this->cron_overdue_warning($cronoverdue);
         $output .= $this->db_problems($dbproblems);
         $output .= $this->maintenance_mode_warning($maintenancemode);
-        $output .= $this->registration_warning($registered);
+        $output .= $totara_renderer->is_registered();
 
-        $totara_renderer = $PAGE->get_renderer('totara_core');
         if ($latesterror) {
             $output .= $totara_renderer->totara_print_errorlog_link($latesterror);
         }
@@ -618,27 +618,6 @@ class core_admin_renderer extends plugin_renderer_base {
         $updateinfo .= $this->box_end();
 
         return $updateinfo;
-    }
-
-    /**
-     * Display a warning about not being registered on Moodle.org if necesary.
-     *
-     * @param boolean $registered true if the site is registered on Moodle.org
-     * @return string HTML to output.
-     */
-    protected function registration_warning($registered) {
-
-        if (!$registered) {
-
-            $registerbutton = $this->single_button(new moodle_url('registration/register.php',
-                    array('huburl' =>  HUB_MOODLEORGHUBURL, 'hubname' => 'Moodle.org')),
-                    get_string('register', 'admin'));
-
-            return $this->warning( get_string('registrationwarning', 'admin')
-                    . '&nbsp;' . $this->help_icon('registration', 'admin') . $registerbutton );
-        }
-
-        return '';
     }
 
     /**

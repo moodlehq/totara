@@ -148,12 +148,6 @@ if (empty($cancel) and $unregistration and !$confirm) {
 
     $siteunregistrationform->display();
 } else {
-    $registeredonmoodleorg = false;
-    $moodleorghub = $registrationmanager->get_registeredhub(HUB_MOODLEORGHUBURL);
-    if (!empty($moodleorghub)) {
-        $registeredonmoodleorg = true;
-    }
-
     // load the hub selector form
     $hubselectorform = new hub_selector_form();
     $fromform = $hubselectorform->get_data();
@@ -179,15 +173,6 @@ if (empty($cancel) and $unregistration and !$confirm) {
     }
 
     echo $OUTPUT->header();
-
-    //check if the site is registered on Moodle.org and display a message about registering on MOOCH
-    $registered = $DB->count_records('registration_hubs', array('huburl' => HUB_MOODLEORGHUBURL, 'confirmed' => 1));
-    if (empty($registered)) {
-        $warningmsg = get_string('registermoochtips', 'hub');
-        $warningmsg .= $renderer->single_button(new moodle_url('register.php', array('huburl' => HUB_MOODLEORGHUBURL
-                    , 'hubname' => 'Moodle.org')), get_string('register', 'admin'));
-        echo $renderer->box($warningmsg, 'buttons mdl-align generalbox adminwarning');
-    }
 
     //do not check sesskey if confirm = false because this script is linked into email message
     if (!empty($errormessage)) {

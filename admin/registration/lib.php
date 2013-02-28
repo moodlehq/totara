@@ -102,7 +102,7 @@ class registration_manager {
         }
 
         if ($huburl == HUB_MOODLEORGHUBURL) {
-            $siteidentifier =  get_site_identifier();
+            $siteidentifier = get_site_identifier();
         } else {
             $siteidentifier = random_string(32) . $_SERVER['HTTP_HOST'];
         }

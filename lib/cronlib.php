@@ -417,6 +417,12 @@ function cron_run() {
     mtrace('done.');
 
 
+    // totara site registration
+    if (!isset($CFG->registrationenabled) || $CFG->registrationenabled != 0) {
+        require_once($CFG->dirroot . '/' . $CFG->admin . '/registerlib.php');
+        registration_cron();
+    }
+
     //Run registration updated cron
     mtrace(get_string('siteupdatesstart', 'hub'));
     require_once($CFG->dirroot . '/' . $CFG->admin . '/registration/lib.php');

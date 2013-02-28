@@ -670,20 +670,20 @@ class totara_core_renderer extends plugin_renderer_base {
         global $CFG;
 
         if (!isset($CFG->registrationenabled)) {
-            // Default is true in Totara 1.1
+            // Default is true
             set_config('registrationenabled', '1');
         }
         if (empty($CFG->registrationenabled)) {
             $message = get_string('registrationisdisabled', 'admin', $CFG->wwwroot . '/admin/register.php');
         } else if (empty($CFG->registered)) {
             $message = get_string('sitehasntregistered', 'admin', $CFG->wwwroot . '/admin/cron.php');
+            $message = $message . '&nbsp;' . $this->help_icon('cron', 'admin');
         } else if ($CFG->registered < time() - 60 * 60 * 24 * 31) {
-            $message = get_string_string('registrationoutofdate', 'admin');
+            $message = get_string('registrationoutofdate', 'admin');
         } else {
             $message = get_string('registrationisenabled', 'admin');
         }
 
-        $message = $message . '&nbsp;' . $this->help_icon('cron', 'admin');
         return $this->box($message, 'generalbox adminwarning');
     }
 }

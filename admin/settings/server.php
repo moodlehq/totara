@@ -200,7 +200,7 @@ $temp->add(new admin_setting_configtext('curltimeoutkbitrate', new lang_string('
 $ADMIN->add('server', $temp);
 
 
-$ADMIN->add('server', new admin_externalpage('adminregistration', new lang_string('hubs', 'admin'),
+$ADMIN->add('server', new admin_externalpage('registrationhubs', new lang_string('hubs', 'admin'),
     "$CFG->wwwroot/$CFG->admin/registration/index.php"));
 
 // "update notifications" settingpage

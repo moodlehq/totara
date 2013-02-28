@@ -6,10 +6,11 @@
  *  @return array Associative array of data to return
  */
 function get_registration_data() {
-    global $CFG, $SITE, $db;
+    global $CFG, $SITE, $DB;
     include($CFG->dirroot . '/version.php');
-    require_once($CFG->dirroot.'/lib/environmentlib.php');
-    $dbinfo = $db->ServerInfo();
+    require_once($CFG->libdir . '/environmentlib.php');
+    require_once($CFG->libdir . '/badgeslib.php');
+    $dbinfo = $DB->get_server_info();
     $db_version = normalize_version($dbinfo['version']);
 
     $data['siteidentifier'] = $CFG->siteidentifier;
@@ -26,11 +27,13 @@ function get_registration_data() {
     $data['phpversion'] = phpversion();
     $data['dbtype'] = $CFG->dbfamily . ' ' . $db_version;
     $data['webserversoftware'] = $_SERVER['SERVER_SOFTWARE'];
-    $data['usercount'] = count_records('user', 'deleted', '0');
-    $data['coursecount'] = count_records('course');
+    $data['usercount'] = $DB->count_records('user', array('deleted' => '0'));
+    $data['coursecount'] = $DB->count_records_select('course', 'format <> ?', array('site'));
     $oneyearago = time() - 60*60*24*365;
     // See MDL-22481 for why currentlogin is used instead of lastlogin
-    $data['activeusercount'] = count_records_select('user', "currentlogin > {$oneyearago}");
+    $data['activeusercount'] = $DB->count_records_select('user', "currentlogin > ?", array($oneyearago));
+    $data['badgesnumber'] = $DB->count_records_select('badge', 'status <> ' . BADGE_STATUS_ARCHIVED);
+    $data['issuedbadgesnumber'] = $DB->count_records('badge_issued');
     return $data;
 }
 

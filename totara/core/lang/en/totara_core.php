@@ -261,7 +261,7 @@ $string['cannotundeleteuser'] = 'Cannot undelete user';
 $string['undeletednotx'] = 'Could not undelete {$a} !';
 $string['core:seedeletedusers'] = 'See deleted users';
 $string['core:undeleteuser'] = 'Undelete user';
-
 $string['core:appearance'] = 'Configure site appearance settings';
 
+$string['totararegistration'] = 'Totara Registration';
 ?>

@@ -498,11 +498,6 @@ if (empty($site->shortname)) {
     redirect('upgradesettings.php?return=site');
 }
 
-// Check if we are returning from moodle.org registration and if so, we mark that fact to remove reminders
-if (!empty($id) and $id == $CFG->siteidentifier) {
-    set_config('registered', time());
-}
-
 // setup critical warnings before printing admin tree block
 $insecuredataroot = is_dataroot_insecure(true);
 $SESSION->admin_critical_warning = ($insecuredataroot==INSECURE_DATAROOT_ERROR);
@@ -581,5 +576,5 @@ $latesterror = array_shift($errorrecords);
 $output = $PAGE->get_renderer('core', 'admin');
 echo $output->admin_notifications_page($maturity, $insecuredataroot, $errorsdisplayed,
         $cronoverdue, $dbproblems, $maintenancemode, $availableupdates, $availableupdatesfetch, $buggyiconvnomb,
-        $registered, $latesterror, $activeusers, $TOTARA->release);
+        0, $latesterror, $activeusers, $TOTARA->release);
 
