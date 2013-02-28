@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/totara/cohort/lib.php');
  * it may fail sometimes, so we always do a full sync in cron too.
  */
 class enrol_cohort_handler {
-    public function member_added($ca) {
+    public static function member_added($ca) {
         global $DB;
 
         if (!enrol_is_enabled('cohort')) {
@@ -59,7 +59,7 @@ class enrol_cohort_handler {
         return true;
     }
 
-    public function member_removed($ca) {
+    public static function member_removed($ca) {
         global $DB;
 
         // does anything want to sync with this parent?
@@ -76,7 +76,7 @@ class enrol_cohort_handler {
         return true;
     }
 
-    public function deleted($cohort) {
+    public static function deleted($cohort) {
         global $DB;
 
         // does anything want to sync with this parent?

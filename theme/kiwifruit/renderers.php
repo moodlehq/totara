@@ -39,9 +39,10 @@ class theme_kiwifruit_core_renderer extends core_renderer {
      * the brackets from the Login/Logout string and adding the 'link-as-button'
      * class so it appears like a button
      *
+     * @param bool $withlinks Not used by this version, added for compatibility with core_renderer::login_info()
      * @return string HTML fragment.
      */
-    public function login_info() {
+    public function login_info($withlinks = null) {
         global $USER, $CFG, $DB, $SESSION, $PAGE;
 
         if (during_initial_install()) {

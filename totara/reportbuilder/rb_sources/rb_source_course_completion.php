@@ -558,7 +558,7 @@ class rb_source_course_completion extends rb_base_source {
 
     function rb_display_completion_status($status, $row, $isexport) {
         global $CFG;
-        require_once($CFG->libdir.'/completion/completion_completion.php');
+        require_once($CFG->dirroot.'/completion/completion_completion.php');
         global $COMPLETION_STATUS;
 
         if (!array_key_exists((int)$status, $COMPLETION_STATUS)) {
@@ -580,7 +580,7 @@ class rb_source_course_completion extends rb_base_source {
 
     function rb_filter_completion_status_list() {
         global $CFG;
-        require_once($CFG->libdir.'/completion/completion_completion.php');
+        require_once($CFG->dirroot.'/completion/completion_completion.php');
         global $COMPLETION_STATUS;
 
         $statuslist = array();
