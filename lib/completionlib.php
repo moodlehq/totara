@@ -583,6 +583,14 @@ class completion_info {
      * calling the involved module via modulename_get_completion_state() to check
      * module-specific conditions.
      *
+     * @global object
+     * @global object
+     * @uses COMPLETION_UNKNOWN
+     * @uses COMPLETION_COMPLETE
+     * @uses COMPLETION_INCOMPLETE
+     * @uses COMPLETION_COMPLETE_PASS
+     * @uses COMPLETION_COMPLETE_FAIL
+     * @uses COMPLETION_TRACKING_MANUAL
      * @param stdClass|cm_info $cm Course-module
      * @param int $possibleresult Expected completion result. If the event that
      *   has just occurred (e.g. add post) can only result in making the activity
