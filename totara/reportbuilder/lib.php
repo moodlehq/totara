@@ -1983,8 +1983,9 @@ class reportbuilder {
         if ($countonly && !$this->grouped) {
             $select = "SELECT COUNT(*) ";
         } else {
-            $baseid = ($this->grouped) ? "min(base.id) AS id,\n    " : "base.id,\n    ";
-            $select = "SELECT $baseid " . implode($fields, ",\n     ") . " \n";
+            $baseid = ($this->grouped) ? "min(base.id) AS id" : "base.id";
+            array_unshift($fields, $baseid);
+            $select = "SELECT " . implode($fields, ",\n     ") . " \n";
         }
 
         // build query starting from base table then adding required joins

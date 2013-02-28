@@ -46,8 +46,7 @@ step_time "2"
 
 #STEP 3
 echo "STEP 3: Run PHPUnit";
-# not all tests pass yet, so let's just run a few to start with
-phpunit --log-junit build/logs/xml/TEST-suite.xml dml_testcase lib/dml/tests/dml_test.php
+phpunit --log-junit build/logs/xml/TEST-suite.xml
 step_time "3"
 
 #STEP 4

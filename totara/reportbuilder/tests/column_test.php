@@ -1119,14 +1119,17 @@ class columns_test extends advanced_testcase {
                 $report->accessmode = 0;
                 $report->contentmode = 0;
                 $reportid = $DB->insert_record('report_builder', $report);
-                // add a single column
-                $col = new stdClass();
-                $col->reportid = $reportid;
-                $col->type = $filter->type;
-                $col->value = $filter->value;
-                $col->heading = 'Test';
-                $col->sortorder = 1;
-                $colid = $DB->insert_record('report_builder_columns', $col);
+                // If the filter is based on a column, include that column
+                if (empty($filter->field)) {
+                    // add a single column
+                    $col = new stdClass();
+                    $col->reportid = $reportid;
+                    $col->type = $filter->type;
+                    $col->value = $filter->value;
+                    $col->heading = 'Test';
+                    $col->sortorder = 1;
+                    $colid = $DB->insert_record('report_builder_columns', $col);
+                }
                 // add a single filter
                 $fil = new stdClass();
                 $fil->reportid = $reportid;
