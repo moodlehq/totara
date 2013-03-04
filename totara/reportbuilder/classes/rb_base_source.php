@@ -545,7 +545,14 @@ abstract class rb_base_source {
         global $OUTPUT;
 
         if ($isexport) {
-            // don't return icon if exporting to spreadsheet
+            switch ($type) {
+                case TOTARA_COURSE_TYPE_ELEARNING:
+                    return get_string('elearning', 'rb_source_dp_course');
+                case TOTARA_COURSE_TYPE_BLENDED:
+                    return get_string('blended', 'rb_source_dp_course');
+                case TOTARA_COURSE_TYPE_FACETOFACE:
+                    return get_string('facetoface', 'rb_source_dp_course');
+            }
             return '';
         }
 
