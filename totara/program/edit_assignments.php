@@ -35,8 +35,6 @@ require_login();
 
 $id = required_param('id', PARAM_INT); // program id
 
-require_login();
-
 $systemcontext = context_system::instance();
 $program = new program($id);
 $programcontext = $program->get_context();
