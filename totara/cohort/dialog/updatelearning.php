@@ -28,6 +28,9 @@
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) .'/config.php');
 require_once($CFG->dirroot .'/cohort/lib.php');
 
+// this could take a while
+set_time_limit(0);
+
 $context = context_system::instance();
 require_capability('moodle/cohort:manage', $context);
 
