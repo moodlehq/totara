@@ -77,6 +77,13 @@ class rb_source_cohort extends rb_base_source {
                             'base.id = members.cohortid', // How it is joined.
                             REPORT_BUILDER_RELATION_ONE_TO_MANY
                         ),
+                        new rb_join(
+                            'membercount',
+                            'LEFT', // Type of join.
+                            '(SELECT cohortid, count(id) AS count FROM {cohort_members} GROUP BY cohortid)',
+                            'base.id = membercount.cohortid', // How it is joined.
+                            REPORT_BUILDER_RELATION_ONE_TO_ONE
+                        ),
         );
 
         $this->add_user_table_to_joinlist($joinlist, 'members', 'userid');
@@ -132,10 +139,9 @@ class rb_source_cohort extends rb_base_source {
             'cohort',
             'numofmembers',
             get_string('numofmembers', 'totara_cohort'),
-            'members.id',
+            'CASE WHEN membercount.count IS NULL THEN 0 ELSE membercount.count END',
             array(
-                'grouping' => 'count',
-                'joins' => array('members')
+                'joins' => array('membercount')
             )
         );
         $columnoptions[] = new rb_column_option(
