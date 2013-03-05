@@ -43,7 +43,9 @@ if ($execute) {
     require_sesskey();
     // Increase memory limit
     raise_memory_limit(MEMORY_EXTRA);
-    //run the sync
+    // Stop time outs, this might take a while
+    set_time_limit(0);
+    // Run the sync
     add_to_log(SITEID, 'totara_sync', 'Execute Sync', 'admin/syncexecute.php');
     $msg = get_string('runsynccronstart', 'tool_totara_sync');
     tool_totara_sync_cron();
