@@ -108,6 +108,10 @@ class dp_objective_component extends dp_base_component {
                 CASE WHEN linkedcourses.count IS NULL
                     THEN 0 ELSE linkedcourses.count
                 END AS linkedcourses,
+                CASE
+                    WHEN linkedevidence.count IS NULL THEN 0
+                    ELSE linkedevidence.count
+                END AS linkedevidence,
                 osv.achieved
             FROM
                 {dp_plan_objective} a
@@ -118,7 +122,14 @@ class dp_objective_component extends dp_base_component {
                     WHERE component2 = :comp1 AND
                         component1 = :comp2
                     GROUP BY itemid2) linkedcourses
-            ON linkedcourses.assignid = a.id
+                ON linkedcourses.assignid = a.id
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'objective'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
             $status
             WHERE
                 $where
@@ -621,6 +632,10 @@ class dp_objective_component extends dp_base_component {
         $DB->delete_records('dp_plan_objective', array('id' => $caid));
         $DB->delete_records('dp_plan_component_relation', array('component1' => 'objective', 'itemid1' => $caid));
         $DB->delete_records('dp_plan_component_relation', array('component2' => 'objective', 'itemid2' => $caid));
+
+        // Remove linked evidence
+        $params = array('planid' => $this->plan->id, 'component' => 'objective', 'itemid' => $caid);
+        $DB->delete_records('dp_plan_evidence_relation', $params);
 
         $transaction->allow_commit();
 

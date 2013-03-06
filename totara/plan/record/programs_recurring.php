@@ -127,10 +127,8 @@ echo $OUTPUT->container_start('', 'dp-plan-content');
 
 echo $OUTPUT->heading($strheading, 1);
 
-$userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
-
 $currenttab = 'programs';
-require_once($CFG->dirroot . '/totara/plan/record/tabs.php');
+dp_print_rol_tabs($rolstatus, $currenttab, $userid);
 
 // display table here
 $fullname = $report->fullname;

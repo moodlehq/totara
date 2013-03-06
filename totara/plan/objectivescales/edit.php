@@ -33,7 +33,7 @@ require_once 'edit_form.php';
 /// Setup / loading data
 ///
 
-// Get paramters
+// Get parameters
 $id = optional_param('id', 0, PARAM_INT); // Objective id; 0 if creating a new objective
 // Page setup and check permissions
 admin_externalpage_setup('objectivescales');

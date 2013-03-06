@@ -27,6 +27,7 @@
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot.'/totara/plan/lib.php');
 require_once($CFG->dirroot.'/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
 
 require_login();
 
@@ -57,6 +58,8 @@ $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'course';
 $component = $plan->get_component($componentname);
 $currenturl = new moodle_url('/totara/plan/components/course/view.php', array('id' => $id, 'itemid' => $caid));
+
+$evidence = new dp_evidence_relation($id, $componentname, $caid);
 
 $competenciesenabled = $plan->get_component('competency')->get_setting('enabled');
 $competencyname = get_string('competencyplural', 'totara_plan');
@@ -106,6 +109,11 @@ if ($data = data_submitted() && $canupdate) {
         }
         die();
     }
+
+    if ($action === 'removelinkedevidence' && !$plan->is_complete()) {
+        $selectedids = optional_param_array('delete_linked_evidence', array(), PARAM_BOOL);
+        $evidence->remove_linked_evidence($selectedids, $currenturl);
+    }
 }
 
 dp_get_plan_base_navlinks($plan->userid);
@@ -125,6 +133,7 @@ if ($canupdate) {
     $PAGE->requires->string_for_js('save', 'totara_core');
     $PAGE->requires->string_for_js('cancel', 'moodle');
     $PAGE->requires->string_for_js('addlinkedcompetencies', 'totara_plan');
+    $PAGE->requires->string_for_js('addlinkedevidence', 'totara_plan');
 
     // Get competency picker
     $jsmodule = array(
@@ -132,6 +141,16 @@ if ($canupdate) {
         'fullpath' => '/totara/plan/components/course/find-competency.js',
         'requires' => array('json'));
     $PAGE->requires->js_init_call('M.totara_plan_course_find_competency.init', array('args' => '{"plan_id":'.$id.', "course_id":'.$caid.'}'), false, $jsmodule);
+
+    // Get evidence picker
+    $jsmodule_evidence = array(
+        'name' => 'totara_plan_find_evidence',
+        'fullpath' => '/totara/plan/components/evidence/find-evidence.js',
+        'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_plan_find_evidence.init',
+            array('args' => '{"plan_id":'.$id.', "component_name":"'.$componentname.'", "item_id":'.$caid.'}'),
+            false, $jsmodule_evidence);
+
 }
 
 $plan->print_header($componentname, array(), false);
@@ -140,6 +159,7 @@ echo $component->display_back_to_index_link();
 
 echo $component->display_course_detail($caid);
 
+// Display linked competencies
 if ($competenciesenabled) {
     echo html_writer::empty_tag('br');
     echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $competencyname), 3);
@@ -166,6 +186,7 @@ if ($competenciesenabled) {
     }
 }
 
+// Display linked objectives
 if ($objectivesenabled) {
     echo html_writer::empty_tag('br');
     echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $objectivename), 3);
@@ -177,7 +198,11 @@ if ($objectivesenabled) {
     }
 }
 
+// Display linked evidence
+echo $evidence->display_linked_evidence($currenturl, $canupdate, $plancompleted);
+
 // Comments
+echo $OUTPUT->heading(get_string('comments', 'totara_plan'), 3);
 require_once($CFG->dirroot.'/comment/lib.php');
 comment::init();
 $options = new stdClass;
@@ -194,6 +219,3 @@ echo $comment->output(true);
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->footer();
-
-
-?>

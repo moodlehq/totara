@@ -715,6 +715,33 @@ class columns_test extends advanced_testcase {
         $this->dp_plan_objective_data->scalevalueid = 1;
         $this->dp_plan_objective_data->approved = 10;
 
+        $this->dp_plan_evidence_type_data = new stdClass();
+        $this->dp_plan_evidence_type_data->id = 1;
+        $this->dp_plan_evidence_type_data->name = 'plan evidence type';
+        $this->dp_plan_evidence_type_data->description = 'plan evidence description';
+        $this->dp_plan_evidence_type_data->timemodified = 0;
+        $this->dp_plan_evidence_type_data->usermodified = 2;
+        $this->dp_plan_evidence_type_data->sortorder = 1;
+
+        $this->dp_plan_evidence_data = new stdClass();
+        $this->dp_plan_evidence_data->name = 'plan evidence';
+        $this->dp_plan_evidence_data->description = 'plan evidence description';
+        $this->dp_plan_evidence_data->timecreated = 0;
+        $this->dp_plan_evidence_data->timemodified = 0;
+        $this->dp_plan_evidence_data->usermodified = 2;
+        $this->dp_plan_evidence_data->evidencetypeid = 1;
+        $this->dp_plan_evidence_data->evidencelink = 1;
+        $this->dp_plan_evidence_data->institution = 'plan evidence institution';
+        $this->dp_plan_evidence_data->datecompleted = 0;
+        $this->dp_plan_evidence_data->userid = 2;
+
+        $this->dp_plan_evidence_relation_data = new stdClass();
+        $this->dp_plan_evidence_relation_data->id = 1;
+        $this->dp_plan_evidence_relation_data->evidenceid = 1;
+        $this->dp_plan_evidence_relation_data->planid = 1;
+        $this->dp_plan_evidence_relation_data->component = 'competency';
+        $this->dp_plan_evidence_relation_data->itemid = 1;
+
         $this->dp_objective_scale_value_data = new stdClass();
         $this->dp_objective_scale_value_data->id = 1;
         $this->dp_objective_scale_value_data->objscaleid = 1;
@@ -1037,6 +1064,9 @@ class columns_test extends advanced_testcase {
         $DB->insert_record('dp_plan_course_assign', $this->dp_plan_course_assign_data);
         $DB->insert_record('dp_priority_scale_value', $this->dp_priority_scale_value_data);
         $DB->insert_record('dp_plan_objective', $this->dp_plan_objective_data);
+        $DB->insert_record('dp_evidence_type', $this->dp_plan_evidence_type_data);
+        $DB->insert_record('dp_plan_evidence', $this->dp_plan_evidence_data);
+        $DB->insert_record('dp_plan_evidence_relation', $this->dp_plan_evidence_relation_data);
         $DB->insert_record('dp_objective_scale_value', $this->dp_objective_scale_value_data);
         $DB->insert_record('dp_plan_component_relation', $this->dp_plan_component_relation_data);
         $DB->insert_record('cohort', $this->cohort_data);

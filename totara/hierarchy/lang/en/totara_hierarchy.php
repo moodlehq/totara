@@ -384,7 +384,6 @@ $string['competencyevidenceassessmenttype'] = 'Assessment Type';
 $string['competencyevidenceposition'] = 'Evidence Position';
 $string['competencyevidenceorganisation'] = 'Evidence Organisation';
 $string['competencyevidencetimecompleted'] = 'Time Evidence Completed';
-$string['addcompetencyevidence'] = 'Add Competency Evidence';
 $string['organisationparent'] = 'Parent';
 $string['positionparent'] = 'Parent';
 $string['competencyparent'] = 'Parent';

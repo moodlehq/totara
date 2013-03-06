@@ -191,7 +191,8 @@ $string['add'] = 'Add {$a}';
 $string['remove'] = 'Select Linked {$a}';
 $string['competency'] = 'Competency';
 $string['view'] = 'View';
-$string['addevidence'] = 'Add Evidence';
+$string['setstatusicon'] = 'Set Status';
+$string['setcompetencystatus'] = 'Set competency status';
 $string['create'] = 'Create';
 $string['update'] = 'Update';
 $string['delete'] = 'Delete';
@@ -219,6 +220,7 @@ $string['nox'] = 'No {$a}.';
 $string['nolinkedx'] = 'No linked {$a}.';
 $string['linkedx'] = 'Linked {$a}';
 $string['backtoallx'] = '&laquo; Back to all {$a}';
+$string['backtoitem'] = '&laquo; Back to {$a}';
 
 
 // Course Strings
@@ -233,6 +235,13 @@ $string['coursenotfound'] = 'Course not found';
 $string['advancedsettingscoursesettings'] = 'Course settings';
 $string['advancedsettingscoursepermissions'] = 'Course permissions';
 $string['includerelatedcourses'] = 'Include linked courses';
+
+// Evidence strings
+$string['addlinkedevidence'] = 'Add linked evidence';
+$string['selectedlinkedevidenceremovedfromcompetency'] = 'The selected linked evidence have been removed from this competency';
+$string['selectedlinkedevidenceremovedfromcourse'] = 'The selected linked evidence have been removed from this course';
+$string['selectedlinkedevidenceremovedfromobjective'] = 'The selected linked evidence have been removed from this objective';
+$string['selectedlinkedevidenceremovedfromprogram'] = 'The selected linked evidence have been removed from this program';
 
 //Competency Strings
 $string['competency'] = 'Competency';
@@ -660,6 +669,7 @@ $string['nocourses'] = 'No courses.';
 $string['nolinkedcourses'] = 'No linked courses.';
 $string['linkedcourses'] = 'Linked courses';
 $string['numberoflinkedcourses'] = 'Courses';
+$string['numberoflinkedevidence'] = 'Evidence';
 
 $string['planname'] = 'Plan name';
 $string['planstatus'] = 'Plan status';
@@ -823,6 +833,7 @@ $string['completedprograms'] = 'Completed Programs';
 $string['on'] = 'on';
 
 // Comments
+$string['comments'] = 'Comments';
 $string['latestcommentby'] = 'Latest comment by';
 $string['nocomments'] = 'No comments';
 $string['commenterror:itemnotfound'] = 'Comment error: Comment item not found';
@@ -843,6 +854,10 @@ $string['commentmsg:componentitemdetail'] = 'There has been a new comment on {$a
 $string['linktype'] = 'Link type';
 $string['error:updateingrecord'] = 'Error, no such link type';
 $string['error:updatinglinktype'] = 'Error: could not update link type';
+
+// Deleting linked evidence
+$string['deletelinkedevidenceheader'] = 'Linked Evidence';
+$string['deletelinkedevidencemessage'] = 'The link(s) to the following evidence will also be removed.<br />The original evidence will not be deleted however and will remain in the record of learning';
 
 // Deleting linked courses
 $string['deletelinkedcoursesheader'] = 'Removing "{$a}" from plan';
@@ -1002,3 +1017,73 @@ $string['advancedsettingsprogramsettings_help'] = 'The Learning Plan is able to 
 *   **Automatically, when the plan completion date has passed.**
     The learning plan is marked as complete when the Completion Date that has been saved with the Learning Plan has passed';
 $string['objectivescaleassign_help'] = 'A Objective scales define the criteria by which an objective can be measured. This is the name of scale the value is being added to.';
+
+// Lang strings for evidence tab
+$string['actionlinks'] = 'Actions';
+$string['addevidence'] = 'Add evidence';
+$string['allevidence'] = 'Other Evidence';
+$string['allevidencesubhead'] = 'All Evidence';
+$string['activeevidence'] = 'Other Evidence';
+$string['activeevidencesubhead'] = 'Active Evidence';
+$string['completedevidence'] = 'Other Evidence';
+$string['completedevidencesubhead'] = 'Completed Evidence';
+$string['allevidencetypes'] = 'All evidence types';
+$string['attachment'] = 'File attachments';
+$string['currentattachment'] =  'Current attachment';
+$string['datecompleted'] = 'Date completed';
+$string['deletecheckevidencetype'] = 'Are you absolutely sure you want to completely delete this Evidence type?';
+$string['deletedevidencetype'] = 'The Evidence type "{$a}" has been completely deleted.';
+$string['deleteevidenceareyousure'] = 'Are you sure you want to delete this evidence?';
+$string['deleteevidence'] = 'Delete evidence';
+$string['editevidence'] = 'Edit evidence';
+$string['editevidencetype'] = 'Edit evidence type {$a}';
+$string['error:cannotupdateevidence'] = 'Cannot update evidence';
+$string['error:createnewevidencetype'] = 'An error occured while creating new Evidence type';
+$string['error:evidencedeleted'] = 'Evidence not deleted';
+$string['error:evidenceidincorrect'] = 'Evidence ID incorrect';
+$string['error:evidencenotfound'] = 'Evidence not found';
+$string['error:evidencetypeidincorrect'] = 'Evidence type ID was incorrect';
+$string['nodeleteevidencetypeinuse'] = 'Unable to delete this evidence type \'{$a}\' because it is in use';
+$string['error:updateevidencetype'] = 'An error occured while updating Evidence type';
+$string['evidenceadded'] = 'Evidence created';
+$string['evidencedatecompleted'] = 'Evidence Date Completed';
+$string['evidencedeleted'] = 'Evidence deleted';
+$string['evidenceupdated'] = 'Evidence updated';
+$string['evidencedescription'] = 'Evidence Description';
+$string['evidence'] = 'Evidence';
+$string['evidenceinstitution'] = 'Evidence Institution';
+$string['evidence_instructions_add11'] = 'You can add additional evidence by clicking the "Add/remove evidence" button to the right of the screen. ';
+$string['evidence_instructions_add'] = 'You can add additional evidence by clicking the "Add/remove evidence" button to the right of the screen. ';
+$string['evidence_instructions_detail'] = 'You can view more details about any evidence by clicking its title. ';
+$string['evidence_instructions_learner'] = 'All the evidence that will be addressed by your learning plan are shown below. ';
+$string['evidence_instructions_manager'] = 'All the evidence that will be addressed by your team member\'s learning plan area shown below. ';
+$string['evidence_instructions_request'] = 'Clicking "Update requested evidence" will allow you to request to add new evidence to this learning plan.';
+$string['evidencelinkerror'] = 'Not a valid web link';
+$string['evidencelink'] = 'Evidence Link';
+$string['evidencename'] = 'Evidence name';
+$string['evidenceplural'] = 'Evidence';
+$string['evidencetypeadded'] = 'Evidence type "{$a}" added';
+$string['evidencetypecreate'] = 'Add a new Evidence type';
+$string['evidencetype'] = 'Evidence type';
+$string['evidencetypename'] = 'Name';
+$string['evidencetypeinuse'] = 'This evidence type is in use. You can still rename evidence types but this may confuse users when this changes without warning.';
+$string['evidencetypes'] = 'Evidence types';
+$string['evidencetypeupdated'] = 'Evidence type "{$a}" updated';
+$string['evidencetypex'] = 'Evidence type "{$a}"';
+$string['namelink'] = 'Name (link)';
+$string['noevidencelink'] = 'No link for this evidence';
+$string['noevidencetypes'] = 'To use please setup an Evidence type';
+$string['noevidencetypesdefined'] = 'No evidence types have been defined';
+$string['plan:editownsiteevidence'] = 'Edit one\'s own site-level evidence';
+$string['plan:editsiteevidence'] = 'Edit site-level evidence';
+$string['plan:manageevidencetypes'] = 'Manage evidence types';
+$string['planevidencetype'] = 'Plan evidence type';
+$string['planevidencetype_help'] = 'Select a type of evidence type';
+$string['recordoflearningevidence'] = 'Record of Learning: Evidence';
+$string['selectanevidencetype'] = 'Select an evidence type';
+$string['updateevidence'] = 'Update evidence';
+$string['evidenceinuseby'] = 'This evidence is used by the following learning plan components';
+$string['evidenceattachmentdeleted'] = 'Attached evidence file has been deleted';
+$string['deleteattachedevidenceareyousure'] = 'Are you sure you want to delete the attached evidence?';
+$string['deleteattachmentevidence'] = 'Delete attached evidence';
+$string['deletecheckevidencetypeinuse'] = 'It is being used by existing evidence';

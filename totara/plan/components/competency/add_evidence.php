@@ -132,7 +132,7 @@ $prefix = 'competency';
 $hierarchy = new $prefix();
 $hierarchy->hierarchy_page_setup('item/add');
 
-$fullname = get_string('addcompetencyevidence', 'totara_hierarchy');
+$fullname = get_string('setcompetencystatus', 'totara_plan');
 $pagetitle = format_string($fullname);
 
 dp_get_plan_base_navlinks($plan->userid);

@@ -119,6 +119,37 @@ $capabilities = array(
         )
     ),
 
+    // Ability to manage evidence types
+    'totara/plan:manageevidencetypes' => array(
+        'riskbitmask' => RISK_CONFIG,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetype' => array(
+            'manager' => CAP_ALLOW
+        )
+    ),
+
+    // Ability to edit site-level evidence for a user
+    'totara/plan:editsiteevidence' => array(
+        'riskbitmask' => RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetype' => array(
+            'manager' => CAP_ALLOW
+        )
+    ),
+
+    // Ability to edit site-level evidence for oneself
+    'totara/plan:editownsiteevidence' => array(
+        'riskbitmask' => RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetype' => array(
+            'manager' => CAP_ALLOW,
+            'user' => CAP_ALLOW
+        )
+    ),
+
     // Ability to select template when creating plan
     'totara/plan:canselectplantemplate' => array(
         'riskbitmask' => RISK_PERSONAL,

@@ -51,4 +51,12 @@ defined('MOODLE_INTERNAL') || die;
         )
     );
 
+    $ADMIN->add('totara_plan',
+        new admin_externalpage('evidencetypes',
+            get_string('evidencetypes', 'totara_plan'),
+            "$CFG->wwwroot/totara/plan/evidencetypes/index.php",
+            array('totara/plan:configureplans')
+        )
+    );
+
 ?>

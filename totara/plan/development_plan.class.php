@@ -1252,6 +1252,7 @@ class development_plan {
                 }
             }
         }
+        $DB->delete_records('dp_plan_evidence_relation', array('planid' => $this->id));
         $transaction->allow_commit();
         return true;
     }

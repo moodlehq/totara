@@ -223,7 +223,14 @@ switch($action) {
         echo $OUTPUT->heading(get_string('deleteobjective', 'totara_plan'));
         print $component->display_back_to_index_link();
         $component->display_objective_detail($objectiveid);
-        echo $OUTPUT->confirm(get_string('deleteobjectiveareyousure', 'totara_plan'), new moodle_url('/totara/plan/components/objective/edit.php', array('id' => $planid, 'itemid' => $objectiveid, 'deleteyes' => 'Yes', 'sesskey' => sesskey())), new moodle_url('/totara/plan/components/objective/edit.php', array('id' => $planid, 'itemid' => $objectiveid, 'deleteno' => 'No')));
+        require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
+        $evidence = new dp_evidence_relation($this->plan->id, $componentname, $objectiveid);
+        echo $evidence->display_delete_warning();
+        echo $OUTPUT->confirm(get_string('deleteobjectiveareyousure', 'totara_plan'),
+                new moodle_url('/totara/plan/components/objective/edit.php',
+                    array('id' => $planid, 'itemid' => $objectiveid, 'deleteyes' => 'Yes', 'sesskey' => sesskey())),
+                new moodle_url('/totara/plan/components/objective/edit.php',
+                        array('id' => $planid, 'itemid' => $objectiveid, 'deleteno' => 'No')));
         break;
     case 'edit':
         echo $OUTPUT->heading(get_string('editobjective', 'totara_plan', $objective->fullname));

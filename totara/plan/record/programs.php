@@ -84,8 +84,7 @@
     }
     $report = reportbuilder_get_embedded_report($shortname, $data);
 
-    $query_string = !empty($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : '';
-    $log_url = 'record/programs.php'.$query_string;
+    $log_url = "record/programs.php?format={$format}&amp;status={$rolstatus}&amp;userid={$userid}";
 
     if ($format != '') {
         add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
@@ -122,10 +121,8 @@
 
     echo $OUTPUT->heading($strheading.' : '.$strsubheading, 1);
 
-    $userstr = (isset($userid)) ? 'userid='.$userid.'&amp;' : '';
-
     $currenttab = 'programs';
-    require_once($CFG->dirroot . '/totara/plan/record/tabs.php');
+    dp_print_rol_tabs($rolstatus, $currenttab, $userid);
 
     // display table here
     $fullname = $report->fullname;

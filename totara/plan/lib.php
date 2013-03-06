@@ -239,7 +239,6 @@ function dp_get_objectives() {
     return $DB->get_records('dp_objective_scale', null, 'sortorder');
 }
 
-
 /**
  * Get a list of user IDs of users who can receive alert emails
  *
@@ -333,6 +332,57 @@ function dp_add_permissions_table_row(&$form, $name, $label, $requestable) {
     }
     $form->addElement('html', html_writer::end_tag('tr'));
     return;
+}
+
+/**
+ * Prints the tabs for record of learning
+ *
+ * @param string $rolstatus - what record of learning status
+ * @param type $currenttab - current tab where are on
+ * @param type $userid - userid if any
+ */
+function dp_print_rol_tabs($rolstatus = null, $currenttab = null, $userid = '') {
+
+    if (is_null($rolstatus)) {
+        $rolstatus = 'all';
+    }
+
+    $params = array('userid' => $userid, 'status' => $rolstatus);
+
+    // tab bar
+    $tabs = array();
+    $row = array();
+
+    // overview tab
+    $row[] = new tabobject(
+        'courses',
+        new moodle_url('/totara/plan/record/courses.php', $params),
+        get_string($rolstatus . 'courses', 'totara_plan')
+    );
+    $row[] = new tabobject(
+        'competencies',
+        new moodle_url('/totara/plan/record/competencies.php', $params),
+        get_string($rolstatus . 'competencies', 'totara_plan')
+    );
+    $row[] = new tabobject(
+        'objectives',
+        new moodle_url('/totara/plan/record/objectives.php', $params),
+        get_string($rolstatus . 'objectives', 'totara_plan')
+    );
+    $row[] = new tabobject(
+        'programs',
+        new moodle_url('/totara/plan/record/programs.php', $params),
+        get_string($rolstatus . 'programs', 'totara_plan')
+    );
+    $row[] = new tabobject(
+        'evidence',
+        new moodle_url('/totara/plan/record/evidence/index.php', $params),
+        get_string($rolstatus . 'evidence', 'totara_plan')
+    );
+
+    $tabs[] = $row;
+
+    print_tabs($tabs, $currenttab);
 }
 
 /**

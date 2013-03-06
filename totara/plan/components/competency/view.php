@@ -25,6 +25,7 @@
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.php');
 require_once($CFG->dirroot . '/totara/plan/lib.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
 
 require_login();
 
@@ -34,7 +35,10 @@ $action = optional_param('action', 'view', PARAM_TEXT);
 
 $plan = new development_plan($id);
 
-//Permissions check
+$componentname = 'competency';
+$evidence = new dp_evidence_relation($plan->id, $componentname, $caid);
+
+// Permissions check
 $systemcontext = context_system::instance();
 if (!has_capability('totara/plan:accessanyplan', $systemcontext) && ($plan->get_setting('view') < DP_PERMISSION_ALLOW)) {
         print_error('error:nopermissions', 'totara_plan');
@@ -51,7 +55,6 @@ $PAGE->set_pagelayout('noblocks');
 $PAGE->set_totara_menu_selected('learningplans');
 
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
-$componentname = 'competency';
 $component = $plan->get_component($componentname);
 $currenturl = new moodle_url('/totara/plan/components/competency/view.php', array('id' => $id, 'itemid' => $caid));
 $coursesenabled = $plan->get_component('course')->get_setting('enabled');
@@ -64,7 +67,7 @@ $permission = dp_get_template_permission($plan->templateid, 'competency', 'delet
 $delete_mandatory = $permission >= DP_PERMISSION_ALLOW;
 
 
-/// Javascript stuff
+// Javascript stuff
 // If we are showing dialog
 if ($canupdate) {
     // Setup lightbox
@@ -76,48 +79,68 @@ if ($canupdate) {
     $PAGE->requires->string_for_js('save', 'totara_core');
     $PAGE->requires->string_for_js('cancel', 'moodle');
     $PAGE->requires->string_for_js('addlinkedcourses', 'totara_plan');
+    $PAGE->requires->string_for_js('addlinkedevidence', 'totara_plan');
 
     // Get course picker
     $jsmodule = array(
         'name' => 'totara_plan_competency_find_course',
         'fullpath' => '/totara/plan/components/competency/find-course.js',
         'requires' => array('json'));
-    $PAGE->requires->js_init_call('M.totara_plan_competency_find_course.init', array('args' => '{"plan_id":'.$id.', "competency_id":'.$caid.'}'), false, $jsmodule);
+    $PAGE->requires->js_init_call('M.totara_plan_competency_find_course.init',
+            array('args' => '{"plan_id":'.$id.', "competency_id":'.$caid.'}'),
+            false, $jsmodule);
+
+    // Get evidence picker
+    $jsmodule_evidence = array(
+        'name' => 'totara_plan_find_evidence',
+        'fullpath' => '/totara/plan/components/evidence/find-evidence.js',
+        'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_plan_find_evidence.init',
+            array('args' => '{"plan_id":'.$id.', "component_name":"'.$componentname.'", "item_id":'.$caid.'}'),
+            false, $jsmodule_evidence);
+
 }
 
 // Check if we are performing an action
-if ($data = data_submitted() && $canupdate) {
-    if ($action === 'removelinkedcourses' && !$plan->is_complete()) {
-      $deletions = array();
+if ($data = data_submitted() && $canupdate  && !$plan->is_complete()) {
+    switch ($action) {
+        case 'removelinkedcourses' :
+            $deletions = array();
 
-        // Load existing list of linked courses
-        $fullidlist = $component->get_linked_components($caid, 'course');
+            // Load existing list of linked courses
+            $fullidlist = $component->get_linked_components($caid, 'course');
 
-        // Grab all linked items for deletion
-        $course_assigns = optional_param_array('delete_linked_course_assign', array(), PARAM_BOOL);
-        if ($course_assigns) {
-            foreach ($course_assigns as $linkedid => $delete) {
-                if (!$delete || (!$delete_mandatory && in_array($linkedid, $mandatory_list))) {
-                    //ignore if it isn't being deleted,
-                    //or if it is mandatory and you do not have the correct permission
-                    continue;
+            // Grab all linked items for deletion
+            $course_assigns = optional_param_array('delete_linked_course_assign', array(), PARAM_BOOL);
+            if ($course_assigns) {
+                foreach ($course_assigns as $linkedid => $delete) {
+                    if (!$delete || (!$delete_mandatory && in_array($linkedid, $mandatory_list))) {
+                        //ignore if it isn't being deleted,
+                        //or if it is mandatory and you do not have the correct permission
+                        continue;
+                    }
+
+                    $deletions[] = $linkedid;
                 }
 
-                $deletions[] = $linkedid;
+                if ($fullidlist && $deletions) {
+                    $newidlist = array_diff($fullidlist, $deletions);
+                    $component->update_linked_components($caid, 'course', $newidlist);
+                }
             }
 
-            if ($fullidlist && $deletions) {
-                $newidlist = array_diff($fullidlist, $deletions);
-                $component->update_linked_components($caid, 'course', $newidlist);
+            if ($deletions) {
+                totara_set_notification(get_string('selectedlinkedcoursesremovedfromcompetency', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
+            } else {
+                redirect($currenturl);
             }
-        }
+            break;
 
-        if ($deletions) {
-            totara_set_notification(get_string('selectedlinkedcoursesremovedfromcompetency', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
-        } else {
-            redirect($currenturl);
-        }
-        die();
+        case 'removelinkedevidence' :
+            $selectedids = optional_param_array('delete_linked_evidence', array(), PARAM_BOOL);
+            $evidence->remove_linked_evidence($selectedids, $currenturl);
+            break;
+
     }
 }
 
@@ -135,6 +158,7 @@ echo $component->display_back_to_index_link();
 
 echo $component->display_competency_detail($caid);
 
+// Display linked courses
 if ($coursesenabled) {
     echo html_writer::empty_tag('br');
     echo $OUTPUT->heading(get_string('linkedx', 'totara_plan', $coursename), 3);
@@ -162,7 +186,11 @@ if ($coursesenabled) {
     }
 }
 
+// Display linked evidence
+echo $evidence->display_linked_evidence($currenturl, $canupdate, $plancompleted);
+
 // Comments
+echo $OUTPUT->heading(get_string('comments', 'totara_plan'), 3);
 require_once($CFG->dirroot.'/comment/lib.php');
 comment::init();
 $options = new stdClass;
@@ -179,6 +207,3 @@ echo $comment->output(true);
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->footer();
-
-
-?>

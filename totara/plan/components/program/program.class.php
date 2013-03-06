@@ -128,10 +128,21 @@ class dp_program_component extends dp_base_component {
                 $completion_field
                 p.fullname,
                 p.fullname AS name,
-                p.icon
+                p.icon,
+                CASE
+                    WHEN linkedevidence.count IS NULL THEN 0
+                    ELSE linkedevidence.count
+                END AS linkedevidence
             FROM
                 {dp_plan_program_assign} a
                 $completion_joins
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'program'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
             INNER JOIN
                 {prog} p
              ON p.id = a.programid
@@ -155,6 +166,7 @@ class dp_program_component extends dp_base_component {
      * @return  void
      */
     public function process_action_hook() {
+        global $DB;
 
         $delete = optional_param('d', 0, PARAM_INT); // program assignment id to delete
         $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
@@ -170,6 +182,10 @@ class dp_program_component extends dp_base_component {
             if (!$deleteitem = $this->get_assigned_item($delete)) {
                 print_error('error:couldnotfindassigneditem', 'totara_plan');
             }
+
+            // Remove linked evidence
+            $params = array('planid' => $this->plan->id, 'component' => $this->component, 'itemid' => $delete);
+            $DB->delete_records('dp_plan_evidence_relation', $params);
 
             // Unassign item
             if ($this->unassign_item($deleteitem)) {
@@ -433,6 +449,10 @@ class dp_program_component extends dp_base_component {
         $currenturl = $this->get_url();
         $continueurl = new moodle_url($currenturl->out(), array('d' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
         if ($delete) {
+            require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
+            $evidence = new dp_evidence_relation($this->plan->id, $this->component, $delete);
+            echo $evidence->display_delete_warning();
+
             echo $OUTPUT->confirm(get_string('confirmitemdelete', 'totara_plan'), $continueurl, $currenturl);
             echo $OUTPUT->footer();
             die();

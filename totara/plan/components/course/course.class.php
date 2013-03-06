@@ -169,17 +169,28 @@ class dp_course_component extends dp_base_component {
             "
             SELECT
                 a.*,
-                $completion_field
+                {$completion_field}
                 c.fullname,
                 c.fullname AS name,
                 c.icon,
-                c.enablecompletion
+                c.enablecompletion,
+                CASE
+                    WHEN linkedevidence.count IS NULL THEN 0
+                    ELSE linkedevidence.count
+                END AS linkedevidence
             FROM
                 {dp_plan_course_assign} a
-                $completion_joins
+                {$completion_joins}
             INNER JOIN
                 {course} c
              ON c.id = a.courseid
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'course'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
             WHERE
                 $where
                 $orderby
@@ -201,7 +212,7 @@ class dp_course_component extends dp_base_component {
      * @return  void
      */
     public function process_action_hook() {
-        global $USER;
+        global $DB;
 
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
@@ -227,6 +238,11 @@ class dp_course_component extends dp_base_component {
             if ($this->unassign_item($deleteitem)) {
                 add_to_log(SITEID, 'plan', 'removed course', "component.php?id={$this->plan->id}&amp;c=course", "{$deleteitem->fullname} (ID:{$deleteitem->id})");
                 dp_plan_check_plan_complete(array($this->plan->id));
+
+                // Remove linked evidence
+                $params = array('planid' => $this->plan->id, 'component' => $this->component, 'itemid' => $delete);
+                $DB->delete_records('dp_plan_evidence_relation', $params);
+
                 totara_set_notification(get_string('canremoveitem', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
 
             } else {
@@ -296,11 +312,15 @@ class dp_course_component extends dp_base_component {
      * @return  void
      */
     public function post_header_hook() {
-        global $OUTPUT;
+        global $OUTPUT, $CFG;
         $delete = optional_param('d', 0, PARAM_INT); // course assignment id to delete
         $currenturl = $this->get_url();
         $continueurl = new moodle_url($currenturl->out(), array('d' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
         if ($delete) {
+            require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
+            $evidence = new dp_evidence_relation($this->plan->id, $this->component, $delete);
+            echo $evidence->display_delete_warning();
+
             echo $OUTPUT->confirm(get_string('confirmitemdelete', 'totara_plan'), $continueurl, $currenturl);
             echo $OUTPUT->footer();
             die();

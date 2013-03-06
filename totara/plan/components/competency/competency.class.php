@@ -135,6 +135,10 @@ class dp_competency_component extends dp_base_component {
                 CASE WHEN linkedcourses.count IS NULL
                     THEN 0 ELSE linkedcourses.count
                 END AS linkedcourses,
+                CASE
+                    WHEN linkedevidence.count IS NULL THEN 0
+                    ELSE linkedevidence.count
+                END AS linkedevidence,
                 csv.id AS profscalevalueid,
                 csv.name AS status,
                 csv.sortorder AS profsort
@@ -145,12 +149,19 @@ class dp_competency_component extends dp_base_component {
                 ON c.id = a.competencyid
             LEFT JOIN
                 (SELECT itemid1 AS assignid,
-                    count(id) AS count
+                    COUNT(id) AS count
                     FROM {dp_plan_component_relation}
-                    WHERE component1 = 'competency' AND
-                        component2 = 'course'
+                    WHERE component1 = 'competency'
+                    AND component2 = 'course'
                     GROUP BY itemid1) linkedcourses
                 ON linkedcourses.assignid = a.id
+            LEFT JOIN
+                (SELECT itemid,
+                    COUNT(id) AS count
+                    FROM {dp_plan_evidence_relation}
+                    WHERE component = 'competency'
+                    GROUP BY itemid) linkedevidence
+                ON linkedevidence.itemid = a.id
             $status
             WHERE
                 $where
@@ -173,7 +184,7 @@ class dp_competency_component extends dp_base_component {
      * @return  void
      */
     public function process_action_hook() {
-        global $USER;
+        global $DB;
         $delete = optional_param('d', 0, PARAM_INT); // competency assignment id to delete
         $confirm = optional_param('confirm', 0, PARAM_INT); // confirm delete
 
@@ -197,6 +208,11 @@ class dp_competency_component extends dp_base_component {
                         $coursecomponent->unassign_item($coursecomponent->get_assignment($courseid));
                     }
                 }
+
+                // Remove linked evidence
+                $params = array('planid' => $this->plan->id, 'component' => $this->component, 'itemid' => $delete);
+                $DB->delete_records('dp_plan_evidence_relation', $params);
+
                 totara_set_notification(get_string('canremoveitem', 'totara_plan'), $currenturl, array('class' => 'notifysuccess'));
             } else {
                 totara_set_notification(get_string('cannotremoveitem', 'totara_plan'), $currenturl);
@@ -283,11 +299,15 @@ class dp_competency_component extends dp_base_component {
         $currenturl = $this->get_url();
 
         if ($delete) {
+            require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
+            $evidence = new dp_evidence_relation($this->plan->id, $this->component, $delete);
+            echo $evidence->display_delete_warning();
+
             // Print a list of linked courses
             $sql = "
                 SELECT courseasn.id, course.fullname
                 FROM
-                    {course} AS course
+                    {course} course
                     INNER JOIN {dp_plan_course_assign} courseasn
                         ON course.id = courseasn.courseid
                     INNER JOIN {dp_plan_component_relation} rel
@@ -1392,7 +1412,7 @@ class dp_competency_component extends dp_base_component {
     public function display_comp_add_evidence_icon($item, $returnurl=false) {
         global $OUTPUT;
         if ($this->can_update_competency_evidence($item)) {
-            $straddevidence = get_string('addevidence', 'totara_plan');
+            $straddevidence = get_string('setstatusicon', 'totara_plan');
             return $OUTPUT->action_icon(new moodle_url('/totara/plan/components/competency/add_evidence.php',
                 array('userid' => $this->plan->userid, 'id' => $this->plan->id, 'competencyid' => $item->competencyid, 'returnurl' => $returnurl)),
                 new pix_icon('/t/ranges', $straddevidence));

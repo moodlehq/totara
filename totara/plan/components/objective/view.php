@@ -28,6 +28,7 @@ require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))) . '/config.ph
 require_once($CFG->dirroot . '/totara/plan/lib.php');
 require_once($CFG->dirroot . '/totara/plan/components/objective/edit_form.php');
 require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
+require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
 
 $id = required_param('id', PARAM_INT); // plan id
 $caid = required_param('itemid', PARAM_INT); // objective assignment id
@@ -50,6 +51,8 @@ if (!$DB->record_exists('dp_plan_objective', array('planid' => $plan->id, 'id' =
 $plancompleted = $plan->status == DP_PLAN_STATUS_COMPLETE;
 $componentname = 'objective';
 $component = $plan->get_component($componentname);
+
+$evidence = new dp_evidence_relation($id, $componentname, $caid);
 
 $objectivename = get_string($componentname, 'totara_plan');
 $coursename = get_string('courseplural', 'totara_plan');
@@ -76,6 +79,7 @@ if ($canupdate) {
     $PAGE->requires->string_for_js('save', 'totara_core');
     $PAGE->requires->string_for_js('cancel', 'moodle');
     $PAGE->requires->string_for_js('addlinkedcourses', 'totara_plan');
+    $PAGE->requires->string_for_js('addlinkedevidence', 'totara_plan');
 
     $jsmodule = array(
                                 'name' => 'totara_plan_objective_find_course',
@@ -83,6 +87,14 @@ if ($canupdate) {
                                 'requires' => array('json'));
     $PAGE->requires->js_init_call('M.totara_plan_objective_find_course.init', array('args' => '{"plan_id":'.$id.',"objective_id":'.$caid.'}'), false, $jsmodule);
 
+        // Get evidence picker
+    $jsmodule_evidence = array(
+        'name' => 'totara_plan_find_evidence',
+        'fullpath' => '/totara/plan/components/evidence/find-evidence.js',
+        'requires' => array('json'));
+    $PAGE->requires->js_init_call('M.totara_plan_find_evidence.init',
+            array('args' => '{"plan_id":'.$id.', "component_name":"'.$componentname.'", "item_id":'.$caid.'}'),
+            false, $jsmodule_evidence);
 }
 
 // Check if we are performing an action
@@ -115,6 +127,12 @@ if ($data = data_submitted() && $canupdate) {
             redirect($currenturl);
         }
         die();
+    }
+
+
+    if ($action === 'removelinkedevidence' && !$plan->is_complete()) {
+        $selectedids = optional_param_array('delete_linked_evidence', array(), PARAM_BOOL);
+        $evidence->remove_linked_evidence($selectedids, $currenturl);
     }
 }
 
@@ -168,7 +186,11 @@ if ($plan->get_component('course')->get_setting('enabled')) {
     }
 }
 
+// Display linked evidence
+echo $evidence->display_linked_evidence($currenturl, $canupdate, $plancompleted);
+
 // Comments
+echo $OUTPUT->heading(get_string('comments', 'totara_plan'), 3);
 require_once($CFG->dirroot.'/comment/lib.php');
 comment::init();
 $options = new stdClass;
@@ -185,6 +207,3 @@ echo $comment->output(true);
 echo $OUTPUT->container_end();
 
 echo $OUTPUT->footer();
-
-
-?>

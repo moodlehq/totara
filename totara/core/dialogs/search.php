@@ -28,7 +28,7 @@ require_once("{$CFG->dirroot}/totara/core/dialogs/search_form.php");
 require_once("{$CFG->dirroot}/totara/core/dialogs/dialog_content_hierarchy.class.php");
 require_once($CFG->dirroot . '/totara/core/searchlib.php');
 
-global $DB, $OUTPUT;
+global $DB, $OUTPUT, $USER;
 
 // Get parameter values
 $query      = optional_param('query', null, PARAM_TEXT); // search query
@@ -305,6 +305,35 @@ switch ($searchtype) {
                 AND {$searchsql}
         ";
         $search_info->order = " GROUP BY pa.managerid, u.firstname, u.lastname ORDER BY u.firstname, u.lastname";
+        $search_info->params = $params;
+        break;
+
+    /**
+     * Evidence search
+     */
+    case 'dp_plan_evidence':
+        // Generate search SQL
+        $keywords = totara_search_parse_keywords($query);
+        $fields = array('e.name', 'e.description');
+        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+
+        $search_info->id = 'e.id';
+        $search_info->fullname = 'e.name';
+        $search_info->sql = "
+            FROM
+                {dp_plan_evidence} e
+            WHERE
+                {$searchsql}
+                AND e.userid = ?
+        ";
+
+        $search_info->order = " ORDER BY e.name";
+        if (!empty($this->customdata['userid'])) {
+            $params[] = $this->customdata['userid'];
+        } else {
+            $params[] = $USER->id;
+        }
+
         $search_info->params = $params;
         break;
 
