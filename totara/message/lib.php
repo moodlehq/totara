@@ -90,20 +90,17 @@ function totara_message_cssclass($msgtype) {
  * Get the language string  and icon for the message type
  *
  * @param $msgtype int message type
- * @return array('text' => , 'icon' => '')
+ * @return array('text' => '', 'icon' => '')
  */
 function totara_message_msgtype_text($msgtype) {
-    global $CFG;
+    global $CFG, $TOTARA_MESSAGE_TYPES;
 
-    switch ($msgtype) {
-//        case :
-
-        default:
-            $text = get_string('unknown', 'totara_message');
-            $icon = 'default';
-            break;
+    if (array_key_exists($msgtype, $TOTARA_MESSAGE_TYPES)) {
+        $text = get_string($TOTARA_MESSAGE_TYPES[$msgtype], 'totara_message');
+    } else {
+        $text = get_string('unknown', 'totara_message');
     }
-    return array('text' => $text, 'icon' => 't/'.$icon);
+    return array('text' => $text, 'icon' => '');
 }
 
 

@@ -5,18 +5,18 @@ $string['sourcetitle'] = 'Messages';
 $string['actions'] = 'Actions';
 $string['dismissmsg'] = 'Dismiss Message';
 $string['msgid'] = 'Message ID';
-$string['msgstatus'] = 'Message status';
-$string['msgtype'] = 'Message type';
-$string['msgurgency'] = 'Message urgency';
-$string['msgurgencyicon'] = 'Message urgency (icon)';
+$string['msgtypetext'] = 'Message Type (text)';
+$string['msgtype'] = 'Message Type';
+$string['msgurgency'] = 'Message Urgency';
+$string['msgurgencyicon'] = 'Message Urgency (icon)';
 $string['name'] = 'Name';
 $string['sent'] = 'Sent';
 $string['select'] = 'Select';
-$string['statement'] = 'Statement';
-$string['statementurl'] = 'Statement (linking to Review)';
+$string['statement'] = 'Message Content';
+$string['subject'] = 'Subject';
 $string['type'] = 'Type';
 // filters
-$string['datesent'] = 'Date sent';
+$string['datesent'] = 'Date Sent';
 $string['details'] = 'Details';
 // content
 $string['currentorg'] = 'The user\'s current organisation';

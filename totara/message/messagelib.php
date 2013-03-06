@@ -91,6 +91,11 @@ $TOTARA_MESSAGE_TYPES = array(
     TOTARA_MSG_TYPE_LINK => 'link',
 );
 
+// list of supported categories
+global $TOTARA_MESSAGE_CATEGORIES;
+$TOTARA_MESSAGE_CATEGORIES = array_merge(array_keys($TOTARA_MESSAGE_TYPES),
+        array('facetoface', 'learningplan', 'objective', 'resource'));
+
 // message urgency constants
 define('TOTARA_MSG_URGENCY_LOW', -4);
 define('TOTARA_MSG_URGENCY_NORMAL', 0);

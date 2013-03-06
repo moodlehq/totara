@@ -23,6 +23,9 @@
  * @subpackage reportbuilder
  */
 
+global $CFG;
+require_once($CFG->dirroot.'/totara/message/lib.php');
+
 defined('MOODLE_INTERNAL') || die();
 
 class rb_source_totaramessages extends rb_base_source {
@@ -89,47 +92,38 @@ class rb_source_totaramessages extends rb_base_source {
     }
 
     protected function define_columnoptions() {
-          global $DB;
+        global $DB;
         $columnoptions = array(
+            new rb_column_option(
+                'message_values',
+                'subject',
+                get_string('subject', 'rb_source_totaramessages'),
+                'msg.subject',
+                array('joins' => 'msg')
+            ),
             new rb_column_option(
                 'message_values',         // type
                 'statement',              // value
                 get_string('statement', 'rb_source_totaramessages'),              // name
                 'msg.fullmessagehtml',        // field
                 array('joins' => 'msg')   // options
-
-            ),
-            new rb_column_option(
-                'message_values',         // type
-                'statementurl',              // value
-                get_string('statementurl', 'rb_source_totaramessages'),              // name
-                'msg.fullmessage',        // field
-                array('joins' => 'msg',   // options
-                      'displayfunc' => 'msgtype_statementurl',
-                      'extrafields' => array(
-                        'msgurl' => 'msg.contexturl'),
-                    )
             ),
             new rb_column_option(
                 'message_values',
                 'urgency',
                 get_string('msgurgencyicon', 'rb_source_totaramessages'),
                 'base.urgency',
-                array('displayfunc' => 'urgency_link')
-                ),
+                array(
+                    'defaultheading' => get_string('msgurgency', 'rb_source_totaramessages'),
+                    'displayfunc' => 'urgency_link'
+                )
+            ),
             new rb_column_option(
                 'message_values',
                 'urgency_text',
                 get_string('msgurgency', 'rb_source_totaramessages'),
                 'base.urgency',
                 array('displayfunc' => 'urgency_text')
-                ),
-            new rb_column_option(
-                'message_values',
-                'status_text',
-                get_string('msgstatus', 'rb_source_totaramessages'),
-                'base.msgstatus',
-                array('displayfunc' => 'msgstatus_text')
                 ),
             new rb_column_option(
                 'message_values',
@@ -148,18 +142,22 @@ class rb_source_totaramessages extends rb_base_source {
             ),
             new rb_column_option(
                 'message_values',
+                'msgtype_text',
+                get_string('msgtypetext', 'rb_source_totaramessages'),
+                'base.msgtype',
+                array(
+                    'defaultheading' => get_string('msgtype', 'rb_source_totaramessages'),
+                    'displayfunc' => 'msgtype_text'
+                )
+            ),
+            new rb_column_option(
+                'message_values',
                 'category',
                 get_string('msgcategory', 'rb_source_totaramessages'),
                 // icon uses format like 'competency-regular'
                 // strip from first '-' to get general message category
-                $DB->sql_substr('base.icon', 0, $DB->sql_position("'-'", 'base.icon'))
-            ),
-            new rb_column_option(
-                'message_values',
-                'msgtype_text',
-                get_string('msgtype', 'rb_source_totaramessages'),
-                'base.msgtype',
-                array('displayfunc' => 'msgtype_text')
+                $DB->sql_substr('base.icon', 0, $DB->sql_position("'-'", 'base.icon')),
+                array('displayfunc' => 'msgcategory_text')
             ),
             new rb_column_option(
                 'message_values',
@@ -169,17 +167,6 @@ class rb_source_totaramessages extends rb_base_source {
                 array('joins' => 'msg',
                       'displayfunc' => 'nice_date')
             ),
-            /*
-            new rb_column_option(
-                'message_values',
-                'task_links',
-                get_string('actions', 'rb_source_totaramessages'),
-                'base.messageid',
-                array('displayfunc' => 'task_links',
-                      'noexport' => true,
-                      'nosort' => true)
-            ),
-            */
             new rb_column_option(
                 'message_values',
                 'checkbox',
@@ -221,7 +208,7 @@ class rb_source_totaramessages extends rb_base_source {
             new rb_filter_option(
                 'message_values',
                 'statement',
-                get_string('details', 'rb_source_totaramessages'),
+                get_string('statement', 'rb_source_totaramessages'),
                 'text'
             ),
             new rb_filter_option(
@@ -311,21 +298,14 @@ class rb_source_totaramessages extends rb_base_source {
     //
     //
 
-    // generate status text
-    function rb_display_msgstatus_text($msgstatus, $row) {
-        $display = totara_message_msgstatus_text($msgstatus);
-        return $display['text'];
-    }
-
-    // generate statement url
-    function rb_display_msgtype_statementurl($message, $row) {
-        return html_writer::link($row->msgurl, $message);
-    }
-
     // generate urgency icon link
-    function rb_display_urgency_link($urgency, $row) {
+    function rb_display_urgency_link($comp, $row, $export = 0) {
         global $OUTPUT;
-        $display = totara_message_urgency_text($urgency);
+        $display = totara_message_urgency_text($row->message_values_urgency);
+        if ($export) {
+            return $display['text'];
+        }
+
         return $OUTPUT->pix_icon($display['icon'], $display['text'], 'moodle', array('title' => $display['text'], 'class' => 'iconsmall'));
     }
 
@@ -336,10 +316,13 @@ class rb_source_totaramessages extends rb_base_source {
     }
 
     // generate type icon link
-    function rb_display_msgtype_link($msgtype, $row) {
+    function rb_display_msgtype_link($comp, $row, $export = 0) {
         global $OUTPUT;
         $subject = format_string($row->msgsubject);
         $icon = !empty($row->msgicon) ? format_string($row->msgicon) : 'default';
+        if ($export) {
+            return $this->rb_display_msgtype_text($comp, $row);
+        }
         return $OUTPUT->pix_icon("/msgicons/" . $icon, $subject, 'totara_core', array('title' => $subject));
     }
 
@@ -347,6 +330,20 @@ class rb_source_totaramessages extends rb_base_source {
     function rb_display_msgtype_text($msgtype, $row) {
         $display = totara_message_msgtype_text($msgtype);
         return $display['text'];
+    }
+
+    /**
+     * Display category
+     * @param string $comp
+     * @param stdClass $row
+     * @return string
+     */
+    function rb_display_msgcategory_text($comp, $row) {
+        global $TOTARA_MESSAGE_CATEGORIES;
+        if ($comp != '' && in_array($comp, $TOTARA_MESSAGE_CATEGORIES)) {
+            return get_string($comp, 'totara_message');
+        }
+        return $comp;
     }
 
     // generate dismiss message link
@@ -397,16 +394,6 @@ class rb_source_totaramessages extends rb_base_source {
     // Source specific filter display methods
     //
     //
-
-    function rb_filter_message_status_list() {
-        global $CFG;
-        require_once($CFG->dirroot . '/totara/message/messagelib.php');
-        $statusselect = array();
-        $statusselect[TOTARA_MSG_STATUS_OK] = get_string('statusok', 'totara_message');
-        $statusselect[TOTARA_MSG_STATUS_NOTOK] = get_string('statusnotok', 'totara_message');
-        $statusselect[TOTARA_MSG_STATUS_UNDECIDED] = get_string('statusundecided', 'totara_message');
-        return $statusselect;
-    }
 
     function rb_filter_message_urgency_list() {
         global $CFG;
