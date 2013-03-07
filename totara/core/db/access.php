@@ -73,5 +73,14 @@ $capabilities = array(
         'archetypes'    => array(
             'manager' => CAP_ALLOW
         )
+    ),
+    'totara/core:appearance' => array(
+        'riskbitmask'   => RISK_CONFIG,
+        'captype'       => 'write',
+        'contextlevel'  => CONTEXT_SYSTEM,
+        'archetypes'    => array(
+            'manager' => CAP_ALLOW
+        ),
+        'clonepermissionsfrom' => 'moodle/site:config'
     )
 );
