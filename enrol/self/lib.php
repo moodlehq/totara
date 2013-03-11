@@ -339,6 +339,7 @@ class enrol_self_plugin extends enrol_plugin {
         }
 
         $subject = get_string('welcometocourse', 'enrol_self', format_string($course->fullname, true, array('context'=>$context)));
+        $subject =  str_replace('&amp;', '&', $subject);
 
         $rusers = array();
         if (!empty($CFG->coursecontact)) {
