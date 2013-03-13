@@ -8231,10 +8231,12 @@ class admin_setting_configmultiselect_modules extends admin_setting_configmultis
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class admin_setting_configfilepicker extends admin_setting {
-    var $filepicker;
-    var $filecontext;
-    var $filearea;
-    var $component;
+    private $fp_acceptedTypes;
+    private $fp_options;
+    private $filepicker;
+    private $filecontext;
+    private $filearea;
+    private $component;
 
     /**
      * Calls parent::__construct with specific args and sets up a file picker
@@ -8248,48 +8250,15 @@ class admin_setting_configfilepicker extends admin_setting {
      *      defaults options are array('maxfiles' => 1, 'subdirs' => 0, 'context' => system_context)
      */
     public function __construct($name, $visiblename, $description, $defaultsetting, $fp_acceptedTypes = array('*'), $fp_options = array()) {
-        global $CFG, $USER;
-        require_once($CFG->libdir . '/form/filepicker.php');
 
         parent::__construct($name, $visiblename, $description, $defaultsetting);
+        $this->fp_acceptedTypes = $fp_acceptedTypes;
+        $this->fp_options = $fp_options;
+        $this->filecontext = context_system::instance();
 
         $full_name_args = explode('_',$this->get_full_name());
         $this->component = $full_name_args[1];
         $this->filearea = $full_name_args[2];
-
-        $this->filecontext = get_context_instance(CONTEXT_SYSTEM);
-        $fp_attributes = array('id' => ('fp_' . $name), 'name' => $this->get_full_name());
-        $fp_defaultOptions = array('maxfiles' => 1, 'subdirs' => 0, 'context' => $this->filecontext, 'accepted_types' => $fp_acceptedTypes);
-        foreach ($fp_defaultOptions as $key => $value) {
-            if (!isset($fp_options[$key])) {
-                $fp_options[$key] = $value;
-            }
-        }
-
-        $this->filepicker = new MoodleQuickForm_filepicker($this->get_full_name(), $this->name, $fp_attributes, $fp_options);
-        $fs = get_file_storage();
-
-        $setting = $this->get_setting();
-        if (isloggedin() && !empty($setting)) {
-            $itemidargs = explode('/', $setting);
-            $itemid = isset($itemidargs[7]) ? $itemidargs[7] : 0;
-            $itemname = isset($itemidargs[8]) ? $itemidargs[8] : 0;
-            $draftid = 0;
-
-            $user_context = get_context_instance(CONTEXT_USER, $USER->id);
-            file_prepare_draft_area($draftid, $this->filecontext->id, $this->component, $this->filearea, null, $fp_options);
-
-            $file_record = array('contextid' => $user_context->id, 'component' => 'user', 'filearea' => 'draft', 'itemid' => $draftid);
-            $current_file = $fs->get_area_files($this->filecontext->id, $this->component, $this->filearea, $itemid);
-            foreach ($current_file as $file) {
-                if ($file->is_directory() || $file->get_filename() != $itemname) {
-                    continue;
-                }
-                $fs->create_file_from_storedfile($file_record, $file);
-            }
-
-            $this->filepicker->setValue($draftid);
-        }
     }
 
     /**
@@ -8316,8 +8285,8 @@ class admin_setting_configfilepicker extends admin_setting {
         }
 
         $fs = get_file_storage();
+        $draft_context = context_user::instance($USER->id);
         $contextid = $this->filecontext->id;
-        $draft_context = get_context_instance(CONTEXT_USER, $USER->id);
         $hasFile = $fs->file_exists($draft_context->id, 'user', 'draft', $data, '/', '');
         $setting = $this->get_setting();
         if ($hasFile) {
@@ -8346,7 +8315,41 @@ class admin_setting_configfilepicker extends admin_setting {
     }
 
     public function output_html($data, $query='') {
-        global $OUTPUT;
+        global $CFG, $USER, $OUTPUT;
+        require_once($CFG->libdir . '/form/filepicker.php');
+
+        $fp_attributes = array('id' => ('fp_' . $this->name), 'name' => $this->get_full_name());
+        $fp_defaultOptions = array('maxfiles' => 1, 'subdirs' => 0, 'context' => $this->filecontext, 'accepted_types' => $this->fp_acceptedTypes);
+        foreach ($fp_defaultOptions as $key => $value) {
+            if (!isset($this->fp_options[$key])) {
+                $this->fp_options[$key] = $value;
+            }
+        }
+
+        $this->filepicker = new MoodleQuickForm_filepicker($this->get_full_name(), $this->name, $fp_attributes, $this->fp_options);
+        $fs = get_file_storage();
+
+        $setting = $this->get_setting();
+        if (isloggedin() && !empty($setting)) {
+            $itemidargs = explode('/', str_replace($CFG->wwwroot, '', $setting));
+            $itemid = isset($itemidargs[5]) ? $itemidargs[5] : 0;
+            $itemname = isset($itemidargs[6]) ? $itemidargs[6] : 0;
+            $draftid = 0;
+
+            $user_context = context_user::instance($USER->id);
+            file_prepare_draft_area($draftid, $this->filecontext->id, $this->component, $this->filearea, null, $this->fp_options);
+
+            $file_record = array('contextid' => $user_context->id, 'component' => 'user', 'filearea' => 'draft', 'itemid' => $draftid);
+            $current_file = $fs->get_area_files($this->filecontext->id, $this->component, $this->filearea, $itemid);
+            foreach ($current_file as $file) {
+                if ($file->is_directory() || $file->get_filename() != $itemname) {
+                    continue;
+                }
+                $fs->create_file_from_storedfile($file_record, $file);
+            }
+
+            $this->filepicker->setValue($draftid);
+        }
 
         $return = $OUTPUT->container_start("form-setting form-filepicker", "id_{$this->get_full_name()}");
         if (isset($this->filepicker)) {
