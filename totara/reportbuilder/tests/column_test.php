@@ -962,6 +962,7 @@ class columns_test extends advanced_testcase {
 
         $this->sync_log_data = new stdClass();
         $this->sync_log_data->id = 1;
+        $this->sync_log_data->runid = 1;
         $this->sync_log_data->time = 1;
         $this->sync_log_data->element = 'user';
         $this->sync_log_data->logtype = 'info';

@@ -29,6 +29,23 @@ define('FILE_ACCESS_DIRECTORY', 0);
 define('FILE_ACCESS_UPLOAD', 1);
 
 /**
+ * Finds the run id of the latest sync run
+ *
+ * @return int latest runid
+ */
+function latest_runid() {
+    global $DB;
+
+    $runid = $DB->get_field_sql('SELECT MAX(runid) FROM {totara_sync_log}');
+
+    if (!empty($runid)) {
+        return $runid;
+    } else {
+        return 0;
+    }
+}
+
+/**
 * Run the cron for syncing Totara elements with external sources
 *
 * This can be run separately from the main cron via run_cron.php
@@ -113,7 +130,13 @@ function tool_totara_sync_cron() {
  * @param string $action the action which caused the log message
  */
 function totara_sync_log($element, $info, $type='info', $action='') {
-    global $DB;
+    global $DB, $OUTPUT;
+
+    static $sync_runid = null;
+
+    if ($sync_runid == null) {
+        $sync_runid = latest_runid() + 1;
+    }
 
     $todb = new stdClass;
     $todb->element = $element;
@@ -121,6 +144,13 @@ function totara_sync_log($element, $info, $type='info', $action='') {
     $todb->action = $action;
     $todb->info = $info;
     $todb->time = time();
+    $todb->runid = $sync_runid;
+
+    if ($type == 'warn' || $type == 'error') {
+        $typestr = get_string($type, 'tool_totara_sync');
+        $class = $type == 'warn' ? 'notifynotice' : 'notifyproblem';
+        echo $OUTPUT->notification($typestr . ':' . $element . ' - ' . $info, $class);
+    }
 
     return $DB->insert_record('totara_sync_log', $todb);
 }
