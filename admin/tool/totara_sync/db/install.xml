@@ -12,7 +12,8 @@
         <FIELD NAME="element" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false" COMMENT="element name" PREVIOUS="time" NEXT="logtype"/>
         <FIELD NAME="logtype" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false" COMMENT="log type" PREVIOUS="element" NEXT="action"/>
         <FIELD NAME="action" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false" COMMENT="action performed" PREVIOUS="logtype" NEXT="info"/>
-        <FIELD NAME="info" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="log entry info message" PREVIOUS="action"/>
+        <FIELD NAME="info" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="log entry info message" PREVIOUS="action" NEXT="runid"/>
+        <FIELD NAME="runid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" UNSIGNED="true" SEQUENCE="false" COMMENT="Run Batch ID" PREVIOUS="info"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -21,7 +22,8 @@
         <INDEX NAME="time" UNIQUE="false" FIELDS="time" NEXT="element"/>
         <INDEX NAME="element" UNIQUE="false" FIELDS="element" PREVIOUS="time" NEXT="logtype"/>
         <INDEX NAME="logtype" UNIQUE="false" FIELDS="logtype" PREVIOUS="element" NEXT="action"/>
-        <INDEX NAME="action" UNIQUE="false" FIELDS="action" PREVIOUS="logtype"/>
+        <INDEX NAME="action" UNIQUE="false" FIELDS="action" PREVIOUS="logtype" NEXT="runid"/>
+        <INDEX NAME="runid" UNIQUE="false" FIELDS="runid" PREVIOUS="action"/>
       </INDEXES>
     </TABLE>
   </TABLES>

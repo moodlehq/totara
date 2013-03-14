@@ -248,9 +248,9 @@ $string['warn'] = 'Warning';
 $string['action'] = 'Action';
 $string['info'] = 'Info';
 $string['id'] = 'ID';
+$string['runid'] = 'Run ID';
 $string['datetime'] = 'Date/Time';
 $string['element'] = 'Element';
-$string['logtype'] = 'Logtype';
 $string['action'] = 'Action';
 $string['info'] = 'Info';
 

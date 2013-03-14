@@ -65,6 +65,12 @@ class rb_source_totara_sync_log extends rb_base_source {
             ),
             new rb_column_option(
                 'totara_sync_log',
+                'runid',
+                get_string('runid', 'tool_totara_sync'),
+                "base.runid"
+            ),
+            new rb_column_option(
+                'totara_sync_log',
                 'time',
                 get_string('datetime', 'tool_totara_sync'),
                 "base.time",
@@ -102,6 +108,12 @@ class rb_source_totara_sync_log extends rb_base_source {
 
     protected function define_filteroptions() {
         $filteroptions = array(
+            new rb_filter_option(
+                'totara_sync_log',         // type
+                'runid',           // value
+                get_string('runid', 'tool_totara_sync'), // label
+                'number'     // filtertype
+            ),
             new rb_filter_option(
                 'totara_sync_log',         // type
                 'time',           // value
@@ -170,6 +182,10 @@ class rb_source_totara_sync_log extends rb_base_source {
             ),
             array(
                 'type' => 'totara_sync_log',
+                'value' => 'runid',
+            ),
+            array(
+                'type' => 'totara_sync_log',
                 'value' => 'time',
             ),
             array(
@@ -195,6 +211,11 @@ class rb_source_totara_sync_log extends rb_base_source {
 
     protected function define_defaultfilters() {
         $defaultfilters = array(
+            array(
+                'type' => 'totara_sync_log',
+                'value' => 'runid',
+                'advanced' => 0,
+            ),
             array(
                 'type' => 'totara_sync_log',
                 'value' => 'time',

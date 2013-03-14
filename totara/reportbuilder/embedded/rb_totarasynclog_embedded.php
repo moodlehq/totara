@@ -41,6 +41,11 @@ class rb_totarasynclog_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'totara_sync_log',
+                'value' => 'runid',
+                'heading' => get_string('runid', 'tool_totara_sync'),
+            ),
+            array(
+                'type' => 'totara_sync_log',
                 'value' => 'time',
                 'heading' => get_string('datetime', 'tool_totara_sync'),
             ),
@@ -67,6 +72,11 @@ class rb_totarasynclog_embedded extends rb_base_embedded {
         );
 
         $this->filters = array(
+            array(
+                'type' => 'totara_sync_log',
+                'value' => 'runid',
+                'advanced' => 0,
+            ),
             array(
                 'type' => 'totara_sync_log',
                 'value' => 'time',
