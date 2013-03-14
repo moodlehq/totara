@@ -75,7 +75,7 @@ $PAGE->set_totara_menu_selected('myteam');
 $PAGE->set_button($report->edit_button());
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
-$PAGE->navbar->add(get_string('mylearning', 'totara_core'), new moodle_url('/my/'));
+$PAGE->navbar->add(get_string('myteam', 'totara_core'));
 $PAGE->navbar->add($strheading);
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
 echo $OUTPUT->header();
