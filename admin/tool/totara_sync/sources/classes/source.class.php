@@ -122,7 +122,7 @@ abstract class totara_sync_source {
      * @return true
      * @throws dml_exception if error
      */
-    function drop_temp_table() {
+    function drop_table() {
         global $DB;
 
         if (empty($this->temptablename)) {
@@ -134,13 +134,13 @@ abstract class totara_sync_source {
 
         $table = new xmldb_table($this->temptablename);
         if ($dbman->table_exists($table)) {
-            $dbman->drop_temp_table($table); // And drop it
+            $dbman->drop_table($table); // And drop it
         }
 
         // drop any clones
         $table = new xmldb_table($this->temptablename . '_clone');
         if ($dbman->table_exists($table)) {
-            $dbman->drop_temp_table($table); // And drop it
+            $dbman->drop_table($table); // And drop it
         }
 
         return true;
@@ -168,15 +168,15 @@ abstract class totara_sync_source {
         $fields = $temptable_clone->getFields();
         $fieldnames = array();
         foreach ($fields as $field) {
-            if ($field->name != 'id') {
-                $fieldnames[] = $field->name;
+            if ($field->getName() != 'id') {
+                $fieldnames[] = $field->getName();
             }
         }
         $fieldlist = implode(",", $fieldnames);
-        $sql = "INSERT INTO {{$temptable_clone->name}} ($fieldlist) SELECT $fieldlist FROM {{$this->temptablename}}";
+        $sql = "INSERT INTO {{$temptable_clone->getName()}} ($fieldlist) SELECT $fieldlist FROM {{$this->temptablename}}";
         $DB->execute($sql);
 
-        return $temptable_clone->name;
+        return $temptable_clone->getName();
     }
 }
 

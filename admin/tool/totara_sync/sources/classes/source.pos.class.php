@@ -105,9 +105,9 @@ abstract class totara_sync_source_pos extends totara_sync_source {
                 'temptableprepfail', $e->getMessage());
         }
 
-        $this->import_data($temptable->name);
+        $this->import_data($temptable->getName());
 
-        return $temptable->name;
+        return $temptable->getName();
     }
 
     function prepare_temp_table($clone = false) {

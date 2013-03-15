@@ -76,7 +76,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
         }
 
         if (!$this->check_sanity($synctable, $synctable_clone)) {
-            $this->get_source()->drop_temp_table($synctable_clone);
+            $this->get_source()->drop_table($synctable_clone);
             throw new totara_sync_exception($elname, "{$elname}sync", 'sanitycheckfailed');
         }
 
@@ -118,7 +118,7 @@ abstract class totara_sync_hierarchy extends totara_sync_element {
             $rs->close();
         }
 
-        $this->get_source()->drop_temp_table();
+        $this->get_source()->drop_table();
         $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', "{$elname}sync");
 
         return true;

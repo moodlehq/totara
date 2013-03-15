@@ -207,7 +207,7 @@ class totara_sync_element_user extends totara_sync_element {
 
         }
 
-        $this->get_source()->drop_temp_table();
+        $this->get_source()->drop_table();
         $this->addlog(get_string('syncfinished', 'tool_totara_sync'), 'info', 'usersync');
     }
 
