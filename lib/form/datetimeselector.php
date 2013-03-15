@@ -166,7 +166,9 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
                     }
                 }
                 if (!is_array($value)) {
-                    $currentdate = usergetdate($value, $this->_options['timezone']);
+                    //use the timezone set in _options
+                    $timezone = $this->_options['timezone'];
+                    $currentdate = usergetdate($value, $timezone);
                     // Round minutes to the previous multiple of step.
                     $currentdate['minutes'] -= $currentdate['minutes'] % $this->_options['step'];
                     $value = array(
@@ -224,7 +226,7 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
     }
 
     /**
-     * Output a timestamp. Give it the name of the group.
+     * Output a timestamp. Give it the name of the group. Also stores the raw ISO datestring
      *
      * @param array $submitValues values submitted.
      * @param bool $assoc specifies if returned array is associative
@@ -234,8 +236,10 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
     {
         $value = null;
         $valuearray = array();
+        $pickername = $this->getName();
+
         foreach ($this->_elements as $element){
-            $thisexport = $element->exportValue($submitValues[$this->getName()], true);
+            $thisexport = $element->exportValue($submitValues[$pickername], true);
             if ($thisexport!=null){
                 $valuearray += $thisexport;
             }
@@ -249,7 +253,12 @@ class MoodleQuickForm_date_time_selector extends MoodleQuickForm_group{
                 }
             }
             $valuearray=$valuearray + array('year' => 1970, 'month' => 1, 'day' => 1, 'hour' => 0, 'minute' => 0);
-            $value[$this->getName()] = make_timestamp(
+            //add the raw datestring in case we want to process the value differently
+            $rawvalue = $valuearray['year'] . '-' . str_pad($valuearray['month'], 2, '0', STR_PAD_LEFT)  . '-' . str_pad($valuearray['day'], 2, '0', STR_PAD_LEFT);
+            $rawvalue .= ' ' . str_pad($valuearray['hour'], 2, '0', STR_PAD_LEFT)  . ':' . str_pad($valuearray['minute'], 2, '0', STR_PAD_LEFT)  . ':00';
+            $value[$pickername . '_raw'] = $rawvalue;
+
+            $value[$pickername] = make_timestamp(
                                    $valuearray['year'],
                                    $valuearray['month'],
                                    $valuearray['day'],

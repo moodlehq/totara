@@ -43,6 +43,7 @@ function group_session_dates($sessions) {
             $newsession = clone($session);
             $newsession->timestart = $newsession->timestart;
             $newsession->timefinish = $newsession->timefinish;
+            $newsession->sessiontimezone = $newsession->sessiontimezone;
             $retarray[$newsession->sessionid] = $newsession;
         } else {
             if ($session->timestart < $retarray[$session->sessionid]->timestart) {
@@ -52,6 +53,7 @@ function group_session_dates($sessions) {
             if ($session->timefinish > $retarray[$session->sessionid]->timefinish) {
                 $retarray[$session->sessionid]->timefinish = $session->timefinish;
             }
+            $retarray[$session->sessionid]->sessiontimezone = $session->sessiontimezone;
         }
 
         // ensure that we have the correct status (enrolled, cancelled) for the submission
@@ -62,6 +64,7 @@ function group_session_dates($sessions) {
         $alldates[$session->id] = new stdClass();
         $alldates[$session->id]->timestart = $session->timestart;
         $alldates[$session->id]->timefinish = $session->timefinish;
+        $alldates[$session->id]->sessiontimezone = $session->sessiontimezone;
         $retarray[$session->sessionid]->alldates = $alldates;
     }
     return $retarray;

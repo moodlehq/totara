@@ -35,3 +35,23 @@ span.errorstring {
 body#page-mod-facetoface-view div#page-content table.sessions {
     width: 100%;
 }
+
+body.path-mod-facetoface table.mod-facetoface-room-list {
+    width: 100%;
+}
+
+body.path-mod-facetoface table.mod-facetoface-notification-template-list {
+    width: 100%;
+}
+
+body.path-mod-facetoface table.mod-facetoface-attendees {
+    width: 100%;
+}
+
+body.path-mod-facetoface div.f2f-button {
+    float: left;
+}
+
+body.path-mod-facetoface div#fgroup_id_recipients input[id*="id_booked_type"] {
+    margin-left: 15px;
+}

@@ -2,7 +2,7 @@
 /*
  * This file is part of Totara LMS
  *
- * Copyright (C) 2010-2013 Totara Learning Solutions LTD
+ * Copyright (C) 2010 - 2013 Totara Learning Solutions LTD
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,18 +50,6 @@ class mod_facetoface_session_form extends moodleform {
         $customfields = $this->_customdata['customfields'];
         facetoface_add_customfields_to_form($mform, $customfields);
 
-        // Hack to put help files on these custom fields.
-        // TODO: add to the admin page a feature to put help text on custom fields
-        if ($mform->elementExists('custom_location')) {
-            $mform->addHelpButton('custom_location', 'location', 'facetoface');
-        }
-        if ($mform->elementExists('custom_venue')) {
-            $mform->addHelpButton('custom_venue', 'venue', 'facetoface');
-        }
-        if ($mform->elementExists('custom_room')) {
-            $mform->addHelpButton('custom_room', 'room', 'facetoface');
-        }
-
         $formarray  = array();
         $formarray[] = $mform->createElement('selectyesno', 'datetimeknown', get_string('sessiondatetimeknown', 'facetoface'));
         $formarray[] = $mform->createElement('static', 'datetimeknownhint', '', html_writer::tag('span', get_string('datetimeknownhinttext','facetoface'), array('class' => 'hint-text')));
@@ -71,7 +59,10 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addHelpButton('datetimeknown_group', 'sessiondatetimeknown', 'facetoface');
 
         $repeatarray = array();
+        $timezones = totara_get_clean_timezone_list(true);
+        $timezones[get_string('sessiontimezoneunknown', 'facetoface')] = get_string('sessiontimezoneunknown', 'facetoface');
         $repeatarray[] = &$mform->createElement('hidden', 'sessiondateid', 0);
+        $repeatarray[] = $mform->createElement('select', 'sessiontimezone', get_string('sessiontimezone', 'facetoface'), $timezones);
         $repeatarray[] = &$mform->createElement('date_time_selector', 'timestart', get_string('timestart', 'facetoface'));
         $repeatarray[] = &$mform->createElement('date_time_selector', 'timefinish', get_string('timefinish', 'facetoface'));
         $checkboxelement = &$mform->createElement('checkbox', 'datedelete', '', get_string('dateremove', 'facetoface'));
@@ -84,16 +75,72 @@ class mod_facetoface_session_form extends moodleform {
         $repeatoptions = array();
         $repeatoptions['timestart']['disabledif'] = array('datetimeknown', 'eq', 0);
         $repeatoptions['timefinish']['disabledif'] = array('datetimeknown', 'eq', 0);
+        $repeatoptions['sessiontimezone']['disabledif'] = array('datetimeknown', 'eq', 0);
+        $repeatoptions['sessiontimezone']['default'] = $this->_customdata['defaulttimezone'];
         $mform->setType('timestart', PARAM_INT);
         $mform->setType('timefinish', PARAM_INT);
-
+        $mform->setType('sessiontimezone', PARAM_TEXT);
         $this->repeat_elements($repeatarray, $repeatcount, $repeatoptions, 'date_repeats', 'date_add_fields',
                                1, get_string('dateadd', 'facetoface'), true);
+
+        // Rooms form
+        $pdroom = '';
+        $roomnote = '';
+        if (!empty($this->_customdata['s'])) {
+            $sql = "SELECT r.*
+                FROM {facetoface_sessions} s
+                INNER JOIN {facetoface_room} r ON s.roomid = r.id
+                WHERE s.id = ? AND r.custom = 0";
+            $params = array($this->_customdata['s']);
+            if ($room = $DB->get_record_sql($sql, $params)) {
+                $pdroom = $room->name.', '.$room->building.', '.$room->address.', '.$room->description.", (Cap {$room->capacity})";
+                $pdroom = format_string($pdroom);
+                if ($room->type == 'external') {
+                    $roomnote = '<br><em>'.get_string('roommustbebookedtoexternalcalendar', 'facetoface').'</em>';
+                }
+            }
+        }
+        $mform->addElement('static', 'predefinedroom', get_string('room', 'facetoface'),
+            '<span id="pdroom">'.$pdroom.'</span><span id="roomnote">'.$roomnote.'</span>');
+        $mform->addElement('static', 'addpdroom', '', '<input type="button" value="'.get_string('choosepredefinedroom', 'facetoface').'" name="show-addpdroom-dialog" id="show-addpdroom-dialog" />');
+        $mform->addElement('hidden', 'pdroomid', 0);
+        $mform->setType('pdroomid', PARAM_INT);
+
+        $mform->addElement('checkbox', 'customroom', '', get_string('otherroom', 'facetoface'));
+        $mform->setType('customroom', PARAM_INT);
+        $mform->disabledIf('customroom', 'datetimeknown', 'eq', 0);
+
+        $mform->addElement('html', '<div class="fitem"><div class="fitemtitle"></div><table><tr><td>');
+        $mform->addElement('static', '', '', get_string('roomname', 'facetoface'));
+        $mform->addElement('html', '</td><td>');
+        $mform->addElement('static', '', '', get_string('building', 'facetoface'));
+        $mform->addElement('html', '</td><td>');
+        $mform->addElement('static', '', '', get_string('address', 'facetoface'));
+        $mform->addElement('html', '</td><td>');
+        $mform->addElement('static', '', '', get_string('capacity', 'facetoface'));
+        $mform->addElement('html', '</td></tr><td>');
+        $mform->addElement('text', 'croomname');
+        $mform->setType('croomname', PARAM_TEXT);
+        $mform->disabledIf('croomname', 'customroom', 'notchecked');
+        $mform->addElement('html', '</td><td>');
+        $mform->addElement('text', 'croombuilding');
+        $mform->setType('croombuilding', PARAM_TEXT);
+        $mform->disabledIf('croombuilding', 'customroom', 'notchecked');
+        $mform->addElement('html', '</td><td>');
+        $mform->addElement('text', 'croomaddress');
+        $mform->setType('croomaddress', PARAM_TEXT);
+        $mform->disabledIf('croomaddress', 'customroom', 'notchecked');
+        $mform->addElement('html', '</td><td>');
+        $mform->addElement('text', 'croomcapacity');
+        $mform->disabledIf('croomcapacity', 'customroom', 'notchecked');
+        $mform->setType('croomcapacity', PARAM_INT);
+        $mform->addElement('html', '</td><tr></table></div>');
 
         $mform->addElement('text', 'capacity', get_string('capacity', 'facetoface'), 'size="5"');
         $mform->addRule('capacity', null, 'required', null, 'client');
         $mform->setType('capacity', PARAM_INT);
         $mform->setDefault('capacity', 10);
+        $mform->addRule('capacity', null, 'numeric', null, 'client');
         $mform->addHelpButton('capacity', 'capacity', 'facetoface');
 
         $mform->addElement('checkbox', 'allowoverbook', get_string('allowoverbook', 'facetoface'));
@@ -126,19 +173,18 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addHelpButton('details_editor', 'details', 'facetoface');
 
         // Choose users for trainer roles
-        $rolenames = facetoface_get_trainer_roles();
+        $roles = facetoface_get_trainer_roles();
 
-        if ($rolenames) {
+        if ($roles) {
             // Get current trainers
             $current_trainers = facetoface_get_trainers($this->_customdata['s']);
-
+            // Get course context and roles
+            $context = context_course::instance($this->_customdata['course']->id);
+            $rolenames = role_get_names($context);
             // Loop through all selected roles
             $header_shown = false;
-            foreach ($rolenames as $role => $rolename) {
-                $rolename = $rolename->name;
-
-                // Get course context
-                $context = context_course::instance($this->_customdata['course']->id);
+            foreach ($roles as $role) {
+                $rolename = format_string($rolenames[$role->id]->localname);
 
                 // Attempt to load users with this role in this course
                 $rs = $DB->get_recordset_sql("
@@ -153,7 +199,7 @@ class mod_facetoface_session_form extends moodleform {
                       ON ra.userid = u.id
                     WHERE
                         contextid = {$context->id}
-                    AND roleid = {$role}
+                    AND roleid = {$role->id}
                 ");
 
                 if (!$rs) {
@@ -184,27 +230,35 @@ class mod_facetoface_session_form extends moodleform {
                             $roledisplay = '';
                         }
 
-                        $mform->addElement('advcheckbox', 'trainerrole['.$role.']['.$cid.']', $roledisplay, $choice, null, array('', $cid));
-                        $mform->setType('trainerrole['.$role.']['.$cid.']', PARAM_INT);
+                        $mform->addElement('advcheckbox', 'trainerrole['.$role->id.']['.$cid.']', $roledisplay, $choice, null, array('', $cid));
+                        $mform->setType('trainerrole['.$role->id.']['.$cid.']', PARAM_INT);
                     }
                 } else {
-                    $mform->addElement('select', 'trainerrole['.$role.']', $rolename, $choices, array('multiple' => 'multiple'));
-                    $mform->setType('trainerrole['.$role.']', PARAM_SEQUENCE);
+                    $mform->addElement('select', 'trainerrole['.$role->id.']', $rolename, $choices, array('multiple' => 'multiple'));
+                    $mform->setType('trainerrole['.$role->id.']', PARAM_SEQUENCE);
                 }
 
                 // Select current trainers
                 if ($current_trainers) {
-                    foreach ($current_trainers as $role => $trainers) {
+                    foreach ($current_trainers as $roleid => $trainers) {
                         $t = array();
                         foreach ($trainers as $trainer) {
                             $t[] = $trainer->id;
-                            $mform->setDefault('trainerrole['.$role.']['.$trainer->id.']', $trainer->id);
+                            $mform->setDefault('trainerrole['.$roleid.']['.$trainer->id.']', $trainer->id);
                         }
 
-                        $mform->setDefault('trainerrole['.$role.']', implode(',', $t));
+                        $mform->setDefault('trainerrole['.$roleid.']', implode(',', $t));
                     }
                 }
             }
+        }
+
+        // If conflicts are disabled
+        if (!empty($CFG->facetoface_allowschedulingconflicts)) {
+            $mform->addElement('selectyesno', 'allowconflicts', get_string('allowschedulingconflicts', 'facetoface'));
+            $mform->setDefault('allowconflicts', 0); // defaults to 'no'
+            $mform->addHelpButton('allowconflicts', 'allowschedulingconflicts', 'facetoface');
+            $mform->setType('allowconflicts', PARAM_BOOL);
         }
 
         $this->add_action_buttons();
@@ -212,22 +266,45 @@ class mod_facetoface_session_form extends moodleform {
 
     function validation($data, $files) {
         $errors = parent::validation($data, $files);
+        $dates = array();
         $dateids = $data['sessiondateid'];
-        $dates = count($dateids);
-        for ($i=0; $i < $dates; $i++) {
+        $datecount = count($dateids);
+        for ($i=0; $i < $datecount; $i++) {
+            //only check timezones if datetimeknown is set
+            if (!empty($data['datetimeknown'])) {
+                $timezone = $data["sessiontimezone"][$i];
+                if ($timezone == get_string('sessiontimezoneunknown', 'facetoface')) {
+                    $errors['sessiontimezone['.$i.']'] =  get_string('error:mustspecifytimezone', 'facetoface');
+                }
+            }
             $starttime = $data["timestart[$i]"];
             $endtime = $data["timefinish[$i]"];
             $removecheckbox = empty($data["datedelete"]) ? array() : $data["datedelete"];
             if ($starttime > $endtime && !isset($removecheckbox[$i])) {
-                $errstr = get_string('error:sessionstartafterend','facetoface');
+                $errstr = get_string('error:sessionstartafterend', 'facetoface');
                 $errors['timestart['.$i.']'] = $errstr;
                 $errors['timefinish['.$i.']'] = $errstr;
                 unset($errstr);
+                continue;
             }
+            //check this date does not overlap with any previous dates - time overlap logic from a Stack Overflow post
+            if (!empty($dates)) {
+                foreach ($dates as $existing) {
+                    if (($endtime > $existing->timestart) && ($existing->timefinish > $starttime)) {
+                        //this date clashes with an existing date
+                        $errors['timestart['.$i.']'] = get_string('error:sessiondatesconflict', 'facetoface');
+                    }
+                }
+            }
+            // If valid date, add to array
+            $date = new object();
+            $date->timestart = $starttime;
+            $date->timefinish = $endtime;
+            $dates[] = $date;
         }
 
+        $datefound = false;
         if (!empty($data['datetimeknown'])) {
-            $datefound = false;
             for ($i = 0; $i < $data['date_repeats']; $i++) {
                 if (empty($data['datedelete'][$i])) {
                     $datefound = true;
@@ -236,10 +313,78 @@ class mod_facetoface_session_form extends moodleform {
             }
 
             if (!$datefound) {
-                $errors['datetimeknown'] = get_string('validation:needatleastonedate', 'facetoface');
+                $errors['datedelete[0]'] = get_string('validation:needatleastonedate', 'facetoface');
+            }
+        }
+
+        // Check the availabilty of trainers if scheduling not allowed
+        $trainerdata = !empty($data['trainerrole']) ? $data['trainerrole'] : array();
+        $allowconflicts = !empty($data['allowconflicts']);
+
+        if ($datefound && !$allowconflicts && is_array($trainerdata)) {
+            $wheresql = '';
+            $whereparams = array();
+            if (!empty($this->_customdata['s'])) {
+                $wheresql = ' AND s.id != ?';
+                $whereparams[] = $this->_customdata['s'];
+            }
+
+            // Loop through roles
+            $hasconflicts = 0;
+            foreach ($trainerdata as $roleid => $trainers) {
+
+                // Loop through trainers in this role
+                foreach ($trainers as $trainer) {
+
+                    if (!$trainer) {
+                        continue;
+                    }
+
+                    // Check their availability
+                    $availability = facetoface_get_sessions_within($dates, $trainer, $wheresql, $whereparams);
+                    if (!empty($availability)) {
+                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement(reset($availability));
+                        ++$hasconflicts;
+                    }
+                }
+            }
+
+            // If there are conflicts, add a help message to checkbox
+            if ($hasconflicts) {
+                if ($hasconflicts > 1) {
+                    $errors['allowconflicts'] = get_string('error:therearexconflicts', 'facetoface', $hasconflicts);
+                } else {
+                    $errors['allowconflicts'] = get_string('error:thereisaconflict', 'facetoface');
+                }
+            }
+        }
+
+        //check capcity is a number
+        if (empty($data['capacity'])) {
+            $errors['capacity'] = get_string('error:capacitynotnumeric', 'facetoface');
+        } else {
+            $capacity = $data['capacity'];
+            if (!(is_numeric($capacity) && (intval($capacity) == $capacity) && $capacity > 0)) {
+                $errors['capacity'] = get_string('error:capacitynotnumeric', 'facetoface');
             }
         }
 
         return $errors;
+    }
+
+    function set_data($values) {
+        $mform =& $this->_form;
+        foreach ($values as $key => $val) {
+            if (strpos($key, 'sessiontimezone') !== false) {
+                $idx1 = strpos($key, '[');
+                $idx2 = strpos($key, ']');
+                $idx = substr($key, $idx1+1, ($idx2 - $idx1)-1);
+                $el = $mform->getElement('timestart['.$idx. ']');
+                $el->_options['timezone'] = $val;
+                $el = $mform->getElement('timefinish['.$idx. ']');
+                $el->_options['timezone'] = $val;
+            }
+        }
+        parent::set_data($values);
     }
 }

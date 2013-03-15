@@ -23,31 +23,39 @@
 function xmldb_facetoface_install() {
     global $DB;
 
-    /*
-     * This creates 3 customfields when facetoface is first installed
-     */
-    $result = true;
-    // Create three new custom fields
-    $newfield1 = new stdClass();
-    $newfield1->name = get_string('location', 'facetoface');
-    $newfield1->shortname = 'location';
-    $newfield1->type = 0; // free text
-    $newfield1->required = 0;
-    $locationfieldid = $DB->insert_record('facetoface_session_field', $newfield1);
+    //Create default notification templates
+    $tpl_confirmation = new stdClass();
+    $tpl_confirmation->status = 1;
+    $tpl_confirmation->title = get_string('setting:defaultconfirmationsubjectdefault', 'facetoface');
+    $tpl_confirmation->body = text_to_html(get_string('setting:defaultconfirmationmessagedefault', 'facetoface'));
+    $tpl_confirmation->managerprefix = text_to_html(get_string('setting:defaultconfirmationinstrmngrdefault', 'facetoface'));
+    $DB->insert_record('facetoface_notification_tpl', $tpl_confirmation);
 
-    $newfield2 = new stdClass();
-    $newfield2->name = get_string('venue', 'facetoface');
-    $newfield2->shortname = 'venue';
-    $newfield2->type = 0; // free text
-    $newfield2->required = 0;
-    $venuefieldid = $DB->insert_record('facetoface_session_field', $newfield2);
+    $tpl_cancellation = new stdClass();
+    $tpl_cancellation->status = 1;
+    $tpl_cancellation->title = get_string('setting:defaultcancellationsubjectdefault', 'facetoface');
+    $tpl_cancellation->body = text_to_html(get_string('setting:defaultcancellationmessagedefault', 'facetoface'));
+    $tpl_cancellation->managerprefix = text_to_html(get_string('setting:defaultcancellationinstrmngrdefault', 'facetoface'));
+    $DB->insert_record('facetoface_notification_tpl', $tpl_cancellation);
 
-    $newfield3 = new stdClass();
-    $newfield3->name = get_string('room', 'facetoface');
-    $newfield3->shortname = 'room';
-    $newfield3->type = 0; // free text
-    $newfield3->required = 0;
-    $newfield3->showinsummary = 0;
-    $roomfieldid = $DB->insert_record('facetoface_session_field', $newfield3);
+    $tpl_waitlist = new stdClass();
+    $tpl_waitlist->status = 1;
+    $tpl_waitlist->title = get_string('setting:defaultwaitlistedsubjectdefault', 'facetoface');
+    $tpl_waitlist->body = text_to_html(get_string('setting:defaultwaitlistedmessagedefault', 'facetoface'));
+    $DB->insert_record('facetoface_notification_tpl', $tpl_waitlist);
+
+    $tpl_reminder = new stdClass();
+    $tpl_reminder->status = 1;
+    $tpl_reminder->title = get_string('setting:defaultremindersubjectdefault', 'facetoface');
+    $tpl_reminder->body = text_to_html(get_string('setting:defaultremindermessagedefault', 'facetoface'));
+    $tpl_reminder->managerprefix = text_to_html(get_string('setting:defaultreminderinstrmngrdefault', 'facetoface'));
+    $DB->insert_record('facetoface_notification_tpl', $tpl_reminder);
+
+    $tpl_request = new stdClass();
+    $tpl_request->status = 1;
+    $tpl_request->title = get_string('setting:defaultrequestsubjectdefault', 'facetoface');
+    $tpl_request->body = text_to_html(get_string('setting:defaultrequestmessagedefault', 'facetoface'));
+    $tpl_request->managerprefix = text_to_html(get_string('setting:defaultrequestinstrmngrdefault', 'facetoface'));
+    $DB->insert_record('facetoface_notification_tpl', $tpl_request);
 }
 ?>

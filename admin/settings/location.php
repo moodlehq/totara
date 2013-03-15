@@ -4,9 +4,18 @@ if ($hassiteconfig) { // speedup for non-admins, add all caps used on this page
 
     // "locations" settingpage
     $temp = new admin_settingpage('locationsettings', new lang_string('locationsettings', 'admin'));
-    $options = get_list_of_timezones();
+    $extraoption = null;
+    if (isset($CFG->timezone) && $CFG->timezone != 99) {
+        $extraoption = $CFG->timezone;
+    }
+    $options = get_list_of_timezones($extraoption);
     $options[99] = new lang_string('serverlocaltime');
     $temp->add(new admin_setting_configselect('timezone', new lang_string('timezone','admin'), new lang_string('configtimezone', 'admin'), 99, $options));
+    $extraoption = null;
+    if (isset($CFG->forcetimezone) && $CFG->forcetimezone != 99) {
+        $extraoption = $CFG->forcetimezone;
+    }
+    $options = get_list_of_timezones($extraoption);
     $options[99] = new lang_string('timezonenotforced', 'admin');
     $temp->add(new admin_setting_configselect('forcetimezone', new lang_string('forcetimezone', 'admin'), new lang_string('helpforcetimezone', 'admin'), 99, $options));
     $temp->add(new admin_setting_configtext('csvdateformat', new lang_string('csvdateformat', 'totara_core'), new lang_string('csvdateformatconfig', 'totara_core'), new lang_string('csvdateformatdefault', 'totara_core')));

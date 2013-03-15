@@ -265,7 +265,20 @@ class admin_uploaduser_form2 extends moodleform {
         }
         $mform->setAdvanced('country');
 
-        $choices = get_list_of_timezones();
+        $badzones = totara_get_bad_timezone_list();
+        $goodzones = totara_get_clean_timezone_list();
+        //see what the site config is
+        if (isset($CFG->forcetimezone)) {
+            $default = $CFG->forcetimezone;
+        } else if (isset($CFG->timezone)) {
+            $default = $CFG->timezone;
+        }
+        if($default == 99) {
+            //both set to server local time so get system tz
+            $default = date_default_timezone_get();
+        }
+
+        $choices = get_list_of_timezones($default);
         $choices['99'] = get_string('serverlocaltime');
         $mform->addElement('select', 'timezone', get_string('timezone'), $choices);
         $mform->setDefault('timezone', $templateuser->timezone);

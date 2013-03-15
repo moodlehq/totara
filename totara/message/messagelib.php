@@ -64,9 +64,15 @@ define('TOTARA_MSG_TYPE_SCORM', 9);
 define('TOTARA_MSG_TYPE_LINK', 10);
 define('TOTARA_MSG_TYPE_PROGRAM', 11);
 
-// message email constants
+// Message email constants (used to override default message processor behaviour):
+// Send email via processor as normal (default)
 define('TOTARA_MSG_EMAIL_YES', 0);
+// Override to prevent the message sending an email (even if the user has asked for it)
 define('TOTARA_MSG_EMAIL_NO', 1);
+// Prevent the email processor sending an email, but manually send it using email_to_user() directly
+// this is useful if you need to send a message and you want the email to have an attachment (which
+// is not currently supported by normal messages).
+define('TOTARA_MSG_EMAIL_MANUAL', 2);
 
 // message type shortnames
 global $TOTARA_MESSAGE_TYPES;
@@ -301,6 +307,51 @@ function tm_alert_send($eventdata) {
     }
 
     $result = tm_message_send($eventdata);
+
+    //--------------------------------
+
+    // Manually send the email using email_to_user(). This is necessary in cases where there is an attachment (which cannot be handled by the messaging system)
+    // We still should observe their messaging email preferences.
+
+    // We can't handle attachments when logged on
+    $alertemailpref = get_user_preferences('message_provider_totara_message_alert_loggedoff', null, $eventdata->userto->id);
+    if ($result && strpos($alertemailpref, 'email') !== false && $eventdata->sendemail == TOTARA_MSG_EMAIL_MANUAL) {
+
+        $string_manager = get_string_manager();
+
+        // Send alert email
+        if (empty($eventdata->subject)) {
+            $eventdata->subject = strlen($eventdata->fullmessage) > 80 ? substr($eventdata->fullmessage, 0, 78).'...' : $eventdata->fullmessage;
+        }
+
+        if ($eventdata->contexturl) {
+            $eventdata->fullmessagehtml .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . $string_manager->get_string('viewdetailshere', 'totara_message', $eventdata->contexturl, $eventdata->userto->lang);
+        }
+
+        // Add footer to email
+        $eventdata->fullmessagehtml .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . $string_manager->get_string('alertfooter', 'totara_message', $CFG->wwwroot."/local/totara_msg/edit.php?id=".$eventdata->userto->id."&course=1", $eventdata->userto->lang);
+
+        // Setup some more variables
+        $fromaddress = !empty($eventdata->fromaddress) ? $eventdata->fromaddress : '';
+        $attachment = !empty($eventdata->attachment) ? $eventdata->attachment : '';
+        $attachmentname = !empty($eventdata->attachmentname) ? $eventdata->attachmentname : '';
+
+        $userfrom = !empty($eventdata->fromemailuser) ? $eventdata->fromemailuser : $eventdata->userfrom;
+
+        $result = email_to_user(
+            $eventdata->userto,
+            $userfrom,
+            format_string($eventdata->subject),
+            format_text($eventdata->fullmessage, FORMAT_PLAIN),
+            format_text($eventdata->fullmessagehtml, FORMAT_HTML),
+            $attachment,
+            $attachmentname,
+            true,
+            $fromaddress
+        );
+    }
+
+    //---------------------------------
 
     return $result;
 }

@@ -44,3 +44,8 @@ Before installing Totara you should have a server with:
 
    These settings are all located in php.ini. See http://php.net/manual/en/ini.core.php for more information (note that you will need to restart your
    webserver for these settings to take effect).
+9. Once Totara is installed you should configure timezone information, especially if you have users in multiple timezones.
+   First run Site Administration -> Location -> Update timezones to ensure Totara has the latest timezone information including the latest changes to Daylight Savings rules in different parts of the world
+   Then in Site Administration -> Location -> Location Settings there are two options
+      1. "Default timezone" should be set to the timezone location where your server is located, or where most of your users are based. You must use the location format timezones e.g. America/New_York, Europe/Berlin, Asia/Singapore rather than the UTC offset (e.g. UTC+3) or the timezone abbreviations (e.g. CET, EST) - this will ensure Daylight Savings rules are applied correctly
+      2. "Force default timezone" if all your users are in one timezone you can enforce a timezone here, to ensure that all users see dates and times in the proper timezone. As above, the location format timezones must be used.

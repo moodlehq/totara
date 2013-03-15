@@ -64,7 +64,7 @@ $fromname = fullname($from) . " ({$from->email})";
 $subject = format_string($msg->subject);
 
 if ($isfacetoface && !$DB->record_exists('facetoface_sessions', array('id' => $eventdata->data['session']->id))) {
-        $subject .= ' (' . html_writer::tab('b', get_string('f2fsessiondeleted', 'block_totara_tasks')) . ')';
+        $subject .= ' (' . html_writer::tag('b', get_string('f2fsessiondeleted', 'block_totara_tasks')) . ')';
 } else if ($isfacetoface && !$canbook) {
         $subject .= ' (' . html_writer::tag('b', get_string('f2fsessionfull', 'block_totara_tasks')) . ')';
 }

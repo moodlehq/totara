@@ -72,7 +72,7 @@ echo $OUTPUT->box_start();
 $bookings = $DB->get_records_sql("SELECT ss.timecreated, ss.statuscode, ss.grade, ss.note,
                                    c.id as courseid, c.fullname AS coursename,
                                    f.name, f.id as facetofaceid, s.id as sessionid,
-                                   d.id, d.timestart, d.timefinish
+                                   d.id, d.timestart, d.timefinish, d.sessiontimezone
                               FROM {facetoface_sessions_dates} d
                               JOIN {facetoface_sessions} s ON s.id = d.sessionid
                               JOIN {facetoface} f ON f.id = s.facetoface

@@ -231,7 +231,7 @@ function useredit_shared_definition(&$mform, $editoroptions = null, $filemanager
         $mform->setDefault('country', $CFG->country);
     }
 
-    $choices = get_list_of_timezones();
+    $choices = get_list_of_timezones($user->timezone);
     $choices['99'] = get_string('serverlocaltime');
     if ($CFG->forcetimezone != 99) {
         $mform->addElement('static', 'forcedtimezone', get_string('timezone'), $choices[$CFG->forcetimezone]);

@@ -242,14 +242,14 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'timestart',
                 get_string('sessstart', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
-                array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
+                array('extrafields' => array('timezone' => 'sessiondate.sessiontimezone'), 'joins' => 'sessiondate', 'displayfunc' => 'nice_time_in_timezone')
             ),
             new rb_column_option(
                 'date',
                 'timefinish',
                 get_string('sessfinish', 'rb_source_facetoface_sessions'),
                 'sessiondate.timefinish',
-                array('joins' => 'sessiondate', 'displayfunc' => 'nice_time')
+                array('extrafields' => array('timezone' => 'sessiondate.sessiontimezone'), 'joins' => 'sessiondate', 'displayfunc' => 'nice_time_in_timezone')
             ),
             new rb_column_option(
                 'session',

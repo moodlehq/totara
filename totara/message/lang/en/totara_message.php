@@ -45,6 +45,7 @@ $string['settingssaved'] = 'Settings saved';
 $string['messagesettings'] = 'Message settings';
 $string['viewdetailshere'] = 'More details can be found at:<br /><br /><a href="{$a}">{$a}</a>';
 $string['cannotsavemessage'] = 'Cannot save message';
+$string['alertfooter'] = 'To change your preferences for receiving these emails, go to your <a href={$a}>Profile -> Messages</a> tab.'; //Not sure if needed, exists in all languages but not English?
 $string['alertfooter2'] = 'To change your preferences for receiving these emails, go to My Profile Settings -> Messaging here:
 {$a}';
 $string['alertfooter2html'] = 'To change your preferences for receiving these emails, go to your <a href="{$a}">My Profile Settings -> Messaging</a>.';

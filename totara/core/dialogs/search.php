@@ -337,6 +337,36 @@ switch ($searchtype) {
         $search_info->params = $params;
         break;
 
+    /**
+     * Facetoface room search
+     */
+    case 'facetoface_room':
+        $formdata['hidden']['sessionid'] = $this->customdata['sessionid'];
+        $formdata['hidden']['timeslots'] = $this->customdata['timeslots'];
+
+        // Generate search SQL
+        $keywords = totara_search_parse_keywords($query);
+        $fields = array('r.name', 'r.building', 'r.address');
+        list($searchsql, $params) = totara_search_get_keyword_where_clause($keywords, $fields);
+
+        $search_info->fullname = $DB->sql_concat('r.name', "', '",
+                'r.building', "', '",
+                'r.address', "', '",
+                'r.description',
+                "' (".get_string('capacity', 'facetoface').": '", 'r.capacity', "')'");
+
+        $search_info->sql = "
+            FROM
+                {facetoface_room} r
+            WHERE
+                {$searchsql}
+                AND r.custom = 0
+        ";
+
+        $search_info->order = " ORDER BY r.name ASC";
+        $search_info->params = $params;
+        break;
+
     default:
         print_error('invalidsearchtable', 'totara_core');
 }

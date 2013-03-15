@@ -142,12 +142,14 @@ class rb_bookings_embedded_cache_test extends reportcache_advanced_testcase {
         $session->duration = 1;
         $session->normalcost = 0;
         $session->discountcost = 0;
+        $session->usermodified = 2;
 
         $delta = ($timeinverse) ? -1 * $this->delta : $this->delta;
         $dates = new stdClass();
         $dates->sessionid = self::$ind;
         $dates->timestart = time() + $delta;
         $dates->timefinish = time() + $delta + abs($delta) * 0.5;
+        $dates->sessiontimezone = 'Europe/London';
         $sessiondates = array($dates);
         facetoface_add_session($session, $sessiondates);
 

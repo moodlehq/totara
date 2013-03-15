@@ -94,7 +94,8 @@ class block_facetoface_renderer extends plugin_renderer_base {
             $output .= html_writer::start_tag('td');
             if ($date->datetimeknown) {
                 foreach ($date->alldates as $sessiondate) {
-                    $output .= userdate($sessiondate->timestart, '%d %B %Y') . html_writer::empty_tag('br');
+                    $sessionobj = facetoface_format_session_times($sessiondate->timestart, $sessiondate->timefinish, $sessiondate->sessiontimezone);
+                    $output .= $sessionobj->date . html_writer::empty_tag('br');
                 }
             } else {
                 $output .= get_string('datenotset', 'block_facetoface');
@@ -103,7 +104,8 @@ class block_facetoface_renderer extends plugin_renderer_base {
             $output .= html_writer::start_tag('td');
             if ($date->datetimeknown) {
                 foreach ($date->alldates as $sessiondate) {
-                    $output .= userdate($sessiondate->timestart, '%I:%M %p').' - '.userdate($sessiondate->timefinish, '%I:%M %p') . html_writer::empty_tag('br');
+                    $sessionobj = facetoface_format_session_times($sessiondate->timestart, $sessiondate->timefinish, $sessiondate->sessiontimezone);
+                    $output .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone . html_writer::empty_tag('br');
                 }
             }
             $output .= html_writer::end_tag('td');

@@ -52,7 +52,6 @@ class prog_message_data {
         (isset($messagedata['contexturlname']))    && ($this->contexturlname = $messagedata['contexturlname']);
         (isset($messagedata['icon']))              && ($this->icon = $messagedata['icon']);
 
-        $this->sendemail = isset($messagedata['sendemail']) ? $messagedata['sendemail'] : TOTARA_MSG_EMAIL_YES;
         $this->msgtype   = isset($messagedata['msgtype']) ? $messagedata['msgtype'] : TOTARA_MSG_TYPE_UNKNOWN;
         $this->urgency   = isset($messagedata['urgency']) ? $messagedata['urgency'] : TOTARA_MSG_URGENCY_NORMAL;
 
@@ -207,7 +206,6 @@ abstract class prog_message {
      */
     public static function send_generic_alert($messagedata) {
 
-        (!isset($messagedata->sendemail))   && $messagedata->sendemail  = TOTARA_MSG_EMAIL_YES;
         (!isset($messagedata->msgtype))     && $messagedata->msgtype    = TOTARA_MSG_TYPE_UNKNOWN;
         (!isset($messagedata->urgency))     && $messagedata->urgency    = TOTARA_MSG_URGENCY_NORMAL;
 

@@ -5,9 +5,9 @@
 //  This fragment is called by /admin/index.php
 ////////////////////////////////////////////////////////////////////////////////
 
-$module->version   = 2013010400;  // The current module version (Date: YYYYMMDDXX)
-$module->requires  = 2011120100;  // Requires this Moodle version
-$module->release   = '2.2.0 (2012140600)'; // User-friendly version number
+$module->version   = 2013013007;  // The current module version (Date: YYYYMMDDXX)
+$module->requires  = 2012112900;  // Requires this Moodle version
+$module->release   = '2.4.0 (2012112900)'; // User-friendly version number
 $module->component = 'mod_facetoface';
 $module->maturity  = MATURITY_STABLE;
 $module->cron      = 60;

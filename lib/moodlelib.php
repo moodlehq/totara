@@ -7565,11 +7565,12 @@ function get_list_of_themes() {
 /**
  * Returns a list of timezones in the current language
  *
- * @global object
- * @global object
+ * @global object $CFG
+ * @global object $DB
+ * @param string|float $extrazone - a deprecated timezone still set in the database in CFG or user profiles, to be added to the approved timezone list in dropdowns
  * @return array
  */
-function get_list_of_timezones() {
+function get_list_of_timezones($extrazone=null) {
     global $CFG, $DB;
 
     static $timezones;
@@ -7578,37 +7579,32 @@ function get_list_of_timezones() {
         return $timezones;
     }
 
-    $timezones = array();
+    $goodzones = totara_get_clean_timezone_list(true);
 
-    if ($rawtimezones = $DB->get_records_sql("SELECT MAX(id), name FROM {timezone} GROUP BY name")) {
-        foreach($rawtimezones as $timezone) {
-            if (!empty($timezone->name)) {
-                if (get_string_manager()->string_exists(strtolower($timezone->name), 'timezones')) {
-                    $timezones[$timezone->name] = get_string(strtolower($timezone->name), 'timezones');
-                } else {
-                    $timezones[$timezone->name] = $timezone->name;
-                }
-                if (substr($timezones[$timezone->name], 0, 1) == '[') {  // No translation found
-                    $timezones[$timezone->name] = $timezone->name;
-                }
+    foreach($goodzones as $tzkey => $tzval) {
+        if (get_string_manager()->string_exists(strtolower($tzkey), 'timezones')) {
+            $goodzones[$tzkey] = get_string(strtolower($tzkey), 'timezones');
+        }
+        if (substr($goodzones[$tzkey], 0, 1) == '[') {  // No translation found
+            $goodzones[$tzkey] = $tzval;
+        }
+    }
+    asort($goodzones);
+    //add the extra timezone if set to a deprecated or unknown zone
+    if (!empty($extrazone) && $extrazone != 99) {
+        if (!in_array($extrazone, $goodzones)) {
+            if (is_numeric($extrazone)) {
+                //UTC offset
+                $modifier = ($extrazone > 0) ? '+' : '';
+                $goodzones[$extrazone] = 'UTC' . $modifier . number_format($extrazone, 1);
+            } else {
+                //some string we don't recognise
+                $goodzones[$extrazone] = $extrazone;
             }
         }
     }
 
-    asort($timezones);
-
-    for ($i = -13; $i <= 13; $i += .5) {
-        $tzstring = 'UTC';
-        if ($i < 0) {
-            $timezones[sprintf("%.1f", $i)] = $tzstring . $i;
-        } else if ($i > 0) {
-            $timezones[sprintf("%.1f", $i)] = $tzstring . '+' . $i;
-        } else {
-            $timezones[sprintf("%.1f", $i)] = $tzstring;
-        }
-    }
-
-    return $timezones;
+    return $goodzones;
 }
 
 /**

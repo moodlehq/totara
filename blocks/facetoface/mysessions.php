@@ -77,7 +77,7 @@ $records = '';
 // Get all Face-to-face session dates from the DB
 $records = $DB->get_records_sql("SELECT d.id, cm.id AS cmid, c.id AS courseid, c.fullname AS coursename,
                                    c.idnumber as cidnumber, f.name, f.id as facetofaceid, s.id as sessionid,
-                                   s.datetimeknown, d.timestart, d.timefinish, su.nbbookings
+                                   s.datetimeknown, d.timestart, d.timefinish, d.sessiontimezone, su.nbbookings
                               FROM {facetoface_sessions_dates} d
                               JOIN {facetoface_sessions} s ON s.id = d.sessionid
                               JOIN {facetoface} f ON f.id = s.facetoface

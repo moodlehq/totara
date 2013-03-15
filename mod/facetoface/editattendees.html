@@ -1,0 +1,102 @@
+<form id="assignform" method="post" action="<?php echo "{$CFG->wwwroot}/mod/facetoface/editattendees.php?s={$s}"; ?>">
+<div>
+<input type="hidden" name="previoussearch" value="<?php p($previoussearch) ?>" />
+<input type="hidden" name="sesskey" value="<?php p(sesskey()) ?>" />
+<input type="hidden" name="add" value="" />
+<input type="hidden" name="remove" value="" />
+<input type="hidden" name="attendees" value="<?php echo implode(',', array_keys($attendees)); ?>" />
+  <table summary="" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
+    <tr>
+      <td valign="top" width="40%">
+          <label for="removeselect"><?php print_string('existingusers', 'role', $attendeescount); ?></label>
+          <br />
+          <select name="removeselect[]" size="22" style="width: 100%;" id="removeselect" multiple="multiple"
+                  onfocus="getElementById('assignform').add.disabled=true;
+                           getElementById('assignform').remove.disabled=false;
+                           getElementById('assignform').addselect.selectedIndex=-1;">
+
+          <?php
+            $i = 0;
+            if ($attendeescount > 0) {
+                foreach ($attendees as $existinguser) {
+                    $fullname = fullname($existinguser, true);
+                    echo "<option value=\"$existinguser->id\">".$fullname.", ".$existinguser->email."</option>\n";
+                    $i++;
+                }
+            }
+            if ($i==0) {
+                echo '<option/>'; // empty select breaks xhtml strict
+            }
+          ?>
+
+          </select>
+      </td>
+      <td valign="middle" style="width: 20%; text-align: center;">
+        <p class="arrow_button">
+            <input name="add" id="add" type="submit" value="<?php echo $OUTPUT->larrow().'&nbsp;'.get_string('add'); ?>" title="<?php print_string('add'); ?>" style="width: 75%; text-align: center; margin-bottom: 10px;" onClick="$('form#assignform input[name=add]').val(1);" />
+            <br />
+            <input name="remove" id="remove" type="submit" value="<?php echo $OUTPUT->rarrow().'&nbsp;'.get_string('remove'); ?>" title="<?php print_string('remove'); ?>" style="width: 75%; text-align: center;" onCLick="$('form#assignform input[name=remove]').val(1);" />
+        </p>
+      </td>
+      <td valign="top" width="40%">
+          <label for="addselect"><?php print_string('potentialusers', 'role', $usercount); ?></label>
+          <br />
+         <label for="searchtext" class="accesshide"><?php p($strsearch) ?></label>
+         <input type="text" name="searchtext" id="searchtext" size="20" value="<?php p($searchtext, true) ?>"
+                  onfocus ="getElementById('assignform').add.disabled=true;
+                            getElementById('assignform').remove.disabled=true;
+                            getElementById('assignform').removeselect.selectedIndex=-1;
+                            getElementById('assignform').addselect.selectedIndex=-1;"
+                  onkeydown = "var keyCode = event.which ? event.which : event.keyCode;
+                               if (keyCode == 13) {
+                                    getElementById('assignform').previoussearch.value=1;
+                                    $('#assignform').submit();
+                               } " />
+         <input name="search" id="search" type="submit" value="<?php p($strsearch) ?>" />
+         <?php if (!empty($searchtext)) { ?>
+         <input name="showall" id="showall" type="hidden" value=1 />
+         <input name="clearsearch" id="clearsearch" type="submit" value="<?php echo $strshowall ?>" />
+         <?php } ?>
+         <br />
+         <select name="addselect[]" size="20" style="width: 100%;" id="addselect" multiple="multiple"
+                  onfocus="getElementById('assignform').add.disabled=false;
+                           getElementById('assignform').remove.disabled=true;
+                           getElementById('assignform').removeselect.selectedIndex=-1;">
+          <?php
+            $i=0;
+            if (!empty($searchtext)) {
+                echo "<optgroup label=\"$strsearchresults (" . count($availableusers) . ")\">\n";
+                foreach ($availableusers as $user) {
+                    $fullname = fullname($user, true);
+                    echo "<option value=\"$user->id\">".$fullname.", ".$user->email."</option>\n";
+                    $i++;
+                }
+                echo "</optgroup>\n";
+
+            } else {
+                if ($usercount > MAX_USERS_PER_PAGE) {
+                    echo '<optgroup label="'.get_string('toomanytoshow').'"><option></option></optgroup>'."\n"
+                          .'<optgroup label="'.get_string('trysearching').'"><option></option></optgroup>'."\n";
+                } else {
+                    foreach ($availableusers as $user) {
+                        $fullname = fullname($user, true);
+                        echo "<option value=\"$user->id\">".$fullname.", ".$user->email."</option>\n";
+                        $i++;
+                    }
+                }
+            }
+            if ($i==0) {
+                echo '<option/>'; // empty select breaks xhtml strict
+            }
+          ?>
+         </select>
+       </td>
+    </tr>
+    </table>
+
+<br />
+<input type="checkbox" id="suppressemail" name="suppressemail" value="1" <?php echo $suppressemail ? 'checked="checked"' : '' ?> />
+<label for="suppressemail"><?php print_string('suppressemailforattendees', 'facetoface'); ?></label>
+
+</div>
+</form>

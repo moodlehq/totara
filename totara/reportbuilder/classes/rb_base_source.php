@@ -304,6 +304,33 @@ abstract class rb_base_source {
         }
     }
 
+    /**
+     * Reformat a timestamp and timezone into a time, showing nothing if invalid or null
+     *
+     * @param integer $date Unix timestamp
+     * @param object $row Object containing all other fields for this row (which should include a timezone field)
+     *
+     * @return string Time in a nice format
+     */
+    function rb_display_nice_time_in_timezone($date, $row) {
+        if ($date && is_numeric($date)) {
+            $dt = new DateTime();
+            if (empty($row->timezone)) {
+                $targetTZ = new DateTimeZone(totara_get_clean_timezone());
+            } else {
+                $targetTZ = new DateTimeZone($row->timezone);
+            }
+            $dt->setTimestamp($date);
+            $dt->setTimezone($targetTZ);
+            if (empty($row->timezone)) {
+                return $dt->format(get_string('nice_time_in_unknown_timezone_format', 'totara_reportbuilder')) . ' ' . get_string('nice_time_unknown_timezone', 'totara_reportbuilder');
+            } else {
+                return $dt->format(get_string('nice_time_in_timezone_format', 'totara_reportbuilder'));
+            }
+        } else {
+            return '';
+        }
+    }
 
     /**
      * Reformat a timestamp into a date and time, showing nothing if invalid or null

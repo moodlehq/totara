@@ -586,7 +586,7 @@ class plugin_manager {
                 'qeupgradehelper', 'replace', 'spamcleaner', 'timezoneimport', 'unittest',
                 'uploaduser', 'unsuproles', 'xmldb'
                 // Totara:
-                , 'totara_sync'
+                , 'totara_sync', 'totara_timezonefix'
             ),
 
             // Totara:

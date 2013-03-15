@@ -92,7 +92,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
     }
 
     function import_data($temptable) {
-        global $CFG, $DB;
+        global $CFG, $DB, $OUTPUT;
 
         $fileaccess = get_config('totara_sync', 'fileaccess');
         if ($fileaccess == FILE_ACCESS_DIRECTORY) {
@@ -225,6 +225,8 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $fieldcount->headercount = count($fields);
         $fieldcount->rownum = 0;
         $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
+        $badtimezones = false;
+        $goodtimezones = totara_get_clean_timezone_list();
 
         while ($csvrow = fgetcsv($file)) {
             $fieldcount->rownum++;
@@ -286,6 +288,15 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
                 $dbrow['deleted'] = empty($dbrow['deleted']) ? 0 : 1;
             }
 
+            if (isset($dbrow['timezone'])) {
+                //clean deprecated timezones if possible
+                $timezone = $dbrow['timezone'];
+                if ($timezone != '99' && $badtimezones == false && !in_array($timezone, $goodtimezones)) {
+                    //unsupported timezone, output message at end of process
+                    $badtimezones = true;
+                }
+                $dbrow['timezone'] = $timezone;
+            }
             // Custom fields are special - needs to be json-encoded
             if (!empty($this->customfields)) {
                 $cfield_data = array();
@@ -344,7 +355,9 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         }
 
         fclose($file);
-
+        if ($badtimezones) {
+            $OUTPUT->notification(get_string('badusertimezonemessage', 'tool_totara_timezonefix'), 'notifynotice');
+        }
         //done, clean up the file(s)
         if ($fileaccess == FILE_ACCESS_UPLOAD) {
             unlink($storefilepath); //don't store this file in temp

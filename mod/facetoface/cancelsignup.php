@@ -54,7 +54,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         if ($session->datetimeknown) {
             $error = facetoface_send_cancellation_notice($facetoface, $session, $USER->id);
             if (empty($error)) {
-                if ($session->datetimeknown && $facetoface->cancellationinstrmngr) {
+                if ($session->datetimeknown && isset($facetoface->cancellationinstrmngr) && !empty($facetoface->cancellationstrmngr)) {
                     $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . get_string('cancellationsentmgr', 'facetoface');
                 }
                 else {

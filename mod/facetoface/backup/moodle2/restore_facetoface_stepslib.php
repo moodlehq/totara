@@ -39,7 +39,7 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
 
 
     protected function process_facetoface_session($data) {
-        global $DB;
+        global $DB, $USER;
 
         $data = (object)$data;
         $oldid = $data->id;
@@ -48,7 +48,7 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
 
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
-
+        $data->usermodified = isset($USER->id) ? $USER->id : get_admin()->id;
         // insert the entry record
         $newitemid = $DB->insert_record('facetoface_sessions', $data);
         $this->set_mapping('facetoface_session', $oldid, $newitemid, true); // childs and files by itemname

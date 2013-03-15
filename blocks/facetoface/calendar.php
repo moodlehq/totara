@@ -442,7 +442,7 @@ function top_controls($month, $year) {
 }
 
 function customfield_chooser($field) {
-    global $activefilters;
+    global $activefilters, $DB;
 
     if (empty($field->isfilter)) {
         return false; // not a filter
@@ -459,7 +459,7 @@ function customfield_chooser($field) {
 
     case CUSTOMFIELD_TYPE_SELECT:
     case CUSTOMFIELD_TYPE_MULTISELECT:
-        $values = explode(CUSTOMFIELD_DELIMITTER, $field->possiblevalues);
+        $values = explode(CUSTOMFIELD_DELIMITER, $field->possiblevalues);
         break;
 
     default:
@@ -486,10 +486,7 @@ function customfield_chooser($field) {
         $currentvalue = $activefilters[$field->id];
     }
 
-    $select = moodle_select::make($options, $fieldname, $currentvalue);
-    $select->nothinglabel = $nothing;
-    $select->nothingvalue = $nothingvalue;
-    $dropdown = $OUTPUT->select($select);
+    $dropdown = html_writer::select($options, $fieldname, $currentvalue, array($nothingvalue => $nothing));
 
     return format_string($field->name) . ': ' . $dropdown;
 }
@@ -499,7 +496,7 @@ function customfield_chooser($field) {
  */
 function matches_filter($filterid, $filtervalue, $sessionid)
 {
-    global $customfields;
+    global $customfields, $DB;
 
     if ('all' == $filtervalue) {
         return true; // Not actually a filter
@@ -539,7 +536,7 @@ function get_sessions_by_date($sessionids, $displayinfo) {
     $params[] = $timestart;
     $params[] = $timeend;
 
-    $sessions = $DB->get_records_sql("SELECT d.id, s.id AS sessionid, f.id AS facetofaceid, f.name, s.datetimeknown, d.timestart, d.timefinish
+    $sessions = $DB->get_records_sql("SELECT d.id, s.id AS sessionid, f.id AS facetofaceid, f.name, s.datetimeknown, d.timestart, d.timefinish, d.sessiontimezone
                                    FROM {facetoface} f
                                    JOIN {facetoface_sessions} s ON f.id = s.facetoface
                                    JOIN {facetoface_sessions_dates} d ON d.sessionid = s.id
@@ -568,7 +565,7 @@ function get_sessions_by_course($sessionids, $displayinfo, $waitlistedsessions) 
     $params[] = $timestart;
     $params[] = $timeend;
 
-    $sessions = $DB->get_records_sql("SELECT d.id, s.id AS sessionid, f.id AS facetofaceid, f.name, s.datetimeknown, d.timestart, d.timefinish
+    $sessions = $DB->get_records_sql("SELECT d.id, s.id AS sessionid, f.id AS facetofaceid, f.name, s.datetimeknown, d.timestart, d.timefinish, d.sessiontimezone
                                    FROM {facetoface} f
                                    JOIN {facetoface_sessions} s ON f.id = s.facetoface
                                    JOIN {facetoface_sessions_dates} d ON d.sessionid = s.id
@@ -759,8 +756,8 @@ function get_matching_waitlisted_sessions($activefilters) {
     global $customfields;
 
     $filterjoins = '';
-    $filterwhere = '';
-    $filterparams = array();
+    $filterwhere = 'AND f.showoncalendar > ?';
+    $filterparams = array(F2F_CAL_NONE);
 
     $filternb = 1;
     foreach ($activefilters as $fieldid => $fieldvalue) {
@@ -781,17 +778,17 @@ function get_matching_waitlisted_sessions($activefilters) {
             $whereparams = array('%' . $fieldvalue . '%');
         }
         $filterwhere .= " AND d{$filternb}.fieldid = ? AND $whereclause ";
-        $filterparams = array_merge($filterparams, array(F2F_CAL_NONE, $fieldid), $whereparams);
+        $filterparams = array_merge($filterparams, array($fieldid), $whereparams);
         $filternb++;
     }
 
     // Get all waitlisted sessions
     $sessions = $DB->get_records_sql("SELECT s.id, s.facetoface, f.name
-                                   FROM {facetoface} f
-                                   JOIN {facetoface_sessions} s ON f.id = s.facetoface
-                                   $filterjoins
-                                  WHERE f.showoncalendar > ? AND s.datetimeknown = 0
-                                  $filterwhere", $filterparams);
+                                      FROM {facetoface} f
+                                      JOIN {facetoface_sessions} s ON f.id = s.facetoface
+                                      $filterjoins
+                                      WHERE s.datetimeknown = 0
+                                      $filterwhere", $filterparams);
 
     return $sessions;
 }

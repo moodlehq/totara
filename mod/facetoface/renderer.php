@@ -1,6 +1,5 @@
 <?php
 
-
 defined('MOODLE_INTERNAL') || die();
 
 class mod_facetoface_renderer extends plugin_renderer_base {
@@ -31,6 +30,7 @@ class mod_facetoface_renderer extends plugin_renderer_base {
 
         $table = new html_table();
         $table->summary = get_string('previoussessionslist', 'facetoface');
+        $table->attributes['class'] = 'generaltable fullwidth';
         $table->head = $tableheader;
         $table->data = array();
 
@@ -71,15 +71,14 @@ class mod_facetoface_renderer extends plugin_renderer_base {
                     if (!empty($allsessiondates)) {
                         $allsessiondates .= html_writer::empty_tag('br');
                     }
-                    $allsessiondates .= userdate($date->timestart, get_string('strftimedate'));
+                    $sessionobj = facetoface_format_session_times($date->timestart, $date->timefinish, $date->sessiontimezone);
+                    $allsessiondates .= $sessionobj->date;
                     if (!empty($allsessiontimes)) {
                         $allsessiontimes .= html_writer::empty_tag('br');
                     }
-                    $allsessiontimes .= userdate($date->timestart, get_string('strftimetime')).
-                        ' - '.userdate($date->timefinish, get_string('strftimetime'));
+                    $allsessiontimes .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                 }
-            }
-            else {
+            } else {
                 $allsessiondates = get_string('wait-listed', 'facetoface');
                 $allsessiontimes = get_string('wait-listed', 'facetoface');
                 $sessionwaitlisted = true;

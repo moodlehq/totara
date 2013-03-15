@@ -96,7 +96,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         add_to_log($course->id, 'facetoface','signup',"signup.php?s=$session->id", $session->id, $cm->id);
 
         $message = get_string('bookingcompleted', 'facetoface');
-        if ($session->datetimeknown && $facetoface->confirmationinstrmngr) {
+        if ($session->datetimeknown && isset($facetoface->confirmationinstrmngr) && !empty($facetoface->confirmationstrmngr)) {
             $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . get_string('confirmationsentmgr', 'facetoface');
         } else {
             $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . get_string('confirmationsent', 'facetoface');

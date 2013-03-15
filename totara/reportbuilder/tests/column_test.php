@@ -496,6 +496,7 @@ class columns_test extends advanced_testcase {
         $this->f2f_session_data->datetimeknown = 1;
         $this->f2f_session_data->normalcost = 100;
         $this->f2f_session_data->discountcost = 90;
+        $this->f2f_session_data->usermodified = 2;
 
         $this->f2f_session_dates_data = new stdClass();
         $this->f2f_session_dates_data->id = 1;

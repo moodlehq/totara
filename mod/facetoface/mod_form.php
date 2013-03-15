@@ -63,7 +63,7 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->addRule('shortname', null, 'maxlength', 32);
 
         // REQUEST MESSAGE
-        $mform->addElement('header', 'request', get_string('requestmessage', 'facetoface'));
+        /*$mform->addElement('header', 'request', get_string('requestmessage', 'facetoface'));
         $mform->addHelpButton('request', 'requestmessage', 'facetoface');
 
         $mform->addElement('text', 'requestsubject', get_string('email:subject', 'facetoface'), array('size' => '55'));
@@ -154,6 +154,7 @@ class mod_facetoface_mod_form extends moodleform_mod {
         $mform->addHelpButton('cancellationinstrmngr', 'cancellationinstrmngr', 'facetoface');
         $mform->disabledIf('cancellationinstrmngr', 'emailmanagercancellation');
         $mform->setDefault('cancellationinstrmngr', get_string('setting:defaultcancellationinstrmngrdefault', 'facetoface'));
+         */
 
         $features = new stdClass;
         $features->groups = false;
