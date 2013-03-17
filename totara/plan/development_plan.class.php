@@ -1228,21 +1228,21 @@ class development_plan {
                 $field = new xmldb_field('planid');
                 if ($dbman->field_exists($table, $field)) {
                     // Get record ids for later use in deletion of assign tables
-                    $ids = $DB->get_records($table->name, array('planid' => $this->id), '', 'id');
-                    $DB->delete_records($table->name, array('planid' => $this->id));
+                    $ids = $DB->get_records($table->getName(), array('planid' => $this->id), '', 'id');
+                    $DB->delete_records($table->getName(), array('planid' => $this->id));
                     $table = new xmldb_table("dp_plan_{$c}_assign");
                     if ($dbman->table_exists($table)) {
                         foreach ($ids as $i) {
-                            $itemids = array_merge($itemids, $DB->get_records($table->name, array("{$c}id" => $i), '', 'id'));
-                            $DB->delete_records($table->name, array("{$c}id" => $i));
+                            $itemids = array_merge($itemids, $DB->get_records($table->getName(), array("{$c}id" => $i), '', 'id'));
+                            $DB->delete_records($table->getName(), array("{$c}id" => $i));
                         }
                     }
                 }
             } else {
                 $table = new xmldb_table("dp_plan_{$c}_assign");
                 if ($dbman->table_exists($table)) {
-                    $itemids = $DB->get_records($table->name, array('planid' => $this->id), '', 'id');
-                    $DB->delete_records($table->name, array('planid' => $this->id));
+                    $itemids = $DB->get_records($table->getName(), array('planid' => $this->id), '', 'id');
+                    $DB->delete_records($table->getName(), array('planid' => $this->id));
                 }
             }
             if (!empty($itemids)) {
