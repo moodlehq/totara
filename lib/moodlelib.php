@@ -8002,6 +8002,7 @@ function get_core_subsystems() {
             'admin'       => $CFG->admin,
             'auth'        => 'auth',
             'backup'      => 'backup/util/ui',
+            'badges'      => 'badges',
             'block'       => 'blocks',
             'blog'        => 'blog',
             'bulkusers'   => NULL,

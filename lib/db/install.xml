@@ -2915,7 +2915,7 @@
         <INDEX NAME="roleid" UNIQUE="false" FIELDS="roleid" PREVIOUS="courseid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="temp_log_template" COMMENT="Temporary storage for daily logs" PREVIOUS="temp_enroled_template">
+    <TABLE NAME="temp_log_template" COMMENT="Temporary storage for daily logs" PREVIOUS="temp_enroled_template" NEXT="badge">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="course"/>
@@ -2930,6 +2930,145 @@
         <INDEX NAME="course" UNIQUE="false" FIELDS="course" PREVIOUS="action" NEXT="user"/>
         <INDEX NAME="user" UNIQUE="false" FIELDS="userid" PREVIOUS="course" NEXT="usercourseaction"/>
         <INDEX NAME="usercourseaction" UNIQUE="false" FIELDS="userid, course, action" PREVIOUS="user"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="badge" COMMENT="Defines badge" NEXT="badge_criteria" PREVIOUS="temp_log_template">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="image"/>
+        <FIELD NAME="image" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="image" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usercreated"/>
+        <FIELD NAME="usercreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="usercreated" NEXT="issuername"/>
+        <FIELD NAME="issuername" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="usermodified" NEXT="issuerurl"/>
+        <FIELD NAME="issuerurl" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="issuername" NEXT="issuercontact"/>
+        <FIELD NAME="issuercontact" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="issuerurl" NEXT="expiredate"/>
+        <FIELD NAME="expiredate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="issuercontact" NEXT="expireperiod"/>
+        <FIELD NAME="expireperiod" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="expiredate" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="1 = site, 2 = course" PREVIOUS="expireperiod" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="type" NEXT="message"/>
+        <FIELD NAME="message" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="courseid" NEXT="messagesubject"/>
+        <FIELD NAME="messagesubject" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="message" NEXT="attachment"/>
+        <FIELD NAME="attachment" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Attach baked badge for download" PREVIOUS="messagesubject" NEXT="notification"/>
+        <FIELD NAME="notification" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Message when badge is awarded" PREVIOUS="attachment" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Badge status: 0 = inactive, 1 = active, 2 = active+locked, 3 = inactive+locked, 4 = archived" PREVIOUS="notification" NEXT="nextcron"/>
+        <FIELD NAME="nextcron" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="status"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_courseid"/>
+        <KEY NAME="fk_courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id" PREVIOUS="primary" NEXT="fk_usermodified"/>
+        <KEY NAME="fk_usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_courseid" NEXT="fk_usercreated"/>
+        <KEY NAME="fk_usercreated" TYPE="foreign" FIELDS="usercreated" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_usermodified"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="type" UNIQUE="false" FIELDS="type"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="badge_criteria" COMMENT="Defines criteria for issuing badges" PREVIOUS="badge" NEXT="badge_criteria_param">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="badgeid"/>
+        <FIELD NAME="badgeid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="criteriatype"/>
+        <FIELD NAME="criteriatype" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The criteria type we are aggregating" PREVIOUS="badgeid" NEXT="method"/>
+        <FIELD NAME="method" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="1 = all, 2 = any" PREVIOUS="criteriatype"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_badgeid"/>
+        <KEY NAME="fk_badgeid" TYPE="foreign" FIELDS="badgeid" REFTABLE="badge" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="badgeid" UNIQUE="false" FIELDS="badgeid" NEXT="criteriatype"/>
+        <INDEX NAME="criteriatype" UNIQUE="false" FIELDS="criteriatype" PREVIOUS="badgeid" NEXT="badgecriteriatype"/>
+        <INDEX NAME="badgecriteriatype" UNIQUE="true" FIELDS="badgeid, criteriatype" PREVIOUS="criteriatype"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="badge_criteria_param" COMMENT="Defines parameters for badges criteria" PREVIOUS="badge_criteria" NEXT="badge_issued">
+        <FIELDS>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="critid"/>
+            <FIELD NAME="critid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+            <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="critid" NEXT="value"/>
+            <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="name"/>
+        </FIELDS>
+        <KEYS>
+            <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_critid"/>
+            <KEY NAME="fk_critid" TYPE="foreign" FIELDS="critid" REFTABLE="badge_criteria" REFFIELDS="id" PREVIOUS="primary"/>
+        </KEYS>
+        <INDEXES>
+            <INDEX NAME="critid" UNIQUE="false" FIELDS="critid"/>
+        </INDEXES>
+    </TABLE>
+    <TABLE NAME="badge_issued" COMMENT="Defines issued badges" PREVIOUS="badge_criteria_param" NEXT="badge_criteria_met">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="badgeid"/>
+        <FIELD NAME="badgeid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="badgeid" NEXT="uniquehash"/>
+        <FIELD NAME="uniquehash" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="dateissued"/>
+        <FIELD NAME="dateissued" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="uniquehash" NEXT="dateexpire"/>
+        <FIELD NAME="dateexpire" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="dateissued" NEXT="visible"/>
+        <FIELD NAME="visible" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="dateexpire" NEXT="issuernotified"/>
+        <FIELD NAME="issuernotified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="visible"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_badgeid"/>
+        <KEY NAME="fk_badgeid" TYPE="foreign" FIELDS="badgeid" REFTABLE="badge" REFFIELDS="id" NEXT="fk_userid" PREVIOUS="primary"/>
+        <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_badgeid"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="badgeid" UNIQUE="false" FIELDS="badgeid" NEXT="userid"/>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" PREVIOUS="badgeid" NEXT="badgeuser"/>
+        <INDEX NAME="badgeuser" UNIQUE="true" FIELDS="badgeid, userid" PREVIOUS="userid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="badge_criteria_met" COMMENT="Defines criteria that were met for an issued badge" PREVIOUS="badge_issued" NEXT="badge_manual_award">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="issuedid"/>
+        <FIELD NAME="issuedid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="critid"/>
+        <FIELD NAME="critid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="issuedid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="critid" NEXT="datemet"/>
+        <FIELD NAME="datemet" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_critid"/>
+        <KEY NAME="fk_critid" TYPE="foreign" FIELDS="critid" REFTABLE="badge_criteria" REFFIELDS="id" PREVIOUS="primary" NEXT="fk_userid"/>
+        <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_critid" NEXT="fk_issuedid"/>
+        <KEY NAME="fk_issuedid" TYPE="foreign" FIELDS="issuedid" REFTABLE="badge_issued" REFFIELDS="id" PREVIOUS="fk_userid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="badge_manual_award" COMMENT="Track manual award criteria for badges" PREVIOUS="badge_criteria_met" NEXT="badge_backpack">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="badgeid"/>
+        <FIELD NAME="badgeid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="recipientid"/>
+        <FIELD NAME="recipientid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="badgeid" NEXT="issuerid"/>
+        <FIELD NAME="issuerid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="recipientid" NEXT="issuerrole"/>
+        <FIELD NAME="issuerrole" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="issuerid" NEXT="datemet"/>
+        <FIELD NAME="datemet" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="issuerrole"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_badgeid"/>
+        <KEY NAME="fk_badgeid" TYPE="foreign" FIELDS="id" REFTABLE="badge" REFFIELDS="id" PREVIOUS="primary" NEXT="fk_recipientid"/>
+        <KEY NAME="fk_recipientid" TYPE="foreign" FIELDS="recipientid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_badgeid" NEXT="fk_issuerid"/>
+        <KEY NAME="fk_issuerid" TYPE="foreign" FIELDS="issuerid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_recipientid" NEXT="fk_issuerrole"/>
+        <KEY NAME="fk_issuerrole" TYPE="foreign" FIELDS="issuerrole" REFTABLE="role" REFFIELDS="id" PREVIOUS="fk_issuerid"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="badge_backpack" COMMENT="Defines settings for connecting external backpack" PREVIOUS="badge_manual_award">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="email"/>
+        <FIELD NAME="email" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="backpackurl"/>
+        <FIELD NAME="backpackurl" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="email" NEXT="backpackuid"/>
+        <FIELD NAME="backpackuid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="backpackurl" NEXT="backpackgid"/>
+        <FIELD NAME="backpackgid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="backpackuid" NEXT="autosync"/>
+        <FIELD NAME="autosync" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="backpackgid" NEXT="password"/>
+        <FIELD NAME="password" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" PREVIOUS="autosync"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_userid"/>
+        <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
   </TABLES>

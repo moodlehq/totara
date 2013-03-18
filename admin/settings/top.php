@@ -32,6 +32,7 @@ $ADMIN->add('root', new admin_category('hierarchies', new lang_string('hierarchi
 $ADMIN->add('root', new admin_category('totara_plan', new lang_string('learningplans', 'totara_plan')));
 $ADMIN->add('root', new admin_category('courses', new lang_string('courses','admin')));
 $ADMIN->add('root', new admin_category('grades', new lang_string('grades')));
+$ADMIN->add('root', new admin_category('badges', new lang_string('badges'), (isset($CFG->enablebadges) && $CFG->enablebadges == 0)));
 $ADMIN->add('root', new admin_category('location', new lang_string('location','admin')));
 $ADMIN->add('root', new admin_category('language', new lang_string('language')));
 $ADMIN->add('root', new admin_category('modules', new lang_string('plugins', 'admin')));

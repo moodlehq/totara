@@ -2163,6 +2163,12 @@ class global_navigation extends navigation_node {
             $usernode->add(get_string('myfiles'), $url, self::TYPE_SETTING);
         }
 
+        if ($CFG->enablebadges && $iscurrentuser &&
+                has_capability('moodle/badges:manageownbadges', context_user::instance($USER->id))) {
+            $url = new moodle_url('/badges/mybadges.php');
+            $usernode->add(get_string('mybadges', 'badges'), $url, self::TYPE_SETTING);
+        }
+
         // Add a node to view the users notes if permitted
         if (!empty($CFG->enablenotes) && has_any_capability(array('moodle/notes:manage', 'moodle/notes:view'), $coursecontext)) {
             $url = new moodle_url('/notes/index.php',array('user'=>$user->id));
@@ -2460,6 +2466,19 @@ class global_navigation extends navigation_node {
                 $reportfunction($reportnav, $course, $this->page->context);
             }
         }
+
+        // Badges.
+        if ($CFG->enablebadges && has_capability('moodle/badges:viewbadges', $this->page->context)) {
+            $url = new moodle_url($CFG->wwwroot . '/badges/view.php',
+                    array('type' => 2, 'id' => $course->id));
+
+            $coursenode->add(get_string('coursebadges', 'badges'), null,
+                    navigation_node::TYPE_CONTAINER, null, 'coursebadges');
+            $coursenode->get('coursebadges')->add(get_string('badgesview', 'badges'), $url,
+                    navigation_node::TYPE_SETTING, null, 'badgesview',
+                    new pix_icon('i/badge', get_string('badgesview', 'badges')));
+        }
+
         return true;
     }
     /**
@@ -2497,6 +2516,12 @@ class global_navigation extends navigation_node {
           and has_capability('moodle/blog:view', context_system::instance())) {
             $blogsurls = new moodle_url('/blog/index.php', array('courseid' => $filterselect));
             $coursenode->add(get_string('blogssite','blog'), $blogsurls->out());
+        }
+
+        //Badges
+        if ($CFG->enablebadges && has_capability('moodle/badges:viewbadges', $this->page->context)) {
+            $url = new moodle_url($CFG->wwwroot . '/badges/view.php', array('type' => 1));
+            $coursenode->add(get_string('sitebadges', 'badges'), $url, navigation_node::TYPE_CUSTOM);
         }
 
         // Notes
@@ -3587,6 +3612,10 @@ class settings_navigation extends navigation_node {
             $url = new moodle_url('/grade/edit/outcome/course.php', array('id'=>$course->id));
             $coursenode->add(get_string('outcomes', 'grades'), $url, self::TYPE_SETTING, null, 'outcomes', new pix_icon('i/outcomes', ''));
         }
+
+        //Add badges navigation
+        require_once($CFG->libdir .'/badgeslib.php');
+        badges_add_course_navigation($coursenode, $course);
 
         // Backup this course
         if (has_capability('moodle/backup:backupcourse', $coursecontext)) {
