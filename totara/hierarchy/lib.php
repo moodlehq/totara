@@ -72,9 +72,10 @@ define('HIERARCHY_ITEM_BELOW', -1);
 * @param string $filearea
 * @param array $args
 * @param bool $forcedownload
+* @param array $options
 * @return bool false if file not found, does not return if found - just send the file
 */
-function totara_hierarchy_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+function totara_hierarchy_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options=array()) {
     $fs = get_file_storage();
     $relativepath = implode('/', $args);
     $fullpath = "/{$context->id}/totara_hierarchy/$filearea/$args[0]/$args[1]";
@@ -82,7 +83,7 @@ function totara_hierarchy_pluginfile($course, $cm, $context, $filearea, $args, $
         return false;
     }
     // finally send the file
-    send_stored_file($file); // download MUST be forced - security!
+    send_stored_file($file, 86400, 0, true, $options); // download MUST be forced - security!
 }
 
 /**

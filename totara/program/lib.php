@@ -1453,7 +1453,7 @@ function prog_get_courses_associated_with_programs($courses = null) {
     return $DB->get_records_sql($sql, $params);
 }
 
-function totara_program_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
+function totara_program_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, $options=array()) {
     $component = 'totara_program';
     $itemid = $args[0];
     $filename = $args[1];
@@ -1465,5 +1465,5 @@ function totara_program_pluginfile($course, $cm, $context, $filearea, $args, $fo
         send_file_not_found();
     }
 
-    send_stored_file($file, 60*60*24, 0, false); //enable long cache and disable forcedownload
+    send_stored_file($file, 60*60*24, 0, false, $options); //enable long cache and disable forcedownload
 }
