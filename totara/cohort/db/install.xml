@@ -45,9 +45,11 @@
                 <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified"/>
             </FIELDS>
             <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="rulesetid"/>
-                <KEY NAME="rulesetid" TYPE="foreign" FIELDS="rulesetid" REFTABLE="ruleset" REFFIELDS="id" PREVIOUS="primary"/>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
+            <INDEXES>
+                <INDEX NAME="rulesetid" UNIQUE="false" FIELDS="rulesetid"/>
+            </INDEXES>
         </TABLE>
         <TABLE NAME="cohort_rule_params" COMMENT="The parameters of rules in cohort_rules" PREVIOUS="cohort_rules" NEXT="cohort_msg_queue">
             <FIELDS>
