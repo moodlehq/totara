@@ -74,7 +74,7 @@ class enrol_totara_learningplan_plugin extends enrol_plugin {
      * @param stdClass $instance
      * @return string html text, usually a form in a text box
      */
-    public function enrol_page_hook($instance) {
+    public function enrol_page_hook(stdClass $instance) {
         global $OUTPUT, $USER, $DB;
 
         $course = $DB->get_record('course', array('id' => $instance->courseid));
@@ -141,7 +141,7 @@ class enrol_totara_learningplan_plugin extends enrol_plugin {
      *
      * @return bool
      */
-    public function allow_unenrol($instance) {
+    public function allow_unenrol(stdClass $instance) {
         return true;
     }
 
