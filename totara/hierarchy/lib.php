@@ -1281,7 +1281,7 @@ class hierarchy {
      * @return HTML to display the custom field data
      */
     function display_hierarchy_item_custom_field_data($record, $cfields) {
-        global $CFG;
+        global $CFG, $OUTPUT;
         $out = '';
         $cssclass = !$record->visible ? 'dimmed' : '';
 
@@ -1305,7 +1305,9 @@ class hierarchy {
             // only show if there's data
             if ($record->$data) {
                 $safetext = format_text($record->$data, FORMAT_HTML);
-                $out .= html_writer::tag('div', html_writer::tag('strong', format_string($cf->fullname) . ': ') . call_user_func(array($cf_type, 'display_item_data'), $safetext, $this->prefix, $record->$itemid), array('class' => 'customfield ' . $cssclass));
+                $item_data = call_user_func(array($cf_type, 'display_item_data'), $safetext, array('prefix' => $this->prefix, 'itemid' => $record->$itemid));
+                $item_name = html_writer::tag('strong', format_string($cf->fullname) . ': ');
+                $out .= $OUTPUT->container($item_name . $item_data, 'customfield ' . $cssclass);
             }
         }
 

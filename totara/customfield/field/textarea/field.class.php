@@ -103,13 +103,16 @@ class customfield_textarea extends customfield_base {
     /**
     * Display the data for this field
      */
-    static function display_item_data($data, $prefix=null, $itemid=null) {
+    static function display_item_data($data, $extradata=array()) {
         global $OUTPUT;
         if (empty($data)) {
             return $data;
         }
+        if (!isset($extradata['prefix']) || empty($extradata['prefix']) || !isset($extradata['itemid']) || empty($extradata['itemid'])) {
+            return $data;
+        }
         $context = context_system::instance();
-        $data = file_rewrite_pluginfile_urls($data, 'pluginfile.php', $context->id, 'totara_customfield', $prefix, $itemid);
+        $data = file_rewrite_pluginfile_urls($data, 'pluginfile.php', $context->id, 'totara_customfield', $extradata['prefix'], $extradata['itemid']);
         return $data;
     }
 }

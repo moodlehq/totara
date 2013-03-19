@@ -120,7 +120,7 @@ if ($cfdata) {
         require_once($CFG->dirroot.'/totara/customfield/field/'.$cf->datatype.'/field.class.php');
         $data[] = array(
             'title' => $cf->fullname,
-            'value' => call_user_func(array($cf_class, 'display_item_data'), $cf->data, $prefix, $cf->id)
+            'value' => call_user_func(array($cf_class, 'display_item_data'), $cf->data, array('prefix' => $prefix, 'itemid' => $cf->id))
         );
     }
 }

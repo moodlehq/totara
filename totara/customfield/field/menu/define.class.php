@@ -36,7 +36,7 @@ class customfield_define_menu extends customfield_define_base {
         $form->addHelpButton('defaultdata', 'customfielddefaultdatamenu', 'totara_customfield');
     }
 
-    function define_validate_specific($data, $files) {
+    function define_validate_specific($data, $files, $tableprefix) {
         $err = array();
 
         $data->param1 = trim(str_replace("\r", '', $data->param1));

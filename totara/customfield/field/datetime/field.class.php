@@ -30,7 +30,7 @@ class customfield_datetime extends customfield_base {
      *
      * @param object moodleform instance
      */
-    function edit_field_add($mform) {
+    function edit_field_add(&$mform) {
         // Check if the field is required
         if ($this->field->required) {
             $optional = false;
@@ -60,7 +60,7 @@ class customfield_datetime extends customfield_base {
     /**
      * Display the data for this field
      */
-    static function display_item_data($data) {
+    static function display_item_data($data, $extradata=array()) {
         // Check if time was specifieid with a sneaky sneaky little hack :)
         if (date('G', $data) != 0) { // 12:00 am - assume no time was saved
             $format = get_string('strftimedaydatetime', 'langconfig');

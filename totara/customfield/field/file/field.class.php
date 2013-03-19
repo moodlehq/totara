@@ -94,16 +94,21 @@ class customfield_file extends customfield_base {
     /**
      * Display the data for this field
      */
-    static function display_item_data($data, $prefix=null, $itemid, $isexport = false) {
+    static function display_item_data($data, $extradata=array()) {
         global $OUTPUT;
 
         if (empty($data)) {
             return $data;
         }
-
+        if (!isset($extradata['prefix']) || empty($extradata['prefix'])) {
+            return $data;
+        }
+        if (!isset($extradata['isexport'])) {
+            $extradata['isexport'] = false;
+        }
         $context = context_system::instance();
         $fs = get_file_storage();
-        $files = $fs->get_area_files($context->id, 'totara_customfield', $prefix . '_filemgr', $data, null, false);
+        $files = $fs->get_area_files($context->id, 'totara_customfield', $extradata['prefix'] . '_filemgr', $data, null, false);
         if (count($files)!=1) {
             return get_string('filenotfound', 'error');
         } else {
@@ -111,7 +116,7 @@ class customfield_file extends customfield_base {
             $file = array_shift($files);
             $strfile = get_string('file');
             $filename = $file->get_filename();
-            if ($isexport) {
+            if ($extradata['isexport']) {
                 return $filename;
             } else {
                 $icon = mimeinfo("icon", $filename);

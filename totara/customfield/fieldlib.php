@@ -60,7 +60,7 @@ class customfield_base {
     function display_data() {
         // call the static method belonging to this object's class
         // or the one below if not re-defined by child class
-        return $this->display_item_data($this->data);
+        return $this->display_item_data($this->data, array('prefix' => $this->prefix));
     }
 
 
@@ -77,7 +77,7 @@ class customfield_base {
 
 /***** The following methods may be overwritten by child classes *****/
 
-    static function display_item_data($data, $prefix=null) {
+    static function display_item_data($data, $extradata=array()) {
         $options = new stdClass();
         $options->para = false;
         return format_text($data, FORMAT_MOODLE, $options);

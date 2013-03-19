@@ -433,7 +433,8 @@ abstract class rb_base_source {
             $prefix = "{$field}_prefix";
             $itemidfield = $field . '_itemid';
             require_once($CFG->dirroot.'/totara/customfield/field/textarea/field.class.php');
-            $displaytext = call_user_func(array('customfield_textarea', 'display_item_data'), $data, $row->$prefix, $row->$itemidfield);
+            $extradata = array('prefix' => $row->$prefix, 'itemid' => $row->$itemidfield);
+            $displaytext = call_user_func(array('customfield_textarea', 'display_item_data'), $data, $extradata);
         }
 
         return $displaytext;
@@ -455,7 +456,8 @@ abstract class rb_base_source {
         $prefix = "{$field}_prefix";
         $itemidfield = $field . '_itemid';
         require_once($CFG->dirroot.'/totara/customfield/field/file/field.class.php');
-        $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $row->$prefix, $row->$itemidfield, $isexport);
+        $extradata = array('prefix' => $row->$prefix, 'itemid' => $row->$itemidfield, 'isexport' => $isexport);
+        $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $extradata);
 
         return $displaytext;
     }

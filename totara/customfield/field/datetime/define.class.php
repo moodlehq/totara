@@ -30,7 +30,7 @@ class customfield_define_datetime extends customfield_define_base {
      *
      * @param object $form the user form
      */
-    function define_form_specific($form) {
+    function define_form_specific(&$form) {
         // Create variables to store start and end
         $currentyear = date('Y');
         $startyear = $currentyear - 100;
@@ -64,7 +64,7 @@ class customfield_define_datetime extends customfield_define_base {
      * @param   object   data from the add/edit custom field form
      * @return  array    associative array of error messages
      */
-    function define_validate_specific($data) {
+    function define_validate_specific($data, $files, $tableprefix) {
         $errors = array();
 
         // Make sure the start year is not greater than the end year
