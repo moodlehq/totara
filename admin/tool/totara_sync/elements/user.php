@@ -48,6 +48,20 @@ class totara_sync_element_user extends totara_sync_element {
     function config_save($data) {
         $this->set_config('removeuser', $data->removeuser);
         $this->set_config('sourceallrecords', $data->sourceallrecords);
+        if (!empty($data->source_user)) {
+            $source = $this->get_source($data->source_user);
+            //build link to source config
+            $url = new moodle_url('/admin/tool/totara_sync/admin/sourcesettings.php', array('element' => $this->get_name(), 'source' => $source->get_name()));
+            if ($source->has_config()) {
+                //set import_deleted and warn if necessary
+                $import_deleted_new = ($data->sourceallrecords == 0) ? '1' : '0';
+                $import_deleted_old = $source->get_config('import_deleted');
+                if ($import_deleted_new != $import_deleted_old) {
+                    $source->set_config('import_deleted', $import_deleted_new);
+                    totara_set_notification(get_string('checkuserconfig', 'tool_totara_sync', $url->out()), null, array('class'=>'notifynotice'));
+                }
+            }
+        }
     }
 
     function sync() {

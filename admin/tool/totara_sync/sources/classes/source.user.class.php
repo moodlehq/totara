@@ -114,7 +114,7 @@ abstract class totara_sync_source_user extends totara_sync_source {
             if (in_array($f, array('idnumber', 'username', 'timemodified'))) {
                 $mform->addElement('hidden', 'import_'.$f, '1');
             } elseif ($f == 'deleted') {
-                $mform->addElement('hidden', 'import_'.$f, empty($this->element->config->sourceallrecords));
+                $mform->addElement('hidden', 'import_'.$f, $this->config->import_deleted);
             } else {
                 $mform->addElement('checkbox', 'import_'.$f, get_string($f, 'tool_totara_sync'));
                 if (in_array($f, array('country'))) {

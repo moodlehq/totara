@@ -76,15 +76,35 @@ class totara_sync_element_settings_form extends moodleform {
  * Formslib template for the source settings form
  */
 class totara_sync_source_settings_form extends moodleform {
+
+    protected $elementname = '';
+
     function definition() {
         $mform =& $this->_form;
         $source = $this->_customdata['source'];
+        $this->elementname = $this->_customdata['elementname'];
         $sourcename = $source->get_name();
 
         // Source configuration
         if ($source->config_form($mform) !== false) {
             $this->add_action_buttons(false);
         }
+    }
+
+    function set_data($data) {
+        //these are set in config_form
+        unset($data->import_idnumber);
+        unset($data->import_timemodified);
+
+        if ($this->elementname == 'pos' || $this->elementname == 'org') {
+            unset($data->import_fullname);
+            unset($data->import_frameworkidnumber);
+        }
+        if ($this->elementname == 'user') {
+            unset($data->import_username);
+            unset($data->import_deleted);
+        }
+        parent::set_data($data);
     }
 }
 

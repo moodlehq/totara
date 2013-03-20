@@ -116,6 +116,12 @@ abstract class totara_sync_source {
     }
 
     /**
+     * Method for getting source plugin config settings
+     */
+    function get_config($name) {
+        return get_config($this->get_name(), $name);
+    }
+    /**
      * Add source sync log entries to the sync database with this method
      */
     function addlog($info, $type='info', $action='') {

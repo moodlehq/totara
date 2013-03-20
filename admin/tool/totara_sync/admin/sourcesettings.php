@@ -41,7 +41,7 @@ if (!$source->has_config()) {
     print_error('nosourceconfig', 'tool_totara_sync');
 }
 
-$form = new totara_sync_source_settings_form($FULLME, array('source'=>$source));
+$form = new totara_sync_source_settings_form($FULLME, array('elementname' => $elementname, 'source' => $source));
 
 /// Process actions
 if ($data = $form->get_data()) {
