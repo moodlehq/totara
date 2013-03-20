@@ -64,7 +64,9 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             }
         }
 
-        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', get_string('csvimportfilestructinfo', 'tool_totara_sync', implode(',', $filestruct)), array('class' => "informationbox"))));
+        $delimiter = $this->config->delimiter;
+        $info = get_string('csvimportfilestructinfo', 'tool_totara_sync', implode($delimiter, $filestruct));
+        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', $info, array('class' => "informationbox"))));
 
         // Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
@@ -146,8 +148,8 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
             throw new totara_sync_exception($this->get_element_name(), 'populatesynctablecsv', 'cannotopenx', $storefilepath);
         }
 
-        // Map CSV fields with db fields
-        $fields = fgetcsv($file);
+        // Map CSV fields with db fields.
+        $fields = fgetcsv($file, 0, $this->config->delimiter);
         $fieldmappings = array();
         foreach ($this->fields as $field) {
             if (empty($this->config->{'import_'.$field})) {
@@ -205,7 +207,7 @@ class totara_sync_source_pos_csv extends totara_sync_source_pos {
         $fieldcount->rownum = 0;
         $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
 
-        while ($row = fgetcsv($file)) {
+        while ($row = fgetcsv($file, 0, $this->config->delimiter)) {
             $fieldcount->rownum++;
             // skip empty rows
             if (is_array($row) && current($row) === null) {

@@ -64,7 +64,9 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
             }
         }
 
-        $mform->addElement('html',  html_writer::tag('div', html_writer::tag('p', get_string('csvimportfilestructinfo', 'tool_totara_sync', implode(',', $filestruct)), array('class' => "informationbox"))));
+        $delimiter = $this->config->delimiter;
+        $info = get_string('csvimportfilestructinfo', 'tool_totara_sync', implode($delimiter, $filestruct));
+        $mform->addElement('html',  html_writer::tag('div', html_writer::tag('p', $info, array('class' => "informationbox"))));
 
         // Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
@@ -153,7 +155,7 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
         }
 
         /// Map CSV fields
-        $fields = fgetcsv($file);
+        $fields = fgetcsv($file, 0, $this->config->delimiter);
         $fieldmappings = array();
         foreach ($this->fields as $f) {
             if (empty($this->config->{'import_'.$f})) {
@@ -212,7 +214,7 @@ class totara_sync_source_org_csv extends totara_sync_source_org {
 
         $csvdateformat = (isset($CFG->csvdateformat)) ? $CFG->csvdateformat : get_string('csvdateformatdefault', 'totara_core');
 
-        while ($row = fgetcsv($file)) {
+        while ($row = fgetcsv($file, 0, $this->config->delimiter)) {
             $fieldcount->rownum++;
             // Skip empty rows
             if (is_array($row) && current($row) === null) {

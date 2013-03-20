@@ -79,7 +79,7 @@ abstract class totara_sync_source_pos extends totara_sync_source {
      * Override in child classes
      */
     function config_form(&$mform) {
-        // Fields to import
+        // Fields to import.
         $mform->addElement('header', 'importheader', get_string('importfields', 'tool_totara_sync'));
 
         foreach ($this->fields as $f) {
@@ -90,7 +90,21 @@ abstract class totara_sync_source_pos extends totara_sync_source {
             }
         }
 
-        // Field mappings
+        // Field mappings.
+        $delimiteroptions = array(
+            ',' => get_string('comma', 'tool_totara_sync'),
+            ';' => get_string('semicolon', 'tool_totara_sync'),
+            ':' => get_string('colon', 'tool_totara_sync'),
+            '\t' => get_string('tab', 'tool_totara_sync'),
+            '|' => get_string('pipe', 'tool_totara_sync')
+        );
+
+        $mform->addElement('select', 'delimiter',  get_string('delimiter', 'tool_totara_sync'), $delimiteroptions);
+        $default = $this->config->delimiter;
+        if (empty($default)) {
+            $default = ',';
+        }
+        $mform->setDefault('delimiter', $default);
         $mform->addElement('header', 'dbfieldmappings', get_string('fieldmappings', 'tool_totara_sync'));
 
         foreach ($this->fields as $f) {
@@ -103,6 +117,7 @@ abstract class totara_sync_source_pos extends totara_sync_source {
      * Override in child classes
      */
     function config_save($data) {
+        $this->set_config('delimiter', $data->{'delimiter'});
         foreach ($this->fields as $f) {
             $this->set_config('import_'.$f, !empty($data->{'import_'.$f}));
         }

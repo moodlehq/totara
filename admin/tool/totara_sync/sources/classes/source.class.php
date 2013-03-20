@@ -89,6 +89,9 @@ abstract class totara_sync_source {
      */
     function __construct() {
         $this->config = get_config($this->get_name());
+        if (empty($this->config->delimiter)) {
+            $this->config->delimiter = ',';
+        }
         $this->filesdir = rtrim(get_config('totara_sync', 'filesdir'), '/');
 
         // Ensure child class specified temptablename

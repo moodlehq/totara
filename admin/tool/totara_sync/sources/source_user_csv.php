@@ -75,8 +75,9 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         }
         unset($fcount);
 
-        $filestruct = implode(',', $filestruct);
-        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', get_string('csvimportfilestructinfo', 'tool_totara_sync', $filestruct)), array('class' => "informationbox")));
+        $delimiter = $this->config->delimiter;
+        $info = get_string('csvimportfilestructinfo', 'tool_totara_sync', implode($delimiter, $filestruct));
+        $mform->addElement('html', html_writer::tag('div', html_writer::tag('p', $info, array('class' => "informationbox"))));
 
         /// Add some source file details
         $mform->addElement('header', 'fileheader', get_string('filedetails', 'tool_totara_sync'));
@@ -161,7 +162,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         }
 
         /// Map CSV fields
-        $fields = fgetcsv($file);
+        $fields = fgetcsv($file, 0, $this->config->delimiter);
         $fieldmappings = array();
         foreach ($this->fields as $f) {
             if (empty($this->config->{'import_'.$f})) {
@@ -228,7 +229,7 @@ class totara_sync_source_user_csv extends totara_sync_source_user {
         $badtimezones = false;
         $goodtimezones = totara_get_clean_timezone_list();
 
-        while ($csvrow = fgetcsv($file)) {
+        while ($csvrow = fgetcsv($file, 0, $this->config->delimiter)) {
             $fieldcount->rownum++;
             // skip empty rows
             if (is_array($csvrow) && current($csvrow) === null) {

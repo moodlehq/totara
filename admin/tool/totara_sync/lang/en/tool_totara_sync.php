@@ -268,4 +268,12 @@ see <a href=\"http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2\">http://en.wikipe
 $string['fileaccess_help'] = '**Directory**: This option allows you to specify a directory on the server to be checked for sync files automatically
 
 **Upload**: This option requires you to upload files via the \'upload sync files\' page under sources in site administration';
+
+//Delimiter strings
+$string['delimiter'] = 'Delimiter';
+$string['comma'] = 'Comma (,)';
+$string['semicolon'] = 'Semi-colon (;)';
+$string['colon'] = 'Colon (:)';
+$string['tab'] = 'Tab (\t)';
+$string['pipe'] = 'Pipe (|)';
 ?>
