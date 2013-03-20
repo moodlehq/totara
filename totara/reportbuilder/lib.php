@@ -71,6 +71,13 @@ define('REPORT_BUILDER_EXPORT_EXCEL', 1);
 define('REPORT_BUILDER_EXPORT_CSV', 2);
 define('REPORT_BUILDER_EXPORT_ODS', 4);
 define('REPORT_BUILDER_EXPORT_FUSION', 8);
+define('REPORT_BUILDER_EXPORT_PDF_PORTRAIT', 16);
+define('REPORT_BUILDER_EXPORT_PDF_LANDSCAPE', 32);
+
+/**
+ * PDF export memory limit (in MBs).
+ */
+define('REPORT_BUILDER_EXPORT_PDF_MEMORY_LIMIT', 1024);
 
 /*
  * Initial Display Options
@@ -87,10 +94,12 @@ define('RB_CACHE_FLAG_FAIL', 2);
 
 global $REPORT_BUILDER_EXPORT_OPTIONS;
 $REPORT_BUILDER_EXPORT_OPTIONS = array(
-    'xls' => REPORT_BUILDER_EXPORT_EXCEL,
-    'csv' => REPORT_BUILDER_EXPORT_CSV,
-    'ods' => REPORT_BUILDER_EXPORT_ODS,
-    'fusion' => REPORT_BUILDER_EXPORT_FUSION,
+    'xls'           => REPORT_BUILDER_EXPORT_EXCEL,
+    'csv'           => REPORT_BUILDER_EXPORT_CSV,
+    'ods'           => REPORT_BUILDER_EXPORT_ODS,
+    'fusion'        => REPORT_BUILDER_EXPORT_FUSION,
+    'pdf_portrait'  => REPORT_BUILDER_EXPORT_PDF_PORTRAIT,
+    'pdf_landscape' => REPORT_BUILDER_EXPORT_PDF_LANDSCAPE,
 );
 
 /**
@@ -110,6 +119,19 @@ $REPORT_BUILDER_EXPORT_FILESYSTEM_OPTIONS = array(
 
 // Maximum allowed time for report caching
 define('REPORT_CACHING_TIMEOUT', 3600);
+
+/**
+ *  Pdf export constants.
+ *
+ */
+define('PDF_FONT_NAME_DATA', 'Helvetica');
+define('PDF_FONT_SIZE_DATA', 10);
+define('PDF_FONT_NAME_RECORD', 'FreeSans');
+define('PDF_FONT_SIZE_RECORD', 14);
+define('PDF_FONT_NAME_TITLE', 'FreeSans');
+define('PDF_FONT_SIZE_TITLE', 20);
+define('PDF_MARGIN_FOOTER', 10);
+define('PDF_MARGIN_BOTTOM', 20);
 
 /**
  * Main report builder object class definition
@@ -2512,6 +2534,10 @@ class reportbuilder {
                 $this->download_csv($headings, $sql . $order, $params, $count);
             case 'fusion':
                 $this->download_fusion();
+            case 'pdf_portrait':
+                $this->download_pdf($headings, $sql . $order, $params, $count, $restrictions, true, null, $cache);
+            case 'pdf_landscape':
+                $this->download_pdf($headings, $sql . $order, $params, $count, $restrictions, false, null, $cache);
         }
         die;
     }
@@ -3087,6 +3113,123 @@ class reportbuilder {
             fclose($fp);
         } else {
             $export->download_file();
+        }
+    }
+
+    /**
+     * Download current table in a Pdf format
+     * @param array $fields Array of column headings
+     * @param string $query SQL query to run to get results
+     * @param array $params SQL query params
+     * @param integer $count Number of filtered records in query
+     * @param array $restrictions Array of strings containing info
+     *                            about the content of the report
+     * @param boolean $portrait A boolean representing the print layout
+     * @param string a path where to save file
+     * @param array $cache Report cache information
+     * @return Returns the PDF file
+     */
+    function download_pdf($fields, $query, $params, $count, $restrictions = array(), $portrait = true, $file = null, $cache = array()) {
+        global $DB, $CFG;
+
+        require_once $CFG->libdir . '/pdflib.php';
+
+        // Increasing the execution time to no limit.
+        set_time_limit(0);
+
+        $fullname = strtolower(preg_replace(array('/[^a-zA-Z\d\s-_]/', '/[\s-]/'), array('', '_'), $this->fullname));
+        $filename = clean_filename($fullname . '_report.pdf');
+
+        // Table.
+        $html = '';
+        $numfields = count($fields);
+
+        if (!$records = $DB->get_recordset_sql($query, $params)) {
+            return false;
+        }
+
+        // Layout options.
+        if ($portrait) {
+            $pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8');
+        } else {
+            $pdf = new PDF('L', 'mm', 'A4', true, 'UTF-8');
+        }
+
+        $pdf->setTitle($filename);
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(true);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+        $pdf->AddPage();
+
+        $pdf->SetFont(PDF_FONT_NAME_TITLE, 'B', PDF_FONT_SIZE_TITLE);
+        $pdf->Write(0, format_string($this->fullname), '', 0, 'L', true, 0, false, false, 0);
+
+        $resultstr = $count == 1 ? 'record' : 'records';
+        $recordscount = get_string('x' . $resultstr, 'totara_reportbuilder', $count);
+        $pdf->SetFont(PDF_FONT_NAME_RECORD, 'B', PDF_FONT_SIZE_RECORD);
+        $pdf->Write(0, $recordscount, '', 0, 'L', true, 0, false, false, 0);
+
+        $pdf->SetFont(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA);
+
+        if (is_array($restrictions) && count($restrictions) > 0) {
+            $pdf->Write(0, get_string('reportcontents', 'totara_reportbuilder'), '', 0, 'L', true, 0, false, false, 0);
+            foreach ($restrictions as $restriction) {
+                $pdf->Write(0, $restriction, '', 0, 'L', true, 0, false, false, 0);
+            }
+        }
+
+        // Add report caching data.
+        if ($cache) {
+            $usertz = totara_get_clean_timezone();
+            $a = userdate($cache['lastreport'], '', $usertz);
+            $lastcache = get_string('report:cachelast', 'totara_reportbuilder', $a);
+            $pdf->Write(0, $lastcache, '', 0, 'L', true, 0, false, false, 0);
+        }
+
+        $html .= '<table border="1" cellpadding="2" cellspacing="0">
+                        <thead>
+                            <tr style="background-color: #CCC;">';
+        foreach ($fields as $field) {
+            $html .= '<th>' . strip_tags($field->heading) . '</th>';
+        }
+        $html .= '</tr></thead><tbody>';
+
+        foreach ($records as $record) {
+            $record_data = $this->process_data_row($record, true, true);
+            $html .= '<tr>';
+            for ($j = 0; $j < $numfields; $j++) {
+                if (isset($record_data[$j])) {
+                    $cellcontent = html_entity_decode($record_data[$j], ENT_COMPAT, 'UTF-8');
+                } else {
+                    $cellcontent = '';
+                }
+                $html .= '<td>' . $cellcontent . '</td>';
+            }
+            $html .= '</tr>';
+
+            // Check memory limit.
+            $mramuse = ceil(((memory_get_usage(true)/1024)/1024));
+            if (REPORT_BUILDER_EXPORT_PDF_MEMORY_LIMIT <= $mramuse) {
+                // Releasing resources.
+                $records->close();
+                // Notice message.
+                print_error('exportpdf_mramlimitexceeded', 'totara_reportbuilder', '', REPORT_BUILDER_EXPORT_PDF_MEMORY_LIMIT);
+            }
+        }
+        $html .= '</tbody></table>';
+
+        // Closing the pdf.
+        $pdf->WriteHTML($html, true, false, false, false, '');
+
+        // Releasing recordset resources.
+        $records->close();
+
+        // Returning the complete pdf.
+        if (!$file) {
+            $pdf->Output($filename, 'D');
+        } else {
+            $pdf->Output($file, 'F');
         }
     }
 
@@ -4535,6 +4678,10 @@ function send_scheduled_report($sched) {
         case REPORT_BUILDER_EXPORT_ODS:
             $attachmentfilename = 'report.ods';
             break;
+        case REPORT_BUILDER_EXPORT_PDF_LANDSCAPE:
+        case REPORT_BUILDER_EXPORT_PDF_PORTRAIT:
+            $attachmentfilename = 'report.pdf';
+            break;
     }
 
     $reporturl = reportbuilder_get_report_url($report);
@@ -4634,6 +4781,20 @@ function create_attachment($reportid, $format, $userid, $exporttofilesystem, $si
             if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
                 $reportfilepathname = get_directory($report, $userid) . '.csv';
                 $filename = $report->download_csv($headings, $sql, $params, $count, $reportfilepathname);
+            }
+            break;
+        case REPORT_BUILDER_EXPORT_PDF_PORTRAIT:
+            $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, true, $tempfilepathname);
+            if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
+                $reportfilepathname = get_directory($report, $userid) . '.pdf';
+                $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, true, $reportfilepathname);
+            }
+            break;
+        case REPORT_BUILDER_EXPORT_PDF_LANDSCAPE:
+            $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, false, $tempfilepathname);
+            if ($exporttofilesystem != REPORT_BUILDER_EXPORT_EMAIL) {
+                $reportfilepathname = get_directory($report, $userid) . '.pdf';
+                $filename = $report->download_pdf($headings, $sql, $params, $count, $restrictions, false, $reportfilepathname);
             }
             break;
     }
