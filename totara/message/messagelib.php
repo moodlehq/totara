@@ -159,6 +159,8 @@ function tm_message_send($eventdata) {
 
     if (!isset($eventdata->contexturl)) {
         $eventdata->contexturl = null;
+    } else if ($eventdata->contexturl instanceof moodle_url) {
+        $eventdata->contexturl = $eventdata->contexturl->out();
     }
 
     if (!isset($eventdata->contexturlname)) {
