@@ -42,7 +42,7 @@ class message_output_email extends message_output {
         if (!empty($CFG->noemailever)) {
             // hidden setting for development sites, set in config.php if needed
             //turn off display of errors if we have arrived here from an AJAX script
-            if (!defined('AJAX_SCRIPT')) {
+            if (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') {
                 debugging('$CFG->noemailever active, no email message sent.', DEBUG_MINIMAL);
             }
             return true;
