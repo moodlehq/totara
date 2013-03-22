@@ -66,7 +66,6 @@ class rb_source_courses extends rb_base_source {
         );
 
         // include some standard joins
-        $this->add_course_table_to_joinlist($joinlist, 'base', 'course');
         $this->add_course_category_table_to_joinlist($joinlist,
             'base', 'category');
         $this->add_tag_tables_to_joinlist('course', $joinlist, 'base', 'id');
