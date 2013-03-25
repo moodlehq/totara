@@ -1378,6 +1378,10 @@ function scorm_format_duration($duration) {
 function scorm_get_toc_object($user, $scorm, $currentorg='', $scoid='', $mode='normal', $attempt='', $play=false, $organizationsco=null) {
     global $CFG, $DB, $PAGE, $OUTPUT;
 
+    if ($mode == '') {
+        $mode = 'normal';
+    }
+
     $modestr = '';
     if ($mode == 'browse') {
         $modestr = '&amp;mode='.$mode;
