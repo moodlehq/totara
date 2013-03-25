@@ -36,6 +36,7 @@ $string['totara_sync:managepos'] = 'Manage Totara sync positions';
 $string['totara_sync:uploaduser'] = 'Upload Totara sync users';
 $string['totara_sync:uploadorg'] = 'Upload Totara sync organisations';
 $string['totara_sync:uploadpos'] = 'Upload Totara sync positions';
+$string['totara_sync:deletesynclog'] = 'Clear the sync logs';
 $string['settingssaved'] = 'Settings saved';
 $string['elementenabled'] = 'Element enabled';
 $string['elementdisabled'] = 'Element disabled';
@@ -234,6 +235,12 @@ $string['nosourceenabled'] = 'No source enabled for this element.';
 $string['syncexecute'] = 'Run Sync';
 $string['runsynccronstart'] = 'Running totara_sync cron...';
 $string['runsynccronend'] = 'Done!';
+$string['deleteallsynclog'] = 'Clear all records';
+$string['deletepartialsynclog'] = 'Clear all except latest records';
+$string['deleteallsynclogcheck'] = 'Are you absolutely sure you want to delete all the Totara Sync log records?';
+$string['deletepartialsynclogcheck'] = 'Are you absolutely sure you want to delete all the Totara Sync log records except for the most recent run?';
+$string['error:deletesynclogpermission'] = 'You do not have permission to delete sync log records!';
+
 ///
 /// Totara sync log reports
 ///
