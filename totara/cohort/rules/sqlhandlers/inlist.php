@@ -94,7 +94,7 @@ class cohort_rule_sqlhandler_in_userfield extends cohort_rule_sqlhandler_in {
         list($sqlin, $params) = $DB->get_in_or_equal($lov, SQL_PARAMS_NAMED, 'iu'.$this->ruleid, ($not != 'not'));
 
         $sqlhandler = new stdClass();
-        $sqlhandler->sql = "lower(u.{$field}) {$sqlin}";
+        $sqlhandler->sql = "u.{$field} {$sqlin}";
         $sqlhandler->params = $params;
         return $sqlhandler;
     }
@@ -134,7 +134,7 @@ class cohort_rule_sqlhandler_in_usercustomfield extends cohort_rule_sqlhandler_i
                                      FROM {user_info_data} usinda
                                     WHERE usinda.userid = u.id
                                       AND usinda.fieldid = {$field}
-                                      AND lower(usinda.data) {$sqlin}
+                                      AND usinda.data {$sqlin}
                                    )";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -159,7 +159,7 @@ class cohort_rule_sqlhandler_in_posfield extends cohort_rule_sqlhandler_in {
                                        ON pa.positionid = p.id
                                     WHERE pa.userid = u.id
                                       AND pa.type = ".POSITION_TYPE_PRIMARY . "
-                                      AND lower(p.{$field}) {$sqlin}
+                                      AND p.{$field} {$sqlin}
                                    )";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -191,7 +191,7 @@ class cohort_rule_sqlhandler_in_poscustomfield extends cohort_rule_sqlhandler_in
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and ptid.fieldid={$field} "
-                ."and lower(ptid.data) {$sqlin}"
+                ."and ptid.data {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -216,7 +216,7 @@ class cohort_rule_sqlhandler_in_posorgfield extends cohort_rule_sqlhandler_in {
                 ."on pa.organisationid=o.id "
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
-                ."and lower(o.{$field}) {$sqlin}"
+                ."and o.{$field} {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
@@ -249,7 +249,7 @@ class cohort_rule_sqlhandler_in_posorgcustomfield extends cohort_rule_sqlhandler
                 ."where pa.userid=u.id "
                 ."and pa.type=".POSITION_TYPE_PRIMARY." "
                 ."and otid.fieldid={$field} "
-                ."and lower(otid.data) {$sqlin}"
+                ."and otid.data {$sqlin}"
             .")";
         $sqlhandler->params = $params;
         return $sqlhandler;
