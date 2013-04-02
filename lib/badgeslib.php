@@ -891,7 +891,7 @@ function badges_add_course_navigation(navigation_node $coursenode, stdClass $cou
     $coursecontext = context_course::instance($course->id);
     $isfrontpage = (!$coursecontext || $course->id == $SITE->id);
 
-    if ($CFG->enablebadges && $CFG->badges_allowcoursebadges && !$isfrontpage) {
+    if (!empty($CFG->enablebadges) && $CFG->badges_allowcoursebadges && !$isfrontpage) {
         if (has_capability('moodle/badges:configuredetails', $coursecontext)) {
             $coursenode->add(get_string('coursebadges', 'badges'), null,
                     navigation_node::TYPE_CONTAINER, null, 'coursebadges',
