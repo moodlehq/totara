@@ -130,6 +130,9 @@ function make_log_url($module, $url) {
         case 'objectivescales':
             $url = '/totara/plan/' . $module . '/' . $url;
             break;
+        case 'my':
+            $url = '/my/' . $url;
+            break;
         // End Totara specific modules
         default:
             $url = "/mod/$module/$url";
