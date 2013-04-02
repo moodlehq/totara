@@ -40,14 +40,19 @@ function get_registration_data() {
  * @param array $data Associative array of data to send
  */
 function send_registration_data($data) {
+    global $CFG;
+    require_once($CFG->libdir . '/filelib.php');
+
     set_config('registrationattempted', time());
-    $ch = curl_init('https://register.totaralms.com/register/report.php');
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 0);  // DO NOT RETURN HTTP HEADERS
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  // RETURN THE CONTENTS OF THE CALL
-    $recdata = curl_exec($ch);
+
+    $ch = new curl();
+    $options = array(
+            'FOLLOWLOCATION' => true,
+            'RETURNTRANSFER' => true, // RETURN THE CONTENTS OF THE CALL
+            'HEADER' => 0 // DO NOT RETURN HTTP HEADERS
+    );
+
+    $recdata = $ch->post('https://register.totaralms.com/register/report.php', $data, $options);
     if ($recdata !== false) {
         set_config('registered', time());
     }
