@@ -145,7 +145,7 @@ if ($mform->is_cancelled()) {
 
 /// Print Page
 $PAGE->navbar->add(get_string("competencyframeworks", 'totara_hierarchy'),
-    new moodle_url('totara/hierarchy/framework/index.php', array('prefix' => 'competency')));
+    new moodle_url('/totara/hierarchy/framework/index.php', array('prefix' => 'competency')));
 if ($id == 0) { // Add
   $PAGE->navbar->add(get_string('scalescustomcreate'));
   $heading = get_string('scalescustomcreate');
