@@ -72,6 +72,7 @@ if ($adminid = $DB->get_field('user', 'id', array('username' => 'admin'))) {
     $todb->id = $adminid;
     $todb->city = 'Wellington';
     $todb->country = 'NZ';
+    $todb->email = 'test@example.com';
     $DB->update_record('user', $todb);
 }
 
