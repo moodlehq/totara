@@ -65,3 +65,13 @@ $todb->lastname = 'Trainer';
 if (!$DB->record_exists('user', array('username' => 'trainer'))) {
     $DB->insert_record('user', $todb);
 }
+
+// Set admin city and country
+if ($adminid = $DB->get_field('user', 'id', array('username' => 'admin'))) {
+    $todb = new stdClass();
+    $todb->id = $adminid;
+    $todb->city = 'Wellington';
+    $todb->country = 'NZ';
+    $DB->update_record('user', $todb);
+}
+
