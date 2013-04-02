@@ -93,6 +93,10 @@ $lc->add_to_whitelist('calendar/export_execute.php');
 $lc->add_to_whitelist('iplookup/index.php');
 // not useful to test
 $lc->add_to_whitelist('admin/tool/xmldb/');
+// uses error box but not an error
+$lc->add_to_whitelist('admin/auth_config.php?auth=radius', 'errorbox');
+// requires an id at this url but used in an external admin page - not sure how to fix this one
+$lc->add_to_whitelist('/admin/webservice/service.php', 'all');
 
 // start spidering site
 $lc->go();
@@ -256,7 +260,7 @@ class link_checker {
                 // the error box - need to traverse DOM and parse to get actual errors
                 $msgdetails = '';
                 $first_sibling = $parsed_page['dom']->saveXML($message->nextSibling);
-                $second_sibling = $message->nextSibling->nextSibling->nodeValue;
+                $second_sibling = isset($message->nextSibling->nextSibling) ? $message->nextSibling->nextSibling->nodeValue : '';
 
                 // make sure the first sibling does contain an error
                 if (strstr($first_sibling, 'notifytiny') !== false &&
