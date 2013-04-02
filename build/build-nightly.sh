@@ -26,18 +26,29 @@
 # 1/ The base url of the site being tested (including trailing slash)
 # 2/ The cucumber test profile (see cucumber.yml)
 
+# Step timer function
+step_time () {
+    if [ -z $TOTAL ]; then TOTAL=0; fi
+    STEPTIME=$((`date +%s`-$TOTAL-$TIME))
+    echo "STEP $1: Finished $STEPTIME Seconds ($(($STEPTIME/60)) Minutes)"
+    TOTAL=$(($TOTAL+$STEPTIME))
+}
+
 echo "STEP 1: Run php syntax check";
 find . \( -name '*.php' -o -name '*.html' \) -print0 | xargs -0 -n1 -P4 ./build/lint.sh | grep -v "No syntax errors detected"
+step_time "1"
 
 echo "STEP 2: Generate some test users"
 sudo -u www-data php build/generate_users.php
+step_time "2"
 
 echo "STEP 3: Run PHPUnit";
-# not all tests pass yet, so let's just run a few to start with
-phpunit --log-junit build/logs/xml/TEST-suite.xml dml_testcase lib/dml/tests/dml_test.php
+phpunit --log-junit build/logs/xml/TEST-suite.xml
+step_time "3"
 
 echo "STEP 4: Run cucumber tests (disabled link checker tests)";
 cucumber -p $2 --format junit --out build/logs/xml/
+step_time "4"
 
 if [ $2 = 'pgsql' ]
 then
@@ -47,11 +58,16 @@ then
     # only process log info from the nightly database
     sudo pgfouine -database t1-hudsontesting-nightly -file /var/log/postgresql/postgres.log -top 40 -report queries.html=overall,bytype,slowest,n-mosttime,n-mostfrequent,n-slowestaverage -report hourly.html=overall,hourly -report errors.html=overall,n-mostfrequenterrors -format html-with-graphs
     cd -
+    step_time "5"
 fi
 
 echo "STEP 6: Run link checker script as a learner";
 sudo -u www-data php build/link_checker.php $1 learner 'passworD1!'
+step_time "6"
 
 echo "STEP 7: Run link checker script as an admin";
 sudo -u www-data php build/link_checker.php $1 admin 'passworD1!'
+step_time "7"
+
+echo "Total Time was: $TOTAL Seconds ($(($TOTAL/60)) Minutes)"
 
