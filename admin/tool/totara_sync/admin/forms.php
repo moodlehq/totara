@@ -130,7 +130,7 @@ class totara_sync_config_form extends moodleform {
     }
 
     /**
-     * Check if path is well-formed (no validation for existance)
+     * Check if path is well-formed (no validation for existence)
      * @param array $data
      * @param array $files
      * @return boolean
@@ -138,11 +138,11 @@ class totara_sync_config_form extends moodleform {
     function validation($data, $files) {
         $errors = parent::validation($data, $files);
         if (DIRECTORY_SEPARATOR == '\\') {
-            $pattern = '/[^a-zA-Z0-9\/_\\\\\\:-]/i';
+            $pattern = '/^[a-z0-9\/\.\-_\\\\\\:]{1,}$/i';
         } else {
-            $pattern = '/[^a-zA-Z0-9\/_-]/i';
+            $pattern = '/^[a-z0-9\/\.\-_]{1,}$/i';
         }
-        if (preg_match($pattern, $data['filesdir'])) {
+        if (!preg_match($pattern, $data['filesdir'])) {
             $errors['filesdir'] = get_string('pathformerror', 'tool_totara_sync');
         }
         return $errors;
