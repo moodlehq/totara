@@ -891,7 +891,7 @@ function badges_add_course_navigation(navigation_node $coursenode, stdClass $cou
     $coursecontext = context_course::instance($course->id);
     $isfrontpage = (!$coursecontext || $course->id == $SITE->id);
 
-    if (!empty($CFG->enablebadges) && $CFG->badges_allowcoursebadges && !$isfrontpage) {
+    if (!empty($CFG->enablebadges) && !empty($CFG->badges_allowcoursebadges) && !$isfrontpage) {
         if (has_capability('moodle/badges:configuredetails', $coursecontext)) {
             $coursenode->add(get_string('coursebadges', 'badges'), null,
                     navigation_node::TYPE_CONTAINER, null, 'coursebadges',
@@ -1227,7 +1227,7 @@ function profile_display_badges($userid, $courseid = 0) {
         }
 
         // Print external badges.
-        if ($courseid == 0 && $CFG->badges_allowexternalbackpack) {
+        if ($courseid == 0 && !empty($CFG->badges_allowexternalbackpack)) {
             $backpack = get_backpack_settings($userid);
             if (isset($backpack->totalbadges) && $backpack->totalbadges !== 0) {
                 $left = get_string('externalbadgesp', 'badges');
