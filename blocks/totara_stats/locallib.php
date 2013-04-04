@@ -133,7 +133,7 @@ function totara_stats_manager_stats($user, $config=null) {
         $statssql[1] = new stdClass();
         $statssql[1]->sql = "SELECT count(DISTINCT userid) FROM {block_totara_stats} ".
                             "WHERE eventtype = ". STATS_EVENT_TIME_SPENT.$commonsql.
-                            " GROUP BY userid HAVING sum(data2) > ".$numhours*60*60;
+                            "AND userid IN (SELECT bts2.userid FROM {block_totara_stats} bts2 GROUP BY bts2.userid HAVING sum(bts2.data2) > " . $numhours*60*60 . ")";
         $statssql[1]->sqlparams = $params;
         $statssql[1]->string = 'statlearnerhours';
         $statssql[1]->stringparam = new stdClass();
