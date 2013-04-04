@@ -38,10 +38,6 @@ admin_externalpage_setup('rbmanagereports');
 
 $output = $PAGE->get_renderer('totara_reportbuilder');
 
-if (!$CFG->enablereportcaching) {
-    $generalurl = new moodle_url('/totara/reportbuilder/general.php', array('id' => $id));
-    totara_set_notification(get_string('error:reportcachingdisabledsite', 'totara_reportbuilder'), $generalurl);
-}
 $returnurl = new moodle_url('/totara/reportbuilder/performance.php', array('id' => $id));
 
 $report = new reportbuilder($id);
@@ -67,6 +63,7 @@ if ($fromform = $mform->get_data()) {
 
     $todb = new stdClass();
     $todb->id = $id;
+    $todb->initialdisplay = $fromform->initialdisplay;
     $todb->cache = $fromform->cache;
     $DB->update_record('report_builder', $todb);
 

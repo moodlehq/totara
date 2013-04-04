@@ -99,13 +99,6 @@ class report_builder_edit_form extends moodleform {
         $mform->setType('hidden', PARAM_INT);
         $mform->addHelpButton('hidden', 'reportbuilderhidden', 'totara_reportbuilder');
 
-        $initial_display_attributes = sizeof($report->filters) < 1 ? array('disabled' => 'disabled', 'group' => null) : null;
-        $initial_display_sidenote = is_null($initial_display_attributes) ? '' : get_string('initialdisplay_disabled', 'totara_reportbuilder');
-        $mform->addElement('advcheckbox', 'initialdisplay', get_string('initialdisplay', 'totara_reportbuilder'),
-            $initial_display_sidenote, $initial_display_attributes, array(RB_INITIAL_DISPLAY_SHOW, RB_INITIAL_DISPLAY_HIDE));
-        $mform->setType('initialdisplay', PARAM_INT);
-        $mform->setDefault('initialdisplay', RB_INITIAL_DISPLAY_SHOW);
-        $mform->addHelpButton('initialdisplay', 'initialdisplay', 'totara_reportbuilder');
 
         $mform->addElement('text', 'recordsperpage', get_string('recordsperpage', 'totara_reportbuilder'), array('size' => '6', 'maxlength' => 4));
         $mform->setType('recordsperpage', PARAM_INT);
@@ -656,48 +649,63 @@ class report_builder_edit_access_form extends moodleform {
  */
 class report_builder_edit_performance_form extends moodleform {
     function definition() {
-        global $output;
+        global $output, $CFG;
         $mform =& $this->_form;
         $report = $this->_customdata['report'];
         $id = $this->_customdata['id'];
         $schedule = $this->_customdata['schedule'];
 
-        $mform->addElement('header', 'general', get_string('reportperformance', 'totara_reportbuilder'));
+        $mform->addElement('header', 'general', get_string('initialdisplay_heading', 'totara_reportbuilder'));
+        $initial_display_attributes = sizeof($report->filters) < 1 ? array('disabled' => 'disabled', 'group' => null) : null;
+        $initial_display_sidenote = is_null($initial_display_attributes) ? '' : get_string('initialdisplay_disabled', 'totara_reportbuilder');
+        $mform->addElement('advcheckbox', 'initialdisplay', get_string('initialdisplay', 'totara_reportbuilder'),
+            $initial_display_sidenote, $initial_display_attributes, array(RB_INITIAL_DISPLAY_SHOW, RB_INITIAL_DISPLAY_HIDE));
+        $mform->setType('initialdisplay', PARAM_INT);
+        $mform->setDefault('initialdisplay', RB_INITIAL_DISPLAY_SHOW);
+        $mform->addHelpButton('initialdisplay', 'initialdisplay', 'totara_reportbuilder');
 
-        $mform->addElement('advcheckbox', 'cache', get_string('cache', 'totara_reportbuilder'), '', null, array(0, 1));
-        $mform->setType('cache', PARAM_INT);
-        $mform->addHelpButton('cache', 'reportbuildercache', 'totara_reportbuilder');
+        $mform->addElement('header', 'general', get_string('reportbuildercache_heading', 'totara_reportbuilder'));
+        if (!empty($CFG->enablereportcaching)) {
+            //only show report cache settings if it is enabled
+            $mform->addElement('advcheckbox', 'cache', get_string('cache', 'totara_reportbuilder'), '', null, array(0, 1));
+            $mform->setType('cache', PARAM_INT);
+            $mform->addHelpButton('cache', 'reportbuildercache', 'totara_reportbuilder');
 
-        $mform->addElement('scheduler', 'schedulegroup', get_string('reportbuildercachescheduler', 'totara_reportbuilder'));
-        $mform->disabledIf('schedulegroup', 'cache');
-        $mform->addHelpButton('schedulegroup', 'reportbuildercachescheduler', 'totara_reportbuilder');
+            $mform->addElement('scheduler', 'schedulegroup', get_string('reportbuildercachescheduler', 'totara_reportbuilder'));
+            $mform->disabledIf('schedulegroup', 'cache');
+            $mform->addHelpButton('schedulegroup', 'reportbuildercachescheduler', 'totara_reportbuilder');
 
-        $cachetime = isset($report->cacheschedule->lastreport) ? $report->cacheschedule->lastreport : 0;
-        $cachedstr = get_string('lastcached','totara_reportbuilder', userdate($cachetime));
-        $notcachedstr = get_string('notcached','totara_reportbuilder');
-        $lastcached = ($cachetime > 0) ? $cachedstr : $notcachedstr;
+            $cachetime = isset($report->cacheschedule->lastreport) ? $report->cacheschedule->lastreport : 0;
+            $cachedstr = get_string('lastcached','totara_reportbuilder', userdate($cachetime));
+            $notcachedstr = get_string('notcached','totara_reportbuilder');
+            $lastcached = ($cachetime > 0) ? $cachedstr : $notcachedstr;
 
-        if ($report->cache) {
-            $mform->addElement('static', 'cachenowselector', get_string('reportbuilderinitcache', 'totara_reportbuilder'),
-                html_writer::tag('span', $lastcached. ' ') .
-                $output->cachenow_button($id)
-            );
+            if ($report->cache) {
+                $mform->addElement('static', 'cachenowselector', get_string('reportbuilderinitcache', 'totara_reportbuilder'),
+                    html_writer::tag('span', $lastcached. ' ') .
+                    $output->cachenow_button($id)
+                );
+            } else {
+                $mform->addElement('advcheckbox', 'generatenow', get_string('cachenow', 'totara_reportbuilder'), '', null, array(0, 1));
+                $mform->setType('generatenow', PARAM_INT);
+                $mform->addHelpButton('generatenow', 'cachenow', 'totara_reportbuilder');
+                $mform->disabledIf('generatenow', 'cache');
+            }
+
+            $mform->addElement('hidden', 'id', $id);
+            $mform->setType('id', PARAM_INT);
+            $mform->addElement('hidden', 'source', $report->source);
+            $mform->setType('source', PARAM_TEXT);
+            $this->add_action_buttons();
+
+            // set the defaults
+            $this->set_data($report);
+            $this->set_data($schedule);
         } else {
-            $mform->addElement('advcheckbox', 'generatenow', get_string('cachenow', 'totara_reportbuilder'), '', null, array(0, 1));
-            $mform->setType('generatenow', PARAM_INT);
-            $mform->addHelpButton('generatenow', 'cachenow', 'totara_reportbuilder');
-            $mform->disabledIf('generatenow', 'cache');
+            //report caching is not enabled, inform user and link to settings page.
+            $enablelink = new moodle_url("/".$CFG->admin."/settings.php", array('section' => 'optionalsubsystems'));
+            $mform->addElement('static', 'reportcachingdisabled', '', get_string('reportcachingdisabled', 'totara_reportbuilder', $enablelink->out()));
         }
-
-        $mform->addElement('hidden', 'id', $id);
-        $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'source', $report->source);
-        $mform->setType('source', PARAM_TEXT);
-        $this->add_action_buttons();
-
-        // set the defaults
-        $this->set_data($report);
-        $this->set_data($schedule);
     }
 }
 
