@@ -152,7 +152,7 @@ class format_demo_renderer extends format_section_renderer_base {
         $output .= html_writer::start_tag('div', array('class' => 'summary'));
         $output .= $this->format_summary_text($section);
 
-            $context = context_course::instance($course->id);
+        $context = context_course::instance($course->id);
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $url = new moodle_url('/course/editsection.php', array('id'=>$section->id, 'sr'=>$sectionreturn));
             $output .= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
@@ -161,7 +161,7 @@ class format_demo_renderer extends format_section_renderer_base {
                                         );
         }
         $output .= html_writer::end_tag('div');
-        $output .= $this->section_availability_message($section);
+        $output .= $this->section_availability_message($section, has_capability('moodle/course:viewhiddensections', $context));
         return $output;
    }
 
