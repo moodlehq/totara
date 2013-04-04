@@ -145,16 +145,17 @@ if (!empty($delete) and confirm_sesskey()) {
 }
 
 $buttoncontainer = null;
-if (has_capability('moodle/course:create', $systemcontext)) {
-    /// Print link to create a new course
+if (has_capability('moodle/course:create', $systemcontext) && $showaddcoursebutton) {
+    // Print link to create a new course, for the 1st available category.
     $options = array('category' => $CFG->defaultrequestcategory);
     $buttoncontainer .= $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
 }
 
-/// Unless it's an editing admin, just print the regular listing of courses/categories
+// Unless it's an editing admin, just print the regular listing of courses/categories.
 if (!$adminediting) {
 
-/// Print form for creating new categories
+    $showaddcoursebutton = true;
+    // Print form for creating new categories.
 
     if ($totalcats > 1 || ($totalcats == 1 && $DB->count_records('course') > 200)) {
         $strcourses = get_string('courses');
@@ -177,7 +178,7 @@ if (!$adminediting) {
         echo $OUTPUT->header();
         echo $OUTPUT->skip_link_target();
         echo $OUTPUT->box_start('courseboxes');
-        print_courses(0);
+        $showaddcoursebutton = print_courses(0);
         echo $OUTPUT->box_end();
     }
 
@@ -257,6 +258,7 @@ if ((!empty($moveup) or !empty($movedown)) and confirm_sesskey()) {
     if ($swapcategory and $movecategory) {
         $DB->set_field('course_categories', 'sortorder', $swapcategory->sortorder, array('id'=>$movecategory->id));
         $DB->set_field('course_categories', 'sortorder', $movecategory->sortorder, array('id'=>$swapcategory->id));
+        add_to_log(SITEID, "category", "move", "editcategory.php?id=$movecategory->id", $movecategory->id);
     }
 
     // finally reorder courses

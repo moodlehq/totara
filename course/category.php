@@ -169,6 +169,7 @@
                     require_capability('moodle/course:visibility', $coursecontext);
                     $DB->set_field('course', 'visible', $visible, array('id' => $course->id));
                     $DB->set_field('course', 'visibleold', $visible, array('id' => $course->id)); // we set the old flag when user manually changes visibility of course
+                    add_to_log($course->id, "course", ($visible ? 'show' : 'hide'), "edit.php?id=$course->id", $course->id);
                 }
             }
 
@@ -197,6 +198,7 @@
                     }
                     $DB->set_field('course', 'sortorder', $swapcourse->sortorder, array('id' => $movecourse->id));
                     $DB->set_field('course', 'sortorder', $movecourse->sortorder, array('id' => $swapcourse->id));
+                    add_to_log($movecourse->id, "course", "move", "edit.php?id=$movecourse->id", $movecourse->id);
                 }
             }
 

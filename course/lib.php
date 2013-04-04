@@ -80,6 +80,7 @@ function make_log_url($module, $url) {
         case 'lib':
         case 'admin':
         case 'calendar':
+        case 'category':
         case 'mnet course':
             if (strpos($url, '../') === 0) {
                 $url = ltrim($url, '.');
@@ -1959,7 +1960,8 @@ function get_module_metadata($course, $modnames, $sectionreturn = null) {
         // NOTE: this is legacy stuff, module subtypes are very strongly discouraged!!
         $gettypesfunc =  $modname.'_get_types';
         if (function_exists($gettypesfunc)) {
-            if ($types = $gettypesfunc()) {
+            $types = $gettypesfunc();
+            if (is_array($types) && count($types) > 0) {
                 $group = new stdClass();
                 $group->name = $modname;
                 $group->icon = $OUTPUT->pix_icon('icon', '', $modname, array('class' => 'icon'));
@@ -2008,7 +2010,11 @@ function get_module_metadata($course, $modnames, $sectionreturn = null) {
             $module->archetype = plugin_supports('mod', $modname, FEATURE_MOD_ARCHETYPE, MOD_ARCHETYPE_OTHER);
             $modlist[$course->id][$modname] = $module;
         }
-        $return[$modname] = $modlist[$course->id][$modname];
+        if (isset($modlist[$course->id][$modname])) {
+            $return[$modname] = $modlist[$course->id][$modname];
+        } else {
+            debugging("Invalid module metadata configuration for {$modname}");
+        }
     }
 
     return $return;
@@ -2467,7 +2473,9 @@ function update_category_button($categoryid = 0) {
 }
 
 /**
- * Category is 0 (for all courses) or an object
+ * Print courses in category. If category is 0 then all courses are printed.
+ * @param int|stdClass $category category object or id.
+ * @return bool true if courses found and printed, else false.
  */
 function print_courses($category) {
     global $CFG, $OUTPUT;
@@ -2515,8 +2523,10 @@ function print_courses($category) {
             echo html_writer::start_tag('div', array('class'=>'addcoursebutton'));
             echo $OUTPUT->single_button(new moodle_url('/course/edit.php', $options), get_string("addnewcourse"));
             echo html_writer::end_tag('div');
+            return false;
         }
     }
+    return true;
 }
 
 /**
@@ -2622,6 +2632,7 @@ function print_course($course, $highlightterms = '') {
     if ($icons = enrol_get_course_info_icons($course)) {
         echo html_writer::start_tag('div', array('class'=>'enrolmenticons'));
         foreach ($icons as $icon) {
+            $icon->attributes["alt"] .= ": ". format_string($coursename, true, array('context'=>$context));
             echo $OUTPUT->render($icon);
         }
         echo html_writer::end_tag('div'); // End of enrolmenticons div
@@ -2724,14 +2735,14 @@ function print_course_search($value="", $return=false, $format="plain") {
         $output  = '<form id="'.$id.'" action="'.$CFG->wwwroot.'/course/search.php" method="get">';
         $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
         $output .= '<label for="shortsearchbox">'.$strsearchcourses.': </label>';
-        $output .= '<input type="text" id="shortsearchbox" size="12" name="search" alt="'.s($strsearchcourses).'" value="'.s($value).'" />';
+        $output .= '<input type="text" id="shortsearchbox" size="12" name="search" value="'.s($value).'" />';
         $output .= '<input type="submit" value="'.get_string('go').'" />';
         $output .= '</fieldset></form>';
     } else if ($format == 'navbar') {
         $output  = '<form id="coursesearchnavbar" action="'.$CFG->wwwroot.'/course/search.php" method="get">';
         $output .= '<fieldset class="coursesearchbox invisiblefieldset">';
         $output .= '<label for="navsearchbox">'.$strsearchcourses.': </label>';
-        $output .= '<input type="text" id="navsearchbox" size="20" name="search" alt="'.s($strsearchcourses).'" value="'.s($value).'" />';
+        $output .= '<input type="text" id="navsearchbox" size="20" name="search" value="'.s($value).'" />';
         $output .= '<input type="submit" value="'.get_string('go').'" />';
         $output .= '</fieldset></form>';
     }
@@ -2924,6 +2935,13 @@ function set_coursemodule_visible($id, $visible) {
     if (!$cm = $DB->get_record('course_modules', array('id'=>$id))) {
         return false;
     }
+
+    // Create events and propagate visibility to associated grade items if the value has changed.
+    // Only do this if it's changed to avoid accidently overwriting manual showing/hiding of student grades.
+    if ($cm->visible == $visible) {
+        return true;
+    }
+
     if (!$modulename = $DB->get_field('modules', 'name', array('id'=>$cm->module))) {
         return false;
     }
@@ -2937,7 +2955,7 @@ function set_coursemodule_visible($id, $visible) {
         }
     }
 
-    // hide the associated grade items so the teacher doesn't also have to go to the gradebook and hide them there
+    // Hide the associated grade items so the teacher doesn't also have to go to the gradebook and hide them there.
     $grade_items = grade_item::fetch_all(array('itemtype'=>'mod', 'itemmodule'=>$modulename, 'iteminstance'=>$cm->instance, 'courseid'=>$cm->course));
     if ($grade_items) {
         foreach ($grade_items as $grade_item) {
@@ -3193,7 +3211,7 @@ function reorder_sections($sections, $origin_position, $target_position) {
  * All parameters are objects
  */
 function moveto_module($mod, $section, $beforemod=NULL) {
-    global $OUTPUT;
+    global $OUTPUT, $DB;
 
 /// Remove original module from original section
     if (! delete_mod_from_section($mod->id, $mod->section)) {
@@ -3202,7 +3220,16 @@ function moveto_module($mod, $section, $beforemod=NULL) {
 
     // if moving to a hidden section then hide module
     if (!$section->visible && $mod->visible) {
+        // Set this in the object because it is sent as a response to ajax calls.
+        $mod->visible = 0;
         set_coursemodule_visible($mod->id, 0);
+        // Set visibleold to 1 so module will be visible when section is made visible.
+        $DB->set_field('course_modules', 'visibleold', 1, array('id' => $mod->id));
+    }
+    if ($section->visible && !$mod->visible) {
+        set_coursemodule_visible($mod->id, $mod->visibleold);
+        // Set this in the object because it is sent as a response to ajax calls.
+        $mod->visible = $mod->visibleold;
     }
 
 /// Add the module into the new section
@@ -3540,6 +3567,7 @@ function category_delete_full($category, $showfeedback=true) {
     // finally delete the category and it's context
     $DB->delete_records('course_categories', array('id'=>$category->id));
     delete_context(CONTEXT_COURSECAT, $category->id);
+    add_to_log(SITEID, "category", "delete", "index.php", "$category->name (ID $category->id)");
 
     events_trigger('course_category_deleted', $category);
 
@@ -3603,6 +3631,7 @@ function category_delete_move($category, $newparentid, $showfeedback=true) {
     // finally delete the category and it's context
     $DB->delete_records('course_categories', array('id'=>$category->id));
     delete_context(CONTEXT_COURSECAT, $category->id);
+    add_to_log(SITEID, "category", "delete", "index.php", "$category->name (ID $category->id)");
 
     events_trigger('course_category_deleted', $category);
 
@@ -3649,6 +3678,7 @@ function move_courses($courseids, $categoryid) {
             }
 
             $DB->update_record('course', $course);
+            add_to_log($course->id, "course", "move", "edit.php?id=$course->id", $course->id);
 
             $context   = context_course::instance($course->id);
             context_moved($context, $newparent);
@@ -3681,6 +3711,7 @@ function course_category_hide($category) {
             $DB->set_field('course', 'visible', 0, array('category' => $cat->id));
         }
     }
+    add_to_log(SITEID, "category", "hide", "editcategory.php?id=$category->id", $category->id);
 }
 
 /**
@@ -3704,6 +3735,7 @@ function course_category_show($category) {
             $DB->execute("UPDATE {course} SET visible = visibleold WHERE category = ?", array($cat->id));
         }
     }
+    add_to_log(SITEID, "category", "show", "editcategory.php?id=$category->id", $category->id);
 }
 
 /**
@@ -3717,12 +3749,10 @@ function move_category($category, $newparentcat) {
 
     $hidecat = false;
     if (empty($newparentcat->id)) {
-        $DB->set_field('course_categories', 'parent', 0, array('id'=>$category->id));
-
+        $DB->set_field('course_categories', 'parent', 0, array('id' => $category->id));
         $newparent = context_system::instance();
-
     } else {
-        $DB->set_field('course_categories', 'parent', $newparentcat->id, array('id'=>$category->id));
+        $DB->set_field('course_categories', 'parent', $newparentcat->id, array('id' => $category->id));
         $newparent = context_coursecat::instance($newparentcat->id);
 
         if (!$newparentcat->visible and $category->visible) {
@@ -3735,6 +3765,9 @@ function move_category($category, $newparentcat) {
 
     // now make it last in new category
     $DB->set_field('course_categories', 'sortorder', MAX_COURSES_IN_CATEGORY*MAX_COURSE_CATEGORIES, array('id'=>$category->id));
+
+    // Log action.
+    add_to_log(SITEID, "category", "move", "editcategory.php?id=$category->id", $category->id);
 
     // and fix the sortorders
     fix_course_sortorder();
@@ -4454,16 +4487,18 @@ class course_request {
  * @param stdClass $currentcontext Current context of block
  */
 function course_page_type_list($pagetype, $parentcontext, $currentcontext) {
-    // if above course context ,display all course fomats
-    list($currentcontext, $course, $cm) = get_context_info_array($currentcontext->id);
-    if ($course->id == SITEID) {
-        return array('*'=>get_string('page-x', 'pagetype'));
-    } else {
-        return array('*'=>get_string('page-x', 'pagetype'),
-            'course-*'=>get_string('page-course-x', 'pagetype'),
-            'course-view-*'=>get_string('page-course-view-x', 'pagetype')
-        );
+    // $currentcontext could be null, get_context_info_array() will throw an error if this is the case.
+    if (isset($currentcontext)) {
+        // if above course context ,display all course fomats
+        list($currentcontext, $course, $cm) = get_context_info_array($currentcontext->id);
+        if ($course->id == SITEID) {
+            return array('*'=>get_string('page-x', 'pagetype'));
+        }
     }
+    return array('*'=>get_string('page-x', 'pagetype'),
+        'course-*'=>get_string('page-course-x', 'pagetype'),
+        'course-view-*'=>get_string('page-course-view-x', 'pagetype')
+    );
 }
 
 // Totara Functions

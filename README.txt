@@ -8,7 +8,7 @@ a few minutes:
 1) Move the Totara files into your web directory.
 
 2) Create a single database for Totara to store all
-   it's tables in (or choose an existing database).
+   its tables in (or choose an existing database).
 
 3) Visit your Totara site with a browser, you should
    be taken to the install.php script, which will lead

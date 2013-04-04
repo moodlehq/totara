@@ -1524,7 +1524,154 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2012120300.04);
     }
 
-    if ($oldversion < 2012120301.01) {
+    if ($oldversion < 2012120301.09) {
+        // Add the site identifier to the cache config's file.
+        $siteidentifier = $DB->get_field('config', 'value', array('name' => 'siteidentifier'));
+        cache_helper::update_site_identifier($siteidentifier);
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120301.09);
+    }
+
+    if ($oldversion < 2012120301.10) {
+        // Fixing possible wrong MIME types for SMART Notebook files.
+        $extensions = array('%.gallery', '%.galleryitem', '%.gallerycollection', '%.nbk', '%.notebook', '%.xbk');
+        $select = $DB->sql_like('filename', '?', false);
+        foreach ($extensions as $extension) {
+            $DB->set_field_select(
+                'files',
+                'mimetype',
+                'application/x-smarttech-notebook',
+                $select,
+                array($extension)
+            );
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120301.10);
+    }
+
+    if ($oldversion < 2012120301.11) {
+        // Retrieve the list of course_sections as a recordset to save memory
+        $coursesections = $DB->get_recordset('course_sections', null, 'course, id', 'id, course, sequence');
+        foreach ($coursesections as $coursesection) {
+            // Retrieve all of the actual modules in this course and section combination to reduce DB calls
+            $actualsectionmodules = $DB->get_records('course_modules',
+                    array('course' => $coursesection->course, 'section' => $coursesection->id), '', 'id, section');
+
+            // Break out the current sequence so that we can compare it
+            $currentsequence = explode(',', $coursesection->sequence);
+            $newsequence = array();
+
+            // Check each of the modules in the current sequence
+            foreach ($currentsequence as $module) {
+                if (isset($actualsectionmodules[$module])) {
+                    $newsequence[] = $module;
+                    // We unset the actualsectionmodules so that we don't get duplicates and that we can add orphaned
+                    // modules later
+                    unset($actualsectionmodules[$module]);
+                }
+            }
+
+            // Append any modules which have somehow been orphaned
+            foreach ($actualsectionmodules as $module) {
+                $newsequence[] = $module->id;
+            }
+
+            // Piece it all back together
+            $sequence = implode(',', $newsequence);
+
+            // Only update if there have been changes
+            if ($sequence !== $coursesection->sequence) {
+                $coursesection->sequence = $sequence;
+                $DB->update_record('course_sections', $coursesection);
+
+                // And clear the sectioncache and modinfo cache - they'll be regenerated on next use
+                $course = new stdClass();
+                $course->id = $coursesection->course;
+                $course->sectioncache = null;
+                $course->modinfo = null;
+                $DB->update_record('course', $course);
+            }
+        }
+        $coursesections->close();
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2012120301.11);
+    }
+
+    if ($oldversion < 2012120301.13) {
+        // Delete entries regarding invalid 'interests' option which breaks course.
+        $DB->delete_records('course_sections_avail_fields', array('userfield' => 'interests'));
+        $DB->delete_records('course_modules_avail_fields', array('userfield' => 'interests'));
+        // Clear course cache (will be rebuilt on first visit) in case of changes to these.
+        rebuild_course_cache(0, true);
+
+        upgrade_main_savepoint(true, 2012120301.13);
+    }
+
+    if ($oldversion < 2012120302.01) {
+        // Retrieve the list of course_sections as a recordset to save memory.
+        // This is to fix a regression caused by MDL-37939.
+        // In this case the upgrade step is fixing records where:
+        // The data in course_sections.sequence contains the correct module id
+        // The section field for on the course modules table may have been updated to point to the incorrect id.
+
+        // This query is looking for sections where the sequence is not in sync with the course_modules table.
+        // The syntax for the like query is looking for a value in a comma separated list.
+        // It adds a comma to either site of the list and then searches for LIKE '%,id,%'.
+        $sequenceconcat = $DB->sql_concat("','", 's.sequence', "','");
+        $moduleconcat = $DB->sql_concat("'%,'", 'cm.id', "',%'");
+        $sql = 'SELECT s2.id, s2.course, s2.sequence
+                FROM {course_sections} s2
+                JOIN(
+                    SELECT DISTINCT s.id
+                    FROM
+                    {course_modules} cm
+                    JOIN {course_sections} s
+                    ON
+                        cm.course = s.course
+                    WHERE cm.section != s.id AND ' . $sequenceconcat . ' LIKE ' . $moduleconcat . '
+                ) d
+                ON s2.id = d.id';
+        $coursesections = $DB->get_recordset_sql($sql);
+
+        foreach ($coursesections as $coursesection) {
+            // Retrieve all of the actual modules in this course and section combination to reduce DB calls.
+            $actualsectionmodules = $DB->get_records('course_modules',
+                    array('course' => $coursesection->course, 'section' => $coursesection->id), '', 'id, section');
+
+            // Break out the current sequence so that we can compare it.
+            $currentsequence = explode(',', $coursesection->sequence);
+            $orphanlist = array();
+
+            // Check each of the modules in the current sequence.
+            foreach ($currentsequence as $cmid) {
+                if (!empty($cmid) && !isset($actualsectionmodules[$cmid])) {
+                    $orphanlist[] = $cmid;
+                }
+            }
+
+            if (!empty($orphanlist)) {
+                list($sql, $params) = $DB->get_in_or_equal($orphanlist, SQL_PARAMS_NAMED);
+                $sql = "id $sql";
+
+                $DB->set_field_select('course_modules', 'section', $coursesection->id, $sql, $params);
+
+                // And clear the sectioncache and modinfo cache - they'll be regenerated on next use.
+                $course = new stdClass();
+                $course->id = $coursesection->course;
+                $course->sectioncache = null;
+                $course->modinfo = null;
+                $DB->update_record('course', $course);
+            }
+        }
+        $coursesections->close();
+
+        upgrade_main_savepoint(true, 2012120302.01);
+    }
+
+    if ($oldversion < 2012120303.01) {
         // Add openbadges tables.
 
         // Define table 'badge' to be created
@@ -1709,7 +1856,7 @@ function xmldb_main_upgrade($oldversion) {
         }
 
         // Main savepoint reached.
-        upgrade_main_savepoint(true, 2012120301.01);
+        upgrade_main_savepoint(true, 2012120303.01);
     }
 
     return true;

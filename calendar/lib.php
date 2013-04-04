@@ -745,7 +745,7 @@ function calendar_get_events($tstart, $tend, $users, $groups, $courses, $withdur
  * @return string $content return available control for the calender in html
  */
 function calendar_top_controls($type, $data) {
-    global $CFG;
+    global $CFG, $PAGE;
     $content = '';
     if(!isset($data['d'])) {
         $data['d'] = 1;
@@ -768,6 +768,7 @@ function calendar_top_controls($type, $data) {
 
     $data['m'] = $date['mon'];
     $data['y'] = $date['year'];
+    $urlbase = $PAGE->url;
 
     //Accessibility: calendar block controls, replaced <table> with <div>.
     //$nexttext = link_arrow_right(get_string('monthnext', 'access'), $url='', $accesshide=true);
@@ -777,8 +778,8 @@ function calendar_top_controls($type, $data) {
         case 'frontpage':
             list($prevmonth, $prevyear) = calendar_sub_month($data['m'], $data['y']);
             list($nextmonth, $nextyear) = calendar_add_month($data['m'], $data['y']);
-            $nextlink = calendar_get_link_next(get_string('monthnext', 'access'), 'index.php?', 0, $nextmonth, $nextyear, $accesshide=true);
-            $prevlink = calendar_get_link_previous(get_string('monthprev', 'access'), 'index.php?', 0, $prevmonth, $prevyear, true);
+            $nextlink = calendar_get_link_next(get_string('monthnext', 'access'), $urlbase, 0, $nextmonth, $nextyear, true);
+            $prevlink = calendar_get_link_previous(get_string('monthprev', 'access'), $urlbase, 0, $prevmonth, $prevyear, true);
 
             $calendarlink = calendar_get_link_href(new moodle_url(CALENDAR_URL.'view.php', array('view'=>'month')), 1, $data['m'], $data['y']);
             if (!empty($data['id'])) {
@@ -804,8 +805,8 @@ function calendar_top_controls($type, $data) {
         case 'course':
             list($prevmonth, $prevyear) = calendar_sub_month($data['m'], $data['y']);
             list($nextmonth, $nextyear) = calendar_add_month($data['m'], $data['y']);
-            $nextlink = calendar_get_link_next(get_string('monthnext', 'access'), 'view.php?id='.$data['id'].'&amp;', 0, $nextmonth, $nextyear, $accesshide=true);
-            $prevlink = calendar_get_link_previous(get_string('monthprev', 'access'), 'view.php?id='.$data['id'].'&amp;', 0, $prevmonth, $prevyear, true);
+            $nextlink = calendar_get_link_next(get_string('monthnext', 'access'), $urlbase, 0, $nextmonth, $nextyear, true);
+            $prevlink = calendar_get_link_previous(get_string('monthprev', 'access'), $urlbase, 0, $prevmonth, $prevyear, true);
 
             $calendarlink = calendar_get_link_href(new moodle_url(CALENDAR_URL.'view.php', array('view'=>'month')), 1, $data['m'], $data['y']);
             if (!empty($data['id'])) {
@@ -2866,8 +2867,7 @@ function calendar_process_subscription_row($subscriptionid, $pollinterval, $acti
             return "<p>".get_string('subscriptionupdated', 'calendar', $sub->name)."</p>" . calendar_update_subscription_events($subscriptionid);
 
         case $strremove:
-            $DB->delete_records('event', array('subscriptionid' => $subscriptionid));
-            $DB->delete_records('event_subscriptions', array('id' => $subscriptionid));
+            calendar_delete_subscription($subscriptionid);
             return get_string('subscriptionremoved', 'calendar', $sub->name);
             break;
 
@@ -2877,6 +2877,21 @@ function calendar_process_subscription_row($subscriptionid, $pollinterval, $acti
     return '';
 }
 
+/**
+ * Delete subscription and all related events.
+ *
+ * @param int|stdClass $subscription subscription or it's id, which needs to be deleted.
+ */
+function calendar_delete_subscription($subscription) {
+    global $DB;
+
+    if (is_object($subscription)) {
+        $subscription = $subscription->id;
+    }
+    // Delete subscription and related events.
+    $DB->delete_records('event', array('subscriptionid' => $subscription));
+    $DB->delete_records('event_subscriptions', array('id' => $subscription));
+}
 /**
  * From a URL, fetch the calendar and return an iCalendar object.
  *

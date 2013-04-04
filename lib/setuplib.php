@@ -137,12 +137,21 @@ class moodle_exception extends Exception {
 
         if (get_string_manager()->string_exists($errorcode, $module)) {
             $message = get_string($errorcode, $module, $a);
+            $haserrorstring = true;
         } else {
             $message = $module . '/' . $errorcode;
+            $haserrorstring = false;
         }
 
         if (defined('PHPUNIT_TEST') and PHPUNIT_TEST and $debuginfo) {
             $message = "$message ($debuginfo)";
+        }
+
+        if (!$haserrorstring and defined('PHPUNIT_TEST') and PHPUNIT_TEST) {
+            // Append the contents of $a to $debuginfo so helpful information isn't lost.
+            // This emulates what {@link get_exception_info()} does. Unfortunately that
+            // function is not used by phpunit.
+            $message .= PHP_EOL.'$a contents: '.print_r($a, true);
         }
 
         parent::__construct($message, 0);
@@ -515,6 +524,22 @@ function get_exception_info($ex) {
     } else {
         $message = $module . '/' . $errorcode;
         $debuginfo .= PHP_EOL.'$a contents: '.print_r($a, true);
+    }
+
+    // Remove some absolute paths from message and debugging info.
+    $searches = array();
+    $replaces = array();
+    $cfgnames = array('tempdir', 'cachedir', 'themedir',
+        'langmenucachefile', 'langcacheroot', 'dataroot', 'dirroot');
+    foreach ($cfgnames as $cfgname) {
+        if (property_exists($CFG, $cfgname)) {
+            $searches[] = $CFG->$cfgname;
+            $replaces[] = "[$cfgname]";
+        }
+    }
+    if (!empty($searches)) {
+        $message   = str_replace($searches, $replaces, $message);
+        $debuginfo = str_replace($searches, $replaces, $debuginfo);
     }
 
     // Be careful, no guarantee weblib.php is loaded.

@@ -1766,7 +1766,8 @@ class assign {
                 }
             }
             $grading_info = grade_get_grades($course->id, 'mod', 'assign', $cm->instance, $USER->id);
-            if (isset($grading_info->items[0]) && !$grading_info->items[0]->grades[$USER->id]->hidden ) {
+            if (isset($grading_info->items[0]->grades[$USER->id]) &&
+                    !$grading_info->items[0]->grades[$USER->id]->hidden ) {
                 $grade = $grading_info->items[0]->grades[$USER->id]->str_grade;
             } else {
                 $grade = '-';
@@ -1894,6 +1895,39 @@ class assign {
 
         $o .= $this->view_footer();
         return $o;
+    }
+
+    /**
+     * Rewrite plugin file urls so they resolve correctly in an exported zip.
+     *
+     * @param stdClass $user - The user record
+     * @param assign_plugin $plugin - The assignment plugin
+     */
+    public function download_rewrite_pluginfile_urls($text, $user, $plugin) {
+        $groupmode = groups_get_activity_groupmode($this->get_course_module());
+        $groupname = '';
+        if ($groupmode) {
+            $groupid = groups_get_activity_group($this->get_course_module(), true);
+            $groupname = groups_get_group_name($groupid).'-';
+        }
+
+        if ($this->is_blind_marking()) {
+            $prefix = $groupname . get_string('participant', 'assign');
+            $prefix = str_replace('_', ' ', $prefix);
+            $prefix = clean_filename($prefix . '_' . $this->get_uniqueid_for_user($user->id) . '_');
+        } else {
+            $prefix = $groupname . fullname($user);
+            $prefix = str_replace('_', ' ', $prefix);
+            $prefix = clean_filename($prefix . '_' . $this->get_uniqueid_for_user($user->id) . '_');
+        }
+
+        $subtype = $plugin->get_subtype();
+        $type = $plugin->get_type();
+        $prefix = $prefix . $subtype . '_' . $type . '_';
+
+        $result = str_replace('@@PLUGINFILE@@/', $prefix, $text);
+
+        return $result;
     }
 
     /**
@@ -2045,7 +2079,7 @@ class assign {
                 if ($submission) {
                     foreach ($this->submissionplugins as $plugin) {
                         if ($plugin->is_enabled() && $plugin->is_visible()) {
-                            $pluginfiles = $plugin->get_files($submission);
+                            $pluginfiles = $plugin->get_files($submission, $student);
                             foreach ($pluginfiles as $zipfilename => $file) {
                                 $subtype = $plugin->get_subtype();
                                 $type = $plugin->get_type();
@@ -2253,12 +2287,14 @@ class assign {
         }
         $user = $DB->get_record('user', array('id' => $userid));
         if ($user) {
-            $o .= $this->get_renderer()->render(new assign_user_summary($user,
-                                                                $this->get_course()->id,
-                                                                has_capability('moodle/site:viewfullnames',
-                                                                $this->get_course_context()),
-                                                                $this->is_blind_marking(),
-                                                                $this->get_uniqueid_for_user($user->id)));
+            $viewfullnames = has_capability('moodle/site:viewfullnames', $this->get_course_context());
+            $usersummary = new assign_user_summary($user,
+                                                   $this->get_course()->id,
+                                                   $viewfullnames,
+                                                   $this->is_blind_marking(),
+                                                   $this->get_uniqueid_for_user($user->id),
+                                                   get_extra_user_fields($this->get_context()));
+            $o .= $this->get_renderer()->render($usersummary);
         }
         $submission = $this->get_user_submission($userid, false);
         $submissiongroup = null;
@@ -2637,7 +2673,31 @@ class assign {
 
 
     /**
-     * Perform an access check to see if the current $USER can view this users submission
+     * Perform an access check to see if the current $USER can view this group submission.
+     *
+     * @param int $groupid
+     * @return bool
+     */
+    public function can_view_group_submission($groupid) {
+        global $USER;
+
+        if (!is_enrolled($this->get_course_context(), $USER->id)) {
+            return false;
+        }
+        if (has_capability('mod/assign:grade', $this->context)) {
+            return true;
+        }
+        $members = $this->get_submission_group_members($groupid, true);
+        foreach ($members as $member) {
+            if ($member->id == $USER->id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Perform an access check to see if the current $USER can view this users submission.
      *
      * @param int $userid
      * @return bool
@@ -2877,8 +2937,12 @@ class assign {
                                         $this->get_instance()->id,
                                         $user->id);
 
-            $gradingitem = $gradinginfo->items[0];
-            $gradebookgrade = $gradingitem->grades[$user->id];
+            $gradingitem = null;
+            $gradebookgrade = null;
+            if (isset($gradinginfo->items[0])) {
+                $gradingitem = $gradinginfo->items[0];
+                $gradebookgrade = $gradingitem->grades[$user->id];
+            }
 
             // check to see if all feedback plugins are empty
             $emptyplugins = true;
@@ -2892,25 +2956,34 @@ class assign {
                 }
             }
 
+            $cangrade = has_capability('mod/assign:grade', $this->get_context());
+            // If there is feedback or a visible grade, show the summary.
+            if ((!empty($gradebookgrade->grade) && ($cangrade || !$gradebookgrade->hidden)) ||
+                    !$emptyplugins) {
 
-            if (!($gradebookgrade->hidden) && ($gradebookgrade->grade !== null || !$emptyplugins)) {
-
-                $gradefordisplay = '';
+                $gradefordisplay = null;
+                $gradeddate = null;
+                $grader = null;
                 $gradingmanager = get_grading_manager($this->get_context(), 'mod_assign', 'submissions');
 
-                if ($controller = $gradingmanager->get_active_controller()) {
-                    $controller->set_grade_range(make_grades_menu($this->get_instance()->grade));
-                    $gradefordisplay = $controller->render_grade($PAGE,
-                                                                 $grade->id,
-                                                                 $gradingitem,
-                                                                 $gradebookgrade->str_long_grade,
-                                                                 has_capability('mod/assign:grade', $this->get_context()));
-                } else {
-                    $gradefordisplay = $this->display_grade($gradebookgrade->grade, false);
+                // Only show the grade if it is not hidden in gradebook.
+                if (!empty($gradebookgrade->grade) && ($cangrade || !$gradebookgrade->hidden)) {
+                    if ($controller = $gradingmanager->get_active_controller()) {
+                        $controller->set_grade_range(make_grades_menu($this->get_instance()->grade));
+                        $gradefordisplay = $controller->render_grade($PAGE,
+                                                                     $grade->id,
+                                                                     $gradingitem,
+                                                                     $gradebookgrade->str_long_grade,
+                                                                     $cangrade);
+                    } else {
+                        $gradefordisplay = $this->display_grade($gradebookgrade->grade, false);
+                    }
+                    $gradeddate = $gradebookgrade->dategraded;
+                    if (isset($grade->grader)) {
+                        $grader = $DB->get_record('user', array('id'=>$grade->grader));
+                    }
                 }
 
-                $gradeddate = $gradebookgrade->dategraded;
-                $grader = $DB->get_record('user', array('id'=>$grade->grader));
 
                 $feedbackstatus = new assign_feedback_status($gradefordisplay,
                                                       $gradeddate,
@@ -3361,6 +3434,9 @@ class assign {
         $info = new stdClass();
         if ($blindmarking) {
             $info->username = get_string('participant', 'assign') . ' ' . $uniqueidforuser;
+            $userfrom->firstname = get_string('participant', 'assign');
+            $userfrom->lastname = $uniqueidforuser;
+            $userfrom->email = $CFG->noreplyaddress;
         } else {
             $info->username = fullname($userfrom, true);
         }
@@ -3638,6 +3714,9 @@ class assign {
             $gradevalue = optional_param('quickgrade_' . $userid, '', PARAM_TEXT);
             if($modified >= 0) {
                 $record->grade = unformat_float(optional_param('quickgrade_' . $record->userid, -1, PARAM_TEXT));
+            } else {
+                // This user was not in the grading table.
+                continue;
             }
             $record->lastmodified = $modified;
             $record->gradinginfo = grade_get_grades($this->get_course()->id, 'mod', 'assign', $this->get_instance()->id, array($userid));
@@ -4121,12 +4200,22 @@ class assign {
             }
         }
 
-        if (has_all_capabilities(array('gradereport/grader:view', 'moodle/grade:viewall'), $this->get_course_context())) {
-            $gradestring = $this->get_renderer()->action_link(new moodle_url('/grade/report/grader/index.php',
-                                                              array('id'=>$this->get_course()->id)),
-                                                $gradinginfo->items[0]->grades[$userid]->str_grade);
+        $capabilitylist = array('gradereport/grader:view', 'moodle/grade:viewall');
+        if (has_all_capabilities($capabilitylist, $this->get_course_context())) {
+            $urlparams = array('id'=>$this->get_course()->id);
+            $url = new moodle_url('/grade/report/grader/index.php', $urlparams);
+            $usergrade = '-';
+            if (isset($gradinginfo->items[0]->grades[$userid]->str_grade)) {
+                $usergrade = $gradinginfo->items[0]->grades[$userid]->str_grade;
+            }
+            $gradestring = $this->get_renderer()->action_link($url, $usergrade);
         } else {
-            $gradestring = $gradinginfo->items[0]->grades[$userid]->str_grade;
+            $usergrade = '-';
+            if (isset($gradinginfo->items[0]->grades[$userid]) &&
+                    !$grading_info->items[0]->grades[$userid]->hidden) {
+                $usergrade = $gradinginfo->items[0]->grades[$userid]->str_grade;
+            }
+            $gradestring = $usergrade;
         }
         $mform->addElement('static', 'finalgrade', get_string('currentgrade', 'assign').':', $gradestring);
 
