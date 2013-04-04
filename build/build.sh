@@ -36,7 +36,11 @@ step_time () {
 #STEP 1
 TIME=`date +%s`
 echo "STEP 1: Run php syntax check";
-find . \( -name '*.php' -o -name '*.html' \) -print0 | xargs -0 -n1 -P4 ./build/lint.sh | grep -v "No syntax errors detected"
+for FILE in $(php -r '$a=json_decode(file_get_contents(getenv("BUILD_URL")."/api/json"),true);
+    foreach($a["changeSet"]["items"][0]["affectedPaths"] as $b) print $b."\n";'| grep '.php$\|.html$')
+do
+    ./build/lint.sh ${FILE} | grep -v "No syntax errors detected"
+done
 step_time "1"
 
 #STEP 2
