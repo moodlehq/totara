@@ -50,9 +50,7 @@ $row[] = new tabobject('content', $CFG->wwwroot . '/totara/reportbuilder/content
 if (!$report->embeddedurl) {
     $row[] = new tabobject('access', $CFG->wwwroot . '/totara/reportbuilder/access.php?id=' . $id, get_string('access', 'totara_reportbuilder'));
 }
-if ($CFG->enablereportcaching) {
-    $row[] = new tabobject('performance', $CFG->wwwroot . '/totara/reportbuilder/performance.php?id=' . $id, get_string('performance', 'totara_reportbuilder'));
-}
+$row[] = new tabobject('performance', $CFG->wwwroot . '/totara/reportbuilder/performance.php?id=' . $id, get_string('performance', 'totara_reportbuilder'));
 
 $tabs[] = $row;
 $activated[] = $currenttab;

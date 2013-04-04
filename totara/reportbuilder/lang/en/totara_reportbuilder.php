@@ -117,6 +117,7 @@ $string['embeddedaccessnotes'] = '<strong>Warning:</strong> Embedded reports may
 $string['embeddedcontentnotes'] = '<strong>Warning:</strong> Embedded reports may have further content restrictions applied via <em>embedded parameters</em>. These can further limit the content that is shown in the report';
 $string['embeddedreports'] = 'Embedded Reports';
 $string['enablereportcaching'] = 'Enable report caching';
+$string['reportcachingdisabled'] = 'Report caching is disabled. You can enable it <a href="{$a}">here</a>';
 $string['error:addscheduledreport'] = 'Error adding new Scheduled Report';
 $string['error:bad_sesskey'] = 'There was an error because the session key did not match';
 $string['error:column_not_deleted'] = 'There was a problem deleting that column';
@@ -168,7 +169,6 @@ $string['error:joinsforfiltertypexandvalueynotfoundinz'] = 'Joins for filter wit
 $string['error:invalidsavedsearchid'] = 'Invalid saved search ID';
 $string['error:cachenotfound'] = 'Cannot purge cache. Seems it is already clean.';
 $string['error:reportcacheinitialize'] = 'Cache is disabled for this report';
-$string['error:reportcachingdisabledsite'] = 'Report caching is disabled. Enable report caching in \'Advanced features\' site settings to proceed.';
 $string['excludetags'] = 'Exclude records tagged with';
 $string['export'] = 'Export';
 $string['exportcsv'] = 'Export in text format';
@@ -288,6 +288,7 @@ $string['pluginadministration'] = 'Report Builder administration';
 $string['initialdisplay'] = 'Restrict Initial Display';
 $string['initialdisplay_disabled'] = 'This setting is not available when there are no filters enabled';
 $string['initialdisplay_error'] = 'The last filter can not be deleted when initial display is restricted';
+$string['initialdisplay_heading'] = 'Filters Performance Settings';
 $string['initialdisplay_help'] = 'This setting controls the how the report is initially displayed and is recommended for larger reports where you will be filtering the results (e.g. sitelogs). It increases the speed of the report by allowing you to apply filters and displaying only the results instead of initially trying to display *all* the data.
 
 **Disabled**: the report will display all results immediately *(default)*
@@ -531,6 +532,7 @@ When **Hide in My Reports** is checked the report will not appear on the \'My Re
 
 **Note:** The **Hide in My Reports** option only hides the link to the report. Users with the correct access permissions may still access the report using the URL.';
 $string['reportbuildercache'] = 'Enable report caching';
+$string['reportbuildercache_heading'] = 'Caching Performance Settings';
 $string['reportbuildercache_help'] = '
 When **Enable report caching** is checked then a copy of this report will be generated on a set schedule, and users will see data from the stored report. This will make displaying and filtering of the report faster, but the data displayed will be from the last time the report was generated rather than "live" data. We recommend enabling this setting only if necessary (reports are taking too long to be displayed), and only for specific reports where this is a problem.';
 $string['reportbuildercachescheduler'] = 'Cache Schedule';

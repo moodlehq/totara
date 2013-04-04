@@ -66,7 +66,6 @@ if ($fromform = $mform->get_data()) {
     $todb->id = $id;
     $todb->fullname = $fromform->fullname;
     $todb->hidden = $fromform->hidden;
-    $todb->initialdisplay = $fromform->initialdisplay;
     $todb->description_editor = $fromform->description_editor;
     // ensure we show between 1 and 9999 records
     $rpp = min(9999, max(1, (int) $fromform->recordsperpage));
