@@ -2934,7 +2934,7 @@
     </TABLE>
     <TABLE NAME="badge" COMMENT="Defines badge" NEXT="badge_criteria" PREVIOUS="temp_log_template">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="image"/>
         <FIELD NAME="image" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="timecreated"/>
@@ -2968,7 +2968,7 @@
     </TABLE>
     <TABLE NAME="badge_criteria" COMMENT="Defines criteria for issuing badges" PREVIOUS="badge" NEXT="badge_criteria_param">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="badgeid"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="badgeid"/>
         <FIELD NAME="badgeid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="criteriatype"/>
         <FIELD NAME="criteriatype" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The criteria type we are aggregating" PREVIOUS="badgeid" NEXT="method"/>
         <FIELD NAME="method" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="1 = all, 2 = any" PREVIOUS="criteriatype"/>
@@ -2978,15 +2978,14 @@
         <KEY NAME="fk_badgeid" TYPE="foreign" FIELDS="badgeid" REFTABLE="badge" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="badgeid" UNIQUE="false" FIELDS="badgeid" NEXT="criteriatype"/>
-        <INDEX NAME="criteriatype" UNIQUE="false" FIELDS="criteriatype" PREVIOUS="badgeid" NEXT="badgecriteriatype"/>
+        <INDEX NAME="criteriatype" UNIQUE="false" FIELDS="criteriatype" NEXT="badgecriteriatype"/>
         <INDEX NAME="badgecriteriatype" UNIQUE="true" FIELDS="badgeid, criteriatype" PREVIOUS="criteriatype"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="badge_criteria_param" COMMENT="Defines parameters for badges criteria" PREVIOUS="badge_criteria" NEXT="badge_issued">
         <FIELDS>
-            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="critid"/>
-            <FIELD NAME="critid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+            <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="critid"/>
+            <FIELD NAME="critid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
             <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="critid" NEXT="value"/>
             <FIELD NAME="value" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="name"/>
         </FIELDS>
@@ -2994,9 +2993,6 @@
             <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_critid"/>
             <KEY NAME="fk_critid" TYPE="foreign" FIELDS="critid" REFTABLE="badge_criteria" REFFIELDS="id" PREVIOUS="primary"/>
         </KEYS>
-        <INDEXES>
-            <INDEX NAME="critid" UNIQUE="false" FIELDS="critid"/>
-        </INDEXES>
     </TABLE>
     <TABLE NAME="badge_issued" COMMENT="Defines issued badges" PREVIOUS="badge_criteria_param" NEXT="badge_criteria_met">
       <FIELDS>
@@ -3015,9 +3011,7 @@
         <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="fk_badgeid"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="badgeid" UNIQUE="false" FIELDS="badgeid" NEXT="userid"/>
-        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" PREVIOUS="badgeid" NEXT="badgeuser"/>
-        <INDEX NAME="badgeuser" UNIQUE="true" FIELDS="badgeid, userid" PREVIOUS="userid"/>
+        <INDEX NAME="badgeuser" UNIQUE="true" FIELDS="badgeid, userid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="badge_criteria_met" COMMENT="Defines criteria that were met for an issued badge" PREVIOUS="badge_issued" NEXT="badge_manual_award">
@@ -3067,9 +3061,6 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_userid"/>
         <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
-      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>

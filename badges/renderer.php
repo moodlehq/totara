@@ -60,7 +60,7 @@ class core_badges_renderer extends plugin_renderer_base {
             $download = $status = $push = '';
             if (($userid == $USER->id) && !$profile) {
                 $url = new moodle_url('mybadges.php', array('download' => $badge->id, 'hash' => $badge->uniquehash, 'sesskey' => sesskey()));
-                if ($CFG->badges_allowexternalbackpack && (empty($badge->dateexpire) || $badge->dateexpire > time())) {
+                if (!empty($CFG->badges_allowexternalbackpack) && (empty($badge->dateexpire) || $badge->dateexpire > time())) {
                     $assertion = new moodle_url('/badges/assertion.php', array('b' => $badge->uniquehash));
                     $action = new component_action('click', 'addtobackpack', array('assertion' => $assertion->out(false)));
                     $push = $this->output->action_icon(new moodle_url('#'), new pix_icon('t/backpack', get_string('addtobackpack', 'badges')), $action);
@@ -231,6 +231,7 @@ class core_badges_renderer extends plugin_renderer_base {
             if ($badge->status == BADGE_STATUS_INACTIVE || $badge->status == BADGE_STATUS_INACTIVE_LOCKED) {
                 $url = new moodle_url(qualified_me());
                 $url->param('activate', $badge->id);
+                $url->param('sesskey', sesskey());
                 $actions .= $this->output->action_icon($url, new pix_icon('t/show', get_string('activate', 'badges'))) . " ";
             } else {
                 $url = new moodle_url(qualified_me());
@@ -278,100 +279,94 @@ class core_badges_renderer extends plugin_renderer_base {
         $today_date = date('Y-m-d');
         $today = strtotime($today_date);
 
-        if ($ibadge->visible
-            || ($USER->id == $ibadge->recipient)
-            || has_capability('moodle/badges:viewawarded', context_system::instance())) {
-            $table = new html_table();
+        $table = new html_table();
 
-            $imagetable = new html_table();
-            $imagetable->attributes = array('class' => 'clearfix badgeissuedimage');
-            $imagetable->data[] = array(html_writer::empty_tag('img', array('src' => $issued['badge']['image'])));
-            if ($USER->id == $ibadge->recipient && !empty($CFG->enablebadges)) {
-                $imagetable->data[] = array($this->output->single_button(
-                            new moodle_url('/badges/badge.php', array('hash' => $ibadge->hash, 'bake' => true)),
-                            get_string('download'),
-                            'POST'));
-                $expiration = isset($issued['expires']) ? strtotime($issued['expires']) : $today + 1;
-                if ($CFG->badges_allowexternalbackpack && ($expiration > $today)) {
-                    $assertion = new moodle_url('/badges/assertion.php', array('b' => $ibadge->hash));
-                    $attributes = array(
-                            'type' => 'button',
-                            'value' => get_string('addtobackpack', 'badges'),
-                            'onclick' => 'OpenBadges.issue(["' . $assertion->out(false) . '"], function(errors, successes) { })');
-                    $tobackpack = html_writer::tag('input', '', $attributes);
-                    $imagetable->data[] = array($tobackpack);
-                }
+        $imagetable = new html_table();
+        $imagetable->attributes = array('class' => 'clearfix badgeissuedimage');
+        $imagetable->data[] = array(html_writer::empty_tag('img', array('src' => $issued['badge']['image'])));
+        if ($USER->id == $ibadge->recipient && !empty($CFG->enablebadges)) {
+            $imagetable->data[] = array($this->output->single_button(
+                        new moodle_url('/badges/badge.php', array('hash' => $ibadge->hash, 'bake' => true)),
+                        get_string('download'),
+                        'POST'));
+            $expiration = isset($issued['expires']) ? strtotime($issued['expires']) : $today + 1;
+            if (!empty($CFG->badges_allowexternalbackpack) && ($expiration > $today)) {
+                $assertion = new moodle_url('/badges/assertion.php', array('b' => $ibadge->hash));
+                $attributes = array(
+                        'type' => 'button',
+                        'value' => get_string('addtobackpack', 'badges'),
+                        'onclick' => 'OpenBadges.issue(["' . $assertion->out(false) . '"], function(errors, successes) { })');
+                $tobackpack = html_writer::tag('input', '', $attributes);
+                $imagetable->data[] = array($tobackpack);
             }
-            $datatable = new html_table();
-            $datatable->attributes = array('class' => 'badgeissuedinfo');
-            $datatable->colclasses = array('bfield', 'bvalue');
-            $datatable->data[] = array($this->output->heading(get_string('issuerdetails', 'badges'), 3), '');
-            $datatable->data[] = array(get_string('issuername', 'badges'), $badge->issuername);
-            if (isset($badge->issuercontact) && !empty($badge->issuercontact)) {
-                $datatable->data[] = array(get_string('contact', 'badges'),
-                    html_writer::tag('a', $badge->issuercontact, array('href' => 'mailto:' . $badge->issuercontact)));
-            }
-            $datatable->data[] = array($this->output->heading(get_string('badgedetails', 'badges'), 3), '');
-            $datatable->data[] = array(get_string('name'), $badge->name);
-            $datatable->data[] = array(get_string('description', 'badges'), $badge->description);
-
-            if ($badge->type == BADGE_TYPE_COURSE && isset($badge->courseid)) {
-                $coursename = $DB->get_field('course', 'fullname', array('id' => $badge->courseid));
-                $datatable->data[] = array(get_string('course'), $coursename);
-            }
-
-            $datatable->data[] = array(get_string('bcriteria', 'badges'), self::print_badge_criteria($badge));
-            $datatable->data[] = array($this->output->heading(get_string('issuancedetails', 'badges'), 3), '');
-            $datatable->data[] = array(get_string('dateawarded', 'badges'), $issued['issued_on']);
-            if (isset($issued['expires'])) {
-                $expiration = strtotime($issued['expires']);
-                if ($expiration < $today) {
-                    $cell = new html_table_cell($issued['expires'] . get_string('warnexpired', 'badges'));
-                    $cell->attributes = array('class' => 'notifyproblem warning');
-                    $datatable->data[] = array(get_string('expirydate', 'badges'), $cell);
-
-                    $image = html_writer::start_tag('div', array('class' => 'badge'));
-                    $image .= html_writer::empty_tag('img', array('src' => $issued['badge']['image']));
-                    $image .= $this->output->pix_icon('i/expired',
-                                    get_string('expireddate', 'badges', $issued['expires']),
-                                    'moodle',
-                                    array('class' => 'expireimage'));
-                    $image .= html_writer::end_tag('div');
-                    $imagetable->data[0] = array($image);
-                } else {
-                    $datatable->data[] = array(get_string('expirydate', 'badges'), $issued['expires']);
-                }
-            }
-
-            // Print evidence.
-            $agg = $badge->get_aggregation_methods();
-            $evidence = $badge->get_criteria_completions($ibadge->recipient);
-            $eids = array_map(create_function('$o', 'return $o->critid;'), $evidence);
-            unset($badge->criteria[BADGE_CRITERIA_TYPE_OVERALL]);
-
-            $items = array();
-            foreach ($badge->criteria as $type => $c) {
-                if (in_array($c->id, $eids)) {
-                    if (count($c->params) == 1) {
-                        $items[] = get_string('criteria_descr_single_' . $type , 'badges') . $c->get_details();
-                    } else {
-                        $items[] = get_string('criteria_descr_' . $type , 'badges',
-                                strtoupper($agg[$badge->get_aggregation_method($type)])) . $c->get_details();
-                    }
-                }
-            }
-
-            $datatable->data[] = array(get_string('evidence', 'badges'),
-                    get_string('completioninfo', 'badges') .
-                    html_writer::alist($items, array(), 'ul'));
-            $table->attributes = array('class' => 'generalbox boxaligncenter issuedbadgebox');
-            $table->data[] = array(html_writer::table($imagetable), html_writer::table($datatable));
-            $htmlbadge = html_writer::table($table);
-
-            return $htmlbadge;
-        } else {
-            return get_string('hiddenbadge', 'badges');
         }
+        $datatable = new html_table();
+        $datatable->attributes = array('class' => 'badgeissuedinfo');
+        $datatable->colclasses = array('bfield', 'bvalue');
+        $datatable->data[] = array($this->output->heading(get_string('issuerdetails', 'badges'), 3), '');
+        $datatable->data[] = array(get_string('issuername', 'badges'), $badge->issuername);
+        if (isset($badge->issuercontact) && !empty($badge->issuercontact)) {
+            $datatable->data[] = array(get_string('contact', 'badges'),
+                html_writer::tag('a', $badge->issuercontact, array('href' => 'mailto:' . $badge->issuercontact)));
+        }
+        $datatable->data[] = array($this->output->heading(get_string('badgedetails', 'badges'), 3), '');
+        $datatable->data[] = array(get_string('name'), $badge->name);
+        $datatable->data[] = array(get_string('description', 'badges'), $badge->description);
+
+        if ($badge->type == BADGE_TYPE_COURSE && isset($badge->courseid)) {
+            $coursename = $DB->get_field('course', 'fullname', array('id' => $badge->courseid));
+            $datatable->data[] = array(get_string('course'), $coursename);
+        }
+
+        $datatable->data[] = array(get_string('bcriteria', 'badges'), self::print_badge_criteria($badge));
+        $datatable->data[] = array($this->output->heading(get_string('issuancedetails', 'badges'), 3), '');
+        $datatable->data[] = array(get_string('dateawarded', 'badges'), $issued['issued_on']);
+        if (isset($issued['expires'])) {
+            $expiration = strtotime($issued['expires']);
+            if ($expiration < $today) {
+                $cell = new html_table_cell($issued['expires'] . get_string('warnexpired', 'badges'));
+                $cell->attributes = array('class' => 'notifyproblem warning');
+                $datatable->data[] = array(get_string('expirydate', 'badges'), $cell);
+
+                $image = html_writer::start_tag('div', array('class' => 'badge'));
+                $image .= html_writer::empty_tag('img', array('src' => $issued['badge']['image']));
+                $image .= $this->output->pix_icon('i/expired',
+                                get_string('expireddate', 'badges', $issued['expires']),
+                                'moodle',
+                                array('class' => 'expireimage'));
+                $image .= html_writer::end_tag('div');
+                $imagetable->data[0] = array($image);
+            } else {
+                $datatable->data[] = array(get_string('expirydate', 'badges'), $issued['expires']);
+            }
+        }
+
+        // Print evidence.
+        $agg = $badge->get_aggregation_methods();
+        $evidence = $badge->get_criteria_completions($ibadge->recipient);
+        $eids = array_map(create_function('$o', 'return $o->critid;'), $evidence);
+        unset($badge->criteria[BADGE_CRITERIA_TYPE_OVERALL]);
+
+        $items = array();
+        foreach ($badge->criteria as $type => $c) {
+            if (in_array($c->id, $eids)) {
+                if (count($c->params) == 1) {
+                    $items[] = get_string('criteria_descr_single_' . $type , 'badges') . $c->get_details();
+                } else {
+                    $items[] = get_string('criteria_descr_' . $type , 'badges',
+                            strtoupper($agg[$badge->get_aggregation_method($type)])) . $c->get_details();
+                }
+            }
+        }
+
+        $datatable->data[] = array(get_string('evidence', 'badges'),
+                get_string('completioninfo', 'badges') .
+                html_writer::alist($items, array(), 'ul'));
+        $table->attributes = array('class' => 'generalbox boxaligncenter issuedbadgebox');
+        $table->data[] = array(html_writer::table($imagetable), html_writer::table($datatable));
+        $htmlbadge = html_writer::table($table);
+
+        return $htmlbadge;
     }
 
     // Outputs external badge.
@@ -473,7 +468,7 @@ class core_badges_renderer extends plugin_renderer_base {
         // External badges.
         $backpack = $badges->backpack;
         $externalhtml = "";
-        if ($CFG->badges_allowexternalbackpack) {
+        if (!empty($CFG->badges_allowexternalbackpack)) {
             $externalhtml .= html_writer::start_tag('fieldset', array('class' => 'generalbox'));
             $externalhtml .= html_writer::tag('legend', $this->output->heading_with_help(get_string('externalbadges', 'badges'), 'externalbadges', 'badges'));
             if (!is_null($backpack)) {
@@ -891,13 +886,8 @@ class issued_badge implements renderable {
         $this->issued = badges_get_issued_badge_info($hash);
         $this->hash = $hash;
 
-        $rec = $DB->get_record_sql('
-                SELECT
-                        userid,
-                        visible,
-                        badgeid
-                FROM
-                        {badge_issued}
+        $rec = $DB->get_record_sql('SELECT userid, visible, badgeid
+                FROM {badge_issued}
                 WHERE ' . $DB->sql_compare_text('uniquehash', 40) . ' = ' . $DB->sql_compare_text(':hash', 40),
                 array('hash' => $hash), IGNORE_MISSING);
         if ($rec) {
