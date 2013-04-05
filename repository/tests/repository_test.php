@@ -44,14 +44,17 @@ class repositorylib_testcase extends advanced_testcase {
         $repositorypluginname = 'boxnet';
         // override repository permission
         $capability = 'repository/' . $repositorypluginname . ':view';
-        $allroles = $DB->get_records_menu('role', array(), 'id', 'archetype, id');
-        assign_capability($capability, CAP_ALLOW, $allroles['guest'], $syscontext->id, true);
+        $guestroleid = $DB->get_field('role', 'id', array('shortname' => 'guest'));
+        assign_capability($capability, CAP_ALLOW, $guestroleid, $syscontext->id, true);
+        $guest = $DB->get_record('user', array('username'=>'guest'));
+        $this->setUser($guest);
 
         $plugintype = new repository_type($repositorypluginname);
         $pluginid = $plugintype->create(false);
         $this->assertInternalType('int', $pluginid);
         $args = array();
         $args['type'] = $repositorypluginname;
+
         $repos = repository::get_instances($args);
         $repository = reset($repos);
         $this->assertInstanceOf('repository', $repository);
