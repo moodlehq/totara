@@ -886,7 +886,8 @@ function certificate_get_mods() {
     if ($CFG->version >= '2012112900') {
         $sections = $modinfo->get_section_info_all();
     } else {
-        $sections = get_all_sections($COURSE->id);
+        $modinfo = get_fast_modinfo($COURSE->id);
+        $sections = $modinfo->get_section_info_all();
     }
     for ($i = 0; $i <= count($sections) - 1; $i++) {
         // should always be true
