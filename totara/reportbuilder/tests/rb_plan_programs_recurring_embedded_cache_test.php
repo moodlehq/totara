@@ -63,8 +63,9 @@ class rb_plan_programs_recurring_embedded_cache_test extends reportcache_advance
      * - Add user2 to program1 and program2
      */
     protected function setUp() {
+        global $CFG;
         parent::setup();
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         $this->cleanup();
 
@@ -81,9 +82,13 @@ class rb_plan_programs_recurring_embedded_cache_test extends reportcache_advance
         $this->program2 = $this->getDataGenerator()->create_program();
 
         $this->getDataGenerator()->assign_program($this->program1->id, array($this->user1->id, $this->user1->id));
-        $this->assertDebuggingCalled();
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
         $this->getDataGenerator()->assign_program($this->program2->id, array($this->user2->id));
-        $this->assertDebuggingCalled();
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
 
         $this->course1 = $this->getDataGenerator()->create_course();
         $this->course2 = $this->getDataGenerator()->create_course();
@@ -129,7 +134,7 @@ class rb_plan_programs_recurring_embedded_cache_test extends reportcache_advance
      * @dataProvider provider_use_cache
      */
     public function test_plan_programs_reccuring($usecache) {
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         if ($usecache) {
             $this->enable_caching($this->report_builder_data['id']);

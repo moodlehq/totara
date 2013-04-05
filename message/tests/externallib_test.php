@@ -29,8 +29,11 @@ global $CFG;
 
 require_once($CFG->dirroot . '/webservice/tests/helpers.php');
 require_once($CFG->dirroot . '/message/externallib.php');
+require_once($CFG->dirroot . '/message/lib.php');
 
 class core_message_external_testcase extends externallib_advanced_testcase {
+
+    private $processorstate;
 
     /**
      * Test send_instant_messages
@@ -44,9 +47,11 @@ class core_message_external_testcase extends externallib_advanced_testcase {
         $this->preventResetByRollback();
 
         // Turn off all message processors (so nothing is really sent)
-        require_once($CFG->dirroot . '/message/lib.php');
+        $this->processorstate = array();
         $messageprocessors = get_message_processors();
         foreach($messageprocessors as $messageprocessor) {
+            // Save current values before we disable
+            $this->processorstate[$messageprocessor->id] = $messageprocessor->enabled;
             $messageprocessor->enabled = 0;
             $DB->update_record('message_processors', $messageprocessor);
         }
@@ -76,5 +81,15 @@ class core_message_external_testcase extends externallib_advanced_testcase {
         $this->assertEquals($themessage->useridto, $message1['touserid']);
         $this->assertEquals($themessage->smallmessage, $message1['text']);
         $this->assertEquals($sentmessages[0]['clientmsgid'], $message1['clientmsgid']);
+    }
+
+    public function tearDown() {
+        global $DB;
+        $messageprocessors = get_message_processors();
+        foreach($messageprocessors as $messageprocessor) {
+            // Restore state from before the tests.
+            $messageprocessor->enabled = $this->processorstate[$messageprocessor->id];
+            $DB->update_record('message_processors', $messageprocessor);
+        }
     }
 }

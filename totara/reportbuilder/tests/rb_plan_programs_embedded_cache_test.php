@@ -75,8 +75,9 @@ class rb_plan_programs_embedded_cache_test extends reportcache_advanced_testcase
      *
      */
     protected function setUp() {
+        global $CFG;
         parent::setup();
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         $this->cleanup();
 
@@ -96,13 +97,21 @@ class rb_plan_programs_embedded_cache_test extends reportcache_advanced_testcase
         $this->program4 = $this->getDataGenerator()->create_program();
 
         $this->getDataGenerator()->assign_program($this->program1->id, array($this->user1->id));
-        $this->assertDebuggingCalled();
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
         $this->getDataGenerator()->assign_program($this->program2->id, array($this->user2->id));
-        $this->assertDebuggingCalled();
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
         $this->getDataGenerator()->assign_program($this->program3->id, array($this->user1->id, $this->user2->id));
-        $this->assertDebuggingCalled(null, null, '', 2);
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled(null, null, '', 2);
+        }
         $this->getDataGenerator()->assign_program($this->program4->id, array($this->user2->id));
-        $this->assertDebuggingCalled(); // Caused by sending of message.
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
     }
 
     protected function tearDown() {
@@ -136,7 +145,7 @@ class rb_plan_programs_embedded_cache_test extends reportcache_advanced_testcase
      * @dataProvider provider_use_cache
      */
     public function test_plan_programs($usecache) {
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         if ($usecache) {
             $this->enable_caching($this->report_builder_data['id']);

@@ -56,8 +56,9 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
      * Prepare mock data for testing
      */
     protected function setUp() {
+        global $CFG;
         parent::setup();
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         $this->cleanup();
 
@@ -72,18 +73,18 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
 
         // Create two alerts to user1 and three to user2
         $this->create_task($this->user3, $this->user1);
-        $this->assertDebuggingCalled();
         $this->create_task($this->user2, $this->user1);
-        $this->assertDebuggingCalled();
         $this->create_task($this->user1, $this->user2);
-        $this->assertDebuggingCalled();
         $this->create_task($this->user3, $this->user2);
-        $this->assertDebuggingCalled();
+
         $info = $this->create_task($this->user1, $this->user2);
-        $this->assertDebuggingCalled();
+
+        phpunit_util::reset_debugging();
         // Add message of different type (not alert)
         tm_alert_send($info);
-        $this->assertDebuggingCalled(); // Caused by sending of message.
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
     }
 
     protected function tearDown() {
@@ -110,6 +111,7 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
      * @param stdClass $to To user
      */
     protected function create_task($from, $to) {
+        global $CFG;
         $ind = rand(0, 1000);
         $event = new stdClass;
         $event->userfrom = $from;
@@ -140,7 +142,7 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
      * @dataProvider provider_use_cache
      */
     public function test_tasks($usecache) {
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         if ($usecache) {
             $this->enable_caching($this->report_builder_data['id']);

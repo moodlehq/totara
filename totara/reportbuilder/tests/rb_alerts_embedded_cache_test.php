@@ -52,8 +52,9 @@ class rb_alerts_embedded_cache_test extends reportcache_advanced_testcase {
      * Prepare mock data for testing
      */
     protected function setUp() {
+        global $CFG;
         parent::setup();
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         $this->cleanup();
 
@@ -74,7 +75,9 @@ class rb_alerts_embedded_cache_test extends reportcache_advanced_testcase {
         $info = $this->create_alert($this->user1, $this->user2);
         // Add message of different type (not alert)
         tm_task_send($info);
-        $this->assertDebuggingCalled();
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
     }
 
     /**
@@ -105,6 +108,7 @@ class rb_alerts_embedded_cache_test extends reportcache_advanced_testcase {
      * @param stdClass $to To user
      */
     protected function create_alert($from, $to) {
+        global $CFG;
         $ind = rand(0, 1000);
         $event = new stdClass;
         $event->userfrom = $from;
@@ -115,7 +119,9 @@ class rb_alerts_embedded_cache_test extends reportcache_advanced_testcase {
         $event->fullmessage = 'Full message #' . $ind;
         $event->fullmessagehtml = '<div style="color:red">Full HTML Message #' . $ind . '</div>';
         tm_alert_send($event);
-        $this->assertDebuggingCalled();
+        if (!empty($CFG->messaging)) {
+            $this->assertDebuggingCalled();
+        }
         return $event;
     }
 
@@ -132,7 +138,7 @@ class rb_alerts_embedded_cache_test extends reportcache_advanced_testcase {
      * @dataProvider provider_use_cache
      */
     public function test_alerts($usecache) {
-        $this->resetAfterTest(false);
+        $this->resetAfterTest(true);
         $this->preventResetByRollback();
         if ($usecache) {
             $this->enable_caching($this->report_builder_data['id']);
