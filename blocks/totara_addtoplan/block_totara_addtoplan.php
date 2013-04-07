@@ -43,7 +43,7 @@ class block_totara_addtoplan extends block_base {
         $jsmodule = array(
             'name' => 'block_totara_addtoplan',
             'fullpath' => '/blocks/totara_addtoplan/block.js',
-            'requires' => array());
+            'requires' => array('json'));
         $this->page->requires->js_init_call('M.block_totara_addtoplan.init', $args, false, $jsmodule);
 
         if ($this->content !== NULL) {
