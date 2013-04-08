@@ -29,14 +29,17 @@ require_once($CFG->libdir.'/adminlib.php');
 require_once($CFG->dirroot.'/cohort/lib.php');
 require_once($CFG->dirroot.'/totara/reportbuilder/lib.php');
 
-admin_externalpage_setup('cohorts');
-
 $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);
 
+$format = optional_param('format', '', PARAM_TEXT); // export format
+$debug  = optional_param('debug', false, PARAM_BOOL);
+
+$url = new moodle_url('/totara/cohort/orphanreport.php', array('format' => $format, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
+
 $report = reportbuilder_get_embedded_report('cohort_orphaned_users');
 // Handle a request for export
-$format     = optional_param('format', '', PARAM_TEXT); // export format
 if($format!='') {
 //    add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
     $report->export_data($format);
@@ -46,7 +49,7 @@ if($format!='') {
 $strcohorts = get_string('cohorts', 'totara_cohort');
 echo $OUTPUT->header();
 
-$debug = optional_param('debug', false, PARAM_BOOL);
+
 if($debug) {
     $report->debug($debug);
 }

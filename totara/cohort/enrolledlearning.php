@@ -35,9 +35,12 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 $context = context_system::instance();
 require_capability('moodle/cohort:manage', $context);
 
-$id = optional_param('id', false, PARAM_INT);
+$id     = optional_param('id', false, PARAM_INT);
+$format = optional_param('format', '', PARAM_TEXT); // Export format.
+$debug  = optional_param('debug', false, PARAM_BOOL);
 
-admin_externalpage_setup('cohorts');
+$url = new moodle_url('/totara/cohort/enrolledlearning.php', array('id' => $id, 'format' => $format, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 require_capability('moodle/cohort:view', $context);
 
 if (!$id) {
@@ -56,7 +59,6 @@ $report = reportbuilder_get_embedded_report(
 );
 
 // Handle a request for export
-$format     = optional_param('format', '', PARAM_TEXT); // Export format.
 if ($format != '') {
     // add_to_log(SITEID, 'plan', 'record export', $log_url, $report->fullname);
     $report->export_data($format);
@@ -101,7 +103,7 @@ $PAGE->requires->js_init_call('M.totara_cohortprogramcompletion.init', $args, fa
 $strheading = get_string('enrolledlearning', 'totara_cohort');
 totara_cohort_navlinks($cohort->id, $cohort->name, $strheading);
 echo $OUTPUT->header();
-$debug = optional_param('debug', false, PARAM_BOOL);
+
 if ($debug) {
     $report->debug($debug);
 }
