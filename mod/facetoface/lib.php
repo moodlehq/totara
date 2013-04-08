@@ -970,9 +970,12 @@ function facetoface_get_grade($userid, $courseid, $facetofaceid) {
  * @param integer Session ID
  * @return array
  */
-function facetoface_get_attendees($sessionid) {
-    global $CFG,$DB;
-    $records = $DB->get_records_sql("
+function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOOKED)) {
+    global $CFG, $DB;
+
+    list($statussql, $statusparams) = $DB->get_in_or_equal($status);
+
+    $sql = "
         SELECT
             u.id,
             su.id AS submissionid,
@@ -998,7 +1001,7 @@ function facetoface_get_attendees($sessionid) {
         JOIN
             {facetoface_signups_status} ss
          ON su.id = ss.signupid
-        LEFT JOIN
+        JOIN
             (
             SELECT
                 ss.signupid,
@@ -1010,7 +1013,8 @@ function facetoface_get_attendees($sessionid) {
              ON s.id = ss.signupid
             AND s.sessionid = ?
             WHERE
-                ss.statuscode IN (?,?)
+                ss.statuscode {$statussql}
+                AND ss.superceded != 1
             GROUP BY
                 ss.signupid
             ) sign
@@ -1024,8 +1028,12 @@ function facetoface_get_attendees($sessionid) {
         AND ss.statuscode >= ?
         ORDER BY
             sign.timecreated ASC,
-            ss.timecreated ASC
-    ", array ($sessionid, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED, $sessionid, MDL_F2F_STATUS_APPROVED));
+            ss.timecreated ASC";
+
+    $params = array($sessionid);
+    $params = array_merge($params, $statusparams, array($sessionid, MDL_F2F_STATUS_APPROVED));
+
+    $records = $DB->get_records_sql($sql, $params);
 
     return $records;
 }

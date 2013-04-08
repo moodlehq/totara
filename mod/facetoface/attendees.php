@@ -68,6 +68,9 @@ $attendees = facetoface_get_attendees($session->id);
 // Load cancellations
 $cancellations = facetoface_get_cancellations($session->id);
 
+// Load waitlisted
+$waitlisted = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED));
+
 /**
  * Capability checks to see if the current user can view this page
  *
@@ -515,6 +518,8 @@ if ($show_table) {
 
     if ($action == 'cancellations') {
         $rows = $cancellations;
+    } else if ($action == 'waitlist') {
+        $rows = $waitlisted;
     } else {
         $rows = $attendees;
     }
