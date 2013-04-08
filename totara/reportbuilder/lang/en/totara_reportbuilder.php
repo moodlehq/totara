@@ -29,6 +29,8 @@ $string['accessbyrole'] = 'Restrict access by role';
 $string['accesscontrols'] = 'Access Controls';
 $string['add'] = 'Add';
 $string['abstractmethodcalled'] = 'Abstract method {$a} called - must be implemented';
+$string['activeonly'] = 'Active users only';
+$string['activeuser'] = 'Active user';
 $string['activities'] = 'Activities';
 $string['activitygroupdesc'] = 'Activity groups let you define sets of activites for the purpose of site-wide reporting.';
 $string['activitygroupingx'] = 'Activity grouping \'{$a}\'';
@@ -104,6 +106,8 @@ $string['daily'] = 'Daily';
 $string['defaultsortcolumn'] = 'Default column';
 $string['defaultsortorder'] = 'Default order';
 $string['delete'] = 'Delete';
+$string['deletedonly'] = 'Deleted users only';
+$string['deleteduser'] = 'Deleted user';
 $string['deletecheckschedulereport'] = 'Are you sure you would like to delete this scheduled report?';
 $string['deletedscheduledreport'] = 'Successfully deleted Scheduled Report \'{$a}\'';
 $string['deletereport'] = 'Report Deleted';
@@ -458,6 +462,7 @@ $string['useraddress'] = 'User\'s Address';
 $string['usercity'] = 'User\'s City';
 $string['usercountry'] = 'User\'s Country';
 $string['userid'] = 'User ID';
+$string['userstatus'] = 'User Status';
 
 // add positions
 $string['usersorgid'] = 'User\'s Organisation ID';

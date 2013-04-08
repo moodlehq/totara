@@ -753,6 +753,15 @@ abstract class rb_base_source {
         return $code;
     }
 
+    // indicates if the user is deleted or not
+    function rb_display_deleted_status($status, $row) {
+
+        if ($status == 1) {
+            return get_string('deleteduser', 'totara_reportbuilder');
+        } else {
+            return get_string('activeuser', 'totara_reportbuilder');
+        }
+    }
 
     // convert a language code into text
     function rb_display_language_code($code, $row) {
@@ -1214,6 +1223,18 @@ abstract class rb_base_source {
             )
         );
 
+        // add deleted option
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'deleted',
+            get_string('userstatus', 'totara_reportbuilder'),
+            "$join.deleted",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'deleted_status'
+            )
+        );
+
         return true;
     }
 
@@ -1259,6 +1280,17 @@ abstract class rb_base_source {
             'select',
             array(
                 'selectchoices' => get_string_manager()->get_list_of_countries(),
+                'attributes' => $select_width_options,
+                'simplemode' => true,
+            )
+        );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'deleted',
+            get_string('userstatus', 'totara_reportbuilder'),
+            'select',
+            array(
+                'selectchoices' => array(0 => get_string('activeonly', 'totara_reportbuilder'), 1 => get_string('deletedonly', 'totara_reportbuilder')),
                 'attributes' => $select_width_options,
                 'simplemode' => true,
             )
