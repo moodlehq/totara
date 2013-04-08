@@ -68,7 +68,7 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
             $settings = $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
             $delete = $this->output->action_icon($deleteurl, new pix_icon('/t/delete', $strdelete, 'moodle'));
             $cache = '';
-            if (isset($report->cache) && $report->cache) {
+            if (!empty($CFG->enablereportcaching) && !empty($report->cache)) {
                  $cache = $this->cachenow_button($report->id, true);
             }
             $row[] = "{$settings}{$cache}{$delete}";
@@ -127,7 +127,7 @@ class totara_reportbuilder_renderer extends plugin_renderer_base {
             $settings = $this->output->action_icon($editurl, new pix_icon('/t/edit', $strsettings, 'moodle'));
             $reload = $this->output->action_icon($reloadurl, new pix_icon('/t/reload', $strreload, 'moodle'));
             $cache = '';
-            if (isset($report->cache) && $report->cache) {
+            if (!empty($CFG->enablereportcaching) && !empty($report->cache)) {
                  $cache = $this->cachenow_button($report->id, true);
             }
             $row[] = "{$settings}{$reload}{$cache}";
