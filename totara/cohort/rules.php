@@ -34,14 +34,13 @@ require_once($CFG->dirroot . '/totara/core/js/lib/setup.php');
 $id = required_param('id', PARAM_INT);
 $debug = optional_param('debug', false, PARAM_BOOL);
 
-admin_externalpage_setup('cohorts');
+$page_url = new moodle_url('/totara/cohort/rules.php', array('id' => $id, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $page_url);
 
 $context = context_system::instance();
 require_capability('totara/cohort:managerules', $context);
 
 $canapproverules = true;  // TODO: maybe another capability check here?
-
-$redirect = $CFG->wwwroot.'/totara/cohort/rules.php?id='.$id;
 
 // Setup custom javascript
 local_js(array(
@@ -109,13 +108,13 @@ if (($data = data_submitted()) && confirm_sesskey()) {
         if (!cohort_rules_approve_changes($cohort)) {
             print_error('error:couldnotapprovechanges', 'totara_cohort');
         }
-        totara_set_notification(get_string('rulesapprovesuccess', 'totara_cohort'), $redirect, array('class' => 'notifysuccess'));
+        totara_set_notification(get_string('rulesapprovesuccess', 'totara_cohort'), $page_url->out(), array('class' => 'notifysuccess'));
     }
     if ($canapproverules && isset($data->cancelrulechanges)) {
         if (!cohort_rules_cancel_changes($cohort)) {
             print_error('error:couldnotcancelchanges', 'totara_cohort');
         }
-        totara_set_notification(get_string('rulescancelsuccess', 'totara_cohort'), $redirect);
+        totara_set_notification(get_string('rulescancelsuccess', 'totara_cohort'), $page_url->out());
     }
 }
 
@@ -154,7 +153,7 @@ if ($formdata = $mform->get_data()){
         }
     }
     add_to_log(SITEID, 'cohort', 'edit rule operators', 'cohort/view.php?id='.$cohort->id, $cohort->idnumber);
-    totara_set_notification(get_string('rulesupdatesuccess', 'totara_cohort'), $redirect, array('class' => 'notifysuccess'));
+    totara_set_notification(get_string('rulesupdatesuccess', 'totara_cohort'), $page_url->out(), array('class' => 'notifysuccess'));
 
     // Regenerate the form so that it'll show the correct values for all the operators.
     // (We need to do this because we're showing all the operators as static items, which
