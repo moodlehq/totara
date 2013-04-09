@@ -95,8 +95,9 @@ $lc->add_to_whitelist('iplookup/index.php');
 $lc->add_to_whitelist('admin/tool/xmldb/');
 // uses error box but not an error
 $lc->add_to_whitelist('admin/auth_config.php?auth=radius', 'errorbox');
-// requires an id at this url but used in an external admin page - not sure how to fix this one
-$lc->add_to_whitelist('/admin/webservice/service.php', 'all');
+// requires an id at this url but used in an external admin page
+// not sure how to fix this one so just whitelist the page
+$lc->add_to_whitelist('webservice/amf/testclient/index.php', 'all');
 
 // start spidering site
 $lc->go();
