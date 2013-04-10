@@ -242,5 +242,19 @@ function xmldb_totara_message_upgrade($oldversion) {
 
         totara_upgrade_mod_savepoint(true, 2012120400, 'totara_message');
     }
+
+    if ($oldversion < 2013020700) {
+        $reportlist = $DB->get_fieldset_select('report_builder', 'id', 'source = ?', array('totaramessages'));
+        if ($reportlist) {
+            list($reportssql, $reportsparam) = $DB->get_in_or_equal($reportlist);
+        }
+        if (!empty($reportssql)) {
+            // Remove status and statementurl fields from reports
+            $params = array_merge(array('message_values', 'statementurl', 'status_text'), $reportsparam);
+            $DB->delete_records_select('report_builder_columns', "type = ? AND (value = ? OR value = ?) AND reportid ".$reportssql, $params);
+        }
+        totara_upgrade_mod_savepoint(true, 2013020700, 'totara_message');
+    }
+
     return $result;
 }
