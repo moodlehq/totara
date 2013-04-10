@@ -145,11 +145,6 @@ if (!empty($delete) and confirm_sesskey()) {
 }
 
 $buttoncontainer = null;
-if (has_capability('moodle/course:create', $systemcontext) && $showaddcoursebutton) {
-    // Print link to create a new course, for the 1st available category.
-    $options = array('category' => $CFG->defaultrequestcategory);
-    $buttoncontainer .= $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
-}
 
 // Unless it's an editing admin, just print the regular listing of courses/categories.
 if (!$adminediting) {
@@ -183,11 +178,21 @@ if (!$adminediting) {
     }
 
     echo $OUTPUT->container_start('buttons');
+
+    if (has_capability('moodle/course:create', $systemcontext) && $showaddcoursebutton) {
+        // Print link to create a new course, for the 1st available category.
+        $options = array('category' => $CFG->defaultrequestcategory);
+        $buttoncontainer .= $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
+    }
+
     print_course_request_buttons($systemcontext);
     echo $OUTPUT->container_end();
     echo $OUTPUT->footer();
     exit;
 }
+
+
+
 /// Everything else is editing on mode.
 require_once($CFG->libdir.'/adminlib.php');
 admin_externalpage_setup('managecategories', $editbutton);
@@ -267,6 +272,14 @@ if ((!empty($moveup) or !empty($movedown)) and confirm_sesskey()) {
 
 /// Print headings
 echo $OUTPUT->header();
+
+echo $OUTPUT->container_start('buttons');
+if (has_capability('moodle/course:create', $systemcontext)) {
+    // Print link to create a new course, for the 1st available category.
+    $options = array('category' => $CFG->defaultrequestcategory);
+    $buttoncontainer .= $OUTPUT->single_button(new moodle_url('edit.php', $options), get_string('addnewcourse'), 'get');
+}
+echo $OUTPUT->container_end();
 
 $addcategorycontainer = null;
 if (has_capability('moodle/category:manage', $systemcontext)) {
