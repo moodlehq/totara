@@ -142,9 +142,6 @@ class rb_source_dp_evidence extends rb_base_source {
                 'base.description',
                 array(
                     'displayfunc' => 'description',
-                    'extrafields' => array(
-                        'id' => 'base.id',
-                    ),
                     'nosort' => true,
                 )
         );

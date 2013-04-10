@@ -79,6 +79,12 @@ class reminder extends data_object {
         'timecreated', 'timemodified', 'modifierid', 'config', 'deleted');
 
     /**
+     * Array of text table fields.
+     * @var array   $text_fields
+     */
+    public $text_fields = array('title', 'config');
+
+    /**
      * The course this reminder is associated with
      * @access  public
      * @var     int
@@ -256,6 +262,12 @@ class reminder_message extends data_object {
      */
     public $required_fields = array('id', 'reminderid', 'type', 'period',
         'subject', 'message', 'copyto', 'deleted');
+
+    /**
+     * Array of text table fields.
+     * @var array   $text_fields
+     */
+    public $text_fields = array('copyto', 'subject', 'message');
 
     /**
      * Reminder record this message is associated with

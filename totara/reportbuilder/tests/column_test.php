@@ -30,8 +30,9 @@ if (!defined('MOODLE_INTERNAL')) {
 
 global $CFG;
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/tests/reportcache_advanced_testcase.php');
 
-class columns_test extends advanced_testcase {
+class columns_test extends reportcache_advanced_testcase {
 
     protected function setUp() {
         global $DB,$CFG;
@@ -1096,7 +1097,13 @@ class columns_test extends advanced_testcase {
         $this->rb = new reportbuilder(1);
     }
 
-    function test_columns_and_filters() {
+    /**
+     * Check all reports columns and filters
+     *
+     * @param bool $usecache
+     * @dataProvider provider_use_cache
+     */
+    function test_columns_and_filters($usecache) {
         global $SESSION, $DB;
         // loop through installed sources
         foreach (reportbuilder::get_source_list() as $sourcename => $title) {
@@ -1121,6 +1128,11 @@ class columns_test extends advanced_testcase {
                 $colid = $DB->insert_record('report_builder_columns', $col);
                 // create the reportbuilder object
                 //echo '<h5>Test ' . $column->type . '-' . $column->value . ' column:</h5>' . "\n";
+
+                if ($usecache) {
+                    $this->enable_caching($reportid);
+                }
+
                 $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query();
                 $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
@@ -1191,7 +1203,8 @@ class columns_test extends advanced_testcase {
                 }
                 $SESSION->{$filtername}[$fname] = array($search);
                 $sql = $rb->build_query(false, true);
-                $records = $DB->get_recordset_sql($sql[0], $sql[1], 1, 40);
+
+                $records = $DB->get_recordset_sql($sql[0], $sql[1]);
 
                 foreach ($records as $record) {
                     $data = $rb->process_data_row($record);

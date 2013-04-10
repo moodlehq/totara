@@ -52,6 +52,12 @@ class grade_outcome extends grade_object {
                                  'descriptionformat', 'timecreated', 'timemodified', 'usermodified');
 
     /**
+     * Array of text table fields.
+     * @var array $text_fields
+     */
+    public $text_fields = array('fullname', 'description');
+
+    /**
      * The course this outcome belongs to.
      * @var int $courseid
      */

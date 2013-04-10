@@ -8157,7 +8157,7 @@ function forum_get_courses_user_posted_in($user, $discussionsonly = false, $incl
 
     // Now we need to get all of the courses to search.
     // All courses where the user has posted within a forum will be returned.
-    // MSSQL distinct=ntext issue
+    // MSSQL distinct ntext issue
     $sql = "SELECT c.* $ctxselect
             FROM
             {course} c

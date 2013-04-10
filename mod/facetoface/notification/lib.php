@@ -87,6 +87,12 @@ class facetoface_notification extends data_object {
     );
 
     /**
+     * Array of text table fields
+     * @var array $text_fields
+     */
+    public $text_fields = array('managerprefix', 'body');
+
+    /**
      * Array of optional fields with default values - usually long text information that is not always needed.
      *
      * @access  public

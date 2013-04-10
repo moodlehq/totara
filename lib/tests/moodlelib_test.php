@@ -2093,6 +2093,11 @@ class moodlelib_testcase extends advanced_testcase {
      * Test the function date_format_string().
      */
     function test_date_format_string() {
+        global $CFG;
+        if ($CFG->ostype == 'WINDOWS' && get_string('localewincharset', 'langconfig') == '') {
+            $this->markTestSkipped('This test requires \'localewincharset\' to be configured in \'langconfig\' file on Windows environment');
+        }
+
         // Forcing locale and timezone.
         $oldlocale = setlocale(LC_TIME, '0');
         setlocale(LC_TIME, 'en_AU.UTF-8');

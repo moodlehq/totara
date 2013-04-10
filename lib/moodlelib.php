@@ -10616,6 +10616,7 @@ function apd_get_profiling() {
  * @return bool success, true also if dir does not exist
  */
 function remove_dir($dir, $content_only=false) {
+    global $CFG;
     if (!file_exists($dir)) {
         // nothing to do
         return true;
@@ -10629,7 +10630,13 @@ function remove_dir($dir, $content_only=false) {
             if(is_dir($dir.'/'.$item)) {
                 $result = remove_dir($dir.'/'.$item) && $result;
             }else{
-                $result = unlink($dir.'/'.$item) && $result;
+                if ($CFG->ostype == 'WINDOWS') {
+                    // WINDOWS specific bug when META-INF folder locked by javaw process and cannot be deleted
+                    $result = @unlink($dir.'/'.$item) && $result;
+                } else {
+                    $result = unlink($dir.'/'.$item) && $result;
+                }
+
             }
         }
     }
@@ -10638,7 +10645,13 @@ function remove_dir($dir, $content_only=false) {
         clearstatcache(); // make sure file stat cache is properly invalidated
         return $result;
     }
-    $result = rmdir($dir); // if anything left the result will be false, no need for && $result
+
+    if ($CFG->ostype == 'WINDOWS') {
+        // WINDOWS specific bug when META-INF folder locked by javaw process and cannot be deleted
+        $result = @rmdir($dir);
+    } else {
+        $result = rmdir($dir); // if anything left the result will be false, no need for && $result
+    }
     clearstatcache(); // make sure file stat cache is properly invalidated
     return $result;
 }

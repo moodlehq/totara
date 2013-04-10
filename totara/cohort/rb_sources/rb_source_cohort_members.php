@@ -115,7 +115,7 @@ class rb_source_cohort_members extends rb_base_source {
             array(
                 'displayfunc' => 'cohort_name_link',
                 'extrafields' => array(
-                    'id' => 'cohort.id'
+                    'cohort_id' => 'cohort.id'
                 ),
                 'joins' => array('cohort')
             )
@@ -268,7 +268,7 @@ class rb_source_cohort_members extends rb_base_source {
      */
     public function rb_display_cohort_name_link($cohortname, $row) {
         return html_writer::link(new moodle_url('/cohort/view.php',
-            array('id' => $row->id)), format_string($cohortname));
+            array('id' => $row->cohort_id)), format_string($cohortname));
     }
 
     /**

@@ -478,6 +478,12 @@ class position_assignment extends data_object {
         'timevalidto'
     );
 
+    /**
+     * Array of text table fields.
+     * @var array $text_fields
+     */
+    public $text_fields = array('fullname', 'description');
+
     public $optional_fields = array(
         'managerpath' => null,
     );

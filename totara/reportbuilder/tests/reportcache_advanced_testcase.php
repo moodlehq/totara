@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
 require_once($CFG->dirroot . '/totara/reportbuilder/cron.php');
 require_once($CFG->dirroot . '/lib/phpunit/classes/data_generator.php');
 
-class reportcache_advanced_testcase extends advanced_testcase {
+abstract class reportcache_advanced_testcase extends advanced_testcase {
     protected static $generator = null;
     /**
      * Enables cache for report

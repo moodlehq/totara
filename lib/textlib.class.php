@@ -678,6 +678,15 @@ class collatorlib {
     }
 
     /**
+     * Check if collator available
+     *
+     * @return bool
+     */
+    public static function is_collator() {
+        return self::ensure_collator_available();
+    }
+
+    /**
      * Ensures that a collator is available and created
      *
      * @return bool Returns true if collation is available and ready

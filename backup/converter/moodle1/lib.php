@@ -1209,10 +1209,11 @@ class moodle1_file_manager implements loggable {
      * @return int id of the migrated file
      */
     public function migrate_file($sourcepath, $filepath = '/', $filename = null, $sortorder = 0, $timecreated = null, $timemodified = null) {
-
+        global $CFG;
         $sourcefullpath = $this->basepath.'/'.$sourcepath;
 
-        if ($sourcefullpath !== clean_param($sourcefullpath, PARAM_PATH)) {
+        // clean_param doesn't support windows
+        if ($CFG->ostype != 'WINDOWS' && $sourcefullpath !== clean_param($sourcefullpath, PARAM_PATH)) {
             throw new moodle1_convert_exception('file_invalid_path', $sourcefullpath);
         }
 
@@ -1227,7 +1228,10 @@ class moodle1_file_manager implements loggable {
         if (substr($filepath, -1) !== '/') {
             $filepath .= '/';
         }
-        $filepath = clean_param($filepath, PARAM_PATH);
+        // clean_param doesn't support windows
+        if ($CFG->ostype != 'WINDOWS') {
+            $filepath = clean_param($filepath, PARAM_PATH);
+        }
 
         if (textlib::strlen($filepath) > 255) {
             throw new moodle1_convert_exception('file_path_longer_than_255_chars');

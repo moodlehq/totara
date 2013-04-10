@@ -51,6 +51,9 @@ abstract class data_object {
     /* @var array Array of required table fields, must start with 'id'. */
     public $required_fields = array('id');
 
+    /* @var Array of text fields, used in where clauses */
+    public $text_fields = array();
+
     /**
      * Array of optional fields with default values - usually long text information that is not always needed.
      * If you want to create an instance without optional fields use: new data_object($only_required_fields, false);
@@ -206,6 +209,7 @@ abstract class data_object {
      * @return mixed array of object instances or false if not found
      */
     public static function fetch_all_helper($table, $classname, $params) {
+        global $DB;
         $instance = new $classname();
 
         $classvars = (array)$instance;
@@ -219,6 +223,9 @@ abstract class data_object {
             }
             if (is_null($value)) {
                 $wheresql[] = " $var IS NULL ";
+            } else if (in_array($var, $instance->text_fields)) {
+                $wheresql[] = " ".$DB->sql_order_by_text($var, 255)." = ? ";
+                $params[] = $value;
             } else {
                 $wheresql[] = " $var = ? ";
                 $params[] = $value;
