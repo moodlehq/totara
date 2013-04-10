@@ -6,20 +6,20 @@
   <TABLES>
     <TABLE NAME="facetoface" COMMENT="Each facetoface activity has an entry here" NEXT="facetoface_session_roles">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="course"/>
-        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="course" NEXT="intro"/>
         <FIELD NAME="intro" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" COMMENT="intro" PREVIOUS="name" NEXT="introformat"/>
-        <FIELD NAME="introformat" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" COMMENT="introformat" PREVIOUS="intro" NEXT="thirdparty"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="introformat" PREVIOUS="intro" NEXT="thirdparty"/>
         <FIELD NAME="thirdparty" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="email address of a third party involved in this activity" PREVIOUS="introformat" NEXT="thirdpartywaitlist"/>
-        <FIELD NAME="thirdpartywaitlist" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Set to 1 if the third party wants to receive signups/cancellations about wait-listed sessions, 0 otherwise." PREVIOUS="thirdparty" NEXT="display"/>
-        <FIELD NAME="display" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="thirdpartywaitlist" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="display" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="shortname"/>
+        <FIELD NAME="thirdpartywaitlist" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Set to 1 if the third party wants to receive signups/cancellations about wait-listed sessions, 0 otherwise." PREVIOUS="thirdparty" NEXT="display"/>
+        <FIELD NAME="display" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="thirdpartywaitlist" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="display" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="32" NOTNULL="false" SEQUENCE="false" PREVIOUS="timemodified" NEXT="showoncalendar"/>
-        <FIELD NAME="showoncalendar" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="shortname" NEXT="approvalreqd"/>
-        <FIELD NAME="approvalreqd" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="showoncalendar" NEXT="usercalentry"/>
-        <FIELD NAME="usercalentry" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="approvalreqd"/>
+        <FIELD NAME="showoncalendar" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="shortname" NEXT="approvalreqd"/>
+        <FIELD NAME="approvalreqd" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="showoncalendar" NEXT="usercalentry"/>
+        <FIELD NAME="usercalentry" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" PREVIOUS="approvalreqd"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for facetoface"/>
@@ -30,10 +30,10 @@
     </TABLE>
     <TABLE NAME="facetoface_session_roles" COMMENT="Users with a trainer role in a facetoface session" PREVIOUS="facetoface" NEXT="facetoface_sessions">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="roleid"/>
-        <FIELD NAME="roleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="sessionid" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="roleid"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="id of the table" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="roleid"/>
+        <FIELD NAME="roleid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="sessionid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="roleid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="sessionid"/>
@@ -42,19 +42,19 @@
     </TABLE>
     <TABLE NAME="facetoface_sessions" COMMENT="A given facetoface activity may be given at different times and places" PREVIOUS="facetoface_session_roles" NEXT="facetoface_sessions_dates">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="facetoface"/>
-        <FIELD NAME="facetoface" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID of the facetoface activity this session is for" PREVIOUS="id" NEXT="capacity"/>
-        <FIELD NAME="capacity" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Number of students who can enroll in this session. A value of 0 means unlimited." PREVIOUS="facetoface" NEXT="allowoverbook"/>
-        <FIELD NAME="allowoverbook" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Flag to turn on waitlisting of signups over capacity." PREVIOUS="capacity" NEXT="details"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="facetoface"/>
+        <FIELD NAME="facetoface" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID of the facetoface activity this session is for" PREVIOUS="id" NEXT="capacity"/>
+        <FIELD NAME="capacity" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Number of students who can enroll in this session. A value of 0 means unlimited." PREVIOUS="facetoface" NEXT="allowoverbook"/>
+        <FIELD NAME="allowoverbook" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Flag to turn on waitlisting of signups over capacity." PREVIOUS="capacity" NEXT="details"/>
         <FIELD NAME="details" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="Extra information about this session" PREVIOUS="allowoverbook" NEXT="datetimeknown"/>
-        <FIELD NAME="datetimeknown" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="A value of 0 means that the date and time are unknown whereas a value of 1 means that both are known." PREVIOUS="details" NEXT="duration"/>
-        <FIELD NAME="duration" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" COMMENT="Total duration (in minutes) of the session.  A session may be split across multiple dates, this is the total." PREVIOUS="datetimeknown" NEXT="normalcost"/>
-        <FIELD NAME="normalcost" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="The normal (non-discounted) cost of the session" PREVIOUS="duration" NEXT="discountcost"/>
-        <FIELD NAME="discountcost" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Discounted cost of the event" PREVIOUS="normalcost" NEXT="roomid"/>
-        <FIELD NAME="roomid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key to facetoface_room" PREVIOUS="discountcost" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="roomid" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
-        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified" />
+        <FIELD NAME="datetimeknown" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="A value of 0 means that the date and time are unknown whereas a value of 1 means that both are known." PREVIOUS="details" NEXT="duration"/>
+        <FIELD NAME="duration" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Total duration (in minutes) of the session.  A session may be split across multiple dates, this is the total." PREVIOUS="datetimeknown" NEXT="normalcost"/>
+        <FIELD NAME="normalcost" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The normal (non-discounted) cost of the session" PREVIOUS="duration" NEXT="discountcost"/>
+        <FIELD NAME="discountcost" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Discounted cost of the event" PREVIOUS="normalcost" NEXT="roomid"/>
+        <FIELD NAME="roomid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key to facetoface_room" PREVIOUS="discountcost" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="roomid" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" />
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me" NEXT="facetoface"/>
@@ -63,11 +63,11 @@
     </TABLE>
     <TABLE NAME="facetoface_sessions_dates" COMMENT="The dates and times for each session.  Sessions can be set over multiple days or blocks of time." PREVIOUS="facetoface_sessions" NEXT="facetoface_signups">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="sessiontimezone"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" COMMENT="id of the table, please edit me" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="sessiontimezone"/>
         <FIELD NAME="sessiontimezone" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Timezone in which this event will take place" PREVIOUS="sessionid" NEXT="timestart"/>
-        <FIELD NAME="timestart" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="sessiontimezone" NEXT="timefinish"/>
-        <FIELD NAME="timefinish" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timestart"/>
+        <FIELD NAME="timestart" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="sessiontimezone" NEXT="timefinish"/>
+        <FIELD NAME="timefinish" TYPE="int" LENGTH="20" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="timestart"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me" NEXT="sessionid"/>
@@ -76,11 +76,11 @@
     </TABLE>
     <TABLE NAME="facetoface_signups" COMMENT="User/session signups" PREVIOUS="facetoface_sessions_dates" NEXT="facetoface_signups_status">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="sessionid" NEXT="discountcode"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="sessionid" NEXT="discountcode"/>
         <FIELD NAME="discountcode" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="userid" NEXT="notificationtype"/>
-        <FIELD NAME="notificationtype" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="discountcode"/>
+        <FIELD NAME="notificationtype" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="discountcode"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me" NEXT="sessionid"/>
@@ -89,15 +89,15 @@
     </TABLE>
     <TABLE NAME="facetoface_signups_status" COMMENT="User/session signup status" PREVIOUS="facetoface_signups" NEXT="facetoface_session_field">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" NEXT="signupid"/>
-        <FIELD NAME="signupid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="statuscode"/>
-        <FIELD NAME="statuscode" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="signupid" NEXT="superceded"/>
-        <FIELD NAME="superceded" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="statuscode" NEXT="grade"/>
-        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" DECIMALS="5" PREVIOUS="superceded" NEXT="note"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="signupid"/>
+        <FIELD NAME="signupid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="statuscode"/>
+        <FIELD NAME="statuscode" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="signupid" NEXT="superceded"/>
+        <FIELD NAME="superceded" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="statuscode" NEXT="grade"/>
+        <FIELD NAME="grade" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="5" PREVIOUS="superceded" NEXT="note"/>
         <FIELD NAME="note" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="grade" NEXT="advice"/>
         <FIELD NAME="advice" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="note" NEXT="createdby"/>
-        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="advice" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="createdby"/>
+        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="advice" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="createdby"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="primary key of the table, please edit me" NEXT="signupid"/>
@@ -106,15 +106,15 @@
     </TABLE>
     <TABLE NAME="facetoface_session_field" COMMENT="Definitions of custom info fields for Face-to-face session" PREVIOUS="facetoface_signups_status" NEXT="facetoface_session_data">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="type"/>
-        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="shortname" NEXT="possiblevalues"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="shortname" NEXT="possiblevalues"/>
         <FIELD NAME="possiblevalues" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="CSV list of allowed values" PREVIOUS="type" NEXT="required"/>
-        <FIELD NAME="required" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether or not this field is mandatory" PREVIOUS="possiblevalues" NEXT="defaultvalue"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Whether or not this field is mandatory" PREVIOUS="possiblevalues" NEXT="defaultvalue"/>
         <FIELD NAME="defaultvalue" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="required" NEXT="isfilter"/>
-        <FIELD NAME="isfilter" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether or not this field is a filter on the Training Calendar" PREVIOUS="defaultvalue" NEXT="showinsummary"/>
-        <FIELD NAME="showinsummary" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether or not to show this field in attendance exports and lists of sessions" PREVIOUS="isfilter"/>
+        <FIELD NAME="isfilter" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether or not this field is a filter on the Training Calendar" PREVIOUS="defaultvalue" NEXT="showinsummary"/>
+        <FIELD NAME="showinsummary" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether or not to show this field in attendance exports and lists of sessions" PREVIOUS="isfilter"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -125,9 +125,9 @@
     </TABLE>
     <TABLE NAME="facetoface_session_data" COMMENT="Contents of custom info fields for Face-to-face session" PREVIOUS="facetoface_session_field" NEXT="facetoface_notice">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fieldid"/>
-        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID in facetoface_session_field" PREVIOUS="id" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID in facetoface_sessions" PREVIOUS="fieldid" NEXT="data"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID in facetoface_session_field" PREVIOUS="id" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID in facetoface_sessions" PREVIOUS="fieldid" NEXT="data"/>
         <FIELD NAME="data" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Contents" PREVIOUS="sessionid"/>
       </FIELDS>
       <KEYS>
@@ -136,7 +136,7 @@
     </TABLE>
     <TABLE NAME="facetoface_notice" COMMENT="Site-wide notices shown on the Training Calendar" PREVIOUS="facetoface_session_data" NEXT="facetoface_notice_data">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Name displayed to admins in list of notices" PREVIOUS="id" NEXT="text"/>
         <FIELD NAME="text" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="Text shown to users on the Training Calendar" PREVIOUS="name"/>
       </FIELDS>
@@ -146,9 +146,9 @@
     </TABLE>
     <TABLE NAME="facetoface_notice_data" COMMENT="Custom field filters for site notices" NEXT="facetoface_notification_tpl" PREVIOUS="facetoface_notice">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fieldid"/>
-        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID from the facetoface_session_field table" PREVIOUS="id" NEXT="noticeid"/>
-        <FIELD NAME="noticeid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID from the facetoface_notice table" PREVIOUS="fieldid" NEXT="data"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID from the facetoface_session_field table" PREVIOUS="id" NEXT="noticeid"/>
+        <FIELD NAME="noticeid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID from the facetoface_notice table" PREVIOUS="fieldid" NEXT="data"/>
         <FIELD NAME="data" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Value of the custom field required for the notice to be shown on the training calendar" PREVIOUS="noticeid"/>
       </FIELDS>
       <KEYS>
@@ -160,11 +160,11 @@
     </TABLE>
     <TABLE NAME="facetoface_notification_tpl" COMMENT="Face-to-face notification templates" PREVIOUS="facetoface_notice_data" NEXT="facetoface_notification">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="title"/>
-        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="body"/>
-        <FIELD NAME="body" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="title" NEXT="managerprefix"/>
-        <FIELD NAME="managerprefix" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="body" NEXT="status"/>
-        <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="managerprefix"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="title"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="body"/>
+        <FIELD NAME="body" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="title" NEXT="managerprefix"/>
+        <FIELD NAME="managerprefix" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="body" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="managerprefix"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -176,25 +176,25 @@
     </TABLE>
     <TABLE NAME="facetoface_notification" COMMENT="Facetoface notifications" PREVIOUS="facetoface_notification_tpl" NEXT="facetoface_notification_sent">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="type"/>
-        <FIELD NAME="type" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="conditiontype"/>
-        <FIELD NAME="conditiontype" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="type" NEXT="scheduleunit"/>
-        <FIELD NAME="scheduleunit" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="conditiontype" NEXT="scheduleamount"/>
-        <FIELD NAME="scheduleamount" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="scheduleunit" NEXT="scheduletime"/>
-        <FIELD NAME="scheduletime" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="scheduleamount" NEXT="ccmanager"/>
-        <FIELD NAME="ccmanager" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="scheduletime" NEXT="managerprefix"/>
-        <FIELD NAME="managerprefix" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="ccmanager" NEXT="title"/>
-        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="managerprefix" NEXT="body"/>
-        <FIELD NAME="body" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="title" NEXT="booked"/>
-        <FIELD NAME="booked" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="body" NEXT="waitlisted"/>
-        <FIELD NAME="waitlisted" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="booked" NEXT="cancelled"/>
-        <FIELD NAME="cancelled" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="waitlisted" NEXT="courseid"/>
-        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="cancelled" NEXT="facetofaceid"/>
-        <FIELD NAME="facetofaceid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="courseid" NEXT="status"/>
-        <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="facetofaceid" NEXT="issent"/>
-        <FIELD NAME="issent" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="status" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="issent" NEXT="usermodified"/>
-        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timemodified"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="conditiontype"/>
+        <FIELD NAME="conditiontype" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="type" NEXT="scheduleunit"/>
+        <FIELD NAME="scheduleunit" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" PREVIOUS="conditiontype" NEXT="scheduleamount"/>
+        <FIELD NAME="scheduleamount" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" PREVIOUS="scheduleunit" NEXT="scheduletime"/>
+        <FIELD NAME="scheduletime" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="scheduleamount" NEXT="ccmanager"/>
+        <FIELD NAME="ccmanager" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="scheduletime" NEXT="managerprefix"/>
+        <FIELD NAME="managerprefix" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="ccmanager" NEXT="title"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="managerprefix" NEXT="body"/>
+        <FIELD NAME="body" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="title" NEXT="booked"/>
+        <FIELD NAME="booked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="body" NEXT="waitlisted"/>
+        <FIELD NAME="waitlisted" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="booked" NEXT="cancelled"/>
+        <FIELD NAME="cancelled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="waitlisted" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="cancelled" NEXT="facetofaceid"/>
+        <FIELD NAME="facetofaceid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="courseid" NEXT="status"/>
+        <FIELD NAME="status" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="facetofaceid" NEXT="issent"/>
+        <FIELD NAME="issent" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="status" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="issent" NEXT="usermodified"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="timemodified"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="courseid"/>
@@ -210,9 +210,9 @@
     </TABLE>
     <TABLE NAME="facetoface_notification_sent" COMMENT="Face-to-face notification reciepts" PREVIOUS="facetoface_notification" NEXT="facetoface_room">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="notificationid"/>
-        <FIELD NAME="notificationid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="notificationid"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="notificationid"/>
+        <FIELD NAME="notificationid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="notificationid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="notificationid" />
@@ -222,16 +222,16 @@
     </TABLE>
     <TABLE NAME="facetoface_room" COMMENT="Table for storing pre-defined facetoface room data" PREVIOUS="facetoface_notification_sent" NEXT="facetoface_notification_hist">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="building"/>
-        <FIELD NAME="building" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="address"/>
-        <FIELD NAME="address" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="building" NEXT="capacity"/>
-        <FIELD NAME="capacity" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="address" NEXT="type"/>
-        <FIELD NAME="type" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="capacity" NEXT="description"/>
-        <FIELD NAME="description" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="type" NEXT="custom"/>
-        <FIELD NAME="custom" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="custom" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timecreated"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="id" NEXT="building"/>
+        <FIELD NAME="building" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="address"/>
+        <FIELD NAME="address" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="building" NEXT="capacity"/>
+        <FIELD NAME="capacity" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="address" NEXT="type"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="capacity" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="type" NEXT="custom"/>
+        <FIELD NAME="custom" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="description" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="custom" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="timecreated"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -242,14 +242,14 @@
     </TABLE>
     <TABLE NAME="facetoface_notification_hist" COMMENT="Notifications history (stores ical event information)" PREVIOUS="facetoface_room">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="notificationid"/>
-        <FIELD NAME="notificationid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="FK of notification" PREVIOUS="id" NEXT="sessionid"/>
-        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="FK of facetoface_sessions" PREVIOUS="notificationid" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="FK of user" PREVIOUS="sessionid" NEXT="sessiondateid"/>
-        <FIELD NAME="sessiondateid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="FK of facetoface_sessions_dates" PREVIOUS="userid" NEXT="ical_uid"/>
-        <FIELD NAME="ical_uid" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="globally unique id of ical event" PREVIOUS="sessiondateid" NEXT="ical_method"/>
-        <FIELD NAME="ical_method" TYPE="char" LENGTH="32" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="ICAL method e.g. update, cancel etc." PREVIOUS="ical_uid" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="timestamp of record creation" PREVIOUS="ical_method"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="notificationid"/>
+        <FIELD NAME="notificationid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="FK of notification" PREVIOUS="id" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="FK of facetoface_sessions" PREVIOUS="notificationid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="FK of user" PREVIOUS="sessionid" NEXT="sessiondateid"/>
+        <FIELD NAME="sessiondateid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="FK of facetoface_sessions_dates" PREVIOUS="userid" NEXT="ical_uid"/>
+        <FIELD NAME="ical_uid" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="globally unique id of ical event" PREVIOUS="sessiondateid" NEXT="ical_method"/>
+        <FIELD NAME="ical_method" TYPE="char" LENGTH="32" NOTNULL="false" SEQUENCE="false" COMMENT="ICAL method e.g. update, cancel etc." PREVIOUS="ical_uid" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="timestamp of record creation" PREVIOUS="ical_method"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="notificationid_fk"/>

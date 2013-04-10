@@ -44,17 +44,17 @@ function xmldb_feedback_upgrade($oldversion) {
         $table = new xmldb_table('feedback_completedtmp');
 
         $field = new xmldb_field('id');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, true, null, null);
         $table->addField($field);
 
         $field = new xmldb_field('feedback');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
         $field = new xmldb_field('userid');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
@@ -63,7 +63,7 @@ function xmldb_feedback_upgrade($oldversion) {
         $table->addField($field);
 
         $field = new xmldb_field('timemodified');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
@@ -82,27 +82,27 @@ function xmldb_feedback_upgrade($oldversion) {
         $table = new xmldb_table('feedback_valuetmp');
 
         $field = new xmldb_field('id');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, true, null, null);
         $table->addField($field);
 
         $field = new xmldb_field('course_id');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
         $field = new xmldb_field('item');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
         $field = new xmldb_field('completed');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
         $field = new xmldb_field('tmp_completed');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED,
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null,
                                 XMLDB_NOTNULL, false, '0', null);
         $table->addField($field);
 
@@ -128,28 +128,28 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field random_response to be added to feedback_completed
         $table = new xmldb_table('feedback_completed');
         $field = new xmldb_field('random_response', XMLDB_TYPE_INTEGER, '10',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, false, '0', null);
+                                    null, XMLDB_NOTNULL, false, '0', null);
         /// Launch add field1
         $dbman->add_field($table, $field);
 
         /// Define field anonymous_response to be added to feedback_completed
         $table = new xmldb_table('feedback_completed');
         $field = new xmldb_field('anonymous_response', XMLDB_TYPE_INTEGER, '1',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, false, '1', null);
+                                    null, XMLDB_NOTNULL, false, '1', null);
         /// Launch add field2
         $dbman->add_field($table, $field);
 
         /// Define field random_response to be added to feedback_completed
         $table = new xmldb_table('feedback_completedtmp');
         $field = new xmldb_field('random_response', XMLDB_TYPE_INTEGER, '10',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, false, '0', null);
+                                    null, XMLDB_NOTNULL, false, '0', null);
         /// Launch add field1
         $dbman->add_field($table, $field);
 
         /// Define field anonymous_response to be added to feedback_completed
         $table = new xmldb_table('feedback_completedtmp');
         $field = new xmldb_field('anonymous_response', XMLDB_TYPE_INTEGER, '1',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, false, '1', null);
+                                    null, XMLDB_NOTNULL, false, '1', null);
         /// Launch add field2
         $dbman->add_field($table, $field);
 
@@ -161,7 +161,7 @@ function xmldb_feedback_upgrade($oldversion) {
         // public is a reserved word on Oracle
 
         $table = new xmldb_table('feedback_template');
-        $field = new xmldb_field('ispublic', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED,
+        $field = new xmldb_field('ispublic', XMLDB_TYPE_INTEGER, '1', null,
                                     XMLDB_NOTNULL, false, '1', null);
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
@@ -220,7 +220,7 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field autonumbering to be added to feedback
         $table = new xmldb_table('feedback');
         $field = new xmldb_field('autonumbering', XMLDB_TYPE_INTEGER, '1',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '1', 'multiple_submit');
+                                    null, XMLDB_NOTNULL, null, '1', 'multiple_submit');
         /// Launch add field2
         $dbman->add_field($table, $field);
 
@@ -272,7 +272,7 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field grade to be added to feedback (T-9604)
         $table = new xmldb_table('feedback');
         $field = new xmldb_field('grade');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, null);
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, 0, null);
         /// Launch add_field
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
@@ -310,7 +310,7 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field introformat to be added to feedback
         $table = new xmldb_table('feedback');
         $field = new xmldb_field('introformat', XMLDB_TYPE_INTEGER, '4',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'intro');
+                                    null, XMLDB_NOTNULL, null, '0', 'intro');
 
         /// Launch add field introformat
         $dbman->add_field($table, $field);
@@ -323,7 +323,7 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field page_after_submitformat to be added to feedback
         $table = new xmldb_table('feedback');
         $field = new xmldb_field('page_after_submitformat', XMLDB_TYPE_INTEGER, '2',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'page_after_submit');
+                                    null, XMLDB_NOTNULL, null, '0', 'page_after_submit');
 
         if (!$dbman->field_exists($table, $field)) {
             // Launch add field page_after_submitformat
@@ -349,7 +349,7 @@ function xmldb_feedback_upgrade($oldversion) {
         /// Define field options to be added to feedback_item
         $table = new xmldb_table('feedback_item');
         $field = new xmldb_field('dependitem', XMLDB_TYPE_INTEGER, '10',
-                                    XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'required');
+                                    null, XMLDB_NOTNULL, null, '0', 'required');
         /// Launch add field
         $dbman->add_field($table, $field);
 

@@ -7,13 +7,13 @@
 
     <TABLE NAME="totara_sync_log" COMMENT="log table for totara element syncing">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="time"/>
-        <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="unix time" PREVIOUS="id" NEXT="element"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="time"/>
+        <FIELD NAME="time" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="unix time" PREVIOUS="id" NEXT="element"/>
         <FIELD NAME="element" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false" COMMENT="element name" PREVIOUS="time" NEXT="logtype"/>
         <FIELD NAME="logtype" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false" COMMENT="log type" PREVIOUS="element" NEXT="action"/>
         <FIELD NAME="action" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false" COMMENT="action performed" PREVIOUS="logtype" NEXT="info"/>
         <FIELD NAME="info" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="log entry info message" PREVIOUS="action" NEXT="runid"/>
-        <FIELD NAME="runid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" UNSIGNED="true" SEQUENCE="false" COMMENT="Run Batch ID" PREVIOUS="info"/>
+        <FIELD NAME="runid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Run Batch ID" PREVIOUS="info"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

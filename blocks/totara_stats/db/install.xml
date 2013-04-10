@@ -6,10 +6,10 @@
     <TABLES>
         <TABLE NAME="block_totara_stats" COMMENT="Holds stats information">
             <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
-                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="timestamp"/>
-                <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid" NEXT="eventtype"/>
-                <FIELD NAME="eventtype" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timestamp" NEXT="data"/>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="timestamp"/>
+                <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="eventtype"/>
+                <FIELD NAME="eventtype" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="timestamp" NEXT="data"/>
                 <FIELD NAME="data" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="eventtype" NEXT="data2"/>
                 <FIELD NAME="data2" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="data"/>
             </FIELDS>

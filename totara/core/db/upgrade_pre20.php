@@ -173,7 +173,7 @@ fix_course_sortorder();
 
 // rename 'completedate' field to 'timeend' in 'course_completion_criteria'
 $table = new xmldb_table('course_completion_criteria');
-$field = new xmldb_field('completedate', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, null, null, null, 'enrolperiod');
+$field = new xmldb_field('completedate', XMLDB_TYPE_INTEGER, 10, null, null, null, null, 'enrolperiod');
 if ($dbman->field_exists($table, $field)) {
     $dbman->rename_field($table, $field, 'timeend');
 }

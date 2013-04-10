@@ -6,12 +6,12 @@
   <TABLES>
     <TABLE NAME="block_quicklinks" COMMENT="Holds information on the defined links of a block">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="block_instance_id"/>
-        <FIELD NAME="block_instance_id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid" NEXT="title"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="block_instance_id"/>
+        <FIELD NAME="block_instance_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="title"/>
         <FIELD NAME="title" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" PREVIOUS="block_instance_id" NEXT="url"/>
         <FIELD NAME="url" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="title" NEXT="displaypos"/>
-        <FIELD NAME="displaypos" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="url"/>
+        <FIELD NAME="displaypos" TYPE="int" LENGTH="3" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="url"/>
       </FIELDS>
 
       <KEYS>

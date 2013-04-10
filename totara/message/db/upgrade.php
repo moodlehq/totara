@@ -72,7 +72,7 @@ function xmldb_totara_message_upgrade($oldversion) {
         if ($dbman->index_exists($table, $index)) {
             $dbman->drop_index($table, $index);
         }
-        $field = new xmldb_field('roleid', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, null, null);
+        $field = new xmldb_field('roleid', XMLDB_TYPE_INTEGER, 10, null, null, null);
         if ($dbman->field_exists($table, $field)) {
             $dbman->change_field_notnull($table, $field);
         }
