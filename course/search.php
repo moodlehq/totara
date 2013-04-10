@@ -944,7 +944,7 @@ if ($results['categories']) {
                     ' src="'.$OUTPUT->pix_url('/t/edit') . '" class="iconsmall" alt="'.$str->edit.'" /></a> ';
 
                 $actions .= '<a title="'.$str->roles.'" href="'.$CFG->wwwroot.'/admin/roles/assign.php?contextid='.
-                    $cat->context->id.'"><img src="'.$OUTPUT->pix_url('/i/roles') . '" class="iconsmall" alt="'.$str->roles.
+                    $cat->context->id.'"><img src="'.$OUTPUT->pix_url('/t/assignroles') . '" class="iconsmall" alt="'.$str->roles.
                     '" /></a>';
 
                 $actions .= '<a title="'.$str->delete.'" href="index.php?delete='.$cat->id.'&amp;sesskey='.sesskey().'"><img'.
