@@ -37,9 +37,6 @@
 $string['pluginname'] = 'Kiwifruit';
 $string['region-side-post'] = 'Right';
 $string['region-side-pre'] = 'Left';
-$string['region-middle'] = 'Middle';
-$string['loggedinnot'] = 'You are not logged in';
-$string['loggedinas'] = 'You are logged in as ';
 $string['logo'] = 'Logo';
 $string['logodesc'] = 'Select or upload the image file to be used as the site\'s logo';
 $string['favicon'] = 'Favicon';

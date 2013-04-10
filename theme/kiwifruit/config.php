@@ -30,7 +30,7 @@ $THEME->name = 'kiwifruit';
 $THEME->parents = array('standardtotara', 'standard', 'base');
 $THEME->parents_exclude_sheets = array('standardtotara' => array('css3'),'standard' => array('css3'));
 $THEME->sheets = array(
-    'core', 'blocks', 'navigation', 'dock', 'css3', 'ie7', 'custom'
+    'core', 'blocks', 'navigation', 'course', 'dock', 'css3', 'ie7', 'custom'
 );
 
 $THEME->layouts = array(

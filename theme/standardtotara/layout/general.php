@@ -176,7 +176,7 @@ echo $OUTPUT->doctype() ?>
                 <?php echo $coursecontentfooter; ?>
               </div>
             </div>
-            <?php if ($hassidepre OR (right_to_left() AND $hassidepost)) { ?>
+            <?php if ($hassidepre || (right_to_left() && $hassidepost)) { ?>
             <div id="region-pre" class="block-region">
               <div class="region-content">
                 <?php
@@ -188,7 +188,7 @@ echo $OUTPUT->doctype() ?>
               </div>
             </div>
             <?php } ?>
-            <?php if ($hassidepost OR (right_to_left() AND $hassidepre)) { ?>
+            <?php if ($hassidepost || (right_to_left() && $hassidepre)) { ?>
             <div id="region-post" class="block-region">
               <div class="region-content">
                 <?php

@@ -85,15 +85,15 @@ class theme_kiwifruit_core_renderer extends core_renderer {
                 if ($role = $DB->get_record('role', array('id' => $USER->access['rsw'][$context->path]))) {
                     $rolename = ': '.format_string($role->name);
                 }
-                $loggedinas = get_string('loggedinas', 'theme_kiwifruit', $username).$rolename.
+                $loggedinas = get_string('loggedinas', '', $username).$rolename.
                     " <a class=\"loginstatus\" href=\"$CFG->wwwroot/course/view.php?id=$course->id&amp;switchrole=0&amp;sesskey="
-                    .sesskey()."\">".get_string('switchrolereturn').'</a>)';
+                    .sesskey()."\">".get_string('switchrolereturn').'</a>';
             } else {
-                $loggedinas = $realuserinfo.get_string('loggedinas', 'theme_kiwifruit').$username.''.
+                $loggedinas = $realuserinfo.get_string('loggedinas', '', $username).
                           " <a class=\"loginstatus\" href=\"$CFG->wwwroot/login/logout.php?sesskey=".sesskey()."\">".get_string('logout').'</a>';
             }
         } else {
-            $loggedinas = get_string('loggedinnot', 'theme_kiwifruit').
+            $loggedinas = get_string('loggedinnot').
                 " <a class=\"loginstatus\" href=\"$loginurl\">".get_string('login').'</a>';
         }
 

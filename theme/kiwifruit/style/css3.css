@@ -58,4 +58,6 @@ div.loginbox .signuppanel {
     -webkit-border-radius: 10px;
     border-radius:10px;
 }
-
+.blogsite thead tr td {
+    width:100%;
+}

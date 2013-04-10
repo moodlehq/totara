@@ -23,3 +23,21 @@
     background: transparent url([[pix:core|i/course]]) no-repeat left 3px;
 }
 
+.dir-rtl .course-content ul.section li.activity span.autocompletion,
+.dir-rtl .course-content ul.section li.activity form.togglecompletion {right:auto;left:0px;}
+
+.dir-rtl .course-content ul.weeks li.section .left,
+.dir-rtl .course-content ul.topics li.section .left,
+.dir-rtl .course-content ul.demo li.section .left {float:right;}
+.dir-rtl .course-content ul.weeks li.section .right,
+.dir-rtl .course-content ul.topics li.section .right,
+.dir-rtl .course-content ul.demo li.section .right {float:left;}
+
+.dir-rtl .showadvancedbtn {
+    float:left;
+    margin-top:0px;
+}
+
+.dir-rtl .mform fieldset .advancedbutton {
+    text-align:left;
+}
