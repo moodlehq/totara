@@ -4186,6 +4186,15 @@ class settings_navigation extends navigation_node {
             }
         }
 
+        // Badges.
+        if ($currentuser && !empty($CFG->enablebadges)) {
+            $badges = $usersetting->add(get_string('badges'), null, navigation_node::TYPE_CONTAINER, null, 'badges');
+            $badges->add(get_string('preferences'), new moodle_url('/badges/preferences.php'), navigation_node::TYPE_SETTING);
+            if (!empty($CFG->badges_allowexternalbackpack)) {
+                $badges->add(get_string('backpackdetails', 'badges'), new moodle_url('/badges/mybackpack.php'), navigation_node::TYPE_SETTING);
+            }
+        }
+
         // Login as ...
         if (!$user->deleted and !$currentuser && !session_is_loggedinas() && has_capability('moodle/user:loginas', $coursecontext) && !is_siteadmin($user->id)) {
             $url = new moodle_url('/course/loginas.php', array('id'=>$course->id, 'user'=>$user->id, 'sesskey'=>sesskey()));

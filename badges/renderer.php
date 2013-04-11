@@ -60,7 +60,9 @@ class core_badges_renderer extends plugin_renderer_base {
             $download = $status = $push = '';
             if (($userid == $USER->id) && !$profile) {
                 $url = new moodle_url('mybadges.php', array('download' => $badge->id, 'hash' => $badge->uniquehash, 'sesskey' => sesskey()));
-                if (!empty($CFG->badges_allowexternalbackpack) && (empty($badge->dateexpire) || $badge->dateexpire > time())) {
+                $notexpiredbadge = (empty($badge->dateexpire) || $badge->dateexpire > time());
+                $backpackexists = badges_user_has_backpack($USER->id);
+                if (!empty($CFG->badges_allowexternalbackpack) && $notexpiredbadge && $backpackexists) {
                     $assertion = new moodle_url('/badges/assertion.php', array('b' => $badge->uniquehash));
                     $action = new component_action('click', 'addtobackpack', array('assertion' => $assertion->out(false)));
                     $push = $this->output->action_icon(new moodle_url('#'), new pix_icon('t/backpack', get_string('addtobackpack', 'badges')), $action);
@@ -97,7 +99,7 @@ class core_badges_renderer extends plugin_renderer_base {
         $output = '';
         $formattributes = array();
         $formattributes['id'] = 'recipientform';
-        $formattributes['action'] = '';
+        $formattributes['action'] = $this->page->url;
         $formattributes['method'] = 'post';
         $output .= html_writer::start_tag('form', $formattributes);
         $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()));
@@ -290,7 +292,7 @@ class core_badges_renderer extends plugin_renderer_base {
                         get_string('download'),
                         'POST'));
             $expiration = isset($issued['expires']) ? strtotime($issued['expires']) : $today + 1;
-            if (!empty($CFG->badges_allowexternalbackpack) && ($expiration > $today)) {
+            if (!empty($CFG->badges_allowexternalbackpack) && ($expiration > $today) && badges_user_has_backpack($USER->id)) {
                 $assertion = new moodle_url('/badges/assertion.php', array('b' => $ibadge->hash));
                 $attributes = array(
                         'type' => 'button',
@@ -437,9 +439,17 @@ class core_badges_renderer extends plugin_renderer_base {
     // Outputs table of user badges.
     protected function render_badge_user_collection(badge_user_collection $badges) {
         global $CFG, $USER, $SITE;
+        $backpack = $badges->backpack;
+        $mybackpack = new moodle_url('/badges/mybackpack.php');
+
         $paging = new paging_bar($badges->totalcount, $badges->page, $badges->perpage, $this->page->url, 'page');
         $htmlpagingbar = $this->render($paging);
 
+        // Set backpack connection string.
+        $backpackconnect = '';
+        if (!empty($CFG->badges_allowexternalbackpack) && is_null($backpack)) {
+            $backpackconnect = $this->output->box(get_string('localconnectto', 'badges', $mybackpack->out()), 'noticebox');
+        }
         // Search box.
         $searchform = $this->output->box($this->helper_search_form($badges->search), 'boxwidthwide boxaligncenter');
 
@@ -459,39 +469,32 @@ class core_badges_renderer extends plugin_renderer_base {
             $downloadbutton = html_writer::table($table);
 
             $htmllist = $this->print_badges_list($badges->badges, $USER->id);
-            $localhtml .= $downloadbutton . $searchform . $htmlpagingbar . $htmllist . $htmlpagingbar;
+            $localhtml .= $backpackconnect . $downloadbutton . $searchform . $htmlpagingbar . $htmllist . $htmlpagingbar;
         } else {
             $localhtml .= $searchform . $this->output->notification(get_string('nobadges', 'badges'));
         }
         $localhtml .= html_writer::end_tag('fieldset');
 
         // External badges.
-        $backpack = $badges->backpack;
         $externalhtml = "";
         if (!empty($CFG->badges_allowexternalbackpack)) {
             $externalhtml .= html_writer::start_tag('fieldset', array('class' => 'generalbox'));
             $externalhtml .= html_writer::tag('legend', $this->output->heading_with_help(get_string('externalbadges', 'badges'), 'externalbadges', 'badges'));
             if (!is_null($backpack)) {
-                if ($backpack->totalbadges > 0) {
-                    $externalhtml .= get_string('backpackbadges', 'badges', $backpack);
+                if ($backpack->totalcollections == 0) {
+                    $externalhtml .= get_string('nobackpackcollections', 'badges', $backpack);
                 } else {
-                    $externalhtml .= get_string('nobackpackbadges', 'badges', $backpack);
+                    if ($backpack->totalbadges == 0) {
+                        $externalhtml .= get_string('nobackpackbadges', 'badges', $backpack);
+                    } else {
+                        $externalhtml .= get_string('backpackbadges', 'badges', $backpack);
+                        $externalhtml .= '<br/><br/>' . $this->print_badges_list($backpack->badges, $USER->id, true, true);
+                    }
                 }
-                $label = get_string('editsettings', 'badges');
-                $externalhtml .= $this->output->single_button(
-                        new moodle_url('mybackpack.php', array('clear' => true)),
-                        get_string('clearsettings', 'badges'),
-                        'POST',
-                        array('class' => 'backpackform'));
             } else {
-                $externalhtml .= get_string('nobackpack', 'badges');
-                $label = get_string('setup', 'badges');
+                $externalhtml .= get_string('externalconnectto', 'badges', $mybackpack->out());
             }
-            $externalhtml .= $this->output->single_button('mybackpack.php', $label, 'POST', array('class' => 'backpackform'));
 
-            if (isset($backpack->totalbadges) && $backpack->totalbadges !== 0) {
-                $externalhtml .= '<br/><br/>' . $this->print_badges_list($backpack->badges, $USER->id, true, true);
-            }
             $externalhtml .= html_writer::end_tag('fieldset');
         }
 
@@ -990,7 +993,7 @@ class badge_management extends badge_collection implements renderable {
  */
 class badge_user_collection extends badge_collection implements renderable {
     /** @var array backpack settings */
-    public $backpack;
+    public $backpack = null;
 
     /** @var string search */
     public $search = '';
@@ -1002,7 +1005,11 @@ class badge_user_collection extends badge_collection implements renderable {
      * @param int $userid Badges owner
      */
     public function __construct($badges, $userid) {
+        global $CFG;
         parent::__construct($badges);
-        $this->backpack = get_backpack_settings($userid);
+
+        if (!empty($CFG->badges_allowexternalbackpack)) {
+            $this->backpack = get_backpack_settings($userid);
+        }
     }
 }
