@@ -94,19 +94,21 @@ function xmldb_tool_totara_sync_upgrade($oldversion) {
 
         //automatically add the column to the embedded sync_log
         $params = array('shortname' => 'totarasynclog', 'source' => 'totara_sync_log', 'embedded' => 1);
-        $report = $DB->get_record('report_builder', $params);
-        $sortorder = $DB->get_field('report_builder_columns', 'MAX(sortorder) + 1', array('reportid' => $report->id));
+        if ($report = $DB->get_record('report_builder', $params)) {
+            $sortorder = $DB->get_field('report_builder_columns', 'MAX(sortorder) + 1', array('reportid' => $report->id));
+            $sortorder = !empty($sortorder) ? $sortorder : 1;
 
-        $todb = new stdClass();
-        $todb->reportid = $report->id;
-        $todb->type = $report->source;
-        $todb->value = 'runid';
-        $todb->heading = get_string('runid', 'tool_totara_sync');
-        $todb->sortorder = $sortorder;
-        $todb->hidden = 0;
-        $todb->customheading = 0;
+            $todb = new stdClass();
+            $todb->reportid = $report->id;
+            $todb->type = $report->source;
+            $todb->value = 'runid';
+            $todb->heading = get_string('runid', 'tool_totara_sync');
+            $todb->sortorder = $sortorder;
+            $todb->hidden = 0;
+            $todb->customheading = 0;
 
-        $DB->insert_record('report_builder_columns', $todb);
+            $DB->insert_record('report_builder_columns', $todb);
+        }
 
         upgrade_plugin_savepoint(true, 2013031400, 'tool', 'totara_sync');
     }
