@@ -92,6 +92,7 @@ local_js(array(
 ));
 
 $PAGE->requires->string_for_js('save', 'totara_core');
+$PAGE->requires->string_for_js('error:addpdroom-dialognotselected', 'totara_core');
 $PAGE->requires->strings_for_js(array('cancel', 'ok'), 'moodle');
 $PAGE->requires->strings_for_js(array('chooseroom', 'roomassignedtoanothersession'), 'facetoface');
 
