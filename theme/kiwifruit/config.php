@@ -76,8 +76,9 @@ $THEME->layouts = array(
     ),
     'report' => array(
         'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('langmenu' => true)
+        'regions' => array('side-pre'),
+        'options' => array('langmenu' => true),
+        'defaultregion' => 'side-pre'
     ),
     'noblocks' => array(
         'file' => 'general.php',
