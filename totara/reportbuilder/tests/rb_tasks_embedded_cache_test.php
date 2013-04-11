@@ -41,7 +41,7 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
                               'heading' => 'A', 'sortorder' => 1),
                         array('id' => 76, 'reportid' => 16, 'type' => 'user', 'value' => 'namelink',
                               'heading' => 'B', 'sortorder' => 2),
-                        array('id' => 77, 'reportid' => 16, 'type' => 'message_values', 'value' => 'statementurl',
+                        array('id' => 77, 'reportid' => 16, 'type' => 'message_values', 'value' => 'statement',
                               'heading' => 'C', 'sortorder' => 3),
                         array('id' => 78, 'reportid' => 16, 'type' => 'message_values', 'value' => 'sent',
                               'heading' => 'D', 'sortorder' => 4)
