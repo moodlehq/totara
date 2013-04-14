@@ -172,7 +172,7 @@ echo $OUTPUT->footer();
 
 function get_display_info($d, $m, $y) {
     $display = new stdClass;
-    $display->minwday = get_user_preferences('calendar_startwday', CALENDAR_STARTING_WEEKDAY);
+    $display->minwday = get_user_preferences('calendar_startwday', calendar_get_starting_weekday());
     $display->maxwday = $display->minwday + 6;
 
     $thisdate = usergetdate(time()); // Time and day at the user's location

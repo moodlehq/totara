@@ -215,7 +215,7 @@ M.totara_coursecompetency = M.totara_coursecompetency || {
                         var id = n.get('id');
                         // call the original component action again so it handles the
                         // auto submission of a selected option based on the new select
-                        M.util.init_select_autosubmit(Y, tableid, id);
+                        M.core.init_formautosubmit(Y, tableid, id);
                     });
                 }, '#'+tableid, Y);
             });

@@ -80,7 +80,7 @@ M.totara_organisationitem = M.totara_organisationitem || {
                 var selectid = Y.one('#'+formid+' select').get('id');
                 // call the original component action again so it handles the
                 // auto submission of a selected option based on the new select
-                M.util.init_select_autosubmit(Y, formid, selectid);
+                M.core.init_formautosubmit(Y, formid, selectid);
             }, '#'+formid, Y);
         });
     }
