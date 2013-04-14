@@ -46,6 +46,16 @@ $showmenu = empty($PAGE->layout_options['nocustommenu']);
 $custommenu = $OUTPUT->custom_menu();
 $hascustommenu = !empty($custommenu);
 
+$courseheader = $coursecontentheader = $coursecontentfooter = $coursefooter = '';
+if (empty($PAGE->layout_options['nocourseheaderfooter'])) {
+    $courseheader = $OUTPUT->course_header();
+    $coursecontentheader = $OUTPUT->course_content_header();
+    if (empty($PAGE->layout_options['nocoursefooter'])) {
+        $coursecontentfooter = $OUTPUT->course_content_footer();
+        $coursefooter = $OUTPUT->course_footer();
+    }
+}
+
 if ($showmenu && !$hascustommenu) {
     // load totara menu
     $menudata = totara_build_menu();
@@ -131,6 +141,9 @@ echo $OUTPUT->doctype() ?>
             <?php } ?>
           </div>
         </div>
+        <?php if (!empty($courseheader)) { ?>
+        <div id="course-header"><?php echo $courseheader; ?></div>
+        <?php } ?>
         <?php if ($showmenu) { ?>
         <div id="main_menu" class="clearfix">
           <?php if ($hascustommenu) { ?>
@@ -158,7 +171,9 @@ echo $OUTPUT->doctype() ?>
           <div id="region-post-box">
             <div id="region-main-wrap">
               <div id="region-main">
+                <?php echo $coursecontentheader; ?>
                 <div class="region-content"> <?php echo core_renderer::MAIN_CONTENT_TOKEN ?> </div>
+                <?php echo $coursecontentfooter; ?>
               </div>
             </div>
             <?php if ($hassidepre OR (right_to_left() AND $hassidepost)) { ?>
@@ -194,8 +209,11 @@ echo $OUTPUT->doctype() ?>
 <!-- END OF CONTENT -->
 
 <!-- START OF FOOTER -->
-    <?php if ($hasfooter) { ?>
+      <?php if (!empty($coursefooter)) { ?>
+      <div id="course-footer"><?php echo $coursefooter; ?></div>
+      <?php } ?>
 
+      <?php if ($hasfooter) { ?>
       <div id="page-footer">
         <div class="footer-content">
           <div class="footer-powered">Powered by <a href="http://www.totaralms.com/" target="_blank">TotaraLMS</a></div>

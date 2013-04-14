@@ -72,7 +72,7 @@ $THEME->layouts = array(
     'login' => array(
         'file' => 'login.php',
         'regions' => array(),
-        'options' => array('langmenu' => true)
+        'options' => array('langmenu' => true, 'nocourseheaderfooter' => true)
     ),
     'report' => array(
         'file' => 'general.php',
@@ -88,17 +88,17 @@ $THEME->layouts = array(
     'popup' => array(
         'file' => 'popup.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
     ),
     'embedded' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
     ),
     'redirect' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
     ),
 );
 
