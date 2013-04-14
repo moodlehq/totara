@@ -48,6 +48,32 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
         $data->timecreated = $this->apply_date_offset($data->timecreated);
         $data->timemodified = $this->apply_date_offset($data->timemodified);
         $data->usermodified = isset($USER->id) ? $USER->id : get_admin()->id;
+
+        $rooms = $DB->get_records('facetoface_room', array('name' => $data->room_name,
+            'building' => $data->room_building, 'address' => $data->room_address, 'custom' => 0), '', 'id');
+        $rooms_found = count($rooms);
+        if (!$rooms_found || $data->room_custom) {
+            if (!$data->room_custom) {
+                debugging("Room [{$data->room_name}, {$data->room_building}, {$data->room_address}] ".
+                    "in face to face session does not exist - creating as custom room");
+            }
+            $customroom = new stdClass();
+            $customroom->name = $data->room_name;
+            $customroom->building = $data->room_building;
+            $customroom->address = $data->room_address;
+            $customroom->capacity = $data->capacity;
+            $customroom->custom = 1;
+            $customroom->timecreated = $data->timecreated;
+            $customroom->timemodified = $data->timemodified;
+            $data->roomid = $DB->insert_record('facetoface_room', $customroom);
+        } else {
+            if ($rooms_found > 1) {
+                debugging("Room [{$data->room_name}, {$data->room_building}, {$data->room_address}] matches more ".
+                    "than one predefined room and we can't identify which - arbitrarily selecting one of them");
+            }
+            $data->roomid = reset($rooms)->id;
+        }
+
         // insert the entry record
         $newitemid = $DB->insert_record('facetoface_sessions', $data);
         $this->set_mapping('facetoface_session', $oldid, $newitemid, true); // childs and files by itemname
@@ -119,7 +145,6 @@ class restore_facetoface_activity_structure_step extends restore_activity_struct
                     $DB->update_record('facetoface_session_data', $customfield);
                 } else {
                     $customfield = new stdClass();
-                    $customfield->id = 0;
                     $customfield->sessionid = $this->get_new_parentid('facetoface_session');
                     $customfield->fieldid = $field->id;
                     $customfield->data    = $data->field_data;

@@ -44,17 +44,15 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
 
         // Define each element separated
         $facetoface = new backup_nested_element('facetoface', array('id'), array(
-            'name', 'thirdparty', 'thirdpartywaitlist', 'display', 'confirmationsubject',
-            'confirmationinstrmngr', 'confirmationmessage', 'waitlistedsubject', 'waitlistedmessage',
-            'cancellationsubject', 'cancellationmessage', 'remindersubject', 'reminderinstrmngr',
-            'remindermessage', 'reminderperiod', 'requestsubject', 'requestinstrmngr', 'requestmessage',
-            'timecreated', 'timemodified', 'shortname', 'description', 'showoncalendar', 'approvalreqd'));
+            'name', 'intro', 'introformat', 'thirdparty', 'thirdpartywaitlist', 'display',
+            'timecreated', 'timemodified', 'shortname', 'showoncalendar', 'approvalreqd', 'usercalentry'));
 
         $sessions = new backup_nested_element('sessions');
 
         $session = new backup_nested_element('session', array('id'), array(
             'facetoface', 'capacity', 'allowoverbook', 'details', 'datetimeknown', 'duration', 'normalcost',
-            'discountcost', 'timecreated', 'timemodified'));
+            'discountcost', 'room_name', 'room_building', 'room_address', 'room_custom', 'timecreated',
+            'timemodified'));
 
         $signups = new backup_nested_element('signups');
 
@@ -104,7 +102,13 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
         // Define sources
         $facetoface->set_source_table('facetoface', array('id' => backup::VAR_ACTIVITYID));
 
-        $session->set_source_table('facetoface_sessions', array('facetoface' => backup::VAR_PARENTID));
+        $session->set_source_sql('SELECT s.id, s.facetoface, s.capacity, s.allowoverbook, s.details, s.datetimeknown,
+                                         s.duration, s.normalcost, s.discountcost, r.name AS room_name,
+                                         r.building AS room_building, r.custom AS room_custom, r.address AS room_address,
+                                         s.timecreated, s.timemodified, s.usermodified
+                                        FROM {facetoface_room} r
+                                        JOIN {facetoface_sessions} s ON s.roomid = r.id
+                                       WHERE s.facetoface = ?', array(backup::VAR_PARENTID));
 
         $sessions_date->set_source_table('facetoface_sessions_dates', array('sessionid' => backup::VAR_PARENTID));
 
@@ -116,7 +120,7 @@ class backup_facetoface_activity_structure_step extends backup_activity_structur
             $session_role->set_source_table('facetoface_session_roles', array('sessionid' => backup::VAR_PARENTID));
         }
 
-        $customfield->set_source_sql('SELECT f.id, f.shortname AS field_name, f.type AS field_type, d.data AS field_data
+        $customfield->set_source_sql('SELECT d.id, f.shortname AS field_name, f.type AS field_type, d.data AS field_data
                                         FROM {facetoface_session_field} f
                                         JOIN {facetoface_session_data} d ON d.fieldid = f.id
                                        WHERE d.sessionid = ?', array(backup::VAR_PARENTID));
