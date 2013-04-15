@@ -2361,7 +2361,9 @@ class reportbuilder {
             foreach ($this->columns as $column) {
                 if ($column->grouping == 'none') {
                     $allgrouped = false;
-                    $group = array_merge($group, $column->get_fields($this->src, rb_column::CACHE));
+                    //we use FIELDONLY for the GROUP BY clause because MSSQL does not allow aliases in grouping
+                    $mode = $cache ? rb_column::CACHE : rb_column::FIELDONLY;
+                    $group = array_merge($group, $column->get_fields($this->src, $mode, false));
                     if ($column->extrafields !== null) {
                         foreach ($column->extrafields as $alias => $field) {
                             // when referencing a column in the group by, use the alias
@@ -2373,6 +2375,7 @@ class reportbuilder {
                 }
             }
         }
+
         return array($where, $group, $having, $sqlparams, $allgrouped);
     }
 
@@ -2699,7 +2702,7 @@ class reportbuilder {
                     $func = 'rb_display_'.$column->displayfunc;
                     if (method_exists($this->src, $func)) {
                         if ($column->displayfunc == 'customfield_textarea' || $column->displayfunc == 'customfield_file') {
-                            $tabledata[] = $this->src->$func($value, $record->$field, $record, $isexport);
+                            $tabledata[] = $this->src->$func($field, $record->$field, $record, $isexport);
                         } else if (($column->displayfunc == 'nice_date' || $column->displayfunc == 'nice_datetime') && $excel) {
                             $tabledata[] = $record->$field;
                         } else {

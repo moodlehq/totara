@@ -443,6 +443,7 @@ abstract class rb_base_source {
     /**
      * Properly format totara customfield textarea data for display
      *
+     * @param string $field fieldname from SQL query
      * @param integer $data contents of field from database
      * @param object $row Object containing all other fields for this row
      * @param boolean $isexport
@@ -457,10 +458,35 @@ abstract class rb_base_source {
         if ($isexport) {
             $displaytext = format_text($data, FORMAT_MOODLE);
         } else {
-            $prefix = "{$field}_prefix";
-            $itemidfield = $field . '_itemid';
+            //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
+            //extract prefix from field name
+            $pattern = '/(?P<prefix>(.*?))_custom_field_(\d?)$/';
+            $matches = array();
+            preg_match($pattern, $field, $matches);
+            if (!empty($matches)) {
+                $cf_prefix = $matches['prefix'];
+                switch ($cf_prefix) {
+                    case 'org_type':
+                        $prefix = 'organisation';
+                        break;
+                    case 'pos_type':
+                        $prefix = 'position';
+                        break;
+                    case 'comp_type':
+                        $prefix = 'competency';
+                        break;
+                    default:
+                        //unknown prefix
+                        return '';
+                }
+            } else {
+                //unknown prefix
+                return '';
+            }
+
+            $itemidfield = "{$field}_itemid";
             require_once($CFG->dirroot.'/totara/customfield/field/textarea/field.class.php');
-            $extradata = array('prefix' => $row->$prefix, 'itemid' => $row->$itemidfield);
+            $extradata = array('prefix' => $prefix, 'itemid' => $row->$itemidfield);
             $displaytext = call_user_func(array('customfield_textarea', 'display_item_data'), $data, $extradata);
         }
 
@@ -469,7 +495,7 @@ abstract class rb_base_source {
 
     /**
      * Properly format totara customfield file data for display
-     *
+     * @param string $field fieldname from SQL query
      * @param integer $data contents of field from database
      * @param object $row Object containing all other fields for this row
      * @param boolean $isexport
@@ -480,10 +506,34 @@ abstract class rb_base_source {
         if (empty($data)) {
             return '';
         }
-        $prefix = "{$field}_prefix";
-        $itemidfield = $field . '_itemid';
+        //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
+        //extract prefix from field name
+        $pattern = '/(?P<prefix>(.*?))_custom_field_(\d?)$/';
+        $matches = array();
+        preg_match($pattern, $field, $matches);
+        if (!empty($matches)) {
+            $cf_prefix = $matches['prefix'];
+            switch ($cf_prefix) {
+                case 'org_type':
+                    $prefix = 'organisation';
+                    break;
+                case 'pos_type':
+                    $prefix = 'position';
+                    break;
+                case 'comp_type':
+                    $prefix = 'competency';
+                    break;
+                default:
+                    //unknown prefix
+                    return '';
+            }
+        } else {
+            //unknown prefix
+            return '';
+        }
+        $itemidfield = "{$field}_itemid";
         require_once($CFG->dirroot.'/totara/customfield/field/file/field.class.php');
-        $extradata = array('prefix' => $row->$prefix, 'itemid' => $row->$itemidfield, 'isexport' => $isexport);
+        $extradata = array('prefix' => $prefix, 'itemid' => $row->$itemidfield, 'isexport' => $isexport);
         $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $extradata);
 
         return $displaytext;
@@ -2128,21 +2178,6 @@ abstract class rb_base_source {
         $fieldtable = $cf_prefix.'_info_field';
         $datatable = $cf_prefix.'_info_data';
 
-        //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
-        switch ($cf_prefix) {
-            case 'org_type':
-                $prefix = 'organisation';
-                break;
-            case 'pos_type':
-                $prefix = 'position';
-                break;
-            case 'comp_type':
-                $prefix = 'competency';
-                break;
-            default:
-                $prefix = $cf_prefix;
-                break;
-        }
         // check if there are any visible custom fields of this type
         if ($cf_prefix == 'user') {
             // for user fields include them all - below we require
@@ -2172,14 +2207,13 @@ abstract class rb_base_source {
             $filtertype = 'text'; // default filter type
             $filter_options = array();
 
-            $columnsql = "{$joinname}.data";
+            $columnsql = $DB->sql_compare_text("{$joinname}.data", 255);
 
             switch ($record->datatype) {
                 case 'file':
                     $column_options['displayfunc'] = 'customfield_file';
                     $column_options['extrafields'] = array(
-                            "custom_field_{$id}_itemid" => "{$joinname}.id",
-                            "custom_field_{$id}_prefix" => "'{$prefix}'"
+                            "{$cf_prefix}_custom_field_{$id}_itemid" => "{$joinname}.id"
                     );
                     break;
 
@@ -2191,8 +2225,7 @@ abstract class rb_base_source {
                         $column_options['displayfunc'] = 'customfield_textarea';
                     }
                     $column_options['extrafields'] = array(
-                            "custom_field_{$id}_itemid" => "{$joinname}.id",
-                            "custom_field_{$id}_prefix" => "'{$prefix}'"
+                            "{$cf_prefix}_custom_field_{$id}_itemid" => "{$joinname}.id"
                     );
                     break;
 
