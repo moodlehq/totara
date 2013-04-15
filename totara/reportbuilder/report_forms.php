@@ -692,20 +692,24 @@ class report_builder_edit_performance_form extends moodleform {
                 $mform->disabledIf('generatenow', 'cache');
             }
 
-            $mform->addElement('hidden', 'id', $id);
-            $mform->setType('id', PARAM_INT);
-            $mform->addElement('hidden', 'source', $report->source);
-            $mform->setType('source', PARAM_TEXT);
-            $this->add_action_buttons();
-
-            // set the defaults
-            $this->set_data($report);
-            $this->set_data($schedule);
         } else {
             //report caching is not enabled, inform user and link to settings page.
+            $mform->addElement('hidden', 'cache', 0);
+            $mform->setType('cache', PARAM_INT);
             $enablelink = new moodle_url("/".$CFG->admin."/settings.php", array('section' => 'optionalsubsystems'));
             $mform->addElement('static', 'reportcachingdisabled', '', get_string('reportcachingdisabled', 'totara_reportbuilder', $enablelink->out()));
         }
+
+        $mform->addElement('hidden', 'id', $id);
+        $mform->setType('id', PARAM_INT);
+        $mform->addElement('hidden', 'source', $report->source);
+        $mform->setType('source', PARAM_TEXT);
+
+        // set the defaults
+        $this->set_data($report);
+        $this->set_data($schedule);
+
+        $this->add_action_buttons();
     }
 }
 

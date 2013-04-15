@@ -63,8 +63,8 @@ if ($fromform = $mform->get_data()) {
 
     $todb = new stdClass();
     $todb->id = $id;
-    $todb->initialdisplay = $fromform->initialdisplay;
-    $todb->cache = $fromform->cache;
+    $todb->initialdisplay = isset($fromform->initialdisplay) ? $fromform->initialdisplay : 0;
+    $todb->cache = isset($fromform->cache) ? $fromform->cache : 0;
     $DB->update_record('report_builder', $todb);
 
     if ($fromform->cache) {
