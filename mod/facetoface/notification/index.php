@@ -254,15 +254,15 @@ foreach ($notifications as $note) {
     $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/edit.php', array('f' => $facetoface->id, 'id' => $note->id)), new pix_icon('t/edit', $str_edit));
 
     if ($note->status == 1) {
-        $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/index.php', array('update' => $facetoface->id, 'deactivate' => $note->id, 'sesskey' => sesskey())), new pix_icon('t/hide', $str_inactive));
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/index.php', array('update' => $update, 'deactivate' => $note->id, 'sesskey' => sesskey())), new pix_icon('t/hide', $str_inactive));
     } else {
-        $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/index.php', array('update' => $facetoface->id, 'activate' => $note->id, 'sesskey' => sesskey())), new pix_icon('t/show', $str_active));
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/index.php', array('update' => $update, 'activate' => $note->id, 'sesskey' => sesskey())), new pix_icon('t/show', $str_active));
     }
 
     if ($note->type != MDL_F2F_NOTIFICATION_AUTO) {
         $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/edit.php', array('f' => $facetoface->id, 'id' => $note->id, 'duplicate' => '1')), new pix_icon('t/copy', $str_duplicate));
 
-        $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/index.php', array('update' => $facetoface->id, 'delete' => $note->id, 'sesskey' => sesskey())), new pix_icon('t/delete', $str_delete));
+        $buttons[] = $OUTPUT->action_icon(new moodle_url('/mod/facetoface/notification/index.php', array('update' => $update, 'delete' => $note->id, 'sesskey' => sesskey())), new pix_icon('t/delete', $str_delete));
     }
 
     $row[] = implode(' ', $buttons);

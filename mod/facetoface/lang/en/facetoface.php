@@ -113,6 +113,7 @@ $string['deactivate'] = 'Deactivate';
 $string['decidelater'] = 'Decide Later';
 $string['delete'] = 'Delete';
 $string['deleteall'] = 'Delete all';
+$string['deletenotificationconfirm'] = 'Confirm you would like to delete the notification <strong>"{$a}"</strong>:';
 $string['deletenotificationtemplateconfirm'] = 'Confirm you would like to delete the notification template <strong>"{$a}"</strong>:';
 $string['deleteroomconfirm'] = 'Are you sure you want to delete room <strong>"{$a}"</strong>:';
 $string['deletesession'] = 'Delete session';
