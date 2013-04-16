@@ -364,7 +364,8 @@ if ($form = data_submitted()) {
             if (empty($recipients) && !empty($data->recipients_selected)) {
                 // Strip , prefix
                 $data->recipients_selected = substr($data->recipients_selected, 1);
-                list($insql, $params) = $DB->get_in_or_equal($data->recipients_selected);
+                $recipients = explode(',', $data->recipients_selected);
+                list($insql, $params) = $DB->get_in_or_equal($recipients);
                 $recipients = $DB->get_records_sql('SELECT * FROM {user} WHERE id ' . $insql, $params);
                 if (!$recipients) {
                     $recipients = array();

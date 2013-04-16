@@ -45,6 +45,8 @@ class mod_facetoface_attendees_message_form extends moodleform {
             MDL_F2F_STATUS_USER_CANCELLED,
             MDL_F2F_STATUS_WAITLISTED,
             MDL_F2F_STATUS_BOOKED,
+            MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED,
             MDL_F2F_STATUS_FULLY_ATTENDED
         );
 
