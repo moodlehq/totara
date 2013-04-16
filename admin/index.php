@@ -122,24 +122,22 @@ if (!isset($maturity)) {
 if (!empty($CFG->local_postinst_hasrun)) {
     $canupgrade = true;
     if (isset($CFG->totara_release)) {
-        //Totara 1.1.0 or greater
+        //Totara 2.2.13 or greater
         $parts = explode(" ", $CFG->totara_release);
-        $canupgrade = version_compare(trim($parts[0]), '1.1.17', '>=');
+        $canupgrade = version_compare(trim($parts[0]), '2.2.13', '>=');
     } else {
         //Totara 1.0 does not set any Totara release info, however if local_postinst_hasrun is true then this is Totara
         //cannot upgrade from any 1.0
         $canupgrade = false;
     }
-    // if upgrading from totara, require v1.1.17 or greater
+    // if upgrading from totara, require v2.2.13 or greater
     if (!$canupgrade) {
-         echo 'You cannot upgrade to Totara 2.x from this version of Totara. Please upgrade to Totara 1.1.17 or greater first.';
-         die();
+         print_error('error:cannotupgradefromtotara', 'totara_core');
     }
 } else if (empty($CFG->local_postinst_hasrun) &&
-        !empty($CFG->version) && $CFG->version < 2010112400) {
-    // if upgrading from moodle, require at least v2.0.0
-    echo 'You cannot upgrade to Totara 2.x from a Moodle version prior to 2.0 Please upgrade to Totara 1.1.17+ or Moodle 2 first.';
-    die();
+        !empty($CFG->version) && $CFG->version < 2011120507) {
+    // if upgrading from moodle, require at least v2.2.7
+    print_error('error:cannotupgradefrommoodle', 'totara_core');
 }
 
 // Turn off xmlstrictheaders during upgrade.

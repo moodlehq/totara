@@ -4,8 +4,9 @@ UPGRADING A TOTARA SITE
 These instructions detail the process for upgrading a Totara site to the latest
 point release version.
 
-NOTE: To upgrade to Totara 2.2 you must be on Totara 1.1.17 or later if your version
-    is earlier than 1.1.17 the upgrade will not run.
+NOTE: To upgrade to Totara 2.4 you must be on Totara 2.2.13 or later. If your version
+    is earlier than 2.2.13 the upgrade will not run. Versions of Totara prior to 2.2 must first
+    upgrade to 2.2 via Totara 1.1.17+, then to at least 2.2.13, before upgrading to 2.4
 
 For more information see http://docs.moodle.org/en/Upgrading
 

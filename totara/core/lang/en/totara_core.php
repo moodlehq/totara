@@ -62,7 +62,8 @@ $string['totaracopyright'] = '<p class="totara-copyright"><a href="http://www.to
 $string['totaralogo'] = 'Totara Logo';
 $string['totaramenu'] = 'Totara Menu';
 $string['requiresjs'] = 'This {$a} requires Javascript to be enabled.';
-
+$string['error:cannotupgradefromtotara'] = 'You cannot upgrade to Totara 2.4 from this version of Totara. Please upgrade to Totara 2.2.13 or greater first.';
+$string['error:cannotupgradefrommoodle'] = 'You cannot upgrade to Totara 2.4 from a Moodle version prior to 2.2.7. Please upgrade to Totara 2.2.13+ or Moodle 2.2.7+ first.';
 // Course categories
 $string['assessments'] = 'Assessments';
 $string['bookings'] = 'Bookings';
