@@ -968,10 +968,11 @@ function facetoface_get_grade($userid, $courseid, $facetofaceid) {
  *
  * @access public
  * @param integer Session ID
+ * @param array $status Array of statuses to include
  * @return array
  */
-function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOOKED)) {
-    global $CFG, $DB;
+function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_WAITLISTED)) {
+    global $DB;
 
     list($statussql, $statusparams) = $DB->get_in_or_equal($status);
 
@@ -1030,8 +1031,7 @@ function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOO
             sign.timecreated ASC,
             ss.timecreated ASC";
 
-    $params = array($sessionid);
-    $params = array_merge($params, $statusparams, array($sessionid, MDL_F2F_STATUS_APPROVED));
+    $params = array_merge(array($sessionid), $statusparams, array($sessionid, MDL_F2F_STATUS_APPROVED));
 
     $records = $DB->get_records_sql($sql, $params);
 
@@ -1047,7 +1047,7 @@ function facetoface_get_attendees($sessionid, $status = array(MDL_F2F_STATUS_BOO
  * @return false|object
  */
 function facetoface_get_attendee($sessionid, $userid) {
-    global $CFG, $DB;
+    global $DB;
     $record = $DB->get_record_sql("
         SELECT
             u.id,
@@ -1093,8 +1093,6 @@ function facetoface_get_attendee($sessionid, $userid) {
  * Return all user fields to include in exports
  */
 function facetoface_get_userfields() {
-    global $CFG;
-
     static $userfields = null;
     if (null == $userfields) {
         $userfields = array();
@@ -1814,7 +1812,7 @@ function facetoface_check_signup($facetofaceid) {
 
     global $USER;
 
-    if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id)) {
+    if ($submissions = facetoface_get_user_submissions($facetofaceid, $USER->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
         return reset($submissions)->sessionid;
     } else {
         return false;
@@ -2442,19 +2440,16 @@ function facetoface_get_num_attendees($session_id, $status = MDL_F2F_STATUS_BOOK
  * @param integer $facetofaceid
  * @param integer $userid
  * @param boolean $includecancellations
+ * @param integer $minimumstatus Minimum status level to return
+ * @param integer $maximumstatus Maximum status level to return
  * @return array submissions | false No submissions
  */
-function facetoface_get_user_submissions($facetofaceid, $userid, $includecancellations=false) {
-    global $CFG,$DB;
+function facetoface_get_user_submissions($facetofaceid, $userid, $minimumstatus=MDL_F2F_STATUS_REQUESTED, $maximumstatus=MDL_F2F_STATUS_BOOKED) {
+    global $DB;
 
-    $whereclause = "s.facetoface = ? AND su.userid = ? AND ss.superceded != 1";
-    $whereparams = array($facetofaceid, $userid);
-
-    // If not show cancelled, only show requested and up status'
-    if (!$includecancellations) {
-        $whereclause .= ' AND ss.statuscode >= ? AND ss.statuscode < ?';
-        $whereparams = array_merge($whereparams, array(MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_NO_SHOW));
-    }
+    $whereclause = "s.facetoface = ? AND su.userid = ? AND ss.superceded != 1
+            AND ss.statuscode >= ? AND ss.statuscode <= ?";
+    $whereparams = array($facetofaceid, $userid, $minimumstatus, $maximumstatus);
 
     //TODO fix mailedconfirmation, timegraded, timecancelled, etc
     return $DB->get_records_sql("
@@ -2551,7 +2546,7 @@ function facetoface_user_outline($course, $user, $mod, $facetoface) {
         $result->info = get_string('grade') . ': ' . $grade->grade;
         $result->time = $grade->dategraded;
     }
-    elseif ($submissions = facetoface_get_user_submissions($facetoface->id, $user->id)) {
+    elseif ($submissions = facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
         $result->info = get_string('usersignedup', 'facetoface');
         $result->time = reset($submissions)->timecreated;
     }
@@ -2571,7 +2566,7 @@ function facetoface_user_complete($course, $user, $mod, $facetoface) {
 
     $grade = facetoface_get_grade($user->id, $course->id, $facetoface->id);
 
-    if ($submissions = facetoface_get_user_submissions($facetoface->id, $user->id, true)) {
+    if ($submissions = facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_USER_CANCELLED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
         print get_string('grade').': '.$grade->grade . html_writer::empty_tag('br');
         if ($grade->dategraded > 0) {
             $timegraded = trim(userdate($grade->dategraded, get_string('strftimedatetime')));
@@ -3980,7 +3975,7 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
     }
 
     // Check if they are already signed up
-    if (facetoface_get_user_submissions($facetoface->id, $user->id)) {
+    if (facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
         $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($user));
         return $result;
     }
