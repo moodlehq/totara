@@ -235,6 +235,9 @@ function tm_insert_metadata($eventdata, $processorid) {
     $eventdata->onaccept = isset($eventdata->onaccept) ? serialize($eventdata->onaccept) : null;
     $eventdata->onreject = isset($eventdata->onreject) ? serialize($eventdata->onreject) : null;
     $eventdata->oninfo = isset($eventdata->oninfo) ? serialize($eventdata->oninfo) : null;
+    $eventdata->msgtype = isset($eventdata->msgtype) ? $eventdata->msgtype : TOTARA_MSG_TYPE_UNKNOWN;
+    $eventdata->msgstatus = isset($eventdata->msgstatus) ? $eventdata->msgstatus : TOTARA_MSG_STATUS_UNDECIDED;
+    $eventdata->urgency = isset($eventdata->urgency) ? $eventdata->urgency : TOTARA_MSG_URGENCY_NORMAL;
 
     if (isset($eventdata->icon)) {
         $eventdata->icon = clean_param($eventdata->icon, PARAM_FILE);
