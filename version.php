@@ -37,7 +37,7 @@ $version  = 2012120303.02;              // 20121203      = branching date YYYYMM
 $release  = '2.4.3 (Build: 20130318)';  // Human-friendly version name
 
 $branch   = '24';                       // this version's branch
-$maturity = MATURITY_ALPHA;            // this version's maturity level
+$maturity = MATURITY_BETA;            // this version's maturity level
 
 
 // TOTARA VERSION INFORMATION
@@ -46,7 +46,7 @@ $maturity = MATURITY_ALPHA;            // this version's maturity level
 // This can be used for modules to set a minimum functionality requirement.
 
 $TOTARA = new stdClass();
-$TOTARA->version    = '2.4.0a';            # Please keep as string
-$TOTARA->build      = '20121126.00';        # Please keep as string
+$TOTARA->version    = '2.4.0b';            # Please keep as string
+$TOTARA->build      = '20130418.00';       # Please keep as string
 $TOTARA->release    = "{$TOTARA->version} (Build: {$TOTARA->build})";
 
