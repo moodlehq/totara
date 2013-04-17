@@ -70,6 +70,9 @@ class plugin_manager_test extends advanced_testcase {
  */
 class available_update_checker_test extends advanced_testcase {
 
+    public function setUp() {
+        $this->markTestSkipped('Not testing available_update_checker as functionality disabled in Totara 2.4');
+    }
     public function test_core_available_update() {
         $provider = testable_available_update_checker::instance();
         $this->assertTrue($provider instanceof available_update_checker);

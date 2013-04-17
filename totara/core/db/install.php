@@ -169,5 +169,11 @@ function xmldb_totara_core_install() {
     // was never implemented and is no longer in totara
     $DB->delete_records('course_completion_criteria', array('criteriatype' => 3));
 
+    //disable autoupdate notifications from Moodle
+    set_config('disableupdatenotifications', '1');
+    set_config('disableupdateautodeploy', '1');
+    set_config('updateautodeploy', false);
+    set_config('updateautocheck', false);
+    set_config('updatenotifybuilds', false);
     return true;
 }

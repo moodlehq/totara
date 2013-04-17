@@ -54,6 +54,69 @@ function totara_major_version() {
 }
 
 /**
+ * Setup version information for installs and upgrades
+ *
+ * Moodle and Totara version numbers consist of three numbers (four for emergency releases)separated by a dot,
+ * for example 1.9.11 or 2.0.2. The first two numbers, like 1.9 or 2.0, represent so
+ * called major version. This function extracts the Moodle and Totara version info for use in checks and messages
+ * @param $version the moodle version number from the root version.php
+ * @param $release the moodle release string from the root version.php
+ * @return object containing moodle and totara version info
+ */
+function totara_version_info($version, $release) {
+    global $CFG, $TOTARA;
+
+    $a = new stdClass();
+    $a->existingtotaraversion = false;
+    $a->newtotaraversion = $TOTARA->version;
+    if (!empty($CFG->totara_release)) {
+        $a->canupgrade = true;
+        if (isset($CFG->totara_version)) {
+            //on at least Totara 2.2, check it is 2.2.13 or greater
+            $parts = explode(" ", $CFG->totara_release);
+            $a->existingtotaraversion = trim($parts[0]);
+            $a->canupgrade = version_compare($a->existingtotaraversion, '2.2.13', '>=');
+        } else {
+            //$CFG->totara_version was not set in 1.1 or early 2.2 releases
+            $a->canupgrade = false;
+        }
+        // if upgrading from totara, require v2.2.13 or greater
+        if (!$a->canupgrade) {
+            $a->totaraupgradeerror = 'error:cannotupgradefromtotara';
+            return $a;
+        }
+    } else if (empty($CFG->local_postinst_hasrun) &&
+            !empty($CFG->version) && $CFG->version < 2011120507) {
+        //upgrading from moodle, require at least v2.2.7
+        $a->totaraupgradeerror = 'error:cannotupgradefrommoodle';
+        return $a;
+    }
+
+    // If a Moodle core upgrade:
+    if ($version > $CFG->version) {
+        $moodleprefix = get_string('moodlecore', 'totara_core').':';
+        $a->oldversion .= "{$moodleprefix}<br />{$CFG->release}";
+        $a->newversion .= "{$moodleprefix}<br />{$release}";
+    }
+
+    // If a Totara core upgrade
+    if (!isset($CFG->totara_build) || (isset($CFG->totara_build) && version_compare($a->newtotaraversion, $a->existingtotaraversion, '>'))) {
+        $totaraprefix = get_string('totaracore','totara_core').':';
+        $moodlespacing = ($version > $CFG->version) ? '<br /><br />' : '';
+        // If a Moodle and a Totara upgrade, tidy up the markup
+        if (!isset($CFG->totara_build)) {
+            //upgrading from versions prior to M2.2.3 or T2.2.13 is no longer possible
+            //so if totara_build is not set this must be an upgrade from vanilla Moodle
+            $a->newversion .= "{$moodlespacing}{$totaraprefix}<br />{$TOTARA->release}";
+        } else {
+            $a->oldversion .= "{$moodlespacing}{$totaraprefix}<br />{$CFG->totara_release}";
+            $a->newversion .= "{$moodlespacing}{$totaraprefix}<br />{$TOTARA->release}";
+        }
+    }
+    return $a;
+}
+
+/**
  * gets a clean timezone array compatible with PHP DateTime, DateTimeZone etc functions
  * @param bool $assoc return a simple numerical index array or an associative array
  * @return array a clean timezone list that can be used safely

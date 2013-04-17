@@ -461,5 +461,16 @@ function xmldb_totara_core_upgrade($oldversion) {
         totara_upgrade_mod_savepoint(true, 2013041500, 'totara_core');
     }
 
+    if ($oldversion < 2013042300) {
+        //disable autoupdate notifications from Moodle
+        set_config('disableupdatenotifications', '1');
+        set_config('disableupdateautodeploy', '1');
+        set_config('updateautodeploy', false);
+        set_config('updateautocheck', false);
+        set_config('updatenotifybuilds', false);
+        set_config('updateminmaturity', MATURITY_STABLE);
+        set_config('updatenotifybuilds', 0);
+        totara_upgrade_mod_savepoint(true, 2013042300, 'totara_core');
+    }
     return true;
 }

@@ -89,27 +89,10 @@ if ($version < $CFG->version) {
     cli_error(get_string('downgradedcore', 'error'));
 }
 
-//determine proper upgrade message
-$a = new stdClass();
-$a->newversion = 'Totara ' . $TOTARA->release;
-// If a Moodle core upgrade:
-if ($version > $CFG->version) {
-    $prefix = get_string('moodlecore', 'totara_core').':';
-    $a->oldversion .= "{$prefix} {$CFG->release} ({$CFG->version}) ";
-    $a->newversion .= "{$prefix} {$release} ({$version}) ";
-}
-
-// If a Totara core upgrade
-if (!isset($CFG->totara_build) || $TOTARA->build > $CFG->totara_build) {
-    $prefix = get_string('totaracore','totara_core').':';
-
-    if (!isset($CFG->totara_build)) {
-        $a->oldversion .= $prefix.' '.get_string('totarapre11', 'totara_core');
-        $a->newversion .= "{$prefix} {$TOTARA->release}";
-    } else {
-        $a->oldversion .= "{$prefix} {$CFG->totara_release}";
-        $a->newversion .= "{$prefix} {$TOTARA->release}";
-    }
+//setup totara version variables
+$a = totara_version_info($version, $release);
+if (!empty($a->totaraupgradeerror)){
+    print_error($a->totaraupgradeerror, 'totara_core');
 }
 
 //check that neither moodle nor totara need upgrading
@@ -161,7 +144,7 @@ if (isset($maturity)) {
 }
 
 if ($interactive) {
-    echo html_to_text(get_string('cliupgradesure', 'totara_core', $a->newversion))."\n";
+    echo html_to_text(get_string('cliupgradesure', 'totara_core', $a))."\n";
     $prompt = get_string('cliyesnoprompt', 'admin');
     $input = cli_input($prompt, '', array(get_string('clianswerno', 'admin'), get_string('cliansweryes', 'admin')));
     if ($input == get_string('clianswerno', 'admin')) {
