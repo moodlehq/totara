@@ -205,7 +205,6 @@ class user_position_assignment_form extends moodleform {
             $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'totara_hierarchy'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
             $mform->setDefault('timevalidto', get_string('datepickerdisplayformat','totara_core'));
-            $mform->addHelpButton('managerselector', 'choosemanager', 'totara_hierarchy');
             $mform->addHelpButton('timevalidto_group', 'finishdate', 'totara_hierarchy');
 
             $rule1['timevalidfrom'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerregexphp', 'totara_core'));
