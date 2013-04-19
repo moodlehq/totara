@@ -205,8 +205,14 @@ class MoodleExcelWorksheet {
     function write_url($row, $col, $url, $format=null) {
     /// Calculate the internal PEAR format
         $format = $this->MoodleExcelFormat2PearExcelFormat($format);
+    /// Convert the text from its original encoding to UTF-16LE
+        if (!$this->latin_output) { /// Only if don't want to use latin (win1252) stronger output
+            $str = textlib::convert($url, 'utf-8', 'utf-16le');
+        } else { /// else, convert to latin (win1252)
+            $str = textlib::convert($url, 'utf-8', 'windows-1252');
+        }
     /// Add  the url safely to the PEAR Worksheet
-        $this->pear_excel_worksheet->writeUrl($row, $col, $url, $format);
+        $this->pear_excel_worksheet->writeUrl($row, $col, $url, $str, $format);
     }
 
     /**
