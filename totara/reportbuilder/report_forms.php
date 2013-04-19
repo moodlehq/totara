@@ -424,6 +424,7 @@ class report_builder_edit_columns_form extends moodleform {
                 }
             } else {
                 $mform->addElement('html', html_writer::tag('p', get_string('nocolumnsyet', 'totara_reportbuilder')));
+                $columns = array();
             }
 
             $mform->addElement('html', html_writer::start_tag('tr') . html_writer::start_tag('td'));
