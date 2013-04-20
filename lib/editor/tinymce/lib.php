@@ -172,7 +172,15 @@ class tinymce_texteditor extends texteditor {
         );
 
         // Should we override the default toolbar layout unconditionally?
+        if (empty($config->customtoolbar)) {
+            $config->customtoolbar = "fontselect,fontsizeselect,formatselect,|,undo,redo,|,search,replace,|,fullscreen
+
+bold,italic,underline,strikethrough,sub,sup,|,justifyleft,justifycenter,justifyright,|,cleanup,removeformat,pastetext,pasteword,|,forecolor,backcolor,|,ltr,rtl
+
+bullist,numlist,outdent,indent,|,link,unlink,|,image,nonbreaking,charmap,table,|,code";
+        }
         $customtoolbar = self::parse_toolbar_setting($config->customtoolbar);
+
         if ($customtoolbar) {
             $i = 1;
             foreach ($customtoolbar as $line) {
