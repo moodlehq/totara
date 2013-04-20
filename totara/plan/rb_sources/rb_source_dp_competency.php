@@ -712,7 +712,7 @@ from
                 $content[] = html_writer::select($compscale,
                                               'competencyevidencestatus'.$plancompid,
                                               $compevscalevalueid,
-                                              array(($compevscalevalueid ? '' : 0) => ($compevscalevalueid ? '' : get_string('notset', 'totara_reportbuilder'))),
+                                              array(($compevscalevalueid ? '' : 0) => ($compevscalevalueid ? '' : get_string('notset', 'totara_hierarchy'))),
                                               $attributes);
             } else if ($status) {
                 $content[] = $status;
