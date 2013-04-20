@@ -444,7 +444,7 @@ class dp_program_component extends dp_base_component {
      * @return  void
      */
     public function post_header_hook() {
-        global $OUTPUT;
+        global $CFG, $OUTPUT;
         $delete = optional_param('d', 0, PARAM_INT); // program assignment id to delete
         $currenturl = $this->get_url();
         $continueurl = new moodle_url($currenturl->out(), array('d' => $delete, 'confirm' => '1', 'sesskey' => sesskey()));
