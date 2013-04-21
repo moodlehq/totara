@@ -4611,6 +4611,9 @@ function delete_course($courseorid, $showfeedback = true) {
         return false;
     }
 
+    // Handle course badges.
+    badges_handle_course_deletion($courseid);
+
     // make the course completely empty
     remove_course_contents($courseid, $showfeedback);
 
