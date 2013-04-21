@@ -50,7 +50,6 @@ $string['uploadaccessdenied'] = 'Your Totara Sync configuration is set to look f
 $string['uploadaccessdeniedlink'] = 'here';
 $string['couldnotmakedirsforx'] = 'Could not make necessary directories for {$a}';
 $string['note:syncfilepending'] = 'NOTE: A pending sync file exists. Uploading another file now will overwrite the pending one.';
-$string['placeholderposition'] = 'Placeholder position';
 //
 // Elements
 //
