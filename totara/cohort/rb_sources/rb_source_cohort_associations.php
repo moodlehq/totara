@@ -223,8 +223,8 @@ class rb_source_cohort_associations extends rb_base_source {
                 'type' => 'associations',
                 'value' => 'name',
             ),
-        array(
-                'type' => 'assocations',
+            array(
+                'type' => 'associations',
                 'value' => 'type',
             )
         );
