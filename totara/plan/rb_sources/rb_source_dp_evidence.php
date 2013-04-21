@@ -79,7 +79,7 @@ class rb_source_dp_evidence extends rb_base_source {
         $this->filteroptions = $this->define_filteroptions();
         $this->contentoptions = $this->define_contentoptions();
         $this->paramoptions = $this->define_paramoptions();
-        $this->defaultcolumns = array();
+        $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = array();
         $this->requiredcolumns = array();
         $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_evidence');
@@ -252,6 +252,28 @@ class rb_source_dp_evidence extends rb_base_source {
         );
 
         return $filteroptions;
+    }
+
+    protected function define_defaultcolumns() {
+        $defaultcolumns = array(
+            array(
+                'type' => 'user',
+                'value' => 'fullname',
+            ),
+            array(
+                'type' => 'evidence',
+                'value' => 'namelink',
+            ),
+            array(
+                'type' => 'evidence',
+                'value' => 'description',
+            ),
+            array(
+                'type' => 'evidence',
+                'value' => 'datecompleted',
+            ),
+        );
+        return $defaultcolumns;
     }
 
     /**

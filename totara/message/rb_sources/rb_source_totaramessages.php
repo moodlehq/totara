@@ -265,6 +265,22 @@ class rb_source_totaramessages extends rb_base_source {
 
     protected function define_defaultcolumns() {
         $defaultcolumns = array(
+            array(
+                'type' => 'user',
+                'value' => 'fullname'
+            ),
+            array(
+                'type' => 'message_values',
+                'value' => 'subject'
+            ),
+            array(
+                'type' => 'message_values',
+                'value' => 'msgtype'
+            ),
+            array(
+                'type' => 'message_values',
+                'value' => 'sent'
+            ),
         );
         return $defaultcolumns;
     }
