@@ -50,8 +50,8 @@ local_js(array(
     TOTARA_JS_PLACEHOLDER
 ));
 
-$usercontext = context_user::instance($userid);
-$PAGE->set_context($usercontext);
+$systemcontext = context_system::instance();
+$PAGE->set_context($systemcontext);
 $PAGE->set_pagelayout('noblocks');
 $PAGE->set_url('/totara/plan/record/evidence/edit.php',
         array('id' => $evidenceid, 'userid' => $userid, 'status' => $rolstatus));
