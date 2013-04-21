@@ -93,8 +93,14 @@ class award_criteria_course extends award_criteria {
      */
     public function get_options(&$mform) {
         global $PAGE, $DB;
-        $param = array_shift($this->params);
+
         $course = $DB->get_record('course', array('id' => $PAGE->course->id));
+
+        if ($this->id !== 0) {
+            $param = array_shift($this->params);
+        } else {
+            $param['course'] = $course->id;
+        }
 
         if (!($course->enablecompletion == COMPLETION_ENABLED)) {
             $none = true;
