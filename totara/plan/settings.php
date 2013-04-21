@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die;
 
     $ADMIN->add('totara_plan',
         new admin_externalpage('managetemplates',
-            get_string('managetemplates', 'totara_plan'),
+            new lang_string('managetemplates', 'totara_plan'),
             "$CFG->wwwroot/totara/plan/template/index.php",
             array('totara/plan:configureplans')
         )
@@ -37,7 +37,7 @@ defined('MOODLE_INTERNAL') || die;
 
     $ADMIN->add('totara_plan',
         new admin_externalpage('priorityscales',
-            get_string('priorityscales', 'totara_plan'),
+            new lang_string('priorityscales', 'totara_plan'),
             "$CFG->wwwroot/totara/plan/priorityscales/index.php",
             array('totara/plan:configureplans')
         )
@@ -45,7 +45,7 @@ defined('MOODLE_INTERNAL') || die;
 
     $ADMIN->add('totara_plan',
         new admin_externalpage('objectivescales',
-            get_string('objectivescales', 'totara_plan'),
+            new lang_string('objectivescales', 'totara_plan'),
             "$CFG->wwwroot/totara/plan/objectivescales/index.php",
             array('totara/plan:configureplans')
         )
@@ -53,7 +53,7 @@ defined('MOODLE_INTERNAL') || die;
 
     $ADMIN->add('totara_plan',
         new admin_externalpage('evidencetypes',
-            get_string('evidencetypes', 'totara_plan'),
+            new lang_string('evidencetypes', 'totara_plan'),
             "$CFG->wwwroot/totara/plan/evidencetypes/index.php",
             array('totara/plan:configureplans')
         )
