@@ -335,7 +335,7 @@
             }
         } else {
             //cannot manage categories but may have course or program create/update capabilities
-            $PAGE->set_title("$site->shortname: $category->name");
+            $PAGE->set_title(format_string("$site->shortname: $category->name", FORMAT_HTML));
             $PAGE->set_heading($site->fullname);
             $PAGE->set_context($context);
             $PAGE->set_button($editbutton);
@@ -343,7 +343,7 @@
         }
         echo $OUTPUT->header();
     } else {
-        $PAGE->set_title("$site->shortname: $category->name");
+        $PAGE->set_title(format_string("$site->shortname: $category->name", FORMAT_HTML));
         $PAGE->set_heading($site->fullname);
         $PAGE->set_button($editbutton);
         $PAGE->set_pagelayout('coursecategory');
@@ -446,7 +446,7 @@
         }
     }
 
-    echo $OUTPUT->heading($category->name);
+    echo $OUTPUT->heading(format_string($category->name, FORMAT_HTML));
 
     $numcourses = 0;
     // Print out all the courses.
