@@ -595,6 +595,38 @@ class badge {
     }
 
     /**
+     * Checks if badge criteria are valid.
+     * Looks for major problems like deleted courses, activities, or roles.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    public function validate_criteria() {
+        $criteria = $this->get_criteria();
+        $aggregateall = ($criteria[BADGE_CRITERIA_TYPE_OVERALL]->method == BADGE_CRITERIA_AGGREGATION_ALL);
+        $single = (count($criteria) == 2); // Default overall + another criterion.
+        unset($criteria[BADGE_CRITERIA_TYPE_OVERALL]); // Don't need to check overall any more.
+
+        // Set initial validation value.
+        $valid = ($single || $aggregateall) ? true : false;
+        $message = get_string('error:invalidcriteriaparam', 'badges');
+
+        foreach ($criteria as $criterion) {
+            list($criteriavalid, $criteriamessage) = $criterion->validate();
+            // To be consistent with the rest of the validation logic,
+            // Don't fail if aggregation is ANY and at least one of the criteria is valid.
+            if ($single || $aggregateall) {
+                $valid = $valid && $criteriavalid;
+                $message .= $criteriamessage;
+            } else {
+                $valid = $valid || $criteriavalid;
+                $message .= $criteriamessage;
+            }
+        }
+
+        return array($valid, $message);
+    }
+
+    /**
      * Marks the badge as archived.
      * For reporting and historical purposed we cannot completely delete badges.
      * We will just change their status to BADGE_STATUS_ARCHIVED.

@@ -181,4 +181,20 @@ class award_criteria_course extends award_criteria {
 
         return false;
     }
+
+    /**
+     * Checks criteria for any major problems.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    public function validate() {
+        global $DB;
+        $param = reset($this->params);
+
+        if (!$DB->record_exists('course', array('id' => $param['course']))) {
+            return array(false, get_string('error:invalidparamcourse', 'badges'));
+        }
+
+        return array(true, '');
+    }
 }

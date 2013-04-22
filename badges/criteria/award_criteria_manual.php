@@ -181,4 +181,26 @@ class award_criteria_manual extends award_criteria {
 
         parent::delete();
     }
+
+    /**
+     * Checks criteria for any major problems.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    public function validate() {
+        global $DB;
+        $params = array_keys($this->params);
+        $method = ($this->method == BADGE_CRITERIA_AGGREGATION_ALL);
+        $singleparam = (count($params) == 1);
+
+        foreach ($params as $param) {
+            // Perform check if there only one parameter with any type of aggregation,
+            // Or there are more than one parameter with aggregation ALL.
+            if (($singleparam || $method) && !$DB->record_exists('role', array('id' => $param))) {
+                return array(false, get_string('error:invalidparamrole', 'badges'));
+            }
+        }
+
+        return array(true, '');
+    }
 }

@@ -122,18 +122,23 @@ if ($activate && has_capability('moodle/badges:configuredetails', $PAGE->context
     $badge = new badge($activate);
 
     if (!$badge->has_criteria()) {
-        $err = get_string('error:cannotact', 'badges') . get_string('nocriteria', 'badges');
+        $err = get_string('error:cannotact', 'badges', $badge->name) . get_string('nocriteria', 'badges');
     } else {
-        if ($badge->is_locked()) {
-            $badge->set_status(BADGE_STATUS_ACTIVE_LOCKED);
-            $msg = get_string('activatesuccess', 'badges');
+        list($valid, $message) = $badge->validate_criteria();
+        if ($valid) {
+            if ($badge->is_locked()) {
+                $badge->set_status(BADGE_STATUS_ACTIVE_LOCKED);
+                $msg = get_string('activatesuccess', 'badges');
+            } else {
+                require_sesskey();
+                $badge->set_status(BADGE_STATUS_ACTIVE);
+                $msg = get_string('activatesuccess', 'badges');
+            }
+            $returnurl->param('msg', $msg);
+            redirect($returnurl);
         } else {
-            require_sesskey();
-            $badge->set_status(BADGE_STATUS_ACTIVE);
-            $msg = get_string('activatesuccess', 'badges');
+            $err = get_string('error:cannotact', 'badges', $badge->name) . $message;
         }
-        $returnurl->param('msg', $msg);
-        redirect($returnurl);
     }
 } else if ($deactivate && has_capability('moodle/badges:configuredetails', $PAGE->context)) {
     $badge = new badge($deactivate);

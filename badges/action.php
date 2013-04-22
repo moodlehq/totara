@@ -105,28 +105,37 @@ if ($activate) {
     $status = ($badge->status == BADGE_STATUS_INACTIVE) ? BADGE_STATUS_ACTIVE : BADGE_STATUS_ACTIVE_LOCKED;
     if ($confirm == 1) {
         require_sesskey();
-        $badge->set_status($status);
+        list($valid, $message) = $badge->validate_criteria();
+        if ($valid) {
+            $badge->set_status($status);
 
-        if ($badge->type == BADGE_TYPE_SITE) {
-            // Review on cron if there are more than 1000 users who can earn a site-level badge.
-            $sql = 'SELECT COUNT(u.id) as num
-                        FROM {user} u
-                        LEFT JOIN {badge_issued} bi
-                            ON u.id = bi.userid AND bi.badgeid = :badgeid
-                        WHERE bi.badgeid IS NULL AND u.id != :guestid AND u.deleted = 0';
-            $toearn = $DB->get_record_sql($sql, array('badgeid' => $badge->id, 'guestid' => $CFG->siteguest));
+            if ($badge->type == BADGE_TYPE_SITE) {
+                // Review on cron if there are more than 1000 users who can earn a site-level badge.
+                $sql = 'SELECT COUNT(u.id) as num
+                            FROM {user} u
+                            LEFT JOIN {badge_issued} bi
+                                ON u.id = bi.userid AND bi.badgeid = :badgeid
+                            WHERE bi.badgeid IS NULL AND u.id != :guestid AND u.deleted = 0';
+                $toearn = $DB->get_record_sql($sql, array('badgeid' => $badge->id, 'guestid' => $CFG->siteguest));
 
-            if ($toearn->num < 1000) {
+                if ($toearn->num < 1000) {
+                    $awards = $badge->review_all_criteria();
+                    $returnurl->param('awards', $awards);
+                } else {
+                    $returnurl->param('awards', 'cron');
+                }
+            } else {
                 $awards = $badge->review_all_criteria();
                 $returnurl->param('awards', $awards);
-            } else {
-                $returnurl->param('awards', 'cron');
-            }
+             }
+            redirect($returnurl);
         } else {
-            $awards = $badge->review_all_criteria();
-            $returnurl->param('awards', $awards);
-         }
-        redirect($returnurl);
+            echo $OUTPUT->header();
+            echo $OUTPUT->notification(get_string('error:cannotact', 'badges', $badge->name) . $message);
+            echo $OUTPUT->continue_button($returnurl);
+            echo $OUTPUT->footer();
+            die();
+        }
     }
 
     $strheading = get_string('reviewbadge', 'badges');
@@ -140,7 +149,7 @@ if ($activate) {
     $url = new moodle_url('/badges/action.php', $params);
 
     if (!$badge->has_criteria()) {
-        echo $OUTPUT->notification(get_string('error:cannotact', 'badges') . get_string('nocriteria', 'badges'));
+        echo $OUTPUT->notification(get_string('error:cannotact', 'badges', $badge->name) . get_string('nocriteria', 'badges'));
         echo $OUTPUT->continue_button($returnurl);
     } else {
         $message = get_string('reviewconfirm', 'badges', $badge->name);

@@ -387,4 +387,11 @@ abstract class award_criteria {
             }
         }
     }
+
+    /**
+     * Checks criteria for any major problems.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    abstract public function validate();
 }
