@@ -48,7 +48,7 @@ class rb_source_dp_program_recurring extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('recordoflearningprogramsrecurring', 'totara_plan');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_program_recurring');
         // only consider whole programs - not courseset completion
         $this->sourcewhere = 'base.coursesetid = 0';
         parent::__construct();

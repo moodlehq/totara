@@ -40,7 +40,7 @@ class rb_source_totara_sync_log extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('sourcetitle', 'tool_totara_sync');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_totara_sync_log');
         parent::__construct();
     }
 

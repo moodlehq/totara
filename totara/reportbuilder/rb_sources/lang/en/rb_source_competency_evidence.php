@@ -1,6 +1,6 @@
 <?php
 // lang strings for report builder 'competency evidence' source
-$string['sourcetitle'] = 'Competency Evidence';
+$string['sourcetitle'] = 'Competency Status';
 // columns
 $string['proficiency'] = 'Proficiency';
 $string['proficiencyid'] = 'Proficiency ID';
@@ -42,5 +42,5 @@ $string['user'] = 'The user';
 $string['completiondate'] = 'The completion date';
 
 // column types for this source, as strings
-$string['type_competency_evidence'] = 'Competency Evidence';
+$string['type_competency_evidence'] = 'Competency Status';
 $string['type_competency'] = 'Competency';

@@ -1,5 +1,6 @@
 <?php
 // lang strings for report builder 'program completion' source
+$string['sourcetitle'] = 'Program Completion';
 $string['program_completion'] = 'Program Completion';
 $string['programcompletionstatus'] = 'Status';
 $string['starteddate'] = 'Date started';

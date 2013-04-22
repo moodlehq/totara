@@ -92,7 +92,8 @@ class report_builder_edit_form extends moodleform {
         $mform->setType('description_editor', PARAM_CLEANHTML);
         $mform->addHelpButton('description_editor', 'reportbuilderdescription', 'totara_reportbuilder');
 
-        $mform->addElement('static', 'reportsource', get_string('source', 'totara_reportbuilder'), $report->source);
+        $string_location = preg_replace('/_grp_[0-9]*$/', '', 'rb_source_' . $report->source);
+        $mform->addElement('static', 'reportsource', get_string('source', 'totara_reportbuilder'), get_string('sourcetitle', $string_location));
         $mform->addHelpButton('reportsource', 'reportbuildersource', 'totara_reportbuilder');
 
         $mform->addElement('advcheckbox', 'hidden', get_string('hidden', 'totara_reportbuilder'), '', null, array(0, 1));

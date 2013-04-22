@@ -19,6 +19,7 @@ $string['competencyname'] = 'Competency name';
 $string['competencyduedate'] = 'Competency due date';
 $string['competencypriority'] = 'Competency priority';
 $string['competencystatus'] = 'Competency status';
+$string['competencyeditstatus'] = 'Competency edit status (link)';
 $string['competencytype'] = 'Competency type';
 $string['competencytypeid'] = 'Competency type ID';
 $string['competencyproficiency'] = 'Competency proficiency';
