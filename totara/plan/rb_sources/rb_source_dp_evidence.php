@@ -190,6 +190,17 @@ class rb_source_dp_evidence extends rb_base_source {
             'evidence',
             'evidencetypeid',
             get_string('evidencetype', 'rb_source_dp_evidence'),
+            'base.evidencetypeid',
+            array(
+                'hidden' => true,
+                'selectable' => false,
+            )
+        );
+
+        $columnoptions[] = new rb_column_option(
+            'evidence',
+            'evidencetypename',
+            get_string('evidencetype', 'rb_source_dp_evidence'),
             'base.evidencetypename'
         );
 
