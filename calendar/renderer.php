@@ -402,6 +402,8 @@ class core_calendar_renderer extends plugin_renderer_base {
                 }
             }
         }
+        // Apply any relevant module filters
+        calendar_apply_mod_filters($events);
 
         // Extract information: events vs. time
         calendar_events_by_day($events, $calendar->month, $calendar->year, $eventsbyday, $durationbyday, $typesbyday, $calendar->courses);
@@ -411,6 +413,9 @@ class core_calendar_renderer extends plugin_renderer_base {
             $output .= $this->add_event_button($calendar->course->id, null, $calendar->month, $calendar->year);
         }
         $output .= get_string('detailedmonthview', 'calendar').': '.$this->course_filter_selector($returnurl);
+        $output .= html_writer::start_tag('div', array('class'=>'calendar-mod-filters'));
+        $output .= $this->mod_filter_controls();
+        $output .= html_writer::end_tag('div');
         $output .= html_writer::end_tag('div', array('class'=>'header'));
         // Controls
         $output .= html_writer::tag('div', calendar_top_controls('month', array('id' => $calendar->courseid, 'm' => $calendar->month, 'y' => $calendar->year)), array('class'=>'controls'));
@@ -821,5 +826,42 @@ class core_calendar_renderer extends plugin_renderer_base {
         $html .= html_writer::end_tag('div');
         $html .= html_writer::end_tag('form');
         return $html;
+    }
+
+    /**
+     * Displays modules' calendar filter input.
+     * This is done by calling a hook in the module's renderer class.
+     *
+     * @return string html
+     */
+    protected function mod_filter_controls() {
+         global $CFG, $DB;
+
+        $output = '';
+        $mods = $DB->get_records('modules', array('visible' => '1'));
+        foreach ($mods as $mod) {
+            $rendererfile = "{$CFG->dirroot}/mod/{$mod->name}/renderer.php";
+            if (!file_exists($rendererfile)) {
+                continue;
+            }
+            $functionname = "calendar_filter_controls";
+            $modrenderer = $this->page->get_renderer($mod->name);
+            if (!method_exists($modrenderer, $functionname)) {
+                continue;
+            }
+            if (!$filtercontrols = $modrenderer->$functionname()) {
+                continue;
+            }
+            $output .= html_writer::start_tag('fieldset');
+            $output .= html_writer::tag('legend', get_string('pluginname', $mod->name));
+            $output .= html_writer::start_tag('form', array('action' => new moodle_url(qualified_me()), 'method' => 'post', 'id' => 'module_filter_' . $mod->name));
+            // call renderer function to render module filter controls
+            $output .= $filtercontrols;
+            $output .= html_writer::empty_tag('input', array('type' => 'submit', 'name' => "apply{$mod->name}filter", 'value' => get_string('applyfilter', 'calendar')));
+            $output .= html_writer::end_tag('form');
+            $output .= html_writer::end_tag('fieldset');
+        }
+
+        return $output;
     }
 }

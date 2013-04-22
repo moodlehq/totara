@@ -4563,3 +4563,61 @@ function facetoface_download_csv($fields, $datarows, $file=null) {
     echo $csv;
     die;
 }
+
+/**
+ * Main calendar hook for filtering f2f events (if necessary)
+ *
+ * @param array $events from the events table
+ * @uses $SESSION->calendarfacetofacefilter - contains an assoc array of filter fieldids and vals
+ *
+ * @return void
+ */
+function facetoface_filter_calendar_events(&$events) {
+    global $CFG, $SESSION;
+
+    if (empty($SESSION->calendarfacetofacefilter)) {
+        return;
+    }
+    $filters = $SESSION->calendarfacetofacefilter;
+    foreach ($events as $eid => $event) {
+        $event = new calendar_event($event);
+        if ($event->modulename != 'facetoface') {
+            continue;
+        }
+
+        $cfield_vals = facetoface_get_customfielddata($event->uuid);
+
+        foreach ($filters as $shortname => $fval) {
+            if (empty($fval)) {  // ignore empty filters
+                continue;
+            }
+            if (empty($cfield_vals[$shortname]->data)) {
+                // no reason comparing empty values :D
+                unset($events[$eid]);
+                break;
+            }
+            if ($fval != $cfield_vals[$shortname]->data) {
+                unset($events[$eid]);
+                break;
+            }
+        }
+    }
+}
+
+/**
+ * Main calendar hook for settinging f2f calendar filters
+ *
+ * @uses $SESSION->calendarfacetofacefilter - initialises assoc array of filter fieldids and vals
+ *
+ * @return void
+ */
+function facetoface_calendar_set_filter() {
+    global $DB, $SESSION;
+
+    $fields = $DB->get_records('facetoface_session_field', array('isfilter' => 1));
+
+    $SESSION->calendarfacetofacefilter = array();
+    foreach ($fields as $f) {
+        $SESSION->calendarfacetofacefilter[$f->shortname] = optional_param("field_{$f->shortname}", '', PARAM_TEXT);
+    }
+}

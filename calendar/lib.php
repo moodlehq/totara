@@ -1837,6 +1837,52 @@ function calendar_add_event_allowed($event) {
 }
 
 /**
+ * Check if any module filters are set and pass the events through.
+ * The module filters will go through the relevant events and remove
+ * items from the events array as necessary.
+ *
+ * @param array calendar event records
+ * @return void
+ */
+function calendar_apply_mod_filters(&$events) {
+    global $CFG, $DB;
+
+    $mods = $DB->get_records('modules', array('visible' => '1'));
+    foreach ($mods as $mod) {
+        $functionname = "{$mod->name}_filter_calendar_events";
+        require_once($CFG->dirroot . "/mod/{$mod->name}/lib.php");
+        if (!function_exists($functionname)) {
+            continue;
+        }
+        // call module filter hook
+        $functionname($events);
+    }
+}
+
+/**
+ * Check for calendar module filter POSTs and call relevant module hook
+ * function to set filters in session.
+ *
+ * @return void
+ */
+function calendar_set_mod_filters() {
+    global $CFG, $DB;
+
+    $mods = $DB->get_records('modules', array('visible' => '1'));
+    foreach ($mods as $mod) {
+        if (optional_param("apply{$mod->name}filter", null, PARAM_TEXT)) {
+            $functionname = "{$mod->name}_calendar_set_filter";
+            require_once($CFG->dirroot . "/mod/{$mod->name}/lib.php");
+            if (!function_exists($functionname)) {
+                continue;
+            }
+            // call module hook to set filter
+            $functionname();
+        }
+    }
+}
+
+/**
  * Manage calendar events
  *
  * This class provides the required functionality in order to manage calendar events.

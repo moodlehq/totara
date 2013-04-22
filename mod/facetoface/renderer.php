@@ -193,5 +193,81 @@ class mod_facetoface_renderer extends plugin_renderer_base {
 
         return $output;
     }
+
+    /**
+     * Main calendar hook function for rendering the f2f filter controls
+     *
+     * @return string html
+     */
+    public function calendar_filter_controls() {
+        global $DB, $SESSION;
+
+        // get fields
+        $fields = $DB->get_records('facetoface_session_field', array('isfilter' => 1));
+
+        $output = '';
+        foreach ($fields as $f) {
+            $currentval = !empty($SESSION->calendarfacetofacefilter[$f->shortname]) ? $SESSION->calendarfacetofacefilter[$f->shortname] : '';
+            $output .= $this->custom_field_chooser($f, $currentval);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Generates a custom field select for a f2f custom field
+     *
+     * @param int $field
+     * @param string $currentval
+     *
+     * @return string html
+     */
+    public function custom_field_chooser($field, $currentval) {
+        global $DB;
+
+        if (empty($field->isfilter)) {
+            return false; // not a filter
+        }
+
+        $values = array();
+        switch ($field->type) {
+        case CUSTOMFIELD_TYPE_TEXT:
+            $records = $DB->get_records('facetoface_session_data', array('fieldid' => $field->id), 'data', 'id, data');
+            foreach ($records as $record) {
+                $values[$record->data] = $record->data;
+            }
+            break;
+
+        case CUSTOMFIELD_TYPE_SELECT:
+        case CUSTOMFIELD_TYPE_MULTISELECT:
+            $values = explode(CUSTOMFIELD_DELIMITER, $field->possiblevalues);
+            break;
+
+        default:
+            return false; // invalid type
+        }
+
+        // Build up dropdown list of values
+        $options = array();
+        if (!empty($values)) {
+            foreach ($values as $value) {
+                $v = clean_param(trim($value), PARAM_TEXT);
+                if (!empty($v)) {
+                    $options[s($v)] = format_string($v);
+                }
+            }
+        }
+
+        $nothing = get_string('all');
+        $nothingvalue = '';
+
+        $fieldname = "field_$field->shortname";
+        $currentval = empty($currentval) ? $nothingvalue : $currentval;
+
+        $dropdown = html_writer::select($options, $fieldname, $currentval, array($nothingvalue => $nothing));
+
+        return format_string($field->name) . ': ' . $dropdown;
+
+    }
 }
 ?>
