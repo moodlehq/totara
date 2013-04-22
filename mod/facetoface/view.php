@@ -142,6 +142,11 @@ function print_session_list($courseid, $facetofaceid, $location) {
             $sessiondata = $session;
             $sessiondata->bookedsession = $bookedsession;
 
+            if ($session->roomid) {
+                $room = $DB->get_record('facetoface_room', array('id' => $session->roomid));
+                $sessiondata->room = $room;
+            }
+
             // Add custom fields to sessiondata
             $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $session->id), '', 'fieldid, data');
             $sessiondata->customfielddata = $customdata;

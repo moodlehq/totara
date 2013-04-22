@@ -1171,6 +1171,7 @@ function facetoface_write_worksheet_header(&$worksheet)
         }
     }
     $worksheet->write_string(0, $pos++, get_string('date', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('room', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('timestart', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('timefinish', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('duration', 'facetoface'));
@@ -1312,9 +1313,11 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
 
     // Fast version of "facetoface_get_sessions($facetofaceid, $location)"
     $sql = "SELECT d.id as dateid, s.id, s.datetimeknown, s.capacity,
-                   s.duration, d.timestart, d.timefinish, d.sessiontimezone
+            s.duration, d.timestart, d.timefinish, d.sessiontimezone,
+            r.name as roomname, r.building as building, r.address as address
               FROM {facetoface_sessions} s
               JOIN {facetoface_sessions_dates} d ON s.id = d.sessionid
+              LEFT JOIN {facetoface_room} r ON s.roomid = r.id
               WHERE
                 s.facetoface = ?
               AND d.sessionid = s.id
@@ -1396,6 +1399,12 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                         $worksheet->write_string($i, $j++, $sessiondate);
                     }
                 }
+                //Room
+                $roomname = isset($session->roomname) ? $session->roomname . ', ' : '';
+                $building = isset($session->building) ? $session->building . ', ' : '';
+                $address = isset($session->address) ? $session->address : '';
+                $worksheet->write_string($i, $j++, $roomname . $building . $address);
+
                 $worksheet->write_string($i,$j++,$starttime);
                 $worksheet->write_string($i,$j++,$finishtime);
                 $worksheet->write_number($i,$j++,(int)$session->duration);
@@ -1491,6 +1500,12 @@ function facetoface_write_activity_attendance(&$worksheet, $startingrow, $faceto
                     $worksheet->write_string($i, $j++, $sessiondate);
                 }
             }
+            //Room
+            $roomname = isset($session->roomname) ? $session->roomname . ', ' : '';
+            $building = isset($session->building) ? $session->building . ', ' : '';
+            $address = isset($session->address) ? $session->address : '';
+            $worksheet->write_string($i, $j++, $roomname . $building . $address);
+
             $worksheet->write_string($i,$j++,$starttime);
             $worksheet->write_string($i,$j++,$finishtime);
             $worksheet->write_number($i,$j++,(int)$session->duration);
@@ -2205,12 +2220,11 @@ function facetoface_print_coursemodule_info($coursemodule) {
             // Get room data
             $roomdata = $DB->get_record('facetoface_room', array('id' => $session->roomid));
 
-            if (!empty($roomdata->building)) {
-                $building = $roomdata->building;
-            }
-            if (!empty($roomdata->address)) {
-                $address = $roomdata->address;
-            }
+            $roomname = isset($roomdata->name) ? $roomdata->name . ', ' : '';
+            $building = isset($roomdata->building) ? $roomdata->building . ', ' : '';
+            $address = isset($roomdata->address) ? $roomdata->address : '';
+
+            $roomtext = $roomname . $building . $address;
 
             // don't include the link to view attendees if user is lacking capability
             $attendeeslink = '';
@@ -2226,12 +2240,11 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 .html_writer::tag('td', $htmlactivitynamelink, array('class' => 'f2fsessionnotice', 'colspan' => '4'))
                 .html_writer::end_tag('tr')
                 .html_writer::start_tag('tr')
-                .html_writer::tag('td', get_string('bookingstatus', 'facetoface'), array('class' => 'f2fsessionnotice', 'colspan' => '4'))
+                .html_writer::tag('td', get_string('bookingstatus', 'facetoface'), array('class' => 'f2fsessionnotice', 'colspan' => '3'))
                 .html_writer::tag('td', html_writer::tag('span', get_string('options', 'facetoface').':', array('class' => 'f2fsessionnotice')))
                 .html_writer::end_tag('tr')
                 .html_writer::start_tag('tr', array('class' => 'f2fsessioninfo'))
-                .html_writer::tag('td', $address)
-                .html_writer::tag('td', $building)
+                .html_writer::tag('td', $roomtext)
                 .html_writer::tag('td', $sessiondate)
                 .html_writer::tag('td', $sessiontime)
                 .html_writer::tag('td', html_writer::start_tag('table', array('border' => '0')) . html_writer::start_tag('tr') . html_writer::tag('td', html_writer::link($signup_url, $strmoreinfo, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $strmoreinfo))))
@@ -2302,8 +2315,10 @@ function facetoface_print_coursemodule_info($coursemodule) {
 
             $locationstring = '';
             $roomdata = $DB->get_record('facetoface_room', array('id' => $session->roomid));
-            if (!empty($roomdata->address) && trim($roomdata->address) != '') {
-                $locationstring = $roomdata->address . ', ';
+            if (!empty($roomdata)) {
+                $locationstring = isset($roomdata->name) ? format_string($roomdata->name) . ', '. html_writer::empty_tag('br') : '';
+                $locationstring .= isset($roomdata->building) ? format_string($roomdata->building) . ', ' . html_writer::empty_tag('br') : '';
+                $locationstring .= isset($roomdata->address) ? format_string($roomdata->address) . ', ' . html_writer::empty_tag('br') : '';
             }
 
             if ($coursemodule->uservisible) {
@@ -2856,6 +2871,30 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     if (!empty($session->duration)) {
         $table->data[] = array(get_string('duration', 'facetoface'), format_duration($session->duration));
     }
+
+    // Display room information
+    $session->room = $DB->get_record('facetoface_room', array('id' => $session->roomid));
+    if (!empty($session->room)) {
+        $roomstring = '';
+        $roomstring = isset($session->room->name) ? format_string($session->room->name) . ', '. html_writer::empty_tag('br') : '';
+        $roomstring .= isset($session->room->building) ? format_string($session->room->building) . ', ' . html_writer::empty_tag('br') : '';
+        $roomstring .= isset($session->room->address) ? format_string($session->room->address) . html_writer::empty_tag('br') : '';
+
+        $systemcontext = context_system::instance();
+        $editoroptions = array(
+            'noclean'  => false,
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
+            'context'  => $systemcontext,
+        );
+
+        $session->room->descriptionformat = FORMAT_HTML;
+        $session->room = file_prepare_standard_editor($session->room, 'description', $editoroptions, $systemcontext, 'facetoface', 'room', $session->room->id);
+
+        $roomstring .= $session->room->description_editor['text'];
+
+        $table->data[] = array(get_string('room', 'facetoface'), $roomstring);
+    }
+
     if (!empty($session->normalcost)) {
         $table->data[] = array(get_string('normalcost', 'facetoface'), format_cost($session->normalcost));
     }
