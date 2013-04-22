@@ -322,7 +322,7 @@ class position extends hierarchy {
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment_history' => 'positionid',
-            hierarchy::get_short_prefix('competency').'_evidence' => 'positionid',
+            hierarchy::get_short_prefix('competency').'_record' => 'positionid',
             'course_completions' => 'positionid',
         );
 

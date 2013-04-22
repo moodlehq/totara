@@ -841,3 +841,19 @@ table.namewithlinks-layout td.user-name {
 }
 
 .dir-rtl.path-course-view .completionprogress {float: left;}
+
+/* shrink select boxes to fit in filter */
+
+select.totara-limited-width-150 {
+    position: static;
+    width: 150px;
+}
+select.totara-limited-width {
+    width: 200px;
+    position: static;
+}
+/* expand while selecting option (IE only) */
+select.totara-expanded-width {
+    width: auto;
+    position: absolute;
+}

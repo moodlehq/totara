@@ -306,21 +306,6 @@ div#totaramenu ul ul {
     border-bottom-left-radius: 5px;
 }
 
-/* shrink select boxes to fit in filter */
-
-select.totara-limited-width-150 {
-    position: static;
-    width: 150px;
-}
-select.totara-limited-width {
-    width: 200px;
-    position: static;
-}
-/* expand while selecting option (IE only) */
-select.totara-expanded-width {
-    width: auto;
-    position: absolute;
-}
 /* Totara dialog boxes */
 .totara-dialog .ui-dialog-titlebar {
     -moz-border-radius: 3px;
