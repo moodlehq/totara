@@ -557,6 +557,10 @@ abstract class rb_base_source {
             return $user;
         }
 
+        if ($row->user_id == 0) {
+            return '';
+        }
+
         $userid = $row->user_id;
         $url = new moodle_url('/user/view.php', array('id' => $userid));
 
@@ -568,10 +572,7 @@ abstract class rb_base_source {
         $picuser->lastname = $row->userpic_lastname;
         $picuser->email = $row->userpic_email;
 
-
-        return $OUTPUT->user_picture($picuser, array('courseid' => 1)) .
-            "&nbsp;" . html_writer::link($url, $user);
-
+        return $OUTPUT->user_picture($picuser, array('courseid' => 1)) . "&nbsp;" . html_writer::link($url, $user);
     }
 
     /**
