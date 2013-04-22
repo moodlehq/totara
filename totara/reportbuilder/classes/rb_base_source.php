@@ -2236,6 +2236,9 @@ abstract class rb_base_source {
                     break;
 
                 case 'checkbox':
+                    $default = $record->defaultdata;
+                    $columnsql = $DB->sql_cast_char2int($columnsql, true);
+                    $columnsql = "CASE WHEN {$columnsql} IS NULL THEN {$default} ELSE {$columnsql} END";
                     $filtertype = 'select';
                     $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
                     $filter_options['simplemode'] = true;
