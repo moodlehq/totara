@@ -20,7 +20,13 @@
             if ($attendeescount > 0) {
                 foreach ($attendees as $existinguser) {
                     $fullname = fullname($existinguser, true);
-                    echo "<option value=\"$existinguser->id\">".$fullname.", ".$existinguser->email."</option>\n";
+
+                    if ($session->datetimeknown && ($existinguser->statuscode > MDL_F2F_STATUS_BOOKED)) {
+                        echo "<option value=\"$existinguser->id\">".$fullname." (".
+                            get_string('status_'.$MDL_F2F_STATUS[$existinguser->statuscode], 'facetoface')."), ".$existinguser->email."</option>\n";
+                    } else {
+                        echo "<option value=\"$existinguser->id\">".$fullname.", ".$existinguser->email."</option>\n";
+                    }
                     $i++;
                 }
             }
@@ -68,7 +74,12 @@
                 echo "<optgroup label=\"$strsearchresults (" . count($availableusers) . ")\">\n";
                 foreach ($availableusers as $user) {
                     $fullname = fullname($user, true);
-                    echo "<option value=\"$user->id\">".$fullname.", ".$user->email."</option>\n";
+                    if ($session->datetimeknown && ($user->statuscode == MDL_F2F_STATUS_WAITLISTED)) {
+                        echo "<option value=\"$user->id\">".$fullname." (".
+                            get_string('status_'.$MDL_F2F_STATUS[$user->statuscode], 'facetoface')."), ".$user->email."</option>\n";
+                    } else {
+                        echo "<option value=\"$user->id\">".$fullname.", ".$user->email."</option>\n";
+                    }
                     $i++;
                 }
                 echo "</optgroup>\n";
@@ -80,7 +91,12 @@
                 } else {
                     foreach ($availableusers as $user) {
                         $fullname = fullname($user, true);
-                        echo "<option value=\"$user->id\">".$fullname.", ".$user->email."</option>\n";
+                        if ($session->datetimeknown && ($user->statuscode == MDL_F2F_STATUS_WAITLISTED)) {
+                            echo "<option value=\"$user->id\">".$fullname." (".
+                            get_string('status_'.$MDL_F2F_STATUS[$user->statuscode], 'facetoface')."), ".$user->email."</option>\n";
+                        } else {
+                            echo "<option value=\"$user->id\">".$fullname.", ".$user->email."</option>\n";
+                        }
                         $i++;
                     }
                 }

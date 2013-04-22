@@ -3977,9 +3977,16 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
     }
 
     // Check if they are already signed up
-    if (facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
-        $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($user));
-        return $result;
+    if ($session->datetimeknown) {
+        if (facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
+            $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($user));
+            return $result;
+        }
+    } else {
+        if (facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
+            $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($user));
+            return $result;
+        }
     }
 
     if (!facetoface_session_has_capacity($session, $context)) {

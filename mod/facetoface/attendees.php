@@ -163,7 +163,13 @@ if (in_array('approvalrequired', $allowed_actions)) {
     }
 
     // Check if any staff are attending
-    $get_attendees = facetoface_get_attendees($session->id);
+    if ($session->datetimeknown) {
+        $get_attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    } else {
+        $get_attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    }
     if ($get_attendees && !in_array('attendees', $allowed_actions)) {
         $attendees = array_intersect_key($get_attendees, array_flip($staff));
 
@@ -530,8 +536,13 @@ if ($show_table) {
             if ($attendees) {
                 $rows = $attendees;
             } else {
-                $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
-                    MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+                if ($session->datetimeknown) {
+                    $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+                        MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+                } else {
+                    $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+                        MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+                }
             }
             break;
     }
