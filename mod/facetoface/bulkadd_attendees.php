@@ -93,9 +93,7 @@ if ($data = $form->get_data()) {
     // If input type, explode of commas
     if ($type === 'input') {
         $rawinput = str_replace(array("\r\n", "\n", "\r"), ',', $data->csvinput);
-        //This line has issues with single idnumbers
-        //$addusers = clean_param($rawinput, PARAM_SEQUENCE);
-        $addusers = $rawinput;
+        $addusers = clean_param($rawinput, PARAM_NOTAGS);
         // Turn into array, then filter out empty strings/false/null using array_filter
         $addusers = array_filter(explode(',', $addusers));
         // Remove any leading or trailing spaces
@@ -124,7 +122,7 @@ if ($data = $form->get_data()) {
         foreach (explode("\n", $text) as $line) {
             $line = explode($csv_delimiter, clean_param($line, PARAM_RAW));
             if ($line) {
-                $cell = clean_param($line[0], PARAM_INT);
+                $cell = clean_param($line[0], PARAM_NOTAGS);
                 if ($cell) {
                     $addusers[] = $cell;
                 }
