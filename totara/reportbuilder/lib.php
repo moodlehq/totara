@@ -4124,6 +4124,10 @@ function sql_table_from_select($table, $select, array $params = array()) {
         // db engines specifics
         switch ($DB->get_dbfamily()) {
             case 'mysql':
+                // Do not index fields with size 0
+                if (strpos($field->type, '(0)') !== false) {
+                    continue 2;
+                }
                 if (strpos($field->type, 'blob') !== false || strpos($field->type, 'text') !== false) {
                     // Index only first 255 symbols (mysql maximum = 767)
                     $sql = sprintf($indexlongsql, $field->$fieldname, 255);
