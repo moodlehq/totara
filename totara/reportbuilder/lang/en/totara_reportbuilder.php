@@ -124,6 +124,8 @@ $string['enablereportcaching'] = 'Enable report caching';
 $string['reportcachingdisabled'] = 'Report caching is disabled. You can enable it <a href="{$a}">here</a>';
 $string['error:addscheduledreport'] = 'Error adding new Scheduled Report';
 $string['error:bad_sesskey'] = 'There was an error because the session key did not match';
+$string['error:columnnameid'] = 'Field \'{$a}\' alias must not be \'id\'';
+$string['error:columnextranameid'] = 'Column extra field \'{$a}\' alias must not be \'id\'';
 $string['error:column_not_deleted'] = 'There was a problem deleting that column';
 $string['error:column_not_moved'] = 'There was a problem moving that column';
 $string['error:column_vis_not_updated'] = 'Column visibility could not be updated';

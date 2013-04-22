@@ -52,7 +52,7 @@ abstract class rb_base_source {
                 $a = new stdClass();
                 $a->property = $property;
                 $a->class = get_class($this);
-                throw new Exception(get_string('error:propertyxmustbesetiny', 'totara_reportbuilder', $a));
+                throw new ReportBuilderException(get_string('error:propertyxmustbesetiny', 'totara_reportbuilder', $a));
             }
         }
 
@@ -126,6 +126,17 @@ abstract class rb_base_source {
                                  $jointable
                                 );
 
+        }
+
+        //validate column extrafields don't have alias named 'id'
+        foreach ($this->columnoptions as $columnoption) {
+            if (isset($columnoption->extrafields) && is_array($columnoption->extrafields)) {
+                foreach ($columnoption->extrafields as $extrakey => $extravalue) {
+                    if ($extrakey == 'id') {
+                        throw new ReportBuilderException(get_string('error:columnextranameid', 'totara_reportbuilder', $extravalue), 101);
+                    }
+                }
+            }
         }
     }
 
