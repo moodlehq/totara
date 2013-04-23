@@ -92,6 +92,8 @@ if (!$nojs) {
     $dialog->selected_title = 'itemstoadd';
     $dialog->selected_items = $currentlyassigned;
 
+    // Additional url parameters
+    $dialog->urlparams = array('assignto' => $assignto);
     // Display
     echo $dialog->generate_markup();
 
