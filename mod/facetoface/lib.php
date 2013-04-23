@@ -4047,16 +4047,14 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
 function facetoface_generate_bulk_result_notice($results, $type = 'bulkadd') {
     $added          = $results[0];
     $errors         = $results[1];
+    $result_message = '';
 
     $dialogid = 'f2f-import-results';
     $noticeclass = ($added) ? 'addedattendees' : 'noaddedattendees';
-    // Generate message
+    // Generate messages
     if ($errors) {
-        $result_message = '<div class="f2f-import-notice ' . $noticeclass . ' f2f-import-failure">';
+        $result_message .= '<div class="' . $noticeclass . ' notifyproblem">';
         $result_message .= get_string($type.'attendeeserror', 'facetoface') . ' - ';
-        if ($added) {
-            $result_message .= get_string('successfullyaddededitedxattendees', 'facetoface', count($added)).'<br>';
-        }
 
         if (count($errors) == 1 && is_string($errors[0])) {
             $result_message .= $errors[0];
@@ -4064,10 +4062,10 @@ function facetoface_generate_bulk_result_notice($results, $type = 'bulkadd') {
             $result_message .= get_string('xerrorsencounteredduringimport', 'facetoface', count($errors));
             $result_message .= ' <a href="#" id="'.$dialogid.'">('.get_string('viewresults', 'facetoface').')</a>';
         }
-
         $result_message .= '</div>';
-    } else {
-        $result_message = '<div class="f2f-import-notice ' . $noticeclass . ' f2f-import-success">';
+    }
+    if ($added) {
+        $result_message .= '<div class="' . $noticeclass . ' notifysuccess">';
         $result_message .= get_string($type.'attendeessuccess', 'facetoface') . ' - ';
         $result_message .= get_string('successfullyaddededitedxattendees', 'facetoface', count($added));
         $result_message .= ' <a href="#" id="'.$dialogid.'">('.get_string('viewresults', 'facetoface').')</a>';

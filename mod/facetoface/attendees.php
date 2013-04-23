@@ -548,6 +548,11 @@ if ($show_table) {
     }
 
     if (!$download) {
+        //output any notifications
+        if (isset($result_message)) {
+            echo $result_message;
+        }
+        //output the section heading
         echo $OUTPUT->heading($heading);
     }
 
@@ -695,10 +700,6 @@ if ($show_table) {
         echo html_writer::select($actions, 'f2f-actions', '', array('' => get_string('action')));
     }
     echo $OUTPUT->container_end();
-
-    if (isset($result_message)) {
-        echo $result_message;
-    }
 }
 
 if ($action == 'messageusers') {
