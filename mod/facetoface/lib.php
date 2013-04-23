@@ -2872,7 +2872,7 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
         $trainers = facetoface_get_trainers($session->id);
 
         foreach ($trainerroles as $role => $rolename) {
-            $rolename = $rolename->name;
+            $rolename = $rolename->localname;
 
             if (empty($trainers[$role])) {
                 continue;
@@ -3115,6 +3115,8 @@ function facetoface_get_trainer_roles() {
     if (!$rolenames) {
         return array();
     }
+
+    $rolenames = role_fix_names($rolenames);
 
     return $rolenames;
 }
