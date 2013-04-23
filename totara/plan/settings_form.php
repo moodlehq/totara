@@ -99,7 +99,7 @@ function development_plan_build_settings_form(&$mform, $customdata) {
 function development_plan_process_settings_form($fromform, $id) {
     global $CFG, $DP_AVAILABLE_ROLES, $DB;
 
-    $currenturl = qualified_me() . '?id='.$id.'&amp;component=plan';
+    $currenturl = new moodle_url('/totara/plan/template/advancedworkflow.php', array('id' => $id, 'component' => 'plan'));
         $transaction = $DB->start_delegated_transaction();
 
         // process plan settings here
