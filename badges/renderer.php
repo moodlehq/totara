@@ -726,7 +726,7 @@ class core_badges_renderer extends plugin_renderer_base {
                 }
                 $actions[] = get_string('addbadgecriteria', 'badges');
                 $actions[] = $this->output->single_select(new moodle_url('/badges/criteria_settings.php',
-                        array('badgeid' => $badge->id, 'add' => true)), 'type', $select);
+                        array('badgeid' => $badge->id)), 'type', $select);
             } else {
                 $actions[] = $this->output->box(get_string('nothingtoadd', 'badges'), 'clearfix');
             }

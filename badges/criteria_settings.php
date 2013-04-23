@@ -28,7 +28,7 @@ require_once(dirname(dirname(__FILE__)) . '/config.php');
 require_once($CFG->libdir . '/badgeslib.php');
 require_once($CFG->dirroot . '/badges/criteria_form.php');
 
-$badgeid = optional_param('badgeid', 0, PARAM_INT); // Badge ID.
+$badgeid = required_param('badgeid', PARAM_INT); // Badge ID.
 $type    = optional_param('type', 0, PARAM_INT); // Criteria type.
 $edit    = optional_param('edit', 0, PARAM_INT); // Edit criteria ID.
 $crit    = optional_param('crit', 0, PARAM_INT); // Criteria ID for managing params.
@@ -60,8 +60,15 @@ if ($badge->type == BADGE_TYPE_COURSE) {
     $navurl = new moodle_url('/badges/index.php', array('type' => $badge->type, 'id' => $badge->courseid));
 }
 
+$urlparams = array(
+        'badgeid' => $badge->id,
+        'edit' => $edit,
+        'type' => $type,
+        'crit' => $crit
+    );
+
 $PAGE->set_context($context);
-$PAGE->set_url('/badges/criteria_settings.php');
+$PAGE->set_url(new moodle_url('/badges/criteria_settings.php', $urlparams));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_heading($badge->name);
 $PAGE->set_title($badge->name);
