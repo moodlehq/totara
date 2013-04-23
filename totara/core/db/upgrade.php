@@ -458,6 +458,7 @@ function xmldb_totara_core_upgrade($oldversion) {
             $info = implode(html_writer::empty_tag('br'), $notice_error);
             echo $OUTPUT->notification($info, 'notifyproblem');
         }
+
         totara_upgrade_mod_savepoint(true, 2013041500, 'totara_core');
     }
 
@@ -472,5 +473,33 @@ function xmldb_totara_core_upgrade($oldversion) {
         set_config('updatenotifybuilds', 0);
         totara_upgrade_mod_savepoint(true, 2013042300, 'totara_core');
     }
+
+    if ($oldversion < 2013042600) {
+        $systemcontext = context_system::instance();
+        $roles = get_all_roles();
+        foreach($roles as $id => $role) {
+            switch ($role->shortname) {
+                case 'assessor':
+                    $DB->update_record('role', array('id' => $id, 'archetype' => 'assessor'));
+                    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $id, $systemcontext->id, true);
+                    break;
+                case 'regionalmanager':
+                case 'regionaltrainer':
+                    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $id, $systemcontext->id, true);
+                    break;
+            }
+        }
+
+        // Add totara block instances to context
+        $bisql = "SELECT id FROM {block_instances}
+                  WHERE blockname IN ('totara_stats', 'totara_alerts', 'totara_tasks')";
+        $totarablocks = $DB->get_records_sql($bisql);
+        foreach ($totarablocks as $block) {
+            context_block::instance($block->id);
+        }
+
+        totara_upgrade_mod_savepoint(true, 2013042600, 'totara_core');
+    }
+
     return true;
 }

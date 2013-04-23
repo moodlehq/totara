@@ -1294,7 +1294,8 @@ function totara_reset_mymoodle_blocks() {
 
     // insert blocks
     foreach ($blocks as $b) {
-        $DB->insert_record('block_instances', $b);
+        $blockid = $DB->insert_record('block_instances', $b);
+        context_block::instance($blockid);
     }
 
     //A separate set up for a quicklinks block as it needs additional data to be added on install

@@ -65,7 +65,7 @@ function xmldb_totara_core_install() {
     $manager             = $DB->get_record('role', array('shortname' => 'manager'));
     $managerrole         = $manager->id;
     $staffmanagerrole    = create_role('', 'staffmanager', '', 'staffmanager');
-    $assessorrole        = create_role('', 'assessor', '');
+    $assessorrole        = create_role('', 'assessor', '', 'assessor');
     $regionalmanagerrole = create_role('', 'regionalmanager', '');
     $regionaltrainerrole = create_role('', 'regionaltrainer', '');
 
@@ -113,6 +113,11 @@ function xmldb_totara_core_install() {
         'teacher' => 'trainer',
         'student' => 'learner'
     );
+
+    $DB->update_record('role', array('id' => $assessorrole, 'archetype' => 'assessor'));
+    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $assessorrole, $systemcontext->id, true);
+    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $regionalmanagerrole, $systemcontext->id, true);
+    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $regionaltrainerrole, $systemcontext->id, true);
 
     foreach ($role_to_modify as $old => $new) {
         if ($old_role = $DB->get_record('role', array('shortname' => $old))) {

@@ -675,7 +675,7 @@ class accesslib_testcase extends advanced_testcase {
      */
     public function test_get_role_archetypes() {
         $archetypes = get_role_archetypes();
-        $this->assertCount(9, $archetypes); // there are 9 archetypes in standard totara install
+        $this->assertCount(10, $archetypes); // there are 9+1 archetypes in standard totara install
         foreach ($archetypes as $k=>$v) {
             $this->assertSame($k, $v);
         }
@@ -974,9 +974,6 @@ class accesslib_testcase extends advanced_testcase {
     public function test_get_switchable_roles() {
         global $DB;
 
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
-
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1190,9 +1187,6 @@ class accesslib_testcase extends advanced_testcase {
      * @return void
      */
     public function test_get_default_enrol_roles() {
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
-
         $this->resetAfterTest();
 
         $course = $this->getDataGenerator()->create_course();
@@ -1461,9 +1455,6 @@ class accesslib_testcase extends advanced_testcase {
      */
     public function test_permission_evaluation() {
         global $USER, $SITE, $CFG, $DB, $ACCESSLIB_PRIVATE;
-
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
 
         $this->resetAfterTest(true);
 
@@ -1895,7 +1886,8 @@ class accesslib_testcase extends advanced_testcase {
 
         $this->assertFalse(has_capability('moodle/block:view', $frontpageblockcontext, 0));
         $this->assertFalse(has_capability('mod/page:view', $frontpagepagecontext, 0));
-        $this->assertTrue(has_capability('mod/page:view', $frontpagecontext, 0));
+        // Frontpage is inaccessible for non-loggedin users
+        $this->assertFalse(has_capability('mod/page:view', $frontpagecontext, 0));
         $this->assertFalse(has_capability('mod/page:view', $systemcontext, 0));
 
         $this->assertFalse(has_capability('moodle/course:create', $systemcontext, $testusers[11]));
