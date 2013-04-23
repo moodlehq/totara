@@ -364,13 +364,14 @@ function totara_upgrade_installed_languages() {
     unset($installer);
     get_string_manager()->reset_caches();
     //display notifications
+    $delimiter = (CLI_SCRIPT) ? "\n" : html_writer::empty_tag('br');
     if (!empty($notice_ok)) {
-        $info = implode(html_writer::empty_tag('br'), $notice_ok);
+        $info = implode($delimiter, $notice_ok);
         echo $OUTPUT->notification($info, 'notifysuccess');
     }
 
     if (!empty($notice_error)) {
-        $info = implode(html_writer::empty_tag('br'), $notice_error);
+        $info = implode($delimiter, $notice_error);
         echo $OUTPUT->notification($info, 'notifyproblem');
     }
 }
