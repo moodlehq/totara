@@ -602,8 +602,10 @@ if ($show_table) {
         if ($action == 'takeattendance') {
             $headers[] = get_string('currentstatus', 'facetoface');
             $columns[] = 'currentstatus';
-            $headers[] = get_string('attendedsession', 'facetoface');
-            $columns[] = 'attendedsession';
+            if (!$download) {
+                $headers[] = get_string('attendedsession', 'facetoface');
+                $columns[] = 'attendedsession';
+            }
         } else if ($action == 'cancellations') {
             $headers[] = get_string('timesignedup', 'facetoface');
             $columns[] = 'timesignedup';
@@ -643,9 +645,7 @@ if ($show_table) {
                 // Show current status
                 $data[] = get_string('status_'.facetoface_get_status($attendee->statuscode), 'facetoface');
 
-                if ($download) {
-                    $data[] = '';
-                } else {
+                if (!$download) {
                     $optionid = 'submissionid_'.$attendee->submissionid;
                     $status = $attendee->statuscode;
                     $select = html_writer::select($status_options, $optionid, $status);
