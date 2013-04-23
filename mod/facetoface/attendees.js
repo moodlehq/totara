@@ -175,7 +175,9 @@ M.totara_f2f_attendees = M.totara_f2f_attendees || {
             var buttonsObj = {};
             buttonsObj[M.util.get_string('cancel','moodle')] = function() { handler._cancel(); };
             buttonsObj[M.util.get_string('uploadfile','facetoface')] = function() {
-                $('div#bulkaddfile form.mform').unbind('submit').submit();
+                if ($('#id_userfile').val() !== "") {
+                    $('div#bulkaddfile form.mform').unbind('submit').submit();
+                }
             };
 
             totaraDialogs[name] = new totaraDialog(
@@ -197,7 +199,11 @@ M.totara_f2f_attendees = M.totara_f2f_attendees || {
 
             var buttonsObj = {};
             buttonsObj[M.util.get_string('cancel','moodle')] = function() { handler._cancel(); };
-            buttonsObj[M.util.get_string('submitcsvtext','facetoface')] = function() { handler.submit(); };
+            buttonsObj[M.util.get_string('submitcsvtext','facetoface')] = function() {
+                if ($('#id_csvinput').val() !== "") {
+                    handler.submit();
+                }
+            };
 
             totaraDialogs[name] = new totaraDialog(
                 name,
