@@ -1781,10 +1781,13 @@ class hierarchy {
      *
      * @return No return value but prints export select form
      */
-    function export_select() {
+    function export_select($baseurl=null) {
         global $CFG;
         require_once($CFG->dirroot.'/totara/hierarchy/export_form.php');
-        $export = new hierarchy_export_form(qualified_me(), null, 'post', '', array('class' => 'hierarchy-export-form'));
+        if (empty($baseurl)) {
+            $baseurl = qualified_me();
+        }
+        $export = new hierarchy_export_form($baseurl, null, 'post', '', array('class' => 'hierarchy-export-form'));
         $export->display();
     }
 
@@ -1895,7 +1898,7 @@ class hierarchy {
 
         $worksheet = array();
 
-        $worksheet[0] =& $workbook->add_worksheet('');
+        $worksheet[0] = $workbook->add_worksheet('');
         $row = 0;
         $col = 0;
 
@@ -1967,7 +1970,7 @@ class hierarchy {
 
         $worksheet = array();
 
-        $worksheet[0] =& $workbook->add_worksheet('');
+        $worksheet[0] = $workbook->add_worksheet('');
         $row = 0;
         $col = 0;
 

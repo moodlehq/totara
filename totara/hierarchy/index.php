@@ -105,7 +105,8 @@ $frameworkid = $framework->id;
 
 
 // Setup page and check permissions
-admin_externalpage_setup($prefix.'manage', null, array('prefix' => $prefix, 'frameworkid' => $frameworkid));
+$urlparams = array('prefix' => $prefix, 'frameworkid' => $frameworkid);
+admin_externalpage_setup($prefix.'manage', null, $urlparams);
 $PAGE->navbar->add(format_string($framework->fullname));
 echo $OUTPUT->header();
 // build query now as we need the count for flexible tables
@@ -185,11 +186,11 @@ foreach ($headerdata as $key => $head) {
 $table->define_headers($headers);
 $table->define_columns($columns);
 
-$urlparams = array('prefix' => $prefix, 'frameworkid' => $frameworkid);
 if ($searchactive) {
     $urlparams['search'] = $search;
 }
-$table->define_baseurl(new moodle_url('index.php', $urlparams));
+$baseurl = new moodle_url('/totara/hierarchy/index.php', $urlparams);
+$table->define_baseurl($baseurl);
 $table->set_attribute('class', 'hierarchy-index fullwidth');
 $table->setup();
 $table->pagesize($perpage, $filteredcount);
@@ -278,7 +279,7 @@ $table->finish_html();
 $records->close();
 
 if ($num_on_page > 0) {
-    $hierarchy->export_select();
+    $hierarchy->export_select($baseurl);
 }
 
 echo $OUTPUT->footer();
