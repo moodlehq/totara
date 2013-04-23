@@ -64,7 +64,6 @@ $geterrors = optional_param('geterrors', 0, PARAM_BOOL);
 $fetchupdates   = optional_param('fetchupdates', 0, PARAM_BOOL);
 
 // Check some PHP server settings
-
 $PAGE->set_url('/admin/index.php');
 $PAGE->set_pagelayout('admin'); // Set a default pagelayout
 
@@ -124,14 +123,6 @@ if (!isset($maturity)) {
 $a = totara_version_info($version, $release);
 if (!empty($a->totaraupgradeerror)){
     print_error($a->totaraupgradeerror, 'totara_core');
-}
-
-//force autoupdates off
-if (empty($CFG->disableupdatenotifications)) {
-    set_config('disableupdatenotifications', '1');
-    set_config('disableupdateautodeploy', '1');
-    set_config('updateminmaturity', MATURITY_STABLE);
-    set_config('updatenotifybuilds', 0);
 }
 
 // Turn off xmlstrictheaders during upgrade.
@@ -214,7 +205,13 @@ if (!core_tables_exist()) {
     install_core($version, true);
 }
 
-
+//force autoupdates off
+if (empty($CFG->disableupdatenotifications)) {
+    set_config('disableupdatenotifications', '1');
+    set_config('disableupdateautodeploy', '1');
+    set_config('updateminmaturity', MATURITY_STABLE);
+    set_config('updatenotifybuilds', 0);
+}
 // Check version of Moodle code on disk compared with database
 // and upgrade if possible.
 
