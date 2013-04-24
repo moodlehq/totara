@@ -123,6 +123,21 @@ class columns_test extends reportcache_advanced_testcase {
         $this->user_info_data_data->fieldid = 1;
         $this->user_info_data_data->data = 'test';
 
+        $this->org_framework_data = array();
+        $this->org_framework_data1 = new stdClass();
+        $this->org_framework_data1->id = 1;
+        $this->org_framework_data1->fullname = 'Organisation Framework 1';
+        $this->org_framework_data1->shortname = 'OFW1';
+        $this->org_framework_data1->idnumber = 'ID1';
+        $this->org_framework_data1->description = 'Description 1';
+        $this->org_framework_data1->sortorder = 1;
+        $this->org_framework_data1->visible = 1;
+        $this->org_framework_data1->hidecustomfields = 0;
+        $this->org_framework_data1->timecreated = 1265963591;
+        $this->org_framework_data1->timemodified = 1265963591;
+        $this->org_framework_data1->usermodified = 2;
+        $this->org_framework_data[] = $this->org_framework_data1;
+
         $this->org_data = new stdClass();
         $this->org_data->id = 1;
         $this->org_data->fullname = 'Distric Office';
@@ -138,6 +153,21 @@ class columns_test extends reportcache_advanced_testcase {
         $this->org_data->timecreated = 0;
         $this->org_data->timemodified = 0;
         $this->org_data->usermodified = 2;
+
+        $this->pos_framework_data = array();
+        $this->pos_framework_data1 = new stdClass();
+        $this->pos_framework_data1->id = 1;
+        $this->pos_framework_data1->fullname = 'Postion Framework 1';
+        $this->pos_framework_data1->shortname = 'PFW1';
+        $this->pos_framework_data1->idnumber = 'ID1';
+        $this->pos_framework_data1->description = 'Description 1';
+        $this->pos_framework_data1->sortorder = 1;
+        $this->pos_framework_data1->visible = 1;
+        $this->pos_framework_data1->hidecustomfields = 0;
+        $this->pos_framework_data1->timecreated = 1265963591;
+        $this->pos_framework_data1->timemodified = 1265963591;
+        $this->pos_framework_data1->usermodified = 2;
+        $this->pos_framework_data[] = $this->pos_framework_data1;
 
         $this->pos_data = new stdClass();
         $this->pos_data->id = 1;
@@ -1015,8 +1045,10 @@ class columns_test extends reportcache_advanced_testcase {
         $DB->insert_records_via_batch('report_builder_settings', $this->rb_settings_data);
         $DB->insert_record('user_info_field', $this->user_info_field_data);
         $DB->insert_record('user_info_data', $this->user_info_data_data);
+        $DB->insert_records_via_batch('org_framework', $this->org_framework_data);
         $DB->insert_records_via_batch('org_type', $this->type_data);
         $DB->insert_record('org', $this->org_data);
+        $DB->insert_records_via_batch('pos_framework', $this->pos_framework_data);
         $DB->insert_records_via_batch('pos_type', $this->type_data);
         $DB->insert_record('pos', $this->pos_data);
         $DB->insert_record('pos_assignment', $this->pos_assignment_data);
