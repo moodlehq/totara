@@ -334,6 +334,7 @@ function facetoface_add_instance($facetoface) {
     $confirmation->body = text_to_html(get_string('setting:defaultconfirmationmessagedefault', 'facetoface'));
     $confirmation->managerprefix = text_to_html(get_string('setting:defaultconfirmationinstrmngrdefault', 'facetoface'));
     $confirmation->conditiontype = MDL_F2F_CONDITION_BOOKING_CONFIRMATION;
+    $confirmation->ccmanager = 1;
     $confirmation->save();
 
     $waitlist = new facetoface_notification($defaults, false);
@@ -347,6 +348,7 @@ function facetoface_add_instance($facetoface) {
     $cancellation->body = text_to_html(get_string('setting:defaultcancellationmessagedefault', 'facetoface'));
     $cancellation->managerprefix = text_to_html(get_string('setting:defaultcancellationinstrmngrdefault', 'facetoface'));
     $cancellation->conditiontype = MDL_F2F_CONDITION_CANCELLATION_CONFIRMATION;
+    $cancellation->ccmanager = 1;
     $cancellation->save();
 
     $reminder = new facetoface_notification($defaults, false);
@@ -365,6 +367,7 @@ function facetoface_add_instance($facetoface) {
     $request->body = text_to_html(get_string('setting:defaultrequestmessagedefault', 'facetoface'));
     $request->managerprefix = text_to_html(get_string('setting:defaultrequestinstrmngrdefault', 'facetoface'));
     $request->conditiontype = MDL_F2F_CONDITION_BOOKING_REQUEST;
+    $request->ccmanager = 1;
     $request->save();
 
     $session_change = new facetoface_notification($defaults, false);

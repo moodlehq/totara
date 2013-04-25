@@ -559,8 +559,11 @@ class facetoface_notification extends data_object {
             if ($managerprefix) {
                 $managerevent->fullmessage = $managerprefix . $body;
             }
-
-            tm_alert_send($managerevent);
+            if ($this->conditiontype == MDL_F2F_CONDITION_BOOKING_REQUEST) {
+                tm_task_send($managerevent);
+            } else {
+                tm_alert_send($managerevent);
+            }
         }
     }
 
@@ -877,7 +880,7 @@ function facetoface_send_request_notice($facetoface, $session, $userid) {
     $params = array(
         'facetofaceid'  => $facetoface->id,
         'type'          => MDL_F2F_NOTIFICATION_AUTO,
-        'conditiontype'     => MDL_F2F_CONDITION_BOOKING_REQUEST
+        'conditiontype' => MDL_F2F_CONDITION_BOOKING_REQUEST
     );
 
     $user = $DB->get_record('user', array('id' => $userid));
@@ -976,7 +979,9 @@ function facetoface_message_substitutions($msg, $facetofacename, $user, $data, $
     }
 
     // Replace more meta data
-    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $CFG->wwwroot.'/mod/facetoface/attendees.php?s='.$sessionid, $msg);
+    $attendees_url = new moodle_url('/mod/facetoface/attendees.php', array('s' => $sessionid, 'action' => 'approvalrequired'));
+    $link = html_writer::link($attendees_url, $attendees_url, array('title' => get_string('attendees', 'facetoface')));
+    $msg = str_replace(get_string('placeholder:attendeeslink', 'facetoface'), $link, $msg);
 
     // Custom session fields (they look like "session:shortname" in the templates)
     $customfields = facetoface_get_session_customfields();
