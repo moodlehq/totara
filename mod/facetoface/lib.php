@@ -3862,8 +3862,7 @@ function facetoface_get_sessions_within($times, $userid = null, $extrawhere = ''
     }
 
     $params = array_merge($params, $extraparams);
-
-    $sessions = $DB->get_records_sql($select.$source.$where.$extrawhere, $params);
+    $sessions = $DB->get_record_sql($select.$source.$where.$extrawhere, $params, IGNORE_MULTIPLE);
 
     return $sessions;
 }
@@ -4010,8 +4009,8 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
         // Check if there are any date conflicts
         if (!$ignoreconflicts) {
             $dates = facetoface_get_session_dates($session->id);
-            if (facetoface_get_sessions_within($dates, $user->id)) {
-                $result['result'] = get_string('error:conflictingsession', 'facetoface', fullname($user));
+            if ($availability = facetoface_get_sessions_within($dates, $user->id)) {
+                $result['result'] = facetoface_get_session_involvement($availability);
                 $result['conflict'] = true;
                 return $result;
             }
