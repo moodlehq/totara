@@ -218,21 +218,24 @@ class course_edit_form extends moodleform {
 //--------------------------------------------------------------------------------
         enrol_course_edit_form($mform, $course, $context);
 
-        $mform->addElement('header','enrolledcohortshdr', get_string('enrolledcohorts', 'totara_cohort'));
+        //only show the Enrolled Audiences functionality to users with the appropriate permissions
+        if (has_capability('moodle/cohort:manage', $systemcontext)) {
+            $mform->addElement('header','enrolledcohortshdr', get_string('enrolledcohorts', 'totara_cohort'));
 
-        if (empty($course->id)) {
-            $cohorts = '';
-        } else {
-            $cohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id');
-            $cohorts = !empty($cohorts) ? implode(',', array_keys($cohorts)) : '';
+            if (empty($course->id)) {
+                $cohorts = '';
+            } else {
+                $cohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id');
+                $cohorts = !empty($cohorts) ? implode(',', array_keys($cohorts)) : '';
+            }
+
+            $mform->addElement('hidden', 'cohortsenrolled', $cohorts);
+            $cohortsclass = new totara_cohort_course_cohorts(COHORT_ASSN_VALUE_ENROLLED);
+            $cohortsclass->build_table(!empty($course->id) ? $course->id : 0);
+            $mform->addElement('html', $cohortsclass->display(true));
+
+            $mform->addElement('button', 'cohortsaddenrolled', get_string('cohortsaddenrolled', 'totara_cohort'));
         }
-
-        $mform->addElement('hidden', 'cohortsenrolled', $cohorts);
-        $cohortsclass = new totara_cohort_course_cohorts(COHORT_ASSN_VALUE_ENROLLED);
-        $cohortsclass->build_table(!empty($course->id) ? $course->id : 0);
-        $mform->addElement('html', $cohortsclass->display(true));
-
-        $mform->addElement('button', 'cohortsaddenrolled', get_string('cohortsaddenrolled', 'totara_cohort'));
 
         $mform->addElement('header','', get_string('groups', 'group'));
 
