@@ -37,7 +37,7 @@ function forkreportcache($reportid) {
         $child = pcntl_fork();
     }
     $message = get_string('cachegenstarted', 'totara_reportbuilder', userdate(time()));
-
+    ob_start();
     switch($child) {
         case -1:
             // No multi-process support/fork fail. Do everything in one process:
@@ -67,8 +67,15 @@ function close_connection() {
     header("Content-Encoding: none\r\n");
     header('Connection: close');
     ob_flush();
-    flush();
-    ob_end_clean();
+
+    if (ob_get_level()) {
+        // Flush all write buffers
+        flush();
+    }
+    if (ob_get_level()) {
+        //Bullet-proof clean output buffer (not sure if it will ever run)
+        ob_end_clean();
+    }
     if (session_id()) {
         session_write_close();
     }
