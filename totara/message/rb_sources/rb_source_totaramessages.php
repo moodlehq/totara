@@ -156,7 +156,7 @@ class rb_source_totaramessages extends rb_base_source {
                 get_string('msgcategory', 'rb_source_totaramessages'),
                 // icon uses format like 'competency-regular'
                 // strip from first '-' to get general message category
-                $DB->sql_substr('base.icon', 0, $DB->sql_position("'-'", 'base.icon')),
+                $DB->sql_substr('base.icon', 1, $DB->sql_position("'-'", 'base.icon').'-1'),
                 array('displayfunc' => 'msgcategory_text')
             ),
             new rb_column_option(

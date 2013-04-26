@@ -188,9 +188,9 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
         if ($usecache) {
             $this->enable_caching($this->report_builder_data['id']);
         }
-        $form = array('message_values-category' => array('operator' => 1, 'value' => array('competency' => 1)));
+        $form = array('message_values-category' => array('operator' => 1, 'value' => array('program' => 1)));
         $result = $this->get_report_result($this->report_builder_data['shortname'],
                 array('userid' => $this->user2->id), $usecache, $form);
-        $this->assertEmpty($result);
+        $this->assertCount(3, $result);
     }
 }
