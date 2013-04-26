@@ -101,7 +101,7 @@ To add a new image, browse and select an image (in JPG or PNG format) then click
 $string['badgeprivacysetting'] = 'Badge privacy settings';
 $string['badgeprivacysetting_help'] = 'Badges you earn can be displayed on your account profile page. This setting allows you to automatically set visibility of the newly earned badges.
 
-You can still control individual badge privacy settings on your <a href="mybadges.php">My badges</a> page.';
+You can still control individual badge privacy settings on your My badges page.';
 $string['badgeprivacysetting_str'] = 'Automatically show badges I earn on my profile page';
 $string['badgesalt'] = 'Salt for hashing the recepient\'s email address';
 $string['badgesalt_desc'] = 'Using a hash allows backpack services to confirm the badge earner without having to expose their email address. This setting should only use numbers and letters.';
