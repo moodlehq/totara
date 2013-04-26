@@ -270,7 +270,8 @@ class totara_program_renderer extends plugin_renderer_base {
         $options = new stdClass();
         $options->noclean = true;
         $options->para = false;
-        $out .= highlight($data->highlightterms, format_text($data->summary, FORMAT_MOODLE, $options,  $data->progid));
+        $options->context = context_program::instance($data->progid);
+        $out .= highlight($data->highlightterms, format_text($data->summary, FORMAT_MOODLE, $options));
         $out .= html_writer::end_tag('div');
         $out .= html_writer::end_tag('div');
         return $out;
