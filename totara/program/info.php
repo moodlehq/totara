@@ -68,11 +68,12 @@ echo $OUTPUT->heading(format_string($program->fullname) . html_writer::empty_tag
 
 echo $OUTPUT->box_start('generalbox info');
 
+$programcontext = context_program::instance($program->id);
 $summary = file_rewrite_pluginfile_urls($program->summary, 'pluginfile.php',
-    context_program::instance($program->id)->id, 'totara_program', 'summary', 0);
+    $programcontext->id, 'totara_program', 'summary', 0);
 
 
-echo filter_text(text_to_html($summary),$program->id);
+echo format_text(text_to_html($summary), FORMAT_HTML, array('context' => $programcontext));
 
 echo $OUTPUT->box_end();
 

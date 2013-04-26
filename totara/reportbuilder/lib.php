@@ -2706,13 +2706,13 @@ class reportbuilder {
                         } else if (($column->displayfunc == 'nice_date' || $column->displayfunc == 'nice_datetime') && $excel) {
                             $tabledata[] = $record->$field;
                         } else {
-                            $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
+                            $tabledata[] = $this->src->$func(format_text($record->$field, FORMAT_HTML), $record, $isexport);
                         }
                     } else {
-                        $tabledata[] = filter_text($record->$field);
+                        $tabledata[] = format_text($record->$field, FORMAT_HTML);
                     }
                 } else {
-                    $tabledata[] = filter_text($record->$field);
+                    $tabledata[] = format_text($record->$field, FORMAT_HTML);
                 }
             }
         }
@@ -3546,12 +3546,12 @@ class reportbuilder {
                 if (isset($primary_field->displayfunc)) {
                     $func = 'rb_display_' . $primary_field->displayfunc;
                     if (method_exists($this->src, $func)) {
-                        $primaryvalue = $this->src->$func(filter_text($item->$primaryname), $item, false);
+                        $primaryvalue = $this->src->$func(format_text($item->$primaryname, FORMAT_HTML), $item, false);
                     } else {
-                        $primaryvalue = (isset($item->$primaryname)) ? filter_text($item->$primaryname) : get_string('unknown', 'totara_reportbuilder');
+                        $primaryvalue = (isset($item->$primaryname)) ? format_text($item->$primaryname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                     }
                 } else {
-                    $primaryvalue = (isset($item->$primaryname)) ? filter_text($item->$primaryname) : get_string('unknown', 'totara_reportbuilder');
+                    $primaryvalue = (isset($item->$primaryname)) ? format_text($item->$primaryname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                 }
 
                 $out .= $OUTPUT->heading($primaryheading . ': ' . $primaryvalue, 2);
@@ -3567,12 +3567,12 @@ class reportbuilder {
                     if (isset($additional_field->displayfunc)) {
                         $func = 'rb_display_' . $additional_field->displayfunc;
                         if (method_exists($this->src, $func)) {
-                            $addvalue = $this->src->$func(filter_text($item->$addname), $item);
+                            $addvalue = $this->src->$func(format_text($item->$addname, FORMAT_HTML), $item);
                         } else {
-                            $addvalue = (isset($item->$addname)) ? filter_text($item->$addname) : get_string('unknown', 'totara_reportbuilder');
+                            $addvalue = (isset($item->$addname)) ? format_text($item->$addname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                         }
                     } else {
-                        $addvalue = (isset($item->$addname)) ? filter_text($item->$addname) : get_string('unknown', 'totara_reportbuilder');
+                        $addvalue = (isset($item->$addname)) ? format_text($item->$addname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                     }
 
                     $out .= html_writer::tag('strong', $addheading . ': '. $addvalue) . html_writer::empty_tag('br');
