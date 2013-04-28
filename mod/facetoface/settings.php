@@ -32,7 +32,7 @@ $settings->add(new admin_setting_configtext('facetoface_fromaddress', new lang_s
 // Load roles
 $systemcontext = context_system::instance();
 $choices = array();
-if ($roles = role_fix_names(get_all_roles(), $systemcontext, ROLENAME_ORIGINAL)) {
+if ($roles = role_fix_names(get_all_roles(), $systemcontext)) {
     foreach ($roles as $role) {
         $choices[$role->id] = format_string($role->localname);
     }

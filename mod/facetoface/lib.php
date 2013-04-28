@@ -1126,7 +1126,7 @@ function facetoface_get_userfields() {
  * for a given facetoface activity
  */
 function facetoface_download_attendance($facetofacename, $facetofaceid, $location, $format) {
-    global $CFG;
+    global $CFG, $DB;
 
     $timenow = time();
     $timeformat = str_replace(' ', '_', get_string('strftimedate', 'langconfig'));
@@ -1149,8 +1149,10 @@ function facetoface_download_attendance($facetofacename, $facetofaceid, $locatio
 
     $workbook->send($downloadfilename);
     $worksheet = $workbook->add_worksheet('attendance');
-    facetoface_write_worksheet_header($worksheet);
-    facetoface_write_activity_attendance($worksheet, 1, $facetofaceid, $location, '', '', $dateformat);
+    $courseid = $DB->get_field('facetoface', 'course', array('id' => $facetofaceid));
+    $coursecontext = context_course::instance($courseid);
+    facetoface_write_worksheet_header($worksheet, $coursecontext);
+    facetoface_write_activity_attendance($worksheet, $coursecontext, 1, $facetofaceid, $location, '', '', $dateformat);
     $workbook->close();
     exit;
 }
@@ -1159,9 +1161,10 @@ function facetoface_download_attendance($facetofacename, $facetofaceid, $locatio
  * Add the appropriate column headers to the given worksheet
  *
  * @param object $worksheet  The worksheet to modify (passed by reference)
+ * @param object $context the course context of the facetoface instance
  * @returns integer The index of the next column
  */
-function facetoface_write_worksheet_header(&$worksheet)
+function facetoface_write_worksheet_header(&$worksheet, $context)
 {
     $pos=0;
     $customfields = facetoface_get_session_customfields();
@@ -1177,9 +1180,9 @@ function facetoface_write_worksheet_header(&$worksheet)
     $worksheet->write_string(0, $pos++, get_string('duration', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('status', 'facetoface'));
 
-    if ($trainerroles = facetoface_get_trainer_roles()) {
+    if ($trainerroles = facetoface_get_trainer_roles($context)) {
         foreach ($trainerroles as $role) {
-            $worksheet->write_string(0, $pos++, get_string('role').': '.$role->name);
+            $worksheet->write_string(0, $pos++, get_string('role').': '.$role->localname);
         }
     }
 
@@ -1202,6 +1205,7 @@ function facetoface_write_worksheet_header(&$worksheet)
  * way too slow.
  *
  * @param object  $worksheet    Currently open worksheet
+ * @param object  $coursecontext context of the course containing this f2f activity
  * @param integer $startingrow  Index of the starting row (usually 1)
  * @param integer $facetofaceid ID of the facetoface activity
  * @param string  $location     Location to filter by
@@ -1210,12 +1214,12 @@ function facetoface_write_worksheet_header(&$worksheet)
  * @param object  $dateformat   Use to write out dates in the spreadsheet
  * @returns integer Index of the last row written
  */
-function facetoface_write_activity_attendance(&$worksheet, $startingrow, $facetofaceid, $location,
+function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $startingrow, $facetofaceid, $location,
                                               $coursename, $activityname, $dateformat)
 {
     global $CFG, $DB;
 
-    $trainerroles = facetoface_get_trainer_roles();
+    $trainerroles = facetoface_get_trainer_roles($coursecontext);
     $userfields = facetoface_get_userfields();
     $customsessionfields = facetoface_get_session_customfields();
     $timenow = time();
@@ -2907,7 +2911,9 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
     }
 
     // Display trainers
-    $trainerroles = facetoface_get_trainer_roles();
+    $courseid = $DB->get_field('facetoface', 'course', array('id' => $session->facetoface));
+    $coursecontext = context_course::instance($courseid);
+    $trainerroles = facetoface_get_trainer_roles($coursecontext);
 
     if ($trainerroles) {
         // Get trainers
@@ -3126,10 +3132,10 @@ function facetoface_update_trainers($sessionid, $form) {
 
 /**
  * Return array of trainer roles configured for face-to-face
- *
+ * @param $coursecontext context of the course
  * @return  array
  */
-function facetoface_get_trainer_roles() {
+function facetoface_get_trainer_roles($coursecontext) {
     global $CFG, $DB;
 
     // Check that roles have been selected
@@ -3158,7 +3164,7 @@ function facetoface_get_trainer_roles() {
         return array();
     }
 
-    $rolenames = role_fix_names($rolenames);
+    $rolenames = role_fix_names($rolenames, $coursecontext);
 
     return $rolenames;
 }

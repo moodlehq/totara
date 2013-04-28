@@ -173,13 +173,13 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addHelpButton('details_editor', 'details', 'facetoface');
 
         // Choose users for trainer roles
-        $roles = facetoface_get_trainer_roles();
+        $context = context_course::instance($this->_customdata['course']->id);
+        $roles = facetoface_get_trainer_roles($context);
 
         if ($roles) {
             // Get current trainers
             $current_trainers = facetoface_get_trainers($this->_customdata['s']);
             // Get course context and roles
-            $context = context_course::instance($this->_customdata['course']->id);
             $rolenames = role_get_names($context);
             // Loop through all selected roles
             $header_shown = false;

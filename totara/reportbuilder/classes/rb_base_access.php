@@ -201,7 +201,7 @@ class rb_role_access extends rb_base_access {
         $mform->addElement('hidden', 'role_enable', 1);
 
         $systemcontext = context_system::instance();
-        $roles = role_fix_names(get_all_roles(), $systemcontext, ROLENAME_ORIGINAL);
+        $roles = role_fix_names(get_all_roles(), $systemcontext);
         if (!empty($roles)) {
             $contextoptions = array('site' => get_string('systemcontext', 'totara_reportbuilder'), 'any' => get_string('anycontext', 'totara_reportbuilder'));
 
