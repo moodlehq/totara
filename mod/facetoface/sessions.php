@@ -201,6 +201,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     $todb->normalcost = $fromform->normalcost;
     $todb->discountcost = $fromform->discountcost;
     $todb->usermodified = $USER->id;
+    $todb->roomid = 0;
     $sessionid = null;
 
     //We cannot use transactions here because of the current issue in messagelib.php
