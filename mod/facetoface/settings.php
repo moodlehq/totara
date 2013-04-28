@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once "$CFG->dirroot/mod/facetoface/lib.php";
 
-$settings->add(new admin_setting_configtext('facetoface_fromaddress', get_string('setting:fromaddress_caption', 'facetoface'),get_string('setting:fromaddress', 'facetoface'), get_string('setting:fromaddressdefault', 'facetoface'), "/^((?:[\w\.\-])+\@(?:(?:[a-zA-Z\d\-])+\.)+(?:[a-zA-Z\d]{2,4}))$/",30));
+$settings->add(new admin_setting_configtext('facetoface_fromaddress', new lang_string('setting:fromaddress_caption', 'facetoface'),new lang_string('setting:fromaddress', 'facetoface'), new lang_string('setting:fromaddressdefault', 'facetoface'), "/^((?:[\w\.\-])+\@(?:(?:[a-zA-Z\d\-])+\.)+(?:[a-zA-Z\d]{2,4}))$/",30));
 
 // Load roles
 $systemcontext = context_system::instance();
@@ -38,63 +38,63 @@ if ($roles = role_fix_names(get_all_roles(), $systemcontext, ROLENAME_ORIGINAL))
     }
 }
 
-$settings->add(new admin_setting_configmultiselect('facetoface_session_roles', get_string('setting:sessionroles_caption', 'facetoface'), get_string('setting:sessionroles', 'facetoface'), array(), $choices));
+$settings->add(new admin_setting_configmultiselect('facetoface_session_roles', new lang_string('setting:sessionroles_caption', 'facetoface'), new lang_string('setting:sessionroles', 'facetoface'), array(), $choices));
 
-$settings->add(new admin_setting_configcheckbox('facetoface_allowschedulingconflicts', get_string('setting:allowschedulingconflicts_caption', 'facetoface'), get_string('setting:allowschedulingconflicts', 'facetoface'), 0));
+$settings->add(new admin_setting_configcheckbox('facetoface_allowschedulingconflicts', new lang_string('setting:allowschedulingconflicts_caption', 'facetoface'), new lang_string('setting:allowschedulingconflicts', 'facetoface'), 0));
 
-$settings->add(new admin_setting_heading('facetoface_manageremail_header', get_string('manageremailheading', 'facetoface'), ''));
+$settings->add(new admin_setting_heading('facetoface_manageremail_header', new lang_string('manageremailheading', 'facetoface'), ''));
 
-$settings->add(new admin_setting_configcheckbox('facetoface_addchangemanageremail', get_string('setting:addchangemanageremail_caption', 'facetoface'),get_string('setting:addchangemanageremail', 'facetoface'), 0));
+$settings->add(new admin_setting_configcheckbox('facetoface_addchangemanageremail', new lang_string('setting:addchangemanageremail_caption', 'facetoface'),new lang_string('setting:addchangemanageremail', 'facetoface'), 0));
 
-$settings->add(new admin_setting_configtext('facetoface_manageraddressformat', get_string('setting:manageraddressformat_caption', 'facetoface'),get_string('setting:manageraddressformat', 'facetoface'), get_string('setting:manageraddressformatdefault', 'facetoface'), PARAM_TEXT));
+$settings->add(new admin_setting_configtext('facetoface_manageraddressformat', new lang_string('setting:manageraddressformat_caption', 'facetoface'),new lang_string('setting:manageraddressformat', 'facetoface'), new lang_string('setting:manageraddressformatdefault', 'facetoface'), PARAM_TEXT));
 
-$settings->add(new admin_setting_configtext('facetoface_manageraddressformatreadable', get_string('setting:manageraddressformatreadable_caption', 'facetoface'),get_string('setting:manageraddressformatreadable', 'facetoface'), get_string('setting:manageraddressformatreadabledefault', 'facetoface'), PARAM_NOTAGS));
-
-
-$settings->add(new admin_setting_heading('facetoface_cost_header', get_string('costheading', 'facetoface'), ''));
-
-$settings->add(new admin_setting_configcheckbox('facetoface_hidecost', get_string('setting:hidecost_caption', 'facetoface'),get_string('setting:hidecost', 'facetoface'), 0));
-
-$settings->add(new admin_setting_configcheckbox('facetoface_hidediscount', get_string('setting:hidediscount_caption', 'facetoface'),get_string('setting:hidediscount', 'facetoface'), 0));
+$settings->add(new admin_setting_configtext('facetoface_manageraddressformatreadable', new lang_string('setting:manageraddressformatreadable_caption', 'facetoface'),new lang_string('setting:manageraddressformatreadable', 'facetoface'), new lang_string('setting:manageraddressformatreadabledefault', 'facetoface'), PARAM_NOTAGS));
 
 
-$settings->add(new admin_setting_heading('facetoface_icalendar_header', get_string('icalendarheading', 'facetoface'), ''));
+$settings->add(new admin_setting_heading('facetoface_cost_header', new lang_string('costheading', 'facetoface'), ''));
 
-$settings->add(new admin_setting_configcheckbox('facetoface_oneemailperday', get_string('setting:oneemailperday_caption', 'facetoface'),get_string('setting:oneemailperday', 'facetoface'), 0));
+$settings->add(new admin_setting_configcheckbox('facetoface_hidecost', new lang_string('setting:hidecost_caption', 'facetoface'),new lang_string('setting:hidecost', 'facetoface'), 0));
 
-$settings->add(new admin_setting_configcheckbox('facetoface_disableicalcancel', get_string('setting:disableicalcancel_caption', 'facetoface'),get_string('setting:disableicalcancel', 'facetoface'), 0));
+$settings->add(new admin_setting_configcheckbox('facetoface_hidediscount', new lang_string('setting:hidediscount_caption', 'facetoface'),new lang_string('setting:hidediscount', 'facetoface'), 0));
+
+
+$settings->add(new admin_setting_heading('facetoface_icalendar_header', new lang_string('icalendarheading', 'facetoface'), ''));
+
+$settings->add(new admin_setting_configcheckbox('facetoface_oneemailperday', new lang_string('setting:oneemailperday_caption', 'facetoface'),new lang_string('setting:oneemailperday', 'facetoface'), 0));
+
+$settings->add(new admin_setting_configcheckbox('facetoface_disableicalcancel', new lang_string('setting:disableicalcancel_caption', 'facetoface'),new lang_string('setting:disableicalcancel', 'facetoface'), 0));
 
 
 // List of existing custom fields
 $html = facetoface_list_of_customfields();
 $html .= html_writer::start_tag('p');
 $url = new moodle_url('/mod/facetoface/customfield.php', array('id' => 0));
-$html .= html_writer::link($url, get_string('addnewfieldlink', 'facetoface'));
+$html .= html_writer::link($url, new lang_string('addnewfieldlink', 'facetoface'));
 $html .= html_writer::end_tag('p');
 
-$settings->add(new admin_setting_heading('facetoface_customfields_header', get_string('customfieldsheading', 'facetoface'), $html));
+$settings->add(new admin_setting_heading('facetoface_customfields_header', new lang_string('customfieldsheading', 'facetoface'), $html));
 
 // List of existing site notices
 $html = facetoface_list_of_sitenotices();
 $html .= html_writer::start_tag('p');
 $url = new moodle_url('/mod/facetoface/sitenotice.php', array('id' => 0));
-$html .= html_writer::link($url, get_string('addnewnoticelink', 'facetoface'));
+$html .= html_writer::link($url, new lang_string('addnewnoticelink', 'facetoface'));
 $html .= html_writer::end_tag('p');
 
-$settings->add(new admin_setting_heading('facetoface_sitenotices_header', get_string('sitenoticesheading', 'facetoface'), $html));
+$settings->add(new admin_setting_heading('facetoface_sitenotices_header', new lang_string('sitenoticesheading', 'facetoface'), $html));
 
 // Link to notification templates
 $html = html_writer::start_tag('p');
 $url = new moodle_url('/mod/facetoface/notification/template/');
-$html .= html_writer::link($url, get_string('managenotificationtemplates', 'facetoface'));
+$html .= html_writer::link($url, new lang_string('managenotificationtemplates', 'facetoface'));
 $html .= html_writer::end_tag('p');
 
-$settings->add(new admin_setting_heading('facetoface_notification_template', get_string('notificationtemplates', 'facetoface'), $html));
+$settings->add(new admin_setting_heading('facetoface_notification_template', new lang_string('notificationtemplates', 'facetoface'), $html));
 
 // Link to rooms
 $html = html_writer::start_tag('p');
 $url = new moodle_url('/mod/facetoface/room/manage.php');
-$html .= html_writer::link($url, get_string('managerooms', 'facetoface'));
+$html .= html_writer::link($url, new lang_string('managerooms', 'facetoface'));
 $html .= html_writer::end_tag('p');
 
-$settings->add(new admin_setting_heading('facetoface_rooms', get_string('rooms', 'facetoface'), $html));
+$settings->add(new admin_setting_heading('facetoface_rooms', new lang_string('rooms', 'facetoface'), $html));
