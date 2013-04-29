@@ -55,5 +55,11 @@ For more details on the Moodle changes see:
 http://docs.moodle.org/dev/Moodle_2.3_release_notes
 http://docs.moodle.org/dev/Moodle_2.4_release_notes
 
-See INSTALL.txt for the new system and browser requirements for 2.4.
+See INSTALL.txt for the new system requirements for 2.4.
+
+API Changes:
+
+* Moodle API changes as detailed in the Moodle release notes
+* Report builder activity groups are deprecated. The menu item has been removed from 2.4
+  and code will be removed in a subsequent release.
 
