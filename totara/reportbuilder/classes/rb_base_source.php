@@ -1525,10 +1525,10 @@ abstract class rb_base_source {
             'name_and_summary',
             get_string('coursenameandsummary', 'totara_reportbuilder'),
             // case used to merge even if one value is null
-            "CASE WHEN $join.fullname IS NULL THEN " . $DB->sql_compare_text("$join.summary") . "
+            "CASE WHEN $join.fullname IS NULL THEN " . $DB->sql_compare_text("$join.summary", 1024) . "
                 WHEN $join.summary IS NULL THEN $join.fullname
                 ELSE " . $DB->sql_concat("$join.fullname", "'" . html_writer::empty_tag('br') . "'",
-                    $DB->sql_compare_text("$join.summary")) . ' END',
+                    $DB->sql_compare_text("$join.summary", 1024)) . ' END',
             array(
                 'joins' => $join,
             )
@@ -1694,7 +1694,7 @@ abstract class rb_base_source {
             'prog',
             'summary',
             get_string('programsummary', 'totara_program'),
-            $DB->sql_compare_text("$join.summary"),
+            $DB->sql_compare_text("$join.summary", 1024),
             array('joins' => $join)
         );
         $columnoptions[] = new rb_column_option(
@@ -2239,7 +2239,7 @@ abstract class rb_base_source {
             $filtertype = 'text'; // default filter type
             $filter_options = array();
 
-            $columnsql = $DB->sql_compare_text("{$joinname}.data", 255);
+            $columnsql = $DB->sql_compare_text("{$joinname}.data", 1024);
 
             switch ($record->datatype) {
                 case 'file':
