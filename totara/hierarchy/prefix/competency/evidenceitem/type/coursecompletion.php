@@ -59,7 +59,7 @@ class competency_evidence_type_coursecompletion extends competency_evidence_type
         global $CFG;
 
         $name = $this->get_type_name();
-        $url = new moodle_url('/course/report/completion/index.php', array('course' => $this->iteminstance));
+        $url = new moodle_url('/report/completion/index.php', array('course' => $this->iteminstance));
         return html_writer::link($url, format_string($name));
     }
 
