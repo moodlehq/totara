@@ -4362,7 +4362,10 @@ function facetoface_extend_settings_navigation(settings_navigation $settings, na
     $mode = optional_param('mode', '', PARAM_ALPHA);
     $hook = optional_param('hook', 'ALL', PARAM_CLEAN);
 
-    $facetofacenode->add(get_string('notifications', 'facetoface'), new moodle_url('/mod/facetoface/notification/index.php', array('update' => $PAGE->cm->id)), navigation_node::TYPE_SETTING);
+    $context = context_module::instance($PAGE->cm->id);
+    if (has_capability('moodle/course:manageactivities', $context)) {
+        $facetofacenode->add(get_string('notifications', 'facetoface'), new moodle_url('/mod/facetoface/notification/index.php', array('update' => $PAGE->cm->id)), navigation_node::TYPE_SETTING);
+    }
 }
 
 
