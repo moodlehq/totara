@@ -105,12 +105,8 @@ $waitingapproval = facetoface_get_requests($session->id);
 if ($save && $onlycontent) {
 
     if (empty($_SESSION['f2f-bulk-results'])) {
-        if (empty($_SESSION['f2f-bulk-results'])) {
-            $_SESSION['f2f-bulk-results'] = array();
-        }
+        $_SESSION['f2f-bulk-results'] = array();
     }
-
-    $_SESSION['f2f-bulk-results'][$session->id] = array(array(), array());
 
     $added  = array();
     $errors = array();
@@ -179,7 +175,7 @@ if ($save && $onlycontent) {
         facetoface_update_attendees($session);
     }
 
-    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors, true);
+    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors);
 
     $result_message = facetoface_generate_bulk_result_notice(array($added, $errors), 'addedit');
     $numattendees = facetoface_get_num_attendees($session->id);

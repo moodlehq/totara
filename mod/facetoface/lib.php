@@ -4027,41 +4027,53 @@ function facetoface_get_session_involvement($userid, $info) {
  * @param   mixed   $userid             User to signup (normally int)
  * @param   boolean $suppressemail      Suppress notifications flag
  * @param   boolean $ignoreconflicts    Ignore booking conflicts flag
- * @param   boolean $useidnumber        Flag to notify Userid is user's idnumber (string)
+ * @param   string  $bulkaddsource      Flag to indicate if $userid is actually another field
  * @param   string  $discountcode       Optional A user may specify a discount code
  * @param   integer $notificationtype   Optional A user may choose the type of notifications they will receive
  * @return  array
  */
-function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false, $useidnumber = false,
-        $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
+function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false,
+        $bulkaddsource = 'bulkaddsourceuserid', $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
     global $DB, $CFG, $USER;
 
     $result = array();
     $result['id'] = $userid;
 
-    // Get user
-    if ($useidnumber) {
-        $user = $DB->get_record('user', array('idnumber' => $userid));
-        if (!$user) {
-            $result['name'] = '';
-            $result['result'] = get_string('useridnumberdoesnotexist', 'facetoface', $userid);
-            return $result;
-        }
-    } else {
+    // Check parameters.
+    if ($bulkaddsource == 'bulkaddsourceuserid') {
         if (!is_int($userid) && !ctype_digit($userid)) {
             $result['name'] = '';
             $result['result'] = get_string('error:userimportuseridnotanint', 'facetoface', $userid);
             return $result;
         }
-        $user = $DB->get_record('user', array('id' => $userid));
-        if (!$user) {
-            $result['name'] = '';
-            $result['result'] = get_string('useriddoesnotexist', 'facetoface', $userid);
-            return $result;
-        }
+    }
+
+    // Get user.
+    switch ($bulkaddsource) {
+        case 'bulkaddsourceuserid':
+            $user = $DB->get_record('user', array('id' => $userid));
+            break;
+        case 'bulkaddsourceidnumber':
+            $user = $DB->get_record('user', array('idnumber' => $userid));
+            break;
+        case 'bulkaddsourceusername':
+            $user = $DB->get_record('user', array('username' => $userid));
+            break;
+    }
+    if (!$user) {
+        $result['name'] = '';
+        $a = array('fieldname' => get_string($bulkaddsource, 'facetoface'), 'value' => $userid);
+        $result['result'] = get_string('userdoesnotexist', 'facetoface', $a);
+        return $result;
     }
 
     $result['name'] = fullname($user);
+
+    if (isguestuser($user)) {
+        $a = array('fieldname' => get_string($bulkaddsource, 'facetoface'), 'value' => $userid);
+        $result['result'] = get_string('cannotsignupguest', 'facetoface', $a);
+        return $result;
+    }
 
     // Get facetoface
     $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
