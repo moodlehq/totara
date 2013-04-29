@@ -343,7 +343,7 @@ class mod_facetoface_session_form extends moodleform {
                     // Check their availability
                     $availability = facetoface_get_sessions_within($dates, $trainer, $wheresql, $whereparams);
                     if (!empty($availability)) {
-                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($availability);
+                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($trainer, $availability);
                         ++$hasconflicts;
                     }
                 }

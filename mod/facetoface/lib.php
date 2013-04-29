@@ -3950,11 +3950,12 @@ function facetoface_get_sessions_within($times, $userid = null, $extrawhere = ''
  * Get session info and role description from get_sessions_within output
  *
  * @access  public
+ * @param   int     $userid     User id of the user this $info relates to
  * @param   object  $info       Single result from facetoface_get_sessions_within()
  * @return  string
  */
-function facetoface_get_session_involvement($info) {
-    global $CFG;
+function facetoface_get_session_involvement($userid, $info) {
+    global $USER;
 
     // Data to pass to lang string
     $data = new object();
@@ -3985,9 +3986,9 @@ function facetoface_get_session_involvement($info) {
         }
 
         $data->participation = format_string($roles[$info->roleid]->localname);
-        $strkey = "userassigned";
+        $strkey = "error:userassigned";
     } else {
-        $strkey = "userbooked";
+        $strkey = "error:userbooked";
     }
 
     // Check if start/finish on the same day
@@ -3997,6 +3998,10 @@ function facetoface_get_session_involvement($info) {
         $strkey .= "sameday";
     } else {
         $strkey .= "multiday";
+    }
+
+    if ($userid == $USER->id) {
+        $strkey .= "selfsignup";
     }
 
     return get_string($strkey, 'facetoface', $data);
@@ -4012,10 +4017,13 @@ function facetoface_get_session_involvement($info) {
  * @param   boolean $suppressemail      Suppress notifications flag
  * @param   boolean $ignoreconflicts    Ignore booking conflicts flag
  * @param   boolean $useidnumber        Flag to notify Userid is user's idnumber
+ * @param   string  $discountcode       Optional A user may specify a discount code
+ * @param   integer $notificationtype   Optional A user may choose the type of notifications they will receive
  * @return  array
  */
-function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false, $useidnumber = false) {
-    global $DB, $DB, $CFG;
+function facetoface_user_import($session, $userid, $suppressemail = false, $ignoreconflicts = false, $useidnumber = false,
+        $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
+    global $DB, $CFG, $USER;
 
     // Get facetoface
     $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
@@ -4057,16 +4065,14 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
     }
 
     // Check if they are already signed up
-    if ($session->datetimeknown) {
-        if (facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
-            $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($user));
-            return $result;
+    $minimumstatus = ($session->datetimeknown) ? MDL_F2F_STATUS_BOOKED : MDL_F2F_STATUS_REQUESTED;
+    if (facetoface_get_user_submissions($facetoface->id, $user->id, $minimumstatus, MDL_F2F_STATUS_FULLY_ATTENDED)) {
+        if ($user->id == $USER->id) {
+            $result['result'] = get_string('error:addalreadysignedupattendeeaddself', 'facetoface');
+        } else {
+            $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface');
         }
-    } else {
-        if (facetoface_get_user_submissions($facetoface->id, $user->id, MDL_F2F_STATUS_REQUESTED, MDL_F2F_STATUS_FULLY_ATTENDED)) {
-            $result['result'] = get_string('error:addalreadysignedupattendee', 'facetoface', fullname($user));
-            return $result;
-        }
+        return $result;
     }
 
     if (!facetoface_session_has_capacity($session, $context)) {
@@ -4088,7 +4094,7 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
         if (!$ignoreconflicts) {
             $dates = facetoface_get_session_dates($session->id);
             if ($availability = facetoface_get_sessions_within($dates, $user->id)) {
-                $result['result'] = facetoface_get_session_involvement($availability);
+                $result['result'] = facetoface_get_session_involvement($user->id, $availability);
                 $result['conflict'] = true;
                 return $result;
             }
@@ -4102,8 +4108,8 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
         $session,
         $facetoface,
         $course,
-        '',
-        MDL_F2F_BOTH,
+        $discountcode,
+        $notificationtype,
         $status,
         $user->id,
         !$suppressemail)) {
