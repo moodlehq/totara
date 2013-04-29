@@ -179,7 +179,7 @@ if ($save && $onlycontent) {
         facetoface_update_attendees($session);
     }
 
-    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors);
+    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors, true);
 
     $result_message = facetoface_generate_bulk_result_notice(array($added, $errors), 'addedit');
     $numattendees = facetoface_get_num_attendees($session->id);

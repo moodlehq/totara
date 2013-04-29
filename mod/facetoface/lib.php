@@ -4013,10 +4013,10 @@ function facetoface_get_session_involvement($userid, $info) {
  *
  * @access  public
  * @param   object  $session            Session to signup user to
- * @param   integer $userid             User to signup
+ * @param   mixed   $userid             User to signup (normally int)
  * @param   boolean $suppressemail      Suppress notifications flag
  * @param   boolean $ignoreconflicts    Ignore booking conflicts flag
- * @param   boolean $useidnumber        Flag to notify Userid is user's idnumber
+ * @param   boolean $useidnumber        Flag to notify Userid is user's idnumber (string)
  * @param   string  $discountcode       Optional A user may specify a discount code
  * @param   integer $notificationtype   Optional A user may choose the type of notifications they will receive
  * @return  array
@@ -4025,15 +4025,10 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
         $discountcode = '', $notificationtype = MDL_F2F_BOTH) {
     global $DB, $CFG, $USER;
 
-    // Get facetoface
-    $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
-
-    $course = $DB->get_record('course', array('id' => $facetoface->course));
-    $context = context_course::instance($course->id);
-
     $result = array();
     $result['id'] = $userid;
 
+    // Get user
     if ($useidnumber) {
         $user = $DB->get_record('user', array('idnumber' => $userid));
         if (!$user) {
@@ -4042,6 +4037,11 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
             return $result;
         }
     } else {
+        if (!is_int($userid) && !ctype_digit($userid)) {
+            $result['name'] = '';
+            $result['result'] = get_string('error:userimportuseridnotanint', 'facetoface', $userid);
+            return $result;
+        }
         $user = $DB->get_record('user', array('id' => $userid));
         if (!$user) {
             $result['name'] = '';
@@ -4051,6 +4051,12 @@ function facetoface_user_import($session, $userid, $suppressemail = false, $igno
     }
 
     $result['name'] = fullname($user);
+
+    // Get facetoface
+    $facetoface = $DB->get_record('facetoface', array('id' => $session->facetoface));
+
+    $course = $DB->get_record('course', array('id' => $facetoface->course));
+    $context = context_course::instance($course->id);
 
     // Make sure that the user is enroled in the course
     $coursecontext   = context_course::instance($course->id);
