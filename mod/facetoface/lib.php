@@ -1514,9 +1514,31 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
             $worksheet->write_string($i,$j++,$finishtime);
             $worksheet->write_number($i,$j++,(int)$session->duration);
             $worksheet->write_string($i,$j++,$status);
+
+            if ($trainerroles) {
+                foreach (array_keys($trainerroles) as $roleid) {
+                    if (!empty($sessiontrainers[$roleid])) {
+                        $trainers = array();
+                        foreach ($sessiontrainers[$roleid] as $trainer) {
+                            $trainers[] = fullname($trainer);
+                        }
+
+                        $trainers = implode(', ', $trainers);
+                    }
+                    else {
+                        $trainers = '-';
+                    }
+
+                    $worksheet->write_string($i, $j++, $trainers);
+                }
+            }
+
             foreach ($userfields as $unused) {
                 $worksheet->write_string($i,$j++,'-');
             }
+            // Grade/attendance
+            $worksheet->write_string($i,$j++,'-');
+            // Date signed up
             $worksheet->write_string($i,$j++,'-');
 
             if (!empty($coursename)) {
