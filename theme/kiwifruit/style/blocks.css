@@ -98,8 +98,8 @@
 .block_settings .block_tree li.item_with_icon > p img,
 .block_navigation .block_tree li.item_with_icon > p img {
    top:0px;
-   width:auto;
-   height:auto;
+   width:16px;
+   height:16px;
 }
 #region-main .block_totara_tasks .header {
    background-color:#2fbce8;
