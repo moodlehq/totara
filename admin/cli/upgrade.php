@@ -99,7 +99,7 @@ if (!empty($a->totaraupgradeerror)){
 //cli installs and upgrades prior to T-10001 bugfix will not have the totara CFG values set - run the upgrade anyway to get those variables in
 $totara_needs_upgrade = (!isset($CFG->totara_build) || (isset($CFG->totara_build) && $TOTARA->build > $CFG->totara_build));
 if (!moodle_needs_upgrading() && !($version > $CFG->version) && !$totara_needs_upgrade) {
-    cli_error(get_string('cliupgradenoneed', 'core_admin', $a->newversion), 0);
+    cli_error(get_string('cliupgradenoneed', 'core_admin', $a->newtotaraversion), 0);
 }
 
 // Test environment first.
