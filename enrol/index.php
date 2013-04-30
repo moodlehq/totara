@@ -97,7 +97,8 @@ if (!$forms) {
     if (isguestuser()) {
         notice(get_string('noguestaccess', 'enrol'), get_login_url());
     } else {
-        notice(get_string('notenrollable', 'enrol'), "$CFG->wwwroot/index.php");
+        $destination = new moodle_url("/course/categorylist.php", array('viewtype' => 'course'));
+        notice(get_string('notenrollable', 'enrol'), $destination->out());
     }
 }
 
