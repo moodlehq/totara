@@ -1133,13 +1133,15 @@ class program {
         }
         $params['id'] = $this->id;
         $url = new moodle_url("/totara/program/required.php", $params);
+        $summary = file_rewrite_pluginfile_urls($this->summary, 'pluginfile.php',
+                context_program::instance($this->id)->id, 'totara_program', 'summary', 0);
 
         $out = '';
         $out .= html_writer::start_tag('div', array('class' => 'dp-summary-widget-title'));
         $out .= html_writer::link($url, $this->fullname);
         $out .= html_writer::end_tag('div');
         $out .= html_writer::start_tag('div', array('class' => 'dp-summary-widget-description'));
-        $out .= $this->summary . html_writer::end_tag('div');
+        $out .= $summary . html_writer::end_tag('div');
 
         return $out;
     }
