@@ -159,9 +159,9 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'session',
                 'duration',
                 get_string('sessduration', 'rb_source_facetoface_sessions'),
-                'sessions.duration',
+                '(sessiondate.timefinish-sessiondate.timestart)/60',
                 array(
-                    'joins' => 'sessions',
+                    'joins' => 'sessiondate',
                     'displayfunc' => 'hours_minutes',
                 )
             ),
