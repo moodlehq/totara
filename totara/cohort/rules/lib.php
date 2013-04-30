@@ -321,7 +321,18 @@ function cohort_rules_delete_collection($collectionid, $usetrans=true) {
     return true;
 }
 
-function cohort_rules_clone_collection($collid, $status=null, $usetrans=true) {
+/**
+ * Clones a collection of cohort rules and attaches them to either
+ * a specified cohort or the or the same cohort as the original collections
+ *
+ * @param   int       $collid     Collection id
+ * @param   string    $status     Status of the collection
+ * @param   boolean   $usetrans   Whether this should use transactions
+ * @param   int       $cohortid   The id of a cohort to attach the collection to
+ *
+ * @return  int       The id of the created collection
+ */
+function cohort_rules_clone_collection($collid, $status=null, $usetrans=true, $cohortid=null) {
     global $DB, $USER;
 
     $now = time();
@@ -335,7 +346,7 @@ function cohort_rules_clone_collection($collid, $status=null, $usetrans=true) {
     }
 
     $newcollection = new stdClass;
-    $newcollection->cohortid =        $collection->cohortid;
+    $newcollection->cohortid =        !empty($cohortid) ? $cohortid : $collection->cohortid;
     $newcollection->rulesetoperator = $collection->rulesetoperator;
     $newcollection->status =          !empty($status) ? $status : $collection->status;
     $newcollection->timecreated =     $now;

@@ -873,10 +873,10 @@ function totara_cohort_clone_cohort($oldcohortid) {
     // If the cohort is dynamic, copy over the rules
     if ($newcohort->cohorttype == cohort::TYPE_DYNAMIC) {
         // Clone active rule collection
-        $activecollid = cohort_rules_clone_collection($oldcohort->activecollectionid);
+        $activecollid = cohort_rules_clone_collection($oldcohort->activecollectionid, null, true, $newcohort->id);
 
         // Clone draft rule collection
-        $draftcollid = cohort_rules_clone_collection($oldcohort->draftcollectionid);
+        $draftcollid = cohort_rules_clone_collection($oldcohort->draftcollectionid, null, true, $newcohort->id);
 
         // Update new cohort's collections to created clones
         $todb = new stdClass;
