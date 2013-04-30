@@ -137,9 +137,66 @@ if ($template) {
 $currenttab = 'components';
 require('tabs.php');
 
-$mform = new dp_components_form(null, compact('id'));
-$mform->display();
+echo $OUTPUT->heading_with_help(get_string('componentsettings', 'totara_plan'), 'templatecomponentsettings', 'totara_plan');
+
+$components = $DB->get_records('dp_component_settings', array('templateid' => $id), 'sortorder');
+
+if ($components) {
+    $str_disable = get_string('disable');
+    $str_enable = get_string('enable');
+    $str_moveup = get_string('moveup');
+    $str_movedown = get_string('movedown');
+
+    $columns[] = 'component';
+    $headers[] = get_string('component', 'totara_plan');
+    $columns[] = 'options';
+    $headers[] = get_string('options', 'totara_plan');
+
+    $table = new flexible_table('components');
+    $table->define_baseurl('/totara/plan/template/components.php?id=' . $id);
+    $table->define_columns($columns);
+    $table->define_headers($headers);
+    $table->set_attribute('id', 'dpcomponents');
+    $table->column_class('component', 'component');
+    $table->column_class('options', 'options');
+
+    $table->setup();
+    $spacer = $OUTPUT->spacer(array('width' => 11, 'height' => 11));
+    $count = 0;
+    $numvalues = count($components);
+    foreach ($components as $component) {
+        $count++;
+        $tablerow = array();
+        $buttons = array();
+        $configsetting = get_config(null, 'dp_'.$component->component);
+        $cssclass = !$component->enabled ? 'dimmed' : '';
+        $compname = $configsetting ? $configsetting : get_string($component->component.'plural', 'totara_plan');
+        $tablerow[] = html_writer::tag('span', $compname, array('class' => $cssclass));
+
+
+        if ($component->enabled) {
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $id, 'hide' => $component->id)), new pix_icon('t/hide', $str_disable));
+        } else {
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $id, 'show' => $component->id)), new pix_icon('t/show', $str_enable));
+        }
+
+        if ($count > 1) {
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $id, 'moveup' => $component->id)), new pix_icon('t/up', $str_moveup));
+        } else {
+            $buttons[] = $spacer;
+        }
+
+        // If value can be moved down
+        if ($count < $numvalues) {
+            $buttons[] = $OUTPUT->action_icon(new moodle_url('/totara/plan/template/components.php', array('id' => $id, 'movedown' => $component->id)), new pix_icon('t/down', $str_movedown));
+        } else {
+            $buttons[] = $spacer;
+        }
+
+        $tablerow[] = implode($buttons, '');
+        $table->add_data($tablerow);
+    }
+    $table->finish_html();
+}
 
 echo $OUTPUT->footer();
-
-?>
