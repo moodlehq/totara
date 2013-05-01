@@ -38,6 +38,8 @@ $confirm = optional_param('confirm', false, PARAM_BOOL); // delete confirmation
 
 $nbdays = 1; // default number to show
 
+define('SECONDS_IN_AN_HOUR', 60 * 60);
+
 $session = null;
 if ($id && !$s) {
     if (!$cm = $DB->get_record('course_modules', array('id' => $id))) {
@@ -171,7 +173,9 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     //check dates and calculate total duration
     $sessiondates = array();
-    $fromform->duration = 0;
+    if ($fromform->datetimeknown) {
+        $fromform->duration = 0;
+    }
     for ($i = 0; $i < $fromform->date_repeats; $i++) {
         if (!empty($fromform->datedelete[$i])) {
             continue; // skip this date
@@ -187,7 +191,9 @@ if ($fromform = $mform->get_data()) { // Form submitted
             $finishdt = new DateTime($fromform->$timefinishfield, new DateTimeZone($date->sessiontimezone));
             $date->timestart = $startdt->getTimestamp();
             $date->timefinish = $finishdt->getTimestamp();
-            $fromform->duration += ($date->timefinish - $date->timestart)/3600;
+            if ($fromform->datetimeknown) {
+                $fromform->duration += ($date->timefinish - $date->timestart)/SECONDS_IN_AN_HOUR; // Convert seconds to hours
+            }
             $sessiondates[] = $date;
         }
     }
