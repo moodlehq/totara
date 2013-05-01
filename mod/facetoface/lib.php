@@ -1613,11 +1613,10 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
                                 $notificationtype, $statuscode, $userid = false,
                                 $notifyuser = true) {
 
-    global $CFG, $DB, $OUTPUT;
+    global $CFG, $DB, $OUTPUT, $USER;
 
     // Get user id
     if (!$userid) {
-        global $USER;
         $userid = $USER->id;
     }
 
@@ -1678,7 +1677,7 @@ function facetoface_user_signup($session, $facetoface, $course, $discountcode,
     }
 
     // Update status
-    if (!facetoface_update_signup_status($usersignup->id, $new_status, $userid)) {
+    if (!facetoface_update_signup_status($usersignup->id, $new_status, $USER->id)) {
         print_error('error:f2ffailedupdatestatus', 'facetoface');
         return false;
     }
@@ -2534,14 +2533,14 @@ function facetoface_get_user_submissions($facetofaceid, $userid, $minimumstatus=
  * @return boolean success
  */
 function facetoface_user_cancel_submission($sessionid, $userid, $cancelreason='') {
-    global $DB;
+    global $DB, $USER;
 
     $signup = $DB->get_record('facetoface_signups', array('sessionid' => $sessionid, 'userid' => $userid));
     if (!$signup) {
         return true; // not signed up, nothing to do
     }
 
-    $result = facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $userid, $cancelreason);
+    $result = facetoface_update_signup_status($signup->id, MDL_F2F_STATUS_USER_CANCELLED, $USER->id, $cancelreason);
 
     if ($result) {
         // notify cancelled
