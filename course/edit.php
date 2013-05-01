@@ -201,25 +201,26 @@ if ($editform->is_cancelled()) {
     }
 
     ///
-    /// Update course cohorts
+    /// Update course cohorts if user has permissions
     ///
+    if (has_capability('moodle/cohort:manage', context_system::instance())) {
+        // Enrolled cohorts
+        $currentcohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id, e.id AS associd');
+        $currentcohorts = !empty($currentcohorts) ? $currentcohorts : array();
+        $newcohorts = !empty($data->cohortsenrolled) ? explode(',', $data->cohortsenrolled) : array();
 
-    // Enrolled cohorts
-    $currentcohorts = totara_cohort_get_course_cohorts($course->id, null, 'c.id, e.id AS associd');
-    $currentcohorts = !empty($currentcohorts) ? $currentcohorts : array();
-    $newcohorts = !empty($data->cohortsenrolled) ? explode(',', $data->cohortsenrolled) : array();
-
-    if ($todelete = array_diff(array_keys($currentcohorts), $newcohorts)) {
-        // Delete removed cohorts
-        foreach ($todelete as $cohortid) {
-            totara_cohort_delete_association($cohortid, $currentcohorts[$cohortid]->associd, COHORT_ASSN_ITEMTYPE_COURSE);
+        if ($todelete = array_diff(array_keys($currentcohorts), $newcohorts)) {
+            // Delete removed cohorts
+            foreach ($todelete as $cohortid) {
+                totara_cohort_delete_association($cohortid, $currentcohorts[$cohortid]->associd, COHORT_ASSN_ITEMTYPE_COURSE);
+            }
         }
-    }
 
-    if ($newcohorts = array_diff($newcohorts, array_keys($currentcohorts))) {
-        // Add new cohort associations
-        foreach ($newcohorts as $cohortid) {
-            totara_cohort_add_association($cohortid, $course->id, COHORT_ASSN_ITEMTYPE_COURSE);
+        if ($newcohorts = array_diff($newcohorts, array_keys($currentcohorts))) {
+            // Add new cohort associations
+            foreach ($newcohorts as $cohortid) {
+                totara_cohort_add_association($cohortid, $course->id, COHORT_ASSN_ITEMTYPE_COURSE);
+            }
         }
     }
 
