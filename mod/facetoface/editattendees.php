@@ -179,12 +179,15 @@ if ($save && $onlycontent) {
         facetoface_update_attendees($session);
     }
 
-    if (!empty($added) || !empty($errors)) {
-        $result_message = facetoface_generate_bulk_result_notice(array($added, $errors), 'addedit');
-    }
+    $_SESSION['f2f-bulk-results'][$session->id] = array($added, $errors);
 
-    $_SESSION['f2f-bulk-results'][$session->id][0] = $added;
-    $_SESSION['f2f-bulk-results'][$session->id][1] = $errors;
+    $result_message = facetoface_generate_bulk_result_notice(array($added, $errors), 'addedit');
+    $numattendees = facetoface_get_num_attendees($session->id);
+    $overbooked = ($numattendees > $session->capacity);
+    if ($overbooked) {
+        $overbookedmessage = get_string('capacityoverbookedlong', 'facetoface', array('current' => $numattendees, 'maximum' => $session->capacity));
+        $result_message .= $OUTPUT->notification($overbookedmessage, 'notifynotice');
+    }
 
     require($CFG->dirroot . '/mod/facetoface/attendees.php');
     die();

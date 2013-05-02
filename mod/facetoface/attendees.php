@@ -551,6 +551,13 @@ if ($show_table) {
         //output any notifications
         if (isset($result_message)) {
             echo $result_message;
+        } else {
+            $numattendees = facetoface_get_num_attendees($session->id);
+            $overbooked = ($numattendees > $session->capacity);
+            if (($action == 'attendees') && $overbooked) {
+                $overbookedmessage = get_string('capacityoverbookedlong', 'facetoface', array('current' => $numattendees, 'maximum' => $session->capacity));
+                echo $OUTPUT->notification($overbookedmessage, 'notifynotice');
+            }
         }
         //output the section heading
         echo $OUTPUT->heading($heading);
