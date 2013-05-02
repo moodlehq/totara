@@ -959,15 +959,17 @@ function xmldb_facetoface_upgrade($oldversion=0) {
                 }
                 $result = $result && $reminder->save();
 
-                $request = new facetoface_notification($defaults, false);
-                $request->title = $facetoface->requestsubject;
-                $request->body = text_to_html($facetoface->requestmessage);
-                $request->conditiontype = MDL_F2F_CONDITION_BOOKING_REQUEST;
-                if (!empty($facetoface->requestinstrmngr)) {
-                    $request->ccmanager = 1;
-                    $request->managerprefix = text_to_html($facetoface->requestinstrmngr);
+                if (!empty($facetoface->approvalreqd)) {
+                    $request = new facetoface_notification($defaults, false);
+                    $request->title = $facetoface->requestsubject;
+                    $request->body = text_to_html($facetoface->requestmessage);
+                    $request->conditiontype = MDL_F2F_CONDITION_BOOKING_REQUEST;
+                    if (!empty($facetoface->requestinstrmngr)) {
+                        $request->ccmanager = 1;
+                        $request->managerprefix = text_to_html($facetoface->requestinstrmngr);
+                    }
+                    $result = $result && $request->save();
                 }
-                $result = $result && $request->save();
             }
         }
 
