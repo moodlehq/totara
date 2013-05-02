@@ -107,7 +107,10 @@ function xmldb_tool_totara_sync_upgrade($oldversion) {
             $todb->hidden = 0;
             $todb->customheading = 0;
 
-            $DB->insert_record('report_builder_columns', $todb);
+            $params = array('reportid' => $report->id, 'type' => $report->source, 'value' => 'runid');
+            if (!$DB->record_exists('report_builder_columns', $params)) {
+                $DB->insert_record('report_builder_columns', $todb);
+            }
         }
 
         upgrade_plugin_savepoint(true, 2013031400, 'tool', 'totara_sync');
