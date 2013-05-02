@@ -512,6 +512,7 @@ input[type="checkbox"] {
     clear: none;
     margin:0;
     padding:10px 0;
+    min-width: 425px;
 }
 .mform .fitem .feditor textarea {
     width:98% !important;
