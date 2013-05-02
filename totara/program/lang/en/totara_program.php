@@ -30,6 +30,7 @@ $string['allowedtimeforprogramviewing'] = 'A learner is allowed {$a->num} {$a->p
 $string['allowedtimeforprograminfinity'] = 'There is no time limit to complete this program.';
 $string['anothercourse'] = 'another course';
 $string['assignedasindividual'] = 'Assigned as an individual.';
+$string['assignindividual'] = '{$a->fullname} ({$a->email})';
 $string['assignmentcriteriamanager'] = 'The learner is required to complete this program under the following criteria:';
 $string['assignmentcriterialearner'] = 'You are required to complete this program under the following criteria:';
 $string['availability'] = 'Availability';

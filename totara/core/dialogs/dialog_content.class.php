@@ -378,7 +378,11 @@ class totara_dialog_content {
 
                     // Grab item display name
                     if (isset($element->fullname)) {
-                        $displayname = $element->fullname;
+                        if (isset($element->email)) {
+                            $displayname = get_string('assignindividual', 'totara_program', $element);
+                        } else {
+                            $displayname = $element->fullname;
+                        }
                     } elseif (isset($element->name)) {
                         $displayname = $element->name;
                     } else {
