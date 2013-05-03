@@ -259,8 +259,8 @@ function facetoface_ical_escape($text, $converthtml=false) {
     }
 
     $text = str_replace(
-        array('\\',   "\n", ';',  ','),
-        array('\\\\', '\n', '\;', '\,'),
+        array('\\',   "\n", ';',  ',', '"'),
+        array('\\\\', '\n', '\;', '\,', '\"'),
         $text
     );
 
