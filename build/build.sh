@@ -35,8 +35,9 @@ step_time () {
 
 #STEP 1
 TIME=`date +%s`
-echo "STEP 1: Run php syntax check";
-for FILE in $(php -r '
+
+echo "STEP 1: Record list of files that changed in this commit";
+affectedFiles=$(php -r '
 $buildinfo = json_decode(
     file_get_contents(getenv("BUILD_URL") . "/api/json"), true
 );
@@ -45,29 +46,82 @@ if (isset($buildinfo["changeSet"]["items"][0]["affectedPaths"])) {
         print $affectedpath."\n";
     }
 }'| grep '.php$\|.html$')
+step_time "1"
+
+echo "STEP 2: Run php syntax check";
+for FILE in $affectedFiles
 do
     ./build/lint.sh ${FILE} | grep -v "No syntax errors detected"
 done
-step_time "1"
-
-#STEP 2
-echo "STEP 2: Generate some test users"
-sudo -u www-data php build/generate_users.php
 step_time "2"
 
 #STEP 3
-echo "STEP 3: Run PHPUnit";
-phpunit --exclude-group=slowtest --log-junit build/logs/xml/TEST-suite.xml
+echo "STEP 3: Run version check"
+for FILE in $affectedFiles
+do
+    case $FILE in
+        *version.php)  versionFile="true";;
+    esac
+done
+# Only run if a version file changed
+if [ -n "$versionFile" ]
+then
+    echo "A version file changed!"
+    #get the branch variable and split to get the remote and branch variables
+    repo=$(php -r '
+    $a=json_decode(file_get_contents(getenv("BUILD_URL")."/api/json"),true);
+    //Tree structure for Gerrit and Nightly builds is different!
+    foreach ($a["actions"] as $key => $val) {
+        if (is_array($val) && isset($val["parameters"])) {
+            //Gerrit build
+            foreach ($val["parameters"] as $index => $value) {
+                if (is_array($value) && isset($value["name"]) && $value["name"] == "GERRIT_BRANCH")
+{
+                    echo "origin/".$value["value"];
+                    exit();
+                }
+            }
+        } else {
+            //Nightly build
+            if (is_array($val) && isset($val["lastBuiltRevision"])) {
+                if (isset($val["lastBuiltRevision"]["branch"])) {
+                    foreach ($val["lastBuiltRevision"]["branch"] as $key2 => $val2) {
+                        if (isset($val["lastBuiltRevision"]["branch"][$key2]["name"])) {
+                            echo $val["lastBuiltRevision"]["branch"][$key2]["name"];
+                            exit();
+                        }
+                    }
+                }
+             }
+        }
+    }
+    ')
+    #Did we find the branch in the json tree?
+    if [ "$repo" = "" ]
+    then
+        echo "ERROR: Could not determine branch in tree"
+    else
+        echo "Repository is ${repo}"
+        remote=$(echo ${repo} | cut -d'/' -f1)
+        branch=$(echo ${repo} | cut -d'/' -f2)
+        for FILE in $affectedFiles
+        do
+            case $FILE in
+                *version.php)  sudo -u www-data php build/version_check.php --filepath=${FILE} --remote=${remote} --branch=${branch};;
+            esac
+        done
+    fi #end if we found repo in tree
+fi #end if we have a versionFile
 step_time "3"
 
 #STEP 4
-echo "STEP 4: Run cucumber tests";
-cucumber --tags ~@nightly -p pgsql2 --format junit --out build/logs/xml/
+echo "STEP 4: Generate some test users"
+sudo -u www-data php build/generate_users.php
 step_time "4"
 
 #STEP 5
-echo "STEP 5: Run code scanner";
-echo "php -f m2scanner // TODO"
+echo "STEP 5: Run PHPUnit";
+phpunit --exclude-group=slowtest --log-junit build/logs/xml/TEST-suite.xml
 step_time "5"
 
 #STEP 6
