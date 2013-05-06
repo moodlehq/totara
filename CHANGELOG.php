@@ -1,3 +1,6 @@
+<?php
+/*
+
 Totara LMS Changelog
 
 Release 2.4.0 (30 April 2013):
@@ -63,3 +66,5 @@ API Changes:
 * Report builder activity groups are deprecated. The menu item has been removed from 2.4
   and code will be removed in a subsequent release.
 
+*/
+?>
