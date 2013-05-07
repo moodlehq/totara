@@ -228,7 +228,11 @@ class rb_source_facetoface_sessions extends rb_base_source {
                 'sessiondate',
                 get_string('sessdate', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
-                array('joins' =>'sessiondate', 'displayfunc' => 'nice_date')
+                array(
+                    'extrafields' => array('timezone' => 'sessiondate.sessiontimezone'),
+                    'joins' =>'sessiondate',
+                    'displayfunc' => 'nice_date_in_timezone'
+                )
             ),
             new rb_column_option(
                 'date',
@@ -239,7 +243,7 @@ class rb_source_facetoface_sessions extends rb_base_source {
                     'joins' => 'sessiondate',
                     'displayfunc' => 'link_f2f_session',
                     'defaultheading' => get_string('sessdate', 'rb_source_facetoface_sessions'),
-                    'extrafields' => array('session_id' => 'base.sessionid')
+                    'extrafields' => array('session_id' => 'base.sessionid', 'timezone' => 'sessiondate.sessiontimezone')
                 )
             ),
             new rb_column_option(
@@ -782,7 +786,17 @@ class rb_source_facetoface_sessions extends rb_base_source {
     function rb_display_link_f2f_session($date, $row) {
         global $OUTPUT;
         $sessionid = $row->session_id;
-        return $OUTPUT->action_link(new moodle_url('/mod/facetoface/attendees.php', array('s' => $sessionid)), userdate($date,'%d %B %Y'));
+        if ($date && is_numeric($date)) {
+            if (empty($row->timezone)) {
+                $targetTZ = totara_get_clean_timezone();
+            } else {
+                $targetTZ = $row->timezone;
+            }
+            $strdate = userdate($date, get_string('sessiondateformat', 'facetoface'), $targetTZ);
+            return $OUTPUT->action_link(new moodle_url('/mod/facetoface/attendees.php', array('s' => $sessionid)), $strdate);
+        } else {
+            return '';
+        }
     }
 
 

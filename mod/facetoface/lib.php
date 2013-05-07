@@ -2155,23 +2155,19 @@ function facetoface_take_individual_attendance($submissionid, $grading) {
 function facetoface_format_session_times($start, $end, $tz) {
 
     $formattedsession = new stdClass();
-    $dt = new DateTime();
     $tzknown = false;
     if (!empty($tz)) {
-        $targetTZ = new DateTimeZone($tz);
+        $targetTZ = $tz;
         $tzknown = true;
     } else {
-        $targetTZ = new DateTimeZone(totara_get_clean_timezone());
+        $targetTZ = totara_get_clean_timezone();
     }
-    $dt->setTimezone($targetTZ);
-    $dt->setTimestamp($start);
-    $formattedsession->startdate = $dt->format(get_string('sessiondateformat', 'facetoface'));
-    $formattedsession->starttime = $dt->format(get_string('sessiondatetimeformat', 'facetoface'));
-    $dt->setTimestamp($end);
-    $formattedsession->enddate = $dt->format(get_string('sessiondateformat', 'facetoface'));
-    $formattedsession->endtime = $dt->format(get_string('sessiondatetimeformat', 'facetoface'));
+    $formattedsession->startdate = userdate($start, get_string('sessiondateformat', 'facetoface'), $targetTZ);
+    $formattedsession->starttime = userdate($start, get_string('sessiondatetimeformat', 'facetoface'), $targetTZ);
+    $formattedsession->enddate = userdate($end, get_string('sessiondateformat', 'facetoface'), $targetTZ);
+    $formattedsession->endtime = userdate($end, get_string('sessiondatetimeformat', 'facetoface'), $targetTZ);
     if ($tzknown) {
-        $formattedsession->timezone = $dt->format(get_string('sessiontimezoneformat', 'facetoface'));
+        $formattedsession->timezone = get_string(strtolower($targetTZ), 'timezones');
     } else {
         $formattedsession->timezone = get_string('sessiontimezoneunknown', 'facetoface');
     }
