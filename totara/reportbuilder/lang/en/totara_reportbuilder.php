@@ -454,6 +454,7 @@ $string['usernamelinkicon'] = 'User\'s Fullname (linked to profile with icon)';
 $string['useremail'] = 'User\'s Email';
 $string['useremailprivate'] = 'Email is private';
 $string['userlastlogin'] = 'User Last Login';
+$string['userfirstaccess'] = 'User First Access';
 $string['userfirstname'] = 'User First Name';
 $string['userlastname'] = 'User Last Name';
 $string['username'] = 'Username';

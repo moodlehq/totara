@@ -1250,6 +1250,16 @@ abstract class rb_base_source {
                 'displayfunc' => 'nice_date',
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'firstaccess',
+            get_string('userfirstaccess', 'totara_reportbuilder'),
+            "$join.firstaccess",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_datetime',
+            )
+        );
         // auto-generate columns for user fields
         $fields = array(
             'firstname' => get_string('userfirstname', 'totara_reportbuilder'),
@@ -1362,6 +1372,16 @@ abstract class rb_base_source {
             'user',
             'lastlogin',
             get_string('userlastlogin', 'totara_reportbuilder'),
+            'date',
+            array(
+                'includetime' => true
+            )
+        );
+
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'firstaccess',
+            get_string('userfirstaccess', 'totara_reportbuilder'),
             'date',
             array(
                 'includetime' => true
