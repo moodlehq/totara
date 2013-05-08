@@ -384,7 +384,11 @@ class totara_sync_element_user extends totara_sync_element {
         }
         $posdata->managerid = null;
         if (!empty($suser->manageridnumber)) {
-            $posdata->managerid = $DB->get_field('user', 'id', array('idnumber' => $suser->manageridnumber));
+            try {
+                $posdata->managerid = $DB->get_field('user', 'id', array('idnumber' => $suser->manageridnumber, 'deleted' => 0), MUST_EXIST);
+            } catch (dml_missing_record_exception $e) {
+                $posdata->managerid = null;
+            }
         }
 
         position_assignment::set_properties($pos_assignment, $posdata);
