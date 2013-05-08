@@ -113,7 +113,7 @@ M.totara_programedit = M.totara_programedit || {
         });
 
         $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).is('checked') ? 1 : 0;
+            var checked = $(this).is(':checked') ? 1 : 0;
             $(this).attr('initialValue', checked);
         });
     },
@@ -134,7 +134,7 @@ M.totara_programedit = M.totara_programedit || {
 
         // Check if check boxes have changed
         $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).is('checked') ? 1 : 0;
+            var checked = $(this).is(':checked') ? 1 : 0;
             if ($(this).attr('initialValue') != checked) {
                 isModified = true;
             }

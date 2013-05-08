@@ -267,7 +267,7 @@ M.totara_programexceptions = M.totara_programexceptions || {
             }
 
             this.isSelected = function() {
-                return this.checkbox.is('checked');
+                return this.checkbox.is(':checked');
             }
 
             // Add a hook for when the checkboxs are updated manually by the user

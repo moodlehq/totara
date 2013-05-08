@@ -192,7 +192,7 @@ M.totara_programmessages = M.totara_programmessages || {
         });
 
         $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).is('checked') ? 1 : 0;
+            var checked = $(this).is(':checked') ? 1 : 0;
             $(this).attr('initialValue', checked);
         });
     },
@@ -213,7 +213,7 @@ M.totara_programmessages = M.totara_programmessages || {
 
         // Check if check boxes have changed
         $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).is('checked') ? 1 : 0;
+            var checked = $(this).is(':checked') ? 1 : 0;
             if ($(this).attr('initialValue') != checked) {
                 isModified = true;
             }
