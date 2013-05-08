@@ -3219,6 +3219,8 @@ class settings_navigation extends navigation_node {
             case CONTEXT_SYSTEM:
                 if ($this->page->url->compare(new moodle_url('/admin/settings.php', array('section'=>'frontpagesettings')))) {
                     $this->load_front_page_settings(($context->id == $this->context->id));
+                } else if ($this->page->url->compare(new moodle_url('/my/teammembers.php'), URL_MATCH_BASE)) {
+                    $this->load_myteam_page_settings(true);
                 }
                 break;
             case CONTEXT_COURSECAT:
@@ -4406,6 +4408,35 @@ class settings_navigation extends navigation_node {
      */
     public function clear_cache() {
         $this->cache->volatile();
+    }
+
+    /**
+     * This function loads the settings for the Totara My Team page
+     *
+     * @param boolean $forceopen (optional)
+     * @return void
+     */
+    function load_myteam_page_settings($forceopen=false) {
+        if (!$this->page->user_allowed_editing()) {
+            return;
+        }
+
+        $teampage = $this->add(get_string('myteamsettings', 'totara_core'), null, self::TYPE_SETTING, null, 'myteammembers');
+        if ($forceopen) {
+            $teampage->force_open();
+        }
+        $teampage->id = 'myteamsettings';
+
+        // Add the turn on/off settings
+        $url = new moodle_url('/my/teammembers.php', array('sesskey' => sesskey()));
+        if ($this->page->user_is_editing()) {
+            $url->param('edit', 'off');
+            $editstring = get_string('turneditingoff');
+        } else {
+            $url->param('edit', 'on');
+            $editstring = get_string('turneditingon');
+        }
+        $teampage->add($editstring, $url, self::TYPE_SETTING, null, null, new pix_icon('i/edit', ''));
     }
 }
 

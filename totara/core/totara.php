@@ -1199,7 +1199,7 @@ function totara_build_menu() {
         );
     }
 
-    if ($staff = totara_get_staff()) {
+    if ($staff = totara_get_staff() || is_siteadmin()) {
 
         $tree[] = (object)array(
             'name' => 'myteam',
