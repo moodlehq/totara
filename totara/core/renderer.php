@@ -169,7 +169,7 @@ class totara_core_renderer extends plugin_renderer_base {
         $cells = array();
         $text = get_string('recordoflearning', 'totara_core');
         $icon = new pix_icon('record', $text, 'totara_core');
-        $url = new moodle_url('/totara/plan/record/courses.php?userid='.$USER->id);
+        $url = new moodle_url('/totara/plan/record/index.php?userid='.$USER->id);
         $cellcontent = $this->output->action_icon($url, $icon);
         $cell = new html_table_cell($cellcontent);
         $cells[] = $cell;

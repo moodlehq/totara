@@ -196,7 +196,7 @@ if ($data = $mform->get_data()) {
 }
 
 $PAGE->navbar->add(get_string('mylearning', 'totara_core'), '/my/learning.php');
-$PAGE->navbar->add($strheading, '/totara/plan/record/evidence/index.php');
+$PAGE->navbar->add($strheading, '/totara/plan/record/index.php');
 $PAGE->navbar->add(get_string('allevidence', 'totara_plan'));
 $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);

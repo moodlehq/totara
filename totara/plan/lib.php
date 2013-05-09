@@ -335,6 +335,57 @@ function dp_add_permissions_table_row(&$form, $name, $label, $requestable) {
 }
 
 /**
+ * Determines which components are visible
+ *
+ * @param    int     $userid    component visibility for this user
+ * @return   array              the components that are visible
+ */
+function dp_get_rol_tabs_visible($userid) {
+    global $DB;
+
+    $visible = array();
+
+    $show_course_tab = false;
+    $show_competency_tab = false;
+    $show_objective_tab = false;
+    $show_program_tab = false;
+
+    $plans = dp_get_plans($userid);
+    foreach ($plans as $p) {
+        $plan = new development_plan($p->id);
+
+        foreach ($plan->get_components() as $component) {
+            if (!${'show_' . $component->component . '_tab'}) {
+                ${'show_' . $component->component . '_tab'} = display_rol_tab_for_component($component);
+            }
+        }
+    }
+
+    $course_count = enrol_get_my_courses();
+    if (!empty($course_count) || $show_course_tab) {
+        $visible[] = 'courses';
+    }
+
+    $assigned_comps = $DB->count_records('comp_record', array('userid' => $userid));
+    if ($assigned_comps > 0 || $show_competency_tab) {
+        $visible[] = 'competencies';
+    }
+
+    if ($show_objective_tab) {
+        $visible[] = 'objectives';
+    }
+
+    $assigned_progs = prog_get_required_programs($userid, '', '', '', true);
+    if ($assigned_progs > 0 || $show_program_tab) {
+        $visible[] = 'programs';
+    }
+
+    $visible[] = 'evidence';
+
+    return $visible;
+}
+
+/**
  * Prints the tabs for record of learning
  *
  * @param string $rolstatus - what record of learning status
@@ -342,6 +393,7 @@ function dp_add_permissions_table_row(&$form, $name, $label, $requestable) {
  * @param type $userid - userid if any
  */
 function dp_print_rol_tabs($rolstatus = null, $currenttab = null, $userid = '') {
+    global $USER;
 
     if (is_null($rolstatus)) {
         $rolstatus = 'all';
@@ -349,36 +401,29 @@ function dp_print_rol_tabs($rolstatus = null, $currenttab = null, $userid = '') 
 
     $params = array('userid' => $userid, 'status' => $rolstatus);
 
-    // tab bar
+    $userid = !empty($userid) ? $userid : $USER->id;
+
+    // Tab bar.
     $tabs = array();
     $row = array();
 
-    // overview tab
-    $row[] = new tabobject(
-        'courses',
-        new moodle_url('/totara/plan/record/courses.php', $params),
-        get_string($rolstatus . 'courses', 'totara_plan')
-    );
-    $row[] = new tabobject(
-        'competencies',
-        new moodle_url('/totara/plan/record/competencies.php', $params),
-        get_string($rolstatus . 'competencies', 'totara_plan')
-    );
-    $row[] = new tabobject(
-        'objectives',
-        new moodle_url('/totara/plan/record/objectives.php', $params),
-        get_string($rolstatus . 'objectives', 'totara_plan')
-    );
-    $row[] = new tabobject(
-        'programs',
-        new moodle_url('/totara/plan/record/programs.php', $params),
-        get_string($rolstatus . 'programs', 'totara_plan')
-    );
-    $row[] = new tabobject(
-        'evidence',
-        new moodle_url('/totara/plan/record/evidence/index.php', $params),
-        get_string($rolstatus . 'evidence', 'totara_plan')
-    );
+    if ($visible = dp_get_rol_tabs_visible($userid)) {
+        foreach ($visible as $element) {
+            if ($element !== 'evidence') {
+                $row[] = new tabobject(
+                        $element,
+                        new moodle_url("/totara/plan/record/{$element}.php", $params),
+                        get_string($rolstatus . $element, 'totara_plan')
+                );
+            } else {
+                $row[] = new tabobject(
+                        'evidence',
+                        new moodle_url('/totara/plan/record/evidence/index.php', $params),
+                        get_string($rolstatus . 'evidence', 'totara_plan')
+                );
+            }
+        }
+    }
 
     $tabs[] = $row;
 
@@ -1495,4 +1540,19 @@ function totara_plan_cron() {
     global $CFG;
     require_once($CFG->dirroot . '/totara/plan/cron.php');
     plan_cron();
+}
+
+
+/**
+ * Decide if the Record of Learning tab should be shown
+ *
+ * @param  object   $component   The component to check
+ * @return bool     true if the component is enabled and has assigned items
+ */
+function display_rol_tab_for_component($component) {
+    $items = count($component->get_assigned_items()) > 0;
+
+    $enabled = $component->get_setting('enabled');
+
+    return $enabled && $items;
 }
