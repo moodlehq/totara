@@ -7,9 +7,8 @@ NOTE: Additional plugins, custom themes or customised Moodle code are likely to
     cause conflicts in the upgrade process.
     Review possible conflicts before upgrading to prevent site stability issues.
 
-    Ensure the Moodle site is updated to Moodle version 2.2 before upgrading.
-    As of Totara 2.2 you can no longer upgrade from 1.9.x versions of Moodle. The
-    upgrade path to Totara 2.2 is through Totara 1.1.17 or Moodle 2.2.
+    As of Totara 2.4 you can no longer upgrade from versions of Moodle prior to 2.2.7.
+    Ensure the Moodle site is updated to Moodle version 2.2.7+ before upgrading to Totara 2.4.
 
     For more information see http://docs.moodle.org/en/Upgrading
 

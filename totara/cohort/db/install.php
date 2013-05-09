@@ -40,61 +40,61 @@ function xmldb_totara_cohort_install() {
     $table = new xmldb_table('cohort');
 
     $field = new xmldb_field('cohorttype');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'timemodified');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'timemodified');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('modifierid');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'cohorttype');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'cohorttype');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('visibility');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'modifierid');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'modifierid');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('alertmembers');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'visibility');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'visibility');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('startdate');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'alertmembers');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'alertmembers');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('enddate');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'startdate');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'startdate');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('active');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'enddate');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'enddate');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('calculationstatus');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '1', 'active');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '1', 'active');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('activecollectionid');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'calculationstatus');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'calculationstatus');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('draftcollectionid');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'activecollectionid');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'activecollectionid');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
     }

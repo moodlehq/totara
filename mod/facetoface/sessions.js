@@ -229,4 +229,7 @@ totaraDialog_handler_addpdroom.prototype.external_function = function() {
         $('span#roomnote').html('');  // remove all notes
     }
     });
+
+    // clear custom room
+    $('input[name="customroom"]').attr("checked", false);
 }

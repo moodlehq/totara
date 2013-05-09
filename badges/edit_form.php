@@ -83,8 +83,7 @@ class edit_details_form extends moodleform {
         if (isset($CFG->badges_defaultissuercontact)) {
             $mform->setDefault('issuercontact', $CFG->badges_defaultissuercontact);
         }
-        $mform->setType('issuercontact', PARAM_EMAIL);
-        $mform->addRule('issuercontact', get_string('invalidemail', 'moodle'), 'email', null, 'client', true);
+        $mform->setType('issuercontact', PARAM_RAW);
         $mform->addHelpButton('issuercontact', 'contact', 'badges');
 
         $mform->addElement('header', 'issuancedetails', get_string('issuancedetails', 'badges'));
@@ -162,6 +161,10 @@ class edit_details_form extends moodleform {
     public function validation($data, $files) {
         global $DB;
         $errors = parent::validation($data, $files);
+
+        if (!empty($data['issuercontact']) && !validate_email($data['issuercontact'])) {
+            $errors['issuercontact'] = get_string('invalidemail');
+        }
 
         if ($data['expiry'] == 2 && $data['expireperiod'] <= 0) {
             $errors['expirydategr'] = get_string('error:invalidexpireperiod', 'badges');

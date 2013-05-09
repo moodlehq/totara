@@ -142,4 +142,14 @@ class award_criteria_overall extends award_criteria {
      */
     public function get_params($cid) {
     }
+
+    /**
+     * Checks criteria for any major problems.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    public function validate() {
+        // Overall criterion doesn't require validation.
+        return array(true, '');
+    }
 }

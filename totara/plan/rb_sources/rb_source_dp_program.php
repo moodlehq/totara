@@ -46,7 +46,7 @@ class rb_source_dp_program extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = $this->define_requiredcolumns();
-        $this->sourcetitle = get_string('rolprogramsourcename', 'totara_program');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_dp_program');
         parent::__construct();
     }
 

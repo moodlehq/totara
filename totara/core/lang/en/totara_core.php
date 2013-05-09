@@ -62,6 +62,9 @@ $string['totaracopyright'] = '<p class="totara-copyright"><a href="http://www.to
 $string['totaralogo'] = 'Totara Logo';
 $string['totaramenu'] = 'Totara Menu';
 $string['requiresjs'] = 'This {$a} requires Javascript to be enabled.';
+$string['error:cannotupgradefromtotara'] = 'You cannot upgrade to Totara 2.4 from this version of Totara. Please upgrade to Totara 2.2.13 or greater first.';
+$string['error:cannotupgradefrommoodle'] = 'You cannot upgrade to Totara 2.4 from a Moodle version prior to 2.2.7. Please upgrade to Totara 2.2.13+ or Moodle 2.2.7+ first.';
+$string['error:autoupdatedisabled'] = 'Automatic checking for Moodle updates is currently disabled in Totara';
 
 // Course categories
 $string['assessments'] = 'Assessments';
@@ -149,18 +152,19 @@ $string['noassessors'] = 'No assessors found';
 $string['alreadyselected'] = '(already selected)';
 
 // Installation and Demo data
-$string['totaraupgradefrom10'] = 'You cannot upgrade directly to {$a->attemptedversion} from {$a->currentversion}. Please upgrade to at least {$a->required} before attempting the upgrade to {$a->attemptedversion}.';
+$string['totaraunsupportedupgradepath'] = 'You cannot upgrade directly to {$a->attemptedversion} from {$a->currentversion}. Please upgrade to at least {$a->required} before attempting the upgrade to {$a->attemptedversion}.';
 $string['moodlecore'] = 'Moodle core';
 $string['totaracore'] = 'Totara core';
-$string['totarapre11'] = 'Totara (pre version 1.1)';
 $string['installingdemodata'] = 'Installing Demo Data';
 $string['installdemoquestion'] = 'Do you want to include demo data with this installation?<br /><br />(This will take a long time.)';
 $string['performinglocalpostinst'] = 'Local Post-installation setup';
 $string['localpostinstfailed'] = 'There was a problem setting up local modifications to this installation.';
-$string['totara11requiredupgradeversion'] = 'Totara 1.1.13';
+$string['totararequiredupgradeversion'] = 'Totara 2.2.13';
 $string['poweredby'] = 'Powered by TotaraLMS';
-$string['cliupgradesure'] = 'Your Totara files have been changed, and you are about to automatically upgrade your server to this version: <br /><br />
-<strong>{$a}</strong> <br /><br />
+$string['cliupgradesure'] = 'Your Totara files have been changed, and you are about to automatically upgrade your server from this version:
+<br /><br /><strong>{$a->oldversion}</strong>
+<br /><br />to this version: <br /><br />
+<strong>{$a->newversion}</strong> <br /><br />
 Once you do this you can not go back again. <br /><br />
 Please note that this process can take a long time. <br /><br />
 Are you sure you want to upgrade this server to this version?';
@@ -232,6 +236,7 @@ $string['error:duplicaterecordsdeleted'] = 'Duplicate {$a} record deleted: ';
 $string['error:positionnotselected'] = 'Please select a position';
 $string['error:organisationnotselected'] = 'Please select an organisation';
 $string['error:managernotselected'] = 'Please select a manager';
+$string['error:addpdroom-dialognotselected'] = 'Please select a room';
 //My Team strings
 $string['teammembers_text'] = 'All members of your teams are show below.';
 $string['nostaffassigned'] = 'You currently do not have a team.';

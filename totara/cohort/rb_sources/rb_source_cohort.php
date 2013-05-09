@@ -49,7 +49,7 @@ class rb_source_cohort extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
-        $this->sourcetitle = get_string('cohort', 'totara_cohort');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_cohort');
 
         parent::__construct();
     }

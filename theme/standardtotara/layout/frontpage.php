@@ -28,6 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 $hasheading = $PAGE->heading;
 $hasnavbar = (empty($PAGE->layout_options['nonavbar']) && $PAGE->has_navbar());
 $hasfooter = (empty($PAGE->layout_options['nofooter']));
+$haslogininfo = (empty($PAGE->layout_options['nologininfo']));
+$haslangmenu = (!isset($PAGE->layout_options['langmenu']) || $PAGE->layout_options['langmenu'] );
 
 $hassidepre = $PAGE->blocks->region_has_content('side-pre', $OUTPUT);
 $hassidepost = $PAGE->blocks->region_has_content('side-post', $OUTPUT);
@@ -109,12 +111,18 @@ echo $OUTPUT->doctype() ?>
           <div id="logo" class="custom"><a href="<?php echo $CFG->wwwroot; ?>"><img class="logo" src="<?php echo $logourl;?>" alt="Logo" /></a></div>
           <?php } ?>
           <div class="headermenu">
-            <div class="profileblock">
-              <?php
-              echo $OUTPUT->login_info();
-              echo $OUTPUT->lang_menu();
-              ?>
-            </div>
+            <?php if ($haslogininfo || $haslangmenu) { ?>
+              <div class="profileblock">
+                <?php
+                if ($haslogininfo) {
+                    echo $OUTPUT->login_info();
+                }
+                if ($haslangmenu) {
+                    echo $OUTPUT->lang_menu();
+                }
+                ?>
+              </div>
+            <?php } ?>
           </div>
         </div>
         <div id="main_menu" class="clearfix">
@@ -140,7 +148,7 @@ echo $OUTPUT->doctype() ?>
                 <div class="region-content"> <?php echo core_renderer::MAIN_CONTENT_TOKEN ?> </div>
               </div>
             </div>
-            <?php if ($hassidepre OR (right_to_left() AND $hassidepost)) { ?>
+            <?php if ($hassidepre || (right_to_left() && $hassidepost)) { ?>
             <div id="region-pre" class="block-region">
               <div class="region-content">
                 <?php
@@ -153,7 +161,7 @@ echo $OUTPUT->doctype() ?>
               </div>
             </div>
             <?php } ?>
-            <?php if ($hassidepost OR (right_to_left() AND $hassidepre)) { ?>
+            <?php if ($hassidepost || (right_to_left() && $hassidepre)) { ?>
             <div id="region-post" class="block-region">
               <div class="region-content">
                 <?php

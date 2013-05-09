@@ -29,7 +29,7 @@ function xmldb_totara_program_install() {
     // table and add it if not
     $table = new xmldb_table('course_categories');
     $field = new xmldb_field('programcount');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'theme');
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'theme');
 
     if (!$dbman->field_exists($table, $field)) {
         // Launch add field programcount

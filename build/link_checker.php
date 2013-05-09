@@ -701,6 +701,11 @@ function generalise($url) {
 
     $new_query_parts = array();
     foreach ($query_parts as $key => $value) {
+        if (is_array($value)) {
+            // to handle url variable[key]=value
+            // may need to implement checks for arrays instead of skipping
+            continue;
+        }
         if (strlen($value) == 0) {
             continue;
         }

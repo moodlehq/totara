@@ -37,7 +37,7 @@ require_once($CFG->dirroot.'/totara/core/db/utils.php');
  * @return  boolean $result
  */
 function xmldb_totara_core_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $CFG, $DB, $OUTPUT;
 
     $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
 
@@ -379,6 +379,126 @@ function xmldb_totara_core_upgrade($oldversion) {
         }
 
         totara_upgrade_mod_savepoint(true, 2013041000, 'totara_core');
+    }
+
+    if ($oldversion < 2013041500) {
+        //need to get any currently-used languages installed as a langpack in moodledata/lang
+        require_once($CFG->libdir.'/adminlib.php');
+        require_once($CFG->libdir.'/filelib.php');
+        require_once($CFG->libdir.'/componentlib.class.php');
+
+        set_time_limit(0);
+        $notice_ok = array();
+        $notice_error = array();
+        $installedlangs = array();
+        $neededlangs = array();
+        //get available and already-installed (via langimport tool) languages
+        $installer = new lang_installer();
+        if (!$availablelangs = $installer->get_remote_list_of_languages()) {
+            print_error('cannotdownloadtotaralanguageupdatelist', 'tool_langimport');
+        }
+        if (!isset($CFG->langotherroot)) {
+            $CFG->langotherroot = $CFG->dataroot.'/lang';
+        }
+        $langdirs = get_list_of_plugins('', '', $CFG->langotherroot);
+        foreach ($langdirs as $lang) {
+            if (strstr($lang, '_local') !== false) {
+                continue;
+            }
+            if (strstr($lang, '_utf8') !== false) {
+                continue;
+            }
+            $string = get_string_manager()->load_component_strings('langconfig', $lang);
+            //if this installed lang is a properly configured language that also exists on the Totara lang site, add it to the update list
+            if (!empty($string['thislanguage']) && in_array($lang, $availablelangs)) {
+                $neededlangs[] = $lang;
+            }
+            unset($string);
+        }
+        make_temp_directory('');
+        make_upload_directory('lang');
+
+        // install all used language packs to moodledata/lang
+        $installer->set_queue($neededlangs);
+        $results = $installer->run();
+        $updated = false;    // any packs updated?
+        foreach ($results as $langcode => $langstatus) {
+            switch ($langstatus) {
+            case lang_installer::RESULT_DOWNLOADERROR:
+                $a       = new stdClass();
+                $a->url  = $installer->lang_pack_url($langcode);
+                $a->dest = $CFG->dataroot.'/lang';
+                echo $OUTPUT->notification(get_string('remotedownloaderror', 'error', $a), 'notifyproblem');
+                break;
+            case lang_installer::RESULT_INSTALLED:
+                $updated = true;
+                $notice_ok[] = get_string('langpackinstalled', 'tool_langimport', $langcode);
+                break;
+            case lang_installer::RESULT_UPTODATE:
+                $notice_ok[] = get_string('langpackuptodate', 'tool_langimport', $langcode);
+                break;
+            }
+        }
+
+        if ($updated) {
+            $notice_ok[] = get_string('langupdatecomplete', 'tool_langimport');
+        } else {
+            $notice_ok[] = get_string('nolangupdateneeded', 'tool_langimport');
+        }
+
+        unset($installer);
+        get_string_manager()->reset_caches();
+        //display notifications
+        if (!empty($notice_ok)) {
+            $info = implode(html_writer::empty_tag('br'), $notice_ok);
+            echo $OUTPUT->notification($info, 'notifysuccess');
+        }
+
+        if (!empty($notice_error)) {
+            $info = implode(html_writer::empty_tag('br'), $notice_error);
+            echo $OUTPUT->notification($info, 'notifyproblem');
+        }
+
+        totara_upgrade_mod_savepoint(true, 2013041500, 'totara_core');
+    }
+
+    if ($oldversion < 2013042300) {
+        //disable autoupdate notifications from Moodle
+        set_config('disableupdatenotifications', '1');
+        set_config('disableupdateautodeploy', '1');
+        set_config('updateautodeploy', false);
+        set_config('updateautocheck', false);
+        set_config('updatenotifybuilds', false);
+        set_config('updateminmaturity', MATURITY_STABLE);
+        set_config('updatenotifybuilds', 0);
+        totara_upgrade_mod_savepoint(true, 2013042300, 'totara_core');
+    }
+
+    if ($oldversion < 2013042600) {
+        $systemcontext = context_system::instance();
+        $roles = get_all_roles();
+        foreach($roles as $id => $role) {
+            switch ($role->shortname) {
+                case 'assessor':
+                    $DB->update_record('role', array('id' => $id, 'archetype' => 'assessor'));
+                    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $id, $systemcontext->id, true);
+                    break;
+                case 'regionalmanager':
+                case 'regionaltrainer':
+                    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $id, $systemcontext->id, true);
+                    break;
+            }
+        }
+
+        // Add totara block instances to context
+        $bisql = "SELECT id FROM {block_instances}
+                  WHERE blockname IN ('totara_stats', 'totara_alerts', 'totara_tasks')";
+        $totarablocks = $DB->get_records_sql($bisql);
+        foreach ($totarablocks as $block) {
+            context_block::instance($block->id);
+        }
+
+        totara_upgrade_mod_savepoint(true, 2013042600, 'totara_core');
     }
 
     return true;

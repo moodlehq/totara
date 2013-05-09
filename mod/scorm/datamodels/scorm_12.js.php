@@ -231,7 +231,7 @@ function SCORMapi1_2() {
                 // trigger TOC update
                 var sURL = "<?php echo $CFG->wwwroot; ?>" + "/mod/scorm/prereqs.php?a=<?php echo $scorm->id ?>&scoid=<?php echo $scoid ?>&attempt=<?php echo $attempt ?>&mode=<?php echo $mode ?>&currentorg=<?php echo $currentorg ?>&sesskey=<?php echo sesskey(); ?>";
                 var callback = M.mod_scorm.connectPrereqCallback;
-                YUI().use('yui2-connection', function(Y) {
+                Y.use('yui2-connection', function(Y) {
                     Y.YUI2.util.Connect.asyncRequest('GET', sURL, callback, null);
                 });
                 return result;
@@ -430,7 +430,7 @@ function SCORMapi1_2() {
                 // trigger TOC update
                 var sURL = "<?php echo $CFG->wwwroot; ?>" + "/mod/scorm/prereqs.php?a=<?php echo $scorm->id ?>&scoid=<?php echo $scoid ?>&attempt=<?php echo $attempt ?>&mode=<?php echo $mode ?>&currentorg=<?php echo $currentorg ?>&sesskey=<?php echo sesskey(); ?>";
                 var callback = M.mod_scorm.connectPrereqCallback;
-                YUI().use('yui2-connection', function(Y) {
+                Y.use('yui2-connection', function(Y) {
                     Y.YUI2.util.Connect.asyncRequest('GET', sURL, callback, null);
                 });
                 <?php
@@ -445,7 +445,7 @@ function SCORMapi1_2() {
                 ?>
                 result = ('true' == result) ? 'true' : 'false';
                 errorCode = (result =='true')? '0' : '101';
-                <?php 
+                <?php
                     if (scorm_debugging($scorm)) {
                         echo 'LogAPICall("LMSCommit", "result", result, 0);';
                         echo 'LogAPICall("LMSCommit", "errorCode", errorCode, 0);';
@@ -570,7 +570,7 @@ function SCORMapi1_2() {
         return '&'+underscore('cmi.core.total_time')+'='+encodeURIComponent(total_time);
     }
 
-    function CollectData(data,parent) {
+    function CollectData(data, parent, isflush) {
         var datastring = '';
         for (property in data) {
             if (typeof data[property] == 'object') {
@@ -614,13 +614,17 @@ function SCORMapi1_2() {
                                     datastring += elementstring;
 
                                     // update the element default to reflect the current committed value
-                                    eval('datamodel["'+element+'"].defaultvalue=data[property];');
+                                    if (isflush) {
+                                        eval('datamodel["'+element+'"].defaultvalue=data[property];');
+                                    }
                                 }
                             } else {
                                 // append the URI fragment to the string we plan to commit
                                 datastring += elementstring;
                                 // no default value for the element, so set it now
-                                eval('datamodel["'+element+'"].defaultvalue=data[property];');
+                                if (isflush) {
+                                    eval('datamodel["'+element+'"].defaultvalue=data[property];');
+                                }
                             }
                         }
                     }
@@ -677,6 +681,11 @@ function SCORMapi1_2() {
         result = DoRequest(myRequest,"<?php p($CFG->wwwroot) ?>/mod/scorm/datamodel.php","id=<?php p($id) ?>&a=<?php p($a) ?>&sesskey=<?php echo sesskey() ?>"+datastring);
         results = String(result).split('\n');
         errorCode = results[1];
+
+        if (errorCode == '0' && results[0] == 'true') {
+            // AICC and SCORM 1.3 do not flush data after commit, not sure why SCORM 1.2 does this
+            CollectData(data, 'cmi', true);
+        }
         return results[0];
     }
 

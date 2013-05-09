@@ -125,3 +125,7 @@ table.hierarchy-index .depth10 {
     margin-left: 0px;
     padding-left: 0px;
 }
+
+.available-column select, .selected-column select {
+    min-width: 300px;
+}

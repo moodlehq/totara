@@ -10,7 +10,7 @@ Before installing Totara you should have a server with:
 * Required PHP modules: iconv, curl, ctype, zip, simplexml, spl, pcre, dom, xml, json
 * Recommended PHP modules: mbstring, openssl, tokenizer, xmlrpc, soap, gd, intl
 * PHP Memory limit of at least 256MB
-* Access to a supported database (Postgres 8.3 or greater, Mysql 5.0.25 or greater, MSSQL 2008 or greater).
+* Access to a supported database (Postgres 8.3 or greater, Mysql 5.1.33 or greater, MSSQL 2008 or greater).
   If your database is Postgres you must set standard_conforming_strings to off and escape_string_warning to off in your postgresql.conf file
 * A domain name that resolves to your server
 
@@ -23,7 +23,7 @@ Before installing Totara you should have a server with:
    For postgres: createdb -E utf8 [dbname]
    For mysql: CREATE DATABASE [dbname] DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-   See http://docs.moodle.org/20/en/Create_Moodle_site_database for details
+   See http://docs.moodle.org/24/en/Installation_Quickstart for details
    Ensure that you have a non-root database user with write access to the database
 
 5. Using your web browser, visit your domain and step through the installation process.

@@ -210,7 +210,7 @@ function send_welcome_messages($orderdata) {
             $paymentmanagers = get_users_by_capability($context, 'enrol/authorize:managepayments', '', '', '0', '1');
             $sender = array_shift($paymentmanagers);
         }
-
+        $strmgr = get_string_manager();
         do
         {
             $usercourses = array();
@@ -232,8 +232,8 @@ function send_welcome_messages($orderdata) {
                 $a->courses = implode("\n", $usercourses);
                 $a->profileurl = "$CFG->wwwroot/user/view.php?id=$lastuserid";
                 $a->paymenturl = "$CFG->wwwroot/enrol/authorize/index.php?user=$lastuserid";
-                $emailmessage = get_string('welcometocoursesemail', 'enrol_authorize', $a);
-                $subject = get_string("enrolmentnew", 'enrol', format_string($SITE->shortname, true, array('context' => context_course::instance(SITEID))));
+                $emailmessage = $strmgr->get_string('welcometocoursesemail', 'enrol_authorize', $a, $user->lang);
+                $subject = $strmgr->get_string("enrolmentnew", 'enrol', format_string($SITE->shortname, true, array('context' => context_course::instance(SITEID))), $user->lang);
 
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';

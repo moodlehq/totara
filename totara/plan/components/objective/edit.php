@@ -224,7 +224,7 @@ switch($action) {
         print $component->display_back_to_index_link();
         $component->display_objective_detail($objectiveid);
         require_once($CFG->dirroot . '/totara/plan/components/evidence/evidence.class.php');
-        $evidence = new dp_evidence_relation($this->plan->id, $componentname, $objectiveid);
+        $evidence = new dp_evidence_relation($plan->id, $componentname, $objectiveid);
         echo $evidence->display_delete_warning();
         echo $OUTPUT->confirm(get_string('deleteobjectiveareyousure', 'totara_plan'),
                 new moodle_url('/totara/plan/components/objective/edit.php',

@@ -63,7 +63,7 @@ class rb_source_cohort_associations extends rb_base_source {
         $this->defaultcolumns = $this->define_defaultcolumns();
         $this->defaultfilters = $this->define_defaultfilters();
         $this->requiredcolumns = array();
-        $this->sourcetitle = get_string('cohort_associations', 'totara_cohort');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_cohort_associations');
         parent::__construct();
     }
 
@@ -223,8 +223,8 @@ class rb_source_cohort_associations extends rb_base_source {
                 'type' => 'associations',
                 'value' => 'name',
             ),
-        array(
-                'type' => 'assocations',
+            array(
+                'type' => 'associations',
                 'value' => 'type',
             )
         );
@@ -297,9 +297,9 @@ class rb_source_cohort_associations extends rb_base_source {
     public function rb_display_associationnameiconlink($instancename, $row) {
 
         if ($row->type == COHORT_ASSN_ITEMTYPE_COURSE) {
-            $url = new moodle_url('/course/view.php', array('id' => $row->id));
+            $url = new moodle_url('/course/view.php', array('id' => $row->insid));
         } else {
-            $url = new moodle_url('/totara/program/view.php', array('id' => $row->id));
+            $url = new moodle_url('/totara/program/view.php', array('id' => $row->insid));
         }
         return html_writer::link($url, s($instancename));
     }

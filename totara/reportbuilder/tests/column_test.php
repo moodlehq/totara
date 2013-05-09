@@ -30,8 +30,9 @@ if (!defined('MOODLE_INTERNAL')) {
 
 global $CFG;
 require_once($CFG->dirroot . '/totara/reportbuilder/lib.php');
+require_once($CFG->dirroot . '/totara/reportbuilder/tests/reportcache_advanced_testcase.php');
 
-class columns_test extends advanced_testcase {
+class columns_test extends reportcache_advanced_testcase {
 
     protected function setUp() {
         global $DB,$CFG;
@@ -122,6 +123,21 @@ class columns_test extends advanced_testcase {
         $this->user_info_data_data->fieldid = 1;
         $this->user_info_data_data->data = 'test';
 
+        $this->org_framework_data = array();
+        $this->org_framework_data1 = new stdClass();
+        $this->org_framework_data1->id = 1;
+        $this->org_framework_data1->fullname = 'Organisation Framework 1';
+        $this->org_framework_data1->shortname = 'OFW1';
+        $this->org_framework_data1->idnumber = 'ID1';
+        $this->org_framework_data1->description = 'Description 1';
+        $this->org_framework_data1->sortorder = 1;
+        $this->org_framework_data1->visible = 1;
+        $this->org_framework_data1->hidecustomfields = 0;
+        $this->org_framework_data1->timecreated = 1265963591;
+        $this->org_framework_data1->timemodified = 1265963591;
+        $this->org_framework_data1->usermodified = 2;
+        $this->org_framework_data[] = $this->org_framework_data1;
+
         $this->org_data = new stdClass();
         $this->org_data->id = 1;
         $this->org_data->fullname = 'Distric Office';
@@ -137,6 +153,21 @@ class columns_test extends advanced_testcase {
         $this->org_data->timecreated = 0;
         $this->org_data->timemodified = 0;
         $this->org_data->usermodified = 2;
+
+        $this->pos_framework_data = array();
+        $this->pos_framework_data1 = new stdClass();
+        $this->pos_framework_data1->id = 1;
+        $this->pos_framework_data1->fullname = 'Postion Framework 1';
+        $this->pos_framework_data1->shortname = 'PFW1';
+        $this->pos_framework_data1->idnumber = 'ID1';
+        $this->pos_framework_data1->description = 'Description 1';
+        $this->pos_framework_data1->sortorder = 1;
+        $this->pos_framework_data1->visible = 1;
+        $this->pos_framework_data1->hidecustomfields = 0;
+        $this->pos_framework_data1->timecreated = 1265963591;
+        $this->pos_framework_data1->timemodified = 1265963591;
+        $this->pos_framework_data1->usermodified = 2;
+        $this->pos_framework_data[] = $this->pos_framework_data1;
 
         $this->pos_data = new stdClass();
         $this->pos_data->id = 1;
@@ -1014,8 +1045,10 @@ class columns_test extends advanced_testcase {
         $DB->insert_records_via_batch('report_builder_settings', $this->rb_settings_data);
         $DB->insert_record('user_info_field', $this->user_info_field_data);
         $DB->insert_record('user_info_data', $this->user_info_data_data);
+        $DB->insert_records_via_batch('org_framework', $this->org_framework_data);
         $DB->insert_records_via_batch('org_type', $this->type_data);
         $DB->insert_record('org', $this->org_data);
+        $DB->insert_records_via_batch('pos_framework', $this->pos_framework_data);
         $DB->insert_records_via_batch('pos_type', $this->type_data);
         $DB->insert_record('pos', $this->pos_data);
         $DB->insert_record('pos_assignment', $this->pos_assignment_data);
@@ -1096,7 +1129,13 @@ class columns_test extends advanced_testcase {
         $this->rb = new reportbuilder(1);
     }
 
-    function test_columns_and_filters() {
+    /**
+     * Check all reports columns and filters
+     *
+     * @param bool $usecache
+     * @dataProvider provider_use_cache
+     */
+    function test_columns_and_filters($usecache) {
         global $SESSION, $DB;
         // loop through installed sources
         foreach (reportbuilder::get_source_list() as $sourcename => $title) {
@@ -1121,6 +1160,11 @@ class columns_test extends advanced_testcase {
                 $colid = $DB->insert_record('report_builder_columns', $col);
                 // create the reportbuilder object
                 //echo '<h5>Test ' . $column->type . '-' . $column->value . ' column:</h5>' . "\n";
+
+                if ($usecache) {
+                    $this->enable_caching($reportid);
+                }
+
                 $rb = new reportbuilder($reportid);
                 $sql = $rb->build_query();
                 $records = $DB->get_recordset_sql($sql[0], $sql[1], 0, 40);
@@ -1191,7 +1235,8 @@ class columns_test extends advanced_testcase {
                 }
                 $SESSION->{$filtername}[$fname] = array($search);
                 $sql = $rb->build_query(false, true);
-                $records = $DB->get_recordset_sql($sql[0], $sql[1], 1, 40);
+
+                $records = $DB->get_recordset_sql($sql[0], $sql[1]);
 
                 foreach ($records as $record) {
                     $data = $rb->process_data_row($record);

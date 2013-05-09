@@ -744,6 +744,8 @@ class available_update_checker {
      * @throws available_update_checker_exception
      */
     public function fetch() {
+        //disable in Totara
+        print_error('error:autoupdatedisabled', 'totara_core');
         $response = $this->get_response();
         $this->validate_response($response);
         $this->store_response($response);
@@ -814,7 +816,8 @@ class available_update_checker {
      */
     public function cron() {
         global $CFG;
-
+        //disable in Totara
+        print_error('error:autoupdatedisabled', 'totara_core');
         if (!$this->cron_autocheck_enabled()) {
             $this->cron_mtrace('Automatic check for available updates not enabled, skipping.');
             return;
@@ -1560,7 +1563,6 @@ class available_update_deployer {
             // The feature is prohibited via config.php
             return false;
         }
-
         return get_config('updateautodeploy');
     }
 

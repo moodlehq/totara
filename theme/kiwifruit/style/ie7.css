@@ -13,7 +13,12 @@ body.ie7 div#totaramenu ul li {
 body.ie7 div#totaramenu ul li ul {
     width:200px;
     top:67px;
+}
+.dir-ltr body.ie7 div#totaramenu ul li ul {
     left:-1px;
+}
+.dir-rtl body.ie7 div#totaramenu ul li ul {
+    right:-1px;
 }
 body.ie7 div#totaramenu ul li li a,
 body.ie7 div#totaramenu ul li.selected li a {
@@ -40,13 +45,18 @@ body.ie8 input[type="password"] {
     padding:0.4em 0.2em !important;
     font-family:Arial, Helvetica, sans-serif;
 }
+
 /* Tabs */
 body.ie7 .tabtree .tabrow0 li a {
     padding:7px 15px 12px;
 }
-body.ie7 .tabtree .tabrow0 li a span {
+.dir-ltr body.ie7 .tabtree .tabrow0 li a span {
     padding-right:0;
 }
+.dir-rtl body.ie7 .tabtree .tabrow0 li a span {
+    padding-left:0;
+}
+
 /* Misc */
 body.ie7 .userprofilebox .descriptionbox {
     float:none;
@@ -61,7 +71,12 @@ body.ie7 #dock .dockeditempanel_hd {
 }
 body.ie7 #dock .dockeditempanel_hd .commands {
    margin-top:-20px;
+}
+.dir-ltr body.ie7 #dock .dockeditempanel_hd .commands {
    margin-right:5px;
+}
+.dir-rtl body.ie7 #dock .dockeditempanel_hd .commands {
+   margin-left:5px;
 }
 
 

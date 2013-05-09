@@ -172,9 +172,13 @@ body.has_dock {
 #page-footer .footnote {
     float: left;
 }
-#page-footer .footer-powered {
+.dir-ltr #page-footer .footer-powered {
     float:right;
     padding-right:10px;
+}
+.dir-rtl #page-footer .footer-powered {
+    float:left;
+    padding-left:10px;
 }
 #page-footer .footer-links {
     float:left;

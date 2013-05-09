@@ -89,6 +89,14 @@ h6.main {
     font-weight:400;
     text-align:left;
 }
+.dir-rtl h1.main,
+.dir-rtl h2.main,
+.dir-rtl h3.main,
+.dir-rtl h4.main,
+.dir-rtl h5.main,
+.dir-rtl h6.main {
+    text-align:right;
+}
 h1.main,
 h2.main,
 h2.header {
@@ -129,6 +137,12 @@ td,
 .formtable tbody th,
 .generaltable th.header {
     text-align:left;
+}
+.dir-rtl th,
+.dir-rtl td,
+.dir-rtl .formtable tbody th,
+.dir-rtl .generaltable th.header {
+    text-align:right;
 }
 tr.r0 {
    background:transparent;
@@ -202,11 +216,11 @@ table.invisiblepadded tr.r1 {
 table.invisiblepadded th.header {
     background:none;
     padding:5px;
-  }
+}
 
 table.invisiblepadded td{
    padding:5px;
- }
+}
 
 .course_icon, .program_icon{
     padding-right:5px;
@@ -245,6 +259,10 @@ table#hierarchy-bulk-action td.action-column div.fitem div.fitemtitle {
     text-align:left;
     background:transparent;
 }
+.dir-rtl .forumheaderlist td.starter,
+.dir-rtl  #page-mod-forum-view .forumheaderlist .discussion .starter {
+    text-align:right;
+}
 .forumpost {
      border:none;
      background:#FFF;
@@ -272,7 +290,18 @@ table#hierarchy-bulk-action td.action-column div.fitem div.fitemtitle {
 #page-site-index .subscribelink,
 .path-course-view .subscribelink {
     font-size:0.85em;
+}
+.dir-ltr .forumpost .options,
+.dir-ltr .forumpost .topic .author,
+.dir-ltr #page-site-index .subscribelink,
+.dir-ltr .path-course-view .subscribelink {
     padding-right:10px;
+}
+.dir-rtl .forumpost .options,
+.dir-rtl .forumpost .topic .author,
+.dir-rtl #page-site-index .subscribelink,
+.dir-rtl .path-course-view .subscribelink {
+    padding-left:10px;
 }
 .forumpost .content .posting {
     padding:0 15px 10px;
@@ -303,6 +332,10 @@ h2.headingblock {
 .coursebox .name img a {
     float:left;
 }
+.dir-rtl .coursebox .name img,
+.dir-rtl .coursebox .name img a {
+    float:right;
+}
 .coursebox .name a,
 .coursebox .summary,
 .coursebox .summary .no-overflow {
@@ -312,6 +345,9 @@ h2.headingblock {
 .coursebox .summary .category {
     margin:0;
     text-align:left;
+}
+.dir-rtl .coursebox .summary .category {
+    text-align:right;
 }
 .coursebox .name img.iconsmall,
 .coursebox .name img.smallicon {
@@ -341,6 +377,16 @@ h2.headingblock {
     margin:1em 0;
     text-align:left !important;
     padding:10px 10px 10px 30px !important;
+}
+.dir-rtl .notifysuccess,
+.dir-rtl .notifyproblem,
+.dir-rtl .notifymessage,
+.dir-rtl .notifynotice,
+.dir-rtl .notice,
+.dir-rtl .loginerrors,
+.dir-rtl .errorbox {
+    text-align:right !important;
+    padding:10px 30px 10px 10px !important;
 }
 .notifysuccess {
     background:#F6FFC4 url([[pix:theme|tick]]) no-repeat 8px 11px;
@@ -409,6 +455,10 @@ p.errormessage {
     float:left;
     margin:27px 0 0;
 }
+.dir-rtl #page-header #logo,
+.dir-rtl #page-header #logo.custom {
+    float:right;
+}
 #page-header #logo a,
 #page-header #logo.custom a {
     display:block;
@@ -445,9 +495,15 @@ p.errormessage {
     max-width:1440px;
 }
 #page-footer .footer-powered {
-    float:left;
     padding:0;
+}
+.dir-ltr #page-footer .footer-powered {
+    float:left;
     margin-left:10px;
+}
+.dir-rtl #page-footer .footer-powered {
+    float:right;
+    margin-right:10px;
 }
 #page-footer .footer-backtotop {
     display:none;
@@ -477,6 +533,9 @@ p.errormessage {
     font-size:0.9em;
     margin:0 10px 0 0;
 }
+.dir-rtl .navbar .breadcrumb {
+    margin:0 0 0 10px;
+}
 .navbar .breadcrumb ul {
     color:#B8B8B7;
 }
@@ -485,11 +544,17 @@ p.errormessage {
     white-space:nowrap;
     text-decoration:underline;
 }
+.dir-rtl .navbar .breadcrumb li {
+    float:right;
+}
 .navbar .breadcrumb li a {
     float:left;
     font-weight:bold;
     color:#B1BB1A;
     text-decoration:underline;
+}
+.dir-rtl .navbar .breadcrumb li a {
+    float:right;
 }
 .navbar .breadcrumb li a:hover {
     color:#B8B8B7;
@@ -506,6 +571,9 @@ p.errormessage {
     text-decoration:underline;
     background:transparent url([[pix:theme|sep]]) no-repeat center 6px;
 }
+.dir-rtl .navbar .sep {
+    float:right;
+}
 .navbar .navbutton {
     margin:0;
 }
@@ -513,11 +581,15 @@ p.errormessage {
     margin:0 0 -10px 0.3em;
     padding:0.3em 0.6em;
 }
+.dir-rtl .navbar .navbutton input {
+    margin:0 0.3em -10px 0;
+}
 
 /* Headermenu */
 
 .headermenu {
-    position:absolute;
+    display:block;
+    float:right;
     top:0;
     right:0;
     font-size:0.9em;
@@ -526,6 +598,10 @@ p.errormessage {
     margin:-2px 0 0 0;
     padding:4px 0 3px 10px;
     background:transparent;
+}
+.dir-rtl .headermenu {
+    float:left;
+    padding:4px 10px 3px 0;
 }
 .headermenu a {
     color:#999999;
@@ -550,16 +626,31 @@ p.errormessage {
     box-shadow:none;
     background:#999999;
 }
-.headermenu .langmenu {
-    padding:0 0 0 10px;
+.dir-rtl .headermenu a.link-as-button {
+    margin:0 7px 0 0;
+}
+
+/* Langmenu */
+.langmenu {
+    float:right;
+    margin:7px 0 0 0;
+}
+.dir-rtl .langmenu {
+    float:left;
+    margin:7px 0 0 0;
 }
 
 /* Profileblock */
 
-#profileblock {
+.dir-ltr #profileblock {
     float:right;
     text-align:right;
     right:0px;
+}
+.dir-rtl #profileblock {
+    float:left;
+    text-align:left;
+    left:0px;
 }
 #profileblock .loginstatus {
     color:#FFFFFF;
@@ -569,6 +660,9 @@ p.errormessage {
     margin:0 0 0 5px;
     padding:6px 10px 7px;
     background:#999999;
+}
+.dir-rtl #profileblock .loginstatus {
+    margin:0 5px 0 0;
 }
 #profileblock .loginstatus:hover {
     text-decoration:none;
@@ -663,9 +757,20 @@ img.smallicon {
     padding:0 0 0 20px;
     background:transparent url([[pix:theme|arw-cal]]) no-repeat 0 2px;
 }
+.dir-rtl #dp-plans-menu ul li,
+.dir-rtl #recordoflearning-menu ul li {
+    background-position:right;
+    padding:0 20px 0 0;
+}
 #dp-plan-content,
 #program-content, #required-learning {
     width:83%;
+}
+.dir-rtl #dp-plan-content #dp-plans-description .instructional_text {
+    float:right;
+}
+#dp-plan-content #dp-plans-description .dp-add-plan-link {
+    float:left;
 }
 .multicheck-items img.smallicons {
     width:20px;
@@ -715,6 +820,11 @@ input,
 textarea,
 select {
     margin:5px 5px 5px 0;
+}
+.dir-rtl input,
+.dir-rtl textarea,
+.dir-rtl select {
+    margin:5px 0 5px 5px;
 }
 .comment-area textarea {
     border:1px solid #AAAAAA;
@@ -781,6 +891,10 @@ input#id_buttonfield[disabled="disabled"]:hover {
 }
 input[type="checkbox"] {
     margin:0 5px 0 0;
+}
+.dir-rtl input[type="checkbox"],
+.dir-rtl input[type="radio "] {
+    margin: 0 0 0 5px;
 }
 .yui-skin-sam .yui-button button,
 .yui-skin-sam .yui-button-hover button,
@@ -889,7 +1003,12 @@ fieldset {
     color:#333333;
     padding-bottom:3px;
     border-bottom:1px solid #BFBFBF;
+}
+.dir-ltr .mform fieldset legend {
     margin-left:0;
+}
+.dir-rtl .mform fieldset legend {
+    margin-right:0;
 }
 .mform fieldset div {
     margin:5px 0;
@@ -909,10 +1028,18 @@ fieldset {
     width:22%;
     margin-top:2px;
 }
+.dir-rtl .mform .fitem .fitemtitle {
+    text-align:right;
+}
 .mform .fitem .felement {
     width:74%;
     float:right;
+}
+.dir-ltr .mform .fitem .felement {
     margin-left:0;
+}
+.dir-rtl .mform .fitem .felement {
+    margin-right:0;
 }
 .mform .fitem fieldset {
     padding:0 !important;
@@ -933,7 +1060,6 @@ fieldset {
  * Course Pages
  */
 
-.course-content ul.demo,
 .course-content ul.topics,
 .course-content ul.weeks {
     clear:both;
@@ -976,20 +1102,43 @@ ul.topics li.section .content {
 .path-course-view li.activity form.togglecompletion {
     top:-5px;
 }
-.path-course-view li.activity span.autocompletion,
-.path-course-view li.activity form.togglecompletion {
+.dir-ltr .path-course-view li.activity span.autocompletion,
+.dir-ltr .path-course-view li.activity form.togglecompletion {
     right:-65px;
+    float:right;
 }
-.course-content #section-0 li.activity span.autocompletion,
-.course-content #section-0 li.activity form.togglecompletion {
+.dir-rtl .path-course-view li.activity span.autocompletion,
+.dir-rtl .path-course-view li.activity form.togglecompletion {
+    left:-65px;
+    float:left;
+}
+.dir-ltr .course-content #section-0 li.activity span.autocompletion,
+.dir-ltr .course-content #section-0 li.activity form.togglecompletion {
     right:-25px;
+    float:right;
 }
-.editing .course-content ul.section  li.activity span.autocompletion,
-.editing .course-content ul.section  li.activity form.togglecompletion {
+.dir-rtl .course-content #section-0 li.activity span.autocompletion,
+.dir-rtl .course-content #section-0 li.activity form.togglecompletion {
+    left:-25px;
+    float:left;
+}
+.dir-ltr .editing .course-content ul.section  li.activity span.autocompletion,
+.dir-ltr .editing .course-content ul.section  li.activity form.togglecompletion {
     right:-25px;
+    float:right;
 }
-.editing .course-content #section-0 li.activity span.autocompletion {
+.dir-rtl .editing .course-content ul.section  li.activity span.autocompletion,
+.dir-rtl .editing .course-content ul.section  li.activity form.togglecompletion {
+    left:-25px;
+    float:left;
+}
+.dir-ltr .editing .course-content #section-0 li.activity span.autocompletion {
     right:15px;
+    float:right;
+}
+.dir-rtl .editing .course-content #section-0 li.activity span.autocompletion {
+    left:15px;
+    float:left;
 }
 .course-content li.activity,
 .course-content ul.section  li.activity {
@@ -1004,15 +1153,19 @@ ul.topics li.section .content {
     padding-top:5px;
 }
 .path-course-view .section .side {
-    padding-left:5px;
     vertical-align:top;
+}
+.dir-ltr .path-course-view .section .side {
+    padding-left:5px;
+}
+.dir-rtl .path-course-view .section .side {
+    padding-right:5px;
 }
 .course-content ul.demo li.section .side,
 .course-content ul.topics li.section .side {
     font-size:1.2em;
     font-weight:bold;
     padding:15px 0;
-    background:#E0E1Cf;
 }
 .course-content ul.demo li#section-0,
 .course-content ul.topics li#section-0,
@@ -1098,8 +1251,11 @@ ul.topics li.section .content {
 .path-backup .backup_progress .backup_stage.backup_stage_next {
    margin:0 3px;
 }
-.path-backup .mform .fgroup .proceedbutton {
+.dir-ltr .path-backup .mform .fgroup .proceedbutton {
    margin-right:0;
+}
+.dir-rtl .path-backup .mform .fgroup .proceedbutton {
+   margin-left:0;
 }
 p.course-prog-alt-view {
    padding:10px;
@@ -1160,14 +1316,19 @@ p.course-prog-alt-view {
 }
 .tabtree ul li.here ul,
 .tabtree ul li.here .tabrow1 {
-    left:0;
     top:30px;
 }
+.dir-ltr .tabtree ul li.here ul,
+.dir-ltr .tabtree ul li.here .tabrow1 {
+    left:0;
+}
+.dir-rtl .tabtree ul li.here ul,
+.dir-rtl .tabtree ul li.here .tabrow1 {
+    right:0;
+}
 .tabtree .tabrow0 li a {
-    margin-right:1px;
     border:none;
     border-bottom:transparent;
-    float:left;
     vertical-align:middle;
     background:#999999;
     color:#FFFFFF;
@@ -1178,6 +1339,14 @@ p.course-prog-alt-view {
     display:block;
     text-transform:uppercase;
 }
+.dir-ltr .tabtree .tabrow0 li a {
+    float:left;
+    margin-right:1px;
+}
+.dir-rtl .tabtree .tabrow0 li a {
+    float:right;
+    margin-left:1px;
+}
 .tabtree .tabrow0 li a:hover {
     border:none;
     background-image:none;
@@ -1185,13 +1354,17 @@ p.course-prog-alt-view {
     color:#FFFFFF;
     background-color:#BBBBBB;
 }
+.dir-ltr .tabtree li {
+    float:left;
+}
+.dir-rtl .tabtree li {
+    float:right;
+}
 .tabtree .tabrow0 li a span,
 .tabtree .tabrow0 li a span:hover {
     background-image:none;
     background-repeat:no-repeat;
-    padding-right:0;
-    padding-top:0;
-    padding-bottom:0;
+    padding:0 0 0 0;
 }
 .tabtree .tabrow0 li a:hover span {
     background-image:none;
@@ -1253,6 +1426,12 @@ p.course-prog-alt-view {
     width:100%;
     top:30px;
 }
+.dir-ltr .tabtree .tabrow0 li.here .empty {
+    left:0;
+}
+.dir-rtl .tabtree .tabrow0 li.here .empty {
+    right:0;
+}
 .tabtree .tabrow0 .tabrow1 li,
 .tabtree .tabrow0 .tabrow1 li:hover {
     background-image:none;
@@ -1290,6 +1469,10 @@ tabrow1 {
     border:2px solid #DEDEDE;
     background:#FFFFFF;
 }
+.dir-rtl .userprofilebox .profilepicture {
+    float:right;
+    margin:0 0 0 2px;
+}
 .userprofilebox .profilepicture a {
     display:block;
     line-height:0;
@@ -1303,14 +1486,29 @@ tabrow1 {
     padding:0;
     width:77%;
 }
+.dir-rtl .userprofilebox .descriptionbox {
+    float:right;
+}
 .side-pre-only .userprofilebox .descriptionbox,
 .side-post-only .userprofilebox .descriptionbox {
     width:83%;
+}
+.dir-ltr .side-pre-only .userprofilebox .descriptionbox,
+.dir-ltr .side-post-only .userprofilebox .descriptionbox {
     margin-left:3px;
+}
+.dir-rtl .side-pre-only .userprofilebox .descriptionbox,
+.dir-rtl .side-post-only .userprofilebox .descriptionbox {
+    margin-right:3px;
 }
 .content-only .userprofilebox .descriptionbox {
     width:87%;
+}
+.dir-ltr .content-only .userprofilebox .descriptionbox {
     margin-left:3px;
+}
+.dir-rtl .content-only .userprofilebox .descriptionbox {
+    margin-right:3px;
 }
 .userprofilebox .descriptionbox .description {
     margin:0;
@@ -1323,6 +1521,9 @@ tabrow1 {
 .userprofilebox table {
     float:left;
     width:100%;
+}
+.dir-rtl .userprofilebox table {
+    float:right;
 }
 .userprofilebox table th {
     font-weight:700;
@@ -1351,7 +1552,12 @@ tabrow1 {
 }
 .loginbox .loginerrors {
     width:100%;
+}
+.dir-ltr .loginbox .loginerrors {
     margin-left:-20px;
+}
+.dir-rtl .loginbox .loginerrors {
+    margin-right:-20px;
 }
 .loginbox {
     width:395px;
@@ -1423,6 +1629,10 @@ tabrow1 {
     width:100px;
     padding-top:6px;
 }
+.dir-rtl .loginbox .loginform .form-label {
+    float:right;
+    text-align:left;
+}
 .loginbox .loginform .form-input {
    width:auto;
 }
@@ -1439,6 +1649,9 @@ tabrow1 {
     display:block;
     margin:3px 25px 5px 3px;
     background:#00ACA8;
+}
+.dir-rtl .loginbox .loginform .form-input #loginbtn {
+    margin:3px 3px 5px 25px;
 }
 .loginbox .loginform .form-input #loginbtn:hover {
     background:#26C9C4;
@@ -1594,9 +1807,14 @@ div.ui-widget-header .ui-dialog-titlebar-close .ui-icon {
 #dialog-tabs ul li.ui-state-default a {
     color:#FFFFFF;
     text-transform:uppercase;
-    margin-right: 1px;
     padding: 7px 15px 6px;
     background:#999999;
+}
+.dir-ltr #dialog-tabs ul li.ui-state-default a {
+    margin-right: 1px;
+}
+.dir-rtl #dialog-tabs ul li.ui-state-default a {
+    margin-left: 1px;
 }
 #dialog-tabs ul li.ui-state-default a:hover {
     color:#FFFFFF;
@@ -1618,6 +1836,10 @@ div.ui-widget-header .ui-dialog-titlebar-close .ui-icon {
 div.totara-dialog div.ui-dialog-content table.dialog-content td.select {
     padding-left:0;
     padding-right:10px;
+}
+.dir-rtl div.totara-dialog div.ui-dialog-content table.dialog-content td.select {
+    padding-right:0;
+    padding-left:10px;
 }
 .ui-widget-content a {
     color:#00ACA8;
@@ -1665,14 +1887,55 @@ div.totara-dialog td.select #browse-tab {
     padding:0 5px 0 0;
     margin-bottom:0px;
 }
+.dir-rtl #dialog-search-table td {
+    padding:0 0 0 5px;
+}
 div.totara-dialog td.select select {
     width:auto;
     margin-top:3px;
+}
+.dir-ltr div.totara-dialog td.select select {
     margin-left:5px;
+}
+.dir-rtl div.totara-dialog td.select select {
+    margin-right:5px;
 }
 div.totara-dialog td.select #search-tab #fgroup_id_searchgroup {
     padding-left:10px;
 }
 #program-assignments #category_select button {
     margin:0 2px;
+}
+.dir-rtl #main_menu {
+    float:right;
+}
+
+/**
+ * Comments
+ */
+.comment-area .fd {text-align:right;}
+.comment-userpicture {float:left !important;padding:0 !important;}
+.comment-content {margin-left:22px;margin-right:0;}
+.comment-content p {margin:0 18px 0 0;}
+.comment-delete {float:right;text-align:right;}
+.comment-container {float:left;}
+.dir-rtl .comment-area .fd {text-align:left;}
+.dir-rtl .comment-userpicture {position:static !important;padding:0 !important;}
+.dir-rtl .comment-content {margin-right: 22px;margin-left:0;}
+.dir-rtl .comment-content p {margin:0 0 0 18px;}
+.dir-rtl .comment-delete {float:left;text-align:left;right:auto !important;left:4px !important;}
+.dir-rtl .comment-container {float:right;}
+.dir-rtl ul.comment-list li.comment-own-post .comment-userpicture {
+    background: url([[pix:totara_core|comment-point-blue-rtl]]) no-repeat scroll left center transparent;
+    float: right !important;
+    left: auto;
+    right: 0;
+    text-align: right;
+}
+.dir-rtl ul.comment-list li.comment-others-post .comment-userpicture {
+    background: url([[pix:totara_core|comment-point-grey-rtl]]) no-repeat scroll right center transparent;
+    float: left !important;
+    left: 0;
+    right: auto;
+    text-align: left;
 }

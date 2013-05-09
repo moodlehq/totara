@@ -160,6 +160,8 @@ class item_bulkaction_form extends moodleform {
 
         $html = html_writer::end_tag('td') . html_writer::end_tag('tr');
         $mform->addElement('html', $html);
+        $mform->addElement('html', html_writer::start_tag('tr'));
+        $mform->addElement('html', html_writer::start_tag('td', array('colspan' => 3)));
 
         switch ($action) {
         case 'delete':
@@ -168,21 +170,17 @@ class item_bulkaction_form extends moodleform {
                 strtolower(get_string($prefix.'plural', 'totara_hierarchy'))));
             break;
         case 'move':
-            $mform->addElement('html', html_writer::start_tag('tr'));
-            $title = get_string('moveselectedxto', 'totara_hierarchy', strtolower(get_string($prefix.'plural', 'totara_hierarchy')));
+            $mform->addElement('html', get_string('moveselectedxto', 'totara_hierarchy', strtolower(get_string($prefix.'plural', 'totara_hierarchy'))));
             $options = $hierarchy->get_parent_list($items, $all_selected_item_ids);
-            $mform->addElement('html', html_writer::tag('td', $title, array('class' => 'available-column')) . html_writer::start_tag('td', array('class' => 'action-column')));
             $select =& $mform->createElement('select', 'newparent', '', $options, totara_select_width_limiter());
             $mform->addElement($select);
-            $mform->addElement('html', html_writer::end_tag('td') . html_writer::start_tag('td', array('class' => 'selected-column')));
             $mform->addElement('submit', 'movebutton', get_string('move'));
-            $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table'));
             break;
         default:
             // this shouldn't happen
             print_error('error:unknownaction', 'totara_hierarchy');
         }
-
+        $mform->addElement('html', html_writer::end_tag('td') . html_writer::end_tag('tr') . html_writer::end_tag('table'));
         // change default render template for bulk action form elements
         $elements = array('available', 'add_items', 'add_all_items', 'remove_items',
             'remove_all_items', 'selected', 'search', 'submitsearch', 'clearsearch', 'deletebutton', 'newparent', 'movebutton');

@@ -52,7 +52,7 @@ define('DURATION_HOUR',   60 * DURATION_MINUTE);
 define('DURATION_DAY',    24 * DURATION_HOUR);
 define('DURATION_WEEK',   7  * DURATION_DAY);
 define('DURATION_MONTH',  30 * DURATION_DAY);
-define('DURATION_YEAR',   12 * DURATION_MONTH);
+define('DURATION_YEAR',   365 * DURATION_DAY);
 
 define('AVAILABILITY_NOT_TO_STUDENTS',0);
 define('AVAILABILITY_TO_STUDENTS', 1);
@@ -1133,13 +1133,15 @@ class program {
         }
         $params['id'] = $this->id;
         $url = new moodle_url("/totara/program/required.php", $params);
+        $summary = file_rewrite_pluginfile_urls($this->summary, 'pluginfile.php',
+                context_program::instance($this->id)->id, 'totara_program', 'summary', 0);
 
         $out = '';
         $out .= html_writer::start_tag('div', array('class' => 'dp-summary-widget-title'));
         $out .= html_writer::link($url, $this->fullname);
         $out .= html_writer::end_tag('div');
         $out .= html_writer::start_tag('div', array('class' => 'dp-summary-widget-description'));
-        $out .= $this->summary . html_writer::end_tag('div');
+        $out .= $summary . html_writer::end_tag('div');
 
         return $out;
     }

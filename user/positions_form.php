@@ -130,7 +130,7 @@ class user_position_assignment_form extends moodleform {
                 $allorgs = $DB->get_records_menu('org', null, 'frameworkid,sortthread', 'id,fullname');
                 if (is_array($allorgs) && !empty($allorgs) ){
                     $mform->addElement('select','organisationid', get_string('chooseorganisation','totara_hierarchy'),
-                        array(0 => get_string('chooseorganisation','organisation')) + $allorgs);
+                        array(0 => get_string('chooseorganisation','totara_hierarchy')) + $allorgs);
                 } else {
                     $mform->addElement('static', 'organisationid', get_string('chooseorganisation','totara_hierarchy'), get_string('noorganisation','totara_hierarchy') );
                 }
@@ -160,7 +160,7 @@ class user_position_assignment_form extends moodleform {
                         u.lastname");
                 if ( is_array($allmanagers) && !empty($allmanagers) ){
                     $mform->addElement('select', 'managerid', get_string('choosemanager','totara_hierarchy'),
-                        array(0 => get_string('choosemanager','position')) + $allmanagers);
+                        array(0 => get_string('choosemanager','totara_hierarchy')) + $allmanagers);
                     $mform->setDefault('managerid', $manager_id);
                 } else {
                     $mform->addElement('static','managerid',get_string('choosemanager','totara_hierarchy'), get_string('error:dialognotreeitems', 'manager'));
@@ -205,7 +205,6 @@ class user_position_assignment_form extends moodleform {
             $mform->addGroup($group, 'timevalidto_group', get_string('finishdate', 'totara_hierarchy'), array(' '), false);
             $mform->setType('timevalidto', PARAM_TEXT);
             $mform->setDefault('timevalidto', get_string('datepickerdisplayformat','totara_core'));
-            $mform->addHelpButton('managerselector', 'choosemanager', 'totara_hierarchy');
             $mform->addHelpButton('timevalidto_group', 'finishdate', 'totara_hierarchy');
 
             $rule1['timevalidfrom'][] = array(get_string('entervaliddate', 'totara_hierarchy'), 'regex' , get_string('datepickerregexphp', 'totara_core'));

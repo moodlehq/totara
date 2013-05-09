@@ -54,6 +54,12 @@ class grade_item extends grade_object {
                                  'timemodified');
 
     /**
+     * Array of text table fields.
+     * @var array $text_fields
+     */
+    public $text_fields = array('iteminfo', 'calculation');
+
+    /**
      * The course this grade_item belongs to.
      * @var int $courseid
      */

@@ -41,11 +41,15 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
                               'heading' => 'A', 'sortorder' => 1),
                         array('id' => 76, 'reportid' => 16, 'type' => 'user', 'value' => 'namelink',
                               'heading' => 'B', 'sortorder' => 2),
-                        array('id' => 77, 'reportid' => 16, 'type' => 'message_values', 'value' => 'statementurl',
+                        array('id' => 77, 'reportid' => 16, 'type' => 'message_values', 'value' => 'statement',
                               'heading' => 'C', 'sortorder' => 3),
                         array('id' => 78, 'reportid' => 16, 'type' => 'message_values', 'value' => 'sent',
                               'heading' => 'D', 'sortorder' => 4)
                             );
+
+    protected $report_builder_filters_data = array(
+        array('reportid' => 16, 'type' => 'message_values', 'value' => 'category', 'sortorder' => 1, 'advanced' => 0)
+    );
 
     // Work data
     protected $user1 = null;
@@ -54,6 +58,8 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
 
     /**
      * Prepare mock data for testing
+     * - Add 3 users,
+     * - Create tasks for users: 3->1, 2-1, 1-2, 1-2 (again), 3-2 (2 tasks to user1, 3 tasks to user2)
      */
     protected function setUp() {
         global $CFG;
@@ -71,7 +77,7 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
         $this->user2 = $this->getDataGenerator()->create_user();
         $this->user3 = $this->getDataGenerator()->create_user();
 
-        // Create two alerts to user1 and three to user2
+        // Create 2 tasks to user1 and 3 to user2
         $this->create_task($this->user3, $this->user1);
         $this->create_task($this->user2, $this->user1);
         $this->create_task($this->user1, $this->user2);
@@ -132,8 +138,8 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
     /**
      * Test alerts with/without using cache
      * Test case:
-     * - Add threee users,
-     * - Add 2 and 3 messages for first and second user accordingly
+     * - Set up
+     * - Prepare cache
      * - Check alerts for first user (2 alertS)
      * - Check alerts for second user (3 alerts)
      * - Check alerts for third user (0 alerts)
@@ -143,7 +149,6 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
      */
     public function test_tasks($usecache) {
         $this->resetAfterTest(true);
-        $this->preventResetByRollback();
         if ($usecache) {
             $this->enable_caching($this->report_builder_data['id']);
         }
@@ -163,4 +168,29 @@ class rb_tasks_embedded_cache_test extends reportcache_advanced_testcase {
         $this->assertCount(0, $result);
     }
 
+    /**
+     * Test failing filters with/without using cache
+     * It's retrospective test for filters that failed on some reasons
+     *
+     * Test case:
+     * - Set up
+     * - Add filter
+     * - Prepare report
+     * - Check filter execution
+     *
+     * @param int Use cache or not (1/0)
+     * @dataProvider provider_use_cache
+     */
+    public function test_filters($usecache) {
+        $this->resetAfterTest(true);
+        $this->loadDataSet($this->createArrayDataSet(array('report_builder_filters' => $this->report_builder_filters_data)));
+
+        if ($usecache) {
+            $this->enable_caching($this->report_builder_data['id']);
+        }
+        $form = array('message_values-category' => array('operator' => 1, 'value' => array('program' => 1)));
+        $result = $this->get_report_result($this->report_builder_data['shortname'],
+                array('userid' => $this->user2->id), $usecache, $form);
+        $this->assertCount(3, $result);
+    }
 }

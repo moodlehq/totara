@@ -112,7 +112,7 @@ $table->finish_html();
 $fileaccess = get_config('totara_sync', 'fileaccess');
 $form->set_data((object) array('fileaccess' => $fileaccess));
 
-if ($fileaccess == FILE_ACCESS_DIRECTORY) {
+if ($fileaccess === (string)FILE_ACCESS_DIRECTORY) {
     $filesdir = get_config('totara_sync', 'filesdir');
     // Always check accessibility of target folder, not only on save.
     // Also, allow save data even when folder not accessible.

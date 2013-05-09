@@ -248,8 +248,9 @@ if ($usernew = $userform->get_data()) {
         $a->site = format_string($SITE->fullname, true, array('context' => context_course::instance(SITEID)));
         $a->fullname = fullname($user, true);
 
-        $emailupdatemessage = get_string('emailupdatemessage', 'auth', $a);
-        $emailupdatetitle = get_string('emailupdatetitle', 'auth', $a);
+        $strmgr = get_string_manager();
+        $emailupdatemessage = $strmgr->get_string('emailupdatemessage', 'auth', $a, $user->lang);
+        $emailupdatetitle = $strmgr->get_string('emailupdatetitle', 'auth', $a, $user->lang);
 
         //email confirmation directly rather than using messaging so they will definitely get an email
         $supportuser = generate_email_supportuser();

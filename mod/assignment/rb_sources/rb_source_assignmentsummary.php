@@ -40,11 +40,12 @@ class rb_source_assignmentsummary extends rb_base_source {
      * c'tor
      */
     public function __construct() {
+        global $DB;
         $this->base = "(" .
         " SELECT a.id AS id," .
         " a.course AS assignment_course," .
         " a.name AS assignment_name," .
-        " a.intro AS assignment_intro," .
+        " {$DB->sql_order_by_text('a.intro', '255')} AS assignment_intro," .
         " a.assignmenttype AS assignment_type," .
         " AVG(asb.grade) AS average_grade," .
         " SUM(asb.grade) AS sum_grade," .
@@ -60,7 +61,7 @@ class rb_source_assignmentsummary extends rb_base_source {
         " INNER JOIN {assignment} a ON asb.assignment = a.id" .
         " WHERE a.grade > -1" . // meaningful aggregations are only possible for numeric grade scales
         " AND asb.grade > -1" . // meaningful aggregations are only possible for graded/marked assignment submissions
-        " GROUP BY a.id, a.course, a.name, a.intro, a.assignmenttype, a.grade" .
+        " GROUP BY a.id, a.course, a.name, {$DB->sql_order_by_text('a.intro', '255')}, a.assignmenttype, a.grade" .
         " )";
         $this->joinlist = $this->_define_joinlist();
         $this->columnoptions = $this->_define_columnoptions();

@@ -577,11 +577,11 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         if (!$dbman->table_exists($table)) {
 
             /// Adding fields to questions table
-            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null);
-            $table->add_field('presentation', XMLDB_TYPE_TEXT, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL, null);
+            $table->add_field('presentation', XMLDB_TYPE_TEXT, 'medium', null, XMLDB_NOTNULL, null);
             $table->add_field('typ', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null);
-            $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
 
             /// Adding keys to questions table
             $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -639,10 +639,10 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         if (!$dbman->table_exists($table)) {
 
             /// Adding fields to question options table
-            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-            $table->add_field('qid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('qid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
             $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null);
-            $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
+            $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
 
             /// Adding keys to question options table
             $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -858,12 +858,12 @@ class rb_preproc_feedback_questions extends rb_base_preproc {
         if (!$dbman->table_exists($table)) {
 
             /// Adding standard fields to answers table
-            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-            $table->add_field('feedbackid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-            $table->add_field('responseid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null);
-            $table->add_field('sessionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
-            $table->add_field('completedtime', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null);
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('feedbackid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('responseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $table->add_field('sessionid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+            $table->add_field('completedtime', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
 
             // loop through questions and add the right columns for the
             // particular question type

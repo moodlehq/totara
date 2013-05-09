@@ -35,7 +35,7 @@ function xmldb_tool_totara_sync_install() {
     // user
     $table = new xmldb_table('user');
     $field = new xmldb_field('totarasync');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', null);
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', null);
     if (!$dbman->field_exists($table, $field)) {
         // Launch add field totarasync
         $dbman->add_field($table, $field);
@@ -49,7 +49,7 @@ function xmldb_tool_totara_sync_install() {
     // org
     $table = new xmldb_table('org');
     $field = new xmldb_field('totarasync');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', null);
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', null);
     if (!$dbman->field_exists($table, $field)) {
         // Launch add field totarasync
         $dbman->add_field($table, $field);
@@ -63,7 +63,7 @@ function xmldb_tool_totara_sync_install() {
     // pos
     $table = new xmldb_table('pos');
     $field = new xmldb_field('totarasync');
-    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', null);
+    $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', null);
     if (!$dbman->field_exists($table, $field)) {
         // Launch add field totarasync
         $dbman->add_field($table, $field);

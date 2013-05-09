@@ -1582,11 +1582,19 @@ class dml_testcase extends database_driver_testcase {
         $this->assertEquals('5', end($records)->cid);
         $this->assertEquals('4', reset($records)->cid);
 
+        if ($DB->get_dbfamily() == 'mssql') {
+            // MSSQL throws warning when trying seek data out of borders
+            $this->setExpectedException('PHPUnit_Framework_Error_Warning');
+        }
         // test 2 tables with aliases and limits with order bys (limit which is highest INT number)
         $records = $DB->get_records_sql($sql, null, PHP_INT_MAX, 2); // Skip all courses
         $this->assertEquals(0, count($records));
 
         // test 2 tables with aliases and limits with order bys (limit which s highest INT number)
+        if ($DB->get_dbfamily() == 'mssql') {
+            // MSSQL throws warning when trying seek data out of borders
+            $this->setExpectedException('PHPUnit_Framework_Error_Warning');
+        }
         $records = $DB->get_records_sql($sql, null, PHP_INT_MAX, PHP_INT_MAX); // Skip all courses
         $this->assertEquals(0, count($records));
 
@@ -4824,6 +4832,11 @@ class dml_testcase extends database_driver_testcase {
 
         $sqlqm = "SELECT *
                     FROM {{$tablename}}";
+
+        if ($DB->get_dbfamily() == 'mssql') {
+            // MSSQL throws warning when trying seek data out of borders
+            $this->setExpectedException('PHPUnit_Framework_Error_Warning');
+        }
         $this->assertEmpty($records = $DB->get_records_sql($sqlqm, null, 8));
 
         $sqlqm = "SELECT *

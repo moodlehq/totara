@@ -220,7 +220,8 @@ function program_cron_switch_recurring_courses() {
     $recurring_programs = prog_get_recurring_programs();
     $program_plugin = enrol_get_plugin('totara_program');
     //get_archetype_roles returns an array, get the first element of it
-    $studentrole = array_shift(get_archetype_roles('student'));
+    $studentroles = get_archetype_roles('student');
+    $studentrole = array_shift($studentroles);
 
     foreach ($recurring_programs as $program) {
 

@@ -52,7 +52,7 @@ abstract class rb_base_source {
                 $a = new stdClass();
                 $a->property = $property;
                 $a->class = get_class($this);
-                throw new Exception(get_string('error:propertyxmustbesetiny', 'totara_reportbuilder', $a));
+                throw new ReportBuilderException(get_string('error:propertyxmustbesetiny', 'totara_reportbuilder', $a));
             }
         }
 
@@ -126,6 +126,17 @@ abstract class rb_base_source {
                                  $jointable
                                 );
 
+        }
+
+        //validate column extrafields don't have alias named 'id'
+        foreach ($this->columnoptions as $columnoption) {
+            if (isset($columnoption->extrafields) && is_array($columnoption->extrafields)) {
+                foreach ($columnoption->extrafields as $extrakey => $extravalue) {
+                    if ($extrakey == 'id') {
+                        throw new ReportBuilderException(get_string('error:columnextranameid', 'totara_reportbuilder', $extravalue), 101);
+                    }
+                }
+            }
         }
     }
 
@@ -443,6 +454,7 @@ abstract class rb_base_source {
     /**
      * Properly format totara customfield textarea data for display
      *
+     * @param string $field fieldname from SQL query
      * @param integer $data contents of field from database
      * @param object $row Object containing all other fields for this row
      * @param boolean $isexport
@@ -457,10 +469,35 @@ abstract class rb_base_source {
         if ($isexport) {
             $displaytext = format_text($data, FORMAT_MOODLE);
         } else {
-            $prefix = "{$field}_prefix";
-            $itemidfield = $field . '_itemid';
+            //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
+            //extract prefix from field name
+            $pattern = '/(?P<prefix>(.*?))_custom_field_(\d?)$/';
+            $matches = array();
+            preg_match($pattern, $field, $matches);
+            if (!empty($matches)) {
+                $cf_prefix = $matches['prefix'];
+                switch ($cf_prefix) {
+                    case 'org_type':
+                        $prefix = 'organisation';
+                        break;
+                    case 'pos_type':
+                        $prefix = 'position';
+                        break;
+                    case 'comp_type':
+                        $prefix = 'competency';
+                        break;
+                    default:
+                        //unknown prefix
+                        return '';
+                }
+            } else {
+                //unknown prefix
+                return '';
+            }
+
+            $itemidfield = "{$field}_itemid";
             require_once($CFG->dirroot.'/totara/customfield/field/textarea/field.class.php');
-            $extradata = array('prefix' => $row->$prefix, 'itemid' => $row->$itemidfield);
+            $extradata = array('prefix' => $prefix, 'itemid' => $row->$itemidfield);
             $displaytext = call_user_func(array('customfield_textarea', 'display_item_data'), $data, $extradata);
         }
 
@@ -469,7 +506,7 @@ abstract class rb_base_source {
 
     /**
      * Properly format totara customfield file data for display
-     *
+     * @param string $field fieldname from SQL query
      * @param integer $data contents of field from database
      * @param object $row Object containing all other fields for this row
      * @param boolean $isexport
@@ -480,10 +517,34 @@ abstract class rb_base_source {
         if (empty($data)) {
             return '';
         }
-        $prefix = "{$field}_prefix";
-        $itemidfield = $field . '_itemid';
+        //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
+        //extract prefix from field name
+        $pattern = '/(?P<prefix>(.*?))_custom_field_(\d?)$/';
+        $matches = array();
+        preg_match($pattern, $field, $matches);
+        if (!empty($matches)) {
+            $cf_prefix = $matches['prefix'];
+            switch ($cf_prefix) {
+                case 'org_type':
+                    $prefix = 'organisation';
+                    break;
+                case 'pos_type':
+                    $prefix = 'position';
+                    break;
+                case 'comp_type':
+                    $prefix = 'competency';
+                    break;
+                default:
+                    //unknown prefix
+                    return '';
+            }
+        } else {
+            //unknown prefix
+            return '';
+        }
+        $itemidfield = "{$field}_itemid";
         require_once($CFG->dirroot.'/totara/customfield/field/file/field.class.php');
-        $extradata = array('prefix' => $row->$prefix, 'itemid' => $row->$itemidfield, 'isexport' => $isexport);
+        $extradata = array('prefix' => $prefix, 'itemid' => $row->$itemidfield, 'isexport' => $isexport);
         $displaytext = call_user_func(array('customfield_file', 'display_item_data'), $data, $extradata);
 
         return $displaytext;
@@ -494,6 +555,10 @@ abstract class rb_base_source {
 
         if ($isexport) {
             return $user;
+        }
+
+        if ($row->user_id == 0) {
+            return '';
         }
 
         $userid = $row->user_id;
@@ -507,10 +572,7 @@ abstract class rb_base_source {
         $picuser->lastname = $row->userpic_lastname;
         $picuser->email = $row->userpic_email;
 
-
-        return $OUTPUT->user_picture($picuser, array('courseid' => 1)) .
-            "&nbsp;" . html_writer::link($url, $user);
-
+        return $OUTPUT->user_picture($picuser, array('courseid' => 1)) . "&nbsp;" . html_writer::link($url, $user);
     }
 
     /**
@@ -753,6 +815,15 @@ abstract class rb_base_source {
         return $code;
     }
 
+    // indicates if the user is deleted or not
+    function rb_display_deleted_status($status, $row) {
+
+        if ($status == 1) {
+            return get_string('deleteduser', 'totara_reportbuilder');
+        } else {
+            return get_string('activeuser', 'totara_reportbuilder');
+        }
+    }
 
     // convert a language code into text
     function rb_display_language_code($code, $row) {
@@ -1179,6 +1250,16 @@ abstract class rb_base_source {
                 'displayfunc' => 'nice_date',
             )
         );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'firstaccess',
+            get_string('userfirstaccess', 'totara_reportbuilder'),
+            "$join.firstaccess",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'nice_datetime',
+            )
+        );
         // auto-generate columns for user fields
         $fields = array(
             'firstname' => get_string('userfirstname', 'totara_reportbuilder'),
@@ -1211,6 +1292,18 @@ abstract class rb_base_source {
             array(
                 'joins' => $join,
                 'displayfunc' => 'country_code'
+            )
+        );
+
+        // add deleted option
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'deleted',
+            get_string('userstatus', 'totara_reportbuilder'),
+            "$join.deleted",
+            array(
+                'joins' => $join,
+                'displayfunc' => 'deleted_status'
             )
         );
 
@@ -1263,11 +1356,32 @@ abstract class rb_base_source {
                 'simplemode' => true,
             )
         );
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'deleted',
+            get_string('userstatus', 'totara_reportbuilder'),
+            'select',
+            array(
+                'selectchoices' => array(0 => get_string('activeonly', 'totara_reportbuilder'), 1 => get_string('deletedonly', 'totara_reportbuilder')),
+                'attributes' => $select_width_options,
+                'simplemode' => true,
+            )
+        );
 
         $filteroptions[] = new rb_filter_option(
             'user',
             'lastlogin',
             get_string('userlastlogin', 'totara_reportbuilder'),
+            'date',
+            array(
+                'includetime' => true
+            )
+        );
+
+        $filteroptions[] = new rb_filter_option(
+            'user',
+            'firstaccess',
+            get_string('userfirstaccess', 'totara_reportbuilder'),
             'date',
             array(
                 'includetime' => true
@@ -2096,21 +2210,6 @@ abstract class rb_base_source {
         $fieldtable = $cf_prefix.'_info_field';
         $datatable = $cf_prefix.'_info_data';
 
-        //hierarchy custom fields are stored in the FileAPI fileareas using the longform of the prefix
-        switch ($cf_prefix) {
-            case 'org_type':
-                $prefix = 'organisation';
-                break;
-            case 'pos_type':
-                $prefix = 'position';
-                break;
-            case 'comp_type':
-                $prefix = 'competency';
-                break;
-            default:
-                $prefix = $cf_prefix;
-                break;
-        }
         // check if there are any visible custom fields of this type
         if ($cf_prefix == 'user') {
             // for user fields include them all - below we require
@@ -2140,14 +2239,13 @@ abstract class rb_base_source {
             $filtertype = 'text'; // default filter type
             $filter_options = array();
 
-            $columnsql = "{$joinname}.data";
+            $columnsql = $DB->sql_compare_text("{$joinname}.data", 255);
 
             switch ($record->datatype) {
                 case 'file':
                     $column_options['displayfunc'] = 'customfield_file';
                     $column_options['extrafields'] = array(
-                            "custom_field_{$id}_itemid" => "{$joinname}.id",
-                            "custom_field_{$id}_prefix" => "'{$prefix}'"
+                            "{$cf_prefix}_custom_field_{$id}_itemid" => "{$joinname}.id"
                     );
                     break;
 
@@ -2159,8 +2257,7 @@ abstract class rb_base_source {
                         $column_options['displayfunc'] = 'customfield_textarea';
                     }
                     $column_options['extrafields'] = array(
-                            "custom_field_{$id}_itemid" => "{$joinname}.id",
-                            "custom_field_{$id}_prefix" => "'{$prefix}'"
+                            "{$cf_prefix}_custom_field_{$id}_itemid" => "{$joinname}.id"
                     );
                     break;
 
@@ -2171,6 +2268,9 @@ abstract class rb_base_source {
                     break;
 
                 case 'checkbox':
+                    $default = $record->defaultdata;
+                    $columnsql = $DB->sql_cast_char2int($columnsql, true);
+                    $columnsql = "CASE WHEN {$columnsql} IS NULL THEN {$default} ELSE {$columnsql} END";
                     $filtertype = 'select';
                     $filter_options['selectchoices'] = array(0 => get_string('no'), 1 => get_string('yes'));
                     $filter_options['simplemode'] = true;

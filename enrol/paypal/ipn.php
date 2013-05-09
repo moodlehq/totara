@@ -234,7 +234,7 @@ if (strlen($result) > 0) {
         $mailadmins   = $plugin->get_config('mailadmins');
         $shortname = format_string($course->shortname, true, array('context' => $context));
 
-
+        $strmgr = get_string_manager();
         if (!empty($mailstudents)) {
             $a->coursename = format_string($course->fullname, true, array('context' => $coursecontext));
             $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id";
@@ -245,8 +245,8 @@ if (strlen($result) > 0) {
             $eventdata->name              = 'paypal_enrolment';
             $eventdata->userfrom          = $teacher;
             $eventdata->userto            = $user;
-            $eventdata->subject           = get_string("enrolmentnew", 'enrol', $shortname);
-            $eventdata->fullmessage       = get_string('welcometocoursetext', '', $a);
+            $eventdata->subject           = $strmgr->get_string("enrolmentnew", 'enrol', $shortname, $user->lang);
+            $eventdata->fullmessage       = $strmgr->get_string('welcometocoursetext', 'moodle', $a, $user->lang);
             $eventdata->fullmessageformat = FORMAT_PLAIN;
             $eventdata->fullmessagehtml   = '';
             $eventdata->smallmessage      = '';
@@ -264,8 +264,8 @@ if (strlen($result) > 0) {
             $eventdata->name              = 'paypal_enrolment';
             $eventdata->userfrom          = $user;
             $eventdata->userto            = $teacher;
-            $eventdata->subject           = get_string("enrolmentnew", 'enrol', $shortname);
-            $eventdata->fullmessage       = get_string('enrolmentnewuser', 'enrol', $a);
+            $eventdata->subject           = $strmgr->get_string("enrolmentnew", 'enrol', $shortname, $teacher->lang);
+            $eventdata->fullmessage       = $strmgr->get_string('enrolmentnewuser', 'enrol', $a, $teacher->lang);
             $eventdata->fullmessageformat = FORMAT_PLAIN;
             $eventdata->fullmessagehtml   = '';
             $eventdata->smallmessage      = '';
@@ -283,8 +283,8 @@ if (strlen($result) > 0) {
                 $eventdata->name              = 'paypal_enrolment';
                 $eventdata->userfrom          = $user;
                 $eventdata->userto            = $admin;
-                $eventdata->subject           = get_string("enrolmentnew", 'enrol', $shortname);
-                $eventdata->fullmessage       = get_string('enrolmentnewuser', 'enrol', $a);
+                $eventdata->subject           = $strmgr->get_string("enrolmentnew", 'enrol', $shortname, $admin->lang);
+                $eventdata->fullmessage       = $strmgr->get_string('enrolmentnewuser', 'enrol', $a, $admin->lang);
                 $eventdata->fullmessageformat = FORMAT_PLAIN;
                 $eventdata->fullmessagehtml   = '';
                 $eventdata->smallmessage      = '';

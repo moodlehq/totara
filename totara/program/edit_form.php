@@ -180,7 +180,7 @@ class program_edit_form extends moodleform {
             $mform->hardFreeze('summary_editor');
         } else {
             $mform->addHelpButton('summary_editor', 'summary', 'totara_program');
-            $mform->setType('summary_editor', PARAM_CLEANHTML);
+            $mform->setType('summary_editor', PARAM_RAW);
         }
 
         $mform->addElement('editor', 'endnote_editor', get_string('endnote', 'totara_program'), null, $editoroptions);
@@ -188,7 +188,7 @@ class program_edit_form extends moodleform {
             $mform->hardFreeze('endnote_editor');
         } else {
             $mform->addHelpButton('endnote_editor', 'endnote', 'totara_program');
-            $mform->setType('endnote_editor', PARAM_CLEANHTML);
+            $mform->setType('endnote_editor', PARAM_RAW);
         }
 
 

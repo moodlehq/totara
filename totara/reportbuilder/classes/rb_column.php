@@ -38,12 +38,14 @@
 class rb_column {
     /**
      * Column field mode. Adjust grouping fields to prepare cache data (NOGROUP),
-     * request to cache (CACHE), and normal work with cache turned off (REGULAR)
+     * request to cache (CACHE), normal work with cache turned off (REGULAR)
+     * or to return ALIASONLY or FIELDONLY
      */
     const REGULAR = 0;
     const CACHE = 1;
     const NOGROUP = 2;
     const ALIASONLY = 3;
+    const FIELDONLY = 4;
 
     /**
      * Used with value to define a column. These properties are used
@@ -287,9 +289,10 @@ class rb_column {
      *
      * @param object $src Source object containing grouping methods
      * @param int $aliasmode mode of alias handle (@see rb_column::REGULAR)
+     * @param bool $returnextrafields whether to return the $extrafields (true) or just the main field (false)
      * @return array Array of field names with aliases used to build a query
      */
-    function get_fields($src = null, $aliasmode = self::REGULAR) {
+    function get_fields($src = null, $aliasmode = self::REGULAR, $returnextrafields=true) {
         $field = $this->field;
         $type = $this->type;
         $value = $this->value;
@@ -298,9 +301,20 @@ class rb_column {
         $fields = array();
         if ($this->grouping == 'none') {
             if ($field !== null) {
-                $fields[] = ($aliasmode == self::CACHE) ? "{$type}_{$value}" : "{$field} AS {$type}_{$value}";
+                switch ($aliasmode) {
+                    case self::CACHE:
+                    case self::ALIASONLY:
+                        $fields[] = "{$type}_{$value}";
+                        break;
+                    case self::FIELDONLY:
+                        $fields[] = "{$field}";
+                        break;
+                    default:
+                        $fields[] = "{$field} AS {$type}_{$value}";
+                        break;
+                }
             }
-            if ($extrafields !== null) {
+            if ($returnextrafields && $extrafields !== null) {
                 foreach ($extrafields as $alias => $extrafield) {
                     $fields[] = ($aliasmode == self::CACHE) ? $alias : "$extrafield AS $alias";
                 }

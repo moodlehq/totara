@@ -36,7 +36,7 @@ function xmldb_totara_core_install() {
 
     $field = new xmldb_field('coursetype');
     if (!$dbman->field_exists($table, $field)) {
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '4', XMLDB_UNSIGNED, null, null, null, null);
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '4', null, null, null, null, null);
         $dbman->add_field($table, $field);
     }
 
@@ -65,7 +65,7 @@ function xmldb_totara_core_install() {
     $manager             = $DB->get_record('role', array('shortname' => 'manager'));
     $managerrole         = $manager->id;
     $staffmanagerrole    = create_role('', 'staffmanager', '', 'staffmanager');
-    $assessorrole        = create_role('', 'assessor', '');
+    $assessorrole        = create_role('', 'assessor', '', 'assessor');
     $regionalmanagerrole = create_role('', 'regionalmanager', '');
     $regionaltrainerrole = create_role('', 'regionaltrainer', '');
 
@@ -113,6 +113,11 @@ function xmldb_totara_core_install() {
         'teacher' => 'trainer',
         'student' => 'learner'
     );
+
+    $DB->update_record('role', array('id' => $assessorrole, 'archetype' => 'assessor'));
+    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $assessorrole, $systemcontext->id, true);
+    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $regionalmanagerrole, $systemcontext->id, true);
+    assign_capability('moodle/user:editownprofile', CAP_ALLOW, $regionaltrainerrole, $systemcontext->id, true);
 
     foreach ($role_to_modify as $old => $new) {
         if ($old_role = $DB->get_record('role', array('shortname' => $old))) {
@@ -169,5 +174,11 @@ function xmldb_totara_core_install() {
     // was never implemented and is no longer in totara
     $DB->delete_records('course_completion_criteria', array('criteriatype' => 3));
 
+    //disable autoupdate notifications from Moodle
+    set_config('disableupdatenotifications', '1');
+    set_config('disableupdateautodeploy', '1');
+    set_config('updateautodeploy', false);
+    set_config('updateautocheck', false);
+    set_config('updatenotifybuilds', false);
     return true;
 }

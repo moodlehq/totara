@@ -218,12 +218,14 @@ switch ($mode) {
                 $a->response = s($essayinfo->answer);
                 $a->comment  = s($essayinfo->response);
 
+                $strmgr = get_string_manager();
+                $userlang = $users[$attempt->userid]->lang;
                 // Fetch message HTML and plain text formats
-                $message  = get_string('essayemailmessage2', 'lesson', $a);
+                $message  = $strmgr->get_string('essayemailmessage2', 'lesson', $a, $userlang);
                 $plaintext = format_text_email($message, FORMAT_HTML);
 
                 // Subject
-                $subject = get_string('essayemailsubject', 'lesson', format_string($pages[$attempt->pageid]->title,true));
+                $subject = $strmgr->get_string('essayemailsubject', 'lesson', format_string($pages[$attempt->pageid]->title,true), $userlang);
 
                 $eventdata = new stdClass();
                 $eventdata->modulename       = 'lesson';

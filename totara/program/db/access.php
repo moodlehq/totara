@@ -72,6 +72,7 @@ $capabilities = array(
 
     // Create new programs
     'totara/program:createprogram' => array(
+        'riskbitmask' => RISK_XSS | RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_PROGRAM,
         'archetypes' => array(
@@ -95,7 +96,7 @@ $capabilities = array(
 
     // Ability to edit and delete programs
     'totara/program:configureprogram' => array(
-        'riskbitmask' => RISK_DATALOSS |
+        'riskbitmask' => RISK_DATALOSS | RISK_XSS |
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_PROGRAM,
@@ -106,7 +107,7 @@ $capabilities = array(
 
     // Ability to edit the program details tab
     'totara/program:configuredetails' => array(
-        'riskbitmask' => RISK_DATALOSS |
+        'riskbitmask' => RISK_DATALOSS | RISK_XSS |
             RISK_CONFIG,
         'captype' => 'write',
         'contextlevel' => CONTEXT_PROGRAM,

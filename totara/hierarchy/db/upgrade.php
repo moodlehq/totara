@@ -135,9 +135,15 @@ function xmldb_totara_hierarchy_upgrade($oldversion) {
         $compevidenceitemsevidence = new xmldb_table('comp_evidence_items_evidence');
 
 
-        $dbman->rename_table($compevidence, 'comp_record');
-        $dbman->rename_table($compevidenceitems, 'comp_criteria');
-        $dbman->rename_table($compevidenceitemsevidence, 'comp_criteria_record');
+        if ($dbman->table_exists($compevidence)) {
+            $dbman->rename_table($compevidence, 'comp_record');
+        }
+        if ($dbman->table_exists($compevidenceitems)) {
+            $dbman->rename_table($compevidenceitems, 'comp_criteria');
+        }
+        if ($dbman->table_exists($compevidenceitemsevidence)) {
+            $dbman->rename_table($compevidenceitemsevidence, 'comp_criteria_record');
+        }
 
         // Indexes
         $indexes = array(

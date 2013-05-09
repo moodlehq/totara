@@ -4611,6 +4611,9 @@ function delete_course($courseorid, $showfeedback = true) {
         return false;
     }
 
+    // Handle course badges.
+    badges_handle_course_deletion($courseid);
+
     // make the course completely empty
     remove_course_contents($courseid, $showfeedback);
 
@@ -5705,9 +5708,10 @@ function reset_password_and_mail($user) {
     $a->link        = $CFG->httpswwwroot .'/login/change_password.php';
     $a->signoff     = generate_email_signoff();
 
-    $message = get_string('newpasswordtext', '', $a);
+    $strmgr = get_string_manager();
+    $message = $strmgr->get_string('newpasswordtext', 'moodle', $a, $user->lang);
 
-    $subject  = format_string($site->fullname) .': '. get_string('changedpassword');
+    $subject  = format_string($site->fullname) .': '. $strmgr->get_string('changedpassword', 'moodle', null, $user->lang);
 
     unset_user_preference('create_password', $user); // prevent cron from generating the password
 
@@ -5734,13 +5738,14 @@ function reset_password_and_mail($user) {
     $data->sitename  = format_string($site->fullname);
     $data->admin     = generate_email_signoff();
 
-    $subject = get_string('emailconfirmationsubject', '', format_string($site->fullname));
+    $strmgr = get_string_manager();
+    $subject = $strmgr->get_string('emailconfirmationsubject', 'moodle', format_string($site->fullname), $user->lang);
 
     $username = urlencode($user->username);
     $username = str_replace('.', '%2E', $username); // prevent problems with trailing dots
     $data->link  = $CFG->wwwroot .'/login/confirm.php?data='. $user->secret .'/'. $username;
-    $message     = get_string('emailconfirmation', '', $data);
-    $messagehtml = text_to_html(get_string('emailconfirmation', '', $data), false, false, true);
+    $message     = $strmgr->get_string('emailconfirmation', 'moodle', $data, $user->lang);
+    $messagehtml = text_to_html($strmgr->get_string('emailconfirmation', 'moodle', $data, $user->lang), false, false, true);
 
     $user->mailformat = 1;  // Always send HTML version as well
 
@@ -5761,7 +5766,7 @@ function send_password_change_confirmation_email($user) {
 
     $site = get_site();
     $supportuser = generate_email_supportuser();
-
+    $strmgr = get_string_manager();
     $data = new stdClass();
     $data->firstname = $user->firstname;
     $data->lastname  = $user->lastname;
@@ -5769,8 +5774,8 @@ function send_password_change_confirmation_email($user) {
     $data->link      = $CFG->httpswwwroot .'/login/forgot_password.php?p='. $user->secret .'&s='. urlencode($user->username);
     $data->admin     = generate_email_signoff();
 
-    $message = get_string('emailpasswordconfirmation', '', $data);
-    $subject = get_string('emailpasswordconfirmationsubject', '', format_string($site->fullname));
+    $message = $strmgr->get_string('emailpasswordconfirmation', 'moodle', $data, $user->lang);
+    $subject = $strmgr->get_string('emailpasswordconfirmationsubject', 'moodle', format_string($site->fullname), $user->lang);
 
     //directly email rather than using the messaging system to ensure its not routed to a popup or jabber
     return email_to_user($user, $supportuser, $subject, $message);
@@ -5791,6 +5796,7 @@ function send_password_change_info($user) {
     $supportuser = generate_email_supportuser();
     $systemcontext = context_system::instance();
 
+    $strmgr = get_string_manager();
     $data = new stdClass();
     $data->firstname = $user->firstname;
     $data->lastname  = $user->lastname;
@@ -5800,8 +5806,8 @@ function send_password_change_info($user) {
     $userauth = get_auth_plugin($user->auth);
 
     if (!is_enabled_auth($user->auth) or $user->auth == 'nologin') {
-        $message = get_string('emailpasswordchangeinfodisabled', '', $data);
-        $subject = get_string('emailpasswordchangeinfosubject', '', format_string($site->fullname));
+        $message = $strmgr->get_string('emailpasswordchangeinfodisabled', 'moodle', $data, $user->lang);
+        $subject = $strmgr->get_string('emailpasswordchangeinfosubject', 'moodle', format_string($site->fullname), $user->lang);
         //directly email rather than using the messaging system to ensure its not routed to a popup or jabber
         return email_to_user($user, $supportuser, $subject, $message);
     }
@@ -5816,11 +5822,11 @@ function send_password_change_info($user) {
     }
 
     if (!empty($data->link) and has_capability('moodle/user:changeownpassword', $systemcontext, $user->id)) {
-        $message = get_string('emailpasswordchangeinfo', '', $data);
-        $subject = get_string('emailpasswordchangeinfosubject', '', format_string($site->fullname));
+        $message = $strmgr->get_string('emailpasswordchangeinfo', 'moodle', $data, $user->lang);
+        $subject = $strmgr->get_string('emailpasswordchangeinfosubject', 'moodle', format_string($site->fullname), $user->lang);
     } else {
-        $message = get_string('emailpasswordchangeinfofail', '', $data);
-        $subject = get_string('emailpasswordchangeinfosubject', '', format_string($site->fullname));
+        $message = $strmgr->get_string('emailpasswordchangeinfofail', 'moodle', $data, $user->lang);
+        $subject = $strmgr->get_string('emailpasswordchangeinfosubject', 'moodle', format_string($site->fullname), $user->lang);
     }
 
     //directly email rather than using the messaging system to ensure its not routed to a popup or jabber
@@ -10616,6 +10622,7 @@ function apd_get_profiling() {
  * @return bool success, true also if dir does not exist
  */
 function remove_dir($dir, $content_only=false) {
+    global $CFG;
     if (!file_exists($dir)) {
         // nothing to do
         return true;
@@ -10629,7 +10636,13 @@ function remove_dir($dir, $content_only=false) {
             if(is_dir($dir.'/'.$item)) {
                 $result = remove_dir($dir.'/'.$item) && $result;
             }else{
-                $result = unlink($dir.'/'.$item) && $result;
+                if ($CFG->ostype == 'WINDOWS') {
+                    // WINDOWS specific bug when META-INF folder locked by javaw process and cannot be deleted
+                    $result = @unlink($dir.'/'.$item) && $result;
+                } else {
+                    $result = unlink($dir.'/'.$item) && $result;
+                }
+
             }
         }
     }
@@ -10638,7 +10651,13 @@ function remove_dir($dir, $content_only=false) {
         clearstatcache(); // make sure file stat cache is properly invalidated
         return $result;
     }
-    $result = rmdir($dir); // if anything left the result will be false, no need for && $result
+
+    if ($CFG->ostype == 'WINDOWS') {
+        // WINDOWS specific bug when META-INF folder locked by javaw process and cannot be deleted
+        $result = @rmdir($dir);
+    } else {
+        $result = rmdir($dir); // if anything left the result will be false, no need for && $result
+    }
     clearstatcache(); // make sure file stat cache is properly invalidated
     return $result;
 }

@@ -478,7 +478,7 @@ function enrol_add_course_navigation(navigation_node $coursenode, $course) {
                 $plugin = $plugins[$instance->enrol];
                 if ($unenrollink = $plugin->get_unenrolself_link($instance)) {
                     $shortname = format_string($course->shortname, true, array('context' => $coursecontext));
-                    $coursenode->add(get_string('unenrolme', 'core_enrol', $shortname), $unenrollink, navigation_node::TYPE_SETTING, null, 'unenrolself', new pix_icon('i/user', ''));
+                    $coursenode->add(get_string('unenrolme', 'core_enrol', $shortname), $unenrollink, navigation_node::TYPE_SETTING, null, 'unenrolself', new pix_icon('i/userdel', ''));
                     break;
                     //TODO. deal with multiple unenrol links - not likely case, but still...
                 }
@@ -496,7 +496,7 @@ function enrol_add_course_navigation(navigation_node $coursenode, $course) {
                     if ($plugin->show_enrolme_link($instance)) {
                         $url = new moodle_url('/enrol/index.php', array('id'=>$course->id));
                         $shortname = format_string($course->shortname, true, array('context' => $coursecontext));
-                        $coursenode->add(get_string('enrolme', 'core_enrol', $shortname), $url, navigation_node::TYPE_SETTING, null, 'enrolself', new pix_icon('i/user', ''));
+                        $coursenode->add(get_string('enrolme', 'core_enrol', $shortname), $url, navigation_node::TYPE_SETTING, null, 'enrolself', new pix_icon('i/useradd', ''));
                         break;
                     }
                 }
@@ -1589,27 +1589,19 @@ abstract class enrol_plugin {
                   WHERE e.courseid = ?
                   AND ue.userid {$sqlin}";
         $uenotlast = $DB->get_records_sql($sql, array_merge(array($courseid), $sqlinparams));
-        foreach ($uenotlast as $e) {
-            unset($ue[$e->id]);
-        }
         if (!empty($uenotlast)) {
             // user still has some enrolments in the course, no big cleanup needed
             $eventdata = new stdClass;
-            $eventdata->ue = $uenotlast;
+            $eventdata->ue = $ue;
             $eventdata->courseid = $courseid;
             $eventdata->enrol = $name;
             $eventdata->lastenrol = false;
             events_trigger('user_unenrolled_bulk', $eventdata);
-        }
-        unset($uenotlast);
-
-        if (!empty($ue)) {
+        } else {
             // users' last enrolment intance in course - do big cleanup
 
             require_once("$CFG->dirroot/group/lib.php");
             require_once("$CFG->libdir/gradelib.php");
-
-            $userids = array_keys($ue);
 
             // remove all remaining roles
             role_unassign_all_bulk(array('userids' => $userids, 'contextid' => $context->id), true, false);

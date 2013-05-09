@@ -25,6 +25,10 @@ echo './build*
 ./config.php
 ./cucumber.yml
 ./webrat*
+./phpunit.xml
+./composer.phar
+./composer.lock
+./vendor*
 ' > $IGNOREFILE
 
 # try and figure out the totara version

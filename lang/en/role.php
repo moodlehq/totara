@@ -47,6 +47,7 @@ $string['archetypestudent'] = 'ARCHETYPE: Student';
 $string['archetypeteacher'] = 'ARCHETYPE: Teacher (non-editing)';
 $string['archetypeuser'] = 'ARCHETYPE: Authenticated user';
 $string['archetypestaffmanager'] = 'ARCHETYPE: Staff Manager';
+$string['archetypeassessor'] = 'ARCHETYPE: Assessor';
 $string['assignanotherrole'] = 'Assign another role';
 $string['assignerror'] = 'Error while assigning the role {$a->role} to user {$a->user}.';
 $string['assignglobalroles'] = 'Assign system roles';

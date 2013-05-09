@@ -142,6 +142,7 @@ class rb_bookings_embedded_cache_test extends reportcache_advanced_testcase {
         $session->duration = 1;
         $session->normalcost = 0;
         $session->discountcost = 0;
+        $session->roomid = 1;
         $session->usermodified = 2;
 
         $delta = ($timeinverse) ? -1 * $this->delta : $this->delta;

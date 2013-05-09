@@ -342,7 +342,7 @@ function totara_readd_course_completion_changes() {
 
     /// Define field status to be added to course_completions
     $table = new xmldb_table('course_completions');
-    $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, 0, 'reaggregate');
+    $field = new xmldb_field('status', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, 0, 'reaggregate');
     if (!$dbman->field_exists($table, $field)) {
         $dbman->add_field($table, $field);
 

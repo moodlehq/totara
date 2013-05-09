@@ -1474,40 +1474,31 @@ function upgrade_core($version, $verbose) {
         // This ensures that we don't permanently cache anything during installation.
         cache_factory::disable_stores();
 
+        print_upgrade_part_start('moodle', false, $verbose);
         // Upgrade current language pack if we can
         upgrade_language_pack();
+        //upgrade all language packs if we can
+        totara_upgrade_installed_languages();
 
-        print_upgrade_part_start('moodle', false, $verbose);
-
-        // one time special local migration pre 2.0 upgrade script
-        if ($CFG->version < 2007101600) {
-            $pre20upgradefile = "{$CFG->dirroot}/local/upgrade_pre20.php";
-            if (file_exists($pre20upgradefile)) {
+        // one time special upgrade script for items that need fixing before main upgrade runs
+        if ($CFG->version < 2012120303.02) {
+            $initialupgradefile = "{$CFG->dirroot}/totara/core/upgrade/upgrade_initialise.php";
+            if (file_exists($initialupgradefile)) {
                 set_time_limit(0);
-                require($pre20upgradefile);
+                require($initialupgradefile);
                 // reset upgrade timeout to default
                 upgrade_set_timeout();
             }
         }
 
-        //only run if upgrading a Totara installation
+        //double-check version numbers when upgrading a Totara installation
         if (isset($CFG->totara_release)){
-            if (substr($CFG->totara_release,0,3) == '1.0') {
+            if (substr($CFG->totara_release,0,3) == '1.0' || substr($CFG->totara_release,0,3) == '1.1') {
                 $a = new stdClass();
                 $a->currentversion = $CFG->totara_release;
                 $a->attemptedversion = $TOTARA->release;
-                $a->required = get_string('totara11requiredupgradeversion', 'totara_core');
-                throw new moodle_exception('totaraupgradefrom10', 'totara_core', '', $a);
-            }
-            if (substr($CFG->totara_release,0,3) == '1.1') {
-                //run special one-off Totara upgrades
-                $pre20upgradefile = "{$CFG->dirroot}/totara/core/db/upgrade_pre20.php";
-                if (file_exists($pre20upgradefile)) {
-                    set_time_limit(0);
-                    require_once($pre20upgradefile);
-                    // reset upgrade timeout to default
-                    upgrade_set_timeout();
-                }
+                $a->required = get_string('totararequiredupgradeversion', 'totara_core');
+                throw new moodle_exception('totaraunsupportedupgradepath', 'totara_core', '', $a);
             }
         }
 

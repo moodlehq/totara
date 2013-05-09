@@ -561,7 +561,7 @@ if (!$csv) {
 
                 // Display icon
                 $iconalt = $role->name;
-                $icon = $OUTPUT->pix_url('i/roles');
+                $icon = $OUTPUT->pix_url('t/assignroles');
                 break;
 
             case COMPLETION_CRITERIA_TYPE_SELF:

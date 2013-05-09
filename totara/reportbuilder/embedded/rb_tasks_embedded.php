@@ -48,7 +48,7 @@ class rb_tasks_embedded extends rb_base_embedded {
             ),
             array(
                 'type' => 'message_values',
-                'value' => 'statementurl',
+                'value' => 'statement',
                 'heading' => get_string('details', 'rb_source_totaramessages'),
             ),
                 array(

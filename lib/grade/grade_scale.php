@@ -51,6 +51,12 @@ class grade_scale extends grade_object {
     public $required_fields = array('id', 'courseid', 'userid', 'name', 'scale', 'description', 'descriptionformat', 'timemodified');
 
     /**
+     * Array of text table fields.
+     * @var array $text_fields
+     */
+    public $text_fields = array('scale', 'description');
+
+    /**
      * The course this scale belongs to.
      * @var int $courseid
      */

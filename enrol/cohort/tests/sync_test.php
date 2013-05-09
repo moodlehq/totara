@@ -49,9 +49,6 @@ class enrol_cohort_testcase extends advanced_testcase {
     public function test_handler_sync() {
         global $DB;
 
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
-
         $this->resetAfterTest();
 
         // Setup a few courses and categories.
@@ -262,9 +259,6 @@ class enrol_cohort_testcase extends advanced_testcase {
     public function test_sync_course() {
         global $DB;
 
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
-
         $this->resetAfterTest();
 
         // Setup a few courses and categories.
@@ -441,9 +435,6 @@ class enrol_cohort_testcase extends advanced_testcase {
 
     public function test_sync_all_courses() {
         global $DB;
-
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
 
         $this->resetAfterTest();
 

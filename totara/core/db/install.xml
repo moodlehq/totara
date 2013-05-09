@@ -6,9 +6,9 @@
   <TABLES>
     <TABLE NAME="course_info_data" COMMENT="Custom course fields data" NEXT="course_info_field">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fieldid"/>
-        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="courseid"/>
-        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="fieldid" NEXT="data"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fieldid"/>
+        <FIELD NAME="fieldid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="fieldid" NEXT="data"/>
         <FIELD NAME="data" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="courseid"/>
       </FIELDS>
       <KEYS>
@@ -20,17 +20,17 @@
     </TABLE>
     <TABLE NAME="course_info_field" COMMENT="Custom course fields" PREVIOUS="course_info_data" NEXT="oldpassword">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="fullname"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="fullname"/>
         <FIELD NAME="fullname" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="shortname"/>
         <FIELD NAME="shortname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="fullname" NEXT="datatype"/>
         <FIELD NAME="datatype" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="shortname" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="datatype" NEXT="sortorder"/>
-        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="description" NEXT="categoryid"/>
-        <FIELD NAME="categoryid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidden"/>
-        <FIELD NAME="hidden" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="categoryid" NEXT="locked"/>
-        <FIELD NAME="locked" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
-        <FIELD NAME="required" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
-        <FIELD NAME="forceunique" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
+        <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="description" NEXT="categoryid"/>
+        <FIELD NAME="categoryid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="sortorder" NEXT="hidden"/>
+        <FIELD NAME="hidden" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="categoryid" NEXT="locked"/>
+        <FIELD NAME="locked" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="hidden" NEXT="required"/>
+        <FIELD NAME="required" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="locked" NEXT="forceunique"/>
+        <FIELD NAME="forceunique" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="required" NEXT="defaultdata"/>
         <FIELD NAME="defaultdata" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="forceunique" NEXT="param1"/>
         <FIELD NAME="param1" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="defaultdata" NEXT="param2"/>
         <FIELD NAME="param2" TYPE="text" LENGTH="big" NOTNULL="false" SEQUENCE="false" PREVIOUS="param1" NEXT="param3"/>
@@ -44,8 +44,8 @@
     </TABLE>
     <TABLE NAME="oldpassword" COMMENT="Password rotation log of old passwords" PREVIOUS="course_info_field" NEXT="reminder">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="uid"/>
-        <FIELD NAME="uid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="hash"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="uid"/>
+        <FIELD NAME="uid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="hash"/>
         <FIELD NAME="hash" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" PREVIOUS="uid"/>
       </FIELDS>
       <KEYS>
@@ -57,15 +57,15 @@
     </TABLE>
     <TABLE NAME="reminder" COMMENT="Totara course reminders" PREVIOUS="oldpassword" NEXT="reminder_message">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="courseid"/>
-        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="title"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="courseid"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="title"/>
         <FIELD NAME="title" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="courseid" NEXT="type"/>
         <FIELD NAME="type" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="title" NEXT="config"/>
         <FIELD NAME="config" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" PREVIOUS="type" NEXT="timecreated"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="config" NEXT="timemodified"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
-        <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="deleted"/>
-        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="modifierid"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="config" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="timecreated" NEXT="modifierid"/>
+        <FIELD NAME="modifierid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="timemodified" NEXT="deleted"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="modifierid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for reminder"/>
@@ -78,14 +78,14 @@
     </TABLE>
     <TABLE NAME="reminder_message" COMMENT="Totara course reminder messages" PREVIOUS="reminder" NEXT="reminder_sent">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="reminderid"/>
-        <FIELD NAME="reminderid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="type"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="reminderid"/>
+        <FIELD NAME="reminderid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="type"/>
         <FIELD NAME="type" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="reminderid" NEXT="period"/>
-        <FIELD NAME="period" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="type" NEXT="copyto"/>
+        <FIELD NAME="period" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="type" NEXT="copyto"/>
         <FIELD NAME="copyto" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="period" NEXT="subject"/>
         <FIELD NAME="subject" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" PREVIOUS="copyto" NEXT="message"/>
         <FIELD NAME="message" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" PREVIOUS="subject" NEXT="deleted"/>
-        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="message"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" PREVIOUS="message"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for reminder_message"/>
@@ -98,11 +98,11 @@
     </TABLE>
     <TABLE NAME="reminder_sent" COMMENT="Totara course reminders log of messages sent" PREVIOUS="reminder_message" NEXT="errorlog">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="reminderid"/>
-        <FIELD NAME="reminderid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="messageid"/>
-        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="reminderid" NEXT="userid"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="messageid" NEXT="timesent"/>
-        <FIELD NAME="timesent" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="reminderid"/>
+        <FIELD NAME="reminderid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="messageid"/>
+        <FIELD NAME="messageid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="reminderid" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="messageid" NEXT="timesent"/>
+        <FIELD NAME="timesent" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for reminder_sent"/>
@@ -115,8 +115,8 @@
     </TABLE>
     <TABLE NAME="errorlog" COMMENT="Totara additional errorlog data" PREVIOUS="reminder_sent">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="timeoccured"/>
-        <FIELD NAME="timeoccured" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="version"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="timeoccured"/>
+        <FIELD NAME="timeoccured" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="version"/>
         <FIELD NAME="version" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="timeoccured" NEXT="build"/>
         <FIELD NAME="build" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" PREVIOUS="version" NEXT="details"/>
         <FIELD NAME="details" TYPE="text" LENGTH="big" NOTNULL="true" SEQUENCE="false" PREVIOUS="build" NEXT="hash"/>

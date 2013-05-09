@@ -1313,6 +1313,13 @@ class mysqli_native_moodle_database extends moodle_database {
     }
 
     public function sql_cast_char2int($fieldname, $text=false) {
+        $serverinfo = $this->get_server_info();
+        if (version_compare($serverinfo['version'], '5.5.31', '<')) {
+            // Explicit casting due to MySQL bug (definitely works in 5.5.31, but broken in 5.1.67)
+            // Appears when CAST used in CREATE TABLE AS SELECT for non-empty MEDIUMTEXT/LONGTEXT fields
+            // Maximum MySQL SIGNED BIGINT can be no more than 20 chars (including minus)
+            $fieldname = 'CAST(' . $fieldname . ' AS CHAR(20))';
+        }
         return ' CAST(' . $fieldname . ' AS SIGNED) ';
     }
 

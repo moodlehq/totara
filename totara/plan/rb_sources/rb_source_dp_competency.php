@@ -352,6 +352,19 @@ from
 
         $columnoptions[] = new rb_column_option(
                 'competency',
+                'competencyeditstatus',
+                get_string('competencyeditstatus', 'rb_source_dp_competency'),
+                'dp_competency.competencyid',
+                array(
+                    'defaultheading' => 'Plan',
+                    'joins' => 'dp_competency',
+                    'displayfunc' => 'competencyeditstatus',
+                    'extrafields' => array( 'planid' => 'dp_competency.planid' )
+                )
+        );
+
+        $columnoptions[] = new rb_column_option(
+                'competency',
                 'type',
                 get_string('competencytype', 'rb_source_dp_competency'),
                 'comp_type.fullname',
@@ -451,18 +464,6 @@ from
                 )
         );
 
-        $columnoptions[] = new rb_column_option(
-                'competency',
-                'addcompetencyevidencelink',
-                get_string('competencyevidence', 'totara_hierarchy'),
-                'dp_competency.competencyid',
-                array(
-                    'defaultheading' => 'Plan',
-                    'joins' => 'dp_competency',
-                    'displayfunc' => 'addcompetencyevidencelink',
-                    'extrafields' => array( 'planid' => 'dp_competency.planid' )
-                )
-        );
 
         $this->add_user_fields_to_columns($columnoptions);
 
@@ -615,7 +616,7 @@ from
      * @param $competencyid
      * @param $row
      */
-    public function rb_display_addcompetencyevidencelink($competencyid, $row) {
+    public function rb_display_competencyeditstatus($competencyid, $row) {
 
         $planid = isset($row->planid) ? $row->planid : null;
         if ($planid) {
@@ -712,7 +713,7 @@ from
                 $content[] = html_writer::select($compscale,
                                               'competencyevidencestatus'.$plancompid,
                                               $compevscalevalueid,
-                                              array(($compevscalevalueid ? '' : 0) => ($compevscalevalueid ? '' : get_string('notset', 'totara_reportbuilder'))),
+                                              array(($compevscalevalueid ? '' : 0) => ($compevscalevalueid ? '' : get_string('notset', 'totara_hierarchy'))),
                                               $attributes);
             } else if ($status) {
                 $content[] = $status;

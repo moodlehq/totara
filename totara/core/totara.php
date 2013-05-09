@@ -27,6 +27,97 @@ if (!defined('MOODLE_INTERNAL')) {
     die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
 }
 
+define('PUBLIC_KEY_PATH', $CFG->dirroot . '/totara_public.pem');
+
+/**
+ * Returns the major Totara version of this site (which may be different from Moodle in older versions)
+ *
+ * Totara version numbers consist of three numbers (four for emergency releases)separated by a dot,
+ * for example 1.9.11 or 2.0.2. The first two numbers, like 1.9 or 2.0, represent so
+ * called major version. This function extracts the major version from
+ * the $TOTARA->version variable defined in the main version.php.
+ *
+ * @return string|false the major version like '2.3', false if could not be determined
+ */
+function totara_major_version() {
+    global $CFG;
+
+    $release = null;
+    require($CFG->dirroot.'/version.php');
+    if (empty($TOTARA)) {
+        return false;
+    }
+
+    if (preg_match('/^[0-9]+\.[0-9]+/', $release, $matches)) {
+        return $matches[0];
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Setup version information for installs and upgrades
+ *
+ * Moodle and Totara version numbers consist of three numbers (four for emergency releases)separated by a dot,
+ * for example 1.9.11 or 2.0.2. The first two numbers, like 1.9 or 2.0, represent so
+ * called major version. This function extracts the Moodle and Totara version info for use in checks and messages
+ * @param $version the moodle version number from the root version.php
+ * @param $release the moodle release string from the root version.php
+ * @return object containing moodle and totara version info
+ */
+function totara_version_info($version, $release) {
+    global $CFG, $TOTARA;
+
+    $a = new stdClass();
+    $a->existingtotaraversion = false;
+    $a->newtotaraversion = $TOTARA->version;
+    if (!empty($CFG->totara_release)) {
+        $a->canupgrade = true;
+        if (isset($CFG->totara_version)) {
+            //on at least Totara 2.2, check it is 2.2.13 or greater
+            $parts = explode(" ", $CFG->totara_release);
+            $a->existingtotaraversion = trim($parts[0]);
+            $a->canupgrade = version_compare($a->existingtotaraversion, '2.2.13', '>=');
+        } else {
+            //$CFG->totara_version was not set in 1.1 or early 2.2 releases
+            $a->canupgrade = false;
+        }
+        // if upgrading from totara, require v2.2.13 or greater
+        if (!$a->canupgrade) {
+            $a->totaraupgradeerror = 'error:cannotupgradefromtotara';
+            return $a;
+        }
+    } else if (empty($CFG->local_postinst_hasrun) &&
+            !empty($CFG->version) && $CFG->version < 2011120507) {
+        //upgrading from moodle, require at least v2.2.7
+        $a->totaraupgradeerror = 'error:cannotupgradefrommoodle';
+        return $a;
+    }
+
+    // If a Moodle core upgrade:
+    if ($version > $CFG->version) {
+        $moodleprefix = get_string('moodlecore', 'totara_core').':';
+        $a->oldversion .= "{$moodleprefix}<br />{$CFG->release}";
+        $a->newversion .= "{$moodleprefix}<br />{$release}";
+    }
+
+    // If a Totara core upgrade
+    if (!isset($CFG->totara_build) || (isset($CFG->totara_build) && version_compare($a->newtotaraversion, $a->existingtotaraversion, '>'))) {
+        $totaraprefix = get_string('totaracore','totara_core').':';
+        $moodlespacing = ($version > $CFG->version) ? '<br /><br />' : '';
+        // If a Moodle and a Totara upgrade, tidy up the markup
+        if (!isset($CFG->totara_build)) {
+            //upgrading from versions prior to M2.2.3 or T2.2.13 is no longer possible
+            //so if totara_build is not set this must be an upgrade from vanilla Moodle
+            $a->newversion .= "{$moodlespacing}{$totaraprefix}<br />{$TOTARA->release}";
+        } else {
+            $a->oldversion .= "{$moodlespacing}{$totaraprefix}<br />{$CFG->totara_release}";
+            $a->newversion .= "{$moodlespacing}{$totaraprefix}<br />{$TOTARA->release}";
+        }
+    }
+    return $a;
+}
+
 /**
  * gets a clean timezone array compatible with PHP DateTime, DateTimeZone etc functions
  * @param bool $assoc return a simple numerical index array or an associative array
@@ -173,6 +264,118 @@ function totara_get_clean_timezone($tz=null) {
     }
     //everything has failed, set to London
     return $default;
+}
+
+/**
+ * checks the md5 of the zip file, grabbed from download.moodle.org,
+ * against the md5 of the local language file from last update
+ * @param string $lang
+ * @param string $md5check
+ * @return bool
+ */
+function local_is_installed_lang($lang, $md5check) {
+    global $CFG;
+    $md5file = $CFG->dataroot.'/lang/'.$lang.'/'.$lang.'.md5';
+    if (file_exists($md5file)){
+        return (file_get_contents($md5file) == $md5check);
+    }
+    return false;
+}
+
+/**
+ * Runs on every upgrade to get the latest language packs from Totara language server
+ *
+ * Code mostly refactored from admin/tool/langimport/index.php
+ *
+ * @return  void
+ */
+function totara_upgrade_installed_languages() {
+    global $CFG, $OUTPUT;
+    require_once($CFG->libdir.'/adminlib.php');
+    require_once($CFG->libdir.'/filelib.php');
+    require_once($CFG->libdir.'/componentlib.class.php');
+    set_time_limit(0);
+    $notice_ok = array();
+    $notice_error = array();
+    $installer = new lang_installer();
+
+    if (!$availablelangs = $installer->get_remote_list_of_languages()) {
+        echo $OUTPUT->notification(get_string('cannotdownloadlanguageupdatelist', 'error'), 'notifyproblem');
+        return;
+    }
+    $md5array = array();    // (string)langcode => (string)md5
+    foreach ($availablelangs as $alang) {
+        $md5array[$alang[0]] = $alang[1];
+    }
+
+    // filter out unofficial packs
+    $currentlangs = array_keys(get_string_manager()->get_list_of_translations(true));
+    $updateablelangs = array();
+    foreach ($currentlangs as $clang) {
+        if (!array_key_exists($clang, $md5array)) {
+            $notice_ok[] = get_string('langpackupdateskipped', 'tool_langimport', $clang);
+            continue;
+        }
+        $dest1 = $CFG->dataroot.'/lang/'.$clang;
+        $dest2 = $CFG->dirroot.'/lang/'.$clang;
+
+        if (file_exists($dest1.'/langconfig.php') || file_exists($dest2.'/langconfig.php')){
+            $updateablelangs[] = $clang;
+        }
+    }
+
+    // then filter out packs that have the same md5 key
+    $neededlangs = array();   // all the packs that needs updating
+    foreach ($updateablelangs as $ulang) {
+        if (!local_is_installed_lang($ulang, $md5array[$ulang])) {
+            $neededlangs[] = $ulang;
+        }
+    }
+
+    make_temp_directory('');
+    make_upload_directory('lang');
+
+    // install all needed language packs
+    $installer->set_queue($neededlangs);
+    $results = $installer->run();
+    $updated = false;    // any packs updated?
+    foreach ($results as $langcode => $langstatus) {
+        switch ($langstatus) {
+        case lang_installer::RESULT_DOWNLOADERROR:
+            $a       = new stdClass();
+            $a->url  = $installer->lang_pack_url($langcode);
+            $a->dest = $CFG->dataroot.'/lang';
+            echo $OUTPUT->notification(get_string('remotedownloaderror', 'error', $a), 'notifyproblem');
+            break;
+        case lang_installer::RESULT_INSTALLED:
+            $updated = true;
+            $notice_ok[] = get_string('langpackinstalled', 'tool_langimport', $langcode);
+            break;
+        case lang_installer::RESULT_UPTODATE:
+            $notice_ok[] = get_string('langpackuptodate', 'tool_langimport', $langcode);
+            break;
+        }
+    }
+
+    if ($updated) {
+        $notice_ok[] = get_string('langupdatecomplete', 'tool_langimport');
+    } else {
+        $notice_ok[] = get_string('nolangupdateneeded', 'tool_langimport');
+    }
+
+    unset($installer);
+    get_string_manager()->reset_caches();
+    //display notifications
+    $delimiter = (CLI_SCRIPT) ? "\n" : html_writer::empty_tag('br');
+    if (!empty($notice_ok)) {
+        $info = implode($delimiter, $notice_ok);
+        echo $OUTPUT->notification($info, 'notifysuccess');
+    }
+
+    if (!empty($notice_error)) {
+        $info = implode($delimiter, $notice_error);
+        echo $OUTPUT->notification($info, 'notifyproblem');
+    }
 }
 
 /**
@@ -1094,7 +1297,8 @@ function totara_reset_mymoodle_blocks() {
 
     // insert blocks
     foreach ($blocks as $b) {
-        $DB->insert_record('block_instances', $b);
+        $blockid = $DB->insert_record('block_instances', $b);
+        context_block::instance($blockid);
     }
 
     //A separate set up for a quicklinks block as it needs additional data to be added on install
@@ -1326,4 +1530,28 @@ function totara_theme_generate_autocolors($css, $theme, $substitutions) {
         }
     }
     return str_replace($find, $replace, $css);
+}
+
+/**
+ * Encrypt any string using totara public key
+ *
+ * @param string $plaintext
+ * @param string $key Public key If not set totara public key will be used
+ * @return string Encrypted data
+ */
+function encrypt_data($plaintext, $key = '') {
+    global $CFG;
+    require_once($CFG->libdir.'/phpseclib/Crypt/RSA.php');
+
+    $rsa = new Crypt_RSA();
+    if ($key == '') {
+        $key = file_get_contents(PUBLIC_KEY_PATH);
+    }
+    if (!$key) {
+        return false;
+    }
+    $rsa->loadKey($key);
+    $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
+    $ciphertext = $rsa->encrypt($plaintext);
+    return $ciphertext;
 }

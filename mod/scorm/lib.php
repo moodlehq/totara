@@ -188,6 +188,9 @@ function scorm_update_instance($scorm, $mform=null) {
     if (empty($scorm->timeclose)) {
         $scorm->timeclose = 0;
     }
+    if (empty($scorm->completionstatusrequired)) {
+        $scorm->completionstatusrequired = null;
+    }
 
     $cmid       = $scorm->coursemodule;
     $cmidnumber = $scorm->cmidnumber;

@@ -52,6 +52,12 @@ class grade_grade extends grade_object {
                                  'locktime', 'exported', 'overridden', 'excluded', 'timecreated', 'timemodified');
 
     /**
+     * Array of text table fields.
+     * @var array $text_fields
+     */
+    public $text_fields = array('feedback', 'information');
+
+    /**
      * Array of optional fields with default values (these should match db defaults)
      * @var array $optional_fields
      */

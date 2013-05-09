@@ -1364,7 +1364,7 @@ class dp_competency_component extends dp_base_component {
         $output = html_writer::select($compscale,
                                     "compprof_{$this->component}[{$item->id}]",
                                     $item->profscalevalueid,
-                                    array(($item->profscalevalueid ? '' : 0) => ($item->profscalevalueid ? '' : get_string('notset', 'totara_reportbuilder'))),
+                                    array(($item->profscalevalueid ? '' : 0) => ($item->profscalevalueid ? '' : get_string('notset', 'totara_hierarchy'))),
                                     $attributes);
 
         return $output;

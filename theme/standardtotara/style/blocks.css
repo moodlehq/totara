@@ -38,14 +38,27 @@
     float: right;
     width: 30px;
     padding: 12px 0 0;
+    float:right;
+}
+.dir-rtl .block .header .block_action {
+    float:left;
 }
 .block .header .block_action.notitle input.moveto {
     margin: -8px 4px 0;
 }
-.block .block-hider-show, .block .block-hider-hide {
+.block .block-hider-show,
+.block .block-hider-hide {
     float: right;
     margin-top: 0;
     margin-left: 2px;
+}
+.dir-ltr .block .header .block_action .block-hider-hide,
+.dir-ltr .block .header .block_action .block-hider-show {
+   float:right;
+}
+.dir-rtl .block .header .block_action .block-hider-hide,
+.dir-rtl .block .header .block_action .block-hider-show {
+   float:left;
 }
 .block .header .block_action input {
     margin-right: 0;

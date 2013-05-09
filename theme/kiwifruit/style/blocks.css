@@ -20,6 +20,9 @@
    padding:8px 5px 8px 10px;
    border:none;
 }
+.dir-rtl .block .title h2 {
+   padding:8px 10px 8px 5px;
+}
 .block .header .block_action {
    width:30px;
    margin:0 10px;
@@ -32,7 +35,17 @@
 .block .header .block_action .block-hider-hide,
 .block .header .block_action .block-hider-show {
    margin-top:2px;
+}
+.dir-ltr .block .header .block_action .block-hider-hide,
+.dir-ltr .block .header .block_action .block-hider-show {
    margin-left:5px;
+}
+.dir-rtl .block .header .block_action .block-hider-hide,
+.dir-rtl .block .header .block_action .block-hider-show {
+   margin-right:5px;
+}
+.block_action .moveto {
+    display:block;
 }
 .block .content {
    border:none;
@@ -85,8 +98,8 @@
 .block_settings .block_tree li.item_with_icon > p img,
 .block_navigation .block_tree li.item_with_icon > p img {
    top:0px;
-   width:auto;
-   height:auto;
+   width:16px;
+   height:16px;
 }
 #region-main .block_totara_tasks .header {
    background-color:#2fbce8;
@@ -150,4 +163,7 @@
 }
 .block_calendar_month .minicalendar .calendar-event-panel .eventcontent {
     text-align:left;.block_calendar_month .minicalendar .
+}
+.dir-rtl .block_calendar_month .minicalendar .calendar-event-panel .eventcontent {
+    text-align:right;.block_calendar_month .minicalendar .
 }

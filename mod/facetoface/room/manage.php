@@ -160,7 +160,7 @@ if ($sort = $table->get_sql_sort()) {
     $sort = ' ORDER BY ' . $sort;
 }
 
-$sql = 'SELECT * FROM {facetoface_room} WHERE CUSTOM = 0';
+$sql = 'SELECT * FROM {facetoface_room} WHERE custom = 0';
 
 $perpage = 25;
 

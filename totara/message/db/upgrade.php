@@ -72,7 +72,7 @@ function xmldb_totara_message_upgrade($oldversion) {
         if ($dbman->index_exists($table, $index)) {
             $dbman->drop_index($table, $index);
         }
-        $field = new xmldb_field('roleid', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, null, null);
+        $field = new xmldb_field('roleid', XMLDB_TYPE_INTEGER, 10, null, null, null);
         if ($dbman->field_exists($table, $field)) {
             $dbman->change_field_notnull($table, $field);
         }
@@ -137,8 +137,16 @@ function xmldb_totara_message_upgrade($oldversion) {
                     //fix contexturl to change /local/ to /totara/ for totara modules only
                     $msg->contexturl = str_replace('/local/plan','/totara/plan', $msg->contexturl);
                     $msg->contexturl = str_replace('/local/program','/totara/program', $msg->contexturl);
-                    $msg->userto = $DB->get_record('user', array('id' => $msg->useridto), '*', MUST_EXIST);
-                    $msg->userfrom = $DB->get_record('user', array('id' => $msg->useridfrom), '*', MUST_EXIST);
+                    if (!$userto = $DB->get_record('user', array('id' => $msg->useridto))) {
+                        // don't recreate if we don't know who it's to
+                        continue;
+                    }
+                    $msg->userto = $userto;
+                    if (!$userfrom = $DB->get_record('user', array('id' => $msg->useridfrom))) {
+                        // don't recreate if we don't know who it's from
+                        continue;
+                    }
+                    $msg->userfrom = $userfrom;
                     //1.1 bug, many messages are set as format_plain when they should be format_html
                     $msg->fullmessageformat = FORMAT_HTML;
                     !empty($msg->onaccept) && $msg->onaccept = unserialize($msg->onaccept);
@@ -234,5 +242,19 @@ function xmldb_totara_message_upgrade($oldversion) {
 
         totara_upgrade_mod_savepoint(true, 2012120400, 'totara_message');
     }
+
+    if ($oldversion < 2013020700) {
+        $reportlist = $DB->get_fieldset_select('report_builder', 'id', 'source = ?', array('totaramessages'));
+        if ($reportlist) {
+            list($reportssql, $reportsparam) = $DB->get_in_or_equal($reportlist);
+        }
+        if (!empty($reportssql)) {
+            // Remove status and statementurl fields from reports
+            $params = array_merge(array('message_values', 'statementurl', 'status_text'), $reportsparam);
+            $DB->delete_records_select('report_builder_columns', "type = ? AND (value = ? OR value = ?) AND reportid ".$reportssql, $params);
+        }
+        totara_upgrade_mod_savepoint(true, 2013020700, 'totara_message');
+    }
+
     return $result;
 }

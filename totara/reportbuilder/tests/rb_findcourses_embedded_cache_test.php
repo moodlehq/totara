@@ -190,7 +190,11 @@ class rb_findcourses_embedded_cache_test extends reportcache_advanced_testcase {
      * @dataProvider provider_use_cache
      */
     public function test_courses_tags($usecache) {
-        global $CFG;
+        global $CFG, $DB;
+
+        if ($DB->get_dbfamily() == 'mssql') {
+            $this->markTestSkipped('Skip until MSSQL GROUP_CONCAT_D is implemented');
+        }
         $this->resetAfterTest();
         // Enable and create tags
         $CFG->usetags = true;
@@ -257,7 +261,12 @@ class rb_findcourses_embedded_cache_test extends reportcache_advanced_testcase {
      * @dataProvider provider_use_cache
      */
     public function test_all_filters($usecache) {
-        global $CFG;
+        global $CFG, $DB;
+
+        if ($DB->get_dbfamily() == 'mssql') {
+            $this->markTestSkipped('Skip until MSSQL GROUP_CONCAT_D is implemented');
+        }
+
         $this->resetAfterTest();
         $coursedata = array(
             'fullname' => 'Big course',

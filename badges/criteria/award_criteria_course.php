@@ -93,8 +93,14 @@ class award_criteria_course extends award_criteria {
      */
     public function get_options(&$mform) {
         global $PAGE, $DB;
-        $param = array_shift($this->params);
+
         $course = $DB->get_record('course', array('id' => $PAGE->course->id));
+
+        if ($this->id !== 0) {
+            $param = array_shift($this->params);
+        } else {
+            $param['course'] = $course->id;
+        }
 
         if (!($course->enablecompletion == COMPLETION_ENABLED)) {
             $none = true;
@@ -174,5 +180,21 @@ class award_criteria_course extends award_criteria {
         }
 
         return false;
+    }
+
+    /**
+     * Checks criteria for any major problems.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    public function validate() {
+        global $DB;
+        $param = reset($this->params);
+
+        if (!$DB->record_exists('course', array('id' => $param['course']))) {
+            return array(false, get_string('error:invalidparamcourse', 'badges'));
+        }
+
+        return array(true, '');
     }
 }

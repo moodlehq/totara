@@ -961,6 +961,7 @@ $string['showdetails'] = 'Show details';
 $string['showuseridentity'] = 'Show user identity';
 $string['showuseridentity_desc'] = 'When selecting or searching for users, and when displaying lists of users, these fields may be shown in addition to their full name. The fields are only shown to users who have the moodle/site:viewuseridentity capability; by default, teachers and managers. (This option makes most sense if you choose one or two fields that are mandatory at your institution.)';
 $string['simplexmlrequired'] = 'The SimpleXML PHP extension is now required by Totara.';
+$string['siteregistrationemailbody'] = 'Site {$a} was not able to register itself automatically. Access to push data to our registrations site is probably blocked by a firewall.';
 $string['sitemaintenance'] = 'The site is undergoing maintenance and is currently not available';
 $string['sitemaintenancemode'] = 'Maintenance mode';
 $string['sitemaintenanceoff'] = 'Maintenance mode has been disabled and the site is running normally again';

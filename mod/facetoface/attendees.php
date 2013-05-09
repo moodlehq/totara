@@ -62,12 +62,6 @@ if (!$cm = get_coursemodule_from_instance('facetoface', $facetoface->id, $course
 // Setup urls
 $baseurl = new moodle_url('/mod/facetoface/attendees.php', array('s' => $session->id));
 
-// Load attendees
-$attendees = facetoface_get_attendees($session->id);
-
-// Load cancellations
-$cancellations = facetoface_get_cancellations($session->id);
-
 /**
  * Capability checks to see if the current user can view this page
  *
@@ -143,8 +137,8 @@ if (has_capability('mod/facetoface:takeattendance', $context)) {
 
 $can_view_session = !empty($allowed_actions);
 
-$requests = array();
-$declines = array();
+$attendees = array();
+$cancellations = array();
 
 // If a user can take attendance, they can approve staff's booking requests
 if (in_array('approvalrequired', $allowed_actions)) {
@@ -169,8 +163,15 @@ if (in_array('approvalrequired', $allowed_actions)) {
     }
 
     // Check if any staff are attending
-    if ($attendees && !in_array('attendees', $allowed_actions)) {
-        $attendees = array_intersect_key($attendees, array_flip($staff));
+    if ($session->datetimeknown) {
+        $get_attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    } else {
+        $get_attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    }
+    if ($get_attendees && !in_array('attendees', $allowed_actions)) {
+        $attendees = array_intersect_key($get_attendees, array_flip($staff));
 
         if ($attendees) {
             $can_view_session = true;
@@ -180,8 +181,9 @@ if (in_array('approvalrequired', $allowed_actions)) {
     }
 
     // Check if any staff have cancelled
-    if ($cancellations && !in_array('cancellations', $allowed_actions)) {
-        $cancellations = array_intersect_key($cancellations, array_flip($staff));
+    $get_cancellations = facetoface_get_cancellations($session->id);
+    if ($get_cancellations && !in_array('cancellations', $allowed_actions)) {
+        $cancellations = array_intersect_key($get_cancellations, array_flip($staff));
 
         if ($cancellations) {
             $can_view_session = true;
@@ -328,7 +330,7 @@ if ($form = data_submitted()) {
         if (facetoface_take_attendance($form)) {
             add_to_log($course->id, 'facetoface', 'take attendance', "view.php?id=$cm->id", $facetoface->id, $cm->id);
         } else {
-            add_to_log($course->id, 'facetoface', 'take attendance (FAILED)', "view.php?id=$cm->id", $face->id, $cm->id);
+            add_to_log($course->id, 'facetoface', 'take attendance (FAILED)', "view.php?id=$cm->id", $facetoface->id, $cm->id);
         }
         redirect($return);
         die();
@@ -361,7 +363,8 @@ if ($form = data_submitted()) {
             if (empty($recipients) && !empty($data->recipients_selected)) {
                 // Strip , prefix
                 $data->recipients_selected = substr($data->recipients_selected, 1);
-                list($insql, $params) = $DB->get_in_or_equal($data->recipients_selected);
+                $recipients = explode(',', $data->recipients_selected);
+                list($insql, $params) = $DB->get_in_or_equal($recipients);
                 $recipients = $DB->get_records_sql('SELECT * FROM {user} WHERE id ' . $insql, $params);
                 if (!$recipients) {
                     $recipients = array();
@@ -497,9 +500,7 @@ if (!$onlycontent && !$download) {
     if ($can_view_session) {
         echo facetoface_print_session($session, true);
     }
-}
 
-if (!$onlycontent && !$download) {
     include('attendee_tabs.php'); // If needed include tabs
 
     echo $OUTPUT->container_start('f2f-attendees-table');
@@ -511,15 +512,47 @@ if (!$onlycontent && !$download) {
  */
 $requests = facetoface_get_requests($session->id);
 if ($show_table) {
-    // Get list of attendees / cancellations
+    // Get list of attendees
 
-    if ($action == 'cancellations') {
-        $rows = $cancellations;
-    } else {
-        $rows = $attendees;
+    switch ($action) {
+        case 'cancellations':
+            if ($cancellations) {
+                $rows = $cancellations;
+            } else {
+                $rows = facetoface_get_cancellations($session->id);
+            }
+            break;
+
+        case 'waitlist':
+            $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED));
+            break;
+
+        case 'takeattendance':
+            $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+                MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+            break;
+
+        case 'attendees':
+            if ($attendees) {
+                $rows = $attendees;
+            } else {
+                if ($session->datetimeknown) {
+                    $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+                        MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+                } else {
+                    $rows = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+                        MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+                }
+            }
+            break;
     }
 
     if (!$download) {
+        //output any notifications
+        if (isset($result_message)) {
+            echo $result_message;
+        }
+        //output the section heading
         echo $OUTPUT->heading($heading);
     }
 
@@ -530,7 +563,7 @@ if ($show_table) {
             echo $OUTPUT->notification(get_string('nosignedupusers', 'facetoface'));
         }
     } else {
-        if ($action == 'takeattendance') {
+        if (($action == 'takeattendance') && !$download) {
 
             $attendees_url = new moodle_url('attendees.php', array('s' => $s, 'takeattendance' => '1', 'action' => 'takeattendance'));
             echo html_writer::start_tag('form', array('action' => $attendees_url, 'method' => 'post'));
@@ -569,8 +602,10 @@ if ($show_table) {
         if ($action == 'takeattendance') {
             $headers[] = get_string('currentstatus', 'facetoface');
             $columns[] = 'currentstatus';
-            $headers[] = get_string('attendedsession', 'facetoface');
-            $columns[] = 'attendedsession';
+            if (!$download) {
+                $headers[] = get_string('attendedsession', 'facetoface');
+                $columns[] = 'attendedsession';
+            }
         } else if ($action == 'cancellations') {
             $headers[] = get_string('timesignedup', 'facetoface');
             $columns[] = 'timesignedup';
@@ -610,9 +645,7 @@ if ($show_table) {
                 // Show current status
                 $data[] = get_string('status_'.facetoface_get_status($attendee->statuscode), 'facetoface');
 
-                if ($download) {
-                    $data[] = '';
-                } else {
+                if (!$download) {
                     $optionid = 'submissionid_'.$attendee->submissionid;
                     $status = $attendee->statuscode;
                     $select = html_writer::select($status_options, $optionid, $status);
@@ -667,10 +700,6 @@ if ($show_table) {
         echo html_writer::select($actions, 'f2f-actions', '', array('' => get_string('action')));
     }
     echo $OUTPUT->container_end();
-
-    if (isset($result_message)) {
-        echo $result_message;
-    }
 }
 
 if ($action == 'messageusers') {

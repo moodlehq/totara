@@ -137,5 +137,10 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'tool/totara_sync:manage'
     ),
+    'tool/totara_sync:deletesynclog' => array(
+        'riskbitmask'   => RISK_DATALOSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ),
 );
 

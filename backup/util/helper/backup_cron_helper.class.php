@@ -217,6 +217,7 @@ abstract class backup_cron_automated_helper {
 
         //Send email to admin if necessary
         if ($emailpending) {
+            $strmgr = get_string_manager();
             mtrace("Sending email to admin");
             $message = "";
 
@@ -225,35 +226,35 @@ abstract class backup_cron_automated_helper {
 
             //Build the message text
             //Summary
-            $message .= get_string('summary')."\n";
+            $message .= $strmgr->get_string('summary', 'moodle', null, $admin->lang)."\n";
             $message .= "==================================================\n";
-            $message .= "  ".get_string('courses').": ".array_sum($count)."\n";
-            $message .= "  ".get_string('ok').": ".$count[self::BACKUP_STATUS_OK]."\n";
-            $message .= "  ".get_string('skipped').": ".$count[self::BACKUP_STATUS_SKIPPED]."\n";
-            $message .= "  ".get_string('error').": ".$count[self::BACKUP_STATUS_ERROR]."\n";
-            $message .= "  ".get_string('unfinished').": ".$count[self::BACKUP_STATUS_UNFINISHED]."\n";
-            $message .= "  ".get_string('warning').": ".$count[self::BACKUP_STATUS_WARNING]."\n\n";
+            $message .= "  ".$strmgr->get_string('courses', 'moodle', null, $admin->lang).": ".array_sum($count)."\n";
+            $message .= "  ".$strmgr->get_string('ok', 'moodle', null, $admin->lang).": ".$count[self::BACKUP_STATUS_OK]."\n";
+            $message .= "  ".$strmgr->get_string('skipped', 'moodle', null, $admin->lang).": ".$count[self::BACKUP_STATUS_SKIPPED]."\n";
+            $message .= "  ".$strmgr->get_string('error', 'moodle', null, $admin->lang).": ".$count[self::BACKUP_STATUS_ERROR]."\n";
+            $message .= "  ".$strmgr->get_string('unfinished', 'moodle', null, $admin->lang).": ".$count[self::BACKUP_STATUS_UNFINISHED]."\n";
+            $message .= "  ".$strmgr->get_string('warning', 'moodle', null, $admin->lang).": ".$count[self::BACKUP_STATUS_WARNING]."\n\n";
 
             //Reference
             if ($haserrors) {
-                $message .= "  ".get_string('backupfailed')."\n\n";
+                $message .= "  ".$strmgr->get_string('backupfailed', 'moodle', null, $admin->lang)."\n\n";
                 $dest_url = "$CFG->wwwroot/report/backups/index.php";
-                $message .= "  ".get_string('backuptakealook','',$dest_url)."\n\n";
+                $message .= "  ".$strmgr->get_string('backuptakealook', 'moodle', $dest_url, $admin->lang)."\n\n";
                 //Set message priority
                 $admin->priority = 1;
                 //Reset unfinished to error
                 $DB->set_field('backup_courses','laststatus','0', array('laststatus'=>'2'));
             } else {
-                $message .= "  ".get_string('backupfinished')."\n";
+                $message .= "  ".$strmgr->get_string('backupfinished', 'moodle', null, $admin->lang)."\n";
             }
 
             //Build the message subject
             $site = get_site();
             $prefix = format_string($site->shortname, true, array('context' => context_course::instance(SITEID))).": ";
             if ($haserrors) {
-                $prefix .= "[".strtoupper(get_string('error'))."] ";
+                $prefix .= "[".strtoupper($strmgr->get_string('error', 'moodle', null, $admin->lang))."] ";
             }
-            $subject = $prefix.get_string('automatedbackupstatus', 'backup');
+            $subject = $prefix.$strmgr->get_string('automatedbackupstatus', 'backup', null, $admin->lang);
 
             //Send the message
             $eventdata = new stdClass();

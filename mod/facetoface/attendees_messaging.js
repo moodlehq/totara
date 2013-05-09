@@ -39,6 +39,7 @@ M.totara_f2f_attendees_messaging = M.totara_f2f_attendees_messaging || {
      */
     init: function(Y, args){
         var module = this;
+        var default_url;
 
         // save a reference to the Y instance (all of its dependencies included)
         this.Y = Y;
@@ -66,6 +67,7 @@ M.totara_f2f_attendees_messaging = M.totara_f2f_attendees_messaging || {
             buttonsObj[M.util.get_string('cancel','moodle')] = function() { handler._cancel(); };
             buttonsObj[M.util.get_string('update','moodle')] = function() { handler.update_recipients(); };
 
+            default_url = M.cfg.wwwroot + '/mod/facetoface/editrecipients.php?s=' + M.totara_f2f_attendees_messaging.config.sessionid;
             totaraDialogs[name] = new totaraDialog(
                 name,
                 undefined,
@@ -74,7 +76,7 @@ M.totara_f2f_attendees_messaging = M.totara_f2f_attendees_messaging || {
                     title: '<h2>' + M.util.get_string('editmessagerecipientsindividually', 'facetoface') + '</h2>',
                     height: 500
                 },
-                M.cfg.wwwroot + '/mod/facetoface/editrecipients.php?s=' + M.totara_f2f_attendees_messaging.config.sessionid,
+                default_url,
                 handler
                 );
         })();
@@ -116,8 +118,8 @@ M.totara_f2f_attendees_messaging = M.totara_f2f_attendees_messaging || {
                 selected += $(this).val()+',';
             });
 
-            var url = totaraDialogs['editrecipients'].default_url + '&recipients=' + selected;
-            totaraDialogs['editrecipients'].open(url);
+            totaraDialogs['editrecipients'].default_url = default_url + '&recipients=' + selected;
+            totaraDialogs['editrecipients'].open();
         });
 
         // Make recipient checkbox unclickable

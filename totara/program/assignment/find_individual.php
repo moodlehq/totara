@@ -35,13 +35,13 @@ require_capability('totara/program:configureassignments', program_get_context($p
 $selected = optional_param('selected', array(), PARAM_SEQUENCE);
 if ($selected != false) {
     list($selectedsql, $selectedparams) = $DB->get_in_or_equal(explode(',', $selected));
-    $selected = $DB->get_records_select('user', "id {$selectedsql}", $selectedparams, '', 'id, ' . $DB->sql_fullname() . ' as fullname');
+    $selected = $DB->get_records_select('user', "id {$selectedsql}", $selectedparams, '', 'id, ' . $DB->sql_fullname() . ' as fullname, email');
 }
 
 // Get all users
 $guest = guest_user();
 
-$items = $DB->get_records_select('user', 'deleted = 0 AND id != ?', array($guest->id), '', 'id, ' . $DB->sql_fullname('firstname', 'lastname') . ' as fullname');
+$items = $DB->get_records_select('user', 'deleted = 0 AND id != ?', array($guest->id), '', 'id, ' . $DB->sql_fullname() . ' as fullname, email');
 
 // Don't let them remove the currently selected ones
 $unremovable = $selected;

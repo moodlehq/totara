@@ -71,16 +71,19 @@ function badge_review_cron() {
         $badge = new badge($bid);
 
         if ($badge->has_criteria()) {
-            if (debugging()) {
-                mtrace('Processing badge "' . $badge->name . '"...');
-            }
+            list($valid, $message) = $badge->validate_criteria();
+            if ($valid) {
+                if (debugging()) {
+                    mtrace('Processing badge "' . $badge->name . '"...');
+                }
 
-            $issued = $badge->review_all_criteria();
+                $issued = $badge->review_all_criteria();
 
-            if (debugging()) {
-                mtrace('...badge was issued to ' . $issued . ' users.');
+                if (debugging()) {
+                    mtrace('...badge was issued to ' . $issued . ' users.');
+                }
+                $total += $issued;
             }
-            $total += $issued;
         }
     }
 

@@ -93,7 +93,7 @@ class mod_facetoface_session_form extends moodleform {
                 WHERE s.id = ? AND r.custom = 0";
             $params = array($this->_customdata['s']);
             if ($room = $DB->get_record_sql($sql, $params)) {
-                $pdroom = $room->name.', '.$room->building.', '.$room->address.', '.$room->description.", (Cap {$room->capacity})";
+                $pdroom = $room->name.', '.$room->building.', '.$room->address.', '.$room->description." (".get_string('capacity', 'facetoface').": ".$room->capacity.")";
                 $pdroom = format_string($pdroom);
                 if ($room->type == 'external') {
                     $roomnote = '<br><em>'.get_string('roommustbebookedtoexternalcalendar', 'facetoface').'</em>';
@@ -173,13 +173,13 @@ class mod_facetoface_session_form extends moodleform {
         $mform->addHelpButton('details_editor', 'details', 'facetoface');
 
         // Choose users for trainer roles
-        $roles = facetoface_get_trainer_roles();
+        $context = context_course::instance($this->_customdata['course']->id);
+        $roles = facetoface_get_trainer_roles($context);
 
         if ($roles) {
             // Get current trainers
             $current_trainers = facetoface_get_trainers($this->_customdata['s']);
             // Get course context and roles
-            $context = context_course::instance($this->_customdata['course']->id);
             $rolenames = role_get_names($context);
             // Loop through all selected roles
             $header_shown = false;
@@ -343,7 +343,7 @@ class mod_facetoface_session_form extends moodleform {
                     // Check their availability
                     $availability = facetoface_get_sessions_within($dates, $trainer, $wheresql, $whereparams);
                     if (!empty($availability)) {
-                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement(reset($availability));
+                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($availability);
                         ++$hasconflicts;
                     }
                 }

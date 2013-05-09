@@ -13,13 +13,13 @@ function xmldb_totara_hierarchy_install() {
 
     $field = new xmldb_field('organisationid');
     if (!$dbman->field_exists($table, $field)) {
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'course');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'course');
         $dbman->add_field($table, $field);
     }
 
     $field = new xmldb_field('positionid');
     if (!$dbman->field_exists($table, $field)) {
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'organisationid');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'organisationid');
         $dbman->add_field($table, $field);
     }
 

@@ -148,15 +148,17 @@ class enrol_flatfile_plugin extends enrol_plugin {
             fclose($fh);
             } // end of if(file_open)
 
+            $admin = get_admin();
             if(! @unlink($filename)) {
+                $strmgr = get_string_manager();
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';
                 $eventdata->component         = 'enrol_flatfile';
                 $eventdata->name              = 'flatfile_enrolment';
-                $eventdata->userfrom          = get_admin();
-                $eventdata->userto            = get_admin();
-                $eventdata->subject           = get_string("filelockedmailsubject", "enrol_flatfile");
-                $eventdata->fullmessage       = get_string("filelockedmail", "enrol_flatfile", $filename);
+                $eventdata->userfrom          = $admin;
+                $eventdata->userto            = $admin;
+                $eventdata->subject           = $strmgr->get_string("filelockedmailsubject", "enrol_flatfile", null, $admin->lang);
+                $eventdata->fullmessage       = $strmgr->get_string("filelockedmail", "enrol_flatfile", $filename, $admin->lang);
                 $eventdata->fullmessageformat = FORMAT_PLAIN;
                 $eventdata->fullmessagehtml   = '';
                 $eventdata->smallmessage      = '';
@@ -171,8 +173,8 @@ class enrol_flatfile_plugin extends enrol_plugin {
                 $eventdata->modulename        = 'moodle';
                 $eventdata->component         = 'enrol_flatfile';
                 $eventdata->name              = 'flatfile_enrolment';
-                $eventdata->userfrom          = get_admin();
-                $eventdata->userto            = get_admin();
+                $eventdata->userfrom          = $admin;
+                $eventdata->userto            = $admin;
                 $eventdata->subject           = "Flatfile Enrolment Log";
                 $eventdata->fullmessage       = $this->log;
                 $eventdata->fullmessageformat = FORMAT_PLAIN;
@@ -270,13 +272,13 @@ class enrol_flatfile_plugin extends enrol_plugin {
                 $teacher = get_admin();
             }
 
-
+            $strmgr = get_string_manager();
             if (!empty($mailstudents)) {
                 // Send mail to students
                 $a = new stdClass();
                 $a->coursename = format_string($course->fullname, true, array('context' => $context));
                 $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id&amp;course=$course->id";
-                $subject = get_string("enrolmentnew", 'enrol', format_string($course->shortname, true, array('context' => $context)));
+                $subject = $strmgr->get_string("enrolmentnew", 'enrol', format_string($course->shortname, true, array('context' => $context)), $user->lang);
 
                 $eventdata = new stdClass();
                 $eventdata->modulename        = 'moodle';
@@ -285,7 +287,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
                 $eventdata->userfrom          = $teacher;
                 $eventdata->userto            = $user;
                 $eventdata->subject           = $subject;
-                $eventdata->fullmessage       = get_string('welcometocoursetext', '', $a);
+                $eventdata->fullmessage       = $strmgr->get_string('welcometocoursetext', 'moodle', $a, $user->lang);
                 $eventdata->fullmessageformat = FORMAT_PLAIN;
                 $eventdata->fullmessagehtml   = '';
                 $eventdata->smallmessage      = '';
@@ -299,7 +301,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
                     $a = new stdClass();
                     $a->course = format_string($course->fullname, true, array('context' => $context));
                     $a->user = fullname($user);
-                    $subject = get_string("enrolmentnew", 'enrol', format_string($course->shortname, true, array('context' => $context)));
+                    $subject = $strmgr->get_string("enrolmentnew", 'enrol', format_string($course->shortname, true, array('context' => $context)), $teacher->lang);
 
                     $eventdata = new stdClass();
                     $eventdata->modulename        = 'moodle';
@@ -308,7 +310,7 @@ class enrol_flatfile_plugin extends enrol_plugin {
                     $eventdata->userfrom          = $user;
                     $eventdata->userto            = $teacher;
                     $eventdata->subject           = $subject;
-                    $eventdata->fullmessage       = get_string('enrolmentnewuser', 'enrol', $a);
+                    $eventdata->fullmessage       = $strmgr->get_string('enrolmentnewuser', 'enrol', $a, $teacher->lang);
                     $eventdata->fullmessageformat = FORMAT_PLAIN;
                     $eventdata->fullmessagehtml   = '';
                     $eventdata->smallmessage      = '';

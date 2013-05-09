@@ -150,12 +150,12 @@ echo $OUTPUT->doctype() ?>
                 <div class="region-content"> <?php echo core_renderer::MAIN_CONTENT_TOKEN ?> </div>
               </div>
             </div>
-            <?php if ($hassidepre) { ?>
+            <?php if ($hassidepre || (right_to_left() && $hassidepost)) { ?>
             <div id="region-pre" class="block-region">
               <div class="region-content"> <?php echo $OUTPUT->blocks_for_region('side-pre') ?> </div>
             </div>
             <?php } ?>
-            <?php if ($hassidepost) { ?>
+            <?php if ($hassidepost || (right_to_left() && $hassidepre)) { ?>
             <div id="region-post" class="block-region">
               <div class="region-content"> <?php echo $OUTPUT->blocks_for_region('side-post') ?> </div>
             </div>

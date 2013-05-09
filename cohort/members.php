@@ -32,7 +32,8 @@ $id     = optional_param('id', false, PARAM_INT);
 $format = optional_param('format','',PARAM_TEXT); //export format
 $debug  = optional_param('debug', false, PARAM_BOOL);
 
-admin_externalpage_setup('cohorts');
+$url = new moodle_url('/cohort/members.php', array('id' => $id, 'format' => $format, 'debug' => $debug));
+admin_externalpage_setup('cohorts', '', null, $url, array('pagelayout'=>'report'));
 
 $context = context_system::instance();
 require_capability('moodle/cohort:view', $context);

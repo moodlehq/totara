@@ -62,7 +62,7 @@ class rb_source_cohort_orphaned_users extends rb_source_user {
                 AND u.deleted = 0
                 AND u.confirmed = 1
             )';
-        $this->sourcetitle = get_string('orphaneduserssource', 'totara_cohort');
+        $this->sourcetitle = get_string('sourcetitle', 'rb_source_cohort_orphaned_users');
 
     }
 

@@ -57,7 +57,7 @@ $string['messageprovider:task'] = 'Task Notifications';
 $string['error:invalideventtype'] = 'Invalid event type: {$a}';
 $string['error:redirecttoexternal'] = 'Error: trying to redirect to external domain';
 
-// message types
+// message types & categories
 $string['blended'] = 'Blended';
 $string['competency'] = 'Competency';
 $string['course'] = 'Course';
@@ -75,6 +75,7 @@ $string['lesson'] = 'Lesson';
 $string['survey'] = 'Survey';
 $string['scorm'] = 'Scorm';
 $string['link'] = 'Link';
+$string['quiz'] = 'Quiz';
 
 //status & urgency
 $string['statusok'] = 'Status OK';

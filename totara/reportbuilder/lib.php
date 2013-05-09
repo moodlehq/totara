@@ -2361,7 +2361,9 @@ class reportbuilder {
             foreach ($this->columns as $column) {
                 if ($column->grouping == 'none') {
                     $allgrouped = false;
-                    $group = array_merge($group, $column->get_fields($this->src, rb_column::CACHE));
+                    //we use FIELDONLY for the GROUP BY clause because MSSQL does not allow aliases in grouping
+                    $mode = $cache ? rb_column::CACHE : rb_column::FIELDONLY;
+                    $group = array_merge($group, $column->get_fields($this->src, $mode, false));
                     if ($column->extrafields !== null) {
                         foreach ($column->extrafields as $alias => $field) {
                             // when referencing a column in the group by, use the alias
@@ -2373,6 +2375,7 @@ class reportbuilder {
                 }
             }
         }
+
         return array($where, $group, $having, $sqlparams, $allgrouped);
     }
 
@@ -2699,17 +2702,17 @@ class reportbuilder {
                     $func = 'rb_display_'.$column->displayfunc;
                     if (method_exists($this->src, $func)) {
                         if ($column->displayfunc == 'customfield_textarea' || $column->displayfunc == 'customfield_file') {
-                            $tabledata[] = $this->src->$func($value, $record->$field, $record, $isexport);
+                            $tabledata[] = $this->src->$func($field, $record->$field, $record, $isexport);
                         } else if (($column->displayfunc == 'nice_date' || $column->displayfunc == 'nice_datetime') && $excel) {
                             $tabledata[] = $record->$field;
                         } else {
-                            $tabledata[] = $this->src->$func(filter_text($record->$field), $record, $isexport);
+                            $tabledata[] = $this->src->$func(format_text($record->$field, FORMAT_HTML), $record, $isexport);
                         }
                     } else {
-                        $tabledata[] = filter_text($record->$field);
+                        $tabledata[] = format_text($record->$field, FORMAT_HTML);
                     }
                 } else {
-                    $tabledata[] = filter_text($record->$field);
+                    $tabledata[] = format_text($record->$field, FORMAT_HTML);
                 }
             }
         }
@@ -3543,12 +3546,12 @@ class reportbuilder {
                 if (isset($primary_field->displayfunc)) {
                     $func = 'rb_display_' . $primary_field->displayfunc;
                     if (method_exists($this->src, $func)) {
-                        $primaryvalue = $this->src->$func(filter_text($item->$primaryname), $item, false);
+                        $primaryvalue = $this->src->$func(format_text($item->$primaryname, FORMAT_HTML), $item, false);
                     } else {
-                        $primaryvalue = (isset($item->$primaryname)) ? filter_text($item->$primaryname) : get_string('unknown', 'totara_reportbuilder');
+                        $primaryvalue = (isset($item->$primaryname)) ? format_text($item->$primaryname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                     }
                 } else {
-                    $primaryvalue = (isset($item->$primaryname)) ? filter_text($item->$primaryname) : get_string('unknown', 'totara_reportbuilder');
+                    $primaryvalue = (isset($item->$primaryname)) ? format_text($item->$primaryname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                 }
 
                 $out .= $OUTPUT->heading($primaryheading . ': ' . $primaryvalue, 2);
@@ -3564,12 +3567,12 @@ class reportbuilder {
                     if (isset($additional_field->displayfunc)) {
                         $func = 'rb_display_' . $additional_field->displayfunc;
                         if (method_exists($this->src, $func)) {
-                            $addvalue = $this->src->$func(filter_text($item->$addname), $item);
+                            $addvalue = $this->src->$func(format_text($item->$addname, FORMAT_HTML), $item);
                         } else {
-                            $addvalue = (isset($item->$addname)) ? filter_text($item->$addname) : get_string('unknown', 'totara_reportbuilder');
+                            $addvalue = (isset($item->$addname)) ? format_text($item->$addname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                         }
                     } else {
-                        $addvalue = (isset($item->$addname)) ? filter_text($item->$addname) : get_string('unknown', 'totara_reportbuilder');
+                        $addvalue = (isset($item->$addname)) ? format_text($item->$addname, FORMAT_HTML) : get_string('unknown', 'totara_reportbuilder');
                     }
 
                     $out .= html_writer::tag('strong', $addheading . ': '. $addvalue) . html_writer::empty_tag('br');
@@ -4121,6 +4124,10 @@ function sql_table_from_select($table, $select, array $params = array()) {
         // db engines specifics
         switch ($DB->get_dbfamily()) {
             case 'mysql':
+                // Do not index fields with size 0
+                if (strpos($field->type, '(0)') !== false) {
+                    continue 2;
+                }
                 if (strpos($field->type, 'blob') !== false || strpos($field->type, 'text') !== false) {
                     // Index only first 255 symbols (mysql maximum = 767)
                     $sql = sprintf($indexlongsql, $field->$fieldname, 255);

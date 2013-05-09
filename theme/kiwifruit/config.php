@@ -30,7 +30,7 @@ $THEME->name = 'kiwifruit';
 $THEME->parents = array('standardtotara', 'standard', 'base');
 $THEME->parents_exclude_sheets = array('standardtotara' => array('css3'),'standard' => array('css3'));
 $THEME->sheets = array(
-    'core', 'blocks', 'navigation', 'dock', 'css3', 'ie7', 'custom'
+    'core', 'blocks', 'navigation', 'course', 'dock', 'css3', 'ie7', 'custom'
 );
 
 $THEME->layouts = array(
@@ -72,12 +72,13 @@ $THEME->layouts = array(
     'login' => array(
         'file' => 'login.php',
         'regions' => array(),
-        'options' => array('langmenu' => true)
+        'options' => array('langmenu' => true, 'nocourseheaderfooter' => true)
     ),
     'report' => array(
         'file' => 'general.php',
-        'regions' => array(),
-        'options' => array('langmenu' => true)
+        'regions' => array('side-pre'),
+        'options' => array('langmenu' => true),
+        'defaultregion' => 'side-pre'
     ),
     'noblocks' => array(
         'file' => 'general.php',
@@ -87,17 +88,17 @@ $THEME->layouts = array(
     'popup' => array(
         'file' => 'popup.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
     ),
     'embedded' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
     ),
     'redirect' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true)
+        'options' => array('noblocks' => true, 'noheader' => true, 'nofooter' => true, 'nonavbar' => false, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true)
     ),
 );
 

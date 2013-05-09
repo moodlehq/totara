@@ -14,6 +14,7 @@ $string['child'] = 'child';
 $string['description'] = 'Description';
 $string['chooseevidencetype'] = 'Choose an evidence type';
 $string['reloadpage'] = ' ~~~RELOAD PAGE~~~ ';
+$string['notset'] = 'Not Set';
 // duplication required to make help buttons work
 $string['competencyframeworkfullname'] = 'Full Name';
 $string['competencyframeworkscale'] = 'Competency Framework Scale';

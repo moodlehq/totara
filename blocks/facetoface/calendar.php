@@ -28,9 +28,6 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/calendar/lib.php');
 require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
-$PAGE->requires->yui2_lib('dom-event');
-$PAGE->requires->yui2_lib('container');
-
 define('MAX_EVENTS_PER_DAY', 5);
 define('MAX_WAITLISTED_SESSIONS', 7);
 
@@ -172,7 +169,7 @@ echo $OUTPUT->footer();
 
 function get_display_info($d, $m, $y) {
     $display = new stdClass;
-    $display->minwday = get_user_preferences('calendar_startwday', CALENDAR_STARTING_WEEKDAY);
+    $display->minwday = get_user_preferences('calendar_startwday', calendar_get_starting_weekday());
     $display->maxwday = $display->minwday + 6;
 
     $thisdate = usergetdate(time()); // Time and day at the user's location
@@ -835,7 +832,7 @@ function print_waitlisted_content($waitlistedsessions) {
 }
 
 function print_tooltips($sessions) {
-    $js = 'YAHOO.namespace("calendar.container");'."\n";
+    $jstooltip = "";
 
     $currentday = 0;
     $sessionlist = array();
@@ -846,7 +843,7 @@ function print_tooltips($sessions) {
         if ($currentday < $day) {
             if ($currentday > 0) {
                 $html = tooltip_contents($sessionlist);
-                $js .= "YAHOO.calendar.container.tt$currentday = new YAHOO.widget.Tooltip('tt$currentday', { context:'cell$currentday', text:'$html' });\n";
+                $jstooltip .= " Y.one('#cell$currentday').setAttribute('tooltip', '$html').setAttribute('tooltip:alignment', 'bottom');\n";
             }
 
             $sessionlist = array();
@@ -855,21 +852,25 @@ function print_tooltips($sessions) {
         $sessionlist[] = format_string($session->name);
     }
 
-    // Print last tooltip
+    // Print last tooltip.
     $html = tooltip_contents($sessionlist);
-    $js .= "YAHOO.calendar.container.tt$currentday = new YAHOO.widget.Tooltip('tt$currentday', { context:'cell$currentday', text:'$html' });\n";
+    $jstooltip .= " Y.one('#cell$currentday').setAttribute('tooltip', '$html').setAttribute('tooltip:alignment', 'bottom');\n";
 
+    $js = "Y.use('gallery-yui-tooltip', 'node', function(Y) { $jstooltip var t = new Y.Tooltip().render(); }); \n";
     echo html_writer::script($js);
 }
 
 function tooltip_contents($sessionlist) {
-    $html = html_writer::start_tag('p') . get_string('tooltipheading', 'block_facetoface');
+    global $OUTPUT;
+
+    $html = get_string('tooltipheading', 'block_facetoface');
     $html .= html_writer::start_tag('ul');
     foreach ($sessionlist as $session) {
         $sessionname = str_replace('"', '\"', $session);
         $html .= html_writer::tag('li', $sessionname);
     }
-    $html .= html_writer::end_tag('ul') . html_writer::end_tag('p');
-    return $html;
+    $html .= html_writer::end_tag('ul');
+
+    return $OUTPUT->container($html, 'tooltip');
 }
 

@@ -707,6 +707,65 @@ function totara_cohort_send_queued_notifications(){
     }
 }
 
+/**
+ * Ensure dynamic cohorts are up to date
+ *
+ * Used when running the cohort sync to make sure members are up to date.
+ *
+ * @param int $courseid one course, empty mean all
+ * @param bool $verbose verbose CLI output
+ * @return void
+ */
+function totara_cohort_check_and_update_dynamic_cohort_members($courseid, $verbose) {
+    global $DB;
+
+    if ($verbose) {
+        mtrace('removing user memberships of deleted users...');
+    }
+    totara_cohort_clean_deleted_users();
+
+    // first make sure dynamic cohort members are up to date
+    if (empty($courseid)) {
+        $dcohorts = $DB->get_records('cohort', array('cohorttype' => cohort::TYPE_DYNAMIC), 'idnumber');
+    } else {
+        // only update members of cohorts that is associated with this course
+        $dcohorts = totara_cohort_get_course_cohorts($courseid, cohort::TYPE_DYNAMIC);
+    }
+    if ($verbose) {
+        mtrace('updating dynamic cohort members...');
+    }
+    foreach ($dcohorts as $cohort) {
+        $active = totara_cohort_is_active($cohort);
+        if (!$active) {
+            if ($verbose) {
+                mtrace("inactive cohort {$cohort->idnumber}");
+                mtrace("start-date: " . ($cohort->startdate === null ? 'null' : userdate($cohort->startdate)));
+                mtrace("end-date: " . ($cohort->enddate === null ? 'null:' : userdate($cohort->enddate)));
+            }
+            continue;
+        }
+        try {
+            $timenow = time();
+            if ($verbose) {
+                mtrace(date("H:i:s",$timenow)." updating {$cohort->idnumber} members...");
+            }
+            $result = totara_cohort_update_dynamic_cohort_members($cohort->id);
+            if (is_array($result) && array_key_exists('add', $result) && array_key_exists('del', $result)) {
+                if ($verbose) {
+                    mtrace("{$result['add']} members added; {$result['del']} members deleted");
+                }
+            } else {
+                throw new Exception("error processing members: " . print_r($result, true));
+            }
+        } catch (Exception $e) {
+            // log it
+            if ($verbose) {
+                mtrace($e->getMessage());
+            }
+        }
+    } // foreach
+}
+
 
 function totara_cohort_clean_deleted_users() {
     global $DB;
@@ -814,10 +873,10 @@ function totara_cohort_clone_cohort($oldcohortid) {
     // If the cohort is dynamic, copy over the rules
     if ($newcohort->cohorttype == cohort::TYPE_DYNAMIC) {
         // Clone active rule collection
-        $activecollid = cohort_rules_clone_collection($oldcohort->activecollectionid);
+        $activecollid = cohort_rules_clone_collection($oldcohort->activecollectionid, null, true, $newcohort->id);
 
         // Clone draft rule collection
-        $draftcollid = cohort_rules_clone_collection($oldcohort->draftcollectionid);
+        $draftcollid = cohort_rules_clone_collection($oldcohort->draftcollectionid, null, true, $newcohort->id);
 
         // Update new cohort's collections to created clones
         $todb = new stdClass;

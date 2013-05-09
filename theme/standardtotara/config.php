@@ -72,26 +72,26 @@ $THEME->layouts = array(
     'login' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('langmenu'=>true, 'nologininfo' => true, 'nocustommenu' => true, 'nonavbar' => true),
+        'options' => array('langmenu'=>true, 'nologininfo' => true, 'nocustommenu' => true, 'nonavbar' => true, 'nocourseheaderfooter' => true),
     ),
     // hide the login info section during maintenance as well
     'maintenance' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks' => true, 'nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true, 'langmenu' => false),
+        'options' => array('noblocks' => true, 'nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true, 'langmenu' => false, 'nocourseheaderfooter' => true),
     ),
     // also exclude login info on print view
     'print' => array(
         'file' => 'general.php',
         'regions' => array(),
-        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true, 'nologininfo' => true, 'langmenu' => false),
+        'options' => array('noblocks'=>true, 'nofooter'=>true, 'nonavbar'=>false, 'nocustommenu'=>true, 'nologininfo' => true, 'langmenu' => false, 'nocourseheaderfooter' => true),
     ),
     // simplify the layout of popups, removing superfluous divs and padding,
     // to make popups work much better with tablets and other devices with limited screen size.
     'popup' => array(
         'file' => 'popup.php',
         'regions' => array(),
-        'options' => array('nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true),
+        'options' => array('nofooter' => true, 'nonavbar' => true, 'nocustommenu' => true, 'nologininfo' => true, 'nocourseheaderfooter' => true),
     ),
 );
 

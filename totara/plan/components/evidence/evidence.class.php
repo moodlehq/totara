@@ -325,7 +325,7 @@ class dp_evidence_relation {
         global $OUTPUT, $DB;
         $out = '';
 
-        $sql = "SELECT e.id, e.name
+        $sql = "SELECT e.name
                 FROM {dp_plan_evidence} e
                 JOIN {dp_plan_evidence_relation} er ON er.evidenceid = e.id
                 WHERE er.planid = ?
@@ -333,7 +333,7 @@ class dp_evidence_relation {
                 AND er.itemid = ?
                 ORDER BY e.name";
 
-        if ($items = $DB->get_records_sql($sql, array($this->planid, $this->componentname, $this->itemid))) {
+        if ($items = $DB->get_fieldset_sql($sql, array($this->planid, $this->componentname, $this->itemid))) {
             $out = $OUTPUT->box_start('generalbox', 'notice');
             $out .= $OUTPUT->heading(get_string('deletelinkedevidenceheader', 'totara_plan'));
             $out .= html_writer::tag('p', get_string('deletelinkedevidencemessage', 'totara_plan'));

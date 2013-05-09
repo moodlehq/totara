@@ -41,8 +41,12 @@ $context = $badge->get_context();
 $navurl = new moodle_url('/badges/index.php', array('type' => $badge->type));
 
 if ($badge->type == BADGE_TYPE_COURSE) {
-    require_login($badge->courseid);
-    $navurl = new moodle_url('/badges/index.php', array('type' => $badge->type, 'id' => $badge->courseid));
+    if (empty($CFG->badges_allowcoursebadges)) {
+        print_error('coursebadgesdisabled', 'badges');
+    } else {
+        require_login($badge->courseid);
+        $navurl = new moodle_url('/badges/index.php', array('type' => $badge->type, 'id' => $badge->courseid));
+    }
 }
 
 $currenturl = new moodle_url('/badges/overview.php', array('id' => $badge->id));

@@ -3046,20 +3046,30 @@
         <KEY NAME="fk_issuerrole" TYPE="foreign" FIELDS="issuerrole" REFTABLE="role" REFFIELDS="id" PREVIOUS="fk_issuerid"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="badge_backpack" COMMENT="Defines settings for connecting external backpack" PREVIOUS="badge_manual_award">
+    <TABLE NAME="badge_backpack" COMMENT="Defines settings for connecting external backpack" PREVIOUS="badge_manual_award" NEXT="badge_external">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="userid"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="email"/>
         <FIELD NAME="email" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="userid" NEXT="backpackurl"/>
         <FIELD NAME="backpackurl" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="email" NEXT="backpackuid"/>
-        <FIELD NAME="backpackuid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="backpackurl" NEXT="backpackgid"/>
-        <FIELD NAME="backpackgid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="backpackuid" NEXT="autosync"/>
-        <FIELD NAME="autosync" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="backpackgid" NEXT="password"/>
+        <FIELD NAME="backpackuid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="backpackurl" NEXT="autosync"/>
+        <FIELD NAME="autosync" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="backpackuid" NEXT="password"/>
         <FIELD NAME="password" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" PREVIOUS="autosync"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_userid"/>
         <KEY NAME="fk_userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="badge_external" COMMENT="Setting for external badges display" PREVIOUS="badge_backpack">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="backpackid"/>
+        <FIELD NAME="backpackid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of a backpack" PREVIOUS="id" NEXT="collectionid"/>
+        <FIELD NAME="collectionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Badge collection id in the backpack" PREVIOUS="backpackid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="fk_backpackid"/>
+        <KEY NAME="fk_backpackid" TYPE="foreign" FIELDS="backpackid" REFTABLE="badge_backpack" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
   </TABLES>

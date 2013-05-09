@@ -200,7 +200,8 @@ class rb_role_access extends rb_base_access {
         //TODO replace with checkbox once there is more than one option
         $mform->addElement('hidden', 'role_enable', 1);
 
-        $roles = $DB->get_records('role', null, 'sortorder');
+        $systemcontext = context_system::instance();
+        $roles = role_fix_names(get_all_roles(), $systemcontext);
         if (!empty($roles)) {
             $contextoptions = array('site' => get_string('systemcontext', 'totara_reportbuilder'), 'any' => get_string('anycontext', 'totara_reportbuilder'));
 
@@ -212,7 +213,7 @@ class rb_role_access extends rb_base_access {
 
             $rolesgroup = array();
             foreach ($roles as $role) {
-                $rolesgroup[] =& $mform->createElement('advcheckbox', "role_activeroles[{$role->id}]", '', $role->name, null, array(0, 1));
+                $rolesgroup[] =& $mform->createElement('advcheckbox', "role_activeroles[{$role->id}]", '', $role->localname, null, array(0, 1));
                 if (in_array($role->id, $activeroles)) {
                     $mform->setDefault("role_activeroles[{$role->id}]", 1);
                 }

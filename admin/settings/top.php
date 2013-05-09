@@ -10,7 +10,7 @@ $hassiteconfig = has_capability('moodle/site:config', $systemcontext);
 
 $ADMIN->add('root', new admin_externalpage('adminnotifications', new lang_string('notifications'), "$CFG->wwwroot/$CFG->admin/index.php"));
 
-$ADMIN->add('root', new admin_externalpage('totararegistration', get_string('totararegistration', 'totara_core'),
+$ADMIN->add('root', new admin_externalpage('totararegistration', new lang_string('totararegistration', 'totara_core'),
         "$CFG->wwwroot/$CFG->admin/register.php", 'moodle/site:config', true));
 
  // hidden upgrade script

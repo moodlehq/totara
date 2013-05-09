@@ -102,7 +102,7 @@ class cohort_rules_form extends moodleform {
                 '',
                 cohort_rules_get_menu_options(),
                 array(
-                    'class' => 'rule_selector new_rule_selector',
+                    'class' => 'rule_selector new_rule_selector ignoredirty',
                     'data-idtype' => 'ruleset',
                     'data-id' => $ruleset->id,
                 )
@@ -117,7 +117,7 @@ class cohort_rules_form extends moodleform {
             '',
             cohort_rules_get_menu_options(),
             array(
-                'class' => 'rule_selector new_rule_selector',
+                'class' => 'rule_selector new_rule_selector ignoredirty',
                 'data-idtype' => 'cohort',
                 'data-id' => $cohort->id,
             )

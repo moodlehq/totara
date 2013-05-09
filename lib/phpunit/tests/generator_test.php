@@ -56,7 +56,7 @@ class core_phpunit_generator_testcase extends advanced_testcase {
         $this->assertRegExp('/^Course category \d/', $category->name);
         $this->assertSame('', $category->idnumber);
         $this->assertRegExp('/^Test course category \d/', $category->description);
-        $this->assertSame(FORMAT_MOODLE, $category->descriptionformat);
+        $this->assertSame(FORMAT_MOODLE, (string)$category->descriptionformat);
 
         $count = $DB->count_records('cohort');
         $cohort = $generator->create_cohort();
@@ -65,7 +65,7 @@ class core_phpunit_generator_testcase extends advanced_testcase {
         $this->assertRegExp('/^Cohort \d/', $cohort->name);
         $this->assertSame('', $cohort->idnumber);
         $this->assertRegExp('/^Test cohort \d/', $cohort->description);
-        $this->assertSame(FORMAT_MOODLE, $cohort->descriptionformat);
+        $this->assertSame(FORMAT_MOODLE, (string)$cohort->descriptionformat);
         $this->assertSame('', $cohort->component);
         $this->assertLessThanOrEqual(time(), $cohort->timecreated);
         $this->assertSame($cohort->timecreated, $cohort->timemodified);
@@ -80,7 +80,7 @@ class core_phpunit_generator_testcase extends advanced_testcase {
         $this->assertEquals(0, $course->newsitems);
         $this->assertEquals(5, $course->numsections);
         $this->assertRegExp('/^Test course \d/', $course->summary);
-        $this->assertSame(FORMAT_MOODLE, $course->summaryformat);
+        $this->assertSame(FORMAT_MOODLE, (string)$course->summaryformat);
 
         $section = $generator->create_course_section(array('course'=>$course->id, 'section'=>3));
         $this->assertEquals($course->id, $section->course);

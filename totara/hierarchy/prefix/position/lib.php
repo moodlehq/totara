@@ -322,7 +322,7 @@ class position extends hierarchy {
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment' => 'positionid',
             $this->shortprefix.'_assignment_history' => 'positionid',
-            hierarchy::get_short_prefix('competency').'_evidence' => 'positionid',
+            hierarchy::get_short_prefix('competency').'_record' => 'positionid',
             'course_completions' => 'positionid',
         );
 
@@ -477,6 +477,12 @@ class position_assignment extends data_object {
         'timevalidfrom',
         'timevalidto'
     );
+
+    /**
+     * Array of text table fields.
+     * @var array $text_fields
+     */
+    public $text_fields = array('fullname', 'description');
 
     public $optional_fields = array(
         'managerpath' => null,

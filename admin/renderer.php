@@ -145,7 +145,7 @@ class core_admin_renderer extends plugin_renderer_base {
 
         $output .= $this->header();
         $output .= $this->maturity_warning($maturity);
-        $output .= $this->confirm(get_string('upgradesure', 'admin', $strnewversion), $continueurl, $cancelurl);
+        $output .= $this->confirm($strnewversion, $continueurl, $cancelurl);
         $output .= $this->footer();
 
         return $output;

@@ -512,6 +512,7 @@ input[type="checkbox"] {
     clear: none;
     margin:0;
     padding:10px 0;
+    min-width: 425px;
 }
 .mform .fitem .feditor textarea {
     width:98% !important;
@@ -821,3 +822,39 @@ table.namewithlinks-layout td.user-name {
     font-size: 1.3em;
 }
 
+.comment-userpicture {padding:0 !important;}
+.comment-delete {float:right;text-align:right;}
+.dir-rtl .comment-userpicture {padding:0 !important;}
+.dir-rtl .comment-delete {float:left;text-align:left;right:auto !important;left:4px !important;}
+.dir-rtl ul.comment-list li.comment-own-post .comment-userpicture {
+    background: url([[pix:totara_core|comment-point-blue-rtl]]) no-repeat scroll left center transparent;
+    float: right !important;
+    left: auto;
+    right: 0;
+    text-align: right;
+}
+.dir-rtl ul.comment-list li.comment-others-post .comment-userpicture {
+    background: url([[pix:totara_core|comment-point-grey-rtl]]) no-repeat scroll right center transparent;
+    float: left !important;
+    left: 0;
+    right: auto;
+    text-align: left;
+}
+
+.dir-rtl.path-course-view .completionprogress {float: left;}
+
+/* shrink select boxes to fit in filter */
+
+select.totara-limited-width-150 {
+    position: static;
+    width: 150px;
+}
+select.totara-limited-width {
+    width: 200px;
+    position: static;
+}
+/* expand while selecting option (IE only) */
+select.totara-expanded-width {
+    width: auto;
+    position: absolute;
+}

@@ -187,4 +187,28 @@ class award_criteria_profile extends award_criteria {
         }
         return $overall;
     }
+
+    /**
+     * Checks criteria for any major problems.
+     *
+     * @return array A list containing status and an error message (if any).
+     */
+    public function validate() {
+        global $DB;
+        $method = ($this->method == BADGE_CRITERIA_AGGREGATION_ALL);
+        $singleparam = (count($this->params) == 1);
+
+        foreach ($this->params as $param) {
+            // No need to check user table, checking only custom profile fields.
+            // Perform check if there only one parameter with any type of aggregation,
+            // Or there are more than one parameter with aggregation ALL.
+            if (is_numeric($param['field']) && ($singleparam || $method)) {
+                if (!$DB->record_exists('user_info_field', array('id' => $param['field']))) {
+                    return array(false, get_string('error:invalidparamprofile', 'badges'));
+                }
+            }
+        }
+
+        return array(true, '');
+    }
 }

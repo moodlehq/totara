@@ -305,6 +305,15 @@ class rb_source_course_completion_by_org extends rb_base_source {
                 get_string('participants', 'rb_source_course_completion_by_org'),
                 'text'
             ),
+            new rb_filter_option(
+                'course_completion',
+                'enrolled',
+                get_string('isenrolled', 'rb_source_course_completion'),
+                'enrol',
+                array(),
+                // special enrol filter requires a composite field
+                array('course' => 'base.course', 'user' => 'base.userid')
+            ),
         );
 
         // include some standard filters

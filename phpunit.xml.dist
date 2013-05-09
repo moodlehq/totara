@@ -36,6 +36,7 @@
             <directory suffix="_test.php">lib/tests</directory>
             <directory suffix="_test.php">lib/ajax/tests</directory>
             <directory suffix="_test.php">lib/form/tests</directory>
+            <directory suffix="_test.php">lib/phpseclib/tests</directory>
         </testsuite>
         <testsuite name="core_files">
             <directory suffix="_test.php">lib/filestorage/tests</directory>

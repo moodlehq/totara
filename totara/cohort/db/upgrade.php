@@ -46,7 +46,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field modifierid to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('modifierid');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, time(), 'timemodified');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, time(), 'timemodified');
 
         // Launch add field modifierid
         if (!$dbman->field_exists($table, $field)) {
@@ -56,7 +56,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field visibility to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('visibility');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'cohorttype');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'cohorttype');
 
         // Launch add field visibility
         if (!$dbman->field_exists($table, $field)) {
@@ -66,7 +66,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field alertmembers to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('alertmembers');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'visibility');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'visibility');
 
         // Launch add field alertmembers
         if (!$dbman->field_exists($table, $field)) {
@@ -76,7 +76,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field startdate to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('startdate');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'alertmembers');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'alertmembers');
 
         // Launch add field startdate
         if (!$dbman->field_exists($table, $field)) {
@@ -86,7 +86,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field enddate to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('enddate');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'startdate');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'startdate');
 
         // Launch add field enddate
         if (!$dbman->field_exists($table, $field)) {
@@ -96,7 +96,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field active to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('active');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'enddate');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'enddate');
 
         // Launch add field active
         if (!$dbman->field_exists($table, $field)) {
@@ -106,7 +106,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field rulesetoperator to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('rulesetoperator');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', 'active');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', 'active');
 
         // Launch add field rulesetoperator
         if (!$dbman->field_exists($table, $field)) {
@@ -116,7 +116,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field calculationstatus to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('calculationstatus');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '1', 'active');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '1', 'active');
 
         // Launch add field calculationstatus
         if (!$dbman->field_exists($table, $field)) {
@@ -126,7 +126,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field activecollectionid to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('activecollectionid');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'calculationstatus');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'calculationstatus');
 
         // Launch add field activecollectionid
         if (!$dbman->field_exists($table, $field)) {
@@ -136,7 +136,7 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         // Define field draftcollectionid to be added to cohort
         $table = new xmldb_table('cohort');
         $field = new xmldb_field('draftcollectionid');
-        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'activecollectionid');
+        $field->set_attributes(XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'activecollectionid');
 
         // Launch add field draftcollectionid
         if (!$dbman->field_exists($table, $field)) {
@@ -147,14 +147,14 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         $table = new xmldb_table('cohort_rulesets');
 
         // Adding fields to table cohort_rulesets
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('rulecollectionid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('rulecollectionid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('operator', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('operator', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
 
         // Adding keys to table cohort_rulesets
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -168,14 +168,14 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         $table = new xmldb_table('cohort_rules');
 
         // Adding fields to table cohort_rules
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('rulesetid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('rulesetid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
         $table->add_field('ruletype', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
 
         // Adding keys to table cohort_rules
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -190,13 +190,13 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         $table = new xmldb_table('cohort_rule_params');
 
         // Adding fields to table cohort_rule_params
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('ruleid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('ruleid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
         $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null);
         $table->add_field('value', XMLDB_TYPE_CHAR, '255', null, null, null, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
 
         // Adding keys to table cohort_rule_params
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -213,13 +213,13 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         $table = new xmldb_table('cohort_rule_collections');
 
         // Adding fields to table cohort_rule_collections
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('rulesetoperator', XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', null);
-        $table->add_field('status', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('rulesetoperator', XMLDB_TYPE_INTEGER, '2', null, XMLDB_NOTNULL, null, '0', null);
+        $table->add_field('status', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
 
         // Adding keys to table cohort_rule_collections
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -415,14 +415,14 @@ function xmldb_totara_cohort_upgrade($oldversion) {
         $table = new xmldb_table('cohort_msg_queue');
 
         /// Adding fields to table cohort_msg_queue
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
         $table->add_field('action', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('processed', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, '0', null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
-        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
+        $table->add_field('processed', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
+        $table->add_field('modifierid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
 
         /// Adding keys to table cohort_msg_queue
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -471,16 +471,16 @@ function xmldb_totara_cohort_upgrade($oldversion) {
     if ($oldversion < 2012102300) {
         //Cohort plan creation history table
         $table = new xmldb_table('cohort_plan_history');
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
-        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('templateid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('usercreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
-        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, null);
-        $table->add_field('planstatus', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('affectedusers', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('manual', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('auto', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
-        $table->add_field('completed', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $table->add_field('cohortid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('templateid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('usercreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, null, null, null, null);
+        $table->add_field('planstatus', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('affectedusers', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('manual', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('auto', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null);
+        $table->add_field('completed', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, null, null);
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
         $table->add_key('cohortid', XMLDB_KEY_FOREIGN, array('cohortid'), 'cohort', array('id'));

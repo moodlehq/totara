@@ -17,6 +17,7 @@ class mod_facetoface_renderer extends plugin_renderer_base {
         }
         $tableheader[] = get_string('date', 'facetoface');
         $tableheader[] = get_string('time', 'facetoface');
+        $tableheader[] = get_string('room', 'facetoface');
         if ($viewattendees) {
             $tableheader[] = get_string('capacity', 'facetoface');
         }
@@ -85,6 +86,17 @@ class mod_facetoface_renderer extends plugin_renderer_base {
             }
             $sessionrow[] = $allsessiondates;
             $sessionrow[] = $allsessiontimes;
+
+            //Room
+            if (isset($session->room)) {
+                $roomhtml = '';
+                $roomhtml .= isset($session->room->name) ? format_string($session->room->name) . html_writer::empty_tag('br') : '';
+                $roomhtml .= isset($session->room->building) ? format_string($session->room->building) . html_writer::empty_tag('br') : '';
+                $roomhtml .= isset($session->room->address) ? format_string($session->room->address) . html_writer::empty_tag('br') : '';
+                $sessionrow[] = $roomhtml;
+            } else {
+                $sessionrow[] = '';
+            }
 
             // Capacity
             $signupcount = facetoface_get_num_attendees($session->id, MDL_F2F_STATUS_APPROVED);

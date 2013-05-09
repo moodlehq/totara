@@ -49,7 +49,8 @@ $ADMIN->add('totara_reportbuilder',
     new admin_externalpage('rbactivitygroups',
         get_string('activitygroups','totara_reportbuilder'),
         "$CFG->wwwroot/totara/reportbuilder/groups.php",
-        array('totara/reportbuilder:managereports')
+        array('totara/reportbuilder:managereports'),
+        true
     )
 );
 

@@ -340,9 +340,14 @@ class totara_sync_element_user extends totara_sync_element {
             'type' => POSITION_TYPE_PRIMARY
         ));
 
+        //if we have no position info at all we do not need to set a position
+        if (!isset($suser->postitle) && empty($suser->posidnumber) && !isset($suser->posstartdate)
+                 && !isset($suser->posenddate) && empty($suser->orgidnumber) && empty($suser->manageridnumber)) {
+            return false;
+        }
         $posdata = new stdClass;
-        $posdata->fullname = get_string('placeholderposition', 'tool_totara_sync');
-        $posdata->shortname = 'PP';
+        $posdata->fullname = '';
+        $posdata->shortname = '';
         $posdata->positionid = 0;
         $posdata->organisationid = 0;
         $posdata->managerid = 0;

@@ -2490,7 +2490,7 @@ class global_navigation extends navigation_node {
         }
 
         // Badges.
-        if (!empty($CFG->enablebadges) && has_capability('moodle/badges:viewbadges', $this->page->context)) {
+        if (!empty($CFG->enablebadges) && !empty($CFG->badges_allowcoursebadges) && has_capability('moodle/badges:viewbadges', $this->page->context)) {
             $url = new moodle_url($CFG->wwwroot . '/badges/view.php',
                     array('type' => 2, 'id' => $course->id));
 
@@ -3535,7 +3535,7 @@ class settings_navigation extends navigation_node {
         if (is_siteadmin()) {
             if (has_capability('moodle/role:assign', $context)) {
                 $url = new moodle_url('/admin/roles/assign.php', array('contextid' => $context->id));
-                $permissionsnode->add(get_string('assignedroles', 'role'), $url, navigation_node::TYPE_SETTING, null, 'roles', new pix_icon('i/roles', ''));
+                $permissionsnode->add(get_string('assignedroles', 'role'), $url, navigation_node::TYPE_SETTING, null, 'roles', new pix_icon('t/assignroles', ''));
             }
         }
         // Check role permissions
@@ -4183,6 +4183,15 @@ class settings_navigation extends navigation_node {
             if (!empty($CFG->useexternalblogs) && $CFG->maxexternalblogsperuser > 0 && has_capability('moodle/blog:manageexternal', context_system::instance())) {
                 $blog->add(get_string('externalblogs', 'blog'), new moodle_url('/blog/external_blogs.php'), navigation_node::TYPE_SETTING);
                 $blog->add(get_string('addnewexternalblog', 'blog'), new moodle_url('/blog/external_blog_edit.php'), navigation_node::TYPE_SETTING);
+            }
+        }
+
+        // Badges.
+        if ($currentuser && !empty($CFG->enablebadges)) {
+            $badges = $usersetting->add(get_string('badges'), null, navigation_node::TYPE_CONTAINER, null, 'badges');
+            $badges->add(get_string('preferences'), new moodle_url('/badges/preferences.php'), navigation_node::TYPE_SETTING);
+            if (!empty($CFG->badges_allowexternalbackpack)) {
+                $badges->add(get_string('backpackdetails', 'badges'), new moodle_url('/badges/mybackpack.php'), navigation_node::TYPE_SETTING);
             }
         }
 

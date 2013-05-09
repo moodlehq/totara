@@ -883,7 +883,7 @@ abstract class dp_base_component {
         $event->contexturl = $this->get_url();
         $event->icon = $this->component.'-update';
         $a = new stdClass;
-        $a->plan = $this->plan->name;
+        $a->plan = format_string($this->plan->name);
         $a->planhtml = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
             $this->plan->name, null, array('title' => $this->plan->name));
         $a->component = get_string($this->component.'plural', 'totara_plan');
@@ -937,7 +937,7 @@ abstract class dp_base_component {
         $event->icon = $this->component.'-'.$type;
         $a = new stdClass;
 
-        $a->plan = $this->plan->name;
+        $a->plan = format_string($this->plan->name);
         $a->planhtml = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
             $this->plan->name, null, array('title' => $this->plan->name));
         $a->component = get_string($this->component.'plural', 'totara_plan');
@@ -988,7 +988,7 @@ abstract class dp_base_component {
         $event->icon = $this->component.'-complete';
         $a = new stdClass;
 
-        $a->plan = $this->plan->name;
+        $a->plan = format_string($this->plan->name);
         $a->planhtml = $OUTPUT->action_link(new moodle_url('/totara/plan/view.php', array('id' => $this->plan->id)),
             $this->plan->name, null, array('title' => $this->plan->name));
         $a->component = get_string($this->component.'plural', 'totara_plan');

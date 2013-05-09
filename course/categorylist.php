@@ -57,7 +57,7 @@
     $isadminediting = ($editingon && $isadmin);
 
     // should we show the editing on/off button?
-    $editbutton = $canedit ? totara_print_edit_button('categoryedit') : '';
+    $editbutton = $canedit ? totara_print_edit_button('categoryedit', array('viewtype' => $SESSION->viewtype)) : '';
 
 /// Print headings
     $numcategories = $DB->count_records('course_categories');

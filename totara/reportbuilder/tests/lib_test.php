@@ -1240,16 +1240,23 @@ class reportbuilderlib_test extends advanced_testcase {
     }
 
     function test_reportbuilder_get_next_monthly() {
-        //TODO fix and enable before releasing Totara 2.4
-        $this->markTestSkipped('Re-enable this test before Totara 2.4 released.');
+        //TODO enable when T-10473 is fixed
+        $this->markTestSkipped('Re-enable this test when T-10473 is fixed.');
 
-        $firstresult = get_next_monthly(1287313200, 20);
+        // Use reflection class to allow us to test protected method:
+        // http://stackoverflow.com/questions/249664/best-practices-to-test-protected-methods-with-phpunit
+        $class = new ReflectionClass('scheduler');
+        $method = $class->getMethod('get_next_monthly');
+        $method->setAccessible(true);
+
+        $scheduler = new scheduler();
+        $firstresult = $method->invokeArgs($scheduler, array(1287313200, 20));
         $this->assertEquals($firstresult, 1287486000);
 
-        $secondresult = get_next_monthly(1287509000 , 20);
+        $secondresult = $method->invokeArgs($scheduler, array(1287509000, 20));
         $this->assertEquals($secondresult, 1290164400);
 
-        $thirdresult = get_next_monthly(1287658800 , 20);
+        $thirdresult = $method->invokeArgs($scheduler, array(1287658800, 20));
         $this->assertEquals($thirdresult, 1290164400);
 
         $this->resetAfterTest(true);

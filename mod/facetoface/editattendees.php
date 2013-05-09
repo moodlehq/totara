@@ -71,12 +71,26 @@ $strfacetoface = get_string('modulename', 'facetoface');
 
 // Setup attendees array
 if ($clear) {
-    $attendees = facetoface_get_attendees($session->id);
+    if ($session->datetimeknown) {
+        $attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    } else {
+        $attendees = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    }
 } else {
     if ($attendees) {
         $attendee_array = explode(',', $attendees);
         list($attendeesin, $params) = $DB->get_in_or_equal($attendee_array);
-        $attendees = $DB->get_records_sql("SELECT * FROM {user} WHERE id {$attendeesin}", $params);
+        $attendees = $DB->get_records_sql("SELECT u.*, ss.statuscode
+                                        FROM {user} u
+                                        LEFT JOIN {facetoface_signups} su
+                                          ON u.id = su.userid
+                                         AND su.sessionid = {$session->id}
+                                        LEFT JOIN {facetoface_signups_status} ss
+                                          ON su.id = ss.signupid
+                                         AND ss.superceded != 1
+                                       WHERE u.id {$attendeesin}", $params);
     }
 }
 
@@ -102,7 +116,14 @@ if ($save && $onlycontent) {
     $errors = array();
 
     // Original booked attendees plus those awaiting approval
-    $original = facetoface_get_attendees($session->id);
+    if ($session->datetimeknown) {
+        $original = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    } else {
+        $original = facetoface_get_attendees($session->id, array(MDL_F2F_STATUS_WAITLISTED, MDL_F2F_STATUS_BOOKED, MDL_F2F_STATUS_NO_SHOW,
+            MDL_F2F_STATUS_PARTIALLY_ATTENDED, MDL_F2F_STATUS_FULLY_ATTENDED));
+    }
+    // Add those awaiting approval
     foreach ($waitingapproval as $waiting) {
         if (!isset($original[$waiting->id])) {
             $original[$waiting->id] = $waiting;
@@ -185,6 +206,7 @@ if ($frm = data_submitted()) {
             }
 
             $adduser = $DB->get_record('user', array('id' => $adduser));
+            $adduser->statuscode = MDL_F2F_STATUS_BOOKED;
             if ($adduser) {
                 $attendees[$adduser->id] = $adduser;
             }
@@ -227,17 +249,34 @@ if ($searchtext !== '') {   // Search for a subset of remaining users
 // All non-signed up system users
 if ($attendees) {
     list($attendee_sql, $attendee_params) = $DB->get_in_or_equal(array_keys($attendees), SQL_PARAMS_QM, 'param', false);
-    $where .= ' AND id ' . $attendee_sql;
+    $where .= ' AND u.id ' . $attendee_sql;
     $params = array_merge($params, $attendee_params);
 }
 
-$availableusers = $DB->get_recordset_sql("SELECT id, firstname, lastname, email
-                                       FROM {user}
-                                      WHERE {$where}
-                                      ORDER BY lastname ASC, firstname ASC
+$availableusers = $DB->get_recordset_sql("SELECT u.id, u.firstname, u.lastname, u.email, ss.statuscode
+                                        FROM {user} u
+                                        LEFT JOIN {facetoface_signups} su
+                                          ON u.id = su.userid
+                                         AND su.sessionid = {$session->id}
+                                        LEFT JOIN {facetoface_signups_status} ss
+                                          ON su.id = ss.signupid
+                                         AND ss.superceded != 1
+                                       WHERE {$where}
+                                       ORDER BY u.lastname ASC, u.firstname ASC
 ", $params);
 
-$usercount = $DB->count_records_select('user', $where, $params);
+$usercountrow = $DB->get_record_sql("SELECT COUNT(u.id) as num
+                                       FROM {user} u
+                                       LEFT JOIN {facetoface_signups} su
+                                         ON u.id = su.userid
+                                        AND su.sessionid = {$session->id}
+                                       LEFT JOIN {facetoface_signups_status} ss
+                                         ON su.id = ss.signupid
+                                        AND ss.superceded != 1
+                                      WHERE {$where}
+", $params);
+
+$usercount = $usercountrow->num;
 
 // Prints a form to add/remove users from the session
 include('editattendees.html');

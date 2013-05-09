@@ -151,7 +151,7 @@ abstract class cohort_rule_ui_form extends cohort_rule_ui {
     public $form = null;
 
     public function validateResponse() {
-        $form =& $this->constructForm();
+        $form = $this->constructForm();
         if (!$form->is_validated()){
             return false;
         }
@@ -164,7 +164,7 @@ abstract class cohort_rule_ui_form extends cohort_rule_ui {
             $this->form = new $this->formclass($CFG->wwwroot.'/totara/cohort/rules/ruledetail.php');
 
             /* @var $mform MoodleQuickForm */
-            $mform =& $this->form->_form;
+            $mform = $this->form->_form;
 
             // Add hidden variables
             $mform->addElement('hidden', 'update', 1);
@@ -185,7 +185,7 @@ abstract class cohort_rule_ui_form extends cohort_rule_ui {
         echo $OUTPUT->heading(get_string('ruledialogdesc', 'totara_cohort', $this->description), '2', 'cohort-rule-dialog-heading');
         echo $OUTPUT->box_start('cohort-rule-dialog-setting');
 
-        $form =& $this->constructForm();
+        $form = $this->constructForm();
         foreach ($hidden as $name=>$value) {
             $form->_form->addElement('hidden', $name, $value);
         }
@@ -255,7 +255,7 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
 
         // Put everything in one row to make it look cooler
         $row = array();
-        $row[0] =& $mform->createElement(
+        $row[0] = $mform->createElement(
             'select',
             'equal',
             '',
@@ -264,7 +264,7 @@ class cohort_rule_ui_text extends cohort_rule_ui_form {
                 COHORT_RULES_OP_IN_NOTEQUAL=>get_string('notequalto', 'totara_cohort')
             )
         );
-        $row[1] =& $mform->createElement('text', 'listofvalues', '');
+        $row[1] = $mform->createElement('text', 'listofvalues', '');
         $mform->addGroup($row, 'row1', ' ', ' ', false);
         if (isset($this->example)) {
             $mform->addElement('static', 'exampletext', '', $this->example);
@@ -356,7 +356,7 @@ class cohort_rule_ui_menu extends cohort_rule_ui_form {
 
         // Put the two menus on one row so it'll look cooler
         $row = array();
-        $row[0] =& $mform->createElement(
+        $row[0] = $mform->createElement(
             'select',
             'equal',
             '',
@@ -370,7 +370,7 @@ class cohort_rule_ui_menu extends cohort_rule_ui_form {
         } else {
             $options = $this->options;
         }
-        $row[1] =& $mform->createElement(
+        $row[1] = $mform->createElement(
             'select',
             'listofvalues',
             '',
@@ -689,8 +689,8 @@ class cohort_rule_ui_date extends cohort_rule_ui_form {
 
         // Put everything on two rows to make it look cooler.
         $row = array();
-        $row[0] =& $mform->createElement('radio', 'fixedordynamic', '', '', 1);
-        $row[1] =& $mform->createElement(
+        $row[0] = $mform->createElement('radio', 'fixedordynamic', '', '', 1);
+        $row[1] = $mform->createElement(
             'select',
             'beforeaftermenu',
             '',
@@ -699,7 +699,7 @@ class cohort_rule_ui_date extends cohort_rule_ui_form {
                 COHORT_RULE_DATE_OP_AFTER_FIXED_DATE=>get_string('datemenufixeddateafter', 'totara_cohort')
             )
         );
-        $row[2] =& $mform->createElement('text', 'beforeafterdate', '');
+        $row[2] = $mform->createElement('text', 'beforeafterdate', '');
         $mform->addGroup($row, 'beforeafterrow', ' ', ' ', false);
 
         $datepickerjs = <<<JS
@@ -726,8 +726,8 @@ JS;
         $mform->addElement('html', $datepickerjs);
 
         $row = array();
-        $row[0] =& $mform->createElement('radio', 'fixedordynamic', '', '', 2);
-        $row[1] =& $mform->createElement(
+        $row[0] = $mform->createElement('radio', 'fixedordynamic', '', '', 2);
+        $row[1] = $mform->createElement(
             'select',
             'durationmenu',
             '',
@@ -738,8 +738,8 @@ JS;
                 COHORT_RULE_DATE_OP_AFTER_FUTURE_DURATION =>  get_string('datemenudurationafterfuture', 'totara_cohort'),
             )
         );
-        $row[2] =& $mform->createElement('text', 'durationdate', '');
-        $row[3] =& $mform->createElement('static', '', '', get_string('durationdays', 'totara_cohort'));
+        $row[2] = $mform->createElement('text', 'durationdate', '');
+        $row[3] = $mform->createElement('static', '', '', get_string('durationdays', 'totara_cohort'));
         $mform->addGroup($row, 'durationrow', ' ', ' ', false);
 
         $mform->disabledIf('beforeaftermenu','fixedordynamic','neq',1);

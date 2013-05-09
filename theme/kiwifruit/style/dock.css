@@ -5,22 +5,32 @@
 body.has_dock {
     margin:0;
 }
-body.has_dock #page-header #logo,
-body.has_dock #page-header #logo.custom {
+.dir-ltr body.has_dock #page-header #logo,
+.dir-ltr body.has_dock #page-header #logo.custom {
     margin-left:30px;
 }
+.dir-rtl body.has_dock #page-header #logo,
+.dir-rtl body.has_dock #page-header #logo.custom {
+    margin-right:30px;
+}
 body.has_dock #page-content-wrapper {
-    padding:0;
-    padding-left:0;
+    padding:0 0 0 0;
+}
+.dir-ltr body.has_dock #page-content-wrapper {
     border-left:30px solid #FFFFFF
+}
+.dir-rtl body.has_dock #page-content-wrapper {
+    border-right:30px solid #FFFFFF
 }
 body.has_dock #page-content {
     max-width:1410px;
 }
-body.has_dock #page-footer .footer-powered {
+.dir-ltr body.has_dock #page-footer .footer-powered {
     margin-left:30px;
 }
-
+.dir-rtl body.has_dock #page-footer .footer-powered {
+    margin-right:30px;
+}
 #dock {
     position:fixed;
     z-index:100;
