@@ -810,6 +810,26 @@ function choice_extend_settings_navigation(settings_navigation $settings, naviga
 }
 
 /**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion
+ */
+function choice_get_completion_requirements($cm) {
+    global $DB;
+
+    $choice = $DB->get_record('choice', array('id' => $cm->instance));
+
+    $result = array();
+
+    if ($choice->completionsubmit) {
+        $result[] = get_string('answered', 'choice');
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this choice based on any conditions
  * in forum settings.
  *

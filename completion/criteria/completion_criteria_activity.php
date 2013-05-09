@@ -280,9 +280,17 @@ class completion_criteria_activity extends completion_criteria {
             }
         }
 
-        $details['requirement'] = implode($details['requirement'], ', ');
+        $libfile = $CFG->dirroot . "/mod/" . $this->module . "/lib.php";
+        if (file_exists($libfile)) {
+            require_once($libfile);
 
-        $details['status'] = '';
+            $completion_requirements = $this->module . "_get_completion_requirements";
+            if (function_exists($completion_requirements)) {
+                $details['requirement'] = array_merge($details['requirement'], $completion_requirements($module));
+            }
+        }
+
+        $details['requirement'] = implode($details['requirement'], ', ');
 
         return $details;
     }

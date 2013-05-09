@@ -1053,6 +1053,26 @@ function assign_user_outline($course, $user, $coursemodule, $assignment) {
 }
 
 /**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion
+ */
+function assign_get_completion_requirements($cm) {
+    global $DB;
+
+    $assign = $DB->get_record('assign', array('id' => $cm->instance));
+
+    $result = array();
+
+    if ($assign->completionsubmit) {
+        $result[] = get_string('submission', 'assign');
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this module based on any conditions
  * in assign settings.
  *

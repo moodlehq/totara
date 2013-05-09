@@ -165,9 +165,8 @@ if (empty($completions)) {
     echo '<th class="c0 header" scope="col">'.get_string('criteriagroup', 'block_completionstatus').'</th>';
     echo '<th class="c1 header" scope="col">'.get_string('criteria', 'completion').'</th>';
     echo '<th class="c2 header" scope="col">'.get_string('requirement', 'block_completionstatus').'</th>';
-    echo '<th class="c3 header" scope="col">'.get_string('status').'</th>';
-    echo '<th class="c4 header" scope="col">'.get_string('complete').'</th>';
-    echo '<th class="c5 header" scope="col">'.get_string('completiondate', 'report_completion').'</th>';
+    echo '<th class="c3 header" scope="col">'.get_string('complete').'</th>';
+    echo '<th class="c4 header" scope="col">'.get_string('completiondate', 'report_completion').'</th>';
     echo '</tr>';
 
     // Save row data
@@ -180,7 +179,6 @@ if (empty($completions)) {
         $row = array();
         $row['type'] = $criteria->criteriatype;
         $row['title'] = $criteria->get_title();
-        $row['status'] = $completion->get_status();
         $row['complete'] = $completion->is_complete();
         $row['timecompleted'] = $completion->timecompleted;
         $row['details'] = $criteria->get_details($completion);
@@ -233,18 +231,13 @@ if (empty($completions)) {
         echo $row['details']['requirement'];
         echo '</td>';
 
-        // Status
-        echo '<td class="cell c3">';
-        echo $row['details']['status'];
-        echo '</td>';
-
         // Is complete
-        echo '<td class="cell c4">';
+        echo '<td class="cell c3">';
         echo $row['complete'] ? get_string('yes') : get_string('no');
         echo '</td>';
 
         // Completion data
-        echo '<td class="cell c5">';
+        echo '<td class="cell c4">';
         if ($row['timecompleted']) {
             echo userdate($row['timecompleted'], get_string('strftimedate', 'langconfig'));
         } else {

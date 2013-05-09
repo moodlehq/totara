@@ -1175,6 +1175,35 @@ function scorm_version_check($scormversion, $version='') {
 }
 
 /**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion of this scorm
+ */
+function scorm_get_completion_requirements($cm) {
+    global $DB;
+
+    $scorm = $DB->get_record('scorm', array('id' => $cm->instance));
+    $statuses = scorm_status_options();
+
+    $result = array();
+
+    if ($scorm->completionstatusrequired) {
+        foreach ($statuses as $nstatus => $status) {
+            if ($scorm->completionstatusrequired & $nstatus) {
+                $result[] = get_string($status, 'scorm');
+            }
+        }
+    }
+
+    if ($scorm->completionscorerequired) {
+        $result[] = get_string('scorerequired', 'scorm', $scorm->completionscorerequired);
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this scorm based on any conditions
  * in scorm settings.
  *

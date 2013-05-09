@@ -2926,6 +2926,26 @@ function glossary_supports($feature) {
 }
 
 /**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion
+ */
+function glossary_get_completion_requirements($cm) {
+    global $DB;
+
+    $glossary = $DB->get_record('glossary', array('id' => $cm->instance));
+
+    $result = array();
+
+    if ($glossary->completionentries > 0) {
+        $result[] = get_string('completionentriesshort', 'glossary', $glossary->completionentries);
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this glossary based on any conditions
  * in glossary settings.
  *
