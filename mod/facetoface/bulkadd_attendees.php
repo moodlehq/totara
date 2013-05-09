@@ -90,17 +90,10 @@ if ($type === 'file') {
 if ($data = $form->get_data()) {
 
     // Handle data
-    // If input type, explode of commas
+    $rawinput = null;
     if ($type === 'input') {
-        $rawinput = str_replace(array("\r\n", "\n", "\r"), ',', $data->csvinput);
-        $addusers = clean_param($rawinput, PARAM_NOTAGS);
-        // Turn into array, then filter out empty strings/false/null using array_filter
-        $addusers = array_filter(explode(',', $addusers));
-        // Remove any leading or trailing spaces
-        $addusers = array_map('trim', $addusers);
-    }
-
-    if ($type === 'file') {
+        $rawinput = $data->csvinput;
+    } else if ($type === 'file') {
         // Large files are likely to take their time and memory. Let PHP know
         // that we'll take longer, and that the process should be recycled soon
         // to free up memory.
@@ -110,25 +103,24 @@ if ($data = $form->get_data()) {
             @apache_child_terminate();
         }
 
-        $csv_delimiter = ',';
         $text = $form->get_file_content('userfile');
 
-        // Trim utf-8 bom
+        // Trim utf-8 bom.
         $text = textlib::trim_utf8_bom($text);
-        // Normalize line endings and do the encoding conversion
-        $text = textlib::convert($text, $data->encoding);
-
-        $addusers = array();
-        foreach (explode("\n", $text) as $line) {
-            $line = explode($csv_delimiter, clean_param($line, PARAM_RAW));
-            if ($line) {
-                $cell = clean_param($line[0], PARAM_NOTAGS);
-                if ($cell) {
-                    $addusers[] = $cell;
-                }
-            }
-        }
+        // Do the encoding conversion.
+        $rawinput = textlib::convert($text, $data->encoding);
     }
+
+    // Replace commas with newlines and remove carriage returns.
+    $rawinput = str_replace(array("\r\n", "\r", ","), "\n", $rawinput);
+
+    $addusers = clean_param($rawinput, PARAM_NOTAGS);
+    // Turn into array.
+    $addusers = explode("\n", $addusers);
+    // Remove any leading or trailing spaces.
+    $addusers = array_map('trim', $addusers);
+    // Filter out empty strings/false/null using array_filter.
+    $addusers = array_filter($addusers);
 
     // Bulk add results
     $errors = array();
@@ -170,10 +162,5 @@ if (!$dialog) {
 // Display form
 $form->display();
 
-// Help text
-if ($type === 'file') {
-    $notestring = get_string('bulkaddfilehelptext', 'facetoface');
-} else {
-    $notestring = get_string('bulkaddtexthelptext', 'facetoface');
-}
-notify($notestring, 'notifyinfo', 'left');
+// Help text.
+notify(get_string('bulkaddhelptext', 'facetoface'), 'notifyinfo', 'left');
