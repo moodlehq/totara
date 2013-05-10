@@ -1173,7 +1173,8 @@ function facetoface_write_worksheet_header(&$worksheet, $context)
             $worksheet->write_string(0, $pos++, $field->name);
         }
     }
-    $worksheet->write_string(0, $pos++, get_string('date', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('sessionstartdateshort', 'facetoface'));
+    $worksheet->write_string(0, $pos++, get_string('sessionfinishdateshort', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('room', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('timestart', 'facetoface'));
     $worksheet->write_string(0, $pos++, get_string('timefinish', 'facetoface'));
@@ -1335,7 +1336,8 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
     foreach ($sessions as $session) {
         $customdata = $DB->get_records('facetoface_session_data', array('sessionid' => $session->id), '', 'fieldid, data');
 
-        $sessiondate = false;
+        $sessionstartdate = false;
+        $sessionenddate = false;
         $starttime   = get_string('wait-listed', 'facetoface');
         $finishtime  = get_string('wait-listed', 'facetoface');
         $status      = get_string('wait-listed', 'facetoface');
@@ -1350,9 +1352,11 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
 
             if (method_exists($worksheet, 'write_date')) {
                 // Needs the patch in MDL-20781
-                $sessiondate = (int)$session->timestart;
+                $sessionstartdate = (int)$session->timestart;
+                $sessionenddate = (int)$session->timefinish;
             } else {
-                $sessiondate = $sessionobj->date;
+                $sessionstartdate = $sessionobj->startdate;
+                $sessionenddate = $sessionobj->enddate;
             }
 
             if ($session->timestart < $timenow) {
@@ -1392,15 +1396,18 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
                     $worksheet->write_string($i, $j++, $data);
                 }
 
-                if (empty($sessiondate)) {
-                    $worksheet->write_string($i, $j++, $status); // session date
+                if (empty($sessionstartdate)) {
+                    $worksheet->write_string($i, $j++, $status); // Session start date.
+                    $worksheet->write_string($i, $j++, $status); // Session end date.
                 }
                 else {
                     if (method_exists($worksheet, 'write_date')) {
-                        $worksheet->write_date($i, $j++, $sessiondate, $dateformat);
+                        $worksheet->write_date($i, $j++, $sessionstartdate, $dateformat);
+                        $worksheet->write_date($i, $j++, $sessionenddate, $dateformat);
                     }
                     else {
-                        $worksheet->write_string($i, $j++, $sessiondate);
+                        $worksheet->write_string($i, $j++, $sessionstartdate);
+                        $worksheet->write_string($i, $j++, $sessionenddate);
                     }
                 }
                 //Room
@@ -1493,15 +1500,18 @@ function facetoface_write_activity_attendance(&$worksheet, $coursecontext, $star
                 $worksheet->write_string($i, $j++, $data);
             }
 
-            if (empty($sessiondate)) {
-                $worksheet->write_string($i, $j++, $status); // session date
+            if (empty($sessionstartdate)) {
+                $worksheet->write_string($i, $j++, $status); // Session start date.
+                $worksheet->write_string($i, $j++, $status); // Session end date.
             }
             else {
                 if (method_exists($worksheet, 'write_date')) {
-                    $worksheet->write_date($i, $j++, $sessiondate, $dateformat);
+                    $worksheet->write_date($i, $j++, $sessionstartdate, $dateformat);
+                    $worksheet->write_date($i, $j++, $sessionenddate, $dateformat);
                 }
                 else {
-                    $worksheet->write_string($i, $j++, $sessiondate);
+                    $worksheet->write_string($i, $j++, $sessionstartdate);
+                    $worksheet->write_string($i, $j++, $sessionenddate);
                 }
             }
             //Room
@@ -2155,9 +2165,10 @@ function facetoface_format_session_times($start, $end, $tz) {
     }
     $dt->setTimezone($targetTZ);
     $dt->setTimestamp($start);
-    $formattedsession->date = $dt->format(get_string('sessiondateformat', 'facetoface'));
+    $formattedsession->startdate = $dt->format(get_string('sessiondateformat', 'facetoface'));
     $formattedsession->starttime = $dt->format(get_string('sessiondatetimeformat', 'facetoface'));
     $dt->setTimestamp($end);
+    $formattedsession->enddate = $dt->format(get_string('sessiondateformat', 'facetoface'));
     $formattedsession->endtime = $dt->format(get_string('sessiondatetimeformat', 'facetoface'));
     if ($tzknown) {
         $formattedsession->timezone = $dt->format(get_string('sessiontimezoneformat', 'facetoface'));
@@ -2208,24 +2219,26 @@ function facetoface_print_coursemodule_info($coursemodule) {
         $submission = array_shift($submissions);
 
         if ($session = facetoface_get_session($submission->sessionid)) {
-            $sessiondate = '';
-            $sessiontime = '';
+            $sessiondates = '';
+            $sessiontimes = '';
 
             if ($session->datetimeknown) {
                 foreach ($session->sessiondates as $date) {
-                    if (!empty($sessiondate)) {
-                        $sessiondate .= html_writer::empty_tag('br');
+                    if (!empty($sessiondates)) {
+                        $sessiondates .= html_writer::empty_tag('br');
+                        $sessiontimes .= html_writer::empty_tag('br');
                     }
                     $sessionobj = facetoface_format_session_times($date->timestart, $date->timefinish, $date->sessiontimezone);
-                    $sessiondate .= $sessionobj->date;
-                    if (!empty($sessiontime)) {
-                        $sessiontime .= html_writer::empty_tag('br');
+                    if ($sessionobj->startdate == $sessionobj->enddate) {
+                        $sessiondates .= $sessionobj->startdate;
+                    } else {
+                        $sessiondates .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
                     }
-                    $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
+                    $sessiontimes .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                 }
             } else {
-                $sessiondate = get_string('wait-listed', 'facetoface');
-                $sessiontime = get_string('wait-listed', 'facetoface');
+                $sessiondates = get_string('wait-listed', 'facetoface');
+                $sessiontimes = get_string('wait-listed', 'facetoface');
             }
 
             // don't include the link to cancel a session if it has already occurred
@@ -2270,8 +2283,8 @@ function facetoface_print_coursemodule_info($coursemodule) {
                 .html_writer::end_tag('tr')
                 .html_writer::start_tag('tr', array('class' => 'f2fsessioninfo'))
                 .html_writer::tag('td', $roomtext)
-                .html_writer::tag('td', $sessiondate)
-                .html_writer::tag('td', $sessiontime)
+                .html_writer::tag('td', $sessiondates)
+                .html_writer::tag('td', $sessiontimes)
                 .html_writer::tag('td', html_writer::start_tag('table', array('border' => '0')) . html_writer::start_tag('tr') . html_writer::tag('td', html_writer::link($signup_url, $strmoreinfo, array('class' => 'f2fsessionlinks f2fsessioninfolink', 'title' => $strmoreinfo))))
                 .html_writer::end_tag('tr')
                 .$attendeeslink
@@ -2312,15 +2325,14 @@ function facetoface_print_coursemodule_info($coursemodule) {
                     $sessiontime = get_string('unknowntime', 'facetoface');
                 } else {
                     $sessionobj = facetoface_format_session_times($session->sessiondates[0]->timestart, $session->sessiondates[0]->timefinish, $session->sessiondates[0]->sessiontimezone);
-                    $sessiondate = $sessionobj->date;
-
-                    if (!empty($sessiontime)) {
-                        $sessiontime .= html_writer::empty_tag('br');
+                    if ($sessionobj->startdate == $sessionobj->enddate) {
+                        $sessiondate = $sessionobj->startdate;
+                    } else {
+                        $sessiondate .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
                     }
                     $sessiontime = $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
-
                     if (count($session->sessiondates) > 1) {
-                        $multiday = ' ('.get_string('multiday', 'facetoface').')';
+                        $multiday = html_writer::start_tag('br'). '(' . get_string('multiday', 'facetoface').')';
                     }
                 }
             } else {
@@ -2858,9 +2870,13 @@ function facetoface_print_session($session, $showcapacity, $calendaroutput=false
             if (!empty($html)) {
                 $html .= html_writer::empty_tag('br');
             }
-            $sessionobj = facetoface_format_session_times($session->sessiondates[0]->timestart, $session->sessiondates[0]->timefinish, $session->sessiondates[0]->sessiontimezone);
-            $sessiondate = $sessionobj->date;
-            $html .= $sessionobj->date . ', ' . $sessionobj->starttime . ' &ndash; ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
+            $sessionobj = facetoface_format_session_times($date->timestart, $date->timefinish, $date->sessiontimezone);
+            if ($sessionobj->startdate == $sessionobj->enddate) {
+                $html .= $sessionobj->startdate . ', ';
+            } else {
+                $html .= $sessionobj->startdate . ' - ' . $sessionobj->enddate . ', ';
+            }
+            $html .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
         }
         $table->data[] = array($strdatetime, $html);
     } else {

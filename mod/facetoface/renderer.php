@@ -71,11 +71,13 @@ class mod_facetoface_renderer extends plugin_renderer_base {
                 foreach ($session->sessiondates as $date) {
                     if (!empty($allsessiondates)) {
                         $allsessiondates .= html_writer::empty_tag('br');
+                        $allsessiontimes .= html_writer::empty_tag('br');
                     }
                     $sessionobj = facetoface_format_session_times($date->timestart, $date->timefinish, $date->sessiontimezone);
-                    $allsessiondates .= $sessionobj->date;
-                    if (!empty($allsessiontimes)) {
-                        $allsessiontimes .= html_writer::empty_tag('br');
+                    if ($sessionobj->startdate == $sessionobj->enddate) {
+                        $allsessiondates .= $sessionobj->startdate;
+                    } else {
+                        $allsessiondates .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
                     }
                     $allsessiontimes .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                 }

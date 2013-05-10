@@ -95,18 +95,19 @@ class block_facetoface_renderer extends plugin_renderer_base {
             if ($date->datetimeknown) {
                 foreach ($date->alldates as $sessiondate) {
                     $sessionobj = facetoface_format_session_times($sessiondate->timestart, $sessiondate->timefinish, $sessiondate->sessiontimezone);
-                    $output .= $sessionobj->date . html_writer::empty_tag('br');
+                    if ($sessionobj->startdate == $sessionobj->enddate) {
+                        $output .= $sessionobj->startdate;
+                    } else {
+                        $output .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
+                    }
+                    $output .= html_writer::end_tag('td');
+                    $output .= html_writer::start_tag('td');
+                    $output .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone . html_writer::empty_tag('br');
                 }
             } else {
                 $output .= get_string('datenotset', 'block_facetoface');
-            }
-            $output .= html_writer::end_tag('td');
-            $output .= html_writer::start_tag('td');
-            if ($date->datetimeknown) {
-                foreach ($date->alldates as $sessiondate) {
-                    $sessionobj = facetoface_format_session_times($sessiondate->timestart, $sessiondate->timefinish, $sessiondate->sessiontimezone);
-                    $output .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone . html_writer::empty_tag('br');
-                }
+                $output .= html_writer::end_tag('td');
+                $output .= html_writer::start_tag('td');
             }
             $output .= html_writer::end_tag('td');
             if ($includebookings) {
