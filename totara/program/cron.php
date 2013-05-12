@@ -382,7 +382,6 @@ function program_cron_copy_recurring_courses() {
             $backupfile = $backupfile['backup_destination'];
             $bc->destroy();
 
-            $datestr = userdate($course->startdate, '%d/%m/%Y', null, false);
             $fullname = $course->fullname;
             if (preg_match('/ ([0-9]{2}\/[0-9]{2}\/[0-9]{4})$/', $fullname)) {
                 $fullname = substr($fullname, 0, -11);
@@ -408,8 +407,9 @@ function program_cron_copy_recurring_courses() {
                 $rc->execute_precheck();
                 $rc->execute_plan();
 
-                $newstartdate = $now + $courseset->recurcreatetime + $courseset->recurrencetime;
                 // Update properties of a new course
+                $newstartdate = $now + $courseset->recurcreatetime;
+                $datestr = userdate($newstartdate, '%d/%m/%Y', null, false);
                 $DB->update_record('course', (object)array(
                     'id' => $newcourseid,
                     'shortname' => $shortname . '-' . trim($datestr),
