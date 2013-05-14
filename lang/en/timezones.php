@@ -393,3 +393,4 @@ $string['pacific/truk'] = 'Pacific/Truk';
 $string['pacific/wake'] = 'Pacific/Wake';
 $string['pacific/wallis'] = 'Pacific/Wallis';
 $string['pacific/yap'] = 'Pacific/Yap';
+$string['utc'] = 'UTC';
