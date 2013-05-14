@@ -85,6 +85,7 @@ $string['comments'] = 'Comments';
 $string['commentson'] = 'Comments on';
 $string['commentupdated'] = 'The comment has been updated.';
 $string['completionentries'] = 'Student must create entries:';
+$string['completionentriesshort'] = 'Create {$a} entries';
 $string['completionentriesgroup'] = 'Require entries';
 $string['concept'] = 'Concept';
 $string['concepts'] = 'Concepts';

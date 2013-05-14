@@ -43,7 +43,6 @@ if ($fromform = $mform->get_data()) { // Form submitted
         print_error('error:unknownbuttonclicked', 'facetoface', $returnurl);
     }
 
-    $timemessage = 4;
 
     $errorstr = '';
     if (facetoface_user_cancel($session, false, false, $errorstr, $fromform->cancelreason)) {
@@ -65,10 +64,11 @@ if ($fromform = $mform->get_data()) { // Form submitted
             }
         }
 
-        redirect($returnurl, $message, $timemessage);
+        totara_set_notification($message, $returnurl, array('class' => 'notifysuccess'));
     }
     else {
         add_to_log($course->id, 'facetoface', "cancel booking (FAILED)", "cancelsignup.php?s=$session->id", $facetoface->id, $cm->id);
+        $timemessage = 4;
         redirect($returnurl, $errorstr, $timemessage);
     }
 

@@ -465,7 +465,7 @@ M.totara_programassignment = M.totara_programassignment || {
         });
 
         $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).is('checked') ? 1 : 0;
+            var checked = $(this).is(':checked') ? 1 : 0;
             $(this).attr('initialValue', checked);
         });
     },
@@ -486,7 +486,7 @@ M.totara_programassignment = M.totara_programassignment || {
 
         // Check if check boxes have changed
         $('input[type="checkbox"]', form).each(function() {
-            var checked = $(this).is('checked') ? 1 : 0;
+            var checked = $(this).is(':checked') ? 1 : 0;
             if ($(this).attr('initialValue') != checked) {
                 isModified = true;
             }
@@ -900,7 +900,7 @@ function item(category, element, isexistingitem) {
     // Add handler for the include children being toggled
     $(this.includechildren).change(function(event) {
         if (this.tagName.toLowerCase() == 'input') {
-            var value = $(this).is('checked') ? 1 : 0;
+            var value = $(this).is(':checked') ? 1 : 0;
             self.get_user_count(value);
         }
         else if (this.tagName.toLowerCase() == 'select') {

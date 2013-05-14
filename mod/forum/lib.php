@@ -309,6 +309,33 @@ function forum_supports($feature) {
     }
 }
 
+/**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion
+ */
+function forum_get_completion_requirements($cm) {
+    global $DB;
+
+    $forum = $DB->get_record('forum', array('id' => $cm->instance));
+
+    $result = array();
+
+    if ($forum->completiondiscussions > 0) {
+        $result[] = get_string('completiondiscussionsshort', 'forum', $forum->completiondiscussions);
+    }
+
+    if ($forum->completionreplies > 0) {
+        $result[] = get_string('completionrepliesshort', 'forum', $forum->completionreplies);
+    }
+
+    if ($forum->completionposts > 0) {
+        $result[] = get_string('completionpostsshort', 'forum', $forum->completionposts);
+    }
+
+    return $result;
+}
 
 /**
  * Obtains the automatic completion state for this forum based on any conditions

@@ -142,7 +142,7 @@ if (!empty($approvalrequest)) {
                             FROM {message}
                             WHERE useridfrom = ?
                             AND useridto = ?
-                            AND ' . $DB->sql_compare_text('contexturlname') . ' = ?
+                            AND ' . $DB->sql_compare_text('contexturlname', 255) . ' = ?
                             AND ' . $DB->sql_like('contexturl', '?');
 
                     $duplicates = $DB->get_records_sql($sql, array($plan->userid, $manager->id, $plan->name, "%view.php?id={$plan->id}"));

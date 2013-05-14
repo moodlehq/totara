@@ -343,7 +343,7 @@ class mod_facetoface_session_form extends moodleform {
                     // Check their availability
                     $availability = facetoface_get_sessions_within($dates, $trainer, $wheresql, $whereparams);
                     if (!empty($availability)) {
-                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($availability);
+                        $errors["trainerrole[{$roleid}][{$trainer}]"] = facetoface_get_session_involvement($trainer, $availability);
                         ++$hasconflicts;
                     }
                 }
@@ -378,11 +378,12 @@ class mod_facetoface_session_form extends moodleform {
             if (strpos($key, 'sessiontimezone') !== false) {
                 $idx1 = strpos($key, '[');
                 $idx2 = strpos($key, ']');
-                $idx = substr($key, $idx1+1, ($idx2 - $idx1)-1);
+                $idx = substr($key, $idx1 + 1, ($idx2 - $idx1) - 1);
+                $tz = ($val == 'UTC') ? 0 : $val;
                 $el = $mform->getElement('timestart['.$idx. ']');
-                $el->_options['timezone'] = $val;
+                $el->_options['timezone'] = $tz;
                 $el = $mform->getElement('timefinish['.$idx. ']');
-                $el->_options['timezone'] = $val;
+                $el->_options['timezone'] = $tz;
             }
         }
         parent::set_data($values);

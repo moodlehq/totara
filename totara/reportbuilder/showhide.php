@@ -62,7 +62,7 @@ $('#column-checkboxes input').each(function() {
 $('#column-checkboxes input').click(function() {
     var selheader = '#' + shortname + ' th.' + $(this).attr('name');
     var sel = '#' + shortname + ' td.' + $(this).attr('name');
-    var value = $(this).is('checked') ? 1 : 0;
+    var value = $(this).is(':checked') ? 1 : 0;
 
     if ($.browser.msie && parseInt($.browser.version) == '8') {
         $(selheader).each(function(i, elem) {

@@ -76,37 +76,38 @@ if ($fromform = $mform->get_data()) { // Form submitted
         add_to_log($course->id, 'facetoface', 'update manageremail (FAILED)', "signup.php?s=$session->id", $facetoface->id, $cm->id);
     }
 
-    // Get signup type
-    if (!$session->datetimeknown) {
-        $statuscode = MDL_F2F_STATUS_WAITLISTED;
-    } else if (facetoface_get_num_attendees($session->id) < $session->capacity) {
-        // Save available
-        $statuscode = MDL_F2F_STATUS_BOOKED;
-    } else {
-        $statuscode = MDL_F2F_STATUS_WAITLISTED;
-    }
-
     if (!facetoface_session_has_capacity($session, $context) && (!$session->allowoverbook)) {
         print_error('sessionisfull', 'facetoface', $returnurl);
     } else if (facetoface_get_user_submissions($facetoface->id, $USER->id)) {
         print_error('alreadysignedup', 'facetoface', $returnurl);
     } else if (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)) {
         print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
-    } else if ($submissionid = facetoface_user_signup($session, $facetoface, $course, $fromform->discountcode, $fromform->notificationtype, $statuscode)) {
-        add_to_log($course->id, 'facetoface','signup',"signup.php?s=$session->id", $session->id, $cm->id);
+    }
+
+    $result = facetoface_user_import($session, $USER->id, false, false, false,
+        $fromform->discountcode, $fromform->notificationtype);
+    if ($result['result'] === true) {
+        add_to_log($course->id, 'facetoface', 'signup', "signup.php?s=$session->id", $session->id, $cm->id);
 
         $message = get_string('bookingcompleted', 'facetoface');
-        if ($session->datetimeknown && isset($facetoface->confirmationinstrmngr) && !empty($facetoface->confirmationstrmngr)) {
-            $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . get_string('confirmationsentmgr', 'facetoface');
+        if ($session->datetimeknown
+            && isset($facetoface->confirmationinstrmngr)
+            && !empty($facetoface->confirmationstrmngr)) {
+            $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') .
+                get_string('confirmationsentmgr', 'facetoface');
         } else {
-            $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') . get_string('confirmationsent', 'facetoface');
+            $message .= html_writer::empty_tag('br') . html_writer::empty_tag('br') .
+                get_string('confirmationsent', 'facetoface');
         }
 
-        $timemessage = 4;
-        redirect($returnurl, $message, $timemessage);
+        totara_set_notification($message, $returnurl, array('class' => 'notifysuccess'));
     } else {
-        add_to_log($course->id, 'facetoface','signup (FAILED)',"signup.php?s=$session->id", $session->id, $cm->id);
-        print_error('error:problemsigningup', 'facetoface', $returnurl);
+        if (isset($result['conflict']) && $result['conflict']) {
+            totara_set_notification($result['result'], $returnurl);
+        } else {
+            add_to_log($course->id, 'facetoface', 'signup (FAILED)', "signup.php?s=$session->id", $session->id, $cm->id);
+            print_error('error:problemsigningup', 'facetoface', $returnurl);
+        }
     }
 
     redirect($returnurl);

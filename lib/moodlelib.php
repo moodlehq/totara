@@ -2079,6 +2079,10 @@ function userdate($date, $format = '', $timezone = 99, $fixday = true, $fixhour 
         $format = $formatnohour;
     }
 
+    // Timezone should be set to zero if it is UTC.
+    // Otherwise, timezone offset will not be calculated correctly.
+    $timezone = ($timezone === 'UTC') ? 0.0 : $timezone;
+
     //add daylight saving offset for string timezones only, as we can't get dst for
     //float values. if timezone is 99 (user default timezone), then try update dst.
     if ((99 == $timezone) || !is_numeric($timezone)) {

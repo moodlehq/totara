@@ -165,7 +165,7 @@ class customfield_base {
 
             // search for a match
             if ($data != '' && $DB->record_exists_select($tableprefix.'_info_data',
-                            "fieldid = ? AND " . $DB->sql_compare_text('data', 255) . ' = ? AND ' .
+                            "fieldid = ? AND " . $DB->sql_compare_text('data', 1024) . ' = ? AND ' .
                             $prefix . "id != ?",
                             array($this->field->id, $data, $itemnew->id))) {
                     $errors["{$this->inputname}"] = get_string('valuealreadyused');

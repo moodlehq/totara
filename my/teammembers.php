@@ -37,11 +37,14 @@ require_once($CFG->dirroot.'/totara/plan/lib.php');
 
 require_login();
 $PAGE->set_context(context_system::instance());
-$PAGE->set_pagelayout('noblocks');
+$PAGE->set_pagelayout('standard');
+$PAGE->set_pagetype('my-teammembers');
+$PAGE->blocks->add_region('content');
 $PAGE->set_url(new moodle_url('/my/teammembers.php'));
 
 global $SESSION,$USER;
 
+$edit = optional_param('edit', -1, PARAM_BOOL);
 $format = optional_param('format', '', PARAM_TEXT); // export format
 
 /**
@@ -77,14 +80,28 @@ $PAGE->set_title($strheading);
 $PAGE->set_heading($strheading);
 $PAGE->navbar->add(get_string('myteam', 'totara_core'));
 $PAGE->navbar->add($strheading);
+
+if (!isset($USER->editing)) {
+    $USER->editing = 0;
+}
+if ($PAGE->user_allowed_editing()) {
+    if ($edit == 1 && confirm_sesskey()) {
+        $USER->editing = 1;
+        $url = new moodle_url($PAGE->url, array('notifyeditingon' => 1));
+        redirect($url);
+    } else if ($edit == 0 && confirm_sesskey()) {
+        $USER->editing = 0;
+        redirect($PAGE->url);
+    }
+} else {
+    $USER->editing = 0;
+}
+
 $renderer = $PAGE->get_renderer('totara_reportbuilder');
 echo $OUTPUT->header();
 
-// Plan menu
-echo dp_display_plans_menu(0,0,'manager', null, null, false);
-
 // Plan page content
-echo $OUTPUT->container_start('', 'dp-plan-content');
+echo $OUTPUT->container_start('', 'my-teammembers-content');
 
 $countfiltered = $report->get_filtered_count();
 $countall = $report->get_full_count();
@@ -106,6 +123,7 @@ if ($countfiltered>0) {
     $renderer->export_select($report->_id);
 }
 
+echo $OUTPUT->blocks_for_region('content');
 echo $OUTPUT->container_end();
 echo $OUTPUT->footer();
 

@@ -134,7 +134,7 @@ if ($changeform->is_cancelled()) {
                 $fieldrecords = $DB->get_records_sql("SELECT * FROM {{$shortprefix}_type_info_data} WHERE fieldid= ? {$cf_data_sql}", array_merge(array($newfieldid), $cf_data_params));
                 foreach ($fieldrecords as $record) {
                     if (isset($field->forceunique) && $field->forceunique == 1) {
-                        $sql = "fieldid = ? AND " . $DB->sql_compare_text('data', 255) . ' = ?';
+                        $sql = "fieldid = ? AND " . $DB->sql_compare_text('data', 1024) . ' = ?';
                         if ($itemid) { $sql .=  "AND " . $prefix . "id != ?";}
                         if ($DB->record_exists_select($shortprefix.'_type_info_data',
                                                 $sql,

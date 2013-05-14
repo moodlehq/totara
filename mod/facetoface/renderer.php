@@ -71,11 +71,13 @@ class mod_facetoface_renderer extends plugin_renderer_base {
                 foreach ($session->sessiondates as $date) {
                     if (!empty($allsessiondates)) {
                         $allsessiondates .= html_writer::empty_tag('br');
+                        $allsessiontimes .= html_writer::empty_tag('br');
                     }
                     $sessionobj = facetoface_format_session_times($date->timestart, $date->timefinish, $date->sessiontimezone);
-                    $allsessiondates .= $sessionobj->date;
-                    if (!empty($allsessiontimes)) {
-                        $allsessiontimes .= html_writer::empty_tag('br');
+                    if ($sessionobj->startdate == $sessionobj->enddate) {
+                        $allsessiondates .= $sessionobj->startdate;
+                    } else {
+                        $allsessiondates .= $sessionobj->startdate . ' - ' . $sessionobj->enddate;
                     }
                     $allsessiontimes .= $sessionobj->starttime . ' - ' . $sessionobj->endtime . ' ' . $sessionobj->timezone;
                 }
@@ -99,13 +101,27 @@ class mod_facetoface_renderer extends plugin_renderer_base {
             }
 
             // Capacity
-            $signupcount = facetoface_get_num_attendees($session->id, MDL_F2F_STATUS_APPROVED);
-            $stats = $session->capacity - $signupcount;
-            if ($viewattendees) {
-                $stats = $signupcount.' / '.$session->capacity;
+            if ($session->datetimeknown) {
+                $signupcount = facetoface_get_num_attendees($session->id, MDL_F2F_STATUS_BOOKED);
+            } else {
+                $signupcount = facetoface_get_num_attendees($session->id, MDL_F2F_STATUS_APPROVED);
             }
-            else {
-                $stats = max(0, $stats);
+            if ($viewattendees) {
+                if ($session->datetimeknown) {
+                    $a = array('current' => $signupcount, 'maximum' => $session->capacity);
+                    $stats = get_string('capacitycurrentofmaximum', 'facetoface', $a);
+                    if ($signupcount > $session->capacity) {
+                        $stats .= get_string('capacityoverbooked', 'facetoface');
+                    }
+                    $waitlisted = facetoface_get_num_attendees($session->id, MDL_F2F_STATUS_APPROVED) - $signupcount;
+                    if ($waitlisted > 0) {
+                        $stats .= " (" . $waitlisted . " " . get_string('status_waitlisted', 'facetoface') . ")";
+                    }
+                } else {
+                    $stats = $session->capacity . " (" . $signupcount . " " . get_string('status_waitlisted', 'facetoface') . ")";
+                }
+            } else {
+                $stats = max(0, $session->capacity - $signupcount);
             }
             $sessionrow[] = $stats;
 

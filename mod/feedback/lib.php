@@ -521,6 +521,26 @@ function feedback_print_recent_mod_activity($activity, $courseid, $detail, $modn
 }
 
 /**
+ * Obtains the specific requirements for completion.
+ *
+ * @param object $cm Course-module
+ * @return array Requirements for completion
+ */
+function feedback_get_completion_requirements($cm) {
+    global $DB;
+
+    $feedback = $DB->get_record('feedback', array('id' => $cm->instance));
+
+    $result = array();
+
+    if ($feedback->completionsubmit) {
+        $result[] = get_string('submission', 'feedback');
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this feedback based on the condition
  * in feedback settings.
  *

@@ -1065,7 +1065,7 @@ function assign_user_position($assignment, $unittest=false) {
             $roleid = $CFG->managerroleid;
             // Delete role assignment if there was a manager but it changed
             if ($old_managerid && $managerchanged) {
-                role_unassign($roleid, $assignment->userid, $context->id);
+                role_unassign($roleid, $old_managerid, $context->id);
             }
             // Create new role assignment if there is now and a manager but it changed
             if ($assignment->managerid && $managerchanged) {
@@ -1199,7 +1199,7 @@ function totara_build_menu() {
         );
     }
 
-    if ($staff = totara_get_staff()) {
+    if ($staff = totara_get_staff() || is_siteadmin()) {
 
         $tree[] = (object)array(
             'name' => 'myteam',

@@ -799,7 +799,7 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             }
         }
         //sessions created before this upgrade may still need fixing
-        $sql = "SELECT count(id) from {facetoface_sessions_dates} WHERE sessiontimezone IS NULL OR " . $DB->sql_compare_text('sessiontimezone') . " = ?";
+        $sql = "SELECT count(id) from {facetoface_sessions_dates} WHERE sessiontimezone IS NULL OR " . $DB->sql_compare_text('sessiontimezone', 255) . " = ?";
         $unfixedsessions = $DB->count_records_sql($sql, array(''));
         if ($unfixedsessions > 0) {
             $info = get_string('timezoneupgradeinfomessage', 'facetoface');

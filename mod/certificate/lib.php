@@ -40,6 +40,9 @@ define('CERT_IMAGE_SEAL', 'seals');
 define('CERT_PER_PAGE', 30);
 define('CERT_MAX_PER_PAGE', 200);
 
+define('CERT_FONT_SERIF', 'freeserif');
+define('CERT_FONT_SANS', 'freesans');
+
 /**
  * Add certificate instance.
  *
@@ -1110,7 +1113,7 @@ function certificate_get_mod_grade($course, $moduleid, $userid) {
             $item->$key = $value;
         }
         $modinfo = new stdClass;
-        $modinfo->name = utf8_decode($DB->get_field($module->name, 'name', array('id' => $cm->instance)));
+        $modinfo->name = $DB->get_field($module->name, 'name', array('id' => $cm->instance));
         $grade = $item->grades[$userid]->grade;
         $item->gradetype = GRADE_TYPE_VALUE;
         $item->courseid = $course->id;
@@ -1305,7 +1308,7 @@ function certificate_get_code($certificate, $certrecord) {
  * @param int $x horizontal position
  * @param int $y vertical position
  * @param char $align L=left, C=center, R=right
- * @param string $font any available font in font directory
+ * @param string $font any available font in font directory (use fonts with type 'TrueTypeUnicode' to avoid character encoding issues)
  * @param char $style ''=normal, B=bold, I=italic, U=underline
  * @param int $size font size in points
  * @param string $text the text to print
