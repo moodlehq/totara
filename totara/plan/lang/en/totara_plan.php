@@ -998,7 +998,7 @@ $string['advancedsettingsprogrampermissions_help'] = 'The advanced workflow sett
 *   **Request** allows the user to request that this action is performed.
 *   **Approve** allows the user to approve an action.';
 $string['competencyevidencestatus_help'] = 'This field records the user\'s status in the assigned competency. The options that appear in the pulldown depend on the competency scale assigned to the chosen competency, so the competency must be selected before this field can be modified. A value scale must be set to add or update a competency evidence record.';
-$string['advancedsettingsplansettings_help'] = '**Plan settings** allow you define general settings for the plan.
+$string['advancedsettingsplansettings_help'] = '**Plan settings** allow you to define general settings for the plan.
 
 The Learning Plan is able to be marked as complete based on the following choices:
 
