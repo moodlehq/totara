@@ -378,7 +378,6 @@ $string['placeholder:starttime'] = '[starttime]';
 $string['placeholder:finishtime'] = '[finishtime]';
 $string['placeholder:duration'] = '[duration]';
 $string['placeholder:details'] = '[details]';
-$string['placeholder:reminderperiod'] = '[reminderperiod]';
 $string['placeholder:attendeeslink'] = '[attendeeslink]';
 $string['placeholder:location'] = '[session:location]';
 $string['placeholder:venue'] = '[session:venue]';
@@ -401,7 +400,6 @@ $string['registeredon'] = 'Registered On';
 $string['registrations'] = 'Registrations';
 $string['reminder'] = 'Reminder';
 $string['remindermessage'] = 'Reminder message';
-$string['reminderperiod'] = 'Days before message is sent';
 $string['removedsuccessfully'] = 'Removed successfully';
 $string['removeroominuse'] = 'This room is currently being used';
 $string['requestmessage'] = 'Request message';
@@ -518,8 +516,6 @@ To re-schedule or cancel your booking
 To re-schedule your booking you need to cancel this booking and then re-book a new session.  To cancel your booking, return to the site, then to the page for this course, and then select \'cancel\' from the booking information screen.
 
 [details]
-
-You will receive a reminder [reminderperiod] business days before this course.
 ';
 $string['setting:defaultconfirmationsubject'] = 'Default subject line for confirmation emails.';
 $string['setting:defaultconfirmationsubject_caption'] = 'Confirmation subject';
@@ -886,8 +882,6 @@ $string['reminderinstrmngr'] = '# Notice for Manager';
 $string['reminderinstrmngr_help'] = 'When **Send notice to manager** is checked, the text in the **Notice for Manager** field is sent to a learner\'s manager advising that they have signed up for a face-to-face session.';
 
 $string['remindermessage_help'] = 'This message is sent out a few days before a session\'s start date.';
-
-$string['reminderperiod_help'] = 'The reminder message will be sent this many days before the start of the session.';
 
 $string['requestmessage_help'] = 'When **Approval required** is enabled, the **Request message** section is available.
 
