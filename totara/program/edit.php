@@ -175,21 +175,20 @@ $pageid = 'program-overview';
 
 if ($action == 'edit') {
     $currenttab = 'details';
-    $heading = $program->fullname;
+    $heading = format_string($program->fullname);
     $pageid = 'program-overview-details';
 } else {
     $currenttab = 'overview';
-    $heading = $program->fullname;
+    $heading = format_string($program->fullname);
 }
 
-$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
 $category_breadcrumbs = get_category_breadcrumbs($program->category);
 
 foreach ($category_breadcrumbs as $crumb) {
         $PAGE->navbar->add($crumb['name'], $crumb['link']);
 }
 
-$PAGE->navbar->add($program->shortname, new moodle_url('/totara/program/view.php', array('id' => $id)));
+$PAGE->navbar->add(format_string($program->shortname), new moodle_url('/totara/program/view.php', array('id' => $id)));
 
 if ($action == 'edit') {
     $PAGE->navbar->add(get_string('edit', 'moodle'));

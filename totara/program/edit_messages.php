@@ -164,7 +164,7 @@ add_to_log(SITEID, 'program', 'view messages', "edit_messages.php?id={$program->
 ///
 
 $heading = format_string($program->fullname);
-$pagetitle = format_string(get_string('program', 'totara_program').': '.$heading);
+
 //Javascript includes
 $PAGE->requires->strings_for_js(array('editmessages','saveallchanges',
          'confirmmessagechanges','youhaveunsavedchanges','youhaveunsavedchanges',

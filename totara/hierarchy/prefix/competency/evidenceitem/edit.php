@@ -103,7 +103,7 @@ if ($nojs) {
         if ($courses = $DB->get_records('course', array('category' => $category), 'sortorder')) {
             $list = array();
             foreach ($courses as $course) {
-                $list[] = $OUTPUT->action_link(new moodle_url('course.php', array('id' => $course->id, 'competency' => $id, 'nojs' => $nojs, 's' => $s, 'returnurl' => urlencode($returnurl))), $course->fullname);
+                $list[] = $OUTPUT->action_link(new moodle_url('course.php', array('id' => $course->id, 'competency' => $id, 'nojs' => $nojs, 's' => $s, 'returnurl' => urlencode($returnurl))), format_string($course->fullname));
             }
             echo html_writer::alist($list);
         } else {

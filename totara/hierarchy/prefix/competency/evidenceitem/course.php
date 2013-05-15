@@ -57,7 +57,7 @@ if ($nojs) {
 if (!$course = $DB->get_record('course', array('id' => $id))) {
     print_error('incorrectcourseid', 'totara_hierarchy');
 }
-echo html_writer::tag('h3', $course->fullname);
+echo html_writer::tag('h3', format_string($course->fullname));
 
 comp_evitem_print_course_evitems($course, $competency_id, "{$CFG->wwwroot}/totara/hierarchy/prefix/competency/evidenceitem/add.php?competency={$competency_id}&{$urlparams}" );
 

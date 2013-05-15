@@ -135,7 +135,7 @@ foreach ($assignments as $assignment) {
 
         // Return html
         echo html_writer::start_tag('tr');
-        echo html_writer::tag('td', $competency->fullname);
+        echo html_writer::tag('td', format_string($competency->fullname));
 
         if ($editingon) {
             echo html_writer::start_tag('td', array('style' => 'text-align: center;'));

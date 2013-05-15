@@ -136,7 +136,7 @@ foreach ($data as $ditem) {
 
     $header = new html_table_cell(format_string($ditem['title']));
     $header->header = true;
-    $cell = new html_table_cell($ditem['value']);
+    $cell = new html_table_cell(format_string($ditem['value']));
     $row = new html_table_row(array($header, $cell));
     $table->data[] = $row;
 }

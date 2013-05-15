@@ -769,10 +769,10 @@ class multi_course_set extends course_set {
                 // Need to figure out how to di $course->enrollable in 2.x as as all this type of functionality
                 // has been moved into individual enrollment plugins
                 if (($userid && $accessible) || ($accessible) || (is_enrolled($coursecontext, $userid)) || is_siteadmin($USER->id)) {
-                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname);
+                    $coursedetails .= html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname));
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
                 } else {
-                    $coursedetails .= $course->fullname;
+                    $coursedetails .= format_string($course->fullname);
                     $launch = html_writer::tag('div', $OUTPUT->single_button(null, get_string('notavailable', 'totara_program'), null, array('tooltip' => null, 'disabled' => true)), array('class' => 'prog-course-launch'));
                 }
                 $cells[] = new html_table_cell($coursedetails);
@@ -834,7 +834,7 @@ class multi_course_set extends course_set {
         if (count($courses)) {
             $coursestr = '';
             foreach ($courses as $course) {
-                $coursestr .= $course->fullname.' '.$completiontypestr.' ';
+                $coursestr .= format_string($course->fullname).' '.$completiontypestr.' ';
             }
             $coursestr = trim($coursestr);
             $coursestr = rtrim($coursestr, $completiontypestr);
@@ -912,7 +912,7 @@ class multi_course_set extends course_set {
                 $cell = new html_table_cell($content);
                 $cell->attributes['class'] = 'operator';
                 $cells[] = $cell;
-                $content = html_writer::start_tag('div', array('class' => 'delete_item')) . $course->fullname;
+                $content = html_writer::start_tag('div', array('class' => 'delete_item')) . format_string($course->fullname);
                 $content .= html_writer::start_tag('a',
                                 array('class' => 'coursedeletelink', 'href' => 'javascript:;',
                                       'data-coursesetid' => $this->id, 'data-coursesetprefix' => $prefix,
@@ -1176,7 +1176,7 @@ class multi_course_set extends course_set {
                 $cell = new html_table_cell($content);
                 $cell->attributes['class'] = $cellclass;
                 $cells[] = $cell;
-                $content = html_writer::start_tag('div', array('class' => 'delete_item')) . $course->fullname;
+                $content = html_writer::start_tag('div', array('class' => 'delete_item')) . format_string($course->fullname);
                 $content .= html_writer::start_tag('a',
                                 array('class' => 'coursedeletelink', 'href' => 'javascript:;',
                                       'data-coursesetid' => $this->id, 'data-coursesetprefix' => $prefix,
@@ -1462,7 +1462,7 @@ class competency_course_set extends course_set {
 
                 $cells = array();
                 $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
-                $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname) : $course->fullname;
+                $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname)) : format_string($course->fullname);
                 $cells[] = new html_table_cell($coursedetails);
                 if ($accessible) {
                     $launch = html_writer::tag('div', $OUTPUT->single_button(new moodle_url('/course/view.php', array('id' => $course->id)), get_string('launchcourse', 'totara_program'), null), array('class' => 'prog-course-launch'));
@@ -1528,7 +1528,7 @@ class competency_course_set extends course_set {
         if ($courses && count($courses) > 0) {
             $coursestr = '';
             foreach ($courses as $course) {
-                $coursestr .= $course->fullname.' '.$completiontypestr.' ';
+                $coursestr .= format_string($course->fullname).' '.$completiontypestr.' ';
             }
             $coursestr = trim($coursestr);
             $coursestr = rtrim($coursestr, $completiontypestr);
@@ -1686,7 +1686,7 @@ class competency_course_set extends course_set {
                 $templatehtml .= html_writer::start_tag('div', array('class' => 'flabel'));
                 $templatehtml .= html_writer::tag('label', get_string('label:competencyname', 'totara_program'));
                 $templatehtml .= html_writer::end_tag('div');
-                $templatehtml .= html_writer::tag('div', $competency->fullname, array('class' => 'fitem'));
+                $templatehtml .= html_writer::tag('div', format_string($competency->fullname), array('class' => 'fitem'));
                 $templatehtml .= html_writer::end_tag('div');
             }
         }
@@ -1739,7 +1739,7 @@ class competency_course_set extends course_set {
                     $cell = new html_table_cell($content);
                     $cell->attributes['class'] = 'operator';
                     $cells[] = $cell;
-                    $content = html_writer::tag('div', $course->fullname, array('class' => 'course_item'));
+                    $content = html_writer::tag('div', format_string($course->fullname), array('class' => 'course_item'));
                     $cell = new html_table_cell($content);
                     $cell->attributes['class'] = 'course';
                     $cells[] = $cell;
@@ -1995,7 +1995,7 @@ class recurring_course_set extends course_set {
                 $course->icon = 'default';
             }
             $coursedetails = $OUTPUT->pix_icon('/courseicons/' . $course->icon, '', 'totara_core', array('class' => 'course_icon'));
-            $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), $course->fullname) : $course->fullname;
+            $coursedetails .= $accessible ? html_writer::link(new moodle_url('/course/view.php', array('id' => $course->id)), format_string($course->fullname)) : format_string($course->fullname);
             $cells[] = new html_table_cell($coursedetails);
 
             if ($accessible) {
@@ -2032,7 +2032,7 @@ class recurring_course_set extends course_set {
      * @return string
      */
     public function display_form_element() {
-        return $this->course->fullname;
+        return format_string($this->course->fullname);
     }
 
     public function print_set_minimal() {

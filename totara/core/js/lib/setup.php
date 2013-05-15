@@ -427,7 +427,7 @@ function build_nojs_breadcrumbs($hierarchy, $parentid, $url, $urlparams, $allfws
                 } else {
                     $first = false;
                 }
-                $html .= html_writer::link($itemurl, $item->fullname) . html_writer::end_tag('li');
+                $html .= html_writer::link($itemurl, format_string($item->fullname)) . html_writer::end_tag('li');
             }
         }
     }
@@ -455,7 +455,7 @@ function build_nojs_frameworkpicker($hierarchy, $url, $urlparams) {
         $out .= html_writer::start_tag('div', array('class' => 'nojsselect')) . html_writer::start_tag('ul');
         foreach ($fws as $fw) {
             $fullurl = $murl->out(false, array('frameworkid' => $fw->id));
-            $out .= html_writer::tag('li', html_writer::link($fullurl, $fw->fullname));
+            $out .= html_writer::tag('li', html_writer::link($fullurl, format_string($fw->fullname)));
         }
         $out .= html_writer::end_tag('ul') . html_writer::end_tag('div');
         return $out;
@@ -490,7 +490,7 @@ function build_nojs_positionpicker($url, $urlparams) {
         foreach ($positions as $position) {
             $fullurl = $murl->out(false, array('frameworkid' => $position->id));
             $html .= html_writer::start_tag('li');
-            $html .= html_writer::link($fullurl, $position->fullname);
+            $html .= html_writer::link($fullurl, format_string($position->fullname));
             switch ($position->type) {
             case 1:
                 $html .= ' (' . get_string('typeprimary', 'totara_hierarchy') . ')';

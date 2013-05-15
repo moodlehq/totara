@@ -230,7 +230,7 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                 $oddeven = ++$oddeven % 2;
 
                 $cells[] = new html_table_cell($framework_text);
-                $link = html_writer::link(new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => 'competency', 'id' => $ritem->id)), $ritem->fullname);
+                $link = html_writer::link(new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => 'competency', 'id' => $ritem->id)), format_string($ritem->fullname));
                 $cells[] = new html_table_cell($link);
 
                 if ($can_edit) {
@@ -338,9 +338,9 @@ class totara_hierarchy_renderer extends plugin_renderer_base {
                 $content[] = empty($ritem->type) ? get_string('unclassified', 'totara_hierarchy') : $ritem->type;
 
                 if ($displaytitle == 'assignedcompetencies') {
-                    $content[] = $this->output->action_link(new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => $displayprefix, 'id' => $ritem->id)), $ritem->fullname);
+                    $content[] = $this->output->action_link(new moodle_url('/totara/hierarchy/item/view.php', array('prefix' => $displayprefix, 'id' => $ritem->id)), format_string($ritem->fullname));
                 } elseif ($displaytitle == 'assignedcompetencytemplates') {
-                    $content[] = $this->output->action_link(new moodle_url('/totara/hierarchy/prefix/competency/template/view.php', array('id' => $ritem->id)), $ritem->fullname);
+                    $content[] = $this->output->action_link(new moodle_url('/totara/hierarchy/prefix/competency/template/view.php', array('id' => $ritem->id)), format_string($ritem->fullname));
                 }
 
                 if ($can_edit) {

@@ -92,7 +92,7 @@ function comp_evitem_print_course_evitems($course, $competency_id, $addurl ) {
             foreach ($evidence as $activity) {
                 echo html_writer::start_tag('div');
                 if (array_key_exists("activitycompletion-{$activity->id}", $existingevidencelookup)) {
-                    echo html_writer::tag('span', get_string('activitycompletion', 'totara_hierarchy') . ' - ' . $activity->name . ' ' . $alreadystr, array('class' => "unclickable"));
+                    echo html_writer::tag('span', get_string('activitycompletion', 'totara_hierarchy') . ' - ' . format_string($activity->name) . ' ' . $alreadystr, array('class' => "unclickable"));
                 } else {
                     echo html_writer::start_tag('span', array('type' => 'activitycompletion', 'id' => $activity->id));
                     echo $OUTPUT->action_link(new moodle_url('#'), get_string('activitycompletion', 'totara_hierarchy') . ' - ' . format_string($activity->name));

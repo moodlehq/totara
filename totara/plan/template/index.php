@@ -239,7 +239,7 @@ if ($templates) {
 
         $cssclass = !$template->visible ? 'dimmed' : '';
 
-        $title = html_writer::link(new moodle_url('/totara/plan/template/general.php', array('id' => $template->id)), $template->fullname, array('class' => $cssclass));
+        $title = html_writer::link(new moodle_url('/totara/plan/template/general.php', array('id' => $template->id)), format_string($template->fullname), array('class' => $cssclass));
 
         if ($template->isdefault == 1) {
             $title .= ' ('.get_string('default').')';
