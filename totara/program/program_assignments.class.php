@@ -404,8 +404,11 @@ abstract class prog_assignment_category {
 
     /**
      * Updates the assignments by looking at the post data
+     *
+     * @param object $data  The data we will be updating assignments with
+     * @param bool $delete  A flag to stop deletion/rebuild from external pages
      */
-    function update_assignments($data) {
+    function update_assignments($data, $delete = true) {
         global $DB;
 
         // Store list of seen ids
@@ -519,26 +522,27 @@ abstract class prog_assignment_category {
             }
         }
 
-        // Delete any records which exist in the prog_assignment table but that
-        // weren't submitted just now. Also delete any existing exceptions that
-        // related to the assignment being deleted
-        $where = "programid = ? AND assignmenttype = ?";
-        $params = array($data->id, $this->id);
-        if (count($seenids) > 0) {
-            list($idssql, $idsparams) = $DB->get_in_or_equal($seenids, SQL_PARAMS_QM, 'param', false);
-            $where .= " AND assignmenttypeid {$idssql}";
-            $params = array_merge($params, $idsparams);
-        }
-        $assignments_to_delete = $DB->get_records_select('prog_assignment', $where, $params);
-        foreach ($assignments_to_delete as $assignment_to_delete) {
-            // delete any exceptions related to this assignment
-            prog_exceptions_manager::delete_exceptions_by_assignment($assignment_to_delete->id);
+        if ($delete) {
+            // Delete any records which exist in the prog_assignment table but that
+            // weren't submitted just now. Also delete any existing exceptions that
+            // related to the assignment being deleted
+            $where = "programid = ? AND assignmenttype = ?";
+            $params = array($data->id, $this->id);
+            if (count($seenids) > 0) {
+                list($idssql, $idsparams) = $DB->get_in_or_equal($seenids, SQL_PARAMS_QM, 'param', false);
+                $where .= " AND assignmenttypeid {$idssql}";
+                $params = array_merge($params, $idsparams);
+            }
+            $assignments_to_delete = $DB->get_records_select('prog_assignment', $where, $params);
+            foreach ($assignments_to_delete as $assignment_to_delete) {
+                // delete any exceptions related to this assignment
+                prog_exceptions_manager::delete_exceptions_by_assignment($assignment_to_delete->id);
 
-            // delete any future user assignments related to this assignment
-            $DB->delete_records('prog_future_user_assignment', array('assignmentid' => $assignment_to_delete->id, 'programid' => $data->id));
+                // delete any future user assignments related to this assignment
+                $DB->delete_records('prog_future_user_assignment', array('assignmentid' => $assignment_to_delete->id, 'programid' => $data->id));
+            }
+            $DB->delete_records_select('prog_assignment', $where, $params);
         }
-        $DB->delete_records_select('prog_assignment', $where, $params);
-
     }
 
  /**
