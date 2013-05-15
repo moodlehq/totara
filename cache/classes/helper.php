@@ -192,8 +192,7 @@ class cache_helper {
             if (in_array($pluginname, $ignored)) {
                 continue;
             }
-            $pluginname = clean_param($pluginname, PARAM_PLUGIN);
-            if (empty($pluginname)) {
+            if (!is_valid_plugin_name($pluginname)) {
                 // Better ignore plugins with problematic names here.
                 continue;
             }
@@ -244,10 +243,9 @@ class cache_helper {
             if ($definition->invalidates_on_event($event)) {
                 // OK at this point we know that the definition has information to invalidate on the event.
                 // There are two routes, either its an application cache in which case we can invalidate it now.
-                // or it is a session cache in which case we need to set something to the "Event invalidation" definition.
-                // No need to deal with request caches, we don't want to change data half way through a request.
-                if ($definition->get_mode() === cache_store::MODE_APPLICATION) {
-                    $cache = $factory->create_cache($definition);
+                // or it is a persistent cache that also needs to be invalidated now.
+                if ($definition->get_mode() === cache_store::MODE_APPLICATION || $definition->should_be_persistent()) {
+                    $cache = $factory->create_cache_from_definition($definition->get_component(), $definition->get_area());
                     $cache->delete_many($keys);
                 }
 
@@ -548,7 +546,7 @@ class cache_helper {
             // If the site identifier is still null then config isn't aware of it yet.
             // We'll see if the CFG is loaded, and if not we will just use unknown.
             // It's very important here that we don't use get_config. We don't want an endless cache loop!
-            if (isset($CFG->siteidentifier)) {
+            if (!empty($CFG->siteidentifier)) {
                 self::$siteidentifier = self::update_site_identifier($CFG->siteidentifier);
             } else {
                 // It's not being recorded in MUC's config and the config data hasn't been loaded yet.
@@ -567,5 +565,65 @@ class cache_helper {
     public static function get_site_version() {
         global $CFG;
         return (string)$CFG->version;
+    }
+
+    /**
+     * Runs cron routines for MUC.
+     */
+    public static function cron() {
+        self::clean_old_session_data(true);
+    }
+
+    /**
+     * Cleans old session data from cache stores used for session based definitions.
+     *
+     * @param bool $output If set to true output will be given.
+     */
+    public static function clean_old_session_data($output = false) {
+        global $CFG;
+        if ($output) {
+            mtrace('Cleaning up stale session data from cache stores.');
+        }
+        $factory = cache_factory::instance();
+        $config = $factory->create_config_instance();
+        $definitions = $config->get_definitions();
+        $purgetime = time() - $CFG->sessiontimeout;
+        foreach ($definitions as $definitionarray) {
+            // We are only interested in session caches.
+            if (!($definitionarray['mode'] & cache_store::MODE_SESSION)) {
+                continue;
+            }
+            $definition = $factory->create_definition($definitionarray['component'], $definitionarray['area']);
+            $stores = $config->get_stores_for_definition($definition);
+            // Turn them into store instances.
+            $stores = self::initialise_cachestore_instances($stores, $definition);
+            // Initialise all of the stores used for that definition.
+            foreach ($stores as $store) {
+                // If the store doesn't support searching we can skip it.
+                if (!($store instanceof cache_is_searchable)) {
+                    debugging('Cache stores used for session definitions should ideally be searchable.', DEBUG_DEVELOPER);
+                    continue;
+                }
+                // Get all of the keys.
+                $keys = $store->find_by_prefix(cache_session::KEY_PREFIX);
+                $todelete = array();
+                foreach ($store->get_many($keys) as $key => $value) {
+                    if (strpos($key, cache_session::KEY_PREFIX) !== 0 || !is_array($value) || !isset($value['lastaccess'])) {
+                        continue;
+                    }
+                    if ((int)$value['lastaccess'] < $purgetime || true) {
+                        $todelete[] = $key;
+                    }
+                }
+                if (count($todelete)) {
+                    $outcome = (int)$store->delete_many($todelete);
+                    if ($output) {
+                        $strdef = s($definition->get_id());
+                        $strstore = s($store->my_name());
+                        mtrace("- Removed {$outcome} old {$strdef} sessions from the '{$strstore}' cache store.");
+                    }
+                }
+            }
+        }
     }
 }

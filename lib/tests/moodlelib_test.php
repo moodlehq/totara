@@ -797,6 +797,21 @@ class moodlelib_testcase extends advanced_testcase {
         $this->assertSame(clean_param('user_', PARAM_COMPONENT), '');
     }
 
+    function test_is_valid_plugin_name() {
+        $this->assertTrue(is_valid_plugin_name('forum'));
+        $this->assertTrue(is_valid_plugin_name('forum2'));
+        $this->assertTrue(is_valid_plugin_name('online_users'));
+        $this->assertTrue(is_valid_plugin_name('blond_online_users'));
+        $this->assertFalse(is_valid_plugin_name('online__users'));
+        $this->assertFalse(is_valid_plugin_name('forum '));
+        $this->assertFalse(is_valid_plugin_name('forum.old'));
+        $this->assertFalse(is_valid_plugin_name('xx-yy'));
+        $this->assertFalse(is_valid_plugin_name('2xx'));
+        $this->assertFalse(is_valid_plugin_name('Xx'));
+        $this->assertFalse(is_valid_plugin_name('_xx'));
+        $this->assertFalse(is_valid_plugin_name('xx_'));
+    }
+
     function test_clean_param_plugin() {
         // please note the cleaning of plugin names is very strict, no guessing here
         $this->assertSame(clean_param('forum', PARAM_PLUGIN), 'forum');
@@ -1058,62 +1073,95 @@ class moodlelib_testcase extends advanced_testcase {
         }
     }
 
-    function test_shorten_text() {
+    function test_shorten_text_no_tags_already_short_enough() {
+        // ......12345678901234567890123456.
         $text = "short text already no tags";
         $this->assertEquals($text, shorten_text($text));
+    }
 
+    function test_shorten_text_with_tags_already_short_enough() {
+        // .........123456...7890....12345678.......901234567.
         $text = "<p>short <b>text</b> already</p><p>with tags</p>";
         $this->assertEquals($text, shorten_text($text));
+    }
 
+    function test_shorten_text_no_tags_needs_shortening() {
+        // Default truncation is after 30 chars, but allowing 3 for the final '...'.
+        // ......12345678901234567890123456789023456789012345678901234.
         $text = "long text without any tags blah de blah blah blah what";
         $this->assertEquals('long text without any tags ...', shorten_text($text));
+    }
 
+    function test_shorten_text_with_tags_needs_shortening() {
+        // .......................................123456789012345678901234567890...
         $text = "<div class='frog'><p><blockquote>Long text with tags that will ".
             "be chopped off but <b>should be added back again</b></blockquote></p></div>";
         $this->assertEquals("<div class='frog'><p><blockquote>Long text with " .
             "tags that ...</blockquote></p></div>", shorten_text($text));
+    }
 
+    function test_shorten_text_with_entities() {
+        // Remember to allow 3 chars for the final '...'.
+        // ......123456789012345678901234567_____890...
         $text = "some text which shouldn't &nbsp; break there";
         $this->assertEquals("some text which shouldn't &nbsp; ...",
             shorten_text($text, 31));
-        $this->assertEquals("some text which shouldn't ...",
+        $this->assertEquals("some text which shouldn't &nbsp;...",
             shorten_text($text, 30));
+        $this->assertEquals("some text which shouldn't ...",
+            shorten_text($text, 29));
+    }
 
+    function test_shorten_text_known_tricky_case() {
         // This case caused a bug up to 1.9.5
+        // ..........123456789012345678901234567890123456789.....0_____1___2___...
         $text = "<h3>standard 'break-out' sub groups in TGs?</h3>&nbsp;&lt;&lt;There are several";
         $this->assertEquals("<h3>standard 'break-out' sub groups in ...</h3>",
+            shorten_text($text, 41));
+        $this->assertEquals("<h3>standard 'break-out' sub groups in TGs?...</h3>",
+            shorten_text($text, 42));
+        $this->assertEquals("<h3>standard 'break-out' sub groups in TGs?</h3>&nbsp;...",
             shorten_text($text, 43));
+    }
 
-        $text = "<h1>123456789</h1>";//a string with no convenient breaks
+    function test_shorten_text_no_spaces() {
+        // ..........123456789.
+        $text = "<h1>123456789</h1>"; // A string with no convenient breaks.
         $this->assertEquals("<h1>12345...</h1>",
             shorten_text($text, 8));
+    }
 
-        // ==== this must work with UTF-8 too! ======
-
-        // text without tags
+    function test_shorten_text_utf8_european() {
+        // Text without tags.
+        // ......123456789012345678901234567.
         $text = "Žluťoučký koníček přeskočil";
-        $this->assertEquals($text, shorten_text($text)); // 30 chars by default
+        $this->assertEquals($text, shorten_text($text)); // 30 chars by default.
         $this->assertEquals("Žluťoučký koníče...", shorten_text($text, 19, true));
         $this->assertEquals("Žluťoučký ...", shorten_text($text, 19, false));
-        // And try it with 2-less (that are, in bytes, the middle of a sequence)
+        // And try it with 2-less (that are, in bytes, the middle of a sequence).
         $this->assertEquals("Žluťoučký koní...", shorten_text($text, 17, true));
         $this->assertEquals("Žluťoučký ...", shorten_text($text, 17, false));
 
+        // .........123456789012345678...901234567....89012345.
         $text = "<p>Žluťoučký koníček <b>přeskočil</b> potůček</p>";
         $this->assertEquals($text, shorten_text($text, 60));
         $this->assertEquals("<p>Žluťoučký koníček ...</p>", shorten_text($text, 21));
         $this->assertEquals("<p>Žluťoučký koníče...</p>", shorten_text($text, 19, true));
         $this->assertEquals("<p>Žluťoučký ...</p>", shorten_text($text, 19, false));
-        // And try it with 2-less (that are, in bytes, the middle of a sequence)
+        // And try it with 2 fewer (that are, in bytes, the middle of a sequence).
         $this->assertEquals("<p>Žluťoučký koní...</p>", shorten_text($text, 17, true));
         $this->assertEquals("<p>Žluťoučký ...</p>", shorten_text($text, 17, false));
-        // And try over one tag (start/end), it does proper text len
+        // And try over one tag (start/end), it does proper text len.
         $this->assertEquals("<p>Žluťoučký koníček <b>př...</b></p>", shorten_text($text, 23, true));
         $this->assertEquals("<p>Žluťoučký koníček <b>přeskočil</b> pot...</p>", shorten_text($text, 34, true));
-        // And in the middle of one tag
+        // And in the middle of one tag.
         $this->assertEquals("<p>Žluťoučký koníček <b>přeskočil...</b></p>", shorten_text($text, 30, true));
+    }
 
+    function test_shorten_text_utf8_oriental() {
         // Japanese
+        // text without tags
+        // ......123456789012345678901234.
         $text = '言語設定言語設定abcdefghijkl';
         $this->assertEquals($text, shorten_text($text)); // 30 chars by default
         $this->assertEquals("言語設定言語...", shorten_text($text, 9, true));
@@ -1122,13 +1170,27 @@ class moodlelib_testcase extends advanced_testcase {
         $this->assertEquals("言語設定言語設定...", shorten_text($text, 13, false));
 
         // Chinese
+        // text without tags
+        // ......123456789012345678901234.
         $text = '简体中文简体中文abcdefghijkl';
         $this->assertEquals($text, shorten_text($text)); // 30 chars by default
         $this->assertEquals("简体中文简体...", shorten_text($text, 9, true));
         $this->assertEquals("简体中文简体...", shorten_text($text, 9, false));
         $this->assertEquals("简体中文简体中文ab...", shorten_text($text, 13, true));
         $this->assertEquals("简体中文简体中文...", shorten_text($text, 13, false));
+    }
 
+    function test_shorten_text_multilang() {
+        // This is not necessaryily specific to multilang. The issue is really
+        // tags with attributes, where before we were generating invalid HTML
+        // output like shorten_text('<span id="x" class="y">A</span> B', 1);
+        // returning '<span id="x" ...</span>'. It is just that multilang
+        // requires the sort of HTML that is quite likely to trigger this.
+        // ........................................1...
+        $text = '<span lang="en" class="multilang">A</span>' .
+                '<span lang="fr" class="multilang">B</span>';
+        $this->assertEquals('<span lang="en" class="multilang">...</span>',
+                shorten_text($text, 1));
     }
 
     function test_usergetdate() {
@@ -1498,6 +1560,59 @@ class moodlelib_testcase extends advanced_testcase {
         // in-memory anyhow
         $CFG->showuseridentity = $oldshowuseridentity;
         $USER = $olduser;
+    }
+
+    /**
+     * Test some critical TZ/DST.
+     *
+     * This method tests some special TZ/DST combinations that were fixed
+     * by MDL-38999. The tests are done by comparing the results of the
+     * output using Moodle TZ/DST support and PHP native one.
+     *
+     * Note: If you don't trust PHP TZ/DST support, can verify the
+     * harcoded expectations below with:
+     * http://www.tools4noobs.com/online_tools/unix_timestamp_to_datetime/
+     */
+    public function test_some_moodle_special_dst() {
+        $stamp = 1365386400; // 2013/04/08 02:00:00 GMT/UTC.
+
+        // In Europe/Tallinn it was 2013/04/08 05:00:00.
+        $expectation = '2013/04/08 05:00:00';
+        $phpdt = DateTime::createFromFormat('U', $stamp, new DateTimeZone('UTC'));
+        $phpdt->setTimezone(new DateTimeZone('Europe/Tallinn'));
+        $phpres = $phpdt->format('Y/m/d H:i:s'); // PHP result.
+        $moodleres = userdate($stamp, '%Y/%m/%d %H:%M:%S', 'Europe/Tallinn', false); // Moodle result.
+        $this->assertSame($expectation, $phpres);
+        $this->assertSame($expectation, $moodleres);
+
+        // In St. Johns it was 2013/04/07 23:30:00.
+        $expectation = '2013/04/07 23:30:00';
+        $phpdt = DateTime::createFromFormat('U', $stamp, new DateTimeZone('UTC'));
+        $phpdt->setTimezone(new DateTimeZone('America/St_Johns'));
+        $phpres = $phpdt->format('Y/m/d H:i:s'); // PHP result.
+        $moodleres = userdate($stamp, '%Y/%m/%d %H:%M:%S', 'America/St_Johns', false); // Moodle result.
+        $this->assertSame($expectation, $phpres);
+        $this->assertSame($expectation, $moodleres);
+
+        $stamp = 1383876000; // 2013/11/08 02:00:00 GMT/UTC.
+
+        // In Europe/Tallinn it was 2013/11/08 04:00:00.
+        $expectation = '2013/11/08 04:00:00';
+        $phpdt = DateTime::createFromFormat('U', $stamp, new DateTimeZone('UTC'));
+        $phpdt->setTimezone(new DateTimeZone('Europe/Tallinn'));
+        $phpres = $phpdt->format('Y/m/d H:i:s'); // PHP result.
+        $moodleres = userdate($stamp, '%Y/%m/%d %H:%M:%S', 'Europe/Tallinn', false); // Moodle result.
+        $this->assertSame($expectation, $phpres);
+        $this->assertSame($expectation, $moodleres);
+
+        // In St. Johns it was 2013/11/07 22:30:00.
+        $expectation = '2013/11/07 22:30:00';
+        $phpdt = DateTime::createFromFormat('U', $stamp, new DateTimeZone('UTC'));
+        $phpdt->setTimezone(new DateTimeZone('America/St_Johns'));
+        $phpres = $phpdt->format('Y/m/d H:i:s'); // PHP result.
+        $moodleres = userdate($stamp, '%Y/%m/%d %H:%M:%S', 'America/St_Johns', false); // Moodle result.
+        $this->assertSame($expectation, $phpres);
+        $this->assertSame($expectation, $moodleres);
     }
 
     public function test_userdate() {

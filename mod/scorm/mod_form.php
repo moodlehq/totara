@@ -43,6 +43,7 @@ class mod_scorm_mod_form extends moodleform_mod {
             $mform->setType('name', PARAM_CLEANHTML);
         }
         $mform->addRule('name', null, 'required', null, 'client');
+        $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
         // Summary
         $this->add_intro_editor(true);
@@ -522,24 +523,25 @@ class mod_scorm_mod_form extends moodleform_mod {
             return false;
         }
 
-        // Turn off completion settings if the checkboxes aren't ticked
-        $autocompletion = isset($data->completion) && $data->completion == COMPLETION_TRACKING_AUTOMATIC;
+        if (!empty($data->completionunlocked)) {
+            // Turn off completion settings if the checkboxes aren't ticked
+            $autocompletion = isset($data->completion) && $data->completion == COMPLETION_TRACKING_AUTOMATIC;
 
-        if (isset($data->completionstatusrequired) && is_array($data->completionstatusrequired)) {
-            $total = 0;
-            foreach (array_keys($data->completionstatusrequired) as $state) {
-                $total |= $state;
+            if (isset($data->completionstatusrequired) &&
+                    is_array($data->completionstatusrequired) && $autocompletion) {
+                $total = 0;
+                foreach (array_keys($data->completionstatusrequired) as $state) {
+                    $total |= $state;
+                }
+
+                $data->completionstatusrequired = $total;
+            } else {
+                $data->completionstatusrequired = null;
             }
 
-            $data->completionstatusrequired = $total;
-        }
-
-        if (!$autocompletion) {
-            $data->completionstatusrequired = null;
-        }
-
-        if (!empty($data->completionscoredisabled) || !$autocompletion) {
-            $data->completionscorerequired = null;
+            if (!empty($data->completionscoredisabled) || !$autocompletion) {
+                $data->completionscorerequired = null;
+            }
         }
 
         return $data;

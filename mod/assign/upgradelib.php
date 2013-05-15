@@ -270,7 +270,7 @@ class assign_upgrade_manager {
 
         } catch (Exception $exception) {
             $rollback = true;
-            $log .= get_string('conversionexception', 'mod_assign', $exception->error);
+            $log .= get_string('conversionexception', 'mod_assign', $exception->getMessage());
         }
 
         if ($rollback) {
@@ -363,7 +363,7 @@ class assign_upgrade_manager {
             return false;
         }
 
-        $newcm->section = course_add_cm_to_section($newcm->course, $newcm->id, $section->section);
+        $newcm->section = course_add_cm_to_section($newcm->course, $newcm->id, $section->section, $cm->id);
 
         // make sure visibility is set correctly (in particular in calendar)
         // note: allow them to set it even without moodle/course:activityvisibility

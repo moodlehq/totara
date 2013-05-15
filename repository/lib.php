@@ -652,7 +652,14 @@ abstract class repository {
 
         // Prevent access to private repositories when logged in as.
         if (session_is_loggedinas()) {
-            $can = false;
+            $allowed = array('coursefiles', 'equella', 'filesystem', 'flickr_public', 'local', 'merlot', 'recent',
+                's3', 'upload', 'url', 'user', 'webdav', 'wikimedia', 'youtube');
+            // Are only accessible the repositories which do not contain private data (any data
+            // that is not part of Moodle, "Private files" is not considered "Pivate"). And if they
+            // do not contain private data, then it should not be a user instance, which is private by definition.
+            if (!in_array($this->type, $allowed) || $repocontext->contextlevel == CONTEXT_USER) {
+                $can = false;
+            }
         }
 
         // We are going to ensure that the current context was legit, and reliable to check
@@ -1134,11 +1141,17 @@ abstract class repository {
             return;
         }
 
-        // do NOT mess with permissions here, the calling party is responsible for making
-        // sure the scanner engine can access the files!
-
+        $clamparam = ' --stdout ';
+        // If we are dealing with clamdscan, clamd is likely run as a different user
+        // that might not have permissions to access your file.
+        // To make clamdscan work, we use --fdpass parameter that passes the file
+        // descriptor permissions to clamd, which allows it to scan given file
+        // irrespective of directory and file permissions.
+        if (basename($CFG->pathtoclam) == 'clamdscan') {
+            $clamparam .= '--fdpass ';
+        }
         // execute test
-        $cmd = escapeshellcmd($CFG->pathtoclam).' --stdout '.escapeshellarg($thefile);
+        $cmd = escapeshellcmd($CFG->pathtoclam).$clamparam.escapeshellarg($thefile);
         exec($cmd, $output, $return);
 
         if ($return == 0) {
@@ -2685,8 +2698,9 @@ final class repository_instance_form extends moodleform {
 
         $sql = "SELECT count('x')
                   FROM {repository_instances} i, {repository} r
-                 WHERE r.type=:plugin AND r.id=i.typeid AND i.name=:name";
-        if ($DB->count_records_sql($sql, array('name' => $data['name'], 'plugin' => $data['plugin'])) > 1) {
+                 WHERE r.type=:plugin AND r.id=i.typeid AND i.name=:name AND i.contextid=:contextid";
+        $params = array('name' => $data['name'], 'plugin' => $this->plugin, 'contextid' => $this->contextid);
+        if ($DB->count_records_sql($sql, $params) > 0) {
             $errors['name'] = get_string('erroruniquename', 'repository');
         }
 

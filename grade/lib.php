@@ -22,7 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once $CFG->libdir.'/gradelib.php';
+require_once($CFG->libdir . '/gradelib.php');
+require_once($CFG->dirroot . '/grade/export/lib.php');
 
 /**
  * This class iterates over all users that are graded in a course.
@@ -128,7 +129,7 @@ class graded_users_iterator {
 
         $this->close();
 
-        grade_regrade_final_grades($this->course->id);
+        export_verify_grades($this->course->id);
         $course_item = grade_item::fetch_course_item($this->course->id);
         if ($course_item->needsupdate) {
             // can not calculate all final grades - sorry
@@ -2461,7 +2462,7 @@ abstract class grade_helper {
             return self::$managesetting;
         }
         $context = context_course::instance($courseid);
-        if (has_capability('moodle/course:update', $context)) {
+        if (has_capability('moodle/grade:manage', $context)) {
             self::$managesetting = new grade_plugin_info('coursesettings', new moodle_url('/grade/edit/settings/index.php', array('id'=>$courseid)), get_string('course'));
         } else {
             self::$managesetting = false;

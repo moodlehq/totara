@@ -24,6 +24,7 @@
 mod_scorm_launch_next_sco = null;
 mod_scorm_launch_prev_sco = null;
 mod_scorm_activate_item = null;
+scorm_layout_widget = null;
 
 M.mod_scorm = {};
 
@@ -40,8 +41,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
         scorm_disable_toc = true;
     }
 
-    scoes_nav = JSON.parse(scoes_nav);
-    var scorm_layout_widget;
+    scoes_nav = Y.JSON.parse(scoes_nav);
     var scorm_current_node;
     var scorm_buttons = [];
     var scorm_bloody_labelclick = false;
@@ -157,7 +157,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
             scorm_resize_frame();
 
             var left = scorm_layout_widget.getUnitByPosition('left');
-            if (left.expanded) {
+            if (left.expand) {
                 scorm_current_node.focus();
             }
             if (scorm_hide_nav == false) {
@@ -368,7 +368,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
                 var datastring = scoes_nav[launch_sco].url + '&function=scorm_seq_flow&request=backward';
                 result = scorm_ajax_request(M.cfg.wwwroot + '/mod/scorm/datamodels/sequencinghandler.php?', datastring);
                 mod_scorm_seq = encodeURIComponent(result);
-                result = JSON.parse (result);
+                result = Y.JSON.parse (result);
                 if (typeof result.nextactivity.id != undefined) {
                         var node = scorm_prev(scorm_tree_node.getHighlightedNode())
                         if (node == null) {
@@ -394,7 +394,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
                 var datastring = scoes_nav[launch_sco].url + '&function=scorm_seq_flow&request=forward';
                 result = scorm_ajax_request(M.cfg.wwwroot + '/mod/scorm/datamodels/sequencinghandler.php?', datastring);
                 mod_scorm_seq = encodeURIComponent(result);
-                result = JSON.parse (result);
+                result = Y.JSON.parse (result);
                 if (typeof result.nextactivity.id != undefined) {
                         var node = scorm_next(scorm_tree_node.getHighlightedNode())
                         if (node == null) {
@@ -496,6 +496,15 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
         }
         tree.expandAll();
         tree.render();
+
+        // On getting the window, always set the focus on the current item
+        Y.YUI2.util.Event.on(window, 'focus', function (e) {
+            var current = scorm_tree_node.getHighlightedNode();
+            var left = scorm_layout_widget.getUnitByPosition('left');
+            if (current && left.expand) {
+                current.focus();
+            }
+        });
 
         // navigation
         if (scorm_hide_nav == false) {
@@ -613,7 +622,7 @@ M.mod_scorm.init = function(Y, hide_nav, hide_toc, toc_title, window_name, launc
                         if (hnode) {
                             hnode.highlight();
                             var left = scorm_layout_widget.getUnitByPosition('left');
-                            if (left.expanded) {
+                            if (left.expand) {
                                 hnode.focus();
                             }
                         }

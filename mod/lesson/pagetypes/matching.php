@@ -161,28 +161,28 @@ class lesson_page_type_matching extends lesson_page {
         }
 
         $response = $data->response;
-        if (!is_array($response)) {
-            $result->noanswer = true;
-            return $result;
-        }
+        $getanswers = $this->get_answers();
 
-        $answers = $this->get_answers();
+        $correct = array_shift($getanswers);
+        $wrong   = array_shift($getanswers);
 
-        $correct = array_shift($answers);
-        $wrong   = array_shift($answers);
-
-        foreach ($answers as $key=>$answer) {
+        $answers = array();
+        foreach ($getanswers as $key=>$answer) {
             if ($answer->answer !== '' or $answer->response !== '') {
                 $answers[$answer->id] = $answer;
             }
-            unset($answers[$key]);
+            unset($getanswers[$key]);
         }
-        // get he users exact responses for record keeping
+        // get the user's exact responses for record keeping
         $hits = 0;
         $userresponse = array();
         foreach ($response as $id => $value) {
+            if ($value == '') {
+                $result->noanswer = true;
+                return $result;
+            }
             $userresponse[] = $value;
-            // Make sure the user's answer is exist in question's answer
+            // Make sure the user's answer exists in question's answer
             if (array_key_exists($id, $answers)) {
                 $answer = $answers[$id];
                 $result->studentanswer .= '<br />'.format_text($answer->answer, $answer->answerformat, $formattextdefoptions).' = '.$answers[$value]->response;
