@@ -310,6 +310,7 @@ $string['normalcosthinttext'] = '';
 $string['noremindersneedtobesent'] = 'No reminders need to be sent.';
 $string['nosignedupusers'] = 'No users have signed-up for this session.';
 $string['nosignedupusersnumrequests'] = 'No users are fully booked for this session. {$a} users are awaiting approval.';
+$string['nosignedupusersonerequest'] = 'No users are fully booked for this session. 1 user is awaiting approval.';
 $string['note'] = 'Note';
 $string['notefull'] = 'Even if the Session is fully booked you can still register. You will be queued (marked in red). If someone signs out, the first student in the queue will be moved into registeres students and a notification will be sent to him/her by mail.';
 $string['notificationalreadysent'] = 'This notification has already been sent, so can no longer be edited.';
