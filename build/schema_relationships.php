@@ -95,7 +95,6 @@ $relations = array(
     'course_completion_crit_compl#course' => 'course#id',
     'course_completion_crit_compl#userid' => 'user#id',
     'course_completion_crit_compl#criteriaid' => 'course_completion_criteria#id',
-    'course_completion_notify#course' => 'course#id',
     'course_completion_aggr_methd#course' => 'course#id',
     // idp
     'dp_plan#templateid' => 'dp_template#id',
