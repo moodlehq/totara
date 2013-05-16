@@ -193,12 +193,12 @@ if (!empty($userid)) {
 
 $courseid = (empty($courseid)) ? SITEID : $courseid;
 
-if (empty($entryid) && empty($modid) && empty($groupid)) {
-    $PAGE->set_context(context_user::instance($USER->id));
+if (!empty($courseid)) {
+    $PAGE->set_context(context_course::instance($courseid));
 } else if (!empty($modid)) {
     $PAGE->set_context(context_module::instance($modid));
-} else if (!empty($courseid)) {
-    $PAGE->set_context(context_course::instance($courseid));
+} else if (empty($entryid) && empty($modid) && empty($groupid)) {
+    $PAGE->set_context(context_user::instance($USER->id));
 } else {
     $PAGE->set_context(context_system::instance());
 }
