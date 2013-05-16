@@ -248,6 +248,16 @@ class rb_source_facetoface_sessions extends rb_base_source {
             ),
             new rb_column_option(
                 'date',
+                'datefinish',
+                get_string('sessdatefinish', 'rb_source_facetoface_sessions'),
+                'sessiondate.timefinish',
+                array(
+                    'extrafields' => array('timezone' => 'sessiondate.sessiontimezone'),
+                    'joins' => 'sessiondate',
+                    'displayfunc' => 'nice_date_in_timezone')
+            ),
+            new rb_column_option(
+                'date',
                 'timestart',
                 get_string('sessstart', 'rb_source_facetoface_sessions'),
                 'sessiondate.timestart',
