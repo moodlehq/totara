@@ -89,7 +89,8 @@
         // otherwise the admin block does not appear to this user, and you get an error.
         require_once($CFG->libdir.'/adminlib.php');
         $adminpage = ($SESSION->viewtype == 'course') ? 'managecourses' : 'manageprograms';
-        admin_externalpage_setup($adminpage, $editbutton, array(), new moodle_url('/course/categorylist.php'));
+        admin_externalpage_setup($adminpage, $editbutton, array('viewtype' => $SESSION->viewtype),
+                new moodle_url('/course/categorylist.php'));
         echo $OUTPUT->header();
     } else {
         $PAGE->set_title("$site->shortname");

@@ -50,7 +50,7 @@
     }
 
     $PAGE->set_category_by_id($id);
-    $urlparams = array('id' => $id);
+    $urlparams = array('id' => $id, 'viewtype' => $SESSION->viewtype);
     if ($page) {
         $urlparams['page'] = $page;
     }
