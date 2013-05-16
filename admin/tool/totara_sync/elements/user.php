@@ -320,8 +320,6 @@ class totara_sync_element_user extends totara_sync_element {
             profile_save_data($user);
         }
 
-        $this->addlog(get_string('createduserx', 'tool_totara_sync', $user->idnumber), 'info', 'createusers');
-
         $transaction->allow_commit();
 
         return true;
