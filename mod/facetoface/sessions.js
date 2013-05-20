@@ -231,5 +231,5 @@ totaraDialog_handler_addpdroom.prototype.external_function = function() {
     });
 
     // clear custom room
-    $('input[name="customroom"]').attr("checked", false);
+    $('input[name="customroom"]').prop("checked", false);
 }

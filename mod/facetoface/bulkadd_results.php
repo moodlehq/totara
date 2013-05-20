@@ -113,11 +113,11 @@ echo('
     <script language="javascript">
         function selectAll()
         {
-            $(\'input[type="checkbox"]\').attr("checked", true);
+            $(\'input[type="checkbox"]\').prop("checked", true);
         }
         function selectNone()
         {
-            $(\'input[type="checkbox"]\').attr("checked", false);
+            $(\'input[type="checkbox"]\').prop("checked", false);
         }
     </script>
 ');

@@ -87,8 +87,8 @@ M.totara_reportbuilder_filterdialogs = M.totara_reportbuilder_filterdialogs || {
                 // disable popup buttons if first pulldown is set to
                 // 'any value'
                 if ($('select[name='+id+'_op]').val() == 0) {
-                    $('input[name='+id+'_rec]').attr('disabled',true);
-                    $('#show-'+id+'-dialog').attr('disabled',true);
+                    $('input[name='+id+'_rec]').prop('disabled',true);
+                    $('#show-'+id+'-dialog').prop('disabled',true);
                 }
             })();
 
@@ -116,8 +116,8 @@ M.totara_reportbuilder_filterdialogs = M.totara_reportbuilder_filterdialogs || {
                 // disable popup buttons if first pulldown is set to
                 // 'any value'
                 if ($('select[name='+id+'_op]').val() == 0) {
-                    $('input[name='+id+'_rec]').attr('disabled',true);
-                    $('#show-'+id+'-dialog').attr('disabled',true);
+                    $('input[name='+id+'_rec]').prop('disabled',true);
+                    $('#show-'+id+'-dialog').prop('disabled',true);
                 }
             })();
 
@@ -145,8 +145,8 @@ M.totara_reportbuilder_filterdialogs = M.totara_reportbuilder_filterdialogs || {
                 // disable popup buttons if first pulldown is set to
                 // 'any value'
                 if ($('select[name='+id+'_op]').val() == 0) {
-                    $('input[name='+id+'_rec]').attr('disabled',true);
-                    $('#show-'+id+'-dialog').attr('disabled',true);
+                    $('input[name='+id+'_rec]').prop('disabled',true);
+                    $('#show-'+id+'-dialog').prop('disabled',true);
                 }
             })();
 

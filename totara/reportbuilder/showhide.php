@@ -56,7 +56,7 @@ $('#column-checkboxes input').each(function() {
     var sel = '#' + shortname + ' .' + $(this).attr('name');
     var state = $(sel).css('display');
     var check = (state == 'none') ? false : true;
-    $(this).attr('checked', check);
+    $(this).prop('checked', check);
 });
 // when clicked, toggle visibility of columns
 $('#column-checkboxes input').click(function() {
@@ -64,7 +64,7 @@ $('#column-checkboxes input').click(function() {
     var sel = '#' + shortname + ' td.' + $(this).attr('name');
     var value = $(this).is(':checked') ? 1 : 0;
 
-    if ($.browser.msie && parseInt($.browser.version) == '8') {
+    if (navigator.userAgent.match(/msie [8]/i)) {
         $(selheader).each(function(i, elem) {
             $(elem).toggle($(elem).css('display') == 'none');
         });
