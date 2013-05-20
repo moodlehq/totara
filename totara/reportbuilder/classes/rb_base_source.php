@@ -2509,6 +2509,20 @@ abstract class rb_base_source {
         );
         $columnoptions[] = new rb_column_option(
             'user',
+            'managerfirstname',
+            get_string('usersmanagerfirstname', 'totara_reportbuilder'),
+            "$manager.firstname",
+            array('joins' => $manager)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
+            'managerlastname',
+            get_string('usersmanagerlastname', 'totara_reportbuilder'),
+            "$manager.lastname",
+            array('joins' => $manager)
+        );
+        $columnoptions[] = new rb_column_option(
+            'user',
             'managerid',
             get_string('usersmanagerid', 'totara_reportbuilder'),
             "$manager.id",
