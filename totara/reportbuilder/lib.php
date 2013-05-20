@@ -3023,17 +3023,18 @@ class reportbuilder {
      * @return Returns the CSV file
      */
     function download_csv($fields, $query, $params, $count, $file=null) {
-        global $DB;
+        global $DB, $CFG;
+
+        require_once("{$CFG->libdir}/csvlib.class.php");
 
         $shortname = $this->shortname;
         $filename = clean_filename($shortname . '_report.csv');
-        $csv = '';
+
         if (!$file) {
-            header("Content-Type: application/download\n");
-            header("Content-Disposition: attachment; filename=$filename");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
-            header("Pragma: public");
+            $export = new csv_export_writer();
+            $export->set_filename($filename);
+        } else {
+            $fp = fopen($file, "w");
         }
 
         $delimiter = get_string('listsep', 'langconfig');
@@ -3043,7 +3044,11 @@ class reportbuilder {
             $row[] = str_replace($delimiter, $encdelim, strip_tags($field->heading));
         }
 
-        $csv .= implode($delimiter, $row) . "\n";
+        if ($file) {
+            fputcsv($fp, $row, $delimiter, '"');
+        } else {
+            $export->add_data($row);
+        }
 
         $numfields = count($fields);
 
@@ -3058,7 +3063,11 @@ class reportbuilder {
                         $row[] = '';
                     }
                 }
-                $csv .= implode($delimiter, $row)."\n";
+                if ($file) {
+                    fputcsv($fp, $row, $delimiter, '"');
+                } else {
+                    $export->add_data($row);
+                }
             }
             $records->close();
         } else {
@@ -3067,12 +3076,9 @@ class reportbuilder {
         }
 
         if ($file) {
-            $fp = fopen ($file, "w");
-            fwrite($fp, $csv);
             fclose($fp);
         } else {
-            echo $csv;
-            die;
+            $export->download_file();
         }
     }
 
