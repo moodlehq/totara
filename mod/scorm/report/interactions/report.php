@@ -116,7 +116,8 @@ class scorm_interactions_report extends scorm_default_report {
             // Now check if asked download of data
             $coursecontext = context_course::instance($course->id);
             if ($download) {
-                $filename = clean_filename("$course->shortname ".format_string($scorm->name, true,$formattextoptions));
+                $filename = clean_filename(str_replace(array('&amp;', '&'), get_string('ampersand', 'totara_core'),
+                        format_string(strip_tags($course->shortname . ' ' . $scorm->name), true, $formattextoptions)));
             }
 
             // Define table columns

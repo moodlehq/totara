@@ -104,8 +104,8 @@ class scorm_basic_report extends scorm_default_report {
             // Now check if asked download of data
             $coursecontext = context_course::instance($course->id);
             if ($download) {
-                $shortname = format_string($course->shortname, true, array('context' => $coursecontext));
-                $filename = clean_filename("$shortname ".format_string($scorm->name, true));
+                $filename = clean_filename(str_replace(array('&amp;', '&'), get_string('ampersand', 'totara_core'),
+                        format_string(strip_tags($course->shortname . ' ' . $scorm->name), true, array('context' => $coursecontext))));
             }
 
             // Define table columns
