@@ -1207,6 +1207,89 @@ function scorm_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function scorm_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get scorm details.
+    if (!$scorm = $DB->get_record('scorm', array('id' => $cm->instance))) {
+        print_error('cannotfindscorm', 'scorm');
+    }
+
+    $result = array();
+
+    if ($scorm->completionstatusrequired !== null ||
+        $scorm->completionscorerequired !== null) {
+        // Get user's tracks data.
+        $tracks = $DB->get_records_sql(
+            "SELECT id, element, value
+                FROM {scorm_scoes_track}
+                WHERE scormid = ?
+                AND userid = ?
+                AND element IN
+                (
+                    'cmi.core.lesson_status',
+                    'cmi.completion_status',
+                    'cmi.core.score.raw',
+                    'cmi.score.raw'
+                )", array($scorm->id, $userid)
+        );
+
+        if (!$tracks) {
+            return $result;
+        }
+    }
+
+    // Check for status.
+    if ($scorm->completionstatusrequired !== null) {
+
+        // Get status.
+        $statuses = array_flip(scorm_status_options());
+        $totalstatus = 0;
+
+        foreach ($tracks as $track) {
+            if (!in_array($track->element, array('cmi.core.lesson_status', 'cmi.completion_status'))) {
+                continue;
+            }
+            if (array_key_exists($track->value, $statuses)) {
+                $totalstatus |= $statuses[$track->value];
+            }
+        }
+
+        foreach ($statuses as $status => $nstatus) {
+            if ($nstatus & $totalstatus) {
+                $result[] = get_string($status, 'scorm');
+            }
+        }
+    }
+
+    // Check for score.
+    if ($scorm->completionscorerequired !== null) {
+        $maxscore = -1;
+
+        foreach ($tracks as $track) {
+            if (!in_array($track->element, array('cmi.core.score.raw', 'cmi.score.raw'))) {
+                continue;
+            }
+            if (strlen($track->value) && floatval($track->value) >= $maxscore) {
+                $maxscore = floatval($track->value);
+            }
+        }
+
+        if ($maxscore > -1) {
+            $result[] = get_string('scoreachieved', 'scorm', $maxscore);
+        }
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this scorm based on any conditions
  * in scorm settings.
  *

@@ -270,6 +270,7 @@ $string['started'] = 'started';
 $string['stop'] = 'End';
 $string['subject'] = 'Subject';
 $string['submission'] = 'Submission';
+$string['submitted'] = 'Submitted';
 $string['switch_group'] = 'Switch group';
 $string['switch_item_to_not_required'] = 'switch to: answer not required';
 $string['switch_item_to_required'] = 'switch to: answer required';

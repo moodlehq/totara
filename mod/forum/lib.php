@@ -338,6 +338,45 @@ function forum_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function forum_get_completion_progress($cm, $userid) {
+    global $DB;
+
+    // Get forum details.
+    if (!($forum = $DB->get_record('forum', array('id' => $cm->instance)))) {
+        print_error("Can't find forum {$cm->instance}");
+    }
+
+    $postcountparams = array('userid' => $userid, 'forum' => $forum->id);
+    $postcountsql="SELECT COUNT(1)
+                    FROM {forum_posts} fp
+                    INNER JOIN {forum_discussions} fd ON fp.discussion=fd.id
+                    WHERE fp.userid=:userid AND fd.forum=:forum";
+
+    $result = array();
+
+    if ($forum->completiondiscussions) {
+        $count = $DB->count_records('forum_discussions', $postcountparams);
+        $result[] = get_string('completiondiscussionscompleted', 'forum', $count);
+    }
+    if ($forum->completionreplies) {
+        $result[] = get_string('completionrepliescompleted', 'forum',
+                $DB->get_field_sql( $postcountsql.' AND fp.parent<>0', $postcountparams));
+    }
+    if ($forum->completionposts) {
+        $result[] = get_string('completionpostscompleted', 'forum',
+                $DB->get_field_sql($postcountsql, $postcountparams));
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this forum based on any conditions
  * in forum settings.
  *

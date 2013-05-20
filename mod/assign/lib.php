@@ -1073,6 +1073,33 @@ function assign_get_completion_requirements($cm) {
 }
 
 /**
+ * Obtains the completion progress.
+ *
+ * @param object $cm      Course-module
+ * @param int    $userid  User ID
+ * @return string The current status of completion for the user
+ */
+function assign_get_completion_progress($cm, $userid) {
+    global $CFG, $DB;
+    require_once($CFG->dirroot . '/mod/assign/locallib.php');
+
+    $assign = new assign(null, $cm, $cm->course);
+
+    $result = array();
+
+    // If completion option is enabled, evaluate it and return true/false.
+    if ($assign->get_instance()->completionsubmit) {
+        $submission = $DB->get_record('assign_submission',
+                array('assignment' => $assign->get_instance()->id, 'userid' => $userid), '*', IGNORE_MISSING);
+        if ($submission && ($submission->status == ASSIGN_SUBMISSION_STATUS_SUBMITTED)) {
+            $result[] = get_string('submitted', 'assign');
+        }
+    }
+
+    return $result;
+}
+
+/**
  * Obtains the automatic completion state for this module based on any conditions
  * in assign settings.
  *

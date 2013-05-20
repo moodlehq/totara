@@ -278,6 +278,7 @@ $string['review'] = 'Review';
 $string['reviewmode'] = 'Review mode';
 $string['scoes'] = 'Learning objects';
 $string['score'] = 'Score';
+$string['scoreachieved'] = 'Scored {$a}';
 $string['scorerequired'] = 'Score {$a}';
 $string['scorm:addinstance'] = 'Add a new SCORM package';
 $string['scormclose'] = 'Until';

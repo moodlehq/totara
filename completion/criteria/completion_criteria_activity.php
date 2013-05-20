@@ -292,6 +292,34 @@ class completion_criteria_activity extends completion_criteria {
 
         $details['requirement'] = implode($details['requirement'], ', ');
 
+        // Build status.
+        $details['status'] = array();
+
+        if ($completion->is_complete()) {
+            $details['status'][] = get_string('completion-y', 'completion');
+        } else {
+            if ($module->completion == 2) {
+                if ($module->completionview) {
+                    $details['status'][] = get_string('viewedactivity', 'completion', $this->module);
+                }
+
+                if (!is_null($module->completiongradeitemnumber)) {
+                    $details['status'][] = get_string('achievedgrade', 'completion');
+                }
+            }
+
+            $completion_progress = $this->module . "_get_completion_progress";
+            if (function_exists($completion_progress)) {
+                $details['status'] = array_merge($details['status'],
+                        $completion_progress($module, $completion->userid));
+            }
+        }
+
+        $details['status'] = implode($details['status'], ', ');
+        if (!$details['status']) {
+            $details['status'] = get_string('completion-n', 'completion');
+        }
+
         return $details;
     }
 }
