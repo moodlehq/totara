@@ -192,7 +192,7 @@ foreach ($category_breadcrumbs as $crumb) {
 $PAGE->navbar->add($program->shortname, new moodle_url('/totara/program/view.php', array('id' => $id)));
 
 if ($action == 'edit') {
-    $PAGE->navbar->add(ucwords($action));
+    $PAGE->navbar->add(get_string('edit', 'moodle'));
 }
 
 echo $OUTPUT->header();
