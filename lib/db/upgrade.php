@@ -1862,7 +1862,7 @@ function xmldb_main_upgrade($oldversion) {
 
         // Adding keys to table 'badge_manual_award'
         $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
-        $table->add_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('id'), 'badge', array('id'));
+        $table->add_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('badgeid'), 'badge', array('id'));
         $table->add_key('fk_recipientid', XMLDB_KEY_FOREIGN, array('recipientid'), 'user', array('id'));
         $table->add_key('fk_issuerid', XMLDB_KEY_FOREIGN, array('issuerid'), 'user', array('id'));
         $table->add_key('fk_issuerrole', XMLDB_KEY_FOREIGN, array('issuerrole'), 'role', array('id'));
@@ -1937,6 +1937,18 @@ function xmldb_main_upgrade($oldversion) {
 
         // Main savepoint reached.
         upgrade_main_savepoint(true, 2012120303.11);
+    }
+
+    if ($oldversion < 2012120304.01) {
+        // Create missing badgeid foreign key on badge_manual_award.
+        $table = new xmldb_table('badge_manual_award');
+        $key = new xmldb_key('fk_badgeid', XMLDB_KEY_FOREIGN, array('id'), 'badge', array('id'));
+
+        $dbman->drop_key($table, $key);
+        $key->set_attributes(XMLDB_KEY_FOREIGN, array('badgeid'), 'badge', array('id'));
+        $dbman->add_key($table, $key);
+
+        upgrade_main_savepoint(true, 2012120304.01);
     }
 
     return true;
