@@ -25,7 +25,7 @@ background: #E2E2E2;filter: progid:DXImageTransform.Microsoft.gradient(startColo
  * File Picker layout
  */
 #filesskin .file-picker.fp-generallayout {width: 859px;background: #FFFFFF;border-radius:10px;border: 1px solid #CCCCCC;position: relative;}
-.file-picker .fp-repo-area {width:180px;overflow:auto;display:inline-block;border-right:1px solid #BBBBBB;position:absolute;top:26px;bottom:1px;}
+.file-picker .fp-repo-area {width:180px;overflow:auto;display:inline-block;border-right:1px solid #BBBBBB;position:absolute;top:26px;bottom:1px;left:0;}
 .dir-rtl .file-picker .fp-repo-area {border-left:1px solid #BBBBBB; border-right: none;}
 .file-picker .fp-repo-items {vertical-align:top;display: inline-block;margin-left: 181px;}
 .file-picker .fp-navbar {background: #F2F2F2;min-height:22px;border-bottom: 1px solid #BBBBBB;padding: 5px 8px;}
