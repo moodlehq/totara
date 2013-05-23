@@ -4124,7 +4124,7 @@ class settings_navigation extends navigation_node {
 
         //Add positions links
         $canview = false;
-        if (!empty($USER->id) && ($user->id == $USER->id)) {
+        if (!empty($USER->id) && ($user->id == $USER->id) && has_capability('totara/hierarchy:viewposition', $systemcontext)) {
             // Can view own profile
             $canview = true;
         }
